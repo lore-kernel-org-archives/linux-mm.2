@@ -1,31 +1,36 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92172606A31F
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 22:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DC7606A323
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 22:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U/fZ8ndz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SMw+IJUQ
 Received: by kanga.kvack.org (Postfix)
-	id 1A6066B05B6; Sun, 15 Nov 2026 17:34:51 -0500 (EST)
+	id 994CC6B05B7; Sun, 15 Nov 2026 17:34:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 183766B05B7; Sun, 15 Nov 2026 17:34:51 -0500 (EST)
+	id 96A8B6B05B8; Sun, 15 Nov 2026 17:34:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06C5D6B05B8; Sun, 15 Nov 2026 17:34:50 -0500 (EST)
+	id 798046B05BA; Sun, 15 Nov 2026 17:34:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B845D6B05B6
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:34:50 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35BE21C415C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4707A6B05B7
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:34:51 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AD5FC1A085A
 	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:34:50 +0000 (UTC)
-X-FDA: 85438809540.28.165DDCD
+X-FDA: 85438809540.21.8D0E30A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 157C820008
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:34:47 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/fZ8ndz";
-	spf=pass (imf31.hostedemail.com: domain of devnull+alireza.asgari.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+alireza.asgari.net@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7587B1C0009
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:34:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMw+IJUQ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of devnull+alireza.asgari.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+alireza.asgari.net@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794782088;
+	b=N+STUeN/EXuywzLv86UvMfGJmm4q2TIbgoabxQUcFDBM9AuKQK76YNxYrd470UEUZbxE/+
+	d8gTrQjIuy7/NisxW6CBWjd7UpxHCSmMe8iuAQ/HoAg+eEuM3ZjWzDCejeXZ9cTF1gf6As
+	pPfRq2C5sLC6TM8tpQ6uyKjjbykPahA=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794782088;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,72 +38,67 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m5RPz7a6FwiInslaW4fTkNxp7BEIp07/Zx2pVKJeOao=;
-	b=p47rHbDPK50yCMZitSk5D4+3oGu+P+xFsjxaNBxLUTS/yVQQivoOpu5E7cQziPzWuAY3H8
-	Cfw0uu7bYiiQJX3EdevfkEe2JJv6Yk9Qy6v46WG04zFBeJFQ7omMv+hp0SxiwtAcByaJBd
-	sllqd45Of23ZVYTl+qJl8uPOltrlbYs=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794782088;
-	b=ZsgbK/Zgch6fvemi1yLxUoxDr6kQAEurY9oNLyW5gxzoHGntlhRlQ4G0AfyJlr6nfFzVP/
-	3cJieTU8Ql/RjQXCnn7VB2HRHy4BGQgdXIeX0zZYlWmnFatqC4I71zfB3u8lFZdiZ5F9aO
-	av0yMbFtrjl6cI5MksO5rcVsPX3PXRE=
+	bh=K78cscSK993U/eDSRsHNE0Wl/CJc5YLqGyOkhSFQ5d8=;
+	b=1JwRyA1IaauOvF1Wzg9LGvKzWgx195oXmPXzwETai931P6dag71fSpgekp8eieZYlcex4v
+	SvaAIfdcIm3BcfqgYPLAZ/TriT/X8nY5Xyvm34lKM0FsnG1GAy4ZZtCooaRqyqj5rsoMK+
+	nhp2mkmJKy5jEUHO7GjYwtsNJW7sDl8=
 ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/fZ8ndz";
-	spf=pass (imf31.hostedemail.com: domain of devnull+alireza.asgari.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+alireza.asgari.net@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMw+IJUQ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of devnull+alireza.asgari.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+alireza.asgari.net@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 66C4C43F07;
+	by sea.source.kernel.org (Postfix) with ESMTP id C1E7C45A50;
 	Sun, 15 Nov 2026 22:34:47 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794782087;
-	b=tKNdeqPWKmxq3C7r31p+dk23tCI7P44MJM8iUpPKzy0oXJQ4z5dbPLaYOjvhiPxjKMLy
-	 grcqcy7srEJbSuOMVW4N+n0xyW9b+ayIOXlpta7T0s1nv3dPknEN95pCGDmZTSriE6iW2
-	 GN/yLCeamA6diwNq5lUsnYOHKpqZ3xavpABs7gwP54lg+8uWvhprlrclgGHXgqkr1uZVj
-	 D75zZOVxxPy1PD2cKg4X5yQcNHOqTXamsh4bFhCJbxfJCQGjCoCxcyYOyiZmfGOXiNa0N
-	 H69Yz3L6bh3wRxbVHDeY/eif77lxVfx9MdwygBJqxeJxxB17iHOoOJk/IVq7iBwf0RA==
+	b=O1o0NXBEwZ5A45TRa26DM+pifoo5sK3aHNjTMlEQLGsjmTVOtaRS4fy90o17fSoS28oa
+	 D+mGL8xCcjC8DqIcuEK6yCny83OqgTnzHYAIMRVUcN2I9XkXJ26Oa0sL35J34DvQVXg4v
+	 ekIB5I4Z/OQlZ3JTwDHhH1AQaPRgQ3Tp+qaL/plu55RJOcnS/sN14ON407+QG4LOoBU5N
+	 1tQUrOxJv+98Xe0SJIU3//rKrKPQPIyftcdcuzZWh9WdUyFxlL7ORA53uFLUraZd4+kRQ
+	 oejpCNdd5GcujfHMeo3659BrpkiVuJyNQ1HamPMT54brOUWOqLkJdCORfhvB3d5aqag==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794782087;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=m5RPz7a6FwiInslaW4fTkNxp7BEIp07/Zx2pVKJeOao=;
-	b=iXAa3B6+P8sIqlR8TpjiLpOWYyqS0wpDckxWqJOJlUpLjQBvcdTsTX4cSbDBAPHuihvw
-	 JpuSG+Ng+Hrk9sE4XUOsltVDqw4hzKO3a96SGx+YG4PXR7evQO+fL2JzkY7/nJQuadMju
-	 tIsT51jjnCn218oAaHLG5KGIJkZpcDJUmeuaqHFFiS+E8woDqqm9AjQfi8jxBUrPxTCJI
-	 Eb1EW4DYzQ1Fcc4/5CQrg53EtOQkVXy1tYd0x1jLhuFi79ksc5oZuqnMkQVQFfZHPNhZt
-	 16fTHSFxT/Q9rVCmBQFyFuQGkkeZqKzVHKW7+E3NdoxNj0lM1rX5svaTkjkXwbVX+rA==
+	bh=K78cscSK993U/eDSRsHNE0Wl/CJc5YLqGyOkhSFQ5d8=;
+	b=xGb7IQwPZfrWId9EmqW6FrT6BjCfrtOYA94/FkzR2J4t/qT8qEP7XrbLkPhQA6XnpMF4
+	 0B9Tk9SuWHQIKl80zSfnGh5HCf3V4vKdhW+mtAxsSjOZ3v3gA3ZFNSc772WkL30r+1rnu
+	 LWr6AFcE8ui3h34QYvV4xugz3+zNuwm339t7Pble1tv4AmAroF/Hj0gftmIVUl4iQQ9A+
+	 c0GnQV75J98Kw2ng/e5gPNBnBe9S/8V4EQc0WtpD2OKHMm1tT1phBnYAZ33h9N131Lqoc
+	 HdnLUBF1a07Eqy6j6sa6lPfCW7qqKXWZM9KEfXsgZLyv5S3Rc8VWN1HhpklCe8BbShA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B65811F000D0;
+	by smtp.kernel.org (Postfix) with ESMTPS id B1CAE1F000CF;
 	Sun, 15 Nov 2026 22:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794782087;
-	bh=m5RPz7a6FwiInslaW4fTkNxp7BEIp07/Zx2pVKJeOao=;
+	bh=K78cscSK993U/eDSRsHNE0Wl/CJc5YLqGyOkhSFQ5d8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=U/fZ8ndzsJyKr8voAQdNeWnUi86ocWMcYtostnRIPP7KeFELFekkluJl+qmRdJfDm
-	 ytBc0+9wLuBHzDkxOGb9aq2C/FQlChLLPOdsWrei45/cJ6yto8kwxOAoHp0a3IjUAS
-	 kJ1iPP7su72dVbuoeShmjVKZwvO/+Izje89JBXrV8S9O1E3IRDyuHA5ZUxfPI2B3TP
-	 EGI8fEv1juc0vnHoyx/Jv2mAOTvWu042QIKaFBNUE1IKHi9WMT+tHWPbUbWXFXpmjF
-	 kK08YHCZAoiFbSm6k5aGa+jrMJfiVxFCD1Hh8zvyAdagMmosNC9lCcCySrQtran6oK
-	 VXiBq+X/9r52w==
+	b=SMw+IJUQR1ZPa+Ie0IXyeL1wD8mvSXFwZoXyl0VmY109ybnh2XfVaTze9SgufaYz9
+	 JfzMvmKu1LfWMBsYTrENxnfpZj3Now3TBjQXQXCe/UTT0t3hzl41kzVSlJQK2oC3LT
+	 mhkqiKmt/8E4kfp9MTid2TMVcNjjc4OPN0lo55icJAUos2TRc/dErPCCLC1W1LPMXt
+	 zazeu2lAxjZ47T6nZ0U2uyJK6rxVR4wEMVrvSCIimk5SMMCW4/H0APzzQ66vMc7XBj
+	 6VEMh1YrmSdOFpIr01igz+jvlvYkIiidATDXpxf0GAWooVXzl9SEOI+DOzsSe5ui+0
+	 Aah9zwxO/h5Pw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id F073E4A25D;
+	by lkml.kernel.org (Postfix) with ESMTP id D601F4A259;
 	Sun, 15 Nov 2026 22:34:43 +0000 (UTC)
 From: Alireza Asgari via B4 Relay <devnull+alireza.asgari.net@kernel.org>
-Date: Sun, 15 Nov 2026 22:34:48 +0000
-Subject: [PATCH RFC nf-next 8/9] netfilter: nfqueue: add KUnit memory
- accounting coverage
+Date: Sun, 15 Nov 2026 22:34:47 +0000
+Subject: [PATCH RFC nf-next 7/9] netfilter: nfqueue: reserve capacity
+ against the bound owner
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261115-b4-nfqueue-memory-accounting-v1-8-b9cc30819997@asgari.net>
+Message-Id: <20261115-b4-nfqueue-memory-accounting-v1-7-b9cc30819997@asgari.net>
 References: <20261115-b4-nfqueue-memory-accounting-v1-0-b9cc30819997@asgari.net>
 In-Reply-To: <20261115-b4-nfqueue-memory-accounting-v1-0-b9cc30819997@asgari.net>
 To: netfilter-devel@vger.kernel.org, linux-mm@kvack.org
@@ -115,11 +115,11 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  cgroups@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Alireza Asgari <alireza@asgari.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794782082; l=14296;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794782082; l=12745;
  i=alireza@asgari.net; s=alireza-kernel; h=from:subject:message-id;
- bh=yVuu+o+DPEI25W4yS93kGUP6LvZX/GhqtDFPsoYHgAs=;
- b=YPoI4Nk50+1ctKI89mKDWt40MD/LMYTFi1OpHNVEFXgtIhaESx1oP+VTbjzERsu9UrHxzjP3n
- pM5pQVERUNICNXnwtadyFf0HBGt85Za8BEkwyQkbkSSOdos9yyhA/qu
+ bh=2RMtp6Bo7PwbFVa/IduU+cdsBTZbySOUxORVFjimTHw=;
+ b=Zo1EQcnHYoQyuJZjflJmekByHV00hvlWIoJWZS7R8/Phb4tO0CHqt6lCbdJjHE44PnHZwZGsj
+ z2yVl5+yj2RA/s32bJUTSeE0cYF85zhCsqTj8+G1rjjr1qVeV+6kAM3
 X-Developer-Key: i=alireza@asgari.net; a=ed25519;
  pk=wuQ0/M69FqoVnrCMUJ13EQCwrCwVjCrtz75k15vW8tw=
 X-Endpoint-Received: by B4 Relay for alireza@asgari.net/alireza-kernel with
@@ -127,18 +127,18 @@ X-Endpoint-Received: by B4 Relay for alireza@asgari.net/alireza-kernel with
 X-Original-From: Alireza Asgari <alireza@asgari.net>
 Reply-To: alireza@asgari.net
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7587B1C0009
+X-Rspamd-Server: rspam12
+X-Stat-Signature: zriy5n8iee5px8fduddgap5ee33tzgzk
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: fiwxgef97fgy3nowmjgfms4ykny988rw
-X-Rspamd-Queue-Id: 157C820008
-X-Rspam-User: 
-X-HE-Tag: 1794782087-471902
-X-HE-Meta: U2FsdGVkX1/9OI+ivAuKnHchacA9c4fnS5qgq+l6oiaVrzlmgY2ItY/I0AzzxbFhG1u1Lm/2wis2SZKJMSpScVW+MeQFBR6DDVMqEQPOPKkqnp0HPuaMUMWEl6gJOVotTRfXPpTvKMY0ZdN7h1irO92gqEGjRyNZF+zfnPuObueVfvWOkVOa18nK20HIKg2vB/mdOJyPSWLGUKgqUuXw4Or2PyjYEx7Q0UMXr8uNMVIX2WY4yWhkcqggK9aW0bf7IHfcePEXDgoEu1k/RRl9CWTdVzVUc+rE1OoZu3g+CVfSgrjjI0LWeJYBLp95QLRpVk+16xChE5cugArkQkM9ig1pHezq/RaChxNsUjfQoO0EgbkFE7llZDMJf365gAVdj4saM0xy45EuRatMuFocrJuj5MNobx4CpVjo/5/bY5Rviz+DYt9Y7sYPTTqheqzS1Q4BDWy+d7FeiYQJrA4huVG+7m38ZJxQANCOT45zytXBEtwfH0vnw1xPtVO0EA7J7PeK25i4z4l2/wpurkLbMOVY6gNAnKDNMzykk4fHfH5Mp6a+XGfL86gljs81mnCpKBsC8gtYqzjK/LZZExOP5h5lYZDlMkU4qfBQVMUuvsdM3TxBSqSmjk0irBJ6ZELUXgMnJF+cUFO38ZyigyGUl/qlzE1v/Bo2s9fqdxek+8+I3x8nCtCt5OEcydzfO7J06Pk9IPUWT3HY24rk0TRrf+ELOGBkNA3ajvfQbaDFB4xzTeNxKB5iwwZT84dFySMZRPnmUC4RcA2/4WBPuC9eh/DCAeSkfHcJkG8PX47/YqGyV8Uvoy/suCwBrRHJj6jM31KRSLWa0mSe0CvQ+VjHy6XMohegBgyGODS1ehlxHHjOvhTbqqogRVtOGpi8aDlPGkn+ePtkQ6y85tsLuqr4ivzeUSEw8s6YCIPRUaOwJSOWXzVgtW0roxwlQAdeUF7/LTLnLf2Xq+NB/2ryDBW
- J31d/T42
- t/82iYVItxoAIUOnoqmoeLrX4hSq7LETZDEqFwU/Oagj9P4At6q1x3aQwyxh1ITehKSAoPQ3UxK+fvQkA1DW0/muIt3AGWOI6jK4bGjMmcbNEcDCBb1Vf9DAZ5BZ06/2FryFbiagUm0pUu1BdHkifPGn+Taqa7Ke65n61O4wV2Nh0idbcjJWba4ii3QOLqBvKyGDiFZj7cfEH5969Zuv8lfnNAY0A5J3U/5NFUbDyUqaFYHCr/DJ7zriSXy+hJ2kn/evvkAE1Nv6s09RjfXveIBQWzrZ9eZYKhyezDTMJHB+lEOh+42dJM6sVwqRlktuDuE6ifLo//YRUFqkxY9aVsWR5GMdfsYuIVDE877gmJ0RRV3zyWtxn2ja9g07HviNeklm6hJCdGHrbic6h7viDvNOwMO3pHw/AXaSRGi7bIPpmhYD/EsJXJ7VvuHWXqwiCjMwol/zHDeI7vFFPoGSbok4FWbxKBbNa/eB4fdbCf9tcUwZQahq4vgVR/txVamd67hxeBfTJe+19yzPFJf4ZiECPTOpKVM4ZMB6ioxAatVYtXW8=
+X-HE-Tag: 1794782088-796753
+X-HE-Meta: U2FsdGVkX19Dq2fBlmcFN3J2RNO+/f+3G+CIZOw5ysEJzeQbKyFKOeBzeOxtgHhx0gzGm1BTSF+VgxPXpNU/PVNXpcrBIzqzIYAzyDAAOcalT8OibWBHlVyjznLTBcwwB798pWP+cwtWqESZNFgVMvkSXLTndifNjIuXQgoPfgjhab1mu0IebLuhKUzHveY/LznC7ZOLOyKTzVs7sRzTBoNji8g3sk/3/KS61nop84m48pBeg6oF9GclVVa49m8jGw2HJRWQSDC/az9gT9S3PdHJ5w8677fETLIb1Qwg16U6Ipulk3X5pP/mBOqD6WHftDUXrXMVdsqTdqzsv6O1oZvaFRmTkskSR0SeyJqDo54PfTrrvbWC+TuNXnWBLS1N9TRe8KPPGdeHcbZ+7/kjH57c4GHfkPWCK/u3qjssvueif+B7vsoyujl3Wo3fTXKGe4XvoyuJSeRl+YULVTp0nNW2XiTgkK0j4DAUByomrrZ4ki7VA1J97Pau8cr2zEd1+y3kuOaZfX1AMar/tqy0HvKIMBdupiPPFhgtGa8b3Le0DOeSDKs6D9Dc8PKeJFmVayrA11edm0tDOA/xvA92GEwbE/G2D/fnSGjKlufpcNUy4ZJOF+ETXnJO/yxbyEiQ0NgWVJYVqoMk8GFeopuLHUd55VDVcrTn+AC4DNPpTazqQQS6unDcVSvEsP40SB1OVbzTOixiXPhM5dA/BmKrb/wmCyjxBf1/Ex2GuY0SHaTtToCwUAsOjXXBjZpJVuXDlIbq0ep4nEyhO9BmmLuToA4lPzXgvrzE0SKtsps2cQp9hPACO/gTHf/KR3eRvoFRidOF5JJqE7AILYEr488W1H1Do2U3MubPPNA3ISYwpa83n8iL275zYcfsnNMvpHOQw4fmhm1CzTjHbTXK0Gw0OLJHwOBMqNjVToohP0jDUNiRe16dsVJWbasszmzTHZdc1VaNb4ScbGGjlMoNIP9
+ zhUgpqQa
+ ogk/3wFHVWlZkFYGjNbicbbCFI3hWjNyzpGL9SvEVBldk4muPus1SjB7pKhENWSGY6ol2+OLx4XJ5hGKjgbWL17+8q+gufD4jNJqGoJRe0lS9NYuCzcpCZ3lX/2XAlHgyIV3TpUhmhf6gaPiISFe537QOoJYumQJppcgjoq2WDHNYHq1B0m6SrS3Xy+a37vrGelNDSKwE5ma/ISefNi1HNNLxYKbtoT85cy3RmvYEhoqAhlXP9YUmL2xhIm1sH+yjHl1XUrCuQNHXUtgmPPQmEAhJf+IISXa9ZRdTXcVaEC8LeE15EJjBcIwytULKI9dZm6KasrCQL+M5rq2XM053zDPfp1l4VW4x/CbaIsBLlGxxwpps8lndrk6UDlnSBfkxUZ0fuy0i41kkd9DXpoGGeaMLpd677huGQVA0Q/gcqTTjKNH98YTTPm3IyiIxNNAlfNP9kFqbGDvlYUzL8OQEWfaiFZFgljPv893sASBN3O7v6/23h27bItZCWfgC1wkbk5fDfTfW/6uyc+NZFK0EG+jhRqRw7zXqZfLTMDaSBWsG4k5j//fkv9RqHrTHpLiAvIk2BVLmRM/GJoIltXdI2oTXlx26INJ0bEGgQTs077+v/qZLLJzkAT60KW///G1cNQoq2WL3b372TAZ8mnF7HosOKYd5b6RoLY7/dVaVGlrV1dW3O+APRLm/YiRbRaVjNB1Xh7CwDDNQLrlOGjv6TcVVJ5MKPpoiepH6ZaJ3mdHIZRnfjfqRw0pIvhtPbtxSIgQk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,421 +149,370 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Alireza Asgari <alireza@asgari.net>
 
-Test local byte boundaries, a small nominal-head skb, a page-backed head,
-saved accounting across detachment, and live limit changes.
+A local queue allowance does not by itself bound aggregate reservations
+across queues. Outside the initial network namespace, capture the binding
+task's objcg and charge activated capacity against that owner and its
+ancestors. Effective aggregate protection requires an applicable finite
+memory limit; root or otherwise unaccounted owners remain uncharged.
 
-Also test active, inactive, and failed instance creation against a private
-queue table. A KUnit static stub checks that a new instance remains absent
-from lookup until configuration succeeds. These tests exercise publication
-ordering directly; they do not claim a concurrent queue-bypass reproducer.
+Reserve capacity on first activation, after any inactive sizing. Publish
+copy mode, size, and flags together only after required growth succeeds.
+Keep activation sticky so switching to COPY_NONE cannot release backing
+for retained entries or an admission already in progress. Configure a new
+instance privately before publishing it to packet readers.
 
+Retain page-rounded backing for the greater of configured capacity and
+saved bytes still in use. Serialize configuration and refunds with a
+mutex. Packet releases schedule coalesced refund work; the worker rechecks
+the target before refunding. Teardown waits for the RCU readers that can
+hold detached entries, stops refund scheduling, cancels outstanding work,
+flushes retained entries, and destroys the reservation.
+
+The charges are ordinary memcg usage, additional to actual allocations.
+Empty activated capacity therefore consumes budget and can affect
+memory.high and protection accounting. The budget policy, nominal byte
+allowance, and reservation API are proposed for maintainer discussion.
+
+Link: https://lists.openwall.net/netdev/2026/11/06/366
 Signed-off-by: Alireza Asgari <alireza@asgari.net>
 ---
- net/netfilter/Kconfig                |  10 ++
- net/netfilter/nfnetlink_queue.c      |  13 ++
- net/netfilter/nfnetlink_queue_test.c | 338 +++++++++++++++++++++++++++++++++++
- 3 files changed, 361 insertions(+)
+ net/netfilter/nfnetlink_queue.c | 213 +++++++++++++++++++++++++++-------------
+ 1 file changed, 144 insertions(+), 69 deletions(-)
 
-diff --git a/net/netfilter/Kconfig b/net/netfilter/Kconfig
-index 09874c26fd13..02818552ac8b 100644
---- a/net/netfilter/Kconfig
-+++ b/net/netfilter/Kconfig
-@@ -71,6 +71,16 @@ config NETFILTER_NETLINK_LOG
- 	  and is also scheduled to replace the old syslog-based ipt_LOG
- 	  and ip6t_LOG modules.
- 
-+config NETFILTER_NETLINK_QUEUE_KUNIT_TEST
-+	bool "NFQUEUE memory accounting tests" if !KUNIT_ALL_TESTS
-+	depends on NETFILTER_NETLINK_QUEUE=y && KUNIT=y
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Test NFQUEUE byte admission, saved charges across detachment, and
-+	  live queue limit updates without sending network traffic.
-+	  The tests run with KUnit and do not need a userspace queue listener.
-+	  Say N unless you are testing changes to NFQUEUE accounting.
-+
- config NETFILTER_NETLINK_OSF
- 	tristate "Netfilter OSF over NFNETLINK interface"
- 	depends on NETFILTER_ADVANCED
 diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index b37fb6f21482..ad14c74f35a8 100644
+index d1e6e02e144b..b37fb6f21482 100644
 --- a/net/netfilter/nfnetlink_queue.c
 +++ b/net/netfilter/nfnetlink_queue.c
-@@ -51,6 +51,10 @@
+@@ -32,6 +32,8 @@
+ #include <linux/icmpv6.h>
+ #include <linux/ip.h>
+ #include <linux/list.h>
++#include <linux/memcontrol.h>
++#include <linux/mutex.h>
+ #include <linux/sctp.h>
+ #include <linux/cgroup-defs.h>
+ #include <linux/rhashtable.h>
+@@ -73,6 +75,10 @@ struct nfqnl_instance {
+ 	struct hlist_node hlist;		/* global list of queues */
+ 	struct rhashtable nfqnl_packet_map;
+ 	struct rcu_work	rwork;
++	struct work_struct mem_work;
++	struct mutex mem_mutex; /* serializes capacity changes and refunds */
++	struct mem_cgroup_reservation memcg;
++	bool mem_activated; /* maintain backing after the first activation */
  
- #include <linux/atomic.h>
+ 	u32 peer_portid;
+ 	unsigned int queue_maxlen;
+@@ -94,6 +100,8 @@ struct nfqnl_instance {
+ 	struct list_head queue_list;		/* packets in queue */
+ 	u64 mem_limit;
+ 	u64 mem_used;
++	u64 mem_reserved; /* pages, published under lock */
++	bool mem_stopping;
+ };
  
-+#if IS_ENABLED(CONFIG_NETFILTER_NETLINK_QUEUE_KUNIT_TEST)
-+#include <kunit/static_stub.h>
-+#endif
-+
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
- #include "../bridge/br_private.h"
- #endif
-@@ -210,6 +214,11 @@ static int nfqnl_set_config(struct nfqnl_instance *queue, unsigned int maxlen,
- 	bool activated;
- 	int err = 0;
+ typedef int (*nfqnl_cmpfn)(struct nf_queue_entry *, unsigned long);
+@@ -146,6 +154,11 @@ static u64 nfqnl_mem_limit(unsigned int maxlen)
+ 	return (u64)maxlen * (SKB_DATA_ALIGN(sizeof(struct sk_buff)) + 2048);
+ }
  
-+#if IS_ENABLED(CONFIG_NETFILTER_NETLINK_QUEUE_KUNIT_TEST)
-+	KUNIT_STATIC_STUB_REDIRECT(nfqnl_set_config, queue, maxlen, params,
-+				   flags, mask);
-+#endif
++static u64 nfqnl_mem_pages(u64 bytes)
++{
++	return (bytes >> PAGE_SHIFT) + !!(bytes & (PAGE_SIZE - 1));
++}
 +
- 	if (params && params->copy_mode == NFQNL_COPY_PACKET) {
- 		range = ntohl(params->copy_range);
- 		if (!range || range > NFQNL_MAX_COPY_RANGE)
-@@ -2390,3 +2399,7 @@ MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_QUEUE);
+ static bool nfqnl_mem_full(const struct nfqnl_instance *queue,
+ 			   unsigned int truesize)
+ {
+@@ -153,6 +166,83 @@ static bool nfqnl_mem_full(const struct nfqnl_instance *queue,
+ 	       truesize > queue->mem_limit - queue->mem_used;
+ }
  
- module_init(nfnetlink_queue_init);
- module_exit(nfnetlink_queue_fini);
-+
-+#if IS_ENABLED(CONFIG_NETFILTER_NETLINK_QUEUE_KUNIT_TEST)
-+#include "nfnetlink_queue_test.c"
-+#endif
-diff --git a/net/netfilter/nfnetlink_queue_test.c b/net/netfilter/nfnetlink_queue_test.c
-new file mode 100644
-index 000000000000..e8b89ca83dff
---- /dev/null
-+++ b/net/netfilter/nfnetlink_queue_test.c
-@@ -0,0 +1,338 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <kunit/test.h>
-+#include <linux/mm.h>
-+
-+static void nfqnl_test_destroy_map(void *data)
++/* The mutex excludes limit changes; packet admission cannot raise this target. */
++static void nfqnl_mem_refund(struct nfqnl_instance *queue)
 +{
-+	struct nfqnl_instance *queue = data;
++	u64 pages;
 +
-+	rhashtable_destroy(&queue->nfqnl_packet_map);
-+}
-+
-+static void nfqnl_test_free_skb(void *data)
-+{
-+	kfree_skb(data);
-+}
-+
-+static int nfqnl_test_init(struct kunit *test)
-+{
-+	struct nfqnl_instance *queue;
-+	int err;
-+
-+	queue = kunit_kzalloc(test, sizeof(*queue), GFP_KERNEL);
-+	if (!queue)
-+		return -ENOMEM;
-+	spin_lock_init(&queue->lock);
-+	mutex_init(&queue->mem_mutex);
-+	INIT_WORK(&queue->mem_work, nfqnl_mem_work);
-+	INIT_LIST_HEAD(&queue->queue_list);
-+	err = rhashtable_init(&queue->nfqnl_packet_map,
-+			      &nfqnl_rhashtable_params);
-+	if (err)
-+		return err;
-+	test->priv = queue;
-+	return kunit_add_action_or_reset(test, nfqnl_test_destroy_map, queue);
-+}
-+
-+static void nfqnl_test_boundaries(struct kunit *test)
-+{
-+	struct nfqnl_instance *queue = test->priv;
-+
-+	queue->mem_limit = 8192;
-+	queue->mem_used = 4096;
-+	KUNIT_EXPECT_FALSE(test, nfqnl_mem_full(queue, 4096));
-+	KUNIT_EXPECT_TRUE(test, nfqnl_mem_full(queue, 4097));
-+	queue->mem_used = 8193;
-+	KUNIT_EXPECT_TRUE(test, nfqnl_mem_full(queue, 1));
-+	queue->mem_used = 0;
-+	queue->mem_limit = 0;
-+	KUNIT_EXPECT_TRUE(test, nfqnl_mem_full(queue, 1));
-+	queue->mem_limit = U64_MAX;
-+	queue->mem_used = U64_MAX - 10;
-+	KUNIT_EXPECT_FALSE(test, nfqnl_mem_full(queue, 10));
-+	KUNIT_EXPECT_TRUE(test, nfqnl_mem_full(queue, 11));
-+
-+	KUNIT_EXPECT_GT(test, nfqnl_mem_limit(U32_MAX), (u64)U32_MAX);
-+	KUNIT_EXPECT_EQ(test, nfqnl_mem_pages(0), 0ULL);
-+	KUNIT_EXPECT_EQ(test, nfqnl_mem_pages(PAGE_SIZE), 1ULL);
-+	KUNIT_EXPECT_EQ(test, nfqnl_mem_pages(PAGE_SIZE + 1), 2ULL);
-+	KUNIT_EXPECT_EQ(test, nfqnl_mem_pages(U64_MAX),
-+			(U64_MAX >> PAGE_SHIFT) + 1);
-+}
-+
-+static void nfqnl_test_small_queue(struct kunit *test)
-+{
-+	struct nfqnl_instance *queue = test->priv;
-+	struct sk_buff *skb;
-+
-+	skb = alloc_skb(SKB_WITH_OVERHEAD(2048), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
-+	KUNIT_ASSERT_EQ(
-+		test, kunit_add_action_or_reset(test, nfqnl_test_free_skb, skb),
-+		0);
-+	KUNIT_ASSERT_EQ(test, nfqnl_set_config(queue, 1, NULL, 0, 0), 0);
-+	/* A standard 2 KiB head must fit in an empty length-one queue. */
-+	KUNIT_EXPECT_FALSE(test, nfqnl_mem_full(queue, skb->truesize));
-+}
-+
-+static void nfqnl_test_page_head(struct kunit *test)
-+{
-+	struct nfqnl_instance *queue = test->priv;
-+	struct sk_buff *skb;
-+	struct page *page;
-+
-+	page = alloc_page(GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, page);
-+	skb = build_skb(page_address(page), PAGE_SIZE);
-+	if (!skb)
-+		__free_page(page);
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
-+	KUNIT_ASSERT_EQ(
-+		test, kunit_add_action_or_reset(test, nfqnl_test_free_skb, skb),
-+		0);
-+	skb_put_zero(skb, 64);
-+
-+	/* A small payload still accounts for the complete receive allocation. */
-+	KUNIT_ASSERT_EQ(test, nfqnl_set_config(queue, 1, NULL, 0, 0), 0);
-+	if (PAGE_SIZE > 2048)
-+		KUNIT_EXPECT_TRUE(test, nfqnl_mem_full(queue, skb->truesize));
-+	else
-+		KUNIT_EXPECT_FALSE(test, nfqnl_mem_full(queue, skb->truesize));
-+	KUNIT_ASSERT_EQ(test,
-+			nfqnl_set_config(queue, DIV_ROUND_UP(PAGE_SIZE, 2048),
-+					 NULL, 0, 0),
-+			0);
-+	KUNIT_EXPECT_FALSE(test, nfqnl_mem_full(queue, skb->truesize));
-+
-+	queue->mem_limit = skb->truesize - 1;
-+	KUNIT_EXPECT_TRUE(test, nfqnl_mem_full(queue, skb->truesize));
-+	queue->mem_limit = skb->truesize;
-+	KUNIT_EXPECT_FALSE(test, nfqnl_mem_full(queue, skb->truesize));
-+}
-+
-+static void nfqnl_test_detached_charge(struct kunit *test)
-+{
-+	struct nfqnl_instance *queue = test->priv;
-+	struct nf_queue_entry entry = {};
-+	u64 detached, released;
-+	unsigned int saved;
-+	int err;
-+
-+	entry.skb = alloc_skb(512, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, entry.skb);
-+	KUNIT_ASSERT_EQ(test,
-+			kunit_add_action_or_reset(test, nfqnl_test_free_skb,
-+						  entry.skb),
-+			0);
-+	saved = entry.skb->truesize;
-+	queue->mem_limit = saved;
-+
++	lockdep_assert_held(&queue->mem_mutex);
 +	spin_lock_bh(&queue->lock);
-+	err = __enqueue_entry(queue, &entry);
-+	if (!err) {
-+		__dequeue_entry(queue, &entry);
-+		detached = queue->mem_used;
-+		/* Verdict payload replacement must not change the saved refund. */
-+		entry.skb->truesize += 128;
-+		nfqnl_mem_uncharge(queue, &entry);
-+		released = queue->mem_used;
-+		entry.skb->truesize = saved;
++	pages = nfqnl_mem_pages(max(queue->mem_limit, queue->mem_used));
++	spin_unlock_bh(&queue->lock);
++
++	if (pages >= queue->memcg.pages)
++		return;
++
++	/* Shrinking cannot fail. Keep the packet-path copy conservative meanwhile. */
++	mem_cgroup_reservation_resize(&queue->memcg, pages);
++	spin_lock_bh(&queue->lock);
++	queue->mem_reserved = pages;
++	/* A final drain may have happened while the refund was in progress. */
++	if (!queue->mem_stopping &&
++	    pages > nfqnl_mem_pages(max(queue->mem_limit, queue->mem_used)))
++		queue_work(nfq_cleanup_wq, &queue->mem_work);
++	spin_unlock_bh(&queue->lock);
++}
++
++static void nfqnl_mem_work(struct work_struct *work)
++{
++	struct nfqnl_instance *queue =
++		container_of(work, struct nfqnl_instance, mem_work);
++
++	mutex_lock(&queue->mem_mutex);
++	nfqnl_mem_refund(queue);
++	mutex_unlock(&queue->mem_mutex);
++}
++
++static int nfqnl_set_config(struct nfqnl_instance *queue, unsigned int maxlen,
++			    const struct nfqnl_msg_config_params *params,
++			    u32 flags, u32 mask)
++{
++	u64 limit = nfqnl_mem_limit(maxlen);
++	u64 pages = nfqnl_mem_pages(limit);
++	unsigned int range = 0;
++	bool activated;
++	int err = 0;
++
++	if (params && params->copy_mode == NFQNL_COPY_PACKET) {
++		range = ntohl(params->copy_range);
++		if (!range || range > NFQNL_MAX_COPY_RANGE)
++			range = NFQNL_MAX_COPY_RANGE;
 +	}
-+	spin_unlock_bh(&queue->lock);
-+	KUNIT_ASSERT_EQ(test, err, 0);
-+	KUNIT_EXPECT_EQ(test, detached, (u64)saved);
-+	KUNIT_EXPECT_EQ(test, released, 0ULL);
-+	KUNIT_EXPECT_EQ(test, entry.truesize, 0U);
-+	KUNIT_EXPECT_EQ(test, queue->queue_total, 0U);
-+	KUNIT_EXPECT_TRUE(test, list_empty(&queue->queue_list));
-+	KUNIT_EXPECT_FALSE(test, nfqnl_mem_full(queue, saved));
 +
-+	/* FAIL_OPEN and notification rollback can reach reinjection uncharged. */
++	mutex_lock(&queue->mem_mutex);
++	activated = queue->mem_activated ||
++		    (params && params->copy_mode != NFQNL_COPY_NONE);
++	if (activated && pages > queue->memcg.pages && queue->memcg.objcg) {
++		err = mem_cgroup_reservation_resize(&queue->memcg, pages);
++		if (err)
++			goto out;
++	}
++	/* Publish activation only after the complete configuration is backed. */
 +	spin_lock_bh(&queue->lock);
-+	nfqnl_mem_uncharge(queue, &entry);
++	queue->queue_maxlen = maxlen;
++	queue->mem_limit = limit;
++	queue->mem_reserved = queue->memcg.objcg ? queue->memcg.pages : 0;
++	queue->mem_activated = activated;
++	if (params) {
++		queue->copy_range = range;
++		queue->copy_mode = params->copy_mode;
++	}
++	queue->flags = (queue->flags & ~mask) | (flags & mask);
 +	spin_unlock_bh(&queue->lock);
-+	KUNIT_EXPECT_EQ(test, queue->mem_used, 0ULL);
-+}
-+
-+static void nfqnl_test_limit_update(struct kunit *test)
-+{
-+	struct nfqnl_instance *queue = test->priv;
-+	u64 used = nfqnl_mem_limit(8);
-+
-+	queue->mem_used = used;
-+	queue->queue_total = 2;
-+	KUNIT_ASSERT_EQ(test, nfqnl_set_config(queue, 1, NULL, 0, 0), 0);
-+	KUNIT_EXPECT_EQ(test, queue->queue_maxlen, 1U);
-+	KUNIT_EXPECT_EQ(test, queue->mem_limit, nfqnl_mem_limit(1));
-+	KUNIT_EXPECT_EQ(test, queue->mem_used, used);
-+	KUNIT_EXPECT_EQ(test, queue->queue_total, 2U);
-+	KUNIT_EXPECT_TRUE(test, nfqnl_mem_full(queue, 1));
-+	KUNIT_ASSERT_EQ(test, nfqnl_set_config(queue, 16, NULL, 0, 0), 0);
-+	KUNIT_EXPECT_FALSE(test, nfqnl_mem_full(queue, 1));
-+	KUNIT_EXPECT_EQ(test, queue->mem_used, used);
-+	KUNIT_EXPECT_EQ(test, queue->mem_reserved, 0ULL);
-+}
-+
-+struct nfqnl_test_creation {
-+	struct nfnl_queue_net queues;
-+	struct nfqnl_instance *instance;
-+	unsigned int config_calls;
-+	int config_error;
-+};
-+
-+static struct nfqnl_instance *nfqnl_test_lookup(struct nfqnl_test_creation *ctx,
-+						u16 queue_num)
-+{
-+	struct nfqnl_instance *queue;
-+
-+	rcu_read_lock();
-+	queue = instance_lookup(&ctx->queues, queue_num);
-+	rcu_read_unlock();
-+	return queue;
-+}
-+
-+static int
-+nfqnl_test_config_private(struct nfqnl_instance *queue, unsigned int maxlen,
-+			  const struct nfqnl_msg_config_params *params,
-+			  u32 flags, u32 mask)
-+{
-+	struct kunit *test = kunit_get_current_test();
-+	struct nfqnl_test_creation *ctx = test->priv;
-+	int err;
-+
-+	ctx->config_calls++;
-+	KUNIT_EXPECT_PTR_EQ(test, nfqnl_test_lookup(ctx, queue->queue_num),
-+			    NULL);
-+	if (ctx->config_error)
-+		return ctx->config_error;
-+
-+	/* Exercise the real configuration while checking its visibility. */
-+	kunit_deactivate_static_stub(test, nfqnl_set_config);
-+	err = nfqnl_set_config(queue, maxlen, params, flags, mask);
-+	KUNIT_EXPECT_PTR_EQ(test, nfqnl_test_lookup(ctx, queue->queue_num),
-+			    NULL);
++	if (activated && queue->memcg.objcg)
++		nfqnl_mem_refund(queue);
++out:
++	mutex_unlock(&queue->mem_mutex);
 +	return err;
 +}
 +
-+static void nfqnl_test_destroy_instance(void *data)
-+{
-+	struct nfqnl_test_creation *ctx = data;
+ /* All release paths use the saved admission cost, including notification undo. */
+ static void nfqnl_mem_uncharge(struct nfqnl_instance *queue,
+ 			       struct nf_queue_entry *entry)
+@@ -160,10 +250,17 @@ static void nfqnl_mem_uncharge(struct nfqnl_instance *queue,
+ 	lockdep_assert_held(&queue->lock);
+ 	queue->mem_used -= entry->truesize;
+ 	entry->truesize = 0;
++	if (!queue->mem_stopping &&
++	    queue->mem_reserved >
++		    nfqnl_mem_pages(max(queue->mem_limit, queue->mem_used)))
++		queue_work(nfq_cleanup_wq, &queue->mem_work);
+ }
+ 
+ static struct nfqnl_instance *
+-instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
++instance_create(struct net *net, struct nfnl_queue_net *q, u16 queue_num,
++		u32 portid, unsigned int maxlen,
++		const struct nfqnl_msg_config_params *params, u32 flags,
++		u32 mask)
+ {
+ 	struct nfqnl_instance *inst;
+ 	unsigned int h;
+@@ -175,16 +272,27 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 
+ 	inst->queue_num = queue_num;
+ 	inst->peer_portid = portid;
+-	inst->queue_maxlen = NFQNL_QMAX_DEFAULT;
+-	inst->mem_limit = nfqnl_mem_limit(NFQNL_QMAX_DEFAULT);
++	inst->queue_maxlen = maxlen;
++	inst->mem_limit = nfqnl_mem_limit(maxlen);
+ 	inst->copy_range = NFQNL_MAX_COPY_RANGE;
+ 	inst->copy_mode = NFQNL_COPY_NONE;
+ 	spin_lock_init(&inst->lock);
++	mutex_init(&inst->mem_mutex);
++	INIT_WORK(&inst->mem_work, nfqnl_mem_work);
+ 	INIT_LIST_HEAD(&inst->queue_list);
+ 
+-	err = rhashtable_init(&inst->nfqnl_packet_map, &nfqnl_rhashtable_params);
++	if (!net_eq(net, &init_net))
++		mem_cgroup_reservation_init(&inst->memcg);
 +
-+	if (!IS_ERR_OR_NULL(ctx->instance)) {
-+		instance_destroy(&ctx->queues, ctx->instance);
-+		rcu_barrier();
-+		flush_workqueue(nfq_cleanup_wq);
++	err = rhashtable_init(&inst->nfqnl_packet_map,
++			      &nfqnl_rhashtable_params);
+ 	if (err < 0)
+-		goto out_free;
++		goto out_reservation;
++
++	/* Keep packet readers from seeing a partially configured new queue. */
++	err = nfqnl_set_config(inst, maxlen, params, flags, mask);
++	if (err)
++		goto out_map;
+ 
+ 	spin_lock(&q->instances_lock);
+ 	if (instance_lookup(q, queue_num)) {
+@@ -206,8 +314,11 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 
+ out_unlock:
+ 	spin_unlock(&q->instances_lock);
++out_map:
++	/* Unpublished instances have no entries or pending refund work. */
+ 	rhashtable_destroy(&inst->nfqnl_packet_map);
+-out_free:
++out_reservation:
++	mem_cgroup_reservation_destroy(&inst->memcg);
+ 	kfree(inst);
+ 	return ERR_PTR(err);
+ }
+@@ -219,12 +330,18 @@ static void instance_destroy_work(struct work_struct *work)
+ {
+ 	struct nfqnl_instance *inst;
+ 
+-	inst = container_of(to_rcu_work(work), struct nfqnl_instance,
+-			    rwork);
++	inst = container_of(to_rcu_work(work), struct nfqnl_instance, rwork);
++	/* The grace period has drained verdict readers, including detached batches. */
++	spin_lock_bh(&inst->lock);
++	inst->mem_stopping = true;
++	spin_unlock_bh(&inst->lock);
++	cancel_work_sync(&inst->mem_work);
++
+ 	rcu_read_lock();
+ 	nfqnl_flush(inst, NULL, 0);
+ 	rcu_read_unlock();
+ 	WARN_ON_ONCE(inst->mem_used);
++	mem_cgroup_reservation_destroy(&inst->memcg);
+ 
+ 	rhashtable_destroy(&inst->nfqnl_packet_map);
+ 
+@@ -1526,37 +1643,6 @@ nfqnl_mangle(void *data, unsigned int data_len, struct nf_queue_entry *e, int di
+ 	return 0;
+ }
+ 
+-static int
+-nfqnl_set_mode(struct nfqnl_instance *queue,
+-	       unsigned char mode, unsigned int range)
+-{
+-	int status = 0;
+-
+-	spin_lock_bh(&queue->lock);
+-	switch (mode) {
+-	case NFQNL_COPY_NONE:
+-	case NFQNL_COPY_META:
+-		queue->copy_mode = mode;
+-		queue->copy_range = 0;
+-		break;
+-
+-	case NFQNL_COPY_PACKET:
+-		queue->copy_mode = mode;
+-		if (range == 0 || range > NFQNL_MAX_COPY_RANGE)
+-			queue->copy_range = NFQNL_MAX_COPY_RANGE;
+-		else
+-			queue->copy_range = range;
+-		break;
+-
+-	default:
+-		status = -EINVAL;
+-
+-	}
+-	spin_unlock_bh(&queue->lock);
+-
+-	return status;
+-}
+-
+ static int
+ dev_cmp(struct nf_queue_entry *entry, unsigned long ifindex)
+ {
+@@ -1975,12 +2061,14 @@ static const struct nf_queue_handler nfqh = {
+ };
+ 
+ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+-			     const struct nlattr * const nfqa[])
++			     const struct nlattr *const nfqa[])
+ {
+ 	struct nfnl_queue_net *q = nfnl_queue_pernet(info->net);
+ 	u_int16_t queue_num = ntohs(info->nfmsg->res_id);
+ 	struct nfqnl_msg_config_cmd *cmd = NULL;
+ 	struct nfqnl_instance *queue;
++	const struct nfqnl_msg_config_params *params = NULL;
++	unsigned int maxlen = NFQNL_QMAX_DEFAULT;
+ 	__u32 flags = 0, mask = 0;
+ 
+ 	WARN_ON_ONCE(!lockdep_nfnl_is_held(NFNL_SUBSYS_QUEUE));
+@@ -2029,6 +2117,15 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 		}
+ 	}
+ 
++	/* Validate before reserving capacity or publishing a newly bound queue. */
++	if (nfqa[NFQA_CFG_PARAMS]) {
++		params = nla_data(nfqa[NFQA_CFG_PARAMS]);
++		if (params->copy_mode > NFQNL_COPY_PACKET)
++			return -EINVAL;
 +	}
-+}
++	if (nfqa[NFQA_CFG_QUEUE_MAXLEN])
++		maxlen = ntohl(nla_get_be32(nfqa[NFQA_CFG_QUEUE_MAXLEN]));
 +
-+static struct nfqnl_test_creation *nfqnl_test_creation_init(struct kunit *test)
-+{
-+	struct nfqnl_test_creation *ctx;
-+	unsigned int i;
-+
-+	ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return NULL;
-+	spin_lock_init(&ctx->queues.instances_lock);
-+	for (i = 0; i < INSTANCE_BUCKETS; i++)
-+		INIT_HLIST_HEAD(&ctx->queues.instance_table[i]);
-+	if (kunit_add_action_or_reset(test, nfqnl_test_destroy_instance, ctx))
-+		return NULL;
-+	test->priv = ctx;
-+	kunit_activate_static_stub(test, nfqnl_set_config,
-+				   nfqnl_test_config_private);
-+	return ctx;
-+}
-+
-+static void nfqnl_test_create_active(struct kunit *test)
-+{
-+	const struct nfqnl_msg_config_params params = {
-+		.copy_range = htonl(512),
-+		.copy_mode = NFQNL_COPY_PACKET,
-+	};
-+	struct nfqnl_test_creation *ctx = nfqnl_test_creation_init(test);
-+	struct nfqnl_instance *queue, *duplicate;
-+
-+	KUNIT_ASSERT_NOT_NULL(test, ctx);
-+	queue = instance_create(&init_net, &ctx->queues, 7, 1, 32, &params,
-+				NFQA_CFG_F_FAIL_OPEN, NFQA_CFG_F_FAIL_OPEN);
-+	ctx->instance = queue;
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, queue);
-+	KUNIT_EXPECT_EQ(test, ctx->config_calls, 1U);
-+	KUNIT_EXPECT_PTR_EQ(test, nfqnl_test_lookup(ctx, 7), queue);
-+	KUNIT_EXPECT_TRUE(test, queue->mem_activated);
-+	KUNIT_EXPECT_EQ(test, queue->queue_maxlen, 32U);
-+	KUNIT_EXPECT_EQ(test, queue->mem_limit, nfqnl_mem_limit(32));
-+	KUNIT_EXPECT_EQ(test, queue->copy_mode, (u8)NFQNL_COPY_PACKET);
-+	KUNIT_EXPECT_EQ(test, queue->copy_range, 512U);
-+	KUNIT_EXPECT_EQ(test, queue->flags, (u32)NFQA_CFG_F_FAIL_OPEN);
-+
-+	duplicate =
-+		instance_create(&init_net, &ctx->queues, 7, 1, 1, NULL, 0, 0);
-+	KUNIT_EXPECT_TRUE(test, IS_ERR(duplicate));
-+	if (IS_ERR(duplicate)) {
-+		KUNIT_EXPECT_EQ(test, PTR_ERR(duplicate), (long)-EEXIST);
-+	} else {
-+		instance_destroy(&ctx->queues, duplicate);
-+		rcu_barrier();
-+		flush_workqueue(nfq_cleanup_wq);
-+	}
-+	KUNIT_EXPECT_PTR_EQ(test, nfqnl_test_lookup(ctx, 7), queue);
-+	KUNIT_EXPECT_EQ(test, queue->queue_maxlen, 32U);
-+}
-+
-+static void nfqnl_test_create_inactive(struct kunit *test)
-+{
-+	struct nfqnl_test_creation *ctx = nfqnl_test_creation_init(test);
-+	struct nfqnl_instance *queue;
-+
-+	KUNIT_ASSERT_NOT_NULL(test, ctx);
-+	queue = instance_create(&init_net, &ctx->queues, 7, 1,
-+				NFQNL_QMAX_DEFAULT, NULL, 0, 0);
-+	ctx->instance = queue;
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, queue);
-+	KUNIT_EXPECT_EQ(test, ctx->config_calls, 1U);
-+	KUNIT_EXPECT_PTR_EQ(test, nfqnl_test_lookup(ctx, 7), queue);
-+	KUNIT_EXPECT_FALSE(test, queue->mem_activated);
-+	KUNIT_EXPECT_EQ(test, queue->copy_mode, (u8)NFQNL_COPY_NONE);
-+	KUNIT_EXPECT_EQ(test, queue->queue_maxlen, NFQNL_QMAX_DEFAULT);
-+	KUNIT_EXPECT_EQ(test, queue->memcg.pages, 0ULL);
-+}
-+
-+static void nfqnl_test_create_failure(struct kunit *test)
-+{
-+	const struct nfqnl_msg_config_params params = {
-+		.copy_mode = NFQNL_COPY_PACKET,
-+	};
-+	struct nfqnl_test_creation *ctx = nfqnl_test_creation_init(test);
-+
-+	KUNIT_ASSERT_NOT_NULL(test, ctx);
-+	ctx->config_error = -ENOMEM;
-+	ctx->instance = instance_create(&init_net, &ctx->queues, 7, 1, 32,
-+					&params, 0, 0);
-+	KUNIT_ASSERT_TRUE(test, IS_ERR(ctx->instance));
-+	KUNIT_EXPECT_EQ(test, PTR_ERR(ctx->instance), (long)-ENOMEM);
-+	KUNIT_EXPECT_EQ(test, ctx->config_calls, 1U);
-+	KUNIT_EXPECT_PTR_EQ(test, nfqnl_test_lookup(ctx, 7), NULL);
-+}
-+
-+static struct kunit_case nfqnl_mem_test_cases[] = {
-+	KUNIT_CASE(nfqnl_test_boundaries),
-+	KUNIT_CASE(nfqnl_test_small_queue),
-+	KUNIT_CASE(nfqnl_test_page_head),
-+	KUNIT_CASE(nfqnl_test_detached_charge),
-+	KUNIT_CASE(nfqnl_test_limit_update),
-+	KUNIT_CASE(nfqnl_test_create_active),
-+	KUNIT_CASE(nfqnl_test_create_inactive),
-+	KUNIT_CASE(nfqnl_test_create_failure),
-+	{}
-+};
-+
-+static struct kunit_suite nfqnl_mem_test_suite = {
-+	.name = "nfnetlink_queue_memory",
-+	.init = nfqnl_test_init,
-+	.test_cases = nfqnl_mem_test_cases,
-+};
-+
-+kunit_test_suite(nfqnl_mem_test_suite);
+ 	/* Lookup queue under RCU. After peer_portid check (or for new queue
+ 	 * in BIND case), the queue is owned by the socket sending this message.
+ 	 * nfqnl_rcv_nl_event() will block on the nfnl subsys mutex that is
+@@ -2048,10 +2145,10 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 		case NFQNL_CFG_CMD_BIND:
+ 			if (queue)
+ 				return -EBUSY;
+-			queue = instance_create(q, queue_num, NETLINK_CB(skb).portid);
+-			if (IS_ERR(queue))
+-				return PTR_ERR(queue);
+-			break;
++			queue = instance_create(info->net, q, queue_num,
++						NETLINK_CB(skb).portid, maxlen,
++						params, flags, mask);
++			return PTR_ERR_OR_ZERO(queue);
+ 		case NFQNL_CFG_CMD_UNBIND:
+ 			if (!queue)
+ 				return -ENODEV;
+@@ -2068,31 +2165,9 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (!queue)
+ 		return -ENODEV;
+ 
+-	if (nfqa[NFQA_CFG_PARAMS]) {
+-		struct nfqnl_msg_config_params *params =
+-			nla_data(nfqa[NFQA_CFG_PARAMS]);
+-
+-		nfqnl_set_mode(queue, params->copy_mode,
+-				ntohl(params->copy_range));
+-	}
+-
+-	if (nfqa[NFQA_CFG_QUEUE_MAXLEN]) {
+-		__be32 *queue_maxlen = nla_data(nfqa[NFQA_CFG_QUEUE_MAXLEN]);
+-
+-		spin_lock_bh(&queue->lock);
+-		queue->queue_maxlen = ntohl(*queue_maxlen);
+-		queue->mem_limit = nfqnl_mem_limit(queue->queue_maxlen);
+-		spin_unlock_bh(&queue->lock);
+-	}
+-
+-	if (nfqa[NFQA_CFG_FLAGS]) {
+-		spin_lock_bh(&queue->lock);
+-		queue->flags &= ~mask;
+-		queue->flags |= flags & mask;
+-		spin_unlock_bh(&queue->lock);
+-	}
+-
+-	return 0;
++	if (!nfqa[NFQA_CFG_QUEUE_MAXLEN])
++		maxlen = queue->queue_maxlen;
++	return nfqnl_set_config(queue, maxlen, params, flags, mask);
+ }
+ 
+ static const struct nfnl_callback nfqnl_cb[NFQNL_MSG_MAX] = {
 
 -- 
 2.34.1
