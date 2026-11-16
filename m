@@ -1,111 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4912606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 00:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D611606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 00:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AndzEtOi
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Ov44YrtP
 Received: by kanga.kvack.org (Postfix)
-	id DECFE6B05B1; Sun, 15 Nov 2026 19:28:42 -0500 (EST)
+	id D20CB6B00EF; Sun, 15 Nov 2026 19:45:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC3D66B05B2; Sun, 15 Nov 2026 19:28:42 -0500 (EST)
+	id CD0C46B05B0; Sun, 15 Nov 2026 19:45:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDC436B05B3; Sun, 15 Nov 2026 19:28:42 -0500 (EST)
+	id B98DD6B05B1; Sun, 15 Nov 2026 19:45:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F7936B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:28:42 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 87B97807F7
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 00:28:40 +0000 (UTC)
-X-FDA: 85439096400.01.76699D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8293540002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 00:28:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AndzEtOi;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794788918;
-	b=G3VflpLuE6pdFjxRGbHLHhXm0h8fcAfi6GKJ4CdwT/ZaGsncpI7dC4eJxJzRs/5EL6vz74
-	9F6ckxkmKyfJ85LnV6oPKYoxbm7AneSppvrPI5oWCYcUujWcuMAJ5QeOwlUXv9f9NAkCCs
-	o95iFftiu/3QawLZoDqhAaH4F8V8Nv8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AndzEtOi;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 85A406B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:45:21 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC61280820
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 00:45:20 +0000 (UTC)
+X-FDA: 85439138400.17.2E70567
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5177640006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 00:45:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Ov44YrtP;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf17.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794788918;
+	s=arc-20220608; t=1794789919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vlb7g6V4pWyOd0zO2EPUK2XD3xyvl8j1Qdxp54r/T3c=;
-	b=oiYzlkqz4KP+Emw5+T+JtZ3rA50kJTjoM14XkB7sdSkaMQFdjhGmr3aHXnjJ3Jm8qin/Fi
-	HgcSK9/lMHJH0AMlWxAmdmEQfr0SmWemW1rrhowTvW+8ZvTumnEhAu1Wq1bfUX0JeCe9UN
-	6GtkYJ8jwakQ/k0MuDYMFYe34qLtjtk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6E08F406F5
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 00:28:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5214B1F000C4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 00:28:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794788917;
-	bh=vlb7g6V4pWyOd0zO2EPUK2XD3xyvl8j1Qdxp54r/T3c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=AndzEtOi7z7cZzg5NoaCCSeGXc7Aw6CARxM/9viahN7u1YCx75EsQ3oFhYCKViWaB
-	 OVJ6lNQ8aE4CjAEwCl5fDsfViW9vqmSEJLR+u4yUP3X8NGxoYLvtkpQor/qmAq6Eu0
-	 +p+st04SJbSnd3WEFAfw8wqbsFjUamBY+3XmM4ah9oXxT1cgCa456jvis8zml7ilJN
-	 n/35Bi5/HwAwA4d0eLrIGQTcGo+B3mXFajaELi9SimK4izmoeCuYSu4YQP1IRgwe4G
-	 EddrmH/ROtNglWsLLxtWMX0gWhba17bA9rb0r+h5fvSrKsfZ7u8uRpRRSp4fCalp6a
-	 lVSpQG4DUku4w==
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-94965745d92so140765985a.2
-        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:28:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErH7YHNntMFv+qlzEPO3PqNKOhHrKOehZI3MQ4O6zuA9LkZKhWnJgFpBVzPIleCCKgqurfUkRQY05g==@kvack.org
-X-Gm-Message-State: APuU4Z8AMa7fI0Nk0E+3Cr3d669Pc8ZPpPZL+rucWJ+qFgKl7WbpKHjY
-	fmL7ru9TqwP7QuLmetCmX5SAgdVRgZolzfd9bDDUyBuJ63sUTpXbKOxh1H4WPWNcLrR6nqbVTdw
-	bSijmViq5TpD4K91lbMvoXIp7zTVff6o=
-X-Received: by 2002:a05:620a:6cc5:b0:93e:94f2:ada5 with SMTP id
- af79cd13be357-9494bb96c07mr1603501985a.25.1794788916691; Sun, 15 Nov 2026
- 16:28:36 -0800 (PST)
+	bh=nEPXf1cG5J+Lghgn3UQeDfptX1Hk+zVJPSj0Zk2IzFQ=;
+	b=rRD6wS7D72dQKzvEs3GlZDbsCGp9uUmfa35yRZ9yK50oI5zURNdZYzaISTuIy3p0j8qa8d
+	/w14L/WAhT4PRAwHpWt89juDVJF9oUZeMNpwhAFUqCyaGyNKwBQux3+xRjGoTxTdDbyoaQ
+	KNBAFd5glY7MOV6as55XOPjGLwWGOI0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794789919;
+	b=i9V+X8B0aNPARyM/U6L+uhaRiSreTatZK+AMzhqnOR4RMipoG/K9d0HY+ISK98cWCPwE8E
+	RkkL5V4Llit+LOIKwiHmPwNBo7Bn/HhvjUEMqVbhzFhYIVFRsKqlXJ63wUgb7h2Y+e3agj
+	+YTJ9HjGtuaI/5EEI801k5HxA5Cz4eM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Ov44YrtP;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf17.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=nEPXf1cG5J+Lghgn3UQeDfptX1Hk+zVJPSj0Zk2IzFQ=; b=Ov44YrtPxUC++hYRNDHSdmdpGW
+	JaxLbFR1NnGayLi7FHLtyTi+He4ZYSfoC7yWmGobJ7E/AIaLAiwDiqmK+og7vdQvnP4EzvIpr462x
+	EDmrhZM3u/N2SWbcqZV+o7jR7R+AN7ZLDYmWxP5FpNx3G+I1qCrQflyake80HiJ9rMKVM/x4eT782
+	9JEn4jhTrQPKUH9n7ugwPApkYe7cQrElzRWPUKP8gRVT9cQSw9rpPJq9AX3iS6GqmzfQn0wqcsM7f
+	leTLxbzdojuK+f/LSdN/KzQKSZ97Y6xYotP0eKRTTUizqT5t8J7W/n/cd6b1FIlVQIvCGZw4VHm9P
+	KD0dlVWg==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xSkqM-00000000pP7-2dPd;
+	Mon, 16 Nov 2026 00:45:10 +0000
+Message-ID: <bbdb3140-dc5f-4ae1-a5a9-c2e25387409a@infradead.org>
+Date: Sun, 15 Nov 2026 16:45:07 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261112081928.3014946-1-ridong.chen@linux.dev>
- <avV52J2rD19cjM2J@KASONG-MC4> <CAGsJ_4yibOkJmi9niJ8svu2NdEkZ5Qyf98VO6qMrJMa_9wGFgQ@mail.gmail.com>
- <c01ec177-da44-49bc-a542-35b64554526f@linux.dev>
-In-Reply-To: <c01ec177-da44-49bc-a542-35b64554526f@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 16 Nov 2026 08:28:24 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xx8ivDeh1d5pvJOEgndRL8rf=CO2==T480pAm=j2X0ZQ@mail.gmail.com>
-X-Gm-Features: AclHuK-MUP8ZaH_AYwjIfA2I9NeM0NJE7zPqIV9E8LCJmYdS9SrrB7NPxzl6bIY
-Message-ID: <CAGsJ_4xx8ivDeh1d5pvJOEgndRL8rf=CO2==T480pAm=j2X0ZQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: deactivate anon folios into the oldest generation
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Kairui Song <ryncsn@gmail.com>, David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rxd8ibhh3o4nczt3iswketpr6cpb4hdm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/12] docs: ioctl-number: update MM entries
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
+ linux-mm@kvack.org, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ linux-bluetooth@vger.kernel.org,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
+ oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
+ linux-atm-general@lists.sourceforge.net,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ MPT-FusionLinux.pdl@broadcom.com,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Zhihao Cheng <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org,
+ Neill Kapron <nkapron@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, xen-devel@lists.xenproject.org,
+ Hans de Goede <hansg@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
+ devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
+ Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Tzung-Bi Shih <tzungbi@kernel.org>, Benson Leung <bleung@chromium.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ amd-gfx@lists.freedesktop.org, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org,
+ Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+References: <20261114202653.3113381-1-rdunlap@infradead.org>
+ <20261114202653.3113381-2-rdunlap@infradead.org>
+ <f37ccd71-8e1d-4dd4-b11a-e22b9e617dea@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <f37ccd71-8e1d-4dd4-b11a-e22b9e617dea@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zrks9ncuz7p5h46bpar7fr87xtyghkrh
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8293540002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-5.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794788918-801261
-X-HE-Meta: U2FsdGVkX1/uEjSflj6ydu/AGTvee/aX44e2Qio1UQyYtqj/w/XxTd4mmhRNAFq4kM9L2wtp4aXEi2XbRpOln7erH22lbWhwjLugbm3aD9IUAFMVxccb8KnQADWzifiQFDZ87lJy/jN7oQDVybheQAO3VKbNG/Fe2CEdbgSErVWYfY9wK0ez63flW+34PRTa6FEra40uHqi2vGp0iAWcvGr+2cWzEZ6b5DOtdUD+L2y/FTHb4o1YEsXt0SfQeF7DM+0K5+FCE4nlT1K9SJUvT3+PMovj0///ZKqPFBnHKrjBT2Glh/CsWm8pcpF46UNhwUWCDmMM2fMrXwAtVDGEB19SzWmEHqGAiiZIFu0jYfFa40jz+QkE6u5Sg4+K0q/Hlo5CyhJBXHTougN1ftHXrtzyfn/NpvXd6zvdcO3vHOOzlvOSAGQAJq0BuDdp3vbtz1Q/J6MNHEWF5vJ/iwDO6XamPu5f3qalbLKOD2WU6FaUnThQLiIu5QJz5z5jpIv3JAOXwtVNqZAwBAfKO9nHGYtjiQfFzHUPAkwXTle6yqF3OTRiOZMivYas3cq7vzUJHNjIVMlI/gWcD9NOaLcqLa5x9/GXlIYRfghvS84g8Uk+uKD8ug4ef2otkCiwUPsRzSK7SaBTw5WB95b8Tbvrsy7g3lWb4UzMvC9TGIka8bGTpkM2rPoNy6U5Qs6jq+7aZt1dzlw0Dzjf7olyLgcXVZEjza79+JCnTXRF+E2pEewDuDdf1sABkWfHBoervYjftRdZQMMKYslNvfImlcKLycyZguhjnmh91Jt2mc/s1mvV8z/lX3JOgNBqTl1ZyWUxzE08cXaEWntxwW4tDWhLukZO8zg3aFEoUYzsf5ghZW1nG40M/gr1da4L+MMEQduN5jnM9FQ9u6HHVe1uCRoJqVs554KCToQ/stkfmEaBE1zLuLeMC5e4955eUHNW7PGzcipFkH2Uo0gEbNbgtHy
- yC73G5yF
- jMoSbanJcS636zXTNbRprX/ZU9+GM0bJr5OikzaLXOlepvwPPC02athqNEgIj+fI02FdHeySczx4KmSnUxcZsCq2XMo5ynAlaeuJkwB6pvCZW3ly8Kse16VtN5G9P1IfXSjbvUNrxy5cpBn8vXmx6dDNOfC2YHhNklDLFBXfrlnZOwMQjz9DcM9MeWQLWvGaJx2AzAHNkRL2bDHg+UhhRTKVnH2JlEd4EVbr84KCHwnjoz5JPZ481SQ+BLU8QRPkBRc6YAcrR92XJjmlTnd3aD3XXnwc9Wpnhexf92bmzjp6xpeHTwXo60k9P5w==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5177640006
+X-HE-Tag: 1794789918-507497
+X-HE-Meta: U2FsdGVkX1/rRArntia4tFWH1KW5Re+ahVjBi/o5r8Pm5L1Opq0hgzmJJZfuDvWYLMfrShQH3LRJf1ODz45r6HxgP2Dc7/4PuADux8K8oYtehXufnX7pxr7yLZYYhcy8r/F4iTBocodgcmFnSH8cbXh52EsDKLMGTThMTuPxyd1o6thf4o7u8MSdnhawF3r+J51mi6zUlBYfTxZar92vMbQlwGYe8+0syJy7yc7kQolWxWx2kwTW+dk/InwkbDXtPr4g2BzVk3kaJmgoc13Qizn5FPW/3vmUbFS3i9pjWY51o3etcvZWxzU/Br0Mx8eCBojccUcoaSQhHylnuh5vIyBLJJIKbV3aS+oSXjlUWLatU2XTh7rrIY/pwoY26BP1aBMX8XZuHis8FGa/7GUb3cikvohf4JIJFptGnzqjCfisfiEErgVwJy5+pRxenRS8liiMKHYLNXNkXU8sjUbjmY2DHm3E7T1kIBk8IEHwpQoyzACOdCkH3dAQ3CvPNRaMlhIrjNh1z4pK9TwR3Ofa95E4xxILSsXMQbJs6mN2Y9RC9Frck7tKljDp2P2bGatPep77/Htw3M366WC/t+YWpqcQcy8JI329u1FbW6WqH69vYPmhLEzDa3z3ypULT+1PVDhuWmgYJ1ETe372zIjF6JdnWHS5BfblPJmMcOVgzkOvcXeOzai1EDkaFOSLJfCY/Xy79PiMa0VA9T8O+TKODWht0Hpv6SU6X/iqv8m5zbtXWwl2OpF/kNj2aK8hzPD1bqtp7ezBcZoSCyZCqOhGD2VoRqJfGthhjQSmAYfImn3laJj4WDhSHdHvdy+o6qnVir18kdnqY1hiw18u8qxS+CTpLvZT6IbxwFWQHBieDHIhuG4PYokICBMEoRSC5ajh6iTAoWYl+/xqfEuSnRoYceRW3NEJA1r1ZnyzCHKPlmoJRu+EQz/PBQhkAL1uxPrx/IU2NMwosfnZnBu4m7U
+ kXJVTUvB
+ FMNAKDKRYbYJAShQq3A9tbbWbM0bGxcDPsymc1UQVLSbZQlqc5oKHv1YwPXsd1C/tRicQMB+cYo2JwgYs/JZKAKexzTJnDsIBmmtEZnPwCR4yR8NIfBx9SKcNgmkJEeCkzG3pFy5mIwH2+Jjh+u6g9NJtYvNoOv0qKf0kf0WX0Khoie+O8CSzHqEQ3LmWOqgzRe8FjoaenGXnqXTVPn7RznVnoS3wMxRLAACyQt0iO8yEjt95fnv5WHFPd+cb5lw9rNRfkTrDP2juPDdx3k7ypyEJpFnaG1V5ft9+/gNWJSRTMUCgjUihGREYFCm0T88JkdenKzuenxFmBJ+JE2bKDlI0hS+BW6Mf9t9JpWhuGXZgn+9/gxoXPiz9bAXGoYyV9Drh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,128 +148,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 4:55=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
->
->
-> On 11/12/2026 4:41 PM, Barry Song wrote:
-> > On Thu, Nov 12, 2026 at 4:38=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> > [...]
-> >>>   mm/folio.c | 11 ++++++++++-
-> >>>   1 file changed, 10 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/mm/folio.c b/mm/folio.c
-> >>> index ea3adb6a89d7..c412d9b398e4 100644
-> >>> --- a/mm/folio.c
-> >>> +++ b/mm/folio.c
-> >>> @@ -583,7 +583,16 @@ static void lru_deactivate(struct lruvec *lruvec=
-, struct folio *folio)
-> >>>        lruvec_del_folio(lruvec, folio);
-> >>>        folio_clear_active(folio);
-> >>>        folio_clear_referenced(folio);
-> >>> -     lruvec_add_folio(lruvec, folio);
-> >>> +     /*
-> >>> +      * For MGLRU, lruvec_add_folio() places anon folios that are no=
-t in
-> >>> +      * the swap cache into the second youngest generation, which is=
- an
-> >>> +      * active one. Add the folio to the oldest generation instead, =
-like
-> >>> +      * lru_deactivate_file() does for clean folios.
-> >>> +      */
-> >>> +     if (lru_gen_enabled())
-> >>> +             lruvec_add_folio_tail(lruvec, folio);
-> >>> +     else
-> >>> +             lruvec_add_folio(lruvec, folio);
-> >>
-> >> Hi Ridong,
-> >>
-> >> One question here, why MGLRU/CLRU have to use two different ways to
-> >> add the folio back?  Will this cause over aggressive reclaim of the
-> >> folio?
-> >
-> > I guess that is because on mglru, that is lacing a way to add the folio=
- to
-> > the head of the oldest generation for anon folios while CLRU can do
-> > that :-)
->
-> Hi Kairui, Barry,
->
-> Thanks for taking a look.
->
-> Barry is right about the reason. With the classic LRU,
-> lruvec_add_folio() adds the deactivated folio to the head of the
-> inactive list. With MGLRU, lruvec_add_folio() can't put an anon folio
-> into the oldest generation at all: lru_gen_folio_seq() places a
-> swap-backed folio that is not in the swap cache into max_seq - 1,
-> regardless of its refs. The only way to reach the oldest generation is
-> the reclaiming path of lruvec_add_folio_tail(), and that path adds the
-> folio to the tail.
->
-> And you are right that this makes it more aggressive than the classic
-> LRU. With this patch, a deactivated folio is evicted before the folios
-> already in the oldest generation, while the classic LRU puts it behind
-> the folios already on the inactive list. It also changes file folios:
-> before this patch they are added to the head of the oldest generation,
-> the same as the classic LRU, and now they go to the tail.
->
-> So the problem in the current code is that a deactivated anon folio is
-> promoted into an active generation, and with this patch it goes one
-> step further than the classic LRU in the other direction.
 
-I think MADV_COLD is fundamentally broken for anonymous folios
-under MGLRU!
 
-An anonymous folio may already be in an older generation, but
-lru_deactivate() can actually promote it to the second-youngest
-generation, effectively making it hotter instead of colder!
+On 11/15/26 8:58 AM, David Hildenbrand (Arm) wrote:
+> On 11/14/26 21:26, Randy Dunlap wrote:
+>> Add ioctl number entries for test_hmm_uapi and gup_test.
+> 
+> Just curious, why do we care about uapi for test interfaces that never see the
+> light of day in production kernels and their sole purpose is to go a long a
+> dedicated selftest?
 
-Right. For anonymous folios, we have no way to insert them at the
-head of the oldest generation without introducing a new flag like
-PG_cold, which is unlikely to be accepted.
+a. We don't control who builds/runs these tests.
+b. There might be some USB gadget or HID driver running at the same time
+   as these tests.
+c. It's preferable not to have conflicts, so any additions to this file
+   should try to avoid these documented ioctls.
 
-If we instead insert them at the tail of the oldest generation,
-I'm not sure whether that would be consistent with the historical
-semantics of MADV_COLD.
+-- 
+~Randy
 
-But I've been thinking about how to insert a folio at the head
-of the oldest generation. Why can't we simply move the folio
-directly from its current generation to the head of the oldest
-generation in lru_gen_deactivate_folio()?
-
-For example, something along these lines:
-
-lru_gen_deactivate_folio()
-{
-        int type =3D folio_is_file_lru(folio);
-        int zone =3D folio_zonenum(folio);
-        int gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
-
-        if (folio_lru_gen(folio) < 0)
-                return false;
-
-        folio_clear_active(folio);
-        folio_clear_referenced(folio);
-
-        list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
-}
-
-Right now, lru_deactivate() seems unnecessarily complicated,
-incurring additional CPU overhead and LRU lock contention:
-
-1. Remove the folio from the LRU list.
-2. Add the folio to the LRU cache.
-3. Drain the LRU cache.
-4. Add the folio back to the LRU list.
-
-Why do we need all these intermediate steps instead of moving
-the folio directly in a single operation, given that we're
-already manipulating the LRU list?
-
-Am I missing something?
-
-Thanks,
-Barry
 
