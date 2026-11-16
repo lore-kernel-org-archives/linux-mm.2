@@ -1,99 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7447A606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B947E606A32F
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=C3aFddts
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=qAHYOZj7
 Received: by kanga.kvack.org (Postfix)
-	id 91BD66B05B7; Mon, 16 Nov 2026 01:56:57 -0500 (EST)
+	id D8E696B05B0; Mon, 16 Nov 2026 02:00:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A4EF6B05B8; Mon, 16 Nov 2026 01:56:57 -0500 (EST)
+	id D662E6B05B1; Mon, 16 Nov 2026 02:00:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 793C26B05C5; Mon, 16 Nov 2026 01:56:57 -0500 (EST)
+	id C7BFD6B05B3; Mon, 16 Nov 2026 02:00:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 52A6D6B05B7
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:56:57 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B92CCC07FF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:56:56 +0000 (UTC)
-X-FDA: 85440074832.06.BEAFF65
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9EF6440009
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:56:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=C3aFddts;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794812215;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DFF46B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:00:31 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38C481608A5
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:00:31 +0000 (UTC)
+X-FDA: 85440083862.09.A8877CE
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2EFC680009
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:00:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=qAHYOZj7;
+	spf=pass (imf30.hostedemail.com: domain of elver@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794812429;
+	b=q9S/kfltqO6joACWkIrpV+RQISBF+RD+9/h0WaDnUjFSz00iGaJ4CdUxMpqYFOV+8FAzh9
+	IzJKpbJwljI1gN9aNizEtMoAqsteFc1FrWfp6hvRQ+zc6NfNmn0AxLSRLRmXVEcujZPi73
+	CknqspJAO5GtU2E9fcH1apP2ZZdWyUw=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=qAHYOZj7;
+	spf=pass (imf30.hostedemail.com: domain of elver@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794812429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Av8Qql1PFCbNo0ym4O0ZY8gbj5FgwCTE5iiuHlTnyDA=;
-	b=l430qAlmktwkqHRfG1C5xQ0TGbXvkXMmN7qw8O7DiCrKlvNPDNHeBdIhrbQlscJhqM+0K9
-	Fv03WpeEuK7iuKdqFhcZe/y1PtZt7/1IA9ECPcP54Cxbz+ctbhRSNg4PhHCo1dBZKnw2Is
-	4hYn/fqK9Ng4aas3xvt0LS9Eem1gVXk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=C3aFddts;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794812215;
-	b=AVAtF3+e5w8GF+ZnQQhk3wAYy2nQNhHKRaF0IhA5aKecWiveGhmyulAo6z/vNUqtcnChLW
-	sjfaGDr2HAjDl6Qy3gSlyPrnqVuq1lIUeeG4LbN7+dU1pmkq53aogrYFW1RnW6Dv6tOuDl
-	zk4wAeXqyIlTeWRwtSMneRptb3vrxEI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0DB12143D;
-	Sun, 15 Nov 2026 22:56:50 -0800 (PST)
-Received: from [10.163.155.94] (unknown [10.163.155.94])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1C5003F632;
-	Sun, 15 Nov 2026 22:56:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794812213; bh=iJSVzWp3/nSBdi9cZI1iskHcjerH/hi74/XTquikmPQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=C3aFddts8iOCMXlkDDHaAcQg7bsRD+smfjKxKYK5fRswDNVlUKNtAQRdKxeFQ18Ta
-	 T8LjGnwNYkkZPALZcA+TvIc+u1SUOSDDYIjLW8qbraexmbYBEdNluSHkqA3OMC/Y5J
-	 qTrubTZPG8r87GvQScYmKm0/IzMAYOTALGAPvpsc=
-Message-ID: <3dab1bbf-77e4-4ce6-8314-2b3154be74dd@arm.com>
-Date: Mon, 16 Nov 2026 12:26:40 +0530
+	bh=5s1cMjlhSVoN+8pwAodz8Vnb1Cd7Y7PNKE3ORLQFJUQ=;
+	b=UWsthrJdrETp11iJ+UirtSsU2ZQ3j/7PMHgZ2sOcuHY1J/3jl+2/AqajqvJpAjHQbCk2pW
+	OLJseOopjf+v5TumPfV2CE42rsxTZ7+gDH6vYLzqL0S77msY1rKjvvlpqyoH2yrkB33Nmf
+	HyJmNQ4ldYC107ePvSO7aepmbtrzCQo=
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1b3beeaf6f9so3457342c88.0
+        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 23:00:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794812428; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JgrpEh5weHsfhndeGc3RgXe1HWg7YtUqQ2cqTqs8dfvRoa6/TTCnRk91hB6jWVah1u
+         cScPUs22vSLTQGN8GfOQzketNAgPrGBs2DtU1aSC7Qan/We4cLX/3P7TK+XsmgxG0wu7
+         rmh0EwzuBOlIIrg/FoNmKxcdC5+Shvi7qH3q6AiN4lWSm2CzyQcK878KREsd2pTIgJ9N
+         Ir/2UjTEJoS2jZZbX53yMlHR3SO/vffB9PxOYAXgEVsAAFifHbdgUaB4vmBENh2IAtSm
+         L58zrwoPQtJRWcFwou/gpelA7gxN7P/W+G3Dy/tbHfweaCfUGI7m9qzMcuQSFeXfYNtL
+         WNZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=5s1cMjlhSVoN+8pwAodz8Vnb1Cd7Y7PNKE3ORLQFJUQ=;
+        fh=+WS2Mc4lAT998JDgaV2evoHvEGngHyaE27cjFIiZY9E=;
+        b=MWZewkHy3mWOuHKksF91qG3DpvdcfmnRnZ6Jf3f2Qn729SqS1xidHoJl2CYr2pmYvd
+         prbl8IPfMdjxkFMdRk+NxlHAA3jvMFXnd6zuuKruwdnFNMCkJclLeZE9s4H4qQrGMDzB
+         rWOGtTHYsBZ59NppZld79Y3mGQulQsz1g+/dPshwSyhyD38vNiaSMNbeJ+g2wHBcVMw6
+         m3TdvvJFmJfGeyA/QukImmqu3TktD9t4aZarbiuJix7SC9m0y3kPA6YhgP2wWaFOpsYw
+         IJDdN4fLCVpTpnX5pjbkC58j4pFb/QTpYA3TU4wFbFY5NjPl145714uowzFZpV02b+yy
+         aEfg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794812428; x=1795417228; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5s1cMjlhSVoN+8pwAodz8Vnb1Cd7Y7PNKE3ORLQFJUQ=;
+        b=qAHYOZj7xTwIoJcF0fPKp8sNvv3TbRmemVar2CCGVuR+DHbyYthu79iTqPZYsTkZ+h
+         C7HnKVCmiM1AhzmU0DcEYQcjuG+cZjEPgpLJmt7agmj5Iii4D2Z9vWUeSmTihDceQYU2
+         n5Syk7hD4svy/OiSqkATATXwx/SXffa958TJ3fHkgyM4A10WnVGUvPCMMfMyhMAUVHnU
+         Aa/8oPS1xL8p9nLwjN9eejOsNSa8dw/8QnT0HLlnxUZD75QUs4xVm8+oxEWQu6LA4Xvb
+         tsefHjGDyG/UO/4Ur1E6RFHgzi0fE6GOrcVcYvHqOQWAUyO5EtKmws1KC7IHwwEqswzc
+         WWPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794812428; x=1795417228;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5s1cMjlhSVoN+8pwAodz8Vnb1Cd7Y7PNKE3ORLQFJUQ=;
+        b=KiDPBbAHaD/PK//zsKpkT0xSTyW52NH8JvMEw1mL1sNfMb72e3z3iVRSRcZAx50pK8
+         z3TCPnzLjThSQnbdpyPQzyup1qhkTJWZCRAjhY/CpzcGRpRvJwlgyPReJ1aWmSiDCPRp
+         tRi96M9t17dm59XXF0zuiqGIGCh7wj1IM8Y10uwm3N2BQmW61XlC5tsf4HlGgCFIxWTy
+         h10q98cmEjSRV8wMiJRT74yUOREJ1dijL5SFmdFlyzbwuzlp4jNomz4AF66B5V6FPcMv
+         7LxaURU4UqTXwysjCAeirh2MpDIeT3C8HjLr+i/9kHW+h4QK+0vElHttG9G4BSWhKK2K
+         yiOQ==
+X-Forwarded-Encrypted: i=1; AL+hErGcdRiHmGJVbKoJ0XQkg+TJrD9GH9WYRnxEDqbno5r2tU4j3+g2J8D9sJatIQ4tyxbnMt5QHxJJ/Q==@kvack.org
+X-Gm-Message-State: APuU4Z+i3NMRosUETZ5ovfjzA10adeek5VVlPRJhtZgh5FrLYxX9JFHO
+	J/TFHfIB4ZLuEZtBQkYrQYWwTtKtecPz2xj2RwAU9Fp1bo6tEo0/V/hfvnKglYB7f5dGLzaf7/q
+	bnmAhn03HD4fXGgI7aMBkV9BxZpyO+T8Jor8BtwuQ
+X-Gm-Gg: AYBFou0xoef99f/eTB0T0lT+a2Ox3V1E0WQGyzlm56vXL80Lw7xyB3VY2F/wifIK7Ad
+	y2aOHm8f9bJkM+VzdQgV+k72ZltbNwqMWUfgjnUTG3AE7EjURw8+5dQr0BN5Zy0aSTYcgH+6KTZ
+	3dycdhB0HLNXHmEeZdRbW4lDzRU6ecGUiJcUVZhYH3i2VgTIQGqF0ygDjK57mnGbL5iAKGb/QG/
+	GzUwbtBIKK6GXfNKVoTmPjvPIOIfGqx9gASYMQEFIX+TKHiCF073HHwVsBbXYxiRH5vlXoG5L+u
+	eW2yVV8umCcWu+2NBH25laKC4yK4gERv3+dwjT9A/aoPqRl1r5f93/RBYNlthqP14zMm4tYOaFA
+	/aBQPwvkDszNaqQz59gBdMv9hrpB/06ZuvqR2kvLvVFRomQkFe7/0wwgeRRggu8x14wFb
+X-Received: by 2002:a05:7022:3a03:b0:1b3:755a:ec49 with SMTP id
+ a92af1059eb24-1b503157e74mr10651080c88.40.1794812426897; Sun, 15 Nov 2026
+ 23:00:26 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 9/9] mm, sparc: batch arch_unmap_one()
-To: sashiko-reviews@lists.linux.dev, david@kernel.org, ljs@kernel.org,
- akpm@linux-foundation.org, hughd@google.com, chrisl@kernel.org,
- kasong@tencent.com, davem@davemloft.net, andreas@gaisler.com
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com,
- linux-mm@kvack.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- pfalcato@suse.de, anshuman.khandual@arm.com, geert@linux-m68k.org,
- sparclinux@vger.kernel.org, ryan.roberts@arm.com
-References: <20261115143905.3045084-1-dev.jain@arm.com>
- <20261115143905.3045084-10-dev.jain@arm.com>
- <sashiko-outbox-215629@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <sashiko-outbox-215629@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <auA7FdubFEDVPB7v@chrisdown.name> <CANpmjNMunLgXHRqXgW3LnniCX50CLbLYsE3DpY7h=cuvu2vSkA@mail.gmail.com>
+ <20261114150201.d428c3847d573be1@chrisdown.name>
+In-Reply-To: <20261114150201.d428c3847d573be1@chrisdown.name>
+From: Marco Elver <elver@google.com>
+Date: Mon, 16 Nov 2026 08:00:00 +0100
+X-Gm-Features: AclHuK-F0k1P_2O2E2wygaMki6BhhjUtxnekVFOvFTlkQiN3eI7cLbmv5yhD7oA
+Message-ID: <CANpmjNNwaeFmVxfPsvdVSc33_DoF_Gcz9DpjGWf6PLD_GZwAyw@mail.gmail.com>
+Subject: Re: [PATCH] kfence: Allow selecting static keys mode at boot
+To: Chris Down <chris@chrisdown.name>
+Cc: Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2EFC680009
+X-Stat-Signature: uthbj9oo3b547rkm1wsgagkyf6e6h9ss
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9EF6440009
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: cq817yabz8b86fut3nuskzu6inikq8tn
-X-HE-Tag: 1794812214-692326
-X-HE-Meta: U2FsdGVkX19fvVum69ObCrxUim511ifzNe7gHOw+1YW1sdM5paONgx5VyVtuJOfKxsveYf6Onf3uETRELaF7qHoWXDzBxguvKRqJoM548zGwpOa3UfuU1hoeL5AwIuDm91JyDZBJxKZovLiU6ewoV6E5p5yEomf59A5rcz+GA4Xo6MMVVIjrCKasx9KyjXaV3MQJIJGo4fM8uc+bJkZ2cspxEpHAiGkblIfRw6Ogd+EMgbwwPOZtdrwVXdftI3K3asjYdWYsCmRJAAdyGt0XfPb/GbpZzUEoesfsTAUuf75EL0w4R+up+siyUaaqs7SCCQ9i15zvQKHr2Tgas2M+fh6QYPFRk+VJVMaLsLCNmxlRVBX+FlmVsBuxDHunG5/d08sR1K3ioP4pVJUEcU06pd4aUxrrYWAmHJ02/RLFVv3g7hDX/Eqn9WTy9q6illkaS1uk0fPXDa+brnqWAV+omrumna2rKKs8InCIkZk0iAVe5BU2c/tLlSxoM/UjTFFE7aV63c3vKIZ3EXW8pkHZKpVd1tz4CyQR/Styh5E8j8mm5YvWKQAyVy8YFqP145mJ1lE84fJqE+JqOWFXLBb/i5cg9J/6C2dLPLzFnc+GfaL04WkxaWKhUh5Rq/BxzQWz04QYL0wI/9fU1E7Q3uLlRA9koMu17jn/k+OoKJt7KXLWdC9Z25HwXUQLRICVtYmY36h6TmoxEzhd9F7OiHiz0vWE55H0EXu1Ns/BKPgZlpFofrU7eCSUG/AeAATC9tIYGRdhbp6S9iadAUmqaG48repEfpuc/QCSnilQ6KFaPpgzzeOrPyvg0ooCdegOeRBFDrIAfza8E+5qQ5bsza+9H68mVsyMmcOMY1WnglhJiPL/hGrX4iIS/OLh+Awt6FGW33KEBdGCy53uKtBSjKVjS35b4D3/Xbjbr+keLXaDgeoVUhqPvsnzyxl891Xyhht3A/wqk5KmroVgYHcHRzb
- LhqPSOJJ
- HbUy751io5daQ5hsbVDpCYPOCegplQAaUnUGSST53ZUdxlaiifAbR0ChgOtJ4JDz5SgzrLi8royQd6U1CRuPNqzzPu4eyLbTlDCNGhwfJ5EKxv8quBWegiOw3Z5OKJKpv960cxP9oIW6MLadghwwxfkIY+OaPZVZaFX4PT0CFt9cH7HUhw7kCVSCn/o5x95NOW4pWJhsen9THsT0sSddfnp3xKxX0VUusdXmsR5a+J6ewQsauWBeLsPUy0AEaL4ra6ejsiGzMFjQg7azzQ34vOr2xFyjtgtqY9N37X1jToa7FyvGqWbiEBjW57UcNZ6ggZDSGb8alAcvHlOD8MzjzIr1LpL+2I2RAw/tObtXwK2wXnqI=
+X-HE-Tag: 1794812429-196005
+X-HE-Meta: U2FsdGVkX18b+6RyAwWmnyzvCluB8bE91iZ8JhjARNq2ewFt+lyBc+zA2f+Pdl88W4b85SknRVir3Yn5WBHoFG0VmtSEeHJE549rdBRu5jKI3G90PY4/FKgbp+7IhL+rL0VIzRzI8DDtU+dflcxPIMu1XGmq/FCiPStcbvhzMzXXwaK/FvVlhYhwbU7zA2+5uvSUwarl+5qFM3FYzwrLuzHTVYc8Pli5CBEhWKfxhAJp1OLo3rvVgIShuorHNH6MZrGb7ofMuRp2BMD8hmBC9UDH9asvBxD/ZZ2Bd4cxEc1rf3KjWHd+AdNxSiIsfQs0QQczesLl7MKzlPlvpVN/hV355tPutJNjycz82x4Hd1sGANya0FOJSC6XlAZtMkcmiqdDCAioyWTlzxlotCGCcFPQRUXB85vPzN2a0y1BiXTkkf01nv8gaqIxXOllH0EtGPVLiepxan9ooCvClirKA0ZyUyRHJSPxvGPO1el+ffOPFlVE62sYlzDBytQb7N/jncIirvkbJqi7R9Prry7rYIEuxAheBShhhGMM0GIFJUziw7Az23Z0xAI6d3W6RW8A88rM5kbEixwygDVI6+Bh+/s8XO0tDxLBj56kZz3FZ0ceik5z0hN/Xa1O0tWxk+pSmj5WKJY7TKmkHXpuE35LkzQZPIbQrcnzoZCI4SnCF/Cr8vXFEzd15zzvvBjRiu87r6TTwIIzIuisZT4sIIw8ypLZN5GaikN9OA1/p0PSVDXL2Ta94SVq4u2uewM+jHwDbOyMQUyFEFS9PMW3MBugjr6DAE/7pAv5NydQ3VlkSkjzY3wfh/BNKk2vqbQg6bMU0HLj2Aa1Fx8r35Ah53V6Un0prgjdyGfkzI/X4/GfA8NUsuROIAK/rWJY/e9dcSmYmNVCBf5TR8TzK5GzKUypn04vriXvTYmA+g4Sv06Sb71vMmEe2WkbixTAvFsLzrNCrrwf4cZ4f1M1+3x7cmT
+ 88viYLXp
+ SPYg4k5Eip2BUzipN7kMiPXOiQx03zbzfpVxVUOi4KB/ycUkYDt/4/tuXWuknJPy7DQhz9XQoZkAYTT79hjNsPDocCBOimSGs6Uk67Nk1dfO9mKEBjGwbz+LfF8zCos8Sj7hoZXkcroWaQYIGlnBDFPNJsUPjdsydxs7FwnwrC7k2rWPeksz7WNd5+j0rncfHtmFkoRt8xpF2VqJRmTXLec6crbFtmS+T43Vj2RZ8izcKgxA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,85 +144,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Sun, 15 Nov 2026 at 00:02, Chris Down <chris@chrisdown.name> wrote:
+>
+> Hi Marco,
+>
+> Marco Elver writes:
+> >On which systems have you found static keys to provide a significant
+> >improvement? Can you share benchmarks?
+>
+> I don't have numbers that show a significant improvement. To be clear,
+> the hosts that use static keys have had it set that way since long
+> before I started looking at this, so it may well just be cargo culted
+> by now :-) Given that, I had a go at measuring the saving on its own.
+> It's there, but it's small.
+>
+>  From a quick check I did in an 8 CPU x86 VM, a
+> kmem_cache_alloc()/kmem_cache_free() pair takes 8.0ns in static keys
+> mode, which is the same as with KFENCE off. With the dynamic branch it
+> takes 8.4ns. A kmalloc()/kfree() pair takes 13.3ns in all three. Both
+> are the same with either branch layout.
+>
+> So static keys saves about half a nanosecond per allocation at best, in
+> a loop that does nothing else. At a million allocations a second on a
+> CPU, that accounts for 0.05% of it.
 
+Thanks for the investigation. On x86 I thought as much; I'm just not
+entirely sure about other architectures, and before deletion, that
+might need some investigation.
 
-On 15/11/26 8:53 pm, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] sparc: leak of ADI tag_users and tag storage in
->   adi_save_tags_range()
+> >IMHO, I was thinking of deleting the CONFIG_KFENCE_STATIC_KEYS mode,
+> >because on most systems, it's not worth the complexity for the small
+> >(if any) performance improvement anymore.
+>
+> I agree, and I think the numbers above are enough evidence for that.
+> Deleting it is better than this patch, because all we want is one kernel
+> across the fleet, and that gets us there with less code. I'm happy to
+> send the removal, if you'd like.
 
-Legit, so I have no choice but to add the restore side of arch_unmap_one(),
-brilliant :)
+While eventual deletion would be my preference, what you say here
+doesn't make sense. "One kernel across the fleet" does not necessitate
+deleting this Kconfig option from the upstream kernel. You control
+your .config, and the Kconfig option is default-off nor is anyone
+forced to enable it.
 
-
-> --
-> 
-> commit ccbef0704b88d6e8aff2c2f0c82f32d9131dcc3f
-> Author: Dev Jain <dev.jain@arm.com>
-> 
-> mm, sparc: batch arch_unmap_one()
-> 
-> This commit extends arch_unmap_one() to accept a page count so SPARC can
-> save ADI tags across a PTE batch during anonymous large-folio unmapping.
-> 
->> diff --git a/arch/sparc/kernel/adi_64.c b/arch/sparc/kernel/adi_64.c
->> index 18036a43cf568..ffa378accefe3 100644
->> --- a/arch/sparc/kernel/adi_64.c
->> +++ b/arch/sparc/kernel/adi_64.c
-> [ ... ]
->> @@ -394,3 +395,23 @@ int adi_save_tags(struct mm_struct *mm, struct vm_area_struct *vma,
->>  
->>  	return 0;
->>  }
->> +
->> +int adi_save_tags_range(struct mm_struct *mm, struct vm_area_struct *vma,
->> +			unsigned long addr, pte_t oldpte, unsigned long nr)
->> +{
->> +	unsigned long i;
->> +
->> +	for (i = 0; i < nr; i++, addr += PAGE_SIZE,
->> +	     oldpte = pte_next_pfn(oldpte)) {
->> +		int ret;
->> +
->> +		if (!(pte_val(oldpte) & _PAGE_MCD_4V))
->> +			continue;
->> +
->> +		ret = adi_save_tags(mm, vma, addr, oldpte);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	return 0;
->> +}
-> 
-> [Severity: Medium]
-> Does this leak tag_desc->tag_users references and tag storage when
-> adi_save_tags() fails partway through a batch?
-> 
-> Each successful adi_save_tags() call invokes alloc_tag_store(), which
-> allocates a tag_storage_desc_t slot (and its tag_desc->tags buffer) or
-> increments tag_desc->tag_users on an existing descriptor:
-> 
-> arch/sparc/kernel/adi_64.c:alloc_tag_store() {
->     ...
-> 				if ((addr >= tag_desc->start) &&
-> 				    (tag_desc->end >= (addr + PAGE_SIZE - 1))) {
-> 					tag_desc->tag_users++;
-> 					goto out;
-> 				}
->     ...
-> }
-> 
-> If a batch crosses tag_desc->end at page i > 0 and alloc_tag_store() fails
-> its GFP_NOWAIT allocation for the new range, adi_save_tags_range() returns
-> an error without unwinding the first i pages.  In mm/rmap.c,
-> __ttu_anon_swapbacked_folio() then fails and ttu_anon_swapbacked_folio()
-> restores the present PTEs for the entire sub-batch via set_ptes().  Because
-> those first i pages are not swapped out, adi_restore_tags() ->
-> del_tag_store() never runs for them, leaking their tag_users references and
-> preventing del_tag_store() from freeing tag_desc->tags or releasing the
-> descriptor slot until process exit.
-> 
-
+An intermediate step would be to e.g. not make
+CONFIG_KFENCE_STATIC_KEYS selectable on certain architectures where we
+are sure it causes more problems (global IPIs on systems with 100s of
+CPUs) than performance improvements. We could do that for x86, and I'd
+Ack that right away.
 
