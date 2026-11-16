@@ -1,65 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE08606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CAB6606A333
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LM5n551J
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WvMiCb3a
 Received: by kanga.kvack.org (Postfix)
-	id 9D6F66B05C2; Mon, 16 Nov 2026 04:14:45 -0500 (EST)
+	id 67C316B05C3; Mon, 16 Nov 2026 04:15:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AE696B05C3; Mon, 16 Nov 2026 04:14:45 -0500 (EST)
+	id 653AA6B05C5; Mon, 16 Nov 2026 04:15:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C5056B05C4; Mon, 16 Nov 2026 04:14:45 -0500 (EST)
+	id 56FC26B05C3; Mon, 16 Nov 2026 04:15:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A54B6B05C2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:14:45 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A073A8683
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:14:43 +0000 (UTC)
-X-FDA: 85440422046.12.B8E52A5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D5DB9100005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:14:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LM5n551J;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3DBB16B05C3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:15:02 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D9D414089F
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:15:01 +0000 (UTC)
+X-FDA: 85440422802.07.8F103C0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D1808A000C
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:14:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WvMiCb3a;
+	spf=pass (imf25.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794820482;
+	s=arc-20220608; t=1794820499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K4jy8IbP53ZuSPYyRskO/hfiiIRx+iysrGQG2bzb9wc=;
-	b=4HL5Hm/BEG4phWtIFvY3CRQQgzeduxzQZz1T5Z3elAwDPsTONedyO4BmUXDYjStpPNTMUX
-	wg7yn7s/upvqmOCrisRUOU2r7AJSZwjfZoLjsPzfyBDmMnJNntGiGp7ThpL2P+4m//vgn9
-	Vp+X8TtQu0FdReAICymn59TVEBGtOSE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LM5n551J;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+	bh=wOq7lOU2FcK7bFNXejlGbOi1XU8BMJcPZcRxtw9e4Sw=;
+	b=uN8F2HWva4YcYklzTz6DMKk1Q/Zsu8P16eB3cHXlM3y9Q4USualmYyM1QvId8gjEO989Hr
+	96KNU2gfpwhfr4ObZlcWVgkA0dZafexm0xON4N57BvIeleIwpFbmZe84Kf9+AyOad9WIbK
+	Wam2osuUVNVimbMdL7q4slzja62SZwU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794820482;
-	b=3qsbunlIS5kxtF8yUQ4IkdNDEAw63yb5lMnN1tVjugK0HtPmAn1P/YrwaesOqarOitccJ4
-	emMnDsxskf9SnOpXVODgX4CiWvNL8sqK/bAeGs6qi3+urXMtfJP6ppO5+sp+zNRA2FXy5P
-	21JDTgtrJlnXEndq5jI2IvYa/cxm1bw=
+	t=1794820500;
+	b=wqXgdBvbis5lOaRM2G454nljADrp4ckQxqylsUGYdmn1z2BuWuEBXGK8HHz1rDHfNiD8sy
+	qKCNhXUou1pMqfbDMbRPJ+sDGzrdSJz+iB4TW7LL+ewvWndiFfW6hP+iaaHtntUtTiMdLY
+	1n1esOkP/T3lggUW1T13nQW9paYf+T4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WvMiCb3a;
+	spf=pass (imf25.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 35074402F7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5DB596144F;
+	Mon, 16 Nov 2026 09:14:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0C91F000C4;
 	Mon, 16 Nov 2026 09:14:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE25D1F000C4;
-	Mon, 16 Nov 2026 09:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794820481;
-	bh=K4jy8IbP53ZuSPYyRskO/hfiiIRx+iysrGQG2bzb9wc=;
+	s=k20260515; t=1794820499;
+	bh=wOq7lOU2FcK7bFNXejlGbOi1XU8BMJcPZcRxtw9e4Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LM5n551JdLsydZmHMtrzZTVMgbKp3UNt8LIepdvq5vXecnB8jqO2/e1PBnAnqwLYx
-	 MHC/xxNyvkRhgENg0YivIMEi1NzQ/pK0XOtRajfws6WJlYcxdiaO8rZ0sENQvewqZq
-	 Xmtpy9NW2zIdjike3QZwnAdQYMlWzPpOW4wLVrG3ZzdHUqC4hnVq10WTMHNs1bQLxS
-	 wlVQKBh4GVQfjjQi8xJ4gckbg+XTk9EHkUHmom9GVd7GoGgq944kL0BI0ldTRHl+TY
-	 gkYFmgnnU/TcFc7xHEGyn/eiBju7caeobi/FMlP1OOMOYrzylAEXXEOOVgVp1l0FAY
-	 VkdKDndimmsMw==
+	b=WvMiCb3a3ulqjdaB22nmgkIQke7QT4O0OvCfYht7wzXALcr4iWzzaR+ZJpkaPOXT1
+	 g6Ml89mj4k9Q9E1ps2p9lnFMX/Gj8Zq8+jF/DkQFCOSXHPj+pizSh2BDErS9fpC7SO
+	 64dxg2HPIYj2YCyf1j3nim34uk+hl8po4RukSk3hMt60OeXUMp6VWkBKyR864CGpMJ
+	 Z5QNDRZshQDNdOjARyuMuuV+7FJMkxEWDxnPO/FtFXKGQ+oYNvDsddHMWQtPlKIJuy
+	 gvIvOgY+2iz+x+q4w2x46z11Wt0+/2ncRaQ1Gy6GYLrbtbhWkTG2dgzC8EboiYpYge
+	 85eluwdssrZnQ==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -123,27 +124,28 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-mm@kvack.org,
 	kvmarm@lists.linux.dev,
 	patches@lists.linux.dev
-Subject: [PATCH v10 09/13] swiotlb: Reject misaligned restricted DMA pools for CoCo guests
-Date: Mon, 16 Nov 2026 14:41:32 +0530
-Message-ID: <20261116091137.94252-10-aneesh.kumar@kernel.org>
+Subject: [PATCH v10 10/13] dma-buf: system_heap: Limit scatterlist entries to the buffer size
+Date: Mon, 16 Nov 2026 14:41:33 +0530
+Message-ID: <20261116091137.94252-11-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261116091137.94252-1-aneesh.kumar@kernel.org>
 References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D5DB9100005
-X-Stat-Signature: 7pymtfb7s7p7c4hhqruab9za4bsd8yzp
+X-Stat-Signature: uoy5qtiatcu8ogswppszrg34m6sddkq6
+X-Rspamd-Queue-Id: D1808A000C
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794820481-752880
-X-HE-Meta: U2FsdGVkX18D3jaksohBhRgAoS4OTX+ioKyhoSgRnjtGfnwaAaswb6kp9bjNQ3P3oPkJRXFiAzxRbZFIshPctB/hsxge8qZDvz6axfj5xHT/qhxzXzQ/f6IBGD/GNXqf27nrpuFsBdcIbDGoktb9ATXCCrJxv/cEnDuU9lfhV0TFS3mShbJCGbAeDej/1yQuXby2ydPVAQWuMY+98etR4BjOOv3TaKUHy5X+AAtNj07MyVPijgqM88K3Y7Nc4cBUbkeEvRkbGoUMDs4ILKiwRPDuYvtZW2uBk3hp96OTxa4Vp3mRZSFSBAVFaEaW+A5/Hx/2+dVu8aP7xXwKW6B3B4NdJiVL73h7O955uIXSg/tobvlBqQZLJIMSjeewQw/cShxICRYRElpBz/DETm230MzMVTfeBiqlP9zYGXcFVqgoipvmuMrbc78X/YzMEAb+v4vJRPFs8GU161ZE9txKqOEq6RMVFhzzTM33Dpei5vjHSiU+B2E4iw5+BP+/hYmFRjp4ndPhi6iQvLJaC5LDigErJ6RHY+46u1ibLro6meUtVdrdVNM5SZ7+2WiJSZ3jAUZKU4M4FszyN6FdVsqGa4qLgCcLb86WKJWlln7hM+5WYe5KWomGIUH/eCySpkWRZjdTOj1hn9xKzWLeoPv3G5kehPrIxY0RxpG0KAxajPw8/HouYhvaWeG1PfYY6H+C8MpsgWZRCsmF9TC8xS6RnJy+sZCxw4pElQxLyFOerFa18h8esKqtktN131PNC4URZbGc6LSR7/e8DCT+P7CLSLiLsSpdEZfb8Pvar44KBLL94KA/8C00xypvltHIlcEJCpC9VK9uSGL7xzFZU+A4su3/W2Nd/n4byjAE+ZIOAjZc9lDYllCCJT/Nwhygxl9MMIVJ+iCIlNncYraoxZ6xL3GgJPs8o9//GJ4a5Kx+BFBGdJWC+DJmDLosmS48q7oR+aNpDgTKqXFQ4l0SmLx
- Ge+0GIx4
- ne2wOzNTKSO4dIn2AGDCVdBZJTt9GhlOqcBswFEQ3cVcJlNzgud7LXUCutLXPkuNpbGzpkCdPFQDoJssJQy52mQKv/iu6BtBsGTSQs90n+PIYAkEu3T+goN+xb6G/DzSBoqcvUuPpg78qA4DxeqnBojqrqQRMFu4AR4y2tH6RO3ZHiSuflkscINxMIwN0y2khDshHF/q2TyMup40LfWtTLfdZPLVEGIX2FnrhHH+CxRAGs/dQ8plIXNi7vfMnrBi3j8qzj5uE6hwH99U8ZL+lj8cOhu9h7H/Beno4NWTo8z3bgHKwa2rikIDyH4iID4Q3hIo1GfDbOEJwHr9qOA2xTUaxoe/3oqTzlO0p3Ymvg0txgW//WN7WukOOdYxG/Atm+6jVAmv/wVxZffCPUFAbZq3NgtUuqRRjmXlyTTsRBP9n/QpYG2NMAqgNLHMMdiOoU57y+ATnqxlfuD74cL0d48Wgp+Udxz6cILsCcquVOBYN4AJ43ofggppeMhSFrSyQM3Yx
+X-HE-Tag: 1794820499-668408
+X-HE-Meta: U2FsdGVkX196NIdSP7IvT2czyynpTxQw0F48Rpq14vfN/MBLsZEdfZGaBQxd7ZP1vOIk/JH0nr6lvTbKQZEnTeqxVz340Og/pCV30HsIojFpTMMblew+xgKRx/KkSApKa1xwmNA4us6I/f3CuJOI9jRPj7HjL9hiYb690qdeq/plt+ZUDN3G6aET2WT8JyJzSBiwPu2pT6PChExuYCSnOt3d/2kmWzU5Y1LVBlAOGBTyAvLpA6bwuqrgUeJNTyW3eATVjb79PEIXIhfh7uXPmnKZ2HUcLSGIi11VRoHp8IrbQ2ox5RhMZO0pm+G8fmBYTcyA76UvzfpF2lFOPpZYsRmIWLZiIDQOe9lOCaqWmG3/fRxxHoyg/+MWmKNo+qMVj7Jv/0tITlRCnKfSt7vV4CGBAXgugl3rwknon6TEEsUqlr9ceF9KDbrO+gvj7x/9SVyFcyXRaSYT8xy8RQF9IIx4fY42X3X/t+8pnZQjFQCk8IYzyFYJHDsmp9D8qxxo/NnVm25VrO3KGunkKUG89vIri1VjVYPH0G+MSluFcipmvNA95EslpMCD42MXiVfHJcpv7gG5zJRnQ9jedCm0ivaSFNamDchfrUjRkit/HHoLc0LZxI6qtHOqTfOxxDVN7fVNakXiUT4UJwPUxt/TKms3ijeL3BiSk9eP+wn9F1VcBESVi/vxJHDMAdflSpgYeNiXzohI9uHDAszWzDr2yMHYztb83tGsTSGzDP/2/A15XdXHy6eQQcjqGAiZoM8c/1MctPzdQs+IZDf1Q95xq4m7o9Xu6Z5mreLwZ+Wv1SyFvgG0uCxdPmJ8PwpngHoIeJkN9qtDzPHNXEv0eCzXomKZw/mlBOd1darnlanVRhKqa6vYjZ5wbqzx8uzYg9xAyj7cOq1J4Dk9lUQNdjfYOVi65IIDpAbQfkbcde54kC27zJgYHGnfKP3efdL7HYp69QL4x7pM8LrSUH8zxO4
+ GwepnV9S
+ A+2wTp0+RharGVA7997TEhPqzFkf0LuW66wHHh/eo5xcKaZuH9qOVdmhmod4xrUmd8VuV1NcuX8jtavpy5NkI8hXUOuPhw9scjgcwuM2pOsANmFSqvYOHLOoNn271eavPnTz9KXywtlLAaCL7lFXlCdncapLek1yC3OrovN4Z54gnnPmZaUVyOXjxkqmv8XYmVyu1qaqsWPiEYJDtQVHHJ6o1PsD+ES11DQWBI25rjfToyNVXUSzHo6YVlSZPSq5FSM9dbMmBx+FrKKm1UnxNsX9E7968XYuQOQq/sg5+pjZLlWyu1MnQPcCFrfOXXvV25Mt8iGrCavNUk1E9HL7O0qv206LVvj7uEzShyGb2XXTKkIkee1+sBzLsORRuzR23d9JIel3705wFm3Ggkt+PsnDtyN76qrhTHsEG3TFjAeleHKzWck5b/iF3vD5MfTBZLazoefqBc2iwpGf7jvLo9PSGk1ZTdIG/R7qs7YgnYP7mfklbcFspKgYxH9cJl0TtmDM6uh2YhzI/D5ok14jboHq1HO0dSA0FgEY6lQ+dxPYK7+2MpvwU4nDot+mlhXaWSfXtbHhFZSHGD6H7hEa75EMJgxKnTVIj6oiXNvvfpLq8jgq6TRbDH0IQpf3j3d6s7VDTLqIBpfJZKOPY0FYmYyTG37WbkCEhWuWyp++EBkFFJl6ZBtDpJ36Olk4qy0/wMVzA+8zRATo9qxJxW3406zwpIOYxIh6ipdGi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,65 +154,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A restricted DMA pool is a firmware-described ownership boundary. Unlike
-a pool allocated by SWIOTLB itself, its base cannot be moved and its
-size cannot be rounded without claiming memory outside the reserved
-region.
+The system heap currently allocates each backing page no larger than the
+remaining dma-buf length. It can therefore use the complete
+compound-page size for every scatterlist entry while keeping the total
+length equal to the buffer size.
 
-Confidential-computing guests may require private/shared state changes
-to cover units larger than PAGE_SIZE. Passing a misaligned restricted
-region to set_memory_decrypted() can therefore fail.
+Shared backing allocations may need to be rounded up to an architecture
+shared granule size. A backing allocation can then be larger than the
+remaining buffer length. Describing the complete allocation in the
+scatterlist would incorrectly expose the rounded tail to scatterlist
+consumers as part of the dma-buf.
 
-Validate both the physical base and the complete reserved size with the
-common CoCo shared-range helper before allocating SWIOTLB metadata or
-performing a state transition. Perform the transition through
-cc_make_shared().
+Track the remaining buffer length while constructing the scatterlist and
+limit each entry to the smaller of the compound-page size and the
+remaining length. The complete backing allocation remains owned by the
+heap and is still released normally.
 
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
+This does not change behavior with the current allocation policy, but
+prepares the heap for shared-granule-sized backing allocations.
+
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Cc: Brian Starkey <Brian.Starkey@arm.com>
+Cc: John Stultz <jstultz@google.com>
+Cc: "T.J. Mercier" <tjmercier@google.com>
+Cc: "Christian König" <christian.koenig@amd.com>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- kernel/dma/swiotlb.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/dma-buf/heaps/system_heap.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 2bb7d83ee479..24366038dfd3 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -39,7 +39,6 @@
- #include <linux/pfn.h>
- #include <linux/rculist.h>
- #include <linux/scatterlist.h>
--#include <linux/set_memory.h>
- #include <linux/spinlock.h>
- #include <linux/string.h>
- #include <linux/swiotlb.h>
-@@ -2007,6 +2006,14 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
+index c8959eadc71d..b5b8cdf65f23 100644
+--- a/drivers/dma-buf/heaps/system_heap.c
++++ b/drivers/dma-buf/heaps/system_heap.c
+@@ -406,6 +406,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	struct system_heap_buffer *buffer;
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 	unsigned long size_remaining = len;
++	unsigned long sg_remaining = len;
+ 	unsigned int max_order = orders[0];
+ 	struct system_heap_priv *priv = dma_heap_get_drvdata(heap);
+ 	bool cc_shared = priv->cc_shared;
+@@ -454,7 +455,11 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
  
-+	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT) &&
-+	    !cc_shared_range_valid(rmem->base, rmem->size)) {
-+		dev_err(dev,
-+			"Restricted DMA pool must be aligned to %#zx bytes for memory encryption\n",
-+			cc_shared_granule_size());
-+		return -EINVAL;
-+	}
+ 	sg = table->sgl;
+ 	list_for_each_entry_safe(page, tmp_page, &pages, lru) {
+-		sg_set_page(sg, page, page_size(page), 0);
++		unsigned long sg_len;
 +
- 	/*
- 	 * Since multiple devices can share the same pool, the private data,
- 	 * io_tlb_mem struct, will be initialized by the first device attached
-@@ -2040,8 +2047,8 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
- 			int ret;
- 
- 			mem->cc_shared = true;
--			ret = set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
--						   rmem->size >> PAGE_SHIFT);
-+			ret = cc_make_shared(phys_to_virt(rmem->base),
-+					     rmem->size);
- 			if (ret) {
- 				dev_err(dev, "Failed to decrypt restricted DMA pool\n");
- 				kfree(pool->areas);
++		sg_len = min_t(unsigned long, page_size(page), sg_remaining);
++		sg_set_page(sg, page, sg_len, 0);
++		sg_remaining -= sg_len;
+ 		sg = sg_next(sg);
+ 		list_del(&page->lru);
+ 	}
 -- 
 2.43.0
 
