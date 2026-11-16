@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54393606A8A8
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291C7606A88F
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ECiVh051
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=J7BjRmu2
 Received: by kanga.kvack.org (Postfix)
-	id 9B2B86B05BE; Mon, 16 Nov 2026 06:04:23 -0500 (EST)
+	id D156C6B05C0; Mon, 16 Nov 2026 06:04:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98AA36B05BF; Mon, 16 Nov 2026 06:04:23 -0500 (EST)
+	id C70C96B05C1; Mon, 16 Nov 2026 06:04:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8533B6B05C0; Mon, 16 Nov 2026 06:04:23 -0500 (EST)
+	id B5FEF6B05C2; Mon, 16 Nov 2026 06:04:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F4876B05BE
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:04:23 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D4E3512088E
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:04:22 +0000 (UTC)
-X-FDA: 85440698364.27.1459A82
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 12DD1180005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:04:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ECiVh051;
-	spf=pass (imf06.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 92E926B05C0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:04:27 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 31D5A40966
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:04:27 +0000 (UTC)
+X-FDA: 85440698574.25.22E5C0C
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 688A818000A
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:04:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=J7BjRmu2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=nakixii@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827061;
+	s=arc-20220608; t=1794827065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f7dAcKypowp6pgdAJ+FuQHJX/9djNf1D5bjpko35/FA=;
-	b=C04MhvqbFICrh2bFUPkw5rWIAdO/ZLIGvybySHulQcLph5eUWpPY4jzirryQISpxDu6Fnc
-	7uQHfMqxw/+7bNOIDUzLzAQH/AjbsHsB7FYuf/krNf5T+NrxliOcZPhA8YxhcS5iqr+jgy
-	gTP+isCPWrGtBzSQjbQbfPHeZn4WOos=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827061;
-	b=5jvSY4NZT8mxuPE5hd3JORnvIZSh97zc3I51bzX4eV7QNpHEqIVvfytc3dvhZxivSAwvh3
-	CvGaVfT7fserePxs1IOW0McGmTIBDQ2RWyyKiinFFi7FkWJTPsrxND4o4Y7L7rLo3XfU0A
-	bwLF07vGsTkbNfpz/JRf4Gjj9HeLqUA=
+	bh=ZX3pkyyq8Bg5+JdrpMjD7+301LPabJjTMnmRRo+l6ag=;
+	b=Z1k1abDaAMRIVnwGCSFBMsqTuEIa4N1L9qNb5V1B4uYBcOpDw5qTFS/ITc4WsI7XUSzp1E
+	4U/3DzkjHXO/fRHkix5Z6uMQIXPKkNKz8atCRt5bJpRNbJ5so454gHyRsEABJRGlTcuXon
+	V9JXFqPQBr2S0F/6WL60/3Gap9Fy8RU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ECiVh051;
-	spf=pass (imf06.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-170135e43c7so5232643c88.0
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:04:20 -0800 (PST)
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=J7BjRmu2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=nakixii@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794827065;
+	b=ahrS98IRqDQVeBYJYf+AclogWDp/3TizYMSdEcPAaOcNI7j/aXvQU7clpC0KjJtfL8FrbI
+	mRvW+VuhdKsG5uqJYQBNsINM/nDhv3SzGVkayNAS9nZUMh+1ju+BeISqHND9WOUZ6DRcDb
+	pT87r/COia8JY/n2mqW2FgV2DwvD8W0=
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1b3ada81853so2886575c88.0
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:04:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794827060; x=1795431860; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1794827064; x=1795431864; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=f7dAcKypowp6pgdAJ+FuQHJX/9djNf1D5bjpko35/FA=;
-        b=ECiVh051WncSnrpotnj//zRhNvoLrrDzPJrHKMKMvvb0OMexmrkV6/0dyvD20UX+FE
-         P0XJmGLC58NCaVfRLX+XvRJ6mNw3+l+/Z4HK8vXln1cqLaMIbe+NtNKHVYbmLYYEUBVK
-         BnmgHSGUTpf9y8m0TGD46YT0xpLtGxAdQEzPlD7OC8sLjQDFJA2E+3Xoddx5wz7AM6Co
-         vz4wWrn0hMcltofoucRALXkGMQvPAnLZDepKwgQmVl0JBGM+W82Fnl8+pWKvjIPu4Sq4
-         bTa9nEgiM4FswwnGYDccUanidnD8wEEV+ExKbWZo09bN3TgAytdAsA6Rn+yw95l6Hy2x
-         BbFA==
+        bh=ZX3pkyyq8Bg5+JdrpMjD7+301LPabJjTMnmRRo+l6ag=;
+        b=J7BjRmu2nDgeHKHYzPVB1DmlCkF79Y2OnvChK6acV0AjRljpM9MhE9AEQ60S1OmBUI
+         ysqi6QfISZT5gC6dTYzpD92Z/kUbqzKZWLXA6Nhf1XYY+RdbNQCOQxsW7Iw76K/ZAjaI
+         wqWhaDa9ZOvezAIux/AXsLkik6PEyJTeT0xQUJHrlapRYF3eTp92Z09HLhNbARlKytja
+         UDcy7xd7NBiJ1+B+44GzC943oRGA+sqyrJBeKlhTf8hyKjS4RHe/g4lTyYvmqJn4VfiE
+         t9by5X0ZeObMj5D/NOMdbe7Pd3rJQOgFFXhhES9Qq0Txfzz2hKMeW9nbltZsY3jq8HZ2
+         iBoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794827060; x=1795431860;
+        d=1e100.net; s=20260707; t=1794827064; x=1795431864;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f7dAcKypowp6pgdAJ+FuQHJX/9djNf1D5bjpko35/FA=;
-        b=WVNMDzF7O8Pp/Q13oK+Z382TkCPxlo2Jy9FLhkTgtX86ttTgrQnlZhFi6ZKUzal0bY
-         3+jEShZAQDNQ6z8mKmQmJfQnPHJyuprJhTzenEzJgCyQuxCWysCrCJOn3S/ZrdeEmRlZ
-         +7PLfKy5QlyUO9IThTaQPx4WR+johVKEvuZeXZvfu8an0sIIKu/6xkhQgRdBPwDXbMmJ
-         lH6053kgml59MS3yzx6IyJASERludI03C8uqn1ckI0zLLKIhN1XMb74uDIScsPt4Gq2B
-         Sykhb/JQlhjIMSrF6JN0EwFKfPQtedAXF75jSbsOvMU169ewdiOJhOj5NnrqwrgLZyM+
-         uqvQ==
-X-Gm-Message-State: APuU4Z9afEp85UViB3lmNv1lmZ2wEnSb9QPH6XIw5J2fK1c+Kar0m0QO
-	ha4mFXzGMatuXuUJ5B+hbUd066oiP46Cc2N+CU0ig+BJLx7io5PjXBM7iZ+NRoHnFt6l5Zmo
-X-Gm-Gg: AYBFou1M5M0V9b07FiG1Ju4SGBILIjmCAluqc6LFMmvP3pey9lbPmUY0OKwMOfRfQBA
-	Rv8NNVE5C0ME5pUBUg7wpWgw4SFPkmLd/+bdxg282eM73adgsgkWkbnDyQbuqljBa4pj/Fj/s2G
-	V8BrK/pcdubfjEqlfKnfjxe1Oo/Q34lsCiYzNlwCuQxuchmdeg5InuOtkvYGtJ6xq5vr16d2qQ7
-	U3TOW29qdoH2oDwY0K0xE55R0ZyFvymwqW73uMTWu5UENwoEFWl01gDX+gM8kBmUDjI764AfOpl
-	sIzJQcsT8M026IQ3pnG4O1DVGApNVGOjESL1XsKz+LbwxrtiwPa1OHwXyA3BMnTic3XvKf2rCC1
-	ddv8kXb8oHiOl9hyccSbM+xfc1uRqQvwt7NP4ZtvI9h+xCABuwmpSgfxD9nrKrzwqD330x/3c8S
-	Ky+gQMs0QVukdk40GfECh5Upxeue3aSBXHiZCY3SiDRI0U2HdfNfJOrDSMEBZizulGS6+cQCQRz
-	CxWM2pQBqXy877gVYQUdU+rr388wXaeUhkkp9mL2ALW7WnH8UG1EkXn9EEMg2WuSGc2jIxoj0gk
-	YO9lDP12IEDZ4kG7bppEvtpeH7Uedxc5TQ/g1y2AP/tqITM=
-X-Received: by 2002:a05:7022:1701:b0:1b4:f5cb:ebe3 with SMTP id a92af1059eb24-1b50311597dmr10189226c88.16.1794827059067;
-        Mon, 16 Nov 2026 03:04:19 -0800 (PST)
+        bh=ZX3pkyyq8Bg5+JdrpMjD7+301LPabJjTMnmRRo+l6ag=;
+        b=K4XeGQgYQRXils+lJ6BO4N8VMZ8fT6iPt97bYk9eeVqCOeYWr2KJvCiQ/hTsNAEb4a
+         mKzWztnJVMzajBKdKDsJJ7OmRE8GTTSYy5ItrqaP7xGNKPi4EwfeNLa8FDu6D5XSiiGw
+         qaB/c8k/kB9QjBD82PDWCiHBLg5QzZ7NXumcyKjrctjPx7Y7bpxQZDKrUK2/5Xh6Efia
+         8dfTAjph5gjh6V5xODU+4Pqrc2L/aR9HMW653JnfXMcrD6bpQSUI4pVVWhz0S+Jdvx1B
+         40FKvQY4f77hzciizMM/aMYSdXF/Psng19kqqKOwsLT6YVHVf/wJybLvLVh7FGZO9h7f
+         5cYg==
+X-Gm-Message-State: APuU4Z+e0Lglpl6BMmqGZnjP7XB1NZ+FtHQzfHNenkv8cqHrQ6AJptO5
+	hc2TbaBRnRr3zytpEIp2B1HUeKVg2+kIUw9jWfKnuG8EVqkStDuVJ/yjyioJ06Cd9fr1+Enz
+X-Gm-Gg: AYBFou0OM6Cx1FSAUUWavaHoY7Nztn3gkyguNibGsezuatf++jQsggJBjRQV4GzhFar
+	3bvMklGNQ+52GuLfaCIMq1f1t5V7zs8bvZdZNiaV6xZkFpKlvyEUeaIuFCOtX3SijWIyoPPt0lk
+	W9Ze2Qwr417TwGXSNUofyTuy7+MUcv52DIPjP5O+F2XmMwqllgIZL32H4NCHyCVyVdcgwfCbMFG
+	IB2MMsAj9btabG+qUpUlaN0cEVu/AxyeiAhdssgdVp00NKmrUt05VgI4N8BNzkv2H7Ed9tM2PyA
+	C0Ik0EIiwX9iQZTHP/mE0+6UBYpjQD6D6tHy33aQq1bjxzAkipFMTM8u7XtQl8TWBHTe5RRkigO
+	tL9Evz2QU/q1zdbAxjWYHuLFdOmgPoOdxGlXeF9g9S/Hc4j2lBFI3gLZHmNH0cT+D7Ev6bqdF4W
+	bsrq+/ftNn6XCMdC1yRYGvHEgAkuwSRGAHkPD+4XZdeA+rqdNJ1Dmt2OaOVMZ5+uaIpJwpe0gHv
+	+z8ub1Yd6S07AKTtf0DPhMqDx/tWDJNjBcboQRR/+xevb8NqxL7I6TvsIvWcxD0pBWOMmowUVqZ
+	my1Ilw+1ts5l7pHFRCiWMfKUoe6nDrra8KIyHKx4m/3nNHY=
+X-Received: by 2002:a05:7022:1e0d:b0:1b3:bae1:f5f3 with SMTP id a92af1059eb24-1b503068228mr8684015c88.6.1794827063915;
+        Mon, 16 Nov 2026 03:04:23 -0800 (PST)
 Received: from naki-PC.localdomain ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031918c7sm42999260c88.9.2026.11.16.03.04.14
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031918c7sm42999260c88.9.2026.11.16.03.04.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 03:04:18 -0800 (PST)
+        Mon, 16 Nov 2026 03:04:23 -0800 (PST)
 From: nakixii <nakixii@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -109,28 +109,28 @@ Cc: linux-kernel@vger.kernel.org,
 	Mike Rapoport <rppt@kernel.org>,
 	Peter Xu <peterx@redhat.com>,
 	Suren Baghdasaryan <surenb@google.com>
-Subject: [RFC PATCH 08/16] mm: memcomp: compress foreground batches asynchronously
-Date: Mon, 16 Nov 2026 19:01:14 +0800
-Message-ID: <20261116110122.309748-9-nakixii@gmail.com>
+Subject: [RFC PATCH 09/16] mm: memcomp: batch unmap reserved large folios
+Date: Mon, 16 Nov 2026 19:01:15 +0800
+Message-ID: <20261116110122.309748-10-nakixii@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261116110122.309748-1-nakixii@gmail.com>
 References: <20261116110122.309748-1-nakixii@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wmm669y59jt3mhsi33s4q7re4e9ira6m
-X-Rspamd-Queue-Id: 12DD1180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 688A818000A
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794827060-189733
-X-HE-Meta: U2FsdGVkX1+ow1VHqXjyzjOANg3LL4ma6V7zOu6nyb+KGA5yUBVyobwxyZU6DiRTkT2Oas4iIT9Hzhj2EM8hQUqGJHLuBVf+da28l4LJBBYm8FG9ecdtwV39S4QOJm8AILg7ZhvZHq5lYxREEwqbgO0nZufG/13CjCFmxKi3WFFcwdq1iYO5vyploHlcxXNxJxnVjhhqdL2SUkTB5tqt8NV2pXWtBWSYy6IGfNQEIFkBdNnpl6IaYf5eg+m+sFAPNy6JJBzXcAJa927aJKPdvPwYNJs1wZljfLogpamqZYx44hqO1PdSHxotfGPOA19fS8BQaGxmIQMubme5BNSKOMCzZ6oc27D+OleD4pPXi9V4PpwQ0y6q5JjffzhXrMaW2Tnm+qHU/kKpUt0KLir1u/Vrfq4VbgBxMXpD2jGoxamdFxchawAQxP8xLdWvqpeB87ezh5CfgQgQLC4Uh6sEWdv8GRe4MYvWpcwB4LH8p3dQmp1Il+FRWwXjgzItC0PLG6tTvlQlD+o0LYm/6lrI/YN7iczdwIzEqnBHA33wzKlmv/PXLw8P13llADifWal3awjFROzJTRleI8U2Sj/rVzVGAfZcwIgLU1tg6pF3H6G6dd/Z/IT5wIUIEVYQmBoihrhslnSeAAm4TpfUAyJQb9j5b5B6JdHSJqyJUglP+n+fDYMRthyQZmA/goEhz8TQDvFNwDCe+DYPl3swKSPMKrF8molkBx0mjabR2FfypHPzQpKDkejOSThSib7MtqIxEfgEUZmwX3+kElACMfg5w9UqbIFoYoUklbwBx41bAHnHea7cWPhVB23VqNXhb/pRy279k+KSZPm4K9c96hLhBdnYIFjt4aqfPJbnAea7G0iekEr0K7wAxBZDCnpcM0ObPeu0nclsQncbQbbZJhh5aLYS0hCL/ZariCwrLHkhjiVU8/S3NdIlRAt8p5EojjAZuJ4BE1tMDO09B0RN90Y
- /DDijUf7
- H6ENU3O62UVXAkTKJmJefhB8aIoHmogLphksfYQ7kA5OuNoq5WAUmpCoE6QT0tXEHDm9/fYEgIjA2R2zcloOf39pvPSZlAnaoEDvgfxFuoLEuk+DjFv6JEGinFq/XB/U+DPk5w6ZH8s6AUwRqH1eWZ5RSxCn/yRQdzh9o1jXjlVfUQV8yJnOhLeHisxT9z15tX/9uhrWoXULVKqJ81AKNJNOQUQCmebL66mJXHLr1fFU7bUa5rfxvctG5Bym1Zsm5GuO1ooG5NKSwVltRAjjK25It71BgOowOXsedTmE4kf80EQvyMP0OgN6hJFV8uwKDOoyWp8kE5lCOrnJudRRBLfJrBlYXMHpPC5je0E2Ad1ymGsL3890Y/Q/cQQSk2b/hPMLdNbg5Nb6MUZfy3SmL8PAWEbHkJxkl5ggNWB0j4LiUvc/ylOs8ujXua8kC9mHdRAZuW7pBu3/mjorL8r2zdmFfAPprkp3hzLd8AUDJo65YHTxV8Lfsc8qMCRukTdbdNQ2p
+X-Stat-Signature: urhnztnmzcc4nzy1dsp8z988x9ice9nu
+X-HE-Tag: 1794827065-278278
+X-HE-Meta: U2FsdGVkX19cFe3vEILgf1MFb+WuQaOtd2P56pLijz5JyuRipmWa9LqaiMPEA45odWgVvbkrJqg7kwKLcNv4WUETtbu7lT6NG0AWnbRBCGHRDbKUl9Wl5Jl+Aif/Aku72XorTDyHDWK82jOSVYdjuJRGDfN/Y568Q6+VbzN+tZwGtgz74mWiYtnarP+wtufa/X3T/hhlkoVxLxIzFddTkoT3r7/fMZwg39DhtzLSyVZQZOP2raamg0L5yX9ErGHLA9a5whge0oFupQUWIQzRbSD6aVbS1L3vPRDYaxFD9eftvwkU+xBQYmAr5y+GR1ihGvTFOZlX8pzaGinjhxaaFn3hm9F1/7yTlB5jpnj9a23yPzhv/V0m3WRq2ryAO1cK0cU6DydBLZxb0/Q7BInEqDOuQeqLrAfYdjiJ/SWqTnFVGzbQAzTF5rzfxyaCx6/h2cQsyMrxkGi5H5+VrJu9nJ5T1zzeQw+1zw6SZnfI+1MABnvMMzoX4eahJ8v0I+p43+/hd/xi2ZgBpKtp7aBCg73WDlcceOQ+77qDHQfFWY4/C/rxqcStdKBz0qjjnQnUe+MCsSsxLJT+gO4G/R+dOKJX4N0NV8bpNvMSy7efDbo1h7pS8twS0tn7x6UfAIzB+2Q13DYTdx8m8Md2uOoGU+xQySItUJV/CkPkgyT9/nKHnLbGT+rNFTD+twYp81EhztxhJLOQKsNlNYiJXITi/cg4czdRITKaF9yWHw6HDSJ8WI8WoaijhwMItMBgTWDD6AlfqTaAN1BZngK6YPl1bZxZS7ORSda8HsZi53T6kyRjr5GJVPATkJZT+WLOSke11FmwcyNIUiNVeEayIM7HOFDFljI3ta7f3NuBSAdM+/prVQyOQ4S1myF+Kc5cJCl0EI5MZXecQKMBhZ6DCYqqhnuG+P6pEDA1uts3QzI08m5J6GcRfU0cdXkRmTTFh2q9Jquf8Zt8cH9Y2Zy5t4i
+ K/cP9tm1
+ kiEc644L7j4m/KAFxL6y2lYp+JURHXbmEkBs39OFSv/JqLRSjul8wZrKgQPYpTqwA9uAEZwWJyr1n1xCFFQbD/qShkKxkGJYbKzUpxgGaQ5AYq7UN8o51yu2u9UuN3ThPrrAY2BNrR0efSLMR0BtDrQp4OWJqnGBaDCQ55CuZXi8gEXMsRGgJwcjGcv0ceR1EpxT1CddoeamlijYIyDfOpOjW3LTIEA/JRaWH+vfnQ5qZlYg4xlSG7FkSHU+umUtXiNJMPyjoCpi0dHKA1vRGim6Rv4A91JhkY+0XnctdU4a8YZUfAIbNp4TDj2LTMVL/e/grM3jOBU3vfXZ4/Zx2oOmwx469k71OSmvNS8rxWf9VT2d1VbWXZrMHiJRA+ksOVow5ZOKTJxkxjqLEkkCCWYFDPSIMnHReJdhMDdOmd4Yi73XXCUWqNM57cRJon/0lK30zJuLvM5xTfemgLA5pK/sZjiL7kpXt4XqP6PxUhcqd4zWjMU6wQ6VjcF4R3sXPtUB4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,1056 +139,195 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Foreground reclaim can have several eligible folios ready for
-compression. Processing each request synchronously prevents a matching
-asynchronous acomp provider from overlapping those requests.
+Batch uniform PTE runs only for reserved memcomp folios. Retain the
+single-PTE path for mixed protection, soft-dirty or exclusivity state.
+Acquire all token owners before clearing mappings and unwind the whole
+prefix when sharing or architecture checks fail.
 
-Prepare bounded batches and submit through the standard asynchronous
-compression API after unmapping and flushing source translations. Keep
-requests, completions and payload buffers alive through completion and
-backlog handling. Drain outstanding requests before releasing a batch
-that cannot continue.
-
-Consume completed payloads through the store and refresh transactions,
-revalidating each folio before publication. Acquire store leases after
-asynchronous waits so a suspended batch does not retain the synchronous
-context lease. Fall back to synchronous compression when no batch is
-available, and keep busy-folio handling within the current reclaim pass.
-
-Carry finish-failure handling into deferred processing. Preserve
-resident rollback, slot and producer ownership, object-cgroup refunds
-and the ordinary swap fallback when compression finishes but reclaim
-does not.
-
-Keep task-side batching without a dedicated compression worker. Order
-compressor selection and late registration so a matching asynchronous
-form cannot change the chosen synchronous codec. Leave codec
-implementations unchanged, and provide a KUnit-only asynchronous
-provider for controlled completion and failure coverage.
+Keep TLB ordering, notifier scope and the native rmap completion
+context.
+Do not import the general lazyfree batching policy.
 
 Signed-off-by: nakixii <nakixii@gmail.com>
 ---
- include/linux/memcomp.h |  59 ++++++
- mm/Kconfig              |   4 +
- mm/memcomp.c            | 426 ++++++++++++++++++++++++++++++++++++++--
- mm/memcomp/anon_store.h |   3 +-
- mm/vmscan.c             | 248 ++++++++++++++++++++++-
- 5 files changed, 727 insertions(+), 13 deletions(-)
+ mm/memcomp_rmap.h | 139 ++++++++++++++++++++++++++++++++++++++++++++++
+ mm/rmap.c         |  12 ++++
+ 2 files changed, 151 insertions(+)
+ create mode 100644 mm/memcomp_rmap.h
 
-diff --git a/include/linux/memcomp.h b/include/linux/memcomp.h
-index cebad54a3844996c72cd3e413a7d6c7e05df953d..600de70efda7d547d8e9ad12932af7a4414b5beb 100644
---- a/include/linux/memcomp.h
-+++ b/include/linux/memcomp.h
-@@ -10,6 +10,7 @@
- struct folio;
- struct mc16_slot;
- struct mc16_cluster;
-+struct memcomp_async;
- struct memcomp_reclaim_ctx;
- struct vm_fault;
- 
-@@ -24,6 +25,9 @@ struct memcomp_ref {
- 	u32 token;
- };
- 
-+/* The most pages one asynchronous compression batch takes. */
-+#define MEMCOMP_ASYNC_PAGES 32
+diff --git a/mm/memcomp_rmap.h b/mm/memcomp_rmap.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..52cdd471ad70fc27372fa819fc8996d57a3f418e
+--- /dev/null
++++ b/mm/memcomp_rmap.h
+@@ -0,0 +1,139 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _MM_MEMCOMP_RMAP_H
++#define _MM_MEMCOMP_RMAP_H
 +
- enum memcomp_reclaim_source {
- 	MEMCOMP_RECLAIM_DIRECT,
- 	MEMCOMP_RECLAIM_KSWAPD,
-@@ -88,6 +92,23 @@ bool memcomp_reserve(struct folio *folio);
- /* A non-NULL *@ctxp lease is consumed and cleared on every return. */
- bool memcomp_store_after_unmap(struct folio *folio,
- 			       struct memcomp_reclaim_ctx **ctxp);
++#ifdef CONFIG_MEMCOMP
 +/*
-+ * A batch to compress a run of folios asynchronously with, or NULL when the
-+ * compressor cannot or none is free.  Submit each folio once it is unmapped,
-+ * wait once, store each with memcomp_store_after_unmap_async(), and put
-+ * the batch back.  All batches serve foreground reclaim; a spare batch is
-+ * available only while another batch would remain free.
++ * Unlike the newer generic lazyfree batching path, this backport only batches
++ * a reserved memcomp span. Mixed protection or exclusive bits stay on the
++ * existing single-PTE path. The caller owns folio lock, PTL and notifier scope.
 + */
-+struct memcomp_async *memcomp_async_get(void);
-+struct memcomp_async *memcomp_async_get_spare(void);
-+bool memcomp_async_submit(struct memcomp_async *async,
-+			  struct folio *folio);
-+void memcomp_async_wait(struct memcomp_async *async);
-+bool memcomp_async_complete(struct memcomp_async *async);
-+bool memcomp_store_after_unmap_async(struct folio *folio,
-+				     struct memcomp_reclaim_ctx **ctxp,
-+					 struct memcomp_async *async);
-+void memcomp_async_put(struct memcomp_async *async);
- void memcomp_rollback_folio(struct folio *folio);
- bool memcomp_folio_dirty(struct folio *folio);
- bool memcomp_folio_incompressible(struct folio *folio);
-@@ -233,6 +254,44 @@ memcomp_store_after_unmap(struct folio *folio,
- 	return false;
- }
- 
-+static inline struct memcomp_async *memcomp_async_get(void)
++static bool memcomp_unmap_exclusive_uniform(struct folio *folio)
 +{
-+	return NULL;
-+}
++	bool exclusive = PageAnonExclusive(folio_page(folio, 0));
++	unsigned int i;
 +
-+static inline struct memcomp_async *
-+memcomp_async_get_spare(void)
-+{
-+	return NULL;
-+}
-+
-+static inline bool memcomp_async_submit(struct memcomp_async *async,
-+					struct folio *folio)
-+{
-+	return false;
-+}
-+
-+static inline void memcomp_async_wait(struct memcomp_async *async)
-+{
-+}
-+
-+static inline bool memcomp_async_complete(struct memcomp_async *async)
-+{
++	for (i = 1; i < folio_nr_pages(folio); i++) {
++		if (PageAnonExclusive(folio_page(folio, i)) != exclusive)
++			return false;
++	}
 +	return true;
 +}
 +
-+static inline bool
-+memcomp_store_after_unmap_async(struct folio *folio,
-+				struct memcomp_reclaim_ctx **ctxp,
-+				    struct memcomp_async *async)
-+{
-+	return memcomp_store_after_unmap(folio, ctxp);
-+}
-+
-+static inline void memcomp_async_put(struct memcomp_async *async)
-+{
-+}
-+
- static inline void memcomp_rollback_folio(struct folio *folio)
- {
- }
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 08d366b1593e048f09bb3bc1239add175394f842..4bd19dc449490d226d1dd5ce94235c2426cbc7c1 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -217,6 +217,10 @@ config MEMCOMP_DEFAULT_COMPRESSOR
- 	  for registration before trying zstd. Setup failures also fall back
- 	  to zstd. Memcomp stays disabled if neither can be set up.
- 
-+	  The synchronous algorithm choice is final. A matching asynchronous
-+	  implementation registered later can enable batched compression
-+	  without changing that choice.
-+
- config MEMCOMP_DEBUG_STATS
- 	bool "Debug statistics for memcomp"
- 	depends on MEMCOMP
-diff --git a/mm/memcomp.c b/mm/memcomp.c
-index 465eb11b4ecf4e95967ea416e8141560f6a4bae4..f5110f46b857407c15c77c215238c9b6e99413c6 100644
---- a/mm/memcomp.c
-+++ b/mm/memcomp.c
-@@ -15,6 +15,7 @@
-  */
- #define pr_fmt(fmt) "memcomp: " fmt
- 
-+#include <crypto/acompress.h>
- #include <crypto/algapi.h>
- #include <linux/atomic.h>
- #include <linux/bitmap.h>
-@@ -45,6 +46,7 @@
- #include <linux/preempt.h>
- #include <linux/printk.h>
- #include <linux/rmap.h>
-+#include <linux/scatterlist.h>
- #include <linux/sched/cputime.h>
- #include <linux/shrinker.h>
- #include <linux/slab.h>
-@@ -300,6 +302,38 @@ struct memcomp_direct_staging {
- 	struct memcomp_ctx_timing_record timing;
- };
- 
-+/*
-+ * A compressor with an asynchronous form compresses a foreground run
-+ * of folios together: reclaim hands all of them over, waits once, and
-+ * stores each with the payloads already made.  One request per page of the
-+ * run, a folio's pages in a row; see memcomp_async_submit().
-+ */
-+struct memcomp_async_req {
-+	struct acomp_req *req;
-+	struct memcomp_async *async;
-+	struct scatterlist src;
-+	struct scatterlist dst;
-+	void *buf;
-+	/* The folio whose page this is, at its offset from its first. */
-+	struct folio *folio;
-+	unsigned int len;
-+	int ret;
-+	/* Set only by memcomp's full software scan, never by a codec error. */
-+	bool same_filled;
-+	/* The value the software scan found. */
-+	unsigned long element;
-+};
-+
-+struct memcomp_async {
-+	/* Requests not yet done, plus one until the batch is waited for. */
-+	atomic_t pending;
-+	struct completion done;
-+	unsigned int id;
-+	/* Requests taken, from the first. */
-+	unsigned int nr;
-+	struct memcomp_async_req reqs[MEMCOMP_ASYNC_PAGES];
-+};
-+
- /* Borrowed under the locked source folio's OWNER; never put this carrier. */
- struct mc16_zero_carrier {
- 	struct memcomp_ref ref;
-@@ -310,6 +344,11 @@ struct mc16_zero_carrier {
- 
- struct memcomp_store_ctx {
- 	struct memcomp_direct_staging *staging;
-+	/*
-+	 * The payloads, made before the store from the same contents: the
-+	 * request for the folio's first page, followed by one for each other.
-+	 */
-+	const struct memcomp_async_req *precomp;
- 	/* The span's anon_vma reference, for the caller to drop once stored. */
- 	struct anon_vma *anon_vma;
- 	struct mc16_zero_carrier zero;
-@@ -494,7 +533,7 @@ static DEFINE_PER_CPU(struct memcomp_decomp_ctx, memcomp_decomp_ctxs) = {
- static bool memcomp_enabled;
- static char memcomp_compressor[MEMCOMP_COMPRESSOR_NAME_LEN] =
- 	MEMCOMP_DEFAULT_COMPRESSOR;
--/* Serializes synchronous compressor selection. */
-+/* Serializes compressor selection and publication of an async pool. */
- static DEFINE_MUTEX(memcomp_select_lock);
- 
- static bool memcomp_is_enabled(void)
-@@ -593,6 +632,8 @@ static atomic64_t memcomp_raw_reject_huge = ATOMIC64_INIT(0);
- static atomic64_t memcomp_raw_reject_ge_page = ATOMIC64_INIT(0);
- static atomic64_t memcomp_raw_reject_zs_fallback = ATOMIC64_INIT(0);
- static atomic64_t memcomp_raw_reject_net = ATOMIC64_INIT(0);
-+static atomic64_t memcomp_async_payloads = ATOMIC64_INIT(0);
-+static atomic64_t memcomp_async_fail = ATOMIC64_INIT(0);
- static atomic64_t memcomp_reserve_entry_alloc_fail = ATOMIC64_INIT(0);
- static atomic64_t memcomp_refresh_state_fail = ATOMIC64_INIT(0);
- static atomic64_t memcomp_refresh_payload_fail = ATOMIC64_INIT(0);
-@@ -2879,13 +2920,26 @@ static int memcomp_compress_result(int ret, unsigned int *dst_len,
- 	return 0;
- }
- 
-+/* Recheck the software same-filled result before storing the payload. */
-+static bool memcomp_same_filled_plausible(const void *src,
-+					  unsigned int src_len,
-+					  unsigned long element)
-+{
-+	const unsigned long *words = src;
-+	unsigned int last = src_len / sizeof(*words) - 1;
-+
-+	return src_len == PAGE_SIZE && words[0] == element &&
-+	       words[last / 2] == element && words[last] == element;
-+}
-+
- static int
- memcomp_prepare_payload_locked(struct memcomp_reclaim_ctx **ctxp,
- 			       const void *src, unsigned int src_len,
- 				   unsigned int *length,
- 				   unsigned long *handle, u8 *pool_idx,
- 				   bool allow_provisional_raw,
--				   struct memcomp_store_ctx *store)
-+				   struct memcomp_store_ctx *store,
-+				   const struct memcomp_async_req *precomp)
- {
- 	struct memcomp_compress_timing_stamp compress_timing;
- 	struct memcomp_direct_staging *staging = NULL;
-@@ -2906,12 +2960,37 @@ memcomp_prepare_payload_locked(struct memcomp_reclaim_ctx **ctxp,
- 
- 	lockdep_assert_held(&ctx->lock);
- 
--	if (page_same_filled(src, &element)) {
-+	if (precomp && precomp->same_filled &&
-+	    !memcomp_same_filled_plausible(src, src_len, precomp->element))
-+		precomp = NULL;
-+	/*
-+	 * A software same-filled result follows the same full scan as a
-+	 * synchronous store.
-+	 */
-+	if (precomp ? precomp->same_filled :
-+		      page_same_filled(src, &element)) {
- 		*length = 0;
--		*handle = element;
-+		*handle = precomp ? precomp->element : element;
- 		return 0;
- 	}
- 
-+	/* The page has been compressed; all that is left is to store it. */
-+	if (precomp) {
-+		target = memcomp_select_pool_idx();
-+		pool = memcomp_pools[target];
-+		huge_class_size = zs_huge_class_size(pool);
-+		allow_slow = ctx->background;
-+		compressed = precomp->buf;
-+		dst_len = precomp->len;
-+		ret = memcomp_compress_result(precomp->ret, &dst_len,
-+					      src_len);
-+		if (!ret)
-+			raw_reason = memcomp_payload_raw_reason(dst_len,
-+								src_len,
-+								    huge_class_size);
-+		goto have_payload;
-+	}
-+
- 	target = memcomp_select_pool_idx();
- 	pool = memcomp_pools[target];
- 	huge_class_size = zs_huge_class_size(pool);
-@@ -2951,6 +3030,7 @@ memcomp_prepare_payload_locked(struct memcomp_reclaim_ctx **ctxp,
- 		timing = &staging->timing;
- 		preempt_enable();
- 	}
-+have_payload:
- 	if (ret) {
- 		memcomp_debug_inc(&memcomp_compress_fail);
- 		return ret;
-@@ -3045,7 +3125,8 @@ static int memcomp_prepare_payload(const void *src, unsigned int src_len,
- 		return -EBUSY;
- 	ret = memcomp_prepare_payload_locked(&ctx, src, src_len, length,
- 					     handle, pool_idx,
--						 allow_provisional_raw, NULL);
-+						 allow_provisional_raw, NULL,
-+						 NULL);
- 	WARN_ON_ONCE(!ctx);
- 	memcomp_put_comp_ctx(ctx);
- 	return ret;
-@@ -3074,6 +3155,23 @@ memcomp_arch_prepare_to_swap(struct folio *folio)
-  * between unmap and the payload store can map the original pages back.
-  */
- 
-+/*
-+ * The payload made beforehand for page @i of the folio @store is for, when
-+ * one was and it says what compressing the page would: a size, that the
-+ * page does not shrink, or that it is same-filled.
-+ */
-+static const struct memcomp_async_req *
-+memcomp_store_precomp(const struct memcomp_store_ctx *store,
-+		      unsigned int i)
-+{
-+	const struct memcomp_async_req *r;
-+
-+	if (!store || !store->precomp)
-+		return NULL;
-+	r = &store->precomp[i];
-+	return !r->ret || r->ret == -E2BIG || r->ret == -ENOSPC ? r : NULL;
-+}
-+
- #include "memcomp/anon_store.h"
- 
- /*
-@@ -4256,10 +4354,11 @@ bool memcomp_folio_incompressible(struct folio *folio)
- 
- static bool
- __memcomp_store_after_unmap(struct folio *folio,
--			    struct memcomp_reclaim_ctx **ctxp)
-+			    struct memcomp_reclaim_ctx **ctxp,
-+				const struct memcomp_async_req *precomp)
- {
- 	struct memcomp_ctx_timing_record *timing;
--	struct memcomp_store_ctx store = { };
-+	struct memcomp_store_ctx store = { .precomp = precomp };
- 	enum memcomp_anon_store_fail failure;
- 	struct memcomp_reclaim_ctx *ctx;
- 	unsigned int nr_pages;
-@@ -4304,7 +4403,299 @@ __memcomp_store_after_unmap(struct folio *folio,
- bool memcomp_store_after_unmap(struct folio *folio,
- 			       struct memcomp_reclaim_ctx **ctxp)
- {
--	return __memcomp_store_after_unmap(folio, ctxp);
-+	return __memcomp_store_after_unmap(folio, ctxp, NULL);
-+}
-+
-+/*
-+ * Asynchronous compression.  A batch lets a reclaimer compress its run of
-+ * folios at once on a compressor that works on its own - a hardware engine,
-+ * which otherwise has a CPU spin through every page - and sleep through all
-+ * of them at once.  A shared pool of batches serves foreground reclaim.
-+ * A run that finds none free is compressed synchronously in the store,
-+ * as it would be without them.  A foreground reclaimer may have two, one with
-+ * the compressor while it fills the other, but takes its second only while
-+ * that leaves another free; see memcomp_async_get_spare().
-+ */
-+struct memcomp_async_pool {
-+	struct crypto_acomp *tfm; /* Release-published after all batches. */
-+	spinlock_t lock; /* Protects the free-batch bitmap. */
-+	unsigned long free;
-+	unsigned int nr;
-+	struct memcomp_async *batches[BITS_PER_LONG];
-+};
-+
-+static struct memcomp_async_pool memcomp_async_pool = {
-+	.lock = __SPIN_LOCK_UNLOCKED(memcomp_async_pool.lock),
-+};
-+
-+/* Take a free foreground batch, leaving @keep for another reclaimer. */
-+static struct memcomp_async *
-+memcomp_async_take(struct memcomp_async_pool *pool, unsigned int keep)
-+{
-+	struct memcomp_async *async = NULL;
-+	unsigned int i;
-+
-+	spin_lock(&pool->lock);
-+	i = find_first_bit(&pool->free, pool->nr);
-+	if (i < pool->nr && hweight_long(pool->free) > keep) {
-+		__clear_bit(i, &pool->free);
-+		async = pool->batches[i];
-+	}
-+	spin_unlock(&pool->lock);
-+	if (!async)
-+		return NULL;
-+
-+	atomic_set(&async->pending, 1);
-+	reinit_completion(&async->done);
-+	async->nr = 0;
-+	return async;
-+}
-+
-+static void memcomp_async_give(struct memcomp_async_pool *pool,
-+			       struct memcomp_async *async)
-+{
-+	/* Nothing may still be writing into a batch handed back. */
-+	if (atomic_read(&async->pending))
-+		memcomp_async_wait(async);
-+	spin_lock(&pool->lock);
-+	__set_bit(async->id, &pool->free);
-+	spin_unlock(&pool->lock);
-+}
-+
-+struct memcomp_async *memcomp_async_get(void)
-+{
-+	if (!memcomp_is_enabled())
-+		return NULL;
-+	/* Pairs with async_init's release publication of a late pool. */
-+	if (!smp_load_acquire(&memcomp_async_pool.tfm))
-+		return NULL;
-+	return memcomp_async_take(&memcomp_async_pool, 0);
-+}
-+
-+/*
-+ * memcomp_async_get(), but only while another foreground batch would
-+ * still be free after: for a reclaimer that has one out already, and would
-+ * otherwise leave the next to come none.
-+ */
-+struct memcomp_async *memcomp_async_get_spare(void)
-+{
-+	if (!memcomp_is_enabled())
-+		return NULL;
-+	/* Pairs with async_init's release publication of a late pool. */
-+	if (!smp_load_acquire(&memcomp_async_pool.tfm))
-+		return NULL;
-+	return memcomp_async_take(&memcomp_async_pool, 1);
-+}
-+
-+void memcomp_async_put(struct memcomp_async *async)
-+{
-+	if (async)
-+		memcomp_async_give(&memcomp_async_pool, async);
-+}
-+
-+static void memcomp_async_done(void *data, int err)
-+{
-+	struct memcomp_async_req *r = data;
-+	struct memcomp_async *async = r->async;
-+
-+	/* A backlogged request has been started; it completes later. */
-+	if (err == -EINPROGRESS)
-+		return;
-+
-+	r->len = r->req->dlen;
-+	r->ret = err;
-+	if (atomic_dec_and_test(&async->pending))
-+		complete(&async->done);
-+}
-+
-+/*
-+ * Start compressing the pages of @folio in @async, each a request of its
-+ * own.  The pages may be read any time until the batch is waited for, so
-+ * their contents must already be what the store will keep: the folio is
-+ * locked and unmapped, with the TLB flushed, and holds no more references
-+ * than the store accepts.  Whatever then changes that also fails the
-+ * store's own checks, which run again before the payloads are used.
-+ *
-+ * Returns whether the folio went in, which takes a request for every page,
-+ * or room for them.  One that did not is compressed by the store, as usual.
-+ * A same-filled page takes its request too, to pass the software scan
-+ * result to the store without invoking the compressor.
-+ */
-+bool memcomp_async_submit(struct memcomp_async *async,
-+			  struct folio *folio)
-+{
-+	unsigned int nr_pages = folio_nr_pages(folio);
-+	u32 flags;
-+	unsigned int i;
-+
-+	if (!async || !folio_test_locked(folio) ||
-+	    nr_pages > MEMCOMP_ASYNC_PAGES - async->nr)
-+		return false;
-+	if (folio_mapped(folio) || folio_maybe_dma_pinned(folio) ||
-+	    folio_ref_count(folio) != 1 + nr_pages)
-+		return false;
-+
-+	/* The batch bounds the number of outstanding requests. */
-+	flags = CRYPTO_TFM_REQ_MAY_BACKLOG;
-+	for (i = 0; i < nr_pages; i++) {
-+		struct memcomp_async_req *r = &async->reqs[async->nr + i];
-+		unsigned long element;
-+		bool same;
-+		void *src;
-+		int ret;
-+
-+		r->folio = folio;
-+		r->same_filled = false;
-+		/* The store keeps these as they are, without a payload. */
-+		src = kmap_local_folio(folio, i * PAGE_SIZE);
-+		same = page_same_filled(src, &element);
-+		kunmap_local(src);
-+		if (same) {
-+			r->ret = 0;
-+			r->len = 0;
-+			r->element = element;
-+			r->same_filled = true;
-+			continue;
-+		}
-+
-+		sg_init_table(&r->src, 1);
-+		sg_set_page(&r->src, folio_page(folio, i), PAGE_SIZE, 0);
-+		sg_init_one(&r->dst, r->buf, PAGE_SIZE);
-+		acomp_request_set_params(r->req, &r->src, &r->dst, PAGE_SIZE,
-+					 PAGE_SIZE);
-+		acomp_request_set_callback(r->req, flags,
-+					   memcomp_async_done, r);
-+		atomic_inc(&async->pending);
-+		ret = crypto_acomp_compress(r->req);
-+		/* Anything else, and the request is done without a callback. */
-+		if (ret != -EINPROGRESS && ret != -EBUSY)
-+			memcomp_async_done(r, ret);
-+	}
-+	async->nr += nr_pages;
-+	return true;
-+}
-+
-+/*
-+ * Wait for every request of @async; call once, before using any of them.
-+ * The compressor is doing the work meanwhile, so the wait is no load.
-+ */
-+void memcomp_async_wait(struct memcomp_async *async)
-+{
-+	if (async && !atomic_dec_and_test(&async->pending))
-+		wait_for_completion_state(&async->done, TASK_IDLE);
-+}
-+
-+/*
-+ * Whether every request submitted in @async has completed, so that waiting
-+ * for it would not sleep; ask before memcomp_async_wait() only.
-+ */
-+bool memcomp_async_complete(struct memcomp_async *async)
-+{
-+	return !async || atomic_read(&async->pending) == 1;
-+}
-+
-+/*
-+ * memcomp_store_after_unmap(), with the payloads @async made for @folio,
-+ * if it made them.  A page whose request failed for any reason but the page
-+ * not shrinking is compressed by the store itself.
-+ */
-+bool memcomp_store_after_unmap_async(struct folio *folio,
-+				     struct memcomp_reclaim_ctx **ctxp,
-+					 struct memcomp_async *async)
-+{
-+	const struct memcomp_async_req *precomp = NULL;
-+	unsigned int nr_pages = folio_nr_pages(folio);
-+	unsigned int i;
-+
-+	for (i = 0; async && i < async->nr; i++) {
-+		if (async->reqs[i].folio != folio)
-+			continue;
-+		/* Taken in a row for the folio, which cannot have split. */
-+		if (!WARN_ON_ONCE(nr_pages > async->nr - i))
-+			precomp = &async->reqs[i];
-+		break;
-+	}
-+	for (i = 0; precomp && i < nr_pages; i++) {
-+		int ret = precomp[i].ret;
-+
-+		/* A software same-filled page has no compressed payload. */
-+		if (precomp[i].same_filled)
-+			continue;
-+		if (!ret || ret == -E2BIG || ret == -ENOSPC)
-+			memcomp_debug_inc(&memcomp_async_payloads);
-+		else
-+			memcomp_debug_inc(&memcomp_async_fail);
-+	}
-+	return __memcomp_store_after_unmap(folio, ctxp, precomp);
-+}
-+
-+static void memcomp_async_free_batch(struct memcomp_async *async)
++static int memcomp_share_anon_ptes(struct folio *folio, struct page *page,
++				   unsigned int nr)
 +{
 +	unsigned int i;
 +
-+	for (i = 0; i < MEMCOMP_ASYNC_PAGES; i++) {
-+		if (async->reqs[i].req)
-+			acomp_request_free(async->reqs[i].req);
-+		kfree(async->reqs[i].buf);
-+	}
-+	kfree(async);
++	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++		/* Paired with the memory barrier in try_grab_folio(). */
++		smp_mb();
++	if (unlikely(folio_maybe_dma_pinned(folio)))
++		return -EBUSY;
++	for (i = 0; i < nr; i++)
++		ClearPageAnonExclusive(page + i);
++	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++		/* Paired with the smp_rmb() in gup_must_unshare(). */
++		smp_mb__after_atomic();
++	return 0;
 +}
 +
-+/*
-+ * Set up the batches when the compressor has an asynchronous form; the
-+ * synchronous one stays what every other path uses.  Both are the same
-+ * algorithm by name, so they make the same payloads.
-+ */
-+static void memcomp_async_init(struct memcomp_async_pool *pool,
-+			       const char *compressor)
++/* 1: use the original actor; >1: complete batch; <0: restored, abort walk. */
++static int memcomp_unmap_ptes(struct page_vma_mapped_walk *pvmw,
++			      struct folio *folio, struct vm_area_struct *vma,
++			      enum ttu_flags flags)
 +{
-+	unsigned int nr = min_t(unsigned int, num_possible_cpus(),
-+				    BITS_PER_LONG);
-+	struct crypto_acomp *tfm;
-+	unsigned int i, j;
++	struct mm_struct *mm = vma->vm_mm;
++	unsigned long address = pvmw->address, end, token;
++	unsigned int i, nr, got = 0;
++	struct page *page;
++	swp_entry_t entry;
++	pte_t first, old, swap;
++	bool exclusive;
 +
-+	lockdep_assert_held(&memcomp_select_lock);
-+	if (pool->tfm)
-+		return;
-+
-+	tfm = crypto_alloc_acomp(compressor, CRYPTO_ALG_ASYNC,
-+				 CRYPTO_ALG_ASYNC | CRYPTO_NOLOAD);
-+	if (IS_ERR(tfm))
-+		return;
-+
++	if (!folio_memcomp_reserved(folio) || !folio_test_large(folio) ||
++	    !folio_test_anon(folio) || !folio_test_swapbacked(folio) ||
++	    folio_test_hugetlb(folio) || (flags & TTU_HWPOISON) ||
++	    !memcomp_unmap_exclusive_uniform(folio))
++		return 1;
++	first = ptep_get(pvmw->pte);
++	if (!pte_present(first) || pte_unused(first))
++		return 1;
++	page = pfn_to_page(pte_pfn(first));
++	nr = folio_nr_pages(folio) - folio_page_idx(folio, page);
++	end = min(pmd_addr_end(address, vma->vm_end), vma->vm_end);
++	nr = min_t(unsigned int, nr, (end - address) >> PAGE_SHIFT);
++	if (nr < 2)
++		return 1;
++	for (i = 1; i < nr; i++) {
++		if (!pte_same(pte_advance_pfn(first, i), ptep_get(pvmw->pte + i)))
++			break;
++	}
++	nr = i;
++	if (nr < 2)
++		return 1;
++	entry = page_swap_entry(page);
++	token = swp_offset(entry);
++	if (!is_memcomp_entry(entry) || !token || token > U32_MAX - (nr - 1))
++		return 1;
++	/* Each future PTE gets a real owner; failure unwinds the whole prefix. */
++	for (; got < nr; got++) {
++		if (!memcomp_entry_get(token + got))
++			goto refs_fail;
++	}
++	exclusive = PageAnonExclusive(page);
++	flush_cache_range(vma, address, address + nr * PAGE_SIZE);
++	old = get_and_clear_full_ptes(mm, address, pvmw->pte, nr, 0);
++	if (should_defer_flush(mm, flags)) {
++		for (i = 0; i < nr; i++)
++			set_tlb_ubc_flush_pending(mm, old, address + i * PAGE_SIZE);
++	} else {
++		flush_tlb_range(vma, address, address + nr * PAGE_SIZE);
++	}
++	if (pte_dirty(old))
++		folio_mark_dirty(folio);
++	update_hiwater_rss(mm);
 +	for (i = 0; i < nr; i++) {
-+		struct memcomp_async *async;
-+
-+		async = kzalloc(sizeof(*async), GFP_KERNEL);
-+		if (!async)
-+			break;
-+		init_completion(&async->done);
-+		async->id = i;
-+		for (j = 0; j < MEMCOMP_ASYNC_PAGES; j++) {
-+			struct memcomp_async_req *r = &async->reqs[j];
-+
-+			r->async = async;
-+			r->req = acomp_request_alloc(tfm);
-+			r->buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+			if (!r->req || !r->buf)
-+				break;
-+		}
-+		if (j < MEMCOMP_ASYNC_PAGES) {
-+			memcomp_async_free_batch(async);
-+			break;
-+		}
-+		pool->batches[i] = async;
-+		__set_bit(i, &pool->free);
++		if (arch_unmap_one(mm, vma, address + i * PAGE_SIZE,
++				   pte_advance_pfn(old, i)) < 0)
++			goto restore;
 +	}
-+	if (!i) {
-+		crypto_free_acomp(tfm);
-+		return;
++	if (exclusive && memcomp_share_anon_ptes(folio, page, nr))
++		goto restore;
++	if (list_empty(&mm->mmlist)) {
++		spin_lock(&mmlist_lock);
++		if (list_empty(&mm->mmlist))
++			list_add(&mm->mmlist, &init_mm.mmlist);
++		spin_unlock(&mmlist_lock);
 +	}
-+	pool->nr = i;
-+	/* Late readers must see every request, buffer and free bit first. */
-+	smp_store_release(&pool->tfm, tfm);
-+	pr_info("async compression through %s, %u foreground batches\n",
-+		crypto_tfm_alg_driver_name(crypto_acomp_tfm(tfm)), i);
++	add_mm_counter(mm, MM_ANONPAGES, -(int)nr);
++	add_mm_counter(mm, MM_SWAPENTS, nr);
++	swap = swp_entry_to_pte(entry);
++	if (exclusive)
++		swap = pte_swp_mkexclusive(swap);
++	if (pte_soft_dirty(old))
++		swap = pte_swp_mksoft_dirty(swap);
++	if (pte_uffd_wp(old))
++		swap = pte_swp_mkuffd_wp(swap);
++	for (i = 0; i < nr; i++)
++		set_pte_at(mm, address + i * PAGE_SIZE, pvmw->pte + i,
++			   pte_move_swp_offset(swap, i));
++	folio_remove_rmap_ptes(folio, page, nr, vma);
++	if (vma->vm_flags & VM_LOCKED)
++		mlock_drain_local();
++	folio_put_refs(folio, nr);
++	pvmw->pte += nr - 1;
++	pvmw->address += (nr - 1) * PAGE_SIZE;
++	return nr;
++restore:
++	/* Complete invalidation before set_ptes() may form a contpte range. */
++	flush_tlb_range(vma, address, address + nr * PAGE_SIZE);
++	/* Dirty/young aggregation is conservative; protection bits were uniform. */
++	set_ptes(mm, address, pvmw->pte, old, nr);
++refs_fail:
++	while (got)
++		memcomp_invalidate(token + --got);
++	return -EBUSY;
++}
++#endif /* CONFIG_MEMCOMP */
++#endif /* _MM_MEMCOMP_RMAP_H */
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 41f1b9f645a261021698d7972649264de391601f..874cf92c1096267a5524b29ab55cc10a901cbcb1 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1656,6 +1656,8 @@ void folio_remove_rmap_pmd(struct folio *folio, struct page *page,
+ #endif
  }
  
- static void memcomp_destroy_comp_ctxs(void)
-@@ -4518,6 +4909,7 @@ static int memcomp_start(void)
- 		memcomp_meta_shrinker->scan_objects = mc16_meta_shrinker_scan;
- 		shrinker_register(memcomp_meta_shrinker);
- 	}
-+	memcomp_async_init(&memcomp_async_pool, memcomp_compressor);
- 	/* Make every initialized resource visible before enabling callers. */
- 	smp_store_release(&memcomp_enabled, true);
- 	pr_info("using %s\n", memcomp_compressor);
-@@ -4549,13 +4941,15 @@ static int memcomp_start(void)
- /* As long as the driver core waits for the modules a device's probe needs. */
- #define MEMCOMP_COMPRESSOR_WAIT	(10 * HZ)
- 
--/* The startup decision is protected by memcomp_select_lock. */
-+/* The startup decision and late async work share memcomp_select_lock. */
- struct memcomp_compressor_select {
- 	struct delayed_work work;
- 	struct notifier_block nb;
-+	struct memcomp_async_pool *pool;
- 	char *compressor;
- 	unsigned long deadline;
- 	bool decided;
-+	bool started;
- };
- 
- static void memcomp_select_worker(struct work_struct *work);
-@@ -4568,6 +4962,7 @@ static struct memcomp_compressor_select memcomp_select = {
- 	.nb = {
- 		.notifier_call = memcomp_crypto_notify,
- 	},
-+	.pool = &memcomp_async_pool,
- 	.compressor = memcomp_compressor,
- };
- 
-@@ -4597,8 +4992,11 @@ static void memcomp_select_worker(struct work_struct *work)
- 	select = container_of(to_delayed_work(work),
- 			      struct memcomp_compressor_select, work);
- 	mutex_lock(&memcomp_select_lock);
--	if (select->decided)
-+	if (select->decided) {
-+		if (select->started)
-+			memcomp_async_init(select->pool, select->compressor);
- 		goto out;
-+	}
- 
- 	if (crypto_has_comp(select->compressor, 0, 0) != 1) {
- 		if (time_before(now, select->deadline)) {
-@@ -4609,10 +5007,11 @@ static void memcomp_select_worker(struct work_struct *work)
- 		}
- 		pr_warn("compressor %s unavailable\n", select->compressor);
- 	}
--	/* The synchronous compressor choice is final. */
-+	/* The synchronous choice is final; keep listening for its async form. */
- 	select->decided = true;
- 	if (crypto_has_comp(select->compressor, 0, 0) == 1 &&
- 	    !memcomp_start()) {
-+		select->started = true;
- 		goto out;
- 	}
- 
-@@ -4622,6 +5021,7 @@ static void memcomp_select_worker(struct work_struct *work)
- 			sizeof(memcomp_compressor));
- 		if (crypto_has_comp(select->compressor, 0, 0) == 1 &&
- 		    !memcomp_start()) {
-+			select->started = true;
- 			goto out;
- 		}
- 	}
-@@ -4798,6 +5198,8 @@ static ssize_t __events_show(char *buf)
- 			  "raw_reject_ge_page %llu\n"
- 			  "raw_reject_zs_fallback %llu\n"
- 			  "raw_reject_net %llu\n"
-+			  "async_payloads %llu\n"
-+			  "async_fail %llu\n"
- 			  "reserve_entry_alloc_fail %llu\n"
- 			  "refresh_state_fail %llu\n"
- 			  "refresh_payload_fail %llu\n"
-@@ -4868,6 +5270,8 @@ static ssize_t __events_show(char *buf)
- 			  raw_reject_ge_page,
- 			  raw_reject_zs_fallback,
- 			  raw_reject_net,
-+			  (u64)atomic64_read(&memcomp_async_payloads),
-+			  (u64)atomic64_read(&memcomp_async_fail),
- 			  (u64)atomic64_read(&memcomp_reserve_entry_alloc_fail),
- 			  (u64)atomic64_read(&memcomp_refresh_state_fail),
- 			  (u64)atomic64_read(&memcomp_refresh_payload_fail),
-diff --git a/mm/memcomp/anon_store.h b/mm/memcomp/anon_store.h
-index 110c315cbcad938385f826d77067adc5f661f190..c8749d315f2c63f28cdad7f48eac5aa1b926de6a 100644
---- a/mm/memcomp/anon_store.h
-+++ b/mm/memcomp/anon_store.h
-@@ -172,7 +172,8 @@ mc16_anon_refresh_full(struct memcomp_reclaim_ctx **ctxp, const void *src,
- 		ret = memcomp_prepare_payload_locked(ctxp, src + i * PAGE_SIZE,
- 						     PAGE_SIZE, &lengths[i], &handle,
- 						     &pool, nr_pages > 1,
--						     nr_pages == 1 ? store : NULL);
-+						     nr_pages == 1 ? store : NULL,
-+						     memcomp_store_precomp(store, i));
- 		if (ret)
- 			goto payload_fail;
- 		payloads[i].word = handle;
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 0f11964567da39f3049282fa8c3ebe5b135c079b..064db53fabfe830ea260c776e91bfc7f4bc46dd9 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1120,9 +1120,229 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
- 	return !data_race(folio_swap_flags(folio) & SWP_FS_OPS);
- }
- 
-+#ifdef CONFIG_MEMCOMP
-+/*
-+ * Anonymous folios shrink_folio_list() has reserved and unmapped for
-+ * memcomp, kept back to be compressed together on a compressor that
-+ * works on its own; see memcomp_async_get().  The reclaimer flushes the
-+ * TLB once for all of them and sleeps once while they compress, instead of
-+ * having a CPU spin through each page.  These batches serve direct reclaim,
-+ * kswapd or MADV_PAGEOUT in the task performing the reclaim.
-+ *
-+ * A full batch is handed to the compressor and left with it while the next
-+ * is unmapped; the one before is stored then, once this one is also with the
-+ * compressor.  So the CPU unmaps and stores while the compressor compresses,
-+ * instead of each waiting for the other.
-+ *
-+ * The context lease each store needs is taken after the wait, so a batch
-+ * does not hold the limited store contexts while it compresses.  Failure
-+ * to acquire a lease fails the store; an unmapped folio cannot fall back
-+ * to swap without first restoring its mappings.
-+ */
-+struct memcomp_deferred_batch {
-+	struct list_head folios;
-+	unsigned int nr_pages;
-+	struct memcomp_async *async;
-+};
++#include "memcomp_rmap.h"
 +
-+struct memcomp_deferred {
-+	/* The batch being filled, and the one before, with the compressor. */
-+	struct memcomp_deferred_batch fill;
-+	struct memcomp_deferred_batch busy;
-+	enum memcomp_reclaim_source source;
-+	/* Where shrink_folio_list() puts what it frees and what it keeps. */
-+	struct folio_batch *free_folios;
-+	struct list_head *ret_folios;
-+	struct reclaim_stat *stat;
-+	unsigned int nr_reclaimed;
-+};
-+
-+/*
-+ * Whether a folio about to be unmapped for its store can be kept back in @d,
-+ * which takes a batch for it if it has none.  memcomp_defer() then keeps
-+ * it back once it is unmapped.
-+ */
-+static bool memcomp_may_defer(struct memcomp_deferred *d,
-+			      struct folio *folio)
-+{
-+	if (folio_nr_pages(folio) > MEMCOMP_ASYNC_PAGES)
-+		return false;
-+	if (!d->fill.async)
-+		d->fill.async = memcomp_async_get();
-+	return d->fill.async;
-+}
-+
-+static void memcomp_store_deferred(struct memcomp_deferred *d,
-+				   struct memcomp_async *async,
-+				   struct folio *folio)
-+{
-+	unsigned int nr_pages = folio_nr_pages(folio);
-+	struct memcomp_reclaim_ctx *ctx;
-+
-+	if (folio_mapped(folio)) {
-+		memcomp_count_unmap_fail(nr_pages);
-+		memcomp_rollback_folio(folio);
-+		goto activate;
-+	}
-+	/*
-+	 * The lease is not held through the wait; there are few of them.  A
-+	 * folio of a batch too small to have been submitted is compressed here.
-+	 */
-+	ctx = memcomp_reclaim_ctx_get(nr_pages, d->source);
-+	if (!ctx || !memcomp_store_after_unmap_async(folio, &ctx, async)) {
-+		memcomp_rollback_folio(folio);
-+		goto activate;
-+	}
-+	if (folio_test_dirty(folio))
-+		folio_clear_dirty(folio);
-+
-+	/* As shrink_folio_list() goes on with a stored folio. */
-+	if (folio_maybe_dma_pinned(folio)) {
-+		memcomp_finish_fail(folio, nr_pages);
-+		goto activate;
-+	}
-+	if (!memcomp_release_folio(folio)) {
-+		memcomp_finish_fail(folio, nr_pages);
-+		goto keep;
-+	}
-+	folio_unlock(folio);
-+	d->nr_reclaimed += nr_pages;
-+	folio_unqueue_deferred_split(folio);
-+	if (folio_batch_add(d->free_folios, folio) == 0) {
-+		mem_cgroup_uncharge_folios(d->free_folios);
-+		try_to_unmap_flush();
-+		free_unref_folios(d->free_folios);
-+	}
-+	return;
-+
-+activate:
-+	if (!folio_test_mlocked(folio)) {
-+		folio_set_active(folio);
-+		d->stat->nr_activate[folio_is_file_lru(folio)] += nr_pages;
-+		count_memcg_folio_events(folio, PGACTIVATE, nr_pages);
-+	}
-+keep:
-+	folio_unlock(folio);
-+	list_add(&folio->lru, d->ret_folios);
-+}
-+
-+/*
-+ * Compress small batches synchronously.  Deferring them adds submission and
-+ * wakeup overhead without enough work to amortize those costs.
-+ */
-+#define MEMCOMP_DEFER_MIN_PAGES	8
-+
-+/*
-+ * Store what @b has kept back, with what the compressor made of it if it was
-+ * submitted, and give back its batch.
-+ */
-+static void memcomp_store_batch(struct memcomp_deferred *d,
-+				struct memcomp_deferred_batch *b)
-+{
-+	struct folio *folio, *next;
-+
-+	memcomp_async_wait(b->async);
-+	list_for_each_entry_safe(folio, next, &b->folios, lru) {
-+		list_del(&folio->lru);
-+		memcomp_store_deferred(d, b->async, folio);
-+	}
-+	memcomp_async_put(b->async);
-+	b->async = NULL;
-+	b->nr_pages = 0;
-+}
-+
-+/*
-+ * Hand what @d has kept back to the compressor, then store the batch before,
-+ * which the compressor has had meanwhile; the new one is stored next time
-+ * round.  Too few pages to be worth the compressor's while are stored
-+ * straight away.
-+ */
-+static void memcomp_submit_deferred(struct memcomp_deferred *d)
-+{
-+	struct memcomp_deferred_batch *fill = &d->fill;
-+	struct memcomp_deferred_batch *busy = &d->busy;
-+	struct folio *folio;
-+
-+	if (list_empty(&fill->folios))
-+		return;
-+	/* No CPU may write through a stale entry once they are read. */
-+	try_to_unmap_flush();
-+	if (fill->nr_pages >= MEMCOMP_DEFER_MIN_PAGES)
-+		list_for_each_entry(folio, &fill->folios, lru)
-+			memcomp_async_submit(fill->async, folio);
-+	memcomp_store_batch(d, busy);
-+	if (fill->nr_pages < MEMCOMP_DEFER_MIN_PAGES) {
-+		memcomp_store_batch(d, fill);
-+		return;
-+	}
-+	list_splice_init(&fill->folios, &busy->folios);
-+	busy->nr_pages = fill->nr_pages;
-+	busy->async = fill->async;
-+	fill->nr_pages = 0;
-+	fill->async = NULL;
-+}
-+
-+/* Compress and store all @d has kept back, and give back its batches. */
-+static void memcomp_finish_deferred(struct memcomp_deferred *d)
-+{
-+	memcomp_submit_deferred(d);
-+	memcomp_store_batch(d, &d->busy);
-+	memcomp_async_put(d->fill.async);
-+	d->fill.async = NULL;
-+}
-+
-+/*
-+ * Make room in @d for a folio of @nr_pages, submitting what it has if it is
-+ * full.  A batch the compressor is done with is stored at once, so that its
-+ * folios are not held locked longer than they have to be.  While one is with
-+ * the compressor, the batch to fill next is taken now: if that would leave
-+ * the pool none to spare, the one out is stored first and its batch taken
-+ * back, rather than storing each folio by itself meanwhile.  Called before
-+ * the folio's own context lease is taken: the stores take leases of their
-+ * own.
-+ */
-+static void memcomp_defer_room(struct memcomp_deferred *d,
-+			       unsigned int nr_pages)
-+{
-+	if (d->fill.nr_pages + nr_pages > MEMCOMP_ASYNC_PAGES)
-+		memcomp_submit_deferred(d);
-+	if (memcomp_async_complete(d->busy.async))
-+		memcomp_store_batch(d, &d->busy);
-+	if (d->fill.async || !d->busy.async ||
-+	    nr_pages > MEMCOMP_ASYNC_PAGES)
-+		return;
-+	d->fill.async = memcomp_async_get_spare();
-+	if (!d->fill.async) {
-+		memcomp_store_batch(d, &d->busy);
-+		d->fill.async = memcomp_async_get();
-+	}
-+}
-+
-+/*
-+ * Keep back a reserved folio that is now unmapped, its TLB flush maybe still
-+ * to come, for its store.  Returns false if it is to be stored now after all.
-+ */
-+static bool memcomp_defer(struct memcomp_deferred *d,
-+			  struct folio *folio)
-+{
-+	unsigned int nr_pages = folio_nr_pages(folio);
-+
-+	if (d->fill.nr_pages + nr_pages > MEMCOMP_ASYNC_PAGES ||
-+	    !memcomp_may_defer(d, folio))
-+		return false;
-+	list_add_tail(&folio->lru, &d->fill.folios);
-+	d->fill.nr_pages += nr_pages;
-+	return true;
-+}
-+
-+/*
-+ * shrink_folio_list() returns the number of reclaimed pages
-+ */
-+#else
  /*
-  * shrink_folio_list() returns the number of reclaimed pages
+  * @arg: enum ttu_flags will be passed to this argument
   */
-+#endif
- static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		struct pglist_data *pgdat, struct scan_control *sc,
- 		struct reclaim_stat *stat, bool ignore_references)
-@@ -1134,6 +1354,17 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 	unsigned int pgactivate = 0;
- 	bool do_demote_pass;
- 	struct swap_iocb *plug = NULL;
+@@ -1737,6 +1739,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 
+ 		/* Unexpected PMD-mapped THP? */
+ 		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
 +#ifdef CONFIG_MEMCOMP
-+	struct memcomp_deferred mc_deferred = {
-+		.fill.folios = LIST_HEAD_INIT(mc_deferred.fill.folios),
-+		.busy.folios = LIST_HEAD_INIT(mc_deferred.busy.folios),
-+		.source = current_is_kswapd() ? MEMCOMP_RECLAIM_KSWAPD :
-+						MEMCOMP_RECLAIM_DIRECT,
-+		.free_folios = &free_folios,
-+		.ret_folios = &ret_folios,
-+		.stat = stat,
-+	};
-+#endif
- 
- 	folio_batch_init(&free_folios);
- 	memset(stat, 0, sizeof(*stat));
-@@ -1385,6 +1616,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 				if (!memcomp_reserve(folio))
- 					goto memcomp_fallback_swap;
- 				memcomp_reserved = true;
-+				memcomp_defer_room(&mc_deferred, nr_pages);
- 				memcomp_ctx = memcomp_reclaim_ctx_get(nr_pages,
- 								      memcomp_source);
- 				if (!memcomp_ctx) {
-@@ -1520,7 +1752,9 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 				goto activate_locked;
- 			}
- #ifdef CONFIG_MEMCOMP
--			if (memcomp_reserved) {
-+			/* Or flushed and stored with others, below. */
-+			if (memcomp_reserved &&
-+			    !memcomp_may_defer(&mc_deferred, folio)) {
- 				try_to_unmap_flush();
- 				if (folio_mapped(folio)) {
- 					memcomp_count_unmap_fail(nr_pages);
-@@ -1545,6 +1779,11 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 
- 		if (memcomp_reserved && !memcomp_stored &&
- 		    !folio_mapped(folio)) {
-+			if (memcomp_defer(&mc_deferred, folio)) {
-+				memcomp_reclaim_ctx_put(memcomp_ctx);
++		{
++			int nr = memcomp_unmap_ptes(&pvmw, folio, vma, flags);
++
++			if (nr < 0)
++				goto walk_abort;
++			if (nr > 1)
 +				continue;
-+			}
-+			/* It may have been unmapped for keeping back. */
- 			try_to_unmap_flush();
- 			if (folio_mapped(folio)) {
- 				memcomp_count_unmap_fail(nr_pages);
-@@ -1809,6 +2048,13 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 				folio_test_unevictable(folio), folio);
- 	}
- 	/* 'folio_list' is always empty here */
-+#ifdef CONFIG_MEMCOMP
-+
-+	memcomp_finish_deferred(&mc_deferred);
-+	nr_reclaimed += mc_deferred.nr_reclaimed;
-+	mc_deferred.nr_reclaimed = 0;
++		}
 +#endif
-+
- 	/* Migrate folios selected for demotion */
- 	nr_demoted = demote_folio_list(&demote_folios, pgdat);
- 	nr_reclaimed += nr_demoted;
+ 
+ 		pfn = pte_pfn(ptep_get(pvmw.pte));
+ 		subpage = folio_page(folio, pfn - folio_pfn(folio));
 
