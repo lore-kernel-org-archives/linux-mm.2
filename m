@@ -1,102 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D0E606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB10606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oCPQaEyu
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ty4JmrlU
 Received: by kanga.kvack.org (Postfix)
-	id 8050C6B05BA; Mon, 16 Nov 2026 05:43:12 -0500 (EST)
+	id 10DAF6B05B2; Mon, 16 Nov 2026 05:47:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DCD76B05BB; Mon, 16 Nov 2026 05:43:12 -0500 (EST)
+	id 0923B6B05BC; Mon, 16 Nov 2026 05:47:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F30C6B05BC; Mon, 16 Nov 2026 05:43:12 -0500 (EST)
+	id E740B6B05BD; Mon, 16 Nov 2026 05:47:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4713A6B05BA
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:43:12 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2295160521
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:43:11 +0000 (UTC)
-X-FDA: 85440644982.25.E32A62F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 168421C0004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:43:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oCPQaEyu;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B902B6B05B2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:47:16 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5646A8091D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:47:16 +0000 (UTC)
+X-FDA: 85440655272.05.157276E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 82135120005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:47:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ty4JmrlU;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794825790;
+	s=arc-20220608; t=1794826034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D2mPmAY7zwrcecu1heIJ2BvdNaHui2QL8RC2C/8dWPU=;
-	b=pP8L2it0+5/XaOX/UOOU3MB43sErmdJWU3OL43J3C7NVPWjeWsN+yfyl9wqcK1cTaDkQBC
-	AKfPQW0snmHUadyzpdb1Gg1GczYlVkd7ugJfMIfX2lwl/uz+yTlTdPpWaB34ZiEHpc6vUA
-	KS4PDxZZdNqZfFgkIArCZgcNzOr1gmU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oCPQaEyu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=Ly7V3SrHtZViQ6MtbvivLUpsgPdJPaNMjgihUn8ZpHs=;
+	b=EyXJ7xpGWO3Um+hMXLG3zo80eA1d/EjzYm2mvQxXpJodX6tndXL7oiReIGso5DYHeb5WQ0
+	+P7dnjxPbqJVgKQNkhT+tz/JEgfcMv3lvwcqRGXviz6rQYmev8LEopGLUH4JJT+BWjl/nT
+	1bh8Hj3TeC31lZaDyXVaa/wRAhqYMPU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794825790;
-	b=PB4z6CsSxfHw0rSUQMHWbZhhI5AO4wrBIkjuhrRXGrPn0iqJuCZzl8mEbW+hMNeEst4ZAR
-	R+jYrwEQebHPsBWQq/A3nbjPGxnvLvXgOzRJV0/S+F0Zu20IfkTVBON4oJbEONGGfeosy6
-	2WqvokSTDv29zS2tmK/txdIqFMN48+M=
+	t=1794826034;
+	b=Zy0Ty2Qs6XJ8lhdg3cc/zuGoadYnD7lqcwxpBNgzlcr/Ej8RPpzqK1Ej7tnqNE6C6vpKsD
+	ZNmf0HDDlyMHzSRzlYeYsur9jV6MQ1fOTeicdgoVGwxSslzWK+cK2CpeMdyHbvx8i6LFRs
+	qIdZehaPI8oELwNBDwKnnWfG6wC2EPw=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ty4JmrlU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9FB361358;
-	Mon, 16 Nov 2026 10:43:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613A91F000C9;
-	Mon, 16 Nov 2026 10:43:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 97EC24043D;
+	Mon, 16 Nov 2026 10:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB091F000C4;
+	Mon, 16 Nov 2026 10:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794825789;
-	bh=D2mPmAY7zwrcecu1heIJ2BvdNaHui2QL8RC2C/8dWPU=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=oCPQaEyu7Dw7pDWc6HhM89NOVPmqfWZvd8EZKHjqBBIVjtvzKNE4g4/OIKYeFxrOa
-	 5aXtZ8pERlSoaF+67JMoZaOFmqfVMN5650dukmH8w0+Smz2ytGmvFzfDWxpvqO2rRz
-	 Y05Qb/NnMYS8UKI+kxS+JxMp6AKC9bXF8a0ChPeovZKbvaDwzmQLM/pI/rB8rJsJQ+
-	 BkKptcBIhMVBSManwdXhnD2IfL+cGOdTiM5DTX7O3ouyjrgo4QHDazlvttK9Jk+aIB
-	 NQQChSP+RJWA5NQqnE/580z30qopKQXOVEmYc6MKAAjU+OAXI4jwX5q9KnQh09gzFG
-	 qDp+yZpgquz5w==
+	s=k20260515; t=1794826033;
+	bh=Ly7V3SrHtZViQ6MtbvivLUpsgPdJPaNMjgihUn8ZpHs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ty4JmrlUS5kwJfARWUSFPwalabr4sHyJRVqesfs4h6tVSEVjc1/WUrR6J1XSFypeU
+	 grVDLv3OD8lci5/0KOuFX05J0SphuYF8ahf/my2S70VqcyBZS/BLOsFEAsqoqCA7q+
+	 ThWJq6jPaRI4nS3i2LlRtoQVq4pCa7LU6A2R8r8Q0Thkn3ZtXD05V7v58i9BcRVWBr
+	 r2IFJYB44CmB6c4UGdDc+9cheL9rPDELpsbNHJJ294KBvj6r3d6fR0dxwPEMh9LyH9
+	 Q/NYGFbnpoUJunLuRln2tgiHTf9U0+2DzwUsocl2cKjqj/0DaTWJNmRdx6WZAOX/yP
+	 yVeKReaiY4Wlw==
+Message-ID: <43dde2e9-24a7-4e09-ba07-d1166963e16b@kernel.org>
+Date: Mon, 16 Nov 2026 11:47:09 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] slab: allow sheaves for SLAB_NOLEAKTRACE caches
+Content-Language: en-US
+To: Breno Leitao <leitao@debian.org>, Harry Yoo <harry@kernel.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ Catalin Marinas <catalin.marinas@arm.com>
+References: <20261113-kmemleak_sheaves-v2-1-8c557c66cec2@debian.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261113-kmemleak_sheaves-v2-1-8c557c66cec2@debian.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 06/14] mm/mm_init: factor out frozen compound page
- initialization
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
- Mike Rapoport <rppt@kernel.org>, Li Zhe <lizhe.67@bytedance.com>, 
- Andrew Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
- James Houghton <jthoughton@google.com>, Lance Yang <lance.yang@linux.dev>, 
- Qi Zheng <qi.zheng@linux.dev>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261113033442.62970-7-songmuchun@bytedance.com>
-References: <20261113033442.62970-1-songmuchun@bytedance.com>
- <20261113033442.62970-7-songmuchun@bytedance.com>
-Date: Mon, 16 Nov 2026 12:42:48 +0200
-Message-Id: <179482576829.2379196.14870002582501235383.b4-review@b4>
-X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 168421C0004
-X-Stat-Signature: n8zzjas65n7pkqqzgz3fjumxin35kjfx
+X-Stat-Signature: 157dgxzpapbwbw1fzq5gnn7gfyb6ttma
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794825789-821491
-X-HE-Meta: U2FsdGVkX192jZohkFNWqAluI2Ipv2tOrNmfKnQzz1I5pLdaGL2zjmudPue5qPqk6aHKTfhK7i5u+qaVuao+NwuLTGTPUqWAHvsa1lBSKhlvAyFR3bVTnH3shLTYG3g3P7oW/jqCRR/FRhCTomeMqnSGrmBCGFcuAhf0kxvoJYAI3cZgVO0B2Vr4RZKnI0OS6ajkiYEFzbgPhwK5lZK1AeTzxCs4zMMHnQFBskLid0EIgU5co1ooQ8nPrJ1/hL5hg99b5IT5+eJEHtvse61AeR9NUsZnnxoiJW5l+KkmESQWuzzFhGeYP0CZ9aevDLPbF/qLZdu/Xc1omXiWJjdi9KOxn2ygNV6O4Ip9N6X7lhvVJvgOtBcSbgwno2/+Q/9M/Q107SoPlEzk4YYavhucJ0B8xHYHms4DbU1b8z2jfQ5t6+RdzoN89GMPu5AQ2RDvrjikYru5RbN+7tgE8hMutYuOONiDEdMKu3T4LhACAuDwwsp3xWXtIgA9enfeGEfmnxdbIDb/TDX8cZGtAGk8lFDHUsDVVJe5lVPciHD47Nk3T9IU2v121wDI40pS147c+iaO73sQBnUM+yaK/W60/mVsnPF7jwbctP4Bdw34yf53yM8hl2MJx16ysVDAzQM2nFULRT7LzDysmKwoCYNLD2qcfKeWGK2KusjdPRJU7nU3wC6bR58rRhpUHXPJETrag08jNhKLNxn50aqUvvWPV1kyjb3Qk3snWeVawX91hH3H2AqyGUN7TWnK3m0TJpbEDXyycY4GnELnneciuuVZp8TaAP+r1P1JhTAEq1ML21Kvk1B4H8WINrIVDTbEFstxrUL69CsnxGId1ffbPIx2aRcr896CV0uo8QeuwH6zQW04IVG8H9sCSYtEheiVZS1VNhrYjFXRnfIZTHa4F3RqW8+tyik0yu+aYrsXWIXlxiN6Rcl7dTzW2g0LZM043oA8qrrLHf35uEegl5c7SJG
- o/LXN4wp
- WqOeNM2/mZIA0TtH5ABJO+s9GX6QlNw4iu0W4V01w/e12mOX0Olqe3areydKy1OG6YXPZzqzYaqjRQCR3/m3EumJZhealvpUE73x5rhINY9CIfrf2gRlrkHGFPGBgS/gBO1r638Bxy20aj4KRzX3Afa41kfxJQSwjElYCHzOCXzLTF0L5ZMhQtXjMRuu1C8Gx2a0oPkb8D1DKmaEx28OXsH+akCjuLqyOX9StqUnx4i6xaeSlrTIk9bsBCB7I46SH8b6Emx8q+w8Ku9xQaqn4uuVq+k4SS7iChKi0
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 82135120005
+X-HE-Tag: 1794826034-748682
+X-HE-Meta: U2FsdGVkX19BAFpSTouTjyhQVZ1bA1CZ3tdEKcDblt2ApE9tuFmTj5CE006APUgRFLRGQHlajZVQZHCF5JmNP4lfpp9qt+PjWS4PjU179mHk22IB12VSb6JYbUJ9TAxdCgWsQuBKxHtSHCvHWnp4Lv16kZk6W/fJexCawfoTTQNZvx9/MPBJ4X6VUf3iaT4l5DGhDR80S6yuq2WYqsaPWl5YZDfs14hbnb+D9J2CSCVt8o7aLsFg5iyvl/n3RLPifGz1iIxgMWyXgVZxr7Iby49WmTaPrOkMkp5gRKn7i3sGVbi8IKvCqXc3p4xi1J7pcQDzovyvpMoOceeWQxIQuiYQTaOi4qenvtVkga4dHN41mLRYaCZFlDabbI+er/O/GvSab9K4GSyOjTjpEyNaZ0P3YDeWhJJn27vlfPZTRrk3SQryO0Wy1pV+Gbh/zELs0/KF+RtXSkhmt7q9/RZyhSy9mqvnS9J83BVF1qal5JdlVxkhzR+OnBn+iy9TlIol7XzUx87WZz68ZQG2mZxgzG4yDfbSde7rNFJoObv/2na7C7DaJfo6/vYx46318HzA9hqOX8864OP0+CHwVx8L1+nA0TIUd2ynkkHtuCtHiUax8fQnNKV1aEvYNqcT/PfnGUa9xsooxXomI95GduHej414s5V/rkYhdN8j2Poer83P33/uZ2WXqgRU8/qVoAsGeqKhNjUxtIV1GVYqUryQ7o7M+NofqECY2v15h5Ty8L5uIZAKF41luUX+CbB9mEKn+Gh6l9jJ5VhAn528MJriPiobStUzX2VD9z/w0c09pr43QPNC9p+xs6iROr7tUyRn7okNhsQlw0LfVE2vr+aEU29wewtGrzi4ccpKBQ1EiCHdw+dkqLVj180qlmguTyMdCozMEG5DkmZFSwpx+8lqGdmj7XmLPvYYlbErqLIsasX5Mofo6jR4rdH3ZdhXLweQ48Ye8LFQFE5N4Fhm07v
+ pMSwxFlE
+ lLFwQ0xATT1s9NqYo+yMzCuK284g05n4pjxIRu956pmpVjjY1/2KEJXsuDp6BNCEPKDuT6ZoSVakL8AYbgS5+K66aLmMrrqScL8OHVL8TH3WMUupYcVbPt4EmirbTg3/seVbOKbQYiTWrptCbCCoAAJB27Y34G/wVOlNJqgMVQqtumu5M2OmpiNuFPPhFZMtwEn714hfLc32frJ37ghinkC5n2z28/4wt/AzeVgwQNJ/WVukGj4rCZNjNmukxriaXAzt9XLfteZcj8JoLs3xKwwvNo5DYM4ARZG9u4Bhs8zUmWv+0nDo+/KnbEEEp5jjn3jSBoxj+PPdeoq9R5Gf7pVUNRp45WfJ3fdiuwdXEwYT4Mx9JDPzYFv9X3Cwua0daK4sGQFBBOuv36uWDF0iFbEkSHKWOCjTg1oQjP9qqyRDLcJVD22FFa7ie/UY2iOilesqHZO7hkG+dNG8jRRlzq7vQVE/ruVqseKVva+sSTj++5QdIeyX90c/PpNMnBMaKFRxeQwvK8DMfE5o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,129 +140,144 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+On 11/13/26 15:36, Breno Leitao wrote:
+> This is a patch that makes kmemleak cheaper to run, by letting
+> kmemleak's own metadata cache use a _new_ sheaves type. The flag only
+> makes that possible without recursion.
+> 
+> The cost today:
+>   * every allocation kmemleak tracks needs one kmemleak_object from
+>     object_cache. An RCU callback frees it later.
+> 
+> Why that's slow:
+>   * object_cache has no sheaves, so each of those allocations and frees
+>     goes to the shared slab lists under n->list_lock.
+>      - On meta's fleet kmemleak kernels, list_lock is the second most
+>        contended lock, after kmemleak_lock.
+>      - About 88% of that wait is RCU callbacks freeing kmemleak objects.
+> 
+> Why sheaves aren't allowed:
+>   * a sheaf is a kmalloc object. Tracking it makes kmemleak allocate
+>     another kmemleak_object, which needs a sheaf, and so on.
+> 
+> When I reported the recursion in [1], I suggested keeping
+> SLAB_NOLEAKTRACE caches away from sheaves, and commit e47c897a2949
+> ("slab: add sheaves to most caches") did that. It stopped the
+> recursion, but it took the sheaves away from the whole cache, although
+> only the kmemleak tracking of the sheaf itself recursed.
+> 
+> Commit 17c38c88294d ("slab: remove cpu (partial) slabs usage from
+> allocation paths"), from the same series, then left these caches with
+> no per-CPU caching at all.
+> 
+> In hindsight, skipping kmemleak only for the
+> sheaf itself, as the new SLAB_ALLOC_NO_LEAKTRACE does, would have been
+> the better fix.
+> 
+> The sheaf is allocated with SLAB_ALLOC_NO_RECURSE as well, like kmalloc
+> sheaves. Without it, a backing kmalloc cache that needs a new sheaf of
+> its own allocates it with SLAB_ALLOC_NO_LEAKTRACE too. kmemleak then
+> does not track that sheaf, and can report objects queued in it by
+> kfree_rcu() as leaks.
+> 
+> SLAB_ALLOC_NO_RECURSE also skips allocation tagging, so mark the codetag
+> of these sheaves empty on free, as is done for kmalloc sheaves.
+> 
+> Link: https://lore.kernel.org/all/aW_NK2NXVgtuzCVH@gmail.com/ [1]
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-> ZONE_DEVICE initializes compound struct pages while their refcounts remain
-> frozen. The setup is open-coded in memmap_init_compound(), including the
-> per-page initialization and compound tail preparation.
-> 
-> Factor the common setup into memmap_init_compound_page_frozen(). Keep the
-> pgmap association and MEMORY_DEVICE_GENERIC refcount handling in the
-> ZONE_DEVICE-specific path.
-> 
-> This provides an MM-internal helper for other early memmap users to
-> share.
-> 
-> No functional change is intended.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Applied to slab/for-next, thanks!
+
 > ---
-> v2:
-> - Rebase on memmap_init_page_from_template().
-> - Rename memmap_init_zone_device_head_page to memmap_init_zone_device_head_fields.
+> Changes in v2:
+> - Fix sashiko findings:
+>   - Set SLAB_ALLOC_NO_RECURSE along with SLAB_ALLOC_NO_LEAKTRACE, so the
+>     flag stays off the kmalloc cache's own sheaf allocation, per Catalin
+>     Marinas.
+>   - Mark the codetag of SLAB_NOLEAKTRACE sheaves empty on free, per
+>     Catalin Marinas.
+> - Link to v1: https://patch.msgid.link/20261112-kmemleak_sheaves-v1-1-e40e3d73b253@debian.org
 > ---
->  mm/mm_init.c | 114 +++++++++++++++++++++++++--------------------------
->  mm/mm_init.h |   2 +
->  2 files changed, 59 insertions(+), 57 deletions(-)
->
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index bf943ae72a3e5..f1e539aec3d91 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -738,6 +738,28 @@ void __meminit memmap_init_page_from_template(struct page *page,
->  	vmemmap_optimization_verify_zone(page);
->  }
+>  mm/slab.h |  1 +
+>  mm/slub.c | 22 +++++++++++++---------
+>  2 files changed, 14 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/slab.h b/mm/slab.h
+> index e94ac63d10dc03..7b20f10aa46a2e 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -23,6 +23,7 @@
+>  #define SLAB_ALLOC_NEW_SLAB	0x02 /* a flag for alloc_slab_obj_exts() */
+>  #define SLAB_ALLOC_NO_RECURSE	0x04 /* prevent kmalloc() recursion */
+>  #define SLAB_ALLOC_NO_OBJ_EXT	0x08 /* prevent obj_exts array allocation */
+> +#define SLAB_ALLOC_NO_LEAKTRACE	0x10 /* skip kmemleak tracking */
 >  
-> +void __meminit memmap_init_compound_page_frozen(struct page *head,
-> +		unsigned long pfn, const struct zone *zone, unsigned int order)
-
-Do we really need the _frozen suffix here?
-
-> +{
-> +	unsigned long nr_pages = 1UL << order;
-> +	struct page template;
-> +
-> +	memmap_init_page_common(&template, zone_idx(zone), zone_to_nid(zone));
-> +	prep_compound_tail(&template, head, order);
-> +
-> +	/* Initialize the head page. */
-> +	__init_single_page(head, pfn, zone_idx(zone), zone_to_nid(zone));
-> +	set_page_count(head, 0);
-> +	__SetPageHead(head);
-> +
-> +	if (vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
-> +		nr_pages = VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES;
-> +	/* Initialize the tail pages from PFN-independent template page. */
-> +	for (unsigned long i = 1; i < nr_pages; i++)
-> +		memmap_init_page_from_template(head + i, pfn + i, zone, &template);
-> +	prep_compound_head(head, order);
-> +}
-> +
->  struct zone __meminit *pfn_to_zone(unsigned long pfn, int nid)
->  {
->  	pg_data_t *pgdat = NODE_DATA(nid);
-> @@ -1063,44 +1085,39 @@ static void __init memmap_init(void)
->  }
+>  #define SLAB_FREE_DEFAULT	0x00 /* no flags */
+>  #define SLAB_FREE_NOLOCK	0x01 /* spinning not allowed */
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 8369853ddca721..b927cd684ec656 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2850,6 +2850,14 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+>  	if (s->flags & SLAB_KMALLOC)
+>  		alloc_flags |= SLAB_ALLOC_NO_RECURSE;
 >  
->  #ifdef CONFIG_ZONE_DEVICE
-> -/*
-> - * With compound page geometry and when struct pages are stored in ram most
-> - * tail pages are reused. Consequently, the amount of unique struct pages to
-> - * initialize is a lot smaller that the total amount of struct pages being
-> - * mapped. This is a paired / mild layering violation with explicit knowledge
-> - * of how the sparse_vmemmap internals handle compound pages in the lack
-> - * of an altmap.
-> - */
-> -static inline unsigned long compound_nr_pages(unsigned long pfn,
-> -					      struct dev_pagemap *pgmap)
-> +static void memmap_init_zone_device_head_fields(struct page *head,
-> +		struct dev_pagemap *pgmap)
-
-I can't say I like this name. Essentailly we initialize ZONE_DEVICE
-folio here, so maybe it can be
-
-	memmap_init_zone_device_folio(struct folio *folio)
-
->  {
-> -	const struct mem_section *ms = __pfn_to_section(pfn);
-> -
-> -	if (!section_vmemmap_optimizable(ms))
-> -		return pgmap_vmemmap_nr(pgmap);
-> -
-> -	return VMEMMAP_OPTIMIZATION_PAGES * (PAGE_SIZE / sizeof(struct page));
 > +	/*
-> +	 * MEMORY_DEVICE_GENERIC pages start with a refcount of one; other
-> +	 * ZONE_DEVICE pages raise it when handed out. Use atomic_set() because
-> +	 * @head may be a stack template, while init_page_count() expects a
-> +	 * memmap-backed page.
+> +	 * kmemleak allocates its metadata from SLAB_NOLEAKTRACE caches, so
+> +	 * tracking their sheaves would recurse into kmemleak. NO_RECURSE stops
+> +	 * NO_LEAKTRACE from reaching the kmalloc cache's own sheaf allocation.
 > +	 */
-> +	if (pgmap->type == MEMORY_DEVICE_GENERIC)
-> +		atomic_set(&head->_refcount, 1);
-> +	/*
-> +	 * ZONE_DEVICE pages union ->lru with a ->pgmap back pointer and
-> +	 * zone_device_data. It is a bug if a ZONE_DEVICE page is ever freed
-> +	 * or placed on a driver-private list.
-> +	 */
-> +	((struct folio *)head)->pgmap = pgmap;
-
-... and then we won't need this cast and the caller will just pass
-page_folio() here.
-
-> +	head->zone_device_data = NULL;
->  }
+> +	if (s->flags & SLAB_NOLEAKTRACE)
+> +		alloc_flags |= SLAB_ALLOC_NO_LEAKTRACE | SLAB_ALLOC_NO_RECURSE;
+> +
+>  	sheaf_size = struct_size(sheaf, objects, capacity);
+>  	sheaf = kmalloc_flags(sheaf_size, gfp | __GFP_ZERO, alloc_flags, NUMA_NO_NODE);
 >  
-> -static void __ref memmap_init_compound(struct page *head,
-> -				       unsigned long head_pfn,
-> -				       unsigned long zone_idx, int nid,
-> -				       struct dev_pagemap *pgmap,
-> -				       unsigned long nr_pages)
-> +static void memmap_init_zone_device_basepages(unsigned long start, unsigned long end,
-> +		const struct zone *zone, struct dev_pagemap *pgmap)
-
-_basepages sounds odd for me, maybe _pages will do?
-
--- 
-Sincerely yours,
-Mike.
+> @@ -2883,7 +2891,7 @@ static void __free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+>  	 * warning, therefore replace NULL with CODETAG_EMPTY to indicate
+>  	 * that the extension for this sheaf is expected to be NULL.
+>  	 */
+> -	if (s->flags & SLAB_KMALLOC)
+> +	if (s->flags & (SLAB_KMALLOC | SLAB_NOLEAKTRACE))
+>  		mark_obj_codetag_empty(sheaf);
+>  
+>  	VM_WARN_ON_ONCE(sheaf->size > 0);
+> @@ -4727,7 +4735,8 @@ bool slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags, size_t size,
+>  		if (init && p[i] && !is_kfence_address(p[i]))
+>  			memset(p[i], 0, zero_size);
+>  
+> -		if (alloc_flags_allow_spinning(ac->alloc_flags))
+> +		if (alloc_flags_allow_spinning(ac->alloc_flags) &&
+> +		    !(ac->alloc_flags & SLAB_ALLOC_NO_LEAKTRACE))
+>  			kmemleak_alloc_recursive(p[i], s->object_size, 1,
+>  						 s->flags, init_flags);
+>  		kmsan_slab_alloc(s, p[i], init_flags);
+> @@ -7987,13 +7996,8 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
+>  	if (IS_ENABLED(CONFIG_SLUB_TINY) || s->flags & SLAB_DEBUG_FLAGS)
+>  		return 0;
+>  
+> -	/*
+> -	 * Bootstrap caches can't have sheaves for now (SLAB_NO_SHEAVES).
+> -	 * SLAB_NOLEAKTRACE caches (e.g., kmemleak's object_cache) must not
+> -	 * have sheaves to avoid recursion when sheaf allocation triggers
+> -	 * kmemleak tracking.
+> -	 */
+> -	if (s->flags & (SLAB_NO_SHEAVES | SLAB_NOLEAKTRACE))
+> +	/* Bootstrap caches can't have sheaves for now (SLAB_NO_SHEAVES). */
+> +	if (s->flags & SLAB_NO_SHEAVES)
+>  		return 0;
+>  
+>  	/*
+> 
+> ---
+> base-commit: 630059a5a632377b9b7b487baccde92b7ae1dd47
+> change-id: 20261110-kmemleak_sheaves-b3531591ad21
+> 
+> Best regards,
+> --  
+> Breno Leitao <leitao@debian.org>
+> 
 
 
