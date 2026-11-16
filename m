@@ -1,89 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A853606A339
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 23:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF822606A884
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 23:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=APFXTrlf
 Received: by kanga.kvack.org (Postfix)
-	id 071156B05B0; Mon, 16 Nov 2026 18:17:19 -0500 (EST)
+	id E5CE56B00EF; Mon, 16 Nov 2026 18:23:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01ED96B05B1; Mon, 16 Nov 2026 18:17:18 -0500 (EST)
+	id E0D086B05B0; Mon, 16 Nov 2026 18:23:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77506B05B2; Mon, 16 Nov 2026 18:17:18 -0500 (EST)
+	id D23206B05B2; Mon, 16 Nov 2026 18:23:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B21AA6B05B0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:17:18 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F14D6C0298
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:17:17 +0000 (UTC)
-X-FDA: 85442545314.12.6665197
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 78C37A0007
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:17:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of fw@strlen.de designates 91.216.245.30 as permitted sender) smtp.mailfrom=fw@strlen.de;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794871035;
-	b=wqMYJD3Qn9+t12toP9AwL9B5QlABQySbPP0XhpnT8gYJ2bjGuahMGETiU4m6zagafHssgD
-	0SnVxoHs6E/CGxWNgZVihyxeEJ7Ki3IolEGKaqTr1PeQFYt3JlEQ3XZEpT9HBKbkMJSmKj
-	h6J6hJGC5z29RX6macrT3b9EG67YS7I=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A404F6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:23:50 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3241A160253
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:23:50 +0000 (UTC)
+X-FDA: 85442561820.05.50E764C
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 75A58A0005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:23:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=APFXTrlf;
+	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794871035;
+	s=arc-20220608; t=1794871428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lBMZHfw7i4eJx0zD4VQ6/+RNNcDSsfzhNT1NDQ8/k0U=;
-	b=mVCTSjUgSlyG9K//R400UXcyHdgXmIsyKg95Ox3KtunpIT3vyELVTpKRtbD7LOMNJwxayk
-	jrmhxXyZ5hmVv89NhflcSVcduJ4BzYPgKaL51Uj+y7Ix6tQUPdjVumaam3DT68AVXFARw/
-	PPwEucEP4Ad4+uJAS7OSBHtKUFJbnTU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=VKxvJEBSpjGlsGfyxb4wEnmaujupzaQfHMLbEQO7Hww=;
+	b=VKVh1vaxkfHVYiRBklOPe+hPUDcNRKbKDRAlLeaGKUFOgvyx+2F4nF1E/+9DFDqlLqkl2c
+	KYAFiAxOu3v2DIQy6pk3GeRTVOx8FQDY17Bnmq0UqM7golRl0uqW+AdBmOa+izDkPC8Wv/
+	XIdmiUiupFbGAS1inaGcl9KBSRZq9fc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794871428;
+	b=EUBfBd46vvx/TPRwk9VVt4zBvYyfGCqc7Lfy2daQW0tL5ccs7LU1gtOv/fe+1KdmUDNi2H
+	jtCQ6mNq7OqvfnITuFbbx6qyL8J0sR9mrn+gq9qgEwWbX7o5AoKmwd9OeatDSOnubs3u7I
+	XfI9Km6Sb82pJMdynib4Nz+o4ivqBPs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of fw@strlen.de designates 91.216.245.30 as permitted sender) smtp.mailfrom=fw@strlen.de;
-	dmarc=none
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 1421760342; Tue, 17 Nov 2026 00:17:13 +0100 (CET)
-Date: Tue, 17 Nov 2026 00:17:09 +0100
-From: Florian Westphal <fw@strlen.de>
-To: alireza@asgari.net
-Cc: netfilter-devel@vger.kernel.org, linux-mm@kvack.org,
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=APFXTrlf;
+	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-43bf9548df4so5366455fac.0
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:23:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794871427; x=1795476227; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VKxvJEBSpjGlsGfyxb4wEnmaujupzaQfHMLbEQO7Hww=;
+        b=APFXTrlfnVHuSLCkFBGIPudnbX1golJNaActYunKZPXtojpqkz598+8FNOEjHO17Gc
+         lqVBTYFUbnLqDJOF2GbUpu6TVT2gSuhFbWiilFPlzCC7kl1Chi1UsLOHr1qkGzpB5KOo
+         QQXrQGt9UdIoUti9ry3oOpPROVp9DQCppPL91EeB3gNNsMmC/dR9oNx6ty2az4TPkRyq
+         oXPKmuWmdQXLKMdGIS7czukHpZgKITBI+BYjswDUs48JdvQR5sshLlnY9mfXTpavoYoC
+         4ucWEa+aEEK1MBt8d6GYLsFClHZVUtLFeIrN1qaUz7Mkw5hXgfMQCkfxQnQEXCfXHo7W
+         t0mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794871427; x=1795476227;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VKxvJEBSpjGlsGfyxb4wEnmaujupzaQfHMLbEQO7Hww=;
+        b=XZoBEjQwMwjolpfKkeCrUUt1vFRD+wWlXh+QBjz7JcboLkYUnp8UH0KGnjOw9rmlRh
+         phUE7KR4+747mA/QuUHxmzyz6ii/jchItdfmjf2bcRcOeo6O7OT4mRHZ5LdBmW9ukttc
+         Ifbvjju+qpJnJB6VzOKN3U/ziUIewSP6G/4uFpTrOJusghGtl3Iaz2qhCQI2CR3IpF27
+         eezIZh145bY1ZzbYA3ShrtRHRaoTQdd4enQsSNXm/K1mTO8MyiYh8FgkwY5ohnATAMUn
+         nWaSvs0HJGfOO3fzjijqEgurawlhhbds50aqDTEkYdeF/vIPNIGf/aX/NdH/J/d9fr4m
+         EXHg==
+X-Forwarded-Encrypted: i=1; AL+hErHmE/imymTt/oyuANWOp4rOzzi63dcofiG6LEeGoPQcUpw3f0Aj2H7+khIezaC/4ANAIOPDYHLQxw==@kvack.org
+X-Gm-Message-State: APuU4Z+4oLM5RQ9vr2aR2OVgpkdkROT0R5iLA9/SPiBO632eNVEUZYSl
+	6C9/zKheQ0iPfJ1vRaHOw3Li6yRCJybn8sERXF4/h5JgYfaYCx+hhZJB
+X-Gm-Gg: AYBFou2jS4pKmHM6abMr6BhGTFLCzmtGGiqpRGzmtyBD/R9JWl1uyKGgji2BniXASv1
+	8RMbKcfeoXVOgXrEiKC5Oqd8T5L06fxe28dgGe8KsD2S7bQagWC7n7qrZ3ebARA2lF2VAv6ybnq
+	wLpcyB5Ofve4LXhcBIlOHDaaZgmL6QWapyq2R7gHHs0SKZjYNBlIWCrqf++3NKeW0KKTaiLkN9e
+	7TNJp4FjGeawKLQyuNJeCnLZCAQX9D61fcRaYkAL8FCP61Q+TK8oPghT7y4PK1Pu3hLwVODozyL
+	YVEZwmBaFdOBDFPG98W0rn3Z5FljQaBse0H3ctsxX1EbAasP/lQ+lz7Wj5dolRyIkVmReGRWEQS
+	MqPJqDd0PflcfTMsBgrtK3b7IChJEvXQzL2BT/MXs0d2Yj/FCbNtM7ZeWwFC7yxlKsolKyGGhbN
+	+poIhRhzs3n4p9WcWgEoOkQaijRXupeunD7qfZq52nMEHDQSE4/VQ4wsnmQkMgaXAh9iL2xHUKm
+	BuYtm13kageBAMgZ/q77ZaJpuq/hd+Pzq4Bb0vjJczbOEDuT7QI42yOdzzr65IWP3fK8FE6h4uI
+	e6gENMt6Fl21bciA8MzItOpCcxfNjkANONNJbuEhhnpSWpKvs3xvEXbByFQ=
+X-Received: by 2002:a05:6871:453:b0:4ad:6057:560e with SMTP id 586e51a60fabf-4afdf0b94bemr10417482fac.8.1794871427343;
+        Mon, 16 Nov 2026 15:23:47 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:1::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4afe2288f59sm7849326fac.9.2026.11.16.15.23.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 15:23:46 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
 	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Vladimir Davydov <vdavydov.dev@gmail.com>,
-	Chris Down <chris@chrisdown.name>,
-	Zhang Jiao <zhangjiao2@cmss.chinamobile.com>,
-	Song Hu <husong@kylinos.cn>, cgroups@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC nf-next 7/9] netfilter: nfqueue: reserve capacity
- against the bound owner
-Message-ID: <avuO9UUriolRoRg8@strlen.de>
-References: <20261115-b4-nfqueue-memory-accounting-v1-0-b9cc30819997@asgari.net>
- <20261115-b4-nfqueue-memory-accounting-v1-7-b9cc30819997@asgari.net>
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v2 0/3] mm/page_alloc: get_page_from_freelist cleanups
+Date: Mon, 16 Nov 2026 15:23:42 -0800
+Message-ID: <20261116232346.788145-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261115-b4-nfqueue-memory-accounting-v1-7-b9cc30819997@asgari.net>
-X-Rspamd-Queue-Id: 78C37A0007
-X-Rspam-User:
-X-Stat-Signature: a36tt51c5ktei1ifamod9746u7gxi5qg
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794871035-413739
-X-HE-Meta: U2FsdGVkX19CckXdmBnwvxUFn8Qr+uUV7C0DS1JUKQs0UWdOGkIAET/o/zc5m6PO1uVd76NaAeqBWYFYPTm5gmrlvxetpXR/q8HmuCjyZKjRjYY9TOUky0MtDnsDYcB0btmYwvTr6n/YYwWZ5WzrvzkA0PZakgofjmgFAGcDtHljH8QG8ZM6Xy/aVls98uv7cDO2HtVltgKSFo6t15tPRtlFzD5Ya8Dw+4aDsEU6zOxCcH8ngk4mW/Ol4cYm8y2YQ9/FIIfQN6sj+SdGlbUIVlPUE+G8DG4DHirXnJE83GV+8ahX4G3exBgLhN8EBQapk3zZJ2Tt1GWYpHhf4ekeDA6f157VRD3A4TWZT9iHSbdGzFmrJem0VpNou6IlHF8bYePudf52tSLIiQI/bN9wnGu/dOUAziPG80smaVVhHPhun1X9d/aclkBZg6XcuGaF3I9McMM/x9HITz8rw+7dJkXfPhZaTop/YMS8yLYyMJX7GCJw2fvErVE5cAEZyLlV0WWxnOedMbUjuCwdpumbQjXsY4EvRACz0TzGyDSTyrliQvSpOavX2xySPcmrp1dTwB/QurtIeoHYFPZOiD/kimSEXkLLfUl40IZmDgPyIsCoN/817XnZz805Jgt1AZCqSkQ76HlLoo2vNXiBsjx3TP0Pti00WfHUnQlQyJio6OAx8a/0URY5E+0BRJ8SWBGf/+vjLetIyk/ECUWJE+71u2K+/Pqm4vHCynFX4C2jdcIwyQBupDP+z9TIJ2AWDNuvGM8Ba9lroHyNtutJDvvRTzyxIW1RF3iJnpcTTeT1tbZp3tYCsxBrqnDcyYEdYu5K0fo3O/OCwTTrQhR312yQsD4cMb9eBq6e0hbFZBCnQdcZXf3uijiMqwBD//6l50fTpRUrxNYqE2uaygWCpkDpASCs7Tx1fd/pMJSLxMYm0YP590jgXE5tNd+GYZaycPvonJEh1QtgNWHo/FYrVmZ
- Zrq+gSJH
- +b6N/qcI9QJrkrm44etRLw4MosDeIa7UdzkBTqvFaaL18ENvm478pl5R7rHSplynpXGw1MEaani5pZG7fm+WcBSGbyQESMCrNL2keSSEI7QgXlf4fN3OI4COgVrILnDTJLMXzTodrI0UrSTovCzrt7OA/8JseS76ifYVEXRF4MBfxLg1bWE8JjmMHiBPxDHwi4TTeK9DfL2lOZj4OrZyvV9xIo+/dpoovcoxu
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pwxf69qtskb4gbqujm7w88fo1wecshte
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 75A58A0005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794871428-459256
+X-HE-Meta: U2FsdGVkX19AiRpZI9/K+eYLabnT22KaJZmWm9/dd+IsyZQr8Dh6rl+hRF5pHP8Eluz6nBdQXbhQGCB7s2byT99VBX1jPUIlp0K5ZctECgnrXi0amZJ9mubwlwNrnrvJqFO6GAqWNJqhZhN5kV4kTLqPKeQ+Q+BsoBTuA9yGS6IJPcG9w5gh1XbhvXKaboIjGK1EGoSqnsDiDiLottkD9L+goxd30a6NgSWgIcqIouczdA+VoFD4VHYLMKGd2mX8xwYJ3nvOSr36f0jqewW+fqBD4vIrIxbPG6BorZT74/x4J/ARo/VAPtorcs69KnKM22O6idu1GriY28CbU55BE98jDMz0vXcEAhFEtzFhQ0zEWv4Mt+qiBE15ucs5VH5aHQPj/abNwuino/h+swInnong+rwkKimCwF0gyO//NunI9l22QXkyuUkcm/UQq3eoTjK79xg34dNw4UrFnwo7Yz8EhYKocQyMqLED266YNh7Vt/fn6yRGWbrEz+DAyDL6gBWCNqh1AuPMGeRJjcTmcN5fBCZhdPLaxH1eEX8MqOJWluoHaxzqPeezeWarRLSea6scPTecWXCEXxIUkWwnO08sKvP/cyqjo6UrJoOU1gGGpLLfgvdvdqBwffx5ZQEMz2XKn/9z/ENj+y9OviFJs+M69/Z6YXo2Zj4FUiBOCEVTkii7ttu7jQ+xpliHg0tcCp+aCURiCYdR+H5v3i7OCjrCYpKXwiBhxgeBJ/m+8WqgGAs0gqToKZgnFobJPI5oSIjv61rL8vQwD28tWVwQU2qD4BHi+88yd+0ObMMhGemQYtyKyHmFvgzo1Z1pmVxV3patsFmS3ruWlMkFRYjBWTt/w2QEGDTCn1yKe9r1ZAW/AtmrpeijdME70nWq7yMQILnaEgL+vft9491MZgtB6tipDObAXX4MKZWGlheIv9KMoQEMZnHI5nhzCKfFNdOl0nHn0fM9uFQ6owffL6A
+ 6BCzFJw7
+ yV6D+SzZTqcP/QSGDJ+wK2KZWywgRI/LPMfQpbuuyO4l5yaZEErmatHPI6sWfPl3nVLL9HolCc7eCvSRmFhEki9rzyeCQaxxtDW1J+Vc7RNG8GWY9ynTbxTxk2d4sBxHuKLKBMO13HqrYTjRDyCuamPSfe9mw/U33iXBDlmi2PilgPv20zsj24MxyKdI5fBJ58taw/90OKFYuhiWrpKrbC5xMNRTSnvX9XftlA1qwzlgPL3J7AaJkUeayyQ11B0Izj8snvpKl6tzqdujOB7z2saW98MyHavbhhT/DLHvCsG9UsPWPbz44DDppn0GvujuOPgSyW40CxdW1TJEobIo1/Pi+fNm+GKTfrHhPuWOf3NcK83dqGBIu58MMEeFAjYQ0glC9BrYvwAw/7FAWCV0uHogIbyiToTmFPR+Q8LorrwrOI76jqBK0UM99xnJOXCEzkA+qSH6BMK5/DekDvjwcsDhahwRkU6XMyYeA8+mPd1bij9A+eIHLM050bMqm/63oSVZcytPuNkqGn19Av5qdf9D/r/aYXU0cu0BLBnbRqUNND6nMK/+6woqBu15u4Pp6U8nT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,49 +133,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Alireza Asgari via B4 Relay <devnull+alireza.asgari.net@kernel.org> wrote:
-> +static void nfqnl_mem_refund(struct nfqnl_instance *queue)
-> +{
-> +	u64 pages;
-> +
-> +	lockdep_assert_held(&queue->mem_mutex);
-> +	spin_lock_bh(&queue->lock);
-> +	pages = nfqnl_mem_pages(max(queue->mem_limit, queue->mem_used));
-> +	spin_unlock_bh(&queue->lock);
-> +
-> +	if (pages >= queue->memcg.pages)
-> +		return;
-> +
-> +	/* Shrinking cannot fail. Keep the packet-path copy conservative meanwhile. */
-> +	mem_cgroup_reservation_resize(&queue->memcg, pages);
-> +	spin_lock_bh(&queue->lock);
-> +	queue->mem_reserved = pages;
-> +	/* A final drain may have happened while the refund was in progress. */
-> +	if (!queue->mem_stopping &&
-> +	    pages > nfqnl_mem_pages(max(queue->mem_limit, queue->mem_used)))
-> +		queue_work(nfq_cleanup_wq, &queue->mem_work);
-> +	spin_unlock_bh(&queue->lock);
-> +}
-> +
-> +static void nfqnl_mem_work(struct work_struct *work)
-> +{
-> +	struct nfqnl_instance *queue =
-> +		container_of(work, struct nfqnl_instance, mem_work);
-> +
-> +	mutex_lock(&queue->mem_mutex);
-> +	nfqnl_mem_refund(queue);
-> +	mutex_unlock(&queue->mem_mutex);
-> +}
+v1 --> v2:
+==========
+- Typo fix (s/patern/pattern) as pointed out by SJ Park
+- Wordsmithing kswapd waitqueue condition as pointed out by Chris Down
+- Collect signatures
+- No code changes
 
-This is rather complex, do we really need all of this extra machinery?
+3 cleanups for vmscan and page_alloc code. The primary goal is to make
+get_page_from_freelist a bit easier to read, especially after the new
+kswapd zone skip conditions [1].
 
-I had hoped we could do the memcg equivalent of
+1/3 is just a nice cleanup that I found along the way.
 
-vmalloc(4 * 1024 * 1024, GFP_KERNEL_ACCOUNT);
-on queue creation / instantiation, and vfree() on instance destruction.
+Based on the latest page_alloc/for-next branch as of 11/13/2026.
+Notably, there is a dependency on the aforementioned kswapd zone skip,
+677dfdfad244a "mm/page_alloc: only skip kswapd nodes below their kswapd
+watermark".
 
-The only minor inconvenience is queue limit reconfiguration.  But that
-also happens from process context, so it should be enough to just
-do the equivalent of vrealloc; or, if memcg precharge cannot easily
-support that, just vmalloc, then vfree(old).
+No functional changes intended.
+
+[1] https://lore.kernel.org/all/CAN+CAwNsqWpPoag_XE6bxbrfi6m71xw1NS_wc3h_ShZjNspSjg@mail.gmail.com/
+
+Joshua Hahn (3):
+  mm/page_alloc: drop unused gfp_mask from zone_watermark_fast()
+  mm/page_alloc: move the kswapd node skip check into a helper
+  mm/vmscan: consolidate promo vs. high watermark checks
+
+ mm/internal.h   |  1 +
+ mm/page_alloc.c | 55 +++++++++++++++++++++++++++----------------------
+ mm/vmscan.c     | 22 ++++++++++++--------
+ 3 files changed, 44 insertions(+), 34 deletions(-)
+
+base-commit: 3a99594e62fce8c646e8aac01d38af16d6833a40
+-- 
+2.53.1-Meta
+
 
