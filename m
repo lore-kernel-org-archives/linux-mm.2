@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E606B606A335
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E07606A881
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cyn4o4st
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OxQZ8ymP
 Received: by kanga.kvack.org (Postfix)
-	id 55F206B05BF; Mon, 16 Nov 2026 01:47:43 -0500 (EST)
+	id 33C496B05C0; Mon, 16 Nov 2026 01:47:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5384F6B05C0; Mon, 16 Nov 2026 01:47:43 -0500 (EST)
+	id 2ED8C6B05C1; Mon, 16 Nov 2026 01:47:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 425F96B05C1; Mon, 16 Nov 2026 01:47:43 -0500 (EST)
+	id 22AE16B05C2; Mon, 16 Nov 2026 01:47:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 237256B05BF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:43 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A5871C42B9
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:42 +0000 (UTC)
-X-FDA: 85440051564.03.561ABE0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F382E20008
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:40 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cyn4o4st;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794811661;
-	b=BSiFygJgGfyGOyA2vWZluWVbhaqRwh8ZpXrtaKTwXW41zunYJV96bv5Aa1HpqSp75PYfWg
-	DQeHICoDVOlNMqf0xHl9VIi3z060QWae2dB3rOzEfEZ95PEo93kE8xCKWfp1HmEKeVUyLw
-	LaKOAmc8/dG60/o7OOfK3zO8HngEJPo=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cyn4o4st;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 004C16B05C0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:46 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 82D8A1A08D2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:46 +0000 (UTC)
+X-FDA: 85440051732.16.70E0783
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CC079120006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OxQZ8ymP;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794811661;
+	s=arc-20220608; t=1794811665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hGcbtCE0xSbWljRHzHfVhj7R0LXVbJXAi8zHRTVvrTw=;
-	b=5tNNWygETB4GB/nVGLPT1z9oAdqZNY2uMzhgUOEB/y8VYAq8NhWBKP5M9BqI+Q3sOPZIrO
-	7Lx7YkDOnTaK/QBdACPDxWSF9eth3K01LyxCjDKhWi7RJgHdc9cqh7/50GS0h5Jgl0O0E+
-	15twfFHYcITLRrRuFzqoyAFU2jCh3T4=
+	bh=A0jsr7g2iSKz4FF1WHoUtFHP+lNGXLioda8TcNBixqg=;
+	b=YNm/UCl1CCtFKk09G/GCDm0f41WrwMdXP2g4ZS5cRTi1qvxdPfzsgOoufjZ5qScs4/jHOO
+	M6vtK9XVSDPtX4A29Bb+pn/P3bIxsnbL6NvXkA+D3T5ofJ3s5e6bcI9J17ALS6GF+scDct
+	6BMv8UDvK2aVmicDpzQJrDcJBgLJi5c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794811665;
+	b=QDzXPlZ9PFIuzIt3665aZcG7TFNsbbfb52mKhUSPBDANJ8Fua0IBmK+pnSgKhKwOs0gJ2R
+	H0jKWJVOxCbJQmwsn063PxVHk8bBiJNZX9V6n2ByCJCi9GCpmxVX7wB55ElSLQug0Z/5Nl
+	mLp7YOf/pl/A03XYdgZAR0slWc9hDHc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OxQZ8ymP;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 97A7361ED0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A91740D75;
+	Mon, 16 Nov 2026 06:47:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA44E1F000C4;
 	Mon, 16 Nov 2026 06:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330521F000C5;
-	Mon, 16 Nov 2026 06:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794811660;
-	bh=hGcbtCE0xSbWljRHzHfVhj7R0LXVbJXAi8zHRTVvrTw=;
+	s=k20260515; t=1794811664;
+	bh=A0jsr7g2iSKz4FF1WHoUtFHP+lNGXLioda8TcNBixqg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Cyn4o4st0NP3iNx6tZjGKRw+K1yhHhaTSMrFJWUJhGFgTd6RPkeWQKeLQnElLISxm
-	 oTfOG6thGik3y4hZOXKxDPYiD2K2wv2QQj7Hkc6vOPpPZrxHx/2XOe6hStDE7txWLU
-	 UWssoLgEqdPqPbMIZYXNqnNyq9qgU++/+Advx2tIz1vaLN8PvWcnecu35eJzv5FmIf
-	 LktidM7wpyUR+TjsYbiQmyJXXEpGBb1KRpqHkNqGvmQMIoX79l7DzT4ovTCwm6i1dC
-	 hh27gKzP6ElV/lviQ318aW9Wx65U2ACr3JNJb/0R9iBSpUkczYrHesbv7LW97UPyq2
-	 k24mdAeLMuxzg==
+	b=OxQZ8ymPPuHVIDSG4ZXqY7UoU8UbImdtL+5nrdFyLMXXb0ccGHWVyFEixEJxsCCC4
+	 ORoxmUJYTXthFH/IWchiclTXNAIU5vzLCfN1ZKZpeNzYBD6KEonGBlW+V9E0lWQ8kY
+	 KUbdMQO4k9+ru7fNwsbaxpileXUF1aw920l0R3p1CfDcP1jwOECHpRg7zM8ohXvxGw
+	 uPFPy1qiC8Jv/GSqIFW8Fh1TiPfPbuw/9lJtyz0FAq6aVQcZ73Msych8G+24k4KEB/
+	 RxphZbEEUVq6ZIRDTvdfbEztPduP2oVRNnGR/3/c0fkGT8k3KBguqNSiLs0Km5VB1t
+	 MZeLGGp9Y7rjw==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 16 Nov 2026 07:47:14 +0100
-Subject: [PATCH v4 06/10] mm, slab: make SLUB_TINY handling dynamic for
- sizing decisions
+Date: Mon, 16 Nov 2026 07:47:15 +0100
+Subject: [PATCH v4 07/10] mm, slab: convert CONFIG_SLUB_TINY checks to
+ kmem_cache_debug()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-slub_tiny_rework-v4-6-227a4b3636a5@kernel.org>
+Message-Id: <20261116-slub_tiny_rework-v4-7-227a4b3636a5@kernel.org>
 References: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 In-Reply-To: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
@@ -83,18 +83,18 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.16.0
-X-Stat-Signature: fmyn68jsyuzr6yrj9bomhpdw7y4es4gj
-X-Rspamd-Queue-Id: F382E20008
+X-Stat-Signature: bsokgtcy68o1mks8bwnccmb3yuzgaf51
+X-Rspamd-Queue-Id: CC079120006
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794811660-159560
-X-HE-Meta: U2FsdGVkX1925bmIILA+ptjTtstiTrpUCsi1gvClCjASGnTcqwluoW4mmcxg3P5QLEV2n/5zMcgWk0LPTukfY8TzXbDP6i9ALsp+nuYz8db3FPjSNXABzq5eZb8NVjQ854Otp4pqKY/dXAC5ksBxRQlLlNeWILB8hVcprRUvNlPmqhosdcD913Oacb/uJGBU6ebJIY6GcRwZsqXqtaALP3Aj3ZGyo6rxNlILm2kJsKlDg2Lobb2wIXTcY/PRpc45p2zD+X+DFtxdzR5P2WZDZ5snoj6TLwQvExRL6a2j79u09YcirE4ey7vABKX0UBU9OhHZBDZq57f0YWqOmLRg6Q1gZI3v6Eqjpyg59uDRQxhNk/xF5VH0H8jMqN/N6TCpQ02McuuBVvWlQdHlKX2QXWIVUSgP3JM2UFKDOVNvVV1BsyPCsl5U+pqL5QJ4X3jdG8NZC+XsezyPfdLYBq2OnjSmqre5DIN9sXAjIazwIsdZN8FL9fi4/lsmE48czM/J2yzpLSkvjy7bhI4mLUZ+PrhfMqAnfR3Doj5tlRiB0PC05ZIaF72ujz9zf6zjAbT8e7U3IPcE8jgYqoFrtJvbbBlAXPFRV2JFwC2aIYVSVyGeKMVscyaAYbgPAjbhxf5M/dVzo5mA4HN/rfrSE+P7lRvp5VsK6lywMj1QF1QGKZR+aTYh5CKLbnyLvQEgtmfh+RpyRKOslw3/tdF2hq2qRSMLWrQKjggWXxVNYM3J/mHKmC0jDw2wBI63+9yH/TmCX1asee3oi/waHbtpxIgmqg9MHakkiY9isRTLhPdQB2s04hQGJVPpehG0EHWFdzRjuvR6qyr07gH6O8aLXlE5e1VEvMVzVbg0suI/J05AoUE8b6I2cm83ia1yG8UVi2stzbySmsGWDAS03vvvbAL6KCctCq3ibmOBGHkVFpAGM9MXzuqEND1qHGXr+dMbTKj2JyUUfBh1ludBmlErZLt
- ekjo25t+
- 2OnS9+KqX0/9ukbvuqmr4HMZc4opQttVw+zQY+HmLqpJVZtntRgq9QB9xQ029a3xhoPcL1Da9aSehuByVX8NOIZvBh66fHNzuSLDSDMLOweBvBM7SfQ97Tm3FAWjmaPQ9IFwftAClDz7aR3guyqtSsMl6ImbMfOftg6IQcP27yXz8jLeHcbByc4lrO5QG8SOmHg93KrFLRa2NeT7rC+cvU89jhtvxusWKoq0cUtKuFNdsCvgAUgDRrOtJc4PPPelLpaw5VBLlTDCmMUODpkjXH1f7wgRArSyno5/dv2E0Lmuut2tqUk58beP8d710fLc37B+9x7Nvr+r6m6B8ACM33zI4Z5xK+dZ3WMAMud9MmP0rHwMI4tMji2K2q9zW0NQc6DQPr6axMKUKmBoTWGyQhQtZmw==
+X-HE-Tag: 1794811664-244362
+X-HE-Meta: U2FsdGVkX1/AYfIX2udjFX+dn/cA58ySPSIZWcAVROvMDI2JQdxBKzgBNFwk+9ST75YnP+HNELQHvpFKgXNvvdtIBHNTYKRcd4oOPQMEGzFUxQui0YbeacASgQuNl88Vq6sIGmnlvbjB00+tcBZZQba9wTuyb2KK2i68grstW0A4A+Zw5121lA73xWcJHKirIO2nrb4ogXSnyURLBksLrDn2UC6Wz576V3sVLZl/BHtyygyXGYnqyxBxJ2N54Toj0ST1bLp+gJore2RtgXhj/FSdUwORAbyC3SO50quvO4V9ro8LGOiSP5jk4bhm1vvQ1eygx48AG38snwXLA/G2BjPvd5t/UUEUnvoPatUyWcm65JXy/Y1MuSwfsmyK1cu8tn1X2aZqtn37xShYISXjQGY7ZjijiFjntopZPr1LaoEf0KqrJ9p3x4LiGBaSrfMavbNujWu5UEPclob0Lm8YEbx0kZ09nNOdqHoGlo3BqLLr4QmTUYeID1JKWWOYYHAWOPkUSjHnvBVJmjLD+vev05os48KDnxbxusAK3QiZJkkW/D8dHXf/zonFD1kJNzYB/7gfFhYu+cr+FE/xN0Hh+PgurDtVHZYvMmmNax+BQRWptYj6I3+U7neQ9SVIutCKyPHKZYHbxXC112MeygEGGNb/KHwIa8tA8NkfhG8t3nVq16iqyNtLiBj/a8G1JtsM5B3n3H3A4lqJr2i1GiGtfLbB5hyl37ZhmjF1LpBAjzKul4J39O0tt/ejk8yQ3ss7pR0AJgAflmA483yJx92Vt+RvX63nmfqMad8rrSDFaJDulJXMt7n0MUOtc8cJigJ910MkFQqjEePTDZgZKGQmNLLrws8eti6sk6v+sQGClWgti1BgoTvXfrNtFNU04eY3Y2lbHIQOxCZDiJpmWUgz0OEAPovZEqt/AOp9zqUknokX1yZ96p4Yt2L77fHxUOzHkFT7cZ+PHchbJ1WmhT4
+ AFIJJjlR
+ NEW+O/3zE1IFn9UZCgFqAvisAhbtqJalTVUr+cwZWzmdp8YsImaTmkIyhtPjpIfO1ZOjPuheiE1buF194v8LCicExpUsW8NJy7+qYyr3d2XzhIUq8Cum+LIJK4E/YLeiEChpvixzmRVsIAN9LG23YU6Y4DKZWb07QIQ0mBPVYBCZ8sYfONTmCxGloU41dIYd7CHVDoMgTmG4NLu77NP1nXgJxdm4dBOz2u1+3trdhQquFEMWtcELlJpf1dZabCrOz4Vnnvg96jGlgROc413JG6HBevqHpyJF5uV1L8mLuNAIYRiq99rjEc6tjOvmE50/QZ0jHbKZ7N/KYSMT1opWBoXEDb08XosiRMSXacfIr8GL0pXMRGP/Qh/RU4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,85 +103,195 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Enabling CONFIG_SLUB_TINY results in the caches' min partial slabs
-threshold to be zero, thus every slab where all objects become free is
-freed immediately. It also sets the default slab_max_order to 1, with
-the goal of reducing the potential of internal slab fragmentation.
+CONFIG_SLUB_TINY shares several slowpaths with debugging as both of them
+avoid percpu caching of objects. With the goal of replacing the config
+with a boot-time decision, extend this sharing by hooking
+slab_tiny_enabled into kmem_cache_debug() check itself.
 
-Rework both of these decisions to be based on the newly introduced
-slab_tiny_enabled flag instead of #ifdefs. It's still possible to
-override the reduced slab_max_order with the boot parameter, as before.
+This is made possible by the new SLAB_DEBUG_NOOP debug flag. Make
+slub_debug_enabled static key always available (not just with
+CONFIG_SLUB_DEBUG enabled) and have slab_tiny_enabled add
+SLAB_DEBUG_NOOP to all caches in kmem_cache_flags(). Do this also in the
+CONFIG_SLUB_DEBUG variant, which is currently exclusive with
+CONFIG_SLUB_TINY, but that will be lifted later.
 
-Also adjust the same way the check in calculate_sheaf_capacity() that
-sets sheaf capacity to 0 with slab_tiny.
+Remove the various IS_ENABLED(CONFIG_SLUB_TINY) checks that
+complement kmem_cache_debug() checks as they are no longer necessary.
+
+While removing/adjusting the CONFIG_SLUB_DEBUG #ifdefs, also convert
+CONFIG_SLUB_DEBUG_ON to *_STATIC_KEY_MAYBE().
 
 Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slub.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ mm/slab.h | 18 ++++++------------
+ mm/slub.c | 38 ++++++++++++++++++--------------------
+ 2 files changed, 24 insertions(+), 32 deletions(-)
 
+diff --git a/mm/slab.h b/mm/slab.h
+index 835d977634ec..7ea057fda751 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -506,26 +506,20 @@ struct slabinfo {
+ 
+ void get_slabinfo(struct kmem_cache *s, struct slabinfo *sinfo);
+ 
+-#ifdef CONFIG_SLUB_DEBUG
+-#ifdef CONFIG_SLUB_DEBUG_ON
+-DECLARE_STATIC_KEY_TRUE(slub_debug_enabled);
+-#else
+-DECLARE_STATIC_KEY_FALSE(slub_debug_enabled);
+-#endif
+-extern void print_tracking(struct kmem_cache *s, void *object);
+-long validate_slab_cache(struct kmem_cache *s);
++DECLARE_STATIC_KEY_MAYBE(CONFIG_SLUB_DEBUG_ON, slub_debug_enabled);
++
+ static inline bool __slub_debug_enabled(void)
+ {
+ 	return static_branch_unlikely(&slub_debug_enabled);
+ }
++
++#ifdef CONFIG_SLUB_DEBUG
++extern void print_tracking(struct kmem_cache *s, void *object);
++long validate_slab_cache(struct kmem_cache *s);
+ #else
+ static inline void print_tracking(struct kmem_cache *s, void *object)
+ {
+ }
+-static inline bool __slub_debug_enabled(void)
+-{
+-	return false;
+-}
+ #endif
+ 
+ /*
 diff --git a/mm/slub.c b/mm/slub.c
-index 0238c990351c..9bd16e04ea24 100644
+index 9bd16e04ea24..ac9dcb4682fb 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -272,7 +272,6 @@ void *fixup_red_left(struct kmem_cache *s, void *p)
- /* Enable to log cmpxchg failures */
- #undef SLUB_DEBUG_CMPXCHG
+@@ -202,13 +202,7 @@ enum slab_flags {
+ #define __fastpath_inline
+ #endif
  
--#ifndef CONFIG_SLUB_TINY
- /*
-  * Minimum number of partial slabs. These will be left on the partial
-  * lists even if they are empty. kmem_cache_shrink may reclaim them.
-@@ -285,10 +284,6 @@ void *fixup_red_left(struct kmem_cache *s, void *p)
-  * sort the partial list by the number of objects in use.
-  */
- #define MAX_PARTIAL 10
+-#ifdef CONFIG_SLUB_DEBUG
+-#ifdef CONFIG_SLUB_DEBUG_ON
+-DEFINE_STATIC_KEY_TRUE(slub_debug_enabled);
 -#else
--#define MIN_PARTIAL 0
--#define MAX_PARTIAL 0
+-DEFINE_STATIC_KEY_FALSE(slub_debug_enabled);
 -#endif
+-#endif		/* CONFIG_SLUB_DEBUG */
++DEFINE_STATIC_KEY_MAYBE(CONFIG_SLUB_DEBUG_ON, slub_debug_enabled);
  
- #define DEBUG_DEFAULT_FLAGS (SLAB_CONSISTENCY_CHECKS | SLAB_RED_ZONE | \
- 				SLAB_POISON | SLAB_STORE_USER)
-@@ -7706,8 +7701,7 @@ EXPORT_SYMBOL(kmem_cache_alloc_bulk_noprof);
-  * take the list_lock.
+ #ifdef CONFIG_NUMA
+ static DEFINE_STATIC_KEY_FALSE(strict_numa);
+@@ -1041,11 +1035,7 @@ static inline void *restore_red_left(struct kmem_cache *s, void *p)
+ /*
+  * Debug settings:
   */
- static unsigned int slab_min_order;
--static unsigned int slab_max_order =
--	IS_ENABLED(CONFIG_SLUB_TINY) ? 1 : PAGE_ALLOC_COSTLY_ORDER;
-+static unsigned int slab_max_order = PAGE_ALLOC_COSTLY_ORDER;
- static unsigned int slab_min_objects;
+-#if defined(CONFIG_SLUB_DEBUG_ON)
+-static slab_flags_t slub_debug = DEBUG_DEFAULT_FLAGS;
+-#else
+-static slab_flags_t slub_debug;
+-#endif
++static slab_flags_t slub_debug = IS_ENABLED(CONFIG_SLUB_DEBUG_ON) ? DEBUG_DEFAULT_FLAGS : 0;
+ 
+ static const char *slub_debug_string __ro_after_init;
+ static int disable_higher_order_debug;
+@@ -2032,6 +2022,9 @@ slab_flags_t kmem_cache_flags(slab_flags_t flags, const char *name)
+ 	slab_flags_t block_flags;
+ 	slab_flags_t slub_debug_local = slub_debug;
+ 
++	if (slab_tiny_enabled)
++		flags |= SLAB_DEBUG_NOOP;
++
+ 	if (flags & SLAB_NO_USER_FLAGS)
+ 		return flags;
+ 
+@@ -2104,6 +2097,9 @@ static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
+ 					struct slab *slab) {}
+ slab_flags_t kmem_cache_flags(slab_flags_t flags, const char *name)
+ {
++	if (slab_tiny_enabled)
++		flags |= SLAB_DEBUG_NOOP;
++
+ 	return flags;
+ }
+ #define slub_debug 0
+@@ -3964,7 +3960,7 @@ static void *get_from_partial_node(struct kmem_cache *s,
+ 		if (!pfmemalloc_match(slab, gfp_flags))
+ 			continue;
+ 
+-		if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
++		if (kmem_cache_debug(s)) {
+ 			object = alloc_single_from_partial(s, n, slab,
+ 							ac->orig_size);
+ 			if (object)
+@@ -4578,7 +4574,7 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
  
  /*
-@@ -8027,7 +8021,7 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
- 	size_t size;
+  * Slow path. We failed to allocate via percpu sheaves or they are not available
+- * due to bootstrap or debugging enabled or SLUB_TINY.
++ * due to bootstrap or debugging enabled.
+  *
+  * We try to allocate from partial slab lists and fall back to allocating a new
+  * slab.
+@@ -4632,7 +4628,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
  
+ 	stat(s, ALLOC_SLAB);
  
--	if (IS_ENABLED(CONFIG_SLUB_TINY) || s->flags & SLAB_DEBUG_FLAGS)
-+	if (slab_tiny_enabled || s->flags & SLAB_DEBUG_FLAGS)
- 		return 0;
+-	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
++	if (kmem_cache_debug(s)) {
+ 		object = alloc_single_from_new_slab(s, slab, ac);
  
- 	/*
-@@ -8763,6 +8757,9 @@ void __init kmem_cache_init(void)
+ 		if (likely(object))
+@@ -5861,7 +5857,7 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+ 	unsigned long flags;
+ 	bool on_node_partial;
+ 
+-	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
++	if (kmem_cache_debug(s)) {
+ 		free_to_partial_list(s, slab, head, tail, cnt, addr);
+ 		return;
+ 	}
+@@ -7573,7 +7569,7 @@ static bool __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
+ {
+ 	int i;
+ 
+-	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
++	if (kmem_cache_debug(s)) {
+ 		const struct slab_alloc_context ac = {
+ 			.caller_addr = _RET_IP_,
+ 			.orig_size = s->object_size,
+@@ -7874,7 +7870,7 @@ static int init_percpu_sheaves(struct kmem_cache *s)
+ 		 * cache.
+ 		 *
+ 		 * We keep bootstrap_sheaf for kmem_cache and kmem_cache_node,
+-		 * caches with debug enabled, and all caches with SLUB_TINY.
++		 * and caches with debugging enabled.
+ 		 * For kmalloc caches it's used temporarily during the initial
+ 		 * bootstrap.
+ 		 */
+@@ -8691,7 +8687,7 @@ static void __init bootstrap_cache_sheaves(struct kmem_cache *s)
+ 
+ 	capacity = calculate_sheaf_capacity(s, &empty_args);
+ 
+-	/* capacity can be 0 due to debugging or SLUB_TINY */
++	/* capacity can be 0 due to debugging */
+ 	if (!capacity)
+ 		return;
+ 
+@@ -8757,8 +8753,10 @@ void __init kmem_cache_init(void)
  
  	slab_obj_ext_has_codetag_init();
  
-+	if (slab_tiny_enabled)
-+		slab_max_order = 1;
-+
+-	if (slab_tiny_enabled)
++	if (slab_tiny_enabled) {
+ 		slab_max_order = 1;
++		static_branch_enable(&slub_debug_enabled);
++	}
+ 
  	if (slab_max_order_param <= MAX_PAGE_ORDER)
  		slab_max_order = slab_max_order_param;
- 
-@@ -8886,6 +8883,8 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
- 	 */
- 	s->min_partial = min_t(unsigned long, MAX_PARTIAL, ilog2(s->size) / 2);
- 	s->min_partial = max_t(unsigned long, MIN_PARTIAL, s->min_partial);
-+	if (slab_tiny_enabled)
-+		s->min_partial = 0;
- 
- 	s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
- 	if (!s->cpu_sheaves) {
 
 -- 
 2.56.0
