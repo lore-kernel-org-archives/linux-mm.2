@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68732606A32A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA181606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iSdNGUDn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J1iRwSzP
 Received: by kanga.kvack.org (Postfix)
-	id DABE26B05B5; Mon, 16 Nov 2026 07:49:02 -0500 (EST)
+	id E95C96B05B6; Mon, 16 Nov 2026 07:49:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D35746B05B6; Mon, 16 Nov 2026 07:49:02 -0500 (EST)
+	id E20406B05B7; Mon, 16 Nov 2026 07:49:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C72696B05B7; Mon, 16 Nov 2026 07:49:02 -0500 (EST)
+	id D5CD76B05B8; Mon, 16 Nov 2026 07:49:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A35E76B05B5
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:49:02 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1DC1AA02F5
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:49:02 +0000 (UTC)
-X-FDA: 85440962124.07.1A983D7
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A83226B05B6
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:49:08 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B092C096D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:49:08 +0000 (UTC)
+X-FDA: 85440962376.23.F2337E2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7E40DC0006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:49:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iSdNGUDn;
-	spf=pass (imf10.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7153C180004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:49:06 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J1iRwSzP;
+	spf=pass (imf06.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794833340;
+	s=arc-20220608; t=1794833346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4F6U5hwvw8gwNmHBNKQhCDls4ausjqIT8kXPov+zDoA=;
-	b=R3jCZEkLcaFNG5gjRaQh6ezmwcUkA7TO1Tpky3xjCu9V/py+CpjkoX9vu+4nrBUv43BPuA
-	96JUKJMIE6LJVB3YJEHMkU9GkPVgfMmutN9AbJ9jlWoeRP1x5+CTGIytYgPP6trWIX89dP
-	ShBR2mKedb0+4kJdlElGtBZSjg2Ii6Y=
+	bh=T+kkEjnaw2ySVd4lLiujiWW53ZRBsmmAWW3cy3wlJjw=;
+	b=Rk8yOOx9OlRXRiLO3jCOcrFVC5VNYjKU5E3VfL/Bn5YCjanokpibv/ZWRsuWHBxRCB1qts
+	pE+tJmNj1sWobEN6VsXHO9V5DjwfO0jmv3rfcduMH2m07q9zZrga3R6WGFVMdVF/q+EJfH
+	QzDMxyk8ynIn7n7pV1anNn/aFDGkNeg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794833340;
-	b=gZ1gmCrUsoe8b0agWdnAizK3uwaerfXxpl9wFFRN3ChqsRGSUufDLHluKLL+R0dcxblksZ
-	f/X3XMhlOxnCZzVonCp7DZryLkeb7frprqR9PHxxCv/PcSgkotcXjtA5pyQ+MpXtgF80wz
-	vEmGmFVwQW+TGNzweQ4SAItSI1MHPJk=
+	t=1794833346;
+	b=MACTNPFMLns169NwZSJfUNYRP4/zt4c1Yxubbu6HdKYgSbWd3E+EoNZ1ZTpfvxcUZvjSRL
+	Z4CBMoU9Ul94bRjW1lm0mkRcfBxCMBwEhiZIXox5r6/4wRTIwNMJaC+14/aZsXQe4HCJiE
+	xveNsIMVry76nrApThIL+cZxVge651U=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iSdNGUDn;
-	spf=pass (imf10.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J1iRwSzP;
+	spf=pass (imf06.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C85C8437C5;
+	by sea.source.kernel.org (Postfix) with ESMTP id C9E7F43421;
+	Mon, 16 Nov 2026 12:49:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FCF1F000C4;
 	Mon, 16 Nov 2026 12:48:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A251F000C4;
-	Mon, 16 Nov 2026 12:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794833339;
-	bh=4F6U5hwvw8gwNmHBNKQhCDls4ausjqIT8kXPov+zDoA=;
+	s=k20260515; t=1794833345;
+	bh=T+kkEjnaw2ySVd4lLiujiWW53ZRBsmmAWW3cy3wlJjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iSdNGUDnUPPi4pJnAYBKNnCGTaI+y4qb3uN/K5lIkcESpOPrpKPgqoRvuRlqXEFp/
-	 D22TIAOQoLnM4fj+lgCWae9ef+MQKYOaeqrQgq0dhWWtnjfAThJNwLHjtsfOcC5RbD
-	 Np0pFfdb5cSXXXZAUynvQxQrYr1pxZBp6UXANT9o7ZTogMmpoIoohw9lcwxG03mhpX
-	 Oy2/oEtzbGj0awkxpXQl7L8affCM3OatgSUKikQvjQ8lVdfzBbeLPTvGwJaiSqc/fS
-	 78SKOIgyWd1tcz2HtBmGbx4T2VjGTdAtXLoFfYLGAeU5FNyhXMeNcrhwM2xy6db58r
-	 GhZKMPeccyxAg==
+	b=J1iRwSzPkXkJExltWHVg0O8oGOL+tawW+ZmYEGgM1jmGAKgXx8sy7HnmkDQVv80Ss
+	 yg4kn+EGjPt1JGKZYyWmr96BKjuswmbOXfgaSRJVySsDYEtOeJ/ovVXA3/PGYaEEQg
+	 e3V7fokGmh+Jawesd3SW+NFvr+/7WMp05FEXbQ8wK0id5O9GLzTl/BNPOe8HMP9wyx
+	 SXMkzQFD+Nl7UMGApCdcv5Ze+xW2cYq4ISMrZw9YTpwVIzOyl4tI/WGNsQAg4Yn1Op
+	 xm4CxP/9WVSS9d5AIaFwkOz7gzndFMorMFu1XaBI6AixyyII7UmWDW9Dxmurqq67j6
+	 wYW15Z/uOQhDA==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-mm@kvack.org
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -88,31 +88,28 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	x86@kernel.org,
-	sashiko-bot@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3 03/10] ARM: pxa: support arbitrary PAGE_OFFSET
-Date: Mon, 16 Nov 2026 13:48:25 +0100
-Message-ID: <20261116124832.662455-4-arnd@kernel.org>
+	x86@kernel.org
+Subject: [PATCH v3 04/10] powerpc: kvm: allow flexible PAGE_OFFSET
+Date: Mon, 16 Nov 2026 13:48:26 +0100
+Message-ID: <20261116124832.662455-5-arnd@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261116124832.662455-1-arnd@kernel.org>
 References: <20261116124832.662455-1-arnd@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 773m9jzsco7anf7f4m7abijda8d81p9y
-X-Rspamd-Queue-Id: 7E40DC0006
+X-Stat-Signature: 7sjdsda4865k93w8hseqm7if311mrd7n
+X-Rspamd-Queue-Id: 7153C180004
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794833340-952541
-X-HE-Meta: U2FsdGVkX1/aIwOVcWglU81XlcCZ58Wv+M1eRicdTVMTGo0P0PABeHXFmphYZ0I5Jf/ELc9mYUSo64IMA7JUKqniF72S0VDXFmHXrrU7JTgkxob5imcY8kbbVOg+e8b7x+l1mIwqjWROVhw9/77qlUJp1kAgOH+HawhVwY42nFWId0U4Q2CbAYQt9HdtiB0L2BiBmJIm6ZmInBYlMPjLLUy84j3zjEp+7qScBfMt9HhnUZjfiAnlddf6X1XQDG/6hZNrOH44P+QgYk4sBJ6DtSz1A/Fdjp9STvgZQh0bgV24kGSKpL/tra8qANdx01dvA5iSNS3F9bYzdVpFn49YWMou63eBSk/w92sEAdJzeKIRhU+BxBoDwNOZqOJuEGUBTIsks5U9o3l7Tbuh5Hdu5WTNb8U0H3xndK+vj43bs/o6ngK8V+BK/lLilKmWcCO3JBAzn/5udNmKy8TNxL0+9KEtNmtO9O37rp35/ehGRiuCw/rgYS0K0btTOhQNlzFSsp3ltUav7FAgHgUgUWDc6jRz+PJ2LnFrEJ+J5o74evKeX73kOSnspUF1y7cf4ZgPySRikEvHVhngYDpLt4iN9VlWHj1y699i8UxzzsDI2KAxObCovUq+qIWptWSZaZOzexGx9fK1hgPvtZUla4VolpHW7ncNdiJ9+P4LoUCcmgTyB40cfDEt82FhtuhK2mK1F7P92fuZZjJV+VvFlrcel51LxZSUFkoGNYuGMSdMOs5G28XCgeTKsRqUc1ykcU/5x9+HUxjVfbYXvuPpC1JYsYbBlWio8BodXqCHXlt/z2NgqiMSQCF+qm1krWgi1wMn12D61uK4JKRQx0SK4K/omfnFnNks5qGRN0dc02MdxxB+WGkGoWU6ku8pBJygLyWAtauxjE32Ezk9VNx3CcEuxj/e3bHZMwomSskSubDbCpn8hJl/hFILLrwQrkcd+QK8Nl3Jy5m53STU8cPPYcw
- B0znsIVf
- 0ce6J0AUg01YsLu57zY+fo++/XB9krbXiZrM7H4huG26tZr7v/nYr8HOajlIkfzncaqEr3OfF4PRxN0OzcZF62kQdcmDnfxn9sgqI9FcS5YE6dWSXEa77LBFqIokIxwzrSYj+KWHyYiX1BAboEmMNN8OWXHJ0OqCCimXtW/83ZTcXoUw51XHZ6Etu1k5vVzTccSlLQaMbu5VF+o4gKKw9spLW79fmlinznXF7og0vSECgucQaKs+nHiV8auzqYBuMeTy5CgoBnPT05HPNHPtk71qsmtVqgzWu9DvM
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794833346-243770
+X-HE-Meta: U2FsdGVkX18loCGN/YNvFNZmmoVTTP5I1wR2NjoUjQxwt8Zbw1t6IlXn9v1RoU+miDiu60PNwg2ED40LOXcHjNVxjN9hKxB6hWUcDh4Ee8fRbx2iPfH2OcdtAgsHn7+sS2QFblu2mDTvGbthdpzFmMvWOayA8EngLPH2urrYaAR/mHyweA8Lrd83cvK4ALwgTUaFIq+GJqH0ylKc8c5afMl8AlQsmXhxiA+I2Mc8uFyTFnWE9pOB5iu2RVC8cpRGkoBGDC5jnuCu/U5OUZ/cgwnzroW2Vc8//pC2my+xyUT2N4qIviyUhqxShvNiRYApQpteH28tsGc1wrTZ+3pTVPnjPoPzy3YaDdJSDdyxwboDMWXDUEqU2gWydriTa0N/6nZu2G/PlnzYku0/LbKm9vBQblyDvaLFnrkVN/EPvHoluEHt74HL9Ks6VsdWfkfqgFhxIQKH/giGu+0Jtkd/I9cj7bGzOp7xjMzy1958Bh+dnOrfCwFJ/qYgUCO+dOdng00mSw71XnbcwKgB349IhdRsTkAX9SEPsdQZPOqe4FXzgdP/xPHuWO50OkvhS6qiy++yvsaVJgSdjuju1Zmzqgx+mxgCzM0b8wuv/Mhs4Bna5qUu1belYJyPWeHNyZ/n6HLvDl3QEV6sG/rADQ3hLDhfTNGtjyrY65lmTnhqbv+YahjfkjMbwzTTxOJXlwCVVAUkJpSm8U9pjDeHg4yil99MDrR0hYxy5HMkMu+VSlgajTAsWD2uCRgtIZvnho4r4SmPpjMxeTdSt6abreZb6ZtgnLwqItCoeStXHz4zESRg9N2e0v2qa2UyMzlAz2Q9Eqe5zSZTMfsr2wRq5r2d/uPzFOJpgWNB5rjsrvY98fSRJf2lma7AadnXu9QKsgGdfS5V0zQ/i7oSEdjPuYOVVOmaOVLFz8XHCsYcj99UzYpas5Ov/7IYolULPrBD59T0O3wNpG/yZC1jf6Fyl1I
+ inEtsBDK
+ CJyKaEsV/WdiYCb8e9bgoPtTnIHP1xKd63aDeINUawi8LrVIep9UeweHWFxS10JM546KJkmYlUZo4Zng9BuczxYZ66hn4OGBE/78/Si5nrGXGTPdZGqUsSNMHPMtXf2cLCIRwUYEKxvrE3C0pGcCRPIhmwbY0T+W8mKExyxUSHVFny1HuE468WPO2oyyE1qyKAF4+pRpFgXIpI8xJDzrHmeWVQhqb604qkDL0txyXMjur+PE1jwM0tHB+T+0DWDY3Qd67
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,35 +120,61 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The pxa3xx_cpu_pm_suspend() implementation hardcodes the default
-PAGE_OFFSET value for CONFIG_VMSPLIT_3G. This has always been broken
-for other configurations but becomes much worse now that the default
-is changing.
+As described by the Sashiko bot, the KVM code on powerpc has multiple
+hardcoded PAGE_OFFSET values. In order to change the default, make these
+compute the correct register values from configuration symbols.
 
-Fix this to use the correct compile-time constant instead.
-
-Reported-by: sashiko-bot@kernel.org
-Fixes: c4d1fb627ff3 ("[ARM] pxa: add preliminary suspend/resume code for pxa3xx")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/sashiko-outbox-212719@kernel.org/
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm/mach-pxa/pxa3xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_32_sr.S     | 4 ++--
+ arch/powerpc/kvm/booke_interrupts.S | 4 ++--
+ arch/powerpc/kvm/e500_mmu_host.c    | 3 ++-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-pxa/pxa3xx.c b/arch/arm/mach-pxa/pxa3xx.c
-index 06c578ea658e..253770075a8b 100644
---- a/arch/arm/mach-pxa/pxa3xx.c
-+++ b/arch/arm/mach-pxa/pxa3xx.c
-@@ -103,7 +103,7 @@ static void pxa3xx_cpu_standby(unsigned int pwrmode)
-  */
- static void pxa3xx_cpu_pm_suspend(void)
- {
--	volatile unsigned long *p = (volatile void *)0xc0000000;
-+	volatile unsigned long *p = (volatile void *)PAGE_OFFSET;
- 	unsigned long saved_data = *p;
- #ifndef CONFIG_IWMMXT
- 	u64 acc0;
+diff --git a/arch/powerpc/kvm/book3s_32_sr.S b/arch/powerpc/kvm/book3s_32_sr.S
+index 6cfcd20d4668..0d8a7857f2bd 100644
+--- a/arch/powerpc/kvm/book3s_32_sr.S
++++ b/arch/powerpc/kvm/book3s_32_sr.S
+@@ -113,8 +113,8 @@
+ 
+         li      r0, 4
+         mtctr   r0
+-	LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * 0xc))
+-        lis     r4, 0xc000
++	LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * (PAGE_OFFSET >> 28)))
++        lis     r4, (PAGE_OFFSET >> 16)
+ 3:      mtsrin  r3, r4
+         addi    r3, r3, 0x111     /* increment VSID */
+         addis   r4, r4, 0x1000    /* address of next segment */
+diff --git a/arch/powerpc/kvm/booke_interrupts.S b/arch/powerpc/kvm/booke_interrupts.S
+index 205545d820a1..ede394f3f63f 100644
+--- a/arch/powerpc/kvm/booke_interrupts.S
++++ b/arch/powerpc/kvm/booke_interrupts.S
+@@ -230,8 +230,8 @@ _GLOBAL(kvmppc_resume_host)
+ #endif
+ 
+ 	/* Restore host IVPR before re-enabling interrupts. We cheat and know
+-	 * that Linux IVPR is always 0xc0000000. */
+-	lis	r3, 0xc000
++	 * that Linux IVPR is always PAGE_OFFSET. */
++	lis	r3, PAGE_OFFSET >> 16
+ 	mtspr	SPRN_IVPR, r3
+ 
+ 	/* Switch to kernel stack and jump to handler. */
+diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+index fa6128119874..9edad9bed589 100644
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -115,7 +115,8 @@ static u32 get_host_mas0(unsigned long eaddr)
+ 	mtspr(SPRN_MAS6, 0);
+ 	mas4 = mfspr(SPRN_MAS4);
+ 	mtspr(SPRN_MAS4, mas4 & ~MAS4_TLBSEL_MASK);
+-	asm volatile("tlbsx 0, %0" : : "b" (eaddr & ~CONFIG_PAGE_OFFSET));
++	asm volatile("tlbsx 0, %0" :
++		: "b" (eaddr & (rounddown_pow_of_two(PAGE_OFFSET)-1)));
+ 	mas0 = mfspr(SPRN_MAS0);
+ 	mtspr(SPRN_MAS4, mas4);
+ 	local_irq_restore(flags);
 -- 
 2.53.0
 
