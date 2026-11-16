@@ -1,29 +1,29 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F1C606A891
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1AC606A896
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oayyYlMd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E/NTwgEo
 Received: by kanga.kvack.org (Postfix)
-	id 6C8526B05B7; Mon, 16 Nov 2026 10:11:08 -0500 (EST)
+	id 9399C6B05B8; Mon, 16 Nov 2026 10:11:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 678CE6B05BA; Mon, 16 Nov 2026 10:11:08 -0500 (EST)
+	id 9118F6B05B9; Mon, 16 Nov 2026 10:11:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5916B6B05B9; Mon, 16 Nov 2026 10:11:08 -0500 (EST)
+	id 84ECA6B05BA; Mon, 16 Nov 2026 10:11:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 347BC6B05B8
+	by kanga.kvack.org (Postfix) with ESMTP id 5B1056B05B8
 	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:11:08 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B78C840130
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E47CD1A0136
 	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:11:07 +0000 (UTC)
-X-FDA: 85441320174.03.BBD29EF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0D1ED14000E
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:11:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oayyYlMd;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+X-FDA: 85441320174.10.75BD428
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4D030100003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:11:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/NTwgEo";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794841866;
@@ -31,63 +31,67 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qAt5aWJop6Pu0d7LhLCZqFYPYEr0G+2IZf0ofUW/gfI=;
-	b=vWamNeBDltralBYSeN3hB0IV9arA3eo18W+TQQzxqO7Twf0SKY+rABqGTRjcRdchqZEK6E
-	0krhZ3N9qFprYnZ1oj1agI9SrxUFIzf12+BFq5TuDbaW+KVuTbwzi0I1TWviRF/SZdE9GA
-	k+85BrVJnUjTumJXSs0rP4fFjYrHuQo=
+	bh=w1WUFy00WKif50635jpAYGG0Z7r0L+cuC+V6UO7Tvv0=;
+	b=xL4t13r8pbddEu4Lez2Muyh+VqhKAbrxikpbjh8k0FxnYN0nzZDi6s5tqDGLRH7S8CeYcn
+	wKhEwxj2pL5ZGnexS67b6/1O0e1N5CmfAkZRMKGe4Nk9Fk+fT6iicQwNQbBPiJiXQAlWvk
+	ezARGRQReayXpkP/4HlvJcmryixDuzg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/NTwgEo";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1794841866;
-	b=GkwqW6eBcV+EDvCcOQDGIG4KLwHAyrN8SCE9QEVdz/M8+U2pZ9wqZBR97A6pMCzR4QlMgN
-	CkL65tuj9Cc3S2FYRU0kckVlL927MiZEdlAlYx8DpSBeBoTDHOnpZ5QO82dhMldAdMm7AH
-	h0PEpwgA9SMvP29Ze+FBdXZFY0GLnEo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oayyYlMd;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=D3xk8m08AOIxI/r4uUKYUWZK8w0rpo8jUUGUlQ4uWjhM5GfpNtUHKnTVxW92pJe5s0WCG7
+	1yNg28sTz9y0HvVH5JN/E/RMt9yY8oe2h66zrYqH7CVqP/WZpXSrfFtMg3jMvUnsOvYQlR
+	h7RwRr1swyKsCfSVpS54GopkwQnNOSQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 421A640B19;
+	by tor.source.kernel.org (Postfix) with ESMTP id E0F0462D34;
 	Mon, 16 Nov 2026 15:11:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7801F000CC;
-	Mon, 16 Nov 2026 15:11:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5611F000CA;
+	Mon, 16 Nov 2026 15:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794841865;
-	bh=qAt5aWJop6Pu0d7LhLCZqFYPYEr0G+2IZf0ofUW/gfI=;
+	bh=w1WUFy00WKif50635jpAYGG0Z7r0L+cuC+V6UO7Tvv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oayyYlMd88BXip/D3W6vthiAlG7kS+IGPEYdh21vy2cV/fVfMXJCA43m+oCZtobUL
-	 P+CfAPVxdXvma8HtULzj6t1wKCV7joPwPSdNCc+FrDxV2XWMDyrNVcs+I8k9DYk2Rc
-	 nMkGPtKwhtoofcNlLRO2T6jqGFXONOduUOjLvQaXJj11q+3Ut7HE4SMUb0M8+6Hu/P
-	 qEy4pje+8RPkAjLmfdYB1J7nnXMOQfV9HyHmARnmC0+758o7WqaA3umI2Hru9KIcyj
-	 4lKIBH0ERyhFHeid6tv5KJ0Xw1BBxyjtMeqEJlOK5Bi831TZR3dzXX34H44Qz48Dgq
-	 vjTQvtf9h9Jqg==
+	b=E/NTwgEoelaYeC6OqXmks8N/gaUD+AcdUO8xivFoV/Ry26MI65gDTP9Ku0jol9iFJ
+	 tDagg5m3MgBwxozICWPiRceFqhmjtSQa0Pg0tlEsI2eSRrS5HBjEwjSOTdaOYOP4Pw
+	 sLpxCJ2dNldClQYI5XqEWGpERmwgVvBvJToJhJNfBgnuwSEmVKkXD51Zqbhbb37neC
+	 DXU10NdfGwhiHvc0TBe6YIterzMpGxBTLR1hmdAqxJXIzOV/nXWEugbxnEWaPrTvSY
+	 T79+2yYiY1BLICqLqXRHpQW3dPcIhogVa4euAS+9JScmG0ivR2hIRIixBwSsOdgz2B
+	 LelZrxTgyAOJg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Aveline Noir <jm5905938@gmail.com>,
+Cc: Enze Li <lienze@kylinos.cn>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	SJ Park <sj@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/2] mm/damon/paddr: add KUnit tests for addr_unit conversion
-Date: Mon, 16 Nov 2026 07:10:51 -0800
-Message-ID: <20261116151057.81692-2-sj@kernel.org>
+Subject: [PATCH 2/2] Docs/mm/damon/design: replace "same to" with "same as"
+Date: Mon, 16 Nov 2026 07:10:52 -0800
+Message-ID: <20261116151057.81692-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261116151057.81692-1-sj@kernel.org>
 References: <20261116151057.81692-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0D1ED14000E
-X-Stat-Signature: 1s5b9ticyki7z3jti5wo5ehgio71nax9
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794841865-537025
-X-HE-Meta: U2FsdGVkX19A4mSyZLPktkSbBicZC4ZMtA/Zi0HgMC/yFBdoWrQGk9IRc5Un9r49n0bVMXj3QynZW6QC6t/b6Akb88hzoTS3BmfGPz9bVRAZNyxqa7Qw0G84ghzzSAA0I42IPwF63ConbhSE1/lHlz9CZ4H0haGVnqDO425eB+ieH+ZEFI0mdt3xqTS5PLU7L3sO7PXmCIIhNIX5y9j2iNy0HN3cUL5Ae/2UGXUuoXyAQrK4cSPv1gVxzmWb0p1bUq+kbYiw+brs8DvWJqZBtunXxn17S7lr/APia5256s9DVnaHJTK8lxOsO920lCQ2LM59LPZ/LLU91GapHTFr7okghClMWei/guT7GqxDm3WNZSuxmr/TzO/ScS3LUexkC3qDng/aBIqwIWP3bcafbwJTKN8FWLv/J6JvEyyRx9m/vLf1ZossuqwXXM4MPUt5VVX7iIIWymZQD6yQYpNJM8eeKN5tagxmDylwYjPi8tIN2Hn63Zv0cNQtbw4KeTM35OZfEKdBhVkrvsgetQKC3ExdVn3ZQ7H+gH44EtpaxREIGlCF5H1fx1CJc16Q1Df2WN5064umAQzEMVogx3vCMz4AfphU/izDAIsQJ7BpDImyrxcdi/BHU09UqxzHmDF2cKAooW5r39DnvKotTXuKZOWiZUQPv2NA9oe7QhWx2g2/rpLHQNyUKubeilsQZjsuMrsEVHFWlkgHP4ubn3uVxB8Z5d1A9xlovfUk+Jboiz0ngZU3MaWQGQy6A1Ql+nX90iyvLpfgyd6U1/DHcg4kPga4rN48KRZ6vlbz0NXzYK5oY8VUa4gObyGWfgsb3lsEJ08y53Vt01v96j/I5Rk5PvaYeNiy25a/DTIDU4ImCpjdI4N6gfJ4D4N1LUnvuKooTmJMWR/63rqWhoP0bqBueCJ5Xx/GwqYBAHZWxopQ9apEzYYrmn9VaD2YJ7MIkAnWHrObCP9ZJWzKtd/9SJq
- bUItfHUI
- FEtSSi8rI85z7dBMYdoLIXm3ByPLoSI23QfSysdU3lFEAzB5XI/FfIlIIUS72LETnwHlgUGUB9gPQSo20XVxk5OdtCUR7zy0u0xGCQlUvJZ/voqySgffmbc75MtGDwUIbl4o89QXPsyEgoun5j3kKAeWQFwMCRX90UzMPblh5J38P309gr8xS7CdH6/3Usp1YbyiQr16CY++Sk3E345uHm0rogE9euZgKGR+WGb+ZKH1x0xKvW5E+ucWZPPCbnsugl8haesqsF4xCDOnxWigM2VDCkKLBvn/5+ilW2XMo883ospY=
+X-Stat-Signature: 46ch985xj9j4caisunk3sfq37azhtkn6
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4D030100003
+X-Rspam-User: 
+X-HE-Tag: 1794841866-325595
+X-HE-Meta: U2FsdGVkX18AfcgPnq+/7O4LE39xaEZdSz0Y9Q5A70IFZ8r/fFBhu8UcLeEy1Y+nDDhE6CmbF9NKyytoRxJYrB9IXbpK0UGdTawVEXPV3/kHzcpzbCBDR8ffy3DGgVEG86gGlM2Nugoy8m4rtg623KNjW9esWlR0Xx3qN71VWBba8qvjqhr8L8+1W9YntWzTorsQxYx8/BwlSCQOnAAnI3koJNzu+d4wegz2Mb6NWJmPhDVERI6poHM2TULqhl+be6avTOpjBNbVQoiArkGMN/8CrLHGadogoXFxU1E7wPOfU+hSmnV8ZBU984hY11DTumLWX2xFnF/IXzwDd/K5KKT87HRJ9jJ32NQRmUMJAHiiAzSpqFUfi+A+jGX64Y5kUE2SEA2iDNrr6LdbIOY0oX9HQFRj1bk1O+x+Lq87ONsFLmu6XjQ8yub7RE6LNQrQtwLybkljF8IGZALVo0lehW+7+papK3aVJ5blrerQAf3mJuuAX0sWfiJoSW9DD73JoRcoA+2XCs/sUcQ9D1UHGtr+rGshHTFdA1XTD+SXUraqKLABjsOxh/1VOdprQIKOGFX1uhkiELbY3nI88o+uLypnmMJeYyut1PYIzsSQwy92JjIhciHEsfveEQPIYQ+AB90sA+Oo/Bci3A0Hqtt8EgXpPqK+XVrhgqDDDIOuj28va2AossdY6Q/rXyLaMRSQMmxpAe/p1JhuQFE2pJao5TK70VmfZsBoJUZ+I7JFedQ/vXev4heswUrTPe/zkjBd7K9yBCgYJwXWOT6Rxma9/frKkWvGXHThTRlSdJLgB5Ks1ly8uFtzKnPgP1vqI9bw4ahGJ+jaAPX3EXtKtfeCtWNPMKvPqeztUhLYrnR/nrSk56MsgddNtQ9Tc1o5tt8q1u93suHfdIrwbj5l731fE5ryFhNAt/17KRTe8f0sW/rc0tgFyVAiktv82eYyJNmiixUxl6uQGyYKDgYnLB+
+ kpjTnCHo
+ FRJk66DfykozAavIhY/pH5x9TKbgGkkBSXkvd8kzxxSQkO+48Ro8a0COJa+P3+ZfzR9vWbRl6V20qV2s8tGvRSCyZkATdUUrz/OiaqK8np8yvsZp3goSi99VdTFKvjId9RrcOfE6ulw/wbE+97z7KPcIrI2BoRqKkCfRk/BWrmlSTr8RhTx9hHMfVKqpKzQMBSMUD8hbTljsepqkUPOR85FJPro03atebrMCvWfC70NP/lwr6ZKTw4kC7vynxCDuhzd+cRbTqeIUsGtMAbqrJyYM76A6rA+uXN410
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,142 +100,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Aveline Noir <jm5905938@gmail.com>
+From: Enze Li <lienze@kylinos.cn>
 
-damon_pa_phys_addr() and damon_pa_core_addr() convert between DAMON core
-addresses and physical addresses using addr_unit.  addr_unit lets 32-bit
-kernels with a 64-bit phys_addr_t monitor physical memory above 4 GiB,
-but no test covers the conversions.
+"same to" is not idiomatic; it should be "the same as" or "same as".
+This doc has six such usages.  Fix all of them at once for consistency.
 
-Add a KUnit suite for both helpers, including a case for addresses above
-4 GiB that is skipped when phys_addr_t is 32-bit.
-
-Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
 Changes from v1
-- v1: https://lore.kernel.org/20261109-test-damon-paddr-addr-unit-kunit-v1-1-bd10bb87be98@gmail.com
-- Shorten config prompt.
-- Collect R-b: from SJ.
+- v1: https://lore.kernel.org/20261114055436.5546-1-lienze@kylinos.cn
+- Collect A-b: from Randy and R-b: from SJ.
 - Rebase to the latest mm-new.
 
- mm/damon/Kconfig             | 12 ++++++++
- mm/damon/paddr.c             |  2 ++
- mm/damon/tests/.kunitconfig  |  4 +++
- mm/damon/tests/paddr-kunit.h | 55 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 73 insertions(+)
- create mode 100644 mm/damon/tests/paddr-kunit.h
+ Documentation/mm/damon/design.rst | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
-index 34631a44cdecb..a33f21c563475 100644
---- a/mm/damon/Kconfig
-+++ b/mm/damon/Kconfig
-@@ -65,6 +65,18 @@ config DAMON_VADDR_KUNIT_TEST
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index b676be6971589..6284b90054430 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -292,17 +292,17 @@ DAMON :ref:`context <damon_design_execution_model_and_data_structures>`.  The
+ registration is made by specifying a probe per attribute.  Each of the probes
+ specifies a rule to determine if a given memory region has the related
+ attribute.  The rule is constructed with multiple filters.  The filters work
+-same to :ref:`DAMOS filters <damon_design_damos_filters>` except the supported
+-filter types.  Currently below filter types are supported.
++the same as :ref:`DAMOS filters <damon_design_damos_filters>` except the
++supported filter types.  Currently below filter types are supported.
  
- 	  If unsure, say N.
+-- ``anon``: Same to that for DAMOS filters.
+-- ``memcg``: Same to that for DAMOS filters.
++- ``anon``: Same as that for DAMOS filters.
++- ``memcg``: Same as that for DAMOS filters.
+ - ``pgidle_unset``: Matches if the page for the memory is marked as not
+   access-idle.
+ - ``pgidle_set``: Matches if the page for the memory is marked as access-idle.
+ - ``hugepage_size``: Matches if the page for the memory is a part of a hugepage
+   of a given size range.
+-- ``active``: Same to that for DAMOS filters.
++- ``active``: Same as that for DAMOS filters.
  
-+config DAMON_PADDR_KUNIT_TEST
-+	bool "Tets for DAMON physical address operations" if !KUNIT_ALL_TESTS
-+	depends on DAMON_PADDR && KUNIT=y
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This builds the DAMON physical address operations Kunit test suite.
-+
-+	  For more information on KUnit and unit tests in general, please refer
-+	  to the KUnit documentation.
-+
-+	  If unsure, say N.
-+
- config DAMON_SYSFS
- 	bool "DAMON sysfs interface"
- 	depends on DAMON && SYSFS
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 5b773012a8764..e89cb14ee17be 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -479,3 +479,5 @@ static int __init damon_pa_initcall(void)
- }
+ If such probes are registered, DAMON executes the probes for each region's
+ sampling memory when it does the access :ref:`sampling
+@@ -706,7 +706,7 @@ There are two such tuning algorithms that users can select as they need.
+ The goal can be specified with six parameters, namely ``target_metric``,
+ ``complement``, ``target_value``, ``current_value``, ``nid`` and ``path``.  The
+ auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
+-``target_metric`` be same to ``target_value``.
++``target_metric`` be the same as ``target_value``.
  
- subsys_initcall(damon_pa_initcall);
-+
-+#include "tests/paddr-kunit.h"
-diff --git a/mm/damon/tests/.kunitconfig b/mm/damon/tests/.kunitconfig
-index 144d27e6ecc5c..9279f0c82be7e 100644
---- a/mm/damon/tests/.kunitconfig
-+++ b/mm/damon/tests/.kunitconfig
-@@ -9,6 +9,10 @@ CONFIG_PAGE_IDLE_FLAG=y
- CONFIG_DAMON_VADDR=y
- CONFIG_DAMON_VADDR_KUNIT_TEST=y
+ - ``user_input``: User-provided value.  Users could use any metric that they
+   have interest in for the value.  User space main workload's latency or
+@@ -736,7 +736,7 @@ auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
  
-+# for DAMON paddr ops
-+CONFIG_DAMON_PADDR=y
-+CONFIG_DAMON_PADDR_KUNIT_TEST=y
-+
- # for DAMON sysfs interface
- CONFIG_SYSFS=y
- CONFIG_DAMON_SYSFS=y
-diff --git a/mm/damon/tests/paddr-kunit.h b/mm/damon/tests/paddr-kunit.h
-new file mode 100644
-index 0000000000000..9839cc2330712
---- /dev/null
-+++ b/mm/damon/tests/paddr-kunit.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Data Access Monitor Unit Tests
-+ */
-+
-+#ifdef CONFIG_DAMON_PADDR_KUNIT_TEST
-+
-+#ifndef _DAMON_PADDR_TEST_H
-+#define _DAMON_PADDR_TEST_H
-+
-+#include <kunit/test.h>
-+
-+static void damon_test_pa_phys_addr(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test, damon_pa_phys_addr(0x1000, 1), 0x1000);
-+	KUNIT_EXPECT_EQ(test, damon_pa_phys_addr(0x40000, 0x1000), 0x40000000);
-+}
-+
-+static void damon_test_pa_core_addr(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test, damon_pa_core_addr(0x1000000, 0x1000), 0x1000);
-+	/* The conversion rounds down. */
-+	KUNIT_EXPECT_EQ(test, damon_pa_core_addr(0x1fff, 0x1000), 1);
-+	KUNIT_EXPECT_EQ(test, damon_pa_core_addr(0xfff, 0x1000), 0);
-+}
-+
-+static void damon_test_pa_addr_over_4g(struct kunit *test)
-+{
-+	unsigned long addr = 0xffffffffUL;
-+	unsigned long addr_unit = 0x1000;
-+	u64 pa = 0xffffffff000ULL;
-+
-+	if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
-+		kunit_skip(test, "phys_addr_t is 32-bit");
-+
-+	KUNIT_EXPECT_EQ(test, damon_pa_phys_addr(addr, addr_unit), pa);
-+	KUNIT_EXPECT_EQ(test, damon_pa_core_addr(pa, addr_unit), addr);
-+}
-+
-+static struct kunit_case damon_paddr_test_cases[] = {
-+	KUNIT_CASE(damon_test_pa_phys_addr),
-+	KUNIT_CASE(damon_test_pa_core_addr),
-+	KUNIT_CASE(damon_test_pa_addr_over_4g),
-+	{},
-+};
-+
-+static struct kunit_suite damon_paddr_test_suite = {
-+	.name = "damon-paddr",
-+	.test_cases = damon_paddr_test_cases,
-+};
-+kunit_test_suite(damon_paddr_test_suite);
-+
-+#endif /* _DAMON_PADDR_TEST_H */
-+
-+#endif	/* CONFIG_DAMON_PADDR_KUNIT_TEST */
+ ``complement`` is a boolean parameter that determines whether to use
+ complemented value of the target metric.  For example, if ``complement`` is set
+-and target metric is ``active_mem_bp``, it is effectively same to
++and target metric is ``active_mem_bp``, it is effectively the same as
+ ``inactive_mem_bp``.  ``complement`` is no-op when the target metric type is
+ ``user_input``.  For the metric type, the user should be able to emit
+ complemented metric values on their own.
 -- 
 2.47.3
 
