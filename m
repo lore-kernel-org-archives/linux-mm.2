@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4928606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA49606A336
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DfDaiG1q
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hwW9YhVo
 Received: by kanga.kvack.org (Postfix)
-	id EBAFE6B05C1; Mon, 16 Nov 2026 02:14:44 -0500 (EST)
+	id 19B476B05C2; Mon, 16 Nov 2026 02:14:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E925D6B05C2; Mon, 16 Nov 2026 02:14:44 -0500 (EST)
+	id 172FE6B05C3; Mon, 16 Nov 2026 02:14:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA8CA6B05C3; Mon, 16 Nov 2026 02:14:44 -0500 (EST)
+	id 0B02F6B05C4; Mon, 16 Nov 2026 02:14:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFE5F6B05C1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:14:44 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 65C101A02C2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:44 +0000 (UTC)
-X-FDA: 85440119688.20.A5242D3
-Received: from mta1.migadu.com (out-64.mta1.migadu.com [95.215.58.64])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 910A740006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DfDaiG1q;
-	spf=pass (imf07.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.64 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794813282;
-	b=5cMDpgnOTBHz3JLdl1MVAlIQWEDiYKoDb8OEiKOK9H0R5x3On8MAAU5Xg8MVH7gXZV27yP
-	1noPc1LihPijXsG+8Iq7a8EMG6HtzPgZdn86/oRUbsxhD22elRP1nYYcvX7VMfitarLTl4
-	ZjWaPUuHP8zqgcZfNKZaOAf75yU7yls=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DfDaiG1q;
-	spf=pass (imf07.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.64 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id E7F856B05C2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:14:50 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A6C140910
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:50 +0000 (UTC)
+X-FDA: 85440119940.08.731C4F2
+Received: from mta0.migadu.com (out-252.mta0.migadu.com [91.218.175.252])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A034A180006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hwW9YhVo;
+	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794813282;
+	s=arc-20220608; t=1794813288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d8GPmNrrbDyVAn3i8pP3Irq5ZXZX7zbqtdgKc3xpyyA=;
-	b=K/JFzEFTquoFm79unU6bi86hXqEzFOkjQwFvlsbrjfCxI5a+2Ovj0ZwSJkZCnAjGnr8hXr
-	Kj8jwdICqgycBJz/Ee6dXsiAF18OhN5NgPEOQSHYoE3VebEzQvepLco0RQh9NLK6V/Fmtq
-	R72fYMr30nUEhYN7i13KEXXFKXQvY3A=
+	bh=xXtS8nqPI8bMiiZsI5aMJRhf4Xi82nV2lL/o/RcncNM=;
+	b=LUM6UNJvhX5jY1r/oWBVFCb7lrnd5qUYFyqukG/ni/RlfSuQTzZ490PPKOl6L0asOK6SwV
+	dJYPkZSj2g/8bnCUKzokVuX/N6Q/CB1e1iwltPfUKau1rAbQu7gTywidsHbdcRI3POjvi4
+	IV+ClXnvo/daq8N4qqZaO9SXkTI0KeY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794813288;
+	b=rD+NrICTdd/yZ9wLVi+UIbsMRN1BkbaOPpOibqswgvStBA+olvLwS7OeGPXk3x64V3E6za
+	w3MFgbvyPg3nN13MaPrGp9wdP04wBXR2c0g8fetNK3V9byLz56HTuZw9W6wpqeWSHxH3Cv
+	O878mErrBS7wyczdbEQ0BMScfPKn3kc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hwW9YhVo;
+	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kV3VwCyfCvJMLMAaZdOv60N3vXq9IpfkDxA+THuP2XI=;
+DKIM-Signature: a=rsa-sha256; bh=5qs+zHZlkyqRDMqx7SNWEDLyLXIGQ6DciwEgGF1OF3Y=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794813281; v=1; x=1795418081;
- b=DfDaiG1qMVulpMmALcrcCWJ5j9wSA2DSpO+s2Ir5iKBYn9xCRhKJbdGFXRPC4FL51hLHD6sf
- yBLGtGdEVEWLedCVu9bnWgjBRBv5v46B9V+aClPEIKFCB4xOUb1fPbklONeSBpQt8hCtX9qtIS2
- SUt02hZEPCPRSsF/7l2Tabi4=
+ t=1794813287; v=1; x=1795418087;
+ b=hwW9YhVodGXQJ1SMJ5tKIVZJv+KYSxSceP42gqINXso1YdzeZOzoS2c40U1gZ5n9WTR6mpmi
+ ChJMcf4AMP59hs1b8XuGJ/ouZsWslrs4xAfKddroMXyez2vs92fd2aBSySV0bXFVUbj16QE6IRt
+ Hgpl1RWjbZEYXUnPam2X1Vvo=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b12c8b10ff90e4bb;
-	Mon, 16 Nov 2026 07:14:40 +0000
-X-Mizu-Trace-ID: b12c8b10ff90e4bb
+Received: by smtp.migadu.com with ESMTPS id 4fd46d42d037db8b;
+	Mon, 16 Nov 2026 07:14:47 +0000
+X-Mizu-Trace-ID: 4fd46d42d037db8b
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Suren Baghdasaryan <surenb@google.com>,
@@ -80,27 +80,27 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org,
 	Hao Ge <hao.ge@linux.dev>
-Subject: [PATCH v5 10/11] powerpc: drop redundant unmaps of failed vmap mappings
-Date: Mon, 16 Nov 2026 15:13:24 +0800
-Message-Id: <20261116071325.263682-11-hao.ge@linux.dev>
+Subject: [PATCH v5 11/11] mm/percpu: stop unmapping the CPU that failed to map
+Date: Mon, 16 Nov 2026 15:13:25 +0800
+Message-Id: <20261116071325.263682-12-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261116071325.263682-1-hao.ge@linux.dev>
 References: <20261116071325.263682-1-hao.ge@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pb3tww9f5xucyepdrcznc93sbwtmh39n
+X-Rspamd-Queue-Id: A034A180006
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 910A740006
-X-Stat-Signature: a6i173eo77ioxhi753uskxx3n1ekopgo
-X-Rspam-User: 
-X-HE-Tag: 1794813282-87482
-X-HE-Meta: U2FsdGVkX1+JZFyVXJ59+L4GEu/+luWl9jLxedch132y0PABGLWpuXnoxGyDBQje+WqpIsIBnXsmrt4dT4kaVupKI/HNG2617DDSRR00DHWF5XeBGLpR/5epyr3cotraEVMZQR+4Nn04itqEggcoEQmBA3Q14RN1WbpmTqYqEuqVWdAkPkcmPNRk7934Vs+gN10nW7LzgcUUk7kDScCNnocYGQOCYwErb8hvok6zp0tlwm59ckVNPyJPxIBBuYNxHQVmdMpqKH8J4EAN8LIRQprggx9mFcehZyF2I1cvJbw/RXRZcBVKoNxAai6EGq3pVZ7DhmcCMpudp88qQSk5ESl2eVkS8p0JD7gjQbdSJ/ojQwbHbb7Iuux0ZRcXx3Cz2GJ2zxjnF7bJVeUuDmaN9N3189ApcmOUcw9ZGqH95Xlx+380qFSlf7h4Y6L+5LmawIp78UC4VMW9GioPFqBW1aTjkfiUmf7gsvAaHlBef8Wl+2gkN5V1DA2pLo3cqj2FSAABbWlaeLiSDiUeuuXtTk8NCxMtrGcklC3tumbe9hfIwURJvgPUQB5zo663oqjZua/QsuEBIFDOq2c5CNM53QBzMHNH9BAOCzHvDgeRu7ND6aYdAwrPrl9RFV2a/GIA83ldC5B3zVwjuWeuSVkyG1OZRyVnz0BUOgZ3OhGxsmITqQ1sGjaqXgN4IL834qZXYo1ogitjjAs3NVMThbhUMGBksWOPgISzEA1nwNyzFbiowu7MA8kVEuH1P9tb+ywzLGjv62blF1ea0hULhpCfRlXr8yt8/8h22OhxYJ9nz5WlDhuVAJXU4UtWhcxaQJBpCMmi07OS50DOPAOg7wdstCgm6fzSMdvW34Ah/hCAuNsIogN+ruK81JLeMNUMStdncwhqVTqXaBoEIFjCIKZifj1/51B/JHOXmkMpyJUlH497nFYblmYIr1Z3gKa7ewqq2qz8FVIddYUue3stZWp
- tkTVpVqX
- 1Y0Tc+/sVRCP7WVYjmx1r3EjIPzVopVucBeSifo0LfGymhrIRvZcSZOhP/lhBx9Erz0Fl1OsNWYNVxp/gl3VakkUNxXgTWLuOsqLME1bW7GDJjL+1QW4CLsoSLRQhCdMT1sKTd5MldXLE/ZaNX5aOqxu8C4qZi/uDIX4YlU9oMb5B00NM8KtlgKcYKtA16v66oSaL9irqtTHb91nQ5grJeGqwoGhiihqVWayVr5qu2iJkLOMtgK4QOT5a8+xA8AqBUyvxlsLLyDjOFlfi6uDhOnoV7UINJzSSPiJzrWZVvtylBTUjMPSoYZxxeMJS06qK7GUdomcS2EXJByKtfa/6Y+Ed6gj6inb2X0q+
+X-HE-Tag: 1794813288-681511
+X-HE-Meta: U2FsdGVkX1+Y0/ZOSlyrEu/uUvxVoVnhQ23i9h6hMfNf4zBV12l92J3os+ePEWu4HLmcYKDe7Qy/CWzG7fL67XiayH78SnWm4QxI368iCo0rGZjmbXMpAYQnWWbRni1Y7c3s0cmwwMykcKMZy2iYTl/YPQ2brtsq6ZEYV3GDaH+efnOjZlrGQifCazqvnIQtrkWn3KJ5HNRXc0Xbyn+oDOvikDu5AhiAZXl7ZtT0DCrphymISYJcM5iEa1gpCiB9F1yE841jXME9LOg5jObaQAUeupR84000S/b4XyemfDBbQO2cAg0elxTjPh3lPuaGbuwGMhXgcZid/CshIVlkyOKPtJahOhRCSUwNmSBnl26CloJP9/g9WBs3/4ngykbghDCf4h1pfhydCCNdYPAY3WTKLxf9LUrEFM8U13GZ3pWrQBgiQsvhmT40WIi2A5fniMMKnVIhqzW3BwXonJtsjHZOQEOkMsWwmcieHOTfkDOvQg3U7Ef8t9d9xE7IomJxn/ntc+YneWiYujEQMwDiGNGUknfxfAntB6Tk7xTIaCsnggllp5vAxobK5Gm1M95325rjHiueeK32rwhoQVXRb0jpV3dcCyp5Gmp9ScYy2qSqDykBAay2jyQ5C0g5isNcctC096ETHtPlqbrhZ5T6gJenq5u0fw8nFNkl6WafsI2XUTyYAAEC5QgglrzoCHI175Y9Cw4h/hW/F7tc9J3BHJN8UvxqmW+6v8b1BkZaFCgx+Xns1V20M9yXsW/XREfLtEB8eEyLpMwiU8uo6e3onWffqe7Zq18cyzO9FW6n/LInzQB14QNzBZoKyvMKEjoyws/76l8xTwhLlJ4E/DVmeIyxixBwrj5I4zjnLqVYAlryd11Dkq629Fj8Gd1PRySvqdj013G9sy41mKa2tyMM+qdeIfkBShH2nfs0X48NIspor0fCfd6YH215zHbyPH8prrKmighs3gA1T/J95nf
+ sXnqAKw8
+ /lfXABSSEEZZWK2u5aDD5VwWZ+ElFXXR3EaZPPlj/lBTcJoRoqwGZ/BdwHMaglxM2vzwDGvTBx+JwQFFm4vXGqKmaA5YYmH08qYQoWI9PXZNB1GKtdXIjkFmv2AbUmV4aGPV4v0Iob2inPg8GMHrOn77eYTZYBLAqcqjoaBtmuvIWxbVugP+V1Oi3c5sns7g2Z7I9V3MREoZLyeVpZNxq6MyH7YCx7ux48e+SBachyJYfVWXu+z8+uBZXxfGclRdWzTb2pCQq3BUkbAjLCu4EU8B44N+oFMMfg1vU1A1kHBxA1+/feGiYrVHVXeojxs7qefK2hGW2LM2TgV59rpFer4hDRIi36iBSJ2Ki
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,50 +109,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-vmap_page_range() and ioremap_page_range() clear the PTEs they
-installed when they fail, so the vunmap_range() in remap_isa_base()
-and ioremap_phb() has nothing left to remove.
+__pcpu_map_pages() clears the PTEs it installed when it fails, so
+pcpu_map_pages() only has to tear down the CPUs it mapped before
+the failing one.
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Hao Ge <hao.ge@linux.dev>
 ---
- arch/powerpc/kernel/isa-bridge.c | 5 ++---
- arch/powerpc/kernel/pci_64.c     | 4 +---
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ mm/percpu-vm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/isa-bridge.c b/arch/powerpc/kernel/isa-bridge.c
-index 5c064485197a..93029d85e6ea 100644
---- a/arch/powerpc/kernel/isa-bridge.c
-+++ b/arch/powerpc/kernel/isa-bridge.c
-@@ -46,9 +46,8 @@ static void remap_isa_base(phys_addr_t pa, unsigned long size)
- 	WARN_ON_ONCE(size & ~PAGE_MASK);
- 
- 	if (slab_is_available()) {
--		if (vmap_page_range(ISA_IO_BASE, ISA_IO_BASE + size, pa,
--				    pgprot_noncached(PAGE_KERNEL)))
--			vunmap_range(ISA_IO_BASE, ISA_IO_BASE + size);
-+		vmap_page_range(ISA_IO_BASE, ISA_IO_BASE + size, pa,
-+				pgprot_noncached(PAGE_KERNEL));
- 	} else {
- 		early_ioremap_range(ISA_IO_BASE, pa, size,
- 				pgprot_noncached(PAGE_KERNEL));
-diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
-index e27342ef128b..f74269636d5e 100644
---- a/arch/powerpc/kernel/pci_64.c
-+++ b/arch/powerpc/kernel/pci_64.c
-@@ -139,10 +139,8 @@ void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size)
- 
- 	addr = (unsigned long)area->addr;
- 	if (ioremap_page_range(addr, addr + size, paddr,
--			pgprot_noncached(PAGE_KERNEL))) {
--		vunmap_range(addr, addr + size);
-+			pgprot_noncached(PAGE_KERNEL)))
- 		return NULL;
--	}
- 
- 	return (void __iomem *)addr;
- }
+diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
+index 509d8901835c..59d3a336a6bd 100644
+--- a/mm/percpu-vm.c
++++ b/mm/percpu-vm.c
+@@ -252,10 +252,11 @@ static int pcpu_map_pages(struct pcpu_chunk *chunk, struct page **pages,
+ 	return 0;
+ err:
+ 	for_each_possible_cpu(tcpu) {
+-		__pcpu_unmap_pages(pcpu_chunk_addr(chunk, tcpu, page_start),
+-				   page_end - page_start);
++		/* The failing CPU's partial mapping undoes itself */
+ 		if (tcpu == cpu)
+ 			break;
++		__pcpu_unmap_pages(pcpu_chunk_addr(chunk, tcpu, page_start),
++				   page_end - page_start);
+ 	}
+ 	pcpu_post_unmap_tlb_flush(chunk, page_start, page_end);
+ 	return err;
 -- 
 2.25.1
 
