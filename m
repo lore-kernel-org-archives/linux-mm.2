@@ -1,112 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9D3606FEA3
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466936071B39
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.it header.i=@amazon.it header.a=rsa-sha256 header.s=amazoncorp2 header.b=jt0NVq4o
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.it header.i=@amazon.it header.a=rsa-sha256 header.s=amazoncorp2 header.b=X8+2OjaX
 Received: by kanga.kvack.org (Postfix)
-	id E13AA6B061F; Mon, 16 Nov 2026 06:18:49 -0500 (EST)
+	id 5B54B6B05EA; Mon, 16 Nov 2026 06:22:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEB0C6B0620; Mon, 16 Nov 2026 06:18:49 -0500 (EST)
+	id 565656B05FE; Mon, 16 Nov 2026 06:22:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D27E96B0621; Mon, 16 Nov 2026 06:18:49 -0500 (EST)
+	id 47B636B0600; Mon, 16 Nov 2026 06:22:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B131D6B061F
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:18:49 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B55D8092E
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:18:49 +0000 (UTC)
-X-FDA: 85440734778.11.6DF015B
-Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 20F20140005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:18:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=jt0NVq4o;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ADA96B05EA
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:22:02 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 97247C0928
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:22:01 +0000 (UTC)
+X-FDA: 85440742842.24.9DC18A3
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 534D2C000B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:21:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=X8+2OjaX;
 	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=773eacc47=dipiets@amazon.it" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=773eacc47=dipiets@amazon.it"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827916;
-	b=fAy8oHDz0ggf9J/mpTOY4u4O+pHlsEsonfjqsQ5bjYNVXlY0ydC6xDgllRQUFY149iC1w8
-	fIhj2rWYEYzH6hVuMZM1xZxVKUHAM/+xJ2e0kSgsMs4XWmdU+H05Veh1OxdTzXGlvlbets
-	qVp+6FfOcTAPGtrB19+Roz2g+wnMRZg=
+	spf=pass (imf28.hostedemail.com: domain of "prvs=773eacc47=dipiets@amazon.it" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=773eacc47=dipiets@amazon.it"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827916;
+	s=arc-20220608; t=1794828119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ki1kgkg1irbVoGfnzm0B8lNmq46n7VG09X3WPUY+KUQ=;
-	b=vmYl76+7u41l4M5WpXOFoMfGksz9uhvFgbalZetSuAG8bZ1nddEM43c2780U+HJLLwcrAl
-	YNDcicslgbsxP9yIN1grnaeEAD3qiPBZm+nIaYhtEZkWOMFEj0yaHLmgyFZ8biySpwjBYj
-	37D4xXODiAipXfmLjH+6/q11/8oW2e8=
+	bh=noCYfjyXVIMbbLN6Ti74onkf+XgPewQsAqDuvy/OF9Q=;
+	b=2iD0aEJYaW/U9NcUPWZCBwY8/igowcnbyfYhlo2B+TUtsvYvKnzPFhfDaBg8oC8KY1anw1
+	3ThcD/l/wpp9Uca5M0CX1D/vZM+TPsyQo2RqB9LrMXJnt+k1ZZMQKgE3/5Af7bft64TGK5
+	sSCoi8h9YBgQAv0Xq5RBH0WDmoKDAdo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794828119;
+	b=rOP1qt5bB2wuGtQVGOM+iyUXzyKxby2WTIFXLziAGo2HrhkiTOCZLmbNH0ZfhYoC3OOpnd
+	tw15LY+pt0e9Z+54l2mGYk11cpufbjv0YwsJ1L4hWY36aBSOiXmONLzqhuI6aQX8VBtNip
+	VO+DrScN9EoBBSkCxwvw45Y2bFMAcUs=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=jt0NVq4o;
+	imf28.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=X8+2OjaX;
 	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=773eacc47=dipiets@amazon.it" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=773eacc47=dipiets@amazon.it"
+	spf=pass (imf28.hostedemail.com: domain of "prvs=773eacc47=dipiets@amazon.it" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=773eacc47=dipiets@amazon.it"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1794827916; x=1826363916;
+  t=1794828119; x=1826364119;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Ki1kgkg1irbVoGfnzm0B8lNmq46n7VG09X3WPUY+KUQ=;
-  b=jt0NVq4onPPsDdmnYNThgr7zgHATmOoPlddVlNMf317sFpoZpcEee+hc
-   AoP0uVgZxCtHoIAkAfiPX6gzfw85+1PKfHnMqYuX/tAT7TdXYKvuEZlTq
-   Ce9WRowuwS+1JEEFpNHfisHDkaqIeBuu8w6p4140qQRefjxEkhh7JMT6Y
-   tikRAB8i6JnoUuXitRlA1CllbW43TN2mYr82/9zOrbiwXsKa2J59EVJgQ
-   pnxcjw0rgou64B7fgFIOvsKTiFZMVCu9hgIt5elecHutqGmpEEeUlTGOh
-   xRGsnF1hkaTJDByTb1NcwJ/KnNtpSjuME+7PvGEx7g9G4Bpe09Qmoskh3
-   Q==;
-X-CSE-ConnectionGUID: HP9IQvENTwidbkcxcFr8Fw==
-X-CSE-MsgGUID: 7r4RpmX3Ti+98YxCDaVCCA==
+  bh=noCYfjyXVIMbbLN6Ti74onkf+XgPewQsAqDuvy/OF9Q=;
+  b=X8+2OjaX9BeRYsFP5sf147Tn82f4JmHrtdSXL4csOG7FAHl87+nLmKh4
+   8UX1S7rW7VUB3JXr+ONWXpnvVeGHO9w0fAPP1CtAN7f98Le9gTzJc8vNl
+   83sJYgMZ0/mGbTLFcFpNMCwlIVZnB3e+Bnl8JE7Zrhwxlzsxzr2mMvoHd
+   n2/+WNaE1u/aKweGKj5TADaOp+HkkLoE4cVvGV4I3Oz5bdV378/UbWnlz
+   pftV0gpqUeVtfGI3SYzUQl3yECaB7up+QEsJllxSEyrX7x6cL9+K2fwQp
+   ZU8ZN7PjejKEBhgy0R1Jj6qTCyH/m4zVy26VLaIJqZDX5YcyAAcuIfAtI
+   w==;
+X-CSE-ConnectionGUID: HyzXHEqkS16Q+NoYWQHUFQ==
+X-CSE-MsgGUID: D4zTA3UQQyWh80f/zai0fg==
 X-IronPort-AV: E=Sophos;i="6.27,216,1787011200"; 
-   d="scan'208";a="34139142"
+   d="scan'208";a="34068360"
 Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 11:18:32 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:12795]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.212:2525] with esmtp (Farcaster)
- id 6a985c6f-36f3-4358-8b0c-8e13929dfc3e; Mon, 16 Nov 2026 11:18:31 +0000 (UTC)
-X-Farcaster-Flow-ID: 6a985c6f-36f3-4358-8b0c-8e13929dfc3e
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 11:21:55 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:29002]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.24.250:2525] with esmtp (Farcaster)
+ id f60cd348-5baf-4a64-9388-a28c25dbb758; Mon, 16 Nov 2026 11:21:54 +0000 (UTC)
+X-Farcaster-Flow-ID: f60cd348-5baf-4a64-9388-a28c25dbb758
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Mon, 16 Nov 2026 11:18:31 +0000
+ Mon, 16 Nov 2026 11:21:54 +0000
 Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
  (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Mon, 16 Nov 2026
- 11:18:30 +0000
+ 11:21:53 +0000
 From: Salvatore Dipietro <dipiets@amazon.it>
 To: <stable@vger.kernel.org>
 CC: <dipietro.salvatore@gmail.com>, Sasha Levin <sashal@kernel.org>, "Andrew
  Morton" <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>,
 	Johannes Weiner <hannes@cmpxchg.org>, <linux-mm@kvack.org>
-Subject: [PATCH 6.18.y v2 0/2] mm/page_alloc: fix iomap buffered write regression from 5d8edfb900d5
-Date: Mon, 16 Nov 2026 11:17:32 +0000
-Message-ID: <20261116111734.3798483-1-dipiets@amazon.it>
+Subject: [PATCH 6.12.y v2 0/2] mm/page_alloc: fix iomap buffered write regression from 5d8edfb900d5
+Date: Mon, 16 Nov 2026 11:21:40 +0000
+Message-ID: <20261116112142.3813013-1-dipiets@amazon.it>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261113110259.2901456-1-dipiets@amazon.it>
-References: <20261113110259.2901456-1-dipiets@amazon.it>
+In-Reply-To: <20261113110611.2915381-1-dipiets@amazon.it>
+References: <20261113110611.2915381-1-dipiets@amazon.it>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-ClientProxiedBy: EX19D031UWA003.ant.amazon.com (10.13.139.47) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 20F20140005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: s1niug39wgkkiompyxamjmcp7pqpehe4
-X-Rspam-User:
+X-Stat-Signature: z8ffx7of19o65s3f85ppwmowp7rjzboj
+X-Rspam-User: 
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794827915-286058
-X-HE-Meta: U2FsdGVkX188oxYY1LkBp/gd18Uqi93VdOIptjKXlxzF62vfJnDfbXFRuWy99BzJQCUQiqQau4Qma8Os/Gy/D2ogV/iPmm5nJLzmTgu+U8w5Cu1F2FGFGGZISoAwxZsia4SfKvGAYKHnbokfkB24b2ZNxa1hG5D72FSPgX0fDo6jkLktQ20TPxiGSgL/+IDd5RzrlikUF+y163yUCoZXbG6mQscQXRNiKBDv50BRWYBT2fMiF6P40+ATWxsJ55gZ/535TEIDv/t+WPWeWAJA+9vcIdr6klQ1HObXhRTJecQEn8Heji6fvM66p8MeUvLki0LlL9URbLFM9/FwhqyHDXUFdNSibEsuXWJqh1J5PpDP7kqr0UPmffHv+vF99j4EDbxVE8Fbw4UDtP5VW/rxSRmMuZeorhdi1hObrtKdmRQ2stJIffqzqQ8Vo06apjmSvsrFx+zvfsEX6YjySR8lmeZ9YNaGYGf5Y4JU/0JwsTaqCY5UCI7OEj4PkVhjNZimd0/kbosSJx2VWKuzeQvvS+xhaRB25An14KtQw379i8aLI+OcEB4lsZrEtRf0G9UzYoRP079i5TiSKS7C3uEXvPxIIbt8AREqKQZ3RTAulTAVtg2z5HHVxI0lVqtVdYgVwpCallsrv0NxxqWGSv6vXJ/FhngWcxxHSb/BXURRQRqJUDebHqSCpIILFNjRHDSN4c+4fTDgDvxF1fWdGeRm+3WjyVlcUXWmsvFyg2hB8scy0i+vugEZ71Zl27PK0yrUzsPb/hFCMYrrfb1OETSLWoHXI5byYtRlaNFbRoVms72LhUGy7lS5VmmbMzZDqf30b9GdGdLCYP9JXKtBpRbiqPpVNSWbtY3UshUJpOBn9WGLyjYKtoHZB2OSf+QllP8xZehcCIJo3pinN0rNaaoJyYESG/pSffPf7bhpZG+cIdPJ/sRhMtorU18UeP4LXXy0IHbfSnmihO74MU4pkDw
- ixZmNcVw
- 11ZftbE9jjpiTYgDNnbjFA68E4CHoM2B/dylwVZ4kqLDPpvbL2l9G+IlWNPK3H38vYZ68WML0r9fLslQpBR6FzdoBhVle8TtkbHmrg1DaHL8H9ZlAoEED4laUYNh7JEQBQpAenZeESxgfLfUjl7+SlGADbj3lhlKlbPchdcdPVpJfo7E1c/V++RDs6vxhEiW5/jTs0AvP0RWzyebxJ+vdIwyTxt7s/GUjSeQA3PFO1uaA8EOSiSrOyy2/kpr/bKidAMCqr4vHH47mphOKcjfbM+veK4i1IY7rb76MowHLPdQW8Pyo/048FFLEngDOS/OUkHrlA0iZw1E+/Le6+17XS49KroKkQ5+SxK4M1/cesN5TsUsxuzIm0Ar5/veAjt4uM+O5/IlsccEzL768M+PFLU1YqkpymjofcavUw1f4nGnXAEN0WbZE7tdLzkgvxIx54phaJLPUgXezB0qrdMRvXX3jAyIXBgw6kkJBEk29X955i/FxskNDPOAhT/uYJRcuJVCQaLg46j7va1sfEzzOezC3QbyzUqleAJoktH6Gh6mr1wRV6mjMFHc9lElsQwiFbqqr6OcUcHksG88ksY+mbJrRASfDlYLmMDBvO7ABquwH0oJKddLQo81QH6cfq0PSRKSd1oKVFCzAkru/aYTmOwCNLdblTcBh5M+T2C+3TonRD8uDYg6TOiJCCKVOE/+sWUSo8h0wLJck08RhPJH6mk3lB5KyFTtyt3n5d0XvPH5h8zTp5lLH+qDFi8MAFfD4beu0hHK7KPUgsl6RJts89Toln+hTG/oNt538v/Kmi6RiN3oy3fQh66sE3+SmCahWyVAqyJ0CZ1I+MzWc/CkqxFwwEw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 534D2C000B
+X-HE-Tag: 1794828119-282715
+X-HE-Meta: U2FsdGVkX19AL9sDdZVyYgIQDaBdI2i0kLWx2ye/OfMX66OuzqYNpENZ0Z3efeYhqFmPK2euGlqB0pYiStbEYOlLk5wctE8G85UH8Vp90302haiJlUmTskVB1CgDEnv4qhOe2qSzNgyJrMp4LYQsU0aKFsfX19LuGpAy7B/yYwBpRLBYbB8uzlU2Wrqal0+b8qehZxflO1muiTUtA3y8EHF0cPYGSZw0wNj7pootX2zdqd8K94GQd/pK44RVNhtwEwSq0ArKeyIgPBvL8UQdP1phIPGcIuPwWVKt1esn9BfxUD1vtDgUskEda4dwYIbPuDle5ZFLnCehkejc4SVDF9HUAa15Kj1HZ4/5aT9WetqwyTv6Dpd9Ng7DX2V2XRTypHFm6yVO9BQ6/pPD4BXHdxTO/6TvKkVnhw7ozgxd+Wtmw8MCavQiSENM1rFSgjUxrENU5SsAvlYR3SBqFeddkyItGRrdztmUE+61fh3t8lmbbWumHNU17xrCelg43G0v6MbRIJoMQHwdXm3rOhLbJhYkvf1pPrmmCZFmV4VdJZZSYd/Tl4sykeD0/ojLAUYoNMRBBbORwd7B8BdDaWM241n1dSkg5b4kISAHzMOijAZADPdBbEcXIEQCPeWU4UxwCcW3mGfph8mSty0OsNmcQQ1Fovq3tvnXxDHM7wA/LfQJXiE/GHlJJUME8kkiSQYfE7KUaKYPtwVdeSVKIkeDhADJ5DcjQgZ7a7j7j8hh90POb5SDGLq5YGXBal571oWQjXcGQERbmi5bOeMhnpNBbjkv6xlFf+++K9hUzin0Y/uBvz2yh20R3QEiTPsVsE7PZ6WdTjT24JZmdVRbxkoNNPFDakAXiNkCDu7ij9Sr2veQDzNJJGs8SFn2uiQ2pNcprNYBBpx40EbShzd+2/jOzVDXlofxoJZi7MoN3K5+JEQCbKlC4KtbgJHnWJpXFM3tOIbR+8iVUicCrjkppi9
+ oJex+fh1
+ z7xUPamTz38h/gjzwnq3JvdbE16TIJtb2PvNlzg0msuyDp2SDEo9wnl6yKi2zqaOdnI6FFFGvkvJWGsD/Z47b7hWgir95cifcJlwJpdOicXCpew9VKmQkMKXhr0heVe7dqPZWsQ0HdCxgN6KhwK+yE1rmcE+zoLDz6ityNvxJhP1+X9GIenUZoJERVePB5oU1E4pFCc54Bb30sPlY/GDXqKpGlKo80TVp2mQzAN3OECsDS7q5+qhmcH6vM3sE9cqMjEP+N4j6S8KbIcQn2mZJsZk9zseTq+V8z/OtmuBF1L3LN4ZWV3230yZRxYZc0DFXG0ziP3P55aCs8WiD4pVJxDQ4EYCx/87H90LyBOjsltnoonnAWBQedwIzuwcTDp+76cTISsv84BbqYWEw6ZF9abEQO+zbvVGTrWcWVdLf4p+OQdA62yQ0HvzzWlEhq+TvDYEW2uS1956rju6satoK7IXVNvysbiVhrywgVR00B0GV1AXrug5awGOh653OsBrkUArQNOqsRCQcSQnkkgWZ5seF8gyt2sfUtFkfetJ7mFvjggoWO2byVUhIOYuNrLC7kktafMi0b9FlA3Nv0OsY0fI0qf/f9xrK/SaPiY1FuBPLfllxZLNShpiZGPmXTkx+SOequiPrJ55n9q8O7XafD2UO2XDHTgJQq5KlUQKtCiU1RJgOvXK8VEGT1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,7 +116,7 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 Backport of 0e05a469c294 ("mm/page_alloc: avoid direct reclaim and
-compaction for costly __GFP_NORETRY allocations") to 6.18.y. It fixes a
+compaction for costly __GFP_NORETRY allocations") to 6.12.y. It fixes a
 regression from 5d8edfb900d5 ("iomap: Copy larger chunks from userspace",
 v6.6), which slows buffered writes under memory fragmentation.
 Andrew and Vlastimil agreed it should go to stable [1].
@@ -135,18 +135,18 @@ Built, booted and tested with pgbench simple-update (PostgreSQL 18.6,
 1024 clients, 96 threads, 1200s) on m8g.24xlarge (96 vCPU arm64),
 12x io2 RAID0 XFS, mean of 3 runs:
 
-  v6.18.63               87,278 TPS
-  v6.18.63 + series     154,670 TPS  (+77.2%)
+  v6.12.117              87,565 TPS
+  v6.12.117 + series    144,458 TPS  (+65.0%)
 
 Changes in v2:
 - Dropped 6ee3d87b9408, now queued from Sasha's backport [2].
 - Added my Signed-off-by to both patches.
 
-v1: https://lore.kernel.org/all/20261113110259.2901456-1-dipiets@amazon.it/
+v1: https://lore.kernel.org/all/20261113110611.2915381-1-dipiets@amazon.it/
 
 [1] https://lore.kernel.org/all/1fc0caa5-43b1-487f-94cf-0d1aff4c03fd@kernel.org/
-[2] https://lore.kernel.org/all/20261112171543.3069410-1-sashal@kernel.org/
-[3] https://lore.kernel.org/all/sashiko-outbox-214380@kernel.org/
+[2] https://lore.kernel.org/all/20261112171856.3309378-1-sashal@kernel.org/
+[3] https://lore.kernel.org/all/sashiko-outbox-214389@kernel.org/
 
 Johannes Weiner (1):
   mm: page_alloc: remove ALLOC_NON_BLOCK from ALLOC_RESERVES
