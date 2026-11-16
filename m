@@ -1,107 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C903B606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28E9606A891
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YlABBZ7I
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TDt51YLN
 Received: by kanga.kvack.org (Postfix)
-	id D1DFD6B00EF; Mon, 16 Nov 2026 04:44:40 -0500 (EST)
+	id BBF0C6B05B2; Mon, 16 Nov 2026 04:44:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA7AD6B05B0; Mon, 16 Nov 2026 04:44:40 -0500 (EST)
+	id B6E556B05B1; Mon, 16 Nov 2026 04:44:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6F746B05B1; Mon, 16 Nov 2026 04:44:40 -0500 (EST)
+	id A0ECB6B05B2; Mon, 16 Nov 2026 04:44:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 840306B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:44:40 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A13A12053F
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:44:40 +0000 (UTC)
-X-FDA: 85440497520.24.B27989D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A25C6B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:44:43 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3AD301C4025
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:44:42 +0000 (UTC)
+X-FDA: 85440497604.03.B88A878
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 35CDEA0007
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:44:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YlABBZ7I;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 65E9C16000C
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:44:40 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TDt51YLN;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794822278;
-	b=jisPq8wF9r0pwzztUETG/liYptTVKTByxEPatXfnvZyaZbHp5b1+bCy4uwbgUKg34NI0AW
-	2Bho9P7mlZ6mKYiCb3wT6Jd0OWgVywPVqIVjsJXpth/ubsZlXqPMCDnMhe00Ho27+s2f2G
-	ni9CpZlOANusqgSFoYmQFn8yvjOwQ7E=
+	t=1794822280;
+	b=CVP3kqa/WoNlx/XrObcQfEEc6BiEau5U6FLHJcHbcyil01SKEePHPWRC1yor+8j3Zff0Om
+	Ml53TbqFwoLYY3VcIoBkGkARiNaiWqutiX8p+xWY6lZVeP57lw5HN8k07wTuo0w6lqbsiu
+	RI0G3CDYEhpBr3FCnP1Zzc4uLZemMsE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YlABBZ7I;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TDt51YLN;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794822278;
+	s=arc-20220608; t=1794822280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=hgAtcboDPL4W6fp361vuNgNH6+9aIO13zK6GxzA5b0w=;
-	b=fMc5Z5BLEMmRWkQM2kvyNXODEhcsdio8ro2xNFFY5CJCwmg7jHdALuKlWqr/qKDtdog7FK
-	pB0neATpj8lYyGS9Tdm8t0sZ8ek/6Lx6s1JKCXTREKIeGGKQ8gvJ5jXuOOdSrk0eGXm1za
-	hbgNSgcDNH6WjYnMr3ruiOY7WMLXrco=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pRTBIPRlWjCyGy6DSOqYG8UUMpJ1tanhgwPOwhgNUk0=;
+	b=vP/quCazIaKSJBFRExn1CZYVq7LQVN6ZowMJjTqo2KzJ2arqF6JJvqxURmeo4928U60YB9
+	8XKaCKHFOoCnbNsVWIyWRa1mTMlmIRYICRsXlrm1GoK3JPIlt8smyPWevHKNNA4uWPltHt
+	feUZlKmD0SO1d1baBW6HM2hNRECLhos=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 172E7408A9;
+	by sea.source.kernel.org (Postfix) with ESMTP id B226741083;
+	Mon, 16 Nov 2026 09:44:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763DF1F000C7;
 	Mon, 16 Nov 2026 09:44:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0C01F000C4;
-	Mon, 16 Nov 2026 09:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794822276;
-	bh=hgAtcboDPL4W6fp361vuNgNH6+9aIO13zK6GxzA5b0w=;
-	h=From:Subject:Date:To:Cc;
-	b=YlABBZ7ISyY8j9P4gftvIQ5fQX3zDPKib7Xm2Dt4ZAhPRcGr+/KKlsHo/3tOVOal8
-	 umF+AfHn881H4gGHyQN8o6pBKilCFGTV8WGl8O54Gzsoe52282VhJ8IohFXYzjILeM
-	 Let/7ORvD2U4VNGTjZ62YCYccjeKWpE4tjn+M7eBrWMbQLXcsp/coEvxLhRAydF8Qt
-	 O58FMbiYeMX+2voIsP9thDz4sR4bxAa7U6nSggyQFkgKv97uk0tUgDno7ZuSnIHRAl
-	 cLJWQF4d53VBcI3pFOVos3Ff6CwRk91RoPBANnUL3EmQTBdtN4B+XLy+HRqNOAMy/H
-	 6T9wmN4DB3ovg==
+	s=k20260515; t=1794822279;
+	bh=pRTBIPRlWjCyGy6DSOqYG8UUMpJ1tanhgwPOwhgNUk0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=TDt51YLNjcsMzp8aXE/4qpR56L2VTw3XE0lOPPyc2yStU0KrgrnBfGEChWObjXCUB
+	 WrIpav1ixgpcfR4ZODZByfoK7gNQD4nzjiOEKH46gETUB1txk83a4IzI5/6Ke2cTm+
+	 Jk/2f9UDj0D4dw1fskY/ObWaRKRDp6viyE2ebl80qR8MLrxMV6uAX/8d2erTjukJJ4
+	 UanTjbkjSAKVU1Bt88DtWmus3GDoAPyXhOtWGSWqBbts55ddLulokjpuhHTxPnrM4j
+	 prH19F5n1/C23v7HYBitfujHpZIzQ4XNsAh19O7TXwD1CE1nRtxlZPo1bCJYL35qLv
+	 V5YsINXiIKiew==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH v2 00/13] fs: let d_real() fail
-Date: Mon, 16 Nov 2026 10:43:57 +0100
-Message-Id: <20261116-work-ovl-d_real-v2-0-90564c4ae347@kernel.org>
+Date: Mon, 16 Nov 2026 10:43:58 +0100
+Subject: [PATCH v2 01/13] ovl: don't warn when the lazy lowerdata lookup
+ fails in ovl_d_real()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOQQ6CMBBFr0K6dhpaggmuvIchpi0DVEhrplg1h
- Lvbwtrlm/n/5a8sIFkM7FKsjDDaYL1LIE8FM6NyA4LtEjNZyrMQooa3pwl8nKG7E6oZpGiaquz
- 6Bk3FUutJ2NvPbry1B4eXfqBZsiYntAoImpQzYz5lIU9Cfgh5fufYaMPi6bsviyLr/o+IAkowS
- tQ19tpoidcJyeHMPQ2s3bbtB2HccVPoAAAA
-X-Change-ID: 20261115-work-ovl-d_real-219930df9ec3
+Message-Id: <20261116-work-ovl-d_real-v2-1-90564c4ae347@kernel.org>
+References: <20261116-work-ovl-d_real-v2-0-90564c4ae347@kernel.org>
+In-Reply-To: <20261116-work-ovl-d_real-v2-0-90564c4ae347@kernel.org>
 To: Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org
 Cc: Chris Down <chris@chrisdown.name>, Miklos Szeredi <mszeredi@redhat.com>, 
  linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
  bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
  linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, 
  linux-mm@kvack.org, "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Fan Wu <wufan@kernel.org>
+ stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4516; i=brauner@kernel.org;
- h=from:subject:message-id; bh=FpAJ8KCoIs10Y+5ts8jOVO0UnpzoDHqYPZv0TdThKa0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9upD3SNq0pzY55Vzy72eZf51fdBpUzJKr4e5eVP+F8
- 3ic7q/EjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInsS2D4KzK7arksS08gw+99
- c9d5rrl0U1OwwGFl8U7lEyFLTyx48oThn+rPlE+RWx+uM/7D9GSh1cfUCMlTd1cKLFOfEFLqsDn
- sIzMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3129; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=uYRKZhpxLqg+b2YtgoKzFfW4tIoikMLXLGY4NolC2mc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9upB/Mvnog+7jLLobGzkPh0yOt7CKEq3b+mdPBrPbN
+ Amd7qNPO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYSbszwP+wNX+dv2/S6ty8T
+ 13f+aN/q/89lzlrngmDGn0uu/RIQms/wv8i129CnNNlBQp354eka2WLrV+IsFnESzvL7v9zYIP+
+ dFQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: ugm4ofyh8pnshsrmwg7ra7zhkbzuf5e6
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 35CDEA0007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794822278-220561
-X-HE-Meta: U2FsdGVkX1/cFE57RzviDKBCxsYKX6wLJbqYHo8u0aBM8RBlxAR7qfqia7NQA24L2c3NwD86vlcTIoR75raUh7Bs+/U0XybYrLZOKBqgMxp8oxvTjORPw4kVm1d6GBLEYziTKpUX0rUSGKApPoTQW2SInqxEBq9+yHrnnHc1xa3hU5p1uXFSw+1UdMu1T/X9GaQyfj8ML7HKdAkAzzVAkTR7CeIkhRLa03BqvlqsFS5bTWg2z6o/Y/UO6Z4OuFm4RGg9S/nTz8RFYNh8zY4dJmwt+48Xl0bcrr02jPmbYDU6efThvu620gdogtLGbeHiXMO3JGzg/0xQF38/KHuRHEnQkoUgzIPsUDpXUEBQEHeNQnh8GY6Byso5FweF9x+r2aPmT3YQtuXuh0WVO0I2SZTyyYKoRTD9AGQOcYaOEEkOSQX/kP4h5XaHJyJeEV7Yx1Zmt9JGBYV86m2NLN+gQhrcoHWFiICcxRxPM2b7GTUuMLZRA39wwEkL/KfyuNrTn5L1I4liaEJGzrixoRgaMG5QNKhN0GNecvJTQM8xHaM1/xwaI6mcskQJIdDOFPtOd7QOxtIiGf51DWMCClH9h3YAZvU6nrSbqVoEeIvmFBUMtXJCG+tuf/5hfy9gl5YX9V0D5fXARCakRNrp2fEEbiUvei8WSKE01jVMR35B9jtk/GfHxLi3DpFMea3aAfVx6/7mDD2W5SSUwOE+AoOAPmX7PKGRBRi17E9BxLtVtwnmHhJJkdsctafci+m2vP7d1vuuKiLIU17zQOcevSufyeAn66U19D/czZDA9GiI+HNET1iXyopYT5Ho2CTztKIa8p50/Ez5bpAPa8wK50/STm36JOogqgtvfdigXqxaAwgIuk5n9uBqs/+QEA8SKEjNm17h5XGQ3+7+Nl7ouS97DuhfNJLMmtJAj7wjWVO/FZAKmXGV1Bv4wZMKCl/MnoGHRaA2XRVYqTt562+SvhQ
- lKXWQFfo
- /c/H5fUwRktyMMNtz7L66klFfsu/WAmS6YpQU2McsqaafibGX+rputDUCumpbSPpaC8ng8nR5saMnRLTjCXPTidGgAT2EvaFJ5IzKr+y62DU6qLjF7ul7XsDhtYdhgBH4g46XyLZDY0ldKmwCuJXhmaJEiRH1S9Shb86CP9cDtXmi0LBNc7tvYy8v+Zm+tVoQ0/OmgmVn7X/5UVxeG2dhXqkv8A7GdYB4IQtcD12a+9sXGJH76DDr2FZTd32VItb2nqR2gaD8xvISF9V0pvu8FKMNkPb3tx9Qybnp/2r9mcUiULJIAqbiE18Qu/eBFjdkeX0b9MjPvQKmuz7JINgiTYQWXCDi9s9d2u1fNt5x6dLYY7Hwryk1ddN/uCUtJIoSrzQe
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 65E9C16000C
+X-Stat-Signature: 4c5od3nzag3g54w3intddn1eesxp3cwe
+X-Rspam-User: 
+X-HE-Tag: 1794822280-967952
+X-HE-Meta: U2FsdGVkX1+R/g6SEhjDmy1Ny/EcfXTfkd3XaT7r+7PvhFWA+DP54h7+VRCzR0YqRla/1npTHBdazyICy2M0cgF+Xsi1R0SFh+fQc5qI0yzQKq6xXfk1urQHZcxodLP05O8L8X/Eq1O1VVSnd0LXze/eKNoaoJPdTfMqtvjHhRQR30cro5dHJVXCT0ksPQ+xDh+ons3zoEW7EEBwGwI5F+7eXBavHeB0mzVUF/WR6LpytBveVCmhdGptyYiEE4yRldub2qPDAMnZQwl84JkkKh8bAX6FqFPMV/Y5YZdUy7u7LuAEvIntgIrOorOyt40HK2bKkhdyt3DEtjNQrdq/6CEhA/yIgX6O+wYbrhFVxOBbgTpdc+LkROqaPmktBvLWqlFCQ5UQBuagiG4geYgdIH+vbZB0xusifhBEPfp4dxkfKGOronmrCWJu25VRwYoEw3KV7eUI0TikYkVm0SYv/2HQr0SEPBvQ0NkBFwKf8pJEKhY3kepXqwkoFtWJzCvsJiz8D/TPBVj+8rNY473EX7oIr0NLtWUQhNPolVWW64adWhYK+Sr5zu2I0+HmORswC42H3ubPOrX9HrHyHLGhdtLzskLJpJpZSrz8cOQsALjsRy38n245aKtFSJ5a9mfGFZT3qqMNEO6kECABIH9QI2t+h3YADcVuOJpVkvSltQi5By/h3gb44N/GuiN+mCshy/4QP6jV9AJz5qVpQ0fqzfYiTmsB4fqWQe/jdJ3ZmolcbIt/iGZYcvdynpzVTGdize2QFkGRGrapiA/WDCx50ECBLIk+bpEbpc7/sLetxfUPM5rSWVx6wUqAf731NLcIgZMdhP4Uooy6e29t0IzxXCqIxvlENcmaTNF3p9JA1Ml7IdCUTPzrdeS1MJsNHoHRqnvHhECyttlQ0YgJsX/JwAUCYYwPcgA121RIK4WJeDz7G27AGFyVcHVEBBMoCKf28LWrS9OKA3FogihapgO
+ s4BPES37
+ 9lhvPgKmuBoNeWRMNIpQFrZ6Ta1Ow7bx+DnUAm5jo+Mv4csrdTVq1Ng+/AWELhe7iY8u8KDRDjDj4uJUrvV4rHMkeVaDUUmP4RDq47chTHsLbmg0kMdKrGZvwLip1cSUPx3TJW/T3rap0el2clov0Awbn2Jqjy476y7ecHHskgUsdTlofnIDNF17t7s59SIRMsIq6C6cfuY5LiSK3t0X1hCSDCFngRd04QO0k2FtQ09uhJaSbjs4jdyrYTbx/sdChaWP28XdqS9M3FaMsPtSmMeiBZjRQaE2xjVzPKqVd3AeP5f7penSo0SKkgrGDyrtPlcxH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,89 +108,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-overlayfs looks up the data of a metacopy file in a data-only layer
-lazily and validates its verity digest when it's first needed. Both can
-fail but d_real() has no way to report it. So ovl_d_real() warns and
-hands back the overlayfs dentry and every caller silently works with an
-inode that doesn't host the data:
+ovl_d_real() looks up the data of a metacopy file in a data-only layer
+itself if nothing has done that yet. If that lookup fails it WARN()s and
+returns the overlayfs dentry.
 
-- uprobes get created just fine and fail later with a bogus -EIO. Every
-  new uprobe warns again for each of them. With panic_on_warn that's a
-  panic.
-- IMA skips detecting changes to the backing file and hands out a cached
-  verdict.
-- IPE evaluates its policy against an inode that has none of the
-  dm-verity or fs-verity properties of the real file.
+Commit 42dd69ae1af4 ("ovl: implement lazy lookup of lowerdata in
+data-only layers") assumed that the file would be read before
+trace_uprobe places a uprobe on it so the data would be there already.
 
-And that's not limited to files nobody opened yet. A metadata-only
-copy-up of an open file makes overlayfs validate the digest again.
+But nothing actually guarantees that. trace_uprobe takes the path from
+kern_path() and calls d_real_inode() on it when the event is created and
+again when it is enabled. So a uprobe on a metacopy file whose redirect
+points at nothing warns twice:
 
-As Amir pointed out the correct fix is to teach the callers to deal with
-an error. So d_real() may now fail for D_REAL_DATA and all callers
-handle it: uprobes fail when they're created, IMA treats it like failing
-to hash the file, IPE evaluates the file without verity state and the
-bpf kfunc returns NULL. Then d_real_inode() goes away so nobody can
-ignore the error again. The first patch only drops the WARN.
+  ovl_d_real(/f, 0): real dentry not found
+  WARNING: fs/overlayfs/super.c:79 at ovl_d_real+0xc9/0x210, CPU#2: sh/279
+  Call Trace:
+   <TASK>
+   __trace_uprobe_create+0x1869/0x25b0
+   trace_probe_create+0xcc/0xe0
+   dyn_event_create+0x46/0x70
+   create_or_delete_trace_uprobe+0x3c/0x70
+   trace_parse_run_command+0x1a6/0x320
+   vfs_write+0x1cd/0xfa0
+   ksys_write+0x116/0x250
+   do_syscall_64+0x10e/0x5e0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-This came out of the same work as the freeze protection fixes for
-backing files (cf. [1]). I ran into it with the pseudo filesystem
-series (cf. [2]) where file_check_backing() looks at the file hosting
-the data of O_PATH files registered for fuse passthrough. With this
-series it can just return the error. But this stands on its own.
+bpf's uprobe_multi does the same.
 
-[1]: https://lore.kernel.org/r/20261114-work-fs-frozen_writes-v1-0-f5ae61c898b1@kernel.org
-[2]: https://lore.kernel.org/r/20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org
+A failed lookup isn't a bug though. The data can be missing, its verity
+digest can be wrong or a signal can interrupt the wait for the inode
+lock. ovl_open() simply fails in that case and
+ovl_maybe_lookup_lowerdata() already warns ratelimited about failed
+lookups. So return the overlayfs dentry without warning. That's what the
+WARN() path returned anyway.
 
+Fixes: 42dd69ae1af4 ("ovl: implement lazy lookup of lowerdata in data-only layers")
+Cc: stable@vger.kernel.org # v6.5+
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/sashiko-outbox-214581@kernel.org
+Reported-by: Chris Down <chris@chrisdown.name>
+Closes: https://lore.kernel.org/all/20261114120557.4bc1eb6e57218cdc@chrisdown.name
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Changes in v2:
-- Drop the second Fixes: tag from the first patch as per Amir's
-  suggestion.
-- Let d_real_metadata_inode() fail too and handle that in IMA and EVM
-  as per Amir's suggestion.
-- Evaluate a file whose data can't be resolved without any verity state
-  in IPE instead of denying it as per Fan's suggestion.
-- Disable the events before removing the uprobes in the ftrace selftest
-  cleanup, skip it without tmpfs xattr support and add the config
-  options it needs.
-- Link to v1: https://patch.msgid.link/20261115-work-ovl-d_real-v1-0-ca155efbcb2e@kernel.org
+ fs/overlayfs/super.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
----
-Christian Brauner (13):
-      ovl: don't warn when the lazy lowerdata lookup fails in ovl_d_real()
-      fs: add d_real_data_inode() and d_real_metadata_inode()
-      tracing/uprobes: handle errors from resolving the real inode
-      bpf: handle errors from resolving the real inode in uprobe_multi
-      selftests/bpf: handle d_real_data_inode() errors in bpf_testmod
-      ima: handle errors from resolving the real inode
-      ima,evm: use d_real_metadata_inode()
-      ipe: handle errors from resolving the real inode
-      bpf: return NULL from bpf_real_data_inode() on errors
-      ovl: return the error from the lazy lowerdata lookup in ovl_d_real()
-      fs: remove d_real_inode()
-      selftests/ftrace: add uprobe tests on overlayfs
-      selftests/bpf: add uprobe_multi test on overlayfs without data
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 08695a99f4f93..1985b553a47b7 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -58,15 +58,13 @@ static struct dentry *ovl_d_real(struct dentry *dentry, enum d_real_type type)
+ 
+ 	/*
+ 	 * Best effort lazy lookup of lowerdata for D_REAL_DATA case to return
+-	 * the real lowerdata dentry.  The only current caller of d_real() with
+-	 * D_REAL_DATA is d_real_inode() from trace_uprobe and this caller is
+-	 * likely going to be followed reading from the file, before placing
+-	 * uprobes on offset within the file, so lowerdata should be available
+-	 * when setting the uprobe.
++	 * the real lowerdata dentry. Callers may ask for files that were never
++	 * opened, e.g. for uprobes or O_PATH files, so the lookup can fail
++	 * here. Return the overlayfs dentry then.
+ 	 */
+ 	err = ovl_verify_lowerdata(dentry);
+ 	if (err)
+-		goto bug;
++		return dentry;
+ 	lower = ovl_dentry_lowerdata(dentry);
+ 	if (!lower)
+ 		goto bug;
 
- Documentation/filesystems/porting.rst              |  10 ++
- Documentation/filesystems/vfs.rst                  |   7 +
- fs/bpf_fs_kfuncs.c                                 |  13 +-
- fs/overlayfs/super.c                               |  19 ++-
- include/linux/dcache.h                             |  50 +++++++-
- kernel/trace/bpf_trace.c                           |   9 +-
- kernel/trace/trace_probe.h                         |   1 +
- kernel/trace/trace_uprobe.c                        |  57 +++++++--
- security/integrity/evm/evm_crypto.c                |   5 +-
- security/integrity/evm/evm_main.c                  |   9 +-
- security/integrity/ima/ima_api.c                   |  17 ++-
- security/integrity/ima/ima_main.c                  |  14 +-
- security/ipe/eval.c                                |  13 +-
- .../selftests/bpf/prog_tests/uprobe_multi_test.c   | 141 +++++++++++++++++++++
- .../testing/selftests/bpf/test_kmods/bpf_testmod.c |  11 +-
- tools/testing/selftests/ftrace/config              |   3 +
- .../test.d/dynevent/add_remove_uprobe_overlayfs.tc |  96 ++++++++++++++
- 17 files changed, 423 insertions(+), 52 deletions(-)
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20261115-work-ovl-d_real-219930df9ec3
+-- 
+2.53.0
 
 
