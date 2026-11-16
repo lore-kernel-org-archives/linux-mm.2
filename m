@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910C1606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56AC606A330
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O5dD2v5y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qq58fmit
 Received: by kanga.kvack.org (Postfix)
-	id 622836B05BA; Mon, 16 Nov 2026 01:47:32 -0500 (EST)
+	id 8934B6B05BB; Mon, 16 Nov 2026 01:47:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FA026B05BB; Mon, 16 Nov 2026 01:47:32 -0500 (EST)
+	id 86C846B05BC; Mon, 16 Nov 2026 01:47:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5101C6B05BC; Mon, 16 Nov 2026 01:47:32 -0500 (EST)
+	id 7A7DA6B05BD; Mon, 16 Nov 2026 01:47:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B03C6B05BA
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:32 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A22E81C42B9
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:31 +0000 (UTC)
-X-FDA: 85440051102.07.D8E84C2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1359E20002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:29 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5dD2v5y;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794811650;
-	b=yuqoIsGYVmyJx+zrJUMB72bAzSBxPntPpxhN0Pgt46QcRsPFhOrILjqcEfMAjd3EcNIaCM
-	HcSxpCk6W/XKfk+fDh1ubcA7gqxtIEy76n4em1Cn2OGn9PIrT1LaFLv7FcldRM6JSL/fzz
-	2yhQ7iWQVAVs8R6YI1z2VZLHMvU8Dmc=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5dD2v5y;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F3346B05BB
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:36 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF8A6808EE
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:35 +0000 (UTC)
+X-FDA: 85440051270.23.857C833
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 21B5E100004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qq58fmit;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794811650;
+	s=arc-20220608; t=1794811654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gc5nVXFmpa2FYzNpiPky+TSsIO9QRIgf+0xNVO2950I=;
-	b=3oivOh21SYZdw2BD68Ml8CiEh7yr0BJMNl28zIFgWEa00Jv/WruYFja5plc9pFvrunWxDr
-	ETOEX79YATDSiA/fPcU8sUqzNAxkPBhwU+SN6xFFALG+L6FQA3o/GqaeHZ2yQLtiYbKWaA
-	w4GLviFJDHpO/KRn0vgU17CJDWAN5A8=
+	bh=6OoPVgHbPcVlyg0bdAKK6MSz7k2hURzUkdi2cy+F0Uk=;
+	b=Sbq6dm4XP6jdDn9o72iBB9GuaIC3yBwvW1Rg7ictBiu8MidhKBgGbi8LkSnn5ZNxgWAFRQ
+	nxGD6sha/PvhJED5LpB6/mgYaFuIosEHKLZQ7G0Lgi8NcFZ1tUDoNed4ajCMCmjk5lf9Mj
+	zE7AGNLZnbmcAZfyIcX8qsoq5L2WhdQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794811654;
+	b=ly0dpg1ErQioJGkLCR6DwJtu2y79b1p3q1OcMf23Qxzb3kGIf+R/I8UolCVsw6JfLRW99r
+	95Ba361L5CNkX3fQGLvOMWkTpW6F1PBsGVG5jH7A0DOsmJ6Qtr3TA/U7mFLOXcKpVeTB9Z
+	pJw4mpw6ytOApD8NN2Ulkb3WazVoMbA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qq58fmit;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A712561ECC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2E3C2459C3;
+	Mon, 16 Nov 2026 06:47:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF6F1F000CA;
 	Mon, 16 Nov 2026 06:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2637F1F000C5;
-	Mon, 16 Nov 2026 06:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794811649;
-	bh=gc5nVXFmpa2FYzNpiPky+TSsIO9QRIgf+0xNVO2950I=;
+	s=k20260515; t=1794811653;
+	bh=6OoPVgHbPcVlyg0bdAKK6MSz7k2hURzUkdi2cy+F0Uk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=O5dD2v5yu5J8xhy7sLPwd8o1ZenNXCLx3LgiAqlz+xblx0jU5kst8YgL1FzGksOMI
-	 Cdmw+8t33N9Lr2RFsL7lc4pfxDksNxt/p+GEvfl1tdhkKJ1c6nUk3OBNbJ19E5cYLA
-	 /EiT2QwT6tHdhFxSWoRSONfUznDnKd7SIl8H4vhCJyPHDjrloiq7/CLzTyBH8cpIIn
-	 EW04UJZPD4cUPBJNk36PRasfzLGgs0UdabevdEy+Nt5SoALqKxqtkNryrDqwkPIXjt
-	 qmQppbrnNfmObfSslu6C6MCui7Y8obF7XEWUGD+rkGdYUowoq5vXboe0GrhxtZvvoj
-	 FyL24kkvR9HeQ==
+	b=Qq58fmitITyVdc9xLE0LoygJhD+cMGyXK6uYcmcjAeynFwpLwjWxf28Kfj6L9MqF3
+	 eM29Y35OXqX8M/K3WycCts5xYTBRe7+Y1p6ZyoC/UVFYXsrZysmG9d4nfYe2DzzSf2
+	 5oHmYsRKF+qXcy8HHZigQGgEjyKEdUj7apNZ+FUhJyZdOdzQHxhTukbTRYWB8PPxwm
+	 dyPgXK5nGhpuzCc0jAM3Kk0+qv1Kd9Hr7mPeJjHUvJEfUFzhvgKtepgaB8dsAx6AOb
+	 H2Pa+aX4JAwWXa1o6thbqkf5Jwoqjqfi8kq+zE3AexcrqSeWKjkXgPlNLFuZ05mnYU
+	 LVVX/2HXlS6Cw==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 16 Nov 2026 07:47:11 +0100
-Subject: [PATCH v4 03/10] mm, slab: refactor slab_min/max_order handling
+Date: Mon, 16 Nov 2026 07:47:12 +0100
+Subject: [PATCH v4 04/10] mm, slab: introduce slab_debug=N
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-slub_tiny_rework-v4-3-227a4b3636a5@kernel.org>
+Message-Id: <20261116-slub_tiny_rework-v4-4-227a4b3636a5@kernel.org>
 References: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 In-Reply-To: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
@@ -82,18 +82,18 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.16.0
-X-Stat-Signature: ctaqf4mcgu3i4bti6u9kqc9d1e3ummsq
-X-Rspamd-Queue-Id: 1359E20002
+X-Stat-Signature: wfqf8ebew4q7x3nt5mb8eehrr37qis58
+X-Rspamd-Queue-Id: 21B5E100004
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794811649-258390
-X-HE-Meta: U2FsdGVkX18NemKOT/1Qk7M24EZuwF7zcAhHDZinv1LnHxhr67VtRRqz4RZ0uQsd/q4kefOIdGmpQx2sFeGeP6iV10pEKkLmWdOcYeCWqH8ZeVdxUbO+CnLoXTwJO0KHmNwrI/ivItEhOK+2uGS3nbBicIW97fnMgGy5ht59zKkPIC64H8E77fYnlE81lKxaMqDbzvQBcdKOkmM6G+O8ChOfQ4BNTIFnFReIJDwH7Qnb3gtJ7hcpj9ksi/VGgBs2kZtwgfFQPKLOrukW1a1eE+yuDcPFm/DuX41KK7YS637i54JeK/FyQhiLKXUUCvHekoxboUTLKpG5U+Be5lb2rV2ERhiI7aUEmZDCk1/gJpOlLuccA6Nemszwhou1REuZuZiPOKCCpkqlmwSkXlaOn7f0JTxSGvLKzXv6s2j3eCzzZRoDd4zCq1+QrZuPyxw/WxWAcyEXqSpHe2pqScGDexBeknSUyDdiVPDXxQeJlVmHBS0UnAtba7PRW2BijkX+ReFjO9EJcrAEC4C0vH5EDcvyNsWPv3EpVgRh03EBupgxqxAqfjhVpWzLl4evWAhkyjHzshIiSJ8MsSuxGvypyn1gLY0ef73WbGqcq3JjbsjIfTCdmx4ywiR2zaI5BCtG29hH/guT+rVi5E6MAGwIjjNt/I6BhW0mzEPNnaxpk1rSxkVxd7iZqLn/YW7TpplKeidm0hYv8LCqH0Du6vT5wK5SjE/G5SCMq7osueJV91bMmouTd9JnejaVInynKf/LWMLCVkSE5aq4yIXAco2c8T4QUnlBMwE81eVlO7VYlAyx7HR7qYCVo0EdN4BuoHWEote7C0Psj00Dhy9ziR3nR45nqa5w4seFyg5Ps6+FPWKP+E+SvhSNiHsQZJ9WrpAkA65cOynHRT/q9Xs3uKuXG0CCdHgVHgvvtmNxM2/hDSU1f4mgxeCDGpXwAKUJ7NuO7SOIk8fEeYl17J0tJwf
- 2W/7Znns
- qoFcdfSvmF5Z667eIqq9mQEZd3kETkS9KE/QOp+yJw7ZAOtZ1UWVXsqMJzkyq+zO5VQJC9WdM+Cab9HLlAiAPnX26yt40uepH+D42xegzRBIvrAIGMpr7g6IcO3tQClr+ocAl9RZ6gebYd3qHnGpbz2hbqtw2AXxlkOwv8BC5VdABfgk+j6eV7P3AmbEcvuvK9IAEb9aBWMWDUhjds/uPz6M676QvWhldDNn9pR2gSg7CjLxHSLl6O2Nk3p8WVIO1k8oui94audNsd0HBL1833hNJCk5PY6hrF+v8ivYTygAzgAiiVJwl22UFBX0GEOItHTIEe4fAJtmUR3d6gfHqLicRLZbKcCCEFtXf7VcUA//vRW3Q6oWja8gi9A==
+X-HE-Tag: 1794811653-48129
+X-HE-Meta: U2FsdGVkX1+MlCNKNPCZtJpzuCOT3bFdyET0ajuqE2gzJgExVunwcWJMLl73Ir5Y3besVV4vsbJmW4gVNRs+oBP/Sfnit3YsgZc8HjppyQEAzrjpw0ZTpVbN6KAMFvLrD9TpJ14ivB0LQoDjfk8eMldkBpc89FDi1LT8go19qF+j31ciaiUF0ECjQ4soG/mqVEZUkcwNzJIvk18Uaz/D9/MH+D6X49Gv9JgaUgszMQrUR2bNlymv5wAtFGN+80TtS8wRlNok/UgcmMPpXf4kjjcsOfiDCyutDhRfZhA3DSFzQH0BoAaXgzXsC61r5se9CxJXRTVygWJ7hhskBwE+8EtoRUMcamFYp58hqC3/VHyWxxTy34UMSiaY8VWaq1oSBS4meevzJ2QqNDMlYMkSoDMkxCSD/XX1dM2G8Ev2InHQQQGi+uli1Wl7hF+l6B0YPEvIulx2pTrPZUZaesmGVLVK/lIJ6Cn+t2rcndH/jw/79c5sWqKBKNxgL76mKDaPXP+KGZe9aeNut/rKAnwrvWU8J0XX13LA8vRcK4ejakkIn4wrw5yBIdazYOeDI5pYX++QlyzsFitQeW4ZLA5Ur/vejLgU5M8dWetzXmj8WTC/fdAd1X9Z2gEFVkBUafj4FnLfzx2yIcoWeZ+nuMsH9j99GM5dSOhZTLg0UK+F7LsYkG1r3DTGLvVBMzGA8FHE0PuecR4DoS7l3/sl86cRjbbVqqerrbvU60nijxAvyhvCycxlcpblIsDQTuD9fougTd7PFLW8ATPxo1IdrPw6QolKNeUGjYjhythpW1uzKOPrs5h7EdJ1B5ScM0wntUqQWWA/yVRLEIq3NAuaxnbNtrNCGr966UQu1Ae6uS48FMtj1F2qdqt+f8d6MKwh0n6PKUkA5Ne1okKU01NL3TTjpqnJFI9w7bo6TFkJ7hr6dGmm0xe2CW9yACpV9DjbA2fiJgScgvBCzg4ORSQZFzs
+ DqfMp9aX
+ K/NfRCtkr5ZOnV2Zml/dPbJU4jQ1rpJswbHitEwVD+neyjUQvTkot1qf/C7s3RU/fqTkkffOQXTTFID5BrWFGwD4z4CX4/cf6N6PztuAQNsJEoeTubRDmzjyDbRB9qy3R8mubdhPypS7H/i2wby3VzEo6GnV1bv9mMTSHw9Jm2B1ONWo+0Vps6uR1X/rZPAeH5rzTc96NPhrFtMo6OVNPFcjeKxzCLFZUuI5R0+ktbzcGVymA/z1oY4cI/tBxXbwb1gGO2PCOcyrBdPBTea5/Tw1uwVkhHIOGvut8suaaIjWxyeIOlbMtRPjdhe4idkCejxxJ1jCqA+6k28Suj2TBGrxC+kce32lJgEbSmFe3itnNnjg2DviCkSykghiROSwsrBHtsu76pNaPSv2c/36ETGATX/Oc72Lx42HB3LSsv5AOb4w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,178 +102,238 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Setting slab_min_order and slab_max_order as boot-time parameters
-currently has several not so great aspects:
+Enabling slab_debug has the side-effect of disabling all percpu caching
+of objects (now via sheaves), which can be sometimes useful for saving
+memory for e.g. kdump kernels. To make this possible without the
+overhead (CPU or memory) of actual debugging options such as poisoning,
+introduce a No-op debug option that only forces the debugging slow paths
+and zero sheaf capacity. The new corresponding slab flag is
+SLAB_DEBUG_NOOP.
 
-- slab_min_order is not checked against MAX_PAGE_ORDER
-- slab_min_order can raise slab_max_order
-- processing requires custom callbacks, their execution order
-  depends on the order of boot time parameters specified
-- upcoming SLUB_TINY changes would be more complicated
+This will also allow reimplementing CONFIG_SLUB_TINY as a boot-time
+option.
 
-Instead of custom callbacks, introduce __initdata variables that hold
-the boot-time parameter values (if given). All inputs are then evaluated
-deterministically in kmem_cache_init(). slab_min_order is always capped
-at slab_max_order and cannot raise it.
+Two details have to be considered, as suggested by Harry Yoo [1].
 
-debug_guardpage_minorder() still overrides any given boot time params,
-but it could be changed if there's a use case.
+- While SLAB_DEBUG_NOOP is part of SLAB_DEBUG_FLAGS, it should not
+  prevent cache merging as it doesn't affect object metadata, and lack
+  of merging would go against the memory footprint reduction. Thus
+  exclude the flag from SLAB_NEVER_MERGE.
 
-While at it, rename the slub_min/max_order variables and
-slub_min_objects to have a "slab_" prefix instead, as their values
-determine the sizing of slabs, and the "slub_" prefix already became
-deprecated also for the boot-time parameters.
+  - However add the flag to SLAB_MERGE_SAME, per sashiko. This needs to
+    be reflected in create_unique_id() as well, which an earlier version
+    didn't. Add comments to help not forgetting this the next time.
+    While at it, remove unnecessary SLAB_CONSISTENCY_CHECKS handling in
+    create_unique_id(), as it's part of SLAB_NEVER_MERGE.
+
+- SLAB_DEBUG_NOOP alone should not request disabling printk pointer
+  hashing. Thus rework the call to hash_pointers_finalize() to not rely
+  on the slub_debug static key state. Instead determine whether the
+  global or per-cache slab_debug options include any flags that are not
+  SLAB_DEBUG_NOOP. This does not change the fact that caches created
+  with explicit debug flags (i.e. slub_kunit tests) later in boot have
+  no effect on pointer hashing, which is determined in
+  kmem_cache_init().
+
+While documenting the new N option, remove obsolete SLAB references from
+the F option description.
+
+[1] https://lore.kernel.org/all/arUx56ee_nkxYP_f@thinkstation/
+[2] https://sashiko.dev/#/patchset/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org?part=2
 
 Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slub.c | 84 ++++++++++++++++++++++++---------------------------------------
- 1 file changed, 32 insertions(+), 52 deletions(-)
+ Documentation/admin-guide/mm/slab.rst | 13 +++++++++++--
+ include/linux/slab.h                  |  5 ++++-
+ mm/slab.h                             |  2 +-
+ mm/slab_common.c                      | 13 +++++++++----
+ mm/slub.c                             | 30 ++++++++++++++++++++++++------
+ 5 files changed, 49 insertions(+), 14 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 45e077c7526c..30714557306d 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7684,10 +7684,17 @@ EXPORT_SYMBOL(kmem_cache_alloc_bulk_noprof);
-  * and increases the number of allocations possible without having to
-  * take the list_lock.
-  */
--static unsigned int slub_min_order;
--static unsigned int slub_max_order =
-+static unsigned int slab_min_order;
-+static unsigned int slab_max_order =
- 	IS_ENABLED(CONFIG_SLUB_TINY) ? 1 : PAGE_ALLOC_COSTLY_ORDER;
--static unsigned int slub_min_objects;
-+static unsigned int slab_min_objects;
+diff --git a/Documentation/admin-guide/mm/slab.rst b/Documentation/admin-guide/mm/slab.rst
+index 14429ab90611..0beeae71d472 100644
+--- a/Documentation/admin-guide/mm/slab.rst
++++ b/Documentation/admin-guide/mm/slab.rst
+@@ -45,12 +45,12 @@ of the first "select slabs" blocks that matches the slab's name are applied.
+ 
+ Possible debug options are::
+ 
+-	F		Sanity checks on (enables SLAB_DEBUG_CONSISTENCY_CHECKS
+-			Sorry SLAB legacy issues)
++	F		Sanity (slab consistency) checks on alloc and free
+ 	Z		Red zoning
+ 	P		Poisoning (object and padding)
+ 	U		User tracking (free and alloc)
+ 	T		Trace (please only use on single slabs)
++	N		No-op (force debugging slowpaths without any checks)
+ 	A		Enable failslab filter mark for the cache
+ 	O		Switch debugging off for caches that would have
+ 			caused higher minimum slab orders
+@@ -85,6 +85,15 @@ in low memory situations or if there's high fragmentation of memory.  To
+ 
+ 	slab_debug=O
+ 
++The No-op option can be useful to minimize slab memory overhead by forcing slab
++debugging slowpaths, which disables percpu object caching. This reduces SMP
++scalability significantly, but does not impose the extra cpu or memory overhead
++of debugging options that actually perform checks. This can be useful for e.g.
++kdump kernels where scalability is not a concern, but memory has to be
++pre-reserved from the production kernel. So for a kdump kernel you can use::
 +
++	slab_debug=N
++
+ You can apply different options to different list of slab names, using blocks
+ of options. This will enable red zoning for dentry and user tracking for
+ kmalloc. All other slabs will not get any debugging enabled::
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index cda126def67a..ed949e8522be 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -35,6 +35,7 @@ enum _slab_flag_bits {
+ 	_SLAB_PANIC,
+ 	_SLAB_TYPESAFE_BY_RCU,
+ 	_SLAB_TRACE,
++	_SLAB_DEBUG_NOOP,
+ #ifdef CONFIG_DEBUG_OBJECTS
+ 	_SLAB_DEBUG_OBJECTS,
+ #endif
+@@ -166,8 +167,10 @@ enum _slab_flag_bits {
+  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+  */
+ #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
+-/* Trace allocations and frees */
++/* DEBUG: Trace allocations and frees */
+ #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
++/* DEBUG: Force the debug slowpaths without actually doing anything */
++#define SLAB_DEBUG_NOOP		__SLAB_FLAG_BIT(_SLAB_DEBUG_NOOP)
+ 
+ /* Flag to prevent checks on free */
+ #ifdef CONFIG_DEBUG_OBJECTS
+diff --git a/mm/slab.h b/mm/slab.h
+index e94ac63d10dc..79774e2be3bb 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -476,7 +476,7 @@ void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
+ 			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE)
+ 
+ #define SLAB_DEBUG_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
+-			  SLAB_TRACE | SLAB_CONSISTENCY_CHECKS)
++			  SLAB_TRACE | SLAB_DEBUG_NOOP | SLAB_CONSISTENCY_CHECKS)
+ 
+ #define SLAB_FLAGS_PERMITTED (SLAB_CORE_FLAGS | SLAB_DEBUG_FLAGS)
+ 
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 01c64ef661e7..4df73eda1090 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -47,12 +47,17 @@ struct kmem_cache *kmem_cache;
+  * Any flag that adds per-object metadata should be included,
+  * since slab merging can update s->inuse that affects the metadata layout.
+  */
+-#define SLAB_NEVER_MERGE (SLAB_DEBUG_FLAGS | SLAB_TYPESAFE_BY_RCU | \
+-		SLAB_NOLEAKTRACE | SLAB_FAILSLAB | SLAB_NO_MERGE | \
+-		SLAB_OBJ_EXT_IN_OBJ)
++#define SLAB_NEVER_MERGE ((SLAB_DEBUG_FLAGS & ~SLAB_DEBUG_NOOP) | \
++		SLAB_TYPESAFE_BY_RCU | SLAB_NOLEAKTRACE | SLAB_FAILSLAB | \
++		SLAB_NO_MERGE | SLAB_OBJ_EXT_IN_OBJ)
+ 
 +/*
-+ * Store values set by boot-time parameters, to be evaluated in
-+ * kmem_cache_init(). UINT_MAX means they were not set, as 0 is a valid value.
++ * Set of flags that caches need to both have or both not have in order to
++ * be mergeable. These need to be also reflected in create_unique_id().
 + */
-+static unsigned int slab_min_order_param __initdata = UINT_MAX;
-+static unsigned int slab_max_order_param __initdata = UINT_MAX;
+ #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
+-			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
++			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT | \
++			 SLAB_DEBUG_NOOP)
  
  /*
-  * Calculate the order of allocation given an slab object size.
-@@ -7741,7 +7748,7 @@ static inline int calculate_order(unsigned int size)
- 	unsigned int max_objects;
- 	unsigned int min_order;
+  * Merge control. If this is set then no merging of slab caches will occur.
+diff --git a/mm/slub.c b/mm/slub.c
+index 30714557306d..3eff5ef4ac80 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1053,6 +1053,19 @@ static slab_flags_t slub_debug;
+ static const char *slub_debug_string __ro_after_init;
+ static int disable_higher_order_debug;
  
--	min_objects = slub_min_objects;
-+	min_objects = slab_min_objects;
- 	if (!min_objects) {
- 		/*
- 		 * Some architectures will only update present cpus when
-@@ -7758,10 +7765,10 @@ static inline int calculate_order(unsigned int size)
- 		min_objects = 4 * (fls(nr_cpus) + 1);
- 	}
- 	/* min_objects can't be 0 because get_order(0) is undefined */
--	max_objects = max(order_objects(slub_max_order, size), 1U);
-+	max_objects = max(order_objects(slab_max_order, size), 1U);
- 	min_objects = min(min_objects, max_objects);
- 
--	min_order = max_t(unsigned int, slub_min_order,
-+	min_order = max_t(unsigned int, slab_min_order,
- 			  get_order(min_objects * size));
- 	if (order_objects(min_order, size) > MAX_OBJS_PER_PAGE)
- 		return get_order(size * MAX_OBJS_PER_PAGE) - 1;
-@@ -7782,9 +7789,9 @@ static inline int calculate_order(unsigned int size)
- 	 * long as at least single object fits within slab_max_order.
- 	 */
- 	for (unsigned int fraction = 16; fraction > 1; fraction /= 2) {
--		order = calc_slab_order(size, min_order, slub_max_order,
-+		order = calc_slab_order(size, min_order, slab_max_order,
- 					fraction);
--		if (order <= slub_max_order)
-+		if (order <= slab_max_order)
- 			return order;
- 	}
- 
-@@ -8355,50 +8362,14 @@ void __kmem_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab)
-  *		Kmalloc subsystem
-  *******************************************************************/
- 
--static int __init setup_slub_min_order(const char *str, const struct kernel_param *kp)
--{
--	int ret;
--
--	ret = kstrtouint(str, 0, &slub_min_order);
--	if (ret)
--		return ret;
-+core_param(slab_min_order, slab_min_order_param, uint, 0);
-+core_param(slub_min_order, slab_min_order_param, uint, 0);
- 
--	if (slub_min_order > slub_max_order)
--		slub_max_order = slub_min_order;
-+core_param(slab_max_order, slab_max_order_param, uint, 0);
-+core_param(slub_max_order, slab_max_order_param, uint, 0);
- 
--	return 0;
--}
--
--static const struct kernel_param_ops param_ops_slab_min_order __initconst = {
--	.set = setup_slub_min_order,
--};
--__core_param_cb(slab_min_order, &param_ops_slab_min_order, &slub_min_order, 0);
--__core_param_cb(slub_min_order, &param_ops_slab_min_order, &slub_min_order, 0);
--
--static int __init setup_slub_max_order(const char *str, const struct kernel_param *kp)
--{
--	int ret;
--
--	ret = kstrtouint(str, 0, &slub_max_order);
--	if (ret)
--		return ret;
--
--	slub_max_order = min_t(unsigned int, slub_max_order, MAX_PAGE_ORDER);
--
--	if (slub_min_order > slub_max_order)
--		slub_min_order = slub_max_order;
--
--	return 0;
--}
--
--static const struct kernel_param_ops param_ops_slab_max_order __initconst = {
--	.set = setup_slub_max_order,
--};
--__core_param_cb(slab_max_order, &param_ops_slab_max_order, &slub_max_order, 0);
--__core_param_cb(slub_max_order, &param_ops_slab_max_order, &slub_max_order, 0);
--
--core_param(slab_min_objects, slub_min_objects, uint, 0);
--core_param(slub_min_objects, slub_min_objects, uint, 0);
-+core_param(slab_min_objects, slab_min_objects, uint, 0);
-+core_param(slub_min_objects, slab_min_objects, uint, 0);
- 
- #ifdef CONFIG_NUMA
- static int __init setup_slab_strict_numa(const char *str, const struct kernel_param *kp)
-@@ -8771,8 +8742,17 @@ void __init kmem_cache_init(void)
- 
- 	slab_obj_ext_has_codetag_init();
- 
-+	if (slab_max_order_param <= MAX_PAGE_ORDER)
-+		slab_max_order = slab_max_order_param;
++/* Union of all slab debug flags enabled for specific caches only */
++static slab_flags_t slab_debug_per_cache_union __initdata;
 +
-+	if (slab_min_order_param <= MAX_PAGE_ORDER)
-+		slab_min_order = slab_min_order_param;
++static inline bool __init slab_want_nohash_pointers(void)
++{
++	/*
++	 * If any debugging is enabled globally or per-cache, we would like
++	 * nohash pointers. The exception is no-op debugging that only forces
++	 * the slowpaths.
++	 */
++	return (slub_debug | slab_debug_per_cache_union) & ~SLAB_DEBUG_NOOP;
++}
 +
- 	if (debug_guardpage_minorder())
--		slub_max_order = 0;
-+		slab_max_order = 0;
+ /*
+  * Object debugging
+  */
+@@ -1898,6 +1911,9 @@ parse_slub_debug_flags(const char *str, slab_flags_t *flags, const char **slabs,
+ 		case 't':
+ 			*flags |= SLAB_TRACE;
+ 			break;
++		case 'n':
++			*flags |= SLAB_DEBUG_NOOP;
++			break;
+ 		case 'a':
+ 			*flags |= SLAB_FAILSLAB;
+ 			break;
+@@ -1961,6 +1977,7 @@ static int __init setup_slub_debug(const char *str, const struct kernel_param *k
+ 			global_slub_debug_changed = true;
+ 		} else {
+ 			slab_list_specified = true;
++			slab_debug_per_cache_union |= flags;
+ 			if (flags & SLAB_STORE_USER)
+ 				stack_depot_request_early_init();
+ 		}
+@@ -2069,6 +2086,8 @@ static inline void setup_object_debug(struct kmem_cache *s, void *object) {}
+ static inline
+ void setup_slab_debug(struct kmem_cache *s, struct slab *slab, void *addr) {}
+ 
++static inline bool __init slab_want_nohash_pointers(void) { return false; }
 +
-+	if (slab_min_order > slab_max_order)
-+		slab_min_order = slab_max_order;
+ static inline bool alloc_debug_processing(struct kmem_cache *s,
+ 	struct slab *slab, void *object, int orig_size) { return true; }
+ 
+@@ -8755,7 +8774,7 @@ void __init kmem_cache_init(void)
+ 		slab_min_order = slab_max_order;
  
  	/* Inform pointer hashing choice about slub debugging state. */
- 	hash_pointers_finalize(__slub_debug_enabled());
-@@ -8823,7 +8803,7 @@ void __init kmem_cache_init(void)
+-	hash_pointers_finalize(__slub_debug_enabled());
++	hash_pointers_finalize(slab_want_nohash_pointers());
  
- 	pr_info("SLUB: HWalign=%d, Order=%u-%u, MinObjects=%u, CPUs=%u, Nodes=%u\n",
- 		cache_line_size(),
--		slub_min_order, slub_max_order, slub_min_objects,
-+		slab_min_order, slab_max_order, slab_min_objects,
- 		nr_cpu_ids, nr_node_ids);
- }
- 
+ 	kmem_cache_node = &boot_kmem_cache_node;
+ 	kmem_cache = &boot_kmem_cache;
+@@ -9777,9 +9796,8 @@ static char *create_unique_id(struct kmem_cache *s)
+ 	/*
+ 	 * First flags affecting slabcache operations. We will only
+ 	 * get here for aliasable slabs so we do not need to support
+-	 * too many flags. The flags here must cover all flags that
+-	 * are matched during merging to guarantee that the id is
+-	 * unique.
++	 * too many flags. The flags here must cover all flags from
++	 * SLAB_MERGE_SAME to guarantee that the id is unique.
+ 	 */
+ 	if (s->flags & SLAB_CACHE_DMA)
+ 		*p++ = 'd';
+@@ -9787,10 +9805,10 @@ static char *create_unique_id(struct kmem_cache *s)
+ 		*p++ = 'D';
+ 	if (s->flags & SLAB_RECLAIM_ACCOUNT)
+ 		*p++ = 'a';
+-	if (s->flags & SLAB_CONSISTENCY_CHECKS)
+-		*p++ = 'F';
+ 	if (s->flags & SLAB_ACCOUNT)
+ 		*p++ = 'A';
++	if (s->flags & SLAB_DEBUG_NOOP)
++		*p++ = 'N';
+ 	if (p != name + 1)
+ 		*p++ = '-';
+ 	p += snprintf(p, ID_STR_LENGTH - (p - name), "%07u", s->size);
 
 -- 
 2.56.0
