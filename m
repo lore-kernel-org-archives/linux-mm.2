@@ -1,128 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C66606A883
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E55606A884
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ngpSOVeP
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gY5LQq5U
 Received: by kanga.kvack.org (Postfix)
-	id 542306B05B2; Mon, 16 Nov 2026 05:41:24 -0500 (EST)
+	id 71A116B05B1; Mon, 16 Nov 2026 05:42:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F36D6B05B3; Mon, 16 Nov 2026 05:41:24 -0500 (EST)
+	id 6F1716B05B3; Mon, 16 Nov 2026 05:42:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 409806B05B4; Mon, 16 Nov 2026 05:41:24 -0500 (EST)
+	id 5E0926B05B4; Mon, 16 Nov 2026 05:42:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A66B6B05B2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:41:24 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A88BC120871
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:41:23 +0000 (UTC)
-X-FDA: 85440640446.07.9ED895E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A8B9012000B
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:41:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ngpSOVeP;
-	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E0AD6B05B1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:42:47 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CABE21C4240
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:42:46 +0000 (UTC)
+X-FDA: 85440643932.13.E87322A
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E880C80003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:42:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gY5LQq5U;
+	spf=pass (imf30.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794825681;
+	s=arc-20220608; t=1794825765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mtA/R92C925aFVKDUjGI6ndZPtLKG+BE7ZufHgCQDo8=;
-	b=SkBqkbJh1IS0szw9fRVOASlUoAbFUHE2IjAsujpCAWxNuMyDx/7n3d3vtWqbH37eNEols8
-	zz03NuowUmlHonruuw0uxpPYDppMJLW3fZ2CDXmoW+eSjiYbSQgJppwW4nCPDebmu4aLbA
-	Lqrxy+p6rmsoy8TPMbdGTUj3YmcTxcM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794825681;
-	b=V7qF7++SSFIwKmtmZIESLZxuIt/3fM5bDPV9l/Ev/Jrokg8An1Wjf78Xljb2UwvcMeU+2y
-	jdOg+wuyGiGllCDz702vv0XQUr6SuDm2rSbmeb0iulSKeyrjMXvlVKLJfoh6jCOlHozT0T
-	iLdezn9FeLwfS09Pa5gihTlfhobO9TE=
+	bh=dr9af4pJ/8zWS6vI+oqg5r0KIFPMXaVucU+qa3+/eLg=;
+	b=XJMJe4/F1uhW4Fqdpuc8fIZ0ejn4TbOgcwHSJKWHxvXlkzf7w1OjBeejgwvyrQHdsuwmra
+	mT4RvAfRhcw9r0wfREpbfr1f2uhf32gQCUHTVR71aY5gDu6YpusE/gpMewMr72Fxum/3K5
+	WlTIXbeO3nrijcu0u4M4/3AW86t2IGY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ngpSOVeP;
-	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 96B27628D4;
-	Mon, 16 Nov 2026 10:41:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937011F000CB;
-	Mon, 16 Nov 2026 10:41:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794825680;
-	bh=mtA/R92C925aFVKDUjGI6ndZPtLKG+BE7ZufHgCQDo8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ngpSOVePFMDtjm1DFvzRnPE1XRgzCOD2oFWJ8d4Ream75ZBgI7koYW2I/saxoji/J
-	 1+uCmmQeOMgoo+jshQgPUiPmss+TmNaGpwDyvXqgzQe/RWwgu+IJI4m6i6B61JMi/m
-	 rCIP5rLDm2h19YGXLN94+rZXkioXU8QE1bQO60M2rkv1BDhCOIcbLLtWS9MRIZtQ+n
-	 LLP9cgbpqqeDHbgnkFTAtLiwNRMWICu6dq1X2S88HrqilNbq+a3xMbhBvT3iukTD01
-	 8QqpR4gaEllLTdiOPeosh9KJCFvmPbwNeUkZHwsDqSHGyNh/MIyguwDsoN0rsSP6gv
-	 wgmqBDkZKRprQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 34DBF198003A;
-	Mon, 16 Nov 2026 05:41:12 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 16 Nov 2026 05:41:16 -0500
-X-ME-Sender: <xms:x936atmzbygUR7XWzOiKGxfcLwKsJOya4h-Ar0Mn3OKoB9QGoFtuug>
-    <xme:x936aq0QnYyW5PTqhqHkxOM4CXviJXliGKgeLIWM7tJeecpknpS_Gn1johgvcZVfF
-    MhQFhFe-38bbxkDKv_P35jWnBvIgRB3F8t4OtAgvqI68648BrU6ZgX1>
-X-ME-Received: <xmr:x936an88khMU2qOvRn8b0glhAUvuZM-wtt_kSvhtnOcbNUUNxYco-juxNxk>
-X-ME-Proxy-Cause: dmFkZTEpJfblbk62xZOAh/T/EZa08rF7h46EjEoJinMEsXgVXH+bIddNYbMR8VMGVvyjT8
-    e0mdxzBtL7KE7zvFOr8XDChSXWMNwAELnNLe6JjwxbgAr66Bmx5PsKcc76FYvA8nBU/xw8
-    pAb4ThAd4RJeI6MMqU1Vt3s2dUzLwASTdOnH2qsvH+G1t2n2pTdLQ1t4ndkKRCNCfhFYm5
-    GCh3wxhrd7AbePBcsqP2oD6+5F38itLQgjTL/aQUe3o5aSsOW4X+hWPgtwBaNbEwPhFHE3
-    eV8SvqS5DvXPD3FVL9DXlExm4dDg7mFNWv8YKZi78rqOBjjaUcFYXUc9s29yi3JEVPEyPl
-    NCtaEUv4NsRuQxjeh0Y3twDDIPA9k+soCpWA8q3h9GaJiLplOTLX4GX5j23NNarWS921Io
-    J9SUfaeGQ6JyOASSCpZQN4Q9WdvfOxLEVFS0LcH8Apt0YxxJNbvyxL/dB2XzBKeTZkLDg2
-    Evv18iMcM24ALKfuzxn1S7QGQxAr5aTUBvoow9y/RTzn6OxJu0wZftggMv9w0yZU9lgp04
-    xlCRh+tQJmbaOd9/Xa4r3ZrKdvNQOLGHhEqUvHZqaWUcJCrsp8D3sMciYvyRkqIARnvDj4
-    LV7fma3BMYE9FjnYWS8+9epfCGHFlSN/CpHvDJvwZ8kDXvH3GU15VnPCiC4w
-X-ME-Proxy: <xmx:x936alz4lcBJrfREqjxlWztg2fzAlF8fd8aA3oJ6dF2QNYaj4N0Yhg>
-    <xmx:x936algcb0RdjmMRuoFlqrgKqKoJvecTq7J7OwAjzHkquLxVnRiw3g>
-    <xmx:x936aoPUFOLTRHygWjueWYnK7Gu0OKbrLHetD6D8nF_4t0ZqVcAePw>
-    <xmx:x936arYS_q73xtLqBDDAESC9ZGUx2P4m_oGvVwn7fPCWUCUUa24WLQ>
-    <xmx:x936auJAJr4cKPopqEOgaD1CiQGQmNMwCRCkmixrRIWirSeI9guGVxbS>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Nov 2026 05:41:10 -0500 (EST)
-Date: Mon, 16 Nov 2026 10:41:09 +0000
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Dev Jain <dev.jain@arm.com>, Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 1/3] mm: page_alloc: add a watermark check that knows
- the migratetype
-Message-ID: <avrVAUGFUJdoVRG7@shutemov.name>
-References: <20261102093939.3340540-1-kas@kernel.org>
- <20261102093939.3340540-2-kas@kernel.org>
- <7e82bf2d-3a36-46d4-b63e-6b6720620380@kernel.org>
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gY5LQq5U;
+	spf=pass (imf30.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794825765;
+	b=ZqeRtXRoRiWzrmkDHm34jTX4WnSvH4l+n6/vebuv2fhAJ8ObMTbMU+XLLNiyX/DmqcARVA
+	S9lEVlCGcS8TjxTkQaqIw10odAlF2TdnLK978S6iCclOCV6fx3QlwkcWx+2FUA6jtCh+29
+	2p0CrQ08z+UqYn9XSMCGeMBGbcWWRpc=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb64c99d2fso19581185e9.3
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:42:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794825763; x=1795430563; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dr9af4pJ/8zWS6vI+oqg5r0KIFPMXaVucU+qa3+/eLg=;
+        b=gY5LQq5UevQ63bIBt9Jz/UFr8vgDidkpdYuuCB8dyC7QK4ooeaxJa7ysAC7eANdkl5
+         AvSEhsIga34zc1gjJQevuOB/ChDiU74FrKrbHyo2KLMxBsKh68/eIYqk/cPR2otPqXhN
+         vGbZIv7gASqAVNt/wB/+PxYypSvWLcVaVysEfSsyNwRCt02dm1jX8/JF1aGfUmU6xTVl
+         7lLPqBz7moPkHTL84PDlt1/p+/3/A2+MZqvp8dKE0RvjcBmdzaxhtKHH9DsWc08zPzZG
+         jFgyUH/xlKAmQDIo/9LFM9BIuOENmvL+Z5BqPkCTaIupzlMeobOl47932AKocS+mfWWa
+         3C5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794825763; x=1795430563;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dr9af4pJ/8zWS6vI+oqg5r0KIFPMXaVucU+qa3+/eLg=;
+        b=gu34hQRomHwU1afyOElb1PJuHJSyUuBBPD/yOO/RKisypVCiBUuD29sMLDD0nuY8X1
+         8qqWX9/HwM2xZ7mK3mPqqOZcjsH0F7sbAbvY3syKDOFUEYrLPPMU/goohZorOljAG8qS
+         F8MECHY4NJArP2ESiSZ43uMP2i9EGshIhCBbubu/hW9pw5aH5Bl14DGTdBLMktGVMVqm
+         6WhKDjSqP7NFB24McMkOdwf9puq3mlzAiw3I150lKkO7l/17AuQy8bXcIvy72gq9D0Qr
+         AWLsJseEOqi+qfnE0OI7tDfqV1wKbELbOTEcHyEXFPN8E71LVdCHkss0oknbRnq4eMPm
+         lXDQ==
+X-Gm-Message-State: APuU4Z9wit4BwHtb6SUoVOMfHsl982DWQqETdCu83heWi9JymuZ3Z+Cw
+	6Qu47dClRPuKmD7klemvisQBzwxWwFC6cp+gmY2adpTCcgd8wKTtaepT
+X-Gm-Gg: AYBFou0cYUTj8NxW/blqK/+C6GGLMNGs0TXjxZy/h35XDqJTFPgde/iKWdmkw9Y0u35
+	PVpeYP7h30N8b4xGaOmbW3wt3pmhupy44a3pBkLIbjvhOqUNe61SELEd5XERf6PpZj7DU5rqSIe
+	3GQG1w5qynUavg90KgHiBj7JXhmb03F13Yx76/hL3Y3qT9mkgVpuulBglnApsJvmMNqlJzAIaoZ
+	t7LJ8aM5uaiANEMiyUZqwynwFYm8d1r73puw3+impeVcjKmlvOFAtpWATDYBSCw+WWDYYm02O0D
+	RHrV0YOUoCY1NWnHW402mH/O5yLP7tMU2y3kZkAkMzgNssCqOKn/HM7Uk0mm3KqNHgVIH/wZrle
+	TobdC6lYuRHZKb0VXXFAsAiL2AKJxQRHWNhkF2vSYLA1HSWX1jkXmSa8N1hpqI3QEGk2s1Xt3tR
+	k54Zz+ZS2uKXl5btyc4dYlatmQgAzXkKDq+sobzDHZr3ab48uCf0qPvrZVOEWestFIf/lpkX6Ji
+	VppL5ZcVdh7jaNE+XTQ8oBFvm6ZoPBd2r+fJsFPg5JYhYQjURFTPwoR9hSGHEUKPQ+ylKHhOI2c
+	SM1NTKv6ijN7mQUoZgQKuVI5
+X-Received: by 2002:a05:600c:468d:b0:4bb:741d:ea0 with SMTP id 5b1f17b1804b1-4bb741d103amr31960235e9.17.1794825763460;
+        Mon, 16 Nov 2026 02:42:43 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f77fc47sm21618424f8f.22.2026.11.16.02.42.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2026 02:42:43 -0800 (PST)
+Message-ID: <9277a849-0cf1-4a49-922a-f35aa36f1dc1@gmail.com>
+Date: Mon, 16 Nov 2026 11:42:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7e82bf2d-3a36-46d4-b63e-6b6720620380@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A8B9012000B
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 7q5srqi1zsp65mu155nzxj9sfe43hmof
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] mm/huge_memory: only compare PFNs of huge entries on
+ huge fault insert
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>,
+ Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>,
+ Roman Kisel <romank@linux.microsoft.com>,
+ Saurabh Sengar <ssengar@linux.microsoft.com>,
+ Naman Jain <namjain@linux.microsoft.com>,
+ Michael Kelley <mhklinux@outlook.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org
+References: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
+ <20261115-huge-pfnmap-fault-races-v1-3-537605643f6f@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261115-huge-pfnmap-fault-races-v1-3-537605643f6f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mhtkcr9a83xqe6q6udusaim6wxs1mkcs
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794825681-302956
-X-HE-Meta: U2FsdGVkX1+pZOFapiRhUSfoF9ILHn3/Ha2wafoNhMfUgqCOS+eFumUlZX0srtQO3ZR6bPwIWQ72Z1XmMTk9S4b6fCzGtp6T1iCV0cwNfl5lazdUJHshiQsw3VjdV/l2+a2vCHGwGwOOr73/4apWU31nKBonoKgPm6xm8TwmFIAIe6x5bzUhyFY6stLj01aK1IHcN6jvTLXY3rDcxmpLloPtrtEqTv0Fge0hGoLtYjVfGTnIo8I43oP8V4FuT47lUvHoH3THnztgEb2GV95t6vQ/e5LC2cYZ34vA2M1JfefCUh8uf9QhblL1N9UuIWBiTqOS/DHXqtAmXY4uc5lcou55bIQBwLlpvzVJr86wlwLwabIu4ydLpNHFbY3ig/kBibcTaqLWdYauYMJjF8j6z1KDvph0CzduRnGSjiPygfdrsuzsCB2EksCPwdzUci8dUSFTzHXba8jWiaIQMjIRxXhXm5njuhjLDrbThEmGPhhpe9HIQdAIKmgxNl0YzZkroRx4mXEa+6oEr3AM4ZdZNldH6PmMiDQ8rzoJEK/+0EWOw47XgdftdF7DkyYwRv9XSdLA75dy6NvxO4SI2vIucx1pQjfcjXTzfvVF+JKrMXgG3qfusHey3/Xkux+T2MnBujPNGIO3g6e3QzjKLJrQBV2kjozOp2lxyEDwKT+T/ZTglUN93dBnmrGmdlVG63OS9m/Cdt+r4lCRWN2POCSgG5vs6XI+S1f/gZXc3LUES63TFOelgx0sRJIWMAEay+aMNKerVZlfMvvGudlPRaTsrtEGy5OzaWrpKT+hWgxevvxDPf7WbOW7xYc3tk12AVSlqv12hlUw8VLre2pm6jBuffX+lAt1OEn0ayy6oBvi3YZ2Geb5F0C03lxoLDSJfeEbYwRX+ESDXolIe1PCJW8AI0pJIt6pt6W3R86udJu4Lc7SZY7r6iGdfQggAGkgH1R9slCSdhc4AGIBTdeyakB
- 2N+6Z8a1
- jpAruQLUTvG7UgBOqtRqtFWAAlPJTKGA5h87uH1bKRySdr7MGwJZjOJ7EPqoFEao8YCtPDikbXNScpx3uCwTtrPpTD1vX0J0t207q3SKLVIRNlgdDTUGHqt5axiFmaU5TVTYa7FCfnkCcs78WQZnq6Vs4cyc64FiE0+FMwa7s048z5SwDRtUo4nnL1CKYK+g3jiRldq5/OfZg4ur0v1r7bCgZHYC+D8THYo+C1qjGmew1kezk317EALvogd6dpYQTnAye+FCevw8sG5dpoXaOg15079Kvg+UW2Z0CG2uagR+GP/+64jYq90fKaA==
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E880C80003
+X-HE-Tag: 1794825764-493450
+X-HE-Meta: U2FsdGVkX1+DO1Y2fhi8J+bcAF4WxikBx9iZHfnu2QXqjFHHow/XH9kXNMKof1Isukepk164DgaUZzZ7F5hlbRiUYf6v43gQoa6TbF/wWAD+UP1luxIK5DYrfCDlmmFsFWHOl/DXMeMDilpx81mRlwy5Ap73EAo+XamHIOXvoFKm3QdXpISuX2GLTw0G4Hd4JGB4fH7FQ3dhDUSwcc3I4x/CQEumzPCMKX2kpJJ1hNEWBBV1fsRDGer/QbS6BX7mrtoPOIEfudVRqstjC+VpMw2QWVwaHfOYtgJtxoRtM2LvJDxJLyinYaTC8oq8Aj+qF8ZZSTXH46+RDX2bdw8SNKGdkV5DJ4M48ihMR+G5M7LG+vp9F47Q1D9mddAehe9j0nnjFB5unYYQPIHXUHSNRfyCVwiI7Obk6V7evpNpWDZllj17LTyu33DMMN8hxlDsas8koi6jVbxC6CmUAEgRcoo+UsiVzMHg2Ao2T/Ssb3qJjBwkpm7ImVl4Bgh74LV5ybY/nkf552URO6IVg+wwxuuT0KHd16RTg9BjKarRQ/lQwfDnphQ5F+9Vd+3b5lY/O6RkADHI9vU/KmtjkiHubfW9vdYWZzExbIlAMWBgbp7rikmXL/dxc5HlCJZ76ja8kVmFj8BuGfyi1XoKtCB+ynYUtRef7e8WPOodSS9G+dNXVAPDkBkNnel+tDDGtYeZcrDFo922tjB716veVA7927d2OV8NYw8GEsBbsSn8amWheEvgWycI/y+7jSKvjoba/1FpptInhJR0Sz1VB+8KgoxSrLa0w1T6EaTDQK3+/RoJ2DYYe5apotsTlAHx36jZQNQDJZX/yF9QytRcJtMZfIhoboCthFep2moawcTLawjafQSn08+mjX0YsEkyAhbAoSjJW6cKk06MIftQ/U+aFxj5Wx6RMuJELxK0TbDF5982s0ZVOw6xIbbNBG8Nt34zEmaBVXXsyppQgIpXpIR
+ h33btG1X
+ uo2N3xdYMMFT4T56URj8GDj1IIpx+bdsBdYKclx3F1xsyPiPKnXVwuVRd4jNXR3exKAzAmO9ah3Bmo4mS07TeM0kijbQwNUImer6COYa6+aLaWtAo7UFVI89xaPHGt9MBy3oYab1t26ewjPZN4uotTRw+DAm/5ilPOGMxsXZdEFCKEwcV0MYOF+1oGp+DS+593BjBZW0wV4K18jSID9q1wueEicOzWYLpFAt+qVRGChmcxT9uSbt8SbDGo6NAAbmJK2NH/wHczSX7+/THbDWlgD6ySL5B74zHrWoHcTlPSaOavvLIkSAs1soIcJiOn9JFRs7scQrO+osKsvFsbSkqfHRA3GEPfrBuCI31uzlHFOMjH3zv30PY4SPcpNnD7FrFjhk+d29mfx8hU6dBniqPWpJvgs1ndTuzmBEN6J5aTYK4U/TDQaY0ZdRitP7cJU9+ZGnaVZ11APrDShFbe5mZpRUktvusUbO6cwQZyka6hSLCtHZQCRWbk91wI530gAXB8NCkXm/l8MgetKJ8JPS4DCVnvwKf+RpjKUDYdRYh+SmWHEsC/aHk0SzUEQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,61 +144,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 05:51:52PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 11/2/26 10:39, Kiryl Shutsemau (Meta) wrote:
-> > The high-order check in __zone_watermark_ok() accepts a free page of any
-> > migratetype.  Under ALLOC_NOFRAGMENT, a request below pageblock_order can
-> > only take a page of its own migratetype or claim a whole free block, so
-> > the check can pass when the allocation cannot succeed.
-> > 
-> > Telling those apart needs the request's migratetype, but not every check
-> > wants them told apart.  A check whether an allocation can be served now
-> > has to count only the pages it can take.
-> > 
-> > A check whether there is enough free memory counts every migratetype:
-> > kswapd and kcompactd balancing a zone, order-0 thresholds, the
-> > slowpath's forecast whether reclaim and compaction can still make
-> > progress.  Reclaim and compaction work across migratetypes to free whole
-> > pageblocks.
-> > 
-> > Move the body of __zone_watermark_ok() into __zone_watermark_ok_mt(),
-> > which takes the migratetype as well, and make __zone_watermark_ok() a
-> > wrapper around it for the second kind of check.  These use the new
-> > function:
-> > 
-> >   - the allocator fast path, zone_watermark_fast();
-> >   - its recheck after node reclaim in get_page_from_freelist();
-> >   - compaction's up-front check, compaction_suit_allocation_order().
-> > 
-> > Declare both in mm/internal.h: nothing outside mm uses them.
+On 11/15/26 9:58 PM, Lorenzo Stoakes (ARM) wrote:
+> A driver that implements both ->fault and ->huge_fault must anticipate
+> concurrent use of both.
 > 
-> Why not mm/page_alloc.h instead, now that it exists.
-
-Ack. Will change.
-
-> > @@ -3665,6 +3666,21 @@ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
-> >  	return false;
-> >  }
-> >  
-> > +/*
-> > + * For checks that are not about serving one allocation now: kswapd and
-> > + * kcompactd balancing a zone, order-0 thresholds, forecasts whether
-> > + * reclaim and compaction can still make progress.  They count free pages
-> > + * of every migratetype: reclaim and compaction work across migratetypes
-> > + * to free whole pageblocks.
-> > + */
+> This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
+> concurrent with faulting, as that only holds the mmap write lock and thus
+> does not exclude faulting threads stabilised by VMA lock.
 > 
-> What a slop comment, sigh. Can you rewrite it normally?
+> insert_pmd() and insert_pud() have issues with this as they both assume
+> that, if the page table entry being populated is not empty, it must a
+> present huge entry.
+> 
+> This is problematic as if it is a write fault, it compares its PFN against
+> the one being inserted, warning if they differ, on the assumption that the
+> entry is a huge leaf.
+> 
+> Since the entry may be a page table, this is invalid and can result in
+> spurious warnings.
+> 
+> Equally, the entry might be non-present. Nothing can install such an entry
+> in the VMAs that reach this code today, but there is no reason to rely upon
+> that.
+> 
+> Therefore only examine the PFN if the entry is both present and huge, and
+> otherwise simply return VM_FAULT_NOPAGE so the fault is retried and handled
+> at the appropriate level.
+> 
+> This is what already happens for a read fault, for which the existing entry
+> is not examined at all.
+> 
+> Target the commit which introduced the first driver which both mixes fault
+> orders and passes the write flag for the fix (since this commit, both
+> drm_gem_shmem and panthor are prey to this issue).
+> 
+> Reported-by: Eliav Farber <farbere@amazon.com>
+> Closes: https://lore.kernel.org/all/20261112051440.16140-4-farbere@amazon.com/
+> Fixes: 7bfe3b8ea6e3 ("Drivers: hv: Introduce mshv_vtl driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-/*
- * Return true if free base pages in the zone are above 'mark' regardless
- * of migratetype. Use it to check whether the zone as a whole has enough
- * free memory. Use __zone_watermark_ok_mt() instead to check whether a
- * particular allocation can be served.
- */
+LGTM:
 
-Okay?
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+cheers,
+jose a. p-a
 
