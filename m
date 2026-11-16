@@ -1,124 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1592A606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000E6606A333
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=aJX5PoNC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BWGzDCEU
 Received: by kanga.kvack.org (Postfix)
-	id 2FAE16B00EF; Mon, 16 Nov 2026 07:47:45 -0500 (EST)
+	id 19D6B6B05B0; Mon, 16 Nov 2026 07:48:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AB516B05B0; Mon, 16 Nov 2026 07:47:45 -0500 (EST)
+	id 1766D6B05B2; Mon, 16 Nov 2026 07:48:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C1F16B05B1; Mon, 16 Nov 2026 07:47:45 -0500 (EST)
+	id 091A26B05B3; Mon, 16 Nov 2026 07:48:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBCF26B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:44 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8D4921C4302
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:47:44 +0000 (UTC)
-X-FDA: 85440958848.24.F5C7728
-Received: from outbound.st.icloud.com (st-2003j-snip4-4.eps.apple.com [57.103.77.145])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AF4B220004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:47:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=aJX5PoNC;
-	spf=pass (imf03.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.77.145 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D2AEB6B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:48:46 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD2E312063F
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:44 +0000 (UTC)
+X-FDA: 85440961368.28.5FF86C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2F362100007
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWGzDCEU;
+	spf=pass (imf05.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794833262;
-	b=me45bAI+ycVXoAN9c0rjSJAlHvohtmyiUFcCNGv3sNeMciDUFm2mAhcel/HqEWHgvQnMo+
-	mBHcdeXa8o8YuPTbfwTH3+ri6ZOBCc4W1a6jMmHbXItWe1QMfmwG6E82144765jrxZZ8kt
-	UXxIPWihXWHjayDTfONRT9hC7xYH4Uw=
+	t=1794833323;
+	b=rpVw1fGdQKIqFq1ayWFMzjfL/ODdQlZXE6BqheQejnLSh4dzJ3/lp4j2PsAvFTrQyX8hqC
+	plPOSEjZXuRFlPuvMAir2FYzRWmCV/1iqhcZLs15icVVcHeqa88TgiPHkE7n7yGU10mIwc
+	fadSxZgM78qRm73QdP4jEg92wcHCAXE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=aJX5PoNC;
-	spf=pass (imf03.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.77.145 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWGzDCEU;
+	spf=pass (imf05.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794833262;
+	s=arc-20220608; t=1794833323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AqPO1svnj6cqsySztRzKc1k975aK5sT9hZbKLmraqes=;
-	b=IB03+RElzB4VgpouzagJitgqRi1aYeQufLXA0FIiTUJHALkkVaZlji5J2nSPTXMwj2+wde
-	Jju65lZMwEPdyCOR0TEXT//b91h9IhqLCNfemqW5gmDjIoifDfyXgJ7LsE6/h0VX5OmMqB
-	cx/gial3Tj0vRHneV//LPf/kisdGFds=
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-10-percent-2 (Postfix) with ESMTPS id 8E69C180064C;
-	Mon, 16 Nov 2026 12:47:35 +0000 (UTC)
-X-ICL-RepId: 01a1e466-0c3e-71a8-945f-4b8f3869dc17
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1794833261; x=1826369261; bh=AqPO1svnj6cqsySztRzKc1k975aK5sT9hZbKLmraqes=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=aJX5PoNCnUZDsPs6Wy9F/BXoQ7QKocVmQhEh1tHlv/DGYDztsZAKGDbDhZaiZKkjGfQGGU5H5OqURWQK16lbuANSbDQZmc7mCg1rJdTdcVPEQwivL2XpbCWZ88vfuyeRRmJjIMJxMh9HqIglhRQ6emejwx9K3ZjUSknL6cfG7A2SfKUwkIZrd4m9z/ZAcNQpo/S8E6mVMk5TnCsAt1qMBBNqzB6lGaX33thVBby3brzO63MktuwU33hgmq2nUQQn0zuD/SwGQOXCblpMx10zqMqMaQwrE7TIb0Ur9ugXTHYUysWyg1KXtjV0ZfDxTui30gUlsqVq1GSAumP/WrXbqA==
-Received: from lima-kernel-dev (unknown [17.156.216.30])
-	by p00-icloudmta-asmtp-us-east-1a-10-percent-2 (Postfix) with ESMTPSA id 6363B18002DF;
-	Mon, 16 Nov 2026 12:47:29 +0000 (UTC)
-Date: Mon, 16 Nov 2026 20:47:24 +0800
-From: Zhang Peng <zippermonkey@icloud.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Zhang Peng <bruzzhang@tencent.com>
-Subject: Re: [PATCH v6 0/5] mm: batch TLB flushing for dirty folios in vmscan
-Message-ID: <avr7UOzToQYOppzN@lima-kernel-dev>
-References: <20261031-batch-tlb-flush-v6-0-190539839eec@tencent.com>
- <8b89bd7d-8de3-408f-8f27-c0e4918e48f9@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=cHwboy1N0wyypiMyN1HkFeKrDxUYIhWj1+v6URlvrGU=;
+	b=lhox+kt+0LRBkbB6s7vJoLYWYIAnE3k1kyk++zfzN/Lgxm/4PBSoOpTq8wnX5W6DnG3yl8
+	CbTIXylNRNBvteNMYkMCE8LMyOQGV+a7+uUo5ivUm08rzWcbys+gFxV+LzYSg1e78XP2XW
+	7O7aWPrU1nW5FMRXxipmUZ9qAUNSIZk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AFAA34039F;
+	Mon, 16 Nov 2026 12:48:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF3E1F000C4;
+	Mon, 16 Nov 2026 12:48:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794833321;
+	bh=cHwboy1N0wyypiMyN1HkFeKrDxUYIhWj1+v6URlvrGU=;
+	h=From:To:Cc:Subject:Date;
+	b=BWGzDCEUKXr34v4C6Dho8x9jma12SCGGbn8RtpnP3qX45i9pqa/vtpEIy71wryEv4
+	 IDWOk5oa3ya3mNqxy+6UT4i70X+uEAWGil+v6ZahGuzUlfN6VIcqcuIrhrZIOo/ekd
+	 EV+YXnEY6Cul1fybgHnM8yGocWvdjRFqe1EMtnbAU3dHGFdRStQauSRRT2AvWZgWgS
+	 +CxxyH2MmUe3+drsDMXbdVpGvCSVANx8OaC9LoJ0Ma8LURv8oUrYUeQ3kK++srZffw
+	 nHuLhWyZR7lw1gAqOMkhLwFNYtFfmVEA6Wq+X7rs6NMUj51o4mJUC4azDZ6J4FQ1Hj
+	 5dUfR3eSzgLFA==
+From: Arnd Bergmann <arnd@kernel.org>
+To: linux-mm@kvack.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Linus Walleij <linusw@kernel.org>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Malin Jonsson <malin.jonsson@est.tech>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nishanth Menon <nm@ti.com>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org
+Subject: [PATCH v3 00/10] mm: highmem cleanups
+Date: Mon, 16 Nov 2026 13:48:22 +0100
+Message-ID: <20261116124832.662455-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8b89bd7d-8de3-408f-8f27-c0e4918e48f9@kernel.org>
-X-Proofpoint-ORIG-GUID: rL_ceMxMQoQrcYO9m8_ONcWMxu8lnufI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA1MCBTYWx0ZWRfX65TkCsqUYmNK
- hQ32UvJQfbCqlzdHFiJo0ComYWmOCClOw4chzSx92ium3md5fvPK7PqNfAh2+TbmwR61GULqxi8
- 0g+tFWGNWWcCIqFBNja+GXrXSDgIGRSxMhjc20Quhua/87k9uzjOXW9I0ESgTg51pondADl0PYK
- iCxF6skFKyv7pcJLWJWz1gbcv/8FlzXnUJ7nX4T0Q5CdKbxjbmYerZc0NT681rWSfes5UVuSV9/
- vdjc8uGSNWTwj9pnXeWR0VEf7rGPQLuvTYkvKE1rEfwzRzqXrScBhBjg+91od8rRfei/WETFwxy
- XLbQZ1+ns4NduH7Nuuk6JdWFnoMsepjRDRJ+9Uj7QA3AvXIFwohz2xX6xv73MQ=
-X-Authority-Info-Out: v=2.4 cv=CJonnBrD c=1 sm=1 tr=0 ts=6afafb6b
- cx=c_apl:c_pps:t_out a=oyWFxbOnq+dmhQrAPgaJYA==:117
- a=oyWFxbOnq+dmhQrAPgaJYA==:17 a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10
- a=x7bEGLp0ZPQA:10 a=YE32fvk_ji8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=-UxxG35tPzvqjwnQO_AA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: rL_ceMxMQoQrcYO9m8_ONcWMxu8lnufI
-X-JNJ: AAAAAAABJG4OMtSERyiWZZXizsbRvBXCI28NnBcbk58Polj8fd/41R7pO1zJJ2Tykwec8h
- Xq4wQw//8H5xM/8wLsgiaXq3PZPV/l65LUcHbV6GZTjy7IRGgu1OzrGEQ8gUBLBgwfA9e2
- JujTZK5cych6aB/GbbiEmyaHnQ8pSUayaJmvYjZdOF8LwXLhOrgDoHKCYaWr1o711h9DG+
- YD6FFenD0LvvhpNMpa7aqZsc4Tm01CH7Vv6GFWua5/gWk8EKT8aqmAgOy17thiWWXjw8KO
- F6jeughSjZC7UH68D7y79DLxucghGwtYaHU1UTmROOrB461zQj3oX4nNn9yRUIck+H2fUv
- WGVCMcqL1h0IDZyepoGHSWrm57jAK4CfHO0WCJJ8AfU2Nc8zuWnOpGDdV2X+Zuiox418p+
- a8in0MXzA39O1vdTch2k/GGrThGWly4S7jo/ZKDy+Q1JQbZ+pN5Oomj26A+iXkfXlu620n
- 15GZ0rltjFAtvVBW/1nXn+4u1QJ5g0apsdQiNV0dPN8+CrjI9vYwm4HM7bb02W1uaWqcWV
- reCnw+zdAzKLPrsczzdoKmDxWBM07mi12N2hORLu+5eSt59mlmqHVKW5ZZjAFh7EgBUt3I
- mujZdddCIrwA2k0cJojCOzDBEK9RMhXPWrGxN5C6LMQuUbALqAzVtk6TQ0IY4iguObiO5L
- x2PNCNzta/XHa4PqZmnxsedpAVQzDjCQ4Qp5FyQgKpZ+TrkGT5zMQ3k/CgL3CiJeRw/5qx
- z+cuvss5pdnUlQ6n66emywLygqffuieTTHb/kNyg9UyGejupMaPfD/Ct378WodANZkQPl3
- qTgDX0ErEaPXy/s4nuo8c7RxFmz4l72lwl4RnX8i+qETu4Hy3SuIKaICLG+IzOelrFmz4o
- 6oDJS7o3umPzexI/Qf72iatX5pkja8cCwfWff/b+6166VhwYmKidshRnrU4qL95kCJALUs
- Hsi6kEtyZ49fgfvxA2nqW0GU8wjfOfudkiAEKpvd6tL5bP389xBxKancX6KUM2VfCkwKEO
- Yt9Xap54Sd63Vy2ZeSus0ma8izjlRQjpelT7jlcVvWSacGM1kaJvnZ2qNAFqsfrXImBiXs
- boHeWj8Vki8WVwAtYKEYoqKUx1l81qYvJ1bSuzZQ4nnSa13jQ5AG5PZe8I+NgmpkrRfZEz
- JZIOUepD0+IuCY6KcrmCIybuFGqaf11M2CWpvP2xpoUrmeJELleN9huS3LPY48XyHruVVF
- mdRkkCq3YOOCQjOqeYSu+0TJnjhMGsroTOPJbToa+/vooaMFfahAyO/4pCLkg2/rWCOTAz
- EzZBpLndUqrvIinA49SYTg5Q1FSRPqaEArbqVFNvqjUMY4Vaqz+ptCxw7gpntToi4mdM6v
- aDhz0dt3TSOTBB/mGoDmdNFnX8jkZikDiAoEAiF8KkJzzaMfVj27TRH0Ad2BTOxLsYGUds
- 8gflFaHYJ96AK/yTzhffYybgYJC/YB5iMUY4IV
-X-Stat-Signature: bibmg4pi7qxjfwd8t3ni83aor5pyist1
-X-Rspamd-Queue-Id: AF4B220004
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: prem5ubnh8yeh4ca7jxroox58cjuz3td
+X-Rspamd-Queue-Id: 2F362100007
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794833262-702090
-X-HE-Meta: U2FsdGVkX18WhBa9JVsEtwm74tEsq/4QZ8IWWvIFJJCXQuID5BSsGMGv3oQ0FG3sA30bS1gxW43HzS31BsvwrP5q+UOwfbBo84l8Rjzs0snHJcjydp8rpCW/PVDG0OzZn5gM0dVPSpw0K/pqMRR0EPqTPW9y/Lhz0WK31pFSmVQM9/x3r54JOVd5BeGkzTjFg8bMmGnWBfswH24n/jx/gjt9NEwAJEmCubjGvYwpKWal86zs4YH2/8GHNMKxjt1M60rX8St1pZh6RKDUB5jBcZY3lwyu352PRmTGGeZ6fvtqQe5yI73odzhMWFhZwOGAJ9rNt8BuxAyoXRR+XQ90I+i5if36SScy34CJE9BtciN7UA0KOgihi0F4O0p1nluxOOEgNit+SjWOXH9N6CyQj1c61RjF3YPPTTvZYBJSRKaUuV3B1QKHvUkvOwIG5+V7wSuO9qaGImFOKmwIZ3OLaCO+ERuFu1542AxfPK1tax4wiyirU7jG1UB79SoZgxqXrZvb0wmyM7y3L/kFHJ31Yq5qx2hbaWhZYPzCnxSt2+3zX3IwFAlNCuTD504yVLWT9jEQfkyJ4HvDyPKVww1kCpuOZrOhMt6PVuWVWY33hF1ziDg0+kAQFiOlN6NXqZ2unzzYe74v+OG2Yx0RnmjbzFZP6SVF9gz//RZlqlJO+TyWSSVHwF+Vcm5SE/v7PWLDav00b3akWi7wT4UsZbS9Ho/qEHz8VKDk0OUpNwASC4MpuV92IPuZ7YkwgXeXFhNy3Za5WJkQ+QQ0V5BMU52md2m+HPMx8LWfQYRBCwl5qMXFdDAHy7OTB2fx7+IifD60YHiMZtZqTxctkgAYrULxt+xdyPyntSDSAySlU6YC799Isp2fzlfnnWXWQv96XC36mVxy636pTIc2A3R4pP9TnbQDlMZa9Wc4sucGwDIPjxE6ca4M/r5WeGAEUkwqJAf1i04j6kEvE/t6b1upkGt
- hHyGZ2+Z
- TPoyGzI+ZHO8iqD4zjw6b3wIhxZI3JNcEyhH4slM4GuGAFMydFyTdM0gkwbuzmEO6FmErjCmff8l+N5y7in8UUg6bgexLaAh0bapwK62s4x2MmsACmcqPrBERfb0189TlBuDnvB4TyXX63jCdJUuihk7wDk4VtNgQy1oyjhhJ0aUTfTlmgLVMBCdX/nHawCNUZZLvTABJ783ZdJHu253Z7MKDCzQ7uKICDquEkUvJDMo9csz8q7BIKKvBsuliwSYc6b8jIthujP/Xcrva/THDFcq4i3SYZQaaHp1fIx5m5xcRVdeVyznGrNPmVI50IyZ6WEe0ocDeUJdKovnwNhjUxfNUvg==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794833323-290281
+X-HE-Meta: U2FsdGVkX1/BU+BmF4pbywIgJy6ApkiNnDv+mZAZY++3O7tcftW5c8QE1mZZEgegbO6sKA+nsV8mBq+nphVEgvlEHSpnqSNJCg2zSZ43RVURt0BYWmrpKhfLaZsTlNQZxiAoj1E1wi8gnHS0RcYGsAV3oJ0TSgDmQbTWkymGbHpKEPU1X7Jm3jzzADvBHRTms6ZdYRkRIVzbjCUSakgeumnwJ1zRGAP4VKYZ/ZSnoWAgAD5kt4LpYkvb0uwugd4jhlVaKWYg4oLLyzJYB5c87uBu0DORxZAhnFal3UNoVQhAOeVI1pj4N6Yp68mHo7FMjJsT+NFS+sBvoHThW3Io9Dcj9v3YJqnBkR6MLNX5JEX573sUbHXr8C8tFQVtGDZ3jZaTcMg8GDAUlb9j/SeMj54dhQwgW+ogSHvQ4VGqWTG4aiuByDF9HRlzRGIVjknvZgdwz2dP3vgSrOr6RBSRH1A59u8l7JPMNQzSsyJaackJNbLdWUjWaR0iYKPwYn7QXGAX+9osEmcFa16LaLts1T8ur8aatG4bEeKjAYsLxw6xRb34Ia+ZQ71qrBbDXC6S8Ed7l/b9MA3tdT+2fWDNWUfGdYxKOMEoK8EvaUgWvwUkLSwl6T+yX5dNJcCVSfZnwqNTDvIIe+BT0eZ9Y2o5pTb7ZlcAxQbLOGJ6AW+TBGY7Qr9NI5fYCtMol88x8td1MD2qtMjknlczHO4J5pIxHpP+u80x/nFVIYW/jcnqBH0kOfK3w4UpaZMLoI+HpLp9EdajVoRO6goI9kAaAo8Jcqne5W/9Gu3mjLhM8X/mfyxu7dO1uDQVPVzzXaYQR1mlTHUfg6x8C3izRzRGdCg89bqRj+5asv+hY01pQUoI04bW7lprhptbthJEbgPiZ2vx40tufj9I6zUkOO9J+JiOygye2ojBNKBM7wz8RoVPN1baTZGHoLl9LA2Nh7DdAtrVt17pfPbU0egaxBEG9Pj
+ l6iwR4KG
+ H+S4vRBdfDF2yH8tn2J9Ply0shT954lvoDjh8flJvEACNFF+6hAfeB/A/qiML/moh074DwXmT6aMzwY3IOitPOXmZsFxF3Eag9NJ3spn3TZaoHWi/SVAQOk7IofMGHumyvBuQ1zc8E0kGioIQzp/W0HZ2GBbhEGXEKz+JFZ4amPMZd5RbuHjOrpoPoyBwJv0TYR/luDMYxpgtUBm/Mdo/hlkm+gP5qyAmLBzcz8gXDo6LIAwgIXcFkOWEEyobeZYnSswCF5Q3PQ+pGIRqx1hv930NVzJahOU2OC+M5K5D0n9Mg3DFYbfZqwG+jQWcna83yJ4zOC8qVfq1NX0Aax5UuE9y07lfuJc7s6ThZiKm2J5pAPjvCn7saWzzIq6NF9Yz1eF3N9xzuo1rDPoTZY0ifD37E6KYfMww7O2qglZTOvwKylk+8SwtN8zWW6c1NC2obYoWQw4K4JatTPIQUqH4XBNSJoLVffh2VXElnNKdMtkOJh7ConCdnBeErAJkuQwBDKC55dh1uQhnoKxJWaigKj+TZUDlarQ/LXRj/eOfcVNwrWSCTdzGBAa7FBA5xqixERn70x6+KEITWg1jfWAu0ybkw5IgTXe5odztUyg9ddJhPNhDtsyZ4yqB9yNtOfL4L88V0MdwwWpGWFcT6xbOCEfofleuQ0jM6YybJWXsoI2kMw58MTK8vrxfjYOSNp4snH2EXncE87pZRbxSdVBVV3eCwLB03wdJG/SFMIFSQOq2QmZvwmOQ1Ma+7QWp2NawhPglUH3cfnwKBsF7U8fIhCqX05d+Xs51zEqZ/q0gkU9yRixjfeg0rBLcSe77HocWsia4la7jOkIJQpc8nHnGyMTA9x1+u6K/vr9prokkZX/nArMNWP8IVh4Ldo/scnLYeynt4B7Ivt4LNqxHqcYvFKPu4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,37 +117,162 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 01:10:22PM +0100, David Hildenbrand (Arm) wrote:
-> On 10/31/26 11:35, Zhang Peng wrote:
-> > This series introduces batch TLB flushing optimization for dirty folios
-> > during memory reclaim, aiming to reduce IPI overhead on multi-core systems.
-> > 
-> > Background
-> > ----------
-> > Reclaim calls try_to_unmap_flush_dirty() before writing out each dirty
-> > folio. When writable TLB entries are pending, this triggers a flush.
-> > On systems that use IPIs for TLB shootdowns, frequent flushes can add
-> > significant overhead.
-> > 
-> 
-> I will send out a series soon that fixes various issues with current delayed TLB
-> flushing.
-> 
-> It's all such a mess.
-> 
-> There will be one issue that is harder to resolve, which will interact with your
-> changes.
-> 
-> I think something along the lines of your approach might come in handy to
-> resolve it. I'll CC you once I send it out and we can discuss there.
-> 
-> -- 
-> Cheers,
-> 
-> David
-Thanks for the heads-up. I'll take a look at your series once it's posted,
-and I'd be happy to discuss how this approach might help.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Thanks,
-Zhang Peng
+This is an updated series from what I posted last year [1] and
+last week[2].
+
+At LPC 2025 [3], we got rough consensus on the plan to keep the
+funcationality present for the time being but instead reduce the scope
+of highmem in the kernel as much as we can without hurting users.
+
+The short summary is a three stage process:
+
+ 1. Nudge users towards using a larger lowmem zone with the
+    CONFIG_VMSPLIT_* options if at all possible.
+
+ 2. Drop most __GFP_HIGHMEM allocations and corresponding kmap()
+    calls from the kernel, leaving only the subset that is likely
+    to contain the majority of the actual allocations.
+    Specifically we will keep anonymous and regular file backed
+    user mappings, zsmalloc, and huge pages.
+
+ 3. In a few years, also drop the page cache allocations and leave
+    perhaps only zsmalloc using a much simpler interface.  I suggested
+    five years as the time until we do this, but the timing depends a
+    lot on how the first two stages work out in practice, and how long
+    the remaining highmem users plan to keep updating their kernels.
+
+This series implements stage 1, mostly using Kconfig changes to the
+default settings but leaving the traditional behavior as a CONFIG_EXPERT
+choice in Kconfig. With the new defaults, most installations that use
+highmem today with 1 GiB or 2 GiB of system RAM will see all of their
+RAM in the lowmem zone after upgrading their kernels. My estimate is
+that instead of 80% to 90% of maintained embedded 32-bit systems, this
+should cover over 98%.
+
+As I don't actually have hardware in the category that still needs
+highmem, I tested this using a qemu-system for Armv7 and PPC6xx running a
+Debian userland with all combinations of VMSPLIT and HIGHMEM options. I
+ran some kernel builds on the Arm guest to ensure that the new options
+don't cause functional or performance regressions for regular workloads
+that don't exceed the virtual address space. I also ran some tests
+with Firefox and was positively surprised to see that this still works
+on the VMSPLIT_2G_OPT configuration without highmem, though it gets
+close to both the address space and lowmem size limits.
+
+The change to use VMSPLIT_3G_OPT by default on Armv5 means that I could
+include a patch to no longer support highmem at all on VIVT caches,
+as suggested by Jason Gunthorpe. I also included the patch to drop
+HIGHPTE support now, as suggested by David Hildenbrand.
+
+The patches from this series are available in [4] for testing.
+
+Once there are no further concerns about the contents, I would
+suggest merging this through the asm-generic tree, as it touches
+mostly architecture specific code and that is not easily split
+from the core mm/* code. Merging everything through the mm
+tree would of course also work.
+
+     Arnd
+
+[1] https://lore.kernel.org/all/20251219161559.556737-1-arnd@kernel.org/  # v1
+[2] https://lore.kernel.org/all/20261112112528.1116405-1-arnd@kernel.org/ # v2
+[3] https://lwn.net/Articles/1051010/
+[4] https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=highmem-7.4
+
+Changes since v2:
+
+ - Add preparation patch for Arm PXA [sashiko-bot] 
+ - Add preparation patch for powerpc32/kvm [sashiko-bot]
+ - Fix Arm ARCH_MMAP_RND_BITS_MAX calculation [sashiko-bot]
+ - Simplification for pte_alloc_one() [Mike Rapoport]
+ - Drop stale references to highpte [David Hildenbrand]
+ - improve __print_bad_page_map_pgtable()
+ - Split out Arm changes for CONFIG_VMSPLIT_2G_OPT
+
+Changes since v1:
+ - rebase to v7.4-rc
+ - add patch to drop highpte
+
+Arnd Bergmann (10):
+  ARM: remove support for highmem on VIVT
+  ARM: drop CONFIG_HIGHPTE support
+  ARM: pxa: support arbitrary PAGE_OFFSET
+  powerpc: kvm: allow flexible PAGE_OFFSET
+  arch/*: increase lowmem size to avoid highmem use
+  ARM: add CONFIG_VMSPLIT_2G_OPT option
+  ARM: defconfig: turn off highmem in favor of CONFIG_VMSPLIT_2G_OPT
+  mm: remove ARCH_NEEDS_KMAP_HIGH_GET
+  mm: drop HIGHPTE support altogether
+  mm: print pte in __print_bad_page_map_pgtable()
+
+ arch/arm/Kconfig                            |  27 +++---
+ arch/arm/configs/aspeed_g5_defconfig        |   3 +-
+ arch/arm/configs/gemini_defconfig           |   1 -
+ arch/arm/configs/lpae.config                |   1 +
+ arch/arm/configs/multi_v5_defconfig         |   1 -
+ arch/arm/configs/multi_v7_defconfig         |   1 +
+ arch/arm/configs/mvebu_v5_defconfig         |   1 -
+ arch/arm/configs/omap2plus_defconfig        |   1 +
+ arch/arm/configs/u8500_defconfig            |   1 -
+ arch/arm/configs/vt8500_v6_v7_defconfig     |   2 -
+ arch/arm/include/asm/highmem.h              |  56 +----------
+ arch/arm/include/asm/pgalloc.h              |  13 +--
+ arch/arm/mach-omap2/Kconfig                 |   1 -
+ arch/arm/mach-pxa/pxa3xx.c                  |   2 +-
+ arch/arm/mm/cache-feroceon-l2.c             |  31 +-----
+ arch/arm/mm/cache-xsc3l2.c                  |  47 +--------
+ arch/arm/mm/dma-mapping.c                   |  12 +--
+ arch/arm/mm/flush.c                         |  19 +---
+ arch/microblaze/Kconfig                     |   9 +-
+ arch/microblaze/configs/mmu_defconfig       |   1 -
+ arch/powerpc/Kconfig                        |  24 +++--
+ arch/powerpc/configs/44x/akebono_defconfig  |   1 -
+ arch/powerpc/configs/85xx/ksi8560_defconfig |   1 -
+ arch/powerpc/configs/85xx/stx_gp3_defconfig |   1 -
+ arch/powerpc/kvm/book3s_32_sr.S             |   4 +-
+ arch/powerpc/kvm/booke_interrupts.S         |   4 +-
+ arch/powerpc/kvm/e500_mmu_host.c            |   3 +-
+ arch/x86/Kconfig                            |   4 +-
+ include/linux/hugetlb.h                     |   5 +-
+ include/linux/mm.h                          |   1 -
+ include/linux/pgtable.h                     |  13 ---
+ mm/highmem.c                                | 100 ++------------------
+ mm/memory.c                                 |  21 ++--
+ mm/pgtable-generic.c                        |  25 +++--
+ mm/userfaultfd.c                            |   6 +-
+ 35 files changed, 104 insertions(+), 339 deletions(-)
+
+-- 
+2.53.0
+
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Linus Walleij <linusw@kernel.org>
+Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Cc: Lucas Stach <l.stach@pengutronix.de>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Malin Jonsson <malin.jonsson@est.tech>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Simek <monstr@monstr.eu>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nishanth Menon <nm@ti.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org
+
 
