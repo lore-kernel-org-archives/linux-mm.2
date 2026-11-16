@@ -1,101 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B8C606A33D
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFAA606E487
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O5zrqDaC
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=mQcxeC6t
 Received: by kanga.kvack.org (Postfix)
-	id 7F0F86B05F9; Mon, 16 Nov 2026 06:14:27 -0500 (EST)
+	id 5FBA96B05FD; Mon, 16 Nov 2026 06:18:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C8816B061C; Mon, 16 Nov 2026 06:14:27 -0500 (EST)
+	id 5D3346B0600; Mon, 16 Nov 2026 06:18:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B7FE6B061D; Mon, 16 Nov 2026 06:14:27 -0500 (EST)
+	id 510D36B0604; Mon, 16 Nov 2026 06:18:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 482006B05F9
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:14:27 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCFFA40975
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:14:26 +0000 (UTC)
-X-FDA: 85440723732.24.DEFDB5F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 43763120003
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:14:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5zrqDaC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 320D06B05FD
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:18:02 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C3E191608D6
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:18:01 +0000 (UTC)
+X-FDA: 85440732762.12.81F08BE
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8D543C0004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:17:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mQcxeC6t;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf28.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827665;
+	s=arc-20220608; t=1794827880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KNPAh5bBD/DCtRCxR0hqcD+XfwtFgFjRzluMrGXNBRI=;
-	b=tsNISHO9M1gfz1yL7i+syRPEr6ko4CxAIFClph+OHuGLz8+Zzrrg/2e0r8yi7UEeEVXFpj
-	31QMsBWvwOh4hxF7QMkvPZGJ1zSs4advmBKASXEjYZ3jczdgwrXfWyVfiwcTw/ZpJNHSTD
-	E/qNOI972MQX85eurv25uzRB3UAXaxU=
+	bh=gcSYfJo9DBtW87ibrEcEB+4TxGxQarLrxm69h/JCdcA=;
+	b=fj1FISLmd+krWq2Yg6r+a4VjVo31Ha0I1RKHCp5B3OwQW4Z/BCVIB7z0G5xG3LbEUsty+G
+	EBpEq34LV6Qi0UvuYldoUyE6fAO6BJzkfo60auOAXbkIUl8nLky6+4rQtzb5IseEMKMBim
+	7Akd9WBR/rGp/GRbpfd7GrUHsrJgu3c=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5zrqDaC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mQcxeC6t;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf28.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827665;
-	b=Bio7WrLbc84Gh29srZrgKRk9n2F/m9pN/ec/qJJC39itTDfgN7FwmBwMGohHNngumGCxa3
-	b6LB9wQ0w8qrAobSJfnN1nERXebrrRWb4NcWJAzC7j1AVSwxDUVeluQ0rpgyo0Z+Ows6H0
-	IC4MpOGo2C7SQxsOEST9fAiYTYRQD8c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C6AE561230;
-	Mon, 16 Nov 2026 11:14:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E331F000C4;
-	Mon, 16 Nov 2026 11:14:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794827664;
-	bh=KNPAh5bBD/DCtRCxR0hqcD+XfwtFgFjRzluMrGXNBRI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=O5zrqDaCTmINWztAloFXN+rib9w6MXO+Cig6Cqk8sJgar8MILTmb6qSQTzdhtT5vQ
-	 /ai9JqDwBZCd7Bj+66UtHdzRGQDUWraCnMEPl+H+91qobdHvRBE09minUyXSPTDOHN
-	 SR+Z1HO69AKxCZozQX2A13wcm5W1p7E/BSAAzcXVEhs/gGNPHLVeJwRsAhCy42glLk
-	 sZzo45Lyuk1zo5M3067MD/U5Kh3sJlqEb0fmFvM6jPpWFQNAtIp4vwa8652NKBEqcq
-	 gXMnfrqG3xlHcUMPkCUaZyXk5hZd2JZpuKmAXRzngkZkn3miQVNMe57FPiGEnq0Vq6
-	 plAw86jLVh3yQ==
-Date: Mon, 16 Nov 2026 13:14:16 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: nakixii <nakixii@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Yosry Ahmed <yosry@kernel.org>, Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Barry Song <baohua@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Peter Xu <peterx@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [RFC PATCH 00/16] mm: add in-memory compression of reclaimed
- pages
-Message-ID: <avrliOfBi326au6B@kernel.org>
-References: <20261116110122.309748-1-nakixii@gmail.com>
+	t=1794827880;
+	b=dVBZsx0soTqAsjIbOqUOeNTTc1DRRq5tqfCCI9nHKpeLdlUEdGdCwVTDJFK2s607vfAqhz
+	8eZW7WY8bnAGE2QCTP091bKupPPbucnZH93XT4XCrdodtwUertmPw/q5Pns+PZmvOrzaj+
+	VMFpiiBQoIhwFu1KJTJL3mTTLpw2n9E=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1794827870; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=gcSYfJo9DBtW87ibrEcEB+4TxGxQarLrxm69h/JCdcA=;
+ b=mQcxeC6tNSjEUQqT1PHD9V7k1HbfoEE3KELg89HubxEA97yFDXM9EtbD4F9tKVWOGoQ2gY
+ RMfsd1avzgnoSVOBDbDRW5wKY5iSx9e3Bh3m2YMbQIOvOohcMR1FLEbqvM3/a02HtWwi15
+ cSY7pzarXdhyHFfiq/lg8h9E8CDXgbv266+7lwOIn7nVjkC7Sfw+NOSb3bQ9q4qBryBSZ+
+ WYLa3mUGNEDq7zs79X3YBv8aVRNSLNbdO9utyS7I9gDoFc8mSd3TTTAE99n3c9zDbKd/DD
+ DzyD6y/VGMkCGaKuQ6m8yfFJVFyTQxqBAaNp95lIPoMIsXpGq3C9gGQl23O2Uw==
+References: <20261113033442.62970-1-songmuchun@bytedance.com> <179482576829.2379196.3205677806966393313.b4-review@b4>
+In-Reply-To: <179482576829.2379196.3205677806966393313.b4-review@b4>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, 
+	"David Hildenbrand" <david@kernel.org>, 
+	"Oscar Salvador" <osalvador@suse.de>, 
+	"Andrew Popple" <apopple@nvidia.com>, 
+	"Balbir Singh" <balbirs@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka" <vbabka@kernel.org>, 
+	"Suren Baghdasaryan" <surenb@google.com>, 
+	"Michal Hocko" <mhocko@suse.com>, "Muchun Song" <muchun.song@linux.dev>, 
+	"James Houghton" <jthoughton@google.com>, 
+	"Lance Yang" <lance.yang@linux.dev>, "Qi Zheng" <qi.zheng@linux.dev>, 
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+X-Lms-Return-Path: <lba+26afae65c+834d37+kvack.org+lizhe.67@bytedance.com>
+Date: Mon, 16 Nov 2026 19:17:27 +0800
+Message-Id: <f38322fb-abb7-4284-b6d5-bd6e747333bb@bytedance.com>
+User-Agent: Mozilla Thunderbird
+To: "Mike Rapoport" <rppt@kernel.org>, 
+	"Muchun Song" <songmuchun@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: Re: [PATCH v2 00/14] mm: Unify memmap initialization for compound pages
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116110122.309748-1-nakixii@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8D543C0004
+X-Stat-Signature: g5stmw65bq3q78n16ws564fc9y8hp1fx
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 43763120003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: yt91eycbik3txjhmy5oa7rm95jd33ddb
-X-HE-Tag: 1794827665-449414
-X-HE-Meta: U2FsdGVkX18ti6FF/L4wKO9n3juX+AjN1pNGCuufqWDCgvJ+M2Hto/Wm9+pgyzW89LnFlOL2caCae3aZqOXT9XTNmNUgQV0J7N09nERPfe07p61F61avxtQ06mMaGzlCMgbbbhZLQMaVF3XJa7OyqzpOD/2ux/GaN2gnV5uaozVwfdm5onFTqrA9P9kkzORPF2/gU8h2dNt6HZDu8vVXvJOiYyd1uZilcLvKd3Sce4PK3mzwa7ttW9yvGqMlSlDwMBSW34FQ/hCkhl5L6DAncKA0Yf13x3dhbtPetYSZBQvSbUTr5O+7nASXmJA1JHx5okViwXCG3flNQznaNphQVHlppXJ4rfwIjEzr8w7SNRkZkeJecoYRLO/sL5gGwXh4V2CRQVpyWHXDnmhoIg3fmNkasVeQZA4Y9C3+yJ2TbQzUt5nkMbHVYGjzCVZMA66FfB6hsX2A0uf0nLiCa05FsTkVRTbQhU4Y5qYcIHMwlp7OdAF5+RyVRNQwjGhqldmhZLnPSujuf9IaLtmFIHgQWFC89GGOgwxWIU2bvn2ukvVjii+kbTBzxeEv5jQ1eoy3VKcx9ee3D8YGNwn+rkYfH+SAkov6KjM598J6bDGXxvlOaUWj4TzTdcZkfZ3iKb94AESkpOHoFrfySuxQCTooTEtsuFeCwRzXKhOOQz7zrAB1GRoMuWb/oMU7mBSJrVhkuCLC7F1VJrhZM5yWhvqCVmvojQF7GR4fnIcYoL5eJuTdoq6V2ptpViXjOymhPCq+aRGmxVDp8oy5/VbdsmJVLK7/2tvYp7hqxljly2e0DHe5qC3B3GeSGpIYaINsINmMkeABVgJMiyWjRcsDXV7cuiPaNQHgXT51oGlAZ1FSuc0lYtv6l1wjyN1XsVduwqG7Z9nnLKtRMOpwiKSiZSX/ZiYyMNx1wg+ByJmWPKboibxwQjr/k/Sz2hKof1eUA1ZhB+aFFqcm6Hj6JlndDsh
- HLiQUvFJ
- Vj+MDPRj8u/06MIClGmMGFRJIwLEli2Ea/O4pC9Qgutm7FZVLCVlJbrooPB9xzzasp6pos+1016sfTD1tclv/DuNYQKcAM6eRooF2IHdqkq0oi5WuA44nRn2E4j1Yno8Pp1I62rqPuAGjAQHXTPQWxWghg8oo/1piFuAeS1ZPvQ5qqayLr1SBg4vUZQGgtFfRw0n2M7m0az80rBfafbl5xPdsN1Zs5h8Gjf9g75Hhwr//vbqa1F/KpgJGcGLJS8zbbbNX
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794827877-126646
+X-HE-Meta: U2FsdGVkX18uMsCCi/FlrLf5+GKka3ryXZWzQsG6nrau1BtkbZGvq9Ck+2jH21MKTT9MHZdCbtp7mgu5gpvJCG6VOoLU8Vr2nOYb4mQrg3yMFF5OMUIfHfptESQjA82jQ2RuCIKKqBu4FmChtFJWWnlKtdnKE7JIpIM+Ub6rnnePKqcY91PbmHpvtKMvRm4e10GwxuvBZYTjKIwHLGEgVy4ZcRlTPJnknC2hLhJb78gZOwZPLKXOhLLOsJLOXhqKkcdgisHqNOgHtXyfww73XNFa7zFr10JrVGvGricHwXSapKWDZTpOqr2vBFvEWzMCvHlbqwkGd1eA04CpEAwqxRhnMyN8ZkfrQwLU5vd5qyqg4sJvSzzOECLm861myDuyJFG0vhv1SlpCcCJoJfKPlQIunmnMOi+lXrinGYrsdPn/n9iwEI4cVqatCfNSfLv4VAufI6LJOJq3YET8V9qqUSIny8c9kEYsXul7vKf+lQvA6PsfSyVMvFIL2DgVYc7jRQnIXAfL60GtqO/xjRSt+9ETLBVfoHNueerWmBzDsLmqXlK6Ui8K6HQLs74MQD1HnZSBgLN+m7iQRI+4leSlMEpfOeLb3I/09cQbUE4OgdApY1PkR2OCNX6Abr87OX4PdkNM67r7+6+UOLDrTVJIewcy8DR92w6krPQGhq3BKMcsI+OFXYMPFsf4o+xipr1fssFqKb/ycxrWp0uEiCx1jfd3YXLy0OJ6FTWH4WPptb93GVe21IvF8x07vtw2ZZz5+xE5C2yavwSWY2O9y097mMuzM10QZldLJAsXBxSM2VhUvTV1TjZnTY67akXUzRAgJlEVzhSx1PzRPnArP4FNEk+w4Eeu/YcxoCNPPq7Y4aVTLybqTZH1VV2p4PrfFLoXArpfy+kEo132WbsVlKqjityyr4yJfBcTML5YeJ/rre5AK1XZa4rh9VlCdsPjOjl/J0Qe7fz7iUEU9b+jj06
+ N1g/fSBq
+ UjB4/P1nOHMfPuS7FwizJqXVBDJn/ckearBhTT/vENJYYEFJgX10FOxhNyfB6/w3ojWPMv5s5ZatmPUejbRVIMXD7M5lxxqPkTyg+GH8XE5l5RrZ/dsVUhQZwUXfha0TUxi+NOGizFuVbyAheGYjRJTIjL8sMM9TcuYP/vLppKDyYYfO34OPAKZuScQa7Op43Qf+tfQSXp3CCI/XB4kUMLiyoiZfsuApxCO5XFuBoqVioGAydKvXVKN0cdLBCZmHW89Msxipw6XHN/u/H/P056h+gtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,114 +103,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+On 11/16/26 6:42 PM, Mike Rapoport wrote:
+> Hi,
+>
+>> Hi,
+>>
+>> This v2 is based on the mm-new branch at commit daed51c91051.
+>>
+>> This series is split out from the earlier, larger series
+>> "mm: Generalize HVO for HugeTLB and device DAX" [1]. That series
+>> generalized vmemmap optimization across HugeTLB and device DAX. One
+>> remaining piece is the separate compound struct page initialization used
+>> by boot-time gigantic HugeTLB pages and compound ZONE_DEVICE ranges.
+>>
+>> This v2 also folds in Li Zhe's two-patch series, using that series' v2
+>> as the integration point [2].
+>>
+>> Li Zhe (2):
+>>    mm/mm_init: factor out memmap_init_page_from_template()
+>>    mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+>>
+>> Muchun Song (12):
+>>    mm/mm_init: verify zones for template-initialized pages
+>>    mm/mm_init: factor out common struct page initialization
+>>    mm/mm_init: simplify zone device page initialization
+>>    mm/mm_init: factor out frozen compound page initialization
+>>    mm/hugetlb: drop boot-time HVO handling for gigantic folios
+>>    mm/hugetlb: initialize all struct pages for bootmem hugepages
+>>    mm/hugetlb: use common compound page initialization helper
+>>    mm/mm_init: make __init_single_page() static
+>>    mm/mm_init: make memmap_init_page_from_template() static
+>>    mm/cma: centralize CMA pageblock initialization
+>>    mm/cma: localize init_cma_pageblock() to cma.c
+>>    mm/mm_init: move pageblock migratetype init to memmap helpers
+>>
+>>   include/linux/mm.h   |   8 --
+>>   mm/cma.c             |  24 +++--
+>>   mm/hugetlb.c         | 111 ++-----------------
+>>   mm/hugetlb_vmemmap.c |  17 +--
+>>   mm/mm_init.c         | 247 +++++++++++++++++--------------------------
+>>   mm/mm_init.h         |  13 +--
+>>   mm/sparse-vmemmap.c  |   7 +-
+>>   7 files changed, 129 insertions(+), 298 deletions(-)
+> That's nice :)
+>
+> The series would be easier to review if Li Zhe's patches were integrated
+> rather than stacked in. I hoped that the changes for template
+> initialization would fit into the patches that rework other parts.
+>
+> The way it's done now several patches in the beginning of the series
+> change code that the later patches remove or turn some of new functions
+> into static.
+>
+> Another thing is that the numbers Li Zhe measured were for a different
+> implementation, so they would be stale for the state after these
+> changes.
 
-On Mon, Nov 16, 2026 at 07:01:06PM +0800, nakixii wrote:
-> This is a proof of concept, posted to ask whether the approach is worth
-> pursuing. It is not meant for merging. The series is based on Linux
-> 6.12.23, not on mm-unstable, and has not been ported to the swap-table
-> and zpool changes that have landed since. If there is interest, the
-> next version will be rebased onto mm-unstable.
-> 
-> memcomp stores reclaimed anonymous and shmem pages in compressed form
-> in memory, using the kernel's compressors and zsmalloc unchanged.
-> Reclaim replaces the PTE, or the shmem page-cache entry, with a
-> swap-like token that names a 16-byte slot. A fault on the token
-> decompresses the page and maps it again. No block device is needed. If
-> swap is configured, cold entries can be written back to it. The sysfs
-> interface is under /sys/kernel/mm/memcomp.
-> 
-> Results
-> =======
-> 
-> The comparison ran 965 fresh guest boots on real application pages,
-> under nested KVM on WSL2, with a paired rule fixed before collection.
-> Selected results:
-> 
->   Without real swap, single-page refault p99 was 10.7 us against 20.7 us
->   for zram with lz4, and 22.0 us against 27.3 us with zstd. Under
->   512 MiB of anonymous pressure, refault p99 was 37% lower than zram
->   with lz4 and 36% lower than zswap.
->   Completed-switch p99 with zstd was 33-36% lower than zram in 10/10
->   rounds and 20-22% lower than zswap in 9/10; these differences were
->   smaller than the reference's variation between rounds.
->   After writeback, readback p50 over an 832 MiB target was 11.9 us
->   against 105.5 us for zswap and 114.0 us for zram writeback, with
->   70-76% fewer bytes written before readback; p99 was about the same.
-> 
-> Less favorable:
-> 
->   With real swap, single-page refault p99 was 4.8 times zram with lz4
->   and about 1.5 times zram and zswap with zstd.
->   Sequential refault was 30-31% slower than zswap, since there is no
->   swap readahead. Single-page pageout p99 was 35-38% slower than zswap.
->   In the pageout and refault workload, 64 MiB of real pages per
->   application, memcomp used 5-8% more memory than zram; this leaves
->   out zram's disksize-sized table, which was larger than the difference.
-> 
-> nakixii (16):
->   mm: userfaultfd: check the exclusivity of the page being moved
->   mm: add a swap entry type for in-memory compressed pages
->   mm: memcomp: compress reclaimed anonymous pages in memory
->   mm: userfaultfd: let UFFDIO_MOVE move memcomp entries
->   mm: memcomp: charge compressed pages to the source memcg
->   mm: memcomp: store shmem and tmpfs pages
->   mm: memcomp: write cold pages back to swap
->   mm: memcomp: compress foreground batches asynchronously
->   mm: memcomp: batch unmap reserved large folios
->   mm: memcomp: queue restored large folios for splitting
->   mm: memcomp: account user eviction and refault
->   mm: memcomp: report precise token residency
->   mm: memcomp: add KUnit tests
->   selftests/mm: add a memcomp pageout and refault test
->   mm: memcomp: add the design doc
->   mm: memcomp: add the admin guide
-> 
->  .../ABI/testing/sysfs-kernel-mm-memcomp       |  363 +
->  .../admin-guide/kernel-parameters.txt         |   10 +
->  Documentation/admin-guide/mm/index.rst        |    1 +
->  Documentation/admin-guide/mm/memcomp.rst      |  149 +
->  Documentation/mm/index.rst                    |    1 +
->  Documentation/mm/memcomp.rst                  |  215 +
->  MAINTAINERS                                   |   12 +
->  fs/proc/task_mmu.c                            |   20 +
->  include/linux/memcomp.h                       |  481 ++
->  include/linux/memcontrol.h                    |   45 +
->  include/linux/swap.h                          |   52 +-
->  include/linux/swapops.h                       |   22 +
->  mm/Kconfig                                    |   75 +
->  mm/Makefile                                   |    1 +
->  mm/hmm.c                                      |    3 +
->  mm/huge_memory.c                              |   44 +
->  mm/internal.h                                 |   84 +
->  mm/madvise.c                                  |   10 +-
->  mm/memcomp.c                                  | 6181 +++++++++++++++++
 
-... (a lot of memcomp/ +++ changes)
+Agreed. I would be happy to provide updated performance numbers once the
+final integrated form is ready.
 
->  mm/memcontrol.c                               |   99 +
->  mm/memory.c                                   |   42 +-
->  mm/migrate.c                                  |   11 +-
->  mm/mincore.c                                  |  125 +-
->  mm/page_io.c                                  |   42 +
->  mm/rmap.c                                     |   41 +-
->  mm/shmem.c                                    |  251 +
->  mm/swap.h                                     |    4 +
->  mm/swap_state.c                               |    5 +
->  mm/swapfile.c                                 |   49 +
->  mm/userfaultfd.c                              |   94 +-
->  mm/vmscan.c                                   |  651 +-
->  mm/workingset.c                               |   32 +
->  tools/testing/selftests/mm/Makefile           |    9 +-
->  tools/testing/selftests/mm/config             |   11 +
->  tools/testing/selftests/mm/hmm-tests.c        |  112 +
->  tools/testing/selftests/mm/memcomp.c          |  831 +++
->  134 files changed, 46825 insertions(+), 14 deletions(-)
+Thanks,
+Zhe
 
-This seems to big of a change and the wall of text in your "results"
-section does not explain clearly why would we want to bother reading this.
-
--- 
-Sincerely yours,
-Mike.
+>
+> I have some nits and naming comments in a few patches, other than that
+> the series LGTM.
 
