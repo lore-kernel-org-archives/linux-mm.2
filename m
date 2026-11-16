@@ -1,105 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6F2606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 03:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5043606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 03:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=b6y5pjZT
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=LyRAVFev
 Received: by kanga.kvack.org (Postfix)
-	id C68686B00EF; Sun, 15 Nov 2026 22:15:46 -0500 (EST)
+	id CB8DE6B05B1; Sun, 15 Nov 2026 22:16:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1A7A6B05B0; Sun, 15 Nov 2026 22:15:46 -0500 (EST)
+	id C91326B05B2; Sun, 15 Nov 2026 22:16:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B08476B05B1; Sun, 15 Nov 2026 22:15:46 -0500 (EST)
+	id BA7876B05B3; Sun, 15 Nov 2026 22:16:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 83ED26B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:15:46 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 836F914052D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:15:45 +0000 (UTC)
-X-FDA: 85439517450.04.9761D71
-Received: from mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4087280005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:15:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b6y5pjZT;
-	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.185 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 95BFA6B05B1
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:16:42 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2755A055F
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:16:40 +0000 (UTC)
+X-FDA: 85439519760.25.565E957
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C2F9F1C0004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:16:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LyRAVFev;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794798943;
+	s=arc-20220608; t=1794798999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=61hA4pI6lWNHs1Ny06AZoS+2gE8bk9pfoV7wwfpwYLY=;
-	b=GykIvh7rgh3IQOdT98WYeu0i5ZC9rZCqL5j8R/c4A2qGNY1JDiB1ncG+xgDYTMrb7ReH+4
-	Ag2moMt5fqoPvG97rbnwn3KUdSmgT+fwEEsruMstlC6CowsGm3/xTp1StrXxnoAkQnkgOm
-	zozs0FSE90lanKRfA8NLGKD+r7EzwDE=
+	bh=f9vMUAln9RF4ExbyRQjC3UtblgMb7Qet2HsLNIFFgQk=;
+	b=mk5+DOULAxumRjkxVj1LWGQMGmZ9b5PhdEFGtzEqKjoUZV5YEFn1LMMf77hqUkwnHtdovM
+	J/u9VAUlHWnZGgk4moZqNkdGbiy+lRjSM3wDfOX4wIN+jRfJSDPUexMJcZjwwFgdHgRioQ
+	nyTTl8SInphuPYVCZCeysVl68kEnlNU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794798943;
-	b=5oM4Oq5YgBTaSnPLda/Yx41+jlWbNNy4QD2caM0vCTn/WBTVlTou6AYTyOeJbZv9QICzNM
-	zz6VrXIs/03/LMtvpcDWXQJ5NRdICL//lfNmFiYdMVoLtO5HnF6FxLGsZHdu2HfIBrFe1F
-	TzrBmvWbbu5L0I/mJ3sK+qA1AmqlHCk=
+	t=1794798999;
+	b=KPPuFfzk5pId3KfmHNNLayt3ygV949LywVazLwjQR0W5zqfrddxeT/SEmzJOD1hCb0z4Lo
+	4sTcAmRsN76La/W/HvCXHOT68WuZqM14lcEGuR3m+9zw9LhdtvsSjeYwzYuQAx5q26kIKH
+	5vcho6LiIRNFsE8sis3HZtZkPUH1OrA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b6y5pjZT;
-	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.185 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RUdXcvQAkasOinh1aHVDzx5Sbf8dYEfIHFE+pPtSAf8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794798941; v=1; x=1795403741;
- b=b6y5pjZThx7DYDxGEYNfUyp+U3/xosaEMZmj2dCioSZXgrycZsMsMAUAuW/xB7bHrCC6ul7F
- 9ajzKA3pNWSWmGKecb6G6We6VuI02BRbHXYzbgsLhXKuTqXrA9aqLfU8wfztFqNfoahP2KCso1W
- Xp6Tjkb4pnM2yywUCJeoV9ao=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4346fe518fa13606;
-	Mon, 16 Nov 2026 03:15:41 +0000
-X-Mizu-Trace-ID: 4346fe518fa13606
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <5d234178-7799-4603-82bf-40a70101f78a@linux.dev>
-Date: Mon, 16 Nov 2026 11:15:24 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LyRAVFev;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D72D843532;
+	Mon, 16 Nov 2026 03:16:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC701F000C4;
+	Mon, 16 Nov 2026 03:16:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794798997;
+	bh=f9vMUAln9RF4ExbyRQjC3UtblgMb7Qet2HsLNIFFgQk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=LyRAVFevgYPkx5MazjZeILe8nf+HIaMipxE5RhUD9KN0zKvQ9SX4LhtRQ6w0wax5b
+	 pl6MKCva03CSsRGh5DEW5ZknGlva63h0SQAVEpY2Jx+/r7drr1fqCizZdoMW4lzrmO
+	 qrvDPmonNiAAfQOtlW/qtNHjnRTJAVZMiZvyNHdM=
+Date: Sun, 15 Nov 2026 19:16:36 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jiebin Sun <jiebin.sun@intel.com>
+Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ rostedt@goodmis.org, linux-rt-devel@lists.linux.dev,
+ tim.c.chen@linux.intel.com, tianyou.li@intel.com, wangyang.guo@intel.com
+Subject: Re: [PATCH] lib/percpu_counter: allow concurrent sums with an
+ rwlock
+Message-Id: <20261115191636.f18859e4dd5f58b9a33e7814@linux-foundation.org>
+In-Reply-To: <20261116015655.2744577-1-jiebin.sun@intel.com>
+References: <20261116015655.2744577-1-jiebin.sun@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/9] mm/vmalloc: BUG_ON() on an unaligned range in
- vmap_pages_range_noflush_walk()
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Dev Jain <dev.jain@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>
-References: <20261110112546.261415-1-hao.ge@linux.dev>
- <20261110112546.261415-5-hao.ge@linux.dev> <avWtB-nWZUwLdQdP@milan>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <avWtB-nWZUwLdQdP@milan>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: i4sd1xaoywc11jeuqh9mqyyua1583ae3
-X-Rspamd-Queue-Id: 4087280005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: imycywb31a1qntkmaj8wxe5jbtfkzjk6
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C2F9F1C0004
 X-Rspam-User: 
-X-HE-Tag: 1794798943-995162
-X-HE-Meta: U2FsdGVkX18DxIzjGtFKVZsle4aPl43dj2zrpwp8vB+GzIdCnr/2RvLxygx4w/j3zyvN5Nc0EiERB3Rz2DwvNXRY2wvIja+0Fez7PUybuNJVQqtfswnk/oHlVaPvV5lALvy7mr0MmAXWseauOoUNAwYRh2wzuS5p43TmIl8XFVAQyfx5DeCyySMABP7J3pCu1rlGA8DpSEfIxDJK3QqCa84BCULnKH2cQX3B4J6wTUFrT22FxxQJue2hjYojA+l9wvcQut7IjYrVlTY8SZeq1pv4b9rqEYamiRfUoZDpXrDND0DO7NLVnMJDNHgpxnA/uOELPRiy2ANLa45QNFmCPVrraAVT0PVWiZ//kfs7lGBWJkcRaCIxyxRS6aoeQJOhd0MSmubhBqwnSdrw8rkWf0jZ79gptX0CPSMZRgQcd2rCvClajIe1FgqfxAc6VN0SAj3+y9KLSqzoNoTBO2iaH/SVUHZYeS+dFXj5zBtEZz4IulXwLDL5KunZsr0excpRiajdvYTJr0QG4Gi5QOQcxCLtBYzoJB/c+4Ugvg8gKXGAxqxuw82hgO/xemscyxp8nBcN60xBrV1/POSr1rxO/q7QjXYkeMzv55nFldANDUQ6jqLjRkXjtkGkttyzptQnwo5jj7se6KKjRnSa/JgeWDOsT7bFMTP/aUOrbkStyYuaL0FVI/MuRKg1T9PWuKGNbHbg30sy6abw51IGnlZGoDLC45ne649apmcGOzzWZPc8aG+hU9EwjKxIBG+MfYgwNOzFJR46CkdLhFpSQW7ig9lcgsbUGtTNp3jHxZ/HOzVCMvzBrtkvJFX/8zq1G3CvaiBunWmFxrsXSTiyOapOaotAAX28Wx+ief93D21fFukQiegbnk4g84rIi3BQH5W9bbWwF44Lcg5W4gl6AueS/oPjwhq9STJLu1faRKuI7ygnX4WTPbTkskF/zvsqL7Fq4/7bsTcjoB0Nqh1U29B
- 6C+Sgtlt
- P97bbgfzyw1QTa/4w5q2MR8PfOp8pvWkq34vIcnOD08p7emKIcC38PRZBeOT+O6gYyZGqn82FqCy3hFWgHGkdVhWdBCogYbuh8AZbHXxGCpHC+Sx+hk2VaXlOF2CzateQKWtRTwYd7sZ5GfQi7CRPlQdonapJUNhfc7zfhsQmX1+y4wiiYiQN4xDGAgGTSLWilgFm9lIJ7M3QL+BmI4woOlRprSDigHJF8s2oOqYhOQN/3zd+cMe7RhtnjKHw1uzpDeHMCeZT1hQ7vayls4FVRAt4wYWa0/mMrR0OMpmM2udn4KRFl1ZNxveAke/U1f+m+wZGFUcFWV9KcclOqwFbowZu2HeTHdfWY2owwdmQoB7gVaxIFjQTH6GHX9CFzRbiPYz8jd0BiMD831uN0aYzWxk13YeN1R58u+zGCp8+ERBCOvU=
+X-HE-Tag: 1794798998-881233
+X-HE-Meta: U2FsdGVkX18xkxqoqwquaax/6oVYCvt16eOR6mh7N1mXt8X83M0uLYTdxHSpocQqrhzOs7r503YGR7HdxeO7XrVHgVQl4MxJ8q+tsd8y5Uu63Vq9/CR5y259kGtuaRv/H1GksB4oryEnncnXzHKNy/5W6lnyCDuHq7AQy/0jTI7mo9pPsAveGc0Yg0zuCSgmGipiMSvL5TkbwHVyTua9v4sT6AxYmQRrVbYe+NDXA1+F9vwYaA8WHt6MzB1F6IUUbqYJ4HjeHk4axBgzwrlm/GhUd7/MJaTm2Z5XwP59iZ1BIiAAwNZ+sa3qKXfFGsbzMd55exe4Z4I2AbJU8UcPXD4s2W3mNo4YpDQXAT0Bfz5pY2Tv8zSoUBeGBZ72F3f+Z0KrD+I6oGljzkaqR5CstqdlCWA3522k53wkdHfrGkWdGFb+tLkU+rZHfLLyd4cBw5LGQNddgoQ3/CfWkKczT0dPDQTHayGS0/Wr4+OxraxXMPcJdJXSvCjICTOv22ynSqbnIzlquvqAwK45E2xvqObV5P4XFi1Ycet6lgZamT+IvjTMU088pV6QlvBgkvQAUKoFn0Puw5xfMZ+3MHVM2jkDHkfT+cyGgZEhyiBFMNJSulJAGdaxOv74i88JDvKAqmRKVoXueAuia05gFzQPegKcEofgO5dqxSpv2Sj9ZrHU7nX8Cb5WL/m3IDdgLTfMzjWneByyGeag8cgG49XXWfITra4a7p7Grxeo0l7EkU3MRiO+a7rOztCGQR3E2NGgTdBjLcCnLmShyM+eKteh5MeE0kKODcZDLD5mGzjqygb+bsBFyRUMZ6o5O/WLJaZLCQTA5K1U+ykJTf8pWb83J46ruQJ9dt7taMand0np58lGhfIj4/9Obr02ozH/qRZzqtYjr41IooacX6z0JsbPjWjMT1yIlhKoIewjDJu1eMQBkmuIR8y4YrOjFlVd6g9wyaHO+3hWH3k521XlCad
+ Qzln+EW5
+ t1ZdQ3DMXkwjQibotvVVQiXK+DkD2w2lYCPd5WOQN5qlAxdURIjgNAfRLEz/CfneYVe+ViHkbmq6KCAmw3jVGJDSwacg6NHCf/btOYEmiUjnCm/BoMH9di1+ZANtvp2mRlwdxuGJl8UYJB82acxV6S7wYEt/bLgRv+umB7k/dx17/f2bglCzgT8vuaV/tXFGshimFzXKoZ5gwZVMiujgzuMh6LLhi0b6cFWYseBAKurdwQ4ahPrv1MZ/yQhglv4OHgUe6s4akJ6gvNJNt9fHRR/FI5weWxq5fCWsijMORTSbhSvEHpG1wsvetRGP3yMQsl78x8PS2x9C9f70I/cSm3r+71A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,62 +95,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ulad
+On Mon, 16 Nov 2026 09:56:55 +0800 Jiebin Sun <jiebin.sun@intel.com> wrote:
 
-On 2026/11/12 20:11, Uladzislau Rezki wrote:
-> On Tue, Nov 10, 2026 at 07:25:41PM +0800, Hao Ge wrote:
->> The pte loop of vmap_pages_pte_range() maps whole pages and stops
->> only when addr lands exactly on end.  An unaligned end lets addr
->> jump over it and the loop keeps mapping into whatever follows the
->> range.  An unaligned start maps the page below the range with its
->> first pte.  That corruption is impossible to debug afterwards, so
->> bug out on addr and end at the entry of
->> vmap_pages_range_noflush_walk().
->>
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->> ---
->>  mm/vmalloc.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index 27f2674a5556..86fbb1d2b27a 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -698,6 +698,8 @@ static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
->>  	pgtbl_mod_mask mask = 0;
->>  
->>  	BUG_ON(addr >= end);
->> +	BUG_ON(!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(end));
->> +
->>
-> But why do we add this? We used to live without it and as far i see
-> we have not gotten any report about any unaligned addresses un-maping.
+> __percpu_counter_sum() holds a raw spinlock while reading the global
+> count and per-CPU deltas, serializing concurrent sums of the same
+> counter. Since a sum changes neither the global count nor the per-CPU
+> deltas, use rwlock_t on !PREEMPT_RT to allow concurrent sums with a
+> read lock. Global updates take the write lock. The per-CPU fast path
+> remains lockless, so sums keep their existing snapshot semantics.
 > 
-> The vmap allocator grantees that va->va_start/end have to be page
-> aligned.
-
-You are right that no in-tree caller passes an unaligned range today.
-This came about after looking at
-commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not PAGE_SIZE aligned").
-That commit only guards the ioremap family. vmap_pte_range() is reached
-through vmap_page_range() only, so what it protects is ioremap_page_range(),
-pci_remap_iospace() and friends, which map physically contiguous ranges.
-
-vmap_pages_range_noflush_walk() has the same loop and serves the other half of the picture,
-the virtually contiguous mappings, where the physical pages behind the range do not have to
-be contiguous, and since functions like vmap_pages_range() take addr and end from the caller as
-they are, the page alignment is the caller's contract in the first place, so this is the same idea
-as a739e6b557af and the check just makes that contract visible.
-
-That said, dropping this patch is also fine with me. Nobody can actually trigger it today, as I said at
-the beginning, so I will drop it from the next version.
-
-Thanks
-Best Regards
-Hao
-
+> stress-ng dentry reaches this path through ext4_statfs():
 > 
-> --
-> Uladzislau Rezki
+>   statfs -> ext4_statfs -> __percpu_counter_sum
+>          -> native_queued_spin_lock_slowpath
+> 
+> Keep the raw spinlock on PREEMPT_RT, where rwlock_t can sleep.
+> Global counter updates can run in atomic context and must not sleep.
+> 
+> stress-ng dentry test average throughput change:
+> 
+>   +------------------------+------------+--------------------+
+>   | Case                   | Unit       | Average change (%) |
+>   +------------------------+------------+--------------------+
+>   | Dentry, 64 workers     | bogo ops/s |             +47.34 |
+>   +------------------------+------------+--------------------+
+> 
+> Dentry ran on ext4 with 64 workers pinned to physical CPUs:
+> 
+>   stress-ng --dentry 64 --dentries 4096 --timeout 20s
+
+lol, this is a fun patch - it reminds me of the old days.  All those
+mission-critical workloads which sit in a loop running statfs will love
+it!
+
+I had $sidekick do a scan and it told me "the only plausible routine
+win is dirty throttling: with low dirty limits, concurrent writers sum
+the same counters.  ext4 and XFS sum near ENOSPC, where updates also
+contend.  BFQ's sums are debug-only and serialized.  Most other callers
+report statistics".  You might want to add something like this to
+changelog.
+
+Also mention that percpu_counter_sum_positive callers will benefit.
+
+> --- a/include/linux/percpu_counter.h
+> +++ b/include/linux/percpu_counter.h
+> @@ -20,7 +20,11 @@
+>  #ifdef CONFIG_SMP
+>  
+>  struct percpu_counter {
+> +#ifdef CONFIG_PREEMPT_RT
+
+Might be worth a wee comment telling readers why RT is special?
+
+>  	raw_spinlock_t lock;
+> +#else
+> +	rwlock_t lock;		/* shared for sums, exclusive for updates */
+> +#endif
+>  	s64 count;
+>  #ifdef CONFIG_HOTPLUG_CPU
+>  	struct list_head list;	/* All percpu_counters are on a list */
+>
+> --- a/lib/percpu_counter.c
+> +++ b/lib/percpu_counter.c
+> @@ -15,6 +15,46 @@ static LIST_HEAD(percpu_counters);
+>  static DEFINE_SPINLOCK(percpu_counters_lock);
+>  #endif
+>  
+> +/*
+> + * Non-RT sums share the lock; global updates take it exclusively.
+> + * Keep raw spinlocks on RT: rwlocks may sleep and their irqsave variants
+> + * do not disable interrupts. Updates run in atomic contexts and need
+> + * IRQ exclusion for CPU-local read-modify-write sequences.
+> + */
+> +#ifdef CONFIG_PREEMPT_RT
+> +#define fbc_lock(fbc)			raw_spin_lock(&(fbc)->lock)
+> +#define fbc_unlock(fbc)			raw_spin_unlock(&(fbc)->lock)
+> +#define fbc_lock_irqsave(fbc, f)		raw_spin_lock_irqsave(&(fbc)->lock, f)
+> +#define fbc_unlock_irqrestore(fbc, f)	raw_spin_unlock_irqrestore(&(fbc)->lock, f)
+> +#define fbc_read_lock_irqsave		fbc_lock_irqsave
+> +#define fbc_read_unlock_irqrestore	fbc_unlock_irqrestore
+> +#else
+> +#define fbc_lock(fbc)			write_lock(&(fbc)->lock)
+> +#define fbc_unlock(fbc)			write_unlock(&(fbc)->lock)
+> +#define fbc_lock_irqsave(fbc, f)		write_lock_irqsave(&(fbc)->lock, f)
+> +#define fbc_unlock_irqrestore(fbc, f)	write_unlock_irqrestore(&(fbc)->lock, f)
+> +#define fbc_read_lock_irqsave(fbc, f)	read_lock_irqsave(&(fbc)->lock, f)
+> +#define fbc_read_unlock_irqrestore(fbc, f) read_unlock_irqrestore(&(fbc)->lock, f)
+> +#endif
+
+Please, no!
+
+https://www.google.com/search?q=why+does+Andrew+Morton+prefer+static+inlines+over+macros
+
+lots of good stuff there ;)
+
+
 
