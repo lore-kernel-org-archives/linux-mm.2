@@ -1,145 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6C7606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3C9606A33A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lzIDDbwi
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pdWIoeJK
 Received: by kanga.kvack.org (Postfix)
-	id 8E2CA6B00EF; Mon, 16 Nov 2026 01:27:00 -0500 (EST)
+	id 1CA266B00EF; Mon, 16 Nov 2026 01:36:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 893C56B05B0; Mon, 16 Nov 2026 01:27:00 -0500 (EST)
+	id 1531F6B05B0; Mon, 16 Nov 2026 01:36:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7823A6B05B1; Mon, 16 Nov 2026 01:27:00 -0500 (EST)
+	id 01B276B05B1; Mon, 16 Nov 2026 01:36:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A08F6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:27:00 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CCE30808E0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:26:59 +0000 (UTC)
-X-FDA: 85439999358.21.BDEA644
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D6013180002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:26:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=lzIDDbwi;
-	spf=pass (imf06.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794810418;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CBBF56B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:36:39 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A27FB1A08D6
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:36:37 +0000 (UTC)
+X-FDA: 85440023634.23.A80A4DB
+Received: from mta1.migadu.com (out-33.mta1.migadu.com [95.215.58.33])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B8252A0004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:36:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pdWIoeJK;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.33 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794810996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wd/v+54C2+9hZ5vK2vynCTpvfy6lXgdEPXyeyseozC8=;
-	b=7DjPs0YR3RQRe0PKhxZe+rkHR8HFk6jjrfiHxW1RKQDf6kwkAKI9O0LiXIBtVjUvg6cAgT
-	oQqeELIdS+6gPZRjvLkQMNVEFpq+we8diP97KXl4tsvKjqct5eFEGcs9sfhp91tWtm5TOs
-	v+9u6P6wwDVco5szxehmTIxYsZOtwl8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794810418;
-	b=44fxJ9x1y8YPR3s7lGpkKsxbShSX7kcHSwMPreQUGjrRa3BTOnHr7pLhunZwUQ4XQaZwrN
-	sN617eArLeqmw7gDsDjo5gBKguvfSbUwpJNHyvUCaoGOaM/jwqkovni42T5iPKyjBQINPL
-	GBeJehQ2p3jfdf8uvn0zhhSGwNW/NpA=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=lzIDDbwi;
-	spf=pass (imf06.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cd61cef87f1so1228292a12.0
-        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:26:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794810416; cv=none;
-        d=google.com; s=arc-20260327;
-        b=R6Nq/V8xAVQlfQJGqWaKvaWuV+1jjI5veZAUPBdJELcMuaEdnFvKOb1VMNqmrbPOee
-         BP4ytvKjipAHlWK/06vqj2EuPqxecDmJICvKSMCoVObqv89vrkkZlY7mu/6tH0MrgEGD
-         T4b3IF5Oo5hyFTpOwn7LpmKsQIRlA3MIauaFjttiVpzbhO1zVP6GY+DxbDaD1uLU2aD5
-         Sv+JQBqCTMpul7WuvnQWF85JfymqWel/JpoWfSFQQrNhrB89kG53/3IUpZTIdsZ8wmjY
-         Ms1CymgMBz6xT1wakiXjjxCYQio0K4X46dWPXa9uCBaQIRWi4xwcku9xY080hpYl7QHF
-         c7tA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wd/v+54C2+9hZ5vK2vynCTpvfy6lXgdEPXyeyseozC8=;
-        fh=Fq7YNmThzBGZ/g6wseyG8UOQLF6ULblF5KWuc9jMrdw=;
-        b=CmSUo6pqo7Cdwp3j1fmEl+PhQrtBnIBoYcV3ODMk2bJT4Oa/jGX4TM15dpCsuvlzzn
-         6hGzv+t/gff1xQ4PzNRx8sWHo2NjtTAQ4sRjLn4E8btVRbSprlH7rrQH6XrYqQzSkRol
-         e9u39avrtWP1YnemETLuYvL7oAacOhbrfsxZaQsj+ZQI5GshzqndD3IX94clfl3gp/AT
-         C1dvg3cCavfznPKcUOKo47VymnG9M95dXPDEvM/FPjjrXG8OnWLxF559ddtqO5r3lfMB
-         jALc1Sx9Tgb+uGsRY9p/vmVM5aGJ7sM3kZ/5cQd2rWeo6dci9ONzMnW0AzllS8UyKAEM
-         F2AQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794810416; x=1795415216; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wd/v+54C2+9hZ5vK2vynCTpvfy6lXgdEPXyeyseozC8=;
-        b=lzIDDbwiFiqrJbLBgb4Eor7HymCzVfQOw/Z8GQ+71Ud+rpCeB1KCPz5/TZ1SHyWLgK
-         CqCGqDe4pIo0BKxZWTwzKkZRtZVbx9UuFKNSDophw0pPcNLg7WW4SoKiiTm0rJ003N3K
-         llguZCDXgIHlo+2hLK3V7aOChk+CPtxSrMicSxa9zQeSljMgUUlASyuCnd6ux8mTqoHw
-         XS6lyXbcpTbf+dC4/2DhBxCg+/Uv0Wv/PniB9RFoxkv5qU5TS9wosh2RJPyQATF8DVCJ
-         o18tO6uU3WkXeWm7InYfI9Ib6zNs5LI2VrhIkjaIt9oIvSSJ1bqcF4E+KiYmxaK6L1nO
-         L4Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794810416; x=1795415216;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wd/v+54C2+9hZ5vK2vynCTpvfy6lXgdEPXyeyseozC8=;
-        b=1Rn7fqtKlbdSLrCQ0w3BchmXErtFxjXbGA4RD+8XkCH4n0K2I9FbaJWq4roU5mOL05
-         6VzfAIoRxKFs0iAAeESvyYBhSeUX7f3ynHbM75+uEFxQsELUg9CnkJ/YBa0wZBfnT5AR
-         j+vxMQZY7pRRQnjK4l3iKeAPy55fMrEcGnEw+MYlWoLV6MhK1wfkEAYIMUogMUsI1kb2
-         fMCEHHRi8oQfEV+LT1ANBBJOQ0GlMfaGrcy7Rk8kGaFa5iq1LVk3i25eeIdZiF9lRcB3
-         DHJJhTRH3G0FR1D39pIYNtCFKtu7q71fVEY5l6NBZBeeAD4Nz4QAsGGanpNMsN4rPlrO
-         qUzg==
-X-Forwarded-Encrypted: i=1; AL+hErExbOdko9M29nctwPVFXr8fCtlThZhytwO/4oT51EGP87SWwS9u0WGlmnE8hv1poA/kEKRP1qzbww==@kvack.org
-X-Gm-Message-State: APuU4Z9bqzuM2D64ilPHADyzc2qFjWo/+NATdWdQ20alzjaPCV+iaM6f
-	COqDShdhh4Ddn/zv5hV4rul0rHTu3G1AFwwlZIcem7oqwsiV2sepHqK/eW525Y8wT8EKYO++8au
-	rw9NNOQvBolCI2Wtw/ZUzSFmdNjNnnDs=
-X-Gm-Gg: AZFdTZfEPJstgCJK6VKYXajtzm9820g4c8dBIPMzqais7g/rhoN5QVXqmMwJzHh2F2t
-	nIVGaubchwtQ7eKQiL3vugq57kbDB1gopDUqrf8SJ3bfdWikOVx3lgy3/dx0UB4uOBFIK3pAaqr
-	yo6XTTNM8HmEl86CBUhwyVNDJw25hRaEL6dWv3kqbmCr5RhxmHuc/FpEKp2XZRziyl+VZOVf3QE
-	5whu/zmDrVJb9fp+4BOGuuXO6SuEy3fzpcEGFGMCVST/eJuaJKgE+WDHML7/a1DCHb0p0QUTrQ8
-	sh2f8lhk9+RoBvkLJ0aI8bEuuQwUnBYFU65RZYZZPzqGYdjfXWRPm9prnSRPbcM/nuPOCevhHy8
-	p1g3Wb1HBmdEZGIdYjGWBIa6S9yvOcILgT7IClwiLQhcw45B6/c8p5Tyg78DZNbyi/Q==
-X-Received: by 2002:a17:903:1844:b0:2ed:3c25:782 with SMTP id
- d9443c01a7336-2ee0da7f5a1mr90997955ad.24.1794810416253; Sun, 15 Nov 2026
- 22:26:56 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Oak5ZxZZQ9yAlOt97hpJszLVfzeQCeMnkPpNvWPUmfA=;
+	b=hjbCubnvu6rg0jjqSZpjAyQ3CB+DeNwAkGq1+djdXYmfa15ry6fGsf+2lHenlqO37M45EI
+	CFuHix1s0ZVYRA8Ulmukghmyml/1Ct1r+DiQa7piTa0DNP27QvyQ0B591LjcfVf8KSWmAv
+	/QvBeyJus/a1WcFHlM1MRrB03ullP70=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794810996;
+	b=6yOSZ3X/lIo3RqNhM7TvUB1N9AeLnu0ND6+k4VosVRJdotjTxxu5/AN17SZbNvZxSpGkup
+	/AYtfsQx4U29+MSIhPjskBZ4aHsH9OuAJN4neApETsHAJ1Opp1NDFv0O3mYr0ssYqSO3V9
+	jxwA+oR2+XH6uBQVCDzh0F4gOmvFgtI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pdWIoeJK;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.33 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nFtAVBIgHW9ME6KU/nYjzXvPWwBZ3oZMIdJ78uXuQ5A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794810994; v=1; x=1795415794;
+ b=pdWIoeJKU229pcjctC9fKotKlaTPb+qH15F4+ET7g6wfkje41+ThtZ+yLI8TNiX+dXbIYNQ7
+ c9uFgnHvvibN/feGp5N/xIdj2X6W8tJKiJyMNY9FkzXMojh/AON9EATcGehDylgCBNBm4tkvaW2
+ Pzdj4ZouRYC9x8ufJj+qkcmM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id f08f631b902eb383;
+	Mon, 16 Nov 2026 06:36:34 +0000
+X-Mizu-Trace-ID: f08f631b902eb383
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	apopple@nvidia.com,
+	byungchul@sk.com,
+	david@kernel.org,
+	gourry@gourry.net,
+	jannh@google.com,
+	joshua.hahnjy@gmail.com,
+	liam@infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	matthew.brost@intel.com,
+	mhocko@suse.com,
+	pfalcato@suse.de,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	kas@kernel.org,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	kernel-team@meta.com,
+	baolin.wang@linux.alibaba.com,
+	Nico Pache <nico.pache@linux.dev>,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v2 0/4] mm: fixes for THP migration, swap-in and device-private smaps
+Date: Sun, 15 Nov 2026 22:34:54 -0800
+Message-ID: <20261116063624.1382944-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261112140101.647-1-adrianhuang0701@gmail.com>
- <20261112183727.68afda9533aff699eea12cdd@linux-foundation.org>
- <CAJuCfpEqQQb1_UkWH50tgbdVz9KZ2anfCGWsvvoYFsnC_KHcjg@mail.gmail.com> <CAJuCfpH57DNEb5ckB_c4QTWiiHVGSHNhB=S6HFdjvJ6GgGNSnw@mail.gmail.com>
-In-Reply-To: <CAJuCfpH57DNEb5ckB_c4QTWiiHVGSHNhB=S6HFdjvJ6GgGNSnw@mail.gmail.com>
-From: Huang Adrian <adrianhuang0701@gmail.com>
-Date: Mon, 16 Nov 2026 14:26:44 +0800
-X-Gm-Features: AclHuK9IzBryxrXRbSIYeEf8bDFSSEJ-fF65yis3zCtQgIP3kFYe9Y881Oj97MU
-Message-ID: <CAHKZfL3UxswfJgK+2rHj8Y-Lckbg1Kt+oVK4iyr0pkPWRmW6mQ@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable 1/1] fs/proc/task_mmu: advance seq_file
- position on interrupted VMA lookup
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, ahuang12@lenovo.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 1ikb7zdebnaqqxej9645nz3kuytg8s5f
-X-Rspamd-Queue-Id: D6013180002
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 34heq1mhgfrcumyxjrkcnwan817xtzry
+X-Rspamd-Queue-Id: B8252A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794810417-786210
-X-HE-Meta: U2FsdGVkX1/n7ogRkupxMdYLs8BWvpjWOjWGNrKiAutV6HujIUXdy9z9+pIU+kNWESRL3xaWHaO0nMOjUPj1DKMQ3+C6BZ3kwkzEj0PBUieEtKzZJ5l9pGYZWgWdiqJdfkbfvWfNM1i4Wn+OFOVNFv3kZO5j/+oArsoEXQL3KEg0Si0AWkFdYW7TLQKoeqECzoY5zySPGDARPtYF8b2Xvxx4YQtTB9LWHsdR8EWrUeoj0/Di7SCKeWms58fXlu7zBumvFJdd0SWPzxXsqIkhjfk+IvlTbWJfKyAzg/UBjj8QqkorFfqHwnuhSCa9RenH3Fvkqcf69fijlDpOb4dfBdpi/kAngIwbKW+Af8VToALGCTENl27videH6Z0Lu3HKU4dztppozMzHTgQ50XFvYuziR9/BJfiKRCkZN48Xp7jKVyYPMdgMsw1/9zY9wa7H3pt81xxq2GjU4aG4kw6kz0ia6dWtEy7kYWTjeBzV67S+UQtR3maWtYt3Lm/CKGsMPbv+L/UQxiHSYJ3AiK/zHu9boGoVCVX6W+c+l4O1xBAmDO6MYz8ZYnGaejE+BDkCY/mt1igjJUAXOKbnVIg7Xjul+syQRfjzPYLWANZ4KnQKNh/5zIRstT3IEZzFJlYA61OsSaFyuJ6IkbLFqXKeSS/sPJggKo2eGp9AJV3JcmPvPySIpRrMZDj6eXKUCNkg4vdO2wFxBmQ47puLlC8mn+8QhsfSf2pSyRvJgGS7KiMjFT4aHDN+ycP1763dRg5ntqBv1ZjMBEd5NPXZFbt3riQtiakGV8XQqkMv2WV6FIEVejq8YHcM8p8YFWGbHpX/CNmqQAUqLGZPcTyLYbHSAq0GyejAYRpm+KEwLW+vC2CH3UMz3vtjEMlfJZcMCrD19mTqRuP42TuA/NpVaJc31uS0jbGNX1O1dwb9HYUArOaVWCRb1Esy0f8qLoX7pXFEXbmg2IzoLlK224UIVSA
- AXWspQjr
- OkqvFE1Zmf5IJzPB8T5iBvwb5crLAzWICItdCuEqb5mNr/sdEolumsPE1ywxbpfE9kCA5yE/31inRaffsCBKPuD18tQOTmmVWd13jEnMBs9U34FDKoscNdJT0lEQvSrIy1s+jfR4Z6doVgxYPufJ9SYqh5inoxcGrJ8q7REUjsSFvbtGuqYknyFmpNI8qMsmB8qXimInR+hfR6T+Pzr4xwxxjVsuGvaE8U6M2EY9gYSUQyDA+yXzDxYMSmlFTJYjLY+0oLAxusyQFMkivqIHfuyjLghhO+Gvef4WNSWYUR0o/xmCrX96Ogovpd99Z70s6KYdiIogt+eGOhYYoAQWk3aLd0tIx6paghinwicjkt+/looYFJgIWyq1c7rHRi3ojTTQrCz68bJLYCuLi/Ty9I9tWtALcMKVylqMdLGUtY8fxafF9+gidrp5GpjBFH3C4VScqAGvTFSulM5e9ewfSMsA9Rk+GcA5JPOej+VrdapWJas8EZyFX4Qy+PHtDbmMIka5l05IAL8Jy8/F9z4eCM41jGRy72WbJZkPKC2JsT0TrRzf1G9pfPZDb4ba4/Bd/wLYqKiAgnVBw7BiBbXfGPd8YZQRun6Mu0N8hi8tZewSRpdc=
+X-HE-Tag: 1794810995-855630
+X-HE-Meta: U2FsdGVkX1942zITn0e7ybAuKObVOCeD0zYHytXiRj/WyLHPRVBb3J0hETKHk42Hs4y8nBjPTtxxByk06TXapnPD0XN8m6aSLlD03eNQomUfBJxkgbDKwKhDGAcr5JMm6GPsIMlYAxlN9yqKY5dsuzDfO4BWYA/nVWgajmFtTbB+vJVt0Vs46ckKkv2iTBJcB7DQ2f3coXRFRZvETwT8RV5fhDi4U+kIzAg4QC9snjWOS7Nndu+NTQf58tgufuqSOUkLuS0me1OSXicPG2OSfHBuk7jvPX4k7z6rfwNEyKavekW2WCcydX5dweB8CsQfXJ/hBB4UygnTxO5ZZTMyzvjAAsIk15Wc49yDgb71p3kGT5YQ8xzCTfOTrl4c2dB/5v4Y17fn08+bk+r5EmPTTpTYFwUHuwlgUHo0xfe2rsOzYIwP4lSCbk7JmS+PuRj93pxgto1e9EWjD09/G/yAFICES5Hn4nKbfyJUxaSbBKKgfPBI87jqOdkUHGHI0UEvArbHatIpPh7b8EVm6bwWlvUikoLr795iDz5Is4OK+YVka/LS65QgAI7kY0N6PkUhS6V4mm1+jIAD7sYpeW6RMfE2HwRFMl4foUQF58DFphCeDZ1bJySp7WDaQf82fU6Bh7oFNv6u72+abesxRROen1bFpwf2Zhyw5gMEZjlkFKZ+fZiFO1sG8CcOSb61Tqu1Dt/MZQcjyOdAxjddsBvnq4GQLHI/zrL6e8VEfRmc0p9FWA5MOksXjWwAm2EeMrRj7VWdXMIMG84spZI8Rf/0FmDd3YYT9XMCkzwjkShsCoAr11j6tNlyf/JhIcnmb9ryHRUHX5FhLE1xGEi0PNqWFpQzw4D31pgyNTGE/SyHF1dLzzQLWgYuY8w53/Ld89XM4F+Bo2DTpOIjfZqkmPGNHUOIZIngPgRMwXxHOY6xs5Zf3xo59GWlN3NPiimK7lgUxl5jLPF2t5zLv0YAjLp
+ K8QHE+3i
+ 9JWSB5YtmAxo4TqL0L8KKqvw4TAVt/IQGwfywLLxfjx7dgqnBBz6laEErDbrhlYLazLYY0ecrhBEDzKUTelZhby+X/XEEDS7+GtOTzmapPBXbq/QuID5XafLoZtLxtak4k0ndTdZM0KpV5jtQqmy+61q3uNfWdmXspGR4VttG5imc9O8/CCRPS4IhjdiprAOGdZFxCwd3knvnkVodCz4jeqD9I1PaDLvzg+sXzZV/3/fJqGUeJ1NH8X6OarVA3Ytc3yu2HVUKrpWybOBYUynEKvhg4sPrpkNsBr7oMdqhR5289nYagNo8iZrgbTvgOE3M29Ir6xKfSs09Sh8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,69 +118,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Andrew and Suren,
+This series contains fixes for existing THP migration, PTE swap-in
+and smaps paths. They were extracted from the work on PMD swap entries
+for anonymous THPs [1] and can be merged independently.
 
-On Fri, Nov 13, 2026 at 11:17=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
-com> wrote:
->
-> On Thu, Nov 12, 2026 at 7:13=E2=80=AFPM Suren Baghdasaryan <surenb@google=
-.com> wrote:
-> >
-> > On Thu, Nov 12, 2026 at 6:37=E2=80=AFPM Andrew Morton <akpm@linux-found=
-ation.org> wrote:
-> > >
-> > > On Thu, 12 Nov 2026 22:01:01 +0800 "Adrian Huang (Lenovo)" <adrianhua=
-ng0701@gmail.com> wrote:
-> > >
-> > > > Commit 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under
-> > > > per-vma lock") introduced the possibility of returning -EINTR
-> > > > from proc_get_vma() when the VMA lookup is interrupted.
-> > >
-> > > OK, but what's causing the interruption?
-> > >
-> > > > When this happens in m_next(), proc_get_vma() returns an error
-> > > > pointer without updating the position index. Consequently,
-> > > > seq_read_iter() reports:
-> > > >
-> > > >   seq_file: buggy .next function m_next did not update position ind=
-ex
-> > > >
-> > > > The above buggy message is reproduced by the following command:
-> > > >
-> > > >   # stress-ng --vma 0 -t 60
-> > >
-> > > afaict "stress-ng -t" can send SIGALRM, but mmap_read_lock_killable()
-> > > only responds to fatal signals.
-> > >
-> > > So please clarify: exactly what is causing this to happen?
-> >
-> > Also I don't think stress-ng --vma 0 -t 60 command reads maps, smaps
-> > or smaps_rollup files by itself but I might be mistaken. It would be
-> > nice to get more details on how this gets reproduced.
->
-> Just after sending this I found
-> https://github.com/ColinIanKing/stress-ng/blob/master/stress-vma.c#L536,
-> so I stand corrected. Still, it would be nice to know how exactly this
-> issue is reproduced.
+1. Avoid a folio reference leak when concurrent MADV_DONTNEED clears
+   or splits a migration PMD before the device migration split helper
+   acquires the PMD lock.
 
-The --vma stressor performs the following jobs:
-  * It creates a thread that repeatedly reads /proc/self/maps while other
-    threads modify the process's VMAs[1][2].
-  * It sends SIGKILL (fatal signal) to its own threads approximately
-    every 10 seconds[3]. This happens independently of the 60-second
-    timeout for the command 'stress-ng --vma 0 -t 60'.
+2. Prevent PTE swap-in batching from mapping a hardware-poisoned page
+   of a large anon swap-cache folio.
 
-As a result, down_read_killable() in Linux kernel returns -EINTR.
+3. Stop reading the accessed and dirty bits out of a non-present PMD
+   in smaps, where they encode the softleaf entry rather than
+   accessed/dirty state.
 
-This finding is based on code inspection and analysis. To validate the
-behavior, I collected ftrace logs and added debug patches to trace the
-relevant task PID/TID information. The full explanation is fairly
-detailed, so I have not included it here, but I can provide it if
-there's interest.
+4. Account device-private PMDs using mapcounts in smaps, matching the
+   PTE path. Shared mappings get proportional PSS, and exclusive
+   mappings are counted as private.
 
-[1] https://github.com/ColinIanKing/stress-ng/blob/master/stress-vma.c#L748
-[2] https://github.com/ColinIanKing/stress-ng/blob/master/stress-vma.c#L658
-[3] https://github.com/ColinIanKing/stress-ng/blob/master/stress-vma.c#L768
+This applies on top of mm-new (0bce4c3c7589).
 
--- Adrian
+v1 -> v2: https://lore.kernel.org/r/20261111113904.650722-1-usama.arif@linux.dev/
+- Patch 2: use the existing folio_contain_hwpoisoned_page()
+  rather than adding a helper that scans every page of the folio
+  (Lorenzo, David). Only skip batching for anon folios, since
+  falling back for a freshly read folio frees it with the poisoned
+  page in it, and the retried fault can get the same block back.
+- Collect the Reviewed-by and Acked-by tags from v1.
+
+[1] PMD-level swap entries for anonymous THPs:
+https://lore.kernel.org/r/20261002095503.3585565-1-usama.arif@linux.dev/
+ 
+Usama Arif (4):
+  mm/migrate_device: avoid leaking folio references during THP splitting
+  mm: don't PTE-batch a swap-in of a folio with a hardware-poisoned page
+  fs/proc/task_mmu: don't read young/dirty from a non-present PMD in
+    smaps
+  fs/proc/task_mmu: account device-private PMDs as present in smaps
+
+ fs/proc/task_mmu.c  | 12 ++++++++----
+ mm/memory.c         |  5 +++++
+ mm/migrate_device.c |  7 +------
+ 3 files changed, 14 insertions(+), 10 deletions(-)
+
+-- 
+2.53.1-Meta
+
 
