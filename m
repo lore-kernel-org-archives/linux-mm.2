@@ -1,106 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA49606A336
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA30F606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hwW9YhVo
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UanhZ4fi
 Received: by kanga.kvack.org (Postfix)
-	id 19B476B05C2; Mon, 16 Nov 2026 02:14:51 -0500 (EST)
+	id EA7376B00EF; Mon, 16 Nov 2026 02:25:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 172FE6B05C3; Mon, 16 Nov 2026 02:14:51 -0500 (EST)
+	id E57DC6B05B0; Mon, 16 Nov 2026 02:25:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B02F6B05C4; Mon, 16 Nov 2026 02:14:51 -0500 (EST)
+	id D6D916B05B1; Mon, 16 Nov 2026 02:25:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E7F856B05C2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:14:50 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A6C140910
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:50 +0000 (UTC)
-X-FDA: 85440119940.08.731C4F2
-Received: from mta0.migadu.com (out-252.mta0.migadu.com [91.218.175.252])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A034A180006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hwW9YhVo;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AE49A6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:25:00 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3E64D1608A5
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:25:00 +0000 (UTC)
+X-FDA: 85440145560.09.455A8A6
+Received: from mta0.migadu.com (out-148.mta0.migadu.com [91.218.175.148])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 371C2120004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:24:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UanhZ4fi;
+	spf=pass (imf29.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.148 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794813288;
+	s=arc-20220608; t=1794813898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xXtS8nqPI8bMiiZsI5aMJRhf4Xi82nV2lL/o/RcncNM=;
-	b=LUM6UNJvhX5jY1r/oWBVFCb7lrnd5qUYFyqukG/ni/RlfSuQTzZ490PPKOl6L0asOK6SwV
-	dJYPkZSj2g/8bnCUKzokVuX/N6Q/CB1e1iwltPfUKau1rAbQu7gTywidsHbdcRI3POjvi4
-	IV+ClXnvo/daq8N4qqZaO9SXkTI0KeY=
+	bh=gxWuCpbv03Zc02+oBlxfrkWwPg/mIkyueML8T0AAdnc=;
+	b=sAAX03gpWHKy2+sNDxMxp4oPPg6LsPiHcX9bj/fRr5BdBzl0gbo1fcnqUXm4RHZG5p610M
+	TtxxHiJbb5xYJZEl3ljUNP4idryLkfPY6uijGzi0j+lOEWmgOnKEf8JA7wtwjglQ9KvZ9O
+	j7tci2uX7YV5sqU8B5XKr7ybxfqYb7c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794813288;
-	b=rD+NrICTdd/yZ9wLVi+UIbsMRN1BkbaOPpOibqswgvStBA+olvLwS7OeGPXk3x64V3E6za
-	w3MFgbvyPg3nN13MaPrGp9wdP04wBXR2c0g8fetNK3V9byLz56HTuZw9W6wpqeWSHxH3Cv
-	O878mErrBS7wyczdbEQ0BMScfPKn3kc=
+	t=1794813898;
+	b=AiHVjC4mkzbyCN1xe3MHaR0/tWyiQiwpnT0snuLdHjpXaU765sT9VIJxlbknzW8G0JA3gB
+	32iBXNBi3AYb8KL+9GF9bgMgM9ES8uz2N3UKuk5ZVZxz3l7FMI2vBdCZUGN7kfWuedNKVF
+	tRb8GKxS9Z5EHQp+KPmUiP3wiqmy7cA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hwW9YhVo;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UanhZ4fi;
+	spf=pass (imf29.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.148 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5qs+zHZlkyqRDMqx7SNWEDLyLXIGQ6DciwEgGF1OF3Y=;
+DKIM-Signature: a=rsa-sha256; bh=g8ClyyMtcgLdsQ6JL3yApqtIQt0AnNXmbikE9ZqcOv0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794813287; v=1; x=1795418087;
- b=hwW9YhVodGXQJ1SMJ5tKIVZJv+KYSxSceP42gqINXso1YdzeZOzoS2c40U1gZ5n9WTR6mpmi
- ChJMcf4AMP59hs1b8XuGJ/ouZsWslrs4xAfKddroMXyez2vs92fd2aBSySV0bXFVUbj16QE6IRt
- Hgpl1RWjbZEYXUnPam2X1Vvo=
+ t=1794813896; v=1; x=1795418696;
+ b=UanhZ4fikeBcpR755ZTsXCKC47TE+RRt60Tw4BHuythe1/9smHKtSHbU9Tk0lUCaaEqx9RC+
+ 2zLQe+fnGe5QYVi66r3gCDm4Y8svM86ocMa8reNfRbNSHedMdfImX5tC0QwGAkuPfTjO1Yxfv39
+ Em3c8X+OX7l9vxmy46dF6BiA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4fd46d42d037db8b;
-	Mon, 16 Nov 2026 07:14:47 +0000
-X-Mizu-Trace-ID: 4fd46d42d037db8b
+Received: by mta12.migadu.com with ESMTPS id b52167547f9f5bc8;
+	Mon, 16 Nov 2026 07:24:56 +0000
+X-Mizu-Trace-ID: b52167547f9f5bc8
 X-Migadu-Flow: FLOW_OUT
-From: Hao Ge <hao.ge@linux.dev>
-To: Suren Baghdasaryan <surenb@google.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	Hao Ge <hao.ge@linux.dev>
-Subject: [PATCH v5 11/11] mm/percpu: stop unmapping the CPU that failed to map
-Date: Mon, 16 Nov 2026 15:13:25 +0800
-Message-Id: <20261116071325.263682-12-hao.ge@linux.dev>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261116071325.263682-1-hao.ge@linux.dev>
-References: <20261116071325.263682-1-hao.ge@linux.dev>
+Date: Mon, 16 Nov 2026 15:24:51 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org,
+	kasong@tencent.com, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: Re: [PATCH v3 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+Message-ID: <avqvw25Ftak2Qq7E@fedora>
+References: <20261113084953.412919-1-baoquan.he@linux.dev>
+ <20261113084953.412919-2-baoquan.he@linux.dev>
+ <sashiko-outbox-214123@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pb3tww9f5xucyepdrcznc93sbwtmh39n
-X-Rspamd-Queue-Id: A034A180006
+In-Reply-To: <sashiko-outbox-214123@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 371C2120004
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: dusmzf71nrb3afpi5d7mxkea4echkc3f
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794813288-681511
-X-HE-Meta: U2FsdGVkX1+Y0/ZOSlyrEu/uUvxVoVnhQ23i9h6hMfNf4zBV12l92J3os+ePEWu4HLmcYKDe7Qy/CWzG7fL67XiayH78SnWm4QxI368iCo0rGZjmbXMpAYQnWWbRni1Y7c3s0cmwwMykcKMZy2iYTl/YPQ2brtsq6ZEYV3GDaH+efnOjZlrGQifCazqvnIQtrkWn3KJ5HNRXc0Xbyn+oDOvikDu5AhiAZXl7ZtT0DCrphymISYJcM5iEa1gpCiB9F1yE841jXME9LOg5jObaQAUeupR84000S/b4XyemfDBbQO2cAg0elxTjPh3lPuaGbuwGMhXgcZid/CshIVlkyOKPtJahOhRCSUwNmSBnl26CloJP9/g9WBs3/4ngykbghDCf4h1pfhydCCNdYPAY3WTKLxf9LUrEFM8U13GZ3pWrQBgiQsvhmT40WIi2A5fniMMKnVIhqzW3BwXonJtsjHZOQEOkMsWwmcieHOTfkDOvQg3U7Ef8t9d9xE7IomJxn/ntc+YneWiYujEQMwDiGNGUknfxfAntB6Tk7xTIaCsnggllp5vAxobK5Gm1M95325rjHiueeK32rwhoQVXRb0jpV3dcCyp5Gmp9ScYy2qSqDykBAay2jyQ5C0g5isNcctC096ETHtPlqbrhZ5T6gJenq5u0fw8nFNkl6WafsI2XUTyYAAEC5QgglrzoCHI175Y9Cw4h/hW/F7tc9J3BHJN8UvxqmW+6v8b1BkZaFCgx+Xns1V20M9yXsW/XREfLtEB8eEyLpMwiU8uo6e3onWffqe7Zq18cyzO9FW6n/LInzQB14QNzBZoKyvMKEjoyws/76l8xTwhLlJ4E/DVmeIyxixBwrj5I4zjnLqVYAlryd11Dkq629Fj8Gd1PRySvqdj013G9sy41mKa2tyMM+qdeIfkBShH2nfs0X48NIspor0fCfd6YH215zHbyPH8prrKmighs3gA1T/J95nf
- sXnqAKw8
- /lfXABSSEEZZWK2u5aDD5VwWZ+ElFXXR3EaZPPlj/lBTcJoRoqwGZ/BdwHMaglxM2vzwDGvTBx+JwQFFm4vXGqKmaA5YYmH08qYQoWI9PXZNB1GKtdXIjkFmv2AbUmV4aGPV4v0Iob2inPg8GMHrOn77eYTZYBLAqcqjoaBtmuvIWxbVugP+V1Oi3c5sns7g2Z7I9V3MREoZLyeVpZNxq6MyH7YCx7ux48e+SBachyJYfVWXu+z8+uBZXxfGclRdWzTb2pCQq3BUkbAjLCu4EU8B44N+oFMMfg1vU1A1kHBxA1+/feGiYrVHVXeojxs7qefK2hGW2LM2TgV59rpFer4hDRIi36iBSJ2Ki
+X-HE-Tag: 1794813898-585892
+X-HE-Meta: U2FsdGVkX19pGPCbyvxjnlqjPtvADW6KQSkdbUjyObKnhZp0Rxd8DPyNSoaZakTDKYAGzC/T+2i/6PXg7kgnxAYGEM13vAIM982w1wnCNlL5i9g5xS5wpD9zYHhRVV3CSpZC7HOc3K47zexi3EW8hyaQgh6/0UYlrOOgJQR26f0ldwIDHBa1kt51CVdU9hu1eWykS2xErgU4D+E7pKOFfLLynyyrM1ap68sBSlfK6F8aDYKY8Xnn5NWIEjolmJkVQl1hxfzDNRPjwU5rggUTn4StmYfT4arxa3R0Efi+0hI3g+x2+ldIEDUq4QWnSERfJSnhlYq3brLuWNdIrQSsU9Ui6Aq9tHu5E0V4yJI3WKFUWYoUxgcfPDC9pA4DNBtxnZ/TOKULyGMgn1zDwAa4Pa8leIfYEYLAybyFslKj6804q8n3E8GeanddtSAnkbcq1d6Exj0l8aMKM68eePGqoVYS/CDjpFkQv52Pyoh2MuRa0BYti6Xzc6vnkYLCOZq0qLCJotRoG3hsWdvnYAdPLFsuu1RwQS95a1I7LynuAHdFx+KRw96wTjcNMrceCMJ+t5DekzDGZEXHdQg2i+xJJ7MF4UiqBlAT/E/ATN8M5F+8WPfYBafsPzirUK94W8o9IQKAioQCjbiUIg7mbYTLEXqmAhxI0jwSVdfNfnmRAJuzqfmz5Niqp6jmq8AkrVogmB/XxN4qx7nmRxMg+F745D+JHwfVS91RjTQMsugTGWbCfluJw1IX2y/wihiusLek/aBMNIwyDgIjeFZ/NSfbrj3ibTPr6ZULaypnIgizxgKk+m0bapMU2t4+jQPzAnGWpFltTVI1VX5c9Wh7ax2RZqnaUZlHpIlygj269d5jq3sZLXGIAvvC7TgsSIo9M9amhHLPZjn0c3yZD4AzuDq2iGbmc3jYxGywhxsZN6P53RuFr+gsipRLccimH/RcoYSKiblOF7muNr6tqoEQiSJ
+ meuZYM/v
+ DhhaHfiHNDvR1j31jbEm7S4trJNpwvwUD/QeYyOpmNEAlUqYVO1NgIa3Ox5g4LLUlurSokbvtXxukCJg3/3AWw3mDL2pddkQu/7RrIFALPg347dBcq03Jg8viD2px8+krW5G07Qga5JgHW6D+8XVkUc7CFEGzLdNaH/K562pDcIAP7N90r6rjwIXJcRLOjbA56sM8TiQNx67IKoUhZVPoyV/mz2G2DxKdf/gCZAuQf+4OAy13T5r3kRRFbjEt5tK3xHLyLE3D30YUd/JCU67cTBivsG41eVYEWRBToEPec6LZdp+bv3pFzUTuKRiKYb5Tcm3RebA5Wjd/xTCZH8VKhvvkR3oXuSjXmcuha+hydnqWRE1VtRhiCZsahgW+SliooDgdSrNvoAzWVVCaGz/zIZY4XjP4WxxGqIWFMu8aJ1ITGFI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,36 +99,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__pcpu_map_pages() clears the PTEs it installed when it fails, so
-pcpu_map_pages() only has to tear down the CPUs it mapped before
-the failing one.
+On 11/14/26 at 03:42am, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [Medium] mm/mglru: get_pte_pfn() and get_pmd_pfn() skip non-young
+>   entries in walk stats
+> - [Medium] mm/mglru: walk_pte_range() undercounts MM_LEAF_ASSOCIATED on
+>   large folios
+> - [Low] mm/mglru: mm_vmscan_lru_gen_walk tracepoint defined outside
+>   CONFIG_LRU_GEN
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Signed-off-by: Hao Ge <hao.ge@linux.dev>
----
- mm/percpu-vm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Thanks for the review. All three points are correct. Please see the
+reply in inline paragraphs.
 
-diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
-index 509d8901835c..59d3a336a6bd 100644
---- a/mm/percpu-vm.c
-+++ b/mm/percpu-vm.c
-@@ -252,10 +252,11 @@ static int pcpu_map_pages(struct pcpu_chunk *chunk, struct page **pages,
- 	return 0;
- err:
- 	for_each_possible_cpu(tcpu) {
--		__pcpu_unmap_pages(pcpu_chunk_addr(chunk, tcpu, page_start),
--				   page_end - page_start);
-+		/* The failing CPU's partial mapping undoes itself */
- 		if (tcpu == cpu)
- 			break;
-+		__pcpu_unmap_pages(pcpu_chunk_addr(chunk, tcpu, page_start),
-+				   page_end - page_start);
- 	}
- 	pcpu_post_unmap_tlb_flush(chunk, page_start, page_end);
- 	return err;
--- 
-2.25.1
+> --
+> 
+> commit b5309c24549f959bf1eb3e88053e43540b30ee90
+> Author: Baoquan He <hebaoquan@kylinos.cn>
+> 
+> mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+> 
+> This commit adds per-walk statistics and a tracepoint to track MGLRU aging
+> page-table walks that find no folios belonging to the target lruvec.
+> 
+> > diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
+> > index 9dafdb5bd3ce8..2b268fd0f89e8 100644
+> > --- a/mm/trace_vmscan.h
+> > +++ b/mm/trace_vmscan.h
+> > @@ -763,6 +763,34 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
+> >  		__entry->nid,
+> >  		__print_symbolic(__entry->reason, kswapd_clear_hopeless_reason_ops))
+> >  );
+> > +TRACE_EVENT(mm_vmscan_lru_gen_walk,
+> > +
+> > +	TP_PROTO(int nid, unsigned long seq, int leaf_total,
+> > +		 int leaf_associated, bool empty),
+> 
+> [Severity: Low]
+> Should mm_vmscan_lru_gen_walk be placed inside the #ifdef CONFIG_LRU_GEN
+> block alongside mm_mglru_scan_folios and mm_mglru_aging?  Its only caller in
+> try_to_inc_max_seq() is built under CONFIG_LRU_GEN, so defining it here
+> generates unused tracepoint code and tracefs entries when CONFIG_LRU_GEN is
+> disabled.
 
+Will fix. mm_vmscan_lru_gen_walk will be put inside the same block as
+mm_mglru_scan_folios and mm_mglru_aging.
+
+> 
+> [ ... ]
+> 
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 25a224746c36d..6034bae03dc21 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3582,6 +3582,8 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+> >  		if (!folio)
+> >  			continue;
+> >  
+> > +		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
+> > +
+> >  		if (folio_test_large(folio)) {
+> >  			const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+> 
+> [Severity: Medium]
+> Does walk_pte_range() undercount MM_LEAF_ASSOCIATED when a large folio spans
+> a batch of contiguous PTEs?
+
+MM_LEAF_ASSOCIATED is not scaled by the batch size for large folios.
+
+Will fix. For a batched large folio we now add nr - 1 as well, so
+MM_LEAF_YOUNG can no longer be larger than MM_LEAF_ASSOCIATED.
+
+> 
+> When folio_test_large(folio) is true, folio_pte_batch_flags() sets nr to the
+> number of batched PTEs and adds nr - 1 to walk->mm_stats[MM_LEAF_TOTAL] and
+> nr to walk->mm_stats[MM_LEAF_YOUNG], before the loop advances by nr entries:
+> 
+> mm/vmscan.c:walk_pte_range() {
+>     ...
+> 		if (folio_test_large(folio)) {
+> 			const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+> 
+> 			nr = folio_pte_batch_flags(folio, NULL, cur_pte, &ptent,
+> 						   max_nr, FPB_MERGE_YOUNG_DIRTY);
+> 			total += nr - 1;
+> 			walk->mm_stats[MM_LEAF_TOTAL] += nr - 1;
+> 		}
+>     ...
+> 		young += nr;
+> 		walk->mm_stats[MM_LEAF_YOUNG] += nr;
+> 	}
+> 
+> Because MM_LEAF_ASSOCIATED is only incremented by 1 before the batch size is
+> computed, the remaining nr - 1 PTEs in the batch are not counted, and
+> MM_LEAF_YOUNG can end up larger than MM_LEAF_ASSOCIATED.
+> 
+> [ ... ]
+> 
+> > @@ -4158,8 +4162,28 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
+> >  
+> >  	do {
+> >  		success = iterate_mm_list(walk, &mm);
+> > -		if (mm)
+> > +		if (mm) {
+> > +			bool empty = false;
+> > +
+> >  			walk_mm(mm, walk);
+> > +			/*
+> > +			 * A walk that traversed page tables but found no folio
+> > +			 * belonging to this lruvec (node+memcg) is pure waste.
+> > +			 */
+> > +			if (walk->mm_stats[MM_LEAF_TOTAL]) {
+> > +				walk->mm_stats[MM_WALK_TOTAL]++;
+> > +				if (walk->mm_stats[MM_LEAF_ASSOCIATED] == 0) {
+> > +					walk->mm_stats[MM_WALK_EMPTY]++;
+> > +					walk->mm_stats[MM_LEAF_EMPTY_WALKS] +=
+> > +						walk->mm_stats[MM_LEAF_TOTAL];
+> > +					empty = true;
+> > +				}
+> > +			}
+> > +			trace_mm_vmscan_lru_gen_walk(
+> > +					lruvec_pgdat(lruvec)->node_id, walk->seq,
+> > +					walk->mm_stats[MM_LEAF_TOTAL],
+> > +					walk->mm_stats[MM_LEAF_ASSOCIATED], empty);
+> > +		}
+> >  	} while (mm);
+> 
+> [Severity: Medium]
+> Does this count a walk as empty whenever an mm has folios in this lruvec
+> whose PTEs and PMDs are all non-young?
+> 
+> In walk_pte_range() and walk_pmd_range_locked(), MM_LEAF_ASSOCIATED is
+> incremented only after get_pte_pfn() or get_pmd_pfn() succeeds, but both
+> helpers reject non-young entries up front when the mm has no MMU notifiers:
+> 
+> mm/vmscan.c:get_pte_pfn() {
+>     ...
+> 	if (!pte_young(pte) && !mm_has_notifiers(vma->vm_mm))
+> 		return -1;
+> 
+> As a result, non-young leaf entries mapping folios in this lruvec are never
+> counted in MM_LEAF_ASSOCIATED, and any walk over an mm whose mapped folios in
+> this lruvec are all cold has MM_LEAF_ASSOCIATED == 0 and is recorded in
+> MM_WALK_EMPTY, MM_LEAF_EMPTY_WALKS, and trace_mm_vmscan_lru_gen_walk() with
+> empty=1.
+
+get_pte_pfn() / get_pmd_pfn() reject non-young entries before
+MM_LEAF_ASSOCIATED is counted, so a walk is reported as "empty" when the mm
+has folios in this lruvec but all of them are cold.
+
+Yes, that is what the code does, and the name did not say it. The
+behaviour is on purpose. The PUD filter in patch 3 carries a subtree only
+when it had young entries for this lruvec, so "nothing young" is exactly
+what we want to measure. Counting the folios before the young test would
+add a folio lookup for every cold leaf, and that is the cost this series
+tries to remove.
+
+So v4 will fix the naming and the comments instead: MM_LEAF_ASSOCIATED is
+"young leaf entries whose folio is in this lruvec", MM_WALK_EMPTY is
+"walks that found nothing young for this lruvec", and the comment in
+try_to_inc_max_seq() says the same.
+
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261113084953.412919-1-baoquan.he@linux.dev?part=1
 
