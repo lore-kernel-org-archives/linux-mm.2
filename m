@@ -1,140 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEA4606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 18:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C096E606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 18:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=cyQR5Y1u
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JIYAQnIx
 Received: by kanga.kvack.org (Postfix)
-	id 6E76A6B00EF; Mon, 16 Nov 2026 13:13:59 -0500 (EST)
+	id B7C926B05B1; Mon, 16 Nov 2026 13:14:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 697E06B05B0; Mon, 16 Nov 2026 13:13:59 -0500 (EST)
+	id B2C096B05B2; Mon, 16 Nov 2026 13:14:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 586BE6B05B1; Mon, 16 Nov 2026 13:13:59 -0500 (EST)
+	id 9D0B56B05B3; Mon, 16 Nov 2026 13:14:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D4E06B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:13:59 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B28B1601DB
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:13:58 +0000 (UTC)
-X-FDA: 85441780956.01.F5E2B6B
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AF451180010
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:13:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cyQR5Y1u;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794852836;
+	by kanga.kvack.org (Postfix) with ESMTP id 7044D6B05B1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:14:37 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCDBE1601CF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:14:36 +0000 (UTC)
+X-FDA: 85441782552.09.0430FB7
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C1935180005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:14:34 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=JIYAQnIx;
+	spf=pass (imf24.hostedemail.com: domain of levinsasha928@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=levinsasha928@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794852874;
+	b=OzYXvvlZBatT3aIT2OdNDQCm2LwVnB0EOs9mKoPkD739lUN29KTUbK4yA/tg8XDrk8tCO0
+	io9BDW7fpaQWJISKTs+S+h7KOwSdhBS2LYr38jHG2n9zLCI69LsQEa1g9EeaDAvO5IhIps
+	Z2DLY+1/K9ocpfKn0PgpExFY1Mf6dDs=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=JIYAQnIx;
+	spf=pass (imf24.hostedemail.com: domain of levinsasha928@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=levinsasha928@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794852874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mB8RDKJrvT0rNRs0LLoWAJXFuxhaQ7Mxjj9sT6tzin0=;
-	b=Qz0sBURo+qCuZ2RToZI8jZiqPSqYyz8UWmi4VkwQfeUkaiKJ3EVPF8/T2t8nLcT8N9MxrH
-	66IbOhiCe3++vQThpV7r9oM2lE9WhfM5LnStEf7vbYoLree3WPwS+6p21mMmhkgmH+NN9S
-	5s60lrTGbWzLjLRiUzFI3ELWBnk3dko=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794852836;
-	b=nSbryzn8UOlK3gYQssArjEWdNzzvOB/OKqwxKpwgJQwcHYEXaICxW0WcU9M9ULA801b807
-	tZAzKNVysfEyVMV23g3tNCjnGUjrJ1uikMDejDM61HDNOy2zIjU802niyMR/zgwYsBOQCt
-	Xh752mlar0NkCjarBQyEpKopCDHm98M=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cyQR5Y1u;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-949680e6d82so189789985a.2
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:13:56 -0800 (PST)
+	bh=tbwNSvGvkZ6FGvVLTIjJxQ3bE6+PehswRYJGBnKvxtI=;
+	b=sdZWezCRlP0/heJwjiqL/f/tHdRCsq5zvY09HN/ONU/r5aFidstCz+cG6dXBRqDMjsPXZm
+	p53Dw9janYQCBBTHfAVcCLyGUbMOPwDinF4JxWRh3FQLRVGCDfXAYpVfmyh0c85r/I3Che
+	LLx31GusvsQfwsjPLxvocfYOO0wBgM0=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c50e9408873so117831866b.0
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:14:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794852873; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nze3c6cqItPpI9TYkwumIpNMClgg4Y5npaEt2GgO5Y1JcpnJgSj9WNVRN8ovJsV9rC
+         +8coq6CE/6a/QrTZS4PO2vKVbNSX664tDH3jBxL15PgkQxmroinA9CMoBhCQ9Nd3BBEm
+         927L69mdwgD2XVbwLW8wzPvheCiFvUduzO6kvMVrKzCRRGIPTeFlDdhydCtwBzLwaTyc
+         qBCMENYlaKtzIaU6BHf0z82YJ68fxwnKWPHtlRKCOC1mi6P5PVnJZKKIF8erkRqGDqUf
+         X7hgvhXWGEAD2+oyA0GiFv6fqinpmpIgeJC684aJvvvysv7xK1D+92zS6zxTxLAVqvIY
+         Z+Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tbwNSvGvkZ6FGvVLTIjJxQ3bE6+PehswRYJGBnKvxtI=;
+        fh=uaUwwYodRyEobXqAAO77HEQVajoeGXvjqCpyb0zHeKM=;
+        b=K3xoTLFTnsQ7+EDoDXucX2Q2ikY8zVg7sk8Sd6xX2CSRQhtmso5LwvW2T2mzOm6nki
+         9mZjfG3ZJZcNaEItpoQiic8ND3NrK6p3Ple+MNjt023pw1Wnk2md5q40yalpffTbBpWw
+         3jjCdazh8E0Pm9PcGOkN0yDuXrTU+jbg6rDiBbuUruOJ5xtIBldv1NENPaOtD2dOxTBD
+         Eu2xi8o95Y8u6vQm5vyoSQDt++a8/T1Y9FX7hl2/Tc7D2HspqpICQ80zLrCVO4OW2ZgJ
+         EohmtleskTAqKSdZlpyN4uovsulvkFrVR1zcRjF6BPe36o2dnKGu4C9PaE5id4/4A53k
+         IaPA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794852836; x=1795457636; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=mB8RDKJrvT0rNRs0LLoWAJXFuxhaQ7Mxjj9sT6tzin0=;
-        b=cyQR5Y1uinmx3xs7dkaHHDykuaBfLygWfrz/CnlSVXJ641+G0EJvbVAbgzamJnmNnM
-         5a0ysLpkBehuo1UrRTQbFflGHBNmJUVh0IZyoePzl1F0XuLt4FNKAYDMQaCpOR6s8UXC
-         AlvAR4m9y+oQadGZBUFLfGwS0vrpRtW0TwRELYgieLXU/B4boLNzRPq2BXEv+pIS+isX
-         BpxxgarD527oO4VJduxOmVZCbro3NNXIpmRgdp3TqEVqA82o0PcEvwi6v+sl4xx/zS9a
-         p/C7FoZu9T7A18xPqDF4lJE2BCgxDxtdBot16lDt8syb4RANBHufY672QtoFxXYw7NIu
-         3oUw==
+        d=gmail.com; s=20260707; t=1794852873; x=1795457673; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tbwNSvGvkZ6FGvVLTIjJxQ3bE6+PehswRYJGBnKvxtI=;
+        b=JIYAQnIx0JAXoosDJHutLeZc7xRFEIbfXCqMgubMIwkvzH1u2asnWL+Z73RxOthnfH
+         q+NNfNQ7uJ1ucFuUexXojj8sfjxixAx4JAK4gRvJXyaudflTcOEWt0sRDnOsxDaFqYJx
+         5d1F60oMDZXuEkCb9QW9pQvRNEL2+d0YmpNBHllsZgIYgzcixCfLitBczMm4BEEeR8wu
+         NEhPgY42BZImFQthHooWo76sbzWlpxKzwKzrEjYuliBhEtJO/ySXYQq8xVIO8/S4KULU
+         7D7w0WWVL1qpMAkK9XAyBclL/3Cw6Mym1lGu+XfeIikdVqfpEk1sqzLkarlhyjL6GIts
+         MRig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794852836; x=1795457636;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794852873; x=1795457673;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mB8RDKJrvT0rNRs0LLoWAJXFuxhaQ7Mxjj9sT6tzin0=;
-        b=BLKVWNz/Sw8X7AV+W6XIzRyynnxnyCi5Nr4hZcsDq/qtJ2hE7IhYdS0tpoIVVgqFX0
-         95GEbko5SXuM6QLX4E0d1JqQPhn9qhqRatvggoSJ7XmHuuRnNdoFwyYy0+lnbwcC/dTu
-         8B812KmWUgcS4j9HTuBeVr8NZQNfF++JGKAUJ/k02x5wl3IO+EeiSA+eB07YMg321W98
-         n59TXfgq3WutpZTVTWcDvLQYBL/SuhTwOF6fSGZ5LAbO2doQ5B9TQPKdHgn/72IXbVHA
-         UioZsaPMt9p/A2SVNuGEFtYz65h0VlhVCWESSoSKp1Ie3IktR/JytNcj80gSzLHQN4NP
-         W5AA==
-X-Forwarded-Encrypted: i=1; AL+hErHBAtqmJU9pgvGSxRZyZUoHFRRQtPqurhhbnqjKa5harVfoxVkhARSyTQXNdzlRT09QntNeJxmusQ==@kvack.org
-X-Gm-Message-State: APuU4Z+Z1yoPYgyocRKltshtOKlaQQa5mdE/50+iJjAhcM5e+6OwDsHZ
-	qUV2GdI+VapSy8avuMwvL9dYYb52tVP5n8qCPXzDCVix3r7yz0hX2+czknbdsH2lzIU=
-X-Gm-Gg: AYBFou3CgtBlMghTm0DBLdNbTxjupsOkgTPb6gNXhFxMVsF+ckGQ2fFE/SkYn1CT3Vl
-	7qwOLJfx/WL8je37PMpN0u1iodLdcmjB3/dhdpr/qJHekXAJs0ACYFbJ0boi202uqjWb16jSMmr
-	g9rQF9JHtW8rirEF+FC83l3uisqQ448v+XSVpOKIxUNOZr0ylwz5Sfk4U2A50DQA1e3+SAYstYD
-	jJ9+6sab2xZksMyB+ySVgz1ftryFljwZkIPfjrS4zVI1KUNlKoyiBSJVyr0WGNfBnxefeXkbJEE
-	/cDd/ZulAsuqCLsG8PPspOuoHdzarvpStVYHNH5pV/vCuPDysuQq0qA81ZAGGSPM6PylKcwpbbQ
-	THw+QIVDPPLxV7bVQDzguSKUOHO1IZstI0G9N5gyNizvnaM4t3UPNVno78Ex24yJBb4/54fl4yx
-	jdJXOYhO7WU1dDRPZ8ak6ovBDPxIYbiANZ1QnUjZ2kok5shZdKfTKGfs/FIrCuJTteBQEBg405m
-	G06Imm5nf+Pa9vE2Y7MZgTk+8GZDiGvJ7gcmvota1bH5jiHXaS14p1j+60Tf2S7ZFoCbpMfSaSU
-	WVGTle5bIQPxB65Lfy5TPHuC+q27Fk/bu/i6MpWxL7nbWUh26+XlzGcKAuUOTJtl34U3FX+fYv7
-	rGfdRatI=
-X-Received: by 2002:a05:620a:6c8b:b0:947:7f5e:2b63 with SMTP id af79cd13be357-9494bad303dmr1772432685a.34.1794852835505;
-        Mon, 16 Nov 2026 10:13:55 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d70918sm90840106d6.22.2026.11.16.10.13.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 10:13:55 -0800 (PST)
+        bh=tbwNSvGvkZ6FGvVLTIjJxQ3bE6+PehswRYJGBnKvxtI=;
+        b=aH6PQGNhMXzXx6jsEN42UGEsLgGTjvqVEXJXKEP4GDsw2YQfjCpiMOjQNZg+oQyo64
+         xoNyvKa5gc+8roiXRbd1LlzRMAFzYioG2h1Y5D91FnTX2/iAoM57COPF3qVdixjP/NC7
+         wXYaXu0dPYNyc0SRU+ENcj16OV7zFT/dxyOsNAFCyS9Gy41bEEEgpTxZUuatUQXBya/p
+         Dgvi6S4xdKMTzBku5FimvgRUa5JbGV2UIEYvrB3gvt9+9n40cPjH16X/5soXhbANfKio
+         cOn9Zru9cbsmxB7IomqOYHmSHDT2QkWJ2ZWeaDCyECkTYK/t39SRGzARHPoPMlC0dDDz
+         0QOw==
+X-Forwarded-Encrypted: i=1; AL+hErEIqWU3pk3gntFJZZPyMuOIUoIuxFWKRas//1Kl77pvi4LNQh/VSgTFIPN8og6V+URh2X3gXMqX5w==@kvack.org
+X-Gm-Message-State: APuU4Z8IyMOq68IMV8gEv4/0Ggr4ZJ3HOrJ74jGdKYEFHRRW3rXz0oGE
+	boDLIwwsfxT7XwWdWmXHPXLaMnndVeyS8c2pRoNYFRJO8tKs1AGYn1XhKWJKJN6YmdW8tniflaA
+	AE+q0k29MJ6I5MjIH/jO1xM2Z4SEeY/A=
+X-Gm-Gg: AYBFou3Gvejzoue1mCzzYowfVoh8AD5sHsrJimS+Ax4I0SeUwewF+BLo34A9rSILtSg
+	1j4sHxXZ85R3naoJbFa/QPW04jPJRckB4NgqtcPCbmXOzC4ccRkjet1JqNEL+/XsNTX0wdqcm14
+	W6Dcwxi4q8P9XpDWQAQokuVRKgIleeOXCRBRKImJOZHUryJ5MMqUQfwEdn/LeSRNrZh5S5uW7qo
+	g5xIr4wfYzLnq/H1XX+Fy8DcCivm9HwUaOMKlQWAopHk2h4OWYkQtXb1yY/i4yppfK8Q1ELkHnh
+	1RylpAFu3aHhFm+vnZGHgX1UB/l6g0/ktq/wjwnnMG0IkyUteiFUJ155Npu/bmhe8gh3t/kAKat
+	I/A5tsblDmnjTG5nMTpdcYRTArj/MBJ46ZniE0D3TjPbosXn8915VIY0OzzkchwtVI8h1rw==
+X-Received: by 2002:a17:907:3ccc:b0:c49:a235:8e0c with SMTP id
+ a640c23a62f3a-c509637e31dmr934233266b.22.1794852873007; Mon, 16 Nov 2026
+ 10:14:33 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/3] mm/memory: do not report OOM if insert_pfn() races
- a huge fault
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>, 
- Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>, 
- Roman Kisel <romank@linux.microsoft.com>, 
- Saurabh Sengar <ssengar@linux.microsoft.com>, 
- Naman Jain <namjain@linux.microsoft.com>, 
- Michael Kelley <mhklinux@outlook.com>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Eliav Farber <farbere@amazon.com>, 
- stable@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261115-huge-pfnmap-fault-races-v1-2-537605643f6f@kernel.org>
-References: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
- <20261115-huge-pfnmap-fault-races-v1-2-537605643f6f@kernel.org>
-Date: Mon, 16 Nov 2026 13:13:53 -0500
-Message-Id: <179485283354.482102.2633605640287961592.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: AF451180010
-X-Stat-Signature: 6i1t6enb6nbqg9c6h7w3gzwipdhoeqya
+References: <20261025164719.1831477-1-sashal@kernel.org>
+In-Reply-To: <20261025164719.1831477-1-sashal@kernel.org>
+From: Sasha Levin <levinsasha928@gmail.com>
+Date: Mon, 16 Nov 2026 13:14:19 -0500
+X-Gm-Features: AclHuK9sfeiUUhkQOi4L3FtpqX1XWSWrAtRgGWBj0BPLzcNiTLpwmGT382OC52c
+Message-ID: <CA+1xoqcxAsRij1j10TyhNX9JXNXNkdWO3sMaVRXCqYdEXi45fg@mail.gmail.com>
+Subject: Re: [GIT PULL] Kernel API specification framework for v7.4
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Mark Brown <broonie@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794852836-970164
-X-HE-Meta: U2FsdGVkX1+jS8jIQ96zA6rCfaNYF/Nnqv1o1Rxx4KhaBp9e9Vl41S5jmqY9PGEyp4PssG7fsgm1A8TBGCsAfwF897UqMmzl0ShIfWQkdx4MiUpqsZrDQBlUkxhDe1xKy9rObX1NkD/SFSdjo97bWnIlUSU2zhKZ3qGVYPSbdx1HcLd450WedpVs8n1DSWSPWWQvKbutAcsLJ1XyAdudyUU0Dbm0JddcZePB3OFrJlEDgMH5QY07jJe3FG0XGbsVwW8LRD7uul2BUv2T+vTs+/O6vK4hbS+vX2rR7Ooi0BnnSmnVYYwZJR5DY1Vv13pFw0iFwpe//qgCF7hBX8mFOsUzyiVJWotml5p++scRpS+U4bQUwPpUu5QH8ufuQv4fN9XP6jVdIr0+++bY/CPMxXbRfx95nNrdZRONFaY1Fz3NIvkq4z6FjyRKHjvMf9gjm0tF/OMzV+XPtPe1cHzP15MwJUs5f/+7h+umbtw+fb/q783uSgpS3R91jqqI/GuyCbAZTD8pJ+KHClXmz13FfaSkk35PM2gsejAn/gfKDrsYQVAXCANBuxAnpZMYwnPOUDYsQCrOQU9mfgZF21o1vOmROuI1GDCu9v5sqRVZcjJqRkSFqz1l3Z6SYrnUQLk1BY+qVmmX35s/X+CeyXKgGZcT/BCIGMpSKLtqPkkGc2N7YJi7K5KiRRXEKc59j0Qh5XvS2TFWs09dD3IkeddxWGiTsaGja4GQC2NTE+en37gGzJ6P12HfUXMAILw29JlrxKYJ9jccVaG5YLPYukgKjuV+j/BoSWs70akhbSx3PmsRtOfTiw/IqB0oHTJoHDVxq+rqTeiqpV9BO6ZAdon6vx2CLTIdr0m8jl7Dou3spCGARwiI1OhvH2Mc51bXEBw9+MKWndL9EUGsCDa4JkEGt/b5rPzwN10bPy1D/aqw39kah7Z0njap0xIIKFXPUjbT7Kz40MgTNCNQ4ZvkqdC
- W1jGqB+6
- oOtPWGpolV2bfK5NX4cXqDITh2NgnlGsHlbIUKE8cIxn+yKCGNR54bX+sQXVb9vCjSKX2yNBngUNIrDwB0eZDcC2nSEIFJuwoV134+a8K+qSKK5DCuNIReDh90DWtawxZfhnsfX9CjxVK5UTuJxThPggwVpSM94MnX1TqF/QQghrsxUyoivJniG7pT6ybjYC2Ks7Muv/237kixW5tIhHK8vpgmC6dz63gVN+vdeM7a85GMXyZHPnZHKtB+nLWvBXxJE/ii71j8+rBkXklEkzXSv6z9Znq2V5PnIF7CKneP0HwW3atbqkOQ2MDsMzpupyzfqhUJXw4LsqTxaBBi1oTNneCAhO7K2fB7ndEUDMNc5JfekDZRrRQkSztERytrF16q5Fb3xsmvfV8f8q1XGF9PGyvldMaBkmhJnSNQovwbJeAsmP0ECx+2GfECA==
+X-Rspamd-Queue-Id: C1935180005
+X-Stat-Signature: qcmmju9o7fbsp1iir7rwynm6uoof9xtj
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-17.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,INCLUDES_PULL_REQUEST,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794852874-135152
+X-HE-Meta: U2FsdGVkX19KeOB0YhLmLR5ZYhVKCAzMcoYF4lCBX1PGEOAedaz7GQusonTPivnrApY6kz725SryjRd7/Gp2c7xqxBdwLgxzTMii3WCU+BxOgJvdrPHH16J5M3b1y2Z6xV1U1qYkvGOXLI8UGORMDvX5672PJ+LITw7L5IFUKH0V5Wwc2kyUjsCJdSSUFtIoAhXafdz2BriWujA1vGXETac5PqT8VivHD3gbEJkF2Ved9H7uyb4fD3cjyXhroTC+gc5VNZnHf+aSI0CQUzus1WIHCz8sYgqGC5f6qpD8PGYEY9AMtK1MYHctqNp95L0RI+c95tWkyRQFFyx9MZRn7uY78CgTs/+k/qpk9+bR7KtVlibWrgwcFDUlVZgMSyJLhfhoKNThK6JfmjuSU8QOJpetcY0prWotQ7VeoubY43V6sXsGtrLVcIU2teAKk1OHy6lmbB4EqfMDawXoptACec1+y9FrFqzlRFMIugI7bMsSj+e7PZVCFnQVo1BBkhiAjNo5PZv6qS+ETC9YHsDK2tH9RxkNy5ojrFZzaYJ0fYClPenVOD9gNuh+E1ppBbcEAa9BWDfzMX4r7RaDkdQ2itY9sd3vFmrkPHQlTBhPre6nzSyb5EUhlo4kNubIwT8+PEi7y7QEB5FonzKA7gVZUh8uNlUTpZBOvicO/Zf6jvrC9YFl/Rfga0ZQw7Eswg49urzDNQboL9BcSXrMgPIG/OXBqWyLKga39OaCI1pXYkXLRrX9WYFu1hdX7gSlGfVtqWw0sGblxPTpCIDPFydX/K0Vho838eq4QZx/EeNvqs4aOE993VLTDrMWmZwObTkqeatDJTRHD2EUMClEpWdckLija8azrK8BsBOaqJctc67wrYpgRw+v4J44BOnV5Uq62bO/I4ul/xFpxxGt/Sly6+kO3umuXqvNFiErPFF/MhP41i8qZXWKB07wSa9YpNXdCf/eBtjBdbJA2PI2nqO
+ 0NV4Ag5L
+ xIbsGxlgRQSBDwIbsHX8fQBw284L+FvqKkaIVo5mBu5IsCo3IMrh6NEufsvqoUpYbBvDDGU1+YfI5pRkHPo2eji9qDy9do3ifl/QigY5uOYfczr7pS6T2kf+oU0QIon+h30AFda5wEFpN4Nw2EppWRlx3rplYRAe35xJa9WlpiP+Eh9J4ObpKO1N5sDyTJmb81uEfDm24IYUy21p6hBsQxR9qZ8oVsBn8MRDFDTUXzXazqbBMSUH3aDP3u0PjcReuYRpkwMCibqy38+qfMU0j6ZiS1hDIw4R3mwR/vxki/jNVxpTNooOHkEpZMfWSj91XgL0YU8V06nCwMsU7FRC7nbBpabQjuHrVMqCa01Ge5zMNcFqoi1dK1/kvS5zWIS5YA8x6qXoJnvLLFYcbVgOH4cUd8or0mJZZjb/U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,57 +149,179 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-15 20:58 +0000, Lorenzo Stoakes (ARM) wrote:
-> From: Eliav Farber <farbere@amazon.com>
-> 
-> A driver that implements both ->fault and ->huge_fault must anticipate
-> concurrent use of both.
-> 
-> This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
-> concurrent with faulting, as that only holds the mmap write lock and thus
-> does not exclude faulting threads stabilised by VMA lock.
-> 
-> This is not currently safely handled by insert_pfn(), however, which
-> obtains its PTE entry via get_locked_pte(), and treats a NULL return value
-> as an allocation failure, returning VM_FAULT_OOM.
-> 
-> The issue is that get_locked_pte() also returns NULL if the PMD entry is
-> not a page table which can happen if a concurrent huge fault installs a
-> huge PMD entry between __handle_mm_fault() observing the PMD entry to be
-> empty and insert_pfn() being invoked.
-> 
-> This can result in VM_FAULT_OOM being reported incorrectly.
-> 
-> Address this by proactively checking whether a page table allocation
-> actually failed, and returning VM_FAULT_NOPAGE if the NULL indicates that
-> we were raced instead.
-> 
-> The same assumption is made in insert_page(), however only DAX implements
-> ->huge_fault and can reach it, and it serialises faults of different orders
-> with its own mapping entry lock, so it does not require a change.
-> 
-> Target the commit introducing the first driver able to do this.
-> 
-> Link: https://lore.kernel.org/all/20261112051440.16140-3-farbere@amazon.com/
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> Signed-off-by: Eliav Farber <farbere@amazon.com>
-> [ ljs: rewrote commit message, trimmed comment ]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Ping?
 
-Tested with the same test from patch 1, observed the leaked OOM faults
-and this patch resolves it.
-
-Makes me wonder whether patch 1 and 2 should just be a single patch to
-avoid bad backports.
-
-Either way:
-
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-
--- 
-~Gregory
-
+On Sun, Oct 25, 2026 at 12:47=E2=80=AFPM Sasha Levin <sashal@kernel.org> wr=
+ote:
+>
+> Hi Linus,
+>
+> Please consider pulling the kernel API specification framework. It has
+> been discussed on the lists for over a year: five RFC rounds starting in
+> June 2025, then v1 through v5 this year, the last on October 8:
+>
+>   https://lore.kernel.org/all/20261008084956.2911790-1-sashal@kernel.org/
+>
+> The branch has been in linux-next since next-20261009. I held off on
+> sending this until the first week of the merge window was over, to let
+> things calm down.
+>
+> There are two conflicts with what you already merged. linux-next resolved
+> both the same way:
+>
+>  - Makefile: kbuild added '*.header-check' to the clean rule at the same
+>    spot where this adds '*.apispec.h'. Keep both lines.
+>
+>  - fs/open.c: vfs added filp_close_sync() just above sys_close(), which i=
+s
+>    where this adds the sys_close() kerneldoc. Keep filp_close_sync(), the=
+n
+>    the new kerneldoc, then the existing "Careful here!" comment and
+>    SYSCALL_DEFINE1(close).
+>
+> The following changes since commit a90ee4305c4a5df72c11b31dacfdc76e00fcf7=
+8a:
+>
+>   Linux 7.3-rc6 (2026-10-04 13:45:25 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/sashal/kapi.git tags/ka=
+pi-7.4
+>
+> for you to fetch changes up to ef777ef05ebcc5ea5393b4bd5af6fc3ad1b3aec9:
+>
+>   kernel/api: add syscall enter/exit tracepoints (2026-10-07 18:26:44 -04=
+00)
+>
+> ----------------------------------------------------------------
+> Kernel API specification framework for v7.4
+>
+> The contract of a kernel interface (which arguments are valid, which erro=
+rs
+> come back and why, what context it can be called from, what it locks and
+> what it changes) only exists as prose in man pages and comments, which
+> tools cannot check. This adds a way to write that contract down in a form
+> that tools can consume, next to the code it describes.
+>
+> A spec is structured kerneldoc covering parameter types and constraints,
+> return values and error codes, execution context, locking, signals,
+> capabilities and side effects. At build time kernel-doc turns it into C
+> data in a dedicated section of vmlinux. From there a spec can be:
+>
+>  - checked against syscall arguments and return values at runtime by
+>    CONFIG_KAPI_RUNTIME_CHECKS, a DEBUG_KERNEL option for x86 and arches
+>    without syscall wrappers; a call that violates its spec fails with
+>    -EINVAL before the handler runs
+>  - read as JSON from debugfs
+>  - extracted from vmlinux, debugfs or the source with tools/kapi, which
+>    emits JSON, RST or plain text
+>  - followed with the kapi_syscall_enter/exit tracepoints
+>
+> The first specs cover open, close, read, write and madvise, with a KUnit
+> suite and a selftest in tools/testing/selftests/kapi.
+>
+> Everything is behind CONFIG_KAPI_SPEC, which defaults to off. With it off
+> the syscall definition macros expand as before, kernel-doc output is
+> unchanged, and the only change to fs/ and mm/ is the kerneldoc text.
+>
+> ----------------------------------------------------------------
+> Sasha Levin (11):
+>       kernel/api: introduce kernel API specification framework
+>       kernel/api: enable kerneldoc-based API specifications
+>       kernel/api: add debugfs interface for kernel API specifications
+>       tools/kapi: add kernel API specification extraction tool
+>       kernel/api: add API specification for sys_open
+>       kernel/api: add API specification for sys_close
+>       kernel/api: add API specification for sys_read
+>       kernel/api: add API specification for sys_write
+>       kernel/api: add runtime verification selftest
+>       kernel/api: add API specification for sys_madvise
+>       kernel/api: add syscall enter/exit tracepoints
+>
+>  .gitignore                                       |    1 +
+>  Documentation/dev-tools/index.rst                |    1 +
+>  Documentation/dev-tools/kernel-api-spec.rst      |  648 +++++
+>  MAINTAINERS                                      |   13 +
+>  Makefile                                         |    1 +
+>  arch/x86/include/asm/syscall_wrapper.h           |    3 +-
+>  fs/open.c                                        |  557 ++++
+>  fs/read_write.c                                  |  710 +++++
+>  include/asm-generic/vmlinux.lds.h                |   14 +
+>  include/linux/kapi_syscall.h                     |   35 +
+>  include/linux/kernel_api_spec.h                  | 1226 ++++++++
+>  include/linux/syscalls.h                         |   42 +-
+>  include/trace/events/kapi.h                      |   74 +
+>  init/Kconfig                                     |    2 +
+>  kernel/Makefile                                  |    1 +
+>  kernel/api/Kconfig                               |   74 +
+>  kernel/api/Makefile                              |   13 +
+>  kernel/api/internal.h                            |   25 +
+>  kernel/api/kapi_debugfs.c                        |  553 ++++
+>  kernel/api/kapi_kunit.c                          |  720 +++++
+>  kernel/api/kernel_api_spec.c                     | 1470 ++++++++++
+>  mm/madvise.c                                     |  549 ++++
+>  scripts/Makefile.build                           |   26 +
+>  tools/docs/kernel-doc                            |   12 +-
+>  tools/kapi/.gitignore                            |    3 +
+>  tools/kapi/Cargo.lock                            |  679 +++++
+>  tools/kapi/Cargo.toml                            |   20 +
+>  tools/kapi/Makefile                              |   33 +
+>  tools/kapi/README.md                             |   33 +
+>  tools/kapi/src/extractor/debugfs.rs              | 1704 +++++++++++
+>  tools/kapi/src/extractor/kerneldoc_parser.rs     | 3335 ++++++++++++++++=
+++++++
+>  tools/kapi/src/extractor/mod.rs                  |  442 +++
+>  tools/kapi/src/extractor/source_parser.rs        |  531 ++++
+>  tools/kapi/src/extractor/vmlinux/binary_utils.rs |  461 +++
+>  tools/kapi/src/extractor/vmlinux/mod.rs          | 1160 ++++++++
+>  tools/kapi/src/formatter/json.rs                 |  659 +++++
+>  tools/kapi/src/formatter/mod.rs                  |  220 ++
+>  tools/kapi/src/formatter/plain.rs                |  679 +++++
+>  tools/kapi/src/formatter/rst.rs                  |  802 ++++++
+>  tools/kapi/src/main.rs                           |  123 +
+>  tools/lib/python/kdoc/kdoc_apispec.py            | 1391 +++++++++
+>  tools/lib/python/kdoc/kdoc_files.py              |   12 +-
+>  tools/lib/python/kdoc/kdoc_parser.py             |  101 +-
+>  tools/testing/selftests/Makefile                 |    1 +
+>  tools/testing/selftests/kapi/.gitignore          |    2 +
+>  tools/testing/selftests/kapi/Makefile            |    7 +
+>  tools/testing/selftests/kapi/kapi_test_util.h    |   31 +
+>  tools/testing/selftests/kapi/test_kapi.c         | 1163 ++++++++
+>  48 files changed, 20350 insertions(+), 12 deletions(-)
+>  create mode 100644 Documentation/dev-tools/kernel-api-spec.rst
+>  create mode 100644 include/linux/kapi_syscall.h
+>  create mode 100644 include/linux/kernel_api_spec.h
+>  create mode 100644 include/trace/events/kapi.h
+>  create mode 100644 kernel/api/Kconfig
+>  create mode 100644 kernel/api/Makefile
+>  create mode 100644 kernel/api/internal.h
+>  create mode 100644 kernel/api/kapi_debugfs.c
+>  create mode 100644 kernel/api/kapi_kunit.c
+>  create mode 100644 kernel/api/kernel_api_spec.c
+>  create mode 100644 tools/kapi/.gitignore
+>  create mode 100644 tools/kapi/Cargo.lock
+>  create mode 100644 tools/kapi/Cargo.toml
+>  create mode 100644 tools/kapi/Makefile
+>  create mode 100644 tools/kapi/README.md
+>  create mode 100644 tools/kapi/src/extractor/debugfs.rs
+>  create mode 100644 tools/kapi/src/extractor/kerneldoc_parser.rs
+>  create mode 100644 tools/kapi/src/extractor/mod.rs
+>  create mode 100644 tools/kapi/src/extractor/source_parser.rs
+>  create mode 100644 tools/kapi/src/extractor/vmlinux/binary_utils.rs
+>  create mode 100644 tools/kapi/src/extractor/vmlinux/mod.rs
+>  create mode 100644 tools/kapi/src/formatter/json.rs
+>  create mode 100644 tools/kapi/src/formatter/mod.rs
+>  create mode 100644 tools/kapi/src/formatter/plain.rs
+>  create mode 100644 tools/kapi/src/formatter/rst.rs
+>  create mode 100644 tools/kapi/src/main.rs
+>  create mode 100644 tools/lib/python/kdoc/kdoc_apispec.py
+>  create mode 100644 tools/testing/selftests/kapi/.gitignore
+>  create mode 100644 tools/testing/selftests/kapi/Makefile
+>  create mode 100644 tools/testing/selftests/kapi/kapi_test_util.h
+>  create mode 100644 tools/testing/selftests/kapi/test_kapi.c
+>
+> --
+> Thanks,
+> Sasha
 
