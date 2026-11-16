@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2B6606A33B
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4928606A331
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CFTRgDEB
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DfDaiG1q
 Received: by kanga.kvack.org (Postfix)
-	id 0B0F16B05BF; Mon, 16 Nov 2026 02:14:38 -0500 (EST)
+	id EBAFE6B05C1; Mon, 16 Nov 2026 02:14:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0888A6B05C0; Mon, 16 Nov 2026 02:14:38 -0500 (EST)
+	id E925D6B05C2; Mon, 16 Nov 2026 02:14:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE0AC6B05C1; Mon, 16 Nov 2026 02:14:37 -0500 (EST)
+	id DA8CA6B05C3; Mon, 16 Nov 2026 02:14:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D59786B05BF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:14:37 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7846FA86AE
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:37 +0000 (UTC)
-X-FDA: 85440119394.27.A3A9D92
-Received: from mta0.migadu.com (out-242.mta0.migadu.com [91.218.175.242])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 921C71C0004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CFTRgDEB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.242 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BFE5F6B05C1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:14:44 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 65C101A02C2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:44 +0000 (UTC)
+X-FDA: 85440119688.20.A5242D3
+Received: from mta1.migadu.com (out-64.mta1.migadu.com [95.215.58.64])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 910A740006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:14:42 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DfDaiG1q;
+	spf=pass (imf07.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.64 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794813282;
+	b=5cMDpgnOTBHz3JLdl1MVAlIQWEDiYKoDb8OEiKOK9H0R5x3On8MAAU5Xg8MVH7gXZV27yP
+	1noPc1LihPijXsG+8Iq7a8EMG6HtzPgZdn86/oRUbsxhD22elRP1nYYcvX7VMfitarLTl4
+	ZjWaPUuHP8zqgcZfNKZaOAf75yU7yls=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DfDaiG1q;
+	spf=pass (imf07.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.64 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794813275;
+	s=arc-20220608; t=1794813282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S4xwi4aHh7ZD/bHp2DRcoCULX4dT5zb31C8Z9H6qmb0=;
-	b=xrxEjeT84ik9sa97xVL1pst4qog5afLHOpqPmmokbQmT8Ls8lzJO/OswK/ViG4yPI8jRUZ
-	ug0drKHqqibmQp2XBLTI0G7yixmYDSQXdVtgyXJ/4lFd5ElK5Cw4cC49RTa1reCHi2rkBR
-	MnLjP9dEoWpP65xUkvhkWYAgs/DHLMM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CFTRgDEB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.242 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794813275;
-	b=M+RKp6KRUQxaylmg4kIullUEZM9sL/7S4UUN8OyYpI3Box9jHtTMzddpeAQWunJsQZtX1m
-	Xf8Zy9jnJsndxlc+WsNt2382Iy7XCi8cvMHEMgxFd4TWy0MsRq9Cxg11kw0Zk94tDQR21k
-	hFVAIXgjYgagwSZxodLk57ZgGJTSxCY=
+	bh=d8GPmNrrbDyVAn3i8pP3Irq5ZXZX7zbqtdgKc3xpyyA=;
+	b=K/JFzEFTquoFm79unU6bi86hXqEzFOkjQwFvlsbrjfCxI5a+2Ovj0ZwSJkZCnAjGnr8hXr
+	Kj8jwdICqgycBJz/Ee6dXsiAF18OhN5NgPEOQSHYoE3VebEzQvepLco0RQh9NLK6V/Fmtq
+	R72fYMr30nUEhYN7i13KEXXFKXQvY3A=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=EVDQOgm4eiv05oSXsLTtEpFF+tsRKuMQEvt8DaJEU2k=;
+DKIM-Signature: a=rsa-sha256; bh=kV3VwCyfCvJMLMAaZdOv60N3vXq9IpfkDxA+THuP2XI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794813274; v=1; x=1795418074;
- b=CFTRgDEBH3j6pmg1ej7njFlv3ud01xfdaOMBaTZS5DBJoWFHZXBdM8Ebo8YkQ7AyoQbXvHJk
- mGFmVZznl5qN2rMEHNFvfRCTsc8E8IoOwvYn28vfB6raIhgTC2vZ47Mamjls2WYuTAi7GiB5cM7
- bwG0TjPRZqKoCRang6O0DWVE=
+ t=1794813281; v=1; x=1795418081;
+ b=DfDaiG1qMVulpMmALcrcCWJ5j9wSA2DSpO+s2Ir5iKBYn9xCRhKJbdGFXRPC4FL51hLHD6sf
+ yBLGtGdEVEWLedCVu9bnWgjBRBv5v46B9V+aClPEIKFCB4xOUb1fPbklONeSBpQt8hCtX9qtIS2
+ SUt02hZEPCPRSsF/7l2Tabi4=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d81b1a6ac4fe3573;
-	Mon, 16 Nov 2026 07:14:34 +0000
-X-Mizu-Trace-ID: d81b1a6ac4fe3573
+Received: by smtp.migadu.com with ESMTPS id b12c8b10ff90e4bb;
+	Mon, 16 Nov 2026 07:14:40 +0000
+X-Mizu-Trace-ID: b12c8b10ff90e4bb
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Suren Baghdasaryan <surenb@google.com>,
@@ -80,27 +80,27 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org,
 	Hao Ge <hao.ge@linux.dev>
-Subject: [PATCH v5 09/11] mm/vmalloc: undo what vmap_pages_range_batched() mapped on failure
-Date: Mon, 16 Nov 2026 15:13:23 +0800
-Message-Id: <20261116071325.263682-10-hao.ge@linux.dev>
+Subject: [PATCH v5 10/11] powerpc: drop redundant unmaps of failed vmap mappings
+Date: Mon, 16 Nov 2026 15:13:24 +0800
+Message-Id: <20261116071325.263682-11-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261116071325.263682-1-hao.ge@linux.dev>
 References: <20261116071325.263682-1-hao.ge@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 921C71C0004
-X-Stat-Signature: p4dhq8tc8nfn1tz5wo41mixdbmf3o3qk
-X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794813275-605202
-X-HE-Meta: U2FsdGVkX1/7UqM3shcRv4ygnn0GGRT3cgupveIdVp9Y29RYP1lBcEB6JAalAyE+WUnevRGtUBiqUTIR1gpM94ewnzKZshVOE032Daw4mBnbGxnYfsfLWUWhJfzpzvdPEK58gUHZgfDeVS0rXsM995ewbJsn1x+lbzDyYJ3KkKjf8M45R+0TzjFzk3vN5oHAzaJT+LPIcFX/2ECMTONjFp3wueRt6aqHCiSmkMtwp09fgMdBCCblOyjqH+6wQIE9iLny10oD+I5SToCeTJHR/lFnOgMFT5yD+ZW46keBsyfx6c7Wk48Hz59zQywGYoViq3qaZX+Mal9EIRcEPwWY2mZPHrEnk6xrXGneru7+8X8EbAwTBjH5U5S0XxthdQTRtlLZ/aIxuhJAsKG++wBIIOdV243hQzdqEK5+sukO9eu3Tm8a+NurTXaPD9BLCvIHCR/Ftn7XtjwmGY+iwC56oxml/xnkSqAIXEJFmnL01lKQ1qY37KHOeaPAz385uA2tz3Q0ZqcycsSitvlNlfyoNIxPtXoXL2yN8LAQdA6IOJYDp3jadj3Sso5N1FhxEt69BOdP8K1x4PeL0FXH9wyZUa3O8X749mCF5/783hJeuoRi2TmofXCk6yWHYeLT/edW2XOMxx0fvgICF2XvO2opDyaA153xkVVXOZN5D/SsujnTBzMBszzC7auglBAQ9iY6aEivN59jH6oKFYhyQJYFU6axPaKLVkYW76HKm+rW9cCQ+NbbKdw+142sjlwoHTU26KCWYwrTWHSPyVOXrGehV4kz4l0J/JFtF+DCIqwbjQQgzBxk9OGLeLI5gqk50Mcin9F83eiF7RoJU3fSZqbPfbECsSNspFhwPL2gTZ9gLyuatecggFRs3d7AF5gBAj/vc9Zk9qSK07gcSavSvRFA8JenpsGR+JbEX8w1Lhabem6z3fyiycyPoY7IBZFAJvCN6pa8I5B4LyRlhH4RWBb
- 8MqkbV9o
- KBpJ3St7PcviTMJXn0wCC1I9iPPQ6KMsDijfWS+vgEnjUT9SA6aDgyXSLyVEkz/Btr0IdrMwF+j5rHBmxSKPnXE+h3THDyUUujlzlD5JITdNk3Sfotcc+3RjDJzfeWnIDzP9NVqvgsMV5TGM5xeRU3e53TudLto56W4FTRiF1sYIUOZmUSmc5U4lsX4gaUE6DzbtOWYsr+VQUj8sFVjOeQ5FtUP016fGieqD3vyHAmGDwKd6OducF3lKjYPaxM6S3OYLudmf+IpXRWqMTjHPqlhn/gPQXGY9hjTFXkkjTh66uspPmLnHVdAQ+/6RSXE2tBpyiJ/2Sis6Us8OxtNrdxBBLqRXJlMhlZW+X
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 910A740006
+X-Stat-Signature: a6i173eo77ioxhi753uskxx3n1ekopgo
+X-Rspam-User: 
+X-HE-Tag: 1794813282-87482
+X-HE-Meta: U2FsdGVkX1+JZFyVXJ59+L4GEu/+luWl9jLxedch132y0PABGLWpuXnoxGyDBQje+WqpIsIBnXsmrt4dT4kaVupKI/HNG2617DDSRR00DHWF5XeBGLpR/5epyr3cotraEVMZQR+4Nn04itqEggcoEQmBA3Q14RN1WbpmTqYqEuqVWdAkPkcmPNRk7934Vs+gN10nW7LzgcUUk7kDScCNnocYGQOCYwErb8hvok6zp0tlwm59ckVNPyJPxIBBuYNxHQVmdMpqKH8J4EAN8LIRQprggx9mFcehZyF2I1cvJbw/RXRZcBVKoNxAai6EGq3pVZ7DhmcCMpudp88qQSk5ESl2eVkS8p0JD7gjQbdSJ/ojQwbHbb7Iuux0ZRcXx3Cz2GJ2zxjnF7bJVeUuDmaN9N3189ApcmOUcw9ZGqH95Xlx+380qFSlf7h4Y6L+5LmawIp78UC4VMW9GioPFqBW1aTjkfiUmf7gsvAaHlBef8Wl+2gkN5V1DA2pLo3cqj2FSAABbWlaeLiSDiUeuuXtTk8NCxMtrGcklC3tumbe9hfIwURJvgPUQB5zo663oqjZua/QsuEBIFDOq2c5CNM53QBzMHNH9BAOCzHvDgeRu7ND6aYdAwrPrl9RFV2a/GIA83ldC5B3zVwjuWeuSVkyG1OZRyVnz0BUOgZ3OhGxsmITqQ1sGjaqXgN4IL834qZXYo1ogitjjAs3NVMThbhUMGBksWOPgISzEA1nwNyzFbiowu7MA8kVEuH1P9tb+ywzLGjv62blF1ea0hULhpCfRlXr8yt8/8h22OhxYJ9nz5WlDhuVAJXU4UtWhcxaQJBpCMmi07OS50DOPAOg7wdstCgm6fzSMdvW34Ah/hCAuNsIogN+ruK81JLeMNUMStdncwhqVTqXaBoEIFjCIKZifj1/51B/JHOXmkMpyJUlH497nFYblmYIr1Z3gKa7ewqq2qz8FVIddYUue3stZWp
+ tkTVpVqX
+ 1Y0Tc+/sVRCP7WVYjmx1r3EjIPzVopVucBeSifo0LfGymhrIRvZcSZOhP/lhBx9Erz0Fl1OsNWYNVxp/gl3VakkUNxXgTWLuOsqLME1bW7GDJjL+1QW4CLsoSLRQhCdMT1sKTd5MldXLE/ZaNX5aOqxu8C4qZi/uDIX4YlU9oMb5B00NM8KtlgKcYKtA16v66oSaL9irqtTHb91nQ5grJeGqwoGhiihqVWayVr5qu2iJkLOMtgK4QOT5a8+xA8AqBUyvxlsLLyDjOFlfi6uDhOnoV7UINJzSSPiJzrWZVvtylBTUjMPSoYZxxeMJS06qK7GUdomcS2EXJByKtfa/6Y+Ed6gj6inb2X0q+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,81 +109,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-vmap_pages_range_batched() maps the range batch by batch. When a
-batch fails, the batches before it are installed, and the failing
-one may have installed some of its pages. mapped_end follows the
-end of the last installed page, and the error path undoes
-[addr, mapped_end), never past the point where the walk stopped.
+vmap_page_range() and ioremap_page_range() clear the PTEs they
+installed when they fail, so the vunmap_range() in remap_isa_base()
+and ioremap_phb() has nothing left to remove.
 
-The KMSAN metadata is set up for the whole range up front, so it is
-torn down as a whole when the mapping fails, like in
-vmap_pages_range_noflush(). The only caller, vmap(), also calls
-vunmap() on its error path; the double teardown only walks over PTEs
-that are already cleared.
-
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Hao Ge <hao.ge@linux.dev>
 ---
- mm/vmalloc.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/isa-bridge.c | 5 ++---
+ arch/powerpc/kernel/pci_64.c     | 4 +---
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 28e65073624a..aa80bc273ec0 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3748,13 +3748,14 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
- 	const unsigned int nr_pages = (end - addr) >> PAGE_SHIFT;
- 	unsigned int prev_shift = 0, batch_idx = 0, nr_mapped;
- 	unsigned long batch_start = addr, batch_end = addr;
-+	unsigned long mapped_end = addr;
- 	int err;
+diff --git a/arch/powerpc/kernel/isa-bridge.c b/arch/powerpc/kernel/isa-bridge.c
+index 5c064485197a..93029d85e6ea 100644
+--- a/arch/powerpc/kernel/isa-bridge.c
++++ b/arch/powerpc/kernel/isa-bridge.c
+@@ -46,9 +46,8 @@ static void remap_isa_base(phys_addr_t pa, unsigned long size)
+ 	WARN_ON_ONCE(size & ~PAGE_MASK);
  
- 	err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
- 					     PAGE_SHIFT, GFP_KERNEL);
+ 	if (slab_is_available()) {
+-		if (vmap_page_range(ISA_IO_BASE, ISA_IO_BASE + size, pa,
+-				    pgprot_noncached(PAGE_KERNEL)))
+-			vunmap_range(ISA_IO_BASE, ISA_IO_BASE + size);
++		vmap_page_range(ISA_IO_BASE, ISA_IO_BASE + size, pa,
++				pgprot_noncached(PAGE_KERNEL));
+ 	} else {
+ 		early_ioremap_range(ISA_IO_BASE, pa, size,
+ 				pgprot_noncached(PAGE_KERNEL));
+diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
+index e27342ef128b..f74269636d5e 100644
+--- a/arch/powerpc/kernel/pci_64.c
++++ b/arch/powerpc/kernel/pci_64.c
+@@ -139,10 +139,8 @@ void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size)
  
- 	if (err)
--		goto out;
-+		return err;
+ 	addr = (unsigned long)area->addr;
+ 	if (ioremap_page_range(addr, addr + size, paddr,
+-			pgprot_noncached(PAGE_KERNEL))) {
+-		vunmap_range(addr, addr + size);
++			pgprot_noncached(PAGE_KERNEL)))
+ 		return NULL;
+-	}
  
- 	for (unsigned int i = 0; i < nr_pages; ) {
- 		unsigned int shift = PAGE_SHIFT +
-@@ -3764,9 +3765,10 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
- 			prev_shift = shift;
- 
- 		if (shift != prev_shift) {
--			err = vmap_pages_range_noflush_walk(batch_start, batch_end,
--					prot, pages + batch_idx, prev_shift,
--					&nr_mapped);
-+			err = vmap_pages_range_noflush_walk(batch_start,
-+					batch_end, prot, pages + batch_idx,
-+					prev_shift, &nr_mapped);
-+			mapped_end = batch_start + (nr_mapped * PAGE_SIZE);
- 			if (err)
- 				goto out;
- 			prev_shift = shift;
-@@ -3786,13 +3788,21 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
- 	}
- 
- 	/* Remaining */
--	if (batch_start < end)
-+	if (batch_start < end) {
- 		err = vmap_pages_range_noflush_walk(batch_start, end, prot,
- 				pages + batch_idx, prev_shift, &nr_mapped);
-+		mapped_end = batch_start + (nr_mapped * PAGE_SIZE);
-+	}
- 
- out:
--	if (!err)
-+	if (err) {
-+		/* Undo the part the batches installed before they failed. */
-+		if (mapped_end > addr)
-+			__vunmap_range_noflush(addr, mapped_end, true);
-+		kmsan_vunmap_range_noflush(addr, end, true);
-+	} else {
- 		flush_cache_vmap(addr, end);
-+	}
- 	return err;
+ 	return (void __iomem *)addr;
  }
- 
 -- 
 2.25.1
 
