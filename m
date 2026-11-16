@@ -1,106 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E09606A884
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BDB606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VaZ6rFBA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ITfVd9wI
 Received: by kanga.kvack.org (Postfix)
-	id C65F56B05CB; Mon, 16 Nov 2026 04:51:18 -0500 (EST)
+	id A6FC06B05CC; Mon, 16 Nov 2026 04:54:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3E0F6B05CC; Mon, 16 Nov 2026 04:51:18 -0500 (EST)
+	id A48106B05CD; Mon, 16 Nov 2026 04:54:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B54716B05CD; Mon, 16 Nov 2026 04:51:18 -0500 (EST)
+	id 984DF6B05CE; Mon, 16 Nov 2026 04:54:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 944E96B05CB
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:51:18 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 248651A076D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:51:18 +0000 (UTC)
-X-FDA: 85440514236.09.3060034
+	by kanga.kvack.org (Postfix) with ESMTP id 7755F6B05CC
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:54:00 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF2CD1A076D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:53:59 +0000 (UTC)
+X-FDA: 85440520998.13.FB5C219
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5A98D40006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:51:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaZ6rFBA;
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2399C180005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:53:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ITfVd9wI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794822676;
+	s=arc-20220608; t=1794822838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EzogT95rPEGnXO3ATl8QCqS0Fa+QqsMtxOYoDzHb5QM=;
-	b=y2LdAnGfWiSPhdUk7qk9mgrF2F5sQEaPnY1k6bz2EIpvFyeEDj0xnua5CjMhjmgMsq6KaD
-	nuJR8AdVaKnbLrwlmn/hHS5GX0LpZCn9PhhrO95AU2KoF/cXfJKhIbMs9Y5jKEmG15LhDU
-	XPGkPtaEtil9Fe/MxO9urEcd/ThoDHs=
+	bh=ZJJAwrYiVuc03fJzpQ6JP1zmHcGVR+cvTb2BYqmzziU=;
+	b=yjFb6UM5QzsrpMKrzcLIuZLXtLBsEzkTbDgobhftpnE8BPp1vo4zyvccMwNIWQ0en10a76
+	I+XCHFNUvXXb/c30oB2KeM8c3XuAp/LkvV5a4qmACaC/LoEqENB62VzsT8x7OfvZySb9j9
+	B1TbU1m0XNvsDBzUMu8NtBIrBZjfTrg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794822676;
-	b=BEhZEAS7RtaWDtMs+Wovo5JiGn00BsoeARNXfd+8jt3fjoLQNmfH83G/UdBh3PSiYTOO35
-	BT/3fmivuTuv9JBfTOmMxoJkKzo9tNEbAFVkLneNWudmFnUOgiUjoXyAxyFAPWKFfmzT3i
-	War56G8oeFNv7NYODfDWfoJow7N7SU8=
+	t=1794822838;
+	b=ZQ4S++7Wjyb40/qbD/g24CdVYzHQ9TR8o5/46+60BE9ViOIrJfYhZNVtzska/OyyZzVrd7
+	r6OwZTx2JTO/sir1whLe1q4g2aLLOuDo0UZLd9iQTJJR6LwzHViW999FsOdOu+9HNJZJMc
+	I/ux+5Xu3WI1z3JBzWLlWicW0fUKvAo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaZ6rFBA;
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ITfVd9wI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC3AC41197;
-	Mon, 16 Nov 2026 09:51:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014C81F000C6;
-	Mon, 16 Nov 2026 09:51:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5FBB3403A0;
+	Mon, 16 Nov 2026 09:53:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755391F000C4;
+	Mon, 16 Nov 2026 09:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794822675;
-	bh=EzogT95rPEGnXO3ATl8QCqS0Fa+QqsMtxOYoDzHb5QM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=VaZ6rFBAYjR/HM5+OlC/kYBh9eokBcyBlJyjLDEGD3pr/1owKWYUkIFonZyVuLy45
-	 aXIGPPwoZFzAFIrDJPr3o4d1FYCF6gEzK4gRGZMRojP6nXuxOYWP66LFhY7XK4EIId
-	 0F9FdRrfySm5SdHKaihGgGUwCpa5ozWOd3R+kAWEW0AOMp5LPHNYZv/BWBQ180WmCq
-	 SGYcL6yKiAUlp1bl5aKgR19AOXfXXbOhxIdLs6gAifxrWtNtvWUXEAaCGYUZCiGaa7
-	 +ReHVuM/M8xxPRelVNj4Hcpgf82OBXtXi/ghPvFAodx9BDyUzwtyIaiRzYrfov1A8G
-	 2aAwCB6uJL+Jw==
+	s=k20260515; t=1794822837;
+	bh=ZJJAwrYiVuc03fJzpQ6JP1zmHcGVR+cvTb2BYqmzziU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ITfVd9wIQ+nAJl70v53f42aDy/XLw55ZzF4oM5tblfEkuK2iHhD8qpLtJZT0c0P+n
+	 HTtvLYBRLgESb81dQJ9PMlL8Si8rguYAg3MfEHU2CYldhRS9twbkP4WgHCBwgFXQT7
+	 b78SqT79oeCU7aHqQl3icLQCvN74FKTQYOIdftgBB/Pp9sTlail+VAzkjVRGlSgVUB
+	 wx6NDyYG0eJRW9+VWuvkpQkOs6ju3VgVddH1fqrpvs7U8MQOKu6shGaFMeZPkgQmZS
+	 O/Y6znUt0e5V4BVxF51ykZt+7guJX6IM2GRfuJSgYd1WbVXBzS0acGGTp0MhvwaUCn
+	 TYQGj8hI8awFA==
+Date: Mon, 16 Nov 2026 10:53:49 +0100
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 16 Nov 2026 10:28:32 +0100
-Subject: [PATCH 3/3] jfs: refuse inodes with a negative size
+To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, ntfs@lists.linux.dev, 
+	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
+	stable@vger.kernel.org, Farhad Alemi <farhad.alemi@berkeley.edu>, 
+	Tyler Hicks <code@tyhicks.com>, Jan Kara <jack@suse.cz>, 
+	Karl Mehltretter <kmehltretter@gmail.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Hyunchul Lee <hyc.lee@gmail.com>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v3 00/33] fs: don't set SB_RDONLY after filesystem errors
+Message-ID: <20261116-kiesel-exekutive-liedchen-26b1c45fe533@brauner>
+References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-work-fs-sb_rdonly-fixes-v1-3-95a25ce917ad@kernel.org>
-References: <20261116-work-fs-sb_rdonly-fixes-v1-0-95a25ce917ad@kernel.org>
-In-Reply-To: <20261116-work-fs-sb_rdonly-fixes-v1-0-95a25ce917ad@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Jan Kara <jack@suse.com>, ecryptfs@vger.kernel.org, 
- linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
- linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, 
- ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
- linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
- linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
- linux-xfs@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1127; i=brauner@kernel.org;
- h=from:subject:message-id; bh=onsWAswaduk9DxHd2totA7LRgkoacrrwUPGlfjERZww=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9uvg/zPh7v4jJl9XJS1adTMmvc90Wskhx45urIQq/v
- +i4RRtkd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzExJjhf0I6X6NS5kOr9nci
- S1rdsg7WHb7PbXFnnvjvWZ/2HONbz87I0MOYE+3LnyrOK2+kdcN71Zd5ak/MHTqmCyzTLfcoFP/
- EDgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 8hcdbpbjn4d9cq9111mkqrfjyphw1yg9
-X-Rspamd-Queue-Id: 5A98D40006
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
+X-Stat-Signature: 5fz7sqkcpikdcrtopgyq1d64tpr7qi7k
 X-Rspam-User: 
-X-HE-Tag: 1794822676-68243
-X-HE-Meta: U2FsdGVkX18sPU5idPe/q7e5nsFgRlxGfW5OOvUO0Nrf+kWSS3hiu/WClVli1Z4nhT0GhrLZk5lHtj0lXwke9SSxbCvt6LquaId1ze80qjlgfymQIjzsy2vni3TX8xWJaHb3ml57hHlw0bSlQ2SKq5obQFcGnKVdszhXP/yL670b9kU951iM29inNx62uFYkE8U6KdO7YRc4vOMNYnZ0LFsyfoUg5z89JNqejPRKUCil0lsQKVPlWoN0csqubhXtETeu3VKXGNR1SNDCgDIxz7vPq78j5ImHFyMYp6p9xYI3L436vqneC94IxB04HyLxsuYD68jNwULMipd9k1qSgTlI1xf0u7K0Cdi41Vb6m2RhtsfIGVHKI3WHGoP2mvl4YUg4OI++xoED4jK8niYAYZ3f2HL2u+IqlVvhIbGP8ALbvALDt8vtqd4xDnZpbJIpaA/mXXCk77fevufcvoQv//paT1QMfk+FXTqaVYS//dCsSoUElTj/P6oMizrVl99VwK5pci0Vva2EZ3YV2PSToavswhogvepTOu+IJaDwkZUcvM4KCStYyd42IijB7hm+7e4+WG9PnELbg51rZJFO7sZdjQ78QHNmgxFtf5ex/8/AIK+KXHIC1ViGE+aSpYZZ2KBp0OPKN65AnC8G3mnn/eOIyfLLN25F+pTiKYlBbEgIjIhrUAGljusltgOyamlRwJ5glH/zvqBNMtELibpM7oDAkegobGnaIczGm3zAH9Jv8d+O10HQYl4tlGrKZh0X82njLGuGC5S9gWk9njMTQ+7Y48IclRAvg08oiLlzCxUpwcwHpMvCeuub7/qvw0kRxjyG+8AwDD9A5KbbRGw3LgdqkkACG8pItDhxniPV3kVCzd6EBkH7it4gDoQqDgDxbAWwlCRa7ebrjm6Rt1Xfu//e4YhvPD+SY4MWLc3rISzqqCSjps//snB7YyKkhe+Pn7ERvatGZv0pk7csY1Y
- HyTHVRZQ
- 74wzKmUvWYv/wg62BaRgfblx3EwZZeUW8ChxMKnDK0epkm22+AOhu89+ZLBRY3WPQ2JSabAEkdXXBxvMcu+SQNSX2/kEzMirm1jy7DW9Ea6YGegQFndYgZ8owe9WvBaqxT49uRIc5Eup9XixKCVmfeQ8aDlP7DS7bOVojfynPdO1ovJ5+pSu4nh1K9RXGjM9D9Bk1gOS3oaE29uhX6O0b4jtlIwpqHhC0A8slcFupGgur2q3y5Ysj6OisO+EHHAUQqd99HouvtDPEbqymKbCwkoP9j2mn3QX9jUxA
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2399C180005
+X-HE-Tag: 1794822837-675685
+X-HE-Meta: U2FsdGVkX18F0xRPJDMi/p/F6tOav8vUayK0IyzsW9JhsRcGRFwnMz3pZY1To/yvO+IW2WXXgAOGs+7YbPGo+Zi3XlhGyBLJivju6PpQI2Ekb+y2EKD+sB4FlOhS8ZZ5HQFBNB2SU+kKiYRb4mYyb1k4AFTR7hnPnocfMg5dzsVttLMiU+vfoazX6mRVuBpD+tmB3p6hGhvdyWEV/ruW700ewMZeeg2EHiFnfYTGxRNaX/EpegnFk29/5CIzhzDYEP85Zmb2KFslaAgN4kKHmY1vg1LxUJpkp0ZYZmO6zom+st8pnaBdeHmPWd1cIrhvKGc219JdgZ8MIY100GsxOxEbtXZliv+NoTpPZYeqv8Wh5MBd5nc2D7lqJGjYcq8bFtMUD9inzAWwscUe/y1xR7nNADSQEUOBS4AwtmYX0rQONfci0QqToBB+0qV8/iBbBkHuXxClU6yaMPjxxxBslmK5sqmnQcxnYuQNAx+bc0c2j3aVw+k1ZONFWgRaBs/0i3DZLEibRWnaK7yEVfD+M+gVdNkqA9hFPh4EZBQf14ZEYSpTloP9gxar148U8CxVJ+g8P/q/JrYn4Y2SrY/DIvjrshUDL9Xh82KZsswyZEFt/y69H3zWiHEs5rTktLBVC7IaeaRY0H2T5HofrLzyRM6WTsA+F9MFvWVUfGOfusQzG9bpDsyLGwI/mawCqIIc8epIqJIJN2Wy9MGTuczXKbjCyrdMgp6LLi9yyKf7wwvqk3fQlwfoR8XDWP5ucAfE5jTAxddI0qJvR7ws4djKjWW2g/Xm7P4IsrI0cJdOsuSSgysUy7vc//SfeYLSm5C6PbT75i/VQh1bzg1OiS/tXcJTiOx52E1KJFwBlehi7McW3PApOERyFNqtxQ17nmpdCnnZ3KT3UTfYo18N7uvPtfHx+i5g+DdL7ZRyFBY+wzYAlOnxbT0/m30Pttcsn8bFfL3GMq+e06b+sVy7Cq/
+ ieuzJ8qg
+ s+9Rjv9lYQUQW6juOAYvUBErJyExycCXrx02FRsMtgJKXmTHAz88akzImYxEH8IBd0mL08f3HCrayNyoEDhUPCnorxGWCdRK8r1d4yMzqled3g7T6i4z4OnRqUN9AjLLQKUhfDmC7JDOcyesXDs+7Gj44JdYlxS/S+wLhmtfJHrMzwtDQHQjMh0c8XL4FlsQK0aITls8zjeliGOgW1Ppy3+aWG/rtp3LbEYhedfiEsnnAhFho8nyqJS4BeWMKPAXSDZnRp5RHS5tjWu/3hYgGOWlZQK5mXC0s8ZBCS96XiRLCC1FCWDDiVRWzcAtjzBGdt7oesQ10TK3gY1hESVuHAeE0eNWS9sk9Eq60RySkCsmQEOhc3Npc8J1VQw+MKoE0aE5He5lnjncNiYEmkLl6JToqof8aaDrCCv4hhDplXqItkkE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,36 +101,10 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-copy_from_dinode() takes di_size as is and a crafted image can store a
-size that is negative as a loff_t. For a symlink that passes the signed
-i_size >= IDATASIZE test in jfs_iget(), so it's treated as a fast
-symlink and i_link[i_size] = '\0' writes out of bounds. Refuse a
-negative size when reading the inode like a corrupt dtroot.
+This is now on vfs-7.5.super. There's a bunch of outstanding
+pre-existing fixes per-filesystems. So please, if you're a filesystem
+maintainer take a look.
 
-Fixes: d69e83d99cf8 ("jfs: ensure symlinks are NUL-terminated")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- fs/jfs/jfs_imap.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index b84ba4d7dfb44..f88e228d12620 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -3079,6 +3079,10 @@ static int copy_from_dinode(struct dinode * dip, struct inode *ip)
- 	}
- 
- 	ip->i_size = le64_to_cpu(dip->di_size);
-+	if (ip->i_size < 0) {
-+		jfs_error(ip->i_sb, "Negative inode size\n");
-+		return -EIO;
-+	}
- 	inode_set_atime(ip, le32_to_cpu(dip->di_atime.tv_sec),
- 			le32_to_cpu(dip->di_atime.tv_nsec));
- 	inode_set_mtime(ip, le32_to_cpu(dip->di_mtime.tv_sec),
-
--- 
-2.53.0
-
+I will declare this series ready, otherwise this will turn from the yak
+shaving that this is right now into yak-herd shaving.
 
