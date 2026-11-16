@@ -1,94 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83351606A332
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 13:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB419606A337
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 13:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ODKhTewZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lPgY3ZKm
 Received: by kanga.kvack.org (Postfix)
-	id A58DC6B05B1; Mon, 16 Nov 2026 08:35:07 -0500 (EST)
+	id CD3276B05B3; Mon, 16 Nov 2026 08:39:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A094D6B05B2; Mon, 16 Nov 2026 08:35:07 -0500 (EST)
+	id C82476B05B4; Mon, 16 Nov 2026 08:39:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F9346B05B3; Mon, 16 Nov 2026 08:35:07 -0500 (EST)
+	id B4A846B05B5; Mon, 16 Nov 2026 08:39:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6598C6B05B1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:35:07 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E7EF5806B4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:35:06 +0000 (UTC)
-X-FDA: 85441078212.19.84A86EC
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 62AA940005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:34:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ODKhTewZ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1A06B05B3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:39:11 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3212BA0697
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:39:11 +0000 (UTC)
+X-FDA: 85441088502.07.62F6957
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 78B0BC000B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:39:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lPgY3ZKm;
+	spf=pass (imf10.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794836349;
+	b=CxdBZXNv2itcHUUcn2/dZVFC/gy1Zh6PBU6Cb2KIkzYCkcWu0D1bS1FvoGVT2UUOe3776d
+	tv3qAiCUGupBisoHKoUHbeR1kHTlxYWn9asCOyI/9JtbYJt2GBKsg8Ppb+3ACIdQOEifGl
+	vIBUneHeH9w53UfR5aCmWUvGWsjStlM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lPgY3ZKm;
+	spf=pass (imf10.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794836105;
+	s=arc-20220608; t=1794836349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VTdh+RQXIjKegFBkHqeV/SunRho35ClvmITrODAwJgE=;
-	b=2vzGHEbT2WUdxx1qUtG2gaV5ev4eHEqpPBhk3WTuDjMZcYNSqH9F0YkPC+D8VclFBDatBk
-	b8H55fvIDmqT5XrDvKPWpV1NoZ7IWrY4ao4NM7Xeyfp3TPqlSihMvoDg6wMAjOuS3KIoi2
-	wG48VTDq9wedfSeqccuLBT0eSLJmTLs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ODKhTewZ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794836105;
-	b=Lg3kyHMmPOsIBWDRXOq+ZXOtcSPcpflkPZ2GWZ7ulhIj8/NaFkY7zvhI99+uYCsEaZFeIb
-	SiNJg2MuMmirHgH7HElR2nQlli1i8Oho3WN7w5M0eKjR//eboTamDfhspudfeQM1IJeboG
-	35a3IiTBw95ngU9MmcbuyYNROBRxg6o=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794836096; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=VTdh+RQXIjKegFBkHqeV/SunRho35ClvmITrODAwJgE=;
-	b=ODKhTewZERc1NGVZvep3c5vaMLOOzI/ARU7ajdvzjHuYHRTRkvFl+ezcIekIsMGwXeJMZHDPqXWQ02PzHKSSIh5mOoFa5b66kcpQgWAnJbh/AexJHkpqgdmbnB30nn9K8jwvofIzQk5/kfFoF5CT5Z9gEmyWwcwAke2pIkzvkMU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R651e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XEtLy1f_1794836094;
-Received: from 30.251.68.229(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEtLy1f_1794836094 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 16 Nov 2026 21:34:55 +0800
-Message-ID: <01d59bbc-46d4-4da2-805c-bf540d50eb37@linux.alibaba.com>
-Date: Mon, 16 Nov 2026 21:34:53 +0800
+	bh=v+u8WOi6enSXf9p1uj17AxTmnZ64Z9UB12nhM5b0wBk=;
+	b=LurCS4YmsStlj1JtfSsGMmw2BvaKcdrNqvAMeiQoGR4WDeeBVqexPpiF4Px+lbIYxSm5Gh
+	MHlHPplaSZmsmp4amUcvoqkmgZSLRgCEYVEqhxAWGGNWYwBGPMQ+KoQLTIErxSy0qkq1au
+	U/L0WOEU1t9SBbZ0SS3Q6XXm7cXCUyQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AE8A961D1F;
+	Mon, 16 Nov 2026 13:39:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809881F000C9;
+	Mon, 16 Nov 2026 13:39:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794836348;
+	bh=v+u8WOi6enSXf9p1uj17AxTmnZ64Z9UB12nhM5b0wBk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lPgY3ZKmD+AWK6OsqmvR2cCzK6j6u/WxfP3iaSyX9l+sr/3pxKSwrPdAxFUmB9xHS
+	 Te4LG33kqlHxat/w0CkHdvZDbte0OMXN6muIL0x7x/arXg19Oq+TkrYgugukT86AIP
+	 fBQDoHj+srBScbYERGJVtYGkySVWbQmNxiPyppwSnff8r1Gg1X48YTJ0M5spgri9sZ
+	 cgtJFF25gMSdEn28dVFmDAaN0XSm5PAYY5CqRCitHfF55dnu7PV8zepEY0Q/zX8K79
+	 MrjkPdaIuSw/y1vNQhJjd47gBkODFnoQwepsvQQyFNRel7sOC5ngZ+n7SoMLX7mQHl
+	 QgBPPOdHcj0UQ==
+Message-ID: <afebfaf5-f3ee-4234-875d-e5ebf1ee64fd@kernel.org>
+Date: Mon, 16 Nov 2026 14:38:58 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
- sizes
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- ljs@kernel.org
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- qi.zheng@linux.dev, pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
- <16bb1a14-04f4-4524-9882-20d452175a3d@kernel.org>
- <d1856861-62d7-4bc0-a8b7-39ccfc064f34@linux.alibaba.com>
- <9e66d5f7-ee81-4204-8d62-b06d26a00623@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <9e66d5f7-ee81-4204-8d62-b06d26a00623@kernel.org>
+Subject: Re: [PATCH v3 04/10] powerpc: kvm: allow flexible PAGE_OFFSET
+To: Arnd Bergmann <arnd@kernel.org>, linux-mm@kvack.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Linus Walleij <linusw@kernel.org>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Malin Jonsson <malin.jonsson@est.tech>, Matthew Wilcox
+ <willy@infradead.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Simek <monstr@monstr.eu>, Mike Rapoport <rppt@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Nishanth Menon <nm@ti.com>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+References: <20261116124832.662455-1-arnd@kernel.org>
+ <20261116124832.662455-5-arnd@kernel.org>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20261116124832.662455-5-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 62AA940005
-X-Stat-Signature: bf1gndxrtiitgrztk6mdi9x7zs1io8ft
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hmm5irgpqxrey6cp84a63yipedfk1o6u
+X-Rspamd-Queue-Id: 78B0BC000B
 X-Rspam-User: 
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794836098-713773
-X-HE-Meta: U2FsdGVkX1/nHxLBUE0oHaX6mHthF/zkW/rW62yUTz4JmKC56zoQrU39Ha7o+bOlMPzsdBgnIps4VlYE+nzhqys/ay6cYET5pR/RRM9xXsO4dwImD5GPpiDkQgiWFh1RcZhEFVihzkKIspZQpPchFUaUYdGIMvSXNigvCUzv5Yi8rI3O6EEYl7ydyIUPqTiq2iOmk+ZOc+bj1IyZjSK9NyIDe1+vxLpnOi22R3L1JGOgh+Mx0EoCaXTdQytO3ieHM6ADYuQso1C+MnnRBZ7E4IDpem7zrRltJP/UWVvv+VElog7cpF1sMRygz3cTlu7sz8s/m/G32eSekjETh69AaY2ZLFjctF9hCSiT8FV53U8p+a2TgiDZdUvndyNzvwDix+v73UaoxKILh9rRczODNWnvE+WRaOCAvqWdE2ta7ADVON1MLe0h0rNROeN1CAzIhK2hfCFQATDzg6PWd6pp46WrE7+s/m5d74FXcIjajqzIAvpo7nk8hVsafvuf2ef9B1iamM+genLoTIa8vY0O52Z/Fmk8kOJ11qTgR8hhGCkZOX7c/Rlf/YwKeqP8lfDpNkKklcTFGooJeal4Q3ydnqykqDd4qOooO7yACehqiCbgMYq0sLFlADteOLxAmRLvMjcEK20jtaN0JvjnLvT2PPfBUCi4AfRoqd4d5vwmjIWWWKTmkZs3Cv1AMTe181FMhiUlg9PtsxTmg18C7cnZ90ZuRAFMH3ajP9tl5dmHFP6Ciz9fiNO6fGhT69tvTb8dJMHpNUxncYVsHAz8T5S9w6pMHDEmrmDQRf6wTDEm6I0xmSR713vUl058naEHzuoMQm2iGf3SJ5YPGj062wmPZwtYGj/mFdKmOl8jJm0f7wgxJcxbc2IZ8nP3j8qm1lJ7cSG8dKfQvZZBEgnzpJI/6nMapx0eJBdJu0JYJ4PgkhFt+3R9YAbniSUZWlMAbkPvkivpFVeNS5tM+lzCeJF
- 9FAKuyLP
- jCdeZss80FVODgE+pA9NvY4gcNLSNG8Pynck7CSC1DuW5gdXBSkiukqUAtUsxWNIlwa7p4RC9tCcNqzic2GrbRGBWJ/9T2xEWvToUU8pWrgix0WMvUYpr9hyXXcB3p69cU5po+sj/sxFkr8h8FVUvI2+JCRd1Capfjkr9ZUcmunAYbX282Vw3KUBIQ/EbsSF7qGqyS4ba9uvyJ8e1+yarKaUzJr5XSqxQz6HXw7Tr02gFfBXTXLdYCG33j0WocQAZLsi5FQVs4z147VO5C2wocT+898YLK4/mlOg8UCsfGelLl1AJ+pSuw9U1sgA7zGhinAL+dNs0pQO53XM=
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794836349-783754
+X-HE-Meta: U2FsdGVkX1/T59bWI4MLmMpTwSRvb+/AMqBu3kYA8QRYXgjbKYPlP2Fbik0RaU1o5Ve9vg3IRcYZB4FX1GOwHjMUQMEURuQEBxaJG5VTj2vi7kL0Sng7TVdczx736QBEEbHS0H2UxpMrWvfVVivnjP7bekbdlNVYyizvq6GJxpTP+vEYkgf1J/+Dj5tfJn/y+zXtsbGiLdsljq9oBnhpmuhvkjwRpfELKdHUW72sr6en2+6t9ySY9Fku8bKqDEUaySu/UqO0fUNjqwTJzLKrmkwXPetngzL8Ws2IKX/MIcUyMctfTrS9lhrSkT17JPncxLSCPcC5we6hhmKlUPCgplxr5UBFG2Im+h+e/HMtN1flDZup+lIq7dGUtae+PSaefZVaW4SLv2J/K1P/5MOH7SnFvqjbH3xYZyfqtvbJzHHoC3mTvdKs/6a72CxL+Epuw8VKxT3dFOtHha+5wJOg8LcgeUBH+Nbc7As2KdVcbsJeLANBxT51lzacrJZSduYng0mGyMLj1OsdLx6ITZpmvhBXfFUeemmu16AK0YAgOtlPRq+IuugJ9zuoGuJ2+syD8kexvc4+L02EWuAm2nVhm6QKbH0ig+rvW7Jyj4W38YbzCX8htwrm1T7ruRsNq4GeAXsL4SclcILk7BxDSV2XtiMFDchkOFaV/w6VmZFROJvTD472O8TbcTRIbGIeAZu7rwBURlXfca+kCawMUg7fEhLD7nY0OTv0MhPN+c22H9WpMc48juozNw9eeSEcw9qfS8FJkriuMIzWP3Qral5ZaU2ag2tdse/0vfgYzm/ZNl31BN1kpfwmMX17fc1RNSHP/H7IBYRDU7RR5+i1sI7aLofqIv6bqKD6hHA2SEeEsbj4zAfTt21S8Dx5Rkn5EgN9goraGi7EdOfaI88V7WkiZXYsll9oU/95HhyOY22gOgyBKjgyV4IxjgIXumX+UFMPMV/PRI+2trNw/Zpz7bJ
+ y69sidgP
+ yY5IXsv2LGVXAJZP+ESpIHWqhdfAeoHfhmf0wAc9hZysPQLMgtiEMlZWQHj1dYCNgvPPK8WwaYwoMmhzDr5xYvgQtBQ6hordzUO39bupHv0Uz0SaM8aW74OZgwze4fd7LiIaC4oIY3ND98w6UdatKDBl/Nmk0civB7pd4HNT1yCMBlykoLn0gFQ3eL94xtAWwlUwPmu5aB0hE1mSnpivdktJbAEsbhv+NTGtBFVfCV3NOxQLW/NzlaGHXvcE2tcH9HnonGkZgbQdp/4JDACBUKC7kknkrjAzEA2vqGs+cKHfVvGuBtWbaRva9kwc0WL6lNLj0sJsS8Qk8nis=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,101 +112,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Arnd,
 
-
-On 11/16/26 8:03 PM, David Hildenbrand (Arm) wrote:
-> On 11/16/26 04:44, Baolin Wang wrote:
->>
->>
->> On 11/14/26 1:39 AM, David Hildenbrand (Arm) wrote:
->>> On 11/5/26 03:56, Baolin Wang wrote:
->>>> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
->>>> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
->>>> with concurrent page table reclamation via zap_empty_pte_table().
->>>>
->>>> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
->>>> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
->>>> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
->>>> and try_to_migrate(), the other callers do not perform post-walk accounting
->>>> checks, so the race has no observable impact on them.
->>>>
->>>> For migration, the race can cause unnecessary retries. For reclaim via
->>>> try_to_unmap(), the race can cause failure to reclaim a folio that is in
->>>> fact already unmapped (as shown below), which may lead to unexpected OOM
->>>> or increased refaults.
->>>>
->>>> CPU 0 (reclaim)                      CPU 1 (MADV_DONTNEED)
->>>> --------------------------------    --------------------------------
->>>> folio_lock(F)
->>>> try_to_unmap(F, TTU_SYNC)
->>>>                                       zap_pte_range(full PMD range)
->>>>                                         spin_lock(ptl)
->>>>                                         clear PTEs
->>>>                                         zap_empty_pte_table()
->>>>                                           spin_trylock(pml)
->>>>                                           pmd_clear()
->>>>                                           spin_unlock(pml)
->>>>
->>>>     page_vma_mapped_walk()
->>>>       observe !pmd_present(pmde)
->>>>       nr_pages < HPAGE_PMD_NR
->>>>       skip synchronization
->>>>       return false
->>>>
->>>> try_to_unmap() returns
->>>> folio_mapped(F) == true
->>>> nr_unmap_fail += folio_nr_pages(F)
->>>>                                       tlb_flush_mmu_tlbonly()
->>>>                                       tlb_flush_rmaps()
->>>>                                         remove F's rmaps
->>>>                                       spin_unlock(ptl)
->>>>
->>>> Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
->>>> has already moved the PMD clear operation (via zap_empty_pte_table()) to
->>>> after tlb_flush_rmaps(). Similarly, page_vma_mapped_walk() also needs to
->>>> use sync_with_folio_pmd_zap() to synchronize and avoid memory ordering
->>>> issues on weakly ordered CPUs.
->>>>
->>>> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
->>>> Cc: stable@vger.kernel.org
->>>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> ---
->>>>    mm/page_vma_mapped.c | 5 +----
->>>>    1 file changed, 1 insertion(+), 4 deletions(-)
->>>>
->>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>> index e6b6170c2f4f..8797467b6f0c 100644
->>>> --- a/mm/page_vma_mapped.c
->>>> +++ b/mm/page_vma_mapped.c
->>>> @@ -293,10 +293,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>>    			spin_unlock(pvmw->ptl);
->>>>    			pvmw->ptl = NULL;
->>>>    		} else if (!pmd_present(pmde)) {
->>>> -			if ((pvmw->flags & PVMW_SYNC) &&
->>>> -			    thp_vma_suitable_order(vma, pvmw->address,
->>>> -						   PMD_ORDER) &&
->>>> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
->>>> +			if (pvmw->flags & PVMW_SYNC)
->>>>    				sync_with_folio_pmd_zap(mm, pvmw->pmd);
->>>>    
->>>>    			goto next_pmd;
->>>
->>> Baolin, how to proceed with that? Are you intending a resend? Including some of
->>> the performance impact and ways forward to optimize?
->>
->> I hope we can merge this fix first if no other objections. As I replied
->> to Barry, whether to set TTU_SYNC for small folios should be done in a
->> separate patch (this is a pre-existing issue) with proper measurement
->> (though it may be hard to measure the actual impact). What do you think?
+Le 16/11/2026 à 13:48, Arnd Bergmann a écrit :
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Can you update the patch description to include some of the performance aspects
-> and planned next steps?
+> As described by the Sashiko bot, the KVM code on powerpc has multiple
+> hardcoded PAGE_OFFSET values. In order to change the default, make these
+> compute the correct register values from configuration symbols.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>   arch/powerpc/kvm/book3s_32_sr.S     | 4 ++--
+>   arch/powerpc/kvm/booke_interrupts.S | 4 ++--
+>   arch/powerpc/kvm/e500_mmu_host.c    | 3 ++-
+>   3 files changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_32_sr.S b/arch/powerpc/kvm/book3s_32_sr.S
+> index 6cfcd20d4668..0d8a7857f2bd 100644
+> --- a/arch/powerpc/kvm/book3s_32_sr.S
+> +++ b/arch/powerpc/kvm/book3s_32_sr.S
+> @@ -113,8 +113,8 @@
+>   
+>           li      r0, 4
+>           mtctr   r0
+> -	LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * 0xc))
+> -        lis     r4, 0xc000
+> +	LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * (PAGE_OFFSET >> 28)))
+> +        lis     r4, (PAGE_OFFSET >> 16)
 
-Sure.
+This is not enough I think. You need to load ctr with the number of 
+segments you want to populate. Here above it is hardcoded to 4.
 
-However, regarding performance aspects, I'm not sure what kind of 
-testing you expect. Since this fixes a uncommon concurrent race, do you 
-want performance data under that race condition, or impact on common 
-paths like try_to_unmap/try_to_migrate()?
+>   3:      mtsrin  r3, r4
+>           addi    r3, r3, 0x111     /* increment VSID */
+>           addis   r4, r4, 0x1000    /* address of next segment */
+> diff --git a/arch/powerpc/kvm/booke_interrupts.S b/arch/powerpc/kvm/booke_interrupts.S
+> index 205545d820a1..ede394f3f63f 100644
+> --- a/arch/powerpc/kvm/booke_interrupts.S
+> +++ b/arch/powerpc/kvm/booke_interrupts.S
+> @@ -230,8 +230,8 @@ _GLOBAL(kvmppc_resume_host)
+>   #endif
+>   
+>   	/* Restore host IVPR before re-enabling interrupts. We cheat and know
+> -	 * that Linux IVPR is always 0xc0000000. */
+> -	lis	r3, 0xc000
+> +	 * that Linux IVPR is always PAGE_OFFSET. */
+> +	lis	r3, PAGE_OFFSET >> 16
+
+Maybe use PAGE_OFFSET@h instead of PAGE_OFFSET >> 16.
+
+>   	mtspr	SPRN_IVPR, r3
+
+That's probably valid but wouldn't it be more correct to use 
+interrupt_base@h as in head_44x.S and head_85xx.S :
+
+	lis	r4,interrupt_base@h	/* IVPR only uses the high 16-bits */
+	mtspr	SPRN_IVPR,r4
+
+>   
+>   	/* Switch to kernel stack and jump to handler. */
+> diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+> index fa6128119874..9edad9bed589 100644
+> --- a/arch/powerpc/kvm/e500_mmu_host.c
+> +++ b/arch/powerpc/kvm/e500_mmu_host.c
+> @@ -115,7 +115,8 @@ static u32 get_host_mas0(unsigned long eaddr)
+>   	mtspr(SPRN_MAS6, 0);
+>   	mas4 = mfspr(SPRN_MAS4);
+>   	mtspr(SPRN_MAS4, mas4 & ~MAS4_TLBSEL_MASK);
+> -	asm volatile("tlbsx 0, %0" : : "b" (eaddr & ~CONFIG_PAGE_OFFSET));
+> +	asm volatile("tlbsx 0, %0" :
+> +		: "b" (eaddr & (rounddown_pow_of_two(PAGE_OFFSET)-1)));
+
+I think this is not valid.
+
+With PAGE_OFFSET equal to 0xc0000000,
+
+Before:
+
+eaddr & 0x3fffffff
+
+Now:
+
+eaddr & (0x80000000 - 1) = eaddr & 0x7fffffff
+
+>   	mas0 = mfspr(SPRN_MAS0);
+>   	mtspr(SPRN_MAS4, mas4);
+>   	local_irq_restore(flags);
+
+Christophe
 
