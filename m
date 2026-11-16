@@ -1,107 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E85B606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2186606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gxlMV0OZ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bu46ZPCU
 Received: by kanga.kvack.org (Postfix)
-	id 07BD66B05B3; Mon, 16 Nov 2026 02:47:51 -0500 (EST)
+	id BAE306B00EF; Mon, 16 Nov 2026 02:55:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02BF46B05B4; Mon, 16 Nov 2026 02:47:50 -0500 (EST)
+	id B86E06B05B0; Mon, 16 Nov 2026 02:55:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E846E6B05B5; Mon, 16 Nov 2026 02:47:50 -0500 (EST)
+	id AC28A6B05B1; Mon, 16 Nov 2026 02:55:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C5D426B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:47:50 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57BA1A04E6
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:50 +0000 (UTC)
-X-FDA: 85440203100.07.0890210
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5ED341A0002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gxlMV0OZ;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A6AD6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:55:50 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 134FC160604
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:55:50 +0000 (UTC)
+X-FDA: 85440223260.29.0A1CCDE
+Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
+	by imf02.hostedemail.com (Postfix) with ESMTP id F1E8E80002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:55:47 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bu46ZPCU;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794815748;
+	b=esozPiMG6O7/WhQS6RbSPzGrvTSlVCJz4Jtoai5RNY106Hz4vc0O6IY3QQZvJl0CFw9x5w
+	FT8B3So9WLoA/0o6awVKksl3WtAu/+mousY6cWkWW7m/TZUOvRSLNttBfLi3O1wLQfM7e3
+	KjzZ7ip+3wW7gFgpvcRxIzL992D3Gb4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bu46ZPCU;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794815268;
+	s=arc-20220608; t=1794815748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L5lYApGjKPqMrWsyMrRgAHHRvopm83QOmd4lVVfjjUc=;
-	b=4Qt6XGC71xOztNmczJC5iah0tTsepVVGXaZpVnNpmgAcY5FJIPJG1lNRCnr3KoFJ0dxXM1
-	7R0ZtZCDayeujDeu9RTUtGVBFWu2AYHHi98iGT8CdC4FGBn464QKA/6hCxe95rMZKCibBG
-	VVXVjY210lsY7rXT6BoLzWY3EHiPfSU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794815268;
-	b=rNciYP3UREIy2TfnlJPkMhMq0jM7PWyEZorKCf/gR+LNBfm/IXTCKdqa/hT07mEONgfoA4
-	zNsCafu+aT5pZAWpeNpGL1qOty20dk6nhhpt3fVU1lQtg5kqMDywUrTdrDjcHwW5GeGyv8
-	nyeLi+rQS5zPSiGrliyMCzkvcMpoAcM=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gxlMV0OZ;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C4CE445D31
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0E71F000CD
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794815266;
-	bh=L5lYApGjKPqMrWsyMrRgAHHRvopm83QOmd4lVVfjjUc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=gxlMV0OZX/KvUEidAvZnU4WOmQLnazSER3rpxnedcoROUu5FE/w9DgHZkuXDMPN5c
-	 ff6zZpe+1k0Krj8w/IEK1Y7nRQ6ECZ9AaqwWJl2cIOpcAfgz/0o5RrCG2FiINsOnUY
-	 D/JsEvtGkl/ly/95IIhkJw2wwZGxCHTKaN9GW4vIkUT+XF6YOy0YZ0ZbK4YernjEfq
-	 InkdrdKclgZrL722DtaxRHCdolN5QZOeRe+Fhms0iuY7cFcxcbssLGiuX4oDVfwCNU
-	 CQjebZ1yTEowqVgeyAbd1Tw4UIT8U6PmOQLyaZ7FB0KFRNydlvvkQLHpx4qXJsRXAS
-	 ET4k1fLSURGlQ==
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-7cc0e865dd1so868516137.1
-        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 23:47:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFDC9gZjpq64LtDvuUP3MLd+XLx45HIOoKhXjl3NPjtGJeYISFdQX9JRMb3NIVxktgClrPVnYzuuQ==@kvack.org
-X-Gm-Message-State: APuU4Z+H30NJJoreD35OK5yhlWF3mVUphy4WyK3t34JW6vGwNwUUC7JY
-	+LiR9vy9OZr7IYcSoUi3qHByrbuj1d2DtMSab8GWW9CmiJJU6y87nF9FAAAqDZxnt6vp8btUv5t
-	cWH8YWqLz7gl0LiVh5Rgt7zgy7nMVgdw=
-X-Received: by 2002:a05:6102:6f06:b0:7d2:7266:2c8f with SMTP id
- ada2fe7eead31-7d64d7f2269mr2150167137.23.1794815265800; Sun, 15 Nov 2026
- 23:47:45 -0800 (PST)
+	bh=jdhXKIihT2dq6nnPB/zLM5Tz5DslhafhE4G3biwkqn0=;
+	b=pnNprfAo/bOZwR5PGMKxMpTVneY5QjD18lv9BO1ox2PtSZUb57sI773U3/ajxWIj9URtV1
+	4QYMiPDKF5uwSaa/HQeFCK2p5jc2Ei8LYuwY8WVQLwF1rrvZKIAfmbKXzCirLgCgYRewed
+	jPnUXQWsmyWFEL5ElBq1SmTPiFU5iCU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=P3aWyo9qWXr+tiJ3CVI0TxPUiud8q0JaCtkx0CdstEc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794815746; v=1; x=1795420546;
+ b=bu46ZPCUJLj7jhQVy6BLO/fx9drzfdKaV7Wi4+gmm7DttpIEz38dSEKnS2wDfwHWPquQYxt3
+ cTD7neVdTQ9nE/fcQNmQOyp91KWt0Hf2RoZg8kg2AayqVh50gmqczVsA9agnr3kMxCEFpdTudlv
+ alNGfxzZqbcIObh1jPN2B9Ts=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 112ad70d5ab5acbf;
+	Mon, 16 Nov 2026 07:55:46 +0000
+X-Mizu-Trace-ID: 112ad70d5ab5acbf
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: muchun.song@linux.dev
+Cc: sashiko-reviews@lists.linux.dev,
+	songmuchun@bytedance.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	osalvador@suse.de,
+	rppt@kernel.org,
+	lizhe.67@bytedance.com,
+	apopple@nvidia.com,
+	balbirs@nvidia.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jthoughton@google.com,
+	lance.yang@linux.dev,
+	qi.zheng@linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 02/14] mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+Date: Mon, 16 Nov 2026 15:55:40 +0800
+Message-ID: <20261116075540.51374-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <D1F34237-066F-43E8-89F5-2D7A6217D72B@linux.dev>
+References: <D1F34237-066F-43E8-89F5-2D7A6217D72B@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261116061158.333826-1-hui.zhu@linux.dev> <b6449fe5-a697-4fa4-8985-fff2e0b0ed76@linux.alibaba.com>
-In-Reply-To: <b6449fe5-a697-4fa4-8985-fff2e0b0ed76@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 16 Nov 2026 15:47:33 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4ztHS-6HmEFZzzua7MnnJuoK1DHr3_4uEwD+SZGN9NuAw@mail.gmail.com>
-X-Gm-Features: Aa3M54oaeNsr3g1DbmW6duiSC8_BFTUsMZ61-jbI6EoY4IzgGR53A8wPlm9__vw
-Message-ID: <CAGsJ_4ztHS-6HmEFZzzua7MnnJuoK1DHr3_4uEwD+SZGN9NuAw@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/mglru: use a smaller batch in fill/drain_evictable()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5ED341A0002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: yhr1uq1ozdo6c8btewnnneiuaw53r8gp
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: t6owjspiq8khqdah7y7amng65g1odaaq
 X-Rspam-User: 
-X-HE-Tag: 1794815268-359449
-X-HE-Meta: U2FsdGVkX18qQG38ElfXlh3XblxY9IfSVZsBdZ/A6AZ5zHkvn5R7nM7rSia6HBMht24PalaQXfcXLxEHIa3MwDun3ZFPVyjbhFTZDk3+jHqYFLIkkgoXWN0SZKvBfYE+NEpU1NdOf0shrFcao6ZdZFM20nMybHbD+pNQsI+UOq+8Tno1Qg8UsJfZyf1o3+Kw47O66jRA5/rRbYddAfaGNbE/W4art0+oXg0+RRTb78j4+GnproOv80ksQAO6URhcvHtfz34unsBuQ/u57N63GxWk1BM2Y+38eo8Ev27DPCVMPN1RMyN2eSFtukcGLKtc8f0m+qB8Sell+HpXp2eTXlxxEl6SGbyyIq3hsHASA9XNuBXJTtsnJ5RfsnRLk4EuYvUWjZ+YpLtJoBVuwcEFzMChRs8paOrIZ/vUF312bzfVVI9gyl1bYoeEs2Hm8sidMqZWHJAkp0n6LnqVpj+o+EL5XNO8bIMrRSX5LvslmEfZyxoJj4zLjkokQ5Kld50LLBw62Ud6fmIKEWexYs2jvpPNaTQXToYOD1DyVBWWRczCB0K+/XZIEuQLsSHVfRteR9A7wwBWRhnk3XdHUIcYPK94n9uwXUyhYJ0s6agF9uAp6mO9pHXuExyQW2BDRc96hao5tdXTTZSGSgudteOj+eEfkX21PU2aelCS6Pxbm/+L38vItDd6H5oQ+oGX3VVALUXRddMkvJhxeuayrYcN9EsJ6LyI/nc154BANuwnnji/hQdYnV/eu0yV2hXLp4EJaaU4YUzMlY4eN+WQ2uSbS71Jc3+72eUkIaI6JNYUBleFiBnxEA09si7dcx9ap/iBZYgTmglK8y25A5LTJy1Rlz7Xxy22fOS/27pokdK6xlKartSplI3sWIg86ewTT2mOz+w/8E1JTJVDpAGQ4Edk/UvAcY9zCKRxWWh5ITemupR6jT8ISpOYF8HilRI4NhWyXIdi43g87heXz6qR7nx
- 4jUDs4NX
- QqcHFWfzkjXjnCf05BBVNSrcQMrj5f5bA6gQjZzH+p0/FGuRTuvdlQr3lbjIca+gaPBPXaEUk2iIa6rZ8McpmbXqp83uBXKFSo/uiEEcdkPFcLIAbXVnnr+iOlrtIGVh/qMT0c8wntfGB5XI6U3QzBHud8ha09pQLwWtQPW+aba+1OiNNFcPcud7d3NjfrMnTbZEXsmIg8Z/g+5meMJzhM6TKjdMLSKRxWVDGRVyPPJlD5X0qHCPkaU8MLOWrxy0Cn6mZ9z380Olqdu3vBHst93iRRx429tjq5ePKHS2Qp/onsZQOYGphTm3SOHCwZU+vkZEU1bQftvN5mUpABzjhzAJkg7Z9UYPToOceiVWohKq//aKedeDtbqs80u0XwC6fmZnt
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F1E8E80002
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794815747-158256
+X-HE-Meta: U2FsdGVkX189ijF7PC0Wc65uVAVg0Xpi9zWujaM7fNMfSATZL5XFWhb6bSFIzefECrRN7E3QSv9SIiUIUUXimfQTxtk5mqzAAVH85jWIiGYdikN4KBvozcLMUZNRy09+9s6hw8QikTqQcCyLF6hXV/JqP5HEzgeZlTV142032Mww9KxPcfFauPdKGqRkJdi5FyjR7rSPjQIWLpqtAv5hz6insA/PxWLyrsrUKo8ThLEjVn9Bh90HY8cnCqS2xX8a8uSSKN8DoWz7W8raUceN8sded5FPQylWnhSvWGx+RpslK1Qav2hLdiA6tD7pyBMB3YAbf2FDhIrSRYXq+PrUWfH+K8tWSo4igYzg9MauKQU/ub3Uyutzd7q8D6Jtot+YMDYlbkhEaV2hCX9dpAoPyOenw2p8Uct6U5b19PC2LU6VKkh5A7i15YisStPmjOeFcKZrk1v0s7Wil/BTMtVPisOKDVLAPMEqnmfLHFhYSrhXR+wQvTI+LDEmWXluK7kC7SZIkTbQZlQg7vrB0+TSYM7rAmIyDyB5Ybpjrgvxk4+4CwfkNjEh1zWRPFWO0qmlHIMJaGpFo83WkM00JVfQjj/wQMUCx2q/ZUU4W7BFT05AOPOQx3KrN/OArZHiR9ep9LU7IywCmw/xpSe75yjcjWMb2uxqsWNpFhQggLdvttPTR1JMZy3tujPyEf6W/OpDJ4768PMpbBeggFxgXn686I3GK6cHJgCqwzCszhz3dunOg8zVJSZ/lJpDRS5fEeBIcERvV1SRDP7RRrvfMVZE7/StYTW/5ptZEnF+ZqI8oesH4cPW4g251pHKkxB2S+xzaXCSK3k3tb5uq1inQc2OFJfALPYEigCcus3e+0353iFiSCVx6yng9sx/zDXRjBXXM8kcDaB8KCKai3mXznWR3qTMQR848LTh3ltSzrpWPglQTkbJzXbJNrH2Whh/Zo2cR2Kb6k9fbmvp2FG9H/p
+ QsyKitnm
+ RoasCG3QIjp0j5s8s2QlPk5IUTYix3ZOK0ezj47TWXfWP19Yj2uW70jo3GlGAWjnZQwMQo8pEr+d8rT3GwdInqQXkoq4IFtkHDMUlDv5Mikiv+L9CdKJ7u6JCf1kzCzKz/wxwbbz9/2osSnELdYE3wK6ViGo9KVrRgkDWNP7ih7ck/wRCCK0kWjzv9Xr0ioD4JyY6bKwuAi6GpDJZDyPBdt5A+jLX4VPDZfWlaNpaZ236nZqrRgOJ2DWGBXyWT6MOHlgwYAEv8bsQP1hA4vgOdnh2+wudydWEpX2x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,42 +109,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 3:29=E2=80=AFPM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 11/16/26 2:11 PM, Hui Zhu wrote:
-> > From: Hui Zhu <zhuhui@kylinos.cn>
-> >
-> > lru_gen_change_state() migrates folios in batches of up to
-> > MAX_LRU_BATCH (4096) folios under lruvec_lock_irq().  A full batch
-> > keeps local interrupts off for up to about a millisecond, and CPUs
-> > contending for the same lru_lock spin with interrupts disabled for
-> > that long.
-> >
-> > The caller already drops the lock and reschedules between batches,
-> > and the restart protocol does not depend on the batch size: both
-> > functions make monotone progress, so a smaller batch only shortens
-> > the irq-off section.  Use MIN_LRU_BATCH (64) instead, bounding it to
-> > about 15us.  This is a cold path that runs once per kill-switch
-> > toggle; the extra unlock/resched/relock round trips cost a few
-> > percent of wall time on an otherwise idle machine.
-> >
-> > Same change as commit 6e9be217a3ce ("mm/mglru: use a smaller batch
-> > for reclaim") made for try_to_shrink_lruvec().
-> >
-> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> > ---
->
-> I'm fine if the small change can fix your issue in this cold path. Let's
-> also see others' input. Feel free to add:
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-+1
+On Fri, Nov 13, 2026 at 12:10:13PM +0800, Muchun Song wrote:
+>
+>
+>> On Nov 13, 2026, at 12:07, sashiko-bot@kernel.org wrote:
+>> 
+>> Thank you for your contribution! Sashiko AI review found 1 potential
+>> issue to consider:
+>> - [Low] mm/hugetlb: commit message mismatches
+>>  memmap_init_page_from_template()
+>> --
+>> 
+>> commit 7cc97c08b2296fc2518d9ae6da5950cb731c48eb
+>> Author: Li Zhe <lizhe.67@bytedance.com>
+>> 
+>> mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+>> 
+>> This commit speeds up boot-time HugeTLB tail page vmemmap initialization
+>> by seeding a template from the first tail page and initializing the
+>> remaining tail pages with memmap_init_page_from_template().
+>> 
+>>> Initialize the first tail page normally, then initialize the remaining
+>>> tails with hugetlb_init_tail_page().  This copies the already
+>>> initialized first tail page with memcpy() and refreshes only the
+>>> PFN-dependent fields in the destination page, while avoiding the full
+>>> __init_single_page() and prep_compound_tail() sequence for state that is
+>>> identical across tail pages in the same huge page.
+>> 
+>> [Severity: Low]
+>> This isn't a bug, but the commit message appears to describe an earlier
+>> version of the patch.  hugetlb_folio_init_tail_vmemmap() copies the first
+>> tail page into a stack template and calls memmap_init_page_from_template()
+>> (which refreshes the template before copying) rather than a
+>> hugetlb_init_tail_page() helper.  The commit message also omits the change
+>> in memmap_init_page_from_template() that restricts memcpy_nontemporal() to
+>> ZONE_DEVICE pages and uses memcpy() for other zones.
+>
+>My bad. I forgot to update the commit message, the corrected commit message
+>is as follows:
+>
+>Boot-time HugeTLB allocation has to initialize tail struct pages itself
+>when HugeTLB vmemmap optimization (HVO) is unavailable or fails.  For
+>gigantic pages, this can cover a large number of tail pages.  Most state
+>installed by __init_single_page() and prep_compound_tail() is identical
+>for every tail page in the same huge page, so repeating the full
+>initialization sequence for each tail page is unnecessary.
+>
+>Initialize the first tail page normally and use it as a template for the
+>remaining tail pages.  Before each copy,
+>memmap_init_page_from_template() refreshes the PFN-dependent fields in
+>the template, avoiding repeated initialization of state shared by all
+>tail pages.
+>
+>This extends memmap_init_page_from_template() from ZONE_DEVICE to normal
+>memory.  Keep memcpy_nontemporal() for ZONE_DEVICE pages and use
+>memcpy() for pages in other zones.  memcpy_nontemporal() was also tested
+>for the HugeTLB path, but did not provide a similar benefit; on x86-64,
+>memcpy() performed better for this workload.
+>
+>The fallback path was measured on a v7.4-rc2 base with a temporary
+>jiffies-based printk modeled after the existing timing in
+>memmap_init_zone_device(), using 4K base pages and 64 boot-time 1G
+>hugepages.  HVO is unavailable on arm64; on x86-64,
+>hugetlb_free_vmemmap=off was used to exercise the fallback path.
+>
+>  arch    base      with this patch  reduction
+>  arm64   360.8 ms  256.0 ms         29.05%
+>  x86-64  171.0 ms  165.0 ms          3.51%
+>
 
-This is a rarely used code path, and we may eventually remove it
-entirely. So let's avoid over-engineering it.
+with the updated commit message, LGTM!
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
