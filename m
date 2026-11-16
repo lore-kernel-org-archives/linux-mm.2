@@ -1,126 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CF9606A8B3
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E85B606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xC2qOUCY
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gxlMV0OZ
 Received: by kanga.kvack.org (Postfix)
-	id D22116B00EF; Mon, 16 Nov 2026 02:45:53 -0500 (EST)
+	id 07BD66B05B3; Mon, 16 Nov 2026 02:47:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD2856B05B2; Mon, 16 Nov 2026 02:45:53 -0500 (EST)
+	id 02BF46B05B4; Mon, 16 Nov 2026 02:47:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC1C26B05B3; Mon, 16 Nov 2026 02:45:53 -0500 (EST)
+	id E846E6B05B5; Mon, 16 Nov 2026 02:47:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81AA86B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:45:53 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E7F5C8050D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:45:52 +0000 (UTC)
-X-FDA: 85440198144.20.10E9FDC
-Received: from mail-pi2-f9.google.com (mail-pi2-f9.google.com [74.125.227.201])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 12E3D40003
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:45:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xC2qOUCY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.201 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C5D426B05B3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:47:50 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57BA1A04E6
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:50 +0000 (UTC)
+X-FDA: 85440203100.07.0890210
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5ED341A0002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gxlMV0OZ;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794815151;
+	s=arc-20220608; t=1794815268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zmgK2rZQB0Zps7NPdGicEsUeC+FDAzmra5NHyyX5KYA=;
-	b=fqj6h7iOaNWLuwXuk9Lrh7z8QtIxjC//whEX2IAE7O8PFyS2MyKOlfAF9oe7uMGpncAaoY
-	QqkkX0r0QNLcFqWo0vtxRDFak/22tO0jvbpMrFzsryD12Tvd5UV9B0ngp3ubg4D+q61zYr
-	+vRSHgrq1pbfi8IYXCFPxNGcKBa4eqk=
+	bh=L5lYApGjKPqMrWsyMrRgAHHRvopm83QOmd4lVVfjjUc=;
+	b=4Qt6XGC71xOztNmczJC5iah0tTsepVVGXaZpVnNpmgAcY5FJIPJG1lNRCnr3KoFJ0dxXM1
+	7R0ZtZCDayeujDeu9RTUtGVBFWu2AYHHi98iGT8CdC4FGBn464QKA/6hCxe95rMZKCibBG
+	VVXVjY210lsY7rXT6BoLzWY3EHiPfSU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794815151;
-	b=gNa3Kv3FfO8E42t73HTp6QrkpZbdFXQSrYQFZDbtXguCJ11Rx6tRUsKtqwwPD0je+2LEsc
-	6WDLIDXSbZTwTeERGXM+TzUdeZ4PHJAfJIfzM2wQltmYcFqRNwoayyLYed18C+cqmQv6DT
-	5k6UpwKi8REGWL0qqz4q9UfgWHkJTY0=
+	t=1794815268;
+	b=rNciYP3UREIy2TfnlJPkMhMq0jM7PWyEZorKCf/gR+LNBfm/IXTCKdqa/hT07mEONgfoA4
+	zNsCafu+aT5pZAWpeNpGL1qOty20dk6nhhpt3fVU1lQtg5kqMDywUrTdrDjcHwW5GeGyv8
+	nyeLi+rQS5zPSiGrliyMCzkvcMpoAcM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xC2qOUCY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.201 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
-Received: by mail-pi2-f9.google.com with SMTP id 41be03b00d2f7-cdd9779aac8so728776a12.0
-        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 23:45:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794815150; x=1795419950; darn=kvack.org;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=zmgK2rZQB0Zps7NPdGicEsUeC+FDAzmra5NHyyX5KYA=;
-        b=xC2qOUCY7y6qCEVhs3yybjs3CfSWxdxh0U11EF4AodlMTRfEW7ROHQeyQ/tHc93VFG
-         wWE3TLQmBX5tQ0As1TateOCpwH2KleXIhseffu3NsQCY7YBOIctUgXcZL+z1j7rds3ci
-         l0kbGsSapisfPfXZ50DB1OwHRWcvGltnNqqnOQXdHl4KS9hRMLxPW5cOhxzQbsSAIRVV
-         +tYcEiRHCnyrZWpf85fxYr2xhi/Wr6TOzm/sxCzI003x3HrhxBWGL/FcRR0AQQ3PL6vc
-         sHU4W/3U0fMu3qpTlUU8UGtMGNvuKaMLrHo5CoWEcLi/e76MmAwub7z+tdEah5AqOsGv
-         XxgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794815150; x=1795419950;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zmgK2rZQB0Zps7NPdGicEsUeC+FDAzmra5NHyyX5KYA=;
-        b=GYQcpGg88/NyxVuOThZXcfZbiucTqdmavCbAT4+/X0Ss3KCDXDWGOcOxmrJsFN/YVz
-         xGfih71JvGlY6j618QEAoqynDk3w4k5HjVdH9YHSgzBH0tT7ZuSi3JqENbe4zUVwYl9y
-         DQuOMmOBfKYY4Ysvn61YuKveL07ta1gRT/j0ytYgVXOQhtleLMrtlbXRsqSA2cWCh1TQ
-         U3dz459S6Bdw+gYMLsDPo2cPTrC8g+lYc/lj/HsMObGw9KSFi1ekdh7vrIl2N+Gw7sqA
-         BNg5wTydFeqTF/0H0uTc7uoh+NkE/QM4c8olgOeO9NxUsyhoOtUnOQKvu+/AuOXNFajl
-         R1PA==
-X-Forwarded-Encrypted: i=1; AL+hErGnb9zsAGerc02TfC5hxJ2v5SgRY7Cbh5KodEv2d4H8AwgvUyd77MXa8bCUjDFWrTAGuPEi225wrA==@kvack.org
-X-Gm-Message-State: APuU4Z+LzckGQMf1qdIbybL43d0lBChTuPrl2ZxBc0UeeJ6f5eI8tZ8C
-	h28w3uSCL3JN4CopZkuQr0DI49TG1N6WU+JuC92DMbofKvLlPCWv5JK2
-X-Gm-Gg: AYBFou2joaiYC14bkDOzyocAdLdiSOVJe099mQx57k+97TYjBJE69UiWbTs1MzcsHIv
-	rI/w5EOWz5TA7nofTjWA5VZ71M3kgAAg4QN2aZaw7Llbq8D9TydtKvT/MNZckVzhKFha5ASJYd6
-	tJhsBc8iI8O+L6e6EHlms8J1Lp9YO1vnnHAq7HVuSoTgoPMIElbPmywhKeCOdO2IdYaRA191I67
-	8zYfAUGwcQy7XnE7a0DfzMSyYy12rs5bIgJ3GTerI6AKjntVd84mXEuwgjjXx5dkH8m64j7nz87
-	BtfXNbWrbXdubDq4JQnoioNcqRfy/HoRpHVlGrZhM3CNW8e1BNE4IOrVr555Q/KkMLK7v0kwWqF
-	bkPzQYqhMfdehAXF58O7XMlt5MZCHqvYkln+QHudULw5xCeWhZQjZaCvVNdHHGbB9rztJgPopXR
-	SJHgBxnn/LQPkmDtLSEES98ebbTOCKKLGK+P+8xT/lJJd/8ToNGqEcuU0erBTfirRIqfFv/EL4F
-	InzJOzE6K6zqYFol1arwWbXNCRGfwC6N5fIzcz6DIP+jyhDivkJl1dlwGFWbPgFTUgYpDYQautW
-	BHV63xzOOSOGBimkhZxjJ4VFpbjpfMybtd91bBt4t4Uh9nD7bDPyik0vrQzl/AHU+nDMm3xDOA9
-	hFe+pJL2LMF/qfdgLrnCm+WMzEuCqaK2rdx9pvLb9L1mLodu1AtSK+Dhw64JnvJ8=
-X-Received: by 2002:a05:6a00:181b:b0:8a0:7677:c8c9 with SMTP id d2e1a72fcca58-8beb7c21179mr8733834b3a.51.1794815149534;
-        Sun, 15 Nov 2026 23:45:49 -0800 (PST)
-Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bed1a6dbd9sm3244287b3a.27.2026.11.15.23.45.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Nov 2026 23:45:48 -0800 (PST)
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gxlMV0OZ;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C4CE445D31
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0E71F000CD
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:47:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794815266;
+	bh=L5lYApGjKPqMrWsyMrRgAHHRvopm83QOmd4lVVfjjUc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=gxlMV0OZX/KvUEidAvZnU4WOmQLnazSER3rpxnedcoROUu5FE/w9DgHZkuXDMPN5c
+	 ff6zZpe+1k0Krj8w/IEK1Y7nRQ6ECZ9AaqwWJl2cIOpcAfgz/0o5RrCG2FiINsOnUY
+	 D/JsEvtGkl/ly/95IIhkJw2wwZGxCHTKaN9GW4vIkUT+XF6YOy0YZ0ZbK4YernjEfq
+	 InkdrdKclgZrL722DtaxRHCdolN5QZOeRe+Fhms0iuY7cFcxcbssLGiuX4oDVfwCNU
+	 CQjebZ1yTEowqVgeyAbd1Tw4UIT8U6PmOQLyaZ7FB0KFRNydlvvkQLHpx4qXJsRXAS
+	 ET4k1fLSURGlQ==
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-7cc0e865dd1so868516137.1
+        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 23:47:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFDC9gZjpq64LtDvuUP3MLd+XLx45HIOoKhXjl3NPjtGJeYISFdQX9JRMb3NIVxktgClrPVnYzuuQ==@kvack.org
+X-Gm-Message-State: APuU4Z+H30NJJoreD35OK5yhlWF3mVUphy4WyK3t34JW6vGwNwUUC7JY
+	+LiR9vy9OZr7IYcSoUi3qHByrbuj1d2DtMSab8GWW9CmiJJU6y87nF9FAAAqDZxnt6vp8btUv5t
+	cWH8YWqLz7gl0LiVh5Rgt7zgy7nMVgdw=
+X-Received: by 2002:a05:6102:6f06:b0:7d2:7266:2c8f with SMTP id
+ ada2fe7eead31-7d64d7f2269mr2150167137.23.1794815265800; Sun, 15 Nov 2026
+ 23:47:45 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC PATCH 14/27] mm/damon/paddr: support REPORT_MADE type
- probe filter
-From: Aveline Noir <jm5905938@gmail.com>
-Date: Mon, 16 Nov 2026 18:43:36 +1100
-Message-Id: <179481501691.2405628.8067144236288202449.b4-reply@b4>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, sashiko-bot@kernel.org, 
- sashiko-reviews@lists.linux.dev
-In-Reply-To: <20261115202849.99134-15-sj@kernel.org>
-References: <20261115202849.99134-1-sj@kernel.org>
- <20261115202849.99134-15-sj@kernel.org>
-X-Mailer: b4 0.16.0
-X-Stat-Signature: yn9h83u98agt1zdy9b6hnsqnrhnm9rap
+References: <20261116061158.333826-1-hui.zhu@linux.dev> <b6449fe5-a697-4fa4-8985-fff2e0b0ed76@linux.alibaba.com>
+In-Reply-To: <b6449fe5-a697-4fa4-8985-fff2e0b0ed76@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 16 Nov 2026 15:47:33 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4ztHS-6HmEFZzzua7MnnJuoK1DHr3_4uEwD+SZGN9NuAw@mail.gmail.com>
+X-Gm-Features: Aa3M54oaeNsr3g1DbmW6duiSC8_BFTUsMZ61-jbI6EoY4IzgGR53A8wPlm9__vw
+Message-ID: <CAGsJ_4ztHS-6HmEFZzzua7MnnJuoK1DHr3_4uEwD+SZGN9NuAw@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/mglru: use a smaller batch in fill/drain_evictable()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5ED341A0002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: yhr1uq1ozdo6c8btewnnneiuaw53r8gp
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 12E3D40003
-X-HE-Tag: 1794815150-854125
-X-HE-Meta: U2FsdGVkX18nusuyTSUQ3pklwyBSQxSE//cEK+YpZZL9cyCBj1cOh8lzKUEFCi9h4DWyWhLfMwKmOU2Q9lzTGioTQJsS/XimeGN7QlXcrDOM7rnuKQymH0DtSym9It32Kq//k1JGRNaV7UPPdp1ajsVFc/vAyH/o0aR31CDpcLpZtz3+FW6f25MBoHuXoaZ2Nj6LqrabkcTAXlkweGqLYSJuq+oIpfBRpLpLIJFwL1xqgbORC23oFgNAsSD2tSxgUTlF2PZzCgdipabhhxLwt1dp1yjKzBjQqTtka6plLUxddrxMVxh7EesjPGJ6u/Jvr835eWA0oUN8t1FCO5VN0IC1Q3HSZh9EPkDki442PTtiw4h70oQCdRPZIWFXNxOnqScgEbOz9QcLQ3rtumLEsftmLfxpO7lA7YCt0E2pfSlOwlOFjZtSh93AK3Ina4BzSXHe7L/Eeip+uJaeM2sJY+vQAOJsPb950B8G+iYA4QOkf8rF8+gEbrZm3LI3sLridzQPpdvvJQnB8s+dyEiu3Vi+0qBe1mUw+dtdQdyJUFUwlX5nIa7CjLC734+7H+QHE623QRxh04k8htj+2s2ZHcJ+1iHvRBgFhAIyHh9dP9I6uuENjfKP6lLaBQF4n7pWw6hGH8Q5X8ySa51VxMn5GclHlpprxBpVymQ9kIrpAuDv5X7N3jnDi59+isSqkIthCobN4I6kZlZR79YxpZralXMqb+yIrLcjjLciI1d5cbEKNgFXXt2qCT4tr9XXx30u5z5gxZnmZf7D1x6VJBcxmp+RwDFYLZnqwXEo8itp1Af90YAOqRsjyovAL9cCRi8hsyDhlUl3Nd5YMhtbLSy06uGESUDoMseqKzu3dGbwakqfvzvggEt/PPhd+Gc9m8Gw4Ecr3tvcAWoadm5O0+AQFlVwHH5+N8NTG+WjvXhfHDZhTsHKhxptTGUIoZqSOP9Q4WKpEQaHjCej2o9SIDO
- TkbagkJT
- xWmADXc5FkOPLf41an0KHw9UxUiJ+kA0wDG0LVm2L+9HwepmMUsbpSqFe/pKs9gBs3UaKXmMvx2S8BrDZyAOZWwEy7Tqe/vW5VCdJbVohO2xnwnS/1W3ZG7hhMCe0c/hFgM2wLtyUObS2skw3iZLOW8fqTs9GypzrPrM1LX9LhoxAGs5kzyDXxuEq6rmg9e0He13xUeJyE65RRAPEzIFZ3Q68Ra8SK5PbNyge5LUgi31xMMSYbsq3YgzvLthWL8iPQj+bP3VyCdfBdxu2mEBanp2pPYmBQ2VSLv/sFOCP1nRkQKQk85OOgv3KjsGeJEVh5C3CvC2qYLm92xlPhGKnGMFBbuVgMGPmmXEQBUaxqQDmeuGnF7LsyuP2V4n7dq3N9EtVV5E0rjZs332YrkSw98M1sJEBgQt5hSAWRrHHImgxhREiPvinN/RoPTjQJZ5ui7ad5StzW4urIPPU0Jh0NKJLisSBfymBqRS/mfkv+dPAzPU=
+X-HE-Tag: 1794815268-359449
+X-HE-Meta: U2FsdGVkX18qQG38ElfXlh3XblxY9IfSVZsBdZ/A6AZ5zHkvn5R7nM7rSia6HBMht24PalaQXfcXLxEHIa3MwDun3ZFPVyjbhFTZDk3+jHqYFLIkkgoXWN0SZKvBfYE+NEpU1NdOf0shrFcao6ZdZFM20nMybHbD+pNQsI+UOq+8Tno1Qg8UsJfZyf1o3+Kw47O66jRA5/rRbYddAfaGNbE/W4art0+oXg0+RRTb78j4+GnproOv80ksQAO6URhcvHtfz34unsBuQ/u57N63GxWk1BM2Y+38eo8Ev27DPCVMPN1RMyN2eSFtukcGLKtc8f0m+qB8Sell+HpXp2eTXlxxEl6SGbyyIq3hsHASA9XNuBXJTtsnJ5RfsnRLk4EuYvUWjZ+YpLtJoBVuwcEFzMChRs8paOrIZ/vUF312bzfVVI9gyl1bYoeEs2Hm8sidMqZWHJAkp0n6LnqVpj+o+EL5XNO8bIMrRSX5LvslmEfZyxoJj4zLjkokQ5Kld50LLBw62Ud6fmIKEWexYs2jvpPNaTQXToYOD1DyVBWWRczCB0K+/XZIEuQLsSHVfRteR9A7wwBWRhnk3XdHUIcYPK94n9uwXUyhYJ0s6agF9uAp6mO9pHXuExyQW2BDRc96hao5tdXTTZSGSgudteOj+eEfkX21PU2aelCS6Pxbm/+L38vItDd6H5oQ+oGX3VVALUXRddMkvJhxeuayrYcN9EsJ6LyI/nc154BANuwnnji/hQdYnV/eu0yV2hXLp4EJaaU4YUzMlY4eN+WQ2uSbS71Jc3+72eUkIaI6JNYUBleFiBnxEA09si7dcx9ap/iBZYgTmglK8y25A5LTJy1Rlz7Xxy22fOS/27pokdK6xlKartSplI3sWIg86ewTT2mOz+w/8E1JTJVDpAGQ4Edk/UvAcY9zCKRxWWh5ITemupR6jT8ISpOYF8HilRI4NhWyXIdi43g87heXz6qR7nx
+ 4jUDs4NX
+ QqcHFWfzkjXjnCf05BBVNSrcQMrj5f5bA6gQjZzH+p0/FGuRTuvdlQr3lbjIca+gaPBPXaEUk2iIa6rZ8McpmbXqp83uBXKFSo/uiEEcdkPFcLIAbXVnnr+iOlrtIGVh/qMT0c8wntfGB5XI6U3QzBHud8ha09pQLwWtQPW+aba+1OiNNFcPcud7d3NjfrMnTbZEXsmIg8Z/g+5meMJzhM6TKjdMLSKRxWVDGRVyPPJlD5X0qHCPkaU8MLOWrxy0Cn6mZ9z380Olqdu3vBHst93iRRx429tjq5ePKHS2Qp/onsZQOYGphTm3SOHCwZU+vkZEU1bQftvN5mUpABzjhzAJkg7Z9UYPToOceiVWohKq//aKedeDtbqs80u0XwC6fmZnt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,39 +110,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+On Mon, Nov 16, 2026 at 3:29=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+>
+>
+> On 11/16/26 2:11 PM, Hui Zhu wrote:
+> > From: Hui Zhu <zhuhui@kylinos.cn>
+> >
+> > lru_gen_change_state() migrates folios in batches of up to
+> > MAX_LRU_BATCH (4096) folios under lruvec_lock_irq().  A full batch
+> > keeps local interrupts off for up to about a millisecond, and CPUs
+> > contending for the same lru_lock spin with interrupts disabled for
+> > that long.
+> >
+> > The caller already drops the lock and reschedules between batches,
+> > and the restart protocol does not depend on the batch size: both
+> > functions make monotone progress, so a smaller batch only shortens
+> > the irq-off section.  Use MIN_LRU_BATCH (64) instead, bounding it to
+> > about 15us.  This is a cold path that runs once per kill-switch
+> > toggle; the extra unlock/resched/relock round trips cost a few
+> > percent of wall time on an otherwise idle machine.
+> >
+> > Same change as commit 6e9be217a3ce ("mm/mglru: use a smaller batch
+> > for reclaim") made for try_to_shrink_lruvec().
+> >
+> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> > ---
+>
+> I'm fine if the small change can fix your issue in this cold path. Let's
+> also see others' input. Feel free to add:
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-On Sun, 15 Nov 2026 12:28:32 -0800 SJ Park wrote:
++1
 
-> +	case DAMON_FILTER_TYPE_REPORT_MADE:
-> +		addr_range.start = pa;
-> +		addr_range.end = pa + 1;
-> +		matched = damon_report_exist(filter->report_type, &addr_range,
-> +				jiffies -
-> +				usecs_to_jiffies(ctx->attrs.sample_interval));
+This is a rarely used code path, and we may eventually remove it
+entirely. So let's avoid over-engineering it.
 
-Since the window is counted in jiffies and rounded up, how many samples
-see a given report depends on HZ.  With the default 5 ms sampling
-interval, the window is 2 jiffies at HZ=250, i.e. 8 to 12 ms, so a
-report is usually seen by two consecutive samples.  At HZ=1000 the
-window is 5 jiffies, but kdamond_usleep() sleeps via
-schedule_timeout_idle() there, and samples end up about 6 ms apart, so
-a report made right after a sample can fall out of the window before
-the next one.
-
-With the queue indexing fixed, user reports submitted every 50 or
-250 ms and covering the whole physical address range were counted
-about 2.0 times each on an x86_64 guest at HZ=250, and about 0.84
-times at HZ=1000.
-
-Is this approximation intended?  If each report is meant to be counted
-once, maybe we could keep a per-context report sequence cursor and
-check only the reports enqueued since the previous probe run.  A quick
-local hack of that counted each report once on both HZ values.  If
-reports are rather meant to stay valid for a while, like a user saying
-a range is hot, a validity period separate from the sampling interval
-might fit better.
-
-Thanks,
-Aveline Noir
+Reviewed-by: Barry Song <baohua@kernel.org>
 
