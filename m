@@ -1,89 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD01C606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 01:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD41606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 01:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RFF5/+1/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aI2KzWyP
 Received: by kanga.kvack.org (Postfix)
-	id CA6366B05B1; Sun, 15 Nov 2026 20:44:51 -0500 (EST)
+	id 52E8D6B05B3; Sun, 15 Nov 2026 20:45:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C565D6B05B2; Sun, 15 Nov 2026 20:44:51 -0500 (EST)
+	id 4DE6D6B05B4; Sun, 15 Nov 2026 20:45:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6D2E6B05B3; Sun, 15 Nov 2026 20:44:51 -0500 (EST)
+	id 3F49E6B05B5; Sun, 15 Nov 2026 20:45:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FACF6B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:44:51 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC1131C3F27
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:44:50 +0000 (UTC)
-X-FDA: 85439288340.07.F655D2E
-Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B15CC40004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:44:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="RFF5/+1/";
-	spf=pass (imf01.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 199CF6B05B3
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:45:56 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD328A860E
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:45:53 +0000 (UTC)
+X-FDA: 85439290986.27.1A3FCFC
+Received: from mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AAEF6120003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:45:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aI2KzWyP;
+	spf=pass (imf29.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.52 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794793552;
+	b=5uSD6F9FXSYe26GQq7aZGGopa2EI13UpfHiyAmg04yf+W7S9I4R4FG/3GVuwFUrrs39K/X
+	ZjqxVYQ42KO+ORtWPmptf20JSJx2b0QT8UMhYmHErrcnrATQi7CHqNdFh9/To01xuJriOb
+	no2d7mJCNtRATvhyxPOho+2yvWnuF7w=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aI2KzWyP;
+	spf=pass (imf29.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.52 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794793489;
+	s=arc-20220608; t=1794793552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0H3osWMLtIW/sGVyOWkSlMGoRnGeburV1Z1d6wUanME=;
-	b=pbeo7jsVNXFUHtJMN2RYhk+1p8K92DBw+AOdI527Q9UoMiYLGcZhS+455LbiCN9o4/Ddi+
-	mfTqg1gj3NDtJxWbs4/KRMzZbzWHi3F/q0/jI9nU1Cu8zuxE/rfV52MawuEoXF1PMhDR0O
-	MThXUK++otIc0aA6OsC5VwaaySnnOmc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794793489;
-	b=lOWtgJ3uzH3e0qzj8GUabI+dixBCUqvpghj7pmVdB4YyfFPD6+liZv/TyPegVi0OC9vDUB
-	tpWWvD2v+qEoFk/hvdpIM9CQlBII/rFzQxy7cugXfC0XGgZYeoJE/vtdfNNIbnS8j7BYMV
-	WxVUxcNTT5KKgQDOi1YOZelceNHU9+c=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="RFF5/+1/";
-	spf=pass (imf01.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Pt8xvDwKeZFNbSLqDy3OvpUkDSrTrAmd4jUA7dH+Zmk=;
+	b=Z0OXaFPZbHDS+JcLY6Xk0BA7nMmTTVxc98eCyNZ9fhEC9AqbZm4omvSlni1mlCHiI6BsPA
+	rY60Tqad5tU8d5d8oqB0DhWfc+bVd31/OCmY1WVw/nZMRncRmhIai9dO4lk4YU+FkRa8Vm
+	kiV3Q2QcqQTO+Pzmbmpz8cQvHIBnrGo=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=n9g002gGdUvJhs5RK9AVAw1HkjwpmBlxvswaJ6Ry8a0=;
+DKIM-Signature: a=rsa-sha256; bh=KsT5VlOouw8+wlbQGGPvciVPDA8AmFbkB9L6Bo0igYA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794793485; v=1; x=1795398285;
- b=RFF5/+1/Hrv2+IqeBltZeAERVGUb0LeWWYrRhnIXOSZSEkZnE6oEQznRlzDvycUFdIJoVZMk
- TeNe6RCDPEWRvx7jKjrfhfHg9OMb/GOJf3zM0WT2FyWACMbqzeUKtitqK61ohrkLZsWGOqPAQZg
- cAlIkj/nkoNbSuMHhdTOQOWI=
+ t=1794793550; v=1; x=1795398350;
+ b=aI2KzWyPKd0vCzFogv4NuhiGjEgI63Mmu5lZUvGyFwsdnU+MvK/tDbMM71ItaBGcn3cQ+qzs
+ WO0ZP5SHGQzKleh+axKi42gwpcHvodN7U4hUDbf6Q9h38G4iD8WLJ1E7IUgxhsy6m3QCC6mXm+T
+ OOzxJR4SNX4IBzT/61ITgwEc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 3d83a667f39792f3;
-	Mon, 16 Nov 2026 01:44:45 +0000
-X-Mizu-Trace-ID: 3d83a667f39792f3
+Received: by mta11.migadu.com with ESMTPS id 3f9af6bc78a53944;
+	Mon, 16 Nov 2026 01:45:50 +0000
+X-Mizu-Trace-ID: 3f9af6bc78a53944
 X-Migadu-Flow: FLOW_OUT
 From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-To: David Hildenbrand <david@kernel.org>
+To: xu.xin@linux.dev
 Cc: chengming.zhou@linux.dev,
-	ljs@kernel.org,
+	david@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	xu.xin@linux.dev
-Subject: [PATCH v3 0/2] mm/ksm: clean up scan_get_next_rmap_item() initialization
-Date: Mon, 16 Nov 2026 09:44:34 +0800
-Message-Id: <20261116014434.310003-1-xu.xin@linux.dev>
+	ljs@kernel.org
+Subject: [PATCH v3 1/2] mm/ksm: extract helper functions for scan cycle cleanup
+Date: Mon, 16 Nov 2026 09:45:32 +0800
+Message-Id: <20261116014532.310270-1-xu.xin@linux.dev>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261116014434.310003-1-xu.xin@linux.dev>
+References: <20261116014434.310003-1-xu.xin@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pry198y8jtwafof39q6diwgb71nabze5
-X-Rspamd-Queue-Id: B15CC40004
+X-Stat-Signature: f9gqp8kafjx5rticke9kwqgouzezzzar
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794793488-851632
-X-HE-Meta: U2FsdGVkX1+mXl7OZYmZlObsro5UjOigewqf2GfbQppOkbEkgux9+TH5QML7xQheUTOeYhPJYI+MZvNNu7qrOngIDkutfocpYw1o4AtDCbswTU8wlrGkgL3fA/YedMlPvi5myU1kr3EL43GxM3ItHb9Bp8ENn58rkM9q1zh5I48Duro5HpN6of6kPYWYxNx77ckuE6V1F+RVysx6XVkI3MJ6GM+OF7pKavV3fN+uZckprBCVK83enhPLsr5cownfHa5xOlJ0rX/DJIWyS5weMHBGic2kqEVcV078CB0nhtwap1VAxl4bQ/hOpDb5aNXOUKwNPPMaLKQX2UW3qBG3OJ3FtzmvwSRsyElhQz6JM5YsBNin8MTOV3YUcBBdxnMh6kg9Bz0NVfblfKVXRsMRBjcP9keHMYUtNWGHy0uPgnNpgLgjhrqyJZyhtpJ0eTnNeOs3HDfigKv4wZU8M0CBRhkZiAFTj+UpTbYNxswBmHJZ1lcVTyt0Sx+XZ7pgCmbWzVw9h/twh9sL9PAue2vP7C1R/lny/ooUagNB23i7X4KjRdH2hzb+qgNwOqBXn2EWogyZRFqFviY1wst5TOg65jxiDsfSvfC3xzbqiLEFrsuAaMM5P26bRHGji2uws3eAuBLqDpklK+bT+AByn71Ig6WwecMDvPmzkCt0RluszAy1mcDH1xYW8WbrpwFnC1k0SkkCyjS0b+qvuE0VYTFLlstduU5J6YZeVISjWaRXD1bEMWD/N0rbXlCd4px0zo5DdUOsTjCmM9EFcLALdq8+oWjbzkeeaAE4LsnPIssfrH/IIWBdyqP2DOv6Guhuu3WeGfXbmumzNur+OqwSqFYnWhKwlpLSfnL8U1gX5l4XQPFsn3RLhxcfbjuvOHDx9eedz+C/lSkqkAznQFRMKY2PU0lYS0QtSdMCLRP+3cHLWkufdK6OP7dJvcgarYzNrK3rI5SIDqg8De64XxXhat+
- BrhzW31y
- O5Gx6CdxZU9fUAN1OP5sOELZzBzxRfZ3Oamibv1ob3c1Dv79wRTfG47e2xnrbzea/fOjVICxKvMDAwai+2jDkKrAj2fCLShw4NUNpIlxI5vuqBCOFB58OfgsGdREJQq85JjPByCMo7hfF6iWCtkL9pDFOn8c3zRvamy8VaMIGM/PEopQ67LcCCRPmqIuvPZ7QQqqk2bRmReGbEYNkLXF6hU+3WDEzVysnG/HkQRWeLBE+TR0JhQ01hoc6UhO0kEfdul63las1ZYiz+E4=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AAEF6120003
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794793551-22313
+X-HE-Meta: U2FsdGVkX181StBpuihTSa5itLgSTRiGm3T7oo7STACx6nSE9XQYhNj/R3+Zev51hIMkglkWp6UMtjS5f7kdrcUcL3Z0PtMVq8biWOE9b8V6Z698/ADSBdL62kjJYiG2VbxBCbc/iMnBoS06uVRZnNDjjNWTlJWxQkoy9iaw6NNj7/LEIa35W0d1RDmB+00zOpbue+0K2eIi6vdzrMtlCAkxYCeojzfmFDLC3ubAnhohLsqMLLiRWt84eX88LRrh9ZbmMug7QMXUUZUYnGf81KCfaS/du9tQ9LD6ZSyiCDyMN5heFojC21hJSq6LUZ4NvgRIkxc4abCAEXNkJnaWvs+sWucQKy1erzHSSPnGBofKQaYuxGJDJ+Fa5ygxWXD2J0d7f9VGMfNk6QU3ekJ2zWL4HMoQuL0pC3l9U39nSsbFsM2+OaKOp4ykxlaG9xQq+EL+uJwsHTPz2rKMY4j1cPJmFfR5u+DRpMNdysFnJTTVY8S5BCTqLI8TLI5YMAbmGVWNF8nW8pZK3DIBdR+5EK+kLGRpj6fiTCwUNNQVYsQKvp6LRwM5QU/7QKamy4LbJcov+mrsMwKzRdyT7kXqLxLiNz9Oc5GnaZrYxWfJk91hBERar1yRM9GMYb+aWlrzzHElDE7J5TstMIwkoGSG5HgFZ9PrGWLgQCgxh+DLUzldPLjB8mDhFZGe8EHfly6PemH5SAMZn/ucLTiFe3EGrtTEI2rJFAPab+AHfQ6CBnAdlf77JsFxPkyt2nkO/pP+SKHBeggaAuUO1ugRw4M84Sv5adJPSCI2JHISF/wdBcLau98FeRlPbWht33UuEEcUje324rcmL+Mdru1DEjPl6xQ99syyxnIHdRggkKRAtUgLlRSoPL3jtxL+dGbDEBOjNm/5f4fmb308xRzZzNNr5S5s44wS1Nxvf/7sVlQIWTda1buaFAKOQdIFnDCh7Ja9R7GswIMBdBz2Kvqqh0G
+ vWibM5oF
+ dXJsgWCLhtbA6uXkDPLd2woLb0K2Dr/7HW71TdAYB/pQewlv8kVTFSTw+r9c8kKYuUxR5LYgby9Lq50auWaG4HUw491FsbRsTEOskmJ9za1dXYJou6xQarGpT5Bm397rxJk+JikoeSAVSvodfiuv+0+wRSTsRKGF2ulj+3IeymdtvQegITWhFGGIdPiXhARbOD1qOpCpx7LgvV+y9JYbGcwNJLH0+xGqKyaW9EuaVd6PQLX3Woxp6vi82JA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +94,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Currently, scan_get_next_rmap_item() has grown quite large and complex.
-When introducing new features, such as the only-merge-zero-page mode we
-are currently working on, we don't want to add more complexity to it
-and don't want to touch rmap_item structures to avoid unnecessary overhead,
-so we need to extract some common logic.
+Since scan_get_next_rmap_item() is getting too large, extract two new
+helper functions, ksm_prune_migrate_nodes() and ksm_reset_unstable_trees(),
+to reduce indentation levels, isolate local variables, and improve the
+readability of the main scan loop.
 
-With these changes, the entry of scan_get_next_rmap_item() becomes much
-cleaner and easier to follow, instead of being cluttered with unrelated
-boilerplate such as stale stable_node pruning and cycle initialization.
+No functional change intended.
 
-Let's start by cleaning up these two parts at the beginning (where I think
-abstraction is necessary), and we can continue cleaning up further if
-needed later.
+Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/ksm.c | 54 +++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 31 insertions(+), 23 deletions(-)
 
-Changes in v3:
-- [PATCH 2/2] Initialize mm_slot = ksm_scan.mm_slot in the else branch when
-              continuing the current scan cycle, fixing an uninitialized
-              variable warning/bug (kernel test robot).
-- [PATCH 2/2] Drop Lorenzo's Reviewed-by tag due to the v2 bug fix.
-
-Changes in v2:
-- [PATCH 2/2] Rename scan_begin_new_cycle() to scan_should_start_new_cycle
-              and keep it simple (David).
-- [PATCH 2/2] Keep lru_add_drain_all() in scan_get_next_rmap_item (David).
-- [PATCH 2/2] Use scoped_guard(spinlock, &ksm_mmlist_lock) in
-              scan_get_first_mm() (Lorenzo).
-
-Xu Xin (vivo) (2):
-  mm/ksm: extract helper functions for scan cycle cleanup
-  mm/ksm: add initialization helpers for scan_get_next_rmap_item()
-
- mm/ksm.c | 101 +++++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 65 insertions(+), 36 deletions(-)
-
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 5e24b5ca8dc8..8db6743ece6d 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2609,6 +2609,35 @@ static struct mm_walk_ops ksm_next_page_ops = {
+ 	.walk_lock = PGWALK_RDLOCK,
+ };
+ 
++static void ksm_prune_migrate_nodes(void)
++{
++	struct ksm_stable_node *stable_node, *next;
++	struct folio *folio;
++
++	if (ksm_merge_across_nodes)
++		return;
++
++	/*
++	 * Whereas stale stable_nodes on the stable_tree itself
++	 * get pruned in the regular course of stable_tree_search(),
++	 * those moved out to the migrate_nodes list can accumulate:
++	 * so prune them once before each full scan.
++	 */
++	list_for_each_entry_safe(stable_node, next, &migrate_nodes, list) {
++		folio = ksm_get_folio(stable_node, KSM_GET_FOLIO_NOLOCK);
++
++		if (folio)
++			folio_put(folio);
++		cond_resched();
++	}
++}
++
++static void ksm_reset_unstable_trees(void)
++{
++	for (int nid = 0; nid < ksm_nr_node_ids; nid++)
++		root_unstable_tree[nid] = RB_ROOT;
++}
++
+ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ {
+ 	struct mm_struct *mm;
+@@ -2617,7 +2646,6 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 	struct vm_area_struct *vma;
+ 	struct ksm_rmap_item *rmap_item;
+ 	struct vma_iterator vmi;
+-	int nid;
+ 
+ 	if (list_empty(&ksm_mm_head.slot.mm_node))
+ 		return NULL;
+@@ -2639,28 +2667,8 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 		 */
+ 		lru_add_drain_all();
+ 
+-		/*
+-		 * Whereas stale stable_nodes on the stable_tree itself
+-		 * get pruned in the regular course of stable_tree_search(),
+-		 * those moved out to the migrate_nodes list can accumulate:
+-		 * so prune them once before each full scan.
+-		 */
+-		if (!ksm_merge_across_nodes) {
+-			struct ksm_stable_node *stable_node, *next;
+-			struct folio *folio;
+-
+-			list_for_each_entry_safe(stable_node, next,
+-						 &migrate_nodes, list) {
+-				folio = ksm_get_folio(stable_node,
+-						      KSM_GET_FOLIO_NOLOCK);
+-				if (folio)
+-					folio_put(folio);
+-				cond_resched();
+-			}
+-		}
+-
+-		for (nid = 0; nid < ksm_nr_node_ids; nid++)
+-			root_unstable_tree[nid] = RB_ROOT;
++		ksm_prune_migrate_nodes();
++		ksm_reset_unstable_trees();
+ 
+ 		spin_lock(&ksm_mmlist_lock);
+ 		slot = list_entry(mm_slot->slot.mm_node.next,
 -- 
 2.34.1
 
