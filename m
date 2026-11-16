@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C06C606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DA6606A33F
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PJ+QNQ5G
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YO6y8M70
 Received: by kanga.kvack.org (Postfix)
-	id 3B8DD6B05BA; Mon, 16 Nov 2026 04:12:56 -0500 (EST)
+	id 6786E6B05BB; Mon, 16 Nov 2026 04:13:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3911C6B05BB; Mon, 16 Nov 2026 04:12:56 -0500 (EST)
+	id 628E26B05BC; Mon, 16 Nov 2026 04:13:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A7186B05BC; Mon, 16 Nov 2026 04:12:56 -0500 (EST)
+	id 4F42E6B05BD; Mon, 16 Nov 2026 04:13:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 027356B05BA
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:12:55 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 932D21A08E4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:12:55 +0000 (UTC)
-X-FDA: 85440417510.07.C2DAB8B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0A648C0008
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:12:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJ+QNQ5G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794820374;
-	b=gR4MhPx4w0h9SXcXGv1ULa6uGuvWPHM2T95NGmYWwvSPwwRcnj2kC/ux9LHBJH1JCN7Zwh
-	4SVFDpWT8sL5AF1dPLSWNza7niyMoPNc+6mCb0moNvka3Ss2bTf6hND2FaNIDISSbt+vFP
-	mbPNSDB8WVfhxJY5no9Tw1f+wKyqhNg=
+	by kanga.kvack.org (Postfix) with ESMTP id 2F68D6B05BB
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:13:14 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD36E1A08DA
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:13:13 +0000 (UTC)
+X-FDA: 85440418266.20.60B35A3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 17A8A14000B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:13:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YO6y8M70;
+	spf=pass (imf09.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794820374;
+	s=arc-20220608; t=1794820392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l9LcwR3Z/eNN8ZlPPbJDNHds/9Tisn7NID8zuHRV4hs=;
-	b=Hu9exq97r8wVrLuzIFz5xLDwVmaGAW0RbvzG7VFJn7wSqTVSXLxi83d9dcxWxx9yClbYw2
-	QK8xRmNB8rcm0xde1CSrQcmNmqsaVBEY1teysN8feAGXawmdql57AYnfqmY2avs3V4mpj/
-	m72HfURAUSACtrF0yqWNnHyRvYML3OU=
+	bh=BkbaFHk2u10jsgJXIyugQue+lmp79DE9DfOGev5Fa6w=;
+	b=wZZBYO1UztdpOfvnj0jgYnDk2rT+mONwCXrGbeCGHxzV2BMEcTaBRInh5iirLBzpWykSzN
+	cdQy+wGnepJDSHwDGMnLmdyQgFa+0DfNTohYLMavvABqncOULKUb5oD9yuX/M6I0lHymIK
+	KwrUJbCv8XPu5POgtaTCaDXgWrrIu6M=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJ+QNQ5G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YO6y8M70;
+	spf=pass (imf09.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794820392;
+	b=wX6KSs8AUt79nnTrLpO7Whbb7O6lgma1OX6OZTqfX/OVz81grcMbULbO7gXUnZyaxd9xP+
+	fhV2bHmZ04kubvsqG9BISWQKEWgAH5k3RRZ7Buu3kHtvrUTalKlnXn9HddD+Wc13qkqgcg
+	Vwe3sW4d0G3lUWmnrbTyg/KHJRUwUAk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 892FC6281A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 62164418FF;
+	Mon, 16 Nov 2026 09:13:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E156D1F000C5;
 	Mon, 16 Nov 2026 09:12:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F3D1F000C6;
-	Mon, 16 Nov 2026 09:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794820373;
-	bh=l9LcwR3Z/eNN8ZlPPbJDNHds/9Tisn7NID8zuHRV4hs=;
+	s=k20260515; t=1794820391;
+	bh=BkbaFHk2u10jsgJXIyugQue+lmp79DE9DfOGev5Fa6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PJ+QNQ5G2P1gSIBkhfmpc1W7iorPgwxExm4Dc2nzbkdybUShh02bugWbL1rVqzYtJ
-	 oVx74CTFnI2YB12OP1B81F1ewU+tKyxAeDAKg4ZaeKs4D0WhduhsEuoLqfrXd5ls/v
-	 aZ8XddYxe/HDF8Q30NG7tGR8IJWjB6j0UKsaqIWpBLP02VB4OQXhWXoLQWxBZvIKJx
-	 EjhJyakAS3o+XkwFOR+F0yR/MzaQwCN3rgA70NgFKZ49QW6yZqm698t/LjuruNtzLD
-	 6hyEto4bvHfZQMUv0vOOHKQY2JMwSYNrhDFDnJxFbgxmSrVs7XKzQiFI4N2bRW0Xs2
-	 6Z6HttzdehPKg==
+	b=YO6y8M70miqIftiolCtjqWxT1cPdwgt4HbMjzAAzHYOjE/n/ayOyiVqewfVGDGe63
+	 RIBGo2geYnm+TXLh0O/WQAMlt4om/0bcCWBjnwvmTmBwFY5gHQBzyfl0CA0Go9fiLt
+	 KN0gBXtYX+YKW+HQ2GHhjbPTLHtm11ifwkcRlFC0h2WNgJK7QCgd48ZzriZWBcnGaA
+	 nnzVMKvNXczopAnQlTiVyV+tl8dt0CeN0rHhMh4usWPNKtZjnBuaxCfz0vWuuwhWVv
+	 XKgZdnevaDCGvLOxMZdL12dmAPvqsOr58Y8BGjJJaVeYHyK1IStYYGF0zdDSVc5Ixu
+	 b/Tq/isddt0VA==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -123,27 +123,27 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-mm@kvack.org,
 	kvmarm@lists.linux.dev,
 	patches@lists.linux.dev
-Subject: [PATCH v10 03/13] irqchip/gic-v3-its: Resolve the default NUMA node explicitly
-Date: Mon, 16 Nov 2026 14:41:26 +0530
-Message-ID: <20261116091137.94252-4-aneesh.kumar@kernel.org>
+Subject: [PATCH v10 04/13] irqchip/gic-v3-its: Allocate shared tables using CoCo shared memory allocator
+Date: Mon, 16 Nov 2026 14:41:27 +0530
+Message-ID: <20261116091137.94252-5-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261116091137.94252-1-aneesh.kumar@kernel.org>
 References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0A648C0008
-X-Rspamd-Server: rspam12
-X-Stat-Signature: jkehsnxna3jktamto8rbe89ikkgezwmp
-X-Rspam-User:
+X-Stat-Signature: zouofgok6asinr96iwm8zd9to5joziy3
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794820373-588775
-X-HE-Meta: U2FsdGVkX18m5N6qU2sBwfV6YmEolDkZytwwDWxi1xwhc4e5ixChQEV5oeNWGyJIrStYIoY3klTXzsfTgdNsKT0Oy0DVKQXC3n5FxKOeCxuSsCLh4F/DUmqb23/DAkDYLwOqIBSEF5VY+p73hvZlEHD2XR5qZI74EvyL616bYr3WhCzGwTyhCF9Kvmq8StdIn0+ULV7N0l0OH4136Fr+Nj23eMDBARrMywREfDy9rmjHZC4SXX6mvaUdkt1btNjsTm3oR6GYKR7lsftKpkGZNGmslnPWG9Z2ehM4CgUL0lKb/L5w/viAVUi0BINB/qKXVMq6PI6VTsKYAqwTFLx+Cbj9lWzWXdopg/O9GgP7+tDIUEu6USybrAhZDepVuKhi+uskmFp6o+5WElVznAgIlXiESPdGQCnIhof4LPgXW6TJUUaAfJq/QmFPhwRMKIn5cUgJb6c/t3O5TEgcmIO0OI+1ltLZeTXOfeLvjGGH8MNC2x/HSOM4ZnGh+J/ZFGS4xfWisi+5dsRV+42JDxn3Tn5JlLojheCIM/4KEhcBhbjg/0wFyWUyDqznil81B3ooe1K67oVF8bIeaj5E1S7qOR0cc7O5FAnWcjivUY5ZdCsPDr9MxYriMCYmNZxtom/RTNw1wZCPHo5BBlr4764lrHKWOLNKkuW6Bq91STVsBFVf4ghcBZXmz8TAM3JEuXcqmZIubjsIBzY9WLaoOQXJosW3cn4EK/QzhDrDDIkDSch6cwHf1Yrvni6JfgLJ8Vsfk3cc7JUbvKlz/T6RU7J+hoG8Q+TPxMbgBbxsuDOp9oNtWWXnogcRKm9G2Xpiyh3M8MvvTdm4yrO87x/zSNCn2cyQAUsve4bywwwn34yGr396AXS19a+5DLIfwZaiBSLgaFGcuJos4s8LMkSXgpDZ7feSafvL0cejQ3y5OoyxTXh/kPAuT5vE7E9xTqTcqQMzLPWfALcKeb2Q+JWrhuK
- 9yJvochP
- YOrN26a9xpSTcImxruFI6ZpMkBDn5yw6l8kFjTtrNmf5EyTKrAqL5nm9PGQMfzls2q3FYAnXBLdVDswqAf+TkwgabeEvnwFRRWUL1fN7KthnPYw2J03OakCCELTWs6nIPg4y/bsrEmcaYfWUzU9nf6gTYOxdJ9X3omt1nTO9qQ5HIDUwSlsI/4mRLlzXlX0LEtdO++b0AUlpxhQQ9DxEzMRYmSqhwkPCQ4BnW0D+dS9l2mrxVXthU+iR/qKpPFTVPg62BOEis+V3iBgwmujEOhwvi/xtf1A9pKCYTBh3f8/cc2n8gRpiEfborCXc5bhi+CsI3xfm81sEvi73ww7eSycInGvAsVqKaYW80QihBSY/3juELkU7+vt33XX3J1JlTw7pbdp4mVUuhBJofg61QIUWr2Sgyb4fURs/w4YG8xILHH/7/beGRn0R5CiJHa/MZGTWnDGDReM2T9ahI3HqTQ/laYxs/C+EvOkIoxETvpNLj2p+hfpw7in/fR6MTT2jfHpIumXB6t1bkLP9LOc7nD+RbRsTSpNPUL4o7Xz5Z3CbhyDWGytD0Xh1P7aRc0FZ9zzTXVehzdbHsvL+fagqYlQV5wt4Tvl7opcVZUNbO1Y25QFbdAcVsIkx8vxAeXAjYFIg6ICA4g9bmWkjH9lapKQv/6syiYdSLn/NT2B7bHapqWog=
+X-Rspamd-Queue-Id: 17A8A14000B
+X-HE-Tag: 1794820391-299172
+X-HE-Meta: U2FsdGVkX197HX+ok1tvyQwV78jlp5lHmFjxwvLP+vKBB8bEgF8EKNwjuMW8DXU8o3kvKysbJjeTkrvGvGJQi0mHH0JhqsldRGVCbFx/FXnUNt718GQvDTH0y+kHQboyuBmofjIrD3wVLAOBqgWBLQFcKHTqooCVOICC8h2cswqpsmJ1ws1y3HVU4zANap7vFHYlOSdBFyyPlQzQmm2L39UX269OCJG3cBAVDhgCmmsewz97IaQmd0lBGKIEBx1bpDnEi3JmNU/Qu7eO2DlxwtFFZ8kjHSN+WcR7s1/w2ac/re3cIqFzTfdGygPsKkHyw7z487+WpvSHHEMREJpPp7/dZ+EGHHVQpWrgLBU2n5fkS5wNq9G62NQ1lL5on7m7d4+7IrprMWQ5owOhbPtUFl2WtipF30qUFnejgw9DX4InVwH7S7wo42CqIB8xPsa9yhLkPNLppSfH0S7dVurKW2KZZVmKcxJ2do9u1BItOl6yu5gPHw/Rf8uTlHfEV8wagCQypcUzQSEnduEyyXvPSL2/BMYlIT+C2i00Kh752K7rNxfxXCRGHx81skUcwbq3MU5vEfylWGpM+DRmvFTTNncgaOr/9KeJXC6Gec8dPlq1rBMYM1U9R0bwOJBvZBtZEPB3/JpV0jSHL8BJke+Yblqb9O72jg6DVXodNQ/40gu/S7fz8Vp/2QCaLJj02An3r2i9G9BlRpRuUJwR5GJK/Cx/R9IK5hEJSNwS86iKLqJJxmSXAtT6okRFbobPIRK8EDAdD7wbCzSG2KWuTxsI/rY/ZWWUxc//q2aPAp8dSbzZeKGdbPxvwaS5vB5HlH04TirejfnnB/+y1+AZSlvRe5/0mWD24zsFonHkqSRWdVKnJwJ1z83gZjudN7WQWS+eH87bppHxidzmLbjvi3TGGm+KSISr9ZodQeo6N7P0HXiS/xaUh3MlzCTk5/f+Q3rweaU4BC2DKfk9X0rfC4W
+ Mf2L8ZvX
+ McOlt49KuVbnOtTWYB8yl1rUXKqG/hRKASFBKgkVuOHcXUeJgl9buS26VsBiClfV69Yz4YTxBY9XTxF/u0AwTtY68nUcC7irSxJvU99sXRAfDlAuJ6kol0NOznVFVddGbbUpiBcDYpi+BhrIy0XCOO5CK43Ee/cVRwc43I6uA1JMRp669nyOXMNerJXYsT5XZJFGrMQ+qktjk4b8Id6spDypihYhYvttJ4uZSncIUGKDi/slXcBBQj3v7U7eL74gxGzSMZEGuUDw034PQmmN9NykZPH5yyrR6h4foMbA0rFiBP5sbdC7LD93Z2BITwAerUM0FNhMqGjejHBo1kkuHOgkkjQ20Mr+mQ2fJ1U+1+KWVmx1Yes7wSjUj1IAVfNFMj0CLKTKtk9c6t942zlE/x6pvLpn5gCuKkGucukYh4de35wiWwBQ07eaqEEIdf0/otzIN1wqcPo9RG0KCFvqmWxO7fl9QLWW/shyXcWmPxZQXjfjuMEVUOoT+E7ElPNxWHGmRvdObh8cnhOAvPsba7eqzFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,48 +152,118 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-alloc_pages_node() resolves NUMA_NO_NODE to numa_mem_id() internally. In
-preparation for switching ITS allocations to the CoCo shared memory
-allocator, resolve the default node explicitly in
-its_alloc_pages_node().
+ITS command queues and tables are shared with the host in a
+confidential-computing guest. The ITS allocator currently assumes that
+the guest PAGE_SIZE is sufficient for both allocation alignment and
+private/shared state changes.
 
-The CoCo shared memory allocator interprets NUMA_NO_NODE as a request to
-apply the current task's memory policy. Resolving it to numa_mem_id() in
-the common ITS allocation helper preserves the existing
-nearest-memory-node placement for all callers
-
-This patch does not change the current allocation behavior.
+Route ITS page allocations through alloc_cc_shared_pages_node(). Keep
+the tracked table size based on the ITS-requested order. On release,
+reconstruct the common allocation metadata from the original ITS order
+and the architecture granule size so the same transitioned range and
+buddy order are used.
 
 Cc: Marc Zyngier <maz@kernel.org>
 Cc: Thomas Gleixner <tglx@kernel.org>
 Cc: Radu Rendec <radu@rendec.net>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c | 40 ++++++++++++--------------------
+ 1 file changed, 15 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index c952c069f937..ada5c30af41e 100644
+index ada5c30af41e..a67e98cecde5 100644
 --- a/drivers/irqchip/irq-gic-v3-its.c
 +++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -32,6 +32,7 @@
- #include <linux/set_memory.h>
+@@ -8,6 +8,7 @@
+ #include <linux/acpi_iort.h>
+ #include <linux/bitfield.h>
+ #include <linux/bitmap.h>
++#include <linux/cc_shared.h>
+ #include <linux/cpu.h>
+ #include <linux/crash_dump.h>
+ #include <linux/delay.h>
+@@ -19,7 +20,6 @@
+ #include <linux/irqdomain.h>
+ #include <linux/list.h>
+ #include <linux/log2.h>
+-#include <linux/mem_encrypt.h>
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/msi.h>
+@@ -29,7 +29,6 @@
+ #include <linux/of_pci.h>
+ #include <linux/of_platform.h>
+ #include <linux/percpu.h>
+-#include <linux/set_memory.h>
  #include <linux/slab.h>
  #include <linux/syscore_ops.h>
-+#include <linux/topology.h>
+ #include <linux/topology.h>
+@@ -216,28 +215,16 @@ static gfp_t gfp_flags_quirk;
+ static struct page *its_alloc_pages_node(int node, gfp_t gfp,
+ 					 unsigned int order)
+ {
+-	struct page *page;
+-	int ret = 0;
++	struct cc_shared_pages mem;
  
- #include <linux/irqchip.h>
- #include <linux/irqchip/arm-gic-v3.h>
-@@ -218,6 +219,9 @@ static struct page *its_alloc_pages_node(int node, gfp_t gfp,
- 	struct page *page;
- 	int ret = 0;
+ 	if (node == NUMA_NO_NODE)
+ 		node = numa_mem_id();
  
-+	if (node == NUMA_NO_NODE)
-+		node = numa_mem_id();
+-	page = alloc_pages_node(node, gfp | gfp_flags_quirk, order);
+-
+-	if (!page)
+-		return NULL;
+-
+-	ret = set_memory_decrypted((unsigned long)page_address(page),
+-				   1 << order);
+-	/*
+-	 * If set_memory_decrypted() fails then we don't know what state the
+-	 * page is in, so we can't free it. Instead we leak it.
+-	 * set_memory_decrypted() will already have WARNed.
+-	 */
+-	if (ret)
++	if (alloc_cc_shared_pages_node(node, gfp | gfp_flags_quirk,
++				       PAGE_SIZE << order, &mem))
+ 		return NULL;
+ 
+-	return page;
++	return mem.page;
+ }
+ 
+ static struct page *its_alloc_pages(gfp_t gfp, unsigned int order)
+@@ -247,13 +234,15 @@ static struct page *its_alloc_pages(gfp_t gfp, unsigned int order)
+ 
+ static void its_free_pages(void *addr, unsigned int order)
+ {
+-	/*
+-	 * If the memory cannot be encrypted again then we must leak the pages.
+-	 * set_memory_encrypted() will already have WARNed.
+-	 */
+-	if (set_memory_encrypted((unsigned long)addr, 1 << order))
++	struct cc_shared_layout layout;
++	struct cc_shared_pages mem;
 +
- 	page = alloc_pages_node(node, gfp | gfp_flags_quirk, order);
++	if (WARN_ON(cc_shared_calc_layout(PAGE_SIZE << order, &layout)))
+ 		return;
+-	free_pages((unsigned long)addr, order);
++
++	mem.page = virt_to_page(addr);
++	mem.shared_size = layout.shared_size;
++	free_cc_shared_pages(&mem);
+ }
  
- 	if (!page)
+ static struct gen_pool *itt_pool;
+@@ -278,7 +267,8 @@ static void *itt_alloc_pool(int node, int size)
+ 		if (!page)
+ 			break;
+ 
+-		gen_pool_add(itt_pool, (unsigned long)page_address(page), PAGE_SIZE, node);
++		gen_pool_add(itt_pool, (unsigned long)page_address(page),
++			     cc_shared_granule_size(), node);
+ 	} while (!addr);
+ 
+ 	return (void *)addr;
 -- 
 2.43.0
 
