@@ -1,100 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFAA606E487
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5717860703CC
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=mQcxeC6t
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YFu4j6UT
 Received: by kanga.kvack.org (Postfix)
-	id 5FBA96B05FD; Mon, 16 Nov 2026 06:18:02 -0500 (EST)
+	id 70F5E6B0604; Mon, 16 Nov 2026 06:18:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D3346B0600; Mon, 16 Nov 2026 06:18:02 -0500 (EST)
+	id 6E6886B061D; Mon, 16 Nov 2026 06:18:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 510D36B0604; Mon, 16 Nov 2026 06:18:02 -0500 (EST)
+	id 5FCBB6B061E; Mon, 16 Nov 2026 06:18:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 320D06B05FD
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:18:02 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C3E191608D6
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:18:01 +0000 (UTC)
-X-FDA: 85440732762.12.81F08BE
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8D543C0004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:17:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mQcxeC6t;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf28.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B3356B0604
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:18:25 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA3FA80930
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:18:24 +0000 (UTC)
+X-FDA: 85440733728.10.D4F9004
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BC9528000C
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:18:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YFu4j6UT;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827880;
+	s=arc-20220608; t=1794827902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gcSYfJo9DBtW87ibrEcEB+4TxGxQarLrxm69h/JCdcA=;
-	b=fj1FISLmd+krWq2Yg6r+a4VjVo31Ha0I1RKHCp5B3OwQW4Z/BCVIB7z0G5xG3LbEUsty+G
-	EBpEq34LV6Qi0UvuYldoUyE6fAO6BJzkfo60auOAXbkIUl8nLky6+4rQtzb5IseEMKMBim
-	7Akd9WBR/rGp/GRbpfd7GrUHsrJgu3c=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mQcxeC6t;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf28.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	bh=pInkU1Kj6zfIjFRdKgRmxjnKdwV+M8/pK6hiBzR2ods=;
+	b=wGtsZH6bvc0rt3U5omIZoEhlgL40cTxa9Wl/Jb1lefr7Z1NcgiC4+r3dsuyH/yxCOdMRin
+	qdfSmSFIJx1qh391aBWUxiNsVFkPESwFVvMrkeb8tu9pejCOpArQr1CtkvwLv7uC3Jlv4Q
+	OjCOZM/LtP/JXE3FNyZJSPFzxMKkOGY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827880;
-	b=dVBZsx0soTqAsjIbOqUOeNTTc1DRRq5tqfCCI9nHKpeLdlUEdGdCwVTDJFK2s607vfAqhz
-	8eZW7WY8bnAGE2QCTP091bKupPPbucnZH93XT4XCrdodtwUertmPw/q5Pns+PZmvOrzaj+
-	VMFpiiBQoIhwFu1KJTJL3mTTLpw2n9E=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1794827870; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=gcSYfJo9DBtW87ibrEcEB+4TxGxQarLrxm69h/JCdcA=;
- b=mQcxeC6tNSjEUQqT1PHD9V7k1HbfoEE3KELg89HubxEA97yFDXM9EtbD4F9tKVWOGoQ2gY
- RMfsd1avzgnoSVOBDbDRW5wKY5iSx9e3Bh3m2YMbQIOvOohcMR1FLEbqvM3/a02HtWwi15
- cSY7pzarXdhyHFfiq/lg8h9E8CDXgbv266+7lwOIn7nVjkC7Sfw+NOSb3bQ9q4qBryBSZ+
- WYLa3mUGNEDq7zs79X3YBv8aVRNSLNbdO9utyS7I9gDoFc8mSd3TTTAE99n3c9zDbKd/DD
- DzyD6y/VGMkCGaKuQ6m8yfFJVFyTQxqBAaNp95lIPoMIsXpGq3C9gGQl23O2Uw==
-References: <20261113033442.62970-1-songmuchun@bytedance.com> <179482576829.2379196.3205677806966393313.b4-review@b4>
-In-Reply-To: <179482576829.2379196.3205677806966393313.b4-review@b4>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, 
-	"David Hildenbrand" <david@kernel.org>, 
-	"Oscar Salvador" <osalvador@suse.de>, 
-	"Andrew Popple" <apopple@nvidia.com>, 
-	"Balbir Singh" <balbirs@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka" <vbabka@kernel.org>, 
-	"Suren Baghdasaryan" <surenb@google.com>, 
-	"Michal Hocko" <mhocko@suse.com>, "Muchun Song" <muchun.song@linux.dev>, 
-	"James Houghton" <jthoughton@google.com>, 
-	"Lance Yang" <lance.yang@linux.dev>, "Qi Zheng" <qi.zheng@linux.dev>, 
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-X-Lms-Return-Path: <lba+26afae65c+834d37+kvack.org+lizhe.67@bytedance.com>
-Date: Mon, 16 Nov 2026 19:17:27 +0800
-Message-Id: <f38322fb-abb7-4284-b6d5-bd6e747333bb@bytedance.com>
-User-Agent: Mozilla Thunderbird
-To: "Mike Rapoport" <rppt@kernel.org>, 
-	"Muchun Song" <songmuchun@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH v2 00/14] mm: Unify memmap initialization for compound pages
+	t=1794827902;
+	b=pEGFSfseMEHvytTM8LjhffP+ZIWMO9Vdf8mXCJD6mXowNIvpTZ2XFNSBSuG8JbbxXZwPPC
+	JIMivu/ly5qYtfnlIPfRie81WBK4Ntv3udoLkJObD68eA4rV9Qg5MtT4JuVA+xb08E0V1a
+	S2i725UlH6v/WATlUcM/XAIl6IXkqrY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YFu4j6UT;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1198C41A41;
+	Mon, 16 Nov 2026 11:18:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7D91F000C7;
+	Mon, 16 Nov 2026 11:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794827902;
+	bh=pInkU1Kj6zfIjFRdKgRmxjnKdwV+M8/pK6hiBzR2ods=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YFu4j6UT5ULC/Wpu4+KyWDjm6pFeSFT78Jr5Y2tEVG2ZjhqbqIJj54d2Xf5k/FRk0
+	 GvA5lLs2yMEbPT9qabJsgfvWpPUl60Q3tlEiel60ZqYYdFvPKnmK1Oo60pi+elAxRh
+	 hO+U+xKxpxG4TzyRi+SSsLXIkvmXeUq3ZYpUJKUxJHYKcRmmQptwgjEBfTmxj2F/Ra
+	 H+8dbl7siG03M+0qRpWBvATvQ9LpnBXSfJAhTjJ5ZMCcGQK54sLQwaXgDVmILXtC7+
+	 ZpFu8l4nMega2NWEyqAhC1SNw2+FsGWbxqe7dn+/tSWNNNx2lV6+SlDYgqfpewxH1f
+	 3tebTBTVM+Umg==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 26FCB198003A;
+	Mon, 16 Nov 2026 06:18:14 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 16 Nov 2026 06:18:19 -0500
+X-ME-Sender: <xms:deb6av-zhn4UO6SdC9g8DgVodC_r7Qj_roodrs9WoCaIMWyAftrBtg>
+    <xme:deb6aqLOlkggipP037eX6K_dJ5eEG6hNXo5LDFfjrp3nZTdqqBkZ1Nb7VoBE0TkZ_
+    JrHh6ocp8yikgswn2tTy7Wa26qUaIYlpIbcgX7U8IfBMq-YX6lJkS4y>
+X-ME-Received: <xmr:deb6akIOoF67Ycx3cI2pe4jE0Gh4n8Dw8dWrDpif4BkQSiyVUL7FBuYHrqo>
+X-ME-Proxy-Cause: dmFkZTF0r54BgXdUKVHIIJLSxT1HUE8NMy+LX6nTbiUSt5B8TJTcqLVbZZh8ZRYGxOuiID
+    I+9mEJoA3l4liwzf6OgguPCU94Yg13dir1yyQwjAQWjSXsuRKra8Aa8G7BK3FTh9HRP9Jv
+    rj2cvt/z3cYpCGQ652b1ZBsuDX3ET4qjRSaLgC7WVmy5QVQTXY6sbLmFql+2DIr0rx7NhT
+    M3uyi2NgsMt+zsW7zVSvCNgsfMIubG8+6aGmigIVwvy8okaCH1oKXVa1qr/yXDaXXUQhYL
+    wQtnRcPUFJ8BoWqQLjWwv3vO8EB3TloW6I0sEs51CXCiQbhRAr0U58mh5FGUEhmjvEHWSn
+    +VPClTVclES+wly6obFvXaBTbp0sdFCQVGmujFiHNt38j1bkOpFJP/hVszvj+kUEv35otN
+    bmfgbpEzJae+7EBTBr16f3Ud+kCvxV2IXr1ntzK4o3iezmgClOlPvFseV0vflmxxYZ9iou
+    kESLDD3GWrIuV/2TnimqZVAVpo3pb7YwUYkv3YHS/oFWN23u0wO22+mVta4CsJV6Q+JVjr
+    42Xv3GRmkfN+/Is/JtGxh2xOrS8zHYVLimTuxF/xmbjO7EaTmdSUBpKlHLc63VrfFOnGq8
+    ih6fQpFWjhuAt1G6ahVMklcAm01IQCnni76TUU1iXCK63PA9DCxg8g0NFnmQ
+X-ME-Proxy: <xmx:deb6avASCCqAgKooRs_OHb_k04EofBRFHYPkDKSovsjMCsMNfnK8hw>
+    <xmx:deb6annMl92x_IHuqdgUCC202iUwUi6CRl5td3U-fDcohK7NmEPJ4A>
+    <xmx:deb6arF6hPMnQg6iDjfI3g3yPFaHoEonqnf6uFZGYGEZxs4uD06pxA>
+    <xmx:deb6amj2_cj6M_CrprWZdkWb2H47YJLmvK3KRAG1FsN3TDgc_8GFXg>
+    <xmx:deb6ajc_0UmiW9_O2vhBOFp-bxsnlE61bfeHCCShXbhxaxQPAoaNB5Oh>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Nov 2026 06:18:12 -0500 (EST)
+Date: Mon, 16 Nov 2026 11:18:11 +0000
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Dev Jain <dev.jain@arm.com>, Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 3/3] mm: vmscan: tell direct reclaim the allocation is
+ ALLOC_NOFRAGMENT
+Message-ID: <avrk2Vn3q8FUI1oZ@shutemov.name>
+References: <20261102093939.3340540-1-kas@kernel.org>
+ <20261102093939.3340540-4-kas@kernel.org>
+ <e16c46e8-d69d-450f-bf98-6f14755cdae5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8D543C0004
-X-Stat-Signature: g5stmw65bq3q78n16ws564fc9y8hp1fx
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e16c46e8-d69d-450f-bf98-6f14755cdae5@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: up4pbtm73thxbpj85gsnbewfasihx7t5
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: BC9528000C
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794827877-126646
-X-HE-Meta: U2FsdGVkX18uMsCCi/FlrLf5+GKka3ryXZWzQsG6nrau1BtkbZGvq9Ck+2jH21MKTT9MHZdCbtp7mgu5gpvJCG6VOoLU8Vr2nOYb4mQrg3yMFF5OMUIfHfptESQjA82jQ2RuCIKKqBu4FmChtFJWWnlKtdnKE7JIpIM+Ub6rnnePKqcY91PbmHpvtKMvRm4e10GwxuvBZYTjKIwHLGEgVy4ZcRlTPJnknC2hLhJb78gZOwZPLKXOhLLOsJLOXhqKkcdgisHqNOgHtXyfww73XNFa7zFr10JrVGvGricHwXSapKWDZTpOqr2vBFvEWzMCvHlbqwkGd1eA04CpEAwqxRhnMyN8ZkfrQwLU5vd5qyqg4sJvSzzOECLm861myDuyJFG0vhv1SlpCcCJoJfKPlQIunmnMOi+lXrinGYrsdPn/n9iwEI4cVqatCfNSfLv4VAufI6LJOJq3YET8V9qqUSIny8c9kEYsXul7vKf+lQvA6PsfSyVMvFIL2DgVYc7jRQnIXAfL60GtqO/xjRSt+9ETLBVfoHNueerWmBzDsLmqXlK6Ui8K6HQLs74MQD1HnZSBgLN+m7iQRI+4leSlMEpfOeLb3I/09cQbUE4OgdApY1PkR2OCNX6Abr87OX4PdkNM67r7+6+UOLDrTVJIewcy8DR92w6krPQGhq3BKMcsI+OFXYMPFsf4o+xipr1fssFqKb/ycxrWp0uEiCx1jfd3YXLy0OJ6FTWH4WPptb93GVe21IvF8x07vtw2ZZz5+xE5C2yavwSWY2O9y097mMuzM10QZldLJAsXBxSM2VhUvTV1TjZnTY67akXUzRAgJlEVzhSx1PzRPnArP4FNEk+w4Eeu/YcxoCNPPq7Y4aVTLybqTZH1VV2p4PrfFLoXArpfy+kEo132WbsVlKqjityyr4yJfBcTML5YeJ/rre5AK1XZa4rh9VlCdsPjOjl/J0Qe7fz7iUEU9b+jj06
- N1g/fSBq
- UjB4/P1nOHMfPuS7FwizJqXVBDJn/ckearBhTT/vENJYYEFJgX10FOxhNyfB6/w3ojWPMv5s5ZatmPUejbRVIMXD7M5lxxqPkTyg+GH8XE5l5RrZ/dsVUhQZwUXfha0TUxi+NOGizFuVbyAheGYjRJTIjL8sMM9TcuYP/vLppKDyYYfO34OPAKZuScQa7Op43Qf+tfQSXp3CCI/XB4kUMLiyoiZfsuApxCO5XFuBoqVioGAydKvXVKN0cdLBCZmHW89Msxipw6XHN/u/H/P056h+gtg==
+X-HE-Tag: 1794827902-979838
+X-HE-Meta: U2FsdGVkX19Lu4QZc9LL0PFeqqo2ldaKo+Z6N6/DTe2CkBZ7+TJB695YF50hkyWbTBbRJFuIPZEyAnYtinVt9+bwzgwuhqdKrELt5aOfXAFwrS2Z3XBOC21yY1hLy2xM2Dt7QLt+YZDbhHR/XaKzxe2SnbrODuUmNlPe6MCAkNWSzmiSt/bM+yY/MEZbY7VN9L13oNPr8s/cshODw+gllP9pypZgpOEECDBIvIOq8PuJRV3Et+r4Tc2lRz0aIR2nKvwEf21RpkmD74pIACRCkUlzAL/CQkH//aNTMcAHU6YVBi0xIp7VQmT19h31/NTL2Nb7NHDoB5ntt0G9vz4sYVq+eZz7HxEN9PF4K76VMYmlG3tE7qk3oEwsJ0guipIFjoxu6gg+0yDaVqo513D2zJxmPCZQzPZdAbhDZHmLQF+V9vSLpbSPRF7u833z01GIgzY80jRDVTlKWNnDUnZX5g4TSc3hPgOhrxMQV1jiOq0kNKDsHZQrCgOoKAjm4Mv/F8IAxfnfNVxF3q2nsDZLQEwBuY+bNKw55UY/sOt1+rXwSEw1vWzxIzvfISLnqTv9tuC6ll1LaLLDzINgBCiN4jq1qmCRaRz699w1WF+mFWfEoD8iFE5bfKYPikForUkLjWSNsf1Mjg6B+1DZlZgWn4EZg+y9JzmyJKqmavXOcdh7OkiaI7JdROOVxwQyVZ7aHIVsNMJ1DT6yz0NYMgmVLLgmbjISiVqCseRYyoNRmCcK/KhFdktlqFAMZjXMmGeny8jnvmJX+U5XHJBPGfKUysxc1154Y9xVHYYWEzn0jzyT39otW7YGCv4gsT25PZ5+keAfBfZkWbckRSvTQhQOAiITdMmwceVECnahNWNgZi66v6DPrj04ZIRUr+EXPPShoT33IgVPpxKA4ffZ1wahmLDmGnZhIHbG65ft1yFlW27Bi+Vej3U5XAhp6jhHJMN95mN3pm7h//FW1Vb74bp
+ /8VSNhhJ
+ +SplVjdzLP6SahJybK+Se86Xab2a/r44ySM62oSc1XUsnXTPy7egre33euSn+DX6U32hqJG9gnT4vUGZWDchkN6pQgNoxAp1VdIbAbSudLdXpS3U9A8GmbgX9xexRfnC6i42jW3xRvejJLdcH2HodlsFZZZVZTsqTjPOwKPi9jeENtL6oZa7HGLHBJKGLwM9KGsS65PTWlRIwHZx0vbx+hC8V5a3GxFMtgjmh/4AqOrIupozldu52BRe9g2/u6yPr1g3zXBAb43wbQhL4vKwstdF9/Nwzn4iIWNrM9qxMaxiZj/g/3EwvgVPUAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,70 +131,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/16/26 6:42 PM, Mike Rapoport wrote:
-> Hi,
->
->> Hi,
->>
->> This v2 is based on the mm-new branch at commit daed51c91051.
->>
->> This series is split out from the earlier, larger series
->> "mm: Generalize HVO for HugeTLB and device DAX" [1]. That series
->> generalized vmemmap optimization across HugeTLB and device DAX. One
->> remaining piece is the separate compound struct page initialization used
->> by boot-time gigantic HugeTLB pages and compound ZONE_DEVICE ranges.
->>
->> This v2 also folds in Li Zhe's two-patch series, using that series' v2
->> as the integration point [2].
->>
->> Li Zhe (2):
->>    mm/mm_init: factor out memmap_init_page_from_template()
->>    mm/hugetlb: optimize bootmem hugepage tail vmemmap init
->>
->> Muchun Song (12):
->>    mm/mm_init: verify zones for template-initialized pages
->>    mm/mm_init: factor out common struct page initialization
->>    mm/mm_init: simplify zone device page initialization
->>    mm/mm_init: factor out frozen compound page initialization
->>    mm/hugetlb: drop boot-time HVO handling for gigantic folios
->>    mm/hugetlb: initialize all struct pages for bootmem hugepages
->>    mm/hugetlb: use common compound page initialization helper
->>    mm/mm_init: make __init_single_page() static
->>    mm/mm_init: make memmap_init_page_from_template() static
->>    mm/cma: centralize CMA pageblock initialization
->>    mm/cma: localize init_cma_pageblock() to cma.c
->>    mm/mm_init: move pageblock migratetype init to memmap helpers
->>
->>   include/linux/mm.h   |   8 --
->>   mm/cma.c             |  24 +++--
->>   mm/hugetlb.c         | 111 ++-----------------
->>   mm/hugetlb_vmemmap.c |  17 +--
->>   mm/mm_init.c         | 247 +++++++++++++++++--------------------------
->>   mm/mm_init.h         |  13 +--
->>   mm/sparse-vmemmap.c  |   7 +-
->>   7 files changed, 129 insertions(+), 298 deletions(-)
-> That's nice :)
->
-> The series would be easier to review if Li Zhe's patches were integrated
-> rather than stacked in. I hoped that the changes for template
-> initialization would fit into the patches that rework other parts.
->
-> The way it's done now several patches in the beginning of the series
-> change code that the later patches remove or turn some of new functions
-> into static.
->
-> Another thing is that the numbers Li Zhe measured were for a different
-> implementation, so they would be stale for the state after these
-> changes.
+On Fri, Nov 13, 2026 at 06:58:05PM +0100, Vlastimil Babka (SUSE) wrote:
+> I'd perhaps pass whole alloc_flags to try_to_free_pages(), but other than
+> that LGTM.
 
+Passing alloc_flags down is easy. The question is what reclaim does with
+them.
 
-Agreed. I would be happy to provide updated performance numbers once the
-final integrated form is ready.
+I can keep using only ALLOC_NOFRAGMENT from them, as the nofragment bit
+in struct scan_control.
 
-Thanks,
-Zhe
+Do you want anything beyond this?
 
->
-> I have some nits and naming comments in a few patches, other than that
-> the series LGTM.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
