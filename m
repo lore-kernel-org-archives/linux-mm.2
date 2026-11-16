@@ -1,140 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9D9606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 08:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05062606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 08:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XJuN6bGQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LwJ29DC/
 Received: by kanga.kvack.org (Postfix)
-	id 931416B00EF; Mon, 16 Nov 2026 03:30:24 -0500 (EST)
+	id 263C56B05B2; Mon, 16 Nov 2026 03:38:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E25A6B05B6; Mon, 16 Nov 2026 03:30:24 -0500 (EST)
+	id 214586B05B3; Mon, 16 Nov 2026 03:38:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D1126B05B7; Mon, 16 Nov 2026 03:30:24 -0500 (EST)
+	id 104486B05B4; Mon, 16 Nov 2026 03:38:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BFA86B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:30:24 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EEC39A86A2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:30:23 +0000 (UTC)
-X-FDA: 85440310326.22.F0D5036
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7B8874000A
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:30:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XJuN6bGQ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794817821;
-	b=MNTWWnndAGI/Cl1QkhhWUCcRPrC+ym7q0Z0puJp06Dt+lyXfAkCOQU8QhSZQV3BseQ3yUL
-	lw60hNOIYo424bfFTMhD5LFgPLN1d+sMa6dwUVQcXdfL6vdIrsX+qg9szRJujB7cEHnlcz
-	+bsELeY2M4u1gDKdAWKVn9MfJGk2L4A=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DA8EF6B05B2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:38:36 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EF731A04FC
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:38:36 +0000 (UTC)
+X-FDA: 85440331032.04.6238EF6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8AF371A0006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:38:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LwJ29DC/";
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794817821;
+	s=arc-20220608; t=1794818314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HcxVbOcOy4JVEhqcYNolqzI7uMO52IjTv8D4sfciG7I=;
-	b=h4WXrZbhbWdQ9bb6KUIPuN91prRzUxFsF689kL7Sqtz1Mko+Fre4dUg361rUfFLvSrQmUs
-	rw8IZsnr3HmhcHMiznIKvc1zt3PVVBSbyt6fpZ0vYlKV31EpxNiL40yML9Oec6QV3m0Zqw
-	lO2lZFGx0jQiZz+lsObUoct6mpu2dr0=
+	bh=YwQjPlE5C9xr3ZrljBav55IFe0LmvzgE7fM0ikoKYZU=;
+	b=ZytbxcrtSTCGC2b8MU+UPiL1MMgDN6RUc0oAoN/rgYNwvlwh1I7FwoZt6bj3OAzLEnTKCm
+	cm/swohWd4vBEoQQnCS1+pcrO4DDWPr84AsKYaFGa5ZDWNUJD6YZiWeRNgyE6GUvobVJG1
+	CBKBbnhUEgU55nF08sB6QjiwcNmEGs4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794818314;
+	b=c0IY4wwJTA5ADPIBT77hBcd1qKwMW96YOC5sEu8jACPTY4JYnxOzUlQ0paczsIPfMZeFwk
+	FsCwfB7E5vndy/0eb5tEGkDHyDYtGih/okSJyVafbqQoY6r+EtQU7619I9piIzd6QtPlJa
+	9/lUti6usg2uptSOXu+dLQnonFVzs9I=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XJuN6bGQ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794817819;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HcxVbOcOy4JVEhqcYNolqzI7uMO52IjTv8D4sfciG7I=;
-	b=XJuN6bGQqf6W/ocxGmz8TkekE+MYOZaXko4yn6xoUI8nDAGyKZdITQydIbjAxjaaTbXtiC
-	q8TZoVX2zpAXzLbDwgglE6NfXMv4v4rY5cGN0Zqh5R4d0AXExuSqZAro7gW1MzBqslsn2Z
-	y5p3nolO4TF2dptyghW0Ui0nnWmsNyk=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-220-arxaR-vOPtaf7ClaTQ4LGA-1; Mon, 16 Nov 2026 03:30:17 -0500
-X-MC-Unique: arxaR-vOPtaf7ClaTQ4LGA-1
-X-Mimecast-MFC-AGG-ID: arxaR-vOPtaf7ClaTQ4LGA_1794817817
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ee1ed68286so23385575ad.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 00:30:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794817817; x=1795422617;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HcxVbOcOy4JVEhqcYNolqzI7uMO52IjTv8D4sfciG7I=;
-        b=YzIRCF4DHUSbCxH0SZHCnqRGo1KX1Vka4Zj/DAM8q8/1RV5nm6PhLA13pw97clICaK
-         zXqDptz84mfvUFTc1i+5lDUhu7rj6WCuZ1oY4vkXPJ76lFl6mLc8cXfQSIxzBdSUHkBq
-         pxAQ+SrXwglHLzfEJcmzRI2Lomd8CvITIVvTZiU6RdAP+CmPt+w3+7SY1THhaed4fYIX
-         aohQ4/XNiWMMwuM/tZRZ4J53/XvVTta5f4jtVcYnbOGx5/YH4oxCCs2F23WVByzW9obW
-         dzxc8HBc/i3cxxIs7L/s8QXD+Wf0AnnjtPgxDKM/6tzVtoePBGlN4piFXmytDcOlZTRN
-         Pn9w==
-X-Forwarded-Encrypted: i=1; AL+hErHMmSTuwVxj7Rxrc8veAWYaE2Ha2eYMWyM3XLMPgJbc4+7O+BopX/Rg13AainB19huT+PQez3sbpA==@kvack.org
-X-Gm-Message-State: APuU4Z8IEEjQspKVYirto9MVf5cEgATQQ3IGxAz/tmdhKEuGo6uYoLMH
-	1HIzw0ITr2fZZmd8TIq+FZc8WWOz4eH/eWhTLOHfniC5mOZNk3xtzi7ajxKGVq+aOLhx0mE4vn6
-	PZUVzES7f5RfAX4Dhs/Twazabq3Y2LZFNFzFQ79ZhzajXbABHQLjz
-X-Gm-Gg: AZFdTZeCtCX3bc1rt+cWrSWywVkbV3iazeMAGeuAhd9YehjlG1veNcgJeyCCXRPJE6d
-	BGe5ImZ1RsXIVQdU+wj90iGB2w5LbaAstIbteOp4sSg4TmnJucvDea10ffDRjH8kDWMuNIa/15o
-	jW00ZOjtSpEYSQCZeCz8ZAua8t/8ilj5J6BPR3uO2QJERIPvXE+9rZeTJCsziOzrtzrLVnlnG5v
-	OKh1ZPMZn6kD6Q53D7jreyGb62IikTKyPVz3pL7eQgfLJVw++SQhlfnzQGlhqZMw0MLJaCE4uMm
-	oV7DlmGEsyxjHTGDRm6Rvdq+zaJxxqvEgrmGqJpZ2zmT5qEh2Prwximp9z/c7wzcg+n1IO7CQ/i
-	otioAJRCKQ2e2SCwjwcafui3AY/dZZZDQHNOnV/dBvIJZ0m70rrNTQ2YHBWkK7X5yQuoW
-X-Received: by 2002:a17:903:2281:b0:2e9:55fc:ded2 with SMTP id d9443c01a7336-2ee0dec63demr105228425ad.52.1794817816643;
-        Mon, 16 Nov 2026 00:30:16 -0800 (PST)
-X-Received: by 2002:a17:903:2281:b0:2e9:55fc:ded2 with SMTP id d9443c01a7336-2ee0dec63demr105228045ad.52.1794817816125;
-        Mon, 16 Nov 2026 00:30:16 -0800 (PST)
-Received: from [192.168.1.41] ([117.245.173.92])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f4ad519sm33628995ad.2.2026.11.16.00.30.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Nov 2026 00:30:15 -0800 (PST)
-Message-ID: <f402c25e-df9f-4007-914c-263694a00885@redhat.com>
-Date: Mon, 16 Nov 2026 14:00:08 +0530
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LwJ29DC/";
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BCB3340B28;
+	Mon, 16 Nov 2026 08:38:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1E71F000C4;
+	Mon, 16 Nov 2026 08:38:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794818313;
+	bh=YwQjPlE5C9xr3ZrljBav55IFe0LmvzgE7fM0ikoKYZU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LwJ29DC/lf644LHL68blpNQ70huLnHF0+Rl5hrrQBxHPjQodrNL/sePSpa/8y/OuR
+	 B1k9NQBK+yE54apQ+9ViglwcMZ5VbY9Fqqp4dFxRwqQkHXOX5nVaOZXxv7MiYdqWDa
+	 O2KZP+JDM6V5hJCXpfvn2b1WLJZraH/c5uvOWT+9dM2yUzT7YnhU4+ZBBJPpxqbW/P
+	 F3szZ9hQpxWosw1naW2pWU61OffrDTugQkCv7SfHQfz5e1Sf/XOohNKZkcltu/e4ct
+	 pvIdMXFwUHy6Yi2KyoC01HSNFUEr6GOmHXpk10rKhbDiCmO+NAOxpFjZc0U5icDxkD
+	 3Ao6XVCcot2QA==
+Message-ID: <d92f9b62-5d2a-44af-908a-ef80fc8e1766@kernel.org>
+Date: Mon, 16 Nov 2026 09:38:29 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] kho: walk bootmem areas in address order
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>,
+Subject: Re: [PATCH] mm/compaction: sample empty pageblocks again from a
+ random offset
+To: Dev Jain <dev.jain@arm.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>,
- Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
- <990cc079-70ab-4fcf-9974-679aaf07849e@redhat.com>
- <avV9qoaPMBLCNOXD@kernel.org>
- <7d5f300f-ab18-4086-8a61-c3347168067a@redhat.com>
- <avl5QjUdYWcCP8Yo@kernel.org>
-From: Mukesh Pilaniya <mpilaniy@redhat.com>
-In-Reply-To: <avl5QjUdYWcCP8Yo@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XDkDAaa26lEMo-FfWHLsHb07Fcmib2FBIGxi_gD63w0_1794817817
-X-Mimecast-Originator: redhat.com
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20261104101747.2485913-1-kas@kernel.org>
+ <28a340e0-76f5-416f-a74e-f74f4a2c2d36@arm.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <28a340e0-76f5-416f-a74e-f74f4a2c2d36@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7B8874000A
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ko6ri7ownzzi5gcopk8rwkmrf7fdbeya
-X-Rspam-User:
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: m9ezieedry41n3jemxy473sz1fbuz9cq
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794817820-145618
-X-HE-Meta: U2FsdGVkX19PXSmjp0hvpGNzQyznd1DDxg4BoD1Jy+65KisRVcPJ4cUuTHDOwVSiKUJ+aPJaxUDgc74B0S5Lo7Y6vCKRphetAfkL6Ru/Hg9PUF+AbTDFgm1lhSswXi4/IMLrfJtQBtakSrfzc/n8NtnsCissNNd2EPj3q7lumLXGs0ARHL7ULswDzWzkqUjETAfEmI3Y6jN7oB+hq6o9rSUL4H5dRbg6OsP6RR4Lm17NZdfomO3hCRZga/JFgnUDY54ARk1D2AEmQuO5Kx5/B8HNcP4c7mf8gDn62dRGPLeoSo5tHk9UgcPUducSwf0UAm1grV4joX+n5RJxKmkjn5MGOrGenBYG4ISaCCK2DxHGI1hP0YRo/rdYUfKlPKIR4u4lpe3vltrH5bREROKhHz6bq89FdIkfnwYRc5DxsTSAMgmofe362OjhTyjIWhOBvCpSqyyJmRVIMWEeNAsIXRqKyahVynxHHFK3XdjT7DbTFYVEptYMb9hK5vWwFAkkeuk2F+7t6UdnCUA/n8JKSoCPb+H1kPRwFYz9cKVeD5ChoUuwr6ioIaCa3na84ygWXKpy0XvmKszzoMntvQf0EOdsZ/dhAg3/MZJU7uqEGu04JL0Q9Z2/BR0sli8/OQEe8Yasz+tWRt5cNkdbbv4TrNN6QFRteUocVfbnIVyC2szguNcbiRuOBAUbGjl9f8797nN/uBQMDWIJkPrKFREyu77K/z6F9OsS6RpP5pb9MRZO2qeLr0dC44nY1aROQzsT4JizJrcsvSXYwtlMe8+O+Bb0XXqtqdixpwXs+dCcFDcRKt+iFI5S4ve2b5ZoazyRH0M3IqYiR3r+6FZJAekgbiXTeB70maqemj0VI0qQogacww3YHRbfVDmne0uo+By3iK0tptP89b7FPVp+xZrdBUPT3WObva6d8NKR64OvP3MI46OyQy9UHz39qMEZLf/0OZxvuhRbrEQi7DPkTHg
- t6Usu3v/
- SVarw6kjNgVi4ap8AjI9OVHP1Z0Dau4tJuzGQYKZRWEuVTwdpa3myvkePPV3+6Ndg/kNQEzROUg2XyYgbdazBH9yC7QkvWxQ2SNfIJfigRGzANp7BO77YVtF3QBoRHgfPeRS2ixHPZkH41fneVigLsfHDty8Fbaq9ZPhyWyv1WYu/Ra7rT95W8za6+5018OklmQYzlqV1k/boBeuDtIESePWLF+wF4WkYybzxhVkXUzVy4vzo5jG5M5HujXEJmTuW83VXNAJCIRP5lalt87GbzCE2cPnRUBJB0XsqREQ4GUFZK+vOMoK0JqJfuhLh3egk79LINtpt0rhNsIp8HYYHd9Vc0D8spr0ZQpgPzdernZyo7OqzH2KNE8ZT8+GTrFuivSbohTGdKUWSkHlZ4844ExPh2v/XnJwQgnfCJ8JM4FBKcvSKdHtbXFXnriGPNt2evT/lrcVOdk/1QdmmqNQuoc3mZEmkXEj5jQvF6pOEsHz0i/FmKHFBx7NBhvm03xycCe5rPgLfeoh95HDuOW9S5/0OxUFpsGHEqb4Y
+X-Rspamd-Queue-Id: 8AF371A0006
+X-Rspam-User: 
+X-HE-Tag: 1794818314-589146
+X-HE-Meta: U2FsdGVkX1/CXHlh0GtEu57fgds7HeXD0joVSDa69NXGL3+Y32EWc4dX7Adpdm3UQq0iYWwyfmc8tMaWllTMQupvVn/fwv6HypHy3HPLNAF1zWGkRpEsRNOLkCPTpdass5qWZTDbkM1hg9P1AHzzKRZa0ZEm4KXNO0WywUfkl80g9eWsM+kLQFQCQFSnJ4Z8/tZ3j6nWgFbldXl6CFa2pXx56JnZBvGRiwn4I9wklnqths+KweelHDHpRVs5C/QHLssWXnmC5k41L+UhKwbmXQZl5h1wL8e/gRO0sfN/LFPe9h2IHi6TbvwYTc3YTLJJwLDy2IS3heyVQqKX57fxzsCk92NfyKQorIW2HdKi6drAb13aW5e281Zl+xHcgUoNhNDiZYDasq8ZBeC+sk6M3CWmbPnUZ5ngA5z8Uy3yengunIaYdqSo6y5PpB9sdVtHPYr8ieAAcRA48ESpSQEy1SS+OCPg9CHJdWgbZYUG9Wd0ulsTuIzLFxBRrf2bKV/PGIYM7EzxYUVRRE2J/9n1Z9IhWS31YvZ6bG9U4EfKrClewfyPMG//Mt0a97ux+i3UI+4AIE+5t3mz2ebg2xkk7iIuJqOIZYXLIXe4xMuSxG6vliIaJ9YAv2iFolvhiumNvDUZn7avTmuipQuZhikvIPIR6bbxnmOqX8VvFxDl0CWj+9yNMeIq04tRoYqdA33CKPjb0rQDTtG/bgll6nP/ZXMvJw1YU0zgdRXxsaYqrjTX717R4gzLgZ4GTr3csFAU+W4SfRhthKMALP8tJNbanobbH7gglil5IowdGJX3p9BQUZb/Z7ORR1CVl/0KRzOENlwbhGnBxudZl6l9iKn6dH1xhDq8XhCqHZhU5SZHW0bSkaE5kBVsbfk7RzgRFmSEP/8Tmm0Nq+dQ1jrODid7siLxlRTWHcFqEUwkePW0yP/p8f4UsL2Hp1R69GhFHy+CLQ+B1lUYuA/Gho68tdu
+ HLPGYOLv
+ Qq74nYg8y1B0SqTfI4moKCul2hPnpK3Z6Ob7czwJ/RozU94xwcLf6b0BfjgXzV4LuGu+xoDdZCg9j1MVGP8npsI8CLve4+yb4e8iNcOCBtH6Y8PO+nWzmKsrlSRQLuvL2qpYbVQyKbkgo39ModIT+uHfit91rpCzJKeALSu35njN7dMauhUiB+9eHgY7iYrC8IgzWa21Sz5H4+3tCLfutW+DkPer4bYpTSuMrQv1V0FpDBsI+01/sLlSLyY4XbHw5TFYYqNpxY+eqWG/XHekFNXFIxua82AZA+YGV2RyY+N4RlRqMUn7ldXERyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,199 +142,133 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mike,
+On 11/14/26 19:11, Dev Jain wrote:
+> 
+> 
+> On 04/11/26 3:47 pm, Kiryl Shutsemau (Meta) wrote:
+>> Once the free scanner finds pageblocks with nothing to isolate, it checks
+>> only every stride-th pfn of the next block.  The stride doubles with each
+>> empty block, up to COMPACT_CLUSTER_MAX, and async compaction starts at
+>> the maximum.  A block that gives nothing is marked skip, and the cached
+>> free pfn moves below it.
+>> 
+>> The samples sit on a fixed power-of-two grid and alias with any layout
+>> that repeats at a power of two: when the free pages sit off the grid,
+>> every sample misses them.  With one free page in eight, all at
+>> pfn % 8 == 4, a stride of eight or more sees no free page at all.  The
+>> free scanner runs into the migrate scanner, and compaction fails with
+>> most of the free memory in the zone untouched.
+>> 
+>> Tasks then stall in direct reclaim, and huge page faults fall back to
+>> small pages, while gigabytes of memory are free.
+>> 
+>> Real memory is rarely this regular; the test below builds such a layout
+> 
+> That is where it gets hairy: will this be observable in real workloads?
+> 
+> Suppose stride is 32 and the pageblock has 100 non-free pages. What is
+> the probability that 512 slots are filled with 100 objects such that
+> x = 0 (mod 32) is filled? It is
+> 
+> C(496, 84) / C(512, 100) = 1.6 * 10^(-12), very improbable.
+> 
+> So the chance you have a sparse block and you are missing out by not
+> looking at other offsets is very low.
+> 
+> If stride = 32 and #objects = 400, the probability comes out to be
+> 1.8%.
+> 
+> Keeping #objects fixed, lowering the stride lowers the probability
+> exponentially. (This is relevant since we start with lower strides)
+> 
+> On the other hand, what happens if you are scanning over fully filled
+> memory? (there is no way to tell whether a pageblock is sparse)
+> You are going to repeat the scans unnecessarily.
+> 
+> IOW I think the probability this patch is going to have a downside is
+> more than that of upside.
 
-On 15/11/26 2:50 pm, Mike Rapoport wrote:
-> On Fri, Nov 13, 2026 at 10:34:06PM +0530, Mukesh Pilaniya wrote:
->> Hi Mike,
->>
->> Thanks for the quick check. I apologies in advance if I am missing
->> something obvious.
->>
->> On 12/11/26 2:19 pm, Mike Rapoport wrote:
->>> On Thu, Nov 12, 2026 at 12:02:05PM +0530, Mukesh Pilaniya wrote:
->>>> Hi Mike,
->>>>
->>>> On 04/11/26 10:20 pm, Mike Rapoport (Microsoft) wrote:
->>>>> kexec_add_buffer() users may depend on the order in which memory holes are
->>>>> searched. For instance, arm64 places the kernel bottom-up and then
->>>>> requires the DTB to be above the kernel.
->>>>>
->>>>> kho_walk_bootmem() walks the bootmem areas in the order they were
->>>>> reserved, so if the kernel lands in a small area at the top of the memory
->>>>> there is no room left for the DTB and kexec fails. For example, on an
->>>>> arm64 VM with 2G of RAM and kho_bootmem=8M,64M,64M, the lowmem area is
->>>>> reserved first at the top of the memory, the kernel image takes most of
->>>>> it and kexec fails with
->>>>>
->>>>>   kexec_file(Image): Could not find any suitable kernel location!
->>>>>
->>>>> Sort the bootmem areas by address and walk them in ascending order, or in
->>>>> descending order for top-down searches, like kexec_walk_resources() does.
->>>>>
->>>>> Fixes: 3bdecc3c93f9 ("kexec: add KHO support to kexec file loads")
->>>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>>>> ---
->>>>>  kernel/liveupdate/kexec_handover.c | 57 ++++++++++++++++++++++++++++++--------
->>>>>  1 file changed, 46 insertions(+), 11 deletions(-)
->>>>>
->>>>> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
->>>>> index 6f1f55fe31819..2ac5d94f33fd4 100644
->>>>> --- a/kernel/liveupdate/kexec_handover.c
->>>>> +++ b/kernel/liveupdate/kexec_handover.c
->>>>> @@ -26,6 +26,7 @@
->>>>>  #include <linux/list.h>
->>>>>  #include <linux/memblock.h>
->>>>>  #include <linux/page-isolation.h>
->>>>> +#include <linux/sort.h>
->>>>>  #include <linux/unaligned.h>
->>>>>  #include <linux/vmalloc.h>
->>>>>  
->>>>> @@ -820,6 +821,14 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
->>>>>  	return false;
->>>>>  }
->>>>>  
->>>>> +static int __init kho_bootmem_cmp(const void *_a, const void *_b)
->>>>> +{
->>>>> +	const struct kho_bootmem *a = _a;
->>>>> +	const struct kho_bootmem *b = _b;
->>>>> +
->>>>> +	return cmp_int(a->addr, b->addr);
->>>>> +}
->>>>> +
->>>>>  /**
->>>>>   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
->>>>>   *
->>>>> @@ -904,6 +913,9 @@ static void __init kho_reserve_bootmem(void)
->>>>>  	 */
->>>>>  	kho_bootmem_cnt = i;
->>>>>  
->>>>> +	sort(kho_bootmem, kho_bootmem_cnt, sizeof(*kho_bootmem),
->>>>> +	     kho_bootmem_cmp, NULL);
->>>> This only covers the case where this kernel allocated the areas itself.
->>>> On a KHO boot the array comes from the previous kernel. A kernel with
->>>> this series that is handed over from one without it therefore keeps
->>>> walking the areas in reservation order for every following
->>>> kexec_file_load, and the arm64 failure you describe comes back until the
->>>> next cold boot and vise versa because the ABI string is still
->>>> "kho-v4".
->>>
->>> If we were able to kexec from a kernel with no reservation ordering, the
->>> issue is not there, isn't it?
->> IMHO that holds for the image that was just handed over, but maybe not
->> for the next one. The producer's last kexec_file_load did place that
->> exact Image, DTB and command line through the areas in that order, so I
->> agree that reloading the same image from the consumer will find the same
->> spot. The order is still arbitrary though, and whether it works seems to
->> depend on the size of the image being loaded.
->>
->> To give you the case I was looking at: on a QEMU arm64 guest with 4K
->> pages, 2 GiB of RAM and kho_bootmem=44M,64M,64M, the 44 MiB lowmem area
->> is reserved first, at the top of RAM (0xb8800000). The Image is about
->> 38 MiB, and the DTB has to go above it on a 2 MiB boundary, which lands
->> exactly on 0xbb400000, the end of that area. The load then fails with
->> "kexec_file_load failed: Cannot assign requested address", and the next
->> area is never tried, because the walk stops at the first area that
->> cannot take the buffer. With the areas walked in address order the same
->> image is placed in a lower, larger area and boots. So the first area
->> decides, and a few MiB of growth in the Image or a larger DTB is enough
->> to flip the result -- which is the part that makes me a bit nervous
->> about the first kexec after a handover.
-> 
-> There's always a risk that KHO will run out of bootmem, even presuming we
-> fixed all our bugs :)
-> 
-> In your example it happens sooner then it should because there's still
-> free memory that kexec won't use, but it's still the same - we've run out
-> of bootmem.
-> 
-> I prefer to keep the sorting in the cold boot going forward to save a few
-> cycles at kexec time, so I'd rather not add sorting to the kexec'ed boot.
-Fair enough, and I'll drop the sorting-in-retrieve suggestion.
+Agreed. This seems to all be based on a hypothetical scenario, only
+constructed artificially to demonstrate it. A real-life motivation is needed.
 
 > 
-> So the kernel from 7.5 will have it right and if there's a case when we use
-> an older stable kernel for the cold boot, and we see that we *really* need
-> sorting after kexec there we can just add such sort as a fix for stable.
-That works for me. The change is small, so the backport should be
-mechanical.
-
+>> on purpose.  On a 32G VM it:
+>> 
+>>   1. fills memory with anonymous pages and pins one of them in every
+>>      pageblock;
+>>   2. frees one page in eight, 3.6G in total;
+>>   3. creates a million files on tmpfs with defrag_mode=1.
+>> 
+>> Direct reclaim entries (allocstall) and the time to create the files,
+>> 10 runs each:
+>> 
+>>                            allocstall
+>>     free pages at          median    max      time, s
+>>     pfn % 8 == 0                0      0      4.6-4.8
+>>     pfn % 8 == 4               86   1544      4.8-5.6
+>>     pfn % 8 == 4, patched       0      1      4.6-4.8
+>> 
+>> Sparse layouts hit a milder form of the same miss: at async compaction's
+>> stride, a block with only a few scattered free pages usually yields
+>> nothing.
+>> 
+>> Keep the aligned samples: the head of a free page of the stride's size or
+>> larger is visible only there.  When they find nothing, sample the block
+>> once more from a random offset.  A random offset is the usual cure for
+>> aliasing: no fixed layout lines up with it, and one free page in eight is
+>> found again within about eight blocks on average.
+>> 
+>> The second pass at most doubles the samples taken from an empty block.
+>> Pages scanned by the free scanner stay within run-to-run noise, both in
+>> the test above and in an mTHP fault benchmark.
+>> 
+>> Fixes: 4fca9730c51d ("mm, compaction: sample pageblocks for free pages")
+>> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>> ---
+>>  mm/compaction.c | 21 +++++++++++++++++++++
+>>  1 file changed, 21 insertions(+)
+>> 
+>> diff --git a/mm/compaction.c b/mm/compaction.c
+>> index f1b2060eb201..475b3a645122 100644
+>> --- a/mm/compaction.c
+>> +++ b/mm/compaction.c
+>> @@ -23,6 +23,7 @@
+>>  #include <linux/freezer.h>
+>>  #include <linux/page_owner.h>
+>>  #include <linux/psi.h>
+>> +#include <linux/random.h>
+>>  #include <linux/cpuset.h>
+>>  #include "page_alloc.h"
+>>  #include "internal.h"
+>> @@ -1797,6 +1798,26 @@ static void isolate_freepages(struct compact_control *cc)
+>>  		nr_isolated = isolate_freepages_block(cc, &isolate_start_pfn,
+>>  					block_end_pfn, cc->freepages, stride, false);
+>>  
+>> +		/*
+>> +		 * Free pages of the stride's size or larger start on a sample,
+>> +		 * but order-0 free pages spaced at a power of two can all fall
+>> +		 * between the samples. Sample a block that gave nothing again
+>> +		 * from a random offset.
+>> +		 */
+>> +		if (!nr_isolated && stride > 1 &&
+>> +		    isolate_start_pfn == block_end_pfn) {
+>> +			unsigned long pfn = block_start_pfn + 1 +
+>> +					    get_random_u32_below(stride - 1);
+>> +
+>> +			/* The block can be shorter than the stride */
+>> +			if (pfn < block_end_pfn) {
+>> +				nr_isolated = isolate_freepages_block(cc, &pfn,
+>> +						block_end_pfn, cc->freepages,
+>> +						stride, false);
+>> +				isolate_start_pfn = pfn;
+>> +			}
+>> +		}
+>> +
+>>  		/* Update the skip hint if the full pageblock was scanned */
+>>  		if (isolate_start_pfn == block_end_pfn)
+>>  			update_pageblock_skip(cc, page, block_start_pfn -
+>> 
+>> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 > 
-> BTW, in your case it's enough to switch lowmem and global sizes to gain a
-> few megs for future image growth, isn't it?
->  
->> It also does not settle down the chain, as far as I can tell. A kernel
->> booted by KHO never reserves, so it never sorts: B inherits A's order,
->> C inherits B's order, and only a cold boot sorts. That makes the same
->> binary behave differently depending on how it was started. Sorting in
->> kho_mem_retrieve as well would cover it.
->>>
->>> And after a cycle of KHO boots to newer kernels we anyway can get to the
->>> point when bootmem is not large enough.
->> That is the same argument, and it is probably why I am not fully
->> convinced that the previous successful kexec covers the ordering case
->> either. The inherited state was adequate for the load that produced the
->> running kernel, not necessarily for the load it is about to perform.
->>
->>>  
->>>>> +static int kho_bootmem_walk_top_down(struct kexec_buf *kbuf,
->>>>> +				     int (*func)(struct resource *, void *))
->>>>>  {
->>>>>  	int ret = 0;
->>>>> -	int i;
->>>>>  
->>>>> -	for (i = 0; i < kho_bootmem_cnt; i++) {
->>>>> -		struct resource res = {
->>>>> -			.start = kho_bootmem[i].addr,
->>>>> -			.end = kho_bootmem[i].addr + kho_bootmem[i].size - 1,
->>>>> -		};
->>>>> +	for (int i = kho_bootmem_cnt - 1; i >= 0; i--) {
->>>>
->>>> kho_bootmem_cnt is unsigned, but the reverse loops in
->>>> kho_reserve_bootmem() and kho_bootmem_walk_top_down() start an int
->>>> counter at kho_bootmem_cnt - 1, which for a zero count is UINT_MAX
->>>> converted to int.  That conversion is implementation-defined; with the
->>>> current compilers it yields -1 and the loop body is skipped.
->>>
->>> We never get here with kho_bootmem_cnt == 0.
->> Unless I am misreading it, we do, via kho_bootmem=0%. The parser accepts
->> it and stores the scale without a zero check, then bootmem_size_update()
->> takes the explicit-size branch and assigns the zero-initialised
->> bootmem_size_pernode to every node. kho_reserve_bootmem_area() returns
->> early for a zero size without recording the area, so kho_bootmem_cnt
->> stays 0 and kho_enable is left alone and only the error path clears it.
->>
->> kho_locate_mem_hole() is guarded by kho_enable only, so with cnt == 0
->> both walks return 0 and the caller turns that into -EADDRNOTAVAIL: KHO
->> is enabled with no regions and every kexec_file_load fails with "Cannot
->> assign requested address".
->>
->> FWIW this became possible with 214f9649 commit, before it the
->> zero-sized areas were recorded, so cnt was never 0. The zero-scale patch
->> you posted in the v4 series [v3 1/5]thread closes this one.
->>
->>>  
->>>> How about using this one.
->>>> 	for (unsigned int i = kho_bootmem_cnt; i-- > 0;)
->>>>
->>>> Reviewed-by: Mukesh Pilaniya <mpilaniy@redhat.com>
->>>
->>> Thanks!
->>>  
->>>> -- 
->>>> Regards,
->>>> Mukesh Pilaniya
->>>>
->>>
->>
->> -- 
->> Regards,
->> Mukesh Pilaniya
->>
-> 
-
--- 
-Regards,
-Mukesh Pilaniya
 
 
