@@ -1,134 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8505606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9952606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nZRqdg9F
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mDChAnWA
 Received: by kanga.kvack.org (Postfix)
-	id DE8F26B05B2; Mon, 16 Nov 2026 05:10:11 -0500 (EST)
+	id DE9366B05B4; Mon, 16 Nov 2026 05:10:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC1366B05B3; Mon, 16 Nov 2026 05:10:11 -0500 (EST)
+	id DC0E06B05B5; Mon, 16 Nov 2026 05:10:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAFCC6B05B4; Mon, 16 Nov 2026 05:10:11 -0500 (EST)
+	id CD7816B05B6; Mon, 16 Nov 2026 05:10:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D83D6B05B2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:10:11 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 266C8120715
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:10:11 +0000 (UTC)
-X-FDA: 85440561822.07.6BF1A40
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5FA1A40002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:10:09 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=nZRqdg9F;
-	spf=pass (imf11.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A98396B05B4
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:10:31 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DF4AC05FD
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:10:31 +0000 (UTC)
+X-FDA: 85440562662.11.1364643
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8E1F1100005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:10:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mDChAnWA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794823829;
+	b=PNn5zUYx40mJdDpKU9+eflKHZ7TahlCUwRtPQN/RN7hLROaMsIvmT3B8Q2BMhA5heRzIr7
+	SyKbfgvMrI6u3svhk6adY0rZwjEBwfgr0fl5+xbM5mQg3bqRNpeUZ8W4xCwaViuKEUyjzO
+	MAabUPDXnQ5MtJup8UsRNve3FcOV6BQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794823809;
+	s=arc-20220608; t=1794823829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Ww1H1S9hrHisj8WmixCX+JG9UibSCui1VAe7NK53FuE=;
-	b=UweLp4gJEAS6z0VzZiaNfk/tl0XuL2Gd1iISAbFGz/+PV9LSHmNKnKa4XpzRnVat87wRUU
-	gAGh1zgUV1RCTjUoW41pX8wkJpZUHu4G2QaHI4yHdDXXeZNXdTIVF6KrTx2Bk42tDsnOL0
-	vqV7lw7XIajE47sz4X3nUiTomdbfOWU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794823809;
-	b=mg+t0R7r6pOG/Ecty9k1t34zJCjMS5gfezMASnXxPvdT4xH9BDUlLYLEvPOzgDk1hQNtZt
-	WvyCJNi2s6LNRPtCTSbaAmaELOxKNPyTtDgkJDIeOxOB0f/jBbRHKcaVkDZlJYqeDZsrqU
-	zHvZBIupPysdvpp9QHhWq14ffXapq8c=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JXbbxzTK4STMxlRmt7LCwpa3q0WjlHYEgdFStr3myuI=;
+	b=EJ5OisXqYrymFBeQapxydrTDhLhZ0E1gAQ3s16tgu1t80zaI04pir8urGHGo6afD39ki9d
+	tox/D12BKK2eDUs6SfHkKjxSJt5a3YHAaKqz0X0a20Viof9FnUv3CdGQmlLdjT9kerhS4p
+	fYdDdE2rc5lLzihuOQojjMPBpBEN534=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=nZRqdg9F;
-	spf=pass (imf11.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a2000d5fb1so15448935e9.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:10:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794823808; x=1795428608; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ww1H1S9hrHisj8WmixCX+JG9UibSCui1VAe7NK53FuE=;
-        b=nZRqdg9FYGId6wm+sFvXw+O0LLq/QWy7fz9eJhekxG9v8WjSawyINMIeWpeqFk2TjU
-         I5L26X5EoeGxclADUJXJz109ubQdlZAkMkmQV5v3X8La74M9nZCJdu6M8LEy+p8Xfivt
-         +BlHmCUpMHSPE5smdJXLbvBU+69A5VCJ5wH3+ttNbLk/0T2rnzqzF8hhUd0Drg1fNGKm
-         nNgafTIMfhpZhDj0a2fqcfdq513/nOnJzA5nAD9CoC0hU8AsR8DRbyyanjvjSewEkwbI
-         OmIXDU55pMgWkYyQWOwRGkR2iC7/d6JKN9zeOc1LTVNTb4ey+XkaJKFuaOrT76uFv/6R
-         lAZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794823808; x=1795428608;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ww1H1S9hrHisj8WmixCX+JG9UibSCui1VAe7NK53FuE=;
-        b=Z0bjFecBflXuKRzaDx+Uh3dPzO5QwcOBu2+3fft1K2uq4XvWofJxBDUx+5Pk75PV9G
-         LCs9+wYd38hb7ggqmQtv99mj+6M8DfnAh83IbZc47kLN6Ju6bPeVrWicsdwPljFe1Lye
-         BIQut0dm7SJl0YhQaC/DwPk0HZhyhvV2L7tDMhKfqrM/BMszQh87/R50Bwaib/wX93xQ
-         z0MPczCZW67xqkVnJq8V0iT3uOyFnJtG+ixeM8iva3rB1PjZlErKRqYeUJ+lKjdBy/uK
-         u1VZ7DtBW1dPbTleSZmUnqE+26noIloHXNrvf/MdmUTqMt8dgVDtUmyAey79WAF7BgHi
-         RgWw==
-X-Forwarded-Encrypted: i=1; AL+hErFYPXe2ZRjXlAbOdts7BkymNNODztg1mOs8ONTKHukAIiqW+c3VnnHdghLdXJkA5mVEBeC2IYNvKQ==@kvack.org
-X-Gm-Message-State: APuU4Z/6DH+q4JETLqgCO2b0OFGrLAEue4Pc3sa0+RifvGlccwQ6MM/C
-	1C79lCRi7jphln/lgdZ28oI847qfHjIJoc3WD14cZms7/Q1Grwvkfdya
-X-Gm-Gg: AYBFou1EyhfrlDkjtypaQrN+yV7tMu8K6bMgTLPsh3i7DMm7Wc7nQ+rXqZLpIA2VshZ
-	reSbMBhKDYRqGUpQcxGRi7XCHUIF7NPmt28EGNVI2xnUOkvurrrfb1QWb2nsNLAYZvco163gOoB
-	IAb1HtCWGPltardy0iaPaydzI49Uf1zZ0gt21qirq1QsD/kiS+PAtC2l/V9uNq2gCcd4Ti1eAX1
-	wDcoNchqPXk0wP8phLpmoGND5o7peeofEdrMx/D41F2OezGN8FtfLXXSgTzJvSTp5ZsGR0WlJb6
-	mVnfI0IV4xHxjtOSQGlkx6iNAFDCkmMN4XtoYwNsKip4tYTiupYLOJb9Xk0od77slM+Z9knhrju
-	+yiBXotOKUxzz3Nu3avx1jDPfytROgf/GlCXThxzy3od1MtZGeZrK2JSTH9ubFixltw3KC+v6DG
-	IYmEUodnmazkLZ8d3SiGPbNnjXRahrBbT3xex2inzWBWOcGaGNp9lU+fv3xndcRv0FDV+JfWFkh
-	WTeZVLmnA0Df4Lqe8gf94LP4hPCg/Mn1JWcy4bI70tGA9AbmYzO/9A3Vybg11205s8Ni/S2WcBP
-	EdZR3nRIvmBGvOnaWBQr
-X-Received: by 2002:a05:600c:544:b0:4ba:2bfc:c8b5 with SMTP id 5b1f17b1804b1-4bb55a662f9mr135927565e9.10.1794823807538;
-        Mon, 16 Nov 2026 02:10:07 -0800 (PST)
-Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5ff2cd05sm19224289f8f.31.2026.11.16.02.10.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 02:10:07 -0800 (PST)
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mDChAnWA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E815F61906;
+	Mon, 16 Nov 2026 10:10:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A5F1F000C6;
+	Mon, 16 Nov 2026 10:10:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794823828;
+	bh=JXbbxzTK4STMxlRmt7LCwpa3q0WjlHYEgdFStr3myuI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mDChAnWAybrGnG8HbCareJDnR8uYlxFVzdt/PWEHutV/Nu9mlhxDeSVN5z3+uieoP
+	 867FCmZ3I5iE2imreP7FBRBUKB5hMORMgEXUcUpkas3sC4KaU9Q/+wmfkEF0B3SzQo
+	 OMZGv15rDPhqH47R/dN0GROMD1GDI48+9RqjdObrC3uC2NFm7CKVGfPG1nXelxvmbh
+	 w3wY/IAqaVUFR4fsK7UJHrnGVcNrYueDRfW5xfcWYiCfB8nZ379yX/zP4mA1AHXTT4
+	 fD1TYp8xdCmpMrHHD5J2pdTfZjyzi8DHOwtymSKOTRXzuS2wLJPK06p9cgYx18/KGQ
+	 yxJD18zhnfAKA==
+Date: Mon, 16 Nov 2026 11:10:22 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
 	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Peter Xu <peterx@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Tal Zussman <tz2294@columbia.edu>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Subject: [PATCH v2] Documentation/userfaultfd: document RWP behavior when the PTE is dropped
-Date: Mon, 16 Nov 2026 11:09:56 +0100
-Message-ID: <20261116101004.15322-1-azpijr@gmail.com>
-X-Mailer: git-send-email 2.56.0
+	Mike Rapoport <rppt@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, Sashiko <sashiko-bot@kernel.org>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	"Jose A . Perez de Azpillaga" <azpijr@gmail.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] mm/hugetlb_vmemmap: fix deadlock during PMD split
+Message-ID: <avrWjqe5kPfkReIj@localhost.localdomain>
+References: <20261114112523.75208-1-songmuchun@bytedance.com>
+ <20261114112523.75208-4-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3o4rpjz1y4r54g5jptnrrkh48o8becup
-X-Rspamd-Queue-Id: 5FA1A40002
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794823809-33070
-X-HE-Meta: U2FsdGVkX1+s8uCYvwJjJtZfNdGRbsYQM5tqYFPAhhl5zCgC90aifAKdFFfjq+rPdQKRl56GAJ5rHXucrrbDuqZwGALcNJAWbyI/JxEItAAJIqwBKW2jkvB0krrRzbtofCt1vsj1yPJZ3ziHo7woGIgvrWLV2QLxaM6iZQZgCQb1PZ0s/C5iiq9A1NVmM9ZHxSUUVu5eSKmPKknuk0bspmY8MR0fw+JzzX3seGeqBuSYxklJpE5uGeioARN2CaIKi0ORfb92TlyOw8cOg47JApa16jfzROf6lAJtJrHzUUI8lbWvE27y2/xiMNPYmWYdtcww2QP6+aWRxtpv++V4Fq87ORkwTcoayNd4dufIqDljNAdNZ7/RHFHU2ERDKfKjJM/k/mH73m8zgzyHNFDTdGAtUkPVs8hpT/rOBha1pEIdJllhdQkUpge7FHtLp7PBYL9xMwNrJ9leJLjXkl98yJXZ9QDsYQBc8AXdrHgjx72yrJ8ZH69wN/+wcNtWQOOFNRb4ZanQbnnSpZD48KtExrnRAdNM3gJg8Gamsazpe73izKtafBKyYD1CFQuKAJJ4TEZSetMmxnT6LzRVXvgp2mlFrbNaoTaPat6kTz169ywu9l70F7iwrmdpi7kxH2bHzSEdrrhnMwAksT6hdnJCstxM1mY7RYpLwd1ZF2mY8EfT+2ZORQWeoM+HI8gLVHKBk4vB7RceblQaPwLfCBid1v3lb86ALw9o6MaLa4AjczBtE+DnO2CXEwfHvlMpZGfJP4v5iifn9s2t4VVYXe+rxFbC4cn5B2oDEixmOM3R46HxVySvCaFd/aCg/gm5jVk8tSUWO3R8gCIHxYFVbYxkJgMl3X+1PL20UNRqQio+5r3VLQHARu9TdzG1O3BL6NJ+A6YGk8o8PbALof/U7TlCjBxWcL6MLlX3qgNNDOdUkqsHPS2/7pU6x9GICPSE7lVl/tcZpyRajEoHt8Sa3U2
- WFLoscs/
- XRA/lTwyY65OEcfVfdeXxeSXAJPgvfpHvcQ+P8u9RME8Z0ukaD7z+vT+7Bg2cC1T3bx/8UnYX8ZO3ztQCgwHTfHQFAg07MsK0OY5F/7vEfEQwzRfjfweKnUClYg6NIZje398D34rXAarmfaXCP1Is4mdIbCwFk1zm4/dbuIUSXPQ4ouue2TJnJUEKAPixOIm5BNHi1olyR9ysApuDO/R5Eh8Maw75qgtzqCoRr4JxyHQyLOrPWnPtRmwe4TV8G0eqI71CPM3Odndr9EZsKHdK++J4/+9yJONmiRoW/r0Qo2s2qnKqbEOQJsemDlZSaNcFQHBiQr9JBNmFoBeHOCcck/kXocM5DglGIdIpktlTiLkNXOWejG+d0hsiUBqHFyfgq+lPRbmJff0ENslIoTRDH1tFPOYCYfz0VDPOcHLNsox5g3xTjJICTxJiVjz7XsG/PvVK4bAn6DSu+T9/8jx4nYW870HG8fcHwsun
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261114112523.75208-4-songmuchun@bytedance.com>
+X-Rspamd-Queue-Id: 8E1F1100005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: wo7pfg6sb7nh6q16jadw55pkkxmit6nb
+X-Rspam-User:
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794823829-513738
+X-HE-Meta: U2FsdGVkX1+ndCEhbo4+rwVlA1hf4iWT38xjtSxzU/lwZQrMx/h/rIS0LL5g+xyu0+POuLOZRDe109hWy0BqGkn9eJSNDg6DK67n5tiEIM2cw8jZh8/4AbEpexbdUIOa+xaycUWhRSPJxo21kz0gzU56/j9fQ2EdQ6QG3zN6jTlkb8RxJT35adCZHD30oJEEZC3tDI3WNLXB6ejJnjYlQovDETZiKZhxgA5zS6FP9TUOfx4JNQFes+81yECQWBDlsKCwVf2PEsaWLi/dIFdtPYZSlsAdV4sTD5eVP/xDB2wNRQEZB8uJPEjrGrTUlU7zI0SxmorwJmkWB3qn/7PGcHiuDU9/OYCnulJbX5wf+YVOVAcYYu0m0MXLGJ+cUy/GAYVQqMuSIMDchkJziyc9LcJID+g44/EMjImY7weJT2Te9SIMfYP7sHN2EVJxyOYcY4bcZMFoB5xMeRfonpz86Ve6H2OVHYHVTQT1YeXNurvSOUq8PxhZNgH8Sp0lGkIelqinRbVbIXS+TXKICOYsLIUH9P1I4Q9/a7jQkHu51a0GMOXzzhcrm4uKX4HPgZiuLXHEMmeB8XDDfakvqPX18jD+Do5kiGaG4BbcjX9wKklvmhLndZFNWOknvWYp8HeAfBFN5p1e6dPdNYb8XWKfCOkrNFOKxXFZriz8U0Who2q6sRSfZEBp8vN/Qwxrf9B7fZDlEJDlF8JBrXvDEPhILSWhoa8D3rfxM/U4onCKAsGTrPr3lB57i6QtmJ45gVN50LeDB5/a+xDuSmOkNbsd+zMPEgMOI0rwyt2Ldrhk51befU8hzcTB322ZqT2hzBxY7jsRkr5otCKib6BgJ/D6DaFWy1kwq9f1yC3ydHMnevr4YpEP2G/mvyQpvdQxbPS8ZMVdmULn0W7xki1X2MRvFK6LhUU/v1JBGZ59tJbJWz0MM8S5+VjQwPkUmhUZEBdxwa9Y2RvIpcA+N77pqDo
+ +DRek0ND
+ c4yoKgeNAwMbryQQftfMbxwITkbM/H5C2f8qa4XXO20lJefAipaelswetyeXUlItZh29HiRWIPKFJBxdqvUZxzAVCeCO/ZfrkXvGujTu46yJTEQOzzhs09pIYrXu5rZbJO/B85P5L2pQqZtnLfLKAHF/EOVHkDqdcVqP3IxYB0JDBm1cfWWINn8fJkgjVq+A4FonLIyU6qIEIFgwhO7Xu1zc3mhoZEijGBeSTTk8+7AWBcuibON2dEQ1Z4iCARv7zE3XwFb9yxDHE/rG63748Nx1kA/zNc/CT6egrRDZjGfWs3iiL9rgYicQKmpzcJ/Y9XxP+XBm35CWAHUUXvt8e09h936MgyrKhRlr+9E4cC/c8J+qavwMf3EuvE90va9uw+L0CjKrHhIt3AdeJcoAebWLMHwsg+dGda59ZWXfrVzO6VqPwUnKVufxFsrnoR2aEItTV7elokl7EbVr2liI+Sv8PjQbypxEIYsGFY7pcRjXaEGWd7zrAwhqKnE8RbfVc0PTNiR1QrRYgH18muMOONDJHfQhNK1pO6iiGsvAeJvS3onI7x4vgXD0mNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,163 +105,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"Scope of protection" lists only the PTE drops requested by the user and
-says the range has to be re-armed afterwards. On shmem the kernel can drop
-the PTE at any time (page reclaim and collapse are examples), and RWP has
-no marker by design: the next access is a minor or a missing fault, and
-the user is expected to register for those. Document this, together with
-the modes that sync and async tracking need.
+On Sat, Nov 14, 2026 at 07:25:23PM +0800, Muchun Song wrote:
+> vmemmap_remap_range() currently walks vmemmap page tables under
+> init_mm.mmap_lock. If the walk reaches a leaf PMD, vmemmap_split_pmd()
+> allocates a PTE table with GFP_KERNEL and can enter direct reclaim:
+> 
+> hugetlb_vmemmap_optimize_folio()
+>   vmemmap_remap_range()
+>     mmap_read_lock(&init_mm)  <-- outer read lock
+>     ...
+>       vmemmap_split_pmd()
+>         pte_alloc_one_kernel(&init_mm)  /* GFP_KERNEL */
+>           <direct reclaim>
+>             ttm_pool_shrinker_scan()
+>               ...
+>                 change_page_attr_set_clr()
+>                   mmap_read_lock(&init_mm)  <-- self-deadlock
+> 
+> Since commit d5d8b8662e6e ("x86/mm/pat: Acquire init_mm read lock on
+> attribute changes to avoid UAF"), reclaim through TTM can enter CPA,
+> which also takes init_mm.mmap_lock. If a writer is pending, the nested
+> read blocks behind it while the outer read cannot be released, causing a
+> self-deadlock.
+> 
+> HVO walks vmemmap ranges whose intermediate page tables remain present.
+> vmemmap_split_pmd() revalidates the PMD under init_mm.page_table_lock
+> before installing the PTE table. Use the lockless page-table walker so the
+> allocation no longer runs under init_mm.mmap_lock.
+> 
+> Fixes: d5d8b8662e6e ("x86/mm/pat: Acquire init_mm read lock on attribute changes to avoid UAF")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/sashiko-outbox-206969@kernel.org/
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-The VMM example registers guest_mem with RWP and MISSING only, so a vCPU
-write to an offset that is not mapped there can be lost during eviction.
-Add MINOR to the registration, describe how the handler treats faults on
-offsets that are being evicted, and fix the step 1 comment, since minor
-faults block even in async mode.
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-Link: https://lore.kernel.org/linux-mm/856cdf21-7982-475a-b244-a7ceff4eb6aa@kernel.org/
-Link: https://lore.kernel.org/linux-mm/avWnaR7VVEGa7yNp@thinkstation/
-Suggested-by: Tal Zussman <tz2294@columbia.edu>
-Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
----
-Changes in v2:
-- keep the migration sentence out of the anonymous-only paragraph, it
-  applies to shmem and hugetlbfs too, and say "uffd bit", not "marker"
-- state the rule instead of listing the operations that drop the PTE
-- say that a context switching to sync with UFFDIO_SET_MODE needs the
-  sync registration, and fix the step 1 comment, since minor faults
-  block in async mode
-- add {} around the comment-only if body in the example
-- make RWP and minor faults on any offset this pass will evict wait
-  until that offset is punched
+ 
 
-v1: https://lore.kernel.org/20261113112806.109578-1-azpijr@gmail.com
-
- Documentation/admin-guide/mm/userfaultfd.rst | 88 ++++++++++++++++----
- 1 file changed, 70 insertions(+), 18 deletions(-)
-
-diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
-index 97daea83b7f1..8d1aeef73ac2 100644
---- a/Documentation/admin-guide/mm/userfaultfd.rst
-+++ b/Documentation/admin-guide/mm/userfaultfd.rst
-@@ -384,17 +384,53 @@ normal missing path (``do_anonymous_page()``, ``do_swap_page()``,
- the population itself, co-register the range with
- ``UFFDIO_REGISTER_MODE_MISSING``.
- 
--Protection is preserved across page reclaim: a page swapped out while
--RWP-protected carries the marker on its swap entry, and swap-in restores
--the PROT_NONE state so the first access after swap-in still faults. The
--same applies to pages temporarily replaced by migration entries.
--
--Operations that drop the PTE entirely — ``MADV_DONTNEED`` on anonymous
--memory, hole-punch on shmem, truncation of a file mapping — also drop the
--RWP marker: the next access re-populates the range without protection.
-+Protection is preserved while a page is temporarily replaced by a
-+migration entry: the migration entry keeps the uffd bit, and the PROT_NONE
-+state is restored when migration completes. This holds for anonymous,
-+shmem and hugetlbfs memory alike.
-+
-+Protection of anonymous memory is also preserved across page reclaim: a
-+page swapped out while RWP-protected keeps the uffd bit on its swap entry,
-+and swap-in restores the PROT_NONE state so the first access after swap-in
-+still faults.
-+
-+Any operation that drops the PTE also drops the RWP protection. On shmem
-+the kernel can drop the PTE at any time while the page stays in the page
-+cache or in swap; page reclaim and collapse into a huge page are examples.
- Unlike WP (which persists via ``PTE_MARKER_UFFD_WP``), there is no
--persistent RWP marker today. The user needs to re-arm the range with
--``UFFDIO_RWPROTECT`` after any operation that explicitly frees PTEs.
-+persistent RWP marker, and this is intentional: once the PTE is gone, the
-+next access takes a page fault that userfaultfd can deliver, and that fault
-+is the notification. Which fault it is depends on what happened to the
-+page:
-+
-+- The page is still in the page cache or in swap: the access is a minor
-+  fault, delivered if the range is co-registered with
-+  ``UFFDIO_REGISTER_MODE_MINOR``.
-+
-+- The page is gone: the access is a missing fault, delivered if the range
-+  is co-registered with ``UFFDIO_REGISTER_MODE_MISSING``.
-+
-+WP cannot use the same scheme — a minor fault would trap reads as well as
-+writes — which is why it needs a marker.
-+
-+Without the matching mode the page is mapped back silently and without
-+protection, so what to co-register depends on the tracking mode:
-+
-+- Sync mode: the access would be lost. Co-register shmem and hugetlbfs
-+  ranges with ``UFFDIO_REGISTER_MODE_MINOR`` (and
-+  ``UFFDIO_REGISTER_MODE_MISSING`` if the file can have holes), and
-+  anonymous ranges, where minor faults are not available, with
-+  ``UFFDIO_REGISTER_MODE_MISSING``.
-+
-+- Async mode: neither is needed. A page faulted back in is mapped without
-+  the uffd bit, so ``PAGEMAP_SCAN`` reports it as accessed.
-+
-+The registration is fixed, but the tracking mode is not: a context that
-+switches to sync mode with ``UFFDIO_SET_MODE``, as the workflow below does,
-+needs the sync registration. This has a cost in async mode, because minor
-+faults are always synchronous: an access that takes a minor fault blocks
-+until the handler resolves it, even while RWP faults are resolved by the
-+kernel.
- 
- **Fault Handling:**
- 
-@@ -484,17 +520,24 @@ never traps on its own ::
-         .features = UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-     };
-     ioctl(uffd, UFFDIO_API, &api);
--    if (!(api.features & UFFD_FEATURE_RWP))
-+    if (!(api.features & UFFD_FEATURE_RWP)) {
-         /* RWP unavailable on this kernel/arch -- fall back. */
-+    }
-+    /*
-+     * MINOR: an offset in the page cache but not mapped in guest_mem
-+     * would be mapped back without a fault, and a vCPU write between
-+     * the pwrite() and the hole punch in step 4 would be lost.
-+     */
-     ioctl(uffd, UFFDIO_REGISTER, &(struct uffdio_register){
-         .range = { guest_mem, guest_size },
-         .mode = UFFDIO_REGISTER_MODE_RWP |
--                UFFDIO_REGISTER_MODE_MISSING,
-+                UFFDIO_REGISTER_MODE_MISSING |
-+                UFFDIO_REGISTER_MODE_MINOR,
-     });
- 
-     /* Tracking loop */
-     while (vm_running) {
--        /* 1. Detection phase (async -- no vCPU stalls) */
-+        /* 1. Detection phase (RWP faults async, minor faults still block) */
-         ioctl(uffd, UFFDIO_RWPROTECT, &(struct uffdio_rwprotect){
-             .range = full_range,
-             .mode = UFFDIO_RWPROTECT_MODE_RWP });
-@@ -544,11 +587,20 @@ never traps on its own ::
-                   .enable = UFFD_FEATURE_RWP_ASYNC });
-     }
- 
--During step 4, a vCPU that accesses a ``guest_mem`` offset being evicted
--blocks with a ``UFFD_PAGEFAULT_FLAG_RWP`` fault while the eviction is in
--progress. After ``fallocate()`` punches the page out and ``UFFDIO_WAKE``
--fires, the vCPU retries the access, faults as ``MISSING``, and the
--handler resolves it with ``UFFDIO_COPY`` from storage.
-+During step 4, a vCPU that accesses an offset this pass will evict blocks
-+with a ``UFFD_PAGEFAULT_FLAG_RWP`` fault, or with a
-+``UFFD_PAGEFAULT_FLAG_MINOR`` fault if the offset is not mapped in
-+``guest_mem``. The handler leaves the fault pending until that offset has
-+been punched out, even if step 4 has not reached it yet: resolving it
-+earlier would let a vCPU write land between the ``pwrite()`` and the hole
-+punch, and the write would be lost. After ``fallocate()`` punches the page
-+out and ``UFFDIO_WAKE`` fires, the vCPU retries the access, faults as
-+``MISSING``, and the handler resolves it with ``UFFDIO_COPY`` from storage.
-+
-+Faults on any other offset are resolved right away: RWP faults with
-+``UFFDIO_RWPROTECT``, minor faults with ``UFFDIO_CONTINUE``. A page mapped
-+by ``UFFDIO_CONTINUE`` does not carry the uffd bit, so the next scan reports
-+it as accessed.
- 
- This workflow targets shmem and hugetlbfs (both support a private
- ``io_mem`` mapping over the same fd). Anonymous-memory backings need a
 -- 
-2.56.0
-
+Oscar Salvador
+SUSE Labs
 
