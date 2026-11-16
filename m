@@ -1,135 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DCD606A32A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 23:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A795B606A33A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 23:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=q2DWio5k
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kEOtxs0p
 Received: by kanga.kvack.org (Postfix)
-	id C03356B05B1; Mon, 16 Nov 2026 18:57:56 -0500 (EST)
+	id CC7466B05B2; Mon, 16 Nov 2026 18:59:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDAB56B05B2; Mon, 16 Nov 2026 18:57:56 -0500 (EST)
+	id C9EEB6B05B3; Mon, 16 Nov 2026 18:59:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF0456B05B3; Mon, 16 Nov 2026 18:57:56 -0500 (EST)
+	id BDDF36B05B4; Mon, 16 Nov 2026 18:59:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E8536B05B1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:57:56 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 12CF11A026D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:57:56 +0000 (UTC)
-X-FDA: 85442647752.14.C04C137
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 37381180002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:57:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=q2DWio5k;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 95BEB6B05B2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:59:05 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2A0A3140237
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:59:05 +0000 (UTC)
+X-FDA: 85442650650.23.935EA9E
+Received: from mta1.migadu.com (out-237.mta1.migadu.com [95.215.58.237])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CC9F04000D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:59:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kEOtxs0p;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.237 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794873474;
+	s=arc-20220608; t=1794873543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kNMtaHpahG58C4CDJTpyGiQEPKrM5bilgLdnVmpa1D8=;
-	b=gKYbeu4/nsRPM4oZb5q20ExiSMJ/l0UNtimn3qz1u8GJ9KQyVqjOjo2v4YZtUM5fjzvmHX
-	uCN9myHI/YtQz1LxZS+pvhQCPrHT8GEMNhHrRktpU2eV6BtumiJJxgSJVZNtQt1Fquj7cM
-	5pIHWZ2KkjOPDufwaKahhVeKFQpuQw4=
+	bh=mSadUDURgH4Lbi9nZMvmw3ahEKdleuYDWzgA7XRD34U=;
+	b=2Vc6n0FU9/Jj3nD578MDzzpY0ktRxoxouWJ6QzdjRyssP9F4+MyaJ6MC9/mnIDWU5Uq8Uy
+	Ss+NVzLXZcdKSE0QC5lqU7t60Af7IlvdE8L/RMf3Eb7hYy+NhGL2Sfm9uRMM3zm7lxOQp/
+	9GhTg9JSfDcFizNeFNIYug4zzXy7Ku8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=q2DWio5k;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kEOtxs0p;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.237 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794873474;
-	b=vQ3b/g5KO8i6Sfvx7799s3IxHrDOGVbZh120by3NFDs8fffz7BQLbV76v8SlJW/Ku+zv8n
-	78zdkwhmWzNqlerHyjfT9cVStfxk/DTVNXzXtEZbqtjh3NjHEL2RklPMDJerkcdwi4B5W8
-	zBMRiKMO1LPHCn34h2l3O2p8OnS2eOE=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-91ec396c93dso71729196d6.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:57:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794873473; x=1795478273; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kNMtaHpahG58C4CDJTpyGiQEPKrM5bilgLdnVmpa1D8=;
-        b=q2DWio5ko7DM0EGP9tRqiYJ8RObRzCMZ+1YDsEdJE1IcmeJgsAozmW/eL0jawMEHpN
-         VdGYbq2/Vtno4DrO4bG6JfCmP01cXyIFEZQXGFChqs668LD1kDsBdlGLrtLSswB8oT4N
-         3CniYUJW/920MrUPa1AWL/yVP2JSVkM4Adv6hQ5WmtyRmeBDsQ00iXwcPXo1C9LErEYd
-         U/9ZIU1FG58RGamKUiFSYSHLGynvO1GQOqJYK7ardHEVpCf1e3pD8YIiAr+1OLuvhzJB
-         sI8B1nakDi0n01DDNXYdnPXoGJ6j8NdITvJjbS/9FvKRScVGqDyXpSnJ760u8uTceU09
-         9coQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794873473; x=1795478273;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kNMtaHpahG58C4CDJTpyGiQEPKrM5bilgLdnVmpa1D8=;
-        b=anIbPKYgyTaRKPlSqayZZTlWHQwVbHhcjdZZJSHr1XVOvKa8wIYYpjVLIL5QJOVqrE
-         D6WqdeYztpFGqdn2jXPWhNOUopC5zxqnqr9U82rcn3XDTdALBzaBjCjsGYh9H5Q8BCgs
-         kjXQ2+oWxSNhvSYQtL4E0meLpe8OzxY2T2q++uQDyKVFag4OgbCyiAq5TMU23DXYLZPf
-         aNGa9MneF0+YutYEprGO3KOLZVCFBas0rhwDqrt/0tf3YKW3W9tFGteTlGnkdyrXh6Kn
-         tXzW+1T7TixLcWaukEpFq3B2zr1XlopD54xnV691jwzqtkwlGs1nZhcQa+PltmX8OsHZ
-         MjhQ==
-X-Forwarded-Encrypted: i=1; AL+hErG+TAVpGiSZ0P6l3Ft0eTuDRZZDmDpnKwZ1MZNPWsG1qLIClqLMplPG1AXubgQdTUN+EpJzVstnbg==@kvack.org
-X-Gm-Message-State: APuU4Z/n8t/ELHkf3k8uYr5LW1mWrBm+mkk/fQ6p0hKOTOGd5ouMu3R8
-	pEXiR1Gf2Fd/TaR8WEVL1FtX2TNxXASj4qYQczWSXfqWu9jt3OuYiC25Q0hyyfWsF2o=
-X-Gm-Gg: AZFdTZfZH7zGJl/FxgnNE0UoqyZvQcA9cqYhRXJsp1sQpRSTxE3BbL00aXoqk1jsQpi
-	x/N13GPSxQO9++zm56Itre9Uj9ltO4OXWTJr0RkJnp0K5LNSo4YPYdiLCJOw/yLb5eyCpuI0DX6
-	3cRuJ9myxO6oxf6IkdEz0FiM724nhrpUgZYQdIMsdAGjZR9DfCE4qk014Tz1YzCZBiSFvZZm4gg
-	nqm8VA2g0QibDgebaZTuhd9f3c4APCzeohvlVt+PX/fS0RNK+LSvDSfgenLxZp8jDURLG9KGciW
-	iwxMagP3dKh7NXbkkX+tfh3Yu4tPcGTO8CyuozcGh+hSkDKDUBjmn+wc9zq7Zs2Jw5ky0F0LrUY
-	AcyK1Ghi/zSaxX/yUwnid3Nze5Qzl+l+O8/vOPl686Jm5jkS7V0tj8JrNFN3TbO6Qt4ue6lj0rq
-	EYtl6ICOpDiSdPyTdgi7j7fX8ZvgBk/ybgyX+Ve+zayUR9Mo8CAvLdXWQmlt9dVV9Ss0NsZZtQR
-	sil8kfLf+QAjSGbYEL7zideFAbx/Ec895YFiDiA1e04P6+e2ysn5YyDKdvdykN3dlcG01nK/1t6
-	gPcsteJpUwsmIyZwcT2QV1piHJ0SbYOlgqCFmN3/oQrAihgviQqCSR99Y5x7rpJCnr0cNiY75/i
-	+EVAv3ME=
-X-Received: by 2002:a05:6214:4019:b0:91e:a219:fed9 with SMTP id 6a1803df08f44-91f2400c99emr200139666d6.1.1794873473078;
-        Mon, 16 Nov 2026 15:57:53 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d453casm97144106d6.10.2026.11.16.15.57.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 15:57:52 -0800 (PST)
+	t=1794873543;
+	b=YiHzS30mSUw5UzTjY5DQpBS20CDQg1ieF9Xn6pyXTxdFIwuuAG8nW6C61nv3xfMsnzIW7R
+	GLl2IdoLvqxwceh/DBG5bz32hpFQY0/yVIwpCGpjk7SuPxvugGID/fRyASGDTcuWXn8c5K
+	thoaI9k5q8zYgwoFlg5ZF/c9lpi1/dk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=CPjJNVI09qZx5LOZ+4kHkEmqRQ/X0wQlgwCOQWXvOUc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794873541; v=1; x=1795478341;
+ b=kEOtxs0pudHCQuaacseSJKyPu3XjHI/5t42rL6p4z57hnKJNiIEmS/iIy+Qb5djq4jqhbUAO
+ pEa/nnXaz8DYdJJUgewj4ILnJVEqrmDGqArfTOyDJL5c/BAuUH4he2BcdIUtMZM0PkCVjTltXOX
+ U0n4qeKL1cLWGN+L+2FD1kv4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 2198a1f1efd9a491;
+	Mon, 16 Nov 2026 23:59:01 +0000
+X-Mizu-Trace-ID: 2198a1f1efd9a491
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <8375728d-c1e7-4033-8096-5d98d1bc36e9@linux.dev>
+Date: Mon, 16 Nov 2026 16:58:55 -0700
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] mm/hmm: skip NUMA balancing on protnone faults
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, 
- "David Hildenbrand (Arm)" <david@kernel.org>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Matthew Auld <matthew.auld@intel.com>, linux-mm@kvack.org, 
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
- Matthew Brost <matthew.brost@intel.com>, 
- =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>, 
- Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <avuN2eIrlqrO0u6O@nvdebian.thelocal>
-References: <20261112-numa-v1-1-ad9cbca8f49a@intel.com>
- <b32fb02a-68b4-4db9-83dd-254147dbf215@kernel.org>
- <1993e931e6a4b0cda5c04e72b1a8d5fb924f950a.camel@linux.intel.com>
- <9ec3e8b9-064a-47a7-8d00-566ff371b846@kernel.org>
- <179460319801.482102.15329919214055018110.b4-reply@b4>
- <avuN2eIrlqrO0u6O@nvdebian.thelocal>
-Date: Mon, 16 Nov 2026 18:57:52 -0500
-Message-Id: <179487347201.482102.6428415219993123805.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 37381180002
-X-Stat-Signature: hcrf4tnw9hrnisxnapogcbmjuow5qfa6
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm/ksm: prevent zero-page remapping during
+ ksmd-triggered THP splits
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Yu Zhao <yuzhao@google.com>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
+References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
+ <20261025-b4-ksm_fixv2-v2-2-8b61ad0491f1@linux.dev>
+ <b4a82805-5b13-46d7-bdb6-0ad2eb70f148@kernel.org>
+Content-Language: en-US
+From: Nico Pache <nico.pache@linux.dev>
+In-Reply-To: <b4a82805-5b13-46d7-bdb6-0ad2eb70f148@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ob93ucsjw99txa63pjsqurn3nuk7o853
 X-Rspam-User: 
-X-HE-Tag: 1794873474-488512
-X-HE-Meta: U2FsdGVkX1+9gADz5i5/oqqvzWyDj9uNPDg9tuScg7eYKuFUCgmC/X4zEaT8Q/7EUUJhpv4PAlEsPablh2+jjzVJyr71nNATibi9lJFx8mrNBPkfS4MiO9RPeuNE2Z29ODCG+IDSNYdOCeW6yt1ujRWETKkBSWUal5Ca+1To98huW2UPudTmh/sKFwYt2j9HOc7jo/TRB2sgWHp6IYG3D6Gagl69Bpmp+bhBy/KtPBa52aryE+cbgnDPkQPH7paxXt1vCRdNtdRMthDSQCEdc7E38S+Z5LmgGEbcjE08ImVkXsrA4yeCWKamt0bYPCEIx/G6/jJj6zPyeRfvXQvgCIQQupnvQ1ubLLQz3518qIq6wUfEoIWGVKkPcV+2NuGB2vPDGTeI75PB7OfqTiynG2a9xbQ6BveXOBn7TCxl9F7tOOUHZeM5fC8Al3T3B6m1L8+H6w35HrDyMU1gCMW9YmwJ1ijaQMoPBprUGi5QG8dcYL0TVeYC+Tgmb0UuFAXflI2MVQlflQtHJclZ9dYFS+Uq1FmjaHPIJF5Y3xTt6nJ4azpKKia5t54/MPkqP6gpUyQV/hu2q/rZLqXa3CozqMBYrbqDyH3WoJCmG/tyVzEhrGudJDq0vAiG8ik2gMDJPK8qKhzi9K+i0esm87r8HLH8h9M8uMO1uDmbgqENaDFp/gRqOW4a2krQhAGFw2VotuByFdX1ViZ9b0Un0DwRQpvb8AT3O5+kzDiZlibLrxvCAkHepja2lTXzp6WcKGAsRRcK7lCOIHhAsV1dt5LgSaJKhtuR+xR9WFeH4k0BKDVPs7Vm6J45aQyUhDC+U7osyE5yOjQ0ELVqrS1C7RtPG1hwan1lX55/RHGup3dKG9jzlc7eavI/AE0vzbhDBFMSdTytrEkFQXYVtnFTjm82XJFKOobzswd2m18F2rx+6pBsyRtMdZcaA+FsizL1l2W/wm8OSsvUxw7zwV8cb/C
- W5eYLvjl
- Ngntg1Ef6Tx25s6Jl/t+HNBzq+F9JUHfUSvPRxL6sKZWv3xnQocyQSy7tlLDZmP4Q9CTUaCo0o7kYlHFfOFjtrLDkUS2XvD7GbWa96SMa1/Gu3fyUjyJzdf8QlhJQfw5ryyOlY3aE0CUUf8/OiDgLLTIOItZ0x+Ij/JxVsufyKPtUQHdV9ZeWoUmq44ndnYcZWYmAfNQua8LtpPyGmnIutIxMg2UPvagxML8MVg+ukz62IJuHs7xvJrunYwd90mkTsUp6YAjn/h3BuuxsZ7OuSFNuOb6qpVBJkp2OqNjwGs2Qvg1C99CMhtiYZUmarx3lofdcEeCJ1WayKyGNuFqnt/F3Ug==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CC9F04000D
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794873542-199190
+X-HE-Meta: U2FsdGVkX1+eiX1f8DGaECnwRHssZlaYOJQq0p1L6Wu0vijtOjkj8ph13BfBuOn79v9ezGGZfTgie3gy8TxUqmKbjpgnj4DfUsCnsKBWV43AXg6NCBbPqdIZINUgWbEmb3wugzAt5V/k8rdXpekZcvBu9diiPFs07/t4kah7b9pAF21EHbOjYzQJ8xTduOoUVIxMNswUYubsrIaB0ugANOsGAXKeAi8CBnegMubQ0WDzv/3/XsVXPZrS3x96Xo33Z7JwJsP+eqTEhChGk8TCR8DKrc95mAlw6fON5gjz2MHDhrZkvmRLjWSdX21h3QDbMubaqDW4SMt4BKrcuhW+c1fWyWUFVhCmZ843QyFU4rMJ74JRScCqFsM3JX6O9Ze4zwHAb2OemAEH552aVVABwcdpX/g9FMpehZd7OBf1uJJIS9tzAhJfOip+DVG/pnuyyDCQEcSEBWGwb0I2zx10oN3PWgZrPcpxvULoXcATJnxogm2kmKl1CCuHekro6edekOaI3ZyrOiUAKK2koEhGVkBvCZnZpnFWdy+Y35np860MIH8WPe6cnJStF/0bHm/o1jue8b8ZlvkypVGcjoA6qk2hiNSNh1jWCxyvAD9RCVsy+4W3FprwSoW8KuiyfKUnH9eO+JgdX8n6Los/pXBOdGvUVBlJo8rNWFNmtyBCvrwtypQwqYJ0uh6Vt3GQlhUS8wch3xw4zeWt5Hp7OrymAEHk2CIkEl99R2G4LJXvODgN0tFqB07FENs/IbMGdATGakL/hksvxhqfhuRt/OHQ97wVk9qMchxEG6Gnmr0GU0lVjxb1pVs1o7LeZZwHaF+Sdk09qGI7VubkXKDFfh9xjAGEg7TF/sGMNjEJIfcCmeJzxKNqZ3K9/ptZdr45OtKxRfhI6lpGInSMw6jLDqb7yuUSN3Y8jFgLS+PPv9gGOL+Q7alvYwXIJMnV6axBr2b0sVznCR9nLaEPG0loKX0
+ y5zYTI8P
+ ieF0+sXYBsy8NKMUNf+wWYUONgv7xi4FCQq/OHa4d0jlPHUblQURuev0ZFcrOpRQDIIF7qAlNH/FclF6FlwNzSyByYoTBsulqtkFDeiGmgNZm6jjCfbWA3MkC61s6qsSCuO8Bsr3T/8dvbsFZq8UI2t+QcXcXfjtllSqQOha0ajlTXZkki1re0ZONthXworFq0h80XeMeCF+tToq6lZiHn2Z41N/U+BbeOwnF7hhvwJdkEdqL6LuA+n01SRWf0ZnXPEXQtNJvnmH+RY+2GDvxIIOqV5sU+hLmlMpRCa03yGsN368qv3G/BU8hlvf3IwBjIfp1n2Kz212TiuLF4yaWtGaaQzQVRoLh/8oZYuSMaMwc3OMUFMLGz2vqgPTht8jhmwP0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,53 +109,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-17 10:24 +1100, Alistair Popple wrote:
-> On 2026-11-14 at 07:53 +1100, "Gregory Price (Meta)" <gourry@gourry.net> wrote...
-> > On 2026-11-13 21:43 +0100, David Hildenbrand (Arm) wrote:
-> > > On 11/13/26 21:34, Thomas Hellström wrote:
-> > 
-> > > I recall that John (cc) kept saying "GPUs and NUMA balancing is inherently
-> > > incompatible, you have to disable NUMA balancing".
-> > > 
-> > 
-> > If this is a NUMA-hotplugged GPU, then this is resolved by a private
-> > node, because this:
-> > 
-> > @@ -6404,6 +6404,9 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
-> >         if (!folio || folio_is_zone_device(folio))
-> > 
-> > 
-> > changes to
-> > 
-> >         if (!folio || folio_is_common_memory(folio))
-> > 
-> > And all folios on the GPU node are never subject to NUMA Balancing
-> > 
-> > so balancing can stay enabled while the GPU memory is not subject to
-> > PROT_NONE spew.
-> 
-> Hi Gregory, just to hopefully help clarify understanding a bit here this isn't
-> related to folio location and therefore private node won't help much.
-> 
-> This about a driver getting a snapshot of current PTE state to program a
-> secondary MMU (in this case on a GPU, but can equally be a NIC or other device).
-> 
-> Even CPU memory being subject to NUMA balancing can have quite an adverse impact
-> on GPU performance due to increased incidence of GPU faults, hence why John says
-> GPUs (using SVM) are inherently incompatible with NUMA balancing.
-> 
 
-Ah, I follow.  I'm still working through the performance implications of
-mmu_notifiers in the presence of PROT_NONE faults, but if i'm
-understanding correctly it tracks that you'd say it's incompatible.
 
-I presume here the driver needs a global view of memory (or at least all
-memory it can potentially DMA), rather than simply just a subset
-(some set of VMAs)?
+On 11/16/26 3:21 PM, David Hildenbrand (Arm) wrote:
+> On 10/25/26 18:39, Nico Pache (Red Hat) wrote:
+>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
+>> when splitting isolated thp"), splitting an anonymous THP remaps all
+>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
+>> This flag is set unconditionally for every anonymous folio split,
+>> including splits triggered by KSM.
+>>
+>> When KSM is enabled with THP=always, this causes two regressions:
+>>
+>> 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
+>>     split_huge_page(). The split remaps all 512 zero-filled subpages to
+>>     the shared zeropage at once, freeing the entire 2MB THP when KSM only
+>>     intended to process a single 4KB page. This bypasses KSM's
+>>     pages_to_scan rate limiting, causing ~1GB to be freed almost
+>>     instantly.
+>>
+>> 2. use_zero_pages=0: The same split side-effect occurs through the
+>>     stable/unstable tree merge paths. Each pages_to_scan iteration
+>>     triggers an expensive split_huge_page() that silently frees 2MB,
+>>     while the scanner wastes cycles on tree searches for zero-filled
+>>     pages that were already freed as a side-effect.
+>>
+>> Introduce current_is_ksmd(), which uses kthread_func() to check whether
+>> the current task is the KSM scanning thread, and use it in
+>> try_to_map_unused_to_zeropage() to skip zero-page remapping when the
+>> split is triggered by ksmd.
+>>
+>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+>> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+>> ---
+> 
+> [...]
+> 
+>>   static bool __ksm_should_add_vma(const struct file *file, vma_flags_t vma_flags)
+>>   {
+>>   	if (vma_flags_test(&vma_flags, VMA_MERGEABLE_BIT))
+>> diff --git a/mm/migrate.c b/mm/migrate.c
+>> index 7bdcdb57652f..c33ae3fa1043 100644
+>> --- a/mm/migrate.c
+>> +++ b/mm/migrate.c
+>> @@ -305,6 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>>   	if (PageCompound(page) || PageHWPoison(page))
+>>   		return false;
+>>   
+> 
+> This really needs a comment like:
+> 
+> /*
+>   * When the split is triggered by KSM, let it take care of scanning-for and
+>   * de-duplicating the shared zeropage.
+>   */
 
-~Gregory
+Ack! ill wait a day or two before sending a fixup in case others review.
+> 
+>> +	if (current_is_ksmd())
+>> +		return false;
+>> +
+>>   	VM_BUG_ON_PAGE(!PageAnon(page), page);
+>>   	VM_BUG_ON_PAGE(!PageLocked(page), page);
+>>   	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+>>
+> 
+> I'm still a bit unclear of what happens when the split is triggered by something
+> else in the system just before we walk into this THP.
+> 
+> Like, imagine the deferred shrinker scans for 0-filled pages and splits under
+> memory pressure. Then KSM scans and essentially skips the (now-split) THP?
 
--- 
-~Gregory
+IIUC, we dont skip the (now-split) THP (ksm works by page, not folio), 
+we would only skip over the parts that were remapped to the zeropage. 
+and because the shrinker already split the folio, it wont end up even 
+needing to split it.
+
+Inversely, if ksm does run into a large folio, it splits it, but doesnt 
+do the remapping. Which KSM will either eventually deduplicate itself 
+(and in the case of use_zero_page=1, it will also do the zeropage 
+remapping).
+
+I asked our robot overlords if im missing anything and it did find this 
+potential issue:
+
+KSM could trigger alloc/reclaim that would then prevent the zero-page 
+remapping for any reclaim done under the daemon.
+
+It did suggest this fix `current_is_ksmd() && !current->reclaim_state` 
+basically check if we are in reclaim and ksm. This would close the gap.
+
+Or we could go back to adding a flag to split function (but i believe 
+this is still somewhat cleaner and doesnt complicate the already messy 
+split code).
+
+Cheers,
+-- Nico
+
+
+
+
+
+> 
 
 
