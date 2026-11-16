@@ -1,79 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B110606A32C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE562606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JJvV2uWi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LD6ejzLV
 Received: by kanga.kvack.org (Postfix)
-	id 5FBA16B00EF; Mon, 16 Nov 2026 01:47:21 -0500 (EST)
+	id 07C606B05B2; Mon, 16 Nov 2026 01:47:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D3A06B05B0; Mon, 16 Nov 2026 01:47:21 -0500 (EST)
+	id 054E96B05B8; Mon, 16 Nov 2026 01:47:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 511646B05B2; Mon, 16 Nov 2026 01:47:21 -0500 (EST)
+	id ED3416B05B9; Mon, 16 Nov 2026 01:47:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 22D3B6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:21 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8D541C4128
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:20 +0000 (UTC)
-X-FDA: 85440050640.07.01FEC44
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C716D6B05B2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:24 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4B063A086B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:24 +0000 (UTC)
+X-FDA: 85440050808.14.802A3DF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2369220008
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JJvV2uWi;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id B2EECA0002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:22 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LD6ejzLV;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794811639;
+	s=arc-20220608; t=1794811642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Z1Rsc7DC+QVh5qdz58bbVw91gg+izy0lpOLfi/21S74=;
-	b=03x+lMlsYeWwt5nRU3fyqFdf5CV8UTqiSxyJMQCUjCDbOfmlgi3rAM6bPxX8T3lCarGBgt
-	LGq5Y9e0Sq2z9NetnzMofYKcvKQs4mFGOdlLKZDiXZ2Kx4pvf7U18n1nIWntOUsJIh0c//
-	UykkiAWVWZCniF49l10hxwhtC01RDjw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3U+iFMsR7Wf6izMeYzL3XEBnXOJ8vfgZxFGf5leGhvM=;
+	b=MXO3A5sZyxjKoZcYdO0LfsqprtOp9lOB8CUdEP1JxMwvsF8p29Z/EcRDmc0MrIaT6BLyTP
+	P3NGXpHPwsy521vKjCpOLDD0J6XbyWVJBM/yn0kDSyfELvJ0ioyVr64KSDSmsigqCWB3hK
+	QtggtgrbuESUAmK0KCl+tTD/CKLAd24=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794811639;
-	b=a16IPTkvI/rmpOfOGIckRSEay+qWaHGTufrzTWjSfs+x+ZRYw4CIbf4as5gGr773WprjXv
-	zyVzXaMhqTDkgxKhSN+Ba2n3zBKknBXqKNv63gxzeDrj36fz9ZTc3YE45nCMv/j2kaSnyz
-	uiTXYNI2K0xFhfvV46CzLBzA2/ukwBw=
+	t=1794811642;
+	b=TrKne4nY8+ZbQXBBmXvXZF6yhzzkgmotpWIyWheNgC/MVPHYfGgkpC12t6HBXO3btN22/w
+	84Ruau7qgPr27Srwt0GWoeMS6mtZSpbmxW7FNnopaqSxmvrm2rX4dL0Dfcec2LQCnWsDQG
+	HZDQcHb/4WLHNyGoXL4pc+lQGelY6+4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JJvV2uWi;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LD6ejzLV;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9B9F661ECC;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4E12E623B5;
+	Mon, 16 Nov 2026 06:47:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12AF1F000C5;
 	Mon, 16 Nov 2026 06:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197601F000C4;
-	Mon, 16 Nov 2026 06:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794811638;
-	bh=Z1Rsc7DC+QVh5qdz58bbVw91gg+izy0lpOLfi/21S74=;
-	h=From:Subject:Date:To:Cc;
-	b=JJvV2uWiZqdWbH4MMiSRVO5D7yVWQMFmglhOIgBUqVU7+Ifnvfbc917cQi5vUPhxZ
-	 nOi80n4MJIvFR/WG3/DMDvlGvpNVzagi1xaAs842ZJDg8hJ9ijtMz24d7B+OgYPsyS
-	 lFqhctbXkIV5NBpuLdyTPYypfh0y3f9tNJL7eGi7XbihdtTSjdAI7DtU2xi1z/EuSB
-	 ZZSja+7hQF9L20q9d4XC7UFiGyj7hAiLuFquwmZsr8xglbRuag5So1UOJ0b+cZz7Ch
-	 Id3nasevFmOO1zmcrypPMyCK0usMTgpXKCoaPoiWaEp6YPGePjP2JyETHgwrNFwZt0
-	 pRqhh37iuu5RQ==
+	s=k20260515; t=1794811642;
+	bh=3U+iFMsR7Wf6izMeYzL3XEBnXOJ8vfgZxFGf5leGhvM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=LD6ejzLVqR8AUJ+Xda9FHUcUBs6d9zxbCmNuusg03uIJxYTZS+tTC8SpyUjNtAPkf
+	 UdXj0ebnLwKrLEMBOZHzghtpFNfFNIggbaaLrE8TvW/5TAX0KFTIgGBkEtFa/RqkLy
+	 6f37iw1UQY+6v/ewpyfStd23CXSbbD47iP6+m36zWp5/APDhb6Ah3IOzR+0zQ0xh0p
+	 rSL51wa75o3AxKQhGi8afDrv1vgmVNotLiqMCnlBaEyhIc/xXjXTts+ow30t7HM8Ej
+	 JpWDX9/vGr1WqSferEgjgGXoQ3D84LupLrDiah82kmYcEQxA2l3u8YepvBnasEJP68
+	 LroJHEfVSVq+Q==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [PATCH v4 00/10] replace CONFIG_SLUB_TINY with a slab_tiny boot
- parameter
-Date: Mon, 16 Nov 2026 07:47:08 +0100
-Message-Id: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
+Date: Mon, 16 Nov 2026 07:47:09 +0100
+Subject: [PATCH v4 01/10] slab, kunit: pin test slabs by an extra
+ allocation
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOym+moC/23NTQrCMBCG4atI1kYy+dO68h4iJWkmGpVWklot0
- rubqiiiyxe+eeZGEsaAiSwnNxKxCyk0dQ45nZBqZ+ot0uByE864ZgUATcezLdtQ92XESxMPdOG
- 5FtI5mJs5yWeniD5cH+R68+x0tnus2tEZF7uQ2ib2j58djLsXz8Uv3wFl1DDU2imh0arVAWONx
- 1kTt2T0O/4WgHH5R+BZsB4kFMYq792PID4CMPVHEFlgciErVAUaa7+EYRjuX7yFEkcBAAA=
-X-Change-ID: 20260911-slub_tiny_rework-8f2634dd17a7
+Message-Id: <20261116-slub_tiny_rework-v4-1-227a4b3636a5@kernel.org>
+References: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
+In-Reply-To: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
 Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
  David Rientjes <rientjes@google.com>, 
@@ -85,18 +83,18 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B2EECA0002
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: xhmdiqmqq9nbhi4ocgqfekkyybuwubky
-X-Rspamd-Queue-Id: 2369220008
+X-Stat-Signature: 93nhtydo1ex8q45tuo6yfgsp7xpdhkig
 X-Rspam-User: 
-X-HE-Tag: 1794811639-292363
-X-HE-Meta: U2FsdGVkX1/uIfOxAYGSNruKsFkvLB7gXUGAfwwTgiEThbfvDkg9Hl4FiEeJboSc/AQdG3Sea/NB00WS+EgM5CVyPxz0XzDWNqXU79fxiaBEl3qNiG7D5A7gzByupdL0WUt5D6XHaQ8fIGfulGp8LHojWWFIaCfsrOb2tYi7DiJx9J9mSCxz0J5LD8/MwyWG5kp51KiUWJk1I5/WK1Lypxm/gzdijGRESD/J/E4Wavs6UML2c6sxAU3Bz7W4l45d/fGxPKk9yVjBnG7khIHCpbENRzpk76YwfY8zH4wvsVG+DmPjbvby/bGqtNhC2c1MlvYNGZr3AOwJBVF69nsDKzA7zy+vzMY7WYvq4Xi5UNfTCQf/4OhocddjCzj76FWNUEqBiU+DnFbql9ARJkxZuDYboGbY5lhWrt3delgH5fGpjGxbetcV314H7Ps5Q7hJptNB8FJOo4Pu5TForeD/IvyxqRWWjp+MP/jJUVa/spDph8ZS85KeY6+X2u7QfN32nUwjpptMw7GOmVbUUDlhp5nFNt3NaDwjHFMK/hJVdYDDIj+0h3kMW/dLmGxw4/KqTKeeKf7XFduq2yAHHn0x+z9KuCkhoMGSGEZ0B5jDLV5r4nAt057r363x0tLwGm/HQrlLCktar1gyNoHcw64jtbhAX7SHBC+V2sjsZdwEFpflJfsd6MNnYUcivPkRtjExk5TFgzLeRkaWdIgb3JjjOhyggq0zpqyvN0vbNR6mskHTRBvWBdXk/DPPEZk/SbMxN+7REZUVDAafesmCtPGLhHdvVt3UC3fVWFWYYIwh3mfLXssbpTDV9jcny5URRwMRdrTVLuIZHQp5FvKAUcL2aYkvYBeWlXv75nI5n2ZyC1jV4JB1UXqy+Siu0tlt/Y5SNorMbRjfFARmpKmdgqqVrk9A7Gg/4ozTvZfnlSJrwqusLNAZCrM86J1f9Mlr/UoAA9qZIGurutDU+D+KdJD
- F6jMhjJb
- LR5xn7KE395flXhU5EwJl4NcO3L+A8S9xXjy46ekZ1WiG+1tju9nt57mBNfq1xyamdkwWkqPBMG1mUyGZ0T42Lu5lVdJkni5Da7VauwKZhxZ7EREXhQEwtHTKzVJ1fnOEkRW9j6Xpbs0jgzLqGoo8SdvmV0C1gqnkQTfkx2iX3hvOSXWfdbWMrVALcFaDL15IB9Jds2/d3ew20VIwodxceGVMsxf/OLYyD9FdWH9+VDW0Zz9WgdNCu/X1vLvaagPZYmbe+XNQtYsC9xqHLjQf/xDuQU/lgt/ORXOSJzZPR8+OJgZ2GvUy13srFz2ul8soXnWLAwq/MhmiMIrjwD+cXff++mgUm4sIYanfJuY0aGFBVPjS+fzvzu5dVklYDvXTHBl6756/ZGKY2mcr2d+Lvb1qlVt2Wd07gtWcNKrx5DpteflkcQCc4heBgdvG10mCwj2pQECCdSowr2MXP05fiKHR6bVopfsMojn4
+X-HE-Tag: 1794811642-253361
+X-HE-Meta: U2FsdGVkX19V5ZbisVl4VrrrGamHoty+CYnjh6WFua9GJD0grmAWU0BgtIkgQrlPedeA/D8/WghDTaX255SrMg7T5R+OhxqR3yQ2zCPArZbsv1tF7JCBN7p726pbjWghRXi44vf/wT1nE2np0gRt4flHqaFDriYGSDVgswm/uV5AKFnaZmvO/zLZF834X9nvoxi7mJpu63QWSFHDO01/fpaoeMw7WaxTzg6DqA1xA9ODvXaDFqtZZp9Lzlq+wysobpOibPyi7/+IwdT/TCCS9joKa7Y+5BHPS5iqGpzetAAcjuNLtFcUERJk6dfX7TOvyK36ep+XVLX3WVWx8mj/eqrRu0EcQJcnhSg/CrDsQb0DhTpeJxe40Kpnq45EJgubkSI6USH+0MWaaS+ZuAEdwCu+fq3NEGNf74do4CrfJWwGMeCtepIjqTddzlQAtW0sQ9n9CNjBSC6CotKkIyMzCM95YHYxrPsoFYeBReIV9vT+dxPSnHEHlCfIWtsIJgJ+TLshmyNKZ7vQOtamdhcnM/NFctFBWz8SmGl1kDU7q4SkATShFGOptjmVBO92eYUY3PMbH+OUYczNsGLjFX2hoZOB67j+fkbF0Zo3undluQzIha3wzh1H81f6/4d1/GTCeNK5x0CahEEfuvv/LTxu9UTr5GX2jPCo8HPUiu646oR+9VwmxrsQRgQFhcbL+BFJmKh+Q0gZ34eGyH/fIKg8ELfL4ktDvUSmUDZbGG/yQkQ3WXpoXRN2J3WnL7r9MD+6UCtYiXQJZPLpYFkAzX2QPffJXQGxmMLYLp73NpoZsI0fG+/Mt+ZXB5DYy6btegXcjPPDzTiatpqERYU0okIjJAJuAH3aHi6ZRwuudyWsfmZPVuWTPEiwO+5CbskJ5PplmVrfHleg1g3mca7UONdKcjC8TRcRnPBwClDv29Np+Eo5ra2Q1OTIZyrV00qXtNORbfNQiKAlosfxOWHlbFU
+ mhGunow2
+ Dj1ofLPLWFo0mwd+ZQk+AeCjcJynuFbzORNDbCN6rL4JK3xlA6A/5VK7L+H33bJrvhfxodhhL/9ICXk+rnD1AWlJBPLNwulV8DHwdqjIz1+Uc3rCXsi5RBeYQalV02n4HaTVkMRV60E7wI/V1VLI1ML4F02e7VZap7Ro6pN2ato99pPtQjPjvV5tfXldjuNB+PaIjKhLEW1yHlK13HBLyXaKrekW/kgbTQQjJFEpDQxR7v3gK0yd0TH5UkoVgLoFQUVgJ3Koka6dO2bZ+wfwisuUnBwiTT+A3v6nCamiSF1FedTKwZWW5NZJP+vZh715PCkrydfrKDcbDfCigm1BfsmIG1X7Hc8KSWNnTgmDJtxu2J09pp7e1Vwm7HdWueWJ3bLHH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,139 +103,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-CONFIG_SLUB_TINY was introduced to help tiny systems migrate away from
-the SLOB implementation so it could be removed. Its main purpose has
-been to disable all forms of percpu object caching (cpu slabs back then,
-now sheaves), and being a compile-time config option, some extra minor
-saving were achieved by code elimination or more agressive merging of
-caches with reclaimable and non-reclaimable objects (keeping those
-separate helps reduce high-order page fragmentation but not memory
-footprint).
+Several of slab kunit tests allocate and free a single object from the
+test cache, perform intentional UAF actions and validation, while
+expecting the empty slab to stay on the partial list.
 
-However being a config option brings issues such as incompatibility with
-other options that has caused troubles in the past and Linus argued for
-removing it [1]. Moreover, there is a use case for having full-blown
-scalable implementation enabled and being able to disable it with a
-boot-time rather than compile-time decision. That use case is the kdump
-kernel which shares the same vmlinux but wants to minimize the memory
-overhead (which has to be pre-reserved from the production kernel) and
-does not mind reduced scalability.
+This subtly relies on non-zero s->min_partial. It currently compile-time
+defaults to a non-zero value, but in theory a sysfs write racing with
+the kunit test could change it. More importantly, the upcoming
+CONFIG_SLUB_TINY changes will make it possible to run the kunit tests
+with s->min_partial being a compile-time zero, which means the tests
+will now do unintended UAF writes on the page allocator level, and also
+report failures, as flagged by sashiko [1].
 
-Thus this series reworks the CONFIG_SLUB_TINY to be controlled by a
-variable set by a boot-time parameter. The config option itself is
-deprecated and only sets the default value of the variable, and all its
-interactions with other config options are removed.
+To prevent this in a robust way, add an extra object allocation to the
+tests, that will prevent the slab being freed. Use migrate_disable() to
+prevent migration to a different NUMA node, which would place the
+allocation to a different slab.
 
-The conversion builds mainly on the fact that most SLUB_TINY specific
-paths to avoiding percpu object caching are shared with slab_debug
-handling, except doing any actual debugging checks.
+[1] https://sashiko.dev/#/patchset/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org?part=8
 
-Thus introduce slab_debug=N (for No-op) option to allow using the
-slab_debug checks directly, and extract the underlying static key
-handling from CONFIG_SLUB_DEBUG only scope. The decision to create
-separate kmalloc-rcl caches is also made to be boot-time.
-
-The parts of CONFIG_SLUB_TINY that can't be transformed to a boot-time
-decision are related to dead code elimination and fast path inlining,
-and ignoring SLAB_NO_MERGE for performance purposes (currently used in
-networking). Those lost memory saving should be all relatively minor
-compared to the savings from avoiding percpu caching.
-
-To sum up, after this series:
-
-- CONFIG_SLUB_TINY is a deprecated option that has no interaction with
-  other options and only controls the default behavior.
-
-- New slab_tiny boot parameter controls the functionality (and can
-  override CONFIG_SLUB_TINY in both directions).
-
-- slab_debug=N can effectively achieve most of slab_tiny and on a
-  per-cache basis
-
-- the implementation is simpler with many ifdefs removed
-
-To verify, slab usage was measured from /proc/meminfo after a virtme-ng
-boot with 16 cpus and CONFIG_SLUB_TINY enabled.
-
-- before the series: 27700 kB
-
-- after the series: 29804 kB
-
-The difference turns out to be due to last patch making CONFIG_SLUB_TINY
-stop blocking several options, but real tiny systems can still disable
-those.
-
-- SYSFS support can be disabled globally. When manually disabling it for
-  slab only:  28992 kB
-
-- Disabling CONFIG_SLUB_DEBUG on top: 28696 kB
-
-- Disabling KVFREE_RCU_BATCHED on top:  27624 kB
-
-Thus it's possible to achieve the same slab memory footprint with
-slab_tiny. One caveat is that disabling KVFREE_RCU_BATCHED is now only
-possible by selecting tiny rcu which means CONFIG_SMP=n. I attempted to
-make rcu batching boot-time as well, but turns out it's not possible
-anymore to switch to call_rcu() with kvfree_rcu_cb because struct
-kvfree_rcu_head is now reduced compared to the full rcu_head.
-
-In case some small (but SMP) systems notice this as a regression, we can
-make KVFREE_RCU_BATCHED configurable, or come up with some other
-solution.
-
-[1] https://lore.kernel.org/all/CAHk-=wh-k04MsoEC0SGKff2Snm6bBF_e+0pHOKwaWv4umZ_SnQ@mail.gmail.com/
-
+Acked-by: Harry Yoo (Meta) <harry@kernel.org>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
-Changes in v4:
-- Collect review tags, thanks!
-- Fix missing migrate_enable() in the kasan test (Harry, sashiko)
-- Handle create_unique_id() properly (sashiko)
-- Drop SLAB_RECLAIM_ACCOUNT on cache creation with slab_tiny_enabled,
-  achieving full parity with handling pre-series.
-- Add memory footprint measurements to the cover letter (Harry)
-- Link to v3: https://patch.msgid.link/20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org
+ lib/tests/slub_kunit.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-Changes in v3:
-- Rebase to v7.4-rc1
-- Add SLAB_DEBUG_NOOP to SLAB_MERGE_SAME (sashiko)
-- Prevent premature slab free in slab and kasan kunit tests by new
-  patches 1 and 2 (sashiko)
-- Link to v2: https://patch.msgid.link/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org
+diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+index e3b63f0338d5..40427f7edf4c 100644
+--- a/lib/tests/slub_kunit.c
++++ b/lib/tests/slub_kunit.c
+@@ -51,10 +51,16 @@ static void test_next_pointer(struct kunit *test)
+ {
+ 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_next_ptr_free",
+ 							64, SLAB_POISON);
+-	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
++	void *pin;
++	u8 *p;
+ 	unsigned long tmp;
+ 	unsigned long *ptr_addr;
+ 
++	migrate_disable();
++	pin = kmem_cache_alloc(s, GFP_KERNEL);
++	p = kmem_cache_alloc(s, GFP_KERNEL);
++	migrate_enable();
++
+ 	kmem_cache_free(s, p);
+ 
+ 	ptr_addr = (unsigned long *)(p + s->offset);
+@@ -89,6 +95,7 @@ static void test_next_pointer(struct kunit *test)
+ 	validate_slab_cache(s);
+ 	KUNIT_EXPECT_EQ(test, 0, slab_errors);
+ 
++	kmem_cache_free(s, pin);
+ 	kmem_cache_destroy(s);
+ }
+ 
+@@ -96,7 +103,13 @@ static void test_first_word(struct kunit *test)
+ {
+ 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_1th_word_free",
+ 							64, SLAB_POISON);
+-	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
++	void *pin;
++	u8 *p;
++
++	migrate_disable();
++	pin = kmem_cache_alloc(s, GFP_KERNEL);
++	p = kmem_cache_alloc(s, GFP_KERNEL);
++	migrate_enable();
+ 
+ 	kmem_cache_free(s, p);
+ 	*p = 0x78;
+@@ -104,6 +117,7 @@ static void test_first_word(struct kunit *test)
+ 	validate_slab_cache(s);
+ 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+ 
++	kmem_cache_free(s, pin);
+ 	kmem_cache_destroy(s);
+ }
+ 
+@@ -111,7 +125,13 @@ static void test_clobber_50th_byte(struct kunit *test)
+ {
+ 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_50th_word_free",
+ 							64, SLAB_POISON);
+-	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
++	void *pin;
++	u8 *p;
++
++	migrate_disable();
++	pin = kmem_cache_alloc(s, GFP_KERNEL);
++	p = kmem_cache_alloc(s, GFP_KERNEL);
++	migrate_enable();
+ 
+ 	kmem_cache_free(s, p);
+ 	p[50] = 0x9a;
+@@ -119,6 +139,7 @@ static void test_clobber_50th_byte(struct kunit *test)
+ 	validate_slab_cache(s);
+ 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+ 
++	kmem_cache_free(s, pin);
+ 	kmem_cache_destroy(s);
+ }
+ #endif
+@@ -127,7 +148,13 @@ static void test_clobber_redzone_free(struct kunit *test)
+ {
+ 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_RZ_free", 64,
+ 							SLAB_RED_ZONE);
+-	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
++	void *pin;
++	u8 *p;
++
++	migrate_disable();
++	pin = kmem_cache_alloc(s, GFP_KERNEL);
++	p = kmem_cache_alloc(s, GFP_KERNEL);
++	migrate_enable();
+ 
+ 	kasan_disable_current();
+ 	kmem_cache_free(s, p);
+@@ -137,6 +164,7 @@ static void test_clobber_redzone_free(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+ 
+ 	kasan_enable_current();
++	kmem_cache_free(s, pin);
+ 	kmem_cache_destroy(s);
+ }
+ 
 
-Changes in v2:
-- Rebase to current mainline (with slab/for-7.4 merged)
-- Stop triggering nohash pointers due to slab_debug=N (Harry)
-- Stop preventing slab merging dues to SLAB_DEBUG_NOOP (Harry)
-- Link to v1: https://patch.msgid.link/20260923-slub_tiny_rework-v1-0-a0e66d536eb5@kernel.org
-
----
-Vlastimil Babka (SUSE) (10):
-      slab, kunit: pin test slabs by an extra allocation
-      kasan, kunit: pin test slabs by an extra allocation
-      mm, slab: refactor slab_min/max_order handling
-      mm, slab: introduce slab_debug=N
-      mm, slab: rework KMALLOC_RECLAIM handling of SLUB_TINY
-      mm, slab: make SLUB_TINY handling dynamic for sizing decisions
-      mm, slab: convert CONFIG_SLUB_TINY checks to kmem_cache_debug()
-      mm, slab: remove remaining compile-time checks for CONFIG_SLUB_TINY
-      mm, slab: add slab_tiny boot param
-      mm, slab: deprecate CONFIG_SLUB_TINY and reduce its Kconfig effects
-
- Documentation/admin-guide/kernel-parameters.txt |   4 +
- Documentation/admin-guide/mm/slab.rst           |  18 ++-
- include/linux/slab.h                            |  17 +--
- lib/Kconfig.kasan                               |   2 +-
- lib/tests/slub_kunit.c                          |  36 ++++-
- mm/Kconfig                                      |  16 +--
- mm/Kconfig.debug                                |   2 +-
- mm/kasan/kasan_test_c.c                         |  25 +++-
- mm/slab.h                                       |  32 ++---
- mm/slab_common.c                                |  28 ++--
- mm/slub.c                                       | 176 ++++++++++++------------
- 11 files changed, 207 insertions(+), 149 deletions(-)
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20260911-slub_tiny_rework-8f2634dd17a7
+-- 
+2.56.0
 
 
