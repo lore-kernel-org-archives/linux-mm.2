@@ -1,147 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CDB606A32F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6C7606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GUA9dup0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lzIDDbwi
 Received: by kanga.kvack.org (Postfix)
-	id 0C3046B05B2; Mon, 16 Nov 2026 01:21:29 -0500 (EST)
+	id 8E2CA6B00EF; Mon, 16 Nov 2026 01:27:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 074706B05B3; Mon, 16 Nov 2026 01:21:29 -0500 (EST)
+	id 893C56B05B0; Mon, 16 Nov 2026 01:27:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA5606B05B4; Mon, 16 Nov 2026 01:21:28 -0500 (EST)
+	id 7823A6B05B1; Mon, 16 Nov 2026 01:27:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C7F556B05B2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:21:28 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 41CA4808BF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:21:28 +0000 (UTC)
-X-FDA: 85439985456.14.7AD91D1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9E08020005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:21:26 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GUA9dup0;
-	spf=pass (imf31.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794810086;
+	by kanga.kvack.org (Postfix) with ESMTP id 4A08F6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:27:00 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CCE30808E0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:26:59 +0000 (UTC)
+X-FDA: 85439999358.21.BDEA644
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D6013180002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:26:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=lzIDDbwi;
+	spf=pass (imf06.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794810418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZGtf5qEhwHANt9S2IldNkWh18GQwYTwsu6dC3M4N+D0=;
-	b=wZTh5eExTZH97TTLZrXI6YWXpj7qg8ldHsEGc8mBtwc/W9C1ssA40bdhSdaXMCsmtD+r9g
-	Tqi7EqBBGvsKmE23s1Ux8UICsyKS6QPzrgAaLFjkDurbz80xJ8U95RGVa3kxvlEYH+1WNP
-	HrnmkAFeB09NmZWn0esBE7PNqqvPYFY=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GUA9dup0;
-	spf=pass (imf31.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794810086;
-	b=6Y7PL4M7lqMrtM186gnvscFGfV3OIDsiva/wvGZBO7RZvWKt7KppZtbkHnYEVpFZFWCxSQ
-	u9W0rl1FP8C6ntIMcIEBnRMPi0ULRlmLBR6/vN0JW5i6GgpXZnA+UT3xZSELY8UkdseZPo
-	sLAR+aiW8pV7UsReAcItncs92FMjHt4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5367861CE0;
-	Mon, 16 Nov 2026 06:21:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBD01F000C4;
-	Mon, 16 Nov 2026 06:21:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794810085;
-	bh=ZGtf5qEhwHANt9S2IldNkWh18GQwYTwsu6dC3M4N+D0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=GUA9dup0fJoWa6DD08lCGejGIeihAF7ZTATO3ZR3GPC9cXgSEgzzlNqI3pfVyB+Hi
-	 qgCm0/gPhdYZphvuSbKs+NCpccVb1MGhx1DwDVRPU4MBuP6cl5DOGzk0ZieQOKFUXx
-	 HBIrWCyjk6fX/0OhKhYhW+ksoU8o+0btHpkKE1PIVjv1lAVmfS1vX0fOyWs6baK0nD
-	 AtaKkLIVR99DkhAuobP0HpDKOgFbhS11Ma/wyrhb4BcdfV2PeCJwKwso2a3p5N7nGU
-	 Y7QTRkaB25YaqZHggv2zPj0b/6uLh0Kl3D/sWZOvcPqGSpmLlm/YIThrsBaw7FT7Ly
-	 gr4xBUww9w8ug==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
-In-Reply-To: <87ld6x8zb7.wl-maz@kernel.org>
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
- <20261104164555.3555725-15-aneesh.kumar@kernel.org>
- <86zevn1c9a.wl-maz@kernel.org> <yq5ah5huoteu.fsf@kernel.org>
- <87ld6x8zb7.wl-maz@kernel.org>
-Date: Mon, 16 Nov 2026 11:51:04 +0530
-Message-ID: <yq5apkw5xpnz.fsf@kernel.org>
+	bh=wd/v+54C2+9hZ5vK2vynCTpvfy6lXgdEPXyeyseozC8=;
+	b=7DjPs0YR3RQRe0PKhxZe+rkHR8HFk6jjrfiHxW1RKQDf6kwkAKI9O0LiXIBtVjUvg6cAgT
+	oQqeELIdS+6gPZRjvLkQMNVEFpq+we8diP97KXl4tsvKjqct5eFEGcs9sfhp91tWtm5TOs
+	v+9u6P6wwDVco5szxehmTIxYsZOtwl8=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794810418;
+	b=44fxJ9x1y8YPR3s7lGpkKsxbShSX7kcHSwMPreQUGjrRa3BTOnHr7pLhunZwUQ4XQaZwrN
+	sN617eArLeqmw7gDsDjo5gBKguvfSbUwpJNHyvUCaoGOaM/jwqkovni42T5iPKyjBQINPL
+	GBeJehQ2p3jfdf8uvn0zhhSGwNW/NpA=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=lzIDDbwi;
+	spf=pass (imf06.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cd61cef87f1so1228292a12.0
+        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:26:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794810416; cv=none;
+        d=google.com; s=arc-20260327;
+        b=R6Nq/V8xAVQlfQJGqWaKvaWuV+1jjI5veZAUPBdJELcMuaEdnFvKOb1VMNqmrbPOee
+         BP4ytvKjipAHlWK/06vqj2EuPqxecDmJICvKSMCoVObqv89vrkkZlY7mu/6tH0MrgEGD
+         T4b3IF5Oo5hyFTpOwn7LpmKsQIRlA3MIauaFjttiVpzbhO1zVP6GY+DxbDaD1uLU2aD5
+         Sv+JQBqCTMpul7WuvnQWF85JfymqWel/JpoWfSFQQrNhrB89kG53/3IUpZTIdsZ8wmjY
+         Ms1CymgMBz6xT1wakiXjjxCYQio0K4X46dWPXa9uCBaQIRWi4xwcku9xY080hpYl7QHF
+         c7tA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wd/v+54C2+9hZ5vK2vynCTpvfy6lXgdEPXyeyseozC8=;
+        fh=Fq7YNmThzBGZ/g6wseyG8UOQLF6ULblF5KWuc9jMrdw=;
+        b=CmSUo6pqo7Cdwp3j1fmEl+PhQrtBnIBoYcV3ODMk2bJT4Oa/jGX4TM15dpCsuvlzzn
+         6hGzv+t/gff1xQ4PzNRx8sWHo2NjtTAQ4sRjLn4E8btVRbSprlH7rrQH6XrYqQzSkRol
+         e9u39avrtWP1YnemETLuYvL7oAacOhbrfsxZaQsj+ZQI5GshzqndD3IX94clfl3gp/AT
+         C1dvg3cCavfznPKcUOKo47VymnG9M95dXPDEvM/FPjjrXG8OnWLxF559ddtqO5r3lfMB
+         jALc1Sx9Tgb+uGsRY9p/vmVM5aGJ7sM3kZ/5cQd2rWeo6dci9ONzMnW0AzllS8UyKAEM
+         F2AQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794810416; x=1795415216; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wd/v+54C2+9hZ5vK2vynCTpvfy6lXgdEPXyeyseozC8=;
+        b=lzIDDbwiFiqrJbLBgb4Eor7HymCzVfQOw/Z8GQ+71Ud+rpCeB1KCPz5/TZ1SHyWLgK
+         CqCGqDe4pIo0BKxZWTwzKkZRtZVbx9UuFKNSDophw0pPcNLg7WW4SoKiiTm0rJ003N3K
+         llguZCDXgIHlo+2hLK3V7aOChk+CPtxSrMicSxa9zQeSljMgUUlASyuCnd6ux8mTqoHw
+         XS6lyXbcpTbf+dC4/2DhBxCg+/Uv0Wv/PniB9RFoxkv5qU5TS9wosh2RJPyQATF8DVCJ
+         o18tO6uU3WkXeWm7InYfI9Ib6zNs5LI2VrhIkjaIt9oIvSSJ1bqcF4E+KiYmxaK6L1nO
+         L4Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794810416; x=1795415216;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wd/v+54C2+9hZ5vK2vynCTpvfy6lXgdEPXyeyseozC8=;
+        b=1Rn7fqtKlbdSLrCQ0w3BchmXErtFxjXbGA4RD+8XkCH4n0K2I9FbaJWq4roU5mOL05
+         6VzfAIoRxKFs0iAAeESvyYBhSeUX7f3ynHbM75+uEFxQsELUg9CnkJ/YBa0wZBfnT5AR
+         j+vxMQZY7pRRQnjK4l3iKeAPy55fMrEcGnEw+MYlWoLV6MhK1wfkEAYIMUogMUsI1kb2
+         fMCEHHRi8oQfEV+LT1ANBBJOQ0GlMfaGrcy7Rk8kGaFa5iq1LVk3i25eeIdZiF9lRcB3
+         DHJJhTRH3G0FR1D39pIYNtCFKtu7q71fVEY5l6NBZBeeAD4Nz4QAsGGanpNMsN4rPlrO
+         qUzg==
+X-Forwarded-Encrypted: i=1; AL+hErExbOdko9M29nctwPVFXr8fCtlThZhytwO/4oT51EGP87SWwS9u0WGlmnE8hv1poA/kEKRP1qzbww==@kvack.org
+X-Gm-Message-State: APuU4Z9bqzuM2D64ilPHADyzc2qFjWo/+NATdWdQ20alzjaPCV+iaM6f
+	COqDShdhh4Ddn/zv5hV4rul0rHTu3G1AFwwlZIcem7oqwsiV2sepHqK/eW525Y8wT8EKYO++8au
+	rw9NNOQvBolCI2Wtw/ZUzSFmdNjNnnDs=
+X-Gm-Gg: AZFdTZfEPJstgCJK6VKYXajtzm9820g4c8dBIPMzqais7g/rhoN5QVXqmMwJzHh2F2t
+	nIVGaubchwtQ7eKQiL3vugq57kbDB1gopDUqrf8SJ3bfdWikOVx3lgy3/dx0UB4uOBFIK3pAaqr
+	yo6XTTNM8HmEl86CBUhwyVNDJw25hRaEL6dWv3kqbmCr5RhxmHuc/FpEKp2XZRziyl+VZOVf3QE
+	5whu/zmDrVJb9fp+4BOGuuXO6SuEy3fzpcEGFGMCVST/eJuaJKgE+WDHML7/a1DCHb0p0QUTrQ8
+	sh2f8lhk9+RoBvkLJ0aI8bEuuQwUnBYFU65RZYZZPzqGYdjfXWRPm9prnSRPbcM/nuPOCevhHy8
+	p1g3Wb1HBmdEZGIdYjGWBIa6S9yvOcILgT7IClwiLQhcw45B6/c8p5Tyg78DZNbyi/Q==
+X-Received: by 2002:a17:903:1844:b0:2ed:3c25:782 with SMTP id
+ d9443c01a7336-2ee0da7f5a1mr90997955ad.24.1794810416253; Sun, 15 Nov 2026
+ 22:26:56 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: icewsiyg9wfeyfxmwnpqd1k5hr9om8g8
-X-Rspamd-Server: rspam01
+References: <20261112140101.647-1-adrianhuang0701@gmail.com>
+ <20261112183727.68afda9533aff699eea12cdd@linux-foundation.org>
+ <CAJuCfpEqQQb1_UkWH50tgbdVz9KZ2anfCGWsvvoYFsnC_KHcjg@mail.gmail.com> <CAJuCfpH57DNEb5ckB_c4QTWiiHVGSHNhB=S6HFdjvJ6GgGNSnw@mail.gmail.com>
+In-Reply-To: <CAJuCfpH57DNEb5ckB_c4QTWiiHVGSHNhB=S6HFdjvJ6GgGNSnw@mail.gmail.com>
+From: Huang Adrian <adrianhuang0701@gmail.com>
+Date: Mon, 16 Nov 2026 14:26:44 +0800
+X-Gm-Features: AclHuK9IzBryxrXRbSIYeEf8bDFSSEJ-fF65yis3zCtQgIP3kFYe9Y881Oj97MU
+Message-ID: <CAHKZfL3UxswfJgK+2rHj8Y-Lckbg1Kt+oVK4iyr0pkPWRmW6mQ@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable 1/1] fs/proc/task_mmu: advance seq_file
+ position on interrupted VMA lookup
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, ahuang12@lenovo.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 1ikb7zdebnaqqxej9645nz3kuytg8s5f
+X-Rspamd-Queue-Id: D6013180002
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9E08020005
-X-HE-Tag: 1794810086-381959
-X-HE-Meta: U2FsdGVkX18VeJ3jvRBw9DekfyssvT58+TseY9FfjKqMrorlu7zx5mPkbSpduuZZ3SLklNoc0FlPXim/GjygOu4bAUyaforw1mTkQ3vFU/peVpXbKtplRL3gOKE3VfLhFBZ05B3Pa5Ao9GiqiBfZQ3e9sJGm386ttkHxU3G/27wf0XLUMHp0UdsvhCbqbLLlqiBGmyQD2m6sSkPPzKx/9FDXjkPlBZ6LPOk4rZIf2pX7GnNlfWe/4x8yfJaxuAyAHqNFlxy0F5X7naVbZEpL1QuM0kfvugq3Rud2/9kqL1Qp8ODKjHmrFXiIILD9ev5ibCqlNYhenZbWZq/fmvDMSleazKkJAv03PGZ7eqyDRj9JL7F7gjiUgU9IDMojlLU/tWUdFHgT7jrDlv42ARVHNUCtqH0eWgC5ffRomb+kvwkLRa1V4NUWkKTMerXDkqfD2jrbxTMH3X2yRX4bjHxq0HLAvsK2TBrJhjFY5NNAd62viUNrSC9QX0IQtgdtQf4VtsgbqW0dUl5w1nabv9lU1oOOBqhESCVjF9Hq2X39LZt7wF780mV63icVOUXoTJF+q7Rzzm3TMfNC+C5HTZAF+uka1cNVLZFnaFJ2PdP9dDG81flDSiwqRtmgfcY/crC2M7D37UuoNhu3Uhe7tJm/JvFV5wLnF+OWwUzptI0soo0OT4D2115M/lwuLbxIJ9+H2ERjGQk4SScwbURjzWPnoNWtn2njNgz+BbhOSrLywMSBpxskwIAW0K36eKaLOyXi6lfRmBFg13Ir9TYASrkI/7yMZH04EkCZ7o0/Jeir7/KBpni5RWfhEZZ/cSqDfohVM8k0o5Bb5AgLEHU4etqIYJwslwHyTRT2tDQO6bIuFyQttvDM6zLURFor86R9kRG3TAwEzog25G1wksP9oCxa1FuA7h+Z56SJkmauw3iXwgbeg4mA2MIMi6hRQytxoL1GpB5VZ8RNZTQNRTKYY3r
- O4Zonr+E
- DYXbgt8CYU5c/sdkCaPNsX356cWoxdlzIoUfNfzKLeMCqu87PfTya69TicyZY984FKKie5TIAEvqR4KF4UdZ5PJkjj1lbpRuNd9LN2R0syknbuW5veS2R+jrgLCeL4bfMVZb1DFFcPFSIzkxSZAdriFBzk3U9KUWtbr14lKtZ8lfgATPu1W1bQ/UQJLfwEnnoynjl7upyopviXAD4FbigMsmQVMz6/YditdwaZBCvlBIC87cvp/mq4Eobs7N+FTusMDuBPKxLn9WwRJtDu0vqNvB65C2hhrefE/NbrFwz/a239+F0inQ3+hyUl/jD30KRTd1A2EwKZX+Z6o+Sn8M+G+KW4Q==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794810417-786210
+X-HE-Meta: U2FsdGVkX1/n7ogRkupxMdYLs8BWvpjWOjWGNrKiAutV6HujIUXdy9z9+pIU+kNWESRL3xaWHaO0nMOjUPj1DKMQ3+C6BZ3kwkzEj0PBUieEtKzZJ5l9pGYZWgWdiqJdfkbfvWfNM1i4Wn+OFOVNFv3kZO5j/+oArsoEXQL3KEg0Si0AWkFdYW7TLQKoeqECzoY5zySPGDARPtYF8b2Xvxx4YQtTB9LWHsdR8EWrUeoj0/Di7SCKeWms58fXlu7zBumvFJdd0SWPzxXsqIkhjfk+IvlTbWJfKyAzg/UBjj8QqkorFfqHwnuhSCa9RenH3Fvkqcf69fijlDpOb4dfBdpi/kAngIwbKW+Af8VToALGCTENl27videH6Z0Lu3HKU4dztppozMzHTgQ50XFvYuziR9/BJfiKRCkZN48Xp7jKVyYPMdgMsw1/9zY9wa7H3pt81xxq2GjU4aG4kw6kz0ia6dWtEy7kYWTjeBzV67S+UQtR3maWtYt3Lm/CKGsMPbv+L/UQxiHSYJ3AiK/zHu9boGoVCVX6W+c+l4O1xBAmDO6MYz8ZYnGaejE+BDkCY/mt1igjJUAXOKbnVIg7Xjul+syQRfjzPYLWANZ4KnQKNh/5zIRstT3IEZzFJlYA61OsSaFyuJ6IkbLFqXKeSS/sPJggKo2eGp9AJV3JcmPvPySIpRrMZDj6eXKUCNkg4vdO2wFxBmQ47puLlC8mn+8QhsfSf2pSyRvJgGS7KiMjFT4aHDN+ycP1763dRg5ntqBv1ZjMBEd5NPXZFbt3riQtiakGV8XQqkMv2WV6FIEVejq8YHcM8p8YFWGbHpX/CNmqQAUqLGZPcTyLYbHSAq0GyejAYRpm+KEwLW+vC2CH3UMz3vtjEMlfJZcMCrD19mTqRuP42TuA/NpVaJc31uS0jbGNX1O1dwb9HYUArOaVWCRb1Esy0f8qLoX7pXFEXbmg2IzoLlK224UIVSA
+ AXWspQjr
+ OkqvFE1Zmf5IJzPB8T5iBvwb5crLAzWICItdCuEqb5mNr/sdEolumsPE1ywxbpfE9kCA5yE/31inRaffsCBKPuD18tQOTmmVWd13jEnMBs9U34FDKoscNdJT0lEQvSrIy1s+jfR4Z6doVgxYPufJ9SYqh5inoxcGrJ8q7REUjsSFvbtGuqYknyFmpNI8qMsmB8qXimInR+hfR6T+Pzr4xwxxjVsuGvaE8U6M2EY9gYSUQyDA+yXzDxYMSmlFTJYjLY+0oLAxusyQFMkivqIHfuyjLghhO+Gvef4WNSWYUR0o/xmCrX96Ogovpd99Z70s6KYdiIogt+eGOhYYoAQWk3aLd0tIx6paghinwicjkt+/looYFJgIWyq1c7rHRi3ojTTQrCz68bJLYCuLi/Ty9I9tWtALcMKVylqMdLGUtY8fxafF9+gidrp5GpjBFH3C4VScqAGvTFSulM5e9ewfSMsA9Rk+GcA5JPOej+VrdapWJas8EZyFX4Qy+PHtDbmMIka5l05IAL8Jy8/F9z4eCM41jGRy72WbJZkPKC2JsT0TrRzf1G9pfPZDb4ba4/Bd/wLYqKiAgnVBw7BiBbXfGPd8YZQRun6Mu0N8hi8tZewSRpdc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,61 +148,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Marc Zyngier <maz@kernel.org> writes:
+Hi Andrew and Suren,
 
-> On Fri, 06 Nov 2026 15:45:29 +0000,
-> Aneesh Kumar K.V <aneesh.kumar@kernel.org> wrote:
->> 
->> Marc Zyngier <maz@kernel.org> writes:
->> 
->> > On Wed, 04 Nov 2026 16:45:55 +0000,
->> > "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
->> >> 
->> >> VPE L1 tables are allocated from the CPU-starting callback, where sleeping is
->> >> not allowed.  Remove the page allocation from this atomic path.
->> >> 
->> >> Use a blocking allocation for the boot CPU and record the resulting table
->> >> order.  Allocate a page of that order from the sleepable CPU hotplug prepare
->> >> stage for each secondary CPU.  Consume the preallocated page only when the CPU
->> >> cannot inherit an existing redistributor or ITS table.
->> >> 
->> >> Reclaim unused preallocations after the CPU reaches the online state, and from
->> >> the prepare-state teardown when CPU bring-up aborts.
->> >
->> > No. The way to do it is to move the ITS probing out of the
->> > non-sleepable CPU hotplug path.
->> >
->> > I proposed a potential hack at [1] (which I find far more palatable
->> > than this proposal), but the real fix is to probe the ITSs as
->> > devices.
->> >
->> 
->> Could you share a bit more detail on what you have in mind?
->> 
->> Are you suggesting that we create a platform device for each ITS and
->> initialize it through the driver's probe callback, while the rest of the
->> GIC initialization stays in the existing early boot path?
->> 
->> Would that mean the main GIC is operational during early boot, while
->> ITS-dependent features, such as MSI delivery and direct injection, become
->> available after the ITS devices probe?
->> 
->> Is that the split you have in mind?
+On Fri, Nov 13, 2026 at 11:17=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
+com> wrote:
 >
-> Yes. Then once this is done, all the tables become normal DMA
-> allocations, for which there should already be adequate support.
+> On Thu, Nov 12, 2026 at 7:13=E2=80=AFPM Suren Baghdasaryan <surenb@google=
+.com> wrote:
+> >
+> > On Thu, Nov 12, 2026 at 6:37=E2=80=AFPM Andrew Morton <akpm@linux-found=
+ation.org> wrote:
+> > >
+> > > On Thu, 12 Nov 2026 22:01:01 +0800 "Adrian Huang (Lenovo)" <adrianhua=
+ng0701@gmail.com> wrote:
+> > >
+> > > > Commit 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under
+> > > > per-vma lock") introduced the possibility of returning -EINTR
+> > > > from proc_get_vma() when the VMA lookup is interrupted.
+> > >
+> > > OK, but what's causing the interruption?
+> > >
+> > > > When this happens in m_next(), proc_get_vma() returns an error
+> > > > pointer without updating the position index. Consequently,
+> > > > seq_read_iter() reports:
+> > > >
+> > > >   seq_file: buggy .next function m_next did not update position ind=
+ex
+> > > >
+> > > > The above buggy message is reproduced by the following command:
+> > > >
+> > > >   # stress-ng --vma 0 -t 60
+> > >
+> > > afaict "stress-ng -t" can send SIGALRM, but mmap_read_lock_killable()
+> > > only responds to fatal signals.
+> > >
+> > > So please clarify: exactly what is causing this to happen?
+> >
+> > Also I don't think stress-ng --vma 0 -t 60 command reads maps, smaps
+> > or smaps_rollup files by itself but I might be mistaken. It would be
+> > nice to get more details on how this gets reproduced.
 >
+> Just after sending this I found
+> https://github.com/ColinIanKing/stress-ng/blob/master/stress-vma.c#L536,
+> so I stand corrected. Still, it would be nice to know how exactly this
+> issue is reproduced.
 
-Thanks for confirming. Can we handle the ITS platform-device conversion
-and the switch to DMA allocations in a separate series?
+The --vma stressor performs the following jobs:
+  * It creates a thread that repeatedly reads /proc/self/maps while other
+    threads modify the process's VMAs[1][2].
+  * It sends SIGKILL (fatal signal) to its own threads approximately
+    every 10 seconds[3]. This happens independently of the 60-second
+    timeout for the command 'stress-ng --vma 0 -t 60'.
 
-The existing VPE L1 allocation path calls set_memory_decrypted() from
-the non-sleepable CPU-starting callback, even though
-set_memory_decrypted() can sleep. This issue predates the shared-granule
-allocator changes.
+As a result, down_read_killable() in Linux kernel returns -EINTR.
 
-Since fixing this properly needs a broader ITS rework, can we handle
-that separately and drop the preallocation patch from this series?
+This finding is based on code inspection and analysis. To validate the
+behavior, I collected ftrace logs and added debug patches to trace the
+relevant task PID/TID information. The full explanation is fairly
+detailed, so I have not included it here, but I can provide it if
+there's interest.
 
--aneesh
+[1] https://github.com/ColinIanKing/stress-ng/blob/master/stress-vma.c#L748
+[2] https://github.com/ColinIanKing/stress-ng/blob/master/stress-vma.c#L658
+[3] https://github.com/ColinIanKing/stress-ng/blob/master/stress-vma.c#L768
+
+-- Adrian
 
