@@ -1,145 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDDD606A333
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84252606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H7cBltWa
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=JxnmLjSq
 Received: by kanga.kvack.org (Postfix)
-	id B6B1C6B05B3; Mon, 16 Nov 2026 12:24:36 -0500 (EST)
+	id 8AFC46B05B4; Mon, 16 Nov 2026 12:26:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1C096B05B4; Mon, 16 Nov 2026 12:24:36 -0500 (EST)
+	id 8870F6B05B5; Mon, 16 Nov 2026 12:26:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0AF86B05B5; Mon, 16 Nov 2026 12:24:36 -0500 (EST)
+	id 776906B05B6; Mon, 16 Nov 2026 12:26:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 79DD26B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:24:36 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F22451401A8
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:24:35 +0000 (UTC)
-X-FDA: 85441656510.16.D8FD8BD
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8EC29140002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:24:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=H7cBltWa;
-	spf=pass (imf23.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 564AA6B05B4
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:26:11 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D43E2A5ED2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:26:10 +0000 (UTC)
+X-FDA: 85441660500.25.1B6A947
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 80FA5160003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:26:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JxnmLjSq;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794849873;
+	s=arc-20220608; t=1794849968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dEx5D78mD3JLl04XVy0Lx8vy3qVm1Ne+25ZFs32wW/8=;
-	b=kZKjjVYsEB+TY4jrYfvIEE+xa0Rm/AO18BzUfqyPiQMY6RTCOtin8eP8DG3DWqRU95uRO6
-	FSL1KGzNFMd9QYdnfBQ19zl3DOuJp+JhF6fbwJfruuoXaFZbElKasBCpFcvnVjnU/Wd6QS
-	hasXUkYaxxj09UuRqAx3JVPTdwSYeCE=
+	bh=rzxgjF868Q8FAbCCoDm+JvCE/jhxHH7vVIq4SATyN8s=;
+	b=XgAiiZ6DUdjXOtsTtrQXp3oVWX2MPAb/Av0rkj8ELwQfb5ddHHdx0OlnNc5tJJor+p7vpp
+	hkcBtKfxrMKU5xM8whFLEeAH+M8Xyw5iGzaEmsLG+4k/BiTHuQIa27YCUyumnNGf3Rf9bN
+	CGrb7+H1Eq1/m3/4auGtDbgPzqadoRE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=H7cBltWa;
-	spf=pass (imf23.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JxnmLjSq;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794849873;
-	b=E8sm0F+YzB9iLpAlVydkIhfnU+isLE+x9kb6YqoRlyt1E+04STZeiC8llSmhqPR+BWsUPI
-	I8I/V4gqdiqFEMlRUOT4FJjIhpivaqGAb8FF9u94d/Zxb301jPImKzKjv9Owatqr7mwrl8
-	9sG5+F7DfW9eatwpkq5DKCE6NfvK3UQ=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGGQIR33952496;
-	Mon, 16 Nov 2026 17:24:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=dEx5D78mD3JLl04XVy0Lx8vy3qVm1N
-	e+25ZFs32wW/8=; b=H7cBltWapocpfh5ET9BzUPRMtQ7SO+VjNYPp3n70wHcU1o
-	Q2mTJ2KnFL/SnXQpbZglrAvu01FSlv6Uzu+K2JxGxSTMBeXmuzWWUlhw0cViuvMI
-	xRCa0z/zFzKxYzyiO+ccbp/sPEjk+sT5UP18qGWMNBMsRBOgRQ+Ww4m6AT1S3FUB
-	XTz/HQWxtQlJzKu1CzowgINKLxDtPzfIbGAfW754o8/4NcS/eMkyjZZOSDKtdXOS
-	TKmZpPxslVoQwzbAiS2+MYhM5dAjZeV6SfedxjXiK0UKfZERTT3IFtPOi7HA6jmm
-	/0khABj+Vl+YGbhp+sx/hON4D+O4A4S6MbkV/Sgg==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxf566s75-44
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 17:24:30 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGDH6xb006236;
-	Mon, 16 Nov 2026 15:22:24 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j02ju84xe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 15:22:23 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGFMIYv38470036
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Nov 2026 15:22:18 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9184B2004B;
-	Mon, 16 Nov 2026 15:22:18 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3444F20043;
-	Mon, 16 Nov 2026 15:22:18 +0000 (GMT)
-Received: from osiris (unknown [9.111.42.169])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Nov 2026 15:22:18 +0000 (GMT)
-Date: Mon, 16 Nov 2026 16:22:16 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 10/14] s390/sclp_cmd: Replace page allocator calls with
- kzalloc()
-Message-ID: <20261116152216.165348Aa5-hca@linux.ibm.com>
-References: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
- <20261108-s390-sclp-ready-v1-10-3e7c90eb6676@kernel.org>
+	t=1794849968;
+	b=72EMEONnGS+7v6sJH5gcu8HGVUaeNJMSUu1dkVIEdc4hX+p5GXyScIofjF1G1vmOlEZ2gU
+	X9Q+u1xWStZ91MCsMNqAOGJtxnHR86IrC8KUL3//uEFzW8K8Uot4PZiLDvyZ493XkOVrqE
+	y4hBD1RHn9GCGoLxnXgwT22qM5/HVmQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=rzxgjF868Q8FAbCCoDm+JvCE/jhxHH7vVIq4SATyN8s=; b=JxnmLjSqavqJ6CKwoKaJlMeyNp
+	D6BysKfZB+wzztxq+k73ocwtwInNef3O66o5U/ZZYYhzD8T5gcQs9/P0L68dpAI1+payU/WSVrLYV
+	r7RjEULHlK0XjY1WM72Yf4Z/LOI8oWH7hTXeei4gwegj/HejhK+eDCPG0h7sGm62m7KVgLN7wc/EJ
+	dNEEZ/JBANht5iXOsLeiMgRjuZbqFd4Trimf/0F8QHfT0kJQPVYQI4oVh4C8+XArRUcq5d/BVFygO
+	oNbSRjbjSFYQp3Z6CIGcOAj3VoQtz35oVFCauvlCP6FBP0yisEgsUfBT+9YCbpx8eQ4t4uHBVMGPL
+	hDLzO5uw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xT0Sy-00000003P62-2xr9;
+	Mon, 16 Nov 2026 17:26:04 +0000
+Date: Mon, 16 Nov 2026 12:26:01 -0500
+From: "Liam R. Howlett" <liam@infradead.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Tal Zussman <tz2294@columbia.edu>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/madvise: zap markers from guard regions
+Message-ID: <ofd747zeh26u3rba42fsdryoe2mwdhi6r4cjvrmjn25tps4ar4@ubcwdhamdyui>
+References: <20261113-disallow-uffd-guard-install-v2-1-9d0063c70542@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261108-s390-sclp-ready-v1-10-3e7c90eb6676@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2NyBTYWx0ZWRfX+2O5PVOBGRm4
- FWIhneTChQLXoZ2kIFlgINqRwVfxwlG1aOUmR54AO5jxUjfFeRpvjfs/bg1ZR6wS3v8KVfZXa7S
- DKcTlz5BUBFqHvFz9msLEubK1Kp9Bvg=
-X-Proofpoint-GUID: f0uxqCT8GrkzDgYIakB12Bhvko1PUInj
-X-Authority-Analysis: v=2.4 cv=ROImjIi+ c=1 sm=1 tr=0 ts=6afb3c4e cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=oZZkxJ__kemSVIr8SkYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: f0uxqCT8GrkzDgYIakB12Bhvko1PUInj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2NyBTYWx0ZWRfXwkwVlvTf4uTT
- 12kAiApmGoF+kNpkbSzOVu/+Xk8rrCIsFmh6Z7k+ube2a+BXMt5GJX2316O6yaRb5HycaV0wTk+
- 8do/yExt/pAj/feV2lTtD8TfcpmwK01VO6BzQCz4DWLXrKj/pfCzIUlMPRkKNUG+ORry7iYM7Ka
- 47eEUdIqT2315BGgDXp+r5FqOm8rsZGnPoY+zXIIHGm4zJtN0T9v0RVloa5zzh6sIijCRVHQ0yM
- VbtAta+uH+vA/WY78IgUdyoL7sMgujABnwIEe0GQCg4KHT0sqlEgKqhvJ2sBke2R4KAaEwbdpFj
- 2AdA1Gk9ysYsArMj2vj42UsM/w9319ZcAs6k5gQEYYWNx8btnEUp2zq9b6lkD5K1G9D5WaK7RXa
- 8Ab8CeybvxSuwqDfLjKJdIGjTI6FwkUE43fwcdc39if464BaWeEzsCDsPy3HWBsvcZgSwysoyGw
- YtMlfKJTeRZvGz754/A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-16_05,2026-11-16_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 bulkscore=0 spamscore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160067
+In-Reply-To: <20261113-disallow-uffd-guard-install-v2-1-9d0063c70542@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8EC29140002
-X-Stat-Signature: kzc3itqeanyespm84h5icx3pibtge5jp
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 80FA5160003
+X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794849873-82467
-X-HE-Meta: U2FsdGVkX1/iaV4gC0oNI0ZXdKJP6egEQdz7EpqoUI1lDQ533VWNNpj12twAKir8XdNbC7KqlcphgKhx5+R+0ot6ywHDODSQcjDSrW+2+pgb90ZKva8hBM9dJfyB/p3X6NfjekIFHhaOoSTZGBKtQpzohkzqvHggjQgWsdWs9q5yw7+TV6WiB3uBBtRUCvlJbZOMy+V03OITT19u3YBDgnY7rBvFbgGjKXb38L63fPVVGurETNkRDvu5ktspijSWA6s5Yz4+3zea0Y03H0yk/B3TFX9JvbB7GLsLqX0E26dFG4sY7ZzuXbvmLdC5KI2v515ClkGCBaVk03IWO7rcUQK9qG2+DAkgdfDGGhknAQHiEntNaZPEaoDU4HPU4YX7rAej8VV6/VuD1jI1d1mhUnT/tlJf9ldcNQZqubSMZtXXD1mFeLfZOG68LYKcclBqay6SrArKjadOFUmAnljuhfMKcP1SwOuYgSq2G1pPyYj+iyYeP0nbAmM3k7w+Amt+yv7CuwKWwfxxLssDjsqIVtS1NW9e5+VvbeDEoSXXFevgDhpGVnNJ15h5EaAKYouY2GGnzCmFODebYzMt1kjTAlKjhmy6fhAYa3b0X2F+HhXco2YR9B9hYCE+JqiWre+u9G2MDhDYDdvaT8um5dLTsUNAK/pigU6tcCoK50BRI+2Ifk/wYlzprx4cRl0Nk/npoc2jYqaFCb9NAaH+aaT6tOpIvYoRm9CaOGrnArruzCN92o4WLWdARvk5SZL0aatH7sR8BL4Va/kUtQpZFJM4uLhSsFJy20sc1eqgOyqFn0UOjwyNUeR8XAdrjm4UUVRHgL4U97nyhBGhXsoyBIhS/crHCj/wBA7x9ZIR6kv2ZkOWx6PIWFGGOr0ZoVG/t4rgeUU6y6GzDvwZJdb2MW7bjiP2Xshh9X8eweKMgEnjtsTtrItr6qb2WD0ulJiTMc4hqhHlm0hWp/xyFPPeTW5
- Th41NKbf
- J9HmGXfI8cWuKk0Kj484Iur0W9dChmXZkq6RdAAbksIdiGW72K2aycu7GxDSCIbbscNNF5hNh8wDDP7/VvNplCoJaBBgkpS3x+vqNd9VStq4uR12saOti0mX1Z9pYW9XGEgYyJ4yXydGz9jja7BCj1/GNhyKX8J3ZpD5ddF5IMAOkAM0YKvwBHX7Us2cuTrmvOfvZUCFMuNNysti2MeRxbT5atTexgH0vZSF2cGuvisZhGEQQqmHuqmCcVFW+0MDNLJVv4jOgwIBlS+2h1Pmn0OFlUqOuH5QA7QRdGXX5zbXX4Oex2hEvPVAnm6pgsOTXNaUZ
+X-Stat-Signature: rm7ab7hnuftrqsbfxhi7gt8w8e3zckmi
+X-HE-Tag: 1794849967-26357
+X-HE-Meta: U2FsdGVkX1+g9/bFeywo/HYV6v0e3eEB8FtDPtcLnKQ4oWb2b8wFBqzEdMMlSaPhxgemX9imSkYNQUlrXv8UqknG99SG2JU/1ygA0wxka7uql1ERtKnuI1OHAfrSUjZJ8036rJXu3GYTDhVG6+kMRzhSJBwaogkWfADFfHpnDneX5hNCWtrxaERLyQ6IyZSDzbR8Bovvfkl4DJUsbKjvQ4BTDI4/0JVWHFBuZGZukzP+KjjSPhy4a9fum4/G8Qk9PI7N+Vt6yCBvjuy2mOty3U6jNvyf6/UXkUwSghVVEj5dqVqtIPVfZ8gHCFvC1/ZZsYeXLdxVw6A+Vq9xx2ybRVqBGqiGynT2sWQDL0XrgqCJhwBEORxPrHRlwu3jRYCxXWGjhIf3hQ9eEMM1L3BanCVAQXjJTiCa2rcl2xxXwh9/OYeVLzJOOaHoIQ1wmhfkclawBpLxpAuyO15yztA2lymjLgrPIb2sbrG+CiVNuecEq+WTRxgRNyA71Zu7Tbc6NRyrd9YbE6Qpd/iMTbZwUtvaEKwHB9gr7hO2JKNftPlbnEtLX5F5oHV8jjODwnEddJu4ZIq6zQqKQ0tCrpOlKhE4xNqlMX3J9+/M66gKYpzvTx2rFwG6nu43BVmHBB7CTjjlZoDKHifdC6mHNg8ys0PiUewE959bQBMSNogo915MoeLQ5rsDKyjTpsqtkLiilKlVqI2JvFRZf2xA97VNQTbST31JAFu1YGvOe/8EMM0ffgy7zoBYExhl1G+zHbl3LpCZm2JfgdCxIoV7foBBU3t2BopPkshV83Q4qrTToZ0o79nK7x2I5/W467/T4vUzOP1vVd2A6s7x5VT1qCvkN7NAvFkSgUiOstRRuENOuj2jLfYwpXFQOD1fWbKvpkulIwFDQrunp0F5nkGLLPOb6IuhW6VRB2Ye6lmfL9bZVFaqiO8MovVkEABifbi4MNJ5X0x2QQIroZsplYxO4Rm
+ XLpHRLcM
+ XPHOGxML65gVjdy7RdBtpGyyEWm3KB2+0hAz+9zRKv+LwBTrxDnwOppysPvzt3FPdvf9U6VD3XVWiRxXPaC/hyvVzuMU3Y/Ct3cJJQDvNISIzfN/Dz3rVKLcoG2E0yHVhdJOq1xEx0tHvmy4JG9XEnmDgoYJCyKCml9dZdIyVcy47MMGmBckN/BDpjPM2brO5RoXD+1TcqGFfFdhnXM5pkCIu/LaRhsrRyQEVu3De8lkzNwPD5WFOMpkLFhoOKROeC028H3ZTnlnStcUgcTVvVcnfZ8rkSdBNsz7BGyK+TwA7k6vCFYoLQbAuarrS+IyIh+fcqxBxYamRk2n5Pkw36Jr1LSA2UMI/nvZZXIxMrdg9Aek=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,58 +96,148 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 10:58:41AM +0200, Mike Rapoport (Microsoft) wrote:
-> _sclp_get_core_info(), do_chp_configure() and sclp_chp_read_info()
-> allocate the SCCBs used to read the CPU information, to configure a
-> channel path and to read the channel path information.
+On 26/11/13 09:04PM, Lorenzo Stoakes (ARM) wrote:
+> In order to establish guard regions, guard markers are installed in the
+> page tables of a mapped VMA.
 > 
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
+> However, problems arise when one tries to combine this with registering a
+> VMA for userfaultfd, as such operations may themselves need to install page
+> table markers such as uffd-wp.
 > 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
+> When the installation is attempted the guard marker prevents these markers
+> being applied, which can lead to unexpected results (especially if the
+> guard regions are later removed.)
 > 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
+> This is especially problematic because guard region installation causes the
+> regions to be zapped first, meaning that the removal of userfaultfd-tracked
+> ranges will not be logged in this case.
 > 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
+> Additionally, the uffd-wp page table marker will be propagated regardless
+> for file-backed mappings as the zap being performed does not clear these
+> markers.
 > 
-> While on it, allocate only the amount of memory the SCCB actually
-> requires in _sclp_get_core_info() rather than rounding it up to the next
-> power of two. An SCCB must be page aligned and kmalloc() guarantees that
-> the alignment of an allocation is at least its largest power of two
-> divisor, so the extended SCCB is still page aligned.
+> This is problematic, as it can cause repeated failure to install guard
+> markers resulting in an infinite loop.
 > 
-> Replace use of __get_free_pages() and get_zeroed_page() with kzalloc()
-> and free_page[s]() with kfree().
+> Therefore, update guard region installation to invoke the zap with the
+> ZAP_FLAG_DROP_MARKER flag applied.
 > 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Both before and after this change, uffd remove events will not trigger on
+> guard region installation, nor will write protect state be propagated after
+> guard region removal.
+> 
+> This makes sense as conceptually, guard regions mark a part of a VMA as
+> effectively unmapped at the page table level, and removing the markers is
+> like mapping the VMA again, over which operation uffd markers would in any
+> case be lost.
+> 
+> A survey of open source users indicates nobody is relying on installing
+> guard regions in uffd-armed VMAs. Software including glibc, android,
+> tcmalloc and CRIU were checked.
+> 
+> This change means that any already established guard regions are removed on
+> zap. These will be overwritten with the newly installed guard markers on
+> success.
+> 
+> However, if this fails for some reason (fatal signal likely the only
+> reasonable cause), guard regions may remain removed, and concurrent faults
+> may succeed in the interim in the range.
+> 
+> Since the installation failing guarantees nothing about the range being
+> installed into, and since success overwrites with guard markers, this isn't
+> an issue.
+> 
+> Since MADV_DONTNEED does something similar, abstract the zapping to
+> zap_range() and call it from both places.
+> 
+> Fixes: f807123d578d ("mm: allow guard regions in file-backed and read-only mappings")
+> Reported-by: Tal Zussman <tz2294@columbia.edu>
+> Closes: https://lore.kernel.org/all/20261111-uffd-state-fixes-v1-9-00713d368976@columbia.edu/
+> Closes: https://lore.kernel.org/all/20261111-uffd-state-fixes-v1-10-00713d368976@columbia.edu/
+> Closes: https://lore.kernel.org/all/20261111-uffd-state-fixes-v1-11-00713d368976@columbia.edu/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
+
 > ---
->  drivers/s390/char/sclp_cmd.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+> v2:
+> * Updated to just zap everything as per David + Tal.
 > 
-> diff --git a/drivers/s390/char/sclp_cmd.c b/drivers/s390/char/sclp_cmd.c
-> index 1dc93d945be6f..6aaf1f6a3633f 100644
-> --- a/drivers/s390/char/sclp_cmd.c
-> +++ b/drivers/s390/char/sclp_cmd.c
-> @@ -102,7 +102,7 @@ int _sclp_get_core_info(struct sclp_core_info *info)
->  		return -EOPNOTSUPP;
+> v1:
+> https://lore.kernel.org/r/20261112-disallow-uffd-guard-install-v1-1-bcf8b1aaa72e@kernel.org
+> ---
+>  mm/madvise.c | 28 +++++++++++++++++++---------
+>  1 file changed, 19 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 0214efd2a014..4f7728583207 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -850,6 +850,19 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
+>  	return 0;
+>  }
 >  
->  	length = test_facility(140) ? EXT_SCCB_READ_CPU : PAGE_SIZE;
-> -	sccb = (void *)__get_free_pages(GFP_KERNEL | GFP_DMA | __GFP_ZERO, get_order(length));
-> +	sccb = kzalloc(length, GFP_KERNEL | GFP_DMA);
-
-It is a bit subtle that this really works. EXT_SCCB_READ_CPU is 3 * PAGE_SIZE,
-so we end up with a guaranteed 4k alignment from the slab cache, which is
-indeed sufficient here. But this is really not obvious, and not as stable as
-before, IMHO.
-
-I'd prefer to have this changed to:
-
-	sccb = kzalloc(PAGE_SIZE << get_order(length), GFP_KERNEL | GFP_DMA);
-
-which comes with the same alignment guarantees as before.
+> +static void zap_range(struct madvise_behavior *madv_behavior,
+> +		      zap_flags_t flags)
+> +{
+> +	const struct madvise_behavior_range *range = &madv_behavior->range;
+> +	struct zap_details details = {
+> +		.reclaim_pt = true,
+> +		.zap_flags = flags,
+> +	};
+> +
+> +	zap_vma_range_batched(madv_behavior->tlb, madv_behavior->vma,
+> +			      range->start, range->end - range->start, &details);
+> +}
+> +
+>  /*
+>   * Application no longer needs these pages.  If the pages are dirty,
+>   * it's OK to just throw them away.  The app will be more careful about
+> @@ -872,13 +885,7 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
+>  static long madvise_dontneed_single_vma(struct madvise_behavior *madv_behavior)
+>  
+>  {
+> -	struct madvise_behavior_range *range = &madv_behavior->range;
+> -	struct zap_details details = {
+> -		.reclaim_pt = true,
+> -	};
+> -
+> -	zap_vma_range_batched(madv_behavior->tlb, madv_behavior->vma,
+> -			      range->start, range->end - range->start, &details);
+> +	zap_range(madv_behavior, 0);
+>  	return 0;
+>  }
+>  
+> @@ -1217,9 +1224,11 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+>  
+>  		/*
+>  		 * OK some of the range have non-guard pages mapped, zap
+> -		 * them. This leaves existing guard pages in place.
+> +		 * them. This also drops any PTE markers in the range,
+> +		 * including existing guard markers, which we reinstall on
+> +		 * the next attempt.
+>  		 */
+> -		zap_vma_range(vma, range->start, range->end - range->start);
+> +		zap_range(madv_behavior, ZAP_FLAG_DROP_MARKER);
+>  	}
+>  
+>  	/*
+> @@ -1845,6 +1854,7 @@ static bool madvise_batch_tlb_flush(int behavior)
+>  	case MADV_DONTNEED:
+>  	case MADV_DONTNEED_LOCKED:
+>  	case MADV_FREE:
+> +	case MADV_GUARD_INSTALL:
+>  		return true;
+>  	default:
+>  		return false;
+> 
+> ---
+> base-commit: 4318887a3efa4c53d6f083ccfd7105b809a3ac65
+> change-id: 20261112-disallow-uffd-guard-install-a5294129ad7b
+> 
+> Cheers,
+> -- 
+> Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
 
