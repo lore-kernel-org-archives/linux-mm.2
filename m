@@ -1,95 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E589606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1E4606A883
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QzEjei9C
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=neeh/JxC
 Received: by kanga.kvack.org (Postfix)
-	id 5AD816B00EF; Mon, 16 Nov 2026 10:05:53 -0500 (EST)
+	id EFF476B05B0; Mon, 16 Nov 2026 10:07:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55E336B05B0; Mon, 16 Nov 2026 10:05:53 -0500 (EST)
+	id ED6D16B05B1; Mon, 16 Nov 2026 10:07:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49BD06B05B1; Mon, 16 Nov 2026 10:05:53 -0500 (EST)
+	id DEDB76B05B2; Mon, 16 Nov 2026 10:07:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 27ECC6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:05:53 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF51A140140
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:05:52 +0000 (UTC)
-X-FDA: 85441306944.04.D1DC383
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BEC016B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:07:19 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3543CC0160
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:07:19 +0000 (UTC)
+X-FDA: 85441310598.20.AFA6E77
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0AA2540015
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:05:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QzEjei9C;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5932A20005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:07:17 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="neeh/JxC";
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794841551;
-	b=sC0jWDbPXP/xGkEVdI5rP3bVIyPV83jslHFUJ9pjh6EMSwgUbU8jfP7hit/5EGVnfpF4q5
-	CcASDMJEtgfurEkLqSay59sxEDkfIxFjDcxuMW1iEO/bKfZRWsUZpmS8UOQMEfTd7zgi4v
-	nKSPTTejf2gb8HiiuSAiaYYuV6FAPns=
+	t=1794841637;
+	b=gHaXt1qThf/X4PH1HdLwF3xeWhiOPAiEeFYf1bnL21VZi8PFW1owWiop6PrEu0fzIHmPnh
+	Mdx1LFWV5f53ukj98QbJv8BdAPTaUorTqjl1QSQqgv6MrEuhicOzfmasSP4a2yudjTF581
+	p9kNbBOmSvusRP4APiw+lWEgsk6CP8k=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="neeh/JxC";
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794841551;
+	s=arc-20220608; t=1794841637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RWLDU4EWfngmSrcCkbKdVTyatFJ0OqjQckEYPqGngkI=;
-	b=J/Wxqgj3F4Jhyqegm5T1xOm6IVHkUEoOPcwMNb6bv/wNA5cMqH3cOEPkGiN28fv5xXcLfz
-	fD4D+6pfolmJyaW+/5OZvwwTR+0o6vFCb0jmQfvnf1tWu1HN+IxArg0Ze+nnZT/MO+8wNj
-	Jse+PrE0Dfc6T65WNhv2pBgeGr9c9Xk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QzEjei9C;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2Z5TqtpnMk3mBwsYMciP/4XrcUBcxTvv+6N/ymI5s7o=;
+	b=DM17JpsXv+dx/yb8KngKITHdQLnWcCo96vVZRqVWeT4g9q+574mvyG2D8eUoadlS9eG1dd
+	U76MrnshokK/U4z402vV+Bqat27PXXDqZA8rUlLDXZMPS22pUy/slN7zcA7X9ST3aOh3Nx
+	2dMi1mrtnuDkaNRSJCqsO2lwBe8jysc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 430E543C0B;
-	Mon, 16 Nov 2026 15:05:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84921F000C5;
-	Mon, 16 Nov 2026 15:05:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8DD9A46573;
+	Mon, 16 Nov 2026 15:07:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548C11F000C6;
+	Mon, 16 Nov 2026 15:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794841550;
-	bh=RWLDU4EWfngmSrcCkbKdVTyatFJ0OqjQckEYPqGngkI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QzEjei9C39bx/30fiWMJo3u/F0Eq3Uvo01kc85HuJz/fp0oiWeQJN9WJmLneGSbB4
-	 JhADs6kxenLsjsEL2WN4qqLDkNZ2uvBsFHxm7xwrAc5+vhpAFHyO6TmkxjSMahmTSs
-	 SCfr491ibmKagCRmtUKAZCNPUsN8vuxLw5eWgcVnCRkRFouDn9yphQK7NheS5iCUW6
-	 cH5+DtbGmjFPqbBkltdlHReX2VhFskhdZTrFwzMwa2hreaGIhGcsoRm6qKufflW09c
-	 oLhVcGmBh9P91Ok+9cBl7ulFynGy4ShKnKgO9zfiErOyIj8FKDGBhzkaFQMljejseN
-	 YDRykM5cIFyMg==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	sashiko-bot@kernel.org,
-	sashiko-reviews@lists.linux.dev
-Subject: Re: [RFC PATCH 14/27] mm/damon/paddr: support REPORT_MADE type probe filter
-Date: Mon, 16 Nov 2026 07:05:42 -0800
-Message-ID: <20261116150543.80514-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179481501691.2405628.8067144236288202449.b4-reply@b4>
-References: 
+	s=k20260515; t=1794841636;
+	bh=2Z5TqtpnMk3mBwsYMciP/4XrcUBcxTvv+6N/ymI5s7o=;
+	h=From:Subject:Date:To:Cc;
+	b=neeh/JxCQ8KhWMT1ASqFudUros9bMuT/k3e+b6YcIbhlFSqg/KWf0X74pYD0klhhi
+	 Yw82eW47iOIpl9tBYZbDGIcqxiq4X2lASVcgeV1HxTJPd282H6wCAFqfTWafk4BxIV
+	 9GA5x/dRgc16XSlrrJsJCpmg7BId+gA8MbyBBuPGMugcmD3CbnEF6U8nON/8v1fR2h
+	 FzNSWw7+9Br3Tpokdio2tyivE4Rud0gO3IKwV1E3tOaZgMsoyakFlGDourx/2w2wHU
+	 7KP/i0dRFFwdXwBt1gIl9k+YmXEtYu70iOYlHmojaTWWZlV4i0EfGHOqqqxf2pbs77
+	 1aaJg0xm7wp+Q==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH v2 0/2] mm/huge_memory: flush dirty file PMDs before
+ removing rmap
+Date: Mon, 16 Nov 2026 16:06:57 +0100
+Message-Id: <20261116-dirty_file_pmd-v2-0-571883053174@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0AA2540015
-X-Stat-Signature: izgenbk99aw7xmg4a71jn6zux8zrzqfi
-X-Rspam-User:
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/3XNQQ6CMBCF4as0s6aGKdIIK+9hCEGYwigCmVYiI
+ dzdgGuXL/nzvRU8CZOHXK0gNLPncYBcmUhB3VVDS5obyBWY2FhETHTDEpbScU/l9Gp0FpNN7Dm
+ u0iyBSMEk5PhzgLfit/37/qA67MpedOzDKMvxOOPe/cVn1KgvNaIzlSGbuuuTZKD+NEoLxbZtX
+ 4tE/lS/AAAA
+X-Change-ID: 20261113-dirty_file_pmd-90e63640a593
+To: Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
+ Ross Zwisler <zwisler@kernel.org>
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
+ stable@vger.kernel.org, Chris Mason <mason@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1153; i=david@kernel.org;
+ h=from:subject:message-id; bh=idU/K1Zt+rfQyeUYE3QGExobNZd3DZ1ROw4P1GPUcO8=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJ+y4io3+H5fH/PdMu51zh4HDrXWP7i+vZUvenPU/GNu
+ xTZhbg6O0pZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZiIcTXDX4GkFO5tDXXN6k9P
+ LO378GjaL4akD/lZ/dNdlJYd5P10aR/DX/HsuW03vJpuJgbcyHjJdabhydNbfwNjY/0YlNqKHed
+ 3MgMA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Stat-Signature: s4qf93ycs8fi4nqu4izgamifq5nyei9k
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5932A20005
+X-Rspam-User: 
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794841550-430705
-X-HE-Meta: U2FsdGVkX19zihlchkwC1E/yzcJuyMAIWzNtE0LTWNMHDbOWK8t6wrW/gXYTIcndkDS98/5+y6tJQ/+jngrM4ig8/h0P0M+8xN/iGA1XGMrozePgFW7HA/T0UBO+Q7ZDwvY+xyosT8B0loJuhswZmwei2/xp4NAkv4jVo2X3GlAT4evIRmitrnAMCUhl+0BcrN/xvbgBd7j+9TkF9ByQPaLuQfo2WMoQhVWmgBUqtaLC2C92xb6B3E0BZ2M0u8fMxLhgPjG0jd1uBlSQQeOmyrNgWfadaPjw9beztDdS9cbzLIy5q1mqZZggoN+hqTlA+7sEEe+wltbkr+NbnT5yf23q2HWEqke4sSHJvWbs69Kn3WAoty0v3/0Q16Pti/pGf+iHVLKoRU/VIFqrz58nkWDz/yYlGNTJaR2VN16T+2cK1u8cWM23ba8v+0RLZgo93kWDeMaGLeUWjxRQJTfekRaKhyZ6+Nh3NeVlIbrpnP9/rbWzMYFTCw15Y9yXhRr5aRC3wR3IgMVRcmzuZX85bQZ+Z2qYm8wlX6+pxhaeqvfAI4R5upb/WDOWgZ5SahnTlcMeuZI4dVfnMnkv6funy3an1+Q8zhOnyW4uIjmarXYMDaBV1IIaQtz6pKscTvuM4L8ucYBw/LWEW4RIrM5C0exavK6cBz8Dtc89mcL3TdCqzdHM1BtoGL9E4DuIHlUIedI0BssXKU73b2BPzzgK0q4uLM+q/tgapVdsfew/tNur/MCcsjrCbHW9h3fOJs5MKHitX+Jh0QC7cni/USDZvSuK6cTxETluaI9a3sDc1hRsihTNZ/T4+shYQMUZOL6957HH9zZk39rWTooCGO8uZZmYJzI2CpmSvbns/wnzJ50XVOx/bDxCku8VAKTDfiTSQ477ZhcngFb8JFfU2Wn0PpXit8FZvmM3ZfXTtlCxi3T8MT7saynfVlMbh0x5fbdX/dF2db99ykXn3D/7mb0
- dzG3EQXn
- xf6qMup1VjZLSuD7S4jBsNIRCUaNibWTozuEB/zbZXvFI+KROtzmjsbp069kQYZ0Nf7OtFt8b1DEUPHKnehmQW5MUxysKKfT2L0lZ7Hz/yTrqXT6TC7i6XkbRM0GQNdYZSZaKX4711rMA+LAN+cXmhUdEVVuJQygK493Kse1VUSdlhix9g6s2Qutsl6DeRxg1ru28lFnwJYAMDdZ28v5NUpJ0ArODiGL7p+Myg6G+VSGSI0Ep1KNsHRTePfKzgq+456/xB4EM/r2bRnQwN5e5sFajrZDoo0gVxGjcRHXNfif6YjxCde0ouKcPBcatQyWrn0236QMu51jytMQY/m26NxUQdQVzYr+GJFqSqSvPhEBuZk/Pu71VSIwBn3/8RxsQhYTOOiZi4RMvJVE=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794841637-923606
+X-HE-Meta: U2FsdGVkX18ayD7He904gnMruXnZLtE4lkqu4k0TgdUivIrFvHyATne7ay8TWRZ9f76H6Hsr9HdAQxMwX3eT4LE89wgzc7dZw6bUWLl6Wcd6EOkX6ijENlfZumEQqtGO2GDypWsOmpg38Y/W7czMJHk8sQ7TxgUFriNbGQ5dXbDXXWLQZK3fd81gI81R9MADtLYi0YYZzbDg6mpCHEjhRJzRZk8dBHEsxqqZKFLqudumOJjNCEhFACJdDFRaJ8qqsNvgrpUzW0b3SCv3xxL69jX5CRm4fA1akohoUzt1EJhn7lSI06ZBrT0YO44z1Y1jOwOhT96DYK1VP7n0GL/EQrCf/ueGNSDG75WjULocVkSDqf6JlmJySUpD6HwJcbNcef92KNuKXwvPKJPXFpbvvlLPNa8N7gex5RIEc+eG/i+OYE8RsVfJtRx7/rwvkg2w/gGsyAzGSFSN0xZTZBCeyl1tHk9l0mZZjhinsshrlmB5lzEd1dYguByMHZ76Dev1VlzXliIJShTOayfA2avh7IC4+t+u/VkYUOmW9irt5ZOJzFpH8IDDMJiMzJliOOBfsaaplDP5nuQClv+gay8M1UbUgezbq7NgwlChIqBOHFDtUMiPgdA9oMGcwQ3MzRw4NptAlB5BaTrZRc7t1Yz4cE/n/JC2H3FU/1rM5Xeadnkdyd7B56u5Lizb3gTVT7FzxI0KUJOZoKDvTpPT3iEu9ZeVcTYpetV+9fsNHoko8L/6GQWMKsuUs3hH+TwubaqxU67jJn/qoIr2MDn3mcpbbXhQ1JEAeRRbcKUNs6Z/weSMRRZXrmPbiKRYL9TjHSXK0QFWEC/vAhZSFhezT0sUjGNNXQfnQ4WbJmYxV0VQBA2/ljTluzTMHtrEdsc/bzFvB0lKr0DEa/KzIb+DpVDShO8lVYnA+qFXcNApy6JJgYCLY7U/YBAf6jIkOpVsxVovAufU9WWyRQdWBpezSyQ
+ GAT+3B7M
+ 9yHL4N4TkM586X+G4CTDIaGYZdaTN6YSqIEMktKrVi6EH5ozPgGBzODgjs87IYGTJasZumyKNOdkjeDCFOhz8d9N7wz5ywzRMGwE23cCGI2kKMqswbN/QR/381kY6+/Vw0YVVfWy3aXTLiY5LfmPlvYnqDXGPrd8DyX0nwYgWwsZSmdxskE8B3H3M5iqGMXoK/GjkFOU0oie88KmqUJroRDHIqx8qDzgTCnhkUW9nSoLW5P7byDJxYLSB8zeMo4NZKMdCe4uaKgkoQvicl4TMh2y8N3TkDDuxUdKPXEghqvhZ358qomrhHugD+TCqxgDAxXdJkdccf3dPf+pZmFktVsKZ9Et+7Vur/ujvpOxgUd32Ang6H4UMnrWk+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,65 +120,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Aveline,
+Details in #2. Now includes a fix for a preexisting issue on UP in #1.
 
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Changes in v2:
+- "mm/mmu_gather: delay rmap removal on UP as well"
+ - Added
+- "mm/huge_memory: flush dirty file PMDs before removing rmap"
+ - Adjust comment in zap_huge_pmd_folio() to talk about stale TLB
+   entries, not mentioning other CPUs
+ - Adjust patch description
+ - Pick up RBs
+ - Use Closes instead of Link for report
+- Link to v1: https://patch.msgid.link/20261113-dirty_file_pmd-v1-1-8c11f2a2e65f@kernel.org
 
-On Mon, 16 Nov 2026 18:43:36 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+---
+David Hildenbrand (Arm) (2):
+      mm/mmu_gather: delay rmap removal on UP as well
+      mm/huge_memory: flush dirty file PMDs before removing rmap
 
-> Hi SJ,
-> 
-> On Sun, 15 Nov 2026 12:28:32 -0800 SJ Park wrote:
-> 
-> > +	case DAMON_FILTER_TYPE_REPORT_MADE:
-> > +		addr_range.start = pa;
-> > +		addr_range.end = pa + 1;
-> > +		matched = damon_report_exist(filter->report_type, &addr_range,
-> > +				jiffies -
-> > +				usecs_to_jiffies(ctx->attrs.sample_interval));
-> 
-> Since the window is counted in jiffies and rounded up, how many samples
-> see a given report depends on HZ.  With the default 5 ms sampling
-> interval, the window is 2 jiffies at HZ=250, i.e. 8 to 12 ms, so a
-> report is usually seen by two consecutive samples.  At HZ=1000 the
-> window is 5 jiffies, but kdamond_usleep() sleeps via
-> schedule_timeout_idle() there, and samples end up about 6 ms apart, so
-> a report made right after a sample can fall out of the window before
-> the next one.
-> 
-> With the queue indexing fixed, user reports submitted every 50 or
-> 250 ms and covering the whole physical address range were counted
-> about 2.0 times each on an x86_64 guest at HZ=250, and about 0.84
-> times at HZ=1000.
+ include/asm-generic/tlb.h | 16 ++++------------
+ mm/huge_memory.c          | 39 +++++++++++++++++++++++++++++++--------
+ mm/memory.c               |  2 +-
+ mm/mmu_gather.c           |  4 ++--
+ 4 files changed, 38 insertions(+), 23 deletions(-)
+---
+base-commit: 25f5c92e1ac06496679ea229e5c825aa88968efd
+change-id: 20261113-dirty_file_pmd-90e63640a593
 
-Thank you for sharing your thought and test results.
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
 
-> 
-> Is this approximation intended?
-
-Kind of intended.  DAMON uses many approximations for low overhead and easy
-maintenance, as long as the results are practical.
-
-For this case, I'm not that scared about such over-counting.  Users ain't
-really care about the report counted just one more time.  I'd rather expect
-users repeatedly submit reports to make sure DAMON shows the memory as hot.
-
-Also I believe users could tune intervals, manually or using the auto-tuning
-feature.
-
-> If each report is meant to be counted
-> once, maybe we could keep a per-context report sequence cursor and
-> check only the reports enqueued since the previous probe run.  A quick
-> local hack of that counted each report once on both HZ values.  If
-> reports are rather meant to stay valid for a while, like a user saying
-> a range is hot, a validity period separate from the sampling interval
-> might fit better.
-
-If it turns out the approximation is real problem for users, we could consider
-this kind of improvements.
-
-
-Thanks,
-SJ
-
-[...]
 
