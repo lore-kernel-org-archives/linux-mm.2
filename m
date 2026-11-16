@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD059606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 20:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8630606A880
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 20:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ItU7TeQa
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fK50WbwQ
 Received: by kanga.kvack.org (Postfix)
-	id 9EFA36B05B3; Mon, 16 Nov 2026 15:17:06 -0500 (EST)
+	id A692B6B00EF; Mon, 16 Nov 2026 15:18:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A1396B05B6; Mon, 16 Nov 2026 15:17:06 -0500 (EST)
+	id A19AE6B05B5; Mon, 16 Nov 2026 15:18:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 868BE6B05B7; Mon, 16 Nov 2026 15:17:06 -0500 (EST)
+	id 8E2266B05B6; Mon, 16 Nov 2026 15:18:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A8F86B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:17:06 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5BEBC0204
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:17:05 +0000 (UTC)
-X-FDA: 85442091210.25.3EF64F5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B76F6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:18:42 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E20D88022A
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:18:41 +0000 (UTC)
+X-FDA: 85442095242.15.672E3EC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F3BE14000D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:17:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ItU7TeQa;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794860224;
-	b=FTTetXgQ2d6Pc5rMqlY1Co7tkv2NUAKle5zk8jBaJrKGYmCH7BUDnk3Vyz3u3qBE/y8Js+
-	LZNUlH2pm0f1oz6kLI1szZTcldtSx5JqA5KzHRDDAJ08LiQE7cG5bh5I7mku+m+DN7icGc
-	NQlh7D+Q5vAhL19FKjCf6E6MECUbmZY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ItU7TeQa;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 04A301A0005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:18:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fK50WbwQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794860224;
+	s=arc-20220608; t=1794860320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bKzzzSpBOaonU826sARfDAiFw4R3omUJQM2ebnYyTcA=;
-	b=Xc6fPTeeQR2EEIc/dC6jDl3r0X3Oa2ErXMbNePaSbGTU7UvgsZHrHBIGCZh1fKboJrFkfz
-	FQgPzVt1NfMRMPBD6v3NoPsN30tuOjJpet+FfqUjGNOTmXj5zEj+9sW1yN9RcKBSHoup/T
-	51tidmnOEjemF3s6ys0Ewy6TUpvOKoA=
+	bh=e+F00mSOHoN5Y69YJ4eI5U2asF3iwsD+sP6+Uxjzv+w=;
+	b=BmvgcYqzxskxVtEnl/LbvrtaDHiOuRCQTZQoFACgMjttGt6Kv1p+EGMQvSLcBsXkYGBupR
+	QV9IXrG0/ciH4K7jAKU5wnXXwd2noNkf34WbdnD2HqEq6s0CFrOe+0fTF7oQWFU3eFS7Lj
+	xiLt3xBkLzcxK/GpVI3MfIibbXV7APQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fK50WbwQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794860320;
+	b=gvYFpGTr9G9Dv3hRP7z6SiM9GlhEqS4ubzLew+ofYZ7HjWcL2w5O5FHT2aaF74LXRagT1K
+	FfSuDDYWBsXsLRb/+Y0ngWUtgDpm044W4zBLAGxEAhwYZLBPWV6IX3q3p8dJH1k1BQRpYU
+	APwPmOXRrp9KunkUVaQ6r7NahRSxl6Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F01442482;
-	Mon, 16 Nov 2026 20:17:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F631F000C5;
-	Mon, 16 Nov 2026 20:16:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3166840910;
+	Mon, 16 Nov 2026 20:18:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E151F000C8;
+	Mon, 16 Nov 2026 20:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794860223;
-	bh=bKzzzSpBOaonU826sARfDAiFw4R3omUJQM2ebnYyTcA=;
+	s=k20260515; t=1794860319;
+	bh=e+F00mSOHoN5Y69YJ4eI5U2asF3iwsD+sP6+Uxjzv+w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ItU7TeQai/+BclW1EU5PAUfzqEk6kWfCZ7ASDuNsu2JYjtmngJxaHrhyvN8sM7Et+
-	 j5moSLArwbw6kg8SHUQd2XgGhkfhaugo+URtLWL4KRZs1ekwG4oSZgnaO+lQXKcrXz
-	 cBui06n56DU1FOwISRi0be2gp8TQiBxJCNALY3VmaNhxOmIg5C7ZJlmCNj/T2fX0JP
-	 GqbLTDxJP5qoqUlbrDewG3W4XgLWIc8posALz4Qwrni4AXv+rFL/LvijdI7xVFBVjZ
-	 SBFR4Srme2YbACrF1idrOzrbm8NhExSVlzMUG8lyRZoYUFLntPc6cwBaVXX3CXB29n
-	 1tdHE12H9/lEA==
-Message-ID: <cc865bc8-b96f-4385-97b1-976de4465ca1@kernel.org>
-Date: Mon, 16 Nov 2026 21:16:50 +0100
+	b=fK50WbwQZf1UckiVFuoJyhG3L6gG5PUkQqa+LYTxJcv21cV+DLK8s0i3FYnoxx+6C
+	 ToQuoG4KYN61wvCzqaocY4176QIWc8krihZm/MWCpg8jG0DUrC0R3xQMRTsouqW/Yx
+	 CBqdMq3l4HbNuXCPuvlbsQy+vnIF/lZS/DSqnJyVoounP0T0WIgOhxqnpZz8e/aOBv
+	 eQEYYDVHpspI3aC1UIdxtIuNOqZcNAbSDBWxjeCE8b4Vx0JFJO1I+P4oyDfDiDQcDH
+	 u5yGgLcnJZLhmS7hJwSwaHwHkU5pMR/Oea6MfeipvbNWAnHySLKN7VoGFW/igkRF1h
+	 dzD2/+i/WgkAQ==
+Message-ID: <17b98593-5f56-45a3-922f-99dee2b917c1@kernel.org>
+Date: Mon, 16 Nov 2026 21:18:26 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/9] userfaultfd: use anonymous memory for
- UFFDIO_ZEROPAGE on private file mappings
+Subject: Re: [PATCH v2 2/9] userfaultfd: refuse UFFDIO_MOVE into a non-present
+ huge destination PMD
 To: Tal Zussman <tz2294@columbia.edu>,
  Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
@@ -93,7 +93,7 @@ To: Tal Zussman <tz2294@columbia.edu>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
 References: <20261116-uffd-state-fixes-v2-0-4397a0196479@columbia.edu>
- <20261116-uffd-state-fixes-v2-1-4397a0196479@columbia.edu>
+ <20261116-uffd-state-fixes-v2-2-4397a0196479@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,22 +140,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261116-uffd-state-fixes-v2-1-4397a0196479@columbia.edu>
+In-Reply-To: <20261116-uffd-state-fixes-v2-2-4397a0196479@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nxez8jtmr866jj4kb75c1xtu33fkzsda
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F3BE14000D
-X-Stat-Signature: jpwnrmz737h4kzp6imz4uzezj1kc1d59
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 04A301A0005
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794860223-335684
-X-HE-Meta: U2FsdGVkX18ylEoO6I/jFzCTc7k5A0f6PPK5R456+wcolVq7j81oiNxjZj/Fk3/9yAxSYzbfMO1eequKuNRRYRntpKUDjS6PQYFiYFH5qdOfOlblMUdBqIZU+qHd/nxkGqkyfE+jwX8ZHpkfnZuzpshgBXjF6IeGoWHBmWEOs8MA6MlDTlB75ppyIzn6wdHrtOPHjvIhm6Z7RSRX1/PmQXTDCUmNp0whrbfmzsIpRFA6oPcp6bRPRq8wmPdm9Rlre8LHv268o6tiGjOeJQJUnrDG04DqWyA/Auqid/kgQf5v3uDAJXaEM9JP7Bwuk6M8Uyfs56pJN0uWIzA/vMtk0MrotJKg+cdpib7R1BeHQo/ZISKvbBoR4jwfK405636W0VjgSDLIPqDFTkc5/vVU/A0eS/40lLPDnJ3C6iGJJ+Ft+mLQm9Vaub8FH3iE8bhtYS6rLAGLKHnlWeZc+sXwPKDVNOn/hp/a5AYwMj8LqN6kWZDh6LNA5eY7PX/PCwmuPzTYfFjW9Fzof7ibMfkfzHXhezzPjwT8Wa0Ne96BCrV9fHG2hywY1Yw+7mFZg+0ckoNm3IVuVBBxqbh+tLkYvPCtLqe6x85F+uHwpJpFXpcs6v2PcE2DZSVCfmc7lJdqFO0NiKoKJAWXgKt3mD37nFhHG0zeqNRYypBDyf+qDs3CSyZPZV8BJd6ISjiASYg6zsvFcC4xlAuKMzmb2ppfPDEe8bQeZXQemwa/j+OKxn6b+DuEdsb7SnI1Oo64059yHs75/SdbyBd2Q8n+6eMa6rcdknyz724tbwJFi/xVmVpJ7S8VsyO9FmtSjamNziLELPtuYyJF3szekwh2/uXW8LaRZM99lERos+oc61zjPnOKpYMwA+luyetwfBaylClteybPhVOBJjNHvX1LnrVpBwdsYhZveBOsImib3n+m6ebatuyT3y/NBh4UOYQXpc873ylhwJWMkze7KgrDlV0
- imgGDIet
- qwmls8OTpRrwbA+3Iqz0+hUJXUgURljvffRq5PV8vT26DwojJqAZJM9yQ++28j6k4YpIv5Cf7vsiUW3r0cgKYAaP9FitkrX/KyeLcnjTV0lJsk4WD+iQADrHITleFcCppUPXOzE4fb006hh1wqGacNkipQKN/ofXZ07FxuBcJDavme2h/e9UdOXoRSAEbnjb+pU/T2aDFjGQbut3rmH+0sjlSY78uWgf5kHand039wCsIIzBOLQjkUlP5c3/XEDf4R7o3z3xjE7BpyRa/LTlBds0XH0pLt03LAIMBKWIX9rhAPSrsIbRBkiPY1V+fCuOubnyZp6muTxgBndJhxB4TCHjM2lLNbXIdWqokoWIjBZy1zEOtSsUu3ThB5a2EFFQDpjAHaM3ZRcQS6yX4j3R1hWhBmA==
+X-HE-Tag: 1794860319-904898
+X-HE-Meta: U2FsdGVkX1/JeUb2PsWktmlhjpMuaO/PxcXzHO4uo5QMdetiuJnBD0yRVhpwaV4HX0nOs3GbBa/yBDUTkDeBjjomokm644TP7EHGyduhBe43geGtsQthJ0bQEKnKzvTswrVSFKgGddMMlUVVOgvrDuNb54MxkISlCkNTj6LkfDNNY+EKr1cPCgVjYlKUXljuID9RYy+Q9UQhYUtVEC2XXzp1O9IJEcnUQlfPyrKL3YFdFTFRmUOHRcj1ZMhnLZaCUzT2gLAnAefK5Q4dHfADZJsbk/FaOKPMsVhjFpZC7s/3y6Dy5u4KEoOELw/MaEXxMuJxldW31Jq1HecWdmj9hmOWT2f5Owo+TzXMlcMjc7L0X4TErT+97PtymtYU7rQgpJ5nJXqi1vu1JR0wvbwDlAMYgMX4zVaC4jktaoaqgb4oU7jbTsJgEX7V7XussWX4b6xvuppzBwZ8I2G6Y3DVSmggutVcA7CeZcuyaLuMRJNNyMjtMk1RFGYM9BOxe51SqUMqZcTZ8C7LjRJF/m3foCvcpjvYKqrA1QWBR/3l7hSp9M3qQrnjQvqga32HzXOxi3tCX6CXojyICpHnMoNdEheyzIVUuNjY820WB8NbkhwznTXgP/+jE4Av63z6lF/ICWJPjq2AUFILUen7Z9g0IjsoDcOMTEDFY+6oa6i3ohzp6bI8Vh8vDppnoBmSat9OviSpP6ql6pzqCnQLHtQHo4j1x9De+zJmHgHQ3l8C7tWU35IvdSXr6MaUqgLvnaoenbCT0k3Sn+YJk5JkDhOlHjf5sjX/TtlWeoQxg3AXxjyr/D0Ui9TEjcA0wFojIzVfiKGdFe2BqFz3QOUujs8C6PFiiRq06qoMZMUzqxSt+8cQr/QtNxPYV+inL/IPheXPRmlBQbf5qXWGLDePQMlIJPle+LxD9bwmFVzubBImUwtDH6j1oP/XxKfZDSSG/o79n89TyXMgy17IROfi3px
+ RBxS5jgn
+ oRRJ+qLvZDz0AO2ymr5FZ3/j5rYZHbDxIN6ItBQKdmKykvHkmrm0IJg8U7QPYKpb8TF6OHhSZKMjICGdJv0nytfgQq5vXCinDq5Kdlf2OxmUAxnONVq6EDxQ8bv1SOQp1di+b8bLfpeeU9kXVytfVChTgCG4FzIyX6awx1qZS9GcCFFo0iNnLLGbwEdB6INhCOrHliw3CAuLtTowENTH1CdSMFN6bSHckVEoXBEG5aBKDEBhuZIDOrs6LH4rpdiZBlEui7JnnYHp/yFWUhjjJcsuM7asY45/H8LC5RczexN+vWponVQANAmtzTQ/LvSieWCd2n4nDC//h2HOhCE99GThZiJCx3oEeOm8qlh+PlVW5P+gKRfDpjn0RteApj9E6ppo7erv9X6m25A8vygRgLlWMlGGShVsA1Y8BPwyss0+Vp0yT+KPqQzpBuqb6edYh1PsfWBjHuQaSKTPAAIfsVowqfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,83 +165,62 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/16/26 21:02, Tal Zussman wrote:
-> If the mm cannot map the shared zero page, UFFDIO_ZEROPAGE falls back to
-> mfill_atomic_pte_zeroed_folio(), which allocates a zeroed folio and
-> installs it through vma_uffd_ops(), no matter what kind of mapping it
-> is. An s390 KVM guest with storage keys or protected virtualization is
-> such an mm.
+> move_pages() refuses to move into a destination PMD that already maps a
+> THP, but checks for that with pmd_trans_huge(), which is only true for a
+> present THP. A device-private THP or a THP under migration is a PMD
+> softleaf entry and is not refused.
 > 
-> For a MAP_PRIVATE shmem mapping, that adds the zeroed folio to the page
-> cache of the file. That is wrong: a private mapping must never modify
-> the file it maps, and the file might even be mapped from a read-only fd.
+> The destination PMD is then treated as if it pointed to a PTE table. It
+> is not empty, so pte_alloc() leaves it alone, and move_pages_ptes()
+> fails to map a PTE table from it and returns -EAGAIN. move_pages()
+> retries on -EAGAIN, with both VMA read locks held. If the source is a
+> THP, it is split first for nothing.
 > 
-> The ioctl can also fail where it should succeed. A missing fault is only
-> delivered for a hole in the file, but UFFDIO_ZEROPAGE can be called on
-> an address that did not fault, or can race with a write to the file. If
-> the file has a page at that offset by then, inserting the zeroed folio
-> fails and the ioctl returns -EEXIST although nothing is mapped at the
-> destination address.
+> For a THP under migration, the loop ends once the migration finishes.
+> A device-private THP can remain in device memory indefinitely, so the
+> caller of UFFDIO_MOVE hangs until it receives a fatal signal, and
+> anything in the mm that needs to write-lock one of the VMAs blocks along
+> with it. This requires a driver that migrates THPs to device memory.
 > 
-> What we want is what UFFDIO_ZEROPAGE does on a private mapping when the
-> shared zero page can be used, and what UFFDIO_COPY does: only check that
-> nothing is mapped at the destination address, map zeroed memory there,
-> and leave the page cache alone. The zeroed folio path did that before it
-> was moved to vm_uffd_ops.
+> To fix it, check the destination with pmd_is_huge(), which is true for
+> a present THP and for a PMD softleaf entry. UFFDIO_MOVE now fails with
+> -EEXIST in these cases, as it already does for a present THP.
 > 
-> To fix it, pick the ops in the common folio path, as
-> mfill_atomic_pte_copy() did for UFFDIO_COPY: anon_uffd_ops for a private
-> mapping, the ops of the VMA otherwise. That makes
-> mfill_atomic_pte_copy() and mfill_atomic_pte_zeroed_folio() redundant,
-> so remove them and rename __mfill_atomic_pte() to
-> mfill_atomic_pte_folio().
-> 
-> UFFDIO_ZEROPAGE no longer modifies the file, and only fails with -EEXIST
-> if something is already mapped at the destination address.
-> 
-> Fixes: f74991b4e383 ("shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops")
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
 > Cc: stable@vger.kernel.org
 > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 > ---
->  mm/userfaultfd.c | 46 ++++++++++++++++------------------------------
->  1 file changed, 16 insertions(+), 30 deletions(-)
+>  mm/userfaultfd.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
 > 
 > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index d65184d9a480..61a712e1f9f5 100644
+> index 61a712e1f9f5..ad9d243dc64b 100644
 > --- a/mm/userfaultfd.c
 > +++ b/mm/userfaultfd.c
-> @@ -531,15 +531,27 @@ static int mfill_copy_folio_retry(struct mfill_state *mfill_state,
->  	return 0;
->  }
+> @@ -2021,12 +2021,13 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
 >  
-> -static int __mfill_atomic_pte(struct mfill_state *state,
-> -			      const struct vm_uffd_ops *ops)
-> +static int mfill_atomic_pte_folio(struct mfill_state *state)
->  {
-> +	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
->  	unsigned long dst_addr = state->dst_addr;
->  	unsigned long src_addr = state->src_addr;
->  	uffd_flags_t flags = state->flags;
->  	struct folio *folio;
->  	int ret;
->  
-> +	/*
-> +	 * The normal page fault path for a MAP_PRIVATE mapping in a
-> +	 * file-backed VMA will invoke the fault, fill the hole in the file and
-> +	 * COW it right away. The result generates plain anonymous memory.
-> +	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
-> +	 * generate anonymous memory directly without actually filling the
-> +	 * hole. For the MAP_PRIVATE case the robustness check only happens in
-> +	 * the pagetable (to verify it's still none) and not in the page cache.
-> +	 */
-> +	if (!(state->vma->vm_flags & VM_SHARED))
-> +		ops = &anon_uffd_ops;
+>  		dst_pmdval = pmdp_get_lockless(dst_pmd);
+>  		/*
+> -		 * If the dst_pmd is mapped as THP don't override it and just
+> -		 * be strict. If dst_pmd changes into TPH after this check, the
+> -		 * move_pages_huge_pmd() will detect the change and retry
+> -		 * while move_pages_pte() will detect the change and fail.
+> +		 * If the dst_pmd is a huge leaf, present or not, don't
+> +		 * override it and just be strict. If dst_pmd changes into a
+> +		 * leaf after this check, move_pages_huge_pmd() will detect the
+> +		 * change and retry while move_pages_ptes() will fail to map
+> +		 * the PTE table and the next iteration will see the leaf.
+>  		 */
+> -		if (unlikely(pmd_trans_huge(dst_pmdval))) {
+> +		if (unlikely(pmd_is_huge(dst_pmdval))) {
 
-Oh, but one comment: why not check for actual cow mappings?
+Insert the usual ranting about stupid thp helpers
 
-	vma_is_cow_mapping()
-
-is your friend :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
