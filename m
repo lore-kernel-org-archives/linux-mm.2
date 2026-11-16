@@ -1,92 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5043606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 03:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ED6606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 03:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=LyRAVFev
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oFarsq5d
 Received: by kanga.kvack.org (Postfix)
-	id CB8DE6B05B1; Sun, 15 Nov 2026 22:16:42 -0500 (EST)
+	id CE2126B05B3; Sun, 15 Nov 2026 22:17:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C91326B05B2; Sun, 15 Nov 2026 22:16:42 -0500 (EST)
+	id CB8BE6B05B4; Sun, 15 Nov 2026 22:17:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA7876B05B3; Sun, 15 Nov 2026 22:16:42 -0500 (EST)
+	id BF6606B05B5; Sun, 15 Nov 2026 22:17:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 95BFA6B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:16:42 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2755A055F
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:16:40 +0000 (UTC)
-X-FDA: 85439519760.25.565E957
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 94EDE6B05B3
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:17:17 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E895808A3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:17:17 +0000 (UTC)
+X-FDA: 85439521314.20.ACAAFBA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C2F9F1C0004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:16:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LyRAVFev;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7547C140006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:17:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oFarsq5d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794798999;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794799035;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f9vMUAln9RF4ExbyRQjC3UtblgMb7Qet2HsLNIFFgQk=;
-	b=mk5+DOULAxumRjkxVj1LWGQMGmZ9b5PhdEFGtzEqKjoUZV5YEFn1LMMf77hqUkwnHtdovM
-	J/u9VAUlHWnZGgk4moZqNkdGbiy+lRjSM3wDfOX4wIN+jRfJSDPUexMJcZjwwFgdHgRioQ
-	nyTTl8SInphuPYVCZCeysVl68kEnlNU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794798999;
-	b=KPPuFfzk5pId3KfmHNNLayt3ygV949LywVazLwjQR0W5zqfrddxeT/SEmzJOD1hCb0z4Lo
-	4sTcAmRsN76La/W/HvCXHOT68WuZqM14lcEGuR3m+9zw9LhdtvsSjeYwzYuQAx5q26kIKH
-	5vcho6LiIRNFsE8sis3HZtZkPUH1OrA=
+	bh=WBniCx6iTdMXGZKXHCATtRQqr8VOEAwfqWsRZ4fWJh8=;
+	b=bT2AuFHuEwQpgWiZ13Vz9bqz+ONPbU73V9mP5+YXWoJscTQZsX5HtkFD+m0PqKD71zdQPK
+	94GKOlJdw4W39s8f2RfpkAkgkbbZbLC0GlBybYq8pc/Z3GZAVC/W/ungY+jn6wNeWKz1qU
+	t4EY+pj0cX6KKVhajQS2yTENUSnfviY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LyRAVFev;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oFarsq5d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794799035;
+	b=a1WtjdYKO+NjNr7BlSJ6Yo2hBsBK9OMpAfSUNSgVxsg+7qHgb6GTx3vAeTwf1NAzwR06Or
+	ZfXympnYSkyEuATMP+OdeNB2Yd7C4zWhZnvK45Pyr3eQqD6V+5twdOkYsyzQgpmvuupfC4
+	YbQF1BIo019EvWWAqlgguCUySe32HF0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D72D843532;
-	Mon, 16 Nov 2026 03:16:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC701F000C4;
-	Mon, 16 Nov 2026 03:16:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794798997;
-	bh=f9vMUAln9RF4ExbyRQjC3UtblgMb7Qet2HsLNIFFgQk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LyRAVFevgYPkx5MazjZeILe8nf+HIaMipxE5RhUD9KN0zKvQ9SX4LhtRQ6w0wax5b
-	 pl6MKCva03CSsRGh5DEW5ZknGlva63h0SQAVEpY2Jx+/r7drr1fqCizZdoMW4lzrmO
-	 qrvDPmonNiAAfQOtlW/qtNHjnRTJAVZMiZvyNHdM=
-Date: Sun, 15 Nov 2026 19:16:36 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jiebin Sun <jiebin.sun@intel.com>
-Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
- rostedt@goodmis.org, linux-rt-devel@lists.linux.dev,
- tim.c.chen@linux.intel.com, tianyou.li@intel.com, wangyang.guo@intel.com
-Subject: Re: [PATCH] lib/percpu_counter: allow concurrent sums with an
- rwlock
-Message-Id: <20261115191636.f18859e4dd5f58b9a33e7814@linux-foundation.org>
-In-Reply-To: <20261116015655.2744577-1-jiebin.sun@intel.com>
-References: <20261116015655.2744577-1-jiebin.sun@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: imycywb31a1qntkmaj8wxe5jbtfkzjk6
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C2F9F1C0004
+	by sea.source.kernel.org (Postfix) with ESMTP id C05354166D;
+	Mon, 16 Nov 2026 03:17:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FD01F000C4;
+	Mon, 16 Nov 2026 03:17:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794799034;
+	bh=WBniCx6iTdMXGZKXHCATtRQqr8VOEAwfqWsRZ4fWJh8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oFarsq5dLj00U6+i82cydfwhdOmkxWDp68WFYN8LRtZ9V9MD/Sv2asQ9XYRNJzMqE
+	 /53URxjCWGdNfNmfqkL6pTNlg5bw+cDJK951xH1WO6RKdV9Ux+C9UMIk0kZTvYQ/n3
+	 B4unSfY9eUP0PSPC1Y43CgrMqN+GBXqkjHiEIX+EEru9q+NZ91uDzMC1XlNHlVU4qG
+	 caGzinn006wWaZ+qBtBAa1wylsKq2R8LqVYHPv4A4cGSJbOQk57eGEdmjELlwvzguO
+	 FDTkE4FMeM19mCXArcwCaI2iupVjU2ymNzlP/Ys6rrdEQwhOGsFGBQ+D+Tv5n9o+El
+	 mwYtdkR7S8U/Q==
+Message-ID: <sashiko-outbox-216113@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] lib: xarray: free unused spare node in
+ xas_create_range()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Andrew Morton" <akpm@linux-foundation.org>, =?utf-8?b?TWF0dGhldyBX?=
+ =?utf-8?b?aWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>
+Cc: linux-mm@kvack.org, "Shardul Bankar" <shardul.b@mpiricsoftware.com>,
+ =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQgKEFSTSk=?= <david@kernel.org>, "Dev Jain" <dev.jain@arm.com>, janak@mpiricsoftware.com, "Jinjiang
+ Tu" <tujinjiang@huawei.com>
+In-Reply-To: <2dfabfd9476542e39c7d5473a6597208.1@linux-foundation.org>
+References: <2dfabfd9476542e39c7d5473a6597208.0@linux-foundation.org>
+ <2dfabfd9476542e39c7d5473a6597208.1@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 16 Nov 2026 03:17:13 +0000
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7547C140006
+X-Stat-Signature: u1co5j5559dge8ezck766unrautadc7u
 X-Rspam-User: 
-X-HE-Tag: 1794798998-881233
-X-HE-Meta: U2FsdGVkX18xkxqoqwquaax/6oVYCvt16eOR6mh7N1mXt8X83M0uLYTdxHSpocQqrhzOs7r503YGR7HdxeO7XrVHgVQl4MxJ8q+tsd8y5Uu63Vq9/CR5y259kGtuaRv/H1GksB4oryEnncnXzHKNy/5W6lnyCDuHq7AQy/0jTI7mo9pPsAveGc0Yg0zuCSgmGipiMSvL5TkbwHVyTua9v4sT6AxYmQRrVbYe+NDXA1+F9vwYaA8WHt6MzB1F6IUUbqYJ4HjeHk4axBgzwrlm/GhUd7/MJaTm2Z5XwP59iZ1BIiAAwNZ+sa3qKXfFGsbzMd55exe4Z4I2AbJU8UcPXD4s2W3mNo4YpDQXAT0Bfz5pY2Tv8zSoUBeGBZ72F3f+Z0KrD+I6oGljzkaqR5CstqdlCWA3522k53wkdHfrGkWdGFb+tLkU+rZHfLLyd4cBw5LGQNddgoQ3/CfWkKczT0dPDQTHayGS0/Wr4+OxraxXMPcJdJXSvCjICTOv22ynSqbnIzlquvqAwK45E2xvqObV5P4XFi1Ycet6lgZamT+IvjTMU088pV6QlvBgkvQAUKoFn0Puw5xfMZ+3MHVM2jkDHkfT+cyGgZEhyiBFMNJSulJAGdaxOv74i88JDvKAqmRKVoXueAuia05gFzQPegKcEofgO5dqxSpv2Sj9ZrHU7nX8Cb5WL/m3IDdgLTfMzjWneByyGeag8cgG49XXWfITra4a7p7Grxeo0l7EkU3MRiO+a7rOztCGQR3E2NGgTdBjLcCnLmShyM+eKteh5MeE0kKODcZDLD5mGzjqygb+bsBFyRUMZ6o5O/WLJaZLCQTA5K1U+ykJTf8pWb83J46ruQJ9dt7taMand0np58lGhfIj4/9Obr02ozH/qRZzqtYjr41IooacX6z0JsbPjWjMT1yIlhKoIewjDJu1eMQBkmuIR8y4YrOjFlVd6g9wyaHO+3hWH3k521XlCad
- Qzln+EW5
- t1ZdQ3DMXkwjQibotvVVQiXK+DkD2w2lYCPd5WOQN5qlAxdURIjgNAfRLEz/CfneYVe+ViHkbmq6KCAmw3jVGJDSwacg6NHCf/btOYEmiUjnCm/BoMH9di1+ZANtvp2mRlwdxuGJl8UYJB82acxV6S7wYEt/bLgRv+umB7k/dx17/f2bglCzgT8vuaV/tXFGshimFzXKoZ5gwZVMiujgzuMh6LLhi0b6cFWYseBAKurdwQ4ahPrv1MZ/yQhglv4OHgUe6s4akJ6gvNJNt9fHRR/FI5weWxq5fCWsijMORTSbhSvEHpG1wsvetRGP3yMQsl78x8PS2x9C9f70I/cSm3r+71A==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794799035-75273
+X-HE-Meta: U2FsdGVkX1/H2ZzrDVgYkczxaYkQsZ+D+nd1IkFLPvLiWQl9E1aKYztrNQfbSmFcnHD4c1Isyx7ecE03bvbca2/2Zba4iTIjl8ttkH2kcyBWFeOBbmFeJqeVgccHVMuz8NmGweLJtLnuyIBJYtgsbOZgKuypao7OTYXEdysMaC5bb+aR4B04Gh4vQjNpJ3lSjWctQ7rtVM9zAWFTas8OLp1rT36W3OOqXuOW+5dczw8CCbQ40xsuh+VNFDACi62S8n+/w3/ZfZf6QRakUu8IMqnuUU4zjvmlVTsb+NDAOMGneIT0sAAaGKGQyIDHHOD2YFBih5ONc2DOWelGVUf6PTpSi/GMzdUBjkWlTuxn9mTjDd9StdnrIYebg8ZRLNN/oKC04IN6xCUU89IwZTAReFbqvtzlUAQHreDjwfLpZqALtma4FcGlrp2f2M99jOCpYeA4g9l8B51NN9c/sr/9s9G3u8g9XNuAad6aMawXSshdvBlbbAdyDJqKxwFq6WrI88JEI8rhil5TAlemUJYGrg2mkuTiNgvUL+3to17g5PU/pG+pK1GFON8Pkavx5jgJdqRDjgGy64CiMsq+Fn7gA41+6RifuQdQ41/EpK2nCvKvyDcrL8adpMcaYwFNBbGeGzh0d4L0cxTlv23kPsrr/I+++xreictU5U9KtxTH29GweqIYjyyK15512HAYAfmnv5tQQVFw+tmEDmEUimOlTHetKv8X6xa76FWYrocAnSTjds0Iqy1fELepZk+vjN+40oGtcPU5bw0gleROSOLpMzVponAxIYirHx0Gz2gJQNW77TwAf3zTHF68bmkXqzj/SiGV26FhxGKHRFOchujLSSjWYF7BtsoTl1kk//0/Qjn1/ObtV4T1Kynf9cwRZaeJwTWgGcj/mRB948pIqMPXZ98duY9w7kD+Cy6WAT/cvI8jZNfPvlG6F9CQ8TVZeCZqXx/qn1CFKr6HlXlJE4h
+ mSHlpwp3
+ F60FqUtdFmB9Lr47JGuA5LnnU+s/FOdZG8GkGmJmH0WLJUmoZAs72/syiCBSlAeM+f6iSJuDsm8hDK43ZDc7Gaa9vSxLBWIkg7R5Byrke+bBz7S6DEZbhsw6pypsiRkVBoupXBcCSXOh1y0PmGqBLcLsST9c0UaCZ45m3IEvagqkureqPtVhtCQ2wdodont1ELWHUseAqrZ/NK6v3mQPUyoDWQPaPf4HbExghRBi/hHMtNfWANwRZ5drnNTmTn6P+h9noG2fgj5i44jsK8cyFBVQrN9jsH4lNYy/rY1BxbRYzGkSf6rrudgTHe0f+KngRpguhxc9ZQPTzfotchW9XMUGhTL4uXABp1IqkfmsUGkcSMuIQuq0H831h6f6D0H6dPbwwX5glhHnwbUXfI38gVGD2ffwo+Lstl29eQVLkzEihzZAKGtA0L+RwC1RJYTP44ROTGEfDvTxPUvvz6B23dBnlVeYqesgyqOcBASdSEBjLk+nYGeDsT4IPRWETFrj52Xd6ksvUbPUDZXKMP87tHPnlbD8eo+kLar154//ctXVBlV1BTTYE/nTl2Q5kWcvHxpw5jODm3rBDZIrEnW2NFQ2O76tlsolCu7caaXdax36BtbGlxLtNyxaKNCsCCdWt/ZK9PnIEy62QIPMwpyNcJzrtEdR79qsPpxAZ++8I/XhaieWYQloXnNSj9I9U5oH+dELBR3t1qSXjP1mnoxXq69V+d7a0y2LeTLDoFxTULM/GmLUaaGMBRMovsWcf6VQzd/UtsDdckOiu08CXGXnKgtGFOHced75hLYXBb4Qf0wNR6vZ6SfMNFJj3yoC14wwnFF4kDhfsocf0AkdX3w4cu57uX46zpMqm2t3hdGp9Sx1tt+obqYsysy5NoZLwiAGLc4xcixDE29Iv2TOC0lJz/QYjJ07MM+cqI9EcM1QClFWBC7V127gfe+K3t7c78SeCuM4CwzlulXAZgOJLBq3JMJH0w766
+ mQAHIbl5
+ YS/oBCDmXAk1vOdlAprhSZENx3iJrR0vDDn1FBCOmu1AkFSRsING6w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,100 +97,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Mon, 16 Nov 2026 09:56:55 +0800 Jiebin Sun <jiebin.sun@intel.com> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] lib: xarray: inaccurate Fixes trailer in xas_create_range()
+  commit
+--
 
-> __percpu_counter_sum() holds a raw spinlock while reading the global
-> count and per-CPU deltas, serializing concurrent sums of the same
-> counter. Since a sum changes neither the global count nor the per-CPU
-> deltas, use rwlock_t on !PREEMPT_RT to allow concurrent sums with a
-> read lock. Global updates take the write lock. The per-CPU fast path
-> remains lockless, so sums keep their existing snapshot semantics.
-> 
-> stress-ng dentry reaches this path through ext4_statfs():
-> 
->   statfs -> ext4_statfs -> __percpu_counter_sum
->          -> native_queued_spin_lock_slowpath
-> 
-> Keep the raw spinlock on PREEMPT_RT, where rwlock_t can sleep.
-> Global counter updates can run in atomic context and must not sleep.
-> 
-> stress-ng dentry test average throughput change:
-> 
->   +------------------------+------------+--------------------+
->   | Case                   | Unit       | Average change (%) |
->   +------------------------+------------+--------------------+
->   | Dentry, 64 workers     | bogo ops/s |             +47.34 |
->   +------------------------+------------+--------------------+
-> 
-> Dentry ran on ext4 with 64 workers pinned to physical CPUs:
-> 
->   stress-ng --dentry 64 --dentries 4096 --timeout 20s
+commit 844089b2ad8c28a781a9ee223d1c1eac3cd107f2
+Author: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-lol, this is a fun patch - it reminds me of the old days.  All those
-mission-critical workloads which sit in a loop running statfs will love
-it!
-
-I had $sidekick do a scan and it told me "the only plausible routine
-win is dirty throttling: with low dirty limits, concurrent writers sum
-the same counters.  ext4 and XFS sum near ENOSPC, where updates also
-contend.  BFQ's sums are debug-only and serialized.  Most other callers
-report statistics".  You might want to add something like this to
-changelog.
-
-Also mention that percpu_counter_sum_positive callers will benefit.
-
-> --- a/include/linux/percpu_counter.h
-> +++ b/include/linux/percpu_counter.h
-> @@ -20,7 +20,11 @@
->  #ifdef CONFIG_SMP
->  
->  struct percpu_counter {
-> +#ifdef CONFIG_PREEMPT_RT
-
-Might be worth a wee comment telling readers why RT is special?
-
->  	raw_spinlock_t lock;
-> +#else
-> +	rwlock_t lock;		/* shared for sums, exclusive for updates */
-> +#endif
->  	s64 count;
->  #ifdef CONFIG_HOTPLUG_CPU
->  	struct list_head list;	/* All percpu_counters are on a list */
+> lib: xarray: free unused spare node in xas_create_range()
 >
-> --- a/lib/percpu_counter.c
-> +++ b/lib/percpu_counter.c
-> @@ -15,6 +15,46 @@ static LIST_HEAD(percpu_counters);
->  static DEFINE_SPINLOCK(percpu_counters_lock);
->  #endif
->  
-> +/*
-> + * Non-RT sums share the lock; global updates take it exclusively.
-> + * Keep raw spinlocks on RT: rwlocks may sleep and their irqsave variants
-> + * do not disable interrupts. Updates run in atomic contexts and need
-> + * IRQ exclusion for CPU-local read-modify-write sequences.
-> + */
-> +#ifdef CONFIG_PREEMPT_RT
-> +#define fbc_lock(fbc)			raw_spin_lock(&(fbc)->lock)
-> +#define fbc_unlock(fbc)			raw_spin_unlock(&(fbc)->lock)
-> +#define fbc_lock_irqsave(fbc, f)		raw_spin_lock_irqsave(&(fbc)->lock, f)
-> +#define fbc_unlock_irqrestore(fbc, f)	raw_spin_unlock_irqrestore(&(fbc)->lock, f)
-> +#define fbc_read_lock_irqsave		fbc_lock_irqsave
-> +#define fbc_read_unlock_irqrestore	fbc_unlock_irqrestore
-> +#else
-> +#define fbc_lock(fbc)			write_lock(&(fbc)->lock)
-> +#define fbc_unlock(fbc)			write_unlock(&(fbc)->lock)
-> +#define fbc_lock_irqsave(fbc, f)		write_lock_irqsave(&(fbc)->lock, f)
-> +#define fbc_unlock_irqrestore(fbc, f)	write_unlock_irqrestore(&(fbc)->lock, f)
-> +#define fbc_read_lock_irqsave(fbc, f)	read_lock_irqsave(&(fbc)->lock, f)
-> +#define fbc_read_unlock_irqrestore(fbc, f) read_unlock_irqrestore(&(fbc)->lock, f)
-> +#endif
+> xas_create_range() is typically called in a retry loop that uses
+> xas_nomem() to handle -ENOMEM errors.  xas_nomem() may allocate a spare
+> xa_node and store it in xas->xa_alloc for use in the retry.
+>
+> If the lock is dropped after xas_nomem(), another thread can expand the
+> xarray tree in the meantime.  On the next retry, xas_create_range() can
+> then succeed without consuming the spare node stored in xas->xa_alloc.  If
+> the function returns without freeing this spare node, it leaks.
+>
+> xas_create_range() calls xas_create() multiple times in a loop for
+> different index ranges.  A spare node that isn't needed for one range
+> iteration might be needed for the next, so we cannot free it after each
+> xas_create() call.  We can only safely free it after xas_create_range()
+> completes.
+>
+> Fix this by calling xas_destroy() at the end of xas_create_range() to free
+> any unused spare node.  This makes the API safer by default and prevents
+> callers from needing to remember cleanup.
+>
+> This fixes a memory leak in mm/khugepaged.c and potentially other callers
+> that use xas_nomem() with xas_create_range().
+>
+> Link: https://lore.kernel.org/20251204142625.1763372-1-shardul.b@mpiricso=
+ftware.com
+> Link: https://syzkaller.appspot.com/bug?id=3Da274d65fc733448ed518ad15481e=
+d575669dd98c
+> Link: https://lore.kernel.org/all/20251201074540.3576327-1-shardul.b@mpir=
+icsoftware.com/ ("v3")
+> Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
+> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Reviewed-by: David Hildenbrand (ARM) <david@kernel.org>
+> Tested-by: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: <janak@mpiricsoftware.com>
+> Cc: Jinjiang Tu <tujinjiang@huawei.com>
 
-Please, no!
+[Severity: Low]
+Is the Fixes tag pointing to the right commit?
 
-https://www.google.com/search?q=why+does+Andrew+Morton+prefer+static+inlines+over+macros
+cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow") only mo=
+ved
+__SetPageLocked(hpage) before the xas_create_range() loop and changed the
+!xas_nomem() failure target from out to rollback, where xas.xa_alloc is
+already NULL.
 
-lots of good stuff there ;)
+xas_create_range() was introduced without xas_destroy() in 2264f5132fe4
+("xarray: Add xas_create_range"), and the retry loop in collapse_file() that
+breaks out on !xas_error(&xas) without freeing xas.xa_alloc dates back to
+77da9389b9d5 ("mm: Convert collapse_shmem to XArray").
 
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/2dfabfd9476542e39c7=
+d5473a6597208.0@linux-foundation.org?part=3D1
 
