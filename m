@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E166606A334
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 18:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505C0606A329
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 18:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MVghdw1b
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cS47NPSf
 Received: by kanga.kvack.org (Postfix)
-	id 3A8856B05B6; Mon, 16 Nov 2026 13:30:05 -0500 (EST)
+	id 110A46B05BA; Mon, 16 Nov 2026 13:30:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37FEF6B05B9; Mon, 16 Nov 2026 13:30:05 -0500 (EST)
+	id 0E8F46B05BB; Mon, 16 Nov 2026 13:30:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BD556B05BA; Mon, 16 Nov 2026 13:30:05 -0500 (EST)
+	id 025476B05BC; Mon, 16 Nov 2026 13:30:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 121996B05B6
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:30:05 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C08E2C025C
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:30:03 +0000 (UTC)
-X-FDA: 85441821486.05.852AFF7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EF3FC14000B
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:30:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MVghdw1b;
+	by kanga.kvack.org (Postfix) with ESMTP id D32816B05BA
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:30:13 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60702C024D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:30:13 +0000 (UTC)
+X-FDA: 85441821906.27.3E37BFC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8A70014000F
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:30:11 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cS47NPSf;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MVghdw1b;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794853802;
-	b=udPUCAf/quJPJgiYtSLZM0/j7tNMTikKAyg9o1WF8tc424lAkM4HAHSnvj+BBZd/zdyy8l
-	efXEZLufmjkIxmbLd2zkLEHRMqebK3LGzGoT5/v9lYdWLgb/jaTW8B/We/P0XEwhr0bMgF
-	ji+Hw1NhOWURIOpYbAa+zW+gJqCJljg=
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794853802;
+	s=arc-20220608; t=1794853811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QvDJKGzSv+kEo6DEGZGlP63nUWVKpmSYnaml8ai5PMU=;
-	b=3XCYipbVWWqWkwdF7oTFTREXohovrn6S1suM5bbiwvDL7uXmCpdD2Ubbe5ENbHrZyLGVj6
-	t5bceHhA4UvD0ByKY87+oA0Ghla3Fpjx4ArnPFc6nfaV5ZwguxtVC6f38Iqcj6z0WRnUqg
-	CKF2Czv2U+6adTLQGH2quHkYwHcqKn4=
+	bh=2bxc7Y1o0IJUNu9aa9tdWaFfEPqOd6AjiRxCSLgH+Bo=;
+	b=riC3wiWm1Zpb+ZR9L/zVwQd+IJjia+sd2T5Mur06754VvbmUhrXcZY9gDBv9nStQgacqPd
+	v0UP5OSnMkB0z6z7yBc0b1Wf0aq4uqNxRAiwvjtfN2DEG2CsFTP2P80lvsPsZyu+o581aB
+	36H1JM07vE50gJWuoHm2u3BSuF/o5DA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cS47NPSf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794853811;
+	b=lJqslZgWS1c/sPl6pv/I9LrGlN3VbN2PTvE/MaoDeR/ILnpCne/VpLkjIMEGQfT0ZSNCNv
+	LT+J9rjlnDanU8AlqiiqByXEemBLFQZZdItsAOdpkokgNLve914b01DQa20bAnMe29ttz1
+	WXf685Q9Lz6unporUO5pzUQC0BCxzAE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3698B4060B;
+	by tor.source.kernel.org (Postfix) with ESMTP id 22FBD61EE2;
+	Mon, 16 Nov 2026 18:30:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACA51F000C4;
 	Mon, 16 Nov 2026 18:30:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD43F1F000C4;
-	Mon, 16 Nov 2026 18:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794853801;
-	bh=QvDJKGzSv+kEo6DEGZGlP63nUWVKpmSYnaml8ai5PMU=;
+	s=k20260515; t=1794853810;
+	bh=2bxc7Y1o0IJUNu9aa9tdWaFfEPqOd6AjiRxCSLgH+Bo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=MVghdw1bb5iVAEe0Y7asR8AvaEXIsJlTi4w1KL+/JJw1mfwRUospv8ANEfvFlzWxA
-	 mEU2xGXDXZDfpFWf7+WrdKg1IRfbMPUtafZgFtnJLaiSugcOglYeBBNNoM4st9ioru
-	 K9FOBte25cl2QUh4dOaV6nBuCt4oFNYluKRT5YdvGcWpxveFWxDuko389MlODaiVBi
-	 3sUnehV/Zn15VkWRZ82iz44K8b7a8UDJQHVHs0DfF53iVEqJqLdTdLrz1fZHXfF4U2
-	 06fr1GrIl0t+raEYtlXTLDSYgrdB2eWVsS6UUNIf7q7P5xSokMucIpcnNIL94LjR3p
-	 A7GZLrlJGlx1g==
+	b=cS47NPSf1gAw5oMwK36MhxFKNNMf0Zf5rdwGjatdYMRI4cfCx+8fa3l77UfCcKdE6
+	 ApXuBPsF8x9XYTR/ZlwZ4qpaoFpf+aV1r+5qlHrnb89jyTZH9sHwrfZjRRjZuozltj
+	 CHVv5vqW8n6bo6vNBMk/4+8d+4rgu+UUvXcRA1zxUVMiBUl0XFXlqRZBukIl9HsYqq
+	 MCJu/2N4PS8/dwGA8fnkL0laB4ZETSk3FlO6nrmpjDXkl23Eeh0hJ6aKZGKhfabLPD
+	 yDcKtQ13hEGwYOaNmU7XyaE1+Wkj2dK73LJl17F+ExoV7wJ5jiCSoNA77M89afE6fC
+	 8M6yv/UgoCSpw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 16 Nov 2026 19:29:23 +0100
-Subject: [PATCH v2 02/15] mm/hugetlb: compare against persistent count when
- freeing lowmem folios
+Date: Mon, 16 Nov 2026 19:29:24 +0100
+Subject: [PATCH v2 03/15] mm/hugetlb: preserve reservations when shrinking
+ on HIGHMEM
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-fixes_hugetlb-v2-2-4dd9e94ea9ac@kernel.org>
+Message-Id: <20261116-fixes_hugetlb-v2-3-4dd9e94ea9ac@kernel.org>
 References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
 In-Reply-To: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -96,28 +96,28 @@ To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, stable@kernel.org
+ "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1998; i=david@kernel.org;
- h=from:subject:message-id; bh=U2I3f0NptKRK+FQV1BsF9XE/Zx46VPb3vBH3cA0Buow=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJ+e3dM6dXZ+XB2/LTrrV/frX1Rft9+kthBZl/HxxdjT
- qUcCyoy7ShlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAiy74yMkwu6kgQ7Xpqwvl3
- 9plFzGff7tL4c0Hh9Mpky1R999KLcpyMDK+3qaSKn9zxzUhcXe5oYnGqmbTg2RPXKwWv/PPvjDf
- W5AEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2610; i=david@kernel.org;
+ h=from:subject:message-id; bh=LLOzrq96DN9yt2OFJ2ZyOmBcDl7+i0ip7px3+VJMlgc=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJ+e3f4i3Qb/bjD9n9Fy+ekbrGTTP7VWhvCBK6qPEgw5
+ Ho23/lnRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABPxMWf4n2f6IXbVt8MXIn7n
+ Bq2aufvR3oecydOeaAWKHbnvuu3A2XOMDMtTl2svmu14P6O1SHj1rnWHDlapSO/wWFb6uNLPQMX
+ yLQMA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: zye5s571nboha6tx6osorybxpqkfn6u3
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8A70014000F
+X-Stat-Signature: fg4gjnn5n59he4jcmg8j4sfgnwqez835
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EF3FC14000B
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1794853801-641835
-X-HE-Meta: U2FsdGVkX18035CEaY5j3NiJMXC52QJl6AKmp+Rj4YHO37dtCp1cI2G8YLmXF9AYlKuQOBC1UO/OwZ0Pe+nZ7OIqsK2LT2ik9UMTzE85L0ZP++GsMtVmMmTcNDsaSfmviM7xfZ7x1px//EGQ6c6pXsBmKLeQME2bP2wNodKO2rAfQNc54yX5XjQdXYm2hlxQzTOT12FwUjtfC88IW98KfiZVnydxXJUStRGkiNhErhn3FR2bO6N2px6L4ctaWQa2oeo3DPuRNMt/i2ZhW5nNXwXJq175JghnpS11SPOLplNpiM/nsW6+Zzq0oJnjV0bMke4Px/LQl4WNrlerXS/ivahWUroDCbIm/yfPOUMYILiMGyPmXgiVqvisDiYy8Z4nxuhOzi04CuWCsmdM6sJaNeIHGv9ZYrHig7DIm8MsKV5KP0zGS1cekrBKd6U8FNlHloVuAiWNwR85hJuEBsZH/oYw/0E11B1C0PmSTsWBfBlMX4uhA/jtEABrEAWaXes/vtNYbxtaAsv5gUonYRTkSYd1B4l8sa522BLX5d+hiXb1UYAG+Btve7VSEvGm781mEHGuphR/jewIfyybKFcUvPqV95EfpboeyzrV3R3RQESVp7YFd8KaGyS06klptle9mRu72QsX7Fon2U5ambxdLxdSf3cfL4eSRemmaEnthtn6OCn1Sk2MIE0fxpMyedyw2CtaP4M5qoavSyjhfqdzPO4W5aUpOOgzPk+c2WAvCjr/5DLTSrKtuGPl+Xm1fTVBtxjqCaCdEjf1ptCpLCEb2xw9mv43y0ro6py79TU9qk4xdWoC6xX0f1x2oesFr9lJTuNwrcQ7d6CY22nrY9NS2s9/7Qsp3dXIpBal9mZYQVSEClwB8a6HiIVHK9VnWMWSkq4aCPJJcjBFNYYoo4tQdlbSKi8/YSL+OdYAzFBHhTqiczfO01OmQS7pjpF7GzxmuhKR9uEmn0wTVrCxkI8
- a0F6nBkl
- 1vRbPNg3DkE/Vunt3aFgtyvWXb06X4BeAkuuCeWEND4pXHEfjPAFAVuDjdwqo0pUWfCl5/KT/F07l/eAxzsb1zY9JtkfS2EQJXNbffo2M1rVNf0+Ag+0zVDcYEAxggJOcicqOEWw92daCHR2NWGDgmUIgy0yeVlbdY9RnbRdwbadd0hq2UkBhrO1cuKaIVvjfb4brv2VYSdtf369b6GOXXYxu0YtcuQidInX2dXiqyh9FSMSmBXr7716f7FBbUM8C17r43BQ0nR67ZRKrwk/yh5GjwxMwka+Mtjdo47J9UJauAZ+V25zfIRT9lcovsmxP7i5n
+X-HE-Tag: 1794853811-392095
+X-HE-Meta: U2FsdGVkX1/sn2pgpxuDvyLTeMDb58C0IAeYUTik7rhlt7Qp0yC8vMm+L/J/NQsbeo9SaT4ZwBALGpnhMXVp0LjjQjuEL0CnvYG1bgwlBvsbsPCgQmhvrfErRmTGZxZhWAjg9RMjz5zNAdaSxMrrmpHOxoQoarqtG/pru4c9U677SAludeHS6wWEXgofDRny27JfKwcMrNaSdLC0O9LLIrJ23vdKfsIwZ2JiDctFq+IskaW2RcTZJ6lzbXFo1t447L73V4AQ1zAwgmWDQ5phb/7KtIxGlixbLfhiEdH0ETDnXSJIXG6HWkSZqVbnEgo795pMQqF5ij8xCxMFT48GfNp6RqFoRO6vLjofXe0unvu5F9HJKuZrj5l5FrOzUZqlS8KpO4nLmo3g4ffShLtkIiAEjAhELOiJKjFaPsCGxG2mlGckLMyWH2RlnnXv6BZtN+AVCHBMMorfcVK4dGtBybBXpqp6BZamuJAWnMCI0462gVWd8PijZlFyWQpVbk5MkHS1cKtyB9P6YR1HaItHo5h64FZJGRc9vYIZ2pDUCOIFJYhnzbATuKEq6D0vWpBUnWVz4nWRmoZeWhlMdFdaFL7n1hgCy2UEI/5EfxjYVeQo2ycDHfV37IEaO8uftTkTkSjzTeHGDU72JAfURo/AjpgnDzewJa+dA3Wa2qEYSFBRmFPRlwJSe//zijGBo6jD+Lhr6Po3wMRPmW/JXWu2UhG7qhM8m60E6jcfUoie+HnVbR6PJfrcK5zFBzGVzt0ZAXjx6yrcjMP1wgrl8xHt55Gk3Lm2PUSZsPCIcSBbyX0nwxGLC6LzDu47AKzKDMAaCtQwjU5uIZL5iiZLDAQlv676i5STotXavvUJSoPUQCoKW8LqswLt7X4RpRYHOG6WInDGC+tmKdVrECbkSMfj5HPtT/DqrBRkK7Wj3Xk8DuuOufMs3yc0CqJURpaYhkIHQz6efVJnLa0I7QWmMjU
+ I+gRDY7e
+ sJ2em07r8rneUolKJitYNvB7mB2wxRfr766umGojVOWYVds7YQmL+OilP7BybKqm95J4I4HopxcbgOeQ+phQ9+teULzNwDSggD/rSBDI/9QnS8uYcpbe7BiTM7zSmRMZUA+ExPwA9e0tAj2pKboafd0ec30RaCb7ndiFLrSEcqOD4u6MmCBFrDTCgytMC30Fo8y0vvbEVbK8nj9SRsU1Vn/d/vX5GhE5lMhvW/Q1iyVxKYShAp7lv9kh4u+6PpS8L//VRgULidV/iSLEbLpmkrxhgHdS7UN7FHwyePpcF57Asd36UhCfDAjh8T6oRXKHe3UNQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,57 +126,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-try_to_free_low() gets a target number of persistent folios, but
-compares it with "nr_huge_pages", which includes surplus folios. As a
-result, it can free lowmem folios below that target.
+try_to_free_low() drops the hugetlb_lock while freeing lowmem folios.
+set_max_huge_pages() then resumes freeing folios using the
+min_count computed before that unlock. Reservations created in between
+can consequently lose their backing.
 
-For example, with two persistent folios and one surplus folio, a target
-of two can still end up freeing one persistent folio.
+Collect lowmem folios on the caller's existing page_list instead. Keep
+the hugetlb_lock held through both selection passes, and free the combined
+list at the caller's existing unlock point.
 
-Compare against persistent_huge_pages() instead. Convert the macro to a
-helper function and place it before try_to_free_low().
+Likely not stable-worthy.
 
-Fixes: 7893d1d505d5 ("hugetlb: Try to grow hugetlb pool for MAP_PRIVATE mappings")
-Cc: stable@kernel.org
+Fixes: 1121828a0c21 ("hugetlb: call update_and_free_page without hugetlb_lock")
 Acked-by: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/hugetlb.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 630c96cd1e880..349d45b932d9b 100644
+index 349d45b932d9b..0b071bef226ac 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -1339,6 +1339,11 @@ static unsigned long available_huge_pages(struct hstate *h)
- 	return h->free_huge_pages - h->resv_huge_pages;
- }
+@@ -3712,39 +3712,31 @@ static void __init report_hugepages(void)
  
-+static unsigned long persistent_huge_pages(const struct hstate *h)
-+{
-+	return h->nr_huge_pages - h->surplus_huge_pages;
-+}
-+
- static struct folio *dequeue_hugetlb_folio(struct hstate *h, gfp_t gfp_mask,
- 					   struct mempolicy_interpreted *mpoli)
+ #ifdef CONFIG_HIGHMEM
+ static void try_to_free_low(struct hstate *h, unsigned long count,
+-						nodemask_t *nodes_allowed)
++		nodemask_t *nodes_allowed, struct list_head *page_list)
  {
-@@ -3723,7 +3728,7 @@ static void try_to_free_low(struct hstate *h, unsigned long count,
+ 	int i;
+-	LIST_HEAD(page_list);
+ 
+ 	lockdep_assert_held(&hugetlb_lock);
+ 	if (hstate_is_gigantic(h))
+ 		return;
+ 
+-	/*
+-	 * Collect pages to be freed on a list, and free after dropping lock
+-	 */
++	/* Collect lowmem pages to free after dropping the lock. */
+ 	for_each_node_mask(i, *nodes_allowed) {
  		struct folio *folio, *next;
  		struct list_head *freel = &h->hugepage_freelists[i];
  		list_for_each_entry_safe(folio, next, freel, lru) {
--			if (count >= h->nr_huge_pages)
-+			if (count >= persistent_huge_pages(h))
- 				goto out;
+ 			if (count >= persistent_huge_pages(h))
+-				goto out;
++				return;
  			if (folio_test_highmem(folio))
  				continue;
-@@ -3777,7 +3782,6 @@ static int adjust_pool_surplus(struct hstate *h, nodemask_t *nodes_allowed,
- 	return 1;
+ 			remove_hugetlb_folio(h, folio, false);
+-			list_add(&folio->lru, &page_list);
++			list_add(&folio->lru, page_list);
+ 		}
+ 	}
+-
+-out:
+-	spin_unlock_irq(&hugetlb_lock);
+-	update_and_free_pages_bulk(h, &page_list);
+-	spin_lock_irq(&hugetlb_lock);
  }
- 
--#define persistent_huge_pages(h) (h->nr_huge_pages - h->surplus_huge_pages)
- static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
- 			      nodemask_t *nodes_allowed)
+ #else
+ static inline void try_to_free_low(struct hstate *h, unsigned long count,
+-						nodemask_t *nodes_allowed)
++		nodemask_t *nodes_allowed, struct list_head *page_list)
  {
+ }
+ #endif
+@@ -3939,7 +3931,7 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
+ 	}
+ 	min_count = h->resv_huge_pages + persistent_huge_pages(h) - persistent_free_count;
+ 	min_count = max(count, min_count);
+-	try_to_free_low(h, min_count, nodes_allowed);
++	try_to_free_low(h, min_count, nodes_allowed, &page_list);
+ 
+ 	/*
+ 	 * Collect pages to be removed on list without dropping lock
 
 -- 
 2.56.1
