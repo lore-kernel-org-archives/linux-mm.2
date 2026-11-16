@@ -1,100 +1,178 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B18606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 22:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7957C606A332
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 22:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=lYmZFk3+
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=shXhWoV8
 Received: by kanga.kvack.org (Postfix)
-	id 5D1276B05B0; Mon, 16 Nov 2026 17:01:16 -0500 (EST)
+	id 84D426B00EF; Mon, 16 Nov 2026 17:08:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A7B76B05B3; Mon, 16 Nov 2026 17:01:16 -0500 (EST)
+	id 7FEE46B05B1; Mon, 16 Nov 2026 17:08:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E55B6B05B4; Mon, 16 Nov 2026 17:01:16 -0500 (EST)
+	id 6C65B6B05B2; Mon, 16 Nov 2026 17:08:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 24E9E6B05B0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:01:16 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0520801C9
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:01:15 +0000 (UTC)
-X-FDA: 85442353710.01.4E69E95
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EEACB40015
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:01:13 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="lYmZFk 3";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794866474;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C4F96B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:08:15 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9883CA0265
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:08:14 +0000 (UTC)
+X-FDA: 85442371308.20.7129C56
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011057.outbound.protection.outlook.com [52.101.52.57])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 98EBD14000D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:08:11 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=shXhWoV8;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794866891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BJQuUBoaJBHanZqDKmQDkjj57N3JJQjULxFAMds5hrE=;
-	b=CR1QnFc7qeNRvbtCABSSycwGKiza8QVZBXhsjfCZ/U1EONfixFI3a4mALinVAwdW4XFq68
-	Hgf5M/EJUFv6yWl9Q3n5nKHnioKNYZMW3AOIAbc3EEjPNcFsmkkMNBHbof3GEbf2K67sVY
-	O4lpnJ7vaqzRFVloDkq0etvoWPwPMwk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="lYmZFk 3";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794866474;
-	b=ibmdj7WzfxNlewL6NuwiVIkpoJNx23u9jhqmS3vAp7FKBoyQVORSegcvJek6PfW9FpSaiW
-	Vg8Tx4lgTZ73Sh++P0qpBVPzSyhWzoKHVlmTH0ISWgtxRnxu9eMwCX+vYAGqIxH3zrg9wZ
-	qVBqoxcLDN5CqpMlwvqdQtle9aFZWpU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=BJQuUBoaJBHanZqDKmQDkjj57N3JJQjULxFAMds5hrE=; b=lYmZFk
-	3+2yX42Q4t9r62FIFYwYD4LLTv1CHdEttkgZFvWh3RtTNraH+GiXnFzpNOkAKs0rKEPipis2BjNyR
-	H/D/s5SpvKcwqgOunMbYhw1+qwp1gmM56s6roqibaiSVi0bJ9m3Pdh9jFRwIjP0+OvgsBYqyAZkOf
-	GxGjXCPl/XZvqYJwoiRWLu+k6IyXpjtIl2FPoTzW+10bD5TNS+xQbGXukkm9VoxPv7HHIf52YCvhZ
-	/70hRkwENbfonq+rN3/dyy5kSxg9UDDK4mdGvNVRfKQ3h51GLTLDmFxukxl1AfA0LWRI0ht3zVORB
-	yFxzty/386fAf0D/sv92ujZyqRmw==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn.surriel.com)
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xT3pS-00000007LIv-2JX4;
-	Mon, 16 Nov 2026 21:01:30 +0000
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Yuan-Hao Hsu <aa9736195201@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Peter Xu <peterx@redhat.com>,
-	Rik van Riel <riel@surriel.com>
-Subject: [PATCH v5 6/8] mm/gup: return a huge page's full count from follow_page_mask()
-Date: Mon, 16 Nov 2026 16:01:25 -0500
-Message-ID: <20261116210127.3837898-7-riel@surriel.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261116210127.3837898-1-riel@surriel.com>
-References: <20261116210127.3837898-1-riel@surriel.com>
+	bh=L+sHDg2bJR50cXoNHg4HjH5e3Mflo65JEPLyXauROeM=;
+	b=6814Pwe/Vgo4VErYkzGbUU3AIqCbKEvEUHFBoOwpslO9GIq+Go8liBaQPagtmgFRtn8Q+U
+	oAsnbY60RZmtL1dDyH+nFkRpMzWK+Lv4rQWl9nmEh7D5G8JZsuKLHuJpn/uSNFccF/IhNy
+	SIFjjXDRrOImSGmPm9mSRDkGMDlBLTQ=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=shXhWoV8;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794866891;
+	b=6QV0MMrYXe46IyAat2t5bULRARpSDSnZTVH32FAXSjBMINzEEWIQ2o1JhWIEq3yA8DSURz
+	h5ihauV1Yr8APnTJyo4EvdbaD6TkiRevu2vbgM70w1KhfpxSycZ5nnuGQ62ARmFAJ4bVpQ
+	UxxnXNLk2dfc1IASfMg8btTzeYZYPsk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NStpwSWzMWsglPucUYlLbk6WCm47Ifmt2ljnI4tTkZZr0jFRMgiWoRuSiIOXT3yU3HpF/d0qamWesHnlRmvdVlH5gXhse1I4I8ZA6DyUPl3oYhncoEDpclLGKwvxgJ6+F5Hftcanb1P3L2yj4dxBP5Zj1U/2peYSFvDdMUnwaX/cr1fmSZi3rfVFHGRVN/FaPJEBANqMOfWEAkfnF6qpOonUKpz6ixGzbZZFlBoe0H4C5WHPnUbkLu98mDRzKu5JZ10yst8QlhgoBRsQ0p6Ex9LzpQz2aXtPVXZtws3Fi97vRAacPZp31WfqW38XE8JBwfDX5MrQwwaNp2+YuSS0bQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L+sHDg2bJR50cXoNHg4HjH5e3Mflo65JEPLyXauROeM=;
+ b=swpJTpZT41ahbJkWMtYRwv4y/G1tOMOyrbN8pwBCj7GxCTwhrAjvhOybgt37jN9KtdtcDUYj2OLK6yWk1pYwO3vBNfRGJz+vvNc0VW97gfxxfelBdd0sU37SoXWdnVkiHWYm1oRMNY3rcGxG+/nIhz93j22DpXG2xklRksS7eYZgulWjbBWEA1VpHximqGVVSF+AJZ0OucS40h/Q5Ke4lzBXkrpsj4+AmcWQcpbt/Jk+q30fpahayrcusXPSigYezhRfzKo6Xm77F/tcfq2IXWAe/9r7UflEYU5TG8sPqgWYzPLbLnjlvEe5/p3TkLu5pglX56ZZ1FZPCjEC5oRZ+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L+sHDg2bJR50cXoNHg4HjH5e3Mflo65JEPLyXauROeM=;
+ b=shXhWoV8A3n5xB8U6qNS+2SqlApMWGnYpcD+KEQQXYy4d50il+kHapq9ALH+5da8Lna/zoWT8evJwRcB068MCCS/7+GB6L6r45cdsO++/kyoneQnpKHSIuwga1rvNF422yyAAkVzOMtFZxUzi9sQYiMdSa/ANcY7rgzoozTRfgFgI3TOrtJmZSNa0SOqpRM6T+gispEVJhEGM9/d+RVzcSsuTlPWEWUDQElF9aUhA2F/siDE61rn7xZhZXU+vSDio0rjwTxEMarS5+92uRtBAoMQFiEgMoIs3mDi7g4MKGBwdRSrAJ62c1f4ZErVlDU/cHeqtC1JSiMVBXONhMn6vA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CY5PR12MB6298.namprd12.prod.outlook.com (2603:10b6:930:21::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
+ 2026 22:08:02 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.009; Mon, 16 Nov 2026
+ 22:08:02 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Nov 2026 17:08:01 -0500
+Message-Id: <DMWZ7IE01AWT.1G38RVHZQFF9R@nvidia.com>
+Subject: Re: [PATCH 2/3] mm/page_alloc: move the kswapd node skip check into
+ a helper
+Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ "Brendan Jackman" <brendan.jackman@linux.dev>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt"
+ <shakeel.butt@linux.dev>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>
+To: "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20261113235238.3595412-1-joshua.hahnjy@gmail.com>
+ <20261113235238.3595412-3-joshua.hahnjy@gmail.com>
+In-Reply-To: <20261113235238.3595412-3-joshua.hahnjy@gmail.com>
+X-ClientProxiedBy: BL1PR13CA0106.namprd13.prod.outlook.com
+ (2603:10b6:208:2b9::21) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY5PR12MB6298:EE_
+X-MS-Office365-Filtering-Correlation-Id: b043b15d-555b-4969-a60d-08df442e152f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|18002099003|22082099003|11063799006|4143699003|56012099006|10067099003|261026140227099003|261028144727099003|261021123027099003|261009223027099003|261021121427099003|261102123227099003|261022105027099003;
+X-Microsoft-Antispam-Message-Info:
+	MWbW4X1dfXnabIVmLd1CFhdLI4TpGgiWwAOCRA5MKziEg1dvVc6agIGd1wuFWODVKBf9NMdSiYqJgHR7AjHSI9JFmNk7Nq1sbKXB/CZ3YgwFzbuBN/FzFPVNFiTyR2gtQmVMhbdcWTWGfJJ3IzeiM2T/ACCGaHH5sJIRXCEEWChjnNLevolozHEuHprtuIX00KsCHCsOS/UG7cbvahzmNH2dqaiGoOHqO+PuXeCfwgAp9uIYR2AzfQfq0uzOejreqbmYrMiLDWIe99RerdvmVwjC50q+qSesCsbGtfJccNpp6cm7PpHnzDV8iFBSw6J0rRVVygcVUTFStcqttFxPhxTiIRYbaNFqBeb79UPvQzkJlulVfzGft73dnxjbMmo2Nzqqv98sSDQd4AAXbagTsIt5gqXdwIPXUcBpReSPOSfasH2xjVIpksscgUqzt5YdRdp7I8p8yTV287b8ZwkjM/n1+mhHB7mDylU7+maDvYu44oZt29gvbG5Msj/VpIWXr6g7BM7NVcluPmAV8VS4U3q+hngTZVdfKMLPLRgxj4dbTda9OTwx9xGFrxUWElTwWoq8OQkWjBdyWcNrU/Tp6Vj5+Ul1s8UoLmRDUoQ1Jh/Q/OcxaZqXXbFh0YChBiZwbGvF/iTt3UnQ83R33Oa1QlLzcIYDzSW/Cz6Pf5MMmGM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006)(10067099003)(261026140227099003)(261028144727099003)(261021123027099003)(261009223027099003)(261021121427099003)(261102123227099003)(261022105027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SHgrd3lWMXNMdGpFT29FZVNHbWROejRRU2JCM2t2MzZNbXlVaXN5OGpKREps?=
+ =?utf-8?B?MDNiRStQeVhLV3NMWTd2eVdJTFNZdHNibnVyK0paNHZNRnYrNnVEZWVFL0pj?=
+ =?utf-8?B?ZXJOMEhBczRXbms5Q01FZ0Zvd3JYK0NDdlhsdWxvcDBjcW54RG9CSEUxTmlv?=
+ =?utf-8?B?NEFGc2NWVWk2dGthb1djN2x6VXROR2Nrdk9YYnlvcFFXNEdyUGtKaTgxSFpa?=
+ =?utf-8?B?QzVRQUhsTVVvSC9sbENUTVNIa1VMQXo1KzZmb0pHbncxUDFFYWdSRURhenMv?=
+ =?utf-8?B?N0tOM3FtU2VodEZNL3FHZll1TURaRnRBd0NCZEVSV1ZIb3R1UGJjMEE1bGlk?=
+ =?utf-8?B?UkxvVEFsYnk0SENiMW5Vd04wc0pRWnBaZ3ZpNFBtZ3NJNHZ1dlp5WkhRNFF3?=
+ =?utf-8?B?RzRtMDB3RzY2eStXcGZzRXRFWnBrMU11UDg5TDFQQ1FzTG1oSzRLc0dOYTF0?=
+ =?utf-8?B?b1hSaFZjdUZRaGJablBrS1hEUlZtWTVRcUY1MnkzQjNpV0xwSWNlb1ZkYTRZ?=
+ =?utf-8?B?RENPM3NNQXNrMVp3WjZzQk02Slp5Rm5ZNzJmOXQ1MktRN0FISisyakxuRitr?=
+ =?utf-8?B?TmlqTE9RWlJOZ1VmOHJkaUJIa0NRRzBVUEJNcm81ODFOWm52WncxSXNxUDhL?=
+ =?utf-8?B?WDJlSCtJSVdSU2poa1dNb1YyeUNvdUNtMnpWU1F3TEJnUEhTcURnU0g3NnM5?=
+ =?utf-8?B?RlN4U1NuRy9nbVN0Q3U5MFh3a0dsbXpDVEJrLzg4eU5Qa1dzR0h5dlpJeUxH?=
+ =?utf-8?B?RzVpUDBqZmwwRENzM0dDcC9FU2ZtYlB0NWU5dG5weEh1dS9KRGNCREIzTFVv?=
+ =?utf-8?B?d296OUNSR2h2L2lFQ0VDK3hLcEZheWkxanEyYldJaGJBdzMzb0duOUtMSFVO?=
+ =?utf-8?B?Y28zQ2RKa2VYZDAyTHIwRmxIb21SaXU2TVk3VWlJWUVlaFNoRkMrVlpKR3Bi?=
+ =?utf-8?B?cmZQWE0xdTBlNUxyVGJ1dGRJOEx5SUc5R090ak9uS0E5eVRWZnZmY2JRenBn?=
+ =?utf-8?B?VVZiN1ZadUQvcjU5b0FOdGNXRDdjM1NqYXUzY3FrYWFnNko3NDF0dGpsdFU1?=
+ =?utf-8?B?UDZEOGhRL2twS3FERlVHdkFjNWZpNjNwSlB2R1lGMmRiUG9JdUxMbnlXVWJk?=
+ =?utf-8?B?cXVjTGxpMkJWS1lVWWhwa1M0U29RUzI0OStXVjl0ajU5NXJWdjNycVB3VFBw?=
+ =?utf-8?B?V0h2d0JxRkdWay8rTW1UZktULzR6ckZLR1FUR3pnWEFOaWJqMDZBZGlzcVI2?=
+ =?utf-8?B?czNpRklrN01GUHRPWnVHbmk4L1ExVnhNR0plMGpDaSt0cndlMzRoNGFEVUU5?=
+ =?utf-8?B?L1NsczNpUWN6ekM5UzdLRXk5MGpCd0xhUUdQOUtPUFlpQnh2ZUoxQ3A2M1pN?=
+ =?utf-8?B?OWJRYWtpeUk2aVd4NlJ3TkgyZXF0ZFFGbExjamFGMXNHTVBGZzlEMjB5TDFn?=
+ =?utf-8?B?QXpKOEpUM2RLSExPMDByeVA2Y01NVWRDcjNSdFdvWXZEVGJMN1g2ZkwzTlpK?=
+ =?utf-8?B?ZzcxMXVCWWNBOG9DUWRBOVdJb2NsNVlQMVAxQzBGMnBJTXd3ODlmVFkwdFlz?=
+ =?utf-8?B?K2NDUDhYdHNZM0h2K01rYWVMcTlwZ2Y2MndhRXhqQ1hZZkhFQjhYVnhrdW9j?=
+ =?utf-8?B?MXpIcTh4N3NBUlhKNjVvbndPM0g1aDN6RzIwYTl2YTZMcnd3KzFER0NmNTBT?=
+ =?utf-8?B?UUM2SVNlb1dMcXhTUE5hM3dKdit2U3ZmR2Rra1NXbXYxRzR4eUhBZEVobzFO?=
+ =?utf-8?B?Q0tsNFJicWlNV2xlMnA4TFNhZ21SRE93TU81MjdFcUt0UnlYWUFYL0ZZcVJI?=
+ =?utf-8?B?WUd0N3FYb09CeXVnZ3Z0Mmlwbmk0cVJxVFBkNUcxT2JVTURWYldwRis1d0ky?=
+ =?utf-8?B?Wm9ZcDlvZTdFaGlHSFBCWGRWeTljL3NBM3Zacys3M25YVldwOXRoMmhoTVVq?=
+ =?utf-8?B?ejR3bGRaYklLaHNjU1V1WVUzMEFYRXVXUmJ3eFFLcGxLOVFoTDlOeE9ob0xV?=
+ =?utf-8?B?MkxaTDd0RDhtK0FLd1hxZk1wYlNNUnBiaWF0UXBHMkM2SWYxaDRGZXA0ODdw?=
+ =?utf-8?B?Z0FOLzlKWW9VVk1jZEdmSkVPbDNTeHprWmdtQzJNeXhOUEJVVFAxc0ExZlJ3?=
+ =?utf-8?B?RjJVNXl5MzZadGVPRWpPN1NhSmdTdGdmV3NmVVRYdnRKV1NOd1p3VTlwREZJ?=
+ =?utf-8?B?eVZvbkV0eGUrMTBGRm8wWkVGZFJXU2dxbjlzZW1UdU9JT1B4MUdBQlhNanYr?=
+ =?utf-8?B?NjNKRmpsMHh1N2RzbE9zQzlFZklFRHJnbWxPT0ozaGdMemRmNDFGRG4yY2s5?=
+ =?utf-8?Q?7gV7tPZN3bAwo1zrE8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b043b15d-555b-4969-a60d-08df442e152f
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 22:08:02.6665
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gJWFog7buFeanKt+ujcdLGAnYV56TizsUa3eUGc6R8OPF57rDVDCheoW8OjT573Y
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6298
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EEACB40015
-X-Stat-Signature: hijx44qpea8gb944oqru3d5kt7h7k6ng
-X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794866473-428741
-X-HE-Meta: U2FsdGVkX1+DAc9Rpa8O72jXRTehuDv7Q5Cuw3CdwaZd4TYbu1tYRpjCCAny7h4Z78PnyxIkG6RS6SQ2opLGQfHtuNvWDXp1LcH1FhGu+ZGdNX+P2RgMZYuWpk4bJ0yzjbcRAN+rdm+ghzfejmVFcxMW/z5kgkmfgsSFOCIq73CcqO7i7d2tfwIEthdr9eXWfrgESeubJriy+UOCW11vUJCkWLjUT9x1jYXAygRYt01jrDAWSG7djIu5I8T+P14OfIYw9TPFzriSxIdCQ8XDCjMsqdp2Xx55uWalCbTYBNfkj8BM9cHQDUzU76IJCQPvVOAd3EHYULaT/xpF5xruqMbFH0LLLTeEzdwX9fXbrc20m15A2w4xn6xuzuO+h4fnrgnn6Jb86zT6TTJr4F0G2fNVNAgsGgLiP2tpBTXq0j7AKIFP07Z5m/Fxv3dQSF0pkyZXhycmDgYowD+w0ut2IKxH71sUR4vHbm3a2g2/OfUo4SzAEijp636lJiE1mIAqEGDTbb8R47eMK4FyHOCy+dczDA5yM7ROtHs7suepzEu720LfEc4IxSEEvVlFlP6SmKldOj81BLQCdCX4ExNT8SeLBK+GABsEYjmbsoJ4ye4AOM6hP3LfkkdoSN0VW4+3KjeEdhc5Y/s9VEOHQIIwmvopJMkIKrt70h0dDV6L0WTVa+WGR8jGnaGs7rh/gpjsTL0Lnfl+UPQWdHQ7yDZ6pF3G3Tui/u6nzknSPdCqNmyeYetuLdrL+cNMWxYhxq2Wzr2BxjbazfYD1gTl00fsF83A5Bt02Va2T4kY9ymIUKBd9ULa+cJbisTlIITq311N2lvgQATxIgu7nxPWy/KJYwk+PFjjYtXQiOfnzXyjfgtvXa/QpFhXJneyDtISHd3FhC5hZjJRFZWMfQfIVahPCwI8+Oat5vvJFDnzo4qzeACdSfUx+TW93m/1ncylIUEYhQDBkyYFTVLCfJzAUU9
- c1SyXv8n
- IxCGZnOxE4JYLjRHP8hQh6SoL/KrnI3fJkKIYwBchz88x8A6kPJgashXkYWE2V5o/IkllOzAJI2OQ2PHFvhZyLb99WfTDNmkZzPIgUCqM4dmfvBULwBn3CGMtcXpVkunrXcJw3QNhQTDe7/SEc7pCzcGpcjKqUf+R3qywmEAYVl4ajUbCbHaAfV5NrosJehz5SSPnhcJ4YXqVHBYlVspkyFwBKRijnV/Ab47cqdUeGLdRdaYGOUCf2/V1J2lMowm125qaoOz6tyiMbFRYlriDxgswHbKm4GcOkxeDieAuP+ci772OcjMl1YARLYvqJRIKAA547mtPoqizq378Ud8GdQzbuTkPvIPlr+GTotKMBZWGqiKt5JS/E0LXbfIpxNYP5Em5cjo6dEoaT8I=
+X-Rspamd-Queue-Id: 98EBD14000D
+X-Stat-Signature: 71hbd6no8ihbm8zxa54cofzb91by3ti1
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794866891-248277
+X-HE-Meta: U2FsdGVkX1+XR5KnXe8/HciljwejWvzt6s+Lg1/gwbrEyvZJyvr5dG8pxR8yVZ+UcKfbq9yTKtUWJJB3vGFDjGmQ7f6oidBhHzLhVE+KC8mfNAXXxVI7BSYDibCYWjduBi1CzIJoBp01v2jHeFDnd+hchkyOB1R6bdgyJyPe5POjXNoKGacIx8aQm0S6dzR82Ovnh0NbgueyXFcL9FaEElMuyo3ZbOQQgqOMPgcDDE4dIXQ8h734sIgW7AaRs1KBoJsE5Qqkwc23+Rm/GkzPgyqItWMeI98Kc0QnFPn9BmUOk5zg3Ek34rB5iALHKasaQu1XYF/PK5vvYWtDs5Hm86cAN945DXb86ZJC9s6oovss623/Lmld8/MFa5iLFqm3Kcos0sIZOMUVAXUztopB94ZRJqZ0ZXrIZNt8J/R+vcdVxRBauqO5HUUKLhNHnbh6UT1IxoHAMoak9O23V/mDXFm9dI26Rw7Uydjk3iR9uUPWPPKdgRJi3CmNsUTvPLM8O2CBFOvpkOzXPTFlAK+TygXUKqCBqfqnXnedFtX29yNzFqmzv5khtrs2//MudUnZyBhr99QLw8ywyxwfiIkXwY2YJR/byNPaiiglUZ1Gex5uZWnGscfGk7DThGgLl7kmV5F9W8jt5j6gV7oYM+vmY1Io4/8BKdgOsFdSbjwGbD5jmVh3WOY1Kn0u2DljEt3HwLCAJ1Pq4Fb6twU+cgW8BUtBdKbLpniLh4Qc/xpvzGSxE7wFLZAtMKjSN8NwI3NebCfO/K723Ha7fjBIi8WXYoJIm30zyJBOyIrycGhCSBmS92b6NkASBd/0fJ7P1RzN/2AIvSX2MYStOUreE7iB4CbOMbNhE1bEw9CUv4xcfNeWYd+76YLiCrZwv2jOaA/xm8dnMEaMOVt2T216I6+lsUHvaEPiy+qWCfkYOGuUwErTnIYcoGftVHf05WU4ToWQKjmfruphYPTS7cenwhV
+ gQYWNaay
+ 2rUVwihoYWNREfNCZRj/MMMLNvZHetHsOfxD7Kw2YKh1Wav43SnWB1ahDXqVe/aUcrejubL8uhUu5yh40ZT7qDyyd66UIx3aVNiZosY5gawAS3mDwy26xjJTBsQGbAsQz9CMKVzj8fi0G2Jv6OZV7zu/OA0lGXnih26Y5xZys1f7QWTuVhPH5pNpYe0LNKMAP/fbcdHxbQP06cIpPe9hOsU6hC4brbvzD2c7HYGy+wZwVDxHeEjYp8R5Ufk+G1bQoNxW9YxqMRH+nUl7STZ1YxsfFYG/BQpMQmObJ5xCDrd4pndS+tTmfQYZZVG2uoEGL8XQIthFFb00MNX1nzdj7R8EEGu4jVqcwS+tXNf/L2BwOQGpnqb7tVnccFc90VtnKmWGTds2TCVmJmUGsrkK0aeCMT3j9Z7G3z1trJ8VidZ4cQlx9EjG14MrR3FGhyYEYYS8FCqgv/JPhu/Fd928wx37+zHykhpJWn7cw8QlXER8URxLw8z2K+j6yPVDyedWkExjGMjRz61BIIuoF8wjSbe5N16RUZisaOgBj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,384 +181,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-follow_huge_pud()/follow_huge_pmd() already know the huge page's full
-size but report it via a separate *page_mask output; __get_user_pages()
-does a second try_grab_folio() call and subpage loop for everything
-past the first page.
+On Fri Nov 13, 2026 at 6:52 PM EST, Joshua Hahn wrote:
+> get_page_from_freelist() checks many conditions for each zone, often
+> with a big comment block explaining the conditions.
+>
+> Move the kswapd check and its comment into should_skip_kswapd_zone() to
+> make the zone iteration cleaner to read.
+>
+> While moving this, also resolve a checkpatch warning which complains of
+> a waitqueue_active() call with no corresponding comment explaining why
+> the lockless use is OK in this case.
+>
+> No functional change intended.
+>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  mm/page_alloc.c | 44 ++++++++++++++++++++++++++------------------
+>  1 file changed, 26 insertions(+), 18 deletions(-)
+>
 
-Have the huge paths report their count as the return value instead,
-clamped to the huge page's size and @end. The merged grab returns
-whatever error try_grab_folio() gives, instead of forcing -EFAULT on the
-second call's failure.
+Makes sense.
 
-*page_mask and __get_user_pages()'s second-grab/subpage loop are now
-dead; remove them. The old silent page_increm clamp becomes a
-VM_WARN_ON_ONCE, since @end already bounds the count and refs/pages[]
-are already committed by the time the caller sees it -- truncating here
-would leak references, not just waste a comparison.
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-follow_page_pte() is unaffected, still returning at most 1 page.
-
-The -EEXIST path needs an explicit nr = 1 when pages == NULL: it used to
-get that from page_mask staying 0 for a PFN-special PTE, but nr holds
--EEXIST there, which would grow nr_pages instead of shrinking it.
-
-mm/gup_test.c (PIN_LONGTERM_BENCHMARK) shows no measurable change; the
-lock-hold-time improvement is by inspection, not measurement.
-
-Suggested-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Rik van Riel <riel@surriel.com>
----
- mm/gup.c | 153 +++++++++++++++++++++----------------------------------
- 1 file changed, 58 insertions(+), 95 deletions(-)
-
-diff --git a/mm/gup.c b/mm/gup.c
-index 3aed0bc1c2b4..691d83cb702b 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -761,15 +761,15 @@ static inline bool can_follow_write_pud(pud_t pud, struct page *page,
- }
- 
- static long follow_huge_pud(struct vm_area_struct *vma,
--		unsigned long addr, pud_t *pudp,
--		unsigned int flags, unsigned long *page_mask,
--		struct page **pages)
-+		unsigned long addr, unsigned long end, pud_t *pudp,
-+		unsigned int flags, struct page **pages)
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 	struct page *page;
- 	struct folio *folio;
- 	pud_t pud = *pudp;
- 	unsigned long pfn = pud_pfn(pud);
-+	unsigned long off, nr;
- 	int ret;
- 
- 	assert_spin_locked(pud_lockptr(mm, pudp));
-@@ -778,22 +778,22 @@ static long follow_huge_pud(struct vm_area_struct *vma,
- 	    !can_follow_write_pud(pud, pfn_to_page(pfn), vma, flags))
- 		return 0;
- 
--	pfn += (addr & ~PUD_MASK) >> PAGE_SHIFT;
-+	off = PFN_DOWN(addr & ~PUD_MASK);
-+	pfn += off;
- 	page = pfn_to_page(pfn);
- 	folio = page_folio(page);
- 
- 	if (!pud_write(pud) && gup_must_unshare(vma, flags, folio, page))
- 		return -EMLINK;
- 
--	ret = try_grab_folio(folio, 1, flags);
-+	nr = min(HPAGE_PUD_NR - off, PFN_DOWN(end - addr));
-+
-+	ret = try_grab_folio(folio, nr, flags);
- 	if (ret)
- 		return ret;
- 
--	*page_mask = HPAGE_PUD_NR - 1;
--
- 	gup_fill_pages(pages, page, 1);
--
--	return 1;
-+	return nr;
- }
- 
- /* FOLL_FORCE can write to even unwritable PMDs in COW mappings. */
-@@ -815,14 +815,14 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
- }
- 
- static long follow_huge_pmd(struct vm_area_struct *vma,
--		unsigned long addr, pmd_t *pmd,
--		unsigned int flags, unsigned long *page_mask,
--		struct page **pages)
-+		unsigned long addr, unsigned long end, pmd_t *pmd,
-+		unsigned int flags, struct page **pages)
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 	pmd_t pmdval = *pmd;
- 	struct page *page;
- 	struct folio *folio;
-+	unsigned long off, nr;
- 	int ret;
- 
- 	assert_spin_locked(pmd_lockptr(mm, pmd));
-@@ -847,7 +847,10 @@ static long follow_huge_pmd(struct vm_area_struct *vma,
- 	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
- 			     !PageAnonExclusive(page), page);
- 
--	ret = try_grab_folio(folio, 1, flags);
-+	off = PFN_DOWN(addr & ~HPAGE_PMD_MASK);
-+	nr = min(HPAGE_PMD_NR - off, PFN_DOWN(end - addr));
-+
-+	ret = try_grab_folio(folio, nr, flags);
- 	if (ret)
- 		return ret;
- 
-@@ -856,27 +859,24 @@ static long follow_huge_pmd(struct vm_area_struct *vma,
- 		touch_pmd(vma, addr, pmd, flags & FOLL_WRITE);
- #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
- 
--	page += (addr & ~HPAGE_PMD_MASK) >> PAGE_SHIFT;
--	*page_mask = HPAGE_PMD_NR - 1;
-+	page += off;
- 
- 	gup_fill_pages(pages, page, 1);
- 
--	return 1;
-+	return nr;
- }
- 
- #else  /* CONFIG_PGTABLE_HAS_HUGE_LEAVES */
- static long follow_huge_pud(struct vm_area_struct *vma,
--		unsigned long addr, pud_t *pudp,
--		unsigned int flags, unsigned long *page_mask,
--		struct page **pages)
-+		unsigned long addr, unsigned long end, pud_t *pudp,
-+		unsigned int flags, struct page **pages)
- {
- 	return 0;
- }
- 
- static long follow_huge_pmd(struct vm_area_struct *vma,
--		unsigned long addr, pmd_t *pmd,
--		unsigned int flags, unsigned long *page_mask,
--		struct page **pages)
-+		unsigned long addr, unsigned long end, pmd_t *pmd,
-+		unsigned int flags, struct page **pages)
- {
- 	return 0;
- }
-@@ -1048,9 +1048,8 @@ static long follow_page_pte(struct vm_area_struct *vma,
- }
- 
- static long follow_pmd_mask(struct vm_area_struct *vma,
--		unsigned long address, pud_t *pudp, pud_t pud,
--		unsigned int flags, unsigned long *page_mask,
--		struct page **pages)
-+		unsigned long address, unsigned long end, pud_t *pudp, pud_t pud,
-+		unsigned int flags, struct page **pages)
- {
- 	pmd_t *pmd, pmdval;
- 	spinlock_t *ptl;
-@@ -1089,15 +1088,14 @@ static long follow_pmd_mask(struct vm_area_struct *vma,
- 		return pte_alloc(mm, pmd) ? -ENOMEM :
- 			follow_page_pte(vma, address, pmd, flags, pages);
- 	}
--	ret = follow_huge_pmd(vma, address, pmd, flags, page_mask, pages);
-+	ret = follow_huge_pmd(vma, address, end, pmd, flags, pages);
- 	spin_unlock(ptl);
- 	return ret;
- }
- 
- static long follow_pud_mask(struct vm_area_struct *vma,
--		unsigned long address, p4d_t *p4dp,
--		unsigned int flags, unsigned long *page_mask,
--		struct page **pages)
-+		unsigned long address, unsigned long end, p4d_t *p4dp,
-+		unsigned int flags, struct page **pages)
- {
- 	pud_t *pudp, pud;
- 	spinlock_t *ptl;
-@@ -1109,8 +1107,7 @@ static long follow_pud_mask(struct vm_area_struct *vma,
- 	if (!pud_present(pud))
- 		return no_page_table(vma, flags, address);
- 	if (!pud_leaf(pud))
--		return follow_pmd_mask(vma, address, pudp, pud, flags, page_mask,
--				       pages);
-+		return follow_pmd_mask(vma, address, end, pudp, pud, flags, pages);
- 
- 	ptl = pud_lock(mm, pudp);
- 	pud = *pudp;
-@@ -1120,19 +1117,17 @@ static long follow_pud_mask(struct vm_area_struct *vma,
- 	}
- 	if (unlikely(!pud_leaf(pud))) {
- 		spin_unlock(ptl);
--		return follow_pmd_mask(vma, address, pudp, pud, flags, page_mask,
--				       pages);
-+		return follow_pmd_mask(vma, address, end, pudp, pud, flags, pages);
- 	}
- 
--	ret = follow_huge_pud(vma, address, pudp, flags, page_mask, pages);
-+	ret = follow_huge_pud(vma, address, end, pudp, flags, pages);
- 	spin_unlock(ptl);
- 	return ret;
- }
- 
- static long follow_p4d_mask(struct vm_area_struct *vma,
--		unsigned long address, pgd_t *pgdp,
--		unsigned int flags, unsigned long *page_mask,
--		struct page **pages)
-+		unsigned long address, unsigned long end, pgd_t *pgdp,
-+		unsigned int flags, struct page **pages)
- {
- 	p4d_t *p4dp, p4d;
- 
-@@ -1143,18 +1138,18 @@ static long follow_p4d_mask(struct vm_area_struct *vma,
- 	if (!p4d_present(p4d) || p4d_bad(p4d))
- 		return no_page_table(vma, flags, address);
- 
--	return follow_pud_mask(vma, address, p4dp, flags, page_mask, pages);
-+	return follow_pud_mask(vma, address, end, p4dp, flags, pages);
- }
- 
- /**
-- * follow_page_mask - look up a page descriptor from a user-virtual address
-+ * follow_page_mask - look up pages at a user-virtual address
-  * @vma: vm_area_struct mapping @address
-  * @address: virtual address to look up
-+ * @end: virtual address at which to stop batching contiguous pages
-  * @flags: flags modifying lookup behaviour
-- * @page_mask: a pointer to output page_mask
-- * @pages: array to receive the page found, refcounted per @flags, or NULL
-- *         to walk the page tables (e.g. to fault pages in) without
-- *         collecting or refcounting them
-+ * @pages: array to receive the pages, refcounted per @flags, or NULL to
-+ *         walk the page tables (e.g. to fault pages in) without collecting
-+ *         or refcounting them
-  *
-  * @flags can have FOLL_ flags set, defined in <linux/mm.h>
-  *
-@@ -1163,15 +1158,15 @@ static long follow_p4d_mask(struct vm_area_struct *vma,
-  * trigger a fault with FAULT_FLAG_UNSHARE set. Note that unsharing is only
-  * relevant with FOLL_PIN and !FOLL_WRITE.
-  *
-- * On output, @page_mask is set according to the size of the page.
-- *
-- * Return: 1 with @pages[0] filled in if a page was found, 0 if no mapping
-- * exists at @address, or a negative errno for a mapping to something not
-- * represented by a page descriptor (see also vm_normal_page()).
-+ * Return: the number of contiguous pages starting at @address that were
-+ * placed into @pages (if non-NULL), which may be fewer than the pages
-+ * requested via @end; 0 if no mapping exists at @address; or a negative
-+ * errno for a mapping to something not represented by a page descriptor
-+ * (see also vm_normal_page()).
-  */
- static long follow_page_mask(struct vm_area_struct *vma,
--		unsigned long address, unsigned int flags,
--		unsigned long *page_mask, struct page **pages)
-+		unsigned long address, unsigned long end,
-+		unsigned int flags, struct page **pages)
- {
- 	pgd_t *pgd;
- 	struct mm_struct *mm = vma->vm_mm;
-@@ -1179,13 +1174,12 @@ static long follow_page_mask(struct vm_area_struct *vma,
- 
- 	vma_pgtable_walk_begin(vma);
- 
--	*page_mask = 0;
- 	pgd = pgd_offset(mm, address);
- 
- 	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
- 		ret = no_page_table(vma, flags, address);
- 	else
--		ret = follow_p4d_mask(vma, address, pgd, flags, page_mask, pages);
-+		ret = follow_p4d_mask(vma, address, end, pgd, flags, pages);
- 
- 	vma_pgtable_walk_end(vma);
- 
-@@ -1523,7 +1517,6 @@ static long __get_user_pages(struct mm_struct *mm,
- {
- 	long ret = 0, i = 0;
- 	struct vm_area_struct *vma = NULL;
--	unsigned long page_mask = 0;
- 
- 	if (!nr_pages)
- 		return 0;
-@@ -1538,7 +1531,6 @@ static long __get_user_pages(struct mm_struct *mm,
- 
- 	do {
- 		struct page *page;
--		unsigned int page_increm;
- 		long nr;
- 
- 		/* first iteration or cross vma bound */
-@@ -1591,8 +1583,8 @@ static long __get_user_pages(struct mm_struct *mm,
- 		}
- 		cond_resched();
- 
--		nr = follow_page_mask(vma, start, gup_flags, &page_mask,
--				      pages ? &pages[i] : NULL);
-+		nr = follow_page_mask(vma, start, start + nr_pages * PAGE_SIZE,
-+				      gup_flags, pages ? &pages[i] : NULL);
- 		if (!nr || nr == -EMLINK) {
- 			ret = faultin_page(vma, start, gup_flags,
- 					   nr == -EMLINK, locked);
-@@ -1614,50 +1606,21 @@ static long __get_user_pages(struct mm_struct *mm,
- 			 * Proper page table entry exists, but no corresponding
- 			 * struct page. If the caller expects **pages to be
- 			 * filled in, bail out now, because that can't be done
--			 * for this page.
-+			 * for this page. Otherwise advance by the one page
-+			 * follow_page_mask() looked at.
- 			 */
- 			if (pages) {
- 				ret = nr;
- 				goto out;
- 			}
-+			nr = 1;
- 		} else if (nr < 0) {
- 			ret = nr;
- 			goto out;
- 		}
- 
--		page_increm = 1 + (~(start >> PAGE_SHIFT) & page_mask);
--		if (page_increm > nr_pages)
--			page_increm = nr_pages;
--
--		/*
--		 * This must be a large folio (and doesn't need to
--		 * be the whole folio; it can be part of it), do
--		 * the refcount work for all the subpages too.
--		 *
--		 * NOTE: here the page may not be the head page
--		 * e.g. when start addr is not thp-size aligned.
--		 * try_grab_folio() should have taken care of tail
--		 * pages.
--		 */
--		if (pages && page_increm > 1) {
--			struct folio *folio = page_folio(pages[i]);
--
--			/*
--			 * Since we already hold refcount on the
--			 * large folio, this should never fail.
--			 */
--			if (try_grab_folio(folio, page_increm - 1,
--					   gup_flags)) {
--				/*
--				 * Release the 1st page ref if the
--				 * folio is problematic, fail hard.
--				 */
--				gup_put_folio(folio, 1, gup_flags);
--				ret = -EFAULT;
--				goto out;
--			}
--
--		}
-+		/* Check that we didn't pin more pages than the caller will free. */
-+		VM_WARN_ON_ONCE(nr > nr_pages);
- 
- 	fill_flush:
- 		/*
-@@ -1666,13 +1629,13 @@ static long __get_user_pages(struct mm_struct *mm,
- 		 * the caches without any page table lock held.
- 		 */
- 		if (pages) {
--			gup_fill_pages(pages + i, pages[i], page_increm);
--			gup_flush_pages(vma, start, pages + i, page_increm);
-+			gup_fill_pages(pages + i, pages[i], nr);
-+			gup_flush_pages(vma, start, pages + i, nr);
- 		}
- 
--		i += page_increm;
--		start += page_increm * PAGE_SIZE;
--		nr_pages -= page_increm;
-+		i += nr;
-+		start += nr * PAGE_SIZE;
-+		nr_pages -= nr;
- 	} while (nr_pages);
- out:
- 	return i ? i : ret;
--- 
-2.56.0
+--=20
+Best Regards,
+Yan, Zi
 
 
