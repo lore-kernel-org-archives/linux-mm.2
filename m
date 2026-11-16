@@ -1,144 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCDE606A882
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB23606A897
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dHwYQhfm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aeu8DGrK
 Received: by kanga.kvack.org (Postfix)
-	id 8486F6B05B6; Mon, 16 Nov 2026 10:28:35 -0500 (EST)
+	id E15EF6B05B7; Mon, 16 Nov 2026 10:28:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8202E6B05B7; Mon, 16 Nov 2026 10:28:35 -0500 (EST)
+	id DEDAC6B05B8; Mon, 16 Nov 2026 10:28:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70F426B05B8; Mon, 16 Nov 2026 10:28:35 -0500 (EST)
+	id D03FF6B05B9; Mon, 16 Nov 2026 10:28:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4912E6B05B6
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:28:35 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A62CB6B05B7
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:28:53 -0500 (EST)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CBE5B120156
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:28:34 +0000 (UTC)
-X-FDA: 85441364148.15.DB0D9ED
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8B6081C000B
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:28:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=dHwYQhfm;
-	spf=pass (imf21.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9823840154
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:28:52 +0000 (UTC)
+X-FDA: 85441364904.15.F961014
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 00EB218000E
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:28:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aeu8DGrK;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794842912;
+	s=arc-20220608; t=1794842931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xptZYPDAQTj3l9jWzdgLCCl+UiBE0vVZqBjyqpYLXog=;
-	b=L1Y0/sIQYvF7NL71tcxTEC4AHMsfp9SAhufjc/+hG7u3mYWzYnzTtul6130H/lxZA0eArO
-	dO4dYezRqjMU77nC3tNoSt5n/w2uph/uFKc5ZvvD4LRih7/ub2JEEaoi8Mv6AAu/3T2495
-	kReW2cyaxa/20rdTcabXyDffVe6mj20=
+	bh=4xAnuCAiuWX4/keedDsQNjuLhi8WyX14EAVs42DysHA=;
+	b=pxHXPAf1+K8RjrgXTBR0yw8OmUWhSuoqNoxCq44usmF3RDsbD/nrtkXSfgDJpzt68vgTLE
+	ClIP/NBSVgtvTtxyWC3iRxh4h3sDPJTWHhU7H7+JYoluorRc60Za79DOuHQm4Me0Dq400V
+	Uo2FGlndrLykVydEP9zK9luuPphxtFs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=dHwYQhfm;
-	spf=pass (imf21.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aeu8DGrK;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794842912;
-	b=R+CDHDM/ai/IZF+Eo1UgfyzCNC7SCD3aaMm2Hf08MdXHA3fsShFUiAX24plL2b0+ICB6oq
-	0gaSIwdjlALLzpnRAISHuuztDIe1IQTg6J5AHLv/VwNpwTUqxFhFEX6HgrIBcWbiqKnMIJ
-	nWGYBNvQpYPjVVeZVG11itqFGjb7aiU=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGDu11r3407802;
-	Mon, 16 Nov 2026 15:28:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=xptZYPDAQTj3l9jWzdgLCCl+UiBE0v
-	VZqBjyqpYLXog=; b=dHwYQhfmVTFZiPnd5U6ir8G8LdliLacIJ59Py+is/DiwTp
-	40VOAS63MpSKWrqctTH/+pvid1a9+E7mGtn7LPND8m5H4QClqsZXJiDp/tJ6W0Wf
-	egzdDkNYBVUJ6bOqD5fqG0Y2Fd+k4PLySueg31kMghhO9cXJWX2Ds4j2NTaHJk5+
-	fksEx20urRC/OomV8ncwtROERrdfxAKyd2EYBpyxrBNahOAnESFgFv8uMYKcJxTa
-	TcjZCOR5B/aATS3islMuHB/TIcA3ublN65nFuGSR0Ka4wwmipLMdnkh8jhVUKeJ3
-	kvOKak6Bj+c4K9GV/ERxfqdK7w3Ivfj075raEIcg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxd2kx02v-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 15:28:29 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGFC49F2972402;
-	Mon, 16 Nov 2026 15:28:28 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j00ns9a30-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 15:28:28 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGFSDWr30933298
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Nov 2026 15:28:13 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BCA6F20049;
-	Mon, 16 Nov 2026 15:28:13 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 605E820040;
-	Mon, 16 Nov 2026 15:28:13 +0000 (GMT)
-Received: from osiris (unknown [9.111.42.169])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Nov 2026 15:28:13 +0000 (GMT)
-Date: Mon, 16 Nov 2026 16:28:11 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 00/14] s390/sclp: replace page allocator calls with
- k[mz]alloc()
-Message-ID: <20261116152811.165348C35-hca@linux.ibm.com>
-References: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
+	t=1794842931;
+	b=tktA9Bk0mJA5GubIm5V7hvOKrZow+MnaaS/F6DOpUQ7G0N9LK7UdFWj99TSNE32JCBhl0f
+	NDCX/B65NTFgxEJxySk1A9hJlywOvoRBtKqtGUmAr0u6tpdrLkxBlIvluAtEHIaU4oO3jP
+	46onEtN1/pZg/flmzJwj6hNUfLTnWTk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2985A62CC4;
+	Mon, 16 Nov 2026 15:28:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A7D1F000C6;
+	Mon, 16 Nov 2026 15:28:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794842929;
+	bh=4xAnuCAiuWX4/keedDsQNjuLhi8WyX14EAVs42DysHA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aeu8DGrK7dOcH+25xyUfDQcUxpXG3VsMt7G/OtfmB+zqydYBhQRnyIUQZe9NDc8WI
+	 0/noo+Rhb1OqjXKQ/ye7foi+ZqBLS5PecEbjpgYoIx9wR3fgWGPgLrnJ72QhYx6CQ6
+	 p1h6NzlPYGEn7zp2M7o4imdmj7bdzv7+/jvTU74pcez4yQrUvdSpn8mMGx3Cv4QtLr
+	 xJYGDUmGbcrrVy0X3yQMVdvAgzx7hQTsoYvNpVk2+iMg7nnCgClNpwMnUPFlFdBLPc
+	 Y7J5GVmgiOJCdAfX7HVypUgxOTdjB5aZ6RArEcdLBM0LC0re1XbCwg9nJjBgcR0W9M
+	 PtEOMv1LfrcrQ==
+From: SJ Park <sj@kernel.org>
+To: Jason Angelov <jasonangelov@ucla.edu>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] mm/damon/tests: add KUnit coverage for age_ms filters
+Date: Mon, 16 Nov 2026 07:28:42 -0800
+Message-ID: <20261116152842.97789-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261116-test-age-ms-filter-v2-0-3b265d59ec98@ucla.edu>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=B6UsQ+tM c=1 sm=1 tr=0 ts=6afb211d cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=RFWjAfAvn5XsmgsbDIkA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: j8eG1yej94bfWv88N2-2XTDuffFF76CY
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2MSBTYWx0ZWRfX+x6vtnQgWfwA
- jwKnlBTp9JiMPvZnGVchhpLgnBHf0JgsnQFzoYRr8P35rCshGAOeJfm7gLde5GMxyEt/l8eh2U5
- V0cxdApBLJIHZK0csJF1Nf99HwqBPWk=
-X-Proofpoint-ORIG-GUID: j8eG1yej94bfWv88N2-2XTDuffFF76CY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2MSBTYWx0ZWRfX026B3Y2k4d3D
- a7KazmPylNWpybs2zmfMsiRjsNQGbGlD3AaiB6SBqYKQvh7hY/wgFDjbmZM6xCdUlqECZi8EqwL
- BoMm69EuI8fwmZwYr1tDewxxl59VOBg/3btkwhB3nPCJlC8vOZXDkcRJHrutdp4YG+XIi181G6J
- AhfEKsTG8Z0S2Ddjzumy/Y6fmF6Wfna4K0nIGXN1bxltOprLrqc7LaMZS6RkBuBIQW05pagaL/H
- XwiLQ0UFWf1fjljurWteADLysrYpavK7Q55luBHGzGIDKBoBmjyOxKN+5HtqlQOrGD7RZJr2ToZ
- UV8sekVudsKIrDM1ydZVgO3zulmRC6UHHG+rqZpBvc5Dayn913baZgTFMKZd8MN6uVyMY0icjs+
- 90e/j2mSNKIWVQJXZyXzbFCTJ/LnfnveBTaBPkm/fxzuqEGCP02kEpYDK2xijarc+H98DsgucRr
- a/ky1Rfxxd3NlxZuwJw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-16_04,2026-11-16_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 spamscore=0 phishscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160061
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: oyk99zhkenne61uj1gqg3wcew93re91a
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8B6081C000B
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1794842912-155398
-X-HE-Meta: U2FsdGVkX1+dfBYW7z43lCsQYtyQQIpn4eE7Wxf3WfN6/bCu5ySlTknmdIVLj0MVeLKlpWZ+NGEJJm0If59d/owHQ/idb2BPGoVpYeVBgf+jx+FUGVBZdbpLEeuStSwT7R17Izy0bng54VnyhNKF75L900bj1/sh3qDHDLRUjbSVuVzRzNq7G3rp4xQQxvq8OW58isYHPrA1Pprdh0NKPCDABkU6ytNm6mwxp2VAXq1fr+O4epq0r4H+xDAXvvuF5hB8M8yNNfqKKCA4lXE1Kp8wQJwxIbuAnnG8ZTelq4ZhInCeiHEW7tZy6zMBLNPbYA/U+xP9bz8wuUrTtLhDT81HJzWUIeIgAjZ61vyBI3UyP83mlxN/kMcCwHEm238nAgkYXGu+tJR9lJJ46vkaE9Gr+yRK8qLVzZypdeHsLaifar8frKMYcponXTimTJctusPKO4fnl4jSTZGPwPrN6+VayxIEwhpgOjJu4lYRLe0/qCDPXLwNEfL6r3s3X6hj/iw9Gy1rG0bsULBihFk1jN0wSQKnkPTcQstuNwCudRKWACW6vrFNEa98kn43ZfU0b+9N21+Enrjjj6MnhpiCqCgpgHwFAKjnaaUw2R6fsVZmTSCZDSnmMmPFg48gYCfZfoswjCLtwzLSDNFqPKw8WN1MH3/rTOmvGrREpeXHfSD6uohQvwInWJcEXcqVvjHXSlWxZ6PSuf4oUOC7JHKDBrYH7PY50cTVjv/No7PWQSF6viMV04z9VIg3Nk3cM7oyt2Yd4TGdHXMbE/Gv20BxMHdj0WjWo2ffyqymjl89eQy00Q5Un5yjwub852sUC4NKx+ZSTgVwtT/Qv2LYU5PmhnLpvyA6Cultd0Gm2WthXf6dMspaLALTJ/x6Sb6lc5VahfBj7mvk4v56XdAaiQQlPJ3SzD6KDZfv/TbrGccotn4djh4raO7tcyAEB23AO9C5LDQe5GskKA3mgem6aLf
- ESB5g4fK
- c8h5nNYdJCjYaOT1leXwvDCJQ6/4FE7MDgE0tZYi64wags53cmTtH4M0eA+NPV3kD1u+2/rKsNwVJoDh2nWdzdN46PnnkiJXCPTxBw+MFNOWGbcb4qBR3WkPabM8ZJQ6lRjVDf5NRjdVMZ4jA9hUmpC9vdrOG6I6FV6i7fVBf9Pk8LRA7iBQWMbdrL8XFCUtud5cdA3Oka9G7cH9f7AgrCHAq/Usp69dde3waMsRtcb26hLodsxi9HsR2xC8E9GlINQy02xUGZCbipHUy0Ys2cAiKXTa2lAFtwutx2d5cn2WkkYhvupVMgfoSE/RwE4eT3UVsmonGirDnXmY=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 00EB218000E
+X-Stat-Signature: 3dqpmmis6hgrnafmyqriorqij3qfm41i
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794842930-854650
+X-HE-Meta: U2FsdGVkX19QUqxnFeM7iucn9E5cTk24Gvm+MiJD03LkRARTKyXRKjZcgzjlQbFnqrgQo49TzlPzxm52cf6p3OzmpaUlJPxq7vpikIw5DIzd87HGTzp9/Bbm15D/bT5aJ4KZAPW+Jdp2iHlDtDUxfcL9hjgAfzZbyFwRLEc7RiWOpoA5sar35iA34hnsoDI+GwxjmMUCvyagr1lWVoM6cr4rpACP18O+AinaZq2RcSgOmws6k0rE7fqS04cqC5MgV6u5xnvktSzcPKJ/u/kl6QQwWHVhTa9KQyR9eBO34kl3+5sh3br2DqBbzJLsOy+grLMaIAyJR6kxX7VO1+QXPY4ddQG4ppWJVKA1QmsVGFcpRJlq2P0yxtBorWEbjo7y8fN3RgtaoVMOVgZ9SeuKa33JIT6UWcMC9/W+GMODzB+DL/EaMaaEIbDDGrwHbHeZiSMC5V/UxyCjcIVoJvcKHsysVP6XKterwRGFvayACo3XidNioJ9P3TGF1vDRT4YVDHtzDEp7hEvpI4jqE1gzC3MXn50g1uG58Gc6I6OG/H/ycTeWUE1XUIMHycWU2+AEt3gKn4QFqbOU5RmbU4dS5RAoNtoW5jaLV7eOeDU0SGN9+nck290d6wO7Imcb7JYh4cotoP6VIrIF8CZX7RREdtZIBWwUYvaO5im1CpTHQ+owNFPzxLFnGV9Pew4ny650ChaBMXt6TpTZrPslhNMm8qir3+TamEvoWNzEMQrd2D7Fr6srAd9Ne0TYuTum9jN3PMCF/6m45GpRJRzI1dCqc8Hm+wOEekL9aYUp8tSXBFrMPDU24pkNNH+/H0sPs/D5dITy/5OJAZ1lVprmGVzKv4yCAv8riLH8Uv6jWx2ckOIfuPZDVb3TqsGtPcXKSGbdx4/IzW6YtFJczBSqlAyvBwiumlMM/kvQiP9YA1EmNPXiofKNRRFLdM3SfdS6IFdMKh6BTywgW3PcNtTx7nl
+ zllR/fBD
+ ckoJqucG0+7FeLciGJW6cPsVYgjxjkHWBZF9TDbmuq9yu44AHqKgp6u8aRoToxI9Apla3nIGxnE52VkYFt4wUdj2WcJ1gEETsR+f6ThvTJm3mM3yVWQM9YKaRcbThgavTC3C4D4clz3m5+NuVMoI1yGQeYfNhOb57vohsUNV6ylk3CClYdaI6EofjQtkCqWDAzgpyhd3FZ+wXKF1vRXZzSSKsKnoZu5XFD9ijihYpA0K+g+hLiqb9FnPlr/FSalK+NbMjtTNR3u3hrl88AeII75GG3RRk4m0QS3Dgyh8f5r90sR4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,21 +96,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 10:58:31AM +0200, Mike Rapoport (Microsoft) wrote:
-> This the next episode of conversion of page allocator calls to kmalloc
-> family :)
-> 
-> This series covers SCLP buffer allocations.
-> 
-> = tl;dr cover letter copied from the previous posts:
-> 
-> This is a (small) part of larger work of replacing page allocator calls
-> with kmalloc.
+Hello Jason,
 
-Series looks good to me, except for the two small nits.
-Feel free to add
+On Mon, 16 Nov 2026 03:06:20 -0800 Jason Angelov <jasonangelov@ucla.edu> wrote:
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+> The DAMON core tests do not cover DAMOS_FILTER_TYPE_AGE_MS. Add tests for
+> committing valid and invalid age ranges, identifying the filter as
+> core-handled, and matching ages at and outside the range boundaries.
+> 
+> Region age is counted in aggregation intervals, but age_ms filter bounds
+> are in milliseconds. The interval-change test checks filter matching
+> after both increasing and decreasing the aggregation interval.
+> 
+> Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
+> ---
+> Changes in v2:
+> - Fix commit-message formatting, line wrapping, and comments.
+> - Set age and interval inputs directly in patch 3.
+> - Add SJ's Reviewed-by tags to patches 1 and 2.
+> - Link to v1: https://lore.kernel.org/r/20261113-test-age-ms-filter-v1-0-b99eab2f71bb@ucla.edu
 
-to all patches, except the two where I left comments.
+From next time, please reply to comments on previous version and share plan to
+the post next revision, before posting the next revision.
+
+> 
+> ---
+> Jason Angelov (3):
+>       mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS in damos_test_commit_filter()
+>       mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS in damos_filter_for_ops()
+>       mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS interval changes
+
+All patches look good to me, thank you for this patch series, Jason.
+
+This series is applied to damon/next [1] tree.  I will repost it soon (~1 week)
+as an mm.git merge request.  So, no action from your side is needed for now.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
