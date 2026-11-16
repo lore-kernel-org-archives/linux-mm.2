@@ -1,124 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A89D606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 16:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78276606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 16:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R+N7uJ6C
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QAwsBxMn
 Received: by kanga.kvack.org (Postfix)
-	id 13D036B05B4; Mon, 16 Nov 2026 11:29:01 -0500 (EST)
+	id 890CE6B05B2; Mon, 16 Nov 2026 11:29:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EDC96B05B5; Mon, 16 Nov 2026 11:29:01 -0500 (EST)
+	id 8683C6B05B5; Mon, 16 Nov 2026 11:29:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 003BF6B05B6; Mon, 16 Nov 2026 11:29:00 -0500 (EST)
+	id 757A46B05B6; Mon, 16 Nov 2026 11:29:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC37C6B05B4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:29:00 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 541BB6B05B2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:29:39 -0500 (EST)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 549C4140169
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 16:29:00 +0000 (UTC)
-X-FDA: 85441516440.29.DA8819B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 65A5E40007
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 16:28:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R+N7uJ6C;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794846538;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A701FC01A1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 16:29:38 +0000 (UTC)
+X-FDA: 85441518036.29.A352D7A
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A25F114000A
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 16:29:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=QAwsBxMn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf26.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794846576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s77Wh0jGQ82biYhvC+IxcW28aNcho8DkaL0D/lxzBTs=;
-	b=fVlvc/D6vPsGjiQfBHx5/vWAUZPRySsCRo4E8DwfaPQEpWoAWTiCUo6D6PHVx0KmIGQIXP
-	hDfH1DT9OerAwMEmcMoZYdpi2dNIMdwcdRcjGSkc5bqUAHBdhPEZHsvgSb3auRdjT7XvrZ
-	LXBQWVhyqmVmjmlYZMFjCjh4FPvmxDY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R+N7uJ6C;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794846538;
-	b=x5xkQpJZC2P9/RJzD/LRCWSswZBD9MmqZ4yriwGJM7Cx5PRhbaoioqZZTE6pLATvG84XZN
-	KZZsxfemF1gOu/sf9uE84Jygut3CrSwf7SIlnTYhdlHLYsdozcMQTCqqHABitJiAOswTfl
-	UKpQZfzMX0ZshN1YAJ8ZLcnlDswEv9U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A591462F62;
-	Mon, 16 Nov 2026 16:28:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA3E1F000CA;
-	Mon, 16 Nov 2026 16:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794846537;
-	bh=s77Wh0jGQ82biYhvC+IxcW28aNcho8DkaL0D/lxzBTs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R+N7uJ6CVs7b5bWLMF4HnzoLO2LD3Gsadk9Q37GaxnC848Fialp//dIbuRkDUCgaP
-	 aQLGRf+iUMwkA1qeX19lVqO+GIfs1vkymtf6T+8Bc1XHVH2IkaLVd4L+sxwEeKpRQb
-	 CMA2S4lKD0R34zuXEQsbcmN203yfwTUtVTFyjYR4BWPx7Pmf/GNM2sa9WZnf+W3ArL
-	 HwPuwbXUKwVXtYnn5ptTo1HSyFb7wGGG6HFHbfJnHSgKEW5+bowJHGm+lBs0yy6HaN
-	 Z8IHFh2FpZi3j34C/z7o95PnzAjKAuVw/WX6t1IbTNLZ57rP2/HElwkHc7OKhkxfln
-	 Hg08yRHrwVL+A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id A3AA4198003A;
-	Mon, 16 Nov 2026 11:28:51 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 16 Nov 2026 11:28:54 -0500
-X-ME-Sender: <xms:Qy_7arRLG_UdUq8qkXEY64ChlNdb-LHvpETpAU0Zyh3u2ujO9Z1OUg>
-    <xme:Qy_7aqauMhLertWeNoutVTp3WOHQryiIEwrplJkYySJenfhzHpbO9rGldJn8Ggdb-
-    QCEFyzJXf_5npbKbm1aLDBp4p_-91MF22M2HgFjqDgCCN-Sw-Ovm_s>
-X-ME-Received: <xmr:Qy_7aoMSvgxEWgNaEKzT4wwcmsyaFttmuUwSFhQWUMSTolZBlcGk3vU6Q0E>
-X-ME-Proxy-Cause: dmFkZTEHeSQUqRY1YhiGAt9xbok3Cz6xVJ5Xo3cfdcttzCYoRzXc8WXErePFu68Wle087D
-    hXsQKfmFrb/APDBx0g1pr2Aa+HutXDgbWTbRTP7Oo4JH2epfiwmDtil9XvIHCmQRToNqD0
-    H37WvBxy3jdygoEsZvmgMNfREfThGuE+f1/fQTxm/5o0v3LXAV6tA0KFr/8qm28SqLjKBC
-    JIvQB7db13NmMEUQ6uicY6Wj1U2YPutN0ED61sQdotiWYJBY0erPuQxPjQAoZZKOHKEm1P
-    CcSCuYQ79IWhDlSdDxsyaZJRWpg89Aij3uhmqBQtQttevR3Vm1wzASR/0SeNIObM2C2xnc
-    RDA/5KFfa/eqjJkob8y6n3L2MsOHrmPlrRpVfQC4I7oC2NWb+2vU7DYstulbXClianeZvN
-    hz6SpjO39Ug9ZQ9ldDmdTx8WrmCVG8/XGh2O8iMUMjsenDS7ogCZBAcLKOfGb5lwwV4BOy
-    xMJxsm6FAEssW8JYs7csY51OzSNtNcNJf32P8O8w4Z+WCEbU1IgN4oDHIoGGPUqMaHSrpt
-    WLylfruposUCDi1TPyDRkd3nHjmwduhDPEk6w0SUmiEfAuaYkx/jakAsxrW6kCFoaSF4NB
-    GAlj9jnGsaNPLN0GfrTeUoHX6ZQNuRsSpHF4/7fYdpsUtSsVlNp6gigN1Y9g
-X-ME-Proxy: <xmx:Qy_7ajNge65h59gJ5PeEE4jYojBTyP81J2yA0FOeaNDJOF898dHpPQ>
-    <xmx:Qy_7asN_4RXOPsYejL8M9bOECto9bUKVRQOfA7r4uOzVXy-zSAocxw>
-    <xmx:Qy_7avYYIK8u7x9s4QIZQgEyAGr7Qyrd0MSDYwg9VZwPuipYISLVug>
-    <xmx:Qy_7aqjvvcj8KRi33l3BF_wnKOr2tP_Du7Vi1mYrMA_i-fhiCOXmkQ>
-    <xmx:Qy_7arMWZXpiHu1sTF9s648ng43bZU-wyYhpHTqjt7OGLV8d113gqrBZ>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Nov 2026 11:28:50 -0500 (EST)
-Date: Mon, 16 Nov 2026 16:28:49 +0000
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Peter Xu <peterx@redhat.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Tal Zussman <tz2294@columbia.edu>, 
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v2] Documentation/userfaultfd: document RWP behavior when
- the PTE is dropped
-Message-ID: <avsu-yTSPKtZn_Ez@shutemov.name>
-References: <20261116101004.15322-1-azpijr@gmail.com>
+	bh=ShKIQFI3uGIhr4DBTVUmVEiZQKVcNYjQ9vNtabc3Rxc=;
+	b=XfIl59Br60vHcN2gADF5noMTUHZ0W6HMqKymOl4MTxUZSb9WEzjqhaubb/6Fy7YWI81DIf
+	Pn3TNtlnMFi5CUGQAmXduyFu8CKXT41deD6EOkxKfG5TefyIx/fszzwP+HlqFE4ZJuwBH+
+	DbT2SOa4BYvfUma+MIgkB+/IxOUCGHg=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=QAwsBxMn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf26.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794846576;
+	b=iQfitymxB6WYYirpoxiS4bJFbtv1PSASShkxE1wXB83RoboK6rZ35kovmeU9X/VBeHxQQk
+	CaUBh2WSAQl9tesRAV2EJGGh+mTYZ3zzClW/dAjKpgsVkS8Iexy/7Pvnpnq+odoW/4L2TP
+	px1pUa8JzgHqZR3pb1x4VsH2U0DrMic=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c45551fa84eso702495866b.3
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:29:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794846575; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sYXI7zzHXw+b8xef4pEEw5iRgOKha+twEK44iJv/r6Tc/Fwo0fKlsHvWJZdturMyQR
+         Ftjd6wMHSbvvHd+OlecWsAcgDDSuSUMF+wWQNES0RyAxtlCA8lRbkIisJvgQlucNqWdm
+         p5VfLTybSX7tJdjyo8oj95qGq6KX9c7bUX43SeB/hVtBTBwjlpyqnNuJN/E7a4ERTOfe
+         mxmC/J7s8eQd6JI7kZH0GVasFWU0cVNYY+a7o8hmJjf2N3M775YaqLufJDWwj+691LRj
+         DUkJNIFy8rNI8eImTFk2lVfJsgt/s0cyIshsFQwy6xgSHQ6yki9Q91gqCw4GUeDM8ynh
+         0VTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ShKIQFI3uGIhr4DBTVUmVEiZQKVcNYjQ9vNtabc3Rxc=;
+        fh=W6p/oZFlJIv2gMDDli/AVU8PqP7jRj4uKs3BI752dAc=;
+        b=ZiuiLAXIT0GiDaFLI7XQL5FQG/gtW5nblesejEA0Yb392JQ2edaz2a7YoQK6ZYreCI
+         7uEmBa1ze/8+rZ4InVOfdYEHitrAxdXbh0ph4RIhqlYhmPtUbwjcuUp9hqi4GJ8BIb6f
+         gl/KSD+A31pJtKWD/k0YKOJoWGXt74544Q58s3pvlqcHgwaEPqvk3hvf7kMmNkTCqHza
+         ufoUp3d4FarZFBOleQqzZX6zz4CQdAaKnwc9Y64v48apxDG6896tLP92SoJCp+Ezf13a
+         i+o0pNQG6G9lSKdvluUMebGfr/B3Yda/RrBIKszmudN9HyCyChBCUrC/VGiGGIEim85u
+         AJUg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794846575; x=1795451375; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ShKIQFI3uGIhr4DBTVUmVEiZQKVcNYjQ9vNtabc3Rxc=;
+        b=QAwsBxMniHhUYbWjsmO5H7KlMsmugb1YC1gWW/4a9Xuub1y59sOcDT0/Mow6jJhxaF
+         NUaWi8NjvLV6gWM3xMJxPUXo0D0mf/0Ga7lLn0U4+Xm8Qi4St9QkwZHMmIDwt4TS9erv
+         MC3nPH6sQoTuGaQUWVSeAXG0LOnjPSlPXQOeaCiRSLVWNdBUpbBReM7me/ox6VBsR7bT
+         olH16oKhfTcDr9PQxCOoJsQhtEYW3lZXVo9WwcpEXkdpSB2HFKq+yB6Mb3wHuuYD0rPv
+         JUQT2DZszQ3pGs7iL/4KYJKj+53w/IGRipEMCghjdJVqKMwRviLhS+EwguinLb1shBrj
+         TJLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794846575; x=1795451375;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ShKIQFI3uGIhr4DBTVUmVEiZQKVcNYjQ9vNtabc3Rxc=;
+        b=ki6cCp/+Si8R0KOAqOobkE9twDX+OZdhjZ/ZsNR6AD3Rj8MLWNY4LJBRtQbbAGJkaS
+         Bq+Mo1223au6JRo380yg+7o/hUQ4h9JTig0w7sf7H92gturu5s4AkhbwxF2U6oZiViRC
+         +bFAwoIu1k/AijfazkIDM0FRazh0UYVDTPlLxFCv8Rx1K46pvi2X6H7AJ1Fs9YhEHi5V
+         7dxmgWp/vznWXiEmvcVw/CAQJ1vm0e6xfoUUwoM711rfEgeTtDNz7ORkY35MjTg81alj
+         oM9cyoT4GfKFzllUWAFTRx1eajNFZ5rProfnYpDS085gM4dgxbuNCfmwBffbDlDz/SMI
+         A9pQ==
+X-Forwarded-Encrypted: i=1; AL+hErGtr68PcLBNpwdBP0QuwhDsSGvoen8Az3PhwmjhKXeths0gs9DL3afm95MuvYdtb8d0nH6RgWwrUg==@kvack.org
+X-Gm-Message-State: APuU4Z9WyP0D16PU7a0u4iAiOcyK0u25Lz0wmcvRVfYr1OA4NQi1W72N
+	bD2eQeH0o92ZzR8HFpUPaBgRfzek+VHVmXIj4XISBDEBwniyeS+gWQ3K2jbFDPXr+uSgXqXqpDc
+	sD4XXDhGPUX49eo+RyFtL1mM0qIAli3geg4TNJdOa
+X-Gm-Gg: AYBFou0xbQxYA43YoLI44kLxLl8LV+YG7+N1EH/Db9hG12rfQB2uLKy7uLCZBUEZNLQ
+	OZOSOexGs91iMALdfB8P2VBj7rZKaMIMKQkBR9d0oWZGqHyf1tuypwKQ2USgKxOpiNTseRMs0Wa
+	uMZ1sQa6UGxZC9r4ipDs7Znj0BG30ci6DRSrPg088ar24WD/qCrG5YkKJ45nyxXAtZO0pXDNUrV
+	sbEV3LdkCo4JOzZyszF8ChMeorQlZNMm433wmMK+Y1YFVPzCKOD3pvjpRbVSTAmgDHpk2VLZevf
+	bXot8Sq5Fqw/Z9GFPlezxAO0NeewWuC5hC7+mvDQxUwb++/a6DHaDa0TAxR1n5UtmCNYHIVJ6+u
+	92ue91oOdyop1ap2U80/0BScYazGAjnwyolPKTShflJHrZtm85uMtcdhtEPuAHKNe1OG41J/A8N
+	hjAv15zkPl94mHAwN6jqbCGFhWwVi0zoRu1KDRLSBEpgwTjY58
+X-Received: by 2002:a17:906:ee85:b0:c4d:906:e979 with SMTP id
+ a640c23a62f3a-c50961992c5mr881499666b.3.1794846574496; Mon, 16 Nov 2026
+ 08:29:34 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116101004.15322-1-azpijr@gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 65A5E40007
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <491B482A-8177-447A-8CDB-AF83C13A5DEE@linux.dev>
+ <20261021212738.321547-1-jthoughton@google.com> <11457D37-5AF9-46C2-95BC-CAD4B22741A1@linux.dev>
+ <7C857138-E17C-40E8-9F72-6FD3E3AB493D@linux.dev>
+In-Reply-To: <7C857138-E17C-40E8-9F72-6FD3E3AB493D@linux.dev>
+From: James Houghton <jthoughton@google.com>
+Date: Mon, 16 Nov 2026 08:28:57 -0800
+X-Gm-Features: AclHuK-zpZUq8W9nNoH-Fxmelqg6hPrcZtO370EgGILVe_jjsPQzSM8Wu11E_Lw
+Message-ID: <CADrL8HUkUJHW0oT+tPhhyYdx+5+boSb8QRk9Bwp4mzVGpgRg0w@mail.gmail.com>
+Subject: Re: [PATCH v2 01/20] hugetlb: Don't restore vmemmap of non-HVOed
+ folios on bulk restore error
+To: Muchun Song <muchun.song@linux.dev>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, 
+	David Hildenbrand <david@kernel.org>, fvdl@google.com, linu.cherian@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, mark.rutland@arm.com, nikos.nikoleris@arm.com, 
+	osalvador@suse.de, rientjes@google.com, ryan.roberts@arm.com, 
+	sunnanyong@huawei.com, will@kernel.org, yuzhao@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ftioykfycn6nmkk531ihcx88gpt5q5ri
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: uef5wdjz8dh618p1r8tra364zs6fy7yk
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A25F114000A
 X-Rspam-User: 
-X-HE-Tag: 1794846538-496094
-X-HE-Meta: U2FsdGVkX19CB0xhj/5gV6qB0Jf6OdzrGRvNlIKAoyaKAGB2KHQsuU+PAFqogKkSBe6mKYeu3oVXIkhjI6OiovyI3PhvrD2hJXw0vTDj5dcHmlYp2x2qo6+4y0JZTTbwyIWgRdurL2Msmy3lHta6jHkhkF7MnqrzCAo7ptG2bFdRIy7N41tQTtfNCm5Ud9V0IXPz/wVDpx3tslhCA2+SWnAqc2Fc1XbUlgIxlR2jhG6IDVuLv7h8ulX7kRfwGyD18cQAM5EehzbjeqcYmwLof9naz/OvXgeFs/8Sxi6Dzl74pxqxllAxa70DkMzvvUMBsfybzDeyTj5Eec6Xpg1iVIkFNrKfVw5OFmw+SzL2Me1MmudTs2H1RuGnXVAaI28EXNACmhQxjfRlj836HQClpMR9/DotWVRh2dZwhgTTMVkjLkNgMYh6t5hSnW5jjgOqxlePtKEiZIwVu75ljoBfm6iqFURTlO8gNjVJpzYPsU9CY+4ZRuWXtDJ1IfOVFomNf04DVtYu8INp9jEq6SC67EpZ57giSlokFwWtrsGs1KSInimHINCnhHmi9IkTTIkD3C8vwyysFJbc3OQUQCU9rj/YKDIYVYT00XSNKVjyX6q2MncIoU/0L9gX3SNmjopimWpHYYWb2ryHnVmBWiW0p0om7RvgIbr0ez4nRUSyuT4zGGv8pZvzAu+V6GrsyLzmUx5c193JSftkjayLlFKncKQ3EdLGWUBHH2OarhS1kt3waYuo6XDtFKwyUQ9IvVpyM4+9ghwG2su7r0BvKKcnsctHCwVGjLet1lS9qLvkgaSbdXkP0Hw9fougj+iCds/6SpLZd/Tb0oVSRjWBh3NijENnQcViJFIOZR9vI+sIFdM6zyKepXUzPEUkP/dQ5maqW0hyoEv3iO27zjIDRbtBGmFRnyIVhQ0pSGLSu/k6LheX0LabcO2ZuB/7kdn8ssJPTA2IPAPWtjVVSmMpFPC
- srHDZi+t
- JUM6bwYaycwfGnuH59WbKRiXvWaSWc2DcynIm+8E3a3LSWzna0Oo8qyaO3lNY5Ltc3eRk/erQVCpK+pd0AQWQgYv8MUn3+3xZF8GbvBklSDbayYDODBwkWDFSMcm3GwJY6BwefcHY5fx/3bn3ts//nswCHf742TNXt3T0p9OAkiXmbEzSV6vGacaGLcQGh8IxizBd9bo+idrFDmy0cHopsCOEbgg+x3Fu9gdAvJcCHi1iIWjc33HINXDdhfIB1JWbfEptaIRXQdUflNyGMU6k+10MWMWABilLKYM8
+X-HE-Tag: 1794846576-218802
+X-HE-Meta: U2FsdGVkX188ZjCbEDaarxiMppoEfkqGlN7imDkQWQetHl1/C76pLQKWpif5g9lPRIyhGOGhferESO65+czgdXcn53PD6vDHWokGF6Mydn2UaB7EebzG7iX0bwPm63tfhj/U/PhFttVdl34TBfcRAmzZqNBLLSCkR16YkfLz81LwU2n9Z1mhLHGp1lfATDjZdgvdklTaCn8Dz51H4wahP3+dQGuu8P6tmXzKFu22aPrCFkvZsf7WjHOKxgBxT0rzk7gnUe6f9Wzd9tB1yb55vjtri93JAHLvZmAvJF4qA/ZHBBYL6JWLVPUMd5i1AjRVNHhTubO9Pr9Ivk75gdNw70vE9pRg/crD41sx8mCI800rBhfCs8GiRaz/Ew5fJEdqeGOxeK6N108aMogVjGQ2SOQ/m6EAJfwANXQQ15ZqmXxDnMB3vsu3x9+TA8AJnw5v94CNixpOhEmy6uSuFEwJEeFSmD0egz9piKlqIuOACHkrtmgXCebCushkrHOOBRatjLBL5C3yDvcPoXJxWnUFbQcDhDs9xnKHtP0ZJVIR4iSq2gFFGuZegBPwfyvgMq5TPrQphXR0tlYP+FZDB9SX5uJQQ20txGxQ3uXDI1qvItrx7jFUvTzuI68eviX1Cx56PH1P5bIFmjhWfM2s0TFFkX1cmQlC2opo2M/JpcB5dLom+NB6b/UQ4jHGY6YuNxoQAEyf+/QdCoDPJgDLzelrS0pnYSXNsqgbLS0QF/l7EtJ+sTlf+zUPhQLhgs79Mha8kbZ6hGWBMcV3bQRHxK7FC01WB2Tx2p+/t9DSzwRSU0uq2B86WJhj7QVKZGqIYw9rSJy1qTTdQmmpJd98S/2m7e9Hj9sUAhITn6wIJL9NzDjq7U3MWjLHoU0UsoEuCZBX6z+2YqvKWch0ukNMDoLW8dS/mRuqBq/WY5M0nxDiUxSqLP+JFEmxe4TJGcs9Q8ImK4Qy4RODBavkdoCp2CJ
+ 5y8JBn3b
+ oSq+ywJ0Nm8CuA58p2Y7nVfuPAzQpgZGXgqHQnWIkADbHA/ebFFoR+Rk6ASdZEEpOjc6EtslOFFcvqFmXo/OR/kAkqbDS6/zrqAs+y3WvLp659utghnswJ1U9MjcB1w8NvEfmDgxHLRbg608nn6IlGrU0UHNDog4o/YSFwB1sUKuZCYbUuXrKAhf5tddEznwrU/IZ+s9NM0lwla8aUCwB15AVgLSuQzpqA8Z24O7MO3pRzemcVIZjn9cpgZNkTPN0AjSfcsiRCZiMNSQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,36 +151,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 11:09:56AM +0100, Jose A. Perez de Azpillaga wrote:
-> +The registration is fixed, but the tracking mode is not: a context that
-> +switches to sync mode with ``UFFDIO_SET_MODE``, as the workflow below does,
-> +needs the sync registration. This has a cost in async mode, because minor
-> +faults are always synchronous: an access that takes a minor fault blocks
-> +until the handler resolves it, even while RWP faults are resolved by the
-> +kernel.
+On Wed, Nov 11, 2026 at 7:46=E2=80=AFPM Muchun Song <muchun.song@linux.dev>=
+ wrote:
+>
+> Hi James,
+>
+> Could you send it as a separate fix patch so that we could merge it first=
+?
 
-Nitpick, and my fault: I said in v1 that the registration is fixed. It
-is not. UFFDIO_REGISTER on an already registered range with the same
-context can add or drop MISSING and MINOR; only dropping WP or RWP needs
-an unregister first. So the cost in async mode is optional: the VMM can
-add MINOR before it switches to sync and drop it after it switches back.
-
-Maybe something like:
-
-  The registration does not follow the tracking mode: a context that
-  switches to sync mode with ``UFFDIO_SET_MODE``, as the workflow below
-  does, needs ``UFFDIO_REGISTER_MODE_MINOR`` while it is in sync mode.
-  Minor faults are always synchronous, so keeping it registered makes
-  them block in async mode as well. Re-registering the range to add
-  ``UFFDIO_REGISTER_MODE_MINOR`` before switching to sync, and to drop
-  it after switching back, avoids that.
-
-The example can stay as it is.
-
-Otherwise:
-
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sure! I'll post it today.
 
