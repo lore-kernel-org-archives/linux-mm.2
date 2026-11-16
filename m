@@ -1,106 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB09B60A2609
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 19:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782A6606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 19:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n2zSs5vd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lLZXSBk8
 Received: by kanga.kvack.org (Postfix)
-	id 44BEE6B05B2; Mon, 16 Nov 2026 14:10:26 -0500 (EST)
+	id 700546B05B3; Mon, 16 Nov 2026 14:10:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32EAB6B05B6; Mon, 16 Nov 2026 14:10:26 -0500 (EST)
+	id 6D8466B05B4; Mon, 16 Nov 2026 14:10:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 159B26B05B3; Mon, 16 Nov 2026 14:10:26 -0500 (EST)
+	id 52C2A6B05B5; Mon, 16 Nov 2026 14:10:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D91926B05B2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E29E6B05B4
 	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:10:25 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5281EC0200
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7A1A8120286
 	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 19:10:25 +0000 (UTC)
-X-FDA: 85441923210.24.1385EC6
+X-FDA: 85441923210.25.2A8D8FA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0A27CC0005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 19:10:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n2zSs5vd;
-	spf=pass (imf10.hostedemail.com: domain of devnull+mattathias.pinchover.uber.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mattathias.pinchover.uber.com@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5B47080007
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 19:10:23 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lLZXSBk8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794856223;
-	b=lo9tF2Kul5LIoojgwG7T8FmwYowaPGlQXWJrAwRK8nJny2O1vMVOImZ8VoxxGeQgndXnAQ
-	m+rKor5RVpYsPDLiuk0sQdQyF2cG+zRsc5P9fQ+B168FVOQpTQcG48VUf+AboNVTGHAVHT
-	w7S3I8kn9hEGzprqdqJndGYDvHGHwxU=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n2zSs5vd;
-	spf=pass (imf10.hostedemail.com: domain of devnull+mattathias.pinchover.uber.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mattathias.pinchover.uber.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf30.hostedemail.com: domain of devnull+mattathias.pinchover.uber.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mattathias.pinchover.uber.com@kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794856223;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wz3i43bWbACcxDrn6IQ1R0IGDWvmDnWNIz0h7uvXbkg=;
-	b=ST3BXKEnalEGZ2xVXTB/QjpdZerXQbQe72Ej0fZLd0SP/MvpWcJQ0d86cKeQntZkaoqFAT
-	64O7LpZC36JIng+MfnLprb1C5JZ/0E2Hzan9xLLp90QzgrX6UArjdWkCENfaCQxu2NHaFh
-	16Hcclh03NoEW/qun8aghSk7BtQxaog=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mTux4u5KLjPPAMNNkhECddqIC/XEX60DgixGnVYe1M4=;
+	b=IeQz6bQI5Ml+J90dS3PPfd9nIQ/2L1LLwPdfX47TTwKurMQJYZebTPKhMf09lJcHDoXPl8
+	P4ZU7ZIXmB9ukPD/marJpyeUUzlXrA9jvoGYWLqHfiiBqyhD7B/dTLeMSk8LafCDNTT4dz
+	9Z9UIycBYl/X+BJzrZi9g+Xj+l8wejE=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lLZXSBk8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf30.hostedemail.com: domain of devnull+mattathias.pinchover.uber.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mattathias.pinchover.uber.com@kernel.org
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794856223;
+	b=1fYFNS5EUQoF4YiNgA6bZD53h79v2Zkg5jeLfmTQXrSBOQT8kTNcbNU9kNCmOhEkqq9fMW
+	wYnNeIatMFlp/e+xq6xfjvEZQ9IocaU2iD2CZJLOVByKPjXRNdmgxHGtii1Xk4CHhWbtpB
+	CASMtnGwuUR5SVaBFPxZzlCLngZQ3LE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D02144FF6;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9DE76462AE;
 	Mon, 16 Nov 2026 19:10:22 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794856222;
-	b=htnaw3LAsFo/9Rn04Ccjq6yLTlEBa8gkMcKss2DR0hKX+R4Js1r/82dLJh9X9ljTkmuy
-	 Kl9fps42TeUApB1JTXKRfzZjtCeNFWKWEeii2d0cUU4vRBNQrapMNG1ehxx7/byr1Pn+Z
-	 /qd8PC8XB/fPegoTjFsdJFddTl2oRlFKnKVInhR/FFl+wiJlbMTUXSZ3AToOMbMga5ueW
-	 FLImL5BTVPDhTm/dYiXI7oCHUOpbenxR+8aoYVlLt3ey74Fq2AMu2852x2e+fUEHrLmvp
-	 4KTYk70cV6VQWuVLd+jg64pqmci/CT5fvCM1pZ7DSMTurDowYl2tezMvcs9T5KwfCnQ==
+	b=ajeuKy6d+/tVDPvPikK++84fdHNN/XLn15+GINJ7/eI13p/ADhPJUhI87chp4dWldTMM
+	 CZfjGXVVQFHkdJ/eHbI0mIqzHyAPpaGwXNF3+zocOFlIEuPAXKJ1jtTo0iNbzgq/yUc8U
+	 iXS7Qk6Vn3ctCIuEa22FyEJXWnT8IicgRNAKhVLRiLrtKznm2uR1h1d6c3oghCr+N7MIJ
+	 CIAGc0bflwpHdwWEQnzMae7dGstw0oszPmNrj3YUgBFU7Kk6hX8gf82IruDi9vXcPJ2Ov
+	 oCCFJB4z7nfmFESxIpwWpaDtwbDbHQazDU+sWZxpDLnmiEigm7kHQJvQc2fANDh7RbQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794856222;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Wz3i43bWbACcxDrn6IQ1R0IGDWvmDnWNIz0h7uvXbkg=;
-	b=a8eGcGtsO4hDNQseLLmgqzUGn2CXZTJ0e7wmIKQ7LqODXEvuIvueRSGDwzs5wEJuhYLJ
-	 LH//1vFfYJttiyNaPMsXbFZ0TtA/TERHsrmZOBLuLEbXUqxer1FVVDGCrnY5fNaB1sLOa
-	 Q8Oipv75zxPOlwdGoFey5QyYCz8BihS3MzOULDY0AzdolX19wK28Bq71G2H8rNHILg5iQ
-	 rd1SgTq8A426aIVtk6rRVqFA31pCBObrLhvJwq6l6R6LPmznOjoQ3b93qj+MfVQWR+a7p
-	 z7K3GsUBViVBZx39REbExyRqu2p0hPYuWph+79D2wdUtnDJSx4wA2g04ca2F5oUyeAg==
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=mTux4u5KLjPPAMNNkhECddqIC/XEX60DgixGnVYe1M4=;
+	b=gGk4IPiZESgFH3+YkXmLU7Bdz9mRFvANge6KALzFGimG9Kv2s6Y+mNy4spTBg1B68NhM
+	 FMShXz9XnJWUHi3roAv/luII6e3FGypskqt6WRB4sRZT4DFpUA0mkniJLCDGhVBFVCTsK
+	 i6LCdVYoZjia/+jYoCVu61ZieFf8dKYq7j4YJ0h7dIvFPK+kEeyA8RegfABN3dVPJUmtV
+	 CSEDM/oBQT3RGS8a6Vwgq1Qj5SzCjZaaELShKhC5z5GKo60iISUXtNY1GlORLxDYlZMc3
+	 7vDFlgNLtIX9JKFuGQ7RsvMenX5sTeELAXgEGc5dlZ03MqsaCVIYaDZTvIMy5KSAp8g==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 17A291F000C4;
-	Mon, 16 Nov 2026 19:10:21 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id D9C9B1F000C5;
+	Mon, 16 Nov 2026 19:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794856222;
-	bh=Wz3i43bWbACcxDrn6IQ1R0IGDWvmDnWNIz0h7uvXbkg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=n2zSs5vdSdMdudyhPG79tYKxSODhCv60mMS4VS0e0KcAwzghprh2JN3lx8hLjOp1s
-	 swOF3WgFec0q9DafwkDo2rBh5mUnWbcnTCrYdr8UBNC7sYPVfM86BG5G9uph+TMV/f
-	 O/JUt83jWVg41Us3LAqB//s7aXQOGZbHIeAVHfnEZlvzLBqwf3ykfJJec043lGAFfB
-	 cQbWnttj7YsgAzmVPRx5FV0gMElp3dEeZMbB7ScDTIPMQ0c9sB2JNLdc77Lnp+Pbig
-	 9CylRlVQXc2KiJiamL0EiciODNH0WhgVBtGbSN5LRAYC2pZpijgCcaKFgGKVNkYdpS
-	 8OHYZ6wc3zk5A==
+	bh=mTux4u5KLjPPAMNNkhECddqIC/XEX60DgixGnVYe1M4=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=lLZXSBk8PKwtEn4UEjIPxE8vGBymFs+aKxxZbhIqTImEuhDl/0Jc1OF4HL/X9latZ
+	 /S0EUTXCj0WIBosH8N6iDANH7YQAFgpeHxugRIcNiKr/wfnE0Uw4oBynHhdB72xlVF
+	 H0prxbw/j2El/TOLNkix5V650q0yAuxu7UgFDi3I5RbwmI+TgKhvhKWogwtF1PTw4u
+	 WQaufh+9Jrr+JR9RYczAFLc8IRtkQMd73GSPUzr05fKbnyZV1R0+oYa7akqbpLr0cV
+	 /DeUPdr8qxcOGAGWtnqjV/DoER0W6H1bJybaSS/8PKaiskRBqX15TgQHc2mB+C2jii
+	 Z736pYfIotD3g==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 947684A5A1;
+	by lkml.kernel.org (Postfix) with ESMTP id 37D464A595;
 	Mon, 16 Nov 2026 19:10:20 +0000 (UTC)
 From: Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org>
-Date: Mon, 16 Nov 2026 19:10:07 +0000
-Subject: [PATCH 4/6] Docs/mm/damon/design: update for
- sz_ops_filter_passed_last
+Subject: [PATCH 0/6] mm/damon: add sz_ops_filter_passed_last DAMOS stat
+Date: Mon, 16 Nov 2026 19:10:03 +0000
+Message-Id: <20261116-damon-sz-ops-b4-v1-0-1cffe7227e6d@uber.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261116-damon-sz-ops-b4-v1-4-1cffe7227e6d@uber.com>
-References: <20261116-damon-sz-ops-b4-v1-0-1cffe7227e6d@uber.com>
-In-Reply-To: <20261116-damon-sz-ops-b4-v1-0-1cffe7227e6d@uber.com>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAxV+2oC/yXMQQqDMBBA0avIrB1ojLbiVcSFScZ2BBPJ2CKKd
+ zfa5Vv8v4NQZBJosh0i/Vg4+ASVZ2A/vX8TskuG4lE8lVIaXT8Fj7JhmAVNibquXmTcYKytIFV
+ zpIHX+9h2f8vXjGSXawPHcQJT4AiccwAAAA==
+X-Change-ID: 20261113-damon-sz-ops-b4-3857ebdfbcc5
 To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
  Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
  Randy Dunlap <rdunlap@infradead.org>
@@ -108,30 +109,29 @@ Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, 
  Mattathias Pinchover <mattathias.pinchover@uber.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794856219; l=2118;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794856219; l=4336;
  i=mattathias.pinchover@uber.com; s=20261113; h=from:subject:message-id;
- bh=nwHjZVHHDRBT1eHlqqDWBt5BJ2Vcy+5/DHoQlewkkIE=;
- b=b0tvkQypc2c7AsnCXE+pq9rOaYIeO3iDB0Oj8qy+Oo2BDDoOAEgQn7E9EZf8uFy1tHQ24VVWB
- X5KJIE6CiWvBDh8V8PfnZmpjaQE2zudNNk0YZuofHhRxEiKtyhq8L1E
+ bh=KL42jbLaW3+y5f9RJAaNYDZJo0sdCvb1DZpH27JUO/U=;
+ b=X9esLWMWkEhP4E6HhN3S5Vq1gM1ODJaamqF71Hoem0y6pvT2abvY3Er0xEBNSKZ7w2J0tLt/U
+ YB1QuY6pfvcBlG4mMNCzzo36wzxj0nqCDXe39JwX0dq2/1MnUCc+KlO
 X-Developer-Key: i=mattathias.pinchover@uber.com; a=ed25519;
  pk=6Bh6OEwWiU6dpON0CVcoipq8fXtEgvhsM1Tmm9CTmtY=
 X-Endpoint-Received: by B4 Relay for mattathias.pinchover@uber.com/20261113
  with auth_id=1515
 X-Original-From: Mattathias Pinchover <mattathias.pinchover@uber.com>
 Reply-To: mattathias.pinchover@uber.com
-Content-Transfer-Encoding: 7bit
+X-Stat-Signature: eadkbdwhux9ywgeewjmnhzqi5dxfgj7m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A27CC0005
-X-Stat-Signature: d37p5nd7yuqjush8i7zwdmdsb5f6pks5
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5B47080007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794856222-921977
-X-HE-Meta: U2FsdGVkX190YwomDwcGrh4MdnHQXuI/JG7RhaHUP+hofDaAQGSfM2CqA3Y8R0uPSLMn9FkGVepdotqz7JzADpUG99OTKdrnrxwz+B0nss+FNTr3QxNPa9h7xxyJldVWd/VsDJa5MENdV2/N2uFf/jqBKZEFJPi9jKETJIdDigjlz/14HxlwxvkdczNW2gWXSUg9iHGFD9W9DrsB4iHRFzUAlA0ffqqS4ydpSaxEmVRzzgUpkhTUlwckcMNQL6Lh6XH5GK7DA0XS71F85f6/ksoMibKOGtkTxjkdkNfXS/HTNUrtJRf3FbLWE2pahP+R2M79wH9dK9miJU9uwPP2GqkrRj6CB068vI1uoGl9aPPi+FX1EseahcaoJk9EZn25FM472d1mwtn3fsDm+qPXZ3mpcrwEDaHOkr90BW5zylQM39BwnWPJ8SwsEZBztxaGs0wXgfJnCcRk2QGqOwYRb02smy9+G+QEfnsO9xYYoz7mh/cN/eyUtI8oEY2CYBkR/iAtnq1RB9vPq/7SZuReaUehTSxklxOANQZpe9a+YStW6v09Frgx0ujJQlfkVggdSnrS3e6XBlFNA+TZSyf8eaRaf9WteQ2T7XR9FZgdt6HBKtdqC35jvf4IzRvOztpd3+xmEqlLXLSai8yFoQqxk47ee53zcRitX5GoL0OfiIUu/QA7Z43qD/APQGrOU/27DMVwH1LMFocC9Hc/QPUeDyUjtbrHtjrobUDd3yQyTHnCLi2pmdzeG8qpmUQsyndBfqCkZKA29GSM1MwD9+rHRprBaBTzgdToCA2XvQ1t5at0c42A/p5EMw1RMt7rpwkb38HF7huKbOfT/x/QXBtokXDVLLQYqcc7PZ2jXRzI6LCVzRjXEi09dNGMmoHJCR7L7ABKJHSKHeRC2B8b+Y0WwAQX8QPao9uRSUZ74AfMPZlA88ERl1WPEWTnvqUJagc4DLI0pXbVMyZfkVC2BOu
- QgCFlP7w
- hf3MXzGMvx086+/DIb2Hcg0+WF8egfys4vLeGuxsyTs3N+Mmpzz/Kzay+MWl0LTPFUSkSPfaRkjCPgRDiJNhJmMC0v8GPTX2KjOHkrojMI5uz8a9QJV1THHnvYwhZc8qgjBkkhv2TkyuehbsBHt6ZY3uf9WK5dr+7QhuFSwvknj3s9IxD65ytoYwRdUgEEm431Ve2d6zqscebK47uyKuKqZfMcDSrENwcADliChzkDFp62SHt3nNquPACDioiaO0v6KbEZV+0Ow+pD8D9XZCmJiZdp3Ke+dfKtGlY0vvezzRx7Z1nl9Sbc9NmmCB8ZTZ1P90oiEkcPogSwp/U/ih0o06ICx2GQTNHKn9eiGn6yr47wGommes0yGK+vjfb9nyUfU9gbuCXEZ2MapR4Qa0GWl6jPw81bDxSEjemDQCPwXbJhjo4qbQNySgT0lxgoeRaFaXQFBr6Zf2NmsyCbAWngdpKsaqODXTsKkTAUwt4y9Ppo9bV9TdzYf49fwVODuh1pkjXu0V2fGWxbKslKsrCnIc8asbD7T295x29TfEzqXOD3gBJApUiU+mQUD0j88i95a62Pyy0PBevcjtW7sXbnf5s2DidJf9oFppwTlbd3l4pk3a0VTmfDx+XnsGb/r2l1SIQ
+X-HE-Tag: 1794856223-911866
+X-HE-Meta: U2FsdGVkX19ioggeQjOfS8MiyrFael0R51TWq6AvhP29/n4TK1+d40eYOLGmn3WP6hVfTBw5tfKR7EI2OtBCG6Ikgu5175Vx+DHzeUXQOIw4A7wN8AJW/z86o7TOp2LDcpLlxBUqGR/5T8F3Ru/sHMZgsQNgkLNadg8fLr/Or1g576xDLN5rvMyDesKswWkKRGKzCytBv8IjxYCd8MMx78F9TQP64G76VCbagft9y/kxVNBAYhNbXoPUREFEriRYsvtBhdCEoaafU91JrOcXvM0QczJmqIEnO9CiNNz6VSCTH6L+3ozmylVa56hJP7YeQrhbpX2q9xJlzzo33AkVlwVQG+4cNWAaPTwOJBJo8OrCMsRgJ5b75zx1Pc6Po6zkhmTztKrEAlTVHYgT8ZjkWKFQF76GVhiMg5W6snIXvd+tNbPeZTMKI+v3yxsZ2GCWOLh6p2S4gZljIZQ4x9VKf09LpHq67Xq25O8YVGUnDyz4lgpSq4xEAa3sgH/+a6qrmquWw+CYDZZu+Gj252rjJPJttHChDNvLcUGhx7fxmDCkGt1OsnShd08kCJYxb4PnUbGHbJem+c39bq5njKqHaGwomhkuGiTlsazY0kUS9itDQs0RHRpEtd+Z9RQUh4qQ/grz8u7ov3KNS3BipK9yJJ3pdeWuutmIxmh5nyFCIXZ6d1zGgFzOktnGnjLNlVGGWFkuc8MSL4tOA7wRde4vHhk7n5BGNgkxKXjch/ia1MjL5wKBsfFaT/VT4rrpRpv8oeqac9/DzkdS2hcgAPSzStX5NwbLULJZKrE6sUd9ZJHlDRObtAoq/3C/L14IZIpovHj5I89qDJFU/wc/5v8Khk5DLjlll2H7vtQOyfoZ793t1usmq+hH2LFDrVE7Ed9NI0sZJlembjjGeR2Z12BdAo9AIAJg21w4aphIyy+oreeP439nW2CA+45vyhmH+GzGzlpA6iNwPwHIfO8SJuM
+ QD2mRd3w
+ Uny4SXPsyiypqOxUBaLsJvQ/gWbg2A7bSqmTh7O/1KEEhj2VKR3Swmjp4og79MRqBGSHsEIvj5DiWuVu/T5mZ1Vyr16QNQiPbwo+RUZA+OJH4NQi1I3tB4iqj0vk+zlDFNTvXGlY1JFR4OpYJJdZpNrbVcI0mnATIBct/amQ5XMf+74CFcPKNhMem0UtQh8+9syDOqSoxRTNUQw64kuLLPTAAtKsCMgt72QyrohaDc4mNZSg/9YpxxtRe4WNywlG9kKOVbvULEHyJa51XYRRtPaH90NR4KWqfvXjlv4O1xojsgSVedKLM172aHluvg6sXaZzR6G/VyhG7bGt611L0Er0K6haGPEm/5NxIvQTDdNHUEHkZNGN58X4+GZXbUbb+aq9rAzhs2fVIifdOc6xr+3xaEccqUA/O6Nhl0qPonuCtLAN/y2eOhkby9QbpUl4BdoPE18+OBr1HU1T2Bq83vHoFv00x8tDDiUyvGZYpEcgkX/ceMVg1afv2sCuE07sE/AajTplaIWSRTwTt8+oCgPL0r9UZn+1sNFfl+NoCTdbdJOaG4Wc1Wn1QM/2osFWCLYfT2+cVFUVnYTJdnahUEjw3ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,49 +140,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mattathias Pinchover <mattathias.pinchover@uber.com>
+DAMOS stat sz_ops_filter_passed shows the total bytes that passed
+operations layer-handled DAMOS filters, accumulated from the beginning
+of the scheme's execution.  Users who want the amount for only the
+latest apply interval, e.g., the size of a workload's anonymous memory
+that is cold as of now, have to keep the previous value in user space
+and compute the difference.  To know how many apply intervals a
+difference covers, they have to rely on nr_snapshots.  But nr_snapshots
+is increased once per target per apply interval, so the computation is
+complicated for contexts having multiple targets.
 
-Update DAMON design document for the newly added DAMOS stat,
-sz_ops_filter_passed_last.  Also explain that, unlike other
-stats, it is not accumulated from the beginning of the scheme's
-execution but shows the value of the last apply interval.
+This series introduces a new DAMOS stat, sz_ops_filter_passed_last.  It
+shows the amount of sz_ops_filter_passed increase in the last apply
+interval of the scheme.  It is updated at the end of each apply
+interval, and kept unchanged until the next apply interval is
+completed.  Like the other DAMOS stats, it is exposed under the stats/
+directory of the scheme in the DAMON sysfs interface, and refreshed
+together with the other stats when refresh_ms expires or
+update_schemes_stats is written.
 
-Assisted-by: Claude:claude-opus-5-5
+Patches sequence
+================
+
+Patch 1 introduces the stat to the DAMON core.  Patch 2 exposes it via
+the DAMON sysfs interface.  Patch 3 adds a kunit test.  Patches 4-6
+update the design, usage, and ABI documents, respectively.
+
+Tests
+=====
+
+I ran the DAMON kunit tests (all 50 pass, including the new one), built
+mm/damon/ with W=1 (no warnings), built htmldocs (no new warnings
+compared to mm-new), and ran checkpatch.pl --strict on the patches (it
+reports a warning and an error on each patch because it does not
+recognize the Assisted-by tag, and four alignment checks on patches 2
+and 3 for the continuation line alignment that the existing DAMON code
+uses).
+
+I also ran the DAMON selftests in a QEMU VM without KVM, on mm-new and
+on mm-new with this series.  On mm-new, 12 tests pass, 2 fail
+(sysfs_update_schemes_tried_regions_wss_estimation.py and
+damos_tried_regions.py), and 1 is skipped (sysfs_memcg_path_leak.sh,
+because kmemleak is not available).  With this series, 13 pass, 1 fails
+(the wss_estimation one), and the same one is skipped, so I saw no
+failure that mm-new does not also have.
+
+None of the selftests read the new stat, so I also checked it on a
+live kernel.  In the same kind of VM running this series, I started two
+Docker containers, each running a Python process that allocates 512 MiB
+and 2 GiB of anonymous memory and then holds it.  Each process was
+monitored by its own kdamond, using the vaddr operations set and a
+stat scheme with an anon operations layer filter, with refresh_ms set
+to 1000.  Output from sz_ops_filter_passed_last was correct:
+
+    # cd /sys/kernel/mm/damon/admin/kdamonds
+    # cat 0/contexts/0/schemes/0/stats/sz_ops_filter_passed_last
+    546385920
+    # cat 1/contexts/0/schemes/0/stats/sz_ops_filter_passed_last
+    2157043712
+
+Tool use
+========
+
+Claude (Anthropic) assisted with the code, kunit test, documents, and
+changelogs of this series, as noted by the Assisted-by: tags.  I
+reviewed all of it and ran the tests listed above.
+
 Signed-off-by: Mattathias Pinchover <mattathias.pinchover@uber.com>
 ---
- Documentation/mm/damon/design.rst | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Mattathias Pinchover (6):
+      mm/damon/core: introduce sz_ops_filter_passed_last stat
+      mm/damon/sysfs-schemes: add sz_ops_filter_passed_last file
+      mm/damon/tests/core-kunit: test sz_ops_filter_passed_last
+      Docs/mm/damon/design: update for sz_ops_filter_passed_last
+      Docs/admin-guide/mm/damon/usage: update for sz_ops_filter_passed_last
+      Docs/ABI/damon: update for sz_ops_filter_passed_last
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index b676be697158..e40b8c1a3461 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -876,6 +876,8 @@ scheme's execution.
- - ``sz_tried``: Total size of regions that the scheme is tried to be applied.
- - ``sz_ops_filter_passed``: Total bytes that passed operations set
-   layer-handled DAMOS filters.
-+- ``sz_ops_filter_passed_last``: Bytes that passed operations set
-+  layer-handled DAMOS filters in the last ``apply_interval``.
- - ``nr_applied``: Total number of regions that the scheme is applied.
- - ``sz_applied``: Total size of regions that the scheme is applied.
- - ``qt_exceeds``: Total number of times the quota of the scheme has exceeded.
-@@ -903,6 +905,13 @@ to exclude anonymous pages and the region has only anonymous pages, or if the
- action is ``pageout`` while all pages of the region are unreclaimable, applying
- the action to the region will fail.
- 
-+Unlike other stats, ``sz_ops_filter_passed_last`` is not
-+accumulated from the beginning of the scheme's execution.  It is updated at the
-+end of each :ref:`apply_interval <damon_design_damos>` with the amount of
-+``sz_ops_filter_passed`` increase in the interval.  Hence it shows the size of
-+memory that passed the operations set layer-handled filters in the last
-+completed ``apply_interval``.
-+
- Unlike normal stats, ``max_nr_snapshots`` is set by users.  If it is set as
- non-zero and ``nr_snapshots`` equals or is greater than ``max_nr_snapshots``,
- the scheme is deactivated.  Note that, unlike watermarks, even if a scheme's
+ Documentation/ABI/testing/sysfs-kernel-mm-damon |  7 ++
+ Documentation/admin-guide/mm/damon/usage.rst    |  6 +-
+ Documentation/mm/damon/design.rst               |  9 +++
+ include/linux/damon.h                           |  6 ++
+ mm/damon/core.c                                 |  5 ++
+ mm/damon/sysfs-schemes.c                        | 17 +++++
+ mm/damon/tests/core-kunit.h                     | 92 +++++++++++++++++++++++++
+ 7 files changed, 139 insertions(+), 3 deletions(-)
+---
+base-commit: 67f3b04b277373438f17300e056306adbd9edf7b
+change-id: 20261113-damon-sz-ops-b4-3857ebdfbcc5
 
--- 
-2.54.0-uber3
+Best regards,
+--  
+Mattathias Pinchover <mattathias.pinchover@uber.com>
 
 
 
