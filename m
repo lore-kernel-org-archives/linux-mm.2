@@ -1,94 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D421D606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDED6606A334
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MP/mu4Hg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DguWC3yV
 Received: by kanga.kvack.org (Postfix)
-	id F065B6B05B0; Mon, 16 Nov 2026 04:56:00 -0500 (EST)
+	id B4D4D6B00EF; Mon, 16 Nov 2026 05:08:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB8F66B05B4; Mon, 16 Nov 2026 04:56:00 -0500 (EST)
+	id AFDE66B05B0; Mon, 16 Nov 2026 05:08:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCDC46B05BB; Mon, 16 Nov 2026 04:56:00 -0500 (EST)
+	id 9ED436B05B1; Mon, 16 Nov 2026 05:08:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B689D6B05B0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:56:00 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44906A6821
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:56:00 +0000 (UTC)
-X-FDA: 85440526080.17.7373830
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A6B1AC000A
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:55:58 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MP/mu4Hg";
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794822958;
-	b=gHpfWY9lqxXaT4GB2FBa40YRKR3FdwgsjsoKplEM+7QQbEkx5HtcKJNKvnZgJglfsMqB4Z
-	RyTY4Zdy+Abu49DhPD61GqJ1+TBqcUk/LQTvSl1+dhMsvGEElx+GZVVlQUFQl/rMnLd5GR
-	lAmgfgkcAzdgkwX4dOJKncT/aLmK4B4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MP/mu4Hg";
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 795E26B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:08:14 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C170140581
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:08:13 +0000 (UTC)
+X-FDA: 85440556866.12.1762C3F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2453DA0008
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:08:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DguWC3yV;
+	spf=pass (imf25.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794822958;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794823692;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=whHoRztwZjb/3Caxzq0M8bzF4x8Q4EWlbXOfbOCEks4=;
-	b=8IN1ARB1baMAVCWzu9KyOY7Sk+BTTLfU/9euuOYVvu+572FoyYcv+VZE02jh3gDRD9ONEB
-	tWnCcMh2ztf2UXDpycLhCK4DhB/J9AWO3E/sKB6YE6wZ15WtyD36D2lbCFgXt2uPsfB8s1
-	qEIidy1/q4dhStugxi393n/dob+gB3g=
+	bh=xomABNJRS5DDfBS7xLxXB1ttX9vN42Q+i+1BI0PiZcg=;
+	b=GuwgrBezytxySLrs/GXQ+Oa5p+Zp9GNwiEsgxGNpgM/KCIxKk9+aquL6czh/dojYG2HYMc
+	ruaPXlSJ6WD/xkQZ68j5B6Bof92C91yFFpfvDDxH6qc4NcuJ70P+AzbV1GKr6UGmn2DBUm
+	E600Nl7Yepc/fY52AYpMBgpcClb3NBw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794823692;
+	b=uYscRc8lmSACNoMAQzcmoJjEQU3FVlr6hPnszrRyIgLW9cUICzIfTUpEtJjslcv0nsFN+t
+	XRzCJQgr3NkasLyqkfr5TlkfaR24+3PKE4wNuZeWPcSblxDA/5Vle5RDBWGUR9dRuyPNuB
+	owNGDFpyKb6XLOdW23yuAIXzLTqHPEY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DguWC3yV;
+	spf=pass (imf25.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4146D6284F;
-	Mon, 16 Nov 2026 09:55:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52AC51F000C4;
-	Mon, 16 Nov 2026 09:55:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E333842B3F;
+	Mon, 16 Nov 2026 10:08:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEBC1F000C4;
+	Mon, 16 Nov 2026 10:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794822958;
-	bh=whHoRztwZjb/3Caxzq0M8bzF4x8Q4EWlbXOfbOCEks4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MP/mu4Hgbaz7UH0W81VWdv6nza3CIfh5e7JdPxf4D4BbTMH2BJYKPc4h/Sj57UUL9
-	 WdETvhJLkQJt+WMBZ+aIyRs+Da7P2QHHXa9DcrYVX7L/6bn+Iub84FtTPwF7Sf0qfc
-	 /PlpLcqthB2h+4tXr0TvBg2UhkgO9by2XTYJ0oZ5GuvakT+coBRjKviFDV4g8BbkEU
-	 j0f/l1Jnw492u3M2r66TYHoq3N9dDyvFCYEEfdAlTgG8yoTcp+OVJ7+f3NXvFSjk9W
-	 WSlKRbV0AocB6HEGUqk6WCT62SNbbxelqzo0uMUcCma8qSfh0tGQbRjQHinsN/kB4t
-	 esCPwgAi0BvGQ==
-Message-ID: <sashiko-outbox-216668@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V2] lib/smp_processor_id: Don't warn if there is only
- one CPU
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Huacai Chen" <chenhuacai@loongson.cn>, "Ingo Molnar" <mingo@redhat.com>, "Peter
- Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent
- Guittot" <vincent.guittot@linaro.org>, "Dietmar Eggemann" <dietmar.eggemann@arm.com>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Ben Segall" <bsegall@google.com>, "Mel
- Gorman" <mgorman@suse.de>, "Andrew Morton" <akpm@linux-foundation.org>, "Huacai
- Chen" <chenhuacai@kernel.org>
-Cc: linux-mm@kvack.org, "Tiezhu Yang" <yangtiezhu@loongson.cn>
-In-Reply-To: <20261115095503.2922598-1-chenhuacai@loongson.cn>
-References: <20261115095503.2922598-1-chenhuacai@loongson.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 16 Nov 2026 09:55:56 +0000
-X-Stat-Signature: 8otaehkyao7q318ff6md8drxftu4jti6
-X-Rspamd-Queue-Id: A6B1AC000A
+	s=k20260515; t=1794823690;
+	bh=xomABNJRS5DDfBS7xLxXB1ttX9vN42Q+i+1BI0PiZcg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DguWC3yVLhDQZdYT0Ss3fhD2eGdA5SSVlW9n3iPptBfnNPe57uUf6enAe6ijWcmaz
+	 YjVLnBWa9RPOSruTDJR0Bw/3MBhirdVRAwMMMJoJ2aCU4An/GS0DtPjXrbqzCxqDPx
+	 NXjX5P+k/g4k0nvzZNmaC2wbs2IQGS3tTs/Ubuelnz0Bg3SnHkC0YdNPBkcBRci8nR
+	 7lv+y0OOJ/6bJHg7+G3mlMqJ1XR82uprshFJqjuMp8QOJoOQsB3/mOCPzuozJNDmLX
+	 zkEZsKlIaRMMroq0JiFxUbAdPShLkYVB3ZBtWQqxDX1Bb3zGNpb0IiPoNJzR202VrQ
+	 LD38oJxnYN29A==
+Date: Mon, 16 Nov 2026 11:08:03 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, Sashiko <sashiko-bot@kernel.org>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	"Jose A . Perez de Azpillaga" <azpijr@gmail.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] mm/hugetlb_vmemmap: fix PMD split TLB flush race
+Message-ID: <avrWA0hxiqPDmivK@localhost.localdomain>
+References: <20261114112523.75208-1-songmuchun@bytedance.com>
+ <20261114112523.75208-3-songmuchun@bytedance.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261114112523.75208-3-songmuchun@bytedance.com>
+X-Stat-Signature: e3dwy9bqp1gw7ffsjj8jshzut5ptzgfu
+X-Rspamd-Queue-Id: 2453DA0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794822958-795336
-X-HE-Meta: U2FsdGVkX194RVP3IZEVlTlOfn0mWHO/sM19RxOFHwbRtQ8NRq1OmxhxK1Utk7FV9R64fQIwQiCayhSkdLyjHYKqVOQWf6TxxmFfTYFpfhOZst4wwoO/ju3tdayzKDHvy4HIccxxAyfHifl/4R3VZqLhf15CnfidwjVkikHNxkAqYSc410XYLKIij2Nh2sLIOshL2Q29VhrCnpykjWHJB6xixEa3eYU9ImhFozlkqkNNA0FbE5X08w75TLMj8R6sU9Y/8ka8QksQ4Of+547QMl5kgEqKyA46uBsmgXNqcLejFkN5EmDZTd5h9ADDKMxa6S7kY/W/73tQfy8cBhSIpq2Vo020bWDg1ksj+TV0FdEDLShioU35XzQwmsVPof88Ar7NL6E58t44Qy2S9JE4zPcmybaJcedkW7XHUSTf9ucu1K2i0bXdI1iH9JO1gge5gtD2aHgF8UnxnwkgWunKH+N97GclJ/u87BbPTAcZ2c06dlu6jA/iUFWvKCV0OWWcDUODLV9x1scIAGjRP58oQurkA6oHW7c+/FBB4BErufIlBMgfnpCYXwdH1fWMolo2PmBD5do3W455nY/GivEOsG0kXpVs+uglVGJ2tMJoUFTilWjU8wAxpGR+gGR02iGkGHAPjYoEhSMs2fCfvnwbs0cQTY+QX/yEbWE8JdUwGBcZqO2l6ZSJoBdquTexIrTWtl9app4qFXNA0onHTjp372i15VqRiZvSmcf0abhN4dsL3Z0usd5/qY0G4y3TpR+24AC8dxUuqOklWIGyEYclYEGINrnXF9cI8d9qw9yMjsAZicFQ7+Pi7GJEikD2mhB1oocS4r6EMYWNA1bJ7cHCGmbXocVx3/XNUxVbw9UeGBfEYzPBlb3KCdHgzifnuFN+HGHNL5OO1FcEj2sJqI6ZBnG8EIDrFrQeL60KJIMMcTqPz9nl7QzP1HtsQb7tPydu7Pw937Dy/CD/hkCC6KO
- IR1OelzT
- V9AykL/EH9cTHlxzQTvsmyDqOGlv36gamN9HFa53d/yrNqGGh1QmzCof551hsIe3Hio6oYNQkLE5tvxvd7vdah55O6W/zusrb9PpWL/GqdC2d1FwMHEVYsHQW218ViTXe1vP+wY3/QNgIIF3aRp8+oFpvBNfwD97rfzP8cHQYDsmyBaSI09219ahSwhNPOxcd9WalhWJdIf9jd2DSLfv0tTdNdI3G/kk62HlTbYI4qvQYNM6Kxnd7LK3DLyZhFYN5iMbgjRZrtoa7WpCqljoQDVQuzQlBrcN8ncSRm4ndeW1CNxZZiGsqskw8m7GQGDoEjgIGTeUcwvLYN/L3z2EwsLb3ZYYua6c1Z9sQo8lMgHfvy8gwJxIyRHPtPQVdsUV4UxK7Zp4/VsA2laPYnRy95uuSKGjs8L7uAV1kDzfxgI9pHT9Nor5Huf3Qso8tkqwMQG8GPTjCsY86pgn/8Sihc4hZsIyWCIA7BobjICDhufSVus2tghrYfHrvZn9I78xR8SVMH9+yibtoJDgPGXUDqIPQbal9Moub6yFTRzIzjzXk+/roFFHjR2TPBsJpCcJN61yQdLOSM4RzSePhU9rTcZijbFOrKYV31STIU4gcmlAw3yi+WLU0n+/yUbth3BhVi0WSmcZaZwW0+lJtsvBTJDDxuV2v2rUhcnWKUgHuwqbmyjAudPMq12fZlTdv1rpb3Xsj
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794823692-381734
+X-HE-Meta: U2FsdGVkX1+ZF6MoBP+J8swywtHKO6LEBw6QGLXuMJ1BpmAuxFp57TnX44+2HhZqdrd2UVvX71miLSSGdB2cOAANvdE5xQnDvd0DdDsdXaBNoN5mMAn2DANdPEQjQKeQzJdFgs+FnjVZPR3Sbszpzr7GzSIBPN3mXMcvdnS1l/CKhCRZLDl8p/ZqrQf2gH2SIcBtheH1vVnKixlax7D2X9D0OZ2AnrotPwryIbgyIkbZhyWjcDaSJriZSwnD/AgmqBFlDTGg0cGcv7iLynp/c+subr98+vXffc3tUKV3EUWebrZGKv4DSFRnQGaH9Xz6ir3bNZYRyTJ+GsUKo6Tzkc8JHFOMyB0ri0L44ySUEHvlNmxKS6K6wFyOfTPvqdiI2p7z9gLeLLb1GsTnmPnIIEvTPDVOj2dtl365oxFSnKZ95t8Ll/3rdwz/V2VgLtdGXunlfCmunLMi+XjOCn4LUq8AlD5OvVRNhTf3t8lYo0Vu0jv0I+GNQ9yIhvgZ3cO95zDhJrM5KUObeTfjWICDhe1s4I/286M0JJG9x/I8S80HCOqN6rQzc5HK5N+SbvLuErImS5h9o94h8WSmGFlL04Ztv5wX9B5u+1tNoKiM19UkLsOetS2KfdRddjZxdpn0akmvfsjTwEQDTDALxKbncD/zMOAWkl7FsaPvRq3xLaHpiqBI7ve7RFniapECSi9Gw6/uSWAb4DcmYAmwS40vYxiPZvEMZpirqo+9ttAst+CPuwvtPIuUC6jAXFiikAskqXnPOgAAWy7okyJCtLhabio6Dv3n5hH1YheGE4aJipPCZFIAom6ptRa2W63ycMNdp+Y60m77P3jOazUosrjuImjFaDmaUO3Raai/YcSI86wVuB8qjNtQ1qasGmGuSTmIQxFdqY9PgYucH4wHZbGmcijOSjqRq5zmfun5eM3EXea4XTMVQN6ZengDSFahf7zCw17sYZyWSwwjoCgXyah
+ INASe2DD
+ bPpKWU4fYQtw93+rbm7z+LhniZR7R0GQZyX8E2A13fThO4AyHTpyVdJP39P1Hn6hs7fSvPvrMS3XunJBGiARK5bBsqgQeg/f4Z7NQ7FAC6vuDv3fSyt53g4JTzeKcBcI+c4sHfkO08YN+gGIj2eJ3EOeo1cf+2FXXLM7LRhcKfJxosL+7Y4WLh7BS4dZEYFBw9AwsHfVXnVeGJQf9zQ4b7gp2FBcHQsAlcDl22kroXnP+rivOt85GGBxd09l5fStshEy7Xyz74g6yp8zCs3kevQFpaD7O0nPdvhrRnfxKs/v9V4+9dVngF8lWgxI1y8oTLYdaDVRPo+of+wnREL4d7lBV8+pf8wk5ZbRZ/g6h/J/LwSCdxlzZLH5Z2AP95WYK8O4xKX4TlnGYmBd027o+uu402UNzrhg2MFidnKhZhcvs5uGmtNdDUSv+Gb6zTlsgG65dUV3jvYMKa1DCE1l4XTxMpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,113 +104,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] lib/smp_processor_id: check_preemption_disabled() skips
-  checks on !CONFIG_SMP
-- [Low] lib/smp_processor_id: missing Fixes trailer on stable bug-fix
-  commit
---
-
-commit 62cd1e08e5d017184a1415887d93a1188fd3f001
-Author: Huacai Chen <chenhuacai@kernel.org>
-
-> lib/smp_processor_id: Don't warn if there is only one CPU
->
-> When CONFIG_DEBUG_PREEMPT is enabled on a Non-SMP (single-core) kernel,
-> calls to smp_processor_id() in preemptible contexts trigger some false
-> positive "BUG: using smp_processor_id() in preemptible" warnings, which
-> are harmless noise because the process always executes on CPU 0 and CPU
-> migration is impossible.
->
-> Here are some of the trimmed log messages:
->
->   Call Trace:
->   [<9000000000d33e28>] show_stack+0xf8/0x1c0
->   [<9000000000d2fdac>] dump_stack_lvl+0x4c/0x78
->   [<9000000002456fc0>] check_preemption_disabled.isra.0+0x100/0x110
->   [<9000000002456ff8>] debug_smp_processor_id+0x18/0x40
->   [<9000000000d31118>] init_cache_level+0x18/0x90
->   [<9000000001adbe2c>] detect_cache_attributes+0x4c/0x640
->   [<9000000001adc44c>] cacheinfo_cpu_online+0x1c/0x310
->   [<9000000000d5ae04>] cpuhp_issue_call.constprop.0+0x94/0xd0
->   [<9000000000d5b278>] __cpuhp_setup_state_cpuslocked+0x208/0x320
->   [<9000000000d30148>] do_one_initcall+0x68/0x200
->   [<90000000024711b8>] kernel_init_freeable+0x1fc/0x294
->   [<900000000245824c>] kernel_init+0x20/0x134
->   [<9000000002455b54>] ret_from_kernel_thread+0x24/0x1d0
->   [<9000000000d31650>] ret_from_kernel_thread_asm+0xc/0x9c
->
-> This warning only exists for the !CONFIG_SMP build. This is because for
-> CONFIG_SMP cpuhp_issue_call() invokes callbacks in cpuhp_thread_fun()
-> which is a percpu thread, but for !CONFIG_SMP build it invoke callbacks
-> in the init process which is not a percpu thread. And there is such a
-> skip condition in check_preemption_disabled():
->
->     if (is_percpu_thread())
->             goto out;
->
-> Since there is only one CPU for the !CONFIG_SMP, we can simply skip the
-> warning if (!IS_ENABLED(CONFIG_SMP)) in check_preemption_disabled(). The
-> effect is partially reverting 570a752b7a9bd03b50 ("lib/smp_processor_id:
-> Use is_percpu_thread() instead of nr_cpus_allowed"), because now in the
-> UP case nr_cpus_allowed is 1 but PF_NO_SETAFFINITY is unset.
->
+On Sat, Nov 14, 2026 at 07:25:22PM +0800, Muchun Song wrote:
+> Bulk HVO optimization converts vmemmap PMDs for a list of folios into
+> PTE tables before issuing a single global TLB flush. After publishing
+> a PTE table, a concurrent single-folio optimization can observe it and
+> remap its PTEs before the deferred flush:
+> 
+> CPU0                             CPU1
+> hugetlb_vmemmap_optimize_folios()
+>   hugetlb_vmemmap_pteify_folio()
+>     vmemmap_split_pmd()
+>       pmd_populate_kernel()
+>       /* TLB flush deferred */
+>                                  hugetlb_vmemmap_optimize_folio()
+>                                    vmemmap_pmd_entry()
+>                                    /* sees a PTE table */
+>                                    vmemmap_optimize_pte()
+>                                      set_pte_at()
+>   flush_tlb_all()
+> 
+> Modern MMUs permit overlapping TLB entries with different mapping
+> granularities only when they translate to the same physical address. In
+> this race, the stale PMD translation still points at the original vmemmap
+> backing range while the new PTE can point at a shared or replacement
+> vmemmap page for the same virtual address.
+> 
+> Serialize deferred PMD splitting against PTE remapping with the HVO
+> rwsem. Hold it for write across the split-only pteify batch and its TLB
+> flush, then downgrade it before remapping the folios' vmemmap pages.
+> This guarantees that no PTE remapper can observe a newly split PMD until
+> the stale PMD translations have been invalidated.
+> 
+> Fixes: f4b7e3efaddb ("hugetlb: batch PMD split for bulk vmemmap dedup")
 > Cc: stable@vger.kernel.org
-> Reported-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/bug/linux-fbdc3410-a4cf-457e-88e6-684380fbadfe
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-[Severity: Low]
-Since this commit is tagged for stable and addresses the !CONFIG_SMP
-behavior changed when is_percpu_thread() stopped unconditionally returning
-true on UP builds, should it include a Fixes: tag such as:
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-  Fixes: cac5cefbade9 ("sched/smp: Make SMP unconditional")
-  Fixes: 06ddd17521bf ("sched/smp: Always define is_percpu_thread() and sch=
-eduler_ipi()")
+ 
 
-> diff --git a/lib/smp_processor_id.c b/lib/smp_processor_id.c
-> index 94b3f6b195388..be079b9085045 100644
-> --- a/lib/smp_processor_id.c
-> +++ b/lib/smp_processor_id.c
-> @@ -22,6 +22,9 @@ unsigned int check_preemption_disabled(const char *what=
-1, const char *what2)
->  	if (is_percpu_thread())
->  		goto out;
-> =20
-> +	if (!IS_ENABLED(CONFIG_SMP))
-> +		goto out;
-> +
->  	if (current->migration_disabled)
->  		goto out;
-
-[Severity: Medium]
-As reported by Peter Zijlstra on v1 [1], does returning early on
-!IS_ENABLED(CONFIG_SMP) disable all CONFIG_DEBUG_PREEMPT checks in
-check_preemption_disabled() on UP builds?
-
-check_preemption_disabled() also backs __this_cpu_preempt_check(), which
-guards non-atomic __this_cpu_*() read-modify-write operations that can
-still race across same-CPU preemption on a preemptible UP kernel, and
-suppresses warnings for smp_processor_id() callers that would be broken on
-SMP.  Because !IS_ENABLED(CONFIG_SMP) is a compile-time constant, this
-also turns the remainder of check_preemption_disabled(), including the
-current->migration_disabled check made unconditional of CONFIG_SMP by
-2885daf47081 ("lib/smp_processor_id: Make migration check unconditional of
-SMP"), into dead code on !CONFIG_SMP.
-
-In the reported trace, init_cache_level(unsigned int cpu) in
-arch/loongarch/kernel/cacheinfo.c already receives cpu as an argument but
-reads current_cpu_data via smp_processor_id() instead of cpu_data[cpu],
-while cpuhp_issue_call() invokes the callback directly in preemptible task
-context on !CONFIG_SMP.
-
-[1] https://lore.kernel.org/r/20261111170600.GS1779021@noisy.programming.ki=
-cks-ass.net
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261115095503.2922=
-598-1-chenhuacai@loongson.cn?part=3D1
+-- 
+Oscar Salvador
+SUSE Labs
 
