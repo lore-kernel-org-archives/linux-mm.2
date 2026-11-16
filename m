@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E09606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 18:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336F3606A33B
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 18:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aV6LHwkJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gzU3ZvOP
 Received: by kanga.kvack.org (Postfix)
-	id 754A76B05C4; Mon, 16 Nov 2026 13:31:24 -0500 (EST)
+	id 04FE96B05C6; Mon, 16 Nov 2026 13:31:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 705FC6B05C5; Mon, 16 Nov 2026 13:31:24 -0500 (EST)
+	id 0013E6B05C7; Mon, 16 Nov 2026 13:31:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CDBF6B05C6; Mon, 16 Nov 2026 13:31:24 -0500 (EST)
+	id E31DA6B05C8; Mon, 16 Nov 2026 13:31:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CB786B05C4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:31:24 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8FB411C2CC6
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:31:23 +0000 (UTC)
-X-FDA: 85441824846.29.C8DC57E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B7F716B05C6
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:31:33 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 435A880281
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:31:33 +0000 (UTC)
+X-FDA: 85441825266.23.C2FFCB8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AFE13160010
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:31:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aV6LHwkJ;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6C8131C000E
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:31:31 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gzU3ZvOP;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794853891;
+	b=JuGg/hNS1oPW1/855G1DvXBJAe26YO/SOxnRxO/WaWw88qtGYIyJHvwSPI6bXg6G+Vamu4
+	AdeW5UlZj4w0DBRC/Wx55QVg+iQubUeZ0ttNAfF+JOdKeyBbRR0G2V1PAS5Z5DHfhvUaeJ
+	vPI2JqZmoYCOhgeghX2c8QCRA2J0840=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gzU3ZvOP;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794853881;
+	s=arc-20220608; t=1794853891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ll3asYuiuZ79eATlz0yEAcompJfGJnlC9CkPVberbcg=;
-	b=mmmolMpQJqyqW2S+zsOaaSWgdJyDiRZlahxiIomRxsmY0E11nhWnaoMK8w5dO9hiriv4dr
-	msYlesAf4dYqNUsP6wkzEfDq2yUbbE7c2p1FyHnb0FGimAtOnFk6qbkteGRhZy6R+2rJ1g
-	3aSa9SjoYvsRlImj5lyeVfLTNLuBlkw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aV6LHwkJ;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794853881;
-	b=ATTQP3w3JpYvKKqcskis0dpjZlwqf5nwPbELTj/2f85iktqoygdbctg108KrxEYOo25SvS
-	tz5U67cOFCy67eGUVnVO4GqoIehIi5qw/WzxALMCnAdkNeEP+XZHthcF5K2ShNHJg/Z9tp
-	3joTIpDSnQXOZbh7feuStxESXjE5vlE=
+	bh=q0jJ9DG871OFSsJRPfDNFiA+MAmHAYLFk8xwl1caeO8=;
+	b=R75TOeKKc9ygk/CyDaBxhPj0kkZXwPlkBMiKT92VA11ZvQdeQ8TQ/qXLKqYFSZ+AkAVLLN
+	knqkyHHsmMi35n3e9nYthiHkGrX77ENNPWDjKfGkzb6N3UKelTM25VgUYRKb6gicgDNwua
+	jxWONrYRHjal6ukHEzi3a/eOCxamQ90=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0AEF41F9A;
-	Mon, 16 Nov 2026 18:31:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC6A1F000C9;
-	Mon, 16 Nov 2026 18:31:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C6F96405D9;
+	Mon, 16 Nov 2026 18:31:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C1B1F000D2;
+	Mon, 16 Nov 2026 18:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794853880;
-	bh=ll3asYuiuZ79eATlz0yEAcompJfGJnlC9CkPVberbcg=;
+	s=k20260515; t=1794853890;
+	bh=q0jJ9DG871OFSsJRPfDNFiA+MAmHAYLFk8xwl1caeO8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aV6LHwkJ65YIOBZzlGD2MLT816Fhf7JiPdkgh9tZNaCgbT8HNSC1K9+I4/0gjqRK1
-	 cVt8ZI5h9r0Br8OUrwGsPOtMHUlWnvTED5hkhFLCzMSpz7x2xIK4uE4P0JSSNzfUmG
-	 24Yqjo6x0GHwxY9K7LZPpKqqor2oN8sYJ1n0Ga1BLgA3XBwqu3zP6g7QSIaugXpb+w
-	 MT86UsoghGDyQfJU6uFNFwETHiQOP0BgtnG9NcWGBR34EpLxfg5fIlo3sRR+FOXOy0
-	 CM83pYgPHFll+SfnIaPhVVy6m++XI15nfp4Zw2rKbyGQ1dJ1P369m28AujKxA2hluX
-	 tsKXUN37L1pfw==
+	b=gzU3ZvOPOm6u99r1euC5lial6Qf/zt9Z2yF20f0NZfK0BVs2UBiLqG7yras464Rq5
+	 U/O54qNu+c8Ffk4R8OioGkEV2DxIx6W2UBRXjc7RgtGhuRVZyZvGi380w6qagb+iaY
+	 H9T6pnKcrcLEz29qrY3kpf1UsQ0fahsCc5+cUGi84dIoCI0gI4eUAJbcOn5HdCb2Ak
+	 f0VFiHQBSxpfcvcYAk05ieFQaDQ5PTaN00cI3lUo5iaXRR71T0/LYj01OAOsb2YLhY
+	 byGtidwywQpBEzyyOwWxmdTBT9Jga8CtTWC8ZMQ5QBajeLrCaOLvFZJCEuxlRc3C4P
+	 ReSDG4BvlyAhQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 16 Nov 2026 19:29:31 +0100
-Subject: [PATCH v2 10/15] mm/hugetlb: count again if the reserve map shrank
+Date: Mon, 16 Nov 2026 19:29:32 +0100
+Subject: [PATCH v2 11/15] hugetlbfs: do not grow a sealed file in mmap()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-fixes_hugetlb-v2-10-4dd9e94ea9ac@kernel.org>
+Message-Id: <20261116-fixes_hugetlb-v2-11-4dd9e94ea9ac@kernel.org>
 References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
 In-Reply-To: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -95,29 +95,30 @@ To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, stable@kernel.org, 
- Josef Bacik <josef@toxicpanda.com>
+ "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Chris Mason <mason@kernel.org>, stable@kernel.org, 
+ "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6751; i=david@kernel.org;
- h=from:subject:message-id; bh=pjdR88mv7+rpLICVRcSvJB2NuhqdX1kITUt5B5uk0C4=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJ+e3c6nm8Q/Wp546FVUle8uvfENI+8ax6hrfriLDvv6
- kxb5+DTUcrCIMbBICumyBIUfN/g5ct1tdVufMwwc1iZQIYwcHEKwEQsbjP8d3t5cIX6/cXr/e/8
- 9pzewRpX9ETChzX4Z4f6KcOfz/UPHWNkuBpspJz/T/B1UKMnX1FjnPPlp5M9KtKuM+Xc/XdR/+w
- CTgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1744; i=david@kernel.org;
+ h=from:subject:message-id; bh=G/tuABhS2tS7ZSsk7F/KPnT0aGZ5wg9nvABDUFm2+8w=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJ+e3fGM9mYXipelJ7Ywvbq5fLfrpsUPx/6NO/X87g3o
+ QFamoadHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExEX4jhf6Wtzm3ZywGvbzdN
+ TE6efEZc8KnNtVUBczU1DvIp39V8/ICR4UPy4sf/53i6vRIoZznvk/3IQ8Bp2r9jsyb+KxX5E59
+ QwQEA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 6C8131C000E
+X-Stat-Signature: jed4eb9bc3rwwoz97hg6w65rz8gok4xp
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 9bddyw54ehqn7q195cpyweqgp6bn8sn4
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AFE13160010
-X-Rspam-User: 
-X-HE-Tag: 1794853881-7913
-X-HE-Meta: U2FsdGVkX18ZU3/K7z7LK1f957lMiQRfeJJuCH58qQ3LxS8eNwJSOig6ITQvb+b9kRfXX0lml7TKEzZu8NqQ/NlFaCPJSafuvONswJrv0y7TLkGLXxRoGJr4p8olGE2zL5FbW/ymdzkRXrEUUNMNDVFMy4iGOXrPF1rOPMnKjNged9Ch/UedCXl0/PJzufFy8lb7SBRnJ0pTsAoY6NOf3q/SbhZKISysy8sCFfZwaHLEDvkZpI1qTgqlaZ6HbRNEwm4ZOKLrX9sQBFNnAj/oM4ZU5hk4mFtMcpRo4AzTYdDeQoOXNwFUvpxhYq40xkoqz6aw19LgF9CxnRU6AsUA0Iu36OCpIo8BroU9f1z9ha5q6tIcvzlnfHozdQ1qHeKc0TS4FUHm4om7MtBHg58P+Yd68Xu2yvRIkCom4010z3WGIpE82aAMB/rhnFusJHK9j+d8yQhvfbCHTFG5K2pk11hqH71BSZ9OtY3CXglfrh6k6WRI2WreJe+Yd2wkC6mIvoolEUCHfY+8oR9jVhZsDqzssVM4oNTMi7Qi0++JH7RSzhOttFbnfMTpEYy+kvNuT6a5eq8UDqJlctX2E5jlW3d2bRxOaZFwHiCll3Ihwzf1TaSVTfKky91YeiiaQC/OgVjDGZcJlBOesw+srlQ1LayQFb1orovE4Qq3lSXS0dnfVVgPIHNBEQr4e0SqRM6XT6QGisES1rmbpstNsRKQFStlSFxccAIP9dckJoSUFRnai8wcBMc0VL5xW1UlKFW+c17RtHd3Y469YErUpd8zLf9gPJtWb/NphTR+umP5V5VBJLBDoRTa0WX5xU998CPyuteBAHVLG9Igm5+Qh9W1deK32LrHAXOES07jBKzHDNwVIl9SDm5ruMtatPvO/tSE/lG/yC7sagCiF7KryJJWrru9oLnofXUP7Yghpcp4BP8yEusV0mAkUWhKxcOd7Ts24wPVQvE8x87zkpufZKn
- aEa0vSHE
- Ac/5ildqZaT6fVf+LH2CBXKMAtpfwbQp9dJjWWwiEvW5jlOtyYHOqPrk7I2IcIGsW+vhafZQ+DaBxNzctCuPd36tGikgbxIVAbKJf7KNUnLlxm76FfOFefYfEHBGw91miXU35bfBKtD/1HpISgDXA4W17oxo/lfcflkAAj84FA0oSQ+7R/WxPao0lw2r7pyNBAa+92O/D+nzHahi5uVOOPXvJNs3sOog/wEopZOj2QYBo+z9YWjt07fUJAzcUaUl+9fgu17tyD452KjBjoXDyfJQb6WUXlTytXdHfh7rvE/1HsP3QRoPK+1ENVAEGc7RueD9nBKqDm+dF9qAApwLZiSVPdCm7oWIfIYgCT4nSdTr3lMWAvx5jR2bz76yXDPJ2lI7T
+X-HE-Tag: 1794853891-367978
+X-HE-Meta: U2FsdGVkX18ghmqLgrdp+QjgVU6pIX0EZB1XHglDTilD+Z4KfTXGxiGWP5SN04P9B1qvJgzQhnLNga2Xm/Z7MaKSyZ6ZpgEse717geoo1mKq86OPcHVcdOABfC1gZhpqjbgUJX6iiMFtnX+id7ydXnDSnJrIC7sVEChHUf8B9sxnUc/hRjUBQ1PHqxxccXPQ6ddNmdnZLCl1hRL8IsUmb2IUNmf409LBxdjrE8etkcmk1a1oiqguCFkVTFmJYynJgIbpO+byo4D3xGKoS1msKbMKzIgksuD+/PPu7N8FpzLY2LX42XeAK+OJHaf4yfOSwSs8LyEx7oRKvLQ8cl7NF7uf6J7/BlsC5d7NouO0zkkKMsB2TUf6O4o9g0+N90TAbqBSLmvO36yZFFhYeu5YF1QyWNTnTxRVmGQIeGGq/LVT1iERAFLdeSG+K3i04AqzDQIBcnxTnBart77sOQwlGeEMp6PFjqvTe3/KAoFXGBQTC4JLENq1Zr9SZPYeupjAXROIu7ZkYV8S8V5xB5PniM8UYHdg65eSnjScAwkfnYl7MnVDk+b3BFSanR3q+LRAIiP0QkOqLOvthb+PCcw9dVT8/Vz+iP5CYKnOSR2hmlhc5TVTiCMlMIMUQd0U+8imjgMCrfV8N6khqrcyqVQMgq0iY+0S2IUv+jjKcYoAFGJYLAfkgY775EzlXAjCiOCswhXNYC/8bXpv1ikENnJvxO5+pa8rEDyYbS5m9+KEiNbIGbzOL3LhpmEmOMnBE6xxcCqX5sUN5HO+N0zrFDpINRb0upGQEYH91i7QG2aos5lkwl1KBe5VDVNjhLbWLRRTFe6O3qGnHHUqikR0TEyj8u8+J4nAhB4E010PWpG2BH3keicJO6f4J4pXNBvuK+Nk4HSReBqFzKtZIBPnhBpyU9k0T7MnCKKke9IiF8kmjHxf0D4LOXVjROoiiCxEwqeIvlkNqZOF1lmeMQ/KA5J
+ u8MPpv4S
+ cWc8Q8BARJW7KnPEzVzAZv/4rjcFqgsXuPXSR4U2je9ZdUZWQuw+ilrZfa9TiWMYZFomYV6pRGgSdRienFMA6RopwmghOKEFSxAq4O8efwcHf8W6C+bPsQV7FAAtlNrNgyrig0jDxy32YfQJRQbb54BACJMuOItlZPOxvgedDsxgqf+PheKaiWXC8Ee/Nv6i66UDnpr8WXIjwGFjZo0CZXbfpD8cTzuSKzjVl3UtLXdyLzCRzh2GqA+bkUGHib3n54TPjGAhGismAc+fAGK6nbv/+5w32W0WFmFMYsgf0QtaAHhHkNze1BZMaH6jPCWeZt++mf7n9s6ZdZoyaAurwRSxA2fGeQTvRoFHLQriShykb/BAdxvTAv4+ZLomVUlhLgKrN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,171 +127,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-hugetlb_reserve_pages() asks region_chg() how many pages of the range are
-missing in the reserve map, charges the cgroup, the subpool and the pool
-for that many, and then lets region_add() fill the gaps.
+From: Chris Mason <mason@kernel.org>
 
-It copes with region_add() adding less, because a concurrent fault added
-an entry in the meantime; however, it does not expect it to add more.
+hugetlbfs_file_mmap() grows a file when a writable mapping extends beyond
+EOF. We are missing seal checks similar to hugetlbfs_setattr() and
+hugetlbfs_fallocate(), allowing a user to grow a file that has F_SEAL_GROW
+set.
 
-Since restore_reserve_on_error() can delete the entry of an allocation
-that failed later on, entries also disappear without the inode lock that
-mmap() holds. For a previously unreserved page, UFFDIO_COPY can do this
-when the source is not resident: it allocates a folio, which adds the
-entry, fails to copy with page faults disabled, and takes both back.
-memfd_alloc_folio() does it when it has made a reservation and gets no
-folio it may pin.
+To fix it, skip the resize when F_SEAL_GROW is set; mmap() still succeeds
+without growing the file.
 
-If region_chg() sees such an entry and region_add() does not, an entry is
-added that nothing was charged for. When we later delete it,
-we decrement resv_huge_pages and uncharge the cgroup once too often:
+We currently also allow CoW mappings to grow a file. Disallowing this,
+maybe even only for read-only file descriptors, could break existing
+userspace, so we have to be more careful. QEMU's file backend is an
+example user that might rely on such things, and would suddenly start
+getting SIGBUS when faulting in memory outside EOF.
 
-  WARNING: mm/page_counter.c:60 at page_counter_uncharge+0xe2/0x160
+So be careful and focus on F_SEAL_GROW for now.
 
-Similarly, HugePages_Rsvd will underflow.
+Fix generated by an LLM and sent by Chris Mason in private.
 
-Tell region_add() how much has been accounted for and let it refuse to
-add more. Convert it to a region_add_limited() for that purpose.
-hugetlb_reserve_pages() then undoes what it has done, as for any other
-failure of region_add(), and starts again.
-
-Note that we move hugetlb_vma_lock_free() so we can retain the allocated
-VMA lock object as we retry.
-
-Limit retries to 10 to avoid livelock under repeated concurrent rollbacks.
-Return -ENOMEM if the retries are exhausted.
-
-Fixes: 846be08578ed ("mm/hugetlb: expand restore_reserve_on_error functionality")
+Fixes: ff62a3421044 ("hugetlb: implement memfd sealing")
 Cc: stable@kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Chris Mason <mason@kernel.org>
+[ david: drop comment; simplify+extend description ]
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 58 ++++++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 44 insertions(+), 14 deletions(-)
+ fs/hugetlbfs/inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 3d8eebdca5136..112fa25f36833 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -739,26 +739,36 @@ static int allocate_file_region_entries(struct resv_map *resv,
-  * region_del.  The extra needed entries will be allocated.
-  *
-  * regions_needed is the out value provided by a previous call to region_chg.
-+ * limit is what the caller has accounted for.  If more huge pages would have
-+ * to be added, because somebody has deleted from the range since region_chg,
-+ * nothing is added and -EAGAIN is returned.
-  *
-  * Return the number of new huge pages added to the map.  This number is greater
-  * than or equal to zero.  If file_region entries needed to be allocated for
-  * this operation and we were not able to allocate, it returns -ENOMEM.
-- * region_add of regions of length 1 never allocate file_regions and cannot
-- * fail; region_chg will always allocate at least 1 entry and a region_add for
-- * 1 page will only require at most 1 entry.
-+ * Ranges of length 1 never require allocating file_regions and cannot fail
-+ * if limit is at least 1; region_chg will always allocate at least 1 entry
-+ * and adding 1 page will only require at most 1 entry.
-  */
--static long region_add(struct resv_map *resv, long f, long t,
--		       long in_regions_needed, struct hstate *h,
--		       struct hugetlb_cgroup *h_cg)
-+static long region_add_limited(struct resv_map *resv, long f, long t,
-+		long in_regions_needed, struct hstate *h,
-+		struct hugetlb_cgroup *h_cg, long limit)
- {
- 	long add = 0, actual_regions_needed = 0;
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 7f64bdc07aa80..68761e1ed4d2e 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -157,7 +157,8 @@ static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
+ 		goto out;
  
- 	spin_lock(&resv->lock);
- retry:
- 
--	/* Count how many regions are actually needed to execute this add. */
--	add_reservation_in_range(resv, f, t, NULL, NULL,
--				 &actual_regions_needed);
-+	/*
-+	 * Count how many regions are actually needed to execute this add.
-+	 * Fail if the number of huge pages to add exceeds limit.
-+	 */
-+	add = add_reservation_in_range(resv, f, t, NULL, NULL,
-+				       &actual_regions_needed);
-+	if (add > limit) {
-+		spin_unlock(&resv->lock);
-+		return -EAGAIN;
-+	}
- 
- 	/*
- 	 * Check for sufficient descriptors in the cache to accommodate
-@@ -794,6 +804,13 @@ static long region_add(struct resv_map *resv, long f, long t,
- 	return add;
- }
- 
-+static long region_add(struct resv_map *resv, long f, long t,
-+		long in_regions_needed, struct hstate *h,
-+		struct hugetlb_cgroup *h_cg)
-+{
-+	return region_add_limited(resv, f, t, in_regions_needed, h, h_cg, t - f);
-+}
-+
- /*
-  * Examine the existing reserve map and determine how many
-  * huge pages in the specified range [f, t) are NOT currently
-@@ -6847,7 +6864,7 @@ long hugetlb_reserve_pages(struct inode *inode,
- 	struct resv_map *resv_map;
- 	struct hugetlb_cgroup *h_cg = NULL;
- 	long gbl_reserve, regions_needed = 0;
--	int err;
-+	int err, retries = 0;
- 
- 	/* This should never happen */
- 	if (from > to) {
-@@ -6869,6 +6886,7 @@ long hugetlb_reserve_pages(struct inode *inode,
- 	if (vma_flags_test(&vma_flags, VMA_NORESERVE_BIT))
- 		return 0;
- 
-+retry:
- 	/*
- 	 * Shared mappings base their reservation on the number of pages that
- 	 * are already allocated on behalf of the file. Private mappings need
-@@ -6947,7 +6965,8 @@ long hugetlb_reserve_pages(struct inode *inode,
- 	 * else has to be done for private mappings here
- 	 */
- 	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT)) {
--		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
-+		add = region_add_limited(resv_map, from, to, regions_needed, h,
-+					 h_cg, chg);
- 
- 		if (unlikely(add < 0)) {
- 			hugetlb_acct_memory(h, -gbl_reserve);
-@@ -7010,17 +7029,28 @@ long hugetlb_reserve_pages(struct inode *inode,
- 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
- 					    chg * pages_per_huge_page(h), h_cg);
- out_err:
--	hugetlb_vma_lock_free(vma);
--	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT))
-+	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT)) {
- 		/* Only call region_abort if the region_chg succeeded but the
- 		 * region_add failed or didn't run.
- 		 */
- 		if (chg >= 0 && add < 0)
- 			region_abort(resv_map, from, to, regions_needed);
--	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER)) {
-+		/*
-+		 * A concurrent rollback removed entries after region_chg()
-+		 * counted the range, so we charged for too few pages and
-+		 * have to recount, recharge, and try again. Limit retries
-+		 * to avoid livelock under repeated rollbacks.
-+		 */
-+		if (err == -EAGAIN) {
-+			if (retries++ < 10)
-+				goto retry;
-+			err = -ENOMEM;
-+		}
-+	} else if (is_vma_resv_set(vma, HPAGE_RESV_OWNER)) {
- 		kref_put(&resv_map->refs, resv_map_release);
- 		set_vma_resv_map(vma, NULL);
- 	}
-+	hugetlb_vma_lock_free(vma);
- 	return err;
- }
- 
+ 	ret = 0;
+-	if (vma_test(vma, VMA_WRITE_BIT) && inode->i_size < len)
++	if (vma_test(vma, VMA_WRITE_BIT) && inode->i_size < len &&
++	    !(HUGETLBFS_I(inode)->seals & F_SEAL_GROW))
+ 		i_size_write(inode, len);
+ out:
+ 	inode_unlock(inode);
 
 -- 
 2.56.1
