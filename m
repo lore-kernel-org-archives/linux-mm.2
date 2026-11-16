@@ -1,94 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354F7606A339
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 02:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j4dFgkdZ
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8953606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 02:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 216B96B00EF; Sun, 15 Nov 2026 21:01:24 -0500 (EST)
+	id BB93F6B00EF; Sun, 15 Nov 2026 21:24:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A0A46B05B0; Sun, 15 Nov 2026 21:01:24 -0500 (EST)
+	id B6A056B05B0; Sun, 15 Nov 2026 21:24:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B6E16B05B1; Sun, 15 Nov 2026 21:01:24 -0500 (EST)
+	id A7F756B05B1; Sun, 15 Nov 2026 21:24:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB3DE6B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:01:23 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2718DA081C
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:01:23 +0000 (UTC)
-X-FDA: 85439330046.10.D9C9BEE
-Received: from mta0.migadu.com (out-251.mta0.migadu.com [91.218.175.251])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 090BF180004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:01:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j4dFgkdZ;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.251 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 857476B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:24:41 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A7FD160871
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:24:41 +0000 (UTC)
+X-FDA: 85439388762.08.4921E65
+Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 56142A0002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:24:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794794481;
-	b=hJ5DjEMd/TW6zjUpqhwvhI0QisDT6lgwnss1oNUPn0RIal8zeElVRn8sUJtagSzLMK+X8X
-	XYhYt9ECz66OQ/1snKzzrvEpGkV8bfC1Tvb7lO9XzFjhC4xD+m+u63/qHQSavmT2N6Di58
-	mw5OhcBpEe+5PcDHBGCD2JMsGBCSeyI=
+	t=1794795879;
+	b=clyitiR8ntO+Z7z0/TKrcUCkCpAmMekC0cZYC62vhGJwDX4X1sbLfoC63rw3PxlE6Ti6Im
+	gmbaoWQOhDodrNn+wgmLbKyKbcKAWSh8oGgkIP2ekyYiaz9cNAHkRfq+Fy87khrkMYR2il
+	clDAVPKjRoAQVitp8Gzsan8nsVZn7M0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j4dFgkdZ;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.251 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794794481;
+	s=arc-20220608; t=1794795879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oT6p9IiKU91ZvAcaQZmWvOZAnFk+N0TACpK4N2ej6Vk=;
-	b=tWvHhHlT5V6oOj17oF+70KwnnzW9QxC3C5FaH3KkTbViI3kijhufWl7btjYRFzIFKSJ03j
-	br/+2OLNC2uc9acCvbN/X5AHKTTiVbO4qiEcmrx5vn0jMVMpAsuzhZA6zghOVzBJj3TP5y
-	glN6hbhDH1si+LAnxM5ogRIl03QDvok=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=rrbl0nuDaW+pJdbFjfWrda5kId++kZCiqnbSpTRa/Zs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794794479; v=1; x=1795399279;
- b=j4dFgkdZfKiV8dYFY6aHoukrw1qGeJ5EV+SHf9HMY7e4In+tI2A4vru5HJT+hcO5kbHM+tod
- 44d4AoVpzbK94NIpdYEz+mhNIjq6q0n6CCS4JMcC0nUVlCKMkF+/wjJxxFQv5sTAosP1J5NqfOk
- 8oQQKrAHI2CKhi0yPKLvhLEQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5099c89ec1dbd413;
-	Mon, 16 Nov 2026 02:01:19 +0000
-X-Mizu-Trace-ID: 5099c89ec1dbd413
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <bc6ffcff-3aaa-43da-91b4-82f27513c761@linux.dev>
-Date: Mon, 16 Nov 2026 10:01:15 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=LsKScfO0dJa2srmU76Dlr1zeKCRPz7xQofnlV4WBL/E=;
+	b=ossZdfAAjKnejnbTh2XmSq+QUOnpRR4bBxBwnYOU8mRjzgKmIvsYNPtukvF6NuJwD5MVCo
+	6TFEheOmQk4nHbKwv+/HgF1riPNeAIwtV60DFz5jVY/LjDLalN8IDs/t90iH2nkJZ3WlMp
+	nwzDNevallrtY8F6vh3phJ5dbhwh/jw=
+Received: from escalante.csail.mit.edu ([128.52.128.198])
+	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
+	(envelope-from <nickolai@csail.mit.edu>)
+	id 1xSmOX-004BHZ-Ne;
+	Sun, 15 Nov 2026 21:24:33 -0500
+From: Nickolai Zeldovich <nickolai@csail.mit.edu>
+To: Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Waterman <andrew@sifive.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	linux-riscv@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Subject: [PATCH v2] riscv: mm: Skip the icache flush for special PTEs
+Date: Sun, 15 Nov 2026 21:24:33 -0500
+Message-ID: <20261116022433.49952-1-nickolai@csail.mit.edu>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] mm: hugetlb: fix CMA-related issues
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, muchun.song@linux.dev,
- akpm@linux-foundation.org, osalvador@suse.de, azpijr@gmail.com,
- lance.yang@linux.dev
-References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
- <b1c1c835-180a-49e2-86c0-bc3f65981728@kernel.org>
- <7e733c3b-2aa2-406e-a5ca-cd9a2c872f9f@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <7e733c3b-2aa2-406e-a5ca-cd9a2c872f9f@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9xcb4mqrpnk59rcwpg1zox45txux4aoe
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 56142A0002
+X-Stat-Signature: kn1myjhjxdptqf9ac85fi1xshq8my89j
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 090BF180004
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794794480-115316
-X-HE-Meta: U2FsdGVkX1/9EOI59FSiGVdI1dPWCSLuvK8IyZ5ji2FC3dgi9ljsDR0qxaNWw1JGArTkClwMeFZl3/FozEJZmSGvDPMypjPR4hc/z18/NhC6YdoJhPktW4miq+WSfEOuKXIUjvF3ojkr+XUk+AZLPa1bN17ESkAAAZI0mSl5903vm95gXS0IBP/gpIqa73GUeyQjSxqWHTL62+TYHFDGeYcvvp688ehYk+lZ87Hk2vMEIWmM1tZd7meqaqCohlOqs/3D3bixGi+DD0NxgEkEfxJQkNObCJeKmswnR7f0arUWYtqsK9TcK77WmkN3aqplIRe58H9LtVY5c9XbWaLuVte3Wk3youD9LIbxYhWRrlRd6VNJltQXIJolI/YqXE2hP9xcK1uHW1yuT4ilQdFfBxhHQCYEXjuRvvQbeUnUKhoTL5yv7H8jRIQhUsFlJUAcrdPV+iCJ91sCvHSEQK0Pf3cS0Uz8m8flx0MaDka8tww3Xr3NwYzYZ96aat9WeHimtCnCyrYFIaBsgYpMou3oyUPI+CTVYL9wG27EgO0gPN0FFsjkTUHEd4HWQUaP0xqXh/giU2y7NC9y1rOzmRmnJPstpOD3puYjCaltM4QkXO/9Tuj8Mw3bow6mIWCGsMG9oOPPguy84PQiMPr9WMLQJa//xH4csH39FasMWBuuUc5XPmO3W1xBLHgCXA0qkNbVUxgOXr+51mtB87LJ4tmYiSa4kVEWQuev90mv02p2FPmBuZbtVyWNCnuZPLcBy3uTUe459WhjvO0uwr1u4drJsVHnlEoR5k/Qm9uPOLFbFYiYzlRe/3eq8Xmaw6u0l+WwDL+PIZQIpX7S1KO9HZKJoHknf2X7P11OCfAG5ZprpJ9Ed7XLV3J+U01SxdEtAQxZT0MyxbrQ8dAEWuyZm614MHmvpGmkdrfLVHnppWE4I6qwbcPsOZBbdMPdD3bkbSin7DVG7OQuZ1Y1OaK6xbl
- D60XuzPZ
- crWjoi+u89Y1V/dWSVznZ1eaEcK7BMWEcAXkGNBJiHpqRv37cg9tKLUJ6OSEy/FpLnmnCdQb2xXNoFK1xyyDyGjB/Apwh0oK5OSMJZ+2y4l7NTNRCIghE74383M6C6MTA/VSXKzw/LqzJ4QU5/EB7Zh2vaIj/o7pa0mHbwxfKfIcgzS44jtWrQLDmp0bkzoxFNIFe8i9of6+RDLDjC+m/FoWzjNowVy9EoOZdh1Dm4UNnLQPEg+3SL1cZDAR+euL4fim0xK9uqSpBaAgFr1dXG6Km8yQ2vsLWmbPhxYjjEtR1xOCLs8/3DBT2D8yjSwwnSJQrqyhxcuUqyoY=
+X-HE-Tag: 1794795879-461902
+X-HE-Meta: U2FsdGVkX19VTRsPdOoD8g+KtT4qY0L6VrBvaXlJ1lYmdu/quodYGOOpMsSgnWfa+e97uaXA+OmZkEsgVfWQfCrlVspHmLR2M8uLQxYxPthyDAbfkq+Z484CNvmDQNGEXhW1D2F5Pp1AM6AWvC9f1cCcTJubIM3CFEWu65nLG71Wry2ekxau8N6ox3rjdwtIh55TZZyAC3KKW6UtP7IGHv/qFrKOsQkYOrgeY6MspIRr3gGNWruaT51xbpgT4yS+ww+63bBP0troMFb9KkxS55t4aGcw580tv9dwpcwb34zNiX+0/IO4g4mFoPBfDa76UJWH8AqzJduOmfiZeQTK5MhETXLzHbRRVRGQyZJGRmGSmbiyIw/agpXYSsXsQpb3ISJF76O8mrmVWunXbOraYqIfNprls8XJTND2N9lcq1vnLEBruiDln7JWwPlB7yMlZRgf+LWylbbKqhcgWdJwuBLBGs63sUmmsSW8UA1aIRhTvv6AsEnVcXL4+W9UUQiR29XHyx/WqBrEsr4q1QovVSXKIfISz19xighRnrqb6HO2Rvpe0Q3bah5NA4ovp7DmKctTxPK1vXb9LogOKgBbhL7BAdjYRrsyi5CoRYR9hJ54i9Fj7FTgnjMNIsjVkKm7kg+jO8alDik5GyZal18JsEgAkuT9HUAIwSLkDjmyd7rScJNXxItjYGGUWFMoOuzqKbDdjlFNtYlT/7rUxu+xWgrU+c9nZzi5pMYpkjK9Hi+JW6g3mU+HJj3QhxGykYD8JOZas/ZMdzvJNl/Nm9Ar5WjgSRv1uz1rXs43CM3EXNaFrGi5Gb7PNPL0Mhzq/3bhDGXfD02epA34E+spuZsFSS6vHAUyMyU4AW+rqLUm4lfkPcvgbzF+9MxyXeOU9m49ZWkG77n/qv+HWfpug4k5DaIIofAI7lURJp7QXLwbOWavaCZTAS+sl7iL8Mf43SySkV8TTv+LMh90UZePcYX
+ Xw7vm7bd
+ 63/UBh8rQLNVSSX5V+zCXQNtg9GCQZ1IkGTicQyFL4x5eq7oiZYS/m4yT4BZtVwVVaHtqD8VL/+Q6S/xq86PwhRwe702pjc7G9tqZdfYIB7cYRETHVW++NLA7yIAtwuTSlqsdyIeseF6jCzIzwGx1lSOR3t6nDo2NWRwe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,106 +86,104 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+An executable mmap() of memory outside RAM through remap_pfn_range() or
+vmf_insert_pfn(), such as /dev/mem or a PCI BAR's sysfs resource file,
+oopses in flush_icache_pte() with the page table lock held, and the task
+never exits. With FLATMEM the kernel instead sets a bit in whatever
+memory lies past mem_map.
 
+__set_pte_at() calls flush_icache_pte() for every present executable
+PTE, and flush_icache_pte() records the flush in the folio of
+pte_page(). A special PTE may have no struct page behind it.
 
-On 11/12/26 11:25 AM, Qi Zheng wrote:
-> Hi David,
-> 
-> On 11/12/26 6:05 AM, David Hildenbrand (Arm) wrote:
->> On 11/7/26 11:30, Qi Zheng wrote:
->>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>
->>> Hi all,
->>>
->>> This series fixes three CMA-related issues in HugeTLB reservation,
->>> long-term pinning and allocation:
->>>
->>
->> Can I hand you over another CMA-related hugetlb problem?
->>
->> On arm64, we can end up allocating 1GiB and 32MiB hugetlb folios from the cma
->> region.
->>
->> Doing that dynamically is not a problem. Doing it during boot doesn't quite work.
->>
->> cma_reserve_early() does not handle any kind of alignment.
->>
->> So if you allocate a 32M folio followed by a 1G folio, the 1G folio will
->> suddenly start at offset 32M, not being naturally aligned in physical address space.
-> 
-> Yes.
-> 
->>
->> Likely cma_reserve_early() must be taught to align (and maybe consume an order
->> instead of a size), similar to how the dynamic cma allocations work.
-> 
-> However, simply adding alignment would leave gaps that the
-> current activation code cannot distinguish from actual reservations.
-> 
-> The early allocation path would become:
-> 
-> hugetlb_cma_alloc_bootmem()
->     -> cma_reserve_early()
->          pfn = ALIGN(cmr->early_pfn, nr_pages);
->          cmr->early_pfn = pfn + nr_pages;
->          cma->available_count -= nr_pages;
-> 
-> For a CMA range starting at 4 GiB, reserving 32 MiB followed by 1 GiB
-> would produce:
-> 
-> 4 GiB       4 GiB + 32 MiB             5 GiB             6 GiB
-> | 32 MiB used |------ 992 MiB gap ------| 1 GiB used       |
->                                                           ^
->                                                       early_pfn
-> 
-> Later, cma_activate_area() marks the entire prefix below early_pfn as
-> allocated, including the gap:
-> 
-> count = early_pfn[r] - cmr->base_pfn;
-> bitmap_count = cma_bitmap_pages_to_bits(cma, count);
-> bitmap_set(cmr->bitmap, 0, bitmap_count);
-> 
-> It only initializes and frees pageblocks after that cursor:
-> 
-> for (pfn = early_pfn[r]; pfn < cmr->base_pfn + cmr->count;
->        pfn += pageblock_nr_pages)
-> 	init_cma_reserved_pageblock(pfn_to_page(pfn));
-> 
-> The gap therefore remains reserved and marked allocated. Releasing the
-> two HugeTLB folios only clears their own ranges through
-> cma_release_frozen(); neither release covers the gap. Those 992 MiB
-> would be permanently lost from usable CMA capacity.
-> 
-> So we would also need to track the gaps, clear their bitmap bits during
-> activation, and initialize them as free CMA pageblocks.
-> 
->>
-> 
-> Another possibility would be to give 32 MiB pages their own pool,
-> similar to the separate PMD-sized pool proposed in the other series. On
-> arm64 with 4 KiB base pages, 2 MiB, 32 MiB and 1 GiB allocations would
-> then use separate pools.
-> 
-> This could work during early boot too: hugetlb_cma_reserve() establishes
-> the CMA areas and their ranges before hugetlb_bootmem_alloc() runs.
-> Although the bitmaps are allocated later, each range already has its
-> own early_pfn. With naturally aligned ranges and one allocation size
-> per pool, the cursors would stay aligned without creating gaps.
-> 
-> What do you think?
+Skip the flush for special PTEs, as arm64 does since
+commit 71fdb6bf61bf ("arm64: Do not synchronise I and D caches for
+special ptes").
 
-Hi David, gentle ping.
+Reproduced on QEMU virt with the riscv64 defconfig by mapping the PCIe
+ECAM window from /dev/mem with PROT_EXEC; the patched kernel maps it.
 
-I’d like to update to v5 so that I can continue advancing the support
-for 2M hugetlb CMA. Regarding this issue, would you like me to include a
-fix in v5? If you agree with the "split pool" approach, we can handle it
-as part of the patch set for 2M hugetlb CMA support.
+Fixes: 08f051eda33b ("RISC-V: Flush I$ when making a dirty page executable")
+Tested-by: Karl Mehltretter <kmehltretter@gmail.com>
+Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
+Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+---
 
-Thanks,
-Qi
+Notes:
+    Changes in v2:
+    - Reworded the source comment as suggested by Jisheng Zhang.
+    - Shortened the commit message.
+    - Rebased on v7.4-rc3.
+    
+    v1: https://lore.kernel.org/all/20261017013634.792220-1-nickolai@csail.mit.edu/
+    
+    This patch was prepared with the help of an AI coding assistant.
+    
+    Reproducer (QEMU virt, riscv64 defconfig, run as /init with /dev/mem
+    c 1 1 in the initramfs; 0x30000000 is the PCIe ECAM window, any non-RAM
+    range does):
+    
+      riscv64-linux-gnu-gcc -O2 -static -o test exec_mmio_mmap.c
+      qemu-system-riscv64 -M virt -cpu max -smp 2 -m 1G -nographic \
+          -kernel Image -initrd initramfs.cpio -append "console=ttyS0 rdinit=/init"
+    
+      unpatched: Unable to handle kernel paging request at virtual address
+                 ff1c000000c00008, epc : flush_icache_pte+0x5c/0xa2,
+                 ra : do_remap_pfn_range+0x284/0x3e6; the task never exits
+      patched:   mapped at 0x7fff8418b000, first word 0x00081b36
+    
+      #include <fcntl.h>
+      #include <stdint.h>
+      #include <stdio.h>
+      #include <stdlib.h>
+      #include <sys/mman.h>
+      #include <unistd.h>
+    
+      int main(int argc, char **argv)
+      {
+      	unsigned long phys = argc > 1 ? strtoul(argv[1], NULL, 0) : 0x30000000UL;
+      	volatile uint32_t *p;
+      	int fd;
+    
+      	fd = open("/dev/mem", O_RDONLY | O_SYNC);
+      	if (fd < 0) {
+      		perror("open /dev/mem");
+      		return 2;
+      	}
+      	printf("mmap(/dev/mem, phys 0x%lx, PROT_READ|PROT_EXEC, MAP_SHARED)\n", phys);
+      	fflush(stdout);
+      	p = mmap(NULL, 4096, PROT_READ | PROT_EXEC, MAP_SHARED, fd, phys);
+      	if (p == MAP_FAILED) {
+      		perror("mmap");
+      		return 2;
+      	}
+      	printf("mapped at %p, first word 0x%08x\n", p, p[0]);
+      	return 0;
+      }
 
-> 
-> Thanks,
-> Qi
+ arch/riscv/include/asm/pgtable.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 2ebd5fa5adc5..48eeeac1019b 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -624,7 +624,11 @@ void flush_icache_pte(struct mm_struct *mm, pte_t pte);
+ 
+ static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
+ {
+-	if (pte_present(pteval) && pte_exec(pteval))
++	/*
++	 * Special PTE mappings are not intended to be executable and may not
++	 * even have an associated struct page.
++	 */
++	if (pte_present(pteval) && pte_exec(pteval) && !pte_special(pteval))
+ 		flush_icache_pte(mm, pteval);
+ 
+ 	set_pte(ptep, pteval);
+
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+-- 
+2.53.0
 
 
