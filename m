@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BBD606FDB8
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78796080669
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SGTpzw+u
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XFkCPZLO
 Received: by kanga.kvack.org (Postfix)
-	id 662E86B0609; Mon, 16 Nov 2026 06:10:07 -0500 (EST)
+	id DDC606B060A; Mon, 16 Nov 2026 06:10:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 612646B060A; Mon, 16 Nov 2026 06:10:07 -0500 (EST)
+	id D65CB6B060B; Mon, 16 Nov 2026 06:10:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5010F6B060B; Mon, 16 Nov 2026 06:10:07 -0500 (EST)
+	id C2D866B060C; Mon, 16 Nov 2026 06:10:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B5606B0609
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:10:07 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 60D6012087D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:06 +0000 (UTC)
-X-FDA: 85440712812.25.7885CE9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EE046B060A
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:10:13 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E533A0888
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:13 +0000 (UTC)
+X-FDA: 85440713106.28.838E64B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9B9AEA0003
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:04 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SGTpzw+u;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827404;
-	b=ztiLVmpAK9TXBKQjiZF1xpghow8VtdMcsV3Mc/HaiMxUAESAHo0uQub8Uhk0M5Er8SSBf0
-	YhxB++/myFvu0XNDxzLiR2QMfBWYk1fWz8RABNscYqtte+mlKoBdGwYWN+b4V/ljV27ufS
-	eLJzNzIUWd0immx0VYycZSRjo+DpBpA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SGTpzw+u;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7B96C18000A
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:11 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XFkCPZLO;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827404;
+	s=arc-20220608; t=1794827411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yVy0s500r+s0cQTnrdL3iNQJg4cLMTqv2Ys59F9WF6I=;
-	b=2l+S1YOFIlT5TNoIQjgpD1X6iLrVf07/66WC5VKFT3G2U47DkeGRu/94DXj7hUQrYPNKJu
-	INtNthns/a0TAKpk8CIkwcVDvndU8jqIMkqkdRhRg6BLhWvOxfPB1VQrFFUR4guM3J7Yq3
-	RKsFenvRtoHrJdoULCPBmXDoe1Y9vX8=
+	bh=64fy1ZrurHksDYaEdeBVzwJEogDQqSWMHixC8IXM43k=;
+	b=mhMTZl7Gmu0q1U+eWWq/XHfQL7xR73aVPUmstcvi8H1VrOewr1z4r/xU1/H1oAt6/n47I+
+	E3SN1uI+Lsc2iGP9ZHKIZo7mk/00QgtkZSmRjCf2OcfJRIikurcdQmtq5oqzt4E5BH1KCj
+	dZ39t50gqi+ZppUg9tEfgd82dsM4DEU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794827411;
+	b=rtKM7lVOapmsjV/+Ieuav/5boRAKq0cDKqfGj0IHvJtNPSFY3JgO+diM0KWNs/lLT+JrtU
+	gRKDRlDAHXLKfNjJSXZajX8ZEDSGyrgNvUjfpXIjNzhJViwzoRv2Z5kUSSuL3+RdGsh8p8
+	8k8cD0jNLgzdkBTgmic9yQBgr+LhVl8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XFkCPZLO;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B75362894;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E44A6292B;
+	Mon, 16 Nov 2026 11:10:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483D51F000C5;
 	Mon, 16 Nov 2026 11:10:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1B01F000CC;
-	Mon, 16 Nov 2026 11:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794827403;
-	bh=yVy0s500r+s0cQTnrdL3iNQJg4cLMTqv2Ys59F9WF6I=;
+	s=k20260515; t=1794827410;
+	bh=64fy1ZrurHksDYaEdeBVzwJEogDQqSWMHixC8IXM43k=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SGTpzw+uOaYvP/qWVmonGrGKiT2oLbT2udCcq4O82u3mG1fLwCQ9o8RLyYUJt4Z2Q
-	 dpAapsEVRxr6oLO/o2rGmqb9CAmt3ErlRs8wAxbEiyz6v0DU4LBOoVm5BMqcicnomC
-	 B8WEPz6Gu99rGym2zbIvLEILBo00aGvsodfuAxEMd8k/D48PrDTO0QuTGdS8US31n4
-	 Vg8bRB/rVTd/Yp5SFsM+N5GWLqI4Smmmis/xMColxtYtlNVNFPYfrZpPd5XgHFtufK
-	 ewpaVp+9XS6onapcIs28W27un4PxSx+n0soDqly36XgM/Z1PmufEv2uBMoEdpSk13h
-	 SXrkbTRXnHaqQ==
+	b=XFkCPZLOyT6temTwAkvo4voI/JBsg/Z4henG9tv1l4AP+unIyDGq5gVd+SYbfTNkW
+	 J2q+A4W9ncbFM3o2CJeB1KlGFOQOyWo8ySYnVIO/5YximXo+mSB8h+1obwLjCcGEvW
+	 A1UXSeiotXqdUuyPaAj9hOORnO/ihLGR8bgH8DCMlnoWpdtPxHllMf91dA7wxs97Eq
+	 yjHuVmibG1NowwYf+Q8JcoJLbSPOUKYKONh6M5SqznmTuA/gM7dxnMZNsRN9PfbJft
+	 +J4kIRFgBCIHj5EPRzp5FFbIDcQ2AbpmpaJCmFvcccbVtq7fFVdRiQ+kdhPCTlwHV7
+	 761XGVhpeq4Nw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 16 Nov 2026 12:05:05 +0100
-Subject: [PATCH RFC v3 32/44] usb: gadget: gadgetfs: use fc_init_pseudo()
+Date: Mon, 16 Nov 2026 12:05:06 +0100
+Subject: [PATCH RFC v3 33/44] ovl: refuse data-only layers on pseudo
+ filesystems
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-work-loop-pseudo-v3-32-8cbbea1cf34f@kernel.org>
+Message-Id: <20261116-work-loop-pseudo-v3-33-8cbbea1cf34f@kernel.org>
 References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
 In-Reply-To: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -87,29 +88,28 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
  linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
  Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
  linux-kselftest@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chris Down <chris@chrisdown.name>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1030; i=brauner@kernel.org;
- h=from:subject:message-id; bh=u0nui1vhf/EmwTq6q2RWgl78HrRK/CPPLvMnc/CZqnI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9etws9fufFq9729RbGXNDfxxYdCtSQifp+r0vMT801
- iTNP1vv21HKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRn48YGT5xPd4gYXzpZPj6
- D6f+qX0Qv9TBUcF6ePfLds7DTysVTzQx/I8rXd4sEjq3bduNK/7X+v/Kqk9YyOWe3dsRZqm+TvT
- IXF4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1983; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Smh6T1OxDytywEa5/SA4YQOn0qat/3OEFq2S8CKkHFQ=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9etzKv1zn0/fF8VbJ056U/V2j8fZ05/RKp3DlWuv16
+ b/0c+MfdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkkz0jw/FI3n9/PH4HhZ1d
+ ys8rckDxnqnu2en5RiGRkRGiO5TUohkZnmV/WFDrXXLFbNEWtocf1uvk3Hommj2NYaaXF8OJCE4
+ pHgA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7B96C18000A
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9B9AEA0003
-X-Stat-Signature: sptnzfhx8jj8hyqpk5yxf88qysmxidkj
+X-Stat-Signature: fhhwndzbrhqu9u91roqw3dgfgr6dnw7d
 X-Rspam-User: 
-X-HE-Tag: 1794827404-120287
-X-HE-Meta: U2FsdGVkX1/yeCUANfs4mV+zc9ebAmiZt61fnVjNtZTFabhMnBQHHrj8L4DAWUvSL/kYwO/4aW5h9Ln8wTDuZBfNqrj+NztY6YbAyVzdLV8+Z5kaEvKD9Q86evTPYorPIknfCcJ2QVvLB7kayC/8C5EQ785uz9Vri0PBhNcj28JgyMrHNi+1qLuylGVDn0Mw4OfDAMuMWy4DI8ud20P05NipjuI03ID7PgfYbwEHfmbTrzB3v7x4xIPfkp4y0jLVCDXuViDqUwNKfAv8bFTceBLRVc2mB33P8hlNerC7PrKDTEQGqNuHIrOh18gBxh/ZYf/Ec/LX3fwMQEEi0X6x/57rXLCzkpAf0yr6LehujNwhc8E6ckgIBbIi7K79Fmym49SDZxlP9199eLjLTiF4Vv+g5uKwQmEKjg6v/EUqx6F9Ud3ta1bfJlY3sASwL8lPKZqoxX31j8wffHavog9QJClsCIuIb+QCLHoDCN9tpJQni0EgNi1QBxD+LDkhJdUJsqbnjcb9wDcCNlDM15RZZu+dhjTuSkgJv0i+Ne7MvazMsLvR2BhEgWnAVu6riZx1z/zfTuTni9M0ReYHDKr7WgGhgXMa1jDaN2V5ODfjIYOZYy+7u5xmKa6yyEpBUCcflSrwo0gPK4D7QKCVcicwepOUR/Kr/mhsBqq/0DdgnqSqyo0Khr7XKvGux4SwnKa4rZGAjcvKN3iifMWhCt2q2Hr8kF+aTwqszA18EGPI/XRV3fdQv3b4BuId5hZeWukMAgic5k+onN4ffQkPJhEmF6MaJZ5Z1xnggTAouT5q8/ZeLZXpDN9NfThJFtnl3wQ8byopPGydwAp1iGxSUzHRaeDMdH6MrG4nXSzklF7g5JOhOFXfKq4N9XOp7alZFD8jRfgAARFs0u0pHvyCH8ykRrD+VaPxfhiQwa1hH+WMOr++3a50aRZqStbhwhWi9ZFAmErVcS+8PSsnSD6yjkU
- S5ju+evC
- QHgvcSB/yaUj+ZFDsrYMx3VdYIob37kP/sndxbhHnbNJmI0NBuvxb2QMN1fKa4oBrpmWC5u0Zn3/6bu1HgEH7TnSrtW5916CX5Q9YhrjAntSCaAj3m5DOMCQ3LtmGdwmSX5UKeAA4RYJDNmvCbUAQuuzVEHI021k1Yyfgkg9Rwi1CqimA8PIaUmSFep2AagkySyfY68J1Y5ugjPX8TMgjVgjCGuYRTfvlafXT5HC77kO93lC9wWT+y1zN38El+NzTs4sau1uolyf25xkGN7tixptCSwLz3RCILbbgA4oCYaUiffHLKFXsble8Sq8DnUWwmcxiNxfK9houQes=
+X-HE-Tag: 1794827411-827874
+X-HE-Meta: U2FsdGVkX19EcF7CFttl91ZDMPAyAdoUfSkLtUX/MKlYzHKd51rFy0uSZVsMFXkqtXZLVk7Yz6o5HtAqfEV3YEZ8MvXOESQoMhuTOorTJMzM8cPohvHYFEmI8zvlo+YGvqO6TuzdJPo41eA3koVkeLae9liBY2nNrygjLv0Wj6hhk+Mh2QSScUNI44tRWX+9ak1mthptU5VLN49LaEOO00T6KtfSz/An4C+G9g59kdIa1fnb7cdn1Ou7sconY86cW69FeJiDeOI1dh8fj1gzea2OD0be8BYTcUmfM+c11eXrYhUlqd4zp+S+YHyZundLlhVaQa362c8W5htbprQ5GK/FX8sz4zrimDaElbASM3+4MaK+QDGxUMinML6qtTBc4di+oOZlK1MJJ/ZVeXyw0WPtx4YP4TUmFe5TwdR7XWRbOFtyFvDYh1s8GkcybXi4RSFAGVERu+oez0m2XHSrKEr3u9Ca9InVe73OAYCcHnfu3v/+npM701OHpdODAPD/ekF6XEAB8rMMY+CturVn4pr4n6nTSeATvx7o+P08es9I7gbKGE1KRb7a6yTx0DZQpJnTYVzkv53gRk7GMTEWm6mMiaH99iACFR1stuEn6uG3Iv3oLF/okECj2fLe8m51zSuLnf/xYMKt3AjokDqlzWFcEmEX62zvMJYbxMPyuo0aRVqW1NAo0orFgYkkFBmYeyhTPNHG96/N9E4Drzw08QF2XqpdZmiNsz8s97CaO5sTQg+tj+mn7dVJz4DL4pAPDGLHUwvjTV285L4I5Q06TaQDBWX1FJMqJ7TTvx42U1bVd+aBE/FcyTixbIBegEe90gvRKPAU31QjkUnYiK2thBi2fX1nGBBx+ZUE8cJpz4jbcUbhKl5LhEM0uq0OzhxKmEwGoFWx4UWhp+4Y/ikADIAY7Cf1jjeBYGdVzhjJHajd3QWgmpklSpUm0sDLzk1l7oGqYIcHV/tLofgTFGL
+ qhHnsyQG
+ 4MEsFhdlHkDqJYLudLBsS6qnKVy1VyStcoGPDrIGokx2e7t5ZMNPEzTkzGvs6BSBoI99/rOki36+sp8KTa7n2zzIqYrXaHT7H1GyuExhPMIVw2s2IC2utD9T3z9cc6OJQjSLF7PxNuCGlCjR9iMlbAGo0w8gtYLu2GGqmAYsrBJHDhDGxY69EEBybULZhAtd6ASyuL56lbUQldhtmFBUpGtz/WDSr02RgWrr5lDnyZu4VCUsNF6Ee0h/9HT3fM7PzZ1YTGqbPfqBSDLM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,36 +118,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Initialize gadgetfs as a pseudo filesystem. This raises SB_I_PSEUDO and
-also SB_I_NOEXEC and SB_I_NODEV. gadgetfs never holds executables or
-device nodes.
+The data of a metacopy file can live in a data-only layer. overlayfs
+doesn't look that data up when it looks up the file. It only remembers
+the absolute redirect and looks up the data lazily the first time
+someone needs it. So until then nothing can tell which filesystem holds
+the data of such a file.
 
-Reviewed-by: Chris Down <chris@chrisdown.name>
+But a data-only layer has no business being a pseudo filesystem in the
+first place. All it does is hold the data of metacopy files and the
+regular files of a pseudo filesystem are kernel interfaces, not storage.
+So let's refuse data-only layers on superblocks with SB_I_PSEUDO at
+mount time.
+
+Data-only layers can be added via the "::" separator in "lowerdir=" and
+via "datadir+" by path or by file descriptor. All of them end up at the
+end of ctx->lower. So a single check in ovl_get_lowerstack() covers all
+of them.
+
+Note that regular lower layers on pseudo filesystems are left alone.
+Stacking overlayfs on top of sysfs keeps working.
+
+Suggested-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/all/CAOQ4uxhGxpBtMZ5kfuzR1tQAewiecoX7UjXQRo91QjJHH9T_Yw@mail.gmail.com
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/usb/gadget/legacy/inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/overlayfs/super.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/usb/gadget/legacy/inode.c b/drivers/usb/gadget/legacy/inode.c
-index 7f6d8460152f9..8490e5d0351e1 100644
---- a/drivers/usb/gadget/legacy/inode.c
-+++ b/drivers/usb/gadget/legacy/inode.c
-@@ -13,6 +13,7 @@
- #include <linux/module.h>
- #include <linux/fs.h>
- #include <linux/fs_context.h>
-+#include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
- #include <linux/uts.h>
- #include <linux/wait.h>
-@@ -2223,6 +2224,7 @@ static const struct fs_context_operations gadgetfs_context_ops = {
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 39d4d57dec230..719c2569dfeaf 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1237,6 +1237,14 @@ static struct ovl_entry *ovl_get_lowerstack(struct super_block *sb,
+ 	for (i = 0; i < ctx->nr; i++) {
+ 		l = &ctx->lower[i];
  
- static int gadgetfs_init_fs_context(struct fs_context *fc)
- {
-+	fc_init_pseudo(fc);
- 	fc->ops = &gadgetfs_context_ops;
- 	return 0;
- }
++		/* Pseudo filesystems don't hold data for metacopy files. */
++		if (i >= ctx->nr - ctx->nr_data &&
++		    (l->path.dentry->d_sb->s_iflags & SB_I_PSEUDO)) {
++			pr_err("filesystem on %s not supported as data-only layer\n",
++			       l->name);
++			return ERR_PTR(-EINVAL);
++		}
++
+ 		err = ovl_lower_dir(l->name, &l->path, ofs, &sb->s_stack_depth);
+ 		if (err)
+ 			return ERR_PTR(err);
 
 -- 
 2.53.0
