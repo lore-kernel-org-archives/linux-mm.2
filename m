@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F42606B180
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68164606A897
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.it header.i=@amazon.it header.a=rsa-sha256 header.s=amazoncorp2 header.b=jGwVEgvv
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.it header.i=@amazon.it header.a=rsa-sha256 header.s=amazoncorp2 header.b=cOwex8nE
 Received: by kanga.kvack.org (Postfix)
-	id 8E9F26B05FE; Mon, 16 Nov 2026 06:22:04 -0500 (EST)
+	id C977D6B0601; Mon, 16 Nov 2026 06:22:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89AF56B0600; Mon, 16 Nov 2026 06:22:04 -0500 (EST)
+	id C1C1E6B0603; Mon, 16 Nov 2026 06:22:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B05F6B0601; Mon, 16 Nov 2026 06:22:04 -0500 (EST)
+	id AE5966B0607; Mon, 16 Nov 2026 06:22:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 165F76B05FE
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:22:04 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94AA01408BE
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:22:03 +0000 (UTC)
-X-FDA: 85440742926.04.22D305B
-Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4873312000A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 73F456B0601
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:22:05 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0707D1A0908
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:22:04 +0000 (UTC)
+X-FDA: 85440742968.29.AF10932
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C2915C0003
 	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:22:01 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=jGwVEgvv;
-	spf=pass (imf29.hostedemail.com: domain of "prvs=773eacc47=dipiets@amazon.it" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=773eacc47=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=cOwex8nE;
+	dmarc=pass (policy=quarantine) header.from=amazon.it;
+	spf=pass (imf28.hostedemail.com: domain of "prvs=773eacc47=dipiets@amazon.it" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=773eacc47=dipiets@amazon.it"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794828121;
+	s=arc-20220608; t=1794828122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GsRwtpCZUTFpb8/EAyVAvI8tGTV76jSMOJuUDiUTgdg=;
-	b=MVu4VKWlRHm2Tf7gWi2yMw/zN6pZoXoawxB/6bUpbPJo0zp/Ph6g9nMz+A0WmmyB22W7xQ
-	Lah+vyD0Y8QiLFEiJD/MWJI0ZpG5HX8nkUg9yH6RsAYTwAen0ukgPIqIEYNwa67wJFORf5
-	USuSKOLTenW4mPHOHTKdjLGKTprzqOY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794828121;
-	b=qBUhU5kZSI7hST40NRa5huzk27WTZEYLDSzDdKIbnUfZzpuYQrDk9POVG72RKimSGk/GkO
-	Gi9TjGG/M7zUUS0gTfjsIi74BJGE+IxH1wsCrp4UG0+lnX3yfOzLyWk2GuFApmPJM9GlpA
-	0utDRU+BpSn5NusDCIyPQFv/4hlKcs8=
+	bh=/j3n71nMvjpVJ76o5ra7tyojZrZYI/2MTP7C4zA5JAQ=;
+	b=mz0VHGUi32e9SxU/OsSb/FNhVlNKN7Mz3Xl/G5xxYRsKlpMcCWT32MWBuAUi2CIgS0dk+5
+	ii2hXV9N3D9o4cIx/Q736nNge2LrVzChJ+4QweQhopvBb3xn5DAKWnqNreoppW+4fe4+kH
+	Gzd/9sMOV8VfAV6HGIoXjMiKadg3auU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=jGwVEgvv;
-	spf=pass (imf29.hostedemail.com: domain of "prvs=773eacc47=dipiets@amazon.it" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=773eacc47=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
+	imf28.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=cOwex8nE;
+	dmarc=pass (policy=quarantine) header.from=amazon.it;
+	spf=pass (imf28.hostedemail.com: domain of "prvs=773eacc47=dipiets@amazon.it" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=773eacc47=dipiets@amazon.it"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794828122;
+	b=GsS7Dl+0qEVmDJG3uKouKz2I/1klWZYERbzpfrogorbfMFvwN+8N7owJDak7nTch57to27
+	cPqPOQVaOwtcN1RVUK8arUp5KQ++AVlDlLEJVprrDVvwvDqBz1evGmAX5QEDE9/a7e4a8Q
+	lw9HX2MJf2adQN9up1qG/my8Pkn0jPY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
   t=1794828121; x=1826364121;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GsRwtpCZUTFpb8/EAyVAvI8tGTV76jSMOJuUDiUTgdg=;
-  b=jGwVEgvvrmlH7SF971eXUD8cAk9yMcyZro1JSvUjAaW2m5iPbGLySG/v
-   ys1iuTGNDjhzd2Ws7hkzI9dqm8WZBEyJqqAr7dBkwybiY6bOwTytng2KT
-   /Imes1HKr7r8mak7KABJON/SRzYmi2uHjziXw6zbthJUAYEcKYSWxqm9o
-   k9qr+tg8US71r0VCgNb8ijBAY78d1UfmLAEAZYM9bsWN4oM6GHvvG7Qwh
-   WsmR+WD6QrjIwv60Mm4F9v5i8PjTgQ7Nw6d31pBAgnWsrY0xVNtojE46P
-   fmnsLKKx6PpegIq0JC5y6z2RzFtb2syyd1io8A/OcbIh5BNMOHS48FcyD
-   Q==;
-X-CSE-ConnectionGUID: aKAy+ATKTFuPD6/VvyiM2w==
-X-CSE-MsgGUID: bbRgb1oTSx+n1h1SHDFFYA==
+  bh=/j3n71nMvjpVJ76o5ra7tyojZrZYI/2MTP7C4zA5JAQ=;
+  b=cOwex8nE4F1pKE9D8l9jaKLCbk6IXqV9kkRWO+nzNS37ZS3QMguzjMqs
+   yegG2bkXSEXhkIEoiQ1Qq65faQxjoopPY8TO21rfZ3VU7E1U61ZP4YleV
+   wyUiPZO3N0vIJf8i6rsNuTSQtnZ/CpvYs7INsD2fHg1KXqwngzDsJm5sJ
+   yv7kXi8npl9cS52TkU99r/5/RyIVAmRZytb0tEL5r8zfOOlgFrS9M/7GH
+   Hs/yBr3uUcN+3aOnUcnNiSSt5W9GaOHYcQAwq4BNxeE+fVt+AsPe6mwXn
+   ZDwXUUYPDkfefyMtpwj+PCnKAQdmEeouyGpgTjEUvw4v7/0HmH6WCc2SK
+   A==;
+X-CSE-ConnectionGUID: J45JDIBVSr68Nm1foogNJg==
+X-CSE-MsgGUID: hCkwUz47RrCTbMBcYKs+NQ==
 X-IronPort-AV: E=Sophos;i="6.27,216,1787011200"; 
-   d="scan'208";a="34147543"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 11:21:58 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:5680]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.61:2525] with esmtp (Farcaster)
- id 9d22e469-a616-4713-90e3-e29451ea3ef6; Mon, 16 Nov 2026 11:21:57 +0000 (UTC)
-X-Farcaster-Flow-ID: 9d22e469-a616-4713-90e3-e29451ea3ef6
+   d="scan'208";a="34193208"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 11:21:56 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:22710]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.5.141:2525] with esmtp (Farcaster)
+ id 94b71232-b214-4a4c-93ea-dfd3ae7d78bc; Mon, 16 Nov 2026 11:21:56 +0000 (UTC)
+X-Farcaster-Flow-ID: 94b71232-b214-4a4c-93ea-dfd3ae7d78bc
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Mon, 16 Nov 2026 11:21:57 +0000
+ Mon, 16 Nov 2026 11:21:56 +0000
 Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
  (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Mon, 16 Nov 2026
- 11:21:56 +0000
+ 11:21:54 +0000
 From: Salvatore Dipietro <dipiets@amazon.it>
 To: <stable@vger.kernel.org>
-CC: <dipietro.salvatore@gmail.com>, Sasha Levin <sashal@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, <linux-mm@kvack.org>
-Subject: [PATCH 6.12.y v2 2/2] mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations
-Date: Mon, 16 Nov 2026 11:21:42 +0000
-Message-ID: <20261116112142.3813013-3-dipiets@amazon.it>
+CC: <dipietro.salvatore@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
+	Sasha Levin <sashal@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>, <linux-mm@kvack.org>
+Subject: [PATCH 6.12.y v2 1/2] mm: page_alloc: remove ALLOC_NON_BLOCK from ALLOC_RESERVES
+Date: Mon, 16 Nov 2026 11:21:41 +0000
+Message-ID: <20261116112142.3813013-2-dipiets@amazon.it>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20261116112142.3813013-1-dipiets@amazon.it>
 References: <20261113110611.2915381-1-dipiets@amazon.it>
@@ -96,21 +96,21 @@ X-ClientProxiedBy: EX19D031UWA003.ant.amazon.com (10.13.139.47) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rzjp6swnj9r5dp5zyd1wq3p48bk3iqwk
-X-Rspamd-Queue-Id: 4873312000A
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C2915C0003
+X-Stat-Signature: yw1x5zcqj91uw1o35dtai8tksepsuai8
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794828121-557577
-X-HE-Meta: U2FsdGVkX18GVr2fjXYW+Q5PU1rKoqc5ysuQsAZYakCjQXWIVqhk00i/9MSsuJFwMC6xH6uTwvRAPrmk+ScDSJaAnE0winALdWGur85OVMv3foulGbUtRwfkZzbB4H+LKdilhNsv5F6p1JAy32SuW0PtsNquBSJvy0IzNbl5GNJ+lQu8wcGHN9PWvzYagGoabhBCuK+eR6544mf+mqpSG7Lpkjp7g68xdMs/5YgaulHZU5ycO3yLhfPyC4FkNhuued7usMD6nEHxJ2vqnn8xXczbA0JvPPCkexzo2X1uU6awiHb38sQq0EaHmZSNDK5/1hLpc+U1TYgbBvx+psiqY9Wv7fxBWpDZ+G61GgpYttZ54epXvKMehPKMbAiZh7Q/no+hvlGo7fAv7D24qv1BGyQNoeRgB9PZNXzTqNi0qncClr8fYGUL2AtgeZs8mfa73eh5cOfuGiWyjk6ZsFT6gOju9tI935YyDUdzXIsZIjCj7Q1ZUbCUrjOvN60YF3Mih8ziOLs+gLbjXFdsuMavoms1K55lTFipfULg8yCzS3Klwxlxz/j97VIgQ8jeFcwL6ZCnRpkWfN8b0d/+0Yp4xy8e5wemufhHHpviqydbghNToZ+BH3LwboJO4HGGSEi6asqsoDQrJcqxJyPEu4SNAEwI9vGu00vcIDe+N1fY8IkneWksaTvguRIvl4H7Riq+ETDMRJ/SOmb6CoawrHbaVtqm/WE4jeqD0imTGbqLAIW+oF72bmS98Av0PIv+j6PgjUYl5uxOwfdxx0kYIhoDQHuUPPrhYI0Pl3Zzx3DDV8dwmh4r5mm/mgEuiJF08jjkdaSSdxV899kL1FknX2qOO77mNfSuQ6Zz79TSIY1CWyc0mXp/qLVVKwQwmFETqpwx1nkiDbgBNeVB2itsYOSpSZBW3cGMMkKj1q81dNLahnv6iuQ+R/rH+jvL9cxITMMnDAEtu4Zju3wZOCwb1th
- jYqrx6vX
- acawrwRx8AJATefqi15MVEBWv2PL0yBl6bbKMRigQzSjLeEtNYChkKsDRrZiTNQxcf839xZp9lXMOQ8c+9TmzYEU78wp+fGfueoQPlce5SUb/Um43KCbP5SHhRyINte5wAwrxBouxWyvM2A9DG2eanaDxCfFIIP4R3YHje+HaGCWef47BOUDwSJ5NeenuI7ufziDQSOBWfJFqGNi4vxOR+d2jy8vJ3xvpFg7p2FU9pI7txDzfRm0Scgn4euhvevyH4XgxIfkAYL9xmndlZFVyF87MBvBv5cR+Pb1ykmE6wrMUCG/JAlaaaVdJNg9PlQUaVHy6Wb+s81S+gfeK/XVjispGFn4E4AFSX+/bzyJ2iIpVIVB/ke3k9Jm9jE4nTP4qxzayZgiUPXjumpLjtSJbkDV4O5Q1HwZ3bI/HjOJljZvu/6tFT5dkj1WrF+jV5nmouVMMCVGXXSkcAbJoNw96e2lZCqjdomxHhuO8LSN1Z/rrNwjCkVrXyMl+VAWzVxNWmg0RqHNWdDF4ArOvQYgj6JNL5I0lLuMv9pwPDDjYi35Hr5CPo4yrXjhmI6vS1S4hTWyjPTEUmaCHIH9ly9zJ5gtsAu65pbq9IggZTBnW6PyX3XQn4BeKj2GtnioTtok7GwbUiJW2Sj24NrbRvXFCK79fL7HJyEz5WKClyhEw7AnWdlL0WvTH9uYCpjSZyhMVWceVcTbcC3n+g1Cbthlkf0DhHBgGHnynkGHqRzSQfp4BRcnJ7nCkfptrW+fBh9Ak9pIyCqY6sx6kBoWN1zPUKBNRbT83zmJB1evidIhprhyk3EUQPBjyOiT01y0Sjv4V+c0csyT9A2qUPI1FTKl7ZhRfaDi6RnbdLNFyrfegcA9c9foBdGvpmaLLnI25gi5Nn0h3ziDGry5OSJJT7u+xX9+CHx9fkrq5e9MfoGYJpX1StN/SwxKmj6t2oNqDST7L2U30kQUnMjSwFp+oFOQ7j2m/V9P9
- xh8A1sS3
- 6lerXqMh/xw/G2TkHZl/yeP9ovrNvc884rh5Ybt8ha2GLQf/UpOgFGSth0M0/Mg/+TMXBFu/aJ2tasmofdXEnFZaq9JebrVYSzSVosStTPLTiN/PK5KV0tEePbi4YarN
+X-HE-Tag: 1794828121-171672
+X-HE-Meta: U2FsdGVkX18Fmk8OMVLj6qflqUa/cT6wWNAPyMHQGLxda6wn4DtRLjVeXlrEvwJekoKcCsjqhwaHwcIJnsA04iUSGWccqXPEpF7ofgaDdMQpc4Qd2Q2Ci3RKuEBGZK7rlMnwM8UnolXROCLyo47eo1a7ONa8wX6TLnV5F9OjRT3/tNhjOXjIi35sSKm3og8FO/b/E4Qgc228v69sWti0OYpYza+cMU34fUUDTS5w+4mxozoOosuWm01iya0iZ9qRg+41azvBM4BFXkLHcqSHtVpTU0GuOyyl1w3cf7yLm1lAhHORxcte9B2ElttRGutj3ugFQiZGKjnCzq9BQ+bFsb53dPJCfxSEjGSCCRova4IbNkMFfcUFUh+A2eCmw41qdxcnBRHoEfrPyRgZgdtTPltaUgPthhrnyvHGG+QT9K99+dqDOaojKjVJEcUZ4WJsrXda8F5HRtHGjR7/qxV+my4oB7/P74N2e6s/134waDuW1ld/g/25SSGPSGGUEPSfKNg5mnplEH/juhniyZhfo+gFicn2AV+hGa6CXVHq7ccmtXQi3qR/jaaSCFNq9+MF1nZaLIL66JkqOsc1GDi8OsubpPVnmI9v1E/1lBoRjwCLIWKXJMicDO/2BMJ6Uiu5kLl2yDCNDGrPl11UG4pRDmFh+qmOf8dDDgcX/ZOH0n+J7xcn0kKttw7oIKoY3YDJ9INPe/NyIrMWm23qywugPKnBsGxZTnvjhP6ujM50DVfiQw7q7uvb/mvjVDr1AdH7kLquTfPGLDwS09kcjYMUY7Mr2K7Pkfaxv+GCqzinFdMkaQPuyUMADUf/aSWbcTJ0LjCUlIJrtxS4kWa/cRuNW8NeFlRinfvsm8lVR/58WSlQIWHRB9NVF5Dz+0yN0W0MX7CpIAYwOfP96J1XVUH4OqNae52BMOto+8edi+XQTFoffOcCcskINCxjNJvhMLG/cQuvtPThPosG7oh5zqK
+ qobcB9uX
+ WHAap38S4RqFRHNcNHr7GyzJP4EDwjE6KpBQv4f4Rb+1dEXow4Xo5nDgWv2WG0dc6C/85rTIncA40N5L1uqOAyQPEZ/duv22AhdOy8K9C4MRBUMaTODeCQ/3q0UqIwBdR3nXOEyQu54o2Zw4mf0tLxLYWTc4Q+e4WlmZqbhVAKmXUEIXg7BFSpSQLro9XJpWOk/SdyqGpOvasr6LEBMaIou7/oTcefIJ4Afe9HxmdWTdX+S3MFsKOCCGMrAGukvXa77rMIzRMKSR5/6Doxqc1aMmqiWCYU/zajlcObc1ZxOVbNjG2g313cSWBF1WgpzVK9/pFVmJNxNsPBpCVVcFJDT6TIVwcUqxt621h5ZgEk9wKr42wu9TLxK+N8Xj+C8M5CwQx4b/zA01Up1kIftVcSfNR5v1smNw7hjHnbLJZYu4pyGKD9p8w35NJScit1Os2HyLfbsGe3Wemxdbapv2UKl7OCLvHI9g9BkuSI14csx3oLQYa1XwjefLJY/QGJ80HXd8CoLmC7kRGxq0LyOz+tHXShNeAXjAuVIAC+ioPszqFTP9pHD9UYLHLQ5vzuA7VBrZZNiDpXZdv+LLh5+5TG/K934E0T3JyzIqdhSsO7PRA868uEipLUtOAXs80IqI69B0KTyv/trrYS1ugxKU5vc36C4mtcEDTvSd8XQmWzuFWozKm5NjmQxZ1bCsfRrrVZCG0o70FbAqL4/B+Y/V2lcQtTxzDrOu4CfAt7Ocappiqf6hgunvXSgrC4VMfYxuqJMWx6wdpIPqCFIju4mS5+Btfg7VnrTymB2HbDGRLpIMF23r50S42AVeNMdaTPJiy32Enab+N0DQkvN/TBUSyvXZXH7ctYQlWAmS2maFvX779nHbxSUVBoGP2SIuzHxrfezSBjRu7v5mD29YouN7zNhzFgeBg6Ayo2wmrbeo2Y89Gdie4UobNCTJuYXFzHCbuRuFy9ol6FJ5PU+vfZtmbva2+vtaM
+ aew2yAFP
+ zeWYxYGxQHKmEi1yJT5wmqoeoYdjig/kfVgQsvvxrRRnUDRXgmkeR12/ZjzpQs2nO/j25X+dE0YpQmqVNR1qZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,136 +119,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-[ Upstream commit 0e05a469c29400eb6e35448ce7318581688a1806 ]
+From: Johannes Weiner <hannes@cmpxchg.org>
 
-Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-introduced high-order folio allocations in the iomap buffered write path.
-When memory is fragmented, each failed costly-order allocation enters
-__alloc_pages_slowpath() which runs direct reclaim, direct compaction and
-drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL pgbench
-(simple-update) with 1024 clients on a 96-vCPU arm64 system.
+[ Upstream commit fe21f930d1e64d121191673076fc4ebe79fc82d5 ]
 
-The root issue is that direct reclaim and direct compaction are too
-expensive for hot allocation paths that have fallbacks to smaller
-allocations.  __filemap_get_folio_mpol() already marks higher-order
-allocations with __GFP_NORETRY | __GFP_NOWARN, signalling that the caller
-can handle failure.  However, the page allocator still enters the full
-blocking slowpath for costly orders with __GFP_NORETRY, which is
-unnecessarily aggressive when the caller will simply retry at a lower
-order.
+1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+non-blocking allocations accesses reserves") stopped handing out reserve
+access for ALLOC_NON_BLOCK on its own: the extra 25% below the min
+watermark is now only granted on top of ALLOC_MIN_RESERVE.  But the flag
+was left in ALLOC_RESERVES, which produces something odd:
 
-For costly-order allocations with __GFP_NORETRY, clear
-__GFP_DIRECT_RECLAIM at the very start of the slowpath, before
-can_direct_reclaim, can_compact and the nofail checks are evaluated.  This
-makes the entire slowpath treat the request as non-blocking: no direct
-reclaim, no direct compaction and no drain_all_pages() IPI across every
-CPU.  Reclaim and compaction move to the background instead: kswapd is
-still woken for reclaim, and it wakes kcompactd for defragmentation.  The
-system keeps its long-term health while the latency-critical direct
-allocation path no longer stalls.
+With the ALLOC_RESERVES match, __zone_watermark_unusable_free() doesn't
+subtract the free highatomic pages for them.  So in the slowpath, they get
+to consume regular blocks below the min watermark by the number of free
+highatomic pages.  The highatomic reserve is capped at 1% of the zone,
+which on any decently sized machine is a multiple of the min watermark:
+GFP_NOWAIT can drain regular memory to zero.
 
-Allocations that also request __GFP_THISNODE are exempted.  That flag
-pairing identifies the local-node-first THP attempt issued by
-alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
-form transparent huge pages.
+The user-visible result is brutal hiccups during bursts of GFP_NOWAIT
+allocations under memory pressure.  This was found in review and
+reproduced with a synthetic burst, not observed in production, but the
+sequence of events is a realistic one: On a 32G box with an anonymous
+working set, swap, and a filled 290M highatomic reserve, a GFP_NOWAIT
+burst drove regular free memory in the 28G Normal zone (min=60M) to 28M,
+0.8M and 0.6M in three runs.  Swapout failed to allocate its swap table,
+reclaim scanned 13M pages to reclaim 200k, page faults stalled for tens to
+hundreds of milliseconds.  The machine survives it, but not by design:
+direct reclaimers eventually fail and start unreserving highatomic blocks,
+until the allocation succeeds or the reserve is gone and the OOM killer
+runs.  That reserve exists for high-order atomic allocations; here it is
+destroyed to bail out a GFP_NOWAIT consumer that was never entitled to the
+memory.
 
-Clearing __GFP_DIRECT_RECLAIM makes these allocations reach the
-!can_direct_reclaim bailout, which since commit 4c0ed883e051
-("mm/page_alloc: fix defrag_mode for non-reclaimable allocations") drops
-ALLOC_NOFRAGMENT and retries instead of failing when defrag_mode is on.
-With vm.defrag_mode=1 a __GFP_NORETRY allocation could therefore succeed
-by fragmenting another migratetype's pageblock.  That is the wrong trade
-for a caller that has already communicated it can handle failure and has a
-cheap lower-order fallback, so exclude __GFP_NORETRY from the relaxation.
-The exclusion is not restricted to costly orders: any __GFP_NORETRY caller
-has said it can cope with failure, so failing is preferable to fragmenting
-for all of them.
+Remove ALLOC_NON_BLOCK from ALLOC_RESERVES.  With that, the GFP_NOWAIT
+burst is stopped short at the min watermark.  No direct reclaim, no
+stalls, no failed allocations, and the highatomic reserve stays intact for
+the requests it exists for.
 
-Test environment:
-  Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
-             12x 1TB IO2 32000 IOPS RAID0 XFS
-  OS:        AL2023
-  Kernel:    v7.3-rc1
-  Database:  PostgreSQL 18.4
-  Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
+__zone_watermark_ok() is unaffected, since everything it keys on
+ALLOC_NON_BLOCK is already nested under ALLOC_MIN_RESERVE.  Update the
+flag comments accordingly: ALLOC_NON_BLOCK just means the caller can't
+block; the reserve math belongs with ALLOC_MIN_RESERVE.
 
-Results (average of 3 runs, TPS):
+GFP_ATOMIC order-0 requests have a milder version of the same problem.
+Through ALLOC_MIN_RESERVE they also count the free highatomic pages in
+their watermark check, but rmqueue_buddy() serves them regular pages first
+and only falls back to the reserve once those are gone.  They can still
+push regular free memory to 37.5% of min minus the free highatomic pages
+before the reserve is touched.  Unlike GFP_NOWAIT they are entitled to the
+reserve, so this needs the watermark check and the freelist order reworked
+together, and is left to a separate patch.
 
-  Config                                       Avg TPS   % vs baseline
-  v7.3-rc1 baseline (vm.defrag_mode=0)          58,602               -
-  v7.3-rc1 + this patch (vm.defrag_mode=0)     157,246         +168.3%
-  v7.3-rc1 baseline (vm.defrag_mode=1)         109,012               -
-  v7.3-rc1 + this patch (vm.defrag_mode=1)     157,778          +44.7%
-
-Link: https://lore.kernel.org/20261001082152.2879289-1-dipiets@amazon.it
-Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
-Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
-Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
-Link: https://lore.kernel.org/all/20260904115629.3993331-1-dipiets@amazon.it/T/#u [v4]
-Link: https://lore.kernel.org/all/20260911142102.2294202-1-dipiets@amazon.it/T/#u [v5]
-Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+Link: https://lore.kernel.org/20261028171719.2043421-3-hannes@cmpxchg.org
+Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Matthew Wilcox <willy@infradead.org>
+Acked-by: Balbir Singh <balbirs@nvidia.com>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Salvatore Dipietro <dipiets@amazon.it>
+Cc: Christoph Hellwig <hch@lst.de>
 Cc: Dave Chinner <dgc@kernel.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-Cc: Ali Saidi <alisaidi@amazon.com>
-Cc: Geoff Blake <blakgeof@amazon.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <dipietro.salvatore@gmail.com>
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>
-Cc: <rvvandan@amazon.com>
+Cc: Matt Fleming <matt@readmodwrite.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Michal Hocko <mhocko@suse.com>
 Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: "Garg, Shivank" <shivankg@amd.com>
-[ Salvatore: backport to 6.12.y: can_direct_reclaim is initialised at
-  its declaration here so assign it after clearing __GFP_DIRECT_RECLAIM.
-  Dropped the defrag_mode hunk: defrag_mode and 4c0ed883e051
-  ("mm/page_alloc: fix defrag_mode for non-reclaimable allocations") do
-  not exist in this tree. ]
+Cc: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+[ Salvatore: backport to 6.12.y: mm/page_alloc.h does not exist in this
+  tree, the ALLOC_* flags live in mm/internal.h. No code changes. ]
 Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
 ---
- mm/page_alloc.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ mm/internal.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 44578e149a54..75e67f7ff4b0 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4288,7 +4288,7 @@ static inline struct page *
- __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 						struct alloc_context *ac)
- {
--	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-+	bool can_direct_reclaim;
- 	bool can_compact = gfp_compaction_allowed(gfp_mask);
- 	bool nofail = gfp_mask & __GFP_NOFAIL;
- 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
-@@ -4303,6 +4303,16 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	unsigned int zonelist_iter_cookie;
- 	int reserve_flags;
+diff --git a/mm/internal.h b/mm/internal.h
+index 9fbed032a9c1..a13a4799bfe8 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1210,12 +1210,11 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ #define ALLOC_OOM		ALLOC_NO_WATERMARKS
+ #endif
  
-+	/*
-+	 * Costly __GFP_NORETRY callers have a cheap fallback, so don't stall
-+	 * them in reclaim or compaction. __GFP_THISNODE callers are exempt.
-+	 */
-+	if (costly_order && (gfp_mask & __GFP_NORETRY) &&
-+	    !(gfp_mask & __GFP_THISNODE))
-+		gfp_mask &= ~__GFP_DIRECT_RECLAIM;
-+
-+	can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-+
- 	if (unlikely(nofail)) {
- 		/*
- 		 * We most definitely don't want callers attempting to
+-#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. Allow access
+-				       * to 25% of the min watermark or
+-				       * 62.5% if __GFP_HIGH is set.
+-				       */
++#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. */
+ #define ALLOC_MIN_RESERVE	 0x20 /* __GFP_HIGH set. Allow access to 50%
+-				       * of the min watermark.
++				       * of the min watermark, or 62.5% if
++				       * the caller cannot block either
++				       * (ALLOC_NON_BLOCK).
+ 				       */
+ #define ALLOC_CPUSET		 0x40 /* check for correct cpuset */
+ #define ALLOC_CMA		 0x80 /* allow allocations from CMA areas */
+@@ -1228,7 +1227,7 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ #define ALLOC_KSWAPD		0x800 /* allow waking of kswapd, __GFP_KSWAPD_RECLAIM set */
+ 
+ /* Flags that allow allocations below the min watermark. */
+-#define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
++#define ALLOC_RESERVES (ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+ 
+ /* Flags that mean GFP_ATOMIC */
+ #define ALLOC_MASK_ATOMIC (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE)
 -- 
 2.50.1
 
