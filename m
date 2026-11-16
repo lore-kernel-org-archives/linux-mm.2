@@ -1,102 +1,189 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1708C606A8A0
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E76E606A322
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SzV35JsA
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Y8Uf0lj7
 Received: by kanga.kvack.org (Postfix)
-	id 14AED6B05B3; Mon, 16 Nov 2026 10:53:49 -0500 (EST)
+	id E913F6B05B7; Mon, 16 Nov 2026 10:54:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 122766B05B7; Mon, 16 Nov 2026 10:53:49 -0500 (EST)
+	id E42086B05B8; Mon, 16 Nov 2026 10:54:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0139B6B05B8; Mon, 16 Nov 2026 10:53:48 -0500 (EST)
+	id D09C86B05B9; Mon, 16 Nov 2026 10:54:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC89D6B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:53:48 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 485BF8018A
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:53:48 +0000 (UTC)
-X-FDA: 85441427736.30.2D98773
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A6A40180004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:53:46 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SzV35JsA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794844426;
+	by kanga.kvack.org (Postfix) with ESMTP id A0AE46B05B7
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:54:12 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 24705140156
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:54:12 +0000 (UTC)
+X-FDA: 85441428744.28.DCA59AF
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012036.outbound.protection.outlook.com [52.101.43.36])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2081120002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:54:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Y8Uf0lj7;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.36 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794844449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x2CywPaM2g5NnzDzlfr6I6R7FLOYJMsUt5HyR2scrh4=;
-	b=409ysTnFvmmFCo+vuhqjbv8tvfkRMWgpB+hy8QTPQnXqgms+uFNunEzh+QLqubFmsqo+Rq
-	VxKt1ms0OwTqT4qDdVOoaKlMNKNDaqpsir7Wh5pvR6sPMOost6S0cgiWb+EaqDLZZ8kSY+
-	vZwIULFg2xqyned24vKvJ15qrd7rB94=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SzV35JsA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794844426;
-	b=Vf/FXrJr3S43xso1etEZuB9rjyAhKZ3LkIoG8lwt+e4JWEycqvJAIge6nafJUqg2O7UJ5Q
-	FLG7hhLMxcRLtd2adGK3UnrE5k9y1Bdee1HEm5F8o3TPXnZmdETsf4ohi/l/M3O/IRR08T
-	PLvljMP5VrwPT33KYV73pEQQOw/dWAE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE2BE4095A;
-	Mon, 16 Nov 2026 15:53:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A121F000CB;
-	Mon, 16 Nov 2026 15:53:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794844425;
-	bh=x2CywPaM2g5NnzDzlfr6I6R7FLOYJMsUt5HyR2scrh4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SzV35JsA+V+Ay/JlfmbHyw8TEEwCyti8oclHTHE0imgrx97/hONEw5501VK69skOH
-	 S8XE5M/0vSh2Le4bJxxpU6BliIEOnJvYj9szavM6P2TnHcYhQ4G4zWhfrmKxaxkvoc
-	 qRuA3BuhR6lNq1ZaH+PcS/4mJ3EXf4wm3u1xfPJLOqtVrT8EOTs3u2HtEVGYsMqJth
-	 TPRPpfh1LBiLdGk1gH5bImnktX7qWe0L3mU1th0caeewo08ajPZ2b1+BQYUXKd88Wt
-	 qb7aXa2Nd4bH8fsJ915ni+G+I9OYFjTGkwMxvbAvTtZMaxx4KiKAxuGNUj70cP9Fg+
-	 wxhCyQFw7A+XQ==
-Date: Mon, 16 Nov 2026 15:53:35 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "HARIHARA SUDHAN. R" <harisudhan@armoriq.io>
-Cc: linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Paul Moore <paul@paul-moore.com>, Kees Cook <kees@kernel.org>, James Morris <jmorris@namei.org>, 
-	"Serge E . Hallyn" <serge@hallyn.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Mel Gorman <mgorman@suse.de>, 
-	Suren Baghdasaryan <surenb@google.com>, Ben Segall <bsegall@google.com>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	K Prateek Nayak <kprateek.nayak@amd.com>, Valentin Schneider <vschneid@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Ketan Bhardwaj <ketan@armoriq.io>, bpf@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 0/6] security: introduce Kernel Assurance Plane
-Message-ID: <avsm6Xg4SFUmF822@gremlin>
-References: <20261110202246.274-1-harisudhan@armoriq.io>
+	bh=ij58lxQsKr14Pm1xSdZM8rMDG5yp2ABGVy2VzjtZGDI=;
+	b=FmmO2oognHs0ing/K2Sk8JpDVNVExpt5/nAlUXusIHkahZtqFqLWzcQmKYZ3JpHBNJlq7o
+	p0g1w20QnQl91d0/jUhvWTODcEy9p/2EeBjz5+wVc6fFsGvFT5vYKvLt/OGnREa0KHFxAZ
+	im+xMFQ8JXGDeMmHkMfES8KoTTH7dvQ=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Y8Uf0lj7;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.36 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794844449;
+	b=s4ahKJtx6N0tY/Iht+FoxjpLkHzndzdaTc+7qRkhe/IafdvLcb5eMDMT4KVCus1fWHM/OI
+	e1nk6T1a3StYt0ZUi7wC2C0TksmgYcwWBorty86FgGx7DpHhdxHEOhSQ0e50whwUEOLl8v
+	6Y6NKE6XC+n1VFZHuYcOTx/r5LYW91I=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PEKak6TyMl6Tvwg1ShcSvowmIxp/fCf/7VZm3c8qseFZ87zzI5KNz/tamVE6+6+SXBPh2aQAFvyr4OrukHEi0NqevLzZXNoFu/4tHY/rDMiWTZLsCXVg+4dJQ1jdcM1Q86Gr1q7u3Y+lLUy/hUkDo3GrfXYkloyLwEzIdClCv82hw8L8rtlg3Knh2qDS12PVv1DksPpBJzR8aI0nXHsMUoTexywIyB1fJqed4EuQx9CAtsYkZSK0z7KmtXhcEtFT+skQnkR8AuXII42BL9Eg9Vo3U7e5Qe9bGdzBxR7Qnmx9vEuhgWJuLg9e2kFZ6nJO+MTwS5R2cFRKbOI/5NGYIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ij58lxQsKr14Pm1xSdZM8rMDG5yp2ABGVy2VzjtZGDI=;
+ b=OZxJQWEIxb1pNNNlaHLnrxRLQwhEadOpih00U9ISBIn4W6cK/+/W7vbwzAq+J3uafWi/sJFEWWEmzzOxAbw5eLkHA+eLrxaa3UXdttM815ZLUiytwcZCifJBRGonlbdZal+VaKOop1t9Gh5fgo8tokhn/eBlEdFrkkT2422rZ/vEew4Ix3ivmtKIsDKs+WU/Pf71vXYYHtLkAzru1YETd2xLuYOaVE5g1Pp9H2SuZygoNxydzojgqvVcNvbgaAI0NlCjKpAf+Bm5PnSGoxg/slWWGMJ94ze+FDFkf1XXs/TbA/RanD9r+d8Nu4cNbPlNLrURPQCa+WaZ8Ee9jgx1yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ij58lxQsKr14Pm1xSdZM8rMDG5yp2ABGVy2VzjtZGDI=;
+ b=Y8Uf0lj79YhSwDj/YqRhwjUeDhJ1tpnvC9ypZlN95snB6vwTvRjplSAr3zMQG4s9ofeEYLOpnewuO2ZEzAqodz5BzDVSubhYJUZJ9GltabuoO1ukzxRr94pvTXXMDLrfrB1W8qZswuR3Z9jU24Sk0b7OPnh4LBr/Hxu6AR3LhgM=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by SN7PR12MB7787.namprd12.prod.outlook.com (2603:10b6:806:347::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 16 Nov
+ 2026 15:52:02 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
+ 15:52:01 +0000
+Message-ID: <980220a5-390e-40a7-bd5c-16a2225bd75b@amd.com>
+Date: Mon, 16 Nov 2026 16:51:50 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] mm: check permissions and bounds for vm_ops->access
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Willy Tarreau <w@1wt.eu>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Chris Wilson <chris@chris-wilson.co.uk>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Rik van Riel <riel@redhat.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
+ Felix Kuehling <Felix.Kuehling@amd.com>, Chris Mason <mason@kernel.org>
+References: <20261112-access_shite-v1-0-988a5c470db2@kernel.org>
+ <20261112-access_shite-v1-5-988a5c470db2@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20261112-access_shite-v1-5-988a5c470db2@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BN0PR02CA0013.namprd02.prod.outlook.com
+ (2603:10b6:408:e4::18) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110202246.274-1-harisudhan@armoriq.io>
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SN7PR12MB7787:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7e7071f-ce8d-42d9-a252-08df43f98dc2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|921020|261102123227099003|56012099006|5023799004|11063799006|261009223027099003|261021135927099003|261028144727099003|261022105027099003|261021123027099003|261021121427099003|4143699003|261026121527099003|261102130727099003|261026140227099003|10067099003|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	3snhvh5FIjUsD2Zs6dx31G/cGmuF/ydKp6cyZL9Q21wT47PH6Hg3p2Bu+I94QZJD0D6Ye8USEV+3aO9UVL+5NSD2ih820YcHi3//6GeiKkKlSV7UKa5GaqXUJ29uaC23oTU7cjqEfi2uF93P7Uqyaktn3XIfXl/69VKDhaZiabZxfrdnoXsN5mbf8xLTKPJAgMczxmoyTT6e9iOUIXd4/36KIF5rTXOPhcig9rPMm1rZlqMhM2S4e4einoFgNy0fsZuIsI/aKvVjV0OCmv3RZuK/7UYsxvrWfZHNwDyYMKhwBt6fERKosj3RRwkG/ehaRYgOf6R8ijAZizMGNmqyIEktN8oeNsUb+LdL/v1lxmhZKXV++i0dODx4yDksGM5x1lIOjTNmTdsfRETexIyNN8v4joXrm05j0ByYGw62RwbZJ4OibALr/pfC4w2b8uveWb9P7GJ8y7mLO6aGUJTZz5uMrXsS9KB2sQcy681z9mgnjn5zd1N0iM3i/1s9/NDeRQGc44Mx+/jfd1iR5Be54OlqIzADsrOW7oPVAc0jw8UuRXBROJGJv1iTmK2H+VKPJZ4xSxLJzem3Tui/x9nOt1WN9mJEz87JxZGF+rwy4aKknG7RgSe7w/VPob1HcJSTHa2WGH9zJw4zzrRKxiH/Id9/25JO5IPnvZEo3RV5ojA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(921020)(261102123227099003)(56012099006)(5023799004)(11063799006)(261009223027099003)(261021135927099003)(261028144727099003)(261022105027099003)(261021123027099003)(261021121427099003)(4143699003)(261026121527099003)(261102130727099003)(261026140227099003)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NkhwSmRFTWZVYmlWYU5CK3l2QVhLTjJjUi9jY1pEN05vOE1xdHptQSs0R0Y1?=
+ =?utf-8?B?dWV1ejExQjF0SEpIeGRTSzdiRUkzMzRYajg4endhdytRRFp5RXVCTTRiTFMr?=
+ =?utf-8?B?VVk1SWtwNGNaS2p6TnNjc2tadWJTTUwzSFp0elZvSkh5eFplOFhxS1RwTEpx?=
+ =?utf-8?B?akxqZDIvV0RoSGtaR2s4MSs4OWpCbGhEeVRGZUJCR1VqODZBWHdQbnZlcjQv?=
+ =?utf-8?B?QW0vSFlsK0hWNERDdlF2SG55N1NkTTQ0RjMzTVZ0VEpabWF6WUVMdWwwNVNF?=
+ =?utf-8?B?MVBjdzZhbzhSaUVDY3RHSmR5cVAyYjZCN2lZZWlqNzk5WUNhMjZGbGJMZDJm?=
+ =?utf-8?B?bitJRWpXUytSTm81MHpNTWRtcXptOStkbm45WTNMWk9nZ011MEJFRWJmT1pM?=
+ =?utf-8?B?bDk4MFA0VEtoWCszMVYxUU5BdVhDMjJvWm9CMFN3aDBwcUFJWUFJVzVMeUZO?=
+ =?utf-8?B?SnEweVRrMFdRclV2NGJOK3RpRTZhZTRTY29MaTdHckdPZDhVWWlSMnNGdjBx?=
+ =?utf-8?B?clRQaEFub3FkOFdxVUhTY1R1eDkzV2VqV25IVkl5bmF3djZJZWcra0tFNS9Y?=
+ =?utf-8?B?T0ZCNk0wWjZ5dFhQSkhCTXNSQkZoWFYvOXpDbzQwaU1PVW5GOXhFc1dVdDJR?=
+ =?utf-8?B?ei8zRUVmV3RIMkk0NG5FS0EwdVlvSUJvSGxmT2RHeFQ0Szc2WGEwdCsrZnhG?=
+ =?utf-8?B?Sitjb1BKN0R1TzIzNEh6L2E0Qjd2WlRmQ2R6OHpSclZtNGJrL213MEl3azJm?=
+ =?utf-8?B?aWpkVUhVdGFUVDByRkp5TWFHT2FmNFh2dnM1dGlueUFJRFA3U0ltbU9mbkgy?=
+ =?utf-8?B?Q2xOczRkbUlSWUFzVk5aWWJaYllFNStLajFFcVV2RFlpRWc0TlRoeHJxbHVF?=
+ =?utf-8?B?d2VCZ1BOQjhNdmZ1Vnd1SGxMTFdoQVhZNW5hT1hRemhYRWtUYjdvWDd5cFE0?=
+ =?utf-8?B?UFVMaWlsaWMzbVU0NGFza21TWmpZMWVtRnoxYnNJaGUraEtFSC9MYmRiR1p6?=
+ =?utf-8?B?TDhCeUltUU9mTHVBWUcxVWhYb3d3R2RWRDBxdzFNMTN5NFpFRDhic1hXM1NM?=
+ =?utf-8?B?bWEvTitNV2h0TUJkQTJ3UElXck5xNnY0V0MwYlZXcWFXNVgyc2p3T3RNUXZ4?=
+ =?utf-8?B?L3dxalp4S3gxTVZEZ0I2cVR0VTkvdGJIazd2WXBLZ0cwUU1WNTdxTmZKWjJz?=
+ =?utf-8?B?bTFHWDV1RG1SYkM3akpyN1FjSDUrZHBSclYxSEw4bktNNmg5YWhJWmVuN1Fv?=
+ =?utf-8?B?dW5ZNHU0a09vNWkzbktKcUxzalNBR1c5VVRiZGprOXdqenFBdEs0Z3NQS1Rr?=
+ =?utf-8?B?L2hjTVZEM3dyQ2l0SE5YQUFJYkk5cXZYRXdudmVYKyt0dnVqeEp4RDVxUlky?=
+ =?utf-8?B?YTdvTWxjd3pMNkpnRzA0WFNjeCtsUThhLytyTytxY3NsdzlacGxOT2lneloy?=
+ =?utf-8?B?aWNrdGRIZmNJcXdVOVcvbWJRZjc0bysxbkNKamhiMDFXKy9ILy9TaHduVnpG?=
+ =?utf-8?B?dTNoTWJDcis3WmFUYkRaOU1DMXNKS1BRb2wyZytTRnBOWmc2UWxVbjUvd0Yx?=
+ =?utf-8?B?QkU5WHVnWi9JQ2FyYTZveWo4cVBNdCtCejNCaE0yVnY2WGc5SUE3OVdSQzJw?=
+ =?utf-8?B?WGdOaVVoZVFIeFFLOHBtSWwyRk9nNlJTWEp3aTBjckhqY0U3SCtzTDQ2M3FO?=
+ =?utf-8?B?NDFmZ2FpcjJQZlVIYVZjd2FUZ1RQdXp6cit3ZzBLSjd5TEttTDlsanVmbWIy?=
+ =?utf-8?B?SjVaK0NlYWFLTVppYkF0SlBHMEhzQVRZTTJHTEtXZ3l1ZjNvcjYxWVErSlZa?=
+ =?utf-8?B?VGJHQURtVmF3TUJNR1MvekFoV0VmOWU0Tjdpa0gwRGpsVGdJUVNlSWJyNC91?=
+ =?utf-8?B?NXpicS9pc08yNGVZaVQ4WEZvVHcvUFdxY2F4VFhzNzFuYkNJcWtpVUZ5Q1J6?=
+ =?utf-8?B?eWlTY0JnL3VXSDQwdXk2YUlMd0lHTStPc0VpOFVKNytFa3hxZzJuWC94eVdm?=
+ =?utf-8?B?Mm5OOWlQdm9sVFdabXZnRXpmUGh0ZFhEUER1cUhCQVVjckhwcEprOUVjQjFj?=
+ =?utf-8?B?SSs5b1V6d0pZQlZqSGh0cEVFUWNUYmprSU5pR2k5RVN3Qyt4NFY1R3IraldD?=
+ =?utf-8?B?Z3ZEVFRpTEFJQWRaVFFJQXlZMFV2eHZObnBOOHdEWm1BdVlBMUtHVmZDTG11?=
+ =?utf-8?B?NWpmQ3U4VS96U2pGaGJuTEwxcXBHdWRTRTMrS0hwUlVnNWl5Q2FLQ3h6NEcx?=
+ =?utf-8?B?OURFMXEyMVNWQTBsTGNWSU5mOENoaTNNOWZIRXhRa0hQNWl2NzI5RHlIbHJO?=
+ =?utf-8?Q?C2LaC6UVyr+7P3f9m9?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7e7071f-ce8d-42d9-a252-08df43f98dc2
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 15:52:01.6662
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: waA/3lS9d9VVasydbCt2S+29Igo+X04osKTot6VuJqgpOPT7mmMt7dRtqR5T0nib
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7787
+X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A6A40180004
-X-Stat-Signature: oh9nt3ygjumksabr34jnwmrxsjtdr3p5
+X-Rspamd-Queue-Id: 2081120002
+X-Stat-Signature: xqnstybu5e8p9bne9onoysj43k61zxhx
 X-Rspam-User: 
-X-HE-Tag: 1794844426-416652
-X-HE-Meta: U2FsdGVkX1/jLHBEkbnohHn/K94PphmNi/QgnqLNTDdrHTdFuBFSDBQYqA6ldct9BmeMhaq1GsSkNJD2kpgUcJvrvUmY3IRE8YYATlpsEj9aa5rUD6CauQbRFbqj5vO69a2brTEW5zP7xQ9DZdvTmfNMZbTOtT3/8WaEETRYOHJfqmhbg+f05WdBGD++0LV4KtxsA5lOTACJZO7uIAzYLVk8SiybeKj5dBf4dODVe+sQYyl6S4h3BUAB+M6eFkfDcHl3MmseWN4ixWfiwGJ7vAkizjNDpRPJa7QEcLWTANY1jLabmTt2oqZlcYIPAhO1w+dvlCkqccpxmnolyB1+m8cYJa9RqSgLbcXFQyPsoo89syrCTHxSrTlmCEecD+mZ7mpHImETJEpyPxUwGV8tyuZGzbJ4E7bD2E4FVIN8WhYyC4njzFRMSRrpNoPUQWLJoI7aZi+bvO2dgrhQIlAofoUnVPA/+qG38gyBF2qwVi64pbFNaCtYhexIPO8Cznop9z9j2IDvwtIZ3NeV/+jWifLTmGxTNs7oqJUDabBMYJR2fATXG5znJF+dwH9ZAY2irhnWANqKBp6Jy5gMg34zD4dwZ7sh0djA3Pbfx8cYhwyoCWS+P6rWH8EVNKGiRU4/gFkT+HbFIh8vYL7vbBGwavsuxBc4dgXTS3U40GBEU0zGmTSUpG/j50DiGDv5MPAozA8ew1wqXgr+tJqojznY/ZHN8EcG/lcYwmrWp/neVvw0YcTtwsjCP/AVTakP99BU8cnBgE71e4esv13pN9fZ2Z02rNFWoaZsny4fnsFjKOGrqatYPPVOd5RHGdf3hgSzUVjMmo7ZNP9T0GlhSYLzqk1GWigLl5ql/9T4kScJtpoP6BjmyiaTTKCkNiFbYGeIJqFpdy3wB/om8aVEf1vRalSJ+HRNn+19D318W0s6xyRf6EJ1lI/4uhQAA70m6yK+hAL3k9eclAfdsi1LGX0
- dBGApGBu
- xC+eVmEX3pClr9GPBHN6frYjzOVDINZU5Z7ymaPDXYnrUfxqRz6XJtxLGagDl972RSc6FNfQ5FWCsOFm+2lL7dCLcBRBv+Go4h7dBlo3srnPTP1fJWWwEcemR+HjMacVvjdT7yLptHSIr8St7b7VOUz2RQTogPJ8K1oJFfhSb2TFXmt/UQiwxo8+xNtFwv+0HPlHxpRhjq/UO8oAgMDgcAJ5ypdNxwCBYeaooH0VwFeZsYxo4FQy/ANClAJoaXZ+Mg1j2
+X-HE-Tag: 1794844448-930340
+X-HE-Meta: U2FsdGVkX1+yzSOBTtz+9rHonGObtauU0EX6YZi2yH0OVpgZmdU6nPA7ZFtlMU3fVCr/lc3qJ7tWcKEBCVgqY9HKDoqBjTo8JeA9zmwWgHGwobLM5lNV+EiPvylJn+++fwkNhwApmiTsNLxRcSyl4kkx2dj5xzBExuUrp9qwCngy0O0OPxG+2pv8NbJ8zSvI0FJ9J1axsIMJMR7ZaeNv5T0HgcB1T9kbeJ8mVeBB+Hn+2DaaE1uIXkKpNX07sOf1t2MGJI3cmTLEcRU60WTQeHMLoLGm+5bZfgx9IpQTBpKeh1qSs8eSnaIv/kyL6Ijk1pTKStKKtJmUSGVoLW1SFDEBplXGmKoHgRn2skp2jIIgwYRyFYGPdqp8oWVCpVA8e3/F+6z9NPow9qS5uFLRAzgXPUJt1xrV/aPp3k7IBjiMm9/aCwZ4cEM8LB9ZI8Q3F8H83P4dkfNkj51v/wBioZJ3eoZNG2GnABJ19vQibPZz7gFLvFkb88tAWRzQ7PEjMqyndis26RPY6QmoU0OkODE89+hHJtF5S7bsol7eQN2/igvz3i8nbtPWoAZHoGyd0VPkz33VFARF8f7knGW/s+Rrme+JjEvK0+Nn5m4Vnl7iJFPHhsaFJUlz9zwcNlPOUs9EU4zjjt8iXEvB7upTRcYiSpqeKejftRPciWipCoQPOuU3lBINHj4LPXHf/Dutb4apX5p2yW9fw1iXQhDlduty59pqpbaFP/qcQdP6PdhNNlQFy9LJJXZcY7XuYSaY6OnvbEbstD1PL8SuW22qjobSJOpj0apG9D0O0k7sDJLMQE6zzNntiWr1+gVm7eF1u8fBFdUOTI+VGh5N6rF3VQeBwKRWtJwPHJLCwulr+b2RlPNJEbzQ256IhZ3Splov5ETHXWCIBAVNtLwaDyftTWV/T0U8aploREaiww7ugffp+SZ6satf5138Va1ItkJKRtX9Y8YwuYjr++xHjIB
+ NXn3ROZ0
+ FwkStsP/8Xt2nL9ATVFRzYerV0E0xxI+99BZknn48JbouiGl83Z3WLKBVgVYb5L4TWrF2FfzyLpq+feH7+fGHBgpk20ME5L4qX/e8YzYyPHxBzK8wupmp8S97NKqbYS4c9ADVmtPp5Kokv/+e2LlBks61EpcghhPfnPowmIrNgrAXe4m5xYZ/8/LUQv/HE64d7dHIDBTTZFI0+HFeHDPPPYw3yWdSr69rSLh9voQE54T1Oe7NmJu5Vfpxds/K7q19fzvsKS8zIHkqRqL7pJr4SbAQBWvnjRCk73eb6A8DhWm31HUqk9V7CQWYRM5v3pPn8Zm6Yp6rfYKP0Ml0vkywPN5zCduUeVzSWgsPv8KDxrN6uBKRJEshoWK/FUDVTDi2WRHPcu+2nSW6JJn7TS6Z9uOMbPs38c6pD1J+XPMmKkTzArpjxUpWfV0fcwk1OLvCjGB97y4TT6yIv2SUJnKMAGlse5ZPzrfAPzWlPltGpLaav3bpY83iAqtjfLnMIDUg449Rce0jF5W7QTk1N9dO5mGZK9vJjGndPE6PDRKJWlmKZOfMfQJi8CqoxfE9Vv0a7JigVWfQs5ZZ/AtNHvhH6Q0DTLInZne6x2EB5/SxnLeDB4QPU9q6twot3CX8TZtagu/wZFLiEKeKt2XXqSh08KMdHYz2/W5YIvfSqKxj074Ri6HOLFA9IpyRLlBoWLelcb+EcHET5Q+AkmI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,9 +192,114 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-No comment on the series, but please please please put a diffstat on the cover
-letter so people can see at a glance what's changed :)
 
---
-Cheers, Lorenzo
+
+On 11/12/26 23:09, David Hildenbrand (Arm) wrote:
+> GUP rejects VM_IO and VM_PFNMAP mappings early. __access_remote_vm() then
+> falls back to vm_ops->access without checking VMA permissions and without
+> limiting the request to the VMA size.
+> 
+> Consequently, /proc/<pid>/mem can bypass protections even without
+> FOLL_FORCE, or cross into another mapping without checking its
+> permissions.
+> 
+> Check VMA permissions before calling ->access and limit each request to
+> the current VMA. Implement similar access permission checks as GUP,
+> however:
+>  (1) Reject writes to CoW mappings because the callbacks access backing
+>      memory directly and cannot handle CoW.
+>  (2) Allow forced writes to non-CoW mappings with VM_MAYWRITE.
+> 
+> This intentionally breaks forced writes through legacy amdgpu PROT_NONE,
+> MAP_PRIVATE debugger mappings. The workaround in commit fa5239f2af98
+> ("drm/amdgpu: workaround failed COW checks for Thunk VMAs") cleared
+> VM_MAYWRITE to avoid CoW, but debugger writes still succeeded by
+> exploiting the missing access-permission checks fixed here. Reads remain
+> supported. Userspace must use MAP_SHARED instead; ROCm 5.5.0, released
+> in May 2023, already does so.
+> 
+> Link: https://github.com/ROCm/ROCT-Thunk-Interface/commit/fea44fab6e84eda52fcf6b419b35600c18f4c022
+> Fixes: 272ddc8b3735 ("proc: don't use FOLL_FORCE for reading cmdline and environment")
+> Cc: stable@vger.kernel.org
+> Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/memory.c | 25 +++++++++++++++++++++++--
+>  1 file changed, 23 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index d4370c1b331c9..9872f289c1e49 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -7362,6 +7362,7 @@ EXPORT_SYMBOL_GPL(generic_access_phys);
+>  static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
+>  			      void *buf, int len, unsigned int gup_flags)
+>  {
+> +	const bool force = gup_flags & FOLL_FORCE;
+>  	void *old_buf = buf;
+>  	int write = gup_flags & FOLL_WRITE;
+>  
+> @@ -7401,15 +7402,35 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
+>  			if (gup_flags & FOLL_ANON)
+>  				break;
+>  
+> +			if (write) {
+
+> +				if (!vma_test(vma, VMA_MAYWRITE_BIT))
+> +					break;
+> +				if (!vma_test(vma, VMA_WRITE_BIT) && !force)
+> +					break;
+
+I might be wrong but IIRC that was brought up before and was rejected.
+
+We even had a bug report for AMDGPU from a security researcher claiming that you could circumvent security checks using vma->vm_ops->access() which turned out to be complete nonsense after spending tons of time investigating it.
+
+The technical background is that there are applications which runtime generate shader code which is then protected by making the VMA read only. But the debugger is still allowed to write to it using vma->vm_ops->access().
+
+That behavior is ok because drivers specific and drivers have checks in place if their backing store is read only or not.
+
+For an example see this code here: https://elixir.bootlin.com/linux/v7.3.1/source/drivers/gpu/drm/i915/gem/i915_gem_ttm.c#L1163
+
+So if you do this here you might break intentional uAPI.
+
+> +				/*
+> +				 * In contrast to GUP, we historically allowed
+> +				 * FOLL_FORCE write access to non-CoW mappings.
+> +				 * However, we must always reject CoW mappings
+> +				 * as we cannot CoW here.
+> +				 */
+> +				if (vma_is_cow_mapping(vma))
+> +					break;
+> +			} else if (!vma_test(vma, VMA_READ_BIT)) {
+> +				if (!force || !vma_test(vma, VMA_MAYREAD_BIT))
+> +					break;
+> +			}
+> +
+>  			/*
+>  			 * Check if this is a VM_IO | VM_PFNMAP VMA, which
+>  			 * we can access using slightly different code.
+>  			 */
+>  			bytes = 0;
+>  #ifdef CONFIG_HAVE_IOREMAP_PROT
+> -			if (vma->vm_ops && vma->vm_ops->access)
+> +			if (vma->vm_ops && vma->vm_ops->access) {
+> +				bytes = min_t(unsigned long, len, vma->vm_end - addr);
+
+Well that check looks totally reasonable to me.
+
+Regards,
+Christian.
+
+>  				bytes = vma->vm_ops->access(vma, addr, buf,
+> -							    len, write);
+> +							    bytes, write);
+> +			}
+>  #endif
+>  			if (bytes <= 0)
+>  				break;
+> 
+
 
