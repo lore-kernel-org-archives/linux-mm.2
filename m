@@ -1,111 +1,185 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB9E606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 01:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F51606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 01:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M2cJoz3v
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FKIL3XaP
 Received: by kanga.kvack.org (Postfix)
-	id 0A6016B05B8; Sun, 15 Nov 2026 20:52:27 -0500 (EST)
+	id 8BE866B05B2; Sun, 15 Nov 2026 20:53:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 056EA6B05B9; Sun, 15 Nov 2026 20:52:27 -0500 (EST)
+	id 896D26B05BA; Sun, 15 Nov 2026 20:53:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E874C6B05BA; Sun, 15 Nov 2026 20:52:26 -0500 (EST)
+	id 7857D6B05BB; Sun, 15 Nov 2026 20:53:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C248F6B05B8
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:52:26 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 38D821C3EFD
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:52:26 +0000 (UTC)
-X-FDA: 85439307492.07.AE80953
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 791CF20008
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:52:23 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=M2cJoz3v;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf31.hostedemail.com: domain of jiebin.sun@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=jiebin.sun@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794793944;
+	by kanga.kvack.org (Postfix) with ESMTP id 4F87D6B05B2
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:53:27 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8632160879
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:53:26 +0000 (UTC)
+X-FDA: 85439310012.24.B2FC792
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011062.outbound.protection.outlook.com [40.93.194.62])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F075940005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:53:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FKIL3XaP;
+	spf=pass (imf07.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.194.62 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794794004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=q3p5Ny9n1tlQYJdeoUKM5vEG7oFiEldi5brekpSeVZA=;
-	b=pMs/jmlcYbBam9hUuYzOpQxg4BZbwHbLG5xbjJw+j+B+UQWUK/JaJP7cxIKN3MBvS/FvRl
-	efgGBdX5hh4MGVmmYnRvEQOesPlOyLyBPKs4/pgIEDBdXkARPqXFTJeToj4KNbUQHoyquR
-	YAVgJ4gSxYvZXbMuX/kSVD7LY276ku8=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=M2cJoz3v;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf31.hostedemail.com: domain of jiebin.sun@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=jiebin.sun@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794793944;
-	b=1rbKG8u1lPlXyCxjQ7M6f+ZOQyvhrVACHbpchWsFkuY59bpfBauffnCstD9HWy5TNOkKUq
-	Aewa2AC3hXpm3FQ555SHgLIL3VJbTTls84403dVCSnTYqPkyId4gZ/NbEUOZZA09ExlGIY
-	IhD/SB2dVt+aa6L35s76FFEKP6Aeobc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794793944; x=1826329944;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3evvT5Cp+KVAXQKYLiXSnN/s+2IfMMah8AYUtGTRNDg=;
-  b=M2cJoz3vfvHvax/5Y/2PDxr465aHeiMwNq7Up5SRytECZtbEJt3uWnBo
-   a+08281w110GWxOCL2RiR1ft2fo5iLI+mtyZiGhQNZyw4bt29XX4NP8kE
-   5uBYRM/03bIRzjghwCn4Yg8O1u0ZZkZjAkqclQ0mTS7pjsvj92X0i9hP2
-   99cirTaa+2ZfoTED4OIYiPUppw7X13dbIzGOQqkb+xTdfF4KHNzaA+yjM
-   +1My2YB0aOwXQPSQT8FhYkyQnALCnvRHZX8qCrE1kDgj5abgdP/nmh8VB
-   xb8oQEpgXISt0hnOM5I+y6g5peByiEee/NiSEvEX29iEYSpekJg+PNWLd
-   g==;
-X-CSE-ConnectionGUID: kAw+VEMcRKKdKIA7PJS6pQ==
-X-CSE-MsgGUID: B8npPT6ERcW7oCxkZGW+3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3561536"
-X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
-   d="scan'208";a="3561536"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2026 17:52:23 -0800
-X-CSE-ConnectionGUID: AiGtzromTC+xA+xdgiHFKw==
-X-CSE-MsgGUID: r0t8OA5lRAaJVSRRofaizA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
-   d="scan'208";a="9497022"
-Received: from linux-pnp-gnr-1.sh.intel.com ([10.239.83.186])
-  by fmviesa005.fm.intel.com with ESMTP; 15 Nov 2026 17:52:19 -0800
-From: Jiebin Sun <jiebin.sun@intel.com>
-To: akpm@linux-foundation.org
-Cc: dennis@kernel.org,
-	tj@kernel.org,
-	cl@gentwo.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	linux-rt-devel@lists.linux.dev,
-	tim.c.chen@linux.intel.com,
-	tianyou.li@intel.com,
-	wangyang.guo@intel.com,
-	jiebin.sun@intel.com
-Subject: [PATCH] lib/percpu_counter: allow concurrent sums with an rwlock
-Date: Mon, 16 Nov 2026 09:56:55 +0800
-Message-ID: <20261116015655.2744577-1-jiebin.sun@intel.com>
-X-Mailer: git-send-email 2.52.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=a8H3m3yWaEGF3JkwOlbMG7d0QM4c1Yx65Q3QKHkV8vk=;
+	b=1MDILlZQbpfA3CerKGPjXbcYWOeLWCv42/YDlEKuysgumALjHW4tZ5SmIRZSUXiw/lJa4m
+	fjrbhiU1floDWUJqgBQ93u0IXgCrLfTXDb+Pl2Ip69V0XtwQTD6Qms8juY7Wfm/iJqZe0m
+	3B/oL28dC38TdKgI2FE4reSZy2D/TnU=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FKIL3XaP;
+	spf=pass (imf07.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.194.62 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794794004;
+	b=AqP6aqPifAIvcrg20geiDA/e+taiH2N5Ivwlqq2uMI2Mf4j+1qPcUjo5iI6veV62XBYEqi
+	uUEP3vJajsg95sb6kDvb8q+4GJtfzDx/QRPmQCZCcMt1wMCud8nb9UUtSc6IuJFy2f0eNN
+	BF05B25N4aKGbwNcj8309uKMAZafpao=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SP8x7gPjBCn+620tQIB+hw8Z8015O4Vq4AtHYRmsxLdA6t+H8kyYM/PkhsNw0XAQc0mnJHNwem52mA2VfehfM8D50S/rC6WhOVawmiQF47mD+7vaHEaPypZLlaMwzKfHIA1BsmF4vDMdD8BoK96kewzyOADSLA6j9dSs8qMRU278M0iwf1zaI3JvuuaPnDESHd3RkiwSmb+UtddtIC9/XymMbS/I2iWUJGjDroDM++iGC9iyDioAVhZghsxnlKc8EM0aYT7UV/jOZRHP538tnmP5Rkc8MZlXfOF/cCRjKsZN9neoHu9UShz0q/StHDjl9nzCGUAbeUNQRNwuVZkcnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a8H3m3yWaEGF3JkwOlbMG7d0QM4c1Yx65Q3QKHkV8vk=;
+ b=S9zM+diuypjhYi0sZrEa87wFn4EuqpXFZ6hPVEu1F6KrmqP07GxhjAIZpO0auKBTzA1AutVOBZ3/Au3TTto+k5ObiZohWmeR7lRLD085X9cjsPrp1egfxt1f86pCWabbMy+ETKbn4129RQRKKK26q8vMrKcMTMPq9rr4jfeN8C60oIHrE3Kgv6eDjZ0m4Thz6uLCcXG5Y52O6AnSM+WBjyNKmxuyHloDqDLk7eliPEHCSy06mYa2V+Q7rT1+nvcWWYnEpsVHR4ujB9KEZUXsAEJ3/GkFZw018bAkqYOaFLycfPc9vyB8CNWsd8PeooVZkpkt1XH2kA9bNV85lOYX5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a8H3m3yWaEGF3JkwOlbMG7d0QM4c1Yx65Q3QKHkV8vk=;
+ b=FKIL3XaPHfrTIG/zzNJgHhDN0UEHffa3EY+xj3RBlThocH7nwGMmp2/pycK5WFmvc5DXBhoaHH+o4uh86lApqHs6SZ5LQ0FfUauj8r7OH2IaODyaBzi7U/TVUHP/sHT6kzIyF+C2PUD+Phm1vr8EuiBIy3VhGFU/fhLPUbGumEzy8aOVrd3qfGr0jGHO8PX4yXU2dEn7MPkH9JcWKoMaNlnbGOKYn5woQ5upOoAkJf5OB4v1mxcMCceF5auT/D585ReHkTz5ANSyaNGjYYWtFl73iGizE1cOiODbWJK26apT8PMy9/TwxLfKlZHMq6L6nOCiwD48xQQGpgtSP/+JBA==
+Received: from CH3PR12MB9730.namprd12.prod.outlook.com (2603:10b6:610:253::9)
+ by BN5PR12MB9512.namprd12.prod.outlook.com (2603:10b6:408:2ab::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 16 Nov
+ 2026 01:53:19 +0000
+Received: from CH3PR12MB9730.namprd12.prod.outlook.com
+ ([fe80::843d:c1f0:b2ed:4128]) by CH3PR12MB9730.namprd12.prod.outlook.com
+ ([fe80::843d:c1f0:b2ed:4128%4]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
+ 01:53:19 +0000
+Date: Mon, 16 Nov 2026 12:53:13 +1100
+From: Balbir Singh <balbirs@nvidia.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
+	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
+	Mark Brown <broonie@kernel.org>, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
+Message-ID: <avpbxk6pzvh4hoLG@parvat>
+References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
+ <20261113-mason-migrate-et-al-fixes-v2-1-50a2ed382b61@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261113-mason-migrate-et-al-fixes-v2-1-50a2ed382b61@kernel.org>
+X-ClientProxiedBy: MEWPR01CA0133.ausprd01.prod.outlook.com
+ (2603:10c6:220:1d3::6) To CH3PR12MB9730.namprd12.prod.outlook.com
+ (2603:10b6:610:253::9)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9730:EE_|BN5PR12MB9512:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2f6afa2-fd97-48bd-e0f3-08df4384633a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|10067099003|56012099006|11063799006|4143699003|261026121527099003|261026140227099003|261028144727099003|261022105027099003|261022075727099003|261021123027099003|261021121427099003|261102123227099003|261009223027099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	wfk02XWPyNsbgYnSIPycK1MaVCo2P4iLpQvBBA7RaZleDWjp/oQkAOMdOyKYtBCJ1YyfUTnEH4C+qXl1SoMLjQ8m7xd03WkuXDxEHlj1aJr0VV16SRpITW1dx9zdEydDtVJ7mAZt3v/nYaxA2s/gRGX1pkSrXsSREUm5q0G/yWnVswQmxzlwmUOxBqPa6Dwts+Yh7YrvVCUCvglr+zHckmGNuLpkxULWOrHQNExf+fq18hN0IJpyOqvpVl8eqySyJT0BdnsLZKDxxE1QENe676FUzqqyoPKxd7cgNZUzObCCTjDlA2svx0oDKPsyc7lXV2jRRMOw+N33paDrFXEC44q81QGBYYZzj0XxwRSfrILBNfXHo8GRIXQNQPX6lnfMTaXdWrt5KZifl7cPgFIGFEkBJTL5wmXreurLDtPV243Pnp1Hc6K/aCJ9Cbpmmhbp9NNGkFhchDQuCtRM4UT+xEYyxiyvIRC5cXKPnmIHu1mcWtpsEg8OJw2MjjD8rrIpPiS6ussPQnGzxHXXte/YqdeIjbzrmillVhaa+uZgvvYOJsnf7ULR8DL4Jx/Vqda/dGn06LqEYpR/+XarKyZhUBcCO/eldJSGfuzDSU9yelLsh0pGigknymK6i5h1ZZ0zcRJBGqtqXdp1WYd7kOi430ZMyvYqX/da9Gka3eRv6S0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9730.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(10067099003)(56012099006)(11063799006)(4143699003)(261026121527099003)(261026140227099003)(261028144727099003)(261022105027099003)(261022075727099003)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SUtqQTN4NWFJaWhlOVlVYXVYdE5YZmpJanNzVjhnTUFJWkxEVTd2V09ka081?=
+ =?utf-8?B?WHlKdktMTUttVlFaMExxRGNlOHE2cWlseFNDTEh1VjJPUGZsOHQrMlBidERP?=
+ =?utf-8?B?RmRzaEp4MmxBK2NUaHBhU3FaWmE1RVNLUFgrMXZXdmd5cWtoSGRoWjAvb2JY?=
+ =?utf-8?B?VHh5Mi8vRjNuS1NCRTRoRHRhWkRFVHpBMytUcldIam5ib04rQktQUk9SelBK?=
+ =?utf-8?B?UjBNdUJjaFdQVGF3eWphL1d4TTVxQkVpbjhIRG9KMWpFUnZUQTU4M3I1ZzNN?=
+ =?utf-8?B?dGFCdDJiNXJJTUlCc21VN21NcTBOM3VqUlBCRWZqcFJmM3ZCNjZNb3MyRW01?=
+ =?utf-8?B?Qytrek5TVXhiTkczQS92bW5HOWg0YVBMN2txNncydlVWVU9SSWc2NlFMT3lB?=
+ =?utf-8?B?aXNXdy9xVjlBM3ZtMS9CMlhpUnlzekFwb01QbTJXakJEb29XYWZNbDhBRk95?=
+ =?utf-8?B?K1dKM1Q3SXJ2bVAxdVBuUDkyb0Rkc2lOL3RTU1p0V2JCbVJQR0V0b1Z1ZTBD?=
+ =?utf-8?B?T0U3UWhKTHNWY2dXcE5lVmkwTFpMc1hWWDhwaFIvYXM4L1ZZUTlvaTVLNWpi?=
+ =?utf-8?B?NVlKU3g4OGNGRjFTUmRkK3hzTVRsbG10ZjBJQmxTMVNLS2ZFODZDbmNCOWNr?=
+ =?utf-8?B?cnRxWEd2OGpwYlY0VEswb0NaREVtT1puMHk3aDVlN0lIbForT3I1bFk0OFlJ?=
+ =?utf-8?B?NjcvS0dlNktMMGZtaUJMNVhoTTJyNDRhWVNHaHVXSGwyejVydlhibTJyZTdE?=
+ =?utf-8?B?U0praXdsUkpIdW9ySlJ6R1g4TVFkM3hoQWtOWXJwN2FEQm9yYlRqK20zek55?=
+ =?utf-8?B?NGNnb0xKampUYVNwa2lFRHpwWDNoVmQ2N0sydWV3a0hYNHlDamRoalpFa2xy?=
+ =?utf-8?B?UkVtdmNFQWNkU0VST3RQd0prRTZmSVZqTXhZVnkyNzM2TjB1RXNLS09qVmEz?=
+ =?utf-8?B?RDAwR1JITmJLUzlMYmw5ZTNMckJFRWJlQTRnN0RGS0N4cHpTWU16dXA5OW9X?=
+ =?utf-8?B?TS85WUFwcGJDTXQxZ0k1RE9YdFB1aUFyU09sZ1d3QWZBM1Y3OW1UM1lncDB5?=
+ =?utf-8?B?WDRmSEVMTHhBQ2hMbStDOExNV29ldlg0MHhlS0lONmRBbEpjeHV2Q3FQSnNj?=
+ =?utf-8?B?alpXMk0xMHNWRU5IRzk1aEs2NTBzMmJHN205SHNGMUpSNzhxMnhobzFaS2xS?=
+ =?utf-8?B?OGd6U3BjTVZMWFZrNjRvZnh3bENrUXZpVVpEQ0lLT1E1Q3F1SmNpQUVZckJR?=
+ =?utf-8?B?dkxPcHl1a2IwZ0J6NnpuMG9HY3h2T3dWc3M5eE1KbHZkcmhzVTloT3BDVFdK?=
+ =?utf-8?B?ZVhaczRLL2QwMmtVZCs0Y0NybzNNbldZdkwrYTBZc3hVbjYzWFAzSXBWZnMz?=
+ =?utf-8?B?UThlNUVDcE9SS21aKzExa3pUR3pRWFVRNk11Uk9ieGpLU085UW82K21sd1BE?=
+ =?utf-8?B?RHNUVW03UC9kczNNWUViRk9yY3QzSlVWeUpCRlRBZVdOM1Bsbkc1dmZDSU8w?=
+ =?utf-8?B?Z3ZrOThGaVdvTlZDY0xVS1NqRm52azBONWJGWXJGemZXWmtySDUxZVhGWnp6?=
+ =?utf-8?B?VWc0cWZ3UCt1dmNlSnhlZzl3L1Yyald6VE1xeEhVN1JyNUQ0RGxnM09FZUMr?=
+ =?utf-8?B?MHpmY1NnWXMrNGU3ZCtSdzcwLzFrMmF1MW91K3NwbEVLYnhFajg3Z2NOdE5y?=
+ =?utf-8?B?NzFLNEphN1g3a094V2tjY2VlbUZaYzBiT3hOZHZzMTVKVG1LQzgyeVpvTEJs?=
+ =?utf-8?B?eWF0dzhWak43NzFueHNIdzhjRHk3MmZja0I2UUhuYmRBbkxwdEVNYWtwVldq?=
+ =?utf-8?B?M0hWUGNHZmo5ZnBuejNRREl5VkNBQTU2ZERWWnB2MGpwSHZaRVh3K1hJWHB3?=
+ =?utf-8?B?OFJVbjdlYzR4Y1gxR2lkWHFCZ01lbjhzNWxqNjJWVUFzTXR4UmM0Yyt1OTlP?=
+ =?utf-8?B?NUx3dVFBSVNmbStXZTNBTUlGMkp2QWxHdmU5cTV2alBPeERiV2JpbFR0OU5K?=
+ =?utf-8?B?MHNTemk4ZzFudmRlN3pnMWdpTFoyQk1nVlR6VGswNnc0M1V6d2t2TGRHNllL?=
+ =?utf-8?B?MXNZVWY4eDBENExmc1RHVUREak82VzdCd2dIeEtYZkxGZFpWS1hmWWJJanh3?=
+ =?utf-8?B?L1Z6VjI2VDBDRHlMQ3RWT3FUZWQ4dldUOUs1UWpkUVIyK210VFdzZXo1di8r?=
+ =?utf-8?B?UXFzcW5pK0RNYWZiL2ZJK1lIMmNxTzl6blhpUkpONlYxWTc1c2ZhZEk0WkpL?=
+ =?utf-8?B?UlEyZnZXT3BFRFAxSUNQQmxMZzAwd2xBeGJHRmNMTWhQL3U3S2VJbDdvNEVj?=
+ =?utf-8?B?V1JUa3hTeHJsRlhkeFRtL0FxS1NYdWtHaE5UeE0rSWdld3o1QXoxZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2f6afa2-fd97-48bd-e0f3-08df4384633a
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9730.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 01:53:19.2267
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 72VXu7G5GZDjm7ABoH4uMFw4qqnxYrUtiB8b25XgXllM8tFUU7D0bsIgFj/FKa+8rm7C0BZSTRUkQI40vS33vA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9512
+X-Stat-Signature: ym3o3orats1x1cffcp1uwzb8htud7xuw
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 791CF20008
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: j99693d4ttbf8wcd1a7rpxih1gp5jm6t
-X-HE-Tag: 1794793943-581296
-X-HE-Meta: U2FsdGVkX1/fNQXR52y+q5bwQs19gqNEHPSHVBX2GMgYSAGoO4QKAx+XHSm11HfuJ7NJNaRULl9kTvAmMbgJ3XUbfxnUz7Tq71YlYe4zr0pYBHa7aJXU7h1sBvAAKV6G4lMkI9xPeUlYYwRDXcc7gA8qijNeAnLNIalDf9nzIuv4wh+RN0iqyfXibFKjPPFyv+bOokjlNAOfYBf61gEGkZse7h1PIU1N80kfl3A+ZxLBtd55+fZbIEzUnD1It5nsePY8NqV/IIOJqSULEPrSDFd5J/d3/iAe5f4l/ws/+6XfUGxTnUpUcEPHfYt4sisoDeti5WMbjECOnHT0TwnpH7AjXfuphxK99emqEfAAmNvegXAfSMWxH5N9t+6o+DtrQcs1UOCfe0TlKGFPTWbGegQ4DiFknYVtVkApntDX3WzTC7Y6hWLtR45yVEDKQCkBGS/zyrt6DrEdYvjMqgQeRT07wYJ1lIu/XFyRDnmllR3liuES/ocqSsuLE/RsHwbLefVBLwZGy4W+pgV4vCkkObCN85HGYupsNfDcK4WNQiZPVRVYJgwLmhAFSinGoJTsBtevwl5CsyToMA6BfzzvVKMQ5hs78aTIn0q21ndkxrMJRbI678ut2ftuKVsIImslcE3EtaZnt+Ub/DGaySS7IeW8j151J77d3bGDMcUpARQWqYjkUHYVYFLKhMvyAu/PcDBKgfDbDQkjtIE/cj9o8+Jt6/Bbr+juExtzO5uW9vfk9n/QPJys1J2dCb0ww6ql2lqmijaH3DKT4hxNXXGUlGu7wdSaQMtR9Hpu76oc9o5zaqWaHXIOGkVIbYx7+IuWzY1cCg10pBop8etOqF3cH/8zfF3UZxngKuyQFBfOylXjhh8AWjrJivTRaDPw9HGosidsKvezP/ZXS7Ww+MuPXd67W15W36Wy2KtesuZ7JZdudy95OYWj8vTwBi5Q4nzXylTOe5tsvjcc4dWvH5Y
- 0jeqHCym
- tI5fY4MjZueLE5mG3BrT8mnAbUWUfv9luygERXh3TzA5QJi0I7hATCytqrQHz0qySA1JqljU6LpW1MPx5ikp4JkBgK1Jc3HRbuaVICBOIQ+lSo6N05F1D/pdzdwK/DDUKoGQMU1V/14HO2U6VY4hHsjzeZ7HOJwyeWfQe2ko53LotoCarXI12PrkgabNfSJo7qW2lUom2etVE2MLjenRUOcyVJCMW8T1SmtPn
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: F075940005
+X-HE-Tag: 1794794003-936845
+X-HE-Meta: U2FsdGVkX19xCuNfGRcbX/hdcBTXtSGvVG7KgLKBCROjGw/3VHjPVahHhhvr169pnnqwYcnfieC/hrrWp/Ur6VyPr46j9+Xk81m8AdAB7xIzfgEJ7ZlokZGqVLdffBR1e6bEOrQnLsADNa2FCdXsG3sCNFsu0gqy+lsMbBL2pcB3QVaKbGWXVDuXEVih1tsuOdMafZIyCw2DHEXTT3WJgZCPQZWn9IZl8o5o//1AZfiVEDqbP6JfTHFg449H3irHJjuzDf612/Es8JXFh1JHVNaEeNYb1Lm94h5xxYDs5mRebqZynw+1ktE1ijitRXNmnCZCJpFqauNOwJWj/4oAI0jqcmuQqUhkYIjJML5H7dCRLbrU5Jf3KbfodbXZTuYjH4q6qeTsuR2pQJn3J5pjGCMKAk2w/jH/uhmLSdaYCYkmu8Q3qgS8euy1IqlqUGiMaCTXJHV4NxYnF53nOylicYW/W4crgWHi/4kMY7paVATqNeMB2rMAxNIvqZdjBvlDw7DgqlgkFvFbTkSU5Vjt27WZ44wbVgXzxxkyKnu3/Ok6H3QNz964Vj3zTXb+itlMrFqVVLTySHKmMl1vA6rrkcuMXJ4kvmJApfiOudI2bOl4FtqsyF16d4h76PRm4SQ4TH+XuY+KEqlKksc4UvHXgea4Blk0Y8MgmfghDABIh3oLfwRo9GBmNuWc3MywFsUkokw/0babPHZ5xhowQIYDKSrXsRgS5SgetbGe/2qJNS/9CB4AMJCgnDjshHMCJJtaXb1x5ZPNDzpIye9iLKiAg5rV5NaUmky61EryC1ed54yVkvFksj3t3Nl2zY+mucEZxx8bzq47+UkUdnveXVAIUY0rgVcgcJab1ACHKNoMaIknwdWNua38zERmn7lWeDMtzyaKoCbPUMkXsmuUwX/lOp1NCH8/aP3ijkKc+xst/X5IyKk0XbHzzepOLwZXrXPsNymQ/7ErZkbK3g5C/UA
+ gYJw/Zk/
+ IRHD5YviFsKGZoVY4Jfi0FTb5gTZS8uo+s8KYSPlwWOpQmghB5cAO+QqFioXq/C9ok3XY2Kn4LquY3PtwunK4c/0z2ozQWZekTvT0kqqQyWaFOHBHavEcndXZbxIeIBCc6pu/SlFf+xypSr4bBaEc9Gbj9V8Bjd57KYZLMIRkMtVvsUJvbvVMINeMA9efr0C7tt0Tvg83R+aPetuGTVlrthFUFLlhNqisvtRufp6JENrMZdmkLaM0km9bNtN/q0GEwlMbQka+jCVx5erRfMF4nEFk5BRr/5O3VXhrAwMRhvfhyrgP5wLpCwOtcmNEFgYqSzXl9eIiGxvr2DZ3maPoYA6QiibzDU/53yRpRAAEdEbIsE/12jltBcAN5uh1Haz1P/5VrHBhAU4+gX1M6OieXvgoEqFzm20euucxOw1dHl157KbpFWoTBOXnplNZJrI1Qi0IJi8ysvZKjbIWed3EPUjID4CaWnyRVAAmwKkcgkD7uc6CSwXFxfxI0wsSiVrLcQ5ZRuUkHYCAqNxZ4FW5FXRTckt6ySBiboIYMCokYwtq8ShoHrLiHUYVPF1MjgqYCLY+D1zSC23hf9VR5hWn1ZpOmTk2Hwykv+M38clYoWUskGStJzNyBkvn6fydNggKd+DPPS705M82KsO9k9G9OlOzy5YR9ELDzQcVLjZI1nae41mi1BXz0VVFo7BxsMPzaRDb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,229 +188,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__percpu_counter_sum() holds a raw spinlock while reading the global
-count and per-CPU deltas, serializing concurrent sums of the same
-counter. Since a sum changes neither the global count nor the per-CPU
-deltas, use rwlock_t on !PREEMPT_RT to allow concurrent sums with a
-read lock. Global updates take the write lock. The per-CPU fast path
-remains lockless, so sums keep their existing snapshot semantics.
+On Fri, Nov 13, 2026 at 09:45:19PM +0000, Lorenzo Stoakes (ARM) wrote:
+> The OOM killer can quickly trigger again after having selected a
+> victim. That victim might not have freed its memory yet, but its mm will
+> be marked MMF_OOM_SKIP by this point, so the OOM killer will ignore it.
+> 
+> This can cause the OOM killer to kill an innocent process when the first
+> might have freed enough memory to relieve the memory pressure.
+> 
+> exit_mmap() marks the mm MMF_OOM_SKIP once unmap_vmas() returns.
+> However unmap_vmas() does not free the last batch of pages it
+> gathered. That is left to tlb_finish_mmu(), which runs after
+> MMF_OOM_SKIP is set, and the batch can be large.
+> 
+> Fix the issue by freeing the gathered pages of an OOM victim before
+> marking the mm MMF_OOM_SKIP.
+> 
+> Note that the task which calls mmput() might not be the victim - if it
+> took a reference on the mm (e.g. ptrace), it may hold the last reference
+> and release it when it calls mmput().
+> 
+> Therefore we cannot rely on current to tell whether the mm belongs to an
+> OOM victim. Instead, partially revert commit b3541d912a84 ("mm: delete
+> unused MMF_OOM_VICTIM flag") to reinstate MMF_OOM_VICTIM, which
+> mark_oom_victim() sets on the victim's mm, and check that.
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: bf3980c85212 ("mm: drop oom code from exit_mmap")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  include/linux/mm_types.h | 2 ++
+>  include/linux/oom.h      | 9 +++++++++
+>  mm/mmap.c                | 9 ++++++++-
+>  mm/oom_kill.c            | 4 +++-
+>  4 files changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 1ed35d258d2e..09e63ff12b04 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -2030,6 +2030,8 @@ enum {
+>  #define MMF_TOPDOWN		31	/* mm searches top down by default */
+>  #define MMF_TOPDOWN_MASK	BIT(MMF_TOPDOWN)
+>  
+> +#define MMF_OOM_VICTIM		32	/* mm is the oom victim */
+> +
+>  #define MMF_INIT_LEGACY_MASK	(MMF_DUMP_FILTER_MASK |\
+>  				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
+>  				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
+> diff --git a/include/linux/oom.h b/include/linux/oom.h
+> index 00da05d227e6..a9390cb70541 100644
+> --- a/include/linux/oom.h
+> +++ b/include/linux/oom.h
+> @@ -76,6 +76,15 @@ static inline bool tsk_is_oom_victim(struct task_struct * tsk)
+>  	return tsk->signal->oom_mm;
+>  }
+>  
+> +/*
+> + * Use this helper if tsk->mm != mm and the victim mm needs a special
+> + * handling. This is guaranteed to stay true after once set.
+> + */
+> +static inline bool mm_is_oom_victim(struct mm_struct *mm)
+> +{
+> +	return mm_flags_test(MMF_OOM_VICTIM, mm);
+> +}
+> +
+>  /*
+>   * Checks whether a page fault on the given mm is still reliable.
+>   * This is no longer true if the oom reaper started to reap the
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 7618e72766a5..4cb18b217048 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1313,11 +1313,18 @@ void exit_mmap(struct mm_struct *mm)
+>  	/* update_hiwater_rss(mm) here? but nobody should be looking */
+>  	/* Use ULONG_MAX here to ensure all VMAs in the mm are unmapped */
+>  	unmap_vmas(&tlb, &unmap);
+> +
+> +	/*
+> +	 * Free the memory before marking MMF_OOM_SKIP so a re-triggered OOM
+> +	 * killer will only skip this mm if it's already freed all it can.
+> +	 */
+> +	if (mm_is_oom_victim(mm))
+> +		tlb_flush_mmu(&tlb);
+>  	mmap_read_unlock(mm);
+>  
+>  	/*
+>  	 * Set MMF_OOM_SKIP to hide this task from the oom killer/reaper
+> -	 * because the memory has been already freed.
+> +	 * because the memory has been already unmapped.
+>  	 */
+>  	mm_flags_set(MMF_OOM_SKIP, mm);
+>  	mmap_write_lock(mm);
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 5d48bd862c27..9de57a23893c 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -752,8 +752,10 @@ static void mark_oom_victim(struct task_struct *tsk)
+>  		return;
+>  
+>  	/* oom_mm is bound to the signal struct life time. */
+> -	if (!cmpxchg(&tsk->signal->oom_mm, NULL, mm))
+> +	if (!cmpxchg(&tsk->signal->oom_mm, NULL, mm)) {
+>  		mmgrab(tsk->signal->oom_mm);
+> +		mm_flags_set(MMF_OOM_VICTIM, mm);
+> +	}
+>  
+>  	/*
+>  	 * Make sure that the process is woken up from uninterruptible sleep
+> 
 
-stress-ng dentry reaches this path through ext4_statfs():
 
-  statfs -> ext4_statfs -> __percpu_counter_sum
-         -> native_queued_spin_lock_slowpath
-
-Keep the raw spinlock on PREEMPT_RT, where rwlock_t can sleep.
-Global counter updates can run in atomic context and must not sleep.
-
-stress-ng dentry test average throughput change:
-
-  +------------------------+------------+--------------------+
-  | Case                   | Unit       | Average change (%) |
-  +------------------------+------------+--------------------+
-  | Dentry, 64 workers     | bogo ops/s |             +47.34 |
-  +------------------------+------------+--------------------+
-
-Dentry ran on ext4 with 64 workers pinned to physical CPUs:
-
-  stress-ng --dentry 64 --dentries 4096 --timeout 20s
-
-Suggested-by: Tim Chen <tim.c.chen@linux.intel.com>
-Reviewed-by: Tianyou Li <tianyou.li@intel.com>
-Reviewed-by: Wangyang Guo <wangyang.guo@intel.com>
-Signed-off-by: Jiebin Sun <jiebin.sun@intel.com>
----
- include/linux/percpu_counter.h |  4 ++
- lib/percpu_counter.c           | 71 ++++++++++++++++++++++++++--------
- 2 files changed, 59 insertions(+), 16 deletions(-)
-
-diff --git a/include/linux/percpu_counter.h b/include/linux/percpu_counter.h
-index 3a44dd1e33d2..7b28b0e22207 100644
---- a/include/linux/percpu_counter.h
-+++ b/include/linux/percpu_counter.h
-@@ -20,7 +20,11 @@
- #ifdef CONFIG_SMP
- 
- struct percpu_counter {
-+#ifdef CONFIG_PREEMPT_RT
- 	raw_spinlock_t lock;
-+#else
-+	rwlock_t lock;		/* shared for sums, exclusive for updates */
-+#endif
- 	s64 count;
- #ifdef CONFIG_HOTPLUG_CPU
- 	struct list_head list;	/* All percpu_counters are on a list */
-diff --git a/lib/percpu_counter.c b/lib/percpu_counter.c
-index 87b261b87b0b..ce0284bacf07 100644
---- a/lib/percpu_counter.c
-+++ b/lib/percpu_counter.c
-@@ -15,6 +15,46 @@ static LIST_HEAD(percpu_counters);
- static DEFINE_SPINLOCK(percpu_counters_lock);
- #endif
- 
-+/*
-+ * Non-RT sums share the lock; global updates take it exclusively.
-+ * Keep raw spinlocks on RT: rwlocks may sleep and their irqsave variants
-+ * do not disable interrupts. Updates run in atomic contexts and need
-+ * IRQ exclusion for CPU-local read-modify-write sequences.
-+ */
-+#ifdef CONFIG_PREEMPT_RT
-+#define fbc_lock(fbc)			raw_spin_lock(&(fbc)->lock)
-+#define fbc_unlock(fbc)			raw_spin_unlock(&(fbc)->lock)
-+#define fbc_lock_irqsave(fbc, f)		raw_spin_lock_irqsave(&(fbc)->lock, f)
-+#define fbc_unlock_irqrestore(fbc, f)	raw_spin_unlock_irqrestore(&(fbc)->lock, f)
-+#define fbc_read_lock_irqsave		fbc_lock_irqsave
-+#define fbc_read_unlock_irqrestore	fbc_unlock_irqrestore
-+#else
-+#define fbc_lock(fbc)			write_lock(&(fbc)->lock)
-+#define fbc_unlock(fbc)			write_unlock(&(fbc)->lock)
-+#define fbc_lock_irqsave(fbc, f)		write_lock_irqsave(&(fbc)->lock, f)
-+#define fbc_unlock_irqrestore(fbc, f)	write_unlock_irqrestore(&(fbc)->lock, f)
-+#define fbc_read_lock_irqsave(fbc, f)	read_lock_irqsave(&(fbc)->lock, f)
-+#define fbc_read_unlock_irqrestore(fbc, f) read_unlock_irqrestore(&(fbc)->lock, f)
-+#endif
-+
-+static void fbc_lock_init(struct percpu_counter *fbc,
-+			  struct lock_class_key *key)
-+{
-+#ifdef CONFIG_PREEMPT_RT
-+	raw_spin_lock_init(&fbc->lock);
-+	lockdep_set_class(&fbc->lock, key);
-+#else
-+	rwlock_init(&fbc->lock);
-+	/*
-+	 * rwlock_t normally uses LD_WAIT_CONFIG because it sleeps on RT.
-+	 * This counter uses a raw spinlock on RT, so it can be taken under
-+	 * raw spinlocks or with IRQs off on every configuration.
-+	 */
-+	lockdep_init_map_wait(&fbc->lock.dep_map, "&fbc->lock", key, 0,
-+			      LD_WAIT_SPIN);
-+#endif
-+}
-+
- #ifdef CONFIG_DEBUG_OBJECTS_PERCPU_COUNTER
- 
- static const struct debug_obj_descr percpu_counter_debug_descr;
-@@ -62,13 +102,13 @@ void percpu_counter_set(struct percpu_counter *fbc, s64 amount)
- 	int cpu;
- 	unsigned long flags;
- 
--	raw_spin_lock_irqsave(&fbc->lock, flags);
-+	fbc_lock_irqsave(fbc, flags);
- 	for_each_possible_cpu(cpu) {
- 		s32 *pcount = per_cpu_ptr(fbc->counters, cpu);
- 		*pcount = 0;
- 	}
- 	fbc->count = amount;
--	raw_spin_unlock_irqrestore(&fbc->lock, flags);
-+	fbc_unlock_irqrestore(fbc, flags);
- }
- EXPORT_SYMBOL(percpu_counter_set);
- 
-@@ -98,7 +138,7 @@ void percpu_counter_add_batch(struct percpu_counter *fbc, s64 amount, s32 batch)
- 	count = this_cpu_read(*fbc->counters);
- 	do {
- 		if (unlikely(abs(count + amount) >= batch)) {
--			raw_spin_lock_irqsave(&fbc->lock, flags);
-+			fbc_lock_irqsave(fbc, flags);
- 			/*
- 			 * Note: by now we might have migrated to another CPU
- 			 * or the value might have changed.
-@@ -106,7 +146,7 @@ void percpu_counter_add_batch(struct percpu_counter *fbc, s64 amount, s32 batch)
- 			count = __this_cpu_read(*fbc->counters);
- 			fbc->count += count + amount;
- 			__this_cpu_sub(*fbc->counters, count);
--			raw_spin_unlock_irqrestore(&fbc->lock, flags);
-+			fbc_unlock_irqrestore(fbc, flags);
- 			return;
- 		}
- 	} while (!this_cpu_try_cmpxchg(*fbc->counters, &count, count + amount));
-@@ -125,10 +165,10 @@ void percpu_counter_add_batch(struct percpu_counter *fbc, s64 amount, s32 batch)
- 	local_irq_save(flags);
- 	count = __this_cpu_read(*fbc->counters) + amount;
- 	if (abs(count) >= batch) {
--		raw_spin_lock(&fbc->lock);
-+		fbc_lock(fbc);
- 		fbc->count += count;
- 		__this_cpu_sub(*fbc->counters, count - amount);
--		raw_spin_unlock(&fbc->lock);
-+		fbc_unlock(fbc);
- 	} else {
- 		this_cpu_add(*fbc->counters, amount);
- 	}
-@@ -148,11 +188,11 @@ void percpu_counter_sync(struct percpu_counter *fbc)
- 	unsigned long flags;
- 	s64 count;
- 
--	raw_spin_lock_irqsave(&fbc->lock, flags);
-+	fbc_lock_irqsave(fbc, flags);
- 	count = __this_cpu_read(*fbc->counters);
- 	fbc->count += count;
- 	__this_cpu_sub(*fbc->counters, count);
--	raw_spin_unlock_irqrestore(&fbc->lock, flags);
-+	fbc_unlock_irqrestore(fbc, flags);
- }
- EXPORT_SYMBOL(percpu_counter_sync);
- 
-@@ -174,13 +214,13 @@ s64 __percpu_counter_sum(struct percpu_counter *fbc)
- 	int cpu;
- 	unsigned long flags;
- 
--	raw_spin_lock_irqsave(&fbc->lock, flags);
-+	fbc_read_lock_irqsave(fbc, flags);
- 	ret = fbc->count;
- 	for_each_cpu_or(cpu, cpu_online_mask, cpu_dying_mask) {
- 		s32 *pcount = per_cpu_ptr(fbc->counters, cpu);
- 		ret += *pcount;
- 	}
--	raw_spin_unlock_irqrestore(&fbc->lock, flags);
-+	fbc_read_unlock_irqrestore(fbc, flags);
- 	return ret;
- }
- EXPORT_SYMBOL(__percpu_counter_sum);
-@@ -203,8 +243,7 @@ int __percpu_counter_init_many(struct percpu_counter *fbc, s64 amount,
- 	}
- 
- 	for (i = 0; i < nr_counters; i++) {
--		raw_spin_lock_init(&fbc[i].lock);
--		lockdep_set_class(&fbc[i].lock, key);
-+		fbc_lock_init(&fbc[i], key);
- #ifdef CONFIG_HOTPLUG_CPU
- 		INIT_LIST_HEAD(&fbc[i].list);
- #endif
-@@ -274,11 +313,11 @@ static int percpu_counter_cpu_dead(unsigned int cpu)
- 	list_for_each_entry(fbc, &percpu_counters, list) {
- 		s32 *pcount;
- 
--		raw_spin_lock(&fbc->lock);
-+		fbc_lock(fbc);
- 		pcount = per_cpu_ptr(fbc->counters, cpu);
- 		fbc->count += *pcount;
- 		*pcount = 0;
--		raw_spin_unlock(&fbc->lock);
-+		fbc_unlock(fbc);
- 	}
- 	spin_unlock_irq(&percpu_counters_lock);
- #endif
-@@ -354,7 +393,7 @@ bool __percpu_counter_limited_add(struct percpu_counter *fbc,
- 		return true;
- 	}
- 
--	raw_spin_lock(&fbc->lock);
-+	fbc_lock(fbc);
- 	count = fbc->count + amount;
- 
- 	/* Skip percpu_counter_sum() when safe */
-@@ -392,7 +431,7 @@ bool __percpu_counter_limited_add(struct percpu_counter *fbc,
- 	fbc->count += count + amount;
- 	__this_cpu_sub(*fbc->counters, count);
- out:
--	raw_spin_unlock(&fbc->lock);
-+	fbc_unlock(fbc);
- 	local_irq_restore(flags);
- 	return good;
- }
--- 
-2.52.0
-
+Acked-by: Balbir Singh <balbirs@nvidia.com>
 
