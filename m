@@ -1,125 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006EC606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 13:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=zinPx+gC
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C19606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 13:07:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DAAA6B05CE; Mon, 16 Nov 2026 08:00:35 -0500 (EST)
+	id 7B4A06B05C7; Mon, 16 Nov 2026 08:07:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B2886B05CF; Mon, 16 Nov 2026 08:00:35 -0500 (EST)
+	id 78D626B05C9; Mon, 16 Nov 2026 08:07:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C8D76B05D1; Mon, 16 Nov 2026 08:00:35 -0500 (EST)
+	id 6CA576B05CA; Mon, 16 Nov 2026 08:07:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D12836B05CE
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:00:34 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DE0091403C9
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:00:32 +0000 (UTC)
-X-FDA: 85440991104.15.97E6689
-Received: from outbound.mr.icloud.com (mr-2006g-snip4-3.eps.apple.com [57.103.70.46])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 03EABC0006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:00:29 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=zinPx+gC;
-	spf=pass (imf10.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.70.46 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CFB66B05C7
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:07:48 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E242BA0840
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:07:47 +0000 (UTC)
+X-FDA: 85441009374.08.6BA4531
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 85DECA0007
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:07:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794834466;
+	b=kwsRj00lIvWCvKxaYPUkH9A7DfOrE4k+ybqSDHaRc15bXv1gJdJyyKb0k03Wiqs9HLOlna
+	V6l5SiqFEeNvV4unHAWbqlALRUyDMeWK7pUxX0WNQt8qy7UI0PcNhKNcFa3xrmDLcSjdIz
+	YafARibJvK5BzeJLAKhQ0p3TMvK8iJw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794834030;
+	s=arc-20220608; t=1794834466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N2VrZwSXFQpePhWr6QR5jf0LaY6vYKdX0ikOoiKW4E4=;
-	b=YNn6TlzDfigG+LWZQL/6sZ48CeYi7UAwiQmw4UPrw+Q15mxH3YjZ0W6dk5U0s6Wr0dKZUi
-	VvfyyPHZ3XDnm5TnVwmPoZAjVvx0bn9Iyoa64FLzE6hduSf2bnjLahge9an1kV3n6Yx7DB
-	Lt2pLR80rs36I2NgvuPc/5awOgabv5I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794834030;
-	b=vJCt+mxszBrRMY2p7GlUKalwHUTyekYL25X4evlT6hs3RCFGvnxqpErpIjfQnd4YDFVxKk
-	J+8+g1eTZYleGvbkzbaS2YAdPrGZ0Bkkt+zrg4Jd0myFrdmTNrSjdMi65Lr5jS48vk7zDA
-	CUF9VmJhNFssaP54RoQL/hUrS6XPsj0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=zinPx+gC;
-	spf=pass (imf10.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.70.46 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-20-percent-1 (Postfix) with ESMTPS id F3DA81801B22;
-	Mon, 16 Nov 2026 13:00:24 +0000 (UTC)
-X-ICL-RepId: 01a1e471-c9d5-7b88-80ae-0d52a32e5e96
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1794834028; x=1826370028; bh=N2VrZwSXFQpePhWr6QR5jf0LaY6vYKdX0ikOoiKW4E4=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=zinPx+gC8U4DU363yssCEHGI1pb41ifQK1L+0LqSHG5RzKgO7aB3YrlK5kQfgdRCbutdgH42F0rBxbFc3bQV6gc0ut2coKmW/tEPBtvebBUMZxE9WW2JgAUtUPmVVxrxxO0NpQGzyU3PFXmpaISHT0SCpmGqPoNFhejJB5o35gBCPRXgUJpGm/1gxqM+cgtaq6GOdAhr9pKaYbsMVsUGkHEONg77r/NIzSUb//5DOQ0ujOhBGR44ousbKWRkM7I9OQvqwrIb/sgd/7pef7oTYVG4dwlDaQHqgvJ9wsvim7mSnC2nAgqvOVjxzK1Jx3tXjTJ9y5f7dNp3tjkM/dJ3cg==
-Received: from lima-kernel-dev (unknown [17.156.200.36])
-	by p00-icloudmta-asmtp-us-west-2a-20-percent-1 (Postfix) with ESMTPSA id B36D01801540;
-	Mon, 16 Nov 2026 13:00:20 +0000 (UTC)
-Date: Mon, 16 Nov 2026 21:00:15 +0800
-From: Zhang Peng <zippermonkey@icloud.com>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, bruzzhang@tencent.com, david@kernel.org, 
-	hannes@cmpxchg.org, kasong@tencent.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com
-Subject: Re: [PATCH v6 0/5] mm: batch TLB flushing for dirty folios in vmscan
-Message-ID: <avr8QDO3CPyCoipF@lima-kernel-dev>
-References: <20261031-batch-tlb-flush-v6-0-190539839eec@tencent.com>
- <20261115230231.21194-1-baohua@kernel.org>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/79yD/ePkhOWtFp46GUyu6ts/vcC2MmXQ7vdqbMevlI=;
+	b=8U5o8vuZTD/OxkBQfxFoViiZ1LSpahGRt7JBVqxBd7CCM4p/+7K4ONIqK/oSf5y8WoccZG
+	bdtcAw1jWMZsd12GDyt9SpXwi97FHU5sF8LH4+wckRgjB5857WZnElkkimaDkKnPY36keS
+	gbGEG8FKCvFK2UJBOFL0IpkMcDuDqos=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 19E8621DC4;
+	Mon, 16 Nov 2026 13:07:44 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DE2B51334C;
+	Mon, 16 Nov 2026 13:07:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id BvIgLh8A+2pNEgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 16 Nov 2026 13:07:43 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 6CC7424E06; Mon, 16 Nov 2026 14:07:43 +0100 (CET)
+Date: Mon, 16 Nov 2026 14:07:43 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
+	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+	Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC v3 35/44] fs: add file_check_backing()
+Message-ID: <fvmgoq6g3orrcbz5j7xoxrqkz4kc4jiopndjfar4cv45pj2y4g@bfgcucrsffnm>
+References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
+ <20261116-work-loop-pseudo-v3-35-8cbbea1cf34f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261115230231.21194-1-baohua@kernel.org>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA1MSBTYWx0ZWRfXwpZDbepw2hpM
- HU1CTTwM0zxmzB11fhPuB1UzVZHlDsxfBOU/Etbi9k82hfPYmJ0+G1dDmLWXTE7wke4UZBPmA4X
- 8MRKZd0Bob0h1iJE/l4EcPpfTKfFefUJD7x7dyw9vE1rkqAOxhHJ3QAUP5pEj2O7PVaobV2U56H
- zlucrlT0Kw8k1SG6tJJtRWZ2jDCI+I3UMJ6lXSqrBeqo9D2YRPpatPN8Z8U1AkvpxCjW6tjZQ43
- vr78xUO4/HfSKEP8Z0kywGDDX5lYaZ2xzY3UvZ6NB+dNfr8gbLA5VNKPcILQVDtyljMcen6Ymlf
- /yWSyDhmMtTrRT/evrX6kssOiZuzMJzPy9BEd8oj6dQEqgqirhUHJ24U3FXkm8=
-X-Proofpoint-ORIG-GUID: S_Ha7s4P6gEu9WtiweQ_SwFQBvt736_9
-X-Authority-Info-Out: v=2.4 cv=ZMXaWH7b c=1 sm=1 tr=0 ts=6afafe6a
- cx=c_apl:c_pps:t_out a=9mRn2PO/+PIrVdEbaIuMPg==:117
- a=9mRn2PO/+PIrVdEbaIuMPg==:17 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=x7bEGLp0ZPQA:10 a=YE32fvk_ji8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=v3ZZPjhaAAAA:8 a=GvQkQWPkAAAA:8 a=AChBciNimkdjFoktPmgA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: S_Ha7s4P6gEu9WtiweQ_SwFQBvt736_9
-X-JNJ: AAAAAAABRpGbp1BOfZ5WH3DNxle6wVttZwlzG4XYJVr8c/t0p4jLXXfHcCiNXmyR7p4KDo
- GLI3jKc8yLvfcnXMbkAeM/iYQ7SUS6WGKnji58FC3WW5DSgYJA7QWJbzlYcmzAsHXg22Xv
- 4wpVFLsO4xXd1Beqy7AUxEYCrNl6AmkQ4WxX5ul2I2CTRctSOFDoccxO2RKSPpYYTlymZs
- OXe0DewGhtHz8ToyTNPJbdM+3BC+ZwCaUHhjrPC46bSo6zxAHoKqsoUQJ+IVGWEZavxzJD
- KGpg+xPXoD/5IxtIio6xX36caeXft+PmC20SiuZDwGNFX4KJ9Ura5euqItGTxT/hIOkyoy
- L93vF7i7f5UJ7+S8wcQrUaM6F+XhOsc1+uEujYwGZi7exKLgafkfhxJ47lFRJ+eVsM1Jei
- iNPJY06FVU5YTcLmgkXBnD482mZ5V620AzWcjQ42uIDWI3VftQCDnj5izxEx5YDpR0nOTm
- pYTZ8zILHK4TOKfF29BaU1gHl7pd6AO8Bkw4enn/Q9kLElQdzbq5BDFYeQ5FSz1KJUwjlB
- ah54tv2wapTw8f1hottnL/e3R2Y+GLp2TuxSpP2OPQac3faOzHd0Q0P77eL6Y1r+Gi8bra
- JBvM3z3B+/mqSAyuczG+nJ6TwwzoDT4UAPBx1SecxAwXnZM/EkA+GV79M+Fpx+A1fISl2p
- 21QFr528FiFJH0eKkWoVutPaw/TbgR5HtFuEu0gZQKwAloRfPINuNOltAeESUBPqMZM+3F
- AloB+WKqws63aaU8hvr2vEvBXCx8Mj4RX29kFX7QYbAjgm4AmDS15MCb3JdRhWi3lYjIq+
- rlmnsbRD8bq0+P8EDdA9X1Sw9fN9DpWqltPWBBihPPfzPRz5LR6FDnghAbE7OTjfYEnDLP
- SgaFfExrhFM9CMAdg88j8HoThosZTGViQXXm7yyf7xkLq0drfZl5oGhkUZkfOrtaAo1dcP
- XVdksnBaccvG2QI9diMja/CqR4ZTQw7Z3PFae82sKJYyVpQXJyYkqMlYbH9QOo90iivoLL
- Ss3xMH3RTqP8yB0fl4rczgIAaXDBGgnnfsW0vcR809rc9lzqhSaIAKHXEEWkoVO55IZmcl
- qQJwV6PX5Hiuyx+MENWtCe9Nd5Pj4QA6gR2haB0xp0B1Y8rO6B0Vffq/13Degj95HzMcCd
- mb2UNYXnrYbeQp0o5bXnqTMp2kQ/HDsUF0IC600tNbX3qHScqx4sFITWxgk064R0JNx15F
- TexiLzBesEFrx15HF8kmEdIr3VppnPLhuU8mQLRc9dy38HiCZBdJKTXCH7FbxsPidMWBsg
- X3DBBe8ebxjUfhrc8deL7JufvpSWrVEwJDWJ07ai0Sck5FIvHhjmLsolFTjCoSn+GNmGth
- jZCv7psRGcKw3Yxac1a3AJMV+LH4RwDw9G2XE3eFbK8XXpP4LBSWKJP7U98ZlO8uRY0JFE
- k4ohrYjwHi5xdFztyjAQFa64L73YquGEJnVJxvthpWmhXOXGYdXuNcVcGAOptk5Q==
-X-Rspamd-Server: rspam06
-X-Stat-Signature: rfapdzfxbx3au37p99t9min8putb4q67
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 03EABC0006
+In-Reply-To: <20261116-work-loop-pseudo-v3-35-8cbbea1cf34f@kernel.org>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spam-Score: -4.00
+X-Stat-Signature: 8au8myqdo6hqb7hnbn3q8h7mxqsyn8om
+X-Rspamd-Queue-Id: 85DECA0007
 X-Rspam-User: 
-X-HE-Tag: 1794834029-469879
-X-HE-Meta: U2FsdGVkX1+NNso5jNUqbdT16Jreb8O78FKgHDn28OpayHEY5PvkACGE0LR4ERVkdAPhp8mwckOj0A2wDitlst23XERUUkkYTYXbDKgYJpncUec5WOrrhuyD2YHxqmhaxadn9d1zxIYMckS57llaYq9jPQzBWkBpQHdWZs0AaIVQKCpyQ1QUrP+0t55XCAczKgiznyb9HdtAFdazNL3TgiBgCCJabI4Y6z+A6wZ2EQYV5XniU9/TkVxnPrtqwWi0NpR/BmifcFZNmnh8da3/wQOVSAuJeO3iUAovWAv6kNEYcczvv8TL1jf8iOqw9Xp6t0ASMvIGvFbIz0XPcQBv6x7VyqCBDeY7IKILE7KjfG7mfsvbohlU0NzygupgJAIBX50/Jm0/pnFk4fty82IxRUauy7bSo+eZUbVAaMEN4tCw/ap770rqcUbvfOhlmqhT6jz5W03H+yNrX8+EQeExhUq0i8ypH0oy/VGYXwb5tdkqUQBD1la2+yz2Rnl5EdsP+OIN8zVi6ziBSIwMGs0KeY6z85bPihcfjLo7fBPVhaGdSc92H6nwzOPbS7ILVckiz8ZQPs2nlGTiffvLVYcR3uAk+BYEPv08DP1QRCG4MIHQBnDnA+1jwu/xDVQmQP87hdD1b+B9RvLI8Js9mY8Sos553TVVLEv9mZFHe2Z7kDDvgfu/D4r9Q2IPitDIvNXtEKtEUcsTmInojqM6stO6gLfHP7yVk9oIiPcJtWcYqiw7OQO30bzZge2ZuMKUmupeFjxnM0sSLL6NiRs97Hwbk1xv4yduZcPaJIZ1PE3j6v5bc48e+HRa5lc2h0iQg4+EmsG3oeOdzrx7/B+8strcnb+gBo5dw3Q321aiAZEHWaB+9A3EXfk6j8kUFc41CBW/wETeKFbQmEgAdMgHbniwmlVkhkVXKTcBaqvQaga1nBxj5vPJQEm/V3AmWHEKoJ6VWuzCx3lTdnDftpP2gEA
- w4pcp6ex
- N/GO05SdpdewyMtR7Y/2wPlLo5yR2AAUl0XAbdhsSGieCveYG5gtTnKf0yKhazRZlQjBeDHexGGpDK8IHuPm+9eR2vuuoljO6lpAGfMfSePKONCDDWsUaPZtFxx82HXx/RIu9wJUwPFtTpnzh4fp68r/ZUVhFMaZuzKHmi5z686f+KRYFk0YJOsnsjTQzyddYFSdh6DRQOjQs91u0m1/c2OyerSnqyZfCVVbwdjHEUI2QOGSopLFcvxrXnhuOe3O4t+1aiQPCbcHEdvJG3GLMNMstmRUpxnnguNQvTyu22kQ1JupFK++OXHViApXLsu/1jISU244rZA0322cBLUbi+1qpCJUJ/1DzDcUrBS5LjO/gTGdVhoJc4byqjHDjxen0vCCx6YfJdDVpXEydwvc8Q2gkNG1HhdS/BDnY
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794834465-468834
+X-HE-Meta: U2FsdGVkX1+byFaAO6cgZnkM2OXY0EIWLtLW/dI4KcfY0JiyzeIWHVuvg2tzbm2mZwi36prj9WqW3kcMReHsfba0we3PMSco2PmUs7Ri/eGloLjBpDHBfl3UyayEgKz1nkinfxADBH4mhdraHCNnsh9FwKrOcwefBfG4LOIGvRKc3xb+OVgAIw3BsU7/1rUwKUkWbPrFYgwVY1IfxHqksBcX5R5sdqAfin8gBJir+un1CnX0DAl0eKrD0wbZcSRGq1Sx+G0XmOra8krRHh2VdXJKcpV81+qaZ68sB9AyjiNbWJ4kMaROCXfFPHJEnYWDZcILzpcWxmEtQ5Sg7K/GmRzNmDAYj/vxBjSRUupSPngizfUyBOLKL+i2FNVF255IFVPPQMddMXKEV4n9pAfNoucgFVcltj5G6roQiDPs95+0Qkoef5P1Au86cULKYC2TomrEnxVKC8RkEHXfofVzP5S3WrENW3+CvLqTviSH1jaHegfn7gDLg+zxBRpXycMWYqGcAgP7x5mLmPl776XHBpmzrcTJonRx+QDN/xLcHZQ8SJUNc9sZbRI/se1NYes7zgz1olgclieTHQlUwo6Dcm7tKFCAobIKCZrtEtWjbIyLn0P5tPW3muZ1mi1D/8kTFM461/2NKNPqpV/aJS21yWK1W/n2PDOyoEpBdacl9FkI1cPKFzdqiQKjYmXMq06mvuoMzvDY/xGUxP1wsvWaoz6aP3P8DQIKFLu76GJ2tFfNrpfN3Cq0QIBqXCJtFSzIZaVlXTqNA0uWytdn+DlIE0hTljlHHT9G/GZyXj7b3DiopXmKkf68XWerb2iHiERl2NQTM5HXMnCuOilt5wW6hM5Z47msse9g9UYzJosC4bh1Vgx7rn6im6cjBkMXJ8nO6lPyGhMrQ+29G9ukzDzqLqHWoxbPB52nsltbNhb5USFnNobgREDZeKe/aFbJHN+Zi4oyTD2cYt7k7j5r1eV
+ t53xLNGy
+ +u5O7aQv4X5BgRwWw7piv0kRsrEyudzS4HIn6AjariFAEpyCZtIb4OM6xjc+g+qB5L6rUeSsAvEpRCzSnGOLAIF5E+WDnC8qogUJ6f+AYyfPth+VLsdxZMh2vTPTFNCXchzErv1t3WQsuuhO3kMAFlFCxNOy+AcRbcQ0seuHweWPP+lEzl/JRa81qxcL69Nia2r9qfFOqMrbwKv4BS0sunUF/R+GkphTREA3hGpCWp0ymZXV/nJrrcYRLHcJ96s8XCUGV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,145 +111,149 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 07:02:31AM +0800, Barry Song (Xiaomi) wrote:
-> On Sat, Oct 31, 2026 at 6:35 PM Zhang Peng <zippermonkey@icloud.com> wrote:
-> >
-> > This series introduces batch TLB flushing optimization for dirty folios
-> > during memory reclaim, aiming to reduce IPI overhead on multi-core systems.
-> >
-> > Background
-> > ----------
-> > Reclaim calls try_to_unmap_flush_dirty() before writing out each dirty
-> > folio. When writable TLB entries are pending, this triggers a flush.
-> > On systems that use IPIs for TLB shootdowns, frequent flushes can add
-> > significant overhead.
-> >
-> > Approach
-> > --------
-> > Collect dirty folios into a folio_batch, releasing their locks while
-> > collecting the batch so swap faults can progress. Before writeout, try
-> > locking each folio again and recheck writeback, mappings and DMA pins.
-> > Keep eligible folios locked, flush pending writable TLB entries once,
-> > then page them out. Process a final partial batch at the end of the scan.
-> >
-> > Changes
-> > -------
-> > Patch 1: Extract the folio activation block at activate_locked into
-> >          folio_activate_locked().
-> > Patch 2: Extract the folio-freeing path (buffer release, lazyfree,
-> >          __remove_mapping, folio_batch drain) into folio_try_reclaim_free().
-> >          Group retained folios, deferred frees and the reclaimed count
-> >          in reclaim_folio_state, local to each shrink_folio_list() call.
-> > Patch 3: Extract the pageout() dispatch state machine into folio_try_pageout().
-> > Patch 4: Extract the TTU setup and try_to_unmap() block into folio_try_unmap().
-> > Patch 5: Implement batch TLB flushing logic. Dirty folios are accumulated in
-> >          batches and a single TLB flush is performed for each batch before
-> >          calling pageout.
-> >
-> > Testing
-> > -------
-> > The benchmark script uses stress-ng to compare TLB shootdown behavior before and
-> > after this patch. It constrains a stress-ng workload via memcg to force reclaim
-> > through shrink_folio_list(), reporting TLB shootdowns and IPIs.
-> >
-> > Core benchmark command: stress-ng --vm 16 --vm-bytes 2G --vm-keep --timeout 60
-> >
-> > ==========================================================================
-> >                  batch_dirty_tlb_flush Benchmark Results
-> > ==========================================================================
-> >   Kernel: 7.0.0-rc1+   CPUs: 16
-> >   MemTotal: 31834M   SwapTotal: 8191M
-> >   memcg limit: 512M   alloc: 2G   workers: 16   duration: 60s
-> > --------------------------------------------------------------------------
-> > Metric                 Before        After             Delta (abs / %)
-> > --------------------------------------------------------------------------
-> > bogo ops/s             28238.63      35833.97          +7595.34 (+26.9%)
-> > TLB shootdowns         55428953      17621697          -37807256 (-68.2%)
-> > Function call IPIs     34073695      14498768          -19574927 (-57.4%)
-> > pgscan_anon (pages)    52856224      60252894          7396670 (+14.0%)
-> > pgsteal_anon (pages)   29004962      34054753          5049791 (+17.4%)
-> > --------------------------------------------------------------------------
-> >
-> > Suggested-by: Kairui Song <kasong@tencent.com>
-> > Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
-> > ---
+On Mon 16-11-26 12:05:08, Christian Brauner wrote:
+> Loop, zloop, the nvme target, the scsi target, fuse passthrough, the usb
+> mass storage gadget, erofs and acct all take a file from userspace and
+> use it as storage. Currently, each of them has its own idea of what to
+> check before using a file like that:
 > 
-> Hi Peng,
+> - loop and the gadget check for a regular file or a block device, the
+>   nvme target, the scsi target and zloop take any file type
+> - loop checks the open mode, the gadget checks FMODE_CAN_READ, the nvme
+>   target, the scsi target and zloop only check for ->read_iter() and
+>   ->write_iter()
+> - apart from acct which refuses procfs and sysfs files none of them
+>   cares whether the file is a kernel interface
 > 
-> Just a quick update: this patch is still on my radar. I ran a
-> quick perf test while building the kernel. Without your patch,
-> try_to_unmap_flush_dirty() accounted for 1.75% of CPU cycles.
+> Add a helper that does all of it in one place. It only accepts regular
+> files and, if the caller passes S_IFBLK, block devices. It refuses files
+> on pseudo filesystems. And it checks that the file is open for what the
+> caller is going to do with it and implements ->read_iter() for reading
+> and ->write_iter() for writing.
 > 
-> I guess there could be workloads where try_to_unmap_flush_dirty()
-> accounts for an even larger share of CPU cycles.
+> O_PATH files are refused unless the caller passes FMODE_PATH. That is
+> for callers that only need the path of the file. fuse passthrough is
+> one of them and has accepted O_PATH file descriptors since commit
+> efad7153bf93 ("fuse: allow O_PATH fd for FUSE_DEV_IOC_BACKING_OPEN").
 > 
-> # Children      Self  Command  Shared Object      Symbol                      
-> # ........  ........  .......  .................  ............................
-> #
+> Block devices are fine even though bdevfs is a pseudo filesystem. A
+> block device that userspace hands in is a device node on devtmpfs or
+> some other filesystem. Files on bdevfs only come from
+> bdev_file_open_by_*() and never end up here.
 > 
->      1.75%     0.01%  cc1              [kernel.kallsyms]  [.] try_to_unmap_flush_dirty
->             |          
->              --1.74%--try_to_unmap_flush_dirty
->                        try_to_unmap_flush (inlined)
->                        |          
->                         --1.73%--arch_tlbbatch_flush
->                                   |          
->                                    --1.70%--flush_tlb_multi (inlined)
->                                              __flush_tlb_multi (inlined)
->                                              |          
->                                               --1.69%--native_flush_tlb_multi
->                                                         |          
->                                                          --1.68%--on_each_cpu_cond_mask
->                                                                    |          
->                                                                     --1.62%--smp_call_function_many_cond
->                                                                               |          
->                                                                                --1.23%--csd_lock_wait (inlined)
+> The pseudo filesystem check looks at the inode that actually provides
+> the data via d_real_data_inode(). overlayfs accepts sysfs, cgroup2,
+> debugfs, tracefs, configfs and securityfs as lower layers and reads of
+> such an overlayfs file are served by the file on the pseudo filesystem.
+> Checking the overlayfs inode would miss that.
 > 
+> For an O_PATH file nothing might have looked up the data yet. overlayfs
+> only looks up the data of a metacopy file in a data-only layer when the
+> file is opened. d_real_data_inode() does the lookup then and if that
+> fails we return the error.
 > 
-> With your patch, the CPU overhead drops by roughly 7x:
+> Note that the file type is taken from the inode of the file and not from
+> the host of ->f_mapping like loop and the gadget do it. A driver can
+> point ->f_mapping somewhere else in ->open(). It makes no difference for
+> block devices as both inodes are block devices.
 > 
+> No functional changes. Nothing calls the helper yet.
 > 
-> # Children      Self  Command  Shared Object      Symbol                      
-> # ........  ........  .......  .................  ............................
-> #
->      0.25%     0.00%  cc1      [kernel.kallsyms]  [.] try_to_unmap_flush_dirty
->             |          
->              --0.24%--try_to_unmap_flush_dirty
->                        try_to_unmap_flush (inlined)
->                        |          
->                         --0.24%--arch_tlbbatch_flush
->                                   |          
->                                    --0.24%--flush_tlb_multi (inlined)
->                                              __flush_tlb_multi (inlined)
->                                              |          
->                                               --0.24%--native_flush_tlb_multi
->                                                         |          
->                                                          --0.23%--on_each_cpu_cond_mask
->                                                                    |          
->                                                                     --0.21%--smp_call_function_many_cond
->                                                                               |          
->                                                                                --0.14%--csd_lock_wait (inlined)
-> 
->      0.00%     0.00%  fixdep   [kernel.kallsyms]  [.] try_to_unmap_flush_dirty
-> 
-> 
-> Overall, I think this is a good approach. I'll be traveling soon
-> and will return to this patchset for more testing and a thorough
-> review in about two and a half weeks.
-> 
-> Thanks
-> Barry
-> 
-Hi Barry,
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Thanks for the update and for taking the time to run the perf test.
-The breakdown is helpful, and it's encouraging to see that
-try_to_unmap_flush_dirty() accounts for a significant share of the
-cycles in shrink_folio_list().
+Looks good to me. Feel free to add:
 
-Safe travels!
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Thanks,
-Peng
+								Honza
 
+> ---
+>  fs/read_write.c    | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/fs.h |  2 ++
+>  2 files changed, 55 insertions(+)
+> 
+> diff --git a/fs/read_write.c b/fs/read_write.c
+> index 6767283108991..9f1e7bfcbd4f1 100644
+> --- a/fs/read_write.c
+> +++ b/fs/read_write.c
+> @@ -866,6 +866,59 @@ static ssize_t do_loop_readv_writev(struct file *filp, struct iov_iter *iter,
+>  	return ret;
+>  }
+>  
+> +/**
+> + * file_check_backing - check that the kernel can use a file as storage
+> + * @file: file that userspace handed in
+> + * @mode: FMODE_READ and/or FMODE_WRITE the kernel will do I/O with, or
+> + *        FMODE_PATH if only the path of @file is used
+> + * @type: S_IFBLK if a block device is fine as well, 0 otherwise
+> + *
+> + * Call this where a file from userspace is taken as a backing file. Only
+> + * regular files and, if @type is S_IFBLK, block devices are storage. Files
+> + * on pseudo filesystems are kernel interfaces and are refused. The file
+> + * must be open for @mode and implement ->read_iter() for reading and
+> + * ->write_iter() for writing. O_PATH files are only fine with FMODE_PATH.
+> + *
+> + * Return: 0 on success, -EBADF if @file isn't open for @mode, -EINVAL if it
+> + * can't be used as storage, or the error from looking up the data of @file
+> + * on a stacking filesystem.
+> + */
+> +int file_check_backing(const struct file *file, fmode_t mode, umode_t type)
+> +{
+> +	fmode_t io = mode & (FMODE_READ | FMODE_WRITE);
+> +	/* Drivers may point ->f_mapping at something else. */
+> +	umode_t fmt = file_inode(file)->i_mode & S_IFMT;
+> +	struct inode *real_inode;
+> +
+> +	/* O_PATH files are only fine for callers that just use the path. */
+> +	if ((file->f_mode & FMODE_PATH) && !(mode & FMODE_PATH))
+> +		return -EBADF;
+> +
+> +	if ((file->f_mode & io) != io)
+> +		return -EBADF;
+> +
+> +	if (fmt != S_IFREG && !(type == S_IFBLK && fmt == S_IFBLK))
+> +		return -EINVAL;
+> +
+> +	/* Look through stacking filesystems at the inode with the data. */
+> +	real_inode = d_real_data_inode(file->f_path.dentry);
+> +	if (IS_ERR(real_inode))
+> +		return PTR_ERR(real_inode);
+> +	if (real_inode->i_sb->s_iflags & SB_I_PSEUDO)
+> +		return -EINVAL;
+> +
+> +	if ((mode & FMODE_READ) &&
+> +	    (!(file->f_mode & FMODE_CAN_READ) || !file->f_op->read_iter))
+> +		return -EINVAL;
+> +
+> +	if ((mode & FMODE_WRITE) &&
+> +	    (!(file->f_mode & FMODE_CAN_WRITE) || !file->f_op->write_iter))
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(file_check_backing);
+> +
+>  ssize_t vfs_iocb_iter_read(struct file *file, struct kiocb *iocb,
+>  			   struct iov_iter *iter)
+>  {
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 99caef43ff3c4..b1c7ebafbadbe 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -2553,6 +2553,8 @@ static inline const struct inode *file_user_inode(const struct file *f)
+>  	return file_inode(f);
+>  }
+>  
+> +int file_check_backing(const struct file *file, fmode_t mode, umode_t type);
+> +
+>  static inline struct file *file_clone_open(struct file *file)
+>  {
+>  	return dentry_open(&file->f_path, file->f_flags, file->f_cred);
+> 
+> -- 
+> 2.53.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
