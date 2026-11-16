@@ -1,131 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED67C60A2626
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD357606A331
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bI8+6lYl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+fgOzHk
 Received: by kanga.kvack.org (Postfix)
-	id 139F66B05B3; Mon, 16 Nov 2026 05:53:12 -0500 (EST)
+	id E0DB96B05BC; Mon, 16 Nov 2026 05:54:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 112766B05BC; Mon, 16 Nov 2026 05:53:12 -0500 (EST)
+	id DE5806B05BF; Mon, 16 Nov 2026 05:54:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 001E06B05BF; Mon, 16 Nov 2026 05:53:11 -0500 (EST)
+	id CD5376B05C0; Mon, 16 Nov 2026 05:54:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D0EEC6B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:53:11 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 66CF680913
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:53:11 +0000 (UTC)
-X-FDA: 85440670182.09.51CCA88
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B7E06B05BC
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:54:44 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1721A1C42F4
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:54:44 +0000 (UTC)
+X-FDA: 85440674088.07.07B7A95
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 70236180005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:53:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bI8+6lYl;
-	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794826389;
-	b=CSwCr9D7CbLrE0+HanUAqeWLapWfQ44muIdJylvtgb1VdN9fbjM3G/BpkX/Eehcg+NddOo
-	5ziOBMnLuex2Vc/353g8o+JbiLTrlFJPqWta9c0Z0xNcB+plyIufrtzDFf6nSRsQTgpYSE
-	MDyXznAXOJhunI1sIWESmcV8WYee8mQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bI8+6lYl;
-	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 504F740006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:54:42 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M+fgOzHk;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794826389;
+	s=arc-20220608; t=1794826482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NsVyf/Eh739256Lt8KexYgfuWst8mEdj0Tcojks+JIY=;
-	b=WUk2W4i/DtkhFrpeX5lVJM7cVuI/hXewM2RKBc8/7KFojQJ9LjpBcOhc0ZOtmih2yG6RH8
-	L4PRFiIwLwBmzIW3hskoC7qumPvfx9atpWjIP/SC9utS1COeQMGMKSvPTHn6/Au8hZ/M5G
-	xtckVYtD5Ys8LttzjRmWjVOqZJDCAUo=
+	bh=rUXIEzzZbx+pvk5hQhC5uQsVJ+Wr1axlLvfdDODcWmE=;
+	b=KUdPlYGz/FEh7LDc64QwNlsS+alibNpjNl73BhHFdzDhwGGtJ5eyceM3j/yBN6PBKwdMxe
+	roK/NiN/CX3o3ZrEtFBH+xJzxAERdm6+uxtPxytodl6+mkWbFjkEoqXtQVPEv2A/T5uVAr
+	/FYaiA9TJFdy/jpFSpHoJhilTtEtMfs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794826482;
+	b=FKhZ28YDBZvrbye0xJzfC13J7tBMong+egvj0SrDGpAtt1Xhj4/iA9u6hUlMVQMjLNjNQX
+	dC1dhNdaZPoFuyOg2Apfq0B32L81gU1+kIVDkhq8kEch7KJrlXOebpoEQ4jA3rpcKo75Em
+	IsnQMeFyZ2UXlHVsl1zmbfPMzAWmJSA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M+fgOzHk;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9C53D461FB;
-	Mon, 16 Nov 2026 10:53:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72CE1F000CF;
-	Mon, 16 Nov 2026 10:53:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7BC9B45589;
+	Mon, 16 Nov 2026 10:54:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D441F000C4;
+	Mon, 16 Nov 2026 10:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794826388;
-	bh=NsVyf/Eh739256Lt8KexYgfuWst8mEdj0Tcojks+JIY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bI8+6lYlyuFNEvgexVeFAv1KnceC/KqVyWEJc6Fg6ZQ69oVcXbyKBkrbWP7LBTdUQ
-	 UZ3D1NJv1uVPo88zLRT9VaY5QgamkNcUOjwi17R3BOYH9eit4krVc1R3+1TAGYuAK4
-	 E3J9UnK3xE9d3F45zZTYJioaSR348U620yQxrdLu+MW80+HUd+hYjLe8wM4VD2/b/1
-	 XkSBs5qFaeHm6oQAdPzcMvzf6baKwkCgNgi3NgnTLweEW52b+TZP+gUN6ORubajShc
-	 FO9C8LsrjC4M3/UnYL4bSSRA0DTCbIeXFcRJhCCfS0pzz6UkXZREnQkpMlpcvZVRbA
-	 RhJAqJvSx95cg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id A290D198003A;
-	Mon, 16 Nov 2026 05:53:00 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 16 Nov 2026 05:53:05 -0500
-X-ME-Sender: <xms:jOD6arHbBDpbSjMbSvRFccO32RM4SCBWpqPS2PjvHSb1SWgXuJY9vQ>
-    <xme:jOD6amyhD2lOcKuuXXKDbwkxoy4aKDpfUyIJW9FyO1EfjXc2R0zcL2XEacDOXyPHG
-    q5oXon1J5EN9xOsq_2h6yU68xtX1Qym7FfemeFk4nwPoDPSRqQK1GYq>
-X-ME-Received: <xmr:jOD6akRKqz0MPdSD8kNUrft2CaAAFy-qRx7xYTUQAGHBkyB_GrAdbWNmj7g>
-X-ME-Proxy-Cause: dmFkZTFG5jkGbtKQz+KGXv6DVcdUEvWZSsyE9ahIjR2txn73RzTRa9O7nCYJLLKho03THN
-    kIcI6bk1JWvKgrACd3MeIyH/ItCs5ocrfrQlgBBAtTK+8cUnU9dva1V94OFKzYh9Q45wLh
-    wgYa8t8gWpHZTq+fMVNAzFXuPM2oWMKFirGFrX1d4bjjdlBDjZWOLHk6xQ1UOgE19k76dg
-    KMwcoWXsLpaqsh1YNLfxGlzUI5Lf1YABKNxKfHVQfhJ3fBiwYOpRnzTIaC1lFykVWNp/lc
-    eG8T/kEyhaU+f0dGoSCn7SwrEFm4dlwZZDTny1YZKQVkn+D5ZxNC7jiBTui0awWbf3GiDJ
-    66dhhCq+9NInds/qJRYRfX0u6DmEQR3Eke068vTtjJDhfc6x6h7q6Zfic1h1KhN9c/o4s9
-    fXGNBVCthuOuFLhGB0mCC1lVdj9F+EzthsJCWrSnqM8m9WGSR+RTutZrnwPJit1tTtEi2j
-    mDwaR5MGvGHykZckIYpdhXxPg15jad9RPHS+ek702xHyrPI25/zMwezMComYrYLqFm1+0A
-    eMtn0gk1Af+8uwiHHandzEFqWxl2B9BA7i2mO0wJavaKFX1exmZRSZi+jobOLhBULyakYw
-    OI+SIuCRTa5nyvu2zNx22SirO/dSsJNQjZfOzwa3z46IiWQwGOAbP9d9923Q
-X-ME-Proxy: <xmx:jOD6asprkkehzNqaCaLAhLutc9UtnTp6gqRXSfdzVE3ZijSoaqfVEw>
-    <xmx:jOD6akt9S7LsRgqeoXBV4hY_bC0DBxO4YIMur2oktxnkch36whwsNw>
-    <xmx:jOD6ahtwexIrbav5m1a-df-luGcRQcIi05tkp9yTRIj9-WvMl0IxiA>
-    <xmx:jOD6aoqwWQI7tNz83LxXoJ-JHIaKPZCUJgO7uO9De14R0KJsuTUN8A>
-    <xmx:jOD6arELcjIfTmIVVKVcB6A3NHHtsFPzlD8Yz9LCB2vMv6C12kQRAsj_>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Nov 2026 05:52:59 -0500 (EST)
-Date: Mon, 16 Nov 2026 10:52:58 +0000
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 1/3] mm: page_alloc: add a watermark check that knows
- the migratetype
-Message-ID: <avrgcyxYFBd_JHrF@shutemov.name>
-References: <20261102093939.3340540-1-kas@kernel.org>
- <20261102093939.3340540-2-kas@kernel.org>
- <auynaZkzdzL6Aeyo@thinkstation>
- <avTEezDIsJBhsPmi@thinkstation>
- <13c40a66-4ce9-4d9a-801b-a3debfecee22@kernel.org>
+	s=k20260515; t=1794826481;
+	bh=rUXIEzzZbx+pvk5hQhC5uQsVJ+Wr1axlLvfdDODcWmE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=M+fgOzHkr8hBd2SC57MQPYOT+v3WbLVix+CbLh5WS/cVkG/7psr2ewW/ujd7whLPC
+	 KMCUWnxBRjzZAI+xHnE2ZepI3e3xDp+IGS3IPiUC7tityO8okLOC6uUjomINEtSfS/
+	 sGz43WsxfRT3XB2OUcNq41La+hScCru6Qtkfc8o8yac37EH7k1Et0aX0QMYV2pmaC3
+	 0QgRezQDfsmcD6FzKQChjK96MP+R6LPBAtx9xG+3skEgxSR8W9nIQTZqaOIXIyyoV5
+	 PscNH8WzGg1n7EHnvUNuAxTdN5N4pYUxwLFLvJq+D2x7L8GszeD4DGdsXH2i9mH8Fs
+	 2PPBLKy4gEHvg==
+Message-ID: <0e626675-c6f9-40d7-a4ae-de069154ada2@kernel.org>
+Date: Mon, 16 Nov 2026 11:54:37 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <13c40a66-4ce9-4d9a-801b-a3debfecee22@kernel.org>
-X-Stat-Signature: d5a6uozmxwezr77k79x5q3g5e7sjtjxk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slub: don't let kmemleak report rcu sheaves
+Content-Language: en-US
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
+ Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com,
+ Breno Leitao <leitao@debian.org>
+References: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: e89yjrn4erui8d614po3f69n7sbizi7h
+X-Rspamd-Queue-Id: 504F740006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 70236180005
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794826389-551249
-X-HE-Meta: U2FsdGVkX1+FXFQQ9fnopFcx5Dh82eQXQCRPWzTeSLG257+o+LrP1zW6HQoTcrSxA08bMFx20Y+BQO1usdeY8i4gyr+jy6NtJopr/M/K4lUpMjS8Ek1VJ6cXWfymLS+SoV6l3uVsixsEUvZ/3GCBZWq68y5oHXQqWIEL6hJ+/hkCTL160GbI0sDG4AOd8IEgliY3fZxSRDdx5T5xdlwigTicmwmKI+hCvW5IwQWMxOm6B8K4emK1QzmRk7MnpxzV39ukvcVQSDFRKrHYxMn2T/RKOEbGrDRbvWEwuA/IKEkhBt1Ad563hxwjwqUL52FsdM59f61h/whv9E/bX9y42eL62IoR5ECUI0o0VmBgMQ8u0M9Y9KFas4fo07EWm2tKuUvGAHL5DLLXPXnvdWWymoVMRSe7b3aKZ1NLihAY3Ld2WxOS4hWb45GBAhe2ahCn3nVZumytYmC1Z/rcxPXzSUqDnUHehI9/0VEqrSxW6BadlsH5pMlBx3ahCP7mnFT+t1Uo96cARo7OquzUvFtJHfrV7S+pvPRQzj8ok/0K/POTokNL6x6Wt2Z6P/K83Gtu2AKf1b/DDsyoCBfnK31AvObv8whsV7SCg83Bm2uhxz1FOmA1CMQPb3nxdQ27MzBSfvuK44DmZW+IU5MCX89WE2uGxIPI+6FvO/csBPY5bqpAJfZlvalMLZWEYGjMLlH6gppQ28V5HC9IbxEalZ7otHzyh+awewWHbeOYnmJ87xyPjnqz8lH/8YyB0q8xkKqACteczZegzT6evwYvrHm3TLR4NXu18rc+dM2Hq1j3XQQCa4D27YUVMYUr7LPPa9WAtbP7M9019/4OAGE8sw7rQoit5oCa5YXhgH0ISSnVbNSwK8uKmAW879HTANetAQuGeHZcx5GVpLNirLirh2QemNBZ2mjlvM3Rpqh4TbPD5p8ty/z/g2IZFwTy96uuJGPrdKpN0F+O8np1/jUVYiz
- VKeshSib
- /GlBgO0QZfNU9PhS8ZpM94dVXxYT6RaFCYL7bCtti+zx/AhZcpe+LXonlQUCSLETUmLO1WwvMXU4Ua+zaAIm4J8YY34UvwVOOEcmMAIf01cDBTaYEy3c1bSetCZwYjCakBJAaAI1fs5w8l+qTgjg+NGNmSjca5o4GO7OG0rWWKAAFTG2tzeHCciW1i+CmAzpCnWJC9heYrlbnJnQ9q3WaZ0D6XfhqrICVwuW6kIT7MVjf8hB3qAyY/La+mQLQRgaEvwl6dXvDafZZgrp4QZxsuliod0uuq88NJHSRp9PIOOWMwONQzlfjoKgWjg==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794826482-96486
+X-HE-Meta: U2FsdGVkX18O0t4VkvsDH7pBo9GkHroGlbsTtIL6JmXb/XjT6x3L4ujFgTY1k5zM70BCTyddcNXegt/mIS4dEYQPdZWCWQDftxIrk6v8vMQmZE9cQlMfC2tusmmuxsw3LApvTota3+OMbnOFpGERXvaxmQOc77OEX1ezQLkL02+smtyN3fv2DqfX+LQB3A7mfPjsI3rwjnZHH18qJpxVhK3/WWaw4hd485f0/19TKWR7v6EzB66UWBNW16RFXZfUOZd1hI03R5rAPcr4VMirYuZfeNwgJ5EVPjy1UDBUu0Jhf94V2py05OPi2D+Vfh/SvlwtBU46OF0+3rJuf7xPeDEEnTRw+qMbOY5YmeYKEaC1fwtap2yvyKfVV2YM+cd3SzNeivq6Z7HTECB5W8iZhHYXT03NjFSFTQjgXvQBRIujRN1UMhAFTaUjeRhSSYfWG9FtnTIA7cD5/z8lXwaxFcVh69rz5qwn9ZbhBTjA9Qgx1qL5Sd/hG2ENgnsGXF94uCq9kPd+pZEI9UiXstjAX9bip7Tt826TUUfImHkUL1n4C7ob3GWdJLNFRCPf/6bqbY7vTRzqbu5n4SkYgDCp1sOd+HoaQMzaQlfvSAGnEGoo/0R4Pbe99TCBY8qB6RYaTxQOnX1H1wLwdb3qCYUyg2wjrNSklIjxDwwt8q7g+R82VqrarljsrjQn+jREJR+qoe3mvliuaIeI3UFMKR6LncU3Vmq0hCRdmQdZxa6MBc4j2RerSK4HtFjZriimzk0sRYHdjsAT6dpIPEvrGEAraZsxEpDmgSAj3hpJqjNyfu3px7NM3tND9WAUHUH2N+2RrCKwguaz3ObB8BQHarZavtPiHfRpdK0g45a5dk1nhyKF/0Rre+sZexxI700Ep175MpIk/r7zoJGRqR168/06MSc19PZnP2ILlQvxQX6wwW9nsgS8DbnU/IKTMVXvTh1qMfLOCCstykappRoFm+H
+ QRgmTA65
+ dcMyM9cjIzCsQOmYSIEKupng9SwUpKfkbZPpCwxsuquy0vZqlMqTlTEqZVObLn9G/bsyHbQE6UFuBJ2HmQKhd40hTFT1X4KCQ3JUr06IuYfHE5xroXspOIXltXd34CzwrS24zzasaNaj2/HwkAi/oR5XbKDICe3eBu07QsOZ0ErIpTPzEBF0kNIVu9Z9cyxujlcw48nGLLlBHgWV+VZlwsWRBavu0vF/hIFPK/94tXdsAAk875VBBxzwWsIQtX+SKEqkOVjiMoT0anAJSMc/BFekX12NFov38i+n8UCTkOKZcKSuxDnd9xDWEETOBdozZ5tVGnFnwnO4kw+kbZS+o2xxMoYF2WcUDTP04C1uzFC8wklZIZOnHKyywJh/GuWl4YqpBOpJn6lE1OF/BNRS7EB0/eguVDCIzIwlzY+Va3PYs4DDaLYmlsE8XeNRJPgwkyexeZJ0prygIhdIyNvS53rj5s2hKMenX1Vn88Eyhjhqr9NRabju96oyAGiMDehI+8ax5g+apIqMw4kxOAn9rokElCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,13 +142,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 06:03:00PM +0100, Vlastimil Babka (SUSE) wrote:
-> > Looks good?
++CC Breno
+
+On 11/13/26 16:18, Nguyen Ngoc Thang wrote:
+> kmemleak reports full rcu sheaves as leaked:
 > 
-> Not really :(
+>   unreferenced object 0xffff88810005f600 (size 512):
+>     hex dump (first 32 bytes):
+>       e0 79 f0 2b 81 88 ff ff 20 00 b4 81 ff ff ff ff
+>       00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00
+>     backtrace:
+>       __alloc_empty_sheaf mm/slub.c:2854 [inline]
+>       alloc_empty_sheaf mm/slub.c:2874 [inline]
+>       __pcs_replace_empty_main+0x260/0x2e0 mm/slub.c:4806
+> 
+> The second word is rcu_free_sheaf and the size equals the capacity: the
+> sheaf was handed to call_rcu() by __kfree_rcu_sheaf() and is waiting for
+> a grace period. At that point the only reference to it is the ->next
+> pointer of the previous callback in the rcu callback list.
+> 
+> That previous callback may live in memory kmemleak never scans, e.g. the
+> rcu_head of a struct slab queued by rcu_free_slab() for a
+> SLAB_TYPESAFE_BY_RCU cache. Slab pages are frozen (page_count() == 0),
+> so kmemleak skips their struct page. The chain from rcu_data is cut and
+> the sheaf, typically allocated long ago and recycled, looks unreferenced.
+> Since the sheaf is then not scanned either, the objects it is about to
+> free can be reported as well.
 
-My bad. Will do better.
+I don't get this part. The previous object can't be that much gone, RCU
+still needs to get to this sheaf at some point, so there has to be a live
+pointer somewhere?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> Sheaves are allocator metadata and are always owned by a pcs, a barn or
+> an rcu callback. Mark them with kmemleak_not_leak(): they are never
+> reported but still scanned, so objects queued in them stay referenced.
+> Allocations that can't spin are not tracked by kmemleak, so skip them,
+> as alloc_slab_obj_exts() does.
+> 
+> Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
+> Reported-by: syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=527fed49e5b988882c9a
+> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+
+I wonder if we should rather do this at the moment the sheaf is handed over
+to rcu.
+Or if it's a generic problem that should rather be solved by kmemleak having
+visibility to the rcu queues.
+
+> ---
+> Reproduced in QEMU (syzbot config, 2 vCPUs, numa=fake=2) by stalling a
+> grace period with a preempted reader on CPU0 while CPU1 interleaves
+> rcu_free_slab() (filp slabs) and rcu_free_sheaf() (maple nodes freed by
+> kfree_rcu()) callbacks, then running two kmemleak scans:
+> 
+>   before: 16-18 sheaves reported per run, rcu_head.func == rcu_free_sheaf,
+>           plus maple nodes held by them
+>   after:  no sheaf or maple node reports, no new warnings
+> 
+>  mm/slub.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index cd671b934719..e01416ae0b4a 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2856,6 +2856,14 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+>  	if (unlikely(!sheaf))
+>  		return NULL;
+>  
+> +	/*
+> +	 * A queued rcu sheaf may only be referenced by an earlier rcu callback
+> +	 * in memory kmemleak doesn't scan (e.g. struct slab). Never report
+> +	 * sheaves, but keep scanning the objects they hold.
+> +	 */
+> +	if (alloc_flags_allow_spinning(alloc_flags))
+> +		kmemleak_not_leak(sheaf);
+> +
+>  	sheaf->cache = s;
+>  
+>  	stat(s, SHEAF_ALLOC);
+
 
