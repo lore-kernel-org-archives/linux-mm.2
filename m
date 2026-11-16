@@ -1,109 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F82606A333
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7480606A33D
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Of4lsz3c
 Received: by kanga.kvack.org (Postfix)
-	id 11B216B05B0; Mon, 16 Nov 2026 02:09:10 -0500 (EST)
+	id EDF536B00EF; Mon, 16 Nov 2026 02:13:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F3AE6B05B1; Mon, 16 Nov 2026 02:09:10 -0500 (EST)
+	id E91356B05B2; Mon, 16 Nov 2026 02:13:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 030016B05B2; Mon, 16 Nov 2026 02:09:09 -0500 (EST)
+	id DA60B6B05B3; Mon, 16 Nov 2026 02:13:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D50416B05B0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:09:09 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 629681A08E0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:09:09 +0000 (UTC)
-X-FDA: 85440105618.02.C7F0764
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7943640004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:09:07 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B8B386B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:13:36 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52D00A86AB
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:13:36 +0000 (UTC)
+X-FDA: 85440116832.07.5AA04D0
+Received: from mta1.migadu.com (out-199.mta1.migadu.com [95.215.58.199])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5427840004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:13:34 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=none (imf17.hostedemail.com: domain of macro@orcam.me.uk has no SPF policy when checking 78.133.224.34) smtp.mailfrom=macro@orcam.me.uk
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Of4lsz3c;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.199 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794812947;
+	s=arc-20220608; t=1794813214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mHmG9IJHtIMld4ZeRanDjKIMZUQxx8f0ptnWkrCv+U=;
-	b=mu1357B8pphPY7usXCFd0lwPsvNWy24/QtxmNMjeJyNLH6rlz4QyPriURh9vpSm18K61f7
-	UX8Y/T2hjPOlIZ8OnLzhjNrg6AC7+vllA6lF7QqT9QDvvt6oylG12U5u/yg+8cZb3bDkFB
-	Zs3OdgQzg0qMVIFTzH12LYBjZtaEaMg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OkgfjJfKGIx3ULtuBKyWwXSAvJnNVfF7lRvSAV7abaM=;
+	b=kpkgLiB/KekLT51I537/GA5cEjkZkanCFGCxUnpBqT0SoadkuWvX5QeMZNUeETi/tELlX8
+	zwUOAcbAtQV+8R9QNn45ztKauU+I91oGlGqnDHw3DdHaOmjWMiP0d6bfuFnshPOMj9KDsF
+	yO4aHi4FZ6gfGkLAVVy3HNYEzQbHDNw=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=none (imf17.hostedemail.com: domain of macro@orcam.me.uk has no SPF policy when checking 78.133.224.34) smtp.mailfrom=macro@orcam.me.uk
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Of4lsz3c;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.199 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794812947;
-	b=q1jJfNQumm4Y1O/+Uf1ZKDreFeCjap4euncqBvGB95WTYiAHYlRCUrLjE6Ip6wq8iJ+6Rz
-	/43K5E1UUR+DtviPdU8Vu6mDX8L3ZV4iyA7abOJob8mq6mnz1zSW14FNI60SUBnjrkwZEb
-	LbpiLrOeu6ur/jTt6QH8/F+mCoXAqxA=
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 39D8A92009C; Mon, 16 Nov 2026 08:09:04 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 376CC92009B;
-	Mon, 16 Nov 2026 07:09:04 +0000 (GMT)
-Date: Mon, 16 Nov 2026 07:09:04 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-cc: David Laight <david.laight.linux@gmail.com>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Geert Uytterhoeven <geert@linux-m68k.org>, linux-fsdevel@vger.kernel.org, 
-    Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
-    Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
-    NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
-    Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-    Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
-    Greg Kroah-Hartman <gregkh@suse.de>, 
-    Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
-    Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
-    linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-    linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-    linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
-    linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
-    linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
-    ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
-    coreteam@netfilter.org, kexec@lists.infradead.org, 
-    linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-    netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-    ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
-    linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-    linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
-    linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
-    sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-    linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
-    linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
-    linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
-    linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
-    linux-debuggers@vger.kernel.org, Chuck Lever <cel@kernel.org>
-Subject: Re: [PATCH RESEND v2 14/23] proc: let procfs copy in writes before
- pinning the entry
-In-Reply-To: <CAHk-=whsA3tKcUCBJDj_vmJ11rVGT9rivgnKjGRgMO21CPmCxg@mail.gmail.com>
-Message-ID: <alpine.DEB.2.21.2611160657470.17804@angie.orcam.me.uk>
-References: <20261104-work-procfs-core-v2-14-76ace653a773@kernel.org> <CAMuHMdVfakapgBK6TBhO1iWX8qzvLDk8jzRS=t2MVa5G=MCUeg@mail.gmail.com> <20261107-akteur-gemieden-eckdaten-21304d085e35@brauner> <20261108185953.28054fb3@pumpkin>
- <alpine.DEB.2.21.2611090504170.17804@angie.orcam.me.uk> <20261109214558.0d9d5228@pumpkin> <CAHk-=whsA3tKcUCBJDj_vmJ11rVGT9rivgnKjGRgMO21CPmCxg@mail.gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	t=1794813214;
+	b=V+U8RYt/j9jFe9qlRqvcbiqRBchX6NuvIWIo2mh11tALYrOkNBOkP9USVxoYCP5hfOFhS0
+	XdugPn/oATcQNANKbjLyUx1imybw5QnTE2GfJeobhuJEOQCKvaQKpTqKfP6MjRmoku1bM8
+	8iDWyHsv/h9xkAAg1XfiigvJqrNVo30=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=m/Ac+mzRFeJIEx6vjbGzkyHImn4ediK/dODwPh9sWhI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794813212; v=1; x=1795418012;
+ b=Of4lsz3cWS4D1+2RzZ0YuO2qq8m9vzH9D4ohHHkX1LUolYMmrGPtNmcDVOW3nyylod4IMiyI
+ PbLC48TuoyBZYroXhjPdCb1y8qQ0SEc0mEPaWtwk/mgKDGHXkctwTMqGsGoKStIaPsfCfbLnLfg
+ tNu4JyqvgfNjbpk0aL2n5VwY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id afbccf1c33743f40;
+	Mon, 16 Nov 2026 07:13:32 +0000
+X-Mizu-Trace-ID: afbccf1c33743f40
+X-Migadu-Flow: FLOW_OUT
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH v5 00/11] mm/vmalloc: fix up vmap error handling
+Date: Mon, 16 Nov 2026 15:13:14 +0800
+Message-Id: <20261116071325.263682-1-hao.ge@linux.dev>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7943640004
-X-Stat-Signature: gymb34ezsh4zxree4zxnpwgmb5hjk6db
+X-Rspamd-Queue-Id: 5427840004
+X-Stat-Signature: ii7eqgctsbiic7yuzcbjf9jm8znycncw
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794812947-759263
-X-HE-Meta: U2FsdGVkX18qhtDyVvWHb2klhohM9FGx+ZKiUD8eNHrjKAbnC8Zo1CWVplPrHuLuvfa0V08aJCoKAz2gbIFhsMCwHoo0T+L7po7o4vEFHs0JgDoMhFs/TEeIPb8RaORBLO+a0ReoSbrTCIRqgttgNEnfctMqYU2JkA69JcIe/zqZriCAyfqbYQZoy3cEK6Yn1KbYUCzdmcpbzIpbZU22anGp/GOjDU0crLOpmRr/USTfh2ETFEePuQW+Ol1VBEkbhJ07OLMPw4jgmtysnFwmFXE5KOv50S6yKjsoV0NeljsbaIGn6Kllq3Up/p05r9ENejXvKlUo+RnAB/gLlyZj/9EalN99SthcAjXULrBaaFwZv7ne0tBmPKHU6MNSJjgVSFlp3hIy0n0gRZPcLx7D9p774r8iSMU4Y4eu6XOHUw5Gu/tgk/CADjOtUzpPMvDbb0Ccn/s/CWbWpiA4pHwiZq5l/0ykNaQbQ9KaLAOnbvhiV+rKyiv/1F9z3Aw9Xk2g1Z5QPidzICbN2Iakk5LM0i1BcIf4qTboCj0pBhDHJv8BKICW/nEhTZMn58/TTtBo61FH3qU6l30mrkvz6v8OBRsQnFDpJGLQYQbDg36m3/dYinVodQhZzve82W3Dh5M3t3r9bNTuI9HTtQ9ZOhWcuYGsIHdykszrf2/Wm05YlZ2dJMuwaWBFgxc8lcrOl9wxKoGPII6dACeuCPAQiWgCg9FC9O1rF/c8yKgZCd24+lPEHKzZi7X7tbOfdmwNK1BT6VMLp7M3lzTpOMYCW+hWW72rURS+g+MAM/ssqnD2+i1AX9o7fe2toEDN73xIBDQuzZzJoK56YiuQqIi/okYH2WfQ5/GLBY1Oj9ImYzLno7K5I676dmNGZu9QmJ5DAsThGPtgGbHq5ipnR4odd1PqyCS3uicXgw97HCkFxOUubJpC0MaxZQeTQjSIfWFGuocjqQm+J4gF1UvMFfcv5Nz
- FuZrPH0l
- yEcZQcJ2X3ftfgUOOV7/xiBRpa647uVZRA0dhA3+FW3BP4egyOJX6U7oyHoJdnhDOLGs1uMiJROxt7/gv3AwGdZ/zKx7PvrKSsbIcWtIeEvZZC+I+9rVugsy0J9Pij1tvtcPS7U8e0FIkkEuSI2BizUynVbpOu+8EOkSsV6yKCcD+qq0FyYn1XZuxnDC2hsMXSo+XS5VTzvqm2cNbN3VjDhtAYEDaZEQg5joKVpEgvgRMLk0=
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794813214-170886
+X-HE-Meta: U2FsdGVkX19fsMrkStBe6UKQ/vMatXHsvoJYjtHj7gQ+q+PqCRjki+NPftgceqISWiID27fGL0rWPCylK1qwUTwGeWWIxc2rItBufbsTWBFLN1wvbScDQf3CwPL7dPa56DXRUruXpQdTMWC3My3Bd1BA7MSTNZs4cgpKDiilVfby5VG5jkTrOoCtZcWM0jtZUlDkllTjXERf77RHBdCGnS1N+btOH8qavsdIdExZuYIBL2XBptggbu5ErIpw2LMaaZg+XEq16Cz4eAkqFk3dv+QC22ls6Nu5wxLAR2hvflF7LOJCs5aO4c6/GllgUHp9TGvOwdtQbkidM+gCM//hXhIrzbu13Ykmg2TFzEVJz7Fgm/+kgP1kOYgaV+19flfZMVFqZupRMS8OVF/Xmr5ZmEykALPl8G9150ponsn4qPo2b+RWsujS9CXV1LrLWSqJdbX3PEdWLWgLS6aUodSSK1gv+/QixKsdxM5rOlZivLj6ezjNZk5D9YMfGJvEcpufwg8tMx0HmfzBP4qYWKl8p8rI0M3Bokj7WGVZWQks4kmP3GFii0f31HcF3v2ZWBKLbwDMhq3BxvFGGBjXgziao9BTM3yDM/WoUh7L/UDklSBXQUXr/0GwMkE/m4ctOt/E3+b3ndMd9PCfOg5agNhIfVbN0iH2xD1weVER09XPNd5226pN2ukEYDDz+FLnGxFoMRn12Syob6W6KB3ssmCYusiitTB5eVdn8XVwYMj8ze2M/uRupKk5YY/4J3j9vTURComlsLM/kznnIi6MHoJew6ZTti76OCGGL18GVk9hvQK5bT6y4Qd1gVRmXkyxOqhcws3iFsAZU1G4WdiGkcC++gUWQkBqi3zd1tT13kgWK4Rw6Q+oCYcatQlQpQUTXPiL4OeyuhdOWtwOXlmld0zAciK/liU9fZXc9skIry0kh0PSnH+EMSFH8UdCO/ERsxNCTlsk6QcLVPuPk6bF43o
+ 84Q5eGcl
+ 9rakB0TB+UBnYKkF6oImmE+PStCvJNG0i6m2Emhs3zIXBKVWO+rDBpdgNCSKTqKjoTxyy62m7/MMkhiCprKgQi5jZ09/um8o+1TUvX272Duq2dbceUsytXON69SO8e8VyKrt2pbyFxHAe1LFyhlCljC8Ri/R0yvBTuYKfnuVwGgCd0BmrtI0ooQDpasR0zYzfsxv4yv5QXTSTIeJ4VlkL8iT+J1ZDifG/2FxYIM+LvaIxD97qSumBGmXLRARY+QERNfEz70LO+PWVqQC8FqPc3ulz0V8/dlOv6TTrKYeOxI3oQaMVrrMwXP9PCJGzPUvmXzmksOXTwesKQfI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,20 +107,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 9 Nov 2026, Linus Torvalds wrote:
+__vmap_pages_range_noflush() and friends can install some PTEs before
+failing and leave them mapped, and the kernel callers do not agree on
+who cleans them up. pcpu_map_pages() and kmsan_ioremap_page_range()
+roll back what they mapped before the failure, while
+vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
+__vmalloc_area_node() rely on the mapping functions cleaning up and
+do not call anything like vunmap_range() themselves. When the same
+range is mapped again, the attempt hits the leftovers and fails with
+a warning in vmap_pages_pte_range(). A leftover huge pmd is worse.
+During the retry, vmap_try_huge_pmd() calls pmd_free_pte_page() on
+it, and the x86 implementation cannot tell a leaf entry from a page
+table and frees the mapped page.
 
-> > Just that the cast would have to be:
-> >         u8 *foo = (u8 *)bar;
-> > where 'bar' is 'char *', and I don't think you need a cast there when
-> > char is unsigned.
-> 
-> .. and just to clarify: 'char' is always unsigned in the kernel on all
-> architectures since commit 3bc753c06dd0 ("kbuild: treat char as always
-> unsigned") back four years ago...
+After discussing with Suren and Ulad [1], we move the rollback into
+the mapping functions. A failed vmap leaves nothing mapped, and the
+callers no longer clean up after it.
 
- Thanks, yes, that's the piece of the context I was missing.  I've since
-actually come across this commit while investigating which Linux ports 
-have plain `char' signed in the psABI (MIPS for sure).
+Patch 1 gives __vunmap_range_noflush() a can_resched argument, the
+failure paths can be reached with a non-blocking gfp mask and the
+undo must not schedule there. Patch 2 is the KMSAN part, the shadow
+and the origin of a range are mapped by two separate calls, so the
+rollback there has to cover both. Patches 3 and 4 reject an unaligned
+range at the entries of vmap_page_range() and __vunmap_range_noflush().
+Patch 5 only flushes the cache once the mapping succeeded. Patches 6
+to 9 add the rollback to the mapping functions, one entry per patch,
+vmap_page_range(), __vmap_pages_range_noflush(), the KMSAN metadata
+and the batched vmap() path. Patches 10 and 11 drop the powerpc and
+percpu cleanups that are not needed anymore.
 
-  Maciej
+Changes since v4:
+- new patch 1, the unmap paths can run under a non-blocking gfp mask
+  and must skip cond_resched(); it carries a Fixes: tag so it travels
+  to stable together with patch 2
+- drop v4 patch 2, the KMSAN-disabled vunmap skip. !kmsan_enabled
+  does not mean no metadata was installed, KMSAN_WARN_ON() can clear
+  the flag at runtime, on Suren's review
+- v4 patch 3 now warns and returns -EINVAL at vmap_page_range(),
+  instead of BUG_ON()ing inside vmap_range_noflush()
+- drop v4 patch 4, the walk check. No in-tree caller passes an
+  unaligned range to vmap_pages_range_noflush_walk(), the vmap
+  allocator guarantees the alignment for vmalloc()/vmap()/
+  vm_map_ram()
+- v4 patch 5 warns and bails out instead of BUG_ON(), following
+  Ulad's review of v4
+- v4 patch 7 is split into patches 6 to 9, one mapping entry per
+  patch. The batched vmap() path is covered now too, on Suren's
+  request
+
+[1] https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/
+
+v4 link: https://lore.kernel.org/all/20261110112546.261415-1-hao.ge@linux.dev/
+v3 link: https://lore.kernel.org/all/20261026080329.140244-1-hao.ge@linux.dev/
+v2 link: https://lore.kernel.org/all/20261019054531.87652-1-hao.ge@linux.dev/
+v1 link: https://lore.kernel.org/all/20261009063619.112313-1-hao.ge@linux.dev/
+
+Hao Ge (11):
+  mm/vmalloc: skip cond_resched() in the vmap unmap paths when atomic
+  mm/kmsan: undo the shadow mapping when the origin mapping fails
+  mm/vmalloc: reject an unaligned range in vmap_page_range()
+  mm/vmalloc: reject an unaligned range in __vunmap_range_noflush()
+  mm/vmalloc: only flush the cache after the vmap succeeded
+  mm/vmalloc: undo what vmap_page_range() mapped on failure
+  mm/vmalloc: undo what __vmap_pages_range_noflush() mapped on failure
+  mm/vmalloc: drop the KMSAN metadata in vmap_pages_range_noflush() on
+    failure
+  mm/vmalloc: undo what vmap_pages_range_batched() mapped on failure
+  powerpc: drop redundant unmaps of failed vmap mappings
+  mm/percpu: stop unmapping the CPU that failed to map
+
+ arch/powerpc/kernel/isa-bridge.c |   5 +-
+ arch/powerpc/kernel/pci_64.c     |   4 +-
+ include/linux/kmsan.h            |   8 +-
+ mm/kmsan/hooks.c                 |  18 ++--
+ mm/kmsan/shadow.c                |   9 +-
+ mm/percpu-vm.c                   |   5 +-
+ mm/vmalloc.c                     | 154 +++++++++++++++++++++++--------
+ mm/vmalloc.h                     |   6 +-
+ 8 files changed, 151 insertions(+), 58 deletions(-)
+
+-- 
+2.25.1
+
 
