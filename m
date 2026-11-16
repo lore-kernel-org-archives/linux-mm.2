@@ -1,97 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B098606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9821606A889
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dgaswur9
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=i2lF6/10
 Received: by kanga.kvack.org (Postfix)
-	id 328996B05EB; Mon, 16 Nov 2026 06:28:32 -0500 (EST)
+	id C2CAD6B05EC; Mon, 16 Nov 2026 06:30:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D9ED6B05EC; Mon, 16 Nov 2026 06:28:32 -0500 (EST)
+	id BDCB66B05ED; Mon, 16 Nov 2026 06:30:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CCCA6B05ED; Mon, 16 Nov 2026 06:28:32 -0500 (EST)
+	id ACBF76B05EE; Mon, 16 Nov 2026 06:30:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E88256B05EB
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:28:31 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F69A1A0903
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:28:31 +0000 (UTC)
-X-FDA: 85440759222.02.A103AA0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C45E620004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:28:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dgaswur9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 898786B05EC
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:30:07 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EBA9012087F
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:30:06 +0000 (UTC)
+X-FDA: 85440763212.28.AC59AA8
+Received: from mta0.migadu.com (out-79.mta0.migadu.com [91.218.175.79])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 830F510000C
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:30:04 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="i2lF6/10";
+	spf=pass (imf14.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.79 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794828510;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794828605;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RW3Nmjz+GbO91KVwbZw20axMMPWohpmxD8TXxvGg3/8=;
-	b=g6ojDthEv+UIPjiK3b/re4ofarB2EMUmyhvyWvcZBWIqpHU7mD8734ortSBGjgTij/Lz8L
-	dEblk+WoYQNgI45HpI4LJSzn0cmkx6ForQAf8tKajHEbCxgfEdGG0EU9onSNNT9TDpNWo3
-	2eEVgEuCcvOYfRGTgHEZGf9/zNsqTfg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dgaswur9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=MkYPvtNGN0RhdD/DTofBA5aCK7VL8OaqbvoHLj/J3vY=;
+	b=yLxunhwe1UFmAZi+kGrU7/CR1SkQkA6qXXbW3RqIkTY4eRjJokvVwippKtuC3HhAfEXrzV
+	/uPp7L+lRuOaGt9F9uSD1r0Estd/LCMbZLjwh6V2/YPPDOAwpMkv/g5TpAijs7gWjegNra
+	Gl+cwkBICrB6UJvVvKQ4iDg8xJXXDoc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794828510;
-	b=rGHevC2kfHK51lVKBHBvQNYuzLyoxu0Xxk3vGyfSiEfrY183RSbKk7oMoch7ayznJioW0A
-	JkjCUYM7xatJwnttZjsTSVVm9CtfTdtMqcEYW7z3U49RrIk8+2uwG2XR6qT4RSSsPPrikt
-	oxjixzjr9HAHBvH7h6mKCgtOxwAZxP0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D402746344;
-	Mon, 16 Nov 2026 11:28:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E091F000C4;
-	Mon, 16 Nov 2026 11:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794828508;
-	bh=RW3Nmjz+GbO91KVwbZw20axMMPWohpmxD8TXxvGg3/8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dgaswur9NKmVb2Cj2LBZvzzO++YPkgo2pM4LudFKJRS+BkMI5ErMhhAJqeDzhVlDv
-	 eCPlnjvzIK+Il93Dk6xH3UrLaJjZsGk3GL/xs8+hSbIxs45r7o6sNqCn1GqDoq24qq
-	 2QUS9uyBVKqILqww7albcp/nEZC5F+Gxqn2u6w+1S/QSyjVgBvEMBaBvy8oC1WrTZV
-	 rcnaX+dbnp5rdl8gyPjgXF2DkHTYsV59wdAhIGeMurQ7N8u+SHTHNYNZNVuKeBPD4z
-	 5O24la+RsvuF8Pvvu97OG2nsodEcHs5Rzt5fUjwVYjICfJDOyrd8HrYrpVXTeV62Oy
-	 fIYgTSktA3yuQ==
-Message-ID: <sashiko-outbox-216927@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 34/44] selftests/ovl: test data-only layers on
- pseudo filesystems
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Brauner" <brauner@kernel.org>
-Cc: "Jann Horn" <jannh@google.com>, "Chris Mason" <mason@kernel.org>, "Josef
- Bacik" <josef@toxicpanda.com>, "Christoph Hellwig" <hch@lst.de>, linux-nvme@lists.infradead.org, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, linux-efi@vger.kernel.org, linux-s390@vger.kernel.org, linux-usb@vger.kernel.org, "Amir
- Goldstein" <amir73il@gmail.com>, "Chuck Lever" <cel@kernel.org>, "Jeff
- Layton" <jlayton@kernel.org>, "Anna Schumaker" <anna@kernel.org>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Mark
- Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261116-work-loop-pseudo-v3-34-8cbbea1cf34f@kernel.org>
-References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
- <20261116-work-loop-pseudo-v3-34-8cbbea1cf34f@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 16 Nov 2026 11:28:27 +0000
+	t=1794828605;
+	b=g16ExlWipjly43Zk5biRPDaBfO6GDfpfJ/mR4zk5FCVWcxO0ZUeIUPsq1mCX7R0YRiTAfa
+	3xleH3y6sd3oEJNeDxm7tczxWNqikBSEknNnMRXrRyzpdoDcdvUnYbF52pHbS4nfifdCdm
+	ZHE82ArCHj0i11q0x3fojJ3adDIdgjA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="i2lF6/10";
+	spf=pass (imf14.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.79 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ie4RzWFhry2MN3P8FJFlT0JqjLp78vgtKrFUT1SVLWI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794828602; v=1; x=1795433402;
+ b=i2lF6/10/tKqW7+jjlsiqUbSErRov+b5YnPW5cXNHPrUh6VD97+SFBon5+ntzEpAiP6/y4nj
+ kt4PPLltsQD0+5aq9LENyeXEVOsO+XEMEY4sepT5gPG4/aroL4gboPIhJ5uXQVnYkGPKFpwgPUo
+ NDwKtDzMZJKskYI18ybD3SSQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ea6ad778d8d8c0b8;
+	Mon, 16 Nov 2026 11:30:02 +0000
+X-Mizu-Trace-ID: ea6ad778d8d8c0b8
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ec16f79b-3a71-4790-b91e-ea73d361bd16@linux.dev>
+Date: Mon, 16 Nov 2026 19:29:52 +0800
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 01/16] mm/mglru: report evictable sizes per type
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
+ baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev,
+ kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org,
+ lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
+ liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org,
+ mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org, ryncsn@gmail.com,
+ shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com,
+ weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
+ zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+References: <20261114200803.23129-1-baohua@kernel.org>
+ <20261114200803.23129-2-baohua@kernel.org>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20261114200803.23129-2-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: okyw5kgfxuetkdj8q11fgryiwepuzmnm
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 830F510000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C45E620004
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: yz4pok5kahrdka1bzg8dduryu9zpjig5
-X-HE-Tag: 1794828509-450189
-X-HE-Meta: U2FsdGVkX1+xXAItWqeOzo/Wf4vGp3/4ZQfhRgKiko8DvjHKk5QmHpDM3p9WT3F4mMBok7Uhe9URKyKhTjRFcKQK424+crog3ZPcUZ5lcXhxwtaZcOhAZIOwsXUU+6sEO6HAEQBW1/SqHezqHYbiMbKS1Gd+ll1uyWSMmkSUGmyaNggwv/vcUpgZvmOSTov7ezKHlH1pqpvfl0SW8YVOdq9/lQ/ojGniAxFVzAj77Gp6Unu/JsNMTXuLus/Cg3hQd8TaP+YcNTE5ntpSmsSDZ5eiZIwZe6Eegvj88gXnCIjNtmorcmHDhb2V0B00rj8Q04KCHd/A+bymzS5aJsyCWP7Jm7Zi1Pw3Y2AbLb+5IEoIsmduw5CAHatnO1GeAhYTXP+6DNSMWCed1D0cHfX+2tlAqX+cHgkA5NdRgqwR/NFfdf9ToXGcs8HUPyVzXmVwg8kO83B4FTHFAqnjUSzMOjbIXhx6m1waHuzQ1jSTAUbdrdtKT2+336rZD2aydfpXW+YwG9q07QJLZX+BC4PcB6Z4hyfUO+lT6+OQx/CboHfzRbkmSZn3+PTGFn4TsCACe7wjHCtutKi0huL8WrnYfJb4+5z1zBTW0ROCklmcFPE54CSLso3aItFjvgJZXFmgzvK+h95bvivQFoUIXbPhoJcIJyA2PzZ3ie89R0aqq7hWWCa1FUCHn8eEJkLF8Z8cUn2phMmWyfnatqisdoRsmtX3/A9unPCbhXUELCeH628tPFTQnreH2RG5O/GlA5hehMMetokb3OGcEsxYVRxT046h7JnFlBP8JsaSTfqThidiYfpZcDHrRGQ6+qi8bImwXr2KwUT2TLnJA/F5/gXZkX5T15ZbrwZU+jb+rvmITmLJXpF7qay1LPhauecedq2JrtPxZQaQ8eB43EMMFFn80uQ2GAhekUQPhsPNUIOxX/aA03OjtK65jP+gs43eWV6rh70herN7WDCPwfqizM2
- Ry5yHLJD
- sd+XGfuOzufUqJD+dYwK4DjFnn+k4LQSUQUX+YmMbyKfjV58e94fqQkYgcSq6lrWXJE4oyrPJ2jTfXAr+dbeoUSmA+MyTb/CwIrHcRqC0innRdE27KcuMG9sjBnIdcLfxz77JMttWCVu6yt9oTvfaTW6bSAjPL0Y5CFtsoHBegf0cwFU/FQtcwk0j6xiOW04DA9YVTirEM79o6ZBwf2VZZ6XyBh70tqFyeLmFpBdRhB880E3CJ5pFc/w2QGSnh2KTuyT4Fw8ZoWTi848kFtnNCXoe3wcICCqzSOvmMBpUROB2Du93qyg/EuBr/cFyIXxhzqkaMCTQFouWj0GjsqSOd6S/TGhoMr9s8eYlsMYaSkC8Exna6xB6xGdDhBKzUh6rISU7hSbVNU4JmMqRH7bmFLx5QfT4dGn1mnL03aCeYWCf8AQU1rRYamVMWe4zSijfaOPfksbpUf+UUJeIhQqCYZBXOA+PcBlP2FW68NnkmdNgvDvtwa7bgzR2HbJJ2KZjJrBAyVEhJIVC9wYuEYQ+SPBrmFAf5P2umP4HCs7Qrk+XxM7GhrdzkuU3stGTPBy0Em18LOeAKW5B6SIw8w2HccD31g==
+X-HE-Tag: 1794828604-133904
+X-HE-Meta: U2FsdGVkX19uyylcvR55eyPlbgCuCdMg5kiS8diPiOC8Ri5MFr89EctpyLh092PYosnYXthOwfYjNOD3kU7rU5oS+jdNGsJ45YWTHoDC+MbYaazQ7araZvEi/+dj4mLbCbDVhEwE4ryPTkLUfYNlgvtp+iZGxG5zwjvDXeTkbdV5fYJTpnoYzZEYjWx/b2mE0T6qmsgBEKIFpaZHa/q25aIxd7rU9FhNam8imqtIzagiIMEqCB7BSxcx5ggFG43jp0CaLO7OnzXcvq0suWiGcpyWrdurO75KLwyA4WCS6akaxJV416vj6TvRjlfvhtAFyd/5ytzNZ+hiFmIR9V6KK5xn/4ybaeHENzM8lrpZ+ZFsRP4T4NGixSKC/1nl0FW8J3ETZjVKqUeIxOJXTBqcbYB3lmiCVeeAiDIZN1FYqvLn1/xbYy0A/p2Mwf0BFUw3vP1tqz+/GdmtfpeBi9Qut7XnToKM9rninOgIUqxezpcM6vtabVCIvnfBEyfDReYEsMzPTrbJKkmpQlvMWfinft9ceDhMcAk5/6VcEC6qZUifsik0WXdD3DzBUkI9OGzleeaRXrBMLl8c1Hq3WOgNa+cJn/yOeaCE/1pABBvDBCAC3zVpEZul+jw/5UoTcmvBq3cOHI+HepZOUM1dbdvXLM4U4Kp6z2jCsOqSd9t/nHXaBqOm35qocieDynuRxUHlY714FFKqLQ1UGzmL+kfWjxjE4FEXsYKttwzTT56w88ITXhWF0+sOzDeg6KwqPTs6fKqc5MqiNkEiztm4bGQIkC2M2CjgWjFWrF5PUGKK3C1QVHXXUd1bR/3/ZdnHMnrgoUCkM7rtPVmr+jjGYSUMoF3U7pf+2CkKZM1jLztSShnCWAU5u3AF7iAugxWf0qSmm5qNY5TITivACFWQb2gvFequURe9oG8t+/LkYWRW1dwNYJ/5R5ShViCaO7zj5Y0FZwN0EscjL9QkMqrUIoz
+ 89kyOUx0
+ d7Xoo8zastssdATtOF73PD52eovRJTsjyGvMNauF9oQ8FKreo45VSA9Tjvzq9HBwrYHc0WS7IND6K3MgWyENLuMUaOgsAM9E4p/c3TA9Y9+0ZcJD9aubBvk18yVJR/hOOuECrU0MQGqUJfA8rNBvfq467ou9JYZvhlTt+JVgMAavgQ5RZ0QTa+tETVb/+nRPS74wYFvbpH1e60yDlRCdM1MBuZGYOey/7tYZm4Zi5JGXEmBKfxkIy342Xt31q7EwjVQFDQ8vg6cSBnGdJ2qbI9segvrYwXdDqgs3VvD1nHS0iW/A6Vvpx8rtIAxFuHTnwF37Ie8TkObEAAKynvLtVFw7m8/y/5RrdZ8GkeIo4oDnWLsOlNpl1A3DFtOD445pUngNr6Bbk246thE+gagEbzFMPcX0sSk8mSXu0fEuZyAhb+qxNzIoe3zVXkBW9MGcz9gHY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,97 +102,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] selftests/ovl: missing prerequisite skips in setup_tmp() and
-  tests
-- [Low] selftests/ovl: duplicated setup_tmp() and datadir test cases
---
 
-commit 9dfbd53c60eeeb8dceed3a46417fda9ee76bb58b
-Author: Christian Brauner <brauner@kernel.org>
 
-selftests/ovl: test data-only layers on pseudo filesystems
-
-This commit adds an overlayfs selftest verifying that data-only layers on
-pseudo filesystems (sysfs and procfs) are rejected while tmpfs data-only
-layers and sysfs lower layers remain allowed.
-
-> diff --git a/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir=
-.c b/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir.c
-> new file mode 100644
-> index 0000000000000..3b59fd3e9f5c2
-> --- /dev/null
-> +++ b/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir.c
-> @@ -0,0 +1,131 @@
-[ ... ]
-> +static int setup_tmp(void)
-> +{
-> +	if (unshare(CLONE_NEWNS))
-> +		return -errno;
-> +	if (sys_mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL))
-> +		return -errno;
-> +	if (sys_mount("tmpfs", "/tmp", "tmpfs", 0, NULL))
-> +		return -errno;
-> +	if (mkdir("/tmp/lower", 0755) || mkdir("/tmp/data", 0755) ||
-> +	    mkdir("/tmp/merged", 0755))
-> +		return -errno;
-> +	return 0;
-> +}
-
-[Severity: Low]
-Should these tests invoke SKIP() with a reason string when root privileges
-or kernel overlayfs support are unavailable?
-
-Running this test without root privileges causes setup_tmp() to fail with
--EPERM on unshare(CLONE_NEWNS), and running on a kernel without
-CONFIG_OVERLAY_FS causes mount_lowerdir() and fsmount_layers() to return
--ENODEV, failing all four tests in make run_tests instead of skipping them.
-
-[ ... ]
-
-> +TEST(datadir_sysfs)
-> +{
-> +	ASSERT_EQ(setup_tmp(), 0);
+On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Change lruvec_evictable_size() to return the number of evictable
+> anonymous and file pages separately instead of a single total, so
+> that callers can weigh the two types independently.
+> 
+> Update lruvec_is_sizable() and get_nr_to_scan() accordingly; the
+> summed totals are unchanged, so there is no functional change.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>   mm/vmscan.c | 22 +++++++++++++---------
+>   1 file changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 46be9c7e967c..400f87fc51e1 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4193,28 +4193,31 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
+>   	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
+>   }
+>   
+> -static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness)
+> +static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
+> +				  unsigned long nr[])
+>   {
+>   	int type;
+> -	unsigned long seq, total = 0;
+> +	unsigned long seq;
+>   	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+>   	DEFINE_MAX_SEQ(lruvec);
+>   	DEFINE_MIN_SEQ(lruvec);
+>   
+> +	nr[LRU_GEN_ANON] = 0;
+> +	nr[LRU_GEN_FILE] = 0;
 > +
-> +	EXPECT_EQ(mount_lowerdir("/tmp/lower::/sys/kernel"), -EINVAL);
-> +	EXPECT_EQ(fsmount_layers("/tmp/lower", "/sys/kernel", false), -EINVAL);
-> +	EXPECT_EQ(fsmount_layers("/tmp/lower", "/sys/kernel", true), -EINVAL);
-> +}
-> +
-> +TEST(datadir_procfs)
-> +{
-> +	ASSERT_EQ(setup_tmp(), 0);
-> +
-> +	EXPECT_EQ(mount_lowerdir("/tmp/lower::/proc"), -EINVAL);
-> +	EXPECT_EQ(fsmount_layers("/tmp/lower", "/proc", false), -EINVAL);
-> +	EXPECT_EQ(fsmount_layers("/tmp/lower", "/proc", true), -EINVAL);
-> +}
-> +
-> +TEST(datadir_tmpfs)
-> +{
-> +	ASSERT_EQ(setup_tmp(), 0);
-> +
-> +	EXPECT_EQ(mount_lowerdir("/tmp/lower::/tmp/data"), 0);
-> +	EXPECT_EQ(fsmount_layers("/tmp/lower", "/tmp/data", false), 0);
-> +	EXPECT_EQ(fsmount_layers("/tmp/lower", "/tmp/data", true), 0);
-> +}
-> +
-> +TEST(lowerdir_sysfs)
-> +{
-> +	ASSERT_EQ(setup_tmp(), 0);
+>   	for_each_evictable_type(type, swappiness) {
+>   		for (seq = min_seq[type]; seq <= max_seq; seq++)
+> -			total += lruvec_gen_size(lrugen, type, seq);
+> +			nr[type] += lruvec_gen_size(lrugen, type, seq);
+>   	}
+> -
+> -	return total;
+>   }
+>   
+>   static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
+>   {
+> -	unsigned long total;
+> +	unsigned long total, sizes[ANON_AND_FILE];
+>   	int swappiness = get_swappiness(lruvec, sc);
+>   
+> -	total = lruvec_evictable_size(lruvec, swappiness);
+> +	lruvec_evictable_size(lruvec, swappiness, sizes);
+> +	total = sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
+>   
+>   	/* whether the size is big enough to be helpful */
+>   	return total >> sc->priority;
+> @@ -5028,7 +5031,7 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+>   static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
+>   			   struct mem_cgroup *memcg, int swappiness)
+>   {
+> -	unsigned long nr_to_scan, evictable;
+> +	unsigned long nr_to_scan, evictable, sizes[ANON_AND_FILE];
+>   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>   
+>   	/*
+> @@ -5044,7 +5047,8 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
+>   			return 0;
+>   	}
+>   
+> -	evictable = lruvec_evictable_size(lruvec, swappiness);
+> +	lruvec_evictable_size(lruvec, swappiness, sizes);
+> +	evictable = sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
+>   
+>   	nr_to_scan = apply_proportional_protection(memcg, sc, evictable);
+>   	nr_to_scan >>= sc->priority;
+Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+Thanks.
+-- 
+Best regards
+Ridong
 
-[Severity: Low]
-This isn't a bug, but could setup_tmp() move into a FIXTURE_SETUP() block,
-and could the three datadir_* tests be parameterized with FIXTURE_VARIANT()
-over the path and expected return code to avoid duplicating the setup and
-mount sequence?  Also, since set_layers_via_fds.c already tests lowerdir+
-and datadir+ layer configuration, should these cases live there instead of
-in a new standalone binary?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116-work-loop-=
-pseudo-v3-0-8cbbea1cf34f@kernel.org?part=3D34
 
