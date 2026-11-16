@@ -1,115 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5C6606A337
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D883606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fFzBs088
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=vXUnHieI
 Received: by kanga.kvack.org (Postfix)
-	id 9DABF6B05B2; Mon, 16 Nov 2026 07:48:56 -0500 (EST)
+	id A9E536B05B3; Mon, 16 Nov 2026 07:48:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98B146B05B3; Mon, 16 Nov 2026 07:48:56 -0500 (EST)
+	id A75DC6B05B4; Mon, 16 Nov 2026 07:48:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8916B05B4; Mon, 16 Nov 2026 07:48:56 -0500 (EST)
+	id 9B33B6B05B5; Mon, 16 Nov 2026 07:48:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BF7C6B05B2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:48:56 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA72F801A2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 67BC06B05B3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:48:58 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E0C111A08F9
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:57 +0000 (UTC)
+X-FDA: 85440961914.26.C2AAD3F
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 374681A0005
 	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:55 +0000 (UTC)
-X-FDA: 85440961830.01.75EF48F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4DF15140009
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fFzBs088;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of arnd@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=arnd@kernel.org
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vXUnHieI;
+	spf=pass (imf19.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794833334;
+	s=arc-20220608; t=1794833336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D3qZ4d2EoZJBj/rnIT9ZqfnQg+sRwjETd54Rn6zh5+0=;
-	b=u/8HfEztfe6Zdj+1wy5vpnXlm0fnB2HIaTwmDK5o9l9lclUGLm62G3y6JR1NeCXfL6eJdw
-	HmB6d8VWakpK2boqlT1+BO4xWxYcCPbGihhFtqre9hOzli8ZW28TqdzmucbXhKcXKrIWYq
-	3vaPaYP35FxGiyQfxuZjwS6xH+CefB4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fFzBs088;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of arnd@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=arnd@kernel.org
+	bh=q+vj+2gwnCsvLuhkx5/eZ6hFIO5bSIxa0YO+wbxe2XI=;
+	b=LJfX/X+L9z3VRh5l+qtoltVjfONIGa95j7ql5MRx/AO20LqYUAcSSB82niAxSMidnadxAk
+	cFxlg2dI0lbhQTR7T6pzPr/N15U530lo9uI5oI6awbyrD6cBsXUBTrdUT+5f70/PpMTazZ
+	6tpuybvljXS4CT2KnFpK8jWEoQQtrhU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794833334;
-	b=CQX28s4fvdFh3iwwFh9VhToc8gOq8aqu6A01wRehSZ5F4hDWPj2NZlusFrwhHhZx2sy9f4
-	su5Pk5QYy98HBZjU52xkB5XpCn/bwQoiBsato8SxARMUqXOf7FpzmV80WBnfF+cseiPo3W
-	g1s/sc5tCldCvbVbsfyhMG3F8gWJ3OQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C114A6232C;
-	Mon, 16 Nov 2026 12:48:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC6A1F000CB;
-	Mon, 16 Nov 2026 12:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794833333;
-	bh=D3qZ4d2EoZJBj/rnIT9ZqfnQg+sRwjETd54Rn6zh5+0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fFzBs088shoTy3rQRvERnUcPbLSDcUJs3516Kbm99pGIrHAGI+mzI+Fjroy1FZoRR
-	 SLSxvUR24Ur9ZMnFUaeM6262CXVoWN+NN6FX3EIesA4PFthJY3GJ963+oBQQcnI5+X
-	 CxF7nKZzUvWmnMkXLlJ9xJTVUsMKwtlsaRKBJYfJqHGajc8KhKS8Zw151NxBITLk11
-	 3f3u+37vYLIpx96RN2dwX3SMGSQ8S06BuVxY5BqJzeFXIzW4GspoVOEMp6v36vSW7x
-	 txORGSJshkejNfxqwzDAw5iWblqJrgB37F54/PpRUDzR1w8ESpUpWt/STu40kxByij
-	 vtGN4WXjhlbeQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-mm@kvack.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Linus Walleij <linusw@kernel.org>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Malin Jonsson <malin.jonsson@est.tech>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Nishanth Menon <nm@ti.com>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	x86@kernel.org
-Subject: [PATCH v3 02/10] ARM: drop CONFIG_HIGHPTE support
-Date: Mon, 16 Nov 2026 13:48:24 +0100
-Message-ID: <20261116124832.662455-3-arnd@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261116124832.662455-1-arnd@kernel.org>
-References: <20261116124832.662455-1-arnd@kernel.org>
+	t=1794833336;
+	b=q+qSKGK0479770pRe9s5+Sio150t8spPUHCr53cXG8LUolF/cFH5dshPvJkFkP/aMCBc4U
+	60PNNh39ARFAem5/Y1piFyFeOcf5RbR9fy59LPNeW8f+yLgsRqfy70yJv7q/bvcveJWGB/
+	yHmYZLK433sWpAFZSp0uTTNw8bwLKkg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vXUnHieI;
+	spf=pass (imf19.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261116124853euoutp011c54477e4a3caf93faed9a5d97743d45~oh2gttuGE0188501885euoutp01Y
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:53 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261116124853euoutp011c54477e4a3caf93faed9a5d97743d45~oh2gttuGE0188501885euoutp01Y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1794833333;
+	bh=q+vj+2gwnCsvLuhkx5/eZ6hFIO5bSIxa0YO+wbxe2XI=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=vXUnHieIz2yw+ObZTGg5tyMTifGqwLhsQ1gYBSiha8L5jipBAijhFM7gQ3PAXm81c
+	 w0U1TKaoclXlzKfmNLWjueZ41UJuTJfo5KujIPpzcYH2sEvV2rB46NnMrEYD28ih8p
+	 y0KSQM2UEzOvKv20NF6qT2YhtGWVCAcx5sggoxY0=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20261116124852eucas1p1b150cae3b2b4f5dac6550d7236791c35~oh2gXEqqS3152131521eucas1p1p;
+	Mon, 16 Nov 2026 12:48:52 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20261116124851eusmtip129b1231d1435be7a0a2c4fa4d4861c9f~oh2fZOj-F3032230322eusmtip1O;
+	Mon, 16 Nov 2026 12:48:51 +0000 (GMT)
+Message-ID: <2be89ecd-2809-4182-b2c4-df062fcf68b6@samsung.com>
+Date: Mon, 16 Nov 2026 13:48:51 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4DF15140009
-X-Stat-Signature: 1qksq9xn18y51drc67oys4aq3epditqp
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 05/40] dma-contiguous: add dma_get_numa_cma_area()
+ accessor
+To: Alexander Graf <graf@amazon.com>, linux-kernel@vger.kernel.org, Greg
+	Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, Shuah
+	Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+	Robin Murphy <robin.murphy@arm.com>, linux-doc@vger.kernel.org,
+	iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, David
+	Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	nh-open-source@amazon.com, linux-mm@kvack.org, Jonathan Corbet
+	<corbet@lwn.net>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <a1294df95fbe0a2ef5cc3585824d396854c7242c.1794393490.git.graf@amazon.com>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20261116124852eucas1p1b150cae3b2b4f5dac6550d7236791c35
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20261111224311eucas1p1eb735607894271094a8934b187647ad5
+X-EPHeader: CA
+X-CMS-RootMailID: 20261111224311eucas1p1eb735607894271094a8934b187647ad5
+References: <cover.1794300002.git.graf@amazon.com>
+	<CGME20261111224311eucas1p1eb735607894271094a8934b187647ad5@eucas1p1.samsung.com>
+	<a1294df95fbe0a2ef5cc3585824d396854c7242c.1794393490.git.graf@amazon.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: c9o4o3oh7kadwyen4mfrjwh7j7yb4j3u
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794833334-390992
-X-HE-Meta: U2FsdGVkX1/yEN7dftnXanFbZAcDOw9zsQ+slsfPBFuWCiIMTUj0NXgx0KqOLqs+GB9BZ+W9oLRms4twiYjE9mj69fyXb8ooX9qP9QtEnnmKHXSH/kULd3lN+/+gMXnnzB2pM+csS/q1661+1bTkIA0Isr+DPuE2ETGS960ILFWnm4l13IRCYBQhMw6hhkhl4TLUQZMTldPV2aRA2yzBvdiJ6YXZjZe3j4iIB0GpvPY7Lr1VTt+UBCHUb6ECtFvjWJipG4hMK81oMIkaYTk4p76XY9ETIJbiSjTtiP3uh/yV/DZIXh4xXNBGPirzRacvj8dE5ZeX1IiWj3Hi1pXY+/B3LA78PtVOJTBMdxJvG2AAPqRMyb4zYh2v3veZrE+bFkUfSJPOBOmbOxSY+EBlhX8GuuDs9hibaXDMOiGA9L/SxpU21b8Vgv0ZxLYZriHWLTNFPwrAggGAdrCCCnlRGgQwRRhawcq7SvOb24lhi8D1bvzBeY0EkO5CHWEETxJvlE2hzXYXkroe7ZIDDwF9eyMQTcm+G352EsNmrymnPAohIiMpcEc/EAn8GYbH28LhBQo3BfWF0Zs0YvkUGbLCuQy7YGqVCUgR4SBEh6/Tt4ttDAFckUJQs7PYmmM4V/K8zu7A8M4l8bYRi6jFzRltTIs7Cp+JEngBiME4LjL8D8ubbEZ1UEve7wdM6o0MhnRkko2RfLd3+ULCL+NdDGC1JDCAIi08oS2a9HqliqOQE/8NXFZjp5Ay3ZhpzxFwADvj2iR8NVJYNot2T2wlQXXBBFBU7p+zrmQSAjVRqXj83HFAfaQJhTYg0Svjp70YnFMJvU0fyqtqzn5dMdpZrf3nCaSwpzPsN0r9z4t4k89pvbwFR1J2+hWw9iuqTuBYKW/k0lLY4a9aHP/h9SsEjc4s4ithY4E6oAr3fqpKNdS2REB1FWML8m6ZbudS/ULvB98sJGqS6EmIYPG5qm9a7l3
- 2I09ceke
- 03Ks3piXyZ0E3aRvQBPkal6sCDOHruJRN2Vu+BfzqT1Srnxldy+E/2roeZw3GITjjEcCWZi1Cb9OypLdNVVvGRXtP7boKkeLFWd7PxBmVofU4efBVdsBn3Vf5MePADMeG+vguHnAUl4wyCDwJC76T2fGe6Ok4ZGBac33zaysB/fwY2D5BPcW9SaQJ1FDwL+NnGr/jOUPeVxR9MPh4PCrxxt5drF1/3UG5WuvJTlTQPDx1MHxqFHtO2kRC1gST1mDyM2dbRQinnezuIclnephw4PvqRvblAV4wFAQ4
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 374681A0005
+X-Rspam-User: 
+X-HE-Tag: 1794833335-682236
+X-HE-Meta: U2FsdGVkX19Oczk3klb7MmzSd4FwnTldzsgnbLgtvwCdoIp5YmnxGOO1XzZ8/HA9jtKvye5aqYtyLyrFLRpj5AiPYw6v0u820co8GTbrST56bpcfaQ3tUTG7II9tBjnhZF1WA3tlUpA4NNcJRWY9G1++mIPzQNU9MXvM+7RMW3LN91LwdOy/tfTW3IZ9NxL0mb6MTrk/ZowqDbmslQAktDz+pBWL/n4F/G3szHGOcqfaYc1r6KrE7+6Xu8BG+sFn/qOHlAVl3NxQRz14qzbG+Hx/voODcuebcK9Y7vX6djWBLuho+j5EZoY6+fLkLurWxg1MFCgJ34z9b9tFfIYPE3MLgTne6mEfVBu7QgI8lMP8WmmRfpdJmadWd77zcyEW41Cum5cdeXuFfwhDSvtvxxxPw3TpK0yv2pZXCa020NPtG4Hz48zbZVglmACuqwF1DuzVjN52NZGuVtfid5z11XOONvhuSs2N3/GgKrYPiYf7JFrCwRWHA6q1fMh3mFDzPupAnucraJmTY+8OEaExw7CQ9jZLd3qyRIzhiyV1oIA7w9qM3CwnZzzVheqceO7yjDwGl23h0hWcUxMjg+WW/e2+RX+azqDoZfU5Xcu3lIMFMEo71Ph+2s4YBuIuvGMq8VPIJm/WD3REDbXJ0/o9DXnEPwyJ+tzutMPJ7Q4I6t1iTKU7YUCoVKRhKpQY7awBHyXgpd8iX4vmaN4KsVQD+nNQTfi6bQW7iQIPQijZHkoFBJSQn0QoJsYRBtBjjCpj7590U2zOMetipYk41h8VrxQvOGk0XbNZImNqgFOMERaQ1Ola2l0WcrvhWPO5komm8LyCf28vM/cu8QXWCSrWYWYTzO9GabRIaHshu1rKJwqa9FD+ARoeN2NxjieZvTpdkzWdsriL4VWWsDXh3msLLqIfNrZS03ifDjWdr0JzmXYdZRxi32DoWEWysS79gG75NWU0u635sjLVDN9Hvuh
+ fGfOfs4g
+ 3dHZ+9fuXCfLvVqmHKfDGB3DCyXhDDZAZDq48cwT203Zf1TupKtGyi1lgSSOL4v+YWOltSbIDqr4pXFmZQ5TBdlUMvb60HWUzsYeXDRQAZBEFqC6wEuWMCsDXgIGe7W8Mdc+wuMMTO+4Q1Ufv8uCzXaYVK/cSDIVPtheTdzfKgEWoUBJKLTIRgA7zVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,93 +114,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Arnd Bergmann <arnd@arndb.de>
+On 11.11.2026 23:41, Alexander Graf wrote:
+> With Nitro Sandboxes, we want to allocate per-NUMA memory from the DMA
+> contiguous allocator, but have no per-NUMA struct device to pass in.
+> dma_alloc_contiguous() takes the node from dev_to_node(dev), and the
+> per-node areas sit in dma_contiguous_numa_area[], which is static.
+>
+> So instead, introduce dma_get_numa_cma_area(), which returns the generic
+> per-NUMA DMA CMA area that cma_alloc() would use. This way, the
+> nitro_enclaves driver can build its own generic CMA pool per-node
+> allocation logic on top of those pools.
+>
+> Signed-off-by: Alexander Graf <graf@amazon.com>
 
-CONFIG_HIGHPTE was added in linux-2.6.32, a few years before 64-bit
-support. At the time it made sense, as the CONFIG_ARM_LPAE option allowed
-systems with 16GB of memory that made lowmem a particularly scarce
-resource, and the HIGHPTE implementation gave feature parity with 32-bit
-x86 and frv machines.
+Take a look at the following patch and the patchset it belongs to:
 
-Since Arm is the last architecture remaining that uses this, and almost
-no 32-bit machines support more than 4GB of RAM, the cost of continuing
-to maintain HIGHPTE seems unjustified, so remove it here to allow
-simplifying the generic page table handling.
+https://lore.kernel.org/all/20261106184433.761422-5-kuba@kernel.org/
 
-Link: https://lore.kernel.org/lkml/20241204103042.1904639-8-arnd@kernel.org/T/#u
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/arm/Kconfig                        | 11 -----------
- arch/arm/configs/vt8500_v6_v7_defconfig |  1 -
- arch/arm/include/asm/pgalloc.h          | 13 +++----------
- 3 files changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index fd01ccab9c12..fc66d52d847e 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -1225,17 +1225,6 @@ config HIGHMEM
- 
- 	  If unsure, say n.
- 
--config HIGHPTE
--	bool "Allocate 2nd-level pagetables from highmem" if EXPERT
--	depends on HIGHMEM && !PREEMPT_RT
--	default y
--	help
--	  The VM uses one page of physical memory for each page table.
--	  For systems with a lot of processes, this can use a lot of
--	  precious low memory, eventually leading to low memory being
--	  consumed by page tables.  Setting this option will allow
--	  user-space 2nd level page tables to reside in high memory.
--
- config ARM_PAN
- 	bool "Enable privileged no-access"
- 	depends on MMU
-diff --git a/arch/arm/configs/vt8500_v6_v7_defconfig b/arch/arm/configs/vt8500_v6_v7_defconfig
-index 2925a1f1dbb6..33a81c5a84d0 100644
---- a/arch/arm/configs/vt8500_v6_v7_defconfig
-+++ b/arch/arm/configs/vt8500_v6_v7_defconfig
-@@ -9,7 +9,6 @@ CONFIG_ARM_ERRATA_754322=y
- CONFIG_ARM_ERRATA_775420=y
- CONFIG_HAVE_ARM_ARCH_TIMER=y
- CONFIG_HIGHMEM=y
--CONFIG_HIGHPTE=y
- CONFIG_ARM_APPENDED_DTB=y
- CONFIG_ARM_ATAG_DTB_COMPAT=y
- CONFIG_VFP=y
-diff --git a/arch/arm/include/asm/pgalloc.h b/arch/arm/include/asm/pgalloc.h
-index a17f01235c29..b01d817fecf3 100644
---- a/arch/arm/include/asm/pgalloc.h
-+++ b/arch/arm/include/asm/pgalloc.h
-@@ -85,22 +85,15 @@ pte_alloc_one_kernel(struct mm_struct *mm)
- 	return pte;
- }
- 
--#ifdef CONFIG_HIGHPTE
--#define PGTABLE_HIGHMEM __GFP_HIGHMEM
--#else
--#define PGTABLE_HIGHMEM 0
--#endif
--
- static inline pgtable_t
- pte_alloc_one(struct mm_struct *mm)
- {
- 	struct page *pte;
- 
--	pte = __pte_alloc_one(mm, GFP_PGTABLE_USER | PGTABLE_HIGHMEM);
--	if (!pte)
--		return NULL;
--	if (!PageHighMem(pte))
-+	pte = __pte_alloc_one(mm, GFP_PGTABLE_USER);
-+	if (pte)
- 		clean_pte_table(page_address(pte));
-+
- 	return pte;
- }
- 
+> ---
+>  include/linux/dma-map-ops.h |  7 +++++++
+>  kernel/dma/contiguous.c     | 36 ++++++++++++++++++++++++++++++++++++
+>  2 files changed, 43 insertions(+)
+>
+> diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+> index afaf2c12189b8..5f7138ea6899a 100644
+> --- a/include/linux/dma-map-ops.h
+> +++ b/include/linux/dma-map-ops.h
+> @@ -93,6 +93,7 @@ static inline void set_dma_ops(struct device *dev,
+>  #ifdef CONFIG_DMA_CMA
+>  struct cma *dev_get_cma_area(struct device *dev);
+>  struct cma *dma_contiguous_get_area_by_idx(unsigned int idx);
+> +struct cma *dma_get_numa_cma_area(int nid);
+>  
+>  void dma_contiguous_reserve(phys_addr_t addr_limit);
+>  int __init dma_contiguous_reserve_area(phys_addr_t size, phys_addr_t base,
+> @@ -115,6 +116,12 @@ static inline struct cma *dma_contiguous_get_area_by_idx(unsigned int idx)
+>  {
+>  	return NULL;
+>  }
+> +
+> +static inline struct cma *dma_get_numa_cma_area(int nid)
+> +{
+> +	return NULL;
+> +}
+> +
+>  static inline void dma_contiguous_reserve(phys_addr_t limit)
+>  {
+>  }
+> diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+> index 90937dc7c627d..363b84284d087 100644
+> --- a/kernel/dma/contiguous.c
+> +++ b/kernel/dma/contiguous.c
+> @@ -443,6 +443,42 @@ struct page *dma_alloc_contiguous(struct device *dev, size_t size, gfp_t gfp)
+>  	return cma_alloc_aligned(dma_contiguous_default_area, size, gfp);
+>  }
+>  
+> +/**
+> + * dma_get_numa_cma_area() - get the CMA area a NUMA node can allocate from
+> + * @nid: NUMA node id
+> + *
+> + * dma_alloc_contiguous() picks a per-node CMA area from dev_to_node(dev),
+> + * which a caller cannot override on a per-request basis. This accessor
+> + * returns the area a specific node can allocate from, so a caller can
+> + * cma_alloc() from the node it wants.
+> + *
+> + * A per-node area comes from numa_cma= or cma_pernuma=, or from
+> + * CONFIG_CMA_SIZE_PERNUMA, which reserves the default area's size on every
+> + * online node on top of the default area itself, all three of which are
+> + * CONFIG_DMA_NUMA_CMA. Where there is one online node this returns the default
+> + * area, so a host that reserved only cma= reaches its reservation through this
+> + * accessor as well, and that holds however CONFIG_DMA_NUMA_CMA is set.
+> + *
+> + * Return: the area @nid can allocate from, or NULL if @nid has none or is not
+> + * a valid node (including NUMA_NO_NODE).
+> + */
+> +struct cma *dma_get_numa_cma_area(int nid)
+> +{
+> +	if ((unsigned int)nid >= MAX_NUMNODES)
+> +		return NULL;
+> +
+> +#ifdef CONFIG_DMA_NUMA_CMA
+> +	if (dma_contiguous_numa_area[nid])
+> +		return dma_contiguous_numa_area[nid];
+> +#endif
+> +
+> +	if (nr_online_nodes == 1 && node_online(nid))
+> +		return dma_contiguous_default_area;
+> +
+> +	return NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(dma_get_numa_cma_area);
+> +
+>  /**
+>   * dma_free_contiguous() - release allocated pages
+>   * @dev:   Pointer to device for which the pages were allocated.
+
+Best regards
 -- 
-2.53.0
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
