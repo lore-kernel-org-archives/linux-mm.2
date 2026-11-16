@@ -1,94 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7B5606A32C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0127606A322
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k9EFhRVC
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=OQrbZSeg
 Received: by kanga.kvack.org (Postfix)
-	id 7A6B46B05B3; Mon, 16 Nov 2026 10:47:02 -0500 (EST)
+	id DA1CB6B05B4; Mon, 16 Nov 2026 10:51:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77E1A6B05B4; Mon, 16 Nov 2026 10:47:02 -0500 (EST)
+	id D79ED6B05B5; Mon, 16 Nov 2026 10:51:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 693C66B05B5; Mon, 16 Nov 2026 10:47:02 -0500 (EST)
+	id C69FB6B05B6; Mon, 16 Nov 2026 10:51:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 444CE6B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:47:02 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD018160170
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:47:01 +0000 (UTC)
-X-FDA: 85441410642.21.5C3F5BE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 20A50C0007
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:46:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k9EFhRVC;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D8D96B05B4
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:51:42 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A27840175
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:51:42 +0000 (UTC)
+X-FDA: 85441422444.28.5E9E18B
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3EC3A2000C
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:51:40 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=OQrbZSeg;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794844020;
+	s=arc-20220608; t=1794844300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f0uElAV1NvKu0ZyMFHxeUG860eoK8aGVGyT8VR+T67Y=;
-	b=YVczjEMId9skgnTJ8ref5p8k3jAxCqNjb87j7ghwIXdQcq7bVbaberri+LOgGHzBixHR+e
-	LHOgVoSfyT5SNsOIUWCG/Ton+bKuRNCaG+HHQfqZMpHU7iA9uO92+yWmqfyt2jdRFOfTuy
-	JMo4arB5HomeCFfK2Ia3Pdh+ikFz6x4=
+	bh=RXYWDIxTCeCaQE5l3PV8c9OeyPodmOKqfIOFfbx0Yzw=;
+	b=ptpFkbn3c2MoN4IDk1GvX6OAfTL7sYgFSeTEgeqhsyztXo5UiBVla9vdu2fUse0YMlQpzL
+	QkfgxiA6OIlLPcUIdKsPsY7svgcJ74UnlfG+GrrMFbKbXbRt2VD3TFs+ET/Z9aBKI9ZkrN
+	MISN3rkLFPV+fx31QdtQDembOx5K4yo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k9EFhRVC;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=OQrbZSeg;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794844020;
-	b=Hp8jqc4mwQidR0iSHoxSlqDsoaUUkcUIcPdSlOHlJylnYeLRlHxmEYcy/M9eiz49/btkWv
-	Q+u8NbtIERD1paPOGfeGM4c96/Ts4dLg6oEt/wD91AHDeU1agCtlDv+MqODdVYiNpOV4oy
-	M87fykOoKFBD21zdzI7/IPkabOjhy3E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 46B3843AD5;
-	Mon, 16 Nov 2026 15:46:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19E31F000C4;
-	Mon, 16 Nov 2026 15:46:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794844019;
-	bh=f0uElAV1NvKu0ZyMFHxeUG860eoK8aGVGyT8VR+T67Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=k9EFhRVCzCfcnffZdkuJZogTdgJRJu/ey5dgGOWDFuZz+pg2opk7vf1J/7XjdvNlL
-	 FgDSvPGP96+a7H8NxW+UdZhmP3SOFRkpdEU2FhzKaNmAIF4g0QD1JZQR/w9PMWGDDz
-	 pJ+55b41SuSDypTZmj0sMYHMitgnUSfZrHdCmOLnzaGcAhPQJvuc3V8i9tg/XKs9yH
-	 eUhb54z/N7uhUmVofEctqQHxi7r+DpSpexGjPD704xRrWUA3Iv+bC6EeoUj8AeywWG
-	 rPVw1hO6pHy5UIDxOCyN0UdIqZN6Ts+QTyaS7YPQK1IL08QYBqHLdHmE0Vr1cdTQjP
-	 h4xZOAyLTBeJg==
-Date: Mon, 16 Nov 2026 15:46:54 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Li Jinyue <jinyue.li@linux.alibaba.com>
-Subject: Re: [PATCH] mm/vma: update VMA iterator state on error in new VMA
- merge
-Message-ID: <avskacTjLUyz4D_c@gremlin>
-References: <20261027-fix-new-merge-bug-v1-1-7023a787e6b9@kernel.org>
- <gp4huj53rndmngvzajdfelalmh5gkhzqv73t2v6rotmr37hgpb@g4a33cixtylu>
+	t=1794844300;
+	b=ZoJpOOaeh8yByS82NxnabDoXsTiEuppb28cKPQeQL57RRnpy8Qp2adzoX3/yvkhGDBYdqL
+	62JB/Amr20Rm01uevxZoAChcPQJSnmcpIdAR0tYRzD7vJkVefyG3JkvagWSIrpmNw1KsdV
+	lnduLMyEEvjqRVtaZytNEbsHBtnguxA=
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5ee029fd76aso3437123e0c.1
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:51:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1794844299; x=1795449099; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RXYWDIxTCeCaQE5l3PV8c9OeyPodmOKqfIOFfbx0Yzw=;
+        b=OQrbZSegnTqjhhEipSp7GTcO3aUlVVvgS3uclzZ+kTNHlbvy+3i85WTRoeTW77w16q
+         bmCXDGfrpEsLQZMzEFOvQOEOB24mzkUh6rkeKB5Oc4ETG7C5EGS5i4CIgjCMLaPFArhr
+         N94ozaAICVB6IYT6BZDcRTAGwA2vViEeX4EssdX2p20mLy0//UiVcVZwhPgb4pe4xak2
+         uqnYbLaBL+v3YUOV3PowIAF1EsNayQWQwAapmJBl2ebtnHW+JY9XvzkWxOCDDLGVuPq9
+         V8/GWrPDaBQC8hRHwmrnx2hYY79y0L5Rp2+o7ALSBrILYW+riFgPS773mLeGXZycHkBL
+         IIMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794844299; x=1795449099;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RXYWDIxTCeCaQE5l3PV8c9OeyPodmOKqfIOFfbx0Yzw=;
+        b=sD7HrNlMzAaphDXjux9t28miAXUM7c+0KemU6bTZ7HjOyrDgcrXpk1krPp5r5okiLH
+         evNlQPtxOvsOZROLWQrKuYVyr/Gj+d1NfPsBioQJKKnfNbh6RVqk5RGX2ixUUuIKQ8HI
+         /hPxqoN79L/J+7rrSdQC2WtV2pjxTZnUiMa600VnZbxzvRZC+/EtTIxIDONp8rz6JkJP
+         M6JGerZsyFdJ3qa4fsUAlya+/YQQH+bonoLekgMyNVYzOs1hWji9fV+A30obR2FMbjzY
+         Hc9bjfZxyigc14BgLxOwH/+zswD4u9Fy9FxqzYv9JSXkd+X3aazxhpwzdejwI3lZnGt9
+         lcLw==
+X-Gm-Message-State: APuU4Z+Wfr+N7JMIcJ+XCnQjqGxWGMNm6ieZtXnb+pUsjJx8leEtaWnc
+	fe1j2+7VyHCbZLv0yNhMK/B4TSfpOJWyGNJxOxPIDLMEag1Q+TFfFttGyguBkybFoUJhKJjMrGn
+	zM9u0
+X-Gm-Gg: AYBFou3bQA5wNQuaE7zuqBXLG1jbZ6e4krwfKo+Lc1n5o60/O9sIUyieIfkU+LQ1KjD
+	7z//lQEVmLPGWJU1EsXIv7vpbqd/++xmjOikeWcJKUeRM+Ss+l3rW56qERcSqfI6t6bDElThZuD
+	XJwLCBx1DosRDqe+S/E/3/I+1hqGhnWqjsDm0MUNvev6f5b3ZM6ADGeCJEgZShJKp82WAqHzTxY
+	+wdXfccAjX/96CeEkoDN5b0tjg8LKHsNC/9LoWTwAQLoPfk1yBXwZBMbQIBfVd4ql/CWOVUEVqp
+	0IDa8I2jiOCDX7evurBhgvqpgFStRQh6yMwGht+RmmrQGSnEYAWFPLdD2gHsdmf8oBvwyjM+V+j
+	l/mRoS2Qv6CpLaah73f+nCiFAXmJCA+zAksiPQeuMdocAg+G2XFWP6+3m0RwfTrc5qZowFBlDZ3
+	30XlCkMSDivJnaYcWaTjq7O9CzOugDw/5/VL8wprmn5l+d45/tRMMp88oKxkWzYuFm2HmVtgHqF
+	x55OedutIUQWtGwZYkVm8MpV1BXcIMZFAHJNuoYtIJ4Uu2BcLeJIrRhjxE90wZVps8Ugj9RAW94
+	NbwaFPE7Vs2t9Ydx3Wc6XD67ErtHRhoeswwmjUod/xCUMR8u9upUFK2Kf7F4fm6ElOXVXhU9v+i
+	WMn/FFGtTAQFdaMalQfg1NVussnmuWpY=
+X-Received: by 2002:a05:6122:62e6:b0:5c9:a60b:e5a2 with SMTP id 71dfb90a1353d-5ee34a87371mr3856682e0c.13.1794844299167;
+        Mon, 16 Nov 2026 07:51:39 -0800 (PST)
+Received: from localhost (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee34e8fe0bsm6514324e0c.11.2026.11.16.07.51.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2026 07:51:38 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <gp4huj53rndmngvzajdfelalmh5gkhzqv73t2v6rotmr37hgpb@g4a33cixtylu>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Nov 2026 10:51:37 -0500
+Message-Id: <DMWR7BK3N2LS.X31OPI6CVASV@soleen.com>
+From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, "David Hildenbrand"
+ <david@kernel.org>
+Cc: <linux-mm@kvack.org>
+Subject: Re: [PATCH] mm: Add IRC channel to MAINTAINERS
+X-Mailer: aerc 0.22.0-39-g5d7784875be2
+References: <20261112212230.2805832-1-willy@infradead.org>
+In-Reply-To: <20261112212230.2805832-1-willy@infradead.org>
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3EC3A2000C
+X-Stat-Signature: piztugtafbafpd5p3hmsupxok3x6sbrm
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 20A50C0007
-X-Stat-Signature: c6ur39fs3aoacumahucz1iyaryg85rcm
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794844019-619293
-X-HE-Meta: U2FsdGVkX19ghMLnUo05QQYLUGYLQzGbZGxMSmbAVZfqI3wQRLZ+AXdKEEZ9vZR/SOw4ha4kbBxiDtYad5Yr9eBLdcc38Fduuex0dw9Z1uXHDcc1c9UqsAqDloB5c1SAW5jSk97n4+oaHQAb01FW25i5YoFgpyrwYwIsl8amTi2b/d4o1jYtm5tJjaUgObjJQWwumq5A9W+gf7leF1dRFAfwKiPbmr6LmpxBWOqHutJLn0mhnV2qH3EosdbIjOnIEWRQJKmgxFTYlfaI/PfEJ2uUuf3yzonYq7OLB9RAlP0czFUKPhbQm7z5TIXHH5VVua7aGEha/Ptd9wWLLGXgkj9BVVKa3W8mx5PB6sflYi9FlEdA7+qYiMdcvtAQzKZO60L6mxiQmfpiJjfGLUi4Vit4XxppQfp6HBLlsl3S2bUIZH0g7v22RisfTDxZ05lzFmnBmxLCFQvCwxEZFGbE3KoVzkh/dA0zAr3SSamSy0AwsNAtoGAbwtN3ShdiNMWuxXGz3ixV1X2jSNBqezCIk7cSo7/b7v86YSSbbq7z83yu/aVzab8EqpHorWBZgxrbQfmHi5eHxw8C+htSYtYR4LXvL/ALvYHSxLssHR7sqq47sXdmY8Fz7/iGnQZ3i/xwkAI78wC/f1x76pxWKihG7qVfGxLbB0PToR4bsakYjZEr/3rwHN66KdEgIFulqaxH/RemHmfKHc0LPGL7FVqmHoK4EC9fm6a7qJSwD0vRu5B7no3AqsmAKuwQQWczF0MeYKihSefk28n9cpBsHuQk3/fq/q6MclpxrLRcZCAMZ/xTvFoRtBDLQ0pFicgu14+UjlfZqjsh8LfWZyJBsRmEeXKSNWpOPasA1XNYxPfvjjE9PUiWTYrYfSzRR7P+B444z553o8QBpJTuOz5oSA2NohPtJfG2+1dtFCswuQJBIBvuKDMZsFHl9Alt8x/ydrHengi3NkkdhPF7dDT60RL
- VGO1Q/h6
- E4Why+OsKGws54j6A6na9VDGb6sSg35KCpTze8CzMTUOULMVT6Pp81hyJ2ybGdDh1pcQt1BExt+8EYhrSRsuM7E7nHvgMzjqZXqFzfDy2IY+HcMiCLIDkmYP29SNo4spqjEUoMB2BWbsoExDAxbC0WUJ+Hx5LQPz3ZFVqDgX911uN4KtN3oK8W+AaQro0OD1OGjV6csnXBe/rfbfK66F/G64lDpPN+2Rq3/E648eiEAEjuS9FdFovcKxpLHF4RTh6aXqn7QCeP1Dy0V/gjOjGr27KpoETCO+ZCkaAOlbeBIq0CCY=
+X-HE-Tag: 1794844300-470597
+X-HE-Meta: U2FsdGVkX1/Vg5+X+0CyKOs8yU+tePwP/rmIveVRrCuY6gPrx+Niig5olINNBe9tAUogQ82XB48OKs9b9EqGEutYQyg1zIE2y168XgblFDsZB+zgtjIXlpkPA13UK8Yt3uLAWcb9KIKCVTJH8hhlxk3LUFf8KC0W3KmFNjVRcih/Hzwmm282ZTtqtKMPGY4qLUaWPk3Z1YOK37pIS2CvsSjJtyj+CA26QFD2VdA6DuCPouAGDKlXasxcWeleTedDgfei5HTJZvVI6Ld3rB0BzvE+1xxWaFxLBZE+kppmlEEHICPRCFAmhF0FZxIbuoptDW62DXRuPyo0tCyza2y4L9OUAKtrkMovrDu70ec+tYUEoRuGUW+3Kt8igm+Upu+Ym1/GX5GcCaaEgT1ZmV5DbSA/cqFIpNXloadYTU6xVuT5kGIelSd5ad7R/ecsfPI3OO6DmHNRVJ+ci7AWlsbR7FSu541njk/7QgpbmmwWmiNJ+2N+1LGwcfgP8LJfyEHqdKpQ1L4MRH/zoH38VWRQAuF1m4CL0PuPVcfaR2pdVSh3Pb3qIrLnLZ+WqXm2SnPO/KTBhMKsyMdgDDxHpTBTD4EXwDfGmvLzwUTHvD06BfBVSWiB0JPSVeSA9nMNDumn8EgZ6/o6n48RUwMY9U+uPJas5LqB0PaGH+iWuii6TpGGOovHgJVNDdcKqgL6aP+qyaRVyJuqcMHmHL6AddobIl1NkfmAt9ModVsM6wp/Okun6a4Knijy0a5c9X9edOHwb9B9nuLbv+w6mx+vT4y3XSNRie20Ugpbayyk4bx/mxobJwJN3d05Pi9RhWjPUXly0rD7RNiaFx4XjgDclr7znwCLfoUYkJUUid3FG3bteTMwJUsDPfGQUk+ntaOkaaas5a8h34GcMwlkwJ7EPkho7b9HRTsic1LiZuLl2Wetr1EENZjDPAvBNhptc6v9I9vnOGcrqztqoHWp1YT4kZo
+ 0JbHvEdC
+ AINqLrfss9GpqHdbc8ojIayzcs0PCtVhZJk9kf/EE/qhP5JSg53hYl/yqCKZiJi7F57FEwAtJ8+aZI+L8DLkG6tLjF8a0OvCnHRsjFR4oQvDQvy5WZbKbkvrEqMTjO6Oinw4olpPTNvc1V18my5XWK2DWe4XdWDYGK/3KzIdqZOM5jcamxhYZkmh7V0T/bBD0w9LCzF9bhUwek6uiMEds5PGbF93BDDNOq8bWr4qirh/Bqj8x1cLIftQUCM/0bYX5d80Gxx5Ac8BYbCRvoNL/yVP7V4QO+pkKfO9p29/m0P3hLDc0RCaoD/RK62jheLcURWjZ9Sj5OJVQrHh9NXnEZvgr+yfqDRykgfYbnBxuavQ7FbrYP0O0EGyVShpzJKh2jUMO/J08Tvtw9khZogtzkSb25KL88iUdlejs1xiEas+DNv1srLYnYshviSSFnKdgjzbZ4Vpy67dEtcfMSOS1t1RrlPyKeM7dGiyV78f0PuJuIodOCiJeBEXZqk5GbzY2RbRIbrJZHBHNGty+F+Vf5Zp65QSQinR1ZokuLPqO+kCoU+p66qmYepBi6Y4R0UZrkbD/TZG6T7x0XMqButl8PDIuTD0h3HIXxzTpufI6O/lWi5Zkn8FPaz6YZp/GdaSBcLHQFA6u+ejRcm4KJLInnOXA0y9PsIpMG9F25FLUNLygcd1POFqYK0u8DZ/6HVnt1G/Vz3Nly9+7Bfw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,151 +127,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 05:01:34PM -0500, Liam R. Howlett wrote:
-> On 26/10/27 11:25AM, Lorenzo Stoakes (ARM) wrote:
+On Thu Nov 12, 2026 at 4:22 PM EST, Matthew Wilcox (Oracle) wrote:
+> The IRC channel has been under-publicised for some time now.  Add it
+> to most of the entries which use the linux-mm@ mailing list.  The only
+> exceptions are those where I think that none of the listed maintainers
+> (or other knowledgable people) are regularly available on the channel.
 >
-> I'm a bit late on this one..
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  MAINTAINERS | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
 >
-> > Commit cacded5e42b9 ("mm: avoid using vma_merge() for new VMAs") shared
-> > code between vma_merge_new_range() and vma_expand().
-> >
-> > However in doing so, it failed to correctly restore the VMA iterator when
-> > vma_expand() errors out.
-> >
-> > This is a problem when the immediately preceding VMA is mergeable and
-> > vmg->just_expand isn't specified, at which point the VMA iterator is moved
-> > to the previous VMA.
-> >
-> > (Note that vmg->just_expand is a special case for brk(), where the
-> > iterator will already be positioned at the VMA to be expanded.)
-> >
-> > Resolve things by restoring the VMA iterator on error. Use
-> > vma_iter_next_range() to do this, so it will correctly stop on the gap
-> > after the previous VMA, rather than skip to the next VMA after it (this is
-> > a new VMA merge, so is being applied at a gap).
-> >
-> > To isolate the error handling, return early when a merge isn't
-> > possible (what the vmg->target check was doing before), then handle the
-> > merge success/failure case explicitly.
-> >
-> > While here, update vma_expand() to jump to the nomem case when
-> > dup_anon_vma() fails, so vmg->state is correctly updated.
-> >
-> > This doesn't impact anything in practice, but is the correct course and
-> > since it's part of the error path that this patch addresses, it makes sense
-> > to update it also.
-> >
-> > Users are very unlikely to have observed the issue this patch addresses in
-> > practice, as it is near-impossible to fail an allocation for an anon_vma,
-> > but a process under memory pressure that receives a fatal signal could
-> > trigger it.
-> >
-> > This issue was originally reported by Li Jinyue for which I am grateful. He
-> > indicated this was uncovered by a private syzkaller instance.
-> >
-> > Fixes: cacded5e42b9 ("mm: avoid using vma_merge() for new VMAs")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Li Jinyue <jinyue.li@linux.alibaba.com>
-> > Closes: https://lore.kernel.org/all/20261025093921.1011927-1-jinyue.li@linux.alibaba.com/
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  mm/vma.c | 28 ++++++++++++++++++----------
-> >  1 file changed, 18 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index af8e65ada23b..d416ba58eb4c 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -1141,6 +1141,7 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
-> >  	struct vm_area_struct *next = vmg->next;
-> >  	unsigned long end = vmg->end;
-> >  	bool can_merge_left, can_merge_right;
-> > +	bool move_iter_back = false;
->
-> The name move_iter_back is a bit confusing because you use it to move it
-> to the next entry.  I get what you mean, move it back to where it was, not
-> go to prev, but the name is a bit off when used to go to the next entry.
->
-> reposition_iter, maybe?
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 222b7fc2c3aa..d1582d4788ff 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -5177,6 +5177,7 @@ M:	JP Kobryn <jp.kobryn@linux.dev>
+>  M:	Shakeel Butt <shakeel.butt@linux.dev>
+>  L:	bpf@vger.kernel.org
+>  L:	linux-mm@kvack.org
+> +C:	irc://irc.oftc.net/mm
+>  S:	Maintained
+>  F:	mm/bpf_memcontrol.c
+> =20
+> @@ -5918,6 +5919,7 @@ CACHESTAT: PAGE CACHE STATS FOR A FILE
+>  M:	Nhat Pham <nphamcs@gmail.com>
+>  M:	Johannes Weiner <hannes@cmpxchg.org>
+>  L:	linux-mm@kvack.org
+> +C:	irc://irc.oftc.net/mm
+>  S:	Maintained
+>  F:	tools/testing/selftests/cachestat/test_cachestat.c
+> =20
+> @@ -6868,6 +6870,7 @@ M:	Shakeel Butt <shakeel.butt@linux.dev>
+>  R:	Muchun Song <muchun.song@linux.dev>
+>  L:	cgroups@vger.kernel.org
+>  L:	linux-mm@kvack.org
+> +C:	irc://irc.oftc.net/mm
+>  S:	Maintained
+>  F:	Documentation/admin-guide/cgroup-v1/memory.rst
+>  F:	include/linux/memcontrol.h
+> @@ -12212,6 +12215,7 @@ HMM - Heterogeneous Memory Management
+>  M:	Jason Gunthorpe <jgg@nvidia.com>
+>  M:	Leon Romanovsky <leonro@nvidia.com>
+>  L:	linux-mm@kvack.org
+> +C:	irc://irc.oftc.net/mm
+>  S:	Maintained
+>  F:	Documentation/mm/hmm.rst
+>  F:	include/linux/hmm*
+> @@ -12377,6 +12381,7 @@ M:	Muchun Song <muchun.song@linux.dev>
+>  M:	Oscar Salvador <osalvador@suse.de>
+>  R:	David Hildenbrand <david@kernel.org>
+>  L:	linux-mm@kvack.org
+> +C:	irc://irc.oftc.net/mm
+>  S:	Maintained
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-hugepages
+>  F:	Documentation/admin-guide/cgroup-v1/hugetlb.rst
+> @@ -12410,6 +12415,7 @@ HWPOISON MEMORY FAILURE HANDLING
+>  M:	Miaohe Lin <linmiaohe@huawei.com>
+>  R:	Naoya Horiguchi <nao.horiguchi@gmail.com>
+>  L:	linux-mm@kvack.org
+> +C:	irc://irc.oftc.net/mm
+>  S:	Maintained
+>  F:	Documentation/ABI/testing/sysfs-memory-page-offline
+>  F:	include/linux/memory-failure.h
+> @@ -14792,6 +14798,7 @@ M:	Pratyush Yadav <pratyush@kernel.org>
+>  R:	Alexander Graf <graf@amazon.com>
+>  L:	kexec@lists.infradead.org
+>  L:	linux-mm@kvack.org
+> +C:	irc://irc.oftc.net/mm
+>  S:	Maintained
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.gi=
+t
+>  F:	Documentation/admin-guide/mm/kho.rst
 
-Ahh too late this is merged :P
+Let's not add it to Kexec/KHO/LU; we have the mailing list and the=20
+bi-weekly upstream hypervisor live update meeting as the proper channels=20
+to discuss this work.
 
-I think it's hard to get this quite right.
+--=20
+Pasha
 
-So in the first instance move_iter_back = do a vma_prev() i.e. literally move
-the iterator backwards.
-
-Then, if the iterator was moved back, we want to restore it on error, I hoped
-that the comment would make that clear.
-
-So it's just separating noting that it needs doing (move_iter_back = true) and
-the actual action (vma_prev()) + the restore.
-
-So I think arguably OK as-is? But could obviously also follow up if needed.
-
->
-> >
-> >  	mmap_assert_write_locked(vmg->mm);
-> >  	VM_WARN_ON_VMG(vmg->middle, vmg);
-> > @@ -1182,23 +1183,30 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
-> >  			vmg->end = end;
-> >
-> >  		/* In expand-only case we are already positioned at prev. */
-> > -		if (!vmg->just_expand) {
-> > -			/* Equivalent to going to the previous range. */
-> > -			vma_prev(vmg->vmi);
-> > -		}
-> > +		if (!vmg->just_expand)
-> > +			move_iter_back = true;
-> >  	}
-> >
-> > +	if (!can_merge_left && !can_merge_right)
-> > +		return NULL;
-> > +
-> > +	if (move_iter_back)
-> > +		vma_prev(vmg->vmi);
-> > +
-> >  	/*
-> >  	 * Now try to expand adjacent VMA(s). This takes care of removing the
-> >  	 * following VMA if we have VMAs on both sides.
-> >  	 */
-> > -	if (vmg->target && !vma_expand(vmg)) {
-> > -		khugepaged_enter_vma(vmg->target, vmg->vm_flags);
-> > -		vmg->state = VMA_MERGE_SUCCESS;
-> > -		return vmg->target;
-> > +	if (vma_expand(vmg)) {
-> > +		/* Error occurred, restore iterator. */
-> > +		if (move_iter_back)
-> > +			vma_iter_next_range(vmg->vmi);
-> > +		return NULL;
-> >  	}
-> >
-> > -	return NULL;
-> > +	khugepaged_enter_vma(vmg->target, vmg->vm_flags);
-> > +	vmg->state = VMA_MERGE_SUCCESS;
-> > +	return vmg->target;
-> >  }
-> >
-> >  /*
-> > @@ -1288,7 +1296,7 @@ int vma_expand(struct vma_merge_struct *vmg)
-> >  	if (!ret && vmg->copied_from)
-> >  		ret = dup_anon_vma(target, vmg->copied_from, &anon_dup);
-> >  	if (ret)
-> > -		return ret;
-> > +		goto nomem;
-> >
-> >  	if (remove_next) {
-> >  		vma_start_write(next);
-> >
-> > ---
-> > base-commit: 1eb36316305767b54fac2cd40b88b3499791bdf2
-> > change-id: 20261027-fix-new-merge-bug-71c2200d40fb
-> >
-> > Cheers,
-> > --
-> > Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >
-
---
-Cheers, Lorenzo
 
