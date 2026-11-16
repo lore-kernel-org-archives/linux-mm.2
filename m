@@ -1,117 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E55606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 04:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAF7606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 04:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P/1x+Z8S
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=sqBi3acz
 Received: by kanga.kvack.org (Postfix)
-	id A2A2F6B05B3; Sun, 15 Nov 2026 23:26:08 -0500 (EST)
+	id D6C636B00EF; Sun, 15 Nov 2026 23:33:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DA5D6B05B4; Sun, 15 Nov 2026 23:26:08 -0500 (EST)
+	id D1D936B05B0; Sun, 15 Nov 2026 23:33:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CA396B05B6; Sun, 15 Nov 2026 23:26:08 -0500 (EST)
+	id C0E7F6B05B1; Sun, 15 Nov 2026 23:33:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E2766B05B3
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 23:26:08 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BEE0F140857
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:26:07 +0000 (UTC)
-X-FDA: 85439694774.21.CB1070F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1B2F8100003
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:26:05 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/1x+Z8S";
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A9A36B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 23:33:33 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 019081605D9
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:33:32 +0000 (UTC)
+X-FDA: 85439713506.01.3FEE0E7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2C29620002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:33:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sqBi3acz;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794803611;
+	b=FuoTlHygey+OEeFRJxHviBgxa5uttPlmJKh74vV0DGVybYbXo4kNKHu3N4Z2rLAmIePrb6
+	JRxEHD9up6Q8sfj5Zp2LvmkAYYfbqt/gpxdtwSdnpLWMipgsQBc7pW/6PrD2BdV4xDCgap
+	1LW+gTSsgxC3uvoNOGwqysQlyM7FNpA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sqBi3acz;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794803166;
+	s=arc-20220608; t=1794803611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/LkyRBu/5B33gc+px/Ls1cEcSKMTU4Ac1+7qctKCFxg=;
-	b=wnKRORS9RvNDGaPFVE7He8QDjeFRyMMx197YEke4CRCsYZtrArQTXBoVx9dkMzjg0z6MhZ
-	c0V97VtWJs0mA9mjCd+wCufnaDxk2Y9zRdC+WljI+DQ/in+4RkLWi/ulHzMYKRyPP+NiSb
-	9x9uiJqXlg14NmNDNNyYKQByv0CIIiQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794803166;
-	b=RDh70BXpupwhBAGMWkONYCeMPXF8qsL5mtBcHLlpvL2GFMno11S4DgXJOqt8HCZoG9JVpy
-	UA6TcJF7w7G0Swxu2bE+2pQkvpEyJG1QsDHHSC5XL1b/w7/L6CtJpF5eNLCw8miuaos/gn
-	Xa5y9AJsjBA8FweXowMNDioddk148ME=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/1x+Z8S";
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Z3LalrofPDIIeLTWNYB/CEjeg90a8F55VBmkKs/2tdA=;
+	b=pS8lm+3RO0B56sRP7iReZxzQllsrCr2bs7oTeRBQatk2pRgdUykEKb3ev65Q+Ia2AYa5g1
+	opL9skxu80l0BR6p0J0skkXkE6sI79Te9tR0FjeygoqpNKQmUI8lz+MqamMH6lXtRBKS5K
+	HQz7Nmr5LqDIc3CQZC6D3cYO5bFCuuI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A7C160D58;
-	Mon, 16 Nov 2026 04:26:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E431F000C4;
-	Mon, 16 Nov 2026 04:26:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794803165;
-	bh=/LkyRBu/5B33gc+px/Ls1cEcSKMTU4Ac1+7qctKCFxg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P/1x+Z8SBTzvYebmgDsdMGRRD7fx6+3XftHMitJYDWsBlYqWfRxM6cF8I3PnAoj4c
-	 nQEnQWNkCipsScimqgjX9baO6PjZqnM4GCGFYkizDvtrUThXVPXVOpayXLqDW4MEI8
-	 /7fC142hGrzkcvcuw59vsOkSHj1mMhmrspDmvmD3xIv2LT7JgXq5B2G4TzK+N5nCFA
-	 JTQbkgTArK9TRwD14Uc7sIbnBpUT0tv7/jTEBStmjPhoAjURAQV5IzvcHM61R2CGvo
-	 KwAq9P8suIO1Yxk/Cfe5C7fSdSOV0U9vM3+N5C6S1OsRYL5CjJWCzh4x+Ow49LwDkI
-	 PZ+1ccBQEu20w==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: ryncsn@gmail.com
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	hannes@cmpxchg.org,
-	hui.zhu@linux.dev,
-	kunwu.chan@gmail.com,
-	liam@infradead.org,
-	lianux.mm@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	liuxiang.277@bytedance.com,
-	lyugaofei@xiaomi.com,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	qi.zheng@linux.dev,
-	ridong.chen@linux.dev,
-	rppt@kernel.org,
-	shakeel.butt@linux.dev,
-	sidchintamaneni@gmail.com,
-	surenb@google.com,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhangbo56@xiaomi.com,
-	zhuhui@kylinos.cn
-Subject: Re: [PATCH v9 10/16] mm/mglru: Run aging when pages are rare outside the youngest gen
-Date: Mon, 16 Nov 2026 12:25:56 +0800
-Message-Id: <20261116042556.42111-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <CAMgjq7C_cH75JrYs8=P5LbxnDjDD6bqeqsCidOPa=r8Z+42sCQ@mail.gmail.com>
-References: <CAMgjq7C_cH75JrYs8=P5LbxnDjDD6bqeqsCidOPa=r8Z+42sCQ@mail.gmail.com>
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C35E408D6;
+	Mon, 16 Nov 2026 04:33:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2781F000C4;
+	Mon, 16 Nov 2026 04:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794803609;
+	bh=Z3LalrofPDIIeLTWNYB/CEjeg90a8F55VBmkKs/2tdA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=sqBi3aczOohYNZ2MSlWIKayDu5xpw0W3F7wwOlDpL2OK0VT5465nvxRWt3IMBF9Pw
+	 7j+GMTaBKKub8rE8LhwYRwuwrJ8BlH7UbNjNgkzn8D1MNRpGAjV93+RHJ69Na3BK+1
+	 89PJisfvxODwTNxETHKr/w/nSp/ksk9oTaVyf6EQ=
+Date: Sun, 15 Nov 2026 20:33:28 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Qiliang Yuan <odys.yuan@gmail.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara
+ <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/readahead: look two windows ahead for the hole on a
+ marker hit
+Message-Id: <20261115203328.f98ce9a068849c2f2fb32a41@linux-foundation.org>
+In-Reply-To: <20261022-bug-mm-readahead-async-overtaken-v1-1-c05b8d8bd2da@gmail.com>
+References: <20261022-bug-mm-readahead-async-overtaken-v1-1-c05b8d8bd2da@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7zue6kho1jizg7p7skdgzzb9g7ab7m5p
-X-Rspamd-Queue-Id: 1B2F8100003
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: odpzwbx8u6ckq9eurd5ja5qw47y596hx
+X-Rspamd-Queue-Id: 2C29620002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794803165-68321
-X-HE-Meta: U2FsdGVkX1/5TEWTrGAox/u/yszPd/sQ36mZW0Txl4p+GJrp0olLf/OIor4pt2zPY2s0n4iS6C557NtR0YaXDK05pVha9Yvll9eymkqXrO8VBYItsfJFMSaS7LdqB+eeDTUh/NpWVHt0juynUyfH6SrMBmb5jlM6oX+oj4nGsgdk3oay/vM9A8srjbvhBMmgcyxPBbQByZzHwgoeMqLqy4dq/dK1bwx8MqIz0RXue0/uvzC8qjRz/j/5gRSPIHJhbvUpt1vyXI0dIvRJU3r9DBYg5ROQKr8TjjPtqzxZ65sM40h/TObysoRJqqOOVDTj+eQl/PwzayFsBN3V7LhB5MyT/APJ/EpsPwUl1PjDZL5LiyerpiRNwcFjqoq52mR8MPTCiH4FfaPpVqI/t/hEdMILPIfRS836KGOvAnGRXsBcCc6Yc8Tdc3w0V2257A8OQnHwLw7qupOwA4E4Ieqpj8xe4oN95mGn2d/A2dBX+7rKrt5QZjlSUS3YQl6mICRuyWUPz7EiNXBI+3zo8OfVKXHwFx2ccudvoROiLFTYhNYU1AkWu000yWB5Xvwrnx3sRmfJ7MhyQ/2r6XVxf2Qv5BNnRV+XDv1AL5YB26VlkIkwt0eJYNQu5vRtTpR+h0t9QkK1Owkt821SU1h0ZN+nSvIL2qYF5v9fIOEcqdY2QefX52KzpvH3BowO0CY3ZZxVBrsmGkL00/H7TWvJb5Jj4huF+7AD+Pw1w4p9QAu3xTkABjNBZdM/xlrfPHAlJMpVgWAsDxEFn+GrH9UrU/lHguHUHWbJDqHNl5WPOnfT17BGlU05WmQ68PnFEaefO3X71onC/hy5ucJykf86DTA+nFLtnYwklYnU2IAP3rKIo04R0VjwxwKfCXGn7406SpJCoZpyYez4iu/kcvN/rzCr+qBJcQeJOjsYCIbrCJnngA9U8pbpDOwlYVfo0vsYdDmO2X+8c3bfygMN4CzNlb3
- tkopydix
- K/+Rhz1+27RrvXiHBZz9159mlHb4t1L7juhY2MaehJydwhKJQ7xMXryQPQo8hCXysEMTnB6gFg3hrA4Zfqfhf3neuVytm4zEYEAhUmOW4OEHPcPSKlYmNvTiBYHZ7AbeJ2AmbM+MXgdDDiOd51IB96kkH1GBEXVMsBQK3m32ljAewtvzetA5MZdYdjTFfFBZIhR2BNxxQTU59n4YqObw+3VN2UDV3ZZGD0yX78s+f5QpWmwMzNEdYyF6YFQUoAfgEJnbuaEEnn3RmhdeORf/wJL5DOkEmlMhsr40lJReOyMPUPypoZnlI2FG6+NFdXwR9Udrg00zO05C5fyASGJv/pz9Li09kJQgfKIJe5Q8727ePssC+a6izgYFqoaqqB5gX84Xj4Pi0vlLWZHs=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794803611-114558
+X-HE-Meta: U2FsdGVkX1+0PoFvcEJ6jJrwVSAkVK0psHiPbRHmJCZkC9T9DQP0jGcszxz76reSmNPQH8p92WRVrjzJeeU/5f3/OSxAgC/tuvtw8vewHX9wkvmtkAYcmxL1H2wZJH75X5aGDMy8JfFIyBP+qiaSB+D3GfOImNEreIgU/GtuU953hIvryNmTxUPookaX/QQF5sx3KfNMQHAnKtVQVvBENh6S3b/tGWmLh/IsYugB/7tMrw7QIIj80PyPKCME048r/RjOs9RtB2bzionwUNLldz5+YpGjqwdFbe49zoKH2wosnKX5AANVu8h/BL+DZbTMHvegTqurZNli3Veze/jI5QEJa23ISANYSGfrES8Vh6ZPNz2B0EbG/Tx1Pt3DnAWc56168LNbfk+ej7JtxWywIblM8LxC1l6Nq1qLQglJpowvc4jxVxQ/cl6gBLBwLtyb0BPg/fUQMjKRnXdCJcpJwzKKK8Xc7E0W+0oogCRRULxbug9Smbcid0dk8KME5RlSGxvGld4inTrvACkOQMAoMx4vGmR4wfgo+fp6Jwj/gmdrmGp6tqprCAjceb589fbHi8bT1uVsHbxXK7Xtu1ju8+QvC9AN0q0aoC3LCMFhHDqly+YFAJP9YLid/lZ2FLfI9721v2Ao/CDT2dGySMLGHPsagLw5gTuwqfe2+J9FG53YIbaLjFL+qaxTZlg8u4l/V8pw0cSLc0vsdsRZdS2VruMgbLMW3B5eIibFJvBZYsCWfnC5QRlCTIeKyHfxVcLQjjbAD7oqx0pUHUprMBKv0h4Go42AqjCwVTlR/VzfnCl0z/zFiFKDt8tjSq/PmV3PqyZbT0vYSvbiLWFnefQR1t+umkqldabbRE4jTx/GEBbPHXhY4dbguGmaWUWrIubDhYePD9Wzj0NFO9DqZuYg52w6+PhZLeCZA8F/lsLV7Iurzf3JMi1WOnjeaGwWXzk5H+QbgpJKhliG2UuxY/Q
+ TgWyUSDP
+ 9HEyKyBmhJzNf4gr/vDMpFKGfpzb3Gy6++Agm+Antx7Vax6Tv12OWYT+Qq0E5h/nkFP6q34gt0yQebDWi3zQ312Y8XCEaesJKse/0fqhooEkhnDYmaOeygC4gxrc8fXRvjGFDtBTxCuPijPpzAbptTMBkNGWtitRtS4UBZjDRi8x96T3R6hj3YKOB/PXaesknvbj+uCpPY6Vq3t01LTFWbDsttxABPHHxEEUk2KEsE9idnKpIC+cwHTuFVtMs7EUDOcqbPZ3aMMMG3fYeqwksiG8/6Ok3IPB8xnO0D4qfz812tC/nVlv1utpMIWs0Gdy9VDXDHHwstP5DWf2EQyXAucBvkjMasTgXUR+HRmps3X+ID5AEdB2bgk03y3o9EmUWDKr8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,77 +95,103 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 15, 2026 at 11:55 PM Kairui Song <ryncsn@gmail.com> wrote:
-[...]
->
-> A little nit: with the rounding above, I think we don't need youngest
-> / old as an array, just an accumulative value seems enough now? But
-> feel free to ignore this so we can avoid more update noise in this
-> series.
+On Thu, 22 Oct 2026 23:24:33 +0800 Qiliang Yuan <odys.yuan@gmail.com> wrote:
 
-Makes sense to me!
+> When a reader hits a folio marked for readahead that the readahead
+> state does not expect, page_cache_async_ra() starts the next readahead
+> at the first hole within one window after the folio. If that window is
+> fully cached, it reads nothing.
+> 
+> memcpy() in glibc loads the end of a large source before copying it
+> forward, so a loader that copies a file mapping out in pieces of a few
+> megabytes faults at the end of each piece first. mmap read-around then
+> reads a window centered on that fault, which reaches more than one
+> window past the readahead marker the copy has yet to hit. When the copy
+> reaches the marker, there is no hole within a window, no readahead is
+> issued, and the next piece faults on its end again. Every piece then
+> gets a synchronous read-around of order-0 folios, and threads copying
+> parts of one file also contend on the i_pages lock to insert them. A
+> copy from offset 0 avoids this as its first read-around is clamped to
+> the start of the file.
+> 
+> Look up to two windows ahead for the hole, which reaches past such a
+> read-around, so the reader keeps an asynchronous window and its folio
+> order keeps ramping up.
+> 
+> Copying a 16 GiB file out of a private mapping with memcpy() in 8 MiB
+> pieces, read_ahead_kb 8192, cold page cache, 32 vCPU VM, mean of two
+> runs:
+> 
+>                                   before    after
+>   1 thread from offset 2 GiB     7.62 s    2.00 s
+>   8 threads, one range each      3.26 s    1.08 s
+>   32 threads, one range each     4.05 s    1.34 s
+> 
+> Random touches read the same amount, and pread() copies and copies that
+> interleave 7 MiB chunks across threads take the same time within
+> run-to-run noise.
 
-I guess Andrew could help squash the cleanup below into the patch?
+OK, thanks, nice numbers but there are complications.
 
-From 972664cf8d40449899b54ee3c7abe6d1a9f72271 Mon Sep 17 00:00:00 2001
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Date: Mon, 16 Nov 2026 11:48:44 +0800
-Subject: [PATCH] 
- cleanup-mm-mglru-Run-aging-when-pages-are-rare-outside-the-youngest-gen
+Readahead is all about contiguously batching physical IO.  So it
+matters whether the device is SSD, NVME, spinning FeO2, SATA, IDE, etc.
 
-As suggested by Kairui[1], we don't need youngest and old as
-array. just an accumulative value should be enough.
+And you have QEMU in the way, so reads can get served from host
+pagecache (depends on QEMU setup), which also matters.
 
-No functional change.
+So I just don't know what to conclude from your numbers.  I *suspect*
+the gains are from reduced CPU & memory-access times which is of course
+good.  But was there any actual physical device access involved?  This
+would probably make the before-and-after numbers even more impressive!
 
-[1] https://lore.kernel.org/linux-mm/CAMgjq7C_cH75JrYs8=P5LbxnDjDD6bqeqsCidOPa=r8Z+42sCQ@mail.gmail.com/
 
-Suggested-by: Kairui Song <ryncsn@gmail.com>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- mm/vmscan.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+I tested the patch on my LLM-driven test setup, which is similar to
+yours.  The results are...  ambivalent.  The things which you want
+faster are indeed faster, but other things slowed down (wall of words
+appended).
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 7acc9acad985..b97dc3103b25 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5086,8 +5086,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- static bool lru_gen_imbalanced(struct lruvec *lruvec, struct scan_control *sc,
- 		int swappiness)
- {
--	unsigned long youngest[ANON_AND_FILE] = {0}, old[ANON_AND_FILE] = {0};
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+	unsigned long youngest = 0, old = 0;
- 	DEFINE_MAX_SEQ(lruvec);
- 	DEFINE_MIN_SEQ(lruvec);
- 	int type;
-@@ -5107,14 +5107,13 @@ static bool lru_gen_imbalanced(struct lruvec *lruvec, struct scan_control *sc,
- 	for_each_evictable_type(type, swappiness) {
- 		unsigned long seq;
- 
--		youngest[type] = lruvec_gen_size(lrugen, type, max_seq, sc->reclaim_idx + 1);
-+		youngest += lruvec_gen_size(lrugen, type, max_seq, sc->reclaim_idx + 1);
- 		for (seq = min_seq[type]; seq < max_seq; seq++)
--			old[type] += lruvec_gen_size(lrugen, type, seq, sc->reclaim_idx + 1);
-+			old += lruvec_gen_size(lrugen, type, seq, sc->reclaim_idx + 1);
- 	}
- 
- 	/* the vast majority of pages sit in the youngest gen */
--	return youngest[LRU_GEN_ANON] + youngest[LRU_GEN_FILE] >
--	       (old[LRU_GEN_ANON] + old[LRU_GEN_FILE]) * MAX_NR_GENS;
-+	return youngest > old * MAX_NR_GENS;
- }
- 
- static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
--- 
-2.39.3 (Apple Git-146)
+The slowdowns happened because the present code misses the gap beyond
+mmap read-around, so each 8 MiB memcpy hunk can need another
+synchronous read.  The post-patch code finds that gap and keeps
+readahead going.  I measured both costs: a full second window added
+about 8 us to the access, while a gap there caused 512 MiB of unused
+reads across 64 accesses.
 
-> > +       return youngest[LRU_GEN_ANON] + youngest[LRU_GEN_FILE] >
-> > +              (old[LRU_GEN_ANON] + old[LRU_GEN_FILE]) * MAX_NR_GENS;
 
->
-> Reviewed-by: Kairui Song <kasong@tencent.com>
+: I tested the patch against the unpatched kernel with matching
+: configurations. Both booted a 32-vCPU, two-node, 24 GiB VM. The test
+: used a fully written 16 GiB ext4 file on the same raw scratch disk,
+: with guest read_ahead_kb set to 8192.
+: 
+: I ran the author's private-mmap test, copying the file with memcpy()
+: in 8 MiB pieces. Before each timed run, the previous process had
+: exited, I dropped the guest file cache, and mincore() confirmed that
+: none of the tested file pages were resident. Medians of three runs:
+: 
+:                          unpatched    patched
+:   1 reader, from 2 GiB      6.87 s      2.12 s
+:   8 readers                 2.18 s      0.70 s
+:   32 readers                1.98 s      0.76 s
+: 
+: Every paired run improved. Buffered pread() and 7 MiB interleaved
+: copies changed little. A shuffled mmap copy was about 1.3 times
+: faster with the patch in two paired runs.
+: 
+: I also tested the cost of looking farther ahead. The kernel marks a
+: cached page so that accessing it can start the next readahead. I
+: timed the test process accessing that page at 64 separate locations.
+: When both upcoming 8 MiB windows were already cached, the median
+: access time rose from 20 to 28 microseconds. When the first window
+: was cached and the second was empty, the patch read about 512 MiB
+: across those locations that the test deliberately never used. The
+: median access time rose from 17 to 470 microseconds.
+: 
+: A memory-limited run had more memory-limit events with the patch,
+: but did not establish a repeatable slowdown for a competing reader.
+: 
+: The guest file cache was cold, but QEMU's host cache was warm; host
+: NVMe read sectors did not increase during the main runs. These
+: measurements show the effect on guest readahead, not cold-drive
+: throughput.
 
-Thanks!
 
