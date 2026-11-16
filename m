@@ -1,74 +1,52 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FDCB606A792
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0326071033
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k7kWHuk0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QNisDWf7
 Received: by kanga.kvack.org (Postfix)
-	id E51E66B060C; Mon, 16 Nov 2026 06:10:27 -0500 (EST)
+	id 502B56B060D; Mon, 16 Nov 2026 06:10:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDB4C6B060D; Mon, 16 Nov 2026 06:10:27 -0500 (EST)
+	id 48CB56B060E; Mon, 16 Nov 2026 06:10:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA39E6B060E; Mon, 16 Nov 2026 06:10:27 -0500 (EST)
+	id 307CD6B060F; Mon, 16 Nov 2026 06:10:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 940D66B060C
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:10:27 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01B2480519
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:27 +0000 (UTC)
-X-FDA: 85440713694.04.97F818A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4D4C41C0004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k7kWHuk0;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827425;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ONDS26Fc5ZAikzBy5Yq3BJDGMgD90Mtcybw+v7fvrMI=;
-	b=0uWAYFN9vNqZWPxz7MDjTvD+ynYtLr0OKNsX7GP1RXA8tEJsmeOSziKccpYceT9M0Irq6k
-	aYrY04PIsZ11JlP+gP609c6IRLlCz2mmwueG53hUYOu/o1QenARFKzbSL315kuGNVoXVlu
-	q73bKi0Vm1R913YPbtDdqQDrljIB9M4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827425;
-	b=tQXS9v2a7/jp0YQTNYpKV+KOq4akUwLi72G64spwcurqW3jcATlrZyn0m1PnefyBZQX2T0
-	i5gBImb/VHi/eJRlE3qh5tcuVX365P8DJ4JW0HPy+RmANQMvejC7fR92Ah3AJYpeQt0PJ/
-	4fAxplRU7aywu5LL5+ZQ/PKL3FuXb5g=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k7kWHuk0;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F11826B060D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:10:28 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55DBB1C4309
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:28 +0000 (UTC)
+X-FDA: 85440713736.28.3CC887A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8CCE340007
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EDCA662932;
-	Mon, 16 Nov 2026 11:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F061F000C8;
-	Mon, 16 Nov 2026 11:10:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D9EBF46197;
+	Mon, 16 Nov 2026 11:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6C51F000C6;
+	Mon, 16 Nov 2026 11:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794827424;
-	bh=ONDS26Fc5ZAikzBy5Yq3BJDGMgD90Mtcybw+v7fvrMI=;
+	s=k20260515; t=1794827417;
+	bh=AMxV5fDFlTE8OAKC1riUjdbxNUfnGfJUWLINJ0DSOYU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=k7kWHuk0vT1TU02u6FNnXUqb9m9PljW9HH7vb2QE/IgCRzadel7KvX8DtuilQwcGt
-	 yc9BN5YAt3E2rq3hJ2IuK/1cnO5yBFpB5J/a/QYkEw3HWAJaGxBQ3b/nLndLrnjkQR
-	 wes6PZ3bkDfTEdq0NHQdQhz/wfkgAEpiH8rIRcqvSHf+NIKem69czEwilAoCTqubWF
-	 PdUa+rVjClCKEIl1BiVeB828bGW19Y3XLEM17DUuRIHtySa9jtiOqM3qJ4EAKDirz5
-	 iYtgDTA48smqXWey1P5lvRxDKDFzobQ8FHnt/JwTp8R6w2fQIj02S3gzllm9EW4Ekp
-	 5f5LtDGqnCZcA==
+	b=QNisDWf7U3h663SyoRV0uxWbOVyLtGNDCxOalmGb2Oy1P+x3yPzMj9NJ8VjnhaIgT
+	 qFDnHLurOuTPsUtv0TnbCEh8CcE8J2YoDDqRxBvPi3b+0t34sV2ZdQ8WcBJFQAzW01
+	 dZV/hUpqsrYSFkjkxKEMYRXKXDlMGRSVBAFcDSt0ZpAWonzunAmi6+H0IT7dCmHDOv
+	 Q2tBNYIqTL3Wj8Lpy3eAb86aT5io7YVR2DHh83QvVZ1oViOXs+zhpN9+3TBnhkmBpP
+	 P5uSY+0IieOD78GEeEis0B8qJFz0aqRqI7v0WUd9WPnDMgp4QpBzej9YDHKTMsq6SM
+	 NnKmRaKURUOpw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 16 Nov 2026 12:05:08 +0100
-Subject: [PATCH RFC v3 35/44] fs: add file_check_backing()
+Date: Mon, 16 Nov 2026 12:05:07 +0100
+Subject: [PATCH RFC v3 34/44] selftests/ovl: test data-only layers on
+ pseudo filesystems
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-work-loop-pseudo-v3-35-8cbbea1cf34f@kernel.org>
+Message-Id: <20261116-work-loop-pseudo-v3-34-8cbbea1cf34f@kernel.org>
 References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
 In-Reply-To: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -89,26 +67,24 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
  linux-kselftest@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5551; i=brauner@kernel.org;
- h=from:subject:message-id; bh=QP5rfW7L1Yos2/x0K40PE01xt91j5V7LTt4ZJzVPG/Y=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9etyuku+3S1tIM0eP1+SXfJZdp4pxm7nDn1Pqm/xOX
- PLuUTzeUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMBHD0wz/U31s969ybu+0msX7
- oVX5sFVRMLeRt+oa/QeKnJn+lys2MjKs83kTq/XL/fD051nzGfV2/y9wtJwrv2brTYVXVdu8F+Y
- xAQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5266; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=RU/dYDB+jdMMzNMeo0U5oo6JSftdyfWqQOmLqwIlGOg=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9etzGd2ObhO1hy2rNxbOC9s22uNMhOfPpjadPOhLub
+ jlkHKla0VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRCYKMDFM/BeYEvN8w4/c0
+ 41kSN3JS3x/VP/Wr6sTU13ffvhGcvfchI8P17p+CIg2c/FPY556OFjotvWWz6DTee+d3yU1wCJc
+ /mcsEAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam06
-X-Stat-Signature: t47cuojfznf6orq1uhaxzbixe9hqfyew
+X-Rspamd-Queue-Id: 8CCE340007
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 5bb51xi47wk7bhyba4jpmeuhu6ntjnjg
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 4D4C41C0004
-X-Rspam-User: 
-X-HE-Tag: 1794827425-313211
-X-HE-Meta: U2FsdGVkX18+JqDhijHVFlGNi6zJCUirXTj7TXhCYvFZBWFK7nyGrbDCw8EbqzPPAkHwW6BqnxGG/mLXqSFVKZ+DmxGT6jDskfWgCLp5kG0g8j7bAPDVxw3K2DkC7lzraLvQ5iDyJo2gqWF84v6Vlb2efEEvk0wVxdtH81dSlDHVs2Tnm3MGksAwRcf9V1AzNmyEk74nItwKCqiYaFO0mAutDx7rRcMlroqcJ3EAAp/s3oEKo8+2fbE72rDXREBKCgilvH1TqhpXCbv7FHnKqtTuE6sVW1JEZAv765rjtojw+q1cGeWaJEEO58nqqykypbWpXRkfxhk8tIfrRbV83U0LoKFVqjbvRB0CLqRPyq7eQV6n1WILQs6826yyhlL1tyAm+gLiXPsldLAC676uAIAL2Jfk1bHTr2qSQlel7sJcwqVfR7nZRIYLk22KqchmzYrnrYGDc7RkRRGrbj2F89iqv1UhWM95K+Os6rdJ/zOVOGvMmUtCE7iCDYj7kZuGv2EoNgFLM2iVZQWy6qkupS8zzPJwlVLQDgDQE9NNjdzeXArYcRuDqA/af4GIJShCkWx4rWxS52+lgDGqqbeNf8HzehkgOTJXzHwtenJIpiQ/qlQ/XRQKMD/13dKwHOUuPklvGFUsLN4bjPqpNCKcxYj1zsF/cIhsWa4oPY6gRWijzlUyDrRgglxQ2O1dX/fWLD1ZnH8by/qQ5FDC4h7Q1mP4Pj065DbL2XXUklp/02BskQ0AahMbQFaCdlwQTUxTNgr6BH07QzJyWwESzO/whAmUSVv/F417Pz1np08a3Uf0j9afKBf1dDq//7mpSzk3j3CzIZKQ7aaAp2vm1MBJF0UDWiSkeUxsVr6ADwY+pnWEGzaV4jGdyCTtkUiC4DDY25OmCU1TG82XCygUtiUBqkx8hKod/q8YVmWPf+tEgoV7JYttUwGvmqNhmiOXAvltQutQz+ZzFIx5bJC5cZ4
- 4T4xQyW+
- 0TdGckfiKb/+x18MPVeIATk52NRNGWsskllVgQkBw+tJcjpQQBKQDKPnLoU4vxrbZEBBgCwlOGJdTEv40Ypjv3d0inRGjkTY8N0as+9JpPMHPQQyBSSG4uExcZ2aqA3uvx9aHItM0ZlZNda86YotGRIU9CkSDhWaD+6qKqTHoalZnMeNnGHiP8Z8px9aWEKhYgl7NNSpAqRQlAqQjhHKwbmYPl4SKlmdWILv1kzGYIzwGlIiJSom0GoswCkYShh2Hq3oekL70PmBQx4GKoqhM/2fD5OH7W0SfwDhtfqiyQ9AxX4k=
+X-HE-Tag: 1794827418-234177
+X-HE-Meta: U2FsdGVkX1/boNxY65x12mDPI77hdzvIez10/Z+msRl/3m55yGHdWNIgZdotRm+glWa0X80Zh+dM4GXP72gx8oakTr6QlZ/mG0n9xNiy4UuoY5QsxiLAl+zdQxciSsnbQylNZnH+pdA6A2xiHvVmWS7sU3aIIQ+BlNIZv98k6FLMdBM6R1Wcg+bxGdeQJNMb6L0NRXxIaceUO0VvIBscZqJVj+9WcxPHiiMceD+0pgvaknGbBAw3u512Qf+0x2PuXJ10BAebI+BZqFkv6W/3p7RhgZK99wR61ur0Ck0b80MeF17uYArSH/FQNzgsHbDzE19dlkjV16L3CxpNiaR3K4svfnxj6Ao+NWPySQdHkv2TN9cfh5tATqWnG+Q1ZJzomiDtbPAWjhMe4GZwRkqEW2ZmmqFf7UD5GDXXbiXvlo8WaeVUajNBReJD14gPNbm9rxPbJmkCRtf9Q6xB30pAOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,136 +93,181 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Loop, zloop, the nvme target, the scsi target, fuse passthrough, the usb
-mass storage gadget, erofs and acct all take a file from userspace and
-use it as storage. Currently, each of them has its own idea of what to
-check before using a file like that:
+Add tests that overlayfs refuses data-only layers on pseudo filesystems:
 
-- loop and the gadget check for a regular file or a block device, the
-  nvme target, the scsi target and zloop take any file type
-- loop checks the open mode, the gadget checks FMODE_CAN_READ, the nvme
-  target, the scsi target and zloop only check for ->read_iter() and
-  ->write_iter()
-- apart from acct which refuses procfs and sysfs files none of them
-  cares whether the file is a kernel interface
+- sysfs and procfs via the "::" separator in "lowerdir="
+- sysfs and procfs via "datadir+" by path
+- sysfs and procfs via "datadir+" by file descriptor
+- tmpfs as data-only layer
+- sysfs as regular lower layer
 
-Add a helper that does all of it in one place. It only accepts regular
-files and, if the caller passes S_IFBLK, block devices. It refuses files
-on pseudo filesystems. And it checks that the file is open for what the
-caller is going to do with it and implements ->read_iter() for reading
-and ->write_iter() for writing.
-
-O_PATH files are refused unless the caller passes FMODE_PATH. That is
-for callers that only need the path of the file. fuse passthrough is
-one of them and has accepted O_PATH file descriptors since commit
-efad7153bf93 ("fuse: allow O_PATH fd for FUSE_DEV_IOC_BACKING_OPEN").
-
-Block devices are fine even though bdevfs is a pseudo filesystem. A
-block device that userspace hands in is a device node on devtmpfs or
-some other filesystem. Files on bdevfs only come from
-bdev_file_open_by_*() and never end up here.
-
-The pseudo filesystem check looks at the inode that actually provides
-the data via d_real_data_inode(). overlayfs accepts sysfs, cgroup2,
-debugfs, tracefs, configfs and securityfs as lower layers and reads of
-such an overlayfs file are served by the file on the pseudo filesystem.
-Checking the overlayfs inode would miss that.
-
-For an O_PATH file nothing might have looked up the data yet. overlayfs
-only looks up the data of a metacopy file in a data-only layer when the
-file is opened. d_real_data_inode() does the lookup then and if that
-fails we return the error.
-
-Note that the file type is taken from the inode of the file and not from
-the host of ->f_mapping like loop and the gadget do it. A driver can
-point ->f_mapping somewhere else in ->open(). It makes no difference for
-block devices as both inodes are block devices.
-
-No functional changes. Nothing calls the helper yet.
+The last two must keep mounting.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/read_write.c    | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/fs.h |  2 ++
- 2 files changed, 55 insertions(+)
+ .../selftests/filesystems/overlayfs/.gitignore     |   1 +
+ .../selftests/filesystems/overlayfs/Makefile       |   1 +
+ .../filesystems/overlayfs/pseudo_datadir.c         | 131 +++++++++++++++++++++
+ 3 files changed, 133 insertions(+)
 
-diff --git a/fs/read_write.c b/fs/read_write.c
-index 6767283108991..9f1e7bfcbd4f1 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -866,6 +866,59 @@ static ssize_t do_loop_readv_writev(struct file *filp, struct iov_iter *iter,
- 	return ret;
- }
+diff --git a/tools/testing/selftests/filesystems/overlayfs/.gitignore b/tools/testing/selftests/filesystems/overlayfs/.gitignore
+index b343cc430051d..e1410fee2269d 100644
+--- a/tools/testing/selftests/filesystems/overlayfs/.gitignore
++++ b/tools/testing/selftests/filesystems/overlayfs/.gitignore
+@@ -3,3 +3,4 @@ dev_in_maps
+ set_layers_via_fds
+ idmapped_mounts
+ automount_in_layer
++pseudo_datadir
+diff --git a/tools/testing/selftests/filesystems/overlayfs/Makefile b/tools/testing/selftests/filesystems/overlayfs/Makefile
+index 382a59bda5e70..ace75f5627e0f 100644
+--- a/tools/testing/selftests/filesystems/overlayfs/Makefile
++++ b/tools/testing/selftests/filesystems/overlayfs/Makefile
+@@ -10,6 +10,7 @@ TEST_GEN_PROGS := dev_in_maps
+ TEST_GEN_PROGS += set_layers_via_fds
+ TEST_GEN_PROGS += idmapped_mounts
+ TEST_GEN_PROGS += automount_in_layer
++TEST_GEN_PROGS += pseudo_datadir
  
-+/**
-+ * file_check_backing - check that the kernel can use a file as storage
-+ * @file: file that userspace handed in
-+ * @mode: FMODE_READ and/or FMODE_WRITE the kernel will do I/O with, or
-+ *        FMODE_PATH if only the path of @file is used
-+ * @type: S_IFBLK if a block device is fine as well, 0 otherwise
-+ *
-+ * Call this where a file from userspace is taken as a backing file. Only
-+ * regular files and, if @type is S_IFBLK, block devices are storage. Files
-+ * on pseudo filesystems are kernel interfaces and are refused. The file
-+ * must be open for @mode and implement ->read_iter() for reading and
-+ * ->write_iter() for writing. O_PATH files are only fine with FMODE_PATH.
-+ *
-+ * Return: 0 on success, -EBADF if @file isn't open for @mode, -EINVAL if it
-+ * can't be used as storage, or the error from looking up the data of @file
-+ * on a stacking filesystem.
-+ */
-+int file_check_backing(const struct file *file, fmode_t mode, umode_t type)
+ include ../../lib.mk
+ 
+diff --git a/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir.c b/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir.c
+new file mode 100644
+index 0000000000000..3b59fd3e9f5c2
+--- /dev/null
++++ b/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir.c
+@@ -0,0 +1,131 @@
++// SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
++
++#include <errno.h>
++#include <fcntl.h>
++#include <sched.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <sys/mount.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#include "kselftest_harness.h"
++#include "../wrappers.h"
++
++static int setup_tmp(void)
 +{
-+	fmode_t io = mode & (FMODE_READ | FMODE_WRITE);
-+	/* Drivers may point ->f_mapping at something else. */
-+	umode_t fmt = file_inode(file)->i_mode & S_IFMT;
-+	struct inode *real_inode;
-+
-+	/* O_PATH files are only fine for callers that just use the path. */
-+	if ((file->f_mode & FMODE_PATH) && !(mode & FMODE_PATH))
-+		return -EBADF;
-+
-+	if ((file->f_mode & io) != io)
-+		return -EBADF;
-+
-+	if (fmt != S_IFREG && !(type == S_IFBLK && fmt == S_IFBLK))
-+		return -EINVAL;
-+
-+	/* Look through stacking filesystems at the inode with the data. */
-+	real_inode = d_real_data_inode(file->f_path.dentry);
-+	if (IS_ERR(real_inode))
-+		return PTR_ERR(real_inode);
-+	if (real_inode->i_sb->s_iflags & SB_I_PSEUDO)
-+		return -EINVAL;
-+
-+	if ((mode & FMODE_READ) &&
-+	    (!(file->f_mode & FMODE_CAN_READ) || !file->f_op->read_iter))
-+		return -EINVAL;
-+
-+	if ((mode & FMODE_WRITE) &&
-+	    (!(file->f_mode & FMODE_CAN_WRITE) || !file->f_op->write_iter))
-+		return -EINVAL;
-+
++	if (unshare(CLONE_NEWNS))
++		return -errno;
++	if (sys_mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL))
++		return -errno;
++	if (sys_mount("tmpfs", "/tmp", "tmpfs", 0, NULL))
++		return -errno;
++	if (mkdir("/tmp/lower", 0755) || mkdir("/tmp/data", 0755) ||
++	    mkdir("/tmp/merged", 0755))
++		return -errno;
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(file_check_backing);
 +
- ssize_t vfs_iocb_iter_read(struct file *file, struct kiocb *iocb,
- 			   struct iov_iter *iter)
- {
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 99caef43ff3c4..b1c7ebafbadbe 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2553,6 +2553,8 @@ static inline const struct inode *file_user_inode(const struct file *f)
- 	return file_inode(f);
- }
- 
-+int file_check_backing(const struct file *file, fmode_t mode, umode_t type);
++/* Mount an overlayfs with the legacy "lowerdir=" option. */
++static int mount_lowerdir(const char *lowerdir)
++{
++	char opts[256];
 +
- static inline struct file *file_clone_open(struct file *file)
- {
- 	return dentry_open(&file->f_path, file->f_flags, file->f_cred);
++	snprintf(opts, sizeof(opts), "lowerdir=%s", lowerdir);
++	if (sys_mount("overlay", "/tmp/merged", "overlay", MS_RDONLY, opts))
++		return -errno;
++	if (umount2("/tmp/merged", 0))
++		return -errno;
++	return 0;
++}
++
++static int set_layer(int fd_context, const char *key, const char *path,
++		     bool by_fd)
++{
++	int fd, ret = 0;
++
++	if (!by_fd) {
++		if (sys_fsconfig(fd_context, FSCONFIG_SET_STRING, key, path, 0))
++			return -errno;
++		return 0;
++	}
++
++	fd = open(path, O_DIRECTORY | O_CLOEXEC);
++	if (fd < 0)
++		return -errno;
++	if (sys_fsconfig(fd_context, FSCONFIG_SET_FD, key, NULL, fd))
++		ret = -errno;
++	close(fd);
++	return ret;
++}
++
++/* Create an overlayfs with "lowerdir+" and "datadir+" through fsconfig. */
++static int fsmount_layers(const char *lower, const char *data, bool by_fd)
++{
++	int fd_context, fd_mnt, ret;
++
++	fd_context = sys_fsopen("overlay", FSOPEN_CLOEXEC);
++	if (fd_context < 0)
++		return -errno;
++
++	ret = set_layer(fd_context, "lowerdir+", lower, by_fd);
++	if (ret)
++		goto out;
++	ret = set_layer(fd_context, "datadir+", data, by_fd);
++	if (ret)
++		goto out;
++
++	if (sys_fsconfig(fd_context, FSCONFIG_CMD_CREATE, NULL, NULL, 0)) {
++		ret = -errno;
++		goto out;
++	}
++
++	fd_mnt = sys_fsmount(fd_context, FSMOUNT_CLOEXEC, 0);
++	if (fd_mnt < 0)
++		ret = -errno;
++	else
++		close(fd_mnt);
++out:
++	close(fd_context);
++	return ret;
++}
++
++TEST(datadir_sysfs)
++{
++	ASSERT_EQ(setup_tmp(), 0);
++
++	EXPECT_EQ(mount_lowerdir("/tmp/lower::/sys/kernel"), -EINVAL);
++	EXPECT_EQ(fsmount_layers("/tmp/lower", "/sys/kernel", false), -EINVAL);
++	EXPECT_EQ(fsmount_layers("/tmp/lower", "/sys/kernel", true), -EINVAL);
++}
++
++TEST(datadir_procfs)
++{
++	ASSERT_EQ(setup_tmp(), 0);
++
++	EXPECT_EQ(mount_lowerdir("/tmp/lower::/proc"), -EINVAL);
++	EXPECT_EQ(fsmount_layers("/tmp/lower", "/proc", false), -EINVAL);
++	EXPECT_EQ(fsmount_layers("/tmp/lower", "/proc", true), -EINVAL);
++}
++
++TEST(datadir_tmpfs)
++{
++	ASSERT_EQ(setup_tmp(), 0);
++
++	EXPECT_EQ(mount_lowerdir("/tmp/lower::/tmp/data"), 0);
++	EXPECT_EQ(fsmount_layers("/tmp/lower", "/tmp/data", false), 0);
++	EXPECT_EQ(fsmount_layers("/tmp/lower", "/tmp/data", true), 0);
++}
++
++TEST(lowerdir_sysfs)
++{
++	ASSERT_EQ(setup_tmp(), 0);
++
++	EXPECT_EQ(mount_lowerdir("/sys/kernel:/tmp/lower"), 0);
++	EXPECT_EQ(mount_lowerdir("/sys/kernel::/tmp/data"), 0);
++	EXPECT_EQ(fsmount_layers("/sys/kernel", "/tmp/data", false), 0);
++	EXPECT_EQ(fsmount_layers("/sys/kernel", "/tmp/data", true), 0);
++}
++
++TEST_HARNESS_MAIN
 
 -- 
 2.53.0
