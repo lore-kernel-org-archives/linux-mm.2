@@ -1,154 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99543606A32F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28F2606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZHhtp9dV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z0M2J+UM
 Received: by kanga.kvack.org (Postfix)
-	id 912616B05B0; Mon, 16 Nov 2026 12:17:02 -0500 (EST)
+	id A2DC96B00EF; Mon, 16 Nov 2026 12:22:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C35D6B05B1; Mon, 16 Nov 2026 12:17:02 -0500 (EST)
+	id 9DF486B05B1; Mon, 16 Nov 2026 12:22:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B2486B05B3; Mon, 16 Nov 2026 12:17:02 -0500 (EST)
+	id 8F5246B05B2; Mon, 16 Nov 2026 12:22:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 532F96B05B0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:17:02 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE06AA7099
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:17:01 +0000 (UTC)
-X-FDA: 85441637442.23.9BF8F40
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E828A1C0005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:16:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZHhtp9dV;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf21.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794849420;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 71F6B6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:22:01 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04A9AA01C8
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:22:00 +0000 (UTC)
+X-FDA: 85441650042.17.49150C7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 60C1E4000E
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:21:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z0M2J+UM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794849719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cvhlwTnVB5qObUR1donDWKQFcI5lhmN3ZPbArGLp5LQ=;
-	b=QAO/yIpcXkJZtpR7ItLxH+iLjCjOjehsxH+4urQw06i988fM15Hy6AqCsKKFHSK8eW8EQh
-	nDo2k1yZGbzSZncc0YhWYR29ELiLTyshZmVQyKsqE+kh8NY00y71fwCVZDdyHiEO5Rokj6
-	lgCUTxKh+VbCyHtvK6hIMZ2UvK6oXzs=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZHhtp9dV;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf21.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794849420;
-	b=i5nIbU13IxFFsdGpPO53kE13YOW+MLP6OlXGglC9zsbMSu/4iL3CGe6DVZa86QcNa9vPMf
-	8rmFDwe7Z+hZCSKZ3r4Xm5DRXXL2nd0EJiuc32QaF4wGpr5OQIG7O1QtAXRrHjzhG2Umfb
-	a1HD4M7lEiN6CGQNKh1KPNkk9nti8UQ=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b6e7a05225so5737916a12.0
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:16:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794849418; cv=none;
-        d=google.com; s=arc-20260327;
-        b=p0a7REIZk2MesoSFTehTrHkozPM2gS9Bn1Y410K/dHY7gKX+GmZk140IAWGC3ZufLQ
-         5GfTtVi+QjDEuUeTL45pc1+RLNaOg+KhiauDr14Akyod/+uLw8Da30qkxPtwPejAgCX9
-         NpxaGu3W0zpQpKqf3QJ7QgMkznSotOGnTVtPG0WsAbdhdYX4rHzBkgKep3yymmIJFZru
-         1zRTdHGwJhkszcInskfYAmkumWTxif7BTmFB7Ju6u3pIdkU4qOVsVvfU+oT5gVVmknlW
-         6p4OfcTQ6mo2gRhPN3vvQY1vYEp/4TXoBK4h3AiNf54YMpg/9n8nXTBG/Kr+IW4rSANK
-         IYCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cvhlwTnVB5qObUR1donDWKQFcI5lhmN3ZPbArGLp5LQ=;
-        fh=hkIAImEPzT0cYG0xN6gbWR2/yC3UwSUHT15lOX08AUQ=;
-        b=ploRAgD9ORXykCyvAAi9KBMmwf+ybUS98wV7A0RO0KL/mgPg317KM5BwrhmWt0C0eT
-         y63UsO4lAj/iRnrYx6sZjv26IRNwmK4If6s8rItMOv+R7BPNoH8JYrXRc4ERxgy/BiQM
-         HwmV3Ebqm1V4f+kk4rrlN6RTxPpL1B+Fn0HQUmnFU9aQClH5gfa++LRDoNbPPHhIhxTy
-         ulqYiQ/jq80XLDBmGwVGnA3sMtH4WUEyWCvdhOJ58n/gFtUTGVpVN+ayTUrqzzmMW4id
-         WEH4w8xIWd7U2eslb2WqjiJOxbkhc7FJw/m441jeRIvYuleZHkiVQx9kukmoBSfEL9oS
-         cs0Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794849418; x=1795454218; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cvhlwTnVB5qObUR1donDWKQFcI5lhmN3ZPbArGLp5LQ=;
-        b=ZHhtp9dVDS6WNG5MIvW68VC5sUnDqcsCQ6X+qip6BHlU1Tg/xG7RHkFSN46M9UNMs3
-         zeiSu4mTTMe9dTxjyo8jFjp+cMU1zgtyEiXM0GU0J5X5KI0o5MRz9YqsfNjiQYgkZdIe
-         wVWrzxkfzzNHhOOGP1KVnqBYmlvDO861V1LhXHE4skIfKoTrPMRxM/ZkIuLaZjQA1OhQ
-         YeNW2u5gwug/8FPhSzIcOFmR7jer1g/DkIgleFOuIo116HBMrxVaBegBC4NzwgiGZaBd
-         n4fHiPQrINpKFY/diC4IoCGBNz0DcdwYN/HUhjrCosAonGE3zF7drdEgPjgN97ih6zMJ
-         /r0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794849418; x=1795454218;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cvhlwTnVB5qObUR1donDWKQFcI5lhmN3ZPbArGLp5LQ=;
-        b=mfbofQLj1a3smZ2MNowzxShyIgM+qsEH9BgyBMZg0GEtXJ/baMQe6P/OsRtK0JKCSj
-         PwpCM/Cnsg7N24DRwo96yG8hL1aHtcyvqw3ul8NxAuXig9Ezuq7fzEExS6xbaxAlL+Ux
-         jWGmWGI88sf60wX2xSm8vRig2NlkEItT4iFpscXdTAHrceAY/wbpVAq/avp+qhxk09Rl
-         roUPNZi0r4VHKViPH8jDZCYc4ZyUCDM9aLZujEwe7ckEGPl5170bg9NW0mD6iQaUnPSK
-         49NL7u5IgkmaQuchHwP+SUiyUV/KwIzYM7e5GO3/PjcXHUBxscuI1nIR+0fKhWMxKDfo
-         q9Ug==
-X-Forwarded-Encrypted: i=1; AL+hErFAQIooA/8q708feoihQeUlpMvXoUnV8XYinxBNkMRKeVKH+CVy2ijgarhbmnp1FJmpUqpIu+GOEA==@kvack.org
-X-Gm-Message-State: APuU4Z8NbO1XlcZzvNm9yK18mroEvzwClJtJ0JgOjCk1WwdPOL25+9V9
-	xOYk82+fIQ4PYyYMMT9zwfKaizqKWOOM9btNx/Ovtxa7vvgHN9FDQa5sexE/yhItyZF2jq1FXcd
-	+dtLsTNqI/daRQxOZ+L/K5/4ZbYVWRjo=
-X-Gm-Gg: AYBFou2obi6kPe6EF8OM1vSi3AMU3GkAjbvfuMGPnSBE9saTpaIpuwqnBytOa4CzHKs
-	i3MNhgsgpRK0tsCGDC+tpxTk85Z3oqwaAsFNO+1zpOCVOBsjwX/XUjHT32lpJzS/ZHja7HfSM6S
-	ZchSmQGmBdJYAOsubFeQgBxSqedthqKNAoKIsOZOBfeh/zBsIbLr6XEOj8xUeaT25EK/NddTVkz
-	e7uuzAoTVcXpO7hd4pI3lY6dDNC9jmbO3BSRdQ/s7vRbIZN0ocA/LkS0OZRII8v50ctzx3aWrIW
-	i9y4ocacRJxIyZh9UpajFXJ/U9MVH9Uspaq/DLEe9gsGIorhvU5m7n+I5Lgea7kPDo9nkUclTS9
-	aKcKJJNWhHVNm79FNsEFRAjZchkWUpiUvIF9i+6oGEVYv2PVaFWSzgyYzib85DN/gXAfhzQV4Yz
-	H35lRCAcs47vCnT7U=
-X-Received: by 2002:aa7:c258:0:b0:6b7:d69a:a3d3 with SMTP id
- 4fb4d7f45d1cf-6b7d69aa8fbmr5089335a12.39.1794849418257; Mon, 16 Nov 2026
- 09:16:58 -0800 (PST)
+	bh=fVsGbQYRHAeRgv/EQToJrUh3lGrfBZ4ksTLjRrhgvYU=;
+	b=2ZzDS6Hzh5Qlr5670tsTNc2Pe4jqdWrLdjqBJ2dte+zJ/G66IXYBeIVWyBUoOT0FLBHPFT
+	ey7Ss0tMUV4o8jQkMSDHvlRMgCga+w6oRADKYGwKNEK72KeVypOhVx/x7Tc+6Z0hzO13lF
+	QqZ95amIbu8yNDWqBRezNLi9Ffq1FlI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z0M2J+UM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794849719;
+	b=1micO/jB4Dd9Chg73EuST3qK+GAv2++R24UMrs9sgY4+xvZ1hEpe1uEVn2AmTbEkWIfJ6U
+	9zucoCSAfEQoCrKhc1mm6FZhA0PqshwtNh9L+sZN8csWPnGSKg+KzyjvJG77fMIcecQ9LU
+	GRQfuEGxgz88X5f/yK9Xj5pdxslFfEU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E8F6C62529;
+	Mon, 16 Nov 2026 17:21:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC131F000C9;
+	Mon, 16 Nov 2026 17:21:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794849718;
+	bh=fVsGbQYRHAeRgv/EQToJrUh3lGrfBZ4ksTLjRrhgvYU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Z0M2J+UM+J2X+m27UF/uGbLb5uGD5sVmGzVUXG8X7hI3x9Ukwm0nej1IfIbe+q+q9
+	 4reI26TAGmspDfN1J/V4c7ZyHcnC6GigZMvmkQK1n5UiMB53RWR4vw8YCPo2RwRLt4
+	 Jg3gUQAj4ldsw67y/c6ttu5ojccsDuWESHtxyftNAlad9Vu+fhiINNCwb01QivffAQ
+	 JePUkTfZFHNdDVnAF3Yl14pC7gq3lYTqHNrr/VXu3l+7OKKRsJPGvhyDKiDcpf7mxo
+	 bdEitk8xYizikjKUBgfGfwp2FWl2Y7EUh/LuegQWHpNecE4wmLbQLywq3Kr8eXGo3+
+	 GS+kXaLTtMJjQ==
+Date: Mon, 16 Nov 2026 17:21:49 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>, 
+	Roman Kisel <romank@linux.microsoft.com>, Saurabh Sengar <ssengar@linux.microsoft.com>, 
+	Naman Jain <namjain@linux.microsoft.com>, Michael Kelley <mhklinux@outlook.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org, 
+	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Subject: Re: [PATCH 2/3] mm/memory: do not report OOM if insert_pfn() races a
+ huge fault
+Message-ID: <avs6WWOurjIN-trm@gremlin>
+References: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
+ <20261115-huge-pfnmap-fault-races-v1-2-537605643f6f@kernel.org>
+ <998b00e3-bde9-450c-b50b-069e65d00c49@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org> <20261116-work-loop-pseudo-v3-34-8cbbea1cf34f@kernel.org>
-In-Reply-To: <20261116-work-loop-pseudo-v3-34-8cbbea1cf34f@kernel.org>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Mon, 16 Nov 2026 18:16:46 +0100
-X-Gm-Features: AclHuK_s2Kpb4OdbgPngYJl9gLHjfhlAmiJMqLtxRnpTDibz-Ni4SZJspSV9laM
-Message-ID: <CAOQ4uxjJVgy-skUbbScfz=eAEATf=iMpqRHNshX=eKu3oiwnrA@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 34/44] selftests/ovl: test data-only layers on
- pseudo filesystems
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
-	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
-	fuse-devel@lists.linux.dev, linux-efi@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-usb@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: qqn9iuhqogt4sotiohw9phuuk8jnw5rt
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E828A1C0005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <998b00e3-bde9-450c-b50b-069e65d00c49@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 60C1E4000E
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 7jy39otd1qmmdbtxhezpk1wzee4ojicm
 X-Rspam-User: 
-X-HE-Tag: 1794849419-316444
-X-HE-Meta: U2FsdGVkX1+6vOO1rIikQczGZmaxG9QCO8FJSfJdJY2wJkkqgQNIfbhbMTaWvWdklBWDXn3bbqAA4uwFGp+NJopwqOi1AWcliFkjmE8zaFt3vdwiXKPOM/4foKHy5GiXXTvzRawQimZ9RDBsBWm8ioZVr5Iam/9ZyR5LWAINgDMYYeV/2wgGy4vmUkwInbwen+qRhB6ZEv82WmqNjJVD+ToRh2Zy3KdFPP9Jg7GIWBhEpnX4P9Nl4Qq9YXu7vc4Pc1+GUwyg2PJpMbiTYZyMqmuCXiX9FZY6BXLvBfY2ONzSGl0ZF9X1kw6x7z538WkNO/85YbIgG2o6Z9pGuzTpw1fIlOmZkxT8AkrRrSc5y8xNB5AgiUiB/pnAfH1VoIaaCdOq/qJjEdyzd9hSqU5PdnuprUFmteUBbhIJC0FcYYYgyl2fFV5anpyXhBI82Q2esQmBNi0hhIKYsn/W6BzMojLtfEKPTvYWnnnEsspsKkNakz4ao55KUj4yVWEPNBogNvXTDkzzpsA9F/XBc4PP7eJ2iaZ2teq3VIjOeqtTVDlzEdcDzVTTZpIdudMcnxuP18jRoteBj4mjQZ3XdbelzLzIA0LX9XV2+y/+G14YMHVFZlC/d+EhSD+QBRryQXEx2qnTF7j5RuWrK1HIrdJWngGC+aYxefeXh2GOoNOF1AneqlWD4wZWXAdDv7f8cDcniktpereaZzPMnkiv9d8zoLoywuTJxULt8zJEO371OnoWUUP1Ps6vP1yU2nKhzhBK1hFrxPJj/mux3udBKWJMjKTnz+5lXh9FOsG218bLhqv9YummmpJCjG06AHYL2sWskZ9LNVZk7I/D0Dy9kfbX1eWZG8NU7qCw4CDm5dm1mLvkNYZd9iu6erVBZTCHOiwRtEDgNAc1OVL0NnCjLOBcfaDv89xiwLrRNV0AyTgSrVMOunIOKaZXecQ5NuYdWJyxkiMdHlzE7xS9pdPVzxo
- A4OGXgiD
- xlhEpjJlfinC3mt0ckFi6rrDaJcyFNSWXQAsBRNhEG2g8zZTHKr775rWxYKa0jf3I2IqRve/RXMQu3uompUteELJ5oeTnEPkHHCWH/hVXYn5YxWRGVfrJll6BTMptQ8YbWNv4IvFg/jNOepDYWv/isSl8GAvZ24vvP8WADA/WWXPnaSAmTcosUAjgggWPjwG4zI1O1SIgtqKAtareJ1M1LuupEj4AMjvOd2fQQv3bJvqzKAAwiz8HNvsacKTi/tnhVakWJgWR3nGDVqe6E70ai7IInQktWxcvxT0BkLV794wulupoctRwIPqpHuXgYY4kIrqvZp5nhsDvpt/YMUXr3zT6ivh3r0uni3omRf51V6dwx8Msxpgxh+z1d1ynR46DRzcY9pL/OqXTVaZHsFcDbEPGIhyCS+vevEXdl4CG4jczA9QeZ+VXMf2PP5rJOosCIRzSdfs/C8NKX5U=
+X-HE-Tag: 1794849719-149286
+X-HE-Meta: U2FsdGVkX191/UBcTFALbJB5Hy3xgfuvH5iIi7tChSQpVmg0VZPsPX5LKXw+qsth61Co9RqnxGzU/aBc2GNfgV9bEkjJ8mp9uo/Yklt28bVhOlaVe4Mh/aZKNGTxTPklRdWLxBzhNAMqviY4u7uLF3fBXAjJKr5CHAVwd9oxy1u49RI0azSX02MjOQrRNa02WhoD+O1xoL2APx9k1e6LdbXBEtTHzkGWYxXEqCy+mVBj88MfZBrYQ7I4FOX2YPs14DZwIo97/hE9CmkNfeVxOBvGpciW7KF67SlJnu4+9rzaDFDeWVF8MU59m3vG/n64u+tXAF6pA7fAK+F3EE8YF/6plMEv9A3/0CP9n4+1p0hDCVTubaNiDC/x1uewGf8MGxx4jW8NKnVmSZC9ANmjh/3Pm+epFlgmiEUEo0DL+qIZ9Ig6no1SnJWbjwI7PNQPQsEhot0GfKdFhNrLIIf62HetC4I/PK3Uip2V1vQoDQr+yZfCyGs/mhk5cgj2FrtSzDmJ8Vn0sJ9rd/5OgpX/ANE2EHOoxa1xtPvScHJxtvYoYsCPu5hK1a+tmxNY4ctjJ/AYDbjAjx3pNZKINqa+ON29ewhUCK/7AoPDZ1id15Pacpa4QOafQ3HuA4+96AkKk+rgonVdkwc9khgKlYt4bVGJ28H1VgS1cbNz380M6+QgZ3I+tmAaWlXLSpRM4NCEVkipVwX0QXtCImciEzNZkA1gIZJuCZVlLblwck31qhoe3aQjYBnCRB89PakvlyAlYFGuylII9gLC8dgtX8sp8JW5dmYWKk04iW51lJ5tfWDVTeo0WPlcrXZnulAxd8idKXnm0p5slHv8QMHWjl3gdUHXHrVk5QeSztWMrq0BEIM+ymvPy9ZBL187HEtIFe9mSOOlBbQPOy9V49n1sar1EjRuZ3v/wwU+x4Wvb+BSCE8BCymiYr36afW1NDpXegwM5zZcSUH0sQnKJaKc3v5
+ tOZS6t7T
+ pBuTjVWEUjyimOsVm2rPW0UVXO4UPtmwoKk+7jQZA9WvHD9TV7FKT8GCfRKYU8KMsOVzYC0jjjD+VafzBjhao023lgA6nv+W+YaWCOoYjit36eM0eS1XlLBON8eygNkhXIUd2ixy9YkI9xzX/B+D3Y0/RbNwzi7DLXYUtKmkf+9KO8RKkK0ZZP2leCGwbX5WFPcBqedW7lUT8XXl5d0DUIvTRYzLUHZWAQIrMdRKVBYCdn/ZmUlxygjiEOXSwmuweN43BSP+m5wv57AlaEQ1VBCndyU/fz1OqC/0p94CTZIcvmabQFAmXawzAgmQmH4sWrQ/7Yg5c6Gc7M2Lq/L2a+HX161Bds5fC3Q+hR8CuCFU2EUFRmqfdOmM95g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,200 +106,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 12:10=E2=80=AFPM Christian Brauner <brauner@kernel.=
-org> wrote:
+On Mon, Nov 16, 2026 at 04:59:35PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/15/26 21:58, Lorenzo Stoakes (ARM) wrote:
+> > From: Eliav Farber <farbere@amazon.com>
+> >
+> > A driver that implements both ->fault and ->huge_fault must anticipate
+> > concurrent use of both.
+> >
+> > This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
+> > concurrent with faulting, as that only holds the mmap write lock and thus
+> > does not exclude faulting threads stabilised by VMA lock.
+> >
+> > This is not currently safely handled by insert_pfn(), however, which
+> > obtains its PTE entry via get_locked_pte(), and treats a NULL return value
+> > as an allocation failure, returning VM_FAULT_OOM.
+> >
+> > The issue is that get_locked_pte() also returns NULL if the PMD entry is
+> > not a page table which can happen if a concurrent huge fault installs a
+> > huge PMD entry between __handle_mm_fault() observing the PMD entry to be
+> > empty and insert_pfn() being invoked.
+> >
+> > This can result in VM_FAULT_OOM being reported incorrectly.
+> >
+> > Address this by proactively checking whether a page table allocation
+> > actually failed, and returning VM_FAULT_NOPAGE if the NULL indicates that
+> > we were raced instead.
+> >
+> > The same assumption is made in insert_page(), however only DAX implements
+> > ->huge_fault and can reach it, and it serialises faults of different orders
+> > with its own mapping entry lock, so it does not require a change.
+> >
+> > Target the commit introducing the first driver able to do this.
+> >
+> > Link: https://lore.kernel.org/all/20261112051440.16140-3-farbere@amazon.com/
+> > Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+> > Cc: stable@vger.kernel.org
+> > Suggested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> > Signed-off-by: Eliav Farber <farbere@amazon.com>
+> > [ ljs: rewrote commit message, trimmed comment ]
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/memory.c | 11 +++++++++--
+> >  1 file changed, 9 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index e03110906aa8..cff39eccfd42 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -2866,10 +2866,17 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+> >  	struct mm_struct *mm = vma->vm_mm;
+> >  	pte_t *pte, entry;
+> >  	spinlock_t *ptl;
+> > +	pmd_t *pmd;
+> >
+> > -	pte = get_locked_pte(mm, addr, &ptl);
+> > -	if (!pte)
+> > +	pmd = walk_to_pmd(mm, addr);
+> > +	if (!pmd)
+> >  		return VM_FAULT_OOM;
+> > +	if (pte_alloc(mm, pmd))
+> > +		return VM_FAULT_OOM;
+> > +	/* We may have raced a huge fault, if so let the fault be retried. */
+> > +	pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
+> > +	if (!pte)
+> > +		return VM_FAULT_NOPAGE;
 >
-> Add tests that overlayfs refuses data-only layers on pseudo filesystems:
->
-> - sysfs and procfs via the "::" separator in "lowerdir=3D"
-> - sysfs and procfs via "datadir+" by path
-> - sysfs and procfs via "datadir+" by file descriptor
-> - tmpfs as data-only layer
-> - sysfs as regular lower layer
->
-> The last two must keep mounting.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> Same question, what if we would stumble over a PUD entry, how would we handle
+> that today? I'd assume we'd also want to return VM_FAULT_NOPAGE instead of
+> VM_FAULT_OOM.
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+It can't for similar reasons.
 
-> ---
->  .../selftests/filesystems/overlayfs/.gitignore     |   1 +
->  .../selftests/filesystems/overlayfs/Makefile       |   1 +
->  .../filesystems/overlayfs/pseudo_datadir.c         | 131 +++++++++++++++=
-++++++
->  3 files changed, 133 insertions(+)
+Actually changing this would require changing walk_to_pmd() a fair bit so it can
+distinguish a failure to allocate from that, and I'm not sure it's worth doing
+that at this point, better as follow-up?
+
 >
-> diff --git a/tools/testing/selftests/filesystems/overlayfs/.gitignore b/t=
-ools/testing/selftests/filesystems/overlayfs/.gitignore
-> index b343cc430051d..e1410fee2269d 100644
-> --- a/tools/testing/selftests/filesystems/overlayfs/.gitignore
-> +++ b/tools/testing/selftests/filesystems/overlayfs/.gitignore
-> @@ -3,3 +3,4 @@ dev_in_maps
->  set_layers_via_fds
->  idmapped_mounts
->  automount_in_layer
-> +pseudo_datadir
-> diff --git a/tools/testing/selftests/filesystems/overlayfs/Makefile b/too=
-ls/testing/selftests/filesystems/overlayfs/Makefile
-> index 382a59bda5e70..ace75f5627e0f 100644
-> --- a/tools/testing/selftests/filesystems/overlayfs/Makefile
-> +++ b/tools/testing/selftests/filesystems/overlayfs/Makefile
-> @@ -10,6 +10,7 @@ TEST_GEN_PROGS :=3D dev_in_maps
->  TEST_GEN_PROGS +=3D set_layers_via_fds
->  TEST_GEN_PROGS +=3D idmapped_mounts
->  TEST_GEN_PROGS +=3D automount_in_layer
-> +TEST_GEN_PROGS +=3D pseudo_datadir
->
->  include ../../lib.mk
->
-> diff --git a/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir=
-.c b/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir.c
-> new file mode 100644
-> index 0000000000000..3b59fd3e9f5c2
-> --- /dev/null
-> +++ b/tools/testing/selftests/filesystems/overlayfs/pseudo_datadir.c
-> @@ -0,0 +1,131 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#define _GNU_SOURCE
-> +
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <sched.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <sys/mount.h>
-> +#include <sys/stat.h>
-> +#include <unistd.h>
-> +
-> +#include "kselftest_harness.h"
-> +#include "../wrappers.h"
-> +
-> +static int setup_tmp(void)
-> +{
-> +       if (unshare(CLONE_NEWNS))
-> +               return -errno;
-> +       if (sys_mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL))
-> +               return -errno;
-> +       if (sys_mount("tmpfs", "/tmp", "tmpfs", 0, NULL))
-> +               return -errno;
-> +       if (mkdir("/tmp/lower", 0755) || mkdir("/tmp/data", 0755) ||
-> +           mkdir("/tmp/merged", 0755))
-> +               return -errno;
-> +       return 0;
-> +}
-> +
-> +/* Mount an overlayfs with the legacy "lowerdir=3D" option. */
-> +static int mount_lowerdir(const char *lowerdir)
-> +{
-> +       char opts[256];
-> +
-> +       snprintf(opts, sizeof(opts), "lowerdir=3D%s", lowerdir);
-> +       if (sys_mount("overlay", "/tmp/merged", "overlay", MS_RDONLY, opt=
-s))
-> +               return -errno;
-> +       if (umount2("/tmp/merged", 0))
-> +               return -errno;
-> +       return 0;
-> +}
-> +
-> +static int set_layer(int fd_context, const char *key, const char *path,
-> +                    bool by_fd)
-> +{
-> +       int fd, ret =3D 0;
-> +
-> +       if (!by_fd) {
-> +               if (sys_fsconfig(fd_context, FSCONFIG_SET_STRING, key, pa=
-th, 0))
-> +                       return -errno;
-> +               return 0;
-> +       }
-> +
-> +       fd =3D open(path, O_DIRECTORY | O_CLOEXEC);
-> +       if (fd < 0)
-> +               return -errno;
-> +       if (sys_fsconfig(fd_context, FSCONFIG_SET_FD, key, NULL, fd))
-> +               ret =3D -errno;
-> +       close(fd);
-> +       return ret;
-> +}
-> +
-> +/* Create an overlayfs with "lowerdir+" and "datadir+" through fsconfig.=
- */
-> +static int fsmount_layers(const char *lower, const char *data, bool by_f=
-d)
-> +{
-> +       int fd_context, fd_mnt, ret;
-> +
-> +       fd_context =3D sys_fsopen("overlay", FSOPEN_CLOEXEC);
-> +       if (fd_context < 0)
-> +               return -errno;
-> +
-> +       ret =3D set_layer(fd_context, "lowerdir+", lower, by_fd);
-> +       if (ret)
-> +               goto out;
-> +       ret =3D set_layer(fd_context, "datadir+", data, by_fd);
-> +       if (ret)
-> +               goto out;
-> +
-> +       if (sys_fsconfig(fd_context, FSCONFIG_CMD_CREATE, NULL, NULL, 0))=
- {
-> +               ret =3D -errno;
-> +               goto out;
-> +       }
-> +
-> +       fd_mnt =3D sys_fsmount(fd_context, FSMOUNT_CLOEXEC, 0);
-> +       if (fd_mnt < 0)
-> +               ret =3D -errno;
-> +       else
-> +               close(fd_mnt);
-> +out:
-> +       close(fd_context);
-> +       return ret;
-> +}
-> +
-> +TEST(datadir_sysfs)
-> +{
-> +       ASSERT_EQ(setup_tmp(), 0);
-> +
-> +       EXPECT_EQ(mount_lowerdir("/tmp/lower::/sys/kernel"), -EINVAL);
-> +       EXPECT_EQ(fsmount_layers("/tmp/lower", "/sys/kernel", false), -EI=
-NVAL);
-> +       EXPECT_EQ(fsmount_layers("/tmp/lower", "/sys/kernel", true), -EIN=
-VAL);
-> +}
-> +
-> +TEST(datadir_procfs)
-> +{
-> +       ASSERT_EQ(setup_tmp(), 0);
-> +
-> +       EXPECT_EQ(mount_lowerdir("/tmp/lower::/proc"), -EINVAL);
-> +       EXPECT_EQ(fsmount_layers("/tmp/lower", "/proc", false), -EINVAL);
-> +       EXPECT_EQ(fsmount_layers("/tmp/lower", "/proc", true), -EINVAL);
-> +}
-> +
-> +TEST(datadir_tmpfs)
-> +{
-> +       ASSERT_EQ(setup_tmp(), 0);
-> +
-> +       EXPECT_EQ(mount_lowerdir("/tmp/lower::/tmp/data"), 0);
-> +       EXPECT_EQ(fsmount_layers("/tmp/lower", "/tmp/data", false), 0);
-> +       EXPECT_EQ(fsmount_layers("/tmp/lower", "/tmp/data", true), 0);
-> +}
-> +
-> +TEST(lowerdir_sysfs)
-> +{
-> +       ASSERT_EQ(setup_tmp(), 0);
-> +
-> +       EXPECT_EQ(mount_lowerdir("/sys/kernel:/tmp/lower"), 0);
-> +       EXPECT_EQ(mount_lowerdir("/sys/kernel::/tmp/data"), 0);
-> +       EXPECT_EQ(fsmount_layers("/sys/kernel", "/tmp/data", false), 0);
-> +       EXPECT_EQ(fsmount_layers("/sys/kernel", "/tmp/data", true), 0);
-> +}
-> +
-> +TEST_HARNESS_MAIN
 >
 > --
-> 2.53.0
+> Cheers,
 >
+> David
+
+--
+Cheers, Lorenzo
 
