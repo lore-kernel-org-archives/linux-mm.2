@@ -1,126 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49CA606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94484606A336
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 13:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=coK6FDBj
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tn81L3WM
 Received: by kanga.kvack.org (Postfix)
-	id E327E6B00EF; Mon, 16 Nov 2026 07:57:57 -0500 (EST)
+	id A8CA26B05CD; Mon, 16 Nov 2026 08:00:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE3216B05B0; Mon, 16 Nov 2026 07:57:57 -0500 (EST)
+	id A64C26B05CE; Mon, 16 Nov 2026 08:00:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD2426B05CD; Mon, 16 Nov 2026 07:57:57 -0500 (EST)
+	id 97B496B05CF; Mon, 16 Nov 2026 08:00:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A44256B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:57:57 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D48D160661
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:57:57 +0000 (UTC)
-X-FDA: 85440984594.17.248E2F5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 45031100006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:57:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=coK6FDBj;
-	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D50B6B05CD
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:00:29 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 281CEA0329
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:00:29 +0000 (UTC)
+X-FDA: 85440990978.20.1362C24
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8326F80005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:00:27 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tn81L3WM;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794833875;
+	s=arc-20220608; t=1794834027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=TsTyimfgSelk39crerZNvaF9T4v2I7XDePVLGlngt5g=;
-	b=lRnJ+GmjLVaB8pyBhfuLrixwuPDtf5YUIeR6Pz0j1JDaXCg3g9/GWZcMb5reVheI/C0fDT
-	uy+/cL3j40XrxgONifYXzy/PJwroDPkOdugKj58a4hQA6D6eVu5hVF6PX7USLBlCU8wjjC
-	JsDQnFnpDuvpozS1G3quWYDh23A7d6M=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=y5R7blodr4KyIr57H0lgE0jfeLfnu8xOhBhiMifpgVk=;
+	b=6N4lD+uK7/RoOaotkaFPwYfNtsBk4inaL/iU3Lb+0rMnHDtgYmRMP9VoCWfcxx5MBVDPwE
+	Hw3u9uk37rF9YAPYNeiSdosX0pl/te3V6YaZMAsGCLjDDQPWZFoMhLDKZ1Y1AGKVSUCHWZ
+	3DBxNVt8One/AxTnzvsSYS6jKBgpewM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794833875;
-	b=SWYoYphQaOihW8Lbbz5a0+85t82pR597hxJhGMp+LR9uaFdv0Hs6CtmCAl45d+XFL71mmd
-	CEZHiuJnRZjV2wS93O0eTta15v0haQLVfK/GUsFNAt1n7vU6R0E6vI6SxZCegC1dr00Sd/
-	KMPndm+hoOBjzHfbcOL4wuOOCPzjUp0=
+	t=1794834027;
+	b=PbF+DWiDsbBvWEDWcO5nZxcDpI8tTBGc2tCsA5ksDlBspntlBfvCzgI+1BoEU5zIUshb7s
+	oSfZfAdsG9kxqeNwgiDMiPgyKlsMteHYKWqSU+rvxwdU7psxj8GxHdLV6cUHyFaWddsbEC
+	YpznZz/2lFENlVbuT82QBN4e3c7qdcw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=coK6FDBj;
-	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tn81L3WM;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7B1D340AC3;
-	Mon, 16 Nov 2026 12:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927181F000C4;
-	Mon, 16 Nov 2026 12:57:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EB592625A7;
+	Mon, 16 Nov 2026 13:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373501F000C4;
+	Mon, 16 Nov 2026 13:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794833874;
-	bh=TsTyimfgSelk39crerZNvaF9T4v2I7XDePVLGlngt5g=;
-	h=From:To:Cc:Subject:Date;
-	b=coK6FDBjSQCexsufKWa+V/+QvqGizRobkNju4/BIVo7zCXD9wskVZgYR7cN441tr9
-	 qLG9xMnmLcNBqnEMBLW0ND8gAIjbFLFF3rWZ92rMgxHbyBCAdv9NVrMWF3eWTneukG
-	 Ps4oFVIl2W1007SA32gpMyAcVEsn5XL0K0oYzaSPUAaydS2UvM34ghTvQq7aru8p3z
-	 6iU/RjXau1DS7wFbjJv/s2o02MzEIOOzbRMoKe93fiEfETYwJ5IFfmZGWDDTFRaMRG
-	 3heHXdqKLa1peWDnfn4EUnCt9n4uzKpXsVXF5CIxKlga6+2Lcv0rT2tEI6rwKzvyvO
-	 Iil+nl87vvhXg==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.ams.internal (Postfix) with ESMTP id EAF451980052;
-	Mon, 16 Nov 2026 07:57:50 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Mon, 16 Nov 2026 07:57:52 -0500
-X-ME-Sender: <xms:zv36amM3gxpSsAWlJWbHuTzdT8oEiqIOhgSGmPo_m7Bud-e-yhOkpw>
-    <xme:zv36aop6q7Qg2aRrEO9Ug5P5TPYUs56mIiq8s4K1y6RfOVg2VdORtbQZeB55WqR-6
-    REQrg6iVpHY7saWDy6bo6CMSebRMjzaDUiA0TF7EsV9HIwp_pKs-CPN>
-X-ME-Received: <xmr:zv36al52ymfp09CI53Jno0AXyVG5zawQrpX4i0eL01UXXyHganDPxu_N74g>
-X-ME-Proxy-Cause: dmFkZTFkPa8woIDg/X6mZIuxiJNygpeOlX0xHBonwxlWn2dHiWS7GTQb73NJEmZCvOEauV
-    y9UXL8D8o+EGdIeCqdLvB2MWcS/z0ptvWxocqauR+x8cK7qpd/IkoPzSQJVwCwfviuE1vM
-    tGwysxRFG5mg25AQnzozv2olC3W7wkbTK8L2XQmvBdDGsYW8DgrDV0m4Xt9NJQaLjuEFem
-    V0zIBT3OUC5OQoRGiQ8/oAXMtsNbzgSo4XZA+sXwzFC8jlfLuLfsfVtAC2dSg3x0HWVa7G
-    t3hyak3PfNiaJZPUohnKhuju5/58WFjO109ixBJLnMykluVXoQCssPFXiQdzqFTIF0kiqM
-    LqnR4tTmbm0GfiAuHnHBrG4gOp3PNqcfZS05DQkBxBINUUj8nir8FE5M8ZE5cevoBoMyu9
-    HsQrUkUunJSj/aFvgAkH/wPptQ74K1echw7UaANuVfXuiE5PH0tsEWE+X/OgIAbKPu7clJ
-    guRpHSoS8Z0PZDFjUgW179otp9aNv60AJoAlulsQyR+9SyZ1N2cQbH859Zx6z+7z0fkiJA
-    fuWHpFjjoqAFZfoXCzi/GBBrkCuS3/eohMoJs7jBtrL+gMGc/2+je5m5MOI5lR9kFs4xCf
-    dbhrMT3DElNmanAGPhWg3jQIEO5nbj6D5+AntpRmEPVIal2GXDNRuGruUfcg
-X-ME-Proxy: <xmx:zv36aoEhterZ2mOfS6SxgVCKHNjSoN2XvWukChqmOB6h6gSpJyrAgw>
-    <xmx:zv36av2xj4tiLyCoxMM0SI6xacgR_GROqlMRy76H3YkdTjzwouvsTw>
-    <xmx:zv36atpVcp-nEieFurpcvI9TdXahifzEICzHiLOPLBfVPBA5watyHA>
-    <xmx:zv36akP9Q7D9LBZf_LhZUariZNWLE05mxsISposr0XKVNMJmBOrV1Q>
-    <xmx:zv36anWHIfc17rLCcSeG8zc17voFZ8MsjQG3JaW5ui6ZA14uJMFpOLwf>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Nov 2026 07:57:49 -0500 (EST)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	Dev Jain <dev.jain@arm.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH] mm/compaction: do not skip the free scanner's periodic lock drop
-Date: Mon, 16 Nov 2026 12:57:45 +0000
-Message-ID: <20261116125746.2897395-1-kas@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	s=k20260515; t=1794834026;
+	bh=y5R7blodr4KyIr57H0lgE0jfeLfnu8xOhBhiMifpgVk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Tn81L3WMTmVSVrFkStoUKS1eJlHCrwqf92DxGJzeE2QnNqJMBbbVy0Xjxt/pr1NlT
+	 CC8inPJD0LToR+NrQVsp4zf7dInOG6i2QM2boXgjJrRapJHocK3+y96JvGlfrph2/w
+	 VXKZJNkxdWHXEYeGBcIoe7vawFNBAvw9sSR3HQWmuqHqve768kdXbPrsGZA0puqQ/U
+	 yuS8sDgebbsOqC3RdflJEQf0pctSVBEO2uDerS+IZULL8JNTLEPvROidufB+eCHmzL
+	 yMXMkEn0k8odvkMvxrOrO/2iUiNR4AFj1hQ8PmnBp98gNt5wQCNSqKvRpPec6xzXUA
+	 Lqp/ok8GxpgoA==
+Date: Mon, 16 Nov 2026 15:00:14 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Linus Walleij <linusw@kernel.org>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Malin Jonsson <malin.jonsson@est.tech>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>,
+	Nicholas Piggin <npiggin@gmail.com>, Nishanth Menon <nm@ti.com>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v3 10/10] mm: print pte in __print_bad_page_map_pgtable()
+Message-ID: <avr-Xjdqrb8Ja1E1@kernel.org>
+References: <20261116124832.662455-1-arnd@kernel.org>
+ <20261116124832.662455-11-arnd@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 45031100006
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116124832.662455-11-arnd@kernel.org>
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 7nzupxuhk15kpxa7fqjadhkny7yptcgj
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 3sxm1u9y4mqo3g7zb7y3hn659jxwmoyg
+X-Rspamd-Queue-Id: 8326F80005
 X-Rspam-User: 
-X-HE-Tag: 1794833875-57744
-X-HE-Meta: U2FsdGVkX1+RXnG5ZvC85dgWVVlJ1F57DAvpuyGPViJ6FhecYkT9mCdg8sufYwe/ynKVgy7vcHlruH4iVUoYv6h5nnf7NUxE+ciYCbDw0OBTKmKX/6NYyPMaGp/aUeTWnGZsw+3GBKOKhhleIqxO4MYnaQmcshmNLmdVKJWtTCPh5d2w/cWQwTi4OWH7ieH4dNRBLTU9lRZyYyvWM4SzgeLhKF7NoOk5V2XEn+XgHzhvDV6+hoE7RkM9BZJ+CvOUqfmP09M8hSM1CxQ45HFsSCoqkpKmAJnXRJC9xl9mLIqA5hggbDg8aAnkH1VX4gyS0vp8G6fISX4/UxvGyzA8OXEyomXSCaZ9S1wUdogxwK8NyvCi8slG/BPEY1C++S/2B7XFuzXjxzx+lQR4bPUzkdL9PBZmD4v09Vtrs9wLOMt/xa+hkQHuFFHghB0ViAbx/W35jeJxfiR4HFrf1GND/7Yxoqi8L4yiSScB90aHdSzjC6xH9FoAjxQxJKyAdso/VuWd43c8sypfDQ7ek+ib2lnjvqqsiSOEuxZMxPf4niXOH4sGhKVvHo67rfTLjfQYNZjYgWVhZJ9fxiyp1dQ1s4X7vtUmgOC9s5LtxPaOxxYqw/a5VnPcwE0LwdauV3etx3dOC/yalWilBiryiazUhSNexaussVI1L8Ax8WOX5SuKfrsce6bisu+6xcwN3n13Kb6RIUza0o2OkcFmCSKYmSirrlWBayNjy+4LXZXKx9V3ckzrRQEBJkyfvfDiUP21+SuvHqO/H2lpNlJl0kuOWws57sz4ZTzsAi0WRljpU6+aHBoEDJTxwzRT5lXcc5+ahIS0USRrjpUvH7aDqAUpRHX5YBPRc34DaKoVj0CG3PABbpHowO08yGAcxKgmiaDgWautgDqTD+6BMJU0BtVGnT3mgpvH0kdXAXSjuU9kMqn8q3g3ENA7Prk8TYCGCGSbuNwIY+oOm5lUrPrXyrg
- g8ZkVnW7
- jmfJIv3IOiWgclTwNVrjvc8cruaRpUoSygfF3KGAr6e9+HpXYyatwxroERuWG2edDqBvoe+atzhQArsFtBm2IhQXARej3onfIHK8nPDU0LjB4soGKf0MFI3iZESLQj1/T1gUDoNo3IvDlXPgsIl4xQWFs17U5oGgNEqjo9u+UgFLqDts1+ANPJN9XuqksYTLFCG/3Zl1VClQK0lWsRqtIFF95bt7g5Fr7ZkbNsvefi6a+U1obBUf1LktTq5eYp6u9ysFw
+X-HE-Tag: 1794834027-606892
+X-HE-Meta: U2FsdGVkX19NtKoNjSLvVxZ57oTcskN4DhqG8KEeLYrkC0hv9GM7m7C4/Gv/4gqwuMABPROlXWzpSd3p+0tEXY1fFT5zW3FzP8rbPxAi3eXqjf3ks/HDCqFkKsNasO6qvuuiUBWTRPvtx8+h9zi1KmciUT1T/8o/NK8P7Yj6GVHDagc5GM1KEwRDrIiMMURVpZ+KPbEykiJO8hqQbNSEJ/A4BGMlUyFxOfeTqHYJRetKFHUTQl2q97QN1ktlWPyeF5iVbZ1vZMRGti4BzHV3+taPNSlFnEmnaN+NAzv9oxbRi90ckbAcCUTzlrJyMLb0sKB/bmexYcQ7RCnjfQ9rOqIN3c+vvfhLXS70ySicLNtSPs5ZbpxorkDhazQrLsX8m8rXLCMFOrD7WaNBkaUg6t3WiFs0jEj1yhJoCuTxiyCl3dpZYK19qASmy5Pf2n3ldXzMbSFNthRf2CoWeaPVFgIppYArfVwmjBscRfWase5Gc+fmEcTc+0MoBEOmMIEZRiRSJerQ1oqsTruMYW9wrPHQCm29khCT8pe36Uo1yxbTi0vN9ESXptm0xZpu7YO1eWbYTm4FT5uGbY4iaYO1k2H93VlABZXDZwY3gVBMQNFKgxPiXnNWjFo36Zz0I3Pa9/ShvWKi9nISnx09LYd+Zpd37KS8kh6lMT7jTgZvmTKd3HOZkIx0pfOrxaETKPu9Ca5q5nDJZnr2uq2TUzCcsBGJpR9IJvLNVv22OIdqzLwozqZEl9PVHjGjSSM1wwJIy10bS5cnE0PMLXPtdf7h1tohtDcd0xfIk8j78qswOeLJVv6RleurHVip3lIYqgNrMpNAtiwh67hn1/sPBVoB8ov9LN7bc9WHqeNhpTGstJztiR85qUh9AxaDgUH4d7CvRAoKPRkptIct5ZYiZ2spnMo+e3vfhiz3IUpj1WDaca++ZaGrdKDLfm8+g6SIoUYla7f9rvrAgImmeEE2DmP
+ n4HWrJKD
+ qRn7io5fT8X6kUfGxw8achEWet54n9vHH3dnea0cqyWaeD6UwBuqcpa9vtG6fUsJ5xTduEd/j2ruuKnPSfH9WfG1NXl8biszR/hBkHmdh3vlz38UjU7l7NHcf4Zk1bYpVWot5tNPm1NziQOBpMmWsvkCsoz6bS5Q03PepR8FZWkol3dDSu+s7u2NzDRshcmdyX/zGYrRGtQlgdYNDJ8WUeU20jT3DVBgu4+Ax5u9Alu8fIpWc8YeXMOj2fp0IpoGbnFTd3blUxCkY58GMFIj+zg0QwtnsTF3Ur6TQUHOK0+SJnMPA0srTiAf0b7p5VWO7YeDOYZQuuCP18vk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,60 +113,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-isolate_freepages_block() drops zone->lock, checks for a fatal signal
-and calls cond_resched() at every pfn that is a multiple of
-COMPACT_CLUSTER_MAX.
+On Mon, Nov 16, 2026 at 01:48:32PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> HIGHPTE support is gone now, so it's easy enough to print the
+> PTE here along with the upper level entries.
+> 
+> Acked-by: "David Hildenbrand (Arm)" <david@kernel.org>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-With a stride above one, the scan steps over a compound page, or over a
-high-order free page it has just isolated, to a pfn that is not a
-multiple of the stride.  From there it never reaches a multiple of
-COMPACT_CLUSTER_MAX, so the rest of the pageblock is scanned without the
-check, possibly with zone->lock held and interrupts off.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Count probes instead, and check every COMPACT_CLUSTER_MAX of them.
+> ---
+>  mm/memory.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
 
-Fixes: 4fca9730c51d ("mm, compaction: sample pageblocks for free pages")
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- mm/compaction.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/mm/compaction.c b/mm/compaction.c
-index f1b2060eb201..4465c1551406 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -579,7 +579,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
- 				unsigned int stride,
- 				bool strict)
- {
--	int nr_scanned = 0, total_isolated = 0;
-+	int nr_scanned = 0, nr_probes = 0, total_isolated = 0;
- 	struct page *page;
- 	unsigned long flags = 0;
- 	bool locked = false;
-@@ -599,13 +599,15 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
- 		/*
- 		 * Periodically drop the lock (if held) regardless of its
- 		 * contention, to give chance to IRQs. Abort if fatal signal
--		 * pending.
-+		 * pending. Count probes rather than pfns, as the scan does not
-+		 * always land on a multiple of COMPACT_CLUSTER_MAX.
- 		 */
--		if (!(blockpfn % COMPACT_CLUSTER_MAX)
--		    && compact_unlock_should_abort(&cc->zone->lock, flags,
--								&locked, cc))
-+		if (!(nr_probes % COMPACT_CLUSTER_MAX) &&
-+		    compact_unlock_should_abort(&cc->zone->lock, flags,
-+						&locked, cc))
- 			break;
- 
-+		nr_probes++;
- 		nr_scanned++;
- 
- 		/*
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
-2.54.0
-
+Sincerely yours,
+Mike.
 
