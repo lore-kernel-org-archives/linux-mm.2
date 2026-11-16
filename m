@@ -1,147 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706A0606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 14:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B2F606A338
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 14:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=THh/Ff3T
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Otsqep25
 Received: by kanga.kvack.org (Postfix)
-	id 831D26B05B3; Mon, 16 Nov 2026 09:14:02 -0500 (EST)
+	id C79EC6B05B4; Mon, 16 Nov 2026 09:14:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 809C16B05B4; Mon, 16 Nov 2026 09:14:02 -0500 (EST)
+	id C29D06B05B5; Mon, 16 Nov 2026 09:14:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 720FC6B05B5; Mon, 16 Nov 2026 09:14:02 -0500 (EST)
+	id B40BB6B05B6; Mon, 16 Nov 2026 09:14:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 45D796B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:14:02 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1C0314090D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:14:01 +0000 (UTC)
-X-FDA: 85441176282.30.08F5D77
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C6FB0100010
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:13:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="THh/Ff3T";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794838439;
-	b=oX3hq+E72KHRY0y4Js48M3rF5+30ACW099uMd9l4OzIVNQFY2Y0ZDloFNKcfMcGEm0Y+Mq
-	SvH5kNW+mXjMojzGYUKSI8uQWw5lX53rw4v+DzJ072nb2Tg3VjvDUo/+O3EC+BPJctpUze
-	BPjK5XMnbeKcRcW4EmLL0xdfCoYNtak=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794838439;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 944E36B05B4
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:14:44 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25AA8160908
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:14:44 +0000 (UTC)
+X-FDA: 85441178088.21.B4C4EAA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8CABE180003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:14:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Otsqep25;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794838482;
+	b=5eSHY+R4rcWA9hRDXAlJH/vbeUFlswAXXlZBqD6O0KqaLypfmuiUVnFAK/ENDlmRcAmsDu
+	CQrAmiz7LZy31zPYWwKtv0OcD9b5MstNK5G7KwkZBBvCXBejX38xu1uE9PC87FbZTCCjqt
+	G54saHBjMkMhy5eC4Efhlx/+rOTpQMo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Otsqep25;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794838482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mE4PFLCBDD7N+5kMo0525pvsFFzxkaRFBGntpezo6s0=;
-	b=fA4iR1fqUuTaDAr8+VOgV1I/df5Tcg9ZZkpln6u91sB5OosIcXQZBKLLI1PVpG/GdntyWV
-	sI7lbA3OvYUvXPr+LyKldDtCVwnHbO4ZNTEoyfEPUCk2azGcDvKkWOPKv65ta11W7c8IrN
-	Uk0MvflTwXZYc5bbzAB8XJfLPVoMgWk=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="THh/Ff3T";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-49412eb1474so1727044f8f.3
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:13:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794838438; cv=none;
-        d=google.com; s=arc-20260327;
-        b=o8gIzrhKSLSi6+LnsD4fw5tcVVk4MYNkg6HHyYt9Qanra38Z1RwNfHbZnJ7+0afvtG
-         hP48sGCAlj3mPVZrRBpy5VIjX4Qa3D5Ryz4cGZdKrHTEIvQvnaqSyCxV+UYX6BPdTbrw
-         e2ErzV8avc1ayFDds2EGVFNl6Gs8DhpXnZPrTFE3Qip5DjBUrN+RdhgiNRE6zJN+99Cq
-         wK51SzSOWtz481cLXk4aTc+9aP/Qhpt1xpwU51ZfyVUYixAgL2wSeP06mumyJOJmhmiN
-         2yOGs/CCnbJZ2ncLU6Q+wgWpFdvT48f+anJT199b71tc1a703eYpaD6GodNm4fRsPY3n
-         HkDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mE4PFLCBDD7N+5kMo0525pvsFFzxkaRFBGntpezo6s0=;
-        fh=l9UWqLnnpFNE8J7zv+bmA3OPAUvY4olRaU3vwmy6P3U=;
-        b=pffwdEw+KCfm51FMWHDsjqoJv9i7jOIjjGKE7tMtB8Ha2zn9DQBu1i+nAgVexEMDv1
-         fZR7+ovtfCTbe6bRM6hU0l616Oz4Li+CT/o3JbqXbe2O+x2ng9DanfDNOfOzKkcnCyzS
-         GPazjP36bFZDSJQj6d6aJqim/s+SpkKv+aRvdL9uLUlixzlJrF9a2P1nokNzZKwzlPkl
-         n9PvT8KsZQTuzUJ9/rd2EOnR105AxywT6xU/aueRkPf2IEOWuKqHb2ZBm5YR3UsR494Q
-         4pE/qTfYT3qxCm8tkJhtGaMvdP0HIlrZvQhwU4rcII7K9xzt4jLSQaEEEFcpAWBAjamo
-         pGrg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794838438; x=1795443238; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mE4PFLCBDD7N+5kMo0525pvsFFzxkaRFBGntpezo6s0=;
-        b=THh/Ff3TPgyCjPMV7tt2Vt54MZgY4HZjztMHkhoWsUj4HwwwC8VzJFuNWOZM79gUzQ
-         YAcMIG2sraT/p94Oyz0UGckw8tsghHHSBsJv3zbMD4XEX2S9FhoLnYAjdfZoocWg9sQp
-         8TY8FiZfwBX6qCJA+3IlC3OHOOXTCfpFYLnO8wdQsvyI1J6abugCKKSGzF7Dd1/FnqRU
-         7FNOibVNPrjOOzCQ/O4O6CyC7oAJ20DoSKlOqaQ+neNVn8qtNgEEBt/lqvMfMBkHDNj+
-         Yc8AmpIit630E1g5QWq0mCSfpGBJ/HtLz24l4d7UVWNtrpzf7gmA8zppow8Df9tvITme
-         J8oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794838438; x=1795443238;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mE4PFLCBDD7N+5kMo0525pvsFFzxkaRFBGntpezo6s0=;
-        b=Q0UqLIMMrVFm0n3unjO7iPEwMVg8TlITbLrJsYuecuE0vhSb4L9adLU1AqqezjXm8U
-         vsuLnpHBdrG1CMtwE2CkKPjc5/CqWvdluLA3GDNN3rTqti94nru0CVHrM90RrJziUnbK
-         We0MV/U3H3sgA+1PLBtd3Tl3dOa7JdCspha5DUL9GqedzgLO06qsc4hLK5vIscK+i9lF
-         Zv5Cf6WUB9qG5R8NWbOGFM7+Ik+HbI351/dL2v0kzE9JYfyEdIadRKPghTD9s99fKtO7
-         vvWiRY7UXAcsR3PeBOHhY5Uc1wHHPL62oRbofAq/6R902SW4fiF9IbLeCqb/w0IlRDVc
-         dUKg==
-X-Gm-Message-State: APuU4Z9f3j7Bb7TAXtstAgsiyrP4KwSDoaC+AYHTBiGK3EC7vXPbHaO1
-	zC+vqVPlmQiv61E6BsSu49/PDb9F2hMS1fIm+VqXdE5bwIDaP2K/am9pden+/xwlQTjkMtl5H+H
-	eAHo+FIxf6Yj1xzW8iDTsnzXTu4ZY9X0=
-X-Gm-Gg: AZFdTZfDDP85oeWhzwAScF50Unz6AGUP9H904yqkQk06lPEKTpo+Weh0AuePzAJU2ga
-	7qDh8iKKNR5KKzjc5aHfvMSbz99U2HrCoNQQUPY3S5VbtgtIN3dbilurNOBLBPQkzEtvcIrxqA0
-	nRTZ1PiT4g7ohgUYf7R5ebrkkb6ZC66cvMk0W52teECLF8w7tQio5JQsE+qMmENykx6sXam5Eqs
-	arhJ9kr5/z1YzIpc3lYXXY6uywt++ScMu9gTFg5p2J3+QZmTYbfE/TV3/eCJNzgWGbCYFXOeLDx
-	N/AvfHp9osH3FD15N8HL7qKve1dTzeTXxX7NFjdmMlksFqs33o4Rjko4X3AvgnoDQyrQ4H80dvY
-	nHVGhjCSZwXJvQY3Grp99xCPPB6ne39+CMkkPjn5P0FWH761v3mcQJIQlb9iPvNaE2hOjrkqrjK
-	G35ss7Afukhr938vDMEfMpRsJ+dJFny630y9ZHnrrtQ0cV60fws5rnwMs=
-X-Received: by 2002:a05:6000:29d6:b0:48e:d7c:4bc8 with SMTP id
- ffacd0b85a97d-49dad032b01mr11487696f8f.7.1794838437977; Mon, 16 Nov 2026
- 06:13:57 -0800 (PST)
+	bh=EZpAJBrxVDUG3AN5aD0Qg1NU1l6jqV0Ou7o1Iq7ljhc=;
+	b=DyViJllro4uU5tCxn1n1WiprvYGQSnq213fTxohdGacPWkim+ojB3wk0FNM22gkTSpCGG3
+	e4V3PZgIRFyD32A8dieTWOTGap5ywbyyWOhmX9pWVllB1ZTBGs0u5ourmwGgvYb0Efd2nj
+	i/HvtS1hyv5itIrfDXV0316m9UuT7qk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 05C2E61445;
+	Mon, 16 Nov 2026 14:14:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AA51F000C4;
+	Mon, 16 Nov 2026 14:14:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794838481;
+	bh=EZpAJBrxVDUG3AN5aD0Qg1NU1l6jqV0Ou7o1Iq7ljhc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Otsqep258j7a+fFg2THl4lNVNvtC6aDcWX37zWqfZJKN2mhSsfWGwIjoEC4R0bLEt
+	 YXF0jBgnBZRxZmVRcMpFLUZfdHaTjOU3RmFZbKu/f4BLfXL7Wf01W3sRklRX6lOFcG
+	 5RqCELFJ4Onj+ISZXwdDIJBu+WxZMxTT0729yjDYM2gFoSv2F6ogCPqiF26DVvJdpR
+	 8JTvbNHGRouYDUQVCRD4n2bRpW/5wxnNhywny5ovmpMcf7pFCdhqRuV7fFKuzGmqNY
+	 hYvbSAfakWXxDYIIXYEEzWH/Tx/iN+oiiqkJQSC8SyIIro6zHT1E7Wrc/TsroTtqNA
+	 1JBgQW6wjc/CQ==
+Date: Mon, 16 Nov 2026 14:14:37 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Xu Xin (vivo)" <xu.xin@linux.dev>
+Cc: chengming.zhou@linux.dev, david@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 2/2] mm/ksm: add initialization helpers for
+ scan_get_next_rmap_item()
+Message-ID: <avsOr-03NtFVG-6a@gremlin>
+References: <20261116014434.310003-1-xu.xin@linux.dev>
+ <20261116014655.310486-1-xu.xin@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261116110122.309748-1-nakixii@gmail.com>
-In-Reply-To: <20261116110122.309748-1-nakixii@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 16 Nov 2026 06:13:46 -0800
-X-Gm-Features: Aa3M54omNEMN1jWto9qZ-fJE2BPU-EGOtdYeDpXDgUWMj8prRt7WmPFciW1q0iM
-Message-ID: <CAKEwX=M64ZmMLBRiAQ6FiiP8f=jkA4m=HM8rgQo-cir2SENPnw@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/16] mm: add in-memory compression of reclaimed pages
-To: nakixii <nakixii@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Yosry Ahmed <yosry@kernel.org>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C6FB0100010
-X-Stat-Signature: h9rw1psk4qypzn5giyfb3b1sut4arg3a
-X-Rspam-User:
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794838439-906677
-X-HE-Meta: U2FsdGVkX1+66a8LFsB7oC/Go5MCgsOV0jI6v2whmO1QA72rbZt7WvHusDTCVCiOhsuN+blWczubrxJFa7QNeS74jUNZqZL5Uubb6DmCkS1YK/BXhJLvB7QzQXdredJGMrPeNgovWm+h12qz7nfvnK3V1YVbqP0/2aiSjAJfZ58cz5Xf5G42pO6/tDceJNwANDCqQYH2+GbPvYq9Ho3j2UmdPA7rX2tiw5xSSUYuO63aF7hXianmViX2YmVq96R/qqlnY1O5dRkXru/ofwV8pK9oCl1AUHxyuLW8RjhV9wDR4NMrrXiC09oSBIy+3UAg+MAsyScQfnMjhWDoZ1M98INXPs0yncY+uOv+2uvVbK7/twCW2lcsPwEBbCzHEi5lsJse113qWNY5wqMF6Ec+LVzViw45TnfKS6/OiQbFZwsGSk0jqo26n604VBmwD/cWZuETbGjqLn3eD54ziTAuHh0VptrrFe3ABFYQnPgvxPuXrFAc2xVmbpcIfbNIuD2q/DdjbS2LcT7WVnhZ+Un3PFqUPJJgjZvF/mnuPxyRIvIYmZDBKKH/rkrGuWmhMjTqKfXhS6X+cGJHyIq1nzmV/dayEpbtrJNCSb7KWl2MNgaJksiMGA+3+tbbLmYkgaJnUIsNjKaJDrbTyvY2BjOOzRuRCRP2OpKj3+OR3q1D+oWwHaPVXjLnDpoKO3YeYMOjVmRuDeBOXWRD4+lkMLSckVWbZIHDuGHn9QUnN3tPnj9BrolLL4yiyhYqgDhUbQdOr/aB6asabC1h61t7qrj+4NJLFFEjmln2yexSvd/qzp+8Q7TEjSO3A+tml+KkszPBCC9JaC0ngT15Wr4YcQ7cnXt34jqxI/PYsooi1SsmixvC4u0RX1ZVfGMkLs5tLzbeCAuB/nGDqNfQdj0bU0dF66GRKqaXhrfKb4la53reX4OQlITU77Ls9ahrdfbm1Rp2E5FacZRMAZq+rJH7TLC
- vSXIL6pV
- mlgc6WdKfj27RqnXk6hZ/48W8z9ocH1g741NLJv65IMLT1EMh8POGXCzN5og5Af8Czp91ErRxKM7Mz/Ws39+rAZkWG986e1WuBEDf316k+Pc04OKL9UvYbpw7ZsxtAWMDJ3+bZvhWhvMhHJqN9xYqiNeRRbUQTmUCfFFb2igesLItxD4TvQhKNXDzI/MsE3nuai6ZjEgq1GZLQJyNq8BO5h2l7K3l36fnDxmygMQWZ1mhQOp7K8Tx6XRObsthvXe3YLJ1+LsZRmgyz7cjv1G2A04esUVktv81rb/jv2TOYNTBlB5cafcRcxnDgFZhqv/q8R7wvydg7I1JObMsAE4H6X2VxLqyfUhzXo+pWjxgjjA8TjzvzQW4cuLzNnPLc2kkkIyItu8ysqJCJMhfC+oNtKcWeFEo6DC9fX32mVyUe2MY4vr23mVWWX3MtMFU23OxDn6I3p8qeTjm7Zd9FAWmvW70qv85Bs5OHq3j2QhX7Tf5oxrqqOw4rh2c6KOcr4oZRj5FhBOJ5sS4hPPThtYU0aldn3xXWa1cuJMm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116014655.310486-1-xu.xin@linux.dev>
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 8CABE180003
+X-Stat-Signature: h4wj3zumkwurkdda7fpibyuo6asdbb4i
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794838482-480214
+X-HE-Meta: U2FsdGVkX1/L1GGmnp/0Arkq9FKNZjGQvpPI0xIV/Pdiy/fiqA0ib9SNUSTLCpCOYPt2hqJ02WZWxMwnGL5pZS9Ym6id1R6tpTIUdtB8GQks3MCUOmes5LvJSP8DNDTOr+RQcVf1WK3maX7h4Jy+r3UfU6d2zxaJwsHH8/+oiflqPHVcHsuhk1iUCc4ol8uN5653U4pib9ZcSGIDBL+G45WqeNCvlftiRiuBG99mXSZVXbAzskeJ4s0A9mbeEC3wTF8VfUgm97ZJm6WROZ++mBhjDCAiMqSL7UyOUShvUh8r+8OHF5i9qlEW97bdHMu8YewvaWe3ZBi6AyxLVWufeI9RIH2ZxiSADMc5uTl8zoHJJKqpv6ta1epVWZLaUcoWBAH6B7H76PXK0881TsGfHC+7YbTswS6jkm+GAUSPgJZ5VUe7YoevCASucBCXF+X14oaB8yh5tN1B2WjGWL9VFYlB8c/9T/Dm3Eqe+4gwrN2h9xBfb88sjNRJukq5QlbD9jMymZJENi4nfpFPWRSpbgk4wN4So4ZJshToyeATk07PwKRZROMrGR/pFZxixOyHVfgpGCt+Lnol9NAfavaZOKO24KzTSGTpcp6zQMAzgtDsDvSpuXUPt+7gga20ERXSlg3PUNHq+hyZw8NTg3mo7G6oMgwDiQIveS2HeqM7ZY5V217w7etXBWPx/O0iZCJFbRliaeYO7p7HRkUMoXefQdPuJHxQ/swElIwShLxLCoGdey1aCSBZbBjqQJ66lzBHu5FHzFJYZIfjETK3TGFJ4WuGdmhZPddCuD0sVG5Ux4TPNqz3Y+0/3BCgBOjt+noeIZfzaYJe8XzFikRMgtaWj7+Ej/mCkQuwDGackdCVP8gLFkTSa+GOINq8lf1BJM99ooPTp4A7GO9x9dua1J+J5j6uQk3ePyJjxjRoq+oN/Dh1RJjFNhOWiid0hGe0GNkvB5zJvYwlNhybvSoE679
+ yIgm9B8Q
+ rzeJvztK0QbSRnQ3kTF6KDjBBpswHKsvvrQNMt6Ih06KqfjBCEgT4Wkpj3knAXPgjt01rKRB8GGaEfC9iG/ap4HI78jTcwY78Vv3gE/jiK7VdtRFuA2HH2khxa/9g5lL3E3bxzmgNsbyG/UmSYh48x8rV2J2lINYoqlKK73jJvisPOGmFdcNZkdDtKbN7rGRCwYwkeWTalGg6YJE+11czyoOUNjEGIDz8OhqmxDo0uTXZSR7WwhjG7lfBmCUxeeImNPmhrxFYdX0yulh1tXnqMJskhvXmo97HQb3eB2noYRy1i60ioYuFO2eJ7AX8Utx2bC1/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,35 +95,129 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 3:03=E2=80=AFAM nakixii <nakixii@gmail.com> wrote:
+On Mon, Nov 16, 2026 at 09:46:55AM +0800, Xu Xin (vivo) wrote:
+> Extract the new scan cycle check into scan_should_start_new_cycle()
+> and add the helper scan_get_first_mm() that advances the scan
+> cursor to the first mm_slot.
 >
-> This is a proof of concept, posted to ask whether the approach is worth
-> pursuing. It is not meant for merging. The series is based on Linux
-> 6.12.23, not on mm-unstable, and has not been ported to the swap-table
-> and zpool changes that have landed since. If there is interest, the
-> next version will be rebased onto mm-unstable.
+> This keeps the exact execution order intact while making
+> scan_get_next_rmap_item() cleaner and easier to follow.
 >
-> memcomp stores reclaimed anonymous and shmem pages in compressed form
-> in memory, using the kernel's compressors and zsmalloc unchanged.
-> Reclaim replaces the PTE, or the shmem page-cache entry, with a
-> swap-like token that names a 16-byte slot. A fault on the token
-> decompresses the page and maps it again. No block device is needed. If
-> swap is configured, cold entries can be written back to it. The sysfs
-> interface is under /sys/kernel/mm/memcomp.
+> No functional change intended.
 >
-> The implementation uses 16-byte slots, a separate owner domain for zero
-> pages, per-key storage and bounded metadata aging. Memory-cgroup
-> accounting, cold-page writeback, asynchronous compression, precise
-> residency reporting and mincore support are separate patches.
+> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
+
+Nits below but otherwise LGTM, with those addressed:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Thanks!
+
+> ---
+> Changes in v3:
+> - Initialize mm_slot = ksm_scan.mm_slot in the else branch when continuing
+>   the current scan cycle, fixing an uninitialized variable warning/bug
+>   (kernel test robot).
+> - Drop Lorenzo's Reviewed-by tag due to the v2 bug fix.
 >
-> Refaults follow stock workingset accounting. The first reader claims
-> and clears the shadow under the slot lock. Feedback runs after
-> charging, outside the PTL and slot locks, before the page is read and
-> installed. Consumed feedback is not restored if the read or the
-> installation fails. An mTHP uses the shadow of its first base page and
-> clears the shadows of all its pages. Swapoff returns payloads to the
-> pool without building user pages.
+> Changes in v2:
+> - Rename scan_begin_new_cycle() to scan_should_start_new_cycle() and keep
+>   it simple (David).
+> - Keep lru_add_drain_all() in scan_get_next_rmap_item() (David).
+> - Use scoped_guard(spinlock, &ksm_mmlist_lock) in scan_get_first_mm()
+>   (Lorenzo).
+>
+>  mm/ksm.c | 47 ++++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 34 insertions(+), 13 deletions(-)
+>
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 8db6743ece6d..89a3da4a4874 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -2638,6 +2638,34 @@ static void ksm_reset_unstable_trees(void)
+>  		root_unstable_tree[nid] = RB_ROOT;
+>  }
+>
+> +static bool scan_should_start_new_cycle(void)
+> +{
+> +	/* Check if the cursor points to the head. */
+
+Probably this comment is redundant, I think the code already makes this
+clear.
+
+> +	return ksm_scan.mm_slot == &ksm_mm_head;
+> +}
+> +
+> +static struct ksm_mm_slot *scan_get_first_mm(void)
+> +{
+> +	struct ksm_mm_slot *mm_slot = &ksm_mm_head;
+> +	struct mm_slot *slot;
+> +
+> +	scoped_guard(spinlock, &ksm_mmlist_lock) {
+> +		slot = list_entry(mm_slot->slot.mm_node.next,
+> +				  struct mm_slot, mm_node);
+> +		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+> +		ksm_scan.mm_slot = mm_slot;
+> +	}
+> +
+> +	/*
+> +	 * Although we tested list_empty() above, a racing __ksm_exit
+
+I think you need to update this comment to reflect the fact that you moved the
+list_empty() check :)
+
+> +	 * of the last mm on the list may have removed it since then.
+> +	 */
+> +	if (mm_slot == &ksm_mm_head)
+> +		return NULL;
+> +
+> +	return mm_slot;
+> +}
+> +
+>  static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  {
+>  	struct mm_struct *mm;
+> @@ -2650,8 +2678,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  	if (list_empty(&ksm_mm_head.slot.mm_node))
+>  		return NULL;
+>
+> -	mm_slot = ksm_scan.mm_slot;
+> -	if (mm_slot == &ksm_mm_head) {
+> +	if (scan_should_start_new_cycle()) {
+>  		advisor_start_scan();
+>  		trace_ksm_start_scan(ksm_scan.seqnr, ksm_rmap_items);
+>
+> @@ -2670,21 +2697,15 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  		ksm_prune_migrate_nodes();
+>  		ksm_reset_unstable_trees();
+>
+> -		spin_lock(&ksm_mmlist_lock);
+> -		slot = list_entry(mm_slot->slot.mm_node.next,
+> -				  struct mm_slot, mm_node);
+> -		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+> -		ksm_scan.mm_slot = mm_slot;
+> -		spin_unlock(&ksm_mmlist_lock);
+> -		/*
+> -		 * Although we tested list_empty() above, a racing __ksm_exit
+> -		 * of the last mm on the list may have removed it since then.
+> -		 */
+> -		if (mm_slot == &ksm_mm_head)
+> +		mm_slot = scan_get_first_mm();
+> +		if (!mm_slot)
+>  			return NULL;
+>  next_mm:
+>  		ksm_scan.address = 0;
+>  		ksm_scan.rmap_list = &mm_slot->rmap_list;
+> +	} else {
+> +		/* Continue scanning the current mm. */
+> +		mm_slot = ksm_scan.mm_slot;
+>  	}
+>
+>  	slot = &mm_slot->slot;
+> --
+> 2.34.1
 >
 
-What's the motivation of this line of work?
+--
+Cheers, Lorenzo
 
