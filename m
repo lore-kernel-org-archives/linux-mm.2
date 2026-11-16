@@ -1,102 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9952606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FA2606A331
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mDChAnWA
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Pz7j/Ikj
 Received: by kanga.kvack.org (Postfix)
-	id DE9366B05B4; Mon, 16 Nov 2026 05:10:31 -0500 (EST)
+	id A90266B00EF; Mon, 16 Nov 2026 05:35:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC0E06B05B5; Mon, 16 Nov 2026 05:10:31 -0500 (EST)
+	id A40646B05B0; Mon, 16 Nov 2026 05:35:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD7816B05B6; Mon, 16 Nov 2026 05:10:31 -0500 (EST)
+	id 92F456B05B1; Mon, 16 Nov 2026 05:35:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A98396B05B4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:10:31 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DF4AC05FD
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:10:31 +0000 (UTC)
-X-FDA: 85440562662.11.1364643
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8E1F1100005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:10:29 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mDChAnWA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794823829;
-	b=PNn5zUYx40mJdDpKU9+eflKHZ7TahlCUwRtPQN/RN7hLROaMsIvmT3B8Q2BMhA5heRzIr7
-	SyKbfgvMrI6u3svhk6adY0rZwjEBwfgr0fl5+xbM5mQg3bqRNpeUZ8W4xCwaViuKEUyjzO
-	MAabUPDXnQ5MtJup8UsRNve3FcOV6BQ=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 741806B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:35:24 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 016B51A08F5
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:35:23 +0000 (UTC)
+X-FDA: 85440625368.12.52A0837
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 26F81140002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:35:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="Pz7j/Ikj";
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794823829;
+	s=arc-20220608; t=1794825322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JXbbxzTK4STMxlRmt7LCwpa3q0WjlHYEgdFStr3myuI=;
-	b=EJ5OisXqYrymFBeQapxydrTDhLhZ0E1gAQ3s16tgu1t80zaI04pir8urGHGo6afD39ki9d
-	tox/D12BKK2eDUs6SfHkKjxSJt5a3YHAaKqz0X0a20Viof9FnUv3CdGQmlLdjT9kerhS4p
-	fYdDdE2rc5lLzihuOQojjMPBpBEN534=
+	bh=iyaQZx4YaB2JOzxstluIUEtBMcc33AW6Ym2vysf33mM=;
+	b=3W4hjPv6tg4jfZADO08rx/4c+AiZB6fgGZ7T7bgLgnyr8maUAjdCTA5kRwwVUKMUZkXFRf
+	eHjJLZdOc2rx/WsER+oxb3sigbb1wbC9tUvg0vGH/5AKKfavqxsuiMYDjkpxQH59qb9TPo
+	E+BXBKYnbCTVvrEcDGZ4u69PkTaqe3Q=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794825322;
+	b=e8r/cx9rB+VrL/KRHTRELAnvbKgtm+Ss19hIg/d6m/OGUnjinpN68wqaaTkfN2Ij5IoFzl
+	m1i6eM1D2tvJ6JwDXrJnfThJfcApZMRyqc0YQ/hXsLgoOOFHnKqorgzQDK68lvMUurQP9j
+	m3IKpNZeQrrsEIWMMsAXyQ4i/GvJgP0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mDChAnWA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E815F61906;
-	Mon, 16 Nov 2026 10:10:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A5F1F000C6;
-	Mon, 16 Nov 2026 10:10:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794823828;
-	bh=JXbbxzTK4STMxlRmt7LCwpa3q0WjlHYEgdFStr3myuI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mDChAnWAybrGnG8HbCareJDnR8uYlxFVzdt/PWEHutV/Nu9mlhxDeSVN5z3+uieoP
-	 867FCmZ3I5iE2imreP7FBRBUKB5hMORMgEXUcUpkas3sC4KaU9Q/+wmfkEF0B3SzQo
-	 OMZGv15rDPhqH47R/dN0GROMD1GDI48+9RqjdObrC3uC2NFm7CKVGfPG1nXelxvmbh
-	 w3wY/IAqaVUFR4fsK7UJHrnGVcNrYueDRfW5xfcWYiCfB8nZ379yX/zP4mA1AHXTT4
-	 fD1TYp8xdCmpMrHHD5J2pdTfZjyzi8DHOwtymSKOTRXzuS2wLJPK06p9cgYx18/KGQ
-	 yxJD18zhnfAKA==
-Date: Mon, 16 Nov 2026 11:10:22 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, Sashiko <sashiko-bot@kernel.org>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Jose A . Perez de Azpillaga" <azpijr@gmail.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] mm/hugetlb_vmemmap: fix deadlock during PMD split
-Message-ID: <avrWjqe5kPfkReIj@localhost.localdomain>
-References: <20261114112523.75208-1-songmuchun@bytedance.com>
- <20261114112523.75208-4-songmuchun@bytedance.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="Pz7j/Ikj";
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb55cda775so14167755e9.0
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:35:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794825321; x=1795430121; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iyaQZx4YaB2JOzxstluIUEtBMcc33AW6Ym2vysf33mM=;
+        b=Pz7j/IkjQtNOs5VvhAob7zLZe124oJ17jtJKXsZvj+EXTaP886L8zH1QMCTxIN4KTn
+         tm9ZDK/G7I70YsWUPwUMvGaWTLWik5ha4DQDXyEYj3DT+cOUGMTiNiQJazIuPja+hcWz
+         d0d0Nr9EAONA621gORJHn9NaC6M3gBcTjEXMZVAOl+EiJZ7czl+gFRfFWm+eW2tRMb63
+         LmfjFdOXxMULC6RpKVhO+zbc/hMWSwb1DsYaBfBnD2ejWuJlU4/GJ2XaZaUgbZLruCEO
+         HES5KgFsSMbfK/d1zUK47oWX7zYGDnawPacG3yQ9CkJVCVYRi5y1nw5XerW+NEHnRxkH
+         hQvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794825321; x=1795430121;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iyaQZx4YaB2JOzxstluIUEtBMcc33AW6Ym2vysf33mM=;
+        b=co5MKgaaOluF97RonBi1JlO2VWgZmnanEocPnYzo5NzIQXMB/CtW3IyhXyH7JrVzYu
+         wlwKlRWnJKgySU3xN30CMNOUMJ0s1VU0PGPASz8ITaiCLqsTUNAqjVWcLN3nqqfrx+rf
+         7RfLPr+BCqgI/WAHg8yg1r83dOltGVo397FPtyVq1Did8d3o6+A6NBFMW9goz/lawRGV
+         Qm4OApgpalHIgsoD9VLIj0GPyFYDjFx5HYX0cV1dCoOYB02hGlJ6oFmjKuFT6wxVtqpj
+         EywjyIcUgS6UnW3cnUuVJ8ImeKBH6NuSUWNCFzqIRiBVVS1ZGGfipcdDp9z5cEGVc8ES
+         EHzA==
+X-Gm-Message-State: APuU4Z/5kQdsmokSU7VlSair0q+buzTIhN07JHTi7NOjb/ABROdlxv7z
+	MtpFIS9MehxngdX8YliYO8m7eTYCFLivOb0AeWacmGnd6AtMNamILrLM
+X-Gm-Gg: AYBFou1yBaPTPSHhwFelS3wOEzOfNUJBQJ2VT379maSGPdgrB6wEn3vuFTYsiUPLHHt
+	S92hCylPUBX31drdLiEfIrgbY1El90M4LJznZQxcftcn5EuZBfK8Q2es8yRuXATUwJul1TLEJ/P
+	NKJ46EBdVT1/lRWtpRwFUDz1Iq3tUyl0SIYW6xhPRZZU5airExozLyApVdJVtK3aJhDSFfMcWk3
+	FLUaVJF0dP7DFe2YzD0yKICYTIfpuvdbiuWVxBnx5n7tBs1HawfqKwcTSP1GupDGiuM0JFWH+XC
+	0oZ7qztiXAeSb7BOvw093ETU5Y3mEQCHqk3kzUU/Ej7aJcX4W2DfrdvWJxmEjcwLVDfOve/36ep
+	I2tSW2qAFsTIZUAaBHilLxJ6z9HKj48G633nzNrMMN4Y9teG8p79PkN1P9wCgxe7TheUz4oWEwg
+	+4t5g3SyYq8PxRi78oaT7cMrcj2dOWGx+IVwS2vmAF8I7mceaRdxGn628iECXzVdO7/ogqZQKTA
+	n88kdy7P1UtBVfLtPyaIZKuQQrKO2MgaHSBuQUTQ3117kC9WiNp7idHq0HwM0vDyyw+bV5j2lAf
+	hdY/EdVpjkVadFs8ueEp+/F5vw==
+X-Received: by 2002:a05:600c:4f86:b0:4bb:5fd1:92aa with SMTP id 5b1f17b1804b1-4bb5fd19428mr160740475e9.15.1794825320590;
+        Mon, 16 Nov 2026 02:35:20 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb675200e4sm118113715e9.0.2026.11.16.02.35.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2026 02:35:20 -0800 (PST)
+Message-ID: <b3183fe8-5e7f-40c2-a534-c643d0fd2bed@gmail.com>
+Date: Mon, 16 Nov 2026 11:35:18 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261114112523.75208-4-songmuchun@bytedance.com>
-X-Rspamd-Queue-Id: 8E1F1100005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wo7pfg6sb7nh6q16jadw55pkkxmit6nb
-X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794823829-513738
-X-HE-Meta: U2FsdGVkX1+ndCEhbo4+rwVlA1hf4iWT38xjtSxzU/lwZQrMx/h/rIS0LL5g+xyu0+POuLOZRDe109hWy0BqGkn9eJSNDg6DK67n5tiEIM2cw8jZh8/4AbEpexbdUIOa+xaycUWhRSPJxo21kz0gzU56/j9fQ2EdQ6QG3zN6jTlkb8RxJT35adCZHD30oJEEZC3tDI3WNLXB6ejJnjYlQovDETZiKZhxgA5zS6FP9TUOfx4JNQFes+81yECQWBDlsKCwVf2PEsaWLi/dIFdtPYZSlsAdV4sTD5eVP/xDB2wNRQEZB8uJPEjrGrTUlU7zI0SxmorwJmkWB3qn/7PGcHiuDU9/OYCnulJbX5wf+YVOVAcYYu0m0MXLGJ+cUy/GAYVQqMuSIMDchkJziyc9LcJID+g44/EMjImY7weJT2Te9SIMfYP7sHN2EVJxyOYcY4bcZMFoB5xMeRfonpz86Ve6H2OVHYHVTQT1YeXNurvSOUq8PxhZNgH8Sp0lGkIelqinRbVbIXS+TXKICOYsLIUH9P1I4Q9/a7jQkHu51a0GMOXzzhcrm4uKX4HPgZiuLXHEMmeB8XDDfakvqPX18jD+Do5kiGaG4BbcjX9wKklvmhLndZFNWOknvWYp8HeAfBFN5p1e6dPdNYb8XWKfCOkrNFOKxXFZriz8U0Who2q6sRSfZEBp8vN/Qwxrf9B7fZDlEJDlF8JBrXvDEPhILSWhoa8D3rfxM/U4onCKAsGTrPr3lB57i6QtmJ45gVN50LeDB5/a+xDuSmOkNbsd+zMPEgMOI0rwyt2Ldrhk51befU8hzcTB322ZqT2hzBxY7jsRkr5otCKib6BgJ/D6DaFWy1kwq9f1yC3ydHMnevr4YpEP2G/mvyQpvdQxbPS8ZMVdmULn0W7xki1X2MRvFK6LhUU/v1JBGZ59tJbJWz0MM8S5+VjQwPkUmhUZEBdxwa9Y2RvIpcA+N77pqDo
- +DRek0ND
- c4yoKgeNAwMbryQQftfMbxwITkbM/H5C2f8qa4XXO20lJefAipaelswetyeXUlItZh29HiRWIPKFJBxdqvUZxzAVCeCO/ZfrkXvGujTu46yJTEQOzzhs09pIYrXu5rZbJO/B85P5L2pQqZtnLfLKAHF/EOVHkDqdcVqP3IxYB0JDBm1cfWWINn8fJkgjVq+A4FonLIyU6qIEIFgwhO7Xu1zc3mhoZEijGBeSTTk8+7AWBcuibON2dEQ1Z4iCARv7zE3XwFb9yxDHE/rG63748Nx1kA/zNc/CT6egrRDZjGfWs3iiL9rgYicQKmpzcJ/Y9XxP+XBm35CWAHUUXvt8e09h936MgyrKhRlr+9E4cC/c8J+qavwMf3EuvE90va9uw+L0CjKrHhIt3AdeJcoAebWLMHwsg+dGda59ZWXfrVzO6VqPwUnKVufxFsrnoR2aEItTV7elokl7EbVr2liI+Sv8PjQbypxEIYsGFY7pcRjXaEGWd7zrAwhqKnE8RbfVc0PTNiR1QrRYgH18muMOONDJHfQhNK1pO6iiGsvAeJvS3onI7x4vgXD0mNA==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] mm/memory: remove racy huge PMD assertion from
+ walk_to_pmd()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>,
+ Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>,
+ Roman Kisel <romank@linux.microsoft.com>,
+ Saurabh Sengar <ssengar@linux.microsoft.com>,
+ Naman Jain <namjain@linux.microsoft.com>,
+ Michael Kelley <mhklinux@outlook.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org
+References: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
+ <20261115-huge-pfnmap-fault-races-v1-1-537605643f6f@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261115-huge-pfnmap-fault-races-v1-1-537605643f6f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: qk6kohu1ts7c86n8g68oaw7dmtssqeud
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 26F81140002
+X-Rspam-User: 
+X-HE-Tag: 1794825321-228661
+X-HE-Meta: U2FsdGVkX1+nwp3kM5zcQ61EOFftAi1NrzRtKhooo5DOVQVqjMRClhR7QXxyatBPcym2XdP+6bNjKwpdLjo6EHBJSsbmjPQXb9PRxlk5pZvvM8RQQxiTasZn/TrwFib7xCz5nxnxdkuVL/T1XnehbcV3KADFBPRKKDC9j5RJ5pBSqgCvZKpLcHpEVq0Z8Q/8dnaeh9orIeCzYPJc6X2MEh6hKVDgMnphJlWRV2kfn76T92aRQJSANC5W0OWUzqCF3D8XwKOy07DtH3Pp/G3KKwwKgB2EWm0N/us9OxoLCsC4DLBPFx0UfsmGOdzP4Jy2HVJrvKKbdhlBHt/ujfJKhXzNkLG8362/+f6tu31oHThjsZ+lAEuTILp8s8Ij42ydaDP4tUsJNDDHmtwEMCgjiDHKUn39V02Eu0Wy0ECOf6eRWndCV+7gqe7nWX09UpgL0AnHSGYRogBFPwfkBCB0bjYW1FML0s5l5HDTMnrDwjQby2sEedwugeeH9zHEi9g0uPH1Ht/NM1fbcNoLiPdtbTGH9FKOSAJY9F3MzugRyHIGBUwPaSFYfZT9ZvgG3NAvOxi6oFNnhBCqHrt/wB0Rpy4F2dLYvINeyZUBxTAxIYvRpR71jA3wDpqKQVm3LH4RA/ufeNM6PImA8y36BmNCvNKkhyDcAC70pQ+elMXvu2Zxlda/bTrthIIhxx2SAee0bOfSQq5m3jRLwKsoIJ2GUVFatbu6tTTJpc8De4fEzomG/BHaUNF2MLetUYUIUdpRHEyQZRvzpIYWHUERqk65osOpR4xZKML+Lh897HiLnu4hhw/OPq6IUgwoIJCQZ6v9D5d+dLRoq0KC5x4zrvgRmcDUwD4GusTmcODDczY0Q6iIUGtJLGX9+8HjHWiyAjTYek2s+jHBUnzRUtO9kYjapqC7xnDE42AsegJA555+hgIyBUt+PH5qnLX5KU9XYfRA5wza4TeT8SOF9wXrTC3
+ wcM0CjlT
+ gQXDP2as7uW4UDG3oFAngzmJvtX0IXfTvjjbIyAl64kIragHigQ8e3BZNRF1vNDW/KAUT8DlbR5J1MbgcnsdPASCSqZsJAQeRWCuf2Y3MIaCRmUzGuuIEkonoK6CYF6Xv6Qxxu+fRdEiZARUKZ7Bydi1uKhIZQ2vTrQNpphCCiwxqIEnXkkLJywck6xpE2btrjBgYCv2DCHxSDw2z89EOUdCUfD2+dakEzLIE4ls66VnQEoQjfRqK5/HE/tIOXgpT4KEUeb2R3mFEISlK9pkZR3sLmzRwkpl1+9oui6IAVj1eBiRhk3ewadx4hxN0gsvS/q+hD2WBZR6Ho8mK+vY5mohLd9cJUv6f3Rw5w0mk5y72CCTuAEL56K/7xWUDLHqkRnJzo73I0ungA6a7pTs0bhzdrofd6NiLTQF6v3Kx5ZeTxiqO8V4dZJLxKxfJFQlWjpMIYRlWSP+UcEPt3OrW6YCuFZuO7i/7l7f2yTIpZacCV3B9qA7xqAAYR0Yym/Y1qsobqTgOa7D0wp8KgxKXxFDXkYVKLmiedo3hJVqsRQ5Hu2Cd6dl3UY9NQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,46 +144,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 14, 2026 at 07:25:23PM +0800, Muchun Song wrote:
-> vmemmap_remap_range() currently walks vmemmap page tables under
-> init_mm.mmap_lock. If the walk reaches a leaf PMD, vmemmap_split_pmd()
-> allocates a PTE table with GFP_KERNEL and can enter direct reclaim:
+On 11/15/26 9:58 PM, Lorenzo Stoakes (ARM) wrote:
+> From: Eliav Farber <farbere@amazon.com>
 > 
-> hugetlb_vmemmap_optimize_folio()
->   vmemmap_remap_range()
->     mmap_read_lock(&init_mm)  <-- outer read lock
->     ...
->       vmemmap_split_pmd()
->         pte_alloc_one_kernel(&init_mm)  /* GFP_KERNEL */
->           <direct reclaim>
->             ttm_pool_shrinker_scan()
->               ...
->                 change_page_attr_set_clr()
->                   mmap_read_lock(&init_mm)  <-- self-deadlock
+> walk_to_pmd() asserts that the PMD entry it returns is not huge, but does
+> so without holding the PMD lock, so the assertion is only valid if nothing
+> can concurrently install a huge PMD entry in the range.
 > 
-> Since commit d5d8b8662e6e ("x86/mm/pat: Acquire init_mm read lock on
-> attribute changes to avoid UAF"), reclaim through TTM can enter CPA,
-> which also takes init_mm.mmap_lock. If a writer is pending, the nested
-> read blocks behind it while the outer read cannot be released, causing a
-> self-deadlock.
+> This is not the case for a VMA whose driver implements both ->fault and
+> ->huge_fault and which invokes vmf_insert_pfn() from the former.
 > 
-> HVO walks vmemmap ranges whose intermediate page tables remain present.
-> vmemmap_split_pmd() revalidates the PMD under init_mm.page_table_lock
-> before installing the PTE table. Use the lockless page-table walker so the
-> allocation no longer runs under init_mm.mmap_lock.
+> The existence of prctl(PR_SET_THP_DISABLE) is problematic here, as it only
+> takes the mmap write lock and faults taken under the VMA lock are
+> unaffected by this.
 > 
-> Fixes: d5d8b8662e6e ("x86/mm/pat: Acquire init_mm read lock on attribute changes to avoid UAF")
+> This can result in two concurrent threads faulting the same thing
+> disagreeing as to whether to attempt a huge fault and thus ->fault and
+> ->huge_fault running at the same time and triggering this assertion.
+> 
+> So just remove the assert.
+> 
+> Target the commit which introduced the first driver able to do this for the
+> fix - vfio-pci. DAX also mixes fault orders within a VMA, but serialises
+> them using its own mapping entry lock.
+> 
+> Link: https://lore.kernel.org/all/20261112051440.16140-2-farbere@amazon.com/
+> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/sashiko-outbox-206969@kernel.org/
-> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> Signed-off-by: Eliav Farber <farbere@amazon.com>
+> [ ljs: rewrote commit message ]
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+LGTM:
 
- 
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
 -- 
-Oscar Salvador
-SUSE Labs
+cheers,
+jose a. p-a
 
