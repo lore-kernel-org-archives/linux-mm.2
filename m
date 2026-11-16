@@ -1,145 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCCE606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D50606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SAFQEOY9
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iDVtXHZd
 Received: by kanga.kvack.org (Postfix)
-	id D76026B00EF; Mon, 16 Nov 2026 10:26:41 -0500 (EST)
+	id D77346B05B2; Mon, 16 Nov 2026 10:27:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4DC36B05B1; Mon, 16 Nov 2026 10:26:41 -0500 (EST)
+	id D26DA6B05B3; Mon, 16 Nov 2026 10:27:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C63966B05B2; Mon, 16 Nov 2026 10:26:41 -0500 (EST)
+	id C16AA6B05B4; Mon, 16 Nov 2026 10:27:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B2776B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:26:41 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3591516014F
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:26:41 +0000 (UTC)
-X-FDA: 85441359402.22.71EE942
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DADB312000B
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:26:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=SAFQEOY9;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf29.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9B7B36B05B2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:27:15 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A90A160152
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:27:15 +0000 (UTC)
+X-FDA: 85441360830.20.31AB89A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 59D2B18000E
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:27:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iDVtXHZd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794842799;
+	s=arc-20220608; t=1794842833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0dwK8TI6qy1OW1ri/FZaygFVxUbF5MpF9Rcdk0ygAxg=;
-	b=voaGGS8FvegH423oZA98Z3Mgv84M3sFCwcP0J/AICJQ4TneJQbRS+RzeAcigBaYIk17Lv8
-	l9JHfkoFgMMiJVKi5I1UrIdTsIE3fOCaww+s6b0bp2wCm6GI0xNRX/w5R6XZ4WMaoE7ESj
-	/hHbLBHXwmMYQ35vTmHUopgbkDzTSSo=
+	bh=upQeaziCAp0s4MI1ooCF98Esj09UZt1W17ULeweJf7s=;
+	b=JptdNaGBvwGLhx8GTll1eIAFyNIiYQFZe9ppaXAroAtCRk4ifHvsfUKusSPWYVaGc9v7Sj
+	VshqG2OohJ2BIDI0eJXldLMO4cm9rKyYs37bmSJdcIAzuUihoRLeD+200T/3+5ozpexD8D
+	vm1AtlceSEXikvGNzt3bZ5XHLFEVBE0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=SAFQEOY9;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf29.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iDVtXHZd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794842799;
-	b=23EdcqAN+PoGtEioIzsXY8MByqDh1YOKCK9uaPMDfJExa9e9lenp+FXoW+1Zqd9Uvm9OUd
-	oQ5pfokM2hehigOlp65X+99ho/wLOwJPscT8gM9JltUSYxIGTlJRl/+eEHK57aSY631ERt
-	S+Sb2hCT211r6N/G5pgbkRXjz0ixQdI=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGDuOv43631009;
-	Mon, 16 Nov 2026 15:26:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=0dwK8TI6qy1OW1ri/FZaygFVxUbF5M
-	pF9Rcdk0ygAxg=; b=SAFQEOY9K0TF6/76lgxBx3bHlrTcJ+GsIIM0PkVfkre54L
-	WUrNawywEsYtALjdlz7ofXdB9p0Pp3egTKhANOUbktufoRvmRT/MzARpdiSMVZlw
-	su0KVzmyx13KSmJLK/PiK3rpnVPhnEsn//9nY0gy36aoLcjLTyjFMQDbAOXVHf8j
-	nyNJ/1UQMv6LuzpTiAwhdbz4U+Jd/XdoA+qUAftLY9KteWw/Q5TnnzqUtvCym1ok
-	9JQbp2iasqQ/R24Kyd13VMvyjg2OER06mYerSObfIn1wg1XvQEnQj1F2xX+I2NRY
-	FMNNBsgYpHZd0WqQvY0BmE/YfaMtr6q2LA0mRymA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxf566bxy-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 15:26:36 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGFGaHc1877646;
-	Mon, 16 Nov 2026 15:26:35 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hy46fyvcd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 15:26:35 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGFQAP552429172
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Nov 2026 15:26:10 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 643D920043;
-	Mon, 16 Nov 2026 15:26:10 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 06C4C20040;
-	Mon, 16 Nov 2026 15:26:10 +0000 (GMT)
-Received: from osiris (unknown [9.111.42.169])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Nov 2026 15:26:09 +0000 (GMT)
-Date: Mon, 16 Nov 2026 16:26:08 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 12/14] s390/sclp_ftp: Replace get_zeroed_page() with
- kzalloc()
-Message-ID: <20261116152608.165348B07-hca@linux.ibm.com>
-References: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
- <20261108-s390-sclp-ready-v1-12-3e7c90eb6676@kernel.org>
+	t=1794842833;
+	b=p2L67Rge1wVAXc5e5O8/OsB9skyXcgO0S+mWYMShsTQj5+VrwNCblJpFnsz3ZF7UUbhdZ8
+	lilvT+ChxExw4r/C/wBu+j8x5+aZQ6Bet76cRlTxo6LMzq4GT1D5rzC6p4PYS7Lm/JU82o
+	zQHa7DdYwhfliXSPpQ9aUkZAl5gNSlo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 83D2940AD7;
+	Mon, 16 Nov 2026 15:27:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DAA1F000C5;
+	Mon, 16 Nov 2026 15:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794842832;
+	bh=upQeaziCAp0s4MI1ooCF98Esj09UZt1W17ULeweJf7s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=iDVtXHZd3KFWd+PePqI5m3ksMYq2Ip2nzvIZCcXiHgLN+WyUxRnE9/q7AUHvuLjp1
+	 J/qMSEJJMZD2w3rETtxoaxmT6/AyHRT2OX4tLc+WW14/OFxFHkUsKF5V0YLLXfuPab
+	 g9Pr3oRKBVQhIb9okU7FDIZhxqd0r8xq2SARQuaQDCLFzfVwOeST5AG3ezeG+HXor/
+	 8sD55VUCq1P938fItCtDJot9h5YEr7ixBSg9akAXV5UxgwQkulpfdXjZDFeREIOXbC
+	 49XA/TiY8veuAci/EuK0XrLA8wWUpZRCGFqxF0vj2fpYkmBgZI03DPR6e5aOykZTQC
+	 epkhjpM0bh/0Q==
+Message-ID: <6c573cf8-4c33-46e0-9309-1d645ee827df@kernel.org>
+Date: Mon, 16 Nov 2026 16:27:07 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261108-s390-sclp-ready-v1-12-3e7c90eb6676@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2MSBTYWx0ZWRfX28vpUqlOw2r1
- RkcZ7aGlRqN8/B2JmCvFltseg1TH2tw3HR7sWeoijQCc+GAC1EH075/kKK/AZCrVTwprGD1F9PM
- tgpccJdR/tIoS3K8ae2yMI76NUfS1a4=
-X-Proofpoint-GUID: BLvltcQCLTMTj6A-iBioRX8bDKVj9MqI
-X-Authority-Analysis: v=2.4 cv=ROImjIi+ c=1 sm=1 tr=0 ts=6afb20ac cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=cbU3o08U4KG32iXkhCkA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: BLvltcQCLTMTj6A-iBioRX8bDKVj9MqI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2MSBTYWx0ZWRfX9sgdr1ebrgLe
- Ln76Ip40/j/6weeD6F/mfUlMpvPsE2RYi5YfpZy9gnRqQ0VFKd+HW2KAnF52RPLdkXa5qFnEKBn
- JhSiNotNAqHadAroyAGROu3gbFRVml+ffds4biAjAC2jBMGjLBRhAOeBHL0lyhnp884756IDaQC
- dUdjWb5SDOR7sjcSq6cE06ntJC2spQbZhSPY2uC2H4P7md+85wPr8NcnjkGffWYzqn09pm2LwnK
- w9zAo/+HdZ2HRZdi5y0T7RFnEqOB3ZaNbNN8oqnG3tE7NZyF2Enf8I9IPYlA4/hnPNnbXN/m42V
- pNzl88LPOd2ewtLsSIJyPhw5cYy1TUcz4wT23b3tUm0CVl34xJhhxFDVQTwWxdktM5Ac/AkYTdi
- 9el8mwNmj1s/KZoWPfREvYnDmUEMQy9DF7y8tACCk5ZTWbkkTiE3pFHySe0pjffAbo/MYpsUKS8
- QjCeTO7vq4r4INxG/Mw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-16_04,2026-11-16_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 bulkscore=0 spamscore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160061
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] mm/ksm: add initialization helpers for
+ scan_get_next_rmap_item()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "Xu Xin (vivo)"
+ <xu.xin@linux.dev>
+Cc: chengming.zhou@linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20261116014434.310003-1-xu.xin@linux.dev>
+ <20261116014655.310486-1-xu.xin@linux.dev> <avsOr-03NtFVG-6a@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <avsOr-03NtFVG-6a@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DADB312000B
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 11nnmhsgiaummkc8n6a3te5zbopkytyq
+X-Rspamd-Queue-Id: 59D2B18000E
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: qisocoqnkh878irgdf1xgbs5c3jypzqw
 X-Rspam-User: 
-X-HE-Tag: 1794842798-457416
-X-HE-Meta: U2FsdGVkX19j+gSClQS1nd/PH5sLW6w3qojKu0gKwYTUu8Cm42Q8wgPxIjJ7UW11hHxg8gw4z4cPjZ9YAy0yurfNU8Q6hvroq5SoCYmg3bXmP8luDnrUZqvlAGRk9bnJIwbT8NL+eSzSv3fiKr+kYV8Nv3GAXICnZbl5NWHJji7QX797PhOAb6uHrMhwL2ABRu6UM3BC216j6oPtxWU4qn3Bhg+5u7RIHqKdxyZSRcpo4O+fmTITeOQumt4oa0JAecIb8AojW4eh7nW2z7+FHxBlzuudILFVx+4Iz8LAUD5O8udypRd3wXs6ffTcXdA/JuZDNNhQSOR3o54Bd0o7/g7BERerQrmO5zUu1rEQpl2u98RUzp2JnLmgMwn62MmvzCR7+aTUSwN7toAsLFCNvaxDqprIFLwIlwoUVJBYaMBcfEsKAr+5RLcecS240NV1Q2B0rK9ELhF7J+ykzrrctZg3Wgk4UgD19NfcJlNMJOnRLRZHSH6oTa4Uv9u35BRCzQeD4WsACcB39jouuroyCGFFGmha5OLuC7KvHzQgWZ3HMYYWUiMIi6bxqCzl1tyy3SGJt9eC+BpbqkEdsvve2hIKYJ7qCZiZ0Y7Ll1GEx5puH61UZQFQa3gNWn9wNZTEDS+03IQA80mUuNy4qljuMhYi17Sl502jxUxxaMa4NvvBkEN8wuWWhzmdE4jPDTnDQjLuIdw6MK7BMaZgLi/n8GGBrFsKSP+R19a7tkj9Sk+mucinzczpzZxDxOEcxBbljB12N7nGsAhmkeOu8lYc/zmC66zR5yThfHyXUzxcF7XkEOmRDupDpUGofyBUJFNDfTGANkLdc1f+iTAiRq4jAoyihT6LUYbyREqxqEDFFygBO4BcNKLEoRYSaP57jNRtID540KBvW3KFuGqls4EFEqom0++3gc4AQ3jT5nrXbrFlBUYyaAoIsg7i+9EwZjgNdmlXYqqo+Cm3xKeJ5Vj
- IttVJcFX
- ZyhGdjM5us1y0sJuSOitFVh8XwaAT2TQGc2nWy+1f3exeX3CQIHRrnT060i9fNe1kRZSe+dMCeBnZNLSI7+Y3SK9WSlWsoBSVTmZpAsCxOukRDvFsm5ftnenp40HS/UTplbpLDOZTYSOzBzQEbNWcmCtohf/z+FrghmvdRFSxZ/FkN4bdTqHliyeGAVHamZ6dQDaNd+6IWyqd7u8NxreIvUkPx1I0xIWIavck3v0n2HFyO2Qa+RveSzLz0hjaQ/mFykjyI6RI26BwsJF/u6w461todirlOxAp2/q1abnGP8MhhkQcg65wwDnXl6TB7hdL8wgyuC73k8kCFKO8lsz0ti34nhxhereJMcRJQFKbmVEHQ5k2AH6N7kOZOO2lDWQT124RP3xCm0UPqSdAjNM3IfCBhA==
+X-HE-Tag: 1794842833-904591
+X-HE-Meta: U2FsdGVkX185QJdLE+CKVQ0komh2vW016n68FNWp7DrB15ZfOCHZMc07Cj5YQVAiX3dXE6EzABkUbPDUDyjWiDweGV8NS85ZMA0veVGtTBbvX7TiH69E1UsIqxI7hqC0/FAF6O6yxhT8Gv1EUvcdpHr16E5rLBUkpQQCpX7mp4I2aMY744cvQAiWAHqRig1QBX9eSCB5Vf1aU2S4+HarYeDlhotOx3mEI1DkRWUfWbw5Z6cOyAlOv1/b2D8ifHT6jcugMYDvrPCi1GSzglZIng2q5FNx/fU2Pc4y3Y1cesSHFG1qGg77bJkyIa7ELBtdXs7Dsy500KIX47wg/ypXNzWR3MGwh0vabqyyyqEX5w2HvHeeA6Xkt9VwjQyxTDuvYmlK1w/d88msyWFw+ICTh0ZhXyVmwPySqIR4ebb32p3QZS8/PEf9XZ17x+iT9IMbPeNEfTmHwZMAwzt7McPJXHzh8ysnYlK5uoOIS5W/onDJEGDPgUihJynB8qZVaXN9qxdNllsJdBDThdUh7vezmU4HBLWVuSS7qdpz9lVDFQzFKEFRWSJGFlwsBGw9hQO5J6cY6Cpo175NjXsq26N2ffmRrd3Hz5GKAuIns6hrvL6jrvvjfAO6lsnv6pQpDlhSZ3dXxPSdsBptHokF33maefsmrhv/5J2Ki3jlW/dlQ9se3xskRX4zSVXQ2CqgSE1M18xdgK9jNMLKNWcwS0/B6jqZaxZO1+AX/RBlU1WgjXaMdTFkiDC7juGsdgETh7Og4v1sfCTcultiBNdWlAeYW9aHgDVj2ITFTcDVGKu/QMjkWkLkGEFplKZtNlCMjqiBq2L3jccDBb5fEu4F3i3jeW8kOJWxeGU+oPUC+89K1wguroSANnRvJnkgsR5ckPl0JxIBlSStBx2duPVcM7Kbo96AofhCv/hzAuDVuEZr3JX6d20n5fGMxwbsw6Nkdb5KJBHbudulmzAvFp3W0hr
+ GICmfDqa
+ xDSuEg4AKc96RfeEbr8eo7n3o05qCIZrVbcjXGna9VWycgyvMFCqya/FLUxTQ4nRyYwlH/zMunqi453qxcRCdRYCGuBL9DXQB9UW/zrarUzj+AcRZHZTpslZ/gCbuvWvfXs0NzNLvZ3XGntFWW/YZhj1KbmswNaek1ZcyLg/MYw+DVxC9Ukx38wGV4FqvabnUQo6MNvFOkmAcnK6okzglEpSXqAjUAPmE7nzkXaiSb1eFSy4Tf+U+Ut+io2Jsxq+kWZTHDpPHuH/jSg1pdJmA5xIoSQbDHvKXBNsuU7wESW2P79bK2h3KIfZs6XIU99W+vqpQwvQpKDHaVuQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,50 +142,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 10:58:43AM +0200, Mike Rapoport (Microsoft) wrote:
-> sclp_ftp_et7() allocates the SCCB used for an HMC file transfer request
-> and sclp_ftp_startup() allocates the SCCB used to read the SCLP info in
-> the debug code.
-> 
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
-> 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
-> 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of get_zeroed_page() with kzalloc() and free_page() with
-> kfree().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  drivers/s390/char/sclp_ftp.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
 
-...
+>> +static struct ksm_mm_slot *scan_get_first_mm(void)
+>> +{
+>> +	struct ksm_mm_slot *mm_slot = &ksm_mm_head;
+>> +	struct mm_slot *slot;
+>> +
+>> +	scoped_guard(spinlock, &ksm_mmlist_lock) {
+>> +		slot = list_entry(mm_slot->slot.mm_node.next,
+>> +				  struct mm_slot, mm_node);
+>> +		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+>> +		ksm_scan.mm_slot = mm_slot;
+>> +	}
+>> +
+>> +	/*
+>> +	 * Although we tested list_empty() above, a racing __ksm_exit
+> 
+> I think you need to update this comment to reflect the fact that you moved the
+> list_empty() check :)
 
-> @@ -250,7 +250,7 @@ int sclp_ftp_startup(void)
->  		return rc;
->  
->  #ifdef DEBUG
-> -	info = get_zeroed_page(GFP_KERNEL);
-> +	info = (unsigned long)kzalloc(PAGE_SIZE, GFP_KERNEL);
->  
->  	if (info != 0) {
->  		struct sysinfo_2_2_2 *info222 = (struct sysinfo_2_2_2 *)info;
-> @@ -262,7 +262,7 @@ int sclp_ftp_startup(void)
->  				 info222->lpar_number, info222->name);
->  		}
->  
-> -		free_page(info);
-> +		kfree((void *)info);
+Yeah, with both things
 
-Sashiko is right here, the ugly cast can go away with a trivial code change.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Xu, can you send a v4 that I can pick up?
+
+-- 
+Cheers,
+
+David
 
