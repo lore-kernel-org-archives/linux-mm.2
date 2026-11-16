@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE562606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA2F606A329
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LD6ejzLV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HbU+7DQA
 Received: by kanga.kvack.org (Postfix)
-	id 07C606B05B2; Mon, 16 Nov 2026 01:47:25 -0500 (EST)
+	id D74E76B05B9; Mon, 16 Nov 2026 01:47:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 054E96B05B8; Mon, 16 Nov 2026 01:47:25 -0500 (EST)
+	id D26776B05BA; Mon, 16 Nov 2026 01:47:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED3416B05B9; Mon, 16 Nov 2026 01:47:24 -0500 (EST)
+	id C636B6B05BB; Mon, 16 Nov 2026 01:47:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C716D6B05B2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:24 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4B063A086B
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:24 +0000 (UTC)
-X-FDA: 85440050808.14.802A3DF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A23B16B05B9
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:28 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19A05120573
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:28 +0000 (UTC)
+X-FDA: 85440050976.23.63E5781
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B2EECA0002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LD6ejzLV;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 63F26160005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HbU+7DQA;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794811646;
+	b=um26ecTtQXAFR++ZevQiMmLjkrf7NYy8q+1vdaWklBt5I9baKi/J44qOlLamfLtkB2bnc/
+	cGsCm7O92uJZzy2zdb4a16UJZeGxN58YlvO6wpqjdHcE+ffp0kpVmE0jmZdfkGDhn203I1
+	987ys9m6Zu0exVyZQiYZVRDBy6N45Ok=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HbU+7DQA;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794811642;
+	s=arc-20220608; t=1794811646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3U+iFMsR7Wf6izMeYzL3XEBnXOJ8vfgZxFGf5leGhvM=;
-	b=MXO3A5sZyxjKoZcYdO0LfsqprtOp9lOB8CUdEP1JxMwvsF8p29Z/EcRDmc0MrIaT6BLyTP
-	P3NGXpHPwsy521vKjCpOLDD0J6XbyWVJBM/yn0kDSyfELvJ0ioyVr64KSDSmsigqCWB3hK
-	QtggtgrbuESUAmK0KCl+tTD/CKLAd24=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794811642;
-	b=TrKne4nY8+ZbQXBBmXvXZF6yhzzkgmotpWIyWheNgC/MVPHYfGgkpC12t6HBXO3btN22/w
-	84Ruau7qgPr27Srwt0GWoeMS6mtZSpbmxW7FNnopaqSxmvrm2rX4dL0Dfcec2LQCnWsDQG
-	HZDQcHb/4WLHNyGoXL4pc+lQGelY6+4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LD6ejzLV;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=qnAd8kdJJsCCZ9ku2gzzQPm1FL2bWZEjkOx7cLArqZE=;
+	b=cGUdpiuI5gRSqG1zvxsRD0eyyJD/uBtb6ckyuvK92Z9u0EOrNn2Vp8UrHPV2ldJxG+eCYP
+	11fv/hgP/c5FPf+ZaFPR2I7y6Frv2lMfBCEyGC0CaW2DN/tQ5zUz9+QmmlF029CUu0kSwt
+	UxFVgu2aTUOwCv2ahvGThMyvl6FpzSw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E12E623B5;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0032661E8F;
+	Mon, 16 Nov 2026 06:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738F71F000C5;
 	Mon, 16 Nov 2026 06:47:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12AF1F000C5;
-	Mon, 16 Nov 2026 06:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794811642;
-	bh=3U+iFMsR7Wf6izMeYzL3XEBnXOJ8vfgZxFGf5leGhvM=;
+	s=k20260515; t=1794811645;
+	bh=qnAd8kdJJsCCZ9ku2gzzQPm1FL2bWZEjkOx7cLArqZE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=LD6ejzLVqR8AUJ+Xda9FHUcUBs6d9zxbCmNuusg03uIJxYTZS+tTC8SpyUjNtAPkf
-	 UdXj0ebnLwKrLEMBOZHzghtpFNfFNIggbaaLrE8TvW/5TAX0KFTIgGBkEtFa/RqkLy
-	 6f37iw1UQY+6v/ewpyfStd23CXSbbD47iP6+m36zWp5/APDhb6Ah3IOzR+0zQ0xh0p
-	 rSL51wa75o3AxKQhGi8afDrv1vgmVNotLiqMCnlBaEyhIc/xXjXTts+ow30t7HM8Ej
-	 JpWDX9/vGr1WqSferEgjgGXoQ3D84LupLrDiah82kmYcEQxA2l3u8YepvBnasEJP68
-	 LroJHEfVSVq+Q==
+	b=HbU+7DQAaJDNRjsKZtMjIolMTDwZVhEoaALimOLHB6t4dRaEII9oFMDxHbYA7OnT/
+	 YmXU/WFq2zfCUnwfaC5yukA2XQznxMUkKbdDV6x0IKgOvclGKNmppIYr2yFSurb3kn
+	 SX4S2czRGqy5NwuGB6ZvCGuvvyc/KMozI5cOogZ8+PogD4PmiuKq9bvy5Fa8dG4aNf
+	 EcdCP00K95HeR2Xkh6Q1kSamO+Y6BrLMvySV6eIBdbp/ATG3QR0/UHKMxcaPsPxCv4
+	 Kb4qdx4BGhJaiz0ezO27NZbi+FxZJBsEHrogqyrXMmt/NznPTXhTuN9dYVfy3YhBlh
+	 F7XW1ri5LlMLw==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 16 Nov 2026 07:47:09 +0100
-Subject: [PATCH v4 01/10] slab, kunit: pin test slabs by an extra
+Date: Mon, 16 Nov 2026 07:47:10 +0100
+Subject: [PATCH v4 02/10] kasan, kunit: pin test slabs by an extra
  allocation
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-slub_tiny_rework-v4-1-227a4b3636a5@kernel.org>
+Message-Id: <20261116-slub_tiny_rework-v4-2-227a4b3636a5@kernel.org>
 References: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 In-Reply-To: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
@@ -83,18 +83,18 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B2EECA0002
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 93nhtydo1ex8q45tuo6yfgsp7xpdhkig
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 63F26160005
+X-Stat-Signature: x74of7sc1rho54yxeown35yzxrfhtojy
 X-Rspam-User: 
-X-HE-Tag: 1794811642-253361
-X-HE-Meta: U2FsdGVkX19V5ZbisVl4VrrrGamHoty+CYnjh6WFua9GJD0grmAWU0BgtIkgQrlPedeA/D8/WghDTaX255SrMg7T5R+OhxqR3yQ2zCPArZbsv1tF7JCBN7p726pbjWghRXi44vf/wT1nE2np0gRt4flHqaFDriYGSDVgswm/uV5AKFnaZmvO/zLZF834X9nvoxi7mJpu63QWSFHDO01/fpaoeMw7WaxTzg6DqA1xA9ODvXaDFqtZZp9Lzlq+wysobpOibPyi7/+IwdT/TCCS9joKa7Y+5BHPS5iqGpzetAAcjuNLtFcUERJk6dfX7TOvyK36ep+XVLX3WVWx8mj/eqrRu0EcQJcnhSg/CrDsQb0DhTpeJxe40Kpnq45EJgubkSI6USH+0MWaaS+ZuAEdwCu+fq3NEGNf74do4CrfJWwGMeCtepIjqTddzlQAtW0sQ9n9CNjBSC6CotKkIyMzCM95YHYxrPsoFYeBReIV9vT+dxPSnHEHlCfIWtsIJgJ+TLshmyNKZ7vQOtamdhcnM/NFctFBWz8SmGl1kDU7q4SkATShFGOptjmVBO92eYUY3PMbH+OUYczNsGLjFX2hoZOB67j+fkbF0Zo3undluQzIha3wzh1H81f6/4d1/GTCeNK5x0CahEEfuvv/LTxu9UTr5GX2jPCo8HPUiu646oR+9VwmxrsQRgQFhcbL+BFJmKh+Q0gZ34eGyH/fIKg8ELfL4ktDvUSmUDZbGG/yQkQ3WXpoXRN2J3WnL7r9MD+6UCtYiXQJZPLpYFkAzX2QPffJXQGxmMLYLp73NpoZsI0fG+/Mt+ZXB5DYy6btegXcjPPDzTiatpqERYU0okIjJAJuAH3aHi6ZRwuudyWsfmZPVuWTPEiwO+5CbskJ5PplmVrfHleg1g3mca7UONdKcjC8TRcRnPBwClDv29Np+Eo5ra2Q1OTIZyrV00qXtNORbfNQiKAlosfxOWHlbFU
- mhGunow2
- Dj1ofLPLWFo0mwd+ZQk+AeCjcJynuFbzORNDbCN6rL4JK3xlA6A/5VK7L+H33bJrvhfxodhhL/9ICXk+rnD1AWlJBPLNwulV8DHwdqjIz1+Uc3rCXsi5RBeYQalV02n4HaTVkMRV60E7wI/V1VLI1ML4F02e7VZap7Ro6pN2ato99pPtQjPjvV5tfXldjuNB+PaIjKhLEW1yHlK13HBLyXaKrekW/kgbTQQjJFEpDQxR7v3gK0yd0TH5UkoVgLoFQUVgJ3Koka6dO2bZ+wfwisuUnBwiTT+A3v6nCamiSF1FedTKwZWW5NZJP+vZh715PCkrydfrKDcbDfCigm1BfsmIG1X7Hc8KSWNnTgmDJtxu2J09pp7e1Vwm7HdWueWJ3bLHH
+X-HE-Tag: 1794811646-871011
+X-HE-Meta: U2FsdGVkX182wN6y+xma1ue527twqr5qLVsenKQZ40cpVR3V00ugD9Lgg2Ek0381+p+YLhV2AUEef2okp+rvPazH7VqVUVtE7XADurJHfIZeWmP0tN44HL/aIdlG4xSXGsgaRDl7AIfRMgmDdQlw5sl5jcCmiAXoOsV1yyfvgGO1kVbzy0mhxTX6jyM461yk5XplLxTn8rXLUIY9xF4HfuVAxM0uSJS9OAJ3AtXsH8mVtomN1GVePMLtXqYKEpZbCC7xeQ9aacHVT2MzCvPROPwGB6p8kq0rV59638Ep03n3J0JlNgLPLPS+npmZ6zhrlLo8IBXO2jEUpVo+qzP3tCjOKHb86/0eOEDQK9EQxwWu0QqkiaFqgbLbSQt+DUJaoKQ2V61dqMsu759RM2VwlG2vToIVN/bZ5nUEHzp+Mk6FbyOSJ+XiIG4xmFOjckxMPWR7a4RKztnpfeu15y2l3Za3UYDmYhAkinr6MYmaWeDP8SS+nL0n/p4b/gg2Zcpv6LI2mfzp5H0dyOctdV8UykubPfSuWOs/CM/TcraV7jOYo0hDb0XV0mEvJ7Bg5rAiBGO48oBiGFtDPbu3OPbIjUstBjYdn3F8DhwIlw08dU6B8UoPJX0xkq5giE2BoiFWbGKsYJg0jrmWBFjM/4SJ7QKawQFY6xhaegKCeBoT4j9XwNXL4zDTDXZajOkqABosEbDY0xZcADokyq9gR6zlF6mQ7N+ZmEmn5qB9Z6BztmTvFKzd9FNbEAOPEnjCNrGWyy72QiMGTXyB8FgfUjsnXj/g+CDeb/iJM3vCnswGqymbc3ePnH7nxvk+Z4zirf4zZgrZYy1JhINoADitfK2dXCjZFc4bfsKGqRmD7iZZtmCnPZV93pwoRS/OAU0ZYyUBrV8RCATwQlXiOJ0VNCP5xHkHNrDy06gG5PZwUc/3OMsElboUPsdO4IRPx+H3VtpoO8QaIDx+wZwJOIgIONX
+ ForBIuQd
+ nTdhJYKce5rmo6FM7006BI7Ajy/JcCjzWSvnyl+sBVaAm+Njh83NabPfzzDaXG+ppV8gtkDdpLNNBVBtv6irfRJNjtYnSZk0g+sy9bADltF4jTzb3advNkahLnDR3yGIs3yE61XMEeCuYYri7QsIvXj3kPjGW47mX14HBMRLvTNzcLQwxOR1EY4ML+kn9p9a6p4FbPgHUWMPSDJwl62v/taTo9nwBfGkTqLHZtUaECAusU1Wzyl9CNi7tvlTsT4WzePWS0sSaDP6GLRpY2wB2t/pvaFPJ8HVdFLHV2Lt5TTzfpPxEDDUNSWIvP5hDFJY/3uwB17Yrjl2tpSImheJPLq4c/Lh5ilnJkMaW6GAmqkhvEehc2lO+HrwRR5JD2A3Zs9DB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,128 +103,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Several of slab kunit tests allocate and free a single object from the
-test cache, perform intentional UAF actions and validation, while
-expecting the empty slab to stay on the partial list.
+The tests kmem_cache_double_free() and kmem_cache_rcu_reuse() create a
+scenario where a slab becomes empty, but rely on the implementation not
+immediately freeing it.
 
 This subtly relies on non-zero s->min_partial. It currently compile-time
 defaults to a non-zero value, but in theory a sysfs write racing with
 the kunit test could change it. More importantly, the upcoming
 CONFIG_SLUB_TINY changes will make it possible to run the kunit tests
-with s->min_partial being a compile-time zero, which means the tests
-will now do unintended UAF writes on the page allocator level, and also
-report failures, as flagged by sashiko [1].
+with s->min_partial being a compile-time zero, which means the tests can
+cause a NULL pointer dereference, or fail, respectively, as flagged by
+sashiko [1].
 
 To prevent this in a robust way, add an extra object allocation to the
 tests, that will prevent the slab being freed. Use migrate_disable() to
 prevent migration to a different NUMA node, which would place the
-allocation to a different slab.
+allocation to a different slab. kmem_cache_rcu_reuse() already uses
+that.
 
 [1] https://sashiko.dev/#/patchset/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org?part=8
 
-Acked-by: Harry Yoo (Meta) <harry@kernel.org>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- lib/tests/slub_kunit.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+As per sashiko, this scenario needs CONFIG_KASAN_SW_TAGS or
+CONFIG_KASAN_HW_TAGS to occur, otherwise kasan quarantine will keep the
+objects and thus slabs alive.
 
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index e3b63f0338d5..40427f7edf4c 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -51,10 +51,16 @@ static void test_next_pointer(struct kunit *test)
+To avoid the need for arm64 system, I have reproduced the issue and
+verified the fix instead with slab_free_hook() modified to skip kasan
+quarantine.
+---
+ mm/kasan/kasan_test_c.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
+
+diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+index b9e167ed5be3..01cf001bf0ef 100644
+--- a/mm/kasan/kasan_test_c.c
++++ b/mm/kasan/kasan_test_c.c
+@@ -1051,22 +1051,30 @@ static void kmem_cache_oob(struct kunit *test)
+ 
+ static void kmem_cache_double_free(struct kunit *test)
  {
- 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_next_ptr_free",
- 							64, SLAB_POISON);
--	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
-+	void *pin;
-+	u8 *p;
- 	unsigned long tmp;
- 	unsigned long *ptr_addr;
+-	char *p;
++	char *p, *pin;
+ 	size_t size = 200;
+ 	struct kmem_cache *cache;
+ 
+ 	cache = kmem_cache_create("test_cache", size, 0, 0, NULL);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
  
 +	migrate_disable();
-+	pin = kmem_cache_alloc(s, GFP_KERNEL);
-+	p = kmem_cache_alloc(s, GFP_KERNEL);
++	pin = kmem_cache_alloc(cache, GFP_KERNEL);
+ 	p = kmem_cache_alloc(cache, GFP_KERNEL);
+-	if (!p) {
 +	migrate_enable();
 +
- 	kmem_cache_free(s, p);
++	if (!p || !pin) {
+ 		kunit_err(test, "Allocation failed: %s\n", __func__);
++		kfree(p);
++		kfree(pin);
+ 		kmem_cache_destroy(cache);
+ 		return;
+ 	}
  
- 	ptr_addr = (unsigned long *)(p + s->offset);
-@@ -89,6 +95,7 @@ static void test_next_pointer(struct kunit *test)
- 	validate_slab_cache(s);
- 	KUNIT_EXPECT_EQ(test, 0, slab_errors);
- 
-+	kmem_cache_free(s, pin);
- 	kmem_cache_destroy(s);
+ 	kmem_cache_free(cache, p);
+ 	KUNIT_EXPECT_KASAN_FAIL(test, kmem_cache_free(cache, p));
++
++	kmem_cache_free(cache, pin);
+ 	kmem_cache_destroy(cache);
  }
  
-@@ -96,7 +103,13 @@ static void test_first_word(struct kunit *test)
+@@ -1152,7 +1160,7 @@ static void kmem_cache_rcu_uaf(struct kunit *test)
+  */
+ static void kmem_cache_rcu_reuse(struct kunit *test)
  {
- 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_1th_word_free",
- 							64, SLAB_POISON);
--	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
-+	void *pin;
-+	u8 *p;
+-	char *p, *p2;
++	char *p, *p2, *pin;
+ 	struct kmem_cache *cache;
+ 
+ 	KASAN_TEST_NEEDS_CONFIG_OFF(test, CONFIG_SLUB_RCU_DEBUG);
+@@ -1162,6 +1170,13 @@ static void kmem_cache_rcu_reuse(struct kunit *test)
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
+ 
+ 	migrate_disable();
++	pin = kmem_cache_alloc(cache, GFP_KERNEL);
++	if (!pin) {
++		kunit_err(test, "Allocation failed: %s\n", __func__);
++		migrate_enable();
++		goto destroy;
++	}
 +
-+	migrate_disable();
-+	pin = kmem_cache_alloc(s, GFP_KERNEL);
-+	p = kmem_cache_alloc(s, GFP_KERNEL);
-+	migrate_enable();
+ 	p = kmem_cache_alloc(cache, GFP_KERNEL);
+ 	if (!p) {
+ 		kunit_err(test, "Allocation failed: %s\n", __func__);
+@@ -1178,8 +1193,12 @@ static void kmem_cache_rcu_reuse(struct kunit *test)
  
- 	kmem_cache_free(s, p);
- 	*p = 0x78;
-@@ -104,6 +117,7 @@ static void test_first_word(struct kunit *test)
- 	validate_slab_cache(s);
- 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+ 	kmem_cache_free(cache, p2);
  
-+	kmem_cache_free(s, pin);
- 	kmem_cache_destroy(s);
- }
- 
-@@ -111,7 +125,13 @@ static void test_clobber_50th_byte(struct kunit *test)
- {
- 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_50th_word_free",
- 							64, SLAB_POISON);
--	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
-+	void *pin;
-+	u8 *p;
 +
-+	migrate_disable();
-+	pin = kmem_cache_alloc(s, GFP_KERNEL);
-+	p = kmem_cache_alloc(s, GFP_KERNEL);
-+	migrate_enable();
- 
- 	kmem_cache_free(s, p);
- 	p[50] = 0x9a;
-@@ -119,6 +139,7 @@ static void test_clobber_50th_byte(struct kunit *test)
- 	validate_slab_cache(s);
- 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
- 
-+	kmem_cache_free(s, pin);
- 	kmem_cache_destroy(s);
- }
- #endif
-@@ -127,7 +148,13 @@ static void test_clobber_redzone_free(struct kunit *test)
- {
- 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_RZ_free", 64,
- 							SLAB_RED_ZONE);
--	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
-+	void *pin;
-+	u8 *p;
+ out:
+ 	migrate_enable();
++	kmem_cache_free(cache, pin);
 +
-+	migrate_disable();
-+	pin = kmem_cache_alloc(s, GFP_KERNEL);
-+	p = kmem_cache_alloc(s, GFP_KERNEL);
-+	migrate_enable();
- 
- 	kasan_disable_current();
- 	kmem_cache_free(s, p);
-@@ -137,6 +164,7 @@ static void test_clobber_redzone_free(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
- 
- 	kasan_enable_current();
-+	kmem_cache_free(s, pin);
- 	kmem_cache_destroy(s);
++destroy:
+ 	kmem_cache_destroy(cache);
  }
  
 
