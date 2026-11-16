@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5908E6071B16
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5923F608379A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tsq4iuTK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N0jLVzlU
 Received: by kanga.kvack.org (Postfix)
-	id 7EB2D6B00EF; Mon, 16 Nov 2026 06:10:59 -0500 (EST)
+	id 7EA7D6B0611; Mon, 16 Nov 2026 06:11:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79B506B05B0; Mon, 16 Nov 2026 06:10:59 -0500 (EST)
+	id 773A16B0612; Mon, 16 Nov 2026 06:11:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 689E96B0611; Mon, 16 Nov 2026 06:10:59 -0500 (EST)
+	id 614D26B0613; Mon, 16 Nov 2026 06:11:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 440F96B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:10:59 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD5BBA05E6
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:58 +0000 (UTC)
-X-FDA: 85440714996.07.A7B9CBE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D1A3720005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:10:54 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tsq4iuTK;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 420BB6B0611
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:11:04 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D978BA08B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:11:03 +0000 (UTC)
+X-FDA: 85440715206.12.23495EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0CBCD1A0002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:11:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N0jLVzlU;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827454;
+	s=arc-20220608; t=1794827462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BY87H/RnXilQq13XAhtvlglG6136WbkekRPXJvo2I3U=;
-	b=55naS+m2pZxDLTIrmSfqwHaa8QhoUHCbZwT9jnlc47+jwtCGFdOUc7JL4orTD4YplRPywJ
-	hDVoQlslvaRue2yHCzTL77/BViiCrJOEb8v/jbTfQgxbk6z2KNvdb7JpV9Xv9sR5VbAj7o
-	HeXS446gHUkxiRBc06f/wLnDmFMhLmk=
+	bh=+1Ha5ASlzziEtpwFumlx1jHdeafb0Uk6ledTOHN/+BQ=;
+	b=Wg32I2m6OsDsuYVYPgLJhOwlt6zMYQjddZXTszruUtt9GUTYT733BLXoOcCX6m2oUy+wND
+	TRh+L7EGBxX+e42ejQ20yQkDLWeCgEjiiPDxIgZeBtB4OdAHW1m0/0iFY+Zjpz4B0LzShz
+	KCvVwLlhhTtkVBfun9MgB7cOBTRln2Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827454;
-	b=ASd2dAPHzYgT9LJRZ/9yNlsPsd0PvBGaISTqq1t8ji2i5+Y4m/Qv6zVVLIU7HEsdY0PfwB
-	K0sP5kWDdmzaMGGZvWRDMbQDGj02L7tjP29NOmCIrRI8ooi4QJ1EnUepxP3sshoJrbnv7l
-	BqVo/0owYICDjKj0bWPp4ek7tdhy76U=
+	t=1794827462;
+	b=07GQOLYX/+UkeirwLk98ZM4L4+6F9KACjIVgaKfQiMA28TdjHwiQAMGsBS8nhwj7QnlEOU
+	gY8cdTz3SYcGkfu11rfBoSeKPDiagvwrXT/JcG073WGgfmFANozM1DvYKNpACMlnSVht4R
+	UifOHhQUUn6d8+q2Dn5e4O87xOi/5pI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tsq4iuTK;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N0jLVzlU;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 82A4762972;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5FCBB462F8;
+	Mon, 16 Nov 2026 11:11:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B256B1F000C4;
 	Mon, 16 Nov 2026 11:10:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416851F000C5;
-	Mon, 16 Nov 2026 11:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794827454;
-	bh=BY87H/RnXilQq13XAhtvlglG6136WbkekRPXJvo2I3U=;
+	s=k20260515; t=1794827461;
+	bh=+1Ha5ASlzziEtpwFumlx1jHdeafb0Uk6ledTOHN/+BQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Tsq4iuTKRhulkomOLwfJCGY7RSUTospv3OqWJbcYQQFjEoKupjSCxw6Yy3rPq4pB9
-	 +LrXvKA4rBly7ufMqZGGURI/PkATv40fMYkjtpqcL/tNHRyeTByFbJTZmujbH0d7/Q
-	 HXCq2zQGevHC5tGi3GM/YXAFadxr211gKZs+efK2OMgZEBHzheaSEy+WXOjCe8RO5r
-	 TJ2bRHJjwjB/ITjzevhBLxBTbfuTMUOIvIjO5xZFZMBmnzadWnSvOl1+uUswfItRJz
-	 cvn+ZB4G6vMTJzmJfSaWRJJZDIQQXhCz05Bm/gc8LbBO51UdG9XgtkJRygpVExqJdR
-	 0R8YByohYWTAQ==
+	b=N0jLVzlUI4/sjWNYOt0rXQTtyrgdKf5Y0kTKuip2dZyDj+4g/Ze7OYrLUiUsPPEye
+	 CjUN4xKWTGOixjV4KcD/jZgCYY6N/+4Z8JHcT7hLcQcrx8q02xe7tYXpY71+xQEHQi
+	 DyFRbLRY7DB9BBOX6LHXYX8dkO5Z1aVdfUmhEIvTLaHSBWeb+l8zD8roBzYXX4rqBT
+	 yE74qV89FpLs5TJU9EwHKj4pCX4TE4X3Kq2ekdC7rThFYLz4eNiPgoOfUI1au18Vyn
+	 pkNLVmlzaNlj37i5uxQXej7cjjXciz8n3fqCszEa5y6nV+Axoq1qL8ATP7YBXt6Xvi
+	 rOa1KxM4tYdvg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 16 Nov 2026 12:05:12 +0100
-Subject: [PATCH RFC v3 39/44] target: fileio: refuse files on pseudo
- filesystems as backing files
+Date: Mon, 16 Nov 2026 12:05:13 +0100
+Subject: [PATCH RFC v3 40/44] fuse: refuse files on pseudo filesystems as
+ passthrough backing files
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-work-loop-pseudo-v3-39-8cbbea1cf34f@kernel.org>
+Message-Id: <20261116-work-loop-pseudo-v3-40-8cbbea1cf34f@kernel.org>
 References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
 In-Reply-To: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -88,29 +88,28 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
  linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
  Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
  linux-kselftest@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Sashiko <sashiko-bot@kernel.org>, Chris Down <chris@chrisdown.name>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2223; i=brauner@kernel.org;
- h=from:subject:message-id; bh=11gfWGw/ZwPDfVFtqD+CkdePFs+glK5xVNQbp3ek2T8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9etzj8cs54I/rlC7xuCARluu5a1aodKvyswTvkD6zv
- 1dfVPVMRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETirBj+e2jMajfMFJqpekRG
- aqlo40Pe5TUVy7c/+DD7XlLpsaZOLoa/knzXPN++Mv3K99Ndbp9ymKjRnUWue9I2sb1mqWq5pLu
- bHQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3093; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Qkr0BYXyDd+I7xUdfK34CTesF8mQyxzVRm4u7QW4pjc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9etz7YYleq5CAw4X4sGW+b2Uz1jbJrH8r5vBSK3KaB
+ H95VsCxjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImcncTI8K+t9HbCCqNJecsr
+ BR3atl39NOkGq5CQkcDVYiVj2Y+rnRkZWv6WG+e4sr/I3r2+LPNhivaEm6fb0rycv4m/V7qxpnQ
+ JFwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D1A3720005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: c4bmnc99b5nobfrzhm3bxo7xfba8or5f
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ns1fykgiy51q5ntmdt645p9bgkh78wwk
+X-Rspamd-Queue-Id: 0CBCD1A0002
 X-Rspam-User: 
-X-HE-Tag: 1794827454-366395
-X-HE-Meta: U2FsdGVkX1/TVTs7qopEqPdqk1bC/oT4e/c6czumg85Uno4OAGC7vWgB+pShxRH6kR//R9Jj8H7AFOgh0ZEgOJ/WCQQPXL1S5lZCB9BhzeGhy3xSxMVcUwmpxls60Ymxs1S65kXvYBC6Zv9YxIoT9/YP0n4Vk5c3C9VuEnvnBH5LV5HnwwS0Fjag5yRAE4gt0gIeYlMouXJnhLUXiZwKkn6Me+2pXJI2YOex7ZnwTzRSsMwqYFxERv3k8GfoTE6MwnF+VpTC3TZK1GJpmKDerplfhAKqIPod2IcNvnH7oHnFK63smcxfV33Y/7jPPua9HokQg1zwCdg1clla1XqK9gYj+RrMPZBGMfMj1C5n85MrJ0Wj/Nag7eb+ZY96FfDPwrxbNanDcGeGszdmUQ9xbIJhTPeJwlgmTHs/+ej98hjSweHCBUds6+m0Qg5e4q6OWU63OuRIMSoJA0qN7BQ5pSlc6t31aWYSa2N1cqQH+oEsjnUrUi/ZComN9qn/IckkcILHxijWf+5UDaHpa/qZVtTh5CitPJk9j8VZ8+6iLFOTy3DdXeZ23yqQGqplsyhEK8WZjIuunFAQRM0ZBsGRmXVB1GE1/0M64uB743VOeXcKfCVF2tl52SFqXdQBjCNE2mBkq5LKRtrIesgo9rYi/8VNnT4VT68BHg7DfkL7ZHtRYwRPRc/GsEWhidS5F2iPMizQRmW3tNy/Z9IxgpGiQnCbfRf2Au/ttDlcysqgFb5uMYVQdrKb542gte/dqZ5QLRm/+hBEUH06VPjLxct/bYLUU/4YQYqiSfijF6nMpCNQjbQxujNWBWSTJILwiYJ+lOyEoy5q1VigvboejMwsTWBkMLWmsK9QCIotj9EoGJVvZ/aTguf4raxP/O6wx/L9cu4YDzo3SUmE2isXUXE7UUmzRSwNqADmKEziG8iJoQz5L4acMtvqFjafvG46oqEVf4cU05WnE/Fba20DgT4
- VMqz9kGL
- JzvXhiGdmYLfNi/24NqlUBG60bZ5m+B+hwRmFgK25Awwo/LrL+vHUFZ1KYR6SJ6INjI7iY0KX1TMaUE6DDl5EtvEHGXNP93Ph29GN2wpBxnfVafvvq+CzrHvV+AGIJWmubxhePO8p7OJfmx4O6f0dSRSbo2pUP7UlZiTyszzzsK6qeLgaInPP/Mm1bhowyQugVfNbwqjDfsNzINQrsLW8OBRvIbd8y8efhaX1Ih11WCHl7hPCB2HosHTMryHwp5f4Plf91aEofh+JL+nWSnv5nU76IQ==
+X-HE-Tag: 1794827461-362363
+X-HE-Meta: U2FsdGVkX1/E+2HIZol6vOcbu+9YQ34djhfiAdz/8yyeQ2aNpjQBzde9m9vDl7mL5kVGVrPVWiTNWjOKAVctfVfUg6bWGXMbn5D5cufesLE0rV6FddUeLzfsntM6eRqBf/ZblzcbGfQPqLM9EgaAR6OLci1GLextrT4cOuTUHrBSSBvLmUnbuViJPaM2+7p9p3Wax7CgTpbKX+xOQrcyJQSKy5wmBQ3yVNa4xrFjbtFNJuBIpf1RHZGAtuNxcYSLD+DpDi4Nrh7pRmCJ3NM4L9U+6TIyp9xOiE1yHlzrVFHzmfnBG9FUBRfZa5udKYnbGUD2DDspcfv+7BhFySjmWBFwLmfrqGLhGXrDZOwqnPCtAudMwHGExlhcFopH30IgrBFjoWbjmF0bDXJVWOm9tSf6UcN4XU3Ao3Fe0zz768eIYDWNq+D9efX1Xtn7jM67W3kbLuaSMJ+CPHsUaCWyGL439qZA4Pl476+Ccl5aoofdAfoymSAmkXv64r7EQBqNlxpbZhC7gTl9C01uCpIauZNtKhCwTaJEfrSdPOzjhTXYJHqgHyOymK0hd/Am4MQVOUpXWH2RW1irkwQDjXfG7vGWHNB6pcWM4z59L7Hjc/ETA3z66D9bT6QdpkQ0PG6gbQhkimPEK9Z6H17Xu2Cou2CWLsojYfHgoZ79Fc+6nTkLStJoXTij57sl0b/U3U+dYrKFw2YdbPQhpNJq40X7I01QS13FFco4XDqSatwIqYO+V76jujKjmO5m0R4uIrM+wpchExhykjfvkzLSSsnxx+8rB7drXfmd4YP3W601crDYnMV85keOJsNcJQup0lXOD+HxGPhfHe8DhBwpVjRMuAzhrM5i2eWPpPFZ8lRuEditk+m1LyW+EwbxD3ilpgsmPMbME2dya8uX72RFeeksj/vOLkPNNq0ayI85gyfHw7MLTFlPQXknpenbnyDFiZMrf0hwVb4W9V6Jtw3nHfe
+ YKE9UTge
+ atcrbd8n2QOGbW9R35ZxGNSi7EFqmU9bWFVh8g5D4hwBrWhapqXPkqn3nyyN1JCf5awKg9AJBO6ksZ48Pc712fCFuoGLYooG/vaQXH5YHVCZvOM+8kir98YSYuvTvfmSDT+mTIlHol8skQqShDEmETl8aW6qhusieFhy9CYEj1/gJqdON/TDcIn5PliBRZ+GfIYWq6qODwGNTdxhjnIvouEdPT4ukB/EiO9wSkY2K18X2tvrUVTPxIlfLO0yrk2gN0wxi5g8lgheyxBc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,59 +118,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-fd_dev_name can name any file including files on procfs or sysfs. The
-initiator then gets to read and write kernel interfaces through the LUN
-with kernel credentials. Refuse files on pseudo filesystems just like
-loop does by switching to file_check_backing().
+The fuse server can register any regular file as a backing file. procfs
+and binfmt_misc files are already refused by the stacking depth check as
+both set s_stack_depth to FILESYSTEM_MAX_STACK_DEPTH. sysfs and the
+other pseudo filesystems aren't. Reads and writes of the fuse file would
+then be done on the pseudo file with the fuse server's credentials.
+Refuse files on pseudo filesystems just like loop does.
 
-Do the same for the protection file. With DIF protection enabled the
-fileio backend keeps the protection information in a second file. It is
-named like the backing file with ".protection" appended and
-fd_init_prot() opens it by path. Whatever that path leads to was taken
-without any checks.
+Note that the backing file is only registered here and opened again for
+every fuse file that uses it. Only its path is used and O_PATH file
+descriptors are allowed since commit efad7153bf93 ("fuse: allow O_PATH
+fd for FUSE_DEV_IOC_BACKING_OPEN"). So pass FMODE_PATH to
+file_check_backing() to keep them working.
 
-Note that the helper only accepts regular files and block devices as
-backing file and only regular files as protection file. So far the
-backing file could be anything with ->read_iter() and ->write_iter()
-including character devices and FIFOs.
+The file that reads and writes are actually done on is opened in
+fuse_passthrough_open() with the flags of the fuse file. So check that
+file as well and pass the mode the fuse file was opened with. It has
+the same path as the registered file so files on pseudo filesystems are
+already refused. But this also makes sure that the backing file
+implements ->read_iter() if the fuse file is opened for reading and
+->write_iter() if it is opened for writing. Like the other failures to
+set up passthrough this fails the open with EIO.
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/sashiko-outbox-206765@kernel.org
-Reviewed-by: Chris Down <chris@chrisdown.name>
-Tested-by: Chris Down <chris@chrisdown.name>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Suggested-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/all/CAOQ4uxhGxpBtMZ5kfuzR1tQAewiecoX7UjXQRo91QjJHH9T_Yw@mail.gmail.com
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/target/target_core_file.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/fuse/backing.c     | 4 ++++
+ fs/fuse/passthrough.c | 7 +++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/drivers/target/target_core_file.c b/drivers/target/target_core_file.c
-index a5391e57e9aa5..c747cc4a647ff 100644
---- a/drivers/target/target_core_file.c
-+++ b/drivers/target/target_core_file.c
-@@ -145,8 +145,8 @@ static int fd_configure_device(struct se_device *dev)
- 	}
- 	fd_dev->fd_file = file;
+diff --git a/fs/fuse/backing.c b/fs/fuse/backing.c
+index 8c21a8a74efb9..7527f3ecb90dc 100644
+--- a/fs/fuse/backing.c
++++ b/fs/fuse/backing.c
+@@ -147,6 +147,10 @@ static int fuse_backing_open_file(struct fuse_conn *fc, struct fuse_backing *fb,
+ 		if (inode->i_sb->s_stack_depth >= fc->max_stack_depth)
+ 			return -ELOOP;
  
--	if (!file->f_op->read_iter || !file->f_op->write_iter) {
--		pr_err("FILEIO: %s lacks ->read_iter or ->write_iter\n",
-+	if (file_check_backing(file, FMODE_READ | FMODE_WRITE, S_IFBLK)) {
-+		pr_err("FILEIO: %s can't be used as a backing file\n",
- 		       fd_dev->fd_dev_name);
- 		ret = -EINVAL;
- 		goto fail;
-@@ -861,6 +861,12 @@ static int fd_init_prot(struct se_device *dev)
- 		ret = PTR_ERR(prot_file);
- 		return ret;
- 	}
++		err = file_check_backing(file, FMODE_PATH, 0);
++		if (err)
++			return err;
 +
-+	if (file_check_backing(prot_file, FMODE_READ | FMODE_WRITE, 0)) {
-+		pr_err("FILEIO: %s can't be used as a protection file\n", buf);
-+		filp_close(prot_file, NULL);
-+		return -EINVAL;
-+	}
- 	fd_dev->fd_prot_file = prot_file;
+ 		fb->type = FUSE_BACKING_PATH;
+ 		fb->path = file->f_path;
+ 		path_get(&fb->path);
+diff --git a/fs/fuse/passthrough.c b/fs/fuse/passthrough.c
+index 0ed964c479d96..fc8979ac96a21 100644
+--- a/fs/fuse/passthrough.c
++++ b/fs/fuse/passthrough.c
+@@ -183,6 +183,7 @@ int fuse_passthrough_open(struct file *file, struct fuse_backing *fb)
+ {
+ 	struct fuse_file *ff = file->private_data;
+ 	struct file *backing_file;
++	int err;
  
- 	return 0;
+ 	if (fb->type == FUSE_BACKING_EXTMAP) {
+ 		if (fuse_backing_is_dax(fb) != !!IS_DAX(file_inode(file)))
+@@ -201,6 +202,12 @@ int fuse_passthrough_open(struct file *file, struct fuse_backing *fb)
+ 	if (IS_ERR(backing_file))
+ 		return fuse_EIO("failed to open backing file (%ld)", PTR_ERR(backing_file));
+ 
++	err = file_check_backing(backing_file, file->f_mode & (FMODE_READ | FMODE_WRITE), 0);
++	if (err) {
++		fput(backing_file);
++		return fuse_EIO("invalid backing file (%d)", err);
++	}
++
+ 	ff->passthrough = backing_file;
+ 	ff->cred = get_cred(fb->cred);
+ 
 
 -- 
 2.53.0
