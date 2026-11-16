@@ -1,104 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA1C606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 01:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB9E606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 01:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lhFLmzbK
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M2cJoz3v
 Received: by kanga.kvack.org (Postfix)
-	id 3D3CB6B05B7; Sun, 15 Nov 2026 20:48:32 -0500 (EST)
+	id 0A6016B05B8; Sun, 15 Nov 2026 20:52:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AB0F6B05B8; Sun, 15 Nov 2026 20:48:32 -0500 (EST)
+	id 056EA6B05B9; Sun, 15 Nov 2026 20:52:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E8616B05B9; Sun, 15 Nov 2026 20:48:32 -0500 (EST)
+	id E874C6B05BA; Sun, 15 Nov 2026 20:52:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 000FD6B05B7
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:48:31 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52411120810
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:48:31 +0000 (UTC)
-X-FDA: 85439297622.14.CBF1D26
-Received: from mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1D4E340006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:48:28 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lhFLmzbK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794793709;
-	b=ZTQR29QlNbkp1pX8QtGfD2lsP+C3GK6fA4zeu2aDn/klf7S8XnrlKc2g6i7UMx7PAFnkPx
-	6hFofi/bJzSE5r3cIMwGTCkO+XSzF/51BMc/kG9W1cwihN6KWVF5TUOgOXE/haJid+P2Dl
-	fNy5qTjHGvoqFRLblzPO78UBlig9apU=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C248F6B05B8
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:52:26 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 38D821C3EFD
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:52:26 +0000 (UTC)
+X-FDA: 85439307492.07.AE80953
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 791CF20008
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:52:23 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=M2cJoz3v;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf31.hostedemail.com: domain of jiebin.sun@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=jiebin.sun@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794793709;
+	s=arc-20220608; t=1794793944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SvYb2dbF8RnLfseYOjJpEqV6XDnyeEcsBNE/GmkQ/9I=;
-	b=PzctP1o5BIDWW0jtADSU5mTa4Zo0WPiR+nvPns2Qj+zgI9J/OHLcRVGx5vvd45hGNBKSNA
-	aloT5OAZDuiauHU4PWKgN3j8pYm/v28Xf21nVfwJsYi66d/J7l4/01CXe0o0M/v0IGqepG
-	CdjdtwXhwKGTcUwXTZG2/UphIkeZhpg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=q3p5Ny9n1tlQYJdeoUKM5vEG7oFiEldi5brekpSeVZA=;
+	b=pMs/jmlcYbBam9hUuYzOpQxg4BZbwHbLG5xbjJw+j+B+UQWUK/JaJP7cxIKN3MBvS/FvRl
+	efgGBdX5hh4MGVmmYnRvEQOesPlOyLyBPKs4/pgIEDBdXkARPqXFTJeToj4KNbUQHoyquR
+	YAVgJ4gSxYvZXbMuX/kSVD7LY276ku8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lhFLmzbK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Yho2xLjSCxu9gfbIDUeoWttJyXdMvsMQaSwbhg6fSYE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794793707; v=1; x=1795398507;
- b=lhFLmzbKTduR9ver9Ra7b8ZIeuudqIc1Km/1sdaQFfbTc3qOcio/1UfUJzCdI0xmywBPmRyz
- dN6wDg0rQmfbnVuqpj7gr9+01mahSzQjo2ropmTcq3wT+TuIFWwLDhWWNTd6or6Qj53ntlGCGwS
- H2KaLCRHbQk6XCRHLMTBNzh4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4b9c400b95ed6538;
-	Mon, 16 Nov 2026 01:48:27 +0000
-X-Mizu-Trace-ID: 4b9c400b95ed6538
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e4f50794-0c47-4fd3-8c3d-f3888f83dd2e@linux.dev>
-Date: Mon, 16 Nov 2026 09:48:21 +0800
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=M2cJoz3v;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf31.hostedemail.com: domain of jiebin.sun@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=jiebin.sun@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794793944;
+	b=1rbKG8u1lPlXyCxjQ7M6f+ZOQyvhrVACHbpchWsFkuY59bpfBauffnCstD9HWy5TNOkKUq
+	Aewa2AC3hXpm3FQ555SHgLIL3VJbTTls84403dVCSnTYqPkyId4gZ/NbEUOZZA09ExlGIY
+	IhD/SB2dVt+aa6L35s76FFEKP6Aeobc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794793944; x=1826329944;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3evvT5Cp+KVAXQKYLiXSnN/s+2IfMMah8AYUtGTRNDg=;
+  b=M2cJoz3vfvHvax/5Y/2PDxr465aHeiMwNq7Up5SRytECZtbEJt3uWnBo
+   a+08281w110GWxOCL2RiR1ft2fo5iLI+mtyZiGhQNZyw4bt29XX4NP8kE
+   5uBYRM/03bIRzjghwCn4Yg8O1u0ZZkZjAkqclQ0mTS7pjsvj92X0i9hP2
+   99cirTaa+2ZfoTED4OIYiPUppw7X13dbIzGOQqkb+xTdfF4KHNzaA+yjM
+   +1My2YB0aOwXQPSQT8FhYkyQnALCnvRHZX8qCrE1kDgj5abgdP/nmh8VB
+   xb8oQEpgXISt0hnOM5I+y6g5peByiEee/NiSEvEX29iEYSpekJg+PNWLd
+   g==;
+X-CSE-ConnectionGUID: kAw+VEMcRKKdKIA7PJS6pQ==
+X-CSE-MsgGUID: B8npPT6ERcW7oCxkZGW+3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3561536"
+X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
+   d="scan'208";a="3561536"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2026 17:52:23 -0800
+X-CSE-ConnectionGUID: AiGtzromTC+xA+xdgiHFKw==
+X-CSE-MsgGUID: r0t8OA5lRAaJVSRRofaizA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
+   d="scan'208";a="9497022"
+Received: from linux-pnp-gnr-1.sh.intel.com ([10.239.83.186])
+  by fmviesa005.fm.intel.com with ESMTP; 15 Nov 2026 17:52:19 -0800
+From: Jiebin Sun <jiebin.sun@intel.com>
+To: akpm@linux-foundation.org
+Cc: dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev,
+	tim.c.chen@linux.intel.com,
+	tianyou.li@intel.com,
+	wangyang.guo@intel.com,
+	jiebin.sun@intel.com
+Subject: [PATCH] lib/percpu_counter: allow concurrent sums with an rwlock
+Date: Mon, 16 Nov 2026 09:56:55 +0800
+Message-ID: <20261116015655.2744577-1-jiebin.sun@intel.com>
+X-Mailer: git-send-email 2.52.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mglru: deactivate anon folios into the oldest
- generation
-To: Barry Song <baohua@kernel.org>
-Cc: Kairui Song <ryncsn@gmail.com>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20261112081928.3014946-1-ridong.chen@linux.dev>
- <avV52J2rD19cjM2J@KASONG-MC4>
- <CAGsJ_4yibOkJmi9niJ8svu2NdEkZ5Qyf98VO6qMrJMa_9wGFgQ@mail.gmail.com>
- <c01ec177-da44-49bc-a542-35b64554526f@linux.dev>
- <CAGsJ_4xx8ivDeh1d5pvJOEgndRL8rf=CO2==T480pAm=j2X0ZQ@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4xx8ivDeh1d5pvJOEgndRL8rf=CO2==T480pAm=j2X0ZQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1D4E340006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: kab8rggsx49eq5onyuzdfem9cjxaqs4s
-X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794793708-579446
-X-HE-Meta: U2FsdGVkX1+BzwozA1qsV42p7CUKaubwL5CIcaH7BEY7opWMeXhBzEZ3EJ5d6AsHZUBSZwnwlAHluG2cUGY9R/YJrsLAFHiYNh+VCGPi2S2Drde5LlFOvx4m8rLHrfJFsGr4dX/hdZaZZ7fP6rzx9BDP1z9unMyQj0oVhh7CF6EixvLxaA8NoOHzHDaojOjgmjh7EpPP0cPEETAD2tYNY9XbvqQttUrrunbWfh2Z0AE/18x5tOrk3fqLtmyv1jTbcz6w1uAXUSMYLz4XLhpY6DdeL9vN+9kWXcH617ey4n+iT2yOoXBXRUg0qhIZECh+VHOqkNlQjZh+soZUw5+FM6LV13QvenbyjrxJnhF9+jLR2s/vxWaa7UmBEvjMcLDfd6o0v7sscG/RggZmWp40gJiMU55BEPdwngaayq89/ImyUn3mhfFt0MVbucoV6I3ZHslAkrjrgxdlskYN8q9WxnjVDEZx8px5/UWeA2CrY6aXpmoGY5h4JYdoWG73vhbji93ftPt58hSs7A/Utpj/IaK3BOLd3pNz93I0ctrf6xDrTy4Jc0GI8ve0OWRMdEXwMDQGCHc31a6TjPXLToUb5Jxx+852JTuogaTv0dFTltQYgWtQCdAHMy+Qtwp5RZuBgwcgIuyTbxSwbJ5Ow+ov1h0eiu3L1wTDLGET9qZqo8aG3dt3jFBDK4RzAytXx3jXl+cQcCJl4YtKOhfTFemd/sYN8p565gQ/lWY/mOzwX0TYfCeHpYb1v3LDh1HGXk3CoaEw/AXvqDN8G1Rk92e4b1QL4M8DK6QbQiG2sWa8bPRcU+Qr5qroVFnf8aQkUuzPsctq7nH9UVXmnQNnEy1F4s9KLRG0I0FBRCyMjBfVQzbl02m7/7jLcNBJsiD4eIVCVqVHAUH66YiiUjXraxzvZ4DeKnpDNuAR+3vjFWyOt9HuzY2UHMAGpBBaUvmZhyU5DN7968v3Pxkq2ebcHWF
- PxZN6KNo
- yS9u2UY+NjkMh6rO60c7eINaKw6se4FY5iRNLmzrtf/MhXDP0UiMRiv983bA3i9MER3nBxFHxBIipO2v3R45t40XfjAcl472XDTfZS99roM46HqaAz+bld0ccZn2WOlOeOsq2Xw8XPqVE0/q9bRLdY8mxCp6tzRBU31gnhZz3yH5hhQqOUCRDwBjiz4peQlI3VWOSexUWIvFsCW2/496+YiTtK9NqYbTFioXITizozAThOsLHcjLLqGrmTNdvfiACMgWTusFENVm82ciQH6s8yTFaIAvO7/aThLCEuJXe3tloEg2KnbCbm9xqbSe52UkyxY4SsI6F/ClJIE2/VAtadI++Mbescuy0MkApvi40XNNv1FrEOOvuvmqHr0BGUkQ08lny5osJCEkbP8ERZeonfBzSV9edXZCpf8MPI5w0a3mF8mPPniWZAsNII6ABT2K+LjSjL1TmT/q22rhtpdYfp+J+jxYcqTReDWzDHh298hDS8Nj46p2wAuQC+TISt2f6und7cdIx3MR2+HmqH+wNhmHoFhnbiDC7pzhE
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 791CF20008
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: j99693d4ttbf8wcd1a7rpxih1gp5jm6t
+X-HE-Tag: 1794793943-581296
+X-HE-Meta: U2FsdGVkX1/fNQXR52y+q5bwQs19gqNEHPSHVBX2GMgYSAGoO4QKAx+XHSm11HfuJ7NJNaRULl9kTvAmMbgJ3XUbfxnUz7Tq71YlYe4zr0pYBHa7aJXU7h1sBvAAKV6G4lMkI9xPeUlYYwRDXcc7gA8qijNeAnLNIalDf9nzIuv4wh+RN0iqyfXibFKjPPFyv+bOokjlNAOfYBf61gEGkZse7h1PIU1N80kfl3A+ZxLBtd55+fZbIEzUnD1It5nsePY8NqV/IIOJqSULEPrSDFd5J/d3/iAe5f4l/ws/+6XfUGxTnUpUcEPHfYt4sisoDeti5WMbjECOnHT0TwnpH7AjXfuphxK99emqEfAAmNvegXAfSMWxH5N9t+6o+DtrQcs1UOCfe0TlKGFPTWbGegQ4DiFknYVtVkApntDX3WzTC7Y6hWLtR45yVEDKQCkBGS/zyrt6DrEdYvjMqgQeRT07wYJ1lIu/XFyRDnmllR3liuES/ocqSsuLE/RsHwbLefVBLwZGy4W+pgV4vCkkObCN85HGYupsNfDcK4WNQiZPVRVYJgwLmhAFSinGoJTsBtevwl5CsyToMA6BfzzvVKMQ5hs78aTIn0q21ndkxrMJRbI678ut2ftuKVsIImslcE3EtaZnt+Ub/DGaySS7IeW8j151J77d3bGDMcUpARQWqYjkUHYVYFLKhMvyAu/PcDBKgfDbDQkjtIE/cj9o8+Jt6/Bbr+juExtzO5uW9vfk9n/QPJys1J2dCb0ww6ql2lqmijaH3DKT4hxNXXGUlGu7wdSaQMtR9Hpu76oc9o5zaqWaHXIOGkVIbYx7+IuWzY1cCg10pBop8etOqF3cH/8zfF3UZxngKuyQFBfOylXjhh8AWjrJivTRaDPw9HGosidsKvezP/ZXS7Ww+MuPXd67W15W36Wy2KtesuZ7JZdudy95OYWj8vTwBi5Q4nzXylTOe5tsvjcc4dWvH5Y
+ 0jeqHCym
+ tI5fY4MjZueLE5mG3BrT8mnAbUWUfv9luygERXh3TzA5QJi0I7hATCytqrQHz0qySA1JqljU6LpW1MPx5ikp4JkBgK1Jc3HRbuaVICBOIQ+lSo6N05F1D/pdzdwK/DDUKoGQMU1V/14HO2U6VY4hHsjzeZ7HOJwyeWfQe2ko53LotoCarXI12PrkgabNfSJo7qW2lUom2etVE2MLjenRUOcyVJCMW8T1SmtPn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,186 +114,229 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+__percpu_counter_sum() holds a raw spinlock while reading the global
+count and per-CPU deltas, serializing concurrent sums of the same
+counter. Since a sum changes neither the global count nor the per-CPU
+deltas, use rwlock_t on !PREEMPT_RT to allow concurrent sums with a
+read lock. Global updates take the write lock. The per-CPU fast path
+remains lockless, so sums keep their existing snapshot semantics.
 
+stress-ng dentry reaches this path through ext4_statfs():
 
-On 11/16/2026 8:28 AM, Barry Song wrote:
-> On Thu, Nov 12, 2026 at 4:55 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>
->>
->>
->> On 11/12/2026 4:41 PM, Barry Song wrote:
->>> On Thu, Nov 12, 2026 at 4:38 PM Kairui Song <ryncsn@gmail.com> wrote:
->>> [...]
->>>>>    mm/folio.c | 11 ++++++++++-
->>>>>    1 file changed, 10 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/mm/folio.c b/mm/folio.c
->>>>> index ea3adb6a89d7..c412d9b398e4 100644
->>>>> --- a/mm/folio.c
->>>>> +++ b/mm/folio.c
->>>>> @@ -583,7 +583,16 @@ static void lru_deactivate(struct lruvec *lruvec, struct folio *folio)
->>>>>         lruvec_del_folio(lruvec, folio);
->>>>>         folio_clear_active(folio);
->>>>>         folio_clear_referenced(folio);
->>>>> -     lruvec_add_folio(lruvec, folio);
->>>>> +     /*
->>>>> +      * For MGLRU, lruvec_add_folio() places anon folios that are not in
->>>>> +      * the swap cache into the second youngest generation, which is an
->>>>> +      * active one. Add the folio to the oldest generation instead, like
->>>>> +      * lru_deactivate_file() does for clean folios.
->>>>> +      */
->>>>> +     if (lru_gen_enabled())
->>>>> +             lruvec_add_folio_tail(lruvec, folio);
->>>>> +     else
->>>>> +             lruvec_add_folio(lruvec, folio);
->>>>
->>>> Hi Ridong,
->>>>
->>>> One question here, why MGLRU/CLRU have to use two different ways to
->>>> add the folio back?  Will this cause over aggressive reclaim of the
->>>> folio?
->>>
->>> I guess that is because on mglru, that is lacing a way to add the folio to
->>> the head of the oldest generation for anon folios while CLRU can do
->>> that :-)
->>
->> Hi Kairui, Barry,
->>
->> Thanks for taking a look.
->>
->> Barry is right about the reason. With the classic LRU,
->> lruvec_add_folio() adds the deactivated folio to the head of the
->> inactive list. With MGLRU, lruvec_add_folio() can't put an anon folio
->> into the oldest generation at all: lru_gen_folio_seq() places a
->> swap-backed folio that is not in the swap cache into max_seq - 1,
->> regardless of its refs. The only way to reach the oldest generation is
->> the reclaiming path of lruvec_add_folio_tail(), and that path adds the
->> folio to the tail.
->>
->> And you are right that this makes it more aggressive than the classic
->> LRU. With this patch, a deactivated folio is evicted before the folios
->> already in the oldest generation, while the classic LRU puts it behind
->> the folios already on the inactive list. It also changes file folios:
->> before this patch they are added to the head of the oldest generation,
->> the same as the classic LRU, and now they go to the tail.
->>
->> So the problem in the current code is that a deactivated anon folio is
->> promoted into an active generation, and with this patch it goes one
->> step further than the classic LRU in the other direction.
-> 
-> I think MADV_COLD is fundamentally broken for anonymous folios
-> under MGLRU!
-> 
-> An anonymous folio may already be in an older generation, but
-> lru_deactivate() can actually promote it to the second-youngest
-> generation, effectively making it hotter instead of colder!
-> 
-> Right. For anonymous folios, we have no way to insert them at the
-> head of the oldest generation without introducing a new flag like
-> PG_cold, which is unlikely to be accepted.
-> 
-> If we instead insert them at the tail of the oldest generation,
-> I'm not sure whether that would be consistent with the historical
-> semantics of MADV_COLD.
-> 
-> But I've been thinking about how to insert a folio at the head
-> of the oldest generation. Why can't we simply move the folio
-> directly from its current generation to the head of the oldest
-> generation in lru_gen_deactivate_folio()?
-> 
-> For example, something along these lines:
-> 
-> lru_gen_deactivate_folio()
-> {
->          int type = folio_is_file_lru(folio);
->          int zone = folio_zonenum(folio);
->          int gen = lru_gen_from_seq(lrugen->min_seq[type]);
-> 
->          if (folio_lru_gen(folio) < 0)
->                  return false;
-> 
->          folio_clear_active(folio);
->          folio_clear_referenced(folio);
-> 
->          list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
-> }
-> 
+  statfs -> ext4_statfs -> __percpu_counter_sum
+         -> native_queued_spin_lock_slowpath
 
-I think that works, and it is better than what this patch does. It
-puts both anon and file folios at the head of the oldest generation,
-which matches the classic LRU, and it avoids the two problems I
-mentioned (too aggressive for anon, and moving file folios from the
-head to the tail).
+Keep the raw spinlock on PREEMPT_RT, where rwlock_t can sleep.
+Global counter updates can run in atomic context and must not sleep.
 
-A plain list_move() is not enough though. We also need to:
+stress-ng dentry test average throughput change:
 
-- update the gen bits in folio->flags with a cmpxchg loop, as
-  folio_inc_gen() does, since folio_update_gen() can change them
-  locklessly from the page table walk;
-- fix up lrugen->nr_pages and the LRU sizes. lru_gen_update_size()
-  warns on an active -> inactive move ("demotion requires
-  isolation"), so this would be done as a deletion from old_gen
-  followed by an addition to new_gen.
+  +------------------------+------------+--------------------+
+  | Case                   | Unit       | Average change (%) |
+  +------------------------+------------+--------------------+
+  | Dentry, 64 workers     | bogo ops/s |             +47.34 |
+  +------------------------+------------+--------------------+
 
-min_seq only advances under the LRU lock, so it is stable here.
-Something like:
+Dentry ran on ext4 with 64 workers pinned to physical CPUs:
 
-static bool lru_gen_deactivate_folio(struct lruvec *lruvec,
-					struct folio *folio)
-{
-	  int type = folio_is_file_lru(folio);
-	  int zone = folio_zonenum(folio);
-	  struct lru_gen_folio *lrugen = &lruvec->lrugen;
-	  int new_gen = lru_gen_from_seq(lrugen->min_seq[type]);
-	  unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
-	  int old_gen;
-	
-	  do {
-		old_gen = ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
-		if (old_gen < 0)
-			return false;
-		new_flags = old_flags & ~LRU_GEN_MASK;
-		new_flags |= (new_gen + 1UL) << LRU_GEN_PGOFF;
-	  } while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
-	
-	  if (old_gen != new_gen) {
-		lru_gen_update_size(lruvec, folio, old_gen, -1);
-		lru_gen_update_size(lruvec, folio, -1, new_gen);
-	  }
-	  list_move(&folio->lru, &lrugen->folios[new_gen][type][zone]);
-	
-	  return true;
-}
+  stress-ng --dentry 64 --dentries 4096 --timeout 20s
 
+Suggested-by: Tim Chen <tim.c.chen@linux.intel.com>
+Reviewed-by: Tianyou Li <tianyou.li@intel.com>
+Reviewed-by: Wangyang Guo <wangyang.guo@intel.com>
+Signed-off-by: Jiebin Sun <jiebin.sun@intel.com>
+---
+ include/linux/percpu_counter.h |  4 ++
+ lib/percpu_counter.c           | 71 ++++++++++++++++++++++++++--------
+ 2 files changed, 59 insertions(+), 16 deletions(-)
 
-> Right now, lru_deactivate() seems unnecessarily complicated,
-> incurring additional CPU overhead and LRU lock contention:
-> 
-> 1. Remove the folio from the LRU list.
-> 2. Add the folio to the LRU cache.
-> 3. Drain the LRU cache.
-> 4. Add the folio back to the LRU list.
-> 
-> Why do we need all these intermediate steps instead of moving
-> the folio directly in a single operation, given that we're
-> already manipulating the LRU list?
-> 
-> Am I missing something?
-> 
-I don't think the batch itself is the problem. The folio stays on the
-LRU while it sits in the per-cpu batch; only when the batch is
-drained do we take the LRU lock once for up to a batch of folios and
-do del + add under it. So the batch reduces lock contention rather
-than adding to it. What the in-place move saves is the del/add pair
-inside the lock.
-
-So I plan to keep the batching and, in lru_deactivate(), call
-lru_gen_deactivate_folio() instead of lruvec_del_folio() +
-lruvec_add_folio() when MGLRU is enabled. I'll test it and send v2
-if that sounds good to you.
-
+diff --git a/include/linux/percpu_counter.h b/include/linux/percpu_counter.h
+index 3a44dd1e33d2..7b28b0e22207 100644
+--- a/include/linux/percpu_counter.h
++++ b/include/linux/percpu_counter.h
+@@ -20,7 +20,11 @@
+ #ifdef CONFIG_SMP
+ 
+ struct percpu_counter {
++#ifdef CONFIG_PREEMPT_RT
+ 	raw_spinlock_t lock;
++#else
++	rwlock_t lock;		/* shared for sums, exclusive for updates */
++#endif
+ 	s64 count;
+ #ifdef CONFIG_HOTPLUG_CPU
+ 	struct list_head list;	/* All percpu_counters are on a list */
+diff --git a/lib/percpu_counter.c b/lib/percpu_counter.c
+index 87b261b87b0b..ce0284bacf07 100644
+--- a/lib/percpu_counter.c
++++ b/lib/percpu_counter.c
+@@ -15,6 +15,46 @@ static LIST_HEAD(percpu_counters);
+ static DEFINE_SPINLOCK(percpu_counters_lock);
+ #endif
+ 
++/*
++ * Non-RT sums share the lock; global updates take it exclusively.
++ * Keep raw spinlocks on RT: rwlocks may sleep and their irqsave variants
++ * do not disable interrupts. Updates run in atomic contexts and need
++ * IRQ exclusion for CPU-local read-modify-write sequences.
++ */
++#ifdef CONFIG_PREEMPT_RT
++#define fbc_lock(fbc)			raw_spin_lock(&(fbc)->lock)
++#define fbc_unlock(fbc)			raw_spin_unlock(&(fbc)->lock)
++#define fbc_lock_irqsave(fbc, f)		raw_spin_lock_irqsave(&(fbc)->lock, f)
++#define fbc_unlock_irqrestore(fbc, f)	raw_spin_unlock_irqrestore(&(fbc)->lock, f)
++#define fbc_read_lock_irqsave		fbc_lock_irqsave
++#define fbc_read_unlock_irqrestore	fbc_unlock_irqrestore
++#else
++#define fbc_lock(fbc)			write_lock(&(fbc)->lock)
++#define fbc_unlock(fbc)			write_unlock(&(fbc)->lock)
++#define fbc_lock_irqsave(fbc, f)		write_lock_irqsave(&(fbc)->lock, f)
++#define fbc_unlock_irqrestore(fbc, f)	write_unlock_irqrestore(&(fbc)->lock, f)
++#define fbc_read_lock_irqsave(fbc, f)	read_lock_irqsave(&(fbc)->lock, f)
++#define fbc_read_unlock_irqrestore(fbc, f) read_unlock_irqrestore(&(fbc)->lock, f)
++#endif
++
++static void fbc_lock_init(struct percpu_counter *fbc,
++			  struct lock_class_key *key)
++{
++#ifdef CONFIG_PREEMPT_RT
++	raw_spin_lock_init(&fbc->lock);
++	lockdep_set_class(&fbc->lock, key);
++#else
++	rwlock_init(&fbc->lock);
++	/*
++	 * rwlock_t normally uses LD_WAIT_CONFIG because it sleeps on RT.
++	 * This counter uses a raw spinlock on RT, so it can be taken under
++	 * raw spinlocks or with IRQs off on every configuration.
++	 */
++	lockdep_init_map_wait(&fbc->lock.dep_map, "&fbc->lock", key, 0,
++			      LD_WAIT_SPIN);
++#endif
++}
++
+ #ifdef CONFIG_DEBUG_OBJECTS_PERCPU_COUNTER
+ 
+ static const struct debug_obj_descr percpu_counter_debug_descr;
+@@ -62,13 +102,13 @@ void percpu_counter_set(struct percpu_counter *fbc, s64 amount)
+ 	int cpu;
+ 	unsigned long flags;
+ 
+-	raw_spin_lock_irqsave(&fbc->lock, flags);
++	fbc_lock_irqsave(fbc, flags);
+ 	for_each_possible_cpu(cpu) {
+ 		s32 *pcount = per_cpu_ptr(fbc->counters, cpu);
+ 		*pcount = 0;
+ 	}
+ 	fbc->count = amount;
+-	raw_spin_unlock_irqrestore(&fbc->lock, flags);
++	fbc_unlock_irqrestore(fbc, flags);
+ }
+ EXPORT_SYMBOL(percpu_counter_set);
+ 
+@@ -98,7 +138,7 @@ void percpu_counter_add_batch(struct percpu_counter *fbc, s64 amount, s32 batch)
+ 	count = this_cpu_read(*fbc->counters);
+ 	do {
+ 		if (unlikely(abs(count + amount) >= batch)) {
+-			raw_spin_lock_irqsave(&fbc->lock, flags);
++			fbc_lock_irqsave(fbc, flags);
+ 			/*
+ 			 * Note: by now we might have migrated to another CPU
+ 			 * or the value might have changed.
+@@ -106,7 +146,7 @@ void percpu_counter_add_batch(struct percpu_counter *fbc, s64 amount, s32 batch)
+ 			count = __this_cpu_read(*fbc->counters);
+ 			fbc->count += count + amount;
+ 			__this_cpu_sub(*fbc->counters, count);
+-			raw_spin_unlock_irqrestore(&fbc->lock, flags);
++			fbc_unlock_irqrestore(fbc, flags);
+ 			return;
+ 		}
+ 	} while (!this_cpu_try_cmpxchg(*fbc->counters, &count, count + amount));
+@@ -125,10 +165,10 @@ void percpu_counter_add_batch(struct percpu_counter *fbc, s64 amount, s32 batch)
+ 	local_irq_save(flags);
+ 	count = __this_cpu_read(*fbc->counters) + amount;
+ 	if (abs(count) >= batch) {
+-		raw_spin_lock(&fbc->lock);
++		fbc_lock(fbc);
+ 		fbc->count += count;
+ 		__this_cpu_sub(*fbc->counters, count - amount);
+-		raw_spin_unlock(&fbc->lock);
++		fbc_unlock(fbc);
+ 	} else {
+ 		this_cpu_add(*fbc->counters, amount);
+ 	}
+@@ -148,11 +188,11 @@ void percpu_counter_sync(struct percpu_counter *fbc)
+ 	unsigned long flags;
+ 	s64 count;
+ 
+-	raw_spin_lock_irqsave(&fbc->lock, flags);
++	fbc_lock_irqsave(fbc, flags);
+ 	count = __this_cpu_read(*fbc->counters);
+ 	fbc->count += count;
+ 	__this_cpu_sub(*fbc->counters, count);
+-	raw_spin_unlock_irqrestore(&fbc->lock, flags);
++	fbc_unlock_irqrestore(fbc, flags);
+ }
+ EXPORT_SYMBOL(percpu_counter_sync);
+ 
+@@ -174,13 +214,13 @@ s64 __percpu_counter_sum(struct percpu_counter *fbc)
+ 	int cpu;
+ 	unsigned long flags;
+ 
+-	raw_spin_lock_irqsave(&fbc->lock, flags);
++	fbc_read_lock_irqsave(fbc, flags);
+ 	ret = fbc->count;
+ 	for_each_cpu_or(cpu, cpu_online_mask, cpu_dying_mask) {
+ 		s32 *pcount = per_cpu_ptr(fbc->counters, cpu);
+ 		ret += *pcount;
+ 	}
+-	raw_spin_unlock_irqrestore(&fbc->lock, flags);
++	fbc_read_unlock_irqrestore(fbc, flags);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(__percpu_counter_sum);
+@@ -203,8 +243,7 @@ int __percpu_counter_init_many(struct percpu_counter *fbc, s64 amount,
+ 	}
+ 
+ 	for (i = 0; i < nr_counters; i++) {
+-		raw_spin_lock_init(&fbc[i].lock);
+-		lockdep_set_class(&fbc[i].lock, key);
++		fbc_lock_init(&fbc[i], key);
+ #ifdef CONFIG_HOTPLUG_CPU
+ 		INIT_LIST_HEAD(&fbc[i].list);
+ #endif
+@@ -274,11 +313,11 @@ static int percpu_counter_cpu_dead(unsigned int cpu)
+ 	list_for_each_entry(fbc, &percpu_counters, list) {
+ 		s32 *pcount;
+ 
+-		raw_spin_lock(&fbc->lock);
++		fbc_lock(fbc);
+ 		pcount = per_cpu_ptr(fbc->counters, cpu);
+ 		fbc->count += *pcount;
+ 		*pcount = 0;
+-		raw_spin_unlock(&fbc->lock);
++		fbc_unlock(fbc);
+ 	}
+ 	spin_unlock_irq(&percpu_counters_lock);
+ #endif
+@@ -354,7 +393,7 @@ bool __percpu_counter_limited_add(struct percpu_counter *fbc,
+ 		return true;
+ 	}
+ 
+-	raw_spin_lock(&fbc->lock);
++	fbc_lock(fbc);
+ 	count = fbc->count + amount;
+ 
+ 	/* Skip percpu_counter_sum() when safe */
+@@ -392,7 +431,7 @@ bool __percpu_counter_limited_add(struct percpu_counter *fbc,
+ 	fbc->count += count + amount;
+ 	__this_cpu_sub(*fbc->counters, count);
+ out:
+-	raw_spin_unlock(&fbc->lock);
++	fbc_unlock(fbc);
+ 	local_irq_restore(flags);
+ 	return good;
+ }
 -- 
-Best regards
-Ridong
+2.52.0
 
 
