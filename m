@@ -1,132 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6A560837B2
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D476071B10
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Xka43TzK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b8+ShhPz
 Received: by kanga.kvack.org (Postfix)
-	id 097856B0612; Mon, 16 Nov 2026 06:11:06 -0500 (EST)
+	id B94D06B0614; Mon, 16 Nov 2026 06:11:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F17936B0613; Mon, 16 Nov 2026 06:11:05 -0500 (EST)
+	id B1DA66B0615; Mon, 16 Nov 2026 06:11:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5EA6B0614; Mon, 16 Nov 2026 06:11:05 -0500 (EST)
+	id 9E5A06B0616; Mon, 16 Nov 2026 06:11:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B46376B0612
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:11:05 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A758A0888
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:11:04 +0000 (UTC)
-X-FDA: 85440715248.27.512C7A9
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A84C21C000A
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:11:02 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Xka43TzK;
-	spf=pass (imf18.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 73D6F6B0614
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:11:11 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1133880519
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:11:11 +0000 (UTC)
+X-FDA: 85440715542.07.72D7054
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 48EB540006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:11:09 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b8+ShhPz;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827462;
-	b=ZgsLAvugGxO1sC+sQw08R52bynxow7KOTrNEzt6J1mgU6JrV1fYX9hAm63uGiXWggB/oCQ
-	56xFEV4ALoY1E5B4wASN4ELt8BzFM4xfv9LsKJCH3QO4Kszbbl0tAa0bj21VIsAt89Qcni
-	s6/iYCKukrEGs1sgMWkHL6eIc6R1aM8=
+	t=1794827469;
+	b=ClM/n5DfdpVMIQ7XW/NznwngZwXZrzEN28wf2TuW//BfrUCnBY+8scGLJzUL676+VaKNTE
+	BjLdSJLkR4OzSjaMyKLbB+Jr8mGR6qPMEDrYjYvXb5v3Bx4aDL50Y2Na6ekpmHhjwElfw1
+	pUqYlyPRsjPUekJdAPuz1tP9OvPAexE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Xka43TzK;
-	spf=pass (imf18.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b8+ShhPz;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827462;
+	s=arc-20220608; t=1794827469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rzDRDu7/JODZwbuavobSKTv49NxzFkRfd84aGaTT9+E=;
-	b=UCFnzBkoo8MottYdEovfoKDaKEUSf7oKJgadU6nyY0zCzvYED/rvwYIjKd7bshVuHSOPsm
-	+axUW3Ci3zCE80QiHDX0DuaulWY7Ee3gHVFYJfGdgQHn8qFHLUZGQL8te0jMrx9Y4Ojmig
-	pYM64l9aIaxosF+KFDmDf0IXm4mdYVM=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3b3a42a4bcdso34850a91.0
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:11:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794827461; x=1795432261; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rzDRDu7/JODZwbuavobSKTv49NxzFkRfd84aGaTT9+E=;
-        b=Xka43TzKyR7x8DherhaESuTFjOJylXpOjHFMKRMT1fzP4M0Ugq19vW2Qn8qQelrd78
-         NL86AAp8rEm2psvT/UO/vSzJ1b5Q5NSR+tQuam93BP8R5RAiSHtmAWOdaQR9+C4/kgjO
-         PjYE6Na338BzhGzJvh49U4sB/4KTRASztj1r0KtDuteTnyjkpJcoMCpo/7L+cSjDJxgf
-         J7Aea7H+gpLJJLU8d5Bs8oq3WkNRmmJyxZRIf48ga0yx8bkvqehzBknTwxeWJol4vL4k
-         Oo7n4i0vtUsdIl4yiCwlfazZgvwaIeQutuBlf3c205Xhy6JQ9GyQakCZ0jHyVlP4UTJf
-         he/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794827461; x=1795432261;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rzDRDu7/JODZwbuavobSKTv49NxzFkRfd84aGaTT9+E=;
-        b=gLI3jT6PTkWqE8r4pCXR7IZuwPY6E0gBwywVVRm8VnFNnSaSyEhch8LdlQo340Evga
-         CFsIjj2yCexjIYYXw/Wiyw5NmjbwWI/XuZIvy5y0Qv3AQELJPtDMrgxi2COofpDJEDbY
-         AMmsKtmdthYheK6yTPjYqoUWVfr6nZLb/OwTH53oHAgj7cRckc8X6CiasZIxBTAVPDYX
-         saP38mX5vbOzu0F462k65OWNJkIympoGJkr6OXq3TzyljlC9Zk8x4pMiuG/VfHR1Q9xS
-         rIOQZitnDac+3ZbeGQybuEhe3V0w1MAEGWyilGOS7jCrK5CyObYaikvXrNKHtGdTy7Z7
-         m4Kw==
-X-Gm-Message-State: APuU4Z9YRaYZKW9DkIu2LMVAKEjYfKUcuE6LeOq+lYAGYZd5hDtRHQtv
-	lE4JRPm5/qyK/Gzv2vvsQix9OsI/PUmhgm/fkQuDqUMpef5aSUr4Glwy
-X-Gm-Gg: AZFdTZft3uQemvQneIrIfF+iltT2p6Ca+rUwZglrl6IU3f+g9awPvmu1Gs9RUIZTe6H
-	EL9Vz4o3h51e/udsD1Dv856BbsUuF8uUG/YN3Zg8AR5pvBICCqSbpCGmdn1i84fSmxLtlYSSIXq
-	rsm9vyPyE4eFFPVXQVpLizcndYxgWi/guFRmrjIbXHB5RPuwUdXiB1rlJo4ipI5QPNKPP+RFYq3
-	vbNP9twPfwjF017KFVsz6Dxk9EmgQuO6Os1AslbACDA/K9KQWI4B/7+gkjSjMkau0s160pSee90
-	ROLT5CYlZL3ierZHkn8uRkal2WH9NnDsjW03r5iKtQifIIT18dWlJMbRD2e+gclZsnpTaLL2/PD
-	j/RoloyCZzYSrwOKSDrjlRD2Y9n9xmcU9gO56uKLg+2lig0/VEmijp6OsXfUVGnTR/nFdfNfDNG
-	U0DGR3OVCDjqb0XTTzYAl8cjW6qvGXMxRGNcFzCGzWuX7M78fUN2P0IhVdP7YsYfAOY0sI8u4pd
-	ptW74f31bTxClvZwUIJMpuNvxpSkLTEypEE+VyYSVUjtBgOkPn43xC+8A0OEoGDCwKCmdmXExMJ
-	2ZqDE0XdC9do+UTuacWj/pvOuemc7QObWDXQWN0uPseZAHINwMqvHKPriNYmI5xVGZpeC/lXFax
-	GnPTvWU4OFEU7LQM=
-X-Received: by 2002:a17:90b:588b:b0:3b0:9984:18c9 with SMTP id 98e67ed59e1d1-3b1b09f37ccmr8454898a91.11.1794827461360;
-        Mon, 16 Nov 2026 03:11:01 -0800 (PST)
-Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1b1e9ef15sm9162815a91.0.2026.11.16.03.10.56
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 16 Nov 2026 03:11:00 -0800 (PST)
-From: Lian Wang <lianux.mm@gmail.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jihan LIN <linjh22s@gmail.com>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: Re: [RFC PATCH v4 00/18] mm/swap: introduce priority queues for swap device allocation
-Date: Mon, 16 Nov 2026 19:10:30 +0800
-Message-ID: <20261116111044.28724-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <CAMgjq7Cq5OQWdompBbEpyJTG3PhtdSLFUdb_Dtht3qH+u5HVhw@mail.gmail.com>
-References: <cover.1794666741.git.lianux.mm@gmail.com> <CAMgjq7Cq5OQWdompBbEpyJTG3PhtdSLFUdb_Dtht3qH+u5HVhw@mail.gmail.com>
+	bh=OTEjlmIJyKpC5NfEWKTxGQBI4o98SYAhIwo6Ai+LDGM=;
+	b=TLX7PlfhR7CNmuuEj4V4weFfXJ6sGZzCiLUVr+R+Pt4VXD/aDKM6SFhjJo1ze6IBvnWBgc
+	r2QHyr5JTZ8VJRoakN8ZqgA8rOCKpSSzBkjd8Ytva8M1mRrle1j7XFeuQYv9LUstyD95oi
+	+aqbqKRO3p9i6acyOyqU4ShUQmXaxvk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E0A6F62964;
+	Mon, 16 Nov 2026 11:11:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90BD1F000C4;
+	Mon, 16 Nov 2026 11:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794827468;
+	bh=OTEjlmIJyKpC5NfEWKTxGQBI4o98SYAhIwo6Ai+LDGM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=b8+ShhPzXQ5lKArD/6+ZRe9DOjMyoKKAtnYUlLtEIbco9DLALBR0Fd2WDzfzWc/xq
+	 +KykUFg8yMY6Kd78+glVS3d4yeckJ0NZgym4qTmABG1DSqtV08TKvEgKTSRPYYc8FP
+	 3A/zUYyTBLJdxk3fLBWngqH38gEefnGvMYwPDcaoLTEerXzCHabY1vE4quu1HkYEqI
+	 xK7UXhuJplVmiu7BnozU6NuKxVhigBCbUzntJkdDKhMU1U4LXEjJVGGRKv6uioBtRs
+	 sd3pKHijxRAVRCt9esuvtmGbmGhGQspe3OfnCiNM1Ut6Q2kagZYzQsqGYzonRHSJSV
+	 uP0mNwhmOYf2A==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 16 Nov 2026 12:05:14 +0100
+Subject: [PATCH RFC v3 41/44] usb: gadget: f_mass_storage: refuse files on
+ pseudo filesystems
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3diaxmufpqh79d83imxzta3rbd695auy
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261116-work-loop-pseudo-v3-41-8cbbea1cf34f@kernel.org>
+References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
+In-Reply-To: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
+ Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, 
+ target-devel@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-mm@kvack.org, bpf@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, 
+ netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+ linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+ ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+ Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Alexander Mikhalitsyn <alex@amutable.com>, 
+ Chris Down <chris@chrisdown.name>
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2207; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=9yOpMEvSpwTZ88CI4cJoJKFDpbu7ZmjHFE7v8Gz8hhc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9etynd0NX1vPeFOdEtq9nL7ydJOxr3SZTcqJWrC/8P
+ 8+eTSY8HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNpsmJk2P/2xMUG9fKOCS+q
+ pmtt5+OefHRG0P2je5ZsqZU7vHHpSW+GvxKn1gcduJD7d9+yy53iOseiZErr8u6GsuasXRM//eL
+ OvXwA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 48EB540006
+X-Stat-Signature: bfqzcqfg6aasxn4pwgaeyyutm1e43euw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A84C21C000A
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794827462-665066
-X-HE-Meta: U2FsdGVkX18uNjN45xWX5BXBMmOLrNeC0pVUc9EsdIaUWZdKYIFMH6RmEPveZ/eBcIbwOUVeZuT1pfG5vUB01z7bD2TMmxvrYhH85xaBiWL1YEEe/uej/QSQoMUgDpCKGiWbEReqnOFWqJ6P4EJ27sJvQw8/5tpFjgcPvd7KW30BjKG5LUxqsNfXStqsp1hxz0AIc0N/RiaVmFFbvicdx9hUrubA4OVjj5p7nEAcC0+ol0b19XyoMfqm02CUt57kzYbxzKLItQwiR24rfPZKyJw6I08es1oAVtOZjwOeso+SwJY+Cq0Vl4ndm4IxzryAbkYv/pb6jNAC6LRXWKdOM9IbExzQPxQl4a+r3ozvzno6sb8C9B4KIqLFnSLqljDVJmE5FNAkQEPgKMCngxRd+5OpeyG8KLFLCJkvZUcV+6kX7leg/Y+huUWn8QUxGEVM25V1Ee6z0UnBNiV7YFn1HPrUmQOioA3csCkpdKjz4J7QFUeTeQgvpwQcijq9XbzpI04tkGt9FENPloQ6t/SYTODYAKhdaZJvbg5iWJtmOvbrDypsWwhX5tDYnyuORW96KsW5SvxkH6Pd+6Wbk5nehgsCbUmwgjCbWpi+Q4XeVzhF8zR8GEeoOX5mYtVxoDyoax+aKV/KvJfOi6bJZYYNUbO9bsOcFmOdryFIv63QxZSU+va23L52q+1ShG1lHaFtDklyaOyldrw11UkYTVGNGlFafqFCinl4xJvKT2qLqwyLa7lYeIsStp9O3hCw9p2LoovPc3BeaaWMY8NsVB+smwivbBBk15ka0zwMQ8+nuhw6EZT9k0t6WhcORXArxW95IgEkxu5pWkuMIp9fn9QpnQOg5GVf/gMRJx5RFe28WFot2EiXylNW+dVjzf//7krJdDAXa/isrXsZtUvBG0kwKekmyl/zbdNvG4n3pCLuXn9TrHtMogOUS2zJrOF7ZWU6MZVVwvlwI3x3sV3O5Eg
- O5WUzRRv
- Re4L7/fk9MWTGRrxwEg67dRNJ+fSxOyhpdL34ARBhhtTN/+Xo/Ei8Vwj+QiZnvawjaGooJymHuLwJdBxlMeTlYcM7JlQ8W9eRBZlT+j+H7hVR5V2BDvJzNeGPbYbL0YE3dpzdQVWMbjtrAFoOJVgHdggjgPl+BIWritpa/l7JNFUhdOJtwnrEYWjy2kdi6Yyj69uO9zTa5SelIFcz/zb8cuVS401ca0vPATL4IxCu8bGLzyBE3FMqqwLYh+rHC8j7o8yea634Vhvl8CZjpwreaRb9HGRQEaHWu+S5QoNkTGDGj2pX197Np6+IY6e6eaYdCuF+g9Ale7hKxyEX9OKEHxoyK2R6cZo8+SSYWf9/gAPdnagfrTheuNvr3AGvBBDAaoSp/GGg3mDe3ryxRLsY7MZfrv564/1RySncYJCU4B6r1oDrfvPiaW84L0kfN0h3Xj8l
+X-HE-Tag: 1794827469-453386
+X-HE-Meta: U2FsdGVkX1+fxr1quqsq1GCbJVpG77hCvYVW249MK/Pq67K4gm87dFj4pB7w5kK31JNUuyqZqCwKK07rnMtD6DHKprvCgqMo1aIxcFjSjK7xJbqP/yGqOBejvopLOSJHkciv/RrhPa2sGUqaPcGSR+amgzdzKNjBrLoZk/SQFzv67A0Ok2Pz4jXQHEE+OuLmFXYwsIzXNMwaO/+kwEmxB6vmbKyHpqSmTjQRpiSZiW7A4F6O7Z69cKMKYCbyPhWGE1ulFxiqLx81RggpSrAOMw3GyeZ+ScrjyetFpP0goovRcD4EnBnB4iZQjnIeW1jle+r6q7d7p8MKLhxCQy/j+nK0X50hb0ZPgxgLSzMGUbNwkdt9kLTpV+ULdSwqYvUetj0t/6pAVeZf9nJemAetEwTzuvTgZx3qZOqz1WLwcKvfKE+my+59qV5hgsU9FMV50IxDJ3xTm/tlxIhSzDZfHbpjPPoHjcqI/JXpmuZHF8IcxwnCDzy9gAswieYcLPiahPY0/ssBHKxyYUit0xupGPVCbCE9d70EKB50JdihueQMMWq6NynjbscEhZhvgd5t5fBFkRhtqwfv5QJxg50lzK+yfgXwo2mMCyI/DWaLIaXfng7hzWZNKpeoFgOjxmRL18N9hsIZA02wZ43U2a3h384tbcQnAwND64/KY6JGHhMlXJOf7azjeWN4yX81buOQibrfd7QKkEyeakxpWSws4vpwxfg0iPPjGb8vk5ndTQk+7MPAguI+9gA7c0K0i46aKOR3nZy0/4VtbiSD1Vz8xL8VnSRz3MaENCXa9LKtQBXMBwl/MOVHDR39iyDX0mY01gniFzSAE3j3DiO0ZOGZVZUMDKfypIXh4hfQ7WZLu1Bzu6cIw/lFBHkXsOzVr6u7CKMrw36TxhwpQC3DfHsO5+F237nkRIE2E/NdC2YlIm8a9ZK29x06G/lEdpNDPO5I2grIOEnaeXqogxFfb8L
+ aOzZtEOi
+ ONj1crQDIYS9+AO5hqdTWyXD1OwZYRSLJNft0q6OARfY8BcTelYM4YIUk5zLEHS1wkzqGIbQVJNoLaHcm64I7L3zx9ykLpFWZIUP7adCrXR1ypQ3EgQVX56s7K62FeliPLVhH5fHdptB0+dy/C1ZXm0LTwMq/3tjMGyM/FqrlBEvQBq7Vho7fXfK5WLipvAlfMf+vAubMClQf89NQ6SdgOzlShpOMrj9NKJHAZX9KpqxlekPY1+gP1eXmMhIvNlz2nlLWUNUnv1JGkDLOwQD+evwqNAZE5gCrOofXTAjXv6JhumuNGTHoe7ddVCRCdv5W2sb0rg2WEdwdOM4AY8fi2DXQU21s1Vd1y8xB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,30 +120,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Kairui,
+fsg_lun_open() takes any regular file as the backing file of a LUN. The
+file-storage kthread then reads and writes it with kernel_read() and
+kernel_write() on behalf of the USB host. With a procfs or sysfs file
+behind a LUN the host gets to read and write kernel interfaces with
+kernel credentials. Refuse files on pseudo filesystems just like loop
+does by switching to file_check_backing().
 
-On Mon, 16 Nov 2026 11:52:30 +0800 Kairui Song <ryncsn@gmail.com> wrote:
+The helper also does the file type and readability checks. So the
+messages for an unsuitable backing file become one. It looks at the
+inode of the file instead of the host of ->f_mapping. For regular files
+and block devices both have the same type. It also wants ->read_iter()
+where FMODE_CAN_READ was enough so far. But kernel_read() never worked
+without ->read_iter() anyway.
 
-> Thanks for the updates!
-> 
-> Nice, but what does n/arm mean?
-> 
-> It's worth mentioning that the global cluster cache is gone, so tiered
-> allocation will have a much better performance.
-> 
-> It seems the sashiko review is all green, which is great, let's hear
-> what the others think about this.
+Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ drivers/usb/gadget/function/storage_common.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-Thanks for the feedback. By n/arm I meant the number of runs per kernel:
-12 builds for each memory limit, and one BRD invocation. I'll use a
-clearer table heading.
+diff --git a/drivers/usb/gadget/function/storage_common.c b/drivers/usb/gadget/function/storage_common.c
+index 75831f2c7abeb..af0c37a9fe029 100644
+--- a/drivers/usb/gadget/function/storage_common.c
++++ b/drivers/usb/gadget/function/storage_common.c
+@@ -205,23 +205,18 @@ int fsg_lun_open(struct fsg_lun *curlun, const char *filename)
+ 	if (!(filp->f_mode & FMODE_WRITE))
+ 		ro = 1;
+ 
+-	inode = filp->f_mapping->host;
+-	if ((!S_ISREG(inode->i_mode) && !S_ISBLK(inode->i_mode))) {
+-		LINFO(curlun, "invalid file type: %s\n", filename);
+-		goto out;
+-	}
+-
+ 	/*
+ 	 * If we can't read the file, it's no good.
+ 	 * If we can't write the file, use it read-only.
+ 	 */
+-	if (!(filp->f_mode & FMODE_CAN_READ)) {
+-		LINFO(curlun, "file not readable: %s\n", filename);
++	if (file_check_backing(filp, FMODE_READ, S_IFBLK)) {
++		LINFO(curlun, "invalid backing file: %s\n", filename);
+ 		goto out;
+ 	}
+ 	if (!(filp->f_mode & FMODE_CAN_WRITE))
+ 		ro = 1;
+ 
++	inode = filp->f_mapping->host;
+ 	size = i_size_read(inode);
+ 	if (size < 0) {
+ 		LINFO(curlun, "unable to find file size: %s\n", filename);
 
-I'll tidy up the cover letter to make the motivation and scope clearer,
-including how removing the global cluster cache helps tiered allocation.
-Once I've collected the remaining feedback, I'll fold the changes into
-the next version and drop the RFC tag.
-
-Best regards,
-Lian Wang
+-- 
+2.53.0
 
 
