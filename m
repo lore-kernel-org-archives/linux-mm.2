@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C28606A893
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 20:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B616D606A322
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 20:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ntN5Yo/t
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jRBPdCnL
 Received: by kanga.kvack.org (Postfix)
-	id 5DC8D6B05B3; Mon, 16 Nov 2026 15:23:22 -0500 (EST)
+	id B8A616B05B0; Mon, 16 Nov 2026 15:26:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58DC56B05B4; Mon, 16 Nov 2026 15:23:22 -0500 (EST)
+	id B62366B05B6; Mon, 16 Nov 2026 15:26:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47C846B05B6; Mon, 16 Nov 2026 15:23:22 -0500 (EST)
+	id A78276B05B7; Mon, 16 Nov 2026 15:26:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A16F6B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:23:22 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D47DC022D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:23:21 +0000 (UTC)
-X-FDA: 85442107002.11.95D4708
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CFB20100010
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:23:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ntN5Yo/t";
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 786266B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:26:58 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 10739120204
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:26:58 +0000 (UTC)
+X-FDA: 85442116116.20.9AED874
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3FEEC18000D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:26:56 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRBPdCnL;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794860816;
+	b=rWnRIUD3U8oxQJmvTUXCSUjWLOlG+007l3yMcHKJ+eAodRMpxsQpz8KBzXl6xIZF9IvX7n
+	JSUt8pSVVUWIKm7ddsNNGesVwU3YuapXoobDiDPhWD5deLGsGofj+w678cqnzDVCklJJgH
+	sqSVQ1xkJN/CjIrKYymp2Jz+3cE1TyQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRBPdCnL;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794860598;
+	s=arc-20220608; t=1794860816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a+ZtZSiHDF77l41X0e+HR8wDioILQAoPoJMETPkmRjg=;
-	b=1bBSt6tYp1gNrAuzRbFTHvbI2jIc7JYqgNE0GoBoRRHkFtTEN9UExF0r7CoVMXgIT2bmgi
-	WP9otmwG+AyeLi26xFhxiJTTtPUXxSMJqetqq713NvIzLC+ERxmbqwQ1UyDDqwLpM48WSv
-	paSnDozyF8wiam6vunGTaL0ZPgvVGP8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794860598;
-	b=DRHjawhU96eNk7y2DHLEP990P1DSk6t7QXpQwzHBXwsqXSzhFTeLTLEP60olxga29kYA1S
-	EpbdJ/6hxILCe41lD1VtXUgPMitQqY1lKVTH4VoGuu+fjhaOMEGCZ6u81RK/728sLaB8h5
-	P8o9dXAnqST6Dp6KMkY199/ax2wpybc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ntN5Yo/t";
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=YaaaDQoV729o0ScmVfuhaqpe8ALtcszXY40XnBdAgAE=;
+	b=TyyJ5yOQWQM1ax378hThb9wR5i7lm+LEMGtfH3O1O3kanDVdUFK3iS62X8bpl3Y84pOine
+	ErY5M2vjrfuFWk5VVIO93BH77CTg9i1kXD64d6HREvSanOC7hV42u7hdcoxg2vqe1Bdo6F
+	rLKgsAc7jQJZ1wtkmFnkHb0iv1+zHbI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5039961232;
-	Mon, 16 Nov 2026 20:23:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088431F000C4;
-	Mon, 16 Nov 2026 20:23:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 69F6A41130;
+	Mon, 16 Nov 2026 20:26:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFA81F000C4;
+	Mon, 16 Nov 2026 20:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794860598;
-	bh=a+ZtZSiHDF77l41X0e+HR8wDioILQAoPoJMETPkmRjg=;
+	s=k20260515; t=1794860815;
+	bh=YaaaDQoV729o0ScmVfuhaqpe8ALtcszXY40XnBdAgAE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ntN5Yo/tIZDHX++d6JWnRglcPUBv4x/co6KCQgnvePDMNmHOeL0SzdB1GjttAeCQc
-	 okYFWmtV9Zf7eguqKwLOh8f53Du96c9oIYEzpudqyocUGmUhuFJmZJXY2NMNZmFGOQ
-	 3DMsKtIl8BwtSDqD1+B0597CiE+oGZltnfIDER1VJNWSp0gfS7JLAnOWTWi8INMPMD
-	 jtkHhZVoGV2HJ7UbVzwZEMvPCvRgj6uH/XRt8cOeaRSFU0itn/CsZF2yoV92QN+I3L
-	 AYi96ywEvt3jFtbeQjcxikGrHG1YUiQ4/Az1T89nUWYzvEgb1Yw/CBON1lZLD0GKbn
-	 wU52v4Sge7wXg==
-Message-ID: <2d9ec2ee-8867-4ac2-b2b5-654bf2441513@kernel.org>
-Date: Mon, 16 Nov 2026 21:23:05 +0100
+	b=jRBPdCnLB9B4oaQmNToTM9trKEppy0Ykfstc+ndfbgJE2FE8fx5W94InNfmEu5m4w
+	 6KJDMR1c/mJJBhGjPGvwoPZUn2FOlyI+m4WCZO5pFRChioiE+bfQvyGNY/c/sMk2IX
+	 Ty+YuY+KbDmAbv5bA787phrN9bix9+gw6HnDKh4icOIs+G719mbSyCaGwMRcPzE8jP
+	 LEyo/bmkWLOnATNxjGyibKcZlj4tYfiC7ZMlBNRIVF+yMZ2/ImCNRZD9fZ9PsHnwLj
+	 eS25I4spV4kbxofFIMBqG/ZYKR51HCQd8apSGoapmDnF4gyI2Z4t67XtOgiuz9lrhR
+	 vQVe1Z4uy+Y7g==
+Message-ID: <38750bd8-6bb3-40f9-901c-44cef40a9de7@kernel.org>
+Date: Mon, 16 Nov 2026 21:26:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/9] mm/migrate: keep the uffd bit when restoring a
- writable migration entry
+Subject: Re: [PATCH v2 5/9] fs/proc/task_mmu: write-protect device-private
+ THPs in PAGEMAP_SCAN
 To: Tal Zussman <tz2294@columbia.edu>,
  Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
@@ -93,7 +93,7 @@ To: Tal Zussman <tz2294@columbia.edu>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org
 References: <20261116-uffd-state-fixes-v2-0-4397a0196479@columbia.edu>
- <20261116-uffd-state-fixes-v2-4-4397a0196479@columbia.edu>
+ <20261116-uffd-state-fixes-v2-5-4397a0196479@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,21 +140,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261116-uffd-state-fixes-v2-4-4397a0196479@columbia.edu>
+In-Reply-To: <20261116-uffd-state-fixes-v2-5-4397a0196479@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CFB20100010
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3FEEC18000D
+X-Stat-Signature: pdoqepxbqaaqqak4xogiamco1d6ibyag
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 16ikawwnojfxfz4px6jpsk13wbier3em
-X-HE-Tag: 1794860598-694332
-X-HE-Meta: U2FsdGVkX1+kDNlnkLny6UhlVq+JONq0QKioUhPsAhg1kCTCbKGeUNCLXR6zBG+DnceUK5KrkfBAmm7P5QnvL56Kix6gVGMa04FN2BPpqiTg+FjEeG0pGzcDpdiNVhHkyknFq0uQepuet0z7wcMEx66aaNx/ZV/w25z23v1lt8oj2ACyiXU9RCEeBVlPOvmPX0hkkNiaoj/PXx2eWu/xaqdXyubgKinZmuZv7xhaQmOEvd2VxLmve5gMvZw2yRelPew9TIPe7RpG1TSEhztstrYs//jwuzz37H9jJF8EwvmdF1UGK64MUHi8oIepTWGlHrLYJttOCvlajC+4qfZIqRXVsalr2Tkke756iltECQze3wzwZu9WTp7Udoj8g8avlMFqH55E1XCG0PjAvQUg2Lof702eE8Sa2bLl2bD4bwkVIpRt2kh7nyVimJS+4xU45mWQ/R60tNlS/7G53zx2PjQqQt5LKc/ie8Gauin03vIVDHCgIfWQZkklMltRi+9pIEA46UiGy5CyDSyTjtVSP673ArOraTUVa2iMmxIK4a8zbQPNtCZ55axa6dR32OYDQBbVz+aJgtPmq8p3shPJZztZVQfnfEcfGbWk924GFUtSNIMaIr2Z+MLAE86avIxTHyAGMTDP+k9ltwzqxhYFudLMK+VmB3o9Ob0VClv/A+8g7BQOgrT1NoUfcgoXTbdWfUmLpFYk3ZsGxzjoLv0M12utc+TXDFdVnsmB0a6HI2FYj67Mq7G9wc+M9hIXQPW6VhR76L6ko0sxy3rv41PFMU+i7RPsFmrEGXTlmiVHcoO4hhzaZ6dw0mYeBeFtO9FLZUKoZ9hszS383eV3D21SbHUbw+GbSRN14Qpz1Mj5wVAGLsTfn1qMtlx5W+sqKWu6dybFQZVhKi3PtSG2Imql78+1NdF2EPjDbH2e5kR4OhZDmvY238vEBG5vBZ6ZQSTMGzD5ogk/TQvBJcNxkbu
- uxGwQ7kD
- H3J84XltXqvtk0j1k5mv7T6vrqQON18B9B3Gtm2h3/EAuBa/kK23/PVH7NbpNVfgZFTBwnIntiyiAyOPMwN/YKO2FDMUkcQgYmND2VnE6Bmbo08+qW7MErRiePbYbkqAyUAz/9zfPj+GSh8wnwX1tOWhWVg6uK/bate9AJsecZGsW5B5MVKoadpjGgoYTUcG1zh/TgzEU/aAmlXU325YctucMb4cqsYwtR3p8rVPuLwyley08bAhXWdfQ56QspVjPVOI/9v5gnMSgXj8V67J8W6zaNDwZvpk+5V8XUk5CtwT8osHWqizd9eNF5iaW1Bi0Ox4UnB60b8b6hCY=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794860816-154431
+X-HE-Meta: U2FsdGVkX19iuMtXR4gHY0T5JYf+52W7+C39ZmLksw3AfgeAifdqgxBI1iM3R73JaANHt+OBfSens1NLIQ4CsVv0eA2SC97sgTWyAgZNb0JpO5WDG7vP7bOBpkRSWgCTYdk6Jhe98JUlNavVVgFkte4cJwRfntDD2PKemHe/dF9m3BD/2dn03d7gIxJpw5DeZBCmlHmkHmA2P1xfoyqyCkmTk2yZcUvymvQG62S3RgKiNCQxG3elu2G/HRJ/nyjyMc8GLHdwp+iUWbAvaNFHkuQAxQZl5q8ONnIfjnNQpz7Gc5dk63g9ZwZ8OF3C2kxYsOeuOaB439AEBG7QzzjzP3ohnCMPG57nIepzTsH+glZDsaXUog47g3wKJutv7pHv67s0z3ZYo0wbAbIC5tWD2gYQbHLd/yV3dWDk3hZ/YGs/v/6YJtwB7rSTqxmO7B//wwAdyBfQm4D/qwW2H3r2SYXO0NcQYGFGK7GxP4e7TyR5mfQqQuuP1JhzmHnYf7rg1L9KrvHKuPUxG/B6/CNSRr/I6WjMuoN2VTFzUs4/L1iwTxyiz98q4TbhDYWD1Ggw4O/Iryy/mmIN6GRjsI21R5Im0+6n6E7RA5rYNhu5PsFqfvPX5y/EjC01EmDL5zcpa/cNdQ3QkfCC/d/HJ9UmTrs79nQ0SzUo8JRo9TfrjaPldterPAVxRQtN/Y6d8o13EeToQoIiKPvKHdQc4LormFOgEn9vbRnYWx+d+sypoUx8ftTdmgMMT6yd1Z26gP3aAeliV2XayV7LXr3NdJv5v5edg02kHTyYGMl4D0GinL4z+6TYW4yYukjix/lKTJXOeDGZfTYwIgvUp0dDw0c/tgaXWfjPisCb3xRgHdIPmJU8x2D5JijXUAjlrLclib2jlet+vJT0eJ2GWPzZSNeCcCOzP/4yvMTRmD9sBUwDniB1BrWaxnDDudwm1D1Nrs4x1hsTARPL0UjOQ0tDYC0
+ xlXScFQL
+ /b1xAOxUSDL74ZFg4aI5bmLMxjPTScI6FZhAqBGI65g2YT9Bzt5JxN4PRD77koK91WPlz5wLOTI7FZTrKXCnhv2xzp9EokwDl/HM5Xv6OCqUViu3cJSrc4V73R5LyLSIzb83XYm3P/WZtY9qpcEQK3kyjBofEJI6H1Lw1yUsX6WBD5AR28rnZTT5GcAEO/7oBJNJ5G5CgBAZfKUCD8pX/251J4bSJe6V26+bQHQ+AlQ7/bHa40BQG63T72+zvJDO3DTJTRBHwwz13k9kC/M+IFRs6pkP8DOw8t4F9tt4KoAox9d4z6ax7gOemzLds7r2yaD8xGpYmgwkOmz6A56vaDS43Xq4dH6LT450dDGi140bTUTBkErwzS9SlSzF9L82gnmxSzKBuCAu0q/M1ygUTHNvmabl/nc+kLxRKT2UZCd2z9tHl4sgLcHGFjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,31 +165,48 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/16/26 21:02, Tal Zussman wrote:
-> remove_migration_pte() makes the restored PTE writable for a writable
-> migration entry, and only looks at the uffd bit of the entry otherwise.
-> A writable migration entry that has the uffd bit set is therefore
-> restored as a writable PTE without the uffd bit, and the page is no
-> longer write-protected.
+> PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects a huge PMD through
+> make_uffd_wp_pmd(), which handles a present THP and a migration entry
+> but does nothing for a device-private THP. The PMD never gets the uffd
+> bit.
 > 
-> An entry with the uffd bit set must be restored write-protected, whether
-> the entry is writable or not. remove_migration_pmd() gets this right: it
-> makes the PMD writable and sets the uffd bit as two independent steps,
-> and pmd_mkuffd() write-protects the result. To fix it, do the same at
-> the PTE level, where pte_mkuffd() write-protects the PTE as well.
+> pagemap_thp_category() reports a non-present PMD without the uffd bit as
+> written. A user tracking writes with async uffd-wp therefore sees every
+> page of a device-private THP as written on every scan, whether it was
+> written to or not. This requires a driver that migrates THPs to device
+> memory.
 > 
-> The only known path that created such entries is PAGEMAP_SCAN. With
-> PM_SCAN_WP_MATCHING, it write-protects the pages it scans, and it set
-> the uffd bit on a writable migration entry without downgrading it. Now
-> that PAGEMAP_SCAN downgrades them like change_protection() does, we
-> should no longer see them, so this change alone should not be visible to
-> userspace. If another path ever creates a writable migration entry with
-> the uffd bit set, the page now stays write-protected instead of losing
-> the uffd bit.
+> A device-private PMD must be write-protected like any other huge PMD. To
+> fix it, pass any valid PMD softleaf entry to set_uffd_wp_softleaf_pmd(),
+> not only a migration entry. It downgrades a writable entry and sets the
+> uffd bit. When the THP migrates back, set_pmd_migration_entry() carries
+> the uffd bit over to the migration entry, so the write protection is
+> kept.
+> 
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  fs/proc/task_mmu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index ee7f509d376e..013eeea7d1a3 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2520,7 +2520,7 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
+>  		old = pmdp_invalidate_ad(vma, addr, pmdp);
+>  		pmd = pmd_mkuffd(old);
+>  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
+> -	} else if (pmd_is_migration_entry(pmd)) {
+> +	} else if (pmd_is_valid_softleaf(pmd)) {
+>  		pmd = set_uffd_wp_softleaf_pmd(pmd);
+>  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
+>  	}
+> 
 
-I am severely confused. If it was properly fixed, why should we do the below?
-
-You should WARN if we get the uffd-wp bit set on something that is writable, not
-silently swallow it.
+This really should be squashed int #3 I think. Or what's the reason for keeping
+this separate?
 
 -- 
 Cheers,
