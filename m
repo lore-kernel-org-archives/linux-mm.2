@@ -1,104 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BD0606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B95606A322
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gcdJF6Ak
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MW4jEOMd
 Received: by kanga.kvack.org (Postfix)
-	id 837AC6B05BD; Mon, 16 Nov 2026 10:19:14 -0500 (EST)
+	id 88AE66B05BF; Mon, 16 Nov 2026 10:22:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80F206B05BE; Mon, 16 Nov 2026 10:19:14 -0500 (EST)
+	id 814B46B05C0; Mon, 16 Nov 2026 10:22:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74C8B6B05BF; Mon, 16 Nov 2026 10:19:14 -0500 (EST)
+	id 7043B6B05C1; Mon, 16 Nov 2026 10:22:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 474CE6B05BD
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:19:14 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E827F1A00FB
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:19:13 +0000 (UTC)
-X-FDA: 85441340586.11.301980C
+	by kanga.kvack.org (Postfix) with ESMTP id 50DE66B05BF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:22:15 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B2FE71A0146
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:22:13 +0000 (UTC)
+X-FDA: 85441348146.19.7988C4A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3826940005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:19:12 +0000 (UTC)
+	by imf11.hostedemail.com (Postfix) with ESMTP id 239B140006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:22:12 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcdJF6Ak;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MW4jEOMd;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794842352;
+	s=arc-20220608; t=1794842532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ncxU2r/aUF48Fhgx8Ru9QkG3S9tdy84hb9vzOCQGD4U=;
-	b=jgTT85qtds50eDHPFEQ9YcP7j4ek+GQSFt2O709nucge/I5/dnnqyYrKE9PTeRjyjlo2kd
-	re6JrMN0EO1slcZ4vZYrL92S0tno94ZpMzSsM9l1ujl14twHpVC+r06jF3nDsup74vdU6W
-	PF/S3j/BAvmetjLop1N1LihrJgGs1Hk=
+	bh=vY0UbG0C3Stc7c0qISbj4M381KaRmNfpfTlZNvZJ4gg=;
+	b=kFitwHpLAVjSQkp0Ii9vRkso5YpffB6KOm6ydW31Ewiw8DqP2TzBw/XpS0ecXPlQi7zerE
+	BVq3vCIr+HbyGFSBGIEQdOUX8jENix+fFyVowlFG6XgMdmNIXYRLaqq0D3N/uml0A8BF/D
+	VxjFV3q0GXPTSkFDorI0sN7vxSZLcEQ=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcdJF6Ak;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MW4jEOMd;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794842352;
-	b=TtBxs3DO7bFVoUoHMcAraLe/11oJJe+yJ5Hh1V363dksLjS8yvpXqhV4kGYIG4yYdXqJc9
-	gJUoS0IAzhcsdV3J/BifRzzKrliWrj/EiSijt6x/WQppYc8/IvjnltX3WgnyjL+rcyTbEB
-	07OG+SEOWrfD/Eox8mqz83tAv60R7Xg=
+	t=1794842532;
+	b=Gdkwq9x9UXJQDFsyD4DYXaNvmu+wc90taRDSKijkcAYuS+ljHyqS57GSF4T0v5XiPdSgvP
+	gCGLcapj5RIy5ksF1R6DjdxWys59Gy9GmRzmtRbWhA4XdXGSadXOSMpSUXWmtQfyYUk3/9
+	WsedMK8SWnOAXGGInBBshwGw4ayMINI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60239403BD;
-	Mon, 16 Nov 2026 15:19:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F27D1F000C4;
-	Mon, 16 Nov 2026 15:19:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6129F43DA1;
+	Mon, 16 Nov 2026 15:22:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168291F000C4;
+	Mon, 16 Nov 2026 15:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794842351;
-	bh=ncxU2r/aUF48Fhgx8Ru9QkG3S9tdy84hb9vzOCQGD4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gcdJF6Ake/Cm9+KZYhi0XB9P1Zks5J13i4tbLpYQRx+mq9yqJS483vqGKvGSDbVGM
-	 wiDJaOn5xTlXjgKhU4gdPkLkw6u0OrJFGbuv7ORBCIEysKemTecP8N7EDwyz17cOlm
-	 qgf699oPDpsS9U6Z9zlfL7ADvkn4KcUqIIb8ZYKvAkzodkLbhR1GQ+qlOxAKDDLVfu
-	 cXM0HDUecK5KmEd8sTHem/37JLUR9m7NgLjCahtGA7II7tupQFvU4XlDVh+u9a8VA/
-	 i/d2CkKy3G1Mm5/E85QF/REoNvAIENKVUeZ/ocN1Fg9poWNNQc4WnkPRrwDWgeAWbG
-	 hGubpbN5WtgBQ==
-Date: Mon, 16 Nov 2026 15:19:01 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Hugh Dickins <hughd@google.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
-	Ross Zwisler <zwisler@kernel.org>, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH v2 2/2] mm/huge_memory: flush dirty file PMDs before
- removing rmap
-Message-ID: <avse3HEkP2TwNlVz@gremlin>
-References: <20261116-dirty_file_pmd-v2-0-571883053174@kernel.org>
- <20261116-dirty_file_pmd-v2-2-571883053174@kernel.org>
+	s=k20260515; t=1794842531;
+	bh=vY0UbG0C3Stc7c0qISbj4M381KaRmNfpfTlZNvZJ4gg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MW4jEOMdnWGPvEz5CGqm/KorZii8WlayfaxYQOGWixb9ToQDNIwgGyTyDOi+IurvI
+	 ErG/UbUJCeqHZInLB5+s/pUew5wgPeKvlq0VS/EJNtJ3UNQKUN8hax/CmCib2GDERa
+	 Jwi7WW0dWg7El81CKKt+cFHlJHRGDtBRMl9aIvWKZYksT+8W3NR6mo9o9DFZvKn3Yi
+	 XqZPbfOVbnewWYxzJgobgZiF5p3encmi58k8O7CA9bV3IAnGykhjxxre7lAB31dh71
+	 aEVQx2Tc0v4ZHI4Ey/AqaXeuNqjauz69ZoDp3bfjYCR9ooCfNpcWlUeY0kZNuZtMiM
+	 0bx/CtQJtyhKQ==
+From: SJ Park <sj@kernel.org>
+To: Jason Angelov <jasonangelov@ucla.edu>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS interval changes
+Date: Mon, 16 Nov 2026 07:22:03 -0800
+Message-ID: <20261116152204.82241-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261116-test-age-ms-filter-v2-3-3b265d59ec98@ucla.edu>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116-dirty_file_pmd-v2-2-571883053174@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 239B140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3826940005
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: tsa5o1y7bawgr43rbq7nmah4p781o6dq
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: z4fzwcciqtbmeu9gf9mygsgoes9qqanw
-X-HE-Tag: 1794842352-128961
-X-HE-Meta: U2FsdGVkX19FJ7cVJ0V7vUMk0gYmHmQI7OFLCMBxsYqm8gQUUtHWwcTyJc/9MD/3DKK0+HJJvYpfe/tc+vzzdT9D6MN59lEQ5ak9FTxcm/WCOiUIlwr86jCB1dGus31D8D31WFGyjSjKruitJRUgTBlNQ4X+RAKfFimtdZ6p5qmMIld+HJsS9bMzMkOWIMu2g6oW5cYcVZqkv5LtUXSbhtPnhX42shN2qwJIVld6QJNB0az7i33ABvtAPyExUGXjp3/f9SmX3IUb57FhR6lkenfb8iOaFnwvYpetMpOYVjZG0VN40hgeW7ulJ3bv7FOFiLhZ4Ek8ca3UyAH9KmYd67B4D8I+oYz76JP0Iv1SF+dL/o9p8d7D52GujajBYodwlgQvXwNJ9tfIsJWvEZcxsNArtMuW0yH4t5Yk3BoJY0g+whO3P83mdCbEYg6Y19uB1DzvnnOnVm9/b1b3yP/3TsjwZHS1qTBYHkmGYz9bmLww+pRqpoMHUmxV802IWbfX+KTaQyLFV1Osw0a9U7n+5n96/YtQjgd3v9MCcCdUGcYTnfFKmOoZdLpgb8xH3UtDa2BSCoF7uh5NdvcBqZC4mv09rNLd8x7RKNO5m2GxOsYh2rrsvv3BTjZZraZ6MVpKazBxxcjO9rtbgjfUL5pmlM0yO49y7NBqUwhIeqYXGnfkix9pbfvROtmFwuWDchUFgSC7uIV/JsT9gC9yoW7trNJUeuMuC3TSwNp4dx3JhLJmdUtvrUuJ2bcxVo1sN1JLNjfSPMBKihg4s7DHmrNT7YPGcFJ6Okx10C9IHR1AdRsss7mHnEI/XOOsM37rxG7MV6qKRmkHv2fTYyuL27fCRhltAOWyRBj9Qy4CWMGWJjVGMa1IsGUFc4EUwiHYgKEc+FQsc2vX2wAlzMo3awEspB6I11o/8CAQ/OJeznYHEfyE/SFB10pcjMBVP91M21lsT3E8AbertzQcEhSj6dh
- 2OSMT9y0
- t4lcpMM2jck6NHXczf5TYQexwlwRyTcCS8ij3gnbtXO5EMcOt1G/QsokLTejti1qdHHGvElR3L5H24lxjGe+nLR3kOUkgrKejMq53bxtZsmdFj7u/lIqXLCi+NtdDsa+NJTd6gApxZ0kd0ZmUsjuMpjDaJg/CrQxOOu0I0ilFGcSNyrToctyvAzpO5SMDYdi3mCRsnoXChX3jG8xtMaJBcMC16/KEJxnNPq/o2q47ixOXS6w/HNOkUdTMTgFZkCyQFNHL5a0RWvLwiAbUkdZ6gCpuxhztMIJB3mJ6K2tiQ92+7TAa0OZaDZpoQphRYY3w/4vq5S/bFEaA76a0m89Q74HzeE6jB+ZYTWCy
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794842532-189665
+X-HE-Meta: U2FsdGVkX18V/rSFWOH/RAHk+nCoumcJhIGfKkRDyefKq27aIBNs+xd5wuqIxaDbkg1+2R8hkFf1rBkky9LOSGs2RTEwQW93BIspj/KsNb4ixz5BF0OCx6/LTh0xnUqq4zQYpkrGHRKAHoDpTeEEmrC8PIvQ53Ax32f/1KQRSzwVuvLpQyGuaDJnB4stSpZHQ3kl+N2pf6xO+WytbJLwxgvToijBfKRCCZoZ3Ihb+rhIdMg+yN+WNzMBo/fOnLXKaNdmb/DDVHyBrexYVq5WCLCUfrhBZDfbbZCJWH1qQdP/H9AS+5yIepFDwojdbF/Hv/+3KiKqbx2HbJLF/pfIGQaGp2xEIfXaC3xIYWHx0rTp+hkl/ePSMm0EitaYhhwoS00N8ceZ6BgRUN5VkAUFqDfM9pDS4WlHQGKjrTtX/fJmYgZ9aarHxafNNAp7nqSt8Vk7HlrtyeZiFqFNYEAW0EjH3dbjuAUdI4rOBR17D3S44XBuh/cuiaakkiKxuCjbJha1oJFZDY314nxV9dTPiquKzVIywnSFLQ3WOajvuRjQdgYkki0JjWds06eoZpJMOz7XP2RNFMBeD01Qi4btZdjVPpB32gyVjFfPgIyWPjJ7syR5pOfdyicmg3BoplNFJXwjF1sDA7ifjg9E2BqUlp2LeGgMuQYrVQx+JqCmpq/tJW1VQYPc/ZU1EBHfcB982J4v7q8GPxeZrnHgUrWRS9mEAdPBxMhtN3HpOb8EX+m3ig2RLkg7h/XQ+KXcjbrbqsTZaF3Awn2gFoyEdBswZ8VOGHKkgF8gNYhYe2uOsmkE6+KfuAKKTf5g0MqnbGdeUKFY06B6PCw8weOGs+wCPoIoMIC7LwIPXSPXPHjYDuzM6m296A8J7pioW0BG+p60S46dZmrYGruVq2rsEw01SoqAw2NRwzkg+4ceDmR9qAw/GIPVOF62GKwnxnzAc9ghS+Nwkd0Jo7yvOWRTkti
+ 8Gd17Iy2
+ pME9kjDUE1CdeDGUD6HyrkDjgs1MuX6UyLiY+wacLgb5WASst0a4VbZQUudvTGA/9ETG1X70L6stvNoUzwRhPFgrnZEYaod7MibZchkQ2JkKXHLkTsYPN1fNT1ghJ8sZ+KB3gjb0DdAjZVWUWnxsRexQkn1QvBI9FfgAZMu8Ym/AZZltYMdaxScLCpomuAILo3+0ytnx3TCz5UAs6rVlNd31EZ/zNRTvMmdXFSaxDR4bwM7bbQ5RkXgmAyZDl3+YxJx3UDCKKS6sZhfGMvxaw6Dz7KQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,216 +96,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 04:06:59PM +0100, David Hildenbrand (Arm) wrote:
-> Unmapping a file PMD can lose concurrent stores when it races with
-> writeback. zap_huge_pmd() removes rmap and drops the PMD lock before the
-> gather flushes the TLB. Writeback can then clean the folio while another
-> thread can still write through a stale writable TLB entry. Those stores
-> do not fault and dirty the folio again. Filesystem DAX has the same
-> problem with its dirty tags.
->
-> Commit 5df397dec7c4 ("mm: delay page_remove_rmap() until after the TLB
-> has been flushed") fixed the same race for PTEs by adding delayed rmap
-> removal to the mmu_gather infrastructure. The PMD path still removes
-> rmap before flushing.
->
-> Flush the TLB under the PMD lock before removing rmap for dirty file
-> PMDs. Skip the early flush at address-space teardown, when no users
-> remain, and for mappings without writeback, including shmem and device
-> DAX.
->
-> Use tlb_can_delay_rmap() to share the PTE path's architecture checks.
-> On s390, clearing the entry already handles TLB synchronization, and
-> __tlb_remove_page_size() immediately drops the mapping reference, so
-> rmap must be removed first. Make the predicate side-effect-free and set
-> the gather's delayed_rmap flag when an entry is actually queued for
-> delayed rmap removal.
->
-> Queue the folio before the early flush, while the gather still has a
-> valid range. Keep batching references and drain a full batch only after
-> dropping the PMD lock. The early flush resets the gather's TLB state,
-> so draining the batch does not flush that range again.
->
-> Although writing to files through mmap is generally discouraged,
-> unmapping such mappings may become slower: each dirty file PMD now
-> requires a TLB flush under the PMD lock. Future work should properly
-> extend the delayed-rmap machinery to PMDs and hold the PMD spinlock
-> across multiple entries, so their TLB invalidations and rmap removals
-> can be batched.
->
-> Fixes: 4b4bb46d00b3 ("dax: clear dirty entry tags on cache flush")
-> Cc: stable@vger.kernel.org
-> Reported-by: Kiryl Shutsemau <kas@kernel.org>
-> Closes: https://lore.kernel.org/linux-mm/aoWw_iKEDLjKL2jr@thinkstation/
-> Reported-by: Chris Mason <mason@kernel.org>
-> Link: https://git.kernel.org/linus/5df397dec7c4c08c23bd14f162f1228836faa4ce
-> Suggested-by: Lance Yang <lance.yang@linux.dev>
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi Jason,
 
-LGTM so:
+On Mon, 16 Nov 2026 03:06:23 -0800 Jason Angelov <jasonangelov@ucla.edu> wrote:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> DAMOS_FILTER_TYPE_AGE_MS defines an inclusive range for age in
+> milliseconds to filter for target regions. Aggregation interval can be
+> changed by users or intervals auto-tuning features.
+> 
+> Add a kunit test for each:
+> 
+> - convert region age to milliseconds, correct behavior at boundaries
+>   for defined filter range
+> - DAMOS_FILTER_TYPE_AGE_MS filter keeps correct behavior even when
+>   aggregation interval changes
 
-> ---
->  include/asm-generic/tlb.h | 10 +++-------
->  mm/huge_memory.c          | 39 +++++++++++++++++++++++++++++++--------
->  mm/memory.c               |  2 +-
->  mm/mmu_gather.c           |  2 ++
->  4 files changed, 37 insertions(+), 16 deletions(-)
->
-> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-> index cb087315b4e72..b318e3e9e66a8 100644
-> --- a/include/asm-generic/tlb.h
-> +++ b/include/asm-generic/tlb.h
-> @@ -249,11 +249,7 @@ extern bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, in
->  bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
->  		unsigned int nr_pages, bool delay_rmap);
->
-> -/*
-> - * This both sets 'delayed_rmap', and returns true. It would be an inline
-> - * function, except we define it before the 'struct mmu_gather'.
-> - */
-> -#define tlb_delay_rmap(tlb) (((tlb)->delayed_rmap = 1), true)
-> +#define tlb_can_delay_rmap() (true)
->  extern void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma);
->
->  #endif
-> @@ -263,8 +259,8 @@ extern void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma);
->   * delay anything. That is used on S390, which flushes remote
->   * TLBs synchronously.
->   */
-> -#ifndef tlb_delay_rmap
-> -#define tlb_delay_rmap(tlb) (false)
-> +#ifndef tlb_can_delay_rmap
-> +#define tlb_can_delay_rmap() (false)
->  static inline void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma) { }
->  #endif
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 7791872f14af7..79d400ea9553d 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2508,10 +2508,12 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
->  	mm_dec_nr_ptes(mm);
->  }
->
-> -static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
-> -		pmd_t pmdval, struct folio *folio, bool is_present)
-> +static void zap_huge_pmd_folio(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> +		pmd_t pmdval, struct folio *folio, bool is_present, bool *force_flush)
->  {
->  	const bool is_device_private = pmd_is_device_private_entry(pmdval);
-> +	struct mm_struct *mm = tlb->mm;
-> +	bool delay_rmap = false;
->
->  	if (folio_test_anon(folio)) {
->  		add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
-> @@ -2519,23 +2521,42 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
->  		add_mm_counter(mm, mm_counter_file(folio),
->  			       -HPAGE_PMD_NR);
->
-> -		if (is_present && pmd_dirty(pmdval))
-> +		if (is_present && pmd_dirty(pmdval)) {
->  			folio_mark_dirty(folio);
-> +			/*
-> +			 * Remove rmap after the TLB flush if stale TLB entries
-> +			 * could still be used to write to a mapping that
-> +			 * supports writeback.
-> +			 */
-> +			if (!tlb->fullmm && vma->vm_file &&
-> +			    mapping_can_writeback(vma->vm_file->f_mapping))
-> +				delay_rmap = tlb_can_delay_rmap();
-> +		}
->  		if (is_present && pmd_young(pmdval) &&
->  		    likely(vma_has_recency(vma)))
->  			folio_mark_accessed(folio);
->  	}
->
-> +	if (!is_present && !is_device_private)
-> +		return;
-> +
->  	/*
->  	 * Present and device private folios are rmappable. Remove the
->  	 * rmap after transferring young+dirty to the folio.
->  	 */
-> -	if (is_present || is_device_private)
-> +	if (!delay_rmap)
->  		folio_remove_rmap_pmd(folio, &folio->page, vma);
->
-> -	/* Device private folios are pinned. */
-> +	/* Device private folios are pinned and don't need a TLB flush. */
->  	if (is_device_private)
->  		folio_put(folio);
-> +	else if (__tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE))
-> +		*force_flush = true;
-> +
-> +	if (delay_rmap) {
-> +		tlb_flush_mmu_tlbonly(tlb);
-> +		folio_remove_rmap_pmd(folio, &folio->page, vma);
-> +	}
->  }
->
->  static struct folio *normal_or_softleaf_folio_pmd(struct vm_area_struct *vma,
-> @@ -2573,6 +2594,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	struct mm_struct *mm = tlb->mm;
->  	struct folio *folio = NULL;
->  	bool is_present = false;
-> +	bool force_flush = false;
->  	bool has_deposit;
->  	spinlock_t *ptl;
->  	pmd_t orig_pmd;
-> @@ -2597,13 +2619,14 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
->  	has_deposit = vma_has_deposited_pgtable(vma);
->  	if (folio)
-> -		zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
-> +		zap_huge_pmd_folio(tlb, vma, orig_pmd, folio, is_present,
-> +				   &force_flush);
->  	if (has_deposit)
->  		zap_deposited_table(mm, pmd);
->
->  	spin_unlock(ptl);
-> -	if (is_present && folio)
-> -		tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
-> +	if (force_flush)
-> +		tlb_flush_mmu(tlb);
->  	return true;
->  }
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 7f019afc35ca0..cd954afb146f4 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1757,7 +1757,7 @@ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
->  		ptent = get_and_clear_full_ptes(mm, addr, pte, nr, tlb->fullmm);
->  		if (pte_dirty(ptent)) {
->  			folio_mark_dirty(folio);
-> -			if (tlb_delay_rmap(tlb)) {
-> +			if (tlb_can_delay_rmap()) {
->  				delay_rmap = true;
->  				*force_flush = true;
->  			}
-> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-> index c022aeb7c84d0..fc547be33a919 100644
-> --- a/mm/mmu_gather.c
-> +++ b/mm/mmu_gather.c
-> @@ -169,6 +169,8 @@ static bool __tlb_remove_folio_pages_size(struct mmu_gather *tlb,
->  	struct mmu_gather_batch *batch;
->
->  	VM_BUG_ON(!tlb->end);
-> +	if (delay_rmap)
-> +		tlb->delayed_rmap = 1;
->
->  #ifdef CONFIG_MMU_GATHER_PAGE_SIZE
->  	VM_WARN_ON(tlb->page_size != page_size);
->
-> --
-> 2.56.1
->
+Looks good to me.
 
---
-Cheers, Lorenzo
+> 
+> Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
