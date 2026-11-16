@@ -1,140 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F57606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B131606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=P1zcEWUi
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A5Vlrj26
 Received: by kanga.kvack.org (Postfix)
-	id 23BAD6B00EF; Mon, 16 Nov 2026 12:40:30 -0500 (EST)
+	id 9DEDC6B05B3; Mon, 16 Nov 2026 12:41:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 213136B05B2; Mon, 16 Nov 2026 12:40:30 -0500 (EST)
+	id 9B5E96B05B4; Mon, 16 Nov 2026 12:41:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 129D76B05B3; Mon, 16 Nov 2026 12:40:30 -0500 (EST)
+	id 8A4FB6B05B5; Mon, 16 Nov 2026 12:41:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4856B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:40:29 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 423AA12020A
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:40:29 +0000 (UTC)
-X-FDA: 85441696578.08.E19B861
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 55F7A180004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:40:27 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=P1zcEWUi;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 566966B05B3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:41:19 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE2CDC0213
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:41:18 +0000 (UTC)
+X-FDA: 85441698636.24.C2A8093
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 48DF520004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:41:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=A5Vlrj26;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf03.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794850827;
+	s=arc-20220608; t=1794850876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YjLseNf2hnBu+sCpNnb8CVwZ4cVJDuEl0f+BAYdwnZg=;
-	b=XnwC4AVr5TAnbpLdLV+Cj82lMqFqrddQ2gpWPHzBMezkVtDWmegignqsPDb2k3qJnoVzTI
-	DsWUTFySJ5hrBFQEKjIVIm7OzhC7TmDhDurfMEoq9WmDsOaaucb+JsLx+LpUZL/6OMLDg0
-	3XGzMiL/aRH9U6npCqpAgvQaffj4gcE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794850827;
-	b=CkRtJyb85TxzJ63q1sQBGZhymADoL3M/JEwXDphg/zEmQD0HvMQoBsk3EQVEXxawUaUipA
-	Sj0L/i3+ldNfpXqLNERSre54STKCNOPFHCKDGDxA8EB+jP2EdkjsI1FBSnU0JEaYySnSmY
-	IniW80NvRe6Ofx2Ids8mCxPxwYroY30=
+	bh=t8fFzc+67KQpZN7Xb9dT4z/F5KJZqrvBQ4Haj4SJy6M=;
+	b=5srU8kty47f4hy5hDnXhRlXJBe7MoPntcwO8aR5jDgsTsfQ6DDF4lOUOYQJw4oeKkgWelF
+	2f97mkuW4vHjPCTftE8iKxkCndKrr8zLwN6hk258UP709q0pWUz/MfdQ4M2/2k31/QMct4
+	yN52VOhQq3eDR6u/f8remp05EcVb5lE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=P1zcEWUi;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-91e8a05ec5aso57924606d6.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:40:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794850826; x=1795455626; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=YjLseNf2hnBu+sCpNnb8CVwZ4cVJDuEl0f+BAYdwnZg=;
-        b=P1zcEWUi6ywEsy134YSlYjfgzXSjKvY6JUsynyzIQm4LaXodxJ4hrYgz6CoEoBQocS
-         8zPaAMEeuAWTvYqseHO50cCVmMsR3d8sgxO/JcvxyaIRu4LM0dXS9NyZ++tOe/ivJsxr
-         CxEh/qVtFigUifCvrSASnVQSXG1iBP7vI6WEfculqYz2i4tuY2B4PO/LX5ixsiS8oMKY
-         BMMUzxlynCac1S6p2kevFcpVpovfGwSkiBsD0A2BxUb+FUk7xdDw6pUjAV9/VUXqS4Tg
-         /zriV3/4DDOBTn47ctiggapnioJnaIsb9p0ID4nuYN5kJnw0yRLFR6XfCIdle6B7qYgr
-         MK1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794850826; x=1795455626;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YjLseNf2hnBu+sCpNnb8CVwZ4cVJDuEl0f+BAYdwnZg=;
-        b=MNJCH042oaPK/BlrCWc9gP6uEX6zQ0QTXFEJwrpy8xhyW1/1rvjf8EfJvc2Jb44I/i
-         e/fl7VKvnqvTckFRwbVEBjY1Gq3gsuPyCwy3JJKlMQSsrjq9MI2cbu9Jadb0L6HusllQ
-         wgl9WHpcEttYrcLO92tdpSjGr3QqGX4rsbdUbRbiE3IWotdx3f6EDytfx05eHe461Aek
-         VXDKEnBBY6bhIrGFCM8AOQ5uoW5k5nRuSYHLYqlR+cmHgXUsFsBj09kFdFVHtHYgF+jk
-         gE87amMjof+iomM2SGLqgVQEpZzaC5SRACW/Zke8k8gVbNmCcKnIGJNxthdfMr71Rx/g
-         8H/w==
-X-Forwarded-Encrypted: i=1; AL+hErHTNxuynwTZxDav4ZdDvPEwJdKyi9cBtX7LSO8yNwmLlAmHafwSLx81jot+CjQoJBnanZDCynQf4g==@kvack.org
-X-Gm-Message-State: APuU4Z/wpgq2L9E1RKKiiAgLhjH5G4me11x94aUUYCnDi92IaB4XotQR
-	4MPtvtqebTC6HQKdZ+IavJCmGkoTPauGxTdL0Fwa9ZNjGFsC8x0f17loFCgO0B9BNV0=
-X-Gm-Gg: AZFdTZeoY7hSxqjbUOSLSthcclL9v3e9tkng2yKGKRFIPOLiKkXiLRIloYC63Sx7FKi
-	8/exUqjWUc16241Bp70tCmxj5lcHzYi+dYkKJAr0L9PJIcGio0jmnL7uENntKE0BPSVtSAYVtpP
-	nb3C0KvHukEmGDvY2keS+6XWCLYPU6oDqSBGumpDIDRQ4L8eXTOtiOwURor/qpfwCinhwWdeQFR
-	evei0HP2nlH9JG4EncM5gRnxxm9AMv97NlhMLF18+IdSLyjb3oqmdp7ZFW0cJMN423b1313C/kC
-	ENM3Qjmv4d+1/N1K42fPt5rRuY/F3Kber/FfIgOD7vVMCBG+iza5Symqr6isTkf0hCd9+kHELrx
-	eUNTKp0ImSGj/YNQzOCr7m2kiI8Q+mAfCS3UK6gX6h5QDlGxwbRPAUJCcT+7Me810A1quuQ2zLb
-	ugeGE6y/xSnfkHE1fZm9OYSG+Qk6gSBuZ56caBgTIX0LPD82L9ByThRsgX6ZcqI0UZkyR5uBO0x
-	aZDurXyoF+1o7w/IULV9/DmD9+ukOw/pURj691VFLsaRHyT7yUUJ+TzgIJz/196X7TRToeAOONM
-	Hck2bUOoJGTOyTeTW5HtXHgobY1G+LPmI+xwycL1wxZMhk2Tz74ipJ21oKfbVh3lqYRgt/wjayF
-	d/FPR/ZM=
-X-Received: by 2002:a05:6214:2246:b0:914:53ca:99e0 with SMTP id 6a1803df08f44-91f241102aemr180003636d6.11.1794850826464;
-        Mon, 16 Nov 2026 09:40:26 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d7b607sm91534216d6.26.2026.11.16.09.40.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 09:40:26 -0800 (PST)
+	imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=A5Vlrj26;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf03.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794850876;
+	b=FDfFpLj7gkAHOv+IYHrPL5Sn+zUt501AMfIwRUK8KzTwXXCbLrpHqe0jyXWJ14OKiqkc1r
+	Mo63LfZuH5e74e+AMwAmdYG+glyDNSo8cmDuNqoESTdvrJe/EWKZtVlOXpuli5Qcth2BKp
+	kP/sv2y7GTSj9+yZQKgPaIbxP03ISzY=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGGPw0t3951380;
+	Mon, 16 Nov 2026 17:34:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=t8fFzc+67KQpZN7Xb9dT4z/F5KJZqr
+	vBQ4Haj4SJy6M=; b=A5Vlrj26ejSk+eQpnWAn86Ta+qsTVbm6qUumrzWGQZ6HS7
+	WiG9MqcgDAwX0gz4c7HdLG2lHn5KOXkELB/yPhl3V6w/foYwduqckKLk9vn2KMHo
+	+LZXtMjaMzmHqQMZFEoUmBtCuZ5HT7W5+9PC8LllBSCHunmYyPfen27xurL9QxnR
+	SJ85RYwbfJSWhLFL3CESdwv8LCkSPitn5RYBvHqjZk81qQmoIhMv5xI3raM3bpQd
+	yradEj+VCo6NuiLBf8qlD3nXfCtI+EYZQtnJZdBqneoqKUssYIxQBvzNtW7uxXqP
+	Vua6xfor/40DhWhbAZX6WMRJLO/n6bkppssOwL1g==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxf566s7k-443
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 16 Nov 2026 17:34:00 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AG7nxxK2129088;
+	Mon, 16 Nov 2026 08:06:29 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hy3fghgx8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Nov 2026 08:06:29 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AG86OCd32571772
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Nov 2026 08:06:24 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 407802004E;
+	Mon, 16 Nov 2026 08:06:24 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B26B20040;
+	Mon, 16 Nov 2026 08:06:23 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.34.1])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 16 Nov 2026 08:06:23 +0000 (GMT)
+Date: Mon, 16 Nov 2026 09:06:21 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+        Kiryl Shutsemau <kas@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@kernel.org>,
+        Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+        Kyle Zeng <kylebot@openai.com>,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+        linux-s390@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH for 7.4-rc2+ 4/7] s390/mm: always clear
+ _SEGMENT_ENTRY_READ in pmdp_invalidate()
+Message-ID: <0dcaca2f-7669-4b20-9204-68ed13d77ffb-agordeev@linux.ibm.com>
+References: <20261015-anon_vma_uaf_fix-v1-0-7b977303b42b@nvidia.com>
+ <20261015-anon_vma_uaf_fix-v1-4-7b977303b42b@nvidia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/3] mm/memory: remove racy huge PMD assertion from
- walk_to_pmd()
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>, 
- Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>, 
- Roman Kisel <romank@linux.microsoft.com>, 
- Saurabh Sengar <ssengar@linux.microsoft.com>, 
- Naman Jain <namjain@linux.microsoft.com>, 
- Michael Kelley <mhklinux@outlook.com>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Eliav Farber <farbere@amazon.com>, 
- stable@vger.kernel.org
-In-Reply-To: <20261115-huge-pfnmap-fault-races-v1-1-537605643f6f@kernel.org>
-References: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
- <20261115-huge-pfnmap-fault-races-v1-1-537605643f6f@kernel.org>
-Date: Mon, 16 Nov 2026 12:40:25 -0500
-Message-Id: <179485082513.482102.6134237207669235151.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 55F7A180004
-X-Stat-Signature: udjg4cqbz51skxxw4enke54ieb9jrqb6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015-anon_vma_uaf_fix-v1-4-7b977303b42b@nvidia.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX+1WCvfZo2A3r
+ X9oHPlX7sjjz/znAFRDAQ6eOQ/Nl1RAb/A68sKsw3Ra/CMnZs24cDvNILCogjdChwM2uV6mWwx0
+ iFI1dz9Q7swY9p+C2cfOngpjDOLUxQk=
+X-Proofpoint-GUID: tqjVguXDKydwkTCpxf9Ih4XMa-8ERHOm
+X-Authority-Analysis: v=2.4 cv=ROImjIi+ c=1 sm=1 tr=0 ts=6afb3e89 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=Ikd4Dj_1AAAA:8
+ a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8 a=jawjUyVw3NHo_kiyCjgA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: RlKNbNXmJi-0aDghPxxu7N3gnH-oC2kk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX952MX5YQ7qBz
+ YkJZ5k+bKAalVpinT4yTjQaZoEVwToYnhZS9xVj7AU0ML+kHVOlPghWMWYkQm0bjbRa3SPuvuNx
+ uK2NWUhCP2ObGGBrJBvT0d65RMPLSaCX6rk3NcwbhSFnig+XA76oBQ6xgJxndSM1NdwkoIV4w+R
+ RGddGHx7+F2QVMBcPEsWB9Vkik5TH2jjYXLYVL466IZhAIxFOmyDE6yNH5D+ABQChfML/tdXLG1
+ Q6498yG0qniB9+BQD5hTu6QhDJTWvRmvSLuvxABlEubVvfRnxnUNvr59GCAVjnKUwj+Je1o/Qwc
+ VI0w54BxfbhigH1I4dawMZIYb8tTpvXuTkFMOpBrD46sCF4sLH2MY/Awle2nd5jC0+pcw45ddFZ
+ Zpc97ifK2dlDKy7QBO8vghKgwV/y628NvQWnoORtnjwexAXLFHHJnhjGvAASBCZNnlOxKBw6P8B
+ uBGj2c3od2C7Xtzqjkw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-16_05,2026-11-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 priorityscore=1501 bulkscore=0 spamscore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160069
+X-Rspamd-Queue-Id: 48DF520004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
+X-Stat-Signature: e7uga5mjhttmbqasewae3gyekbrbsnrh
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794850827-945021
-X-HE-Meta: U2FsdGVkX1/j63bWLNWPxQjB1d65XqL1i/8+c+DETFDg43E7ROjD5TETbQnvXwrQumjaDFHsq0kudoM2VDiU7JUG5x5P1CE3pP/49B3U8YPQuvQurO9W+NIn63rlIJxe7U1xcHOwdOsDI6wavYuiiWFq8n0x9LH3fHANsvrWSrntQz6NM4ONnxmvi3q/sPWv+oPHcJyukfDjVslOEvVyCeoGbeNC4JG4UqQK788AW0trc/7kDN1njF7HCXJRj0I1/Yr2/IxVlawzd2KN3wD9GLLJSqOV2WqAk4t/qwT28aB2vjMnE8Kh4Vjes8fARmVXt34DM3nIvir4J8N/cvaWLrLz3CYTiZeP73IZyeaEkIIKehuATlTt51B/DkmQYSarWCpyJR7P4iCl6CCXcVOtmFlStJUczFSPJENnGLAKZTu/RcB6q1x0zS1vWy9+GQzi7D1cQEz6pFNi5CD5+hEZAgao18XLPC/9eSMDSclqcMt290KWhs++SLNSf9wRu4EE5RNl6R70L1lZo/QMTofsSu6KDfBxHK6hd83bPhr3vaJmC/jKWV/xwdEIpTDtDSMxLQvIHuEBmSSLAp3VfON6NLGFFtb4ZXibjSWzfCWm9btFppDTK317OBlby6RTxB9qE1ovzH9fGy3jEX2Tc6UL0GJbfzQoX4h8BXloPu/dvX5q5o+sMhzMe0qI/Z5wiEuSV8YsWMvuNjKA9AF4dciFi4nRFa9DHT/A3DryNKaNQnU5CZwrbPvxPF1gAOcO4TPXD8bp4Cpc0DUjiMmoeqXi/e+iNGR4RYxIIzu9Jyd5jEEgbYyVGgFIJL3T2Se8CHZSRl0G4hhM2YhO1u4Q/YKrrp7Mir6WNrr5K6q5D9Vjrj9NtFjj4z2I5NkLkgo6BhOALnthnjnBSiJYanKXMMulWAz3hgZK7nGXUTYs4pHkF8AywdTreryVcs84urtwdovdCxnYpWrlY2R6/7K/JYH
- XrnsaGfM
- OdHtoSTgUVH42CJ0l2k5JSeM1eqvoCSoI2CghGh3eZAoqq8MvctdF3AzDdjJxOZ6xxNzljbvkYatMJo5aRN4N3ETjMeG/5BHxRVUnvVrI7Ccli9SR+1x4FQCokE+29WyJ4N+hOm5M4MR+bjeOjhPvq4odXrU6PexZ3rXbv1bKGTyxq5awT3RY1/cB5qB1tz0MeUJRUA2TQf8bht6tS8uKDijK1Mtue3PE/B8UJV0CvSPuFsN6cxL8xZ8U4reoxfU5nqqMPomzy1EUOEuLPVAu5OP+TOZOJoOths+i7+BICKXKL6QQ7cM5FVfYjyJgjLjTijWPwfZZhY9M9eNOJj7G0BE/vOCF1G/0O5Z1eVFaHlfHLHpF3fFK7lmb4Gkn6yq6FPrytQ0Yq92jUEEMfy7lAACGDw==
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794850876-870374
+X-HE-Meta: U2FsdGVkX1/6QlwAuF8qbhSWFz8DGrOrgwcH275nCrntyFndOegC7y4pAuiWzyZ2AJeFm4Apguk+/jSvvn481QbsIQmpR/gEA+Ap4LhypSVRZgDT5AgwO2c87SDQe8qEAh7RqjmhuctIsn4A6KyFu9g5zJuMibdvHtoxyuZndPadfLo3cRWFOU7M9Qnqw6VBLUE2dfVWpKji0F7k4z1XK2dzbDQdpbO4L97ATnmyC8l6VzyGuxVJ+l5YT4ORSeuiS2W7gZBdJIMp6zrYNMGOV802PJFmtD2P+9o/MNKfG8nT22/Y/CgdbnIpNI8IGe/A7Y5yw0Dy1cixsrvLcTYL9CpuKXPw7S0ubaw9+9zFDtgktCclscpVrZss8wVRZAhM2kOx0jaEL7jmm8ggj1AfLZGq/W+S/mVFu03FRGnvujqWte5y97uAksa1nauqdZPZLqLPwSqyjh1yc9NDF3BSMaF0PstSdlK8s6mrD/Y28l8WdToHbGtXu7YbPZDBdPklCaliSvsKxg1WWAGRTH0367wpAsThTapcOp1YHPZtnCvjhZ6Ux4MM9JSIldaeuPzUgoNqhSMnm62vBx1YkjW1PXkrsMITyNcV7MPTrECHdr0mnvqhVk9QUacSenm5JvRw4ljGlXqvSo+oPTGPbhka1vThzirH4yhMlrOQuPqAr563cpC9Li6TNJvwpIbCF6DS08K/Asum/5Z6kdqunTN9dcQ9lgzhJhsjMR3NyGP02+GuyKvrlmW3aHIFG+fY5sYRznjgpCHJvfwunKKz+HWKSNW8uBgTanx2+aDBDAMCgQq2BBly+1PNAkd31huebhkjLdPjfgZz5+VXxYS8PYn7E/obQGWl7ERxYxrnKItZAKNZy9V/PpwLHCTnSMYN5k+kQxO2Ix/k1K9r/ZkNfFrQbpERVfFyHfcdTPRbiumRNejH4APf0LT0KJCaz9kbFxombbWEH0DQXsAFRzHqAiG
+ Eb1/QKn3
+ YGS/cn67ZTiHRhIWqn1NyZdkXK/3QUg4/RgF2Po89EHPYdpoeeqZZZBGKsdHIjUDU9mhEEUAKUhcycZAmVSh91/SbAtzLgnJvHVZfaO6nAMH/4M/GNqiTrPav8yDN81FDDv0MTWJ14tTp0tUEDgK4cmFxf9I3UM7DSyJZLTgT9I6bhpsW2HpF0DbBZuFPMMMk9dExDXeRATIvmSyjZqRQYbqM3t/K2TRgDeteAaveZsJjDOBvfUsVhsGSyFA2EyWL3GvmRyynImU+LyQG8UySW6AtlqoJdSzbBPFT9SPdvSpXZAq6nLgZZXNhIhf0eLLGSKqnTPlLqgmMoG6X8D4vlTrEx754dFogVv1wZ1KbvVydSNI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,44 +161,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-15 20:58 +0000, Lorenzo Stoakes (ARM) wrote:
-> From: Eliav Farber <farbere@amazon.com>
-> 
-> walk_to_pmd() asserts that the PMD entry it returns is not huge, but does
-> so without holding the PMD lock, so the assertion is only valid if nothing
-> can concurrently install a huge PMD entry in the range.
-> 
-> This is not the case for a VMA whose driver implements both ->fault and
-> ->huge_fault and which invokes vmf_insert_pfn() from the former.
-> 
-> The existence of prctl(PR_SET_THP_DISABLE) is problematic here, as it only
-> takes the mmap write lock and faults taken under the VMA lock are
-> unaffected by this.
-> 
-> This can result in two concurrent threads faulting the same thing
-> disagreeing as to whether to attempt a huge fault and thus ->fault and
-> ->huge_fault running at the same time and triggering this assertion.
-> 
-> So just remove the assert.
-> 
-> Target the commit which introduced the first driver able to do this for the
-> fix - vfio-pci. DAX also mixes fault orders within a VMA, but serialises
-> them using its own mapping entry lock.
-> 
-> Link: https://lore.kernel.org/all/20261112051440.16140-2-farbere@amazon.com/
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eliav Farber <farbere@amazon.com>
-> [ ljs: rewrote commit message ]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Thu, Oct 15, 2026 at 02:13:04PM -0400, Zi Yan wrote:
+> pmdp_invalidate() sets _SEGMENT_ENTRY_INVALID, but on s390 that bit
+> alone also marks an old (not young) PMD, which is still a valid mapping
+> that GUP-fast follows. Without CONFIG_PAGE_TABLE_CHECK, an invalidated
+> PMD is therefore not pmd_protnone(), so GUP-fast can grab a reference on
+> the folio and, as the PMD value doesn't change until the caller
+> finishes, the recheck after taking the reference passes too.
 
-Reproduced by racing faults different mappings against THP-policy
-changes. Change looks reasonable.
+I do not quite get how where pmd_young() (or whatever) participates in
+the scenarios you described. If you meant something else, then the
+wording is rather confusing.
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+In my reading it is the notion of pmd_protnone() decisive for GUP, not
+old/young.
 
--- 
-~Gregory
+> Code that invalidates a PMD and then decides, from the folio refcount,
+> whether it may drop the mapping relies on GUP-fast backing off from an
+> invalidated PMD, like it does from a cleared one. x86, arm64 and powerpc
+> already make GUP-fast reject invalidated PMDs.
 
+Why the code change itself looks fine, I would love the commit message
+to provide bit more details.
+
+> With CONFIG_PAGE_TABLE_CHECK, pmdp_invalidate() already clears
+> _SEGMENT_ENTRY_READ, which makes the entry pmd_protnone(), so GUP-fast
+> does not follow it. Do that unconditionally. As noted in commit
+> 7b4dde5e40ad6 ("s390/pgtable: Add s390 support for page table check"),
+> an invalidated PMD that is pmd_protnone() is fine for the remaining
+> pmd_protnone() users, which run under the page table lock or are
+> lockless walkers that should not follow it anyway.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> To: Alexander Gordeev <agordeev@linux.ibm.com>
+> To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+> To: Heiko Carstens <hca@linux.ibm.com>
+> To: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Cc: Sven Schnelle <svens@linux.ibm.com>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  arch/s390/include/asm/pgtable.h | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+> index 2d5c2ab06de98..fe1ba746203ab 100644
+> --- a/arch/s390/include/asm/pgtable.h
+> +++ b/arch/s390/include/asm/pgtable.h
+> @@ -1781,10 +1781,14 @@ static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
+>  	pmd_t pmd = *pmdp;
+>  
+>  	VM_WARN_ON_ONCE(!pmd_present(pmd));
+> +	/*
+> +	 * _SEGMENT_ENTRY_INVALID alone also marks an old (not young) entry,
+> +	 * which lockless walkers like GUP-fast may follow. Clear
+> +	 * _SEGMENT_ENTRY_READ too, so the invalidated entry is pmd_protnone()
+> +	 * and is not followed, and page table check does not count it.
+> +	 */
+
+Could you please remove this comment in favour of more descriptive
+commit message?
+
+>  	pmd = set_pmd_bit(pmd, __pgprot(_SEGMENT_ENTRY_INVALID));
+> -#ifdef CONFIG_PAGE_TABLE_CHECK
+>  	pmd = clear_pmd_bit(pmd, __pgprot(_SEGMENT_ENTRY_READ));
+> -#endif
+>  	page_table_check_pmd_set(vma->vm_mm, addr, pmdp, pmd);
+>  	pmd = pmdp_xchg_direct(vma->vm_mm, addr, pmdp, pmd);
+>  	return pmd;
+
+Thanks!
 
