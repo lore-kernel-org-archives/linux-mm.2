@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0CB606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F77606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Iti3eb2x
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cHKJSbPk
 Received: by kanga.kvack.org (Postfix)
-	id A004E6B05B3; Mon, 16 Nov 2026 04:15:38 -0500 (EST)
+	id 656856B05C6; Mon, 16 Nov 2026 04:15:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D82D6B05C5; Mon, 16 Nov 2026 04:15:38 -0500 (EST)
+	id 62F1B6B05C7; Mon, 16 Nov 2026 04:15:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EE406B05C6; Mon, 16 Nov 2026 04:15:38 -0500 (EST)
+	id 544B16B05C8; Mon, 16 Nov 2026 04:15:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B7A96B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:15:38 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9A2140933
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:15:37 +0000 (UTC)
-X-FDA: 85440424314.22.05BBE7E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 34EED6B05C6
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:15:56 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CD5D312057A
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:15:55 +0000 (UTC)
+X-FDA: 85440425070.17.09D6D1C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 279821C0008
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:15:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iti3eb2x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3F12340008
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:15:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHKJSbPk;
+	spf=pass (imf27.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794820536;
+	s=arc-20220608; t=1794820554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KUD0zGvsKdu3zcOD5zlTuN8g1sBTSA2EazIJOi3ONjA=;
-	b=RC2N8eRT+f8MOWd9ALeCgyOiP6TzupwId2GdunztJEQtfzTA9S7f/4f+zp30ugjMgNsptG
-	SHaJO2mPkWOcrb2B2726rHFc8/6cOaQnbPLsDY9UKEAoWYiR2LQnCV8c4mxyfbL+YdjgN1
-	yvCrua/9zmHd7qZIicqc3Pmus4Qk1G8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Iti3eb2x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+	bh=vl/C5jn+1tPTrCTsFhPelusdvJCp3xW8fwCUnP8k0/4=;
+	b=2uAxyx2OAWA5/kPoM2bAhSCs/rDnXfcsdkblYZcyjF0vbmU8IUUTn36FGmYnUUCpYv1F6o
+	hGzIP4HYDErlDvn+QOCIDwJrqA717bY6A5cBG15F8hz/l0eQGK9I/fo5bbXXZGEv5sNbb7
+	5EAcTLhNIwvLnOf4CeYUY6deJGxpfRo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794820536;
-	b=Swn3n8PsIpSBczxTyiavGGH/kj4rFaNSabwRieHzLxA+HQj3QBYGtpAO/yWl68YeddJUps
-	ajAgquSIVsIwPqPO0O1GkGJZWSAzo1MjaB8DktBbCBNzjwwJM5+J0eK2xjD+GQEO7sRvAY
-	5oDy5tnbBb5e2dOP4/7vS5S9mL+c5Xg=
+	t=1794820554;
+	b=vuL1X6aWxMjVom2ln2WM3Z6KEU4cKL071Yx/R+HUobsmncuAOENUv7wIBx2KLFNnBWM1g7
+	NJ/VXAxguHtEFMJxhDa1O+8Zhb5wkfzQwnqhQSktrcPXpjqx3iwAO1fuc7NikF3/Ro1d9b
+	tW7VSO46Acr7GbMOy1rsAC6+vcaVdi8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHKJSbPk;
+	spf=pass (imf27.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BEAF262788;
+	by tor.source.kernel.org (Postfix) with ESMTP id BB83D6144F;
+	Mon, 16 Nov 2026 09:15:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C371F000C4;
 	Mon, 16 Nov 2026 09:15:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205B51F000C4;
-	Mon, 16 Nov 2026 09:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794820535;
-	bh=KUD0zGvsKdu3zcOD5zlTuN8g1sBTSA2EazIJOi3ONjA=;
+	s=k20260515; t=1794820553;
+	bh=vl/C5jn+1tPTrCTsFhPelusdvJCp3xW8fwCUnP8k0/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Iti3eb2x9l3uC7iAUO/qk6aC/3ijuwvDgqSujOaVwMhCxDfkHsA/yeUxufDGnQv2t
-	 RYAIDdBUin6OACLcpfH8H4L4l+H6vRw7vM01FsnjWz3QsmsKMzPuYQzvgEYBs9jERm
-	 scVMBZ9arWuicvpZehYQnwkKmcu3h+cFgc74vKjIbFqAGdXsRfNPdPSY6s0i/sExxy
-	 v/XiYxGvSTSMxnGsoqQIKFio/6w/lKxreLjwj7wA54j5dvdq6+WmGrSmkSeHBsHNSe
-	 KsYGwpPNRffHROPnBHj2m4ymXrtff+WfLFb215uhRLZ83U+gB+dFPyunVsHBCTa7rH
-	 TsteO9LkFpO9w==
+	b=cHKJSbPkOmS/vgJzoXZ32XAOeuVSd+4AR7wQLkrcipLJYDsoZKVmhqWehLYzXMbaw
+	 R3B/AWlh1S33BLxY0EBupbn4erb2GjPok1Jk/A55GVWK5wNLgVoyr2G0xYzkPsQqrS
+	 gEcKCWeL+Dx8daRQR7LlmEGmvbevX+pW1mWsLtDL+aO8GHfANkZfhz3lX/pcDnwZbc
+	 UHkMOWPm7+qImQLYnPoIXD7VjI+BnQheFEUtLhUtYGPZ9yo3CCvw5jJbAJwFim9sxs
+	 Sn+0K23n/zloQoNpUknUCmfvqa20zhvkh18bHTM68vSbFX62rWnlkpstGAqA6zLKhe
+	 SJxi6oLHRkgQw==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -123,27 +123,27 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-mm@kvack.org,
 	kvmarm@lists.linux.dev,
 	patches@lists.linux.dev
-Subject: [PATCH v10 12/13] swiotlb: Make rounded shared pool capacity allocatable
-Date: Mon, 16 Nov 2026 14:41:35 +0530
-Message-ID: <20261116091137.94252-13-aneesh.kumar@kernel.org>
+Subject: [PATCH v10 13/13] mm: Assert CoCo shared allocations may sleep
+Date: Mon, 16 Nov 2026 14:41:36 +0530
+Message-ID: <20261116091137.94252-14-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261116091137.94252-1-aneesh.kumar@kernel.org>
 References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 279821C0008
-X-Stat-Signature: tc558hoef4wknowm6yw3pq65h9e4jkpx
-X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3F12340008
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794820536-528878
-X-HE-Meta: U2FsdGVkX1/SBISjJH2wd5l46ATxCpO/vUIX1ljvBu601DNEjpuB3DZV6yOZWjCUd/sIJDjufIS1vkN6VbxkCrLcf9gIbWJZy+edGv8BOG7g7xeu7sEomG7HcUyhbAyywBdwTBnTUrzl0ozS79WM7rhtyKxb4V7dOVqLqyjBxbP7UmLIPEEUsvRnFMtbuw/4SIzqKVq+cC8LycbXT/WzSn7E+8vvcVjqWRR9kSNmNj4AGJcsqK3HVRFcD6JbS+/cq+MLuGsOuEVxx+tmonjFAFWWM5QW0wzeSpLkZdO8Sx8Lv9Onl1cje4tR8AaGj1gcX/cn2yB+zseg1+616L2nb1dKQ0Q5h+gpZDh3yKirAOAx+mRUlcW2/3G99GnaHrRnstfc2/ihdurXxL2I8psRW3oZa2jyl6x5eKzYfssvZ2JnmfIJQy18ktj5SPuber//g+sRcbs1xP6zIdg7JDjrTQJFLjmDOYSi/OP70yAhftd+VdaIHLioKtyylmKo8yJvMZREg4jGutZWWSP94MAtxoO7npqeO7pQJChUA93Wg5bgojq7THlOFa2wULBMN1mDVdRuv+pVkDkCqE1U5jirwGdrDILKoazwb8CvH0Y1uDSsgrkCiTT9wSVyi8Gt2K+Nz0Sf3Az8mOeK5vkjjmx9Yfm+mPQTJmWnN8ar/s6LTvZrJH1idlS8MPqd5dMuo02wZh/WVUJlR/RwJzEhdd+Imdh0yGwqbZv1rXktor/8U6hcncC5CnKQOTPD10DuYyGJh5oRKJkHit6cDRlebC5SVtExbaJzOf3JTeL3liLXxUU6+bQZrpqRg3NZnnVOCrjt9UlJpPFQjcRP3NXPT/7Tr0NWQDLOiP4irMQZ4LMdKUhCrwIsnflVhrNEcoIHTAhhocyFryLDpZOvYXEYUKIazSMvz6856doDX6r43y4tsBYmUigAbgl+b8yrl9hv7FK5yRnpa52RhRFPUqowanI
- Lsv/Vz1P
- N6JcXOYKOIil+gpi6aQ8ZVpCs1XXuFa68xxkL8Y9GcKbApkTbPd98FSkVmv/awoAaYijO507Y+74qfoSSU4JoJ6iQjGet+drVXnzeQez3FaXai4dDkwSc5srARWgqsXtA2BZ9cPsQ72l21iqxDvV+RpXzr6mH4hyNZoxuVtRnCNuQQ7+5JRBNb6+ZDPCnoRHSPPKwN22gBN91+43jlq5mBfnmnbGIIghRpm48H8qziwqKmGMQVXm53Rdku9fwRaMw4Cz3FrK+NRPjjRSf471f3zv+7zbWqeaqtYZtvQf/OT4/LiYaIVR4QhdglH8IRaM1kag4CnuuofRghxe1Arn6RBsWWg59N4wRrGqYBu0E4G2wN+lVw3FCNLuDg+w5BPzHn9Tjc/PaKQ4emzlbxJjCchbCUk2EyJUhMkLale4OVNaUmx2clRReLipynkFGxXfDF1YmNInep5Q8T836s3UBlhnG2qssIjPrcEI74jdp8/6pL18DDvbj7ygADdPdgkPt1ko5
+X-Stat-Signature: 3zq4dabjgjjjcxkuw75uyxfm8c7t4mpw
+X-Rspam-User: 
+X-HE-Tag: 1794820554-895656
+X-HE-Meta: U2FsdGVkX19Ar40kJN1BIW2G4jIuRC4NQtl1zfoHAaSNBQrWkPNjdYljCwehz8uKYfvwn7WtiIhUH+ajWskvKKygvoI8FagR7L+0aDZFLQrv5XR0ZI5A5JroADxz3HYureRc7afUjY+i5sNZtA4OPYfhSeKi/mBDl3GTMWlj8h+objhvJypjktvSVPZUtdtVP0G75Yl601HVH4dpTFGnweHc1iewhDnGDAAPeVjsDnDo+WaRHs3fHkJ9vuSHO0zoCTQXvToUMLz2VqKynB6avSofhuy72M5y2l07jRzJH2gfkXjGHEpir9E80NhrumjNFJv9MgyzUwRWH1aBbYZOFF7mowPoK/ZmJDIDTNPdAfKFiUUsI+2VG3jcXry7laga371tq52KUgXJOGSdbjWrYNYJnH38CODrmSttiYMbUXGaYl4+TcwjDxGJKEhPGLFBaDnxeKmKYFgIO6hKBGHbYFEOvsJ/wRVehal1A/JEXOf/JHD417MxfB7c46sq8UiIlqQc191+IXtEdCi7xYo9OyYmjjdGfdxzi7cdMjfoQLhhXkkZceOjao0qbaXlskQGmeMVK7gfnpu2Oq7+FbEBj9k2dxiQeSAHO/sqeGcr249aD1tNa5MIAj9183kEEgi4wmABV5v8/+ff6XAGFQNO3LQpJdQFh0R0eh6CW7x3SuMNFeg8hr+YAcHGzIvt7IG+ENsIYM2pXmplRf6gtYJCixzvd/uBrzW44z1YWkpsxG9vzqr4CieB7OvblaUWeKfZ+Cpo7F0sFMrVy2iGpTw3v3kPTOwubw7LGsnqPz/rUMvvhliooB1eJu/q6siZLcR1DRd4Eo9pid1VJ0ot1+ue+XE161kkRTSBWegLhCBA76svVKnwdgzrk5mjuVMS2Esr+wXZKfVxzrpcQfwJ+82x/Rw79boUiHBvZkcaFWgrMVWKauaEU4cvBd+TMDYiW+lR4pSisObV7SVctws9/kF
+ 4hnCwi+C
+ L5VQUDIIIhMHobsb5IQEXdb3tjswcWj80iCLzU5PAKLLomHA2DjCEthtZgzzUnhTjW7b8wS8BeiHXNJtIpCk2ghuRlHpQSdjzmlPOIl6afdM7l2kVO3KGIlqMsnTKtLHsCG6jZsK32F9uktBGO1e8l0TO4iS4nH5mAlYpGLdZqmVF2IziBn03aKl3cNQ/VFzy0sawSg2yyQY51Z8EeZP4eDzY4+EpPqgNT9NgAFnPnuVBb5/vgmXp881rBrd6COjsFMPotNqNMBWMJ5SyEZJwiucDuyE/EyCMe+ltnV6dNKpkJcaAl/V9LJwc3qIVmT5YBmbz67ZgqQiluwaH4ADGNBAbjJB64kdqz/xZy/ONHMMszs5f00KzYijFqO/4mJ6ImEK1afy6NU8EiCZdIMvSMf9sFMVqLmSrQC+CcMWVDwpmemCbY8vMpN1prQNyTfQxqSfiL9CTUN9V6yX0bNT4PADZSHfUvlpuO3DhPfy562OfDMsWXinbbYmEf0rlELGZWlat
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,140 +152,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-CoCo shared memory may need to be allocated and transitioned in units larger
-than the requested object. Before this change, users handled the resulting
-capacity as follows:
+On platforms with memory encryption, alloc_cc_shared_pages_node()
+transitions the allocated memory to the shared state.
+set_memory_decrypted() may sleep, so the transition must run from a
+sleepable context.
 
-  User                         Rounded capacity reused
-  dma-buf system heap          no
-  DMA-direct                   no
-  regular GIC tables           no
-  small GIC ITTs               yes, through a gen_pool
-  early SWIOTLB pool           no
-  late SWIOTLB pool            yes
-  persistent dynamic SWIOTLB   no
-  transient dynamic SWIOTLB    no, one mapping only
-  atomic DMA pools             yes, through a gen_pool
-  restricted SWIOTLB pool      no additional padding
-
-Improve the early and persistent dynamic SWIOTLB pools. They already own
-and transition backing rounded to the shared granule size, and SWIOTLB
-is itself a suballocator. Advertise the rounded extent as slots, size
-the slot metadata to match. This makes the extra capacity available
-without reserving more backing memory.
-
-Keep transient dynamic pools unchanged. A transient pool belongs to one
-DMA mapping and is destroyed when that mapping is unmapped, so its spare
-backing cannot satisfy a later request without changing the lifetime
-model.
-
-Do not attempt the same optimization for dma-buf, DMA-direct or regular
-GIC objects. Those allocations have independent caller-visible sizes and
-lifetimes. Reusing their padding requires a shared-granule suballocator
-with reference counting, per-object mappings and accounting.
-
-Note:
-For the current 64 KiB CCA shared granule size, SWIOTLB pool sizes are
-already multiples of the 256 KiB IO_TLB segment size. Consequently, the
-rounding does not change any runtime values on current CCA systems. It
-instead makes the code express the intended invariant that pool metadata
-describes the complete shared-granule-aligned backing allocation.
-
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- kernel/dma/swiotlb.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ mm/cc_shared.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 24366038dfd3..a245c508fb3a 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -328,6 +328,14 @@ static inline unsigned long nr_slots(u64 val)
- 	return DIV_ROUND_UP(val, IO_TLB_SIZE);
- }
+diff --git a/mm/cc_shared.c b/mm/cc_shared.c
+index c9b4e3dfe06a..b30b8e78da32 100644
+--- a/mm/cc_shared.c
++++ b/mm/cc_shared.c
+@@ -8,6 +8,7 @@
+ #include <linux/errno.h>
+ #include <linux/export.h>
+ #include <linux/gfp.h>
++#include <linux/kernel.h>
+ #include <linux/log2.h>
+ #include <linux/mm.h>
+ #include <linux/mem_encrypt.h>
+@@ -106,6 +107,8 @@ static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
+ 	unsigned int order;
+ 	int ret;
  
-+static unsigned long swiotlb_align_nslabs(unsigned long nslabs)
-+{
-+	unsigned long granule_nslabs;
++	might_sleep();
 +
-+	granule_nslabs = cc_shared_granule_size() >> IO_TLB_SHIFT;
-+	return ALIGN(nslabs, granule_nslabs);
-+}
-+
- static void swiotlb_mark_pool_used(struct io_tlb_pool *pool)
- {
- 	unsigned long i;
-@@ -431,11 +439,12 @@ static void add_mem_pool(struct io_tlb_mem *mem, struct io_tlb_pool *pool)
- }
- 
- static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
--		unsigned int flags,
-+		unsigned long *alloc_nslabs, unsigned int flags,
- 		int (*remap)(void *tlb, unsigned long nslabs))
- {
-+	unsigned long aligned_nslabs = swiotlb_align_nslabs(nslabs);
-+	size_t bytes = aligned_nslabs << IO_TLB_SHIFT;
- 	void *tlb;
--	size_t bytes = ALIGN(nslabs << IO_TLB_SHIFT, cc_shared_granule_size());
- 
- 	/*
- 	 * By default allocate the bounce buffer memory from low memory, but
-@@ -453,12 +462,13 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
- 		return NULL;
- 	}
- 
--	if (remap && remap(tlb, nslabs) < 0) {
-+	if (remap && remap(tlb, aligned_nslabs) < 0) {
- 		memblock_free(tlb, bytes);
- 		pr_warn("%s: Failed to remap %zu bytes\n", __func__, bytes);
- 		return NULL;
- 	}
- 
-+	*alloc_nslabs = aligned_nslabs;
- 	return tlb;
- }
- 
-@@ -471,6 +481,7 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
- {
- 	struct io_tlb_pool *mem = &io_tlb_default_mem.defpool;
- 	unsigned long nslabs;
-+	unsigned long alloc_nslabs;
- 	unsigned int nareas;
- 	size_t alloc_size;
- 	void *tlb;
-@@ -495,13 +506,14 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
- 		swiotlb_adjust_nareas(num_possible_cpus());
- 
- 	nslabs = default_nslabs;
--	nareas = limit_nareas(default_nareas, nslabs);
--	while ((tlb = swiotlb_memblock_alloc(nslabs, flags, remap)) == NULL) {
-+	while ((tlb = swiotlb_memblock_alloc(nslabs, &alloc_nslabs, flags,
-+					     remap)) == NULL) {
- 		if (nslabs <= IO_TLB_MIN_SLABS)
- 			return;
- 		nslabs = ALIGN(nslabs >> 1, IO_TLB_SEGSIZE);
--		nareas = limit_nareas(nareas, nslabs);
- 	}
-+	nslabs = alloc_nslabs;
-+	nareas = limit_nareas(default_nareas, nslabs);
- 
- 	if (default_nslabs != nslabs) {
- 		pr_info("SWIOTLB bounce buffer size adjusted %lu -> %lu slabs",
-@@ -867,6 +879,12 @@ static struct io_tlb_pool *swiotlb_alloc_pool(struct device *dev,
- 		tlb_size = nslabs << IO_TLB_SHIFT;
- 	}
- 
-+	/* Transient pools are tied to one mapping and cannot reuse padding. */
-+	if (mem->cc_shared && !dev) {
-+		nslabs = swiotlb_align_nslabs(nslabs);
-+		tlb_size = nslabs << IO_TLB_SHIFT;
-+	}
-+
- 	slot_order = get_order(array_size(sizeof(*pool->slots), nslabs));
- 	pool->slots = (struct io_tlb_slot *)
- 		__get_free_pages(gfp, slot_order);
+ 	ret = cc_shared_calc_layout(requested, &layout);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
