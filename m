@@ -1,151 +1,153 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F75606A88B
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 22:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D9F606A8A6
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 22:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ikf9y+eb
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OLAvM34Q
 Received: by kanga.kvack.org (Postfix)
-	id 013BC6B05B4; Mon, 16 Nov 2026 17:30:15 -0500 (EST)
+	id 14CD96B05B5; Mon, 16 Nov 2026 17:31:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2C5C6B05B7; Mon, 16 Nov 2026 17:30:14 -0500 (EST)
+	id 125126B05B6; Mon, 16 Nov 2026 17:31:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1B276B05B8; Mon, 16 Nov 2026 17:30:14 -0500 (EST)
+	id 03A616B05B7; Mon, 16 Nov 2026 17:31:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B2B0C6B05B4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:30:14 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 36FC41C266E
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:30:14 +0000 (UTC)
-X-FDA: 85442426748.17.F11FF95
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 69D22A0003
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:30:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ikf9y+eb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794868212;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B6CA96B05B5
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:31:05 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B943980271
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:31:04 +0000 (UTC)
+X-FDA: 85442428848.18.44B5990
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C251E40003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:31:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=OLAvM34Q;
+	spf=pass (imf04.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794868262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V6fhJx/sPF2j9L/w2dByxX7AjmdD1i+rW4Z9BzXzRiQ=;
-	b=5yVLyeKLtCe251MSyoNT5+OS/81HezmEtqPonAPUP9d9WIL+eMo36GUWS5JmwmK3V6UIpX
-	Iu2PgdqvI80ikpaYVkSBDu/ugO02HTdgDhoo8WlrIuDYjkynJuiWbq4ELHo7/6myE0j+xj
-	qUUhIbp3g/iJ4drbKWgiGmasQqGKUlQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ikf9y+eb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794868212;
-	b=duNwS74BfSWDOgTNSoRxkrT0J+OSS5dYLzwasWBwq8nQwP8c+R8s7E/mL7JEbaOjx2DkEX
-	A9JehvMgE/iMDF+XLysNEl59f+VqY9G3QH1tzlgkHDZ12bT+IWnu4K7RjgG/Oi0EDYNslR
-	0fvQXjmfsnnNjCiV/RIoKJ+ZJl6AOVM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0903C60DFE;
-	Mon, 16 Nov 2026 22:30:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118CF1F000C7;
-	Mon, 16 Nov 2026 22:30:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794868210;
-	bh=V6fhJx/sPF2j9L/w2dByxX7AjmdD1i+rW4Z9BzXzRiQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ikf9y+ebsZT+HzEkChEiMZDnNutS1gG4lMjgRNrIBdIaGgn1g4KDb52HTnc5/6quW
-	 iSN5JEXtfpkyTANgr1Mnot8rOJhIiBwpUfiUX1OTWfoOKDy/ygVEJDHr4hBGSjt42W
-	 3JE0mMYhaYtt3TmH78mgkpZFK/QhfJwlvlfbphzXWBTVXUH3exoCFb7EL6epXrPpm3
-	 SNIRFlW7bUIZXpXh6Ai9vzzoKQJg7ein+Pivg+SLuSGCZMEjEbFuKbFAKJ9OZL3PwT
-	 WgqFIYcepJpY9n0eUM71Mj9tyiNlKZzsMgiZ76Q8zlBvP66vEW9FAAdRwisNcwvix4
-	 kk/+FSLEfdW1A==
-Message-ID: <175e7fae-2254-4e13-a4ba-0d39fb82018a@kernel.org>
-Date: Mon, 16 Nov 2026 23:30:01 +0100
+	bh=flBIwrkiz4CrL8ZnZbUIHi9/+ZYjmj62+yS9Tn5YAWI=;
+	b=d0N9vvq4vwL/NVolKlrPo0y+lV1smQqrsQIGCESymkCzGTTE8WZx5jI2tPTyBdgNsRgFWd
+	rUez02gJ8cnv83NEelReinHBHjIBjsKnya2Ov53DawLS7unp+4XlPf5R13a5XwNCe4U104
+	l8mAxD1iS08NIQhkuniyQyUb1U+Go/0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794868262;
+	b=COdQBaYHLYV0MDpqdttSo1e/OpH628giOXc3KTmPIFDvQ2f+EPQXQE7Me9I+JkqwZzmnA1
+	kXPqMFCBKZF8CG9svmkqsxBkhM/escazL2vcmwe2KZsrn3PWxhaJKdGDmLWK3u7cERSr4N
+	mzDdhnqAiiWjCHcdKiocsL1De+fHImE=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=OLAvM34Q;
+	spf=pass (imf04.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a018493d57so19385e9.0
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:31:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794868261; cv=none;
+        d=google.com; s=arc-20260327;
+        b=c79HfCugBY4ernqdN4eEsnBhQIJu9Mpo1+sa1BOm3zTnRu7yv7x9QqGEwJ76RuXLyx
+         UkBnKu+4iWbXyH8jv0Z7ywaeAokZ3h8jh+U4BCw8NPk+KCFrjWTh738LzFFVuogmjslO
+         cXW45zD1XoShkU5IjErF+vDVY8GWEsCKTfSWHRHpQYgfYXLZnL3qT1OsjjvhKevcyccR
+         qAgupanJo+QXZGZlxDtFRWi1D0DCT6J7gMv/4jpjlYT6hRqSdifpOsVS0lo5YM8hLtqA
+         mZuEQ5pqOJzLY6YAFZ30UEo0d0W0Y+3K9U0UrADRyyhwwbBxGjnz/lhaZ1ku4Mh/8Sy9
+         q91g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=flBIwrkiz4CrL8ZnZbUIHi9/+ZYjmj62+yS9Tn5YAWI=;
+        fh=zMkAAaNtBwiqq84r+J163UuRlm6b5Jo2tfdCyF4to1Y=;
+        b=Gvn+IJxTQvD68zyGRme7iofoJ5Jj/77TQmK/8Y8V2l6FLUVEjvL7wyRPC2ZsM9lhvv
+         DYKNHNxMP8DfnArpSm3k8gefv1SIzb+A9cFhewAwNlh1IJNCW5QYokfRhhy8izgGG9DW
+         D7kRNpCy0aRz7bbeYdm8ZGw6Rfnegvf+FNaXEdf4HKki1rWEOLp0i7WVr9iawBtXkK0P
+         GhPtHvR/Nhp9aG0hCXyb7m+o+PmDK/Dmf1rWvQj41U7AfrxIz6xkbR8UxyEBqz3UlPEt
+         WmIhGzeADdioByM+wnEIo+9W2Iq20r9KQwYhDEPDF18clRDgC0nlEW2gyikopRMVYgUL
+         mB0A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794868261; x=1795473061; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=flBIwrkiz4CrL8ZnZbUIHi9/+ZYjmj62+yS9Tn5YAWI=;
+        b=OLAvM34Qe11+3TiOVx2KB2mjoyd6gol1CCYzLJ26fhQzl0tSaK4TtfaUzFWXRkxbn+
+         6QumV1y82v7XWTtb+yTkOX7+PlkI88U+peWfQQJeWk4bmbyw0yZE5+K0syCLOmx0uZZ1
+         8SeF8pqVtxon4KKB+HIeuP4rVlbFyfbYcIG2c8t3bHsueBmt7rIxGAlOaZaL67Y/c39W
+         G7/HrMCjnC91bHG74Vxyip99C1CrpkQHaYG8S2ovDstS4ECzh+U1zhlatYlN1XrUN9Ix
+         xysLzgUM2TbjnMbtozPcSSv7gkwYcRL9sW24HoyUtDnl0nxYE6LcCObpovjB/A67pexa
+         MFMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794868261; x=1795473061;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=flBIwrkiz4CrL8ZnZbUIHi9/+ZYjmj62+yS9Tn5YAWI=;
+        b=fDV7/urxGqIJGn3Mvy/dUMfgUKQq4Jda3AINS7pa2KK62YA/Qbsjf4SiXunBYkD8FM
+         7G9qRvg8XuUhHNdDJVKPeva/6qGuFXBF4wz4WvKp2cz9ZXS+X91GnXY6aJk8IWERdyQH
+         rRHBx4B8MS8AixAnpbNmghjVrVCnuH5b5jqbyz+y8M0z2LvC4CRWHZWjFiYg5ardfNV6
+         xfTv6RwF7SqvdIDlLr7qIdBtA41aX3GeOPsVgD9cgEHFN0XPDC4qKYBI5TRfmb3jZnTQ
+         FAn0gjeoEw957lSbDuX+ZXxwNDvORsUWMCygQDpjDDdMKCJXZKtd08eQ3Qg2rrkG51s6
+         Lanw==
+X-Forwarded-Encrypted: i=1; AL+hErF/V7+RmsotSRrmOxjCxqmtAb4IAqZSL+La19TFGFLvbtPjHTMhBr+IWT2R6YDCWtYE8kmW4FkTdw==@kvack.org
+X-Gm-Message-State: APuU4Z/pHJ7KIrXEHzzpEqhc3BgOs2rWkmmy3QN2APky2ZjnZzIfp/n9
+	5tNfeJ6aEM8QuVSAgaDBma28l7DrN5EXlVDwroRqQHtJvEZglspA7670fQvRO+OmTFAhUkuD+q5
+	nKRGDfv/inGzcxlFOu+T8IOp/XURwaMe75zg1qCjv
+X-Gm-Gg: AYBFou0McRxpF+OQeIKvJlmdTHs6GvD+ezG7g2dsj1aI0C0gfJzs0z6FXixUgVNeBSm
+	PVEtz6f9ex5oTfiWIOywm2Xm3Y/D013nLWCwryWQWwGWptTfma4stgkaltbhaWN7xwHXikASvih
+	tWY7sECgGFt5Tnlrfl4uiK9b3enmEy+IMCLKySZt67Q6ojU2cGWzL0TLh4fTQQWH0ZrslsDjBLR
+	S4IGRRjJ+P5SaukAG9Z+S/mjKkSYQHsyaMjOLVv9XnsNIUSDb5TBHk8im5dmKDaKwCH3ySh59a7
+	tsslLUSb3eGakz+XB0VrmuLDLu7YfqoeAxwWRTNg3tRm4UcwixUexvmWngsJl3eX/nJuUv13U+x
+	Rzefa4zEGw0h2r9JGlLMs6YtCj3oOIzCbpIxrgCZHv/V8eLst5/5yYVPcIH6x3n8Z7uu7HIeYMY
+	lyD6EwTXU++kEag7b2vDnAKn4=
+X-Received: by 2002:a05:600c:58da:b0:4b6:5035:d54a with SMTP id
+ 5b1f17b1804b1-4bb7899bf04mr226565e9.1.1794868260939; Mon, 16 Nov 2026
+ 14:31:00 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
- underused THP shrinker is disabled
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Yu Zhao <yuzhao@google.com>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
-References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
- <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zt1ywn1fa5xfrkxfm3qq491wepu6aidm
+References: <20261106235904.1092712-1-tjmercier@google.com>
+ <CABdmKX1gdOH8R6qyjw6XN5VdpAZKVR8NZ=R7Y9Db-BEhUrX-1Q@mail.gmail.com> <CAGsJ_4w4rNzvaOK9f4D56opW7TtUWL_6srxJoyWXWDzhfgm4ug@mail.gmail.com>
+In-Reply-To: <CAGsJ_4w4rNzvaOK9f4D56opW7TtUWL_6srxJoyWXWDzhfgm4ug@mail.gmail.com>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Mon, 16 Nov 2026 14:30:48 -0800
+X-Gm-Features: Aa3M54qWwlAq7r7UGFJTztgBBMUBZhaJaGwzwqSekoGuVRPRGEupivlWBRBOvBQ
+Message-ID: <CABdmKX1v0Bs4U255krWQF7eh2gfuL7-zsvSTEtO3_vMs0OKgDA@mail.gmail.com>
+Subject: Re: [PATCH] mm: workingset: compare shadow nodes node-wide without
+ kmem accounting
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Dave Chinner <david@fromorbit.com>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jaewon Kim <jaewon31.kim@samsung.com>, 
+	Jaeseon Sim <jason.sim@samsung.com>, Youngchan Kim <ycshark.kim@samsung.com>, 
+	Dmitry Skiba <dskiba@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: mupgc8g8mwti18cup7h7ragunjr7zypx
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 69D22A0003
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: C251E40003
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794868212-176145
-X-HE-Meta: U2FsdGVkX1+EU7S7rHV84B65JhAQjAuWgpvH8JA9ndvhdWERn2Sf6D4ps5jjc+LwYPQUfTHexT+YkQqequ54I5pgPhPKqeFCcHg+wL751JIh+BHS6WtKB4BmF6ggUOUFy4dYjmsFRp/k2rOKXyUR42upzH3NyYjvroY55vR5AHwJvYND9Svu10/xYaKTQk4V2YF72lSG9BXwjdI7vVkRUu8lh5LqUHdMIH4wPgEl3P5zhpCRJ4kpJSnks3uMq3dYI7u5XvxDYokUe4b6Vqd8he+INaYYRvPzDXA9eQeK9DGFR/uMzTLkgvwfpA7yeH4fEST3cYk0U62bb56brQVfdOkhOBNiz5mkMWOQExNqvqmhZYm8/4KE87nU4J8GhIaik76/91MTmcm+lVDcWJKfJBq7b9yLNwSdGCroyV59PH9r7KdJHcZsneP8B82+GfCVmbEK0yNIxR+gmlG9WefwBvDAh7jSSnseZUISu/t7mQEbKl9RM68xrS+3iAnHIYqPJGhs1bGAxmIyW3J/eJqltnVZ0p9L+EfQJZ0zEk2Ks66CewE521taN7+xEYgNdS9E8Lghu4AOen1IEeLaZP+444kQjGZGvj+c1OgIIrRt29+JO7vgirNfapv7nTSXuUPYGxX81CbWDzTVix02HHiWC3HXxqxCkcSCit/OBCNRXoIP7vntNB2oIyN2QaGdougYvm2cDq+Dde7LPLQS6a5t2hmDN/gi/kL7r8BHiW2jJKOvxPdYJjvOcRM/XdxIsNGoKXKaBRrGEVIGAKcauLzjjNSRzOrezz/2GEoH1+ktxHGhqQ2d2EwdvAFeowsxITlGTs0jJbKq/F29lXQMw6jn9zj1H0rv4Fy15B2e+4sqhvtZ3LPr/1TVI+gNnFvycw8s7O165SXiZ9oHjiV90GsTMGREAtcUxWRN3A0e/gZ8k44lgIZhyYCUfiUoDI/Pfyl6Dc9KjBlpE4iV9Hb1LD3
- 53JwvjO3
- bBO8QmsiF++I4+pWfTOIzu/PHrhxCi4z/8ygPycFlh65gFNBAx08lQLLuIEmtWla1vCIvtpDCAkLCt2T7M0yDQfC+iJWKgq4d7g/Ev6wvtLjx9Y26SSfvgcnPFtJ83JGqIaf8gZyHtHbA6wt5Qm5/HnD05owzm74ZasTGf9KIo3XE2IE1WJT7A6nf/Zw/M6XeawiorqO7zXkDBKmQt5jImASC2D0iolAhTili+Zk3Wmv2uLsdZ3QwoAyNOQQWSpuCn5NMbKb/H1RBtnlXyvLVnBEIymDNZhjQNILRKv+WrGPXFQkucQoe/9qhwTkyuAQhU+8dpvt/RI14uvCu/60sDJaAewPQXGOJbRDyJwytABhwXvGV+vWrcXkGv1mJ4ESmG9jEF7hkoSEeLzz3MhmR/JYcKQ==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794868262-414052
+X-HE-Meta: U2FsdGVkX18aUemobdOuUDKucxyOmxtPJ34Zv3E5PYDlL4fxRf2SpCSsmC6W53BvfcD8TRpzD1g6x+eaHs5RiwF+r2JpyeCe2scoWcv9ZvW55Bq2M454Nq3xwyW+4ZaE44Q8xNo1I/yJISp2Z5DbZ2mxJWcVXP76fEhfvpYz5/TXbrnHz6MCQr8ihVjMagBIxRBXa3qkOI1APDiN552BEJBywd7ySAoVnA0nfwv4Q2IUe1Tef9Rvp1aKON5vZLm5jpDx/hkL/mqK2ZDworibbecPzQArk1nizV2ohu2L7jYHdJRKcolehby6Ap2eMRJMH334tlUHq6ItwDcoXWONJYTmjAjMkrS6MbtBSKgrzsqRiOrHnwda4GmYQ5pVAxVMwB4oniXSu33hJI06mJ/u1RecjRW8Suuw8WjmlLXjI9dVePczg/5z8kHk5D25BGiNuIO8YK5lnLsxZqOXjMBFDidZceqF2+58V/FXJ4Ku6Rfs4bqhHsz6t14DPXIwTOkixLY1mUNaL2irmPTWkCE3H2MJV59cpmV02laAlWprUh5MB0cIPjm6nI73+nhWRWxZ8twyaFmvmWsLvwvQt1911K5lqu67GzcCBRVBtpAcNjtN+ULezZAELs5/mQxrtdml4au/vu6ZMAE+2Nlz1DRYpLEcHQMlsoMocqJifyvxfvVvctv9aut38xH9eY+Z9w+MYdGii81p0IYtGmag1PMzNwHZIrPN6OhUMPQ2AOtVecQaR5a+OUeSfE51vI6W4TzWy0IJ0rp3LBwgFxuIoXfMWs/2Q7qNGvpk3++LQCJ1smICUtPV1blJxGXrVUXt3KYnetTxL/eGY/AWFuUtJik8gLGSw5Bc88PE5rMoYtdoXolWlZ/67ugdoe1TIREyjLN0IvU1MM9WKXuLaRnFM3w5tR4DTLBRxRjGT/EGQf4ajXiKmpwboDzOuYA/3ASrXIcNTCIDz0RCzh2CqCSikax
+ 3pSy4PjN
+ XHl7tJgGpK5tl35+23k1kyRbRSu28vYciL1LFVEwi2aoLneI0AQSKILsLyoGx0FAkZfTIrXs2Ajj7l4yEd+NlZwaj2cUkROx+hWaFwIDOGKEJ0L9ywsf7hgP6h4JCE2G9RB+v23Wlw3g40xMQzOH2XkCCkj9+iCAASg8KrZfw1n/HjpdnH7bljV3GnCEqjOlx2fSh0C75hszYDYRXtJ1FThpzchojd27NZisv834RQN4i7M7xRsjKyegkdi7+yPxUVVb4NZTFX+th85IZ2AZZLBa3qfm53GCvR3otpVKtN2Jw2xjqHJUclu6eMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,58 +156,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/25/26 18:39, Nico Pache (Red Hat) wrote:
-> The zero-page remapping in __folio_split() was added to support the
-> underused THP shrinker. When the shrinker is disabled via
-> shrink_underused, gate TTU_USE_SHARED_ZEROPAGE on split_underused_thp
-> to avoid scanning subpages for zero content unnecessarily.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-> Signed-off-by: Nico Pache <nico.pache@linux.dev>
-> ---
->  mm/huge_memory.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index bd44d58e8684..2d56d1bff0ea 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4104,7 +4104,8 @@ static int __folio_freeze_split_anon(struct folio *folio,
->  out_no_split:
->  	local_irq_enable();
->  	if (anon_vma) {
-> -		if (!ret && !folio_is_device_private(folio))
-> +		if (!ret && !folio_is_device_private(folio) &&
-> +		    split_underused_thp)
->  			ttu_flags = TTU_USE_SHARED_ZEROPAGE;
->  		remap_anon_folio(folio, 1 << old_order, ttu_flags);
->  	}
-> 
+On Mon, Nov 16, 2026 at 12:04=E2=80=AFPM Barry Song <baohua@kernel.org> wro=
+te:
+>
+> On Tue, Nov 17, 2026 at 1:40=E2=80=AFAM T.J. Mercier <tjmercier@google.co=
+m> wrote:
+> >
+> > On Fri, Nov 6, 2026 at 3:59=E2=80=AFPM T.J. Mercier <tjmercier@google.c=
+om> wrote:
+> > >
+> > > count_shadow_nodes() limits the number of xarray nodes holding shadow
+> > > entries to 1/8th of the pages that could be using them. For a memcg, =
+it
+> > > counts the LRU and slab pages local to that memcg.
+> > >
+> > > With kmem accounting disabled (cgroup.memory=3Dnokmem), shadow nodes =
+are
+> > > not charged to any memcg and __list_lru_init() makes the shadow_nodes
+> > > list_lru non-memcg-aware, so all shadow nodes of a NUMA node are on a
+> > > single list. shrinker_alloc() falls back to a non-memcg-aware shadow
+> > > node shrinker, which shrink_slab() only invokes for the root memcg.
+> > > count_shadow_nodes() therefore compares every shadow node on the NUMA
+> > > node against the pages local to the root memcg.
+> > >
+> > > When most tasks run in child memcgs, the root memcg only holds a smal=
+l
+> > > fraction of all pages, so the shadow node limit derived from the root
+> > > memcg page count is far below the number of shadow nodes on the NUMA
+> > > node. Since the shrinker has seeks =3D=3D 0, every root shrink_slab()=
+ call
+> > > trims about half of the "excess" shadow nodes. Most refault informati=
+on
+> > > is thrown away, so refaults of recently evicted file folios are not
+> > > detected. Refaulted folios lose PG_workingset and the workingset_refa=
+ult
+> > > and workingset_restore stats drop.
+> > >
+> > > In testing on devices with kmem accounting disabled, moving tasks fro=
+m
+> > > the root memcg into per-application memcgs dropped workingset_nodes f=
+rom
+> > > ~37,000 to ~900 and raised workingset_nodereclaim 4.6x while
+> > > pgsteal_file rose by ~12%.
+> > >
+> > > When kmem accounting is disabled, compare the shadow nodes against th=
+e
+> > > whole NUMA node, as is done without memcg. Behavior with kmem
+> > > accounting enabled is unchanged.
+> > >
+> > > Cc: Jaewon Kim <jaewon31.kim@samsung.com>
+> > > Tested-by: Jaeseon Sim <jason.sim@samsung.com> # Galaxy A18 LTE
+> > > Tested-by: Youngchan Kim <ycshark.kim@samsung.com> # Galaxy S27
+> > > Tested-by: Dmitry Skiba <dskiba@google.com> # Pixel 10
+> > > Signed-off-by: T.J. Mercier <tjmercier@google.com>
+> >
+> > I'm guessing there aren't many other nokmem users?
+> >
+>
+> Out of curiosity, is `cgroup.memory=3Dnokmem` commonly used
+> on Android devices? If so, what's the rationale behind it?
+>
+> As for the patch itself, it makes sense to me.
+>
+> Reviewed-by: Barry Song <baohua@kernel.org>
 
-I guess the change is not that relevant in practice, because I suspect most
-people always run with split_underused_thp=true
+Thanks Barry.
 
-Th question is whether "split_underused_thp" only determines "that we trigger a
-split if underused", or also "what to do when splitting a folio".
-
-Yes, it was added for the deferred shrinker, but the semantics of the toggle are
-not quite clear. I don't think there is any documentation for it ...
-
-Disabling the "split to zeropage" entirely with the toggle off (behavior before
-the toggle was introduced) makes sense to me.
-
-But the behavior now already like that in the kernel for a while.
-
-
-I know that I suggested this, but I wonder, is this patch relevant for your use
-case and patch #2?
-
-IOW, woudl RHEL customers disable this toggle here when running with KSM on
-affected systems?
-
--- 
-Cheers,
-
-David
+It's a mix since we don't currently require kmem accounting. The main
+reasons vendors use nokmem are to avoid kmem-specific overhead, and to
+avoid bugs they've hit with kmem enabled. We had one report of kmem
+increasing clone latency by ~25% because of kmem charging in
+dup_mmap(). Another report of a NULL pointer dereference in
+list_lru_add() during eviction on 6.6 also resulted in kmem accounting
+being disabled on the affected device. Those issues were from over a
+year ago, and I haven't seen anything else recently.
 
