@@ -1,103 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FA2606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E883606A332
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Pz7j/Ikj
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FFSUJOlg
 Received: by kanga.kvack.org (Postfix)
-	id A90266B00EF; Mon, 16 Nov 2026 05:35:24 -0500 (EST)
+	id B7C9D6B05B1; Mon, 16 Nov 2026 05:37:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A40646B05B0; Mon, 16 Nov 2026 05:35:24 -0500 (EST)
+	id B2E996B05B2; Mon, 16 Nov 2026 05:37:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92F456B05B1; Mon, 16 Nov 2026 05:35:24 -0500 (EST)
+	id A1F296B05B3; Mon, 16 Nov 2026 05:37:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 741806B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:35:24 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 016B51A08F5
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:35:23 +0000 (UTC)
-X-FDA: 85440625368.12.52A0837
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 26F81140002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:35:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="Pz7j/Ikj";
-	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 79A1B6B05B1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:37:06 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E717B1C42C5
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:37:05 +0000 (UTC)
+X-FDA: 85440629610.18.C7E4A30
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 083FF40004
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:37:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FFSUJOlg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794825423;
+	b=u3EkANoSWUbCyVqiXRPktOl3KJckzwsBli6LJhNFbaApwovBY9/Jx572a+7TnkI3CI6W3F
+	6/0zWoSulmV1uZH1PjAfuIvXK0BVJAjyaFdQtv9dkYctxNBNhYjzi6RkNagO7HxoFBRxXW
+	MXsj5z49sxkKo1k8YacpTINqWpm3C3E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794825322;
+	s=arc-20220608; t=1794825423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iyaQZx4YaB2JOzxstluIUEtBMcc33AW6Ym2vysf33mM=;
-	b=3W4hjPv6tg4jfZADO08rx/4c+AiZB6fgGZ7T7bgLgnyr8maUAjdCTA5kRwwVUKMUZkXFRf
-	eHjJLZdOc2rx/WsER+oxb3sigbb1wbC9tUvg0vGH/5AKKfavqxsuiMYDjkpxQH59qb9TPo
-	E+BXBKYnbCTVvrEcDGZ4u69PkTaqe3Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794825322;
-	b=e8r/cx9rB+VrL/KRHTRELAnvbKgtm+Ss19hIg/d6m/OGUnjinpN68wqaaTkfN2Ij5IoFzl
-	m1i6eM1D2tvJ6JwDXrJnfThJfcApZMRyqc0YQ/hXsLgoOOFHnKqorgzQDK68lvMUurQP9j
-	m3IKpNZeQrrsEIWMMsAXyQ4i/GvJgP0=
+	bh=j7rA6Xl71xYXKV83hCBQM26oVzIZlY/G9Jtv6N99/NM=;
+	b=EOcwtEdE/Kwss+AzQssj577smenEPjyRp6slc+ETox9l1W9K+XiCYky9IAPfrovRoNuMib
+	ewUkm3ImIm2kAlAAzs/sPLZOBmHRq6zmy6XKLLSwHDN6UZWKUqUI/Uw2Jv01Jd03r341gU
+	HXP92Q9oXaHvVMZtFGNkJhRRXdjBDgE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="Pz7j/Ikj";
-	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb55cda775so14167755e9.0
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:35:21 -0800 (PST)
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FFSUJOlg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49d05d51553so17765955e9.2
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:37:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794825321; x=1795430121; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1794825422; x=1795430222; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iyaQZx4YaB2JOzxstluIUEtBMcc33AW6Ym2vysf33mM=;
-        b=Pz7j/IkjQtNOs5VvhAob7zLZe124oJ17jtJKXsZvj+EXTaP886L8zH1QMCTxIN4KTn
-         tm9ZDK/G7I70YsWUPwUMvGaWTLWik5ha4DQDXyEYj3DT+cOUGMTiNiQJazIuPja+hcWz
-         d0d0Nr9EAONA621gORJHn9NaC6M3gBcTjEXMZVAOl+EiJZ7czl+gFRfFWm+eW2tRMb63
-         LmfjFdOXxMULC6RpKVhO+zbc/hMWSwb1DsYaBfBnD2ejWuJlU4/GJ2XaZaUgbZLruCEO
-         HES5KgFsSMbfK/d1zUK47oWX7zYGDnawPacG3yQ9CkJVCVYRi5y1nw5XerW+NEHnRxkH
-         hQvA==
+        bh=j7rA6Xl71xYXKV83hCBQM26oVzIZlY/G9Jtv6N99/NM=;
+        b=FFSUJOlg7kKzV1LTpDEDWoxaGmPyP2Q3MLOyM1TPw+BwUHJXRj6oWLwgS14WJMKQvU
+         KyoNHZQNtjraifnO9Jnb/jwOWIsjtKFT+kJ8HpBlABu8utiI7fIYRi359/zxao9mnxv8
+         gCqxizwPGF9JE7auK4vtqqkG2vht0bANH+izmWkNUUW4a6h4VkoOB+IciPkF9AgiqQls
+         Mqkg3tRKnVJ+8iK/o/EyKH8RIlz7gzQOPF9otsgUt5VDhQIb2ORINY0bw6ffL660ZQvF
+         tJBR80SwTJ3Q7sH6MZTcnqPCW2AG9qfmXneW9YZjkpnDMOV+VXINZ5ToWmiiT1tfhlb8
+         49tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794825321; x=1795430121;
+        d=1e100.net; s=20260707; t=1794825422; x=1795430222;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iyaQZx4YaB2JOzxstluIUEtBMcc33AW6Ym2vysf33mM=;
-        b=co5MKgaaOluF97RonBi1JlO2VWgZmnanEocPnYzo5NzIQXMB/CtW3IyhXyH7JrVzYu
-         wlwKlRWnJKgySU3xN30CMNOUMJ0s1VU0PGPASz8ITaiCLqsTUNAqjVWcLN3nqqfrx+rf
-         7RfLPr+BCqgI/WAHg8yg1r83dOltGVo397FPtyVq1Did8d3o6+A6NBFMW9goz/lawRGV
-         Qm4OApgpalHIgsoD9VLIj0GPyFYDjFx5HYX0cV1dCoOYB02hGlJ6oFmjKuFT6wxVtqpj
-         EywjyIcUgS6UnW3cnUuVJ8ImeKBH6NuSUWNCFzqIRiBVVS1ZGGfipcdDp9z5cEGVc8ES
-         EHzA==
-X-Gm-Message-State: APuU4Z/5kQdsmokSU7VlSair0q+buzTIhN07JHTi7NOjb/ABROdlxv7z
-	MtpFIS9MehxngdX8YliYO8m7eTYCFLivOb0AeWacmGnd6AtMNamILrLM
-X-Gm-Gg: AYBFou1yBaPTPSHhwFelS3wOEzOfNUJBQJ2VT379maSGPdgrB6wEn3vuFTYsiUPLHHt
-	S92hCylPUBX31drdLiEfIrgbY1El90M4LJznZQxcftcn5EuZBfK8Q2es8yRuXATUwJul1TLEJ/P
-	NKJ46EBdVT1/lRWtpRwFUDz1Iq3tUyl0SIYW6xhPRZZU5airExozLyApVdJVtK3aJhDSFfMcWk3
-	FLUaVJF0dP7DFe2YzD0yKICYTIfpuvdbiuWVxBnx5n7tBs1HawfqKwcTSP1GupDGiuM0JFWH+XC
-	0oZ7qztiXAeSb7BOvw093ETU5Y3mEQCHqk3kzUU/Ej7aJcX4W2DfrdvWJxmEjcwLVDfOve/36ep
-	I2tSW2qAFsTIZUAaBHilLxJ6z9HKj48G633nzNrMMN4Y9teG8p79PkN1P9wCgxe7TheUz4oWEwg
-	+4t5g3SyYq8PxRi78oaT7cMrcj2dOWGx+IVwS2vmAF8I7mceaRdxGn628iECXzVdO7/ogqZQKTA
-	n88kdy7P1UtBVfLtPyaIZKuQQrKO2MgaHSBuQUTQ3117kC9WiNp7idHq0HwM0vDyyw+bV5j2lAf
-	hdY/EdVpjkVadFs8ueEp+/F5vw==
-X-Received: by 2002:a05:600c:4f86:b0:4bb:5fd1:92aa with SMTP id 5b1f17b1804b1-4bb5fd19428mr160740475e9.15.1794825320590;
-        Mon, 16 Nov 2026 02:35:20 -0800 (PST)
+        bh=j7rA6Xl71xYXKV83hCBQM26oVzIZlY/G9Jtv6N99/NM=;
+        b=eS+iPaad4yY/Q5qB/PrupjTavDvLFjePC6HhxMED5tVCdWZM9WEzL4+5ceNGbGZE9O
+         C7mNvoEz0UEDteaQwXOQ/15xt3BMoI1efsACOHPav1AYyCMbhnn1PhoHFe8o8WkzQsJf
+         jKaR2i01l+4rXxSXsiVdqzzliT/3LFchaPQ67AD/KIhYPecPiYY+JdvKuipb6BWacFtI
+         EZlUipQpF5lR8V2qWrXTrpa0vBnkQ+yMLxLaVS2dY6s1OPoF/PFcNcJKdvl1b+wddNJv
+         M6fCryr3okfDSD4WHrWzjNDXOVjC/km1u6LNqMGs4MuLJGavSU3zLrKGGz5j75nyHn4T
+         pgbA==
+X-Gm-Message-State: APuU4Z94lOluZsAeRvx8uKe4zRs5PerSU+cr6eqGJIOg6V3GUAyoKxsM
+	2MVNkElYaxLoRMAPesC2a7oHV3YNEt3IZjkY0ta1iU6aDHeHzx17VRwr
+X-Gm-Gg: AYBFou2+vSbwfjEgPFKlD8QkxMofaYmCEbGKpmEh3zQ4sLGC1X7nNRxBTzy79/R+PLD
+	ZcPvA/DEq3pbsHtQ+5O8VsenMMypdcDNu4BktA2w/5mYvueQYeWqT2eM94Aq4fMg4E65IUjYp+/
+	5oJpJix40zUWIa95mr/Ra/PRWivbuR5KW38TUX9/zTJU5oteb6uUH4glxhplG5cyuNjoTf4yBUJ
+	3PHbO51tcbC7nkrBqWJfMueVSw8sGHU9ooOk5+LpO8JPYFnV78Xs55+d+W7eKkvbSIq0NoQTrdW
+	j1k5PsVHsSmTKEn/B9Z/NQFNw8VmSTsjf4/mL+A2FLGk55NKzD5+hXZi0NSOcsGvYw1l2Iuqcpu
+	CfOzwmCWYIswK+0NlCBEqkXf7E60ci/DWCzk2GYqNZ+PPUQK+HTzdd97mZES/qOMycTUuXwUKmV
+	KSeNFk07Te64sjQuk1Jx4H8FYEr3x9kJscOE721dqGA5NrLcQmfqyoAJxYGoQOXLTxTbSpSX6TX
+	2WfHH8i8YyBMpc90GagO21/V5jtPKltALxrvRhBkZyBXciUZbybJEuMRl2SbTqcWqyvEQLGkVAZ
+	ukXITtHB1CpMIgBC136Wq5SW
+X-Received: by 2002:a05:600c:4e56:b0:4bb:7292:b871 with SMTP id 5b1f17b1804b1-4bb7292bf16mr53530855e9.14.1794825421700;
+        Mon, 16 Nov 2026 02:37:01 -0800 (PST)
 Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb675200e4sm118113715e9.0.2026.11.16.02.35.18
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb62d5ec30sm294131895e9.15.2026.11.16.02.36.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Nov 2026 02:35:20 -0800 (PST)
-Message-ID: <b3183fe8-5e7f-40c2-a534-c643d0fd2bed@gmail.com>
-Date: Mon, 16 Nov 2026 11:35:18 +0100
+        Mon, 16 Nov 2026 02:37:01 -0800 (PST)
+Message-ID: <fea564eb-eafc-454a-a6ea-877d5285ef0d@gmail.com>
+Date: Mon, 16 Nov 2026 11:36:59 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm/memory: remove racy huge PMD assertion from
- walk_to_pmd()
+Subject: Re: [PATCH 2/3] mm/memory: do not report OOM if insert_pfn() races a
+ huge fault
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
@@ -117,25 +117,25 @@ To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org
 References: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
- <20261115-huge-pfnmap-fault-races-v1-1-537605643f6f@kernel.org>
+ <20261115-huge-pfnmap-fault-races-v1-2-537605643f6f@kernel.org>
 Content-Language: en-US
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261115-huge-pfnmap-fault-races-v1-1-537605643f6f@kernel.org>
+In-Reply-To: <20261115-huge-pfnmap-fault-races-v1-2-537605643f6f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: qk6kohu1ts7c86n8g68oaw7dmtssqeud
+X-Rspamd-Queue-Id: 083FF40004
+X-Rspamd-Server: rspam12
+X-Stat-Signature: n49cy8tfxwe8d7ukjramhwmpw7uiydgy
+X-Rspam-User:
 X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 26F81140002
-X-Rspam-User: 
-X-HE-Tag: 1794825321-228661
-X-HE-Meta: U2FsdGVkX1+nwp3kM5zcQ61EOFftAi1NrzRtKhooo5DOVQVqjMRClhR7QXxyatBPcym2XdP+6bNjKwpdLjo6EHBJSsbmjPQXb9PRxlk5pZvvM8RQQxiTasZn/TrwFib7xCz5nxnxdkuVL/T1XnehbcV3KADFBPRKKDC9j5RJ5pBSqgCvZKpLcHpEVq0Z8Q/8dnaeh9orIeCzYPJc6X2MEh6hKVDgMnphJlWRV2kfn76T92aRQJSANC5W0OWUzqCF3D8XwKOy07DtH3Pp/G3KKwwKgB2EWm0N/us9OxoLCsC4DLBPFx0UfsmGOdzP4Jy2HVJrvKKbdhlBHt/ujfJKhXzNkLG8362/+f6tu31oHThjsZ+lAEuTILp8s8Ij42ydaDP4tUsJNDDHmtwEMCgjiDHKUn39V02Eu0Wy0ECOf6eRWndCV+7gqe7nWX09UpgL0AnHSGYRogBFPwfkBCB0bjYW1FML0s5l5HDTMnrDwjQby2sEedwugeeH9zHEi9g0uPH1Ht/NM1fbcNoLiPdtbTGH9FKOSAJY9F3MzugRyHIGBUwPaSFYfZT9ZvgG3NAvOxi6oFNnhBCqHrt/wB0Rpy4F2dLYvINeyZUBxTAxIYvRpR71jA3wDpqKQVm3LH4RA/ufeNM6PImA8y36BmNCvNKkhyDcAC70pQ+elMXvu2Zxlda/bTrthIIhxx2SAee0bOfSQq5m3jRLwKsoIJ2GUVFatbu6tTTJpc8De4fEzomG/BHaUNF2MLetUYUIUdpRHEyQZRvzpIYWHUERqk65osOpR4xZKML+Lh897HiLnu4hhw/OPq6IUgwoIJCQZ6v9D5d+dLRoq0KC5x4zrvgRmcDUwD4GusTmcODDczY0Q6iIUGtJLGX9+8HjHWiyAjTYek2s+jHBUnzRUtO9kYjapqC7xnDE42AsegJA555+hgIyBUt+PH5qnLX5KU9XYfRA5wza4TeT8SOF9wXrTC3
- wcM0CjlT
- gQXDP2as7uW4UDG3oFAngzmJvtX0IXfTvjjbIyAl64kIragHigQ8e3BZNRF1vNDW/KAUT8DlbR5J1MbgcnsdPASCSqZsJAQeRWCuf2Y3MIaCRmUzGuuIEkonoK6CYF6Xv6Qxxu+fRdEiZARUKZ7Bydi1uKhIZQ2vTrQNpphCCiwxqIEnXkkLJywck6xpE2btrjBgYCv2DCHxSDw2z89EOUdCUfD2+dakEzLIE4ls66VnQEoQjfRqK5/HE/tIOXgpT4KEUeb2R3mFEISlK9pkZR3sLmzRwkpl1+9oui6IAVj1eBiRhk3ewadx4hxN0gsvS/q+hD2WBZR6Ho8mK+vY5mohLd9cJUv6f3Rw5w0mk5y72CCTuAEL56K/7xWUDLHqkRnJzo73I0ungA6a7pTs0bhzdrofd6NiLTQF6v3Kx5ZeTxiqO8V4dZJLxKxfJFQlWjpMIYRlWSP+UcEPt3OrW6YCuFZuO7i/7l7f2yTIpZacCV3B9qA7xqAAYR0Yym/Y1qsobqTgOa7D0wp8KgxKXxFDXkYVKLmiedo3hJVqsRQ5Hu2Cd6dl3UY9NQA==
+X-HE-Tag: 1794825422-259293
+X-HE-Meta: U2FsdGVkX19dgLjItALyjcZ+BtqOJSj849aUsycu5HgR+R2hSk7h+dNdi25McpmQcsXXRSMr36fNatV8s4XVIxfN+b5H9OdXPe4YuycUcoNS5cYO9pPsJaVsGLVYyuntu9K5jiuQbIor9AzBZrCGzR137L4aKZiVhtlLDggNjl7L+5a2E3ck1GVrk1VT6fXGOu6fkFzQAMf8r0CkkKoHbLI+fMWFFzwhGWbx4KYyXczQNdXmCKX8V21/LiJxitDsKjDbc5mS85DeS/3kGcn5ycVXwNFGGmbjiyCV3+AXaD6nv8FQogwX9VdmB/tUUROJlqolJOFrhEkJvS3kje4tT7dh07NM2R+iTJz0Ome/14WU2GKd9tqlZBIkl6m/bZnz6XMm3C3+bogiefWb7o07VAt/RmvC+L9jyhyL8eUpIBVs6C2iW5PtlAXo7uUWGAUDScId+ZY56VmN4BUfSMRBBI73kSKxFaJb+5vwBhcVI9E1bYJuwVsEwxyfxYYIru0Kr+DR3mEqe4Ac/tJnMduZgxs1r/mxbrl1VZyJ2m4XOc4/hmVOhHJtea0OdNSMS/UZpctHsWThNeI3kU2QW1av+E+kW9Ihzt5pMmGKqU0MRPOzoonF2GVkBYEJWydAmVW3NwM6DwE+EKcQ4XOyXGVze5kM42Ulk2uuvgmpZ2vvkAL0chSSfp59tsHJVZkGucfYHSpaj1mVbsT4q7I4qoLA5fzRAAauawVJLVG8q4sl6njdsI9Ha/MxJN1Mil02nQ2Vfu1xu+zCBuxn0OI8El6QqVUKFWq0v/HjjSBhhFd7HsPOLALkAs5GOCb14wr/bL0DPeIQgD7IbFdvynBQL6qDwrvorF/EvaWEHuW4aX8VM4HhMeObgZKiol2sHABgLuyn+q5SXI1LM9w0EBcr82CtCllfcoTGvfrpmCsTfyaeTBZLw9WAEYLxpUhLju3v6JgVNVWEY+/RyP+nrCU2bLe
+ IRqxRmTB
+ tFbfUwsye5ccpDVnppBEZdFqIHDaNrqbEz5nLRd6T5wJHDGcoLSnpcKGeRLHV4Kyx9OJiuyljwZnGvDbaRqOejJtPrLcfbadFTmfScCWrg1WpYC7n9ywBDnE/TUzG66A0h8JFVvpfNeAOpfWDUUQ3FKyQJAYVWcJmWyndVjNrgL1oTV1200oUCNKANbymMfGAJL/C2myXB3YRBZMpCHYt8Egyabbzsemf81pfzi9EO0V0rWOH4O68KizX4mP1Bsm2BNiypm3aNo/HGK/LvH9tgBm11e+CnhlFIO1NCwGCtvDEbr1PXMdkgoG6PbKlc/HPcWnK6V8UX9ej7OzI7drwYqNFK9riGSbVO9R6afNaEbtQqSel4wxzBJMokzeVPS3aEjHy3lWh3FxNBGT+HL6ZEA9dTVCPw03euPNcpEFzKWW+RF10t539xBozwqo5o3NxNVLFQUqQ3Qt30QLWAdCXGdRWCtTYonz6JSlylPmzOA54M83PcG97N23NS/c97yOkded/w7aDHkdGTKfpbuSKOUMoJeQOVuUc638L0v0Z8Ot/XtxH7aECbcJmr03ZJQPQOjVqAT08Zd6DnV4G8pCB0ZVErQ5wOluTsPvrurOtY6yR3mm2gtj1DC6372FsQdCYK4yC1o4AXClPg18xW5AMJHyOw0ZY1ZH0ZxWHoTH5EvDspukAPmPWiTIthFvmV3HR+CFN+8BkPJ3InHo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,32 +147,40 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 11/15/26 9:58 PM, Lorenzo Stoakes (ARM) wrote:
 > From: Eliav Farber <farbere@amazon.com>
 > 
-> walk_to_pmd() asserts that the PMD entry it returns is not huge, but does
-> so without holding the PMD lock, so the assertion is only valid if nothing
-> can concurrently install a huge PMD entry in the range.
+> A driver that implements both ->fault and ->huge_fault must anticipate
+> concurrent use of both.
 > 
-> This is not the case for a VMA whose driver implements both ->fault and
-> ->huge_fault and which invokes vmf_insert_pfn() from the former.
+> This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
+> concurrent with faulting, as that only holds the mmap write lock and thus
+> does not exclude faulting threads stabilised by VMA lock.
 > 
-> The existence of prctl(PR_SET_THP_DISABLE) is problematic here, as it only
-> takes the mmap write lock and faults taken under the VMA lock are
-> unaffected by this.
+> This is not currently safely handled by insert_pfn(), however, which
+> obtains its PTE entry via get_locked_pte(), and treats a NULL return value
+> as an allocation failure, returning VM_FAULT_OOM.
 > 
-> This can result in two concurrent threads faulting the same thing
-> disagreeing as to whether to attempt a huge fault and thus ->fault and
-> ->huge_fault running at the same time and triggering this assertion.
+> The issue is that get_locked_pte() also returns NULL if the PMD entry is
+> not a page table which can happen if a concurrent huge fault installs a
+> huge PMD entry between __handle_mm_fault() observing the PMD entry to be
+> empty and insert_pfn() being invoked.
 > 
-> So just remove the assert.
+> This can result in VM_FAULT_OOM being reported incorrectly.
 > 
-> Target the commit which introduced the first driver able to do this for the
-> fix - vfio-pci. DAX also mixes fault orders within a VMA, but serialises
-> them using its own mapping entry lock.
+> Address this by proactively checking whether a page table allocation
+> actually failed, and returning VM_FAULT_NOPAGE if the NULL indicates that
+> we were raced instead.
 > 
-> Link: https://lore.kernel.org/all/20261112051440.16140-2-farbere@amazon.com/
+> The same assumption is made in insert_page(), however only DAX implements
+> ->huge_fault and can reach it, and it serialises faults of different orders
+> with its own mapping entry lock, so it does not require a change.
+> 
+> Target the commit introducing the first driver able to do this.
+> 
+> Link: https://lore.kernel.org/all/20261112051440.16140-3-farbere@amazon.com/
 > Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
 > Cc: stable@vger.kernel.org
+> Suggested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 > Signed-off-by: Eliav Farber <farbere@amazon.com>
-> [ ljs: rewrote commit message ]
+> [ ljs: rewrote commit message, trimmed comment ]
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 LGTM:
