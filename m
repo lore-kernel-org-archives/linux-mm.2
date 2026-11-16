@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56AC606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E58606A334
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qq58fmit
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WyciufVo
 Received: by kanga.kvack.org (Postfix)
-	id 8934B6B05BB; Mon, 16 Nov 2026 01:47:36 -0500 (EST)
+	id 0085E6B05BD; Mon, 16 Nov 2026 01:47:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86C846B05BC; Mon, 16 Nov 2026 01:47:36 -0500 (EST)
+	id F218F6B05BE; Mon, 16 Nov 2026 01:47:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A7DA6B05BD; Mon, 16 Nov 2026 01:47:36 -0500 (EST)
+	id E37DD6B05BF; Mon, 16 Nov 2026 01:47:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F3346B05BB
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:36 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF8A6808EE
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:35 +0000 (UTC)
-X-FDA: 85440051270.23.857C833
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD0E46B05BD
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:39 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2C5CC1A08D2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:39 +0000 (UTC)
+X-FDA: 85440051438.29.81883F6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 21B5E100004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qq58fmit;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7C4B640005
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WyciufVo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794811654;
+	s=arc-20220608; t=1794811657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6OoPVgHbPcVlyg0bdAKK6MSz7k2hURzUkdi2cy+F0Uk=;
-	b=Sbq6dm4XP6jdDn9o72iBB9GuaIC3yBwvW1Rg7ictBiu8MidhKBgGbi8LkSnn5ZNxgWAFRQ
-	nxGD6sha/PvhJED5LpB6/mgYaFuIosEHKLZQ7G0Lgi8NcFZ1tUDoNed4ajCMCmjk5lf9Mj
-	zE7AGNLZnbmcAZfyIcX8qsoq5L2WhdQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794811654;
-	b=ly0dpg1ErQioJGkLCR6DwJtu2y79b1p3q1OcMf23Qxzb3kGIf+R/I8UolCVsw6JfLRW99r
-	95Ba361L5CNkX3fQGLvOMWkTpW6F1PBsGVG5jH7A0DOsmJ6Qtr3TA/U7mFLOXcKpVeTB9Z
-	pJw4mpw6ytOApD8NN2Ulkb3WazVoMbA=
+	bh=YtLIbSo48K9CccVqc5phPEZBBM23ut66AAk1YeVVHH4=;
+	b=DI+swqsYvgyr9CMSew1aAp+zpZrnZovkbMQZmzU5myQDpGAQQ8cJt7yfIwWeUOfrSV3OzP
+	kmnIKBWt0Q2tKs3d+l2eJvq00RjkRDmLKfHswDQoF2vZSfhU3s0CTpleLEj+lJ/hno43Td
+	78belo4d+vW1TkNiag0w/kAkMLbpWGA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qq58fmit;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WyciufVo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794811657;
+	b=M9HXY/LKq7vKI6IPMho0riQhn5IMO7GZxG6uJ6zoH8EXdjMsTzGfx7AxsF5mzVuJUvoGE+
+	lgYTMlN8EQMqrWTJs6n1/BUss9G22LpI3RSgxWmEcPoOqF+VC2D8OLF8PL4UXtAmGI5gZu
+	AhFIfL8y9Jtv58dvBZbt9O2w9S/Ekzw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2E3C2459C3;
+	by sea.source.kernel.org (Postfix) with ESMTP id D1F9145A7D;
+	Mon, 16 Nov 2026 06:47:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCF81F000C4;
 	Mon, 16 Nov 2026 06:47:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF6F1F000CA;
-	Mon, 16 Nov 2026 06:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794811653;
-	bh=6OoPVgHbPcVlyg0bdAKK6MSz7k2hURzUkdi2cy+F0Uk=;
+	s=k20260515; t=1794811656;
+	bh=YtLIbSo48K9CccVqc5phPEZBBM23ut66AAk1YeVVHH4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Qq58fmitITyVdc9xLE0LoygJhD+cMGyXK6uYcmcjAeynFwpLwjWxf28Kfj6L9MqF3
-	 eM29Y35OXqX8M/K3WycCts5xYTBRe7+Y1p6ZyoC/UVFYXsrZysmG9d4nfYe2DzzSf2
-	 5oHmYsRKF+qXcy8HHZigQGgEjyKEdUj7apNZ+FUhJyZdOdzQHxhTukbTRYWB8PPxwm
-	 dyPgXK5nGhpuzCc0jAM3Kk0+qv1Kd9Hr7mPeJjHUvJEfUFzhvgKtepgaB8dsAx6AOb
-	 H2Pa+aX4JAwWXa1o6thbqkf5Jwoqjqfi8kq+zE3AexcrqSeWKjkXgPlNLFuZ05mnYU
-	 LVVX/2HXlS6Cw==
+	b=WyciufVoqkp3MohcOppU5Y+0Cvp0Y58i56WSsRZke9g0zuhifQXzWP2NvUoym2HPm
+	 UcR84Z7qj8ju8MAZIXLIf1pohaHngjJhQKIr3/lEqqs0s/jXGLqKzbiIiFUIec24bb
+	 jlSUc4B7W1Mj8kdcRMXTcqMXgImk6RRsQR52rs3M/Q2kyvTHujplkvtAW3bGeqDeou
+	 ApfHEr2Vur0ev8sp2hEoRVyMxCFmUbfPrYJVc6MoQCyaECcccNULkQHTX9pY+3q7yH
+	 aYhocGpkPWiEtp7Y70+84cah8vrmzqcGNKn/ES0iGVX3b1mTFH1Fgov39+q4HIai6G
+	 Y8UIctPOCUKFg==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 16 Nov 2026 07:47:12 +0100
-Subject: [PATCH v4 04/10] mm, slab: introduce slab_debug=N
+Date: Mon, 16 Nov 2026 07:47:13 +0100
+Subject: [PATCH v4 05/10] mm, slab: rework KMALLOC_RECLAIM handling of
+ SLUB_TINY
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-slub_tiny_rework-v4-4-227a4b3636a5@kernel.org>
+Message-Id: <20261116-slub_tiny_rework-v4-5-227a4b3636a5@kernel.org>
 References: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 In-Reply-To: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
@@ -82,18 +83,18 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.16.0
-X-Stat-Signature: wfqf8ebew4q7x3nt5mb8eehrr37qis58
-X-Rspamd-Queue-Id: 21B5E100004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7C4B640005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794811653-48129
-X-HE-Meta: U2FsdGVkX1+MlCNKNPCZtJpzuCOT3bFdyET0ajuqE2gzJgExVunwcWJMLl73Ir5Y3besVV4vsbJmW4gVNRs+oBP/Sfnit3YsgZc8HjppyQEAzrjpw0ZTpVbN6KAMFvLrD9TpJ14ivB0LQoDjfk8eMldkBpc89FDi1LT8go19qF+j31ciaiUF0ECjQ4soG/mqVEZUkcwNzJIvk18Uaz/D9/MH+D6X49Gv9JgaUgszMQrUR2bNlymv5wAtFGN+80TtS8wRlNok/UgcmMPpXf4kjjcsOfiDCyutDhRfZhA3DSFzQH0BoAaXgzXsC61r5se9CxJXRTVygWJ7hhskBwE+8EtoRUMcamFYp58hqC3/VHyWxxTy34UMSiaY8VWaq1oSBS4meevzJ2QqNDMlYMkSoDMkxCSD/XX1dM2G8Ev2InHQQQGi+uli1Wl7hF+l6B0YPEvIulx2pTrPZUZaesmGVLVK/lIJ6Cn+t2rcndH/jw/79c5sWqKBKNxgL76mKDaPXP+KGZe9aeNut/rKAnwrvWU8J0XX13LA8vRcK4ejakkIn4wrw5yBIdazYOeDI5pYX++QlyzsFitQeW4ZLA5Ur/vejLgU5M8dWetzXmj8WTC/fdAd1X9Z2gEFVkBUafj4FnLfzx2yIcoWeZ+nuMsH9j99GM5dSOhZTLg0UK+F7LsYkG1r3DTGLvVBMzGA8FHE0PuecR4DoS7l3/sl86cRjbbVqqerrbvU60nijxAvyhvCycxlcpblIsDQTuD9fougTd7PFLW8ATPxo1IdrPw6QolKNeUGjYjhythpW1uzKOPrs5h7EdJ1B5ScM0wntUqQWWA/yVRLEIq3NAuaxnbNtrNCGr966UQu1Ae6uS48FMtj1F2qdqt+f8d6MKwh0n6PKUkA5Ne1okKU01NL3TTjpqnJFI9w7bo6TFkJ7hr6dGmm0xe2CW9yACpV9DjbA2fiJgScgvBCzg4ORSQZFzs
- DqfMp9aX
- K/NfRCtkr5ZOnV2Zml/dPbJU4jQ1rpJswbHitEwVD+neyjUQvTkot1qf/C7s3RU/fqTkkffOQXTTFID5BrWFGwD4z4CX4/cf6N6PztuAQNsJEoeTubRDmzjyDbRB9qy3R8mubdhPypS7H/i2wby3VzEo6GnV1bv9mMTSHw9Jm2B1ONWo+0Vps6uR1X/rZPAeH5rzTc96NPhrFtMo6OVNPFcjeKxzCLFZUuI5R0+ktbzcGVymA/z1oY4cI/tBxXbwb1gGO2PCOcyrBdPBTea5/Tw1uwVkhHIOGvut8suaaIjWxyeIOlbMtRPjdhe4idkCejxxJ1jCqA+6k28Suj2TBGrxC+kce32lJgEbSmFe3itnNnjg2DviCkSykghiROSwsrBHtsu76pNaPSv2c/36ETGATX/Oc72Lx42HB3LSsv5AOb4w=
+X-Stat-Signature: qic33qh1funf7kd44j3rrupgpm5oaycu
+X-HE-Tag: 1794811657-356638
+X-HE-Meta: U2FsdGVkX1+Hn57Wtam5oUpQf6Tsk+R46lio7uA7XUvz6Pg9pizu3I1sS1ggAq5LudeVfOyTXBISuxX4oVCnHjrvKlbv56ae/RC5zN7Pp20uUWXcxd3K2MkppW/4zGsYEtvQ9TtAJpI2PbKJdXDy5NwBgmLBkd8GhgrNF/1sOY5eUPCpz28CRjaygk6D3kJ8luFxZxWOk2UzFPvNaWNOTJ4yeuF6YjdZkCjzSF0BdGjAKYJwIn12gM/+qH/b36/Bo059zbHk7bCMTMGA0+RnzNeKmp2+jp1v5uj7wM4HjeakF1+rZJKZBaNNyGCxY6uSeNMoxPu+WR4t4Q1duL+FQ6p+fP2dBuAm0GtFEouSyVlcbF8q+jnnIupnKHruKk08OkAfhsbOr5znh1KdZRqBNXO3WMO7htoU8traO3tyGuIIZoeq0c+Y5Cgld9Pl3Ye79wQxKAxvPsgDqVHrn/NbSbt3y7QIZdoQNVJ6agJ5C884tjr8KvuFRlIinA6UfbkRH/7clWyPetSlpxnm6q0NiyfMcPtRYePbaPTOTYkOUHTS2sZLSaLEkmhCoBpHnmEutVphQnY17P2SfqpEwDtQG1hIcGSMbNQQd92S5QdcDpWX7Fp723QLCA1TXGSo3u04vkTeIAozryj2PpbCCUpzvjl6hJsstedXUidYCbsknpKEF0iOulfVZV2j3bvpYjwujc8Y6i1Kxlh0YGf6RIy1fJDbUqv6QyBZxPvZytoWRcsEXk84QUSpgyah5Sn8kyFkm6oF4o4b+pCbFDsiI/9OXKW77SnvoeuTiZJlI/1G3KLHKq0KK3qLObm3Q+HPz7FVl04mdkO5hxaxyd9IsKqzEYMGpkg3OGCDiWrkq6Yp7t1ojYLYF4wLL+JtD+C50kcwurnaa0WM8FMjhF8u3v5Sqe++DJKJNDKk3rphgHJLxZZD8dfDecmbbQ57d+UJkDJNERNAN9uw8omhysuVzJ4
+ iNP8YjGr
+ MYqXIOnWJlxQLxcGzAvUnx0kFppQdC040z/OB23dpuRPBAOk4pwma5S/ob58TEGs+1TSwwCgU71D2Jx5cA9AuamX1w+mmfk6TzjvXUz8kLkDNS+r1YZA4nweed8u0nDcr+UHN+hz4qb1MACfLCrndCnQCh5O4p3Ns5J7stz/0OgYYmfLsvaO0zEZCCzjESDUUAyd31BBzMNl+2CSdxshojlLFVM+DOFcnpqNbWnAX/JB7Gx43ElL7eiIn2/svs03zhFTC0ze9M9eROgGe2m/gy2YAcuj5VwIyx9ovz2u+mVF5288kwsJGje3ABLCVthdiSgTPWWKwjwmEdw9EAB0rxNWFP1U3yTUAQjsfzBBEhB5kSrrjmtor4H1MOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,238 +103,163 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Enabling slab_debug has the side-effect of disabling all percpu caching
-of objects (now via sheaves), which can be sometimes useful for saving
-memory for e.g. kdump kernels. To make this possible without the
-overhead (CPU or memory) of actual debugging options such as poisoning,
-introduce a No-op debug option that only forces the debugging slow paths
-and zero sheaf capacity. The new corresponding slab flag is
-SLAB_DEBUG_NOOP.
+One (relatively minor) aspect of CONFIG_SLUB_TINY is the assumption that
+letting reclaimable and non-reclaimable caches merge will save more
+memory, which is more important on small systems than the page allocator
+level fragmentation (where distinguishing reclaimable slabs should
+help).
 
-This will also allow reimplementing CONFIG_SLUB_TINY as a boot-time
-option.
+For now that has been achieved by #ifdefs that result in making the
+SLAB_RECLAIM_ACCOUNT no-op and aliasing KMALLOC_RECLAIM to
+KMALLOC_NORMAL on the enum values level.
 
-Two details have to be considered, as suggested by Harry Yoo [1].
+With the goal of converting CONFIG_SLUB_TINY to a boot-time decision,
+rework this so that SLAB_RECLAIM_ACCOUNT and KMALLOC_RECLAIM are
+distinctly defined always. Now, creation of kmalloc-rcl caches is
+avoided by assigning a pointer to the normal kmalloc cache on the
+kmalloc_caches array level.
 
-- While SLAB_DEBUG_NOOP is part of SLAB_DEBUG_FLAGS, it should not
-  prevent cache merging as it doesn't affect object metadata, and lack
-  of merging would go against the memory footprint reduction. Thus
-  exclude the flag from SLAB_NEVER_MERGE.
+To prepare disconnecting of this boot-time decision (and the evaluation
+of the need for kmalloc_no_objext) from CONFIG_SLUB_TINY, introduce a
+slab_tiny_enabled variable that's initialized to the CONFIG_SLUB_TINY
+state.
 
-  - However add the flag to SLAB_MERGE_SAME, per sashiko. This needs to
-    be reflected in create_unique_id() as well, which an earlier version
-    didn't. Add comments to help not forgetting this the next time.
-    While at it, remove unnecessary SLAB_CONSISTENCY_CHECKS handling in
-    create_unique_id(), as it's part of SLAB_NEVER_MERGE.
-
-- SLAB_DEBUG_NOOP alone should not request disabling printk pointer
-  hashing. Thus rework the call to hash_pointers_finalize() to not rely
-  on the slub_debug static key state. Instead determine whether the
-  global or per-cache slab_debug options include any flags that are not
-  SLAB_DEBUG_NOOP. This does not change the fact that caches created
-  with explicit debug flags (i.e. slub_kunit tests) later in boot have
-  no effect on pointer hashing, which is determined in
-  kmem_cache_init().
-
-While documenting the new N option, remove obsolete SLAB references from
-the F option description.
-
-[1] https://lore.kernel.org/all/arUx56ee_nkxYP_f@thinkstation/
-[2] https://sashiko.dev/#/patchset/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org?part=2
+Since SLAB_RECLAIM_ACCOUNT is not 0 anymore, caches that differ only in
+that flag would stop being mergeable. To avoid this potential impact on
+memory footprint, start dropping the flag on cache creation when
+slab_tiny_enabled is true.
 
 Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- Documentation/admin-guide/mm/slab.rst | 13 +++++++++++--
- include/linux/slab.h                  |  5 ++++-
- mm/slab.h                             |  2 +-
- mm/slab_common.c                      | 13 +++++++++----
- mm/slub.c                             | 30 ++++++++++++++++++++++++------
- 5 files changed, 49 insertions(+), 14 deletions(-)
+ include/linux/slab.h | 10 ----------
+ mm/slab.h            |  5 +++--
+ mm/slab_common.c     | 15 +++++++++------
+ mm/slub.c            |  2 ++
+ 4 files changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/slab.rst b/Documentation/admin-guide/mm/slab.rst
-index 14429ab90611..0beeae71d472 100644
---- a/Documentation/admin-guide/mm/slab.rst
-+++ b/Documentation/admin-guide/mm/slab.rst
-@@ -45,12 +45,12 @@ of the first "select slabs" blocks that matches the slab's name are applied.
- 
- Possible debug options are::
- 
--	F		Sanity checks on (enables SLAB_DEBUG_CONSISTENCY_CHECKS
--			Sorry SLAB legacy issues)
-+	F		Sanity (slab consistency) checks on alloc and free
- 	Z		Red zoning
- 	P		Poisoning (object and padding)
- 	U		User tracking (free and alloc)
- 	T		Trace (please only use on single slabs)
-+	N		No-op (force debugging slowpaths without any checks)
- 	A		Enable failslab filter mark for the cache
- 	O		Switch debugging off for caches that would have
- 			caused higher minimum slab orders
-@@ -85,6 +85,15 @@ in low memory situations or if there's high fragmentation of memory.  To
- 
- 	slab_debug=O
- 
-+The No-op option can be useful to minimize slab memory overhead by forcing slab
-+debugging slowpaths, which disables percpu object caching. This reduces SMP
-+scalability significantly, but does not impose the extra cpu or memory overhead
-+of debugging options that actually perform checks. This can be useful for e.g.
-+kdump kernels where scalability is not a concern, but memory has to be
-+pre-reserved from the production kernel. So for a kdump kernel you can use::
-+
-+	slab_debug=N
-+
- You can apply different options to different list of slab names, using blocks
- of options. This will enable red zoning for dentry and user tracking for
- kmalloc. All other slabs will not get any debugging enabled::
 diff --git a/include/linux/slab.h b/include/linux/slab.h
-index cda126def67a..ed949e8522be 100644
+index ed949e8522be..930dd64b9ad6 100644
 --- a/include/linux/slab.h
 +++ b/include/linux/slab.h
-@@ -35,6 +35,7 @@ enum _slab_flag_bits {
- 	_SLAB_PANIC,
- 	_SLAB_TYPESAFE_BY_RCU,
- 	_SLAB_TRACE,
-+	_SLAB_DEBUG_NOOP,
- #ifdef CONFIG_DEBUG_OBJECTS
- 	_SLAB_DEBUG_OBJECTS,
+@@ -55,9 +55,7 @@ enum _slab_flag_bits {
+ #ifdef CONFIG_KFENCE
+ 	_SLAB_SKIP_KFENCE,
  #endif
-@@ -166,8 +167,10 @@ enum _slab_flag_bits {
-  * Note that SLAB_TYPESAFE_BY_RCU was originally named SLAB_DESTROY_BY_RCU.
+-#ifndef CONFIG_SLUB_TINY
+ 	_SLAB_RECLAIM_ACCOUNT,
+-#endif
+ 	_SLAB_OBJECT_POISON,
+ 	_SLAB_CMPXCHG_DOUBLE,
+ #ifdef CONFIG_SLAB_OBJ_EXT
+@@ -241,11 +239,7 @@ enum _slab_flag_bits {
+  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
+  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
   */
- #define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
--/* Trace allocations and frees */
-+/* DEBUG: Trace allocations and frees */
- #define SLAB_TRACE		__SLAB_FLAG_BIT(_SLAB_TRACE)
-+/* DEBUG: Force the debug slowpaths without actually doing anything */
-+#define SLAB_DEBUG_NOOP		__SLAB_FLAG_BIT(_SLAB_DEBUG_NOOP)
+-#ifndef CONFIG_SLUB_TINY
+ #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
+-#else
+-#define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
+-#endif
+ #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
  
- /* Flag to prevent checks on free */
- #ifdef CONFIG_DEBUG_OBJECTS
+ /* Slab caches without obj_exts array */
+@@ -724,11 +718,7 @@ enum kmalloc_cache_type {
+ #endif
+ 	KMALLOC_PARTITION_START = KMALLOC_NORMAL,
+ 	KMALLOC_PARTITION_END = KMALLOC_PARTITION_START + KMALLOC_PARTITION_CACHES_NR,
+-#ifdef CONFIG_SLUB_TINY
+-	KMALLOC_RECLAIM = KMALLOC_NORMAL,
+-#else
+ 	KMALLOC_RECLAIM,
+-#endif
+ #ifdef CONFIG_ZONE_DMA
+ 	KMALLOC_DMA,
+ #endif
 diff --git a/mm/slab.h b/mm/slab.h
-index e94ac63d10dc..79774e2be3bb 100644
+index 79774e2be3bb..835d977634ec 100644
 --- a/mm/slab.h
 +++ b/mm/slab.h
-@@ -476,7 +476,7 @@ void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
- 			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE)
+@@ -396,6 +396,8 @@ extern const struct kmalloc_info_struct {
+ 	unsigned int size;
+ } kmalloc_info[];
  
- #define SLAB_DEBUG_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
--			  SLAB_TRACE | SLAB_CONSISTENCY_CHECKS)
-+			  SLAB_TRACE | SLAB_DEBUG_NOOP | SLAB_CONSISTENCY_CHECKS)
++extern bool slab_tiny_enabled;
++
+ /* Kmalloc array related functions */
+ void setup_kmalloc_cache_index_table(void);
+ void create_kmalloc_caches(void);
+@@ -576,8 +578,7 @@ static inline bool need_kmalloc_no_objext(void)
+ 	if (!mem_alloc_profiling_permanently_disabled())
+ 		return true;
  
- #define SLAB_FLAGS_PERMITTED (SLAB_CORE_FLAGS | SLAB_DEBUG_FLAGS)
+-	if (!mem_cgroup_kmem_disabled() &&
+-			(KMALLOC_NORMAL == KMALLOC_RECLAIM))
++	if (!mem_cgroup_kmem_disabled() && slab_tiny_enabled)
+ 		return true;
  
+ 	return false;
 diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 01c64ef661e7..4df73eda1090 100644
+index 4df73eda1090..bd31184e0642 100644
 --- a/mm/slab_common.c
 +++ b/mm/slab_common.c
-@@ -47,12 +47,17 @@ struct kmem_cache *kmem_cache;
-  * Any flag that adds per-object metadata should be included,
-  * since slab merging can update s->inuse that affects the metadata layout.
-  */
--#define SLAB_NEVER_MERGE (SLAB_DEBUG_FLAGS | SLAB_TYPESAFE_BY_RCU | \
--		SLAB_NOLEAKTRACE | SLAB_FAILSLAB | SLAB_NO_MERGE | \
--		SLAB_OBJ_EXT_IN_OBJ)
-+#define SLAB_NEVER_MERGE ((SLAB_DEBUG_FLAGS & ~SLAB_DEBUG_NOOP) | \
-+		SLAB_TYPESAFE_BY_RCU | SLAB_NOLEAKTRACE | SLAB_FAILSLAB | \
-+		SLAB_NO_MERGE | SLAB_OBJ_EXT_IN_OBJ)
+@@ -352,6 +352,9 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+ 	if (args->sheaf_capacity)
+ 		flags |= SLAB_NO_MERGE;
  
-+/*
-+ * Set of flags that caches need to both have or both not have in order to
-+ * be mergeable. These need to be also reflected in create_unique_id().
-+ */
- #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
--			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
-+			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT | \
-+			 SLAB_DEBUG_NOOP)
++	if (slab_tiny_enabled)
++		flags &= ~SLAB_RECLAIM_ACCOUNT;
++
+ 	mutex_lock(&slab_mutex);
  
- /*
-  * Merge control. If this is set then no merging of slab caches will occur.
+ 	err = kmem_cache_sanity_check(name, object_size);
+@@ -840,11 +843,7 @@ EXPORT_SYMBOL(kmalloc_size_roundup);
+ #define KMALLOC_CGROUP_NAME(sz)
+ #endif
+ 
+-#ifndef CONFIG_SLUB_TINY
+ #define KMALLOC_RCL_NAME(sz)	.name[KMALLOC_RECLAIM] = "kmalloc-rcl-" #sz,
+-#else
+-#define KMALLOC_RCL_NAME(sz)
+-#endif
+ 
+ #ifdef CONFIG_KMALLOC_PARTITION_CACHES
+ #define __KMALLOC_PARTITION_CONCAT(a, b) a ## b
+@@ -981,7 +980,11 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+ 	unsigned int aligned_size = kmalloc_info[idx].size;
+ 	int aligned_idx = idx;
+ 
+-	if ((KMALLOC_RECLAIM != KMALLOC_NORMAL) && (type == KMALLOC_RECLAIM)) {
++	if (type == KMALLOC_RECLAIM) {
++		if (slab_tiny_enabled) {
++			kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
++			return;
++		}
+ 		flags |= SLAB_RECLAIM_ACCOUNT;
+ 	} else if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_CGROUP)) {
+ 		if (mem_cgroup_kmem_disabled()) {
+@@ -1014,7 +1017,7 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+ 	 * KMALLOC_NO_OBJ_EXT cache.
+ 	 */
+ 	if (!mem_cgroup_kmem_disabled()) {
+-		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
++		if (type == KMALLOC_NORMAL && !slab_tiny_enabled)
+ 			flags |= SLAB_NO_MERGE;
+ 		else if (!(flags & SLAB_NO_OBJ_EXT))
+ 			flags |= SLAB_MAY_ACCOUNT;
 diff --git a/mm/slub.c b/mm/slub.c
-index 30714557306d..3eff5ef4ac80 100644
+index 3eff5ef4ac80..0238c990351c 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -1053,6 +1053,19 @@ static slab_flags_t slub_debug;
- static const char *slub_debug_string __ro_after_init;
- static int disable_higher_order_debug;
+@@ -219,6 +219,8 @@ DEFINE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
+ 			slab_obj_ext_has_codetag_key);
+ #endif
  
-+/* Union of all slab debug flags enabled for specific caches only */
-+static slab_flags_t slab_debug_per_cache_union __initdata;
++bool slab_tiny_enabled __read_mostly = IS_ENABLED(CONFIG_SLUB_TINY);
 +
-+static inline bool __init slab_want_nohash_pointers(void)
-+{
-+	/*
-+	 * If any debugging is enabled globally or per-cache, we would like
-+	 * nohash pointers. The exception is no-op debugging that only forces
-+	 * the slowpaths.
-+	 */
-+	return (slub_debug | slab_debug_per_cache_union) & ~SLAB_DEBUG_NOOP;
-+}
-+
- /*
-  * Object debugging
-  */
-@@ -1898,6 +1911,9 @@ parse_slub_debug_flags(const char *str, slab_flags_t *flags, const char **slabs,
- 		case 't':
- 			*flags |= SLAB_TRACE;
- 			break;
-+		case 'n':
-+			*flags |= SLAB_DEBUG_NOOP;
-+			break;
- 		case 'a':
- 			*flags |= SLAB_FAILSLAB;
- 			break;
-@@ -1961,6 +1977,7 @@ static int __init setup_slub_debug(const char *str, const struct kernel_param *k
- 			global_slub_debug_changed = true;
- 		} else {
- 			slab_list_specified = true;
-+			slab_debug_per_cache_union |= flags;
- 			if (flags & SLAB_STORE_USER)
- 				stack_depot_request_early_init();
- 		}
-@@ -2069,6 +2086,8 @@ static inline void setup_object_debug(struct kmem_cache *s, void *object) {}
- static inline
- void setup_slab_debug(struct kmem_cache *s, struct slab *slab, void *addr) {}
- 
-+static inline bool __init slab_want_nohash_pointers(void) { return false; }
-+
- static inline bool alloc_debug_processing(struct kmem_cache *s,
- 	struct slab *slab, void *object, int orig_size) { return true; }
- 
-@@ -8755,7 +8774,7 @@ void __init kmem_cache_init(void)
- 		slab_min_order = slab_max_order;
- 
- 	/* Inform pointer hashing choice about slub debugging state. */
--	hash_pointers_finalize(__slub_debug_enabled());
-+	hash_pointers_finalize(slab_want_nohash_pointers());
- 
- 	kmem_cache_node = &boot_kmem_cache_node;
- 	kmem_cache = &boot_kmem_cache;
-@@ -9777,9 +9796,8 @@ static char *create_unique_id(struct kmem_cache *s)
- 	/*
- 	 * First flags affecting slabcache operations. We will only
- 	 * get here for aliasable slabs so we do not need to support
--	 * too many flags. The flags here must cover all flags that
--	 * are matched during merging to guarantee that the id is
--	 * unique.
-+	 * too many flags. The flags here must cover all flags from
-+	 * SLAB_MERGE_SAME to guarantee that the id is unique.
- 	 */
- 	if (s->flags & SLAB_CACHE_DMA)
- 		*p++ = 'd';
-@@ -9787,10 +9805,10 @@ static char *create_unique_id(struct kmem_cache *s)
- 		*p++ = 'D';
- 	if (s->flags & SLAB_RECLAIM_ACCOUNT)
- 		*p++ = 'a';
--	if (s->flags & SLAB_CONSISTENCY_CHECKS)
--		*p++ = 'F';
- 	if (s->flags & SLAB_ACCOUNT)
- 		*p++ = 'A';
-+	if (s->flags & SLAB_DEBUG_NOOP)
-+		*p++ = 'N';
- 	if (p != name + 1)
- 		*p++ = '-';
- 	p += snprintf(p, ID_STR_LENGTH - (p - name), "%07u", s->size);
+ /* Structure holding extra parameters for slab allocations */
+ struct slab_alloc_context {
+ 	unsigned long caller_addr;
 
 -- 
 2.56.0
