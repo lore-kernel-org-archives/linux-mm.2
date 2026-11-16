@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712A7606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB18606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L53Kvpg/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LS+w2cy0
 Received: by kanga.kvack.org (Postfix)
-	id 8C8776B05B6; Mon, 16 Nov 2026 05:43:03 -0500 (EST)
+	id 2ADE06B05B8; Mon, 16 Nov 2026 05:43:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89FEA6B05B7; Mon, 16 Nov 2026 05:43:03 -0500 (EST)
+	id 25E896B05B9; Mon, 16 Nov 2026 05:43:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B5986B05B8; Mon, 16 Nov 2026 05:43:03 -0500 (EST)
+	id 19BB16B05BA; Mon, 16 Nov 2026 05:43:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 519066B05B6
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:43:03 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CFA621404AD
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:43:02 +0000 (UTC)
-X-FDA: 85440644604.03.4DE5234
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3663440003
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:43:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L53Kvpg/";
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794825781;
-	b=zqqYx72w5K0IX2QkPp9W1uP+hKDAuKLrFApeQ/5nKeSY0x4p7gma1i6AbznkJ+yP57CPeU
-	kVNZDBugovQLezKRJWcqDXuoDVXEzcbxYBbXZe8+W8eHiXKfKuf+1Hzhf9AwRW6FoSiB1B
-	VbjL6s63WhZBjmUXTaWrANT7Lqp7hDc=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L53Kvpg/";
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EAE9B6B05B8
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:43:07 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7625F1C42E2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:43:07 +0000 (UTC)
+X-FDA: 85440644814.28.2F3C11F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BA3DC140009
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:43:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LS+w2cy0;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794825781;
+	s=arc-20220608; t=1794825785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cx/84dIEgCToGVbSCcqCImRJVM/D/eNbp/YNfnFpfQE=;
-	b=jv+hYLE6UU0YL3SkU3GKV/x3zALz4CJZYaHduglW7Z0mgmgt6sTpYRVNS4dh4FL1qpXiwX
-	Tq3hVR8sArGmfFlQFkpp6SYE1WKQTtaDmbyXwhKIwtIsQVvBuspmHDHjW0G+JPQsUuJJ/w
-	oaLsKL95U3pQB9R4da0uH16XSoZfNX0=
+	bh=z6AXf0siXdDWvTk64l5wL4TOepYq/+Ur1vzvg0dCyJA=;
+	b=mIxuZOdElPx0C2uLgHbSPU4nbtdfeCyljNr+gqWjUUfJZdP9H0tnkyPcWdOV1R0ETE/dlV
+	kjDEVprc/2fhJX7SWxYtOEPwtncllaihC0OVvglyLaPHaklAQ+67fjrAPkkiVHe46Y8EW9
+	qaHVt471WfEJR8yGeDNq7B31ARV5pw8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794825785;
+	b=8HeSkDJGTVNpHLsIbCSaJtOzcX2dvsXTVQfLwIN72dImwN5+PtQz1IuoACfym0czCMcFYo
+	zm5e9+0u1UL0Sbi362O41bCj/VCh0C4USdx7+/agVexZjStxCdbGM4MLxHwc6ldaphZ97J
+	BiTOcHDxRk3wWu0hFGT7mP7toeJSUSU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LS+w2cy0;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC560628E2;
+	by sea.source.kernel.org (Postfix) with ESMTP id 04D394622E;
+	Mon, 16 Nov 2026 10:43:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4961F000D0;
 	Mon, 16 Nov 2026 10:43:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E171F000C6;
-	Mon, 16 Nov 2026 10:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794825780;
-	bh=cx/84dIEgCToGVbSCcqCImRJVM/D/eNbp/YNfnFpfQE=;
+	s=k20260515; t=1794825784;
+	bh=z6AXf0siXdDWvTk64l5wL4TOepYq/+Ur1vzvg0dCyJA=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=L53Kvpg/F1eR9dPgVhOXriObkAjop9B9ioQwhI2UPyGHVxcZANDFkOKiohK+anad0
-	 H+wTCo1aRZcsrVFJtre153ASAH7f2xaNtBGyRXCu/ktsMvS1aF4FM3f6PExMl89eMt
-	 GH5z1Y87L2dKpBYkBCHFBwYvcfyWaaCf6cl3JcawO5Y3tEBmW9PZrO9/V2A8sKHMSL
-	 v9kXdZAgtevbm5LGMGqc8FhWiZqqtwLvH8AMEQzX2CnpHMMWV35yDDtrPLckX7F1KL
-	 rkJET0alEEADoHw170MFKCCA4UmuC9BlxBIPf2vxAfkjCdb80HolkTMwkwzoqMb5HE
-	 l9+M9ceWTKo1w==
+	b=LS+w2cy0vGEr9WdSp4cnovx0NKyZkKklwL9lzx14eRcHKdgIyBEl+AiKIkLSU2CpL
+	 RXopJ7DfT3NDkhWV+PauZ7u6ernGjkM1cE7NVC8Fsli0N72mfUiDjn/5QGn2NEwWCB
+	 +c45IvJBwSeJgD63I+T7kepVMH0WK+22zq/Wv1XRZ+1obkD37/K0ARf2ncY4EilRLF
+	 hKcEFXo9ZQI/uAA760lHOzJC3eAokAL2CdH0ahIEs2MY3rXJOvkmORu2sOsEZ8qgkz
+	 Zymg9q8dUiiub+Mjt169OOmqlPLaQCFnH+ws877YImPJkiTuWa+Dx5h3jwj+7frNTm
+	 6GDWQHreFp3bw==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 02/14] mm/hugetlb: optimize bootmem hugepage tail
- vmemmap init
+Subject: Re: [PATCH v2 04/14] mm/mm_init: factor out common struct page
+ initialization
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -79,24 +79,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  James Houghton <jthoughton@google.com>, Lance Yang <lance.yang@linux.dev>, 
  Qi Zheng <qi.zheng@linux.dev>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20261113033442.62970-3-songmuchun@bytedance.com>
+In-Reply-To: <20261113033442.62970-5-songmuchun@bytedance.com>
 References: <20261113033442.62970-1-songmuchun@bytedance.com>
- <20261113033442.62970-3-songmuchun@bytedance.com>
+ <20261113033442.62970-5-songmuchun@bytedance.com>
 Date: Mon, 16 Nov 2026 12:42:48 +0200
-Message-Id: <179482576829.2379196.14337146328165617703.b4-review@b4>
+Message-Id: <179482576829.2379196.2091312590305150578.b4-review@b4>
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: ui1ourzk86ydof8mkzce6pheid61b1j5
-X-Rspamd-Queue-Id: 3663440003
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BA3DC140009
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794825781-87590
-X-HE-Meta: U2FsdGVkX18G2xsTM1zqOB7xAHQAOtW33PpKTYZHHBks+sw1NYQaoLlot/dhIav7vjjp8j2fieWxXFqJwqkEvggcRd4uytosaowwv6njKiQqxJQk/tTOXJLvemfKc9gJJs0K0hJPQ0xID0W+49/iCmfQZpqvliwZ5PxMA97axwdiFdY6viHzFy2dZB7Aj/Th1UJTDxOUOISNmFh9Cb+PgxnNI3DaPb83NQ7NpMM1Gu0F7nTZBrxYNmVkO3MgHbUzkA90xdlhWrPcHDyjRreJjMvI1gvSM6ZPQQMGD959o0Y0lQuh15E09n9K7X6iVCzit4PoF/BllQ/vzgVxOgdLxq64l0mBAvJWfAVsNFS98lFuc24EGt7WdwLm2YBHVMKoOqD9hZthbda0DgkLqwVVu4eJJys/hrM8z1e4b3bRIGZOgTEadtyjDX0rsz8KsdoH9ay26UrA9OLgUE+Xz9UAcf53xBodrx5skrUWl7iYiPDlgyrOGhJQVvOWhO+iEGJSxcNhhrYcKyBMhMBmBoHUkiiXc1gVkTY2IjDHppmMHijVKzqIwgKNep81TBvvACufhh7U0RARw65hFYoJMkDAH3U1oTmgSQ0iHcMN7vZZmuYi4Ayf2dlGsJVsnyEgeTffniLkJ07QDLDT2vMy5S3wBymerw9aJn5QeCsqq6smh+siSriktjZkUYSGjVuYRpHBc2Sll2xAY3asAS4GIH3pgDXBeke/vVdmPoOyZyEdnjW3OTaitw/n/soZPMCcff0/cWc6neSkUUhMC1f4uvL8TGaHt/6oeZ6USsuxlXEFD0aQh8LgK963MRPM6lWA2irm8LfsfmfTkuS2u4sB8VW0oARHy24DiLlSBEf+BI1vfK0NID1GPUqQl28t9wi+AuGzcUdvuBUCFuotRU7wUWkePmuSz4TLVN2h2XG/X1ZHPNDPv+RL6A7AzCKg7tr3nIf7/DRjyHvv5cMnLmXKHOI
- Bg0+Vsg8
- DfZuoTbalYmK5A15FA1zCUe21pwn4uL+wxMwIMbkLs97cpkmXpBbgu7kazQJm/x8KupgJoXA9EmnZuxsCOVF0qHrRXwaknb1JUMyeE+rKugwp+pDCYOEgKTwsQ1/w1ObQ53KVkXkLHMgZ6JvI8lBY/zFKQu/w61hJXLKAplOfX900sqkMpq2HJ1sgz6y9dBRGsOvvCEmtNIiJ49KXXgOxiKzqmg6A9dhU9/BVG9Xs46T3nfn/L4tTEFzK4Q==
+X-Stat-Signature: xx87wqkoe7uiq5inpomdcomg3dug9fxn
+X-Rspam-User: 
+X-HE-Tag: 1794825785-613590
+X-HE-Meta: U2FsdGVkX1/HoiEGoOrSH9TGA7w5/1m/kWxXEFFFTwEtiGQXgS9uO8390EBjVBQ8hvmxMLwABMcl7JukcRjeOXFbf6Q7y+cImBAUIWI1QuPxcPow8FnmLuMfzg1yYQB6JJwYCT1tI/9tMJx+llyjRnCCX14+7socTvQET0ZEHDDqUiLRFIwDUTkKmtDP2XLgILIsJE3TSeMqievzwpnIUwU1ai+P0sNbC6mStgeKYYK4rT1HNjKclGYifnH1POghdmKB29cwXOLmA8xG0PRV/gKzl0F2vGLkMl369W4dZYD9efKz2eVWSZpD+wbmMD0tLp/7nK7syfVmiX3Fk9T1WOXAlvOtNIwreuZ86EC1LvldbqUWYeAd2ChPpHaMH1TY0RNti29P4935qNXO+J1I6lm3nueJiZxkrZjiBEbAls5JPDhEesXK1JWsp/7RHPh5B7pgUB3Rtcy7MXtcJL1jpVgLwzn330oXx6Bq01YK2j+LnaUaj5zX4pO5kMg2IrZuiHL/d2WLkwlsHg6At6k1SbrI081oHcOkucUM9ZpRQTgsqUfRzlZuCYMzqSmY/s8S2fA8NLDQeQJcuI6ioIWsgsTm+WHFOSaFaIDTyFhPoOL7RQ8gGVSYrpWIpsvpoZPbNz9dOri/8YmUSaGerPeMSO/GIP4K8Mq79MHmVZC59CKwo1UKo+j5uSWH+zykDjxLgMafhYn8BNxhw7ewu0V60WuQiSVCajHqLOBFq25hZHyUJ9B0O6iRuxNcxHFwj7afEpcMmcwS3qZ+6Apj/BIGYTmeyuZikiBUQFmYs5RfubBkcM76FKgnBHE+a/VnptpqU+CYS8SmUI0u6wVIZJs/u42h5uYTgtU/+2G5eRr/hckak8pZLv9fMJVld7/+ztlsuziI5bItZBX5ywrYEgZW0MN2tweca+VaUK3EgOa+tCQ1eu1ooOnFlhxQ3uL8wZaW3leWPn5nlngwySOiaBn
+ 0sVRHPBJ
+ loccEMTFA1rTrAwkudYsaA4d9j9x+A6N1zCp+bGLalFhP6gwEDLQve+Zd6TrSiE8XIZWjlfBGOzwE33v4rMsQUAzZES6KZjS+mcrE6UF94UQYgKV+LKj+DybKKCvsaF0C+4/Ui8JYYr0KwX9n+PVgclXAiFyyn4t4rLAZz96DxInKi5zFpuqj3HWZkyH8YWPI7SHwNlnDks2aiyN520tx8f8P1hOdwSVKSKE/AEffsuAK7grzKrX75ymYpGIR1VIG2WZB6MjpjJIt8vkY8WmEVNMxF3TGnXOSlb6mU+HT7EgXSw0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,94 +107,88 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hi,
 
-> Boot-time HugeTLB allocation has to initialize tail struct pages itself
-> when HugeTLB vmemmap optimization (HVO) is unavailable or fails.  For
-> gigantic pages, this can cover a large number of tail pages.  Most state
-> installed by __init_single_page() and prep_compound_tail() is identical
-> for every tail page in the same huge page; only PFN-dependent fields need
-> refreshing.
+> Several struct page fields have the same initial values for every page in
+> a zone. __init_single_page() initializes this state as part of its
+> per-page setup, while the shared vmemmap tail path open-codes only a
+> subset.
 > 
-> Initialize the first tail page normally, then initialize the remaining
-> tails with hugetlb_init_tail_page().  This copies the already
-> initialized first tail page with memcpy() and refreshes only the
-> PFN-dependent fields in the destination page, while avoiding the full
-> __init_single_page() and prep_compound_tail() sequence for state that is
-> identical across tail pages in the same huge page.
+> Factor the PFN-independent state into memmap_init_page_common() and use
+> it for both regular and shared tail struct pages. Keep section-, PFN-
+> and instance-specific initialization in __init_single_page().
 > 
-> The fallback path was measured on a v7.4-rc2 base with a temporary
-> jiffies-based printk modeled after the existing timing in
-> memmap_init_zone_device(), using 4K base pages and 64 boot-time 1G
-> hugepages.  HVO is unavailable on arm64; on x86-64,
-> hugetlb_free_vmemmap=off was used to exercise the fallback path.
+> This also initializes the last cpupid and KASAN tag for shared tail
+> struct pages consistently with regular struct pages.
 > 
->   arch    base      with this patch  reduction
->   arm64   360.8 ms  256.0 ms         29.05%
->   x86-64  171.0 ms  165.0 ms          3.51%
-> 
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->  mm/hugetlb.c | 23 ++++++++++++++++++-----
->  mm/mm_init.c |  5 ++++-
->  2 files changed, 22 insertions(+), 6 deletions(-)
+> v2:
+> - Remove __meminit from memmap_init_page_common() so HVO shared tail
+>   pages can call it after init text is freed (reported by Sashiko).
+> ---
+>  include/linux/mm.h  |  8 --------
+>  mm/mm_init.c        | 22 +++++++++++++++++-----
+>  mm/mm_init.h        |  1 +
+>  mm/sparse-vmemmap.c |  7 +------
+>  4 files changed, 19 insertions(+), 19 deletions(-)
 >
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index cb2de24affdc4..d70ed37d2553b 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3239,6 +3239,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
->  	enum zone_type zone = folio_zonenum(folio);
->  	int nid = folio_nid(folio);
->  	struct page *page = folio_page(folio, start_page_number);
-> +	struct page template;
->  	unsigned long head_pfn = folio_pfn(folio);
->  	unsigned long pfn, end_pfn = head_pfn + end_page_number;
->  	unsigned int order = huge_page_order(h);
-> @@ -3247,11 +3248,23 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
->  	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
->  	 * we must initialize them ourselves here.
->  	 */
-> -	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
-> -		__init_single_page(page, pfn, zone, nid);
-> -		prep_compound_tail(page, &folio->page, order);
-> -		set_page_count(page, 0);
-> -	}
-> +	if (start_page_number >= end_page_number)
-> +		return;
-> +
-> +	pfn = head_pfn + start_page_number;
-> +
-> +	/*
-> +	 * Seed a template from the first real tail page and refresh only
-> +	 * PFN-dependent fields before copying it.
-> +	 */
-> +	__init_single_page(page, pfn, zone, nid);
-> +	prep_compound_tail(page, &folio->page, order);
-> +	set_page_count(page, 0);
-> +	memcpy(&template, page, sizeof(template));
-> +
-> +	for (pfn++; pfn < end_pfn; pfn++)
-> +		memmap_init_page_from_template(pfn_to_page(pfn), pfn,
-> +					       folio_zone(folio), &template);
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 77b5d450fe45b..2e182498898ec 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3022,14 +3022,6 @@ static inline void set_page_node(struct page *page, unsigned long node)
+>  	page->flags.f |= (node & NODES_MASK) << NODES_PGSHIFT;
 >  }
 >  
->  static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
+> -static inline void set_page_links(struct page *page, enum zone_type zone,
+> -	unsigned long node, unsigned long pfn)
+> -{
+> -	set_page_zone(page, zone);
+> -	set_page_node(page, node);
+> -	set_page_section_from_pfn(page, pfn);
+> -}
+> -
+>  /**
+>   * folio_nr_pages - The number of pages in the folio.
+>   * @folio: The folio.
 > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index f16a047796c88..934512bceda39 100644
+> index af3b81733193b..d0a11989bd249 100644
 > --- a/mm/mm_init.c
 > +++ b/mm/mm_init.c
-> @@ -719,7 +719,10 @@ void __meminit memmap_init_page_from_template(struct page *page,
->  	if (!is_highmem_idx(zone_idx(zone)))
->  		set_page_address(template, __va(pfn << PAGE_SHIFT));
->  #endif
-> -	memcpy_nontemporal(page, template, sizeof(*page));
-> +	if(zone_is_zone_device(zone))
+> @@ -602,15 +602,27 @@ static inline void vmemmap_optimization_verify_zone(struct page *page)
+>  			page_zone_id(page));
+>  }
+>  
+> -void __meminit __init_single_page(struct page *page, unsigned long pfn,
+> -				unsigned long zone, int nid)
+> +/* Initialize PFN-independent fields common to pages in the same zone. */
+> +void memmap_init_page_common(struct page *page, enum zone_type zone, int nid)
 
-Nit: missing space after "if".
+I don't think _common adds much here, memmap_init_page() would do.
 
-The comment at the beginning of memmap_init_page_from_template() still
-talks about "the non-temporal copy", which is now true only for
-ZONE_DEVICE.
+>  {
+>  	mm_zero_struct_page(page);
+> -	set_page_links(page, zone, nid, pfn);
+> -	init_page_count(page);
+> -	atomic_set(&page->_mapcount, -1);
+> +	set_page_zone(page, zone);
+> +	set_page_node(page, nid);
+>  	page_cpupid_reset_last(page);
+>  	page_kasan_tag_reset(page);
+> +	atomic_set(&page->_mapcount, -1);
+> +#ifdef CONFIG_ZONE_DEVICE
+> +	if (zone == ZONE_DEVICE)
+> +		__SetPageReserved(page);
+> +#endif
+
+Can't we keep this in ZONE_DEVICE part?
+
+If we can't, __init_single_page() sets PG_reserved for ZONE_DEVICE pages
+and the
+
+if (zone == ZONE_DEVICE)
+	__SetPageReserved(page);
+
+in the MEMINIT_HOTPLUG part of memmap_init_range() becomes redundant.
 
 -- 
 Sincerely yours,
