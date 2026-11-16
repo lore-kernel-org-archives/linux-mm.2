@@ -1,94 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF02F606A880
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E98606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=COMCeF2g
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c9gb14EP
 Received: by kanga.kvack.org (Postfix)
-	id 03C086B05BA; Mon, 16 Nov 2026 10:12:51 -0500 (EST)
+	id 54D906B05B0; Mon, 16 Nov 2026 10:17:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0191D6B05BB; Mon, 16 Nov 2026 10:12:50 -0500 (EST)
+	id 5254B6B05B1; Mon, 16 Nov 2026 10:17:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93B86B05BC; Mon, 16 Nov 2026 10:12:50 -0500 (EST)
+	id 461F06B05BA; Mon, 16 Nov 2026 10:17:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C274E6B05BA
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:12:50 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 51B531C1137
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:12:50 +0000 (UTC)
-X-FDA: 85441324500.08.167587C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F38F6B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:17:12 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8D6648012F
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:17:11 +0000 (UTC)
+X-FDA: 85441335462.14.7E4FADA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9ED1F4000B
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:12:48 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=COMCeF2g;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id E97EBC0012
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:17:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c9gb14EP;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794842230;
+	b=5HDH4x9x+cp9RqHoSNt+pXsMlCvuv/6rc4GZbN1x5LAazWlIl2uiQKP3W/l51ZPHcVPvPF
+	NCrxx13n6fr9C2qnn8ifwN0uWdV5FB8ARCqDDkrTiBsxi/gWUOghIf7k+dHCSZu5wJGtvy
+	KiW/RUnFewFt8I94SqRmhPzVTTRITXQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c9gb14EP;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794841968;
+	s=arc-20220608; t=1794842230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQJbz0+g2lH5pB00J5WNO9QkzcZ2ta2JczWJ7IFiNSo=;
-	b=20WIiSq9IMkPI5ZUXtRsYMNn4BCx/4dAm1CRnv9ZwTYGZD8/y2UR0PVCSgtoX2ZEkN+HHM
-	8Ujk1hxoFFiSwLfJmn1l0mUbIrEMQW1G0S05Xuaw1zxRE47gsG0hZ6BP6rjyHQhl3nCJX/
-	8R1E7ywafC1YpBtcgXmRQPvQP0kzGus=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794841968;
-	b=vRAckk5isTdf/z2dGzm9iidvKAPx78uiC7JUzHGF7b3bHpCDF9eFXn+uf6+iPuANm3dLDm
-	OfOxGqoHq2iePsS22AGvNNMEJYwRTPfd1wc2MG8JQPNA5hNyVb9RGKFAZ3RkFQ+L9mxfTB
-	qivOItpE6jIeWoCEWIUqP3kT6VMXLkE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=COMCeF2g;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Ujqrk5GfnvZSQ47QPVWShAtgKW4tgnFTvG/p2sZDfiU=;
+	b=L2GwmGPBMIGT3ilzSnZfSKG9c0VU14ypBTVmb6QRQkCj0iLIOtHfmldAMDdexUCqQaBBfv
+	al0kA8cpPELoxygAFmWW5V5ZqVtku514J1ORjVNXjYp13jyaj0R23htTxx3/W0OZtM/jle
+	9KJywpI6boAWf6j492+AAZE06T7p2Ig=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 21D3C62D7C;
-	Mon, 16 Nov 2026 15:12:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A1E1F000C6;
-	Mon, 16 Nov 2026 15:12:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5DED462D4D;
+	Mon, 16 Nov 2026 15:17:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696291F000C6;
+	Mon, 16 Nov 2026 15:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794841967;
-	bh=JQJbz0+g2lH5pB00J5WNO9QkzcZ2ta2JczWJ7IFiNSo=;
+	s=k20260515; t=1794842229;
+	bh=Ujqrk5GfnvZSQ47QPVWShAtgKW4tgnFTvG/p2sZDfiU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=COMCeF2gVxBOIqseA4DrlRfHBB8N6I+viinf6+LyU6H8+R4iKILtLBVf5fwb/+QWJ
-	 39LYitotiXu5WMcxLsoiF+pAeS/ZZpdGZie9J7af4Xpu3SnJ/Dz13Zfpt49gS06V3D
-	 wOYcJSC/26FoOsaAFuG1aCOQ5TopMT15cACyCtuyEHiZJW/SjA7kz0JYTi44nsj8Ms
-	 o+VeEke64isp7htctM/tnVRKDz798GW5JNygcivEDaj/p/QdPRopAoEElviyGQBFQJ
-	 mE0DGNWPUE+ttt1TWwBeiCNhqlsVCH9+/rI0gjDpIhWbe+jmCfg1CUsBhPZ57NCXdW
-	 P0YDVJAGLo2pg==
-Date: Mon, 16 Nov 2026 15:12:42 +0000
+	b=c9gb14EPpkm2f4Xkve+woq2EcaqVAU6OWFg/jQQkk+LdeQMeL7wWdgnWrcehtDozj
+	 hlOPWzyc3otoJDc1BnWmnfcGkELE5ne9YdbXb8bOeqQgo2ANcdeP4VSohetQKo+bu6
+	 l5ph1oMq/97A/jF+1i6vYBlBI3MVXXqtcaOkV92iTMzuCIqe5tQ2pEfSD6ogMQ3HJh
+	 bic2UvECRtuYisN6i/RkebN7RRB6ItCm2WazrTPfpAne4MbT05QwixHEpiEAMU0J5O
+	 v3BC1siAMDf+wN5WhgY81rIR/ucUfVkxsvzUBcp2oLIQ5es2Gj6dI711oOZg0IHil4
+	 KlLYgJkBMlr0w==
+Date: Mon, 16 Nov 2026 15:16:59 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Eliav Farber <farbere@amazon.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] mm, uio: huge PFN mappings for /dev/mem and UIO
-Message-ID: <avsbLgh-zBGmE4KF@gremlin>
-References: <20261112125638.12209-1-farbere@amazon.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Hugh Dickins <hughd@google.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
+	Ross Zwisler <zwisler@kernel.org>, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/mmu_gather: delay rmap removal on UP as well
+Message-ID: <avseFdmK8zN8JTNe@gremlin>
+References: <20261116-dirty_file_pmd-v2-0-571883053174@kernel.org>
+ <20261116-dirty_file_pmd-v2-1-571883053174@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261112125638.12209-1-farbere@amazon.com>
-X-Rspamd-Queue-Id: 9ED1F4000B
-X-Stat-Signature: wrijdmsxg7bwzswekxyjhey1w84wqc4b
+In-Reply-To: <20261116-dirty_file_pmd-v2-1-571883053174@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: E97EBC0012
+X-Stat-Signature: 5atpraxy5yz9ube5job67yxu6biscog7
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794841968-708691
-X-HE-Meta: U2FsdGVkX1/hU9mN7VkWNW11G+tjBTdX/BvqTyzeM8qzN0fe8bLb1tR1aygZuhlmXD7f0f/W97WPgBHDav3SupctTXCOoJhPoJAc+mb6wNH1fOj4UX0qA+/1HVIyR5aknEcGb4by64H3zRVYvD4cmge8MniHELEEi7gN3bEe0qT+MYLqPU+qVNMyj/mClHqxAt7RRyV8oZ1OjjuBo17S62DZjoxEH/9FR+eDkwvJfCduG2H4CMINr1VUI+R9ISMEnMlxUbGi7l7z9m9KWzcdZXPhENm/5SgEFL7vdEyLS3zhoLN5mAN2oK88YsGA5MPVzmih20h2ftCBVL8qgGULYQtOO8GNf+KX1vGobsHq3CrSwbjORchdxkoob5bMFX0vLkGemd8coXQUkBOmNiBthyxPuWUB1NPprKSl0p4CgiL3LY96DzR6RnglxwvE24wF7Llz17o9s/RPWlZf3vfXTKNbrZfW7A/CePaaq1yGQYb+NLdKAbFLAp4Ty9jsJzKt2byMSYzZ2+MqJPs2nFU9OMjclvH+x9jh3IFMy3ptOd+wJVagFMB6/xavOfnz8Ly5f7PBhvwhSMY0ovcJrYi2r5RrcK9Ouk4c/pAWFh2Oa3/FYVgN6fTVUc0LwejODqlE9FXkyEjWi4VoTjnm1Tst3n6cELsP0p24PN0v3nP2lgQpv3SzaJJic1IFpblK/F4lfW02xjVul/AaWtQV2E8HzmY7jmA92wzvkfRfR9CclhRkwxS2grN8ANVRzdlW1lJzMq0cf3OUS3/CdTdMQSCUzTCDHi82op3Nsb+ybWNccryLPJoUXGovFkFg4eGkvyi3czyUdEwrngHGc7/zEtwgHVuRB2Xpc40MX27gPlt+sWztpINRBPMGAnmyj9i1sTU2og6jA+y9hd1hDYV3LQMhu5jwrHvIv5JEn2tddeSwyF/npMKVWOCzsu22R22zMq+mpMad6BzPe2I7GILWlUf
- 5w7tJqtR
- D+UHYspUZy4yi9PpXFQ8Lj4KTayK/Aavq1KlU6tSA/6uY/oM3a7UOr0bzDH12TV+c7XOLKgR5tScdCxcUSmeQQmnzdvvQCS3V4TJV1ZE/JSM7IYSYNhkyNpDT2vMNOs5mnumHMrI3q8atzcBFIgSX7HrKjkFdMV+/s8kBSpKFj5yxqe36vXFOWn+fa0gqBy/k6veJI1T9gvJzm/+hbi5PLE8Lmcu9EaW/8W1MXyMEJp1NNuObjwog9xpnVQbghHYd/QtprOVU5PnCPvZ9jrWTawSRLhJ6voWFN/6XUyHYELyFDGY=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794842229-865403
+X-HE-Meta: U2FsdGVkX1/uwvjCFiJNEzJ/92CfmF1yFsw76PGMLbIEC/j74A1FMHqpkwxd2hac0I35WUnG06yMIAO1v6mV0TiWFYhvQcmWgDWutwo6/GC3wLQtIStyQPYQ4OrndZT5231wKEgTyiiqnZkcvYMrozbKaxFxTIfgD9vOlcG6umf5WMoF5WjgBPT+EWeuIBj+pB1Ur5dhCOkY2yjeplLTKDMdNxFK/nXBPVOpCY+yfY9gcAkBL9R/AyI2HhRTgt6kexRtqBaw5ofKp9AKRs5SIsedmu5uu+NyoMppQRL9ZOmZCy7R7MenhT3IuT+TTgjwwgWCj2OweSak30uhocc0W9Omjs1g2jDwy2LLRHxiBgGfEPCd3y7OHm8ld05oQ8z62+gOZiRFES7H8dY5F56c1GFEFbgN8jvb74apNa7mwG1jiJAMyZDJKhSHQUObGkXvLmX+5JU9nvqdZuBthPp1ArVt3+bnDgMUTpJlpqtkISso+J4LI34WJB/W++jScTSsV6zSiq3cs5ZGH4r0J8PTsdRexdXttkB//6RdWuu2/Ft/gfs32uNZkVIm2zRfO9qz9lXiOmrSllksST26ODyQ1ai7+oCHAspBC9nA8XV28OzDxaZo+xuFhkkcZquk0gXFf1FDzWIkBcMODOldJxpCSDM63xNWQ3X01zYdkgI9BXLLCDXk9sIY9fQIE0a1AeklzJev3swnay0WM+6DAOrwA3hxO8mlI72EOI7QoARY5mC/SsFqWSjcDWmzR3Frs0h9e5Qlua+RMUZCGdqKK0+4d9g5t0BDmDCuIT7SmC6JR6JawUGjHx0Jt4E2Xl827agXjD5nWWbnt4AjpSAqSkWIL6JckyOHBTAtnOygmN23WhmFSa0EnrhlU/ETM68gQvbAOxiVAXGQOzBju4MfRLnHD/iFUGhSzjFISThdvDL/XuMnYial+5B5nWZ3OPuZnxpb/8X64m8uWoKsh3gpgbi
+ zblp8Ts0
+ SNqZ9Q03AtkKup4MQvQtda1/Y6LkF2zlTxQRElPXorUZohyDyrG9MDfUQYveqH4wdX8gj7yttpA4inNwjbQnuX1u6XWB2od31KZjkJwnW7vp8bWZrPYY6AKTgDmaGcg8zWaSnbryluaBAMLuy9M2DrjGajmWZuJEoKmpqIpiYYO4NCCYMWO/61406JwqI1jgU6TBk/nMjY0ZOQwUWSPFcaM1xq8aHgQ4CpDOIEPfjHDs0JnR8qJvYEJv4YoEXcqw4f/Z6S8Bvubt4PtMDxQGJ7TZ+WDXgxZyyxADEQu/Ouu+BMKwCbrgBK2fRpKE04CpE+qPv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,123 +105,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Err, there unanswered questions on v1 of this review, so why have you
-sent a respin?...
-
-I also seem to remember David asking you to slow down on the respins
-earlier too.
-
-AI might make it easy to send stuff out but you're outsourcing work to
-maintainers here...
-
-On Thu, Nov 12, 2026 at 12:56:34PM +0000, Eliav Farber wrote:
-> /dev/mem and UIO both hand large, well-aligned physical regions to
-> userspace, and both populate them eagerly at mmap() time with
-> remap_pfn_range(), that is with 4K PTEs however large and well aligned
-> the region is. vfio-pci moved to fault-driven population in commit
-> f9e54c3a2f5b ("vfio/pci: implement huge_fault support") and gets PMD and
-> PUD mappings where alignment allows. This series does the same for
-> /dev/mem and UIO, and factors out the logic vfio-pci open-codes so that a
-> third driver does not have to repeat it.
+On Mon, Nov 16, 2026 at 04:06:58PM +0100, David Hildenbrand (Arm) wrote:
+> Commit 5df397dec7c4 ("mm: delay page_remove_rmap() until after the TLB
+> has been flushed") introduced delayed rmap removal of dirty pages until
+> after the TLB flush, so writeback cannot clean a page that is still
+> writable through a stale TLB entry.
 >
-> Two things have to be solved to do this outside vfio-pci:
-
-[blah
-blah
-blah
-blah
-...]
-
-Just way way way too many schloppy words. Write this yourself please.
-
+> It skips this on UP, because on UP there are no remote TLBs (single CPU)
+> and because the PTL prevents preemption.
 >
-> Testing
-> =======
+> The PTL prevents preemption while removing the rmap, but the local TLB
+> flush is usually only performed after dropping the PTL.
 >
-> Tested on x86_64 at 7.4-rc2, and on arm64 at 7.3.4, which is what the
-> test hardware runs. The four patches are identical in both trees.
-
-[blah
-blah
-blah
-blah
-....]
-
-> Two things none of this reaches: 1G PUD mappings anywhere but x86, as the
-> test hardware has no suitable 1G-aligned region, and the huge zero folio
-> fallback in patch 2, which needs STRICT_DEVMEM=n and has no check
-> targeting it.
-
-This is so TOO MUCH noisy, schloppy information. Write this stuff yourself
-and small.
-
-I hate to say it but it feels so so lazy to get an AI to do stuff like this
-without even bothering to reference _how things are done in mm_.
-
-Be considerate please, we don't have time to read your novels.
-
-And you've been told before...
-
+> Consequently, after dropping the PTL we could reschedule to another
+> thread of the same mm, which does not flush the TLB. A kworker could
+> then run into the original race with writeback: it cleans the folio,
+> but the other thread can still modify it through the stale TLB entries,
+> and these writes get lost.
 >
-> Performance
-> ===========
+> Fix it by simply not special-casing UP. Now, only architectures that
+> select MMU_GATHER_NO_GATHER (s390) will skip delay_rmap handling.
 >
-> Unchanged from v1, where the numbers are tabulated; nothing in v2 touches
-> the huge path. On arm64 the fault counts were re-measured and are
-> identical: 128 faults for a 256MB /dev/mem region against 65536 for a 4K
-> mapping, and 4 against 2048 for an 8MB UIO region. Against today's eager
-> mapping the series cut mmap() by 95x on the 256MB region and 5.6x on the
-> 8MB one, total setup by about 12% on both, and the dTLB read-miss count
-> by about 80x.
+> Fixes: 5df397dec7c4 ("mm: delay page_remove_rmap() until after the TLB has been flushed")
+> Cc: stable@vger.kernel.org
+> Reported-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Link: https://lore.kernel.org/r/avrxOt_GyXLXNqtR@gremlin
 
-We don't need a (schloppy) 'perf since last-version' update thanks.
+Nitty, but I think better as Closes? :P
 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+LGTM so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  include/asm-generic/tlb.h | 6 +-----
+>  mm/mmu_gather.c           | 2 --
+>  2 files changed, 1 insertion(+), 7 deletions(-)
 >
-> Changes since v1
-> ================
+> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> index 4bba02fd5d543..cb087315b4e72 100644
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -249,23 +249,19 @@ extern bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, in
+>  bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
+>  		unsigned int nr_pages, bool delay_rmap);
 >
-> - Patch 2: the order-0 path passes the fault's write flag too, so a
->   caller that does not retry the access, fixup_user_fault() from an
->   ->access handler, is not left with a read-only pte.
->   vmf_insert_pfn_prot() keeps its signature; its body moved into a
->   static __vmf_insert_pfn_prot() taking mkwrite.
+> -#ifdef CONFIG_SMP
+>  /*
+>   * This both sets 'delayed_rmap', and returns true. It would be an inline
+>   * function, except we define it before the 'struct mmu_gather'.
+>   */
+>  #define tlb_delay_rmap(tlb) (((tlb)->delayed_rmap = 1), true)
+>  extern void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma);
+> -#endif
 >
-> - Patches 3 and 4: COW mappings get their own vm_operations_struct
->   defining only .access, instead of a COW test inside the fault
->   handler, which was not enough: installing ->fault at all skips
->   do_fault()'s recheck of a pte cleared under the page table lock.
+>  #endif
 >
-> - Commit messages: corrected the L1TF claim in patches 3 and 4 -
->   mmap(PROT_NONE) above l1tf_pfn_limit() now succeeds, and nothing
->   fails later - and dropped patch 2's claim that uffd-wp can
->   write-protect such a mapping.
+>  /*
+>   * We have a no-op version of the rmap removal that doesn't
+>   * delay anything. That is used on S390, which flushes remote
+> - * TLBs synchronously, and on UP, which doesn't have any
+> - * remote TLBs to flush and is not preemptible due to this
+> - * all happening under the page table lock.
+> + * TLBs synchronously.
+>   */
+>  #ifndef tlb_delay_rmap
+>  #define tlb_delay_rmap(tlb) (false)
+> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+> index e98397ac577c4..c022aeb7c84d0 100644
+> --- a/mm/mmu_gather.c
+> +++ b/mm/mmu_gather.c
+> @@ -49,7 +49,6 @@ static bool tlb_next_batch(struct mmu_gather *tlb)
+>  	return true;
+>  }
 >
-> - Patch 3: the commit message now also documents what the fault-time
->   range_is_allowed() re-check changes without CONFIG_IO_STRICT_DEVMEM,
->   where revoke_iomem() is a no-op.
-
-This is so schloppy and WAY TOO MANY WORDS. Please just write these things
-yourself...
-
+> -#ifdef CONFIG_SMP
+>  static void tlb_flush_rmap_batch(struct mmu_gather_batch *batch, struct vm_area_struct *vma)
+>  {
+>  	struct encoded_page **pages = batch->encoded_pages;
+> @@ -91,7 +90,6 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma)
+>  		tlb_flush_rmap_batch(tlb->active, vma);
+>  	tlb->delayed_rmap = 0;
+>  }
+> -#endif
 >
-> The write-flag and COW changes came from sashiko-bot's review of v1.
-
-You credit sashiko but not David... Please follow how _other established mm
-people_ do these things please.
-
-See [0] for an example. Note the brevity and actually crediting people who
-asked, so they know that their feedback was addressed.
-
+>  /*
+>   * We might end up freeing a lot of pages. Reschedule on a regular
 >
-> v1: https://lore.kernel.org/all/20261111113045.35368-1-farbere@amazon.com/
-
-See https://lore.kernel.org/all/042795ab-e8af-443f-b34c-72c674c0ea32@kernel.org/
-
-You were told to rewrite your answer, instead you sent a v2. This isn't how
-to interact on-list.
+> --
+> 2.56.1
+>
 
 --
 Cheers, Lorenzo
-
-[0]: https://lore.kernel.org/linux-mm/20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org/
 
