@@ -1,106 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2186606A31C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 07:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDA0606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 08:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bu46ZPCU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HcX01uNn
 Received: by kanga.kvack.org (Postfix)
-	id BAE306B00EF; Mon, 16 Nov 2026 02:55:50 -0500 (EST)
+	id 883BE6B05B1; Mon, 16 Nov 2026 03:01:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B86E06B05B0; Mon, 16 Nov 2026 02:55:50 -0500 (EST)
+	id 8345E6B05B2; Mon, 16 Nov 2026 03:01:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC28A6B05B1; Mon, 16 Nov 2026 02:55:50 -0500 (EST)
+	id 74AD06B05B3; Mon, 16 Nov 2026 03:01:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6AD6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 02:55:50 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 134FC160604
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:55:50 +0000 (UTC)
-X-FDA: 85440223260.29.0A1CCDE
-Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F1E8E80002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:55:47 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bu46ZPCU;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794815748;
-	b=esozPiMG6O7/WhQS6RbSPzGrvTSlVCJz4Jtoai5RNY106Hz4vc0O6IY3QQZvJl0CFw9x5w
-	FT8B3So9WLoA/0o6awVKksl3WtAu/+mousY6cWkWW7m/TZUOvRSLNttBfLi3O1wLQfM7e3
-	KjzZ7ip+3wW7gFgpvcRxIzL992D3Gb4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bu46ZPCU;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C02D6B05B1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:01:05 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C2107408FC
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:01:04 +0000 (UTC)
+X-FDA: 85440236448.13.E4B98F8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 22D2F20008
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:01:02 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HcX01uNn;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794815748;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794816063;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jdhXKIihT2dq6nnPB/zLM5Tz5DslhafhE4G3biwkqn0=;
-	b=pnNprfAo/bOZwR5PGMKxMpTVneY5QjD18lv9BO1ox2PtSZUb57sI773U3/ajxWIj9URtV1
-	4QYMiPDKF5uwSaa/HQeFCK2p5jc2Ei8LYuwY8WVQLwF1rrvZKIAfmbKXzCirLgCgYRewed
-	jPnUXQWsmyWFEL5ElBq1SmTPiFU5iCU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=P3aWyo9qWXr+tiJ3CVI0TxPUiud8q0JaCtkx0CdstEc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794815746; v=1; x=1795420546;
- b=bu46ZPCUJLj7jhQVy6BLO/fx9drzfdKaV7Wi4+gmm7DttpIEz38dSEKnS2wDfwHWPquQYxt3
- cTD7neVdTQ9nE/fcQNmQOyp91KWt0Hf2RoZg8kg2AayqVh50gmqczVsA9agnr3kMxCEFpdTudlv
- alNGfxzZqbcIObh1jPN2B9Ts=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 112ad70d5ab5acbf;
-	Mon, 16 Nov 2026 07:55:46 +0000
-X-Mizu-Trace-ID: 112ad70d5ab5acbf
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: muchun.song@linux.dev
-Cc: sashiko-reviews@lists.linux.dev,
-	songmuchun@bytedance.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	osalvador@suse.de,
-	rppt@kernel.org,
-	lizhe.67@bytedance.com,
-	apopple@nvidia.com,
-	balbirs@nvidia.com,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jthoughton@google.com,
-	lance.yang@linux.dev,
-	qi.zheng@linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 02/14] mm/hugetlb: optimize bootmem hugepage tail vmemmap init
-Date: Mon, 16 Nov 2026 15:55:40 +0800
-Message-ID: <20261116075540.51374-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <D1F34237-066F-43E8-89F5-2D7A6217D72B@linux.dev>
-References: <D1F34237-066F-43E8-89F5-2D7A6217D72B@linux.dev>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: t6owjspiq8khqdah7y7amng65g1odaaq
+	bh=S2U+r5omMSvTNilYbrVDSHAYW6jmnL3FBKnknVs4aUk=;
+	b=6o4B7vezZhvumn7UTd3WGHZI6I37FtW9pGs1n0LJxpbHQsBfgdbceFWP2aO0aFUj9T0rV0
+	LGV4EgMzh/uNar31tc0NetuP5tP8As6VmvJOb6sxAA+TP52a9iXI5R3cEN249dB8rmNEMO
+	5kYyvqnO0l0Tj1x5lQo0x2wcP6l0ZOM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794816063;
+	b=qQkXxBASEVBZ7vnROFrFMVK0W7Kmzdx0L1+KgjKhD22q+CGoidWCPdvdJgAFYDOAB7Nslt
+	RhEdlde1LY6laSPw9FmxKr20eqQmFpJq913uTrzvMvl3LUWE60SPe5NfY0r1/3Vqs09qCs
+	JHZ97Xefh2ilB07YaVxNjPOl7CJ3enE=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HcX01uNn;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4CF6D4177D;
+	Mon, 16 Nov 2026 08:01:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1B21F000C4;
+	Mon, 16 Nov 2026 08:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794816062;
+	bh=S2U+r5omMSvTNilYbrVDSHAYW6jmnL3FBKnknVs4aUk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HcX01uNn2/09OkEGtqpsJU8FriKXne0zHaukY8JEFsDmzVSvB6XNvWRs6Neui7t+u
+	 r81Nj/8K2ET4wtEzNr8op3oy8BQrohtyANxlO1X1qm6GzcjA6ownjmvSYh1AgqWUEH
+	 uIXtBnHMD6X/EnR+pt2DE4tGh47RM54P/+PEjYy6SZ7I2N6aPDq1+hq8mtzc/6rNWI
+	 PbUri01pK6go5DzMVxReivWqKvyMKlwpvU8/ywjXNJ9suxtBQ9CrCJpGjQZME3wzAA
+	 5f/kWQOg3qbbCWYYtT7NMbU/pFkTrtjL3l+vifYCjbujkC3yjWbpk5PP+gpgvLdBqU
+	 sFtYfyBpGOerw==
+Message-ID: <sashiko-outbox-216493@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] mm/ksm: add initialization helpers for
+ scan_get_next_rmap_item()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?WHUgWGluICh2aXZvKQ==?= <xu.xin@linux.dev>
+Cc: chengming.zhou@linux.dev, david@kernel.org, linux-mm@kvack.org, ljs@kernel.org
+In-Reply-To: <20261115080049.132515-1-xu.xin@linux.dev>
+References: <20261115075832.132109-1-xu.xin@linux.dev>
+ <20261115080049.132515-1-xu.xin@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 16 Nov 2026 08:01:01 +0000
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: omkxjzswgg9ky9kmaubno9qsuxnykzup
+X-Rspamd-Queue-Id: 22D2F20008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F1E8E80002
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794815747-158256
-X-HE-Meta: U2FsdGVkX189ijF7PC0Wc65uVAVg0Xpi9zWujaM7fNMfSATZL5XFWhb6bSFIzefECrRN7E3QSv9SIiUIUUXimfQTxtk5mqzAAVH85jWIiGYdikN4KBvozcLMUZNRy09+9s6hw8QikTqQcCyLF6hXV/JqP5HEzgeZlTV142032Mww9KxPcfFauPdKGqRkJdi5FyjR7rSPjQIWLpqtAv5hz6insA/PxWLyrsrUKo8ThLEjVn9Bh90HY8cnCqS2xX8a8uSSKN8DoWz7W8raUceN8sded5FPQylWnhSvWGx+RpslK1Qav2hLdiA6tD7pyBMB3YAbf2FDhIrSRYXq+PrUWfH+K8tWSo4igYzg9MauKQU/ub3Uyutzd7q8D6Jtot+YMDYlbkhEaV2hCX9dpAoPyOenw2p8Uct6U5b19PC2LU6VKkh5A7i15YisStPmjOeFcKZrk1v0s7Wil/BTMtVPisOKDVLAPMEqnmfLHFhYSrhXR+wQvTI+LDEmWXluK7kC7SZIkTbQZlQg7vrB0+TSYM7rAmIyDyB5Ybpjrgvxk4+4CwfkNjEh1zWRPFWO0qmlHIMJaGpFo83WkM00JVfQjj/wQMUCx2q/ZUU4W7BFT05AOPOQx3KrN/OArZHiR9ep9LU7IywCmw/xpSe75yjcjWMb2uxqsWNpFhQggLdvttPTR1JMZy3tujPyEf6W/OpDJ4768PMpbBeggFxgXn686I3GK6cHJgCqwzCszhz3dunOg8zVJSZ/lJpDRS5fEeBIcERvV1SRDP7RRrvfMVZE7/StYTW/5ptZEnF+ZqI8oesH4cPW4g251pHKkxB2S+xzaXCSK3k3tb5uq1inQc2OFJfALPYEigCcus3e+0353iFiSCVx6yng9sx/zDXRjBXXM8kcDaB8KCKai3mXznWR3qTMQR848LTh3ltSzrpWPglQTkbJzXbJNrH2Whh/Zo2cR2Kb6k9fbmvp2FG9H/p
- QsyKitnm
- RoasCG3QIjp0j5s8s2QlPk5IUTYix3ZOK0ezj47TWXfWP19Yj2uW70jo3GlGAWjnZQwMQo8pEr+d8rT3GwdInqQXkoq4IFtkHDMUlDv5Mikiv+L9CdKJ7u6JCf1kzCzKz/wxwbbz9/2osSnELdYE3wK6ViGo9KVrRgkDWNP7ih7ck/wRCCK0kWjzv9Xr0ioD4JyY6bKwuAi6GpDJZDyPBdt5A+jLX4VPDZfWlaNpaZ236nZqrRgOJ2DWGBXyWT6MOHlgwYAEv8bsQP1hA4vgOdnh2+wudydWEpX2x
+X-HE-Tag: 1794816062-954992
+X-HE-Meta: U2FsdGVkX18ABf+l1/z3UFJ51Le3JkkVQTKEc3SR5toBg8dLNSJA2DpC1U7u1Ep0FhnGgK3f5fIIOVRN/2e/aI+h28XlxbsyFMSwXzl8YrGuVVeWE5q4L2Z3zLtNs8vnhoz4RdCzkoyIgWIW1usR9L0cSBHOolHj7RZxlyU3VVVQTXPgvdYjpHgOEMovE7hBYMJYbIqpsqZqhWg57nLJr56twdQqQBf1wW75kre/4oA+k5m0q0uSLd2Ek2fENgglp5/ZpHfa7h9MvddVyZZxhrJqZQXtqPMsIU+PfmnLzALX8ZrAdrnkx4NqcUOxn1oMfvz7rOQen9w3BUjybGfXXC93TyhpI1fayv6hHhEnMCr/8wwiDWzO63eewmH8sCSFmoAvyyVnDIaMFfh6/Vthjqn/X+GHcitzXbH/QHmMT7N7z30FsLFGnPVKsfDgLFqvGXyjwNBUnGkuVcrzMesDSWn5J+CnTTlcqkJuoAbwlMBASsnUIWtYfhyFzoTiV8gGxI3GASCo48pdO2F/PaPGlR5S90xofckhGUMUOZc7mr6PxauLvp0dVSijRa1UKrz6gnIyMsMC5EJ9uyEphxKsOadk+Z+5wCiIyn3M6Fcqc8s7a/0hNcQf4rTmj5AwE82FFkaw9WksKXRVs3s5k31tH6Kmv//wtaDx4D8QnVvOGWbErUkJyLrHt2/rSlks0KXcl01Ylqdb3XZCXR545vyRKIDDHjFA2cC6zEicPUpjlr5qyFnpLb5zXlxJH27Mc6DJV6iSHUs8tvR2OgH2XH3WFCv0AXbOleRVfsTC8WBCEwdgtspy6tjyIp/p9nIi5sHa+buDbUocXP3ZTNtDbwdc3tqmGGtCIT2wRXjsak1JFLnwqguKKGiixLTMgcYKPYurauWxghQV/sPY7Yf0EOQ5t+Yc3Z4xk/SjPj8/LFXWPPv0aCpSwRCp6XAw1BNW9azT6JI6O8C64VyPUNiYwVs
+ YWMdW+iz
+ 4b/uLF9x05y3VkWrbDCJFHstCP12Tg/ZKxHQMh1mZ6ZZZwPyx/mUHmDvvg24bc/5TWHsX3RbX6zp2HKL/33Z347KaQ6NAeoiQU8caPzZFaaKDn2mnTN1P6YhEnvjGMnrvz1M6XA2k5wgwIyt3Nkuq8V7KXSOSqlepTDpsL5M4Wpug0oMJy8jVNr5hs/cOTHLVe/KA7L0m74pXHbb8GJAKi6XH216YUIMn5ll7VKD2qeGw/rCZuSNtfxQpWQB+rIApQ2FWr23HlJx4VCoFYr8RB30aiw8HzYwYL1WgVMgWG8It0PPB/Y5PXcP/GnRJI0nrO1Ryt5/FCShrQ3l/NI1rEG1dE2wZOKwMmKGN4eAXHC2z05SYauGft5EXZHtyUzhaeCqHOYDPjrOjP+JTOHKAVZGaG028H+SYKud+xf2nBIKXAjJhSuZyo/Tf9IRuBHF2nkYetINOnrev70CrtBGyQOJ4Sm14PrHU4PcnjI7ciKisj1IkIx9xqIIwpqFoYrxuy5zTvugaMsyBlwcGaSNJC2qF/hmUBJiEHLvBgVZWYevzynsHYtJD7p6y41GJFklJqu88gYK8pO2j1II0XfNkx51ave0DvdMMFE8MCIRPeKs7/KJ69y+hW67cq5BIbMY1eLbQ7qvcLPNvKrM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,78 +92,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] mm/ksm: uninitialized mm_slot dereference in
+  scan_get_next_rmap_item()
+--
 
-On Fri, Nov 13, 2026 at 12:10:13PM +0800, Muchun Song wrote:
->
->
->> On Nov 13, 2026, at 12:07, sashiko-bot@kernel.org wrote:
->> 
->> Thank you for your contribution! Sashiko AI review found 1 potential
->> issue to consider:
->> - [Low] mm/hugetlb: commit message mismatches
->>  memmap_init_page_from_template()
->> --
->> 
->> commit 7cc97c08b2296fc2518d9ae6da5950cb731c48eb
->> Author: Li Zhe <lizhe.67@bytedance.com>
->> 
->> mm/hugetlb: optimize bootmem hugepage tail vmemmap init
->> 
->> This commit speeds up boot-time HugeTLB tail page vmemmap initialization
->> by seeding a template from the first tail page and initializing the
->> remaining tail pages with memmap_init_page_from_template().
->> 
->>> Initialize the first tail page normally, then initialize the remaining
->>> tails with hugetlb_init_tail_page().  This copies the already
->>> initialized first tail page with memcpy() and refreshes only the
->>> PFN-dependent fields in the destination page, while avoiding the full
->>> __init_single_page() and prep_compound_tail() sequence for state that is
->>> identical across tail pages in the same huge page.
->> 
->> [Severity: Low]
->> This isn't a bug, but the commit message appears to describe an earlier
->> version of the patch.  hugetlb_folio_init_tail_vmemmap() copies the first
->> tail page into a stack template and calls memmap_init_page_from_template()
->> (which refreshes the template before copying) rather than a
->> hugetlb_init_tail_page() helper.  The commit message also omits the change
->> in memmap_init_page_from_template() that restricts memcpy_nontemporal() to
->> ZONE_DEVICE pages and uses memcpy() for other zones.
->
->My bad. I forgot to update the commit message, the corrected commit message
->is as follows:
->
->Boot-time HugeTLB allocation has to initialize tail struct pages itself
->when HugeTLB vmemmap optimization (HVO) is unavailable or fails.  For
->gigantic pages, this can cover a large number of tail pages.  Most state
->installed by __init_single_page() and prep_compound_tail() is identical
->for every tail page in the same huge page, so repeating the full
->initialization sequence for each tail page is unnecessary.
->
->Initialize the first tail page normally and use it as a template for the
->remaining tail pages.  Before each copy,
->memmap_init_page_from_template() refreshes the PFN-dependent fields in
->the template, avoiding repeated initialization of state shared by all
->tail pages.
->
->This extends memmap_init_page_from_template() from ZONE_DEVICE to normal
->memory.  Keep memcpy_nontemporal() for ZONE_DEVICE pages and use
->memcpy() for pages in other zones.  memcpy_nontemporal() was also tested
->for the HugeTLB path, but did not provide a similar benefit; on x86-64,
->memcpy() performed better for this workload.
->
->The fallback path was measured on a v7.4-rc2 base with a temporary
->jiffies-based printk modeled after the existing timing in
->memmap_init_zone_device(), using 4K base pages and 64 boot-time 1G
->hugepages.  HVO is unavailable on arm64; on x86-64,
->hugetlb_free_vmemmap=off was used to exercise the fallback path.
->
->  arch    base      with this patch  reduction
->  arm64   360.8 ms  256.0 ms         29.05%
->  x86-64  171.0 ms  165.0 ms          3.51%
->
+commit c379de4f41203759cd851dbc9790adb7f3dde0fd
+Author: Xu Xin (vivo) <xu.xin@linux.dev>
 
-with the updated commit message, LGTM!
+mm/ksm: add initialization helpers for scan_get_next_rmap_item()
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+This commit extracts the new scan cycle check into
+scan_should_start_new_cycle() and adds scan_get_first_mm() to advance the
+scan cursor to the first mm_slot in scan_get_next_rmap_item().
+
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index b81a49c65030b..7d0f4bad53b28 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+
+[ ... ]
+
+> @@ -2662,8 +2690,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_ite=
+m(struct page **page)
+>  	if (list_empty(&ksm_mm_head.slot.mm_node))
+>  		return NULL;
+> =20
+> -	mm_slot =3D ksm_scan.mm_slot;
+> -	if (mm_slot =3D=3D &ksm_mm_head) {
+> +	if (scan_should_start_new_cycle()) {
+>  		advisor_start_scan();
+>  		trace_ksm_start_scan(ksm_scan.seqnr, ksm_rmap_items);
+> =20
+> @@ -2682,17 +2709,8 @@ static struct ksm_rmap_item *scan_get_next_rmap_it=
+em(struct page **page)
+>  		ksm_prune_migrate_nodes();
+>  		ksm_reset_unstable_trees();
+> =20
+> -		spin_lock(&ksm_mmlist_lock);
+> -		slot =3D list_entry(mm_slot->slot.mm_node.next,
+> -				  struct mm_slot, mm_node);
+> -		mm_slot =3D mm_slot_entry(slot, struct ksm_mm_slot, slot);
+> -		ksm_scan.mm_slot =3D mm_slot;
+> -		spin_unlock(&ksm_mmlist_lock);
+> -		/*
+> -		 * Although we tested list_empty() above, a racing __ksm_exit
+> -		 * of the last mm on the list may have removed it since then.
+> -		 */
+> -		if (mm_slot =3D=3D &ksm_mm_head)
+> +		mm_slot =3D scan_get_first_mm();
+> +		if (!mm_slot)
+>  			return NULL;
+>  next_mm:
+>  		ksm_scan.address =3D 0;
+
+[Severity: High]
+Does removing mm_slot =3D ksm_scan.mm_slot leave mm_slot uninitialized when
+a scan cycle is already in progress?
+
+mm_slot is now only assigned inside the scan_should_start_new_cycle()
+block:
+
+mm/ksm.c:scan_get_next_rmap_item() {
+	struct mm_struct *mm;
+	struct ksm_mm_slot *mm_slot;
+    ...
+	if (scan_should_start_new_cycle()) {
+    ...
+		mm_slot =3D scan_get_first_mm();
+		if (!mm_slot)
+			return NULL;
+next_mm:
+		ksm_scan.address =3D 0;
+		ksm_scan.rmap_list =3D &mm_slot->rmap_list;
+	}
+
+	slot =3D &mm_slot->slot;
+	mm =3D slot->mm;
+	vma_iter_init(&vmi, mm, ksm_scan.address);
+
+	mmap_read_lock(mm);
+    ...
+}
+
+On the second call to scan_get_next_rmap_item() in a scan cycle,
+scan_should_start_new_cycle() returns false and execution proceeds to
+slot =3D &mm_slot->slot; mm =3D slot->mm; with an uninitialized mm_slot
+pointer, causing a kernel crash in ksmd as well as a
+-Wmaybe-uninitialized build warning.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261115075832.1321=
+09-1-xu.xin@linux.dev?part=3D2
 
