@@ -1,168 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40DD606A8A4
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 18:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFD960A3836
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 19:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WGFtOJWe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VNtdmOa5
 Received: by kanga.kvack.org (Postfix)
-	id C6A196B05B0; Mon, 16 Nov 2026 13:58:46 -0500 (EST)
+	id 886B16B00EF; Mon, 16 Nov 2026 14:10:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C41716B05B1; Mon, 16 Nov 2026 13:58:46 -0500 (EST)
+	id 865C16B05B2; Mon, 16 Nov 2026 14:10:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2FFD6B05B2; Mon, 16 Nov 2026 13:58:46 -0500 (EST)
+	id 726B46B05B1; Mon, 16 Nov 2026 14:10:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 846816B05B0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 13:58:46 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 00D82A7BAF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:58:45 +0000 (UTC)
-X-FDA: 85441893852.16.A6CAC80
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012017.outbound.protection.outlook.com [40.93.195.17])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 201631C0002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 18:58:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=WGFtOJWe;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id 421146B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:10:25 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A22F8A7D39
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 19:10:24 +0000 (UTC)
+X-FDA: 85441923168.12.A4A3B32
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7DF134000B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 19:10:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VNtdmOa5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of devnull+mattathias.pinchover.uber.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mattathias.pinchover.uber.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794855523;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1794856222;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sSJQwAVjqtKC68lGy7Idfh+eTeZHnkXWIJOGxpRoXqg=;
-	b=N/bKE4O5USJQPPZ9P9O3HkHBoP1sF+gDlLxmA1uHMmylgCgUUSNYfxjVDE1bhhdVsfNqH+
-	4zaQhyruaHDRh87QEAE6shMQ7vCW/6X4ksaqLpXR50nJ4GVlE9G8qRE8DYLNxBeTEXLQvt
-	1EnqULQ9gAx88lex5dPhn2EGluTQxq8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794855523;
-	b=zh0ty3NqLMV8AGtP6yUDFBcLwCNY0icnoaeEN0/KB7qk1fr8KPUEwv+MvFqwmhd+USW6FD
-	fJqrpo03Rw+ABt7ShHeOEJgQetbqLn+VWBicq6uOidpxPzjq4bopi6owBVJ1EXZ/Ggzsh1
-	Q08NpX+Vug38eb/+ExJN4KDF+QCGPx0=
+	bh=SEJOx53H1+kOAfB5X/d1gIgUhchGzcrN8DF1l4byjXc=;
+	b=Vf8CWKnzVfLcFtp3spD18vqvppJ1K6gLktwuhumOCmwfttjUdSwgM+wzEDFABX/COauLVE
+	4RWczZ1anS3usWItVL/dE2JBKNBVCVHDTl2wlTVmDyxNFlcb9AVfwG7QfYVfOA+cKiKo+z
+	EyemXMQUAZrutqmEYcFH9DfoKjYvogg=
 ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=WGFtOJWe;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Mr0QZ2Ek5XAtbJMrqFs+njtohX7u68o9YBWgabEJWL3wDmnJ/yQXFRa8tM8We4XXfi5psRj6FOIieKgM7ap9EehW28ykzz4f9tjPrvAHB3LfUjFgJY124NUYgUB3VPZ3vPpEse/VxGzVXf5uOs7nppPyBl/IW62rcDwVXTDA7ZOIp3xZpSBdgATGZipJwlsxi/3PUoe/Ge9BKPTmW39IipXKSDRrOATU14V01wWuJ0c6AWuB1SolNg+nUNVFIbhKB/vKCGO1UBjHlB30YaqC06+xMZ3dLK2cPjQEfzjDorgBcZkL1Is+BT8AKjdpqJZDCS1pHnhxbG0MZDtQvQ/NVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sSJQwAVjqtKC68lGy7Idfh+eTeZHnkXWIJOGxpRoXqg=;
- b=ZZWjQ1ivUKZ0sFGstYgXEhkSb4cAFgVH9GWaRaOOen1qmps8G0Itx6AUvIS8FFeimWBNacON5KkU1IfaX6Gb1CL+y35W0rw08C5TKNOHVylMLdGT/f+VdlVfZj2UZ+6jk1l9NdfhktTPYOra/9be3myJVbEsadrBV4ziesef1HShXTgFrS2+mkmml/GE5zqIlJp0OAV0Omtmg0sbEi0TEHvdGt61gQ2detl+WG7PkiJNGnFyeTwVmIQZkP+MuuF9tPgj1rLvmNj4K9r5JSh4YsE+cfHNhNauFqqaWDzv3vYE34RSAiE4W+KVi3/OcV35fWw0RlYc5CkVTYuStel8PA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sSJQwAVjqtKC68lGy7Idfh+eTeZHnkXWIJOGxpRoXqg=;
- b=WGFtOJWeAEhiJjVCZs1/alNZZ5X+lz0rD4OkKxwfvoWNv2txnlnEYZQhFDu45DFfnlkSQSY8pBfvOeLEgDodU2ht+wBbQRbPg76BNwt2/v9Z2NHod0FZYxzfhJpQTx5+qsjbuf995QxHyfYePMIYuGlZpUUY57/iC2Gn9Rubi/64U2xnGRrDUl/9ZUCwpDKlMDrFqyfZkPM3I/LqUvZlcdl29M7CM8YBEtSB/HT8uAB9aswJQ7rD1ZabKPdo+AGudRjQ06IDJaRBI9lBZGy5rNmoN3ICVvkBjCY59WReKPGLT2pYxpQS4/deSLWK/pbcKmCB0wr3q8P9O0nf5V/fXw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by MN2PR12MB4269.namprd12.prod.outlook.com (2603:10b6:208:1d4::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 18:58:38 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.009; Mon, 16 Nov 2026
- 18:58:38 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com,
- byungchul@sk.com, david@kernel.org, gourry@gourry.net, jannh@google.com,
- joshua.hahnjy@gmail.com, liam@infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- matthew.brost@intel.com, mhocko@suse.com, pfalcato@suse.de, rppt@kernel.org,
- surenb@google.com, vbabka@kernel.org, ying.huang@linux.alibaba.com,
- kas@kernel.org, hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
- kernel-team@meta.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] mm/migrate_device: avoid leaking folio references
- during THP splitting
-Date: Mon, 16 Nov 2026 13:58:35 -0500
-X-Mailer: MailMate (3.0r7038)
-Message-ID: <F40191DE-78E7-4861-8CFB-A460A543F49D@nvidia.com>
-In-Reply-To: <20261116063624.1382944-2-usama.arif@linux.dev>
-References: <20261116063624.1382944-1-usama.arif@linux.dev>
- <20261116063624.1382944-2-usama.arif@linux.dev>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BLAPR03CA0130.namprd03.prod.outlook.com
- (2603:10b6:208:32e::15) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VNtdmOa5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of devnull+mattathias.pinchover.uber.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mattathias.pinchover.uber.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794856222;
+	b=dJEnsfbloFhHXWMmSt2SSWWfIwONXCHo9hXwan8EJZHyjfRJlNIWioQ2uLAGuduzzhYY0L
+	V7I6rZS7k7Hth2YSqs+jUbtXH2eANh2GAGuNef2h1bHId6x99nxbKmxl706ZYJZ20q4Veo
+	bI2Ev1ZqFKWdEyC7Dy+tafd8ocuhrNk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9DCF344CF6;
+	Mon, 16 Nov 2026 19:10:21 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794856221;
+	b=vBsUM3xKGizhRwS51I+qzF7uz8WpkSRfXR+C8R986NSMBzTSSADixQFsb7Y28eFZpeOe
+	 HyyFpENPpzPTO4X121/eYcrjyq5mTSfjrUwTEJXmvn/YjOIHK3kqHIUZmLfZwLMvAMiQL
+	 NZN29ZMcs3Eg8comiCfDyGtA1Qeufsj5wv0dZEXcybOHLFHZn9gbCvpWFS3vf3LK5s8JQ
+	 YKeJ6K3xUn8+Owe/W4q3XNpkeObouV2yO4cvl+jheFYe2yhuzdc1ZXEahW44gkFgByWJF
+	 9puO4ainDb4HuxL8ndq1k6sTIFH2wrP+9ZaYhfgdyyx1h9R1FhQvK3EAHH6XXLeQO3Q==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794856221;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=SEJOx53H1+kOAfB5X/d1gIgUhchGzcrN8DF1l4byjXc=;
+	b=QD+Rz0lDF1tXhL3nJGkuBzPUaXlX4g4pjwl5WhTtivDOKqFtvLa1FmpDPcydlDFGS9lw
+	 gzEpuEwBabDg8d1gkxOSy9j9qAHW+uIJNFpmgdF2jxMM4TAM5jLOHlRHZs1/Bl+QT5+uq
+	 JED7972rfGlVQQG8mJiM3cwBXZ3XN7MmAq5wng32Ati8S3L86OYs9kutranjAmLat0r/d
+	 buPTsYMhplf3VDdIt5IqGFuiihUYrUZrfahfmCSOpoK0Km8eIZ35zdmLysPuD+ertRqMg
+	 act0ovJS7gw6Yyij0QNTzX+sYyXHkBWIjvfCQZnlRYgzwTTuMzCm4ArKKFQ1Xkndpnw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id E0CC31F000C7;
+	Mon, 16 Nov 2026 19:10:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794856221;
+	bh=SEJOx53H1+kOAfB5X/d1gIgUhchGzcrN8DF1l4byjXc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=VNtdmOa5Bv0ZFaxb2XTUipyEydDyWvdVgAreLr4Y0Kb9QmniLCGusvauvooTXu70V
+	 Req91qAXtK7zzhZrAv5sMT/pqEqJzh5dEWuYlTbLz12aFXfNF5vnIM5AN6nM57hCuO
+	 0+B45VFu0/gmMdb+xoo430xETiFEZmcKbdy1kMBzrdKl98EOCFjrDdWkjfk5q/NPi6
+	 +pve/LJboiuaDpWG21AMLoAdnDtFQur1fOb/3vTaR170opL6CX5MyNmhTi/uWQERXO
+	 zJ84jGYVJIQLsp0b3Hip4IGlMCPROORE4FF19zcSKPBgA+DeVeVbwa9ikRFTNoL4Nc
+	 LT8odP4A+O0jA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 693AD4A599;
+	Mon, 16 Nov 2026 19:10:20 +0000 (UTC)
+From: Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org>
+Date: Mon, 16 Nov 2026 19:10:05 +0000
+Subject: [PATCH 2/6] mm/damon/sysfs-schemes: add sz_ops_filter_passed_last
+ file
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MN2PR12MB4269:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9400155-85a3-4a5c-9d7d-08df44139f65
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|5023799004|10067099003|4143699003|11063799006|56012099006|261026121527099003|261026140227099003|261028144727099003|261022075727099003|261022105027099003|261021121427099003|261021123027099003|261102123227099003|261009223027099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	9fby0mjT/koKjqWluJpHmiAyS7YPXgUwWIyv8VwMVlj7wSeGaMZAa3Qv9QLAPmyNeMy5xgEufuX6pfhVj6YIhn/t+TT6KVE9z5ZOjvZj4mXpKp3VgB5+RUijO0gJkfsLliOIKFBl0ZGAFK0Gs4CLxo2XvxBgDZ+TJqdvdVJLIA2tCqpIwa28dqcGYUSbjsbB/aITtGEjlfcJOI+U/cIKF70890zDFZKwqPMBKII+lEfjldJj2USyXboyDCSIIw2eWoWhHLr0i7S1V/TPwKfVoc8OwxXagUOWgXM/NhiidO6pk1t9xl1Z1mrUUPH1+WGLcjru70qhC+t+bf7sjAMy7dRm6v3wtgQuex+u6K/Bk2+H4lUweLOuE1bXtSxLZgg/zpVrSPX0FSiqqGF5pOha6zdtWlDi0lrzoYy+VfSGNf1H0AsyVpg9haizchKf9MXaAQVhYAg1Qu2/rsM2niTBmUXKGuTjYfVfEHFRRhOpd1x53WWCLf9pBMBeTi1t/Qx2WVL61Qo7PYPn2e/CaMixb0xbMnDC1KJ217iC/YrGb+Ff8gk1069oKTUXAWF1f1Uw7ULSt4TNxkdtO5avU2k9beGWE8+zdD4iyMq49HvTa25/h59A2CPIcR8PCriOusKwFF7Mcuc+Mwxpd5k/ohdnDHyuLOdT8aHcWBFBG7kFJ8Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(5023799004)(10067099003)(4143699003)(11063799006)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261022075727099003)(261022105027099003)(261021121427099003)(261021123027099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?S4KChVLOqc9H4DIPgDSt9/2SUSIR6haoWyUEFYTVe3QgcIRzSoJxZPKAI3Az?=
- =?us-ascii?Q?zQZk13K3uz1kVzgZV6GBlOFIMSaQcF+WVR883AQFnntfLJKeq6CXr+20ZVuh?=
- =?us-ascii?Q?r4m2Z4Y5FwlO9XPI84al8hFQsapjPkpHSbq/gF3HQhPpn9xwxVQDNmKJEPrc?=
- =?us-ascii?Q?4CDF/vy5aqPgqH9gR7kjSjDh8kzZ0U37IBrmObyZpGRiDgpiaZ6AVgS8yS7n?=
- =?us-ascii?Q?SWLCyXgmxoN0JOXZG1BrjaNCVuaslMVWKItO3nTEeJ6eFljmuaidIrWwYz0y?=
- =?us-ascii?Q?S89vDwHfjw2mEzig9e/HNfBXfDtVpCejY3mEOuv+sZRrx0y8mPgmx6QWpAKa?=
- =?us-ascii?Q?RXn98KFmoUBNJDBP6nJdv1NG24ADQFxPlgjV/EQVppO+uiDTZyXdyWooV25w?=
- =?us-ascii?Q?aI0OPIOopVn4aXwRNTo/kLL1pFzExzIRgbdvPt4MzHoexwbNfMCuf8pDELEE?=
- =?us-ascii?Q?emo72me0Fj1CVZTmhQ6d3k/ke89gBa6iFdHRIKEo9hgClNvkopNwGfUqs6Ea?=
- =?us-ascii?Q?QRGvhjrH99VS7Otlo4QpdVQRzpg2rj47vXp1B92sRp9aKH/5nj8Csd9N8wPw?=
- =?us-ascii?Q?6k5M86evFtI8+TtDcyZ37U8+zvp1QrcbxY3Aarpx9augOeD47xuzQNWiqEfg?=
- =?us-ascii?Q?GcHOAIPEIaRUgeccvDxJiMjU3hbuRRswKL1TixSxyVwuQ4qDtCrZVEaOuK9Q?=
- =?us-ascii?Q?C0MMJErgWMh+p8ogDhRfso89nIkQqWltNs6eZIs5nIHXdKjNxlV72EmMwnsB?=
- =?us-ascii?Q?SEWsJyUvW5Fvzi4EsLAT6AKLZmQ4+kyxOxaVzqO/c5+R2qpPlw1RA3gvo8r5?=
- =?us-ascii?Q?VSuEVWVTv0pfV/hIjLWN55WiBHky/0urf/Mwh/t6oIdwcQBGtsrCXVC55N7p?=
- =?us-ascii?Q?8cVKzsnmWfIacWQ4sD7nzqXrTicIZzanAjW3FJWAx2vIpy4UuHgSGeiKzgiz?=
- =?us-ascii?Q?vlpUj415qs0TQIXT3RsTniq4RKQGMhGoTx7tCq/jzCyyOTVZeMqfgmyhuJp3?=
- =?us-ascii?Q?8a+3xOB1pf9V3AP9sILRN1sUMTXVVDwnYnqeKQNLl5Hl3FZT52oLWF/5XQJ9?=
- =?us-ascii?Q?yVwaFEQjbzgu3KIUSYGO0cW2ey/V5NPl88Ra5u78a679PFPBJpshRMlyw0oQ?=
- =?us-ascii?Q?N2WeEaSRe/ZicqcoeVhAGgMQ3BFXBluxZppeAG0ZG8GDrHbrKWdxQlpMAEpd?=
- =?us-ascii?Q?OxPQqotJpwL55ON4fVx4uhxn0KClRgyAgCeCC/l/7C7n93q9orSeixT9JHkm?=
- =?us-ascii?Q?75RwkOrA+GEvCreg4dJgUnP56BcSmm1htuLg2+XLShM5EMXDBPoZFRigUuc+?=
- =?us-ascii?Q?+U6aivE/Qm04msXijY3rxz1rlu3O0tHSaRMcwhZb5nBYOF6wG/k9zmEv1FTy?=
- =?us-ascii?Q?fT+4mDV0hANA7qymYB4OYkdyYE0CF0iwYtLpwzvx8PhSByG6plYW9Jl4c9UO?=
- =?us-ascii?Q?unBDJsxe42t61XswDhVqYQ1zLMGJ25Td1WDCQB+tMWPiF5xMOEE/mF4s3b7x?=
- =?us-ascii?Q?0xh+fu2gNu6RCVHR27jL1u/dY0A23JW5rADvEDfXRIGI5K9UztB6e4GBQWus?=
- =?us-ascii?Q?jtsprvDj208/nPdnxHaXmSPhtRprjeVO3b9L1k8d0DtRNsv1P3lFjasG3dCt?=
- =?us-ascii?Q?cSpK9c5szNPqXNOrigemYxll9v9PEa8ULrPLd2qnML8xhpviL1o6kgq7F7dZ?=
- =?us-ascii?Q?4Ju3hl/qPIQgI0AEGuib0XD0nTMSt5nU9y02wohnKyL4ojKd?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9400155-85a3-4a5c-9d7d-08df44139f65
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 18:58:38.0389
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5zIGJalD5NCpvmQgYBBboyl2Dz1Y/fDGIS8Fb8MiSsaYBFDFxZvbBeX6hqRN+D99
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4269
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 201631C0002
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261116-damon-sz-ops-b4-v1-2-1cffe7227e6d@uber.com>
+References: <20261116-damon-sz-ops-b4-v1-0-1cffe7227e6d@uber.com>
+In-Reply-To: <20261116-damon-sz-ops-b4-v1-0-1cffe7227e6d@uber.com>
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, 
+ Mattathias Pinchover <mattathias.pinchover@uber.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794856219; l=2837;
+ i=mattathias.pinchover@uber.com; s=20261113; h=from:subject:message-id;
+ bh=3d72KQenPLZSAMPasN1wih5Lo/g59JndfypEpkGmhZ0=;
+ b=ob0NIrM5E36+IU946sP/gerNGtsB6G1jMaVz6CIklTsO1XmSuRtfAXavsk4EJgGhR524xNXNa
+ hh61Cn/ziZCB+eAEWSGpjAOTt7YsPgURlFwJy7Fs8cvWMw+RQF3ZHXP
+X-Developer-Key: i=mattathias.pinchover@uber.com; a=ed25519;
+ pk=6Bh6OEwWiU6dpON0CVcoipq8fXtEgvhsM1Tmm9CTmtY=
+X-Endpoint-Received: by B4 Relay for mattathias.pinchover@uber.com/20261113
+ with auth_id=1515
+X-Original-From: Mattathias Pinchover <mattathias.pinchover@uber.com>
+Reply-To: mattathias.pinchover@uber.com
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7DF134000B
+X-Stat-Signature: s9tgj1g13arhum991uwkm4s6z8hg7r8b
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: es5go4hci9s456zj8mrjaebcn7zm1cwb
-X-HE-Tag: 1794855523-780039
-X-HE-Meta: U2FsdGVkX1+bfzuJbn2Arb770kQkytDTEpoYwIEHq7U8sljzACtVYXEo1QZvpKmPSkk2XjMKpQacmqCOMZfgpQFnl7vH8uhFaU89vgR6Cgt84z5uKJ7ZB3X5Uim8bmaraW6deWOCYmadxU/8BeShfZdpxqtZ4kZSOInUbrlu7MwShAtmXTZobnBbBe0FoVjbos1acJMoeT1HbD+NUv7TW6tQ4z7FvUijFnMbZMNaijCosakZjz38h/daJyEtM/Yg84y7oa/kYWmVqi8hO79UOdFKEJEvSx+hUZrkThhIi8YeNxYJMrQzyCBQtjghb4BP+ePy7QxTZW6ovtJH+TBHS5QJaAmA8Py0brgyAEiIumproaZxKBxMgvEwkCtxjiLqxOKqX5Yv8J26+ZM5qgp18CRTsLRTvR1tp8xqURdRI/8nU0ixyaZP/Hm9o38M0Ta2SIc6d8smP4BmWdSiGt+X0hNVmVLoRhOkrgcs7BGFwIpAZJGP1er4vUphkDB9cvLneUIFYoModLq4+MFbYqdBTLBrtTOikP9JNJ/g/HPCwZ4WRjk0km/x4TdM/bZUJwC47jhKJvXyKkXQaBuIb1rssB3CQp1EDDf4lRG9d6rwdNcMVKicqYbqKBNvDT2x72DjkfM+XfBchbBtpJl1WpR937f5TIKicC3pAAjZNZFUFTrJxwYI+vvX8k2aZ48IjVf23ogzLSsICDSVgvtdGDHxVS2kxEfl5eKXPq9nn5ahtAj63w3CiqdK/0BjF4cA2VxRbFaCP28VQBkA/dSTPJ1mZeTjMapWHoJ6AONf3aLpeyTeSwnRZ3jj9bFoCmFoBhd9qJfHPotAiLfQXWYidJpRU0rsGSFs9zaPDcJfiJ6tEbytbXVZ2sjm4InX1izckXMiAdpzSPRPo5JVgqmEhuod5hCfctj8FrkNuYiRqZwAkt6Cf8ur9z6+bieJwVnqQVWN2559r2cJkv0aKvyhDm4
- G+Pvjx+0
- ajTlp426erxImfOhdCGb4CeTzXAWEWXoJ3k3NIeMpOn11V/Th50s9zXqt/pDciiQ0n425K5a6jTb+MahykxfK66DFjwCIedW03Rko4+15U/mEyMemgbdeFYAdfKkK+54xx5QBoORKcvuPzHQQEbt/pirpRqSNdHkIgXGZhrV14ZW9ZH7JozSdbkQJzW2wBJiQe/g8Xl6B8VX/cCW/7OF8i6bkmV3cz6iPDwpXuDKGZDLZQAB1SxSO9DDXxyCSNbyMyM/qPlfuLtYJ1vaMknEbVy10FXirRZoVJsYbfFVz6tKhaZvlvj6U7S/UgCKUANdTgkhiXI6tjY+CBJRiZ0YZbOrevLAzaI4s5q/IdH/pTxGGnpTod4e62nTcGHxFe02zAAOVMYGQq+FTELYJzFEp0x1lnlVHYYW2dPeUFjZY0OCx8mdICPCAmK3zHBf7fQIrxKiJRdm3BOk6lhbyo17LfAURkH3Upy4FiXV2ND6YsYi9hgimBviX0i3A2m1xiivv9XFZYTvdufPp6VsXL+yKg4OQ8A==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1794856222-158144
+X-HE-Meta: U2FsdGVkX19vtJWS+2JRwAeHEzP+pscbjZuHsc4C7UxY3tGbAZu6zqCnV4EbSQUqTFQEv8KrJ+PkZaEQOtbJzBZoE1XDjsAMNzZPPz/qSEdGSAafG7kOKg4Pk72/5HjZPIf9RmR3+Q8WNK3l1wrdjY2p8Y9hwbakCZwd0g+dbUJFDBPon7xYo20IzoxidH2l4iXHhzhc8x2kATDNhMlqqchMrZ3pH3PxG1JXAqU7EDwSxjUXBIKdKKG2uywJGA9vPbEFIMyf8g0S6ThpvkvJhMcE7tcizTqAoDOrIIWNpRR1xdJOSl92KUTDpd+wON7JT8fC0U9xTGv1KZGIkXtGWIM5EKuMwdVLqlws+D6nFQMEEY/1EzK2stPmZr+GpNUX9a4qo8hKnYtGAfenf71WCQlj76p+1tCa5petICUVIjipENlf2qnmL8i4Urzj9pfIoW6vK4cUET2vD+oeWf+AIiEQF6yzSuHqujAjO2AVfJJtAYWJJ5rkXH1/4DVH2jtAtlDsKS7YKh0p1z/LQ9kFJMg8crzTSPbkcdG7PnHdPnwKnYRiusIEUS31iojxA+bOTDY6HJ2GSCYJ450onhH9aW/+pEPZc0ZbP/AKqLMZP1ZIvmC9yRRUo0zXexB3ZaSr0GLRwP9ZP1T5bnnZrlq3GiZ4Nihuu4hv0llwPK0oBnO6fOua9YbOoiAF6sqp0FOSuCbsCwbcNL417mocrjwpCc9wrfeV41Ougf09SiiuLlM4hU3Mn0pCzQo4v5z/lbXGdg/6i8M41BkGPOH/x/W2yk2Vo/4iWwFKRf/DBWYI/24bfXe9Ywke72BTYKxVxUl2jmw44flQTwdSQsbF9uFr1G+UtaQ9H+L6k94HpfUqdPHvfRq9bftHEWQ6aQCGUK/HAUE7LALhVoGjmO1L0RRZNdiSUoRyTYyik5IZ5w70HVTb0XzbbfiqEBjvfh2Fvb3DIj0mX24EIoKMtv91CWW
+ wiq/F4uT
+ kS67l73zABFNFThkKvJn2b++GQhnulWWpOdHyAm6mzbpoOuabTZ6ranfELcQIepxf9LihtPFWvXYoEFm+lwsxvUUpr15XdB5+ZnXwLVsAzqNQZDkGV3Cz6iMcJPBTIjRbMsJfAmFKorNbYrWNq7DGNTfnCKqgtGWm22LaAppyYa3WWAkcrR7CalhMOVIse/1EnDrgT33jn38vRqUhg9jhcavUZmZH8/l806Dyl15HTvm7AYbd+JXBCUGryjyjV3X9YyCpOKkddKRgG++KJHq998PrrSpnKJnpouEg4pF6JXKaMyF8tjQIDdE+ZmQM0Ep0MxtnZ8NH6wRKCxoW3OKFpl5mYIITQrisLU/iT/sap1IpUucJNVbLxFeXPQQ+9b2J0Qhi8GDx440amvRc/i0fM7SA7WRF8/hFweS9okMkQquqFJOlMjkjEUAO5X3/phppop2YDNUuezyiH5On4OU/2/8kjso2qjCuYGF8UMFfH5LRrk7zXPQmbTO7fA85BMuijB5QWobP1MdjE+phwddYfzfFCDSA5xnVB85V3u7CawQfOZTdGemSmNwJkenv1vUY4r6vPs1rpPEhZ4HbnXfXWCSajw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,41 +140,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 16 Nov 2026, at 1:34, Usama Arif wrote:
+From: Mattathias Pinchover <mattathias.pinchover@uber.com>
 
-> migrate_vma_split_unmapped_folio() takes an extra folio reference because
-> split_huge_pmd_address(..., true) drops one when it splits a PMD.
->
-> However, migrate_vma only holds mmap_lock for reading. A concurrent
-> MADV_DONTNEED can clear the migration PMD, or split it into PTE migration
-> entries, before the split helper takes the PMD lock. The helper then does
-> nothing and leaves the extra reference behind. folio_split_unmapped()
-> fails with -EAGAIN due to the unexpected reference, and the reference is
-> never dropped, so the source THP is leaked.
->
-> If a THP is faulted in at the same address inside that window it is
-> worse: freeze = true replaces the new folio's mappings with migration
-> entries that nothing will ever remove, and drops a reference the caller
-> never took.
->
-> An existing migration PMD is expanded into PTE migration entries even
-> with freeze = false. Use that mode and remove the extra folio_get(). The
-> reference already held by migration keeps the source folio alive whether
-> or not its PMD migration entry still exists.
->
-> Reported-by: Zi Yan <ziy@nvidia.com>
-> Closes: https://lore.kernel.org/all/DLZ48KMS7YG8.3BTM0UUU8CTU2@nvidia.com/
-> Fixes: 4265d67e405a ("mm/migrate_device: add THP splitting during migration")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  mm/migrate_device.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
->
-Thank you for fixing it.
+Introduce a new DAMON sysfs interface file for exposing the newly added
+DAMOS stat, sz_ops_filter_passed_last.  The file has the same
+name as the stat and is placed under the DAMOS stats directory.  Like
+other stats files, it is updated when the stats are refreshed via
+refresh_ms or the update_schemes_stats command.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Mattathias Pinchover <mattathias.pinchover@uber.com>
+---
+ mm/damon/sysfs-schemes.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Best Regards,
-Yan, Zi
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 230987efac3a..fe33189e8802 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -370,6 +370,7 @@ struct damon_sysfs_stats {
+ 	unsigned long nr_applied;
+ 	unsigned long sz_applied;
+ 	unsigned long sz_ops_filter_passed;
++	unsigned long sz_ops_filter_passed_last;
+ 	unsigned long qt_exceeds;
+ 	unsigned long nr_snapshots;
+ 	unsigned long max_nr_snapshots;
+@@ -425,6 +426,15 @@ static ssize_t sz_ops_filter_passed_show(struct kobject *kobj,
+ 	return sysfs_emit(buf, "%lu\n", stats->sz_ops_filter_passed);
+ }
+ 
++static ssize_t sz_ops_filter_passed_last_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
++{
++	struct damon_sysfs_stats *stats = container_of(kobj,
++			struct damon_sysfs_stats, kobj);
++
++	return sysfs_emit(buf, "%lu\n", stats->sz_ops_filter_passed_last);
++}
++
+ static ssize_t qt_exceeds_show(struct kobject *kobj,
+ 		struct kobj_attribute *attr, char *buf)
+ {
+@@ -485,6 +495,10 @@ static struct kobj_attribute damon_sysfs_stats_sz_applied_attr =
+ static struct kobj_attribute damon_sysfs_stats_sz_ops_filter_passed_attr =
+ 		__ATTR_RO_MODE(sz_ops_filter_passed, 0400);
+ 
++static struct kobj_attribute
++damon_sysfs_stats_sz_ops_filter_passed_last_attr =
++		__ATTR_RO_MODE(sz_ops_filter_passed_last, 0400);
++
+ static struct kobj_attribute damon_sysfs_stats_qt_exceeds_attr =
+ 		__ATTR_RO_MODE(qt_exceeds, 0400);
+ 
+@@ -500,6 +514,7 @@ static struct attribute *damon_sysfs_stats_attrs[] = {
+ 	&damon_sysfs_stats_nr_applied_attr.attr,
+ 	&damon_sysfs_stats_sz_applied_attr.attr,
+ 	&damon_sysfs_stats_sz_ops_filter_passed_attr.attr,
++	&damon_sysfs_stats_sz_ops_filter_passed_last_attr.attr,
+ 	&damon_sysfs_stats_qt_exceeds_attr.attr,
+ 	&damon_sysfs_stats_nr_snapshots_attr.attr,
+ 	&damon_sysfs_stats_max_nr_snapshots_attr.attr,
+@@ -3130,6 +3145,8 @@ void damon_sysfs_schemes_update_stats(
+ 		sysfs_stats->sz_applied = scheme->stat.sz_applied;
+ 		sysfs_stats->sz_ops_filter_passed =
+ 			scheme->stat.sz_ops_filter_passed;
++		sysfs_stats->sz_ops_filter_passed_last =
++			scheme->stat.sz_ops_filter_passed_last;
+ 		sysfs_stats->qt_exceeds = scheme->stat.qt_exceeds;
+ 		sysfs_stats->nr_snapshots = scheme->stat.nr_snapshots;
+ 	}
+
+-- 
+2.54.0-uber3
+
+
 
