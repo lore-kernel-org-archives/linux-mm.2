@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000E6606A333
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A36606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 12:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BWGzDCEU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YgNre3ol
 Received: by kanga.kvack.org (Postfix)
-	id 19D6B6B05B0; Mon, 16 Nov 2026 07:48:47 -0500 (EST)
+	id 0163A6B05B1; Mon, 16 Nov 2026 07:48:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1766D6B05B2; Mon, 16 Nov 2026 07:48:47 -0500 (EST)
+	id F08D16B05B2; Mon, 16 Nov 2026 07:48:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091A26B05B3; Mon, 16 Nov 2026 07:48:47 -0500 (EST)
+	id DF9006B05B3; Mon, 16 Nov 2026 07:48:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D2AEB6B05B0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:48:46 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD2E312063F
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:44 +0000 (UTC)
-X-FDA: 85440961368.28.5FF86C0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B150E6B05B1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:48:50 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2ECCC160666
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:50 +0000 (UTC)
+X-FDA: 85440961620.07.8E02D09
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2F362100007
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWGzDCEU;
-	spf=pass (imf05.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 700E420009
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:48:48 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YgNre3ol;
+	spf=pass (imf31.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794833323;
-	b=rpVw1fGdQKIqFq1ayWFMzjfL/ODdQlZXE6BqheQejnLSh4dzJ3/lp4j2PsAvFTrQyX8hqC
-	plPOSEjZXuRFlPuvMAir2FYzRWmCV/1iqhcZLs15icVVcHeqa88TgiPHkE7n7yGU10mIwc
-	fadSxZgM78qRm73QdP4jEg92wcHCAXE=
+	t=1794833328;
+	b=11qzt+t4WabSIVuiM+KcfUskVopvBnumcUO5mA4q0CfWTp73prQeTRDhoM7ENL65TuclQT
+	C19521pyLepx6LHaXmAh9kkYfzdY0Ap2R0Q6iIsFqk6AeWPyrTTejyhEFly7wCoK+25YXi
+	OsIoKbINTaWWVJmJV+7t2HDnhz1KZeE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWGzDCEU;
-	spf=pass (imf05.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YgNre3ol;
+	spf=pass (imf31.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794833323;
+	s=arc-20220608; t=1794833328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=cHwboy1N0wyypiMyN1HkFeKrDxUYIhWj1+v6URlvrGU=;
-	b=lhox+kt+0LRBkbB6s7vJoLYWYIAnE3k1kyk++zfzN/Lgxm/4PBSoOpTq8wnX5W6DnG3yl8
-	CbTIXylNRNBvteNMYkMCE8LMyOQGV+a7+uUo5ivUm08rzWcbys+gFxV+LzYSg1e78XP2XW
-	7O7aWPrU1nW5FMRXxipmUZ9qAUNSIZk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AEdbrDpSY9Pd3S9BWm3ULK03VyrCamVgAGp+ra9Lmx0=;
+	b=ZnsHTaepxEEDSR46Ks+SnCb/26NXSUbmiOWE4wMzRBAn3WMwp93yHSBkQema/O1cLTD3Nk
+	c5tlX0Gkl1/RGQJbkFf22+SKJR7j6oUVC+JGfxgshzlCq9pbljhBZuH+5FNwpVZxwmvmJ9
+	qBPEWAQuoJrx3T5dk6r9dvZW2DC592o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AFAA34039F;
+	by sea.source.kernel.org (Postfix) with ESMTP id B91A14173F;
+	Mon, 16 Nov 2026 12:48:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C551F000C4;
 	Mon, 16 Nov 2026 12:48:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF3E1F000C4;
-	Mon, 16 Nov 2026 12:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794833321;
-	bh=cHwboy1N0wyypiMyN1HkFeKrDxUYIhWj1+v6URlvrGU=;
-	h=From:To:Cc:Subject:Date;
-	b=BWGzDCEUKXr34v4C6Dho8x9jma12SCGGbn8RtpnP3qX45i9pqa/vtpEIy71wryEv4
-	 IDWOk5oa3ya3mNqxy+6UT4i70X+uEAWGil+v6ZahGuzUlfN6VIcqcuIrhrZIOo/ekd
-	 EV+YXnEY6Cul1fybgHnM8yGocWvdjRFqe1EMtnbAU3dHGFdRStQauSRRT2AvWZgWgS
-	 +CxxyH2MmUe3+drsDMXbdVpGvCSVANx8OaC9LoJ0Ma8LURv8oUrYUeQ3kK++srZffw
-	 nHuLhWyZR7lw1gAqOMkhLwFNYtFfmVEA6Wq+X7rs6NMUj51o4mJUC4azDZ6J4FQ1Hj
-	 5dUfR3eSzgLFA==
+	s=k20260515; t=1794833327;
+	bh=AEdbrDpSY9Pd3S9BWm3ULK03VyrCamVgAGp+ra9Lmx0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YgNre3olTDL+L3EqSJ2fguQ6R5Iw3GpYLOGZWUqcBnW5w67naYqxfzkcHPO6vRrPg
+	 TAHFZjJjzp2t4fwlyZoZGXe1iVB8r4SwhKTIRgUT1ECiSXCGsTpMsZpLKtPtdnWmck
+	 FDjt82BU7gQz2QlQSYlTx+UmhjufBCKECVJKod6TRtUz9S8MnBGci1fmgCxlwhH0gX
+	 6jSOI7srsGM9usgpjMNUavaA9sWcM4j8pZclWM+T4PxBlwxWa1q3F+pU0JArTl0/x3
+	 yGZ33ixft9GStsv7/pqYV+yjYB29LllzVlp7qiCr1cj2G5pvtA/H2AuJCg0bNU05Yh
+	 kC1Cs31JiD9fg==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-mm@kvack.org
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -89,26 +89,28 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linux-fsdevel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	x86@kernel.org
-Subject: [PATCH v3 00/10] mm: highmem cleanups
-Date: Mon, 16 Nov 2026 13:48:22 +0100
-Message-ID: <20261116124832.662455-1-arnd@kernel.org>
+Subject: [PATCH v3 01/10] ARM: remove support for highmem on VIVT
+Date: Mon, 16 Nov 2026 13:48:23 +0100
+Message-ID: <20261116124832.662455-2-arnd@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261116124832.662455-1-arnd@kernel.org>
+References: <20261116124832.662455-1-arnd@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: prem5ubnh8yeh4ca7jxroox58cjuz3td
-X-Rspamd-Queue-Id: 2F362100007
+X-Stat-Signature: 4emyi6kiifsf8sy8w4fqg6efkbna5yb1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 700E420009
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794833323-290281
-X-HE-Meta: U2FsdGVkX1/BU+BmF4pbywIgJy6ApkiNnDv+mZAZY++3O7tcftW5c8QE1mZZEgegbO6sKA+nsV8mBq+nphVEgvlEHSpnqSNJCg2zSZ43RVURt0BYWmrpKhfLaZsTlNQZxiAoj1E1wi8gnHS0RcYGsAV3oJ0TSgDmQbTWkymGbHpKEPU1X7Jm3jzzADvBHRTms6ZdYRkRIVzbjCUSakgeumnwJ1zRGAP4VKYZ/ZSnoWAgAD5kt4LpYkvb0uwugd4jhlVaKWYg4oLLyzJYB5c87uBu0DORxZAhnFal3UNoVQhAOeVI1pj4N6Yp68mHo7FMjJsT+NFS+sBvoHThW3Io9Dcj9v3YJqnBkR6MLNX5JEX573sUbHXr8C8tFQVtGDZ3jZaTcMg8GDAUlb9j/SeMj54dhQwgW+ogSHvQ4VGqWTG4aiuByDF9HRlzRGIVjknvZgdwz2dP3vgSrOr6RBSRH1A59u8l7JPMNQzSsyJaackJNbLdWUjWaR0iYKPwYn7QXGAX+9osEmcFa16LaLts1T8ur8aatG4bEeKjAYsLxw6xRb34Ia+ZQ71qrBbDXC6S8Ed7l/b9MA3tdT+2fWDNWUfGdYxKOMEoK8EvaUgWvwUkLSwl6T+yX5dNJcCVSfZnwqNTDvIIe+BT0eZ9Y2o5pTb7ZlcAxQbLOGJ6AW+TBGY7Qr9NI5fYCtMol88x8td1MD2qtMjknlczHO4J5pIxHpP+u80x/nFVIYW/jcnqBH0kOfK3w4UpaZMLoI+HpLp9EdajVoRO6goI9kAaAo8Jcqne5W/9Gu3mjLhM8X/mfyxu7dO1uDQVPVzzXaYQR1mlTHUfg6x8C3izRzRGdCg89bqRj+5asv+hY01pQUoI04bW7lprhptbthJEbgPiZ2vx40tufj9I6zUkOO9J+JiOygye2ojBNKBM7wz8RoVPN1baTZGHoLl9LA2Nh7DdAtrVt17pfPbU0egaxBEG9Pj
- l6iwR4KG
- H+S4vRBdfDF2yH8tn2J9Ply0shT954lvoDjh8flJvEACNFF+6hAfeB/A/qiML/moh074DwXmT6aMzwY3IOitPOXmZsFxF3Eag9NJ3spn3TZaoHWi/SVAQOk7IofMGHumyvBuQ1zc8E0kGioIQzp/W0HZ2GBbhEGXEKz+JFZ4amPMZd5RbuHjOrpoPoyBwJv0TYR/luDMYxpgtUBm/Mdo/hlkm+gP5qyAmLBzcz8gXDo6LIAwgIXcFkOWEEyobeZYnSswCF5Q3PQ+pGIRqx1hv930NVzJahOU2OC+M5K5D0n9Mg3DFYbfZqwG+jQWcna83yJ4zOC8qVfq1NX0Aax5UuE9y07lfuJc7s6ThZiKm2J5pAPjvCn7saWzzIq6NF9Yz1eF3N9xzuo1rDPoTZY0ifD37E6KYfMww7O2qglZTOvwKylk+8SwtN8zWW6c1NC2obYoWQw4K4JatTPIQUqH4XBNSJoLVffh2VXElnNKdMtkOJh7ConCdnBeErAJkuQwBDKC55dh1uQhnoKxJWaigKj+TZUDlarQ/LXRj/eOfcVNwrWSCTdzGBAa7FBA5xqixERn70x6+KEITWg1jfWAu0ybkw5IgTXe5odztUyg9ddJhPNhDtsyZ4yqB9yNtOfL4L88V0MdwwWpGWFcT6xbOCEfofleuQ0jM6YybJWXsoI2kMw58MTK8vrxfjYOSNp4snH2EXncE87pZRbxSdVBVV3eCwLB03wdJG/SFMIFSQOq2QmZvwmOQ1Ma+7QWp2NawhPglUH3cfnwKBsF7U8fIhCqX05d+Xs51zEqZ/q0gkU9yRixjfeg0rBLcSe77HocWsia4la7jOkIJQpc8nHnGyMTA9x1+u6K/vr9prokkZX/nArMNWP8IVh4Ldo/scnLYeynt4B7Ivt4LNqxHqcYvFKPu4g==
+X-HE-Tag: 1794833328-489679
+X-HE-Meta: U2FsdGVkX19ijAfAE/mVk1z3waHTuoIhMrxIxs+lD/lBcPR8bwUuYO+RgUu9O4DS0h9v2tlI2U+qPBnFhdkPzSal5oJu8O8zs0poRndfx0iFP4b/Fc0KMMazNqFDtqnJiYLTRjpmyWnm5UP3uwPmdSzApwVal1BAbcHcvY3F4CKJIKiqjnvCLlUXStr2n9hiEkISiaN0ZmbscTG44Qe3OoSMhUkZuajfzaAaWfEfQ9TyBlkNv8Myz/GY5/aDLKjhQXj7wWNpTtC9lYlpHYA4oKCkCUUvejG0+B8d+U6y1FDXf07Vca3GI/fTjtKM8phKNCsjuVpmMrTg0H7zIQJKqP48NnGAEfPbssd0f8qNVoxlfaQT+nDBXOJooQiiQw/eFFqLXWAvpDi8LBANbJW7a8JtajI1C2eX3uX0rMnSnoTmDUCe8JAyCmS1X90ua3hmC22wLnrcdHNJn+fpWcIQxJUuwu2R7EAhpTXxnFR7kAScRqLC3hxv8+MRtvjmlYleqXK5UcqhLpd8AmMogLq2WOO4fXT6OIk6Ccv4HKUJnZDKgHYGdNQpqhCNXmJVX5+x1+pkDAKehB440ftx+UL75sFBy1+muwZ6nXyfcn8T5lo4t+JFtKZwdeOuvEyuP/y3C2aVVP36lNiMoH/udWlLWqOwQGMYUwbmD0bkv5Gk3F0lsq1gChJgJ1j9i0+USo2elJBWvZvOU+svpZESUFwBo8u4rUXqKeJOuIgys7cxU4hildss+909RBCMPQnG1l1v4hRNhjIAaGVRzcr5WF/rVnRjksNHXj/fZmYJR0BM6dHfFUkmdUsO8sMWEZo+y+1uuRberyN/i78/3ppInden4vxYQtOyeVQNC2xbace3XDEh6o5EFBRy1jDcAQQIiAepcBInaYr9Da5X5VQ/PFNuZpxHchIscNbYi5LuvvolccjESGYtaSrv0HU8xmRMZXLO6alY/Jzv1tq2vum10NI
+ JodNJjIr
+ Qvov1ldR8wSPTlVjyAzXyLxz710apvyTaE5tPx+AHFEBKjgBJh76VhBzTF5E0AAMa22MKGPcud0o1K0q/Anbjlqh/Ete0RXmy7Raq56p3wTv6yk9jweU2TGzDeRQpErAlApDxHzn2cEA/giSb/Z8yKEielI9bYkayiSXpOzGo8O/CETdGxc+AOehAGL16a5cRYi9RFpJ/Pbk8UyYsSfFyoCDQCxXeJHQjA3Jr/bYCEa6DF/uTiJOXyKq2peI7VuDpc3SK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,160 +121,417 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-This is an updated series from what I posted last year [1] and
-last week[2].
+As Jason Gunthorpe noticed, supporting VIVT caches adds some complications
+to highmem that can be avoided these days:
 
-At LPC 2025 [3], we got rough consensus on the plan to keep the
-funcationality present for the time being but instead reduce the scope
-of highmem in the kernel as much as we can without hurting users.
+While all ARMv4 and ARMv5 CPUs use virtually indexed caches, they no
+longer really need highmem because we have practically discontinued
+support for large-memory configurations already.  The only machines I
+could find anywhere for memory on ARMv5 are:
 
-The short summary is a three stage process:
+ - The Intel IOP platform was used on relatively large memory
+   configurations but we dropped kernel support in 2019 and 2022,
+   respectively.
 
- 1. Nudge users towards using a larger lowmem zone with the
-    CONFIG_VMSPLIT_* options if at all possible.
+ - The Marvell mv78xx0 platform was the initial user of Arm highmem,
+   with the DB-78x00-BP supporting 2GB of memory. The only remaining
+   board file is for Buffalo WLX (Terastation Duo), which has only
+   512MB and is going to be removed soon.
 
- 2. Drop most __GFP_HIGHMEM allocations and corresponding kmap()
-    calls from the kernel, leaving only the subset that is likely
-    to contain the majority of the actual allocations.
-    Specifically we will keep anonymous and regular file backed
-    user mappings, zsmalloc, and huge pages.
+ - The Kirkwood platform supports 2GB, and there are actually boards
+   with that configuration that can still work. However, there are
+   no known users of the OpenBlocks A7, and the Freebox V6 is already
+   using CONFIG_VMSPLIT_2G to avoid enabling highmem.
 
- 3. In a few years, also drop the page cache allocations and leave
-    perhaps only zsmalloc using a much simpler interface.  I suggested
-    five years as the time until we do this, but the timing depends a
-    lot on how the first two stages work out in practice, and how long
-    the remaining highmem users plan to keep updating their kernels.
+Remove the Arm specific portions here, making CONFIG_HIGHMEM conditional
+on modern caches. Since the cache type is enforced by Kconfig, no
+boot time check is needed here.
 
-This series implements stage 1, mostly using Kconfig changes to the
-default settings but leaving the traditional behavior as a CONFIG_EXPERT
-choice in Kconfig. With the new defaults, most installations that use
-highmem today with 1 GiB or 2 GiB of system RAM will see all of their
-RAM in the lowmem zone after upgrading their kernels. My estimate is
-that instead of 80% to 90% of maintained embedded 32-bit systems, this
-should cover over 98%.
+Link: https://lore.kernel.org/all/20251219171412.GG254720@nvidia.com/
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/arm/Kconfig                    |  1 +
+ arch/arm/configs/gemini_defconfig   |  1 -
+ arch/arm/configs/multi_v5_defconfig |  1 -
+ arch/arm/configs/mvebu_v5_defconfig |  1 -
+ arch/arm/include/asm/highmem.h      | 56 ++---------------------------
+ arch/arm/mm/cache-feroceon-l2.c     | 31 ++--------------
+ arch/arm/mm/cache-xsc3l2.c          | 47 +++---------------------
+ arch/arm/mm/dma-mapping.c           | 12 ++-----
+ arch/arm/mm/flush.c                 | 19 +++-------
+ 9 files changed, 16 insertions(+), 153 deletions(-)
 
-As I don't actually have hardware in the category that still needs
-highmem, I tested this using a qemu-system for Armv7 and PPC6xx running a
-Debian userland with all combinations of VMSPLIT and HIGHMEM options. I
-ran some kernel builds on the Arm guest to ensure that the new options
-don't cause functional or performance regressions for regular workloads
-that don't exceed the virtual address space. I also ran some tests
-with Firefox and was positively surprised to see that this still works
-on the VMSPLIT_2G_OPT configuration without highmem, though it gets
-close to both the address space and lowmem size limits.
-
-The change to use VMSPLIT_3G_OPT by default on Armv5 means that I could
-include a patch to no longer support highmem at all on VIVT caches,
-as suggested by Jason Gunthorpe. I also included the patch to drop
-HIGHPTE support now, as suggested by David Hildenbrand.
-
-The patches from this series are available in [4] for testing.
-
-Once there are no further concerns about the contents, I would
-suggest merging this through the asm-generic tree, as it touches
-mostly architecture specific code and that is not easily split
-from the core mm/* code. Merging everything through the mm
-tree would of course also work.
-
-     Arnd
-
-[1] https://lore.kernel.org/all/20251219161559.556737-1-arnd@kernel.org/  # v1
-[2] https://lore.kernel.org/all/20261112112528.1116405-1-arnd@kernel.org/ # v2
-[3] https://lwn.net/Articles/1051010/
-[4] https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=highmem-7.4
-
-Changes since v2:
-
- - Add preparation patch for Arm PXA [sashiko-bot] 
- - Add preparation patch for powerpc32/kvm [sashiko-bot]
- - Fix Arm ARCH_MMAP_RND_BITS_MAX calculation [sashiko-bot]
- - Simplification for pte_alloc_one() [Mike Rapoport]
- - Drop stale references to highpte [David Hildenbrand]
- - improve __print_bad_page_map_pgtable()
- - Split out Arm changes for CONFIG_VMSPLIT_2G_OPT
-
-Changes since v1:
- - rebase to v7.4-rc
- - add patch to drop highpte
-
-Arnd Bergmann (10):
-  ARM: remove support for highmem on VIVT
-  ARM: drop CONFIG_HIGHPTE support
-  ARM: pxa: support arbitrary PAGE_OFFSET
-  powerpc: kvm: allow flexible PAGE_OFFSET
-  arch/*: increase lowmem size to avoid highmem use
-  ARM: add CONFIG_VMSPLIT_2G_OPT option
-  ARM: defconfig: turn off highmem in favor of CONFIG_VMSPLIT_2G_OPT
-  mm: remove ARCH_NEEDS_KMAP_HIGH_GET
-  mm: drop HIGHPTE support altogether
-  mm: print pte in __print_bad_page_map_pgtable()
-
- arch/arm/Kconfig                            |  27 +++---
- arch/arm/configs/aspeed_g5_defconfig        |   3 +-
- arch/arm/configs/gemini_defconfig           |   1 -
- arch/arm/configs/lpae.config                |   1 +
- arch/arm/configs/multi_v5_defconfig         |   1 -
- arch/arm/configs/multi_v7_defconfig         |   1 +
- arch/arm/configs/mvebu_v5_defconfig         |   1 -
- arch/arm/configs/omap2plus_defconfig        |   1 +
- arch/arm/configs/u8500_defconfig            |   1 -
- arch/arm/configs/vt8500_v6_v7_defconfig     |   2 -
- arch/arm/include/asm/highmem.h              |  56 +----------
- arch/arm/include/asm/pgalloc.h              |  13 +--
- arch/arm/mach-omap2/Kconfig                 |   1 -
- arch/arm/mach-pxa/pxa3xx.c                  |   2 +-
- arch/arm/mm/cache-feroceon-l2.c             |  31 +-----
- arch/arm/mm/cache-xsc3l2.c                  |  47 +--------
- arch/arm/mm/dma-mapping.c                   |  12 +--
- arch/arm/mm/flush.c                         |  19 +---
- arch/microblaze/Kconfig                     |   9 +-
- arch/microblaze/configs/mmu_defconfig       |   1 -
- arch/powerpc/Kconfig                        |  24 +++--
- arch/powerpc/configs/44x/akebono_defconfig  |   1 -
- arch/powerpc/configs/85xx/ksi8560_defconfig |   1 -
- arch/powerpc/configs/85xx/stx_gp3_defconfig |   1 -
- arch/powerpc/kvm/book3s_32_sr.S             |   4 +-
- arch/powerpc/kvm/booke_interrupts.S         |   4 +-
- arch/powerpc/kvm/e500_mmu_host.c            |   3 +-
- arch/x86/Kconfig                            |   4 +-
- include/linux/hugetlb.h                     |   5 +-
- include/linux/mm.h                          |   1 -
- include/linux/pgtable.h                     |  13 ---
- mm/highmem.c                                | 100 ++------------------
- mm/memory.c                                 |  21 ++--
- mm/pgtable-generic.c                        |  25 +++--
- mm/userfaultfd.c                            |   6 +-
- 35 files changed, 104 insertions(+), 339 deletions(-)
-
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 0cc289a7184a..fd01ccab9c12 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1208,6 +1208,7 @@ config ARCH_SPARSEMEM_ENABLE
+ config HIGHMEM
+ 	bool "High Memory Support"
+ 	depends on MMU
++	depends on !CPU_CACHE_VIVT
+ 	select KMAP_LOCAL
+ 	select KMAP_LOCAL_NON_LINEAR_PTE_ARRAY
+ 	help
+diff --git a/arch/arm/configs/gemini_defconfig b/arch/arm/configs/gemini_defconfig
+index 5860b2fe7d1f..95debf46581b 100644
+--- a/arch/arm/configs/gemini_defconfig
++++ b/arch/arm/configs/gemini_defconfig
+@@ -11,7 +11,6 @@ CONFIG_KEXEC=y
+ CONFIG_ARCH_MULTI_V4=y
+ # CONFIG_ARCH_MULTI_V7 is not set
+ CONFIG_ARCH_GEMINI=y
+-CONFIG_HIGHMEM=y
+ CONFIG_CMDLINE="console=ttyS0,115200n8"
+ CONFIG_PM=y
+ CONFIG_PARTITION_ADVANCED=y
+diff --git a/arch/arm/configs/multi_v5_defconfig b/arch/arm/configs/multi_v5_defconfig
+index a0d2fb2fcf9a..bc34b6026e37 100644
+--- a/arch/arm/configs/multi_v5_defconfig
++++ b/arch/arm/configs/multi_v5_defconfig
+@@ -27,7 +27,6 @@ CONFIG_MACH_D2NET_DT=y
+ CONFIG_MACH_MSS2_DT=y
+ CONFIG_ARCH_SUNXI=y
+ CONFIG_ARCH_VERSATILE=y
+-CONFIG_HIGHMEM=y
+ CONFIG_ARM_APPENDED_DTB=y
+ CONFIG_ARM_ATAG_DTB_COMPAT=y
+ CONFIG_CPU_FREQ=y
+diff --git a/arch/arm/configs/mvebu_v5_defconfig b/arch/arm/configs/mvebu_v5_defconfig
+index dbc6c511e70b..5adf6c75304e 100644
+--- a/arch/arm/configs/mvebu_v5_defconfig
++++ b/arch/arm/configs/mvebu_v5_defconfig
+@@ -13,7 +13,6 @@ CONFIG_MACH_RD88F5182_DT=y
+ CONFIG_MACH_LINKSTATION_MINI=y
+ CONFIG_MACH_D2NET_DT=y
+ CONFIG_MACH_MSS2_DT=y
+-CONFIG_HIGHMEM=y
+ CONFIG_ARM_APPENDED_DTB=y
+ CONFIG_ARM_ATAG_DTB_COMPAT=y
+ CONFIG_CPU_FREQ=y
+diff --git a/arch/arm/include/asm/highmem.h b/arch/arm/include/asm/highmem.h
+index bdb209e002a4..67ed46d1922b 100644
+--- a/arch/arm/include/asm/highmem.h
++++ b/arch/arm/include/asm/highmem.h
+@@ -11,66 +11,14 @@
+ #define PKMAP_NR(virt)		(((virt) - PKMAP_BASE) >> PAGE_SHIFT)
+ #define PKMAP_ADDR(nr)		(PKMAP_BASE + ((nr) << PAGE_SHIFT))
+ 
+-#define flush_cache_kmaps() \
+-	do { \
+-		if (cache_is_vivt()) \
+-			flush_cache_all(); \
+-	} while (0)
++#define flush_cache_kmaps() do { } while (0)
+ 
+ extern pte_t *pkmap_page_table;
+ 
+-/*
+- * The reason for kmap_high_get() is to ensure that the currently kmap'd
+- * page usage count does not decrease to zero while we're using its
+- * existing virtual mapping in an atomic context.  With a VIVT cache this
+- * is essential to do, but with a VIPT cache this is only an optimization
+- * so not to pay the price of establishing a second mapping if an existing
+- * one can be used.  However, on platforms without hardware TLB maintenance
+- * broadcast, we simply cannot use ARCH_NEEDS_KMAP_HIGH_GET at all since
+- * the locking involved must also disable IRQs which is incompatible with
+- * the IPI mechanism used by global TLB operations.
+- */
+-#define ARCH_NEEDS_KMAP_HIGH_GET
+-#if defined(CONFIG_SMP) && defined(CONFIG_CPU_TLB_V6)
+-#undef ARCH_NEEDS_KMAP_HIGH_GET
+-#if defined(CONFIG_HIGHMEM) && defined(CONFIG_CPU_CACHE_VIVT)
+-#error "The sum of features in your kernel config cannot be supported together"
+-#endif
+-#endif
+-
+-/*
+- * Needed to be able to broadcast the TLB invalidation for kmap.
+- */
+-#ifdef CONFIG_ARM_ERRATA_798181
+-#undef ARCH_NEEDS_KMAP_HIGH_GET
+-#endif
+-
+-#ifdef ARCH_NEEDS_KMAP_HIGH_GET
+-extern void *kmap_high_get(const struct page *page);
+-
+-static inline void *arch_kmap_local_high_get(const struct page *page)
+-{
+-	if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM) && !cache_is_vivt())
+-		return NULL;
+-	return kmap_high_get(page);
+-}
+-#define arch_kmap_local_high_get arch_kmap_local_high_get
+-
+-#else /* ARCH_NEEDS_KMAP_HIGH_GET */
+-static inline void *kmap_high_get(const struct page *page)
+-{
+-	return NULL;
+-}
+-#endif /* !ARCH_NEEDS_KMAP_HIGH_GET */
+-
+ #define arch_kmap_local_post_map(vaddr, pteval)				\
+ 	local_flush_tlb_kernel_page(vaddr)
+ 
+-#define arch_kmap_local_pre_unmap(vaddr)				\
+-do {									\
+-	if (cache_is_vivt())						\
+-		__cpuc_flush_dcache_area((void *)vaddr, PAGE_SIZE);	\
+-} while (0)
++#define arch_kmap_local_pre_unmap(vaddr) do { } while (0)
+ 
+ #define arch_kmap_local_post_unmap(vaddr)				\
+ 	local_flush_tlb_kernel_page(vaddr)
+diff --git a/arch/arm/mm/cache-feroceon-l2.c b/arch/arm/mm/cache-feroceon-l2.c
+index 2bfefb252ffd..1316b6ab295a 100644
+--- a/arch/arm/mm/cache-feroceon-l2.c
++++ b/arch/arm/mm/cache-feroceon-l2.c
+@@ -12,7 +12,6 @@
+ #include <linux/init.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/highmem.h>
+ #include <linux/io.h>
+ #include <asm/cacheflush.h>
+ #include <asm/cp15.h>
+@@ -38,30 +37,6 @@
+  * between which we don't want to be preempted.
+  */
+ 
+-static inline unsigned long l2_get_va(unsigned long paddr)
+-{
+-#ifdef CONFIG_HIGHMEM
+-	/*
+-	 * Because range ops can't be done on physical addresses,
+-	 * we simply install a virtual mapping for it only for the
+-	 * TLB lookup to occur, hence no need to flush the untouched
+-	 * memory mapping afterwards (note: a cache flush may happen
+-	 * in some circumstances depending on the path taken in kunmap_atomic).
+-	 */
+-	void *vaddr = kmap_atomic_pfn(paddr >> PAGE_SHIFT);
+-	return (unsigned long)vaddr + (paddr & ~PAGE_MASK);
+-#else
+-	return __phys_to_virt(paddr);
+-#endif
+-}
+-
+-static inline void l2_put_va(unsigned long vaddr)
+-{
+-#ifdef CONFIG_HIGHMEM
+-	kunmap_atomic((void *)vaddr);
+-#endif
+-}
+-
+ static inline void l2_clean_pa(unsigned long addr)
+ {
+ 	__asm__("mcr p15, 1, %0, c15, c9, 3" : : "r" (addr));
+@@ -78,14 +53,13 @@ static inline void l2_clean_pa_range(unsigned long start, unsigned long end)
+ 	 */
+ 	BUG_ON((start ^ end) >> PAGE_SHIFT);
+ 
+-	va_start = l2_get_va(start);
++	va_start = __phys_to_virt(start);
+ 	va_end = va_start + (end - start);
+ 	raw_local_irq_save(flags);
+ 	__asm__("mcr p15, 1, %0, c15, c9, 4\n\t"
+ 		"mcr p15, 1, %1, c15, c9, 5"
+ 		: : "r" (va_start), "r" (va_end));
+ 	raw_local_irq_restore(flags);
+-	l2_put_va(va_start);
+ }
+ 
+ static inline void l2_clean_inv_pa(unsigned long addr)
+@@ -109,14 +83,13 @@ static inline void l2_inv_pa_range(unsigned long start, unsigned long end)
+ 	 */
+ 	BUG_ON((start ^ end) >> PAGE_SHIFT);
+ 
+-	va_start = l2_get_va(start);
++	va_start = __phys_to_virt(start);
+ 	va_end = va_start + (end - start);
+ 	raw_local_irq_save(flags);
+ 	__asm__("mcr p15, 1, %0, c15, c11, 4\n\t"
+ 		"mcr p15, 1, %1, c15, c11, 5"
+ 		: : "r" (va_start), "r" (va_end));
+ 	raw_local_irq_restore(flags);
+-	l2_put_va(va_start);
+ }
+ 
+ static inline void l2_inv_all(void)
+diff --git a/arch/arm/mm/cache-xsc3l2.c b/arch/arm/mm/cache-xsc3l2.c
+index d20d7af02d10..477077387039 100644
+--- a/arch/arm/mm/cache-xsc3l2.c
++++ b/arch/arm/mm/cache-xsc3l2.c
+@@ -5,7 +5,6 @@
+  * Copyright (C) 2007 ARM Limited
+  */
+ #include <linux/init.h>
+-#include <linux/highmem.h>
+ #include <asm/cp15.h>
+ #include <asm/cputype.h>
+ #include <asm/cacheflush.h>
+@@ -55,34 +54,6 @@ static inline void xsc3_l2_inv_all(void)
+ 	dsb();
+ }
+ 
+-static inline void l2_unmap_va(unsigned long va)
+-{
+-#ifdef CONFIG_HIGHMEM
+-	if (va != -1)
+-		kunmap_atomic((void *)va);
+-#endif
+-}
+-
+-static inline unsigned long l2_map_va(unsigned long pa, unsigned long prev_va)
+-{
+-#ifdef CONFIG_HIGHMEM
+-	unsigned long va = prev_va & PAGE_MASK;
+-	unsigned long pa_offset = pa << (32 - PAGE_SHIFT);
+-	if (unlikely(pa_offset < (prev_va << (32 - PAGE_SHIFT)))) {
+-		/*
+-		 * Switching to a new page.  Because cache ops are
+-		 * using virtual addresses only, we must put a mapping
+-		 * in place for it.
+-		 */
+-		l2_unmap_va(prev_va);
+-		va = (unsigned long)kmap_atomic_pfn(pa >> PAGE_SHIFT);
+-	}
+-	return va + (pa_offset >> (32 - PAGE_SHIFT));
+-#else
+-	return __phys_to_virt(pa);
+-#endif
+-}
+-
+ static void xsc3_l2_inv_range(unsigned long start, unsigned long end)
+ {
+ 	unsigned long vaddr;
+@@ -92,13 +63,11 @@ static void xsc3_l2_inv_range(unsigned long start, unsigned long end)
+ 		return;
+ 	}
+ 
+-	vaddr = -1;  /* to force the first mapping */
+-
+ 	/*
+ 	 * Clean and invalidate partial first cache line.
+ 	 */
+ 	if (start & (CACHE_LINE_SIZE - 1)) {
+-		vaddr = l2_map_va(start & ~(CACHE_LINE_SIZE - 1), vaddr);
++		vaddr = __phys_to_virt(start & ~(CACHE_LINE_SIZE - 1));
+ 		xsc3_l2_clean_mva(vaddr);
+ 		xsc3_l2_inv_mva(vaddr);
+ 		start = (start | (CACHE_LINE_SIZE - 1)) + 1;
+@@ -108,7 +77,7 @@ static void xsc3_l2_inv_range(unsigned long start, unsigned long end)
+ 	 * Invalidate all full cache lines between 'start' and 'end'.
+ 	 */
+ 	while (start < (end & ~(CACHE_LINE_SIZE - 1))) {
+-		vaddr = l2_map_va(start, vaddr);
++		vaddr = __phys_to_virt(start);
+ 		xsc3_l2_inv_mva(vaddr);
+ 		start += CACHE_LINE_SIZE;
+ 	}
+@@ -117,13 +86,11 @@ static void xsc3_l2_inv_range(unsigned long start, unsigned long end)
+ 	 * Clean and invalidate partial last cache line.
+ 	 */
+ 	if (start < end) {
+-		vaddr = l2_map_va(start, vaddr);
++		vaddr = __phys_to_virt(start);
+ 		xsc3_l2_clean_mva(vaddr);
+ 		xsc3_l2_inv_mva(vaddr);
+ 	}
+ 
+-	l2_unmap_va(vaddr);
+-
+ 	dsb();
+ }
+ 
+@@ -135,13 +102,11 @@ static void xsc3_l2_clean_range(unsigned long start, unsigned long end)
+ 
+ 	start &= ~(CACHE_LINE_SIZE - 1);
+ 	while (start < end) {
+-		vaddr = l2_map_va(start, vaddr);
++		vaddr = __phys_to_virt(start);
+ 		xsc3_l2_clean_mva(vaddr);
+ 		start += CACHE_LINE_SIZE;
+ 	}
+ 
+-	l2_unmap_va(vaddr);
+-
+ 	dsb();
+ }
+ 
+@@ -178,14 +143,12 @@ static void xsc3_l2_flush_range(unsigned long start, unsigned long end)
+ 
+ 	start &= ~(CACHE_LINE_SIZE - 1);
+ 	while (start < end) {
+-		vaddr = l2_map_va(start, vaddr);
++		vaddr = __phys_to_virt(start);
+ 		xsc3_l2_clean_mva(vaddr);
+ 		xsc3_l2_inv_mva(vaddr);
+ 		start += CACHE_LINE_SIZE;
+ 	}
+ 
+-	l2_unmap_va(vaddr);
+-
+ 	dsb();
+ }
+ 
+diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
+index fb2eb0ed7bb8..917a546af0b9 100644
+--- a/arch/arm/mm/dma-mapping.c
++++ b/arch/arm/mm/dma-mapping.c
+@@ -647,18 +647,10 @@ static void dma_cache_maint_page(phys_addr_t phys, size_t size,
+ 			if (len + offset > PAGE_SIZE)
+ 				len = PAGE_SIZE - offset;
+ 
+-			if (cache_is_vipt_nonaliasing()) {
+-				vaddr = kmap_atomic_pfn(pfn);
++			vaddr = kmap_atomic(phys_to_page(phys));
++			if (vaddr) {
+ 				op(vaddr + offset, len, dir);
+ 				kunmap_atomic(vaddr);
+-			} else {
+-				struct page *page = phys_to_page(phys);
+-
+-				vaddr = kmap_high_get(page);
+-				if (vaddr) {
+-					op(vaddr + offset, len, dir);
+-					kunmap_high(page);
+-				}
+ 			}
+ 		} else {
+ 			phys += offset;
+diff --git a/arch/arm/mm/flush.c b/arch/arm/mm/flush.c
+index 66270904f874..e21c5af6f34c 100644
+--- a/arch/arm/mm/flush.c
++++ b/arch/arm/mm/flush.c
+@@ -208,21 +208,10 @@ void __flush_dcache_folio(struct address_space *mapping, struct folio *folio)
+ 					folio_size(folio));
+ 	} else {
+ 		unsigned long i;
+-		if (cache_is_vipt_nonaliasing()) {
+-			for (i = 0; i < folio_nr_pages(folio); i++) {
+-				void *addr = kmap_local_folio(folio,
+-								i * PAGE_SIZE);
+-				__cpuc_flush_dcache_area(addr, PAGE_SIZE);
+-				kunmap_local(addr);
+-			}
+-		} else {
+-			for (i = 0; i < folio_nr_pages(folio); i++) {
+-				void *addr = kmap_high_get(folio_page(folio, i));
+-				if (addr) {
+-					__cpuc_flush_dcache_area(addr, PAGE_SIZE);
+-					kunmap_high(folio_page(folio, i));
+-				}
+-			}
++		for (i = 0; i < folio_nr_pages(folio); i++) {
++			void *addr = kmap_local_folio(folio, i * PAGE_SIZE);
++			__cpuc_flush_dcache_area(addr, PAGE_SIZE);
++			kunmap_local(addr);
+ 		}
+ 	}
+ 
 -- 
 2.53.0
-
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David Hildenbrand (Arm) <david@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Linus Walleij <linusw@kernel.org>
-Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Cc: Lucas Stach <l.stach@pengutronix.de>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Malin Jonsson <malin.jonsson@est.tech>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michal Simek <monstr@monstr.eu>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nishanth Menon <nm@ti.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: x86@kernel.org
 
 
