@@ -1,152 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E557B606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 14:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650BD606A335
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 14:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pYQpPFUG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mQPqyhx7
 Received: by kanga.kvack.org (Postfix)
-	id 145726B05BB; Mon, 16 Nov 2026 09:26:29 -0500 (EST)
+	id 871ED6B05BD; Mon, 16 Nov 2026 09:26:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11D516B05BC; Mon, 16 Nov 2026 09:26:29 -0500 (EST)
+	id 8491C6B05BE; Mon, 16 Nov 2026 09:26:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00C3A6B05BD; Mon, 16 Nov 2026 09:26:28 -0500 (EST)
+	id 760CD6B05BF; Mon, 16 Nov 2026 09:26:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD13D6B05BB
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:26:28 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38B16140911
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:26:28 +0000 (UTC)
-X-FDA: 85441207656.13.F45E17A
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 793E2A000C
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:26:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=pYQpPFUG;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3jxL7agYKCP4ykgtpimuumrk.iusrot03-ssq1giq.uxm@flex--seanjc.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3jxL7agYKCP4ykgtpimuumrk.iusrot03-ssq1giq.uxm@flex--seanjc.bounces.google.com
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=pYQpPFUG;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3jxL7agYKCP4ykgtpimuumrk.iusrot03-ssq1giq.uxm@flex--seanjc.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=3jxL7agYKCP4ykgtpimuumrk.iusrot03-ssq1giq.uxm@flex--seanjc.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794839185;
-	b=nS5smCOuRyA6Jb6MXSQ7GnarNNCwaa2OvQ6PkEQqUqW9urD/eoTMGMeyJTpAxZB7neZ2uB
-	1Iz0wgosRwgPL5Ut0ig2mW1gZ3Scuhtwno04mhY4jASMp0o6O6k/VlSccqZTPnKO110Tnu
-	708ASNmp0g0r3aW14Q14WbuIBzQuyig=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 53D3B6B05BD
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:26:46 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DABF4400BD
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:26:45 +0000 (UTC)
+X-FDA: 85441208370.27.6894083
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 249A61C0006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:26:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQPqyhx7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794839185;
+	s=arc-20220608; t=1794839204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Julx96UTlwUpy/yEEb6XKUMDaihQ6nHqBxqUTRWWoDs=;
-	b=YfKTXF7G7lmhtb5LZ8vEJftADYByLO6CmGsqLRyK7APml2ai2GhoI34WRk815mftr3oa0H
-	/6VeGaP4oko6e1xOOqvkD0SKbJpnzfgDYlvEfPg7mR40/B+6KBg7nuoVINsPUqSJ045oNr
-	SxsBEWLtYJaYQyIbPlvydTp8Scxlq2k=
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8b8cef34b43so4609540b3a.2
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:26:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794839184; x=1795443984; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Julx96UTlwUpy/yEEb6XKUMDaihQ6nHqBxqUTRWWoDs=;
-        b=pYQpPFUGk5tM0pUSaz5I5JptTdOSLj+dcQh1JjlOj+Bd+nqvXu0LSj4zUucgbemoR1
-         WT0doTL6Qf2lvWANE77EHTlepCBom45Na+n19UTjLHcYf5mytLe1oiOG36flbU+9sOk6
-         ucJtmnptJUND4cTGz63yhZwcH9DjT8nz03oPkcB35nV8Yiocs0AdcdSlM8FFbLjy8sKS
-         2iznIq/OcfmbLeVZmq38BnwlwOjIhGPZmlCYkcI7W7EwC5BS+olPAsZqWgBL+bSydFeP
-         obSPJhg6HfEP5QOMa2OwmvQNkTIAe8BGRfK3ru7PnhrFTmyLmtLbcHkSDur0bWjFPcUN
-         FCFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794839184; x=1795443984;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Julx96UTlwUpy/yEEb6XKUMDaihQ6nHqBxqUTRWWoDs=;
-        b=UqWzIybSxu9XBwtYO1HrKKeELjrHol8JUwafRD+bNAk1mDWxDy5A6zwIorN4ostvnf
-         uDBkfXFT4QID8n0BfHlfwNJ0WYSbJdknGnRCB5dMKRg+RhwUwpH53aQvi8Mr7AlP4KG4
-         vAY8SfsN2aLmbX1ffnR0i631CWCpga6ZalX1OpcROZruACHmpAaOEwlUpTlHE2QI6d0g
-         Y7S3aZC9lucgis1rIjixyNqa3sejOv2XXmxgnUfOg1GkI4i33mqU9ChhJ8wWYQwkFyOU
-         qNnHOqhnLM2ICY4/xeB/EWDrGxY4kJyOtMmP7T6ZptUgmFlLAL1AfbC389jmXrMn3JiB
-         DKPA==
-X-Forwarded-Encrypted: i=1; AL+hErG85SmctFV9VVl9Eq1w/99wca00UBitEB9MSjM+XJOJloJhgN/C4dsFHD0mP/HSPDaEv1BKSOef3Q==@kvack.org
-X-Gm-Message-State: APuU4Z80rPX/PjeIosWfriDCM3f0McIFxB3/GE5jnXTomU3Qt+CfMZeB
-	yDrcEtAP1B+UZSk3WrvV0zND6Ge6Rm+oYazoiFfEoLMve/po2kalXOvoxcAYn/02kIObU+hLiQ9
-	ViK5EyQ==
-X-Received: from pffm4-n2.prod.google.com ([2002:a05:6a00:c304:20b0:8a0:70d8:a2ef])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4fc3:b0:89f:b166:bde6
- with SMTP id d2e1a72fcca58-8beb8cc8ad6mr9720424b3a.54.1794839183449; Mon, 16
- Nov 2026 06:26:23 -0800 (PST)
-Date: Mon, 16 Nov 2026 06:26:22 -0800
-In-Reply-To: <20261114202653.3113381-10-rdunlap@infradead.org>
+	bh=j/cDML+T26sdQopeF9JOcLeFrLc7HBAnzv/NOTzn5RY=;
+	b=kC+SvMH9gbg2JLY82yGuRiXwAgksytCDXGJGRUt1YnqZVY54lnbeEAQXwdVfBkPeOjELjD
+	BA3caTCZHoFbxk8R763Bb495WOQEvpWhJiixIciAQ9TWw89Vf7pT0zGriylxpm+7yQbuC0
+	GUVxKNmmI+DInvSv890zrRXlxwXu4ug=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQPqyhx7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794839204;
+	b=Qun1GiMMkkG1jIsdgJxjCU3As3cPh/BvgU3h0IdjazW4a1O1grG6I5agVUz/qGQsCsl8LB
+	IN6tGNKE/0QjBY1nqh8GKCvyGa5M7+OjlkQCH8mgkOXrXFqjTZ/b9S1N50Fl6p9/koNYIz
+	YoZur/XvoAs697XrW3bydbi9eL31XQc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 98D1F62C1F;
+	Mon, 16 Nov 2026 14:26:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70F71F000C7;
+	Mon, 16 Nov 2026 14:26:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794839203;
+	bh=j/cDML+T26sdQopeF9JOcLeFrLc7HBAnzv/NOTzn5RY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mQPqyhx7ZPLZTQfXvRc7983IUMX1IFW5Nh8Az9s/0fDxDHzrRyTckj6/jlUz9PNSx
+	 Ajg2Ajy5EAkH34N0p7lF8V3Ze6POz4mAmfRq9R4NPFSooDUyExHjKqeJEMfq3Kn2Or
+	 /6IiFXfNQtVWUPxSp0MCl1REJCIBvkA7ZEEG40hwncFFnxBjttPU8JFPWflyD7UFl9
+	 hqnkavPOKEg5AI4lZsQFO18q/ReLgQMHhS6XQNwIy4qGPK3rGm8m+8okUcjH+ufxxs
+	 D7HrfeEhkJ0bMylk7JCWy0VE+W1VibRzG6MCMqzyKie3cFrqV3QB1TVSc+wkQT8+cN
+	 /pzC4U2mRrWKw==
+Message-ID: <02e6240c-78ac-48a2-8bf8-36a2327e9de8@kernel.org>
+Date: Mon, 16 Nov 2026 15:26:33 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261114202653.3113381-1-rdunlap@infradead.org> <20261114202653.3113381-10-rdunlap@infradead.org>
-Message-ID: <avsSjioXqbCOn834@seanjc-mac.roam.internal>
-Subject: Re: [PATCH 09/12] docs: ioctl-number: update virtualization entries
-From: Sean Christopherson <seanjc@google.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	linux-bluetooth@vger.kernel.org, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowangio@gmail.com>, 
-	David Heidelberg <david@ixit.cz>, oe-linux-nfc@lists.linux.dev, 
-	Chas Williams <3chas3@gmail.com>, linux-atm-general@lists.sourceforge.net, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, MPT-FusionLinux.pdl@broadcom.com, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Zhihao Cheng <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org, 
-	Neill Kapron <nkapron@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, 
-	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, xen-devel@lists.xenproject.org, 
-	Hans de Goede <hansg@kernel.org>, Arnd Bergmann <arnd@arndb.de>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	"Eugenio =?utf-8?B?UMOpcmV6?=" <eperezma@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
-	Mike Marshall <hubcap@omnibond.com>, devel@lists.orangefs.org, 
-	Paulo Alcantara <pc@manguebit.org>, Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
-	linux-f2fs-devel@lists.sourceforge.net, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	Tzung-Bi Shih <tzungbi@kernel.org>, Benson Leung <bleung@chromium.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alex Deucher <alexander.deucher@amd.com>, 
-	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, amd-gfx@lists.freedesktop.org, 
-	Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, intel-xe@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ya5szen94y1k4b4mrenu1y3457g11bmr
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/userfaultfd: prevent poison marker loss
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20261107-b4-uffd_marker_loss-v1-0-82926b22704c@kernel.org>
+ <20261107-b4-uffd_marker_loss-v1-1-82926b22704c@kernel.org>
+ <avij463DZ_tSwgKy@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <avij463DZ_tSwgKy@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 249A61C0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 793E2A000C
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1794839185-112703
-X-HE-Meta: U2FsdGVkX18tNVF5llms2NkyLqdC63F3SSzdEwN7Bmt17CD+tHoW5JUT62AChM1cgeIbIxruA39DAbXnGT/PU3HJCVCT1IP0uIOViMNwxXSQh1JC2xb6GXa4gVT3EhekSFUngN9uf5Pv+BMIeWxckiMS3+AeRdRHczQlGkqk5OzEq7KI5VyXqnHYB7Ds8mlGo4ooT3KD1rB1UoGEQYu7wvYZ2zACTIzLg39afVNVkj5AKxdi9/8JaxJvUM6PsvhSaUP+76hk2AQGPFkSaN84ledg8FvOx7b1ZC+06Kr8ZsIFLWwaAw6sgw95g/bIUmR7sqnCMlrYzH5LKyoHbpLProqlwZcBqNj2mBjQw5vvo/LpjWw6Js0Q1io6n9nL8w0OAOhXP0inwj14WH8rZ+W9xMTTwyRXHIXexlcmoFkEL54avmvF/oe+31KCZowPVlUTkbwnMgj/YIKLdSKwo+azz11brz+fDlKpGLEkn2xZ3Wih/4ZkE/+ABT7/ucdOE94BEeO5Dxs/GfOQBNA8c0hiVanBC6bnSfNgSrTkDAA9HxOaXdyKOcTuiqnk+NoW2a3G9dhwAM9+RtOeMlDd91mNMc4bHRrnjm7Or0qbczgARxKckmQv+pFwIsqcqMdv1LiV92DaQGLwXhWS8shjyH4zfgfna/27bdfblQEpG93DvrnFE/r2+0hUhr0S02kn51YPoxYMReh1pJjcw4rOcfkuXWYfn819ILIytNf8L9hGV36F4Hnt2rIc/sTG9jDVRrEInkmN599Rrz5YJoPUfXX21QJj70/zFISTp6kDjV4Zmd3l9zoeETgjfvt60J08OiD16dHABo8y/NwEgvESt0kDrtBiUZAjhta1xoTdxFX/Iy3JxDFRTkm9aDlH/AwqnJol7MWzAn53AQ/E2gmBGwilslJaBoxtXXgHpeNsovOi2FmHT/lmqZed0ARzdhkw4F1RmLfdgCVrybHerQVZWVq
- AY+lkena
- gOiHSV7CglIcF2wN4BVTJkT1agwPW8h3HFeNhvg6fthjVKY4dt5iFw7s02CqKMA+OFh1m0ZNUyqYlpudZkgQdaemXQCRhf1LbO7faWSvsdE/pwE+7U+bHzKplKvQkrSIbUHgcIHVGvYw/G6BJAH3sU5KP2yae0T7Q12YSBEPNE0tVaf172qx834KxsakAvnQR+FaBvDOg+d81zRL1C+SOMulv8AFpuU3SO9poHPxZvMjk2BG/Qle7o1Er8iEOpTRAP2Aoj2Ou4xgb9B3S+F/rz4UgaE7R35es2c07JEFQ+qNwf6mjRqZTSAdXVu/esk8VtKZ4yBIX57BpwPUW+RWIw494RsqYsFhboc0KTPj7l1pPjWRfRclG0lKMR00IBQwb8IDQy5qI93XZfgoU5D6ggtsTly/4wPRmH0bR0CeUfjVbgugOgb8SWNxwcFLb6VPsuw8KA8vm0xZZyyCIP7MO9bRmqYEo04IBUl1Au3Xeb2zNUpOpSfjHyBvbm4p6edkG+bM1GWnEuP5ZfNG3c/Vq8YyROwDzOtcSib83chLcgqg6qaELbksb2ufw1Z1UICP+0dvVxushTfkiUcZ7K/mNJylSFP//ijCpKYf/iiPnHaEcZu1OKO6XA1wRSu1CnsWl89Sl8SJUnPXip3DwRiDeV1F+ny85n0yYpcZoLgqd88g0P2zeZARorpLfSIclirx5VIY6MPQRwXV/VXgvuq+EmloGVG2r/7p4NhLImEpaTH3mpqwR0D0kLX5DSMNo3fJ+9oKqx/kq6JXFtGq4M2MB8MDgek5Nxsq/PudzaTyOE0+TTxZ51YJT9LUcrqdprPLTriNZC4MZ0BiXexYmWnqKnT8HJ2Vx71Gue5cT3wPG84NoCyqjkFp5OS8Ktp2G6MLXjZo4qmwhUzdHM2lLCHg0TLZKQdsogzCYAIHnJYkFhHk4/Z7HzdYQos3LPtUCDBh8tMysvSvSw5WpnbMh8qjEflUIxA==
+X-Stat-Signature: 3pga3qarbf1kbf3yxtsm8qih9mx6gud7
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794839203-817328
+X-HE-Meta: U2FsdGVkX19f70epR9iT5SwAElYCNTcQWasESODFB4fklkTSH5e57MDlOn4tqBPD2fdZvWDid3pkRTWc17JIH4X/dZ0HTPOnzyI0LX+z1Pb6wGJu2imkCmzpSEImP/HlmD6BGvbupYe+zgvfMi86qsAZrz+OsEUmAAXkY+XfXWdw8yT8r9to/5vku2y/FCZKh6AuWnjjJhNwjS1IVY8mKIXGKS1RKhDKKuOEFBgnqDh3WonVp0fMu0GdoMAYD4eP5s4NuiJU497n/IgyOwWvBfJyOlIu3zYrmoC31MXMKVUq9bIxMQh/CGPtwRQPlZd6YNGKT7dLwGqMd5/iuHqGH2YgxRLFSIZslwlvO89eMxGTygxLqug4+7PUZjM9p2+1KmGr4B8QwlVOPfgZur0cNBSDXgW/u+CASA/ntaWjVgnDxUBMBezvh4bSefb08YLOST63RoUohpHNMY3ZU1s8eCgAYsv7Z2oVJv0e31wPJVpZwL88ufk2aZZVaNPcV8n/pqlcg0z7mVtSTdamMGZEkwtQjXLGF6lVnyiwmCCwF0iVkKvIecGNcjH/Tmyw4G+cv8rb6bI5B802wWPsTc40sfYLh0NtRjerWLGVSUQAaLYMxJ1Bavro6EL2zi4483dwVNHu3DlIYQxLXohEPdczVzR1SNYbKDZxICadLK68dEK3Gku3O21z7FtiIfbcM9zba1yKvStbuuAUjys287pqNdUo4sk+O4Ry5Z0Q595Cfdg+jSHmRfNeiCF8wluYCe4tFoJsJIT077KbMHXlUiF2GXOB98VV209ytYYegK/utlQGnL9uTdsE3fAPpo+/URT5tT96OnhCM/vsfCGj4X48CoYcJqngN3RDZp3DF9cDKZ2pw46TJkCR47xiKKWmgIN6i17y0jEudXL1Ufkb46f25FRZmRPRl3hKYqGn/EqVeBs9ONPcWnRvkkYN0C6ndECVNuuYz7uWRxHX8BclT2R
+ /J2Ll6KP
+ vPh1tsLkN2WUH2tR4ZXfi6Oynl95MWB1dx74WqDY6jCc+nZaG4EzBQ3OviuQjArU5o1HY6SSMfvOII85EX+a9smKabpvZedknzAE6H0QzXawvZ5vbmA0lPpk+FBZN/SWcWqHR+f5f+eHOXyOgs5922iIFyf8fZtSIHIPMj2xgWKuGr8pbk1n7ShCmmkyB1HQq3/ownpXU2o+WYUia5ab4I5/D6QTTPdMLRD15deV6geeXvnGIDgQ308KXRAWjCTlgQ0ns
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,172 +157,127 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 14, 2026, Randy Dunlap wrote:
-> Update the list of files where virtualization ioctls are defined.
->=20
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> ---
-> [Since having multiple maintainers trying to merge these would
-> cause some conflicts, it would be more manageable for Jon to
-> take all of these through the docs-next tree.]
->=20
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Juergen Gross <jgross@suse.com>
-> Cc: Stefano Stabellini <sstabellini@kernel.org>
-> Cc: xen-devel@lists.xenproject.org
-> Cc: Hans de Goede <hansg@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Jason Wang <jasowangio@gmail.com>
-> Cc: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> Cc: Sean Christopherson <seanjc@google.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: kvm@vger.kernel.org
-> Cc: virtualization@lists.linux.dev
->=20
->  Documentation/userspace-api/ioctl/ioctl-number.rst |    6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> --- linux-next-20261113.orig/Documentation/userspace-api/ioctl/ioctl-numb=
-er.rst
-> +++ linux-next-20261113/Documentation/userspace-api/ioctl/ioctl-number.rs=
-t
-> @@ -200,6 +200,7 @@ Code  Seq#    Include File
->  'M'   01-03  drivers/scsi/megaraid/megaraid_sas.h
->  'M'   00-03  drivers/video/fbdev/mb862xx/mb862xxfb.h
->  'M'   00-0F  drivers/video/fsl-diu-fb.h                                c=
-onflict!
-> +'M'   01-03  xen/interface/xen-mca.h                                   c=
-onflict!
->  'N'   00-1F  drivers/usb/scanner.h
->  'N'   40-7F  uapi/linux/nvme_ioctl.h
->  'N'   80-83  uapi/linux/ntsync.h and uapi/linux/nvme_ioctl.h           c=
-onflict!
-> @@ -239,6 +240,7 @@ Code  Seq#    Include File
->  'U'   64     drivers/usb/misc/usbtest.c                                c=
-onflict!
->  'V'   all    linux/vt.h                                                c=
-onflict!
->  'V'   all    linux/videodev2.h                                         c=
-onflict!
-> +'V'   00-1F  linux/vboxguest.h                                         c=
-onflict!
->  'V'   C0     linux/ivtvfb.h                                            c=
-onflict!
->  'V'   C0     linux/ivtv.h                                              c=
-onflict!
->  'V'   C0     media/si4713.h                                            c=
-onflict!
-> @@ -357,6 +359,7 @@ Code  Seq#    Include File
->  '|'   80-9F  samples/                                                  A=
-ny sample and example drivers
->  0x80  00-1F  linux/fb.h
->  0x81  00-1F  linux/vduse.h
-> +             drivers/vdpa/vdpa_user/vduse_dev.c
->  0x89  00-07  asm-generic/sockios.h
->  0x89  06-07  linux/sockios.h
->  0x89  0B-DF  linux/sockios.h
-> @@ -398,8 +401,11 @@ Code  Seq#    Include File
->                                                                         <=
-mailto:kvm@vger.kernel.org>
->  0xAE  40-FF  linux/kvm.h                                               K=
-ernel-based Virtual Machine
->                                                                         <=
-mailto:kvm@vger.kernel.org>
-> +0xAE  C6     arch/x86/kvm/x86.c                                        X=
-86 KVM
+On 11/14/26 19:40, Lorenzo Stoakes (ARM) wrote:
+> On Sat, Nov 07, 2026 at 12:51:05AM +0100, David Hildenbrand (Arm) wrote:
+>> Unregistering userfaultfd leaves poison markers in the page tables.
+>> However, once unregistered, hugetlb PMD tables can be shared again.
+>>
+>> Further, shmem page-table retraction can discard poison markers even
+>> while registered in missing mode, and fork() can skip copying page
+>> tables containing poison markers.
+>>
+>> To fix it, add VM_MAYBE_UFFD_POISON and set it before installing poison
+>> markers. Preserve it across unregistration, splits, merges and fork(),
+>> just like we do with guard markers.
+>>
+>> Use the new atomic VMA flag to disable PMD sharing and page-table
+>> retraction, and to force page-table copying during fork().
+>>
+>> Move VM_UFFD_WP to bit 44 and make HAVE_ARCH_USERFAULTFD_WP depend on
+>> 64BIT, freeing bit 12 for the new flag on both 32-bit and 64-bit systems.
+>> Expose the flag as "up" in smaps.
+>>
+>> Losing poison markers, while unpleasant, is not really fatal, and the
+>> use case is rather a niche thing. In addition, we rely on the atomic
+>> VMA flags infrastructure ... so let's not CC stable.
+>>
+>> Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+>> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
+> 
+> Are we looking to cc: stable or this something for newer kernels only?
 
-I'd rather omit this entry.  0xAE C6 is covered by the entry above, and the=
- horror
-in arch/x86/kvm/x86.c is purely a 32-bit compatibility alias for an ioctl t=
-hat is
-defined in kvm.h (the structure payload defines an pointer instead of a __u=
-64).
+Per above:
 
-If it's a sticking point, e.g. this will trip automated tooling over and ov=
-er, then
-I vote to move the relevant definitions to uapi headers, e.g.
+"Losing poison markers, while unpleasant, is not really fatal, and the
+use case is rather a niche thing. In addition, we rely on the atomic
+VMA flags infrastructure ... so let's not CC stable."
 
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kv=
-m.h
-index 00ce265391e1..e02ef7a39f7c 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -230,6 +230,18 @@ struct kvm_msr_filter {
- 	struct kvm_msr_filter_range ranges[KVM_MSR_FILTER_MAX_RANGES];
- };
+We cannot really backport to the pre MADV_GUARD fixes that handle the atomic flag correctly.
 
-+struct kvm_msr_filter_range_compat {
-+	__u32 flags;
-+	__u32 nmsrs;
-+	__u32 base;
-+	__u32 bitmap;
-+};
-+
-+struct kvm_msr_filter_compat {
-+	__u32 flags;
-+	struct kvm_msr_filter_range_compat ranges[KVM_MSR_FILTER_MAX_RANGES];
-+};
-+
- struct kvm_cpuid_entry {
- 	__u32 function;
- 	__u32 eax;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0771efaf94c8..ef9f92cba589 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4260,21 +4260,6 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+We could easily backport to stable kernels that have it.
+
+Thoughts?
+
+
+[...]
+
+>>  #define VM_LOCKED	INIT_VM_FLAG(LOCKED)
+>>  #define VM_IO		INIT_VM_FLAG(IO)
+>>  #define VM_SEQ_READ	INIT_VM_FLAG(SEQ_READ)
+>> @@ -502,13 +508,17 @@ enum {
+>>  #endif
+>>
+>>  /*
+>> - * vma_flags_t masks for the userfaultfd VMA flags. The two high-bit modes are
+>> - * gated on the same configs as their VM_* flags above -- both of which imply
+>> + * vma_flags_t masks for the userfaultfd VMA flags. The three high-bit modes are
+>> + * gated on the same configs as their VM_* flags above -- all of which imply
+>>   * 64BIT -- so an out-of-range bit is never fed to mk_vma_flags() on a build
+>>   * whose bitmap cannot hold it.
+>>   */
+>>  #define VMA_UFFD_MISSING	mk_vma_flags(VMA_UFFD_MISSING_BIT)
+>> +#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+>>  #define VMA_UFFD_WP		mk_vma_flags(VMA_UFFD_WP_BIT)
+>> +#else
+>> +#define VMA_UFFD_WP		EMPTY_VMA_FLAGS
+>> +#endif
+> 
+> Could you just move these up to the block above to match the convention here?
+> 
+
+Did you have the following change on top of my changes in mind?
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6cd9d86f7adac..fa56d9e9f3ebd 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -410,8 +410,10 @@ enum {
+ #define VM_MAYBE_UFFD_POISON   INIT_VM_FLAG(MAYBE_UFFD_POISON)
+ #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+ #define VM_UFFD_WP     INIT_VM_FLAG(UFFD_WP)
++#define VMA_UFFD_WP    mk_vma_flags(VMA_UFFD_WP_BIT)
+ #else
+ #define VM_UFFD_WP     VM_NONE
++#define VMA_UFFD_WP    EMPTY_VMA_FLAGS
+ #endif
+ #define VM_LOCKED      INIT_VM_FLAG(LOCKED)
+ #define VM_IO          INIT_VM_FLAG(IO)
+@@ -508,17 +510,12 @@ enum {
+ #endif
+
+ /*
+- * vma_flags_t masks for the userfaultfd VMA flags. The three high-bit modes are
+- * gated on the same configs as their VM_* flags above -- all of which imply
++ * vma_flags_t masks for the userfaultfd VMA flags. The two high-bit modes are
++ * gated on the same configs as their VM_* flags above -- both of which imply
+  * 64BIT -- so an out-of-range bit is never fed to mk_vma_flags() on a build
+  * whose bitmap cannot hold it.
+  */
+ #define VMA_UFFD_MISSING       mk_vma_flags(VMA_UFFD_MISSING_BIT)
+-#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+-#define VMA_UFFD_WP            mk_vma_flags(VMA_UFFD_WP_BIT)
+-#else
+-#define VMA_UFFD_WP            EMPTY_VMA_FLAGS
+-#endif
+ #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+ #define VMA_UFFD_MINOR         mk_vma_flags(VMA_UFFD_MINOR_BIT)
+ #else
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index b8b7cc2f00388..75c3e9270b62a 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -201,7 +201,7 @@ static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+
+ static inline bool userfaultfd_wp(struct vm_area_struct *vma)
+ {
+-       return vma_test_any_mask(vma, VMA_UFFD_WP);
++       return vma_test_single_mask(vma, VMA_UFFD_WP);
  }
 
- #ifdef CONFIG_KVM_COMPAT
--/* for KVM_X86_SET_MSR_FILTER */
--struct kvm_msr_filter_range_compat {
--	__u32 flags;
--	__u32 nmsrs;
--	__u32 base;
--	__u32 bitmap;
--};
--
--struct kvm_msr_filter_compat {
--	__u32 flags;
--	struct kvm_msr_filter_range_compat ranges[KVM_MSR_FILTER_MAX_RANGES];
--};
--
--#define KVM_X86_SET_MSR_FILTER_COMPAT _IOW(KVMIO, 0xc6, struct kvm_msr_fil=
-ter_compat)
--
- long kvm_arch_vm_compat_ioctl(struct file *filp, unsigned int ioctl,
- 			      unsigned long arg)
- {
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 8dff2fc1972e..54dbdabd0e9b 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1477,6 +1477,7 @@ struct kvm_enc_region {
+ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
 
- /* Available with KVM_CAP_X86_MSR_FILTER */
- #define KVM_X86_SET_MSR_FILTER	_IOW(KVMIO,  0xc6, struct kvm_msr_filter)
-+#define KVM_X86_SET_MSR_FILTER_COMPAT _IOW(KVMIO, 0xc6, struct kvm_msr_fil=
-ter_compat)
+-- 
+Cheers,
 
- /* Available with KVM_CAP_DIRTY_LOG_RING */
- #define KVM_RESET_DIRTY_RINGS		_IO(KVMIO, 0xc7)
-
->  0xAE  20-3F  linux/nitro_enclaves.h                                    N=
-itro Enclaves
->  0xAF  00-1F  linux/fsl_hypervisor.h                                    F=
-reescale hypervisor
-> +0xAF  00-8F  linux/vhost.h                                             c=
-onflict!
-> +0xAF  31-32  drivers/vhost/test.h                                      c=
-onflict!
->  0xB0  all                                                              R=
-ATIO devices in development:
->                                                                         <=
-mailto:vgo@ratio.de>
->  0xB1  00-1F                                                            P=
-PPoX
+David
 
