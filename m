@@ -1,104 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDF3606A335
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 08:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4AF606A329
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 08:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YKadq6xx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YvwomPFr
 Received: by kanga.kvack.org (Postfix)
-	id C4B796B00EF; Mon, 16 Nov 2026 03:56:34 -0500 (EST)
+	id AEC5B6B05B0; Mon, 16 Nov 2026 03:57:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFC4B6B05B0; Mon, 16 Nov 2026 03:56:34 -0500 (EST)
+	id AC41B6B05B1; Mon, 16 Nov 2026 03:57:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B11EC6B05B1; Mon, 16 Nov 2026 03:56:34 -0500 (EST)
+	id 9DB2D6B05B2; Mon, 16 Nov 2026 03:57:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9064E6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:56:34 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ED58A12075F
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:56:33 +0000 (UTC)
-X-FDA: 85440376266.21.439B990
-Received: from mta0.migadu.com (out-241.mta0.migadu.com [91.218.175.241])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9F47A1A0002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:56:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YKadq6xx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.241 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 813BC6B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:57:02 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A47F1A0853
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:57:02 +0000 (UTC)
+X-FDA: 85440377484.27.0895C5B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 80866A0007
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 08:57:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvwomPFr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794819392;
+	s=arc-20220608; t=1794819420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TCOAmNe0BEFi8mKC+0PAv0vRnH09iyDNA3a8Nshj+co=;
-	b=6ry2lr1639xbPDUn3BkMtxjahMzzfppyIuSEXK+49C8fur6E9O+5LbNTme1kruo5cnZ1fr
-	ztm2cidkqFRqwuka0ZogdSHHF6Z0ljUsTc8CiesYH9B0nxAAejxusAkNEQzVfXP+MCnPk9
-	Bx0WZuK3rQdfagKrQu4F6IT/Fx1O7wY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794819392;
-	b=YhI6LgDFMCaYWaEr8AC1D2+eKHON7rsZEYjZamqbSyozZPwoOPbW98f14es7P44zhWpBPh
-	d5xxvd2IqKnvtyzFC89LyzCNBZDwV7QXTazkv5Q6pzCMWU4RflbBWvhEnLJh/Xm4sxK0At
-	uZGGuTl7qTIqtU72ICr7TlJAweR6g8c=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=42Gs7+kt2Rgi78czHC7JtxOqLEeMRxWEH0wDlNcA+Ok=;
+	b=DgtDrhol5Cc7mMhXAMsLiyPsDvnQsnQLpNIgorfoEh+Wyf2Yeyhp19Op/YOKOyCd0itOTy
+	UCML/GMdqMpHaR3hxaJ9tQA6o0fumUPGKfTtf/3vEifjkwk6YNkZdN0YMTBvkFQlnKuhLW
+	7BB8yl0ltSqKYsAn51nF4zCcPWysUX0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YKadq6xx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.241 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7lolab2zVmmIzQhOdTNrMQkrZuGsVRndTA3iq4cS6mY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794819390; v=1; x=1795424190;
- b=YKadq6xxRABnupfUM1Y3hNWq3Al7M1iv5OqCAbAfNTk17YILf3ZqtW36B6X1MXCCt1kkg91T
- 6eHvksBn9PAi9rKa8wc5E1tikQsyX9npBRPn46zM/d8prnXNJ6tKrMyplef8SF2GgP+mcVSv6Oi
- g6mYlUnstFLAeQrKREmEXLfI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 17b6a22d7d497bc4;
-	Mon, 16 Nov 2026 08:56:30 +0000
-X-Mizu-Trace-ID: 17b6a22d7d497bc4
-X-Migadu-Flow: FLOW_OUT
-From: Hongfu Li <hongfu.li@linux.dev>
-Date: Mon, 16 Nov 2026 16:56:11 +0800
-Subject: [PATCH] selftests/mm: protection_keys: use _exit() in aarch64
- ptrace tracee
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvwomPFr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794819420;
+	b=sqwPSz4Wv+o0wkYqdC5o9d3GJNo9/d8RFexjXQAXpKMve03/OkFknejUged5RJ4XVJBU1y
+	bt/3RG2W9q6NQImZTl/8Ii5UOmGZp8xB+82461crqcFLQEsxuDI1NAqBntyW3CeM1HV19/
+	UWia0x0k9bblQxHJDquwGz5wfpYPNws=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B55346274B;
+	Mon, 16 Nov 2026 08:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2401F000C4;
+	Mon, 16 Nov 2026 08:56:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794819419;
+	bh=42Gs7+kt2Rgi78czHC7JtxOqLEeMRxWEH0wDlNcA+Ok=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YvwomPFr3Dy9WSCTUXhwRiYexIxZeWPNOZRKwjA0vqfPQlD8u2H3Ih9BA+LuQbQ2T
+	 vAUkKvnPltWir4szpjNDjLYjJrdeRcXGRAmJsy8SxC87nlJXLe9ntRGmxAtBZ+zerq
+	 C8HZktnZdeV/l1EyOvBTBD80nuK9d9iFhWJDahqJhNpWJWvARiiH3tsbh75HbjeaO3
+	 CuW6JIBoklYWu0IejwlPgG8nFzDc7QhmPhK0oQOHwhGvsMqYKLxIAZqr78s/rjvH5b
+	 hokEF8CGgFxixV/C5RpoLk8uXvDgZ6m1YV776kOvDrJrLc0DxMWpe+XrHTr5K7vjjf
+	 QLuwIefE37nPw==
+Date: Mon, 16 Nov 2026 09:56:54 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Hungyu Lin <dennylin0707@gmail.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jm5905938@gmail.com
+Subject: Re: [PATCH v2] hugetlbfs: report inode limits without a memory
+ subpool
+Message-ID: <avrFVm-VwMwoBZyS@localhost.localdomain>
+References: <20261111130145.96534-1-dennylin0707@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-for-pkey-exit-v1-1-ca4c76b32ff7@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqAIBBA0avIrBtQF0JdJVqkjjUFFVpRRHfPa
- vkW/1+QKDIlqMQFkXZOPE8ZqhDg+nbqCNlng5baKCVLDHPEZaQT6eAVZShN8EY7Yz3kZokU+Ph
- +dfM7bXYgt74TuO8HcVaD73EAAAA=
-X-Change-ID: 20261109-for-pkey-exit-0f96fd62c6bd
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
-Cc: hongfu.li@linux.dev, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Hongfu Li <lihongfu@kylinos.cn>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794819387; l=2106;
- i=lihongfu@kylinos.cn; s=20260915; h=from:subject:message-id;
- bh=I343t2uR4wEtG+HLyp6H7kkFFFvE00XGS9N9j96x0BE=;
- b=WBYHvXmoxaPSzAUK9OsLYlPhQpq9V9t4iR/GbU7w7PSrNgs3/neeELXubmCtAzFBv88Jh67QB
- PJu87aQrbGhB3pKMntsmZzL9gPjVeV+SRoEasVfYnMQ81Pr6WhKMFkM
-X-Developer-Key: i=lihongfu@kylinos.cn; a=ed25519;
- pk=rUpDSpB3neoNZRlGG6dHlFb3RepiJakcev+ucyqaZzw=
-X-Stat-Signature: a9sptnenuagt8b799ii7ifhzpdxy51ur
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111130145.96534-1-dennylin0707@gmail.com>
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9F47A1A0002
-X-HE-Tag: 1794819391-445844
-X-HE-Meta: U2FsdGVkX19ABOhzVbp3XRrfmQgLOcrLl/OMJYc8gN98E+CFbCjFzu1Yw1W1+wH8EgSCeUT0dIbmEUvVtrmAKPIAsAthkMqxGavm8oJ3nY2op2A7NauF9MEps0sUXchoojMCyswURkiPpfU7vR1gXdVWb6FXoLLuxeBg52t7TrYztbVY9qon+88Cq/Hvj9uqObgfq0sRkYAiXSdOpr5+bFSPoJb3rQCKiMU6TTPE8lIOX/hC1F9RLgCvX6mAgq9Qx5Msd3ZNQN320YuY9BjOJZJFxw3dPzIH0kzWLb/pF23Itfkz8Mlh7f+Pw0hQQ2qxDpqOcCJgAVOD4/IV7oT0a7LDWkhyEuIoT3AHTtdZuihf6IwNX2e2D4wZvrAjfcBpyqL2+CvefuYx8SEzgzk70y0AAQ5dpyvsYDOxq29Kd0kk198+1Yhf8eLH2T3Bm8B5NzdQZrPBUez8+Bhy06uSP80uJxC+HfdnEU9bLJ2aHxJFoEGQaSM0GGCJhnIuyopnpPxWoK3RIQzkNQ4PfVQvpY0licjSktM3HjQrnI9TmyTbs4LHKA4LWtehJaptZKjiEXhZxIpIUP7CDnp9V64y+SiBH+KjYtD7+B4BXYD+wKrDaRDIFuMZnyRzg93r/a0hwMPjHI/JG1FeCJqVLKR78VGB0odYMtzm7bFyIP8l8vwCuzdLIYr6nVlaLxnygSocPo93nMUWxnsvwSM0q1SXHW6kn10cKzTihGLk878ZvKr6vb+/Inqq0aHBN/YjLV5ieGykJeWOlP/ZsiqCxs2raxDT4ah+TZJAWdPfEImN9JgaPqN6AOQ3teFYBRf9131xpWdmyYsAtA8TG3CfTBla+lOAyOqFTyWu2U9DxPQ7bLSFLHDxR0nzzzFNdPSIZLmwtBERxetX0xDVzRuqMCj9zdcfnMjMC4oA/YbwTGmiuPOu9C3G+E8lGCnp6LDLqSGOvLR7WtbkuhMXbkuttfE
- edFxLysX
- hiFB7OHxPlgIqcaP485E7FliePbPglMiWw2ROB46HJkltPWUDIoKhB2bjeKbHp0lfPXC5FgIfn8FDBFZMx9oX8j8LVEBhsVLothT7nWmZIQ5p94hkCJrfzk+dhaPCNp5RNR8X/fzaWQ84zQRym7Av/7q/RTwEicIL5s+hW4fwDfqZkGOCpm0/2LV1CDM1SEMc3HXIMtAMnH/MWaMhiuhkWN9OZGcsEz7T4GgSRJ+e3BMpFBt7VAu+XoAT8A==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 80866A0007
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 5d3j8fni76y99kcmj1zcoe1g8rxn1x1z
+X-HE-Tag: 1794819420-112207
+X-HE-Meta: U2FsdGVkX1+h046dj+McR94TV/46WfuBLwEasNhuzy5srf2Yu/WH+SpNoiYu2qUMu/tYFGWEvYp4MhMPE09FCxPn1kKPTRpOrj8HA2TXaH9Eh6kW2giaD8x25V2KamCkdpuAfKWzAe6TfFgyrr2XbZrQe7Aflbdo4dgJHm1XIyjjLRr5+aK0Co5Zks+sx1Ugb2j0g77JZ3bsLlU0sPwFGgeqSoAtted+r1WuyBNyenGrC6RGl8qPVCAy9pInNOszPSbZ/9sI/FUx8sBnpYP4pOzkiCABTKbPZUCCXLfHBvniFNrt2YM+j/JzyzPD56POfJ+L7WFXcqUCp9uixz+JQw4NNUoCTHiY0XUzIR3l+VQRTquBAAd9njOPe31ywjECUYLTztXetlIye4wBnb703/Ams+jwQ6ZHOFJnlnhOWQPmDVgSD1u1E8BnQjw+KiHj4ZeEmkJOeIu/pjfFS4YEkF+cGohrTRRYUx3NtU6WtOVwZpamke6NSZnAzVNLR89KD7a1s3OAF/RMNzl58lnUPd8CXCB664c0p1FH/qPFUl17xkVKx4A/WImsfcz9+3WP6n3hx68UxiQSByuuN2uMaYUG92sYhIrkbfZRCJ72gjSDKodV7jKv7SyJhMaWvrXn4FjGOaKXL5TrNT+S2HhGzMu2q0oL9/16RHg2h4wvNuEzDJPHp00z/N36QgQEvxv7qrieBjGuUvSfM/VPkEfCQJcjiiFnuwItQD80CeTuh7Mp5aJK5WglDjzl7H+YpOF7Sr717CARd0Pa8ACr0jFJPeChVmRVGpoWCEu979UdfCbLwo5LMmLlykwcnDatAvZsqvmK7q/ZklGKu7vz9Wgi5FezFVXlXqYdxv7OxsUy8yN7J2RmT96MHQrHqc6drgcW9QM8ndK6rDbKHb9XkUyHrHzWBILc9UFNOFsOqdJsG6HGv8CAMfl9MMF9gG9qbeZCG9U9T7dxNES0XVduan4
+ 60RSydqB
+ q7DfV4I1P096vuo2LiOHUlmwdOgVPjwm4Ojtf+Plo/mscXrPEE/9kURynEWxIqAzxIgbX6jF+uIU4To7T2J9DXdXbe3zP7ukAGePw8qFH9o4Ewf8++mr2PGCYyBN+/0XO0rXwhGJSYCbqtyJXap76+alkms3G73ZOyfLpHjt/sxuFPmfCpUoe1zU/a6dGKoUo0oHMg9D44AY0XuKYyedn9rBiICJDGoDDSneqzJvbra8iB13JDQarXj3pkmqSdMLgoSFx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,61 +96,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Hongfu Li <lihongfu@kylinos.cn>
+On Wed, Nov 11, 2026 at 01:01:45PM +0000, Hungyu Lin wrote:
+> A hugetlbfs mount can limit inodes with nr_inodes independently of size
+> or min_size. hugetlbfs_statfs() only fills f_files and f_ffree when a
+> memory subpool exists, so an inode-only limit is enforced but its inode
+> counts are reported as zero.
+> 
+> For example, a fresh mount with nr_inodes=4 reports zero total and free
+> inodes instead of 4 and 3. This hides the inode limit from tools such
+> as df -i, even when creating another file fails with ENOSPC.
+> 
+> Report the inode counters when an inode limit is configured,
+> independently of the memory subpool. Preserve the existing zero and -1
+> results for unlimited inode counts.
+> 
+> Fixes: 74a8a65c5261 ("[PATCH] Fix hugetlbfs_statfs() reporting of block limits")
+> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+> Reviewed-by: Aveline Noir <jm5905938@gmail.com>
+> Tested-by: Aveline Noir <jm5905938@gmail.com>
 
-Commit 25356081894d ("selftests/mm: protection_keys: use library code
-for HugeTLB setup") replaced the exit() calls in the x86 version of
-test_ptrace_modifies_pkru() with _exit(), but missed the aarch64
-version, which still calls exit() from the tracee.
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-When the test runs as root, hugepage_save_settings() registers
-hugepage_restore_settings_atexit() with atexit(). The tracee inherits
-the atexit list across fork(), so its exit() runs
-hugepage_restore_settings_atexit() in the child. That handler calls
-hugetlb_restore_settings(), which writes nr_hugepages back to the saved
-original value while the test is still running. If the saved original
-value is 0 (or otherwise leaves fewer than the two free huge pages
-needed by the next allocation), subsequent iterations fail in
-malloc_pkey_hugetlb() when mmap(MAP_HUGETLB) returns MAP_FAILED.
-
-Use _exit() in the aarch64 tracee as well, matching x86.
-
-This was found by code inspection with AI assistance. No POE-capable
-arm64 hardware was available, so test_ptrace_modifies_pkru() was not
-runtime-tested; the change has only been compile-tested with an arm64
-cross-compiler.
-
-Fixes: 25356081894d ("selftests/mm: protection_keys: use library code for HugeTLB setup")
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
- tools/testing/selftests/mm/protection_keys.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-index 5dece144ab95..a0f51be3fcbc 100644
---- a/tools/testing/selftests/mm/protection_keys.c
-+++ b/tools/testing/selftests/mm/protection_keys.c
-@@ -1530,11 +1530,11 @@ static void test_ptrace_modifies_pkru(int *ptr, u16 pkey)
- 		 * checking
- 		 */
- 		if (__read_pkey_reg() != new_pkey)
--			exit(1);
-+			_exit(1);
  
- 		raise(SIGSTOP);
- 
--		exit(0);
-+		_exit(0);
- 	}
- 
- 	pkey_assert(child == waitpid(child, &status, 0));
 
----
-base-commit: 2c5dafa7f289d760f4492260b0988029aab478b0
-change-id: 20261109-for-pkey-exit-0f96fd62c6bd
-
-Best regards,
---  
-Hongfu Li <lihongfu@kylinos.cn>
-
+-- 
+Oscar Salvador
+SUSE Labs
 
