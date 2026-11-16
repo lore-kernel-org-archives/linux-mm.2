@@ -1,135 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979B8606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 04:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAEA606A331
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 04:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=NCRMRLFa
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oigd/Phg
 Received: by kanga.kvack.org (Postfix)
-	id C0E616B05B1; Sun, 15 Nov 2026 23:34:30 -0500 (EST)
+	id 341EB6B00EF; Sun, 15 Nov 2026 23:40:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBED16B05B2; Sun, 15 Nov 2026 23:34:30 -0500 (EST)
+	id 2F05F6B05B0; Sun, 15 Nov 2026 23:40:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAD936B05B5; Sun, 15 Nov 2026 23:34:30 -0500 (EST)
+	id 1E0716B05B3; Sun, 15 Nov 2026 23:40:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D2AA6B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 23:34:30 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 260F4808AB
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:34:30 +0000 (UTC)
-X-FDA: 85439715900.09.F8B5BB5
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4000D1C0002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:34:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=NCRMRLFa;
-	spf=pass (imf21.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.43 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794803668;
-	b=winR5WtBEeAwKnzmHIcy51ckHzEfc7c39sXXGiFtWzHocwzVKuXPSUUxUUXOc4Gg2Q4WE5
-	pCCacRIL8M+gfc7QHYhRp9eRMW5SqfKQvyMEcovrnNwoPAWsGwIMdpJGiR5ue9ljWquhI7
-	hBHbppD1BQ2CgNKVu/TnHCIPWP7pytQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=NCRMRLFa;
-	spf=pass (imf21.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.43 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ED8816B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 23:40:47 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 522C5120522
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:40:47 +0000 (UTC)
+X-FDA: 85439731734.17.C64DCDB
+Received: from mta1.migadu.com (out-74.mta1.migadu.com [95.215.58.74])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2C848180003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:40:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="oigd/Phg";
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.74 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794803668;
+	s=arc-20220608; t=1794804045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yb0ouDgf9S/OdWev3vcVfqdIAaKZrYAoDUUyKNG3AEU=;
-	b=1NHufwAmPQ0oQolhJ+ebBu/b08gEDfINfKaV5nUvBh1kJkL2UGT4JDRExAhowDVH3T77BQ
-	RdQTKoGwQ/ALgqXI++JaI3/G2yTMwiPUSSswzl3yeiPA2ehsWq6Ratf/ljxoWiwQfLh/hx
-	5iOv4K0Z004KNuzIvqgfyoJcfIwdb0Y=
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-18818daa3e7so1356316c88.0
-        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:34:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794803667; x=1795408467; darn=kvack.org;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yb0ouDgf9S/OdWev3vcVfqdIAaKZrYAoDUUyKNG3AEU=;
-        b=NCRMRLFaifete6hUFh1jt0kW/Vqmy7uRxb/3pWX4mHHEtLsc8MTIfjAkAp1xw1bzH6
-         rxKwzxALauZOIJkxqGgc7KWOmgjvXjXrgd/98HLKeR490Othk3Q07ktqzult8F5qmyoT
-         DZYF1zQzw5pIHKDJcNvbj0hqRoACnqUKmTitc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794803667; x=1795408467;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yb0ouDgf9S/OdWev3vcVfqdIAaKZrYAoDUUyKNG3AEU=;
-        b=goWb7eO9z4IfQA85loUFgk+Y3hP/0fYztMURs9XFts5lnQR2dmu1PJ7Jpl33+K3pRt
-         0GojcPF7aRyM13jj5T/NcyXhh8L+kpYS4bqbIEKd3yasgnDmeEI2n9zZ49+4CPG/NfP/
-         VwoFNF8ksEbI6gO0V9G1kfvG6GpObpREKXio/zPkAP8wo5j9J+xwzw/g+jebgbaIZNCT
-         2zCtlZ6z7o7YhZYkbhn1wbuWzzk/JpFcee0WwwJ5b9ogHFsyrBObSPr8htm1cuEDZjcl
-         Hqy2Rs901TE6LjLT/LG43aMKUk0VEKU38SnTp2qfgzk9nwT1Ge2zBQb3QbGhCUPQ2Ysb
-         5xeA==
-X-Forwarded-Encrypted: i=1; AL+hErFlqcjtbCkQlbS9qwiBG4X9Zte5rcXLbCAMuTdZGDCorsxwZ+3DzGloR9FZi55ULbBGIi3iUS1H7A==@kvack.org
-X-Gm-Message-State: APuU4Z+KDSGO45shBSZMpXrNnbBeZVN/d+nvFCySm74AORR0mTOI8ijH
-	ePd0kzCRqxvNh9tEaAWHeVkOljrskQJUpwtiMKKxaqt1kvURCwYY/6LK7yusvmyJUzY=
-X-Gm-Gg: AYBFou2IKbiwBz02mX87j+Jx4zgOIxLV8WZ/9bVjnRjbwk1TVIt28/dEkJKr2MNbuZY
-	EIQ95z5qykJzywCSMZxspIkFQPeo5pxy5zdB+szM4AltCIL3m1GvtJPzjMoVf64RzmEQ+qDGydo
-	7EiV9G9TIJNn6y5snYp+RqUgxtOfjnHVRdOxNp0WqChZgDO2KpOLQYmSMwBRGL1GIYvfwtVvuMX
-	KeNUWC+rlwxn8FIxSmSRxzRzhoeW2aV/QDXZztU8oQOd4lWyeduEu1MSu+W9fHRV4xBkZhIxftc
-	KmuTgWLABRcVT8p6zdWTDQwaWUKCVbBESK999noMxjKVoPQI9YnvGjWAjdbfJZpmMHnqB9A2boU
-	Rhyjwhjkf3EXJjzpZuTr7meTHV0zA5UV+uDz3K5oOkIUoesbF78Giy1xq+WTVg1+lgqc3qddSRH
-	784KIGubiZLsWMtbVsxrtlZhqPfz37EkGFVWrBHKrzLALUmsY9S49E9wUYZbY/YnZHYJz5xUMRH
-	Gno+411KUC8ykWOdQ4BFOlv5GBrPrOOS8Py+NXugWjaxMcIqzK+fi3xrSpVn2KwV1wjl750KtNA
-	zf3WfjSgoA6qc5DpbfjcTwS/SQLtu6X88Q27391w3ul9eifCsU7nj2qWxGrq3jbOzssvbYkNmUQ
-	L5un+wCRk4zsgDD79tYBmjQ2Bg1BNESgU5VgTgeKIF2KXrZXQr4qemxxUh46DTtsg79WF09q409
-	HzGh2jCEfhBiSvFsZ8snZVJK1G/C2gvRDl2vMorr2O6S47yH/SuSYh8yZUlQDgudtD
-X-Received: by 2002:a05:7022:b0c5:b0:181:6b8:31f1 with SMTP id a92af1059eb24-1b4f5f3475fmr11110443c88.10.1794803667022;
-        Sun, 15 Nov 2026 20:34:27 -0800 (PST)
-Received: from [172.18.0.2] ([172.56.232.151])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031918c7sm38362148c88.9.2026.11.15.20.34.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Nov 2026 20:34:26 -0800 (PST)
-Date: Sun, 15 Nov 2026 20:34:21 -0800
-From: Chris Down <chris@chrisdown.name>
-To: tarunsahu@google.com
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org,
-	will@kernel.org, David Matlack <dmatlack@google.com>,
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com,
-	loganodell@google.com, arnd@arndb.de, dwmw2@infradead.org,
-	baolu.lu@linux.intel.com, Bjorn Helgaas <bhelgaas@google.com>,
-	oupton@kernel.org, alex@shazbot.org, gle.com@google.com, pbonzini@redhat.com,
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com,
-	joro@8bytes.org, kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, skhawaja@google.com, sagis@google.com,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 05/19] kho: Add feature header for fine-grained ABI
-	compatibility
-In-Reply-To: <9huz5wy4tufo.fsf@tarunix.c.googlers.com>
-References: <20261110050202.529473-1-tarunsahu@google.com>
-	<20261110050202.529473-6-tarunsahu@google.com>
-	<DMRMLZSZ0LAZ.D4P70QWX0IHB@soleen.com>
-	<9huz5wy4tufo.fsf@tarunix.c.googlers.com>
+	bh=lowWXPPa6IhhrsA8lYkt58nukDSxiG64mEXkGZf5zlQ=;
+	b=jSNgl4l2o+AfXCTO5nEN9jK9XCByTmnipOJtKLiKlj011g6oT9dlITOB5ZiHs/bfptTf6i
+	86YPBQx8v/kp0Q6x315PEYC6t+jNUz6AaDMUOr4TrjqMqjo9Z4/mcZANoJtcBoHA4NBknm
+	7JV0jnrrvMPOJ5fFuuHtuTzV7ZbKArQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="oigd/Phg";
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.74 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794804045;
+	b=Rjk9keEN1tFN8N7xv+ZWceJlPYeXsdh3VGNZM6GWjih84EzQJtbij7Zm1DqCLN9oCov8J2
+	OtIz/0ymKQtXfEMqnJi5fJP6ZtxasBRZosznXPbniUIQI791t9pKS+1lFzg76gRTA3GsYu
+	51uK/YTj6IwIaQowaAiTYKLBnnW9n60=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=wkYROWez3KV9qDm5oG/7+0bZbBndD+X98UIdC3VnWrA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794804043; v=1; x=1795408843;
+ b=oigd/Phgsyk4OdqUgWyH+NzqwVgcNesOTcLQHok640M6/nfd01ErO4WGRF+dS7lOAIrNOeZI
+ Xgjtrd2Sb/rhrs9hN7fI6vkBWztPRJXdqEZb9EedrtyXDB6r59mKKhQxO2COvc7xn+4v/gAeRsk
+ p+E4iNTKznE8274Y8ogswcQc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 44426cc0f36867df;
+	Mon, 16 Nov 2026 04:40:43 +0000
+X-Mizu-Trace-ID: 44426cc0f36867df
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: songmuchun@bytedance.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	osalvador@suse.de,
+	rppt@kernel.org,
+	lizhe.67@bytedance.com,
+	apopple@nvidia.com,
+	balbirs@nvidia.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	muchun.song@linux.dev,
+	jthoughton@google.com,
+	lance.yang@linux.dev,
+	qi.zheng@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 01/14] mm/mm_init: factor out memmap_init_page_from_template()
+Date: Mon, 16 Nov 2026 12:40:33 +0800
+Message-ID: <20261116044033.26591-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261113033442.62970-2-songmuchun@bytedance.com>
+References: <20261113033442.62970-2-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Message-ID: <20261115203421.38c206b35f5b12e6@chrisdown.name>
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4000D1C0002
-X-Stat-Signature: e8hgdsked8sq855f1u1rz6uc19zudbwy
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 11brpik6uem3ddd6j78w1c5pxowhsin4
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794803668-660150
-X-HE-Meta: U2FsdGVkX190+dEoUP49kGQLWFgYhMIg3MxFCcpjVH0eZty2hHYr5JoAoa85zqeiL/We9c19X/fcRc4B/lGvWkukBM5jRRsQFy9mCnwx59UERdZOX0Q5IJAehCarlR0CGHUbynY02+J/tU6UqTfUVK9X+sUJW0QHDLKm+ObJr14x/Cvs7Cc3y0Ugp6ULs4CTRwDbP4z9qXkdWlMm5ITzT7ZxT5M+9jLGKYJJdt5ctlOcJSQsyHBHk1UVRm8laoyVhR/8H7wae1eOUD8lTLGIph0GRNekj7RaTD8TGb/5g5VYsl0BacuDiyglU2uKouRPvB6EJC70vEGwjrsKzBZVdF5ic0FdmdHLuvV9NFXIrh40OrAVT2Xo93T3lRvxnkx3fSju15XnuGZLCoTmx/Vq0kkOHwuHyGZinRcNnglJHAgScydZebGc94VkDwS5mPFoeF3A77qKL2Ip2d/wk2h8pRZ6HbYz/s97KZbUziq+KacCU2/2oQhpD1dA+dzEkhyWEosnthuXnUJOruq9oZeK/BlRglQAxhuKkO3XVgdTj3N810p2GYLGi6KjGY7RjSNQE6gn0n+atdlfcWH5E4Phz9zNHxhrfAyhFHswg2L42NqGtk38eYO3yfza4Qk5NxbA6VT6tlAPi1bP75bWv3fZGcUCAgxZlaCW3MgvmEY2rmHE1V7VI9fGVwlHqbV6FUthuqbwLG2EPeYm8VfajXK1aKRH7kK3t9Hpb3tRwYREzlw19RPa4zTEFdXePHfCKtlLxLaUDKpC3RIewsaTLaBzlsi+oeMhftda5WFsZvVz3JnQqHJBd+NxpEqXfO2fpLmsa1aDBKzdCzP+5ASTZfXU2nA3JEtyTcC+PJEGVLb7RAezO3zgvUmOHS5TstIV/UacyD3xOFJ9NqWv9A9PuwM1U4Hqfwyvde3YgZSkbnkX8xJIps+Gs7Zn0mEeqxH9Vqs+KqITk0fcFZqUpoM8+Kh
- ioEOwhni
- KHzG70Xy5fatKIzWux9U0vx8inECNEdxjPaOS8L0ovqVKEZ6vuusN4wmIZ5qF/g+sn+aesZ42/8wghzzjJR4dmqOBwtVi4YJRXLec/Vz6nu0p50NjH63G79J0LFLQ62jA5INreNOfuJU5K+ni7GEBH6LeXGHwXIlsWpHOK2RPPYfTnUO6U7T04iA8XW7EFRzKftcyAioKtiKjOkULwBTFXcBPRQAVz3JYmXN4zlrTKL+wo3bFasc0YdqMDQdOOYbrhDdAR6+7asPxKU3BCZjjVyvQUa4ibhF2XVrQVP28HaG8vGokJ4OmSPF0O4GokWeMjzPJhCAPPwJTYCGRaNmImcpbDsUipwekofrVSXkItDgoFIuYaVvALVMX1ZuP/VV9u/PvFJybMtlqYv3F+TP5hwEIhujg7xnh3daCsa1TEHowumu+JOy0iq0QOBwI4lA/zcrs
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 2C848180003
+X-HE-Tag: 1794804044-35288
+X-HE-Meta: U2FsdGVkX1/x0wsdikPZ+JrZZqwsGuQvks2C4U1PuKSYpPK75rc0jAkkbcYt+N3MorraTNhIXHHsIw0ErgMCIndTgK8crKbPCfUlbo3MHSqYh2qxiIrQ2o0AWMQ092tyiYpp5pGw3EHokvt4Y7jw5K7xPyOpZdeFw8QCGb7pFUYjwCy7ROxjxp8dPo8J5Fijs7/LkIkWiIwQ66A0yEdbAAVxjdb2rjxlQHT/mf7sTw7TcNN9Cn2JX0HsuJWqv1p8eFeubqpXJ7XEMvWDZd63JkDtOgDICY9JHtvdYbq5Pf1+Jr9tS08gXX0TCAXZijxZn/G1IAPOB2hUehqcEu/PuH2nbVvRPbF1vA6vLcxPxMltrknujvHLloU7iBpvpbZZAuTdD/tc8nWEdxldJNw7FbQTfU/0H3zLb+eFdNkOIKpoefA48vgeurJz2QdZ8ketHblVLix/Ka1unhEbChGnaRvT2y/zOwM5lcZuEQlOZyJLVJFXSVyJ2CSc3/CbeZz1nDYo6mxvDXtjqdBgm7VYsFB3VDCdANSbiLNU5FHgfzjHIKxcR3eQLma3Ce+JjWlaiHu6AB8SJMK7EPms6YFvW0GrCo1TRSmWTlmlbmbdFn8GfWFBLEWZlT0dAeWh67Cpvj8vsypwGxrmHzyHesCgsmo2uVkpkDr/Br7AUxfum5d7gxtmOXAU+IIr0ZrzyLMbkoxtORsSEpBzhiEIeOrwPFDmPYujPQN3T1s96MhiGlujkApXkg3CMY4YJtC+7nvTk3StBjGr1m6nf0GR1+zDcyQnHyP6+jyJ4sV1tiRVxE7sljnl9s8T7WfYpR13Sr2igIF3lr3ImWPu9tmCwOgg0AIBZffsugxG5XEdPble4OppVWlzOj33gq29WA0rjwLBVa1ErX6/M6XgfSWPrgxbYZ2CXsXLqnQuTDtQMMZVZBHaDJ2jcqJ9bos9/2C98yJbIX4zMaDfZiVlQLzDJlO
+ FAKw6Hv4
+ GKlOTz/pJ8iOUXJ62MNkieima+8qHKl63rb7yRtAGZ8WrWmVu5luSLD3oEdrQxD9AyaBnK+Nt2+QI4ZiYqynJo9IaRZkLfnsAqmgPI6ecebLFEEMaJcOO/Qki3homwg2D9m0bX7wl4pcmmLWc5IYzm8I1toi/guc6nzQc4aKTt0HV28G+SVuqR/TpBve3YWW2Vylb4SW7i9W5tmSWeE0RIWGhhS7KHStL+mMT9C/qyyfGX3h3u/Z0DbuUXvcFw4xg94NR8jcRVkk9XDSZjtpqUlFpG6qqT/iJPVj6fQ3ix6dNHbHD4yB0oBRJvJnDbf7svqDyC9s3xLCUAn3L78LaSzg9ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,26 +109,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Tarun,
 
-tarunsahu@google.com writes:
->Techinically this is just for readability.
+On Fri, Nov 13, 2026 at 11:34:29AM +0800, Muchun Song wrote:
+>From: Li Zhe <lizhe.67@bytedance.com>
 >
->WDYT?
+>ZONE_DEVICE memmap initialization already uses a reusable struct page
+>template when initializing compound tail pages.  The template mostly
+>contains invariant state, but a few fields still depend on the target PFN
+>and must be refreshed before copying the template into each destination
+>struct page.
+>
+>Factor that operation into memmap_init_page_from_template() so other
+>boot-time memmap initialization paths can reuse the same helper.
+>
+>No functional change intended.
+>
+>Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>Reviewed-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
+>Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>---
 
-It doesn't help readability in the generated docs, though. kernel-doc
-splits the parameter list on the comma inside the macro, so
-kho_preserve_vmalloc() comes out as
-
-     int kho_preserve_vmalloc (void *ptr, DECLARE_KHO_SER_HDR(kho_vmalloc# *fhdr))
-
-and the struct memfd_luo_ser and struct luo_session_ser definitions in the
-ABI docs end up with a member like
-
-     DECLARE_KHO_SER_HDR(kho_vmalloc folios_fhdr;
-
-I'd go with Pasha's suggestion and use struct kho_ser_hdr directly. The
-pointer can then say which payload follows it with a comment.
-
-Chris
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
