@@ -1,118 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390FE606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B110606A32C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 06:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Netf0Q8+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JJvV2uWi
 Received: by kanga.kvack.org (Postfix)
-	id D89CD6B05B5; Mon, 16 Nov 2026 01:36:53 -0500 (EST)
+	id 5FBA16B00EF; Mon, 16 Nov 2026 01:47:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D393E6B05B6; Mon, 16 Nov 2026 01:36:53 -0500 (EST)
+	id 5D3A06B05B0; Mon, 16 Nov 2026 01:47:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C01076B05B7; Mon, 16 Nov 2026 01:36:53 -0500 (EST)
+	id 511646B05B2; Mon, 16 Nov 2026 01:47:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 937286B05B5
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:36:53 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24229A82FA
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:36:53 +0000 (UTC)
-X-FDA: 85440024306.01.FA085F3
-Received: from mta0.migadu.com (out-97.mta0.migadu.com [91.218.175.97])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1BEA120002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:36:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 22D3B6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 01:47:21 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8D541C4128
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:20 +0000 (UTC)
+X-FDA: 85440050640.07.01FEC44
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2369220008
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:47:19 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Netf0Q8+;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.97 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JJvV2uWi;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794811011;
+	s=arc-20220608; t=1794811639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hd4SQF+1L7e8YtGflxA30HMxE4b1cNs0ce33y36EA60=;
-	b=1mXK274fKVGMt+FK4ITNYXJX9JAXEzYJqtwXPMkX3qszLP0pxm5zvbbYtfqN+a5xDGN/wY
-	fYn+Xj6icnVQmYo0F8sVAWHaWm/d1g9pH7njoFfylcn8VAjV6Hj+n2HZSDqehNFYB0FrC/
-	GDWfpiDge37KhEM6ElBZiixkJH9eV0A=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Z1Rsc7DC+QVh5qdz58bbVw91gg+izy0lpOLfi/21S74=;
+	b=03x+lMlsYeWwt5nRU3fyqFdf5CV8UTqiSxyJMQCUjCDbOfmlgi3rAM6bPxX8T3lCarGBgt
+	LGq5Y9e0Sq2z9NetnzMofYKcvKQs4mFGOdlLKZDiXZ2Kx4pvf7U18n1nIWntOUsJIh0c//
+	UykkiAWVWZCniF49l10hxwhtC01RDjw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794811011;
-	b=NP/l+Mt1kpuO5NzPNnvv0+HIiRwFyvhDMtV9JmSSmLsHleDd7Id9tHzodVPsPP/0Ak1v2j
-	U1ffZ3+6wr22iRWdBwNj8/IZjXPwHZhxj0bNvlOcvLAJhYKhP4qni7YYQOHvBH3SJ6ROfg
-	rUYi73s5tsxcdUub454J/6Z47AVKPQY=
+	t=1794811639;
+	b=a16IPTkvI/rmpOfOGIckRSEay+qWaHGTufrzTWjSfs+x+ZRYw4CIbf4as5gGr773WprjXv
+	zyVzXaMhqTDkgxKhSN+Ba2n3zBKknBXqKNv63gxzeDrj36fz9ZTc3YE45nCMv/j2kaSnyz
+	uiTXYNI2K0xFhfvV46CzLBzA2/ukwBw=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Netf0Q8+;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.97 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=o6YMBbWCU4WJ1J5424/7Klz5ro7UDAr7ojCH/NxJ8fU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794811009; v=1; x=1795415809;
- b=Netf0Q8+SQodXHuzRshZ5Kej+ZCmSSpoAPZClyKtqYR258jxeDEkuekybFzuzEqTs/rh38f/
- SsS3MQhoIM/5/ed3SoOpyLjQLgN2mS2BeN5j75GCWh/Lr+RwIsUvV7X5Mu3V6Me4EgVcuRculGF
- Fdahuc67Dz5E93xH7DtwdXCQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 94c6d5c2c26d4ba8;
-	Mon, 16 Nov 2026 06:36:49 +0000
-X-Mizu-Trace-ID: 94c6d5c2c26d4ba8
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	apopple@nvidia.com,
-	byungchul@sk.com,
-	david@kernel.org,
-	gourry@gourry.net,
-	jannh@google.com,
-	joshua.hahnjy@gmail.com,
-	liam@infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	matthew.brost@intel.com,
-	mhocko@suse.com,
-	pfalcato@suse.de,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	kas@kernel.org,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	kernel-team@meta.com,
-	baolin.wang@linux.alibaba.com,
-	Nico Pache <nico.pache@linux.dev>,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev
-Cc: Usama Arif <usama.arif@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/4] fs/proc/task_mmu: account device-private PMDs as present in smaps
-Date: Sun, 15 Nov 2026 22:34:58 -0800
-Message-ID: <20261116063624.1382944-5-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.1
-In-Reply-To: <20261116063624.1382944-1-usama.arif@linux.dev>
-References: <20261116063624.1382944-1-usama.arif@linux.dev>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JJvV2uWi;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B9F661ECC;
+	Mon, 16 Nov 2026 06:47:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197601F000C4;
+	Mon, 16 Nov 2026 06:47:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794811638;
+	bh=Z1Rsc7DC+QVh5qdz58bbVw91gg+izy0lpOLfi/21S74=;
+	h=From:Subject:Date:To:Cc;
+	b=JJvV2uWiZqdWbH4MMiSRVO5D7yVWQMFmglhOIgBUqVU7+Ifnvfbc917cQi5vUPhxZ
+	 nOi80n4MJIvFR/WG3/DMDvlGvpNVzagi1xaAs842ZJDg8hJ9ijtMz24d7B+OgYPsyS
+	 lFqhctbXkIV5NBpuLdyTPYypfh0y3f9tNJL7eGi7XbihdtTSjdAI7DtU2xi1z/EuSB
+	 ZZSja+7hQF9L20q9d4XC7UFiGyj7hAiLuFquwmZsr8xglbRuag5So1UOJ0b+cZz7Ch
+	 Id3nasevFmOO1zmcrypPMyCK0usMTgpXKCoaPoiWaEp6YPGePjP2JyETHgwrNFwZt0
+	 pRqhh37iuu5RQ==
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [PATCH v4 00/10] replace CONFIG_SLUB_TINY with a slab_tiny boot
+ parameter
+Date: Mon, 16 Nov 2026 07:47:08 +0100
+Message-Id: <20261116-slub_tiny_rework-v4-0-227a4b3636a5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: a5bdbnwsy471nzsgwt3mz73z8cxr794m
-X-Rspamd-Queue-Id: 1BEA120002
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOym+moC/23NTQrCMBCG4atI1kYy+dO68h4iJWkmGpVWklot0
+ rubqiiiyxe+eeZGEsaAiSwnNxKxCyk0dQ45nZBqZ+ot0uByE864ZgUATcezLdtQ92XESxMPdOG
+ 5FtI5mJs5yWeniD5cH+R68+x0tnus2tEZF7uQ2ib2j58djLsXz8Uv3wFl1DDU2imh0arVAWONx
+ 1kTt2T0O/4WgHH5R+BZsB4kFMYq792PID4CMPVHEFlgciErVAUaa7+EYRjuX7yFEkcBAAA=
+X-Change-ID: 20260911-slub_tiny_rework-8f2634dd17a7
+To: Harry Yoo <harry@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, Conor Dooley <conor@kernel.org>, 
+ Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, 
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+X-Mailer: b4 0.16.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794811010-715769
-X-HE-Meta: U2FsdGVkX1/YQtYYy9JvHWDHl9qxvbVtDvNEgwdWv7TCMcmmvOyGJg5v3fq9faUpaIJzz42Uaqz3cyzuHxsdG+u2B3DWZdaaobN43IkdVY+E8wvOiTePxnwJeaKNGEKij4aD7kpzfM/Ayi/taEdywBqQsY6WK523TzguJme3znVTKaCqRHZF2fmaHrroUXrly3qYN0RIyEbpsSplIVs0Pz1T5h/gNJ/xxrw1QOwZDycXeOmnsyXZteE3GlSaFit+GVdfRmmw0rh0VTR0xL0+zx/A1QOUWyVANCbgXruA4Vrx+CW9t7lmLP3jvWA+3Ema4v26MbLJ65Ax5TPI0wBd4a61rw9T1QWEbxJlyTmv8SdrG2P/mgDlI3ARiT6SJRLpaPUa/7AawDp1ELJbSIwCfVJ7qNoy2UWh6wzOVw7bOQw87oXPvhwiJvoKGau23A8KN+5C2vnQgbhg2YSSSkjQTeuRSO5Fmdv28wUROLO9AdiSsktSGk/bhlvlZgMmXLTHwKiNHj2eqfdJ787LO3lUzVmLkrgUns987nzeX1uBVDEG0s5xdIHPKgwTP5qXsQc9Q6gRGf7ElsBhIo6rRnDOgYU7uFCUVct5iZ8ZLifL1s0kz1Okw8e2pV/nFG/NRHX//236B1L7I34hMLmQNK2iVeJTsm58qJUmRwBjHAnIXspjh7052KdywYpk2XQ/SrPqvYUtR2lg8CKGnjNXSpp8xx/k59tetxNuh8GGOIhdtSUb10M//OidlVF33bXrHJz+todTmnfZTyN6dGwySadn/hc5emiuPOJq7EOWKRdp6qAs4MJGOqqAkIZqV+UDwyTlz2tlZ6EUZdk4+lCteLL6tMiNSExx6t5e9G/UlQlpIbM1ip+0Hz6uQSPx+DWS57l/sYwBF+n+Ey9PDmjQQ3QrTwa6y8yUl/uxsp32HtVsHbiWE2F3umc1bYZ38dIOAOLzRjsPfeY5s4I7W2Gs9Xn
- hj+VIMnQ
- 4l7MgvswHvMQ4F85trZoi07w7TayCT3y/4CI8fiJBU52h3GbKyRZw4FNKg9BSjBK51d5nWWVYw/i1+bimU99bks9UoFesivOrsW+uPnQrgkMnv+paTqgzJEUFFcV5SpD9tgzO8KyIMuR/ZbW07+B3RDHtsK38m5ur7XDa2DG69ymeKJ0on1yxUrPRbh/y46fUBSDUVsbZTJNjaEBjdW4Z9bBDCSm7BbOuSwG/d67NZQoIJITYwBlggvrVCjQ2oPh1rrM9AlDKoO2yqLggjxYBqZG6zTRSK5pBfDtAcBN5uliGkqkGvydKL96RckaNS/xSFVdrHVMzuN04jxEsQ2p8G/92Agfq5+9a+w6yMlRuio6ncCt2oOEa08vM9O8B2t5SwVy0txJATjRQ58c=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: xhmdiqmqq9nbhi4ocgqfekkyybuwubky
+X-Rspamd-Queue-Id: 2369220008
+X-Rspam-User: 
+X-HE-Tag: 1794811639-292363
+X-HE-Meta: U2FsdGVkX1/uIfOxAYGSNruKsFkvLB7gXUGAfwwTgiEThbfvDkg9Hl4FiEeJboSc/AQdG3Sea/NB00WS+EgM5CVyPxz0XzDWNqXU79fxiaBEl3qNiG7D5A7gzByupdL0WUt5D6XHaQ8fIGfulGp8LHojWWFIaCfsrOb2tYi7DiJx9J9mSCxz0J5LD8/MwyWG5kp51KiUWJk1I5/WK1Lypxm/gzdijGRESD/J/E4Wavs6UML2c6sxAU3Bz7W4l45d/fGxPKk9yVjBnG7khIHCpbENRzpk76YwfY8zH4wvsVG+DmPjbvby/bGqtNhC2c1MlvYNGZr3AOwJBVF69nsDKzA7zy+vzMY7WYvq4Xi5UNfTCQf/4OhocddjCzj76FWNUEqBiU+DnFbql9ARJkxZuDYboGbY5lhWrt3delgH5fGpjGxbetcV314H7Ps5Q7hJptNB8FJOo4Pu5TForeD/IvyxqRWWjp+MP/jJUVa/spDph8ZS85KeY6+X2u7QfN32nUwjpptMw7GOmVbUUDlhp5nFNt3NaDwjHFMK/hJVdYDDIj+0h3kMW/dLmGxw4/KqTKeeKf7XFduq2yAHHn0x+z9KuCkhoMGSGEZ0B5jDLV5r4nAt057r363x0tLwGm/HQrlLCktar1gyNoHcw64jtbhAX7SHBC+V2sjsZdwEFpflJfsd6MNnYUcivPkRtjExk5TFgzLeRkaWdIgb3JjjOhyggq0zpqyvN0vbNR6mskHTRBvWBdXk/DPPEZk/SbMxN+7REZUVDAafesmCtPGLhHdvVt3UC3fVWFWYYIwh3mfLXssbpTDV9jcny5URRwMRdrTVLuIZHQp5FvKAUcL2aYkvYBeWlXv75nI5n2ZyC1jV4JB1UXqy+Siu0tlt/Y5SNorMbRjfFARmpKmdgqqVrk9A7Gg/4ozTvZfnlSJrwqusLNAZCrM86J1f9Mlr/UoAA9qZIGurutDU+D+KdJD
+ F6jMhjJb
+ LR5xn7KE395flXhU5EwJl4NcO3L+A8S9xXjy46ekZ1WiG+1tju9nt57mBNfq1xyamdkwWkqPBMG1mUyGZ0T42Lu5lVdJkni5Da7VauwKZhxZ7EREXhQEwtHTKzVJ1fnOEkRW9j6Xpbs0jgzLqGoo8SdvmV0C1gqnkQTfkx2iX3hvOSXWfdbWMrVALcFaDL15IB9Jds2/d3ew20VIwodxceGVMsxf/OLYyD9FdWH9+VDW0Zz9WgdNCu/X1vLvaagPZYmbe+XNQtYsC9xqHLjQf/xDuQU/lgt/ORXOSJzZPR8+OJgZ2GvUy13srFz2ul8soXnWLAwq/MhmiMIrjwD+cXff++mgUm4sIYanfJuY0aGFBVPjS+fzvzu5dVklYDvXTHBl6756/ZGKY2mcr2d+Lvb1qlVt2Wd07gtWcNKrx5DpteflkcQCc4heBgdvG10mCwj2pQECCdSowr2MXP05fiKHR6bVopfsMojn4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,42 +105,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Device-private PMDs represent mapped pages, but smaps_pmd_entry()
-passes present=false to smaps_account(). That treats them like migration
-entries: mapcounts are ignored, PSS is charged in full, and exclusive
-mappings are accounted as shared.
+CONFIG_SLUB_TINY was introduced to help tiny systems migrate away from
+the SLOB implementation so it could be removed. Its main purpose has
+been to disable all forms of percpu object caching (cpu slabs back then,
+now sheaves), and being a compile-time config option, some extra minor
+saving were achieved by code elimination or more agressive merging of
+caches with reclaimable and non-reclaimable objects (keeping those
+separate helps reduce high-order page fragmentation but not memory
+footprint).
 
-Match smaps_pte_entry() and mark device-private PMDs as present so
-smaps_account() uses mapcounts for PSS and private/shared accounting.
+However being a config option brings issues such as incompatibility with
+other options that has caused troubles in the past and Linus argued for
+removing it [1]. Moreover, there is a use case for having full-blown
+scalable implementation enabled and being able to disable it with a
+boot-time rather than compile-time decision. That use case is the kdump
+kernel which shares the same vmlinux but wants to minimize the memory
+overhead (which has to be pre-reserved from the production kernel) and
+does not mind reduced scalability.
 
-Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-Cc: stable@vger.kernel.org
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Thus this series reworks the CONFIG_SLUB_TINY to be controlled by a
+variable set by a boot-time parameter. The config option itself is
+deprecated and only sets the default value of the variable, and all its
+interactions with other config options are removed.
+
+The conversion builds mainly on the fact that most SLUB_TINY specific
+paths to avoiding percpu object caching are shared with slab_debug
+handling, except doing any actual debugging checks.
+
+Thus introduce slab_debug=N (for No-op) option to allow using the
+slab_debug checks directly, and extract the underlying static key
+handling from CONFIG_SLUB_DEBUG only scope. The decision to create
+separate kmalloc-rcl caches is also made to be boot-time.
+
+The parts of CONFIG_SLUB_TINY that can't be transformed to a boot-time
+decision are related to dead code elimination and fast path inlining,
+and ignoring SLAB_NO_MERGE for performance purposes (currently used in
+networking). Those lost memory saving should be all relatively minor
+compared to the savings from avoiding percpu caching.
+
+To sum up, after this series:
+
+- CONFIG_SLUB_TINY is a deprecated option that has no interaction with
+  other options and only controls the default behavior.
+
+- New slab_tiny boot parameter controls the functionality (and can
+  override CONFIG_SLUB_TINY in both directions).
+
+- slab_debug=N can effectively achieve most of slab_tiny and on a
+  per-cache basis
+
+- the implementation is simpler with many ifdefs removed
+
+To verify, slab usage was measured from /proc/meminfo after a virtme-ng
+boot with 16 cpus and CONFIG_SLUB_TINY enabled.
+
+- before the series: 27700 kB
+
+- after the series: 29804 kB
+
+The difference turns out to be due to last patch making CONFIG_SLUB_TINY
+stop blocking several options, but real tiny systems can still disable
+those.
+
+- SYSFS support can be disabled globally. When manually disabling it for
+  slab only:  28992 kB
+
+- Disabling CONFIG_SLUB_DEBUG on top: 28696 kB
+
+- Disabling KVFREE_RCU_BATCHED on top:  27624 kB
+
+Thus it's possible to achieve the same slab memory footprint with
+slab_tiny. One caveat is that disabling KVFREE_RCU_BATCHED is now only
+possible by selecting tiny rcu which means CONFIG_SMP=n. I attempted to
+make rcu batching boot-time as well, but turns out it's not possible
+anymore to switch to call_rcu() with kvfree_rcu_cb because struct
+kvfree_rcu_head is now reduced compared to the full rcu_head.
+
+In case some small (but SMP) systems notice this as a regression, we can
+make KVFREE_RCU_BATCHED configurable, or come up with some other
+solution.
+
+[1] https://lore.kernel.org/all/CAHk-=wh-k04MsoEC0SGKff2Snm6bBF_e+0pHOKwaWv4umZ_SnQ@mail.gmail.com/
+
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- fs/proc/task_mmu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Changes in v4:
+- Collect review tags, thanks!
+- Fix missing migrate_enable() in the kasan test (Harry, sashiko)
+- Handle create_unique_id() properly (sashiko)
+- Drop SLAB_RECLAIM_ACCOUNT on cache creation with slab_tiny_enabled,
+  achieving full parity with handling pre-series.
+- Add memory footprint measurements to the cover letter (Harry)
+- Link to v3: https://patch.msgid.link/20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index ad9fdcdaa2c40..6345bb143f200 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1042,8 +1042,11 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
- 	} else if (unlikely(thp_migration_supported())) {
- 		const softleaf_t entry = softleaf_from_pmd(*pmd);
- 
--		if (softleaf_has_pfn(entry))
-+		if (softleaf_has_pfn(entry)) {
-+			if (softleaf_is_device_private(entry))
-+				present = true;
- 			page = softleaf_to_page(entry);
-+		}
- 	}
- 	if (IS_ERR_OR_NULL(page))
- 		return;
--- 
-2.53.1-Meta
+Changes in v3:
+- Rebase to v7.4-rc1
+- Add SLAB_DEBUG_NOOP to SLAB_MERGE_SAME (sashiko)
+- Prevent premature slab free in slab and kasan kunit tests by new
+  patches 1 and 2 (sashiko)
+- Link to v2: https://patch.msgid.link/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org
+
+Changes in v2:
+- Rebase to current mainline (with slab/for-7.4 merged)
+- Stop triggering nohash pointers due to slab_debug=N (Harry)
+- Stop preventing slab merging dues to SLAB_DEBUG_NOOP (Harry)
+- Link to v1: https://patch.msgid.link/20260923-slub_tiny_rework-v1-0-a0e66d536eb5@kernel.org
+
+---
+Vlastimil Babka (SUSE) (10):
+      slab, kunit: pin test slabs by an extra allocation
+      kasan, kunit: pin test slabs by an extra allocation
+      mm, slab: refactor slab_min/max_order handling
+      mm, slab: introduce slab_debug=N
+      mm, slab: rework KMALLOC_RECLAIM handling of SLUB_TINY
+      mm, slab: make SLUB_TINY handling dynamic for sizing decisions
+      mm, slab: convert CONFIG_SLUB_TINY checks to kmem_cache_debug()
+      mm, slab: remove remaining compile-time checks for CONFIG_SLUB_TINY
+      mm, slab: add slab_tiny boot param
+      mm, slab: deprecate CONFIG_SLUB_TINY and reduce its Kconfig effects
+
+ Documentation/admin-guide/kernel-parameters.txt |   4 +
+ Documentation/admin-guide/mm/slab.rst           |  18 ++-
+ include/linux/slab.h                            |  17 +--
+ lib/Kconfig.kasan                               |   2 +-
+ lib/tests/slub_kunit.c                          |  36 ++++-
+ mm/Kconfig                                      |  16 +--
+ mm/Kconfig.debug                                |   2 +-
+ mm/kasan/kasan_test_c.c                         |  25 +++-
+ mm/slab.h                                       |  32 ++---
+ mm/slab_common.c                                |  28 ++--
+ mm/slub.c                                       | 176 ++++++++++++------------
+ 11 files changed, 207 insertions(+), 149 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260911-slub_tiny_rework-8f2634dd17a7
 
 
