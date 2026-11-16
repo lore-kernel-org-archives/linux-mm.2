@@ -1,147 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9CE606A33F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33DC606A330
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rwMGbKeg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LWj9kUC8
 Received: by kanga.kvack.org (Postfix)
-	id 88CEF6B05B1; Mon, 16 Nov 2026 12:47:40 -0500 (EST)
+	id F1DB16B00EF; Mon, 16 Nov 2026 12:49:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83B716B05B7; Mon, 16 Nov 2026 12:47:40 -0500 (EST)
+	id ECF076B05B4; Mon, 16 Nov 2026 12:49:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7514F6B05B8; Mon, 16 Nov 2026 12:47:40 -0500 (EST)
+	id D72586B05B8; Mon, 16 Nov 2026 12:49:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 540246B05B1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:47:40 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCE9A1401BF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:47:39 +0000 (UTC)
-X-FDA: 85441714638.01.D4C477E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 95D2E1C0011
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:47:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rwMGbKeg;
-	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id A42076B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:49:26 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 258FCA7487
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:49:26 +0000 (UTC)
+X-FDA: 85441719132.04.BFF1109
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6D4CEC0006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:49:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWj9kUC8;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794851257;
-	b=OJPOowYpkTOzYBEvOW+AxjloklN0Sygh5/SmE8zhQjjq40XHvKWevI4iFVThepIWjcg4yb
-	5OkrNMorCJIeCd/1WKad5J56WcGqTgmFMtu/KGIm4HgA7i25n3GPIWx+H6+CaHVymbGNkb
-	3xzElDnaSY0II0p1SMxGzuhbPrQF1Fo=
+	t=1794851364;
+	b=55PFQteajYOqPDemuRlnw6qiM8zZrmmnm7nvdjICJ/gPGKXU28eojpU0mW3XpbmsePzTeq
+	Fy0BdoBWnxPRtBfdsnmddbf61DoV199zu4R6hrG9mYE2biiqLZX8vvbgbEuijjE6T1/Xaw
+	bvH884pI/5XPc8yoW6hG2whO95LYwxk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794851257;
+	s=arc-20220608; t=1794851364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lSkurEuqzWY07J42xz49JInftf8xvjfRIqM1YL0tZ5c=;
-	b=OFI2+WDBKXsDQSTwZltLDTYvrSYpIdzFRtAngKvj2th9ABvw+dZxA6rG9s8eQ8eIjOxNgo
-	AHjM5Qn7LPLsnV/fuHNDH3H4Bp5npmW3hZZH6OAq8NJo44IcwNRC+Jw5pfzfxXvihkzWaG
-	XiIZxAJP+cQg0qS/8n6BFKg75f5GUbU=
+	bh=ED8m1EUNyZbVy60KlCH1nfmXFCVOvYy5WXRoQrkl9dY=;
+	b=rhJHhe3ToN7flWkcY83SwKjvFqLpfckYAOwFDbbuUufmJxIzXsXZ4rFI+kqeiJbD7TuecH
+	uAlf0E/NlJMJ2/TnHK7xrYRkhwyLQb2td/AerMUrqrbq+7/gz7KqxhkBSmBLN7EZitUp76
+	JwVEt1UcvifhmsZHC/L2+wgjIGKn9gI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rwMGbKeg;
-	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGGQBjV3773693;
-	Mon, 16 Nov 2026 17:47:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=lSkurEuqzWY07J42xz49JInftf8xvj
-	fRIqM1YL0tZ5c=; b=rwMGbKegakPvE0CIQtAqgEn+oh3LlHxF+nvZRS2PoVXJHB
-	zJuLlPoWa/NHFe5JbYkg6HJkEBQKeCWrywf1dK+v3njdnWn1PEtC4vFDkc2oKZ97
-	A/s9d81Aih4CUM4G0010EbH4iePu7mAgJYFvneGj/dwQZv+sYcEI/8kaGTCSG/sa
-	0YJ9vpkRHOPuwIoR5bacd5JCzp5YS80ymccJRNeDhPUda5t+VzHrad+mGzcFXScK
-	DpHlbyfA1ktUGm63n2aNRyQWBqGz07rDFX4216ag3+Ac+hK6ISXXeqfJJtLhFqjP
-	2qM/vQzFGni61Y69TVyy9OPyEMKi7wHqwC+KB9sQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxf9ve8d0-1311
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 17:47:35 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGCKXv22351239;
-	Mon, 16 Nov 2026 13:13:09 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hy2bv9u55-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 13:13:09 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGDCwLW53084420
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Nov 2026 13:12:58 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B526220043;
-	Mon, 16 Nov 2026 13:12:58 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 434472004B;
-	Mon, 16 Nov 2026 13:12:58 +0000 (GMT)
-Received: from osiris (unknown [9.111.42.169])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Nov 2026 13:12:58 +0000 (GMT)
-Date: Mon, 16 Nov 2026 14:12:56 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/5] s390/vmur: Replace __get_free_page() with kmalloc()
-Message-ID: <20261116131256.125125Cdd-hca@linux.ibm.com>
-References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
- <20261108-s390-char-ready-v1-2-3db507722530@kernel.org>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWj9kUC8;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A06146147C;
+	Mon, 16 Nov 2026 17:49:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A261F02813;
+	Mon, 16 Nov 2026 17:49:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794851363;
+	bh=ED8m1EUNyZbVy60KlCH1nfmXFCVOvYy5WXRoQrkl9dY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LWj9kUC8kQFC5SfD1vjbud2HBFDNnZqFBwsM7D7EkixcrkbHslvvXUPplnT67OEDa
+	 Ojxvc/9bBfh+7M7IgMwLe0/MW3vEZ7MNK475jdjW9gzIKFiwKQYtp2o3epkEHr1OUY
+	 ut8wZMtQ6WwDI4R/4NjZmngdKNKdP+t6PoX5HnYwVJTKEbOQrvDnGzw7NTHVCoa2iV
+	 Az2pSjHFx32LhMnzCRrFLDjD1DXtR7qLBdQXkQEuVAl0z7iuGlB/eKvhfmNtzTqNut
+	 eiuM63/QtPtS1+8sCvNSNotSJGDSOZKb/xcO1WCvyJtafHJlrptV+MYpMU1CW9c9N/
+	 f6aB01Y3d7oMw==
+Date: Mon, 16 Nov 2026 18:49:14 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
+	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC v3 33/44] ovl: refuse data-only layers on pseudo
+ filesystems
+Message-ID: <20261116-kriterien-getoppt-kauern-5a0c1fba70cf@brauner>
+References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
+ <20261116-work-loop-pseudo-v3-33-8cbbea1cf34f@kernel.org>
+ <CAOQ4uxgPerkkG4ie0SyHVXaBD9VZN2wYfQpEAEi4hytn=ara3A@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261108-s390-char-ready-v1-2-3db507722530@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7AiCKN4979fldUbYW-Neq7KI7iaDNVkX
-X-Authority-Analysis: v=2.4 cv=dtxOmFg4 c=1 sm=1 tr=0 ts=6afb41b7 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=Y6TpkvVB5ZIwULgkomUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX5TOywkPDj7lQ
- HNrmfuLln6FgDAm5tONoVF0myIyvvgTGjKb2TaA8+KWG0MI/i7Rr9lWiIOb8/EKtsV4TlffUA0Q
- PeFcv79OZg2atJqk9oQfW5lLLdvyYaL3gsKWTOl6CyEizeBKqFlULaTxTdGlZux7EIwbJ+Y1Fsj
- FNBUuYcKwgtTb0+irzTRS7b7MVAkqDJxaEZy3onXIMI20Oc4vX800/etJ+kY8nlgxgl1qk52E2O
- C6C3LfX/UOWErrxoodoRokstcA8W5xQvUYWaB111dTf0EFwacVWfbuu2nlCpqb9oeONp8bdjFFC
- lAZzjc/N01SzKaK2DSIxOpJUkY3pSOczCzrqhBEgvVdqMJIwlLUnSicUiUmOlyz7Cv1HWQ6MxJl
- +/Rb4NP1mhsW4w69qOMRCKFxdDqPx+D/K0NG8POO9nMNykMcpBzkcUxzL9vhGB5ssWETrHaU1lc
- ielt9eBk1RF8wfvpA4g==
-X-Proofpoint-ORIG-GUID: 7AiCKN4979fldUbYW-Neq7KI7iaDNVkX
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX/oHTORHLiPRG
- spGtUexLGQ2GCSjwYhnFHs/FNuOQaz4quf96OKEXlzhWJe7LE2Cgwhjp1ZZSO1Xu58OczsAdxLi
- HKBfiPs3FW4s1seTCiNkygpH8TCORJs=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-16_05,2026-11-16_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- spamscore=0 malwarescore=0 phishscore=0 clxscore=1015 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611160069
-X-Rspamd-Queue-Id: 95D2E1C0011
-X-Stat-Signature: ij4e11yiksxo51o5zp5ka5xr3pxgusih
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOQ4uxgPerkkG4ie0SyHVXaBD9VZN2wYfQpEAEi4hytn=ara3A@mail.gmail.com>
+X-Rspamd-Queue-Id: 6D4CEC0006
+X-Stat-Signature: ifgy5geog3y5wxy35gbcrd7hiqgge64k
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1794851257-241150
-X-HE-Meta: U2FsdGVkX19o5DFx0bebZBATOapJyKwCyzU2YunioeYKbGf9y0U/duaxIE7VACGLN5UndNac3TpvPso+ezql8zq5AaOVA6Zw4Xm8yq+wvMpezYY7PxBXqe3sSQhxAQo9WZV4qs09vbsNXVEPEqclCM74yj2/YhURgdS2WtcKXq9zZvkwStyC83AT4XEBfs/L6vkED2kpvT+gX1IsY/H3Cjy/mxgR77DkoMHMa6U5shCR4MGKyd63HZacA/NJtXbOgFTJoHU71VNIJrhZa60XWOm33TTwdiz8J6bU3IYpY8q4dLtI9UNi/f22FTnHNBFm28K6Z+FTu/HfqqaTFVtqgJXCPdrhuAyezK8R0I3TjRtBUq/W4jld5/IZuLYFto9xoaarmIaZU1Tg4s8jtpNnR0ZP1wnn9c5MizwlvdxfprQbbTC1lmZaocMpXQ0hFAauqvTCelkVLkcEdtjzKt5wkHyPoS7tMf+RHKxEktXiib2PhV3iTvTrnetHTJFOuOQ21em/QzCB9AY/XGWbWr6P3TKPmE08MrX6LtR+Sq9ir1NsuhkoA827wlRozwzUJoy2JHrEUWhUxsyMluMF9SuDWmiFoH0lCNZ6ylC14xbQRG9zXOQGAJa0SicHlUnG4PQjWitWtbGlfa2Pu+dqN6eEneSM/KPw3sDomwP633/gynBXOuFd4hjn9sFU15q1+ifeYwHRjfa6jp5uJkETzYbhpoxL1XPoCAPX2n1L2oiBGeTpwFpamcdtyi8i2jDfIoo2tyjitA4Sv3PUWFwCPDxlCBMLNMRLiRsg2I6qRdawmcsZX5/f2OTZc5ntqbijDH4y9Y8SeMuRrKlgFnwtIlrHmswxBl+UCcd7CdGDrc+yGeLTNzh9jceuA0AaXQ3T3i4wx8kTEAmaHKv9KiV7tKpnNnJnyODix0NuM6V0hwjCNKIch7Mr52ZDQIhpa+7kmdp/fdGA0Q0pHrm/TremS69
- KEEbgaD8
- PjhsMtRU+UKBrGyaHofR5hjYvtHJikhhOE2LpClcxtkZRpKKurYSadTR6oVuGzKm/90pdB+3boc145h6fiBUDQnKEJg/ROblFeckijSgmxPROUihHf5LDUYeavDp+HtCyMV3GXLOSlCk8vB/vnffCUkEaJM6FJ5KFuXV0g3fuGeXb6dlForPt15hJQ0vqjmXCqsXCBz0xHqX3/FaPGKN8j2AEdEJ65i7dJ0m83F5zSOHHstSoH55Fuuu2NDb5AdGEcMUN0esdvW+y17tqlMb1+LaV/Ic6mbyHX0ae5RvafCwlHzTJ2eo8VCeTlmiCcqww1LGvGRFPFWvKUsHHUcLdJxhK2NmJMAzbXcYc1qb2Yt4ibOK1vTahn0QkLJN2gY1zS5/I0D0+3KXvn9gZVYMcSh84gs9hCE24Zz8yaq9vtq6CaXDuJ9nRyAJ6JOQCZkE44ZQh/vKUS48oIKM=
+X-HE-Tag: 1794851364-399832
+X-HE-Meta: U2FsdGVkX1/fQ7AlxYTaK4XBPlZZ66OzN5kFEpmoHS6Fl/6H/iwU7VmoHp9n3YoPaHiyfY9m3BaIz13BGAjhrhAIwMdXpiP8natU6e6a5+MX4QqNeeVrwChHGvXZy+IZtz9jKhKXe8EjBfM2M8yflS7SbaK+3QbILY3Mk4T7HKDeGWPnmBRSZQpt0bIhjC7lX5KLNxiGmTQ1XQ7+R3YYpWFYdPKmyKOGWFFaTOCcTQ4OMOTq75flpH33h273LQIcQsQLPtRrAeiMeNPS0Q0K1RNisc4ji28epSlQv9z84wemb3R6t67hdl01rxke/DropHBvXDaCXWD0L3hei4stU6A6zSXgq6AiwiO4BNSyzxoD5af5AgM37SAzii4XI4ZjneBtRl12Sek2XQVGd0sZvb8K3VJ9Yz010GVrZlUmcudtgLQp+4ftQpzcq7BiUUzAOEa6sfaLgp8dWTEJiuc2fieLhaVY6kEV8oMCx/XfSpSjfl3Uy8hTaaQ2Ndbn3NSPPdlcwagD/7Iq++J8Uj3Ejl5RfISvh5Q5RjjeDKprwDC3b1FDH9JukHLk+rzuDyg0gsmHkNriAEZymdDKPuaS78/B5DzuY99bAVdPGaC53iSl9v23JFi2tvrn80Jon480wtvs4O8m1cW+nIOEwOa8FGAMBPhqRuB2F+vZ+A2mntcLrSJOMXlmcoMum0yHftfiPfd0zqMqcm3a/qNdatFzeLmVLuK5osaYpPfVBf3Dc9csv5344pxybZT5z+QvPBLl4AXi8x4suguIVb1yp4nILMhj66pIg+FKihlBmiCc8P1XHQms958IrOscN3y0elfx8efVB/sZoBVer/fR3/1TpDeVhxPRJIq6eDHOxiJUfQZAALzX5w2Xa3RG05tkYqmBbr4Dr5VPUCHt7cmha6qXrETl9J0LsrU8F/tHLiUrBRnzj8QAVxIZAeiDk/rhdXQ0gVDGjke3KCjXADYFfv4
+ Qteptevy
+ GW48uHPUSmwsKQLd2QJkx54hR9sZk5+Div3KNZJnex+E9/m6sfdxTKBDMroLN7MQBksfXmaX3Az3qHy9nW3sTi40iYmhyECCg3SQ2WrIqjHcYOMNlqiNRBp7EGuEG2fWY4uTMj0EPtVXX5/O8YTtk7xtSonPafPagNAU0itDo9dv04jm5WON6dizD3KkcFTmzkqXYEdG7PshBla33XyEEhs07i+qtiPcdTXJKigwRbvWJnrYgamZCZNnGpromf5RJjLFzq5EarkcUTTgoYb8uWcl6/XfxNnCyiblsR7LjOI3VXhvKZoLvrBm5eJ/hu7IfuOhgPnb/QQ20Mualqhmo4dzN7EfrtcVF1R/w06VMR3BzQSqdBwHWBIrGXURm7RHbWAPr5VkWGDh6jzP6tmOgYPcn//ZFCAyzK3DR3JefuMvbFmKns+2u8gdC3EwfG61zCNPZcKubr9lvKr9vaSVTTwQ246FJdh7I6nx7EkwgumIvsiI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,31 +107,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 10:48:59AM +0200, Mike Rapoport (Microsoft) wrote:
-> diag14_read() and verify_uri_device() allocate the buffers that receive
-> the spool file data returned by z/VM DIAGNOSE 0x14.
+On Mon, Nov 16, 2026 at 06:37:16PM +0100, Amir Goldstein wrote:
+> On Mon, Nov 16, 2026 at 12:10 PM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > The data of a metacopy file can live in a data-only layer. overlayfs
+> > doesn't look that data up when it looks up the file. It only remembers
+> > the absolute redirect and looks up the data lazily the first time
+> > someone needs it. So until then nothing can tell which filesystem holds
+> > the data of such a file.
+> >
+> > But a data-only layer has no business being a pseudo filesystem in the
+> > first place. All it does is hold the data of metacopy files and the
+> > regular files of a pseudo filesystem are kernel interfaces, not storage.
+> > So let's refuse data-only layers on superblocks with SB_I_PSEUDO at
+> > mount time.
+> >
+> > Data-only layers can be added via the "::" separator in "lowerdir=" and
+> > via "datadir+" by path or by file descriptor. All of them end up at the
+> > end of ctx->lower. So a single check in ovl_get_lowerstack() covers all
+> > of them.
+> >
+> > Note that regular lower layers on pseudo filesystems are left alone.
+> > Stacking overlayfs on top of sysfs keeps working.
+> >
+> > Suggested-by: Amir Goldstein <amir73il@gmail.com>
+> > Link: https://lore.kernel.org/all/CAOQ4uxhGxpBtMZ5kfuzR1tQAewiecoX7UjXQRo91QjJHH9T_Yw@mail.gmail.com
+> > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> > ---
+> >  fs/overlayfs/super.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+> > index 39d4d57dec230..719c2569dfeaf 100644
+> > --- a/fs/overlayfs/super.c
+> > +++ b/fs/overlayfs/super.c
+> > @@ -1237,6 +1237,14 @@ static struct ovl_entry *ovl_get_lowerstack(struct super_block *sb,
+> >         for (i = 0; i < ctx->nr; i++) {
+> >                 l = &ctx->lower[i];
+> >
+> > +               /* Pseudo filesystems don't hold data for metacopy files. */
+> > +               if (i >= ctx->nr - ctx->nr_data &&
+> > +                   (l->path.dentry->d_sb->s_iflags & SB_I_PSEUDO)) {
+> > +                       pr_err("filesystem on %s not supported as data-only layer\n",
+> > +                              l->name);
+> > +                       return ERR_PTR(-EINVAL);
+> > +               }
+> > +
 > 
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
+> How about we make this just a tad more restrictive:
 > 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
+>                 /* Pseudo filesystems don't belong in composefs setup */
+>                 if (ctx->nr_data &&
+>                     (l->path.dentry->d_sb->s_iflags & SB_I_PSEUDO)) {
+>                         pr_err("filesystem on %s not supported along
+> with data-only layers\n",
+>                                l->name);
+>                         return ERR_PTR(-EINVAL);
+>                 }
 > 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
+> I could send this as followup patch, but since this version is simpler
+> there is no real reason to have the intermediate "only ban datadir" step.
 > 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of __get_free_page() with kmalloc() and free_page() with
-> kfree().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  drivers/s390/char/vmur.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> Only the commit message needs a little more flexing to justify this.
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Just sent me the diff on top of the series and I can fold it with the
+commit message you want and slap your Co-developed-by and SoB on it,
+please?
 
