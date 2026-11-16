@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447F1606A332
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 20:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD059606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 20:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e91q/zjO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ItU7TeQa
 Received: by kanga.kvack.org (Postfix)
-	id 2256C6B05B1; Mon, 16 Nov 2026 15:16:12 -0500 (EST)
+	id 9EFA36B05B3; Mon, 16 Nov 2026 15:17:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D60E6B05B2; Mon, 16 Nov 2026 15:16:12 -0500 (EST)
+	id 9A1396B05B6; Mon, 16 Nov 2026 15:17:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0774E6B05B3; Mon, 16 Nov 2026 15:16:12 -0500 (EST)
+	id 868BE6B05B7; Mon, 16 Nov 2026 15:17:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D8E436B05B1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:16:11 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6EF2B16021F
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:16:11 +0000 (UTC)
-X-FDA: 85442088942.07.07A38BA
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A8F86B05B3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:17:06 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5BEBC0204
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:17:05 +0000 (UTC)
+X-FDA: 85442091210.25.3EF64F5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9CD71140005
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:16:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e91q/zjO";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id F3BE14000D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:17:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ItU7TeQa;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794860169;
-	b=2Q6GwKVE53qJkddGSLzD7HaWBHHSnxodQoMOme5wunOApCVDuKxcas/i4Qpz5awQ4PNG8Z
-	7T+LPDgkYxwvhwo9ji36TFfHp9FoiOW6/g6p4dvM88heVd1KeUGt7jvvDKFTDfygodMtRJ
-	eEQrUVLXszUPTon+ikeGf+0IP9CB0ww=
+	t=1794860224;
+	b=FTTetXgQ2d6Pc5rMqlY1Co7tkv2NUAKle5zk8jBaJrKGYmCH7BUDnk3Vyz3u3qBE/y8Js+
+	LZNUlH2pm0f1oz6kLI1szZTcldtSx5JqA5KzHRDDAJ08LiQE7cG5bh5I7mku+m+DN7icGc
+	NQlh7D+Q5vAhL19FKjCf6E6MECUbmZY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e91q/zjO";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ItU7TeQa;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794860169;
+	s=arc-20220608; t=1794860224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nP2/A4kreMDxcG0ChilH5zyKMiflQw713CJUf+u0xOo=;
-	b=n5YzScghBX1Ec7vUs0grObYPAewn1HgiOhoxRtKPm+FQmZuyYYpLm7jEY/LCBzAtsW5swR
-	09/big2eWttKwBsxTTMi0f/dwhwABBOsJYi3j9+H7SJ9YJO6+uYEpjHLZ9M/gO5yG7AfTQ
-	Yz6BsI/xWVhQZ+Zh5ucf9Sk9c6igBOU=
+	bh=bKzzzSpBOaonU826sARfDAiFw4R3omUJQM2ebnYyTcA=;
+	b=Xc6fPTeeQR2EEIc/dC6jDl3r0X3Oa2ErXMbNePaSbGTU7UvgsZHrHBIGCZh1fKboJrFkfz
+	FQgPzVt1NfMRMPBD6v3NoPsN30tuOjJpet+FfqUjGNOTmXj5zEj+9sW1yN9RcKBSHoup/T
+	51tidmnOEjemF3s6ys0Ewy6TUpvOKoA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCAE743B9E;
-	Mon, 16 Nov 2026 20:16:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8901F000C4;
-	Mon, 16 Nov 2026 20:15:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3F01442482;
+	Mon, 16 Nov 2026 20:17:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F631F000C5;
+	Mon, 16 Nov 2026 20:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794860168;
-	bh=nP2/A4kreMDxcG0ChilH5zyKMiflQw713CJUf+u0xOo=;
+	s=k20260515; t=1794860223;
+	bh=bKzzzSpBOaonU826sARfDAiFw4R3omUJQM2ebnYyTcA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=e91q/zjOKL9q/uw7SxD7P7ZTugdBB+UjVeXZwDBA8rP/BBz54+FhWFY2qnooMzVWg
-	 oX84IokEF/q+TxpkmbU7qiM8zh6hxBTGVrRnh87SH/qv2wv73t0THwTWBdRowX9+AW
-	 RsgMhZw0A+ywGRj0DJFvpaHq6RCtWbqAcmzibI9A5TOIQWQadHYiu3HFc4ldrL80oc
-	 QVTzetfhI4ylCxsQROZuZt6AFLOVYngULhFF4XkkvJWtMCM7UKrYOC9vo4XfaKbqwF
-	 qfWjUYCzprpyX+YfuMV5cvu2RO7YeSZKHw0+Qs9kodUTW39ZT8Qjf3Cdi+TeTSWEsc
-	 el6L+IFlE/R9A==
-Message-ID: <d4ceead7-4b55-4525-8d09-121a75c30ac4@kernel.org>
-Date: Mon, 16 Nov 2026 21:15:56 +0100
+	b=ItU7TeQai/+BclW1EU5PAUfzqEk6kWfCZ7ASDuNsu2JYjtmngJxaHrhyvN8sM7Et+
+	 j5moSLArwbw6kg8SHUQd2XgGhkfhaugo+URtLWL4KRZs1ekwG4oSZgnaO+lQXKcrXz
+	 cBui06n56DU1FOwISRi0be2gp8TQiBxJCNALY3VmaNhxOmIg5C7ZJlmCNj/T2fX0JP
+	 GqbLTDxJP5qoqUlbrDewG3W4XgLWIc8posALz4Qwrni4AXv+rFL/LvijdI7xVFBVjZ
+	 SBFR4Srme2YbACrF1idrOzrbm8NhExSVlzMUG8lyRZoYUFLntPc6cwBaVXX3CXB29n
+	 1tdHE12H9/lEA==
+Message-ID: <cc865bc8-b96f-4385-97b1-976de4465ca1@kernel.org>
+Date: Mon, 16 Nov 2026 21:16:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
@@ -143,18 +143,19 @@ Autocrypt: addr=david@kernel.org; keydata=
 In-Reply-To: <20261116-uffd-state-fixes-v2-1-4397a0196479@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9CD71140005
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ckgyhbpntus687onwe79b3twnef9aghf
 X-Rspam-User: 
-X-HE-Tag: 1794860169-359395
-X-HE-Meta: U2FsdGVkX1/rLwk2adLmxxSFxCKAVFllnvVZERweNJAP9WpYlE9q/I0Qi7Zg5R4JWwEPyXXVbtWBQLpARXh+L6xDRef5a6xEuTQESSuG9ndXZkpJO5RI9/MgN4yg0lyzafTxLiVfWmOjY6fmsKgnhFiUXu3Amwfm88B01ybGe6mq2kJH70REj9SXnZbE90UnPz9qDgvUK0QP4V/hgo4Xw8iy9pa3ofFT6HedvGjPODlHtUy5kBDBZATH0YcBLHbGsRvTJcQnYGgzhQD3YII3GV4PysgygW116ZGm/iyl36meIFdCZbyYXrC4G7aUEJSdeH3GRAsurHsvXBeg1cA5CvetMMhES1g/LTBFkoYhVv4pnM47mMqo+NMa0+Nlni+nilSoULrjI5nOa3aAd8X+1mnwlBY/bMMUPAdO8xVPgCP9YkM5kLj1jC3Yczo9NhroyRPQZSyQnuZwRrKMgMRZ8M4v7Ice1GsWB0KwDYjQrTYhUz1ZJ1CvZZbI0UxMN+u5xqNVvXQhoPydl/XpnCU/S37EsQ73TVSBwsdP81Kyr1o3vWxS66/6c8nrNNM4MGthKlOAMYdhQnkOgc4b7ddcElWJVlutZrccHVIx8ObQXl+MFLWnUZqZhNSo3vZ/6vaetkLokka7eUUo4XX40qXzhSuaCk2NRjL0ha6HTJViqu86Lin8CokykftQplkq3PYGtLXr2nIZ/W+z+wwz2P8aOpmTcw3Bkeu3thDnKJoNh+ekUy1plV+g5Z62NqE0B+lV+JHP0FfhYihkEVfs4O07lJExwHOAx17jzoaon4sYfElR5qGlJ/vMeYvn5QjGYqYvdnr+hoVhAacr9vVL0AcNzSvB2RgRfG4PffhHJop0bHS+BRpIP+LQi7ERKLZ27v+dWMrTjvCt1Z0zNNzgPL287/SSBDRkqEXyU/2yYV86qMvhLA52+j9JU4K1K2SDCYibLD2+5X8BZL5aPGZRZh/
- GTlT+X5W
- ShYJETceRl8x8RWgXjVetjVYcYhA+4+WBzDXQtEBwk5fMvIQrdvm49mGsJNSVLSLZCBvtJ5Fw/Jag5ylD6tdysnDReNSADqUyI5wqniBu8lIh5EBlT0VNyMuAPiZbkBaB8EuuZCn1ceYYc18iaKUELrHh0XZFNZZBRJ3V+ScwSbj1OYCU6Nz9UWc88E9k7ILUETGfVPJqatWeFM4b2/C2iY0qf/owBLcbxU4nZ6A3WSwv6SeDa14X6jJK5o/CyyzTLylgHGNPmB1EviBD6H+izdu96EpC886Szez0e279nOtrXIWEAo0qh1AqCw4kEeJGtKTzjfaOxWGTMzdjuv6ykBATgWyyJRRSuszsx7ryN+Y4/WQsrjAPXpvAIDNHqTjDmfyFjAUNZuhS7I3JfR9yk/sIOg==
+X-Rspamd-Queue-Id: F3BE14000D
+X-Stat-Signature: jpwnrmz737h4kzp6imz4uzezj1kc1d59
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794860223-335684
+X-HE-Meta: U2FsdGVkX18ylEoO6I/jFzCTc7k5A0f6PPK5R456+wcolVq7j81oiNxjZj/Fk3/9yAxSYzbfMO1eequKuNRRYRntpKUDjS6PQYFiYFH5qdOfOlblMUdBqIZU+qHd/nxkGqkyfE+jwX8ZHpkfnZuzpshgBXjF6IeGoWHBmWEOs8MA6MlDTlB75ppyIzn6wdHrtOPHjvIhm6Z7RSRX1/PmQXTDCUmNp0whrbfmzsIpRFA6oPcp6bRPRq8wmPdm9Rlre8LHv268o6tiGjOeJQJUnrDG04DqWyA/Auqid/kgQf5v3uDAJXaEM9JP7Bwuk6M8Uyfs56pJN0uWIzA/vMtk0MrotJKg+cdpib7R1BeHQo/ZISKvbBoR4jwfK405636W0VjgSDLIPqDFTkc5/vVU/A0eS/40lLPDnJ3C6iGJJ+Ft+mLQm9Vaub8FH3iE8bhtYS6rLAGLKHnlWeZc+sXwPKDVNOn/hp/a5AYwMj8LqN6kWZDh6LNA5eY7PX/PCwmuPzTYfFjW9Fzof7ibMfkfzHXhezzPjwT8Wa0Ne96BCrV9fHG2hywY1Yw+7mFZg+0ckoNm3IVuVBBxqbh+tLkYvPCtLqe6x85F+uHwpJpFXpcs6v2PcE2DZSVCfmc7lJdqFO0NiKoKJAWXgKt3mD37nFhHG0zeqNRYypBDyf+qDs3CSyZPZV8BJd6ISjiASYg6zsvFcC4xlAuKMzmb2ppfPDEe8bQeZXQemwa/j+OKxn6b+DuEdsb7SnI1Oo64059yHs75/SdbyBd2Q8n+6eMa6rcdknyz724tbwJFi/xVmVpJ7S8VsyO9FmtSjamNziLELPtuYyJF3szekwh2/uXW8LaRZM99lERos+oc61zjPnOKpYMwA+luyetwfBaylClteybPhVOBJjNHvX1LnrVpBwdsYhZveBOsImib3n+m6ebatuyT3y/NBh4UOYQXpc873ylhwJWMkze7KgrDlV0
+ imgGDIet
+ qwmls8OTpRrwbA+3Iqz0+hUJXUgURljvffRq5PV8vT26DwojJqAZJM9yQ++28j6k4YpIv5Cf7vsiUW3r0cgKYAaP9FitkrX/KyeLcnjTV0lJsk4WD+iQADrHITleFcCppUPXOzE4fb006hh1wqGacNkipQKN/ofXZ07FxuBcJDavme2h/e9UdOXoRSAEbnjb+pU/T2aDFjGQbut3rmH+0sjlSY78uWgf5kHand039wCsIIzBOLQjkUlP5c3/XEDf4R7o3z3xjE7BpyRa/LTlBds0XH0pLt03LAIMBKWIX9rhAPSrsIbRBkiPY1V+fCuOubnyZp6muTxgBndJhxB4TCHjM2lLNbXIdWqokoWIjBZy1zEOtSsUu3ThB5a2EFFQDpjAHaM3ZRcQS6yX4j3R1hWhBmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,8 +203,45 @@ On 11/16/26 21:02, Tal Zussman wrote:
 > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 > ---
+>  mm/userfaultfd.c | 46 ++++++++++++++++------------------------------
+>  1 file changed, 16 insertions(+), 30 deletions(-)
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index d65184d9a480..61a712e1f9f5 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -531,15 +531,27 @@ static int mfill_copy_folio_retry(struct mfill_state *mfill_state,
+>  	return 0;
+>  }
+>  
+> -static int __mfill_atomic_pte(struct mfill_state *state,
+> -			      const struct vm_uffd_ops *ops)
+> +static int mfill_atomic_pte_folio(struct mfill_state *state)
+>  {
+> +	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+>  	unsigned long dst_addr = state->dst_addr;
+>  	unsigned long src_addr = state->src_addr;
+>  	uffd_flags_t flags = state->flags;
+>  	struct folio *folio;
+>  	int ret;
+>  
+> +	/*
+> +	 * The normal page fault path for a MAP_PRIVATE mapping in a
+> +	 * file-backed VMA will invoke the fault, fill the hole in the file and
+> +	 * COW it right away. The result generates plain anonymous memory.
+> +	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
+> +	 * generate anonymous memory directly without actually filling the
+> +	 * hole. For the MAP_PRIVATE case the robustness check only happens in
+> +	 * the pagetable (to verify it's still none) and not in the page cache.
+> +	 */
+> +	if (!(state->vma->vm_flags & VM_SHARED))
+> +		ops = &anon_uffd_ops;
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Oh, but one comment: why not check for actual cow mappings?
+
+	vma_is_cow_mapping()
+
+is your friend :)
 
 -- 
 Cheers,
