@@ -1,136 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01F7606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC223606A889
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=CvFaEcjP
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=jRNS6qMT
 Received: by kanga.kvack.org (Postfix)
-	id D2E036B05B8; Mon, 16 Nov 2026 10:30:50 -0500 (EST)
+	id BF9346B05BB; Mon, 16 Nov 2026 10:32:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDEFA6B05B9; Mon, 16 Nov 2026 10:30:50 -0500 (EST)
+	id BAA1A6B05BC; Mon, 16 Nov 2026 10:32:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCE866B05BA; Mon, 16 Nov 2026 10:30:50 -0500 (EST)
+	id A99A96B05BD; Mon, 16 Nov 2026 10:32:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 97B4E6B05B8
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:30:50 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 346D640154
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:30:50 +0000 (UTC)
-X-FDA: 85441369860.22.C21E034
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4F0BAC0010
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:30:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CvFaEcjP;
-	spf=pass (imf28.hostedemail.com: domain of pmladek@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=pmladek@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 859486B05BB
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:32:43 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12008A014B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:32:43 +0000 (UTC)
+X-FDA: 85441374606.17.9FD629B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BA04314000B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:32:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jRNS6qMT;
+	spf=pass (imf26.hostedemail.com: domain of steven.price@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=steven.price@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794843048;
+	s=arc-20220608; t=1794843161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hPr9IOYFjtJaYI4q2QerjW2bLfRzLv1kPuZUspzu/XY=;
-	b=semay5MF5ha5vdRGrZf/qmd7rHBcM1HNDxtykw1YwJA3JwUQDNqUvWkXS8qV4H0gEps+Xc
-	XVfYK8ypRvptW+Ske6pZpB+xkBgo5H2k+XMknbzlHXb+Drv2zGuBtt1Hh2tvSmOPzMzMGa
-	GOJllLVAir5XehYLZdCqszYJlyaG2/k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794843048;
-	b=O8FRbQxl3SXXDSwH3f7yiI4xf3/sS7789EHLRrtNE8tDqGU7UlOMWf+7ScQuWWLFkSLrqk
-	q27REJPLKdDQTJdZnjY/5uIdaBMM74ZI2vIQHfDd7LvRU+j+5oeBaNKZeqMYSjpY1DpC0H
-	xyHdzRmp+oQnc4IPSAX6y0RWmovcAtA=
+	bh=Jj5m6gkNclPyoQQk/4BXK65xYrNPjI5avdyYMJJgjD8=;
+	b=wTSLa+pskNajnMG8ioD/YxAZi0CgcZpfMme4sqL84tdKkG5S2eXX+O4VAP5YafqNLM7Njf
+	WLqD9LyXeWQD9mYY58oNz+S3QZbTUXiLb3qOieDUL2pc4YEL3uEa+tvj5FAsDffJ62xRdu
+	IYu4ohVGNbhsmXGalzTqXav9MIae/sA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CvFaEcjP;
-	spf=pass (imf28.hostedemail.com: domain of pmladek@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=pmladek@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4bb702a7548so10988285e9.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 07:30:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1794843047; x=1795447847; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hPr9IOYFjtJaYI4q2QerjW2bLfRzLv1kPuZUspzu/XY=;
-        b=CvFaEcjPw9mN58nbazjLn2AEb60IZ7Yqd09FzwmV/Lq65iVKpNOagBk6veDvLKmfOA
-         9jrxvqgw8OTCI8OZGa3iA7Zhbe6VgHjTVpkTRK1ZFwp6cplKaLe8OEbhgu+8UNrLlY8q
-         VEfS9Ko4ezF9tTh5kYu2x8PGs2I6w9FMjKzwEdxuU3xiMX/m6kXM/zfJKwIxTuMnQKJd
-         vxsGOr1dFuE5OcQMXdUln2lKKgbJ6HD6aTw6Apw82dRhSpULupQvcgNYzMSAq6gzsUr0
-         3o5k7EhLwj1V0jr5fmIFil2vEby/6czhC7Git/rNWcUemgU1zbKoDCOEq18IrGPm+r8u
-         SYMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794843047; x=1795447847;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hPr9IOYFjtJaYI4q2QerjW2bLfRzLv1kPuZUspzu/XY=;
-        b=s0vcNdzErB+wcPXXBrklACOq7JxtYoLamV9fwRwp23FbH6bekuP9oPNX9Rogxpku4D
-         SteCYXiRQtn1+LfX9EGxubI2liECd6hbVztxvSX2bdAtQm26zInTATD4wd9en4kLC7fF
-         TEhInQ9ml+AtucwK5ZmaPEN0yfA3bqb/MFpwgEU80BPELk+iMij3cm575qFSobVugpsr
-         Qs9JY/uoy0vIAjy/CLk6YNnKmn0V2FFR+52auENAxozZEaiPYASuiaN5WkC3+P39LGv4
-         C3B94du8dp5MwDs/5gfsIYX0reGi+sgmlivEYbBAIlUejBJewcCX5AZktQcaUDosTPoc
-         LtnA==
-X-Forwarded-Encrypted: i=1; AL+hErG0m0ivN9fW9To/pkmu22ECvc9WPp5rgPdM4yrhYNVTpVf29Aj2dVWKm2cSovPWZhEEk4zaZLe/CQ==@kvack.org
-X-Gm-Message-State: APuU4Z+sH18NCPUMVvFfa8KZO12g+PCvAr80uw4cj/vDTh8/uulTr4Jf
-	HrlE1MRnGV/1VvkT3Heh5vAMtnSNBZxH4N7Md7Y6u+3DXTUr0Mko4WjJPlazKD3CyS8=
-X-Gm-Gg: AYBFou3ocQ1s/FwxUtwX6AZqc80fL+fJ3kWB1df44rDYLNTHQ5xOPYQ6RNKN0kiwQh6
-	PsFmqKwEZCU9QbeEZC/jaVsDRDJxCqf4I7ZMw/genY8uML6Dx5uTAzbIEL8Mo2E4j6wcpU5a6MT
-	HWSGhcjSAwDMo+usTVKZ/NdlqK/vUGnGJDG06cYF85EwJ5ivegy0rMpikfNuOuX9Vib8sZ/hV+I
-	lj4ORCo1WVXFY5qSVxF3ivXJnlurnfB7xdOx7GQttp/bMPt81yVYGDt+/xFJxWz78R+zypmnyzG
-	FD4NqbGyPJawj+5IjnEHVGvxw8PlIovHSZs6N3KN2BiTeNAaIxwZL58URE15h8uf7IasTJfJ/3P
-	WGyngciH8HoxoEXpWmJSaGBwMpDZXHExLVt/iqUCr8XVfdgD+XQJp6L5A1qWyXtRLjr6ko80SRU
-	oibugKg749X/LC24pm7L8Vem7l9ItA0vo2XGIj0kQ4VUc+GYFSLafv4zSXFrDvXJ8GGB6y3dgXk
-	e3Ve8s/7pd3ENr9iZDb6FpMH8l7KxvRofcVyphJhQCmQHO66pFEe2DR0THEskMuMjKEP18qiKcI
-	nxO+WRbQqOclV8U0fBIUi2o4+cxLqEM=
-X-Received: by 2002:a05:600d:8449:b0:4bb:5f07:10d7 with SMTP id 5b1f17b1804b1-4bb5f07134dmr146384475e9.26.1794843046610;
-        Mon, 16 Nov 2026 07:30:46 -0800 (PST)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb55ae5299sm315252695e9.11.2026.11.16.07.30.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 07:30:45 -0800 (PST)
-Date: Mon, 16 Nov 2026 16:30:42 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Aaron Tomlin <atomlin@atomlin.com>
-Cc: john.ogness@linutronix.de, rostedt@goodmis.org,
-	senozhatsky@chromium.org, mingo@redhat.com, peterz@infradead.org,
-	juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, kprateek.nayak@amd.com,
-	akpm@linux-foundation.org, baoquan.he@linux.dev, rppt@kernel.org,
-	pasha.tatashin@soleen.com, pratyush@kernel.org,
-	ruirui.yang@linux.dev, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, kees@kernel.org, anna-maria@linutronix.de,
-	frederic@kernel.org, tglx@kernel.org, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, brendan.jackman@linux.dev,
-	hannes@cmpxchg.org, ziy@nvidia.com, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [RFC PATCH v2 1/5] panic, sys_info: Fix duplicate and dropped
- all-CPU backtraces in panic
-Message-ID: <avshouTNBIeM5qtP@pathway.suse.cz>
-References: <20261103024453.922373-1-atomlin@atomlin.com>
- <20261103024453.922373-2-atomlin@atomlin.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jRNS6qMT;
+	spf=pass (imf26.hostedemail.com: domain of steven.price@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=steven.price@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794843161;
+	b=rYZUP8nQMuVl92Ir0tS9KRdb7y4d/8JkrLWnV+TexHzl8vdJGDXhWwqD7zFAFbBZAqtzd9
+	IsDqz3JGmyqMleTj3Je8jqqlpYWarHGeWtxGy+JbnzzfKGj1C1mHnKGZ4Vj7vORq8hCF38
+	pFPcyfZDf2Ny1JDd7JQ7BiPAkG78kmk=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 981E61684;
+	Mon, 16 Nov 2026 07:32:36 -0800 (PST)
+Received: from [10.57.63.54] (unknown [10.57.63.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F11FA3F763;
+	Mon, 16 Nov 2026 07:32:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794843159; bh=43dgJFkp15JzcneMwI62MfsDly+SSUj435aeqqE9QFA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jRNS6qMTC1i1b0ZGoCqXwbS6KBrk+Yh5SqMP1Ral6xS3Kl4b05yV/26O1O9OQPr/V
+	 VKv8wWRTeAZ2qJ0AGAc5mdeJ1sNcv8KVpuqbRXV/JZl8UK6xrppLNhbKHBUqg37QLZ
+	 28VI45Iu+Fte5YfxEwqeMoQxZGRjZaXXLp6Vp5Us=
+Message-ID: <f2e47b68-1aee-4d17-8b63-e67075e7a42e@arm.com>
+Date: Mon, 16 Nov 2026 15:32:25 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103024453.922373-2-atomlin@atomlin.com>
-X-Rspamd-Queue-Id: 4F0BAC0010
-X-Stat-Signature: w8n3bfzrr79etioe31w74rcxw9bka8m8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, linux-coco@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>, Baoquan He
+ <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Thomas Gleixner
+ <tglx@kernel.org>, Will Deacon <will@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
+ Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
+ "T.J. Mercier" <tjmercier@google.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Ritesh Harjani
+ <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+ linaro-mm-sig@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+ patches@lists.linux.dev
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-15-aneesh.kumar@kernel.org>
+ <86zevn1c9a.wl-maz@kernel.org> <yq5ah5huoteu.fsf@kernel.org>
+ <87ld6x8zb7.wl-maz@kernel.org> <yq5apkw5xpnz.fsf@kernel.org>
+ <avrgNBXDFMGL6dqO@red-moon>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <avrgNBXDFMGL6dqO@red-moon>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: 54we4w67rtrpd1og3n4154dmrpnztnwc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BA04314000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794843048-637116
-X-HE-Meta: U2FsdGVkX1/UD87VAunHqG+S7WHYshw94UY6XSfZO/SDJK3Vhh+R9XxMS6RYxVFhfN/NbCDeKZwjxhF9Uzz/LF4C+kSKKoU/oW/HfmslZiAKQDtYODv+xdvKuAuwXM9tMcfstuWIJ3f+KNadDqFXM8khQBhIJhqMJlud9bJSuBzlsVQypjJ3rqiT+U+Uw91hFOQwVrU2VrflT7+N1KJYFPoyQqOUOHxWzF9RDzvGN3OGWgTAIWn6qzsDm/0MkWGhMMLNFwSHLW59APX/wDfDDMJxJYwBgZPm1qFF83vBifusCgKHpaO9fIFQ3jkSPZGrIOJ4Rsll/+UhsFYue8gZxexZ12wmMU6u408k6JVG3EeO5J1VBv/tnzuE6HOte657CrGtZfHPaQmAep7Vfh40LvGaY1D8OalYRcw0eIVH20xYV9l0BpDd+8nIRdkZ8lLwf5xcFG7ckQCwO5IjOodOv8dqzC6zfOt4pQo5HVJ3SEJfsBEjCub/JB3LktCCid6WUimEFLBu/VxY4f/0BgevSb17coW/ABdjvb/SMbEYNB9jCmtLOYHycvFayRrn+VMlvf+BdP08HNte5EquZMnjZDsuEMfXcMPlLBtieMyu8EbOjzt4abQYpxxWFuc9f7mhJtpSvQgtwA0hJcBbVLltCLQUS61E8aag4rSI/2OomGNvh0nRqpxyBC4WqxbpwfSQL2RKWR34UibOn9qn6e4jyA+wrmc5oWUzlfJS+hcfCQi6F4VFIUE0f/XFVRuVIzP3WKkX6cypAhtnruEtcHKTSDBzaTu/2FS8KSV3ExiRAnlVWRWJK8/S1ygkkxm/BPqlxQKpz0KZqSnYcFn0iqJVwtSmPhj0ZojO+6WL/sYXebC4QfppKjVgY0pKF0SLeGNmBV8IVcVNDNZ8S6wkowJb+M92fiGmmSmzjuh8hkduYlWoP2liYXMpmuLrvUdq55MPI7XVCK2Ofv5CZoCXsd1
- 4EFh5KOt
- YtO7qjNhHPIZRBCnX5VnyLFQQLT4Jze3C3MVBj6rszD2yMf+QZw0qWpd8T44MhCvqx7SDd9A5wARgahShqoPbX4w7z1t2xdEdmdIKjbSu/EmvFhu80glPlfHKAfyzoyMkckaPlcDsBUyzGy/8UCgxtj5Fr88iN1ap+rrfOpPX72KF+p7q7ZzcFxMODt9e31W4h72CVM7kGZUR0WUGFE2kMo9gEBGGy16ViUTI3X/xk22zSFZ1eM3b89CdHyUHfLB012sL43RSYRj5HkuzN1Gw4IleVjgTJyEAR2TilKEc8ACIhhw0IXYY6T8SQ5DgvBzCWLJsqd3RR3LB26skZTefqmtPBQ==
+X-HE-Tag: 1794843160-546731
+X-HE-Meta: U2FsdGVkX1+SfTfMWAjmJ/aDIKK/u5wp+vvP4IFxHuLf7QQJQLr7h5zLItJd5vAU74ktjeF9WBmR+Biq2Zx6yvGqxlx+7d4VazJHLGUgg4fXzlD0Bmu1cYOOrNy02/Ys4kQBvP8/fiZ2VhQan7cwlrVYroJumIRhMNzBcPrs9SNa7/l8oKMj+LDfpeYVM/qKzWivOzvffXrwb7Nmd2lfc8GOFKL2H7U0RmzLhTSNeRie1vChu5lj804qvr3XZDd87sha1XsP6xeqpdwJ78FoE7k/6Z+fwyVAiUOiqubRBUYV/zOqPQ7EQsU32sfNKQKT9WFQUFdyQjC9D61g9CMwpp8ewqvpiPAXHt6H/q6APIsIJa+1DNX225NAZUxDgTm60nAOgPnJiWFDfae9m6Jxwp/gom48PA34kBDajhC7p2oXXCZcPAhGG58Q5QQVmBi6z8fcs44ri95B0eMkSI7Xkz/gQVw6VcOtEUzZ9NWSegMIvYvqWAanRcS40Xfq0XDvLE8QhanIbMafBo1l54xT/bzwjfF0RAlByJpJOoaAsoLdwP98umUyy/uomxYWIcrNq2azRGRtCFDZog0Mr/Z9X6TSBfGV40h5PhJXad+upugVt1ESKWUm2nSGFdHcaz4rZaec/CNqGaJQ8ICXo2p0FTo3kefoTWwc5edcdfB9TvcxqSrUWgA8NkLSbl8RpihbMuOnVm/4VgXQP+R+nZirf4jjPK+7Gx4lFAZNvRSO+34izY8sc2jX8YwabmbnRu+w2GiiKE9IanNJBJmszr3rTlgBziBgo98AwvuqE/gHjBSwC6SPwD6r8Sm9on8v6nrmq0yhtjHFTVNqhCHyOtfVVj4gZDLoR+9zz33afkoVXLD7yPnl6QT8MhukpP/6uERqzySIYUF4avs5l85LHHv8gegBXDuUeix+8iZHEs8Z6R1bF4XsJR+eoea4DjEGjsXZGQJl4M11dGQ7GVMKNIB
+ BZvFTJFu
+ OyU3yfcsZdCPP2EVEQVM7qhicxalCJwWzsrjGu3+JbaLGlzTK5sGIVYXUaYzwoziGxIEcjqpN54yrQJaqVzqHwHeu76m+Rq8F/uveGZ8NxZoBMLTEaQCDkDOYNbEA239Fki4CPi1/BHpNn9RWZY0+dLTfocxrdPaPYxIOXTKbm31+YcRVK9pv5VO24uyC0DzTUa3tssabWk/4aUYkiVTNW5OQbyahrXFgO1tKZaKpD9nKddoK53dN2qLOe7cM5GI/fRZU5Juwc9oh1phntlC8e+NX0vSO22cFuy7przqMzxoICI4q17FFOYlmRDovFgjVUox5bQsNVDDB0p8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,73 +134,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon 2026-11-02 21:44:49, Aaron Tomlin wrote:
-> When sys_info() was factored out of kernel/panic.c by
-> commit b76e89e50fc3 ("panic: generalize panic_print's function to show
-> sys info"), __sys_info() gained an unconditional call to
-> trigger_all_cpu_backtrace() when SYS_INFO_ALL_BT is set, while
-> panic_other_cpus_shutdown() retained its own call to
-> panic_trigger_all_cpu_backtrace().
+On 16/11/2026 10:51, Lorenzo Pieralisi wrote:
+> On Mon, Nov 16, 2026 at 11:51:04AM +0530, Aneesh Kumar K.V wrote:
+>> Marc Zyngier <maz@kernel.org> writes:
+>>
+>>> On Fri, 06 Nov 2026 15:45:29 +0000,
+>>> Aneesh Kumar K.V <aneesh.kumar@kernel.org> wrote:
+>>>>
+>>>> Marc Zyngier <maz@kernel.org> writes:
+>>>>
+>>>>> On Wed, 04 Nov 2026 16:45:55 +0000,
+>>>>> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+>>>>>>
+>>>>>> VPE L1 tables are allocated from the CPU-starting callback, where sleeping is
+>>>>>> not allowed.  Remove the page allocation from this atomic path.
+>>>>>>
+>>>>>> Use a blocking allocation for the boot CPU and record the resulting table
+>>>>>> order.  Allocate a page of that order from the sleepable CPU hotplug prepare
+>>>>>> stage for each secondary CPU.  Consume the preallocated page only when the CPU
+>>>>>> cannot inherit an existing redistributor or ITS table.
+>>>>>>
+>>>>>> Reclaim unused preallocations after the CPU reaches the online state, and from
+>>>>>> the prepare-state teardown when CPU bring-up aborts.
+>>>>>
+>>>>> No. The way to do it is to move the ITS probing out of the
+>>>>> non-sleepable CPU hotplug path.
+>>>>>
+>>>>> I proposed a potential hack at [1] (which I find far more palatable
+>>>>> than this proposal), but the real fix is to probe the ITSs as
+>>>>> devices.
+>>>>>
+>>>>
+>>>> Could you share a bit more detail on what you have in mind?
+>>>>
+>>>> Are you suggesting that we create a platform device for each ITS and
+>>>> initialize it through the driver's probe callback, while the rest of the
+>>>> GIC initialization stays in the existing early boot path?
+>>>>
+>>>> Would that mean the main GIC is operational during early boot, while
+>>>> ITS-dependent features, such as MSI delivery and direct injection, become
+>>>> available after the ITS devices probe?
+>>>>
+>>>> Is that the split you have in mind?
+>>>
+>>> Yes. Then once this is done, all the tables become normal DMA
+>>> allocations, for which there should already be adequate support.
+>>>
+>>
+>> Thanks for confirming. Can we handle the ITS platform-device conversion
+>> and the switch to DMA allocations in a separate series?
+>>
+>> The existing VPE L1 allocation path calls set_memory_decrypted() from
+>> the non-sleepable CPU-starting callback, even though
+>> set_memory_decrypted() can sleep. This issue predates the shared-granule
+>> allocator changes.
 > 
-> This causes two problems during a kernel panic:
+> If I may ask, why does the existing code ends up calling set_memory_decrypt(),
+> or reworded, why does the VPE L1 allocation path goes through the ITS specific
+> allocation function rather than using alloc_pages() (as it was before
+> b08e2f42e86b5) ?
+
+Because it needs to be accessible to the GIC "hardware". In this case
+the GIC is emulated by the hypervisor and the hypervisor for a realm can
+only see the unprotected memory.
+
+Now I agree this is a little academic in practise because Linux (as a
+hypervisor) will not expose RVPEID - so allocate_vpe_l1_table() will
+early out. IIUC this would only actually be relevant in the case of
+nested virtualisation within a realm guest - which is a long way off if
+it ever happens.
+
+> Why did b08e2f42e86b5 patched allocate_vpe_l1_table() allocation and moved
+> it to using its_alloc_pages() ?
+
+In that commit I simply changed all the allocation paths which were
+allocating memory to be visible to the GIC to use the new allocator. As
+we "know" that the GIC can only access "decrypted" memory. Admittedly
+that could easily change in the future - but my expectation is that it
+will only change with the switch to GICv5.
+
+Of course what I missed was that this specific allocation uses
+GFP_ATOMIC and that set_memory_decrypted() can sleep. This wouldn't have
+shown up on any testing because of the early exit:
+
+        if (!gic_rdists->has_rvpeid)
+                return 0;
+
+Thanks,
+Steve
+
+> Thanks,
+> Lorenzo
 > 
->     1.  vpanic() invokes panic_trigger_all_cpu_backtrace() inside
->         panic_other_cpus_shutdown() before stopping secondary CPUs, and
->         then invokes trigger_all_cpu_backtrace() a second time inside
->         sys_info(panic_print) after secondary CPUs have already been
->         shut down, stalling for up to 10 seconds waiting for offline
->         CPUs to respond to NMIs. Furthermore, if SYS_INFO_ALL_BT is
->         configured via the kernel.kernel_sys_info sysctl rather than
->         panic_print, panic_other_cpus_shutdown() misses it prior to CPU
->         shutdown.
-> 
->     2.  If sys_info(SYS_INFO_ALL_BT) is invoked on the panicking CPU
->         prior to panic_other_cpus_shutdown(), calling
->         trigger_all_cpu_backtrace() directly bypasses
->         panic_trigger_all_cpu_backtrace() and leaves
->         panic_triggering_all_cpu_backtrace unset. Because panic_cpu is
->         already active, vprintk_emit() silently drops all NMI backtrace
->         messages originating from non-panic CPUs.
-> 
-> Export panic_trigger_all_cpu_backtrace() with a panic_on_this_cpu() and
-> one-shot guard so all-CPU backtraces are only emitted once before
-> secondary CPUs are stopped, consult sys_info_get_mask(panic_print) in
-> panic_other_cpus_shutdown(), record prior Oops stack dumps in
-> panic_try_start(), and route SYS_INFO_ALL_BT in __sys_info()
-> through panic_trigger_all_cpu_backtrace() on the panicking CPU.
-> 
-> --- a/kernel/panic.c
-> +++ b/kernel/panic.c
-> @@ -451,13 +452,21 @@ bool panic_try_start(void)
->  	old_cpu = PANIC_CPU_INVALID;
->  	this_cpu = raw_smp_processor_id();
->  
-> -	return atomic_try_cmpxchg(&panic_cpu, &old_cpu, this_cpu);
-> +	if (!atomic_try_cmpxchg(&panic_cpu, &old_cpu, this_cpu))
-> +		return false;
-> +
-> +	if (atomic_read(&panic_redirect_cpu) == PANIC_CPU_INVALID &&
-> +	    (test_taint(TAINT_DIE) || oops_in_progress))
-> +		panic_this_cpu_backtrace_printed = true;
+>>
+>> Since fixing this properly needs a broader ITS rework, can we handle
+>> that separately and drop the preallocation patch from this series?
+>>
+>> -aneesh
 
-This would be pretty hard to maintain. The complexity of the check
-shows how many code paths affect the decision. I can't imagine how
-to synchonize all the pieces this way.
-
-We need another approach. I remember that I have already proposed
-something some time ago.
-
-The idea was to enhance sys_info() API to remember what has already
-been printed. trigger_all_cpu_backtrace() and frieds should
-not longer be called directly. They should be called only via
-sys_info() API.
-
-See https://lore.kernel.org/all/aj5tFiwhRqPkAkqU@pathway.suse.cz/
-for more details.
-
-I think that this would be a better way to go.
-What do you think, please?
-
-Best Regards,
-Petr
 
