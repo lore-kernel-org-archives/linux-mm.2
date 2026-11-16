@@ -1,94 +1,161 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86027606A338
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 20:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB52F606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 20:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q9snoCww
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZIrd9/0w
 Received: by kanga.kvack.org (Postfix)
-	id 3E76B6B05B5; Mon, 16 Nov 2026 15:47:53 -0500 (EST)
+	id CD1DB6B05B0; Mon, 16 Nov 2026 15:57:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 398D76B05B6; Mon, 16 Nov 2026 15:47:53 -0500 (EST)
+	id CA94B6B05B1; Mon, 16 Nov 2026 15:57:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AE026B05B7; Mon, 16 Nov 2026 15:47:53 -0500 (EST)
+	id BC0596B05B2; Mon, 16 Nov 2026 15:57:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 035AD6B05B5
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:47:52 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9AB2CA773D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:47:52 +0000 (UTC)
-X-FDA: 85442168784.13.105BC1F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0391640002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:47:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9snoCww;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9945C6B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:57:06 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 225F91201B3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:57:05 +0000 (UTC)
+X-FDA: 85442192010.21.2F2BCAF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5128E10000A
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:57:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZIrd9/0w";
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794862071;
+	s=arc-20220608; t=1794862623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OLiavxsDlBfdXBPQBNGT2FAhIOzho6noIQxZvnyUpp0=;
-	b=nXKxPeCg+rwG5uH3V/RTXdteMdI484Q98Mxmck6KZ3Jp4sZALtTL1pcRrLOw7bm6w3K6l2
-	caSBDT/Ft86jxF3T2KD7c6tiUyzCkjhST7iRyDGZmjEr9C1X4qQkwq2FUfN3TudYYQnKKc
-	yZofk6klhbzsERXohjSBSQjF17636zk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9snoCww;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+	bh=MtRGWIC2vir7npOOqtBcJjVE7mLonnCdITKCBiWXfn8=;
+	b=uul+KTO8bUoW94wpOX40/aYFRag9DpIuX78lAzagTuVPV4nKyzgKLIr0CLQv0/Wj/RT3jQ
+	X64DaY1QqA16xT6RV7nJEkTT9YzqhvpOesjsOm3v2t6sYYgzFFRNvxUVVIC4G0Fcufas/r
+	Olz8xDs6u7CEccu+hchh0RX6UCXoRFc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794862071;
-	b=bIW1CvLBB1O5y7TjDOKe1ic6DMpcGJqLt32O1xIUE1kH5oWX2nAACOgqhAIsaEUxujML/X
-	EnDvj/59eSd8iPLo8e88GSrWaBCIQ5fLNUJEHal7hcxPrDwfgpoIYBHjOEGSHZW8J66Age
-	rE3UxMgFxQQNt2rlpmr2KTNYqEIte24=
+	t=1794862623;
+	b=b5p/vr55wSI6wh7io6D/Q+RiZ0iyjSvjV0N988KWTrnxGeEjUarjzNmmx76HbvDryv6con
+	yZHx130IpI7y9CiwqOWmf819pM2tcls6GJPbeuG6lvBU7VeejUCoGOpwILWblubBXskB7F
+	Ic/EV9fdfXkFfmh/WTn2LHsmkdU+hsw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZIrd9/0w";
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8826E630C4;
-	Mon, 16 Nov 2026 20:47:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B241F000C4;
-	Mon, 16 Nov 2026 20:47:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8450245587;
+	Mon, 16 Nov 2026 20:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD351F000C4;
+	Mon, 16 Nov 2026 20:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794862070;
-	bh=OLiavxsDlBfdXBPQBNGT2FAhIOzho6noIQxZvnyUpp0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Q9snoCwwFCt1j8KTTj8fxvYElH/dBOlVcv7MgV+Vsx0xrnhaLBNPgFda6Sl8iQiBf
-	 O9hNoPUTQMtR6CR7dyuIOc5Jfnhtao/pTx3wZ60Kjf6GM0JBpKzfh6xzmhTU+awkjy
-	 N4sDv8gOJ0H59T/m+tZOfiMeRlwzfFcQckc6rBRYDcnycoaMEnAnzhui3UXMqBtUoS
-	 9om4jA2rVPNbG7WfTwYdLYjVSoahFM36S1bjAG5zzn4XcrxTPrvAjfZ22wlNdcqFEO
-	 yTDsDapCyAEuzkv//R6BGTvos7MaD5HQCkNP3EijpujpGTaEHGJTX3Ys8kN+UurRbW
-	 ZjQ66SvnnKpgA==
-Date: Mon, 16 Nov 2026 15:47:49 -0500
-From: Mike Snitzer <snitzer@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
-	Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org, Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org
-Subject: Re: [PATCH v12 0/7] mm, iomap, NFSD: stop DONTCACHE writes reading
- back shared pages
-Message-ID: <avtr9YaUNyjGHk4h@kernel.org>
-References: <20261112190911.84702-1-snitzer@kernel.org>
- <iushs6l3mjqkq65srej4gevaf2oeazy5j5miaipy6yxscetzjd@d4ti4qgbhman>
+	s=k20260515; t=1794862622;
+	bh=MtRGWIC2vir7npOOqtBcJjVE7mLonnCdITKCBiWXfn8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZIrd9/0ww/GnH4ovEs2bI18NsQ4JxS4tZCjL+VYVz8r8SGlJu1vI/1l8v8zlq8gyf
+	 FToW6J2hOXKZ6WGMKc9ht5LWZ+edDkQBGfH5wI/3ypkQaSTiaFNZCU3fhCEk4xPp3/
+	 7DacL0Cj3337gnbrXJdYJr8gmvvJ4P9gvuPu8uxbx1zPyphV2OocCXkPMtynM76xn1
+	 lAnsQC3bf3vMJ9woYr2+NIfQmBx0iQs4jDwOccZ/8pqUlS3TA01EDoH8gCAjY54n7h
+	 9Awd+h4xGPj2Vc2/+pkbMhaQpB8LYbfkc6NAZwzNSBSvl2apCDGwqhcqBor1dVpH0j
+	 8bwl0Z9qf+/qA==
+Message-ID: <2837958f-5a9d-46ad-b6ff-5a922b09e81a@kernel.org>
+Date: Mon, 16 Nov 2026 21:56:48 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <iushs6l3mjqkq65srej4gevaf2oeazy5j5miaipy6yxscetzjd@d4ti4qgbhman>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 9/9] mm/userfaultfd: check hugetlb end alignment in
+ UFFDIO_UNREGISTER pre-scan
+To: Tal Zussman <tz2294@columbia.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Michal Hocko <mhocko@suse.com>,
+ =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+ Andrei Vagin <avagin@gmail.com>, Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>,
+ =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20261116-uffd-state-fixes-v2-0-4397a0196479@columbia.edu>
+ <20261116-uffd-state-fixes-v2-9-4397a0196479@columbia.edu>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261116-uffd-state-fixes-v2-9-4397a0196479@columbia.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0391640002
-X-Stat-Signature: wgorqxigfuko4ncc5dhbwraszmnjzzd7
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5128E10000A
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794862070-857998
-X-HE-Meta: U2FsdGVkX1+hygXIZ8WkHCZ1yqvWnJWVVCceKrbgDv2i9fuj5ZqRsiAPC1YZ8vaT4ANlipNUMDuVL4LsEoRbFkbU+Vm3gpDsBZsVtw9FgvL4bThFsujx5+phvi50HVarmFIsGVYtFNbRursg5Hx6rdl5RDhmDFjz7mTe7WgBQJwywlwqI3v28XR7twFC6AfS4tf0XquOn3z1M95wdgxFRFCnqVTTCNIMZ7Ln5BZvBcsy3sXGvSnIWIFhNA8fTHYVb3ca6HROLleuOsmTTdqgfGmbGuor4l5h4hEM6ZQ869z0UmvdNn56+8Q1a801mT9/Rui13TQ8Xa8GhFL4GpMCdCG8/qVFoHPhAXSVfC0fxXNM/K/cCWw7x0AUiA2wapvxFWIrnOTvk8GDm059eL3726umRZYBgFznAP4qwyGJA8x8mfYbf5qGds3tFZxTbYV/pqpxrdGhVqgnpeDHsrqYelpqw/J+qAUt60YIJgMdlC6KdiFpUUJNBKFUZ3KHKaW/ejuKhARMCafturj+XRjBPoN3dHJJ9rWU9lCsn7aWvJLpg970A0rVobmICk2CtU1bzj6eqXknF0FXLsa5NsjPLdYGStWtVa0Zwcmyh3q0JVdlLyaK2Hz59itRyDjTweIfE+dUPnEle6HS94PMhCYiLUnpd6aVmymC2omEkkBQXoKSKfVUYrMSe1UqGz02jI22qyIDTjuI2sOqzloIJH9a/RRItux3/HE0eYOlDQ0qM74qnLdl+sosUdfz3eoorBVTghlOomSg3ipumPoEz3GkOhygyZ0xclNVN4qtD5naY0/X+soiAyvPxrAJtmOKia1Lt2yc6O8Xp6wwz7GfdW6y0bIkekAKiI9Smo+LUu8adnB3z1PjGNDQHR/5tJMCu5eEk3LAsUS+lupRnXyfU/cAduf1c1un9gTsTCH6E5UUjXWta0oM1U46euFAENNIlOoFFJ7zkgjmZfN6XGCdMYb
- PdusSM56
- AQ618fnPIfECzXMYeL6flNaWHqqOnXbQg/DiZdLGyMTEtlF4SepqBzEzFEsumKlMTOCKXsR5hVGODrN2RBhCjAzxfjU7v9alyYy+77aKNwGCyLZnKsTV4E8BC5XyKIM59lOlzNkkPw6EcV9VqQjDgczfAXmWAYNokni54rHCtDn96+4rHl2IGSNS9jXtk6Z5P5nBE2CxTTB33GaL036iw30UQLZdQiFBiellYsQstxB/aKsYJHMNfnP88OGTcqrIUUp0/
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: 476bhey7nfn3ee6ix7ke8rn9kwnmwcc6
+X-HE-Tag: 1794862623-650362
+X-HE-Meta: U2FsdGVkX1+S08pPL8PYkuqF+sPypjM0lWdySvb6VgbF4RWaHZCOS2dstThaP1Hgk4WLz1p+dLmVK28ESmPMko4sRH6eW/pWYHz/bcbGRCsYfIbpnXiuprFhKynT5EAQtehYJi7csgK12J/EJ6aUVno68lEjga0aMa0iToGZc8DMzO6vJn9nx42aaJapE0cRHATkhklnkH2ehnhJjBbP6bJHj28aZMLXczeVghdbIk+PTLMobBgTpsyigCKKTLUp9qGxUTshDQingxESHmkWZ2fBd9mqpYhyT+YzhWRWzu+4SRKEuXj5Ypipw5rD+wp7MAto3Gc4AQ83LIoxOlfdMVTkQ817KqjBwhQ12PeMmyCVrjO6CuwL00xTMqWwoKUcB5MpEzS1dlYdxFZvW+gLvonUy09PCawSzL+SP7uYngm3Y8+dKNcBVTa2qatGIcqQloii10RBJ2n9buWj/uq9swWyrsjFTa/nZ2Kaa1FhyTJtnos9NSqemrwFLkJGp3x+56VY65q3+/Q3Y6xaDiUfVOBDHaOIB0VUY+lYKKvvyYcc5eXcJzI3ajGUTbpAMo3/eVZBjxoB/bkaAdTFiqsXZ5q/AVUzbYsNocbs0s0xtBNMVhJxGmYR2VuDXXyag4N99RAtR41bP97J5MISxdED4dFqokJQxkI4I2k8Qjp+wmPgzXLaRDfRpJaiSXjkU1cFpwvnN7yO8aXCr+rHPCWgt84PioSQ5DSMw/B+7B7kJt492I3IFbjNgv1/ygdjHAnOHmHOAtu5ydLnDADQpGSOLwbSDCHLQTyT4IgkUx+Jzz4p/+DK0+/JGLqub6AChbP2RtHmCtd/7JAj41E4hbauFoWe7t4QSXBOO+YkKXzB6qqyqpzKDbvaQLfYnBrxfNr2hMApb8JpC8XSTo45UKW5MEmyWGrVmOzOsNtG05jcR2nPm2j33AarRYV5wb8A8DtA9gjS+WUncTc21eTgkDb
+ 2EUnQHbt
+ ZV3ofCa1AEAUanT7EIbASHKYCAu+OKn6Ima5ghUNS3GvYa/6WuQnApt2vHseD2G6wAjgP/4ZA02XIZa8Ce/ML85cH7rqaXTQvMGGJ84NBB4Qr4AMU3jkmrSa6NnZzv9BCPEUMLRMGPlEb8st7SnVHO2Yi2LQaCx7jjg1sDCG1Z0RG+Crm7ML+S46wXYrS6r3OhePerLapPLO4EPb0hekKcuQpY+6jLXiMvqoYkgS43yoK3zlevGlvo6FyikTFHnNYKJARwE85C2eyYB7+tVuVMxKTF/IcwIAcgPkbclmY/FpVPZgs5WV4N/8kV6RRs2h/HOD42upIdvcv56/uioI6qEhlj4xcZEEYJjhYf1Bwm+vKD4b0ESw2PAEUhEVSuKqy0Gji
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,100 +164,174 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 12:02:20PM +0100, Jan Kara wrote:
-> Hi!
+On 11/16/26 21:02, Tal Zussman wrote:
+> UFFDIO_REGISTER and UFFDIO_UNREGISTER both scan the VMAs of the range
+> before changing anything. For a hugetlb VMA, userfaultfd_register()
+> rejects a range whose start or end is not huge page aligned there.
+> However, userfaultfd_unregister() only checks the start.
 > 
-> On Thu 12-11-26 14:09:03, Mike Snitzer wrote:
-> > An RWF_DONTCACHE write is buffered IO: its data goes through the page
-> > cache, and writeback drops each folio once the folio is written back.
-> > A write that starts or ends inside a folio covers that folio only
-> > partially.  Usually another write covers the rest of the folio.  If
-> > writeback drops the folio before the other write writes its part, the
-> > other write must first read the folio back from disk.  32 threads
-> > writing interleaved records to one XFS file, 4 KiB pages, before and
-> > after 5/7:
-> > 
-> >   record  pwritev2() flags          4 KiB device       MiB/s
-> >   bytes                             reads per write
-> >                                     before   after     before  after
-> >   47008   RWF_DONTCACHE             0.97     0.0005    831     2281
-> >   47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.0005    601     1227
-> >   6000    RWF_DONTCACHE             0.97     0.0001    121      488
-> >   6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.0002     90      206
-> > 
-> > 47008 bytes is the transfer size of IO500's ior-hard, in which each
-> > rank writes interleaved records to one shared file.  Any record size
-> > that is not a multiple of the page size has the same problem.  6000
-> > bytes is a second example.
+> An unaligned end only fails later, when vma_modify_flags_uffd() cannot
+> split the VMA there. At that point, userfaultfd_clear_vma() already
+> cleared the WP or RWP protection. The ioctl returns -EINVAL and the VMA
+> stays registered, but accesses to its pages are no longer reported. This
+> requires a caller passing a misaligned range.
 > 
-> OK, I understand the problem but frankly I hate the complexity this
-> introduces. Patches 1-3 are good improvements, patch 4 is OK but 5 & 6 look
-> too complex for too niche usecase to me. I didn't really pay attention to
-> previous revisions of this patch set so I'm sorry if this was discussed but
-> can't we just make iomap for unaligned RWF_DONTCACHE write ask for
-> minimum-sized folios for the partial edges without FGP_DONTCACHE and
-> use FGP_DONTCACHE only for folios fully within write? That will also solve
-> the problem with the following write having to read again from the disk and
-> it will be much simpler. Sure the edge folios will not be dropped after IO
-> completion which may have smaller or larger effect (depending on the
-> overall write size) but I'd say that's the cost of userspace making life
-> hard for the kernel :-p
+> To fix it, check the end of a registered VMA in the pre-scan as well.
+> The ioctl still returns -EINVAL, but no longer unregisters the VMAs
+> before the misaligned one first.
+> 
+> Fixes: cab350afcbc9 ("userfaultfd: hugetlbfs: allow registration of ranges containing huge pages")
+> Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-Thanks for looking, Jan.
+Okay, I assume it's not a stable kernel, so we can fix this in a cleaner way.
 
-On complexity: 5/7 and 6/7 add almost nothing to the fast path.  The
-new code runs only at a partial edge.  Aligned IO, and IO that is not
-RWF_DONTCACHE, pays for it with a few flag tests:
+> ---
+>  mm/userfaultfd.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index bf42fabb5afd..d8abc24353e1 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -3960,6 +3960,8 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+>  	found = false;
+>  	cur = vma;
+>  	do {
+> +		const struct userfaultfd_ctx *vma_ctx = cur->vm_userfaultfd_ctx.ctx;
+> +
+>  		cond_resched();
+>  
+>  		VM_WARN_ON_ONCE(!!cur->vm_userfaultfd_ctx.ctx ^
+> @@ -3983,6 +3985,15 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+>  		if (!vma_can_userfault(cur, cur->vm_flags, wp_async))
+>  			goto out_unlock;
+>  
+> +		/* See the check in userfaultfd_register(). */
+> +		if (vma_ctx && vma_is_hugetlb(cur) &&
 
-- IO that is not RWF_DONTCACHE (buffered, direct, reads): every new
-  branch is behind IOMAP_DONTCACHE or FGP_DONTCACHE.  The cost is one
-  flag test in the found-folio path of __filemap_get_folio(), one when
-  a folio is created, and one per write call in
-  iomap_file_buffered_write().
-- An aligned RWF_DONTCACHE write: iomap_get_folio() tests whether the
-  folio is partially covered, which is a mask and two compares per
-  folio.  The test is false, so FGP_DONTCACHE_EDGE is not set, and the
-  folio is created and marked dropbehind as before.
-- No new locks, atomics, allocations, page flags or per-file state.
-  The state of an edge is the uptodate state that the folio already
-  has.  Writeback and reads do not change.
-- folio_dontcache_edge_written() and the two 6/7 helpers run only at a
-  partial edge, or for a caller that asks for IOCB_DONTCACHE_DEFER
-  (NFSD).
+I'm not sure if we really need the vma_ctx. I'd just fail this consistently if
+someone passes hugetlb VMAs, independent of if they are registered or not.
 
-So the complexity is all in the misaligned case, which needs it.  I'd
-argue that if the kernel (MM) can handle userspace making life hard it
-should, within reason.  I think my patchset nicely isolates the
-complexity to userspace that makes life difficult.
+> +		    end <= cur->vm_end && end > cur->vm_start) {
+> +			const unsigned long vma_hpagesize = vma_kernel_pagesize(cur);
 
-The first part of what you describe is what 5/7 already does.  iomap
-asks for a minimum-sized folio at each partial edge, and a new edge
-folio is not marked dropbehind.  5/7 adds one more step: the write that
-completes an edge marks it, so the writeback that cleans it drops it.
+vma_kernel_pagesize(), yuk. :)
 
-Without that step, every edge stays cached until reclaim.  For this
-workload, that is a large part of what the writes put in the page
-cache:
+> +
+> +			if (!IS_ALIGNED(end, vma_hpagesize))
+> +				goto out_unlock;
+> +		}
+> +
+>  		found = true;
+>  	} for_each_vma_range(vmi, cur, end);
+>  	VM_WARN_ON_ONCE(!found);
 
-- With 4 KiB pages, each record leaves about one page cached.  Through
-  LOCALIO with cached edges, 8.6% of the data stayed resident with
-  47008-byte records, and 66% with 6000-byte records.  When the write
-  that completes an edge drops it, 0% stayed resident.
-- With 64 KiB pages, a 47008-byte record never covers a whole folio.
-  So no folio is ever marked, and RWF_DONTCACHE caches as much as a
-  normal buffered write.
-- Jon Flynn measured cached edges through NFSD on four pNFS data servers
-  with ior-hard.  The page cache grew by 622 GiB in a 318 s write phase.
-  With this series it grew by 2.9 GiB.
 
-So for this misaligned workload, cached edges keep from 9% to all of the
-written data in the page cache, depending on the record size and the
-page size. The reads stop, but the page cache fills until reclaim runs.
+Can we clean all this up into something simple like:
 
-6/7 does not change what is cached.  A caller that syncs its own write
-(NFSD, for a FILE_SYNC WRITE) uses it to mark the shared folios after
-its sync.  Without it, each segment wakes the DONTCACHE writeback kick
-for pages that the sync then writes.
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -3669,6 +3669,19 @@ static __always_inline int validate_range(struct
+mm_struct *mm,
+ 	return validate_unaligned_range(mm, start, len);
+ }
 
-Mike
++static bool vma_uffd_range_aligned(struct vm_area_struct *vma,
++	unsigned long start, unsigned long end)
++{
++	unsigned long size;
++
++	if (!vma_is_hugetlb(vma))
++		return true;
++
++	size = huge_page_size(hstate_vma(vma));
++	return IS_ALIGNED(max(start, vma->vm_start), size) &&
++	       IS_ALIGNED(min(end, vma->vm_end), size);
++}
++
+ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 				unsigned long arg)
+ {
+@@ -3747,17 +3760,6 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 	if (!vma)
+ 		goto out_unlock;
+
+-	/*
+-	 * If the first vma contains huge pages, make sure start address
+-	 * is aligned to huge page size.
+-	 */
+-	if (vma_is_hugetlb(vma)) {
+-		unsigned long vma_hpagesize = vma_kernel_pagesize(vma);
+-
+-		if (start & (vma_hpagesize - 1))
+-			goto out_unlock;
+-	}
+-
+ 	/*
+ 	 * Search for not compatible vmas.
+ 	 */
+@@ -3774,6 +3776,8 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 		ret = -EINVAL;
+ 		if (!vma_can_userfault(cur, vm_flags, wp_async))
+ 			goto out_unlock;
++		if (!vma_uffd_range_aligned(cur, start, end))
++			goto out_unlock;
+
+ 		/*
+ 		 * RWP uses protnone as an access-tracking marker. PROT_NONE
+@@ -3797,20 +3801,6 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 		ret = -EPERM;
+ 		if (unlikely(!(cur->vm_flags & VM_MAYWRITE)))
+ 			goto out_unlock;
+-
+-		/*
+-		 * If this vma contains ending address, and huge pages
+-		 * check alignment.
+-		 */
+-		if (vma_is_hugetlb(cur) && end <= cur->vm_end &&
+-		    end > cur->vm_start) {
+-			unsigned long vma_hpagesize = vma_kernel_pagesize(cur);
+-
+-			ret = -EINVAL;
+-
+-			if (end & (vma_hpagesize - 1))
+-				goto out_unlock;
+-		}
+ 		if ((vm_flags & VM_UFFD_WP) && !(cur->vm_flags & VM_MAYWRITE))
+ 			goto out_unlock;
+
+@@ -3920,17 +3910,6 @@ static int userfaultfd_unregister(struct userfaultfd_ctx
+*ctx,
+ 	if (!vma)
+ 		goto out_unlock;
+
+-	/*
+-	 * If the first vma contains huge pages, make sure start address
+-	 * is aligned to huge page size.
+-	 */
+-	if (vma_is_hugetlb(vma)) {
+-		unsigned long vma_hpagesize = vma_kernel_pagesize(vma);
+-
+-		if (start & (vma_hpagesize - 1))
+-			goto out_unlock;
+-	}
+-
+ 	/*
+ 	 * Search for not compatible vmas.
+ 	 */
+@@ -3959,6 +3938,8 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 		 */
+ 		if (!vma_can_userfault(cur, cur->vm_flags, wp_async))
+ 			goto out_unlock;
++		if (!vma_uffd_range_aligned(cur, start, end))
++			goto out_unlock;
+
+ 		found = true;
+ 	} for_each_vma_range(vmi, cur, end);
+
+-- 
+Cheers,
+
+David
 
