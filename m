@@ -1,83 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD357606A331
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7745C606A89E
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 10:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+fgOzHk
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FVc++JR0
 Received: by kanga.kvack.org (Postfix)
-	id E0DB96B05BC; Mon, 16 Nov 2026 05:54:44 -0500 (EST)
+	id 9A34A6B05B4; Mon, 16 Nov 2026 05:55:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE5806B05BF; Mon, 16 Nov 2026 05:54:44 -0500 (EST)
+	id 97A766B05B5; Mon, 16 Nov 2026 05:55:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5376B05C0; Mon, 16 Nov 2026 05:54:44 -0500 (EST)
+	id 892326B05B6; Mon, 16 Nov 2026 05:55:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B7E06B05BC
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:54:44 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1721A1C42F4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:54:44 +0000 (UTC)
-X-FDA: 85440674088.07.07B7A95
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E6556B05B4
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 05:55:51 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DEC751A0904
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:55:50 +0000 (UTC)
+X-FDA: 85440676860.06.8F41895
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 504F740006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:54:42 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M+fgOzHk;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2578A20002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:55:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FVc++JR0;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794826482;
+	s=arc-20220608; t=1794826549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rUXIEzzZbx+pvk5hQhC5uQsVJ+Wr1axlLvfdDODcWmE=;
-	b=KUdPlYGz/FEh7LDc64QwNlsS+alibNpjNl73BhHFdzDhwGGtJ5eyceM3j/yBN6PBKwdMxe
-	roK/NiN/CX3o3ZrEtFBH+xJzxAERdm6+uxtPxytodl6+mkWbFjkEoqXtQVPEv2A/T5uVAr
-	/FYaiA9TJFdy/jpFSpHoJhilTtEtMfs=
+	bh=kmQvt1UCbjuMhtpN4OiUXlJWOrQfIZG1i7NH6rxNLIQ=;
+	b=VnNwWAfSaAGULGU1lF9i+74NA2fBGbTG1jxFIND5+0V0Tc/ehtRqG+G9TBzrSsJ5LiL9yL
+	WvsjCmbYPo7qvo4T6q+mwDib8UHogtviaRanUgX3pvkTe8zbs99YFQAU03GinO5Wmujdqv
+	/t9Y2Yw9Rlw2gkERRGQEMyp4OWAt5yw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794826482;
-	b=FKhZ28YDBZvrbye0xJzfC13J7tBMong+egvj0SrDGpAtt1Xhj4/iA9u6hUlMVQMjLNjNQX
-	dC1dhNdaZPoFuyOg2Apfq0B32L81gU1+kIVDkhq8kEch7KJrlXOebpoEQ4jA3rpcKo75Em
-	IsnQMeFyZ2UXlHVsl1zmbfPMzAWmJSA=
+	t=1794826549;
+	b=YqVbpzpMXOorHA2FlyC2r15FxMa3hYPXXj2XOKS/v36KB5LlSJwthn0aeeVJkqZofQNgh8
+	Bfx7M8BAQRl+xwmgXlf9573Gd4Y+A3e8PQDxL1rY3kwf8qJGaZHxVVitkBT6mQaOpwTAuP
+	IXtIs4pAGXYeAzMbkxhjBFsAyedDA4M=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M+fgOzHk;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FVc++JR0;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BC9B45589;
-	Mon, 16 Nov 2026 10:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D441F000C4;
-	Mon, 16 Nov 2026 10:54:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CF10461B2;
+	Mon, 16 Nov 2026 10:55:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8052B1F000C6;
+	Mon, 16 Nov 2026 10:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794826481;
-	bh=rUXIEzzZbx+pvk5hQhC5uQsVJ+Wr1axlLvfdDODcWmE=;
+	s=k20260515; t=1794826548;
+	bh=kmQvt1UCbjuMhtpN4OiUXlJWOrQfIZG1i7NH6rxNLIQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=M+fgOzHkr8hBd2SC57MQPYOT+v3WbLVix+CbLh5WS/cVkG/7psr2ewW/ujd7whLPC
-	 KMCUWnxBRjzZAI+xHnE2ZepI3e3xDp+IGS3IPiUC7tityO8okLOC6uUjomINEtSfS/
-	 sGz43WsxfRT3XB2OUcNq41La+hScCru6Qtkfc8o8yac37EH7k1Et0aX0QMYV2pmaC3
-	 0QgRezQDfsmcD6FzKQChjK96MP+R6LPBAtx9xG+3skEgxSR8W9nIQTZqaOIXIyyoV5
-	 PscNH8WzGg1n7EHnvUNuAxTdN5N4pYUxwLFLvJq+D2x7L8GszeD4DGdsXH2i9mH8Fs
-	 2PPBLKy4gEHvg==
-Message-ID: <0e626675-c6f9-40d7-a4ae-de069154ada2@kernel.org>
-Date: Mon, 16 Nov 2026 11:54:37 +0100
+	b=FVc++JR0UFlf7jLyOMMTzAI48mqJyJjV3G4SJDcE0txQcYOrgpGg1+mb3iNMcdkgN
+	 WMSLi1KndEhtQ1NjgPR31/+w+ZgFWNtuQZY8pCW7mNUSD3HxuaOM76GDqtTGay/EIA
+	 Gr1ptuVEWgJjLEhfKWmlhV266LrWJkUaljCDV3ewocUUSfgd2WDi+vK1H2CbyLPmJB
+	 UZ/1BhXkzhdU9uOYKTFYhyFxHScm/R7e6Pq1WxnroZruyDfFZMh+62apb3O+Ji2UVj
+	 nsPbQ8NIwFm4OuvWMgVv0wmYNnDAAtGrxf5rrwt2/UXl48mSuAJkIB0E+XaeMk4wxM
+	 61N3tN81JRyLQ==
+Message-ID: <505e53ac-6720-431a-b272-bc5bd593b0d6@kernel.org>
+Date: Mon, 16 Nov 2026 11:55:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: don't let kmemleak report rcu sheaves
+Subject: Re: [PATCH v2 1/3] mm: page_alloc: add a watermark check that knows
+ the migratetype
 Content-Language: en-US
-To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
- Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com,
- Breno Leitao <leitao@debian.org>
-References: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
+ Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20261102093939.3340540-1-kas@kernel.org>
+ <20261102093939.3340540-2-kas@kernel.org>
+ <7e82bf2d-3a36-46d4-b63e-6b6720620380@kernel.org>
+ <avrVAUGFUJdoVRG7@shutemov.name>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -118,22 +127,21 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
+In-Reply-To: <avrVAUGFUJdoVRG7@shutemov.name>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e89yjrn4erui8d614po3f69n7sbizi7h
-X-Rspamd-Queue-Id: 504F740006
+X-Stat-Signature: 5c8c8gynq9gnj6eganm5uxu4cah7yrfd
+X-Rspamd-Queue-Id: 2578A20002
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794826482-96486
-X-HE-Meta: U2FsdGVkX18O0t4VkvsDH7pBo9GkHroGlbsTtIL6JmXb/XjT6x3L4ujFgTY1k5zM70BCTyddcNXegt/mIS4dEYQPdZWCWQDftxIrk6v8vMQmZE9cQlMfC2tusmmuxsw3LApvTota3+OMbnOFpGERXvaxmQOc77OEX1ezQLkL02+smtyN3fv2DqfX+LQB3A7mfPjsI3rwjnZHH18qJpxVhK3/WWaw4hd485f0/19TKWR7v6EzB66UWBNW16RFXZfUOZd1hI03R5rAPcr4VMirYuZfeNwgJ5EVPjy1UDBUu0Jhf94V2py05OPi2D+Vfh/SvlwtBU46OF0+3rJuf7xPeDEEnTRw+qMbOY5YmeYKEaC1fwtap2yvyKfVV2YM+cd3SzNeivq6Z7HTECB5W8iZhHYXT03NjFSFTQjgXvQBRIujRN1UMhAFTaUjeRhSSYfWG9FtnTIA7cD5/z8lXwaxFcVh69rz5qwn9ZbhBTjA9Qgx1qL5Sd/hG2ENgnsGXF94uCq9kPd+pZEI9UiXstjAX9bip7Tt826TUUfImHkUL1n4C7ob3GWdJLNFRCPf/6bqbY7vTRzqbu5n4SkYgDCp1sOd+HoaQMzaQlfvSAGnEGoo/0R4Pbe99TCBY8qB6RYaTxQOnX1H1wLwdb3qCYUyg2wjrNSklIjxDwwt8q7g+R82VqrarljsrjQn+jREJR+qoe3mvliuaIeI3UFMKR6LncU3Vmq0hCRdmQdZxa6MBc4j2RerSK4HtFjZriimzk0sRYHdjsAT6dpIPEvrGEAraZsxEpDmgSAj3hpJqjNyfu3px7NM3tND9WAUHUH2N+2RrCKwguaz3ObB8BQHarZavtPiHfRpdK0g45a5dk1nhyKF/0Rre+sZexxI700Ep175MpIk/r7zoJGRqR168/06MSc19PZnP2ILlQvxQX6wwW9nsgS8DbnU/IKTMVXvTh1qMfLOCCstykappRoFm+H
- QRgmTA65
- dcMyM9cjIzCsQOmYSIEKupng9SwUpKfkbZPpCwxsuquy0vZqlMqTlTEqZVObLn9G/bsyHbQE6UFuBJ2HmQKhd40hTFT1X4KCQ3JUr06IuYfHE5xroXspOIXltXd34CzwrS24zzasaNaj2/HwkAi/oR5XbKDICe3eBu07QsOZ0ErIpTPzEBF0kNIVu9Z9cyxujlcw48nGLLlBHgWV+VZlwsWRBavu0vF/hIFPK/94tXdsAAk875VBBxzwWsIQtX+SKEqkOVjiMoT0anAJSMc/BFekX12NFov38i+n8UCTkOKZcKSuxDnd9xDWEETOBdozZ5tVGnFnwnO4kw+kbZS+o2xxMoYF2WcUDTP04C1uzFC8wklZIZOnHKyywJh/GuWl4YqpBOpJn6lE1OF/BNRS7EB0/eguVDCIzIwlzY+Va3PYs4DDaLYmlsE8XeNRJPgwkyexeZJ0prygIhdIyNvS53rj5s2hKMenX1Vn88Eyhjhqr9NRabju96oyAGiMDehI+8ax5g+apIqMw4kxOAn9rokElCQ==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794826549-72963
+X-HE-Meta: U2FsdGVkX18e2E1XjT0/Pa78kb836vfbQy1tBQcHMkyGgssoooQIAV+IuFtje6x4uvlhP6CWcvYfHh8fhKjOkrsQvWFKq2b1UVfgtVqKvrbvxPmokl1FmnvGhnZVCj8lxlitvViNqOpJjb/pbFPYIFPvwbD6tLtWCejBEpcz5/RMrmFDME1mMxd2r2X07xB0gPl0RwZw84Az/4s8V+fePlBot/I9GrTDX1Gt8wJO0BAE+LZc5IBkcnZYNe9qJm5uY6JaTpcDQEIITCQVm2pWqOFINdiW2SNvQnGWeRwaAnT9L2qbcEhxdlD1pXkUA067emOBHLFCP3FiNsMK1kaoXaUjT+alQPIVBXwdD4sEK05Tw0WBaXYggJ8lNmWddlBA+oTkH8+o0aIVy+fHahRl6BxuWmV2QT+D5zTRNkW6wisFVNy4OLkS+yXfefgLqgX1z1YRn0VAmcdAN1PwfKXaP/7D9f4EJnq9CfgC9uze4C9Lz66DPN3x3MVVlWIw6FmFiSt1RwxpZN4pYezC0aXz7kBmR68jZyAyrJf1EhLYmvjG2yQVoNFkuQ/9DLB/an1xB2hSeQ+QRTlwuALLi6Y+mcPHjndiwRRM62ydHRwDnaPijNEdBpHG/OYfdXJEf152g0tVBjwlT8eFmylujA/u3xMroZ52Iip+0aPZmhOs21ZHUMe18mdp6uBvLwYGeqLhtE7576/gme2/GBKN2ik480+NCKQnIs8jKr91fueamWjpocgDqpmDnj3zgvVx/tS3sCOMr00shOLbErJIyrceVtSAv5p1MIQx9EX3q0T+KudSGgjTEg3j933fWhsb5iDB+cE2um9t9pKjTYS5kraF15bFZTTJEq1/5kFNAVa7RienFbhRDzondYbf0EgUZHGjxThbGIk2a1m8Az1ApGaXEbgmZertStULDxgThDYLQCPD1mqFP1Ixi8HGfWnwgR1U+52Ih7y9caEZ2jf0Th8
+ zmCGg/UJ
+ JAiu3t9FN4YP4alpLYk/6uzK1HlQnVwI73YEKBPjl/XWkwepaKHQuJ+zmYHYlV36+WZyYTQZ+6Rjxr2c7dwcbtoHfS1k8lTreLDWSR3FgTNYODnQiv4OgCH5VYKMasHFyihyHE3WBvUXqRzMmhnd54AblLRHI10pNQ8k5JQn0UM+RT2YEplXb0+/3vY7Y4qD2bcF+PpYkxq/kye+EfS+12ERk/SkdOW8MmO1y8vwy9RVCcbHgeBzMYxCr6yntbnjNmNWbAkKMypMBEQ+cLv7hUR+PFre2Lrv+rRxtg8Y85WfWipopXzwa5+/TLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,84 +150,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-+CC Breno
+On 11/16/26 11:41, Kiryl Shutsemau (Meta) wrote:
+> On Fri, Nov 13, 2026 at 05:51:52PM +0100, Vlastimil Babka (SUSE) wrote:
+>> On 11/2/26 10:39, Kiryl Shutsemau (Meta) wrote:
+>> > The high-order check in __zone_watermark_ok() accepts a free page of any
+>> > migratetype.  Under ALLOC_NOFRAGMENT, a request below pageblock_order can
+>> > only take a page of its own migratetype or claim a whole free block, so
+>> > the check can pass when the allocation cannot succeed.
+>> > 
+>> > Telling those apart needs the request's migratetype, but not every check
+>> > wants them told apart.  A check whether an allocation can be served now
+>> > has to count only the pages it can take.
+>> > 
+>> > A check whether there is enough free memory counts every migratetype:
+>> > kswapd and kcompactd balancing a zone, order-0 thresholds, the
+>> > slowpath's forecast whether reclaim and compaction can still make
+>> > progress.  Reclaim and compaction work across migratetypes to free whole
+>> > pageblocks.
+>> > 
+>> > Move the body of __zone_watermark_ok() into __zone_watermark_ok_mt(),
+>> > which takes the migratetype as well, and make __zone_watermark_ok() a
+>> > wrapper around it for the second kind of check.  These use the new
+>> > function:
+>> > 
+>> >   - the allocator fast path, zone_watermark_fast();
+>> >   - its recheck after node reclaim in get_page_from_freelist();
+>> >   - compaction's up-front check, compaction_suit_allocation_order().
+>> > 
+>> > Declare both in mm/internal.h: nothing outside mm uses them.
+>> 
+>> Why not mm/page_alloc.h instead, now that it exists.
+> 
+> Ack. Will change.
+> 
+>> > @@ -3665,6 +3666,21 @@ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
+>> >  	return false;
+>> >  }
+>> >  
+>> > +/*
+>> > + * For checks that are not about serving one allocation now: kswapd and
+>> > + * kcompactd balancing a zone, order-0 thresholds, forecasts whether
+>> > + * reclaim and compaction can still make progress.  They count free pages
+>> > + * of every migratetype: reclaim and compaction work across migratetypes
+>> > + * to free whole pageblocks.
+>> > + */
+>> 
+>> What a slop comment, sigh. Can you rewrite it normally?
+> 
+> /*
+>  * Return true if free base pages in the zone are above 'mark' regardless
+>  * of migratetype. Use it to check whether the zone as a whole has enough
+>  * free memory. Use __zone_watermark_ok_mt() instead to check whether a
+>  * particular allocation can be served.
+>  */
+> 
+> Okay?
 
-On 11/13/26 16:18, Nguyen Ngoc Thang wrote:
-> kmemleak reports full rcu sheaves as leaked:
-> 
->   unreferenced object 0xffff88810005f600 (size 512):
->     hex dump (first 32 bytes):
->       e0 79 f0 2b 81 88 ff ff 20 00 b4 81 ff ff ff ff
->       00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00
->     backtrace:
->       __alloc_empty_sheaf mm/slub.c:2854 [inline]
->       alloc_empty_sheaf mm/slub.c:2874 [inline]
->       __pcs_replace_empty_main+0x260/0x2e0 mm/slub.c:4806
-> 
-> The second word is rcu_free_sheaf and the size equals the capacity: the
-> sheaf was handed to call_rcu() by __kfree_rcu_sheaf() and is waiting for
-> a grace period. At that point the only reference to it is the ->next
-> pointer of the previous callback in the rcu callback list.
-> 
-> That previous callback may live in memory kmemleak never scans, e.g. the
-> rcu_head of a struct slab queued by rcu_free_slab() for a
-> SLAB_TYPESAFE_BY_RCU cache. Slab pages are frozen (page_count() == 0),
-> so kmemleak skips their struct page. The chain from rcu_data is cut and
-> the sheaf, typically allocated long ago and recycled, looks unreferenced.
-> Since the sheaf is then not scanned either, the objects it is about to
-> free can be reported as well.
-
-I don't get this part. The previous object can't be that much gone, RCU
-still needs to get to this sheaf at some point, so there has to be a live
-pointer somewhere?
-
-> Sheaves are allocator metadata and are always owned by a pcs, a barn or
-> an rcu callback. Mark them with kmemleak_not_leak(): they are never
-> reported but still scanned, so objects queued in them stay referenced.
-> Allocations that can't spin are not tracked by kmemleak, so skip them,
-> as alloc_slab_obj_exts() does.
-> 
-> Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
-> Reported-by: syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=527fed49e5b988882c9a
-> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-
-I wonder if we should rather do this at the moment the sheaf is handed over
-to rcu.
-Or if it's a generic problem that should rather be solved by kmemleak having
-visibility to the rcu queues.
-
-> ---
-> Reproduced in QEMU (syzbot config, 2 vCPUs, numa=fake=2) by stalling a
-> grace period with a preempted reader on CPU0 while CPU1 interleaves
-> rcu_free_slab() (filp slabs) and rcu_free_sheaf() (maple nodes freed by
-> kfree_rcu()) callbacks, then running two kmemleak scans:
-> 
->   before: 16-18 sheaves reported per run, rcu_head.func == rcu_free_sheaf,
->           plus maple nodes held by them
->   after:  no sheaf or maple node reports, no new warnings
-> 
->  mm/slub.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index cd671b934719..e01416ae0b4a 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2856,6 +2856,14 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
->  	if (unlikely(!sheaf))
->  		return NULL;
->  
-> +	/*
-> +	 * A queued rcu sheaf may only be referenced by an earlier rcu callback
-> +	 * in memory kmemleak doesn't scan (e.g. struct slab). Never report
-> +	 * sheaves, but keep scanning the objects they hold.
-> +	 */
-> +	if (alloc_flags_allow_spinning(alloc_flags))
-> +		kmemleak_not_leak(sheaf);
-> +
->  	sheaf->cache = s;
->  
->  	stat(s, SHEAF_ALLOC);
+Yes, thanks!
 
 
