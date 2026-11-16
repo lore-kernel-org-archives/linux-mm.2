@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AAD606A895
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0717660A383B
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hHG9Uz9g
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RcXBe0Ce
 Received: by kanga.kvack.org (Postfix)
-	id 6F5206B05C9; Mon, 16 Nov 2026 06:05:03 -0500 (EST)
+	id 2AF996B05CA; Mon, 16 Nov 2026 06:05:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A5966B05CA; Mon, 16 Nov 2026 06:05:03 -0500 (EST)
+	id 267676B05CC; Mon, 16 Nov 2026 06:05:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BB4F6B05CB; Mon, 16 Nov 2026 06:05:03 -0500 (EST)
+	id BFD0B6B05CD; Mon, 16 Nov 2026 06:05:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 349776B05C9
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:05:03 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3FF8A8711
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:05:02 +0000 (UTC)
-X-FDA: 85440700044.29.0C18C63
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EBC6118000D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:05:00 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=hHG9Uz9g;
-	spf=pass (imf06.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B07D6B05CA
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:05:09 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38794A08C8
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:05:09 +0000 (UTC)
+X-FDA: 85440700338.06.48D66A0
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 68C5A1C0006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:05:07 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RcXBe0Ce;
+	spf=pass (imf18.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827101;
+	s=arc-20220608; t=1794827107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dEwMuEk6L9PkuPwgRk5o/Rg0G4cgqI2PeNM611PKi+o=;
-	b=RRhDrGo/RupFS6V15l648X/OXFeC6thPQjLlpfMW/2pTqaPmwSjA5/5lspJLboaaA5sLoj
-	OOAl02GyQHG0nknth8Lv6b8XkA6B07Nxbgj2/frAk1Ab05ZlGM8X5FolQea7pXR7Zc3xrF
-	QKjog9fhcFA/52+tAki9KqWtcRsC8AI=
+	bh=zS2lDzeHA/1L2L3MmL+yEtxhF4ntSvUOnFxLZtQr65E=;
+	b=nXIpxZGzh/mTpRGCXmkgm+UouWOZK/jr2OtzAFwfjjA6b9UeKvp6xmf66XOkiB5yijKXEO
+	FDvTptD0bgCwwbHkuvwtCKjxJawTeYmlPC6nvACcEvELA3rx+CTzqOC6MGkkgN2DS3xisA
+	+Rz4+eZtPPI5t4aUwPmEnIvX6OogHmo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827101;
-	b=0BW2dJMKw5bxZIToBqHo3Hr5TAaI91Ye/O0m+lbBnYBiopds0fcq7dawsU1j0DnxKJmE8/
-	KklxyEk2ZKnyR9wBbyibVYPKF6kvSg1GTpwdvZJ3+08wIxZ9NmUGXC+xV43imF86g3BKkX
-	crVvrt78n8QAFQsuO+/VIXqA1gLM4Dg=
+	t=1794827107;
+	b=IqBSutFTWUeE4JlxGnC5ASuqnb+XZDV9kYAt33LSW+tokv5J6c2iyxX02b11Pvk845WhZU
+	camt/r3Yrsz4LlSRiaaGSFcQRcXAEgmZgq3d/wN2w5vjBwifYCy89knENA/8YGNq0DuZ39
+	I7frbB1xE5RTh55n4UMO6wFJ8ID6/Kg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=hHG9Uz9g;
-	spf=pass (imf06.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RcXBe0Ce;
+	spf=pass (imf18.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1a8cc11ac42so3002266c88.0
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:05:00 -0800 (PST)
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-14394530ec6so3922402c88.1
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:05:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794827100; x=1795431900; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1794827106; x=1795431906; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dEwMuEk6L9PkuPwgRk5o/Rg0G4cgqI2PeNM611PKi+o=;
-        b=hHG9Uz9gffRyw0dYek52MG/i9lASZ3y8W0uhed3pUoL4hAqlfyx95VbrkuOGow9axf
-         RWSC6+vwtw2W3koN4rzErMjbFQ/NWQDk9EC7/xEccxBhOxhnMwUvUuvFsBXQyO2GstUB
-         RSzypIj8XriuRneZ2HauCGQjxd+/RT6ZWbxvEhmBlE5wReddpgNWj0O98Nc/64Vv0WB/
-         E5MXFzoNp9kYYHYCfiNtdsMOtxm0TowL28U8r9IbFbjO2GLih/tIt7ljHYXh4G1STkJ+
-         cOV+IxxLUN9cQALYlDE+cuTidLnddfxoZiHoLea8W1yhY1nR2vumlyFXeeG+6vrzPntL
-         J4DA==
+        bh=zS2lDzeHA/1L2L3MmL+yEtxhF4ntSvUOnFxLZtQr65E=;
+        b=RcXBe0CeF+QRKBAFruLlOj/sxbmDstwZX/M4r2iT+XTquXU7dr0Renp+sAAdFJHmOt
+         +QbA2JEYwaAZTx3Fcd8RYMrQgFzgb0bD57gGfepOYLDB3JmUkfi4UAUGerdykza/mLbu
+         jCg8LsMGzqzXKyxQUXQaEx9rORV+p1xrYDGUV1mpKFdN/yUQ0JkUjHZCgmSZapRBxqNZ
+         hE8pMjPyZy73HVi0x3G3aBxicJkpJcSdfKCIhpL6XOtgOPtFxMZMS4Z8CxUU8B1uec7i
+         XnWxLUE1AQuVuMQ106MhyVTVGottswUcPiKH8emYIPtXOXP4Jh7Tmsqp3vvn7PNWdLsH
+         XVYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794827100; x=1795431900;
+        d=1e100.net; s=20260707; t=1794827106; x=1795431906;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dEwMuEk6L9PkuPwgRk5o/Rg0G4cgqI2PeNM611PKi+o=;
-        b=nbDsVCNT5fPkdMyE9quHlcYZhoo0F54Bs+RHfnC1kP+NskL4fedvP5hszxiS74+/UG
-         nG8yBgicu0Kui44N8HZfM25kxOBImOXNfiiqbDGPhVDqwe2dUlTn8HbnfFL+4s0II72b
-         NBQxkQR+uibRWZuaMJL48812OPYssyX8WvzIj2/k/zMfptdiBYiou6/IAgBPFph7TpBy
-         YC61QhphMI4FJLvbVtiJOcdxezC/SA1s2pgc0wvHm1pUhp8evSQTvkslD5bHfOBKKSM2
-         ISfolwQUktveostbu7VPmwaPJiz0YS4+++1q5rpzTRJ5rxX0F9AonZ8k3GuKSpHcifiX
-         YG4w==
-X-Gm-Message-State: APuU4Z9lyk6ukpQmgj2Zjhh2K7v4WeJ6opgFzlfq6+5IpwBw7dtkjNe1
-	NnTTmDg11JIkFNQOrVEVzvDMXoPCXALyRyNivFQr/JbcMT/MB8sGGTfJc8bA5RM0fmmbz7r5
-X-Gm-Gg: AYBFou3FeguNt891J3XQYZwF3Z6uBvA46PvtObIuKeVIzeGlmUPkNz5Ama7AcXLRt8J
-	cTzJlFicPIm9AZ4QsyaFUzDAp3dUPex6dqhkLrUyijyj4xDd0P1hLkwjL2Sf2apaxmahF5HUZfV
-	SVdp13vm2DdSQc9t9rO5U5i2B3FQD6xgxWOI2VL6/N81+/ymdMIcr1g61MZbViq0eznlp5ktXvn
-	D5c7Nhs3pD/4OJdrUDuw3KFHghvC0erL4aDD6L5KROMeKrzxw9uMHk2Lzzo6SlWIRYsZ4BJmBZB
-	smas4ZiAC3BaHe03rPAglAuTuOeph1SddBDxY+58vcCWgyG9VEKPumBZ1c/QIwvclGTFpm8HdtM
-	bNNOdu8wJs06UChPbBnSO1uChtLYrFC/4gS6iuc3tXTkTyvEnNJ7ZQMYKMU7SHl4NV5TmXGJ6vb
-	X/sxoNNlwMddhCTwS9EYYxKpaeolL5/eLp1hjw7lGXiOv6EXdrB2Gvc0W1K3qE9r1Ocy82aDGd3
-	YFoOMEbkLmypItn27pFFUERklOTrJQgHiftM2WVmxlK78quEMI3NAuGB8XB+u3KHWlqC1XrYOmF
-	zmaZX86Zfu6azZUdxEl37NSoPd6oQt7Zel/jLuRb/ckZ8CE=
-X-Received: by 2002:a05:7022:ea81:10b0:193:3274:aac with SMTP id a92af1059eb24-1b50312f210mr9875871c88.37.1794827099537;
-        Mon, 16 Nov 2026 03:04:59 -0800 (PST)
+        bh=zS2lDzeHA/1L2L3MmL+yEtxhF4ntSvUOnFxLZtQr65E=;
+        b=1dJ2DQF7ZFJICtx7yKSYv/mi5ZZWWBucq9LXJowwUi+wSi5b4WdD2nDFVH1F6V7cRh
+         AtR3CBIFomOyh6V2kulBQ2/ovPV2+SlSQSpjjPZzoCMDMpeCQOqATeMCehXgmBvGVM3U
+         Ez4gdD8ZLFKFe7f7kMVODujUzXh9UpK2RnLDi7mzC/kDTMXYq/Ru6rghK9MqtnwO3hPK
+         gwxmqkUcF4G50MMTdRn44mvosmvyQTItbIlw5+VSYTebO03cP+HI61tiNYZYjOkdZrvG
+         Hrc7i8TGGgaMVoN5UTCia/G/xY67JMBzcISvJYupdblNpCHGBbT3gP3M5yjgMc6HYwBo
+         n8zw==
+X-Gm-Message-State: APuU4Z+498ex8d/C/OjKZ5x67bnaKwGEJNPRnQFo5np0z5FBX/QGZdHt
+	MvDt0DddwGdDHXSw8aPtEDnXfnqJYcBivvmSkhQUDCQZLAcgBGbrZtFr26OuiXDoJyHnU7Hy
+X-Gm-Gg: AYBFou26LL3Bd8EL+UigA1OM/frUrebl2IM7DWwiB4JrSHpon3JPxtw+aHGufLSzJ+i
+	6ElOfyp0AGqPC25HKC6bpOpVfMT3FOpSgk4ARbpbD8WbP4u9aCDVeYykZtOg34k+k1DKb5ajevh
+	pCLeEhppWr+IZlVrTu3QntZ2/MMrMoqp2KFssiLq1eil5m26yiO/JlPj8Rjl2ssLb/ZiJF8litk
+	aP3TAZuJXOAMn6QWlrwo/xX8+frRRQeAJRL1mpNxUonb+HlLPE5AGfzqOBj1BKYV6YDjUrukgxq
+	mpJiW9NzWyeqGYK7sCkebF62XS4ihDpVGkxGWYvxQyprXeAK/ezl4QaJmbPi2v22VKvd1ZYG53i
+	U9xsgbtf/xA2c7Rvs0S8mI8yg6MUZQd/V1nNv+akSsbLlcp1l9gTOZTXNgVdVBvau3vRO2fWk4C
+	KC+A3UJd5ydAf4VxVgXoUNBT5+ZNffAL69mDYyAPVCyjNHUyh3wBZM6vpKInuf23cjIuPhoYmzE
+	opH8hWip28EM/Z0jFcWF2hfwEHnoVcEgZXFK2FIO4k51lHYKkWV09NtBfTs9YHipLPlZo2H385O
+	hnAgV+im1oRd2Bxnsi3BJO2rIHQ4ho1BGRPJUeK4NLbu3ec=
+X-Received: by 2002:a05:7022:170f:b0:166:f097:6f12 with SMTP id a92af1059eb24-1b5030e76a5mr10196048c88.15.1794827105267;
+        Mon, 16 Nov 2026 03:05:05 -0800 (PST)
 Received: from naki-PC.localdomain ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031918c7sm42999260c88.9.2026.11.16.03.04.54
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031918c7sm42999260c88.9.2026.11.16.03.04.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 03:04:58 -0800 (PST)
+        Mon, 16 Nov 2026 03:05:04 -0800 (PST)
 From: nakixii <nakixii@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -109,28 +109,28 @@ Cc: linux-kernel@vger.kernel.org,
 	Mike Rapoport <rppt@kernel.org>,
 	Peter Xu <peterx@redhat.com>,
 	Suren Baghdasaryan <surenb@google.com>
-Subject: [RFC PATCH 15/16] mm: memcomp: add the design doc
-Date: Mon, 16 Nov 2026 19:01:21 +0800
-Message-ID: <20261116110122.309748-16-nakixii@gmail.com>
+Subject: [RFC PATCH 16/16] mm: memcomp: add the admin guide
+Date: Mon, 16 Nov 2026 19:01:22 +0800
+Message-ID: <20261116110122.309748-17-nakixii@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261116110122.309748-1-nakixii@gmail.com>
 References: <20261116110122.309748-1-nakixii@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EBC6118000D
+X-Stat-Signature: 6ixf6udu1obz587fbihs5opanuyc4ogy
+X-Rspamd-Queue-Id: 68C5A1C0006
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: qq8isj1pi6aiuhekrafjx6zrnctsnq9i
-X-Rspam-User: 
-X-HE-Tag: 1794827100-664004
-X-HE-Meta: U2FsdGVkX1+A3eA8/diLxmUcYkY+LY44reniRAuz0dz8wGmg9F3EodGFZj2aScpyI/6hpOBqdNqtDcko7DTGKgQk9ihJZWzTZxijRUhnMtY3j/+u5kh50fWvkhiKf9FxcoN2GdnHHCC4IlqCZWAni6tEIqbl+seGPac1P832mMs8P1bdgIfz1BZcXfun4MJjLrrwnIaE/eNmcI0cA5guU3gmu4f+qsfe45BEVl2R4oQVkp5lPLJraxZnPTsj5vUgZToVg0L9OrndviBoWwwj4sylMGdyppYScZ2MyRJAjp+z3r/xR57sYdp6X/s+sgcQFnyohIj5vcrGMTb6bJqhfjVglsAZdasSbLrVvJv/nsHaOejjXYc6oRN2A/rs/eRG9te6UaW3dIS2KPa9yp2gJ1PJgF/cBMu+C9rpyZpY8N3xd5/y40w0Dmc1U9owBZNu/La/FbpNw3oceCx6y6L0uqPVitXB/S5LvkaSL7G0yj+XvWrVlQybWAb9aVpJ8c6hsO3bkm+sJ0eskmW3v4SxVkuMkOthQN/APH5kTyZrmYxl4+1+5HdVhpU/Zcgcd/STgIdy9xmhQKiS+rVpshW9GHu9ciZsZwe6rLeV7Ez0oTRG+MMmY+LVMA+kU9HIIWwWzOgo6vplpNTdT35xXsfI28WpLrQD8DpLVABbNaqoNwqe96ot8FDpdLDCFq0SrzsTuJF73NPo3FvWaoHolvaMir3JPZPly4hnuy2qxCgz0NHp/zUlAaxLqeDAgOSGBZKv303csuuR8OVn6A7blNOVbSd6h6vO1DyL9a0GHExUikEjPgYjeKwZNpsrg37Km2XOC+g4caGWBtAjmskb6//pdbHg3DYmsYQEEHT+Do2H5kY6pIqg2mAev1jCUwzRwubL6w6cdwJuQCpJBAxLMm+X1qvIj2GlqC0ccTdMDZcAYsVWo7PHKldQjYvbj6SxQ/0HpRhQ4ze4O6n0Ruvg5sW
- zrRldKQ6
- S4LKtkbL0VudH+MK2OV1tOJeabZOJfuBBxFwdtdD9Bad42boi9KjvesrGSOmMgBzCjdMlagfIq7ekiNRS86e1pfgC7D5GBctIumNWQRZroimlVjzlWjP4BUGedKcHb/mvJgsZdLSMkr2YsKl7gP1eEu+KpoqicHqAnnCx/o4RdEx1iU6sTyoecBYSVKtP7d85ns48ERP7YjQiTjgCSgWefbxWW9R8JX0cvxwGz2iwMFa0g6xekPMbqrkrKceNgdd7tIZHgJNOwh1frhZ/Qp5lyTBVb5vKm7jxA7u/c+EJWSd2k2uu/KK+yNGt05wswHWpepPpqRMow7YvTo3LgEfcOqM5Gs8xKkaGFwrS0KQqmIxN6MpARX8P3Q1nXU/jaPfW/l98jkJML83d4A3A/yI/2LcBAn0I8vgBBQyc4TAwVNMVgH2g8URH6r++bH5nq/a9qdMTigbUjwwIwqQXYXsQbRz4IS0k+Ctt4WpS1i4c3FXYHPNhAn3XE4e8NFpfmdyAsR52hp8mGkheFlgMtqsCoQ6pkGh41DAJVhdneN+KKA+8KwOrPjB6u0gIBw==
+X-HE-Tag: 1794827107-984567
+X-HE-Meta: U2FsdGVkX1+i3kJeEhIdlm+Mz+n1hN2HgR+P3PC9qCtGaHQs50q2B7P6hzrNQ2kAtX7zQq+Ru18RxGrxdT6JNAuPTh/xz3iB8eCSDmrp2jl4iiVLLD/7uovG1DHXlk10CHsZ9HsGfCPsCj87ZNDTte2wq6vBKPyPphRylMapYXSFLuvJqMe+4arD5iD6q42AKdVfUP6OQJhHm9D38LJzqnkS9ToS3csC/stwL/MUv4Z1RFX+89/1JUSI/4x9G6+WjR20ey64GtLAw9P4W+rQzvPw7VZyXEsCqdparjBrvqRXC7gAFCB0XZwIOc9B+mT+V/5oF3UpaocIYsTqyYEOsfL8n4vxvkJXBdCoWVsduIZogitzB5UqX7S352YmXBaiauxdxR390G16QSy5hWoYVEkJFY8NOjOseTdaAcuT2wvMZy5IsOlkO6mjNanJiiUW6MhWTd8b0Rdcdv6QYCxSjZZR/tsUNwICNxg5TuQOr2Bfhx8CxCsp849prnqZHlGc19aUPgGW5IAFgszADzM22E3zv44TW9Lz1vTnEA4IQuBNnyN188bbIutKHGbwDP+tDGFQ0Uv0dsp2E25DLKYdiZ0c3NKft4+Jzzb+N0qTlwZTTIauS46SC4esKiGjyJHIYW1K0+KB7+iuaUl5lgLPncO5OVAS/B9PfmaP8O28COPSnFo0alr3ODe6aVRkkOPLIb3eJvHX3t5QSm6q1+UVlo09FcndmpkIt2FKFWJCmh2QkalP16GgAk7Hr7mhJm+aAvzgLszUY5oY2yz8Mg5y/fKEMn8gs0tF+ljTwwIVphNt70znHARB4pRg2xC9FWWKDQVp2WFHuxKlI7H3PvQCXckC5UNb9FyDVz7LsX27WV8qRA2m9XJIjjVGgsRHrgY43Z5k7OcYc2ZWVYT4xsChJ4CEJ6uNk2yDpTmvTz4vI17JUwuujjkbqILMGgC8WoTpd7VnI/bNwVOHtTPKF03
+ I9xDqzNf
+ 5Pr39wk41HHOZA/bwjuhJpqQHryuTw560oAuPXUaUcURPpvbPL5gIb5S2TVw5KdfdH3uvF3SX8PJR9OyO7Xk6bFp9UzenotmQaG8vS6zfb29byWVLsm8E7FFvL7K8wCxQ7m3M2os3W3+Y84+Igs7iaymOoiDVZiaCcLv4s85E1RGiCY+3OEGKe2pNKcK6LxtGoKozNZvS49MzlOIlSjwJb3inK62/fHkFe/xAyMXFFW+dJ6sk9IzVrh8sy7X2r4uBwgT6YGgndcU2b2wsoVjqBv6Wea9R3RHKnvDRUxq6O4Zeokay1MvnRL1Hg1Ey2v+seE5vw0lRhQzScvfo5e71W/Gds9vHJhVQ5sJ+l1DVPVohj7vccUDAveHdUXiwWUx1C2Sm0skEPe5Rd23Ccpq59E7B+51GM1F0peP+21QxynG8CBDgGahCJhP/4E//Lh2OUYziOPFn0jJNoyCe2kMa2JIojNl8/RR6U/U1xyadPh6S+DqJwl9PfMFEva59BBVBHECM5bggmD86C/r6Vr6SfXib9pg9TiTXG2+Fhn3WQiAA9eg2lHbXqDV0w8/LS554bevai+M8Ra1zeeGbhBCjP7VWvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,278 +139,583 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The memcomp backend spans page-table ownership, compressed storage and
-real swap. Document the design so readers can follow which object keeps
-contents alive when reclaim, faults, fork and backing conversion
-overlap.
+The memcomp backend has boot-time policy, compressor selection and
+observable statistics that need an operational description separate from
+the internal ownership design.
 
-Describe token encoding, 16-byte slots, per-key clusters and temporary
-resident records. Explain the separate zero-owner domain, nonzero same-
-filled values and source-object-cgroup accounting without treating the
-slot layout as the entire per-page metadata cost.
+Explain the experimental configuration and default-off policy, including
+built-in compressor requirements and the memcomp.compressor= override.
+Describe initialization and compressor availability without implying a
+runtime enable or disable interface.
 
-Document anonymous unmap and rollback, single-PTE rmap restoration,
-fault revalidation, shmem shadows, writeback and swapoff. Explain the
-lookup, producer and mapping references and the locking boundaries that
-keep allocation or I/O out of non-reclaimable critical sections.
+Document stat and compressor under the established memcomp sysfs
+directory, with optional diagnostic fields gated by MEMCOMP_DEBUG_STATS.
+Describe writeback policy, accounting limits and supported operation.
+Add the sysfs ABI descriptions and link the guide from the memory-
+management index.
 
-Describe bounded compression contexts, foreground asynchronous batches
-and metadata aging in batches of at most 32 examined entries per storage
-lock acquisition. Document the stock crypto and zsmalloc dependencies,
-supported contexts and restrictions, and link the design from the
-memory-management documentation index.
+Keep implementation, documentation and selftest maintenance coverage
+aligned with the series. State operational restrictions and untested
+areas explicitly rather than promising behavior beyond the supported
+configuration or available validation.
 
 Signed-off-by: nakixii <nakixii@gmail.com>
 ---
- Documentation/mm/index.rst   |   1 +
- Documentation/mm/memcomp.rst | 215 +++++++++++++++++++++++++++++++++++
- MAINTAINERS                  |   1 +
- 3 files changed, 217 insertions(+)
- create mode 100644 Documentation/mm/memcomp.rst
+ .../ABI/testing/sysfs-kernel-mm-memcomp       | 363 ++++++++++++++++++
+ Documentation/admin-guide/mm/index.rst        |   1 +
+ Documentation/admin-guide/mm/memcomp.rst      | 149 +++++++
+ MAINTAINERS                                   |   2 +
+ 4 files changed, 515 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-kernel-mm-memcomp
+ create mode 100644 Documentation/admin-guide/mm/memcomp.rst
 
-diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-index 0be1c7503a010de78c1c1965b43bffc6311a6ca6..dc00d0b5db14d1a323715ceb8bdefe66e4179d17 100644
---- a/Documentation/mm/index.rst
-+++ b/Documentation/mm/index.rst
-@@ -46,6 +46,7 @@ documentation, or deleted if it has served its purpose.
-    hwpoison
-    hugetlbfs_reserv
+diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-memcomp b/Documentation/ABI/testing/sysfs-kernel-mm-memcomp
+new file mode 100644
+index 0000000000000000000000000000000000000000..0d68defd8d1a2b09f700d12827dad12743d94d6d
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-kernel-mm-memcomp
+@@ -0,0 +1,363 @@
++What:		/sys/kernel/mm/memcomp/stat
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Read-only memcomp capacity counters.  The three decimal
++		fields are logical stored bytes, compressed payload bytes, and
++		zsmalloc pool bytes, in that order.  A pending logical page is
++		still resident and must not be treated as committed capacity.
++
++		Slotless zero tokens contribute one base page per logical owner.
++		Anonymous PTEs and shmem page-cache shadows have independent
++		ownership counts. Fork adds a zero PTE owner; fault, zap and
++		MADV_FREE remove it. Moving a zero PTE does not change the count.
++		A present shmem mapping adds no owner beyond its cache shadow.
++		Positive slots retain the per-slot counting convention, so fork
++		can increase the logical zero capacity without allocating any
++		entry metadata. Counter fields remain observational snapshots.
++
++What:		/sys/kernel/mm/memcomp/compressor
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Read-only name of the compression algorithm selected at boot.
++		While memcomp is still waiting for a compressor that has
++		not registered yet, this is the name it waits for; it changes
++		to "zstd" if memcomp falls back to that.
++
++What:		/sys/kernel/mm/memcomp/events
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Present only when CONFIG_MEMCOMP_DEBUG_STATS=y.
++
++		Read-only text with one key, one space, a decimal value and a
++		newline per line. Reading does not reset statistics. Values are
++		collected independently, so a read is not a coherent snapshot
++		against concurrent work.
++
++		The ``folio_owner_pages``, ``samefill_pages``, ``raw_pages`` and
++		``shmem_pages`` fields are current entry-state gauges. They count
++		entries with a retained folio owner, same-filled payloads, page-sized
++		raw payloads and shmem ownership, respectively. Owner detachment
++		and payload replacement update the corresponding gauge;
++		entry removal subtracts its remaining state before payload release.
++		These are sums of signed per-CPU values, not an object index or a
++		transactional snapshot. Cross-CPU reads may race concurrent updates;
++		negative aggregate samples are clamped to zero. Compare quiescent
++		samples when checking balanced ownership.
++
++		Event counters accumulate; they are not instantaneous state. The
++		other current gauges are: ``enabled``, ``comp_ctx_count``,
++		``comp_ctx_reserved``, ``comp_ctx_borrow_limit``, ``comp_ctx_free``,
++		``comp_ctx_waiters``, ``comp_ctx_borrowed_active``, ``pending_pages``,
++		``swapped_entries`` and ``zs_huge_class_size``. ``enabled`` is 1
++		when memcomp is enabled and 0 otherwise. ``zs_huge_class_size`` is
++		the request boundary, in bytes, below which zsmalloc can share
++		backing pages; zero means memcomp is not enabled or no allocator
++		pool is initialized.
++
++		``comp_ctx_borrowed_peak`` is the largest recorded count of
++		simultaneously borrowed compression contexts, not current
++		occupancy. ``comp_ctx_count`` and ``comp_ctx_reserved`` report
++		the initialized compression-context pool sizes.
++
++		``swapped_read_io`` counts successful read/decode calls for
++		swap-backed pages, including calls satisfied from swapcache; it is
++		not a physical I/O count or proof of a later PTE mapping. ``swapped_read_error`` counts read-page or decode
++		failures. ``swapoff_entries`` counts entries successfully converted
++		back to RAM backing. ``swapoff_read_io`` counts successful read-page
++		operations in that conversion path. These four fields are
++		accumulated events, not current gauges.
++
++		Compression staging and reservation rollback/split diagnostics are
++		reported by ``execution_events``, not by this file.
++
++What:		/sys/kernel/mm/memcomp/placement_events
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Present only when CONFIG_MEMCOMP_DEBUG_STATS=y.
++
++		Read-only text with one key, one space, a decimal value and a
++		newline per line. Reading does not reset statistics. Values are
++		collected separately and do not form a coherent whole-file snapshot.
++
++		Accumulated routing-attempt counts: ``compress`` counts attempts to
++		route anonymous or shmem folios to memcomp; ``normal_swap_fallback``
++		counts fallback attempts to ordinary swap after a memcomp attempt.
++		These are routing events, not successful stores, reclaimed pages or
++		byte counts. An event can concern a multi-page folio; retries can
++		cause further events.
++
++What:		/sys/kernel/mm/memcomp/packed_swap_events
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Present only when CONFIG_MEMCOMP_DEBUG_STATS=y.
++
++		Read-only text with one key, one space, a decimal value and a
++		newline per line. Reading does not reset statistics. Values are
++		collected separately and do not form a coherent whole-file snapshot.
++
++		Compressed-pool writeback diagnostics. The following fields are
++		current gauges:
++
++		* ``writeback_pool_pages``: allocator backing footprint in base
++		  pages.
++		* ``writeback_pressure_scopes``: active reclaim writeback scopes,
++		  summed across memory nodes, including overlapping scopes.
++		* ``writeback_gate_open``: last evaluated writeback-gate state, 0
++		  for closed or 1 for open.
++
++		The remaining fields are accumulated counts:
++
++		* ``writeback_pressure_events``: node scope transitions from no
++		  active scope to an active scope.
++		* ``writeback_pressure_scans``: eligible pressure-driven writeback
++		  scan invocations.
++		* ``writeback_compression_throttled``: budget-grant episodes with
++		  effective compression feedback; this is not a count of compressor
++		  calls delayed. Feedback is effective after sufficient logical
++		  stored-byte growth when backing-byte growth is at most half that
++		  growth.
++		* ``writeback_limited_batches``: scanned batches which exhaust their
++		  node's writeback budget.
++		* ``writeback_budget_granted``: sum of payload-entry allowances
++		  granted, not bytes or completed writes.
++		* ``writeback_payloads``: payload entries successfully converted
++		  from in-pool storage to swap-backed storage.
++		* ``writeback_zs_reclaimed``: sum of observed decreases in
++		  allocator backing base pages during pressure scans, including
++		  compaction. It is not a logical-page count or exclusive
++		  attribution against concurrent pool changes.
++		* ``writeback_zs_no_progress``: pressure scans which converted
++		  payloads but observed no decrease in backing pages after
++		  compaction.
++		* ``writeback_decompress_error``: failures to decompress a payload
++		  when preparing an unpacked swap page.
++		* ``writeback_write_error``: submitted swap-page slots observed
++		  dirty after waiting for writeback, indicating write failure. This
++		  counts slots, not the payload entries within them.
++		* ``writeback_gate_opens``: recorded transitions from a closed gate
++		  to an open gate.
++		* ``writeback_packed_slots``: packed backing-page slots submitted
++		  for writeback, not successfully completed I/O.
++		* ``writeback_packed_payloads``: payload entries successfully
++		  converted to packed swap storage. Multiple payloads can share a
++		  slot.
++		* ``writeback_defrag_moved``: packed swap payload entries
++		  successfully moved back into the compressed pool by
++		  defragmentation.
++
++		Submission, conversion and page-footprint statistics have different
++		units and accounting points; they must not be equated.
++
++What:		/sys/kernel/mm/memcomp/admission_events
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Present only when CONFIG_MEMCOMP_DEBUG_STATS=y.
++
++		Read-only text with one key, one space, a decimal value and a
++		newline per line. Reading does not reset statistics. Values are
++		collected separately and do not form a coherent whole-file snapshot.
++
++		Accumulated direct-reclaim admission diagnostics:
++
++		``reclaim_ctx_early_reject`` counts direct-reclaim context prechecks
++		which rejected an attempt; ``reclaim_ctx_early_reject_pages`` sums
++		the associated base pages. This is a precheck result, not proof of
++		an eventual failed store.
++
++What:		/sys/kernel/mm/memcomp/context_events
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Present only when CONFIG_MEMCOMP_DEBUG_STATS=y.
++
++		Read-only text with one key, one space, a decimal value and a
++		newline per line. Reading does not reset statistics. Values are
++		collected separately and do not form a coherent whole-file snapshot.
++
++		Compression-context timing diagnostics. ``sample_interval`` is the
++		lease sampling period, currently 256 successful reclaim-context
++		acquisitions per context and reclaim source, with staggered initial
++		phases. Sampled values are raw measurements, not extrapolated totals
++		for all work.
++
++		``wait_events`` counts entries into the context wait path, including
++		retries, independently of lease sampling. ``wait_ns`` is accumulated
++		elapsed wait-path time in nanoseconds and ``wait_max_ns`` is its
++		largest recorded individual duration; a wait-path entry need not
++		actually sleep.
++
++		The prefixes ``direct`` and ``bg`` select direct reclaim and all
++		non-direct reclaim sources. Each prefix has the following suffixes,
++		joined with an underscore:
++
++		* ``samples`` counts accounted sampled leases; ``pages`` sums their
++		  associated base pages, not pages successfully reclaimed.
++		* ``store_samples`` counts sampled leases that reached a store
++		  attempt; ``store_success`` counts successful store outcomes among
++		  them.
++		* ``lease_ns`` is accumulated context-holding time; ``lease_max_ns``
++		  is its recorded maximum per sampled lease. A lease ends when the
++		  context is released or its output is transferred to a staging
++		  buffer; later store work may continue after it.
++		* ``pre_store_ns`` is accumulated time from lease acquisition to the
++		  beginning of a store; ``pre_store_max_ns`` is its recorded
++		  maximum. A lease that never starts a store contributes its full
++		  lease duration here.
++		* ``compress_ns`` is accumulated elapsed compression time;
++		  ``compress_max_ns`` is the maximum accumulated compression
++		  duration for one sampled lease.
++		* ``compress_cpu_ns`` is accumulated task CPU time spent in measured
++		  compression; ``compress_call_cpu_max_ns`` is the largest recorded
++		  CPU duration of a timed compression operation.
++		* ``compress_store_success_ns`` and
++		  ``compress_store_success_cpu_ns`` are elapsed and CPU
++		  compression-time totals for sampled leases whose store succeeded.
++		  ``compress_store_fail_ns`` and ``compress_store_fail_cpu_ns`` are
++		  the corresponding totals for leases without a successful store,
++		  including leases that never started one.
++		* ``zs_ns`` is accumulated measured allocator/payload-placement
++		  time; ``zs_max_ns`` is its maximum per sampled lease.
++		* ``store_other_ns`` is accumulated store elapsed time after
++		  subtracting measured compression and allocator time, floored at
++		  zero; ``store_other_max_ns`` is its maximum per sampled lease.
++
++		Each prefix additionally has ``compress_<outcome>_calls``,
++		``compress_<outcome>_ns`` and ``compress_<outcome>_cpu_ns`` for
++		``compressible``, ``raw_huge``, ``raw_ge_page`` and ``error``
++		outcomes. These count timed compression operations and accumulate
++		their elapsed and task CPU nanoseconds. The outcomes mean a result
++		below both storage boundaries, a result reaching the allocator
++		huge-class boundary but below input size, a result at least input
++		size, and a compression-result error. They are distinct from the
++		later store-success classification.
++
++		All durations are nanoseconds. Counts and duration totals
++		accumulate; maxima are recorded high-water durations, not gauges.
++		Lease and store phases must not be assumed to be a disjoint
++		decomposition of end-to-end request latency.
++
++What:		/sys/kernel/mm/memcomp/context_sources
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Present only when CONFIG_MEMCOMP_DEBUG_STATS=y.
++
++		Read-only text with one key, one space, a decimal value and a
++		newline per line. Reading does not reset statistics. Values are
++		collected separately and do not form a coherent whole-file snapshot.
++
++		Source-attributed context timing. ``sample_interval`` reports the
++		lease sampling period, currently 256 successful reclaim-context
++		acquisitions per context and source, with staggered initial phases.
++		Lease measurements are sampled, not extrapolated; wait-path
++		measurements are not lease-sampled.
++
++		Prefixes are ``direct`` for direct reclaim and ``kswapd`` for the
++		regular reclaim daemon. For each prefix, suffixes are joined with
++		an underscore:
++
++		* ``samples`` and ``pages`` count sampled leases and their
++		  associated base pages, not successful reclaim.
++		* ``store_samples`` and ``store_success`` count sampled store
++		  attempts and successful store outcomes.
++		* ``wait_events`` counts context wait-path entries, including
++		  retries; ``wait_ns`` sums their elapsed nanoseconds;
++		  ``wait_max_ns`` is the largest individual duration. A wait-path
++		  entry need not sleep.
++		* ``lease_ns``, ``pre_store_ns``, ``compress_ns``, ``zs_ns`` and
++		  ``store_other_ns`` are accumulated elapsed nanoseconds; each has a
++		  corresponding ``*_max_ns`` field for its recorded per-lease
++		  maximum.
++		* ``compress_cpu_ns`` is accumulated compression task CPU time;
++		  ``compress_call_cpu_max_ns`` is the maximum CPU duration of a
++		  timed compression operation.
++
++		Lease, pre-store, compression, allocator and residual store phases
++		have the same meanings as in
++		/sys/kernel/mm/memcomp/context_events. A context lease can end
++		before staged store work completes, and a lease without a store
++		contributes its full duration to pre-store time. Counts and times
++		accumulate; maxima are historical measurements, not current
++		occupancy. A read is not a consistent snapshot across source groups.
++
++What:		/sys/kernel/mm/memcomp/execution_events
++Date:		July 2026
++Contact:	Linux memory management mailing list <linux-mm@kvack.org>
++Description:
++		Present only when CONFIG_MEMCOMP_DEBUG_STATS=y.
++
++		Read-only text with one key, one space, a decimal value and a
++		newline per line. Reading does not reset statistics. Values are
++		collected separately and do not form a coherent whole-file snapshot.
++
++		Compression execution budget, staging-buffer and reservation
++		diagnostics. ``comp_budget_limit`` and
++		``comp_budget_background_limit`` report the current background
++		execution-credit limit; ``comp_budget_active`` and
++		``comp_budget_background_active`` report currently held background
++		credits. Their ``comp_budget_peak`` and
++		``comp_budget_background_peak`` fields are recorded occupancy
++		high-water counts. These are credits, not pages or all contexts in
++		use.
++
++		``comp_budget_direct_limit``, ``comp_budget_direct_active`` and
++		``comp_budget_direct_peak`` currently report zero: direct reclaim
++		does not consume these background execution credits. Zero does not
++		mean that direct compression is disabled. ``comp_budget_waiters`` is
++		the current number of registered context waiters, not only waiters
++		for budget exhaustion. Limits and occupancy are gauges; peaks can
++		restart if the associated context resources are reinitialized.
++
++		``reclaim_ctx_budget_pages`` accumulates base pages associated with
++		context misses attributed to execution-budget exhaustion.
++		``direct_budget_reject`` counts direct-reclaim precheck or
++		acquisition failures attributed to that budget;
++		``direct_budget_reject_pages`` sums their base pages.
++		``kswapd_budget_wait`` counts reclaim-daemon context wait-loop
++		attempts attributed to budget exhaustion, not slept time or unique
++		callers.
++
++		``direct_staging_count`` is the initialized number of staging
++		buffers. ``direct_staging_free`` and ``direct_staging_active`` are
++		current free and occupied buffer counts. ``direct_staging_peak`` is
++		a recorded occupancy high-water count and can restart on resource
++		reinitialization. ``direct_staging_miss`` counts unsuccessful
++		attempts to reserve a staging buffer; compression can continue
++		without staging. ``direct_staging_detach`` counts transfers of
++		output and timing state to staging that release the compression
++		context before completing the store; it does not indicate store
++		success.
++
++		Additional accumulated reservation/split diagnostics:
++
++		* ``restore_spans`` counts reservation rollbacks requiring an
++		  initial reverse-mapping restore walk; ``restore_rewalks`` counts
++		  additional walks while reservation tokens remain referenced.
++		* ``restore_ptes`` counts page-table entries mapped back to resident
++		  folio pages during those walks.
++		* ``restore_missed_pages`` sums base pages still referenced by
++		  reservation-token PTEs after those walks when the reservation is
++		  dropped. A subsequent fault restores the resident page instead.
++		* ``restore_ns`` sums elapsed reverse-mapping walk nanoseconds;
++		  ``restore_max_ns`` is the largest recorded individual walk
++		  duration.
++		* ``split_refused`` counts refused anonymous-folio splits due to a
++		  reservation; ``split_refused_pages`` sums their base pages.
++
++		Event counts and durations are accumulated statistics; gauge, limit,
++		initialized-capacity and peak fields are not interchangeable.
++		Separate locks and counter reads do not provide a coherent
++		whole-file snapshot.
++
++		``aging_work_calls`` counts retained-header aging callbacks;
++		``aging_detached_headers`` counts the empty current headers they
++		detach. Both are accumulated per-CPU events. They do not reset on
++		read and are not atomic with ``retained_empty_headers`` or the
++		metadata allocation/free gauges. Detaching queues existing RCU
++		callbacks; it does not mean those callbacks have completed.
+diff --git a/Documentation/admin-guide/mm/index.rst b/Documentation/admin-guide/mm/index.rst
+index 8b35795b664bee614fd941f12ba3a7df937f3a6f..c11d8c58d7e3cc26f87181f7bb4cb400c73c46e0 100644
+--- a/Documentation/admin-guide/mm/index.rst
++++ b/Documentation/admin-guide/mm/index.rst
+@@ -30,6 +30,7 @@ the Linux memory management.
+    hugetlbpage
+    idle_page_tracking
     ksm
 +   memcomp
-    memory-model
-    mmu_notifier
+    memory-hotplug
     multigen_lru
-diff --git a/Documentation/mm/memcomp.rst b/Documentation/mm/memcomp.rst
+    nommu-mmap
+diff --git a/Documentation/admin-guide/mm/memcomp.rst b/Documentation/admin-guide/mm/memcomp.rst
 new file mode 100644
-index 0000000000000000000000000000000000000000..08524581e26a88119d9b2bd0f327fc7c3ccf9cf9
+index 0000000000000000000000000000000000000000..78298a51ad6eb198e6c5e00e94434e82d2966ed6
 --- /dev/null
-+++ b/Documentation/mm/memcomp.rst
-@@ -0,0 +1,215 @@
++++ b/Documentation/admin-guide/mm/memcomp.rst
+@@ -0,0 +1,149 @@
 +.. SPDX-License-Identifier: GPL-2.0
 +
-+================================
-+memcomp: compressed page backing
-+================================
++======================
++memcomp administration
++======================
 +
-+memcomp provides experimental in-memory backing for reclaimed anonymous
-+and shmem pages. It uses the crypto compression API and stock zsmalloc.
-+It does not route the first store through a swap block device. Optional
-+writeback can move cold payloads to real swap without replacing the
-+memcomp tokens held by their mappings.
++memcomp is an experimental compressed backing store for anonymous and
++shmem/tmpfs pages. It keeps compressed payloads in RAM before using block
++I/O and can write cold payloads to real swap. It is not a block device and
++does not require a zram device or a swap file as its initial storage layer.
 +
-+This document describes the lifetime and VM integration rules. The
-+administrator guide describes configuration and the existing sysfs ABI.
-+No particular compression ratio, latency or energy saving is guaranteed.
++Configuration
++=============
 +
-+Tokens and backing states
-+=========================
++Enable ``CONFIG_MEMCOMP`` in a 64-bit kernel with MMU, crypto and swap
++support. ``CONFIG_SWAP=y`` is required even when no swap device is active.
++The option selects stock zsmalloc, the crypto compression interface and
++xxhash; it does not require modified allocator or codec code.
 +
-+A dedicated non-swap entry type distinguishes memcomp tokens from real
-+swap offsets, migration entries and PTE markers. Enabling memcomp consumes
-+one of the swap-entry type values. The implementation requires 64-bit
-+kernels: a token must round-trip through a PTE offset, and the compression
-+paths must be able to address a whole folio through its local mapping.
++``CONFIG_ZRAM`` must be ``n``, not ``m``. ``CONFIG_ZSWAP`` must also be
++``n``. Coexistence is not supported in this version. Enabling memcomp
++reserves one swap-entry type, reducing the available swap-device types.
 +
-+An anonymous folio reserves a consecutive token span before reclaim
-+unmaps it. Each entry records its position and the size of the source
-+span. An entry can refer to the resident source folio, a compressed
-+payload, a same-filled value, or swap backing. A token identifies the
-+entry, not the address of a zsmalloc object or a swap slot.
++``CONFIG_MEMCOMP_DEFAULT_COMPRESSOR`` names the default crypto compressor
++and defaults to ``zstd``. Build the desired compressor into the kernel or
++make it available during initialization. For zstd this includes
++``CONFIG_CRYPTO_ZSTD``. The exact registered crypto name matters.
 +
-+Entry references include mapping and internal references. Fork acquires a
-+reference before copying a token PTE. Zap and MADV_FREE drop only the
-+references represented by the PTEs they remove. Discarding one mapping
-+must not invalidate another mapping's reference to the same entry.
++``CONFIG_MEMCOMP_DEBUG_STATS`` adds diagnostic counters and hot-path
++accounting. Enable it for validation and controlled measurement; disclose
++its setting when comparing results. It is not required for the two
++core read-only attributes.
 +
-+An entry's owner relationship with a folio is distinct from the reference
-+that keeps a resident folio faultable. A failed store can release its
-+owner hold while a token that escaped rollback still refers to the
-+resident contents. Releasing that resident reference too early would
-+leave a valid PTE pointing at a freed folio.
++The ``memcomp.compressor=<name>`` command-line option overrides the
++configured default. Initialization waits up to ten seconds for a late
++algorithm registration, falls back to zstd if selection or setup fails,
++and leaves memcomp disabled if the fallback also fails. Check the kernel
++log and the reported compressor instead of assuming the request worked.
++There is no ``memcomp.fast=`` option in this implementation.
 +
-+Anonymous reclaim and rollback
-+==============================
++Inspecting the pool
++===================
 +
-+Reservation requires a locked, swap-backed anonymous folio outside the
-+swap cache. KSM folios are excluded. Their reverse-mapping rules are not
-+the anonymous rules used by memcomp's restore walk; a still-merged folio
-+must not acquire a token even after its mapcount falls to one.
++After successful initialization, inspect::
 +
-+Reservation pins the anon_vma while the folio still has its mappings.
-+The normal single-PTE reverse-map walk then installs token PTEs and takes
-+the corresponding entry references. Reclaim must flush pending unmaps
-+before reading contents for compression.
++    cat /sys/kernel/mm/memcomp/stat
++    cat /sys/kernel/mm/memcomp/compressor
 +
-+Compression, backing allocation or a subsequent ownership check can
-+fail after some PTEs have changed. That is not an opportunity to overwrite
-+the reservation with a normal swap entry. The failure path restores
-+matching PTEs through the pinned anonymous reverse mapping, updates RSS
-+and reverse-map accounting, and drops the reservation. It re-walks a
-+maximum of three times while escaped references remain. The initial walk
-+can be retried even if it restores nothing; a later re-walk that makes no
-+progress stops the loop.
++``stat`` returns three decimal byte counts: logical stored bytes,
++compressed bytes and allocator pool bytes, in that order. ``compressor``
++reports the selected crypto algorithm. The implementation uses zsmalloc directly;
++there is no allocator-selection attribute.
 +
-+When every page of a large folio has been mapped back, rollback repairs
-+the partially-mapped deferred-split accounting. Otherwise a failed store
-+could leave a fully mapped folio queued as though part of it were absent.
-+The anonymous reverse-map pin is released on both successful store and
-+rollback. Entries that escaped restoration retain resident backing until
-+fault or invalidation resolves them.
++Logical bytes are not physical RAM usage. Same-filled entries, metadata,
++allocator fragmentation and swap-backed entries have different costs.
++Do not interpret a single ratio or the pool byte count as a complete
++measurement of memory saved. In particular, writing a payload to swap
++does not remove the logical data represented by its token. The first two
++stat values retain swap-backed entries and are not resident-RAM gauges.
++Pending reservations are not committed compressed capacity.
 +
-+Normal swap is a forward-progress fallback before a fresh reservation
-+owns post-unmap tokens. A failure after unmap restores or retains resident
-+backing first. An unchanged incompressible folio can take normal swap on
-+a later reclaim attempt instead of repeating the failed compression.
++Additional nodes exist only with debug statistics enabled. Their fields
++are documented in
++``Documentation/ABI/testing/sysfs-kernel-mm-memcomp``. Take snapshots
++around the measured workload and subtract counters with matching units.
++Counters can include repeated attempts on the same page; they do not
++necessarily count distinct pages. Gauges and high-water marks are not
++cumulative event counters.
 +
-+A dirty anonymous swap-cache folio gives up its swap slot so that its new
-+contents can be compressed again. The locked-folio check also reads dirty
-+state still held only in PTEs or PMDs, without clearing or write-protecting
-+those mappings. Checking a clean mapped folio can require a reverse-map
-+walk, but its usual swap-backed eviction is unchanged. Writeback or
-+outstanding swap references leave the folio on the normal swap path.
-+
-+Compression and allocation
-+==========================
-+
-+The allocator is zsmalloc, called directly rather than through a custom
-+allocator interface. Compressor selection uses the crypto API and does
-+not require private hints or changes to a codec. Allocation and context
-+admission must obey the caller's reclaim constraints.
-+
-+Bounded compression contexts and detached staging buffers limit concurrent
-+resource occupancy and allow foreground admission to fail. They do not
-+guarantee bounded reclaim latency: background context acquisition and
-+asynchronous completion waits have no timeout. The lease
-+needed for a synchronous store is acquired before unmapping and consumed
-+by the store on every return. It is released before finishing or rolling
-+back the folio. Foreground admission failures can stop repeated anonymous
-+attempts in the current reclaim pass so that file reclaim can proceed.
-+
-+Same-filled pages store the repeated value without a zsmalloc payload.
-+A folio whose contents did not compress can carry an incompressible mark
-+and a content hash in folio->swap while outside the swap cache. The mark
-+is not a reserved token. Reclaim recomputes the hash and clears a stale
-+mark when contents change; migration carries the mark with the contents.
-+A split cannot assume that the original whole-folio hash describes each
-+new smaller folio.
-+
-+Payload thresholds depend on the allocator's actual class geometry.
-+Logical compressed length and allocator footprint are different costs.
-+The implementation must not assume that a threshold measured with a
-+modified allocator also applies to stock zsmalloc.
-+
-+Asynchronous foreground batches
-+================================
-+
-+A crypto implementation with an asynchronous form can compress a bounded
-+batch of already-unmapped folios in the reclaiming task's path. The
-+reclaimer flushes their pending TLB invalidations, submits requests,
-+waits for completion and then publishes the resulting payloads. Small
-+batches can use the synchronous path instead.
-+
-+A batch does not hold the limited store leases while waiting for the
-+compressor. Failure to acquire a lease when publishing a completed folio
-+fails that store and invokes the same rollback rules. No private crypto
-+execution hints or independent background compression worker are needed.
-+
-+Fault, migration and userfaultfd
-+================================
-+
-+A token fault resolves the entry and its backing, prepares a folio, and
-+revalidates the PTE before publishing a present mapping. A concurrent zap,
-+move or invalidation can require retry rather than installation of stale
-+contents. Fault results use vm_fault_t rather than negative errno values.
-+
-+A resident token must be restored where the source folio's reverse mapping
-+expects it. UFFDIO_MOVE first faults that token back at the source address
-+and retries through the present-PTE path. A nonresident exclusive token
-+can move like a swap entry. A stable entry reference spans the lookup and
-+PTE revalidation; entry locks must not be acquired while the temporary
-+PTE mapping keeps an RCU read-side section active.
-+
-+For a present PTE, UFFDIO_MOVE checks exclusivity on the actual source
-+page, not the first page of its folio. Reclaim can clear exclusivity one
-+page at a time. A genuinely shared page remains rejected, while an
-+exclusive tail page is not rejected just because the head differs.
-+
-+Migration transfers the resident/owner relationship together with the
-+contents and restores that relationship if the VM mapping transfer fails.
-+Splitting a folio with a live reservation is refused; rollback must first
-+resolve that reservation and repair deferred-split state.
-+
-+Shmem and memory cgroups
++Swap and memory pressure
 +========================
 +
-+Shmem keeps memcomp tokens in its page-cache exceptional entries rather
-+than installing the anonymous reservation protocol on an inode mapping.
-+The writepage handoff and the swapin path balance the mapping's entry
-+reference separately from an anonymous folio-owner reference. Truncate,
-+fault races and allocation failures must undo the associated inode and
-+entry accounting.
++Real swap is optional for in-memory stores. If it is available, normal VM
++swap can provide fallback before token ownership, and memcomp can write
++cold payloads back using packed or unpacked swap slots. Writeback limits
++are derived from total RAM, not from a fixed device-specific capacity.
++The pool is not a preallocated reservation of that fraction of RAM.
 +
-+Compressed storage is charged to the source folio's object cgroup, not
-+the task that happens to execute reclaim. Metadata and allocated payload
-+bytes have distinct lifetimes. A pending charge must be refunded if
-+allocation, publication or a competing operation prevents its transfer
-+to the entry. Same-filled payloads still require entry metadata.
++Storage can fail because data is incompressible, memory-cgroup charging
++fails, an execution resource is unavailable, allocation fails, or a VM
++race changes the source mapping. A failure after unmap restores matching
++PTEs or retains resident backing before releasing ownership. It does not
++immediately overwrite the token span with normal swap entries.
 +
-+Dropping a mapping does not necessarily destroy the backing entry. The
-+payload charge is refunded when allocated backing is freed, including
-+conversion to swap backing. The metadata charge and object-cgroup reference
-+remain until the RCU-delayed entry free. This is compressed-storage
-+accounting, not a separate per-cgroup admission controller or swap budget.
-+Normal VM charging is still required for folios allocated on refault.
++Unchanged incompressible contents are marked to avoid repeatedly paying
++compression cost. Modified contents can be retried. Same-filled contents
++need entry metadata but no allocated compressed payload. KSM-merged
++folios are excluded from anonymous memcomp reservation.
 +
-+Swap writeback
++``swapoff`` must resolve memcomp entries backed by the removed swap area.
++This can require RAM and can fail; a successful swapoff is not a promise
++that the compressed pool became empty. Do not use swapoff as an eviction
++or reset interface for memcomp.
++
++Memory cgroups
 +==============
 +
-+Cold allocated payloads can move from the pool to real swap. Packed slots
-+share a swap page between multiple payloads; the hybrid representation can
-+also use an unpacked slot when packing does not fit. Slot ownership,
-+packed-member lifetime and read-cache references are balanced independently
-+of the mapping's token reference.
++Entry metadata and compressed payload storage are charged to the source
++folio's object cgroup rather than to the task doing reclaim. This is not
++a separate memcomp quota, target or per-cgroup writeback controller.
++Refaulted folios still follow the VM's ordinary memory-cgroup charging.
++Observe the normal cgroup memory interfaces as well as memcomp statistics
++when applying memory limits.
 +
-+Writeback selection and its drain budget are bounded. The policy derives
-+its limits from total RAM rather than a device-specific memory size.
-+The level controller observes zsmalloc's physical pool footprint. It must
-+not close its feedback loop on total stored logical bytes: moving a
-+payload to swap leaves those bytes represented by the entry, so that
-+quantity does not measure memory released by writeback.
++Validation
++==========
 +
-+Writeback pressure scopes exclude inappropriate reclaim contexts and
-+avoid doing packed I/O in direct reclaim. Swapoff resolves entries backed
-+by the disappearing swap device into RAM, balances failures and lost
-+races, and does not report a failed conversion as successful. Allocation
-+and I/O must not recurse into reclaim under an entry lock. Conservative
-+packed-slot defragmentation remains separate from active pool draining.
++Run destructive pressure and swapoff tests in a disposable VM. Building a
++kernel or running KUnit does not validate every reclaim topology or
++workload. Keep the source revision, effective configuration, command and
++complete log with each result.
 +
-+Observability and limitations
-+=============================
++The dedicated KUnit configuration is
++``mm/memcomp/tests/.kunitconfig``. For example::
 +
-+The stable stat file reports logical stored bytes, compressed bytes and
-+allocator pool bytes, in that order. These are not interchangeable gauges.
-+Debug event counters can count repeated attempts for the same page; their
-+deltas are not counts of unique pages. See the ABI descriptions for each
-+field's units and accounting point.
++    python3 tools/testing/kunit/kunit.py run --arch=x86_64 \
++        --kunitconfig=mm/memcomp/tests/.kunitconfig \
++        --build_dir=<kunit-output> --jobs=<jobs> 'memcomp*'
 +
-+The current implementation is mutually exclusive with zram and zswap,
-+supports only 64-bit configurations, and reserves one swap-entry type.
-+Its multivalue sysfs files and large implementation are RFC limitations,
-+not the intended final upstream interface or source layout.
++Tests that call madvise are registered only when
++``CONFIG_ADVISE_SYSCALLS=y``. A configuration that omits the syscall does
++not exercise those MADV_FREE cases; do not report the full configuration's
++case count for that build. KSM flag rejection in KUnit does not replace a
++real merge/pageout regression test.
 +
-+Runtime validation of hibernation, memory hot-remove, DAMON and all
-+khugepaged interactions remains incomplete. A successful build or a test
-+in one VM topology does not establish coverage of those interactions.
++The MM selftest is built separately from the kernel::
++
++    selftest_out="$(pwd)/selftest-out"
++    mkdir -p "$selftest_out"
++    make -C tools/testing/selftests/mm OUTPUT="$selftest_out" \
++        "$selftest_out/memcomp_selftest"
++
++The accompanying harness covers pageout/refault, ownership churn,
++userfaultfd moves, shmem and swapoff. Match its requested features and
++resources to the guest configuration. A skipped feature is not proof of
++runtime coverage on a kernel that enables that feature.
++
++Known limitations
++=================
++
++This is an RFC implementation based on Linux 6.12. The swap-entry encoding,
++64-bit restriction, mutual exclusion with zram/zswap, multivalue sysfs ABI
++and source layout need further work before an upstream submission.
++
++Runtime coverage of hibernation, memory hot-remove, DAMON and all
++khugepaged interactions remains incomplete. VM correctness tests and
++relative VM measurements do not establish real-device latency, energy or
++compatibility. Device validation must use the intended release image and
++be reported separately from development-tree results.
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 98c920275f276ba29fdd459a39aa8db7c83042e7..d1d8f578f62cd9c0b824b0a5f95b49433970c377 100644
+index d1d8f578f62cd9c0b824b0a5f95b49433970c377..5e557aaae70d25ec47f8a602fb89eb63729d14a3 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -14806,6 +14806,7 @@ MEMCOMP IN-MEMORY COMPRESSION
+@@ -14806,6 +14806,8 @@ MEMCOMP IN-MEMORY COMPRESSION
  M:	nakixii <nakixii@gmail.com>
  L:	linux-mm@kvack.org
  S:	Experimental
-+F:	Documentation/mm/memcomp.rst
++F:	Documentation/ABI/testing/sysfs-kernel-mm-memcomp
++F:	Documentation/admin-guide/mm/memcomp.rst
+ F:	Documentation/mm/memcomp.rst
  F:	include/linux/memcomp.h
  F:	mm/memcomp.c
- F:	mm/memcomp/
 
