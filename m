@@ -1,147 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B2D606A32A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6524606A8AC
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 17:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nd2uNLnG
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hmDKsv1c
 Received: by kanga.kvack.org (Postfix)
-	id 0AB6E6B00EF; Mon, 16 Nov 2026 12:35:11 -0500 (EST)
+	id E443C6B05B0; Mon, 16 Nov 2026 12:37:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0837D6B05B0; Mon, 16 Nov 2026 12:35:11 -0500 (EST)
+	id DF4396B05B1; Mon, 16 Nov 2026 12:37:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDCD06B05B1; Mon, 16 Nov 2026 12:35:10 -0500 (EST)
+	id CE3A06B05B2; Mon, 16 Nov 2026 12:37:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B019E6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:35:10 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3897D801A3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:35:10 +0000 (UTC)
-X-FDA: 85441683180.02.625CD7E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E90018000A
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:35:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=nd2uNLnG;
-	spf=pass (imf30.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794850508;
-	b=xmCrdcBv0Jzc57z177StlTxrMfjEmirktAfxvOmFqeL9p1puBiKf6CRPXdj2sIpkDg99zN
-	1IoMOkRs/JHrp/CwF/w6e0Ay++OdswcIn3+DnU9jfhyIm6aSGGqvJ0ily+SgIqhpEx0Gh5
-	cLvtrPLsQiV4SobTr6Sa6PKG3mtADn0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=nd2uNLnG;
-	spf=pass (imf30.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794850508;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ADF16B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 12:37:31 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A68E1C21F9
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:37:31 +0000 (UTC)
+X-FDA: 85441689102.25.E385209
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2CA8EC0006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:37:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hmDKsv1c;
+	spf=pass (imf10.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794850649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=te7C2wbyDwcJurO4QeE1wdh3aR34pYnV9S24yGWzngk=;
-	b=bFZrYdzoVHGlu0cDCgJTxn8TBb055Yc0i7nwABTTBH3uvdIjPPhr5AJi/adSJAJhbpH0tt
-	DIMiypQMPIvpdy9QgOFGG1v349RkgSJW3KmYjvElWUzf2sqPsV6FIu16nHva57nXAloiPh
-	ndg48PMGxOiyXPQPw5U12xNO1IYbSRs=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGGQ69T3730012;
-	Mon, 16 Nov 2026 17:35:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=te7C2wbyDwcJurO4QeE1wdh3aR34pY
-	nV9S24yGWzngk=; b=nd2uNLnGHXV2lgGyE/n+ka0e9q5Bl0NvuqhIB9AK2Aqo/g
-	U+/ljqVSXk8rhEO97gHh/5sl+GSvCjDK0CQ8blJ8y8KvUt/tFXA86Q+zF16ClOyu
-	2tMYWXza0lz2+ePEh6EkGb9dmPOCpUHjttTaof040BlSAp9/NFUv7fcsn/QAh0q9
-	oY2VI+cwCpXs/L7V+GMwwQ3W5b9Y7E2lmmakjGOwQrnqsb3ZpY3T4omZPOrjudA6
-	vjW1owOfIeZaQPXFV06VemBxcgvjQiQE9TnFraMvqxuMqf1gC9sO9kaTxHOmcv91
-	OEH3/LFK6HZptafXpmG6w0pMuG7IR22PD0eUUCdg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxd2kxca1-1144
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 17:35:05 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGC4tuc210487;
-	Mon, 16 Nov 2026 13:47:12 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hyxwt08xb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 13:47:11 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGDkw8n30736644
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Nov 2026 13:46:58 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EDAEB20040;
-	Mon, 16 Nov 2026 13:46:57 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7CD1820043;
-	Mon, 16 Nov 2026 13:46:57 +0000 (GMT)
-Received: from osiris (unknown [9.111.42.169])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Nov 2026 13:46:57 +0000 (GMT)
-Date: Mon, 16 Nov 2026 14:46:56 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 5/5] s390/hmcdrv: Replace page allocator calls with
- k[mz]alloc()
-Message-ID: <20261116134656.125125Fdc-hca@linux.ibm.com>
-References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
- <20261108-s390-char-ready-v1-5-3db507722530@kernel.org>
+	bh=ASqD7yYrxwRTXpvky24aSldHzEJHTNv4OUWKJ01NHN8=;
+	b=Ql2kqxAdEq8SYVS3icD3+Yvj8OzdfFCbdU99X9SECjYzOHL4rH3spFdYBwGd0oR/MpBtsJ
+	jqmHTS/svOKwoKEi2C9vK1IfNJz1HyLvrNj7SNsadKh6WVQHgB24Cn+ZaO0zNRCQKVLgVT
+	ZQa3NxhJhdWzDcfbKYRadsvrEmeiOwA=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hmDKsv1c;
+	spf=pass (imf10.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794850649;
+	b=yCtFNYQ8FijJbnTFSQSD3cb9GvHpAlBBGfGp9g6TZDgt9xlQT1gssc22YxRkqmCqYxf/MJ
+	HcSjZ93SODEex4p3tWmfapKKCML/JFA3u9f//KjuJ8vbUvFwZOodz3pTSD/sEZqHxSzj4E
+	SLgZNMDrpwoUTZ1Htow4W1cPEQSUX2Y=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b70192ebceso151580a12.0
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:37:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794850648; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kMhtFj6akV7HDnJbkbK0vP7CemcGhoO9qsvXWNilo4PaQ5cHrTbGrPU2GrWNgVzWV8
+         Wd17f+Wbk/7LM434gGKdvVXPrDugyeQYo6LEVOMs+OH2Z3JJZB+xACLW2mzNlhNUfAFS
+         qzteYV0L/G9LWlW78TkVwbYHYqLX1xb77FMrgPLYefrHqUQ6gfnwYOBwV/Wz9iU+EzaX
+         Yiwo4KjuJIDVKnQyLEDAlL8zzTGD0ePuU6/WnwWedso9WSJWmoSJST5Hrq3ANoODlPcL
+         8rnkkfTrO/vYHakgcYCBsW4FJcJg6YA8cdk5h9W2KLOVh/D4i3Ea9/h+fYYipj2MKTMq
+         8IhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ASqD7yYrxwRTXpvky24aSldHzEJHTNv4OUWKJ01NHN8=;
+        fh=1zSIPmgbAeTo7EPMokXbYlMncrFJCMCkYSmE56vFopo=;
+        b=k71r3PL473cRu1H70d35PWEkKOCODG0r917RsKEQ6UgB+S7Nd4CnGmoKYbVaP0Ni5w
+         GvzdDNBJxCJnlJWe02RGL77/ZqBopB/Uwep4AOjB2vE4JZy/ndL/YoiWrgrn31UeBfN0
+         d57C0dkYliLIgbdGqnQmormUhVb+r1Ee/KPjzm3/6XfbUi/BiNNId53LbKqfA3LKWtbz
+         6qNq/akH7hvMyEw3KfSzFrp5uzN5eSHoZnaURumzfDYi9Rui4ANrYuFZeVcX2c2Uohx9
+         I6URlvtY1cvsp90Po2N6PUB+icTLGDKFAd96dP6mQcfDzw9XcGrJQRDVkaijA5WNAf4M
+         xY0Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794850648; x=1795455448; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ASqD7yYrxwRTXpvky24aSldHzEJHTNv4OUWKJ01NHN8=;
+        b=hmDKsv1cjekQJOGHm7QZJoqaK4FtLJGugQxnVWwE5mMKeMUEJdh7uIqFc045goBE+y
+         NMMzc5Jpj+WOMRgEgdruqVDF9l+tHDwxAklQqL4h7Mk6SSFPe3+Bd94/aen0WZe19XKK
+         hz/qFstPP521mvf3RpvuKQ+MpiKn5SWkIClRtNCTRlzmsHX4QXOu60VFJaI2I0sU1NvM
+         54zgsQ6eJI2qljTftlIN985Vhkwdq2UhvDVG8sbbYt2gfhY5mdFGaTOPS4ot6GfhQyji
+         XDHEAVdGXy+aAFHLK4Sr0J4mMVpv44FKwbt6VL21ZPXV41nNVPUZXEWyjc6bEt2rWMYk
+         ZFNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794850648; x=1795455448;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ASqD7yYrxwRTXpvky24aSldHzEJHTNv4OUWKJ01NHN8=;
+        b=H93hf+Xy3b7FcYH7y/R408v16Qs0nKc/DWvsZ3CS0E2A4efORWqlCAQha53jyQqcLL
+         7sLOgYa/YlY2dzj/j3guH3S3PWBOGdD/rjrpdCueBX1qxT+pb2sGJEX6JrWTntB1/fRy
+         EbahNTxZrbSpWZItXaw8OTeDnoiNopn8eOM1wHaYAVVfQtbL340Qeb0ZHIXfA8aS773t
+         3b3snX4RaQ/nvEvTFTfrdKXo0836M31646ZPiiX6vMcIQQ9Y5AX7VE92NddeR6RaeTCi
+         4KTVj8ygSEgffORKlUkSeCf2ikD8eTuFCE6jvKIzgwhbVQlMxMmHbPDYwXJXH4j3Cf8N
+         wOVA==
+X-Forwarded-Encrypted: i=1; AL+hErEhnRUC6HPG9p/ykyxITcLYYJfXuBvVyw+LHwCesKiix9LeTkQrlEHLS8+bYv5Vd22sPAqHeIOKrg==@kvack.org
+X-Gm-Message-State: APuU4Z8yRZsdg0BgiqeqLJRipFo7sX8BlNaWLMp5h86IUsM5HI37S0ec
+	N3IxbdZ/3PMp00iBYcr2qo8Z5Jo6ZlZ1AzQ1sShwlwlDouVTHXaJOIx4cYC6vUBEYS6mJi9vIIB
+	oqm3bcqb9cg9t23nmuZo1bDnWu+t2ujI=
+X-Gm-Gg: AYBFou0N0quBe3iN02iO7fEYl0TmB5KjyXDx3BTF0uvgHpWQIsilToEcDN+MG4Qapj0
+	yyy0n+u5KQzNvVNeAkR0QzpYjPPo4yMa2dO3Hikpq/XwGoQjLrCO6yv8FQEjSoz7IKNx5IaAjWv
+	W+zVFmXDyGQ4ZucR0cbI8kubVRBCx2MsXHv6tjxz9ZNNpNF2fS/+syIEt7YS/kFQwKopfEuYjIY
+	d6JkaVELCvJa3jwCqCsqeLPUvhUhHgIA5dr33koV4Y+rDUxTAr0RyWQu2XFX/w09kTCkoREpSVR
+	fS2DJO0LSAoXv6W7XFyn9oEgDu1vL36zQylLaPOl3V7zPn2srkndp7VCGW93RhAQUq7b1tQRolA
+	USLmvGQXz6/1guZxeTTkLnCacx+yBDOMeGl9FjEDY73Iwu2WaPw7ykg/ItG3sGev2YhAa0A==
+X-Received: by 2002:a05:6402:1598:b0:6b5:7250:d621 with SMTP id
+ 4fb4d7f45d1cf-6b859ae1a00mr134291a12.15.1794850647426; Mon, 16 Nov 2026
+ 09:37:27 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261108-s390-char-ready-v1-5-3db507722530@kernel.org>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=B6UsQ+tM c=1 sm=1 tr=0 ts=6afb3ec9 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=QsPt8aXxvDvY35rw5ugA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: 0aZFqTIu-qNzewmkibGc8dEsfnURC-Me
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX2J8YQogyuJHm
- qAvgBWiso6Sw3yV6Dnae9xhPai3cjw614XwCx/PQmHI3kBwFsd7nBMns91+QnIj0Rdohij0UaXK
- nvBA4Rz4zegBqjS4kiJ5ercE6mnYH0Y=
-X-Proofpoint-ORIG-GUID: 0aZFqTIu-qNzewmkibGc8dEsfnURC-Me
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX9uu4plKdGiwv
- gQGiYTAIl7NUOdLSt32KDOXR0BJ3fABFmiyb6hkONgNeoQbfy17tX32q5eoA7MO6RYi6wDWOMEU
- KxJhyj5ymgor0s7FmNiBdUmXabGe6wWDG07BPEMAk3FqVyi7bIW6+eVZqdhgsQ57bI2iAg8D60V
- was10tiFTi7cZuk7pEidQxG39wSqE8P5I77Dvgx5xkVNx+BebF6BLMaynfG8IYz4izjbZ7v9NcS
- fftsfQbDCOJ5o6n1FmExz/Pi+aHeBqTnNh6al9NQKsEaBpKo5uTpOxpge19tB5rhl63E/DY6lyi
- FDplwSIKverwmLx6URJCPLuw0Gjs71QPMqhJNn7l2rSjBHb/CyCMgowmnLKWqTBasoB9NuoASJf
- SFnMZgbikU1eORs4kH24n6zpjt1Q5L+vyzluYdHYVJEw/VsMvL6OGQTJXkpBSDNGT9p1fhkwrKB
- YTU9xM8Zp2onPtA94fw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-16_05,2026-11-16_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 spamscore=0 phishscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160069
-X-Stat-Signature: auxdbkredyjcywrxrh53cu434f4e9a3w
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E90018000A
+References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org> <20261116-work-loop-pseudo-v3-33-8cbbea1cf34f@kernel.org>
+In-Reply-To: <20261116-work-loop-pseudo-v3-33-8cbbea1cf34f@kernel.org>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Mon, 16 Nov 2026 18:37:16 +0100
+X-Gm-Features: AclHuK_sKnxFPAK3k65pZhjyZC94SJD4eZ9z2j_P12s3kyb9TMw6hurQcjyq55Q
+Message-ID: <CAOQ4uxgPerkkG4ie0SyHVXaBD9VZN2wYfQpEAEi4hytn=ara3A@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 33/44] ovl: refuse data-only layers on pseudo filesystems
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, linux-efi@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-usb@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2CA8EC0006
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Stat-Signature: j7gomy53sfur56frmnx7z9rzg4jbszns
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794850507-475685
-X-HE-Meta: U2FsdGVkX1/2yG8TnsY2O+lABe4lwVuvN6+urXlKwGqp5Z2KoJB3VAIPV5Vdp/JtJBKIVsbeuMZ6cyc/OOQ2ywW0mIEpmGwx/mAZMHhXXjgM1zY0L74Wm+EA4QJb8jAyjr/vxfQsCSFMA5GTiPnjFpiwf2dcTL9jQgXH0GrrV+hpHRInLIxhRBWCx6O8X+TP8ExoNqk+r9kux49zNjGDWoX7cB4NT9CQWEj911BQqsDNWbOJ7+1zwpkF2/ywnOQ31cD0JfOjlfE15LQOkKACw3LTsKK0Vb0VU0nBHbwsSC48944oDMs/tC0DH/CgVnHjEcXMnX3ivdYqzqevbKKH3gVWTMMV4/157m7dOkNpW3Av9uWsboDOqbwU6pi/emN5CNIWiLeWeFA+0Ypo2dEqtKmavxIC0ybZLVFiPrNjBanVI8sMcDT3jeSN69aVjrhnKY3/ZQBpyfkdMhvlQgYhrqUJdPZs9gHup7TShAmSmHyBnw6t4FfznXkG8WNZ/bveOf+Yz5rJwVnARsa0iJdeCvygD92tnhQE7D9ah7NplG41k8vjPfqZMzTA8r0xcXsj5MKww6ELRQIOVft0ss/cE1MABap7WhzFQhpuO9WI60us2CGhI/YqAFbjmm1lCtgXCP80FhQiMRL4jE+ymNCRTAXxhRJfY1k2Q62dDQu/XXYkyx2ojOe+yYKCtiYjmQ6KKC6rYx0HyEtoIQqSPc/JXhm2NLA+L5rIXEVo02ikMncv45ov9LIIU75caXSkQu75NdI/G/yO48LuY+tZL8eyxPPo/J/RJmUpqrJeU10DczpRmvHh+RvUu4GDzOHi0159rPWyOY0fBWaDLXBoiUIgs+Jj00fCJN1AKdnKS7+xDBWoxi3fK3zN08auK/79yVvREOnn44i+dvsSz4xSBAXF9+Cs/tMZ9khkKFZKBwKz4gIB7g3SqY9OEiKqjWwBPRU1sQIBwAKehFNYqU4ax39
- 6Ay4f4MT
- Xq41CIToC6QEhqlKz0gHGFFC3jx8pGrItgIjEj7KW2iF02liybVWLPPkUSBDdw9Y84D7hQTkQ++fNYEELhH4xxvE1EXMNQX9Ko37AMEy2FfL5f9GFTcze5bqwWtf69gXIpaG/+Ijf5Z4rWIPuxsxoRRpmZSdWqeiogj/c47FCSdNhpxMthSK0ITghDm4gB5rpmjD8TIaE46pglidt9yO9k+GEUCEEZMn8HNhkpxVpHhcSOCnNeeG/uVsjcH+GOYCTHfu/DNHQRQMbJl6mQR0XlMOPfQ==
+X-HE-Tag: 1794850649-437759
+X-HE-Meta: U2FsdGVkX19KqN0ZfCOd7rZ0ZlKLxW5oa3TUXA763UH9ggtlMY6km45NWTUlJ1UhjCX2mmM227LX2IXH5XWhRnHXNPuyJiEqNTXjGamU74huBUAVETwO7sITuzQ2XB2EJjAg4X8o3xEmFdCpxScJnLOMyDBwStIDO7rugwgbVAo+w+YiX6ydR4Y2lTvOii4bu+vD3TViT96aFvDxhJWHAsrGm6+CFBC9Lc/cylUkC/nroNKDi51USjL4YhMHRt+qCxhdAO0RGPv6xldv17x4JIm15Ad4nJZfm1T0WMPj4ZEzV7REjnbIzKMXWmF6c5zHMcsQzcnYuoSA5Z3FPb6cX1TtuNkL2oPExgWURGvCig0jnAeP4t7un3Hh3tj5Ei5xjlmz7mPIGb5D9VbJ0eF7AoNPd6HNesyh3RjX/SvjDPw8q6UBIhB+ClSguINkPiNEIaVrsb/S2x3dv90ChrmJVmrrMDq0pZjo3zyZyN65ky8SCAwpkFHUD6uo3Lt2MrDWk7Eg3DGPT85yQdcEWpE4KXa+1ZPgj8vA1wn1uQLcTIn2k1PyfztogAPmELZF/2QkXkDkzZOiuapI35ibj0UUx0arD/Fn9/fVpN9h8DcN3nLAS18kZgKSEUlRD54B3zlBfq0CIwvAI5CQlBP+1TZVbsLF2wlnwdWf/qRl29DPgMAHmicWlRzlhuqUy4ALVth99twM+iaSiEPwaO9d1czOgI8Vs4sTnd0n+obTe74mP9hOAR8HCyQW2RL5pJJAU8YT7wn+bOEOktAoJJ+6YRwWt9VIBHqos+Jfc0smD9GhcbPiotqUfPTVnzX+TP2aLC3rGgGv2P6aRewUCf21EBijp0yAP2LjPRacU9ntu43zmBQ7JG9O6TEMmpL4wuv9bYsMIAkJ2VuKUk4yrNX9tcBRTAzhFqmb3crP23R0Ev3vKU9d8YF0R+qzPewfGGAudI4tNfVaWkT0YvhXykziAUO
+ FNRfu6/4
+ MhcR0gmspAy8EhB5l05hSpw8X1aLwqMtKB5tvbLtR1pMgCRuB/vZ8MrPo5Bza+D/PVF+9gGnfnIkDWYEOCqnacxlqgX4ifTkry9bZLKmgqt2DVJiZb7DSz3egpV41tVtQCR/RoqABv721DHAUj0Axy3BF8WXLDh+waVw8owifluNVhXWRP3q7LaVJ0gQ3jlKLPb4dCIdjad8NL5qTOFS4zXATidM1mH8JfwOlx0ULhZrcQWZ7ewrkZ1fYmeo1+BXV7G1TS4lduTKsVl2N+8WtHBZyMGebqgMn3lcCw10al6HzKgtnPnugNZJaO4h4K/3gmhMCEOGHOJh6WJjSy5hOwCLQVVp7AKsxaDDHs8lfyt0kcpxkCBQp/Wh34zyi5hGmLEpqMKONtOBgdV52p8BtU9S5fzPUu2f6c5yuYqPlm2yWIoOLgVhe0pl5OMruhRHAHQvW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,88 +155,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 10:49:02AM +0200, Mike Rapoport (Microsoft) wrote:
-> diag_ftp_cmd() allocates the DIAGNOSE 0x2C4 parameter list used for HMC
-> file transfers under z/VM, hmcdrv_ftp_probe() and hmcdrv_ftp_cmd()
-> allocate the data buffers used for the transfers and
-> hmcdrv_cache_startup() allocates the buffer that caches the contents of
-> the last file read from the HMC drive.
-> 
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
-> 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
-> 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of get_zeroed_page() and __get_free_pages() with kzalloc()
-> and kmalloc() and free_page[s]() with kfree().
-> 
-> Round transfer and cache buffers up to a page for the required 4K
-> alignment, without rounding to a power-of-two number of pages. Reject
-> unsupported sizes before rounding.
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Mon, Nov 16, 2026 at 12:10=E2=80=AFPM Christian Brauner <brauner@kernel.=
+org> wrote:
+>
+> The data of a metacopy file can live in a data-only layer. overlayfs
+> doesn't look that data up when it looks up the file. It only remembers
+> the absolute redirect and looks up the data lazily the first time
+> someone needs it. So until then nothing can tell which filesystem holds
+> the data of such a file.
+>
+> But a data-only layer has no business being a pseudo filesystem in the
+> first place. All it does is hold the data of metacopy files and the
+> regular files of a pseudo filesystem are kernel interfaces, not storage.
+> So let's refuse data-only layers on superblocks with SB_I_PSEUDO at
+> mount time.
+>
+> Data-only layers can be added via the "::" separator in "lowerdir=3D" and
+> via "datadir+" by path or by file descriptor. All of them end up at the
+> end of ctx->lower. So a single check in ovl_get_lowerstack() covers all
+> of them.
+>
+> Note that regular lower layers on pseudo filesystems are left alone.
+> Stacking overlayfs on top of sysfs keeps working.
+>
+> Suggested-by: Amir Goldstein <amir73il@gmail.com>
+> Link: https://lore.kernel.org/all/CAOQ4uxhGxpBtMZ5kfuzR1tQAewiecoX7UjXQRo=
+91QjJHH9T_Yw@mail.gmail.com
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 > ---
->  drivers/s390/char/diag_ftp.c     |  5 +++--
->  drivers/s390/char/hmcdrv_cache.c | 18 +++++++++---------
->  drivers/s390/char/hmcdrv_ftp.c   | 14 +++++++-------
->  3 files changed, 19 insertions(+), 18 deletions(-)
-
-...
-
->  int hmcdrv_cache_startup(size_t cachesize)
->  {
-> +	if (cachesize > KMALLOC_MAX_SIZE)
-> +		return -ENOMEM;
-
-What is the reason for this check? I can see that this seems to be a
-common pattern, however the buddy allocator would warn as well for
-allocations larger than MAX_PAGE_ORDER if I'm not mistaken.
-
+>  fs/overlayfs/super.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+> index 39d4d57dec230..719c2569dfeaf 100644
+> --- a/fs/overlayfs/super.c
+> +++ b/fs/overlayfs/super.c
+> @@ -1237,6 +1237,14 @@ static struct ovl_entry *ovl_get_lowerstack(struct=
+ super_block *sb,
+>         for (i =3D 0; i < ctx->nr; i++) {
+>                 l =3D &ctx->lower[i];
+>
+> +               /* Pseudo filesystems don't hold data for metacopy files.=
+ */
+> +               if (i >=3D ctx->nr - ctx->nr_data &&
+> +                   (l->path.dentry->d_sb->s_iflags & SB_I_PSEUDO)) {
+> +                       pr_err("filesystem on %s not supported as data-on=
+ly layer\n",
+> +                              l->name);
+> +                       return ERR_PTR(-EINVAL);
+> +               }
 > +
->  	if (cachesize > 0) { /* perform caching ? */
-> -		hmcdrv_cache_order = get_order(cachesize);
-> +		/* the buffer must be 4k aligned, hence round up to page size */
->  		hmcdrv_cache_file.content =
-> -			(void *) __get_free_pages(GFP_KERNEL | GFP_DMA,
-> -						  hmcdrv_cache_order);
-> +			kmalloc(round_up(cachesize, PAGE_SIZE),
-> +				GFP_KERNEL | GFP_DMA);
 
-...and that check wasn't here before.
+How about we make this just a tad more restrictive:
 
-> diff --git a/drivers/s390/char/hmcdrv_ftp.c b/drivers/s390/char/hmcdrv_ftp.c
-> index 3312b2ac00a9d..e22789b532de2 100644
-> --- a/drivers/s390/char/hmcdrv_ftp.c
-> +++ b/drivers/s390/char/hmcdrv_ftp.c
-> @@ -238,16 +238,16 @@ EXPORT_SYMBOL(hmcdrv_ftp_probe);
->  ssize_t hmcdrv_ftp_cmd(char __kernel *cmd, loff_t offset,
->  		       char __user *buf, size_t len)
->  {
-> -	int order;
-> -
->  	struct hmcdrv_ftp_cmdspec ftp = {.len = len, .ofs = offset};
->  	ssize_t retlen = hmcdrv_ftp_parse(cmd, &ftp);
->  
->  	if (retlen)
->  		return retlen;
->  
-> -	order = get_order(ftp.len);
-> -	ftp.buf = (void *) __get_free_pages(GFP_KERNEL | GFP_DMA, order);
-> +	if (!ftp.len || ftp.len > KMALLOC_MAX_SIZE)
-> +		return -ENOMEM;
+                /* Pseudo filesystems don't belong in composefs setup */
+                if (ctx->nr_data &&
+                    (l->path.dentry->d_sb->s_iflags & SB_I_PSEUDO)) {
+                        pr_err("filesystem on %s not supported along
+with data-only layers\n",
+                               l->name);
+                        return ERR_PTR(-EINVAL);
+                }
 
-Same here, and as far as I can tell the Sashiko finding seems to be
-valid as well, even though it looks to me as if this worked only by
-accident. Also, as far as I can see, the reported "delete" command is
-currently not used at all from the only existing user space
-application that I'm aware of. But let's not change this, please.
+I could send this as followup patch, but since this version is simpler
+there is no real reason to have the intermediate "only ban datadir" step.
+
+Only the commit message needs a little more flexing to justify this.
+
+Thanks,
+Amir.
 
