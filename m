@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9403606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E09606A884
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ndmzvTxe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VaZ6rFBA
 Received: by kanga.kvack.org (Postfix)
-	id EFE2A6B05C9; Mon, 16 Nov 2026 04:51:13 -0500 (EST)
+	id C65F56B05CB; Mon, 16 Nov 2026 04:51:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED5C36B05CA; Mon, 16 Nov 2026 04:51:13 -0500 (EST)
+	id C3E0F6B05CC; Mon, 16 Nov 2026 04:51:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E13366B05CB; Mon, 16 Nov 2026 04:51:13 -0500 (EST)
+	id B54716B05CD; Mon, 16 Nov 2026 04:51:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B2A7E6B05C9
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:51:13 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 114401608B2
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:51:13 +0000 (UTC)
-X-FDA: 85440514026.04.B4C0ECB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 944E96B05CB
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:51:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 248651A076D
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:51:18 +0000 (UTC)
+X-FDA: 85440514236.09.3060034
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 39E781C0004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:51:11 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ndmzvTxe;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5A98D40006
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:51:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaZ6rFBA;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794822671;
+	s=arc-20220608; t=1794822676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L1lZ5wfKib47+5cbYuK6ksYT98WTq4lYB0XvmtFMUsk=;
-	b=d8d//EJu1+X0Vyj3AU2hGPW5szhoUunMEt2n3KU96DPMTMCHtJTQT8/i6Mh3PBrHoFmxMZ
-	N3RaWOe/6VGTCS+Z/6dY84vyzwj7FGIkKu7WK/DSG6g9Df0yWGzX0lEF/WkYMsnpelU78G
-	l7YMwrQqghGzOv1i4syhhTJ64o2gpfg=
+	bh=EzogT95rPEGnXO3ATl8QCqS0Fa+QqsMtxOYoDzHb5QM=;
+	b=y2LdAnGfWiSPhdUk7qk9mgrF2F5sQEaPnY1k6bz2EIpvFyeEDj0xnua5CjMhjmgMsq6KaD
+	nuJR8AdVaKnbLrwlmn/hHS5GX0LpZCn9PhhrO95AU2KoF/cXfJKhIbMs9Y5jKEmG15LhDU
+	XPGkPtaEtil9Fe/MxO9urEcd/ThoDHs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794822671;
-	b=iLaGMhRsAaYxb3Fk3vM0R4tENP8RJiqRcWOyTbYKKk9UCydpkYIWa+Ue9p0AYjlZjN0CvT
-	BOduWOjAfqjH2ct2/LtNfBJizLLjqneybH8skwnuP14WYWpvfJpvW3DaBMija3LeZJ1zMz
-	5oNV2xemckJ6PDui19e0ty3hduOVyrw=
+	t=1794822676;
+	b=BEhZEAS7RtaWDtMs+Wovo5JiGn00BsoeARNXfd+8jt3fjoLQNmfH83G/UdBh3PSiYTOO35
+	BT/3fmivuTuv9JBfTOmMxoJkKzo9tNEbAFVkLneNWudmFnUOgiUjoXyAxyFAPWKFfmzT3i
+	War56G8oeFNv7NYODfDWfoJow7N7SU8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ndmzvTxe;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaZ6rFBA;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 973B344F03;
+	by sea.source.kernel.org (Postfix) with ESMTP id AC3AC41197;
+	Mon, 16 Nov 2026 09:51:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014C81F000C6;
 	Mon, 16 Nov 2026 09:51:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3FB1F000CE;
-	Mon, 16 Nov 2026 09:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794822670;
-	bh=L1lZ5wfKib47+5cbYuK6ksYT98WTq4lYB0XvmtFMUsk=;
+	s=k20260515; t=1794822675;
+	bh=EzogT95rPEGnXO3ATl8QCqS0Fa+QqsMtxOYoDzHb5QM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ndmzvTxeL7W9/Jdvz6YxY8P8py51Wjc6qNExCmjwvS+9JImEf9epaC85hzjy9eYR9
-	 uVUDbSmgWHfI5S2ZpnyUY95j+V+6dUc4x/eYgmcYHu6230ISr7IQbxB7A14/qh1SKI
-	 z/tb+w3N095FxQ0FXm2/FU4pUUqM9RlWmH+HUlWsxVqgM3WeZNtSwQQrNUl/6m6qRh
-	 pcxjjekvdoG0jkzcO1CZNWORgA41hbfuqMidkny80LdqROFR2yYY9l3tEwpYUDW1B3
-	 90dJoUAo/iHmuVyrQsl3XF0DD0Bz1kpLrlqVa624COZ5W1omJ7iv9DbKGwbhBw+vM0
-	 xBZY/TU+9NFfg==
+	b=VaZ6rFBAYjR/HM5+OlC/kYBh9eokBcyBlJyjLDEGD3pr/1owKWYUkIFonZyVuLy45
+	 aXIGPPwoZFzAFIrDJPr3o4d1FYCF6gEzK4gRGZMRojP6nXuxOYWP66LFhY7XK4EIId
+	 0F9FdRrfySm5SdHKaihGgGUwCpa5ozWOd3R+kAWEW0AOMp5LPHNYZv/BWBQ180WmCq
+	 SGYcL6yKiAUlp1bl5aKgR19AOXfXXbOhxIdLs6gAifxrWtNtvWUXEAaCGYUZCiGaa7
+	 +ReHVuM/M8xxPRelVNj4Hcpgf82OBXtXi/ghPvFAodx9BDyUzwtyIaiRzYrfov1A8G
+	 2aAwCB6uJL+Jw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 16 Nov 2026 10:28:31 +0100
-Subject: [PATCH 2/3] exfat: keep the volume marked dirty after a shutdown
+Date: Mon, 16 Nov 2026 10:28:32 +0100
+Subject: [PATCH 3/3] jfs: refuse inodes with a negative size
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-work-fs-sb_rdonly-fixes-v1-2-95a25ce917ad@kernel.org>
+Message-Id: <20261116-work-fs-sb_rdonly-fixes-v1-3-95a25ce917ad@kernel.org>
 References: <20261116-work-fs-sb_rdonly-fixes-v1-0-95a25ce917ad@kernel.org>
 In-Reply-To: <20261116-work-fs-sb_rdonly-fixes-v1-0-95a25ce917ad@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -81,26 +81,26 @@ Cc: Jan Kara <jack@suse.com>, ecryptfs@vger.kernel.org,
  linux-xfs@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1218; i=brauner@kernel.org;
- h=from:subject:message-id; bh=IuQsw0bjMfs69fKlB5zik2hJtUUfvF+Vp2c63qEi16c=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9uvhPuTT10dTm9V9DF81rmlGTNHO/a0zqhAtKP+fGb
- i+6d0DjQUcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEUm4zMvwL2pdfVbTdiSvs
- MMdFJu780kSe1jUN1zMVOM8IHBO6uoHhf+KNiUcqlSdfkfxX1DlX5Cf711LOF4I9HiELIqeWdgu
- WsgEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1127; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=onsWAswaduk9DxHd2totA7LRgkoacrrwUPGlfjERZww=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9uvg/zPh7v4jJl9XJS1adTMmvc90Wskhx45urIQq/v
+ +i4RRtkd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzExJjhf0I6X6NS5kOr9nci
+ S1rdsg7WHb7PbXFnnvjvWZ/2HONbz87I0MOYE+3LnyrOK2+kdcN71Zd5ak/MHTqmCyzTLfcoFP/
+ EDgA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 39E781C0004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: nmbpzz4w4mg7dwxp8sxw7t98tah7dowu
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 8hcdbpbjn4d9cq9111mkqrfjyphw1yg9
+X-Rspamd-Queue-Id: 5A98D40006
 X-Rspam-User: 
-X-HE-Tag: 1794822671-317072
-X-HE-Meta: U2FsdGVkX182oK9tmRmHtQ76nnO3AjKzWIqiIZDDbvv7zrIxx1wpjkHxhdmFbbeQm90779zTGFYaQ4oZWL69BJPKx/87+mnTaWeUbsjL88DdOscskm7xR0ls69K6NgWKNM1LixnCD/EPJzR1ko5PcSxI0S0lceGPw7jrkak5l9m7wemNcL4qmbd+KBuz2H1854THJeQH7Fds20qugHg71+/Dpyg7TPsgk6cpvtQNGqnujROqmSvqevWRtuRh+tOpwP0RcNpsoq2x+sDQMBLYYHDaqSfsA9aYyfvbmTfFXWvBsGjyodazeNC+qG6wC6Npz9iQfwckj/LZgNUfTCeP7gofDS06Mx0iz9hWwd53ewvDMbwknWPd77/rFygkhYYQsmTMdpJTUxljzt+wd9fdVq4EnrkGmYzwMVeU7cl0YzLAp+3dSwVrT/puhK0kpEUp0meZ1gEvYcACPTq0ST1dGPQ9Fe1a94nzNNKRwpBk+/IsvdPstdzQ9SHfIIBlgo+BPZw1TxuhINInyqtzRh85kxaY55rQN3BlW9tAGr20OoB0GbBJlALSnITItpxi+kTpYYiSjy51GRirFZmDq5+tY9Vrl0YbjKuK7m62vC4SVoquNt4cwCqF1F+IC4uSQXtizJzv4dHPVf13UllhSnsshVaG0AYR7urvtoyRR9Jxg5KsB42rde+lCf7jrb5EEQOjERIJTIEnrDTMBNmTbwKkhm2pxjo7LahfGHf1YSX5QwedEvAUzBXLHpwYU6mx+omHu6l7MK59GIKc6DLvLiPwz/ScAHOsTNvemC4sZqaVslO4WJ+O82FIHFYmIIH5gHFQu6EG6tpxj+OZYK2a/R30rhSn3wtqcnlIlcEudW5udYHhKFe3ZxfhKFE9ziBJLe3ybmaygJ4T4ny3LNUfjleIWWT+uiCDdKNOzeit/vxKIOk+aXSR1EkqrY4S9xXXGVmkk+uIw9Og2hwNfZ7422f
- BSXbWcn6
- sec7lnBrMOOBoXfa0zH/Yvs0D9n9EX62xlLWVvqmmF3d8vJtZsKYIBDCc/nz6+UbyFp/n04GNeF+/FhobNOoxuAHhNrrCQSWs9WgX8WGVucQfNmjvUZdAn41/GDFFlJO9P/sejhgoCTyyGUWRe0rs5hyIc6FWvvwp5aDI7rDhjKBYIcKExluIeHHcDEIvvbMLSh+HblIVXAGnBzj8wrvAHaSLFOlTPumURewDHktI1eMQH0DVQwx7w8eW5o0UBR5LlUWXlVJNxuFZWy72bJqfPyLU4VqAHywhW6z3
+X-HE-Tag: 1794822676-68243
+X-HE-Meta: U2FsdGVkX18sPU5idPe/q7e5nsFgRlxGfW5OOvUO0Nrf+kWSS3hiu/WClVli1Z4nhT0GhrLZk5lHtj0lXwke9SSxbCvt6LquaId1ze80qjlgfymQIjzsy2vni3TX8xWJaHb3ml57hHlw0bSlQ2SKq5obQFcGnKVdszhXP/yL670b9kU951iM29inNx62uFYkE8U6KdO7YRc4vOMNYnZ0LFsyfoUg5z89JNqejPRKUCil0lsQKVPlWoN0csqubhXtETeu3VKXGNR1SNDCgDIxz7vPq78j5ImHFyMYp6p9xYI3L436vqneC94IxB04HyLxsuYD68jNwULMipd9k1qSgTlI1xf0u7K0Cdi41Vb6m2RhtsfIGVHKI3WHGoP2mvl4YUg4OI++xoED4jK8niYAYZ3f2HL2u+IqlVvhIbGP8ALbvALDt8vtqd4xDnZpbJIpaA/mXXCk77fevufcvoQv//paT1QMfk+FXTqaVYS//dCsSoUElTj/P6oMizrVl99VwK5pci0Vva2EZ3YV2PSToavswhogvepTOu+IJaDwkZUcvM4KCStYyd42IijB7hm+7e4+WG9PnELbg51rZJFO7sZdjQ78QHNmgxFtf5ex/8/AIK+KXHIC1ViGE+aSpYZZ2KBp0OPKN65AnC8G3mnn/eOIyfLLN25F+pTiKYlBbEgIjIhrUAGljusltgOyamlRwJ5glH/zvqBNMtELibpM7oDAkegobGnaIczGm3zAH9Jv8d+O10HQYl4tlGrKZh0X82njLGuGC5S9gWk9njMTQ+7Y48IclRAvg08oiLlzCxUpwcwHpMvCeuub7/qvw0kRxjyG+8AwDD9A5KbbRGw3LgdqkkACG8pItDhxniPV3kVCzd6EBkH7it4gDoQqDgDxbAWwlCRa7ebrjm6Rt1Xfu//e4YhvPD+SY4MWLc3rISzqqCSjps//snB7YyKkhe+Pn7ERvatGZv0pk7csY1Y
+ HyTHVRZQ
+ 74wzKmUvWYv/wg62BaRgfblx3EwZZeUW8ChxMKnDK0epkm22+AOhu89+ZLBRY3WPQ2JSabAEkdXXBxvMcu+SQNSX2/kEzMirm1jy7DW9Ea6YGegQFndYgZ8owe9WvBaqxT49uRIc5Eup9XixKCVmfeQ8aDlP7DS7bOVojfynPdO1ovJ5+pSu4nh1K9RXGjM9D9Bk1gOS3oaE29uhX6O0b4jtlIwpqHhC0A8slcFupGgur2q3y5Ysj6OisO+EHHAUQqd99HouvtDPEbqymKbCwkoP9j2mn3QX9jUxA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,36 +109,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-After a shutdown exfat_write_inode() and exfat_writepages() drop
-whatever is still dirty. But exfat_put_super() and a remount to
-read-only still clear VOLUME_DIRTY through exfat_set_vol_flags() which
-only leaves the boot sector alone on a read-only superblock. So after a
-shutdown with EXFAT_GOING_DOWN_NOSYNC the volume ends up marked clean
-although it may be inconsistent. Leave the boot sector alone after a
-shutdown too.
+copy_from_dinode() takes di_size as is and a crafted image can store a
+size that is negative as a loff_t. For a symlink that passes the signed
+i_size >= IDATASIZE test in jfs_iget(), so it's treated as a fast
+symlink and i_link[i_size] = '\0' writes out of bounds. Refuse a
+negative size when reading the inode like a corrupt dtroot.
 
-Fixes: f761fcdd289d ("exfat: Implement sops->shutdown and ioctl")
+Fixes: d69e83d99cf8 ("jfs: ensure symlinks are NUL-terminated")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/exfat/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_imap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/exfat/super.c b/fs/exfat/super.c
-index 4943cef977418..eef7c159d32f4 100644
---- a/fs/exfat/super.c
-+++ b/fs/exfat/super.c
-@@ -98,8 +98,9 @@ static int exfat_set_vol_flags(struct super_block *sb, unsigned short new_flags)
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index b84ba4d7dfb44..f88e228d12620 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -3079,6 +3079,10 @@ static int copy_from_dinode(struct dinode * dip, struct inode *ip)
+ 	}
  
- 	/* skip updating volume dirty flag,
- 	 * if this volume has been mounted with read-only
-+	 * or was shut down (it stays dirty then)
- 	 */
--	if (sb_rdonly(sb))
-+	if (sb_rdonly(sb) || exfat_forced_shutdown(sb))
- 		return 0;
- 
- 	p_boot->vol_flags = cpu_to_le16(new_flags);
+ 	ip->i_size = le64_to_cpu(dip->di_size);
++	if (ip->i_size < 0) {
++		jfs_error(ip->i_sb, "Negative inode size\n");
++		return -EIO;
++	}
+ 	inode_set_atime(ip, le32_to_cpu(dip->di_atime.tv_sec),
+ 			le32_to_cpu(dip->di_atime.tv_nsec));
+ 	inode_set_mtime(ip, le32_to_cpu(dip->di_mtime.tv_sec),
 
 -- 
 2.53.0
