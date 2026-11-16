@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DF560A263B
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10833606A891
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jk/FjUy0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C7+P4qkl
 Received: by kanga.kvack.org (Postfix)
-	id 9B8256B05E0; Mon, 16 Nov 2026 06:07:08 -0500 (EST)
+	id 17B3A6B05E2; Mon, 16 Nov 2026 06:07:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 940FD6B05E1; Mon, 16 Nov 2026 06:07:08 -0500 (EST)
+	id 1528B6B05E3; Mon, 16 Nov 2026 06:07:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8585C6B05E2; Mon, 16 Nov 2026 06:07:08 -0500 (EST)
+	id 08F846B05E4; Mon, 16 Nov 2026 06:07:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 620B86B05E0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:07:08 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECEFF1A090D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:07:07 +0000 (UTC)
-X-FDA: 85440705294.25.986797C
+	by kanga.kvack.org (Postfix) with ESMTP id D8DA06B05E2
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:07:15 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 74AFC1A0904
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:07:15 +0000 (UTC)
+X-FDA: 85440705630.19.FD1B165
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 298B940007
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:07:06 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jk/FjUy0";
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 83242140008
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:07:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C7+P4qkl;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827226;
+	s=arc-20220608; t=1794827233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZjUZ/LbyySofwJKchunYgmcW+hv6mWM9r+0t30zrAC4=;
-	b=dUuNJPFXlf14ManBqF1JJoPz49KgiTp/u8JzMk9awmfCLZvVeaMMhmZhS0tsZ98B2tRBGr
-	69LkSdSZbIaEzjiJmMCy4V2vtpYEhGMsRc636ioAATJXXfab5JEAdSEVbxGvXUqdVQoB1d
-	VsTlCya5YDtazB2exhA1Q4dT2OPwDNI=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jk/FjUy0";
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=jRCDiiiipC02o6v9Jxb1vAxzrNeQQVIjxwNCfj8X/R4=;
+	b=P95VcQVOa5mzpvIO2/qesu9mOrxe5sEpy8BHW9wjeIcfpeOSWg29LbOYru6oxEfJQw7nN0
+	UuT4Ly7t58XF0NRSMMe/wZ4SizYzMh7fAw18r1xF40zFG6MYyRyY9D1o7sjy1Ee2q+cC5E
+	QsRmEnKIKj6M/OUXdVqLpU+/O/F320Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827226;
-	b=iBtoecBTFNtmAk0qGRDurKstiAu3Co29GxuWVjHLCBYV+ZV+dWHUR76qoev8cbE2LKfvrK
-	AaExJsRpT62GvO4tV3EGMEDmVX6nm90KPTOKUUtFUzbT+eeVha+g+U707jJHUfq+ryIoLR
-	e5hGPJk+b2rHBNeCFU+a3ctHkT5knco=
+	t=1794827233;
+	b=N9B6eRNb9XS/cQL3rJYgSK3D3oIzU9GVPh+SaOUc9e4ky+hR0qyvbKLxjX+8Jxjjqwjf9C
+	o8zMM+TIL3roZe3Y/vIExIE/dIjb5aHx0waFrQxEZW4Z4ZEgOOKNr1uflvid5VDJKB4t4W
+	2/JtS58wbzexN9woCwiXX6kODDEJ52Q=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C7+P4qkl;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 780A64398A;
+	by sea.source.kernel.org (Postfix) with ESMTP id D61FD462CF;
+	Mon, 16 Nov 2026 11:07:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29B01F000C6;
 	Mon, 16 Nov 2026 11:07:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EBE1F000CC;
-	Mon, 16 Nov 2026 11:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794827225;
-	bh=ZjUZ/LbyySofwJKchunYgmcW+hv6mWM9r+0t30zrAC4=;
+	s=k20260515; t=1794827232;
+	bh=jRCDiiiipC02o6v9Jxb1vAxzrNeQQVIjxwNCfj8X/R4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=jk/FjUy0cS6GgqVt9SsPloY8k3i4CqrkgFOMuEfM9XpfG/P/xdaYstLnK6As2uWUx
-	 DEasrHPORlAiJurUDvkuRuudCdX4+089Oc2tRistqib9WEwQ5lBrReoBhl8MhZJbHr
-	 l6aBHu8foX0BKN0F6xwxKuR1wHN/HENZS+AdFP226DO8djRCuCN7EcShhykNWGeUfv
-	 2qReXmfM4j5HwLrmWLj8INf6brOXbWCkQPlzkcCvyFZ79G4NtpxPZuc+Bt5iZoOrkI
-	 QVXW8/XVnBthjiWRTNhaVer+CxRfjJN9ob0t6JGwEOzJgRSBms1wlYdaktJYkpCcpN
-	 a/EAYoQOnhFDQ==
+	b=C7+P4qklM2cUtF+D6jKlp4LfRoTf/rU+rRx75wWnpOAGzkO6UhrgQhaB00OBirsz8
+	 MACnRyQXR/eVZcJt26EgPAg08QL9RP3fqjgBujz8JgGTsdAq6s9jMDLu5UM1Mt75r+
+	 rU31WaAbrxRj4Q6ApcXpA6RdFQWcxEa3jvCp1wjijmBnSknbaFrMtAulRG9Ru5GQZF
+	 zR8Eq93DBcHOnp3DGufxmLYRE35gtF+ApgQEwhLP7zupv0zg/x25pZIqY3aeu/K+PA
+	 FAWFK2afKgUVLhRHvl9IPfvP5yS5WVqmWxxUWW4EL7jJPW1i1AwQf4WL12FyR6NIWv
+	 BlkzcsPlba1iA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 16 Nov 2026 12:04:41 +0100
-Subject: [PATCH RFC v3 08/44] mqueue: use fc_init_pseudo()
+Date: Mon, 16 Nov 2026 12:04:42 +0100
+Subject: [PATCH RFC v3 09/44] bpf: use fc_init_pseudo() for bpffs
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-work-loop-pseudo-v3-8-8cbbea1cf34f@kernel.org>
+Message-Id: <20261116-work-loop-pseudo-v3-9-8cbbea1cf34f@kernel.org>
 References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
 In-Reply-To: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -91,26 +91,26 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
  Alexander Mikhalitsyn <alex@amutable.com>, 
  Chris Down <chris@chrisdown.name>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1349; i=brauner@kernel.org;
- h=from:subject:message-id; bh=eUpb/5VRc6uGUB6tbJ3+67OknD2n3CMn6o+Ub0d1Knw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9epzhGiew20J0pdn/rc+br7ncYiy+qrz264M7t5VXX
- HtelL34bkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBESi0YGV5Vvm5S2zypdNU1
- 0asTlm32TIpeYct0smnHH95QyWeSPuEM/x1bNttw/OG9Ib/orjXbnP81Nr9VO1SydlbPvJgivPC
- LNT8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1354; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=3qR9ut2IuMeJZP39d8v3qoh7r3hSncJsbQL0FQDP6f8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9epypt//Aqrfefw+skXjp+v5VSGefzSdhLhmdSaf2p
+ RREVxys7ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI23qGf6qa+8+wTP/FfLRk
+ 17ow1WvfmN8+j+TVqpx9LrukSWfVm2eMDO8aK5/8V8pb+3RdTPOv41Fr5txetXRVRqfdE7V537M
+ nGbAAAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 8wc8njjcznkbe7c98ooiqnz75jffj58a
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 83242140008
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 298B940007
-X-HE-Tag: 1794827226-829218
-X-HE-Meta: U2FsdGVkX1/q4kgVY66R5F3+xx2VBNBzc4wkOJ0cJE6sYWq7fSOxFnTUAsD17zrAE/26yQW6iEMaRAJ4eInAkGkd0XNTBBB7GGcqPo7u+qVvIAyBOvm1eUxAO662v/aRPvpmUeI1KAltDfrx2SpKfXjk7FG7+H2nfB7SGJKQZ1Is3hwtNka2RzLHIAfpCAOrUh1/CN25EZdzq2KRsCeR8brmJv3cBiDsnOiaksu8BY8y7qcs4Z50H+GDJRCeMjC+xFbth7Mp0XkQtsCuO6K1QQBIChUUv5ULo7yQKHDft4kKKMOVvBMm5hEkgb1cXHj9ZRDPTlSphh/Ck8k0xNk2/wD6R2UlGkdkTVqQefTdGJN/iEXCX1+Au2dV3+j6AlIo6Q4HVgE1LCLVaIiWgO18M944rwGwdT+sOR2eVCcT7aDk9yNF3BESZbm7rWAaut4olqMlqioJrOl53YjAOjOwhkTZnxkV0PtmkkBUv7SRuxbN9WcuN+JBBzi3992u2pqO5vO5LBBnfYdJdGIxCk8X9u30FmL2aXnJ8SLdCU1SHn+QJlBUJGQk/mHN4ViNG+p/F4FZ5YQJcq4taJG183gpBaKGUiiI7k2G3o5pn1Nxm1OzZiIxsrXDq45SRZVZ2v45NSBa7pjS55kGe1vqfwkOhrhoGp16oiVWkB3vV6Z1r5wmLTINAKxnPfDo0x2Uo1MJINBzrE8KEMiCcZAljiO6FDCbbSRtuDR3sz/jSOR873qPkQ1iV444Na98iKxWF19dQO0V+B1EB5r0U9xqtrqUcLwJbyIel0vifJsWLZhrcGZtsTwiIyYQ1C2MP2OAuu34v09XFCfmhL8Ak5cW3H4qhdMuje/YOIImU3SKAv6QH9fV/5otMK6PXVSHHfouGRlVLlhLYknYHAIKlZ4+Wy844S5jzfV73mxFxwDYAff3od9qmampJWwqi3YzTLrcfkbklpoUn3y2SWl5cfm+nM5
- OkosEeRu
- iv//5q4TwTgiIGCk8MMH6sC2pAImrmVWx+Lc6X42GKJJT3AnOpXWcEcwqua32YFK9wmEg+iPCkOPz+AkNG+R33qvkkeCDjCqC20rGX7iEdSgJgBYIiPURyzUxVZLL7EAKIycBMPtXcJb46iC3kpkOj1s8Q/3xz5gjUQALvDNw8Jim4T59ajib7JS7zx8+2bVWi4RHpKqL4VoKnXPLEDg0MBOIK8X0tK05PivhSl5gtEQhCoBJn/Iwnx6b+BD3Fwkwrb2V1iJRrRRMcPTM1DRGqNkVRlh6LZgRN1PFuD6CjqH3JMtxTg4bgoNNLkH4UqMoQdy55TKzEpl1v4GPV+Sezswl5kZ7AsK+AewX
+X-Stat-Signature: camaqgjexhj159t95g3fqkpnb7pr1gbs
+X-Rspam-User: 
+X-HE-Tag: 1794827233-948761
+X-HE-Meta: U2FsdGVkX1/q+kQRzfb6r+F42L3vDh9/LjVsETAeliJ2j31h/XI9Kz7/i1YrXo+eUn2Wp1cKwFHB4WCvzpnGlRp8d3dlrcXfTIr8uExXNFW0gtOzLQU4auLxKti7oQ1EdSmp2xKYmHgxHffhEQw3uz1H4wDK34KdcV0Nrc0Q7LUaOeLCSoJXEXo3EcHf67lV0EjmT7AfaS+uGiQBYUJltvM6eVKjiDb9G7N3V07hsuoRS6R87wUux0+dgioVTLqVOP28oxdt57N7Em1O9k1At1jCuKbsULN0m343erj9I11SG1Acb8VLdRtZ+dmXNdEu1kksFfD7p3IDE9NHl7n25DwWGcUNaruIVui2kGUwZ9cBpxiHo0Ko9GhiJsq77JH306vfIgROyQLG/Lh9VuCZzppubhZD1ozKKsBTw8Gt3aYu47bD9quWk5sjFXsi7ZksH8C8/y0Gx9tI2mn0ioCoFheBfhXlKsjXfuwWS6f3F8qaIVuYGShfWTVVz6pUdmHqCi+pbWMMQUXDE4B7WLeOT9Y1zliSAnOMhMoP/LqHSb4wIgRUeB8Z+khUWBDjlfLPg81agBFzCFKhckxTM/qMnEwHAsu4dD78ViyA1mu6TWb8k0tHnn6D/PnBV0NUcAkop8ntGY4ubzx/eA39r8sre4yXGJ6/drpAcPJkTFZkrSCFI7cXwINyTPzTvf9AI5EjmM1Vgrk93YgXeW+xXPyU5yTDTqsFE9g4/9j9avowEIOihTk60hR61nWe+FG+BCHFsy1CPibNXch8KwNx+KwoH88QobSJBnAly/b54+cGAscvzK+ebGW+m16KKCh56TclMowZWKQv2iCCgdbnvaA8e0SX4UmiYN9sFlXMemkr2QSSu1cXT8cGuhO0EnqQea8DY67upInpGqV5kjqqdAIxEZ7x2YqB7nCF/XPvz2uMA00BpiYg0XQr+0zcpTeaa2BFKiPuXnl1I6L21pq3Ubn
+ VrHWo3Ti
+ 38zYHx7RQOS1nTGlQmYDrmU8kd5SIsbbrw4NhmMpoL+p5XdQ7KB+6i1lDMFlihgE2CI/eagQOuMzohMsIhN0Wfqd4mQztFrLfEhTOSqjK1LYlR6rLKqmNgpIXSTcmFW0SKKSvoAaNXLVBHxMPKQXBJuB9MrmEq6oljLSf1V+51xYXN3FjzVbB+6a8uWvQiUa+B2bWiKp8VUMkOPphJmV6zZYE/l5iKaFlWs6C8vOK1crU3F8Kicrkf7f5IzzFc0MFDiylK3Vb8WPmG4Y36ZT/z6u4qwvlLoIMrhdaZoT12V43ZlZdaaURjSFtAcj6Bh8hbIVx2mkg4Gzt4z8fukOH43lzdFRGxsBjaBHE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,7 +119,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Initialize mqueue as a pseudo filesystem instead of raising
+Initialize bpffs as a pseudo filesystem instead of raising
 SB_I_NOEXEC and SB_I_NODEV by hand. This adds SB_I_PSEUDO.
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
@@ -127,35 +127,36 @@ Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
 Reviewed-by: Chris Down <chris@chrisdown.name>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- ipc/mqueue.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/inode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index 322c3dd98c447..8bbe32d0881f2 100644
---- a/ipc/mqueue.c
-+++ b/ipc/mqueue.c
-@@ -18,6 +18,7 @@
- #include <linux/file.h>
- #include <linux/mount.h>
+diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
+index c6f328e4752e1..57cf3775c0766 100644
+--- a/kernel/bpf/inode.c
++++ b/kernel/bpf/inode.c
+@@ -15,6 +15,7 @@
+ #include <linux/namei.h>
+ #include <linux/fs.h>
  #include <linux/fs_context.h>
 +#include <linux/pseudo_fs.h>
- #include <linux/namei.h>
- #include <linux/sysctl.h>
- #include <linux/poll.h>
-@@ -405,7 +406,6 @@ static int mqueue_fill_super(struct super_block *sb, struct fs_context *fc)
- 	struct inode *inode;
- 	struct ipc_namespace *ns = sb->s_fs_info;
+ #include <linux/fs_parser.h>
+ #include <linux/kdev_t.h>
+ #include <linux/filter.h>
+@@ -1197,8 +1198,6 @@ static int bpf_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_magic = BPF_FS_MAGIC;
+ 	sb->s_op = &bpf_super_ops;
+ 	sb->s_xattr = bpf_fs_xattr_handlers;
+-	sb->s_iflags |= SB_I_NOEXEC;
+-	sb->s_iflags |= SB_I_NODEV;
+ 	sb->s_time_gran = 1;
  
--	sb->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
- 	sb->s_blocksize = PAGE_SIZE;
- 	sb->s_blocksize_bits = PAGE_SHIFT;
- 	sb->s_magic = MQUEUE_MAGIC;
-@@ -457,6 +457,7 @@ static int mqueue_init_fs_context(struct fs_context *fc)
- 	put_user_ns(fc->user_ns);
- 	fc->user_ns = get_user_ns(ctx->ipc_ns->user_ns);
- 	fc->fs_private = ctx;
+ 	inode = bpf_get_inode(sb, NULL, S_IFDIR | 0777);
+@@ -1261,6 +1260,7 @@ static int bpf_init_fs_context(struct fs_context *fc)
+ 	opts->delegate_attachs = 0;
+ 
+ 	fc->s_fs_info = opts;
 +	fc_init_pseudo(fc);
- 	fc->ops = &mqueue_fs_context_ops;
+ 	fc->ops = &bpf_context_ops;
  	return 0;
  }
 
