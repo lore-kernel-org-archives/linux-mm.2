@@ -1,123 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47281606FEB0
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB60606A7A5
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=g-ucla-edu.20260707.gappssmtp.com header.i=@g-ucla-edu.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=fq2MzP83
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VlWUdDLV
 Received: by kanga.kvack.org (Postfix)
-	id 5BF3D6B05DA; Mon, 16 Nov 2026 06:06:55 -0500 (EST)
+	id DAF8D6B05DC; Mon, 16 Nov 2026 06:07:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 570646B05DB; Mon, 16 Nov 2026 06:06:55 -0500 (EST)
+	id D87176B05DD; Mon, 16 Nov 2026 06:07:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ADD06B05DC; Mon, 16 Nov 2026 06:06:55 -0500 (EST)
+	id CC4B76B05DE; Mon, 16 Nov 2026 06:07:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 28A156B05DA
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:06:55 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5867A7432
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:06:54 +0000 (UTC)
-X-FDA: 85440704748.01.50914E1
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8A0E6C0004
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:06:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=g-ucla-edu.20260707.gappssmtp.com header.s=20260707 header.b=fq2MzP83;
-	dmarc=pass (policy=none) header.from=ucla.edu;
-	spf=pass (imf10.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 74.125.82.42 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A46BE6B05DC
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:07:00 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D13FC0941
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:07:00 +0000 (UTC)
+X-FDA: 85440705000.26.AFB7E08
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8C280C000F
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:06:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VlWUdDLV;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794827218;
+	b=sL0jTf8K1bFRnRHegKQZfEeH5bzfOrcYYhoFGA1iA0qEFsJv+F3XbG8jW1JFB/vuip8Zpv
+	09OAfj2QQSSPiIwJh2KEXxXSzgRZmvfI/fVdmJDMvvfYIg3KsZg8XruCZsh/24tGE7TjxQ
+	4siQtDiAYS4SIOAuNa0bM5jVjNYgAXo=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VlWUdDLV;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794827212;
+	s=arc-20220608; t=1794827218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G6Er2nPrtscnG/s8rWHw2Y9sWYYlyx2QveGZLr9tu7k=;
-	b=DQV8lhJ/b9OySTcQDHD9W4+W8UsPvTHwN36eMgZaqt6IYDClX+SQ75dTvIfK45+ZyWVONv
-	pu23Jmp+ipiIZUwgEVqoAmDI79q/QYSACIU5XJtPuj7pF/6cfVJZaUvDQs+gtDwvBN8/W1
-	7Lq54UuYnVHs2E4S2VaIXzCkB8nUWvs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794827212;
-	b=kyIgccjNvp61Rmd4jhiJ+agierHbhLcbNBzzcHMIaA/vU5+tzQwFshuSXtftJvmOtl4PH9
-	ZrdVcTAvYr+UCs+TMV1Z0XlmOJFBy1NAFWT6dnQ5uykenSpqaOQUbBJhi/OiSveg4sDJ55
-	6nJG1uvDrkqt49sCIvREymDpSQWuz4M=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=g-ucla-edu.20260707.gappssmtp.com header.s=20260707 header.b=fq2MzP83;
-	dmarc=pass (policy=none) header.from=ucla.edu;
-	spf=pass (imf10.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 74.125.82.42 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1b3b4bcbfc9so3662407c88.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:06:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=g-ucla-edu.20260707.gappssmtp.com; s=20260707; t=1794827211; x=1795432011; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G6Er2nPrtscnG/s8rWHw2Y9sWYYlyx2QveGZLr9tu7k=;
-        b=fq2MzP83HqBb/7JtQqfkEb5p9D/ahOyS4hUwZ4QG209reTeMRg6wig+q0Q19ntFYYU
-         GtFcFPAq04rTic7QYo3EeiwU9MC+CTfc8MHbzvg2uPzet8DLr/ovxzv3xHYZCWQQeC0w
-         0u+HpOpjL1yVeeBoXfGMXQa6HpyIW6nnGjEoXWW0rhqkZrrteLq1A2dP1iuT0PiXUJdh
-         nMFJfC1FE4PRFevHW9XxxG7G7Eqd3REgOBS8PAitmoZxUatNo2MJ+Jas0VJbp0Us4gPe
-         RL2xVFZK46mflKOJlBWvwyAGj4SXyM3Bs+/4OUIkD2reMvXU57iBsUsq/3KCoOedcB5t
-         rwWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794827211; x=1795432011;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G6Er2nPrtscnG/s8rWHw2Y9sWYYlyx2QveGZLr9tu7k=;
-        b=zGzuOsOcxag4kH2Ol80GSAjVT2m2lISFupvJEfXP5EeBtV4t/QoSxgshKBzTWedsu7
-         HEYeSKiEzVkPr9ZNTtg6Uc2N3v8tmNT4bMJkRwveeWZXqwEPCCsXyp4UrqkXUM+SkkSb
-         SCbBzcJ0l9HF9ORJroO7m7GGy0iE+JiTbFNCZyO1lwASh/v54ViHskGSC3QTU2dT5ImR
-         lurZCN8TtL0xDCGC8+IHHFD7Xxakq5ldXyzZUVE2tlOjWAgCbpcf1P//Qw3pWCco3reN
-         0lxUVAiqDAgQfsFo651WePYg3LKktu1ytBT+4ixmFhb4p3igTyOGxLFPUEAN/I+aWDqd
-         wCPg==
-X-Forwarded-Encrypted: i=1; AL+hErGLeyz3r8JkLthdbbelE/C6fBfY1dR2ErDaI8vgGzXpvhwgqVzjE0Orm2R885z0GXApSmSZj2yTsQ==@kvack.org
-X-Gm-Message-State: APuU4Z+DV9JcGN1NcanfphQGpPIMFsBkyjpC2VGl4bE5CnaULM+QDrXL
-	hqQGjPgqryyO44EusUtPQEmkzlsGLanBIo+Lhtj92LqIfYsSPIi4E1pE73+ICQjBlko=
-X-Gm-Gg: AYBFou0YZOM2odwEpySk4YgOjMxXKmqGlygUakgGd9TxDuzZCTckfMw3aSaUxlBG/rl
-	xbkXcx03xHc4+Ax6B2CUfW/a/15IDUQlGznSm9e30klTR0NC2NgFvd91q+9eoI1oOD1ZpWXLHXb
-	RHk2pyC0NlbL9QFh9SJwysSeFHphIg0pV5L2oka70iyqC2+kiaafYbgSuVkAFgd99v/RRR6fDYW
-	Uieu6Iwhwb25QM9/XjAhPjNVUJnrZq1lOQ53P8+Drb8eetQPnmYAPcz4VRSUgAp3GCM3y9oBvkp
-	U/9MOBbMMn//okZ2/4OnZ1DAV00WXBxdaWXa9jjqU8FPd5tXOtf77sqsSUFX9YDgM8Mi3gZUApk
-	c4BtL12mXzyOrw3PcS/e77d0iGliIoIbPVcjemxecznPaLSHLYvFzYMBXZlyx/Si1tFcuM+9Eq+
-	FYTOXGIcGiHuwKME5F0F5FAyU2c09c0FIJJ/NqRVdC1PCPncM6gj4Fzrp/Yw8CmZAlSkUHA8NRj
-	WGx+5eDjou+FLGXlq86otCkFSxSt/RjHTj9Elg4MBi3Q3ySvrHKdD8NmNvfBqxXUfUa71ArueIh
-	T85ypYI5wO9zd/XwcoyHLWSSL0J/Lw==
-X-Received: by 2002:a05:7022:38b:b0:1ac:9da7:e881 with SMTP id a92af1059eb24-1b503175cf7mr11947613c88.36.1794827211184;
-        Mon, 16 Nov 2026 03:06:51 -0800 (PST)
-Received: from [127.0.1.1] ([131.179.95.34])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b524049e0asm12522103c88.4.2026.11.16.03.06.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 03:06:48 -0800 (PST)
-From: Jason Angelov <jasonangelov@ucla.edu>
-Date: Mon, 16 Nov 2026 03:06:22 -0800
-Subject: [PATCH v2 2/3] mm/damon/tests/core-kunit: test
- DAMOS_FILTER_TYPE_AGE_MS in damos_filter_for_ops()
+	bh=jcuZgfEAu/QV7fwp1VLyFSljuB6ko+rpbI5oo0xXTbA=;
+	b=AOWYITkSYSmrygG9l5QwYiBxbgYQrOE9APq2l+Q5w/9yMsVxjdLMKUN3FMQmrX/5mbm/ai
+	ErVut+fX871Uyqa+qJP5vaLD0ltFdu239Ch4STAi35IHH1NG9Gbe9RdajgHDbgw+5+Z9IJ
+	54DFB/YostzfRshzpsJs9CnmVjU3gIw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2AC7762965;
+	Mon, 16 Nov 2026 11:06:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF281F000CE;
+	Mon, 16 Nov 2026 11:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794827217;
+	bh=jcuZgfEAu/QV7fwp1VLyFSljuB6ko+rpbI5oo0xXTbA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=VlWUdDLVuU7+1W5AfKDV8A6h7bpZD6EsCzKV3QkLOwQIaYytJajpFIVxFa+tZJ35S
+	 tI3uPLWgSo+No0yMgSs4xL74IpVyEJcOMhOK9feVdhR0gz/3OsFCh+HBGIfL5bfaQy
+	 EeWwUQfCTADTYpl3kYIVLHrKD0071KrFYjjll+kMtoKchmkd0P4z7p5mleDk4dc4RI
+	 FfwrK4jlOLZbAGciN7FsmDhx1C1Isd2oeRGeEvBqEwGSDwcR3+swUmLjG4HKFAeiXz
+	 c1mW+z65Ldx/VReJb1LQr1zBRFMkwzpCRVKF3SJQ+PxD2B6SIRjYnlrbYtR7otXVX9
+	 51azYy6ntC+8g==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 16 Nov 2026 12:04:40 +0100
+Subject: [PATCH RFC v3 07/44] binfmt_misc: use fc_init_pseudo()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-test-age-ms-filter-v2-2-3b265d59ec98@ucla.edu>
-References: <20261116-test-age-ms-filter-v2-0-3b265d59ec98@ucla.edu>
-In-Reply-To: <20261116-test-age-ms-filter-v2-0-3b265d59ec98@ucla.edu>
-To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Jason Angelov <jasonangelov@ucla.edu>
-X-Mailer: b4 0.14.3
-X-Stat-Signature: 89u5miuooio54zd7bsoc6gpmrm639wp4
+Message-Id: <20261116-work-loop-pseudo-v3-7-8cbbea1cf34f@kernel.org>
+References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
+In-Reply-To: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
+ Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, 
+ target-devel@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-mm@kvack.org, bpf@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, 
+ netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+ linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+ ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+ Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Alexander Mikhalitsyn <alex@amutable.com>, 
+ Chris Down <chris@chrisdown.name>
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1381; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Op8caQB40yLDgM+EzuEIWYdaqzetBKTmauJ3/A8MyW4=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9epz2stXSV/bIi9CLVUrrcpeXPvuV4y5RpjX9R2Rox
+ r/jidW7O0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYiKszIsPeTS0+B0pFmdk8l
+ p0n2046ui4zZq/L5S64sm9fmmVf2dTMyzMt9rHkle3Nhwf2a5nkBe5i1t7ttYSyfFqfzfN10XlU
+ eRgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: atj9kij756dtmtuk9pbz5cnx5c13ncm6
+X-Rspamd-Queue-Id: 8C280C000F
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8A0E6C0004
-X-HE-Tag: 1794827212-942693
-X-HE-Meta: U2FsdGVkX18pL2tJakY2gz49+vxO6w2pQuULt/Gh2fE1WaMq2dfi8jJG+/S3nSKtFVW3HAG8067zupkDY6VHpqyVcBohGTtjd59beJ12QHO1AXW66W3f33vTlpLkZkEwYcgeTLvwU4nTw2c2kp6dg798TfiGd8Ag8+gaqKNOYeyiwerAjBLJS7LuLDKlgkajtAOJ0geWUXlS9H5zDp0hYDCNA58NxMYHCycsJiDwwYmu+IeYoMWIOC8j0lgOjMaviymknumFPCKpW/CaxSE/A9TTDjgrTUafcvJ2QOrahpCg8ufqbvdJMXglOXnf4HQl8A0JcVJMzAdJH47P6LlUVGk31OpVz5ZEohQuufmlxGnIpyRGWIMSU6QlQSc6ZpuuFmWD808zr9uaJMC7MQ65b19i+ptQP/6ORhy+1TF261lo9vOO6gSvIerbxMcMR4xANVh1+fcgtGw/CH7BdhAvmYAp9LYXlgd6Zh4Ynb0i2dY/P3PllySb0DzAKoCNU4CYBXjgdyHagrHTg9oGZcayj+aEAlMDxWeqwnPoFHSOJm97/5sEJ8Tl9j2KsKzBPDVSxR3FYwSVyX6RTCKh3Blqft5+ugKpDQuc+/iYPucrfdr5+ktYeXjuqrENoiR66VuMxvdC6d75J3OQI43yalzaxwoUWP5LC+U/hj/UIrNF8hKoyxKd0wBaFjBggUHHjf/5DL7nfEkrwK1oA452+54Gbny8ZzFDTbcyWjjVhxWDPE7LBBu1aONaKe8aNtMs4gnOY+jm5BcTgHa0mFeLa57sj8rE+w0SXGvhufREQMrAuD7whHYuAA6oDygbAf6d5OmVQIXDUJC1Ls0SbrytdlyLBPlePAX+rxPLAjpivTzzCXH0ZzULKUCkE0LlhY8rAldXKthed0gLWLaW6xLWKwHhUF4Wh9WV2ne5XVOLHbavu+OcBSLlwl+qN/bO1zNHFwVWdfPkOTwcOf65yqg4awT
- 1qrm3EFh
- J234vzupffcVDDAGRuuGTHw0jqsrbTaDeOKKN2+3Q+fLLP75iTmZXqqopUQEOH5gpdYcJK+wTn0YlkISFMyJTLqYXcOuUPUQUxUR3lrVJkdI/uOxaSIFdA14SxHyWTSML/ZKxa0UKpiZ0PAmFXKHw3up8dKVrUdRH2SymS1ATXBmUGqEA6k6QFhgvU/s7UTGv97p2dH6vKrupyZ7ZTGa/8vm92VDgW+M+mklq7wV0vEWiRW4Gr9MFO27INcfpTawHL/CgfiDMb72bYEXBEMiZ273yxANJ1YxKzWJ+lVLPwqo8SRn4JUKt7VOyWr6iaW6MCDKyI4XFGypIdACkAOMlcz8iSCd1xSQrmDHsfCl0UKujDsanTaqX5fBjZqFAeGLJOQIALyJew+43bIVu4GjTHyUFlEFat6ZQ5XDqv9p4zfDHgKE0xvyH7Vs2ayiFJkvT7leEienxgfPy5ISZ0JXlc4EfRnUwZU8D8xFMdu46AwkHqJ82x7BjOLYOxTsU3TTXMyexA8N8r/W9CKTHgqNAcck/5xyUlXV4fkqKWKi6ri6i/EVB6AcXCMCm8v1qpOL446ixLnzJ8/a7DxwaajKhfjBUNyLCHky6KUwBbkHGZu6kP1U=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794827218-742926
+X-HE-Meta: U2FsdGVkX1+ELD87n7QgoUZZ9Xxk1coOSQXgN3G6OF0yV8WdW0pdbMFPX8TaXeufb+DGQsMpLExuCEgiWoMgyIMO6BujF3ZvfgVYvrCIfXV7LDgwaxM92ycuHGiz9alp6CzSUjEuSEtKe3beoIB2HVZMSoxz9NI9Y/FwWG/7nHxQMCmh/phmSa+cCucLJXt5l6ZLRHf6a92Syu1afiPnuU/6YXU+RPbTAMjTjswaul0OU9Rg8yu9Pn4rf0fGiQ8L+89eLQjUfxV/eacXoa9h1SF5FOiLrNovy2DmuRJ2bb42T8amjx2Siy29TP5qSbIHQGLTRUGxOdMdgYHAaBmX9v5fY+TtaC8b6wX8PSxf3JFZ391+rmY1QLCpLYeLYl+LsY+m7NBEfycwgKHbpOyytOHmyjypeE9+5MNYkYiSBKqmG66Q1cOXUf+kq44vnCHCa23Ki/5KrrEg11XEbNZPlW7f6/vWAA1ukxSC1Ki2bIOm5OXBN92FnKuEW/AG4XLlvlsy+9265GzHWHh05YWOwYrqRUwBphLjU7CuWVB6peSVah79SzpxFm+Pig2NhzvhTPWZJQD+8Iv/P29obh2unleb+Rtykf5XgsujMimvthAt7Lsz0hYry6TPsqcdtREc4BHUC4pzrj5CoBFfFO2WfHKCjI3p51L+wTL8NSJ7Si53naAJ1aT5yrSmZuf6cx9N9i7TBWP+p4/KgG1GykKUZIxdjxAAXociEdtMUqQA6lFWFzJRn5ZiwBwnskQ/1QyEa6LP0FpSx5hdTTXpjkreL8dJw9uztyMmR16wBUFMszuX48KtyzAsHC1J7qfb0H/OmyfANFC7BWNQJzFBwuP1xKPKxWY8+6dcZfYQJZ+YbI+9XdyyydocIN4xHGomaoJzJgZueFM/GK1Aotsw5eVQJ4UbUgZuCMndTAJhTQZB/6EFWWMYiBwSTOIYdYS7JI3z8l+sHAyIIW+nxWqam4I
+ g2Ud0Ili
+ Bxox8Pf2U1qtsLT/o61CVfgQhhVTAkjGflG57x+XggAKEc39e5xcQGeRPORLMSGjMRXYm7WlU0EE8R3WxR0WjizY9GIqybetJUFr8XWOzerENv8cAmqe86CMeAG3+rVna2vDcLDaM+JXbTiz0Xwr4ii9rIeBklat5b+UH3Tuts6VZdFI4dQ/JpfcXmFHP5bIVrT2fqlVmunHG3Ya9Kk4gYiXu+WcCokuWQcsBAUtRQirTDCQ0Bw0OkK6KWqSbL1Kh9GVRvZxqg2KsHkxAr4mIpPo2dNJ85dESx4dVbo//epJraxUWsIyTMZUfJWkUcPvd1V3y2PKliid0osPgmB3mmkYJB3K05K6v60Fk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,40 +119,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-DAMOS_FILTER_TYPE_AGE_MS is core filter, not ops filter.
-Add kunit test covering this rejection.
+Initialize binfmt_misc as a pseudo filesystem instead of raising
+SB_I_NOEXEC and SB_I_NODEV by hand. This adds SB_I_PSEUDO.
 
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/binfmt_misc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 0eb5dcdba0ae..156f74832c40 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1832,6 +1832,12 @@ static void damon_test_valid_probe_params(struct kunit *test)
- 	damon_destroy_ctx(ctx);
- }
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index d945b4f6e1581..7dc233becd98d 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -22,6 +22,7 @@
+ #include <linux/file.h>
+ #include <linux/fs.h>
+ #include <linux/fs_context.h>
++#include <linux/pseudo_fs.h>
+ #include <linux/init.h>
+ #include <linux/kstrtox.h>
+ #include <linux/limits.h>
+@@ -1575,8 +1576,7 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	if (user_ns != current_user_ns())
+ 		return -EINVAL;
  
-+static void damos_test_age_ms_filter_is_core(struct kunit *test)
-+{
-+	KUNIT_EXPECT_FALSE(test,
-+			damos_filter_for_ops(DAMOS_FILTER_TYPE_AGE_MS));
-+}
-+
- static void damos_test_filter_out(struct kunit *test)
+-	/* Never exec off this instance and never let anything stack on it. */
+-	sb->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
++	/* Never let anything stack on this instance. */
+ 	sb->s_stack_depth = FILESYSTEM_MAX_STACK_DEPTH;
+ 
+ 	/*
+@@ -1660,6 +1660,7 @@ static void bm_kill_sb(struct super_block *sb)
+ 
+ static int bm_init_fs_context(struct fs_context *fc)
  {
- 	struct damon_target *t;
-@@ -2593,6 +2599,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_commit_ctx),
- 	KUNIT_CASE(damon_test_commit_ctx_keeps_quota),
- 	KUNIT_CASE(damon_test_valid_probe_params),
-+	KUNIT_CASE(damos_test_age_ms_filter_is_core),
- 	KUNIT_CASE(damos_test_filter_out),
- 	KUNIT_CASE(damos_test_apply_scheme_filtered_sz),
- 	KUNIT_CASE(damos_test_apply_scheme_filter_sz_unchanged),
++	fc_init_pseudo(fc);
+ 	fc->ops = &bm_context_ops;
+ 	return 0;
+ }
 
 -- 
 2.53.0
