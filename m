@@ -1,145 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90520606A32C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCDE606A882
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 15:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=frNkaEBO
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dHwYQhfm
 Received: by kanga.kvack.org (Postfix)
-	id B2D586B05B4; Mon, 16 Nov 2026 10:27:37 -0500 (EST)
+	id 8486F6B05B6; Mon, 16 Nov 2026 10:28:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B04D16B05B5; Mon, 16 Nov 2026 10:27:37 -0500 (EST)
+	id 8202E6B05B7; Mon, 16 Nov 2026 10:28:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1C5C6B05B6; Mon, 16 Nov 2026 10:27:37 -0500 (EST)
+	id 70F426B05B8; Mon, 16 Nov 2026 10:28:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A9F86B05B4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:27:37 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E1E2940153
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:27:36 +0000 (UTC)
-X-FDA: 85441361712.02.8FCA3B4
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 57D62180011
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:27:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=frNkaEBO;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf16.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4912E6B05B6
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 10:28:35 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CBE5B120156
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:28:34 +0000 (UTC)
+X-FDA: 85441364148.15.DB0D9ED
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8B6081C000B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 15:28:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=dHwYQhfm;
+	spf=pass (imf21.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794842854;
+	s=arc-20220608; t=1794842912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zDqKDi+8QS7XpcU4OwMH+nJrC1paFAHA3qMs2v8CCWI=;
-	b=OhjS8bKRBwTIdpBLY0Thv67UwUBvQplI0rogsUQgk4Ii4ngOT6XE5uo4DIf/LqbDus/wFH
-	An632jkLNGIn3GeJJbX+hE1lW6rnBzgR35KLl/SMpNKHDE0HQUxvFsnZs/ybckmzduKQS/
-	16zXlu0eYHzjERE121hx8D1zdAeBu5w=
+	bh=xptZYPDAQTj3l9jWzdgLCCl+UiBE0vVZqBjyqpYLXog=;
+	b=L1Y0/sIQYvF7NL71tcxTEC4AHMsfp9SAhufjc/+hG7u3mYWzYnzTtul6130H/lxZA0eArO
+	dO4dYezRqjMU77nC3tNoSt5n/w2uph/uFKc5ZvvD4LRih7/ub2JEEaoi8Mv6AAu/3T2495
+	kReW2cyaxa/20rdTcabXyDffVe6mj20=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=frNkaEBO;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf16.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=dHwYQhfm;
+	spf=pass (imf21.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794842854;
-	b=vA1Oi9eWRpU/rcT7lUzuvnVX7otlqRqDNKfmPiOH6SmLiJLUhYGYWnImR06spdiKcORp7p
-	Z+6FAR/rXXQCV4vVENM56H5Ch0Tz3ollhfg41z4CV26oKL0iBCMmmzW7cTbz8yrkZh3xw1
-	SqYvW0e37zPLzcNKrH2e5G7/+FGUOas=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGDuLqZ1820443;
-	Mon, 16 Nov 2026 15:27:32 GMT
+	t=1794842912;
+	b=R+CDHDM/ai/IZF+Eo1UgfyzCNC7SCD3aaMm2Hf08MdXHA3fsShFUiAX24plL2b0+ICB6oq
+	0gaSIwdjlALLzpnRAISHuuztDIe1IQTg6J5AHLv/VwNpwTUqxFhFEX6HgrIBcWbiqKnMIJ
+	nWGYBNvQpYPjVVeZVG11itqFGjb7aiU=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGDu11r3407802;
+	Mon, 16 Nov 2026 15:28:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=zDqKDi+8QS7XpcU4OwMH+nJrC1paFA
-	HA3qMs2v8CCWI=; b=frNkaEBOL64sssNvR7YtSN/DavP7rEouQLqVPSS65gK5zY
-	Twji8MK6kZ3mph53RNYW/3FSlEqY/+WUc+33IDjefJ2gCBdNg+7a5ysR5sa82cBs
-	qRUOwuGbAE1d7ZM8qqoZi/A4tcC2QH7R7Z6F+Wk7cN57dou85QvVqI/UQ/plOe4K
-	hZg3RMDo8O0tlh3cgWy0L/rNrILS5WZErTSYnj5+ajcCtqcyaS7TLh/Il7q+fK76
-	qHHKFgpLt2+dAmz7/GuDsn4/pswhLQza9hT6/U0sgXDZCNJM9Iu9rAug6Cw11A/M
-	jskOBKmvciXrsPLr9KQ002LXcI+vC8m2PfxGzapA==
+	:references:subject:to; s=pp1; bh=xptZYPDAQTj3l9jWzdgLCCl+UiBE0v
+	VZqBjyqpYLXog=; b=dHwYQhfmVTFZiPnd5U6ir8G8LdliLacIJ59Py+is/DiwTp
+	40VOAS63MpSKWrqctTH/+pvid1a9+E7mGtn7LPND8m5H4QClqsZXJiDp/tJ6W0Wf
+	egzdDkNYBVUJ6bOqD5fqG0Y2Fd+k4PLySueg31kMghhO9cXJWX2Ds4j2NTaHJk5+
+	fksEx20urRC/OomV8ncwtROERrdfxAKyd2EYBpyxrBNahOAnESFgFv8uMYKcJxTa
+	TcjZCOR5B/aATS3islMuHB/TIcA3ublN65nFuGSR0Ka4wwmipLMdnkh8jhVUKeJ3
+	kvOKak6Bj+c4K9GV/ERxfqdK7w3Ivfj075raEIcg==
 Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxfasxaj2-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxd2kx02v-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 15:27:31 +0000 (GMT)
+	Mon, 16 Nov 2026 15:28:29 +0000 (GMT)
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGF9mwf2972493;
-	Mon, 16 Nov 2026 15:27:31 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j00ns99ww-1
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGFC49F2972402;
+	Mon, 16 Nov 2026 15:28:28 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j00ns9a30-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 15:27:30 +0000 (GMT)
+	Mon, 16 Nov 2026 15:28:28 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGFRJ6k17564150
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGFSDWr30933298
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Nov 2026 15:27:19 GMT
+	Mon, 16 Nov 2026 15:28:13 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B566F2004B;
-	Mon, 16 Nov 2026 15:27:19 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id BCA6F20049;
+	Mon, 16 Nov 2026 15:28:13 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E3B720040;
-	Mon, 16 Nov 2026 15:27:19 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.68.17.117])
+	by IMSVA (Postfix) with ESMTP id 605E820040;
+	Mon, 16 Nov 2026 15:28:13 +0000 (GMT)
+Received: from osiris (unknown [9.111.42.169])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Nov 2026 15:27:19 +0000 (GMT)
-Date: Mon, 16 Nov 2026 16:27:18 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+	Mon, 16 Nov 2026 15:28:13 +0000 (GMT)
+Date: Mon, 16 Nov 2026 16:28:11 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
         David Hildenbrand <david@kernel.org>,
         Sven Schnelle <svens@linux.ibm.com>,
         Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 12/14] s390/sclp_ftp: Replace get_zeroed_page() with
- kzalloc()
-Message-ID: <f47dc1fa-3def-4558-acb1-5b58a3ff226a-agordeev@linux.ibm.com>
+Subject: Re: [PATCH 00/14] s390/sclp: replace page allocator calls with
+ k[mz]alloc()
+Message-ID: <20261116152811.165348C35-hca@linux.ibm.com>
 References: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
- <20261108-s390-sclp-ready-v1-12-3e7c90eb6676@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261108-s390-sclp-ready-v1-12-3e7c90eb6676@kernel.org>
+In-Reply-To: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2MSBTYWx0ZWRfXylraMr+QEUCv
- 9MvUnVY1NWWuNuFaaQqVZdp2ZA7N5KK4bBl8OR+30lfgCajZrk2SSRLBXJyzWvVObd+r/XKiIvT
- Ok5ZZ92b6vRV/HF1q+bkVma/043WmX4=
-X-Proofpoint-ORIG-GUID: lBYkfDeD4sccbWyPq-tPzYXfrltOULN-
-X-Proofpoint-GUID: lBYkfDeD4sccbWyPq-tPzYXfrltOULN-
-X-Authority-Analysis: v=2.4 cv=IaESymqa c=1 sm=1 tr=0 ts=6afb20e3 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=B6UsQ+tM c=1 sm=1 tr=0 ts=6afb211d cx=c_pps
  a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=0NCBxJeg4obUfdkLXI0A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2MSBTYWx0ZWRfX+uX0dOR6dd0O
- GbLn1rL63pMU/GN2H4dPRkjGXfvvE1jm2RGpms2BysTwwpAtx/tSzz0rqwHWCuKCZ+PLT+ZJNjZ
- SKuClC+WnVTLZl8SEH+jirH6b+a8x4+ZxudPuUG2OgMYLXTb2jVT/tGi5N4xh8ejzVLJxp5oLTZ
- ZjH6HaZ83EWU6LNaYd7E79z443NeiXXsQqsZjWeyhyoMFxFWXse/JKgYj5OULkXO7+mYIadzWQ6
- Je14u2K+yy1HbntzuN5xefiqvYYI4rrRh6w3GlA0pOODjv/E0hWaXWommmZ32X0RhTawd517zq1
- qj4tdQmv5S8qa3T3Mq+3WIwlpcmR7K0bpywf1T77dOXsomHzDERIHijf9Zfdlz4emI/KPgSxk7h
- sv5t45uWv75RwReMs6zJvQPqXg/8OcMMJ7+PNA1aBj0mEl/aF/kIuxRoUxfyeH8xR52tscmaXpI
- 2bb2yPlDDvpdiQq7kVg==
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=RFWjAfAvn5XsmgsbDIkA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: j8eG1yej94bfWv88N2-2XTDuffFF76CY
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2MSBTYWx0ZWRfX+x6vtnQgWfwA
+ jwKnlBTp9JiMPvZnGVchhpLgnBHf0JgsnQFzoYRr8P35rCshGAOeJfm7gLde5GMxyEt/l8eh2U5
+ V0cxdApBLJIHZK0csJF1Nf99HwqBPWk=
+X-Proofpoint-ORIG-GUID: j8eG1yej94bfWv88N2-2XTDuffFF76CY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2MSBTYWx0ZWRfX026B3Y2k4d3D
+ a7KazmPylNWpybs2zmfMsiRjsNQGbGlD3AaiB6SBqYKQvh7hY/wgFDjbmZM6xCdUlqECZi8EqwL
+ BoMm69EuI8fwmZwYr1tDewxxl59VOBg/3btkwhB3nPCJlC8vOZXDkcRJHrutdp4YG+XIi181G6J
+ AhfEKsTG8Z0S2Ddjzumy/Y6fmF6Wfna4K0nIGXN1bxltOprLrqc7LaMZS6RkBuBIQW05pagaL/H
+ XwiLQ0UFWf1fjljurWteADLysrYpavK7Q55luBHGzGIDKBoBmjyOxKN+5HtqlQOrGD7RZJr2ToZ
+ UV8sekVudsKIrDM1ydZVgO3zulmRC6UHHG+rqZpBvc5Dayn913baZgTFMKZd8MN6uVyMY0icjs+
+ 90e/j2mSNKIWVQJXZyXzbFCTJ/LnfnveBTaBPkm/fxzuqEGCP02kEpYDK2xijarc+H98DsgucRr
+ a/ky1Rfxxd3NlxZuwJw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-16_04,2026-11-16_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 phishscore=0 adultscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611160061
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 57D62180011
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+ lowpriorityscore=0 clxscore=1015 spamscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160061
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: 7u38ohw6tdf7soq85sjgw493s3ge59d8
+X-Stat-Signature: oyk99zhkenne61uj1gqg3wcew93re91a
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8B6081C000B
 X-Rspam-User: 
-X-HE-Tag: 1794842854-615468
-X-HE-Meta: U2FsdGVkX1+e38pqh7iPC8Y5PBEh+Vohq4J0IaM6HT1MJhChTPpqr7M/JNSoqblfFieyTW4ZkGgYSsjl+fuWjj/6HW9oqIpzerHZfCtcgwPso/ttUvC+i1p+VtkpekQ+WDjii0OSF6QKp2FxSrhWOFqzDj+t6QOKFqCNGa9/tQV69NxxIY23IiLEU5lLjSk8kK+RTt2EkWrHUSB/4LCwmTrlV24xpXamPtTpeOupqv3Yl2HXjLU1xGcd4hkgHhbA3iOdreiPNplFVsZDujW8xiVliEo8ggNFR6pEjvAmVlJUb19ATdb5gSAvcYk/GKNKb2NO+B+CvBoDDfKI+E12XgJbMo18RtuND5+sbR2/iBAi5OypS20YNZEqRD0H7H2zbrubymuCbmYFaYEx8hKuLWMX/CxnDUOxyIQg1sHCGZAm46vDwZISfMcTUQEadaBqhc5IdpWTZJ9j2yWfznpGs0SFtVdPslIrG+8UooHul9kRc4t/DfvSynXrkvV698zXWZfCTwOm2LA+Iansa9zwwhrmjettFm2eT5bNCjtvMtzspvFxC2+3EMC0zhvDr6XBjdCSYXiSHHFM4L+N+ZNAONZW9K9ZLXh/TDtFc5Bg6QRm9BfiwjVnUZUvHRbU4P5/kzI8yFYl/Bs1tA4LCAzSDkcIHpRcFftCXpTBsLXnjMXqSgFwnLYeMNzEtmC6moUXnf4CY0VRkb/Ts7JVqwXDJ1VNTsoeqbiUc2OgysGmqJEJ4Q+LVLiRLlLFfSmBClmYd9/CQOIK/0gOdV8OzsdWffS800kvWyIC//+RcDbgmNGkT9I8hsiqnDmQv/aSPo3iKt2NxbJMKcYLwbp7HDRR4MZNwwTuWwuk2bI0eVbljkhxWbDd4JdM/qqkLkiZsssWKjA6ujPzr3K2DSSNxDJZtURH2cj3OrfhhtKx2AozrY4djVjw2lX+LaO+qN34UlN33Va5dAxu189AEyQOwfK
- YNMgR2+p
- kPiTSh7waYFUR/u+HDm/l1cCBdeqrnbHHYPiCha384odedrv+H2d+pavBgE7UahP+TTa6bCDSGq+LRxkZ0gqexC5DUNWG/DlmwshhM2LDFfGpgf/dLgCZZAjQZub6btYhxGgCUkUeA8Wjo/bi41dOE1zq7dwiZ9q/5mC3ITXtyT3kDjYDBFpxrBibFIjc2ElLiU13L+iqdUw7Ij7oXp5qwAluYTWCdPN0Hi4C5JaIbmbCVKOXlTJ4RzbY0JKwXI2A+VQQSyJOEk35huH8F1YhLMfuNh1WYCQL/CFnlggI6ivTX84gsM3ozPk7wa/pwzTbX7w1x0vwcLnVi/bD9iSGJn/kX0vyXZXGXgXAzScZOMvEeIR/sr6lf7GTE9KwzfqDaP4ftrtdNhgxOsyPjjQMb5gXkw==
+X-HE-Tag: 1794842912-155398
+X-HE-Meta: U2FsdGVkX1+dfBYW7z43lCsQYtyQQIpn4eE7Wxf3WfN6/bCu5ySlTknmdIVLj0MVeLKlpWZ+NGEJJm0If59d/owHQ/idb2BPGoVpYeVBgf+jx+FUGVBZdbpLEeuStSwT7R17Izy0bng54VnyhNKF75L900bj1/sh3qDHDLRUjbSVuVzRzNq7G3rp4xQQxvq8OW58isYHPrA1Pprdh0NKPCDABkU6ytNm6mwxp2VAXq1fr+O4epq0r4H+xDAXvvuF5hB8M8yNNfqKKCA4lXE1Kp8wQJwxIbuAnnG8ZTelq4ZhInCeiHEW7tZy6zMBLNPbYA/U+xP9bz8wuUrTtLhDT81HJzWUIeIgAjZ61vyBI3UyP83mlxN/kMcCwHEm238nAgkYXGu+tJR9lJJ46vkaE9Gr+yRK8qLVzZypdeHsLaifar8frKMYcponXTimTJctusPKO4fnl4jSTZGPwPrN6+VayxIEwhpgOjJu4lYRLe0/qCDPXLwNEfL6r3s3X6hj/iw9Gy1rG0bsULBihFk1jN0wSQKnkPTcQstuNwCudRKWACW6vrFNEa98kn43ZfU0b+9N21+Enrjjj6MnhpiCqCgpgHwFAKjnaaUw2R6fsVZmTSCZDSnmMmPFg48gYCfZfoswjCLtwzLSDNFqPKw8WN1MH3/rTOmvGrREpeXHfSD6uohQvwInWJcEXcqVvjHXSlWxZ6PSuf4oUOC7JHKDBrYH7PY50cTVjv/No7PWQSF6viMV04z9VIg3Nk3cM7oyt2Yd4TGdHXMbE/Gv20BxMHdj0WjWo2ffyqymjl89eQy00Q5Un5yjwub852sUC4NKx+ZSTgVwtT/Qv2LYU5PmhnLpvyA6Cultd0Gm2WthXf6dMspaLALTJ/x6Sb6lc5VahfBj7mvk4v56XdAaiQQlPJ3SzD6KDZfv/TbrGccotn4djh4raO7tcyAEB23AO9C5LDQe5GskKA3mgem6aLf
+ ESB5g4fK
+ c8h5nNYdJCjYaOT1leXwvDCJQ6/4FE7MDgE0tZYi64wags53cmTtH4M0eA+NPV3kD1u+2/rKsNwVJoDh2nWdzdN46PnnkiJXCPTxBw+MFNOWGbcb4qBR3WkPabM8ZJQ6lRjVDf5NRjdVMZ4jA9hUmpC9vdrOG6I6FV6i7fVBf9Pk8LRA7iBQWMbdrL8XFCUtud5cdA3Oka9G7cH9f7AgrCHAq/Usp69dde3waMsRtcb26hLodsxi9HsR2xC8E9GlINQy02xUGZCbipHUy0Ys2cAiKXTa2lAFtwutx2d5cn2WkkYhvupVMgfoSE/RwE4eT3UVsmonGirDnXmY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,75 +147,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 10:58:43AM +0200, Mike Rapoport (Microsoft) wrote:
-> sclp_ftp_et7() allocates the SCCB used for an HMC file transfer request
-> and sclp_ftp_startup() allocates the SCCB used to read the SCLP info in
-> the debug code.
+On Sun, Nov 08, 2026 at 10:58:31AM +0200, Mike Rapoport (Microsoft) wrote:
+> This the next episode of conversion of page allocator calls to kmalloc
+> family :)
 > 
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
+> This series covers SCLP buffer allocations.
 > 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
+> = tl;dr cover letter copied from the previous posts:
 > 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of get_zeroed_page() with kzalloc() and free_page() with
-> kfree().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  drivers/s390/char/sclp_ftp.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/s390/char/sclp_ftp.c b/drivers/s390/char/sclp_ftp.c
-> index 853492d53953c..c46fd056e9daf 100644
-> --- a/drivers/s390/char/sclp_ftp.c
-> +++ b/drivers/s390/char/sclp_ftp.c
-> @@ -93,7 +93,7 @@ static int sclp_ftp_et7(const struct hmcdrv_ftp_cmdspec *ftp)
->  	int rc;
->  
->  	req = kzalloc_obj(*req);
-> -	sccb = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
-> +	sccb = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
->  	if (!req || !sccb) {
->  		rc = -ENOMEM;
->  		goto out_free;
-> @@ -155,7 +155,7 @@ static int sclp_ftp_et7(const struct hmcdrv_ftp_cmdspec *ftp)
->  	}
->  
->  out_free:
-> -	free_page((unsigned long) sccb);
-> +	kfree(sccb);
->  	kfree(req);
->  	return rc;
->  }
-> @@ -250,7 +250,7 @@ int sclp_ftp_startup(void)
->  		return rc;
->  
->  #ifdef DEBUG
-> -	info = get_zeroed_page(GFP_KERNEL);
-> +	info = (unsigned long)kzalloc(PAGE_SIZE, GFP_KERNEL);
+> This is a (small) part of larger work of replacing page allocator calls
+> with kmalloc.
 
-Hmm.. Why not make info struct sysinfo_2_2_2 * instead?
+Series looks good to me, except for the two small nits.
+Feel free to add
 
->  	if (info != 0) {
->  		struct sysinfo_2_2_2 *info222 = (struct sysinfo_2_2_2 *)info;
-> @@ -262,7 +262,7 @@ int sclp_ftp_startup(void)
->  				 info222->lpar_number, info222->name);
->  		}
->  
-> -		free_page(info);
-> +		kfree((void *)info);
->  	}
->  #endif	/* DEBUG */
->  	return 0;
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
 
-Thanks!
+to all patches, except the two where I left comments.
 
