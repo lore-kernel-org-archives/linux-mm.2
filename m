@@ -1,139 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4907F606A32C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD1B606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 11:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=m5xT4FxW;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QITJlvhV;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=m5xT4FxW;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QITJlvhV
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K8zHPTFK
 Received: by kanga.kvack.org (Postfix)
-	id 234D56B00EF; Mon, 16 Nov 2026 06:02:26 -0500 (EST)
+	id 3E6656B05B1; Mon, 16 Nov 2026 06:03:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E5EC6B05B0; Mon, 16 Nov 2026 06:02:26 -0500 (EST)
+	id 3C3106B05B2; Mon, 16 Nov 2026 06:03:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AE326B05B1; Mon, 16 Nov 2026 06:02:26 -0500 (EST)
+	id 2D3396B05B3; Mon, 16 Nov 2026 06:03:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CCC676B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:02:25 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 463D814089E
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:02:25 +0000 (UTC)
-X-FDA: 85440693450.09.64508E6
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id EE7D54000A
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:02:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m5xT4FxW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QITJlvhV;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m5xT4FxW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QITJlvhV;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 020126B05B1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 06:03:40 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8793340978
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:03:40 +0000 (UTC)
+X-FDA: 85440696600.18.B6066B7
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BEA78120003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 11:03:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=K8zHPTFK;
+	spf=pass (imf29.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794827018;
+	b=HBvZctfyIEsm2gdWuNXVO7ZOCpP1zajNKsSAjV6w03rfkZcDr/oB2/Bgr7/YJJH2lMKlO3
+	Po47G29+YAEaCcTF3H8Sw0AhnKk0rc+Ru/pabHHTfHLCklW/zf4UrT3yrbEDFBGXNcWDEX
+	MPd9uS5bSPRmGDHzNxAKcv6RedxIMac=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=K8zHPTFK;
+	spf=pass (imf29.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794826943;
+	s=arc-20220608; t=1794827018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zMrJA+gjZFjeo0ud1+bDTEk2lqHpB6cq2ulbdh6191o=;
-	b=f6RGCSl4Se+3e79/YDDYyPveFYc9KjuvrbaCiYktSM5O6P8m4ysHL65xJMfpobIsq+MWbt
-	HI4QOrj2W3r9y4Ev1eQyVlwJRyF+B5sOPkPHYD71cq20RiEscuEovR5CtFqPLlrKE3FNrK
-	p+biTz0Ve0/cru36qTkYfvTDbV5CGz0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794826943;
-	b=AjtJ4m5+lAyQKzu0NQZjJzw2hVgO9yyHcm3WHHS1f34qHfOKmXGu3rGT3DGc21cuJM252c
-	WQfTjXmACDTpt+VWnVGyBCcCftjwm9gFUgzYKffNGxjefwX+mURv/qRp8n1c1yb++CZp3G
-	Xy5NWbRpUMlc4t70M03rHsoaEUaZtgM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m5xT4FxW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QITJlvhV;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m5xT4FxW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QITJlvhV;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9A98C1FD38;
-	Mon, 16 Nov 2026 11:02:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794826941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zMrJA+gjZFjeo0ud1+bDTEk2lqHpB6cq2ulbdh6191o=;
-	b=m5xT4FxWfhs/zyAI8agAe7LoG6kv0PNhgm8FfIeYbvTPRTtint7AWkWG9HgUuSUhcMt3/K
-	HxyfZRrNkInhARbOOiK4DykIpqUjBjMAwWxL2XQzor4MjcVbnDgPoORIOouh0h8zwauEQE
-	3tlmZTNweSJPM80cbqK2X/wzBiz0kGI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794826941;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zMrJA+gjZFjeo0ud1+bDTEk2lqHpB6cq2ulbdh6191o=;
-	b=QITJlvhVhkoDFdAS/Enz/tCFDnDccQ+1FlmiGUQ0L7nZ1+NYfKqgknnqaLI6mDhJ89eQJH
-	YS2FmZ31zPzziODA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794826941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zMrJA+gjZFjeo0ud1+bDTEk2lqHpB6cq2ulbdh6191o=;
-	b=m5xT4FxWfhs/zyAI8agAe7LoG6kv0PNhgm8FfIeYbvTPRTtint7AWkWG9HgUuSUhcMt3/K
-	HxyfZRrNkInhARbOOiK4DykIpqUjBjMAwWxL2XQzor4MjcVbnDgPoORIOouh0h8zwauEQE
-	3tlmZTNweSJPM80cbqK2X/wzBiz0kGI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794826941;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zMrJA+gjZFjeo0ud1+bDTEk2lqHpB6cq2ulbdh6191o=;
-	b=QITJlvhVhkoDFdAS/Enz/tCFDnDccQ+1FlmiGUQ0L7nZ1+NYfKqgknnqaLI6mDhJ89eQJH
-	YS2FmZ31zPzziODA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6FEC713408;
-	Mon, 16 Nov 2026 11:02:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 39+PCb3i+moaCwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 16 Nov 2026 11:02:21 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id D0FBA24DB2; Mon, 16 Nov 2026 12:02:20 +0100 (CET)
-Date: Mon, 16 Nov 2026 12:02:20 +0100
-From: Jan Kara <jack@suse.cz>
-To: Mike Snitzer <snitzer@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	linux-mm@kvack.org, Christian Brauner <brauner@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
-	linux-nfs@vger.kernel.org
-Subject: Re: [PATCH v12 0/7] mm, iomap, NFSD: stop DONTCACHE writes reading
- back shared pages
-Message-ID: <iushs6l3mjqkq65srej4gevaf2oeazy5j5miaipy6yxscetzjd@d4ti4qgbhman>
-References: <20261112190911.84702-1-snitzer@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dtkPIsMJSzldfEnqyfpO3Kcdd14xhNY/Wofzn7QSnQ0=;
+	b=URLnje1aTKiajdeg+H/ndLo7eGiugDkxDqPDpoKw1oAM61zk/aHo66TBK2IP8poty/2SNs
+	Ks64Uri99H5boinLRFasTpLKKMhNc5I2D3vUE5Pw1x69/QaIu3Wuri6lqWCtF7W8cV0vOC
+	QKmUA99QKRv+NrvX90kdusyYHePlemI=
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-1b244fb7fffso3721547c88.1
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:03:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794827017; x=1795431817; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dtkPIsMJSzldfEnqyfpO3Kcdd14xhNY/Wofzn7QSnQ0=;
+        b=K8zHPTFKs3+X0mLBt01awGscrV3LJu0K1Y+T9O6XCc8Xcwekkxm+Ofvo0gARoRnmYl
+         A6xTFCOmdwUN6XzJYPC/KOG4haOEGTZVHCpYsYXe0YCgbdQkk1e5UZClIKfA59jpwQvI
+         j0ff67g13u3a5NGdVR3+ooK9c7LYUDaxGm1eE3GiqeidvWYf8Ar4EWyAcbHcsFgpnkRw
+         z7SOum8GWMIP+JTqx0daVXVywsi+Zi79JIa8qfUslhEBwIcdzSFa6SLJIesc1z+MxYW7
+         0Im+QtCu9C+9i1WAiy+NNxzd3PppUitQ5RxSn5BHG9TngPa+xnMdGl699kTDlBJ3Vxm0
+         Q/4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794827017; x=1795431817;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dtkPIsMJSzldfEnqyfpO3Kcdd14xhNY/Wofzn7QSnQ0=;
+        b=OzDtT+XuMz+ZaoFy+ZkPtz1y7N4DOvg9qmgjnKpjLxPDkRlySMCutonGSozMnY82iO
+         0VP8U4npcLAuEWgnISZC1o+Ggvd864ycGcJ03NeW2J/c/1l2EyW8TmkhHljfyd5/xH+i
+         AI180vqiD+rlrxlkslV1DbsXfFf3ollsDycmL/aQSFu0pCNszCwNUUOQdOGjOR2NZW/s
+         vrWsu2YF8lnEihpjaugy6EZ+2djwc/4aUW+LDmikqm/U2j8UcqVmX+xTEBijWoaAwC1y
+         SVUurT+8yN5JjNIrQuOXy3XnMJslomsNg34DzlE4k9gWepVUaMY1SdHu9/9cZEupFfdY
+         NqAg==
+X-Gm-Message-State: APuU4Z8atyKcZggumRL8ftXCLmnGMg/9ZWxixdDl7GI+QNodcFKexiKT
+	haq0sDhXQtTkvcFqPsFm04+8uqtOim41OW7EwOuWWrNUy0Zn+ZuDYWl88IYQkunlCTdqshAP
+X-Gm-Gg: AYBFou2gXMH2x4SIplKmPGeQku+28JddFBmgMhpaqqUOxHppMPiaoS3P63w42F3C5V4
+	AEcAh95rD0A4v9raxZch1MtHiHMT/HIapBL3rQtRDpJVjpo3UimBBu0qmP1nTwbtU60ag9jtg7N
+	wnuDbj+PaiBeQRvPTfbItGVWODJ//JzN0eV+NTiyBJIDXyvP78rGgprzs77NpZwevtyz1MBa0Na
+	aT9SlB4wm5Y6KTee5EdyZc2IpaNROnzdA8fBp0FpbbmctkLyVKWraA1S9Z+wdhUl+8TxLrC3KhW
+	Pd9nfBSQTFnB/F0CZSNt1KK68QcVQWf1xd0e2nRY2IHCCnqyAYL9UxAZ8hGtqH8V1bAId/4ajwg
+	QWzIliASxgeg1g8zvjsj+8nuQGysweiSpbIO0RvgvDUTqTRv0sSBKzUQbx5/xMXpCbylXfnSMf9
+	rpNdO2/AyG6XyaSne92C3LNRNCoqP3PMyG38rDCmTafv9re4+gMT6DyYE2nuVf41UekACCastXX
+	F1z41FG/asTQKtNZxQbJvy8vdTbJ7x4lrMFgUPFXP/EmsTJAh8heLLtjmLrcNlL372lT4OSS2Xa
+	6SS0iprbddVmsXYrUr0kfWw0VnMX2/bqgTycizacM0TT64U=
+X-Received: by 2002:a05:7022:5f01:b0:151:2e62:fe8a with SMTP id a92af1059eb24-1b50313d8a1mr9131206c88.40.1794827016955;
+        Mon, 16 Nov 2026 03:03:36 -0800 (PST)
+Received: from naki-PC.localdomain ([203.175.14.54])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031918c7sm42999260c88.9.2026.11.16.03.03.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 03:03:36 -0800 (PST)
+From: nakixii <nakixii@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Barry Song <baohua@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: [RFC PATCH 00/16] mm: add in-memory compression of reclaimed pages
+Date: Mon, 16 Nov 2026 19:01:06 +0800
+Message-ID: <20261116110122.309748-1-nakixii@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112190911.84702-1-snitzer@kernel.org>
-X-Spam-Score: -12.80
-X-Spam-Level: 
-X-Stat-Signature: e83fh55uc4o479t4z7owfachcp1gaaca
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9geqiix1wf3kgf6oyitebs5f858kysrg
 X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BEA78120003
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EE7D54000A
-X-HE-Tag: 1794826942-804394
-X-HE-Meta: U2FsdGVkX1/EUqUPyN8cM2bc025++b3JDE0phBMKJjaKV8r6QJAOYO/9aCqxgBepH0qN8xGRxE0ESwOd1qjmgPurrKJhjFsDzCkO3wsIXrba0hZr847M+CRX+I2D6MP6HwpU3rkVK+McQ2AWfJvDES2Le0mTRJg7KC1y1xb5cdPPZx/k7k8N8mJM25j3/jEy/gYh1ku0TWu62GbQLCf53xlWo0PMp1I19viGILLYeYso2Y4k+Aq4yJOT0UvxRt8E6zKwzdwUpG/ooadEzjxl9IEXafcxs2xc0M/bTNA9VzzZCRqMJfvf0XuvdAUmy4FfyBb5ZDRCCktQWMNSZRmPqmKs4Yu8+LH/i2iissrR7EUCXsJSNkfXnfa8ZbK6hdZrtd+AITftkWq4zOZ3ZhclPeiniYiDAhwGusgcYjdCPqQfuzvZI2efFl4iN61NSKenBbP9RQJ5rpVx79YtY4kRlv9oFB7iLOpd69hrqCMSpvLsUkdWs4T+RuEkagfnSacw5jOK0Myudegbdi4Ey0EXzzhRfNhDBpLIrVUGmdYj12ErTiasSvtZOmeRsdFXmr4hIewePBCvKZX03Oj0XPEzS/aJzeE4H4SINMmMAL8/HmFdHZ070KLOIaJLVigKhfP2W1dGun+kXXu3SzfQJiZLBGDpS9FXVkeqVnxv22BmYM9Nc1BEBinQNgHHsw0Wiv5A7PM5bZqudSsrPjNIsUITM3LRErsvhY+iTY5N0b9QW7k513DwGA64bf4327ep9FVQrTBHHgYLwdGKwObU46FHXzsrgpWiGXUmt3DxKkReCMLWmXkP3g2yax/VP+qSrgXrCPM9Mw88if6sGp7oQKlnl5NGtvaltg4b03UgnA/h6hrDLBemWzsItSBiFDsmfSazUFXsSiefNxCio/d1Og4tFWNSRxWLbFFMyY0ROhWjrN4u+XLnOZ7PT6+52UAyHAVzZUSboqvEA76JBH1ARGQ
- liBbMjSd
- qV+Y6sTi0xz0IFjSUUrgf8TKwJiqlYQjs7W6dWJz4L1Xnyo+xf/x/qK5UwQy9+HOPUDy2h/c3B8hXMDg3wkFnFSS/wWMG0v1gr93QilgrLzR4SKMiY88m0UQ8yk+m3yXOIipUktrqYjWkWjNEWZSRnKlKP6mKCF0jflVKKOXGIozt4FWSd59ymT6Hc90OHeMzZbICcofjX1FkC4uwwsC/ENnGxCYyUMBlh6PkTehBKiHyNy+8BmX2vtDV+2CcZgcgPlxuoL+fz5MID1mTWLMCv18YDT4AeuQgU0V+zrV9Vs3Atl8lLy44yUIy3l0+WmvQ8aoTEaRwjwaQJ2yikaUuMBbwMav5ZaYBMJrF6ZLC4JuTD30=
+X-HE-Tag: 1794827018-684901
+X-HE-Meta: U2FsdGVkX18iurIZDsGyEr+CLqPHh0LAFMmKLeuHv7oH8a3x1RTv+eaSGXhNEGl+k5v5XprCnvvZc6uFc7/Rocj0Y1b0Jda5+MiMboR+GZGkRmZJQhG0tQ5d1OvQhalvPDt6LZ3cJDBq9hZrCd5r86mybFHRJrTqyIJQceOYyOxfT/66cYNdBVdENwuwX79ATtephv0SqDgBURZrcu8F9ofcT3s8oU6PAIaGDIbC7pxm1Ak6kjyrAuSYUIz72RPr8+vIQb8h8DpoX1rM4jyRw5ssEi+lWQD4D/lhApINuXE5/wRJdFGFFl4e/coD+8RPA0riRuWpj8Yi/CHhCl+QZWg+dEBpKNgtHxLTJ7jKAUfy3Uq5NlezoqZQonSUBKM1SXF0V0dmmY7NDg7m2wKgXszcaxqpn1/lRve/9eKQZr/PnuvAQhOSR9htG0JikXSvcrrckMloRpZfbu8ApjyER7uhhzgcSnXkDkZxAIQuly9j7AR4Sohebc5f2plTlM+Bn0+w343tsk9J5Q905o4eTNxAHIr0ddvxrMaAgbTghR1mBMOQx2aBHlQWskpWvwqzWbBpPOaM/dGMQHUMfxtvHwHWlkmpcKuPKCdexenqw6z32QZ0hM5wELWwriyWyL2vGZxx7kXu1odiEKiHlQMLlJ5uh8Gr7NMqzBJcp4KBupZGZrkR0W0EdD+bkDKmTU25CwLreVnRHIMeHm0i7lqLHLnUjAOj/l78UxqLYNAVJOGuvhQf4fRViWNZTx1B9F5Hr64QK6r4genBm+SB0Zz0LYbQZt4mQsVDnGiksC0CAjEm8TmwDZyc+ELI9RZPrIgUcuEc1wwNWVofgZbO2mhhBiEjlVGT9V5DUx+9bIcLsgvVaaeWZoSrQSdpHWs3ahFloUyu5gzxJHzWEfis+zQEjbjU/YCnVLYbj3DfTnVTUbCldJLWwFVHfFLy9q5YfjWmLQ8SWwIHm7Ea/Cnsqme
+ LCyPum1h
+ 7qph0cvogSpmWGEP5/c4HnoHHKYKuuagi/fPHn6SpS37tqlOw5sBQS0WWKtiR6l9c6ZwPBrxE9eMKO9tzCpmJtkIoNsrLy1oweKH3zpDoDXxDpyWF2niIENlZAEEb2keT06GPuQq8g20ZHVs44TlG/MPyQfbnggQztLQJNXYSXjjlEGbZaS/JTD+9IpJnFqMbTbCco0FBcj+aEpWtG8xgemTbhSzE44U+foKaKxJ/Ar7HDI+amfJ05SRj4NNDlOnstiGH7u37fqeMrrIdL4CHMup/gWRpLHrxl1mhYWh1PIEE3AMtMBAtiuEMinsDlyiyEbk0MJLv6RxI3qan4cl2vOSJVKbPMI6PgqsW0D00/48s7+mOKed/4jZMLQGT+wBMCwBg8fMOqL9q7j/VdKNwldJk6N7IXPadgiJgjFMO8Erhn1CweC1C6BzdqIIaaKU20l6S/M/4GlS/wOQutMJax5DwwQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,133 +136,400 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi!
+This is a proof of concept, posted to ask whether the approach is worth
+pursuing. It is not meant for merging. The series is based on Linux
+6.12.23, not on mm-unstable, and has not been ported to the swap-table
+and zpool changes that have landed since. If there is interest, the
+next version will be rebased onto mm-unstable.
 
-On Thu 12-11-26 14:09:03, Mike Snitzer wrote:
-> An RWF_DONTCACHE write is buffered IO: its data goes through the page
-> cache, and writeback drops each folio once the folio is written back.
-> A write that starts or ends inside a folio covers that folio only
-> partially.  Usually another write covers the rest of the folio.  If
-> writeback drops the folio before the other write writes its part, the
-> other write must first read the folio back from disk.  32 threads
-> writing interleaved records to one XFS file, 4 KiB pages, before and
-> after 5/7:
-> 
->   record  pwritev2() flags          4 KiB device       MiB/s
->   bytes                             reads per write
->                                     before   after     before  after
->   47008   RWF_DONTCACHE             0.97     0.0005    831     2281
->   47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.0005    601     1227
->   6000    RWF_DONTCACHE             0.97     0.0001    121      488
->   6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.0002     90      206
-> 
-> 47008 bytes is the transfer size of IO500's ior-hard, in which each
-> rank writes interleaved records to one shared file.  Any record size
-> that is not a multiple of the page size has the same problem.  6000
-> bytes is a second example.
+memcomp stores reclaimed anonymous and shmem pages in compressed form
+in memory, using the kernel's compressors and zsmalloc unchanged.
+Reclaim replaces the PTE, or the shmem page-cache entry, with a
+swap-like token that names a 16-byte slot. A fault on the token
+decompresses the page and maps it again. No block device is needed. If
+swap is configured, cold entries can be written back to it. The sysfs
+interface is under /sys/kernel/mm/memcomp.
 
-OK, I understand the problem but frankly I hate the complexity this
-introduces. Patches 1-3 are good improvements, patch 4 is OK but 5 & 6 look
-too complex for too niche usecase to me. I didn't really pay attention to
-previous revisions of this patch set so I'm sorry if this was discussed but
-can't we just make iomap for unaligned RWF_DONTCACHE write ask for
-minimum-sized folios for the partial edges without FGP_DONTCACHE and
-use FGP_DONTCACHE only for folios fully within write? That will also solve
-the problem with the following write having to read again from the disk and
-it will be much simpler. Sure the edge folios will not be dropped after IO
-completion which may have smaller or larger effect (depending on the
-overall write size) but I'd say that's the cost of userspace making life
-hard for the kernel :-p
+The implementation uses 16-byte slots, a separate owner domain for zero
+pages, per-key storage and bounded metadata aging. Memory-cgroup
+accounting, cold-page writeback, asynchronous compression, precise
+residency reporting and mincore support are separate patches.
 
-								Honza
+Refaults follow stock workingset accounting. The first reader claims
+and clears the shadow under the slot lock. Feedback runs after
+charging, outside the PTL and slot locks, before the page is read and
+installed. Consumed feedback is not restored if the read or the
+installation fails. An mTHP uses the shadow of its first base page and
+clears the shadows of all its pages. Swapoff returns payloads to the
+pool without building user pages.
 
-> 
-> The test program and script: https://lore.kernel.org/linux-nfs/atqJBS8MlYfeUU-t@kernel.org/
-> 
-> - 1/7 moves code into a helper, with no functional change.
-> - 2/7 fixes 88d6f128d06d ("mm: track DONTCACHE dirty pages per
->   bdi_writeback"), in v7.3: WB_DONTCACHE_DIRTY could drift.
-> - 3/7 reports WB_DONTCACHE_DIRTY in the bdi debugfs stats.
-> - 4/7 adds folio_mark_dropbehind() for a folio that is already dirty.
-> - 5/7 keeps a partially covered folio until the write that completes it.
-> - 6/7 lets a writer that syncs its own write complete those folios
->   itself, after the sync.
-> - 7/7 makes NFSD do that for the misaligned ends of a direct-mode WRITE.
-> 
-> Merging: Chuck suggested taking the series through the mm tree.  1/7 to
-> 6/7 apply cleanly to each of these mm branches:
-> 
->   mm-unstable  4318887a3efa ("fs/proc/task_mmu: fix lost maps entries above 2^63")
->   mm-new       daed51c91051 ("riscv: mm: fix concurrency in mark_new_valid_map()")
->   mm-stable    fa4ad798f6f6 ("Merge tag 'for-7.4-rc1-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux")
-> 
-> 7/7 needs the NFSD direct-mode changes that are in cel/nfsd-testing.
-> The whole series applies to cel/nfsd-testing at ab036e3a0dd4 ("NFSD:
-> Refuse a direct READ whose aligned range exceeds the reply pages"),
-> where each patch builds with W=1 with no warnings.  So 7/7 could follow
-> in the nfsd tree once the mm part is merged.
-> 
-> Changes since v11:
-> - 4/7: folio_mark_dropbehind() leaves a mapped folio unmarked.  Through
->   its page table, a mapped folio can be dirtied without the folio lock,
->   and PG_dirty set before the folio is counted.  With a stale dirty tag,
->   folio_mark_dropbehind() then counted the folio in WB_DONTCACHE_DIRTY,
->   and the dirtier counted it again.  sashiko found this in its review of
->   v11 4/7 (https://lore.kernel.org/r/sashiko-outbox-210121@kernel.org).
->   The folio lock keeps an unmapped folio unmapped, so the window is
->   closed for every dirtier that does not use buffer heads.
->   filemap_end_dropbehind() does not drop a mapped folio either.
-> - 6/7: filemap_dontcache_edge_complete() leaves a mapped folio alone,
->   dirty or clean, to match.
-> - Jeff's Reviewed-by is dropped from 4/7, which now has a code change.
-> - Testing: a KUnit test (not in this series) runs the interleaving from
->   sashiko's review step by step.  On an unmapped folio, the folio is
->   counted twice.  On a mapped folio, v12 leaves it unmarked and the
->   count is correct.  The v11 tests through NFSD and with RWF_DONTCACHE
->   give the same results with v12.
-> - Rebased on the current cel/nfsd-testing.
-> 
-> v11: https://lore.kernel.org/linux-nfs/20261111015607.46338-1-snitzer@kernel.org/
-> v10: https://lore.kernel.org/linux-nfs/20261103211754.35352-1-snitzer@kernel.org/
-> v9: https://lore.kernel.org/linux-nfs/20261024221152.6965-1-snitzer@kernel.org/
-> v8: https://lore.kernel.org/linux-nfs/20261023024548.71123-1-snitzer@kernel.org/
-> v7: https://lore.kernel.org/linux-nfs/20261020220346.28020-1-snitzer@kernel.org/
-> v6: https://lore.kernel.org/linux-nfs/atbfEbgMU6UGkn2X@kernel.org/
-> v5: https://lore.kernel.org/linux-nfs/20261019150725.1507-1-snitzer@kernel.org/
-> v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
-> v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
-> v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
-> v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
-> 
-> Thanks,
-> Mike
-> 
-> Mike Snitzer (7):
->   mm: move clearing the dropbehind flag of a found folio into a helper
->   mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
->   mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
->   mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
->   mm, iomap: keep a partially covered page until a DONTCACHE write completes it
->   mm, iomap: let a DONTCACHE writer complete its shared pages itself
->   NFSD: drop a shared boundary page only once both WRITEs have written it
-> 
->  .../filesystems/nfs/nfsd-io-modes.rst         |  18 ++
->  fs/iomap/buffered-io.c                        |  30 ++-
->  fs/iomap/trace.h                              |   3 +-
->  fs/nfsd/vfs.c                                 | 107 ++++++++-
->  include/linux/fs.h                            |   5 +-
->  include/linux/iomap.h                         |   1 +
->  include/linux/pagemap.h                       |  12 +
->  mm/backing-dev.c                              |   6 +
->  mm/filemap.c                                  | 219 ++++++++++++++++--
->  9 files changed, 370 insertions(+), 31 deletions(-)
-> 
-> 
-> base-commit: ab036e3a0dd410f762192f33d6244e7993b36f8d
-> -- 
-> 2.52.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Base and branches
+=================
+
+The 16 patches sit on Linux 6.12.23 plus eight prerequisite commits;
+base-commit below names the top of that layer. The prerequisites make
+the series work on 6.12 and are not part of the proposal. Those already
+upstream drop out on a newer base. An android16-6.12 port carries 18
+patches, the 16 here plus two ANDROID patches for vendor hooks and
+gki_defconfig, on a nine-commit prerequisite layer.
+
+  mainline: https://github.com/nakixii/linux/tree/memcomp/series-v1
+  ACK:      https://github.com/nakixii/linux/tree/memcomp/android16-6.12
+  whitepaper, benchmarks and results: https://github.com/nakixii/memcomp
+
+Testing
+=======
+
+KUnit: 492 tests pass on x86, both with the classic LRU in a debug
+configuration and with MGLRU. On arm64 ACK with MTE (HW_TAGS), 487 pass
+and six are skipped as architecture-specific.
+
+All 17 cases of an end-to-end test in KVM guests passed their checks.
+The nine cases with swap ran every check; in the eight cases without
+swap the checker stops early, so those results are partial.
+
+These are retained results, not reruns. KUnit ran on the final test
+candidate, before the sysfs directory was renamed and the matching
+comments and documentation were updated. The end-to-end test ran on an
+earlier implementation checkpoint, before later test additions and the
+rename.
+
+checkpatch --strict reports no errors and no checks, and 17 warnings:
+six FILE_PATH_CHANGES notes for new files; one allocation that would
+use kzalloc_obj(), which 6.12 does not have; one ENOSYS in a selftest
+that compares a userspace errno; and nine BUG_ON warnings, eight on
+assertions carried over from stock page_io.c and workingset.c code and
+one on a shmem token reference. sparse was run on x86 with LLVM and
+GCC; arm64 sparse and W=1 were not run.
+
+Not covered by tests
+====================
+
+Hibernation, memory hot-remove, DAMON and khugepaged have had static
+review only. The paths without an exact test include swapon unwind and
+retry after a bitmap allocation failure, a genuine shmem charge failure
+as distinct from an earlier allocation failure, zero-page refault
+windows attributable to one operation, two concurrent readers of one
+token, a pool return followed by its first consumption, and ordinary
+reuse of the same swap offset. The error path for a failed pin of a
+still-online source memory cgroup is defensive and was never reached at
+runtime.
+
+Questions for review
+====================
+
+- The source and patch layout: the implementation is one compilation
+  unit with internal headers split by function.
+- The multivalue sysfs ABI and the debug counters.
+- Whether direct reclaim should skip folios with a high mapcount. A
+  failed store can cost an unmap plus a reverse-map walk.
+- The encoding uses one swap type and supports only 64-bit
+  configurations, and memcomp cannot run together with zram or zswap.
+- KUnit probes are kept in production code.
+
+Results
+=======
+
+The comparison ran 965 fresh guest boots on real application pages,
+under nested KVM on WSL2, with a paired rule fixed before collection.
+Selected results:
+
+  Without real swap, single-page refault p99 was 10.7 us against 20.7 us
+  for zram with lz4, and 22.0 us against 27.3 us with zstd. Under
+  512 MiB of anonymous pressure, refault p99 was 37% lower than zram
+  with lz4 and 36% lower than zswap.
+  Completed-switch p99 with zstd was 33-36% lower than zram in 10/10
+  rounds and 20-22% lower than zswap in 9/10; these differences were
+  smaller than the reference's variation between rounds.
+  After writeback, readback p50 over an 832 MiB target was 11.9 us
+  against 105.5 us for zswap and 114.0 us for zram writeback, with
+  70-76% fewer bytes written before readback; p99 was about the same.
+
+Less favorable:
+
+  With real swap, single-page refault p99 was 4.8 times zram with lz4
+  and about 1.5 times zram and zswap with zstd.
+  Sequential refault was 30-31% slower than zswap, since there is no
+  swap readahead. Single-page pageout p99 was 35-38% slower than zswap.
+  In the pageout and refault workload, 64 MiB of real pages per
+  application, memcomp used 5-8% more memory than zram; this leaves
+  out zram's disksize-sized table, which was larger than the difference.
+
+The measured kernels differ from this series only by the sysfs directory
+rename and by seven removed header-comment lines. All decisions,
+including undecided rows, are in the whitepaper. No phone results are
+reported: the variables on a phone could not be controlled, so all
+numbers come from KVM guests, and they do not establish device latency,
+energy use or compatibility.
+
+Tool use
+========
+
+Most of the code, the tests, the changelogs and this letter were
+written with LLM coding assistants, working from my design decisions
+and under my review over many iterations. I reviewed every patch and
+take responsibility for it. The assistants also ran the builds, KUnit,
+the KVM end-to-end test and the 965-boot comparison described above;
+the test programs and raw results are in the GitHub repository.
+
+nakixii (16):
+  mm: userfaultfd: check the exclusivity of the page being moved
+  mm: add a swap entry type for in-memory compressed pages
+  mm: memcomp: compress reclaimed anonymous pages in memory
+  mm: userfaultfd: let UFFDIO_MOVE move memcomp entries
+  mm: memcomp: charge compressed pages to the source memcg
+  mm: memcomp: store shmem and tmpfs pages
+  mm: memcomp: write cold pages back to swap
+  mm: memcomp: compress foreground batches asynchronously
+  mm: memcomp: batch unmap reserved large folios
+  mm: memcomp: queue restored large folios for splitting
+  mm: memcomp: account user eviction and refault
+  mm: memcomp: report precise token residency
+  mm: memcomp: add KUnit tests
+  selftests/mm: add a memcomp pageout and refault test
+  mm: memcomp: add the design doc
+  mm: memcomp: add the admin guide
+
+ .../ABI/testing/sysfs-kernel-mm-memcomp       |  363 +
+ .../admin-guide/kernel-parameters.txt         |   10 +
+ Documentation/admin-guide/mm/index.rst        |    1 +
+ Documentation/admin-guide/mm/memcomp.rst      |  149 +
+ Documentation/mm/index.rst                    |    1 +
+ Documentation/mm/memcomp.rst                  |  215 +
+ MAINTAINERS                                   |   12 +
+ fs/proc/task_mmu.c                            |   20 +
+ include/linux/memcomp.h                       |  481 ++
+ include/linux/memcontrol.h                    |   45 +
+ include/linux/swap.h                          |   52 +-
+ include/linux/swapops.h                       |   22 +
+ mm/Kconfig                                    |   75 +
+ mm/Makefile                                   |    1 +
+ mm/hmm.c                                      |    3 +
+ mm/huge_memory.c                              |   44 +
+ mm/internal.h                                 |   84 +
+ mm/madvise.c                                  |   10 +-
+ mm/memcomp.c                                  | 6181 +++++++++++++++++
+ mm/memcomp/access.h                           |  132 +
+ mm/memcomp/anon_folio.h                       |   84 +
+ mm/memcomp/anon_store.h                       |  268 +
+ mm/memcomp/api.h                              |  205 +
+ mm/memcomp/cache_folio.h                      |  103 +
+ mm/memcomp/cache_store.h                      |   97 +
+ mm/memcomp/consumers.h                        |  129 +
+ mm/memcomp/defrag.h                           |  169 +
+ mm/memcomp/drain.h                            |   83 +
+ mm/memcomp/fault.h                            |  320 +
+ mm/memcomp/fault_alloc.h                      |   23 +
+ mm/memcomp/fifo.h                             |  136 +
+ mm/memcomp/folio.h                            |  434 ++
+ mm/memcomp/format.h                           |  308 +
+ mm/memcomp/lifetime.h                         |   87 +
+ mm/memcomp/load.h                             |   96 +
+ mm/memcomp/migrate.h                          |  155 +
+ mm/memcomp/mincore.h                          |   83 +
+ mm/memcomp/owner.h                            |  157 +
+ mm/memcomp/payload.h                          |  151 +
+ mm/memcomp/query.h                            |  187 +
+ mm/memcomp/refs.h                             |   83 +
+ mm/memcomp/resident.h                         |  106 +
+ mm/memcomp/scan.h                             |  115 +
+ mm/memcomp/span.h                             |   89 +
+ mm/memcomp/storage.h                          | 1131 +++
+ mm/memcomp/swapoff.h                          |  190 +
+ mm/memcomp/swapoff_walk.h                     |  122 +
+ mm/memcomp/tests/.kunitconfig                 |   16 +
+ mm/memcomp/tests/access_test.h                |  197 +
+ mm/memcomp/tests/aging_test.h                 |  771 ++
+ mm/memcomp/tests/anon_store_test.h            |  704 ++
+ mm/memcomp/tests/async_test.h                 |  703 ++
+ mm/memcomp/tests/budget_packed_test.h         |  435 ++
+ mm/memcomp/tests/budget_swapped_test.h        |  292 +
+ mm/memcomp/tests/budget_test.h                |  542 ++
+ mm/memcomp/tests/cache_folio_test.h           |  627 ++
+ mm/memcomp/tests/cache_reserve_test.h         |  447 ++
+ mm/memcomp/tests/cache_store_test.h           |  216 +
+ mm/memcomp/tests/cache_xarray_race_test.h     |  193 +
+ mm/memcomp/tests/codec_scope_test.h           |   94 +
+ mm/memcomp/tests/consumers_test.h             |  478 ++
+ mm/memcomp/tests/core_test.h                  |  119 +
+ mm/memcomp/tests/defrag_test.h                |  601 ++
+ mm/memcomp/tests/drain_test.h                 |  581 ++
+ mm/memcomp/tests/enospc_test.h                |  236 +
+ mm/memcomp/tests/fault_alloc_test.h           |  119 +
+ mm/memcomp/tests/fault_test.h                 |  851 +++
+ mm/memcomp/tests/folio_test.h                 |  769 ++
+ mm/memcomp/tests/format_test.h                |  520 ++
+ mm/memcomp/tests/late_async_test.h            |  331 +
+ mm/memcomp/tests/load_test.h                  |  133 +
+ mm/memcomp/tests/migrate_test.h               |  795 +++
+ mm/memcomp/tests/mincore_test.h               |  462 ++
+ mm/memcomp/tests/owner_test.h                 |  400 ++
+ mm/memcomp/tests/payload_test.h               |  220 +
+ mm/memcomp/tests/public_api_test.h            |  422 ++
+ mm/memcomp/tests/public_driver_test.h         |  358 +
+ mm/memcomp/tests/query_test.h                 |  480 ++
+ mm/memcomp/tests/refs_test.h                  |  224 +
+ mm/memcomp/tests/replacement_test.h           |  360 +
+ mm/memcomp/tests/resident_test.h              |  796 +++
+ mm/memcomp/tests/rollback_test.h              |  163 +
+ mm/memcomp/tests/scan_test.h                  |  422 ++
+ mm/memcomp/tests/shared_test.h                | 3477 ++++++++++
+ mm/memcomp/tests/shmem_retry_test.h           |  340 +
+ mm/memcomp/tests/shmem_zero_fault_test.h      |  121 +
+ mm/memcomp/tests/span_test.h                  |  128 +
+ mm/memcomp/tests/storage_fixture.h            |   84 +
+ mm/memcomp/tests/storage_test.h               |  468 ++
+ mm/memcomp/tests/store_transaction_test.h     |  587 ++
+ mm/memcomp/tests/suite.h                      |  693 ++
+ mm/memcomp/tests/swapoff_test.h               |  558 ++
+ mm/memcomp/tests/swapoff_walk_test.h          |  562 ++
+ mm/memcomp/tests/swapoff_yield_test.h         |  532 ++
+ mm/memcomp/tests/test_api.h                   |   41 +
+ mm/memcomp/tests/transport_reclaim_test.h     |  298 +
+ mm/memcomp/tests/transport_test.h             |  114 +
+ mm/memcomp/tests/workingset_load_test.h       | 1095 +++
+ mm/memcomp/tests/workingset_mthp_error_test.h |  164 +
+ mm/memcomp/tests/workingset_storage_test.h    |  442 ++
+ mm/memcomp/tests/workingset_store_test.h      |  572 ++
+ mm/memcomp/tests/writeback_batch_test.h       |  688 ++
+ mm/memcomp/tests/writeback_test.h             |  540 ++
+ mm/memcomp/tests/zero_callers_test.h          |  717 ++
+ mm/memcomp/tests/zero_carrier_test.h          |  405 ++
+ mm/memcomp/tests/zero_convert_test.h          |  694 ++
+ mm/memcomp/tests/zero_hint_test.h             |  860 +++
+ mm/memcomp/tests/zero_load_test.h             |  645 ++
+ mm/memcomp/tests/zero_test.h                  |  313 +
+ mm/memcomp/workingset_load.h                  |   97 +
+ mm/memcomp/workingset_store.h                 |   62 +
+ mm/memcomp/writeback.h                        |  133 +
+ mm/memcomp/writeback_batch.h                  |  398 ++
+ mm/memcomp/zero.h                             |  205 +
+ mm/memcomp/zero_convert.h                     |   78 +
+ mm/memcomp/zero_load.h                        |   91 +
+ mm/memcomp_rmap.h                             |  139 +
+ mm/memcontrol.c                               |   99 +
+ mm/memory.c                                   |   42 +-
+ mm/migrate.c                                  |   11 +-
+ mm/mincore.c                                  |  125 +-
+ mm/page_io.c                                  |   42 +
+ mm/rmap.c                                     |   41 +-
+ mm/shmem.c                                    |  251 +
+ mm/swap.h                                     |    4 +
+ mm/swap_state.c                               |    5 +
+ mm/swapfile.c                                 |   49 +
+ mm/userfaultfd.c                              |   94 +-
+ mm/vmscan.c                                   |  651 +-
+ mm/workingset.c                               |   32 +
+ tools/testing/selftests/mm/Makefile           |    9 +-
+ tools/testing/selftests/mm/config             |   11 +
+ tools/testing/selftests/mm/hmm-tests.c        |  112 +
+ tools/testing/selftests/mm/memcomp.c          |  831 +++
+ 134 files changed, 46825 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-kernel-mm-memcomp
+ create mode 100644 Documentation/admin-guide/mm/memcomp.rst
+ create mode 100644 Documentation/mm/memcomp.rst
+ create mode 100644 include/linux/memcomp.h
+ create mode 100644 mm/memcomp.c
+ create mode 100644 mm/memcomp/access.h
+ create mode 100644 mm/memcomp/anon_folio.h
+ create mode 100644 mm/memcomp/anon_store.h
+ create mode 100644 mm/memcomp/api.h
+ create mode 100644 mm/memcomp/cache_folio.h
+ create mode 100644 mm/memcomp/cache_store.h
+ create mode 100644 mm/memcomp/consumers.h
+ create mode 100644 mm/memcomp/defrag.h
+ create mode 100644 mm/memcomp/drain.h
+ create mode 100644 mm/memcomp/fault.h
+ create mode 100644 mm/memcomp/fault_alloc.h
+ create mode 100644 mm/memcomp/fifo.h
+ create mode 100644 mm/memcomp/folio.h
+ create mode 100644 mm/memcomp/format.h
+ create mode 100644 mm/memcomp/lifetime.h
+ create mode 100644 mm/memcomp/load.h
+ create mode 100644 mm/memcomp/migrate.h
+ create mode 100644 mm/memcomp/mincore.h
+ create mode 100644 mm/memcomp/owner.h
+ create mode 100644 mm/memcomp/payload.h
+ create mode 100644 mm/memcomp/query.h
+ create mode 100644 mm/memcomp/refs.h
+ create mode 100644 mm/memcomp/resident.h
+ create mode 100644 mm/memcomp/scan.h
+ create mode 100644 mm/memcomp/span.h
+ create mode 100644 mm/memcomp/storage.h
+ create mode 100644 mm/memcomp/swapoff.h
+ create mode 100644 mm/memcomp/swapoff_walk.h
+ create mode 100644 mm/memcomp/tests/.kunitconfig
+ create mode 100644 mm/memcomp/tests/access_test.h
+ create mode 100644 mm/memcomp/tests/aging_test.h
+ create mode 100644 mm/memcomp/tests/anon_store_test.h
+ create mode 100644 mm/memcomp/tests/async_test.h
+ create mode 100644 mm/memcomp/tests/budget_packed_test.h
+ create mode 100644 mm/memcomp/tests/budget_swapped_test.h
+ create mode 100644 mm/memcomp/tests/budget_test.h
+ create mode 100644 mm/memcomp/tests/cache_folio_test.h
+ create mode 100644 mm/memcomp/tests/cache_reserve_test.h
+ create mode 100644 mm/memcomp/tests/cache_store_test.h
+ create mode 100644 mm/memcomp/tests/cache_xarray_race_test.h
+ create mode 100644 mm/memcomp/tests/codec_scope_test.h
+ create mode 100644 mm/memcomp/tests/consumers_test.h
+ create mode 100644 mm/memcomp/tests/core_test.h
+ create mode 100644 mm/memcomp/tests/defrag_test.h
+ create mode 100644 mm/memcomp/tests/drain_test.h
+ create mode 100644 mm/memcomp/tests/enospc_test.h
+ create mode 100644 mm/memcomp/tests/fault_alloc_test.h
+ create mode 100644 mm/memcomp/tests/fault_test.h
+ create mode 100644 mm/memcomp/tests/folio_test.h
+ create mode 100644 mm/memcomp/tests/format_test.h
+ create mode 100644 mm/memcomp/tests/late_async_test.h
+ create mode 100644 mm/memcomp/tests/load_test.h
+ create mode 100644 mm/memcomp/tests/migrate_test.h
+ create mode 100644 mm/memcomp/tests/mincore_test.h
+ create mode 100644 mm/memcomp/tests/owner_test.h
+ create mode 100644 mm/memcomp/tests/payload_test.h
+ create mode 100644 mm/memcomp/tests/public_api_test.h
+ create mode 100644 mm/memcomp/tests/public_driver_test.h
+ create mode 100644 mm/memcomp/tests/query_test.h
+ create mode 100644 mm/memcomp/tests/refs_test.h
+ create mode 100644 mm/memcomp/tests/replacement_test.h
+ create mode 100644 mm/memcomp/tests/resident_test.h
+ create mode 100644 mm/memcomp/tests/rollback_test.h
+ create mode 100644 mm/memcomp/tests/scan_test.h
+ create mode 100644 mm/memcomp/tests/shared_test.h
+ create mode 100644 mm/memcomp/tests/shmem_retry_test.h
+ create mode 100644 mm/memcomp/tests/shmem_zero_fault_test.h
+ create mode 100644 mm/memcomp/tests/span_test.h
+ create mode 100644 mm/memcomp/tests/storage_fixture.h
+ create mode 100644 mm/memcomp/tests/storage_test.h
+ create mode 100644 mm/memcomp/tests/store_transaction_test.h
+ create mode 100644 mm/memcomp/tests/suite.h
+ create mode 100644 mm/memcomp/tests/swapoff_test.h
+ create mode 100644 mm/memcomp/tests/swapoff_walk_test.h
+ create mode 100644 mm/memcomp/tests/swapoff_yield_test.h
+ create mode 100644 mm/memcomp/tests/test_api.h
+ create mode 100644 mm/memcomp/tests/transport_reclaim_test.h
+ create mode 100644 mm/memcomp/tests/transport_test.h
+ create mode 100644 mm/memcomp/tests/workingset_load_test.h
+ create mode 100644 mm/memcomp/tests/workingset_mthp_error_test.h
+ create mode 100644 mm/memcomp/tests/workingset_storage_test.h
+ create mode 100644 mm/memcomp/tests/workingset_store_test.h
+ create mode 100644 mm/memcomp/tests/writeback_batch_test.h
+ create mode 100644 mm/memcomp/tests/writeback_test.h
+ create mode 100644 mm/memcomp/tests/zero_callers_test.h
+ create mode 100644 mm/memcomp/tests/zero_carrier_test.h
+ create mode 100644 mm/memcomp/tests/zero_convert_test.h
+ create mode 100644 mm/memcomp/tests/zero_hint_test.h
+ create mode 100644 mm/memcomp/tests/zero_load_test.h
+ create mode 100644 mm/memcomp/tests/zero_test.h
+ create mode 100644 mm/memcomp/workingset_load.h
+ create mode 100644 mm/memcomp/workingset_store.h
+ create mode 100644 mm/memcomp/writeback.h
+ create mode 100644 mm/memcomp/writeback_batch.h
+ create mode 100644 mm/memcomp/zero.h
+ create mode 100644 mm/memcomp/zero_convert.h
+ create mode 100644 mm/memcomp/zero_load.h
+ create mode 100644 mm/memcomp_rmap.h
+ create mode 100644 tools/testing/selftests/mm/memcomp.c
+
+
+base-commit: e728da875eb1d50add12357d01f44a3edf9a6f8c
 
