@@ -1,202 +1,165 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9590E606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 22:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933AE606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 22:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=k1WbxU0l;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=DtX+D3/G
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=ZAEZsjJp;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Q9DTKFid
 Received: by kanga.kvack.org (Postfix)
-	id 5B4FB6B05B1; Mon, 16 Nov 2026 17:48:55 -0500 (EST)
+	id 60E1F6B00EF; Mon, 16 Nov 2026 17:54:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 565736B05B4; Mon, 16 Nov 2026 17:48:55 -0500 (EST)
+	id 5E60B6B05B0; Mon, 16 Nov 2026 17:54:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 409356B05B5; Mon, 16 Nov 2026 17:48:55 -0500 (EST)
+	id 4FED56B05B4; Mon, 16 Nov 2026 17:54:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1526B05B1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:48:54 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C22AA0262
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:48:54 +0000 (UTC)
-X-FDA: 85442473788.17.C16A369
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BA7A540007
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:48:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=k1WbxU0l;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="DtX+D3/G";
-	spf=pass (imf11.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794869332;
-	b=VdbMF6lIMW6nvdP8g+1xKj3GM3baqwmOC/JHrX1iNFDZsnn3Qlnbp+om7DGo62RqpJmmOo
-	FzTw+RPH7UXWoZgx4x+ZCZVVjZrRrS8zTU1QMO8hKIHR1AUiwu3xF5gn3eIXQC1pjIES+C
-	4vRdUvQcaJw2k6lblz3BTDEdNAuyeDo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=k1WbxU0l;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="DtX+D3/G";
-	spf=pass (imf11.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DC656B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:54:47 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72A5A16014B
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:54:46 +0000 (UTC)
+X-FDA: 85442488572.05.72B1017
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 39885180003
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:54:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=ZAEZsjJp;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Q 9DTKFi";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf24.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.158 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794869331;
+	s=arc-20220608; t=1794869684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=60pDhYqz+P/R0qO3ME/ENMTcAYUA1szCxs7zb9TkRHQ=;
-	b=GlowmJ+2941P1a0SUlHqjnVm30l49WWIc6HDoiHKYRAhNULcujXePHqTffTQuSyn8C1C48
-	BOLux0GPGkLZ6+1ftVe7FWktjaqy62p6qA6Bx3G1HgKfb80NALZpC3lH1551F2GUrK6XLr
-	Yi33zjK2ttAdnKabYfemiRt3EzIkH6M=
-Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGLYuWs1763929
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:48:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=60pD
-	hYqz+P/R0qO3ME/ENMTcAYUA1szCxs7zb9TkRHQ=; b=k1WbxU0lT18UNmrfrowr
-	y8lYOCZNHg2XrgLX4thXOcJ3RlUAb8SxGwHDhC8PUYAt217320UMYud3I5p4Srfm
-	6QU4bFrowB3M0GGpHY1i5fHPKf0r/2A/9nafA3zaQt4eIk332NNa8mXs7Bbdw50x
-	GZfTUn8r8CbEoyvCeZsHbO1sHQ1MFAUp2W75qr4SM59U+9IXrFDIarJ25YOFlOs5
-	KSCyZBiQBywR8GQ/XJWEMnvcwGuVYsylasbbZEMQF23euFbKRbjtpOxTwhgLeF+L
-	abnUcCxQdOEPOXg7VbMNASQC3fjzwuBCdtIrhjHTxJ/l9hgbTjBWUHePsKCTXmaF
-	AA==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4j059hkdvp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:48:49 -0500 (EST)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-94960131befso479131185a.0
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 14:48:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1794869329; x=1795474129; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=60pDhYqz+P/R0qO3ME/ENMTcAYUA1szCxs7zb9TkRHQ=;
-        b=DtX+D3/GFNBr1k5qefjYNayYXNryZj12y+erBQZaJNhPGsaXMj3Qut0k5EHWb764hM
-         MRghPV+x+zUFtJbYXsS26r8fl8aCkNGeonDDGApaxPjdvLEHGjGlt5Lx+8WCIoUOfTLE
-         w8Iz9KccH88CDCBE4/+ox3IVaqHvcUv9fxdyFTj906IssAfImp4sPXRPX1niwt3OdLW1
-         NwSYEA9AlNJxburOlIuFuibhf2sYHtOzGg/BrnQlckyfy0yCpWsqq26jqBF5wxgIP3Gc
-         CqmJpd1eWhSZ2fz/lYPSdm+vEzsEu5y7YXB/OivBeExxmGWqHddspDf8hJpC7H9oTSi9
-         U3Vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794869329; x=1795474129;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=60pDhYqz+P/R0qO3ME/ENMTcAYUA1szCxs7zb9TkRHQ=;
-        b=V9Fr4jLU8smbxbb8o01JCNucprSoY9aXkW6DxxeCvNmOi1KWcTpPRy+f+z/teQqewH
-         t581C+UhhNZqXcwPG3TsrB+bEpp8vNKtcH1+HKJphsMUDP+trT78AcG6ZssRv9py0Fgi
-         /Z8dmwnESK4abzTqmBvjtrdMWKU6Bll/pgLUzSHyaFrpgaIjGxfu4RxERsoJBL7QWXO/
-         W3ppVZghrlZsQ/b1w7UKf9D3viOP0Epv4BtqLQaadENtH2GJjhPYpyQQ0BI+R0NeZxrn
-         mUtQQUNBHw5Q+Z2OFrWMXHQhiXCpgJZrWD5FgrphT/EjBNLSTLuJBN4+3fo5hCi5A10m
-         Edmw==
-X-Gm-Message-State: APuU4Z/V2PLPE4Qf5rh0EYNKZO3Tc0YOQLFZ9GFDaKGbvCjoE8JHCwpc
-	cJ2VoogaQfbrNm8qvaysS/Yv5xeoJYG4WzU2Lmo9HGfeJloYwbtdJN34Fh3XFQOw6kdU3PKtCkt
-	CoYmWN6qKjRZh9s77DAvDjhLX19BAtBLO1ZlFD8W2qIH7GxF9
-X-Gm-Gg: AYBFou0lUxDlrHnkXAnZ8QL0ysRG92ZH48z15dIaqxR3xKShOzTJtSZQTUWLTBQtgOQ
-	xefh/fhzwFKvVtzJyCxP9tIRDlkZRAk2Qmo4Z4VYnDT+jBpnlgG+cC5TmE9lCs+OMascCIZ9Ip2
-	FBKueHtHs59K8ifj8JLnsPqRsTOPuIk3aWe05LE94WIOX9qinItFYq8lO+fOy4RusuGTcY4y+Hb
-	du1ud67PR7qHVoJZXjyrVuxnOFne0n9+slxR9V6hmiGTpQkPK1d1+twGZsrWd5nCkzrAr9xt9b9
-	Ea2iu84iKWrPSGB5FiEnv3TSiORPf8KfIps51ZMAiQf77aXLZfTzH75Mlht3f0okPGsvwEhfj7m
-	4dCmmauVsob/0n4afnvs4z5X/57G99+iTKNsgr4jrgiwjEZZvoIP7zluSBs+PFtbgwIodx1AcU6
-	CTnDD0+dVWRoiAA+ryYBjR3mRs
-X-Received: by 2002:a05:620a:2b89:b0:949:7781:6a31 with SMTP id af79cd13be357-94977816f98mr830657285a.76.1794869328823;
-        Mon, 16 Nov 2026 14:48:48 -0800 (PST)
-X-Received: by 2002:a05:620a:2b89:b0:949:7781:6a31 with SMTP id af79cd13be357-94977816f98mr830652185a.76.1794869328428;
-        Mon, 16 Nov 2026 14:48:48 -0800 (PST)
-Received: from [10.207.2.125] (nat-128-59-176-174.net.columbia.edu. [128.59.176.174])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9494c804f9esm954860185a.11.2026.11.16.14.48.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Nov 2026 14:48:48 -0800 (PST)
-Message-ID: <cc8daec0-c3e5-45be-9af0-d58719a43953@columbia.edu>
-Date: Mon, 16 Nov 2026 17:48:46 -0500
+	bh=OcAgC0vPJKwVGXFjWubBy/YnWKV2HmzIb3LAukpGicE=;
+	b=ZwHnjI9Ckvm63cmjN1eClz79//pZ2upZrG67NfShsmoZPV+/Xz84YUfLwhTg5atm7ETZsa
+	5R/FwNSuMKJMKP7bzrmHZ8rE72pVgSupfTdHcEGzlrSb12blDi8wQfFndFCzs+GzRCO2AI
+	8O4BTjm4ipybfsH5O5DAA87HREFuvl8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=ZAEZsjJp;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Q 9DTKFi";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf24.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.158 as permitted sender) smtp.mailfrom=arnd@arndb.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794869684;
+	b=Hfn6CKk+HOz66VrG/I5nsnOxq1zbLBsQPwGHYypyFvjfFtldQx+kdQ0aGgqlSmhvVmDGAY
+	00QbI46IB61jCsTBKjFifRXKldqFG5jHEYrRpmEDznoCNQYVDDPWzVFYHN/NNSZTiYAdVI
+	yE4dsK9zCXzf6LjsG6epZeK9MkSmPoo=
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 54D601400080
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:54:43 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Mon, 16 Nov 2026 17:54:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794869676;
+	 x=1794956076; bh=OcAgC0vPJKwVGXFjWubBy/YnWKV2HmzIb3LAukpGicE=; b=
+	ZAEZsjJpuRQxEFpNlUZgnShZrgORqdVNh9DyAVrLzb30qXR61XfYqoRaMrobLuH7
+	zynLG+rLBei2d6LgTseF6/Qsv0f0k1bSxFNPhydlhTdo/E9jaEWpZr6jf2snhjJs
+	p0PpdLtt2tVJhmRpWzkyXLsm8oFMA6LSBx1DIh5f5tytnmoUCfswTljpraIgofMx
+	qnZ0sXkBEg3LeqYbdeM8Xg13BM0yd86FTDqd8f4Mv/KE3QWnlWRJfSmsD01uU/1H
+	JunDVoj1Br6H+nLAhOO8aw4xRwlI9knNWnRUBQ3rRPBPMTP8YYfPZrVCep0r1l+S
+	J1Eq2NaURUS3F4BmXDxbug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794869676; x=
+	1794956076; bh=OcAgC0vPJKwVGXFjWubBy/YnWKV2HmzIb3LAukpGicE=; b=Q
+	9DTKFidW8SGMQlcttnyM4KM7l8Rlgdl9JoiGLBTw6vGhuH8Hfvif5fJcsK4bxJjB
+	3JnDCurQWCL01lfJmu8Cf+xXWjlRixgLbKW8ghg0iAw0TvBpR++etMHvXWbQD8bh
+	4/WKFb3GuG31YwtYvfsoNpmB3P3/ANhmuRyqtPuBwfOC8j3xN/26CXSVqH+SrO5p
+	O+/xL7q7fBGdD4UVk99LKvPfMrkuhR7MUQeX/LQvkdnYSkl+BCLGKvSzl17iTAuk
+	hzAYTGHTC/YUqlqxDn/mlX1L2RhqbypIjTpxRAxj3FT49uj24+M3VOXay7eWdo4n
+	XWRpG/d3k259KP5mbuBrg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794869676; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:melRIx29RidZK3KrMu14FN8Pk89Q4pvKAlrKkAzEwUZ4Cwz
+	MoPD2rvb0Bm10v9NYsV8Wvwq1Wxr2+4WRy/fEJVActMVlTk3IjrfJHawVoft+ZJI
+	mEadM+K/tWi3dC2DsEqauVLSainuFaIvo1oPDqu1xdXMv/iBjbLscmFfRrWmV5+Q
+	FCosqK4XtgwcEj+c4ZUoy4RUBwOGXZqApw44BubX0AQc2hz9gWRCv9MIc5Iehm8m
+	7Py9oGIIubzOTL5Lnp+enCaBG5vxZ+qdvPrBrzj+Kd6bH9obxbB9AZOZW8UJ4uMK
+	PrsnP/Zt0n9itPbGilJNFqM2WdVrFdkP8IP78BQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:1FLIZhGqarwOJSnywNEf9XRvfjOg2CpkcYCnEGQdU5s=:upc1O8MhVk6W6DXMUXoKnCzT5vlTeKI3ptx/dGWzRao=;
+X-ME-Sender: <xms:n4n7agXZ7ONsA579anVWRWvWK3svLhzxYQfKUya7zUY1ECSI3W_Lbg>
+    <xme:n4n7ava4_Rif4XI_kTldl2Wv16XH4NtzaWT80AdcO4Cjg7P6MK9hW95CISU6e8D6_
+    QnupqNF6Fvqc2g4aAIuK_wItjOGMAkT3AueMOqtQZHuHCHrR5p_jBn_>
+X-ME-Proxy-Cause: dmFkZTGYHYRRTDjHLNMRLa12I41RV/zEUX5WZz+wz6jwGtrJt9YQLDiiD2umaL7QU8Y/qB
+    iECjbl6aYU3q/0J7B2Zv7XwkLq2NTuAEl2lYzsFFfzHWIDRX7QGqZ1wrfNYzqWAAcxs3UP
+    zvZ+yvxg01oDoRtpjdbpnQ5iFomwiYQpkHZLDJfw2rM0QquV3UEg8Lu+BITL/63EjH/G0L
+    9qX9B5G+BCW0tG+4+s9LQPza5D6BLo+3wbITjCE9Rcy4y29konmMAOurewxT6Tr++S90dq
+    cPHsImnluo8UikP6vG7g8wbS+eVlCp2LkEpHP56AJbqT3gqaj++5oFCkPJUPgxaZwLqpI8
+    o00H6vIP2RSQYTyqnEalaSnYha3EWtY6uexVC8QlipwsgATE2m+gKnCgbyJDNbuipj3G8w
+    SmwWpamBMJcnBAQF/lbbPBnnFP/wgmf16VVFk6brqBLtE8xqQY+s+i22wcrHn8BTOv79ac
+    j/NZa7vV/IHjryko7kye/LXI7qW6XF7hZtp6gP2Uu19TYjVFBoVo3EondqK0SPD4vg1u3i
+    guWhisYm11KjBFmyjpxNcXvaOST6ywxyTQycc8dB3YRWh7j5pHwlNFCuzfRYoY3WBr9MsW
+    tlZrbtmDiKz6ymb9We4Cdj8O9Mq1lm4HDsHp9Xg9gqmHT3qq4J6qZY2GbJBQ
+X-ME-Proxy: <xmx:pIn7ak8JY2mxHGkdnBacSQy0_YDqn8uAk8TXcVv0K-3nd2I73f0fZQ>
+    <xmx:pIn7as3QY15meRWmJe33ONUEWlbPLODGhW_9dkJeGI2R03y9_R8Z6g>
+    <xmx:pIn7an1z6hs-ML_bz8h_Ewbl3CzeMOdh0LhclBXpEMzkuPQEsNTU7Q>
+    <xmx:pIn7aou5xvc1t6CKTaftA8otrpULQ6opJOJTRpeIghqsWVPUMxaptg>
+    <xmx:rIn7atQNXqBX-b-MS9Yz8DIBNXfiyAH74u8AsH8C_963fMr413skDJfy>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 373F832A009F; Mon, 16 Nov 2026 17:54:23 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/9] fs/proc/task_mmu: write-protect device-private
- THPs in PAGEMAP_SCAN
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
-        James Houghton <jthoughton@google.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Balbir Singh <balbirs@nvidia.com>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        Michal Hocko <mhocko@suse.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Andrei Vagin <avagin@gmail.com>,
-        Muhammad Usama Anjum <usama.anjum@arm.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
-        Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang
- <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
-        Kiryl Shutsemau <kas@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-References: <20261116-uffd-state-fixes-v2-0-4397a0196479@columbia.edu>
- <20261116-uffd-state-fixes-v2-5-4397a0196479@columbia.edu>
- <38750bd8-6bb3-40f9-901c-44cef40a9de7@kernel.org>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <38750bd8-6bb3-40f9-901c-44cef40a9de7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: sO6aBwh4ahu_UZ1HO01Hp1xoocb9LgUY
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA5MCBTYWx0ZWRfXzq8FiE8KJnwL
- Fs1nMEKtubbPS9OyR3p3Oj9socHcfRQNw/ShSUgzjugR2+EC/scQFe68i0gGSo5Oyo4m+kgjqGn
- 3HBNhIqLxbs8KiuI67QTqA+ucoTQL1GqFBx3rd+TWkHMT497ZNj3
-X-Proofpoint-GUID: sO6aBwh4ahu_UZ1HO01Hp1xoocb9LgUY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA5MCBTYWx0ZWRfXx4LBaRKDPnGt
- M5EwqTtEqcGU9y/X/baG7J4Gh2D1G2pUROP+xnDvaGoEx870LIgTmMQec+w24f6O6t2fzAwrHBR
- CKjWu6z9zeR20jNw08gf/0J4PG0o5djXlZyN5l82Y6Fei1wqNJqPFitiAizQGVagXeDZIFBtSX7
- 0B+BS2jdhec+a4e7vPOK15UQLAjxi3FDLr6B0fi8tPQSwr51ipmlfbddpihHGBOH/SBxuCbbYPp
- DT7+iTJskxizQd9J3krwlFJUKSoTrNB6doIX9LxUZjRPVP0EWRKsbvY6jKTcnRFYMW/4RUww7bn
- axXmpqL50qB3ONPFktoeDj9hs+UCcg1INSaRlzx+OM7+P9aLXoElFq3HOybPDzjceQxeo1A/t7O
- YKkozLP4AabfjowaN7Pyc4vAXPVYZ/XknVvq86Hscm1o6MNHs/lu56w1ou4pKxn1+FcSwxUorqc
- QTZ5X8h32QkGnC3UiTw==
-X-Authority-Analysis: v=2.4 cv=NLlAaE6g c=1 sm=1 tr=0 ts=6afb8851 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=KPY1cyGZ6h6m4ASiENTC8Q==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
- a=tHa68p0SAAAA:8 a=qGNAzR1j6OtaQhhBgNgA:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22 a=ufIsyHvWW7FwcMbVRpPq:22
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11968
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 impostorscore=10 clxscore=1015 spamscore=0
- suspectscore=0 bulkscore=10 lowpriorityscore=10 malwarescore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611160090
+X-ThreadId: AwZDIwU2rPTF
+Date: Mon, 16 Nov 2026 23:54:02 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Christophe Leroy" <chleroy@kernel.org>,
+ "Arnd Bergmann" <arnd@kernel.org>, linux-mm@kvack.org
+Cc: "Andreas Larsson" <andreas@gaisler.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Ingo Molnar" <mingo@redhat.com>,
+ "Jason Gunthorpe" <jgg@nvidia.com>, "Linus Walleij" <linusw@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Lucas Stach" <l.stach@pengutronix.de>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Malin Jonsson" <malin.jonsson@est.tech>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Michael Ellerman" <mpe@ellerman.id.au>, "Michal Simek" <monstr@monstr.eu>,
+ "Mike Rapoport" <rppt@kernel.org>, "Nicholas Piggin" <npiggin@gmail.com>,
+ "Nishanth Menon" <nm@ti.com>, "Richard Weinberger" <richard@nod.at>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Thomas Gleixner" <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Message-Id: <83495d02-4e09-40f0-94fe-e57a1e73d1a3@app.fastmail.com>
+In-Reply-To: <afebfaf5-f3ee-4234-875d-e5ebf1ee64fd@kernel.org>
+References: <20261116124832.662455-1-arnd@kernel.org>
+ <20261116124832.662455-5-arnd@kernel.org>
+ <afebfaf5-f3ee-4234-875d-e5ebf1ee64fd@kernel.org>
+Subject: Re: [PATCH v3 04/10] powerpc: kvm: allow flexible PAGE_OFFSET
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BA7A540007
-X-Stat-Signature: sdbmeqjdfrfytqt19zhbpuxkzw1m4e3y
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794869331-531786
-X-HE-Meta: U2FsdGVkX18wx43FRGq9nTLCTmznih1lDuA4mmBycxhgygeWIBK3kLhqWEw7lrCytnsrZbldaYPg9nUUk1+lwzvZqmnenJUrqmwXsWjhhdVFfOKG6Lak1ZvXGAdiLzQMiKRl+zbTqucTodXIKPuwd0roVZ+T8VBAo3FIb+JuKa/IvjE1wgKxquXRLugGuTSdx3qXB5HiIsRQRzHCmtRw5r+AnJSchvpJqn+dkyI94o/lGX28IfUg1ypK19+GNgztYkEBxPeb4B3EPbiTJShZ97WzWkgnGUSMWx2rJjM5YebWR9xJn/OewwlhIzMPTwuWmNm9E762RBag6KEn8uINxIXj4d8AZ1lNoRsAVN1FEwf/lGXG36fLzfCIIv6ZKGIUazS6m3SXfoTS+AGoC3/EQ+Cjh7UdfUv5/lDEhELMWo9MtC6AzjNkXA587ktSya8p0Zkz4vslpLMYBgw36UB8YYdFZlZeIBhWHHXevVcavmwuJwo5LD9dheBsi6X0XSjJ0H6Rqjs7B2mxb6SyT06S/TA2EsrgJClkjydGu2W9Hmurl5O4iEv2vL8550sC8f5KH/iZlQKsAeKEAPaQpcnbdzJ01rjppMnuwffWwXIz99GVjMmZmzSoNZEc16C/Rnzwg2xlgFp2LvabuVhg74wPAV+aXamZN6vpCfflpeTU66OlxQgdKzRla3WDjQOoRmukleyXcwss6Zqb8q2ly9PXk9yMaUfq4VDTOKrQ+L76Dgxa3Q2NoQOphx1/OSa8F1MZWb2/j3W72oRXdj4ZN9PPD/cJmjrPs81WJBSjOObFBPpVFVDuyEbjZUdUk/ZX0KA0NtOYxN4OTDrcsW2KCUEZxo8RVoF/AVehe3CYrN9/x3YhTJkn8r05gDHj2Ku6qmydO+mO+cR9rO9R2QXP0PKQFs7OT9qjjxmLX+dGSvIjBpW1INFE7tMtsqM/AYh2RpLPRbA3i5b9efSCc49VKBf
- juSEgSXB
- KpSHXNNWlFtFJ4ONGku4mYqv2sc8yO396nYhlM01FLJ8PK/bapLjb5HhlO3HAjlJ8CGUn8D6RkttlRC0fSNf4C8tfYFbQbpDrqn1iGe9BBNy7wurP3fcDdvTmBnmjq4h0Ciqq3GnHNa/kEry5hOchDho2gnft6KMWU1aQpy+m/l300AxlZI6uj2ptTXxN4tDZh7pgT0tx/6bSwKpcBfRmEnN+vwTKoLiO+rLnMx/KsKq1Y2lL54L2XjNlNUFZipEtD/BMeicrg8BxwrkXaOh38B/lV/2aCQyw80bn7TITUrVMwMNh70u4+jJ0j3GwiPxHxIhKMsRbGG8xcbGHDqDZNQ0ZUQJ0n9skAEk52fDsotZti7lJeSSI2cIkFLW68T6EbVgsTa+16ued63ATRgVFpGUjujHl3D5ELM4k82/fvRwsVsrfegaGAsfvj5eRpsrX39atKVw9q9+iD6Vcg690y+v3+YFCyWIiXMmvlI5a8ENn/1gixvknpQ4JehuPmv4ccx50Q9m75iq1ciIzyyb+qTvvLp3b2U+JPIVlLlznYTM5zfOqmzsvGDERskVAAly3Sg3/512QsRSNY8fy90LaJEW+HH31UFC/xePv
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 39885180003
+X-Stat-Signature: twei7oddbczckfujm1g6qtuj9t4yj581
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794869684-278155
+X-HE-Meta: U2FsdGVkX1+X/bRVQFtCKPHV5N6cdXTFFS/QnBW5oJVJ1Ruo81AvVethxEO6JjvhNVRDp0S49AJewqRuHuv9vXTYj9VotGQVYZWWoG+ib7OeHlHwLML+DaZrD+2QI4bBOwqA+NLJO3J8/Qcd3sYPe6v++6xKOQvS3E1lMb7t40OVcNT64jdPFYt9gKXgigA7cPBPlJ9stu6l40dYNqIau1YxMpKb3E+Fhw9caxoCJSkNJ2KY2OliAILBFv/RkwVJTNUpBgWIZRwdWjm1vIg9uL/ffWQ0zK0lztIt5oOOOkqeGHFoo3ZQt3nkKZlwMftKsXNj7iAzgTsQWkHI3AyFbObmIRFtPL9caUdMVVQAYyrzhufpJzhJIRL1cXvMGNXtYSP59DUhb+PWlv8rRyE+PD9OaIPydMt4A2ksdoo1k0DL65UQVlV0MleJDnlJ/vt9lOhw/+4Ag9DYQE66NI0a3eVU+IXV6vp0Y+zRq+rufM9qAZi8tZ7ZmT5wOtH8Hg0RVNalO/hRMql/fq79RUxw5AdUXL8SgbycH9QLEJhguVZ+p8yc3op/SKd07ZhVpB2AkUVVSayCpUy9SaPaHOoOOkztvnnU2XApFyG5ZqwyWEensOrp6pZavf8KavdGNEuFcosfr7VDOkF2w1HR/dBcZ8L62mcE28i9lLLjy++VJn/LbXep0W4gZh5eJ0nXJQvzhKwe21k/i9jfqAj6nWMee24U9CSdWOL+1+obs0tPTrXq+qwv9gj4E5QEsZ2Ckch+Q0GmcgMArAnbBa+FTSWwsj2KRckCgyKO33dVYlIkILMA+wyIoCcyOr1TA0cK0vZlP13EF376Nk8lTZRJfWI9xHl8l9+bX7MY80ffVvj3TFI5q0YQdoQwu8bRXYzacxVDz8lt0Bvm6ozUAMgGOZDmbcjkS0GeuybbUlREOae98WbjcoWiTBtmdFGxArQOIQ5j6He48+OUeCNc2sHUZ28
+ C6qwTSQT
+ JBcCX4GU5fUtsinQ5Qy7ijTLSkT5X5UPn/2ozImdQ8VpLSpCQb7qiNSNQDfZl8y+JWDFwvAnAw4R0qhoTcsqTOu6q1Gr1GVQ8dyy1Hsp9d6T4gSNQ9GHj6GSZn7LpIGUg4/jyjv+Xzreg7P5V+nwpaxgpnC4LD3Ur4Df4dw2NJPVD8VxztQAM+4lEOIOlVjYRG6e9p5nxjbSIltalSqzrbGk5Q8zypBTJTljnMJqKWUEVXdg9jRkGJDQ7X7lnJYf+R2UsyD/MAtGFYxBm4yBu0B6ldr2IRuofiDRF1NAamfwIygVoigK7WyfhhaC0cpaPYVapRfSMfb7uwewbgoRfnohOz1BfNb8CtGFuaXbjCsr2xYRKBRc1bJQQdUFC16/K9Z+jEdQQU+rXjIzt+syj+BMl4vMhfNJO3rYSOPocxEgpLrqrnERgKCx7wg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -205,53 +168,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/16/26 3:26 PM, David Hildenbrand (Arm) wrote:
-> On 11/16/26 21:02, Tal Zussman wrote:
->> PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects a huge PMD through
->> make_uffd_wp_pmd(), which handles a present THP and a migration entry
->> but does nothing for a device-private THP. The PMD never gets the uffd
->> bit.
->> 
->> pagemap_thp_category() reports a non-present PMD without the uffd bit as
->> written. A user tracking writes with async uffd-wp therefore sees every
->> page of a device-private THP as written on every scan, whether it was
->> written to or not. This requires a driver that migrates THPs to device
->> memory.
->> 
->> A device-private PMD must be write-protected like any other huge PMD. To
->> fix it, pass any valid PMD softleaf entry to set_uffd_wp_softleaf_pmd(),
->> not only a migration entry. It downgrades a writable entry and sets the
->> uffd bit. When the THP migrates back, set_pmd_migration_entry() carries
->> the uffd bit over to the migration entry, so the write protection is
->> kept.
->> 
->> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
->> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
->> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
->> ---
->>  fs/proc/task_mmu.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
->> index ee7f509d376e..013eeea7d1a3 100644
->> --- a/fs/proc/task_mmu.c
->> +++ b/fs/proc/task_mmu.c
->> @@ -2520,7 +2520,7 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
->>  		old = pmdp_invalidate_ad(vma, addr, pmdp);
->>  		pmd = pmd_mkuffd(old);
->>  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
->> -	} else if (pmd_is_migration_entry(pmd)) {
->> +	} else if (pmd_is_valid_softleaf(pmd)) {
->>  		pmd = set_uffd_wp_softleaf_pmd(pmd);
->>  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
->>  	}
->> 
-> 
-> This really should be squashed int #3 I think. Or what's the reason for keeping
-> this separate?
-> 
+On Mon, Nov 16, 2026, at 14:38, Christophe Leroy (CS GROUP) wrote:
+> Le 16/11/2026 =C3=A0 13:48, Arnd Bergmann a =C3=A9crit=C2=A0:
+>> diff --git a/arch/powerpc/kvm/book3s_32_sr.S b/arch/powerpc/kvm/book3=
+s_32_sr.S
+>> index 6cfcd20d4668..0d8a7857f2bd 100644
+>> --- a/arch/powerpc/kvm/book3s_32_sr.S
+>> +++ b/arch/powerpc/kvm/book3s_32_sr.S
+>> @@ -113,8 +113,8 @@
+>>  =20
+>>           li      r0, 4
+>>           mtctr   r0
+>> -	LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * 0xc))
+>> -        lis     r4, 0xc000
+>> +	LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * (PAGE_OFFSET >> 28)))
+>> +        lis     r4, (PAGE_OFFSET >> 16)
+>
+> This is not enough I think. You need to load ctr with the number of=20
+> segments you want to populate. Here above it is hardcoded to 4.
 
-I viewed them as separate bugs with different Fixes: targets, one from v6.7 and
-one from v6.19, so it seemed reasonable to keep them separate. But patch 3 handles
-device private entries already anyways, so I can squash this in.
+Ok, trying this one now
+
+--- a/arch/powerpc/kvm/book3s_32_sr.S
++++ b/arch/powerpc/kvm/book3s_32_sr.S
+@@ -107,14 +107,12 @@
+        KVM_LOAD_BAT(2, r9, r10, r11)
+        KVM_LOAD_BAT(3, r9, r10, r11)
+=20
+-       /* Restore Segment Registers */
+-
+-       /* 0xc - 0xf */
+-
+-        li      r0, 4
++       /* Restore Segment Registers, assumes PAGE_OFFSET is segment ali=
+gned */
++        li      r0, (0x100000000 - PAGE_OFFSET) >> 28
+         mtctr   r0
+-       LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * 0xc))
+-        lis     r4, 0xc000
++       LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * (PAGE_OFFSET >> 28)=
+))
++
++        lis     r4, PAGE_OFFSET@h
+ 3:      mtsrin  r3, r4
+         addi    r3, r3, 0x111     /* increment VSID */
+         addis   r4, r4, 0x1000    /* address of next segment */
+
+>>   	/* Restore host IVPR before re-enabling interrupts. We cheat and k=
+now
+>> -	 * that Linux IVPR is always 0xc0000000. */
+>> -	lis	r3, 0xc000
+>> +	 * that Linux IVPR is always PAGE_OFFSET. */
+>> +	lis	r3, PAGE_OFFSET >> 16
+>
+> Maybe use PAGE_OFFSET@h instead of PAGE_OFFSET >> 16.
+>
+>>   	mtspr	SPRN_IVPR, r3
+>
+> That's probably valid but wouldn't it be more correct to use=20
+> interrupt_base@h as in head_44x.S and head_85xx.S :
+>
+> 	lis	r4,interrupt_base@h	/* IVPR only uses the high 16-bits */
+> 	mtspr	SPRN_IVPR,r4
+
+Ok, copying that version now:
+
+--- a/arch/powerpc/kvm/booke_interrupts.S
++++ b/arch/powerpc/kvm/booke_interrupts.S
+@@ -229,9 +229,8 @@ _GLOBAL(kvmppc_resume_host)
+        mtspr   SPRN_PID1, r3
+ #endif
+=20
+-       /* Restore host IVPR before re-enabling interrupts. We cheat and=
+ know
+-        * that Linux IVPR is always PAGE_OFFSET. */
+-       lis     r3, PAGE_OFFSET >> 16
++       /* Restore host IVPR before re-enabling interrupts. */
++       lis     r3, interrupt_base@h    /* IVPR only uses the high 16-bi=
+ts */
+        mtspr   SPRN_IVPR, r3
+=20
+        /* Switch to kernel stack and jump to handler. */
+
+>> @@ -115,7 +115,8 @@ static u32 get_host_mas0(unsigned long eaddr)
+>>   	mtspr(SPRN_MAS6, 0);
+>>   	mas4 =3D mfspr(SPRN_MAS4);
+>>   	mtspr(SPRN_MAS4, mas4 & ~MAS4_TLBSEL_MASK);
+>> -	asm volatile("tlbsx 0, %0" : : "b" (eaddr & ~CONFIG_PAGE_OFFSET));
+>> +	asm volatile("tlbsx 0, %0" :
+>> +		: "b" (eaddr & (rounddown_pow_of_two(PAGE_OFFSET)-1)));
+>
+> I think this is not valid.
+>
+> With PAGE_OFFSET equal to 0xc0000000,
+>
+> Before:
+>
+> eaddr & 0x3fffffff
+>
+> Now:
+>
+> eaddr & (0x80000000 - 1) =3D eaddr & 0x7fffffff
+
+I'm probably still misunderstanding the intention of this code then,
+my reading of the comment was that both 0x3fffffff and 0x7fffffff
+would be valid choices here as both are below PAGE_OFFSET and
+large enough to alias the correct set.
+
+What are the actual requirements for the mask?
+
+Thanks for looking at these bits in detail, I'm quite out of my
+comfort zone here, especially with the book-e stuff.
+
+        Arnd
 
