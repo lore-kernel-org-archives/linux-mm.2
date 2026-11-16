@@ -1,96 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE63606A33D
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4EB606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 09:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ry7BddNF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GcXC+zTa
 Received: by kanga.kvack.org (Postfix)
-	id EB69E6B05BE; Mon, 16 Nov 2026 04:13:48 -0500 (EST)
+	id 51AB66B05BF; Mon, 16 Nov 2026 04:13:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8E8D6B05BF; Mon, 16 Nov 2026 04:13:48 -0500 (EST)
+	id 4F2466B05C0; Mon, 16 Nov 2026 04:13:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA5266B05C0; Mon, 16 Nov 2026 04:13:48 -0500 (EST)
+	id 408ED6B05C1; Mon, 16 Nov 2026 04:13:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4D46B05BE
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:13:48 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 479C28059D
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:13:48 +0000 (UTC)
-X-FDA: 85440419736.16.37886AF
-Received: from mta0.migadu.com (out-229.mta0.migadu.com [91.218.175.229])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 16C5D20006
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:13:45 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ry7BddNF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.229 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794820426;
-	b=Bh1w1rkfwmTvDNMOV/y1BTjN/1mNJRn30H1hszdQL6D5zX/T6Y321zPiqVv7FdBo2S9nCo
-	eerXj921ygiWXEWxu307ZB1zGCdnpGkuaxc69cdhH/2uq+eb0VFXSh6q6pA/SWymj6zJuA
-	HbaKnh/+lgfWxJD5jPztfxyEPbQRMHo=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 179ED6B05BF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 04:13:50 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 86267A017C
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:13:49 +0000 (UTC)
+X-FDA: 85440419778.04.B8AAFC2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E8D5820008
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 09:13:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GcXC+zTa;
+	spf=pass (imf03.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794820426;
+	s=arc-20220608; t=1794820428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uBI20GIoHIeO9nJKpZQ+Icy1CTlU696c8C2pcMHc3vs=;
-	b=fPng/cvLWXHzIVb7l/CHkCCZB0AhOjuxdvOac6OWEiiy0IqccYMwYoTzMmk5tqRpWtQpGS
-	rzOUhvoZClosBEwlPR7tnG/+0ImdKvd4JUCJHRXqQ+IIxvsRRXFG013A7gaYpLW4Xi7R1v
-	3kna+fYSehx49PEkHMcb7gV9bKCGakQ=
+	bh=Acdm197U0xK657CGEFs4haruK4G8I1o86W9oW5IkpgM=;
+	b=UwmoP1i7HQEcIEs8LXJA+XYZ9WU+n5uoIyoMAJ2HF/PK5mb7sFRL5JDeljBXcapGp1muFd
+	ofWZ4nQ7fKYNN8/uqXysMBOXjhky+L263/ZVprRlhSLKlBj1W4wFptdTuNdDXHBUykTBJT
+	3OrlRYkTy81kl6AUMwQSVbBqCVdLSFM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ry7BddNF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.229 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=vkoE6KORQMAFzwcm5haqOvH3H10zW833YOviF5z+zOY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794820424; v=1; x=1795425224;
- b=Ry7BddNFgm8Y2QWK1Gj/bejhBQT1hhYfcDVVFQBZygeYcWMGqLTFBGQYxdLJJu/vXqd+pl/n
- VgdKTw2X6CyMIck031myc1U6Czl7aI4nakTa9AI2uTmVGgk0niBVJpEl78lcKtBFQAyC8qWZ1Mx
- gduMQpQ4FlDWLBFGVTWBcIA0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 79afc9c9dc722c5a;
-	Mon, 16 Nov 2026 09:13:44 +0000
-X-Mizu-Trace-ID: 79afc9c9dc722c5a
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 16 Nov 2026 17:13:36 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org,
-	kasong@tencent.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com,
-	Baoquan He <hebaoquan@kylinos.cn>, Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v3 3/4] mm/mglru: skip cold PUD subtrees during aging
-Message-ID: <avrJQIyQXf9zmeo3@fedora>
-References: <20261113084953.412919-1-baoquan.he@linux.dev>
- <20261113084953.412919-4-baoquan.he@linux.dev>
- <sashiko-outbox-214125@kernel.org>
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GcXC+zTa;
+	spf=pass (imf03.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794820428;
+	b=XDvw6+88hPMPMyjlQJJQk16lmzm0ncmUbgLc3NUu+L2mmE7ZvhMF15Dot6478Bqwmob/2P
+	+P5DYVbP5pwhnJNwDeTNSROaxpH2S5cDX0vhtrstD713RwCtV6yJfOqN2nKLuyYl4W/pPW
+	QbjOP6w5GvFZ/RnUpKoiIF2R+OfH7BA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 86939625BA;
+	Mon, 16 Nov 2026 09:13:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D131F000C4;
+	Mon, 16 Nov 2026 09:13:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794820427;
+	bh=Acdm197U0xK657CGEFs4haruK4G8I1o86W9oW5IkpgM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=GcXC+zTasqUB6rZyp40ubqEMD2P5RI8V5mDV45QPKVzlxAigUSw03ias6QPRyLqM0
+	 G4bwYwatGjWTsJyY/FRnX+9H6uvcYv0NPrI7EpF4/Ic6diJLNLvrg2Txa9y2G7A+nv
+	 JWcpNLdCUL0cO6p5FH2N3GE001X6ofrN03s8FEd0H5/BTYKjiFIDVN4JmNq2ERtW+D
+	 jKVtjlpfcCgfIHxgbzs5Sk1bKX+yUpuE0GN4qbMne/oQzqNDhXf5oKrBbNVoi128gh
+	 cSgXzFgU2xG+7W0HRdl3wc3UKyqYfcO9H2mL+AEFs6QQsldsl4pqvldtd2rsFs9o+Y
+	 tnafUuwMfeP/A==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	linaro-mm-sig@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,
+	kvmarm@lists.linux.dev,
+	patches@lists.linux.dev
+Subject: [PATCH v10 06/13] dma-pool: Allocate CoCo atomic pools using CoCo shared memory allocator
+Date: Mon, 16 Nov 2026 14:41:29 +0530
+Message-ID: <20261116091137.94252-7-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261116091137.94252-1-aneesh.kumar@kernel.org>
+References: <20261116091137.94252-1-aneesh.kumar@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-214125@kernel.org>
-X-Rspamd-Queue-Id: 16C5D20006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: bii9wugw5j68bctqucszsmmq9ctu5ora
-X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794820425-844313
-X-HE-Meta: U2FsdGVkX1+isBiXpCcZb6OI/eUXq1rgZGPc4dLYHH8ELX3F6NvGvduEVcv/fiQDjvjMyIl2lkAIb2/A/OhHK1gG7cpWIBZkr4iLco0gMHJB/won0bnMN27HkDZj2qNQgCrMtXMazcJwEZ5FLIlFF/X72edGNnThFr0eAPcmMbYqxw05rI0nKpO/0qIFvZVcqyGuB0uQNFOc/6lJATEywijnrqcEGbui19+Sa7/NeiakvrMaQZMcxhMbZtNPmuLntoR9ivCcWLCtUOuMedq0poCqXttc4TtKpTsAgTeXDBMi4rtlUsQlh8eTeN+Lc0VrbueLr/snPlhy8mEXekrOeLB4ZmOoML8RQsMW5kU8S7GixXLE78DwD08W7s4sls7MGlMW426pDlJJ+snc2Uf17iFO+3KeE8NpuVCKv8D6S64JEsTQE18ikHhsJi7m972z4x0TtAXgUxh7Qo/0yHuwpVsLQYY4uU5toaFclPa1yEM8hqDAoZ0MvZSN+NMkx4SL/dq3PGD0P3fq+BBBJkhEOGnNfzHRLmsHX7RC6iW6CgebeC0J6SocMglG9qBWGxIMWcqUTMk9dDxNoZMyCFm+d+8j01MAeC4w60ITyT0BzGJ4NxzMEm8tRE24tH2PJPCwQNipDN3YYZm/ofJ8vo142Z5RZUY5pGOX32n3f4T1b3Cfxu6h5Qm0M3IehdayEyhS0e9YzQMrFtpmY5/EKRnuNj2wLgrBAI5fW4YA6KR43csnsD50ake4VNi2v0OAjfcI1mKwjP+NnZXrVPCUf/SBz9dbmSPBqVEQyE6wbyOfFWM/EThxpoHP8CfZnGcPzDtNXMbTPuCRamF1JFwda1sCcaS/h4V7wXARbrb8M/jS3M6RDLhOnuGoBk4geMQ5w+0jLifLVfjK58EibQkGEXw7GM2YdxA5kKtpQKugYWUYz7voKWvN4z5rghk3tFX2rz24kuQGyEp1mazRLfo7amC
- BmeMbhgU
- 2+NoF5Xv9SefDlzu/Gwp7NpHu7z9agf1o8sygj2CmeP3RdcAxQP1ZQW/Hn89leqxv6MI8dMpBW6WBD0rBAoZeLN1HQYVK8OskNjS39DyRKA3FFAuWxgs66SkDuiAZhikAfy4ypgIiY7g0agFvVKu/3bzyZwTb0DFGRKrotKS9iBaKYx+P/bA2yMf3p5hXfFk3/u2uTH+Lk0xDGGJgKxpeEv4oQ2ovczOd7A5/PF4a+Pq9DShq6AVzuN4288edmiRR1LKoFakZ0FTxKOxy3AHd21P6vgh2dUBxzuXIgcB8VhPXMC5gspup4FdRVtlcRz2ljfOmlk/F+Z43GqqRFXBOe7MLbkz8uh8ojbcjz+/bicbq14sS2YEiVqGeHzyJkQ8NnI/FlUL/FBS6W/+dBxfEeM5/siouqoin1iukrJaAWJLQVHj35+ctxrCa6vopA8yGhzUNO4EfdFIfnlW6WupIuhY9c3ua7qSs9BVWk7C0Ew9rqibBWkqum2VBu/QpRU7RPXi/IU7VDyZTjsmXXD4jI0inq7nFoK24/3nCKkcxv5p8S2qOlzlJyER13Dfqjakio9DBLlMhvcRncHHMRFHa/Dtnhw==
+X-Stat-Signature: h1mtn1iq3wpedp3ghgdng83qszphdrio
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E8D5820008
+X-HE-Tag: 1794820427-972553
+X-HE-Meta: U2FsdGVkX1/mXXJAoqYPG3zfuZgEUeQ1j3vsJyouR9Ya10v6eyQU/qLib1rrKd9Oyb0k1ReRcsvEkmpCn7LSnnwxbATebQYNUSz33AmYKV7dBuie64FnoWJ3egvXO6goYyGEvHn6VMIlEgPuRermRYrKdDlhFhy4+dQVzE+uMcbYWaFxXZtnidZcEKMZe2CQfJr2k/Iw5j/X+iXpdZliMI5UA2AKfk3l3UX/Ip9LELFv5wGvR0ggC78IVUNTyMF2hs6Hjm/hCpt0Az6taVO0G/b3k/XEDcF4Lnq+IaeWNwXbtrJaWjhQaaE/XiPpFSgMpBZ/BTycLj/jX2r8SNEYwp92GVovyCfnoXsYoeh4YZHhxwdubmsBkeWG76dRYvL8JTjP4WM1KPOQDvTaR70dI4zRXMj1or05tvaQSC6S6cQxpjhBZTWc1xSDUs95M6YT2JNf/WGMt743vcFW5y0K2UsUdSzcHVGmk3STipLdvTRM9EE0GGmrzp6x6LfgoTpcuR3zecKB2tDNxGdAwgyTwvo1cYn3QXlMp//EVD7DBENwhqYZfkgtdwNIEm9MwYSkh5qIdvF33oShNa2ZSJGnTnRWUqeqmtgHbp1TySMJwllIIW286+aI/lB9jZgdReGj3xsU7WjcOSegoNV+EiWBMwKytf/wKA9o406gWJs4qEMtwvK62KfMGauQcsHJJfU0mNWXC8Fow4IX/SrvhbTutoKitMJio9Z+t0qxlmYhax8YENza1CTGW42NvwumXah8GuxBpt3vCqunYDk730boHDmmrpHXzuUuTuy794ttqySOFzNtMAyqzUoYgvJcrKvMQ+9iFSoUQEBvbvgIrfEwUZMw3G6UtkDezJ58m/HCYC0hTAvN1xK2/hJJJvs3EBQgJfkz3HiV9zUre6guUUYx2wXpVx1g/IETwypAmGzdZfRQSTMko2l/OXVJmV8dk+d9nF/iDaJY23anGwfnbEU
+ IgTwH/sj
+ 9od6+vExXmeyOiuueK/kdeffFnEXAeFuGO824kGKp5uo25NMQxgjmKRiW+m744IzZAnPbti1E9HQ40RzdYNY3EJouebgc57z4ORLxHhMuuv1tDKjuS78rN8MrETmmoBdzOJpOKeAq/9pGrcFJcGvOJ8a8j8ZP07y+HAEYrpLNSvdtB3XIfGPHGoNQcmQzaOKRkKT4jKByCQOvTHl4V/lSp70KjJmHWnRyGxxTTAQ5kBfDcYgiuQ3Zrr69armQ4DHu8GkRJP/lxII8ODyN79hL5tuzNfxlDGoaG704vwYjuB4Mh3PWz/K74Kl4RMqWf+gZXg34OfVkmKOjuMxHTB1l/aWHqcUPOFs75hpQaYtsEy/5pdP1RWX2GpVsl/ZMxNHTc0kr0BFYVd3n4x9naV2x4zRJtFa+8vNIY8cuY2YZp9fByxulmu+oX8OA8HwIJILucdVXSg1HwS1zWbRA7G7Dg227hqcm6Zb2KEFcVUQL3ILKIdeH1AavLln2tBvb/gU2ZZLP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,211 +152,118 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/14/26 at 03:42am, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issues to consider:
-> - [Medium] mm/mglru: walk_pmd_range() marks PUD young on non-leaf PMD
->   accessed bit
-> - [Medium] mm/mglru: walk_pmd_range() marks PUD young for THP before
->   memcg and notifier checks
-> - [Medium] mm/mglru: PUDs with PMD-mapped THPs are suppressed
->   indefinitely once skipped
+Atomic DMA allocations cannot perform a potentially sleeping
+private/shared state transition at allocation time. The atomic DMA pools
+avoid this by transitioning their backing allocations in a sleepable
+context and suballocating memory that is already shared.
 
-Thanks for the review. All three points are real. The third one is the most
-important. Will Changes in v4. Please see the inline reply for each item.
+Architectures may require these transitions to use a shared granule size
+larger than PAGE_SIZE. The existing fallback loop can reduce the backing
+allocation below the order required by that size, producing a range that
+cannot be safely transitioned.
 
-> --
-> 
-> commit 31572808d36982038b4b945e98794001c99a5d21
-> Author: Baoquan He <hebaoquan@kylinos.cn>
-> 
-> mm/mglru: skip cold PUD subtrees during aging
-> 
-> This commit introduces a PUD-level Bloom filter keyed by (mm, PUD-aligned
-> address) to skip PUD subtrees that had no young pages in the previous
-> generation during MGLRU aging walks, and updates it from the rmap feedback
-> path in lru_gen_look_around().
-> 
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index a0332586b3d83..79d533ebfd108 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> 
-> [ ... ]
-> 
-> > @@ -3730,10 +3732,11 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
-> >  	*first = -1;
-> >  }
-> >  
-> > -static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> > +static bool walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> >  			   struct mm_walk *args)
-> >  {
-> >  	int i;
-> > +	bool young = false;
-> >  	pmd_t *pmd;
-> >  	unsigned long next;
-> >  	unsigned long addr;
-> > @@ -3770,8 +3773,10 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> >  
-> >  			walk->mm_stats[MM_LEAF_TOTAL]++;
-> >  
-> > -			if (pfn != -1)
-> > +			if (pfn != -1) {
-> >  				walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
-> > +				young = true;
-> > +			}
-> >  			continue;
-> >  		}
-> 
-> [Severity: Medium]
-> Does setting young = true as soon as get_pmd_pfn() != -1 mark the PUD young
-> before checking memcg ownership or MMU notifiers?
-> 
-> get_pmd_pfn() only checks that the PFN is on pgdat and that pmd_young() or
-> mm_has_notifiers() is true, while the memcg check in get_pfn_folio() and
-> the notifier young check in pmdp_test_and_clear_young_notify() are deferred
-> to walk_pmd_range_locked().  A PUD with PMD-mapped THPs belonging to
-> another memcg on the same node, or cold THPs in an mm with MMU notifiers,
-> will therefore be recorded in BLOOM_FILTER_PUD on every generation and
-> never skipped.
+For pools marked cc_shared, round the requested pool size up to a multiple
+of the shared granule size and prevent allocation fallback below the order
+required by that size. Pass __DMA_ATTR_ALLOC_CC_SHARED to
+dma_alloc_from_contiguous() so it enforces the mandatory alignment. If CMA
+cannot satisfy it, fall back to the buddy allocator. Non-shared pools pass
+zero attributes and retain the existing CMA alignment policy.
 
-Yes, that is too early. get_pmd_pfn() only checks that the PFN is on this
-node and that the accessed bit is set. The memcg check and the notifier
-young check happen later, inside walk_pmd_range_locked().
-  
-Will fix in v4 by making walk_pmd_range_locked() return true only when it
-found a young entry for this lruvec, and using that value here:
+Use the cc_make_shared() and cc_make_private() helpers to transition the
+backing allocation and validate its address and size.
 
-> 
-> > @@ -3781,6 +3786,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> >  				continue;
-> >  
-> >  			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
-> > +			young = true;
-> >  		}
-> >  
-> >  		if (!walk->force_scan &&
-> > @@ -3793,6 +3799,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> >  			continue;
-> >  
-> >  		walk->mm_stats[MM_NONLEAF_ADDED]++;
-> > +		young = true;
-> >  
-> >  		/* carry over to the next generation */
-> >  		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i);
-> 
-> [Severity: Medium]
-> Should young = true be omitted from the non-leaf pmd_young(val) block?
-> 
-> When should_clear_pmd_young() is true, setting young = true there happens
-> before checking BLOOM_FILTER_PMD or calling walk_pte_range().  Because CPU
-> page table walks set the accessed bit on non-leaf PMDs regardless of which
-> node or memcg owns the underlying PTEs, any accessed non-leaf PMD will
-> cause walk_pmd_range() to return true and carry the PUD into
-> BLOOM_FILTER_PUD even when every PMD in the subtree fails the PMD Bloom
-> filter or has no folios in walk->lruvec.  The young = true after
-> walk_pte_range() already handles non-leaf PMDs that pass suitable_to_scan().
+Individual atomic allocations may remain smaller than the shared granule
+size because the backing allocation remains owned by the pool and in the
+shared state.
 
-Agreed, will remove. The accessed bit of a non-leaf PMD says nothing about which
-lruvec owns the pages, and the first walker of a generation clears it. A
-second walker (another node, or kswapd) then sees it cleared and skips the
-whole PUD, so the skip depends on walk order instead of on the lruvec.
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+---
+ kernel/dma/pool.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+index 70b7f64b17ab..da487c3f9dc6 100644
+--- a/kernel/dma/pool.c
++++ b/kernel/dma/pool.c
+@@ -4,12 +4,12 @@
+  * Copyright (C) 2020 Google LLC
+  */
+ #include <linux/cma.h>
++#include <linux/cc_shared.h>
+ #include <linux/debugfs.h>
+ #include <linux/dma-map-ops.h>
+ #include <linux/dma-direct.h>
+ #include <linux/init.h>
+ #include <linux/genalloc.h>
+-#include <linux/set_memory.h>
+ #include <linux/slab.h>
+ #include <linux/workqueue.h>
+ #include <linux/cc_platform.h>
+@@ -85,6 +85,9 @@ static bool cma_in_zone(gfp_t gfp)
+ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+ 			      gfp_t gfp)
+ {
++	struct cc_shared_layout layout;
++	unsigned long attrs = 0;
++	unsigned int min_order = 0;
+ 	unsigned int order;
+ 	struct page *page = NULL;
+ 	bool leak_pages = false;
+@@ -92,6 +95,19 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+ 	int ret = -ENOMEM;
+ 	pgprot_t prot __maybe_unused;
  
-In v4 a PUD is marked young only when walk_pte_range() reports young leaves for
-this lruvec, or when a young huge page of this lruvec is found. The batched
-flush below contributes too, because batched huge pages are processed there:
++	if (dma_pool->cc_shared) {
++		int err;
++
++		err = cc_shared_calc_layout(pool_size, &layout);
++		if (err)
++			return err;
++		pool_size = layout.shared_size;
++		min_order = get_order(layout.alignment);
++		if (min_order > MAX_PAGE_ORDER)
++			return -E2BIG;
++		attrs = __DMA_ATTR_ALLOC_CC_SHARED;
++	}
++
+ 	/* Cannot allocate larger than MAX_PAGE_ORDER */
+ 	order = min(get_order(pool_size), MAX_PAGE_ORDER);
  
-   young |= walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
-
-> 
-> > @@ -3802,6 +3809,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> >  
-> >  	if (i < PTRS_PER_PMD && get_next_vma(PUD_MASK, PMD_SIZE, args, &start, &end))
-> >  		goto restart;
-> > +
-> > +	return young;
-> >  }
-> >  
-> >  static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
-> > @@ -3812,6 +3821,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
-> >  	unsigned long addr;
-> >  	unsigned long next;
-> >  	struct lru_gen_mm_walk *walk = args->private;
-> > +	struct lru_gen_mm_state *mm_state = get_mm_state(walk->lruvec);
-> >  
-> >  	VM_WARN_ON_ONCE(p4d_leaf(*p4d));
-> >  
-> > @@ -3819,13 +3829,29 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
-> >  restart:
-> >  	for (i = pud_index(start), addr = start; addr != end; i++, addr = next) {
-> >  		pud_t val = pudp_get(pud + i);
-> > +		void *pud_key;
-> >  
-> >  		next = pud_addr_end(addr, end);
-> >  
-> >  		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
-> >  			continue;
-> >  
-> > -		walk_pmd_range(pud + i, addr, next, args);
-> > +		/*
-> > +		 * Use (mm, PUD-aligned address) as the filter key instead of
-> > +		 * the page table pointer. It is stable across the aging walk
-> > +		 * and the rmap feedback path, and avoids walking the page
-> > +		 * tables in lru_gen_look_around().
-> > +		 */
-> > +		pud_key = (void *)((unsigned long)args->mm ^ (addr & PUD_MASK));
-> > +
-> > +		/* Skip a subtree that had nothing young for this lruvec last gen */
-> > +		if (!walk->force_scan &&
-> > +		    !test_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq, pud_key))
-> > +			continue;
-> > +
-> > +		if (walk_pmd_range(pud + i, addr, next, args))
-> > +			update_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq + 1,
-> > +					    pud_key);
-> 
-> [Severity: Medium]
-> Once a PUD is absent from BLOOM_FILTER_PUD, can PMD-mapped THPs inside it
-> ever be scanned by page-table aging again without force_scan?
-
-Agreed, and this is the important one. For a PMD-mapped folio
-folio_referenced_one() takes the pmdp_clear_flush_young_notify() branch and
-never calls lru_gen_look_around(), so once a PUD is skipped nothing puts its
-key back, until a forced scan or a new mm.
+@@ -99,10 +115,10 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+ 		pool_size = 1 << (PAGE_SHIFT + order);
+ 		if (cma_in_zone(gfp))
+ 			page = dma_alloc_from_contiguous(NULL, 1 << order,
+-							 order, 0, false);
++							 order, attrs, false);
+ 		if (!page)
+ 			page = alloc_pages(gfp | __GFP_NOWARN, order);
+-	} while (!page && order-- > 0);
++	} while (!page && order-- > min_order);
+ 	if (!page)
+ 		goto out;
  
-v4 will add the missing feedback. 
+@@ -126,8 +142,7 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+ 	 * shrink so no re-encryption occurs in dma_direct_free().
+ 	 */
+ 	if (dma_pool->cc_shared) {
+-		ret = set_memory_decrypted((unsigned long)page_to_virt(page),
+-					   1 << order);
++		ret = cc_make_shared(page_to_virt(page), pool_size);
+ 		if (ret) {
+ 			leak_pages = true;
+ 			goto remove_mapping;
+@@ -144,7 +159,7 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+ 
+ encrypt_mapping:
+ 	if (dma_pool->cc_shared &&
+-	    set_memory_encrypted((unsigned long)page_to_virt(page), 1 << order))
++	    cc_make_private(page_to_virt(page), pool_size))
+ 		leak_pages = true;
+ 
+ remove_mapping:
+-- 
+2.43.0
 
-> 
-> Previously, BLOOM_FILTER_PMD was checked after pmd_trans_huge() in
-> walk_pmd_range(), so PMD-mapped THPs were never gated by a Bloom filter.
-> Gating walk_pmd_range() on BLOOM_FILTER_PUD skips the entire PUD when
-> pud_key is not present, and iterate_mm_list() clears the next generation's
-> filter via reset_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq + 1).
-> The only rmap feedback that populates BLOOM_FILTER_PUD is
-> lru_gen_look_around(), which folio_referenced_one() only calls when
-> pvmw.pte is non-NULL:
-> 
-> mm/rmap.c:folio_referenced_one() {
->     ...
-> 		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte &&
-> 		    pte_present(pteval)) {
-> 			if (lru_gen_look_around(&pvmw, nr))
-> 				referenced++;
-> 		} else if (pvmw.pte) {
->     ...
-> 		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
-> 			if (pmdp_clear_flush_young_notify(vma, address,
-> 						pvmw.pmd))
-> 				referenced++;
->     ...
-> }
-> 
-> For PMD-mapped THPs (pvmw.pte == NULL), rmap eviction checks never update
-> BLOOM_FILTER_PUD, so any PUD that goes cold for one generation or receives
-> newly faulted or collapsed THPs after the initial force_scan will be
-> skipped by aging indefinitely.
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261113084953.412919-1-baoquan.he@linux.dev?part=3
 
