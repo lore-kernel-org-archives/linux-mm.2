@@ -1,93 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7A9606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 03:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C6E606A31C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Nov 2026 03:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=0dYFo6CO
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Kl1YzAVp
 Received: by kanga.kvack.org (Postfix)
-	id EE6E66B00EF; Sun, 15 Nov 2026 22:44:09 -0500 (EST)
+	id DFF226B05B1; Sun, 15 Nov 2026 22:44:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBEDA6B05B0; Sun, 15 Nov 2026 22:44:09 -0500 (EST)
+	id DAFBA6B05B2; Sun, 15 Nov 2026 22:44:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFBE36B05B1; Sun, 15 Nov 2026 22:44:09 -0500 (EST)
+	id C9E436B05B3; Sun, 15 Nov 2026 22:44:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C10316B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:44:09 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA1051606E1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:44:08 +0000 (UTC)
-X-FDA: 85439588976.29.8ED47DA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0088220002
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:44:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0dYFo6CO;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 988C86B05B1
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:44:54 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 99702A862A
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:44:53 +0000 (UTC)
+X-FDA: 85439590866.20.8C1AE2C
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 929A9100002
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 03:44:50 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Kl1YzAVp;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794800647;
+	s=arc-20220608; t=1794800692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLeSRzbCytnZXNus5jLvaHfW3mKYG8u2Hq9MNKiQaJc=;
-	b=SIi8bwL26bKFNCQtPIFEOraqgkCeBNmBp8NNQVGJ57UrHyskozJ3/3q1Ib7btJCp/G4ZqI
-	wtcsX2BwVi92ZRWFlUZeavkHFLfRtQZOtDPyxmu978GSo9guFFBEmkWhZMzCF2kc91kqSZ
-	MgTf6UrlA3G64yCMEFqcw1QeFmzD82I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794800647;
-	b=dDANP/mdM8vwXLwGIx1fccri3POljEHA1QiX5/Vs8dlb/oekS/TICQ6HFT9rbZxDY9KZex
-	2f4y8vcowjE1lHYWn4x0AjOp2XX9GYeKEfgPHDtejzllQcdDM/Io4I1jMHT9bN7HALfIn4
-	a3/i3Rzu2Qwg/HU8mVyIp+MxFt11h8M=
+	bh=1ZQTmnkOlTIQcpFlUhpI85UknghQOhoWHtJld43E1F0=;
+	b=ZT1acU0nr0skJzztLZ98CP0T6xLG3BSaB/i0uYumh/Jv7vAxZxxVlTTIRjWgVdSKotaaJt
+	3YJQULIkjFGO4QDsgzn3a6e9HJAJVMW8nuQkdDLbIgxlqF0zo6XZvmvjI0FxCbs/Y7ayoo
+	azol/5Qs2fW+VJVYDgSmwZPti5qdGQo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0dYFo6CO;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A57C61E7B;
-	Mon, 16 Nov 2026 03:44:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D862C1F000C4;
-	Mon, 16 Nov 2026 03:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794800645;
-	bh=vLeSRzbCytnZXNus5jLvaHfW3mKYG8u2Hq9MNKiQaJc=;
-	h=Date:From:To:Subject:In-Reply-To:References;
-	b=0dYFo6COd5e4jza16vX0GgnRiQwhcpkoC72T/5GM9HYvGLzjzr0L5LvmJPsFm5zWg
-	 R9Zztxn7YHiRRzbnyxYV+3KB8p4smv63q2CrSCc3/dzietkS3agZMK3NXfw6vtdWxL
-	 MoBcwzGfgGf/vRXULlElKpN/Eul4Z/VCEfVmsvqI=
-Date: Sun, 15 Nov 2026 19:44:04 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jiebin Sun <jiebin.sun@intel.com>, dennis@kernel.org, tj@kernel.org,
- cl@gentwo.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, rostedt@goodmis.org,
- linux-rt-devel@lists.linux.dev, tim.c.chen@linux.intel.com,
- tianyou.li@intel.com, wangyang.guo@intel.com
-Subject: Re: [PATCH] lib/percpu_counter: allow concurrent sums with an
- rwlock
-Message-Id: <20261115194404.a8d751a7c17904c756b16b61@linux-foundation.org>
-In-Reply-To: <20261115191636.f18859e4dd5f58b9a33e7814@linux-foundation.org>
-References: <20261116015655.2744577-1-jiebin.sun@intel.com>
-	<20261115191636.f18859e4dd5f58b9a33e7814@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Kl1YzAVp;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794800692;
+	b=IdirP5B8beFpnbHrfnz3n5XHlI7UznVDU5blFSt1cvIaUu5gGKptH7Sp6YBcisxniY/xpS
+	cmqyUDSFt4MbULazDDqEX1DL0oLI/nFDyaIDvw+aBUanL4AD5Q3ZswJnPwu+A/J5+yJ1Eu
+	RI03vF/9NE+LpJKxnrccqyJiHNNTNag=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794800687; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=1ZQTmnkOlTIQcpFlUhpI85UknghQOhoWHtJld43E1F0=;
+	b=Kl1YzAVpD+9SZbdmzvS15sXtfFpOB4DXYh8iFZccOIG0snCskrtw96qWCSIfgHlOuLzdRXixQHV+KWxXCI6yyvFFLSnsJq0z5EkDq79AyC+wm2+zryW+WAB4SWY6X/o6+VbmSwViwQfjBlcJLiydTgUVw9RvuW56g37IEBV3sYc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XElOevH_1794800685;
+Received: from 30.74.144.137(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XElOevH_1794800685 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 16 Nov 2026 11:44:46 +0800
+Message-ID: <d1856861-62d7-4bc0-a8b7-39ccfc064f34@linux.alibaba.com>
+Date: Mon, 16 Nov 2026 11:44:44 +0800
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
+ sizes
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ ljs@kernel.org
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ qi.zheng@linux.dev, pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+ <16bb1a14-04f4-4524-9882-20d452175a3d@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <16bb1a14-04f4-4524-9882-20d452175a3d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xzoxwhybh86wuqe5c6ub1a7k84r47qra
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 929A9100002
+X-Stat-Signature: 3pik1cuijstcdrfo9ph8kud1k7c47zf7
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0088220002
-X-HE-Tag: 1794800646-572960
-X-HE-Meta: U2FsdGVkX1/91rb7pm5OBgjXIjUWVYAd3lRMZE/ao8hqnVEg9D2VDJtYPl8BDqZQEKqi2OfxaOFkuaADhog7hOWntdBsoW2PLgxMHeSr1ReS2uOjzZ8n68w0qjwBMrMT5oS37BFhxtBFs7gjsdGog0WdDb8d8FmGgwlPwtxoNqk35a9mlPhxQPEJvk7nf7Cr6slae8QulSDhOwEy6xPs6grwMPZWZFidomuEIrFhcBiyVMQuNFbeiWQHuWaLSjNJnxVMJwLteRM+SVE+DK7dVtdeys1zPmSyIM+TGILR4gPIYx46LCCC0v2HGCgnCudweue3ab9320RaCzQVPRWizvzZe6yF92eo0c8UXf3/E/a6xSk9lgTJbNqWFlaa8Nck2il2dDIfkp0iAuPIK/xS3iTHOoT6VRU6m/q1yPgk1ujn7tCFDJGMa63wCcapyj//bymBwezE0Q1oYO5vfFadfiQKXlxQiYqNeL5BQ+C0I6c3uVHhg9i5efijtYPsO/y0fHVnG8B4AM85E6abWOTm0QuxmvB/i3DzMvNBwsonBPuyMi8u3pGNzjlw+8n435j17Z+AteoZjDhnFe8eJGUL8tbGUBecQw9v7Juf/87Y5KwEHN5+7o8pYcBZtfY7GGy4UIPufhxOUTi+ZUhV47om2IqI2zuZF/f21LVHbn+iSuF9O1awR8adrYw2LZRK3vywzOJxTZtDa2YyC5pR+n8r1RUUfF4HiKQqdtuQ0YoJHWEoM0hVUrjoMMzxtOLPQWo32mPf5DJpDb0eyJB5wI3WquluA5S1pTvu4QvbDoa63uaXDao8oyzn+v2KevzxAfTaGKjW0hMDLatZL6V2awBMzyYKR0K+wIRQF0TT+j+3cETqk7jC251nJHt1y86BvgLzdQAw8yoiEgZs/wxA1ofTTDRjx3J1AKahJRJzIO7R/FL0ETrQifDDRDVbqLXxkRZ8KwPtE0+3eCownq7/IGX
- ECfFojuI
- tN9zb33PDWVXY6oVubugLxPACtq8NzoviwXJGUi8jINqr8KkeY29g29NeMJqOSqdbnRxyK842W5WsgtVjwLLdRfOZMYBoO7b2whz1s1eVKBgEh4breO01XIHXgYu4aGzBpkx0xIgpEbT3SU8fHJXkH5QxwN3jQkYd2ohL1je0njq8WoNTLhGlFzbuP3AQtOdCVh1qNPQKVGxhTa8rn+660hlzC2T83kMQeXByKJ/qHbpMQpJcnQKIsau6JNV40/Nzb8ymBi+20C8U6axigIMCGMZC5X7k3rOF5TkMb98o/rsNgOEpGlxhv72YfTVWh2wcPkO5P1/y6EZmRo2ovzgPopVOKmbih6Lad5PI
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794800690-629715
+X-HE-Meta: U2FsdGVkX1/05neCmU4BC5fS5/223OL2Rc2NprCvDn6tMeeV6VFUvnPySe53lOOqNAY3EXQrIrbHuQbXOMOf36BeDvHJ3w3ScK3BVmoPlDI9q4l2V5n+7PXiigA7kCQOkEBeUMqmRNKS6CNraPFIIxHXBgf42F91/YaDSlRPIiYEn6bKuYJv4rfJbA7qn6WClfsQC6QvZA7M3878hYGy1lao1yFvTmF/8llSeh7bAKkckF9isiC8VF15nd3Dxlv2vln7eTOjrRwXOeKvDyuszKjI3BT6/3V/6f8l/wBLuKr99Xi4M8onXo32MAKSTzUtadAt7LPenZNiRbQ4ditkvhfq5t5R2H1UmhMqudSAdBbr4HFcsozBXnLMgCXTIAsBn4QS546WIk+hjayHH12Xa6NLrQj9vMfg7roT3mvZt4lelGXpXsLvn2Ju5dd0JFZzWpkWYpo9QBKQpN3m2QrgmJlqtp+ZCuKEY3VWPFggxsKH/uv/Mg5MbnycpMc+QkntE7QXtXbbRYyXkTC3g1EN5AfdnLAtrVkJOb4hL64pZwEIiQwLQUFHJAve2cI8g5BI66YHDMk9/vpJYEd8H9u5TYBTCwEzo0HzQPRS6AVIGtlerZVu2KocRSSqXbpkqrD7Nx4IUnNdMQOMgLFY3TCSWBd1RKk8hu++MNFTMpub+LobJQJuNi2HtyT/sZdlFd1hSl+WfROQs3L8iU5mgh2+72v/MpQVkDzKwBPn5m2/coAThfWGqqaoH78aDZLyMJLdxvuwKxlzpw5sQmSON0QwIk5lDFGsH1HP53obSk2iOwWYb6xHiLyvLSteBLfvttLh4Yr5it7M1/jYjno0kdlQxDuwHPY6KPyPta5mb1WjpzHP7nryedpasN+cCPFz6pMPSSiXHHLu0ScdHt5UD9q8WaWQA9tRji3jjsxlRz+B/Cygzr80gbiO36AH1XXXmOMy9B2JY+1m0z/jTUgt94O
+ ctG5or1j
+ 74xWd+alWiq7lsL5smf5EfUtSeTJYvoI+5blhXrJ07csQetYaA74TZOsDKtMwStRdfjhk4VTTaQBSWGOVOiW88YvYoJfMPJ8AWBVHHsu/c+ArVRIotNtJIufEDv5mNth2qV3Jpzr85E56qUtAqgQrOQHqEwDNjuXFnzBtk2ucPZx51xGyMP2B8fnZZ5i3SVxZGLzWYImbHkaEDcedKOqHdTLIXm74mIxWwGbyKhMcl+fmDgf3XGEShjb+uUZ1y1YmsNFu+EtwbPrPRZXGPmKGgd1v01mPbVlqfQiffSTGKoQHYc2ICSOLxN9rRsm/9Oh0+1goBOVruiJ3E2s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,31 +95,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 15 Nov 2026 19:16:36 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> > stress-ng dentry test average throughput change:
-> > 
-> >   +------------------------+------------+--------------------+
-> >   | Case                   | Unit       | Average change (%) |
-> >   +------------------------+------------+--------------------+
-> >   | Dentry, 64 workers     | bogo ops/s |             +47.34 |
-> >   +------------------------+------------+--------------------+
-> > 
-> > Dentry ran on ext4 with 64 workers pinned to physical CPUs:
-> > 
-> >   stress-ng --dentry 64 --dentries 4096 --timeout 20s
+
+On 11/14/26 1:39 AM, David Hildenbrand (Arm) wrote:
+> On 11/5/26 03:56, Baolin Wang wrote:
+>> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
+>> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
+>> with concurrent page table reclamation via zap_empty_pte_table().
+>>
+>> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
+>> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
+>> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
+>> and try_to_migrate(), the other callers do not perform post-walk accounting
+>> checks, so the race has no observable impact on them.
+>>
+>> For migration, the race can cause unnecessary retries. For reclaim via
+>> try_to_unmap(), the race can cause failure to reclaim a folio that is in
+>> fact already unmapped (as shown below), which may lead to unexpected OOM
+>> or increased refaults.
+>>
+>> CPU 0 (reclaim)                      CPU 1 (MADV_DONTNEED)
+>> --------------------------------    --------------------------------
+>> folio_lock(F)
+>> try_to_unmap(F, TTU_SYNC)
+>>                                      zap_pte_range(full PMD range)
+>>                                        spin_lock(ptl)
+>>                                        clear PTEs
+>>                                        zap_empty_pte_table()
+>>                                          spin_trylock(pml)
+>>                                          pmd_clear()
+>>                                          spin_unlock(pml)
+>>
+>>    page_vma_mapped_walk()
+>>      observe !pmd_present(pmde)
+>>      nr_pages < HPAGE_PMD_NR
+>>      skip synchronization
+>>      return false
+>>
+>> try_to_unmap() returns
+>> folio_mapped(F) == true
+>> nr_unmap_fail += folio_nr_pages(F)
+>>                                      tlb_flush_mmu_tlbonly()
+>>                                      tlb_flush_rmaps()
+>>                                        remove F's rmaps
+>>                                      spin_unlock(ptl)
+>>
+>> Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
+>> has already moved the PMD clear operation (via zap_empty_pte_table()) to
+>> after tlb_flush_rmaps(). Similarly, page_vma_mapped_walk() also needs to
+>> use sync_with_folio_pmd_zap() to synchronize and avoid memory ordering
+>> issues on weakly ordered CPUs.
+>>
+>> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+>> Cc: stable@vger.kernel.org
+>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   mm/page_vma_mapped.c | 5 +----
+>>   1 file changed, 1 insertion(+), 4 deletions(-)
+>>
+>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> index e6b6170c2f4f..8797467b6f0c 100644
+>> --- a/mm/page_vma_mapped.c
+>> +++ b/mm/page_vma_mapped.c
+>> @@ -293,10 +293,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>   			spin_unlock(pvmw->ptl);
+>>   			pvmw->ptl = NULL;
+>>   		} else if (!pmd_present(pmde)) {
+>> -			if ((pvmw->flags & PVMW_SYNC) &&
+>> -			    thp_vma_suitable_order(vma, pvmw->address,
+>> -						   PMD_ORDER) &&
+>> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
+>> +			if (pvmw->flags & PVMW_SYNC)
+>>   				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+>>   
+>>   			goto next_pmd;
 > 
-> lol, this is a fun patch
+> Baolin, how to proceed with that? Are you intending a resend? Including some of
+> the performance impact and ways forward to optimize?
 
-It's *probably* OK, for sane workloads.
-
-But if some workload is busily running percpu_counter_sum on 1000 CPUs,
-how is a writer ever to get in there to spill ->counters into ->count? 
-
-Modern rwlock_t does implement queuing, so the writer will get in
-there eventually.  But nothing is simple any more - there are
-complications with rwlocks on PREEMPT_RT and with interrupt-time reads
-(do we even do that?).
-
-So I think indefinite writer starvation is a risk here?
+I hope we can merge this fix first if no other objections. As I replied 
+to Barry, whether to set TTU_SYNC for small folios should be done in a 
+separate patch (this is a pre-existing issue) with proper measurement 
+(though it may be hard to measure the actual impact). What do you think?
 
