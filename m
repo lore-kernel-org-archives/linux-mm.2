@@ -1,65 +1,41 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB48606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 02:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB82F606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 02:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oV0pcpC/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kBnDPekR
 Received: by kanga.kvack.org (Postfix)
-	id 3708F6B05B1; Mon, 16 Nov 2026 21:22:53 -0500 (EST)
+	id 042C66B00EF; Mon, 16 Nov 2026 21:26:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FB166B05B2; Mon, 16 Nov 2026 21:22:53 -0500 (EST)
+	id 01B136B05B0; Mon, 16 Nov 2026 21:26:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 210A16B05B3; Mon, 16 Nov 2026 21:22:53 -0500 (EST)
+	id E74776B05B2; Mon, 16 Nov 2026 21:26:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F3CED6B05B1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 21:22:52 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 905DE1602F4
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:22:52 +0000 (UTC)
-X-FDA: 85443012984.29.66D1578
+	by kanga.kvack.org (Postfix) with ESMTP id C57226B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 21:26:25 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D4E31C355D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:26:25 +0000 (UTC)
+X-FDA: 85443021930.14.92B0330
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D6498160002
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:22:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oV0pcpC/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794882171;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/3H1mpvRDxjYxRQV4+mRDY8Md93q+YJNHbYdI+GkXXs=;
-	b=xUJ8g7L20IK4LJSWrBdEnky/l3VTcMvklzbZPqDCv0tByRWIb1Ll9pz9uL7a77r78R9MIe
-	S/Lph+/VXUvcpwHdeIDVfSwVx1+KxoJ671uvpxKbu/Rf0aWt0JlSO5At0GlOvgGYRuSxmH
-	NwvLtfHCnbXxAc4FuIp8vM9cJ5efEgs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oV0pcpC/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794882171;
-	b=2YwTR9WWZ5NL8C0fMMSzAhy+TEeaBaEu0WmXvmE1tjy0shdpQJn6SdiGuSTOFp5EoDll9T
-	AgH4DtmyMdVcCJGPIv6mQkbvHiicXwBuWiNSk3oEib1TqlPaMU/cWRcV8n/eM5lS3lwhpK
-	RrjixJFJzHJ6BYw7az0RgdRpddxyCYU=
+	by imf03.hostedemail.com (Postfix) with ESMTP id 174B02000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:26:07 +0000 (UTC)
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E9F062448;
-	Tue, 17 Nov 2026 02:22:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A391F000CC;
-	Tue, 17 Nov 2026 02:22:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9AB2062765;
+	Tue, 17 Nov 2026 02:26:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCDA1F000C4;
+	Tue, 17 Nov 2026 02:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794882170;
-	bh=/3H1mpvRDxjYxRQV4+mRDY8Md93q+YJNHbYdI+GkXXs=;
+	s=k20260515; t=1794882367;
+	bh=PwJJPpk0KtufegXyh+UDHeclSfuYI9J6g+cBDWGlDL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oV0pcpC/ffQh4rYzlim2rjHX6x8pya+lJQW+QWen80nRL3PhybSB2Dju8jm5K/nQR
-	 MGx2I2IQ/i5dlPw8fMOqfIf4Vhm/ETKoxUgNhjW5F16sRAYsyuWRIXy2Dp3qfRqAzf
-	 Y8DxfYWDS1WTutcjkOR1czWMIX5y4t/WG67chhmR0/l23Bl1KBqq479/K2qPjJyhIW
-	 r4HJypnvf7N7V6Hokp/vKvAdiaW8QU7sjUQFKTw51fMt2+OGI3kP4hHvtLISko815d
-	 yBFFLEYp89wdkBS4GICSJVimhvFbZg9eo3YYm7STwI/hVGS+brGP7huF61E+dvLbCk
-	 h1fm4nf2Jak1w==
+	b=kBnDPekRMxV5Tz1ixrttniVUjQ/Y5abW8tNTlEf7fOi4ZaOX6Xysah5INbCB4LJdt
+	 PNYnVRrO1c4KefQkUROFHa50Q/1Ng4uM2DQyk0BXX/yUL7xXEYZ0cCnszuKRxfXOhD
+	 dnkI+MYADUej+9hL6Bn+Aqomi3Mex2xIbLGg5NxcZh+zWOwIn0X7NjPT7ey7EC7UA6
+	 pq+1ibg0NnHaYLzC1fllDwWWjO0DTTClfja8fdc2g3XTjosIdnGN2cSulXKes5vZzM
+	 8v063ap8izPeUogb1u7LU8Rcg/3G9K2FNsR+eiJeLhSep/qh3Z+MNGJnKV+fM5b3m4
+	 MnnqolfjM2waA==
 From: SJ Park <sj@kernel.org>
 To: Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org>
 Cc: SJ Park <sj@kernel.org>,
@@ -72,70 +48,76 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Mattathias Pinchover <mattathias.pinchover@uber.com>
-Subject: Re: [PATCH 3/6] mm/damon/tests/core-kunit: test sz_ops_filter_passed_last
-Date: Mon, 16 Nov 2026 18:22:42 -0800
-Message-ID: <20261117022242.110258-1-sj@kernel.org>
+Subject: Re: [PATCH 4/6] Docs/mm/damon/design: update for sz_ops_filter_passed_last
+Date: Mon, 16 Nov 2026 18:25:59 -0800
+Message-ID: <20261117022600.110435-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261116-damon-sz-ops-b4-v1-3-1cffe7227e6d@uber.com>
+In-Reply-To: <20261116-damon-sz-ops-b4-v1-4-1cffe7227e6d@uber.com>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4ernynw1aoa6tetjup51u6n51xhg1hep
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D6498160002
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794882170-293381
-X-HE-Meta: U2FsdGVkX1+dxdZfdZf2XDeRenUe7gL8X+oPnnCEiIxA/6ZV22E5XBFSvMER7oyWrrBSw9rsHsZApm8REZZxpvquemeaQyWABKuhGu6Ts2wRFrkTv+9ui0D5YTxC0ekmV0yPd8xjbhHqw35X6z3uYNjbQ876mTlkgBsr25J+dulRk7pzs1qS6YZtfx6wbSai6SSV++3uGRUDyaAjattVzrpvgG1nA3Rjr9iwrr0ER7CjHaWAEZCwsjcSuaYkBvAerHLtrCTt+dzzqMt+PSAkWN3zbKoR6GjGcgjVc1i9sE3mcu05ZJP754ZMGmlE3KQSZFptRgh+cQ8FeucZEqhAx0TwI4++xkXbMCnSj8xEcdrI19Ws4raqnG9K0XluoSW9MRHiiPgZDdNmQi5qCpMQpUQJSCYJ964N6v/K4uAZKqtaAW2O7B3YvTwvWP7SZ+W89QnwKv9G5Ydy2yJJukju4fdwnNabqAqRmk3sDbuEHWzuqsC91/u6+PIVZBgpYBg5uiHiPKlB6oQSwOrzjcqds9zsOCX7ud6mWYzLBePRiC5ST+lQU8OKMI2aE7w03+VSvqHgisUzNO+4cLOB664XRM3cWSeWVIXRbENGRdkVzwVLAq1UOphCo34A1aGype1oaKuXSqO0oFlhdYL5d6ygobxwRFBAsVu24+MjxPxmZh1/RcWfNF1raQQyOPWmIgO6p15yn+iLfQRlJ8FJTmP8v5KLAt9hhs/67uoyDPc6dSpfzpX+y7kQzMxZLtjxYL4ydUTiZrbsyUp3KjHk9xQY2ZB8EN1Td+f/NFFDXlbrH888/ah+w1ifgw6GTH0EZkqF/ksFvfS4+wRcn9hFpBq3/X3FrUtXmZWHNo2ln97U8A9i31RFxQZf9STv7+4MbwiknxEt7i+ty/kAZ9OaqKlVyUH/3kqRwzEXS/p+2nSYogWmb/Qvwxcr32v/tsPzf65xO5ikQ+2j8PJRDgv2FgR
- soRWCRkS
- OazZ/X8SfRyTqaE4/VSaN3eKEWaH43cPFEiBxAQJIWyzfICZdzmYT36zQ0Uf7e9kcG0Zc18OTeHz2LIwwOVL3vVes74XrQSwuoilpE7hPUMORpRNvwiRlqbR1+WVjo1S+5YQFRDIajx3EcWiaC8C9gALfNhUPYoFQXqf2V9bV9f8G1/Xo5GVazRkFoVM8eGs6+QGnvB9cBvHSkCCNtrtvvO7suBjIXvFOOI05HWR5eFKjHvnnqPB2OmeB2oqm1gySzMIPe6s6I/I7thJPZguWELBIYnmiM6SPts1vw5DOkyQOuKZOJ4HddO+OAOaJU06WCqPbddeAWskKgNKR3IwWAEGDwcwBbDudVEXqTt8wMZKlRHjwuFux+E1Jo5MktUWvDbxiKwUkF/nMmpxMXY71qOs/+IpajDVPO0y1JnXYtbWbelpOYoD7xv/k3+10mCkYWXM4
+X-HE-Tag: 1794882367-772186
+X-HE-Meta: U2FsdGVkX1+Mr5kdnJ5tjGnnBRfTF6Om7e1AU+ZdIU8L+k/9OYYfbqYawPB7vNrc8pk60FWUZ7ndSH80m6Sbs8Rv8WaJbUdcYKPnhCMRqHrQpDFqlXKc/dEzKpwxBlNwx1/ZiwJL4U5gr62sDb8P08T980vaSQhINBnWkRXLNBmeIXMG4Un138TtgiJNhwpLHIp2gOHENTC6EQw0Tb+Hxf0E5w135xSEfTGuug/NDkW6jRvPaS5eqtaDkVu7KrIIoK8k8731so5rhB3/cCfmJyloh+muPVRfQUoIL6h0odxPrFx1DiQVOoIwMQMbcnWIXeJw2G2Yn5xNxhs5IGEFovSzSr7q0YKcqa7OF8a0KBUggtAxx8ZJZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 16 Nov 2026 19:10:06 +0000 Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org> wrote:
+On Mon, 16 Nov 2026 19:10:07 +0000 Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org> wrote:
 
 > From: Mattathias Pinchover <mattathias.pinchover@uber.com>
 > 
-> Add a kunit test for the sz_ops_filter_passed_last DAMOS
-> stat.  The test runs kdamond_apply_schemes() for multiple apply intervals
-> with a stub apply_scheme() operation that reports a given ops
-> filter-passed size, and checks that the stat is set to the value of the
-> last apply interval rather than the accumulated value, and that it is
-> kept unchanged until the next apply interval is completed.
+> Update DAMON design document for the newly added DAMOS stat,
+> sz_ops_filter_passed_last.  Also explain that, unlike other
+> stats, it is not accumulated from the beginning of the scheme's
+> execution but shows the value of the last apply interval.
 > 
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Mattathias Pinchover <mattathias.pinchover@uber.com>
 > ---
->  mm/damon/tests/core-kunit.h | 92 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 92 insertions(+)
+>  Documentation/mm/damon/design.rst | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index a5ca4bfe2f0d..ec83598fff0e 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-[...]
-> +	s = damon_new_scheme(&pattern, DAMOS_STAT, 0, &quota, &wmarks,
-> +			NUMA_NO_NODE);
-> +	if (!s) {
-> +		damon_destroy_ctx(c);
-> +		kunit_skip(test, "scheme alloc fail");
-> +	}
-> +	damon_add_scheme(c, s);
+> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+> index b676be697158..e40b8c1a3461 100644
+> --- a/Documentation/mm/damon/design.rst
+> +++ b/Documentation/mm/damon/design.rst
+> @@ -876,6 +876,8 @@ scheme's execution.
+>  - ``sz_tried``: Total size of regions that the scheme is tried to be applied.
+>  - ``sz_ops_filter_passed``: Total bytes that passed operations set
+>    layer-handled DAMOS filters.
+> +- ``sz_ops_filter_passed_last``: Bytes that passed operations set
+> +  layer-handled DAMOS filters in the last ``apply_interval``.
+>  - ``nr_applied``: Total number of regions that the scheme is applied.
+>  - ``sz_applied``: Total size of regions that the scheme is applied.
+>  - ``qt_exceeds``: Total number of times the quota of the scheme has exceeded.
+> @@ -903,6 +905,13 @@ to exclude anonymous pages and the region has only anonymous pages, or if the
+>  action is ``pageout`` while all pages of the region are unreclaimable, applying
+>  the action to the region will fail.
+>  
+> +Unlike other stats, ``sz_ops_filter_passed_last`` is not
+> +accumulated from the beginning of the scheme's execution.  It is updated at the
+> +end of each :ref:`apply_interval <damon_design_damos>` with the amount of
+> +``sz_ops_filter_passed`` increase in the interval.  Hence it shows the size of
+> +memory that passed the operations set layer-handled filters in the last
+> +completed ``apply_interval``.
+> +
 
-Sashiko concerns [1] the fact s->core_filters_default_reject is unset.  How
-about calling damos_set_filters_default_reject() just before
-damon_add_scheme()?
+I think the description is clear enough.  Could we drop this?  I concern if we
+will have more non-accumulated stats but forget updating this in future.  We
+could add this again if someone really get confused about this in future.
 
-[1] https://lore.kernel.org/sashiko-outbox-217563@kernel.org
+Other than that,
+
+Reviewed-by: SJ Park <sj@kernel.org>
 
 
 Thanks,
