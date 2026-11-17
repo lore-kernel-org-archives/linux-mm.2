@@ -1,101 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C049A606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 14:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47822606B849
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 14:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a786Rfbu
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VqTh/yMX
 Received: by kanga.kvack.org (Postfix)
-	id D058F6B05B8; Tue, 17 Nov 2026 09:26:38 -0500 (EST)
+	id 5C2766B05B1; Tue, 17 Nov 2026 09:34:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDD226B05B9; Tue, 17 Nov 2026 09:26:38 -0500 (EST)
+	id 5707C6B05B2; Tue, 17 Nov 2026 09:34:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF3846B05BA; Tue, 17 Nov 2026 09:26:38 -0500 (EST)
+	id 460B06B05B3; Tue, 17 Nov 2026 09:34:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A1E6A6B05B8
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:26:38 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F97C1203C3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:26:38 +0000 (UTC)
-X-FDA: 85444836876.02.AF71599
+	by kanga.kvack.org (Postfix) with ESMTP id 26C3E6B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:04 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1E83F12047E
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:34:02 +0000 (UTC)
+X-FDA: 85444855524.08.7801A71
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7DD141C0005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:26:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a786Rfbu;
-	spf=pass (imf18.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 63BC420006
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:34:00 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VqTh/yMX";
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794926040;
+	b=lRJGvff0Rz9/xqyn27RCbt3Hz7BQ8yqWPhbG/zDMiIUgrVnSi8I4GdJEUnGyxIbyYMJoLu
+	EDMtfMc4fHsiLieSFJCtjiCR9xMvFJ694UOn9PEBNYxeBTT3VFIGnmW69VTlTUmXCTaPpn
+	E4XZ094tZoOWctvqh2srSDDsOtLKupI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VqTh/yMX";
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794925596;
+	s=arc-20220608; t=1794926040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=rlQlNnIZ/8+czgBS03uRUWP6VlvdPXDkWQ0M5ulQFY4=;
-	b=G9cWLGMyxI54Pc/dzif8iSOOEX6Gg3M9Quiq8JTAtdFdg4yqul/dyPOEQaAktl88fqonBZ
-	qZMAPaDGazBIFqXqqr4lVA4laCjQrxJuR4yx2KlzY5qLi8dzA7rXfzupCLz5cWd22slvmK
-	oOvPwXig+XANHKKFb8RtVKIGNOfKG/I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794925596;
-	b=GWypiqgxYdGOVPd0y5xl/eecTfMXYOAYzqP2+bLRfyGA3R++tx0/gzq/a77kqL1bWXSAmV
-	xISuekDPdpKB/WVXxfW/zDaGGfmlYE1ju3xOYS0mMOcxKBCWdFfKpjOptyjbmywBhXCTIQ
-	cQ0tqjghnRoh3oOFNMpFEUsUu0D4xP4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a786Rfbu;
-	spf=pass (imf18.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8lJn5i3rB8hKxekAA9fjmUZ4HWkDFl1+fq3jMpfeiZY=;
+	b=0kpPZIU3/m3JkHjrw2zU+F1jEDVAhf/PxykCw9STOHDHzBs5SaOAKnJ62yEmn6OXLYmNL+
+	uQ7FMR8gS+LxVs7gl0skWlDIXKIdPb8opbMf29rMG88QmmT5XN9RTK55Ze0icY8nkBPQZA
+	zDEQfZCas76xoku7KpnWKq1u03bgDx4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A38840AF4;
-	Tue, 17 Nov 2026 14:26:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97441F000C4;
-	Tue, 17 Nov 2026 14:26:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 858494108B;
+	Tue, 17 Nov 2026 14:33:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8D21F000C4;
+	Tue, 17 Nov 2026 14:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794925595;
-	bh=rlQlNnIZ/8+czgBS03uRUWP6VlvdPXDkWQ0M5ulQFY4=;
-	h=From:To:Cc:Subject:Date;
-	b=a786Rfbua0e0KJuPtqYPrAIOolUAlNtoH1SVZATqAvSLv5QCYzTn6e5ZZA3a3CXny
-	 cfYU2pdCDUr+8PSpqVQH45cyGXtnH0KcTKXZChHeqW3yCdz2yvjSv3dER9ldKvWinU
-	 pRybFcIIIcJ1x1gVcDse8TFcN3hO2F6bLrYBQvCAo6D7TOleOtwQ53V5oGlr7EKEM0
-	 kK5eXgT7ULE0fn5gQuNToj51Fn2ORWLRIoFLkaNQ4ZmXOovexDaF5bhF8n25xErblJ
-	 uVZYrvqMo9ETwQcBDzyZjuDO+zGRShjt5/qw3N8oqLjMr8+LEV7EHw19Fgm3n0obgH
-	 2R7eQdFuYIeTQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
+	s=k20260515; t=1794926039;
+	bh=8lJn5i3rB8hKxekAA9fjmUZ4HWkDFl1+fq3jMpfeiZY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VqTh/yMXXl6eU95sOIdz8nSlg3vVLthgUnKTxjjfYVKLjNA8AMU6YVK+xi5lI8yVC
+	 os1kppKGNFo89igovqaicw3qmvxvOT5Ar0NKlYin4F8+GZHPgquSRzqzDoq24Iy95l
+	 QX22x6FkoYYaEDI8Ki5USCIgZrvGWuISGlaitQyHSj8yXIWSsXODyUq+2Z7QwTnIei
+	 M1SOdg8gUsHTanPlFcVuvoEo4JcGv3vSo2e9IO0ThicDU8a5Omf54yz7l65F3FV9fI
+	 KwM0gPzHgrNwDUBzkSG0MPvrIbQJASTo0VcmdvuwUeaPZQDI+/IE7+eBwpmdec7fyC
+	 UeNTm5MKweqpw==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: larips <larips950@gmail.com>,
-	stable@vger.kernel.org,
-	Zi Yan <ziy@nvidia.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jackie Liu <liuyun01@kylinos.cn>,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/mempolicy: fix copy_nodes_to_user() for odd inputs
-Date: Tue, 17 Nov 2026 15:25:53 +0100
-Message-ID: <20261117142628.3931151-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.53.0
+Subject: Re: [PATCH] mm/damon/paddr: skip hugetlb folios as a whole in pageout
+Date: Tue, 17 Nov 2026 06:33:51 -0800
+Message-ID: <20261117143352.121497-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261117-fix-damon-hugetlb-pageout-20261117-v1-1-054ef8760a92@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7DD141C0005
+X-Rspamd-Queue-Id: 63BC420006
+X-Stat-Signature: s7fex7pc8xx9a8nu7kjoq8h69p1totim
+X-Rspamd-Server: rspam05
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3jajortfugpmkfnoh1isq7tnkhmjmih8
-X-HE-Tag: 1794925596-166012
-X-HE-Meta: U2FsdGVkX19E7rFdQRvbrYw65bwsgoaVZoHGHMGtMJTK6oEvgff8DRv0iEbw02vdQL8UCOS391dhHnvfAx4pZ+BY7Oh/elIYP+FtAn8nqjQ8GARV+iOdzohUGf4QQQLT7m1sA0c7zT3YWBRiYZNIkwWRVXlbvvsVfVF4vEiVu3UcjlNnWaFd5Wr+Ry7rgsg1Vrvzfe+94CGlfQ4tdlW/6aYENdajico+NyHFJrwfHmmcnYssyOs7RvI28xCHTG/fzG8ogjBAD6Tmissv8sq/X/TL6G1dC8UFroxDOAEG1yIBU8Nt3x4GQUdMSW70/GZsK/KIkH0PHkpPUgUnJoeDFX40/VO8rXyKcS2j3Gg0wbt49Rvl3BMskWvEONmBk1GAKrroVHoaypRlJ68XJFyAL2itd0bQqpmqn02SL1K5MDVMwRG98aGuiyMWaB9CD8+TO2KASxk/tqpzMedDdgpOuNEgk5yBQYWnljGTy4ebeU0tqu3PcSY6JxACcfV4hxB9SUxfgY2GbHf8ayR9YUWOyLX2+vFMiM4NGhnMyx3ZTk+OmfYIeJmeq6c0mvqZlxBpxASKuyjI+3p4+GoqOkCXNRlyQ3Z9QddyVSiWD9xCObdk217506VjntQ4g3+MUdRJzUb3lXrKgy4FvMrykA8XlXYdLV94ZAcn7F3YcFC/KbNjpkHdyxBIvtmxDzybo812LH5cQvp3N1vv5WWPzg2Lt4MT4SSnF+BeP0UJo2NkqjXXyRNSATWZo6Hku4HNZshyBdbiD4ARPuTGEqEQDk9PjAO5l3KviSiYi5wO5XOK4oEAUW+lSkWJzdI57Ox2n1/aEKj9M1b5mE+jCoIhRNMIOO0x7c1EZkvKTRna/U52Io2qOYriB0tUPuH4QvLP48TFnJpCVaQIUiMJteH89uoJ3h8OalR9A4quG0h5FoGE7SwRjD2MtbUI2YSNACcf1yvQJi3PNkmzdgdBQEWtDEe
- z8GWhq+b
- Ms/xDRP8dHd47pwUuZLG4t6JCJ3EpLbCMR3wR1Y8/2mqi9GUTxCikiCFqTA2YNho80ATQn25AEdJcAkgjPiK2TO/8cmj93Yk+fV8+dbjYAhg9N86b0NQnQi+pWxe3TgZ29IegvFluSx9p+c4cajssqUUHgmCsv6Enjoscl5dQoA+UTEV3tWH+/09AJLtnHQ8hyI3+oYVGy4dTNSvOLZIB3Hndw5g6do1y/IyVrj0nlFmWmmunxjN0rBlPgadA6TV40KAe1b8nb1ix9t+zn9UrjxGotT/Jr5adLufjdeaZ/K6vMv8TCZ+VeCKtWNUckqiAW6NkP9FBPDBTAyXjBaxKHiQzzRmxfWRXy9t0u/y54HOzrzymQzU1x3g/y8e/NHDWIUszh/+b4qQwxrujk0Zv6am+/njxfwIQskDPOIl4h7f6u+uXBG4MpBE0PA==
+X-HE-Tag: 1794926040-167846
+X-HE-Meta: U2FsdGVkX18WcwbwlnvYaDwFRJ2PqtcqIol8k7cMB+EdlaynIz/KPasx2zxOTvY/6JzSy51NYkUzqcgBfMjaaYjWxqGjfHUpgE8ny4m+KSfQiUd+BpbzVerj8dC3EQkfcDXPB12xEYZS92KTxDsSQzWk7ywsUWLALH3CUKh5KNBu1FTQh6DP6yb5XhjapxnumBDULbAFASRW6u8pWhAr+lF7PB8kDugO24Y54dI9y1dngMicOlFeHa4PZ2JR8uUPEd7vuOG2JZ1JfU+InrmePuyyPpOexjqN2qUrk93CBmlupgZBCdqGSLpSXZM/I3Zd0yYkOXMPgUQJp0F7GkI0D5Z9iJ8iN6aMOSc2yiOZ6kUPyABUXiwWX5B2sVbeyEzzRuDTkWJQsz8t73TVjs5FIwkT1T38k2BwytWk5pcr0jg6cvfiqCpAH5E+f63NTImMo+IKGSTSys2jQ26olUOn+/sEQeZ6OEW3JAsSbQHj9soMeH7aZuT/pbXylL6J2lIezwOC3UNVfV7kr3aQ//UxE7dpVnXg8D64Oyh/+aE7I34Rp1rwQkXEOiVegbbUYmWOvP0TdzBqrG/asuMOgugvCuUG9n4NkaoV3QHd3kIlv0e1270vm8izOzTaNVnC0JYxSuFH8J5W0KMWlsuP7jC6Dc4jEa0RAd7wJKbToa69dNHHTpC5h8FnE6c5Z5v2uni8XAiOQUrSkLsm+rcZuRPcfGVwJGe1DxTO2C6icEQ9KXamkoBN0sAmcVTQkGOrG9q8Iqbb7JjQDni6jJwnHoP3Du9Z9m15ZHfaYJDqDQjmeh3FcDPsOnrPTfhqzDRHyuEffwGMZ+CoRSbnusHHQLY790i27fvZJII4NVum1XqE0SNNw6UbJQ4uQeaVFiVG72L/nrY4GdWJIjLXXXGyspHHl0FFzUlsHLH0r0cRxU3iKtaz/Ev7zT0k7VBmbCcaGRCdHH10bt0kciPjDTVKC8b
+ Tecy42ib
+ egSkp/A6i3PhopTJLrOLFi1Apz8jneVsh82xfOIxQj6ShoOI3xKkvls2ITsAQapku97bOtnLGxkw2Mwl2B1ouFoAeyvdWPA+mXutYphbkAtFzI06BmgglAHVnmKltgxxGUSxLVMxR5Ov/L5Pcq8TO5BHAI8lJ7Kq1py8kepxnBye4DVU42s/tKEGiVhvh1ED8b9SbM/O2tsB6I7hJ7TlaX1Y/FIIZ3Sf/R/a+cgtC54RjaPrGGX1Aa9E2mJNYObQeNryEEJw+aW+TCm8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,68 +96,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hello Aveline,
 
-The ALIGN(maxnode-1, 64) check has an off-by-one error that leads to
-rounding down too much, and ends up not copying the last word when
-userspace asks for one bit over a multiple of 64.
+On Tue, 17 Nov 2026 17:06:54 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
 
-For compat syscalls, the effect is worse, as the actual calculation for
-the size does include the extra word, but the check for the input size
-does not take it into account and can leak a word of stack data.
+> damon_pa_pageout() uses damon_get_folio(), which rejects hugetlb folios
+> because they are not on the LRU.  The loop then advances by PAGE_SIZE and
+> looks up every base page of a hugetlb folio that cannot be reclaimed.
+> 
+> Use damon_get_monitor_folio() and skip a hugetlb folio as a whole by
+> advancing to its end.  Do this before the filters, the accounting and the
+> last_applied check, so that adjacent regions within the same hugetlb
+> folio are not walked by base page either.  Test the LRU flag first to keep
+> the hugetlb check off the path of ordinary LRU folios.
+> 
+> In a pageout microbenchmark in an x86-64 KVM guest, traversal time
+> dropped by about 99.7% for regions covering whole 2 MiB hugetlb folios.
+> As a side note, there is a small overhead of about 1 ns per region when
+> each region is a single 4 KiB page.
 
-In addition, the size calculation rounds up to multiples of 64 bits
-instead of multiples of word size as documented in the man page and
-expected by numactl.
+Thank you for this patch.
 
-Fortunately numactl always passes multiples of 64 here, so none of
-this affects userspace we care about. Finally, the 'nbytes' calculation
-for compat mode makes no sense since that is the size of the kernel's
-internal representation, not the userspace side.
+> 
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> ---
+> Tested in x86-64 KVM guests.  KUnit passes.  The damos_quota.py selftest
+> can also fail without this patch; I will send a separate fix for it.
+> ---
+>  mm/damon/paddr.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+> index 5b773012a876..aca48bf752c8 100644
+> --- a/mm/damon/paddr.c
+> +++ b/mm/damon/paddr.c
+> @@ -268,7 +268,9 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
+>  
+>  	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
+>  	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
+> -		folio = damon_get_folio(PHYS_PFN(addr));
+> +		folio = damon_get_monitor_folio(PHYS_PFN(addr));
+> +		if (folio && !folio_test_lru(folio) && folio_test_hugetlb(folio))
 
-Fix the 'copy' calculation to address all of the above. Note that the
-off-by-one error has been in there since the beginning, but commit
-e130242dc351 ("mm: simplify compat numa syscalls") is where we starting
-copying the wrong data.
+Why do we need both !folio_test_lru() and folio_test_hugetlb() here?  Could
+hugetlb folio in lru list exist?  Could folios not in lru list be reclaimed?
 
-Reported-by: larips <larips950@gmail.com>
-Reported-by: Gregory Price (Meta) <gourry@gourry.net>
-Fixes: e130242dc351 ("mm: simplify compat numa syscalls")
-Link: https://lore.kernel.org/all/20261117101910.1820066-1-gourry@gourry.net/
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-Please double-check the calculation and retest this with the original
-reproducer. The off-by-one error does explain all of this, I'm still
-worried about getting this version wrong again as everyone including
-myself seems to have missed this in the past 25 years and there may
-still be additional subtle issues around it. Apparently we had many
-instances of the same off-by-one in this file but all (most?) others
-got fixed inadvertently by other changes in the past.
----
- mm/mempolicy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Would only !folio_test_lru() suffice?  If so, the patch subject and description
+may also better to be updated.
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 6d662a9a8c74..f318e1155770 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1749,12 +1749,12 @@ static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
- static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
- 			      nodemask_t *nodes)
- {
--	unsigned long copy = ALIGN(maxnode-1, 64) / 8;
-+	unsigned long copy = ALIGN(maxnode, BITS_PER_LONG) / 8;
- 	unsigned int nbytes = BITS_TO_LONGS(nr_node_ids) * sizeof(long);
- 	bool compat = in_compat_syscall();
- 
- 	if (compat)
--		nbytes = BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t);
-+		copy = ALIGN(maxnode, BITS_PER_COMPAT_LONG) / 8;
- 
- 	if (copy > nbytes) {
- 		if (copy > PAGE_SIZE)
--- 
-2.53.0
+> +			goto put_folio;
+>  		if (damon_pa_invalid_damos_folio(folio, s)) {
+>  			addr += PAGE_SIZE;
+>  			continue;
+> 
+> ---
+> base-commit: 67f3b04b277373438f17300e056306adbd9edf7b
+> change-id: 20261117-fix-damon-hugetlb-pageout-20261117-a4e03d9d5a5b
+> 
+> Best regards,
+> --  
+> Aveline Noir <jm5905938@gmail.com>
+> 
+> 
 
+
+Thanks,
+SJ
 
