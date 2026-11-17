@@ -1,145 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9C7606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 20:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57934606A32F
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 20:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oMhz1tPc
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Dbol2SdG;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=bVGMY0QC
 Received: by kanga.kvack.org (Postfix)
-	id E5C286B05B2; Tue, 17 Nov 2026 15:19:31 -0500 (EST)
+	id 76EBD6B00EF; Tue, 17 Nov 2026 15:31:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E34246B05B3; Tue, 17 Nov 2026 15:19:31 -0500 (EST)
+	id 6F84C6B05B0; Tue, 17 Nov 2026 15:31:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D49886B05B4; Tue, 17 Nov 2026 15:19:31 -0500 (EST)
+	id 5BFD86B05B1; Tue, 17 Nov 2026 15:31:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD6F26B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:19:31 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 368C714050A
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:19:31 +0000 (UTC)
-X-FDA: 85445726142.30.D0B00BA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 45FD640006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:19:29 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oMhz1tPc;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794946769;
-	b=j3S5cGwyiWzbIFi/j9xEu18rOHCxD+L2mn9QMbsWw9PNnI2spf6oQJO1VYtuZLK7J2sHzy
-	c/uE5GzCVhlxAI/cM7JcWZOVwW65E8CxESLDSDiOyUEt+2jhCv9tUrqhXybUMpOCwwHgE8
-	orYKwGWJQVVGiuAQpnDXgucoiX4jIV8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oMhz1tPc;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 32B926B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:31:53 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9140E8037B
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:31:52 +0000 (UTC)
+X-FDA: 85445757264.27.23FA1BF
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4F8C640012
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:31:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=Dbol2SdG;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b VGMY0Q";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.149 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794946769;
+	s=arc-20220608; t=1794947510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WY9IFVkkOBOpnAhykaCKS5Ee5S56skAlbBfr1XJGQ+0=;
-	b=vrsum5V6bXwVma7h0+pqbQ1L4RHBfVCPdPhpqDBkUdwq8yPHioempJkPfle40Nwg0zQeeh
-	zWJnMUYWoluqNlpIyQLat2LxVyqtXJZzzDXOAIB5vBTxxnxK+fdOjy9JzXP4BegZw9ln2O
-	tJrDL2ZGVQlvk9LU2Y04KRSIRaazuBY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 570E140DAC;
-	Tue, 17 Nov 2026 20:19:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1393B1F000C4;
-	Tue, 17 Nov 2026 20:19:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794946768;
-	bh=WY9IFVkkOBOpnAhykaCKS5Ee5S56skAlbBfr1XJGQ+0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oMhz1tPcr84xfecTqSKkB1bmkwTmKwgpCugDzxXkwA9o1T1Gu8mzOlRm8hJnMuMJ1
-	 DGQz3cEqjiqzgMxMQC8+54HhRT0MaGuQtS/oel/+bMXiCCbSzc5PsehycXMmUFU6/d
-	 luV3p2KMsk3OfYJb+X7zgRwrJHY4SVLxjhahbxFY4p5X+xiStsIXXsvZvrcR6jSaof
-	 iX5xw7rw/Tpj2XlkQNR/eDjTiCe6YYhfzHq4zwA2hhgJODzvogLK5dUjjs3aPtptOZ
-	 djnyLp/a82Xy7lbDcBGPQy5Q/4frdklGHnG3nWbr6oXuDGKWWH1b/wcvCdh0N6Gox/
-	 hZi+jWXNFYjhg==
-Message-ID: <71899695-4dcc-4875-80c0-bbcb224d43e2@kernel.org>
-Date: Tue, 17 Nov 2026 21:19:20 +0100
+	bh=WNCSWS2QqSRGlwzVEz08kpdvfR9MhOjRdFeTc6DNji4=;
+	b=ub2gOeFPZvwzpqqz/cXAXrjTXLEfE1B8E0eOi4Q17tbjBY7F8HJ36az5XopO02eKJi0LUg
+	chhLjoeniCmkz3pl9rLzptYAlTNoKOaFVwyQqDDB/RBJiaxzadbgWLlqwRMz9dNqMHYUMi
+	pczJTIpohIV1bUB9Bx4pj+ptq83U3p0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794947510;
+	b=hJpttOBiQ8Eas5Ve9yyrSRGKGM0p5MPaHhzRFVP5dqrOEl8ukSE6f5Qj5E0QAlfAUohChl
+	w4/uhVpXe4S6ZoWgEB9qwhTg2U7FaG4e1jHQYdqRwfcxG1+GtjXmAc8KvN1rQ3nEA/s3CE
+	bUW54duJUF8ugxQDyku3aYuZB+JD19E=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=Dbol2SdG;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b VGMY0Q";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.149 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.phl.internal (Postfix) with ESMTP id 7CAF2EC088F
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:31:49 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 17 Nov 2026 15:31:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794947505;
+	 x=1795033905; bh=WNCSWS2QqSRGlwzVEz08kpdvfR9MhOjRdFeTc6DNji4=; b=
+	Dbol2SdGFaQqyJvSWzqITR78ej/yMViPnTN2XjqlTVliD9QfLdixQKnSTHDXqlYS
+	M4u0/CK+AgvflLiH1RrLGTP0EFlOZZ7GkEjaZXDs//ZTaX2HKDpU54nrkJ76KJ0a
+	xieMdyhtRy3bMHZvFg4UI98VuQdad3ODeyKVwXt0lE1BmgoZjc4Qr55kkGqoTy3V
+	+f81Ju1XRmWbZCloDZxOrEaQx1Ji8fnYSZQyXXqdFjg/Fd87nWcFCFl64ZtF6tS4
+	lskeHxsVuPoFjXdDj3XA9g3I65DjO3g2kxbQYKWUPHye0LfQg4dN2mdf8GlZUp7H
+	GFtflzN48+y1i611iZ9pWg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794947505; x=
+	1795033905; bh=WNCSWS2QqSRGlwzVEz08kpdvfR9MhOjRdFeTc6DNji4=; b=b
+	VGMY0QC0lXkN5yQusQJVXqhsMz504eRl+FSaCCvEl97uJ50hKrjtk+RcBO7isl7D
+	0uBlbee6DOZ4jIDan8Pe+nFVeTinBlTwxAfF6oMYadOgzeSydL5TkG4FLGghdAe1
+	OKkmEV3XyYnV8xO5SBeZKt9utccfqI8iFx4bviZoZlVReYc2g0j+NvoX8T5ofpxc
+	U7wJkGpHLjjr0htmWdQsKZ+w76lcm4OLvHFGd/nyE59+1lPoX8pXtZdAurZBnML7
+	v7XyUvxATdzd92gj+TqnUSDwrdormPcNaJueOPfTJrr/S6IRmnVpJg58Gqy39Vb7
+	GSzDOHRxumhpWOiC8nQRg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794947505; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:iUP+dbfjMHt9SUe6oUxYjN9bzGyW1mMNAY/GabDRmSqS7sn
+	QOBsVXX2CsbXYJNJR56ApIv18FxJCMY0IN5VaxsbNr9yRn4qry2Ghj+eeWk2unUn
+	dVXodX7fG5Ss0dhudbSh7MqUZXHepwwSHZvX8O6nyGFf6KKsqpaOmXQaj0u/wbDy
+	KOTmZzxW3Ehe4oj/yob+BJjiohQwDxztxbMAXcKMeSQaTsaFXMwkw4NdY1Tiv3dr
+	dv6XQowcWxp/f4W0fvdo9N+XS9/lcfb0fhTvc7lgWjcErLvAMhQSfccRm0xdiZsf
+	9vSZe22S/MlyMzWjno0XGF1QAgMXMu9EWAolBHw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:zJWjr0w3M4uzGv9DdYuVvMqjqpmxQkLd0PUp2ChdHmI=:vZCoE7GaeTovUmbb2627WNVcsxxfg/5P5Qa1/f2QtCE=;
+X-ME-Sender: <xms:qLn8aut4kjEAIfTtKKGxWZ-hOtsuMwsTOhijyO33M9k9UKBvkJ3KrA>
+    <xme:qLn8auRxM9JaWI4XD6aBn5D1w8i4TbEQ2EYZAdg0eMDTC9q5lUsJdP4vc2TJMxiEQ
+    np57Qgx8bLSz5xmHV1VBb4wNtq47SnhKqeytP34DJquf81c3umxSpXw>
+X-ME-Proxy-Cause: dmFkZTE0A9w+3y8XwzwOBv43d1AyuvTsAuiT2g9ykEpGMhc4nsxzzX3B8PJFomtHSZZeJc
+    khIJgbJuHtU9xdjTsYeF5AXolyWV5KGMp9OKVwv2bn2IqVZu7pck7dzVgDsNODPu/fYpXZ
+    7uxRkJFwomneQH3/FI2o5QtPAi44mXLePCFmHonK0zt//dinU7VfLSsSXgawZdyPn7661+
+    i7voJF6rON6TNeF7q5UlaDGyevhhFa+nSKaUSQDucAlHDx1eyj5zJKhT2TdQiQZUXDYztO
+    qGo8yJQ4p8fFy91xPsR5hIT9665FM2i+AMxAzzRv3uTvyG6AyBZMzeTKRL8beMlpe8wYec
+    c5gEu7wMJiwFSQgxSkq00VMWhPeYj2a4/w8vEUCHah8AN9E9QQGLuJt2urg0N2xauE0yml
+    EfcYJxucixIhJdhmWNWV60pm3jpW9O6tks+upGWdkZSf1MzW1d9LXmDdz3y/3J9m64zkLG
+    5l3s2hPtKKAXa1R4FitA82h8NntynpgA9yDpZ7k6t+nMTZQyqdBGrje+s+xZXaw1UGk9ui
+    9dXxor9pmO0y0/InEJ0/EDauA/mqqgCGUprQcneXLupOODBhkSj4NYx7z/mnN8RGAZx5IY
+    v0Epg7JXoLeVLrJnKt3svcxoO3RPEvq7yOlSDkiwMcz36I8iJ6YQKcGNOQyw
+X-ME-Proxy: <xmx:q7n8aqZnNZcsaMYeJ2yFSowbOe4V2-N8k8R0e7nCg0QB19jqpK7k2w>
+    <xmx:q7n8ar6Dar06zmf9UnCsiJQbAtuy1ytgj5EtoAgKNGXai26oW9YEEg>
+    <xmx:q7n8arzn2gVJyrol89XFf5bwE_SXKmj5Dhxz9hM4jLRj5HQZZ4DfvA>
+    <xmx:q7n8asreHaW_kWMSvYJe38Vq-6KfxzK7gnmxCe_ItZ8I9R8UtCxw4g>
+    <xmx:sbn8amEc_gSAE9Qm7EyRNWFkieIAKR3fEH60_gODcmjaP1lzRgeaVRVk>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id C443D32A0099; Tue, 17 Nov 2026 15:31:36 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm/memory: fix handling of PTE markers in
- insert_page_into_pte_locked()
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>,
- Jingyi Sun <1045704958@qq.com>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Michal Hocko <mhocko@suse.com>, Muhammad Usama Anjum <usama.anjum@arm.com>,
- Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, nvdimm@lists.linux.dev
-References: <20261117-uffd-dax-async-wp-fix-v1-0-c9a30f27f452@kernel.org>
- <7ae17206-829d-4fdb-afd0-cc14c5411b74@kernel.org>
- <avyri3PoPUriTmxN@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <avyri3PoPUriTmxN@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: AXxIX-uOARoc
+Date: Tue, 17 Nov 2026 21:31:16 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Gregory Price" <gourry@gourry.net>, "Lorenzo Stoakes" <ljs@kernel.org>
+Cc: "Arnd Bergmann" <arnd@kernel.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, larips <larips950@gmail.com>,
+ stable@vger.kernel.org, "Zi Yan" <ziy@nvidia.com>,
+ "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>,
+ "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Brendan Jackman" <brendan.jackman@linux.dev>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Jackie Liu" <liuyun01@kylinos.cn>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-Id: <9e7805c3-d41b-4d5e-ac67-8474a5671d86@app.fastmail.com>
+In-Reply-To: <179494557732.482102.7719202079181127037.b4-reply@b4>
+References: <20261117142628.3931151-1-arnd@kernel.org>
+ <avxnIQTcFni9G4IN@gremlin>
+ <541a67af-3b45-4d5d-ac4b-c741850f92e1@app.fastmail.com>
+ <avx0Ci5uPW_hF0Jk@pazuzu>
+ <179494557732.482102.7719202079181127037.b4-reply@b4>
+Subject: Re: [PATCH] mm/mempolicy: fix copy_nodes_to_user() for odd inputs
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4F8C640012
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: betdhd4mu159smu6594xbueg87cyrxf9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 45FD640006
-X-Stat-Signature: hft8wqq9crizi1kkj3qumrhco6snm5zt
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794946769-849412
-X-HE-Meta: U2FsdGVkX1+V+ULqok0mRJprWHtcWGA4+T3UDQY2bscwkzovFWiJERvfAPdCDdmMfaMwIDjCDTQDTmSjja+KDuUrGWowdl2tbGwUtsgLgqpxaYO+NHKrvxQpl9yQw2a+IWFnThMlv/HLOjhN4xwPwk8j3+prrk6yfDXRbHhv606h/PKdBl4JvvxCoqv2BsTL0iI3afxs6YgIJ6YbDx8a5Ql2H9X9SgUv3c+0Iyu73qCNlcI4tsZC5NUZMfZGADWdpY5bH2MXklM16P+UkNuSk7OUj83EUMu6kRBrhKwZYsEOBn8zwOvROZ6boZWOHRwQr3qZXyvy07ZHcaGAbbzB14brIPyioNW0ia/jpgrk/yYDg7H0usg0ZodzY1Z6Dfs5HfV/yKv/8/DH2ILlcoZdaQF2biFaiwsePFoy/+Wmed+HEbnKspK1HeMBrAKOs5YvFrGCP9QyFH5+3IIM21x0pI61LwoQjDFvX5uny4TxcQ7kJeJolIplBPDib99lXqes2qVeaTPSp2ia2IwoQRoEgAMlvUXUNrKTZizVfNm13feRcqfNL4aa5aa4qT8cnySL/23kxtaO7xeGDD8zZumxuT+bqKuONWnm1ixzjx9PUKCz1YC1wkF2CruKwT1yga6fEMFj0rWT8sNsavG/v/uRofvl1BOUKN6Meo2JBHS8tQVbuFiYvc6o5XWvOkAncReN/NVqnvlEThWGAlQyt+cbSeQ8rlZktowlrqHMzsLitKO6ryrtHrTNEZJTajCQmHKWuafshrkr3ILxdIpcyhdKY6MxMK0Df0QZNEWBCm8BV+1KmyM4wOw1es/nb/QNxTDP32RQXL08dR9v/+/kcvIqkLNof/WyXHyfz4AfE2bUmIT7+g8343+UQFFFfjnIoqirSQnUryHh1uZzFcil3UhtPna8a3MAQeqiyPQORjVMVmmvRRTC0qUrZBL2ZbDPp8UrcWocFhjlyv4+RmnK1R1
- LQmiObg8
- ukYD1Oc/Y8RkkciCsmcDtozHpQ+1piRUSxJ4imhl88+7A5zsRq5WI2Q3qlkCJ/0L+2zfbnn5pp5lGMlW1MFF+1iEvMWwHLg4C496KTZNXE0/4daxC8DpHVzKCSr+7SFkPabd0i5oG79VwxkynzE+LrtPCgPkA537Tno8Q39xAEzpzXBBM/URf2j5cnKyHVni1UfwvDR33Jjcmw+/5/ac6f7m16QzvsdDc21gzJbDisUVLcYcLcPNC93AZsEO3zXSvVypSZ7vjdunKJdfNZTXmC8nkAEN8Po767cttajPza6RFx1B1NeLjuFPAPvktgl3949qOU1YFLr+8yRSUbjn8gMuwzmCXi4W3mZmk
+X-HE-Tag: 1794947510-851675
+X-HE-Meta: U2FsdGVkX18/oHX6QsYfl+ggVArbf2OhvF3cEBlFH/lgbyJehd3nAqWQVhMkpwmmgTGYUBehKfieGF/YrQCZsplwfrS0MYheWpVPO0p4rmW4vyrkQcb/Jw9b83RbrpsI2trCmFSeGVFaEf2HiDqWVWnAUVGI+c2z0+4Tk9c3dpXuW069SNpEEnM6kwbC2Tmd7Q8fa7uSC5Q5UpZRSEgzzof9xdcYOv2aNAnRquUy9jXrijfeoiFhUXfvyb/2j8DCUtpuTphrOWNW5PaxYDUvjqSSTonxMRhLA5jGRQVOLyFcHnI/M0YbWfKg7v0YRAHZWx7iRbVoqbnz+FyqJLT9Y12IoZgqusMiD9rAbQIo0i0DPXvj5A0H60m5OYV6GDTSA/PXiWlYRyFCLzPuTt1u9m3AijheP9R/7mvkw60mkEN4TwaSZ05D6URZXDaZYs8cCmUCvcNfYBDEDwz7EuTQeFB2OeIV6iP1t/0jP0XjpmV0/+ZlhVoexrKJvlOOw9lZEBGmTWEApusjkCoogeEkdEz2RxoTMREKuMwjc6HZfiv2HvvTd0pH9DZNJwjU4CHaZwJrronAsbllkjyrIgyJXUkZhHRUc5ES0DZZxnwwdKdOOxulSVLMJwtWQ54lp0etCKrEUKw3Q5ew4Kb+sdS2TFxlwr9G/ygHkbbR2/WwnJNdtry2A/hg5Grigz1WrfUDHBRDvt13hBC0i5n68o+F3hOUAZ2PsiBXLYXyYkqMsjOlWD9Yy6/j0BWZ3GTCmCg97+Hb5LGEyqFKkCRYW1Mn7O8Ot8f8zJ3VIcxPADEyg6UaxZrlQx06N9mWU6OF2j7nuzMlnLepfIcaOSFDZQkKTd5M6HVmCm1f92PIHH+Zs0mH3sgJvLA8V07ZKjsZOuG+4ZsXlWYZ2nZh1dNDCRw1Ltad/YhvKDJhzXWB1ihQF2e+UI1mulfLA8itu+Ck6qVwYXlW9eO7SO5/mvvPLwI
+ //ggksWc
+ kEFPDij8k7HrucZWtisGiCIVFRsJmUpb0D/OC1zcFu1z3Nkjp6XPNoQayvNFFdNdzNMQ+K7DQRRpEOaMqJUaKnalKSlwjB8iRvqKXibDqxI6xUOlz1PFBbo9m7Yn81x3hS8zYSJUmreP3d0wd9B+kmLRKvLx78TPv6NOpe+FOXporKRHnxNkEQLpVFVOWGvJvPnDSPqloIy2jXtcbHtnAn/2kqkuFGeuzlQWCz9yjJmvAwOU0iTtDNc9ZBjegZcI3G4ffy3QjbQmzk63U3OOdn0apahMtrJ6LC+bFoaBaVRPcA6jZahg9Tq8qqcWK+5aY9i2MFgjgtse/YQz5r5PucBzpECtMHgkUkj8sJO89lkDvVxy6GlJ+od9eLh9YaO5OEsfno+nkorJLbXhyNlitjtdW4UMr6tqv/Wvt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,58 +162,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 20:31, Mike Rapoport wrote:
-> On Tue, Nov 17, 2026 at 05:22:09PM +0100, David Hildenbrand (Arm) wrote:
->> On 11/17/26 16:58, Mike Rapoport (Microsoft) wrote:
->>> Jingyi reported that a uffd-wp marker in a DAX mapping causes endless
->>> refaults on reads and SIGBUS on writes [1].
->>>
->>> The root cause is that insert_page_into_pte_locked() treats every PTE that
->>> is not none as a present mapping. Besides uffd-wp markers, this also
->>> affects guard markers that MADV_GUARD_INSTALL can put into a DAX mapping
->>> concurrently with a write fault.
->>>
->>> The first patch restructures insert_page_into_pte_locked() to make room
->>> for the fixes, the second patch fixes the reported issue and the third
->>> makes write faults back off on non-present PTEs.
->>>
->>> Both issues were reproduced on ext4 with dax=always on emulated pmem, and
->>> the fixes were verified with these reproducers.
->>> selftests.
->>>
->>> [1] https://lore.kernel.org/all/tencent_1874C71D4177A1624528043E008DB1A5EF05@qq.com
->>>
->>> ---
->>> Mike Rapoport (Microsoft) (3):
->>>       mm/memory: install new PTEs first in insert_page_into_pte_locked()
->>>       mm/memory: replace uffd-wp markers in insert_page_into_pte_locked()
->>>       mm/memory: don't upgrade non-present PTEs in insert_page_into_pte_locked()
->>>
->>>  mm/memory.c | 68 +++++++++++++++++++++++++++++++------------------------------
->>>  1 file changed, 35 insertions(+), 33 deletions(-)
->>> ---
->>> base-commit: 93d7a816a2df3e907e2719bd12b0073f1285fc5c
->>> change-id: 20261117-uffd-dax-async-wp-fix-867acc8dc78f
->>>
->>> --
->>> Sincerely yours,
->>> Mike.
->>
->>
->> I have here a fix to disallow uffd on DAX entirely. It's completely broken.
->>
->> I was staging it to send with others, but I can send it out separately.
->  
-> Nah, no need.
+On Tue, Nov 17, 2026, at 20:59, Gregory Price (Meta) wrote:
+> What about the following:
+>
+> --- 1/2 mm/mempolicy: convert maxnode to a bit count in copy_nodes_to_user()
+>
+> Converts maxnode to a bit count on entry to copy_nodes_to_user() and 
+> get_nodes(), fixing the compat KASAN stack over-read and stack leak. 
+> Fixes e130242dc351, Cc stable.
+>
+>
+> Subject: [PATCH 1/2] mm/mempolicy: convert maxnode to a bit count in
+>  copy_nodes_to_user()
+>
+> Whenever maxnode - 1 is a multiple of 32, compat_put_bitmap() reads one
+
+'multiple of 64' I think
+
+> more compat_ulong_t from the kernel nodemask than the caller asked for,
+> and writes it past the end of the caller's bitmap.
+>
+> When the kernel nodemask ends there, that read goes past the on-stack
+> nodemask_t in kernel_get_mempolicy(), and its low 32 bits are copied
+> to userspace.
+>
+> With CONFIG_NODES_SHIFT=6, 64 possible nodes and a 32-bit caller
+> passing maxnode=65:
+>
+>   BUG: KASAN: stack-out-of-bounds in compat_put_bitmap+0x122/0x130
+>   Read of size 8 at addr ffff8880150d7ec0 by task mpoltest/241
+>    compat_put_bitmap+0x122/0x130
+>    copy_nodes_to_user+0x14a/0x250
+>    __ia32_sys_get_mempolicy+0x1b0/0x2b0
+>
+> Convert maxnode to a bit count once, on entry, and use only that in the
+> rest of copy_nodes_to_user(), so the compat path gets the same size as
+> the native one. Do the same in get_nodes().
+>
+> Fixes: e130242dc351 ("mm: simplify compat numa syscalls")
+
+I like the renaming as a cleanup, though it does make it a little
+harder to backport to stable kernels from context changes, maybe
+it's better to do do the minimal fix first.
+
+>  mm/mempolicy.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 390a31a99b4ff..cddca1db3d9a1 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -1725,8 +1725,10 @@ static int copy_nodes_to_user(unsigned long 
+> __user *mask, unsigned long maxnode,
+>  	unsigned int nbytes = BITS_TO_LONGS(nr_node_ids) * sizeof(long);
+>  	bool compat = in_compat_syscall();
 > 
-> But patch 3/3 here is for MADV_GUARD_INSTALL on DAX unrelated to uffd.
+> -	if (compat)
+> +	if (compat) {
+> +		copy = ALIGN(nbits, BITS_PER_COMPAT_LONG) / 8;
+>  		nbytes = BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t);
+> +	}
 
-Let me take a look at that tomorrow. But for 1 and 2 we should just reject uffd
-registration.
+It fixes the bug, but I'd drop the nbytes= assignment here, as it
+has no benefit: The only configurations where nbytes actually gets
+a different value is for NODES_SHIFT<6, but as the on-stack
+bitmask is still a 64-bit word here, the only difference is whether
+the extra zeroes come from memset() or compat_put_bitmap().
 
+I assume that when I introduced this bug, I simply confused which of
+the two variables needed to be adjusted.
 
--- 
-Cheers,
-
-David
+      Arnd
 
