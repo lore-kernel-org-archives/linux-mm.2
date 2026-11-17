@@ -1,63 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FF7606A883
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 16:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A147606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 16:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=NG2k+6pH
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=xiRImFeZ
 Received: by kanga.kvack.org (Postfix)
-	id B12FB6B05C5; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
+	id E20016B05C4; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEC7E6B05C6; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
+	id DD0B06B05C6; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98A956B05C7; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
+	id D0DAD6B05C7; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 69A206B05C5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A83A36B05C4
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E68D4A04D0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:17:26 +0000 (UTC)
-X-FDA: 85445116092.25.4361C6E
-Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5F123100012
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7EA6A8087
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:17:25 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=NG2k+6pH;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf14.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+X-FDA: 85445116050.30.FF0C8EE
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5D15280007
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:17:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=xiRImFeZ;
+	spf=pass (imf30.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794932244;
+	b=aDquY71U7fbbmPJeDQ9TBqc5q/AOnGthOSjFUg5GN4jw6uc/kucNTk9UoFVgU3TzYnf2mc
+	epr6Znx+yfwmxENLCNai04C54vBtWwOIKUqGU7+md0CBUdKdEyCvLciniFRQXKVGfME93s
+	PC4Gv+FeGNYxmKAdbyAf7PXrVyd4wys=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=xiRImFeZ;
+	spf=pass (imf30.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794932245;
+	s=arc-20220608; t=1794932244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KBBX73vanCN3RJV6WAoz27bue4rtrM6PSqgvAc6MDVc=;
-	b=CskbKeB6SJMgIh693F+r3V7sozbnnJwQCltl+ARyqs8du30jZfzlvDol6Aoes5FyvAB+mr
-	t1r5bnGCvLEedoOFG+qF4xHSFHQND4nYU4oDTaxK7OrhS4/LML4XzFvDblrIkruE4v3oc5
-	diKvmPbaLYewR6e+fq5wEjGG+IyMZoo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794932245;
-	b=S9tre/gEHSwUVpQkFH67e44DjyaliqMht2DQoKOYatJq/mlIpgtCCI+/pt3+2XjpBJ1RhM
-	RexZuvocoT92RIzKzT0vrQLhTL3n1EzwOlktrt5uylP3W3Dsi5ihT3IcmOJsdWPhX4YNvN
-	rogX4ExLkrmxGjDqSZrLq++2Vc6Jw6I=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=NG2k+6pH;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf14.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+	bh=CfJVYl8d7qdtMu+pXKIuXS8SjsAEQjuLyjcfQyGXzHw=;
+	b=XnsjkO4aAXpVl3BMxc5rl9JHemxSxL0J4bAUEgyUIUhJetU5Ap2IuywaesEMSLfC8AD4Wp
+	IGeVQwcxetgUXftKtOeBiaF1/V78X37OwaIv85hOU+2olnESIr9IPSDQOxkWZwl0ZuTILt
+	7ZltcPQaEaSJ5atI52c22WC7i2W1yI4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1794932243;
-	bh=KBBX73vanCN3RJV6WAoz27bue4rtrM6PSqgvAc6MDVc=;
+	s=smtpout1; t=1794932242;
+	bh=CfJVYl8d7qdtMu+pXKIuXS8SjsAEQjuLyjcfQyGXzHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NG2k+6pHGLmiJ1pROyhiRO9WtCXmNEspfqVYKoAs261FAXvbWSi4VCeVJuEmdUBAy
-	 TG4PUt02A/nI8SQ8wJ0CVc7vNApcGNlUuvKAJAhBpjJCd754C6IbyWzpoD7/swECRa
-	 nxhQi+wEiL8VC7dwuds1SLH/JdM30G2B+ShtwJL/4g+HVtME2yoUFd0bkuWfm7dqD3
-	 7OfkMuRPZoMdTmucTQwCtTvsd6xheq1sLRrrPbFGdNDPgvwO81pyDrvm9gtVXiWN53
-	 HU12V14+HItceAh8TZv0/1k1bZCZs2s1N6Adp/iNzC92pODB96DOKCLcsR2NCKS7Cq
-	 FEzsGNbePradg==
+	b=xiRImFeZD6zn8N1cKU87FaBUXW7qWxpd/dReIsv3iWScG0aHGA4xQK5WpLP31IPoc
+	 Jt4XIGjtMQDhfLqDah6YaGrdo+wLBdGQeWHbhOEtMZ4+D+mw+nevK64ZTokqSq2l+m
+	 4ipl2N06TbQszjJIUby9epNaZGyv+mMNIH0UH1v+EQ22MfxoqDNK2wuacYmVG/iT7A
+	 me2o7vftkFnkaWNymDLcw2v5voYFr7Oc0Cg2aol6KAf61KJUKnQEE6KMKjyW+7Hkj+
+	 iS1VnK9R7SQQkrZR61d45CVN3Qa95WfzWtZJrcrB5L6hetad/33LusDTWf19xnNDbN
+	 FMExrGjIxfsPg==
 Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jTVHl593zzRZZ;
-	Tue, 17 Nov 2026 11:17:23 -0500 (EST)
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jTVHk39MCzRHW;
+	Tue, 17 Nov 2026 11:17:22 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: tglx@kernel.org,
 	peterz@infradead.org
@@ -85,28 +85,30 @@ Cc: linux-kernel@vger.kernel.org,
 	xujiakai24@mails.ucas.ac.cn,
 	linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH 14/17] selftests/rseq: Test the concurrency IDs after the affinity is widened
-Date: Tue, 17 Nov 2026 11:17:14 -0500
-Message-Id: <05781fc46cb63b548588e58b356ab08b10619aac.1794932121.git.mathieu.desnoyers@efficios.com>
+	linux-kselftest@vger.kernel.org,
+	stable@vger.kernel.org,
+	co+cab19e2ebe4d535a@bugs.sh
+Subject: [PATCH 06/17] sched/mmcid: Synchronize MM teardown with affinity updates
+Date: Tue, 17 Nov 2026 11:17:06 -0500
+Message-Id: <cb90e1d7ec582b72eb5d3b15633a1fc149ec1a57.1794932121.git.mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1794932121.git.mathieu.desnoyers@efficios.com>
 References: <cover.1794932121.git.mathieu.desnoyers@efficios.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5F123100012
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5D15280007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 9xiuiq4ywefpukn838x51f34x6wa7wu9
+X-Stat-Signature: fconwka5yx79nrhyo3s9gf1orkb4rp18
 X-Rspam-User: 
-X-HE-Tag: 1794932245-135029
-X-HE-Meta: U2FsdGVkX1/O6AGlAApno67GmZxzv7WLxEWnGTI2jmLs6vu7Nsp2G/fR9vUqLy/IiS+/xIpHFnxorsG5FZf3QP1qa6h4PGXrGbS0CsFxWfu5G5QOl6uDk2UCDmAdLQpPKntVc9XvcwS/wiKF5ttuZkE6bhRMfl6VmMCPuP01awUniV13bnIsyATfZb0IQLHx5sVfC6bONfKENrSNL1wpeHR20tnQ0jacnK9JsaP1gCwGOejKKszT65SU7iDTrbydwFzmuR4kW50NcXr2UFD3SWhEKrXcQgzG9e3Dk8YTR5VfCSID3pjJBV7COxu4WGhvXGBNOppUf5DJ1stEUC9RH3ZLfVExQDekUQrd7ilTTOoNQLe1Wixsz+iGPsNCRb98/OTSkCZ9+LwnX3gUXMAdg+e/Mj1jyjBOERsezF5dyWAgGDNtWGwEpCuAj5k+LSla5eY7CZMs/JuFV1ceUZ8Ci/HaodPs1aH8twOIHt91sQAC4Ut8ZnBYtxDASUj9rR1ajY6OkgjR1eHBkPaLo9Qlo7/DGT4RTIa+96cX0O9cNXjFEcMH8320e1lhD4PItrSbDhjdQUeZzp8CnkqgEMLnW2MSD7BsYn1Iie4fRyOVTXHIql+UNCO5fGfKFrrZgDuhouYFR5Cv9ZNA174elSj/fry7vXN94DSIvce0rItzf9Uw/IHpnOOoU5zuafjywwjFNlyRexaZL67186QJ9GeL3muFOiiORFgtKBt0ibJ3aQskz95HC9GMGZbSZO9bLCKs+tUjs94k8GJGKnNFfkAViBo/e4Bn8KSyq5+vSbBFbua5HMRmXa9jzsIPyVd7cBRbj9c/cPCyrAt6JVpe+vBJhI+lmzk9CoCLVusk7v6+io87IM0GV3MYtegC5KsidLCE7QmVK4QTZP+EW42sOBAeoIAcdeQWwti1wUVOV+IufRL81wrifC1GG7EZde/p56+56DAtr5r4k/YFd0DUigM
- e/Q0LJPG
- qCmxv7Bqk2DCOG3BEnDT2rDPw/nosj1LQ033xZ16vS6KhmxNVrsw1OFD/jH/px7P9gJsxBG99gQEHp95efsNwzgeXIQzhp2iRmxkgsoeCNtGR+ErgInmxXFfTq17Uvc9lePIXiDmerLujBdDPeSVJHYio4hNiWQT9vlSLMf13wzT5VMyQHeh5Q34FMJ5sHVlXC8qrSjyzns59DiND60ZYzPqeiewgIDIcH9tP4Nr7QVLHI1VDHb6vltFB5zyzVIZdqdf6i++5YwBu8R4X8BiV+xY0djxOvU0kb4t7VZyhenMOYd9MKbSVLuf8GQ==
+X-HE-Tag: 1794932244-603688
+X-HE-Meta: U2FsdGVkX1/e+N708vkEPnmgJlCh/HrW9TsmXSHCKxQfVxpQkech0VkJnrlHdSBx53xALZiqlsZnuxhWiBrpMgOLyjCF2fHawcpk1JzDsPvAr/UWoBqGV/HzeCjdH5GnPS6+z+lu9SzoqzsDC0I11wQuH8l7HPv3+58ISaaXRPvHnwaYZIAf4bc5Wb3HhfSf0ZHaLRBoQj28MUzh38mqfu5atB19rIIXoUG/7LdAB+ndaIgPgBtRS3gtEluhfQ0jhWZOpPs8sPHDgJCQmQ72yeLOULVlUXiOiuDDk7ZXo8wjMPQjQjVeNgMLHKHCly5upFP9ei8LFBt2+Symes1HhB4s5w+4cbYK7ilYugQtcjDdJMDPndFE61li+cn6QXcmZ7vkcC3+4jEH5lN+YLyXHaqhGPyLbx1sdVZqUa6CjNgVKkbUjkugJGPwvvD+YffyWCPztMMnRjwSgumuvIVRdRiXmb8CFr0maSIAy2nWUhbazaigOTDb5ZlZkh0NN0c0NTSAzAwZFxBFr3lD8XRpc7VKFdudGmghtyz5t4fLr7S9xJHdbB2MMTNE6+oLwHnKvn6/WcZskvoG8fEA64hxpPxkj6RNyCz0PBtFBI4Dqus2e67yQ1a0woYB/rzktOy3mgcTrUAivyrRnBpqw7UhUWIeiCGwoekHjhhk6QNH4eW/ritKMO7hbfa+so4dYcYQ0kvJpfI2rOpP4/dm4rZZ5mSAHm2GZs9noImBFtRjU707UNwHICqs6QGwhq8B+7qrkXghhR4QYHzRQvo3z5J8+EGB33ZlzlThfDJQfw6rE7bwn5mLunFN1BS7Zn5L7p14Xo+YN3G/n04bDGc13OjmhFWOgLxoUq4UO0Smh2qjP7hLyAN94oURxbEh/PTzxbuZjf9vqzjgAoKqSWBF7v6i3m0I6FDES3D9B8r/tLLTt35iqs07kMnKs8zqa8EYXu4YTMDWLejynI5Y5mMEPG5
+ oI1+kWpW
+ 2UzuJiblVv5RbSXIAMtTGcAyNuCkQC8db1gTNCn723HbO/fFDdPLY2j8uG84LkSHqaqI5AmMZja3IXlu11hv/ju7hDmrK/sqm9vfXF0RjjMxGJ8/pS57cVjZDjA3tFRdTK9T3rJSaIBUv7XJQq3yOtjkjcliNQoQU52VqzHY0XGRPG5t6vp4eJAUqOMg6nYoUxfWmoCapZZ9Dd8f6d+D+M5V2bprJiHWABekJepzSjE/1IMpHsiU7hRC/YIolFTWtIemG+XlcoY1IVoMxqG4E+ruuYOurvDBXIzojCd7nEjUAzyuP6uE7cxb/QFltP5F8litMyT1i4NU+TrLK2gdYaZSTep6UNu8xVSASLP4OU6whcDGRO6Q7ilu/U6W4I2ptlHpgnGNAlsAvBfq8boZ7OXo/Dv4+6vwCpOa2DRWn0vV+5iS+LgRJHxheVAtoO/gyFEvDXHBhIKF+WfYVOj4b6Y8NyXWfHdF7q5r93Vz/ly47RLdL5vnk08sbGs7TfQmpMs3H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,172 +117,170 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When the allowed CPUs of an mm grow, the kernel can give the
-concurrency IDs back to the tasks. Commit 7dbc307b6c72 ("sched/mmcid:
-Fix affinity-triggered switch back to per-task mode") fixed a threshold
-that kept the CPUs as owners. No test shows it: the tests that widen
-the affinity only check that the IDs are unique and in range.
+From: Weiming Shi <bestswngs@gmail.com>
 
-Add a case to mm_cid_bound_test. Three threads start on two CPUs, so
-the CPUs own the IDs. The threads are then allowed on all CPUs and
-visit each of them. The kernel aims at an mm_cid below 3 for them. That
-is a target, not a bound. The case prints when the target is missed. It
-fails only when an mm_cid is not below the possible CPUs. The case needs
-8 CPUs: with fewer, the kernel keeps the CPUs as owners.
+set_cpus_allowed_common() passes a remote task's p->mm to
+mm_update_cpus_allowed() while holding p->pi_lock, but that lock did not
+stabilize the pointer against MM replacement. A same-owner
+sched_setaffinity() caller can therefore retain the old pointer while exec
+replaces and frees it. On architectures which shoot down rather than
+refcount lazy TLB MMs, exit_mm() and kthread_unuse_mm() have the same
+lifetime gap.
 
-The target is met on guests with 8, 16 and 64 CPUs:
+  BUG: KASAN: slab-use-after-free in set_cpus_allowed_common
+  Read of size 4 at addr ffff888123155e4c by task poc/5132
+  Call Trace:
+   set_cpus_allowed_common (kernel/sched/core.c:10835)
+   set_cpus_allowed_fair (kernel/sched/fair.c:10046)
+   __set_cpus_allowed_ptr_locked (kernel/sched/core.c:3224)
+   __set_cpus_allowed_ptr (kernel/sched/core.c:3258)
+   __sched_setaffinity (kernel/sched/syscalls.c:1161)
+   sched_setaffinity (kernel/sched/syscalls.c:1239)
+   __x64_sys_sched_setaffinity (kernel/sched/syscalls.c:1275)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:84)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
 
-  3 threads widened to 64 CPUs: largest mm_cid 2 on CPU 63
+  Freed by task 5127:
+   kmem_cache_free (mm/slub.c:6757)
+   __mmput (kernel/fork.c:1204)
+   mmput (kernel/fork.c:1215)
+   setup_new_exec (fs/exec.c:1395)
+   load_elf_binary (fs/binfmt_elf.c:1024)
+   bprm_execve (fs/exec.c:1865)
+   do_execveat_common.isra.0 (fs/exec.c:1963)
+   __x64_sys_execveat (fs/exec.c:2047)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:84)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
 
-A v7.1.8 kernel with 384 CPUs, which does not have the commit above,
-misses it:
+  Kernel panic - not syncing: KASAN: panic_on_warn set ...
 
-  3 threads widened to 384 CPUs: largest mm_cid 383 on CPU 383, above the thread count target
+Affinity paths hold p->pi_lock across the p->mm load and its complete use.
+After publishing a replacement or NULL p->mm, take and release that same
+lock before dropping the old MM reference. For an updater that is already
+using the old pointer, the ordering is:
 
+  affinity updater                     MM teardown
+  ----------------                     -----------
+  raw_spin_lock(&p->pi_lock)
+  mm = p->mm            /* old_mm */
+                                       p->mm = new_mm or NULL
+                                       raw_spin_lock(&p->pi_lock)
+                                         /* waits */
+  mm_update_cpus_allowed(mm, mask)
+  raw_spin_unlock(&p->pi_lock) /* release */
+                                         /* acquire succeeds */
+                                       raw_spin_unlock(&p->pi_lock)
+                                       ...
+                                       mmput/mmdrop(old_mm)
+
+The teardown-side acquire cannot complete until an updater ordered before
+it has released p->pi_lock, so old_mm remains alive throughout that
+updater's access. If teardown is ordered first instead, its unlock is a
+release that orders the preceding p->mm store before a later updater's lock
+acquire. The later updater therefore observes new_mm or NULL. An updater
+that acquired the lock before the store but has not loaded p->mm yet is
+still ordered before the teardown-side acquisition; it may observe either
+pointer, but teardown waits for its complete use before dropping old_mm.
+
+All runtime callers of set_cpus_allowed_common() hold p->pi_lock across
+this access. The runqueue lock is not part of the p->mm lifetime ordering,
+so the grace period only needs p->pi_lock. Place it after publication and
+before the old reference drop in exec_mmap(), exit_mm(), and
+kthread_unuse_mm(). The last two paths matter on architectures which shoot
+down rather than refcount lazy TLB MMs.
+
+This change was developed with assistance from an LLM.
+
+Fixes: 7e019dcc470f ("sched: Improve cache locality of RSEQ concurrency IDs for intermittent workloads")
+Cc: stable@vger.kernel.org
+Reported-by: <co+cab19e2ebe4d535a@bugs.sh>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/all/20261110183809.3308868-1-bestswngs@gmail.com/
 ---
- .../selftests/rseq/mm_cid_bound_test.c        | 88 ++++++++++++++++++-
- 1 file changed, 87 insertions(+), 1 deletion(-)
+ fs/exec.c             | 1 +
+ include/linux/sched.h | 2 ++
+ kernel/exit.c         | 1 +
+ kernel/kthread.c      | 1 +
+ kernel/sched/core.c   | 9 +++++++++
+ 5 files changed, 14 insertions(+)
 
-diff --git a/tools/testing/selftests/rseq/mm_cid_bound_test.c b/tools/testing/selftests/rseq/mm_cid_bound_test.c
-index 11332b9ff24b..a751d8929138 100644
---- a/tools/testing/selftests/rseq/mm_cid_bound_test.c
-+++ b/tools/testing/selftests/rseq/mm_cid_bound_test.c
-@@ -28,6 +28,11 @@
-  * The number of IDs follows the union of the allowed CPUs of the threads,
-  * which only grows. The affinity is therefore narrowed before the fork(2)
-  * that creates the process under test.
-+ *
-+ * A last case widens the affinity. Three threads start on two CPUs, so the
-+ * CPUs own the IDs. The threads are then allowed on all CPUs. The kernel
-+ * aims at giving the IDs back to the tasks, so that three threads read an
-+ * mm_cid below 3. That is a target too: the case prints when it is missed.
-  */
+diff --git a/fs/exec.c b/fs/exec.c
+index 8d2b14e1d455..3196421cb81d 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -905,6 +905,7 @@ static int exec_mmap(struct linux_binprm *bprm)
+ 		BUG_ON(active_mm != old_mm);
+ 		/* Defer teardown to setup_new_exec(), outside the exec locks. */
+ 		bprm->old_mm = old_mm;
++		sched_mm_cid_mm_barrier(tsk);
+ 	} else {
+ 		mmdrop_lazy_tlb(active_mm);
+ 	}
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index e4f6323d7855..8da4b88f434c 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2360,6 +2360,7 @@ static __always_inline void alloc_tag_restore(struct alloc_tag *tag, struct allo
+ #ifdef CONFIG_SCHED_MM_CID
+ void sched_mm_cid_before_execve(struct task_struct *t);
+ void sched_mm_cid_after_execve(struct task_struct *t);
++void sched_mm_cid_mm_barrier(struct task_struct *t);
+ void sched_mm_cid_exit(struct task_struct *t);
+ static __always_inline int task_mm_cid(struct task_struct *t)
+ {
+@@ -2368,6 +2369,7 @@ static __always_inline int task_mm_cid(struct task_struct *t)
+ #else
+ static inline void sched_mm_cid_before_execve(struct task_struct *t) { }
+ static inline void sched_mm_cid_after_execve(struct task_struct *t) { }
++static inline void sched_mm_cid_mm_barrier(struct task_struct *t) { }
+ static inline void sched_mm_cid_exit(struct task_struct *t) { }
+ static __always_inline int task_mm_cid(struct task_struct *t)
+ {
+diff --git a/kernel/exit.c b/kernel/exit.c
+index d5e7bc2af804..5f9979d6216c 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -582,6 +582,7 @@ static void exit_mm(void)
+ 	local_irq_enable();
+ 	task_unlock(current);
+ 	mmap_read_unlock(mm);
++	sched_mm_cid_mm_barrier(current);
+ 	mm_update_next_owner(mm);
+ 	mmput(mm);
+ 	if (test_thread_flag(TIF_MEMDIE))
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index fdb8fb07f40b..e7b393cfdcee 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -1682,6 +1682,7 @@ void kthread_unuse_mm(struct mm_struct *mm)
+ 	enter_lazy_tlb(mm, tsk);
+ 	local_irq_enable();
+ 	task_unlock(tsk);
++	sched_mm_cid_mm_barrier(tsk);
  
- #define _GNU_SOURCE
-@@ -46,6 +51,9 @@
- 
- #define MAX_THREADS	1024
- #define MAX_STEPS	64
-+#define WIDEN_THREADS	3
-+#define WIDEN_MIN_CPUS	8
-+#define WIDEN_SETTLE_US	20000
- 
- /*
-  * Exit status of the process under test: a mask of the bound and of the
-@@ -67,6 +75,7 @@ struct worker {
- static struct worker workers[MAX_THREADS];
- static unsigned int epoch;
- static cpu_set_t allowed;
-+static cpu_set_t all_cpus;
- static int nr_allowed;
- static int nr_possible;
- 
-@@ -228,6 +237,49 @@ static int run_child(const int *steps, int nr_steps)
- 	return ret;
+ 	mmdrop(mm);
+ }
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 456b76e823b3..c4475344f6f2 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -11229,6 +11229,15 @@ void sched_mm_cid_after_execve(struct task_struct *t)
+ 		sched_mm_cid_fork(t);
  }
  
 +/*
-+ * The process under test of the widening case. It starts on two CPUs.
-+ * Return a mask of the OVER_* values.
++ * Pair with set_cpus_allowed_common()'s p->pi_lock critical section. Call
++ * after publishing p->mm and before dropping the old MM reference.
 + */
-+static int run_child_widen(void)
++void sched_mm_cid_mm_barrier(struct task_struct *t)
 +{
-+	int nr_workers = 0, ret = 0, cpu, err;
-+	unsigned int cid;
-+
-+	if (sched_getaffinity(0, sizeof(allowed), &allowed))
-+		return CHILD_ERROR;
-+	nr_allowed = CPU_COUNT(&allowed);
-+
-+	err = set_workers(&nr_workers, WIDEN_THREADS - 1);
-+	if (err)
-+		return CHILD_ERROR;
-+	measure(nr_workers, &cpu);
-+	cid = measure(nr_workers, &cpu);
-+	ksft_print_msg("%4d threads on %d CPUs: largest mm_cid %u on CPU %d\n",
-+		       WIDEN_THREADS, nr_allowed, cid, cpu);
-+
-+	/* Each thread widens its own affinity at the end of its next tour. */
-+	allowed = all_cpus;
-+	nr_allowed = CPU_COUNT(&allowed);
-+	if (sched_setaffinity(0, sizeof(allowed), &allowed))
-+		ret |= CHILD_ERROR;
-+	measure(nr_workers, &cpu);
-+	/* The kernel changes the owners of the IDs from a work item. */
-+	usleep(WIDEN_SETTLE_US);
-+	measure(nr_workers, &cpu);
-+	cid = measure(nr_workers, &cpu);
-+	if (cid >= (unsigned int)nr_possible)
-+		ret |= OVER_POSSIBLE;
-+	if (cid >= WIDEN_THREADS)
-+		ret |= OVER_STRICT;
-+	ksft_print_msg("%4d threads widened to %d CPUs: largest mm_cid %u on CPU %d%s\n",
-+		       WIDEN_THREADS, nr_allowed, cid, cpu,
-+		       ret & OVER_STRICT ? ", above the thread count target" : "");
-+	if (set_workers(&nr_workers, 0))
-+		ret |= CHILD_ERROR;
-+	return ret;
++	guard(raw_spinlock_irq)(&t->pi_lock);
 +}
 +
- /* Keep the first @nr CPUs of @src in @dst. */
- static int narrow_cpus(cpu_set_t *dst, const cpu_set_t *src, int nr)
+ static void mm_cid_work_fn(struct work_struct *work)
  {
-@@ -326,13 +378,46 @@ static void test_ramp(const cpu_set_t *all, int cpus, const char *name)
- 			 "%s: below the possible CPUs\n", name);
- }
- 
-+static void test_widen(const cpu_set_t *all)
-+{
-+	const char *name = "widened from 2 CPUs: below the possible CPUs";
-+	cpu_set_t narrow;
-+	int status = 0;
-+	pid_t child;
-+
-+	/* With fewer CPUs the kernel keeps the CPUs as owners of the IDs. */
-+	if (CPU_COUNT(all) < WIDEN_MIN_CPUS || nr_possible < WIDEN_MIN_CPUS) {
-+		ksft_test_result_skip("%s: fewer than %d CPUs\n", name, WIDEN_MIN_CPUS);
-+		return;
-+	}
-+	narrow_cpus(&narrow, all, 2);
-+	all_cpus = *all;
-+	if (sched_setaffinity(0, sizeof(narrow), &narrow))
-+		ksft_exit_fail_msg("sched_setaffinity: %s\n", strerror(errno));
-+	child = fork();
-+	if (!child)
-+		_exit(run_child_widen());
-+	if (child < 0)
-+		ksft_exit_fail_msg("fork: %s\n", strerror(errno));
-+	if (sched_setaffinity(0, sizeof(*all), all))
-+		ksft_exit_fail_msg("sched_setaffinity: %s\n", strerror(errno));
-+	if (waitpid(child, &status, 0) != child)
-+		ksft_exit_fail_msg("waitpid: %s\n", strerror(errno));
-+	if (!WIFEXITED(status) || (WEXITSTATUS(status) & CHILD_ERROR))
-+		ksft_exit_fail_msg("the process under test failed to run\n");
-+	/* The thread count is a target. Only the bound decides the result. */
-+	if (WEXITSTATUS(status) & OVER_STRICT)
-+		ksft_print_msg("widened from 2 CPUs: above the thread count target\n");
-+	ksft_test_result(!(WEXITSTATUS(status) & OVER_POSSIBLE), "%s\n", name);
-+}
-+
- int main(void)
- {
- 	cpu_set_t all;
- 	int nr_all;
- 
- 	ksft_print_header();
--	ksft_set_plan(3);
-+	ksft_set_plan(4);
- 
- 	if (!rseq_available())
- 		ksft_exit_skip("rseq is unavailable\n");
-@@ -351,5 +436,6 @@ int main(void)
- 	test_ramp(&all, 2, "2 CPUs");
- 	test_ramp(&all, 4, "4 CPUs");
- 	test_ramp(&all, nr_all, "all CPUs");
-+	test_widen(&all);
- 	ksft_finished();
- }
+ 	struct mm_struct *mm = container_of(work, struct mm_struct, mm_cid.work);
 -- 
 2.47.3
 
