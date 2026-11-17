@@ -1,107 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1F9606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1C9606A329
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PKTIhaGa
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cZhOFAFV
 Received: by kanga.kvack.org (Postfix)
-	id DD4906B00EF; Tue, 17 Nov 2026 04:58:18 -0500 (EST)
+	id 7BE6C6B05B1; Tue, 17 Nov 2026 05:00:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DABF86B05B0; Tue, 17 Nov 2026 04:58:18 -0500 (EST)
+	id 76F106B05B2; Tue, 17 Nov 2026 05:00:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C73B66B05B4; Tue, 17 Nov 2026 04:58:18 -0500 (EST)
+	id 637C26B05B3; Tue, 17 Nov 2026 05:00:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A2F5A6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:58:18 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 43C7C1C2B4C
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:58:18 +0000 (UTC)
-X-FDA: 85444160676.21.39043EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 86D1720002
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:58:16 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PKTIhaGa;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4022D6B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:00:49 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C71F61203A9
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:00:48 +0000 (UTC)
+X-FDA: 85444166976.23.B0CB758
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 01B9740010
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:00:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cZhOFAFV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794909496;
+	s=arc-20220608; t=1794909647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3LgsglAFrX/+u6sq+JUPf5c5+f8fmRKk1XVeo+aF5S0=;
-	b=6WbSn31hby0vojHp9ItU0wU5b+hvqED8GtGL6TSgluIv4sMIAhD92lDwlz4HFp+/GpPS/Q
-	rdmRZ7UwImoQ3FQ9hb5MZw5ZXZiQuyZGY6yfeNMCeY2FK+XyK7gCtu3iTJ84vzeSN5Rs6s
-	PhfXKn30nb7o53lTiD/hZeXYBTLELO4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794909496;
-	b=RNd8Zcutu4GDDd+JB+yo9+IsBFNFPUeax7bZw3WO49TlmWAQX1GyEqPD7veZo5j74EmagI
-	U2ruzi+WuFEjDKoK484h2GAaNnlF3VxqPuCgsQX/5FZiJxISSIB3Typt/yIrg+Jep7+VVP
-	iYnCFUgC6N63ESXyJaDllVIWjVtcSP8=
+	bh=rLU0m+i51pat3GsVZS9FC+8o0VmdU4AL5cy98JWS7c8=;
+	b=GpNna7CDUw4ExSpdIWrI/aWtwpRSAR0PgMVkTNueVjVA2vNkl76rL01VXZy1/KriaZSB3n
+	6nLBZKdmYdNzrRar4SZ23x1F1Y2eR2kXwHW7cRyPK1gR/u6OWE8CSuC9r0jhUgNH7SiNGf
+	jsmN1AMLuiAuwpd2lDSFhK7BgHA2hyk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PKTIhaGa;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cZhOFAFV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794909647;
+	b=qtlVz1VSfAmi1PtgxDZTsWy3OAhKwdicJg/ft+kbseeXP21e6bIcEkpmj+NBH1oyuhpYzh
+	6WAoQo4WrELTYCWbpfAL+fUSALDFbi2weKrr5VJNmVdN4zhAIXNbdmVcS5mh4AnxVVOnlU
+	eOQMjKmkvqkkm2A6qo/3eh4za7jYLAI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F0CA461D08;
-	Tue, 17 Nov 2026 09:58:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD77F1F000C5;
-	Tue, 17 Nov 2026 09:58:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 350DD40DD5;
+	Tue, 17 Nov 2026 10:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27711F000C5;
+	Tue, 17 Nov 2026 10:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794909495;
-	bh=3LgsglAFrX/+u6sq+JUPf5c5+f8fmRKk1XVeo+aF5S0=;
+	s=k20260515; t=1794909646;
+	bh=rLU0m+i51pat3GsVZS9FC+8o0VmdU4AL5cy98JWS7c8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PKTIhaGaFJjS8CEuxmoycngekpxqyTVDnR+ZbXMPkZLRz4ltzKBzyYbM81DD7kjQp
-	 dJko9j4wHxkttt7vMNmlyiiUPmk6J0+SNRfMMI43e00Q26u/3Zs4SU9IDyENJJCN27
-	 0y6HGdbRJ/Pgc8qqTqPRtz/M9tbjAqGvfP3adIBD8UGiRZrpj8LwM74cWF9bM9Ga9G
-	 deU1O6u/09nFGfMVdsjWFGVDoE+32ZqEozAehWGjEOzwf3+SpXXWsWVQjmE54Nu9xy
-	 ZyDBWs2rwIBJJ63aMdREtpHzjfvEIv9d9d1TbHnsu6uvOD39NXSmHfWxu6C3eTTsn8
-	 mhBQ1FxH7fAKQ==
-Message-ID: <c368f4a2-aaf2-49d0-90d1-0bacc9950967@kernel.org>
-Date: Tue, 17 Nov 2026 10:58:00 +0100
+	b=cZhOFAFVxSdeDuTxSxEhs9gPpiWywSH6yCyruwfni1yeF1qmJqvrfwBErLufmMBan
+	 v8UrVqfIqcZD02hwj7QfnjggRxzVAIPAzV6h7WvTLUFkFh7D2+CSj+OERAslUxr89j
+	 omooWQzphPlqBa2fgYx+szJ0w8baRW/psZ54GaJB7oo3UFLRvYki0+sCUNzY2O0kp+
+	 Gaz6TaLKYtW0GpnwpkWR2/v2+QJOCDScSxfgLKpoW1oCGohoIcax3kHF+PALoekhO/
+	 9EjcscmKQFbaQfGkyn656zX4mCbhyUX8AZv6LmHZdfpj3XzeyfT4SFElCLWSvQPN25
+	 YOtFYgWJ1FtHA==
+Message-ID: <8c0ce90d-74d8-4578-bfc9-9218fcae8165@kernel.org>
+Date: Tue, 17 Nov 2026 11:00:36 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/9] mm/migrate_device: do not migrate a uffd-protected
- zero page
-To: Tal Zussman <tz2294@columbia.edu>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
- Andrea Arcangeli <aarcange@redhat.com>,
- Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Michal Hocko <mhocko@suse.com>,
- =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
- Andrei Vagin <avagin@gmail.com>, Muhammad Usama Anjum <usama.anjum@arm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
+ underused THP shrinker is disabled
+To: Nico Pache <nico.pache@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Yu Zhao <yuzhao@google.com>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
  Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
  Gregory Price <gourry@gourry.net>, Ying Huang
  <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- Felix Kuehling <Felix.Kuehling@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org
-References: <20261116-uffd-state-fixes-v2-0-4397a0196479@columbia.edu>
- <20261116-uffd-state-fixes-v2-8-4397a0196479@columbia.edu>
- <a384d75c-2134-407a-924f-ee511f65a2d1@kernel.org>
- <71aa028f-c753-40d5-a8e4-8daef5aea3aa@columbia.edu>
+ Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
+References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
+ <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
+ <175e7fae-2254-4e13-a4ba-0d39fb82018a@kernel.org>
+ <22894af6-fd2f-4c26-b74b-d950f55a4e1b@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -148,22 +132,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <71aa028f-c753-40d5-a8e4-8daef5aea3aa@columbia.edu>
+In-Reply-To: <22894af6-fd2f-4c26-b74b-d950f55a4e1b@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: e1a8rtxmk9qz37gz44kjtfj9wgo8by58
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 86D1720002
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 01B9740010
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: ezyx6qyg7fubf39bnub348468p8d7yy8
-X-HE-Tag: 1794909496-539967
-X-HE-Meta: U2FsdGVkX189eIb+z19cimCIjVt/7gY8l5D8vtCuxAXtLcvx6Ig6Vv0sYtmpti5OnCKiXGh01LESrT4UGfyY2ubFL1UviDV9ztok7TTDyym+T/t5SWZBXAmIGcFAh3GRTGXWj9p9m6D82qbHFmbVpiIVMbZU8uqjzlygNgijwX/aEqVLeAHnJTstM/jVoIzHW4J3iTULZlm9QgsfkJIMUyrCgqZKOUVks1tSRc57WzuYAgPf4L6m9vgFoYytRYUVUxwXKGZCBikoaSTjzHQCTEodw7IhW2l//ATqpz/RoyWGw8ktge7oji6CwK+zktQZvpBR4de+P4VVGAcnY1PSiSEYFKSCITXK4WHy7kVJZPEcjkk7I25gd32Y25/aXD9PCnhUGPF1gcD8zod6D+WPpR+W7FgiKcloMd63oI1kC+qizpogWRQC2Cj9yozi5to3Jp17YzdHaRsMw1ft9Abrs70dtpDulAUK6RtW+I4ZFi7afEppua4OQ1Oiuatz5AnZ+ojR4bIMeMwks+0MlvCzKsbQt/HpfUe5lcmRJbD95B3d4i9td9urFfIRjCBZSld/pgVi0CwjtIh2m6gQWuVIeAt6zWZF3ILq7KRSrpLsNcyxMrG/+a8A4lQrU5bVVNO3xd6JZ895M3xvOBWalvrLp8O9szABcWV5RziZgS00ntYQ/bUJwvih0Iqfo6s7JAm8j0rmvl3vgms/McoDeLfFg/rCZ7s45yv5siZPftoWTVUA0974Rwc4cWArS4X/H9cR2bfTeb+vqW1VLxeJpHS27tsV++IHrKYeVSYRtSgXuUF3lJnE27lnGvvm+jDU8vsODpEmq+zNQDSqFWyC1mdxVZf+GQvjP8HeMhXK6PF564SAFoEZVsRxup0YehI7esfmUWEuSraxZV8HV0X9I3tjGlZGZVx7YldWoOcvu9Hmf0WIxzcfL59JoNzbC7QZRTOyw3awXGoWXGXtrumVvFg
- s4k367+b
- B2366seYf54lLEXX0zytYYx7yfGJhXk0/sStTBGSLI7SkB7JDY1/7/sTQDZ9ljrFt7vO64zcWkm+oFUF7074J9VisWM/jDBOTihd3vvvsMSLBnV0XKFO/fu4/i8/f48m+Iao5tq6I0XNGR8OQE5Max6HCw0Z/Ei4WA/z1th8CUwjScwGNfvWIgbGRQMDNu0dJ+cDpci5Xu7rP42dFGo6kayJ4XUwty2J66aV4emlY4DreqfhzIrV8wv00NFiAiGAzAhLtgMilY8iNpO5NQza1FCFLLkAK1KkTRvp1TWiZ61fmxrBW+ZiVEidsOYgmwZ2X4ORMFQzdafkPl8CjD4W2t+p37MGjYsMSVtW3QfLp1BT6Y8TGvcEYLWZXKY3X/5nlNJclhOzTRp4fbcDFlt8QSE8VhsQcUvpS6AVSqYz70Pw5Re2hHstrIWQIvyV+cjBZOL6oggKA4oypd7gYdhXnHbmaeDhcjF0rSSjeGnHVgM6rxw/Yschw3IqjzNVcyPCZBZ5PhxKhXoXLB/q8v8j9H1MisohisBpOzFHM9R4l0ksBd0CucdVQtUWRdqvAxZwLbVuj84JbTiIYGDEGRINPjWd0Yce0DqNNQyixavbWifUEsls1ORQdB2Md5BKivH3nehTnk9Sxvm2e/Fw=
+X-HE-Tag: 1794909646-91411
+X-HE-Meta: U2FsdGVkX1+i7yVuXqKHbM3Un0Ox5V4IP/as1TpEzOEaCIfEVEpDBDqoMXhorSD38UL8J4zRX0j4Dw6BphN9PfdTnbSU9ria3zgTylgHQnz6w9XBPt5uylmC5Nw5okV7rxnN2QULSJtTy2CKZUvmHOjsfUUp+81G5hIRcu0cHyXG479JpnLLFR09fT0A8bt9PVm4Y+QPi+Y5vq4btgmOtf7xItb5QP8nbgA5WQE4VzOgNehz7D1zZLGohbooV4k1UoZq1q6icpLayc2EsaNej7xmZXh21skcXsx63k5MIucd00m+gl9DNQW+QfUCaF9vepuQVcp6wcAwlzdgU/E9obTruSR9jXQI4OUSX5lueRMfWvLBGW2gzbxzuyJW1b0A7SfLuv+TmjsLxWxOu8ksrfnwnnBe8sLERTRAGFgfFnMDpD+T1zwnp+3tSVIDU0ifSBfZgPkreQ3p12I3nhWczf4YQXhGWsJH7EI/r0q5aKE05hP6hYFyLduOwdWeUQbpJzK5goSqU2DpaxV3EtTPPMcHgrKdigCBGN7h/hQxBde0zvwU8+P8qg4P51E8q5YWynURdow9ToUUedeWYZPvp+zooXVmkwuVz9yL3WICYI7SG6aKtGRGKOqJ7Q2fa60hZ2DOf3nxOS1gyks9bqTNQdWUbYg62kTIIxpZDQMSq2zU0k49TQpVvX1J9Bm+nvtVXLlr2gjZicHya6LbL5a4JrTql6t18UubkzX63SurZ5qYD2Nz8KK/KQjSZ+6oH8Tw+eps6O/u16kzR50ty2mWvkl/XOXYHtxdO4/1fU51UugOxMRWcXke2Ko6eUQMyasW3YRkC0x1d/EDCLLnvhKoShtfyZKimkG7E6p/n1JB3GyXMt0uXTo2uYqwOJCiJ70URZs/H5U1hOa+1uSvBKqDXBAQDl5CnbJGJqegrYdCxXtLo+yuedwi8JgnUmIUlJc5YPnTA7ifRkPXQ0xmygF
+ 3tSmZ+We
+ cjaebIvfiFf7qxOHdaIf4sukt4L8gxb1rozZ0jTjNmjmc9iI4124G4YnyzSzHxAqcWwddtk+iwiPcmcgpc8WAzAbfPNsjnec4nc/D/vvPkQ+bKcErE3vh9WjLxttTXxYrQNIgMLxnaLmxi7outA5WzphRV1e3UR9XHcBFLtS28iIEbCOCcbzeitIBWjOhgfEi+cn53b97Us4LlqnFFQRp7Ul8T1M+5FkghKY4WLHy4blJq3Dr6EKV/xppJyVyagVsQzd1NGBqLLUZNUZ2w1gefJzHyPetlQR3mEOuBUjRsJV/1O2h7TvPNKWEUdUr8J6/ESXfDAb/Cl1Wo2+oIb2awjSQiMZSWJbszcqmX96WfXeAP6gRDkOCiQB7CxdaGzdjJyt3qb+9SULdIZrqqikMMGISWrM2AD2ajpIdfG3ZdAAnjtCc22UQr7nZ9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,73 +156,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 00:06, Tal Zussman wrote:
-> On 11/16/26 3:45 PM, David Hildenbrand (Arm) wrote:
->> On 11/16/26 21:02, Tal Zussman wrote:
->>> Device migration replaces a PTE that maps the zero page with a new PTE
->>> that is built only from the VMA flags, so its userfaultfd WP or RWP
->>> protection is lost. The same applies to the huge zero PMD. Writes and
->>> accesses to the page are then no longer reported to userfaultfd.
+On 11/17/26 00:08, Nico Pache wrote:
+> 
+> 
+> On 11/16/26 3:30 PM, David Hildenbrand (Arm) wrote:
+>> On 10/25/26 18:39, Nico Pache (Red Hat) wrote:
+>>> The zero-page remapping in __folio_split() was added to support the
+>>> underused THP shrinker. When the shrinker is disabled via
+>>> shrink_underused, gate TTU_USE_SHARED_ZEROPAGE on split_underused_thp
+>>> to avoid scanning subpages for zero content unnecessarily.
 >>>
->>> To fix it, do not migrate a uffd-protected zero page. Skip it during
->>> collection, and check again under the page table lock before inserting,
->>> as another thread can protect the page after it was collected.
->>>
->>> The alternative would be to carry the uffd state over to the new entry,
->>> but a uffd-protected zero page in a range that a driver migrates should
->>> be rare.
->>>
->>> Fixes: 292924b26024 ("userfaultfd: wp: apply _PAGE_UFFD_WP bit")
->>> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
->>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->>> Cc: Lyude Paul <lyude@redhat.com>
->>> Cc: Danilo Krummrich <dakr@kernel.org>
->>> Cc: Felix Kuehling <Felix.Kuehling@amd.com>
->>> Cc: Jason Gunthorpe <jgg@ziepe.ca>
->>> Cc: Leon Romanovsky <leon@kernel.org>
->>> Cc: dri-devel@lists.freedesktop.org
->>> Cc: intel-xe@lists.freedesktop.org
->>> Cc: nouveau@lists.freedesktop.org
->>> Cc: amd-gfx@lists.freedesktop.org
->>> Reviewed-by: Alistair Popple <apopple@nvidia.com>
->>> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+>>> Suggested-by: David Hildenbrand <david@kernel.org>
+>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when
+>>> splitting isolated thp")
+>>> Signed-off-by: Nico Pache <nico.pache@linux.dev>
 >>> ---
->>>  mm/migrate_device.c | 23 +++++++++++++++++++++--
->>>  1 file changed, 21 insertions(+), 2 deletions(-)
+>>>   mm/huge_memory.c | 3 ++-
+>>>   1 file changed, 2 insertions(+), 1 deletion(-)
 >>>
->>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->>> index 9e19fadfa65c..140b99f72508 100644
->>> --- a/mm/migrate_device.c
->>> +++ b/mm/migrate_device.c
->>> @@ -159,7 +159,16 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
->>>  
->>>  		folio = pmd_folio(*pmdp);
->>>  		if (is_huge_zero_folio(folio)) {
->>> +			/*
->>> +			 * Nothing carries the uffd state of the zero page
->>> +			 * over, so skip it if its uffd bit is set.
->>> +			 */
->>> +			bool protected = userfaultfd_protected(walk->vma) &&
->>> +					 pmd_uffd(*pmdp);
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index bd44d58e8684..2d56d1bff0ea 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -4104,7 +4104,8 @@ static int __folio_freeze_split_anon(struct folio *folio,
+>>>   out_no_split:
+>>>       local_irq_enable();
+>>>       if (anon_vma) {
+>>> -        if (!ret && !folio_is_device_private(folio))
+>>> +        if (!ret && !folio_is_device_private(folio) &&
+>>> +            split_underused_thp)
+>>>               ttu_flags = TTU_USE_SHARED_ZEROPAGE;
+>>>           remap_anon_folio(folio, 1 << old_order, ttu_flags);
+>>>       }
+>>>
 >>
->> Now that I read it 3 times in a row below, these needs a helper.
->>
->> userfaultfd_pte_protected() ? userfaultfd_pte?
->>
->> That might help you to get rid of the local variable (that should have been
->> called something that includes uffd and should have been const)
->>
->>
->> Maybe just add a simple helper for the pmd as well and use it below.
->>
+>> I guess the change is not that relevant in practice, because I suspect most
+>> people always run with split_underused_thp=true
 > 
-> Will do. I'll do userfaultfd_pte_protected() and userfaultfd_huge_pmd_protected()
-> to match the existing wp and rwp helpers.
+> Yeah these two patches are only tangentially related. Technically with this
+> patch (1), disabling the underutilized shrinker would indeed fix it, as we no
+> longer are doing zero-page remapping. But the root cause is the split initiated
+> from KSM.
 > 
-> Re: the local variable, I'll rid of it and just call spin_unlock() in
-> both branches, which is a little ugly.
+> Most people always run with split_underused_thp=true, but they also run with 511
+> max_pte_nones.
+>>
+>> Th question is whether "split_underused_thp" only determines "that we trigger a
+>> split if underused", or also "what to do when splitting a folio".
+>>
+>> Yes, it was added for the deferred shrinker, but the semantics of the toggle are
+>> not quite clear. I don't think there is any documentation for it ...
+> 
+> Yeah Im not really sure if the intentions were to make all the splits do this
+> zero-page remapping. And im not fully aware either of the potential impact to
+> the system (whether positive or negative) this could have system wide. You could
+> argue it keeps better system utilization, but you could also argue the cmp is
+> expensive.
+> 
+>>
+>> Disabling the "split to zeropage" entirely with the toggle off (behavior before
+>> the toggle was introduced) makes sense to me.
+>>
+>> But the behavior now already like that in the kernel for a while.
+>>
+>>
+>> I know that I suggested this, but I wonder, is this patch relevant for your use
+>> case and patch #2?
+> 
+> Technically patch #2 solves the issue im actually trying to tackle. But during
+> this case we also found this functional change which we werent sure if it was
+> intended or not. As you say its poorly defined.
+> 
+> Im ok with or without this patch. Perhaps we can take patch #2 (bar'ing review),
+> and I can try to do some perf testing regarding the effect of this zeropage
+> remapping system wide, and base our judgement off that.
 
-The clean thing to do would be to read the pmd once using pmdp_get() :)
+Okay, then let's focus on patch #3. The semantics of this toggle here are rather
+akward (and I'd suspect we might just get rid of it at some point).
 
 -- 
 Cheers,
