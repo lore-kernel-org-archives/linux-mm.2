@@ -1,94 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC833606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 03:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F485606A89E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 03:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MevL1yT7
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HbqWS3zd
 Received: by kanga.kvack.org (Postfix)
-	id DFFB06B05B1; Mon, 16 Nov 2026 22:09:16 -0500 (EST)
+	id 32EDA6B05B3; Mon, 16 Nov 2026 22:11:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAFD16B05B2; Mon, 16 Nov 2026 22:09:16 -0500 (EST)
+	id 2DF856B05B4; Mon, 16 Nov 2026 22:11:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC9066B05B3; Mon, 16 Nov 2026 22:09:16 -0500 (EST)
+	id 1CFD86B05B5; Mon, 16 Nov 2026 22:11:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA5DC6B05B1
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:09:16 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D5B5A701B
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:09:16 +0000 (UTC)
-X-FDA: 85443129912.25.6396AF7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9B6DD40004
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:09:14 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D97EB6B05B3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:11:48 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60BBE80310
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:11:48 +0000 (UTC)
+X-FDA: 85443136296.16.83299CC
+Received: from mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 35B3340005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:11:45 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MevL1yT7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HbqWS3zd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794884954;
+	s=arc-20220608; t=1794885106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bsKdpnnbNLZITb4IXi8YQJrmOxF/yvbqsGdvFsxy/Ks=;
-	b=UnS55QdcxU568fv/j06PWoK3zjQ749uvMdZTgunHtCvzPzQV4LkTw4pM8CC893m/JvfZVL
-	7jocvku7PlHEgekb4DQHiYSgA5X9iwuQyojXF5/qGaXftnk0gCDhdy5MRX99Zb0HfCMgmo
-	uJ2jTjQCYXv3eDc5J4NNxRaesfX5lAI=
+	bh=qQu7ydPyiXxJnszdjAuda6MBtG/hw6yFx+eKHBW3+tU=;
+	b=wfpfxz0x1SEfbdCajFlWmQ15pkCkoAj0GVxBuQe7f6RXQPzE6YnGov6wyqRFT79HNkiMh1
+	ExtEm+idn3rg8H7YBmeUBbcN9nn+k+8G8gnoABhBjMCzu2LIkasDq3+B0WD2G4NOcgWvI0
+	XRQGv+yjhokKBqT9M8DCkihpCKMVz14=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MevL1yT7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HbqWS3zd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794884954;
-	b=QTx0RbEGQZn6NNDqa3NXvPwgAg2mZiMRw2jR8X3zaj6DIQ8WBrEKxPRV+iElyUEBG/pzvg
-	1rP5sgJnhsnqs8fCUYN0S6GodFMlddbhEYKKi/npek/wDA0l1DUMx/JgCyHX9mvSCd3xzh
-	EqI7ybiReESGWOxesylBGyoY5/l4gzc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7DF80438C0;
-	Tue, 17 Nov 2026 03:09:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEFA1F000C4;
-	Tue, 17 Nov 2026 03:09:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794884953;
-	bh=bsKdpnnbNLZITb4IXi8YQJrmOxF/yvbqsGdvFsxy/Ks=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MevL1yT72wWCYGI4QPeV4DwsylX64DMvU6yG3IpfCnar6ZOm8i080Ib16BKsIaems
-	 pF24awB8cOeXE/dCc/LJzuDF1rjhPAMuP1ZBe0PJUVnBUyhxKIv8+D8TJ7ug0t3RUt
-	 tJH0+Rsn7Z/ftsUNmGv8j37QoVd1764IJa8sHFVlXVKrNdvgQjnxZmnm7Z8UuzMCOZ
-	 g41WU7ZU13R3jPgLZYIY6viiSjF/Y4epbov2E8uISiT7Ko6VTiFaecHv/gEwQKUA/W
-	 Kt+fMTAHCTxKyJYVRs1w94IaPqPfnYo6KghUvqT0GSlIb+gst0KpTiatyLgPYORg1g
-	 5XmYEv+hid13Q==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Mark Polyakov <mark@thundercompute.com>
-Subject: Re: [PATCH 6.12.y] mm/damon/reclaim: use parameter context correctly
-Date: Mon, 16 Nov 2026 19:09:05 -0800
-Message-ID: <20261117030906.117403-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261117025144.117100-1-sj@kernel.org>
-References: 
+	t=1794885106;
+	b=KcuxCb7em8JzFIlQmM17YrxIfwHKTrBHfR8OC6js/f90sF9jFrgcS3XfeiX5Gtq4+3DI9G
+	+XPoLVc4qpuwItrYDtfHILW2uhz76HnEHfQlQFfUKRevl5mqDKcRoj9Cv++eSMhpyy6vjC
+	Wzm2dpBu0+cJnmf+uzkH1GYPdjadR9g=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=do3iUEHsRUOXXkxYyuNnpPjohxgfsv86UsfgKD2v+UQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794885104; v=1; x=1795489904;
+ b=HbqWS3zdfE+jWBSrnRQkLRJchmm5y5sku8Gby1ASLwABW9VHwQaFtJKFUi9yuDW6gtawAcpE
+ dWzySC02stEvXMD+lSvf3Q3eNbg0l8WZV1rUeUAdqkVfyVeDVj5FJGHT1x7DNUnIegmtlLjXY49
+ C1phM7X6Rr+rxf1VMyffK/Lg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 546bf800db40f8e2;
+	Tue, 17 Nov 2026 03:11:44 +0000
+X-Mizu-Trace-ID: 546bf800db40f8e2
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <f618fc7e-371e-4f83-92fd-ee97db4b682f@linux.dev>
+Date: Tue, 17 Nov 2026 11:11:33 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9B6DD40004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/14] mm/mm_init: factor out frozen compound page
+ initialization
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Li Zhe <lizhe.67@bytedance.com>, Andrew Popple <apopple@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, James Houghton <jthoughton@google.com>,
+ Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Muchun Song <songmuchun@bytedance.com>
+References: <20261113033442.62970-1-songmuchun@bytedance.com>
+ <20261113033442.62970-7-songmuchun@bytedance.com>
+ <179482576829.2379196.14870002582501235383.b4-review@b4>
+Content-Language: en-US
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <179482576829.2379196.14870002582501235383.b4-review@b4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 35B3340005
 X-Rspam-User: 
-X-Stat-Signature: i6j8fozuz1ffsycmehj94efxmhsfgq7i
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 5imtdn46duq348rzk5sncdrot6euf7j8
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1794884954-278885
-X-HE-Meta: U2FsdGVkX189LW2GiX+Eh2QA0XgIrHPc2W+jD0who+BJvz+/KMxyZINGAvJtdp+rU/p+VMMRP4di5EFhC1bpyxnAjAvyevUpjZhrITDKkRh9wZpc7VcCy4UUYwhFWDUF6vSPZ8w2R5hVjeDKEnEZReGrrxYUk/GHMghdMSGB/9AQc4taLfz9jnEKrfeVx/Z1G4GmTaT+dRtPX3VDhu5sETj8kKIzMyHN3PDNHxDV5ejR7kQTWUfuQl7D1IDoggpKCGpriSJjJeXcA1VSgIAclxrDXIS1pPDauDG3F1uYD+1Hnb5ypbhxtUBzH7NuIjph/mdqJiSN2oyN2RCBvtFWUNDyXFsyBfFl65lw/3UWTN4wNmsbM/RVUhrytFBxpFG1wMpn+eo/HVJuZSI6Fm7n/YVyThqRdM5S0nYMF+7c9Pqsgch4pNoiZnC2cjs2ApqDQm4GtQjZCeGeS2ilqQYgR7hLfpgkY7k7TQJKIFzK7sNzjV6GeFSUN2qOSWYKzYZXFSenJiMKjBRIIw7cXqYiIxRyX3yjNzFnscPHp1KwivxrGmSAylhLR1DTTNTSewZUUy1+qdci9sKzwFytQuHEONA/F+LstrWmWbKEkI6j2a8LrEz22w4AFRRUPEjRaas5kzJAvcreBjtzRPf/JR/3oIeugRpolpGJJb3gkYxZd0Mo2lzNRerXZY5liLMht+quHTXSlJzkY2xnFTC4ljXyWvRvhz67psSUyvDcqVA/X4JhR4dgEiaXJ+xJU+GHP8PkSpm3ICNDax7t9puwbALFSwGnYr/M8MfOu8KgSgH1Ebn1TbykR6fKcRTNzGgS4pWQl4y0iiFgLfDqnX5dl+FzzYTd1IayFNeQn/BwO9tZ697InIkuxp6nnMEleNie7E8dz+jRS6mnKByrN+hiUs5r/Cp2tAcdkR4zZbTc8BOIoIyNYBoaZKSHJKGCs8bpioHaCY+toe+dym0ILYomY0F
- 4I9vmCOB
- yABofigofRCr9wcRPVDc9YMLEpmEbgg2XI/x0hLjO3fjuZq+6k3e/wiQFwD6m7EBJPA39YqwzFVDdEoKtfrAb2F63gKxNI9jVedJhM393rk8xi4Av+EJgLKgAK2zlYnVbj5f5n8w9zOt9ZYLVU0Abe8sxUnu05Zs+GKubkSOHLt8ciZ7wQh9nODATLXRvL7mEmAdneCZk4YToytjuBQj9rN36rFWLZh64oaO+VbZvs9R8Pz0PUav+khyylY2ssWtVaKoqtyirkL9l6g2CkxXpo0XH6rhDcoL+JeoCyo2DKbvgNi7uJ7iCFJ0tXA==
+X-HE-Tag: 1794885105-889362
+X-HE-Meta: U2FsdGVkX18hTbJcp6WA5p5cVwYylVvHniWK2cTTqUCzUi+QW2ymOPdmWvGexD//4Gnx9U36WaolTeGABUgWBiGKQOW001sHZfF4cRPZM3UYL8xaxDFMF/lQUxtxECJXHhHVKvdDZKOKDtmrlX+ZkJXG+X8eI9NchgGy0LaUuuTdIeJzFkMUQR0TK29IYeNgOb2Qm6kbwSSCnoTFJ/xiJqqAuPIn9Kgyc36UknPcSykcvSZS6FPYMiuAocfCXy9YA/hptreaMlMsc/gLGzlVkpIZ8fcVNYtFUqzp9maD321IeXda3iqxO3eLrau+KwBMZL0qKq7P7Ox3geys1udf5qImJ+qnJWcEaJQNmC2fhAO2OhEqcwGNW3xhIO09gTTE6OlU/R1SY5mkXAcexKZ/LChGG2B2RpPuGy3I2RoW8i54oP0LXtHkozy36RmuG01b7Ly2UO9YocHeRndeB+NYFYBfFPW29gR+8AapqF3TE9gWz6CdhFz50EQ/dIWPWkzx0R9L8MI4DwmJjDjSzIDK5jleYmEidZdexbtWcxRURkWp+/jStb/P87E5FZ8KQj21dDoIjrlpF4x9o1sY/dCpz3WbjWgom7hGctYpa+BatfAd/EdV7Kwfpn512meAy9MW/gmx6ARiL0ar7X1f0yN4OvkY5vdRvGxqGXN3gHqmtc0ddpHwy+O2aOeuvNPFmRs77vAKzr6MdqJjsbCh845UnlLY73XLPy/cOLop/6hdW5WHJQeEseGTsT3uFGimXDHAr62iwqeOFp4pZdH1MCQqcFMFvJQKWflnqOU/NJkP3DGM/f15t22jU4N1hGAuYkh3B3XYHpTwVSgHkelGeXZ9HpMOEp2V4prJk69GKNVCEhtBfBdc9IVSKVG5mD9qPTDx44doq8vCo5HxF6/agfVAggaEKXjLmI0IRkudBOsBgiOmr0bD+OtFg1J39hsONXta8MX/VMvNm5DQuPGDvTh
+ MAticzG1
+ ReyRPuxqOizw5jeYUtTQxBYAuARNpV9Jl+ssRx4TiMpKOC8sGOhcr4mx1FvOe/fAzZ4gwZiU1E9hlRNPsQ3QuAT44kDpEWwmTXOxTRPCs4633nFhoe2iz95rNJhoZsfX85lyQ9ITkUaUP4xSuNUPwaWjwAKmKs5Oux5bgakHTs9yPqbQTNxjrjpCvgy2fB5SUjQ9Myt+3migaPnMUOr7AUolJ/GSqjvC//Tuddw+PBxVkFh/s5fqZobXSpI+jMLP/KroX3N6rDdQwhvtIyuUZJ7uYm3w1WNETicG2+AFPfkZOvlPrQTIZhrIm3KgFTUizpQZ+CT9ZTemZQ+ywKQ2sTeel5s9OoOA7Jak/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,38 +106,144 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 16 Nov 2026 18:51:42 -0800 SJ Park <sj@kernel.org> wrote:
 
-> From: SeongJae Park <sj@kernel.org>
-> 
-> damon_reclaim_apply_parameters() allocates a new DAMON context, stages
-> user-specified DAMON parameters on it, and commits to running DAMON
-> context at once, using damon_commit_ctx().  The code is mistakenly
-> over-writing the monitoring attributes and the reclaim scheme on the
-> running context.  It is not causing a real problem for monitoring
-> attributes, but the scheme overwriting can remove scheme's internal status
-> such as charged quota.  Fix the wrong use of the parameter context.
-> 
-> Link: https://lkml.kernel.org/r/20250706193207.39810-7-sj@kernel.org
-> Fixes: 11ddcfc257a3 ("mm/damon/reclaim: use damon_commit_ctx()")
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit fed48693bdfeca666f7536ba88a05e9a4e5523b6)
-> Signed-off-by: SJ Park <sj@kernel.org>
-> ---
-> Mark Polyakov found [1] this patch is missed in 6.12.y and causing an
-> issue.
 
-By the way, it was not picked for 6.12.y because I underestimated the bug and
-therefore didn't Cc: stable@.  Sorry about that, Mark and stable@ maintainers.
-Also appreciate again for the issue report, Mark!
+On 2026/11/16 18:42, Mike Rapoport wrote:
+> Hi,
 
-> 
-> [1] https://lore.kernel.org/CAA5JH2yO-gw1gn_172hv0YWFfQpkXz915a=uoVH+e49P_D8-+Q@mail.gmail.com
+Hi Mike,
 
+>
+>> ZONE_DEVICE initializes compound struct pages while their refcounts remain
+>> frozen. The setup is open-coded in memmap_init_compound(), including the
+>> per-page initialization and compound tail preparation.
+>>
+>> Factor the common setup into memmap_init_compound_page_frozen(). Keep the
+>> pgmap association and MEMORY_DEVICE_GENERIC refcount handling in the
+>> ZONE_DEVICE-specific path.
+>>
+>> This provides an MM-internal helper for other early memmap users to
+>> share.
+>>
+>> No functional change is intended.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> v2:
+>> - Rebase on memmap_init_page_from_template().
+>> - Rename memmap_init_zone_device_head_page to memmap_init_zone_device_head_fields.
+>> ---
+>>   mm/mm_init.c | 114 +++++++++++++++++++++++++--------------------------
+>>   mm/mm_init.h |   2 +
+>>   2 files changed, 59 insertions(+), 57 deletions(-)
+>>
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index bf943ae72a3e5..f1e539aec3d91 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -738,6 +738,28 @@ void __meminit memmap_init_page_from_template(struct page *page,
+>>   	vmemmap_optimization_verify_zone(page);
+>>   }
+>>   
+>> +void __meminit memmap_init_compound_page_frozen(struct page *head,
+>> +		unsigned long pfn, const struct zone *zone, unsigned int order)
+> Do we really need the _frozen suffix here?
+
+Maybe not. I can remove it.
+
+>
+>> +{
+>> +	unsigned long nr_pages = 1UL << order;
+>> +	struct page template;
+>> +
+>> +	memmap_init_page_common(&template, zone_idx(zone), zone_to_nid(zone));
+>> +	prep_compound_tail(&template, head, order);
+>> +
+>> +	/* Initialize the head page. */
+>> +	__init_single_page(head, pfn, zone_idx(zone), zone_to_nid(zone));
+>> +	set_page_count(head, 0);
+>> +	__SetPageHead(head);
+>> +
+>> +	if (vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
+>> +		nr_pages = VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES;
+>> +	/* Initialize the tail pages from PFN-independent template page. */
+>> +	for (unsigned long i = 1; i < nr_pages; i++)
+>> +		memmap_init_page_from_template(head + i, pfn + i, zone, &template);
+>> +	prep_compound_head(head, order);
+>> +}
+>> +
+>>   struct zone __meminit *pfn_to_zone(unsigned long pfn, int nid)
+>>   {
+>>   	pg_data_t *pgdat = NODE_DATA(nid);
+>> @@ -1063,44 +1085,39 @@ static void __init memmap_init(void)
+>>   }
+>>   
+>>   #ifdef CONFIG_ZONE_DEVICE
+>> -/*
+>> - * With compound page geometry and when struct pages are stored in ram most
+>> - * tail pages are reused. Consequently, the amount of unique struct pages to
+>> - * initialize is a lot smaller that the total amount of struct pages being
+>> - * mapped. This is a paired / mild layering violation with explicit knowledge
+>> - * of how the sparse_vmemmap internals handle compound pages in the lack
+>> - * of an altmap.
+>> - */
+>> -static inline unsigned long compound_nr_pages(unsigned long pfn,
+>> -					      struct dev_pagemap *pgmap)
+>> +static void memmap_init_zone_device_head_fields(struct page *head,
+>> +		struct dev_pagemap *pgmap)
+> I can't say I like this name. Essentailly we initialize ZONE_DEVICE
+> folio here, so maybe it can be
+>
+> 	memmap_init_zone_device_folio(struct folio *folio)
+
+Make more sense.
+
+>
+>>   {
+>> -	const struct mem_section *ms = __pfn_to_section(pfn);
+>> -
+>> -	if (!section_vmemmap_optimizable(ms))
+>> -		return pgmap_vmemmap_nr(pgmap);
+>> -
+>> -	return VMEMMAP_OPTIMIZATION_PAGES * (PAGE_SIZE / sizeof(struct page));
+>> +	/*
+>> +	 * MEMORY_DEVICE_GENERIC pages start with a refcount of one; other
+>> +	 * ZONE_DEVICE pages raise it when handed out. Use atomic_set() because
+>> +	 * @head may be a stack template, while init_page_count() expects a
+>> +	 * memmap-backed page.
+>> +	 */
+>> +	if (pgmap->type == MEMORY_DEVICE_GENERIC)
+>> +		atomic_set(&head->_refcount, 1);
+>> +	/*
+>> +	 * ZONE_DEVICE pages union ->lru with a ->pgmap back pointer and
+>> +	 * zone_device_data. It is a bug if a ZONE_DEVICE page is ever freed
+>> +	 * or placed on a driver-private list.
+>> +	 */
+>> +	((struct folio *)head)->pgmap = pgmap;
+> ... and then we won't need this cast and the caller will just pass
+> page_folio() here.
+
+Right. Initially, I thought using page_folio on the template page might
+be problematic when compound_info_has_mask() == true. However, I found
+that the template page happens to be order-0, which avoids the issue.
+So, we can safely use page_folio.
+
+>
+>> +	head->zone_device_data = NULL;
+>>   }
+>>   
+>> -static void __ref memmap_init_compound(struct page *head,
+>> -				       unsigned long head_pfn,
+>> -				       unsigned long zone_idx, int nid,
+>> -				       struct dev_pagemap *pgmap,
+>> -				       unsigned long nr_pages)
+>> +static void memmap_init_zone_device_basepages(unsigned long start, unsigned long end,
+>> +		const struct zone *zone, struct dev_pagemap *pgmap)
+> _basepages sounds odd for me, maybe _pages will do?
+>
+
+Sounds good.
 
 Thanks,
-SJ
-
-[...]
+Muchun
 
