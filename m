@@ -1,115 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18A2606A886
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 14:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9DB606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 14:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ms4TEX+3
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=DowSCbg7
 Received: by kanga.kvack.org (Postfix)
-	id 22A056B05B0; Tue, 17 Nov 2026 09:23:13 -0500 (EST)
+	id 42C5B6B05B6; Tue, 17 Nov 2026 09:26:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 202096B05B4; Tue, 17 Nov 2026 09:23:13 -0500 (EST)
+	id 403836B05B7; Tue, 17 Nov 2026 09:26:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13FE96B05B5; Tue, 17 Nov 2026 09:23:13 -0500 (EST)
+	id 341126B05B8; Tue, 17 Nov 2026 09:26:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E03696B05B0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:23:12 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 385DE120484
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:23:12 +0000 (UTC)
-X-FDA: 85444828224.24.DB0D836
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 731D180003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:23:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ms4TEX+3;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794925390;
-	b=658dZ0sX0CJFABZuMngCO6eThRnay82J0cUd1qb407l7I64oiGFL0DMuJnPpANvnyJ/+e+
-	rB3fMPa4f5/tU0Qm2CpmRKbQ689slBucionlzx6F7MwZ1soXPJ0rQDrV8vNKeocs3kUEdW
-	w5GWrGHECQyr1W3qKUc6ZRMYJNdfBpg=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CBDB6B05B6
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:26:25 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DA4D8049D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:26:24 +0000 (UTC)
+X-FDA: 85444836288.28.FAE1C32
+Received: from outbound.st.icloud.com (st-2006h-snip4-11.eps.apple.com [57.103.76.171])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A66FD40005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:26:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=DowSCbg7;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf17.hostedemail.com: domain of m.harisawan@icloud.com designates 57.103.76.171 as permitted sender) smtp.mailfrom=m.harisawan@icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794925390;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794925582;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1v3XDaIPsn+JJltQ44/B7GYW4pMWHo/jyhLjp2tXhpU=;
-	b=ohoWz5UH9VagKxRkpeg7yVXbXZTQOtlBEH9OPwPDeFUnfF0zj6lNoawEwzGOmr9hKhhkXc
-	w7e66czlLgmdsovGZQrcm/EfMoIXO0iFxKpzM5h1yr7L9sRwaawV7OWdpZD1U5NGhLKLqg
-	ZlaxgVWDqfszzGMlN4veIaiq4cDROgc=
+	bh=cFBQgsUKqn2SeEBgrCHrVNl21tMPPxSMfQjFRoHrS54=;
+	b=glD/1+QCtsU9uUMHfp//BuR85vdlifggQRWENS/9rjfkywZ6IU/ndXoV7d7x7qpuX1OMOB
+	Vs+U5dXC3HXeKVPakqZ7jcrv+wLMpJ5oM9O6HQzjkrtuyy6oTMnIxaRIzkZAsTkcbmXjBV
+	bagg0molNImvf/GkIJgD09Ern0lx8zc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ms4TEX+3;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B153441999;
-	Tue, 17 Nov 2026 14:23:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E9B1F000C8;
-	Tue, 17 Nov 2026 14:23:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794925388;
-	bh=1v3XDaIPsn+JJltQ44/B7GYW4pMWHo/jyhLjp2tXhpU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ms4TEX+35GlVZDWxtFrKHXCEGtiwtf31X5SUg8Rgxfe9VPX1jDQW0/Og//0X0wDmk
-	 I9MBNEYvG3eyERN88hZmPsTUdvizD6YaKHRnRh7ce3+vpkmakqbx2/k1M3K8WPtlAM
-	 d55iB8zUE+ZCUuKf409Cqx9uTzXVD3rBgWL9o9jOCKYNH1qZ/qpDDYdJj8vzeVUGfN
-	 8rjbHYLe1Ak0daACyU18m/Cqw+KrkKBXBwPxXxcFQfKm5jRz6fmZ5nHp5wqFQaVNF5
-	 ZNohBWGVtYRBmBA1kLVGKZhNDZPJTdLoDa4ocqQt5LtsXYH1lLrakqxKTEFzfSRGG5
-	 vTlyhXL4TjQ+A==
-Message-ID: <sashiko-outbox-218957@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v22 5/5] rust: Add `OwnableIntoShared` and
- `OwnableTryFromShared`
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?b?QmrDtnJuIFJveSBCYXJvbg==?= <bjorn3_gh@protonmail.com>, "Benno
- Lossin" <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir
- Duberstein" <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?b?T251ciDDlnprYW4=?= <work@onurozkan.dev>, "Lyude Paul" <lyude@redhat.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Christian Brauner" <brauner@kernel.org>, "Rafael
- J. Wysocki" <rafael@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>, "Serge
- Hallyn" <sergeh@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona
- Vetter" <simona@ffwll.ch>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Jan
- Kara" <jack@suse.cz>, "Igor Korotin" <igor.korotin@linux.dev>, "Viresh
- Kumar" <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen Boyd" <sboyd@kernel.org>, "Bjorn
- Helgaas" <bhelgaas@google.com>, =?utf-8?b?S3J6eXN6dG9mIFdpbGN6ecWEc2tp?= <kwilczynski@kernel.org>, "Pavel
- Tikhomirov" <ptikhomirov@virtuozzo.com>, "Michal Wilczynski" <m.wilczynski@samsung.com>, "Ira
- Weiny" <iweiny@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>,
- =?utf-8?b?VGhvbWFzIEhlbGxzdHLDtm0=?= <thomas.hellstrom@linux.intel.com>, "Johan
- Hovold" <johan@kernel.org>, "Sumit Semwal" <sumit.semwal@linaro.org>,
- =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Dave
- Jiang" <dave.jiang@intel.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Saeed
- Mahameed" <saeedm@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Jonathan
- Cameron" <jic23@kernel.org>, "Markus Probst" <markus.probst@posteo.de>
-Cc: "Philipp Stanner" <phasta@kernel.org>, linux-mm@kvack.org, linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org, linux-usb@vger.kernel.org, linux-serial@vger.kernel.org, "Oliver
- Mangold" <oliver.mangold@pm.me>, media-ci@linuxtv.org
-In-Reply-To: <20261116-unique-ref-v22-5-12029383206d@kernel.org>
-References: <20261116-unique-ref-v22-0-12029383206d@kernel.org>
- <20261116-unique-ref-v22-5-12029383206d@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 14:23:02 +0000
-X-Rspamd-Queue-Id: 731D180003
-X-Rspam-User:
-X-Stat-Signature: 7xt484xyxonf7cadwnh15dsp88qygsu5
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794925390-477713
-X-HE-Meta: U2FsdGVkX19IPwQPaozyaz7gyDrxKpjgcBz8UKG/AL/uvUI/h9XVePKBtbgAX43uXiwKKG/GVT5bECB+o+9mTrI6EATs/EGBLe+mifiygl3BHBLuK2UmrUZBVIB63cu57r6rCTBOfAFp2vuxOtqEeiR9iRQhUZRbXuTsjdXLqVwtnt+4lj7vE873bfq0DcPGo6vIYPjh+Sc9KDAQ2+kD9sgq0yRlFl7bXu7Du5WwH7eQ1wz4Tlw1RYo642P1EYS8lthpiozkqxDSmOU7AEuhzZla8k6gFQINQYXPjXg4whzagwMq72wfxX8d/2EJBqVjs2R8JyCtZSZ/BfA9PhY31zEgu8ZQ2FBURhUs0LCIHu4uyH94F8aLufkHefihDMhX59/vsroDhbDtrDyXnGVwbdT5S2nzwDT36wxZKH6nxrN/AATZomUFxvzRsN28swgTNtzUEgbAmnRqkvtMvkynqpzZJPXhEicJw/x1n7+pqp2kat9tpERKzFk5i8QVKhfW3i88BtqMhxwVAZVuGmInrygS6zUfVvlfvqzMB3UOdFybfL8eMa2t8KUIQji7+/AomccCqSbuhDgZs6u7QYnADJoBJDeRocXdNbWXOQIf8gOYypY13RTna6PyM+oUgHI1mO7f0vXe9EnqEDFd7EL0fL9nnFha+uHc8x7gyJgFxSINOvhQJTNRITARZCunRCL4Iurjt8Q0GfTyO6WGtRL9K7gTJqJZHAD8/3dSYrCXWuYmaRphYThdcfiJqr2sKE2dqRDkA4gJ5Czc5b4zmtQlIoCJcoBgwOt2uLbmfFjgBSvtYQMmgRhufriSQDfjl2WDOBQeevuyGbL2a9oiF7q0SWj6ckC0CJLiCcE1OxCFjdGAbsm7BSZwvDYtoGuBDc4MtXQ1iyEXY4KboXIPwwVfpaWGFR9H6lfhWR/putU+1Lwe7VW09qC/F8eFCcFczlUYi2GNUKwk5mv8BLwPu+G
- Kd4ylt5T
- bjcktjR0n1t74EYYugEimQXUMwOkxsEIgdPTVrVxPaH1OjGTxp2h7H8PDVcysmqgjFuHOdrqCpmsPyURem+eXblQU132/y4K5RujtVdV+5tG2RI1GtcLnoNa2hhrZ1eRPDl2qs8Wh4nxLRWgvHdgpry3qEK5e06VmiuNJe9l49vxa52oHdEQYCj4tLf4FXUbv9OrUsRVnUX5oGr+8yCt6hBWgfmB+uvp0FALTpTwhbhP3TN8cqBKMyUp6iALCBRqr+GaKLzjFKrBTwwIO9qKtSKH/mO4xD22nqpWcKmIVlQwYhAtsUNM2vNkXeKeuFRuhCIYL+ihLlDLobvkVFQk0fvoq7N8THCND4qyu/gPtJBvblnAVUa/4GwbEJ1q+VtIhKy8ZdX1pW7ubUd26Y0H8qvrXBCsU1P5Dn7qctyEaB6HndjCHCc0nPvAs11es8igYgPX5kEV1rRHTF5GZV0nTLA/wJYJovRqieEFM0mVJL9jRZUYglxILsoVCcdRHC2H13XPGTkcDjd5X3noTbVVWT9N4KWO1+rAzep+/2HUZ5Ef0mS23wJZ4OlfwfU5fVI365dULvJ8eZTrfvoRGQJh7nAUX1wwl2+tNdp/OxjudHdLlKasqTQhpmxHdeAitHyL3VSlahtzq0CUxgLOr434PIYV11s0330W9eyaksMBjsAC0V7Cvu6HhRFUoqymhYtEid7kl+mkLoqApwF4=
+	imf17.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=DowSCbg7;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf17.hostedemail.com: domain of m.harisawan@icloud.com designates 57.103.76.171 as permitted sender) smtp.mailfrom=m.harisawan@icloud.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794925582;
+	b=uLGbYf0xdpV+KEMKgmX9O2TMocvKSKRgtlus4eqVsZP2BHM+IrcEuQqnveyqn+n7koPhb+
+	8DeFdlCSKvKFGYVu/f5RGxOWB6hJZTJ3ZIcgVkLAJZAJbOxmLIlwehVF1hC2h71jBRYU6C
+	l0jCAc0faZgPfVnc84O5pTbHQfic2/k=
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-5 (Postfix) with ESMTPS id 83D8D18000AF;
+	Tue, 17 Nov 2026 14:26:19 +0000 (UTC)
+X-ICL-RepId: 01a1e9e6-ccc9-71e4-98a9-760f2b0e292f
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1794925582; x=1826461582; bh=cFBQgsUKqn2SeEBgrCHrVNl21tMPPxSMfQjFRoHrS54=; h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:x-icloud-hme; b=DowSCbg7YwoSsknR4EjggXyYYm02omUQrEl0OXPCqFHbWE55JH3cDwfIUUt8J+NsE64lMfuMsKxffuK/q2uAwbnAZQBhG1xb/iK5EX25+MC/1nbanytzcedOPrCtb2ULBNwwGdUqGr0foKvajRlhXIKwV6uDRXiStaVX6hEBzbroeu8qA7kVAP4kvpSAYON1xehJ+tXZdPvASAMaEpXpOWfBWgC7+htBa/f8jbb5FM/zW+URNJnAlighdoRfU5uBoI6MWB1oh/SzKWHjLICl5pV71q5NAcbWNX8V5K5c2lBkNmVZvuMGC4Jp/olqWATgjSL9lUUZP6wDsQO5zh3qcA==
+Received: from omarchy.local (unknown [17.156.216.30])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-5 (Postfix) with ESMTPSA id 621301800122;
+	Tue, 17 Nov 2026 14:26:12 +0000 (UTC)
+From: Muhammad Haris Awan <m.harisawan@icloud.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>,
+ Liam R. Howlett <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Subject: Re: [PATCH] fork: mark memcpy() in dup_mm() with data_race()
+Date: Tue, 17 Nov 2026 19:26:08 +0500
+Message-ID: <179492556819.269625.4305215206796797018@icloud.com>
+In-Reply-To: <avxPvfV4NxKL58ZR@gremlin>
+References: <179489519663.1444496.15875846661591982934@icloud.com>
+ <0b565b9c-1462-4fed-8836-9a7d08e4b861@kernel.org>
+ <f75945f7-82bc-4ff2-92ac-9ec057347a41@kernel.org> <avxPvfV4NxKL58ZR@gremlin>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-Proofpoint-GUID: p8wqqG80lPu0mQwr9KgtBsMoa_EicKJf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE3MDA1NyBTYWx0ZWRfXxui4LjhxlIV4
+ DypV9iBKoe5+y/yVnE0sXJDeZm/WcuAApvJEj2MSL9X6i6mXYDN0QcTE427VRIxMaG5MevK98L+
+ Op4kc4VboUyjgtdhv8pHVA8brD7VpSTHYvWiP6JQM/zvWbhqj3RYEiGkB599+/zZJC8agG3KnPp
+ Uj6nBLE4AnKWBkVBQhI4drUw55ueCTDW7Ma3fQiFaD9L7UUJWwqsqb66MFD1ItEzZsoCtngcmVs
+ /hNrKDSt5c/LUHu8ydkoKlHFM9+3A3ZE3GLMHIJGuIlGjpu5MFpQGGJ297sKgp/bHS5MoRjhft3
+ 80FPuvjpLETj1GL2vF1ngWPUaEGDoEAXgHPrtT24NtgHUey4Q9NCfdD6TrNWik=
+X-Proofpoint-ORIG-GUID: p8wqqG80lPu0mQwr9KgtBsMoa_EicKJf
+X-Authority-Info-Out: v=2.4 cv=ZMDaWH7b c=1 sm=1 tr=0 ts=6afc640d
+ cx=c_apl:c_pps:t_out a=oyWFxbOnq+dmhQrAPgaJYA==:117
+ a=oyWFxbOnq+dmhQrAPgaJYA==:17 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=x7bEGLp0ZPQA:10 a=2kFROKt5_e8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=cxNFcN4zLupSoemyiDcA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
+ a=zZCYzV9kfG8A:10
+X-JNJ: AAAAAAABOQLEpfW9MVVoxxro1LkZWVzM4PxAUYPKMvIDCe/LliswltnyqBAinHwTCNR2oc
+ 9gVTpS92RTbdQ+h3sFHXgwKPFVx4uqmn9TdMdZdHcrfcYD7aCV75ln1eF02aXQvwNhSpfz
+ qbDdn+J4UwyQ26Y/DkBtNRymeyy2eYlK9kM8qqBDD2z53qSLHwjPrOUq3ZX29w02Iha4Xm
+ /HdnAhVa2t/MSMZRlfhDwcPXcb0BJZx5XzPtWmQFc650+oaYYWsHRUJuMuX+hxS5nAUqNh
+ DS2KVPYsRLvFwDLFzSipOqZ0EOoS0i5BnoPv7JlUydseyJgxdj2GjeEUcLK+IfEVFwr/RT
+ fARHhIrV1d4w7gevT+d7dsEABWIgVwxFiNl8M/YfSEtDiqfCOMdszXoI6G0PKMwj5VidPs
+ cVpK4JpJmm8lH3HFaeM3FsXAystR+JgNvWd0n5m2zx7Fep1XpVfoXUMYMSdl7/Slwyz7ut
+ 0fyZYgFfWbonBu52MJ2oEmmbwfRYQxCkl8Z+NBnsvXcv9DqFU158+Mr66uvD/QdTnKIf69
+ qAyxCqzoxoY7deB0jC1d8CjN5H8SNPi41EqFFwhHTsTJugGYY3d8MTTrMqoKdKisqNABnw
+ T0Uze3OtGdHBKlcHtIbUVy+zF+W0M9vkpJ47deMqaK5sfBAvwLzYer+8xbbIuLwpL4c0Up
+ F4dVDxOx5+giYdkXiRzSZZvuLVp+m61LjhecQ8Ppp5OA8kFcuLXZRXSbjhxi78gnHzLYlc
+ FPjF48DBA2dHiclucWwoOmk8VE01bfDJSXDtSBvk1uZDsqkSsmP8AeKxRLo1L8fQnwpWFn
+ TmXf5LdQ8BSOMMzs1oM6hCx0qgsnBPARbdtCexGvpzwPgBqmJU7SaGIm/jVewn+rdk8PtM
+ aIPtjywD6Q3IOlozmYp3sbZ6b2g+c3gx/7/IXMjEKP/LXkRVyvAzJqzSwo8rH/MFfZ5sTJ
+ rKDMke70FROWm3tt1k/6V0zpzYUoKEk/KzjQP+oLxj5e/+7asmSG0DQoPYBmtFzngrfQ+N
+ q3vF/RHaIYeZd4k9bBINfeTVp5tXss9+FldOX7a9FKPWcoXdbh5ner88i9bfUsNAn+3FQT
+ c2Nn7+pVC2FC66TuNXLXfm4pT8iccg9V+2MsCKHqaERD6XEOeBz+n8jgbkssYz0go/IyZI
+ 9DgmY+AUVt2mXwX6lmGKqRqYJoyqDE2S24e4XzH/HZi27a+RcCqYyySbzhi8G5IWqiAsx/
+ cvXz/+u5cOBb35FLakU7cB2EXLTPORme/GGFOhe3svu7sGAltdHtu62+fYC0Fbxa4IUQlO
+ ZKFoBElrFAW5Hiaiud/ZGMTzpEds40IUkHXewwnOqdbwD8KfrE6zv1wP9eYrGGI7XEAw1C
+ vVZobikT/Zv8rpC6vLOPtWX28uVne+b3uZRUzQs/w1wXOhpoiPHnaWeXX0Z+vg==
+X-Stat-Signature: i7wo9m3ta4jter6mhjt4rijawwtoh966
+X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A66FD40005
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794925582-450383
+X-HE-Meta: U2FsdGVkX18O+RIhNxQcebHuXe8GobKNVUk1Ocap+c5hkasuEqFzjky0/TOuTsphB7B+9ddkfSSLy68quyaNFwJv9T+mbJbK0NF2OBRD81VopnqXW20ZV1YrbcnIhqDB3N6eLPod8JIIj7DOj28vs8QUkprGfr0eeifed6ARSeofkK2Tyn2e6+81L8lPk0oELeuZYbw/e26FooF+g0jdyq5M97cLN+TdnbkhH4BzfrESzh8PwRwdKU3ttBN3RGuApZOM67ekA1t0Kl+BYu8CwfMildwQOk9zU0zD11Sex0mRFkMKV0eV2dWR13SUOWmwzpYOHDNY/FiA7hQJ9z5d2y+k57bMnyqA+fHyni4jF40KioR/R5rA1uYAT1zox7rv2U+bC0tr+GHUKAEC6xx368TYYxOHZM9oBs9kvt7wzYPF+nQ1u3Nv/zI0pHRCKs0b17WSgZuy3oV+GerRAtrZz0O3+9D8+4WewqRjqXRLroY0+oQSvgrngBSeyy+QGf1aJimk3QwEFpEptNU7ewGwMIAfh9JVarybFIU3fCJx4pwBxKQ6KX9+XQ5XGQf+c26FguGlBGMHNqcp/6Nf515afHWKB8it2D6gz7bzGsD2QnVaY0gZOz9r/RFZmNm1eVZviDUHsGOXqiMe8xRRTiv6dXhnFHWu5ijyzv4PtS15NjXcM+am89hvdOmDDPfk5/cx0QVXVly3d5X9b36hOF64aykAOps8zBvTC8ThqsF51Y6asmeHu0lRiY3xonkkGG3/XZbrNumULoDopXdcgA/axe4hNHNyy22fXU+LlxkD1rFhGyexfF69qtnHI3ToxIyQXZ0mNHnlDZDxNzvBC6kOtMqfVwIkJnxq632TIGtf0vyejiwqdNFcvJyvaiiA5lgdQ2pPvLenI18fWAOX3bsSp+ABHzD/HrcFkKcXp4b7GErx5LoIA7aa9gd2I6JeFSni+PCU+jqwXUFWFLiwMLJ
+ OII2JqHN
+ 4U7vWA28MvF/EuYYzx2RgBlRHpYJOvqsjYABTmNGikoH9PploFkuB6jA3UWA0luMGxIGlzIVjaYu13nRmqg74fj9FCSD93/JoB3sX2kyZt+MqlOV46Ezmi/zC0fKbfjh+q0Hoyv8zGua/z1TnvtGfuntstWKrIAoDIs/djQQd5QEoLh4FXYppNhP1WWKaAgW2dbF5jNnNN717PnY7LCbKlbcD1q3P2lbSXmx4Q82TWj44TifVqEGAVgzXr0X1XTGIJzgJPfoRJRZMoJ5lgiimh1jseQBz7aYL8iy0Uxg+gNJcR/J5QcohT+KFU7G8tJef07ifL3wPJKzZzMEJWxArJ+mIeIDy8vDRmHfrlGpeWkRRgI4it3TZh/Lw254vd1meP75owF8xhIeIShRW1jFVl7GspKzeLB4Muq3tvaX2ADCaUacVBOd54RdrKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,62 +133,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] rust: separate use blocks instead of single vertical import
-  block
---
+I accept the technical feedback. Silencing KCSAN on the whole dup_mm()
+memcpy is too broad so I'm dropping this patch.
 
-commit eb9ded53e4184ea08932194e99ba6dc1bce8d3eb
-Author: Oliver Mangold <oliver.mangold@pm.me>
+To be honest, I used AI to help draft the messages and I should have
+mentioned that. I picked up this open syzbot bug because I genuinely
+want to contribute to Linux and open source, and I chose a rare edge
+case because I thought no one else would pick it.
 
-rust: Add `OwnableIntoShared` and `OwnableTryFromShared`
+A technical NACK is totally fine and I appreciate the review, but calling
+a new contributor's attempt "slop" isn't really needed to say the fix
+isn't good.
 
-This commit introduces the OwnableIntoShared and OwnableTryFromShared
-traits to support converting between Owned<T> and ARef<T>.
-
-> diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
-> index bfc52bc7f6451..5b71d264477ef 100644
-> --- a/rust/kernel/owned.rs
-> +++ b/rust/kernel/owned.rs
-> @@ -14,6 +14,10 @@
->      pin::Pin,
->      ptr::NonNull, //
->  };
-> +use kernel::{
-> +    sync::aref::ARef,
-> +    types::RefCounted, //
-> +};
-> =20
->  use kernel::types::ForeignOwnable;
-
-[ ... ]
-
-> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-> index 6bc58aae38ed9..8a029d124fa31 100644
-> --- a/rust/kernel/sync/aref.rs
-> +++ b/rust/kernel/sync/aref.rs
-> @@ -23,6 +23,10 @@
->      ops::Deref,
->      ptr::NonNull, //
->  };
-> +use kernel::types::{
-> +    OwnableIntoShared,
-> +    Owned, //
-> +};
-> =20
->  use crate::{
->      prelude::*,
-
-[Severity: Low]
-This isn't a bug, but both files add a separate use block instead of
-merging the new imports into the existing kernel/crate vertical import
-blocks (grouping ForeignOwnable with RefCounted in owned.rs, and
-OwnableIntoShared and Owned under crate::types in aref.rs).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116-unique-ref=
--v22-0-12029383206d@kernel.org?part=3D5
+With respect,
+Haris
 
