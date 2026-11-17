@@ -1,148 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89980606A33D
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 08:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3486606A891
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 08:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=iqUH4Ca+
+	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=aa1DJ0ZL
 Received: by kanga.kvack.org (Postfix)
-	id 6B3F86B05C1; Tue, 17 Nov 2026 03:42:26 -0500 (EST)
+	id AAF526B05B1; Tue, 17 Nov 2026 03:44:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68BAD6B05C2; Tue, 17 Nov 2026 03:42:26 -0500 (EST)
+	id A60096B05BA; Tue, 17 Nov 2026 03:44:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A1EE6B05C3; Tue, 17 Nov 2026 03:42:26 -0500 (EST)
+	id 94F5F6B05C3; Tue, 17 Nov 2026 03:44:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AEC46B05C1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:42:26 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6E74C0378
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:42:25 +0000 (UTC)
-X-FDA: 85443969450.30.BA47F71
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C8FB220006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:42:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=iqUH4Ca+;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C17B6B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:44:45 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C96A0140316
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:44:44 +0000 (UTC)
+X-FDA: 85443975288.12.1CEBB0E
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D360F40002
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:44:42 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=aa1DJ0ZL;
+	spf=pass (imf11.hostedemail.com: domain of alex@amutable.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=alex@amutable.com;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794904943;
-	b=4xwugfizUxE0vps+PWGB5K/MWCqFUxC7EoKjuzaT3f38RzDEu8BPcfg+XcoBodOwLVctIL
-	QXx5S2Ob8prolT6PPBaJFx6tn2ji/ABfblcbOpYLPR52g/ALUzxCV0vIaJQsMRwYW/XUv5
-	V0oJqDT+Zb0j0LqwsK7Ud3D5hX5eCpY=
+	t=1794905083;
+	b=H4qBP9XBx8i3KCeFi/SLHsPY0NeuVRXh1pxuGbAeJG80HC0y8Ji/UqOWjVFOykTp8rLiMi
+	1Oed6dG+BFbHKlyp0UdmCk3UI6b7ZBNZnyuBGeUnTwmvDQDkjbLLcBbkJGX7XlB/shsJNr
+	i3WJil4Hs75brcQwb53eY/Dye4kkMuo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=iqUH4Ca+;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf11.hostedemail.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=aa1DJ0ZL;
+	spf=pass (imf11.hostedemail.com: domain of alex@amutable.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=alex@amutable.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794904943;
+	s=arc-20220608; t=1794905083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=beHv4RWKzAGXqCj9AQIheRdqq9/SqD5ToQS6bWhTNyw=;
-	b=1lmwn5zSy/icKDrCGvD5xRq9pV74bNTqt96e/rcEM3xs6Amv7h4v3839UdLOoUOhyuXIJ1
-	ktzp2KtdO8GpdPDoF1457Hyx/t3JuUM41jgtaTort3gsKCBb/eSd3Y2zgCGg1nsjwg6FDZ
-	UGCb87ETQW5ZFXW1IAUUZa814/btlVw=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5365f9a04c5so71790691cf.1
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 00:42:23 -0800 (PST)
+	bh=YtgOPMlBsDbDRTTami0iaeC2PfdAlPMUJ3BhZBWqnDY=;
+	b=G2Bh6yG52Nb6rXkGD6ynKMDhKvuP7VUiaVZbe5iT/G2/dbBQTMOLKO0QaYoxWtlsxqpoBq
+	7UVlmD/KQfdWtxtN2DQL+Z0rg3He1x0pI7a3MENgq9injq6+eTAuCB0Kn/dZbrfaQX5etr
+	pO1tDukdvHACI80osWHfbH3pRKaEL+8=
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48e46e449e8so3217597f8f.3
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 00:44:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794904943; x=1795509743; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=beHv4RWKzAGXqCj9AQIheRdqq9/SqD5ToQS6bWhTNyw=;
-        b=iqUH4Ca+mybvRakoGLRSnsQLB7mPZ2Xv95uE09aTlf5rzZwogD15ZevjMRnriykt72
-         MBNFqVF/kGtCbZR1VB7/KMoAKWrGlIVF0oI7qwuk3CPpn2axP7OWovVcj/EYL5V9mgHJ
-         j8ikFRkWBghNmCoYjx0ZqHkdBiUcdBG2l6kYUMJwni0WQOswT+1eR+hk/GCfw9cMovNL
-         nsFATwtZd5YkKGMxBxR+rQXbHTjt6u5ZLw1gXzaHUjwWOaX3bFB+4WET43SHsl0O7mmU
-         gyAJ+myv7OTm9ZdIR7GgmSIDImqwdIoR7fqk0SyzfbJyEg0J/GnyyE6L4zP+EdEALKqy
-         UJKA==
+        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794905081; x=1795509881; darn=kvack.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=YtgOPMlBsDbDRTTami0iaeC2PfdAlPMUJ3BhZBWqnDY=;
+        b=aa1DJ0ZL84/7KXGB/FRfBb5uhaFRUxxMQ8WoySoWF35PmSRVFxvW16E5UnriTbaB3D
+         vdO9WW/s3606LdQwvBb/B0Fg7DbjnlkLcrEP7EzumFSY35n4CsCavaqVDL8gL+3tSAvj
+         yd6gqEtBrd6yYmlUHpSZuBkpxoKeLRnFRUHowrqysIOIgGF5y1NqLC1seFoW8SgZRdJR
+         LzbC3YqmFJf1GAWJdqMyzEqex5o8SCSQrk+Fu1aCI0MPTOVL21CEczQ2MJ9VBtvlvIOB
+         1PTC3qse+V3TSJ4JOuosGqSBgaYiNsITGax8QJSgN6Kj9An9nZqlfgWnGNSZC2xjDxqe
+         XxAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794904943; x=1795509743;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794905081; x=1795509881;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=beHv4RWKzAGXqCj9AQIheRdqq9/SqD5ToQS6bWhTNyw=;
-        b=p3Wso82T7bjOgh/TsO9hiII/DGhB+iI1nxjM38p294ObWl1lpUjRlXaoH2F3cX9gMM
-         zXEi2mDWsIW0L16Djsud0n88BGhgwPAC4nLMfUnwr4XOUInS//qngtXBsQhNrM/OEtFR
-         MD6yDs/HRwiJp8535xFXep/gx3dSMD/2DHBfreRao5jdg0hueCZQeFjT6DOJ5EezK3mH
-         V9dviFFj7879xrqs9wcdo1/MLKwSWnJrsYaPjSdDlzDSncobTQlnznfWj8qf0LxuC3Yl
-         bPzAXxzLl5DCy2n2vfJNIIc+6yZ8H5n7s56o1LKCEk6HE//ujZ8SQn90l4DA5XE62I7T
-         STXA==
-X-Forwarded-Encrypted: i=1; AL+hErHekXcYUhd1d6AkXySi8FQi1vqGg4Z4m4INXolFbQFl23ALEUPxdKAXNJa/5FQIpotMltf6OdMoXg==@kvack.org
-X-Gm-Message-State: APuU4Z8ey2Yjoafj5PPza4Df/c1n/fN5WnkA1b7IXFhVzMMXDC2g2Zfw
-	hND7LcVL4r1bIfSqbKx93uFXJIlI3N/VmVaZXPEFVf1xprrxT/pfUjcg1yIS4p1yfPM=
-X-Gm-Gg: AYBFou0z6hFP+falIQgEx89g2/gW6Ujg1tomMkQEjWdTgtc29JmDEHdl3Pd8hGgTrNu
-	pKpGjlW64Kl82cD18DmjeiV13CcPKyTdiLVZk2pcWKhX7vjw1f8oWPJYQrpjg+SJ5mSS5WBwCsU
-	hLvn7gAhVnxVhtVzTAScMVRWRvRTxqosHHp5dGFad3tdo0AH+L0LwW1BWhe7NpjRTL+zCdeepYs
-	F+cQgdKds08INEHxy4oTmVLt7+nFsp0bRXzw95MhxyVf+2sICHQjZlTNzNxfSeyLEsGLpmVN5og
-	muVQgXgfW/PPw/rv5vUlzP2Xrms5mP2R8KvK9PiaH3CFmxi+tkxS4GoTIoBFSSCTY6vsQFMbPrH
-	3jPBwQX6WWzfcbHrWb6Rbl/o9lkfcbOQGtFGzSjckou8dSOlvT/vwzQzCqXrKPZnsLbkQ00CHX9
-	8S5bgE2/XI7kTYqYTouJBFUOadHJJMG/BX7gRD3TH27tXZ+DNEVRU3aBQFKC7lYKSB2z9sXkapE
-	klobpqjEqHwNw94NDzCDq8mz9h/qL+mBw9N499k4yjZhVGVtcXfSzdlzDENynryjcFV6INq5ua+
-	uslEKqMd5M60fCSeDwBWihhL2e6kxZNrs9Rl30dXNivboDkEUoDwp9Oz0D7051rhQN70uRX3aSf
-	asafUiCQ23HkaX8iiwsqynBHyXDXY
-X-Received: by 2002:a05:622a:758e:b0:55c:5ebd:8823 with SMTP id d75a77b69052e-55c5ebd936dmr138487931cf.66.1794904942797;
-        Tue, 17 Nov 2026 00:42:22 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d37daf422sm44268211cf.15.2026.11.17.00.42.21
+        bh=YtgOPMlBsDbDRTTami0iaeC2PfdAlPMUJ3BhZBWqnDY=;
+        b=zz3mYAlf2RyvUjdKos+s1uNUI10A4i73UbwL7S4NEy2vtfEmLHZddg6esjITTBX1w5
+         xQ8DazZ255qvwnI354VQsq0cxNRCm/qdu1lEgPd2SdzTedQQZg/J9aW/spF+CKMfBav5
+         Ck7FOV2jqQGc5znOtsyZxcpu+ETgjBkneYAOXSE4E3Z4GwMtFxTxEaqE5R1SOfmH1FWH
+         uz7B6Uoz98ns7/4vE/DYEuWrIiaWnTxmr2M4nZ3NqTmHBsuo7KwWIlfy6cn7JwNyOtcN
+         3tzRGsFJZMDT8McvotIVBAc3HnqIofYaXIOnMBgClcy2cKNfopuGZDJJKtyrAeFu6u32
+         fQdQ==
+X-Forwarded-Encrypted: i=1; AL+hErHuNmJ1/+6AsP2h4IRvuLZkaMlDD1Z80O0/iOQOYNlC8h7wMVMabuBch1GuvbBWcr2SBuPz1Hqbhg==@kvack.org
+X-Gm-Message-State: APuU4Z9gddpOCmq/shkFXY08CucwE33u03zvra2/n98Xx39gGf/fF6lZ
+	NEUw/OrybuVuKsK+SKKwYboXk56aWjjUuWHF+kA9hKzY+De0ZdLJaoToLLVsAWRq0/hm
+X-Gm-Gg: AZFdTZcHSG3KHbcq7wmqAPZs9lwB52vqGXslHBvohO0DwxLx8kObk3WNCat9pqMyo1j
+	LCIPvPseYpYUgTiGA/RSskup1/cAYFH6gOnPuzam4yJdJkED1br6Ns0LlIJzVwk20iyFfvr+9EP
+	u7S7f8AWCW4leCo9z+3titc/S6POdrykECv0/Gr2mqFROizfbzQjivJH8ZkNma3vx2oF1U4AmoU
+	9D656g5Whjz1M9C4OfdHn/pZc8TaNSFvaLoTsz984ZEJgAsenpgjF9IyEFSTAx3em3N2CqiQWFp
+	iWDrxlfIfkdXizkppiFyVRVT9EuWzPeaAhLRgKRzREl7hTAzy4hE4DWG775yTFncolIzn0dFAyj
+	z5zO+cLfLO8ghNxm6I64NUg5zVezXL5RoSl8OtFFXUer1qkJjwjNl9ywls2W5EYbhbay6SC70l1
+	It2JUBytf5FxWhWd1IqEqvUjEdxQblN3AOHCKS//7V4ZlSBCnBTYDCHPy/LsL8LRZEfMK+iLnDP
+	C6/zUCkSNOAbxxybO3HVi7OPZUOv7tZcWCiyh47fcuO9/EtPBevttf18lmQ3t4gDQc0CvxvXVhM
+	i6TnQDFUSL07WDtNMUHObALyw9quMn6vJ8aphZriwysfY40d5n97QvC5HB7FR8ntOnJBuDnue7u
+	s6n/uQVB2WVIs19vqiJYNURiICdcbkQp3iS9v3V6SKv1/H0OATlsFis0j2kMSZn7OLb5KvhoFQ4
+	OqKg==
+X-Received: by 2002:a05:6000:2411:b0:48f:f26d:c5c with SMTP id ffacd0b85a97d-49c70b051d1mr27471178f8f.9.1794905081269;
+        Tue, 17 Nov 2026 00:44:41 -0800 (PST)
+Received: from ?IPv6:2003:cf:572c:2800:de4c:6789:33ce:97c2? (p200300cf572c2800de4c678933ce97c2.dip0.t-ipconnect.de. [2003:cf:572c:2800:de4c:6789:33ce:97c2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49d673ce75fsm19982260f8f.55.2026.11.17.00.44.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 00:42:22 -0800 (PST)
+        Tue, 17 Nov 2026 00:44:40 -0800 (PST)
+Message-ID: <d18a972cfc6a7d6da39ab9674903d7ae6e4c1826.camel@amutable.com>
+Subject: Re: [PATCH RFC v3 35/44] fs: add file_check_backing()
+From: Alexander Mikhalitsyn <alex@amutable.com>
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
+ Bacik	 <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, 	driver-core@lists.linux.dev,
+ linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org, 	fuse-devel@lists.linux.dev,
+ linux-efi@vger.kernel.org, 	xen-devel@lists.xenproject.org,
+ ocfs2-devel@lists.linux.dev, 	linux-s390@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, 	linux-usb@vger.kernel.org, Amir Goldstein
+ <amir73il@gmail.com>, 	linux-erofs@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org
+Date: Tue, 17 Nov 2026 09:44:39 +0100
+In-Reply-To: <20261116-work-loop-pseudo-v3-35-8cbbea1cf34f@kernel.org>
+References: <20261116-work-loop-pseudo-v3-0-8cbbea1cf34f@kernel.org>
+	 <20261116-work-loop-pseudo-v3-35-8cbbea1cf34f@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 06/15] mm/hugetlb: fix mremap() racing with page
- migration
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@suse.de>, 
- Andy Whitcroft <apw@canonical.com>, Miaohe Lin <linmiaohe@huawei.com>, 
- Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
- Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Vivek Kasireddy <vivek.kasireddy@intel.com>, 
- Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>, 
- Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, stable@kernel.org, 
- Chris Mason <mason@kernel.org>
-In-Reply-To: <20261116-fixes_hugetlb-v2-6-4dd9e94ea9ac@kernel.org>
-References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
- <20261116-fixes_hugetlb-v2-6-4dd9e94ea9ac@kernel.org>
-Date: Tue, 17 Nov 2026 03:42:20 -0500
-Message-Id: <179490494079.482102.4618915344813254218.b4-reply@b4>
-X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C8FB220006
-X-Stat-Signature: zzuphu3ssxpcauhqxop4rmtmmduotw8y
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D360F40002
+X-Stat-Signature: reeh738bmijfshaqfq4j5ox4e6i5351x
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794904943-54995
-X-HE-Meta: U2FsdGVkX1+i+E0ANHaG2M+VFJjzy5mfZKjY+GK8+i6s+SmNXn2727UwyWEsF4FBVBwGcP4r0ElZk32nps6YkqGxC8O9KtzjluFnQfDsth7rh8yhkZFRXXF+XSFeVDWzT3782/CpVcBFAibIStPf1qJdPpSoS1qSeN1Nqnut1u/X/pC2Hkzkv2SmM8MupE+0pyyK6OoGnf+g6+rZ6vhm5/iu4H4/KknwEqttG/5YOGxLOLhqZhu476/DUKUqDp14CSWAYOhuXeJU3K68DHWbmRK4DFOmPzz8552Qx04aDA020MrtNmXJDdelACM8h9xo+xZGqT4GeEk01F99XsKe9hgJlNi3UJXzCTJvqDvRrmvY9ynpTKx/+Oa7t0xU4SH8XfpHBAn5FHOhfzmV7f5CX23LxnSlUU6VOTL4fpYd5NkeJnUBcRtMYNb0yrMvzp35hb5n7U5jz4EdByw6wkoFkQhuwSlhoudKjEO1y77rTgeMCLM6Vc59bNhvEhX0J0v/xMWNgCot9Ktwdw+Td0ZreNW978lW5qsr+mLXXxNEGrYy2RqdCXON+ntCjGxfXAueEKqR8PA4VJKnM5jBiY5/EPGIvTNxUQF6CFJi/EWpfGn520iL6axSn0kvcGeeCjm3/qSF7T7BeyUQsFoVgtBBEEjIfT25MAwwyHLySnktBSp6pmch2YXzOmMwrUBOMtgajMzRnL01V+2ru9isLZd0R6vVtBVD2+wKWs7wdvgso/VAp6dIlMgMwwEDkGZ+5Euqnx64JEVsUsjdBOD+fIXMwDq2MQCZG+mgdw3Qvzs+9q5Uyvrg/7/m7LTVkXdG0C7KQw14VOFGGh6shDtn5RcltEuO67pmocCf6SNdkcZ7qhBsVnZPdISOq78chXCjc0c3lpdT1RuncC0Z3jH/wsOiDFJRVO7ua7lyZXLXfkGIB/e1tWYQyAH4UYCbP5lsGvj1cJcAX+TTQi2mZMtU2tN
- 1OUbJYaM
- Wf5JIlkSg9mFV8hEbm4XRmh1usggKndat+EZt1KtcHlVBSqpGq2fLq87oc6sZahqFcGbbGfh0xEkTej4lDEtKo8dLEqigdCbu51FBiUhb2Pkv6mJHj6JnF+A6860SrpCbmxZnV3Akdtk9Yrd7o/HV1PXxYRIA1IT2Kg+qkaQ0vg8NpvlOu8a/Pb6EKdO5EhSbVnG5hW+yIhldPLqPvg7IDabB5NHvr0SUMyIN9iLCI7k83gMq2y0mPbTT2FdV0GGfPDqKxIIMoYOAdH4aT+UTaNahrAqusJYdth8V6BQMLh5i0SHTsz7hgvy2RMrpqgjj0LMMAI1p/uXGclw3fys28+xPd63gk/NFZtBgJAXFoTQ5bsDkSzy+LfZGfjInLF8w6Lsct+DXGfKOPQ3KSpxEy0why38pkORL6VE4
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794905082-162587
+X-HE-Meta: U2FsdGVkX18GhRG2+M4SSDL4KDTtxP1TvL1dAJT2IZ24FxdXHFi1xsr7jU0SXrzHv44uxnkwILLg5yp0clD3qZ/WYlMTCTAP9og9lM/bGf0s68w1ln3oUNG1aj2DyCkn4gmJ2VrVqRY9YxlRLQ3O0ljHrm3C1Lg/O7C42P0ri78fuf57b9J0+lTvxlhV/YW4gCVjojfrDwKycj5ExsmEbRRAdeAV/jhiLRBCZOSw0Q1nq1SvA6mZXDERz4nqxn1WahOwgWI0hTcupeKqxrXmCRcyHLjIGgp8aYircSJz226I/h/Pcdg7Zb4zc/EBVBV2G4V9p8T9a37zQV7j7icJ9JpXa4buvZNlImiP58AXij5dW03yMbU2Ztyl/gC2m8GFGmVke9hvmOB4KYoTF2dU/pBxsFF11Y1coKCiLCawRBeYVbGC0kzHTtJFJ49bd6lnvdu4AdmG7MlhZW5UFC3Sa4UqqtOFb3WFMK5//gZ0o1DA4UxwCLeSRk97SeeJpKFaHzeolaXur8Uz0nncwZLHZqZPYhBWb6sQ3ES9CAmLyIyfqyGaxuiNKJ3IcWtK6q1np2XrW6Ab9Tzcvn6k74g8HERXfgmBL2ydhMDgXdKvGqBnfduS424pLMhxWmkM8iKOwRQ+QNGBaPO6xukCZVSdMfrK6ZuT805SjMaj7eOeR34E4rp9dTiy4kINuMQgKxlBMI6w1YnN7pq7g+fNUiLtLhUeAx2sU56PQkgYpEyeGOUjfSmwKUw37sW9C0RUsRcwziFbtHg3PcQMa0IrnyTse43TmVYGhSC+eLP0U1vOWat+C/x1rWqGbI3qi8dTqRPvw4d0DqDHgR7crjGnnOHpHM74zAbwCUSuOBIxCUDKPSOzaRfCpmW+2A1RgWWat+6eXiG4niBOgSUrbKnZX6LmskWK9Sndx/XMeaaOfZhpUKOwAu1CXIa1eTmVNkfOe77NqcT28CppNKeKKpe1TNx
+ 2y9oP+mz
+ faLlC/VQVpTzz6vadldRx5Tm/v7afihHyvO/+iBajfTrgLhBMSSC5/dJAtIoXDLPcQJoaNpWdJ3nB5jaug4F4utTsULlX5SUpunRgJgAO5a09NGOLxN7gumKSoWqH3f9+yV+Up5aTvXt5HmAQaIed+RcATo1jpBEbg+28WY+OuxfV/5yTzuWM02jWe6bfJ/c+uGb8ZOcsbMXNzLlgf+p8/nrUqcKHVylmgU2W2ZsjxCKaiawIIW11FKmTPBPyXpUNxfydFlHQZjAs28hfheVEg4QuuOKAjcWLBU1+vrLHPHOVTL3OOngJ3IITG7cBsnJ//+qZbfhopU1aMGt2xQWWs+8RDDdAkQ9xUk3uBdra0JsGzLXpjREI4RNJ1pxXGeyYP/+GcK6loowQprgSD+z+vNxhQbaG+mvPV0x3bhbTrI67S6eyhSfCXtgf96TjXCokbxuWBnJSBBH0wFffJApAOSWubFmsTPQJRYm8Q6PWFgvWWNwjssQpzN7R+t04Luh0j9rRCFu6IKKSRl48jlL6xUG0GxN/9dD0FmHL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,48 +141,172 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-16 19:29 +0100, David Hildenbrand (Arm) wrote:
-> Migration of anon hugetlb folios walks the anon_vma, so the file's
-> i_mmap_rwsem does not serialize it against move_hugetlb_page_tables().
-> 
-> There are various issues with that. Most importantly, move_huge_pte()
-> releases both page table locks before the TLB is flushed. Migration can
-> then find the destination entry and finish migration, reusing the old
-> folio while the TLB still has entries cached.
-> 
-> Hold the anon_vma write lock across the move and the final TLB flush.
-> This also prevents concurrent rmap walks from missing entries moved
-> during rollback.
-> 
-> When we must allocate a destination page table, flush the TLB before
-> dropping the anon_vma lock, then reacquire it after allocation.
-> 
-> Dropping the lock only works around lockdep: hugetlb folios are not
-> reclaimed or migrated by allocation compaction, but their anon_vmas
-> share the lock class used by ordinary anonymous memory. Having a
-> separate lock class for hugetlb's anon_vma (like already done for
-> i_mmap_rwsem via hugetlbfs_i_mmap_rwsem_key) requires more thought.
-> 
-> There is a concern that this can block page migration of anonymous
-> folios quite a while ... which is not really different to what happens
-> to page-cache folios today. If ever a problem, we can temporarily
-> release the lock.
-> 
-> So let's keep it simple for now.
-> 
-> It is a shame that hugetlb has to implement everything core-mm implements
-> in a different way that just screams for problems.
-> 
-> Fixes: 550a7d60bd5e ("mm, hugepages: add mremap() support for hugepage backed vma")
-> Cc: stable@kernel.org
-> Reported-by: Chris Mason <mason@kernel.org>
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Mon, 2026-11-16 at 12:05 +0100, Christian Brauner wrote:
+> Loop, zloop, the nvme target, the scsi target, fuse passthrough, the
+> usb
+> mass storage gadget, erofs and acct all take a file from userspace
+> and
+> use it as storage. Currently, each of them has its own idea of what
+> to
+> check before using a file like that:
+>=20
+> - loop and the gadget check for a regular file or a block device, the
+> =C2=A0 nvme target, the scsi target and zloop take any file type
+> - loop checks the open mode, the gadget checks FMODE_CAN_READ, the
+> nvme
+> =C2=A0 target, the scsi target and zloop only check for ->read_iter() and
+> =C2=A0 ->write_iter()
+> - apart from acct which refuses procfs and sysfs files none of them
+> =C2=A0 cares whether the file is a kernel interface
+>=20
+> Add a helper that does all of it in one place. It only accepts
+> regular
+> files and, if the caller passes S_IFBLK, block devices. It refuses
+> files
+> on pseudo filesystems. And it checks that the file is open for what
+> the
+> caller is going to do with it and implements ->read_iter() for
+> reading
+> and ->write_iter() for writing.
+>=20
+> O_PATH files are refused unless the caller passes FMODE_PATH. That is
+> for callers that only need the path of the file. fuse passthrough is
+> one of them and has accepted O_PATH file descriptors since commit
+> efad7153bf93 ("fuse: allow O_PATH fd for FUSE_DEV_IOC_BACKING_OPEN").
+>=20
+> Block devices are fine even though bdevfs is a pseudo filesystem. A
+> block device that userspace hands in is a device node on devtmpfs or
+> some other filesystem. Files on bdevfs only come from
+> bdev_file_open_by_*() and never end up here.
+>=20
+> The pseudo filesystem check looks at the inode that actually provides
+> the data via d_real_data_inode(). overlayfs accepts sysfs, cgroup2,
+> debugfs, tracefs, configfs and securityfs as lower layers and reads
+> of
+> such an overlayfs file are served by the file on the pseudo
+> filesystem.
+> Checking the overlayfs inode would miss that.
+>=20
+> For an O_PATH file nothing might have looked up the data yet.
+> overlayfs
+> only looks up the data of a metacopy file in a data-only layer when
+> the
+> file is opened. d_real_data_inode() does the lookup then and if that
+> fails we return the error.
+>=20
+> Note that the file type is taken from the inode of the file and not
+> from
+> the host of ->f_mapping like loop and the gadget do it. A driver can
+> point ->f_mapping somewhere else in ->open(). It makes no difference
+> for
+> block devices as both inodes are block devices.
+>=20
+> No functional changes. Nothing calls the helper yet.
+>=20
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
 
--- 
-~Gregory
-
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> ---
+> =C2=A0fs/read_write.c=C2=A0=C2=A0=C2=A0 | 53
+> +++++++++++++++++++++++++++++++++++++++++++++++++++++
+> =C2=A0include/linux/fs.h |=C2=A0 2 ++
+> =C2=A02 files changed, 55 insertions(+)
+>=20
+> diff --git a/fs/read_write.c b/fs/read_write.c
+> index 6767283108991..9f1e7bfcbd4f1 100644
+> --- a/fs/read_write.c
+> +++ b/fs/read_write.c
+> @@ -866,6 +866,59 @@ static ssize_t do_loop_readv_writev(struct file
+> *filp, struct iov_iter *iter,
+> =C2=A0	return ret;
+> =C2=A0}
+> =C2=A0
+> +/**
+> + * file_check_backing - check that the kernel can use a file as
+> storage
+> + * @file: file that userspace handed in
+> + * @mode: FMODE_READ and/or FMODE_WRITE the kernel will do I/O with,
+> or
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 FMODE_PATH if only the path=
+ of @file is used
+> + * @type: S_IFBLK if a block device is fine as well, 0 otherwise
+> + *
+> + * Call this where a file from userspace is taken as a backing file.
+> Only
+> + * regular files and, if @type is S_IFBLK, block devices are
+> storage. Files
+> + * on pseudo filesystems are kernel interfaces and are refused. The
+> file
+> + * must be open for @mode and implement ->read_iter() for reading
+> and
+> + * ->write_iter() for writing. O_PATH files are only fine with
+> FMODE_PATH.
+> + *
+> + * Return: 0 on success, -EBADF if @file isn't open for @mode, -
+> EINVAL if it
+> + * can't be used as storage, or the error from looking up the data
+> of @file
+> + * on a stacking filesystem.
+> + */
+> +int file_check_backing(const struct file *file, fmode_t mode,
+> umode_t type)
+> +{
+> +	fmode_t io =3D mode & (FMODE_READ | FMODE_WRITE);
+> +	/* Drivers may point ->f_mapping at something else. */
+> +	umode_t fmt =3D file_inode(file)->i_mode & S_IFMT;
+> +	struct inode *real_inode;
+> +
+> +	/* O_PATH files are only fine for callers that just use the
+> path. */
+> +	if ((file->f_mode & FMODE_PATH) && !(mode & FMODE_PATH))
+> +		return -EBADF;
+> +
+> +	if ((file->f_mode & io) !=3D io)
+> +		return -EBADF;
+> +
+> +	if (fmt !=3D S_IFREG && !(type =3D=3D S_IFBLK && fmt =3D=3D S_IFBLK))
+> +		return -EINVAL;
+> +
+> +	/* Look through stacking filesystems at the inode with the
+> data. */
+> +	real_inode =3D d_real_data_inode(file->f_path.dentry);
+> +	if (IS_ERR(real_inode))
+> +		return PTR_ERR(real_inode);
+> +	if (real_inode->i_sb->s_iflags & SB_I_PSEUDO)
+> +		return -EINVAL;
+> +
+> +	if ((mode & FMODE_READ) &&
+> +	=C2=A0=C2=A0=C2=A0 (!(file->f_mode & FMODE_CAN_READ) || !file->f_op-
+> >read_iter))
+> +		return -EINVAL;
+> +
+> +	if ((mode & FMODE_WRITE) &&
+> +	=C2=A0=C2=A0=C2=A0 (!(file->f_mode & FMODE_CAN_WRITE) || !file->f_op-
+> >write_iter))
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(file_check_backing);
+> +
+> =C2=A0ssize_t vfs_iocb_iter_read(struct file *file, struct kiocb *iocb,
+> =C2=A0			=C2=A0=C2=A0 struct iov_iter *iter)
+> =C2=A0{
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 99caef43ff3c4..b1c7ebafbadbe 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -2553,6 +2553,8 @@ static inline const struct inode
+> *file_user_inode(const struct file *f)
+> =C2=A0	return file_inode(f);
+> =C2=A0}
+> =C2=A0
+> +int file_check_backing(const struct file *file, fmode_t mode,
+> umode_t type);
+> +
+> =C2=A0static inline struct file *file_clone_open(struct file *file)
+> =C2=A0{
+> =C2=A0	return dentry_open(&file->f_path, file->f_flags, file-
+> >f_cred);
 
