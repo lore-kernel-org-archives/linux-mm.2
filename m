@@ -1,95 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6CC606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 19:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBAB606A332
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 19:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=WtlZQ+/O
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BF94EwWZ
 Received: by kanga.kvack.org (Postfix)
-	id 818CA6B05B4; Tue, 17 Nov 2026 14:13:43 -0500 (EST)
+	id 036F36B00EF; Tue, 17 Nov 2026 14:21:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C88E6B05B5; Tue, 17 Nov 2026 14:13:43 -0500 (EST)
+	id F29456B05B0; Tue, 17 Nov 2026 14:21:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 706D26B05B6; Tue, 17 Nov 2026 14:13:43 -0500 (EST)
+	id E40436B05B2; Tue, 17 Nov 2026 14:21:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C3C96B05B4
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:13:43 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DC14805C0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:13:40 +0000 (UTC)
-X-FDA: 85445560200.21.0A2300A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A1095100003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:13:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="WtlZQ+/O";
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B49856B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:21:02 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 428DC160585
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:21:02 +0000 (UTC)
+X-FDA: 85445578764.12.8D4694D
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6756A10000D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:21:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=BF94EwWZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=nakixii@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794942818;
+	s=arc-20220608; t=1794943260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DWNOL9oXi4FJBrMo2p57OMhawm6GSyZyZ5LAMYiUucQ=;
-	b=O6/vbPlKs+UsgeRHltkV/vm/HbZKVevqFXNu+W5vbRAeEzUNkhKyeJt6Wh/3Qudfmh0cpr
-	sO0PNRvefysCWxwTSDlWwK+j+QvthaEDDHsGiPiS3AdCMbBLI/OIEWlsmOEGkTxhUKGLPz
-	PHwDX7JfoUTUJSpz5S3acTnKMlil+p0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794942818;
-	b=x1deOxgBf5hr/swN6nLxqo607VP/zbuGdm+ZvxTmI3MuU5YHrSoELbCthVIXxZ5IPfD6k/
-	B6bLBNhz9zrozOzZay+T1RbxJiFYAIxlJvZww/fPE5UuGsy0YRrSX1mEdfuYLwOF6tQUcl
-	H0hQtBrt0Ih3VG9Z2PH1ZCWckDBX5Vs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=w1pP5hK5c0Kpgq7UYf5wVXth8KsJQzGv3dmC2VFyJ6c=;
+	b=8JwZRzuPs8vC+6p0nQ+N3a/mTy7dZRk1OjjfyB95Lnwspwf4YpXESpCx3cjyGNfUYxHgC5
+	NBFcv6ozRJo9ln+hE8Mn2xIOfOnHmIcMsnMxsHQuha9pbtKcWO5R0MhA8LPx7p31qyGIlu
+	RSyUaw5q3fIbApwjBvfBtGp2Hph5XXI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="WtlZQ+/O";
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 11CD6611E8;
-	Tue, 17 Nov 2026 19:13:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503391F000C7;
-	Tue, 17 Nov 2026 19:13:37 +0000 (UTC)
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=BF94EwWZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=nakixii@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794943260;
+	b=bSeSzxJsNPS2kzQ80pH6QHeG6U1TlqZ9i7Tk1Cks8Wrrd54IweyCDP0TDh/8ct4XkBmLfA
+	8mbzmWcON6eTVChBnbaiZIwx64ZvmmH+NlvzZsFXtPH84vKLPRBuR8nyhT9hGy0T+q1bob
+	JgjQM4b5qp0TsGco0rHkCB3c4qgqopE=
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1a2761c69fbso389384c88.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 11:21:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794942817;
-	bh=DWNOL9oXi4FJBrMo2p57OMhawm6GSyZyZ5LAMYiUucQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=WtlZQ+/OHjaHXLWloIGtS25tyanq+8IWJJe/8vkj9wMY/KQMGZfRw1c9kowZ2CTHf
-	 lsEPr93LQloDvm4BMKAR+rjyb2EgO6oro0uuEJpiz6ObPWpl7+NDpHWdh8jMFx7CgL
-	 E3AqCnhT3t0jkD02Hfb8B4kNtPtdpoHjAZ4Lc8Z8=
-Date: Tue, 17 Nov 2026 11:13:36 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Shivank Garg <shivankg@amd.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Luiz
- Capitulino <luizcap@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page_ext: remove unused page_ext_iter_get()
-Message-Id: <20261117111336.ee49c0d4722a042c071c68b0@linux-foundation.org>
-In-Reply-To: <e745f91b-3312-47b9-965c-510bf0a0b7f7@kernel.org>
-References: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
-	<e745f91b-3312-47b9-965c-510bf0a0b7f7@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20260707; t=1794943259; x=1795548059; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=w1pP5hK5c0Kpgq7UYf5wVXth8KsJQzGv3dmC2VFyJ6c=;
+        b=BF94EwWZBcwi34BC4SsnvhPhyQW1Es9ZA6XQzwlbBIeePV4eh6SQAEeHHS6vIOQ7Ul
+         qSnUtDZLmyHEJZ8VuWBNWCrCs4+yAixmN+2bNY6SsonMQjimKYZ+sSUhW0QRkealfkb/
+         Sttmnq9YRTuu1lJ407wNSvMd72r7ohgRlq911FNSws9WBOlPmvmjipnf2OH0lKvCfB11
+         2mvgdR87AhsAt4Uy9d4dphiItfQxYbwOyKXoubXrDO/wSxCv6OfJdVcuC41EtTHLkt3R
+         oegMJOhWhpPfYIP0vI6IxLjsubGK9ziqZwGCM4CR3Aphj6L58aQwIRImI3i8zOr5IKs9
+         2Ufw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794943259; x=1795548059;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=w1pP5hK5c0Kpgq7UYf5wVXth8KsJQzGv3dmC2VFyJ6c=;
+        b=FEcUzoBMnjciIQaBIkAvtYDSpjs01dj9dplWUYQJjnn+Q+7wxZbvAQ1Ts4JhKwtYMM
+         VcxOpfAiBiXitSDj09Rfw/T/6WTu/YfOk6jQVpPAfmxgVukz+fN1IG7T9uQcECNovsBx
+         GnTs6hKWrBYFqmeinCnvTfL8PcmsYO7FVTR4l+d3RZTC1o66YC0LyUA5Ae5h/OsNVUpt
+         GGHF/Z2d0PdX3/mxTzA9egn4FE6qRp/5kSarYJvN5U1c7xUjOXd1s8tBiuI3sT1rcC3S
+         yc0pa5dEdM5bR+gD5Mi0G9Z6BwFNmhkm+ZK//5mSdszeR0i4ofsYF/bUWan7uFEbZqmg
+         jzPQ==
+X-Forwarded-Encrypted: i=1; AL+hErEWMM3Bz05L6jnSgS6YF3fhZCDwQRlMTiy/KFDwzFWP2h3QciwdO85216NtMYTCuji38awF0PXlsA==@kvack.org
+X-Gm-Message-State: APuU4Z+WtjEOcTNWb9JWWwy3apLQC2t7Yh037ujLa43ejR5WQ12vot0a
+	dA5yxCKrNVPW/XYP1kXz982RQmL21b5bPDV9VfUGcETOEjR2+kX2ub9vgf5A6+aMxIj9paau
+X-Gm-Gg: AYBFou3WxBi4CXTRKcEkyIsEk1NQ0u64OE5OQAwAJxKZFNhEFQlGwhWKCOuK5wpxQ5A
+	ciZQncjwwmup9gUIgVbBcEjuBAHkPwTVnjfAbohwXDQPo3fL8gExkvGGsHnBaYPRgNoSSlDKIxT
+	y6FPaKDjM+pagt2eVDu7zO7XU7h3l32Kp+O59j6QPcqKKfNzOKHlyikRBgJrbJzqZmmbWpdCtC7
+	qdbx9biI6sglUSwECaMf7sWXlIHDut5cnWqj2gOP3uZ2JG46x9NVLkBYA3zhu63u3AE/rxzXxvv
+	+6F7BwxTl5OY6UeaX7btS19wjQGTKNAtD5BRY4aIIWPQNOjCPZG7gdIoVwa/WpggKLs5+1tGsdU
+	snT0RmdNpbuHIlGYEsUeSB9MR59pIm2T+YxrFfLNoIWI08eh8Toy+Ya6wOV5GEtp6P2UB6yKhIO
+	ybcEi6XDjhLHCWPAEAc4s3eG+3D2miSUp65580zGNbkxYn504ghiD8B7aF5aqENnlWsaQf8V4+B
+	DFK2W45u1wbtw0accLYCqfT/Q5BSnoBdiSW5QJqMtMvY18FRjPrfvl81IDzlGArIJcsjmIEfkcV
+	AzVw7U20RX4OV5J4o2gnFiZ4cFpkhzbK6aSOT7Tz/7YdFtg=
+X-Received: by 2002:a05:701a:cca2:20b0:1b5:31db:cc3e with SMTP id a92af1059eb24-1b543be92bcmr520505c88.11.1794943259060;
+        Tue, 17 Nov 2026 11:20:59 -0800 (PST)
+Received: from naki-PC.localdomain ([203.175.14.54])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5447dc5e9sm368230c88.11.2026.11.17.11.20.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 11:20:58 -0800 (PST)
+From: nakixii <nakixii@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Kairui Song <kasong@tencent.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/userfaultfd: check exclusivity of the page being moved
+Date: Wed, 18 Nov 2026 03:18:53 +0800
+Message-ID: <20261117191853.1314834-1-nakixii@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A1095100003
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: tdddawewihazzwsb7o9pjyrydx6e48ir
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1794942818-515839
-X-HE-Meta: U2FsdGVkX1+Rvbvy7m1KLAmwA3H1CdiFNtRHhzRWZaFjm/9Zh5iKzH8g2QHOieMeHfqwz1O+cWkJu8WDttDqdmhcFytDRhQpzB5Q8UYEQP8slm/gT4lOe8w2Qpi2Y0j06kKDh0KYOTneDHLLSAOtd6B4HYLWhIxpice0mYkCSoayLNZQW2uI9pDFoDwjRy4thGHhDD9jOFkwmB2QcxHzsy4RJcgw+dp3moE2hJpu+U2JX+1efm/lKhXapges7MBV2W2C3U0MkTQgnobxzGu9UqSYljWRwX+OF/D81nZeieLUWzmFzh03mabiWDUXB0fJsd2LrY+LvMUXS6mC4fSh3gcx03LWKnCtFuxo6skLxE2XPfVQA9L7d1THJdbh9VDbyoiV8HqKShAkzpUjaD16UR+g+yXxl3LnniAEBjSv4H8tR6R4CGeOw7fO/GdeDqlHrB/dPNBwrw/rfJZBWOa0o+1jxA8CVOAJsoskF8RkY2w74GkPQs+IpxZkg07vSKlfRgGIuDozm81P0NQKXJDhNIwbNhBp0zKb1B3bmFv68ilG5fqS8k2brNAbdNRIOzDJ6DP4qNMuFMjUmeWPQtMvWQEt6PqUPbbi78dtqjxR+LRArwg4G1LmZvunUKs84vM/dvBxXAQSB07uxbYtWqNpJSgmrQrDKnjDlgMkch7ujMT95VmaXMww5k8/An3pARvzlf4hoeei5+TIiVKHHV6S62Z+Z7IWF0gc5mtE6GNY2BbkBy90Ub6fxHUcX/4KCqXHB698NhweN0lXvPU3CmqeXCb8H7ONHfPiu8NREWh89geLydFPpt6PUqTtOX1ChGZ8xY10j9IqBy4uuGb4SWnySfxff6L7ZORtisGZUAGvPK7TbcQUp+SHYUf1HB6iXdPFa1VH9WAiOq37NA2dkl13baiDNDA8hN0f8fxdd/nOcmsqVUnOcDLT2NEYOX2BtqmIaUxOySNpUztXWrudmX6
- mI5RK/rh
- cCVeixa0T5uX0yAHhLBviS7BDtiixUE25M12jqOF3eHibOPEqM8ibhGraCPT7IZSLwf85GCYu7dbEUkM805uxhADDB7fD8N6SRgt421Z43ZVUWHipmhGXJgv2JmEQN3Mot+ZUh/NLM9G4XDTSkMJIsRubWVXMkd5zKRYtZZtXQpVKFJUZ0PMPOewmks3ErkNOphH1+yFPrTHeGgNeh1T9U5ImT0dxrbUmLrFUzvxpH8Eg45DSRlPHRGcr6YASFuDqJRq9QjtnLGAnYd9F744mw3yUB6JckpjE/ZRxxv+LzQV3eMOc3FH0DhrpnP3MpTzY0vmS8MkLuBuk9xunxghgu06Icovf4IB9X3J0JESyLPprxuU4Rst6NZzGOBUbHSBxmR2htBzQOpJAVetpukrhshYZFw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6756A10000D
+X-Stat-Signature: 63hp9hwsx78io6ftd4bw4ppgdr9r1def
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794943260-562852
+X-HE-Meta: U2FsdGVkX1+vVrTZGi+nGMrtQ4LmvG8FrFZkpdFGB4ff8Jz9LLK/zK8UTX6vnOBf5vU51xtYE7ISFPEwB5i8++WUgQ5NfZQxJed+NveinwnATSvVoJw9JWqR+wk1Tf3N4tQz2T6tVeVC2sZC11Q45H4vM87LiMnnx4SEz4+64OsoScMCjaeFPcTnVe5i5pLpA1Ol22ilKAJhfqYUcYOWIMqeBhGCbnxX6+XEo93ApZdSftGNQ0RAwvXihDpGXGL2Uq236yEbgg+q7EGCWSlbqumYZ4pP9WafhZohamjHPdxz2WcmarXnbALs2dZuQRieSrHBe9eBSBud3cASX5U1n1sALf+FO1YKkXIHoVkkuVVsqIMf3EkCVVmxSKGiqxrXjHJKyHBnaOyM4jsvCVC19zZc96GmxXB0Zpw1baaWIxH4H9Nges1Ze1yN74/9HOky2whEnO5gh2aq7yP8gAs8o7c9SFvHDwDneweh9WvsXmssCBhyHDWbmukjd/mn76SVsVpo2l7PZNW7ep+FyvSMxAFnigZXo8LEyVHud34jhiuFYxuF0XGSAcuwtjfi408auxGfLuuRsSWDB0ISvmT3x133hf1qWHdW/3yLgodlHgJLl7NsVNQLEmAYuu0FAxWHffAKcZ+n97owuWvT2cE8jKwFaPETssVbAC/O3c8036E6v+Lj9hFcn2Aao88Q9Znm4i+DCTlzYYFGm/Rq1qBpUk/ryGY3tngsR9soFV1BVPzzzizLCS7XeQulY1JWt+0fCg7v/zd19nj5B/oCdTE4EzOqNaTTP7KIvylaj5P7UHgITetF0JvFYaCBk4vHHihXTCjHJpJNmnyh+/VmXqVYWP87/DLTLfKoZi+qGmUgo/J6JDG4vfQwPRokyr8kov7T+jSqLUEg0urz4MrOGF+xMqYjRYMDqH9H8Q9G8Tlnnmj44KCTenNuwCaJ0kPZG2hS3cBauXlDD+2VSDF2NcA
+ kItPzptL
+ PDnND03D1WHccjWHCvREHcvfDYoB5lXYrYARe7KR0kahXLB+Dcs4n/RhF0WhGY/RTxOcgK3T5e1k/aR1UCiDziPwY8Zg69cFXZom+yZ0zuDq9SCeqp4HoZOpJwvPGDiNFQ7XMp7aGqoO6WmDohCEziK5NrqHLXUFyvqZQ/8pNOTgE6E/kGbtteWisLp9egar0Y489aF9AD56RktHSBMy+MM8es2bc/XkFMgRfeysjUJGewcA/v+PSKpIJipzJVSW6OQvNXKVbPCmrI32f7Te8we7TcEXsWR7KwrOA2oDuFktNyljKhFkVdme6VbJW8MguKBgIKkEDc/gN2TQD/YajYDBnLCj6QgFIp5f28+a8g3HwvTSg7FLvZzAJdIsX8s9BdugymrEw0mxMg2m6oqJtP1gjYpLEFsjTmndC0SYklvxixT3cTHVK7KGyDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,50 +126,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 17 Nov 2026 19:50:09 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+move_pages_ptes() gets the folio of a present source PTE and then checks
+PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
+is per page, so for a PTE-mapped large folio this can give the wrong
+answer for the page that is actually being moved.
 
-> On 11/17/26 17:26, Shivank Garg wrote:
-> > It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
-> > for page extensions") but has never had a caller.
-> > 
-> > Signed-off-by: Shivank Garg <shivankg@amd.com>
-> 
-> Added to page_alloc.git for-next, thanks!
+This happens after fork().  fork() clears the flag on every page of the
+folio.  Once the child exits, a write fault in the parent can reuse the
+large folio, and do_wp_page() sets the flag again only on the faulting
+page.  Reclaim can leave the same state behind when try_to_unmap()
+replaces the earlier pages with swap entries and then fails on a later
+one.
 
-Thanks.  Helps.
+Moving that page with UFFDIO_MOVE then fails with -EBUSY, even though
+the folio could be split and the page moved.  Callers that fall back to
+UFFDIO_COPY on -EBUSY end up copying instead.
 
-> Hm page_ext.h should be added to the PAGE ALLOCATOR section. Wonder if
-> Andrew's patches adding various missing bits included that too.
+Check the flag on the page mapped by the source PTE and get the folio
+from that page.  Locking, refcounting and the split-and-retry path stay
+the same.  The batched path only handles small folios and the PMD path
+already checks the page the PMD maps, so they don't need this.
 
-Nope.  I'll add the below.
+Tested in an x86_64 KVM guest on mm-unstable with only 64K anonymous
+mTHP enabled: map a 64K-aligned region backed by one large folio, fork,
+let the child exit, write to the sixth page and move it.  Without this
+patch all 20 moves failed with -EBUSY.  With it all 20 worked and the
+data was correct.  Moving the first page right after fork() still fails
+with -EBUSY, as it should.  The move tests in uffd-unit-tests pass with
+and without the patch (the two swap tests were skipped, there is no
+swap in the guest).  I didn't reproduce the reclaim case and didn't
+test arm64.
 
-A few things under mm/ include page_ext.h so perhaps more mentions are
-needed.
+I found this with Claude Code while debugging an out-of-tree swap
+backend, and it wrote the first version of the fix.  This version, the
+changelog and the reproducer were also done with AI help.  I've reviewed
+all of it.
 
-I'm presently carrying no patches which alter page_ext.h or page_ext.c
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Link: https://lore.kernel.org/all/20261116110122.309748-1-nakixii@gmail.com/
+Signed-off-by: nakixii <nakixii@gmail.com>
+---
 
+Notes:
+    Split out of the RFC linked above, as Kairui suggested, and rebased
+    onto mm-unstable (81188836663676f8).  The code is the same as in the
+    RFC; I rewrote the comment and the changelog.
 
+ mm/userfaultfd.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: MAINTAINERS: add page_ext.h to MEMORY MANAGEMENT - PAGE ALLOCATOR
-Date: Tue Nov 17 11:05:44 AM PST 2026
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index d65184d9a..ae9ee210b 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1557,6 +1557,7 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
+ 		 */
+ 		if (!src_folio) {
+ 			struct folio *folio;
++			struct page *page;
+ 			bool locked;
+ 
+ 			/*
+@@ -1570,8 +1571,14 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
+ 				goto out;
+ 			}
+ 
+-			folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
+-			if (!folio || !PageAnonExclusive(&folio->page)) {
++			/*
++			 * PG_anon_exclusive is per page. The first page of a
++			 * large folio can be shared while the page mapped here
++			 * is still exclusive, so check the page being moved.
++			 */
++			page = vm_normal_page(src_vma, src_addr, orig_src_pte);
++			folio = page ? page_folio(page) : NULL;
++			if (!folio || !PageAnonExclusive(page)) {
+ 				spin_unlock(src_ptl);
+ 				ret = -EBUSY;
+ 				goto out;
 
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-
- MAINTAINERS |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/MAINTAINERS~a
-+++ a/MAINTAINERS
-@@ -17779,6 +17779,7 @@ F:	include/linux/compaction.h
- F:	include/linux/gfp.h
- F:	include/linux/page-isolation.h
- F:	include/linux/pageblock-flags.h
-+F:	include/linux/page_ext.h
- F:	include/trace/events/compaction.h
- F:	include/trace/events/page_isolation.h
- F:	include/trace/events/page_ref.h
-_
+base-commit: 81188836663676f8503f3603cfe56e88264c4d50
+-- 
+2.43.0
 
 
