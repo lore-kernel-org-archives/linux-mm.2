@@ -1,116 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ED4606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D195B606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C8lhV+Z6
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L3B8zwEX
 Received: by kanga.kvack.org (Postfix)
-	id 03D4D6B05C6; Tue, 17 Nov 2026 07:21:49 -0500 (EST)
+	id 6AE676B00EF; Tue, 17 Nov 2026 07:27:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F305C6B05C7; Tue, 17 Nov 2026 07:21:48 -0500 (EST)
+	id 65FA26B05B0; Tue, 17 Nov 2026 07:27:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E450C6B05C9; Tue, 17 Nov 2026 07:21:48 -0500 (EST)
+	id 54E7F6B05B1; Tue, 17 Nov 2026 07:27:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CAC1B6B05C6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:21:48 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B56280447
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:21:48 +0000 (UTC)
-X-FDA: 85444522296.16.5A87DD3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BDB5840004
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:21:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8lhV+Z6;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794918106;
-	b=IWULciMKm9EFXMq1c7FTTHHGuy5tlIjVe+bJZYxxBKAfFGUpkdNzVJwptkkHHoJ36gbxHn
-	9+8ePz3+zeJgKM+1AQOrIljq4y6MnDkXRyNUgjwxiaclEXKJsyD1cF1iqAtVO2HFs2ZS7Y
-	SwDy+C4kaixbAzXtWJB8D/r+53BgSvU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8lhV+Z6;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 28EF66B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:27:02 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2BD181403B2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:27:00 +0000 (UTC)
+X-FDA: 85444535400.23.C89A8E8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8E47B1C0005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:26:58 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L3B8zwEX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794918106;
+	s=arc-20220608; t=1794918418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GttENf4AQLKGgaT2xtnMonfh7k3XNqVVFPtXzQMChjU=;
-	b=B/GQ4xtuStcYK0dm4E3RUUpG8+qzhVyl8mek9oCq3KgHaB/fRNExlU6U5iteFD1TNSUUZA
-	sml37K+RtgkR7ZCIsS5axPgkArXFyiqsF+APcm1YEq8oKrBFqoKFeHrTq5O7ctUFAEJTr4
-	HU4PeiiZ7WuJ4qrXo5xYIr2GGiqxaiI=
+	bh=a0Hhh6EB7u7ze6tHi/AqmllD56uVT+yPDQDWEyuvBtQ=;
+	b=ZvyVwQ1WDv2fJ+p0RwckjzW71rvYPR65c0W6exJYBmRhybOd/1HvCa/muA3YPT+SRYvJfF
+	0ygKv4yAFc6D8qeo5DaG5Kj1yJ1saTACtLgQg+wiOIK6FGaP7tQ8WLOtzomykJuzJCNVMW
+	PZOfG+X01eScFKrf0EaKeH7GrC1zuZU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L3B8zwEX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794918418;
+	b=D6g2zHAZsm0PTofQ5U9qEp91n7i4+JMgGzvpvCoJxnVLA6Qc1LUrcJF7G08KYRLtAgi52P
+	1aXxRrrmvgytoe3ZcztNze7CT02BJrT63PNV7H8ItZoJkZheBXIQlWDKVcZdcudzACfjaR
+	M95T1e36wPJA+E6BAOgpPx5/JMwz18k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E4E6743692;
-	Tue, 17 Nov 2026 12:21:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023021F000C9;
-	Tue, 17 Nov 2026 12:21:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FF3863469;
+	Tue, 17 Nov 2026 12:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5012B1F000C5;
+	Tue, 17 Nov 2026 12:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794918105;
-	bh=GttENf4AQLKGgaT2xtnMonfh7k3XNqVVFPtXzQMChjU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=C8lhV+Z6SJ8XgHd/J2EKI1U6pcb4wnoZF8dID2gB43wsYDa8pyqcBqXoFMBN0xEPN
-	 iDxWYqie8JE0pWF2f1kyXnCQ6L5jOHuyZy6Tob4n2/xEewU+wXTHgFe8AXq06KvIs5
-	 DaKLlL4gqZ6+qRwK1mKZ/oot5DCjLn7s3MFzjm1k/2LnjoEDqxFy9MeMqgtd9sG1U4
-	 fQ+kCnZ+V0Jbj9XU6dxdgPvt0chSQtjPt0YC28YBiFO312AJ3WmUWkDdu9jidpWQkp
-	 kL1OZE7zrbXx1g+ZVCa5SBXHy/BmdjHWUII37KVWw/6mK+HD8vNfHhCkVxfVbbv1A4
-	 ZC6mh0URIBSIg==
-Date: Tue, 17 Nov 2026 12:21:28 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Jeff Xu <jeffxu@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver <elver@google.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Chia-I Wu <olvaffe@gmail.com>, Dev Jain <dev.jain@arm.com>, 
-	Evgenii Stepanov <eugenis@google.com>, Ian Rickards <ian.rickards@arm.com>, 
-	Jann Horn <jannh@google.com>, Jeff Vander Stoep <jeffv@google.com>, 
-	Jeff Xu <jeffxu@google.com>, Kees Cook <kees@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Peter Collingbourne <peter@pcc.me.uk>, =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi@google.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Tomasz Figa <tfiga@chromium.org>, Will Deacon <will@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Baoquan He <baoquan.he@linux.dev>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Allison Henderson <achender@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-mm@kvack.org, 
-	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, kexec@lists.infradead.org, 
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 5/7] mm: kasan: skip KASAN for GFP_HIGHUSER
-Message-ID: <avxFYRBid_VUp6vo@gremlin>
-References: <20261116230627.3537051-1-jeffxu@chromium.org>
- <20261116230627.3537051-6-jeffxu@chromium.org>
- <avwp1ZpVudiT1Gux@gremlin>
- <85ce1f24-8b49-4cd3-a9f7-02d1be69708e@kernel.org>
+	s=k20260515; t=1794918417;
+	bh=a0Hhh6EB7u7ze6tHi/AqmllD56uVT+yPDQDWEyuvBtQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=L3B8zwEX1FTal6O2Eoy7mwJOAUsJyaL07I0n5sa7jQbOMTnV8LSBRDO5mhrYj7xBL
+	 qmncfH3N68+9Ld2c0KC+cQh6tJUWmGDp1uhXgdNRYi8YXggB1uVr9+U1iIv1kvgzbW
+	 0IVV0KaOH9/vIMOAgAWPCHZIQ20rMwcSflm4Df6WkAaoyvPN2hkGeoFF9Av7FPArqt
+	 Ck+nzUb0sMblXMJymF8IVhrsfMjRGfRucr1V0Yz2luxdfACZ5ItBcsXcWnDnhOhmmr
+	 iL6Yt7QGzH43LPppRMilN3ujiwNT/FkKpnMOGp3f4T2kI0geMpS0HYN5Y+jxz75X6i
+	 suriT9i4Gl5GA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Alexander Graf <graf@amazon.com>,  Jonathan Corbet <corbet@lwn.net>,
+  Shuah Khan <skhan@linuxfoundation.org>,  Randy Dunlap
+ <rdunlap@infradead.org>,  Andrew Morton <akpm@linux-foundation.org>,
+  Tarun Sahu <tarunsahu@google.com>,  David Matlack <dmatlack@google.com>,
+  Samiullah Khawaja <skhawaja@google.com>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-doc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org
+Subject: Re: [RFC PATCH 0/5] KHO map
+In-Reply-To: <179486913878.127049.11178890384802388709.b4-review@b4> (Pasha
+	Tatashin's message of "Mon, 16 Nov 2026 17:45:38 -0500")
+References: <20261116134013.1636689-1-pratyush@kernel.org>
+	<179486913878.127049.11178890384802388709.b4-review@b4>
+Date: Tue, 17 Nov 2026 13:26:52 +0100
+Message-ID: <2vxzwlqbfxtf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <85ce1f24-8b49-4cd3-a9f7-02d1be69708e@kernel.org>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BDB5840004
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: ha9rwsnmxca8obf55atgfg71h9ics3f3
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1794918106-285151
-X-HE-Meta: U2FsdGVkX1/06AnNuqbTU4an+lMpxkbsomSpwmkwsAP4Bbw0JuKrnYtrWbLHv0hIF8iyf9V2tBr/z6v4Em4NuawWJiraC42lZN93NvXf9xRb5U77F0aJ1CQhDYmkol69RHwZPs5L/NZyn6VdYFSQkM6U8TT+VykIJg2lsFM90C5aH6d/IOZndB4SuAuTa56WhjJq1UtTdr7GBTYd2Wjup5m3R+S/289e6Y3N9zFHq1+y2jbRii9dkhwkSMdw0kNzV4ewL09r68xv5dGTwW9hCDt9Pmc/DHZlGvQNML1QXhLO+8Zrqo6x3E73sRwnHPdBUGZ6gVJj/YEAiypy6t69xuICbbb27Kjbi6NU1rWkVUls8zlmyU755B3xqcsctNo4pJCSJ2KiHXMgvcdVo42gWZaxPwL0JdZ7Tu4d0TaAl1EHOvX6QalqCxt7oyQn2dAT9hWOsAddEZguChTS8sKAN9uG7QZnywJbR2ghCGlZ2jw+NUvSEnWuuExRyOMe5Y686hs+qAZAN5kFL/qJgtj/tWqWa4MPdBsglwjnZ6j8m6dn4iiF7nOKv6XkQiutlKkM8wWRpmlea0BAORPB0spUULJrHhntSwdZYAAt3gPHpzzjR3b13vcDWF4iaouIcjTMhwArd5CncGLWynAHLhLRBrAJRHIxIbccwv0dda4Wx5EGfLV+E1YOpDyPZdmHHHbLqEkuz4yf58edHywBA+nQyoK2WoQ6nvm+22S+3x8aoXCFeoRXZw8ptWN5ZSi4eq8Q3TiMk1Yb3dW4yL7V+ywev/Th7aFJH4b1J+lBzltT7ql0kI9oMWxjXyK+tvlm1c4A0ye9ZBlcb3oWaj1Wye9Ima/uSTtH+GR9ncFCjHKSdTzJarnAv4TwQDNH2ScGnc2FYRDtM7KVaGPu0CXtIumusi9WR3xx5EpHVJMARDLQBzLSjPoMg17tusvusuH8ticRBIpOhS1pbAnu2I32GtF
- TqzwiqXS
- 1VM6HVJpIgTOJekRCdlLlcqm81StOo1uGyHtTpTLc6iX2sASju8vk0lEONd/l8nPiv8OFbDgWPKmyY4uvrZtO7Al6XEwWT6eb+c/v2SwF0rUtnR26oY9pQl7UR89hCL1OVHShh4o1+MMrCfgS4wqkMSqFovK/DESU2B6mq+dVSiLXPNc6A9n/+McIcHLW4NXK76BDn6M5Oh/H30NxLqh6hkiCB42IjHQj6Aj/pTJMkX/xaeG53liDvHCUxczEpsRNuRXaUm5t+7kyUyXsC7ocZp88b8ZnNbA/0JTB9BXZrJyYI9agfr0ZcZ0bIDln9C8+FoLKkBgCsr2a9IWIb/RlAbnQUNXysn0nhAqDizRsS1hCG52/5zhej1+FlQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8E47B1C0005
+X-Stat-Signature: ss839y9dxjz6yfith3bma9hz6tyyzr9e
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794918418-192152
+X-HE-Meta: U2FsdGVkX18/aUEmpA3zrsQqw10eN2l8rCHJbNmQglfin94WZsN0QjCpr9mA2OhjCkceYvj3ER9bsd9L7uZXmZovqCKlLuHVZct7cEzE9CHrQjfPjX6zgsDsAAD67xv9Y1fDET4+mm6OoY+YHkxuKwny09qK0pH1hE0Us/f67HGYmFpK3VfcqIqN2KzVbtNyiCABJQh9ZP7JcMH8T6PWuO82jk/TugSHL8UB9nvyFXMjhnGa+3si23FMnK4D5txFhgvJXmS/nqBkoMQP7UTQ8mfW0c4CPoU/M27jeEa4lxjVb+HwIjYz7SO8bh8uVq0DSwr7FqDTG+W61hXBIxwlskljBxbii8UaZgHtnYWWEdQipL5V7sWoI8nOA1NYTAcUPqv9HOstlAdnVACkUl3ChfQIE+AOfqc2+Ms7UU+gTkgcKoV5biVwKTV+vf4d65ApF5M3tC15qT+EELOomtCQS1OJ1nTF70tWjzXcMjHBkGpQ6H/LytbrYczxltrFM68MgRSIA87KyS64eYda1EbnEzreZxH4CCpDt2IipUD02/SIT62Pt29fhJ2oPEz5XbA5BD79W3J83WS1RyQSgkoOuL0a9g2YLIt57gQLcsvRup6rLws1lKlpVa4CNgL1TqoybVoiAfe8ioLhhGKNZQswqs5KEBZbxVMclsjzwXwEhvonHDKlRwM/NTIdYJ+XgkCCCJgba0ZHYyexz6++beXHiqItA1VokoisivG3TWFOyx6CZjqkoqJRQeFpBDkGR2hoT/QhFX0E+9Xfw8xIWw8UlGbEnuR67vnH0jDrupXHahCyLLCsChNxD1YXSyDUD6ykVcwAbLfe9ZZWqnkR3M8Bsg6FhFDhtgUUgJTjryRmFN42Xu00YCahbvZ6Usz0FVyriG+GopQiQ9/muLiBDba1pr4Jj0fd7466JMse0L4UYGPNnDbI/6d03QGE1+akw9A9ysS8vxvXu9SGfQAJ31F
+ rohsYn+V
+ T2RcxIA7IOo2tLOqLJL9z0GLSLZ9ei1yAnBZNVVYzLk9A8/FL7FQMi2f6zfPGoxzkYXHpFvfE8/IUpCRxxYZAfulYPtrhfO9J4tIWuhVL0Xf0N4I4D4W+SlnxV7kVCfRfd/7xL3JlWLZJMeiu3p1sbe8i59NhZF066zZMyQQSaeW2Y6hPwXVwfAQUkFpa2qWriYwfQ5+jcPAFiRNhlXTZtpWXZgnKupi5v9gfSoXPpbrzn7Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,16 +101,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 01:06:54PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/17/26 11:21, Lorenzo Stoakes (ARM) wrote:
-> > This commit message is just inscrutable. It's like reading Finnegan's Wake :)
-> > LLMs are obscenely terrible at this stuff unfortunately.
+On Mon, Nov 16 2026, Pasha Tatashin wrote:
+
+>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>> 
+>> Hi,
+>> 
+>> This series introduces the KHO map. It is a sparse map from integer keys
+>> to u64 values. It is implemented as a radix tree of fixed depth.
+>> Currently the tree depth is 6, so it can support keys up to 54 bits
+>> wide.
+>> 
+>> The main user of the map is memfd. Currently memfd uses a vmalloc buffer
+>> that has a pair of {index,pfn} to track the folios in the file. That
+>> uses 16 bytes per page. The KHO map uses only 8 bytes per page with some
+>> overhead. So for a 1 GiB memfd, it uses roughly half the memory.
+>> 
+>> In addition, it is a more versatile data structure. For example, it
+>> allows for adding or removing pages from a memfd after preserve more
+>> efficiently than the vmalloc array.
+>> 
+>> Post-LPC 2026, the plan is for KHO to maintain backwards compatibility
+>> as much as possible. So this data structure allows the serialization
+>> format to be more flexible to future changes. It can also be used by the
+>> upcoming HugeTLB and guest_memfd preservation.
+>> 
+>> I have talked about this as "KHO xarray" before, but I think using
+>> "xarray" is just going to confuse everyone since it isn't really a
+>> xarray, and the API works a fair bit differently. So I renamed it to
+>> "KHO map".
+>> 
+>> This series isn't complete yet, but it is in fairly good shape so I want
+>> to share it to get some early feedback.
+>> 
+>> Things that are missing and planned in the future:
+>> 
+>> - Multi-index entry support: currently, while the map is very efficient
+>>   with 4k folios, it is horribly inefficient with 2M folios. Each folio
+>>   in the memfd takes up a full page to track. Multi-index entry support
+>>   can fix this by tracking entries that cover a whole page in the
+>>   previous level, similar to page tables.
 >
-> I truly wonder how some can decide to submit something like that with their name
-> under it :)
+> Let's fix it, see below.
+>
+>> 
+>> - LUO versioning support: LUO versioning headers are still in
+>>   discussion. This data structure should use them for future
+>>   extensibility. I am mainly waiting for things to settle down there.
+>
+> I would not worry about this. If versioning lands first, this series can 
+> be updated then; if this series lands first, Tarun will update his 
+> series.
 
-Have you seen mseal? ;)
+Sure, fair enough.
 
---
-Cheers, Lorenzo
+>
+>> 
+>> - Dynamic depth support: Currently the depth is static, so it can only
+>>   support keys up to 54 bits wide. Adding support for multiple depth
+>
+> Let's allow keys to cover the full 64-bit space from day 1, and make 
+> values 63-bit (like XArray), using bit 0 to distinguish a child node 
+> pointer from a leaf value.
+>
+> By making it generic from the beginning, we won't need to worry about 
+> ABI churn for these features later.
+
+Right, that makes sense. I didn't want to over-complicate things, but
+you have a point. Taking the ABI complexity up-front is better than the
+churn later down the line.
+
+> Instead of caller-chosen depth, the tree should grow (and shrink?)
+> dynamically bottom-up based on the widest key.
+>
+> Plus, with bit 0 tagging leaf values, 2M entries can be stored directly 
+> at L1 and 1G at L2 (on 4K pages). Even for huge memfds, the pgoff space 
+> is much smaller than 64 bits, so in practice the tree stays tiny in 
+> depth.
+
+I think it is a good idea to allow dynamic depth in the ABI, but I am
+not sure if we should deal with the automatic resizing just yet. How
+about we start with making callers specify the depth (max index/pgoff)
+up-front for now? The ABI stays the same, so we can add support for
+dynamic resizing later if needed.
+
+The reason for this is to keep things simpler to begin with. That said,
+I don't have a _strong_ opinion about this, so if you insist, I can add
+dynamic resizing from the get go.
+
+-- 
+Regards,
+Pratyush Yadav
 
