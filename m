@@ -1,101 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CBB606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E5260A381E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vs/Ttq+W
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y+OgHF7N
 Received: by kanga.kvack.org (Postfix)
-	id EC8D76B05BD; Tue, 17 Nov 2026 07:50:06 -0500 (EST)
+	id 88A666B05B0; Tue, 17 Nov 2026 07:51:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E53506B05BE; Tue, 17 Nov 2026 07:50:06 -0500 (EST)
+	id 83B9D6B05B2; Tue, 17 Nov 2026 07:51:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA53C6B05BF; Tue, 17 Nov 2026 07:50:06 -0500 (EST)
+	id 72A8D6B05B3; Tue, 17 Nov 2026 07:51:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9269F6B05BD
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:50:06 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 08A341403B8
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:50:06 +0000 (UTC)
-X-FDA: 85444593612.19.958728D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5AEDB40005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:50:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vs/Ttq+W";
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BADE6B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:51:39 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0119A040B
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:51:38 +0000 (UTC)
+X-FDA: 85444597476.14.652C6A5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3F2E7A000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:51:37 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y+OgHF7N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794919804;
+	s=arc-20220608; t=1794919897;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+gMfPP+/wfx4oq0DEqnz4800oywzmrTuNd7xV7OGuCc=;
-	b=YDccX2JHiHRl8oWdgpUpOMkMY6IFhszYamqIpwqKeJgQJ1wUfwf7DiAI9IVJZRMk/LZ1Pl
-	F0RmGwj87I3ZDA2/Y4QUUb3JoZ4pu1EiUXhetjVoiG/zXj98XfCZdKFB887G7DzZWnmHRQ
-	AcJYPqSOawkg3LfB8m/VW2zEAJW64bM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794919804;
-	b=ZavqISILG64x16JzZyOgFBhUqd9u+wDz8jXAIihnpB/gr+L3H5MMC+xX3FI5lRGSPhoC7o
-	Cs8BdSrlaKPIVW0YRrmPoFR5/bkaIuNnTnOEptL32g++FuMm7tvIQh8SoJly+6b3nnSNwI
-	QNc8gWHhZjywz8q6trqQXG3ylJC4VX4=
+	bh=J0TOUvk32E1rdNMExsYqIoOZFzxD3LaVQ2WnMx0hvlo=;
+	b=BxKlQA7eL0fid0cfpGheTnGGTN4/CaagyuCxJFDLO7yDx39S16nugOnIBHSGHgXjEB8VSZ
+	n1lV6gFcQgeC3mXAzp9a6j5PAxGHiicsq1oIPRSeZY1vJ2Ldh5nMmkPyTSISNPor2smpnU
+	OLx4oUf8JTbQ7Nx/FZprPAYhFIW5Dmw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vs/Ttq+W";
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y+OgHF7N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794919897;
+	b=xGkxTE2VvLYYGMeSxCODC+JQGmI4tiqGwexREmtLWO0W44XjPBOMIpfRKEwd6nT/G8aV9E
+	LCdX92YAxNDRSxHsKVmBl++Zt/8kjfjbLrqTRKkB1N6L93dZ74WkHtAuQZvEI61sOLu/Xc
+	a+aWiNCyq41ddkz1D/faxx0KoPaP/N0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 760D945769;
-	Tue, 17 Nov 2026 12:50:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1231F000C5;
-	Tue, 17 Nov 2026 12:50:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AA8D163492;
+	Tue, 17 Nov 2026 12:51:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252EB1F000C9;
+	Tue, 17 Nov 2026 12:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794919803;
-	bh=+gMfPP+/wfx4oq0DEqnz4800oywzmrTuNd7xV7OGuCc=;
+	s=k20260515; t=1794919896;
+	bh=J0TOUvk32E1rdNMExsYqIoOZFzxD3LaVQ2WnMx0hvlo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Vs/Ttq+W+qwBjZ4wm/flY08kuFJn3j3qpaR+m7kBbH55LOkEJmVE2IllJiqqzlsdM
-	 Ih4WYUO6YK9hLwhTOuEAXLBO3URLEQMaW5BB7EwBZ2qFG7zUuDbMms10gJq0syKgvM
-	 bJS78w+sECk3gF9dWiFEPZll9+yC13Quz/0nYP6zHw64yicPLNPhcKezJ/mz2r3gtl
-	 2UnM7a2RkKPRxiZIo/oWS0rKPdiWX685TDuuQ1GxkXNLKpzLwQLBFd3Zs9OYRTQnaN
-	 ViFBY0tyWP6F4xzjZnSmmwfiYx0RxiM1uaqopUmIstAsRadQNWVqU8txuN3OKrxeAn
-	 MCtTmIINrV8Ew==
-Message-ID: <sashiko-outbox-218805@kernel.org>
+	b=Y+OgHF7N/NMRmrNc+apXZMxeQebI9nQAVImfiLvKWeNrfAK6s7oYdTCKMr++9hJN6
+	 07JIvOT7ZZDZYJO3i7DjFi7i7i5n1VGEEy6vW7EXx8VOCaHhUFD5xhJgJyGzaOPGHs
+	 Fm2e+QNUn7MBHDWTTSoQpbS82YYhXWlip1zedHesejk+2Mci/5RMHPpqeuUwtIJ8T3
+	 LqHDd54pUApHRpqrO2hvjCpaRIugg0DLksj0A31M2Kli/nMbtj5XfTN9BGP7UBr0lL
+	 nHRuwICvUnUXv2hhXQLy4Ke8LL6R+gxHiQ819hoJtZhBZtLSRQbDvLnCR7uypo6hCB
+	 6EcefM8ZssCTg==
+Message-ID: <sashiko-outbox-218808@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 10/10] mm: print pte in
- __print_bad_page_map_pgtable()
+Subject: Re: [PATCH v3 2/3] mm: page_alloc: make the high-order watermark
+ check honour ALLOC_NOFRAGMENT
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Arnd Bergmann" <arnd@kernel.org>, linux-mm@kvack.org
-Cc: "Arnd Bergmann" <arnd@arndb.de>, "Andreas Larsson" <andreas@gaisler.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, =?utf-8?b?Q2hyaXN0b3BoZSBMZXJveSAo?=
- =?utf-8?b?Q1MgR1JPVVAp?= <chleroy@kernel.org>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQgKEFybSk=?= <david@kernel.org>, "H. Peter
- Anvin" <hpa@zytor.com>, "Ingo Molnar" <mingo@redhat.com>, "Jason Gunthorpe" <jgg@nvidia.com>, "Linus
- Walleij" <linusw@kernel.org>, =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>, "Lucas
- Stach" <l.stach@pengutronix.de>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Malin
- Jonsson" <malin.jonsson@est.tech>, "Matthew Wilcox" <willy@infradead.org>, "Michael
- Ellerman" <mpe@ellerman.id.au>, "Michal Simek" <monstr@monstr.eu>, "Mike
- Rapoport" <rppt@kernel.org>, "Nicholas Piggin" <npiggin@gmail.com>, "Nishanth
- Menon" <nm@ti.com>, "Richard Weinberger" <richard@nod.at>, "Russell King" <linux@armlinux.org.uk>, "Thomas
- Gleixner" <tglx@linutronix.de>, x86@kernel.org
-In-Reply-To: <20261116124832.662455-11-arnd@kernel.org>
-References: <20261116124832.662455-1-arnd@kernel.org>
- <20261116124832.662455-11-arnd@kernel.org>
+To: =?utf-8?b?S2lyeWwgU2h1dHNlbWF1IChNZXRhKQ==?= <kas@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "David Hildenbrand" <david@kernel.org>, "Harry
+ Yoo" <harry@kernel.org>
+Cc: "Suren Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Brendan
+ Jackman" <brendan.jackman@linux.dev>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Kairui
+ Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>, "Axel
+ Rasmussen" <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei
+ Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Dev
+ Jain" <dev.jain@arm.com>, "Usama Arif" <usama.arif@linux.dev>, linux-mm@kvack.org, kernel-team@meta.com
+In-Reply-To: <20261116125103.2894162-3-kas@kernel.org>
+References: <20261116125103.2894162-1-kas@kernel.org>
+ <20261116125103.2894162-3-kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 12:50:01 +0000
-X-Stat-Signature: cb44stk64wrtx7z69b5hxi5955fq3q4r
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 5AEDB40005
+Date: Tue, 17 Nov 2026 12:51:34 +0000
+X-Rspamd-Queue-Id: 3F2E7A000A
+X-Stat-Signature: 6stekqtu3okaw91d5ga5whjafg6piczd
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794919804-854904
-X-HE-Meta: U2FsdGVkX1+Q4/Mt4E1sXqPCA63fn+TsAhmOHfRw3ug6cZmKl9xIYiG5h65p5sNN0El31rO43iya46cylHzmjRt+N+QNmktpoygltP1YbTLjzlPW6WuPxLbNhx/b3vSiqqlfmJ/DKTfhCrtk2uU6V+FxCuMYH+x/PdawGupmw9wLF62YfAMzohkNXZeRe2Ttm7K9Dglhi7iO0GZT6/iUkEmp27EK6BhDMKjwp1l9Wit2ETIvFqdu15tN9ddZKT7TFG1zIl3uMuYcsPhHlFHUsI/ZcmMSZMv0C8LR5tmzzaLYFCNrASBBAqhtTYG62m1VfeeG2bZBSOm1D5dcL/ZAaWf+rjLwpTUFqdsMCrEB4NmKT5ZNUGT6IjL9VMrSuXrCTBsHrTfaIkLWGCFWSa/LR0sIVvN5nXeB0Gs4HcabKaB/tkzzjb+7o5ejgBqBuXK53xeM+u0IqWjIu4LXmnd/74X6baXrQw/2yKFPQX+goTkdmRkknBP/914AJlM7IHdMDwLAO/LXnwADrGDBdKxe1fCLBNEPQ5fln83zQ59E6qkdmWGpttp0bgcRS1qEIUqg934UX5YqYxIFXG8eBMj/oft0nVJ/05f8DqBhrArpGe6yhSX/gIZ07L91kAD59XrMertO1c3zab02r+dM6P7djZHRZfZMEuMQ7ERqhRmmaBR8C6VWFfdN5LU/hXjZghVbPHdSmPIFMeohH7e5cBBU5siwnxZxZPfem82hvjvAxd3cwi1bLpyJzP/bKLRAi1yJJ7TATaR9qTrI2/OKLYJ2ZZAGrGGJW58vwuuIUiSzNpkNWnwnQgN+A2CbRBXbPB+lmISkUcpSfw56+T6W/yOD3NYbOZr999gXlQGUpEYQCcVzpcVO8YruXXy/ZUmvVdbNz/I0RTyxC+8qhxTacG0YJrBUhY/6BrX8tZVwu5VD8urIbXKdQF68d6P3CFgVwpEpiEB+CjGgbqT6mJTXykg
- fJqp/ueK
- QP8m5Yq8S6NLEMZCYKUWwGmWFncwzcS3kcK33R96H6XdAvFO1Ndd4Ri5+L9IXA/GCyuMuUK8K4pvFFRYfJRBVgLfxaKCPxk81ZTggbxtOjRkCBEBAoN6/7rWuMMUgxvEq0O0PK9CittaI0+lg27GFQG63lo3CbJ46UypEMC9Qc1xK4Ii8IRDXyeAgEs981Bkt0m7JASL3IfWQ5T2mwnwwRKpZYla5q7rQe3YQ4OLUUht6J6bRJz7NXhfvJse5hSAVp3AbX8yI0ntk6W4exMLWg4tcT/V57PkpI/9RjEOKQnGdkql6PA5IgL+HRX5GdtcijcCdC15909TuuTmDFA5SXEwaFaKV8krJd9LbjwrpmBuLFxzmZ1oHDkVqs7By4QQVdx1VNz4JgS4+NC2+tz0NbCf9EIbLTnYACHFyxedf4ye+Gh87zoDePqCv11sahZVlOWdOOmtgCPjJT0ZCGDyy/tyTVltzMCoAojQO+C1D6mNLPofrSlyC0xaqypsnkqzcE1CWTrtma2AlG7tnrpfRH92lvxYIRQfQHjc4JbNIFRbUKxxG5EEGoK3Rw6RCjWeBrqJ2/PAGsNSaepsCtvc9oWZIUseF9nrAqXzd2uXyuv5/Q/Mx0Pi8UJ1Xy2LSpjO0crZ1r8WGzFXEXpDW+jXfM1wBLdlW88PZ6NYUtO6r9plp8dM=
+X-Rspam-User: 
+X-HE-Tag: 1794919897-916330
+X-HE-Meta: U2FsdGVkX195McKde9ekbPzV0TnmDBEg/pYBnd51KCcRmAnNGaBpZ8JpgqwkU7vRgCWmwai3oFLtlnKeyz47LmUI+zw6Gd9OQ6tiaFcZcU1MLp/DUq0oS+fG2iWdJ/wPi/4mwWbt5BzxTd7DzOEEhmlvaHezqKhUMhJN7vFp8E45G/pHrpD8ta/y3ylcNgwSfxQjB/5a7qpKcN/yQMpuHsANuYUnlgm2p6FJ548EcO1iiAKc8Eh6KeTAV3+d3u1vkiKHh/A6VzHQsQ6Xov/A9rd+NKo5FqyDUiuCTNzunavQIKPYYAIHbBU3cLnoNDLmVrnXVoAzSdG28xajdY6+yjG7DY6tKsFTTHBusUyKdPcZSRlZsCglrIzl+7t5t0L+SwiI1RSbiNg0sXM4wR/MF6982DbQ5mJ37Np5X08nYu0eKEoL8LS9YFTS+iND8RadlxSW9ZyxAZniV7ICkZQKJXFYPePjTs9mNPB0AKYSVxEXQlKJnb/2Bjvtkp3qMN7VDgyxtDrfwmLkE+AMjssOnf60qbXl16jZas8mGwyBdC09qWNjw4ujp7qd0gyYH8Mp2pjRoEoNRonJ04TanT8um19Aalsb5eneM6W6qTm1qubcr+gtdDwLMAaOViBls2xyFhCcmWm1Kle5qLuKYeyEkZys9koVmU0mgTK5Jxk9FK7A5j9oUYQw5+1VphJfIt6uGy1+PHiJSAVGxB9aeZ3YCXwKOiMOGm44TaTdfLwbb4xmVb5HlB7rRWdyQeBIKdG1MitMGb+apOEt2Yr043XF+Roh9zhEf0+7Wgsb84GENRJ4X1oI/zzdU9r9z3VDMCNLCaoyuaLDGZN+fnde7nbHkNqEIVoapCwp/TY11M1jukYoR3ArnSCQIB0bxiPqoQTX65Tqfo3UjLTvB3R0lku/4Fb8fNPgPYf+jDIpN/gwdvmUkTGch0NxvIWKFllva3tyEL8aaZldS73uS9/ZmFT
+ b9Zh4pjH
+ NBUkNjXCA7igSdoQ7OzctIX3PsRZ5Z4J+RxnXeXT0dHSp7DMG6PmjSU9y+8VRdd30nx+kYBZXnS+G4DZHoS1xyyXRAwKBN1UCyXCAI3wOKlNEPbz3LIXPhfr+b0Cca28RmJiHhnxj/xsEdBpzL32hy/hmofuS+i9Kxohve7e+XC8+MXLzkUdwzPUgzbFxbKpYjoXXBw8oWGmW+GgCBI9aaoRF2K0Na1bOAA6bVKPTHE8d1BXOqSXtsKE0AdCuDg2NXLWPXhqx4Le/FTIMF357in9RZufxXLDH3splOfKcNgmqY9G1Gq8TZzKCeGHMhPssgaMHQ7O5nxU2O9CXGLTfd8+9jEame85DmVpnd/5zPVmYS28/3jt3ZtMvtpdRZe6jWXOpsFvKq0+SPeBpB189jt8bSuHyTeFcUH6zPqGhdIe4FoyIG3eCxHsaQIcrgDTsrt/H8ouTMH7P9+QM0ObfEsddJZ4Caj/V/b+Aj6G0ZjU1Mb4055k3ehuAS851dweQH3jiJnSzv4WzADEIlqCUfnQEz+XQAy+c10Ic0B3cJ4rTX7iU+IiITjLzORlH2MSdBTI/KHlZgM9n/X1NKxJX2EF2IItx4dVAF+P2KoizScJKgM2pDZz8FSrNOsnb9qmIOh3bmYBinXh6p7x7aXZJyIosyxLuMfpGkeJ/ZI5xAlUaU0w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,109 +106,89 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm: TOCTOU race and missing RCU protection in
-  __print_bad_page_map_pgtable()
+- [Medium] mm: page_alloc: should_reclaim_retry() counts unusable
+  migratetype pages
 --
 
-commit ba4bdee29bb52c7a53d86e0e93403b7b06ce3b2f
-Author: Arnd Bergmann <arnd@arndb.de>
+commit 214b943d575d3d5441bd4208e2c27a65d780e75c
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm: print pte in __print_bad_page_map_pgtable()
+mm: page_alloc: make the high-order watermark check honour ALLOC_NOFRAGMENT
 
-This commit extends __print_bad_page_map_pgtable() to also read and print
-the PTE entry alongside the upper page table levels.
+This commit makes __zone_watermark_ok_mt() and __compact_finished() ignore
+free lists of other migratetypes below pageblock_order when
+ALLOC_NOFRAGMENT is set.
 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ec3d9d99ccee2..6404bb447d9c7 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -528,9 +528,11 @@ static void __print_bad_page_map_pgtable(struct mm_s=
-truct *mm, unsigned long add
->  	char p4d_str[PTVAL_STR_MAX];
->  	char pud_str[PTVAL_STR_MAX];
->  	char pmd_str[PTVAL_STR_MAX];
-> +	char pte_str[PTVAL_STR_MAX];
->  	p4d_t p4d, *p4dp;
->  	pud_t pud, *pudp;
->  	pmd_t pmd, *pmdp;
-> +	pte_t pte, *ptep;
->  	pgd_t *pgdp;
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 0ebfbbb5d7c57..6e75c03b303b1 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+[ ... ]
+> @@ -4693,10 +4705,13 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned ord=
+er,
 > =20
->  	/*
-> @@ -567,13 +569,18 @@ static void __print_bad_page_map_pgtable(struct mm_=
-struct *mm, unsigned long add
->  	pmd =3D pmdp_get(pmdp);
->  	ptval_to_str(pmd_str, pmd_val(pmd));
-> =20
-> -	/*
-> -	 * Dumping the PTE would be nice, but it's tricky with CONFIG_HIGHPTE,
-> -	 * because the table should already be mapped by the caller and
-> -	 * doing another map would be bad. print_bad_page_map() should
-> -	 * already take care of printing the PTE.
-> -	 */
-> -	pr_alert("pgd:%s p4d:%s pud:%s pmd:%s\n", pgd_str, p4d_str, pud_str, pm=
-d_str);
-> +	if (!pmd_present(pmd) || pmd_leaf(pmd)) {
-> +		pr_alert("pgd:%s p4d:%s pud:%s pmd: %s\n",
-> +			 pgd_str, p4d_str, pud_str, pmd_str);
-> +		return;
-> +	}
-> +
-> +	ptep =3D pte_offset_kernel(pmdp, addr);
-> +	pte =3D ptep_get(ptep);
-> +	ptval_to_str(pte_str, pte_val(pte));
-> +
-> +	pr_alert("pgd:%s p4d:%s pud:%s pmd:%s pte:%s\n",
-> +		 pgd_str, p4d_str, pud_str, pmd_str, pte_str);
->  }
+>  		/*
+>  		 * Would the allocation succeed if we reclaimed all
+> -		 * reclaimable pages?
+> +		 * reclaimable pages?  Count free pages of all migratetypes.
+> +		 * Compaction can then free a whole pageblock for the
+> +		 * allocation to claim.
+>  		 */
+>  		wmark =3D __zone_watermark_ok(zone, order, min_wmark,
+> -				ac->highest_zoneidx, alloc_flags, available);
+> +				ac->highest_zoneidx,
+> +				alloc_flags & ~ALLOC_NOFRAGMENT, available);
+>  		trace_reclaim_retry_zone(z, order, reclaimable,
+>  				available, min_wmark, *no_progress_loops, wmark);
+>  		if (wmark) {
 
 [Severity: Medium]
-Can pte_offset_kernel(pmdp, addr) and ptep_get(ptep) race with concurrent
-PTE table reclaim or collapse and read a freed or invalid PTE table?
+Does stripping ALLOC_NOFRAGMENT here cause should_reclaim_retry() to keep
+returning true when a free page with order <=3D o < pageblock_order only
+exists on another migratetype's free list?
 
-pte_offset_kernel(pmdp, addr) dereferences *pmdp again after the local pmd
-copy was validated, and accesses the PTE page table without rcu_read_lock().
-Although print_bad_page_map() assumes callers keep the leaf page table
-mapped, callers such as do_swap_page() unmap the PTE (dropping both the PTL
-and rcu_read_lock() in pte_unmap_same()) before calling print_bad_pte():
+In __zone_watermark_ok_mt(), the order-0 watermark check against available
+already counts free base pages of all migratetypes regardless of
+ALLOC_NOFRAGMENT.  Clearing ALLOC_NOFRAGMENT instead changes the
+z->free_area[o] loop for order > 0 so that it accepts existing high-order
+free pages of other migratetypes that the ALLOC_NOFRAGMENT allocation and
+compaction now reject.
 
-mm/memory.c:do_swap_page() {
+In __alloc_pages_slowpath(), should_reclaim_retry() runs before
+should_compact_retry() and the ALLOC_NOFRAGMENT fallback:
+
+mm/page_alloc.c:__alloc_pages_slowpath() {
     ...
-	if (!pte_unmap_same(vmf))
-		goto out;
+	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+				 did_some_progress > 0, &no_progress_loops))
+		goto retry;
+
+	if (did_some_progress > 0 && can_compact &&
+	    should_compact_retry(gfp_mask, ac, order, alloc_flags,
+				 compact_result, &compact_priority,
+				 &compaction_retries))
+		goto retry;
+
+	/* Reclaim/compaction failed to prevent the fallback */
+	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT)) {
+		alloc_flags &=3D ~ALLOC_NOFRAGMENT;
     ...
-		} else {
-			print_bad_pte(vma, vmf->address, vmf->orig_pte, NULL);
 }
 
-Other paths such as get_gate_page() and hmm_vma_handle_pte() also call
-vm_normal_page() under pte_offset_map() without holding the leaf PTL:
+When another migratetype holds a free page of order 1..pageblock_order-1,
+this regression makes __alloc_pages_slowpath() jump back to retry before
+should_compact_retry() can escalate compact_priority, and traps movable
+allocations of order <=3D PAGE_ALLOC_COSTLY_ORDER in reclaim because
+should_reclaim_retry() resets *no_progress_loops to 0 on every reclaim pass
+that frees any page.
 
-CPU0                                  CPU1
-do_swap_page()
-  pte_unmap_same(vmf)
-  print_bad_pte()
-    ...
-    pmd =3D pmdp_get(pmdp)
-    if (!pmd_present(pmd) || ...)
-                                      retract_page_tables() / zap_pte_range=
-()
-                                        pmdp_collapse_flush() / pmd_clear()
-                                        pte_free_defer()
-                                        /* RCU grace period elapses */
-    ptep =3D pte_offset_kernel(pmdp, addr)
-    pte =3D ptep_get(ptep)  <-- bogus address or use-after-free
-
-If CPU1 clears *pmdp or replaces it with a huge leaf PMD and frees the PTE
-page table via RCU between pmdp_get(pmdp) and ptep_get(ptep), CPU0 will
-re-read the modified *pmdp and dereference a bogus kernel address or freed
-PTE table.  Using pte_offset_map() and pte_unmap() here avoids re-reading
-*pmdp and keeps the PTE page table RCU-protected while reading the entry.
-
-Also, this isn't a bug, but the early-return pr_alert() above adds an extra
-space in "pmd: %s" compared to "pmd:%s" in the other messages.
+Calling __zone_watermark_ok_mt(zone, order, min_wmark, ac->highest_zoneidx,
+alloc_flags, available, ac->migratetype) here would still count all
+migratetypes in the order-0 available check while only accepting usable
+high-order free pages, letting the slowpath fall through to
+should_compact_retry() when compaction is needed to form a full pageblock.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116124832.6624=
-55-1-arnd@kernel.org?part=3D10
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116125103.2894=
+162-1-kas@kernel.org?part=3D2
 
