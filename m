@@ -1,113 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EDC606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A1A606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dHDag0c3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c3hLoxO5
 Received: by kanga.kvack.org (Postfix)
-	id BBE9E6B05B0; Tue, 17 Nov 2026 08:12:11 -0500 (EST)
+	id DCA666B05B1; Tue, 17 Nov 2026 08:21:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B48946B05B8; Tue, 17 Nov 2026 08:12:11 -0500 (EST)
+	id D7B5E6B05B2; Tue, 17 Nov 2026 08:21:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A10346B05E6; Tue, 17 Nov 2026 08:12:11 -0500 (EST)
+	id C91F46B05B4; Tue, 17 Nov 2026 08:21:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 726066B05B0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:12:11 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8D14C0425
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:12:10 +0000 (UTC)
-X-FDA: 85444649220.06.E37BB2F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A96EA6B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:21:37 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CC3F40413
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:21:37 +0000 (UTC)
+X-FDA: 85444673034.21.132C92D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 303BA2000D
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:12:09 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dHDag0c3;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8ED0480002
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:21:35 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3hLoxO5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794921129;
+	s=arc-20220608; t=1794921695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IC3tAH0+JcdzdHPufDEDOrI0hUeRA+GvEx3SyxbcP1A=;
-	b=W8mex/zSzSgOUjAbgOuBpXodpGvalRHlHzJuOFjJ/2YQJJMXHPwQjYlBbVdURqKoYwMKX+
-	yPEqlLQrQk6rj+2bd5DFyWonyWgv4zTxvN7qPa1G1SfvR5p4caChXkESEHqAdMYN0G/ROj
-	tH3mhQnKYwsryAMZx40WUJRm+pWCIwg=
+	bh=Zi8OAGVQukL/w4MsMi+hTnD2T6SHZKyI0yT1q7MBUxo=;
+	b=Uk5ASp4j/LDxLsEVW5vB214bh16HG7/n3Ke4CNkrv4qnhYgjA1sdooHTJv+cmBANAZb8SP
+	YI9hzJaJ0uYBnW0E4/PThhgmQpfMPcFd0s6DgTP4+ay5KRcuDNrBLn011DuyyYHF1ziWlL
+	aequjM18HY9E7KX9C2Q+0fpB5C1THJ0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dHDag0c3;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3hLoxO5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794921129;
-	b=jJDT6Xjy73X/5Z221lx6Tk1kpYlLoHDN9Wa5wsB2MUEFmlomll93u5Z4e0JBTuuLGANbBO
-	Sfz2MzFLf9xdSPQsb+NirDkgvqRO7/Z/LRip0bVnZLIApBZ54pLUjNtCB6IAjR5/8A3kct
-	Cq3JQPkH3tSjOoY8omlxhFW28evPPOY=
+	t=1794921695;
+	b=WUwt4YuXLtpgvfhH3KvXLNYWMED35jsTWchAQAjejhyPhybAJNRVnOxr1dY3gNyZT+hei5
+	QZWuLJRZSb+9yjVsZ/fom0IIg+IJ0UQTEnpV4mGdrXXv/omJuzbjuDgCHSLqYOvMO/oz3d
+	qeAu9Jkwf82okPIcLuxZpeaUv2SUCF8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 61F6A41319;
-	Tue, 17 Nov 2026 13:12:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE5E1F000C5;
-	Tue, 17 Nov 2026 13:12:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D12843EEA;
+	Tue, 17 Nov 2026 13:21:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC3D1F000C4;
+	Tue, 17 Nov 2026 13:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794921128;
-	bh=IC3tAH0+JcdzdHPufDEDOrI0hUeRA+GvEx3SyxbcP1A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dHDag0c3LyAwqr1pAj3N63u2qz3WaREWQMTkTk39jVbU/jXCjo98bWqFVCDpqH7gM
-	 oAO1G+Fz0bJfY3eTn5WD6cu5C4b/wFHtvWnzsxBt2tyIH38nq9Wee3HFuT6WBlnudL
-	 J+QIHYApXJLva/8wxX4ifc0SrbGgxMEpRr51NmfRN4egzS3OYhEtQuktAcMMnAnT92
-	 1Xvww3feM0iMHrASdt/ChuZNTI3K0T8lzZDbOPVPfavh0Rujm2nKuYNHbmnC9LCDYI
-	 c2g0kiYVtKLGix5ACIWRfNclWVt1LQGZaS9rI3u2rDbVvVfp45lxd41dAlMMJep4Sh
-	 kfRbFeMEm3RrA==
+	s=k20260515; t=1794921694;
+	bh=Zi8OAGVQukL/w4MsMi+hTnD2T6SHZKyI0yT1q7MBUxo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=c3hLoxO5ZMuNEHZiJATEkpv8p+udzJFUOp2pu1gs8MW23Tyjvpd3D5du5cH0GIhSj
+	 Bebp/aNm3kBkENkyreMiaaRbw5sq5B+odL+4I/OoYt/D+eq54cF1xVwOpr0ITYdl9T
+	 vFQ8MCk7K2Rv4I4qO5gXK/vWG9ZjwMRyJKbFL/jvCR6LjxpncbNktpakZhu1sTJwB9
+	 B3R1lCX99cdmrzSMZYqCxRqLSKToEIIMwr9qlspSLiulHVbGM36Uj6elUKrnV/i4i0
+	 2tey4lBw3qiOmYs4BqUHA9ian1oPvcab/cuHfj8C6pFzjqrRVluLMZ02KuMLv4qJH8
+	 tkdcJye7wDIGw==
+Date: Tue, 17 Nov 2026 15:21:25 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usama.arif@linux.dev>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	linux-mm@kvack.org,
-	Breno Leitao <leitao@debian.org>,
-	Bradley Morgan <bradley.morgan@linux.dev>,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	ruirui.yang@linux.dev,
-	Jonathan Corbet <corbet@lwn.net>,
-	skhan@linuxfoundation.org,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Jiri Bohac <jbohac@suse.cz>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Subject: Re: [PATCH] mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory
-Date: Tue, 17 Nov 2026 15:11:57 +0200
-Message-ID: <179492089700.3802272.5945322500134568664.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <ee0918f4987c4914abea1d486043011c.1@linux-foundation.org>
-References: <ee0918f4987c4914abea1d486043011c.1@linux-foundation.org>
+	Oscar Salvador <osalvador@suse.de>, Li Zhe <lizhe.67@bytedance.com>,
+	Andrew Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	James Houghton <jthoughton@google.com>,
+	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: Re: [PATCH v2 04/14] mm/mm_init: factor out common struct page
+ initialization
+Message-ID: <avxU1Ypb6Vy4Sp4O@kernel.org>
+References: <20261113033442.62970-1-songmuchun@bytedance.com>
+ <20261113033442.62970-5-songmuchun@bytedance.com>
+ <179482576829.2379196.2091312590305150578.b4-review@b4>
+ <44fc03e4-a545-465b-a7f4-174be2038884@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 303BA2000D
-X-Stat-Signature: 9r1nd5difkawznq37nfhck7zkxg967yo
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+In-Reply-To: <44fc03e4-a545-465b-a7f4-174be2038884@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1794921129-98002
-X-HE-Meta: U2FsdGVkX1/OAdeJULhqnrW2rTn4+aYvbdnxev2QQevNLDTeWEbEiBk3GDNcoYmnOp+7m4OZiJnZvStSyAWUh4dc2FaSHm4JzvG+LmPH6rbqmbNn26m2AyXorKQG82wwAJuVGmwIqNu78bsTEAwH6kDoZwhoujMaH7bXPeH1ZvMzRIobcz3j6nbBGdCLQgstlavydgtC34HrBYwQSVNMdMxXXdV6MX/9sUAxbq+YPFrfG6mWPHP0sJXB3Aq8NAdoGUnIia3wVMBblUz62mWIzqtrjcBb8C6eMXz2Q2kpuHfpT5UkENaERXrMqZ18iiPMfqUrrCKamZyLWlKjEmjoXA4ZLXMHco0ugId8L2690DSIu5ggzJZ++pnqQkvxlWFT3NauPadk13wlDR/LkOXJ8z5igRw7KQEX67X5hgnFdJaYXgEQ4dDtPhulom2uuYsZHrTxggloZ7GGWldphK8w3+3TQX493GwjnPr/AoBNKAFzMcEMffDwZ/Wb9Z4YQ9TlPaY2mNwhowAVatHTClyf/I77ml46glMAj1v29kRv9YK3RlRnk/LG5HcsImGW3hvylLG9WfVFJC2sORw1sqMnVzQi39j76M8wSfp/WhQ5iifWmWXC+ay6JkRdsa1cT/lI6kQV/9WCzd1ooOmtZhAdHqP32PyVwpyKqmvHIWMNYoVUHuM5nGG5Tn9HfT4E4BFbLEVm1YbtodyP56vPCP6Wmg/yEYsUxRCg1HB4/U1FtcefKy7OujJBwRmSscMT9vv+AuOVOcb++Rbo9hLk8H/NiAfTgASI2GsHa3ZceBMfWStBjCxab1aJCdxH0CayBVuBl1OR0AVpdxHM3N/XR02EkSF7kTiAYTwN62UMLGFnFt2k7a+7QQkJqNBuM/sUoqAU/rQz0l0xdCOyEF9R2YUqh/Z+6z1EmTc2iv2xDKUF9RGFn/Y/jWw12G4eBRsrH4M6RCJBMlEdG+qLUAJp24x
- NSF1aMfX
- MoN1KHRDAFItMYJqukAmrvhY/760RWmODVUicNLlKLHpgCYgrKQaEpq01O0MOwdFpqIVcROGFZw+Jf+GAG/ldPzb7kHh56P0XOmZ7Gp8rDOwlMYMsY+xorHALdn1RwTJotdRWmJH41UyODW9zIlgn4pr1Hdiu6wDDvIOamn+OjXFbyQU9mFsqAs1HLRypFw4ZEcbXZM+gDeGhzlbY8PbmuVG+jsITf5doPUI7M4Aze3SojGPBMOHj7qOFHQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8ED0480002
+X-Stat-Signature: kiftagzmi349i3tkoyjty9jr8hcnhcys
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794921695-216677
+X-HE-Meta: U2FsdGVkX1+/jrUSYeygKqMIBQAa1KIZCzyD5u0t4Gtiyz3Vgq+MPgg78AQLZfgT25q9OCk7S8gJJYXJIyq3+xfTNQK6C+KY/YrwQ02vtTp8XU24eXnpLEH8zmvWLW1Sze7DR8tsEsg8LY6svjSAFUXKG+g2/DouOOrjF6c9xg3Zbc5YiesbuimJsMnJEdN62gpJomeo/hS0GOAixFSvj2OGxBtMgiMAhBmhQwzt85zU+uX4WzathZZDpF1+k1462fXD2A/kfmAF4/1zRk0IQ+sEVcQposog2v8MLGf9LbaAvK87R0OItf4BqDA0nONUO/av3v11eEggOGyYScghKBAZjz4IefbAjsLOggW4r64gsKzMqqnsntyTvAwPQJP+TGHszy2DvpoyqtJ+sroth4AEZm1W6hL5FrmTzfEhTJNhV3v4tUKPHpe5anY8qfsfUczTcZaAt22CQwn414SAwjeNOdi1ZZwtT4LQcvoN6Vh9hHe0FZ9XN3A/v0IEbZ2j4zMZbOpvYDsvwKWEungCDGf49DOxGahLSWWDueqzPYN8kKXEC/Rk6U6At0cIF3SQ28i9pqcBjbIb1l5z6MGVJVhgQyLOIU6HdRhenuGZRhG9/0fMrmdhdXNZU0HGgNUcFuBA+nf6SloGGTcuIHahAJPmEpYuEy1a6pg2kxlDUnBXZrt+uqhX5BupjzxFPUooeN8W2vBAFrtFk+B2OX5T2sjpVm0M0qvxGlIIpQ5fHmzJuvTUu80/vz1iIQRTqILGuC/SlKqkY9bZP2AVClQ4R3myJVxz3BqnGwAcb2Kuw68VK2StQm9oDBc7v6/x4qVD63eqO0rdSFTcS5K/qglYHayVnhLEpxiExbLqt/vlugjIEM+jDnfcyA81nnougSve294B/Dy0M9Gp7s1uXOYN3redJxBepH29r/aRdhf7KVAWGJeMCPzPusYdB25pxuzFC+savw0E3i1Saw0oa5C
+ sOhO/ZdF
+ uDp9o9lqTZapC3OSLVK/IsFZ02vGiJgn4ep2+yaMPhiynHo5k11s1q01FtWin7mieTfxXP95y3ChM79TWdHMA3GaQqVu57A0D1xmjXr1q32hmxfef92FFGPRZzWG0PVmL5ktKSpD4FbP0vxJQECzMZuAWW51ExJ7/t1NMpT3CqqMz13T/6M9qwQe2zh9FsILZdvXda6bB6q/IgZ+FNtl6qUDzmHbnlwdQevq6ojEbi5cwIlwq7HbDcNoi49Kj9pHwCPSk65oYYwtJJoQc3xtPQQ/63jqkk5xeheinUbOecgAGtW9MKBS3Yp9JU64C3sfV6iAgyZwusWTvQnA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,27 +110,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-On Mon, 16 Nov 2026 11:42:55 -0800, Usama Arif wrote:
-> crashkernel=size,cma reserves a separate CMA pool.  On systems that
-> already reserve several gigabytes with hugetlb_cma= (which is common in
-> the Meta fleet), the crash kernel cannot use that existing memory as part
-> of its working set.  With hugetlb_cma=6G, requesting another 2G with
-> crashkernel=2G,cma brings the total CMA reservation to 8G, none of which
-> can serve unmovable kernel allocations.
+On Tue, Nov 17, 2026 at 11:13:42AM +0800, Muchun Song wrote:
+> On 2026/11/16 18:42, Mike Rapoport wrote:
 > 
-> [...]
+> > >   	page_cpupid_reset_last(page);
+> > >   	page_kasan_tag_reset(page);
+> > > +	atomic_set(&page->_mapcount, -1);
+> > > +#ifdef CONFIG_ZONE_DEVICE
+> > > +	if (zone == ZONE_DEVICE)
+> > > +		__SetPageReserved(page);
+> > > +#endif
+> > Can't we keep this in ZONE_DEVICE part?
+> 
+> We can. But I put it here because there are at least two places where
+> we need to mark a ZONE_DEVICE page as reserved. Handling it in
+> memmap_init_page_common is simpler — it reduces the number of places
+> where we have to set reserved individually. Otherwise, we would need
+> to explicitly set reserved in multiple places.
+> 
+> > 
+> > If we can't, __init_single_page() sets PG_reserved for ZONE_DEVICE pages
+> > and the
+> > 
+> > if (zone == ZONE_DEVICE)
+> > 	__SetPageReserved(page);
+> > 
+> > in the MEMINIT_HOTPLUG part of memmap_init_range() becomes redundant.
+> > 
+> 
+> Good catch. I think I could remove this redundancy next version if you
+> think handing it in memmap_init_page_common is okay.
 
-Applied to kexec-7.5 branch of liveupdate/linux.git tree, thanks!
+Let's keep the #ifdef, still better than duplication.
+ 
+> Thanks,
+> Muchun
 
-[1/1] mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory
-      commit: 97d3ca782028b62a26e5855e2af07308da41d972
-
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
-branch: kexec-7.5
-
---
+-- 
 Sincerely yours,
 Mike.
 
