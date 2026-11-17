@@ -1,172 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E7B606A889
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 07:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C355606A32F
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 07:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=EMCproY3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MNtaJ/TK
 Received: by kanga.kvack.org (Postfix)
-	id BAE356B05B3; Wed, 18 Nov 2026 02:34:12 -0500 (EST)
+	id 614DC6B05B4; Wed, 18 Nov 2026 02:40:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5DA76B05B4; Wed, 18 Nov 2026 02:34:12 -0500 (EST)
+	id 5EB8B6B05B6; Wed, 18 Nov 2026 02:40:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4F2E6B05B5; Wed, 18 Nov 2026 02:34:12 -0500 (EST)
+	id 503EE6B05B8; Wed, 18 Nov 2026 02:40:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 770D26B05B3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:34:12 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7895712027D
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:34:11 +0000 (UTC)
-X-FDA: 85447426302.06.58DFF19
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011021.outbound.protection.outlook.com [52.101.52.21])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9F22C1C0005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:34:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EMCproY3;
-	spf=pass (imf21.hostedemail.com: domain of icheng@nvidia.com designates 52.101.52.21 as permitted sender) smtp.mailfrom=icheng@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794987248;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D7206B05B4
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:40:28 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4B101C3D3E
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:27 +0000 (UTC)
+X-FDA: 85447442094.12.75C07A4
+Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D3D11180002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="MNtaJ/TK";
+	spf=pass (imf06.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.133 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794987625;
+	b=7b/HgOZQCMYbBrV3wTBJcPkvycCMWVW3plQ4wuv9XJU+wJw6b1h0CRuFCKQKSk9rjTo15a
+	WN1ry6GTVvW/GoBh8tSt1JcuhMymNQefc0js0HCkbg/nv79g3uSvwMyoYrx+tuXd+LisZv
+	aYrxf9mwIgEk6OJBff6EO7RCT6HGz1I=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="MNtaJ/TK";
+	spf=pass (imf06.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.133 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794987625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3LcPghvT4MlsKigSrisYfhCeWXY5hpBEtnXJWO3z5a4=;
-	b=CIHJKDKBvg/VDCB9fbKJ5OQoz4hYRH4zuGcNCsOYnWVt48eUTF5YCKyA9eee5CFpYUthcd
-	I/Yp/ux4MrAo/7xiHcojt10E0HgmtX2EwQBvLg/BTn8bCXbfktSIBftBFPwERsLzS0YiVh
-	H3zjo/JuJoPc23TyefXttIXTCA8y+k4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794987248;
-	b=ufToCBFG6MxZml8Iu/auvJrrodxmezf7VVYKoo+1gWZ5OCdVueFNWYvxbYNGVwgjwCPlFH
-	7V3L64+GNp0YXXo04Ua06bBD1IdgIch+ODGT/0vk1bre9NWtkmCR+SH74MPIqWYn6f3Jhd
-	JvbmyGsTS0wBd3duImV8koBzQP0aWbs=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EMCproY3;
-	spf=pass (imf21.hostedemail.com: domain of icheng@nvidia.com designates 52.101.52.21 as permitted sender) smtp.mailfrom=icheng@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CRlZcoaLNUNmdLBg7q3fErwzx/M9Vc26E6PgswXMjeYxzmiYrB0v7rj7foJfk6Cq7k3w7Ms+k74MS2jX+Co4oi3AJnw4cOi0/Kxt1XdNQlQXLhQgEyXU0fX8EQuOgV0ZhZYQGOEOLFU08n5mTEE+50m/gqlusnuBmAMnE9pOOtXs1MY8qbP+i32jpVZvl8L55BziI6sBhUD19AA6BqOeg9So0z32BFC5vb4bihEQlY9qdao7omh24PVjwA+HTGODnpi+99jKxnPbVHiVvyV2iGauI62WdD5VyjHVkSI0HmhrxjwL+QkgR0LgtyAB1YC9SjpiSK9L7RFMZX8Pmj4k6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3LcPghvT4MlsKigSrisYfhCeWXY5hpBEtnXJWO3z5a4=;
- b=u9H50C+mO6Kel5IX3vaEEdGh5jrzI6vKOfghphg/gr864gckoaR06xhXQieUoxfWVzGqZPO/5MTuNbCVMZ1/uIT+X217MzQ6F3bHPk1n8qynU5NHkjS6eB6df7tH3n3xRaHNU1lI3ZnYzY0DTHMUhEVFHAoOhN90t/KrcebQJa3uC8cLrF2cj4jjw5J5xJ4MqzFXzMa7UO3zvix6jFpF3EfK3Y6fv0kFwhQzysHeZFAxwSYDux3W6+aR3WAXQPBOgG7Uc00LNXM8pmPxoaqZKdm666r/0cgkSTFahLhf1JTV/9hsjXoRQhzWATZiMCEXP7x2waus9oEeecXDTNJ7uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3LcPghvT4MlsKigSrisYfhCeWXY5hpBEtnXJWO3z5a4=;
- b=EMCproY3imkOlFX32G8SkpaamXpqCgBWS56nsZou/m5iKpmysno0LDxS6snbvgDBNNM6F5+cHP9XylG4F/zgO25wzruw2gXdgyP0zFYyoKiMKduGiYCpkbqeFpGlkBGeACuwsmmKJtHt60TX2Tzl62cDrlWaZx+3LWBhCy+y340Aak49wK56re+cqkcjvjIGrsA8hmiYGcwpS7tKI65gL6R1LOsnl0syeOCtfLNfczgJJlUhp8VqZGWwvZh1piriyCu1pRQB9ihrRIQwICLzifERTEQBDnz92DAr56Vu+t4aXQWDICXbz6qjG0Dt+gmOggXrd/viuBL1+BDDX1gguw==
-Received: from BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
- by SA5PPF6407DD448.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8ce) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
- 2026 07:32:17 +0000
-Received: from BL0PR12MB2370.namprd12.prod.outlook.com
- ([fe80::86cf:c3ec:2cf5:74c8]) by BL0PR12MB2370.namprd12.prod.outlook.com
- ([fe80::86cf:c3ec:2cf5:74c8%5]) with mapi id 15.21.0615.009; Wed, 18 Nov 2026
- 07:32:16 +0000
-Date: Wed, 18 Nov 2026 15:32:10 +0800
-From: Richard Cheng <icheng@nvidia.com>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	linux-doc@vger.kernel.org, driver-core@lists.linux.dev, linux-serial@vger.kernel.org, 
-	linux-pm@vger.kernel.org, damon@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, johan@kernel.org, jirislaby@kernel.org, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
-	baolin.wang@linux.alibaba.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, pavel@kernel.org, 
-	lenb@kernel.org, hannes@cmpxchg.org, brendan.jackman@linux.dev, ziy@nvidia.com, 
-	sj@kernel.org, muchun.song@linux.dev, osalvador@suse.de, nico.pache@linux.dev, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
-	kas@kernel.org, xu.xin@linux.dev, chengming.zhou@linux.dev, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, 
-	matthew.brost@intel.com, byungchul@sk.com, apopple@nvidia.com, rientjes@google.com
-Subject: Re: [PATCH 13/22] mm/hugetlb: restrict pool growth to common memory
-Message-ID: <av1PyBvUVJcy_Psd@MWDK4CY14F>
-References: <20261114070959.3490008-1-gourry@gourry.net>
- <20261114070959.3490008-14-gourry@gourry.net>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261114070959.3490008-14-gourry@gourry.net>
-X-ClientProxiedBy: SI2PR01CA0044.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::8) To BL0PR12MB2370.namprd12.prod.outlook.com
- (2603:10b6:207:47::27)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=V+Q/b4oQQRcc2ev9VIFrb3ozJoPLTXTZ4ZqHagDQPao=;
+	b=GbnyUG/P/5TeOkcwspL5npLcMzYlq80RPGMYPxXBXaKNok7qNsQpQd5hTnWoxYrtE/+83e
+	xpIVuK4iK8Jt5JLLoZVWDHMo/UhraxZFjxJCA9iV3A/AWvepLOKoI6HnBFiEDjH371wUmr
+	JcJibR1fJfkRTNtMj+J/tdqBnP9vbKU=
+Received: by mail-pj2-f5.google.com with SMTP id d9443c01a7336-2efd4a0bd68so2281795ad.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:40:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794987624; x=1795592424; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=V+Q/b4oQQRcc2ev9VIFrb3ozJoPLTXTZ4ZqHagDQPao=;
+        b=MNtaJ/TKgemaLy54fed0SpYzDbDMpc/ndQHVkvnFooRZZWbaHRlZyuj5UL/aiTyYV6
+         X6xo+AMtuGkExEDeanE0IFttlgSWkelKMv0WqJVkDuZRJQuz2iX/kHKJc0s1qq3Xmfm7
+         YAbo4bWgiek233F15IL6HX9tzp5vLMPGQ6dhm86ewVkx1Uf6ClQnAJacgR+Vq4x/nXvG
+         rZpbyCfu5HgUau45QqO0X7HjCxG3Se4hrX5xqAETHesLDAjCUMFUCPFuqrl8w24mfAUJ
+         2LwQvIeSR7NP5/ERw/dyjCg90dEwuD7Wm8ihjIAxAZGkhsrwlCUA05dhKF6bX6R+Q8xs
+         t4JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794987624; x=1795592424;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=V+Q/b4oQQRcc2ev9VIFrb3ozJoPLTXTZ4ZqHagDQPao=;
+        b=vIF71vmD5SoJXL0WGS6Zr3WzI+ToICjiPFtTX9tgNfVP6d7YDEEKoIl0iA/omhusTs
+         1N5ni6Q6LOnmNzw1xpswQVtaFz+FK+bLKhUMAQmhF6k671VRsUre9OjMBT6yiT3gpCm2
+         OwHpZU6C3XI+MrJKxmaTdrRgvPLxVC6FaXHD8KOQYCHwFrKgZMF4MJB7EblUYei6s2r6
+         2OMUB9VvmBd3mWSOvNmZJ4PKN5DK1n7qrEn75q29pvN/jfaDC6yxKoAGiUHWpNZFXKA9
+         I3VPXPsbahg38TjEjQKK73smbL6gIneTa0380qc9nfTAh56YZNKhKJm3bS52dQRyQ5Kk
+         RW0g==
+X-Forwarded-Encrypted: i=1; AL+hErEhYQJqKzfaByPvSoWJRgN6IC+4MZJwHdxTwcVgpRJZXYPM2E2j+hnhUNwE+Cv1sYmIx0J9oqh2uA==@kvack.org
+X-Gm-Message-State: APuU4Z8MO2a0pXySJthJqAkpQEbBaTpI3I7+IFT8aJD3q4x31XlbdbyY
+	ilS/22Fb9QcuZ46j5LfHREJa+QfuxcxGmW2FNl1qbsrlIVfMHlPwObYm
+X-Gm-Gg: AZFdTZd1JRwXXJSnQJW3LfEKgyungdVO6NmniI7a/DhWmBVAd7UpugYJht3oItqYlMJ
+	d3ar/q9t90hHIVLZtfHJK74+J1dc2qdNBBF2HQErZhpw7ikrnuLYraWRv2ScZF60UIAvKaGQiZ3
+	MNxiyOvX7/hL9Z1o7Xg2miL9lP4To8R0JpUCkFc3EH160uMHxrOjcyU6Gicty8hjoVciNrPzHXK
+	xflALQBENtCC8jk7l82U6o+2oAKLfyT31LltLlpNO+Uyeb3UDfhLM8dZonGsN2KCPby6e/ko0nP
+	jK+IvkFSiQQyY5Vq1J8+B7o3CuPsOiAaud1bLayFYic6os4/Jx4VifaLXhyz5Slo/mc5OAS/mFd
+	huiFajimoZskkAtdso8zKUVKCLVpH9fPNuSXhixQuNQJn10ncUjccVjf+c0rMLcM0kyhxl8InZQ
+	WaEhEKQ//JV8dGxH8+2X+GETKincROj0vumlcCjSK2VCdIWiIGW6uEadZjmM4Wz3Fby8+MUxVJ6
+	9GRC8h2jBXnL2KyUsIChiTNKs1UpTXnbBHlDttvwiFu7Pi0Pt60blp9vJee5nisHGewCbkqf5Qx
+	w6RHq3v2isIvwj4IfZMCA07+cJROveSsjmVBGIgSW9DnvOh6gu4W8NzNfCg7eiDHilwLcrizpDC
+	X2EciGdvT0WPHV4UKUFRQpXWpnYhg1fasXL6gP8rsknDfbVw7fdh73d6kZtOkJg==
+X-Received: by 2002:a17:902:d505:b0:2ef:e044:290c with SMTP id d9443c01a7336-2eff75451bdmr16959655ad.25.1794987624447;
+        Tue, 17 Nov 2026 23:40:24 -0800 (PST)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eff6214565sm8667315ad.42.2026.11.17.23.40.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 23:40:23 -0800 (PST)
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Wed, 18 Nov 2026 03:24:28 +1100
+Subject: [PATCH v2] mm/damon/paddr: skip non-LRU folios as a whole in
+ pageout
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2370:EE_|SA5PPF6407DD448:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a7c70fd-d85c-4c61-2031-08df454611f2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|261026121527099003|261022105027099003|11063799006|4143699003|56012099006|261021123027099003|10067099003|261009223027099003|261021121427099003|261102123227099003|261026140227099003|261028144727099003|18002099003|22082099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	KuxMocrdiR4cSCCljhzUZz37PKhbYoREWO0kCZ+FyD4JOayPWOp+wSONX4W0Q+3+BgaPgLh2xTDGGtj2lt5D4VJCakwFdyycPiLduYN+RZbyWC7chala/x+7LlVVcsrNOMyY/6jR4SOjHTQrE8Q6uV029kGHJNB6b0hZYxsf7Y5P5gsVDNPy8bzQQmk0QodLOGgMtv1KXPV7on27IFNbHhBc0Bx2JcKE4ShA+MSu03rh3bZVYnTLg44OoZkSWPjTrzTRRWPq4lH2TxDzbORXD2TSOsfJ3Md3oDGsJm3K5E/yIiSoUzjvMJkz7YTZt90YMbUIsw8pAiwqKJu332EbTkVoE+FXcFKAQLJOZcWBRWCB/WatKyizXGSijyDhiWvp7Mn2NuiveOVth84ZLh8rDd30hCqsyl091tPIxJoPFZ5Hu0Qe9NXdrMBhi5HRVXjDGoAarSH8QByTihMgXapJOwC8PKh5OmM68t7ZTpgINPv2BVeoqQeT+9RyhNlA7xcqNwCNGw9+nLv6lHs2GBQJVe62hKfASAEosPHLSNPXS049rHrnjeUsdVGRoCZVsXDWzP8gj2l4FWNKLaTFQOevw3B+X4hfDi1fs72a7viIPAhvvYPolNUaRwpmsTUsIk+PEI2D+AlUTKCKcS4qMxSbkN0qUxmOPsgBZDNNdSE78Yc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2370.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(261026121527099003)(261022105027099003)(11063799006)(4143699003)(56012099006)(261021123027099003)(10067099003)(261009223027099003)(261021121427099003)(261102123227099003)(261026140227099003)(261028144727099003)(18002099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gTr2q+cJZG+ehgUPLBb1axE2BtSw8Rfuxv2xnIAWIlM7EsTEZ+YYghFGfsTk?=
- =?us-ascii?Q?I749o1yI6albDvGA9jRaORPLSME/AVYYn3ySuNFgjZeRLOkoZ5mBzt95+wA+?=
- =?us-ascii?Q?GAE127OjyXoewNtODJqygptCJtcsz/jBeEmMAmdJpj31OobzuOj926Q2xtng?=
- =?us-ascii?Q?pDrAB0ijr45EGGLBa0etSFXPcyaq4ymiaR8r3FCGXgmqW9nMkdM4kVXBYkYJ?=
- =?us-ascii?Q?ySJR33QWsaiVOJYfJNxXDJQVbZqXvfzC2Z6l305i6CiMoSBUQ9m+e6CJyfez?=
- =?us-ascii?Q?0BQlD3t49L52ssOeHO4DSWNm5RM6xqBLp2adimH+IezHMEI7lYfFSgz16SY7?=
- =?us-ascii?Q?+hNR7hJiDXlrHIkRpdXLoQuDWL3gxuEYvuIzrscU+c/ZV/QGgl0GjjYXbcWl?=
- =?us-ascii?Q?e0OOCaHkhr2dHWaE+B8bPS2j0hXUlqbWfdxs+a+EbEyomC9GMRTe6Et+GMyM?=
- =?us-ascii?Q?wUwWB+74s7waJhcq/b2W4J5wFvUOlfF8fm8QOclkn7pCsnnSxOgjAXaNw3W3?=
- =?us-ascii?Q?7w8DIa0KhTnUXQMHjTkCQvqxm0D33fLnQhq4YzAUNFnpFw80gfxXx+V9L4Sm?=
- =?us-ascii?Q?vwQ9m1PwfKd79hIoa+mm3PVmJ97i1eWs22IQLtTiRojJj6/IynDIRaWPpVaM?=
- =?us-ascii?Q?QShOgP8q/Ymdb1xZ+Rv7a9LYcHbaNRXeXAAkn4YrTFbRBPjd/pPzsyeY4HrK?=
- =?us-ascii?Q?Y8Aj1s9/M+3UZxYHdxd46vZq1sxj9oXtD5PLTcZh+JqMaLKp/m6fLvhsJM6N?=
- =?us-ascii?Q?TBTvLyE+rzCsvMl+YHn3FfKEBaY7EtcVOLjV25GTP0cCJFesKd2ik+O0ud0z?=
- =?us-ascii?Q?Ow7trTtTAan0Q9fynn5QYbT0yiGekxjXzjfsx2uovZs9cuCUblUWtodav2Vw?=
- =?us-ascii?Q?RWxuoYgnZDpHC26P9R7tJSIPx9+tPuwoYQLOo5PQZFubYEbobZMbXuqG5M6Y?=
- =?us-ascii?Q?T8MssjmAoRcS+xbRewnXgbwmP3gCtilzDleCGOeqwYLpXXI88BHSKRpfgnxX?=
- =?us-ascii?Q?oyMGloUy1qh9YgcKeppf/aD1ETiiR4KvddgMIxpjeRB+YA2cj+x5t4CKlobS?=
- =?us-ascii?Q?Xpc1mrVEU6s5z1JU/Sxh4PNWGF+x2rtsgYjkDztl1gaEXNCE+zk1IcCBEp24?=
- =?us-ascii?Q?UDaVeaMN8UtyRd6mpqbbjERRfIDc2EkuaBNlX45tFKzSLb2fUgSc29X/k/V1?=
- =?us-ascii?Q?x2GBkgubY27EmfE7ObigKJhZPGFQSlTHoJgiGX56Y6YY/DBlWDWptFxRFNo2?=
- =?us-ascii?Q?yEr06BNB815qHfxuIUyAu0m8AH/IdvmMULzeXTHUIfgpSUycboUFfTXAqojY?=
- =?us-ascii?Q?84WBd+7SxUEHTMtSFOPVn/teRDSZICWwcPcXgdEawggNfzrR6uaRwKI41UWg?=
- =?us-ascii?Q?wUHDoyAdK2C49rrrlPYpExqoe16pQKpvN6HGXkW2fAbkEHnI7lfUc0tQeMe0?=
- =?us-ascii?Q?bc7onrr1tEjRrgU4vdANaroOUCw9k66wYmJ/nIOn0BZTepbR8KJI/KFGam3I?=
- =?us-ascii?Q?Euqsk7petQhv6cwgZM6YPA884R4BqoHBkVtuOFliUHWxcEEJRUtMd2wNg/gg?=
- =?us-ascii?Q?vLzFcSHZmGvoiXEUsG36kHd0g1taQuFV0Wf963d4UIQByzFBSlHUOZtaoLCd?=
- =?us-ascii?Q?zVDVYHxM4/RxBBPAOP5QRQSuChXrL/6dtppK5LNwC2TnQ9pAlYyU5CtU5KHE?=
- =?us-ascii?Q?Ry0AlQn+miLCGk+T//22CXF4QmW9zjJSouhTf23Qb4u20udg?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a7c70fd-d85c-4c61-2031-08df454611f2
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2370.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 07:32:16.5203
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QfL5HJnpkoa9GxEImLInmfxafEKnWD7MnigAjS0faMRzQDMFbZsOcW+ui6rP8Iez72Kew/mC6bX9lamPxIwQPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF6407DD448
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261118-fix-damon-hugetlb-pageout-20261117-v2-1-547a65a3206e@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/z2N2w6CMBBEf4XssxsBRaO/QnzY0rWtkZb0IiaEf
+ 7eVhMczmTmzQGBvOMC9WsDzxwTjbIb2UMGgySpGIzNDW7eXpmmu+DRflDQ6izopjm+BEyl2KeJ
+ eoTPXJ3mTHXUCsmjynFf/k/6xcUjixUMs5tIQFBiFJzvoEm3+OLvdeRxHtDzDuv4Ap29dr7IAA
+ AA=
+X-Change-ID: 20261117-fix-damon-hugetlb-pageout-20261117-a4e03d9d5a5b
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, sashiko-bot@kernel.org, 
+ sashiko-reviews@lists.linux.dev
+X-Mailer: b4 0.16.0
+X-Stat-Signature: shs7no58dazsdtpqutdenfhp9gdooebp
+X-Spam-Status: No, score=-14.7 required=3.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9F22C1C0005
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: qi81o7uxpmgugyt8hx4gpd5zdkto8bnw
-X-HE-Tag: 1794987248-209097
-X-HE-Meta: U2FsdGVkX1/+ocflzVq15/aBGeQSH6mzYCzpRGic5/yEGpHmruqr02uNkT+wLxVumk9pOcWityZxsB9IWwtazeyVwY99LOwZA1TBw3Vd99LVskHs8YJRMDsjCamd6Es0luiqpV/BMPUbGVgjVXtDTUrHxuJGtd4VBk/DJ3Q4C5WkCP2ccKu7NiqbWMEdyK/1fAz4GyR7HKrlhfsaLLFGbbxxEVL9GOlgd6DvLbFC8ciariQZTE/zA/TfcxlzxoorxJiCIgD/O1bJOMrSW9JUm0r7/4RFTtYic70a79nbV7hj9DsI2QRhlARagL6cMKlu/KMYCbfp5Zun3pw0lAaq89BSfLyqqE7WNRMCamB26xk4KKXgdnkuwP0vHCGYp7z5Gb+bIln4WS7S2sKAPJrBi0C9Lxac0tXuNv2uqiVrg1c697Y+l9RLs/zO0yyanZPy8gcfYlMrJtklSKvE/z0nKj94+ZcUjem5wOkUAk7MzW+i1frEZTRP5OdoSZLyDteU2zY761NG8Qc8pAtYHzfBly62QkEtVo6WPVhQDj7yczHr5tOsCZreLJtG4oX/gDm+8YeY66dpKu7H9q5+Fn5lYcIDCimakQrsTZNHYegn7/xAIVm9PvMdn9D5IDDLo1tZFqPGup/s2JY1sG3zjJaoXxY2m2ZQmQ+EU2ORMKIPeajElQWXzvG0Yg8vjGXqM1HzV5wWQT0/ejk6SyaYhVwMAf4DGN7LKBtOKrLAyt/j48G9tWueOK11oqVtw5e+napSVakiPaytiYMPRB41WcWz5aCW5rntRVlbFJTw1EnTmal33r9jEobdNeo9TVdGc2ImgcUi7xwD7yVI+6lUYf8TglWR4xUGhfPdmn5FimaXqeJReETwm2+j5L3KBnlyudFCeQsGaNx8e9TuZKET7qIOFKUZ/5x20akhUlDvLx0N5Tiid7QBzyim6U6h9PLwipY8x9BtN7x/Zq0YuhCfu4V
- oQGJEcfk
- X56pxPKx/bL/4a3A9H1EAGwz6Cpx11eBML9ZyYqC+UbOGIU0oX8V0ENWErgwoyRhNPYk47EoGSupJ06dGnSbjw7HSe8TpV/Tcc7HIEik58Mkrms69rgCmpfZnnt9jrdc9ZMbIAhJ9/rHk8eT3vzLr08NBQZuYkcRh/XVuPBYqSVs+fIcELqshx9kKZ7o7He6OkP5XoJ7AqCyreii3MiNc0uHUwi1LsbNr6znWLmR8IBR638f+Oems9jCMT939xQbZlaX80RP7ZYvwQ3+ylq/myjXR8JfyErVRAgmLu6J5ii9JK4khjnHw/q+IwP4Cojc+atkrbhexBJpZKAGA9TzdY76W2aPChQJPNyeV54sbyjQyViKjQvI3Ajrel4N5LzhxpgpnzxAZ3vFtEt/dN0Njl+nz8aLCioTHahzLgBqLoYbXusNLYvNpxCIO48jfSIxS5e4m1aHF8qamhTvVlN+66mNS9GCeE8hopzBpOIxhE7qmfnqBDm9+7GDXA4Mifhu2y5TVtSSGeQV03rDg3tgqZE084YLGW2XLLFtJ
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D3D11180002
+X-HE-Tag: 1794987625-996547
+X-HE-Meta: U2FsdGVkX1+prUH5E3mWz1O44Z4lEcDf3xlS+H4e49M61BpxViiVVuk3C+OCNARZJUeSekF8iv/LdAtIwSV/2ndsZN7frZr24VorYy8/BOi78kZFz1VylZ7vWpZtTgn0Zivu+GyFaI+M/iFjibhyRwMonKPByn0JJF43wEfSXECnTB0x6mPDeygur9boea8wdjt8Eg22DFnbRXkEUAmEljsHTK6XyKkX8EUAHTmSbvz+ugtbHzoD7nj1CcY6Fg1Jr2mPh3przfnxKPj29VbJUXMzVCEZ/nXmgxJC+LMljkNb3y9cLqOpFrf+6sYAEVqcppAs2J5pALBurCQXgaqnRGZYlsXYKsUW/v+v10UmrSun1QhunwcIh4ke0RcXOyBq1W4StfDnNDCUaXXG0VFSgcKfo5u2T4/jRwk7qoSpbfvR+0wE+p2dWJQB2PAkDRuSOW0mByS67+Ta8Q6A7n1/yaxI83v72Dsz6IPhHaaPkf2vXVtypXeQ6g9qZ3+h2RgCSZIY4OUNmEmor16dSZvIFhhLXWXLBxfUh2vzb4eox366UnSHi41CbO0UCkXNVGpfCYAF85kxJGDavyvqBGL8aWS5k8QYDiZUu83jQSxt4weXPv+eBNR9QTLN5nwFDd9/sKuga841gJrfVDAuSKHWlzXuhQ43PtvgpO6WCAThPK1C3OVh/CyfOUUqHaDmpWaBjr+Lw4L2qeSNCrfGOgt+pWofB0eNsVCxG7yKbaZSyQYIQK6INKpjSuEp20TC6+HC13kk4GdG2TFk54LiNnwmW60UaSQKwIEjhvoJk0yw5Mwmx0yTjRxbggCwE97V+A+AiXpS+t46hyJBCw7Ah5MOdjOwkuqRvdQ2a5H+aCTUZcpwMmVJqTdvcw9/Z5J38x9J6i0wCDDUCGM1FKAD4qMrbjlVHPblx8uPlBeUZkbDLYLN/dpyISnT1uQxoT2E7cLY79/aDFsC24jnSRz0NXO
+ 3eY6b+j5
+ EkQ0Ewm7H8ZOn6sqfYGl0Lfo7XHVV3vMu67k6TuEOflzUvPRsT7QPbeb0p16Il1UtC22o40M55FHFmghKmO2Z5dxRYv3BsuyOEz3nIA9O09YSe6HdT+9fXpdHGJFRcLRaZusEq2I07YV8it3IaXl6hp8slfxTMrLVWRgnpLNArdPXeFfCYKmdwEUs7eFtI8iIK0qzchxZtm17k+0vdp7CtuDoECuv6XuVQGE5ODjaOD8O8D+QJXUrFVnSssunYtds9WYkEHxoaz56wMh7fjInHkgeOZvsO7a85iaGu88CAhh7AkyZ6KkAat56yOim0YhaNiJVSbX9cc5By7bQKNfh58KMiX7FikMy5xhaAArfCCcaUkRcymrO9aLd0eBZwqiip949AmNAkNQ0nuq7gNU0PHjeWGdz00j/SAcTHVNscZtfV+LV7ZXr9OtWtFtfpVzokOQhgC15H4YsOkJbp2kiObmZjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,163 +130,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 14, 2026 at 02:09:50AM +0800, Gregory Price (Meta) wrote:
-> Fresh HugeTLB pool folios come from ordinary allocations, which only
-> N_MEMORY_COMMON nodes serve.
-> 
-> Restrict HugeTLB allocations and pool-growth to N_MEMORY_COMMON nodes.
-> 
-> Keep the original allowed mask for pool shrinking and demotion so
-> existing pool folios can still be found on any online-memory node.
-> 
-> The result of this change is that hugepage allocations will fail on
-> nodes without N_MEMORY_COMMON.  This restriction can be loosened later
-> when/if it grows a user.
-> 
-> All memory is common at this point, so behavior is unchanged.
-> 
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
->  mm/hugetlb.c | 44 ++++++++++++++++++++------------------------
->  1 file changed, 20 insertions(+), 24 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index cb2de24affdc4..cc1468f68901b 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3452,13 +3452,13 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
->  			gfp_t gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
->  
->  			folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
-> -					&node_states[N_MEMORY], NULL);
-> +					&node_states[N_MEMORY_COMMON], NULL);
->  			if (!folio && !list_empty(&folio_list) &&
->  			    hugetlb_vmemmap_optimizable(h)) {
->  				prep_and_add_allocated_folios(h, &folio_list);
->  				INIT_LIST_HEAD(&folio_list);
->  				folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
-> -						&node_states[N_MEMORY], NULL);
-> +						&node_states[N_MEMORY_COMMON], NULL);
->  			}
->  			if (!folio)
->  				break;
-> @@ -3528,7 +3528,7 @@ static void __init hugetlb_pages_alloc_boot_node(unsigned long start, unsigned l
->  			prep_and_add_allocated_folios(h, &folio_list);
->  			INIT_LIST_HEAD(&folio_list);
->  		}
-> -		folio = alloc_pool_huge_folio(h, &node_states[N_MEMORY],
-> +		folio = alloc_pool_huge_folio(h, &node_states[N_MEMORY_COMMON],
->  						&node_alloc_noretry, &next_node);
->  		if (!folio)
->  			break;
-> @@ -3672,13 +3672,12 @@ static void __init hugetlb_init_hstates(void)
->  
->  	for_each_hstate(h) {
->  		/*
-> -		 * Always reset to first_memory_node here, even if
-> -		 * next_nid_to_alloc was set before - we can't
-> -		 * reference hugetlb_bootmem_nodes after init, and
-> -		 * first_memory_node is right for all further allocations.
-> +		 * Always reset the allocation cursor here, even if it was set
-> +		 * before: hugetlb_bootmem_nodes cannot be referenced after init,
-> +		 * and further pool allocations use common memory.
->  		 */
-> -		h->next_nid_to_alloc = first_memory_node;
-> -		h->next_nid_to_free = first_memory_node;
-> +		h->next_nid_to_alloc = first_node_state(N_MEMORY_COMMON);
-> +		h->next_nid_to_free = first_node_state(N_MEMORY_COMMON);
->  
->  		/* oversize hugepages were init'ed in early boot */
->  		if (!hstate_is_gigantic(h))
-> @@ -3802,23 +3801,21 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
->  	unsigned long allocated;
->  	struct folio *folio;
->  	LIST_HEAD(page_list);
-> -	NODEMASK_ALLOC(nodemask_t, node_alloc_noretry, GFP_KERNEL);
-> +	NODEMASK_ALLOC(struct nodemask_scratch, scratch, GFP_KERNEL);
->  
-> -	/*
-> -	 * Bit mask controlling how hard we retry per-node allocations.
-> -	 * If we can not allocate the bit mask, do not attempt to allocate
-> -	 * the requested huge pages.
-> -	 */
-> -	if (node_alloc_noretry)
-> -		nodes_clear(*node_alloc_noretry);
-> -	else
-> +	/* Scratch masks for allocation eligibility and per-node retries. */
-> +	if (!scratch)
->  		return -ENOMEM;
-> +	nodes_clear(scratch->mask2);
->  
->  	/*
->  	 * resize_lock mutex prevents concurrent adjustments to number of
->  	 * pages in hstate via the proc/sysfs interfaces.
->  	 */
->  	mutex_lock(&h->resize_lock);
-> +
-> +	/* Fresh pool pages come from the ordinary allocation domain. */
-> +	nodes_and(scratch->mask1, *nodes_allowed, node_states[N_MEMORY_COMMON]);
+damon_pa_pageout() uses damon_get_folio(), which rejects folios that are
+not on the LRU.  For a large non-LRU folio such as a hugetlb folio, the
+loop then looks up the same folio once per base page even though
+pageout cannot reclaim it.
 
-For a global request the caller passes &node_states[N_MEMORY], so before this patch
-the grow loop read the live mask on every alloc_pool_huge_folio().
-Now the mask is sampled once, before the loop.
+Use damon_get_monitor_folio() and skip any returned non-LRU folio as a
+whole by advancing to its end.  Do this before the filters, the
+accounting and the last_applied check, so that adjacent regions within
+the same non-LRU folio are not walked by base page either.
 
-The loop drops hugetlb_lock and can run for a long time. If a node gets its first
-memoroy in that window, the old code would start using it. The new code won't, until
-the next write to nr_hugepages.
+In an x86-64 KVM pageout microbenchmark, traversal time dropped by
+about 99.7% for regions covering whole 2 MiB hugetlb folios. For
+4 KiB regions within hugetlb folios, traversal took about 1 ns more
+per region.
 
-So the pool can end up uneven, or smaller than requested if the other nodes are full.
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+---
+Tested in x86-64 KVM guests.  DAMON KUnit tests all passed.  Ordinary-page
+and THP controls passed the 3% non-inferiority bound in the microbenchmark.
 
-I think the nodes_and() should be placed inside the loop to keep the old behavior ?
+Changes in v2:
+- Drop the redundant hugetlb check and update the subject and description
+  as suggested by SJ.
+---
+ mm/damon/paddr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 5b773012a876..0a205fa8d468 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -268,7 +268,9 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
+ 
+ 	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
+ 	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
+-		folio = damon_get_folio(PHYS_PFN(addr));
++		folio = damon_get_monitor_folio(PHYS_PFN(addr));
++		if (folio && !folio_test_lru(folio))
++			goto put_folio;
+ 		if (damon_pa_invalid_damos_folio(folio, s)) {
+ 			addr += PAGE_SIZE;
+ 			continue;
+
+---
+base-commit: 67f3b04b277373438f17300e056306adbd9edf7b
+change-id: 20261117-fix-damon-hugetlb-pageout-20261117-a4e03d9d5a5b
 
 Best regards,
-Richard Cheng.
+--  
+Aveline Noir <jm5905938@gmail.com>
 
-
->  	flush_free_hpage_work(h);
->  	spin_lock_irq(&hugetlb_lock);
->  
-> @@ -3855,7 +3852,7 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
->  		if (count > persistent_huge_pages(h)) {
->  			spin_unlock_irq(&hugetlb_lock);
->  			mutex_unlock(&h->resize_lock);
-> -			NODEMASK_FREE(node_alloc_noretry);
-> +			NODEMASK_FREE(scratch);
->  			return -EINVAL;
->  		}
->  		/* Fall through to decrease pool */
-> @@ -3873,7 +3870,7 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
->  	 * within all the constraints specified by the sysctls.
->  	 */
->  	while (h->surplus_huge_pages && count > persistent_huge_pages(h)) {
-> -		if (!adjust_pool_surplus(h, nodes_allowed, -1))
-> +		if (!adjust_pool_surplus(h, &scratch->mask1, -1))
->  			break;
->  	}
->  
-> @@ -3889,9 +3886,8 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
->  		/* yield cpu to avoid soft lockup */
->  		cond_resched();
->  
-> -		folio = alloc_pool_huge_folio(h, nodes_allowed,
-> -						node_alloc_noretry,
-> -						&h->next_nid_to_alloc);
-> +		folio = alloc_pool_huge_folio(h, &scratch->mask1, &scratch->mask2,
-> +					      &h->next_nid_to_alloc);
->  		if (!folio) {
->  			prep_and_add_allocated_folios(h, &page_list);
->  			spin_lock_irq(&hugetlb_lock);
-> @@ -3978,7 +3974,7 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
->  	spin_unlock_irq(&hugetlb_lock);
->  	mutex_unlock(&h->resize_lock);
->  
-> -	NODEMASK_FREE(node_alloc_noretry);
-> +	NODEMASK_FREE(scratch);
->  
->  	return 0;
->  }
-> -- 
-> 2.53.1-Meta
-> 
-> 
 
