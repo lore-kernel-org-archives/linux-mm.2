@@ -1,99 +1,168 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CCB606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 15:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341E3606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 15:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZjlZo9Ub
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=QEZlqEdW;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=xjk0STV/
 Received: by kanga.kvack.org (Postfix)
-	id 2DAD86B05BC; Tue, 17 Nov 2026 10:37:09 -0500 (EST)
+	id 46B286B00EF; Tue, 17 Nov 2026 10:42:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 264406B05BD; Tue, 17 Nov 2026 10:37:09 -0500 (EST)
+	id 41BEA6B05B0; Tue, 17 Nov 2026 10:42:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156C36B05BE; Tue, 17 Nov 2026 10:37:09 -0500 (EST)
+	id 2BE7B6B05B1; Tue, 17 Nov 2026 10:42:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CF5DC6B05BC
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:37:08 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 361C0C04B4
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:37:08 +0000 (UTC)
-X-FDA: 85445014536.14.61F73B8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 36220180007
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:37:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZjlZo9Ub;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 056576B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:42:08 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8343014045E
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:42:08 +0000 (UTC)
+X-FDA: 85445027136.08.1B5CDA1
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3574FC0003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:42:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=QEZlqEdW;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="x jk0STV";
+	spf=pass (imf28.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794930126;
+	b=b2NOqUsUPefrCEOwFAx2c5uPUaXfCqBAMdOyGMZM2UcDmsvidw8v7dWI164+X7XKQMjzFD
+	+SeI8uWHiMxak3ulCJKqrXx/MJKCu+gkJPBH9+FCkSCL6wuu7U50CKdDzgEsBkKT9Qsv30
+	7g/3MtIp8D3jPkAb/Sh8R7PJ1ngM6LU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=QEZlqEdW;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="x jk0STV";
+	spf=pass (imf28.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794929826;
+	s=arc-20220608; t=1794930126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+bALTgYPfIad1XZTuc45/MCR0LAeKGdtBKZv+egR7pQ=;
-	b=fginBi7hk01JSosPlfqPcnQt5fMXQLOVBUoTP2c0mAel20yg9iRO0Vs1rgX1/3WO0n6F4Z
-	B4yEXBtk+mHq4H8ZIrhhW5BOF8uQ/7iQTQl9rAok7JSpgESgeLZuAOehObFVSOO5JdCnje
-	F4+8zfngFQLfiO686roQmPTEHnQOiS8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794929826;
-	b=IxvpqL73Xm/XAnHRskd7orCghKbqg3pfLdOrXhxzl4GJCRukrY3WMYqecTzFNfbn+R26RC
-	4mNLP/KOm88y22vkqC+t6S7xQyDduJoQNOHh7n+EfniVwy8Cy/vjy8DOd3Ur5vos8X4b8i
-	bnrIxiv7ebH9s27uzOpv0alJW3mzk6E=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZjlZo9Ub;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B375562368;
-	Tue, 17 Nov 2026 15:37:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1871F000C4;
-	Tue, 17 Nov 2026 15:37:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794929825;
-	bh=+bALTgYPfIad1XZTuc45/MCR0LAeKGdtBKZv+egR7pQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZjlZo9Ubqff4c93mEcadpNICZynvRDGma8iq4qQhH5ZtClssDYYxMEJmhnIIMv7rH
-	 +tSvWJ3smeCCE6UvBQLXxwRZQhdu5Hi1cbrQHTnRwEGZtSvFb4/U9QIK2AAAmFw82+
-	 JzTufoKKAbf4PMRbnzKJYo2BOe1BAXvMQtY9UOEdhiAcyGqZbnlvaeFZDDhAFOa4Am
-	 h/LD58VRtaGPno2Tqat5p36Yv13S3DyHGucnqaXHJx6Ieq/v4CP4kWzwjawT+bC2zf
-	 q0jaQIEz/puFZBofPlJIaO2/YvofxD+7ItBTJaxs48Dd0C8LueDY8pBllWg8vjZZyD
-	 GB0kcW4vuRuvw==
-Date: Tue, 17 Nov 2026 15:36:58 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Arnd Bergmann <arnd@kernel.org>, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, Gregory Price <gourry@gourry.net>, 
-	Andrew Morton <akpm@linux-foundation.org>, larips <larips950@gmail.com>, stable@vger.kernel.org, 
-	Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Jackie Liu <liuyun01@kylinos.cn>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mempolicy: fix copy_nodes_to_user() for odd inputs
-Message-ID: <avx0Ci5uPW_hF0Jk@pazuzu>
-References: <20261117142628.3931151-1-arnd@kernel.org>
- <avxnIQTcFni9G4IN@gremlin>
- <541a67af-3b45-4d5d-ac4b-c741850f92e1@app.fastmail.com>
+	bh=Ll1OJgMTfmbPO7d5RPNU8rQH+se51A5k26zqVWnejZw=;
+	b=FNHVV65iGXPFifo8OF37jHJkspEnAF8iQoB2DZUNSGUmA/mD0eGOLXALO0Mj5njJQp+i+z
+	baN1tPxOy0eblYOTkUrH9XloHyNIdZ9KPZ8+a0iRGlxYaWwnitPnXc3PigNSypCWpJzNnG
+	g/EiEOBUdXhwGuYp8wqpgoy/hnZPqtk=
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 7D5F61400162
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:42:05 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 17 Nov 2026 10:42:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794930118;
+	 x=1795016518; bh=Ll1OJgMTfmbPO7d5RPNU8rQH+se51A5k26zqVWnejZw=; b=
+	QEZlqEdWmLc2QEeS/BvIC2QetEO8ShYZ8QZ0rgehqZi2X19nuUaFAx+esxJHgLnt
+	HVTPUJLjNLC2N7WtnFZR0QMqPeZ4KruDB3miKy5rh1lKpSNLuqrcp780F93wnkdp
+	gab2EWwAv8xyOGTR/Torx5SHoEnu8LhryEt2CtwNzMg/q6if/vFpC6XyXmDxo+9j
+	hMolatYINZtvg4s/5AGp3ec7e3505ADuPFWsry1m4NFISDIx0fi2ZdqhoP2y7mxD
+	Fybj5ryRQmmOPXg6fLVhUr27Z1bhna3g0S0U8G44YhZ/h3OT2CxSCqb3g1zYtbHB
+	EzHG8WD8/AwMJe/Qk2KQ3Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794930118; x=
+	1795016518; bh=Ll1OJgMTfmbPO7d5RPNU8rQH+se51A5k26zqVWnejZw=; b=x
+	jk0STV/L7B3O32tU8VWQ+CXfuJNPCEgZftRy6OCtYsguLRqbFWxi8TcoLDMess9D
+	u7YjlWVhKHXW7Ez8ZujQNovmIVo2avPQC1xH7fK0iehkA4Cg4+tUVd9GhVk4AXSe
+	iAP5DPYQ1ltZU8fXdllavVvDIlH0brQAaLrHMwNQJr4PZD+d9o/txnf0rBw0+61h
+	WfJKoINsTt8fSQKUD2C5M7fpa3e+kkbOZPKq9c8nOZL+uS5NxQnGb9lP7F0zp19e
+	Z+U45BXjDR9EPtbOv4gpqPHnmp+3cf0fFX4Uu2yxdovwgCRELzokQqgvmxUOsGvT
+	MPa0smRqY2s+RbOinkIJA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794930118; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:IdJUgS4PPmOeUB8Yb6vxnSDtuH0VJrF6xjLwak7lfEvOrMm
+	KeMHCi/e/I2aBtzAGWRuXdxhA1o5VQmT4DQdFR7QIVqm4jP2KX2k1qcHH801YAR0
+	P9ILaH0LgEWI7vVI3pHhF31UL6IyIlSGWbQXDxvNKXU/F+nbnJ+/cBZq01kYGlGC
+	55mKkSSZ+MK0RfHWLJLfD+ET/nbSkFDImXNbGYTTeiYZtItX1dgmgkVB5U58RxBK
+	pGMgnVfHkJ3ShkNq749ztou++FO0U9WX6utOrI2BnsAGCANRErL88dPJQJGCVMnJ
+	RKgxWOHNQ4MSI835EvKp22roMrcqqvnwL4uwYlg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:2E40Akz7CxLdmuHlTptnFJiub4jcCNuV3dW/pONaNOE=:XQKkVDqsZ6QAFyQa7gMxgcUZ+KiF7YSNEoDW2ZGC3Os=;
+X-ME-Sender: <xms:uHX8aj1ULntcAUjkLkyeKKS2OhHsnYaZboc_qTKkPmMb_Rh6xj1BlA>
+    <xme:uHX8as5_M3xbsNzHJjlSvktxoxnwpOJmqi5r_0lEtCjqhB5l-ociCBTlam_GSGS9P
+    Wsk0QaMd_UCkjc9EPKz8ZHIPqIWuwy9Mbnpi8R2MQFfJzvmv4o-rsxg4Q>
+X-ME-Proxy-Cause: dmFkZTEeJL0hwSgutYTXOLa07funNRvMyPcPnJNDU5g67C7XEeTwvtKXcfgmBe6zntHJIV
+    hWVxBCJPwJrqa6fhior51HEG1Y92Mns1888jh4KZEm3IDFBQOvSqu8ssEeQzJpNx2oF84s
+    4H7Uj6X4t7fgv6Fjn5AQ2tudTC+laSaiRXUul5xFQjHYC029RvSS13/d+dv4wwBj7Yn3HS
+    x5VmPMgGXww/TIVieDlS8BCq2YnZ4rSLiQ7s1Sco1S5nUwg50M8BHdy+cVwTlIJQwqsCuK
+    EomYhXWiNLeYHbaHt/4WnYcbuK268FwZlL0axh3zm6ezRWHI67tZZrzPUaKVXr8vMnSDBP
+    cZniHB8BHCzNCmfI4FaQhmKAKQN00ak5GaXTEM7gXg23kxhK4HlLXfcWokveeAMUi6sm7P
+    +hwELaock05KDm5SwW6DvgqSzCdyoX+3fVVkaVyOJoKFbfhfkGB/t/f0FiBVqPJX/B2uBM
+    OnFeY7lW6pC6aX+lD2JdAqV1Ob6LSU5l2Brc7WXHHmwsCE5U1DsIyUOrP2/dx6MXbYu4/7
+    LZno59sHVe2sYLlQtO7JxYvGTvtc2xBgf1/zkTUcFbqMVNltrUVgS7pLPreEqmGsPn+4uw
+    TcuZSSv4Ot3WyFWSNCKpCQ5gMoOfu8BVMGFOEOe0oatIX9e8yLFWiAE2mxlw
+X-ME-Proxy: <xmx:vnX8auYuKawXISghf2SS_ele99TK-xlZAaQoZNwnjO3teiGw4mk6uw>
+    <xmx:vnX8aqMLx1SreMXPhKf-edBV69G0ugydCrfVeeWBQeqNzqHGXnCoZA>
+    <xmx:vnX8av4gTQP6w5zLly17IpnwDRqE3w7EqapVYUYeSjo771u0PdjAcQ>
+    <xmx:vnX8aqN1FiwixV-u1II7ik9iaKq5xJw6Bi9WyoII-D6I7ewjczzIHA>
+    <xmx:xnX8al9iigkUpsfbrzzYnNp6MlNkTaLHYYtXFBUbQ-3FEKV4pkbZlJ1a>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id DA48532A009C; Tue, 17 Nov 2026 10:41:44 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+X-ThreadId: AwZDIwU2rPTF
+Date: Tue, 17 Nov 2026 16:41:24 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Christophe Leroy" <chleroy@kernel.org>,
+ "Arnd Bergmann" <arnd@kernel.org>, linux-mm@kvack.org,
+ "Crystal Wood" <crwood@redhat.com>, "Alexander Graf" <graf@amazon.com>
+Cc: "Andreas Larsson" <andreas@gaisler.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Ingo Molnar" <mingo@redhat.com>,
+ "Jason Gunthorpe" <jgg@nvidia.com>, "Linus Walleij" <linusw@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Lucas Stach" <l.stach@pengutronix.de>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Malin Jonsson" <malin.jonsson@est.tech>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Michael Ellerman" <mpe@ellerman.id.au>, "Michal Simek" <monstr@monstr.eu>,
+ "Mike Rapoport" <rppt@kernel.org>, "Nicholas Piggin" <npiggin@gmail.com>,
+ "Nishanth Menon" <nm@ti.com>, "Richard Weinberger" <richard@nod.at>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Thomas Gleixner" <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Message-Id: <93593ec2-0f7e-43a9-9166-dee90a9cd2c3@app.fastmail.com>
+In-Reply-To: <14e28b99-12dc-4000-a704-8b46cfeb3c0f@kernel.org>
+References: <20261116124832.662455-1-arnd@kernel.org>
+ <20261116124832.662455-5-arnd@kernel.org>
+ <afebfaf5-f3ee-4234-875d-e5ebf1ee64fd@kernel.org>
+ <83495d02-4e09-40f0-94fe-e57a1e73d1a3@app.fastmail.com>
+ <14e28b99-12dc-4000-a704-8b46cfeb3c0f@kernel.org>
+Subject: Re: [PATCH v3 04/10] powerpc: kvm: allow flexible PAGE_OFFSET
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <541a67af-3b45-4d5d-ac4b-c741850f92e1@app.fastmail.com>
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 36220180007
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wwzbotq1h69urkof687yg1cfnqsyy5pu
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: xsi1kcq7a1wnn6wjbgc3cejfe1ud1pkd
-X-HE-Tag: 1794929826-682643
-X-HE-Meta: U2FsdGVkX1/hHdXe9cppCOqTIlsc/deIOV1qE0nXBc6jqN9fdfHm4qyw71fTL5eEvN46BElOSQEsM2CL6TwiN1ZgVxD6jYeegsyfCdvdDXvXBdYCGiEhhRs1bhQifgFIxYAPArb8lrlbaMNhcAzo2sn2qpBSJo5aUp0dvrQyIR7mJqhdL3Rbk5+gcXPDvrpE6nnu5WQMJjAANUosuStnscSj33gCBcs/2SdRCmoZEl8kjjogwAxsZte6a63VbZmzOIU8FVw6+UZ3IY1RBFPBkL43/imuFd8xcA3ia0QgII9VhBhbgUhgswewnRfhQ61UiyiF+TOLcj0JgH0/Ml2+mqgVG4EW5YIGbEThVBFFowqHT+QdwlhSusjj8y8lNB4TIEP+JJJDzzJkqbGh4y7VdQSPD2MO0L0kxE+T5n8jAg1Q0j5tUID6GlNDiG7SPmW5HyrweUn2J/i8t94xb86d8ZNkwUfP/5F5mLvMRk2CV38OGRWuekpbSxDTk7hKppDhSpkEVfrhUlAMttbFLfiOu5sB24VV5RSLgEkv4XvOvBq2K8KJ0Gz3vymKVOcXqY83ynzsmz3R2eLmh4Ozz3+EKVy+v8JdDPskPSb/p17dCHUSpC7k5gHVT4qBw2AhtmgQ9+4PRjNT1XgH/1tijv/6IxGqpIohjluxrcrERejCBjDX2i95Jq4UB80o/Qs64p6EdPChiRSGGuMB93A0ceRo5ZzhigXhHu4lqzOgbzvfKixjJdrnRsVa7n2Th8GqQdeMoeWvhh70dkHyGKUtNUdGmx/B+GOdHC0X4dAuKXCpJtXYqG6Unr0eTKRNgVSyKr+skaNUApV7FSxn1JL7HrPZp53BDx2itCQ60ZrvKVFUcu2aCQS+8ViSFwy2YIuMn0Lj6TKlc48DRADuFShxlp5x37oNPWz9Xn8VFox+SXRVX0H0eRA/UJHwPWGYtIPAKqVP+IZ1nupF9opyo1CUkDk
- 8XHUDZy1
- FjHH2w2stbgKH4u+Kc8Mw2AzYhCJSJpKoaTlTErs1OIdPtMd8VdsmPkU3ynpR+o/uFdGo93cWDhCW+P0PXP+Iyv+XdU6i9UYg5iTpb4n59S/2gSuR8mFi1mdS1hUqkmdsUCLtc02Jd9S80c+xI3p1Knpe9UtBPr1UfAhfGaBSfZj4KmYR/tN38TWg+Y+Q+IXbN8NCDJEqnBpInCGp7P22PSuorIJCxtvB9oxSUaU9lQ82aGcnjElyDA7XKR50kHKmvhF2XS7JqGlcIw4mGriBY/ZxCA7ihu6fTGpmMUXBRItCfUcDMdUsD8RcWCLhfLX520WWQAe1S4tg0ERapvpnwfbLSXxgugJTqrRZTWVm9yvHVrBS7c52ya8TWKK7Qi4wqYIcINscvu9+w1sO7i3bl0tpcw==
+X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3574FC0003
+X-HE-Tag: 1794930126-195870
+X-HE-Meta: U2FsdGVkX1/0+Lka95lOEuLgJhOLUyZ7P1fiR/g1BrPOn/5/1ooA41oHV+YUwa8UrIgJnkrdBQmCh6cerQX5gq2x/hVzezXnwliGXfHHPdzsLrRuPW01Kl9CymX2W3NjSWQ254wNohqDboV/cDgMna1mUAGDECJWp9WemYmGGRlTLo4uHkFQIUzROANLgk6QPyuBpaHM51JNxQh571cQ2HPUJSFrQBZRTHtPesRh/NKi3mGPFRiIKkWcHXGURNkWVfMexg/6ovjXWkhlFGzpTupsG3R6l8BWJ7alQifGYC4CBXTNgnZrxEc31h5kB1LKeg+LMowTddkeJba371H5ohbOiiGL/WxpsGSJiBsiU1cOz+6qRX1GRIPdeiveGmY4zxxebNcRp3ckRDYBhgLJHWr8kmF0jNKHjJXDxSbSJFH6XbmDYbiuAf3DoDqbCkbeF2aayP8idk9C2h4mE6/ItEXlxrDJr/Jfq718kPPawCqOqGOXFvzm/xNkN33M199mt25uhm+phFj+qDOGKpO+20xh9bHIca3TApokDkP6ZDt6JESJcAtHcpE+zrLjpUgpr9rnRwAHd5IThsbcS6sYWNtqfMdRQX2U+iKWP/upavKCgMjIRmBxUNdgrlmDzQVsx/gm1LU57/XMVygYcR6wv/Ou5HDRonlSIbmyZY1B/EyXCL1jG06u2L8GYGL1d04NekIt6YY4svgY42zriyXFdbw59dRbhUKp4IGQdtfmlQoFMCb4HW73umPSfK6ApIpMX6T8tSpte3gn8nl57bn+zRuQx8Umnfeab0aRfR1mz5Ek1N75YprAf61n4P+eC0SRHCe3uEfHWglojTHM2W8Kq/E/z47C6Hzv9u7kPFJN1hn+QcG0qOOjwdBPE2IzNFNfjh+wYgvakZnJQzzgMkDRr0PVOPpEG+Yl/d8WT6SOgGdMv2pF5NLPiZE0a/pCS+hywuYuM+Guss10LUVSRVO
+ palBqBZ2
+ 3dUxUUd6M/wKee8NNzpui1WqtQj6GG6AKZZwSu15TJMgvepMPZq6ZgYQEWpc2UlNna0gaPrtb4kc/iE2CYJosoGdTqcjfQqbaMO2VF1wOHkHSBJWoEH62Zz3RVsBz76ig4YLufFwmG65wm6jHegu96QmsnI0HNtWUCL3aw/RR0IIm2MMyHtq3JYMQUCthJO9NP6TQR6YT6YkUIRDZdRZ7hx5CLjyXw3vV25ljXmlCt6n1u43fZw6y3A32OxlFQ/wqcimNG9BPCurs85Xc812xrtuUoTu6MINQYNLUTudmESTLhoR+RK4bnRD0SQiXMXG66joiZZYL9XRQExHah4BKT5JRau8So8xlS4ZcggHVgdsTkQA3th47W/amc0ocCKP/SR1a54Pl4xGxygg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,90 +171,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 04:26:48PM +0100, Arnd Bergmann wrote:
-> On Tue, Nov 17, 2026, at 15:59, Lorenzo Stoakes (ARM) wrote:
-> > On Tue, Nov 17, 2026 at 03:25:53PM +0100, Arnd Bergmann wrote:
-> >> From: Arnd Bergmann <arnd@arndb.de>
-> >> For compat syscalls, the effect is worse, as the actual calculation for
-> >> the size does include the extra word, but the check for the input size
-> >> does not take it into account and can leak a word of stack data.
-> >>
-> >> In addition, the size calculation rounds up to multiples of 64 bits
-> >> instead of multiples of word size as documented in the man page and
-> >> expected by numactl.
-> >>
-> >> Fortunately numactl always passes multiples of 64 here, so none of
-> >
-> > (Claude) went looking at numactl source (e.g. via libnuma) and it seems it
-> > passes size + 1 matching the convention?
+On Tue, Nov 17, 2026, at 16:11, Christophe Leroy (CS GROUP) wrote:
+> Le 16/11/2026 =C3=A0 23:54, Arnd Bergmann a =C3=A9crit=C2=A0:
+>> On Mon, Nov 16, 2026, at 14:38, Christophe Leroy (CS GROUP) wrote:
+>>> Le 16/11/2026 =C3=A0 13:48, Arnd Bergmann a =C3=A9crit=C2=A0:
+>>=20
+>> --- a/arch/powerpc/kvm/book3s_32_sr.S
+>> +++ b/arch/powerpc/kvm/book3s_32_sr.S
+>> @@ -107,14 +107,12 @@
+>>          KVM_LOAD_BAT(2, r9, r10, r11)
+>>          KVM_LOAD_BAT(3, r9, r10, r11)
+>>  =20
+>> -       /* Restore Segment Registers */
+>> -
+>> -       /* 0xc - 0xf */
+>> -
+>> -        li      r0, 4
+>> +       /* Restore Segment Registers, assumes PAGE_OFFSET is segment =
+aligned */
+>> +        li      r0, (0x100000000 - PAGE_OFFSET) >> 28
 >
-> Ok, I see it now as well. The man page again says "maxnode specifies
-> the number of node IDs that can be stored into  nodemask——that is,
-> the maximum node ID plus one.", which I'd naïvely interpret as meaning
-> that a system with 64 nodes would have a "maximum node ID" of 63 and
-> require passing one more (64), but clearly the implementation on
-> both sides expects a 65 here.
-
-Yeah which is... special isn't it? :))
-
+> Fine, thank should work allthough I would have used 0x10 - (PAGE_OFFSE=
+T=20
+>  >> 28)
 >
-> >> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> >> index 6d662a9a8c74..f318e1155770 100644
-> >> --- a/mm/mempolicy.c
-> >> +++ b/mm/mempolicy.c
-> >> @@ -1749,12 +1749,12 @@ static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
-> >>  static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
-> >>  			      nodemask_t *nodes)
-> >>  {
-> >> -	unsigned long copy = ALIGN(maxnode-1, 64) / 8;
-> >> +	unsigned long copy = ALIGN(maxnode, BITS_PER_LONG) / 8;
-> >
-> > This looks like it'll be broken given the convention of passing bits + 1,
-> > e.g. ALIGN(1025, 64) / 8 != ALIGN(1024, 64) / 8.
-> >
-> > Then later that could case a buffer overflow potentially?
+>>           mtctr   r0
+>> -       LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * 0xc))
+>> -        lis     r4, 0xc000
+>> +       LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * (PAGE_OFFSET >> =
+28)))
 >
-> Right, this would then overflow the user buffer.
+> Maybe an opportunity to replace 0x20000000 by SR_KP
+
+Ok, changed both.
+
+>>>> @@ -115,7 +115,8 @@ static u32 get_host_mas0(unsigned long eaddr)
+>>>>    	mtspr(SPRN_MAS6, 0);
+>>>>    	mas4 =3D mfspr(SPRN_MAS4);
+>>>>    	mtspr(SPRN_MAS4, mas4 & ~MAS4_TLBSEL_MASK);
+>>>> -	asm volatile("tlbsx 0, %0" : : "b" (eaddr & ~CONFIG_PAGE_OFFSET));
+>>>> +	asm volatile("tlbsx 0, %0" :
+>>>> +		: "b" (eaddr & (rounddown_pow_of_two(PAGE_OFFSET)-1)));
+>>>
+>>> I think this is not valid.
+>>>
+>>> With PAGE_OFFSET equal to 0xc0000000,
+>>>
+>>> Before:
+>>>
+>>> eaddr & 0x3fffffff
+>>>
+>>> Now:
+>>>
+>>> eaddr & (0x80000000 - 1) =3D eaddr & 0x7fffffff
+>>=20
+>> I'm probably still misunderstanding the intention of this code then,
+>> my reading of the comment was that both 0x3fffffff and 0x7fffffff
+>> would be valid choices here as both are below PAGE_OFFSET and
+>> large enough to alias the correct set.
+>>=20
+>> What are the actual requirements for the mask?
 >
-> > Overall it seems the issue is that e130242dc351 (understandably!) passes maxnode
-> > rather than maxnode-1.
-> >
-> > So a really small fixup would be something like:
-> >
-> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > index fb627b37afcb..051d411c04ee 100644
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
-> > @@ -1733,12 +1733,12 @@ static int copy_nodes_to_user(unsigned long
-> > __user *mask, unsigned long maxnode,
-> >  		if (clear_user((char __user *)mask + nbytes, copy - nbytes))
-> >  			return -EFAULT;
-> >  		copy = nbytes;
-> > -		maxnode = nr_node_ids;
-> > +		maxnode = nr_node_ids + 1;
-> >  	}
-> >
-> >  	if (compat)
-> >  		return compat_put_bitmap((compat_ulong_t __user *)mask,
-> > -					 nodes_addr(*nodes), maxnode);
-> > +					 nodes_addr(*nodes), maxnode - 1);
-> >
-> >  	return copy_to_user(mask, nodes_addr(*nodes), copy) ? -EFAULT : 0;
-> >  }
-> >
-> > Maybe doing that's the easiest route for this?
+> I'm also struggling to understand this so I might be wrong. My=20
+> understanding at the moment is that here we are looking for the physic=
+al=20
+> address matching that effective addr in order to find the 1:1 MMU=20
+> mapping. The particularity of booke is that you cannot turn off the MM=
+U,=20
+> so to simulate MMU off you have to have a MMU translation to translate=20
+> logical address 0 to physical address 0.
 >
-> I would still try to fix the other mistakes (aligning to 64 instead
-> of BITS_PER_LONG/BITS_PER_COMPAT_LONG and the incorrect nbytes).
-> Maybe it's clearer to just pass the adjusted maxnode into the
-> function directly and keep that extra '-1' in one place?
+> Therefore IIUC the correct calculation should be (eaddr - PAGE_OFFSET)
 
-Yeah it'd be nice to get away from that convention which is... very
-confusing :) Especially as 'max' implies to me an inclusive bound.
+AIU that would be wrong for PAGE_OFFSET=3D0x70000000 if eaddr>0xf0000000
+is a valid argument here, as that would still point into the linear
+lowmem map. I've added Crystal and Alex to Cc with their current
+work emails, maybe one of them knows.
 
-You could have a wrapper get_nodes() that calls __get_nodes() that has a
-'lastnode' parameter for instance?
-
---
-Cheers, Lorenzo
+     Arnd
 
