@@ -1,123 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB65606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7822A606A339
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f9VnvS5U
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wp6qXcbI
 Received: by kanga.kvack.org (Postfix)
-	id 0088F6B05B6; Tue, 17 Nov 2026 05:29:53 -0500 (EST)
+	id 8EA396B05B2; Tue, 17 Nov 2026 05:34:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F21D36B05B7; Tue, 17 Nov 2026 05:29:52 -0500 (EST)
+	id 8C17B6B05B3; Tue, 17 Nov 2026 05:34:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E114D6B05B8; Tue, 17 Nov 2026 05:29:52 -0500 (EST)
+	id 7D7046B05B5; Tue, 17 Nov 2026 05:34:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B96AA6B05B6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:29:52 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 444A11A03AC
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:29:52 +0000 (UTC)
-X-FDA: 85444240224.11.2E07E5D
+	by kanga.kvack.org (Postfix) with ESMTP id 4FB126B05B2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:34:02 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D557540396
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:34:01 +0000 (UTC)
+X-FDA: 85444250682.07.487CE49
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6084980007
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:29:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f9VnvS5U;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794911390;
-	b=FNBTZ5ZwE91Na6b8iaMCqqpx5YrJlzAA9A87at/ShQW08fmrr9xNNCEP/T4E5r6vUeMe1f
-	3zAsAMmuUdxpyJtR+azpVFhzY6VXOhT+UB7HIi+UTLV3x/7tB6oxaVT4/qaLu+kJ0Pz7HN
-	EXb6zp+8Uy7EAKstCglveDoo2Fbh0pw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f9VnvS5U;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id DC9214000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:33:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wp6qXcbI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794911390;
+	s=arc-20220608; t=1794911640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kMMalkHqyexrRI9uTeursGHU/2uETz56pJsgymByLq0=;
-	b=iZYqxJ0i17G3xTR6IEFh+FEXoXYOjzqKooSBQpqu20kZz23GE6mj3nYF8Mf1hA9Xyl6PVk
-	aFzR3I8puN6aSzaYbsSAopL0RNsytxypPfTjgYS8xE+1kE2EkmPpuDRVQ8cv2g+sNjE2Xo
-	FcfL0ZMNzskTJioJb5lqEzCmcCWCHcg=
+	bh=9Y6jdRs43MMUd5mnE51/FCbB/e1QngRZEN/6HJJEEn8=;
+	b=U1MTYbXU4lFhpEiv8lPicOpfo4h3oHw+r1Gt6aYCfUunfuQRvHokDY6JOpSHfDFFJBaZW+
+	LgN2KgZ/+eO8YfEuHHcXfJxkcAfhSrCaubdSC5NTtR649Ah/1T2woFZdvwUDEbgIqZxQIy
+	zBkogCQhXMJaTAsB0f5+ac7GZfW298Y=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wp6qXcbI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794911640;
+	b=3jcetqrLHn2E+gulh4v5kyFL10F99iOepDy12eeAHsuIDMPIdHkzt3AyYcnEM7yDkD4mNf
+	i3z6+ewANMO5njyYv7CgVzNKGZUKXeZjPPM6hya2P62K8HsWqfvLk54btgNtUGzrv0aJwB
+	YoXfWOjUFM/m1RQJFl9PjgVgvacoFqk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB2D4633A9;
-	Tue, 17 Nov 2026 10:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26991F000C8;
-	Tue, 17 Nov 2026 10:29:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 72415618AC;
+	Tue, 17 Nov 2026 10:33:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03E61F000C8;
+	Tue, 17 Nov 2026 10:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794911389;
-	bh=kMMalkHqyexrRI9uTeursGHU/2uETz56pJsgymByLq0=;
+	s=k20260515; t=1794911639;
+	bh=9Y6jdRs43MMUd5mnE51/FCbB/e1QngRZEN/6HJJEEn8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=f9VnvS5UX5+LIAeVYyYRIRpkL5m0lTRnBcuVKqy827ff1wba9e2isZsOrj6XCR/ik
-	 EgdzcbUfaN0xZtXR22MmzlYwP1rm0ff/emQdmF9ctm7+5ZqAoKm8d+fw3TgjDVuPh+
-	 SOfKUTpVcf+uRnwivTORXAnlFyNn2vfY8x/M9eVwhNhvpurhk0nUiZhjkIn16nxrUP
-	 xW6DtboYWJFnd5fjxscJLfotDtTO2IBhXqQEVGF0nh2EjfX3XrKxy2xM/tGrV0SdDr
-	 f00Sc/CjbszbamBbSTzIEo9UpxCsD2QGOOMdDGMGWsKbP1do6SJMy8ezzE4zbu1Qph
-	 Vrin2ViTVkDRw==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 0C1EC1980047;
-	Tue, 17 Nov 2026 05:29:44 -0500 (EST)
+	b=Wp6qXcbIQIE4bpxyM9/SXmq2rlIdWXyLmNwraaBrkNWV6Sdu92icFVFw9aZ6qHaj8
+	 TM7d+AIbTJO4p98FbS9ecNFjyga110pcsPyeonG81MvaN8UBHdhbWSblvMqGPw8I9v
+	 eImA3xLaN1XHowsn0syJtwfQTVThF3r/GyZW3kbs05gF9HB4cuYlfvElS43YqmgJfj
+	 vp19XDmC/2FTNKIFzbcvmYw7ZZbaTQ+GJ2H04FDxIChNqtjGKTivP71goojxX692TU
+	 RuXy8t/xkX7Z3LOOG7zhO1ULXJq4ot8jtasJlLJbz96XbMhs70o1wRrLwQUtbxXsE1
+	 mx074gg6G7K4g==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 367B11980047;
+	Tue, 17 Nov 2026 05:33:51 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 17 Nov 2026 05:29:47 -0500
-X-ME-Sender: <xms:mCz8aug91pNoR66em1YAWzlIThrX5Epv1ZIhi_Kq_8QTuZw3Lqt0fg>
-    <xme:mCz8agg1iPkBuhsSNmNcLK3LNtrQqQNWSCySOOswlVx09ZZfR4zvp-EurLqTixLxs
-    JFBg7UhMUS6AxyaFG168RjcZEEUmD6qm9BGWnUZMPRM3eiawNF8y-op>
-X-ME-Received: <xmr:mCz8aqojE7bomun_BA0hgxs9p1QqMt-NlFnfo7O5gTaLHvic3P0R9FqL7mo>
-X-ME-Proxy-Cause: dmFkZTFWht0HuXcLPxNLST5jGk7LEnSc4D1QzzdUn/dMpxot85529SlKu9p5b6DrbabwHb
-    U1Qe8kzPDpQS/ETM1hDqgmCVEktjdOhhANEYt/LI80k9Q69nOSi6h0tcHNNU6FjfzwQwXh
-    dygIdfWp2cmscSyQe2XvhShcOVYPiwajXDuDzUKj+tJ858wuSiY3qPHauvrgPvSlXq6Df0
-    uUe0kRQh4jdjDqjwxcWNnVmUFE2g8/IcroHpvHWqlR7eEB1RQbH/Vb9K/yZ2VmpefvexOr
-    /M6uW021gxUkfQ+yi+YpC310rSzvh/bTmuLORYOCAvsG0jP8FPKuJDTjA3Teg4/v9gznEQ
-    cG8rIfCuXV/Y4EHkBmLiLzUqEOKYSS6zfgYxqyMS9rztZi6rk9QF8sHIEeKLXwADKHnqrr
-    nwYmFArIggU5U5ZMdjjCUoeNzGDAu6cAESZ/ZaghRAe75DM1QD0fS/0Ch51y0R1Sb+v/oS
-    6YETzi0Lq39gG+gDAWD2ZZgJDCKUaafY8two1BWSBB0WA8V9apq4oD8Jy5qvxhtpRhQWJ9
-    2R4l2Z1nd2/lPBsARD2bSHYXkk7FMtr0LzX4Cy6tX1NmowJ/Up9JJfWhvkedtrys9KziTP
-    dl+nt3DgrNrEpQN47uRmWgWrH7CPELhP+mgIk81lJMkI44b0GoOM2dKmnBHg
-X-ME-Proxy: <xmx:mCz8amyV2qhW2qczQFdj0pybGNjjlEHdDeqtin34cQv1IJp9yehVZQ>
-    <xmx:mCz8apz-12YK2dwhzoV7bSb3pq2xClcXWW20yjeI_JEv1rCXuTTWXA>
-    <xmx:mCz8auamK2IpklSycQZm3OXNYbswF4V3Pz43koguSAWH7rt3h3VhPw>
-    <xmx:mCz8aqm9QaTytRvHEqOl6qvgrBLh8yeVkhr0in9mRNe_0VeG2Z9ccw>
-    <xmx:mCz8ajF43WNrC2vEOtTUqZEctJr_4ZxrF7Hje7WNvexSNWE0ytLVTwg_>
+  by phl-compute-08.internal (MEProxy); Tue, 17 Nov 2026 05:33:56 -0500
+X-ME-Sender: <xms:ji38al9U-A9k9GqY5Vjo6Wlp300UGDaK750bgl1O6jnux9bo3o5-hQ>
+    <xme:ji38agYYWZT4Oylp-ZIjxdISzQbNyW08g44Opy1PUbkJ5_BAjdztGux4wAVob-ubF
+    sGPFtoBD68Swc3B45Gp26HVb73yHY3HasbRLHPddQOTS4i04CCVjAJS>
+X-ME-Received: <xmr:ji38anfzunD68jqATVMcyffrfLUwjJrMTeHab3NZ6oSzI8ot9X95jKgIBl4>
+X-ME-Proxy-Cause: dmFkZTGPoCZIOo/tLs+Jt+MNHEmRpH88IwE5gjVBo57y2PhV3xWyC7Orpw8u3hp9Sbsccf
+    sXwt6xUeMAogQH7zZvv/pYlPFYqWnSoj1Rdm2isbXzFwg6zfm38sm+AQpZvy49cVwXdb7r
+    vVlDCMrtvmBVbG0q+uBYPlLixR8jQfegKQU0DMP3tRnaXusL5beUtu65ZIuBoACs9qAJnO
+    omyZk6X+S08zPnin8zP6uc/QQjwy9dVJp4qPj/VrzVDDlxNGwYHUx3loE+Ute9wlrCfK6Z
+    fE23V+MKFqIh5EKMNNDVh8scW8u3EEK/CgMlNw+xqUGFFsvMYQ/ROnA+NPMY6/OHiO1SMu
+    Llo8g7ojqT75VbxWo5K+LFkZVEo/rBG59vu1epq9BFxhrECQ9+7upcL/ZIv88Vp1qr3Kdn
+    w+cJ4GLs0MJMFFNjsC0mgyfGTJgXJYCxsPiALYLd3+5vOXbHayeaaXCNOv3ECHgO7PrHEB
+    LS9ptwb+Nz8o+Nx2gdYuKxTRu5QjJv/+TTlM1OInQxL95R5VPySwvBds6Jkp8SSqVa8aA6
+    WpfEFBCXDfQBHlHX/LLFFlUUQoFakSH6XhebYIY3Gm5EyPZf9uGeaHEHpsK47gblP6/yOP
+    xM2WhpaJAgTHegCsiQIfKYIwh3upci4zvXmLjwR0HLdlPoIhYddkxGKVHaUA
+X-ME-Proxy: <xmx:ji38anriSs2E8qw_U6l9QyA8TecYQEH3pa0tNws1LYfT0wFGFXoTHQ>
+    <xmx:ji38ag84_WU6TMq3OYf9z6IWk2cPUzK8V8LeZZL951tvIqHwSxqvSQ>
+    <xmx:ji38arISS9EdnkQK94hqvguI-cTUOEI5QfrugXTHLcrEspAUGbpLtg>
+    <xmx:ji38amOnf0c-5KjEHTTH38TWSpEGmU3PkR2uCycMfvadPdGaqPUjIA>
+    <xmx:ji38an_oN9qoF0edvVZ0A4Eu4hqrbBuA7Alhxc9znTtQp8_OHztP9YFm>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Nov 2026 05:29:43 -0500 (EST)
-Date: Tue, 17 Nov 2026 10:29:42 +0000
+ 17 Nov 2026 05:33:49 -0500 (EST)
+Date: Tue, 17 Nov 2026 10:33:48 +0000
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Mel Gorman <mgorman@techsingularity.net>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Dev Jain <dev.jain@arm.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/compaction: do not skip the free scanner's periodic
- lock drop
-Message-ID: <avwsUxvOymaJqcXX@shutemov.name>
-References: <20261116125746.2897395-1-kas@kernel.org>
- <20261117013702.109081-1-sj@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com, byungchul@sk.com, gourry@gourry.net, 
+	jannh@google.com, joshua.hahnjy@gmail.com, liam@infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	matthew.brost@intel.com, mhocko@suse.com, pfalcato@suse.de, rppt@kernel.org, 
+	surenb@google.com, vbabka@kernel.org, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com, 
+	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] mm/migrate_device: avoid leaking folio references
+ during THP splitting
+Message-ID: <avwtWUVHwcJJKfWR@shutemov.name>
+References: <20261116063624.1382944-1-usama.arif@linux.dev>
+ <20261116063624.1382944-2-usama.arif@linux.dev>
+ <40f86b39-96cb-4fb3-9282-ec06504774e5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261117013702.109081-1-sj@kernel.org>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6084980007
+In-Reply-To: <40f86b39-96cb-4fb3-9282-ec06504774e5@kernel.org>
+X-Rspamd-Queue-Id: DC9214000A
+X-Stat-Signature: bssdwgk4srg3aj6z9fo1ys8oga6dy5eq
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: zg7s8by6rdqr6nbqje9ndhee77nkdw1h
 X-Rspam-User: 
-X-HE-Tag: 1794911390-376591
-X-HE-Meta: U2FsdGVkX18cFCjMjp0aeGae8nycGaTeqf+uGv67oR4mLmK5LEHvpWx8RKgAdwbS4aXib5TrmujV4KcIqBSyl+4V4QUtrcHZLV5ybSDzXLE7GV8xSezDn/ZWFS/XicjgdJ3bhM2NgyDhUv7KIo7AbrtrANtB7yQirgcncxSz/VhW6I1oGBGydyR5a/4DfL6g/xS+QEEieCsaKp4wxMfhYxHiU9J1aHulp6UggqiyzQxsr3BPAnIVEKn8rSGyO7eIWGHiZCBfvLF985l/D/9CV5pYMjvaBIZXpThRzgFA+GEpArNGmUJS1aupcYH8OtoyO0uU2N/W7tTrn37Pvk26GFSfCxkyb+L9Aeo4h1JnybTSo5s6eLPyk7nV+rMzFJoKlc5JWt6/p04NcJ7XKANuLAXiW/F56SxzCuG4iNghqwExDLqTDQhZY8ib3qsY9PnhmA+TNfcDw60YohyvRNJ/ESriOAexTzTDK7ojpY2ZOIyTB/y9oAJZbQ0TPAI58+zqmcYOuyWZJ0ZIOEjEYwQNhYEVCGpxc8/5ocF0uXEM3Wi8ZXJ6W31Chd8e3T8ecTaOXsLJ2qBJtlkSIAeizI+xyMeMFkSHyLZJeJ8x737uRY3tCGT6sabnRNC4UOlmkwFgm2SPaOBN4QNsurzg78MvWMG5SZgV/G/wMri3ElYSdtqNCu6jmzLjQer2Mu9/QA0LenDGsyYV1QI3AG5Ljv76HPxk4Ga07jH4FZxz5SubooBZ4J6MdMJAxyc0/kOk8bfj/ap0kBHMOWxeeP7A65fTRMtkikGW+VvTIUX88OtnwGucg+oiYpeNBp8ndlsC/Vsdjp6cOMCx1Ct9MlESNGtozOzWm0brBrANt8ioHY2WlnNoMmc3+zm5NNXNwaMnu8kPgGCfaHPIxuxxwIsof9flf0HgWUQAnmzmrDCWVBU/wocuNoC+Y2UmE5r+Zv/Z92TzsHI1Y1hl3/0oyrm2OCI
- 1/UU7oMh
- nsYXi8NmlptDuMT5vwk24I8B4UY/+fU3ZGidnjckScz4enwiykmIzHVh5kohEnkQF6EuAjnp2hPQuZKe7YYYVIShWCSvyRUZ6g5glmWJ95QrAlf0TDbatuxs/RdZ+XHiFyfihjZvqt069XXoXSRZJURTSsQPVaaxCmoFmblaQBPRi99Nr2Zz9qjPveZPO+dh2ekxVs+pgr8DFgbz2qRD2+5P9OlQdeBWz7xbPr16AGZAFRRHYTvqJSj0jH9oV0NkTcnEWjqDW3jnIWXY3cwmE5qzNZ0XON4Blv45J
+X-HE-Tag: 1794911639-311397
+X-HE-Meta: U2FsdGVkX19lcX1fiThhUGgMWc6CBUjTcE2tcxiR7BEm1bErteFuXmit2f4iDZ7OCJOEVDZunkxPISrimngUF6Hu/SjyT0iQbgaEu3prFlAUCSsJnhG2lUwAkQNcUaR6pmEFzw+lZDPACkgN3ik4uorvRKG5Vw1pdBBLl8g0sOtB6kggnO6tMuFKct0LSAJoOK3kmn8Hv71pm2EzhQqh72ViKCakzWx45cyzK9FJ8GU/ZMgrxRmLRGWjnEqNlBN2nACRWABCqHFGOAfuXkEHgghKT4q+d3TymnsDWumNaXjvF4drM9WHWnHw0+t1bySIFBH0YUM2BNNboJu2N52gnWkaofKoF8jn3zxN0OrpfUWcyYVss6nC/5cGDvv7pgOFX3vcf01zbj0vB2UnrXp/22l/PxN8ULEyldw5Fz9FM63ZM1sQUTGDIQr3Xz+2cjhQiJd/Z47TpncX4yGaDXHMZkMpXDJmU7aqOTeTdXrr+kkxlnQXue6edzjnP/sr27fPw1k71D5DPw5CGmKgyL/P0vhy/UjbmteFQcWdJZ0TONkvc8j/jjMHxlWePqMh56E7vvhwF2Kiqt6PM/6fJtoctRv8QeyNjJ8tkhsfIZBybyB5yVh8nUGu2HLEpFJX/WE5qZf+rsoxtP1ev51dc0+8P6C5vzcLLxxGN+pHF8d/9GNTvp3B6//tjX51RXKVag8v55gjeasYvXtjWAFh5hhIoIDdPYUiY/kmnqNX/73uYl0pWQ+o9S2aW/iv5wWTpbauSebva9xxHfWdWpBFYP+KSYVui1J67Ysu7oJFQaMV2dYqnxnG/bLaF4OlRA2FFOF62k1sCcBzv4ddr1G1YoGH9z+20SBJ35uWXJDPw+rZEroBn6ZfBq7LcDwIJJIaizUhLvh1QPmegrH1a5CCTGfyhZWk+UB2VSa6ldzwxK254sWzFZCrlLVBrN9ZgaRTCnjOe2Av/OnEOiXGKOm7hit
+ vgJ9SBGH
+ LCyFHikcEdGOQv2ajJ3ISoWIB6qa9K6XwbKSgKzH3gsIYGvHSsAzoDDn72SgjUVezPuFA/n475rtEdjUiqQjZzZ9QQMM5/TYcrzjikrkpIMUASa1e/08iO0QY3Uik+iXFcERW2VRYYy0U7fd8aitNCtZJQYmLJzrqZPG1qRhz9fgcb6rQV5Vp0sbey2pIHZXe53El9SmeVxaVchtQM3CIz+1bwoPhJ+iAdB6cTMmfRGBwlBEdC8CbQHNDTkVI0Gv1Pf/a5eYb1VF6oDRFEBvphRV6CLW0chhGbFK+gyEhDhy9SgjJU1keh2V7xhrOvLAp8P50vhUU2uCrBmKdz/eSPYJXW1BNt9Ryr2u2nOLA75Vq60NfHk+pfWtRJEK7AoYz8DA3OTZoET2evp4MuhdTcIhu6tsVIpY8PDwC8jQFi7oOrPz0l6SN4xMlSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,74 +130,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 05:37:02PM -0800, SJ Park wrote:
-> On Mon, 16 Nov 2026 12:57:45 +0000 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
-> 
-> > isolate_freepages_block() drops zone->lock, checks for a fatal signal
-> > and calls cond_resched() at every pfn that is a multiple of
-> > COMPACT_CLUSTER_MAX.
+On Mon, Nov 16, 2026 at 07:44:42PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/16/26 07:34, Usama Arif wrote:
+> > migrate_vma_split_unmapped_folio() takes an extra folio reference because
+> > split_huge_pmd_address(..., true) drops one when it splits a PMD.
 > > 
-> > With a stride above one, the scan steps over a compound page, or over a
-> > high-order free page it has just isolated, to a pfn that is not a
-> > multiple of the stride.  From there it never reaches a multiple of
-> > COMPACT_CLUSTER_MAX, so the rest of the pageblock is scanned without the
-> > check, possibly with zone->lock held and interrupts off.
+> > However, migrate_vma only holds mmap_lock for reading. A concurrent
+> > MADV_DONTNEED can clear the migration PMD, or split it into PTE migration
+> > entries, before the split helper takes the PMD lock. The helper then does
+> > nothing and leaves the extra reference behind. folio_split_unmapped()
+> > fails with -EAGAIN due to the unexpected reference, and the reference is
+> > never dropped, so the source THP is leaked.
 > > 
-> > Count probes instead, and check every COMPACT_CLUSTER_MAX of them.
-> 
-> Makes sense to me.
-> 
+> > If a THP is faulted in at the same address inside that window it is
+> > worse: freeze = true replaces the new folio's mappings with migration
+> > entries that nothing will ever remove, and drops a reference the caller
+> > never took.
 > > 
-> > Fixes: 4fca9730c51d ("mm, compaction: sample pageblocks for free pages")
-> 
-> I understand you intentionally not Cc-ing stable@, buecase the user impact is
-> not that bad.  I think that makes sense.  I just wanted to call out this for a
-> case that it was not intentional.
-
-Right, I have not see the actual user effect of the bug.
-
-> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > An existing migration PMD is expanded into PTE migration entries even
+> > with freeze = false. Use that mode and remove the extra folio_get(). The
+> > reference already held by migration keeps the source folio alive whether
+> > or not its PMD migration entry still exists.
+> > 
+> > Reported-by: Zi Yan <ziy@nvidia.com>
+> > Closes: https://lore.kernel.org/all/DLZ48KMS7YG8.3BTM0UUU8CTU2@nvidia.com/
+> > Fixes: 4265d67e405a ("mm/migrate_device: add THP splitting during migration")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > > ---
-> >  mm/compaction.c | 12 +++++++-----
-> >  1 file changed, 7 insertions(+), 5 deletions(-)
+> >  mm/migrate_device.c | 7 +------
+> >  1 file changed, 1 insertion(+), 6 deletions(-)
 > > 
-> > diff --git a/mm/compaction.c b/mm/compaction.c
-> > index f1b2060eb201..4465c1551406 100644
-> > --- a/mm/compaction.c
-> > +++ b/mm/compaction.c
-> > @@ -579,7 +579,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
-> >  				unsigned int stride,
-> >  				bool strict)
-> >  {
-> > -	int nr_scanned = 0, total_isolated = 0;
-> > +	int nr_scanned = 0, nr_probes = 0, total_isolated = 0;
-> >  	struct page *page;
-> >  	unsigned long flags = 0;
-> >  	bool locked = false;
-> > @@ -599,13 +599,15 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
-> >  		/*
-> >  		 * Periodically drop the lock (if held) regardless of its
-> >  		 * contention, to give chance to IRQs. Abort if fatal signal
-> > -		 * pending.
-> > +		 * pending. Count probes rather than pfns, as the scan does not
-> > +		 * always land on a multiple of COMPACT_CLUSTER_MAX.
-> >  		 */
-> > -		if (!(blockpfn % COMPACT_CLUSTER_MAX)
-> > -		    && compact_unlock_should_abort(&cc->zone->lock, flags,
-> > -								&locked, cc))
-> > +		if (!(nr_probes % COMPACT_CLUSTER_MAX) &&
-> > +		    compact_unlock_should_abort(&cc->zone->lock, flags,
-> > +						&locked, cc))
+> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> > index 9e19fadfa65c6..3286bb8a4b73e 100644
+> > --- a/mm/migrate_device.c
+> > +++ b/mm/migrate_device.c
+> > @@ -920,12 +920,7 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+> >  	unsigned long flags;
+> >  	int ret = 0;
+> >  
+> > -	/*
+> > -	 * take a reference, since split_huge_pmd_address() with freeze = true
+> > -	 * drops a reference at the end.
+> > -	 */
+> > -	folio_get(folio);
+> > -	split_huge_pmd_address(migrate->vma, addr, true);
+> > +	split_huge_pmd_address(migrate->vma, addr, false);
+> >  	ret = folio_split_unmapped(folio, 0);
+> >  	if (ret)
+> >  		return ret;
 > 
-> Why don't you let the later two lines unchanged?  No strong opinion, no
-> blocker.
+> Oh, that means we can remove the parameter from split_huge_pmd_address no? Best
+> as a cleanup patch once this is in for-next-fixes.
 
-&& on the new line is odd to me.
+Yeah, that's would be great.
 
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> Reviewed-by: SJ Park <sj@kernel.org>
+The patch looks good to me too:
 
-Thanks!
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
