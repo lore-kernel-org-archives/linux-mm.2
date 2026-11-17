@@ -1,113 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14AC606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810DE606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=L4X/7pi/
+	dkim=pass (2048-bit key) header.d=shopee.com header.i=@shopee.com header.a=rsa-sha256 header.s=shopee.com header.b=L0FJbtAC
 Received: by kanga.kvack.org (Postfix)
-	id BCD1B6B05CE; Tue, 17 Nov 2026 02:08:31 -0500 (EST)
+	id 985696B05D1; Tue, 17 Nov 2026 02:09:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA4F56B05CF; Tue, 17 Nov 2026 02:08:31 -0500 (EST)
+	id 935EF6B05D2; Tue, 17 Nov 2026 02:09:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABB7A6B05D1; Tue, 17 Nov 2026 02:08:31 -0500 (EST)
+	id 84C5C6B05D3; Tue, 17 Nov 2026 02:09:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 920646B05CE
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:08:31 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2FAC11C1197
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:08:31 +0000 (UTC)
-X-FDA: 85443732822.16.9033A1B
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 88EE720006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:08:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="L4X/7pi/";
-	spf=pass (imf13.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794899309;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 696396B05D1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:09:40 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01A4180312
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:09:39 +0000 (UTC)
+X-FDA: 85443735720.04.70BB8F2
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E04B34000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:09:37 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=L0FJbtAC;
+	spf=pass (imf27.hostedemail.com: domain of mingyu.he@shopee.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=mingyu.he@shopee.com;
+	dmarc=pass (policy=reject) header.from=shopee.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794899378;
+	b=xK1fZ+Mxt+tjsodqMJHIzvbR5Cr/cjQ6GyrQ7zE31uZWh8PA5XtyDJv+pMPUC+2IH+tmez
+	rbLsDE9wTzf7nu+BvlHTgdotjlSkzfySsKH00vXO0R1c1TRlKEGeRj3X5ZT1CpG6HkPYSG
+	iHKbvXxl7Yb0QsiMHlbJvG15S4R3k7c=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=L0FJbtAC;
+	spf=pass (imf27.hostedemail.com: domain of mingyu.he@shopee.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=mingyu.he@shopee.com;
+	dmarc=pass (policy=reject) header.from=shopee.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794899378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rOa3RtnmIODQAIOd/ZqlGYqJucQki9cfsWeLmMaO4dU=;
-	b=U4btME8nlnlhQJ1DdRVWGw2M66etVIV5oCuQgLLyfO1eSHqMP1qoojEoxscnShqV08hQ3P
-	tXl6sys6eEAOc3mXHXnV07C6SntXfcmDC2uPWZXCe0UK1dHHjlaIeiKtajgaPQQZSVd/0r
-	1+8Vcknt1ex6pDmDuegcwntNQsKipwY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794899309;
-	b=ocl7z+Y9DMq/HBoPt73zJkkjyWYyCV534RDFy3ADYQTwBdjcal5h47LE7X/dnlG3y59JJt
-	A8yjHY3E30cKaGg30H49qKJ+a0U5Rzwb0Ik+DdhwMk3IDmtggRGlpzLSXcBuIJ/MYFB0DD
-	cFz9T5eT041faKd/2lwRD0/A9u265PY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="L4X/7pi/";
-	spf=pass (imf13.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=rOa3RtnmIODQAIOd/ZqlGYqJucQki9cfsWeLmMaO4dU=;
-	b=L4X/7pi/hKgrcWH+r2Lyz2K5fDr6oemmr9Vqo/mlPjixIKI0SaWd02EkAFwLiATXCcyx1b0Xd
-	SD4a44BotoB4mvpr9tipicm36JCDbfzpc2xS5upFF+YfPk1QhGsg2JAQ+C8ME4u4aQkhKCrxCFx
-	b96PIsaaZyFGx0HZvwo6Js4=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4jTG5y5hW3zKmT8;
-	Tue, 17 Nov 2026 15:08:06 +0800 (CST)
-Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 72C8D4055B;
-	Tue, 17 Nov 2026 15:08:20 +0800 (CST)
-Received: from [10.67.110.68] (10.67.110.68) by kwepemk200008.china.huawei.com
- (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 17 Nov
- 2026 15:08:18 +0800
-Message-ID: <ece02e4c-f87e-48ca-a653-cd02ca74eaba@huawei.com>
-Date: Tue, 17 Nov 2026 15:08:18 +0800
+	bh=WnR+cG1zrK99ABssRDEAQLG69JFukBqigLZq1PXp1Q0=;
+	b=WgWVOBVtW0jH63kEhORc3TQgUV2vJlnSPCsOrC8nuNwzUaRQayDQTHV9e309Ku9ZS8p5vD
+	bfibnqqeUfoFJaymxt6micszCi/Zf6mfBlpfWkaFeqVTHu7fY7ajJlYcCJPPf7fcanbwZT
+	I1bnny7DOkHvQ8/T18dtN2tA5+aXWY0=
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-3704d30b84fso5159923eec.1
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:09:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794899377; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aArSJHXZGZ9be+LnJYuEcE3dM2Fdo5mqrvMIq7mFs+5z6NySXcH2rbsjU5/5yPt4sh
+         5UKknAxSKYU5/g+zHZXLNGLPqrwVOrauiGYNRuOVbSxHgdw/+d/TanW19uhSsdvCnE3b
+         WKvTbmRFTjA30dYpS9W+mbFkKA/envH2hm9hpU3cY9Q/hAoljdaVs2QTIOw9vhZdWplA
+         5H+Vimaj1hidGimPA02Jj5GWRKBwx/fug8+PZ9gZIXlu1Svb9Sd9ysyGCMmiyYfe8xbE
+         dlsd/C4Rqs8UiZpbqYDOV5lGnWyQfDTtr47tY555ATtN5AeBcGI9ksr1GWxN9LBnJbgG
+         ENhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=WnR+cG1zrK99ABssRDEAQLG69JFukBqigLZq1PXp1Q0=;
+        fh=M5Zb/ft4jcGXbWob2VnET0fRZvywK6+PimKZgaB/KdE=;
+        b=hPoSQervpgf60kJyCo8JruEMsfbGqDqcHLYTfVW6sKYDqihtYreNlBtirP3HjK0uMW
+         CbcRwBcBsdPrrMNJfivERSxW3A1RNXU7Qu99Y77l9YKkfWsq+LRtcOkF6GNqTTf8mEgv
+         jJeSrJO8geH26sbgPf6tXe4LjZzRsrzILuLFmu0uKWDI696CBPPFt9d/JNggqY98tVig
+         n7ye0+Inp4Q+AmZpOlvWHqZjQdp5Fm2tlGdqIuNCB8DPljU0jWipuda7O0iyrODe1qhJ
+         zXgFfibFfA4oOCf9P3MMGNwJXq8awz0TIOWnwLFwt00eCnFLmVLMizBIHdDmgFpGvSEO
+         h3TQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shopee.com; s=shopee.com; t=1794899377; x=1795504177; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WnR+cG1zrK99ABssRDEAQLG69JFukBqigLZq1PXp1Q0=;
+        b=L0FJbtAChxkStDy4pl4I7cOLY4C/xPp+hef4UZParEFqUJDzwOUh8gXgcVo52YVrcL
+         kA/LHVX1Or6sHupKQwKdhL87q0Kg6I0Ls4jQXlpiryCCb7LLgHhEfbJ/Jv/5fI1ZA66P
+         fAPnO0UzwuHVKbVlZnpy8YGaaYHTFIJD0hwvrEnRzzWK0r9XAT+zrajW31f8klgTEbkO
+         6xlGmi+4blA4kwESfcR0uul52bbzt3DoAtQo8IWijTNTg9awDs92ms7nUWvTBJsLx+5Y
+         ZClVw1YEvLhl5U4fdb1GXlapqGZJmlbfKe14n/MSP/U8ynI/wzVKJ13crr1GlzEhSdQh
+         gU1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794899377; x=1795504177;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WnR+cG1zrK99ABssRDEAQLG69JFukBqigLZq1PXp1Q0=;
+        b=wVeQsJxiS1Y3mRWfX9bpieujmegq3W17QUSdozCWrX91mmJRqoadjMxpeKc6L8630T
+         ee52pKwTvMdRKZ4bg8oYdqqL244mwPzv39R1TVUPsFCQw488qurcBlv9tTmGG4781P3F
+         EUTGo5f0+TgkQo++nYZjUAYrqG2w9jRFzU9qEuxcX0t2gCSrYh6NjR4GAf4TOfkStIFp
+         E2AdtfH/brZpGf+7uR66oj9DeImS9rFhUbt7MTdUdbeYkVhtJx3TFce1qi1DOtzfGL2e
+         jaNojx6Ul8gO4nUkyObDyghcLO7JRjn2kKgUVzIewbnr1Kbc+TxZb83FCNVGmHl+kz6o
+         6csw==
+X-Forwarded-Encrypted: i=1; AL+hErG7qgqA43VuNjwiRUy8No09Pa/4cL44UIIqSQNO0rXgw+uiIFZyKQPWDzCdCt+HwXx0pn4KPmG6Qw==@kvack.org
+X-Gm-Message-State: APuU4Z/o5b0MGr5jMX0ELa6i3srw/QVjF/YbbJod0uW/EY51m7G+Ae9I
+	YJYnJ44v2S5y6EbaVh+etlQcw10C6I+V7EVbLDPlUbXwff3t7NzBHcLs0BgDUR7bPS+eX6r947I
+	U4MeY5rdnGuq0/YKFLBH+9bh18dtt4Hk9b3W3CqmIIQ==
+X-Gm-Gg: AZFdTZfOzKvI7PPXEBE6M/z9gcSrArovmeJDQwOhD6o1JvpiQVcDCbbslGVSddaTcYx
+	AQMEgITru+aS88/PZCLgDe5F0/bctnhIqjIhvmdnvtYixZbLIT+n51imd1TRtiT6Ho2nxCfqFjF
+	Ns7UFNfN/66uCmGhymRrv9KSsBE0QazKOT2p0cV0qfeNWk090+sS0K21AHmox7mXIY1nsXGvnCD
+	bSv9mISuK5G/6HWRgL6X/K4y420fPqgu02juxzmPdUoJFeihAYAHUPR44D6Zt4WTvAwwAkqE0C7
+	i493E3vogxhSlCLSP5ObdQ9mFy+eZzbv15JJ9bBRyI/ZKac8K1E23g4tSCFBPbA/uaUK4jKh1FM
+	zZq6n9F8snIsAQHxrfsM98LM8oZb/nRdelUwf
+X-Received: by 2002:a05:7300:de01:b0:369:daea:812a with SMTP id
+ 5a478bee46e88-379682c2053mr10636754eec.30.1794899376652; Mon, 16 Nov 2026
+ 23:09:36 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/3] security: Add PR_CAPBSET_DROP_MASK for
- process-wide bounding-set drops
-To: "Serge E. Hallyn" <serge@hallyn.com>, Oleg Nesterov <oleg@redhat.com>
-CC: <kees@kernel.org>, <akpm@linux-foundation.org>, <david@kernel.org>,
-	<ljs@kernel.org>, <liam@infradead.org>, <vbabka@kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<mingo@redhat.com>, <peterz@infradead.org>, <juri.lelli@redhat.com>,
-	<vincent.guittot@linaro.org>, <dietmar.eggemann@arm.com>,
-	<rostedt@goodmis.org>, <bsegall@google.com>, <mgorman@suse.de>,
-	<vschneid@redhat.com>, <kprateek.nayak@amd.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <shuah@kernel.org>, <brauner@kernel.org>,
-	<alexjlzheng@tencent.com>, <jannh@google.com>, <jaime.saguillo@gmail.com>,
-	<elver@google.com>, <blbllhy@gmail.com>, <bvanassche@acm.org>,
-	<pjw@kernel.org>, <broonie@kernel.org>, <debug@rivosinc.com>,
-	<tglx@kernel.org>, <aleksey.oladko@virtuozzo.com>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kselftest@vger.kernel.org>, <morgan@kernel.org>
-References: <20260929130200.1638343-1-ruanjinjie@huawei.com>
- <20260929130200.1638343-3-ruanjinjie@huawei.com>
- <atjN3JX7sWx9kpQ5@hallyn.com> <avHfm5/mVtuN/oPW@hallyn.com>
- <avIKUzCKAkfC-wuk@redhat.com> <avIVCf1ok6Xyfii0@hallyn.com>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <avIVCf1ok6Xyfii0@hallyn.com>
+References: <20261112041348.66915-1-mingyu.he@shopee.com>
+In-Reply-To: <20261112041348.66915-1-mingyu.he@shopee.com>
+From: Mingyu He <mingyu.he@shopee.com>
+Date: Tue, 17 Nov 2026 15:09:23 +0800
+X-Gm-Features: AclHuK_OdWVIh2slf7tcPI8uUm8C9Xejgxejc9Hqh6QFSCrmh8eY8O7vcMROZXY
+Message-ID: <CAAoBcuTiyvYHPpKNzYsHdLTGmkQmrKUZPkJAkm1qEdOeu18hRw@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/bpf: Always flush memcg stats when explicitly requested
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	littleswimmingwhale@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk200008.china.huawei.com (7.202.194.74)
-X-Stat-Signature: 9m91michsjghs6sizh67a3uhigegpqgs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 88EE720006
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: E04B34000A
+X-Stat-Signature: huc9f94wrx91smf5nanf34mpafr45mdj
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794899308-260435
-X-HE-Meta: U2FsdGVkX1/c6jlzt/rgQEEgdHcp/kFjG7IE62Xtjk07Qg7sMEai1VaNlZYb/EqVMrDCV1u40KD4kEJrpM0epoqJBADTJSkGXVa9SjIt9Wxp1oo6FXyAXXikaBAzBFysfbWQqDg/3ct4DrE0INtw4CkYv53IQ0dv7ArktLpocqF+yJ6DM7rZ0qD3yUxZ3X1tfV7Rf805f3ZioO5GCCT3mjsNbo0RTNoxu2TcKAc9tBVY/f/sNWdS1A68fPqSOst537NYz2A909HSVYU158PlDUmJP/0iNJpQm0lgP37ks/CzTpAA8XRPWypyiqW5Wo+8cjrXUoT++iPxFt04MEneCHVsCntdct3KbmPUOquoYRZSnKwY4Bzac4lPRNRYprYrlq/W2rCIu5HNTtpQ/jvWgIwues6CBHZrqJmsqkFJ/ap1+i0Pcum7xRm1Y88DlOO1KcDTqc0P3g89gC7ckk1H2EdS4uZGkDs3Eyldp2dskDsa/owjSkQZpoK0TrzRbnEP4D2Z7kun2Ph193ayNdgNJVnyEAp+pff15l29q08lhqrPd0alN+7Ob9mopIF/T+ATGQee1uN4D+CaVgVKC4IaX3AEnZ8NKohAK5Wz1bVk5vK9l5JftFIFBFKgQTuai1DTR/Vf9ymIVI4MyGKyXJcvniXdpCRXoEmQjaR/rCeEG/4iv+MozTHX3tQO57F7QpkfYb9+2MMUfENfMEqtCVJ9zlOyJIuQZ/0ufoGDoq431Po4X9BP5id0K34bRK7md7tddSZzxf/omELHdHE1Uv9Bf6fQWN7PqUJbOMPxf8+Sc3TMDm7S1GKJlNz6JZY1Tsw9i1Qsxjt+D8U/T4wADaiA9YzD8EFfzoshZV9RdGtrNihTiIlFEnkHFT7BefGiTLtw9h+MLKwVjxP0WfEa5VaCniUj84Q6SJupYEKcCkNo2c/QaiVk6n7LIA94CpgmAwCzgHuzkYDugw3TyZG3aRq
- lV+wQfoL
- 54ou8kymbeCca1gc9T0EbRBKIwImNCTd1Pe4DonLL0tqMt75QXgrWPwfCzKgL+Ns5WI9MpiF6HKxQbnUgD7bx9nOvPQ754DAhRKzl0wguqZXy3m7/AZv2Cv/YAjSTREPJx0VNnQDt2AHsh0LikeQAlzG3jdlG+VCZXUryefC4Ye/hQvltbLU2kEDHLmGytuCyk0fTh1TfvUz9fQvA89ma6Tpt5YNmk9pfzexeEsSIAKa3FCVb4XQRIsdNhTRCbctaFZPNqxzHx5GC7l2SmsU4X065WF0OvZiPoheqqblaBgcERv/RJd3cj2SPYfQfudB3Vi+5MFEkESOhD65TTE3YrZQUJA8wFnZVjEcuAHf+VQavMVbwKPK5cfdzkkBEmvSVOWVSutR/tfyEbdgtj1Af3KszsRwds0exixJ7Uozu+pgsMqqfL1bSjazkij+enazzT04rvA6ld/OltZMw/Qd16S5bTd9OFzqQbctzM0lPaNYGk95KrO1GosetIuBDgHTq/DkimWuuWzLLXtkSIbqvExBZ1fSL0cbQ+F6Oa4E7xGgFgX8=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794899377-571233
+X-HE-Meta: U2FsdGVkX19hDSWTgbZV8HzLEdXbqb4PbM602kOlLQfSljolB2Tq00mIjG7hNkMvCYbPNsqm6E8w3ww746/zmkPZQR+EZZyekrsZDJLa91DwuP+BHabFX3dkNCnYHQ3PZWxQGjR1bP3sU6WpXo/XNHnIWitzslP124DGbmQXQRYMpHn2m4o6AIKt/GoRj8WQemez5QI7LDTiEas5WjrffKtr3MQXtd648CVPJ4KHDwJSd0Ye3l5rR+Q8Kozj3KlA0HY3aSnjrsGvI+2ZhX05D8eJ3T7sY9EWIud8RuATjV+ZPyjnkvTfMSlXySzbr+wrIls4FDZUZoQuCKgE82rUD7nSe5Olr2clJqz/gEUsuDh4Xx07DpJy0QYiRlyC9kmQeG3sN858sF34tKm2gqxhthbB65kgq9O54CS30GyX2DghIEaC7nmel2vx3IcvuEKfVF4k0sJP7vL79Oxke+1YYUcR4m6T8BT3UWNRWXL3N7k24BqmaX9xmOXQHCqoFXQbRGqJUkkXjM7tBR1nAcTi7rFlyWhgIOELpjkuyVx/lGN87T+Un5Ohh8NqQpVgsEozUQXxdcOziwznHB5kl0Mui9GIPZEkfeJOsPPhsbbOUJG3+8CnSqhlgBjQNI6IPgbGLeWExXho6Pl1bwBTnMxPNueYBasjmMZQwidSRxVMjS2QstUjESbd+24m0lYKN680g3DrtIBuc1256GElz1g8/37R9OuatGW4FIeu9zZ5bDrbhNQWiFAK5LPGkBiaUfDD1nCzbVAJExzg/HduOMY19i9b5/Hbyn6tUb5vWzapKw6vaxkdvoksPaLXMtbMuEpV/Bz26KXDLg603I7Seo0ShFVWQOUvvVf6R4aEgtZoKcoZ2AkFn2zXIUaSJ9SWb2Jp+ioLXQsRZPejZdA/QL/sPDDrnT2qX3A5RePZFTnIzTRQMNsyaklLFQe7d2kmmiAVh1H2J+EkMWjIkhMJmdt
+ z1RfBvKF
+ nkJKouc2vq9r8NKZuRM6X9/TsVPBlrITXpiRtwCp3grV+D3x1h1ci7/j9kR84d/MBtM1uzJAmCBn8pMXaUundg7eeNwkLxupBUkEnBSm0fVcOTL66BDd++ycqmJ0F0SO4ZsRMx+GzMzqSLJITDVjNfFa91QDZsbuscv5/1WPsCDp4K53+vvVOcm/naBrMlLvoagX60RpQ9CkRBA359pvTMvBu8TndUs8mzvAkM/odrsMv42oh/quHNYVvQUmhCEE0lTGsbTaXkVXtCVdDhCSNKLsXGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,42 +142,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi, I wanna gently pin this email, thanks.
 
-
-在 2026/11/10 2:46, Serge E. Hallyn 写道:
-> On Mon, Nov 09, 2026 at 07:00:51PM +0100, Oleg Nesterov wrote:
->> On 11/09, Serge E. Hallyn wrote:
->>>
->>> Hi Oleg,
->>>
->>> please see below.  Do you have any issues with this use of sighand?
->>
->> Hi Serge,
->>
->> I already tried to look at this patch, but sorry, can't really comment.
->>
->> I'll try to take another look, but can't promise much, I don't understand
->> the problem space (I could never reallly understand capabilites in details).
-> 
-> Thanks.  I'm mainly wondering about the storing of this pending capability
-> bounding mask in signal_struct, whether that might have any unexpected
-
-Hi Serge,
-
-rlimit is also placed inside the signal struct to implement
-process-level restrictions.
-
-I think the different lifetimes of cred and signal struct might be an
-issue, but since drop only decreases and never increases, the result
-seen by the user will only be stricter.
-
-Link: https://lwn.net/Articles/103658/
-Link:
-https://github.com/torvalds/linux/commit/31180071ee5e6cc6ff4d036d655c556f582f74e4
-
-Best regards,
-Jinjie
-
-> side effects.
-
+Runli
 
