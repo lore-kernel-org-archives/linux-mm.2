@@ -1,138 +1,164 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4F1606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68BF606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EnFucXqi
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=Yv7w+f4a;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Z6Bw6rdn
 Received: by kanga.kvack.org (Postfix)
-	id 3C6926B05B0; Mon, 16 Nov 2026 20:03:27 -0500 (EST)
+	id 929586B00EF; Mon, 16 Nov 2026 20:10:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39DE86B05B1; Mon, 16 Nov 2026 20:03:27 -0500 (EST)
+	id 8DA556B05B2; Mon, 16 Nov 2026 20:10:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28D036B05B2; Mon, 16 Nov 2026 20:03:27 -0500 (EST)
+	id 7CE4D6B05B3; Mon, 16 Nov 2026 20:10:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D21046B05B0
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:03:26 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A46581C32D1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:03:25 +0000 (UTC)
-X-FDA: 85442812770.19.A313480
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CCC2B40009
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:03:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=EnFucXqi;
-	spf=pass (imf17.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794877403;
-	b=BwbNcTaKAKhs60e+Cb+zDGs/1HiP8IBSS07Xv2o1xcHtYTDjCWHwrXbS8Ik/nm7vEeiN33
-	cde6KGTadmrxT/jNgLUV/EvMScCf0gIXj5fYM02u+rFidvtE8f/3ysB+7Z8rYLe7Lh7NGI
-	JUcn4wOEyKsp+upl92//QtMe1fQHTiM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=EnFucXqi;
-	spf=pass (imf17.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 44F846B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:10:02 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B4C1C1A02AF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:09:56 +0000 (UTC)
+X-FDA: 85442829192.27.594E65C
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 624604000F
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:09:54 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm2 header.b=Yv7w+f4a;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Z 6Bw6rd";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf04.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.151 as permitted sender) smtp.mailfrom=alex@shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794877403;
+	s=arc-20220608; t=1794877794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8xRj1Homj/VTvTcbwqPDSEFGebgrQcuNK0zuIg1sPk=;
-	b=F/sN64XSgch4U0yiHS0lWHxmO3LWEpWYNNuls5euEnxaQYfJZhp8R4sbxoJz2HI3059Q9h
-	N/dc0DCHsF884WCVlgJiUTquc8/whAYf924VmT8T7Bo0QhfM99Z6aiMnejofEx67pm4XUy
-	PenNkc1/a82AcOHkNXCOr2UjOm2FIPQ=
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-372bdb942dbso3675157eec.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:03:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794877402; x=1795482202; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Q8xRj1Homj/VTvTcbwqPDSEFGebgrQcuNK0zuIg1sPk=;
-        b=EnFucXqicoJpAwvTRGeYRAIMzhfV88vX6TroNalbHVZ4EmGq0ks/c1Fmx/1nbNGjEZ
-         wK2ebdgUVl+sIhwWO6C/yh9tgpaJZWYwNcaVvVJvO7z7d/IL9i9YoAbLPrDGVRQU1x58
-         XE0wLxhmN+8fruoaxLlUVlmbOgLxUJRDl9tT7MivSbBDOKK3W5RhTa14oisozTWnMxSC
-         61EcfzDRVKM7E1o5h7z0wdOKh0NrUMlWS/pS3+0Zy2XeWSUltMwtQRZrJCjqz/FQZJt/
-         gkeM/7wTcRUgyfg9AxgqN8tOOG/Hs92SEGpfc0yDQvSzIqAnl3pePB7lgl5tzk4E2VJA
-         MNVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794877402; x=1795482202;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q8xRj1Homj/VTvTcbwqPDSEFGebgrQcuNK0zuIg1sPk=;
-        b=q7DjS5d3Rw7zjaQ+R8huQfQtSkbWfy6ZRPYldS8Rz1s3pEFWWxaOR0lI13rUWtUPwF
-         tmsObwBApMXXuLZBJckW4OgyPS11j00Fos6oYDNHFw/2Z5TsPWsP9vhS3ybz1ANiQff5
-         VsNYUN+WZq992DvMKnBoI8IbQggYauAp70qbL+CagTYJXEbSKsG6ZOEHNq3rUDbF1VQY
-         XGtQfNIaw0sl/uDSQTvADcuDAkljuJt3h9zfpq/oJg2D8rvSbogRiDlMhmDF/3Xd21aH
-         tFsgviLImmy0HfIQIqYtgCRMT1L0MmI6ROXjsl8rj2qLpohSCT/kFJLycKLzUiStR1jD
-         Ml9w==
-X-Forwarded-Encrypted: i=1; AL+hErHShbyQKVRkbgsap5B5VpUN3Q1Wwb7ZOPxrCj/0nixlzWtS5SC2jd7qf7ectCV/R8YlaMNJ1QkteQ==@kvack.org
-X-Gm-Message-State: APuU4Z+tXlgoe3zGe9fZqTD7rjq+3lulo4kJNCAn7Hif9GNxvS0nQthC
-	/ivE68nK8ScExl/XD6jprCQEM2yGsgmCP8W6EGAzahNfIyKvhTsogPFM
-X-Gm-Gg: AYBFou0sMh3ikEhCbIExi5/zumgiJsK5asifs1f9voje9aww1JUAIOEdJniseWCS/0x
-	Hx45o0uFhRSU1uqznyTW5lqu04TawJlQybZoNLfooaTazVhQgO4gQ+7LlY7ZnXvrHMp00xVH4QY
-	P0XuT9RooW9RIwMaKztdFOQ4xVjc0ak9Jez/1KF/KTVyez+ybguQWHxZJ7Argne9GxqCcbdzOv8
-	dXD65qD7g0oEI+fjk7n2QIH9mwGXbdLyyqKT+/0brKDyqPfWztJWkMDvgXYF3JROH7w/bzRifDy
-	q2Ywlbf+qvus9AMwYrKbopn6c5fBTIV+UZKZyCDfwbh9tCcwDtViw0BU9c1quELZRjkieGK0dia
-	PP9qZHxo6qnDAWqqhlujVsMZ8KAKY4AOi0VCAcMVByUqM4XvX9WOY2uwiYe3X7d+lCPHnmMVmNc
-	fk5kWMTMMuLVRCBI0toBR6oGfwfzx+IR7mbrifha88VviqkPenlm92s3BorCbhGstB8ojxArgXA
-	flE0Nlv6j0UT5/VfrIWeW+s52r40Mqj6baMs0YMeO5dxprXY1cSO2kp4LrM3D41yrf/O7OKHMKa
-	UiJi1w6ZybMg+F7uMZ/k5yEbAikRIeAF5A==
-X-Received: by 2002:a05:7300:cc9c:b0:371:5cb0:4929 with SMTP id 5a478bee46e88-37967dd4c20mr11790852eec.25.1794877402316;
-        Mon, 16 Nov 2026 17:03:22 -0800 (PST)
-Received: from localhost ([115.99.200.166])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37955822d58sm37778195eec.10.2026.11.16.17.03.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 17:03:21 -0800 (PST)
-Date: Tue, 17 Nov 2026 06:33:19 +0530
-From: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dan Williams <djbw@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Breno Leitao <leitao@debian.org>, Ira Weiny <iweiny@kernel.org>,
-	Li Ming <ming.li@zohomail.com>, Richard Cheng <icheng@nvidia.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Kiryl Shutsemau <kas@kernel.org>, Harry Yoo <harry@kernel.org>
-Subject: Re: [RFC PATCH 2/5] cxl/region: Factor decoder poison-list retrieval
-Message-ID: <avun1x_x1UK2yWjL@acer-nitro-anv15-41>
-References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
- <20261010162017.62506-3-shaikhkamal2012@gmail.com>
- <20261016232103.6497bbb2@jic23-hlaptop>
+	bh=tixrKvDlE8HOBCT+YKZFYawn5B7wVxaXbSBVfB7YWRc=;
+	b=JPKGeVGQb+DHpVqAkbkIWfejKYgafiI8j6OzZyUcbhz1QU5Vj3SrPhNJoWYLeD+vb/igv+
+	vSmR3nCtshs3bxXG8r4VXZCMpZH/ozrKujir8sAiyZtkLZDaf4ICgwTy0ayy/eI95bkLX+
+	uM+gQd4fMcIMcDqW48qvJnjypsX5c1M=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm2 header.b=Yv7w+f4a;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Z 6Bw6rd";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf04.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.151 as permitted sender) smtp.mailfrom=alex@shazbot.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794877794;
+	b=WIWz/L9D0SglStF42oG2GcJD1GabLZK9kVwpcyHT0f06En7n2DHGGLmqO0yPKWIWcrtsKF
+	CGsGnw5U14lgw91R1eIGHG77pkbcgEqtUGKezeHIQ2/IBnzc6YQEGNcBYm4C+MoyhUqREy
+	3QBNgGE6cHz1KKbQ9tPVcXzyK1BdYmw=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 7F9721D001BA
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:09:53 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Mon, 16 Nov 2026 20:09:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794877792;
+	 x=1794964192; bh=tixrKvDlE8HOBCT+YKZFYawn5B7wVxaXbSBVfB7YWRc=; b=
+	Yv7w+f4a7yLZ7pS+fyZ1mVYAgiXOLpWpxo2CVDHwqDXl1vmhcWHDd7sJ3U3MKPPw
+	b900vTAsW6wjs4L2LutPUaxBWa/Qn+BQmwQd/m6zPjDPzFUpnv94lexz09UlBaPB
+	4jIQgonKLK1QAPiav7YLgLYJWarwcoFH9yajuhIMpvgJQOo+zHcp31DR4kECfsGq
+	xjuHkHZ/GM04/N1ow/0nrNVJU/0z4RVhJfWNOvZW2BR8OJxVRAihb2Zj+41v4g9b
+	w9ntpIBlfE4+I6F2d3K2aw01bleVd2TVKA5f1LtVf+X0tilSuWr5qJfPtIppMWEg
+	m+FKe7rKC1vJcfJ1ec01Cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794877792; x=
+	1794964192; bh=tixrKvDlE8HOBCT+YKZFYawn5B7wVxaXbSBVfB7YWRc=; b=Z
+	6Bw6rdny28CStS9ZT3Ge1pcIJzCxZPjOGEeotkhaDXB76lZzXQVOEEA9uz69AlmO
+	ktDLvuJFsZIstAbTniNobym5xQsD14TsOxA7omojaqc/7hQdqIyQnpoW7p7Z9UHr
+	xzk1bQMh3ZH0/pgyLEcpUO5OjRCps5DdizS4UplTSSn7ILKmeLeNwywTb1YnIT16
+	FhQeMiUzYg8PU9PXtOUfyZDQKMZ4Bc7EiO/QztVEfSkcw8ppZqUHXBpqORuiyiox
+	Dg/fxONsnp/GfEL9detq2rE2hNQzhZSIqdfzWe5oKF/Z3kjT3cdySUJLJ3tWLOta
+	82YUe9SKSzCoIYwFd5G2g==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794877792; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:tM/ZIo7E3etpdPZZMYU9pP+6YVzbsSn7IhuFhvE4c/664Zo
+	MYd6a7rKeaIIC5ujo4NQRTq42q+TM/mdWesikT/FFCkg4jbZdFvMq/CC4LfiRkXu
+	sGcNK2S6KVHROGcuQ7HdPPJ+5ThTi9PeuJ7koPPTWVgcyNFLKg+m3Q+mLX7P9brz
+	bY71+tmdFPkOnR46dYYQZ0ee2lRPKXEPc1WCemR71h+6QAVeSEfzpeyUxxhwW4LY
+	Z9yhoE2HM9w3J7RM4q0IqvSNY25RXwXsX0sfZvI5Bc/ZBmwpKU3xi880hMtBtKdt
+	+lLjM6qwm0x8Baz4BmqmvJL+r3WB7pfB+58Dwkw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:D0E/4PDZJPnu1t1li8k5W6N3FEXxA0th0UdXIYFCnkI=:SydkCMeTxoLNHBfx2E/TOjZe/1v8iut1quLwh6idvL4=;
+X-ME-Sender: <xms:X6n7aq-MELGOqApgzAuMrkTsb2N0K7bxZ-PDs_CLglWbaWoElny0zg>
+    <xme:X6n7ahoiWK_hO5Os-hng9Ddr4HcKn0SYwJ1jtC5ZKj9Ign1n0JkCKjjC0Sd59vI-l
+    6Yt9XzAYSZlK65O9ldNC6hrpsnuqUavUm2gcXsv_9wYYACkKHjHgw>
+X-ME-Received: <xmr:X6n7ameM4l76dFyIO59e4sdYekMZU0fiH62OC-VQXZBZ2WsCgX31D5cQxLe-Cg>
+X-ME-Proxy-Cause: dmFkZTEgxcyEJ/ZnG+FHJ0CeWRTo2IzLSs3YDikR2toXXr8YQ23eVsIcbtKGIr8dsYfpSa
+    LXeDk0iE0EXpMXzwzGTeRQ9j5J9u+Y/kN5PEXjXKhAxlrQ+XnOqTVfcXWKSTj9ZwQI6NFt
+    nWkN/0BGkOxhAFMzEq7TJyoPp0a5IKkOnAKFKvLkihhprjY/MxysB59sktE1WCqtN5PgTQ
+    SnTb80Z9a/uOlWSDz/15bhAxELk/SWPPs2ghsECGsLkSVuycQlhdSpe8VXxyfPXAW75WaW
+    frJZw3qgLH2lC2BdrR3XorZoD8XBtGOBwHPMDhK96xr9VsEfauZHSr0oy9IaOexJSDcAjw
+    xN7TBzFE5JNfdE1GIgrSJZi1xzEFa9rGHe5zVJbssExAzaS/Lt3+Py/6fNwLNIitko60X1
+    4rH21PkMwyD1ZtUoIHjwuRAXXAJoeks6OsVwhy45gpOOCNYW8+yBLZXr07sq1BwvBQQo0P
+    T6PzYSWDajzebmuer1vwRzMIVtiFClpaccd6SwneVO4nHIEG510UwwcK16+Lw28lgHVUgt
+    WuLvcZUtCFDiOW4pfYOCunMmCmDJr9Xji5ak/6Tcjshf9GoUA+Bwpv8eEqnt0C9z/covJe
+    Rp/YI+G59Qqt/9h7XifbSXO9yrFLdiJlZjWF1ItoCZkyTNHqeVh0pZrW4liA
+X-ME-Proxy: <xmx:X6n7ag9bAfMSkHhDhUH57dOOoFU9HsD08wM3T6A4pGeVFSXqzzQd_w>
+    <xmx:X6n7agZv_NBVVCgjpSpQvnMGPdhb_azohY2xBadIeMpTqr_DNVQtig>
+    <xmx:X6n7ar0_YZomJQm4F8zl_QTYN74iEKENrohAmiuueEJ5iBSUKIQX5Q>
+    <xmx:X6n7ah00up13RCEJtSlDuJomE_dnJdnVfPC6NeFhBgJKtp8Xq_HdGA>
+    <xmx:YKn7agwWCfdaBDaP3evcCkByMYUCzWlaYiqTrO-xd1Zgv8YME2QH-Sra>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Nov 2026 20:09:45 -0500 (EST)
+Date: Mon, 16 Nov 2026 17:09:42 -0800
+From: Alex Williamson <alex@shazbot.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, Jacob
+ Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon
+ Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike
+ Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja
+ <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma
+ <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu
+ <yi.l.liu@intel.com>, alex@shazbot.org
+Subject: Re: [PATCH v10 09/13] PCI: liveupdate: Adopt ACS controls in
+ incoming preserved devices
+Message-ID: <20261116170942.720b06fd@shazbot.org>
+In-Reply-To: <20261013162529.1928093-10-dmatlack@google.com>
+References: <20261013162529.1928093-1-dmatlack@google.com>
+	<20261013162529.1928093-10-dmatlack@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261016232103.6497bbb2@jic23-hlaptop>
-X-Stat-Signature: 35398gok7dgyw3dcnhkgdx58schraop5
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 624604000F
+X-Stat-Signature: deb88pggf5brsdqyteftdjpu546sx64t
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_2 autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CCC2B40009
-X-HE-Tag: 1794877403-712377
-X-HE-Meta: U2FsdGVkX19AcFXQ8zRcpeFY5iYzPhOQIlSlkwFpg/aOicwOl6ESiF885OWUINmzM2Vr/pQ7FOVAaFwSVjsfCbQgLFwdDpMVSXzBL0g+e0ESK2ErKYGsIOcWMwTA0QbtOQxHDw21cPa9gzFSFHasZ3lHInNerv2opzWw4dWUPM83DBn0WNdls+p1jLuWL5OlmIODiRoXss510SFT6+4CcPIt/jT9G6sqN4I/pnDODEmtSi5+2GgKOQ4B2YjS7CET5fxKoJcGuql8Le8PmUKsO3lT6HOyjfPGAhdhXGj9sfbRo8nwM6Mz+LDlddcW+S5QuGuFNGHAEqoGAXJJoe/ITMdrduX9Ogyqhsz4Ey2Pgdqsbc3NxGnxe1dhfGxPbfzyVZswdoicguSwcKH+BeWFDafGG0YWFMNTvgdXdmL+gM0K2Lv4suxuJqxudXxX24RMeijbjXDx2Zl6iL/4YddWV0M6cIIvoPSvpV3DxmGfcrhoJO8sEC32/bSvxFxkS+4tdSjBbwGU1m242VSguJDVQsW4zPgnsfhSxAHliXbjt6zt2ceb2EHbLPzBFolHUgVQtEqR8/zLoKZTTJxVTqE8A1IYVZCW2fVuTVU9fUU8Ad6oNy0GYWR1Hr1IRsZ3TBuPpxyORtIAm0LZDXev1eHTdMWOg1lBQl8ZV5SmKrX1nd9YflwOPINV4YUGpNXo7UfKxYkjQm+cvz5A2Td7xOBNIy0+aHVrNPIzKI0jrOTRV5zw7+9vydwlaII175iXnR4LfqfHzrN20Dn1U/gAVKFB6GpNw2TXMOiQvhFID41dwrALywIOglO5f5A9DLHR3s+I24qxg8jyS3gBokiBwmMo5j6YYUTNPq5kAMQ/+NNRjrnLZYi/p1R/IC6+42EsCzHTf/Go7o93jsvmz3rQaRP4DJfAy3zMVCkYKlA1o/5saZCpd0BKfP9W9UZJlHc5x291Dm+k6fSNrbFGcV51tan
- iCPTtKYD
- 6J0fwq+E6EDXDTUxNsrZ5YBBq32a9OnsLVyde31D8760t4oTvNK3HdT3HwUtzLYR7osIAG1autN90yf28CfMcfijpyWjo1sU3p9doaTk03gnABO1EhS8eCKqBvnlyV/hl6F1jjoxQdJFisMmyQuDxE3wtToY5SoMe0EipAvgaAInZgIvv3q0lawiINO1+YYr18A/RCpKf2yayLGsWIB6sXF7yw+AJOx3Fo/3exfF6fgN6N8ES7uHgtWgvoWqUnumcWNZ5V+9SHOrInEZ2nNPWpg9DTNXcEJkksHbHk4pXJduntIHS+y+DxJYc8lYiwkx4BgrTCoFTmcFkOaAXdneyt5f6NIyGaWht9uRZ2sxCQ2V61YV1R4t80O/lv00tJcMKYLVypfWezB2OIcDw+E7G2cgCvXB3YtVP9QzJyvnu6rq6hFOHbQH58zz+w0cYHFjcOtZtNJWK9vHoDPyWz78sQEN74A8LkAx3vYryMfwsWDu+AExJ7MkFtnsHk0uPePB537UvimORQ/Wb6kiDXeX9hROH4NHqabmFGwCneJBUbVgjU/z76LhVDqe/4svUcmGTl5IIxYsK1AomrH4=
+X-HE-Tag: 1794877794-671041
+X-HE-Meta: U2FsdGVkX1+H+CwVHmz4osWQjfdjrYQP/PBg2m/srgBRUaIDFtCbNzAqebXyZghpwLxSwBy8m6cOs6BRcxLJpcDBkcgOq3bxJz+rDDMK/UsOZP9LvT8BBE7qhBP0xqxN3cvKZMnyftTUP2h7Q5NjuZW+9kH4lK5r6LFhehLFg9nRluVfl5PylyxZJL4LEzaXgkbUje7pSa+h79LKOjfgQlpKw4zuTuIobDbiC3dJekkMHtM+vGfPKILQwK6jZFA8YdHUgWQnBskn42zWXlizPqwUYl6RrginhsKvzA+XeHazNu6FLh1NSgQu8Hshc6xiAdgivMTOR2d8gqqQOp6PH7c0rXBZ8Bwtz9aHMpKeYDkf5NjbQL15oa5zGJNBMwCzlCKHegobhQA6TZ9yy+VbsByKw1csI2hjf2JPA1qEdvI6OCnvce/Ok2x9hX85xii1A6WGoXpafpspQXHuKTqlrd4dM8A7zQxS5qpJiDnmXelOgatxDYjjYO84SVBgHCx6O8WUb7/G8z9xWqK6gjLjyU1eGrNTAqXaFPE2ZU9nnpvurWnEOxTPEU+Xcl2DO+iP7NNlDqJft8kYYzHr4SA7dzcEExCZhf05LTW/XL1+kKV2ktpK4F0R2r+9tw39YqXdUV4dyvvlmyLWQ668DhdY4k+y5100aY1U+wDHBc/FrIAArjMWOjLxDgmIWY9Vg/bWDnUwHJCHJzj95Nrbd+4QIw536BxCLAEyDRnlzNJOvKGdqkod33drOkVLKavmd7MiheTq25rwTNnVBVd86y99GLHJooG4JQyWaHYD3kS6Jv/oD+lrU/xObSTAg5NURvpOPCcVL4/QaAMC6FDHZ211h/Di8uAxbJFW7zLeCch8zqL73WnHeP3kdEtgWXgDOkZvW4jFQTI6dLakleMjUjTTJZMuSfinl9eFoZzu82YQI7pRdg6gZi5BOI5OGboVRb8BeThj7VqEY1dARXWODzS
+ KzQJz4x/
+ NL4t088NhLbExo14O9HuyvuXsUv1MDFpe5JOrCuJ+zmxBff3FKMzdcqMvWlWqHJRGw2IdYbLP1JNzPI6tmdDUN6+I6NLOk8NjxaiitquMTAyionc1C3m4Rknx8YZV5cpMbowdE6f5yX6+0kbpf9smJw9O2MwrdThrrltiJeIYvNBfqbzwBW4biFlgjCEzkhJUDeckjdOgQBxM3NWORjr3eH1eECd2tU+MCYchSBfOWDml9G5SXJwyo78CETjfXUei2Xn/zbJwejdlw6l+bjZogAXaPG51Uvhq0mqi6HthjhBetcxCr6aynPahMqe+sgNfOVGFx2QZnXDhfSuXeQHXVEHKqxa1RnwE5aIrdi91/a1XSNC1fkqd6/xFFZ+2GB3hbmCY9fl9Ovl19HIEpuh6qoksBBaAGI5py8wIX9TYYK63aqvj325xlttuULcpAtxvhh0O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,106 +167,210 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 16, 2026 at 11:21:03PM +0100, Jonathan Cameron wrote:
-> On Sat, 10 Oct 2026 21:50:10 +0530
-> Shaikh Kamaluddin <shaikhkamal2012@gmail.com> wrote:
+On Tue, 13 Oct 2026 16:25:25 +0000
+David Matlack <dmatlack@google.com> wrote:
+
+> Adopt Access Control Services (ACS) controls on all incoming preserved
+> devices (endpoints and upstream bridges) during a Live Update.
 > 
-> > poison_by_decoder() performs two different operations: it queries an
-> > unmapped DPA gap preceding an endpoint decoder, then queries the DPA
-> > resource assigned to that decoder and its region.
-> > 
-> > Factor the second operation into cxl_get_poison_by_decoder(). Give the
-> > helper an optional snapshot so a later region-probe caller can retain
-> > records from exactly one mapped decoder. Keep the existing endpoint
-> > walk, skipped-DPA queries, partition-tail queries, -EFAULT handling, and
-> > trace behavior unchanged.
-> > 
-> > Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-> > ---
-> >  drivers/cxl/core/region.c | 41 ++++++++++++++++++++++++++++++++++-----
-> >  1 file changed, 36 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> > index 75b8092e6dc2..c72524923b38 100644
-> > --- a/drivers/cxl/core/region.c
-> > +++ b/drivers/cxl/core/region.c
-> > @@ -2940,6 +2940,40 @@ static int cxl_get_poison_unmapped(struct cxl_memdev *cxlmd,
-> >  	return rc;
-> >  }
-> >
-
-Hi Jonathan,
-
-> > +enum cxl_poison_query_policy {
-> > +	CXL_POISON_QUERY_DIAGNOSTIC,
-> > +	CXL_POISON_QUERY_PREONLINE,
+> Inheriting ACS flags avoids changing routing rules while memory
+> transactions are in flight from preserved devices. This is also strictly
+> necessary to ensure that IOMMU group assignments do not change during or
+> after Live Update.
 > 
-> For now, perhaps focus on flags defining what you want done, not when the
-> query is happening.
->
-
-Make sense. I will drop the enum. The snapshot argument already tells
-the helper what to do: NULL for trace path, a snapshot for region probe.
-The helpler will return the error unchanged and each caller will handle
--EFAULT itself, as poison_by_decoder() does today.
-
-> > +};
-> > +
-> > +static int cxl_get_poison_by_decoder(struct cxl_endpoint_decoder *cxled,
-> > +				     struct cxl_poison_snapshot *snapshot,
-> > +				     enum cxl_poison_query_policy policy)
-> > +{
-> > +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-> > +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-> > +	enum cxl_partition_mode mode;
-> > +	u64 offset, length;
-> > +	int rc;
-> > +
-> > +	if (!cxled->dpa_res)
-> > +		return 0;
-> > +
-> > +	mode = cxlds->part[cxled->part].mode;
-> > +	offset = cxled->dpa_res->start;
-> > +	length = resource_size(cxled->dpa_res);
-> > +	if (snapshot)
-> > +		rc = cxl_mem_get_poison_snapshot(cxlmd, offset, length,
-> > +						 cxled->cxld.region, snapshot);
-> > +	else
-> > +		rc = cxl_mem_get_poison(cxlmd, offset, length,
-> > +					cxled->cxld.region);
-> > +
-> > +	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM &&
-> > +	    policy == CXL_POISON_QUERY_DIAGNOSTIC)
+> The adopted controls are recorded by the pci_save_state() call in
+> pci_bus_add_device(), which runs before drivers bind, so they are
+> automatically reapplied by pci_restore_state() if the device is reset.
+> If that save buffer could not be allocated there is nowhere to record
+> the adopted controls, and they would be silently lost by the first
+> reset. Program ACS from scratch in that case, which is a better outcome
+> than leaving ACS disabled.
 > 
-> This is becoming odd enough I'd add some comments saying why
-> we are eating the error return.
+> To simplify ACS inheritance, reject preserving any devices that require
+> quirks to enable ACS as those quirks would also have to take Live Update
+> into account.
 > 
-
-Will add one. A device that keeps no poison list for volatile ranges
-returns Invalid Physical address for them (CXL r3.2 8.2.9.8.4.1) which
-comes back as -EFAULT. The trace path treats that as "no records"
-instead of failing the whole walk.
-
-> > +		rc = 0;
-> > +	return rc;
-> > +}
-> > +
-> >  static int poison_by_decoder(struct device *dev, void *arg)
-> >  {
-> >  	struct cxl_poison_context *ctx = arg;
-> > @@ -2971,11 +3005,8 @@ static int poison_by_decoder(struct device *dev, void *arg)
-> >  			return rc;
-> >  	}
-> >  
-> > -	offset = cxled->dpa_res->start;
-> > -	length = cxled->dpa_res->end - offset + 1;
-> > -	rc = cxl_mem_get_poison(cxlmd, offset, length, cxled->cxld.region);
-> > -	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM)
-> > -		rc = 0;
-> > +	rc = cxl_get_poison_by_decoder(cxled, NULL,
-> > +				       CXL_POISON_QUERY_DIAGNOSTIC);
-> >  	if (rc)
-> >  		return rc;
-> >  
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  drivers/pci/liveupdate.c | 78 ++++++++++++++++++++++++++++++++++++++++
+>  drivers/pci/liveupdate.h |  6 ++++
+>  drivers/pci/pci.c        |  5 +++
+>  3 files changed, 89 insertions(+)
 > 
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index 8d5ad26e948c..1d2324d339da 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -123,6 +123,9 @@
+>   *
+>   *  * The device cannot be a Virtual Function (VF).
+>   *
+> + *  * The device cannot require device-specific quirks to enable Access
+> + *    Control Services (ACS).
+> + *
+>   * Driver Binding
+>   * ==============
+>   *
+> @@ -174,6 +177,18 @@
+>   * bus, since the bus numbers of the failed bridge can no longer be read from
+>   * hardware and handing them to another bridge would let an unrelated device
+>   * inherit the BDF of a preserved device.
+> + *
+> + * Handling Preserved Devices
+> + * ==========================
+> + *
+> + * The PCI core treats preserved devices differently than non-preserved devices.
+> + * This section enumerates those differences.
+> + *
+> + *  * The PCI core adopts all ACS controls enabled on incoming preserved devices
+> + *    rather than assigning new ones. This ensures that TLPs are routed the same
+> + *    way after Live Update and ensures that IOMMU groups do not change. Note
+> + *    that a device will use its adopted ACS controls for the lifetime of its
+> + *    struct pci_dev (i.e. even after pci_liveupdate_finish()).
+>   */
+>  
+>  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
+> @@ -189,6 +204,7 @@
+>  #include <linux/slab.h>
+>  
+>  #include "liveupdate.h"
+> +#include "pci.h"
+>  
+>  /**
+>   * struct pci_liveupdate_global - Global state for PCI Live Update support
+> @@ -520,6 +536,16 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
+>  		return -EINVAL;
+>  	}
+>  
+> +	/*
+> +	 * Do not preserve devices that rely on device-specific ACS equivalents
+> +	 * (for now) since that would complicate keeping ACS constant across
+> +	 * Live Update.
+> +	 */
+> +	if (pci_need_dev_specific_enable_acs(dev)) {
+> +		pci_warn(dev, "Refusing to preserve device that relies on ACS quirks\n");
+> +		return -EINVAL;
+> +	}
+> +
+>  	/*
+>  	 * Endpoint devices should not be preserved more than once.
+>  	 * Bridges are preserved once for every downstream device that
+> @@ -844,6 +870,58 @@ void pci_liveupdate_finish(struct pci_dev *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(pci_liveupdate_finish);
+>  
+> +/**
+> + * pci_liveupdate_adopt_acs() - Adopt ACS controls
+> + * @dev: The PCI device to adopt ACS controls for
+> + *
+> + * For devices preserved across a Live Update, leave the ACS controls
+> + * established by the previous kernel alone instead of programming new ones.
+> + * The adopted controls are recorded by the pci_save_state() call in
+> + * pci_bus_add_device(), so they are reapplied by pci_restore_state() if the
+> + * device is subsequently reset.
+> + *
+> + * Return: 0 on success, or -EINVAL if the device was not preserved, requires
+> + * device-specific quirks, or has nowhere to record the adopted controls.
+> + */
+> +int pci_liveupdate_adopt_acs(struct pci_dev *dev)
+> +{
+> +	/*
+> +	 * Check if the device was preserved over a previous Live Update (even
+> +	 * if it has already gone through pci_liveupdate_finish()). This ensures
+> +	 * that the device continues to use the ACS controls established by the
+> +	 * previous kernel.
+> +	 */
+> +	if (!dev->liveupdate.was_incoming)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * The previous kernel should not have preserved any devices that
+> +	 * require device-specific quirks to enable ACS, but if such a device is
+> +	 * detected (e.g. new device-specific ACS quirk in the current kernel),
+> +	 * log a big warning and fall back to the normal enable ACS path.
+> +	 */
+> +	if (pci_need_dev_specific_enable_acs(dev)) {
+> +		pci_warn(dev, "Device-specific quirk required to enable ACS!\n");
+> +		WARN_ON_ONCE(true);
+> +		return -EINVAL;
+> +	}
+
+This looks pretty unsafe and the comment is only explaining how we
+might get here, not why we shouldn't panic.  IIUC, the IOMMU lho
+support requires singleton groups, but I'm not sure what it does if a
+group becomes non-singleton in the new kernel (such as via a new quirk).
+
+Is a warning related to what might be a parent bridge rather than the
+endpoint device, really sufficient here?  Thanks,
+
+Alex
+
+> +
+> +	/*
+> +	 * Adopting the previous kernel's controls depends on them being
+> +	 * captured in the ACS save buffer, so that they are reapplied if the
+> +	 * device is later reset. Without that buffer, e.g. because it could
+> +	 * not be allocated under memory pressure, the adopted controls would
+> +	 * be silently lost by the first reset. Program ACS from scratch
+> +	 * instead, which is a better outcome than leaving ACS disabled.
+> +	 */
+> +	if (dev->acs_cap && !pci_find_saved_ext_cap(dev, PCI_EXT_CAP_ID_ACS)) {
+> +		pci_err(dev, "No ACS save buffer, not adopting ACS controls\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  /**
+>   * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
+>   * @dev: The PCI device to check
+> diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
+> index e5d2a19d2ca2..d4721ffcecb2 100644
+> --- a/drivers/pci/liveupdate.h
+> +++ b/drivers/pci/liveupdate.h
+> @@ -15,6 +15,7 @@ void pci_liveupdate_setup_device(struct pci_dev *dev);
+>  void pci_liveupdate_cleanup_device(struct pci_dev *dev);
+>  bool pci_liveupdate_preserve_bus_numbers(void);
+>  bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus, struct pci_dev *dev);
+> +int pci_liveupdate_adopt_acs(struct pci_dev *dev);
+>  #else
+>  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
+>  {
+> @@ -34,6 +35,11 @@ static inline bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus,
+>  {
+>  	return false;
+>  }
+> +
+> +static inline int pci_liveupdate_adopt_acs(struct pci_dev *dev)
+> +{
+> +	return -EINVAL;
+> +}
+>  #endif
+>  
+>  #endif /* DRIVERS_PCI_LIVEUPDATE_H */
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 944590fdef48..650d7f92f93a 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -35,6 +35,8 @@
+>  #include <linux/aer.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/suspend.h>
+> +
+> +#include "liveupdate.h"
+>  #include "pci.h"
+>  
+>  DEFINE_MUTEX(pci_slot_mutex);
+> @@ -1164,6 +1166,9 @@ void pci_enable_acs(struct pci_dev *dev)
+>  	bool enable_acs = false;
+>  	int pos;
+>  
+> +	if (!pci_liveupdate_adopt_acs(dev))
+> +		return;
+> +
+>  	/* If an iommu is present we start with kernel default caps */
+>  	if (pci_acs_enable) {
+>  		if (pci_dev_specific_enable_acs(dev))
+
 
