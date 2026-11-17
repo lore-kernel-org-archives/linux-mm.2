@@ -1,153 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4467606A33B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2777606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Eh/Ms1hA;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=i0F0Kliz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eY5KBAs9
 Received: by kanga.kvack.org (Postfix)
-	id CF1756B05B2; Tue, 17 Nov 2026 08:52:24 -0500 (EST)
+	id BE2AF6B05B0; Tue, 17 Nov 2026 08:54:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7B626B05B3; Tue, 17 Nov 2026 08:52:24 -0500 (EST)
+	id B93576B05B4; Tue, 17 Nov 2026 08:54:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1E296B05B4; Tue, 17 Nov 2026 08:52:24 -0500 (EST)
+	id A5AEB6B05B5; Tue, 17 Nov 2026 08:54:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 84B2D6B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:52:24 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B8D612045D
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:52:23 +0000 (UTC)
-X-FDA: 85444750566.22.C665F58
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6048B40007
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:52:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b="Eh/Ms1hA";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="i 0F0Kli";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf11.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.146 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EC526B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:54:08 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 379BC160439
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:54:06 +0000 (UTC)
+X-FDA: 85444754892.15.B8B1A87
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6BC09A000D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:54:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eY5KBAs9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794923541;
+	s=arc-20220608; t=1794923644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=70DfZfFKXRaieDq8Pk9B90fU5z9WYAvkXhfACEP3qcs=;
-	b=Ow9odEm0iNbbf/SJ0EcO4JQ1Ucmrhcn7ZFzl7B46oVrA9TKT5LDmdbvcxyHfY+HhFT01qP
-	KVrkqt/bYU5BzCiUHAD7d50Z2jMupiHbyMLW43stXDzaOTFX4hwUAEGkoy7fZc7uAjbWe7
-	xRyAul/roFaeyt9AbWFjzuJrT/z1Tzk=
+	bh=lqe4yka6zmdqmbIPGKAWwRM6Ez2dyujJozYgr8mnWDQ=;
+	b=Yh+1VC3tHjMqIOgt2A5vtHFWrkzLjm7Ej0++V2kGy2m76JxVOesCzkD4SJe+VRdnvvmuVd
+	GAcxhaXGseIBwVKeNMcf98kNB39fB/5+lp3L3Hg9GKThIBxG/sMqoMMDaMihK8rlj666fr
+	A4bl48b2TalGss54NqemD2PZ0PBfr+8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b="Eh/Ms1hA";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="i 0F0Kli";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf11.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.146 as permitted sender) smtp.mailfrom=arnd@arndb.de
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eY5KBAs9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794923541;
-	b=ukBXskOjsC9nBxYCeb73Anw3YoG75mFC6DN1E1bbMq0NsZszuwJpXWEO536XXB/IuGDAYn
-	Zb0aLWARQhXEgE6EOXbXbWrjvebVplklG4weEjdrVo5zUG6hoSAYeQzhPczpw2cf/5nxtW
-	+l7LJyml4snXvvKaYnB1vfo2wi5WcnE=
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.phl.internal (Postfix) with ESMTP id 6F83CEC018B
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:52:19 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 17 Nov 2026 08:52:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794923536;
-	 x=1795009936; bh=70DfZfFKXRaieDq8Pk9B90fU5z9WYAvkXhfACEP3qcs=; b=
-	Eh/Ms1hAquDDHtVZ27m9uvf0+ko9AoxxkgdcpMIbdyNynTXyFvMOo1JDhyt3voka
-	bV2Ek+qXrVJxOmNU0z6iH4m4eTlPwHPRMEk3GSoZPhT76s9DIpnxqx+3AygDPwra
-	FTdo1ngLGnCQfEQTOKL5jpO122Vx/wBe8u8DFFmssmuf9WKv11duwMJi4bPmJVoU
-	6Kf3YjURyqulH9uLBgSmn4PN7d3Fdd1q/DW3EoBLDmr8kqg5/BShFS9tgnhiTgFW
-	TH6AhpZuJ9F9ovqVUvf2SLoLoRqI7IpkxLSewDOyUfz+vMuHgaYwWtzjqhpDpIyb
-	TBRSghl1yrrUVNoF7O5vtA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794923536; x=
-	1795009936; bh=70DfZfFKXRaieDq8Pk9B90fU5z9WYAvkXhfACEP3qcs=; b=i
-	0F0KlizY9fYR05xWMNMBDU/8d+P0ofG+d4tvdoDPn097lZjwC7GZpPp7E6zPF1q4
-	6Q9gr7ayD2pP9bdTDpzmldv4N/7TKyfQkcHYsPeSrKmrHaeOnR7SHcbqr8g5XzmA
-	R8FMqm/SylMZDd17dUOZJqOOtKVAERWrk4iMk1hRgisRfKAoEQdHnWSQFiuj6gGL
-	d3OxvvwaW6TF3xi50PzIixbgQbGe2jWd07Jxu9frtcJYCOVk0GlgZASxUnJ6VxlR
-	bSUfl0rh0Umbq105poGhM79DGYu122515kXpllMJiwK0q+lNpwDWCBrk35Gg14vU
-	/ds3bAGYu0TZNhJD9MFeA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794923536; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:WRxttOShu11X/21XLqwxeByAL37CKI9MVybsoT6gUraPdS0
-	AcvEhp06GAREWlTggchzQb6NOANLkCrI6h0L65yS1arawuIaI+tsZhlNT4wQ2ehb
-	pnTZ9fvIhywpAv+7FCx8MaWuD5wleOyjvqCHSSK4mMnW7dWWPKNjdr2AAW+3SwGK
-	lCAdtnUgQDnEXtaD9ugX03w7hdcqAxFRURdBT4QXfhjJyBm77owQ/76cErjYrhBf
-	OE5W9iwKJnHJZQ8tziX5KEwy9fUF1c3Ovg8qQhgygwdhoxCqm0gHg5rxxtvlnOHI
-	HYy073aia3WD7QI0k6gkVW6wzxysfeTEOk488Dg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:a4sh5katwY3sk4nluWL68Ro8t3huMRlOF0IEQTQsYMo=:TWxQp3xG7bFeorA66FGctaC8sTOSNUIbVqQqm9Wca38=;
-X-ME-Sender: <xms:Clz8anWDkquIeRmPpaMC8pZGm-EbL2puLbs6CkabcerL_BCOz5RplQ>
-    <xme:Clz8aqbq5zAftxvDghU5hH1yCDKywIUASeS0Ej_kwQH130wsQdfJbBPDB65hyKCqM
-    iZ43XLeCCBFlPm8Bd4chXJtfvCwXAMavlzLbP3ckaea-FWUvnDMuAgp>
-X-ME-Proxy-Cause: dmFkZTErj3UNL1H8vGxcIV9waJUX7Kb4aDL90O1n6cyapaglOpbqhZOQHRL4N9Of3vEnk0
-    8Lq6myvF4mYoxTQq9CL5EOgkvK/82hT5/T5f4aKsrXe7EfGOtRJjJ8h7VctaTG3sQeNBAf
-    F3xW8RId3M0d3vKpfwT5opIXqB58oltuQaN6JJQR+RcaJPof7TAoZPTEoEpGSQHWw4SLOQ
-    o8lImCOOujg+ehqfhrhGAUcxXuXbuaU3WPwEohNaqepY54bYDvsMb2W2S5ZKxL4AJPTgY8
-    X67Nv8qI+ozjTEzRSyewaU5AfK5fl5kMXCITJfMMs0FY3F4MFdv+77OfgKdCFFEP7u10M0
-    Gb/3bO2hBba/HSRs1F19loLPydSszZF58tpIbbvhJkmYTN3yI3TPFQTWr+jsrrNM3WDAEY
-    nHjA0SRHcFr4b3rqIXsoh3PRSe8Wz5DG69nNweJ0VJcAe4lIkVl3ue84ebIjjNv2DxfjXz
-    bw3QbNLYAGVTyOPhpdptMW2k2AnPxOP43B4rH962wgyWDT39UVqIuDR4SFZXX3J0NYmquF
-    QcME7r+w732IQ7FRJNpR2DW5p4dTLYk+ZxhHlPrnCTsFXkOLEkmt5SrUiAUkVo9EOgJubV
-    WXIVeZCpQtihtEzmb45WEHEVw+e5H6N+3FM6t5CsQ8z/kUV1yS1rXn34ODhQ
-X-ME-Proxy: <xmx:DFz8avR48OzdtK6IPGxqK5xkTUy4IWbCcrb9QymI_xRvJ8vQ4hKXxw>
-    <xmx:DFz8anI2aVo7LJvln8G6ohYcXtwbsj2VR134nHam9AmOPVfUKuJm8w>
-    <xmx:DFz8ahG8vo86pBxJBlVeopVBl41CvjJdCZedjbtcP1_q-lMRTa6-Xg>
-    <xmx:DFz8as34RhQTeAUnYPP6HbyG7pqjwRomuz9gnjzSMuuafdsOhL_HFw>
-    <xmx:EFz8aq_gFF2O1G8MurySICHSgLzeGIYlq6FQXxG4MiDSbNrkSLkEH2u9>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 058D032A009E; Tue, 17 Nov 2026 08:52:10 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	t=1794923644;
+	b=EZIeTYeGJC80hnSqZSVCAXq9yj/Xq0fL6ouqeIxJKuo68C1E6EQjStW/ANZ4GwhEakQ8bZ
+	xlwlhSFy7IBYDj9Slim/9gyd8B3/OFfjTkvDOZN86eFEPBo2OTXK92MAdjOOLDDhiXWXmY
+	O1tWEPJguCrwUlDRQ7dWE7uhDsOkuOU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B6A4419C3;
+	Tue, 17 Nov 2026 13:54:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7171B1F000C5;
+	Tue, 17 Nov 2026 13:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794923643;
+	bh=lqe4yka6zmdqmbIPGKAWwRM6Ez2dyujJozYgr8mnWDQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eY5KBAs9g2p2pyhRfMC05yNEB9i4QMP4RZ52xLmzkFHeic3SQHVGfC5k81lP1elcJ
+	 a2h9lSbPMCS6sghJIV0xdbvKooQZCxU7DIDnvdF4bBw4Hsm7urWSfMpG5SJCXKGP+U
+	 5zR76H1WXzEl8Y7Ln89P1XbU9TXQNPgh9QaNgzmvEd/wix1cAGYXvbcWVeN9vfnbVm
+	 h6WyByJ5dOekMOUi7TVfroPikXqhM9RkFsR05PShSryOwD+/xDjDV/VzXr5qNniPZC
+	 te63dzrEOf2X0JqI6x/hPb4q+kd7LOpl+ut+KI03NfECMo6ekwyXBjfh7leCxEMpB4
+	 6ty/RgWJtd3PA==
+Date: Tue, 17 Nov 2026 13:53:56 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, 
+	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
+	lance.yang@linux.dev, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: use memory barriers for non PMD-sized folios to
+ sync
+Message-ID: <avxb050XeV895evT@gremlin>
+References: <6274e62645b9f176dd10d7a79e86b900a39cec5f.1794898535.git.baolin.wang@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AqUefEB18S3J
-Date: Tue, 17 Nov 2026 14:51:49 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Gregory Price" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "David Hildenbrand (Red Hat)" <david@kernel.org>, "Zi Yan" <ziy@nvidia.com>,
- "Joshua Hahn" <joshua.hahnjy@gmail.com>, rakie.kim@sk.com,
- "Ying Huang" <ying.huang@linux.alibaba.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, larips <larips950@gmail.com>,
- stable@vger.kernel.org
-Message-Id: <6695bd2a-5450-48b6-8ebc-8b847e7c1dad@app.fastmail.com>
-In-Reply-To: <3b9d974c-18d3-4113-b7a6-1f785f19b318@app.fastmail.com>
-References: <20261117101910.1820066-1-gourry@gourry.net>
- <3b9d974c-18d3-4113-b7a6-1f785f19b318@app.fastmail.com>
-Subject: Re: [PATCH] mm/mempolicy: limit compat bitmap reads to the source nodemask
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7gia9eoxtboa1ofdcphtftxqjjw79uzj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6274e62645b9f176dd10d7a79e86b900a39cec5f.1794898535.git.baolin.wang@linux.alibaba.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6048B40007
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794923541-33681
-X-HE-Meta: U2FsdGVkX19m+ktLzLRtoXKvzpNnStsFTgsRIw8OvGjIU/xFH012tiAdis17CbvM8zhbygtZ9SiscFvPyVy8APZHjHnLeBJakB3HW1q0kl5BPhMHPhERjHXBFWsJYG+LiVdgTkdNSCQTd2zcS7mpPVlzBYU6MPSRPMZEhyqvINr7Z8lbWq23nx2s4a0dYP0lnPamNI11dDzUR29oVG4q6K7NQkLauYnyhj1bz5lOnkEBB/sqiDMREx8p2fz+hFortWEKIXz87toSUUjoPLzOd9rBSm5rtHXURdmdWgvKrCIEdAlJMo4sYMNHwF4nevtQfIJrAYm0SMignVI0oZ8fUgBMeGRAYmdjWSoy8UxwrkzMDWWC10GgM8yon4UUMGFWgwk237Jjq+renLH1naaR7QKBx7gka+Tz/3DIy/lAYa4BMA4ICJuqJHSp2pfDQO++MxjXMsmyrwy3A0lZ3Ec+4CrBlyKh5fUqvQ+mie3bykfTsktagJjzZtC9RaLYnsICkF2KR2kJD3h7cIJ0RNHBPkiutt13IKn5JIuoXQvzRxJyima2DpHq6UeGPhZ3UMa0xLeLGSdzrAZlG4NEHEUecjmtdpjtkyhDP9k+ruL6msIGnc9j4zBBUiyZYhuwIcJnmhm++BXOsKe3ozdfG45FAytJF+GgTy1YlLIeskIgKi3ekve9U43Y3rIgyZWvRPmPVpfYmWXPCFMS8au19VdJXgdhILOL3hhP8eKkuGHH4Ig+6HuLSAr8HDk2f12M7MYDDxVDX/yZ80nfrOVoKkAivmi6GHgqF58FEcEmda4p9Hf4O7c+pCVCRBzDitgL+7CdRyxYx6fAOnN1CfjJKMuRq5dxEOv1uSxM+acLDXO0fdaSbTLRWuZGmgxjP3+VTrO4t7BsOtDvFd0F80bGFzAjUskIpMwwHjUtCY9JQr30AR8jHYu4OR4iYqC/Pu5jMteCGgT52poTWlZiAVjf+uM
- we67TQpU
- TaN1NUdqvcQoCCyftgvAvJGnU29meGjbFdANJ67nTkUK7+SlNxiGYh/E+habuZl6mPnRUbk2YJjUJC55bDW8KTLsLDc3kP4cWG7Cb0xHvkzvJ0oNikyew3ynski1BCXmCXSrn27mqqdg0Ws/tgaOGK9s2t/FPXAqlnbA9y+KIYKGqj13ej2y5/B7mAMZr5V82Sw5Lusw8xUbCF2xNH14J+zfpyHoAm1t665BBQkHDNClIDC8Pn0XepxCnx1PmWtd3A9hVimXIVCZe4tHXWeqPR2lrWNsLFHuNzPqQJTXHlAfj8D/xm+pPfE6EYBIuIcyJYm3podAiLngV1a26hHteihMuPbQgTJ6LbnsHuvGlwHYwzs/q0hIvClg9oQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6BC09A000D
+X-Stat-Signature: dx4s9x791e4yrmhdwq8yh1gppnkmkncd
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794923644-999701
+X-HE-Meta: U2FsdGVkX18Fdka77RUaZmidUy6K1GV2U1iud7BQgzXmGxzO1L2DCkF9biqaH5QaeQ9Rt7at9SqQGupdkFwtiGqt/Mhy1R0m5p8ikgfnkw85tgFqrNTJET8132+gZjkhxTDnQ3v04ZBuTu8MZFaUCYjfVvT9BJuc+sBr4lcQk+I8qzhS/vaiAINgVFcs8r6fdukHJxBwWBKwA9RnkMrgj2RsAl9e8oPajKYfEzneYqZMgMqRf16hgvuoWIMDdnWZLlzuzkX60e2GtLOd7bpxBR9EBDM0zmZC4vGI0+nQRnxi4hVRiXk5ODd2v/jreFtvwejIGcqSnFtuQ+vag0IKDJKdjf1aDq87ZVmx+Mj19hYvpKvcQXQ1ZHuvuOPbejix+hTj/0fgXlvekGvbDBCC6ovRvHXyG3mExN87+U1T1E5EKiwKytmGiGIcGGIZFuPirMXQfFaacQwIE9tmJRCWREYPWyRDs1H84b8C1U81o5yzRgzPCRsfeI6C+IXvR0Jh17xQ8N2tPPN/Pr7jmPkpNjucOEgdQQh8NkMQxWeHJGxxC7pANTXDE+ocSosZdPDZ/w4qamh1O8PlFgyhcukTsvdQrj708XTi7d/uG3PSmigfnRNc8Sq/9CqovOPGpy4Rk/2D0Qogj/yuRJNAcCn+Xx46Fyt1QZrA0FD+JtpAuGzyu4XJQpLN6YIznh1OgrrimmpTm4vnnqLoSoB3svHnls179Qh+G++MGSdoiq6kSoMERXgLeLwac7rBXVAOVWUc3qwBeoPyeykM+ow1q0xBx/J5LRd5tFTRnxrBOO93tTaWQ4vdlOv2BcQ37TyihdngHsh40viUtrZgKwxCmmWXW11ZFjU8cj+nMZSb4RpVAHGKaQV02xuYwwU1VLdtHlVeASd7Afd0j97Jm235oJKEoRbFO3dD2MBk68QbWfpkKcrujc5tpBH4L2jedvb0WCkiN2w8Ar/BMoocdEpbMM0
+ GxIx4GQd
+ ebtihKM44mTnGeB6WzagYxu+tLVVyZ01h6044zEuFsEanYokJWyMSJMctGdqejnAy/sMH81y2jBxENxnzM899pjVtBhHUpJqe8gFMaD2e+otkJ3lcAVRt7QKAWW0mBaYKFiauPWQ0609ZGjFADr/RJw3qpSFr7I7wh6qQ0G2AdKpUJM/XqWZdkHHxWDyXUAaNh6WEUSodA9d0XjRow+kaJsIYU8bqHyVZlgzOFmT1PS3Unqg8SVx4kofMYXmw5oUe0JN4tAbPu2h87EZDUq1dr+490GjWOIHZ2BbK7m22pXWOAa8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,74 +96,217 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026, at 13:44, Arnd Bergmann wrote:
-> On Tue, Nov 17, 2026, at 11:19, Gregory Price (Meta) wrote:
->> A 32-bit get_mempolicy() call can read past the kernel's stack nodemask.
->> With 64 possible nodes and maxnode=65, copy_nodes_to_user() computes an
->> eight-byte copy, but compat_put_bitmap() reads two native words.
+On Tue, Nov 17, 2026 at 03:00:30PM +0800, Baolin Wang wrote:
+> Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
+> uses PMD lock via sync_with_folio_pmd_zap() to synchronize when a cleared
+> PMD is found while unmapping a folio.
 >
-> I don't quite follow the explanation yet:
+> However, for non PMD-sized folios, the only PMD clear that can race with
+> this unmap is PTE table reclaim, which clears the PMD only after the rmaps
+> for the table have been removed. This is plain message passing, and taking
+> the PMD lock is more than needed, like I did in the previous patch[1].
+
+But it doesn't automatically mean that you _have_ to use fragile memory
+barriers?
+
+Correctness and robustness in the future are important right? You need to
+justify this properly.
+
 >
-> if maxnode=65, shouldn't that result in copying 16 bytes on x86-64
-> and 12 bytes on compat mode?
+> Without barriers, the walker can observe the cleared PMD but a stale
+> mapcount on weakly ordered architectures:
+
+You mean without the PMD lock?
+
 >
-> It looks like compat mode adjusts the wrong variable and we should
-> be doing this instead:
+> CPU 0 (unmap folio)                 CPU 1 (MADV_DONTNEED, full PMD)
+> ================================    ================================
+> folio_lock()
+>                                     lock(ptl)
+>                                     clear PTEs
+>                                     remove rmaps   /* W mapcount */
+> [mapcount load satisfied early,
+>  folio still mapped]
+>                                     pmd_clear()    /* W pmd */
+>                                     unlock(ptl)
+> pmdp_get_lockless() -> none         /* R pmd */
+> skip the PMD
+> folio_mapped() -> true              /* R mapcount, stale */
+> unmapping assumed to have failed
 >
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 6d662a9a8c74..f9a7be9f4432 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -1749,12 +1749,12 @@ static int get_nodes(nodemask_t *nodes, const 
-> unsigned long __user *nmask,
->  static int copy_nodes_to_user(unsigned long __user *mask, unsigned 
-> long maxnode,
->  			      nodemask_t *nodes)
+> Pairing an smp_wmb() before the PMD clear with an smp_rmb() after the
+> PMD read forbids this outcome:
+>
+> CPU 0 (unmap folio)                 CPU 1 (MADV_DONTNEED, full PMD)
+> ================================    ================================
+>                                     remove rmaps   /* W mapcount */
+>                                     smp_wmb()
+>                                     pmd_clear()    /* W pmd */
+> pmdp_get_lockless() -> none         /* R pmd */
+> smp_rmb()
+> folio_mapped()                      /* R mapcount */
+>
+> If R pmd observes W pmd, R mapcount must observe W mapcount, so
+> folio_mapped() no longer reports the removed mappings.
+
+This is insufficient IMO, you need to explain firstly why acquire/release isn't
+feasible (presumably because you can't synchronise the clear properly that way).
+
+>
+> Pass a 'folio' parameter to sync_with_folio_pmd_zap(), allowing us to
+> skip those pfn walkers: pfn_mkclean_range and mapping_wrprotect_range,
+> which don't need synchronization.
+>
+> Similarly, skip sync for page_mapped_in_vma() since the subsequent
+> operations don't check the folio's mapcount.
+>
+> No changes for PMD-sized folios unmapping.
+>
+> [1] https://lore.kernel.org/all/542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com/
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+
+This replaces an easy-to-reason about lock with a very-hard-to-reason about
+memory barriers that are fragile and could easily break resulting in subtle data
+race bugs.
+
+And you don't seem to have provided any perf numbers or anything to justify it
+unless I'm missing something?
+
+I'm a little uneasy about it honestly.
+
+> ---
+> Changes from v1:
+>  - Pass in a folio for sync_with_folio_pmd_zap(), per David.
+> ---
+>  include/linux/rmap.h |  2 ++
+>  mm/internal.h        | 26 ++++++++++++++++++++++----
+>  mm/memory.c          | 12 ++++++++++--
+>  mm/page_vma_mapped.c |  4 ++--
+>  4 files changed, 36 insertions(+), 8 deletions(-)
+>
+> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> index 74cca0e3c726..62e7341de179 100644
+> --- a/include/linux/rmap.h
+> +++ b/include/linux/rmap.h
+> @@ -862,6 +862,7 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
+>  #define PVMW_PGTABLE_CROSSED	(1 << 16)
+>
+>  struct page_vma_mapped_walk {
+> +	struct folio *folio;
+>  	unsigned long pfn;
+>  	unsigned long nr_pages;
+>  	pgoff_t pgoff;	/* Only meaningful if nr_pages > 1 and not a KSM walk */
+> @@ -876,6 +877,7 @@ struct page_vma_mapped_walk {
+>
+>  #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
+>  	struct page_vma_mapped_walk name = {				\
+> +		.folio = _folio,					\
+>  		.pfn = folio_pfn(_folio),				\
+>  		.nr_pages = folio_nr_pages(_folio),			\
+>  		.pgoff = folio_pgoff(_folio),				\
+> diff --git a/mm/internal.h b/mm/internal.h
+> index cd3675c044e0..ad7e051cb198 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -592,6 +592,7 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+>   * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
+>   * @mm: The mm_struct.
+>   * @pmdp: Pointer to the pmd that was found to be pmd_none().
+> + * @folio: The folio being zapped.
+>   *
+>   * When we find a pmd_none() while unmapping a folio without holding the PTL,
+>   * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
+> @@ -600,13 +601,30 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+>   * against later mapcount reads. Skipping the PMD without synchronization
+>   * could make folio unmapping code assume that unmapping failed.
+>   *
+> - * Wait for concurrent zapping to complete by grabbing the PTL.
+> + * Wait for concurrent zapping to complete by grabbing the PTL for PMD-sized
+> + * folios, otherwise smp_rmb() is sufficient.
+>   */
+> -static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
+> +static inline void sync_with_folio_pmd_zap(struct mm_struct *mm,
+> +		pmd_t *pmdp, struct folio *folio)
 >  {
-> -	unsigned long copy = ALIGN(maxnode-1, 64) / 8;
-> +	unsigned long copy = ALIGN(maxnode-1, BITS_PER_LONG) / 8;
+> -	spinlock_t *ptl = pmd_lock(mm, pmdp);
+> +	if (folio_test_pmd_mappable(folio)) {
+> +		spinlock_t *ptl = pmd_lock(mm, pmdp);
+>
+> -	spin_unlock(ptl);
+> +		spin_unlock(ptl);
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * For non PMD-sized folios zapping, concurrent zap_empty_pte_table()
+> +	 * may clear the PMD after the rmaps for the table have been removed,
+> +	 * but later mapcount reads could still be observed before the PMD
+> +	 * read, making the folio appear to be still mapped after unmapping.
+> +	 * Order the PMD read before later mapcount reads, so that observing
+> +	 * the cleared PMD implies observing the rmap removals.
+> +	 *
 
-I guess this would be an ABI change for 32-bit userspace asking for
-maxnum that results in an odd number of 32-bit words. The man
-page documents this as "The value specified by maxnode is always
-rounded to a multiple of sizeof(unsigned long)*8", while the
-code here has always rounded it up to a multiple of 64 in
-both native (no longer supported on 32-bit) and compat syscalls.
+This also makes me very uneasy, complicated reasoning like this is asking for it
+to break.
 
-numactl (1) always uses 128 or 2048 bit masks and won't notice
-it either way, so we can possibly change the ABI here and
-do what the man page says, or keep the current behavior and update
-the man page.
+Also could this be smaller and clearer?
 
-It looks like the other part of the problem is the off-by-one
-error: the "ALIGN(maxnode-1, 64) / 8" rounds down maxnode=65
-to copy=8 which is the same as nbytes, but the compat_put_bitmap()
-treats it as a 65-bit map that needs 96 bytes. 
+> +	 * Pairs with smp_wmb() in zap_pte_range().
+> +	 */
+> +	smp_rmb();
+>  }
+>
+>  struct zap_details;
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 529a9189e426..dcf205175f71 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2054,8 +2054,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+>  	 * Clear the PMD after the rmaps for the table have been removed, in case
+>  	 * an incorrect mapcount is observed after unmapping the folio.
+>  	 */
+> -	if (can_reclaim_pt && direct_reclaim && addr == end)
+> +	if (can_reclaim_pt && direct_reclaim && addr == end) {
+> +		/*
+> +		 * rmap changes need to be observed before page tables get zapped.
+> +		 *
+> +		 * Pairs with smp_rmb() in sync_with_folio_pmd_zap().
+> +		 */
+> +		smp_wmb();
+>  		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
+> +	}
+>  	pte_unmap_unlock(start_pte, ptl);
+>
+>  	/*
+> @@ -2110,7 +2117,8 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+>  			/* fall through */
+>  		} else if (pmd_none(*pmd)) {
+>  			if (details && details->single_folio)
+> -				sync_with_folio_pmd_zap(tlb->mm, pmd);
+> +				sync_with_folio_pmd_zap(tlb->mm, pmd,
+> +							details->single_folio);
+>  			addr = next;
+>  			continue;
+>  		}
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index a931243ca42b..9b72ac408c70 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -294,8 +294,8 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  			spin_unlock(pvmw->ptl);
+>  			pvmw->ptl = NULL;
+>  		} else if (!pmd_present(pmde)) {
+> -			if (pvmw->flags & PVMW_SYNC)
+> -				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+> +			if ((pvmw->flags & PVMW_SYNC) && pvmw->folio)
+> +				sync_with_folio_pmd_zap(mm, pvmw->pmd, pvmw->folio);
+>
+>  			goto next_pmd;
+>  		}
+> --
+> 2.47.3
+>
 
-This means we have a related bug on native syscalls as well:
-asking for a 65 bit mask in mempolicy only returns 8 bytes
-without clearing the next word like it would for a 66 bit mask.
-If we just fix the off-by-one and keep the 64 bit alignment
-(with a manpage update), the version below be should be sufficient.
-
-   Arnd
-
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1749,13 +1749,10 @@ static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
- static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
-                              nodemask_t *nodes)
- {
--       unsigned long copy = ALIGN(maxnode-1, 64) / 8;
-+       unsigned long copy = ALIGN(maxnode, 64) / 8;
-        unsigned int nbytes = BITS_TO_LONGS(nr_node_ids) * sizeof(long);
-        bool compat = in_compat_syscall();
- 
--       if (compat)
--               nbytes = BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t);
--
-        if (copy > nbytes) {
-                if (copy > PAGE_SIZE)
-                        return -EINVAL;
-
+--
+Cheers, Lorenzo
 
