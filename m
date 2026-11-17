@@ -1,70 +1,70 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F485606A89E
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 03:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D748606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 03:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HbqWS3zd
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IFQyfyc4
 Received: by kanga.kvack.org (Postfix)
-	id 32EDA6B05B3; Mon, 16 Nov 2026 22:11:49 -0500 (EST)
+	id 4443C6B05B4; Mon, 16 Nov 2026 22:13:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DF856B05B4; Mon, 16 Nov 2026 22:11:49 -0500 (EST)
+	id 3F4D46B05B5; Mon, 16 Nov 2026 22:13:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CFD86B05B5; Mon, 16 Nov 2026 22:11:49 -0500 (EST)
+	id 2E3716B05B6; Mon, 16 Nov 2026 22:13:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D97EB6B05B3
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:11:48 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60BBE80310
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:11:48 +0000 (UTC)
-X-FDA: 85443136296.16.83299CC
-Received: from mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 35B3340005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:11:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HbqWS3zd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0691F6B05B4
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:13:52 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D71E16024F
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:13:50 +0000 (UTC)
+X-FDA: 85443141420.06.63FE6B7
+Received: from mta1.migadu.com (out-195.mta1.migadu.com [95.215.58.195])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6DA16100005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:13:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IFQyfyc4;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794885228;
+	b=mrETMIEg21hKq3HnaA7JH/pxiL0dRa05ZoULWSnCepV0D3ydZ/0gv2VihteYCMZ2Y8cOvw
+	/6Wc9sURzbJ5hY4qWFBPyQgGPJDewLUwpEP/muE1+QcrMN14z/PrZevMXlWCCMknJE3Qr5
+	mKRvPgGfkBX2qzjHpksFfWDp/DvUIfU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IFQyfyc4;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794885106;
+	s=arc-20220608; t=1794885228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qQu7ydPyiXxJnszdjAuda6MBtG/hw6yFx+eKHBW3+tU=;
-	b=wfpfxz0x1SEfbdCajFlWmQ15pkCkoAj0GVxBuQe7f6RXQPzE6YnGov6wyqRFT79HNkiMh1
-	ExtEm+idn3rg8H7YBmeUBbcN9nn+k+8G8gnoABhBjMCzu2LIkasDq3+B0WD2G4NOcgWvI0
-	XRQGv+yjhokKBqT9M8DCkihpCKMVz14=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HbqWS3zd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794885106;
-	b=KcuxCb7em8JzFIlQmM17YrxIfwHKTrBHfR8OC6js/f90sF9jFrgcS3XfeiX5Gtq4+3DI9G
-	+XPoLVc4qpuwItrYDtfHILW2uhz76HnEHfQlQFfUKRevl5mqDKcRoj9Cv++eSMhpyy6vjC
-	Wzm2dpBu0+cJnmf+uzkH1GYPdjadR9g=
+	bh=8Henz0FrWmmxzwoavWH1AFferz9Sy4A9czKO41x1rhs=;
+	b=qAm+NrBEaFbvu86RhfUmFd+Sso8CXnbI+fG0cY21Tt/zvOL6Vn1CS7Y+gjuvfiLkmGtVMw
+	VoSq2HUvXEObhGvIvqKYWnIQAWFfbeXe+Us6lqB/xHvykeI/RB97xdY1qJg3EnMieJ4MOl
+	nEtfvzncNxkMdAJSV6vDHs+e1Q+NFw0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=do3iUEHsRUOXXkxYyuNnpPjohxgfsv86UsfgKD2v+UQ=;
+DKIM-Signature: a=rsa-sha256; bh=R3QFMBD/atgM6V8xogzigzWPQmqYHpUv7HSFT3n7u58=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794885104; v=1; x=1795489904;
- b=HbqWS3zdfE+jWBSrnRQkLRJchmm5y5sku8Gby1ASLwABW9VHwQaFtJKFUi9yuDW6gtawAcpE
- dWzySC02stEvXMD+lSvf3Q3eNbg0l8WZV1rUeUAdqkVfyVeDVj5FJGHT1x7DNUnIegmtlLjXY49
- C1phM7X6Rr+rxf1VMyffK/Lg=
+ t=1794885227; v=1; x=1795490027;
+ b=IFQyfyc4sDt7Ud73LHiVUEWq8Soo68ERr2KoZoU8Z+GOwWqFBoogM3CuJBqsd+C9zbvckxb1
+ qwZHNlPHTRN0PaLcr9XNOodg3JwOOM698v03nWbU2bWeMaGx6v6Q9fSTirWDIGKE2nZhJ5nAk/Q
+ ohseESwX2PQGgp0XeoVeBxK4=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 546bf800db40f8e2;
-	Tue, 17 Nov 2026 03:11:44 +0000
-X-Mizu-Trace-ID: 546bf800db40f8e2
+Received: by smtp.migadu.com with ESMTPS id bf6838e5dd8e88ed;
+	Tue, 17 Nov 2026 03:13:46 +0000
+X-Mizu-Trace-ID: bf6838e5dd8e88ed
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <f618fc7e-371e-4f83-92fd-ee97db4b682f@linux.dev>
-Date: Tue, 17 Nov 2026 11:11:33 +0800
+Message-ID: <44fc03e4-a545-465b-a7f4-174be2038884@linux.dev>
+Date: Tue, 17 Nov 2026 11:13:42 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/14] mm/mm_init: factor out frozen compound page
+Subject: Re: [PATCH v2 04/14] mm/mm_init: factor out common struct page
  initialization
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -78,26 +78,26 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Muchun Song <songmuchun@bytedance.com>
 References: <20261113033442.62970-1-songmuchun@bytedance.com>
- <20261113033442.62970-7-songmuchun@bytedance.com>
- <179482576829.2379196.14870002582501235383.b4-review@b4>
+ <20261113033442.62970-5-songmuchun@bytedance.com>
+ <179482576829.2379196.2091312590305150578.b4-review@b4>
 Content-Language: en-US
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <179482576829.2379196.14870002582501235383.b4-review@b4>
+In-Reply-To: <179482576829.2379196.2091312590305150578.b4-review@b4>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 35B3340005
-X-Rspam-User: 
-X-Stat-Signature: 5imtdn46duq348rzk5sncdrot6euf7j8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: k17ohb3brjchf76fohuup5kgb84456em
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794885105-889362
-X-HE-Meta: U2FsdGVkX18hTbJcp6WA5p5cVwYylVvHniWK2cTTqUCzUi+QW2ymOPdmWvGexD//4Gnx9U36WaolTeGABUgWBiGKQOW001sHZfF4cRPZM3UYL8xaxDFMF/lQUxtxECJXHhHVKvdDZKOKDtmrlX+ZkJXG+X8eI9NchgGy0LaUuuTdIeJzFkMUQR0TK29IYeNgOb2Qm6kbwSSCnoTFJ/xiJqqAuPIn9Kgyc36UknPcSykcvSZS6FPYMiuAocfCXy9YA/hptreaMlMsc/gLGzlVkpIZ8fcVNYtFUqzp9maD321IeXda3iqxO3eLrau+KwBMZL0qKq7P7Ox3geys1udf5qImJ+qnJWcEaJQNmC2fhAO2OhEqcwGNW3xhIO09gTTE6OlU/R1SY5mkXAcexKZ/LChGG2B2RpPuGy3I2RoW8i54oP0LXtHkozy36RmuG01b7Ly2UO9YocHeRndeB+NYFYBfFPW29gR+8AapqF3TE9gWz6CdhFz50EQ/dIWPWkzx0R9L8MI4DwmJjDjSzIDK5jleYmEidZdexbtWcxRURkWp+/jStb/P87E5FZ8KQj21dDoIjrlpF4x9o1sY/dCpz3WbjWgom7hGctYpa+BatfAd/EdV7Kwfpn512meAy9MW/gmx6ARiL0ar7X1f0yN4OvkY5vdRvGxqGXN3gHqmtc0ddpHwy+O2aOeuvNPFmRs77vAKzr6MdqJjsbCh845UnlLY73XLPy/cOLop/6hdW5WHJQeEseGTsT3uFGimXDHAr62iwqeOFp4pZdH1MCQqcFMFvJQKWflnqOU/NJkP3DGM/f15t22jU4N1hGAuYkh3B3XYHpTwVSgHkelGeXZ9HpMOEp2V4prJk69GKNVCEhtBfBdc9IVSKVG5mD9qPTDx44doq8vCo5HxF6/agfVAggaEKXjLmI0IRkudBOsBgiOmr0bD+OtFg1J39hsONXta8MX/VMvNm5DQuPGDvTh
- MAticzG1
- ReyRPuxqOizw5jeYUtTQxBYAuARNpV9Jl+ssRx4TiMpKOC8sGOhcr4mx1FvOe/fAzZ4gwZiU1E9hlRNPsQ3QuAT44kDpEWwmTXOxTRPCs4633nFhoe2iz95rNJhoZsfX85lyQ9ITkUaUP4xSuNUPwaWjwAKmKs5Oux5bgakHTs9yPqbQTNxjrjpCvgy2fB5SUjQ9Myt+3migaPnMUOr7AUolJ/GSqjvC//Tuddw+PBxVkFh/s5fqZobXSpI+jMLP/KroX3N6rDdQwhvtIyuUZJ7uYm3w1WNETicG2+AFPfkZOvlPrQTIZhrIm3KgFTUizpQZ+CT9ZTemZQ+ywKQ2sTeel5s9OoOA7Jak/
+X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6DA16100005
+X-HE-Tag: 1794885228-793218
+X-HE-Meta: U2FsdGVkX19KosbYf7No0ATSnoKxxoTZCr+rcG3tkrIJ/YitSHE1yIpAxUN6RqHsaHaFAU0kCQHAIOg+Nk/XNnYd5bCSB9wC187bHMbL5hhop3nIXgAv60Xu3QiWWqOMYzc1cddei/jTcpUgAPaTABHpdnWp2ILb3MLS5oMvcqn0/th80IMKh2hpSaV07frTK9vt/OkqTkWbPlwp2nBDHzefoITVl3O9q1nT/Bv4P/oSom0OE/EZIQYo7Nzv6yxRH92ONxhZfYQZVk0e2yNWeAkHshDsXxk8QJf6npAIXoD13BXmNwD4Qmcj6h32XGopeIiPg8fU5nzup5Nc5uEqzu8Z4CqxcS4VdPDY79OEDR3osbj/sR+4rX/IHMFZebhH3O+99NT6zoL1mkIRNZho92cz4Ml2PWLntqJ9CaZU3N5fRuQdZpx5jJd5ZGEdQTcfpdIaiqrJYrqtZDH8TEegzshuSeCngjEW5Q0mPMkH9a7UZC863BeU/EXNW+gL5lK3wkxh7l8deXnaU+CdK1+LYDKikLiPsxiTBDwGVMZEJadWJ8hpokIixbg3sy0gjtgKazER/IAmci+db3Tjot0HQ0FetnvvQmKSjB+vKMcWGA0w2C7sSIdoGDU9BbP+9hyUMUraUnRsrWt8PA+V8VblUgJbmmrc0970JL6cgjbrwNU0goxn32M4JoDK8p8XEG8MjVe/ODMA9McEG1voL278xmNgzKfZDo0Y4QOPl8o3X/I2fXQK9niU0wbMUhkvO3h1iVwL0wPLSb3PwVYnOhawRUinklGAslpUoJluZbWaVCzvvInFWtpE9NI1zGkPub0QzDV9hnQ9VqUdw7kY/8ZyzyfIrgCOpIqU6LP/uy7RlfuAoUK4owoWVwx/udhZVwfiMwrU1HvCYq39gmGUvEPhTCstjvKlliCRJ4m0W/Lsm6JavDU7rPEKGGm1iRdoN9/S2zZ3LnfNUoNRgBPpGkn
+ s+1B7fDF
+ SsmjA+Hh18QyevOxbfJESNK0Byd9UJB9Iwtfr0uhx+byhJcD1v+8f4yi+oJLC/sAMiHa9QNE+y2qiMGhfdutM7UhDrRcKB63xAjvsI28Ft1uMfPn2G9SwiCG5HIvAgQn1AA/2r/Ax4b7QoHEmukg/IFpGM6L2UpRLP+LZeKJqJx0rJmbzC2l3kdzVAWBrExwvMi/Ir2dzquBnyS9aEhuwIEa2R8bzdWCXeYNZZEOEuLAX5VUtEXOYcDWOg2y08r5IHKIW3ZR0Pw3N/bv9aZMUPbkTMrzK+sxoFQcM3G59HDEiU3Id1FehrQ6qvbWqlnCma/juOOU7OIGk5Aw4iLWRPxkbstmlSZhMqiUFc+ahaPQRDRbOcxXOxa6L5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,136 +113,100 @@ On 2026/11/16 18:42, Mike Rapoport wrote:
 
 Hi Mike,
 
->
->> ZONE_DEVICE initializes compound struct pages while their refcounts remain
->> frozen. The setup is open-coded in memmap_init_compound(), including the
->> per-page initialization and compound tail preparation.
+>> Several struct page fields have the same initial values for every page in
+>> a zone. __init_single_page() initializes this state as part of its
+>> per-page setup, while the shared vmemmap tail path open-codes only a
+>> subset.
 >>
->> Factor the common setup into memmap_init_compound_page_frozen(). Keep the
->> pgmap association and MEMORY_DEVICE_GENERIC refcount handling in the
->> ZONE_DEVICE-specific path.
+>> Factor the PFN-independent state into memmap_init_page_common() and use
+>> it for both regular and shared tail struct pages. Keep section-, PFN-
+>> and instance-specific initialization in __init_single_page().
 >>
->> This provides an MM-internal helper for other early memmap users to
->> share.
->>
->> No functional change is intended.
+>> This also initializes the last cpupid and KASAN tag for shared tail
+>> struct pages consistently with regular struct pages.
 >>
 >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 >> ---
 >> v2:
->> - Rebase on memmap_init_page_from_template().
->> - Rename memmap_init_zone_device_head_page to memmap_init_zone_device_head_fields.
+>> - Remove __meminit from memmap_init_page_common() so HVO shared tail
+>>    pages can call it after init text is freed (reported by Sashiko).
 >> ---
->>   mm/mm_init.c | 114 +++++++++++++++++++++++++--------------------------
->>   mm/mm_init.h |   2 +
->>   2 files changed, 59 insertions(+), 57 deletions(-)
+>>   include/linux/mm.h  |  8 --------
+>>   mm/mm_init.c        | 22 +++++++++++++++++-----
+>>   mm/mm_init.h        |  1 +
+>>   mm/sparse-vmemmap.c |  7 +------
+>>   4 files changed, 19 insertions(+), 19 deletions(-)
 >>
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 77b5d450fe45b..2e182498898ec 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -3022,14 +3022,6 @@ static inline void set_page_node(struct page *page, unsigned long node)
+>>   	page->flags.f |= (node & NODES_MASK) << NODES_PGSHIFT;
+>>   }
+>>   
+>> -static inline void set_page_links(struct page *page, enum zone_type zone,
+>> -	unsigned long node, unsigned long pfn)
+>> -{
+>> -	set_page_zone(page, zone);
+>> -	set_page_node(page, node);
+>> -	set_page_section_from_pfn(page, pfn);
+>> -}
+>> -
+>>   /**
+>>    * folio_nr_pages - The number of pages in the folio.
+>>    * @folio: The folio.
 >> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index bf943ae72a3e5..f1e539aec3d91 100644
+>> index af3b81733193b..d0a11989bd249 100644
 >> --- a/mm/mm_init.c
 >> +++ b/mm/mm_init.c
->> @@ -738,6 +738,28 @@ void __meminit memmap_init_page_from_template(struct page *page,
->>   	vmemmap_optimization_verify_zone(page);
+>> @@ -602,15 +602,27 @@ static inline void vmemmap_optimization_verify_zone(struct page *page)
+>>   			page_zone_id(page));
 >>   }
 >>   
->> +void __meminit memmap_init_compound_page_frozen(struct page *head,
->> +		unsigned long pfn, const struct zone *zone, unsigned int order)
-> Do we really need the _frozen suffix here?
+>> -void __meminit __init_single_page(struct page *page, unsigned long pfn,
+>> -				unsigned long zone, int nid)
+>> +/* Initialize PFN-independent fields common to pages in the same zone. */
+>> +void memmap_init_page_common(struct page *page, enum zone_type zone, int nid)
+> I don't think _common adds much here, memmap_init_page() would do.
 
-Maybe not. I can remove it.
-
->
->> +{
->> +	unsigned long nr_pages = 1UL << order;
->> +	struct page template;
->> +
->> +	memmap_init_page_common(&template, zone_idx(zone), zone_to_nid(zone));
->> +	prep_compound_tail(&template, head, order);
->> +
->> +	/* Initialize the head page. */
->> +	__init_single_page(head, pfn, zone_idx(zone), zone_to_nid(zone));
->> +	set_page_count(head, 0);
->> +	__SetPageHead(head);
->> +
->> +	if (vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
->> +		nr_pages = VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES;
->> +	/* Initialize the tail pages from PFN-independent template page. */
->> +	for (unsigned long i = 1; i < nr_pages; i++)
->> +		memmap_init_page_from_template(head + i, pfn + i, zone, &template);
->> +	prep_compound_head(head, order);
->> +}
->> +
->>   struct zone __meminit *pfn_to_zone(unsigned long pfn, int nid)
->>   {
->>   	pg_data_t *pgdat = NODE_DATA(nid);
->> @@ -1063,44 +1085,39 @@ static void __init memmap_init(void)
->>   }
->>   
->>   #ifdef CONFIG_ZONE_DEVICE
->> -/*
->> - * With compound page geometry and when struct pages are stored in ram most
->> - * tail pages are reused. Consequently, the amount of unique struct pages to
->> - * initialize is a lot smaller that the total amount of struct pages being
->> - * mapped. This is a paired / mild layering violation with explicit knowledge
->> - * of how the sparse_vmemmap internals handle compound pages in the lack
->> - * of an altmap.
->> - */
->> -static inline unsigned long compound_nr_pages(unsigned long pfn,
->> -					      struct dev_pagemap *pgmap)
->> +static void memmap_init_zone_device_head_fields(struct page *head,
->> +		struct dev_pagemap *pgmap)
-> I can't say I like this name. Essentailly we initialize ZONE_DEVICE
-> folio here, so maybe it can be
->
-> 	memmap_init_zone_device_folio(struct folio *folio)
-
-Make more sense.
+Naming is difficult. I'm fine with memmap_init_page.
 
 >
 >>   {
->> -	const struct mem_section *ms = __pfn_to_section(pfn);
->> -
->> -	if (!section_vmemmap_optimizable(ms))
->> -		return pgmap_vmemmap_nr(pgmap);
->> -
->> -	return VMEMMAP_OPTIMIZATION_PAGES * (PAGE_SIZE / sizeof(struct page));
->> +	/*
->> +	 * MEMORY_DEVICE_GENERIC pages start with a refcount of one; other
->> +	 * ZONE_DEVICE pages raise it when handed out. Use atomic_set() because
->> +	 * @head may be a stack template, while init_page_count() expects a
->> +	 * memmap-backed page.
->> +	 */
->> +	if (pgmap->type == MEMORY_DEVICE_GENERIC)
->> +		atomic_set(&head->_refcount, 1);
->> +	/*
->> +	 * ZONE_DEVICE pages union ->lru with a ->pgmap back pointer and
->> +	 * zone_device_data. It is a bug if a ZONE_DEVICE page is ever freed
->> +	 * or placed on a driver-private list.
->> +	 */
->> +	((struct folio *)head)->pgmap = pgmap;
-> ... and then we won't need this cast and the caller will just pass
-> page_folio() here.
+>>   	mm_zero_struct_page(page);
+>> -	set_page_links(page, zone, nid, pfn);
+>> -	init_page_count(page);
+>> -	atomic_set(&page->_mapcount, -1);
+>> +	set_page_zone(page, zone);
+>> +	set_page_node(page, nid);
+>>   	page_cpupid_reset_last(page);
+>>   	page_kasan_tag_reset(page);
+>> +	atomic_set(&page->_mapcount, -1);
+>> +#ifdef CONFIG_ZONE_DEVICE
+>> +	if (zone == ZONE_DEVICE)
+>> +		__SetPageReserved(page);
+>> +#endif
+> Can't we keep this in ZONE_DEVICE part?
 
-Right. Initially, I thought using page_folio on the template page might
-be problematic when compound_info_has_mask() == true. However, I found
-that the template page happens to be order-0, which avoids the issue.
-So, we can safely use page_folio.
+We can. But I put it here because there are at least two places where
+we need to mark a ZONE_DEVICE page as reserved. Handling it in
+memmap_init_page_common is simpler — it reduces the number of places
+where we have to set reserved individually. Otherwise, we would need
+to explicitly set reserved in multiple places.
 
 >
->> +	head->zone_device_data = NULL;
->>   }
->>   
->> -static void __ref memmap_init_compound(struct page *head,
->> -				       unsigned long head_pfn,
->> -				       unsigned long zone_idx, int nid,
->> -				       struct dev_pagemap *pgmap,
->> -				       unsigned long nr_pages)
->> +static void memmap_init_zone_device_basepages(unsigned long start, unsigned long end,
->> +		const struct zone *zone, struct dev_pagemap *pgmap)
-> _basepages sounds odd for me, maybe _pages will do?
+> If we can't, __init_single_page() sets PG_reserved for ZONE_DEVICE pages
+> and the
+>
+> if (zone == ZONE_DEVICE)
+> 	__SetPageReserved(page);
+>
+> in the MEMINIT_HOTPLUG part of memmap_init_range() becomes redundant.
 >
 
-Sounds good.
+Good catch. I think I could remove this redundancy next version if you
+think handing it in memmap_init_page_common is okay.
 
 Thanks,
 Muchun
