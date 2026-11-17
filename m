@@ -1,135 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307EE606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 19:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6CC606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 19:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PEE/teTQ
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=WtlZQ+/O
 Received: by kanga.kvack.org (Postfix)
-	id 41E426B05B1; Tue, 17 Nov 2026 14:12:16 -0500 (EST)
+	id 818CA6B05B4; Tue, 17 Nov 2026 14:13:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CE576B05B2; Tue, 17 Nov 2026 14:12:16 -0500 (EST)
+	id 7C88E6B05B5; Tue, 17 Nov 2026 14:13:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BE206B05B3; Tue, 17 Nov 2026 14:12:16 -0500 (EST)
+	id 706D26B05B6; Tue, 17 Nov 2026 14:13:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 096F26B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:12:16 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8AC4F16056A
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:12:15 +0000 (UTC)
-X-FDA: 85445556630.18.3B3E734
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C8FE214000A
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:12:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="PEE/teTQ";
-	spf=pass (imf23.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794942733;
-	b=5rxVu861EB4b8FZ3xBDlTUWBdS88MyPEWxHvneaCwGblt+p0iueGeJt5K4JrFUfgx1FqUY
-	c71B5VbhaJAXgj8PR2xZsrb++DXG1Ocm6qZL8rJz4jBl55ujd65vT1cqSsoAz3AAjL/x8G
-	JsP92C0QTLvfhvHeLD/xmzPCQguqp2w=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="PEE/teTQ";
-	spf=pass (imf23.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C3C96B05B4
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:13:43 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DC14805C0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:13:40 +0000 (UTC)
+X-FDA: 85445560200.21.0A2300A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A1095100003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:13:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="WtlZQ+/O";
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794942733;
+	s=arc-20220608; t=1794942818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SoGTYtJjdTBlgzzjEp2BKIQvSbp+BHYyIKXNcsaV2lA=;
-	b=XKHUYvCsNfCI2n5ck3pwQ7RHGVkt+UATVy9kjjBConR2psLn2pNbLqWqwDQN0+HCD417sI
-	m8v4izGhiAo9h8qn+nzAgqvk7o+7Jfs0b7B2o7pJacFDqy/Zkp4rHOuAlL9aPIWgY67+Qy
-	xIbhBn/QdQ/xzG7G4KZuPjl2hMuQBok=
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1b3beeaf6f9so272164c88.0
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 11:12:13 -0800 (PST)
+	bh=DWNOL9oXi4FJBrMo2p57OMhawm6GSyZyZ5LAMYiUucQ=;
+	b=O6/vbPlKs+UsgeRHltkV/vm/HbZKVevqFXNu+W5vbRAeEzUNkhKyeJt6Wh/3Qudfmh0cpr
+	sO0PNRvefysCWxwTSDlWwK+j+QvthaEDDHsGiPiS3AdCMbBLI/OIEWlsmOEGkTxhUKGLPz
+	PHwDX7JfoUTUJSpz5S3acTnKMlil+p0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794942818;
+	b=x1deOxgBf5hr/swN6nLxqo607VP/zbuGdm+ZvxTmI3MuU5YHrSoELbCthVIXxZ5IPfD6k/
+	B6bLBNhz9zrozOzZay+T1RbxJiFYAIxlJvZww/fPE5UuGsy0YRrSX1mEdfuYLwOF6tQUcl
+	H0hQtBrt0Ih3VG9Z2PH1ZCWckDBX5Vs=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="WtlZQ+/O";
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 11CD6611E8;
+	Tue, 17 Nov 2026 19:13:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503391F000C7;
+	Tue, 17 Nov 2026 19:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794942732; x=1795547532; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SoGTYtJjdTBlgzzjEp2BKIQvSbp+BHYyIKXNcsaV2lA=;
-        b=PEE/teTQrC7up8+DbDyFBDXlHyCsLHqv5D9JHbud01bf6DWNfa9eZMmjdeohcvQiQV
-         U+M336EaWoPa47j+d8tgDmwdfbOP66C3PvOY4SEwvtBT91lub0tPMMUAwaAqm2ta7fcT
-         wbn8wEHtRqHwSzETW604XQHnUOvyKzTzYsqdY4urBQnd3LmvVvVHeqIHpfDFALLH54ZK
-         ecNLfQLm9cqBW7pAM6NDMauWhtKYkQhLo1hfy7c7sO8yFXTG4/RIjIYwXwDVrkj5sc5X
-         8SnSahFH7hCKAuHTIDuEY11h1R+IpSHZzeAFWml6EO9OXSf2t9o45jzKPL6S14rzAYeW
-         j6lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794942732; x=1795547532;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SoGTYtJjdTBlgzzjEp2BKIQvSbp+BHYyIKXNcsaV2lA=;
-        b=A3NG6X8pPtFSZr0zglhqv70VO0dr4hCpmlOBljuk0GhqSEjMr/kOToy8IUhlJdNT71
-         dxBe+WxHYXyCX/Du+1FkmdNC50qWSiW1l0dmLXsnOfG5/HUs6mwmA1IQprH2fUOwSZqS
-         pEJ+UYCHJf6lXmEgQ9ImCWyeW2+vqJI0/b8cGzy/SnaaxcdUflY/jzZYaTXiGMGNvCf3
-         uQa5WndvAEYSxmCUwX4CNGMlQL0ouszLizjlLpfr4uiTzGudvtYrl4H2Sj4jHzELRfpO
-         HgwqcKc9ObCYt0V7g76UfsleTZQJ2/hQ0GguTk+GCLzVIsk3Nshj6Zk/PuiYaFJw4rsc
-         iZnQ==
-X-Gm-Message-State: APuU4Z875R4inatCXUWg4M9W/JbTuOrDqHBitRwfVARXCZImBuAGxdfv
-	17qS0QIUVN27QF7CsHkA/iBD5RgXozo+mnarB7XHStSfM1VLMseev7aT
-X-Gm-Gg: AYBFou20M7zjuOQrEjy4uNMWBdEJmcLJKtWmYz1tFDoXCyawdwRsTC+68SIITWXNzXl
-	7CjwLkuCfK/fD32YqJb3JEEGptQOJ9ucFSGANNMEi4ZbPcrZQBXBcJZwZz7tCcXpIlAA/OHiEVt
-	PQn33Pw0fTJKzgNG1GE94eTNEdNcrCij+T2zB81xCCCtygQdjdwO5PUm1ayWf5nbwTi/myBaJH/
-	MMg1Xv3SB7bkKGjohcCUgD/xvbNZGjubQWl9HfwIWOJHMRkDgJwJK3KjXEAVuc+zblnNgZSWxiT
-	6xrkxhv7bFN71IfIIvs5gGAzKjZJo0jy2YkjQioALnXEFTeqVkAGYCaofLAOKi9vtr8qRIp5+IN
-	tc1zQ4NyTOFAWBd+xABRrG2Vz7SSKM+eMfVjeyu9S9uOwZWNv1mNABvfd9XiJgy6mOcbl/9kRSH
-	NGlDaxgw3BeX5byqsmnuIAneB5t/6AQgiOkoaM8zW5XX3AG5X+lL4blF/8Vzyqyjt95s9F+WcZk
-	d5Vl0kxE+5ZMpvFpI6Kq3/vMy8vBQRlfTl0jDYoulIjk8Ek3/GbzDpdzj4dUGixU0ng0O+TjZam
-	UUTsK0Jk5WXq4Wh/BT/JIX9xFjetHWxotv6t8+twDphLKYo=
-X-Received: by 2002:a05:701b:2718:b0:1b2:6a1d:bf58 with SMTP id a92af1059eb24-1b543d4b410mr474902c88.38.1794942732411;
-        Tue, 17 Nov 2026 11:12:12 -0800 (PST)
-Received: from naki-PC.localdomain ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5447c5b02sm211610c88.6.2026.11.17.11.12.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 11:12:11 -0800 (PST)
-From: nakixii <nakixii@gmail.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Barry Song <baohua@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [RFC PATCH 00/16] mm: add in-memory compression of reclaimed pages
-Date: Wed, 18 Nov 2026 03:10:04 +0800
-Message-ID: <20261117191004.1289281-1-nakixii@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAMgjq7B=F7grQqhUP1wGPG5uYHL44QNS023Lg4Zw0ycQEr_C0A@mail.gmail.com>
-References: <CAMgjq7B=F7grQqhUP1wGPG5uYHL44QNS023Lg4Zw0ycQEr_C0A@mail.gmail.com>
+	d=linux-foundation.org; s=korg; t=1794942817;
+	bh=DWNOL9oXi4FJBrMo2p57OMhawm6GSyZyZ5LAMYiUucQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WtlZQ+/OHjaHXLWloIGtS25tyanq+8IWJJe/8vkj9wMY/KQMGZfRw1c9kowZ2CTHf
+	 lsEPr93LQloDvm4BMKAR+rjyb2EgO6oro0uuEJpiz6ObPWpl7+NDpHWdh8jMFx7CgL
+	 E3AqCnhT3t0jkD02Hfb8B4kNtPtdpoHjAZ4Lc8Z8=
+Date: Tue, 17 Nov 2026 11:13:36 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Shivank Garg <shivankg@amd.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Luiz
+ Capitulino <luizcap@redhat.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/page_ext: remove unused page_ext_iter_get()
+Message-Id: <20261117111336.ee49c0d4722a042c071c68b0@linux-foundation.org>
+In-Reply-To: <e745f91b-3312-47b9-965c-510bf0a0b7f7@kernel.org>
+References: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
+	<e745f91b-3312-47b9-965c-510bf0a0b7f7@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: sr7n7mnsxbop8uioznzd4bn3ab9ok71o
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A1095100003
+X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: tdddawewihazzwsb7o9pjyrydx6e48ir
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C8FE214000A
-X-HE-Tag: 1794942733-651058
-X-HE-Meta: U2FsdGVkX1+VbWVigLsa44wRGk14HFhnSu8t4+nlZTzF5v/r8r2u+CR2XJU3/VnWrggOvqNM6eWDQsFyww53mWQ/VI66AqLju9tge4LeQHoIL59n/WX6i3QQnLrhkSgVar+QGZZeR9gbWxQhnz11P/9g/7Eg7nvylTLg5rxGQf7af0fz7H4U06OdfjT9PfvNx89x4f02O7MeCrHOsV9u7wh/p7hgyXTQ5zGSpDNE76eyC8QnwwVOPtnJjGcpmF/3HSalAFP3zAn9Su6mhHirm0nqgEjOUm0DbXPl090D2d44qLvGfBLOJaDynKQ/K77tv0DoadS5jrXLl8p+VX0DZCuYwdRcil1DqXlMyzXm6xOtcv+F64tjk2wy30r/3biRjoy2IoNbuz2PlHmFb7EI1zvs6YDSxNCKFX9VuEaMrFe433jKzVJMdcWk7NWlAedBe38JgraaLIaVQEMBcuI4NXPomIgHs8tF+pKV0XpoeNCQcvFPUJEaEpA2bsBniORJCLd9dMKkOhcFxoWuTJgEEhoD1F3oKB4to2+78ujE2/c836ROcvyCweRmWRjSTHqBOrU9FyP6uyA4grRI9CJuSqIhZl6vgAOB7xAZWcKzsp4JHV83pGrBl1l5Epcoo0hXt87GkCTzWRF/1Q/KVwP0SNiSUlzkOyWPS6hnzy/3E8pF8ZyE/4UDN1J0RgN/+tbGONpJA9LYACOjpTJu+2NAkWSrerN0MeEXbhLgCXtOJtAnKXzoOYkgMACNpVL0KgYf9SssPlcM98jtqL8ckRbIyNdChGmaW0bYSvlzN1QI/V+EalUEOwPgw9poIC1TqrpMdg8GQjfwWLMs/1vyBS9u2lBtekfw9FrfPvZP+KpCddVWGrSfqaiFulaFYSchQJYZhrlMiXfG4PMZGZAR0kTRcTRM5NcyePSsMo6VM87oQDSdEYMGMWHnaqVtEF1rRovlIQt0udgcQZlJs6ixbii
- LwEP4CWe
- JHv5ln7wL+rycYblgrpB/ROdsyfPiu4W/ACjXEaJOI/vRrHPFKe+GOZHgM9sBn3ryB9fYPS9NBbVdgTRYhfjRaLHLTMLNIOwIhRc7jijOXq/6/+MPyFfaPhLWLvAJWMy1Of7QdQf7Jo+nxqCzSWiOuIDCHXFYCqh3xlpHWj0rxxLeDEGsQYZjiviYk9ttWt8qzmw1w0ZycVQ1gKvjXDJOLaHk1skWF5pqlhYg1mxwvCgW2v5b02xhYWnjcxMaa6A2P1cdjEjBcLJXp314+QBUD2cFSxfbpe53nz345WfZcJIZ6aoAn/ACcslw3NN7nrFG6kqLJj7EbGVqF7mqPlNHWp/q9awgKHtYZhy5EJ/hemAfv2PjgeryO0UknOALRPw+D1Zp
+X-HE-Tag: 1794942818-515839
+X-HE-Meta: U2FsdGVkX1+Rvbvy7m1KLAmwA3H1CdiFNtRHhzRWZaFjm/9Zh5iKzH8g2QHOieMeHfqwz1O+cWkJu8WDttDqdmhcFytDRhQpzB5Q8UYEQP8slm/gT4lOe8w2Qpi2Y0j06kKDh0KYOTneDHLLSAOtd6B4HYLWhIxpice0mYkCSoayLNZQW2uI9pDFoDwjRy4thGHhDD9jOFkwmB2QcxHzsy4RJcgw+dp3moE2hJpu+U2JX+1efm/lKhXapges7MBV2W2C3U0MkTQgnobxzGu9UqSYljWRwX+OF/D81nZeieLUWzmFzh03mabiWDUXB0fJsd2LrY+LvMUXS6mC4fSh3gcx03LWKnCtFuxo6skLxE2XPfVQA9L7d1THJdbh9VDbyoiV8HqKShAkzpUjaD16UR+g+yXxl3LnniAEBjSv4H8tR6R4CGeOw7fO/GdeDqlHrB/dPNBwrw/rfJZBWOa0o+1jxA8CVOAJsoskF8RkY2w74GkPQs+IpxZkg07vSKlfRgGIuDozm81P0NQKXJDhNIwbNhBp0zKb1B3bmFv68ilG5fqS8k2brNAbdNRIOzDJ6DP4qNMuFMjUmeWPQtMvWQEt6PqUPbbi78dtqjxR+LRArwg4G1LmZvunUKs84vM/dvBxXAQSB07uxbYtWqNpJSgmrQrDKnjDlgMkch7ujMT95VmaXMww5k8/An3pARvzlf4hoeei5+TIiVKHHV6S62Z+Z7IWF0gc5mtE6GNY2BbkBy90Ub6fxHUcX/4KCqXHB698NhweN0lXvPU3CmqeXCb8H7ONHfPiu8NREWh89geLydFPpt6PUqTtOX1ChGZ8xY10j9IqBy4uuGb4SWnySfxff6L7ZORtisGZUAGvPK7TbcQUp+SHYUf1HB6iXdPFa1VH9WAiOq37NA2dkl13baiDNDA8hN0f8fxdd/nOcmsqVUnOcDLT2NEYOX2BtqmIaUxOySNpUztXWrudmX6
+ mI5RK/rh
+ cCVeixa0T5uX0yAHhLBviS7BDtiixUE25M12jqOF3eHibOPEqM8ibhGraCPT7IZSLwf85GCYu7dbEUkM805uxhADDB7fD8N6SRgt421Z43ZVUWHipmhGXJgv2JmEQN3Mot+ZUh/NLM9G4XDTSkMJIsRubWVXMkd5zKRYtZZtXQpVKFJUZ0PMPOewmks3ErkNOphH1+yFPrTHeGgNeh1T9U5ImT0dxrbUmLrFUzvxpH8Eg45DSRlPHRGcr6YASFuDqJRq9QjtnLGAnYd9F744mw3yUB6JckpjE/ZRxxv+LzQV3eMOc3FH0DhrpnP3MpTzY0vmS8MkLuBuk9xunxghgu06Icovf4IB9X3J0JESyLPprxuU4Rst6NZzGOBUbHSBxmR2htBzQOpJAVetpukrhshYZFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,36 +98,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Kairui,
+On Tue, 17 Nov 2026 19:50:09 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
 
-On Wed, Nov 18, 2026 at 12:27:51AM +0800, Kairui Song wrote:
-> Posting a mega-sized chunk of LLM generated unreviewable code is not
-> helpful for anyone.
+> On 11/17/26 17:26, Shivank Garg wrote:
+> > It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
+> > for page extensions") but has never had a caller.
+> > 
+> > Signed-off-by: Shivank Garg <shivankg@amd.com>
+> 
+> Added to page_alloc.git for-next, thanks!
 
-Yeah, that was a mistake. Sorry for the noise.
+Thanks.  Helps.
 
-> So in mainline, the win you measured is no longer there.
+> Hm page_ext.h should be added to the PAGE ALLOCATOR section. Wonder if
+> Andrew's patches adding various missing bits included that too.
 
-Thanks for actually testing it and posting numbers, that helps a lot.
-I'll drop this series.
+Nope.  I'll add the below.
 
-> you didn't bypass swap, you just re-invented it.
+A few things under mm/ include page_ext.h so perhaps more mentions are
+needed.
 
-Fair enough, that's a better way to put it.
+I'm presently carrying no patches which alter page_ext.h or page_ext.c
 
-> One thing to keep though: patch 1 (UFFDIO_MOVE exclusivity) seem
-> valid?
 
-Yes, mm-unstable still has it. I reproduced it in a VM (fork, child
-exits, parent write-faults one page of a 64K folio, then moving that
-page gets -EBUSY), and the fix makes it work. Will send it separately.
 
-The part I still want to try is packing several compressed objects
-into one swap slot on zswap writeback, so writeback doesn't need to
-decompress. If I do, it'll be a small series on mm-unstable, with
-numbers under sustained pressure. Any concerns with doing that on top
-of the swap table?
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: MAINTAINERS: add page_ext.h to MEMORY MANAGEMENT - PAGE ALLOCATOR
+Date: Tue Nov 17 11:05:44 AM PST 2026
 
-Thanks,
-nakixii
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+
+ MAINTAINERS |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/MAINTAINERS~a
++++ a/MAINTAINERS
+@@ -17779,6 +17779,7 @@ F:	include/linux/compaction.h
+ F:	include/linux/gfp.h
+ F:	include/linux/page-isolation.h
+ F:	include/linux/pageblock-flags.h
++F:	include/linux/page_ext.h
+ F:	include/trace/events/compaction.h
+ F:	include/trace/events/page_isolation.h
+ F:	include/trace/events/page_ref.h
+_
+
 
