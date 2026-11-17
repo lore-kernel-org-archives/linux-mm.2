@@ -1,101 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFBC606A880
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C9560A380C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gfxT8tOq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HFcJrDjg
 Received: by kanga.kvack.org (Postfix)
-	id E932C6B05BC; Tue, 17 Nov 2026 08:02:50 -0500 (EST)
+	id AF1476B00EF; Tue, 17 Nov 2026 08:07:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6B966B05BE; Tue, 17 Nov 2026 08:02:50 -0500 (EST)
+	id AC9496B05B0; Tue, 17 Nov 2026 08:07:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA89E6B05BF; Tue, 17 Nov 2026 08:02:50 -0500 (EST)
+	id 9DEB26B05B1; Tue, 17 Nov 2026 08:07:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AF4336B05BC
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:02:50 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B6A26B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:07:03 -0500 (EST)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 86FF6120444
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:02:49 +0000 (UTC)
-X-FDA: 85444625658.26.0C24F7B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C8DEB4000F
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:02:47 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gfxT8tOq;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08D661A0435
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:07:03 +0000 (UTC)
+X-FDA: 85444636326.26.19C531F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 69DF340008
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:07:01 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HFcJrDjg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794920568;
+	s=arc-20220608; t=1794920821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NHTczoTsGMT8ANQ9iC8XTxFw5jbc16CYKcnRaKdRcNg=;
-	b=UpIogxT+51sH71fMXfCwcaVdmCfMQ/lHCmiGJ3JNSCkWwYbKp8XyAIv9JwTGaC5NOeKdHJ
-	ZFCxdN0nsnwQiV4Fp7xLKzwEjZcKDaIad6OzR4HlHJWe2h10OTdYo60jDMzaGNjxumYgdd
-	6RvM+rIyLz4p8K50szE0KqNMv5ki5m4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1pVjlFKLqrkizC9FmJoCvgI9LyQi88+dBoMO0i3338w=;
+	b=3TgQObw6rU4Gpza3m61uWgYBhmpNzL5OsmhkyURUaq8jxH/HtU2Zx3QqTBJqmpATtmcriy
+	5iGKahJF/MUqSNIhUzGpumNP6xwP9aPdunXJVrypxmQ9c/+bkxddCz2u1aHHe0ikruToIs
+	D9/G3mZplTOzPndwCvv5miJkeGHiShw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gfxT8tOq;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HFcJrDjg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794920568;
-	b=gNT7G4NIAVssCtBu6mQqZG6VOzAblR/j4UkTjyJi2ZWa+VIYFryTCv/s6jx63IDTTXZPdY
-	WDTZQlc0s3Ql4hIl5L9Od4SzFijBu2cPM/Wy7Zfo2ErT4U0XTj714yoXJxoQfBgBvBdCaK
-	7hcT7yS94D9FRutq18qcij/8InLzFYA=
+	t=1794920821;
+	b=ghCBCu77i87kkcgIQl1NyCA1tE9kCacs7AGaJBCQ4mnkvsWvHL8GMGEW2vVYou1+LmY6kw
+	ULL8YqeJJqUahIw8DWvCKLTmkjyTETH/Y1NsLP4s3zuEE66jlNWaZQMvPJJ2UKnkgaYfH0
+	eKxh5n2kgM+WLSNFTgf6/tKgym8suAU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EC62E43DBC;
-	Tue, 17 Nov 2026 13:02:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A401F000C4;
-	Tue, 17 Nov 2026 13:02:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C98C4634BE;
+	Tue, 17 Nov 2026 13:07:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2D21F000C4;
+	Tue, 17 Nov 2026 13:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794920566;
-	bh=NHTczoTsGMT8ANQ9iC8XTxFw5jbc16CYKcnRaKdRcNg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gfxT8tOqXRdUP5ZGhbJ9mvTZb9kVbJlCny4E1YJEXq4QCHqILWvyyL92de395wqXz
-	 ZTrkgEVjPKlbgziWlZZ4lU4NGMJvegsJS9UdZVHQqjkki7Eg8n79kHP+P0J14IUu1m
-	 qAFCqvOiSA82cYhO0NFWvAkLMME2hOz0vOS/DKYraMWvIMTHiqfxg+U3mtFG8BNRoX
-	 auMV2ID2jVLzveFiwbhv6laf8XUc7xNBW/FtCrxj97dZhjmBpX2yKjrgO+s7yWkrz2
-	 GJWoW2qpZh7gDEMEwvedgCqZxTby9dujjuZ34/yaCqfCq38tc+6fFdz6QInoX2ekgm
-	 AuLwBMwCmpP2A==
-Date: Tue, 17 Nov 2026 13:02:38 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muhammad Haris Awan <m.harisawan@icloud.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Subject: Re: [PATCH] fork: mark memcpy() in dup_mm() with data_race()
-Message-ID: <avxPvfV4NxKL58ZR@gremlin>
-References: <179489519663.1444496.15875846661591982934@icloud.com>
- <0b565b9c-1462-4fed-8836-9a7d08e4b861@kernel.org>
- <179491109101.4015489.11185824873441987133@icloud.com>
- <f75945f7-82bc-4ff2-92ac-9ec057347a41@kernel.org>
+	s=k20260515; t=1794920820;
+	bh=1pVjlFKLqrkizC9FmJoCvgI9LyQi88+dBoMO0i3338w=;
+	h=From:Subject:Date:To:Cc;
+	b=HFcJrDjgU5KIKe8VUxdGSrgtpeFOrq2E4A5i5M1vM3jWpYK//HFX0YELRLGduYiYs
+	 R36DFGAsEIfPAf8wRD1Gi0kFcRf27LgMNogbjZaa/mY/kf4XRTFCux4O5H//2ffwbC
+	 956UoH31u0lYKQqCK0V7kZFvBycOKZ7WxytlxlIxV38MkdcntgbVMavEeoEekpq8Bu
+	 tzKnm92DUwib0fIztSd4MNztORti8B492mwdPp4rLn2teFl5H8FPr9sqDtNJnOPyAK
+	 0dqLXjJoLydhIJuf4yhcljWDb5IeUplvtkOeGxjlaQXQqAEN++Jf8EvOYwGX+cp6ln
+	 MgpgGDeUQSg6A==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH v2 00/14] s390/sclp: replace page allocator calls with
+ k[mz]alloc()
+Date: Tue, 17 Nov 2026 15:06:52 +0200
+Message-Id: <20261117-s390-sclp-ready-v2-0-e518c99622c6@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f75945f7-82bc-4ff2-92ac-9ec057347a41@kernel.org>
-X-Rspamd-Queue-Id: C8DEB4000F
-X-Stat-Signature: efcnezrpabqo5k4n96xu8kaz6ppigm83
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WOQRKCMAxFr8J0bbWFoVhX3sNh0ZYIVWyZBBkZh
+ rtLcenyJT/vZ2EE6IHYJVsYwuTJx7BBfsiY60xogftmY5aLXAktKk6FFpxcP3AE08xclGCtkWB
+ K0Gy7GhDu/rMbb/WP6W0f4MakSQlrCLhFE1yXRhF968PpZWgETPvO0xhx3l+aZPLs7VKK81/7J
+ LngBVROC7BKVer6BAzQHyO2rF7X9QvegnOG4QAAAA==
+X-Change-ID: 20260907-s390-sclp-ready-05ebba1ea5e9
+To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Sven Schnelle <svens@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org
+X-Mailer: b4 0.16.1-dev
 X-Rspam-User: 
-X-HE-Tag: 1794920567-171936
-X-HE-Meta: U2FsdGVkX199x/CBSKjODsvjoDs4O42rHWhFezNOeDI9btNpFKqkd2ycvHMqa0LiFwbFhNTbzMSQxAjyY6/EMZSIrmsVUfbMKnhJdJUMcP+jNJu1mYhp4/5tiCVmgj7k1NWYAOSqN0SAMfKncMPvIMQ/iHRaB6MA+eoP7nEZbqKMIM+ivS+0LLnIGhNzQYaMw/wdt3nMakfD5sctA/FvDdlrsmyq32EET2lPRr9WwlwyKoQhWqZMesrCPMJ1kdUrGHqSVt+A+ymJghjeYIB2hHYdWbnasyXfGj+Nopsj9k68U+wGDYUiTP6Wi8t2pnVFV+vpNDl/MVHRaKyZG6R/x3pAyr0pMJun+Xcpl2XRrat4ZGmWtWHMJ5FbRaLA094cavRY1xM847jwhgXdDnhxaSlEvLQHc65Mw/NrXQ8/36wOgKZunu2jhLE4asDrMdknt1TpcRg+5/v95wobTnMzljK0jJ1ppnhwIcJVvEujSv1D9YoVruYwqJWqsGdMwq77hiutR40bGrCh/sb1EQpu5QLdVvftX5jckxtIbNhEp7Hialx5aLJPM48LKfzYspNZIVjIcRXz+jNJKWlJNkomXJMjq1/5QsOdRRPWiYkzCOpDh0Vy9wY6OvRS9bDH8LWOTSFwviPhtdS9tPCu4XglqjQDbl4uPoMHouvT5e13pJt03HKqCIoUxAqfIuSQG3Mqrse6ZpjzmRH4vVlnQ12L8XCeUtAthOBBuSY2VgjWPTIPJIO/JSBtL+GfcE2XZ8+jSDSrZrhu/kDHB1Ikk0zzXQ6MEpikD5iEkFReHMgNOqfg5g3jrvQ0ELcExH41yOyB0l85HUwb7+gpR1iYco+4RvZz8WBPdUo+edZMmlJlhivUzJrgA3Cv/cTaDQJC4Wl6x8w+ngut0z/JYLPDrDk/qWOIAmUaSxwJ7vIjWTIJbWwde0gzTGVFYfmoNQIVfCs/CQW/3nFTyQGdq44oMd3
- K4Yx7eHM
- JTg3zIxEAjQdtxz6zTR6Gx/ghqn6B7rrPDxDTpNHM8Q4KtcFZaRkPOERiGfWYHSmHVgz2kq5HLvm0RXmkQyfBniAeQwPbOl1sH62rCCZ3oUjBlkzuZqIb5Eeqyuk2HDhJFYkic6KMqZjjhaHyFiEXm4V/TPIjPjcGHrcXKg5yGJmeVYEv0ULN2EPJK4Enlcr7crKFcKFYVAmtoPq7ErUBkRPMpO9TUdlwJQQNbHruxoj81j0DlW2FCJWONC7xchEoQmVdigMxYq7XrBmZYIZw8dYh8D4Xia47h+fw9GGJs2jc6iU=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 69DF340008
+X-Stat-Signature: 3zpue3rpbe3skxeiak7xeattxko6kwmg
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794920821-267034
+X-HE-Meta: U2FsdGVkX18XpkpNJVOt1RJAMXWIoDiK3pdpD5zgWpp43zR4w7u9sXUOoGF+yfXvLp/NxhfJviN9ryqXUfv5y2S6+n2x8rap/0lBFzSxF11O5CbrfUINgHedPmpDEDigmivSdu//AZWQfJ2khYaSidBCw9Bsu+HAf6CwQ3SfkOe86/Yz4muouJkh2/RTZ5kY/eGx20mHzFi9FtikbJutz3RLgqRFLI1OEgqb1lIzIB5dOSYx8I0GdgsS0e8xBGDuO9O6NCfRAQj4sDt4G9at4rXE8JuIN7sHIFf+yCO+4rMHVlSMToO8BzRUDY5Z//tGcqKIezJWCHIsp9ntLDMnc2v9V2gRZi12IQNOQ6FVVxesD6HThczOY5WEfiIJQ5DSAsSbR7A810pIlsNTMx8ixf/K6zcxHpVw2XXrzeWFkEVYlm6F8Cjjym2tMw+GVvHrKuQzQzH+nSIr1WMKg2CNs/vMDegtCExWZJPFHMkni040LVOU1j5gjXxRV0xTg7hkWazzKHWfHdFGdhmQGgtG7exlmapv2TTBj7H/Kfr22YCmjQZ30D/SaswIVFCceuqkgLBYDC2GCCwUix5gaJ0nDMOMUcK1+K2EnoVF9Q90tV2MK75o6c9XgBQQtCIss0e2YsmU7NvvU9CgqBTuSNCL8D1NU/kBUsea1oIM03XAuWX97Ds01MdKQfZQRudVvZn6iqd1CQJhpB5cLa4Dc9WHdsNmsNhWikiUZm9MNp3bbtmlSCyJZ4z1i2j36b6wKehCKraUdWwTHO/wUQdpFxa1d04wdOcp/i6Uw+Z50aINQtp6nkuu+i2APkPy6Fj1I4ssXaQIU+UdlDFaBHsfx6ZqhUJWDpz1b3QK+M5lKYX5+mQ7FQU14uqX4Fsmj8oPsFY9qQThoK4Q/eKzzRsGtVrxxxwTMgA1Um8Tj0pGBR0KiAJ6w/L5Tc8zOOrX0KIJ9TsgO5IiVr1C4P7QqJP2UKJ
+ f019FaJq
+ 0mXF6PAn5pkHHbuZwOliaDolCoHeyNXqtcyfw/tctv83CBhxlYRHUigyCV4Xb59g2GBmf9FnSRZir0Kt9jzU36Kbmt4sjyKA40HKiNsEvKwDAqMkoXq/AUfdvcSTRmJr/4+cr00F2Y+HQv7Z4LhWQ1MJHSMem9kFHvCJq4eHxPx9TOCN/JzZX5B3ymVFC+mZupSLcDgTQOjgPX4nLjx9Coe8lO+HqFGcUGA/Jv0enElAq2Ni85rHo/JSLfayAlurF7D9kMPezQw7rl/slPoARV/tDr2kBFWDgeP1sI+/dGGxrwE21Y2m21firxiVk4QcmBE2+Dd8+SFtjS0WSHU232sQ9+lPEiiNNY8I9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,62 +102,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 11:54:28AM +0100, David Hildenbrand (Arm) wrote:
-> On 11/17/26 11:24, Muhammad Haris Awan wrote:
-> > Hi David,
-> >
-> > Reclaim isn't touching the new mm being initialized (which isn't added to
-> > mm_list->fifo until lru_gen_add_mm() at the end of copy_process()).
->
-> Oh, that makes sense.
->
-> >
-> > The KCSAN read is on oldmm inside dup_mm()'s memcpy(mm, oldmm, sizeof(*mm)):
-> > oldmm is an already-live mm sitting on mm_list->fifo, so when an adjacent
-> > exiting mm calls lru_gen_del_mm(), list_del_init() updates
-> > oldmm->lru_gen.list.next/.prev under mm_list->lock.
-> > > Since oldmm is live, lru_gen_del_mm() has to update those list pointers.
-> > The alternatives in dup_mm() would be taking mm_list->lock (plus
-> > mmlist_lock) during fork, or avoiding copying oldmm->lru_gen / oldmm->mmlist
-> > (awkward because struct mm_struct uses __randomize_layout). Wrapping the
+This the next episode of conversion of page allocator calls to kmalloc
+family :)
 
-The focus on __randomize_layout is really weird. What, were you assuming you
-could avoid it by using offsetof() or something? That'd be an awful solution
-anyway?
+This series covers SCLP buffer allocations.
 
-> > memcpy() in data_race() avoids locking on fork and matches dup_vma() in
-> > mm/vma_init.c.
+= tl;dr cover letter copied from the previous posts:
 
-(BTW this reads like it's an AI-generated reply... sigh.)
+This is a (small) part of larger work of replacing page allocator calls
+with kmalloc.
 
-_My_ LLM says that lock thing wouldn't work without really fiddly changes as it
-relies on memcg and you'd have to double-check a concurrent change didn't take
-place and etc.
+My initial intention a few month ago was to remove ugly casts [1], but then
+willy pointed out that Linus objected to something like this [2] and it
+looks like more than a decade old technical debt.
 
-All to silence a once-in-4-year KCSAN report...
+Largely, anything that doesn't need struct page (or a memdesc in the
+future) should just use kmalloc() or kvmalloc() to allocate memory.
+kmalloc() guarantees alignment, physical contiguity and working
+virt_to_phys() and beside nicer API that returns void * on alloc and
+doesn't require to know the allocation size on free, kmalloc() provides
+better debugging capabilities than page allocator.
 
->
-> Yeah, the only concern I have is that this is the big hammer for any members,
-> not just the ones where we expect races.
->
-> We hold the mmap lock in write mode, so one would assume that nothing can rally
-> modify it. Well, besides these list exceptions.
->
-> Let's see what others have to say, but I guess this is fine then, although a bit
-> suboptimal.
+Another thing is that touching these allocation sites gives the reviewers
+opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+another size is appropriate.
 
-Replied, but this for me is far from fine, since it means that we basically no
-longer have any KCSAN protection against most of what fork does.
+For larger allocations that don't need physically contiguous memory
+kvmalloc() can be a better option that __get_free_pages() because under
+memory pressure it's is easier to allocate several order-0 pages than a
+physically contiguous chunk with the same number of pages.
 
-Since it's 1 report in 4 years, I think we can just live without it. And I don't
-really trust the submitter to not try to slop some broken alternative solution.
+And last, but not least, removing needless calls to page allocator should
+help with memdesc (aka project folio) conversion. There will be way less
+places to audit to see if the user was actually using struct page.
 
->
-> --
-> Cheers,
->
-> David
+The patches are deliberately kept small, so that every conversion can be
+reviewed, and if needed reverted, on its own.
+
+Also in git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/s390-sclp
+
+[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
+
+---
+Changes in v2:
+- sclp_cmd: allocate a power of two size for the CPU info SCCB and drop
+  the misleading paragraph from the commit message (Heiko, Alexander)
+- sclp_ftp: use struct sysinfo_2_2_2 pointer to get rid of casts
+  (Heiko, Alexander, sashiko)
+- add Reviewed-by tags
+- Link to v1: https://patch.msgid.link/20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org
+
+---
+Mike Rapoport (Microsoft) (14):
+      s390/sclp_vt220: Replace get_zeroed_page() with kzalloc()
+      s390/sclp_config: Replace get_zeroed_page() with kzalloc()
+      s390/sclp_pci: Replace get_zeroed_page() with kzalloc()
+      s390/sclp_ctl: Replace get_zeroed_page() with kzalloc()
+      s390/sclp_con: Replace get_zeroed_page() with kzalloc()
+      s390/sclp_tty: Replace get_zeroed_page() with kzalloc()
+      s390/sclp: Replace __get_free_page() with kmalloc()
+      s390/sclp_sdias: Replace __get_free_page() with kmalloc()
+      s390/sclp_sd: Replace __get_free_page() with kmalloc()
+      s390/sclp_cmd: Replace page allocator calls with kzalloc()
+      s390/sclp_cpi: Replace get_zeroed_page() with kzalloc()
+      s390/sclp_ftp: Replace get_zeroed_page() with kzalloc()
+      s390/sclp_mem: Replace page allocator calls with k[mz]alloc()
+      s390/sclp_ap: Replace get_zeroed_page() with kzalloc()
+
+ drivers/s390/char/sclp.c         |  9 +++++----
+ drivers/s390/char/sclp_ap.c      |  4 ++--
+ drivers/s390/char/sclp_cmd.c     | 13 +++++++------
+ drivers/s390/char/sclp_con.c     |  5 +++--
+ drivers/s390/char/sclp_config.c  |  4 ++--
+ drivers/s390/char/sclp_cpi_sys.c |  4 ++--
+ drivers/s390/char/sclp_ctl.c     |  5 +++--
+ drivers/s390/char/sclp_ftp.c     | 14 ++++++--------
+ drivers/s390/char/sclp_mem.c     | 12 ++++++------
+ drivers/s390/char/sclp_pci.c     |  8 ++++----
+ drivers/s390/char/sclp_sd.c      | 20 ++++++++++----------
+ drivers/s390/char/sclp_sdias.c   |  5 +++--
+ drivers/s390/char/sclp_tty.c     |  5 +++--
+ drivers/s390/char/sclp_vt220.c   |  4 ++--
+ 14 files changed, 58 insertions(+), 54 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260907-s390-sclp-ready-05ebba1ea5e9
 
 --
-Cheers, Lorenzo
+Sincerely yours,
+Mike.
+
 
