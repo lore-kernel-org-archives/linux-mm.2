@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99428606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 22:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BB4606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 22:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fY1OmYfI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J3ReQyyP
 Received: by kanga.kvack.org (Postfix)
-	id A35ED6B05B2; Tue, 17 Nov 2026 17:21:23 -0500 (EST)
+	id AFB076B05B5; Tue, 17 Nov 2026 17:22:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E7316B05B3; Tue, 17 Nov 2026 17:21:23 -0500 (EST)
+	id AAB1A6B05B9; Tue, 17 Nov 2026 17:22:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AE516B05B5; Tue, 17 Nov 2026 17:21:23 -0500 (EST)
+	id 99DE76B05BA; Tue, 17 Nov 2026 17:22:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 551E76B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:21:23 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4DAA61605DF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:21:21 +0000 (UTC)
-X-FDA: 85446033162.19.A040494
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 85273120006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:21:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fY1OmYfI;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794954079;
-	b=SRJ6Ly3JALRybCxw4Ff6BGfQerAucHNEfk4SC5AXfdG9GgU42eNkp3aB7S3VGBjWo57pr4
-	5fkDTAeUvFsufbfLpfjbx37dyAZH9nbHRb19Oopt3lOpEuIb/Df6mJ0mCNBEvulo2412E5
-	bfHBr8hH0CefH5aJzEqIUDXRt30OcJQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fY1OmYfI;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 68E1E6B05B5
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:22:20 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EBC63C05C2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:22:19 +0000 (UTC)
+X-FDA: 85446035598.28.1E6F488
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1E84FA0003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:22:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J3ReQyyP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794954079;
+	s=arc-20220608; t=1794954138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YnPmoI6JPFrx0ipKzZPLJ8qO6jh67M7b6J0hvlzZ69Y=;
-	b=KRdlZ0NO/7NYawFHOgmeuP8JydJPh0GY78e2MHIBlxj0mjvo7eXs++omnslX9fWMXWWrlr
-	jVK7lkfto1Qf19QbEkiMvHs7wBlQG2F9BhViXrNlFQ2M0sLzGwtwzQzemws/DfdWgWmTiJ
-	A4vkyAI/xjn94WyXKUUrIfXRLOCNiOs=
+	bh=8SI6dF9aj8I6Xyc7aHfvZCamGlGBl6LeyZ0P5TJyoUY=;
+	b=qd62IUWFVjyALNBh5zVsT4VC25E4laEAYVBG6LevLQYT188/0gEmr7oHsIGm3pwW79bpXQ
+	yucvhJfZK9f+ciXki+7jnZCNGnZ1AxSm088b764WSpMV+ij70+b2Vtrq8cZlhIts8ICZeH
+	m7gxHHcI6av6U/0zJSy2hlDqDFyJbwA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794954138;
+	b=PYfPgEJY7LfC7jTjSCtjwvk02NnyeAWitzq/3h6YNOlY6LxaLiR72rUndhMMxsyx2HGpUa
+	5e5irkN6ZLSJUXeTWd6o2B8epuN8KnkTY2ywswyMABDhUGYeJujMOQzPf8lHqR6DJKqu/y
+	FQ5kWXq2hG0Oghf02ZXqn2+8Ap7Uzgs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J3ReQyyP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 47EC961C69;
-	Tue, 17 Nov 2026 22:21:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6FD1F000C4;
-	Tue, 17 Nov 2026 22:21:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 442BD40983;
+	Tue, 17 Nov 2026 22:22:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE191F000C4;
+	Tue, 17 Nov 2026 22:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794954078;
-	bh=YnPmoI6JPFrx0ipKzZPLJ8qO6jh67M7b6J0hvlzZ69Y=;
+	s=k20260515; t=1794954137;
+	bh=8SI6dF9aj8I6Xyc7aHfvZCamGlGBl6LeyZ0P5TJyoUY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fY1OmYfI8nFvOwKlbmwhJnYNa4PV3Cm02aSc0zrIQuYxxuHiAigmFIySbTVjj5Plq
-	 IiMijaCQGIbFVQugF8PirF8LFwwZuOQoZEheouKRSiPYjTc2QwxcmaiSAJAfSKYVEc
-	 uAmSiDIHqlReu0m0cOr9N2HDXcv1qaw+efBvoWfcddysNTX7hhRXZRfHh5HQWAAapO
-	 E4DcLt1fm1I2EVvNLIhtmnvEUjotWw05fzNBETV7+gl8trEjQpLV9ofFDEfy2EI9v3
-	 hF0LgEeisby1ii6eS7cFi/jnU6x82Ua+ltWektpoa+V/yMkL12+v9Mimwrv0QLaTko
-	 xWbuWwkS2Toqg==
-Message-ID: <0d75991d-9381-440c-8d7c-07bca53cc8ff@kernel.org>
-Date: Tue, 17 Nov 2026 23:21:08 +0100
+	b=J3ReQyyPp7G9Cs9e9cfYHA0dJGPwnvzW0W8cbokRo1dkQHaIGqu5lK7RaC0UbzEW4
+	 AQhOENqON8AlS1271xUYilhf9CAt/UlTTBWZ/tTX3uiMY+E8tEbJ1ZSNm7UUzMIckb
+	 qiVv/1jYcxtnG/mKbfP4dCM6weW9nmnY/rfLF08L3GmJt84ELc7dP/j/y0U7jiHDLO
+	 3RO1P7DbpScYxyx/C127WT+zPfynXy0zwdYnWiKeeVWC+WgjK4mHzL8+qPbKRWCIEi
+	 6REH30LRULbcXyY4JS5YGD3W08KShZTWgUmx79M152EzSDW9WNb7ApreQir3fQArk6
+	 B1CwBKLe3oshA==
+Message-ID: <e2831d86-2fda-44ca-8ee3-b3b29877f78c@kernel.org>
+Date: Tue, 17 Nov 2026 23:22:08 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/4] mm: add anonymous mTHP folios to the deferred
- split list
+Subject: Re: [PATCH v4 3/4] mm/huge_memory: add a per-order counter for
+ underused splits
 To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
  ljs@kernel.org
 Cc: baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org,
@@ -77,7 +77,7 @@ Cc: baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org,
  vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
  willy@infradead.org, linux-mm@kvack.org
 References: <20261103212004.1356327-1-joannelkoong@gmail.com>
- <20261103212004.1356327-5-joannelkoong@gmail.com>
+ <20261103212004.1356327-4-joannelkoong@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,22 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261103212004.1356327-5-joannelkoong@gmail.com>
+In-Reply-To: <20261103212004.1356327-4-joannelkoong@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: p7px57nbcicspgryh5pbh4tp33ffz5ak
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1E84FA0003
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: uq74md7xp1c3ybgn578wsg6yyumcaa1t
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 85273120006
-X-HE-Tag: 1794954079-886701
-X-HE-Meta: U2FsdGVkX1+t+Smu0/55mEbtGQlCVol4lHLesG8rU7tuc+vI1b4RzgqcJXjuEQRxQDisJEEBHOX2TAJK5EnCafLqSxd0RxMP6HLzXYhwLkJOVdtaaxuRCZJ3KrSqL0qfZdjnGrLdVViLhiwyVhfliQiBNKFkMTT3g6ERnIAMrygzVSYWt9Rk8q8S3wsw5tk1w3Ty9ERpgFxfuDUEpl3uWVBGIARX4zPf9Kp826p/2gGDeKjjleesChvvRDwrqP84CF3WRFgRn5b+onHNtz9FZOd/4rVLnUSM9YOCDJk/RVBCAXG6gXKXWstpibi3HFLx+w9Bblv80rzMUA83NCH5vkT/S58N1SKzL3sItLcIN0VB9TbAGDoSLV1q/GjXIWK8WLwGkCiY2UM6ozeXZfIVm04AJVsnOpR3OITOaSKWay9khZCKtKivXE52UoRvDdLOuDN4DR3I6PrnSP+bBdLBoW5jzILigsk0YJp8TdrbMJ7L6b4w6sr16gIZkXnZN6Dgry/0G+550hBo+zLif4vgjuA60J7G0tP+kDKNKupKqFKB4Zp1dzgyVXYhY5DgPw9kb4qJPkhjjOPC8IzWm/BUFkA72OQbim/K6RyAoY0LGA/vN7Uz46LRcSNE8w0ItElcEulyy9QVIz5pcWJkFEmf4oPi/WJQeJnwWh9zNQoTnTLZHRQVYg9KbQCJZgY1z2tiolCHmRINjdRvBK2S7YiIRH0QwZjcHwwPNvakCs7bqfCQDescSY4cYCs65n/rSwFwXTsgjiO5z3Utyn0+dgp8eZMOHVSj4ccRN755dtqmq5tiz8FNpLtTrPShObAeT6ElQGrmeROrShvDF2CquUZjuWkEjjUXOgH+evCE3fUa6fc/eb+7n1VrqMt3/Tx3SHUY1clQaW5PdOFE/KOs7DwA26ebEzRTnfM0BDThcOXzYBwO0Nhk2YUq6HY6FO3TJ8um+CHCXLCH+yD0QN5txE/
- QDnybMgh
- YiGsYtGWM8k2tFZZdBN7WeBWk/ukzKJtrXIRzvagLK8BAGyOxMNKjx21yhk6I/cso3BqMOPY4IrPTzEcgpk6p7XXTv3gZG7z/YHLlXIFKJ4UF7uvLInT54H8ISENXlIvS8rQXVhfHB7F0N/u1eXtBNtM5w0rBtqc2xDCz9O6ZQ7jZRQMBAAeUfU3l2oFaOAm8kXOQO8/c1oTNXZZVm/OUQHYkoibr0nT+1qpfuBCB5Co4CiAkriQKXH1UkeXeQcOfSTKvrfJ8JrsL0az1rfVuVd6qaFUtX8LzBdwx
+X-HE-Tag: 1794954137-127860
+X-HE-Meta: U2FsdGVkX1+7WEiduSYXoZRhTl6OYizGja31aaTkSolWCV/dXvRjsvKwMsERgOVUioYEe2xYIbKTC0rnMXdfbia4QD2cw9eT9B9Tf+rQc0Fbngyj6eBK6UZ25eoZRVqA2nbHE+tK7BK4yvcrPeMn/5z/LlxyAMW3Rd0lh7DPT9TFC0cPX+RtsFf5Ud6IYxOpm7k5WcXQGiRbMEfb/sBcRVfGMno15QFsKRDbk3qDDz9HfH1LvIzLVHM68vJZUNgrWVHEPq5/cejvq6S4wFLc30UTfEmA3OYtD5RzcaAIrYSs71Adwg8vWWkT53WnHffzXDwYoGmUk5QcXIgvZZSo6Lk9HFGA/jSraXnAQ2cHvNoiuDeZB89gQeGAgObf6sSEQNwV0dRN4C+OVwhOHZusRUCXFlYiUzr2HEdlQ2KDNZWtQLn/eOq6wUQszenuinf2m2Y4MPluc4XixOFTzCdHLPOGtuqtR66APsGFNqB9QwB6nxh3XuLS9FDETHp7l/h25etCjdvxCWLFLFOTVMf6+vwWbhnqD7aXIZhj7/885bfWDBOQlfWIA/ykl1Fu959AJXRrX6JBGZMdBhanCf8DR9H2DyoCzWJDd/TmNJ44CZNmcwJcXwOWZH6FJc99MmQT4h67PVcCd4Xs0lb9z7q3VoDFdKUl8LT3lzlYt78KSuDeQH8Jf3EC71bpndyRHWwYGGk9SeIUaPXZpeQ2pLNfN39l/kSDJG4n+Lr6/OOeOr2jcynM9cJoZ8Sv3dz5XDzaGF29BF2exkSz3OmKKLM+aJDBmcoa/VsJFSFhjkdLrIO4o1l1C9nMgx9TGzkbpAHNivEBRaTw47tNlnK5VPT4RCRuQcY+Wo6sZJGstG97pLQ8rpewSmSvO+LtoONFSWIKmPF2aqjvq7jnOtydFj0DTGPRXJAQ+VTB/Dxwvc9CCOYTnvoP0ArSmb2LPGHi6IR3n2zMZ4OiuqtDHD+Ifpe
+ CMWvWMNG
+ QPoSxkRvCLdczvg08LOmHPLk9LvGQwPhxM1Vi+PV4cIhGY01YUXwrTuPS60gnemdYbpSwktcjzNfVpe4vQ1TTf7Soiod2A/CGzeGAoeojxVw06bTrkVbySMP9HuOPMj/DoPw17gr7TjReP/0IErmNEdVRAIIFCnc/uqSLCc3UyA6ucGuSdpiMmmjcBHkqjqMoPMR00+W1aPIgAdITNtAd8G4o5qhs+pnvoMFHDnVuihi5ieJMiurkFovDDG5Wz6NxS3O+MK/jwlDUz3IOG6AdX8K/Wn3qWUo4ev1C8rtFYRwX94OMFRwdk4wB7XWgkenRn7COL5xW5ZzWHU4xzDGi+HWxSvaZrohqr17d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,116 +148,33 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/3/26 22:20, Joanne Koong wrote:
-> Unlike for PMD-sized folios, an anonymous mTHP folio doesn't get added
-> to the deferred split list at fault or collapse time. As a result, a
-> fully mapped mTHP folio that is mostly zero-filled doesn't get split by
-> the deferred split shrinker when the system is under memory pressure.
+> thp_underused_split_page counts every folio that the deferred split
+> shrinker splits for being underused. Today that is only ever a
+> PMD-sized folio, but a later patch queues anonymous mTHP folios for
+> underused splitting too, at which point this counter would start
+> counting mTHP splits as well.
 > 
-> At Meta we would like to deploy 2M THP=always on arm64 with 64k base
-> pages, as 2M gives the contpte benefits while the PMD size (512M) is too
-> big to use. Without underused splitting this causes memory regressions,
-> as the unused parts of those folios can never be broken down and
-> reclaimed.
+> thp_underused_split_page could then end up larger than thp_split_page,
+> and there would be no per-order count of underused splits. That doesn't
+> match how the other THP split stats work. In /proc/vmstat,
+> thp_split_page and thp_deferred_split_page only count PMD-sized folios.
+> Splits of every size, PMD included, are counted per order in the split
+> and split_deferred stats under hugepages-<size>/stats/.
 > 
-> Add anonymous mTHP folios to the deferred split list from
-> map_anon_folio_pte_nopf(), mirroring what map_anon_folio_pmd_nopf()
-> already does for PMD-sized folios. This covers both the fault path and
-> the khugepaged mTHP collapse path. If there is memory pressure, a
-> zero-filled mTHP can then be split with its zero pages remapped to the
-> shared zero page and reclaimed.
+> Do the same for underused splits. Only count PMD-sized folios in
+> thp_underused_split_page, and add a per-order split_underused stat that
+> counts underused splits of every size. The folio's order has to be read
+> before splitting it, since the folio is no longer large once the split
+> succeeds.
 > 
-> Only queue mTHP folios of at least 2M for underused splitting. With
-> thp_underused() scaling khugepaged/max_ptes_none to the folio size, any
-> folio of order 2 or above could in principle be underused, but for small
-> folios it is unlikely to be worth it. An order-2 folio on 4k base pages
-> can free at most four pages and on systems that only enable small mTHP
-> sizes (eg Android's order-2-only configuration) zero-filled subpages
-> tend to be few and short-lived.
+> There is no functional change to thp_underused_split_page yet, as only
+> PMD-sized folios are split for being underused today.
 > 
-> The minimum is hard-coded rather than a knob, since admins have no good
-> way of choosing it, and is a size rather than an order since what a
-> split recovers depends on the folio's size in bytes, and the same order
-> means very different sizes across different base page sizes. It can be
-> lowered later if data shows smaller sizes are worth it. PMD-sized folios
-> are exempt from the minimum in order to maintain backwards compatibility
-> since on some architectures (s390, with a 1M PMD) the PMD size can be
-> below 2M.
-> 
-> To minimize overhead on the common order-0 fault path, the
-> deferred_split_folio() call is guarded by an inline folio_test_large()
-> check.
-> 
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
 > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 > ---
->  mm/huge_memory.c | 14 ++++++++++++++
->  mm/memory.c      |  2 ++
->  2 files changed, 16 insertions(+)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 8f90fb609e57..cda3c886ec53 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4575,6 +4575,13 @@ static bool thp_underused_never(unsigned long max_ptes_none)
->  	return max_ptes_none == HPAGE_PMD_NR - 1;
->  }
->  
-> +/*
-> + * Smallest mTHP folio that is queued for underused splitting. Kept
-> + * conservative, as small folios are unlikely to free enough memory to be
-> + * worth queueing and scanning.
-> + */
-> +#define THP_UNDERUSED_MIN_SIZE	SZ_2M
 
-Working on orders would be nice.
-
-I think you can use something like
-
-	order_base_2(SZ_2M >> PAGE_SHIFT)
-
-for that.
-
-And then you can just do something like
-
-	max(order_base_2(SZ_2M >> PAGE_SHIFT), HPAGE_PMD_ORDER)
-
-And place the comment next to this definition.
-
-> +
->  /* partially_mapped=false won't clear PG_partially_mapped folio flag */
->  void deferred_split_folio(struct folio *folio, bool partially_mapped)
->  {
-> @@ -4600,6 +4607,13 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
->  		 */
->  		if (thp_underused_never(khugepaged_max_ptes_none))
->  			return;
-> +		/*
-> +		 * Keep queueing PMD-sized folios as before, even where the PMD
-> +		 * size is below the minimum (eg 1M on s390).
-> +		 */
-> +		if (folio_size(folio) < THP_UNDERUSED_MIN_SIZE &&
-> +		    !is_pmd_order(folio_order(folio)))
-> +			return;
->  	}
-
-Shame that we already did a function call just to figure that out. Shouldn't we
-just replace the folio_test_large() thingy below by helper that embeds this
-directly, with a focus on underused shrinking?
-
->  
->  	/*
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 0c9ed04528d8..44376321180b 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5477,6 +5477,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
->  	folio_add_lru_vma(folio, vma);
->  	set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
->  	update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
-> +	if (folio_test_large(folio))
-> +		deferred_split_folio(folio, false);
-
-Do we also ahve to take care of mTHP placed by khugepaged?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
