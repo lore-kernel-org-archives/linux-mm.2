@@ -1,109 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C53606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6743A606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G7+BydlQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQj/Gx4M
 Received: by kanga.kvack.org (Postfix)
-	id 5EDC46B05B5; Tue, 17 Nov 2026 05:02:24 -0500 (EST)
+	id 7014C6B05BB; Tue, 17 Nov 2026 05:03:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59DA56B05B8; Tue, 17 Nov 2026 05:02:24 -0500 (EST)
+	id 6D9646B05BC; Tue, 17 Nov 2026 05:03:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48D646B05BB; Tue, 17 Nov 2026 05:02:24 -0500 (EST)
+	id 5EED56B05BD; Tue, 17 Nov 2026 05:03:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 241846B05B5
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:02:24 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B20921603A6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:02:23 +0000 (UTC)
-X-FDA: 85444170966.05.6BC2F97
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E134A6B05BB
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:03:26 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 723C2A039C
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:03:26 +0000 (UTC)
+X-FDA: 85444173612.20.37386E9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C577B1C000B
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:02:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G7+BydlQ;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id BE8AC140006
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:03:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fQj/Gx4M";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794909741;
+	s=arc-20220608; t=1794909804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cLK3zzOfhn1NufegKdCfvj6yMMyKmfBzXnjhXdQX99w=;
-	b=iYRaQptFNmNzRMWzZ/VIMp/uIS/D75iyI4MIXq0W+h5oGfNKrNpL3E+JznNm+lg4fbuYC2
-	ozbQQXgls8kKtTxr02YV1AIy+VjXCNNKuQlRZw7olN7lH6qExWirpWUS7QEGhZRGHtnwXg
-	5KAX4A79azqebr16d/102Wx6jwt7wkw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794909741;
-	b=1Ls1CU5ODgBUGUGHmZwQCVh7MmUm7tsM2BFZfGOcVMLfQLYiMGdil6eG6crb/5jTePeoG6
-	aitrB1uE+uUeGqoraK7RJLj2OfwZ/iihXf4XJx3qP/N+Hzq/tyeVFNtcBB60fHdMdQwCas
-	ow8+CmNt2Rypxs00mnjTL2x9/hwvsd0=
+	bh=LLK+IGv2ggFjXZSuGp8l0UEwQwQwUf8yC75OsLJHlz0=;
+	b=VzIVPiSToQEyKYLrQyLcdVTdOjiAXCL1Ts/EJZm82b1oxMTag8ygrH0/sHsJ+fHUma3bQp
+	XK13ciQPI03T0Q1AVtgUurb+M14d12MCtb3xRZQ/PYyfb8lb1MQU6xstRMfEGgYIqM+86p
+	rlo6cUAVl13C2uyEUrOwjZpYk88Kf1A=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G7+BydlQ;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fQj/Gx4M";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794909804;
+	b=1m2pFluz0nitptfYxsEOdQyWw/+2sjxacgs8nY2EQHYFeeZ2VxTVfLxD9Cj9Z5KzSdL8zq
+	9apXsX35sLZQRVaSN7bsAWD/oopFf/DqphYIJUOQUei+r3YyjB1jSrDar9i9MoozrUEZRd
+	hXUM6w4/B6B2u74gazOfCX6zVsZBTJo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05F6045A66
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:02:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5B61F000CE
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:02:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DCD61407A9;
+	Tue, 17 Nov 2026 10:03:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314CB1F000C4;
+	Tue, 17 Nov 2026 10:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794909740;
-	bh=cLK3zzOfhn1NufegKdCfvj6yMMyKmfBzXnjhXdQX99w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=G7+BydlQPSnynYkWinkxFM4YfGrecHX+svjDGOyD/KYsHRDXWX/yW470mlX45a2e8
-	 EE93m/32G0w9nLRAOVet/9y1i/ogbpDK5FRRKre+YrcjvP1qAC3IvVUcMnr2FiobYx
-	 ij8CeEiC49pZiNZOx66/cQrmdXKkxYzaplG4VWIxG5jUVBw88jljyvZ/YIhNAJDYH5
-	 IlJ5BEKxfO1Jvd28VDvYv93KeLWZx30GRHIEefT8QPBE09bRD0/yceHtcGMQirLLEL
-	 ENwfOMnzi1o67W+f7ssd7iyx6OhzdN24bGQ9tlTbTATSGYpdFUWj+BxIdpnN2RaqsS
-	 Y9SJ9BmfObtAQ==
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5eafb65e169so3559381e0c.1
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:02:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFKyl7v6dm+6TyIvrEXloHUova1QDvM7LA7VP0s4vM9WCNJ3pxvIfnryL+G2QRjS/bTqXI4SkaLWQ==@kvack.org
-X-Gm-Message-State: APuU4Z/CM7onxMiK8lT8JsH+GDbAuPOiZHdYlb2Eoo2HsSAKm4vPlBU1
-	tdc981G4FbPz07XpcqycfcN+gZnOMRGAn13Vns5XIIUjyH1mjMPtjkJ3XbIxKTaA7T4PNmIWq3N
-	mJlkA8aOT/AEh6mYojbV6mWz88eunXEg=
-X-Received: by 2002:a05:6122:8483:b0:5ee:3f2e:714c with SMTP id
- 71dfb90a1353d-5ee3f2e76b1mr2651586e0c.4.1794909740230; Tue, 17 Nov 2026
- 02:02:20 -0800 (PST)
+	s=k20260515; t=1794909803;
+	bh=LLK+IGv2ggFjXZSuGp8l0UEwQwQwUf8yC75OsLJHlz0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=fQj/Gx4MpWTb0HS/QyBN3HDcXOn2ruyxu1noi4UPMonZE4mwguKdHXtczFhB6PLXY
+	 zrvoMBTb0Xhbp3f74EfDYXeaSu+omudQ3+lHy9Map9SwVotVMNsvTWRI8xEXyNFK+I
+	 9176wuEGJOZ8YP3pqq8Uk3rvsZRGFARZP+MZ/6EDeW6ccrjomOYAPtQNaZz/kz4x74
+	 7hvpzyVC5oYV8SD/dYJgx2xIuwbAp8UJXfYB1QLHu7tasggTg/Y0OTWCL62q+FLlYO
+	 7hQiTUDsT+rwQ5/2+WJkqs7Vmct9jm0UbaSEk9G5fF9tG07eME5aGR4QeM/Uijgly0
+	 TNdqcbORy+cMg==
+From: David Hildenbrand <david@kernel.org>
+To: David Hildenbrand <david@kernel.org>, 
+ "Xu Xin (vivo)" <xu.xin@linux.dev>
+Cc: chengming.zhou@linux.dev, ljs@kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org
+In-Reply-To: <20261117015009.611551-1-xu.xin@linux.dev>
+References: <20261117015009.611551-1-xu.xin@linux.dev>
+Subject: Re: [PATCH v4 0/2] mm/ksm: clean up scan_get_next_rmap_item()
+ initialization
+Message-Id: <179490980182.4957.9865090817609300343.b4-ty@b4>
+Date: Tue, 17 Nov 2026 11:03:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com> <20261117-unused-sym-mm-v2-2-2f845e94dd50@amd.com>
-In-Reply-To: <20261117-unused-sym-mm-v2-2-2f845e94dd50@amd.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 17 Nov 2026 18:02:08 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4whmBuTeoEtKzfdYKXaBp-9Ph7+Oj6xCFUWY8en+p-q7Q@mail.gmail.com>
-X-Gm-Features: Aa3M54ozWLhKg1KFQokUO3ZjKoGTiLL_NX7NP3uVe-gz0Ybf495Q6LaRkAtem0E
-Message-ID: <CAGsJ_4whmBuTeoEtKzfdYKXaBp-9Ph7+Oj6xCFUWY8en+p-q7Q@mail.gmail.com>
-Subject: Re: [PATCH mm-new v2 2/5] mm/swapops: remove unused make_guard_swp_entry()
-To: Shivank Garg <shivankg@amd.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4hrx37qtjwr688bgdp9jtzmtrggik3mp
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C577B1C000B
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BE8AC140006
+X-Stat-Signature: aqh69s8o6eawsyhhqmab997gdpy4ugf8
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794909741-565878
-X-HE-Meta: U2FsdGVkX19JCNeyCltqGld1he9reF8lP8H1N6VwPk3hOINQDI2/k7GmHOBO/Mq/7axHS9Pd5kOsET6D4ALxwdZgmz+v00epNjDv6AIrNroToRz2pFGj9Th8AhzVk+GsPj0dBz4qUbojyD7mSLkgzz74Ih6nKqnDtRAr5Kl/08A7nHi70DKJFQlYLWqkUEWDHa/WsTlTP2iyasQuTkQ71CYsus2p6UeVQe3O5BOrLbXOdqyNnAFMrRoMp1ZmBGikYcJ3aGau0hh/oOMt6yPzxo3atn44RSdAdw/q1/AHEYQijS/tXTrhd3Df3cz0vEaXpTiNkEeedfXhbKHfQbCnbp/UKACPL79cflLY3fXrCpsL6gQ/CCPsj693EQ381frE5z6m3AI7+0PX2t+4kiUGgGqN2H33JQop+Zt0ubEW9tpzMML19+LDGvJ9I20WTnPXqfcGgpWMQyKSsBdOdW4DbgMgKZcUanxp6dUJq+lpfstbDYV2+d9MrJ2qDVs9O+2OrC9H9cPpC70IMY9+mGCPB70uuskJPM+d9NAMycbdBtCXmSEDWzE8Fg+aUnRVwKXzn3ev4MyZdetspauisstK/GwujMugfrk8YlhsvsfN2OIhy+5/2vCZFgBNWJynd7Yy3GG8eOopzHngBgEFwumOKMeppGHKGbj7LgOCXbaU7RxAExNt9ZjGbsHRNTQl7GvSXAShs/GEgK/bvz4IrYsMq2dKJsLK/eSuDmefhiGVjn3ph6H74ovIMS+OEfQs8Zl+gNQMLV2MCaX3ycwYp//IjWJGyXgSW7a67aRzpSTGvUHOTsq0ehlwhweYnFe4oIuubasYroJQ/X1ulrYPWFfEpPx/Zo0pWpp9RZlRjH02roNDvIumnWln7WbvO2zxRb5VTrcSL8HMwxEcFaFI8ou+BIVVAivgHiMGUq5xnKJVAntKPummi2MahQNKb72j6uZ8oo3RlweeNa2s3NnVuom
- gS4+lOd/
- lIb4JUjq0Vy5ZoD9xcYeOn5i4fi5AWg6eKBWt6NJ6l73pJFAPLTcxRftMTdDOFyzYkhN1JbSWVgLbAMAdINPvCQ61ZbCqD1nN1uQQogEI0fjdMRn6GlObj1IAVwsX+zaoyPZjU7Jf30hNM62CXJFzxFEMtoZFfKnl0FCvVQbY/18iWbY3BmOxRaCuV4S84YYpG3ROorRNit+BHOv3snwsVnxUw4QXTaP91SHPEVKGeLMFjqVWFAkJBjO4lpGwOgBuiEd2KZ1Oz4hbCc2W4Vpf1JE9UabpClU7sDSVYM3dUOIPVTMiBHvGstZqScHXNpto0UsT9Wzn96lJASZA5s0PmAoUlh5x8G6Afda0moeWyB2QJP5CPMQ7LarwVAIrycU1MsSJCJlFT0VbY4vmE5eWprjfBg==
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794909804-120042
+X-HE-Meta: U2FsdGVkX18+ixI9/2+at56sfcqoVbMhXVz2/YL/Q8shChziweq9/LhEI0RwCguyRS/7nclOir5S/D6VXR7Tw69uo7JHuKmW79ZrsbTZlmWQ87+/2brhcLIHNp601l68/Me4Iw0rzggcJfrLE+8lRumyS8psjaDtJ68yzsdbX2k5RlcqdphilEmDWptcxkCnqRkKL2JEtmFVSnE+ybtT2TKObl43S9euexbdaSljGcliMdqehxpEO6jtEbIcEVBzv3ecYOnVp16GjxIyyBuFaCJXhVbmiB8T+PHz7JWRj4ubGpecOPETHVcfOwhwoQz5r1ENkHA6smWUEADavaC6+N/DVTy6PsoJLXOddHJQYeNE3eVoQyhirvXg71ldPOz1jz6dvXBfxEYeIap7+2/UTSmScY4bNNF+sQ9NBD+ncHJl4/QLb7kjfqfatjhLlvaN+OwQx+jFIzyYKtioIsBwpaStaK1+Ntdzi7afRY7iAHBEEA6mFWqqsUKaHkOnKkdbFZvTmPoBsLteyfh52sr02dFOWB8aFVpwY4qV7sbYS2VGZSYJDgcU/0ZOW+ZNZxzupTA4dM9WjJ6P1Xqpd3vyT3qjvFiltzvkqKaFQ9rICSFCJ7UTT4dLjjoGGvFXfx2LlDMULmZ6t8Z5G1lAtHgYjJbRD+xhoRiS0Iw2LAh6Ksw2cwAXu0/+otMgqWnV8PRTylFV/26wdO1AF5IslilP2jN8iTiY2yqLdW0x1TIS7t566KSvLh0wABYN3b3prxoc6VYANCRw6XyaaZ2L1p8UOIqoqtbi/eTFzaSMPGGQj37qoLuMIhoLb3wzY12mtuQnlkuWTi5SeqlbNT0yboyXh7zdX9pZ+G7C3KmageyVOfkc3tbChN5OZibMHKZUXnWwEC8QEGC6aevMtXw/FS73Tuw03438RGdAivnnmNawnIA1Q/V9RfbHsLILQ1F0ZQaC0c7GHXqy2fGsydcVpAf
+ +VVfptO1
+ j+eMfNpKnOHFf3BqeRzx7FKYnh9gC1z36Op1Ppo/yLb/piv/eHHTpfEbaIgsMu8Gp6Vl4A/Rdy8fQnLTO9evKgQ/gNIHnvOyFN3oVCqdqijMzknSzQdXInrRYYupayQzzyDeRBedE6V5sM1W0V2JFZF2/zmXu0oo8oDSUIPdUk9bq3in0G35Gui14qoL4AuE4SnpqNk4bXVREhmqICm9efNH0dE01Qo3TSPHvOIk1H6whP9EBW9rTUWN3g4ujLGa7T1R1GuJpZS/JFe4sGtE6gaa6qCy5thwidksT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,16 +97,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 3:17=E2=80=AFPM Shivank Garg <shivankg@amd.com> wro=
-te:
->
-> make_guard_swp_entry() has no callers.
->
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  include/linux/swapops.h | 5 -----
->  1 file changed, 5 deletions(-)
->
+On Tue, 17 Nov 2026 09:50:09 +0800, Xu Xin (vivo) wrote:
+> Currently, scan_get_next_rmap_item() has grown quite large and complex.
+> When introducing new features, such as the only-merge-zero-page mode we
+> are currently working on, we don't want to add more complexity to it
+> and don't want to touch rmap_item structures to avoid unnecessary overhead,
+> so we need to extract some common logic.
+> 
+> With these changes, the entry of scan_get_next_rmap_item() becomes much
+> cleaner and easier to follow, instead of being cluttered with unrelated
+> boilerplate such as stale stable_node pruning and cycle initialization.
+> 
+> [...]
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Applied, thanks!
+
+tree: mm/core.git
+branch: ksm-7.5.misc
+
+Applied patches will appear soon in mm-next, followed by linux-next.
+
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
+
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[1/2] mm/ksm: extract helper functions for scan cycle cleanup
+      https://git.kernel.org/mm/core/c/c3ee56cc
+[2/2] mm/ksm: add initialization helpers for scan_get_next_rmap_item()
+      https://git.kernel.org/mm/core/c/0eec9abe
+
+-- 
+Cheers,
+
+David
+
 
