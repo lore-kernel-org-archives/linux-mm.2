@@ -1,96 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A45606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15E1606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LPKRQb4y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F1+OUVYe
 Received: by kanga.kvack.org (Postfix)
-	id C3B7D6B05B2; Tue, 17 Nov 2026 04:09:31 -0500 (EST)
+	id EFD416B05B5; Tue, 17 Nov 2026 04:10:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEC2D6B05B4; Tue, 17 Nov 2026 04:09:31 -0500 (EST)
+	id ED46C6B05B6; Tue, 17 Nov 2026 04:10:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2B3C6B05B5; Tue, 17 Nov 2026 04:09:31 -0500 (EST)
+	id E12B36B05B7; Tue, 17 Nov 2026 04:10:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F5A56B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:09:31 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BEDF802C3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:09:31 +0000 (UTC)
-X-FDA: 85444037742.29.39AE061
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 71DE81C0006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:09:29 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LPKRQb4y;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C20B76B05B5
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:10:30 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31B33C0352
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:10:30 +0000 (UTC)
+X-FDA: 85444040220.24.AFDCDAB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 752C0A0004
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:10:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F1+OUVYe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794906569;
+	s=arc-20220608; t=1794906628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4j68du+QqrdYo0mkRinPnN6ZWQftz36UXeshS3GPhUU=;
-	b=oVwDjurQeffdJ4olPhc6wcv9/c0URxTW/oDs2qHXRrY1gYgk8Uh9bfmXyXO4gNEX1ZGIDg
-	aalw0srz9mA8GzsLhy29Eh3qRSNy9blq4FVENZcynia+Y9M44JzJzX8TmUnUCV9aZ83xWX
-	p2VKuoKrdTXMNDbSERsNs25fKPo5V10=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794906569;
-	b=ENh6EZaOILW1neuXxktD0q/Kmw8ucEqC7QrFb9FDavnJPHlRPWQkjXDHwCZ2E3EpY4vKxb
-	Ish7bKO364BCJwbCegsuVxADH55HcZdNtIBLAG2m74ro1lIN2IP45nj9KCx0rBFk6phtyi
-	+rY3bj5s6Hme7y5qQEpy/ik1lcTknjA=
+	bh=R3xjMAAodPt6ComAZI2yr4tqLZHgVn0+opeICRnPgFQ=;
+	b=HRFetib6byl12e8Y8lvAgp9e7FV/iungMtRvRwg+uPPB4XRYIFHWbiChgQtopDeClzJBB+
+	mwy75qJict1HMtWs+kjCBR3Cq8+JIx7PttOGn2PCRm+1yz1Vjyk8Kg2A+X4JZ5CQeu0j7T
+	jBkzkrUZLWkopTyItSC9bokarh2CHjs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LPKRQb4y;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F1+OUVYe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794906628;
+	b=eUpzaF3TVm2n/7JjO4gi7CHYpZmq/he7cvLyboAWIuEnj77j8O9UfHQIHEKrqPfEZkCIDU
+	Fo7BTFfI/LRMqNt7XLbeZrMuGL9phYXNYzxtuBIBrz23H6coY6+gTG10j4QVh/9RUzDHyT
+	uBzNnKkoR9QRQ7i65/X7b/1uAG6Qv2c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A57AD403CE;
-	Tue, 17 Nov 2026 09:09:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363FA1F000C4;
-	Tue, 17 Nov 2026 09:09:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EADDD62387;
+	Tue, 17 Nov 2026 09:10:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893881F000C5;
+	Tue, 17 Nov 2026 09:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794906568;
-	bh=4j68du+QqrdYo0mkRinPnN6ZWQftz36UXeshS3GPhUU=;
+	s=k20260515; t=1794906627;
+	bh=R3xjMAAodPt6ComAZI2yr4tqLZHgVn0+opeICRnPgFQ=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=LPKRQb4y3SHB6n3wVr1JYri8GotsV4oPdRPiR7zJmJl+MCdWBR7m0MtshOnWULYbD
-	 mILxrFFNR+8elVObe9U4VmA/qcWXHKIZQj2Q/QYPRMwjdMO3wJzwNRRrr3D19oIAQw
-	 9dKedsp+767EKn3I4Ss3VBqATSnODpHwizcox1dTBgL35Y/6wEACwcxVRfWhiYJpOq
-	 Q6Q+9XEHctPxSdKec3MweC6MTNhlLJvXLYl7oegwCRlzcJbFiu3NGRhJnIKCYE4WIs
-	 28Ygfi+PXtHDm5fsH3HPB87RPs3IwoBU7F6K3J166GdKhJJnJ+T/Gj0X8flMtjfv62
-	 Bip8OHjqOpiTw==
+	b=F1+OUVYeCkol6ftrcrJuGaYnKqEUJVAZwY3HVnGUBskVzs/NkRnWDCWySGL0bl+yo
+	 aM7JrMvjYhdyE4vwrAx83WgtN4P4k7vHcJ5QOoM8bz9JhhdzlS6awcU2YUCMq7K9d6
+	 5aXBlHC58z6N/DjHWJwckfiKhCvypu/oSZ9llqTKuHrwwsWLVAuHSLdzxQTEUSkpbT
+	 7OmlIeZsSHiHVnLFhe9ozqYWzkIHbDXHSWRJJ5uw7kPOD/x+S0QpSb2YXhqcy64VkI
+	 0T9PvUFb0p+yEtWQxUsEEAj8nspU1X3lrjnFU8wAuFfKleirosh1sygjWTeA98vWZ/
+	 JZ54Og9bdKNfA==
 From: David Hildenbrand <david@kernel.org>
-To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
- Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev, 
- qi.zheng@linux.dev, baohua@kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <71980310d9bf1bf9733ea0e4b772635e1b2bc5c5.1794886401.git.baolin.wang@linux.alibaba.com>
-References: <71980310d9bf1bf9733ea0e4b772635e1b2bc5c5.1794886401.git.baolin.wang@linux.alibaba.com>
-Subject: Re: [PATCH v2] mm: synchronize with PTE table reclaim for all
- folio sizes
-Message-Id: <179490656487.3795.10506084518247823925.b4-ty@b4>
-Date: Tue, 17 Nov 2026 10:09:24 +0100
+To: Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Luiz Capitulino <luizcap@redhat.com>, Shivank Garg <shivankg@amd.com>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Shao Mingyin <shao.mingyin@zte.com.cn>
+In-Reply-To: <20261116-snapshot_page_fix-v1-1-8e425984e8d1@kernel.org>
+References: <20261116-snapshot_page_fix-v1-1-8e425984e8d1@kernel.org>
+Subject: Re: [PATCH] mm/util: fix retry detection and handling in
+ snapshot_page()
+Message-Id: <179490662325.3990.242767098070074559.b4-ty@b4>
+Date: Tue, 17 Nov 2026 10:10:23 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
+X-Rspamd-Queue-Id: 752C0A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 71DE81C0006
+X-Stat-Signature: 789dhie454beb7jquyd1y1wrzw4xm377
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 49ca5i4ga33bro7f9iadajkm5fkb7adr
-X-HE-Tag: 1794906569-279640
-X-HE-Meta: U2FsdGVkX18MLVCT6dBi5lKE3dwG6Ucoa9FW/bWLzOajeVn8Q1NNh2so58VfTwfWuvJMSbCRgAext3e7JfIfBbeN10vB4/FIOUCZApUxsGhXZAd1tKZnRkQCiycZljj3rKDDfz2bqrB+tk0cbUDx53QYFUPbaB5rCg2rLo8dMcfJsKUFzmWl2v89SCTevve3j1xrw/HrQ9Cl/KmDKWJNrCUuF1V31uRDj7Kx9gKdO1mdXcmNKiNgu9wRucSygeTcN541Is8AH7m5xxqs1k8aPvPnBrEOXYa9txHlpUrwTqpYoYWsj/OAOoTOZ6+goYTL+kdlmCddkePENKd/wxfui+rDgClRzN22OgaAC1upR6s4fFIJGuQmV5seI3lN0Ob6GMjcBnhhdXPVHEPVvZ4hKO+etEaSYsIyoWie3aJ+zkmCgv23MUlx+IYvdLB5411IKD8KZJdIGZ0fgZjQh5/gvFhRco0jFqtRGKSFmdxBdFisrvpF5GZS912Q3DzKDcsRXLMQhPC+eltMjVjimUWF/ntThs88RTsQY73g1+OEISQfoOZDcVW5AHrgFEHrYL1JbwvInN9m1H1TCf08i8MiEzXakYZSi9OOEi74RQSlYiYjWG8l3ehY+4f36ImQkV2cBYQFyDZpIJebzsAI4XyfcghWH7QrT9leTWHB/rhgTbr+NX/VTGmlKmeIdBHQBCkEu9ARrOLOchLMY7kZKvni8pIiWAIJpTNYPnaqB5g/8xzaSIeT9z9kdAtZcSuLxSRFbluZ75dFuyNhkhYoMsJNeBRM6rEs7DBXyMEh7hhTV9pefH95BitHUZDvpxEdnSJbk+H2QxayOlaYXTCSO0zLfoAb3zfQ8QBoHf46Qvn9ZOMkSrkpSEBRRppbw5Psr7VWu96v0eu3TDbtmFT9oBptkqyOHmuzj2wqsBBU8swT22HLhiv6I9Eq36LllrBRArj9RfCxJLOUrCz9kQloGfE
- x57GY7qn
- o2mJubmv9T/I1V8EMd4zkJJf6YydUkJhOZ9NBc3zdpAoPnoY6cWJsMYWcEe0aqPwGoFf02MX5yyvaVkr3RTrvaNRIQByrlI58t9OwjOLmSyMiUWwVCbABJ93Ck77yLRS7u14iS71dSJt2+Yr4+aVw2opJUuaHF6aYV8fhDIt05NooBKkbovYp/dX73Dmeq5fmQ11Jf7uQCv/9jg85pG2YZEd0Ksz4FHbvTkIlGM9DK9QhotCk7hpfzY5NFw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794906628-951493
+X-HE-Meta: U2FsdGVkX19pKjKkWc1c/uyJo6EUXvBU1pHcsK7hkiEq+l1OH65JBdkLAu+hpggBBir0eTlrn9oFmaWRMPf46Kl6H0pBMrjebu2/S+D/eBdhhWhx0Vt4KPGkSxurKk7EkadH5cOZAdub+MLRtb1Ig62Hokr9Z5F7G1IZOyc22ykAubnYddd/sxEIDgs1u/vrGygiUss3SwHcBvQGFOa5uEE2pUTB3SbHyiBxH6gaJ4k6BtLamEuavYUVKPDXo+RFYJQdxOyCpfLyGjeKH6dgqy5Jscnshbynb6wxrDZtNiKiqbCYw5EQlRQjXM/22YY8JfZJxUvjFaRNbl8M4/H6hZATnZr17Zmh3o0M1IwqEh1RryTfI9qad2KKFGuWEIqYxuOt9Xt1HYYGNmglxepJ499vc3AI0dE3mP0oY5sLxzJg1AHQJO8Tl/+B1Na5PohC/fKErzv/UTWQ8bveM82s5I1B4wkneePS3lg+EV4CEaBqs1rbCmQ3S93gnGxPY9dHgJhp2+dT/OHhsO7Z2ILTElh6+sbwUQjferCH15cMvGoy8bB0gs5slYqyZUeIVOlGFHhlersn6aG3mzhkoyY+okighMjvGKzDlMz0ChmhvmSjK7nfFXSSevpBaGUrOytOKE22U4U/opp5l7S3hVwc05mKmxqYfZT28NKOWQuQRpSkolqs7nOkPmJdY4vE2Ohjnxm6pP1oQa77uVOm5fLMOz9DRZN2Ox0MkkpiX977NEyk9DEL4K9H8tP17yJtWu42Cxe8wVDPWztGadd9DHzwMJs00gi+w1eUZ4aDczrKWcSiAkAntAQ/4rM4x2k1T/3dyw3kgxJlp0PBC3GtuEudcCyV6gOeaQw87LamS/AAlK4U2laGuI3g/RE+X+5Yo08eL12ojLmbxiIWce98qjqGa1uGGj6o2bSw/bxVeZ+Xv6etNFJxvYzU7fgR0Vys3xB9gbyt28dU5JV3fo3Qs8t
+ /De9ERkk
+ hH8rtM9x+6I4BXswstJPKrfsiPycnQmMBeTEkwI2dvBx5sSRO6pceXVcri8jY913SVl1hAaM2TfRBjdihwhc1R/NLqXT1rkuIjNNsJwaP+qOOdyKc0bUouFYEpYc3ciYyXZiDZ9pYtkvcsvdU8rFKnhYouDMdMRgl6doxok99GCaX7zos0aMakyIcbfySAht0XMI7zmV2yQbQF9gjUwyxBLQ+xOSOJoiKLUrJ//f8ZRoTcE4PFdG5OpUxkfnKFfL3W3ZH1h9a/p0dEqJcSqweWXUiYhME+SYnaxo/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,16 +101,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 17 Nov 2026 11:40:22 +0800, Baolin Wang wrote:
-> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
-> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
-> with concurrent page table reclamation via zap_empty_pte_table().
+On Mon, 16 Nov 2026 15:12:13 +0100, David Hildenbrand (Arm) wrote:
+> snapshot_page() detects races with concurrent folio split+construction by
+> checking whether the given page still falls into the folio. Unfortunately,
+> we have an off-by-one error in there, and we should be checking for
+> "ps->idx >= nr_pages", because idx 0 is valid.
 > 
-> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
-> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
-> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
-> and try_to_migrate(), the other callers do not perform post-walk accounting
-> checks, so the race has no observable impact on them.
+> For example, we might currently report a tail page at idx 1 as faithful,
+> although the snapshotted folio is now a small folio.
 > 
 > [...]
 
@@ -130,8 +130,8 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[1/1] mm: synchronize with PTE table reclaim for all folio sizes
-      https://git.kernel.org/mm/core/c/bf4c270e
+[1/1] mm/util: fix retry detection and handling in snapshot_page()
+      https://git.kernel.org/mm/core/c/d172918d
 
 -- 
 Cheers,
