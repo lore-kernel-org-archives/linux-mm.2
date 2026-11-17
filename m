@@ -1,90 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8191A606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 22:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94151606A8A8
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 22:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=EHdbSKZv
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=A2y7TeVy
 Received: by kanga.kvack.org (Postfix)
-	id 9F36C6B00EF; Tue, 17 Nov 2026 17:27:54 -0500 (EST)
+	id 914616B00EF; Tue, 17 Nov 2026 17:54:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CC716B05B0; Tue, 17 Nov 2026 17:27:54 -0500 (EST)
+	id 8C5196B05B0; Tue, 17 Nov 2026 17:54:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 909BC6B05B1; Tue, 17 Nov 2026 17:27:54 -0500 (EST)
+	id 78E106B05B1; Tue, 17 Nov 2026 17:54:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E2596B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:27:54 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0C58A1A05C2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:27:54 +0000 (UTC)
-X-FDA: 85446049668.29.60138CF
-Received: from relay.hostedemail.com (unirelay07 [10.200.18.70])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 39CCC120004
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:27:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	none
+	by kanga.kvack.org (Postfix) with ESMTP id 4633E6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:54:52 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BCF43405EE
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:54:51 +0000 (UTC)
+X-FDA: 85446117582.09.F0F550D
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DB4CB20004
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:54:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=A2y7TeVy;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	spf=pass (imf03.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=paul@paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794954472;
+	s=arc-20220608; t=1794956090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ko/0t8Uo3cYIjjNrJtn/Btsh4RwXHj5exYfcCPg49hM=;
-	b=dXEGMRDErG7qyjdtYjyQsoqccb2qu8Putnqqw9EvwpoknqTT4rkYUlgpNzqLm05ecpDmA/
-	6aov8e8yU66Vhw5bX6WT5D0ztcsSbO1VDUAHPO4WWU0BxCs+HId5TCfiPN3pLpwEvYELkA
-	ZUtlN8h6hXhRSwyBrgJGYcqv4EnxTas=
+	bh=k7/QLUvYDzH8xZxy3OOm+8SYpFBmpzd+eC/ISXSLxiA=;
+	b=lKK1mWN2tDuZQna2H5i+pUbkKITol8wFw2VvK8+FV/JdPYa5Hi4O2ZsAJ0yV4D2rzBNMKn
+	mzL/eFoOtEA5L2S6ZfcyZASYlr7MC90qAac0XZH43E558GxFc/dCmn0VYwp4gax3ru5Jd4
+	2eczaKzilXKopzC+0XRGRAiqHloJlac=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	none
+	imf03.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=A2y7TeVy;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	spf=pass (imf03.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=paul@paul-moore.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794954472;
-	b=h3d4PtObD7kBjh7inkidYgwHfbjTUQfxAD7n0vFRdPXACxsA3EjuwLAOt7HybMylVyv7sy
-	aspSHmK17zEbl4OHcmU0T8RBUSAag+we8iiaNovAwfNmhZynenM+myNW7SU9B/p/pCQmCO
-	AP61SNJmdpcu+Jftlkk71SyREybMzEo=
-Received: from omf06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C7691605D3;
-	Tue, 17 Nov 2026 22:27:51 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id D729F20010;
-	Tue, 17 Nov 2026 22:27:48 +0000 (UTC)
-Date: Tue, 17 Nov 2026 17:27:46 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Chaosheng Qu <quchaosheng000406@163.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] tracing: record jiffies in writeback events instead
- of computing age
-Message-ID: <20261117172746.42d075bd@gandalf.local.home>
-In-Reply-To: <1793157924.328974.4869096@163.com>
-References: <179299543891.294518.18224691820856958686@163.com>
-	<20261026084709.26f7737f@fedora>
-	<1793157924.328974.4869096@163.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	t=1794956090;
+	b=1pS+DlnN8mU/zFG+kKzC9kRggBWwWAKJNBD+yYvXfFftxIk3pbaUZ2bsqVNRkCjmrsiPJV
+	ppuw/wywS30nMPQDtGXtmmH+XVWLHRMd/h4aPf4XQxjIgTRST/7sS//uREAAnrJ7YoIrVV
+	iGzbkcqRoTF9osIM7Th5rmHA0612vgg=
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-91e7af9a67fso1361376d6.2
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:54:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1794956089; x=1795560889; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :content-type:mime-version:message-id:date:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=k7/QLUvYDzH8xZxy3OOm+8SYpFBmpzd+eC/ISXSLxiA=;
+        b=A2y7TeVyWe4PThPzXFlHTqVKa+iAArhGH3yrzNOrfBr+1sZiz/zYfV4XlaJmZh7lQi
+         nw1HMbF0NuAMVDA1IPLkYHz/WF53ruYxC847qsIFqToMLB+hlizHRwGXlNF/RrvjFtb0
+         jLkSgFSV0nBHNalX2VBxgJUYcBGGEDbeG/sv9KMTVb3T7z2lnBLS4+O3IUfHAoq4yzRN
+         fnwoREGsBnroFN1s0Q1Nt7tY1aIYopabPSMKyfeKAetyKWG+b4hji6IFr02Ze7NXcnVC
+         2GOiCu+fnllb/UHUVBYZ5S0YXCR9sj513lZfdayRNt2yP/URlhUCPQlCU8v9WFQCfxqK
+         suWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794956089; x=1795560889;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :content-type:mime-version:message-id:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k7/QLUvYDzH8xZxy3OOm+8SYpFBmpzd+eC/ISXSLxiA=;
+        b=Yq4YVxlWNYIUl066BR1GpAjuIhWvrLt4Fzt6tUnBupFr1sQoBGce0KudJbmwjgT607
+         8CF7HK3RKaoaqyeOGvJqK8w4OnNOcOMZVKzsP3X16ldaTmIj6/Vf3RKLETjkQA8IQylM
+         WeV0bRDD0dZMlvUjFcUUJwryFpwngtJNxUgg6nn5Oh23jJ3hNXTrApFVudCW+4QnDo5j
+         qO0AN3QqCuYtBpQK9KEIolc6z1vxiiYNxHAzZ9C+EgrJQmgXczMQJntmIOf2s52pzFI5
+         IiCYQK1LgjTRHysEu/ALrbgJmcAjtxkS9HxaDTJqVuUwTV4H87oPt9LaEPKCp3aM9ZpI
+         i4Bw==
+X-Forwarded-Encrypted: i=1; AL+hErFLkZBwz9GcceBOorfSDbQTirvxSoM//pCSHmRweEhdzhjOKptWExwV9J/gmWJD0u4XAHvrf9ujLg==@kvack.org
+X-Gm-Message-State: APuU4Z/G5h62m3drJt9TF4VXC5n5vvLV0PQhnrhuuqMmjgvlXqAGSu1/
+	etpvdxoOT9xmOIMqUODdI6Rk90QZRZyA+yg+Hr/MA3u+VBE50w10D1Sum2kOyXLZ+g==
+X-Gm-Gg: AZFdTZcxkTOM8IgOhbvD++mwqjd+7M0FZr10EHZgYsn25F4VmAHyc0K1aLHJoKyzGB0
+	vXgVMOzveLHWekTN8rufioXjOUisIALjJLGTg/CI1XLAUGVVV2M8V/BrPT9vBZEthsVBuXdU3Ia
+	P++vjGsMphYQPWrmDj7mbFzJk8FJtdDqWe3IuWnAEp6jJuayOfWwk+ykNjgv8o3ggVMWU8AHcRS
+	S3DYvdcg/6CPV9ItNNSdubFVZ8+UkKWo7xwXpfbjFDUT8b4bxfA6NWeYPnZYFX4AueYXmEtDflz
+	pfn3xq1WRtsMQeJLKlt9zHq5eVbRdfvh82/gWP4bP4dOnlBiqwHgB9daulLkLvuC+R36eydeulR
+	IbsDQ4L1iFWSlLP2clA4/9B+XV9SEtj0rKbVCLHcJlVRZ10pz8Zhs9YenRFIKsxaG9wpOxPO3RX
+	OEC0Y0pGdaK6oFpBbit8zQ7h5Npw9jCoibaveLCEp3k27FAMupWtwiyN1kRUkoQ0V2o6OVM4Dtt
+	xrnGxIG7nyMa/ih0YFEXp5A6tp1aQDhDMIPbko7TW8y0puw+j3Gz+mU951K9MYL/imX3oUZWgJG
+	fPQGyqH8HVXfwSAHMxEH+3pKrWHlgU4zXdivIvPiZoUMafxKihsxUoelPeLg1aUxfiJZe6Ae8Lr
+	3Lw1gcGTT6P4ktM7Wc65Ddmc2rU67cg==
+X-Received: by 2002:a05:6214:4981:b0:921:9ed:ee6 with SMTP id 6a1803df08f44-92114dd0d06mr10225486d6.20.1794956088668;
+        Tue, 17 Nov 2026 14:54:48 -0800 (PST)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92114d53b7fsm5495766d6.26.2026.11.17.14.54.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 14:54:48 -0800 (PST)
+Date: Tue, 17 Nov 2026 17:54:47 -0500
+Message-ID: <4356992ac4fb7876fb5759189ba4b492@paul-moore.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX198/NLHb3rmfOYPbcxeL4+SJl56B6U+SzQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=ko/0t8Uo3cYIjjNrJtn/Btsh4RwXHj5exYfcCPg49hM=; b=EHdbSKZvsn4//OVY5FY9Ahc2Tr8C4l4YN0lT74uTZqOOPhLacf/5lPpne0rS3RvEfZ9Dz6hWOaY62RNhdEFR28cKvlVDus+WOszi56LR5mxRHeMY0/efedKKf8hZ2BVH6nl82a8iGgpjZ1JOrX/PpVzRZKvfWLyKVdkBMGXG5ZE=
-X-HE-Meta: U2FsdGVkX190m8CaKzES5kkLjFQxipcm1qgoflPGiCdFdHoV/FJOi7oPWmrW/1uY5DfHuFUsYYtdOUrf/ZK9RxJzapxWclGLxgXg8MEjes2VO9bI+ZVkW9zULcpftBVXpjpzJ5c8oN5jNpC6NyyvI8On5ZS9EWXaoE5tZjHAVYtfSMhC1kjbXuSroDAB8o7oHlSqwwbdpSbPA3ApcT9R49GjPH/6IC69a94Cwb1AlRJzo1Bu2B+60/hZ61I1WTDhjHevSD0Vxyi0Hqseuwm+z0N4+0wvVg90mZX7TKi87U3wk5yplLLOqFVSHrsELlSJWvql6CScXnA5SczNE0BbcN5t730IAdBBHrPJaIKIcGRanX1kpbl3Yb7z/fLVweo/aIv07eiOBJYU5rm0630Jk+led1HWzJNow0UzQMUFkjA=
+MIME-Version: 1.0 
+Content-Type: text/plain; charset=UTF-8 
+Content-Transfer-Encoding: 8bit 
+X-Mailer: pstg-pwork:20261117_1552/pstg-lib:20261117_1552/pstg-pwork:20261117_1552
+From: Paul Moore <paul@paul-moore.com>
+To: Albert Esteve <aesteve@redhat.com>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Christian Brauner <brauner@kernel.org>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	=?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
+	Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
+	Philipp Stanner <phasta@kernel.org>
+Cc: airlied@gmail.com, cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, op-tee@lists.trustedfirmware.org, Albert Esteve <aesteve@redhat.com>, echanude@redhat.com, mripard@kernel.org
+Subject: Re: [PATCH v5 0/8] memcg: dma-buf cgroup accounting and charge
+ transfer
+References: <20261117-v2_20230123_tjmercier_google_com-v5-0-1ce975f2a9ad@redhat.com>
+In-Reply-To: <20261117-v2_20230123_tjmercier_google_com-v5-0-1ce975f2a9ad@redhat.com>
+X-Rspamd-Queue-Id: DB4CB20004
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 39CCC120004
-X-Stat-Signature: s4cdizhjhscjqygk7q3m9hwq93831cn9
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Stat-Signature: 8d3uu4rd4mbtjxgtk815mk9y94bqji8e
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_2 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag-Orig: 1794954468-512238
-X-HE-Tag: 1794954472-953887
-X-HE-Meta: U2FsdGVkX186LF7ZqMzZbUTPnq1AH5fNFX2iyA+TwY6zX1ZnYk2xEPojQT2x5GbTPzZ04KdrASGI/iVGfo/+eHovoeEdw0eBFQ5fyQATrXOh/1DPRrTomDXvsBlgr2BDg0GLF4ihsf0Tht9Sov63L8o1JrYKu+SRlHkx1oXmSpswizDpiP9ZevBD00NCbhzkAi1VY4hpeUkczAqtjWCYBXlBfCyVpaERfX7ugnS2z6ncPEMl5Ye0ggtZiMlhYM8WRvwtGocUb829/9XVEw46dQ/gFRSwS7hAI13MW3c0/pn29xGj0g+EIp56Cfrjz0Nl0zPtsmTzKbzTVgwNsynzAsA3fgzjX/Z+CeY6o61cnG1+bHqkAmp5hUW7/w2djZonYzQrOnI37oIsGujHDH6VzYmrZGUqWEQk0ghPNtt/Vpbp9jf+5I5hYacC9SpOlhgmTYhZaokz4GHHJy2pRBnQPhDdwkD0oPExO7yQqrG1mKziN8RGAuPqRUwc5YtG9h9nl5j3QMdh6PRxIWyPjIYEstnk6q3BPD/UnsPmO5M1LuzLu/ayhXXoedpbXabLHUJXwwyXzNas2QD1cXgPavQ2jn67JCu8wPaz6F4wT1j7HF5349SCMQmTy3u6aDN41OcCosJo1v0DfPtHKqz3cBG5uQIl2TNXPvMW6GDTKMo+mE4NHcXUQH/m7xYgkLJdoOwJPbfmRCaYoux93UxqZbgk3BJ3q9+sx1CzVHH6bCAkJiiBKzbKVust+/pjndZ1DiTYcQ4IpvC0pi1Cff2DEToniT3MgY6XrJY5uFKSf0hY14cVushH/bsqXK3Llc/tGhXVEdAXggp4SOk15rYheQS053OhXhKmGUIAyKQwo1OFzBdmckCd7mXivCz5iFr/Jj0/uCKAkiJ8SUYxDk/prMi+jAEOuFC4qY4wm5Q1ZoZRiN37e8TMIIU8gKNYmpfGLdbAh6VMJM07+Lz5+Kuy9dr
- oeRyLgeS
- ScJt57HbuVt+5OiYkbHlMTNXkN2+bFnZZxaH6hSl/EAOWgNnR6bTQrkt99Asr+u1GCvr3joDnyIAhhGKB5xWsJvhRKOwqZNPuzFEOoTBlXDPYHGrks03fVERDmdT5wLziAxs2WT7yzAa74DI7iu9TSkJVXA==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794956089-589981
+X-HE-Meta: U2FsdGVkX1/mpC5Sc8qgZ09/2LCJ1JxDzlzraROHqlZex8zf1Y9j082RQXFEss3R3wHr/efqYgBabto2UdFI/qHrAJT5i5kozzfjubCEJ7JKmAin0cGAgDMK2HxwgtPNKTLasOsuE6X1tS52daiF89Kxv6xMjVsE3disVX5nMe8vOEuS4Z8WWY/6gt4Sw9vdotYcY/sYtzeohWniVxCu4vMkIsdfHvUZUqzg5uSuVPGFEkoNTMLUPrfWjxwPPa+wumH22xL0ZFq2OUrpPJ1gjQdvUPyC4jO3Vw6PxccH/9CWBKB5AUNtNkHsYO8EGcw51kT4DDptrHE0xgfB7WXwhH39eFAEcndWMkr0DIKoMjfv251A3tqQQ77yHlFgFlURj850kTImSa9fU2LWpfhev6is6qaTRqgvAlW212k+kx4dMLK+iOS0djqR+aeLvOhbnjKXyIrCdezAMEcMp/HzzHjYowRRggH4z0M1EqgUVMUou66C1n/YCudak89vJFY4YKbd+xHn7mHyGD87+2Yim+O0Srn/wGkJIfzxQbCDctywEu7fcRu7/2BMEvsMtZk1eIhziFlyVD6DED/WbDFmQHXa2QtNDkMxDKoont7VcxE/e8u2jmcQCAEaBp5v47lNUrnFf1solyPA/DEVnnVGZ0HTELS0FjiGGl/D0NY5Sk95oA1ZmLRMnI+cH0+ZxV3yStedyrIfA7z9mS1EpHrEMcS5xeqncnZK0BbfIYzvwecvVEKFrySaUVG+uhxisAoFFVgesFq/7anQ9YoIHSIyshEksZBpQ5oo+OcxldHKG3+wiefZ3BvIwP+oDq9MEgMmZLdNZ2X+++nnqwaG5MtsC9meB11g4mUDj2eDXtKoRV5Nggshh+414BjEP5BGXjAUcj1Th7sSfkHcoozS4b1xE498lTbAUc8Az6YjaJ5bWU4yU+Z/nVs56SuwtlsCilAozjnxnmJXgqmJlCgds2P
+ pfM3oudl
+ nm6v1ou4ZOAlF0vfvO7fhTfypSvBcmm2GIWx5A03URUZFPoOKTWZ1AbDW+a11f6WXeRMfj7FMVo1Htt+DV8Gvb00tXuqlEe4yJBFpqqorl+UUJztflS0IsW2P5Oio2LqOoSCyB0E8ke0i55JEbTlA47/nlkK7S/cLx1aEmiJhdxbuOrIzVZVS0og/ZjZwEjjbgXhxG3x6royqMh/xrk4Ylb2eepq4Ivc6QQQP6j+krqJxfH2DvMNa3QEQuAm3ZG7hV5eSY/l8KpAcmyit5iCh2x5RrFLs1meV7X0aXV61uQaUdZ5WUpntyzRWqgWXRijbtio3ASKDJcy8512vhqtuk3jPWKjdgs5+M6KLlWpCI1qcy550SgC3vTm1MlyE8teFXNglz3OGT1D361AI7S4d+VRyxyRubgE1gcWIyraXrbYW/jwgmTpRTARZxOubbuD9wDJlvHhb7aps6iSCw5mMYEuNrZzpTLrSiMeNKvWEuIqjorvDQnftvjo3tS3yp8MsB/QuECGhgCX2JMa8zg8H11DEuNKB3NQLIDV4q9PVQDhkfMZoJKcZV8FoZFUuF6j3WqwUfL0hc32RtIhCVojURBQWNXbtg4LCwzJij9Yjm2LOKo0Eh0zXxrY1osquyEvb85OI3knBsm2q4LswJNSbe3xgyoU077AekzMeYhrAtK13CRZoNT4ITmsiqRsjMY4G1Ng5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +140,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 28 Oct 2026 11:25:24 +0800
-Chaosheng Qu <quchaosheng000406@163.com> wrote:
+On Nov 17, 2026 Albert Esteve <aesteve@redhat.com> wrote:
+> 
+> Shared-memory allocator services (e.g., Android's gralloc)
+> allocate dma-bufs on behalf of client processes in different
+> cgroups. Today those allocations are charged to the allocator's
+> own cgroup, leaving client cgroups with no visibility into their
+> actual memory consumption and defeating resource limits.
+> 
+> This series adds memory cgroup accounting for dma-buf allocations,
+> building on T.J. Mercier's earlier series [1] and incorporating
+> feedback from previous versions and LPC discussions [2].
+> 
+> Patch 1 introduces the MEMCG_DMABUF stat and the
+> obj_cgroup_reserve_dmabuf()/obj_cgroup_cancel_dmabuf() and
+> mem_cgroup_commit_dmabuf()/mem_cgroup_uncharge_dmabuf() helpers
+> in mm/memcontrol.c
+> 
+> Patch 2 wires up the charging policy: dma_buf_export() stores
+> exp_info.objcg and updates the stat, a new charge_fd field in
+> DMA_HEAP_IOCTL_ALLOC accepts a pidfd or cgroupfd to identify
+> the target cgroup, and __GFP_ACCOUNT is removed from system-heap
+> allocations to avoid double counting.
+> 
+> Patch 3 adds DMA_BUF_IOCTL_XFER_CHARGE, a general ioctl on any
+> dma-buf fd to transfer charges post-allocation. This covers the
+> double-hop allocator case (SurfaceFlinger -> gralloc -> kernel)
+> and works for buffers from any exporter that opts in. Charging
+> is gated by dmabuf->objcg being set at export time, ensuring that
+> transfer is only applied for buffers backed by system memory where
+> size reflects actual bytes. If the receiving cgroup lacks capacity
+> for the charge, the ioctl returns -ENOMEM and the original charge
+> is preserved.
+> 
+> Patches 4-7 add access control for cross-cgroup charging. Letting
+> userspace decide who to charge needs to be a privileged operation
+> because it has material impact on OOM decision and resource limits.
+> Charging outside the caller's own memcg subtree requires
+> CAP_SYS_RESOURCE. On top of that, LSM hooks gate the two charge_fd
+> flavours: security_memcg_charge_task() gates the pidfd path (target
+> identified by task credentials) and security_memcg_charge_cgroup()
+> gates the cgroupfd path (target identified by cgroup directory label),
+> with SELinux implementations using process2:charge_to and
+> cgroup:charge_to permissions.
 
-> >From 677560a14dae0d9581effc5cdb9375052902bb21 Mon Sep 17 00:00:00 2001  
-> From: Chaosheng Qu <quchaosheng000406@163.com>
-> Date: Tue, 27 Oct 2026 14:28:09 +0800
-> Subject: [PATCH] tracing: record jiffies in writeback events instead of
->  computing age
-> 
-> writeback_sb_inodes_requeue and writeback_single_inode_start/() compute
-> the inode age with:
-> 
-> 	(jiffies - __entry->dirtied_when) / HZ
-> 
-> inside TP_printk().  TP_printk() is not part of the recorded event: it
-> runs when the trace is read back, so the expression is evaluated at
-> formatter time, not at the time the event was recorded.
-> 
-> It is also evaluated outside of the kernel: tracefs renders the format
-> string once and userspace re-evaluates it.  A tool that has to resolve
-> every symbol in the expression (trace-cmd and the parser in LISA both
-> do) resolves the bare "jiffies" to its address, so the printed age
-> becomes ((unsigned long)&jiffies - dirtied_when) / HZ, which is
-> nonsense.  This was reported as a wrong "age" value in trace-cmd
-> output:
-> 
->   https://bugzilla.kernel.org/show_bug.cgi?id=219839
-> 
-> Nothing in TP_printk() may depend on the state of the machine at read
-> time, which is the same rule that keeps ktime_get() and friends out of
-> it.
-> 
-> v1 stored the age itself in TP_fast_assign().  Steve pointed out that
-> the division then runs on the trace path, which is where the side
-> effects have to stay small, and that recording the jiffies snapshot
-> instead lets userspace compute whatever it wants from the raw value.
-> Do that: save jiffies in TP_fast_assign() and keep the subtraction and
-> the division in TP_printk(), where they run on the slow path.  This
-> follows the same shape as xprtrdma_req's connect/reconnect fields.
-> 
-> The new __entry->jiffies field is appended after the existing fields,
-> so no existing field changes offset and trace consumers that index the
-> event by offset keep working.  The "age=%lu" placeholder keeps its
-> position in the output text, and the value it prints is unchanged.
-> 
-> Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=219839
-> Reviewed-by: Jan Kara <jack@suse.cz>
-> Signed-off-by: Chaosheng Qu <quchaosheng000406@163.com>
-> ---
+I'm probably misunderstanding the description here, but in both cases
+(the pidfd or cgroupfd case), ultimately the cgroup is charged, yes?  In
+the cgroupfd case it is more direct, but in the pidfd case it is still
+the cgroup associated with the process identified by pidfd, yes?
 
-This should likely go through the fs or mm tree.
+If that's the case - and it very well may not be (!) - it probably makes
+more sense to combine the two SELinux access controls into one.  Yes, the
+LSM hooks and callbacks would likely need to be different due to the
+mechanics of it, but the permission check "cgroup/charge" could be the
+same.
 
--- Steve
+> Patch 8 adds selftests. The tests and vmtest script were mostly
+> written by an LLM, closely following the style of the surrounding
+> tests and the virtme-ng setup. All code has been reviewed and tested.
+
+I think we need to have selinux-testsuite tests to go along with
+this, especially as this would be the first patchset to add cgroup
+controls.  Historically I've pushed back on piecemeal cgroup additions,
+pushing for some basic design of how to manage access controls for
+resource management first, but since evidently no one wants to do that,
+we really do need tests.
+
+https://github.com/SELinuxProject/selinux-testsuite
+
+> Known limitations:
+> 
+> - Single-owner model: a dma-buf carries one memcg charge regardless
+>   of how many processes share it.
+
+Once again, I'm sure I'm misunderstanding things, but are you saying
+that multiple cgroups can end up sharing the same dma-buf despite
+only one of the cgroups taking the accounting hit?
+
+Hopefully the charged cgroup is deterministic?
+
+> - Only memcg accounting. CMA heaps would additionally need dmem
+>   controller integration.
+
+Do you have a rough idea of how that would work?  I ask only because I'm
+interested in seeing if that would require an additional LSM hook or if
+there is some way we could leverage the same hook(s) used here.
+
+> - If a transfer of an uncharged buffer fails, the buffer remains
+>   charged to the original cgroup. The allocator (userspace) is
+>   expected to handle this (retry, free, ...).
+> - The LSM hooks are intentionally narrow. Broader cgroup access controls
+>   (e.g. for the memfd/kexec handover case [2]) could be a separate effort
+>   reusing the same pattern.
+> - Only system heap sets exp_info.objcg today. Other exporters
+>   (DRM, V4L2, etc.) can opt in by setting it, but are not
+>   covered by this series.
+> - Related to the above: lazy backing-store allocation is not supported.
+>   This can be extended later, e.g., by adding a flag on the dma-buf
+>   struct for explicitly marking when memory is committed.
+
+Similar to the CMA case, any rough ideas on what this would look like?
+
+> Note on TTM/GPU accounting [3]: that effort charges system memory
+> allocated for GPU buffers per page, with its own stats (gpu_active
+> and gpu_reclaim). This series charges at the dma-buf level, for
+> memory with no memory.stat category of its own; exporters whose
+> memory is already charged by their allocator must not opt in, so
+> the two do not overlap.
+> 
+> [1] https://lore.kernel.org/cgroups/20230109213809.418135-1-tjmercier@google.com/
+> [2] https://lpc.events/event/20/contributions/2416/
+> [3] https://lore.kernel.org/all/20260706052330.1110909-1-airlied@gmail.com/
+> 
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+
+--
+paul-moore.com
 
