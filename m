@@ -1,79 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323CC606A338
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 08:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32C0606A334
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hiDuFh5W
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k0vHivJV
 Received: by kanga.kvack.org (Postfix)
-	id 39BE06B05B1; Tue, 17 Nov 2026 03:58:47 -0500 (EST)
+	id C77F56B05B3; Tue, 17 Nov 2026 04:00:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34CC56B05B2; Tue, 17 Nov 2026 03:58:47 -0500 (EST)
+	id C292C6B05B4; Tue, 17 Nov 2026 04:00:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23BD26B05B3; Tue, 17 Nov 2026 03:58:47 -0500 (EST)
+	id B3EDA6B05B5; Tue, 17 Nov 2026 04:00:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF7B26B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:58:46 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B54FA7C26
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:58:46 +0000 (UTC)
-X-FDA: 85444010652.15.47131B3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 87D586B05B3
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:00:10 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21244A0376
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:00:10 +0000 (UTC)
+X-FDA: 85444014180.10.DCC081B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BD2D4A0003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:58:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hiDuFh5W;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 579552000C
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:00:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0vHivJV;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794905924;
-	b=i5jii1wBB6Tzk8zrEN5orKq/z8g+aTEK2PJ24OryZkxQgx6f6NPaptLdppT7gPHKtv10FH
-	9kJRj3sSYhKQIbMYZ8HmeMoZKR50lVNWBTU8bqlcKYRExTpcB274KkqUTOwK4FqIEHzMe3
-	XKU0irtniHARX8Jpn819mkp/VRaPJ1o=
+	t=1794906008;
+	b=pvnjsWXvH1DV755WXljUZx1+tjDTMgcp9uEaAV3BjcUcNnTvsDkuiqq+2qyBOLf5menHdw
+	a1c/tSmmuTN1ThTu/kGAegQpC6WrUFnBKjaoymEC1rrwUfHfHcjE6zPp1F9tc+9eLAVb7H
+	ELbdfMoh9GjOMCJx+Jf8YuYHdqjGInU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hiDuFh5W;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0vHivJV;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794905924;
+	s=arc-20220608; t=1794906008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sdaJ46qgDtJZkPgfo2bi66ZtW6lZcvzV7LDkXsyhjRw=;
-	b=DmRaS4PO134+cMX2KoLrDYglVthyi88ZWBOKonK0R7b59Rmrjh+/HHrFCfA+cUk8bonWSG
-	djLp4/UTlhcT3twj4dk/YWD1+AfA3MVO5RxEAvJQk8tj7SlS9vY8MK84lTzij2Rvy+h7dk
-	hD+7VfL9vl3fC4/bYhDDOTPD3hrVamU=
+	bh=XgHQdBWzds2ptgggUl76prs1LWBlb+UNo9yIzg5rC2o=;
+	b=A23zS6bIvoOXO0uBRig8unB4XlokQMkG20SjKbUWHE0vDU9l9fUfN4CqaS1VJpFCLOLR/m
+	c03UDYONWf3BzZOfH2i6zRy9+U35jFyHB5Twom3V6wr0NCveXpYKLdDxPb+J2LVtC94Uz5
+	a3MUWpJVw9+We4ZqAjqnWKCQrA/JudE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDB94612BA;
-	Tue, 17 Nov 2026 08:58:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCB71F000C4;
-	Tue, 17 Nov 2026 08:58:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D7F5662F22;
+	Tue, 17 Nov 2026 09:00:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F92E1F000C4;
+	Tue, 17 Nov 2026 09:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794905923;
-	bh=sdaJ46qgDtJZkPgfo2bi66ZtW6lZcvzV7LDkXsyhjRw=;
+	s=k20260515; t=1794906007;
+	bh=XgHQdBWzds2ptgggUl76prs1LWBlb+UNo9yIzg5rC2o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hiDuFh5WlgG+JKxfQnO28g51JpHD1Mpwt5nYbjHiiOR8aRqwmndsTM+bhPwQirfyM
-	 s7IZng56tkBWK1cNTMafNnMeR7kd8g/EIP6m45rcIGg8RsKHKQ+qutb1ANFwdSpJTw
-	 QPsq4b2VgYBhcjvMjzxrj8EIFzBoHaqQu5LTuQyIENby1vTb/Pu90TRJyifvs3tkIT
-	 i1zp/qRsJWEGoASA0CQiCP7xo7/29BdaAXi2/9l6qNrFRmsVxZX4Z7/S/VkiMO3hmF
-	 rCeEsTOo++1erxKHvI5BP5IJmyjS8U4aTmKifv4ungSKCdKOpEEF6ibgBK/7DPsCQ/
-	 WjCBZSjVEU9Mw==
-Message-ID: <486cd251-f7eb-4162-a1c7-92f04f480a6f@kernel.org>
-Date: Tue, 17 Nov 2026 09:58:38 +0100
+	b=k0vHivJV4vgkreK7bO+TJP1L2r/RaqhNIi1rS4+N3zRncU8SiVhyxeC8VvzkJfn8P
+	 xKTNbTuBOzzoKga4TA6+YZK6vHBOGS4meBEWRy+UYEEr0ZbP5/gYUSOVzZcEziI1du
+	 VH16nP8twID+dDXTtGVVgqNQnn67AJ1QGGI/3IArbJ+Yar3nWN8tOpGABEMbhH2jnB
+	 CTdRIy7ZSVhZa/OYcwsDVv+bpHP1eN6relwMQjOUaDZ7s4DUS9dWegz1h3UuLgsa7i
+	 x5A7MCO8kpLTOxZ8n1Sin+X1V6xaflo7RHO6gDFXBD+73tblbhuBCnZyr9vjS+Rxvp
+	 NA6dPqllVZ2Uw==
+Message-ID: <0b565b9c-1462-4fed-8836-9a7d08e4b861@kernel.org>
+Date: Tue, 17 Nov 2026 09:59:59 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] selftests/mm: handle implicit read permissions in
- madv_populate
-To: Xionggui Chen <evers_chen@163.com>, akpm@linux-foundation.org
-Cc: shuah@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Xionggui Chen <chenxionggui@lanxincomputing.com>
-References: <20261112031811.56500-1-evers_chen@163.com>
- <20261117070606.3752-1-evers_chen@163.com>
+Subject: Re: [PATCH] fork: mark memcpy() in dup_mm() with data_race()
+To: Muhammad Haris Awan <m.harisawan@icloud.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Kees Cook <kees@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+References: <179489519663.1444496.15875846661591982934@icloud.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,22 +127,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261117070606.3752-1-evers_chen@163.com>
+In-Reply-To: <179489519663.1444496.15875846661591982934@icloud.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BD2D4A0003
-X-Stat-Signature: m559ammoym4yjc3rb7fmrsimx1rgdr7d
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 579552000C
+X-Stat-Signature: u9ozxndrjbonuuthbhbc86n84xoeicof
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794905924-138248
-X-HE-Meta: U2FsdGVkX1/ri5panM1HCKoOKXSFMegafZBSvvjMzFBJdYaIUe7hcn1Mk2nxbeIlcn0eF5MJZVwZ23Mrc8IUlMMKpCKen1QmTSZOoMlCjDSgwiyKtYjoe6/Ng2vLIF3HQhNor5Qj1rNwAp3c0px9Vcbw6kAm11sASU8DMg4thAgtysmAw5Sl+meNAWN6YXIHYoE+Jl2n3wKLZ1zYLYwiJ8nmjb2lsFD870z86hYd+nGquD0k5JnP6qKnaS0NdabfBznv/u8AGJZW5u8U7uK0VKnd3Qh6L0tw7YkUK+uALOSNzcR830GMGWCItbQC6/Wg7JNxPwjbETNkF5oa7siu3DuwdKsHqZmQYHcU4QAexqEsiff0xXzQEgROfPYkdrQ6cQBJkC/Wu1K/ZFTr7k8w/FRddsjcqHZR2hz6n+uhrM1Oq4+iswehu7tawUgE/fMSCQa1D/6c8uUGWl6N1F011M+VCM2QsO2qoagnTVstcO8AIO27ItIJdQHygKL+3duKEa961P9FLJRJwvcaCm7snpiAuF2aTXSm5HZs004i2SRodqbAmq6cfKW92zk20StjI+BuOevXSv1QWEVEIajcWeOCtn7qTGX0APFP++jv/tj5g71azrKgqLEoYkiQAzDJdWUh9jBydOzfTdf6I4hKhguHuHiu0EhXq4gPZtmV2xvUdy3b3qPmvtnj78C0saENv68c0lZsyRtvt2M8tii2atunNs/ONi29MD3c79Kt1yiOSTz0KAsg94z2tjYXbQQxTCetMdNcRyIB4ykNEJbsdEmRsR4No5m/kPmv7qDUDkVhXwQJQaa9Ga8mHosgxM3U0L1AHWtIiCeE4u3Csv2hk8tWyPva7jAWFYloawHTPFh47s8XIJcBBV0RNiuatsuByuKl+OM0yL7pWJBNIg5SI+cz4uC407EG1C5HA3YyioFNHxPihh0E4M4X6YqqwqMmn60vz5S9vMAFjJHJqSJ
- JPLvzBjj
- AdqVVjh+OAg+kfJa0zt9tsDhb7dOOsctBpcxS0Y7XjMXk3iO4Tvj9u0Pvka3lpurcD9lg1RwaT4Gbu+kXzvSM3/2ssUdbur+cJSz7vjK3dRjFoLdfDu+xLzwMiGM+hWuDzaZ+X5BYIS3erEXjoDSlsyrGW94GiwqZVXRzqtU5H+QsZPQFPXb4XIjqU8GT9s0RE6KUpbBstSxoUkAfON0YI/o5A3sNZCoDodYJEx++wRl4NV7tVNzuVqICVrngqbqAzzoaIidVpd123t8DyUGWOiSN7gSnUB1XXPcx8dV97Pz69fOzXjffd7h9P/pNEAsi+mcRNUQVBSLfc4pNKZMl2HO3zj416e5k/FCdKKQu7y5qVxfg97gVN/1IGgRZh62swGPCW2wQNXA89YpEjVWx3GX7LaeweHj1K1aP
+X-HE-Tag: 1794906008-376380
+X-HE-Meta: U2FsdGVkX19SL8DJqtS1lA/EXXyS4vNxbPyroVBm7V7GzNqmLMu9HzCF21/coLnPQwT/A5kle186Niv91QUDucQsDuUzTd+m5lJVLl8NSfoAeJURvd2VS+2qoT/yfMKSgiumGAIjqo3PaBL8SLBoiidRpFkcruIYsFP2k6EH30MqOv26pLKsJrD2B+dfRC36rDyFOShH1S2wsWVKCHOSp5NRPbjuP4Siy9xa1wHQ72ZpRyWS1IDOpiUUA3O4dn/pCkL+7rcc67e5vTpNqWYmyaidqSxP99cCRWKF3tfDLwaNHFqSG05QhxDuWmq0kxQVzNJaZ5TCjluQKZQxmcWncrfBFuCRj0k7fYjrxDDBBk0OnlRLVavg/hHw1NymIapsErfNywcqtwPAWGb2ZlUGQQD7TejfxdTQV/3bISRjtRp4bBa3usV0NTABwR2zfY2+t0Xg+u5q3PTEZRDEuwtbzUv7Dt+0+pUaL8/gVVwf/7JOCAVVEQVULnrgTwXWz3oqA1eXQv75YQAn+vgJueJ1y2jx21jVWJzEtrN+NcL2lyT471VklGONlFgEKJnR4mt70P2xP0iuf89G/yRen/YBlGE55ZSbt6FTyoBP4p5mCLCsQ9U68aXUdapT/t/3GL69E4iLF7qs6kMESrkrsb72+6I7qCHYnRZdupwXsDsn1+A9UmxuU6xhsh1B9nWhE9/kVOdhhkc4kzkjFt/KgOad4PGeftYxQj/2ot8Q84wWltQAEumkkJdxkvOCNBAbjxvpATRb3+dBj4h7GjYR1bmMn4ufFPf2pDa+MCZR1W8KqWvIiSAXp+ivFTnn5Zrql3OFnoA4APKBqqqBcpmmXom3khCTP6+bRoIbueYSoTZdvNMloTWRx6KpG23cJXIf69dUxTz9/l+E6eqorfTj586ZV7PImltRhd8iHrwy8RR3UmeSbHaAwxMVgsGJW8ClMICF6kEJ+Lfd7NmlORH0dEh
+ Ex23HXtO
+ V++llvdCj7AMR51LIe2UiL2egjmBbFuU2A+rIfCDzykFIJPHLW9r+cgP8tgIeR9D5DsSM5xMe+EQ1IYkYLTkl+gcWJDJVfxCpVG85+MQ4YDQJrB31Uw0v0Eg9JA2QI6nUBFLBZQ/RQBx6ng0lI7Qq4bxTJd+tFAelVKiL9m5drFwmw55r0nQCWKgd8oLKGa51ggD52RKQWrXpslAMRZCEoFF1oAHLRBpB/P1sf43AdpwyZq2KJYtn3qJ3yc2mKyIQiRc9PSy+jdr9AGqby8D0BzAMnZ+qVRqryI+QqDlQY+CPIBvgB0mYjKBK8NF43x6tbs6kRUHYzcoyOBc5PQL0yx0DpkM1A0DG7N4wRU0KKNADAsz23fPZfvn8Ctb+9qVM/C/S4VEs0tdT9mGEA2dQ07FyxsbMH2KtOk6joU1fiPkOsrUD5GUJqd/GubD+GQV+IPAf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,62 +151,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 08:06, Xionggui Chen wrote:
-> From: Xionggui Chen <chenxionggui@lanxincomputing.com>
+On 11/17/26 06:59, Muhammad Haris Awan wrote:
+> KCSAN reported a data race between dup_mm() copying oldmm via
+> memcpy(mm, oldmm, sizeof(*mm)) and lru_gen_del_mm() modifying
+> oldmm->lru_gen.list when an adjacent mm_struct on the shared
+> mm_list->fifo is removed under mm_list->lock.
 > 
-> The madv_populate selftest assumes that mmap(PROT_WRITE) creates a VMA
-> without VM_READ and expects MADV_POPULATE_READ to fail with EINVAL.
+> oldmm->lru_gen and oldmm->mmlist are protected by mm_list->lock /
+> mmlist_lock (or updated locklessly via lru_gen_use_mm()), not
+> oldmm->mmap_lock. Because struct mm_struct uses __randomize_layout and
+> mm_init() immediately reinitializes these fields on the new mm, wrap
+> the memcpy() in data_race(), matching dup_vma() in mm/vma_init.c.
 > 
-> On RISC-V, commit 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to
-> VM_READ | VM_WRITE") makes the kernel set VM_READ for mappings requested
-> with PROT_WRITE. MADV_POPULATE_READ checks this VMA permission, so it
-> succeeds and the test fails incorrectly.
-> 
-> Adjust the expected result for RISC-V using an architecture-specific
-> conditional, while preserving the existing behavior on other
-> architectures.
-> 
-> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16 tests,
-> while the updated test passes all 16 tests.
-
-Thanks, please don't send new revisions in reply to previous revisions next time.
-
-> 
-> Link: https://lore.kernel.org/20261112031811.56500-1-evers_chen@163.com
-> Fixes: e5bfac53e310 ("selftests/vm: add test for MADV_POPULATE_(READ|WRITE)")
-> Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
+> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> Reported-by: syzbot+c6e1b1b32ff2fc3b7d60@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=c6e1b1b32ff2fc3b7d60
+> Signed-off-by: Muhammad Haris Awan <m.harisawan@icloud.com>
 > ---
-> Changes in v2:
-> - Use an architecture-specific conditional for RISC-V.
-> - Remove /proc/self/maps parsing.
-> - Remove the additional PROT_NONE test.
+>  kernel/fork.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
->  tools/testing/selftests/mm/madv_populate.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
-> index 7fce5d0b622b..fa26ca2d8cf6 100644
-> --- a/tools/testing/selftests/mm/madv_populate.c
-> +++ b/tools/testing/selftests/mm/madv_populate.c
-> @@ -81,8 +81,13 @@ static void test_prot_write(void)
->  		ksft_exit_fail_msg("mmap failed\n");
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 5efceb8d5..14ac9a070 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1539,7 +1539,12 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
+>  		goto fail_uprobe;
+>  	}
 >  
->  	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
-> +#ifdef __riscv
-> +	ksft_test_result(ret == 0,
-> +			 "MADV_POPULATE_READ with PROT_WRITE\n");
-> +#else
->  	ksft_test_result(ret == -1 && errno == EINVAL,
->  			 "MADV_POPULATE_READ with PROT_WRITE\n");
-> +#endif
+> -	memcpy(mm, oldmm, sizeof(*mm));
+> +	/*
+> +	 * oldmm->lru_gen and oldmm->mmlist may be modified concurrently under
+> +	 * mm_list->lock / mmlist_lock or locklessly via lru_gen_use_mm(),
+> +	 * and mm_init() will immediately reinitialize them.
+> +	 */
+> +	data_race(memcpy(mm, oldmm, sizeof(*mm)));
 >  
->  	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
->  	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
-> 
+>  	if (!mm_init(mm, tsk)) {
+>  		mmap_write_unlock(oldmm);
 
-No that's a simple fix :)
+I hate that lru_gen_del_mm() would have to mess with that.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Is there no way we can teach reclaim code to not mess with MMs that are being
+initialized?
 
 -- 
 Cheers,
