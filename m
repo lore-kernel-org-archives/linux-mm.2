@@ -1,98 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E50606A8BA
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD473606A881
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GWlTI+fv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oLXy011t
 Received: by kanga.kvack.org (Postfix)
-	id 6C3E26B05B3; Tue, 17 Nov 2026 07:59:00 -0500 (EST)
+	id D7EEC6B05B9; Tue, 17 Nov 2026 08:01:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69B2D6B05B4; Tue, 17 Nov 2026 07:59:00 -0500 (EST)
+	id D56106B05BA; Tue, 17 Nov 2026 08:01:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D8D66B05B5; Tue, 17 Nov 2026 07:59:00 -0500 (EST)
+	id C93296B05BB; Tue, 17 Nov 2026 08:01:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EACB6B05B3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:59:00 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D18B2A03F9
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:58:59 +0000 (UTC)
-X-FDA: 85444615998.25.D82E82C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 47DD81A0008
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:58:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWlTI+fv;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A9FC36B05B9
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:01:36 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F2C2C041E
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:01:36 +0000 (UTC)
+X-FDA: 85444622592.29.1B1C221
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8A31A1C0025
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:01:34 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLXy011t;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794920338;
+	s=arc-20220608; t=1794920494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ETzbJC1in5IC+3NOvYSae2SmX1J2Sy51B7KWOSdFkgY=;
-	b=F9rKhIqFSCinzTCuDFAo0+BVDdc9GOB5fejeur/rAy5Fk9v3Ixk2PQzJrgNUkbKuLw7gQl
-	eg51BlmXk/vYFK3RorLQyvI1LSy/9KR9cd/KZWvoWvTt8cuqFeb9WFeXu5LzEsqrdqCsLc
-	MfykJr9tPZSDxHXHA2yb82Gp5RqHFq4=
+	bh=ayTEljGwz/C/9F1gwd1UVwjVow2ZOVRqTAfEDPNcmCo=;
+	b=uhCZTQDZoCILPVdr3aORupgjMUJW1sBp6OQb70jtNuzQrpUPtKcwKhBQiz0NQI/khlQIDK
+	FwD51P2wU1oXssnYPv56aTIO5aTfvgCPeBIPkPa4RQ9EVoPbMCdLHYJZ6EgFSlgofYDgeX
+	LnwheR5l/1goFyWttBPAiQn1PJZLUOQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWlTI+fv;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLXy011t;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794920338;
-	b=2twdsxGzQTkSGnJj8XqmkzY7BdRp3oYbLynbentkW1ATpdVU6O3T6yatk/w+kN3Mi4+AlQ
-	ZCwAsogthzUxfRtMhFJ8SFUxdUrtZf0xOL8McuvUhhfYqd8NpLhSTWRyF14mJeEP5pph+/
-	JK/CsFpL/S6xlgkymCOc2psbutC0YVs=
+	t=1794920494;
+	b=MKsL0569VUVt97els/QXt9SIc1MA4rb2PbIrpuP1kOeMyIcJ1gXH9TiHiReTSFQW0/wXje
+	OYKot1NfB5ZhDI8qUhltz1+KQe32Q82kIckvGfwhmheIKaKMLJ/UODiIal6Nzuc0Y/i3CI
+	fyFnyp6mbUvPKHbcHLI/8pK8yb0mjCI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C81716125F;
-	Tue, 17 Nov 2026 12:58:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A998B1F000C4;
-	Tue, 17 Nov 2026 12:58:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B8FBF4089C;
+	Tue, 17 Nov 2026 13:01:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11DC1F000CC;
+	Tue, 17 Nov 2026 13:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794920337;
-	bh=ETzbJC1in5IC+3NOvYSae2SmX1J2Sy51B7KWOSdFkgY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GWlTI+fvDTelDZPIAmzsRdV3Urdoqx0eju+4Y3GnlL89x+Gbtfvjm4dit4iRkqmaj
-	 qmm1sGb7GTc18rJr9sUs+07VCIUml2jwFQ9p6mJcB0dXMUdWY74i5lOTlADLUJhu24
-	 xmkwtHlinCcdKIavvtegVokXmj9ZakiZx60LuQLUEHPHEzo7OJqy/dGQF2sbrhim7Q
-	 etzqv4qYcGHFsfVHa6sqh8iO1mGeh5fW8TUfyA+LTgnsDSwOfFItMyPInTiCEzFf6u
-	 RE6253NkVC6SbL2f6qYZxxbk1lBofC+aIAubOPjNT5rREsyVSsevjk0Jr6VE8t6ajE
-	 iFdcb6oZsO1bQ==
-Date: Tue, 17 Nov 2026 12:58:48 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Muhammad Haris Awan <m.harisawan@icloud.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Subject: Re: [PATCH] fork: mark memcpy() in dup_mm() with data_race()
-Message-ID: <avxJKzw9JLrSZTlR@gremlin>
-References: <179489519663.1444496.15875846661591982934@icloud.com>
+	s=k20260515; t=1794920493;
+	bh=ayTEljGwz/C/9F1gwd1UVwjVow2ZOVRqTAfEDPNcmCo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=oLXy011tD0Lq2XmQGbPDQXGMNJhwNlcl7ow9id2rCTBLZY7lgGwg4Hq5cXNP2uXWc
+	 s4s2qxProB4VQtOIN6Zop9n05AEqH8Ak5MYY1s4tqVfmhYyEzV22KerCWaJ/yZ/wVI
+	 cLrTTJLrhPepY39XdjZNdK8KP7aMAiwR+g0VQgCLBr9pA3+/aHtqCniC1l1rKEk/h0
+	 Y0O9z564FqUJaenebFu3Lph65xPq7+IbKx/+V4r8IN+4gr8inBR2qM/mW7CABfMFUh
+	 Om6Tq1cgGQx3Y/EZjrERb6ecCV4OPuCmsv9JGy2YLq2lgUA3pJQtIlyQTkEMiKxVve
+	 U/vSZ2C9WgwRg==
+From: Mike Rapoport <rppt@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chen Pei <cp0613@linux.alibaba.com>,
+	George Guo <guodongtai@kylinos.cn>,
+	Kexin Liu <liukexin@kylinos.cn>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	kexec@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+	Mukesh Pilaniya <mpilaniy@redhat.com>
+Subject: Re: [PATCH v3 0/5] kho: fix bootmem sizing
+Date: Tue, 17 Nov 2026 15:01:22 +0200
+Message-ID: <179492040138.3797543.1666695922414228895.b4-ty@b4>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261112-kho-bootmem-sizing-v3-0-f0c8d00295d5@kernel.org>
+References: <20261112-kho-bootmem-sizing-v3-0-f0c8d00295d5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179489519663.1444496.15875846661591982934@icloud.com>
-X-Rspamd-Queue-Id: 47DD81A0008
-X-Stat-Signature: bseq57k3ngei7jyafoe913spjzkpipd3
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1794920338-767571
-X-HE-Meta: U2FsdGVkX1/ODEnVH7KW8xpc9eAO4fJOeiNg896CkRIqEewi7OFtgwGX03H0g5AjiYwEVsOGSfLLq0h8suq/X3D+yS20Q2KiWbHJNlfZMQV5QMUdxt+KwJZd7NL91L9ZGncYyCwT7x5JHmxKbpcVu1OlBXmE121oXOn+CeUAee+2qQ1pjqsBs6XR/XtQuNXQ3Mq288PTvyJs41+2GvHCCxWyZXlDmAlKk7zXeTDueI1MwflAcCq1D3CP9iTxw+6a5MbZvizTxmksGKhmRDOr6YtByFmuQyCh42MN2Nk1+M9qlq5Mt0IACqtqZSnTup64ZLqGvuwvcRNsU4pDzmPpOG3hWRDt91w1xkB0HmjeHEAWD1HnOGTKBg5WNKofS1x0FHgESZdwVWiRpCUHPoldmyf3TRWgeatpwrbRvU9Arqx6N8p2anNweKzvFZ1c/G1lwohYb5cB24qjz6T7PgcWy93igUQTx05MHh7x3VbRSH3xc3ZCVyHxKxYIczF1j3Pf9xVkGzMUdbjy1b1RWMvVAxsgcVT1bnITXrcir/EofSnboK6Zh4iEMBHFfrumDrYQOukswnsFSEX6tfqk+d0pQuBh4nG7gpryznko1zkmHTZk8ihVPqd/34/cNPzHFuETJP3TGtMWFTM5hEk31yOLBIl95q/JvJb/NATb8y++bjLdO6C/GuJzK7IadAiSzRAFqG9G0eOrtdZ0ZEcoZWSVaamfhmgxq/jTe0FAS9M5WwFOtowypvoGm19WJiTWnmBGmHo6xaHqAEheAayBENBWTN5XA07IB8ZRoUikwDhO9aeszfP43X0kHFzTrGq1/O8XNVkLJlEmxVzSZtHs4XX22WMcMgkNQ7lHZaTYu6FGhAC4gyT4/dzEZstYxPokDe1uE0jaMa3ofXJFc/aqWibLgJ8IHUOfT9VVg6Gibb92onyCQB6jBpviV9n25yofljKzvoY9c0KvEsbjV1n0ymh
- j1j3Xetn
- IEVorSHQpmOOD2lOO6FqJ5shN0ZP2HCf2C5L3VswcPbka2XIk3kxNoTZ4SplL7OcbRjA/XioieBsaPQCKbGpbIIBtYt8+SxJ7U8fDeTNSWqNO4Y+F+eeJMs46m7fO3g37sjspPJpSLBJ8VNwHUovYbXwhV2ao4p4TX7ye1YRp2VBPZcfLZBFaH7+Uu4yuj3gAtpmHHVJ8Wz45WAid7KTokQ0N+BEqIV6Q7mLHimc0tUhLcTtAxLyCFuOmh6F7hGTTK+dXcgnnjkMQX3vB5rPclu0L30dI+RwwTQQoNNZlrpB8tBOF/dsLt9VjMdmjJEaczrW2W3/3FDnQ6hr68HiOTA4IIZh2guDCtR4E1r/poZQ4WGJKWT72ZhbT8oA20Oo9EzhnSHtOJo0n9IY+npG2q0EisL2iP2dTxfknVJqfYYFDF0F7cbI2tVWkKGa8pzZi7seoe1rEht6upksekex1BslrE53qmEP41bdyqyn9MG15oUw=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8A31A1C0025
+X-Stat-Signature: mppazwek74mxsg4tadyi9tu9uzfdwdqb
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794920494-804399
+X-HE-Meta: U2FsdGVkX19qwlif+H5t+NuRZbKbbxfbg0/439v/DJrtD8qPOoO9f29Mkpt9K9Xzf5iczvpGoL16z3ZSLnBwb2I5VvG6P5YWpQGV6Qknujlubx869238YWwMYesch1sE5QDSdoWQ9DhowOe00G6Ta5ynUW1bXQ4xp6/9i3mxwSS+51ivgH7egyRikzzcHuc6JjKq+Z+QZB4MBAly61vUV5a6jPjuALVmdkWtMidkyKn/X3Zbh+GuFCgzlZ1J3I6QOC8q6WZ8k8kZZEDyAxQoOKmSlAmb3OeAglcSs49c4dLp8fkFL55PrgKFVCvZgh9xSpgS5gagxcDWcHD4YKH34EPcqAXsDqLSbrQGzHbv3hvH8Wt5has0u6LkiqMXRacX5RxJel1R0hsvGrKpAB+R2PSPjbp4EPNL4ki0eCkpfVA6uRlthAA3VOAezAaJczGJs8u2GlF9XIH0lsjNre+yPkrS2KaK+OsSOn07ptvqdsgw1SF2KizrC0ekcYFoeCKylKjKuOD4dimCxTf/VgtZcev6Kob5nzoVUJ+7FLtw2bitRqnDQwvDvbGHUeyw8cljWlPvbtg6q6rrYG7qly+UKIuhdA4BkcG6wyPgbcuOA91he1rvN9Qc0N5yRzpsnZXg1Mu9GyrGU6my9QD7EGYHYUe0h4/KMZ2qXLBbdxb1ScD0bvcUQ0ukjmluWRTJPea5pPdNU3SjTQOf227exCOiGiI3wcD9qKeiRHPElQh7FebCBksPcsRcOewO0PeNlQ1IlRc1fw5K+5++IIPSaUVejK57w+mTyqkAnKIKb09Topl7c2LabdQvS3ybxDM5sr6JBm4hl2fgBC8jtv9DOk01SSBhCAGiZKqQIzmKbmefTjaDdvFA6OCQPpie5qtpG6D3vXii6YXcPmooI5D2+OoSAICrrq02PZIR2GJVuotZmtptxTyczkQNDHus+GYTq8f3tTJQaTvHO7slnzapYYY
+ 6OsjyBuX
+ ZytphSTZaRjyBaX8DCAMCHIXeWQZPnAuKuh1kAUrkDfyp7tQkGNghFx/iIX3S0BvyaZsYjLetes08zAiCwQ6Gvz7PVpPK9XPbVJ8pyCyyXxTxigmkkiz7D9I/2H1a2YFLfbD7XXiWgmGKV1Eu5LTn3+/dF/NVvvVcC32A5gzpwRXnjoH9Y3doUiGoVEEgQNY8JMGnX0qdYIYL+JkaIqNEjSP1b2QShVSO9Rl0tQ+xDsBZxSOyMZ6hwCejuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,87 +110,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 10:59:56AM +0500, Muhammad Haris Awan wrote:
-> KCSAN reported a data race between dup_mm() copying oldmm via
-> memcpy(mm, oldmm, sizeof(*mm)) and lru_gen_del_mm() modifying
-> oldmm->lru_gen.list when an adjacent mm_struct on the shared
-> mm_list->fifo is removed under mm_list->lock.
->
-> oldmm->lru_gen and oldmm->mmlist are protected by mm_list->lock /
-> mmlist_lock (or updated locklessly via lru_gen_use_mm()), not
-> oldmm->mmap_lock. Because struct mm_struct uses __randomize_layout and
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Firstly what on earth does __randomize_layout have to do with anything?
+On Thu, 12 Nov 2026 12:38:52 +0200, Mike Rapoport (Microsoft) wrote:
+> There were several reports about issues with KHO bootmem sizing.
+> 
+> The bootmem areas are sized from overlapping views of the memory reserved
+> in memblock, so on NUMA systems memory allocated on a node is accounted
+> twice and with CONFIG_NUMA=n the lowmem and the global areas are accounted
+> once again in the area of node 0. Besides, the lowmem and the global areas
+> are reserved even when they are empty.
+> 
+> [...]
 
-Secondly, ef694e2d2101 takes the oldmm mmap_lock so what you're saying here is
-wrong.
+Applied to liveupdate-7.5 branch of liveupdate/linux.git tree, thanks!
 
-The problem is that you end up manipulating a neighbouring mm in the list.
+[1/5] kho: reject zero bootmem scale
+      commit: caeb2173b83441d991171dbbaa59455dae5399ea
+[2/5] kho: walk bootmem areas in address order
+      commit: f117bbae706f44c7dd1e811d89057d1dc7886554
+[3/5] kho: skip zero-sized lowmem and global bootmem areas
+      commit: 1010dc3150fc835695df7b21cb9d56016477fab8
+[4/5] kho: fix bootmem sizing
+      commit: ee4505fe8c4490827244668dab3659c100f4e7cd
+[5/5] kho: docs: update description of bootmem regions
+      commit: 5b27be339c42a7540eeca5c179e7e0bbdb7a4cdb
 
-> mm_init() immediately reinitializes these fields on the new mm, wrap
-> the memcpy() in data_race(), matching dup_vma() in mm/vma_init.c.
->
-> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-> Reported-by: syzbot+c6e1b1b32ff2fc3b7d60@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=c6e1b1b32ff2fc3b7d60
-> Signed-off-by: Muhammad Haris Awan <m.harisawan@icloud.com>
-
-Given you're a complete newcomer to mm I do have to ask if you used an LLM, you
-should mention that somewhere in the commit message or at least below the '---'
-by convention.
-
-And it's vital that you understand everything you submit as per
-https://docs.kernel.org/process/generated-content.html
-
-So what work are you doing with regard to KCSAN, data races and mm lifetime that
-led you to this? And what expertise are you coming to it with?
-
-> ---
->  kernel/fork.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 5efceb8d5..14ac9a070 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1539,7 +1539,12 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
->  		goto fail_uprobe;
->  	}
->
-> -	memcpy(mm, oldmm, sizeof(*mm));
-> +	/*
-> +	 * oldmm->lru_gen and oldmm->mmlist may be modified concurrently under
-> +	 * mm_list->lock / mmlist_lock or locklessly via lru_gen_use_mm(),
-> +	 * and mm_init() will immediately reinitialize them.
-> +	 */
-
-I really don't like this comment that is begging to bit rot.
-
-> +	data_race(memcpy(mm, oldmm, sizeof(*mm)));
-
-That's _really_ horrible.
-
-That's now making it so any race that matters is ignored in a _super_ sensitive
-part of mm, because MGLRU decided it was a special snowflake.
-
-But I'm confused as to why in 4 years nobody reported a KCSAN issue with this?
-Surely something increased the likelihood of this race?
-
-In any case, this is MGLRU's fault. It's abusing the mm data structure and doing
-something it shouldn't.
-
-So any fix should be there. Similarly for other mmlist users.
-
-Or really, given this seems to be a one-off, spurious, KCSAN report, do nothing
-until it becomes clear this will be reported more than once in 4 years? :)
-
->
->  	if (!mm_init(mm, tsk)) {
->  		mmap_write_unlock(oldmm);
-> --
-> 2.56.0
->
+tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
+branch: liveupdate-7.5
 
 --
-Cheers, Lorenzo
+Sincerely yours,
+Mike.
+
 
