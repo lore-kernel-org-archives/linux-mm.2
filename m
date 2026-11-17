@@ -1,123 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43618606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 17:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E77606A333
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 17:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=AmBxm20J
+	dkim=pass (2048-bit key) header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=FcR0DuxQ
 Received: by kanga.kvack.org (Postfix)
-	id CC6F36B00EF; Tue, 17 Nov 2026 12:42:43 -0500 (EST)
+	id 330316B05B1; Tue, 17 Nov 2026 12:45:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9F3F6B05B5; Tue, 17 Nov 2026 12:42:43 -0500 (EST)
+	id 2E01D6B05B2; Tue, 17 Nov 2026 12:45:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBB946B00EF; Tue, 17 Nov 2026 12:42:43 -0500 (EST)
+	id 1A85C6B05B6; Tue, 17 Nov 2026 12:45:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99DE06B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:42:43 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DC45680580
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:42:42 +0000 (UTC)
-X-FDA: 85445330964.08.8918DEC
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 979B7140003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:42:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.s=20260707 header.b=AmBxm20J;
-	spf=pass (imf23.hostedemail.com: domain of luto@amacapital.net designates 209.85.167.43 as permitted sender) smtp.mailfrom=luto@amacapital.net;
+	by kanga.kvack.org (Postfix) with ESMTP id E52BE6B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:44:59 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75286A8144
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:44:59 +0000 (UTC)
+X-FDA: 85445336718.09.5C49E93
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 766494000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:44:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.s=20260707 header.b=FcR0DuxQ;
+	spf=pass (imf17.hostedemail.com: domain of luto@amacapital.net designates 209.85.208.175 as permitted sender) smtp.mailfrom=luto@amacapital.net;
 	dmarc=none;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794937360;
-	b=O4/Sf/fQ37zxNvBiG3qMtBSxQo0sCzB5BgT/SjGX78J0cM6swDvLFqx5nE1PUMFSG/Dj8n
-	wMg/5RmrKvVhXzlcPr5JiA5E2fsv28Ponq2cu2B7Pmm62Kt5dIG7O1f5zE4tdog6b5A/wO
-	cUG0ki/iI0OnEo8auxWC8thddlhk9N4=
+	t=1794937497;
+	b=7wHARmtF1+iXcP9vw40T0JQnwff8cDJcy6fXzO3gLjFrkpmuUiuo4Ag6XIPm3NLWHq0cwv
+	9AgswId51aJP0QqR3GUuYQVS9SZLhPEcUZlQvtqHzYoxhECLhHbGnd9PUaxPIZASHJWrDh
+	HMEEh7drkV1C/vleO9s12SZ2I1A8YCo=
 ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.s=20260707 header.b=AmBxm20J;
-	spf=pass (imf23.hostedemail.com: domain of luto@amacapital.net designates 209.85.167.43 as permitted sender) smtp.mailfrom=luto@amacapital.net;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.s=20260707 header.b=FcR0DuxQ;
+	spf=pass (imf17.hostedemail.com: domain of luto@amacapital.net designates 209.85.208.175 as permitted sender) smtp.mailfrom=luto@amacapital.net;
 	dmarc=none;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794937360;
+	s=arc-20220608; t=1794937497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C0Br6uNbCeSZG/D0SaMC7uBQz4y4PQvjObMC5HHmvxw=;
-	b=TiVIacvbxGqHapwzOdgUTdYnW6pRvhcu4X8HGyhB6uf5PAJnCUcV+/qh2/+4urWNOpCvda
-	dz9WMl0GzYrXgbTZdfxHYmfnoguWEwYbcis3OFgrcCF3U6TnJAjXIX45VrJo/WV5B/poWZ
-	NpwtDStTaOz86F78bMCKT0Rz+vmUU6g=
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5bcdae234ecso3174e87.3
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:42:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794937359; cv=none;
+	bh=eNNOnQUc8HQHxzszI7I5Z5MCWmY2JGLCloKQuWJY2Z0=;
+	b=oyD9SF5eMQ1kLH0t9dDpAlRp0dKH57a6zcXKxEs9F8+LCyeAc9hNlTLlnEd5CN1oVrUgOR
+	HGMNFZGzKL5v+h2EKssrXKw1rQJNtYZdh0d8q+AGfh1QcC39F3UqQ48Ra2tAe+ryFl1p3/
+	6Us5pOumrslQ3mKuW1CZWIbYDwRPqdM=
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3ae25c846edso1106081fa.2
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:44:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794937495; cv=none;
         d=google.com; s=arc-20260327;
-        b=MHroBVUoq2XcysixfgqfGwsMWI4R860HLrNmdzLyLO1f2nHUcRwVdE1YR2k489I5bb
-         PO2vXqxMZcyEqn5U25hJP8rGMFAwauLmPALaKlbu9HAY8lK5u0AMSxHfrjpMOWgpiV96
-         hvjmAOjYAiwjKJHVluURpcndDvyoWKdoZVqyCv6SjO15W4LQOILAs29guoAKWySwhhaf
-         a6oPASPQA0mGw8Z3ISAqDE64b2m1EJy2gxwAxTid+VDVsxKsejRhZvJrEVUu2olVHTta
-         NwWvQaJkrpztHJ4x7m4o+VQI0AYrhqnFVXqbK29W1jelrZ2gyuRvWAdoFggNfADFUF18
-         162A==
+        b=F+jBreV4J1mfeA8RREECZ/yIqGw/+XrEub9rLknIYwjljcHfbe8OnJXlGecX9kAYV6
+         6LeJdx9Jgx89a+MxzXFgl8BR7CBcGtM8ZsTAwN1qmkeF9uPM1Ec0ZCyqCDpjpsPU2acn
+         p+jAXIAHDDAXVelv3pTZGsJ6t7sMPmHanbKaG/OI47eAvilH5ep0v2LILj3ykMW2bEDO
+         +/zcLCKt0Rp9vR5sl+A5TIVvamLP4Ijq2X9Cu2DEwdh8OxleyqCeJLImDHErj7UyKALg
+         tTvFXw0Pdl1RB/M+wD3XvGGxMe+k/dqXJBn1yfITooZVWByQsy9GgA4nYaajegAFN0Rc
+         u0Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=C0Br6uNbCeSZG/D0SaMC7uBQz4y4PQvjObMC5HHmvxw=;
-        fh=S5wy8cKy1WfDpyt0aFqHpNwKfT3LEI4pI7WFhcfbQKI=;
-        b=qUhrCSDvl1srMEmjSUO8c/x0iUnTfsIOQSBON8x0HCGqrsNzFxAqCly+KNe3YWWs2T
-         Ht32AezBulk+4yi8G4QXz0XZcbkWlCvfLK7VW0CutYxGGo6t7gpSBV3h45Co7zmPyhmY
-         LP0rIPK3uvXjwF1cab8vPntCOUWzhpoNI1X7ONBQI5/Tbj5zgyFVn2wOEbMZmDFcEEaH
-         E+zr4MkUyCsKS796Wpq+r87aCloQHy8p0yL2Yeilncv5rjhuzzNblbKmgunCQdCXQjf0
-         skiySB7MdYH0Ww+4pILG47m78XY0N6jZ2lQjMd/y8pMrZxzRxb6Uc1CCoFvLmap3jvNN
-         BDlA==;
+        bh=eNNOnQUc8HQHxzszI7I5Z5MCWmY2JGLCloKQuWJY2Z0=;
+        fh=eFd74iq53RUmv2VRsP81QQmGT7O5d+g4kMlVZzMOtnY=;
+        b=KY7crW2m7+eML3BYsh4DLJb/oTQu52dWouxlic2d7moQGy0LPOfS0hIsmeUWZ29XTS
+         2GOxgHOw8I46kl1lyqUNC10X5PcOAIWr9xFUZYZkQWtcTV6wLkGaWMhwG3JN0pDFnGch
+         bjkWm+bMMFKin61ijgYeFirAdhR7vRdjFvlWuld3o0PNl7YW+55vZHmOdrInum2/T2IO
+         fXYYhvPSjJudFE5vTjIl6O1I8TJvcQhG+4a6qTw3hrBW25TbhQV1d/yeVwGM8i/MpLAR
+         SgoKE4CDv4Z+f7dclk/d7lpX1CedDlo8lpzfnAvamyYZOHWnKtU8o96+Ahe/GBpkVQM6
+         03DA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20260707.gappssmtp.com; s=20260707; t=1794937359; x=1795542159; darn=kvack.org;
+        d=amacapital-net.20260707.gappssmtp.com; s=20260707; t=1794937495; x=1795542295; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=C0Br6uNbCeSZG/D0SaMC7uBQz4y4PQvjObMC5HHmvxw=;
-        b=AmBxm20JL67Vp+qwXiLQa4Smhb64pK+mmIgIK6vI8BHZFZNTm6o5/GIXW4xnOb+uLj
-         7Y43rnARDKH25Exn1/KetnvDmqPPMy0taQxboaala5tnxvm6Q4yfSfUgziXXJaj4jKpx
-         6rf0EM9H2lotUOsPau4h2fMhGEhkdVW8FODtjlewplmr48S50izOsakdx35oN9XKnBWO
-         PNdRyQTgdwcrDjokc9BXc/cpIvS1ndXzEr5CsAmaovkqZUw3gD7K2jac+/dqDRnmBJyu
-         K4a+NZyJ1PpQdwmNcc9YT81Rm8P63p+Y6IUWWbybRsdd06L/Nat/YX7YLZfw6I4QuRF0
-         f4Jw==
+        bh=eNNOnQUc8HQHxzszI7I5Z5MCWmY2JGLCloKQuWJY2Z0=;
+        b=FcR0DuxQFhomiRA+LsawLPt9MGnBebngRHuZoyC8qyY8FUioSiXAOvkL1NbNQmHRr0
+         0xZURi2R+rKIAzLo+cgn7VSh5W3Uk2lPsnlLKdiZ+UQtX28Lvjfa0XIlusvjmCor1G+t
+         jEL2ojnJvT1X4NiYcH/HV91+6s72ycNkQIEwxuA/wymleSqtc4f65FpJj+UzVGeppp3H
+         WYUwSEPv3WJhv8DBsGZ2Mv+TVMObu3Wcjrs63lr1Wd3017v4QByasSVRDRZ1kpqLzfpJ
+         GkKvEy1uuakkNUkZph/0t+SfbIWkQ+2QfSTolWUn8qda/xYQnteYZOAUDBJ2cJSbUrei
+         NRVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794937359; x=1795542159;
+        d=1e100.net; s=20260707; t=1794937495; x=1795542295;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C0Br6uNbCeSZG/D0SaMC7uBQz4y4PQvjObMC5HHmvxw=;
-        b=VbpAiARenoHW68MB9gTNuje7gYsuFVFaIxJGJfsymNHcHkt9e2ee8I8bazv99FYwl6
-         Gdc66gt8l3AO9m6gJ8sqaBzKZy5N9Q0EkAFEprYs0mVyES4P8H2tC3JrVXbR6gsayES2
-         8zS8tjdBxhYmYjtsYZ87kTcOizxsPEdhL2NFD3M7jRr/OD+FbxlhVZ21wZqHO/cgZ6V+
-         ozx/iPtI7+ukn+EiWMrscLQXvzmhscxBfEASDptD66+RfSDj7OTkbtvftwU+7AFCvFx9
-         3b5KT+zZCY1K10ZjaQQB+j1CJMQDtl7VbAIYOtxkiAbz+jRE1fzry49Toi7nfHE1hmml
-         CdAA==
-X-Forwarded-Encrypted: i=1; AL+hErH6r9NOQFEvmTelELD23aVHtERePm+oQjqPOfeiJMQp1ZhCZjlWYtwefxSjK54AFqJecdTYqqSKBA==@kvack.org
-X-Gm-Message-State: APuU4Z+FBVtYvEG2DPDnDsGazZdPdA0EKkrGr2OG+9KXopNmjBkqQ8m1
-	AkYz7cqawLXShZRnrAfVc7tM+5T7YB4iE6Ahh2rD+r8WoAaadqhLQJxOo+ZgPiO35C5U30soNy4
-	rXg2SuHIyUBMf/6SZgnWIeukMnm+2jvHKQpRY2ecQ
-X-Gm-Gg: AYBFou2AN/yURIqx0JpxhUYqMJ93xqeqpIUN079h3UAuPUG6L48gRJXuOrpzIh8hzGk
-	60TAxxvwBbOrJ5TzaOEWUurzqZRolLPtevS1Y8XE/4DZUaexeah8Mmx3rPtl42sSw8urAS65kli
-	7z0O5mwrg20hvZDzcrSJ8Rq1mJ3qvsGKlJfJVAw3fz9ftlVF9MmkSo7HjFCmupxd158EPZcGQAa
-	h8NWzIrY+WHN0P9gsKiejIRg10aTx/pQkJ3+/WbgCp8M7sL0ZJWC2sNsLk/e8SV+XW2/F/aiup1
-	Qc9CNl0U+OVDV95Kf6tEYH5KqveFhB4UUgpIno/fM1t6aQ6Vsj2ZWDJMypzeVuyg8FktdBkKVmp
-	nFx+h/aIEhVLyyJmDKaWelifZSpqLcFCldw==
-X-Received: by 2002:ac2:4bc9:0:b0:5c1:4ccf:f0b8 with SMTP id
- 2adb3069b0e04-5c170a0bb3cmr7252657e87.16.1794937358574; Tue, 17 Nov 2026
- 09:42:38 -0800 (PST)
+        bh=eNNOnQUc8HQHxzszI7I5Z5MCWmY2JGLCloKQuWJY2Z0=;
+        b=YN6OA3kD2D0xPeuSd2z6nAVSiN988oE6pL8H79q0leihwd0M6uf7Y9Cyh5WtF19bFv
+         A2ol0tz8sc78bg3YtNtk8TXETAk8mfkGhw8vcMd+q7of4yNYuCXZTf9E1khNfhSrVDmy
+         U8rysmtYTUXxwKwtkmkYHiXDpq0VxWA48zzrrMnGS9fhNfdSM4M7+EDxE+lbAlyLiGlW
+         5eaJYilG+V4C+MuXW9NL+LtDDbZ8najK+C63T4qaKn4RdMgNgkO6GKegM0ma+qtnuLmL
+         EjtR7mkFHpqsNROBKaUWalVf2/M33ZiRgWnFO/tSVq0k2eSCJiGvxXzI5OEqsL/MqjtQ
+         /B0g==
+X-Forwarded-Encrypted: i=1; AL+hErFPfJaTs5H4o2tasTWt3E9XDGPpGHRCklVhVxNwf+/m944aw2Jpv3RGmaUUDQ/SwMzq47RU7bBR/Q==@kvack.org
+X-Gm-Message-State: APuU4Z/LKmO+KgHzXcB0BtJw+3/C+tlOa5lvGS4vEU5FA95vD/+tOKPr
+	m8HR/uNKt/M3MdPi9ZpPKun7oa9qtflcWQH8ETEM2xqe0rZIadDeQU92SeWc3QQGvEn/wdPOPWQ
+	RXprdASJ0mxzoNqvYY++oq1m8tc3mQcqwzAQcOoIH
+X-Gm-Gg: AYBFou3ZaaupUSE4Tcxh4cKtnqryYkVUL9MNiP/GZook8nQuZAy53dyXZHxVJ8bG742
+	xrj8NbcWxQTTcuSFCcL7SPeVO4DE2YXoTa8hcgbCG+sgl4YoX/CDH6/lMA1aPFnM/sUSNetvTUL
+	9J8K0lcTgVkkTR18xyNAvKlHOnL94g5KslxHd0Afjpg9LIii37soMs9kquJvZe2ovpfk+KA66mi
+	AkWLZPR47SXpHJ4A9jTw+di5DBe/+RFkOHP0W86wNBQVNXG2KtCoA9t/z8H3/i868N7wCv8CQa9
+	o3tUzSBDM+jVrexZR7RLf6tvEq3eeVrjKEDyOuCmIZw05tH8G3LrWDIdzhEy+HPS7+kdIFzEqbE
+	y0PtSB33VP4KjENV1d2U26NfOfshwPdLImvP30gYm4GGuNw88Du2nTuI=
+X-Received: by 2002:ac2:51c6:0:b0:5bf:b945:4334 with SMTP id
+ 2adb3069b0e04-5c170a15b78mr6210350e87.67.1794937495491; Tue, 17 Nov 2026
+ 09:44:55 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261117050841.3289652-1-jarkko@kernel.org> <20261117050841.3289652-8-jarkko@kernel.org>
-In-Reply-To: <20261117050841.3289652-8-jarkko@kernel.org>
+References: <20261117050841.3289652-1-jarkko@kernel.org>
+In-Reply-To: <20261117050841.3289652-1-jarkko@kernel.org>
 From: Andy Lutomirski <luto@amacapital.net>
-Date: Tue, 17 Nov 2026 09:42:26 -0800
-X-Gm-Features: Aa3M54o6AJsup2EB_D5C3UIkkriS8wK22wW9apyv8KKATx5_DoWBh2HrH9mfDyU
-Message-ID: <CALCETrWtbUFQGDOCHkxAN9O4i29ixfL5KKF1Cqw2-CjxKwC6gQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 07/13] rootns: Add rootns_enter() system call
+Date: Tue, 17 Nov 2026 09:44:43 -0800
+X-Gm-Features: Aa3M54pzaE332pTi53D1YpA5VO7WahNUrZvzEHccu8lFNhASVJD5SKW-Zdzq05g
+Message-ID: <CALCETrUBUnJVhiMkft6hTZZMe8nTpMBRTGY2v=9x5ETBSvmPZQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/13] Namespace for namespace roots
 To: Jarkko Sakkinen <jarkko@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -142,15 +142,16 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 979B7140003
-X-Stat-Signature: 7wei7yrnqxykc198uyodhnrm8pkiznde
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 766494000A
+X-Stat-Signature: dey7ax9oiqx6toesn3krk5dm793tmu6z
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794937360-625316
-X-HE-Meta: U2FsdGVkX1/kG1f+yMontO7rhXsxuT6aAS0VDBimzhaqJSCOP4grgzwitwECOA/hKzogoMddwdCPSH+fic0QTTfNehsKJllwme8QJNpVy3H2EjpSJU26cZFuv5YDUlxSS0pBfoWHydVBbxVHYA22zBMalQ/k7AWGaaJYoEZKGNex8YJ7Tz6eiZosQwT8+tMvLPo5dLLbjQ9ZLC8ZU39UD4BHvflVuWCwW/hhyXw9fhHJaoHHnw7OPOKS1BwOf07fVUwZ9dKGNRxh/9kJjc+SZXBPIMOGRqh+4F+8fQNsZKpfLM5xBXA+QkmYvB3gU+dnN3EY3uMlpUl4WpdlOkgS8Yq3aPUGZLHz9SrObaUr+E+qyMU6S4Hwn8/Ys/0NLpTHlLVrNL+ScQGGLhZkughMNa0eYlDMA9G6/AJC1YH9BvnuJwgBztASeBnoi9nTAkxBI8jHoKcCeF+flsB5MeH5GRnrHnMgwrO7IIXxZ8tIxYbbsup85fQJ8JIDb7hdNVhKZeVyh3khJAk/+uFvXjbTz77MOZFGOebnYkDUD1ubosow1g9uO7kzhyzN2RCoJclHM9K3gl257mD4C7cEnAnFlpwzNHzEna72BSB9zq/P0BAEoGl8/9ZOROADn/CHujJEPAMT9jTnhHJd+dO5LING8tRXufhVmag1oPewHcnZ/yN+cMY5h1nmi5gWXBHIyCn0N/pGNwgj2VAmOFcGAorQN4jCVpJmGE5PkozRjHn6GazhNoIAA1zyKpzVpPRtbEonns7a895qxhzNAA91/n5cIyb8Lp4EpNAHiucVqo04V58ATEplPc25bnUKehaTdePUk3/XNsJXtVjF5eT9Pvy2r6cgWMfKw+N3iTTBJkOyHrXgzegKpKebejURmlJyzuJctJ2/ac/FAYNf2cyi+AkatyEC13qHjOJuqEsBpVeojm17mtdHJHKykg2+O2KvYWcIulFrXvleyC/QoTk1bPg
- HkaCgN2+
- L+GRKl3uBB+W/sY7hCIq7klxJGyrXmb3YFgpWKgoNn0mJEtmudJTJ0h9CHwVWUFaKvKcBjyAZ5fD0vBXUZO+hrOYPaMCCBY8tbgTS7kjQ2U1cHL5kG08n2OPumbJdc6sJr1SYt0oIKmYs1SDU/Utot9fykKNiiwwa5TEIJmcumkTzxrvXPdFfWb9Q8NJrSRgnYAqvl2Anvc8EyTRLCZ8PU4N//MPbbTNyiKl5JzY3HqtoQD4egTp6UhujRvLnSMkGhljcQztrc+EKFA7VSOvWJqTdKkJGIX7uRl3O7tdYTJSCjapLZ21onbBjYRLwxyEKbRBV/soIGu7mRd1oIzYE6X41RQ++i+b3hMYeinlWSYC1L7ElYDfqdV0e3IUCZuV1TY0oEUE0GA33h6o=
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794937497-892026
+X-HE-Meta: U2FsdGVkX1+/fXnHPeYVJYLWXUfbsmYxlrB494mPxIquqO7CENvEBZYcjkbkLQbJiwtOUsKzNZoWLMMRB8o7YuGBlD7nC/G9DAkPF4zjM/CCPI/J9IXziaUK9S8rou1wAfoTGTr3FE037bKGFSd1HJ43ljUD2VemKmsU1ZkmjUgoINcgUgYR9CiRH+1GjugxDiygxyzJ3Mdkf2ToPxCIItVNg5F0OpdXeMghw8cwGmddUVugSjx+9hd4Gm9ATa4Idw3cvOVkdwF3vV4HCrLROxCGmI8HRnHNqLzptYni6Fio4nWbEbGItWi8yJYwYiB8cQor6kdUNRGJWTg8u236aVEu+DM25s9Ii+1BAVL9obXB4IAZ21VUd47C9PSzz91R1qeLMtGMdiLlZO/FJIrmi1eT+FRK0myxcdu9tClu/VQtqaqxa+SrPMhu9gR3MGGsiTbVJ1bviyPwC6oskRHezyz+4lgiGaLapPNrEZcXyhjWKUKGBW6ClyLEA38IhEWHP6TDDksAiQd1rzTKXo/oundYj9E9ihufc9klxW2dirzG2i3kOgxHD85rZK+yVOjI3FGKCzJ45ScFAQqL6lZ2XvzYfFNVh6HZEBfCpNKq2/yQA5QITMqEHE9UaZKA3gEJTKHvA+rywCDfFp4N8yi4E3tB8jM1HtrAbU03TLnRY1zLS5TAGuOpq46k6lug7jZWwITbNMR4xx7E+QcmaRRrUiiJdIBF9kAP37JGztU3GcWZO0hNKk2GnLPisdCbYykIQed6CxqhBCkpkJEFOimLQnhQtdZr+pVmV+343xK1NhiaeQhGhUhZ/3q23Qb5Psnhh4x3nfaTudHp6BqMpUPszTckSNBI0bjaP5k1pHvRhamVwBg6AnL7oV6fJQCyab1v43hLF80/SBKy/9eJUn52akFqCHkNQncbjrA2e+SShoYtswtEAsKRmGLqi95XJvzx7h1C8LiRH2Af9ZZo0xx
+ ABMsmqrY
+ WbrHFDEmxU6sVuv20QO26fB01T3nN0WkndMFJKhRTh8AS9khB4aHsesmkvEJoANHt4PeOEDwhdhkci4APhidFRj8V26F0fYbsWVjuSKG90nz415X60k5/AfxJ86DpnejKci6WXXevuBKjzt9L1uZ8kKYBr8wnBnWA8zRY1P2uRGbe+P01I4FikvlHnQKoUog9Vgtx2Sdk+gxScIzbQguysjD0v51Y6pF6QARbvakUrhgTAkOHWMb8DwlNjG7DJfqiU6b4VzoTcDbJBMq1zmP10ez/QLB+dEMJA5yhla9EzKTo5gxbleNz56XD91f57Bxs8eXIFAkXp8R77TCiyxyQ1XAIqa4KlMlZl6dVdV/DLnYN+NOlyKDx56tNPrJBgqjm2WXMUL/dSDKd6JUW3utmiznwuOEraHzbCggdC3TOgjEOI6tFctLn78lODKGl3aWjKsq4PFxSKgiF9Z/qGzSAaxcgHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,30 +160,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 9:09=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org>=
+On Mon, Nov 16, 2026 at 9:08=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org>=
  wrote:
 >
-> Multithreaded userspace daemons cannot call setns(CLONE_NEWUSER) or
-> safely mutate process-wide filesystem state in place before spawning a
-> child into a target namespace set.
+> OVERVIEW
+> =3D=3D=3D=3D=3D=3D=3D=3D
 >
-> Add the rootns_enter() system call to fork a child process directly into
-> a rootns whose root mount has been installed. Transition the rootns from
-> ROOTNS_READY through ROOTNS_FORKING to ROOTNS_RUNNING for the first
-> process so it becomes PID 1, serialize concurrent entrants on waitq
-> until bootstrap resolves, and admit subsequent callers into the running
-> PID namespace until teardown begins.
+> The problem that root namespaces try to resolve is starting a container
+> from a root mount tree that is pre-populated before any process is allowe=
+d
+> to run, without inheriting any host mount-tree ancestors.
 >
-> Require CAP_SYS_ADMIN in the target user namespace, forbid credential or
-> PR_SET_NO_NEW_PRIVS privilege escalation
+> Work on this feature started originally in 2025 from David Howells'
+> container object patch set [1], but I turned container objects into a
+> namespace of namespace roots and built a new implementation around this
+> premise.
+>
+> In early 2026, the patch set was left to gather dust in my kernel tree
+> [2]. Then, the other day I saw [3] as was shocked by its over the top
+> complexity and thus, here we are.
+>
+> Not doubling the number of container frameworks inside Linux kernel is at
+> least a benefit over container object based solutions. Parallel plumbing =
+is
+> an inherent flaw of container objects, and it directly affects on
+> development and maintenance cost of container runtimes.
+>
+> Also, thanks to better scoped implementation surface, verifying rootns
+> correctness is factors easier than with container objects, and even my
+> early kselftest is meaningful. We know what and where we are testing,
+> which is always great.
+>
+> Finally, it is more compatible with pre-existing container tooling
+> whereas container objects would have much higher cost.
+>
+> [1] https://lore.kernel.org/all/155059610368.17079.2220554006494174417.st=
+git@warthog.procyon.org.uk/
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.gi=
+t/log/?h=3Drootns
+> [3] https://lore.kernel.org/linux-fsdevel/20261105-b4-cells-v3-0-bc909593=
+7a84@toxicpanda.com/
+>
+> IMPLEMENTATION
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> rootns_create() allocates a rootns object backed by a pollable anonymous
+> inode fd, pinning dedicated empty mount (CLONE_EMPTY_MNTNS) and PID
+> namespaces along with any optional namespaces selected in flags.
+>
+> Before entry, a manager prepares the mount tree through the control fd:
+> FSCONFIG_SET_ROOTNS binds a newly opened fs_context to the target rootns,
+> and move_mount(..., MOVE_MOUNT_T_ROOTNS_ROOT) installs "/" onto the nullf=
+s
+> root once and attaches relative submounts beneath it.
+>
+> rootns_enter() forks a child directly into the rootns credentials,
+> nsproxy, and root path without mutating the caller in place. The first
+> entrant becomes PID 1; once it exits and zap_pid_ns_processes() reaps all
+> members, poll() reports EPOLLHUP and rootns_wait() returns init's status
+> and rusage. rootns_kill() walks pid_ns->idr under RCU to signal member
+> thread groups.
 
-Why are you disallowing this if no_new_privs?
-
-This isn't necessarily a showstopper, but fork() is really quite slow
-in many cases.  It would be nice to have a more spawn-like API
-available.  I assume it's possible to open a file in the target's
-mountns by some sane API even without entering that mountns, as a side
-effect of how the fsopen / move_mount mechanism works.
+Can you clarify what this new API actually does?  I've read this three
+times, and the best understanding I've come up with is that you've
+designed a way to create a group of namespaces identified by an fd and
+you're adding an API to configure and enter them cleanly.  Which
+sounds very sensible.  But I'm completely confused as to why a
+namespace needs to be owned by a "rootns" or why that ownership
+affects even newly created sub-namespaces.
 
 --Andy
+--=20
+Andy Lutomirski
+AMA Capital Management, LLC
 
