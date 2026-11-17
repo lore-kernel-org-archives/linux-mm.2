@@ -1,82 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FF7606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43568606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y7p61y13
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NVBqlWC1
 Received: by kanga.kvack.org (Postfix)
-	id E33136B05B3; Tue, 17 Nov 2026 16:42:30 -0500 (EST)
+	id 5DC686B05B0; Tue, 17 Nov 2026 16:49:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE3A36B05B4; Tue, 17 Nov 2026 16:42:30 -0500 (EST)
+	id 5B4766B05B1; Tue, 17 Nov 2026 16:49:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFA856B05BC; Tue, 17 Nov 2026 16:42:30 -0500 (EST)
+	id 4CBBC6B05B2; Tue, 17 Nov 2026 16:49:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A18D86B05B3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:42:30 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC4FC1605BC
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:42:29 +0000 (UTC)
-X-FDA: 85445935218.02.035BD5E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F7C46B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:49:59 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A5C501A0577
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:49:58 +0000 (UTC)
+X-FDA: 85445954076.03.346FFBF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 16D1414000C
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:42:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y7p61y13;
+	by imf17.hostedemail.com (Postfix) with ESMTP id D138240004
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:49:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVBqlWC1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794951748;
+	s=arc-20220608; t=1794952197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jrcUl658g76wxGBnlY4HNlVgi/sQ8Xeo/9AIM2wsHJM=;
-	b=Y520fsnt3FiVx+L1lJXgxULtDU2rjx6+oJ9GChw/ZfvoYMQHxLsAATOM9z28Zqu/5Y3feC
-	IjHxYEi75ycLFUq6j3w4gBNZFEBeuekk2532ENEOWJ/V0WBGzPXBHjdN3wWJapAPT95MX5
-	Ao2dghhiV9bvpIkCoEvaEjnZN1v4s7I=
+	bh=hXE0D+8kWfYIVXIXnCUrO9YjBexR7cGSOZwGsQoKqqo=;
+	b=kzBuhnHp5/QflKoiBsKdMAbcL9U751qcnx+EDE36GIF9MLJHpsmoZ+/K+P9ZNI7A7SY7Fo
+	jbMEpRHHtOrVb3dXPcQFtP4ShVjjLEhsO6+UjUH0u7LqiBVLjKXmbiB/XwFjgrdHW8OMHg
+	8l1Lfd6WZs9ZyHQ0k5jfAwy/ygE4Zag=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y7p61y13;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVBqlWC1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794951748;
-	b=m7SQxOyCCdzrjxZmScryQuUNTQ668LGe+rnLSW0JPSE/RlUQZn+BshpxKWVtlpVTpJuLUt
-	vJfLHMu18VcpWsslwoae5jFNDdKkOGHuUFVeaxe1RH5fvxBBc1UYGy8ptMP7BHbqVovCCC
-	LObDU0D0MlMRjMvS2kTVfrOa5mFQWZY=
+	t=1794952197;
+	b=b/VqrpoLzktK1OmvPOkOpcX1lUc7+CTy5fRubJAp7tyWUKSh4CW/CNVbBpjgvOr1IO99/s
+	//r77mlGSdSp6r5MP0MyCW9MPGA4POXFJpVfaiDSawOzPtophJZcpzQ9cUhchf2iD6fwXw
+	kczfBHTr3jGUeokpskmfUZhn7/g+3IU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A83F061B44;
-	Tue, 17 Nov 2026 21:42:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B461F000C4;
-	Tue, 17 Nov 2026 21:42:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 36BCD618DD;
+	Tue, 17 Nov 2026 21:49:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B261C1F000C5;
+	Tue, 17 Nov 2026 21:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794951747;
-	bh=jrcUl658g76wxGBnlY4HNlVgi/sQ8Xeo/9AIM2wsHJM=;
+	s=k20260515; t=1794952195;
+	bh=hXE0D+8kWfYIVXIXnCUrO9YjBexR7cGSOZwGsQoKqqo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Y7p61y13BfWYuoxnnoMCURUYRODS1qlCl4Dr+pzsmMAThjcbDqJLu8Bhgfj/Zawaz
-	 seJgjEv1NEpqfVdf2vBmYzELK64d9BZCyjnPP++cdRoXSIkGwiEQrUwClzT4vL0D8B
-	 QiK2CRA3xjXyfzwRhWJDrsDs0NtmazTTVxqhgsb6QR8chN7c/uv7UTNMTxUhroMueG
-	 AN1z8Kn0kuL7zLrsfk7scHdsYDtbpZYuU86z1/KAiJ0M5hUys6dKXyMTbN04B/NGHE
-	 aqgSrqTYtx85vlCmgyOOkL4oRK6WI2O457aOjmKtEoC9vm2G3zQ/FXBgjR2sFldl/d
-	 8kHKyOOlBSBBA==
-Message-ID: <2c6d4e24-8ad3-4190-98a3-d3f889d03890@kernel.org>
-Date: Tue, 17 Nov 2026 22:42:19 +0100
+	b=NVBqlWC1Ow1rAtVPhZ7hVTfDp9ZLQcfY8I9DQP4w0h3DospTnLHkxOWr7k2lWkZMP
+	 twbkFgvkPK3qDjtjXYNcvL/Nlk6RnhXZHMjr/bDnpE/sFqlAYkXXDPnCl6SSa+FTm6
+	 IV6m0si2RajVtN90JkyrGWy6L5Gm7krPBmjWlAwHhH3u5FxWqjXBd2JxHC+1JFID6m
+	 rNQDWcx0bWzUPkbvXTqoM2X4DAIqODEep8nJ/RbmVa0fiKgeuhW7mcFHXcDRmELH0Z
+	 6WvWzEh5K2KlVPreV+eiFXjTv4ZER7BEGEL2jVoFibuZ2unFTvM4HHnwUHXINjOmmc
+	 eKv3aicus8DgQ==
+Message-ID: <9514b491-ce2b-41e1-b1c7-066855ed6fd7@kernel.org>
+Date: Tue, 17 Nov 2026 22:49:45 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
- !copy_mc fallbacks
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
- Kaitao Cheng <kaitao.cheng@linux.dev>, "Garg, Shivank" <shivankg@amd.com>,
- vbabka@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com,
- tujinjiang@huawei.com, mgorman@techsingularity.net, chengkaitao@kylinos.cn,
- muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+Subject: Re: [PATCH v5 0/4] mm/huge_memory: copy PMDs at fork like the PTE
+ path does
+To: Konstantin Khorenko <khorenko@virtuozzo.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,21 +132,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 16D1414000C
-X-Stat-Signature: u4ftafuqnjit8g895rnpchk1qxy471ge
-X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D138240004
+X-Rspam-User: 
+X-Stat-Signature: 1h9bfijfjh48je6hr9ibjh7p7jni7ecb
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1794951747-631769
-X-HE-Meta: U2FsdGVkX18g8SjRGyPXn6iam+uMxoey5leZdLCKaWeEWRBEW++yTXr5JW18y9QtcCqc2EVNR1t5Efkj1pKreMtZm7+SVeIBk52tLljLwkV/+Dfd+ZyEU1C/8OLcp4lOY9ckf3fEW4DABzQZmWdfVRu+8x4i4dIZ9AAixvBn8shJffH+O/lRoh+/mAhnsvfMna54wslt0trAb6jmxcs9K8lcGlaeN88E3x2OGuVtHObpgx+sNoTdUJVk6EFiFtuIRa1jHjN1AKVG1ZM9/Iq6HxscHhIRemAh50pQHN7dsXDy6iEgVUl9yM+3O7lHimQ/3ntWZ5MRuIB1CgHqocYWKNT6r3Jj0eK8ioV7d9skNTHJFWXBjrGFavCwDeAE3A4RYDWjTXAjMno8p91Esunv9zFSWNb34jSAmwAoOStq5+ZqDRcLOoOAYWebsaN1Fass8WMuldn2EZVF1oBeWQNfAjWmxjlv1KIHU13E1s2HyPmDgA0vlFw7yMfMNus16RArUPS0iR+bt2UgKqMCQTOa4TfBdODqy2B0JanXhYzrS2rkxsJg06On/46n429NZSvkAV5qkniGEAo90ku07dvCvYozhYrbHvFQz6RTEVswzpETboFztc5fgShDVwUD0c2M6xwgE1ckfKy+bvXb3Eg3cFwZmLGYbuL0n+H5i9fL/Dk+pBEdmCqFxQ6/PMCBBAU6ZU0pT73G6YSeL59bFQlekCoriNZV16pvqWHKufvJCjgI03oDsBg43lNrYarf+2/f4ZmRnTXQkMe5vrTaSxIXgOyRW8pg3M7AX4YooLci4meuqlmo4QW/AKLWohHjsYkwBZRFrTMWcuFfrCKq9E/wct0foOYr3SugW7cFVOHz5u3Aik//8iNI4A3HgrtQu+PvW/BC8prvckiP+IjZKuFYuEf7lUf2e/EZ3NFoqv/nV718gmCHP08ngeiuEWfT9/Hy6jywf9V/QCB8Z0GElsv
- uzf8SOir
- fP6tDqiEm7+tSqyt/KsrRUVaOnaXymibj33gMm0aBrPpQdu8OweKEm8d+0bxY4q9OWNsBtW0CNc7TIsVl7ibzjGw17MAFTQ6mV3TWx1rIHHUhPmuHpC1+NBEW1q8egUVWPvCCOswA0+LRhIoUHGbfI+XnFBlGV4/CZTDsruPYiEy3110o7DCiR6WfIwJwtGEQW6owxtsVuiFDSPXM5MWjNHjUdcnwwchAuOJ8xJUeOZDoUpokOyOtUZrHkizPg4gt3Xu2YqqzNGoQYbzjFDxQQmOLr8r3CA860h6tOQTNR1pKWN9epWX5qG6mahhXLFTR8V29ug7Qk6Ghc45m5sC+pXrnc9ekW0F7XEqOGc7M4It7T0ZbXL86Cfh6QIo1teWCPA/ndM80o5Qc5NkfTgAzDtk7BF85jqCz6qFlc0yc4315M2adl3SuZDpMntpGSD0HCtn4n5FnOxUbdL1YdXdtOFV7yQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794952196-52377
+X-HE-Meta: U2FsdGVkX1/QD16jD7hxkHzsL34Wrxm7h5jWFapiIXoF3k5tMK9W+EiJ18qqlaPKzPc5+q/zbvz/yLHooqwOO8+1E5RUFXZLWW6cavbOB5wVdX/+rEWSE9XdzXi1MIIkNjLo6D1baDlw0xKrxC1/8H5ge+tw0StxGo+ns5ZGJrAgovL1+5Jz0FnoAS2EOydtxuVgD+v85hGwoD9voEFo3oNWJwykYvEnCPRRrw7A2EXwWTjZtQ+x5zRp9Ida/w92KvvyTHVYVqu881xQosram2xFRX6mbAOaHMu3PWgiiT16PywgDXNezReBabgktrgY9O5/CAT+X6bNSPEE3IHq88/8EmadzgnfiV1Je+9gyb1XrH7R1w6NRXjHdwbBM41Fttj+PPKYYaxC4hskGp0XasyjpdyL1xxDWvPLmxqrXwF4evkmEWEGr7yIgkqdzX4IvaEPJ6KiaHKgZDCbQ+zETHij2f6V6zAO8K3bP1UdankkSU6LD2aXVHuqyAqPAWg3GYq0dshSnbJ3iHFfZGIyAUkEUoavTjVD0ZlCUtCHn6pIO4nNw+BmKOC+XGBjBwGZ40Ob+sQdrwXlE+TMhdXFwqMoQqFLyEiQrWj1C+BlzE9FFXOpONDxFaVyMQFD+WQ7VdhXaBdaWZ0lAUkMr8Kw/Wg5t1ogn3dP1IkzTd7PyTOuLb/1PpVKZ9cnorki4V310AX7hrnWlWoBaOB+T6gm20vQJ67XTfbWPnNFjjH98OZCgOnm6yFB3jfaJMuzyv+qpE8ovoiKO0eWVwNJz0gLM+8pC5IzRnjHz4Sguy9cH1KdrT26wnzzYpama4aTGd/nYdu/DOZcLI2B56fTSzRY2xxiy7MNRACJqVTMS2XyIHOGF50ESGvKSwwQUWnPgKt0+G90Ym7fZymYDKi618xhfs+ppxZvOs725XA/PHVDP6eB3SF8rrt/DFxIKNrJetgblhULRJiXz2k1wDElxI8
+ QBJGcz2z
+ pq+ycHA+KePzTe9eGb+kFczr4J0KWO50/DJytRdrPva88pEDPJ9jfUgqaIdo/t5/0QOnhOfgdOViS4F73QbdaeJOm/c8CjKbpb7OnSRLTIG4sszCbHe5a8OF/hP+NoyGvnsgP7q5VjZ3LjbhLO/s2RICx1unCaQdMIC8GzZ/fNYtnV2kMA81IODsr1lZL+rkSMYcjtrJEDfNbPjMsy0pF+lEC50FE3PzwHJSComLPMcX+rq3Wjm/AhE9xwErbmoBfJMMZvfE9765uCiTBYLw3cj8ZpAvHnO4Ff4pKeGqhdmDGicN5+9U6SpxmUziJIyj++l98ojJkQqCl0esGOGgZDkmjXsLDM3bpXiYin/blrIMnwbJnCdVTs9vA+dOJxSTkbP/5g+gFa+3483OqfzgFPrNfTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,33 +155,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 12:26, Yuanhe Shu wrote:
-> The !copy_mc fallbacks of copy_mc_user_highpage() and
-> copy_mc_highpage() return 0 after a plain copy.  With PG_hwpoison
-> set while the data stays readable, there is no fault to recover
-> from: the copy completes, the destination folio carries no poison
-> marker, and the poison is consumed silently.
+On 11/4/26 21:40, Konstantin Khorenko wrote:
+> copy_huge_pmd() decides what to copy at fork by its own rules, apart
+> from copy_present_ptes(): a lockless check for special PMDs, and a skip
+> of every file THP. Following David's review of v3, this series makes it
+> decide the way the PTE path does, under the page table lock, with
+> vm_normal_page_pmd(). That fixes the two bugs v1-v3 were about. The
+> patches:
 > 
-> Check the source page with is_page_hwpoison() in both fallbacks,
-> before the copy, and return PAGE_SIZE, the not-copied-bytes
-> convention of the real copy_mc paths, so the callers take their
-> existing error paths.  On archs with copy_mc this code does not
-> compile.
+> 1. folio_dup_file_rmap_pmd() duplicated a PMD mapping as HPAGE_PMD_NR
+>    PTE mappings. It had no caller until patch 2.
+> 2. File THPs are copied at fork instead of being refaulted by the
+>    child, as their PTEs would be.
+> 3. The special-PMD read moves under the lock. That closes the race with
+>    a driver zap (vfio-pci, panthor) and the missing page table deposit
+>    on ppc64 hash that Sashiko found in v1.
+> 4. A selftest for 1 and 2.
 > 
-> Measured on arm64, where the fallback code compiles: a
-> kernel-space microbenchmark measures 90.00 ns per copy before the
-> patch and 90.71 ns after, 0.8% of the copy itself.
-> 
-> Suggested-by: "Huang, Ying" <ying.huang@linux.alibaba.com>
-> Suggested-by: Kaitao Cheng <kaitao.cheng@linux.dev>
-> Assisted-by: LLM
-> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-> Link: https://lore.kernel.org/r/877bjowf9i.fsf@DESKTOP-5N7EMDA/
-> ---
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Okay, the refcount overflow patches are now upstream.
 
-Queueing this, hoping for even more review :)
+Can you rebase against
+
+	git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+
+and resend?
+
+Thanks!
 
 -- 
 Cheers,
