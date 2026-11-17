@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A89606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 02:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44185606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 02:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bz/yjurB
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gad53SSF
 Received: by kanga.kvack.org (Postfix)
-	id 83B206B00EF; Mon, 16 Nov 2026 21:51:54 -0500 (EST)
+	id 3365E6B05B1; Mon, 16 Nov 2026 21:54:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EAE66B05B1; Mon, 16 Nov 2026 21:51:54 -0500 (EST)
+	id 2E70D6B05B2; Mon, 16 Nov 2026 21:54:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 701F06B05B2; Mon, 16 Nov 2026 21:51:54 -0500 (EST)
+	id 1FDEB6B05B3; Mon, 16 Nov 2026 21:54:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FAFF6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 21:51:54 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D3A5AC02F6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:51:53 +0000 (UTC)
-X-FDA: 85443086106.03.9AF57F3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F10D26B05B1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 21:54:48 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B173A02B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:54:48 +0000 (UTC)
+X-FDA: 85443093456.24.91EDA48
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5C55540009
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:51:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Bz/yjurB";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id DA5E0100003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:54:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gad53SSF;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794884087;
+	b=5MYPNo5GB2AofSULVYsVBCtCHffeaNaYKReeDkcrGFIE4vF9QUYNu9QcO69oInKcGJ8kE6
+	6JMtmaBGZuYlRze6jtVwcUlq56E8T3hD3pK9JRKkSjnT16DmsNaYtWgxx7jemHcb95ohyt
+	Jg+juf27TdHy1MkiV9s6TLo85TE9Yc4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794883912;
+	s=arc-20220608; t=1794884087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YT7dJBTJ5NpMKHm7zef0UK+gnv6Fb8K6ANn5jOwpk54=;
-	b=3YCxymnysKQeZGv2lbRKb2mFvArAHrkfPnpLL9YYIAB44xcjhm8ZCoQTNwPa05gOxxlfLV
-	qVErlTzQRhKiTImoXjcMwSAPM9I902Kd9P/4DnrRYoI/QLkQnP3M+Hf6ynhMNpgBxzo0Ii
-	RABsOsr8EL84NItYVjX3tRi3UEydLws=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9mRXkzBGeilyrtl2xQUNu92A5sXxTwz+7Vog/x6aTi0=;
+	b=x7+5dpefqH34/8qq6aIsPtXeavYLxFY3x900DgFrk8INVRlcy9TZ37zqn09xKJg75mxXXz
+	ANYxd7uQQLXsYp5HAr7z9HoGCghr0Wxpfuywt1OtSC+NU3p2hlGnY0a31Fft8gx3x92XPn
+	Z7/QF0fDAJxLEJre4on+cnKFdr/WgwQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Bz/yjurB";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794883912;
-	b=OBjHp1UmHbhp1N2KLdQKJdNwro3XnE4OeJw+lB6ZhS+D1FZ1qXosY4+d1oc+VhEZ7P6Gd7
-	A/RjJUz+mZnEGndojcxo4iosaxzEWnh+GSKP5uIW8n4HSMzOYIKj2xXxO5us9gHwQc6ivA
-	lOgelmqitUHrxe2y3XZtMHW3xZV+0h4=
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gad53SSF;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF1B9628A3;
-	Tue, 17 Nov 2026 02:51:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593DA1F000C4;
-	Tue, 17 Nov 2026 02:51:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 519F562A05;
+	Tue, 17 Nov 2026 02:54:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78601F000C4;
+	Tue, 17 Nov 2026 02:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794883911;
-	bh=YT7dJBTJ5NpMKHm7zef0UK+gnv6Fb8K6ANn5jOwpk54=;
-	h=From:To:Cc:Subject:Date;
-	b=Bz/yjurB2tXqFCox6lw5FYMKZMY3cqFANa75FHh/q5cop5PzxLyd5qXy4WKkeJ6Ik
-	 MiYPqVCQdY8DMWHxoSdnjLKIcVkI9pUxxIciiQpKHZXlAi3snx3nqo6VN+tVZkACqw
-	 Bh7OGQOnn2BEQPLcOVEPa3Bcw2FytVQLi0QkjTOO7nTuiClUQha4jpYRULqh3GxiH/
-	 fcZUTG9zSNWamHOCEYdIFH6UuebMoJza3xiZGm76zub/V6bf4jFQ3wNLJsDXCpvyjW
-	 GKpTyAJtvlX3XVdLyonEeK6VHVBnMQmjKNwbf4349yk3cjBg9EFm2EslKo8xSmKYKr
-	 2RlWqddR3yi4g==
+	s=k20260515; t=1794884086;
+	bh=9mRXkzBGeilyrtl2xQUNu92A5sXxTwz+7Vog/x6aTi0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gad53SSFAtTxw94ku7z15FEUFg5Onmufsy0VAucpxVCdX3w7K3NAYLbg+FPLgIPxp
+	 4Up27XxYoinD6nvY8WRfyZNOwUbucJ5OWXY2ILMvsrj/KtG/iOJnE7yuaJ+IKjsa86
+	 jvPSSgVUQfRfF5H/XfxonQtaWnWt6azhfilx9QNv+Pzt2Z+cg4LAKyRRKRM/zMjNCh
+	 sVU2OCeaOJrkyhC6R5uTPf8C1WoIRDq0uy+jek3zKY5qo7UqgsSQBaSU/ly9n218yN
+	 2h66TFtuW85r6m27izN/vWFql6EBfMywuwDSEclVqHscLWa9CAG7r8AYoXlWet9KjP
+	 G/tVnaP4aPMZg==
 From: SJ Park <sj@kernel.org>
-To: stable@vger.kernel.org
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: Mark Polyakov <mark@thundercompute.com>
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
 	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6.12.y] mm/damon/reclaim: use parameter context correctly
-Date: Mon, 16 Nov 2026 18:51:42 -0800
-Message-ID: <20261117025144.117100-1-sj@kernel.org>
+Subject: Re: Backport request for 6.12.y: mm/damon/reclaim: use parameter context correctly
+Date: Mon, 16 Nov 2026 18:54:28 -0800
+Message-ID: <20261117025429.117165-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAA5JH2yO-gw1gn_172hv0YWFfQpkXz915a=uoVH+e49P_D8-+Q@mail.gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5C55540009
-X-Stat-Signature: 6zrwpsxbetmm16gutw6y5ozrapqjrwmi
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: DA5E0100003
+X-Rspam-User:
+X-Stat-Signature: 57nxriggih7q8nw3azja7m9fg1d1f6i1
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1794883912-942620
-X-HE-Meta: U2FsdGVkX18xPN4oH5xWplcGAxztJ1SAnoitW8Kp+AnQCRP7ra3jz6OcvYMzb4Q5xnQsrWQbRo3SJzdYFVFYM5vsGVVuKOuMDnvtpQ6Cu7ePPZNQc5RaeQWK56sWn5smMhSKU3iEmd0SFZTfg+2g/TYboFcomzX8h/EBPUUTQKsPRcn/cHQJqX7TjzNrATBr8kzKhxKRsw8pElna+USWPu77Mg+gelEcdtHpjeI9TGcj6rdYm4+eJrz6YLo36DRQcVFU6WUnAisWwpuhTzu/lsnTJK2doIsv5/vyEfRgj8j7YuT5NUP05KJRK/VMfTkhMIljPKReMgOhr6yaeyTMDMv42tI5mCIoWnMjdHOcfy+PmUlVi3ziSpFxrigNLG+fFMxpxWQqfSf7x9CWRe4iD+Cja9U0OTk+fglS1z2lHStZ//w28gtwef2mVbD8futDVDAL1kdHyA8ebgw47Lis1y06xXMHAkcKqF248yOeQOqxsogRxddfD9LUcJ6kN6g7T/ylnBqhiUYsM08zwxqNBq9B6aHJiFgMXIbz8+gv+LKFZzXpDLLi5VXMVvW67Bi0ll0wu1nipXuMNzwWh8ZTHr5ZrDCysi45FljeuJ03QxUK2dqipH48/yD1ZDLP7+4cqHbMHNzGw1nfu6qvJDGQJoN93XBVexN7mUAfyFl46hky4DyDjfVtKrm95pZ9y7VVTlUCmajsMt7ybl2pB3IIm9vGLqhVVKShMrKrbzFJ4CY6q06MOBUHGerZMC4CLM/tWFeEtjfGwKU8nUvhIVnwt5QTxFsRMlrDljuMQXwcXqOKSWuILL1AkfikRbiEcdF/K6uzZMZS3AlHNAdQRVfj4F4PCVAbVT4KZ8NvexIlZARjeXGZBzaZNO/F5L+6QEZIWvJblpbIf8HYFRhPh6nl7ultH/t2+Dvd7qgZVYTnJN25foYSw7ijNZ/rnXAdgxDwwZ3BsX9c7YlCNkA+eoH
- QWAqBtA9
- lLqo4PYiCRPVaMjeA/83s2Uv+OOM8ro086pxuR/ZR9Pw5G4l8ocLrQZS5Dbubeqqf+L96Z1iZ0ayzN4WYxtNY6Spi5CHKsH4PoxocOY16gyg96C8X5qA/qFKh/Log3PmmhcavcAat3WcqhlNcDr0V+c+aiFvOQ5DkbGhqb8/MHi/Vsp+0vp3rS1Sc5d1b3vbFdFmYrJv/lYW3aTOB3u5m9TG9gDisL0ocy+SFqTzlhcqsS+E9YJXkYc02Cjor72a8ErusYFaVoLmussjqP2TPwU3lNJmKzhJn81ZlzfKBv80QJPOzKVndY9Iizw==
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794884086-324887
+X-HE-Meta: U2FsdGVkX1+pIUMQXVCkC+eYuN2jfnhMEusqP+DMuDPrkb/3lJXkuZZWv8/ytgSuv9+MWvG08LF0lG9Xn5Zmj5DFuo7PWA2INNC7OtGk9TBDRRKB2DxOsfkDOD7rD3lZP4A495AfipB3McBAwuS3VS2AcZDgUFxToWmpHUwdfxt304VZ+36Q7JnMKathQNuS7mja3aa/6MeFyxiLovIZev33ikkNfIfS0pHqCHfxp2yhZYCCWqD0Cgk2ZmMQU3QOEYT9LWZixo06LbgsddirrcjvvznM3bdj4e4C903CdaxsnhaUQv6SYxCN/5ywdWi0fZST3AOSRmbQj+hwgHE+GtjYSJX9jFy7M9tKiHS7y/claJPsyGnu424Uj1EjYNvaOxUcUHipFwxr2zPRhL8YIY08jHjLPx4WI1cC0UQ7OWFSBLKXoEOMrYMuXHQmDEpRCnMl99jyaf0Wj3F7s+L0bp+/BZvfpx6zyMHBL7lm0PaxjFjFmjqEBCvt+khHXjW/0pzNTTaTTnwY9qbyzuyapyxrx80D6BxYx/unnDR2iPy6MQ+R+ZtHe0ZnBTUu0NrBxeLAiOTl2PPD/oO48r7j4uej3ZNmFX6cMDF2BGi5BO6wbiLdYhZKT4ANySYIKj5rx8DvLlFyoroP04DMkE+O03g1AP7QSf+/qkwo98FIe5z595eycmYb9N72ZS5mERIQ41cFvy7nT7L0A2H7fC2ktzWkmvM/WRbErr7pglxYVr5Ak/RkZaH4cAXGBO/4P/+3wfygWdegbRTAeqVKIApqIxC4cy2zx/cfc9BLsOPUn7AH6B6rrRgadRKVh7XAiuzCRFDR/EN4iSEjRPZ6c7un0kHXl1bvCAESxkQur/tA62AZT7p63jxX+bFdMHfCuvezeE3UiR6BaMCmrXCudmdt6kMDUinbfKI3CgbWascW0vN/Wl5a8ekIGFB3Qq9hrGDd3eBqwEfBaUtfw2R8CTf
+ ayKs+OV0
+ xz1/c8vK9R6BWJaPQ3QXgFO7wdOVpoIhn+jTEoJ2RVpnPYWoL21+qaIvmV4k1PrBwd7dTLQe4uPqxRu5Hn4Mb2rsOhyBlnecvzbZcgGnSCzGnD9oEYWOuR/jOfANlptdwqToflQUd+a3jfwO/jhkM17KvJSZlT0zhKVBlyPxPUzfGxNpl0bth/6Ef8Htmr+qmNITMtNEuX3/jooaGvdHQ5QSxmPB2A13p5D8kw/22Qc+uus+RkM3e8HjTCTbNAss+Ggv7eLQhU16fR1mM00sOHS4Rts/oY7B1ppVStM4OyH/Hc/j/aFMunB6rQfgTt+XDs+zYt72tUAreLm8dSLFV4JptHigCLuzZABz98k52o/yVIapvv+DAYbxRLR7Z9xRRPaONuXTX7XvQUqWGlGQqIjNziw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,55 +95,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: SeongJae Park <sj@kernel.org>
+On Mon, 16 Nov 2026 18:39:08 -0800 Mark Polyakov <mark@thundercompute.com> wrote:
 
-damon_reclaim_apply_parameters() allocates a new DAMON context, stages
-user-specified DAMON parameters on it, and commits to running DAMON
-context at once, using damon_commit_ctx().  The code is mistakenly
-over-writing the monitoring attributes and the reclaim scheme on the
-running context.  It is not causing a real problem for monitoring
-attributes, but the scheme overwriting can remove scheme's internal status
-such as charged quota.  Fix the wrong use of the parameter context.
+> Hi, would appreciate a backport to 6.12.y of the commit
+> fed48693bdfeca666f7536ba88a05e9a4e5523b6 (mm/damon/reclaim: use
+> parameter context correctly,
+> https://git.kernel.org/torvalds/c/fed48693bdfeca666f7536ba88a05e9a4e5523b6).
+> It seems 6.12 gets backports of most DAMON fixes but this one must
+> have slipped through.
+> 
+> We've run into the issue fixed by the commit on 6.12.115: A guest VM
+> with DAMON_RECLAIM enabled but no reclamation occurred. After
+> backporting this fix ourselves, it started reclaiming.
 
-Link: https://lkml.kernel.org/r/20250706193207.39810-7-sj@kernel.org
-Fixes: 11ddcfc257a3 ("mm/damon/reclaim: use damon_commit_ctx()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit fed48693bdfeca666f7536ba88a05e9a4e5523b6)
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Mark Polyakov found [1] this patch is missed in 6.12.y and causing an
-issue.
+Thank you for this issue report and requesting backport of the fix!
 
-[1] https://lore.kernel.org/CAA5JH2yO-gw1gn_172hv0YWFfQpkXz915a=uoVH+e49P_D8-+Q@mail.gmail.com
+I just posted [1] the fix for 6.12.y.  I mentioned you on the comment of the
+patch, but forgot Cc-ing you, sorry.  Please use the lore link to review.
+Also, let me know if I did anything wrong while doing the porting.
 
- mm/damon/reclaim.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+[1] https://lore.kernel.org/20261117025144.117100-1-sj@kernel.org
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 9df096218beb7..254d84166131f 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -190,7 +190,7 @@ static int damon_reclaim_apply_parameters(void)
- 		goto out;
- 	}
- 
--	err = damon_set_attrs(ctx, &damon_reclaim_mon_attrs);
-+	err = damon_set_attrs(param_ctx, &damon_reclaim_mon_attrs);
- 	if (err)
- 		goto out;
- 
-@@ -198,7 +198,7 @@ static int damon_reclaim_apply_parameters(void)
- 	scheme = damon_reclaim_new_scheme();
- 	if (!scheme)
- 		goto out;
--	damon_set_schemes(ctx, &scheme, 1);
-+	damon_set_schemes(param_ctx, &scheme, 1);
- 
- 	if (quota_mem_pressure_us) {
- 		goal = damos_new_quota_goal(DAMOS_QUOTA_SOME_MEM_PSI_US,
 
-base-commit: 8ea1fd6d2beedbc49a917cdccea09a0354b64d5f
--- 
-2.47.3
+Thanks,
+SJ
+
+[...]
 
