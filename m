@@ -1,107 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05577606A33A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4F1606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZmHB+25T
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EnFucXqi
 Received: by kanga.kvack.org (Postfix)
-	id CEC196B00EF; Mon, 16 Nov 2026 20:02:24 -0500 (EST)
+	id 3C6926B05B0; Mon, 16 Nov 2026 20:03:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9CEC6B05B0; Mon, 16 Nov 2026 20:02:24 -0500 (EST)
+	id 39DE86B05B1; Mon, 16 Nov 2026 20:03:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8C546B05B1; Mon, 16 Nov 2026 20:02:24 -0500 (EST)
+	id 28D036B05B2; Mon, 16 Nov 2026 20:03:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EAD66B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:02:24 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 141E340283
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:02:24 +0000 (UTC)
-X-FDA: 85442810208.25.EB80DB8
-Received: from mta1.migadu.com (out-202.mta1.migadu.com [95.215.58.202])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BCF141C0009
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:02:21 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZmHB+25T;
-	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.202 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D21046B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:03:26 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A46581C32D1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:03:25 +0000 (UTC)
+X-FDA: 85442812770.19.A313480
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CCC2B40009
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:03:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=EnFucXqi;
+	spf=pass (imf17.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794877342;
-	b=WPI7yMEtvXtVto7v+UafY2Kb+207MTCK5jJgxj2mGHk8tSWMEw7hudT+yd37sBdrTjyoA8
-	KXiG7QRyM3TUggzKaZyfdELw6O4Q2qiEquvyItaxCP3iLOOWhNLBNNB6XtsoH1E4Ip4WZs
-	j5FzxeGqcSj5KwaCbZNqI9clOkdUASA=
+	t=1794877403;
+	b=BwbNcTaKAKhs60e+Cb+zDGs/1HiP8IBSS07Xv2o1xcHtYTDjCWHwrXbS8Ik/nm7vEeiN33
+	cde6KGTadmrxT/jNgLUV/EvMScCf0gIXj5fYM02u+rFidvtE8f/3ysB+7Z8rYLe7Lh7NGI
+	JUcn4wOEyKsp+upl92//QtMe1fQHTiM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZmHB+25T;
-	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.202 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=EnFucXqi;
+	spf=pass (imf17.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794877342;
+	s=arc-20220608; t=1794877403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8jUhG/+yD7ltzA1P4BeznW+FBUmK45hGHrDe9rOGBQI=;
-	b=S2nOFSh6G4sj3GmYReM8H2NRT6mLmr5V6OHodOSuyob7ojw2BBSbtes7N0polDBE6zBPcs
-	WaDWqaAHa2y3J8G2Xhc4ZqrysSfVUswD10fSFVztgBYt1TA+vXHF2mIknoLX8QGLr+pb+a
-	Ew+L/iQptKzOVvcZSe7sLvTg1Fjpf4s=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=pr7ixXlMABVW+xJfmRHqZ/e1vIB1gUkwAZyRtlilqH4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794877340; v=1; x=1795482140;
- b=ZmHB+25TBRRhBW31zFJrfdn6ttpzmoDErIxV6rTVUUofVjBweGbt/Jbrci/dqoB0v7KGlwu/
- Xt6nVTiE5yFq5Tnp92Uz9F855H3qbk0X2/lUoDzOgmTXjK2u93W4yoWnXWhLtrWy2rKY0z4KDhB
- rTA/nUhx0d6uoUe1MHBQXzUI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 8f80fbc7d52bf4f3;
-	Tue, 17 Nov 2026 01:02:19 +0000
-X-Mizu-Trace-ID: 8f80fbc7d52bf4f3
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 17 Nov 2026 09:02:07 +0800
-From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-To: Nico Pache <nico.pache@linux.dev>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Yu Zhao <yuzhao@google.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
-Subject: Re: [PATCH v2 2/2] mm/ksm: prevent zero-page remapping during
- ksmd-triggered THP splits
-Message-ID: <avunj4dVyiLovWL0@dgvxl46587.localhost.localdomain>
-References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
- <20261025-b4-ksm_fixv2-v2-2-8b61ad0491f1@linux.dev>
- <b4a82805-5b13-46d7-bdb6-0ad2eb70f148@kernel.org>
- <8375728d-c1e7-4033-8096-5d98d1bc36e9@linux.dev>
+	bh=Q8xRj1Homj/VTvTcbwqPDSEFGebgrQcuNK0zuIg1sPk=;
+	b=F/sN64XSgch4U0yiHS0lWHxmO3LWEpWYNNuls5euEnxaQYfJZhp8R4sbxoJz2HI3059Q9h
+	N/dc0DCHsF884WCVlgJiUTquc8/whAYf924VmT8T7Bo0QhfM99Z6aiMnejofEx67pm4XUy
+	PenNkc1/a82AcOHkNXCOr2UjOm2FIPQ=
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-372bdb942dbso3675157eec.1
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 17:03:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794877402; x=1795482202; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Q8xRj1Homj/VTvTcbwqPDSEFGebgrQcuNK0zuIg1sPk=;
+        b=EnFucXqicoJpAwvTRGeYRAIMzhfV88vX6TroNalbHVZ4EmGq0ks/c1Fmx/1nbNGjEZ
+         wK2ebdgUVl+sIhwWO6C/yh9tgpaJZWYwNcaVvVJvO7z7d/IL9i9YoAbLPrDGVRQU1x58
+         XE0wLxhmN+8fruoaxLlUVlmbOgLxUJRDl9tT7MivSbBDOKK3W5RhTa14oisozTWnMxSC
+         61EcfzDRVKM7E1o5h7z0wdOKh0NrUMlWS/pS3+0Zy2XeWSUltMwtQRZrJCjqz/FQZJt/
+         gkeM/7wTcRUgyfg9AxgqN8tOOG/Hs92SEGpfc0yDQvSzIqAnl3pePB7lgl5tzk4E2VJA
+         MNVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794877402; x=1795482202;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Q8xRj1Homj/VTvTcbwqPDSEFGebgrQcuNK0zuIg1sPk=;
+        b=q7DjS5d3Rw7zjaQ+R8huQfQtSkbWfy6ZRPYldS8Rz1s3pEFWWxaOR0lI13rUWtUPwF
+         tmsObwBApMXXuLZBJckW4OgyPS11j00Fos6oYDNHFw/2Z5TsPWsP9vhS3ybz1ANiQff5
+         VsNYUN+WZq992DvMKnBoI8IbQggYauAp70qbL+CagTYJXEbSKsG6ZOEHNq3rUDbF1VQY
+         XGtQfNIaw0sl/uDSQTvADcuDAkljuJt3h9zfpq/oJg2D8rvSbogRiDlMhmDF/3Xd21aH
+         tFsgviLImmy0HfIQIqYtgCRMT1L0MmI6ROXjsl8rj2qLpohSCT/kFJLycKLzUiStR1jD
+         Ml9w==
+X-Forwarded-Encrypted: i=1; AL+hErHShbyQKVRkbgsap5B5VpUN3Q1Wwb7ZOPxrCj/0nixlzWtS5SC2jd7qf7ectCV/R8YlaMNJ1QkteQ==@kvack.org
+X-Gm-Message-State: APuU4Z+tXlgoe3zGe9fZqTD7rjq+3lulo4kJNCAn7Hif9GNxvS0nQthC
+	/ivE68nK8ScExl/XD6jprCQEM2yGsgmCP8W6EGAzahNfIyKvhTsogPFM
+X-Gm-Gg: AYBFou0sMh3ikEhCbIExi5/zumgiJsK5asifs1f9voje9aww1JUAIOEdJniseWCS/0x
+	Hx45o0uFhRSU1uqznyTW5lqu04TawJlQybZoNLfooaTazVhQgO4gQ+7LlY7ZnXvrHMp00xVH4QY
+	P0XuT9RooW9RIwMaKztdFOQ4xVjc0ak9Jez/1KF/KTVyez+ybguQWHxZJ7Argne9GxqCcbdzOv8
+	dXD65qD7g0oEI+fjk7n2QIH9mwGXbdLyyqKT+/0brKDyqPfWztJWkMDvgXYF3JROH7w/bzRifDy
+	q2Ywlbf+qvus9AMwYrKbopn6c5fBTIV+UZKZyCDfwbh9tCcwDtViw0BU9c1quELZRjkieGK0dia
+	PP9qZHxo6qnDAWqqhlujVsMZ8KAKY4AOi0VCAcMVByUqM4XvX9WOY2uwiYe3X7d+lCPHnmMVmNc
+	fk5kWMTMMuLVRCBI0toBR6oGfwfzx+IR7mbrifha88VviqkPenlm92s3BorCbhGstB8ojxArgXA
+	flE0Nlv6j0UT5/VfrIWeW+s52r40Mqj6baMs0YMeO5dxprXY1cSO2kp4LrM3D41yrf/O7OKHMKa
+	UiJi1w6ZybMg+F7uMZ/k5yEbAikRIeAF5A==
+X-Received: by 2002:a05:7300:cc9c:b0:371:5cb0:4929 with SMTP id 5a478bee46e88-37967dd4c20mr11790852eec.25.1794877402316;
+        Mon, 16 Nov 2026 17:03:22 -0800 (PST)
+Received: from localhost ([115.99.200.166])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37955822d58sm37778195eec.10.2026.11.16.17.03.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 17:03:21 -0800 (PST)
+Date: Tue, 17 Nov 2026 06:33:19 +0530
+From: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dan Williams <djbw@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Breno Leitao <leitao@debian.org>, Ira Weiny <iweiny@kernel.org>,
+	Li Ming <ming.li@zohomail.com>, Richard Cheng <icheng@nvidia.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Kiryl Shutsemau <kas@kernel.org>, Harry Yoo <harry@kernel.org>
+Subject: Re: [RFC PATCH 2/5] cxl/region: Factor decoder poison-list retrieval
+Message-ID: <avun1x_x1UK2yWjL@acer-nitro-anv15-41>
+References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+ <20261010162017.62506-3-shaikhkamal2012@gmail.com>
+ <20261016232103.6497bbb2@jic23-hlaptop>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8375728d-c1e7-4033-8096-5d98d1bc36e9@linux.dev>
+In-Reply-To: <20261016232103.6497bbb2@jic23-hlaptop>
+X-Stat-Signature: 35398gok7dgyw3dcnhkgdx58schraop5
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BCF141C0009
-X-Stat-Signature: npoh54o831smg49ggq86bs4h9wh97bfc
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794877341-956891
-X-HE-Meta: U2FsdGVkX19//AVtUH79BvqmlAKpUJy7NVEsbn+xA/d31d4xuCXzNaTHQrSlMrLxRaPv+rc2+LTNPbspKYetIYBwo0lNR9FHfj50wLJP3WRiRCrSfE8q/NuXRqNcjeumKvJbWCluWJciCQ0K99E2kNHE9SZ862ac1djQqh85SfzAspUtaBG5TWpQTjI3q3l/zSODpm05qqzU3kZoMOknltFzVKfxqthGIClnzPYJBmA3/W7+OQtV8UgJI1sl4axGUOvnXw2dt8m/MwYoRZWWoTR1cZeKXABgz1NIQ5wnpvVkJa8MeRiL4XJZjqdLn8Daa0+Cuzi8mGWxppFg0HhTZeQNeIYnLSWb54wKZWGaSbo8EeYwb3XTLy1yPG7mmpIDKRgfZMcg4rNw0Zda1QbQC8pKCr4wwo1joQRa4Ygxkce/ZWNd9Tj6i2ZKZ13+GMpiEHcBBfS+3LDobd/d4k4G4nSIM6VLDmGIA2RtYIeztzhE6+yh3pCHp9jW6Ezm7/UM/JOlGboU0J26I5r1kjAgcJXdu0otynMCTN+RcoMS0/wKh+4RQojO0zRDRJlMFoZmNuDZRQBCBUX8eAsfIc+UrnKzxiqMT5KHD+sc9AookHNKHHXsldMW8pC62XVnvr9YDNuQ3rTA+9CmV/SBGqz8xIPkcc7j4z5VczA2urSUppjfuO4U8clmCnOfFrmpjrBJmCb1qHIF7sz5lQZNazogj52H9GajtEe86ZrcN8s6kskoWTvgiryQFS86dMZA17dsgJvBTQiY4TdRPmWiS3oMvt+KDvbtxdmHob5tuqNn0XF963Hcy9CMIEWebr9vIqcmICLPfqPxV2PDifgPDBhtk0kwOxIf9BAeYkqdL0GCbzY+EReQJmZvZSFraTJkSZkdv4OQ70zcW49OuFVdml7GqyAoNBGJQgLiNveH1jXk+nxF+uY4rUhNBmBph2j5cMIKwaQ27/MW2IRf2umJaoR
- mWWv9jD8
- 9rojosce1qNtqHrXoCgzgs0CaQSjkHIvQB0uHojJ09LFGaTKWuH64Y4EpniMdMDAqiea74XEoA2dF5bjo5au6Aj9Zs3g0NLqsQdvoAHMA9+orcuRvxKT5+QznCGwmgHjlcstb8lIoKEiFGdIdt8bPzp1EzBrf3ehcGbaWxuChVEwLRY4cfYxnchXmMfqf7dpEEHlOmLQH1vUjXmVt2l4PkZUMOEEHJYnpxw+IMUHuSE6pY8/jMWfBfr9mzlfape+XpbEEL5E6lNz+rcyR4SlVrln4YjBmigOsDUFP1mW1eKvDBcv6+WTUzbkzB0FIzVf1wE3Uhq8mMvN0/D0=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CCC2B40009
+X-HE-Tag: 1794877403-712377
+X-HE-Meta: U2FsdGVkX19AcFXQ8zRcpeFY5iYzPhOQIlSlkwFpg/aOicwOl6ESiF885OWUINmzM2Vr/pQ7FOVAaFwSVjsfCbQgLFwdDpMVSXzBL0g+e0ESK2ErKYGsIOcWMwTA0QbtOQxHDw21cPa9gzFSFHasZ3lHInNerv2opzWw4dWUPM83DBn0WNdls+p1jLuWL5OlmIODiRoXss510SFT6+4CcPIt/jT9G6sqN4I/pnDODEmtSi5+2GgKOQ4B2YjS7CET5fxKoJcGuql8Le8PmUKsO3lT6HOyjfPGAhdhXGj9sfbRo8nwM6Mz+LDlddcW+S5QuGuFNGHAEqoGAXJJoe/ITMdrduX9Ogyqhsz4Ey2Pgdqsbc3NxGnxe1dhfGxPbfzyVZswdoicguSwcKH+BeWFDafGG0YWFMNTvgdXdmL+gM0K2Lv4suxuJqxudXxX24RMeijbjXDx2Zl6iL/4YddWV0M6cIIvoPSvpV3DxmGfcrhoJO8sEC32/bSvxFxkS+4tdSjBbwGU1m242VSguJDVQsW4zPgnsfhSxAHliXbjt6zt2ceb2EHbLPzBFolHUgVQtEqR8/zLoKZTTJxVTqE8A1IYVZCW2fVuTVU9fUU8Ad6oNy0GYWR1Hr1IRsZ3TBuPpxyORtIAm0LZDXev1eHTdMWOg1lBQl8ZV5SmKrX1nd9YflwOPINV4YUGpNXo7UfKxYkjQm+cvz5A2Td7xOBNIy0+aHVrNPIzKI0jrOTRV5zw7+9vydwlaII175iXnR4LfqfHzrN20Dn1U/gAVKFB6GpNw2TXMOiQvhFID41dwrALywIOglO5f5A9DLHR3s+I24qxg8jyS3gBokiBwmMo5j6YYUTNPq5kAMQ/+NNRjrnLZYi/p1R/IC6+42EsCzHTf/Go7o93jsvmz3rQaRP4DJfAy3zMVCkYKlA1o/5saZCpd0BKfP9W9UZJlHc5x291Dm+k6fSNrbFGcV51tan
+ iCPTtKYD
+ 6J0fwq+E6EDXDTUxNsrZ5YBBq32a9OnsLVyde31D8760t4oTvNK3HdT3HwUtzLYR7osIAG1autN90yf28CfMcfijpyWjo1sU3p9doaTk03gnABO1EhS8eCKqBvnlyV/hl6F1jjoxQdJFisMmyQuDxE3wtToY5SoMe0EipAvgaAInZgIvv3q0lawiINO1+YYr18A/RCpKf2yayLGsWIB6sXF7yw+AJOx3Fo/3exfF6fgN6N8ES7uHgtWgvoWqUnumcWNZ5V+9SHOrInEZ2nNPWpg9DTNXcEJkksHbHk4pXJduntIHS+y+DxJYc8lYiwkx4BgrTCoFTmcFkOaAXdneyt5f6NIyGaWht9uRZ2sxCQ2V61YV1R4t80O/lv00tJcMKYLVypfWezB2OIcDw+E7G2cgCvXB3YtVP9QzJyvnu6rq6hFOHbQH58zz+w0cYHFjcOtZtNJWK9vHoDPyWz78sQEN74A8LkAx3vYryMfwsWDu+AExJ7MkFtnsHk0uPePB537UvimORQ/Wb6kiDXeX9hROH4NHqabmFGwCneJBUbVgjU/z76LhVDqe/4svUcmGTl5IIxYsK1AomrH4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,115 +141,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 04:58:55PM -0700, Nico Pache wrote:
+On Fri, Oct 16, 2026 at 11:21:03PM +0100, Jonathan Cameron wrote:
+> On Sat, 10 Oct 2026 21:50:10 +0530
+> Shaikh Kamaluddin <shaikhkamal2012@gmail.com> wrote:
 > 
-> 
-> On 11/16/26 3:21 PM, David Hildenbrand (Arm) wrote:
-> > On 10/25/26 18:39, Nico Pache (Red Hat) wrote:
-> > > Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-> > > when splitting isolated thp"), splitting an anonymous THP remaps all
-> > > zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
-> > > This flag is set unconditionally for every anonymous folio split,
-> > > including splits triggered by KSM.
-> > > 
-> > > When KSM is enabled with THP=always, this causes two regressions:
-> > > 
-> > > 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
-> > >     split_huge_page(). The split remaps all 512 zero-filled subpages to
-> > >     the shared zeropage at once, freeing the entire 2MB THP when KSM only
-> > >     intended to process a single 4KB page. This bypasses KSM's
-> > >     pages_to_scan rate limiting, causing ~1GB to be freed almost
-> > >     instantly.
-> > > 
-> > > 2. use_zero_pages=0: The same split side-effect occurs through the
-> > >     stable/unstable tree merge paths. Each pages_to_scan iteration
-> > >     triggers an expensive split_huge_page() that silently frees 2MB,
-> > >     while the scanner wastes cycles on tree searches for zero-filled
-> > >     pages that were already freed as a side-effect.
-> > > 
-> > > Introduce current_is_ksmd(), which uses kthread_func() to check whether
-> > > the current task is the KSM scanning thread, and use it in
-> > > try_to_map_unused_to_zeropage() to skip zero-page remapping when the
-> > > split is triggered by ksmd.
-> > > 
-> > > Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-> > > Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
-> > > ---
+> > poison_by_decoder() performs two different operations: it queries an
+> > unmapped DPA gap preceding an endpoint decoder, then queries the DPA
+> > resource assigned to that decoder and its region.
 > > 
-> > [...]
+> > Factor the second operation into cxl_get_poison_by_decoder(). Give the
+> > helper an optional snapshot so a later region-probe caller can retain
+> > records from exactly one mapped decoder. Keep the existing endpoint
+> > walk, skipped-DPA queries, partition-tail queries, -EFAULT handling, and
+> > trace behavior unchanged.
 > > 
-> > >   static bool __ksm_should_add_vma(const struct file *file, vma_flags_t vma_flags)
-> > >   {
-> > >   	if (vma_flags_test(&vma_flags, VMA_MERGEABLE_BIT))
-> > > diff --git a/mm/migrate.c b/mm/migrate.c
-> > > index 7bdcdb57652f..c33ae3fa1043 100644
-> > > --- a/mm/migrate.c
-> > > +++ b/mm/migrate.c
-> > > @@ -305,6 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
-> > >   	if (PageCompound(page) || PageHWPoison(page))
-> > >   		return false;
+> > Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+> > ---
+> >  drivers/cxl/core/region.c | 41 ++++++++++++++++++++++++++++++++++-----
+> >  1 file changed, 36 insertions(+), 5 deletions(-)
 > > 
-> > This really needs a comment like:
-> > 
-> > /*
-> >   * When the split is triggered by KSM, let it take care of scanning-for and
-> >   * de-duplicating the shared zeropage.
-> >   */
-> 
-> Ack! ill wait a day or two before sending a fixup in case others review.
-> > 
-> > > +	if (current_is_ksmd())
-> > > +		return false;
-> > > +
-> > >   	VM_BUG_ON_PAGE(!PageAnon(page), page);
-> > >   	VM_BUG_ON_PAGE(!PageLocked(page), page);
-> > >   	VM_BUG_ON_PAGE(pte_present(old_pte), page);
-> > > 
-> > 
-> > I'm still a bit unclear of what happens when the split is triggered by something
-> > else in the system just before we walk into this THP.
-> > 
-> > Like, imagine the deferred shrinker scans for 0-filled pages and splits under
-> > memory pressure. Then KSM scans and essentially skips the (now-split) THP?
-> 
-> IIUC, we dont skip the (now-split) THP (ksm works by page, not folio), we
-> would only skip over the parts that were remapped to the zeropage. and
-> because the shrinker already split the folio, it wont end up even needing to
-> split it.
+> > diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> > index 75b8092e6dc2..c72524923b38 100644
+> > --- a/drivers/cxl/core/region.c
+> > +++ b/drivers/cxl/core/region.c
+> > @@ -2940,6 +2940,40 @@ static int cxl_get_poison_unmapped(struct cxl_memdev *cxlmd,
+> >  	return rc;
+> >  }
+> >
 
-Yes, that's right, KSM would skip zero page during scan_get_next_rmap_item, but still
-scan non-zero parts.
+Hi Jonathan,
 
+> > +enum cxl_poison_query_policy {
+> > +	CXL_POISON_QUERY_DIAGNOSTIC,
+> > +	CXL_POISON_QUERY_PREONLINE,
 > 
-> Inversely, if ksm does run into a large folio, it splits it, but doesnt do
-> the remapping. Which KSM will either eventually deduplicate itself (and in
-> the case of use_zero_page=1, it will also do the zeropage remapping).
+> For now, perhaps focus on flags defining what you want done, not when the
+> query is happening.
+>
+
+Make sense. I will drop the enum. The snapshot argument already tells
+the helper what to do: NULL for trace path, a snapshot for region probe.
+The helpler will return the error unchanged and each caller will handle
+-EFAULT itself, as poison_by_decoder() does today.
+
+> > +};
+> > +
+> > +static int cxl_get_poison_by_decoder(struct cxl_endpoint_decoder *cxled,
+> > +				     struct cxl_poison_snapshot *snapshot,
+> > +				     enum cxl_poison_query_policy policy)
+> > +{
+> > +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
+> > +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+> > +	enum cxl_partition_mode mode;
+> > +	u64 offset, length;
+> > +	int rc;
+> > +
+> > +	if (!cxled->dpa_res)
+> > +		return 0;
+> > +
+> > +	mode = cxlds->part[cxled->part].mode;
+> > +	offset = cxled->dpa_res->start;
+> > +	length = resource_size(cxled->dpa_res);
+> > +	if (snapshot)
+> > +		rc = cxl_mem_get_poison_snapshot(cxlmd, offset, length,
+> > +						 cxled->cxld.region, snapshot);
+> > +	else
+> > +		rc = cxl_mem_get_poison(cxlmd, offset, length,
+> > +					cxled->cxld.region);
+> > +
+> > +	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM &&
+> > +	    policy == CXL_POISON_QUERY_DIAGNOSTIC)
 > 
-> I asked our robot overlords if im missing anything and it did find this
-> potential issue:
-> 
-> KSM could trigger alloc/reclaim that would then prevent the zero-page
-> remapping for any reclaim done under the daemon.
-> 
-> It did suggest this fix `current_is_ksmd() && !current->reclaim_state`
-> basically check if we are in reclaim and ksm. This would close the gap.
+> This is becoming odd enough I'd add some comments saying why
+> we are eating the error return.
 > 
 
-Yeah, `current_is_ksmd() && !current->reclaim_state` would be more precise.
+Will add one. A device that keeps no poison list for volatile ranges
+returns Invalid Physical address for them (CXL r3.2 8.2.9.8.4.1) which
+comes back as -EFAULT. The trace path treats that as "no records"
+instead of failing the whole walk.
 
-Generally, LGTM if you fix that.
-
-> Or we could go back to adding a flag to split function (but i believe this
-> is still somewhat cleaner and doesnt complicate the already messy split
-> code).
-> 
-> Cheers,
-> -- Nico
-> 
-> 
-> 
-> 
-> 
-> > 
+> > +		rc = 0;
+> > +	return rc;
+> > +}
+> > +
+> >  static int poison_by_decoder(struct device *dev, void *arg)
+> >  {
+> >  	struct cxl_poison_context *ctx = arg;
+> > @@ -2971,11 +3005,8 @@ static int poison_by_decoder(struct device *dev, void *arg)
+> >  			return rc;
+> >  	}
+> >  
+> > -	offset = cxled->dpa_res->start;
+> > -	length = cxled->dpa_res->end - offset + 1;
+> > -	rc = cxl_mem_get_poison(cxlmd, offset, length, cxled->cxld.region);
+> > -	if (rc == -EFAULT && mode == CXL_PARTMODE_RAM)
+> > -		rc = 0;
+> > +	rc = cxl_get_poison_by_decoder(cxled, NULL,
+> > +				       CXL_POISON_QUERY_DIAGNOSTIC);
+> >  	if (rc)
+> >  		return rc;
+> >  
 > 
 
