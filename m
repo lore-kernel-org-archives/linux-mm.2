@@ -1,107 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE408606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 04:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B99606A32F
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 04:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cgneAeOE
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=iqedDka/
 Received: by kanga.kvack.org (Postfix)
-	id EB4D36B00EF; Mon, 16 Nov 2026 23:43:56 -0500 (EST)
+	id 069366B05B1; Mon, 16 Nov 2026 23:50:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3E7E6B05B0; Mon, 16 Nov 2026 23:43:56 -0500 (EST)
+	id 019F46B05B2; Mon, 16 Nov 2026 23:50:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D06E46B05B1; Mon, 16 Nov 2026 23:43:56 -0500 (EST)
+	id E4C196B05B3; Mon, 16 Nov 2026 23:50:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A2CFE6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:43:56 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 29647C0221
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:43:56 +0000 (UTC)
-X-FDA: 85443368472.15.9504D6E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4355740002
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:43:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cgneAeOE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C01526B05B1
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 23:50:38 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBE6E1C36EC
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:50:36 +0000 (UTC)
+X-FDA: 85443385272.21.A7D5D1E
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C0B8CC0003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:50:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b="iqedDka/";
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf10.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.180 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794890634;
+	s=arc-20220608; t=1794891035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Aq/4bQWK6agJBagPkXF8CgZGH0YPmPBsGkYRYivAkc8=;
-	b=b8ATcmPEDp9tHqAtG1Ug8y+Pv3UXwlfHdxoJ0114lZaP/2IkLG/7qjwv0sAv5PfJtfwt4p
-	MievqkYKQo9dxLEnBw8OmXb3EGMeUxyCY5hevZVC66y0LmjVY7bWu7fnM7nnIWoU2cJg1P
-	4v/c1N9svYFCSzRUgHph1CD4dKJHhU4=
+	bh=yUYUZ2LlOsiIpdrbhk1wJZRY3ayR3Noi9TQPGtDKtP8=;
+	b=rmDsorROJnd+TM1jhUsknSdeBFnWtehUj6Aex9MoycrBZ4WICuQYZ/rwQiD6nkJRnf+AdK
+	+Zeql83NRh/iasMi/vhkX8yo8ngYxQv6pA8rHQlkL3asRZBwOWdBSfdSOBnUAw+uTK8Twe
+	zubYFzP7o5IrIFY11C5fodEkR124aZQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cgneAeOE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b="iqedDka/";
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf10.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.180 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794890634;
-	b=UOaHqBXu+9WUAgmHppksjnAFBlszDN/ylA41/JDnrT/XyidK2iNJUm0ZJ6LEgZ918QFgT/
-	4BzpODITywJLrCjY/4SSubggb8D28q8qaCYjs3/Id4bMyepZvq9I4SpeAvml23pbmI3Bmx
-	iUHjLfbzGQkAJ1QgeM1rxjLOZE2Gb0s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AA36845A8C
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:43:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899501F000C9
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:43:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794890632;
-	bh=Aq/4bQWK6agJBagPkXF8CgZGH0YPmPBsGkYRYivAkc8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cgneAeOEwTgh4tPllkMNymY1UAI0lM9AFpi95plKa/ue4yIBg6G69n7KzyHwf+sQb
-	 f9vwV4WQoehgE8IL+KpJqH7w/saD1mzuDDVDSuCgrVD0O4DOsd5oxf9i0AO3PR7orl
-	 sPTroggbYonyrZdq7Jan/i9LyN3jP4JVO2W9JgP+yYJSAqa/g9xJl0PqKDfXmZMGWV
-	 iPiNpHEvhlY5i0xPNOmNPQRa3TQo5veEYT3yfAam5a0COaeKe3N2ZnnvmVcbEDmA1Y
-	 ZO9vB6YenC4BufHxPIUFsGOawIsvJ1THGFD4FJCRkQJa81UWRP0n5XRNL/cdbpeZpA
-	 T2IvMxN+smeyA==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-9497a167a6aso58942085a.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:43:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFiubbShNajLBs2FoNc3oj09nCwYj1xi4zW4ztChJRFGq4sl8ubiH7N/AkoIxbZT4LXun8tXxVYyg==@kvack.org
-X-Gm-Message-State: APuU4Z9B4VadurcPHUFIhRA8PECR/sICNHYYYyV8MjM8ufHIk0bO6PeW
-	v+jPw9umHKMP7gNQrMioLgUZa4UV1exNfiWIIDAcrhfs15m4Mmk/dGZtQ9LvOaynTAmK2LC2E6Q
-	UiTTzBcLRBUYq/xFiuBOlSXBjybAyvrI=
-X-Received: by 2002:a05:620a:2915:b0:949:70c5:c0ce with SMTP id
- af79cd13be357-9498b8ec2dcmr265533485a.19.1794890631760; Mon, 16 Nov 2026
- 20:43:51 -0800 (PST)
+	t=1794891035;
+	b=gj8ikWQ1Lcgn9wA1rVZdxvWjmUOPWand35C7hCH4YXpi8SdBxCbBtzrEDXndlAnpAXn5Jr
+	jY6jRhDbjIieATM9/V6vFegH+5lI3GPwrg7fHNzih+DWEmXiNH/OM9krVTlL6iMMwr1upq
+	QD7qqon6uaKYJa+PJujDYOp1/7PBsvs=
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-380b40312e2so2639926eec.1
+        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:50:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1794891033; x=1795495833; darn=kvack.org;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yUYUZ2LlOsiIpdrbhk1wJZRY3ayR3Noi9TQPGtDKtP8=;
+        b=iqedDka/SYol0TVMkRRAC91Fos/yqygwjdzz13osHeYA4MXJeRLdbZ/UJnxnrHAGPG
+         zp37JlgMr1XeGPSkULFi/3uTy3jYI47LFG3lg5gJ2twKmFIWfMes3pm3RTT0Lu4sPgBk
+         0PmNoc9ZXdmp/QliE5UdI5J41/ayKKwxfHZUs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794891033; x=1795495833;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yUYUZ2LlOsiIpdrbhk1wJZRY3ayR3Noi9TQPGtDKtP8=;
+        b=PubtJZPSPdiRGQ45RWsnrgiHqa9X7gCesK4TDyiUmqdLLL0PCj34qlAJshw2S6sP9a
+         9Y1J1UJcwyn3X74Hce+OSe95kVQLpfYRsB70e6k5Sc5cn/WXJIiDAjpM0PX3imhuegPr
+         9TbNclK1RYe7simk2BLOVfXATSsPNHyDWk2cmjBueJstKvRNHeGfY7u++sAxHN1QV36E
+         xKltWtzrrEwU2Zr9nVbI2u8fqj74kKQUIXQ208IRiYrOCz1PqFGTvuv616ZX9TDklSXe
+         eS5HESiBU+0A9aECTt1OZnr78kO4po5bptmCs3o44FQPDELQsZeG9eYKaswkyWvtG+LX
+         Fa+g==
+X-Forwarded-Encrypted: i=1; AL+hErHJDcc89HmSumQUwk8I834a0QrVsaV30Gu9HTw9ZLCSNb/bZQGMKt2UJTktFV9PSmjTKGbjwxF0XA==@kvack.org
+X-Gm-Message-State: APuU4Z8C+wN/odoFAFT+y/pA24hiYu/0ntG3lUdYljPztK1u+Nti2MPx
+	qUmzkK2rwTxqMdrHFJQkiBGZki15uqVXWMW73ZxrtDNnVAVWqb95SHndZeuc8OHFCaQ=
+X-Gm-Gg: AYBFou125wnLCpOqrJZiZyKesg5zSKoz2sbbD0Xl1xm7Er48I3PlWsUgODaPQLHzqcj
+	Sk0lSbCB1l/r2S6VJd9TtVjm6wkwUTpuwsNUV9AXd5aPmqfng/czSIpE8sXLLwRIdgvnxOFCDZi
+	IoIEBjCt96OBBAETo9cPk0GvQY+t0KWWOQiwYnfwHHWkFmjhy0o3HAiADFIHCRlfBSkFhoKBaT1
+	p5N+e1BY1fjeJVu7qyOQ54IeozyWUs0Vmco2I5c/jzoZag737nQvGD7WsrD1xRlZpkZ9Pn9/OXv
+	xD5GkzacMti+V1NlEIsf/JY/lNMccsgXFmMLWsKqSqxEtZDmQalLQS8WpB8fmv94vpzYv1pJwWX
+	9ovu9er0J0kTcSFWaC1dPdkch18kXfi7T+nC6/r0W/w/7JsDa0/VjenNT2DXKdKC3owxkRcSDPb
+	DJiX7Qv+xpY22XOp1PYWKmVgqNpDqaV8etBr0Tr6jpNohL2bC4OMdXwanjQUKVB3khJLwLy2qYp
+	QthgjU3Oq2MolMPEYdkaZkthJUoVLwC3InOyrbre/y/iozLBQtuu+qH+7E5ACuB7LoYVEe6Lupf
+	UrbshyiFZT1nqpkmaKAzmSGXNE1Cb5bwrAl2PmPL1u6nhRItT0zgf6L9rruq8SIyaT020Sbff9d
+	b+BGirCLsOb3PL4TCW3Nd1PUGtsc+X/zFuTLU1JWJQXdioERc+JDqP6bvwJ/HUFiW407Tqdugun
+	FEQCJqA7OVnlmsBX7kkpJ+c844TWUfpqrTVOkgouxMHvkFus7BlJQiloe0pP7D1GiS
+X-Received: by 2002:a05:7022:1583:b0:1ac:1343:fa54 with SMTP id a92af1059eb24-1b503112a8cmr13989391c88.14.1794891033256;
+        Mon, 16 Nov 2026 20:50:33 -0800 (PST)
+Received: from [172.20.0.3] ([172.56.235.113])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031468b7sm43375533c88.5.2026.11.16.20.50.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 20:50:32 -0800 (PST)
+Date: Mon, 16 Nov 2026 20:50:28 -0800
+From: Chris Down <chris@chrisdown.name>
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: linmiaohe@huawei.com, muchun.song@linux.dev, nao.horiguchi@gmail.com,
+	william.roche@oracle.com, ljs@kernel.org, vbabka@kernel.org,
+	tony.luck@intel.com, wangkefeng.wang@huawei.com, willy@infradead.org,
+	akpm@linux-foundation.org, osalvador@suse.de, rientjes@google.com,
+	duenwen@google.com, jthoughton@google.com, jgg@nvidia.com, ankita@nvidia.com,
+	peterx@redhat.com, sidhartha.kumar@oracle.com, ziy@nvidia.com,
+	skhan@linuxfoundation.org, corbet@lwn.net, david@kernel.org,
+	dave.hansen@linux.intel.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-api@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] mm: memfd/hugetlb: memfd-based userspace HugeTLB
+	MFR policy
+In-Reply-To: <20261115160105.2507650-2-jiaqiyan@google.com>
+References: <20261115160105.2507650-1-jiaqiyan@google.com>
+	<20261115160105.2507650-2-jiaqiyan@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <179488434239.3564555.16227252580122398690@icloud.com>
-In-Reply-To: <179488434239.3564555.16227252580122398690@icloud.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 17 Nov 2026 12:43:39 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wzsCm_BBh3B5s5K=c07bRk72kacU5vbzCbn_U-AvSWEg@mail.gmail.com>
-X-Gm-Features: AclHuK_rtoz70VnA_M4UGikPk3EP06ruH5kDNTs15rnzs6z6G8d8BBzyRtDcXG8
-Message-ID: <CAGsJ_4wzsCm_BBh3B5s5K=c07bRk72kacU5vbzCbn_U-AvSWEg@mail.gmail.com>
-Subject: Re: [PATCH] mm/vmscan: respect can_reclaim_anon_pages() in MGLRU get_swappiness()
-To: Muhammad Haris Awan <m.harisawan@icloud.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Message-ID: <avvdFHtnw2BlE5Vq@chrisdown.name>
+User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+X-Stat-Signature: uaz39et8idn4dwmam31xgoxggirjd7q3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4355740002
-X-Stat-Signature: nz7gtdi8gzpiq9fsk66xp6ujk8zd7aks
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794890634-186092
-X-HE-Meta: U2FsdGVkX18S0zQ2Uk0SAHuklegN+XNfjnrcj+TWiYq5QZMs8sMFLIk7cpudcTXtnrHMN/nnF8LDTq3Cmtw3eoe0E5Bh3XeR8n0KY5mvpPlZn2jDuVL+R+k27RiwhIvezos0/Fou5fMwLbqRcO3DcVNwOSIlQ5/fc9geeoAfSWHf20w6i9HpVAAsUYQXGWdxrCgtINdAm0p+4MeQQh2lQIskh+RMJwwqKSqT11QwXigB07RkoYFFYo2a0onie4o2p2jSrZPwJ5eOhZtA88vHLs1BErTB/6fQaDMfFMDKU3PalRko9E+NjQYlhPn2fqtnYqqdAuo87afJ8bJKNvWTWu5BXWXxGcCyYi2o2YgM6wksZXWCLFDAWmZTm258qnsIdIC8XKSLAhfIVoIAKJUe/Lodmimu0Hp6Sxa3wEVyEt3+/pXjpxHqh2TkvONRQXdTOS/OrYB2q9LuJkcydPrOM+aKp8sUGM7TWHfTlkBPmfL0l6tJwxfp5Mi6ov82AbIwtugV+T4a+d/dCqi5dMrxds33J0PoA7b5mnMrEmMzRKtewcNUBhUi/O5bdjCZL8XAee/4zmVsiR6G34fA8Z6dFhf7Y3KY1/M30iqC4Hikg7G9JA46LDNOMNBaY2Nc22mbdu1SujQ6ceHJEpaq/8lbm2OcSQYM8UR2iFNMcb81FaIkwhKxQFuls+5ouTzEfgWGLqoV6hx7BNknl72f0MLQXE71zf8SzfgxeMLK05OoO4YcX/WUCVjMkWs6q01G9ksuPUdJb8OmEglfCO6w5flgfkYgxfl9BrFPJiGRkbKvoM2pf7ieWvuUA4g8zkBNNhfISjyQL+PZY4/LU6XKesO7VvdTsoGfqIFlTjesHPQQn9yX6ido8DFKCO9vFl1zI0JdcmzHdsEIoapPHIZ1hmCBPryXHbysVArxrvLBjrpaRNT720JpX2kiRiPoLvtmMy9DXDjzzkZgYvR1GIc6Zmw
- pBQd2opA
- MrqvaIkhT02MqTEf8sAZ9Nr0ZJ5DgU5fGptyA86fe+G1xc0D04VSfQYYLRqXgdYVFPhYbAiCpjBUk6exLj3D4pu7uWAdF6vILXOoclS2DIWUSbKy6tnuqaKTT7kSyZfzsTYham+aTRAxf/O8MPNSnB5Yr1/xganPJ6GvqnerNixQl+DrEgd+5v//p9V6uiNNB9q1XHFWbcGKguEM4LBlthX+p9vZL03b5AhnWaFFofgsZGESzdGhgcFnPQSYv1hfWAqWH4QWKI76uLady7culKMsMkCf9Xu3p0VWfgjoVfTFiABo1kXxVuObIFo57Adx8ggbz4OgTThcpCO6N9++l73Fxx+TdcLBsVDZ2frnqOwx+E3Oir9cTquLmFjc7Fj2xKY1lXYIk7ITuQ2cpIsvy9HbV6g==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C0B8CC0003
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794891034-149597
+X-HE-Meta: U2FsdGVkX1+8KbYJsuIHRpm9/X+07SMPr2ASWqYNbiETwIdwdb6+wnqq99APdlQbusyjoVt0N1Po78L+ktjrg3Tz0RQVaGeSP2Zf59GrdmTCC1bMA39Zbg3qi/tyJhLLVpXnliwp5RTNukDgW6z/gvIQIMzcQaFgsg2woqQQv2EEQ8+SwH/id5KwpZPbslSBrW4hm7bWW6ORau/pwuNr9WNxGFl/mmeSROIHl45rDbxCDgDU1Bz2kj3isLB+0vn/S221ERK5/vo7wXgz8776PiUaWIrjOM2w3WldUzQfplzFOsaukFLaGtBqtmgpxX2oQfq8XnL9XscznQxkqtqnLlXE6G58Rd3AW15+0ATodiKpz5Cm5rg8AqTKogS3jnauswgCXgYFmy1lqwe51uSBvWizNH/B/GwYtwZpaGS1DLF6P1A/TG/Pm3NJ60u5CYOF/yLaOIzInhLVg4LQARs69fZlTxrexORmRpzAVaaFsbexmPLYes5EYuvRl+55Q9WCb0uyDKrcW+wPBNZiD76B49nnngOFX/NfTbB+jlKxdWnR6SbJIEMMEhn43SWunyxAlARmy0T4u+ZJ65GV5+Q+mnEBUR+sP+DZRJkt99UrMWhrIWXwryVwIXQcyoh3K4VvyNGlQwynQZQjyQt8Lo15k82tRrSMbfBAPUfUcJGtX5IA+kyGrfSRrQNMYH8W0BFUKOjH5OhHhj8RQHCVqb69QPhQ0KQoqWIonY5WJgjMU8eC/mDj6fjizo6j1qNCFAjvhxdVFxksggxd9YsR/sB+T/AmUJPxCYdkjxS7VBi0a1x/xhIO2M1mUqDFTYfoLbnDsX+cWUouepVcdjXtOxt8GTK5bzYecKX8LcEkGSqSic31fyF+ASeBBddRHEXgnPGucg2qfr4JpAIDtBz4dDaGv4TM+6l+LcvmAdHPT9BN7XjtWuvekgBri9SCi1UCI8QR8Lf6NpE+AvVf2/cIZyv
+ 1sa/JqI2
+ b8dl3Eb4G29thrW5EmMz5eEoiKETxivEgaBROxocxtpnKN8O5qdGrfqs76yX47Wq81SpElzp9XBcmU66drXpEs5G+UhgshRE1U+XLggWHNDdSwT4LjBcVr7l7LtQ75WSgU8si5pM5NbLNHfFSzpnBWXdVtBFO9lSBH6YJxEDHVIhw/oZDSXDzKB1TXgOlxfoWz4fRw5/utWixl4e+ksvYB5jM+riuiWVUgYRNaHAbGNLOcH6ZEllz8U0t2866exySKSQ2MunwzU3Wj0GFnXyzskFshI0aCNM8j2i2Jqj+HInCAoAvIuLo7CtoJ8WnCXU+6mM9aAF3FmlBg4epKPPIfYN6BxziLV/V+EOyJ9gtfhxyd6rXlhomMxuZe5Z1XV0BSQYqHegozd9ssbW9fJCrSqLrWA2QlmBNYRh7062iBrHAexG+MqcJWfwkjWddHGcri6tgDmcCFf5mboeL4bbxQLEWKqfqLWbes2A7h/LmDACNc8cqvjph/BnCpbhgcWthG/b1nRre0YvhAehU2kqukuuxjuCf4q9HJTUF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,75 +134,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 10:59=E2=80=AFAM Muhammad Haris Awan
-<m.harisawan@icloud.com> wrote:
->
-> Under GFP_NOIO reclaim, reclaimers cannot add anonymous folios to the
-> swapcache and can only reclaim anon folios that are already in the
-> swapcache (or demotable). Traditional LRU avoids scanning anon when
-> swapcache < (anon_pages >> 6) via reclaimable_anon_is_low(), but MGLRU
-> explicitly skipped this check because get_swappiness() did not consult
-> can_reclaim_anon_pages().
->
-> Call can_reclaim_anon_pages() from get_swappiness() and remove the
-> lru_gen_enabled() bypass from reclaimable_anon_is_low(). When anon
-> pages are not reclaimable (e.g., GFP_NOIO with low swapcache and no
-> demotion target), get_swappiness() now returns 0, restricting MGLRU
-> eviction, aging, and fallback isolation to LRU_GEN_FILE only.
->
-> Signed-off-by: Muhammad Haris Awan <m.harisawan@icloud.com>
-> ---
->  mm/vmscan.c | 10 +++-------
->  1 file changed, 3 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 6a1af9b92..f5fa67985 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -379,13 +379,6 @@ static inline bool reclaimable_anon_is_low(struct me=
-m_cgroup *memcg,
->         if (!sc || (sc->gfp_mask & __GFP_IO))
->                 return false;
->
-> -       /*
-> -        * FIXME: MGLRU doesn't fully respect can_reclaim_anon_pages() fo=
-r the
-> -        * scanning type, so only apply this to the traditional LRU for n=
-ow.
-> -        */
-> -       if (lru_gen_enabled())
-> -               return false;
-> -
->         if (memcg) {
->                 struct lruvec *lruvec =3D mem_cgroup_lruvec(memcg, pgdat)=
-;
->
-> @@ -2893,6 +2886,9 @@ static int get_swappiness(struct lruvec *lruvec, st=
-ruct scan_control *sc)
->         if (!sc->may_swap)
->                 return 0;
->
-> +       if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc))
-> +               return 0;
-> +
+Hi Jiaqi,
 
-Thanks, but we've already discussed this in [1][2].
+This generally looks reasonable in principle, but some comments.
 
-This approach is incorrect, as it leads to hot/cold inversion.
+Jiaqi Yan writes:
+>+			if (!mapping_mf_keep_ue_mapped(mapping)) {
+>+				ret = VM_FAULT_HWPOISON_LARGE |
+>+				      VM_FAULT_SET_HINDEX(hstate_index(h));
+>+				goto backout_unlocked;
+>+			}
 
-Xiang's approach [1][2] avoids this issue, but the code is somewhat
-confusing, as it effectively uses two swappiness values: one for
-eviction and the other for aging.
+This doesn't look right to me. For example, hugetlb_mfill_atomic_pte() also
+checks folio_test_hwpoison(), so UFFDIO_CONTINUE on such a folio still fails
+with -EIO. Also, do_migrate_range() calls unmap_poisoned_folio() on any
+mapped folio with HWPoison set, so offlining the memory block unmaps the
+hugepage after all.
 
-We've been working on a clearer solution in patchset [3].
+>+	folio_put(folio);
+>+
+>+	/* Refcount now should be zero and ready to dissolve folio. */
+>+	ret = dissolve_free_hugetlb_folio(folio);
+>+	if (ret)
+>+		pr_err("failed to dissolve hugetlb folio: %d\n", ret);
 
-[1] https://lore.kernel.org/linux-mm/20261010141057.599595-1-liuxiang.277@b=
-ytedance.com/
-[2] https://lore.kernel.org/linux-mm/179248830836.1744016.84242178112866169=
-19.noio-mglru-rfc-v2@bytedance.com/
-[3] https://lore.kernel.org/linux-mm/20261114200803.23129-17-baohua@kernel.=
-org/
+This isn't a good idea when somebody else still holds a reference, such as
+a long term pin from io_uring or iommufd (Jason was asking about the latter
+in [1]). dissolve_free_hugetlb_folio() returns -EBUSY, and when that last
+reference goes away later, free_huge_folio() puts the folio on the free list
+with HWPoison still set. Now, while this sketchy page may well never be
+handed out again, it is nevertheless counted in free_huge_pages, so a later
+mmap() can end up getting its reservation against it, and as a result, a
+SIGBUS when it faults. That seems like a real problem for a VMM with
+passthrough devices.
 
-Thanks,
-Barry
+I didn't check in detail, but since the folio has to be dissolved when its
+last reference goes, wherever that happens, perhaps one way to fix this
+would be to do it from free_huge_folio() instead, and treat a HWPoison folio
+there much like a surplus one? That would cover the pinned case, and I think
+it would also let you drop filemap_offline_hwpoison_folio() and the
+folio_batch changes in remove_inode_hugepages() entirely.
+
+>+		if (hugetlb_should_keep_hwpoison_mapped(folio, mapping))
+>+			/* A new raw HWPoison page in a still mapped hugepage. */
+>+			ret = MF_HUGETLB_IN_USED;
+
+This also looks a little wrong, because a 2nd error now gets past here and
+reaches the hwpoison_filter() check in try_memory_failure_hugetlb(), which
+calls folio_clear_hugetlb_hwpoison() when the page is filtered. That clears
+HWPoison for the whole folio, earlier errors included. I'd suggest instead
+that it only undoes what this call added.
+
+Thanks!
+
+Chris
+
+[1] https://lore.kernel.org/r/20250120172626.GO5556@nvidia.com
 
