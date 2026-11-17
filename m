@@ -1,97 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C901606A32F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F125F606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xzdrztU1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bcgaae2p
 Received: by kanga.kvack.org (Postfix)
-	id 532B86B05C0; Tue, 17 Nov 2026 05:06:26 -0500 (EST)
+	id 09F7A6B05C2; Tue, 17 Nov 2026 05:06:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50A376B05C1; Tue, 17 Nov 2026 05:06:26 -0500 (EST)
+	id 076426B05C3; Tue, 17 Nov 2026 05:06:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 420186B05C2; Tue, 17 Nov 2026 05:06:26 -0500 (EST)
+	id ECEC96B05C4; Tue, 17 Nov 2026 05:06:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 138346B05C0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:06:26 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 759FD1603A5
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:06:25 +0000 (UTC)
-X-FDA: 85444181130.05.CCE61E7
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf31.hostedemail.com (Postfix) with ESMTP id A63A720009
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:06:23 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xzdrztU1;
-	spf=pass (imf31.hostedemail.com: domain of danjwade95@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=danjwade95@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794909983;
-	b=VsonqTR88Jkmfoi76DrB4zHEP8xqt9f7uB5u6CO/HoTn/w2vsy1JaIttFOQnoFdBV0oYoX
-	z1N0Bxuwx28Y6ams4ETyDD7UqsFTCL7C22hvYUdPi96n+8miZvNmwNaD6Cq4rPhPMcR144
-	bs2AvgZdZ5/WdfV5xCUottsKZo3X8gU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xzdrztU1;
-	spf=pass (imf31.hostedemail.com: domain of danjwade95@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=danjwade95@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id C6DBF6B05C2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:06:45 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A3831C3AB8
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:06:45 +0000 (UTC)
+X-FDA: 85444181970.13.8390C00
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9304440003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:06:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=bcgaae2p;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of danjwade95@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=danjwade95@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794909983;
+	s=arc-20220608; t=1794910003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rI4LasV5b++IgM0KeqrCTlvPABydB8GrsEj8qvf7nig=;
-	b=wiZBoPdMwXdEA3mCygKb7PBH+GStewMhO93sFrw2KrzyeNN89Tl0kGTdMrU/1IEJusOe0J
-	Ge1uPkQ2d2ODKnXM+oQ1IWTyHifx4Iq8C/U180dQUG+G26KvtLUzdj42cj4JLI1h6zKsg/
-	SZP++9dmi0fhnnL5nEn2koYqN9dzs4o=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8a06cc097c7so3721156b3a.0
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:06:23 -0800 (PST)
+	 in-reply-to:references:dkim-signature;
+	bh=3ahOovwjDlDqMNZ2Yyn08XyrzZ+sm+Yb+nsv1sSKI48=;
+	b=VQql1VzzkYxg+gdXYxIJgUuRhrezNNnfo80fgfti0BifCMdH+yNtw9La4ZgpoqbylkbHbE
+	Kkf7oi6xB/EEWivxBOJw8lg1wyV3EgqG/ZuDWyrae2Ap1nbJ01VtZ7baFBnqYTQO1NMYXP
+	YaY7x70GD3gGNbVlibAZIf3e8FkmioY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=bcgaae2p;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of danjwade95@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=danjwade95@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794910003;
+	b=2PIctXNM95QJVxeZjAHQOq0FEuNkpj1rQCsh76Q/s0ArR907p3+kMOpkV5ah9FLsRD86KO
+	hfUMO/gxLIvylrtq/I+NMLJEbXPK3EOt4pExwib1eE3xUMa/0rqAR9lT1ORhxFbrQocrjD
+	eyRo6gLQrgV+XIRKbBfLVzNquhFqIC0=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8b2382bf051so2508659b3a.3
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:06:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794909982; x=1795514782; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rI4LasV5b++IgM0KeqrCTlvPABydB8GrsEj8qvf7nig=;
-        b=xzdrztU1LtjVFhCPdmuw9+W277MYKWzDR38c/H+KGIMTBqXPNwcTX+xFsRqqN478rh
-         f1AbQdyNHv/Zb+nanrv0vrFNPLv05W7ELmujM517xA40Xhe88PVeYv4CEZ3PCm6vrJ75
-         +GivlplFSvviYgf0zsZGsRqWySEGWacecGKEESQ0axYbIjmnYi5k41OFTRZ+wS8uPkr7
-         IYtdQ6lRDqHonzE5V/VDVLIYo8OmQSsJMzhy0qcj/RSjXdL6rehIEVFKyQAt8oYD86+/
-         cTzNkL6jKy5zK7fb88YVBG5Q4Wd8wuJ9ZomKqkwlTcYpykTJdsP0GtT/cNz9GBcMR36r
-         igNw==
+        d=gmail.com; s=20260707; t=1794910002; x=1795514802; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3ahOovwjDlDqMNZ2Yyn08XyrzZ+sm+Yb+nsv1sSKI48=;
+        b=bcgaae2prCUIFzeppM5tNuqEOPrrRfEXHAiE3uSqw0RWoaONpNFT8AzX23yiGQ6Iz1
+         CNOFGeyJ0OBjpM438h2+5E+QDn1Ge2eqvTYwuuFD4gwo0Fa2XcXwPwM25uHGJX9z+tq6
+         zvuGD3HdavucUOMrpaI7t4qbyxEtEPNv+bm1eRQml1H1716gqoXMIXX6bvz7iKuByPDh
+         FY4pRXW9immu39MJ1fuUGUr8d1DzWOPdUxvV86yASv0Fl++i64Ghyf9v2pGUNO+RDH+a
+         sR+cqDUT7bnvQwCpPQ/NSAj9W0XzCUPnu5nbReDJSXfXuHSar7Gtd+iA0JeJlo6ex/SV
+         OfLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794909982; x=1795514782;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rI4LasV5b++IgM0KeqrCTlvPABydB8GrsEj8qvf7nig=;
-        b=ZMfvnDuwc/SLPyFeUQS48tIsO/wEQPdlcuZQg8Po2wd4uEn0jIVhkMRY9NHQJBsiTa
-         CQcJSOXQIN1CnKbmSGX6Kqy5xwT9sD3ROY5XRTiN6kXG0+wUf2Jh4/OlhmvgaL37aTrf
-         LVVdA78MtVhjQlud9F5i5NCn4ezGRrhpnxw0THEPO1vCWhsfEttNE9Lpc5sPjGlxtQUD
-         Ib4fTA6n7r6bduQdjle3v2Bel0uxNvpICsFc9bJzR5dlX3ZUiXCk8TqWeDerrndKtopy
-         iWLx7URbJBUU59lofHs+s+tgulwFl4xq7Jh7pom7hNqMbEYhEgRKWyovruc/rvrN1yys
-         Z4ZA==
-X-Forwarded-Encrypted: i=1; AL+hErFo5yrCgIv2eKjEJrStwip/sfyzhU38ZYR+1SO3bxXhBRZFFqwBDF9jJ9yry6jVTcjRCje9DdTJwA==@kvack.org
-X-Gm-Message-State: APuU4Z8W6+DRLdl6JAH8k9Fqmi0c68WjAiSItF8euJqI6BuzmusR3DVe
-	gqnJw9Qrooafn4SKgrcMDj94ZdyaNpb3jwOWYXQ2uRlTi8VsddNnYjOw
-X-Gm-Gg: AYBFou3qWG0N8KpCPyvxIaZ1NQ1bculX5iTWyn5TKuiYZxX6AoV8DCzrcfvI821G8zA
-	P8NipqVEiA+DWWsRmNISVNCENT9R7DrtyL5g6GkUiUGnylb0pPNBm2BCWPtywRxYbujabmzF2zt
-	BFbqY6aMf0JpFYvNAvmQxlI4aXQea/Ac5T1lyvRsGQff6qqOej34NSzHW2Jtd7OapSaR+QJoqCC
-	HRajA+a4FuEpKtXQRM4SI71rAk1FLRyaRm7CPbHB4vuMW6lmjddm1u43r7k6MlRk77sK/nGJCsn
-	D9NIz0uKKBTIjbOyFHRVDFaUTwhVFuHyPHpEac7kevjMbAdO4nzad07niUZpjaHY4bhD80jjY9t
-	2Ulv0mpx8t4+V3e5ECPN6SE7jsE8d9eRh61UcOe7Qc8Jhcoov5TlZ6aiprJsY1L/7S/a/RuMizc
-	jevm3tSy3dWJJApholl3HUrZey7mYbFJ7qfx1Lz+tZRbMTDLr9JajZy+yi4ff6oseheBszeDQCa
-	2OX0BxXW55kBjpscQ9MP4ez2IKmcpYkqqosEfe3YyNfUxJdPEmMT/5gINfEjPlYLUdcdoN6sxC6
-	8kEwJRHuOTPTkJkoMH6BXn1mnBhsEhF9QmAnQWfYVOL7chBgVFMsWpx5C8FviMCo/m4WVoiWXom
-	EhO79Xp5CXwIVDu8Jk2uyitMMg+dJBp6KUOEIUxlKmjM387RuqvesWDH7YIwSj9DqXkZnNIQGsP
-	lfSHr9pdZ0JSJWh127SUHoFjxWcCGVrJgjbi/BDahKj+PK3lAl7fFHjzJrCwiuNV7JKHtQ7VFQy
-	W3HBu/I0LgTHiumCKMH+aF/1jM8zlVn0mxiwhOEhgo28Ai5IpAwwFMGhRDA3p8H
-X-Received: by 2002:aa7:9ec2:0:b0:8bf:e028:7864 with SMTP id d2e1a72fcca58-8bfe02879c7mr6741005b3a.0.1794909982190;
-        Tue, 17 Nov 2026 02:06:22 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794910002; x=1795514802;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3ahOovwjDlDqMNZ2Yyn08XyrzZ+sm+Yb+nsv1sSKI48=;
+        b=EjiSnCFisKJWyLS6RIg3OzpVE/zJoxkFZVZtTvg6aJGM7nhs5G3g53giTY2L0BKPmv
+         R7Nh4JU8rYse+938VRNtrdFdl8m5P1iHvthgU+n5Ay56/PXJAPekx0lFQeHMYjkYkihm
+         FKHeTL6Nz9trg3m/G4wwcBpdN8D9od4vfg1rNdLVX7bCBxjE2c+CagLQtjAq0C82RrUH
+         RcPcxqZiyZkZbZX/PB5QdXtof/Ng/n3XXxD2trBuu7SposbBiVKAzPomrPyiwnVAmYrs
+         Adu+BZ6X8BGr4yO9G+QEZ0DDbepELJ/jwefF3NuOT8UpERUqfEIKNLsaZ5UJksJ8BC0C
+         vlfg==
+X-Forwarded-Encrypted: i=1; AL+hErEDaBDId4rIVpJLC3cJDP+NxAhNxCyf24Jv8t7pFPjy4hpg1kylptIh730qOWVbZlsFkBRU4V+ucg==@kvack.org
+X-Gm-Message-State: APuU4Z8qN5JEV5vyyGLu7+VixV+PRcOqE2eHl1k8K5bD9UYIYFErHIru
+	8Mltx62Nf5342zUGDmFe+DcJHSkATI5MIiTwq5hrmODMVyOxVGtgBQlL
+X-Gm-Gg: AYBFou2H0TKIRd9+ZKyXPhzP9ONoTBrW2K9l3J5bBk9TbLX4bC1VxsxI7lgXIc4LMO4
+	PY7c3X4OIBK6jEKbcwJnWdcLs5I8WNPOwwVI8j4aufxRQtFGR+BsI1/oZ3iIwvAFJ7ag+80E2rG
+	yJp4GMdqGGEwZYr2UrBSker4hdVIJavqbPf8rRaScpBOPj+FVBw9ftm6OpwqBYpLNpvGTtM0xbr
+	9ZRNx4X8iWNa0IlwOnss7H1Yxjx69bBI9BlSpLHhxOZE7E58IQVZ9AzitncnP0GHqRxZXyb8meC
+	3jJwEP/IGl934ngYAzukR1ur1knN+lFA4rqqqE62tJYLcgg1FinwYXq8Yeddgg5hW+Oga49fPee
+	Q+MCp4XV2Pj9cAXYoKmie5BS7Y+lod7/lt+Z6sIZ2VZ7DYhpuoD6FU0FoV1phW6UOnF7PBfDZJI
+	rR4dGE9+pQ00tG2CQuL72MFEtxC1Z8RlHWK0yK13nqln1wPbM7Vu2pth8x0NVXa8jtmSYNDWo8F
+	zRh7eUX6NQpcwnooYZlrwZ5CAiOnou6prJJ6PK7887TQEzibkjhcdg44KLTb7YbXlbrey4OvpuM
+	SmKZ2k/AaS3Qsdjtkbtl+wq+wKWRuAYhXSprHzTRP3D50UwRc9gntn3heCanhjdgLhoMyZxbhG2
+	HvYeLphsxwawT1r3x6f4RtiM7UxHN4ExuOb0musIVG6wmjI9jw14vhtOsyiVfXngOv/Y0WQB5hz
+	NNY8aeMeuL9gZVkt51F6mW4OZWAYwmfNuc0575C7JUZX5ylTbly+4GeIc/QeBXG38KJfjonNTs8
+	zZT6cShXsZJtr2rvUcp/Y6mpsKe3Y4VeVCsHQlH1bKXtB1Bf8+wLDSpWNn1juaZ
+X-Received: by 2002:a05:6a00:13aa:b0:897:d037:f3ef with SMTP id d2e1a72fcca58-8beb7d1cd51mr11380228b3a.30.1794910002249;
+        Tue, 17 Nov 2026 02:06:42 -0800 (PST)
 Received: from localhost.localdomain (123-243-92-89.static.tpgi.com.au. [123.243.92.89])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bed263b354sm4752612b3a.47.2026.11.17.02.06.17
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bed1d6207fsm5213337b3a.32.2026.11.17.02.06.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 02:06:21 -0800 (PST)
+        Tue, 17 Nov 2026 02:06:41 -0800 (PST)
 From: Daniel Wade <danjwade95@gmail.com>
 To: David Hildenbrand <david@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -104,28 +103,26 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	stable@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/memory: mark unshare copies dirty to fix MADV_FREE data loss
-Date: Tue, 17 Nov 2026 20:36:02 +1030
-Message-Id: <20261117100602.797-1-danjwade95@gmail.com>
+Subject: [PATCH v2] mm/memory: mark unshare copies dirty to fix MADV_FREE data loss
+Date: Tue, 17 Nov 2026 20:36:22 +1030
+Message-Id: <20261117100622.807-1-danjwade95@gmail.com>
 X-Mailer: git-send-email 2.39.0.windows.2
-In-Reply-To: <c7c8ba0f-49ff-4b22-bd24-20fc394b1e36@kernel.org>
-References: <c7c8ba0f-49ff-4b22-bd24-20fc394b1e36@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3f813kgh1fa8yoab39gb1a1y8yqwt56q
-X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
-	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A63A720009
-X-HE-Tag: 1794909983-248761
-X-HE-Meta: U2FsdGVkX1/HlS6LqGQqVFrcyZYCv6Sw7HQqXvKhad2vYDGC/jH/mrFDMB4IpmM3fvXURh9z97IowpX3NWKcw5p7veDu3WKwypH1IwYmrKYMFltdMuMFWjxeQ9Yp0djeJt+IAdAe9dQWDv9t4/C+40/e3+RmGVB7EmU5kdJVVC4mdlPIf91Zz0kLnXqkETfXAbjBqCwNy1MoG853RDVEVPh0OfUbta5nR9kgcI+IvPqnisQU2VuHGk1X5iSPwhQgltI7EpItWAP2qAolu3tcW95agjaDpuye5U9s6z46EmLw8YNbVhFaSLiRePZcHG42lXfN/z9YN0fbRnl1yy0ox3o4n9yZxAkZZlaysMiDc/M6lYf8SEyN79t7mLde28yWk9EWC9vfA9jH+dbRHUI9DWNinFawe4lMRBvFb4fuBChLCjB30S1jjYFoSLCsxfFr4QvNB2DEZaspubhl8gIHNu7UHNHu3wxedKSwbrYXTW7ChQ2oPigxXtUB87whh1xh136RzJC4kNpxrYVU+hPhbCvGDL4pGfCIbf9YZtdqHHVIMhPXkrWmStGa6M3kdXBOOfIAJZ/fC9mT55vmM4fZ7Cxb9rSqxGXCSn2Aen8865f24dyg+tmsy5w2gbDF8Im1//VDLsp2L4IX5g70YqQYnlvoiTiZjUYycOPLK9jBSJ8g7o55wVwdSDAMzhewqsWge09peDB7O3YyjYlEGgVPbnD/Pu2jBjMvY7xTmeUkiVFkO6ogFrD+xSQuT3fdmVxLTFcO8oq/Bg169f8vtSY3wLJuoxk9TojMJz+7pdBw8jZgDFMSXoM5Jn4AUYeQgPaG+8Uj8GR+4cSTdqibh4xpOd4BDoXAN56CXfndfKHXf5QMLB+t1REtH4qpmAqRKcb7f+w+7PdOjbr+CXLCvpta5GuQVp7Q3l31tYNQcDMsQq0MXyTBDdRsHHhpWXLvBEfy+PMnH4IZaqjoiLYc5E8
- gFr2LZzw
- O/HD9+f3sAwh9l33ePS0mt5rHZUEha6ucDxpy8mkDaV3g1X77kQpfYqX+6wnK8hTe2uFmNe2CorYrr543IQK6KY91vFzsgZSaq9vV6gT8iB0FaFcQkTkCQKw5GpDugM2B6tAon3lnjJ+9hc/rcyDE2sCz7pq+3bCENeWV1ssYBKoqNW0SiB/8phc1KWtIftSWLQkXkhFVF3Xzvqym2A9H9uJ/XH1+pXDXFjLB81puY6yIVfHM7gtZbRnmivHMLYCwVVzVe3AtQ6TcfQ8wbQNInyJHGieVJa0O+HolYn4bDqmDokOUMJSuKMlhXhvD4wjnzRHYkQrzpVy003k6XaHgygHzy115Pu1FWe9wF6LHqQbeWf+KeMMgafNIXAH2asL7LydXS0wEqjdXxIMpkpSBCU6HACCuXHjcLJjn1vhdKIXSCHA3DDJ+WfTt0exZ7Xeb7wiTwC/jnlKNaXc=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9304440003
+X-Stat-Signature: amnwy4ydms39kj8oe94n3dipasi6yz5x
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794910003-318805
+X-HE-Meta: U2FsdGVkX1+BwvKZujdyrcP8a1ZM8YqGPyrF0ZNMclg1r30aSR7cX821n2MFJwYZ0WUf+WFIXqWN7z6L4I0QOsWYeFRumOIfkiUfT9vWFsK9+WoyEnNpioZ9QJcUoZM5Jkv82ZdIrZuyme68ejrZ+zlCis+0pZgqWyWEjocEfNLnmP3viPnjMTrWFhHSwRWPV/I/6ynvVKGW2paoYhHp8SsamsX3whtvxnalU90zJ8P+/o5rDoZwnyJlxcmhP6p33CrpPFtCaYAQ5ojekQDK73/kevRxTDjLIWGMVK08RJ1mUbVs5ls4EnnsC6+AxwnYEdnq8gTceX2phSAgabSxbkm/cgugJThV4hQXDamA8H6+Hr1QKSpr3sxTV07nN/PNCIKINWF941brMfSrVf7ckut0lVeX/PWAg9sOz1P/T8skpPA/5rJEvFeL9HF8955Jetd5VOtzkpLQsk4C0tzGXFIXqdjmb4mSdplAXb53RjwDz/dJyfRilK6d4YeQjzTBkWL4p4QJIpl7rmAOr6aFL+sGdIuZYyi6kvbtzvy2+fAKpopcTskrj7pytzxCmeIbqlUInBDxNnBXUeGwahUGuIuZyIt0MLHmMJzPN0EEIz5Da0+jdI1alFDATYdyLmAPhSuDlq/7qG5C1MPuSdqIkUbYjiOZ3ez88iAyJc4hN19YYR+HoZWv+3iYTP4N3LTGTNdhtAK3EOPNwqw/h5+2IV/TfKYJSrHzHqWLdM+2iMqXTRTH6DMVsq1kFfjCoPORLWdqJdC+yW7owMNWPJZGPRYz3W9YIduABYJY1ExjPxeAwqAmkG5+VBQQmw07iWhw3HIVmRPcYAmHvIlbDtW1knIqdUbimZF+mpVHyU3H1koa8/NbknGBYl1gKBdQWujBM/HTnII/AVivUFvcnqtm1STs3cjnc2f/SKR1VcgURRs+oKGtozKnw4VMzIYhz+LG9eUDWmyAFcvHX9iJwS/
+ avzy+slt
+ MsZl1WMMK+S5Rp7tZGVWYzSyawNMNZx3GEYevf7OtRNjBVIEMfgyLoRu5BX/XCgesdjZ0VHp2PIfx+3KlcY59QOb28iHwNOx0+wWPGKbRNMBKpex/IdHplkbEKu5Cr5yApOs0XgpoieWJsodMQVmcb62n0/8BGfNn2ToT2l9WV2yhNJb3/QiXT1++9rxATGuVeHdO5w2+RjWv/QkvfLZ9TLIMzRAsWfrGynFy2qiSlawBpo/h/+E/6Zg9d2xdRbPELRvAkmA7JOl2fEuU+R7rOSB10EUtHlCqdGqVjPTxu1nkutW6PZKzLgjom12QFlXZBPv/RuxwR0g9EkQPTOzhuvyNAtTQW4B04EMZATj3RKR0q1YvkY++i4rnWpvwLsmG73pQeq3QNqgzrJpV9qGsvvW2lk63WtrVoqTbMEYgfWLSlx0kuRBE1qMKeYB4bcVbUyLzcKVVFugFh1dl9AfHp26eUUv50pxPE16n3+UewTuo2PU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,27 +131,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 17 Nov 2026 09:55:24 +0100
-"David Hildenbrand (Arm)" <david@kernel.org> wrote:
+wp_page_copy() only calls pte_mkdirty() for write faults, so the copy it
+makes for FAULT_FLAG_UNSHARE comes out clean. Nothing marks the folio
+dirty either and there is no swap entry.
 
-> We should always prefer setting the pte dirty, not the folio, as the latter
-> needs atomics.
+Unshare faults come from R/O GUP pins, like process_vm_readv() on a page
+shared with a child. If the process forks after the pin is gone,
+MADV_FREE in one of them marks the folio lazyfree and reclaim frees it.
+The other process then reads zeroes.
 
-Will do a v2 with your version, thanks.
+Mark the copy's PTE dirty. pte_mkdirty() also sets soft-dirty on x86, so
+take soft-dirty from the old PTE in both directions.
 
-> numa_maps does not show any such data. Did you mean smaps_rollup ?
+Side effect: smaps and numa_maps count an unshare copy as Private_Dirty
+or Shared_Dirty rather than _Clean.
 
-It does, gather_stats() ors the pte bit with folio_test_dirty(). So I
-kept it.
+Fixes: c89357e27f20 ("mm: support GUP-triggered unsharing of anonymous pages")
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniel Wade <danjwade95@gmail.com>
+---
+v2: set the PTE dirty instead of the folio, as David suggested. No atomic,
+and the dirty bit then also survives in the other mappings.
+v1: https://lore.kernel.org/all/20261116111245.28871-1-danjwade95@gmail.com/
 
-> A more future proof solution would be to only allow MADV_FREE if we are the
-> exclusive folio owner, checked under folio lock.
+Tested on mainline b3dfbde62cf1, x86-64 with KASAN and PROVE_LOCKING, as
+uid 65534. The test gives an unshare copy to a child, has the parent
+MADV_FREE it and a control page it alone maps, then waits for reclaim.
+Without the patch all 4096 bytes come back wrong in the child; with it the
+child's page is intact and the control page is still discarded. Same on
+v6.12.117.
 
-Makes sense to me, it kills the whole class instead of one producer at a
-time.
+ mm/memory.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-One thing though, that takes the folio lock on every folio. Right now a
-clean exclusive one doesn't take it at all. If the lock is busy you skip
-the folio, so jemalloc freeing a big range would leave some of it
-behind.
+diff --git a/mm/memory.c b/mm/memory.c
+index ec3d9d99ccee..113b305854d5 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4130,8 +4130,11 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+ 		entry = folio_mk_pte(new_folio, vma->vm_page_prot);
+ 		entry = pte_sw_mkyoung(entry);
+ 		if (unlikely(unshare)) {
++			entry = pte_mkdirty(entry);
+ 			if (pte_soft_dirty(vmf->orig_pte))
+ 				entry = pte_mksoft_dirty(entry);
++			else
++				entry = pte_clear_soft_dirty(entry);
+ 			if (pte_uffd(vmf->orig_pte)) {
+ 				entry = pte_mkuffd(entry);
+ 				if (userfaultfd_rwp(vma))
 
