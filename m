@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFDD606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78DF6606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=rYq6QArb
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OpuGfhe6
 Received: by kanga.kvack.org (Postfix)
-	id BA3BD6B05C6; Tue, 17 Nov 2026 02:07:15 -0500 (EST)
+	id 959506B05C8; Tue, 17 Nov 2026 02:07:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7B156B05C7; Tue, 17 Nov 2026 02:07:15 -0500 (EST)
+	id 90A896B05CA; Tue, 17 Nov 2026 02:07:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A91146B05C8; Tue, 17 Nov 2026 02:07:15 -0500 (EST)
+	id 81D986B05C8; Tue, 17 Nov 2026 02:07:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 729066B05C6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:07:15 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C57DE40343
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:14 +0000 (UTC)
-X-FDA: 85443729588.15.5C434CD
+	by kanga.kvack.org (Postfix) with ESMTP id 5148D6B05C8
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:07:19 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B61101A036A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:18 +0000 (UTC)
+X-FDA: 85443729756.07.D249D58
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 29D3B18000B
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rYq6QArb;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 15BF3120005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OpuGfhe6;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794899233;
-	b=SzGgoxTyfIsDYSM7xh8qrSeI7cgy9CFuc8wr/x+icsnSEyXQhxXZLU2KYD37C7kSkm3r8C
-	UCPSxvudUusBFwrCAYyDzFNLZHdiY2iJnF5O12TdBNzvkf6a7M1KzQgKHVWWrMTOBkbQtI
-	VTud0MUY3HVGixC39pEfsR6D8KRpIaQ=
+	t=1794899237;
+	b=PrJ3t7gZILgq4jC7KpXygRzyRcqRRPIl5Pb0smxS0PguuJWKp8I02Hm/yIV1hplpZb7Gt0
+	hOoBNJcCjOdOZYcBShT5kuSuJBCe7dUct3LbE/8l6/y4QesWNal5htWU2Jnhq5jwVIvFhw
+	kqpUHLls1OhXkCylRAq2kiaa1pQHpkk=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OpuGfhe6;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794899233;
+	s=arc-20220608; t=1794899237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mTjrX8BPMgEQvF/l76KpwD+d59uY8XaGkIgLG0DayPI=;
-	b=UxtO+NxpZ0QI2tOpL0YUx+GiPRzbbrQTndTwzYWnhzcUXYYrhsG96sNVuvFBJf3bTHsA21
-	lNb4jo8EfktbjqLLGpbWM3B0BI+zWX1V9oT1ZxkW3sGkyeV2BxxVOpcW/iKvShLp3VYHyK
-	rVgRj6DYMHZdYVbFBokZS0y6xZiczGQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rYq6QArb;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=037BP7LSN4gD0zQjrB6FwBIbxukPEEKzDg+C42Jifdw=;
+	b=Bac/aCIxaeN77ZeN/Tcq43m9CCnQa+7sJxlAuo4GyW9BqMviwfoKlSQce2BpMpR11x73/L
+	XlnowHEWyRVq3jvSfqfGSRH6rSTWeIzfFnxpMFSGSD7uVv3YooVuRtPCwBxvY5SpuJ27Su
+	Mj9uTDDSlbu1FtcBcfuvrZasTxhnuRo=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C1D21476;
-	Mon, 16 Nov 2026 23:07:09 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CF431688;
+	Mon, 16 Nov 2026 23:07:13 -0800 (PST)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A32693F763;
-	Mon, 16 Nov 2026 23:07:11 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 72E9E3F763;
+	Mon, 16 Nov 2026 23:07:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794899232; bh=rJVnBpFL56QP0tzbwghdHJEf9E+Td6sJ8tYNwYNyfgc=;
+	t=1794899236; bh=ubPPA2iriBEKz9Li34H1P6Gjby7HXyDV/7vIdwZFjPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYq6QArbfWSLm8uS4OkY1zm8Ij6CSl/yN+vvIKSfIqJ+H9evA70BjDxNkdbkDldEp
-	 eXRqqVIRMJQMqFwLfnwstjodMH4kyKA1Ac5jzWKcjLNGqKROOSWRcuOro4tf7HXTU2
-	 HA2E7d0rj1VNO/iTkODSsEKMM85G5R99qliEUCJI=
+	b=OpuGfhe6W9DIBiXUJhTBR04nun2AmUPAaokxv/1jyVMXPblNPmYtiBM179AACGujk
+	 ol3M2Fi/dsuNQqbHzFc4TU6C26fgzcv6r2SySrTx9kjrj02VP3QKNRpKe4++jPsBA7
+	 7tjkGgaefzBrzBWuJmNQ+srM3RKLPzoJCegI45ag=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	catalin.marinas@arm.com,
@@ -70,28 +70,28 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH V3 13/14] arm64/mm: Make ARM64_D128 selectable
-Date: Tue, 17 Nov 2026 12:36:12 +0530
-Message-ID: <20261117070613.1183243-14-anshuman.khandual@arm.com>
+Subject: [PATCH V3 14/14] arm64/configs: Add d128.config
+Date: Tue, 17 Nov 2026 12:36:13 +0530
+Message-ID: <20261117070613.1183243-15-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261117070613.1183243-1-anshuman.khandual@arm.com>
 References: <20261117070613.1183243-1-anshuman.khandual@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 29D3B18000B
-X-Rspam-User:
-X-Stat-Signature: 9ah1abgk3tt6mndqtzxesincyc3kngps
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 15BF3120005
+X-Stat-Signature: 67fb7k6j3bz91irii7r5mrco6qkde7u8
+X-Rspamd-Server: rspam05
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794899232-454267
-X-HE-Meta: U2FsdGVkX18dkyh80aUcltUcvUqbdfp/NOlGjEFyHK2xgdfVHznRrTRsx/j3SAdUtS708aTH/6cCmdK/VH1FxQCc9WG6Wl/71uf2rEvBiihwcb5cBH2SfU5dEj1GBAuNglyet9DYYnQF2+WpVFaajD7EIWonEBSrT3pw20Za/XYKs57qK67q4zHjNJNbd8qYOS1Cf5gdD6Bk1Ry8KSNxn4itG/4PsghDMf06DQDOXmfJVPBE3lV3RqcBx39yFu4P9dE2j3BEV5ahcu4wZoJbVHYZJw7fsB+/J4thF3N42cJh8HN2yU+C27VEHn4VS1OPhWcSGBAt46QiRSOU8Zo0daTJ30S+E6Xw1T/56hT94oJdTAiV82Hj/ycBb8xorXb+rmbByDG+70kuoXw0V+8t6ntIhL1vnVOqlWRAa7OYRiKNcSPH7qG4m4RFYjxGQarIMlFd4Ysj1qEuoytcgI1ansdj3tu9ngKb5fbzxqKaeFjumoEKu/B4t21FYzjMdTmD+A9GcZGT1bLMVyTVyCCEn1p81JkbPyhF7Nl/T/PEwTWjxO27HZZpDFnaKzwIu648xJuanbTz/qIe3phzoQw9heIZk0NVGRbo7s5IKgDvdk2QANFPHlR58LeOhwEnJHz2zinCV1C9i3IxzkRIK0U1aHIJXkmthcJoxa+1/lwZfPzEM71Sa3XhAV+0G+mBZqjePiqa3thPzN8dGIki3xVZ3QT9N0+kriKk+hl7ExXu6SzSphXKHSAik03CYZ50/HUa2xMMH9Uu8PuuuSy3HbE3KPoXSnmZag44zhl+acBxTQgO0QhuaOWpZuwDdGYncF7TwUfDPjn1nB42q0OTNCh7S5h1tvjYAwzhlmEPBkzNlCp8cq3w9Yc7JmUH43Tvx3ZfbQy3tsWK4wizvTJC0Fbnk8/vgR2xPJ6otQNMB/NpnEQysBpP0sj1C6/zbWD07FB3hNxL1bD8KnRxlLEktxi
- HSXFq3jv
- ioexkq2CB89Z7ZB5jGJdGEoI/J6nxemVy6IGzq2a2d4m+gaC9umnzfznr6FjF6q89vH/PBbA0k3yn0zRz5Fg3he8w6dZakTLrFHU+bAgbSHBlN6lZ5YuOoBJ98e+iA9q7s8ZiNTHMF5/B2y4zSahJ8JZ/nKJPsaJPEmun3DhQbxH3+d7TADV9D/FCyeE/0lQx57UxuMZ+L12fBt55YhvTbcyL0MhvQzlHlQepOdnBWx0SoL4Z7/F1QQSFngbWqrGaalcBN338FPMcZXjoTVg/g8hxQq8jBdc/1oiEK9SMhoLbTshTsjXcaEfj0KisC0s8rp3ev335Fz5I9UV2wl9YbJI8QzyVDiadaLjZvoCnDFqIk1M2JDDIpUKTVPXa8Kz2nFnZHrX0X2sA+maPaWDFPjx8huYQi8lzenKeUH3+AeMOtcuXRBkRyQYjnh2zXi6MNMw45jP9YebU0LeC8Db2r/joaS5RYjEa+SrnHojzhaeDofRp7HtfeuhuO+7eUZT1ingbwN9nwa6WFgZcaN7ip6jIVA==
+X-HE-Tag: 1794899236-212226
+X-HE-Meta: U2FsdGVkX1/0usKLjwSJVMCh22LzPxWaLlhMQPWdZ6Dl9PbhssdUUkffiWa+AqklZmjkMEdvwRUJDlOxojNyRakaFETSLfBSW8mMKnhm8MnGgtesEWYK13K/uPpW+1X/26LDgOLtaVdcqBahnkktSAgDe3Sg6nTKyqRfqXbZW3fMbluy1kdisVRX1FgypBfK6OvDdsvhaoj19vYMFig6dWhEKzi9jgW2FfAj90lRYc6x2ZuCzleHu4xav790RMRdpxWKEIY+DtvWwVq+3jm9ZecO4J2ZCUvxq9B/NONQYhx2LQBf8UFzn3r73D6B/RbEgsOhBqycWKQVkz4dtvTBwTEsHN1eeiHx6cl98xP3fzbWt1AAXJQUg9QBLlUM5gHBOzGq9xKTAOcmAdN841EZMTlzcYEWibN6jfo2BJbYFhJiWXyJlKL14I6RkxJ6eRPkjF/f5hsG2kBcCBkqst1AVgNzKxnLGvTReQCMK54APCPYx4ECK2kHUjXw4xlZIDUtnxiu223HHy5lwx7J+mSsN7F2Uvgg81GnyI8CG/X/F55xhNxqYbJXhGIbW7Wc+KTGEvuUc1SIB4+tdLNpOeo6ze8DnDEajsS/yNdy1jHOTNJGza6+Uz3n6Ik+6Tm218ajczFANOjow+wpsp3O8WOTT9zOTjyEIHQrM6ePgC7hUnLbalJ3gdQKMFQTsUbT30VUNnb97UQW1JcvdkG9X979LP7s2nqA1lluiW17bryjsmm8dvldQoODDAOsyua03FJSJQmnBrI3gpnUEI2CFr6Tzoi5VIrArJjJ66Q4jI8oqyzVUjVhCFDsy6Q/xtiYrPWmZK1HLMElavQF9Obz0pLeTxn1S4qn4sig+EBvP86G8sSGqsskdXcSfnWnk+N3Ykc1ujgINsqjoedKiIt/HSpwR2KCKVoP3EBfOrE+ACBpxZGc6pkp5tt5ZQpCDGBaP3wI9VGKDIgkPnCS4WvfAkf
+ /OP8CeFs
+ Fk1ekuABcqm1szbC8JGggXWuUNjt7ajdNoaLWHCFxp/ZfQEi9SS+LoHxjAXIx5RZr7DswyZ+0UgF9Jm/txWuN8sze0LwKZl42o39nJBQJyP35ni7Ms797WtmdR06nZjb4zAEvXWvzuia0bHwiZz0CfP/p/xZyc1AuvB9MKP/6SjLXvQmy0D6aHaVhArcS9X6pVAWYW5AUj4jJWvRzvioy7jEwe/9hifkWzazu+umZeHlY4YTbUQGGlZDd+6il2kCO9rPtSAIgJy/tNmRxOA8Bg+7/v42up7ioTHCmMr6/7i7SFfioQus4Uc61CKYiX7rukh+aWrdero5c8bjRpgLl4WSmY3Ow0FjSn8vRFgckj0+laTJsomKYta/cuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,56 +100,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-All required changes are already in place including the TLBIP instruction
-support for enabling D128 translation. Just make this new ARM64_D128 user
-selectable, after ensuring necessary tools chain support required for the
-new instructions being used for D128.
+Provide a slimline configuration intended to be booted with ARM64_D128.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/Kconfig | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/arm64/configs/d128.config | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 arch/arm64/configs/d128.config
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index e54cff118f8a8..83faac63e5612 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -272,6 +272,10 @@ config GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
- 	def_bool CC_IS_GCC
- 	depends on $(cc-option,-fpatchable-function-entry=2)
- 
-+config CC_SUPPORTS_LSE128
-+	def_bool CC_IS_GCC
-+	depends on $(cc-option, -march=armv8.1-a+lse128)
+diff --git a/arch/arm64/configs/d128.config b/arch/arm64/configs/d128.config
+new file mode 100644
+index 0000000000000..e0a2d7bd8f204
+--- /dev/null
++++ b/arch/arm64/configs/d128.config
+@@ -0,0 +1,6 @@
++# ARM64_D128-specific configuration
 +
- config 64BIT
- 	def_bool y
- 
-@@ -2385,8 +2389,17 @@ endmenu # "ARMv8.9 architectural features"
- 
- menu "ARMv9.3 architectural features"
- 
-+config AS_HAS_ARMV9_3
-+	def_bool $(cc-option,-Wa$(comma)-march=armv9.3-a)
-+
- config ARM64_D128
--	bool
-+	bool "Enable support for 128 bit page table (FEAT_D128)"
-+	depends on ARCH_SUPPORTS_INT128
-+	depends on CC_SUPPORTS_LSE128
-+	depends on AS_HAS_ARMV9_3
-+	depends on EXPERT
-+	depends on !VIRTUALIZATION
-+	depends on !UNMAP_KERNEL_AT_EL0
- 	default n
- 	help
- 	  ARMv9.3 introduces FEAT_D128, which provides a 128 bit page
++# CONFIG_UNMAP_KERNEL_AT_EL0 is not set
++# CONFIG_VIRTUALIZATION is not set
++CONFIG_EXPERT=y
++CONFIG_ARM64_D128=y
 -- 
 2.43.0
 
