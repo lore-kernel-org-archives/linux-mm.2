@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECA8606D807
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA3060A2634
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 16:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=dAHGJJBy
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=LlQ6HgCA
 Received: by kanga.kvack.org (Postfix)
-	id 101E86B00EF; Tue, 17 Nov 2026 11:17:25 -0500 (EST)
+	id 20E626B05B6; Tue, 17 Nov 2026 11:17:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B20A6B05BA; Tue, 17 Nov 2026 11:17:24 -0500 (EST)
+	id 14DCA6B05BB; Tue, 17 Nov 2026 11:17:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D83F86B00EF; Tue, 17 Nov 2026 11:17:24 -0500 (EST)
+	id E94FB6B05B8; Tue, 17 Nov 2026 11:17:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A81D26B05B4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BDD1A6B05B8
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 11:17:24 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3585580523
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 486C0404D5
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:17:24 +0000 (UTC)
-X-FDA: 85445116008.22.8CDF028
+X-FDA: 85445116008.05.2136C49
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5CFA114000F
+	by imf09.hostedemail.com (Postfix) with ESMTP id B2989140009
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:17:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=dAHGJJBy;
-	spf=pass (imf26.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794932242;
-	b=rDu5ly0cNqMh2EkhSOWSo79ocHvBYMOXctUdx6O6wDestfAm/NR1MRXuDt2MIQXDvtsiOQ
-	0EEYZm2PSJhDixt8OKcDUhblJOtB/MOX5vP8dx+IY5lg3/W+hF+c+FRUg9nEovTz1gVQST
-	Is+t5J+6GOsPTDrLGr7TAvfgPNyPZLM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=dAHGJJBy;
-	spf=pass (imf26.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=LlQ6HgCA;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf09.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794932242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J5ObJtDP34I/BMfHer6YxrOqpSiQsGpA7S8X4Rx45Ro=;
-	b=56hXtrQEpQhB+t+nRy2zTBmPA0dSiydfRzxNI/i/aBmSRFMoodrGSkP/fJLyve21Fab5HB
-	aeGhgNCcSqKScHbIWKMQH1Oohh21i9n50cxYZAkmvEaXl7RrAtRa/VLzsneYiYz/A4t53u
-	/bG1S8gCoUYoLACd5KBcEP15co2QdRU=
+	bh=CbT445wpUVOQuseHxKqXDJcQzACyRBO0wZvsiVSVyj4=;
+	b=emankgqDuyHw27kt2HKidVSv/cL1Lzv1FIkHOmyyvaIozx4/lponTVTlQwvCGCEaC4dk0K
+	3aPLdTbA8526dQOXw7GlgvJ6kc9Jce+14P0DavgrXZE6WKiQoom50zGAWX0mrth3mFMYIZ
+	iuBk6DnJY3A1atwe+eC1y7zA4jQrRyo=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=LlQ6HgCA;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf09.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794932242;
+	b=pROj8wf3JgFnoQO6wJ/UBUSUNKImDICokzcOXAkfhSBRNF51eSpIEN1Zo6Hustc3R6OI5V
+	Ukq5bdz0FogCrhtIVXVOXZyDpVHFNDLbTX7xJ4fO/wajvRalpj4Wt7+ta48eqrO4csLyvr
+	iiAzb41QEyi7XVj01FY2BpaOPPQYJ/U=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
 	s=smtpout1; t=1794932241;
-	bh=J5ObJtDP34I/BMfHer6YxrOqpSiQsGpA7S8X4Rx45Ro=;
+	bh=CbT445wpUVOQuseHxKqXDJcQzACyRBO0wZvsiVSVyj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAHGJJByTy4EHpW5ej+bdYloHhOBu2GBE4ssFO3r+UHxSeQ4MY4O7+YwycJk/tEps
-	 OrX88u+pLS4veb+ki3/QKoXO4/bR2rsV6lppLyZ/xB281s2DfSuTv1e+2BMWh7X2Mi
-	 61QAnCNi9mENrqE42GFxcjILKfrEUy3NfLv0ftdbqmnYsn3htVIaIIaOqH6PHOXFxh
-	 DpzsXi3FN1R0vgqDDw7s68uwUNlqZq51AJceX6vUmHy4LP9w6nYBPTT1mevY58eCKS
-	 3V1i53pVcZ14nG6DI+4ziIomLJT6dRAG8PjWo6b4RE+JVTSyewWk4XU+0Rk9ELWVJ1
-	 3pG4Z3U5neg8Q==
+	b=LlQ6HgCAK6mDmXs48rJgePPsA4NTN42mq46a2a6S9K7N5+GeGljnBH4ekWusIuvFf
+	 tElsGuHI7TXi6LQ3A+m3NEFihfKS2HiZuI5PIS+tbP0om86ajW2QSlKWH/rFWaYj1A
+	 dvDa0uxxZpraqHiUJKc9GJ4uw999OTBtJo3qcskN6n5PXIRwwMepb2NPHKFiPP9q2G
+	 j8N+1xdk9GuAfC4S55xy60GfaTU6FGAYRieMJPN//2a3ryOM3/w/OPE0d3VsT1BRoT
+	 XOQAKD9C5tsVgciZ8ejhelPXvTlxu6xfPAEFOwMrsMHFHcDn6rHuTBM/ltCmAQCZbV
+	 uRMLYARiPJqtg==
 Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jTVHj3vvxzRWZ;
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jTVHj6MbDzRKX;
 	Tue, 17 Nov 2026 11:17:21 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: tglx@kernel.org,
@@ -87,27 +87,27 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 01/17] sched/mmcid: Give a CID to a task that joins its mm while running
-Date: Tue, 17 Nov 2026 11:17:01 -0500
-Message-Id: <87f01a2eacf8aeea751d8f48b3aab752d825a4bf.1794932121.git.mathieu.desnoyers@efficios.com>
+Subject: [PATCH 03/17] sched/mmcid: Reset stale state when the first user joins an mm
+Date: Tue, 17 Nov 2026 11:17:03 -0500
+Message-Id: <b03714bdaf30f1b552d46caf22f4e1e77ca9e6ff.1794932121.git.mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1794932121.git.mathieu.desnoyers@efficios.com>
 References: <cover.1794932121.git.mathieu.desnoyers@efficios.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5CFA114000F
+X-Rspamd-Queue-Id: B2989140009
+X-Stat-Signature: ceqja7qwntt3hbhxykmq3mmof55u9x89
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 9d4xabst4buhdb3fn8s1srhmuw1rmgju
 X-Rspam-User: 
-X-HE-Tag: 1794932242-207611
-X-HE-Meta: U2FsdGVkX1+r4G2xmClOslLwQ8TH/UGCqeRFGLZoaG/FffSlZjnu5hpnnfnH2haRoeU0ZvtPr8U7r65+L+zeXQG+/mXYOT0Y2N5NhdcorrEgVvlg4JG6VqfoqfxW0ps2iSZkXfvhVdniF96X4O2NrBhe5KVXfqRHOIkMaD1LpKSJLbY7AWWi0DQ+8lBRFHQgndg7S/6ml4lsEFFSSrvqvcFV+cW7zWunmkiU1A7I4zG423z34nZvmA6QBXolII48slqfhrVXE9BxmDTYXY4vdEGZBo+s6a5X/HUW3vw9IlCem160LG3XTFviiYLjA9P1bp2hrgaRdBQDasD19LxGa4KjsuY1RZTynIJQ5HZEOmkfzE1+iE5Z64xSDBU3ZmtDyBuYYUzpbOCzOGw1EM4MV74mTLq6Xgk0dUxDbftOpKeFNbvfdBK/Xa7yvRDzzj9jq7NdKa1O4WLWzHmZnIZcRXGeKsS1FhUK24McdCGZrSNceyUV/ZIpEjLuT1FQxm4zfpILxLCnTFw/3gR76TavFFwkkoiryp46bkbl2qY0U2Azl7FdxYECvl3uLXZjjhlJn0A3PordYJcj9Skv06qHicafWOgy6M0PB3wOVYBM2r0gelvj9q7pxZgpikYmNJrWy6cflv25lui/hvBnq+QNv6pQzMfKi1POBpwyRaeaWhvUk/47KN/yPqqzfRPsiQa84eZbr9SxpgrGIiEFJckCzOSvXvn9e/q4OyUT0foiSz1udvPnS4tPGf8J2HA35g1ikf5W7AU1uZA1uDgGPT0VNBlE9NUbkR3eGWNhhe9HMSp9/ns3KLEalzIXMhWrUukHBgNonkTFUMDg63wvW5se0FFwGY1o1SrUlJnrnggdvbGwFeRmNdjM1xN1wEFa08N2VbUkuGjctl7i5mdNRneV46VLGlPKgtHHsrgw2Yp81aM03WeJBQzG2W5TBDcHindIQZ5qUw/q8VKUn5d/cir
- bQCFFPWN
- z+Q39nFwli8Pg1WaoIpNcza+42qZoaSvHWE1XL3c3mnYCOtU8nOLT5xm27UlmHHNfnBzVXWeg8nzSRREEjIQeX6KYFbYM1Lozga5xmyK31YYT/xyzJrjCS4LzHNF4FA/6KwaSxUfAjjZreCeVPMmYk+E/2OEFr8y4deK6fMB/RMnrITTX+zTONAAimmDS4qWIlOHjCABIkmmUAaCEhgWo7Q2M67jlhM0hPaMImvzBXCoVEDJtYuh/P9ao/AG+aRZqwSP/4t3K/PDzVqZ3NOHdO9lDaIJlD9itr5covrd0d3E97vL1UjazT5ekHp0/38UvFoCv8bnHA0CIIfkDBx7wG1pSBlT/yJabNE/x
+X-HE-Tag: 1794932242-374324
+X-HE-Meta: U2FsdGVkX1/BwRrir6mSCAW9Ph2ELuA1LU9NCYK9bxoOOv2SGlOXi4WFyiZ/WVQLuxiHlkmmo2xVFQhPAIDUGXn9qiA8i32v0p82c72mdz0Y2naoyr8L6wDRmkPwZomyCnotb2iqYs7ISdFp5/X31F6Ap8qsp9RdJwONKH8MmTME8yZrMDjjobOKKxbPxm4HEPHc2Gn7p7fgsBOOdVaG5xrUMyMKtswysQNiu0Ws18opTVpv7wU23LFKTkBr05YoF+QAVzsxBPYyzlQ2UzBotHvo8RIQ7MTgrutXesVRJ3ikMqzossO5RX2BgleovSVhY8Wwj7sOiE/m934mQnh3+980/pdOZfsK+v2H9xEt9K5yVZ+gRSSY56wOepX7zCEMnapEw0WNh/0mPMiHATpWw10ZkCzdcKYUEsLAGz/4wemF5zO9BDNatbJ3oi2n9hzB62rg03TAzZ2DvozmMSJUFu0QMEP+OYnj/+HbMnK4+93Urna1G7ZO6yfS4rJ/4evmHOsyFqT9jZhU1AlpCLJx5fu0FNSIZvK8MCPdlrO269obt0fREEkE2VijamqUxibR5PQDoEimJXnY2QEqhUCZ0o/+HBqztzNCN8WL1ojrE5SXopjkX/WAPCVtkuS4ZniKwHxROA36mUL4aCq4RWbseEqRqgo0dV9bb0E4bnUw3rYWfuXO2zl94yFZJeBcXaDWmoiwCCH4FaSv2DSSlQ6jd3cT+UYQZQuu4ide0pMBC3NXmYczttq/XC22YYsv0HV9l7nM5sSLKNagL02PRkI+kmOOXrDx67HlE90W3bZjF0pwD3zpi5JZKlNBB56UKfd8f1kQY3PCPBe/2Lif9SYQlhDaxAZcQIb8YJpgRZwsvE7IMaE/uMmr1I5f4Ao9aEPA8ka6b3FlNYwBttJuX5MCd2VL5JqWGSm5Ot0kqN3h6+rZioh0if4UBOgXse/oLBxvWTWtLbvgzQzUrEOPv4N
+ sN9fS5B3
+ nbShaccs5wPOR6Lo+lnZJQQkv3Z+gl3/Fj4+RqMErK72fPTeOFDUDRHZLxNiX48an8Nt3DFFh3MKbHOlYQUeR4Yk7gwaNb33WXqGp5hy38EFtgVfUToHqxJ4x0Azmhapygc7dOI6k4dpx3heQ8GzLUkwpM/5swd1JWM+SGQ6iSvxE31MkfMAFGx9Lni7ydHyLrnlfZOKW5zNHy8n7Ldv7aj7XC+AopcOXnpg7yb2dLlWv6HXefCH6ksZu3H/L2jQMzjw3hNQf2hywrpuozvfsicdgkwLlg33S2QLtEdcDJkffIZWrZE4cgwRRQpZpsZ3Allq1s7u35Vg+swU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,128 +116,147 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-sched_mm_cid_fork() makes a task a user of the CIDs of its mm. In per
-CPU mode the new user gets no CID there. It takes the CID of its CPU
-when it is scheduled in.
+sched_mm_cid_exit() ignores the mode change when the last user of an mm
+leaves. Its comment says there is nothing to do. That holds for an exit:
+the mm goes away. It holds for a successful execve() too, which joins a
+new mm.
 
-This relies on the new user not running yet. That holds for a fork()
-child. A successful execve() joins a new mm as its first user, and the
-first user gets a CID directly.
+A failed execve() is missed. It leaves the mm in
+sched_mm_cid_before_execve() and rejoins the same mm in
+sched_mm_cid_after_execve(). If the last user left in per CPU mode,
+MM_CID_TRANSIT stays set and the other CPUs still own their CIDs.
 
-A failed execve() is missed. bprm_execve() leaves the mm in
-sched_mm_cid_before_execve(). Its error path rejoins the same mm in
-sched_mm_cid_after_execve(). If the execve() fails before
-begin_new_exec() kills the other threads, they are still users of the
-mm. The mm can then be in per CPU mode. The task is running, so it
-returns to user space with no schedule in. Its CID is still
-MM_CID_UNSET, and rseq_force_update() makes the kernel write it to the
-rseq area. User space reads an mm_cid of 0x80000000 until its next
-context switch. A program that indexes per-CID data with it would read
-out of bounds.
+In the diagram below, the machine has two CPUs. T is the main thread
+of a process. The four threads it creates only wait. H is another
+process. It stays on CPU 1.
 
-An execve() of a file that no binfmt handler recognises fails in that
-window. In testing, with 20 threads on a machine with 8 CPUs:
+  CPU 0                                     CPU 1
 
-  mm_cid 2147483648 (0x80000000) after a failed execve, round 0
+  T: creates four threads
+     the mm switches to per CPU mode
+                                            T: runs on CPU 1
+                                               CPU 1 owns a CID
+  T: runs on CPU 0 again
+     CPU 0 owns a CID
+  T: joins the four threads
+     T is the only user left
+  T: execve()
+     sched_mm_cid_before_execve()
+       T leaves as the last user
+       drops the CID of CPU 0
+       MM_CID_TRANSIT is set
+       CPU 1 still owns its CID
+                                            H: sched_setaffinity(T, CPU 1)
+                                            T: migrates to CPU 1
+                                               execve() fails
+                                               sched_mm_cid_after_execve()
+                                                 sched_mm_cid_fork(T)
+                                                   T is the first user
+                                                   mm_get_cid() succeeds
+                                                   writes that CID to the
+                                                   storage of CPU 1
+                                                   the CID CPU 1 owned keeps
+                                                   its bit, with no owner
 
-Fix this by giving a running joiner its CID in sched_mm_cid_fork(). It
-takes the CID a schedule in would give it, under the runqueue lock.
+The mm has one CID fewer from then on. Once every remaining CID is
+taken, mm_get_cid() loops forever with interrupts disabled. On a guest
+with two CPUs, the next pthread_create() of T does not return:
 
-The switch back to per task mode has the same problem. Since
-commit 7dbc307b6c72 ("sched/mmcid: Fix affinity-triggered switch back to
-per-task mode"), a join can do the switch that an affinity change
-queued. For a running joiner:
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  RIP: 0010:sched_mm_cid_fork+0x1dd/0x660
+   copy_process+0x2339/0x2ca0
+   kernel_clone+0xc3/0x3c0
+   __do_sys_clone3+0xe2/0x130
 
- 1. sched_mm_cid_fork() runs mm_cid_fixup_cpus_to_tasks().
- 2. The joiner is preempted. It takes a CID at its schedule in.
- 3. sched_mm_cid_fork() allocates a CID for the new user. That
-    overwrites the CID of step 2.
+Per CPU mode lasts down to one user when mm_cid_calc_pcpu_thrs() returns
+1. It does with two or three possible CPUs. It also does on any machine
+when the mm is allowed a single CPU. The lockup was reproduced in the
+first case only.
 
-The bit of the first CID stays set in the bitmap, with no owner. In
-testing, three threads on two CPUs then read an mm_cid of 3 or more.
-Leave that allocation to a joiner that is not running. A running joiner
-takes its CID as above if it has none.
+Fix this in sched_mm_cid_fork(), when the first user joins an mm whose
+mode is not 0. Clear the mode, the CID of every CPU and the CID bitmap,
+and take the allowed CPUs of the task. A new mm has mode 0, so this
+does nothing for it.
+
+sched_mm_cid_exit() stays as it is. The last user of an mm that goes
+away runs no fixup.
+
+Also check the user count again under the lock in
+mm_update_cpus_allowed(). An affinity change can race with the last
+user leaving. It would change the allowed CPUs of an mm with no user.
+
+With this patch, in the same test, T keeps CID 0 after the failed
+execve() and its next pthread_create() returns.
+
+[ mathieu: wrote the changelog from the thread; the code is Thomas's
+  draft, placed on the current sched_mm_cid_fork() ]
 
 Fixes: 653fda7ae73d ("sched/mmcid: Switch over to the new mechanism")
+Originally-by: Thomas Gleixner <tglx@kernel.org>
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/87mrs8bhp4.ffs@fw13/
 ---
- kernel/sched/core.c | 43 +++++++++++++++++++++++++++++++++++--------
- 1 file changed, 35 insertions(+), 8 deletions(-)
+ kernel/sched/core.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 1a088d4576f5..f2a981d418eb 100644
+index 7e213e88ac28..ab68e8605eed 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -10986,10 +10986,19 @@ static bool sched_mm_cid_add_user(struct task_struct *t, struct mm_struct *mm)
+@@ -10847,6 +10847,10 @@ static inline void mm_update_cpus_allowed(struct mm_struct *mm, const struct cpu
+ 	 */
+ 	mc = &mm->mm_cid;
+ 	guard(raw_spinlock)(&mc->lock);
++	/* Might have raced with exit() */
++	if (!mm->mm_cid.users)
++		return;
++
+ 	mm_allowed = mm_cpus_allowed(mm);
+ 	weight = cpumask_weighted_or(mm_allowed, mm_allowed, affmsk);
+ 	if (weight == mc->nr_cpus_allowed)
+@@ -10986,6 +10990,33 @@ static bool sched_mm_cid_add_user(struct task_struct *t, struct mm_struct *mm)
  	return mm_update_max_cids(mm);
  }
  
 +/*
-+ * Make @t a user of the CIDs of its mm. Called on fork(2) and on
-+ * execve(2). A failed execve(2) rejoins the mm it left.
-+ *
-+ * In per CPU mode a new user gets no CID here. It takes the CID of its
-+ * CPU when it is scheduled in. A task that joins while it is running
-+ * returns to user space before that, so it takes its CID here. This is
-+ * the case of a failed execve(2) when the mm has other users.
++ * sched_mm_cid_exit() does not handle the mode switch for the last user
++ * because for normal exit() that's a pointless exercise. But if the
++ * process which issued execve() was multithreaded and the last exiting
++ * thread switched back from per CPU mode then this leaves stale state
++ * around. The indicator for that is mm_cid::mode having MM_CID_TRANSIT
++ * set.
 + */
- static void sched_mm_cid_fork(struct task_struct *t)
- {
- 	struct mm_struct *mm = t->mm;
--	bool percpu;
-+	bool percpu = false, flip = false;
- 
- 	if (!mm)
- 		return;
-@@ -11012,10 +11021,14 @@ static void sched_mm_cid_fork(struct task_struct *t)
- 		if (!sched_mm_cid_add_user(t, mm)) {
- 			if (!cid_on_cpu(mm->mm_cid.mode))
- 				t->mm_cid.cid = mm_get_cid(mm);
--			return;
-+			break;
- 		}
- 
--		/* Handle the mode change and transfer current's CID */
-+		/*
-+		 * Handle the mode change and transfer current's CID. A
-+		 * running joiner has no CID yet. It takes one below.
-+		 */
-+		flip = true;
- 		percpu = cid_on_cpu(mm->mm_cid.mode);
- 		if (!percpu)
- 			mm_cid_transit_to_task(current, pcp);
-@@ -11023,11 +11036,25 @@ static void sched_mm_cid_fork(struct task_struct *t)
- 			mm_cid_transit_to_cpu(current, pcp);
- 	}
- 
--	if (percpu) {
--		mm_cid_fixup_tasks_to_cpus();
--	} else {
--		mm_cid_fixup_cpus_to_tasks(mm);
--		t->mm_cid.cid = mm_get_cid(mm);
-+	if (flip) {
-+		if (percpu) {
-+			mm_cid_fixup_tasks_to_cpus();
-+		} else {
-+			mm_cid_fixup_cpus_to_tasks(mm);
-+			/*
-+			 * A running joiner may have taken a CID at a
-+			 * schedule in. If not, it takes one below.
-+			 */
-+			if (t != current)
-+				t->mm_cid.cid = mm_get_cid(mm);
-+		}
-+	}
++static void sched_mm_cid_cleanup_execve(struct task_struct *t, struct mm_struct *mm)
++{
++	if (likely(!mm->mm_cid.mode))
++		return;
 +
-+	/* A running joiner with no CID takes one now, see above. */
-+	if (t == current) {
-+		guard(task_rq_lock)(t);
-+		if (t->mm_cid.cid == MM_CID_UNSET)
-+			mm_cid_schedin(t);
- 	}
- }
++	WARN_ON_ONCE(mm->mm_cid.mode & MM_CID_ONCPU);
++	mm->mm_cid.mode = 0;
++
++	unsigned int cpu;
++
++	for_each_possible_cpu(cpu)
++		per_cpu(mm->mm_cid.pcpu->cid, cpu) = 0;
++
++	bitmap_zero(mm_cidmask(mm), num_possible_cpus());
++
++	mm->mm_cid.nr_cpus_allowed = t->nr_cpus_allowed;
++	cpumask_copy(mm_cpus_allowed(mm), &t->cpus_mask);
++}
++
+ /*
+  * Make @t a user of the CIDs of its mm. Called on fork(2) and on
+  * execve(2). A failed execve(2) rejoins the mm it left.
+@@ -11015,6 +11046,7 @@ static void sched_mm_cid_fork(struct task_struct *t)
  
+ 		/* First user ? */
+ 		if (!mm->mm_cid.users) {
++			sched_mm_cid_cleanup_execve(t, mm);
+ 			sched_mm_cid_add_user(t, mm);
+ 			t->mm_cid.cid = mm_get_cid(mm);
+ 			/* Required for execve() */
 -- 
 2.47.3
 
