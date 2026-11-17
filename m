@@ -1,89 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821D0606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E041A606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HKFqPnH3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ehp/U92I
 Received: by kanga.kvack.org (Postfix)
-	id A60D86B00EF; Mon, 16 Nov 2026 20:50:38 -0500 (EST)
+	id E5A546B05B0; Mon, 16 Nov 2026 20:51:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A11E36B05B0; Mon, 16 Nov 2026 20:50:38 -0500 (EST)
+	id E0A206B05B1; Mon, 16 Nov 2026 20:51:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 900656B05B1; Mon, 16 Nov 2026 20:50:38 -0500 (EST)
+	id D474B6B05B2; Mon, 16 Nov 2026 20:51:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7148A6B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:50:38 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E4FC21C34A4
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:50:37 +0000 (UTC)
-X-FDA: 85442931714.02.1D60677
-Received: from mta0.migadu.com (out-101.mta0.migadu.com [91.218.175.101])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CFBF31C0002
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:50:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HKFqPnH3;
-	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.101 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B70DF6B05B0
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:51:11 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 32ACA1202E7
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:51:11 +0000 (UTC)
+X-FDA: 85442933142.29.58715F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8CC5180008
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:51:09 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ehp/U92I";
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794880269;
+	b=Iv+UY86vu16f8DCaxf+Sdf2b7Od2KAyHeT+hXQnQyCilTvW1Fc9BLaNwlTkX1GcwvfICwL
+	lTWj9i7ZzDHJlMBhGr0buRDxkFpiPMCsFtjhnIiAQWpuz6cjREC5E0z+VHg4LKhp7MVO82
+	2BIl4/xOjckiBsY1vPT79zFVJqWsO5g=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ehp/U92I";
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794880236;
+	s=arc-20220608; t=1794880269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lmqG4T85wzH+EvkxPYNS8DJ2icFTQEKM/mrAvrY7aA8=;
-	b=J19ZsCEP7RTAeFBqieqQ7vw5e+vJBGAu0i2r+oMvkXsfAAbe+v7CRU/GtUIk4ww6b10dSV
-	F4ho21jpYgv5l62zDyvRuuA3PAv3mb4cCKaECWVQ59D2VAI1m1+Y4ofpe+LJ8aJGkTVYsL
-	6ezHEk5A6BUiziEpg4JVFEVJ1wLj730=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794880236;
-	b=S+2SaE307M9ctEwDDtk/mnAgvR2vWYGRw1do2cf5llHI9vh6c7cfna6H1WhESebbGthkyR
-	4pCMk7HirBArs+Tm3ZFhyB4I0YfPYixFvfdCrwI1KhaRh+e8sZPdsupMZLLvC3+jUzzjyC
-	cmDX0y0FqewhC9ocFKJDfRntvd59Ono=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HKFqPnH3;
-	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.101 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/IMAEuYJ6PcwjzqBNjJhlIuqxkqlOoUlO6uHl/vn3GI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794880234; v=1; x=1795485034;
- b=HKFqPnH3Qt/0v320IBWwEgPKA9soAOJhsAVhoLMQmtkvk17FUTPtOkR5lYEBLNN7p2H2SpCE
- 9YsRqrzSULHZNuwLQv/zXcTMurvkULB4p17VsuZzF0b+uw3XnMIGeZ6V90N5BkwPXeM0OTQB2kG
- HHrNozmojexSFDW7sjJ0XLYo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 472675b50f597a85;
-	Tue, 17 Nov 2026 01:50:31 +0000
-X-Mizu-Trace-ID: 472675b50f597a85
-X-Migadu-Flow: FLOW_OUT
-From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-To: David Hildenbrand <david@kernel.org>
-Cc: chengming.zhou@linux.dev,
-	ljs@kernel.org,
-	linux-kernel@vger.kernel.org,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=D0FCTYt6jHaJZUw3wHtDw4KARhIPdPMYdYHwx6jns/Q=;
+	b=PBg3y3bP/Jrvg3lAXpXH4E25dRfLPD4aMjrIYP1FYoto+S8NRdZ0qbl4QPF1CGu79X0XOl
+	YHjX5mCjYIQR2KTkj64KjeyizrDRt8FIIYT74XXKfhj2JGipQ9JB6d4uHzVi4Dqc9rN11/
+	lRP5KVpOUkg2blW0wkeTrOBMOw4vCb0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DA6A361B38;
+	Tue, 17 Nov 2026 01:51:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3152C1F000C4;
+	Tue, 17 Nov 2026 01:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794880268;
+	bh=D0FCTYt6jHaJZUw3wHtDw4KARhIPdPMYdYHwx6jns/Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ehp/U92IgWIGbUkFgQBTffkVW93m6TfXkzFBrR8uKsxPMf0wpo/qi0973gaZodsvt
+	 RTjhKgW7YBwN4ILV18KhUJg4z/j/dQohydRe9pmHGdQR+FA83G2h3cN4p2cXIzclv+
+	 0Lca7mxdzWahhH67f8VF5ldDBQHYQjtfWsRK3sl3s/7VGVrRrNUf1HjFxTwag3M6L8
+	 d/rCgd3p7phD77v1y9Fz0TCVVqLasxgHpmyAKgODJph6U/vdSgiTN26MQ6VS6+E+IT
+	 2Kjm11Qp2lNwz3+Ib1g3HhpMHeGFrvMhfBeguFx00d8UCai9/sWrGIEubLBMyoMnob
+	 ANpQRkM1kgmrQ==
+From: SJ Park <sj@kernel.org>
+To: =?UTF-8?q?Oscar=20Alejandro=20S=C3=A1nchez=20Lucero?= <aleszlucero@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
-	xu.xin@linux.dev
-Subject: [PATCH v4 0/2] mm/ksm: clean up scan_get_next_rmap_item() initialization
-Date: Tue, 17 Nov 2026 09:50:09 +0800
-Message-Id: <20261117015009.611551-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/pagewalk: document missing struct members
+Date: Mon, 16 Nov 2026 17:50:59 -0800
+Message-ID: <20261117015101.109312-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261112-pagewalk-doc-v1-1-6cc5ce7148da@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 59me9ja3n6qz9y8jtbrmhgen3bsxqexe
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CFBF31C0002
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794880235-45282
-X-HE-Meta: U2FsdGVkX1+ddWvlgQ8GyRYAG8WOkr2l6jzXxo9AnauY7SVay0EeFZ/nL8g975sdIMlb7tQ0QE7aMSmYyGTPu0GnfgwOpxehY9L0QSMA1kKIv6Wqmzg1Lvn9UMISEOswsePKMVtJKHMEuyS6fqUtTm7bT5qbdTdxrQEWrqEmGzYRMsO9A9THk7BbrcQ27AXe4CtMVZOZrBX1WRDvbeqjLooCodTdVgmwOGETtuaQIq7+7/w2buWe8VF4ygBWyPDeTSItSmO6yxHmFwpwOSkPt8yiSXbCJCdsnttS6lj2y7kQWs2rDglkiFj/iTlzYUYu2vCxee+j2yrzJ+GRFaWhANuxiIh2FpXv/n4ri8O+zpnMl3BRrFT9fu1RsA44W3owEL+90g1rQXODSM2BuGQh2kwGcnJrsudS+Vc8tRkMNGeY3HfZg5m4IE0BNhEm4H2klN3lEazBYk7DjtkgHw25DlEUBRe2XIqQvaCWqU+DKZhvdomuW3AeR8R1+bCQHzdlMKjQ3u/u7z6AOzyBXf9f7yOuEEvWR6CoKPWYWtiw0DZvSTP5eHtZZWAsmu6iQuAna/5zNgvmBQgMGTXYjgZsGVRWLEBMZkcqLiAVm2ggRGFp0O5bYgpGXQQOXEsTlgRz33euPryPauj3t8ZhnRcG4z8c/57B9wfvOtLsZFUe0NATNL6dyU4J7sSxwE7wVapjybuVabzgtAbTBIqjP4KrdkmcPihcILTtS+m1L0Q7Ll/BV1aSpAozx7le75JIT84p1I8h5vWWuD9wLWn3G3u9ihpijlITcGc9GXMwpdeYoB73Pj2LgCwXMknXWfdqARLA70AlOfTsLp6VpJMG9SNxYJZdqM2r4q9uemS1In7Sw5sBnV53Agor2fCGW77uFVXLDVwO+7Sp96rDsEKpTZHUNNIuldcTe7IprcdI7VA7BkgnHO49P6oIQo/OYYJif0ThFUMyDLhINF8poP1TfdD
- 8GtIWIEn
- fR+sVxqIYcXV71a74dZkqcT155mTIkUHdlEwas88hpntbGxfQc3KXryTZ8JozT/qW1QSe8lRwS22eYThgeV3D6WVPF8BWOH1rzpDDsZRAgiK4X/oANU53IslH55LmIW/eY3qAznUkUiKTHP/zPojiw4qg3ho6lGZoecrh7X0XlreqG8zlJbkNvl4amqtCbcn+FcyM0TE0wDE0JVeHMwfQMliMFeBssYaafccGARWopP5c2BHlLuQyE3rsQfG++79lHJd/SD9td3c07T8wyzH5oFkKWg==
+X-Rspamd-Queue-Id: 8CC5180008
+X-Stat-Signature: 16169i5uqcygsawh9197fnwy9djic5sr
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794880269-450315
+X-HE-Meta: U2FsdGVkX18p1VrTZEs4zAT6iFDzHxoxUJx4FJOolP9+ueEd1rZXQyO7VwLy/6J88g1sJSQZ+GY/cLyD794sVpTZUqTcnb48fW9lHX9Z/WsTjAbrlO9AwSdKxEWNv7nOdETcjMstE17lLkqN0gdQi/bgwLcpLqgy1izV081zEambdEGVTSmCvydvrGGXkcUf4W7B7UeQQvzXwvTSV6PovFZnbQHRliE8ubSigr+R2tvjw+pqw6KgoZzaekVlKwuEpXHgrs1dxHc3FGgvXefv/n7+io9po3O3GRh7pvqoyMPOshvHHDBI+gcxw8elF4OcgJ19dbHBNFPByxmBjYu5QxUVxCj9ivurEYVOQLuM9Uz0qXgecjWKEWAGOiDLIjSZuFZ6wa5cAX4OEcJZagu4QQ8hBSlr/wjbmMhUGC/wRgMgGoxbZ3hWIqm5RILsu2nycFknILmLDE6zz0JIZ2OgpePdEtlvfJZO6k6fVixixJspw7PpJmELU/Ms/dnW2x9BesU53iTULzjKujzcpma9s8EiAsSkCyWh/s0ILaPZ474d6uuKCkT7IDHIOtHhc6A1LlRrJ/7L68D0r91UA1VKtWGgi6ty6D7m3qucwTBEOxGyUFzxs6HGDWzWriTYqU2UT3IYgzNAUhXPXewrpoM7V+GYxoiELpX3f9fba3XfdQew2RQUEcrR3Ly0oChrVhbIT5R2W0Q/U/4smQKTeXwZPhyVsAae9hmaaFySHQ6HJjYFo7nDZlfddpwoiB2D8qRzsML7+GDLb+hWDVIgCUl4HAicvjFsLwNIUxvcWKs5JFfVKzTCD29R8UnEnGcs6UkJg3tlqDPBy1cXpjMXCEM6TlO09NR5pVCSgPtfB+IsJ5vJcHBhE+5CVOgvxluyBahKclS5QXVNcudB3i8S80faGE4SANlU9FdCDmwQDw8HkHmagZCCvYIL0yCmak0xYDSpz9UP9nZVgnV2Uq5mmR1
+ SSqMboe9
+ TxCnbVBBAXipMLuz4AgTZVKLcdM5awpZb+o+qRSAvv66Y0tWpLhGpohRcE5WnDaqNKH2RpoWhVQhU+aZHF2mQSy9I/ILAWxOOBLeIdZWKtk9XC2o/I89Zn8Ur1yFjHD3OTkKFhtSXJAlB9JCj1LUydFOBpyEq6oVKRXGFGBmZPzC+z7YDJJMMjBq9TxMLIUVnWgv0DV3KPO5yF65zSh9HmeFR1HrtiX7nGZnYbA7M2oNijnAlk5e95xN3OHkDKNidTsFI4CugTMcMXFvLe4JIdt+67sFV9M1bIynortQRMczXpzPKLPEJNNy834EqPcfRzkm8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,47 +104,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Currently, scan_get_next_rmap_item() has grown quite large and complex.
-When introducing new features, such as the only-merge-zero-page mode we
-are currently working on, we don't want to add more complexity to it
-and don't want to touch rmap_item structures to avoid unnecessary overhead,
-so we need to extract some common logic.
+On Thu, 12 Nov 2026 18:44:07 -0600 Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com> wrote:
 
-With these changes, the entry of scan_get_next_rmap_item() becomes much
-cleaner and easier to follow, instead of being cluttered with unrelated
-boilerplate such as stale stable_node pruning and cycle initialization.
+> Add missing kernel-doc entries for @walk_lock in struct mm_walk_ops, and
+> for @ptep, @pudp, @pmdp, and @vma in struct folio_walk. Also fix @pte,
+> @pud, and @pmd descriptions to state they hold entry values, not pointers.
 
-Let's start by cleaning up these two parts at the beginning (where I think
-abstraction is necessary), and we can continue cleaning up further if
-needed later.
+Looks good and correct to me.
 
-Changes in v4:
-- [PATCH 2/2] Drop redundant comment in scan_should_start_new_cycle() and
-  update the comment in scan_get_first_mm() to refer to
-  scan_get_next_rmap_item()'s list_empty() check (Lorenzo).
-- [PATCH 2/2] Add Reviewed-by tags.
+> 
+> Signed-off-by: Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
 
-Changes in v3:
-- [PATCH 2/2] Initialize mm_slot = ksm_scan.mm_slot in the else branch when
-              continuing the current scan cycle, fixing an uninitialized
-              variable warning/bug (kernel test robot).
-- [PATCH 2/2] Drop Lorenzo's Reviewed-by tag due to the v2 bug fix.
+Reviewed-by: SJ Park <sj@kernel.org>
 
-Changes in v2:
-- [PATCH 2/2] Rename scan_begin_new_cycle() to scan_should_start_new_cycle
-              and keep it simple (David).
-- [PATCH 2/2] Keep lru_add_drain_all() in scan_get_next_rmap_item (David).
-- [PATCH 2/2] Use scoped_guard(spinlock, &ksm_mmlist_lock) in
-              scan_get_first_mm() (Lorenzo).
 
-Xu Xin (vivo) (2):
-  mm/ksm: extract helper functions for scan cycle cleanup
-  mm/ksm: add initialization helpers for scan_get_next_rmap_item()
+Thanks,
+SJ
 
- mm/ksm.c | 101 +++++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 65 insertions(+), 36 deletions(-)
-
--- 
-2.34.1
-
+[...]
 
