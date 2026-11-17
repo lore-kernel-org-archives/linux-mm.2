@@ -1,119 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6031A606A329
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBEC606A332
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UygshCHv
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=JNxW4gAU
 Received: by kanga.kvack.org (Postfix)
-	id 593366B05B1; Tue, 17 Nov 2026 05:16:25 -0500 (EST)
+	id 91B306B05B5; Tue, 17 Nov 2026 05:19:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56AC96B05B7; Tue, 17 Nov 2026 05:16:25 -0500 (EST)
+	id 8CC566B05B8; Tue, 17 Nov 2026 05:19:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A8CD6B05BA; Tue, 17 Nov 2026 05:16:25 -0500 (EST)
+	id 7BBB86B05BA; Tue, 17 Nov 2026 05:19:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 259846B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:16:25 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98517140380
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:16:24 +0000 (UTC)
-X-FDA: 85444206288.08.DAAB424
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 070B7140004
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:16:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UygshCHv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5DF486B05B5
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:19:20 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED036A7E17
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:19:19 +0000 (UTC)
+X-FDA: 85444213638.17.0F18729
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 45946160002
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:19:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=JNxW4gAU;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794910758;
+	b=YL9ZcPwvxTuy78pZd+gBySy5cU1UOgEWiiLI6gKEHtO0OJmfzaBXYcRD8mIwV7K7CBIY9L
+	AelgsVx+EDHstlogYcs8Cgt6hVXPD6xnM8L9iUiWQSdUyLUC+KZQ9cQO7FIhqgH4D3/khz
+	Bi/vgJhDk/AmnIZhTOTnmw5kGKVzQ9g=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=JNxW4gAU;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794910583;
+	s=arc-20220608; t=1794910758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDYqn2zYmU/muKMWOwZRP/lmMgVBMmIpWntga6OkdHs=;
-	b=Cac8VrhrnMrmT5S+QbdIT7MoPd0KOkZPamZpR7vmFML2s7qzdMW+Hp7Cxs9beTbv0oGn9+
-	dd/w+lzy5qrnydSgrxiVtHO+vv2Uz2+ua9erC8J8Ht1DXdmePsZfwf+TG6hwCJL8vuM+8g
-	PKCpq1OCcBalkTuXXR7qS0asn1AlFVs=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UygshCHv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794910583;
-	b=d307jcYtbByG7MMjBnO6yte/Z0NUhIgemxpcNzFjgL0WO9s/GpnEP2LAEXbU3GSGA+wSZT
-	H9O++y8aGUM8eMmcjkoXoPKJBZN7NF6VFK42fAS0JeIdBQ324hQY5w12dDBQkn8ubK/wAR
-	uq6Lbr0GLyUep/gkaEN22LHtSuBuEZg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 831246299F;
-	Tue, 17 Nov 2026 10:16:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127881F000C5;
-	Tue, 17 Nov 2026 10:16:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794910582;
-	bh=xDYqn2zYmU/muKMWOwZRP/lmMgVBMmIpWntga6OkdHs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UygshCHvYb0JI//oaXBOMwL1fJNJ9pPVP3LkGVS6bdBeM3Ve4cREnUxtcv8LLAZ/x
-	 VcfcP1mmfCSfntA006QaldiGHIPKUNFKnXCV1y49BwMQo8/w7KmjuejXJutyY5EXWX
-	 6tUFM8+8yK8/9stnEWJd9NSxT4S5m35e2WQEik+YhBMiRu3WDYvS2g9v+PYDcVtJhu
-	 2C/srRWnTKNb/XrYpcWmevDcAdkhKHhhb9rETxv4dtlUJRHDLanZcejBB6YsQFZA9P
-	 wOQzsVP4YB0lsu7IQkIUUbb5PPSOpAyJCS2FZm2ZeYUOUegy9TWNZhnBfrBhqaFGkD
-	 vFVdMFSP7HmlA==
-Date: Tue, 17 Nov 2026 11:16:10 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mel Gorman <mgorman@suse.de>, Andy Whitcroft <apw@canonical.com>,
-	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
-	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>,
-	Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-	stable@kernel.org, Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH v2 04/15] mm/hugetlb: account temporary folios separately
-Message-ID: <avwpak13vu83aL9U@localhost.localdomain>
-References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
- <20261116-fixes_hugetlb-v2-4-4dd9e94ea9ac@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6tYUDeaUmXci4DtaZ3KGPX6vHUKyaaYpdht15nvdlEk=;
+	b=gksUjrsbrg6wyUZdpENsS0v869ootc735/nfPXUqAmR2Y4DtbwyHsASY37aiJfa2R3cqGK
+	DPz5COtsPzwaWjz+bmg8aI3Pn8M4Wty++3Xc5hh7XvV2jGCw/o+y0SEYUDmdtIEjMP0VJf
+	8AebL97JG/sA+PV1/cQpTvSKUQTYnw8=
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9495f083657so431962785a.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:19:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794910757; x=1795515557; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6tYUDeaUmXci4DtaZ3KGPX6vHUKyaaYpdht15nvdlEk=;
+        b=JNxW4gAUwsm5bO/KEm3SDVsaM51f8J38bcXzbSGijv3r7R9qyxTis9upkj7tIdSEwS
+         Z+mdmgEVCpZakAeXhTWoEZJxpz9e9l/r56mw14M4b7R/qqLb992FJcZ7ccbQARJvmT0e
+         8Mnj3Ra/LVd52A4saIUEhfDLkXf06KwQcewg2orKZGcANET4ArXQXBZYa71d0JDVSIOB
+         5QmALhiNdQHYhZFgwXfn3eGSVtM83EAQmEtvUrrcUZ+z6ZVHXeU1iqzFSmtWlyHSC/UT
+         xmXkSTZFHeSqRzuFD0VIixDTP4HefS+oxjMlVgddcsct8uYDI6HtEYp0JL0I15cGZlGM
+         oTTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794910757; x=1795515557;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6tYUDeaUmXci4DtaZ3KGPX6vHUKyaaYpdht15nvdlEk=;
+        b=pLCrDgkc1Cxi0EaBivvaqdU/BbKX3IoQBQ2c8X1MEbsnrOgSZKERB07LRsV7I/B0/L
+         sOb0BR+g7QAKnLbnSzQpEW4WK1c089sQR6o+jNyrl01yw8Nj/XjnJS0dX45BH7golkXs
+         e3P96iWAm89IzGN20fsLFQI6+o4SXJUgST8LndBRjAWDSZu0/NEeCKXgq0vKaL2dJbbD
+         zoswq6xBYc+H8LRwe1TiwmmgVZ+LIBBVUxPAUt4L4eLciuu1wfjH7vrxiZyBAMUdF1KD
+         E4FwC3s7RPaLojmRbQ+uGc2GO+3+pc0LIlbio6LxuBrwKLDBf35c31T0k45Kcin43Hv+
+         O4Gg==
+X-Gm-Message-State: APuU4Z/+kKRzCJ626c8xny8f4+qbKhQxm7z8ywKNO1y5UFe8gTv3M8cC
+	PtboZIfGT/eXpw6e6zpDK+QAktqUPkCl0Lx72qSWyrEUwaGfR+HFhwCjduaT3fI11MX0ZgHQC3L
+	aBVko
+X-Gm-Gg: AYBFou0l8QTRHoQC13G4T30AH/5sdCXkQfHoyGrnGnaVp+WFhdqdkX1k8eJPfF39CQn
+	w8el/HeUrHVb3CAbT4Dt8yM8VG/U/xUEl8lNsOpfoDfzU0uELM4ScOUlI34fPxulspKgwVzTZ6w
+	tKAF9rBLXo7E+HP0EBjIW+MCuukkQhn2rpthSI49m8hapH3Ydw0L/j7LgU5Fxa2znjBtlmQy6Rj
+	7pQ0+TfcU/bTUkjobLLJ5mJyUl+5RFZmTrj7rLX2bOOPL48xFcg/eNlOa2rGU97MIgpIBVJk9TM
+	W+8vce2hjwST03iIZt5Bb8aacxxmN+RBJHkeeMmCONCDN7Y0yhZENp/CjVyIkRvyK0GxD0iiRnq
+	78dI+bKISDwgqyLU6lv5gXzJYVFukuz1fl1gVG1Mi+0yAUGPF22OxwjtBJYnQbJ8RVZkIoK+wdz
+	j4yx8tHm1cFMXx5MNLeiAZ9CZN6N1md3AZTFYWr/VbKuusrFtPe2/sKugPf7VjRxxpGYnJZDURY
+	viBDTHJRMlmIV52fg69UIaFp94vbA5muTRI2LKtzJEdxhLP0sVlSjGjrYpHfIlGWjnyIFcrBTPT
+	xvlS32ygm1PoUirxdiHXiuRw3w4Y+75jl76+l2rEcgvyatxInlDoHNtPieNhe1aDOwlLwZHFxXl
+	bVdSgf8+2I4xNhWU=
+X-Received: by 2002:a05:620a:4048:b0:93f:dea:3b7e with SMTP id af79cd13be357-9494baf6928mr2132633385a.24.1794910757471;
+        Tue, 17 Nov 2026 02:19:17 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9496bfb7fa0sm719926685a.34.2026.11.17.02.19.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 02:19:17 -0800 (PST)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	david@kernel.org,
+	gourry@gourry.net,
+	ziy@nvidia.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	arnd@arndb.de,
+	larips <larips950@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/mempolicy: limit compat bitmap reads to the source nodemask
+Date: Tue, 17 Nov 2026 05:19:10 -0500
+Message-ID: <20261117101910.1820066-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.56.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116-fixes_hugetlb-v2-4-4dd9e94ea9ac@kernel.org>
-X-Rspamd-Queue-Id: 070B7140004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 53e8qhy9p865pjqfnxjo85mbsykjh4ro
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794910582-482201
-X-HE-Meta: U2FsdGVkX1+CVqL5t4RsS5skGy11TbnNcccfREVN0MCdtwRvFdhKR8GCXYnmVwJLqy3YWlG8ukA9tcZ7rT2mJWikHzZVmPH8TCmqIySPnKLs/+ah4gHrv4srHZ9i8k9gjk+TYd7KDQL7drO7pVUGEjA2w/4CCmnPCf2JZT7RiTyrXCJ1b0M5X40kGOMJpLMyEJ0xW0oWzlpNFj8LwSKYWMZ1C45tJcjoEWUL5aMaqbP2ylG9iZhea/BTQmpsiFTsraJTb5lRHSA/UomNx4siiQ6QqLVoaj1Gyuu3vpmRMAd8v0C6zqOTqcsYDBM7f+vhxnhTKEYkf94r9j5R3IyyxoVXk8rFivz6TkKLrD4098N2lzpaGuhFvtqHJ0SD0NwGI6YfeMR/ZjLGQ5LgRxdAPc5CIKqNAcOROOLYJl0SeVM9Rk0/zgG82U5Ldj0RJREhG3VEfHplHiLSCqe6RHkV25orlaOUMG9pCegLtoiYIT11W5LiVi+c4Zr8Doe+fy3o099035g/tdUnxRaHxM771gwnjU3xNNaH3dFyQBw6+nTtN397PcwbgpGaggC3L83q7YMpm7VtNVSJ34VirWY0EoAgSkDMAFP71B9lrYamlXyo6f1UiSGIx8zLp7bUSWoeNvXcbKgaiEBMNiQBQdsdxzr4XCeCEL57gSOJo6LetlfGskJy02itcSARfzuTgCSPcx6CWbnkDQf6NpS+LARv274YFCqx2b7IPkmAD07/hqu1Ljhpz7va5vfdeSJA01IZ8McRYbpAKBsJbYolKVBLDhtYgYzzxehRhHxke57x8CBdRD/AKwSgttQ3bBhV/+iC8nsUw/FqcFWQYVQNruYgZ63lDpPxNdo7q4zgFc7wo1pOgPrR974t/Tct5j4BAUGjwCbT7VRwMKp92M9bZmPKCu1EpAeMmOcuM8yBXAd5TsF31+lxs2NL9Fu7jV7IbkLAiLTRL1CPVL5rRf+pEZ0
- l27y1mDh
- aK0IZk0lFsFqHTFevpjv6o5/bN3zHjuduueEg6ANrszQ5HT+fCpzMVSsarEL0+0cnPOqs9okDVil1ESSnHE14PnXcxP7J+yjiyGKmvNxI13o/PlCEMMpOuDA81J/2QgC02VXZUT84mfjriq6iOVhHBp2qBYVI/joq9eoqirpODE43hKFIVlzAfarz/a7oRpYMyNu0LAtPZYF1eoYF7kk3ol+1WpFghynOQK4wWMayqGuBx3OEJZDEER88O14oIBS3Er3eF40dmUA60n+vWmx9XeBZ+S1k02WgRfUfDyl14F6V0W6Vt9seYnRAVbj433/bX1jNDGbhFCls/yG7DebcGNLve2Cbh5A20Ki8VKE4zxzn3ovO1hki2TtXrg==
+X-Rspamd-Queue-Id: 45946160002
+X-Stat-Signature: 49w7orbxrsxzdpqni7adpfzg6ubw5di6
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794910758-613347
+X-HE-Meta: U2FsdGVkX19i0MFk04bYTjob8FignJL1FSuUCQWQzV+sNRYzNdxyCr0ZGYUYJbZfA3jWGV+7LRQiNWopWxQh86tCf9AJ1pdrWjKdaNHVsftuWDVWy5OFWQcdClsIUiLQ37ZhSD5b/5F/VmLhmga6G2kwSXtcnckSSM9mdSRB09SbeYY0Iy1c2/R5aJebthSJGy9BLsTH+v5M34RX5kDQJnPfNIVBsTzl0GzXlIpOZZRLsuX4tBwNYFvXqyTbFAHm89itEvwRS95XcT3M4OG51AXeGtBuxuhjnV29lmR50pirJPFwN7g/iSE/qdmP6dcTplLl+5g86fCcgubt6bc1MOBa1bWIxaMT0CtZkmVxcQYxMBXL5pLypsJZsh3SNY3ovB2+Td6z5FWaztwEoCJfEazxiBFq0hhwfSpSu6IUXPbfBQSkq5nIYMl4Xy0g0JpBRASsewYrO+JPMv2Ax7FwKxca11XiO+q64vkuzQmJyJDPvUoxADqy0u8GfhHasTmTtr5ymLEFmQCeiSjni6BvYKx2A4ZS5y8vPQD0AEW692VjFwYCl4GMRtturfuMCNOKy3QbO3x55r8rc2WygGaaUFIRlPRyaOhbkoPg8dNZINHIWTqlbI9mOLmPkvlcqAFtiL9ySyGNOAbCeptzwI1ML8LXtCxQgXBi8Vkuv3+qEEJPZfntGwHQVFvrXxeSHCgjBlbcYIsIZirlWjq0xelE7AHw7giIs52dNjI7d+FZVFf2DkkMUYbCe8BY0NW46NAqzlfk/Edx7r/k5yeUf9Gm/hRNaidnE53VQVFncEkIMQyOZSL3vGal4Z4yk0iZnsAgMxX58NQvvvlD6ekTIrIN8nmaMfyZyiKnupY6VA52Xoo4F40istbgHp5l6AFtlaLNYqPyeg+gVDQhuyMNjQ87XcJU8sZl52LUVkWw3skov+v0hohC3ZRmo1YyDER36kTKwxx7z7xSAm345vV9wb4
+ rWNIlKx5
+ 6YpKKsL0VIjHd4khEXonb92kDp/+m1r5UD19Tzzti2ARKmVxPIyrNxdel2A6EQZnTAAmeXxGshMVce1MvCmutdXk874sVyjr/OBb8kiZr6caIPECnS35hgwWbZHs29e5ToG9xEYUJbIXVud75bj4earZuig4pfzl/d15sGoyT4phLvDk35/lxU9yDQZnQFwUOMDbNSQPDr8eks9CMm140ZlfZdMrzkSP/oNKcpKAxkGjxKWzKP/kE78umICxZmx1Dy/er5NtECOuwNTsk1DKMxGuuTX+JsC4OOS+RNYcc4fzMmWwAKNRo7kLKX1psTNSxoa7ZHjIYvxggpu7jabazANAJpZD0fEEPe3Yeqe831sXzfJeY9zC5tvKy6nqcvipadhiFPWtS0+k67FHpNRU1uBilBi6M3uYDI2plHSLqh2Ip0Oo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,57 +130,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 07:29:25PM +0100, David Hildenbrand (Arm) wrote:
-> Hugetlb migration might have to allocate a temporary folio through
-> alloc_migrate_hugetlb_folio(). Such folios are currently accounted in
-> "nr_huge_pages" but not in "surplus_huge_pages". persistent_huge_pages()
-> can mistake them as persistent huge pages, as it merely calculates the
-> difference.
-> 
-> If set_max_huge_pages() shrinks the pool at the wrong time, it will turn
-> hugetlb folios into surplus folios until persistent_huge_pages() returns
-> the desired number.
-> 
-> After the migration (successful or unsuccessful) either the new (temporary)
-> folio or the old folio gets freed: this will reduce "nr_huge_pages" but
-> not "surplus_huge_pages", to undo what was done when allocating a
-> temporary folio.
-> 
-> This can result in having more surplus folios than actually allocated
-> folios:
-> 
->   HugePages_Total:       0
->   HugePages_Surp:        1
-> 
-> From then on persistent_huge_pages() returns garbage.
-> 
-> To fix it, add internal temporary counters and subtract them when
-> calculating persistent pool sizes. Update persistent_huge_pages() and add
-> persistent_huge_pages_node() to make the code easier to read.
-> 
-> Count migration targets and rejected surplus allocations as temporary.
-> Transfer the per-node temporary count along with the temporary flag on
-> migration, such that folio freeing will always do the right thing.
-> 
-> Take care of calling account_new_hugetlb_folio() only after setting the
-> folios to be temporary.
-> 
-> For now, keep temporary folios in nr_huge_pages, so HugePages_Total and
-> Hugetlb continue to include them and overcommit accounting remains
-> unchanged. The new temporary counters are internal for now and are not
-> exported to userspace.
-> 
-> Fixes: ab5ac90aecf5 ("mm, hugetlb: do not rely on overcommit limit during migration")
-> Cc: stable@kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+A 32-bit get_mempolicy() call can read past the kernel's stack nodemask.
+With 64 possible nodes and maxnode=65, copy_nodes_to_user() computes an
+eight-byte copy, but compat_put_bitmap() reads two native words.
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+A kernel built with CONFIG_NODES_SHIFT=6 reports:
 
+    BUG: KASAN: stack-out-of-bounds in compat_put_bitmap+0x113/0x120
+    Read of size 8 at addr ff110000099afeb0 by task mpol32/246
+    Call Trace:
+     compat_put_bitmap+0x113/0x120
+     copy_nodes_to_user+0x137/0x200
+     __ia32_sys_get_mempolicy+0x1a6/0x280
+
+Bound the compat bitmap read by MAX_NUMNODES.
+
+Clamping every call to nr_node_ids would remove the extra userspace
+word when the kernel nodemask is large enough to contain it, but this
+keep that existing compat behavior while preventing reads beyond the
+source allocation.
+
+Reported-by: larips <larips950@gmail.com>
+Fixes: e130242dc351 ("mm: simplify compat numa syscalls")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+---
+ mm/mempolicy.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 79053ece02cd4..d9177c5504879 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1715,7 +1715,8 @@ static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
  
-
+ 	if (compat)
+ 		return compat_put_bitmap((compat_ulong_t __user *)mask,
+-					 nodes_addr(*nodes), maxnode);
++					 nodes_addr(*nodes),
++					 min(maxnode, MAX_NUMNODES));
+ 
+ 	return copy_to_user(mask, nodes_addr(*nodes), copy) ? -EFAULT : 0;
+ }
 -- 
-Oscar Salvador
-SUSE Labs
+2.53.1-Meta
+
 
