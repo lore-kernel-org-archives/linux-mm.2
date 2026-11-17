@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C33A606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D61606A330
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=H2rKIAAl
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=saYThnMd
 Received: by kanga.kvack.org (Postfix)
-	id A981C6B05BC; Tue, 17 Nov 2026 04:34:27 -0500 (EST)
+	id 232D76B05BD; Tue, 17 Nov 2026 04:34:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6E7C6B05BD; Tue, 17 Nov 2026 04:34:27 -0500 (EST)
+	id 1E3426B05BE; Tue, 17 Nov 2026 04:34:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AC046B05BE; Tue, 17 Nov 2026 04:34:27 -0500 (EST)
+	id 120A86B05BF; Tue, 17 Nov 2026 04:34:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 794076B05BC
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:34:27 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFB19C0340
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:26 +0000 (UTC)
-X-FDA: 85444100532.28.D76DDE0
-Received: from mta1.migadu.com (out-6.mta1.migadu.com [95.215.58.6])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 083221C0006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:24 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E72F06B05BD
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:34:34 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2840F120388
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:34 +0000 (UTC)
+X-FDA: 85444100868.13.816C2E1
+Received: from mta1.migadu.com (out-17.mta1.migadu.com [95.215.58.17])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 331DD1C0008
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:31 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H2rKIAAl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.6 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	dkim=pass header.d=linux.dev header.s=key1 header.b=saYThnMd;
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.17 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794908072;
+	b=e+N/6/apE6GDOpIqNvquztj7g34sBQsdgfJ1iJa9pPO6KLygE7aguGwrQd5sEMcV7RoZ5J
+	bVqbwWn+V5fu5856Qx7fkj6S3BbuukN0x11O5Uk8Ed/wuK+eLcWDFJR5Qd8G4/Tl5983oy
+	rF632yIah2ePf+y02FRrI+KcL+xESxY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=saYThnMd;
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.17 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794908065;
+	s=arc-20220608; t=1794908072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VVjEArGpfzLKglvqc3YXGN4z2hsAIb4Ii6LC+8XEfek=;
-	b=VD8ljxpM4v2ZiCN0l+ktueQbPTKwXp9eZ35WwRdtH3QRuEgDvg9yW3iALW5PWunZC19hiE
-	4/bxOJK0HEsaiwNxaDAN++cGDwY/7AZjeDFy8Zq7WwSCZegtCZXGz0D5uLCn5Llfvd1gR6
-	XMfou0sAaKmw8+m6On/1auL+6HGWLaA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H2rKIAAl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.6 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794908065;
-	b=PaLIIDxazpvv8VkXFGADb1QXR9mzhfK6dXoDdqpRJQqcSq2lEX3CLsayUcFxhoxbj1wIji
-	RC21veDKC0tmWKukCTpKNX9Dvb9KBYmzyydMc6378n+qR0GHkCpF0IdaVLeZIkr6nkKsdt
-	ZgdZj+iEB8IQTuTzBcBWblW4y68hb9s=
+	bh=Pabw/uWm1cjpx9kdTQH80s4Ttm/z+LkqjaBTBCm9M1Q=;
+	b=515TfHx943Ii0r+Uz60MdnkObDOjg2zgZIfCH+h9l1zD31Zxt9CvpFKzWP92/DO/I+UlKb
+	O/TQDeiCE2qY9xgvGNV1WO/BtWVh+8Oi6dgOqQEmV1O5fQKACRRSTKM4jwrTEmfmp9iG0O
+	RfEm6IxAPKevkuOFbVJpCSPkkwrvafM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=osMdup1XthVBj9dZj7BkFJdDR3+5E/Rv1rSyQcK8Jac=;
+DKIM-Signature: a=rsa-sha256; bh=ILUpJ4Ob0pNFnAX2ltHw4R7fKp4fmf8Un2vNiqYU0SU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794908063; v=1; x=1795512863;
- b=H2rKIAAlMQX+xCzh2f7B3coiICfjjHHD74cFy+vvnGy5/4q/lmZmoa4yltUK/6GmZoxcZBKv
- snRvvjpQNA05gJ+5hYvefGvVT4s9VH4pZQdVzDgGWD7HpfwmbVq4UAq3ZEKB4Bo/QR25Cq6dr3M
- QggjyDxujfcWLPz/zqmUAbYM=
+ t=1794908070; v=1; x=1795512870;
+ b=saYThnMd25FwYHaO2dELkyNcwQBLYWupj19AW6inLkyGWKuqxuwnJ7ByyqAK4RKHv5kR4OdX
+ Yhthf3WKRsuyJF/YVmDE/nUeZdzdiTEoE6/ot9JYdsNoQUFHSzDvn9QLDFjMJUAbiyip/DfJkfK
+ juSSztSXah+aHs3j+DHUY7HQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e2236bfef0a0d9fc;
-	Tue, 17 Nov 2026 09:34:23 +0000
-X-Mizu-Trace-ID: e2236bfef0a0d9fc
+Received: by smtp.migadu.com with ESMTPS id 81f6557a191836e0;
+	Tue, 17 Nov 2026 09:34:30 +0000
+X-Mizu-Trace-ID: 81f6557a191836e0
 X-Migadu-Flow: FLOW_OUT
 From: Qi Zheng <qi.zheng@linux.dev>
 To: muchun.song@linux.dev,
@@ -69,10 +69,11 @@ To: muchun.song@linux.dev,
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v5 2/3] mm: gup: allow long-term pins of CMA-allocated HugeTLB folios
-Date: Tue, 17 Nov 2026 17:33:58 +0800
-Message-ID: <295af6601ce79f2c2b3dc4352a3279f0e6ac513e.1794907279.git.zhengqi.arch@bytedance.com>
+	stable@vger.kernel.org,
+	"Oscar Salvador (SUSE)" <osalvador@kernel.org>
+Subject: [PATCH v5 3/3] mm: hugetlb: fix GFP mask propagation to CMA
+Date: Tue, 17 Nov 2026 17:33:59 +0800
+Message-ID: <990efc61c4c3b2a4186cd578a56c6a74348fcdb1.1794907279.git.zhengqi.arch@bytedance.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1794907279.git.zhengqi.arch@bytedance.com>
 References: <cover.1794907279.git.zhengqi.arch@bytedance.com>
@@ -80,17 +81,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 083221C0006
-X-Stat-Signature: 6a3a16pegbo17aw4d8hx4ghccr8zpowa
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 331DD1C0008
+X-Stat-Signature: cyxtgwhum9nyir5yxbtgamkc47cxj56c
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794908064-307451
-X-HE-Meta: U2FsdGVkX18mmJoIpNN7loVRWXcU3fyCv+cV56N/mqp1HaqVWyjBFsMkaqYcwRsCJH7RiUBaE9pYdbjBgzrTJQ/T/n532HUxwu6r3/wmFsSVrRfB2VduTtDRm3+C3MLVJxrOERc02XWa8rTQn2BkXWNLU7HPMIGCmWSvrA0hz/gCZ0Hyq+6VmbZG0Ep2fPg6WheoItfWEs/WGHNXjg7vAuaGVZHndmOvn2VHZGs6sVsDdMis7ZdaKCR9wX05FtdEQs6Urjbl9TkcyF/c7rIWFlBYDG499Xb//3uz5sa9ItDhWeBFduVZoeweafYXZGmxHn+Uv4GNaBa053TjOmBoBHB5oS2yKNFtS8zKPNnpanysNeR59Je1a3OXyx25+tGDgSvzkEL0HNXAjlS+ZeiMTtkSVx8SQs/HUCnZgpqDeObzqHN9BrFWqHGujBVqpKbUPL/4wYbeqnxcpVtfQhBVXMWAUDz945NU/BiIoHIK1VhNlhjPEgfqAZQYcNBXgLrX1NviwMULuh4OA2Wixrjk9wIK/+R+Eu3Hj6nLhtINNU3z0GPqZ0DWzha7V8jNmOi7c6oMNuQteaJHAk+pc2080L0+lyB1AAgX9ivrksgkYYGynlj1wF2WVROUU9hHZWBu6MXA/4VYfFBi+8yROMs51GY+1ZQGHUDBRkbGuBlWQLUa6DG9R95tUGO3IJuO3d2fe18B0XECKgz4kMA/rAr00wm5bsrx9f4EMqYhvLNFv/2EEEyup5TPmTSL1G2z+kcJTlW/quMhIdSx1M7+CN8KpKOoUE2yILUSO/MyAU9H5F1yGXHzs1wjRWbUlfcaU++Ye1pr9NzBpPnfptJN4XeooKF4bVbJo23uBjAc7vbNtv/lSDLDcKSAHa7Dz+Y5PXdhM3keyVvImBkyIBg6aQ6Bzxv1aQaGf7MFRVFZVc/7Wb0PWeL+G8EfavMYm127B7z4k9i56v/nHagDwkIUNLI
- SEd1qyLN
- ZUZR2IOjhuZkk3YZ9VOTO3yBNl//xMQDTpUlzdb0ZFNyEFXS1kIYtS9tam0gW+EhkMc69/9ogVUxPbjxX61RL+p+a279lpRbQBh1Lx2TbCJJGYmQB89EzpneXU4uWDZJUgWhld8sfLP271qw9vvvcyCmn+PeOV7wjxq6wLR7jmUjvD3lq5n3C6/Mm/RQhEDijc1q+pa+Buw7UZSLmimj3EG8OVP4rvs4MH7AfTyzNpG52a8D+YgSIEezDRMK3gUrxqHHfkD599ke1vsGHH3DnNTfwdQ==
+X-HE-Tag: 1794908071-822097
+X-HE-Meta: U2FsdGVkX1/aLB7W4r8hkjFLipE6ePS8sxeznLaAONQ+X/rIUpxXZilji3okrwI16PXY9UlxVaZIVWuJ+wK30IaJP2eR89VzFZASKOwPrmIk4HKZPN2aRrN8H7m0wvXNUOyncVWPbJMRqq+WoE345/6r903Fj0ZrqsRqQlreIF7ISDIJ0DWAbZdi4byyqXciIZZ5HoAKPI8hES3PPyx9AC3PR7hXscPv9w2ic6T4un96u1+/cJkQNFbtJLkjqR7kO6Ft0RTOzRzRep8ZwrUk5FsQncn1d8jWUCllnrNh6H4fVskRuxyzz1gsFYMS2GbYeRjlzWCSAKVZ3/Z+GEk34rpCbnHKc4mAFcNFhRDh3pqL0lZP31ZDT6HKkUNpGeS5S/RnjAEujFEWMyUcPMJyrQ8d/DtcLfVpdplzRaYHMCROH16HTPedrhORLNk70ZmU6tgi3nDCaK+E1if/dWqD2J3WzPFYtUTr+kV2o3gH689uDngA0a6++ZnaXZ0+xwQRoJNO0rrdSBBQPZSNJ9Y1BqoN7OFCfyalmMsmlRwElOc9P43c87tW98x/7OFlxcbOhlLuXtHxKDnXRKoHdInDRc2tCpv0PmIyZxtrISDo6WJvq+PYUDwILRULb/DTdEx/dAoEddewmANps2bXOEM8/YLKbGCehjVmTl9TH7g/1mbSCOoHxyaW8BkbD9+P9FIOXx4ZvL3a+qzLzWHvSqHx4PHvjelGYmQ/sHPgHFN4krP2iOJ6pHTeXDriTeJJJtkrisI83JbcJgyKNAvP70xe+H6pA37ZUkReK7xggHv+0I/Mp/rzJAWniEE6V09Isi4DRr6nExZi9Vi9tvP4reMPmXyfex3aqgPildT7v99O4r02wfoqCHjuk3YWHtU2lzXLm2gJgsa9AZpXE4zPFpkNbLHR08ZwD39x7eKaROK3oGgMXPJkXeW/t3ltFKjJ5mv0BxVVDzDBCIIh0ZzD5F7
+ 5rj7+TNh
+ v1uSxOncwwa1Xp5T+ndsMBm8CQWUj6HNzeoFJVtFW/0Frmh7ppfSUs5BBiQbU3qPmnu5PCRMxRYoR+JlwYLiJudAELssVp+pfbQGotMzfXPXBq2Hozk7tGZCAczMoOL8uTIQVY/zBkMLWzhHEvqwXDXEztuFLVThnxPUt4CXNJA+9c3rfQF9y+Z6XuymDFzq52Q0olJVs2RYNJNJ6bv6JFmYxOqy5XL6yX/fI984KS0jqWqdUTGc+xKaYvXvTAJ+nBGLT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,115 +102,81 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Long-term pinning rejects HugeTLB folios explicitly allocated from CMA,
-causing unnecessary migration or pinning failures. These folios already
-own their CMA memory and do not need to be migrated out for future CMA
-allocations.
+cma_alloc_frozen_compound() uses GFP_KERNEL, allowing direct reclaim
+during the first MPOL_PREFERRED_MANY allocation attempt even though
+the caller clears __GFP_DIRECT_RECLAIM.
 
-Add cma_folio_is_longterm_pinnable() to recognize these allocations
-through HPG_cma. Allow them to be pinned even in ZONE_MOVABLE, since
-memory blocks overlapping boot-time CMA areas cannot be offlined. Ordinary
-movable allocations that borrow CMA memory remain unpinnable.
+Pass the caller's GFP mask through the helper so CMA respects its
+reclaim constraints when trying the preferred nodes.
 
-Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
+Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
 Cc: stable@vger.kernel.org
-Suggested-by: Muchun Song <muchun.song@linux.dev>
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 Acked-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
 Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-Reviewed-by: Frank van der Linden <fvdl@google.com>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 ---
- include/linux/cma.h |  3 +++
- include/linux/mm.h  |  9 ++++++---
- mm/cma.c            | 11 +++++++++++
- 3 files changed, 20 insertions(+), 3 deletions(-)
+ include/linux/cma.h |  2 +-
+ mm/cma.c            | 10 ++++++++--
+ mm/hugetlb_cma.c    |  4 ++--
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 8555d38a97b1a..d829fd0355bae 100644
+index d829fd0355bae..d6e97e831d970 100644
 --- a/include/linux/cma.h
 +++ b/include/linux/cma.h
-@@ -21,6 +21,9 @@
- #define CMA_MIN_ALIGNMENT_BYTES (PAGE_SIZE * CMA_MIN_ALIGNMENT_PAGES)
+@@ -56,7 +56,7 @@ extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long
  
- struct cma;
-+struct folio;
-+
-+bool cma_folio_is_longterm_pinnable(struct folio *folio);
+ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
+ 		unsigned int align, bool no_warn);
+-struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order);
++struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order, gfp_t gfp);
+ bool cma_release_frozen(struct cma *cma, const struct page *pages,
+ 		unsigned long count);
  
- extern unsigned long totalcma_pages;
- extern phys_addr_t cma_get_base(const struct cma *cma);
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index daf5c5b567ebc..e71aae8001831 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -38,6 +38,7 @@
- #include <linux/bitops.h>
- #include <linux/iommu-debug-pagealloc.h>
- #include <linux/kcsan-checks.h>
-+#include <linux/cma.h>
- 
- struct mempolicy;
- struct anon_vma;
-@@ -3015,15 +3016,18 @@ static inline bool is_zero_folio(const struct folio *folio)
- 	return is_zero_page(&folio->page);
- }
- 
--/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
- #ifdef CONFIG_MIGRATION
-+/*
-+ * MIGRATE_CMA and ZONE_MOVABLE folios cannot normally be long-term pinned.
-+ * CMA may allow pinning folios explicitly allocated from its areas.
-+ */
- static inline bool folio_is_longterm_pinnable(struct folio *folio)
- {
- #ifdef CONFIG_CMA
- 	int mt = folio_migratetype(folio);
- 
- 	if (mt == MIGRATE_CMA || mt == MIGRATE_ISOLATE)
--		return false;
-+		return cma_folio_is_longterm_pinnable(folio);
- #endif
- 	/* The zero page can be "pinned" but gets special handling. */
- 	if (is_zero_folio(folio))
-@@ -3042,7 +3046,6 @@ static inline bool folio_is_longterm_pinnable(struct folio *folio)
- 
- 	/* Otherwise, non-movable zone folios can be pinned. */
- 	return !folio_is_zone_movable(folio);
--
- }
- #else
- static inline bool folio_is_longterm_pinnable(struct folio *folio)
 diff --git a/mm/cma.c b/mm/cma.c
-index 9ec1d1fd5dff5..fea5d1015319d 100644
+index fea5d1015319d..225e3bbaecf9a 100644
 --- a/mm/cma.c
 +++ b/mm/cma.c
-@@ -29,6 +29,7 @@
- #include <linux/highmem.h>
- #include <linux/io.h>
- #include <linux/kmemleak.h>
-+#include <linux/hugetlb.h>
- #include <trace/events/cma.h>
+@@ -944,9 +944,15 @@ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
+ 	return __cma_alloc_frozen(cma, count, align, gfp);
+ }
  
- #include "internal.h"
-@@ -38,6 +39,16 @@
- struct cma cma_areas[MAX_CMA_AREAS];
- unsigned int cma_area_count;
- 
-+bool cma_folio_is_longterm_pinnable(struct folio *folio)
-+{
-+	/*
-+	 * Explicitly allocated CMA folios own their CMA memory and can be
-+	 * pinned even in ZONE_MOVABLE, as CMA memory cannot be offlined.
-+	 * For now, only HugeTLB tracks these allocations with a folio flag.
-+	 */
-+	return folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio);
-+}
-+
- phys_addr_t cma_get_base(const struct cma *cma)
+-struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order)
++struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order, gfp_t gfp)
  {
- 	WARN_ON_ONCE(cma->nranges != 1);
+-	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
++	/*
++	 * The only caller of cma_alloc_frozen_compound() is hugetlb, and
++	 * hugetlb constructs its gfp mask via htlb_alloc_mask(), which already
++	 * sets __GFP_COMP. Check here for usecases bypassing htlb_alloc_mask().
++	 */
++	if (WARN_ON_ONCE(!(gfp & __GFP_COMP)))
++		return NULL;
+ 
+ 	return __cma_alloc_frozen(cma, 1 << order, order, gfp);
+ }
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index cd6f64da31a2c..1eb9d8d8732ba 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -71,14 +71,14 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+ 	}
+ 
+ 	if (hugetlb_cma[nid] && node_isset(nid, *nmask))
+-		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
++		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order, gfp_mask);
+ 
+ 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
+ 		for_each_node_mask(node, *nmask) {
+ 			if (node == nid || !hugetlb_cma[node])
+ 				continue;
+ 
+-			page = cma_alloc_frozen_compound(hugetlb_cma[node], order);
++			page = cma_alloc_frozen_compound(hugetlb_cma[node], order, gfp_mask);
+ 			if (page)
+ 				break;
+ 		}
 -- 
 2.54.0
 
