@@ -1,125 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B270606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 05:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B931C606A33E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 05:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=ewtveVi8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LEczq6rN
 Received: by kanga.kvack.org (Postfix)
-	id A00336B05B2; Tue, 17 Nov 2026 00:07:47 -0500 (EST)
+	id B64476B05B6; Tue, 17 Nov 2026 00:08:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B0DC6B05B3; Tue, 17 Nov 2026 00:07:47 -0500 (EST)
+	id B15956B05B7; Tue, 17 Nov 2026 00:08:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89FF66B05B4; Tue, 17 Nov 2026 00:07:47 -0500 (EST)
+	id A04716B05B8; Tue, 17 Nov 2026 00:08:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 18CAD6B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 00:07:46 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A12AA16033E
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:07:45 +0000 (UTC)
-X-FDA: 85443428490.12.960DD34
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D6BC7C0003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:07:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=ewtveVi8;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf22.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.171 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 644E66B05B6
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 00:08:52 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2735A0117
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:08:51 +0000 (UTC)
+X-FDA: 85443431262.18.2313487
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4C29D1C0004
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:08:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LEczq6rN;
+	spf=pass (imf20.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794892130;
+	b=d3f46EJZcqem6G4OdsYT+cGiyUuaeDYIQcp99K7j2AG8LSyRrHvh+vE6zu5bau7I4NBl15
+	K6gc4E7kgPngZIqCSe1qKqf5XMYU/Q2vPnM3lyzbquVbGs4MgtJp3I5FCxyQuPvTwJhyrn
+	exowTnTLZcvyqzkb3MGlKhO86UgJCAk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LEczq6rN;
+	spf=pass (imf20.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794892062;
+	s=arc-20220608; t=1794892130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=erZtH4IJMudy7WQUbT7BdWCH9j2OmGrPuCsVrI+Funw=;
-	b=kZfHU7lryT1iueSER0zKVx/nycQfYiTFzP/2XgiVi5E4c149R9FXnfZoKUPASwDVaNJOme
-	hAKZsJNuUejO077srUSBuQNbEHMAnqMDqfceTcnRf6KLumCXO9+bTXXQWnwQ24jJ7gU2Ff
-	lFgnyKm1dffmfEPGrJTDSZDSACTDJso=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=ewtveVi8;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf22.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.171 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794892062;
-	b=8HrQXm1rRXjvQOBZ3cBqvyYlikmKJQ1jy1y0IDu7TZmawZtamJsrB9IzvHkAbvqyKTflox
-	/VNUdFBgs6WfzdUhyC05aLshxmuu1g91oCcNJAbdEW/hrp/g28D4wycs/VCUCQbCaI/iRt
-	YqFBnX/cs5aD3O1clGb/sKyTu70nEb0=
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-36f8cdd30beso7053108eec.1
-        for <linux-mm@kvack.org>; Mon, 16 Nov 2026 21:07:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794892062; x=1795496862; darn=kvack.org;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=erZtH4IJMudy7WQUbT7BdWCH9j2OmGrPuCsVrI+Funw=;
-        b=ewtveVi8++N/2zrzmgX0EHPp2GegO0nvaj6hBYgDAkbtxbc1pPdP6KmEsB0lx+kTF1
-         TnGAIS7sDTyJWmH+5JC2Tf3mWNJrRbmD3k9owKrWykFVAHYcJIrPitbB2Yr8pWyROvqu
-         3t+X135miH+xeQSypOq3zpGDEb3d4Kfyi0iDQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794892062; x=1795496862;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=erZtH4IJMudy7WQUbT7BdWCH9j2OmGrPuCsVrI+Funw=;
-        b=0+HPJA76R3n0W4mw1f2qak4fmxgqoSH+Yv6NLdYqp6eoYJ9FNhcEFfsi2U3u/oPuPQ
-         FsTEVYJhLdD7+QFIZmzfmzLr6kQvml67K0Hy47B4IDzpdFvnUv3JFlbbQQBeLEMd5GV2
-         Uun8gBfrws7/xNzetWNr190mgcXAp8ywP8Pll3q/JwcC4bgIyb6MfBW3/mbcVpq2WZUe
-         ifHLGUDWGPhlXk2nacQiEwRf9DaWE4s6Bs+WEL15UziTn8hc+7bv9GW7NtSG11b6MJxO
-         lPUjTsCcjM6Hp6Z97EruaKpUmgr3KetTJhCkH6RNIY9+/MMibL+tRxJHJ0qgDS0fxHTR
-         xhFA==
-X-Forwarded-Encrypted: i=1; AL+hErGvwXql/ezeX4AYyy4BEHZkCTeV48fKOrqKfL0N3HNuuUNnOxTseY3AkKzTod8Nxc9iIv6Q+8VK+w==@kvack.org
-X-Gm-Message-State: APuU4Z9Hxs5miX8n8wSL7s51/dBqzkmk7/olJTNZnLjZPiqHMAm5zIiO
-	+gkPvqOcjAM2ozSF39hlqFck/KA3BnBsEO2fI6syW0MxUoQo7B0CA30xIq7ifGDg1sc=
-X-Gm-Gg: AZFdTZebu1STsk8oFGyuckKOZhH+YXBxmdKelU75+RJNEixH1HBAezzV6+YpoBQ5M9r
-	jwVFf+sk7aRPXaM0RNCCbGmpmYK2Y+Xs2dDyUnMNrVzRUJnAq2qCOH/Px+R9YfccGDPhJTyScYV
-	gnpgfi3y0p1087Cr67lNFZsvppIH3HLfX38M+BCrN3ksIgaICuLMeItniK+6B93i9VMmIz74MSB
-	ifMHEkM4O9D5LaNSiW2lU7m57xl2EITNmw9bVr/QeA7kQBNA1Pb+OOyXZ33vT+Fp18cUZwDoxu7
-	fVeHZpEv3Er0d+rq+iJWPdRJXy8a0rv81OEr3Wd1yis8SZ4IfuuyH/SjT5a4lnR8u+ytGODREXH
-	Ty68Rza395WaXbWXnYrdv/mvHbUk1+LngZU18jY8KE3fiUi0Vc3RTos2W6jXniU81WOYpKMgBax
-	Fl1ZJwJH6vUvW15XM5kFAIzluYci0qxSzCgcwTVl0730c+msJ7EP3EmuciEiRAM5kkdFMVew1de
-	Strs8H8Ov/PZ79NYaxeLSrPzPD72sKamgr7eRFlrtFmvdgBGBgVlOSAPMUM1uHwxnUqb5xjmzH3
-	/TmVjktwAr/beC/tV9mDlUDlFTwx2O9BCJ79RrD0DYHx9Zhd3AAREw0+KSFhamX6sXcO/p8I1hC
-	BFYqhsqphPQzER8j9Ns/I6RnuMO1BUqPFNIWm/fI/uJ1YGIgolRV+Wns8RoTi0cJD18Y2E49fYZ
-	flhbQxEY8KmW/FSynex4HQBh/FxXuepffNyNtaOUeycy7/X2F3Qtt4KHysxGpNLJ5G
-X-Received: by 2002:a05:693c:6383:10b0:380:d1bd:ed2c with SMTP id 5a478bee46e88-380d1bdeeadmr2109515eec.27.1794892061684;
-        Mon, 16 Nov 2026 21:07:41 -0800 (PST)
-Received: from [172.20.0.3] ([172.56.235.113])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-380e031f3e5sm7128627eec.12.2026.11.16.21.07.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 21:07:40 -0800 (PST)
-Date: Mon, 16 Nov 2026 21:07:37 -0800
-From: Chris Down <chris@chrisdown.name>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, yosry@kernel.org,
-	mkoutny@suse.com, shakeel.butt@linux.dev, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev,
-	nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, ljs@kernel.org,
-	linux-mm@kvack.org, cgroups@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH v3 4/4] mm/damon/core: use node counters instead of
-	flushing the root memcg
-In-Reply-To: <20261114002822.1043378-5-joannelkoong@gmail.com>
-References: <20261114002822.1043378-1-joannelkoong@gmail.com>
-	<20261114002822.1043378-5-joannelkoong@gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=EHOaglGu01L1Blez6rThdkeRSDoeQsisrNfdJmtnDfw=;
+	b=1v54Ju0YKvl1Ne/+T/IkG8rq5ho7LFNO4ARwbIQLDFncTDNPeQNWTh0CnMNlaiRq3W8Z/8
+	k4+HM3sK5JURKogOiGVVU9uvBZaU4pfE4jCTFBTktxq6vvM5kGk/IrnnfgJvYY0CELD0yR
+	t9MJyoyIkyhKeuuejP9EjsEczpmryk4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 6704A447F1;
+	Tue, 17 Nov 2026 05:08:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 9A8CC1F000C5;
+	Tue, 17 Nov 2026 05:08:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794892129;
+	bh=EHOaglGu01L1Blez6rThdkeRSDoeQsisrNfdJmtnDfw=;
+	h=From:To:Cc:Subject:Date;
+	b=LEczq6rNDD7/cZElMucuSr8e9ue2aG8F06dN2crHVgmE7ZPKTXCa7tv+Xg5QuIC1J
+	 xycva1j6I8rXKchoZy3SblemaCtNsHXPwWgLGsMfvy2S7ruepM7D9KUXZb3ny81NGO
+	 8MWnS8r6SViQfto5mHPABF2iC4OAlQrjDCB5zp419SJcpQ7hahNnNMbEUgldJL4Sh+
+	 jTOhvPMAcTPyM9Y06iGqVZ+rZ6hRsJ64zi9p+dcXKE+v0MQHVcM8BEmJQRU3B908Jr
+	 q+vVswDXYKILSq1zDUtt96nII0FBEln74u0FpB4+9SWdxzNO3xNNvb+h0dlWA7d60E
+	 7EjJRf+RRy4Uw==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	linux-api@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: [RFC PATCH 00/13] Namespace for namespace roots
+Date: Tue, 17 Nov 2026 07:08:28 +0200
+Message-ID: <20261117050841.3289652-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Message-ID: <avvhGYhjBrOzAmT_@chrisdown.name>
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
-X-Rspamd-Queue-Id: D6BC7C0003
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ouqjsedjebk8wh7zhk8j6fg57tukcp1z
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: zia84as1txiignztgkak3oug6kyyirxy
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794892062-354174
-X-HE-Meta: U2FsdGVkX1+YASeGdCHoUE3wQcugC25MyMc1LmpCcIzEsZD6mbU0FmpRyX3tnI4/O4LIGQT5yFZlF4JvCQPhDxf7u40QAH4dmd0NL5O+yEhH/t5AC4Jb7nDMCbpAj/AuqN3GGurjngMxfKKmRgROtV1Ar3lbsNjBhQpcPOJ2WcKgelulmvm8vpHb+b6McEf6DCEdi2WiTS+Fi0CcYmZJudq39m+0byxfQZZZ+phJYD61JaG/dl+2FpcBor62+LSHp7Anuf/Xig/Ea4Uc9qt2NUF5B9kfOnK0Ivkb9EXtrXKkJfVTH2jYnIs+ppSjfSyS4KlTXm14AebO/1G8tHn3v8+HTIKS2I6bGyYI4KN1CSb7UegLO1V9cMmW06oiH7ErbMaWn6OZ9cNLpyYOeHtU1IhAoohPP1Jy1/y964DSzFxx28Lx/NFqv0zab/hA98XgpGsYYmQDAnLo0eVgXh+bhr/splp/MapezE2/HxIEYO7gV+O0G8brv9fERxG0HBIU1TSO+1tgFhZxKzzVgcX9VCzMLTVDlegLyNSurGUrJ0w6j9gKOj6XAqEUlnO6NTYzCgDDIUNqCyD5qdcTOKdm60OHuLfX51XO/wpYW7ESL88ylWA+xadLl02Vyw7hCG5w509lfqBEcSlwzgq1CkBcT6rC32U8p9SHxQRpZ2/FCp8EEORgAzPm3wYTempzlQwGCCk270pgdDWXSm4fK5QTYs7ujsU0jyHaPIFnDrKRihzGFeRlYkfwx4TkSArqGOybB0newLYQKCsP8vlD8XRYk7k4iGUA49/KkVu/gNJuvIMGe1AWgKI8dvThOQcKAVf5kjzvh4erVSqF+N5dYw1l/5lIwTLPjTMHWgcOjF9ScHG4b/rrJPRZ8N8n/BdM9NwlJqIQvSsTz28C3oIgcadfmsJg/R5jfuKWlFBmo1CmDg3txIpqCIjBWzUXVYmgvsSUgqKpqIgw8skgYfvLOkL
- UWNrkrOm
- 3AEnGLaHe/UIsBX1EmjNVn8r9D9DTX4TotVcdrgOPN1G/bEmCnk/pDk4BkkjF8RZbW8akpMDi/HpVUk2tBR6pIV1MQuYqwRXclQSmvwZUGoID1PL9Nn82H6gddj6e16STpQpOwd6dNxsypFPlTazHbk74U6egbL8oOunKTZZjaxNJbcUsdKodavX3pqIbnvpa04brP1ACq0LlMGpATzt712giZ0SqPmjdxc5Tg+Ed5b65TDEQLBWe7fUeow/0JbhsowMFEEIWy+9KKQmcuxLVr4/6EAoyOKgUaln8q5uWGjCOdgO1hnAsYm8HQaTyz+4jJm/sBV/OSyprMhHggbl9MDrcvjDqZ/3LqML1yh5Cqu84sSYs8GYlUEWZfrMOV4GQlLDgcZ4sXWYbDZpLW9JoZJuC8GhpJLTD1qvotF14afOvnRvTuRvzEQIhisEbJo0rMbLac+n7HOpbAlE=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4C29D1C0004
+X-HE-Tag: 1794892130-350447
+X-HE-Meta: U2FsdGVkX18eqUe2LymWhqPFpQ23+A21/S2fC9REBWeoQJZ8D9WOppiYQpL08fTinFGhSmnVwTO4OH0T9IjZEPgpXjUJrnZm3yocC8pSL+kLcWRgBhfr6u7kK6pTvGR6mE5RJfLPHxJOP7byV5fQ4YXVF78Y3toLW6+8uZaY+t18pTG9qQYVuHBNmX/ZiHKU7DfRskU5XT9f67g2MAOlRiKtFWwO9sghnw/Ocy5fpa9bo48iDRSCh/xkt1d0ZzH50sUNUBfWYlvrRzjnS8Rz7j3VO3vHCunbuv93RxeBKXtkSONEIGATHFlxcjHPf/27XOo5uSy/6/fk0+FJ7WQqJKHRw3+PGN1AS9zud/p+ubRLxwKA+mAOWTNhvYdCd9IV54bhKnczlOmrdqPbZLLDCuAuLw9T+yjWLELfNswFyP7LWjjyBmxiuEvuFMSQZ2ferW6ivG3tQKCD92/Ww5aDy4+VD+g0H15R3XOv+HkEmHeCH1rJQM+Kr1ImoqeRX5ycx+XrqJL4+w6WBrxwmx3WuRZtePym6iK3KzqzDE/Z8AEOhTen6+e01FxKHR5NuLmH93u1MURGbz7Y6AaYgW2qhOI/LDmqBju5bu9jCLJ3jJLKqGk89o3XQH0eLmUybXMNHCYeLxpDd5Pwv5NBVCVP3Q7kSrn16oXTI19mXdd2oemV9xF7FcjdEBuss5k8/em4ptvpwF4rq6i8/pKVhovgmMiAfdixE6G/IPEmuz7umuQbFLOzZCCzyMs92kOzc4CGtWW3eMcKS6yLZ/ZU7OtVCHH5Y3Oul1nwfWpyVUmmdjp7DD/KCEw3G/5OcILaR18FGX+eDSK9yG7Hus1lnlAckhoHNGc685pnMikOpzhcMKb2l168Xc82WAuOzyho7nwl41a5lINM62wQu0FTIxvnYb5pOKVA5a7LU90QflT1aobnGl20XykOKhCkKBaipnO3PJxdYTJKwdC9SRSV3mW
+ CVzuWTGW
+ uzLVag4pd0smMoCURWFnwAZ48LiyCBU82TTyGtcRVoGxq8UFqEN2kkwY696CfVPN90c+6hfm4hn3N0J0Z6Vc5uBR6yEhtgOj2IvwdgF982qJIPq0ban+nuVpa+f/GUwdkgfKn+IubzgEPA5hHDVlHNfYuivDO1tWLsXs1+HoH+jWp60Le/FGzMXOG3Xl+uPdYFAl925uI905bdPEC5MVVjK6/FFXP/kq/J1aI27X1lcpywuiv8PIynNSYdj3fwUlfMogiudjMTxv1hl6tedAnYUBvq1Rcl47paZTIQjRevutOlXiIOBb/BfedJ9Y5keBIuE67UUB0CuLoD4XMt0335OJyYoj/sMgSqiituPSVmfaRfvfLgKdhwkuSs65SpyQ3aZn3KPnJgkSQzLzT3Zyu3HgV0+DMGJCTf8Al+Vwgoanl1UDKJGGuRvlj+IyOU0dZImcimDHgCdPPnLh0KrQ2n4xn34n4KE0OGyXC14uH5fC7aDZ2NPPMKGVTq8kb2Qz1gz68uxzBu0fiYiVipLdYZ8uTiZFkbijvwdN7AELsaeUgOtpFZ1XshvqTV2AmlxrY7mIHzaniS7FUX3R4Pc60Ymzcmoj55z+UyrTQdkoNjWhE842bUGByLD+l/FYfk54GvM6rWApphruCE3bNCa+aiNVTepNJ922/cV3+EQtCgUxCBzD1hqKn1Vv+u7SV/6XHf1CV0TXoilKhf5gvytIbn5CAHX5jA7jeb6st0nc+pCqdoJhnSoeG98i1elM6XTMI5ZTMlVJ+0AvCeTr8Q6jjYCSuiHSiJzWRzSYUxZyDMRQFN1gh0RDv3EAGw4yCU5b232DfKM1Yxt/sw+G3Hk3SWbQiUZ0QmBq3/wIw0Lu4EG5RvROY9vjBuEqQl2mb62wMglkXsolBqaixDu2Cu4Hdly13A6hAqx01hrEKIv0JCIX1aYhDCVO4mX9SndwJqLY6aebOZ8CLhXQny3mUJy6zWEyXLcDN
+ 1WNyykpu
+ 1rVw+O+jnWdhHTjRZIs+OF9jrBTbTD6Au7NSHp6JiVY38wfGe2+ng6rK2syzfPm9EvPFRacjdM7lV6xyzYD7huGK7H49EfyKaHnMAvox9SMzngRlQ88G8R4MblsCIvvqKMKuAjhRTx8sEET7GtZNfBxCYepr0/Fqz1x8kL5j7abY6tWqUY26lQxvbUHRGZQiz3HN6JnKKaNRaMrbM9SSjKyuD+HdmyLdDihMvHp77R8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,14 +130,179 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Joanne,
+OVERVIEW
+========
 
-I've tested that this works well.
+The problem that root namespaces try to resolve is starting a container
+from a root mount tree that is pre-populated before any process is allowed
+to run, without inheriting any host mount-tree ancestors.
 
-Reviewed-by: Chris Down <chris@chrisdown.name>
-Tested-by: Chris Down <chris@chrisdown.name>
+Work on this feature started originally in 2025 from David Howells'
+container object patch set [1], but I turned container objects into a
+namespace of namespace roots and built a new implementation around this
+premise.
 
-Thanks!
+In early 2026, the patch set was left to gather dust in my kernel tree
+[2]. Then, the other day I saw [3] as was shocked by its over the top
+complexity and thus, here we are.
 
-Chris
+Not doubling the number of container frameworks inside Linux kernel is at
+least a benefit over container object based solutions. Parallel plumbing is
+an inherent flaw of container objects, and it directly affects on
+development and maintenance cost of container runtimes.
+
+Also, thanks to better scoped implementation surface, verifying rootns
+correctness is factors easier than with container objects, and even my
+early kselftest is meaningful. We know what and where we are testing,
+which is always great.
+
+Finally, it is more compatible with pre-existing container tooling
+whereas container objects would have much higher cost.
+
+[1] https://lore.kernel.org/all/155059610368.17079.2220554006494174417.stgit@warthog.procyon.org.uk/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/?h=rootns
+[3] https://lore.kernel.org/linux-fsdevel/20261105-b4-cells-v3-0-bc9095937a84@toxicpanda.com/
+
+IMPLEMENTATION
+==============
+
+rootns_create() allocates a rootns object backed by a pollable anonymous
+inode fd, pinning dedicated empty mount (CLONE_EMPTY_MNTNS) and PID
+namespaces along with any optional namespaces selected in flags.
+
+Before entry, a manager prepares the mount tree through the control fd:
+FSCONFIG_SET_ROOTNS binds a newly opened fs_context to the target rootns,
+and move_mount(..., MOVE_MOUNT_T_ROOTNS_ROOT) installs "/" onto the nullfs
+root once and attaches relative submounts beneath it.
+
+rootns_enter() forks a child directly into the rootns credentials,
+nsproxy, and root path without mutating the caller in place. The first
+entrant becomes PID 1; once it exits and zap_pid_ns_processes() reaps all
+members, poll() reports EPOLLHUP and rootns_wait() returns init's status
+and rusage. rootns_kill() walks pid_ns->idr under RCU to signal member
+thread groups.
+
+Namespaces allocated by member tasks inherit the owning rootns ID in
+__ns_common_init() so intra-rootns clone(), unshare(), open_tree(), and
+setns() work while foreign setns() calls fail with -EPERM.
+
+Cc: linux-api@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-security-module@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: "Liam R. Howlett" <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Manfred Spraul <manfred@colorfullife.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Neal Gompa <neal@gompa.dev>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Serge Hallyn <sergeh@kernel.org>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+
+Jarkko Sakkinen (13):
+  nsproxy: Pass nsproxy to create_new_namespaces()
+  rootns: Add core infrastructure for root namespaces
+  rootns: Track init lifecycle via copy_process() and pid_namespace
+  rootns: Add rootns_create() system call
+  rootns: Add rootns_wait() system call
+  rootns: Add rootns_kill() system call
+  rootns: Add rootns_enter() system call
+  fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
+  fs: Support installing rootns mount trees via move_mount()
+  arch: Wire up rootns system calls
+  docs: Document root namespace uAPI
+  selftests/rootns: Add root namespace test suite
+  MAINTAINERS: Add entry for ROOT NAMESPACE
+
+ Documentation/userspace-api/index.rst       |    1 +
+ Documentation/userspace-api/rootns.rst      |   35 +
+ MAINTAINERS                                 |   11 +
+ arch/alpha/kernel/syscalls/syscall.tbl      |    4 +
+ arch/arm/tools/syscall.tbl                  |    4 +
+ arch/arm64/tools/syscall_32.tbl             |    4 +
+ arch/m68k/kernel/syscalls/syscall.tbl       |    4 +
+ arch/microblaze/kernel/syscalls/syscall.tbl |    4 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl   |    4 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl   |    4 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl   |    4 +
+ arch/parisc/kernel/syscalls/syscall.tbl     |    4 +
+ arch/powerpc/kernel/syscalls/syscall.tbl    |    4 +
+ arch/s390/kernel/syscalls/syscall.tbl       |    4 +
+ arch/sh/kernel/syscalls/syscall.tbl         |    4 +
+ arch/sparc/kernel/syscalls/syscall.tbl      |    4 +
+ arch/x86/entry/syscalls/syscall_32.tbl      |    4 +
+ arch/x86/entry/syscalls/syscall_64.tbl      |    4 +
+ arch/xtensa/kernel/syscalls/syscall.tbl     |    4 +
+ fs/fsopen.c                                 |   74 +-
+ fs/namespace.c                              |  176 ++-
+ fs/proc/root.c                              |   13 +
+ include/linux/compat.h                      |    4 +
+ include/linux/cred.h                        |    4 +-
+ include/linux/fs_context.h                  |    3 +
+ include/linux/ns/ns_common_types.h          |    4 +
+ include/linux/nsproxy.h                     |   27 +-
+ include/linux/pid_namespace.h               |    4 +
+ include/linux/rootns.h                      |   87 ++
+ include/linux/sched/task.h                  |    4 +
+ include/linux/syscalls.h                    |    5 +
+ include/uapi/asm-generic/unistd.h           |   12 +-
+ include/uapi/linux/mount.h                  |    4 +-
+ include/uapi/linux/rootns.h                 |   38 +
+ init/Kconfig                                |    9 +
+ ipc/mqueue.c                                |   12 +
+ kernel/Makefile                             |    2 +
+ kernel/cred.c                               |   70 +-
+ kernel/fork.c                               |   29 +-
+ kernel/nscommon.c                           |    8 +
+ kernel/nsproxy.c                            |   49 +-
+ kernel/pid_namespace.c                      |    2 +
+ kernel/rootns.c                             |  599 +++++++++
+ kernel/sys_ni.c                             |    7 +
+ scripts/syscall.tbl                         |    4 +
+ tools/testing/selftests/Makefile            |    1 +
+ tools/testing/selftests/rootns/.gitignore   |    2 +
+ tools/testing/selftests/rootns/Makefile     |    5 +
+ tools/testing/selftests/rootns/config       |    9 +
+ tools/testing/selftests/rootns/smoke.c      | 1254 +++++++++++++++++++
+ 50 files changed, 2559 insertions(+), 73 deletions(-)
+ create mode 100644 Documentation/userspace-api/rootns.rst
+ create mode 100644 include/linux/rootns.h
+ create mode 100644 include/uapi/linux/rootns.h
+ create mode 100644 kernel/rootns.c
+ create mode 100644 tools/testing/selftests/rootns/.gitignore
+ create mode 100644 tools/testing/selftests/rootns/Makefile
+ create mode 100644 tools/testing/selftests/rootns/config
+ create mode 100644 tools/testing/selftests/rootns/smoke.c
+
+--
+2.47.3
+
 
