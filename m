@@ -1,168 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341E3606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 15:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C96606A337
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 15:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=QEZlqEdW;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=xjk0STV/
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=La5iaYZ1
 Received: by kanga.kvack.org (Postfix)
-	id 46B286B00EF; Tue, 17 Nov 2026 10:42:09 -0500 (EST)
+	id 857596B00EF; Tue, 17 Nov 2026 10:57:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41BEA6B05B0; Tue, 17 Nov 2026 10:42:09 -0500 (EST)
+	id 7E0E56B05B0; Tue, 17 Nov 2026 10:57:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BE7B6B05B1; Tue, 17 Nov 2026 10:42:09 -0500 (EST)
+	id 681AD6B05B1; Tue, 17 Nov 2026 10:57:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 056576B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:42:08 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8343014045E
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:42:08 +0000 (UTC)
-X-FDA: 85445027136.08.1B5CDA1
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3574FC0003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:42:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=QEZlqEdW;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="x jk0STV";
-	spf=pass (imf28.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 424AD6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:57:35 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB1821A049B
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:57:34 +0000 (UTC)
+X-FDA: 85445066028.11.C651F19
+Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 04FDA20010
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:57:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=La5iaYZ1;
+	spf=pass (imf13.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794930126;
-	b=b2NOqUsUPefrCEOwFAx2c5uPUaXfCqBAMdOyGMZM2UcDmsvidw8v7dWI164+X7XKQMjzFD
-	+SeI8uWHiMxak3ulCJKqrXx/MJKCu+gkJPBH9+FCkSCL6wuu7U50CKdDzgEsBkKT9Qsv30
-	7g/3MtIp8D3jPkAb/Sh8R7PJ1ngM6LU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=QEZlqEdW;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="x jk0STV";
-	spf=pass (imf28.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+	t=1794931053;
+	b=rDEggn4YcWBPcYwNowCoLjfO/Q8KqOwq5I61wND8EKv5Bl6rIZcXAU2ATqPhca3BjmanUi
+	10C5FVDsEsXaZsnuxrs8Eu+09aU4vIElTCaEREgD5TYok5/s8O1TyMrXryuv+G2nt+HPvL
+	NpE2kk8sPYzsNmnP0xUjoO1LijnhMZQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794930126;
+	s=arc-20220608; t=1794931053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ll1OJgMTfmbPO7d5RPNU8rQH+se51A5k26zqVWnejZw=;
-	b=FNHVV65iGXPFifo8OF37jHJkspEnAF8iQoB2DZUNSGUmA/mD0eGOLXALO0Mj5njJQp+i+z
-	baN1tPxOy0eblYOTkUrH9XloHyNIdZ9KPZ8+a0iRGlxYaWwnitPnXc3PigNSypCWpJzNnG
-	g/EiEOBUdXhwGuYp8wqpgoy/hnZPqtk=
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 7D5F61400162
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:42:05 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 17 Nov 2026 10:42:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794930118;
-	 x=1795016518; bh=Ll1OJgMTfmbPO7d5RPNU8rQH+se51A5k26zqVWnejZw=; b=
-	QEZlqEdWmLc2QEeS/BvIC2QetEO8ShYZ8QZ0rgehqZi2X19nuUaFAx+esxJHgLnt
-	HVTPUJLjNLC2N7WtnFZR0QMqPeZ4KruDB3miKy5rh1lKpSNLuqrcp780F93wnkdp
-	gab2EWwAv8xyOGTR/Torx5SHoEnu8LhryEt2CtwNzMg/q6if/vFpC6XyXmDxo+9j
-	hMolatYINZtvg4s/5AGp3ec7e3505ADuPFWsry1m4NFISDIx0fi2ZdqhoP2y7mxD
-	Fybj5ryRQmmOPXg6fLVhUr27Z1bhna3g0S0U8G44YhZ/h3OT2CxSCqb3g1zYtbHB
-	EzHG8WD8/AwMJe/Qk2KQ3Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794930118; x=
-	1795016518; bh=Ll1OJgMTfmbPO7d5RPNU8rQH+se51A5k26zqVWnejZw=; b=x
-	jk0STV/L7B3O32tU8VWQ+CXfuJNPCEgZftRy6OCtYsguLRqbFWxi8TcoLDMess9D
-	u7YjlWVhKHXW7Ez8ZujQNovmIVo2avPQC1xH7fK0iehkA4Cg4+tUVd9GhVk4AXSe
-	iAP5DPYQ1ltZU8fXdllavVvDIlH0brQAaLrHMwNQJr4PZD+d9o/txnf0rBw0+61h
-	WfJKoINsTt8fSQKUD2C5M7fpa3e+kkbOZPKq9c8nOZL+uS5NxQnGb9lP7F0zp19e
-	Z+U45BXjDR9EPtbOv4gpqPHnmp+3cf0fFX4Uu2yxdovwgCRELzokQqgvmxUOsGvT
-	MPa0smRqY2s+RbOinkIJA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794930118; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:IdJUgS4PPmOeUB8Yb6vxnSDtuH0VJrF6xjLwak7lfEvOrMm
-	KeMHCi/e/I2aBtzAGWRuXdxhA1o5VQmT4DQdFR7QIVqm4jP2KX2k1qcHH801YAR0
-	P9ILaH0LgEWI7vVI3pHhF31UL6IyIlSGWbQXDxvNKXU/F+nbnJ+/cBZq01kYGlGC
-	55mKkSSZ+MK0RfHWLJLfD+ET/nbSkFDImXNbGYTTeiYZtItX1dgmgkVB5U58RxBK
-	pGMgnVfHkJ3ShkNq749ztou++FO0U9WX6utOrI2BnsAGCANRErL88dPJQJGCVMnJ
-	RKgxWOHNQ4MSI835EvKp22roMrcqqvnwL4uwYlg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:2E40Akz7CxLdmuHlTptnFJiub4jcCNuV3dW/pONaNOE=:XQKkVDqsZ6QAFyQa7gMxgcUZ+KiF7YSNEoDW2ZGC3Os=;
-X-ME-Sender: <xms:uHX8aj1ULntcAUjkLkyeKKS2OhHsnYaZboc_qTKkPmMb_Rh6xj1BlA>
-    <xme:uHX8as5_M3xbsNzHJjlSvktxoxnwpOJmqi5r_0lEtCjqhB5l-ociCBTlam_GSGS9P
-    Wsk0QaMd_UCkjc9EPKz8ZHIPqIWuwy9Mbnpi8R2MQFfJzvmv4o-rsxg4Q>
-X-ME-Proxy-Cause: dmFkZTEeJL0hwSgutYTXOLa07funNRvMyPcPnJNDU5g67C7XEeTwvtKXcfgmBe6zntHJIV
-    hWVxBCJPwJrqa6fhior51HEG1Y92Mns1888jh4KZEm3IDFBQOvSqu8ssEeQzJpNx2oF84s
-    4H7Uj6X4t7fgv6Fjn5AQ2tudTC+laSaiRXUul5xFQjHYC029RvSS13/d+dv4wwBj7Yn3HS
-    x5VmPMgGXww/TIVieDlS8BCq2YnZ4rSLiQ7s1Sco1S5nUwg50M8BHdy+cVwTlIJQwqsCuK
-    EomYhXWiNLeYHbaHt/4WnYcbuK268FwZlL0axh3zm6ezRWHI67tZZrzPUaKVXr8vMnSDBP
-    cZniHB8BHCzNCmfI4FaQhmKAKQN00ak5GaXTEM7gXg23kxhK4HlLXfcWokveeAMUi6sm7P
-    +hwELaock05KDm5SwW6DvgqSzCdyoX+3fVVkaVyOJoKFbfhfkGB/t/f0FiBVqPJX/B2uBM
-    OnFeY7lW6pC6aX+lD2JdAqV1Ob6LSU5l2Brc7WXHHmwsCE5U1DsIyUOrP2/dx6MXbYu4/7
-    LZno59sHVe2sYLlQtO7JxYvGTvtc2xBgf1/zkTUcFbqMVNltrUVgS7pLPreEqmGsPn+4uw
-    TcuZSSv4Ot3WyFWSNCKpCQ5gMoOfu8BVMGFOEOe0oatIX9e8yLFWiAE2mxlw
-X-ME-Proxy: <xmx:vnX8auYuKawXISghf2SS_ele99TK-xlZAaQoZNwnjO3teiGw4mk6uw>
-    <xmx:vnX8aqMLx1SreMXPhKf-edBV69G0ugydCrfVeeWBQeqNzqHGXnCoZA>
-    <xmx:vnX8av4gTQP6w5zLly17IpnwDRqE3w7EqapVYUYeSjo771u0PdjAcQ>
-    <xmx:vnX8aqN1FiwixV-u1II7ik9iaKq5xJw6Bi9WyoII-D6I7ewjczzIHA>
-    <xmx:xnX8al9iigkUpsfbrzzYnNp6MlNkTaLHYYtXFBUbQ-3FEKV4pkbZlJ1a>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id DA48532A009C; Tue, 17 Nov 2026 10:41:44 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=3+FyKPryUnxHupmwOSIIYdOL35FcAHgGEhz0DKQNfhY=;
+	b=Ibg5rKpSTQZ1qNb7/gHN2hfMPZPv2fxbba1U5cx0lVSWMI7KBxzQ96i7vyZlWIezbZzRpe
+	WWPK8Paqw2bU9HcoJFSbzvxby9i5JveYUVFTRNfC/04lLpEExEOw/MGmlqBzgdWA0PoAIL
+	U0yPXkuHgmMOxGYv/OYA+dWGQy9NuOM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=La5iaYZ1;
+	spf=pass (imf13.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f9.google.com with SMTP id 98e67ed59e1d1-3b18c01238eso1530254a91.1
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:57:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794931052; x=1795535852; darn=kvack.org;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=3+FyKPryUnxHupmwOSIIYdOL35FcAHgGEhz0DKQNfhY=;
+        b=La5iaYZ1G4vXQQ7Wbv+/fz2S7sRa47+Gwvv7LkWCj7q7Sh1AAkd15tb1q1TOR5wj8z
+         +R0jWT5JQcEpuWLOYsiC8o4KY3zFPdmK6zlRv5P0GXBU+mb3ohImR+NZbejzboKSI42u
+         hh9eDiaPEXtGsidy5dbsOOioxYEYvTLQguNpKCuAFB3y/L1+J60AYsd9hMmlWLXYO/Hh
+         FGPlybplhh6yR4YtlDBMsXGC81uBh4xBSjswCxR6Ya6McLew93/wYRBdDQVlCa3qkP7C
+         K6fTTMeV9ECX85L4S+mZSmS652AaF2YATxQfgoxrSj/1Oaen/Av3GH5Eq7jmfxBRupZ7
+         pTlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794931052; x=1795535852;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3+FyKPryUnxHupmwOSIIYdOL35FcAHgGEhz0DKQNfhY=;
+        b=kfYecTIsFhHGVz5Ju38h9fOKbEVBLzMPIBU13lxcwgqylt/gywKKG0z2gwgFUvPj7f
+         VOa0mZzZ9cMl4Kq8ZngvOCZFfQYDim8QcNeYkw5qW2h8X0YDGFCk2Klcd+yntCpGL1Qx
+         cJJQOgELBijjlcRVCTNWbMv7cegIOR1ejrvhH5cIljSNJrAImQzKSL5CqpPHWXluWKDd
+         SxGRrQbE0KqwivgakVGvkmhNrZk/VLL17ggsmnz1dNkx5ubgb7gZg27YY3u2ipiMB28Z
+         E6raykeirBekRLe2yIheFvb69Wq59nuKn69MlU5J5o7Z4Miurr3EYohLLTEisq7uLvfR
+         bSKA==
+X-Forwarded-Encrypted: i=1; AL+hErHV5ZR4EDG39GSpn+coY0TXWap9G699MbZkNzglunB7UkpJYpRUa0o4iL/U4JexylcbM+LBzQ6qbQ==@kvack.org
+X-Gm-Message-State: APuU4Z98KYHhqMldHlq7DIO9vHF5wUgyt3x80xp21a2wRRuBV3nSJq8G
+	cpGweaav2QXk+SjQaD7OjOL3j74MzYTrEuc9N81RjFt7Tn5LCQCtEMDL
+X-Gm-Gg: AZFdTZcly6LBfesRlCWLQ58vhQqR1QsoRymSeLJ2uJHWQaLFuNOIjW69WtTXbYkO/H5
+	3iywhfRjYZrhpwarPyE+5jbw6OxSgtRQqNalv7PoLqmY74SUU4ta4vbDucgfh8cckDIAno3gt/M
+	INIE6MpHsZ5ypTB7I4E8oWQ62ojdJOifbnBCTkZdC7ClC2nn6DyR5ZbGrKdiqTqbuakfCebb7//
+	7c+SYogVhTdZOl1N653kD1jRN7IDc5p+7mgA0FrXjRYuQrcooM8jmc6tgEdGrn2gwDycQKRkbbT
+	I4cycoS0P5wMTgdp2vknr+bDazC4tpxlhfFzwS08O46aCDmwHeEhsFwL6Vsjhp4s3H8XOa5h+CQ
+	OdmAOz4Gs2wVg9J7eAAnVcyrIa6Xnm1xfK7l80uLPP0vqzLszUFQCavegJmCYYpV01RkTUyej2G
+	B6Qev/HooYEeYvbWpjbT1rXSjuj853YtB4hB61Zgi/EE5YLm1DJ37funV3AFt9OZBeZ2y8l42Ou
+	v58TWCNF7vAreIcV1UT5vL+r+M0Fb5w8Ad9V56aq2RW/YLN/GfhqyM68F+KbCzMsCEH6RIDsgyG
+	b8XijtlrIwrFHD+fWEGP8DV/XdOARdxvFAZTHdx2flzrO6abB19X6LoeEblISdNjI7Uw5VAWQrW
+	CiKV7hBhmEAjM17Uacf/zdO98hO44Omnd8O5l1ATcPzt4w4kuKRxc3UI+MEkOaS3+E5ZKaczDuZ
+	XezWXUtn4=
+X-Received: by 2002:a17:90b:50d0:b0:3b3:b750:d2ed with SMTP id 98e67ed59e1d1-3b3b750d6acmr2306459a91.8.1794931051401;
+        Tue, 17 Nov 2026 07:57:31 -0800 (PST)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3ac6016c3sm4692320a91.15.2026.11.17.07.57.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 07:57:30 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AwZDIwU2rPTF
-Date: Tue, 17 Nov 2026 16:41:24 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christophe Leroy" <chleroy@kernel.org>,
- "Arnd Bergmann" <arnd@kernel.org>, linux-mm@kvack.org,
- "Crystal Wood" <crwood@redhat.com>, "Alexander Graf" <graf@amazon.com>
-Cc: "Andreas Larsson" <andreas@gaisler.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, "Ingo Molnar" <mingo@redhat.com>,
- "Jason Gunthorpe" <jgg@nvidia.com>, "Linus Walleij" <linusw@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Lucas Stach" <l.stach@pengutronix.de>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Malin Jonsson" <malin.jonsson@est.tech>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Michael Ellerman" <mpe@ellerman.id.au>, "Michal Simek" <monstr@monstr.eu>,
- "Mike Rapoport" <rppt@kernel.org>, "Nicholas Piggin" <npiggin@gmail.com>,
- "Nishanth Menon" <nm@ti.com>, "Richard Weinberger" <richard@nod.at>,
- "Russell King" <linux@armlinux.org.uk>,
- "Thomas Gleixner" <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Message-Id: <93593ec2-0f7e-43a9-9166-dee90a9cd2c3@app.fastmail.com>
-In-Reply-To: <14e28b99-12dc-4000-a704-8b46cfeb3c0f@kernel.org>
-References: <20261116124832.662455-1-arnd@kernel.org>
- <20261116124832.662455-5-arnd@kernel.org>
- <afebfaf5-f3ee-4234-875d-e5ebf1ee64fd@kernel.org>
- <83495d02-4e09-40f0-94fe-e57a1e73d1a3@app.fastmail.com>
- <14e28b99-12dc-4000-a704-8b46cfeb3c0f@kernel.org>
-Subject: Re: [PATCH v3 04/10] powerpc: kvm: allow flexible PAGE_OFFSET
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wwzbotq1h69urkof687yg1cfnqsyy5pu
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3574FC0003
-X-HE-Tag: 1794930126-195870
-X-HE-Meta: U2FsdGVkX1/0+Lka95lOEuLgJhOLUyZ7P1fiR/g1BrPOn/5/1ooA41oHV+YUwa8UrIgJnkrdBQmCh6cerQX5gq2x/hVzezXnwliGXfHHPdzsLrRuPW01Kl9CymX2W3NjSWQ254wNohqDboV/cDgMna1mUAGDECJWp9WemYmGGRlTLo4uHkFQIUzROANLgk6QPyuBpaHM51JNxQh571cQ2HPUJSFrQBZRTHtPesRh/NKi3mGPFRiIKkWcHXGURNkWVfMexg/6ovjXWkhlFGzpTupsG3R6l8BWJ7alQifGYC4CBXTNgnZrxEc31h5kB1LKeg+LMowTddkeJba371H5ohbOiiGL/WxpsGSJiBsiU1cOz+6qRX1GRIPdeiveGmY4zxxebNcRp3ckRDYBhgLJHWr8kmF0jNKHjJXDxSbSJFH6XbmDYbiuAf3DoDqbCkbeF2aayP8idk9C2h4mE6/ItEXlxrDJr/Jfq718kPPawCqOqGOXFvzm/xNkN33M199mt25uhm+phFj+qDOGKpO+20xh9bHIca3TApokDkP6ZDt6JESJcAtHcpE+zrLjpUgpr9rnRwAHd5IThsbcS6sYWNtqfMdRQX2U+iKWP/upavKCgMjIRmBxUNdgrlmDzQVsx/gm1LU57/XMVygYcR6wv/Ou5HDRonlSIbmyZY1B/EyXCL1jG06u2L8GYGL1d04NekIt6YY4svgY42zriyXFdbw59dRbhUKp4IGQdtfmlQoFMCb4HW73umPSfK6ApIpMX6T8tSpte3gn8nl57bn+zRuQx8Umnfeab0aRfR1mz5Ek1N75YprAf61n4P+eC0SRHCe3uEfHWglojTHM2W8Kq/E/z47C6Hzv9u7kPFJN1hn+QcG0qOOjwdBPE2IzNFNfjh+wYgvakZnJQzzgMkDRr0PVOPpEG+Yl/d8WT6SOgGdMv2pF5NLPiZE0a/pCS+hywuYuM+Guss10LUVSRVO
- palBqBZ2
- 3dUxUUd6M/wKee8NNzpui1WqtQj6GG6AKZZwSu15TJMgvepMPZq6ZgYQEWpc2UlNna0gaPrtb4kc/iE2CYJosoGdTqcjfQqbaMO2VF1wOHkHSBJWoEH62Zz3RVsBz76ig4YLufFwmG65wm6jHegu96QmsnI0HNtWUCL3aw/RR0IIm2MMyHtq3JYMQUCthJO9NP6TQR6YT6YkUIRDZdRZ7hx5CLjyXw3vV25ljXmlCt6n1u43fZw6y3A32OxlFQ/wqcimNG9BPCurs85Xc812xrtuUoTu6MINQYNLUTudmESTLhoR+RK4bnRD0SQiXMXG66joiZZYL9XRQExHah4BKT5JRau8So8xlS4ZcggHVgdsTkQA3th47W/amc0ocCKP/SR1a54Pl4xGxygg=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/damon/paddr: skip hugetlb folios as a whole in
+ pageout
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Wed, 18 Nov 2026 02:54:30 +1100
+Message-Id: <179493087012.57245.993362683540368479.b4-reply@b4>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, sashiko-bot@kernel.org, 
+ sashiko-reviews@lists.linux.dev
+In-Reply-To: <20261117143352.121497-1-sj@kernel.org>
+References: <20261117-fix-damon-hugetlb-pageout-20261117-v1-1-054ef8760a92@gmail.com>
+ <20261117143352.121497-1-sj@kernel.org>
+X-Mailer: b4 0.16.0
+X-Rspamd-Queue-Id: 04FDA20010
+X-Rspam-User:
+X-Stat-Signature: ogjqgepe78dpdfhsoedymzm55f1is5jh
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794931052-761035
+X-HE-Meta: U2FsdGVkX1/eNJjYXPCRVNimtE5Yp0RCd09ds9A2cbejuM1CGjNq6ODBFUi/f6Co6+JLXqrSwTQcY4r8TmjjZPoQoE8JgKjhjans1h+ObEMCmXAmGIK/UsgbmZN2YEq5wnI9/0T9bnH/rL55xXwGZwuynfYmBofXFfmfaWKCJvZgUEPlaxGWOxy8Vcn2KAUbWcfpHXThYpHrrlCnAU1RJ6YG8nZp6Hh+FrHrC0DpjDzhlglDTg2C2SoomgwbrnlTFNo1M+xvVXfHjTjH+fmu6U1yDwilME9uuCIeJI3F9cWiHMH0ntiK3HfekEEJs+Pq5gtXo1DIvKBy7oSh6HmRj5u69mzFF2Cih+uWmsME23lR8VVWQtDuqMwVAg1cRsslu+aNvQfc/KXpX+mOU9Nmrszfh1xYxen1mkdx8JRxooQ3u1n49MGRBTjyIGpIrWSyW9tLcHazC2uxJhlBZxr6nOdHjjOkxrqfIj3xS3A9h/Tli+DlqET9T2D7rLm74XhdKeJFE47AIS5JbdZ/EEZmqKedqjLujRkwwaJiF2xkw9IK5WwY/Wkrhn4XzH8f3EvYrONhTzE+OCDv4vinA2uIaY6pn5NRlkkXEVNCcTTk1nDfUr2vM7sK/rXtQBYMlinMF1+E8cWWhGW2RxqGQdE4uMD41untT2EcqSgjeTlS68yZrNUmLD2MZIVPCDC6anVl8T23cfzpPlkUTT2VA2o9s6/5K7ijQOQrcjt8btlZnyBrKayEr0R4b4YEt+9zbDMnkAOHAZ+gi6mSuI+N1EvWGOhTdtxASXT1POzUjGPbz4lPzxjonhxVKdUTXnldNXNAJPPOH3sEQoZfozCML+nlDR+sXmIYKic95AH0jG/01J0H1tCDgjfIBMHorBzu5chYKXznEvH56zNC3C5HJGcciRd9S/hxNk/SZMjxkAhFGR/juetl90Q6ai1bqZQrGRZfdbGEvh98352I6tVCCRW
+ Cz8pIdGt
+ dWsNBg4amrX0Vmx1QKC1ChH72mSXcMGv/tt8RpLkT228nDPeGrC33/X74NDJkCkXvQ+mdIuBaRVtihhTjlkiw4CoCzGpUhK1LQleIdoPJIjp1EQckH/mvV/5/i70TKP6OHY0bvKXNj3dEZbkX8o1m7HdrABrMKUmc+ILadMaUk4K4g0GTsFx88UU2rUyxf50G1U5inw4rZHDliCnx49fKbIQ38Ms7hLQ7hkoWdDwlz8FCElUe7QAhNEH8CrIfxv5d5SDXtmFlF0jiee5+4PWx+0NdKq4vb2e4aqahl1/mTTncy+tCo8o5vA8xDWszMdlVORDk6H1mzLwMW7TN3XUaoYZBS9kd/OWhU7o4vGkclXJlvEkAHKdBpxdHd3+a4wMnDKKQn2uD1gFZbN2DGBwv/27sz5Qoc+91XSzBeAFrj+f5Awfn6E6UZrz1CApiU0cD0fiizJCuCQYyrOVlOhFLbvjaQrj82iBhoGYzWPM+YDHhWZO7Qb+yvxuuY5G3PUUUFO4Y/SBFMdwCzJveszYXKnvhelsWPiAd8tV2YcPEGSPnbPErzzpfKvRo+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,82 +130,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026, at 16:11, Christophe Leroy (CS GROUP) wrote:
-> Le 16/11/2026 =C3=A0 23:54, Arnd Bergmann a =C3=A9crit=C2=A0:
->> On Mon, Nov 16, 2026, at 14:38, Christophe Leroy (CS GROUP) wrote:
->>> Le 16/11/2026 =C3=A0 13:48, Arnd Bergmann a =C3=A9crit=C2=A0:
->>=20
->> --- a/arch/powerpc/kvm/book3s_32_sr.S
->> +++ b/arch/powerpc/kvm/book3s_32_sr.S
->> @@ -107,14 +107,12 @@
->>          KVM_LOAD_BAT(2, r9, r10, r11)
->>          KVM_LOAD_BAT(3, r9, r10, r11)
->>  =20
->> -       /* Restore Segment Registers */
->> -
->> -       /* 0xc - 0xf */
->> -
->> -        li      r0, 4
->> +       /* Restore Segment Registers, assumes PAGE_OFFSET is segment =
-aligned */
->> +        li      r0, (0x100000000 - PAGE_OFFSET) >> 28
->
-> Fine, thank should work allthough I would have used 0x10 - (PAGE_OFFSE=
-T=20
->  >> 28)
->
->>           mtctr   r0
->> -       LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * 0xc))
->> -        lis     r4, 0xc000
->> +       LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * (PAGE_OFFSET >> =
-28)))
->
-> Maybe an opportunity to replace 0x20000000 by SR_KP
+Hi SJ,
 
-Ok, changed both.
+On Tue, 17 Nov 2026 06:33:51 -0800 SJ Park wrote:
 
->>>> @@ -115,7 +115,8 @@ static u32 get_host_mas0(unsigned long eaddr)
->>>>    	mtspr(SPRN_MAS6, 0);
->>>>    	mas4 =3D mfspr(SPRN_MAS4);
->>>>    	mtspr(SPRN_MAS4, mas4 & ~MAS4_TLBSEL_MASK);
->>>> -	asm volatile("tlbsx 0, %0" : : "b" (eaddr & ~CONFIG_PAGE_OFFSET));
->>>> +	asm volatile("tlbsx 0, %0" :
->>>> +		: "b" (eaddr & (rounddown_pow_of_two(PAGE_OFFSET)-1)));
->>>
->>> I think this is not valid.
->>>
->>> With PAGE_OFFSET equal to 0xc0000000,
->>>
->>> Before:
->>>
->>> eaddr & 0x3fffffff
->>>
->>> Now:
->>>
->>> eaddr & (0x80000000 - 1) =3D eaddr & 0x7fffffff
->>=20
->> I'm probably still misunderstanding the intention of this code then,
->> my reading of the comment was that both 0x3fffffff and 0x7fffffff
->> would be valid choices here as both are below PAGE_OFFSET and
->> large enough to alias the correct set.
->>=20
->> What are the actual requirements for the mask?
+> > +		if (folio && !folio_test_lru(folio) && folio_test_hugetlb(folio))
 >
-> I'm also struggling to understand this so I might be wrong. My=20
-> understanding at the moment is that here we are looking for the physic=
-al=20
-> address matching that effective addr in order to find the 1:1 MMU=20
-> mapping. The particularity of booke is that you cannot turn off the MM=
-U,=20
-> so to simulate MMU off you have to have a MMU translation to translate=20
-> logical address 0 to physical address 0.
->
-> Therefore IIUC the correct calculation should be (eaddr - PAGE_OFFSET)
+> Why do we need both !folio_test_lru() and folio_test_hugetlb() here?  Could
+> hugetlb folio in lru list exist?  Could folios not in lru list be reclaimed?
 
-AIU that would be wrong for PAGE_OFFSET=3D0x70000000 if eaddr>0xf0000000
-is a valid argument here, as that would still point into the linear
-lowmem map. I've added Crystal and Alex to Cc with their current
-work emails, maybe one of them knows.
+Yeah, you're right.  Neither is possible, so the hugetlb check is
+redundant.
 
-     Arnd
+> Would only !folio_test_lru() suffice?  If so, the patch subject and
+> description may also better to be updated.
+
+That'll be better. Thanks for your help :) I'll fix it in v2.
+
+Thanks,
+Aveline Noir
 
