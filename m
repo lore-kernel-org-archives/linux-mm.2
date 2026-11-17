@@ -1,96 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2DA606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 02:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AF6606A333
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 02:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=BnQfriOm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hrwJiClt
 Received: by kanga.kvack.org (Postfix)
-	id 19D9A6B05B7; Mon, 16 Nov 2026 21:02:49 -0500 (EST)
+	id CE92A6B05BB; Mon, 16 Nov 2026 21:03:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14EC16B05B8; Mon, 16 Nov 2026 21:02:49 -0500 (EST)
+	id C99F36B05BC; Mon, 16 Nov 2026 21:03:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F09AE6B05B9; Mon, 16 Nov 2026 21:02:48 -0500 (EST)
+	id BD69E6B05BD; Mon, 16 Nov 2026 21:03:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C21E96B05B7
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 21:02:48 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20D1AC02D3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:02:48 +0000 (UTC)
-X-FDA: 85442962416.26.E5884DB
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 68873120009
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:02:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=BnQfriOm;
-	spf=pass (imf29.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FABF6B05BB
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 21:03:11 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1067D1602EC
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:03:11 +0000 (UTC)
+X-FDA: 85442963382.28.0BDAD35
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 64F6C40005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:03:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrwJiClt;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794880965;
+	s=arc-20220608; t=1794880989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=3j1/LPII0agGL+7GGF+Dy4qs3ftQPKUhDA9Jt0WBq1w=;
-	b=d7Lbzhi694JoWbCUP+8Bjc4uSkMDUODbe66LCH3MAy6mqAd1P5OErzqTZH49oWjU/C7yEH
-	d1ZHd+l3H1ugDSkg24YB0SE/iXYUlxaxSlso73AZyPMvOd4IGsigLdMYAypL/tDyFEestQ
-	KcnaqTY9RsC3EpNAiz/pxF7AgDfIlYY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Xk4s00lH1jP8Kym1YXaLQ7Wf0LEh2ORBX1GhbZk7f6s=;
+	b=ov+RR4EiLZXzinQe2WP0apxhlFb5iEMb12AO3hBWED8FrWXqOrOjKdgBoG1e8wH3eU7CKL
+	lCgFTHLJJkDFvwolB3XEYpoXyZbS+frpA+KvUyFyLTBQ3YzzuHL1yg5o6J5Seb2fOTnOiM
+	CxzNMWddjTceiN4Lux7i0J/KqUMH3vk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794880965;
-	b=OL4hMw9MWpr8axr2dFaaZ4Kr9t4gqj8nPmHoJHV0Meop9OrKJRXZhW+0IdhkgpjVOiew5j
-	JRRg2v55fSCtPJmNCB7WlEO/vVkk8fFzZhalBQvCVoofI6KrTurmI6lhHcKkfh4FG+ucBe
-	1onIKg1Xrq+5jeC9j8ZiWm+YOO3DsxU=
+	t=1794880989;
+	b=BnzF9T5KdNk8kEthgcpB3OXlz4iFOpbMELLx72i1sbjDCQle8bhF96OO58upSMwKtAGTFK
+	WwrfJTwBtxg0SY0MGB0w9nHUE5aCQbv387quFKXK0stadRJmT8RsBUIU3zJ0D+fmzYnEaA
+	2ZItnN/96OB5z9H/+a6tkFKF9wQJ+/s=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=BnQfriOm;
-	spf=pass (imf29.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=3j1/LPII0agGL+7GGF+Dy4qs3ftQPKUhDA9Jt0WBq1w=;
-	b=BnQfriOmjYqZaNtmWwEWDJ7ZOGw6Lhma2L1aTwiU+hOtUzpBpDbq9ivkvsipKWXiMz39V0uDe
-	rWQ1ecG8Yr1S4rXiyPquSYC8ENi8R9F724umfppvjQc3LCOuhceS1eEbyqcHpRjvuYUMC609ur4
-	KpIyDOIcbNwNMpvQDr6YXgY=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jT7K72lS3z1cyQG;
-	Tue, 17 Nov 2026 10:02:19 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 68C874055B;
-	Tue, 17 Nov 2026 10:02:38 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 17 Nov
- 2026 10:02:37 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
-	<ryan.roberts@arm.com>, <peterx@redhat.com>, <dave.jiang@intel.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-	<tujinjiang@huawei.com>
-Subject: [PATCH v2 0/4] arm64: Add PUD THP support for DAX and pfnmap
-Date: Tue, 17 Nov 2026 10:02:33 +0800
-Message-ID: <20261117020237.4037980-1-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrwJiClt;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 930FB45E41;
+	Tue, 17 Nov 2026 02:03:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF621F000C8;
+	Tue, 17 Nov 2026 02:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794880988;
+	bh=Xk4s00lH1jP8Kym1YXaLQ7Wf0LEh2ORBX1GhbZk7f6s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=hrwJiClto+C48EC49n/1H+Cjq63wAPZR54SZhU2EAPoOznhGsCcLABIaJWwDaJbw6
+	 rfN8nr7hASd96R0hpYkrxOSruU11D/asS2RZYm27yucpVPGnrqDCA5cgjVZU/nW1mW
+	 Ln45+zLNkAjf59tt4NtJhM11f2uAt/96RnwjFz4kiqDAGSzzp4ac6X72ofkiJ1yMBQ
+	 j/NLU9aJTIhW4ayxlU1IfkIPaIe+KOp6jom6cXnqtTTIpcmMaqIxLnzSM5wLjbUiBw
+	 KL5dH8sv+n9Iuu9OzitAAlg3DQf5bIpi7NjAN3evObsWIZS2bky+RYSCYwzjJ0ftMj
+	 m/gPZJYqROqiA==
+From: SJ Park <sj@kernel.org>
+To: Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Mattathias Pinchover <mattathias.pinchover@uber.com>
+Subject: Re: [PATCH 1/6] mm/damon/core: introduce sz_ops_filter_passed_last stat
+Date: Mon, 16 Nov 2026 18:03:00 -0800
+Message-ID: <20261117020301.109715-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261116-damon-sz-ops-b4-v1-1-1cffe7227e6d@uber.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+X-Stat-Signature: uh8snxfabgtqu4p37ddau54ybgg3anuu
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 68873120009
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: gnxxyfyus7jxzm4p88bgkhcg6ez3wchc
-X-HE-Tag: 1794880964-716097
-X-HE-Meta: U2FsdGVkX1+IFlBv/ByVO7ADmGEEcLrY9WJ0jLYE8tIieyne4Ld7Ow4TtTsw+JFjy8Ale9ZK8QX0qvvMa3ezCSunwKF0FMZIM0HUwheFN8xetCZjA5jtdS5rcPsUoKXjI/cdbc354jfZsfw1VLf/8on01RI/RqKAlynvvD2RALyOGrBofioWBT6sk/kYc2OZYrxAN1bBm3CMp8lEFyljUSjNcj4ij1b3Ht9GvehOwVvWWbJ58QWkyYSg0YsUXdL7EaHKy8ljtNkapRKrTtk6Qd5nnFxxs8bOZlcm58mFyO5nQs+gSlnc5/rjIXoAlrxqdTr6bThc7Ng5P15CkTDo1cAKrm/LSVxringk4LtB1bnioe2N6KyZhrPgZ7BMS9GxXB+CvW0I5VydelcIV3I/tJhdlNrSMWYePck6/5nn457F7yi0Y8uXoC9dm6Y6WIyVa2Q08YZ2occNEj58nf98KSofA9Vxi0Se/Y9T9PRAL4+zqVJbVyHr8yYVaZ8DUn/GzwegGwujkonOPEj0NoSJLpuwtoOllMZOw5gdUtZ5s6dL2clCSyKLp3lCxJ7LE7ZtyemLM2ptGIpXp7Ml2h7HX4Y3gNKeDQG40irvgxltd/ydDeghu6eAcEGvogTTglr0AtHhkvu7acgaXVLjrCNcc+HL7tgv9XehuyDiHsiiQmj2yOZuWVRbuC891IdwowW7Onx89gYFm0FZtgR8v7zcEldiy3yw6oMihJxvyIpusQvfscublIMF2/Xif1ekzuw64RZhjO0M5WaImROfwVt9fz07LIIBR/sVWUq9L/rEBNd1vndQUnvMufYhW/uFh4RRoVGOP3k1xAQXalh28qqfyawO4KyOp1nL200aQ6WOPHXHbuMG3f01clwx9NHL/F9nwpqmkKODE1CW/9fq/O1wLSMHDOAUOUQSujvF3aeU1YkFp6JZ/RlWxIes55L5hH87HSrRxI9j45qfKHXQynX
- Er4T0BhN
- iOcOlUbgFgQ0AGjO2DPfCn8Kw7zfYD7Y5ubLE9Pqp6OkU16nVP3s73qBGNnhoO0eAY4/M9phve/65i8LVU4NpV0cjsIJOLZgw6wyuIDCz7ZtbuN9hdVgXfoDLEq3x+ZnJYkQNwBNX9uOCbUENPGMBMOZce/S/dvtB+UAf1J6fcdSD/bs97avIXUCHe1LMMlLDdwEzmuz38NXb9hlVbOALBNkCfzZ7Yqc0JjDiwp8xxMYEmt7RHimQ4wDzExdUmShy9b+SNVlsVegskeU=
+X-Rspamd-Queue-Id: 64F6C40005
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794880989-707091
+X-HE-Meta: U2FsdGVkX196y1QeE3CDXpVopDJieqoUbfjC3Ap73SrGiV2cpwMuEOyyXBv2K9FdCxJiN6GLRBlWHAK/NToZolwPjUGGdja5/Ro3UWtQ3npWV1jYzy3sF4i0dwZPWvxetSW65VGKk3chSkP+qPIxtuq/497ExzByfG9/gkXgups54YXOWx86t8AI/01AUUpxrEZG8CfuYhgw8UiDGYSxDqeiPwMW77LTIaoQl4JrML9oIEQ27MveTnx/j9vuvO+DA5vuf33Xyn3o4Wx1JU03KsDESy3pHEeXB44F/zDkANFdYCHnadnS2ysLnWbvC8Wq2u+2vMrdM7E9pDiAVoEFMWJ4JXA2IwIqmXFITVmFPaxZ3dytS2DXagvQ5+w1zB85eMmdMZ6T7T334xI+aQsI9kSSfJaA4uFq8zRV3iLPLBDrMyexEr3CrMt9lrTDhuNI7Z9L66eFgFYpZe2sngh1o+X3XNZVl3I2/+A7aIWnXeZRYzORdV5r4qqGeaNssfnnouTQmcvpQc/MpkMU27EVsO5O+tSWz/0PztyaVCmWt+ys8/UcMUJApmRpdExxheQ+URL0gin4NcuBNySMpRgCi25LdyqpvjXFaCcP2+OcLa+Qq4SNzoLFiLJS8kjx4gEbuJXOdnrIwu1zwTHAMoYR9pAQC7CsLuNUmOuvhwU3Ed2PIamT4/c1EnAaqCPerBqfHZiSu4RWD6MdS2xMxJcnaxmLzK7Vz77M6cbt/k1/Hp0qOr1/KuiRukgiWxWUal8aHQDTyQUJdY0R9qPxo2xZLOe35rtd8beq6Fbv9/7k+26ytBeuJOER50LkGRCroWvpAju4iQjlq7LEvDPuuQq9hta2KSC/X8fNyBwLd7YzZ0UUCnoF1hbVSlOZZQWnnASy+5mLbxgemBvZlyKafc8jlTnbewW4DlpSV4XK4TvwbZkM0rJwR9Eg+uyy6ahEGPC5pYW4w17AEAl4ZnjEvyL
+ KGpZYHkF
+ XutDobLYv4a2lEapN26lLR8BHo3K1sEdbd1BzrVrLuh7cRsYvf4zMKP+9YVMrR+j5AqF5RTzekVesEQ51CRickrSu5oTDCqgUUbLT67lEmToqZhERrbLp2TBIZAuP6ZgDVUiuJMfMeqWhbNhBFy9ZQht5V/0zUJADO/NEP1k/Jo9Hst4BshKpjvzIgOxZM2IVeGB0gjWh64qg6fAShyYs897ApLGBoUBfmhxhJ71IX9GZD317hbkiXyIBrpmpYJYOUWgy8rSzDTh6kvSjt4VZhQCGhHQ8DX5Qg3no+G7PTnOxwPZjr+MHtKfuG5FupWN3XQvatRPBslofci8MQYXiagIdaYp0yESUQZGzfnohMpwcxtu/lVmI3Fl7JD+hn3UJEkRUdYSuDCubpbmWiVDJh+b+MLBCgCZEHib6MG7+1pvx4pnwg/AIEjOtGG2G0M/GoRsy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,42 +101,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series adds PUD THP support for arm64, enabling PUD THP for DAX
-and pfnmap.
+On Mon, 16 Nov 2026 19:10:04 +0000 Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org> wrote:
 
-Patch 1 moves the identical pudp_invalidate() implementations from x86
-and riscv to a generic location so arm64 can reuse it.
+> From: Mattathias Pinchover <mattathias.pinchover@uber.com>
+> 
+> DAMOS stat sz_ops_filter_passed shows the total bytes that passed
+> operations layer-handled DAMOS filters, accumulated from the beginning of
+> the scheme's execution.  Users who want the amount for only the latest
+> apply interval, e.g., the size of a workload's anonymous memory that is
+> cold as of now, need to keep the previous values in user space and
+> compute the difference with the help of nr_snapshots.  Because
+> nr_snapshots is increased once per target per apply interval, the
+> computation is complicated and error-prone, especially for contexts
+> having multiple targets.
+> 
+> Introduce a new DAMOS stat, sz_ops_filter_passed_last.  It is
+> updated at the end of each apply interval of the scheme with the amount
+> of sz_ops_filter_passed increase in the interval.
 
-Patch 2 is a minor cleanup that simplifies pmd_special/pmd_mkspecial.
+Looks good to me.
 
-Patch 3 adds the necessary spurious PUD fault fix and PUD page table
-helpers and selects HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
+> 
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Mattathias Pinchover <mattathias.pinchover@uber.com>
 
-Changes since v1:
- * fix issues reported by sashiko
+Reviewed-by: SJ Park <sj@kernel.org>
 
-Jinjiang Tu (4):
-  mm: define generic pudp_invalidate() implementation
-  arm64: simplify pmd_special and pmd_mkspecial
-  mm: add spurious fault fixing support for huge pud
-  arm64: Add PUD THP support for DAX and pfnmap
 
- arch/arm64/Kconfig                           |   1 +
- arch/arm64/include/asm/pgtable.h             | 104 +++++++++++++++----
- arch/powerpc/include/asm/book3s/64/pgtable.h |   1 +
- arch/riscv/include/asm/pgtable.h             |   3 -
- arch/riscv/mm/pgtable.c                      |   9 --
- arch/x86/include/asm/pgtable.h               |   3 -
- arch/x86/mm/pgtable.c                        |  12 ---
- include/linux/huge_mm.h                      |   5 +-
- include/linux/pgtable.h                      |  11 ++
- mm/huge_memory.c                             |  17 +--
- mm/internal.h                                |   2 +-
- mm/memory.c                                  |  14 ++-
- mm/pgtable-generic.c                         |  14 +++
- 13 files changed, 131 insertions(+), 65 deletions(-)
+Thanks,
+SJ
 
--- 
-2.54.0
-
+[...]
 
