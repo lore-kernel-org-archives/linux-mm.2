@@ -1,161 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044DF606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF20606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=hNGdQPcw
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IUa3hUbx
 Received: by kanga.kvack.org (Postfix)
-	id 268AD6B05C2; Tue, 17 Nov 2026 02:17:47 -0500 (EST)
+	id EB1966B00EF; Tue, 17 Nov 2026 02:28:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 240E16B05C3; Tue, 17 Nov 2026 02:17:47 -0500 (EST)
+	id E62BE6B05B0; Tue, 17 Nov 2026 02:28:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 157476B05C6; Tue, 17 Nov 2026 02:17:47 -0500 (EST)
+	id D9F346B05B1; Tue, 17 Nov 2026 02:28:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D7BA96B05C2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:17:46 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F4F1A7D22
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:17:46 +0000 (UTC)
-X-FDA: 85443756132.26.DF9B050
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012026.outbound.protection.outlook.com [40.107.200.26])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4B8F31C0005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:17:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=hNGdQPcw;
-	spf=pass (imf21.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.26 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794899863;
+	by kanga.kvack.org (Postfix) with ESMTP id B33016B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:28:09 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43AD71401BA
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:28:09 +0000 (UTC)
+X-FDA: 85443782298.01.D9C7D23
+Received: from mta1.migadu.com (out-148.mta1.migadu.com [95.215.58.148])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 24B96C0003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:28:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IUa3hUbx;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.148 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794900487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=09U7UvY+B3okNAT7LE1wuAp6ZjyC3vPbdWsq64758qY=;
-	b=Wnd9pAyOhyY0UffL7PVdJQctmdLUqSUBwte036b0O6xnGqAFuo3nIvRZ3CuZMCqq1EyEHb
-	FIsCc6J7qVU4XpBQwgvoj2TZocXQGjRS0E+dpQQA6HMF66Q49RlZKDeM6p7e1Fb+Jqjaal
-	mVwHO33vkkVsGT4fx+rqwpnhvw8MGnE=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794899863;
-	b=L2ArJ1+HJ7D7FtMWqAs/erg+s0WJgLivjYSjV5xLVLGgkETuUQlBPBKnRP28pjqWqK4Zr9
-	/F0YZAVuWHGvfJDfuCRiDpy/5NpbSOg6wMVqsLU7Tc3wDwyMzFcE3d/TLclqaTHHkBRMvx
-	kgrI+xYBnq3EtyR9CIgLf6tNnBTj+qY=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=hNGdQPcw;
-	spf=pass (imf21.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.26 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x8TCJEseh2ncOCgJj4Q9U4VykaxC/UuGN3p0F0OnXu90DVr9yFHTCNFWb8RGdgYcf4j/J51a2tAiDlV/RKimQaBLmtNRiNkE/Uz3SoTWWaegZ66lRkGvxJiPoOFp66u3xaw98QkR5stLj0NXld67g8c/4qpJTMFV5a6/OyYreg6O7SOuCw2WtSBXJF96dt0Mxe7GbjKgKZoyxV5+kIBpYNKovoYPuJ5vOeYP5OhKTFdxf1j/nCsQZ7+yKrtlfb3rpln0fqyY5q69bBj2vUfLQV4ZLX6kILdnOMj4SAkFc67Ld7uKEzIm3Nsi+8snK07x+a+FsErva7eWIdxDSDUH8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=09U7UvY+B3okNAT7LE1wuAp6ZjyC3vPbdWsq64758qY=;
- b=iQQ5wmVbtZMTOkG2LViHxMxDKKMDN1VjSDl4Obnz90TjFtps75z9PTkTsmftItKhxvgZgVH3sslLIvjsZeC0Zsxl8fYZBNdUze+fMIEjGz3k8vG50kPcRdbgwSYibCTi2VXU0Dgvxd2eNZdlWEVh6mwxeNmc61eQ566a6J9i24++ymgv8hVQ7YwiXY3ivTcLHC21FlBvGWfOzdXM7b90AhKy5fq1SI7E9sUqhIkpdsdnYpQw1T0B7PxugfSQC7swFLRylHAMnYmzcpR7k5srGKMMwnmsD3z3IN3hMnPBcwK/FQBE9Fv/ixxppa0XPwuO6ilF4zfHrHkOmWOqq7Sayw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=09U7UvY+B3okNAT7LE1wuAp6ZjyC3vPbdWsq64758qY=;
- b=hNGdQPcwsCl0F5b4rRHa0i3cLu3mSEDxHB88vNUQFp5teRiWmXi/zRUdKTGc8H6yuuI8r0pVs7LUnzGGjCTZBXGEcp9kxISZTY8xRwHwSZV7QmCaC/I0R2WhaGkZWIp7aKEEdLjKFE7XRJoMIDNMwz08TeHTUKGLkMxOV6DZ1GU=
-Received: from CH2PR15CA0018.namprd15.prod.outlook.com (2603:10b6:610:51::28)
- by BL3PR12MB6546.namprd12.prod.outlook.com (2603:10b6:208:38d::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 07:17:36 +0000
-Received: from CH7PEPF0000001A.namprd21.prod.outlook.com
- (2603:10b6:610:51:cafe::9c) by CH2PR15CA0018.outlook.office365.com
- (2603:10b6:610:51::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.13 via Frontend Transport; Tue,
- 17 Nov 2026 07:17:36 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH7PEPF0000001A.mail.protection.outlook.com (10.167.244.169) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.0 via Frontend Transport; Tue, 17 Nov 2026 07:17:36 +0000
-Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 17 Nov
- 2026 01:17:30 -0600
-From: Shivank Garg <shivankg@amd.com>
-Date: Tue, 17 Nov 2026 07:16:52 +0000
-Subject: [PATCH mm-new v2 5/5] mm: nommu: remove unused heap_stack_gap
+	bh=AiloeVj7f5SkmVduZu6GrGYjRe7VINboO/OLOU2KIoM=;
+	b=E++Ux09PHM/bMaBnI1+KYz9UEL26ZCwutNVdGEjAyIpTKbu8++5tyZSdevuLq3qSpBNbih
+	VihYg6N+CqdZnx31RbrHxv2k1sMPacl2rwfT4jUXKF0atmQauTvTgmzWMAbNA6lGwYccqo
+	xGBFtiSTm5cQUQV6ZUU0ai+wdAYB6K8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794900487;
+	b=WK19Appgz5Eh+D/XzSe4MxJT/0M5NwdzlRtZTfcMyIbaZSdoEiRPtedwdlWl44vS2al9mM
+	U76N6Sdh2BTqj5rJNL53pQMzogsYivOs6iVw8fuQyAvpYIapeOi58SiraDi84571fiaSwz
+	lo7HrEK1nE6+71vC3c55xyY8IHzfb2o=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IUa3hUbx;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.148 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=OOZLqF1KqEWXsHkQIJQdmwZs3bWqAcc5EVrCFP1k6Ko=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794900485; v=1; x=1795505285;
+ b=IUa3hUbxMteF48XpluyzUk+/5jUbACgr8hkX/L4YThrvV0cr+nwKKln3Up3fpA7yFI2y2kGa
+ 3s6YvYYIV/9lgM8LGKfDXd91wAe0EUzxy8SznktHU0wQ+kBthmEUygZhhAwjXgz0vqImxD7Cjxq
+ Hwnf8dw6PKqww+065SW4zioU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id cca165b129b6f823;
+	Tue, 17 Nov 2026 07:28:05 +0000
+X-Mizu-Trace-ID: cca165b129b6f823
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <b61ece54-4df8-4d4d-a64a-be7f56f380dc@linux.dev>
+Date: Tue, 17 Nov 2026 15:27:53 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 07/11] mm/vmalloc: undo what
+ __vmap_pages_range_noflush() mapped on failure
+To: sashiko-reviews@lists.linux.dev
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ Suren Baghdasaryan <surenb@google.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Marco Elver <elver@google.com>, Alexander Potapenko <glider@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
+References: <20261116071325.263682-1-hao.ge@linux.dev>
+ <20261116071325.263682-8-hao.ge@linux.dev> <sashiko-outbox-218305@kernel.org>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <sashiko-outbox-218305@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261117-unused-sym-mm-v2-5-2f845e94dd50@amd.com>
-References: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com>
-In-Reply-To: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song
-	<baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, Minchan Kim
-	<minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, "Liam R.
- Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
-	<pfalcato@suse.de>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
-X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794899821; l=584;
- i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=xutkpMVDsubOUvN4qaxfBq/hpdvEFD2ITbH891JolTM=;
- b=680/aZQMqYQI1ovcbYrJ2fCjmGwoXYkXsCjlBmyUv81oM8JlvmGg1TSZ3wr5Ebod0YvGeaNUf
- HroUr+8ucKQBT+eayrMqbHh+PEmV55ItHWRNjoGVgX0Cox4Yz9sad5G
-X-Developer-Key: i=shivankg@amd.com; a=ed25519;
- pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH7PEPF0000001A:EE_|BL3PR12MB6546:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b5a415a-1894-420c-6c90-08df447adb06
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|36860700016|82310400026|921020|11063799006|56012099006|10067099003|261021123027099003|261009223027099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	USa2tqs12Qjsc8anIERjTafGFPXjga6zPgoacVByG9WAnBSCDILjyv/5XcwIbY2t+nWAJlf1nEfD9ss4oAWgxMHZcgL/+PNRi2hDXMBU7bR8glf/pup4b05SR7IrGU4c2KSgD3bVxoDxAqFTnx65HSXr9JIua/gzOQImity3/RxVAzNeozQ+wcgpHwv4TFPq1ZRdQclWThG/AyjBYd7OmqP1XgoSC2nYa9LbOirwg3O+8WLgqPLVmh8/w5QAYNrYmrqXH1JKrEbRcWCJX1zXe3EsY2y/f4jxyViDRJdqxNrRWvpMNR/6vbZcgWF06QXNQF4Hc/rDzIhgHamcB4g0WeaULgo+V33j4Q6sNi7lj529SqnhfGysugt5aBTQprJRizjFqqqOXuLW7pJedWoGMXr1lU6OCnKcjEkVum1d1ESdCS50lpx6VhjtSntCIiPa04MmdnxaoVM+3jstUxOnfHSfUM0RumHeSVx5sqJROyurFcp4YpQwOIW+xFVUrJuy6C2hlBm6fbpdU5NBJtSw7NBN3El//YaxoYkICkJu6HkuLYkhA0c53wNiz4TVs3gX3/NuCS36m8Kq9GoiLdW8yIxF//2RHjEqD2IrEvqWwQd/lGmZqcKxB/kT1rB1WtC4vz0RRnriHjvDNRcQAFwHyUHM5TsUwc8CWI5ouBwbik5/jq80orLALTE6nzI17V3Rx02+LlZzKeIHGorxuJsANA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(36860700016)(82310400026)(921020)(11063799006)(56012099006)(10067099003)(261021123027099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	EvRImdHtkAklAQXYJcBijJPQ9M1xWXsVpu6NcQ/YwvMp6sXPNDQJMkUm0zpu2NQriQmnZIOAzx+6MUHhIV+H9DJXy1RNBzuKJFXCO1Fbt+NENbVDd739ek2iChD3uInDni06yuAhYgFacOyOaVXs5mXDp8vvHVoK7IgQEuP5VA/jKpTIGNI7f4MUrHUvT58w056954MjW4XEs+o0dYRS3AatENg4Q/NcPzfe9VaZ11b6tLecMGvgqnykcW28LyjtpgD5JmKpkhV+gbTNKqJL1C5JMS+cLGczgFlM6kES4fjjvnFGMpeoCWNWI/rb+Ke3YHzBlPKaLxWMlqTTLzsUR/9+MTVqaI67D9AqdtMPTPDRMVmk+Z39PuvZzvMSj3NMIc9HV0Oig2R4YxrT+qWhi4YXEbG514B0Sdc15GGW488T4MqY6Kqnx0feBeQQTaSo
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 07:17:36.0688
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b5a415a-1894-420c-6c90-08df447adb06
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH7PEPF0000001A.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6546
-X-Stat-Signature: fkoynb85pngqk8bkgtxiyo9gpmberamm
+X-Stat-Signature: xwe34qnuqfyors8gy1dmnwnhcsrywb4j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4B8F31C0005
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 24B96C0003
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1794899863-431371
-X-HE-Meta: U2FsdGVkX1+5c745zZVxh1EdInFVKTNd4Lk3YO7vuJSgfQNdQe4fK8ro+IvbTUu7DB8GHM2ZKWWbeeL92vx0JprI/i9WD5MS4dJ84UkU4sJKJSpGsPgROua2KkXdowDZP6WVyfdQWCM/nM3bVgIwZ68DuSNtZIV40ow3TTVcVL+UtBnvUe4UZ63Eomb3hm4YYQ64wPmC36ACUkAWnClVgwC/vZM2hVjs4ftNUuiwa9tv8BgldFXVXBNabQWVRz6eQxDqQV+2lRai6FBOtDgNuxCEBk0luQzPvgnW3iPKpCcqgWjzT28GTFNsnmmVcQ9Ws7PGFkWG5x7kLNSMkM7ALnnj9AtfHV9hJ6cKSe18kEWR/o2dvbLOh1074CIQ3ZJ7G3OVGdzTQ1DUzSMa3uN9qNrrxl58gmihDCOeZ8oZ4CMsBsuDbSiza+vEpWzd5OJ9mis4/ZyjwACNrlA+lnGQYf+y9kkc65B9h6lN24532LyeV9xkRipfm1YQTVKY5Y+xM/8g5SnctFewCsqLbrTtGhzOoranQsgTVEurMNyGwEyr1FUJwiscEi1CBQywRkc4Y6wpj0b5CQsx3H2CVFbC5ciNtobeSts3V8B4uVZfVnlsNXPrWtTQJLNK0LzHUg0iElesHGlVPF6d/CzGQjCFUkgTqc8+9DpdyNXUlG5ciMumIVn3xFrgBsbVyFpjrMnto+PvtsrjvAVoxa6pfdq68tf0mWm+Zrx13ivq7iWXYlgnLEaSlHZgwyj+Vxtq4HLXD/oNMVN8St5PHIVkKkfjLRc7HDYsYhm2oqj2olRoV7oa2Z6Al9D6BR868twREd3cwWkHDhfusFQIkL8PW9jFtaGYGykP+pFfiDF2Mlg8Icm0bYlFi20HlP+gNmbr+h8lsK7t7LjcZof66G5ZNruIvqPoolCRmo0nfJlBWzN7mdaS7r2ltK2qr1mdCGDHYyTqv98QmHbYPUUlpJflVd2
- RvECcAdu
- JKnC3Owladf7jktBVXg8ZJDVzywWiB23VBld6mM4cdQ/HChko7O0IdBxSEIn3fmdYTeNZniJTjGehxZi63daMJ6vh3an1KGxPLdRpcXjPqsxms787NGmB+w36fA38rDz1towvbYbqK+/LYFjFxBP0uCIdyKhrCP63c5RgVw/wJNmZao7aepCrRM13+/fxJP9UAXUOn9WhblXi5lVy3N+HUdXr8Apu7mLC+tiscyJtqd1mmZKld4naO114Oj5Fi+beGpKZYxVgvZCuJAmHgkMUGjb4zfYc9NLKrmkAmzMqvJ86IOuXwWHwZfHQ1lc1nD9xNYJ99GFqAOaSY4V54dX4S4+ehUVdPia6MmV8WCJkVIRaNY1W0rV7Dft9ynVfLPgqPDa+8U6/NUf6RTvpUUHP8zij9Z7htrrIMf1GdThE/QK6bEYQmfpWJf8P8Om/xd8SOBc/haPnLrX4XNnFWp1It54BZQgliKIcuq5owjJBmAhlB3Fwu3b+W5VAZgHuS+RQH//oFfJRx5sJq5H972IrZzOHzgOc7XaXuQiw
+X-HE-Tag: 1794900486-240195
+X-HE-Meta: U2FsdGVkX1+wIwxvo89vG3q9rYCG0KL1bkiEyXcQgitZjnSOIhCiq6i5sZbN2Qmc0PqZGJYZXUe78gaE61N99l0swm8rxxKR0c0JnkPO1FtwdwGe0Bcc9udjmyxeLxpiMfjv+0GEzqxxUIMdTP6iV8YAacGCPiE0m//BxumW0FY824mZZrAes+sVtrjZaOquYlSz6l44QPpbJ3mDy/hlYDlVgK0EXSvOYnU0fOjmIrrrZ4TfrK9I7SnrtXceOaB/K/FNcEiR/gRqTGhTIgVn39JxVFbt6YSRHgSaxXCTfVHhtntfqUYH/6RJQoKG7RxpYn368oO/VmThCW87r6JS9XkL7+OB8yonfEnEKDbKALPUr5SSmgKl8Ks7Qouj+PGlFUXKQbGgiCzhAa0NHpoWrp8vRbcFmD6WN78q+nZ1zpljNuDDOTf3beiwNqvP19SkPbv35lc+FApAWb1eFQxTGnCuHPNxB4J4JgXqOVeeY7NmQIOQvRT07OWRt51sKn6vwVJzFs2ufqLQeUaOHsVMBC7CzEmdwe7SmTpFYG5sa6YazBBc9zXxj2FsYToI0fTBmOn22l7OhA1RITUivfnsQdubfCNB2HLoxGsBA511PGdmGhr7XGkwJ/FFBcXv7Tc5bLrOrOvTLwfRLlH2UoAKO4sMBnKVh8L0boMG54nilghVQ8hy6H82k/0Mic6HlfpoKIEd7Y0fiiWms/G1fawQzXqydxTP+N1GXemNTfcUQQunWG4v+HcZnHDaj0B3HBm+HWCSS0Cf7KiLnu4D9Le/wdbS8SRQTFnNXIPSZdK7ObCmVm4I4CBh3R1vFGsyOqmPQE4Qult31jWVLB7E/Q2qe+LGJWk52LNclHRyJyw6qwdHMpCESlX4sH/dXC6EYwUm/13jRIYv0o5hZDyl4hwb5AZQzobJG4+qHwfXFbTxDpIO307LmUWdTjLXPDJXQI5AcZyZDjAHhex91XfiDwY
+ CPZwh9Nk
+ Bc3iJMBeyaLdpJbPyZYt2xc/Ar40gtyOGO8Vu0XhnS1v3a4hw2ZaXP1WQKv3Dpc86t5WG8pGQ5V3NjIPMQtPcXOd4bMs2wb4tPHx3d8NbTTDRrns/BqKo2CHyj5K65cHQpik/wb4V085OwLwJACdvobfwCuxLElfI0K1YT0lQmOvLgNcTZGTk9EGPvqw1t5oz1M8u+7pXmi13uzBYQX2eDJtlgllhFnR+Si/59rrNR+sx7qLFd5ltrAR8qrdFu+PoIFwqoLPW0AXIhxiITWbgHzKua9G2h41xE3bcg4VOcYpdnKk2/Czc5pjmlYaDXy2C46YnsdxRiUUz2K1EepFjNwTkbPZF56JdEq6hzSqRqypEknB6Fs7Dd7kPyh9Zb86P5xhjR31G05BAR8CMZp5nK94WnyB3cEjLlV7ipNhEdngWmkU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,29 +105,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-heap_stack_gap has been unused since at least the start of git history,
-commit 1da177e4c3f4 ("Linux-2.6.12-rc2").
 
-Link: https://lore.kernel.org/linux-mm/20140430083620.GA4711@dhcp22.suse.cz/
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- mm/nommu.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/mm/nommu.c b/mm/nommu.c
-index df99495c8902..a971c12f2732 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -43,7 +43,6 @@
- #include "internal.h"
- 
- unsigned long highest_memmap_pfn;
--int heap_stack_gap = 0;
- 
- atomic_long_t mmap_pages_allocated;
- 
+On 2026/11/17 15:15, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Low] mm/vmalloc: vmap_pages_range_noflush_walk() truncates nr into
+>   unsigned int
+> --
+> 
+> commit f06c1baff5ffda8b5f9a1dce600b9d716bd0c648
+> Author: Hao Ge <hao.ge@linux.dev>
+> 
+> mm/vmalloc: undo what __vmap_pages_range_noflush() mapped on failure
+> 
+> This commit tracks the number of pages installed by
+> vmap_pages_range_noflush_walk() and tears down those PTEs in
+> __vmap_pages_range_noflush() when a mapping fails midway.
+> 
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index 5c1eacc2a0ac3..4f3c320a48499 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -725,7 +725,8 @@ static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
+>>   * may have contiguous chunks, as hinted by @shift.
+>>   */
+>>  static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
+>> -		pgprot_t prot, struct page **pages, unsigned int shift)
+>> +		pgprot_t prot, struct page **pages, unsigned int shift,
+>> +		unsigned int *mapped_pages)
+>>  {
+>>  	unsigned long start = addr;
+>>  	pgd_t *pgd;
+>> @@ -748,6 +749,7 @@ static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
+>>  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+>>  		arch_sync_kernel_mappings(start, end);
+>>  
+>> +	*mapped_pages = nr;
+>>  	return err;
+>>  }
+>>  
+>> @@ -758,18 +760,36 @@ static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
+>>   * The caller is responsible for calling flush_cache_vmap() after this
+>>   * function returns successfully and before the addresses are accessed.
+>>   *
+>> + * On failure the PTEs installed by this call are torn down before
+>> + * returning, so a retry sees a clean range; PTEs that were already
+>> + * there when the walk failed are left alone. When @gfp_mask cannot
+>> + * block, the teardown skips cond_resched(), it may run in atomic
+>> + * context.
+>> + *
+>>   * This is an internal function only. Do not use outside mm/.
+>>   */
+>>  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>> -		pgprot_t prot, struct page **pages, unsigned int page_shift)
+>> +		pgprot_t prot, struct page **pages, unsigned int page_shift,
+>> +		gfp_t gfp_mask)
+>>  {
+>> +	int err;
+>> +	unsigned int mapped_pages = 0;
+>> +
+>>  	if (WARN_ON_ONCE(page_shift < PAGE_SHIFT))
+>>  		return -EINVAL;
+>>  
+>>  	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
+>>  		page_shift = PAGE_SHIFT;
+>>  
+>> -	return vmap_pages_range_noflush_walk(addr, end, prot, pages, page_shift);
+>> +	err = vmap_pages_range_noflush_walk(addr, end, prot, pages, page_shift,
+>> +					    &mapped_pages);
+>> +
+>> +	/* Undo the PTEs installed before the failure. */
+>> +	if (err && mapped_pages)
+>> +		__vunmap_range_noflush(addr, addr + (mapped_pages * PAGE_SIZE),
+>> +				       gfpflags_allow_blocking(gfp_mask));
+>> +
+>> +	return err;
+>>  }
+> 
+> [Severity: Low]
+> Should mapped_pages (and nr_mapped in vmap_pages_range_batched()) be
+> unsigned long instead of unsigned int?
+> 
+> vmap_pages_range_noflush_walk() tracks nr as an unsigned long across the
+> page-table walk, so storing it into an unsigned int truncates the count to
+> 32 bits and would leave the unmap range incomplete if a walk ever failed
+> past UINT_MAX pages.
+> 
 
--- 
-2.53.0
-
+Sure, keeping them consistent does make sense.
+I will hold this change and wait for more review comments on the rest of the patches.
 
