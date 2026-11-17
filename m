@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56325606A338
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D862606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kSS+QgSD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ieF745AD
 Received: by kanga.kvack.org (Postfix)
-	id 7DBB66B05B6; Tue, 17 Nov 2026 04:55:21 -0500 (EST)
+	id 89FFC6B05B8; Tue, 17 Nov 2026 04:56:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78C756B05B7; Tue, 17 Nov 2026 04:55:21 -0500 (EST)
+	id 877866B05B9; Tue, 17 Nov 2026 04:56:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67B4F6B05B8; Tue, 17 Nov 2026 04:55:21 -0500 (EST)
+	id 7672A6B05BA; Tue, 17 Nov 2026 04:56:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 431D06B05B6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:55:21 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C701A1203A2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:55:20 +0000 (UTC)
-X-FDA: 85444153200.21.237100E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 51F816B05B8
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:56:04 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D4C2A1603B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:56:03 +0000 (UTC)
+X-FDA: 85444155006.28.9D5703D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 16F5180002
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:55:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSS+QgSD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1C9B41C0009
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:56:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ieF745AD;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794909362;
+	b=gBKmfsEiTVj3yp+x9jVPst4R4tInhVMLpeMEjJ3kCZBxqP6gqfHsz7ii78fGdDDbV67lif
+	8hmDVRGPAEIjuPHD4XKiE4+JHLZHjGfCIsvuoM5NvftyJ4iCz6Me1K0iANezxmZMHpre1E
+	ezOJIGrIBeywi5iI3MSC6i6L7i8H2xc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ieF745AD;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794909319;
+	s=arc-20220608; t=1794909362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DMyC1okRsySQAgoBesJDfyI8sBJ6WUZdUoOx84UiPvI=;
-	b=C6bWEXuhlDwlAvKlKzlX12Tx6DCK5G3AMLkfw+Djf69SGWg6cUsd0+25HgvsRRmkXEcQpl
-	ELlr+5Kp4PpC3quTaczq1kdctah+xc613hnDqmXz9wj/8o82WtynSqrG7S8NcCnLr5QKV/
-	sBRd0GzQsQ+rX7P1Q9zMPfmy/UxdreM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794909319;
-	b=JwZpnH6XIKA83SNrpxNszrVP5MXE2tku8b3y5S6NKGja6zUPp0ZgV6ZXn47SlFlHxxrDBK
-	wGk7IDHK9wq0dnHW80rGHFPJUq2X06ItGXm+dgAzp+aJp1WDhhYIebmFU68KQtsPYFJDF4
-	uIHSrPXEyrW4JtOmZqNM3bSAKb6xQMg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSS+QgSD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=RXpkAmDQM3YL/W8+BChLDkEu3hDU+qLuCPRwmd9apzM=;
+	b=epUaCqhcRLVWcztSzmLCtukJ4rd65goV0P8oB+60u6GeNYZkxrD+h6H/sj7wB/ssuK/5nd
+	B29k+go3LksTq6LQxkOgEEKEBEPH/LlRKPRJQGi0aetoQFF75CRBArQLbQuT3s93Qc0Ym3
+	NoHkBmDScFEjXE1jBr0IPUjv/edo/IA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9703E60D37;
-	Tue, 17 Nov 2026 09:55:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363781F000C4;
-	Tue, 17 Nov 2026 09:55:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B178261E81;
+	Tue, 17 Nov 2026 09:56:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D6E1F000C4;
+	Tue, 17 Nov 2026 09:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794909318;
-	bh=DMyC1okRsySQAgoBesJDfyI8sBJ6WUZdUoOx84UiPvI=;
+	s=k20260515; t=1794909361;
+	bh=RXpkAmDQM3YL/W8+BChLDkEu3hDU+qLuCPRwmd9apzM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kSS+QgSDcTUl16LXaAccAGAtSJWS8GLOIOkgE2Y0+d6R9641Soo6Xl21m9f/jCW1k
-	 3LYpbiG0JVOPzz4VL3kFi12qz0OwAzqZSmiycveqnqcJaMVafYVzaTeaC/B6nIIenm
-	 yE9lS9dgTHpwbWMBXNQHYFBh/c9LLc9DOU+dzjHqZb8pN9wFJkTQg6/AMNFzfqZ8k1
-	 k2M+f93TRRuhjI1IeVSqi0f6Sd3sGHcWUhCkK06wXQ2J5/vFLDlNihYvvcEedrKyJC
-	 3ZK1uBspRA1nP76uzjEdkH0gZbch/6zJkQC6PaqtirJqnWjiMQ9pyZtJ4l9DKLJuvl
-	 ygHXpMG83BV3Q==
-Message-ID: <91aadb5b-53a7-41eb-a0fa-4fce804a35e6@kernel.org>
-Date: Tue, 17 Nov 2026 10:55:05 +0100
+	b=ieF745ADkvptZ7RZ9MjF5EOCbX1p4MyKcv7xpQefcFxuUQt4dykq1m4vjzcAiDDK4
+	 Y5SI04smpkSm9CXwMyK82O+uRop1RRfBovG+iN9uWzD7G8ohkUPJp/E2ijYCMFcQ6U
+	 50PL0zzXZZ3oFqWsrgDqFYTrOqkTe9vIs0BeoGXCSRagFOmXXGSyxMvYAkrX1s2EmM
+	 Pu3I/B4hv2Unp0MBR5GHePMi+ixtbZg6D7ESw0X0vVlii6XHu2mHaxxVOYObCtWd1H
+	 mScv5Gfy4GJlJSHNQdt1yjFNUN9ziEauxef79xcUzo0heuKIX22fHyKigjUnSQCss7
+	 t7jsB4B7pe/pw==
+Message-ID: <4851f0db-9305-444e-8037-34bed9ecb6b3@kernel.org>
+Date: Tue, 17 Nov 2026 10:55:48 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/9] userfaultfd: use anonymous memory for
- UFFDIO_ZEROPAGE on private file mappings
+Subject: Re: [PATCH v2 4/9] mm/migrate: keep the uffd bit when restoring a
+ writable migration entry
 To: Tal Zussman <tz2294@columbia.edu>,
  Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
@@ -91,11 +91,11 @@ To: Tal Zussman <tz2294@columbia.edu>,
  Oscar Salvador <osalvador@suse.de>,
  =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+ linux-fsdevel@vger.kernel.org
 References: <20261116-uffd-state-fixes-v2-0-4397a0196479@columbia.edu>
- <20261116-uffd-state-fixes-v2-1-4397a0196479@columbia.edu>
- <cc865bc8-b96f-4385-97b1-976de4465ca1@kernel.org>
- <eba4fb71-6baa-455f-8899-87567af898aa@columbia.edu>
+ <20261116-uffd-state-fixes-v2-4-4397a0196479@columbia.edu>
+ <2d9ec2ee-8867-4ac2-b2b5-654bf2441513@kernel.org>
+ <20e72944-108e-461a-b75f-d8c4f8edbc9d@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,22 +142,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <eba4fb71-6baa-455f-8899-87567af898aa@columbia.edu>
+In-Reply-To: <20e72944-108e-461a-b75f-d8c4f8edbc9d@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 16F5180002
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1C9B41C0009
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: gh5p1bpdaw5qpffq1u11n9gwb9uud7uh
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: ec6ww4ygn6h4g5hp3qp6axubu15w66oh
 X-Rspam-User: 
-X-HE-Tag: 1794909318-879537
-X-HE-Meta: U2FsdGVkX1/WHceKVUNXHYDKQES9wPHp9dB1uwQY4nB0AyJDDCzD+M443gC5Oo8cIQXP+XCKGOAuAyJWWpPziyIOjl24kWIVo1yg8jIzr3ZF2/2NVjd9+9BbkzkFmh5js5w3B0SkWTOfEUJeQvezQONgl6snbxw7E7GAsEsisOH8py2f+U09z6+gZt3fwHMifKTcHmyPrcB+sS1KPKZNVYjT9yLhAzaaVMn6JOwapsWb5eN78DjRd5S5vDCAKQqdJmKkXA7OmpluNGt7/wQ6WzyRvQNFvBOEn8uVRpv8tuAw54MnnghiRCjRFxrjRwKYxcfFQnpaHAbshpt5EYkK6pOyfLfowqFDO71xuwgqRQW50+9AL7eptxs7kthdo6LwK8B6aJ5wWghVk3HFLedaMFIhMd4DPSnn3IUNdtSYsOx0GLNgbmQXhgVIQXtTYQ7NlAStmnvh2hRBUN/OYE+a1ZKFuj1vuKvQVN9PQNsPey8yrPkmZJ3MI+Ep54ql/pHJWMgfe47qidajqhRHHI6GC/Q0fLyKuIo9pAKf4ppc0qKAa81v6Kl2DHWnI5Z2lUETCZaGaooxrBZngC1F5XgH3wJfdzb1vzG3xYCqlpi2k+3DaFi64AY1fum04phEzua8iz7V3ROGdKUctlh5lxsGvix1cu6B0IV/MVlnGCmivYcf1nL/3cntvrNp6dPa0wu3kr6vrw39JEIYLdzMpwuIB22KUU/5pH6hgdvptUmHXdyl/4MHGY+quwpCDB4IjcBiBo7yToqdezeDcfzneHhNitJQWP9GqLc9VVUMExPBNg0jjThAFFD8zfSPDVJYkD6K/ExX15/reAyw+RRToWIEcAPOc/9A5vIER0ii0seT1kKl0pYZyBHPNwwlb/ZRgjRF8d09mlJ2e+RF8vkiwZUC7k2z0NWUpeVkqhRAFahDb4k6PBztE4H7QBevwle6hNyBX7G/7/VQ2jbFulQvSHF
- XOdLqpcg
- fWOpzE3aXijm8RQOApbcwI9yKQGtIHSkZ5N9Ej+afvvmoaAMZBERdUB5ru1pMvGIFeZWBImqYsgfXezdGJogUNh5nxnUkKXYmh1ypF4Qqu1C2Sc7UDdUNUDJ3CaMpxyje8TdhrtWniefopBZ5o11CnlV5Qyo8lbHvD+vgW2CfXSD804TQXSI4C7IQCf8RaBhQeKzMnLpFWnkLQqObJIPFOqSszrNPWfWxjD4jRc0Wi3DLlPl4W9HgkVSN3Lu9zumn1gQ8TnDRfQJ1+bxTdtooZYktlz+EI/zg9UxsY40om/DRpCg3d72EgC8WWrwN64O2Md2sIE0jYV+37+zQ5mma3Lbkd4pqnOvUKzVamoYOfeU2FK563JEprUFPj1+bEk96NxmoBuwnvbh6o8a4tZ/cHh4t6w==
+X-HE-Tag: 1794909361-836228
+X-HE-Meta: U2FsdGVkX1/2wra3etsr6ghVePZ0FAo4XoJasrpKibZehq5XRzSXAK3YMN3ueA+JL9GZMd9uDYappY2JJ/5hCk9SEqnYFchgs+0Fhf39+GtiyUfp3qcft9fYNhnjmZai8rsZ0G+pNkTDMz3e0vbvhyfCsHbWbp1TVWVezlatKss6IZ/ZIj0oqPmerou4Do5GKSLk6+hbvbfDgFeACL3rrUGSFWfnewgItUUQnFkL/BDlghi2Hts14FfJQbSFwPk9i173TQt3aTE3lkFoWJZSqHJFX07Um0RMrWcfD1Yyg9Erwf4dNw6jPr1bi/gsmXg8qsMplWYOZcoo5uKImf3E48cN/PqJwEdOgr5Wo+Bhl1snAWkI+N91bwzEX9moFgJB7S+vq0YErB9uFO4+7RDKCin5PiJPRQSILlVFX8q0sQuc6DlMpgzKvm80VeT2plRk+R8FzELVOzTca9MQTW67ohjTo3p3DXepSeTsffTHeR7D2f3OhkliGlONwx6dymTzpFq26+/j31qzwHwNnaHIuxPnX3qI6Pnk6sVOPCkltXrlS/D3faCMeRT/T6t2QOhgYrj65IbJlaZbh1C1oCMBmq5zS8I6H3ZJ5+GfpJfFa4pBUQfbFv35FRZZaAgrfSBLKwJ/5jdtP3mI/ZEF2pyiGKFohbDhakQu8EAay2k5vI/6ep7AcuQolTZ4Tixo7WRozmCrGy25yTFsqE2UQB8TC8RS8RoNevf86ESNlqt3tFaDzOgUzxnL9/hVhTo9Nit8swLc34/sROcVSqgxKQHiGUE+O/k0G6oCzgW2dLlZ3xR4ouJNrjoMcM5S4WBQeJdIAsDmK4mTIRmXZ/AWTR5pel91yc8Ph1NKZKPdZmWhMlcdENDRmlWRu5AbLaTD3KFbTZftECb7ltmrRILxSBLsKx+IkaHx9y04l7syKAu2uwX/Rn1eoAnVXGYGEzu9d+ESUjd+cKRhHDLK6qdzlce
+ zqUtd5hL
+ CwX2x6S0h9jQ/4dYmWNRrCzLSAUzgBDQlbmVR6IBL5d00MGTnO41dM1UwzuFDs9oP17PBJD0EQ3qTTH42ytJRFo904k9RMFXEWxRH4SdTYQh6koAP56jVN55ArgL9+rDe0xTHZgz76FpJpk34SrlIHwFMHjSaz/uLvF6P9quvqKQ05T/8TFdxZcMw6VGktdUFzDhjeAG5nSVP9ar6VKtjOp1c9mDq3rzy+Pak2eKMoJYiy3iRkCwX8Gw+eX/5murM1/jXKFwwGfnl1amRlYmxORSTBETnr9ST04axKQu0axUA95J+7lmMcogfW/dPaMWaO6vyH7fGzpUUxeg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,96 +165,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/16/26 23:27, Tal Zussman wrote:
-> On 11/16/26 3:16 PM, David Hildenbrand (Arm) wrote:
+On 11/16/26 23:42, Tal Zussman wrote:
+> On 11/16/26 3:23 PM, David Hildenbrand (Arm) wrote:
 >> On 11/16/26 21:02, Tal Zussman wrote:
->>> If the mm cannot map the shared zero page, UFFDIO_ZEROPAGE falls back to
->>> mfill_atomic_pte_zeroed_folio(), which allocates a zeroed folio and
->>> installs it through vma_uffd_ops(), no matter what kind of mapping it
->>> is. An s390 KVM guest with storage keys or protected virtualization is
->>> such an mm.
+>>> remove_migration_pte() makes the restored PTE writable for a writable
+>>> migration entry, and only looks at the uffd bit of the entry otherwise.
+>>> A writable migration entry that has the uffd bit set is therefore
+>>> restored as a writable PTE without the uffd bit, and the page is no
+>>> longer write-protected.
 >>>
->>> For a MAP_PRIVATE shmem mapping, that adds the zeroed folio to the page
->>> cache of the file. That is wrong: a private mapping must never modify
->>> the file it maps, and the file might even be mapped from a read-only fd.
+>>> An entry with the uffd bit set must be restored write-protected, whether
+>>> the entry is writable or not. remove_migration_pmd() gets this right: it
+>>> makes the PMD writable and sets the uffd bit as two independent steps,
+>>> and pmd_mkuffd() write-protects the result. To fix it, do the same at
+>>> the PTE level, where pte_mkuffd() write-protects the PTE as well.
 >>>
->>> The ioctl can also fail where it should succeed. A missing fault is only
->>> delivered for a hole in the file, but UFFDIO_ZEROPAGE can be called on
->>> an address that did not fault, or can race with a write to the file. If
->>> the file has a page at that offset by then, inserting the zeroed folio
->>> fails and the ioctl returns -EEXIST although nothing is mapped at the
->>> destination address.
->>>
->>> What we want is what UFFDIO_ZEROPAGE does on a private mapping when the
->>> shared zero page can be used, and what UFFDIO_COPY does: only check that
->>> nothing is mapped at the destination address, map zeroed memory there,
->>> and leave the page cache alone. The zeroed folio path did that before it
->>> was moved to vm_uffd_ops.
->>>
->>> To fix it, pick the ops in the common folio path, as
->>> mfill_atomic_pte_copy() did for UFFDIO_COPY: anon_uffd_ops for a private
->>> mapping, the ops of the VMA otherwise. That makes
->>> mfill_atomic_pte_copy() and mfill_atomic_pte_zeroed_folio() redundant,
->>> so remove them and rename __mfill_atomic_pte() to
->>> mfill_atomic_pte_folio().
->>>
->>> UFFDIO_ZEROPAGE no longer modifies the file, and only fails with -EEXIST
->>> if something is already mapped at the destination address.
->>>
->>> Fixes: f74991b4e383 ("shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops")
->>> Cc: stable@vger.kernel.org
->>> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
->>> ---
->>>  mm/userfaultfd.c | 46 ++++++++++++++++------------------------------
->>>  1 file changed, 16 insertions(+), 30 deletions(-)
->>>
->>> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
->>> index d65184d9a480..61a712e1f9f5 100644
->>> --- a/mm/userfaultfd.c
->>> +++ b/mm/userfaultfd.c
->>> @@ -531,15 +531,27 @@ static int mfill_copy_folio_retry(struct mfill_state *mfill_state,
->>>  	return 0;
->>>  }
->>>  
->>> -static int __mfill_atomic_pte(struct mfill_state *state,
->>> -			      const struct vm_uffd_ops *ops)
->>> +static int mfill_atomic_pte_folio(struct mfill_state *state)
->>>  {
->>> +	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
->>>  	unsigned long dst_addr = state->dst_addr;
->>>  	unsigned long src_addr = state->src_addr;
->>>  	uffd_flags_t flags = state->flags;
->>>  	struct folio *folio;
->>>  	int ret;
->>>  
->>> +	/*
->>> +	 * The normal page fault path for a MAP_PRIVATE mapping in a
->>> +	 * file-backed VMA will invoke the fault, fill the hole in the file and
->>> +	 * COW it right away. The result generates plain anonymous memory.
->>> +	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
->>> +	 * generate anonymous memory directly without actually filling the
->>> +	 * hole. For the MAP_PRIVATE case the robustness check only happens in
->>> +	 * the pagetable (to verify it's still none) and not in the page cache.
->>> +	 */
->>> +	if (!(state->vma->vm_flags & VM_SHARED))
->>> +		ops = &anon_uffd_ops;
+>>> The only known path that created such entries is PAGEMAP_SCAN. With
+>>> PM_SCAN_WP_MATCHING, it write-protects the pages it scans, and it set
+>>> the uffd bit on a writable migration entry without downgrading it. Now
+>>> that PAGEMAP_SCAN downgrades them like change_protection() does, we
+>>> should no longer see them, so this change alone should not be visible to
+>>> userspace. If another path ever creates a writable migration entry with
+>>> the uffd bit set, the page now stays write-protected instead of losing
+>>> the uffd bit.
 >>
->> Oh, but one comment: why not check for actual cow mappings?
+>> I am severely confused. If it was properly fixed, why should we do the below?
 >>
->> 	vma_is_cow_mapping()
+>> You should WARN if we get the uffd-wp bit set on something that is writable, not
+>> silently swallow it.
 >>
->> is your friend :)
->>
+> Yeah, so this is more of a hardening change than a pure fix. I think adding a
+> VM_WARN_ON_ONCE here makes sense, but the uffd bit should still be set so
+> writes don't go unreported (which is what remove_migration_pmd() does too).
 > 
-> Probably because I didn't know about it :)
-> 
-> This is already equivalent since uffd registration rejects VMAs without
-> VM_MAYWRITE, but I can switch it over for consistency.
+> remove_migration_pmd() should probably grow a warning for this case too then.
 
-Yes please. We need to convert all of that code to not check fiddly VMA flags.
+I don't like this hardening fix with recovery for something that should never
+happen.
 
-Cow mapping in uffd -> anon folios only.
+Throw in a VM_WARN_ON_ONCE() and call it a day.
 
 -- 
 Cheers,
