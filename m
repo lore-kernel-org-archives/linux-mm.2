@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ACC606A8B4
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D10606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LlbF1Z8k
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nv82ikRn
 Received: by kanga.kvack.org (Postfix)
-	id B0F006B05C6; Tue, 17 Nov 2026 18:14:45 -0500 (EST)
+	id 1738B6B05C8; Tue, 17 Nov 2026 18:14:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE6476B05C7; Tue, 17 Nov 2026 18:14:45 -0500 (EST)
+	id 14A0D6B05C9; Tue, 17 Nov 2026 18:14:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DB556B05C8; Tue, 17 Nov 2026 18:14:45 -0500 (EST)
+	id F062B6B05CA; Tue, 17 Nov 2026 18:14:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D44D6B05C6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:14:45 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E9711604C3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:44 +0000 (UTC)
-X-FDA: 85446167688.16.28A1CBE
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C4A176B05C8
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:14:48 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2FA69405F7
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:48 +0000 (UTC)
+X-FDA: 85446167856.29.DA99B29
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CD52B80005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LlbF1Z8k;
-	spf=pass (imf02.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7651120008
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:46 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nv82ikRn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794957283;
+	s=arc-20220608; t=1794957286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YM03tj0qhFqGxTChBGNPgoRuD3foZkehP4IPWon9Cak=;
-	b=H4tqqzZBX/AMrXalIkcHoSKhUBDd3x+46IEjNkdMweGLIVzLYsS4TDxFP9tZl8097XowQc
-	4SW+bteUrnNBAbVV72hxXECrC1O4RP1SSlCj2NCbi6ir5tK8OZG2c01mLK9KB3LdgCuwid
-	IrIYr9j4a4ftPBmuIms9EsFxduJbn+k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794957283;
-	b=zVdf/tQbmE8fdngqima7JjklIJgrnWQypXUNtywETERULF6F/HC22YKtGx7yobkYOWW1ox
-	3Ek3wq6NlMoeDN6OnECSDDSbwdb9/LfZH8GW1k7VDJgjjNn0EQ6PGEBuQRPF6nj/zTWxVO
-	gKGLbaMBYWE0FFzOpO5CWH/nbOy6G44=
+	bh=6n34UB4IGYmqbxIeyu3C92WUyY/otUHn2KouidPimtk=;
+	b=gj6svqguTKwmA5w6PyUSCDYIjOSXXlCcrSj3c0ZrrYYLAIoiU6KXZael3IE6xT9JN/pKdv
+	/+ZvO2S3TsiU8AnZZ7Xocy+o4Q5J8cpd/JsBsjG6FfgpYyZpO3G9gs4Hp7FazmaIgOpqda
+	p6CZ2jZ7R9wkMQ09Wfunk3HfVx4n6aI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LlbF1Z8k;
-	spf=pass (imf02.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nv82ikRn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794957286;
+	b=R7SwHAlRNCHARfsArcCx6O29AKarn4Eha5U7/R0POcFrKGHH49z7NyllNaipZGq977mBNQ
+	LI6fZ2xqfGxOgkUvBaKN7FLWUCqQyVPSgbD4u5kTs/X4lCR2sNR1Wrv/JZn1MDS18kXv91
+	wl/o0LsXKwZK35Zzzwz0NDe/dmLiy80=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id E3239439BB;
-	Tue, 17 Nov 2026 23:14:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 13F081F000C7;
-	Tue, 17 Nov 2026 23:14:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id BC78A41720;
+	Tue, 17 Nov 2026 23:14:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id DE2621F00923;
+	Tue, 17 Nov 2026 23:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794957281;
-	bh=YM03tj0qhFqGxTChBGNPgoRuD3foZkehP4IPWon9Cak=;
+	s=k20260515; t=1794957285;
+	bh=6n34UB4IGYmqbxIeyu3C92WUyY/otUHn2KouidPimtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LlbF1Z8kYcrI81oTdyGlWvMBJelrKdR1O0TNUGnwdcSbm1rm5rYP2lq8EA8WLEmHu
-	 Ae2hPOt8GGUUFMavRV3OHSY2o5KUQXiJIoLwa/y8zyDkzVkamtybC8Bqh+hqdS4LLk
-	 +n/Wtcnkw0q4/KieF+4OlYnFr2sSuK2UrrDWe1RUoFeCTJcJqMJOfTlMICwwtRLx+7
-	 QDVKs5lSJNCG4sKcWPGwgJEx/vl9Mrquhfwun8eDx61f8Yb+k1+64IhUd777R/9iqR
-	 AIIeEgZ522tGsQYlh1hrVh79oByO1TQKw7qE4XHN1QAvasmPI2yRO+T4hqt/2sfk3p
-	 hpX3JBhXZeTDA==
+	b=Nv82ikRni3pWvdz/v3Vdo+m1Anuew84FJcPoalRIkbDhe6E5zey3rFphBih5HmEi1
+	 Jdj85W4jMNmUEEYeQvn10vCL9w84rrIIQWOvHio86WhASVJSe7JhRk/BhZoA2caOMn
+	 BcQCQ1kOtz3EfRvr5RBUjeT8YZUorLG1SwZ24dQylM7CUrkAohYxDY1kC6mLaVAIpE
+	 njZnDZ9/qWUlt4Ax/p64lqw9yFXGnqjVuiOMmxjXfoqa8EuMKYBfUAzEHntS7aYcqC
+	 3KEhBzC1vPDiFvp4mnnuTvw6gT7uuc39cnywJh8Ozpp8k+cLCTOr5c8ebROGPJKW67
+	 NkI6qRuasf7jA==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -104,27 +104,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v2 08/13] fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
-Date: Wed, 18 Nov 2026 01:13:47 +0200
-Message-ID: <20261117231352.3816603-9-jarkko@kernel.org>
+Subject: [RFC PATCH v2 09/13] fs: Support installing rootns mount trees via move_mount()
+Date: Wed, 18 Nov 2026 01:13:48 +0200
+Message-ID: <20261117231352.3816603-10-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261117231352.3816603-1-jarkko@kernel.org>
 References: <20261117231352.3816603-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CD52B80005
+X-Rspamd-Queue-Id: 7651120008
+X-Stat-Signature: wc7zbigbodctbw7w45go5466hots9nxx
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: cm9q3neiu66x6dxyguozcwqfxhfpn3gb
-X-HE-Tag: 1794957282-998986
-X-HE-Meta: U2FsdGVkX19Xr04w2vS88/aKfkj72mIvMhYo6W2F72RBO3iGaSenHg4FnzsmBnhQ/6zcGMQ3R+jizWF5We6XM+CNSF8eOu7GyJAEhIibcF6I/enVNs/VOnIs/uKOEdUNDs3Z04Ah1pvowTUttosyqezmhR+4Ch0CkrjrmKucw4om4FlRXPROeC3WPvr80SWELX7r4ia8QJdVIEisjiHdI7FMOITkloWoNI5GM9EJuM7ScasvNR4miyLOFtAsHF5K3EeuawTeISUXX8hWyn4oRPNcx0Vu0ujc11dxT+gDu6J4nWNHmAraTemxJ14ERHW7iVqmBHK5odb3lWd/aFoeKZ6dZpP06+QVMBRRKTZwjQBe4qarMud2OiA3iqapYhVwi7EnJmUoN0Cjms7XWR59/AS8k4KSfx1LvgzW/2fkGWYbTwN4K0DXaYZuZeCC5m/tRogcKAwCA+MuIUT1Eb0U3cTJMXRiggxW+otApvPb2hpFtUkd3mXoce+nh5tjq6CmjOYnWtvwxU44NyDegqwIyg1LGuwB1/AG1eW5XOpsPYpo7l1ZMlMm4ACh6etAaUsMwEblkMl0f5H/jGL7l2kwnTgxcOcBNOm9Xu07omds3a6uR97qZUiRsEFjIja0pXk5ZtZLC3YqvSabbk2iFRaU63INSpKAuP8aKwVryUEEwiIaLNFUEVyMtLqSDOPeEtkIxW+8CDeiR1zVicKiwLGMKtnJWMA6Zo6/Ro4oXOvxcFNdSZCAEximD5EUmXLujKCQv5sDPYEOA2mW9reINOi3mILbEMKmzAZwQoBHiz65zSwarDWJIcu6Z+m57TziUQf+NJTNsfF9M2TkESi0+az8srU3nxtUTMfHDlic9w1roRbdtupUqt6FrFJ77Ckvb5k5ipZmvFd7iDDmMxH0r6IKpA9XNYZjWX1OdOO6RoQTdqP0JjIwQo+RQfTN0uUheFOTLMEx+95dZwqs4/XOaYq
- b01wFiNJ
- REq1MPrjXpfG46kC0BA7Cssl3esn2/JnVCPd5qFJjflIWT/0I9fYKFSYRg3PillxpaSrFLNGKvyahcU7KNgQ8JzEWcHHYjTncEeLF5x5WfO8zTE81cAtdTL3Cb6DuI//E3fkrM65i3TKJluK08zoZMCdxBD/0L8DgHzvd9QBwahgeOxNON1DrD1zbH2Kxg9oOIYsSdDjQktNK5TUPo77x7+xGCQgw5W6la3yBVXiDXP2ddaQCTsWce2Yj/FvAlXCORAV+ss/wOn1fvCY=
+X-Rspam-User: 
+X-HE-Tag: 1794957286-122796
+X-HE-Meta: U2FsdGVkX19wFot+nclsMio6riU5rCbUOSkMUZ5dQBUVE2RrcpG4iu2f1SZhQt0l+GQoLTogtnQdululn4gaSzRFiG4yGHF7BrlGKwcmt4eC6shJ/sJefbWGDFuShAn5WEJQvSQbZubmy7MIUUH91FFW/3aHkXBO/DudaAkqmVRPFUKqBeqXZtpzT2CnIqzClWUfua/ryNShO7tqJhgwgY0BrS+wt2j387kRC23mkUouwBfxHJ1JhHxIrZ0umtT7oQ7znh/R96V5XR9FwB0j3hl2yH4ALEyuCrfeMjz9V9q9Mz//QZVVDM5jRgNoRqmO0piJzWnErKjFUx9GGEOp/ogfQeBnFkvgC9rZVjBItGKY4Rp8s2/qENRVky2DKZRB5NvInoeHOLQxEPqNbzvZhkSPgfcadpOoe+HpqrzJspF2VqtyG9CsZZUFtGeCPO49qdNQRueevflcwMDRtxiRVaiJVoA2CulVZBFCs4ECwR4Z8xciW7UjskTkNVtGICLkqIxtAbPj9QuNJ5xnacPPiEhOBFyDZK9m5QfE+And58Nqf4asvFYzdBoS8rVKCIuf2uj8/7InCvhH7Cg7G9sTHKeIQ5ujperlGQ6KjUtxTUr2n0tRpKEJR60a+XMRBQAKPO87UH3twZR0YKd1ecGwFyCpGcwz9tNxZkQmDkYUoFZrpuwSwNS7Tap8RviHJmX+oKttZUGzw9ojw5L/rl9QH5NSZNGtCbcp1tRgvtrnAHuxdBUJWxl6CAXzIYtdHCoWM+Btde99eMV+iy1aXkjZG9Ixno9pQAIZH4OCM4VV4dsRrciZHolCdD/KDKgR1QAFCwehkk6QDH2K5YZRhVZ0fJLn0AaAMpZ5PlBmyBH3AyljILrz1JDlzHAx7gAHDTqv2xH6r9RP5/K0Vn9cr86c+qew8cg/WZ+xUQpjSgN4DhgmmlDkECp2w0I5MS9R+Pu/j75kkV9vxU8i7O2Amc1
+ 9bVE6bPm
+ zIp7P6lGJHDV8KtgLM0mDm5MRsIaITFHAu9JS4Mis01bjuJrNwxz6ha0G6PjNMjRf/83aL4Ch7C761JCPsxQCXbXHOiypGePp7TDTH0zwKH2icDMkoiVoz+rEe1UwXo/Z5PoAyyWRXdTaUqTPJbXl/zkhvV8FxbDh7458XR5N1R8jkT96WksUl56+ZTYyiVWpGIPzJclDsguqq+HexZofoonfwLj/AOrj0oEIuyFlJaQpYH54rtX44pOaD51hmLDE6FPm+yFGGhNOwAQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,284 +133,298 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-fsopen() initializes a filesystem context from current's user, network,
-PID, and IPC namespaces, preventing an external manager from creating
-proc, mqueue, or userns-owned superblocks bound to an unentered root
-namespace.
+A newly created rootns starts with an empty nullfs-rooted mount
+namespace, and move_mount() only resolves target paths against the
+caller's own filesystem view.
 
-Add FSCONFIG_SET_ROOTNS so callers holding CAP_SYS_ADMIN in the target
-rootns user namespace can bind a newly opened fs_context to that rootns
-once before offering parameters. Update fc->net_ns, switch fc->user_ns
-for non-global FS_USERNS_MOUNT or FS_USERNS_DELEGATABLE filesystems
-whose mounter fsuid/fsgid map into the rootns user namespace, and pass
-the rootns to ->set_rootns() for proc and mqueue.
+Add MOVE_MOUNT_T_ROOTNS_ROOT to populate a rootns mount tree through its
+file descriptor before or after entry. Installing "/" attaches a
+detached anonymous mount tree onto the nullfs root of the rootns mount
+namespace once and transitions the rootns to ROOTNS_READY; relative
+target paths attach anonymous mounts underneath the installed rootns
+root while verifying the destination mount namespace.
+
+Allocate fsmount() anonymous namespaces in fc->user_ns, check target
+user namespace CAP_SYS_ADMIN for MOVE_MOUNT_T_ROOTNS_ROOT instead of
+caller may_mount(), and lock moved mount trees when crossing user
+namespace boundaries.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- fs/fsopen.c                | 76 ++++++++++++++++++++++++++++++++++++--
- fs/proc/root.c             | 13 +++++++
- include/linux/fs_context.h |  3 ++
- include/uapi/linux/mount.h |  1 +
- ipc/mqueue.c               | 12 ++++++
- 5 files changed, 101 insertions(+), 4 deletions(-)
+ fs/namespace.c             | 178 ++++++++++++++++++++++++++++++++-----
+ include/uapi/linux/mount.h |   3 +-
+ 2 files changed, 157 insertions(+), 24 deletions(-)
 
-diff --git a/fs/fsopen.c b/fs/fsopen.c
-index 70024870fefa..ca3234c8c4e4 100644
---- a/fs/fsopen.c
-+++ b/fs/fsopen.c
-@@ -13,9 +13,14 @@
- #include <linux/security.h>
- #include <linux/anon_inodes.h>
- #include <linux/namei.h>
-+#include <linux/capability.h>
-+#include <linux/nsproxy.h>
+diff --git a/fs/namespace.c b/fs/namespace.c
+index aecd05ac0170..f8c96e4d13ee 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -34,6 +34,7 @@
+ #include <linux/mnt_idmapping.h>
+ #include <linux/pidfs.h>
+ #include <linux/nstree.h>
 +#include <linux/rootns.h>
-+#include <linux/user_namespace.h>
- #include <linux/file.h>
- #include <uapi/linux/mount.h>
- #include <linux/audit.h>
-+#include <net/net_namespace.h>
- #include "internal.h"
- #include "mount.h"
  
-@@ -41,6 +46,50 @@ static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
- 	return p;
+ #include "pnode.h"
+ #include "internal.h"
+@@ -2564,6 +2565,8 @@ int count_mounts(struct mnt_namespace *ns, struct mount *mnt)
+ enum mnt_tree_flags_t {
+ 	MNT_TREE_BENEATH = BIT(0),
+ 	MNT_TREE_PROPAGATION = BIT(1),
++	MNT_TREE_ROOTNS = BIT(2),
++	MNT_TREE_ROOTNS_INIT = BIT(3),
+ };
+ 
+ /**
+@@ -3781,6 +3784,7 @@ static int do_move_mount(const struct path *old_path,
+ 	struct mount *old = real_mount(old_path->mnt);
+ 	int err;
+ 	bool beneath = flags & MNT_TREE_BENEATH;
++	bool lock_tree;
+ 
+ 	if (!path_mounted(old_path))
+ 		return -EINVAL;
+@@ -3792,7 +3796,13 @@ static int do_move_mount(const struct path *old_path,
+ 	if (IS_ERR(mp.parent))
+ 		return PTR_ERR(mp.parent);
+ 
+-	if (check_mnt(old)) {
++	if (flags & MNT_TREE_ROOTNS) {
++		if (!anon_ns_root(old) || old->mnt_ns == mp.parent->mnt_ns)
++			return -EINVAL;
++		if ((flags & MNT_TREE_ROOTNS_INIT) &&
++		    mp.parent != real_mount(new_path->mnt))
++			return -EBUSY;
++	} else if (check_mnt(old)) {
+ 		/* if the source is in our namespace... */
+ 		/* ... it should be detachable from parent */
+ 		if (!mnt_has_parent(old) || IS_MNT_LOCKED(old))
+@@ -3845,7 +3855,16 @@ static int do_move_mount(const struct path *old_path,
+ 	if (mount_is_ancestor(old, mp.parent))
+ 		return -ELOOP;
+ 
+-	return attach_recursive_mnt(old, &mp);
++	lock_tree = (flags & MNT_TREE_ROOTNS) &&
++		    old->mnt_ns->user_ns != mp.parent->mnt_ns->user_ns;
++	err = attach_recursive_mnt(old, &mp);
++	if (!err && lock_tree) {
++		scoped_guard(mount_writer) {
++			lock_mnt_tree(old);
++			old->mnt.mnt_flags |= MNT_LOCKED;
++		}
++	}
++	return err;
  }
  
-+/**
-+ * DOC: FSCONFIG_SET_ROOTNS
-+ *
-+ * ``fsconfig(fsfd, FSCONFIG_SET_ROOTNS, NULL, NULL, rootnsfd)`` binds a newly
-+ * opened filesystem context to ``rootnsfd`` once before any parameters are
-+ * supplied (subsequent calls fail with ``-EBUSY``).
-+ *
-+ * The caller must hold ``CAP_SYS_ADMIN`` in the target ``rootns`` user
-+ * namespace.
-+ *
-+ * ``fc->net_ns`` is switched to the ``rootns`` network namespace,
-+ * ``fc->user_ns`` is delegated for non-global ``FS_USERNS_MOUNT`` or
-+ * ``FS_USERNS_DELEGATABLE`` filesystems when the mounter ``fsuid``/``fsgid``
-+ * map into the target user namespace, and ``proc`` and ``mqueue`` contexts
-+ * bind to the target ``rootns`` PID and IPC namespaces.
-+ */
-+static int fsconfig_set_rootns(struct fs_context *fc, struct fs_parameter *param)
+ static int do_move_mount_old(const struct path *path, const char *old_name)
+@@ -4699,7 +4718,7 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
+ 		return FD_ADD((flags & FSMOUNT_CLOEXEC) ? O_CLOEXEC : 0,
+ 			      open_new_namespace(&new_path, MOUNT_COPY_NEW));
+ 
+-	ns = alloc_mnt_ns(current->nsproxy->mnt_ns->user_ns, true);
++	ns = alloc_mnt_ns(fc->user_ns, true);
+ 	if (IS_ERR(ns))
+ 		return PTR_ERR(ns);
+ 	mnt = real_mount(new_path.mnt);
+@@ -4739,6 +4758,129 @@ static inline int vfs_move_mount(const struct path *from_path,
+ 	return do_move_mount(from_path, to_path, mflags);
+ }
+ 
++static int lookup_move_mount_from(int from_dfd,
++				  const char __user *from_pathname,
++				  unsigned int flags, struct path *from_path)
 +{
-+	struct user_namespace *user_ns;
-+	struct rootns *c;
++	unsigned int uflags = 0;
++	unsigned int lflags = 0;
 +
-+	if (!is_rootns_file(param->file))
++	if (flags & MOVE_MOUNT_F_EMPTY_PATH)
++		uflags = AT_EMPTY_PATH;
++
++	CLASS(filename_maybe_null, from_name)(from_pathname, uflags);
++	if (!from_name && from_dfd >= 0) {
++		CLASS(fd_raw, f_from)(from_dfd);
++		if (fd_empty(f_from))
++			return -EBADF;
++
++		*from_path = fd_file(f_from)->f_path;
++		path_get(from_path);
++		return 0;
++	}
++
++	if (flags & MOVE_MOUNT_F_SYMLINKS)
++		lflags |= LOOKUP_FOLLOW;
++	if (flags & MOVE_MOUNT_F_AUTOMOUNTS)
++		lflags |= LOOKUP_AUTOMOUNT;
++	return filename_lookup(from_dfd, from_name, lflags, from_path, NULL);
++}
++
++/**
++ * DOC: MOVE_MOUNT_T_ROOTNS_ROOT
++ *
++ * ``MOVE_MOUNT_T_ROOTNS_ROOT`` installs detached anonymous mount trees into a
++ * target ``rootns`` control fd supplied as ``to_dfd``:
++ *
++ * 1. ``to_pathname`` of ``"/"`` attaches the initial root mount onto the
++ *    ``nullfs`` root of the ``rootns`` mount namespace at most once and
++ *    transitions the ``rootns`` to ``ROOTNS_READY``.
++ *
++ * 2. Relative ``to_pathname`` values resolve beneath the installed ``rootns``
++ *    root inside the ``rootns`` mount namespace.
++ *
++ * Capability is checked against ``CAP_SYS_ADMIN`` in the target ``rootns``
++ * user namespace, and source trees crossing user namespace boundaries are
++ * locked with ``MNT_LOCKED`` and locked mount flags.
++ */
++static int move_mount_rootns(int from_dfd, const char __user *from_pathname,
++			     int to_dfd, const char __user *to_pathname,
++			     unsigned int flags, enum mnt_tree_flags_t mflags)
++{
++	struct path from_path __free(path_put) = {};
++	struct path to_path __free(path_put) = {};
++	struct mnt_namespace *rootns_mnt_ns;
++	unsigned int lflags;
++	struct rootns *rootns;
++	bool is_root;
++	int ret;
++
++	CLASS(filename_maybe_null, to_name)(to_pathname, AT_EMPTY_PATH);
++	if (IS_ERR(to_name))
++		return PTR_ERR(to_name);
++	if (!to_name)
 +		return -EINVAL;
 +
-+	c = param->file->private_data;
-+	user_ns = c->cred->user_ns;
-+	if (!ns_capable(user_ns, CAP_SYS_ADMIN))
++	CLASS(fd, f_rootns)(to_dfd);
++	if (fd_empty(f_rootns))
++		return -EBADF;
++	if (!is_rootns_file(fd_file(f_rootns)))
++		return -EINVAL;
++
++	rootns = fd_file(f_rootns)->private_data;
++	if (!ns_capable(rootns->cred->user_ns, CAP_SYS_ADMIN))
 +		return -EPERM;
 +
-+	put_net(fc->net_ns);
-+	fc->net_ns = get_net(c->ns->net_ns);
-+	if (!fc->global &&
-+	    (fc->fs_type->fs_flags & (FS_USERNS_MOUNT | FS_USERNS_DELEGATABLE)) &&
-+	    kuid_has_mapping(user_ns, fc->cred->fsuid) &&
-+	    kgid_has_mapping(user_ns, fc->cred->fsgid)) {
-+		put_user_ns(fc->user_ns);
-+		fc->user_ns = get_user_ns(user_ns);
++	rootns_mnt_ns = rootns->ns->mnt_ns;
++	is_root = to_name->name[0] == '/' && to_name->name[1] == '\0';
++	if (is_root) {
++		if (flags & MOVE_MOUNT_BENEATH)
++			return -EINVAL;
++		if (READ_ONCE(rootns->state) != ROOTNS_EMPTY)
++			return -EBUSY;
++
++		to_path.mnt = mntget(&rootns_mnt_ns->root->mnt);
++		to_path.dentry = dget(rootns_mnt_ns->root->mnt.mnt_root);
++		mflags |= MNT_TREE_ROOTNS_INIT;
++	} else {
++		if (to_name->name[0] == '/')
++			return -EINVAL;
++
++		scoped_guard(spinlock, &rootns->lock) {
++			if (rootns->state == ROOTNS_EMPTY)
++				return -ENOENT;
++		}
++
++		lflags = 0;
++		if (flags & MOVE_MOUNT_T_SYMLINKS)
++			lflags |= LOOKUP_FOLLOW;
++		if (flags & MOVE_MOUNT_T_AUTOMOUNTS)
++			lflags |= LOOKUP_AUTOMOUNT;
++		ret = filename_lookup(AT_FDCWD, to_name, lflags, &to_path,
++				      &rootns->root);
++		if (ret)
++			return ret;
++		if (real_mount(to_path.mnt)->mnt_ns != rootns_mnt_ns)
++			return -EINVAL;
 +	}
-+	if (fc->ops->set_rootns)
-+		fc->ops->set_rootns(fc, c);
-+	fc->phase = FS_CONTEXT_CREATE_PARAMS;
-+	return 0;
++
++	ret = lookup_move_mount_from(from_dfd, from_pathname, flags,
++				     &from_path);
++	if (ret)
++		return ret;
++
++	ret = vfs_move_mount(&from_path, &to_path, mflags | MNT_TREE_ROOTNS);
++	if (!ret && is_root) {
++		scoped_guard(spinlock, &rootns->lock) {
++			path_get(&from_path);
++			rootns->root = from_path;
++			WRITE_ONCE(rootns->state, ROOTNS_READY);
++		}
++	}
++
++	return ret;
 +}
 +
  /*
-  * Allow the user to read back any error, warning or informational messages.
-  * Only one message is returned for each read(2) call.
-@@ -147,7 +196,7 @@ SYSCALL_DEFINE2(fsopen, const char __user *, _fs_name, unsigned int, flags)
- 	if (IS_ERR(fc))
- 		return PTR_ERR(fc);
+  * Move a mount from one place to another.  In combination with
+  * fsopen()/fsmount() this is used to install a new mount and in combination
+@@ -4758,7 +4900,7 @@ SYSCALL_DEFINE5(move_mount,
+ 	enum mnt_tree_flags_t mflags = 0;
+ 	int ret = 0;
  
--	fc->phase = FS_CONTEXT_CREATE_PARAMS;
-+	fc->phase = FS_CONTEXT_CREATE_NS;
+-	if (!may_mount())
++	if (!(flags & MOVE_MOUNT_T_ROOTNS_ROOT) && !may_mount())
+ 		return -EPERM;
  
- 	ret = fscontext_alloc_log(fc);
- 	if (ret < 0)
-@@ -222,7 +271,8 @@ static int vfs_cmd_create(struct fs_context *fc, bool exclusive)
- 	struct super_block *sb;
- 	int ret;
+ 	if (flags & ~MOVE_MOUNT__MASK)
+@@ -4771,6 +4913,13 @@ SYSCALL_DEFINE5(move_mount,
+ 	if (flags & MOVE_MOUNT_SET_GROUP)	mflags |= MNT_TREE_PROPAGATION;
+ 	if (flags & MOVE_MOUNT_BENEATH)		mflags |= MNT_TREE_BENEATH;
  
--	if (fc->phase != FS_CONTEXT_CREATE_PARAMS)
-+	if (fc->phase != FS_CONTEXT_CREATE_NS &&
-+	    fc->phase != FS_CONTEXT_CREATE_PARAMS)
- 		return -EBUSY;
- 
- 	if (!mount_capable(fc))
-@@ -298,9 +348,16 @@ static int vfs_fsconfig_locked(struct fs_context *fc, int cmd,
- 		return vfs_cmd_create(fc, true);
- 	case FSCONFIG_CMD_RECONFIGURE:
- 		return vfs_cmd_reconfigure(fc);
-+	case FSCONFIG_SET_ROOTNS:
-+		if (fc->phase != FS_CONTEXT_CREATE_NS)
-+			return -EBUSY;
-+		return fsconfig_set_rootns(fc, param);
-+
- 	default:
--		if (fc->phase != FS_CONTEXT_CREATE_PARAMS &&
--		    fc->phase != FS_CONTEXT_RECONF_PARAMS)
-+		if (fc->phase == FS_CONTEXT_CREATE_NS)
-+			fc->phase = FS_CONTEXT_CREATE_PARAMS;
-+		else if (fc->phase != FS_CONTEXT_CREATE_PARAMS &&
-+			 fc->phase != FS_CONTEXT_RECONF_PARAMS)
- 			return -EBUSY;
- 
- 		return vfs_parse_fs_param(fc, param);
-@@ -390,6 +447,10 @@ SYSCALL_DEFINE5(fsconfig,
- 		if (!_key || _value || aux < 0)
- 			return -EINVAL;
- 		break;
-+	case FSCONFIG_SET_ROOTNS:
-+		if (_key || _value || aux < 0)
++	if (unlikely(flags & MOVE_MOUNT_T_ROOTNS_ROOT)) {
++		if (flags & (MOVE_MOUNT_T_EMPTY_PATH | MOVE_MOUNT_SET_GROUP))
 +			return -EINVAL;
-+		break;
- 	case FSCONFIG_CMD_CREATE:
- 	case FSCONFIG_CMD_CREATE_EXCL:
- 	case FSCONFIG_CMD_RECONFIGURE:
-@@ -457,6 +518,12 @@ SYSCALL_DEFINE5(fsconfig,
- 			goto out_key;
- 		param.dirfd = aux;
- 		break;
-+	case FSCONFIG_SET_ROOTNS:
-+		ret = -EBADF;
-+		param.file = fget(aux);
-+		if (!param.file)
-+			goto out_key;
-+		break;
- 	default:
- 		break;
++		return move_mount_rootns(from_dfd, from_pathname,
++					 to_dfd, to_pathname, flags, mflags);
++	}
++
+ 	uflags = 0;
+ 	if (flags & MOVE_MOUNT_T_EMPTY_PATH)
+ 		uflags = AT_EMPTY_PATH;
+@@ -4794,25 +4943,8 @@ SYSCALL_DEFINE5(move_mount,
+ 			return ret;
  	}
-@@ -482,6 +549,7 @@ SYSCALL_DEFINE5(fsconfig,
- 			putname(param.name);
- 		break;
- 	case FSCONFIG_SET_FD:
-+	case FSCONFIG_SET_ROOTNS:
- 		if (param.file)
- 			fput(param.file);
- 		break;
-diff --git a/fs/proc/root.c b/fs/proc/root.c
-index 7fbbe92bf73a..5976029ad3f8 100644
---- a/fs/proc/root.c
-+++ b/fs/proc/root.c
-@@ -15,6 +15,8 @@
- #include <linux/sched/stat.h>
- #include <linux/module.h>
- #include <linux/bitops.h>
-+#include <linux/nsproxy.h>
-+#include <linux/rootns.h>
- #include <linux/user_namespace.h>
- #include <linux/fs_context.h>
- #include <linux/mount.h>
-@@ -323,6 +325,16 @@ static int proc_get_tree(struct fs_context *fc)
- 	return get_tree_nodev(fc, proc_fill_super);
- }
  
-+static void proc_set_rootns(struct fs_context *fc, struct rootns *rootns)
-+{
-+	struct proc_fs_context *ctx = fc->fs_private;
-+
-+	put_pid_ns(ctx->pid_ns);
-+	ctx->pid_ns = get_pid_ns(rootns->ns->pid_ns_for_children);
-+	put_user_ns(fc->user_ns);
-+	fc->user_ns = get_user_ns(ctx->pid_ns->user_ns);
-+}
-+
- static void proc_fs_context_free(struct fs_context *fc)
- {
- 	struct proc_fs_context *ctx = fc->fs_private;
-@@ -334,6 +346,7 @@ static void proc_fs_context_free(struct fs_context *fc)
- static const struct fs_context_operations proc_fs_context_ops = {
- 	.free		= proc_fs_context_free,
- 	.parse_param	= proc_parse_param,
-+	.set_rootns	= proc_set_rootns,
- 	.get_tree	= proc_get_tree,
- 	.reconfigure	= proc_reconfigure,
- };
-diff --git a/include/linux/fs_context.h b/include/linux/fs_context.h
-index d1727dffecc5..cb978273c8bc 100644
---- a/include/linux/fs_context.h
-+++ b/include/linux/fs_context.h
-@@ -21,6 +21,7 @@ struct file_system_type;
- struct mnt_namespace;
- struct net;
- struct pid_namespace;
-+struct rootns;
- struct super_block;
- struct user_namespace;
- struct vfsmount;
-@@ -36,6 +37,7 @@ enum fs_context_purpose {
-  * Userspace usage phase for fsopen/fspick.
-  */
- enum fs_context_phase {
-+	FS_CONTEXT_CREATE_NS,		/* Set namespaces for sb creation */
- 	FS_CONTEXT_CREATE_PARAMS,	/* Loading params for sb creation */
- 	FS_CONTEXT_CREATING,		/* A superblock is being created */
- 	FS_CONTEXT_AWAITING_MOUNT,	/* Superblock created, awaiting fsmount() */
-@@ -117,6 +119,7 @@ struct fs_context_operations {
- 	int (*dup)(struct fs_context *fc, struct fs_context *src_fc);
- 	int (*parse_param)(struct fs_context *fc, struct fs_parameter *param);
- 	int (*parse_monolithic)(struct fs_context *fc, void *data);
-+	void (*set_rootns)(struct fs_context *fc, struct rootns *rootns);
- 	int (*get_tree)(struct fs_context *fc);
- 	int (*reconfigure)(struct fs_context *fc);
- };
+-	uflags = 0;
+-	if (flags & MOVE_MOUNT_F_EMPTY_PATH)
+-		uflags = AT_EMPTY_PATH;
+-
+-	CLASS(filename_maybe_null,from_name)(from_pathname, uflags);
+-	if (!from_name && from_dfd >= 0) {
+-		CLASS(fd_raw, f_from)(from_dfd);
+-		if (fd_empty(f_from))
+-			return -EBADF;
+-
+-		return vfs_move_mount(&fd_file(f_from)->f_path, &to_path, mflags);
+-	}
+-
+-	lflags = 0;
+-	if (flags & MOVE_MOUNT_F_SYMLINKS)
+-		lflags |= LOOKUP_FOLLOW;
+-	if (flags & MOVE_MOUNT_F_AUTOMOUNTS)
+-		lflags |= LOOKUP_AUTOMOUNT;
+-	ret = filename_lookup(from_dfd, from_name, lflags, &from_path, NULL);
++	ret = lookup_move_mount_from(from_dfd, from_pathname, flags,
++				     &from_path);
+ 	if (ret)
+ 		return ret;
+ 
 diff --git a/include/uapi/linux/mount.h b/include/uapi/linux/mount.h
-index ac865edac517..cb55cfcfc92e 100644
+index cb55cfcfc92e..7224a43af51d 100644
 --- a/include/uapi/linux/mount.h
 +++ b/include/uapi/linux/mount.h
-@@ -105,6 +105,7 @@ enum fsconfig_command {
- 	FSCONFIG_CMD_CREATE	= 6,	/* Create new or reuse existing superblock */
- 	FSCONFIG_CMD_RECONFIGURE = 7,	/* Invoke superblock reconfiguration */
- 	FSCONFIG_CMD_CREATE_EXCL = 8,	/* Create new superblock, fail if reusing existing superblock */
-+	FSCONFIG_SET_ROOTNS	= 9,	/* Set a rootns, supplied by fd */
- };
+@@ -75,9 +75,10 @@
+ #define MOVE_MOUNT_T_SYMLINKS		0x00000010 /* Follow symlinks on to path */
+ #define MOVE_MOUNT_T_AUTOMOUNTS		0x00000020 /* Follow automounts on to path */
+ #define MOVE_MOUNT_T_EMPTY_PATH		0x00000040 /* Empty to path permitted */
++#define MOVE_MOUNT_T_ROOTNS_ROOT	0x00000080 /* Set as rootns root */
+ #define MOVE_MOUNT_SET_GROUP		0x00000100 /* Set sharing group instead */
+ #define MOVE_MOUNT_BENEATH		0x00000200 /* Mount beneath top mount */
+-#define MOVE_MOUNT__MASK		0x00000377
++#define MOVE_MOUNT__MASK		0x000003f7
  
  /*
-diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index 322c3dd98c44..a85ca188d370 100644
---- a/ipc/mqueue.c
-+++ b/ipc/mqueue.c
-@@ -32,6 +32,7 @@
- #include <linux/mutex.h>
- #include <linux/nsproxy.h>
- #include <linux/pid.h>
-+#include <linux/rootns.h>
- #include <linux/ipc_namespace.h>
- #include <linux/user_namespace.h>
- #include <linux/slab.h>
-@@ -400,6 +401,16 @@ static struct inode *mqueue_get_inode(struct super_block *sb,
- 	return ERR_PTR(ret);
- }
- 
-+static void mqueue_set_rootns(struct fs_context *fc, struct rootns *rootns)
-+{
-+	struct mqueue_fs_context *ctx = fc->fs_private;
-+
-+	put_ipc_ns(ctx->ipc_ns);
-+	ctx->ipc_ns = get_ipc_ns(rootns->ns->ipc_ns);
-+	put_user_ns(fc->user_ns);
-+	fc->user_ns = get_user_ns(ctx->ipc_ns->user_ns);
-+}
-+
- static int mqueue_fill_super(struct super_block *sb, struct fs_context *fc)
- {
- 	struct inode *inode;
-@@ -1613,6 +1624,7 @@ static const struct super_operations mqueue_super_ops = {
- 
- static const struct fs_context_operations mqueue_fs_context_ops = {
- 	.free		= mqueue_fs_context_free,
-+	.set_rootns	= mqueue_set_rootns,
- 	.get_tree	= mqueue_get_tree,
- };
- 
+  * fsopen() flags.
 -- 
 2.47.3
 
