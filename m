@@ -1,137 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482B7606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 08:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7326606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 08:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=fpPjAkP7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hlyAEWxi
 Received: by kanga.kvack.org (Postfix)
-	id 5FA976B05B6; Tue, 17 Nov 2026 03:06:07 -0500 (EST)
+	id 7B4E16B05B0; Tue, 17 Nov 2026 03:13:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D12E6B05B7; Tue, 17 Nov 2026 03:06:07 -0500 (EST)
+	id 765976B05B2; Tue, 17 Nov 2026 03:13:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E8676B05B8; Tue, 17 Nov 2026 03:06:07 -0500 (EST)
+	id 654C46B05B3; Tue, 17 Nov 2026 03:13:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 279C96B05B6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:06:07 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C04E81A033C
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:06:06 +0000 (UTC)
-X-FDA: 85443877932.05.23C9DBC
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C5465A0004
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:06:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fpPjAkP7;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E4C36B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:13:19 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C44B0A032D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:13:18 +0000 (UTC)
+X-FDA: 85443896076.25.B984524
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 17F7A20005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:13:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hlyAEWxi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794902765;
+	s=arc-20220608; t=1794903197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=phkLAVe2PWOa6jK368c9XEugs4HUA+7j+Ko3Mk6IPVk=;
-	b=3rBJwBhSqSu7fzJpLSM2yYRmn9W6oIt96Z2Su9NLD8qwrvb+TBNtqtVM6pFbSpMe3WZmZT
-	WTgKILX33WUEoAwNYU/UP4alYMAS8g+E9RgYl48WRH18RbnGWLp+B5GhSAHdK0B6kbLLxj
-	Dio+N/CNQQbJ6JbnAYNzHRkgHDmpsrI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794902765;
-	b=ZljpmmHRvnbltTlfwv2u8AgM90XCzkmBMk6xqGjBh57WH/Egb/MI78P4wkhbWeHLCxLvRx
-	QjSyAaRK0W5EeCSrun4b1f3jwEU8bQqCFrvxSst6xqTJDfQiK5IlGpUZt9ANj33l5Coq8a
-	6eHa1wSHynpIVoGz4eie10IComdhs6I=
+	bh=IBXUdSjPv3St/AeuB5N6wFkUoCBcAH66OSGEhKqTT3g=;
+	b=FeweKGxVSx9LFhhOEahgPWeSujI/6EMZiaQnDY5pJJoizAmm/qO14bdMlW8K4DfwRqZChp
+	LejsWKW9C4IK1g2OQn8vLzXAWWJNDBgHx+LdBj/73t7K3Wh9SrHnGTKLjVs+rkfsdMtjkT
+	XhufD+4fV7DA2h8M/cYGeM2IQVaa3Ck=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fpPjAkP7;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-55bd96affd2so7593351cf.1
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 00:06:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794902764; x=1795507564; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=phkLAVe2PWOa6jK368c9XEugs4HUA+7j+Ko3Mk6IPVk=;
-        b=fpPjAkP7JlG4seMuMiy5ACbzC1cXK6KASrT4ZLJszlzRwMAcT6wHYMKzbn145ovtBA
-         brJa71HqJ1Ma91ykEETV6vCL7036qtBjXTzyTV76IIFvmNWUgWNxywRsUNIY9Al9PoeL
-         tl7IQ+E5ttJojiSz5P+SOJlwTpjXaPACUwDvzUby4kpsV18i2rRgAJWpl7LWEJ/+IEsL
-         fcdn1a9b71HjXv27dnec4NPGMcRrwvbAOmN8w5KyYCPIQQyPo/9ZEm5lyi1fJdksS94q
-         uk+7iE/1dXHGdk/kqvtXKCdxsXe752gQaWfbO834IL+vf9N4pk4dCOmjK10oU6aCsgJn
-         OBSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794902764; x=1795507564;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=phkLAVe2PWOa6jK368c9XEugs4HUA+7j+Ko3Mk6IPVk=;
-        b=IadLlndTLHOqhQTcjKv6+vqdCdVuuab+PSFlNw4dnAR+u3mQRHpjLAO/lKsJOn+yHH
-         XZ67iYu961Vs8fyqCLDrwZpBJs3gfPL/KPc90dlebVtaqFS/DTa1kcpQ5zpwlO/1RfwY
-         FZFL3U/f1t/jai2YibfEoP8aHnG4r/v0zO9chkVxUYcGc4HTt+c41cswXKsuvvdG4m2h
-         ECiY1dlVtlK9GRN+DQmqBx8Mcq83UvlZhBBKh5wI1X1T3thMLXuw5xA00r/1XMpn+HQq
-         J8XhqntSmssznynAsPi2dLHioHilp0X5i4kYRL0uDuV5Oxs8zRdbygZBlv/ongQGmktr
-         F7+w==
-X-Forwarded-Encrypted: i=1; AL+hErE3kwLuP6/5ebaqCe0o290xApU1gYMWnLW9qqNgobQedtPdoiYGJ3pSLFRHs1p/vw6VN3iCITAjfw==@kvack.org
-X-Gm-Message-State: APuU4Z/9+hjlkLAaF6raW7RCvJQBHxfbOGLttrkrzp406auN3ztR9IOn
-	SQ9A4Ax1AG6Mv2Dy8nfBevLyJE3etoT+cVcOtCkWMWjvRwP7UDS9IsWU7U3tseZ4l0A=
-X-Gm-Gg: AYBFou1cyaMMNYWeP8c48hCmVzHAsIfOY2uxVcSmHOkul0eZKwHK5qFSeq0rT7Q5XXb
-	X6RBxlpycy7h/9bCzo83JZf69AJ/3VsJ5p9w3524yCrjSuE4RNWCDD7pqhlvYvWjeoFU6v+K7fj
-	FbvyiRKXDab7FI9iB3ngL3bZBncMclgLvD55j74SKauxAtBriPVFwa4RfKFw+FAwrkDM+KZIp3C
-	KspCS6qynImtx2qNTPVzIsxaYjIKuMkivvXvuoBVckedFQJ+KRCyDv+vQAKWkc47RFroBvrrV4i
-	ioZnufTGuNQZsmjxhnyvneenw1eThWvh77I816G2w1iNjqiovhq9p4krCFuYKyRU0wC94JI39MW
-	HP9LsXkre/3XOBrSZBlGdRBpOCriLiqypjDBibcXzEdIiyyFjgSjpvfNoX1aY2eTN3lcsh5pdiF
-	OZHs/rz14Q3oDqSqyZmJPwtTHCNuKUyUNBqnsr3t9MBkepd+Gz9BoKQujoK73WdAkmRLJyXu361
-	fTvLg7dOdmUjT9om+v1CadqbDsDPmS7REOmOsoWkGg4N1Tv+EeM/SDZWs2A9Ecag0LWHkFY9NpO
-	WoH0VBoSaIp82ByeVD6wRQ0rdyuIXaa0T4p8QFswlJ/NFjSJskAYL60/1FsXEhLkv6g0NLWkaNx
-	PoxKYWKivLvQZ9lMvtc8RJh8spqFq
-X-Received: by 2002:a05:622a:5a17:b0:55d:31ac:d86f with SMTP id d75a77b69052e-55d494553e7mr26563541cf.13.1794902763822;
-        Tue, 17 Nov 2026 00:06:03 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d7fad3sm105812516d6.29.2026.11.17.00.06.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 00:06:03 -0800 (PST)
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hlyAEWxi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794903197;
+	b=YFd4BPd/r686kn2vqREfajTFkk8FJuMhnqF43cpkYxmJdyotBDxs03WL24NlDEvzVpLpJY
+	NgH2j/rOoGjvAdOdBkPyIAqVU4/dvFHL50s/KTWELSOU/Jo56XdXy6Xv5lxMqoHbMZThHq
+	OW0DU697kpuwVi/f9RMeNqFKgJG3QcA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 92C5160610;
+	Tue, 17 Nov 2026 08:13:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23A81F000C4;
+	Tue, 17 Nov 2026 08:13:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794903196;
+	bh=IBXUdSjPv3St/AeuB5N6wFkUoCBcAH66OSGEhKqTT3g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hlyAEWxiuklLcW8fzBZVgxRgIwA1STK2mCOg4xpyew9l5sw6uHHG4GUa2esbOCYyR
+	 gWKY7aebdDYx4tQ134Pd/mA9ZSascY77fjfxf+8tHph7RJZwnUQxmbd7Vadjlp03PB
+	 RNrBxLdB4INA9J5n4eCN8l0/HM1BLIEee3UGNu1EQN6nZ01iflmnECFgmgq54XrtB1
+	 JsXeeobeiOizwedOp7h4cIHeq87rET3qPSz3+VkiGULZ9mugtd+znJxTMH4/8NV91B
+	 jbDVAA5MDAyYBIqfEy1dX4KdSKVNshyJa6p2RyLVZdP/Gqx/GUbyHbKR9JJRivERy1
+	 PZ4c2J3bY56LA==
+Message-ID: <dfbf361e-8125-4f8e-9567-65e80996e2d4@kernel.org>
+Date: Tue, 17 Nov 2026 09:13:09 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/khugepaged: mark a collapsed mTHP dirty
+To: Daniel Wade <danjwade95@gmail.com>, Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261117075246.61336-1-danjwade95@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20261117075246.61336-1-danjwade95@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm/hmm: skip NUMA balancing on protnone faults
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, 
- "David Hildenbrand (Arm)" <david@kernel.org>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Matthew Auld <matthew.auld@intel.com>, linux-mm@kvack.org, 
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
- Matthew Brost <matthew.brost@intel.com>, 
- =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>, 
- Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <avvJZtN88gLXA6Uz@nvdebian.thelocal>
-References: <20261112-numa-v1-1-ad9cbca8f49a@intel.com>
- <b32fb02a-68b4-4db9-83dd-254147dbf215@kernel.org>
- <1993e931e6a4b0cda5c04e72b1a8d5fb924f950a.camel@linux.intel.com>
- <9ec3e8b9-064a-47a7-8d00-566ff371b846@kernel.org>
- <179460319801.482102.15329919214055018110.b4-reply@b4>
- <avuN2eIrlqrO0u6O@nvdebian.thelocal>
- <179487347201.482102.6428415219993123805.b4-reply@b4>
- <avvJZtN88gLXA6Uz@nvdebian.thelocal>
-Date: Tue, 17 Nov 2026 03:06:02 -0500
-Message-Id: <179490276245.482102.13112734238511841101.b4-reply@b4>
-X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 17F7A20005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C5465A0004
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 1jdt73o311pth68upp13ifgu4tjji95i
-X-HE-Tag: 1794902764-56354
-X-HE-Meta: U2FsdGVkX1+cYoebsDvEvKjAEUtaiwpHE15tCafjipPTeWLxP7GJJnxj5D7tpkpx7v72aLagk9PC5GXX4DeIHWJDdtoLa7NAybIKo9Hm6UCQM4p29cw2msBhtIsKulZbnB8OqJIGBYLDDb0RtJAloIeEETg+4MxruJy3jwLv6cxd71IpLPwkWxd0jSg06UfWP3cggQpFJiqQde9Xnxp5lblGaTNuZojiZFI/0AImcWTI5aB4xKOGqlJNpLLPgYalHtHZg4LeXCjBNi9Z/UQDP9VM897IFg5ou20HASnWptx2Si7/4YhOSDyiboiQHXl6koL3J4TmVMKZPyEbLDnjpmuBAuBbqrSpPW2B6EMkip+N0NgGxAgIstIlL2IzXshvrgrYgVfFeytGPQhcPAqiMW07N0AGcs6NnctDYDV2ysqA7TI3/Asb3UrL6sIOB3CdlQBd+Wah4he4XnKcut+xs02CM922uQ6Curdb8e8H6WCfPFxILzwhhb4r2OSa/WnJGn+19UHBu3nXpOb9LiFRv/fXsEvQB6f15OfKJWHXVa0DIvGBjsP7K8wBDoj6ziCvcnBgZ6KNxEHBPnXfJEybYCiG+W3pwgD+ID5JfNLoru8bnrohJyFgxSh9m8Lkm62MDDf2VHjmZNyIC2oE3bX+vtQlvKQvT9Dcr7P0pf4bmvQE/MuCwSSVCY7IWag6Ko1VY+Jnh3skI7uIhHWpMDPO1IyuggkoN0TmbZT2V1IeMXSp7BgpFIvPLfaacXphotC1Mg67nEspdWzsNE1jzkxfs2Dt8NIg5q513I55/1IR0ayVMldP/NXu+sz3A7YjnaG9ReXLgawIOjB52yuZ36/j3wRiGmP04wXZgL8n4y/8db6Ui/XP9uSLIBus+LzPQMcQiGa+T9LpzJbW6W4YZ+1kYiFm59JBpCoYijNcPqGL9BeueWUDAeuHlHkWO1RKaM47WUyBrWbQCj/vGAIstaz
- VZTT7MUm
- L9wjLcUJqb2bwN1WfMyaZPN12x7uaaALxwJCaKdWvxyKd4VVWp7iTC0F8l9nvext4IfNNvd2U20jsAw9cf1H6WoBnnE+AeEqmyfI2Qj1n7P3KcSIlnqyn7SDvyvCY5JhwnvYdJ6VJ+PWADKx8GvDkaOzc1DklvKCJ5EchPqlZSxISStwhSPuuL4SNnTWAlmxcC1f9nUzZ3wIjAFu2JnPCwHa//xm++nW/E1lwKeqIIqctlhsZkxdRRjECQ5uThiefd+e9fVYM33y+zZd20vLfCoD3gxdr1Yq2x+5zOag1aSb1G8hJm9r8059/qA==
+X-Stat-Signature: 3endtj5dcog1sa3bc7qawtwhcfa8cjuq
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794903196-213235
+X-HE-Meta: U2FsdGVkX1+CW5pQbmdljPJ3jMnjKIqQOOmv5nzGLDPHRtjJydbITyrh4wKV4JerBEz5XJxB5Huim+ntnh3rVQaC8z+lJsBLjBDGM2GHQjQA9X8QuLOnryDamcc0Gy76P+2tPN7EXJOu92xjVxZ7ccbEC3+1HwXJMbJAa0ioXdLCZo1WBt1mROuyA9cSj3SNdztoBPWXGaEeLxjhfDPVUePVpRyM5aJvfjdbY6IiFjd5jIloVnb+ZKaO4cFG9zmuDkoUvsXyFXVf//qWGwco9KYYQ2ThazgZsgpEwYLLD8LsoemNQvd558Cqih7AJeo7lHDaZQMkZ/CUHxhDTUf/LiRJ/x6mGOFHF8I3eGinWJiMWTmlvUJYEpS6wtzCfA7tYasHnuOsxTr8KyTJ2kY2J9YPN4lturV1DFwFNsOA6oc6wpi92hfcseDnjvXvFEwiezLaKR8ub/b5EJIc+pS2PPCa4C82iE5xVpnmUDkzeXO3OM22tuN6JRJiyxYmn8CFFqz2FrUVQ8JIqsn8EW//PT5+BkcKi+BlNEIgUBWEMA+8ICat9cTX+fEq/zRxdI7LVGypYyXXsv8zmWzPJMjV40sMoTfIE/X4CV0/fM+CahiTfLZqrXm866icTod2KSYGGLxgz6Y1E97yKc6aIQ9Ei1gYYTpYaTfz+wofdO1mCc4SRC+qS7YoWGUy5guZ2kaz3EYNzXX7w7TlL0FkNX0gOY+0McDJYGhXWR3+5U9Cd5C2DzOkcE1MTUDOrhqNpJoaIK7erIweYBG7ch+YbXcTbNoEwuNAJws3nPAY7zG70apklqeAnhz1zfHJ9xvCoo1CNbnbZnFSGr/3y2hOI+2/dalnCjJVHa60j1dsK0MKG60GGfoxnbvcz1NBKGE7fVbi7hyEQLNHSIb/nDIc6PUuwQq+FMfO4A6ZJzrEMTOqb/meX2lLBZDBqHGbmHB3RepIbbs7ZCA4UD1xSBuXHjg
+ KQVOeK+s
+ X22yNKSIAYQ6ggjk+UvlQX9iGFZwCmSkF+VUm3sAkjMjSwMISXupT0haR8VJhv44gSJ0ecBccqnFGSMhO04wmMSjbjz3Rex2c/moHOX5lLC3XZeXKs7ra2Q3ywgo43YhB+sYP1aICbbzr352x+drWlxxxHvX1UNM7onQBa74dTVyufYmiUzNoDUS8roOHfyFC2JVDinQpXbFagEMOzVWzDKhAhuYg1udazHGy/mfWnnFIfskg4rdRJOd0DcGMQXH6ZN/pAcBlYuhF0ujpw1Ad+Fm1LHkhsFWLFPowVxczVbpGe/wjaToflgY1qw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,124 +146,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-17 14:51 +1100, Alistair Popple wrote:
-> On 2026-11-17 at 10:57 +1100, "Gregory Price (Meta)" <gourry@gourry.net> wrote...
-> > 
-> > Ah, I follow.  I'm still working through the performance implications of
-> > mmu_notifiers in the presence of PROT_NONE faults, but if i'm
-> > understanding correctly it tracks that you'd say it's incompatible.
+On 11/17/26 08:52, Daniel Wade wrote:
+> When khugepaged collapses an anonymous range into a folio below PMD
+> size, collapse_huge_page() copies the pages in, but
+> map_anon_folio_pte_nopf() marks the PTEs dirty only when the VMA has
+> VM_WRITE and nothing marks the folio itself dirty. After
+> mprotect(PROT_READ) the folio therefore holds the only copy of the data
+> while looking clean, so MADV_FREE in one mapping marks it lazyfree,
+> reclaim frees it, and another process that maps it reads zeroes. Mark
+> the folio dirty before mapping it.
 > 
-> Incompatible is probably not the correct term as it still works. It's just that
-> GPU faults are really expensive, and to be avoided at all costs. So having NUMA
-> balancing running around randomly unmapping pages the GPU is using (regardless
-> of whether or not they are on the device) results in more GPU faults and
-> therefore a huge perf impact for basically no (or in fact sometimes negative)
-> gain.
+> Found by static analysis with an AI coding assistant and reproduced with
+> a test program on an unmodified kernel.
 > 
-> > I presume here the driver needs a global view of memory (or at least all
-> > memory it can potentially DMA), rather than simply just a subset
-> > (some set of VMAs)?
-> 
-> The basic process is this:
-> 
-> * GPU needs to access some user space virtual address (eg. allocated with mmap/malloc)
-> * Therefore GPU driver needs to setup GPU page tables to point to the physical
->   memory[1] backing the user space virtual address
-> * To find the physical address the GPU driver uses hmm_range_fault() on the
->   range, possibly faulting pages in if required (ie. if CPU PTE permissions
->   don't match what's required).
-> * hmm_range_fault() relies on mmu_notifiers for synchronisation with CPU PTE state.
-> * An mmu_notifier firing causes a driver to do two things:
->   a) Must invalidate any GPU page tables / TLBs mapping the notified virtual address.
->   b) Increments a sequence number for any concurrent hmm_range_faults(), which must
->      retry as their view of CPU PTEs is now out-dated. This is the problem
->      this patch series hits - the migration on fault causes an mmu_notifier to fire
->      resulting in a hmm_range_fault() retry and associated overhead.
-> 
-> So the driver doesn't need a global view of memory, just a view of the memory
-> the GPU needs, or likely needs, to access. Determining that depends on the
-> driver - some might require pre-registration of the ranges (eg. via an ioctl)
-> prior to launching work whilst others might wait until the GPU work faults on an
-> address not in the GPU page tables. Or some combination thereof.
-> 
+> Fixes: e22f2fe72c74 ("mm/khugepaged: generalize collapse_huge_page for mTHP collapse")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Daniel Wade <danjwade95@gmail.com>
+> ---
 
-I feel like i'm missing something here.
+I have a different patch on my queue here that fixes this as well I think. Please review.
 
-Why can't this be solved by just setting MPOL_LOCAL (or any bind policy)
-without MPOL_F_NUMA_BALANCING on the VMA to prevent the VMA from being
-NUMA scanned in the first place?
 
-mpol_misplaced() already checks whether it should migrate with the
-MPOL_F_MOF flag:
+commit b835defd5b9b0fb8cd89997fd4a11c27b28bbef7
+Author: David Hildenbrand (Arm) <david@kernel.org>
+Date:   Wed Nov 11 21:09:26 2026 +0100
 
-    pol = get_vma_policy(vma, addr, folio_order(folio), &ilx);
-    if (!(pol->flags & MPOL_F_MOF))
-        goto out;
+    mm/khugepaged: do not lose soft-dirty in an mTHP collapse
 
-and task_numa_work never scans VMA's without MOF:
+    An mTHP collapse can lose soft-dirty PTE bits if pages were written and
+    the VMA was then made read-only.
 
-    for (; vma; vma = vma_next(&vmi)) {
-        if (!vma_migratable(vma) || !vma_policy_mof(vma) ... )
-                trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_UNSUITABLE);
-                continue;
-        }
-    ...
-    }
+    Collapse does not preserve the soft-dirty bits of the old PTEs, so the
+    new entries must be marked soft-dirty. map_anon_folio_pte_nopf() relies
+    on pte_mkdirty() to do that, but only calls it if the VMA has VM_WRITE.
 
-So any stray (already scanned) pages at least won't migrate, and
-NUMA balancing skips re-arming for VMAs that don't set MPOL_F_MOF.
+    In map_anon_folio_pte_nopf(), call pte_mkdirty() unconditionally, just
+    like map_anon_folio_pmd_nopf() already does with pmd_mkdirty().
 
-You'd only have to worry about a user setting a mempolicy after
-it becomes hmm tracked - and i think we could work around that
-by locking a VMA policy in place.
+    Consequently, we always mark these PTEs dirty (including soft-dirty) but
+    only set them writable if the VMA has VM_WRITE.
 
-Gets a little tricky for pagecache i suppose, but the plumbing
-exists to handle this.
+    This essentially reverts Hugh's commit 1ac0cb5d0e22 ("mm: fix anonymous
+    dirtying") that back then touched do_anonymous_page() to avoid forcing
+    clean anonymous pages through swap instead of discarding them. This no
+    longer applies as shrink_folio_list() allocates swap for ordinary
+    anonymous folios and unconditionally marks them dirty before unmapping,
+    regardless of PTE dirty state. Keeping their PTEs clean does not make
+    them discardable.
 
-Anyway, MOF gets set is if you inherit the default policy:
+    This now also marks fresh anonymous PTEs dirty and soft-dirty in read-only
+    VMAs when page faults allocate real pages.
 
-void __init numa_policy_init(void)
-{
-...
-    for_each_node(nid) {
-        preferred_node_policy[nid] = (struct mempolicy) {
-            .refcnt = ATOMIC_INIT(1),
-            .mode = MPOL_PREFERRED,
-            .flags = MPOL_F_MOF | MPOL_F_MORON,
-            .nodes = nodemask_of_node(nid),
-        };
-    }
-...
-}
+    This has low urgency.
 
-or you set MPOL_F_NUMA_BALANCING on the policy:
+    Fixes: e22f2fe72c74 ("mm/khugepaged: generalize collapse_huge_page for mTHP collapse")
+    Reported-by: Chris Mason <mason@kernel.org>
+    Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-static inline int sanitize_mpol_flags(int *mode, unsigned short *flags)
-{
-...
-    if (*flags & MPOL_F_NUMA_BALANCING) {
-        if (*mode == MPOL_BIND || *mode == MPOL_PREFERRED_MANY)
-            *flags |= (MPOL_F_MOF | MPOL_F_MORON);
-        else
-            return -EINVAL;
-    }
-...
-}
+diff --git a/mm/memory.c b/mm/memory.c
+index 24144892c2803..8b4a62722a0b1 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5518,8 +5518,7 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
 
-If the memory is tmpfs/shmem, you can even set a default mempolicy at
-mount time that does not set numa balancing.  If we need that for
-another filesystem, it can be added trivially.
+        entry = pte_sw_mkyoung(entry);
 
-If there's a need for a driver or hmm to update a VMA mempolicy as part
-of the hmm runtime process so userland doesn't have to know about it
-under the hood - i think we could do that too.
-
-Am I missing something?  Seems we can just rid hmm-tracked regions of
-NUMA Balancing PROT_NONE faults entirely instead of ignoring them.
-
-~Gregory
+-       if (vma->vm_flags & VM_WRITE)
+-               entry = pte_mkwrite(pte_mkdirty(entry), vma);
++       entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+        if (uffd_wp)
+                entry = pte_mkuffd(entry);
 
 -- 
-~Gregory
+Cheers,
 
+David
 
