@@ -1,86 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32C0606A334
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66D1606A32F
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k0vHivJV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UpgXaNR5
 Received: by kanga.kvack.org (Postfix)
-	id C77F56B05B3; Tue, 17 Nov 2026 04:00:10 -0500 (EST)
+	id 18C5D6B00EF; Tue, 17 Nov 2026 04:08:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C292C6B05B4; Tue, 17 Nov 2026 04:00:10 -0500 (EST)
+	id 163DA6B05B0; Tue, 17 Nov 2026 04:08:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3EDA6B05B5; Tue, 17 Nov 2026 04:00:10 -0500 (EST)
+	id 0799B6B05B1; Tue, 17 Nov 2026 04:08:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 87D586B05B3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:00:10 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21244A0376
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:00:10 +0000 (UTC)
-X-FDA: 85444014180.10.DCC081B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 579552000C
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:00:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0vHivJV;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794906008;
-	b=pvnjsWXvH1DV755WXljUZx1+tjDTMgcp9uEaAV3BjcUcNnTvsDkuiqq+2qyBOLf5menHdw
-	a1c/tSmmuTN1ThTu/kGAegQpC6WrUFnBKjaoymEC1rrwUfHfHcjE6zPp1F9tc+9eLAVb7H
-	ELbdfMoh9GjOMCJx+Jf8YuYHdqjGInU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0vHivJV;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D769A6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:08:23 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BDB6803B5
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:08:23 +0000 (UTC)
+X-FDA: 85444034886.06.BC6E5C8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9EDCD20004
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:08:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UpgXaNR5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794906008;
+	s=arc-20220608; t=1794906501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XgHQdBWzds2ptgggUl76prs1LWBlb+UNo9yIzg5rC2o=;
-	b=A23zS6bIvoOXO0uBRig8unB4XlokQMkG20SjKbUWHE0vDU9l9fUfN4CqaS1VJpFCLOLR/m
-	c03UDYONWf3BzZOfH2i6zRy9+U35jFyHB5Twom3V6wr0NCveXpYKLdDxPb+J2LVtC94Uz5
-	a3MUWpJVw9+We4ZqAjqnWKCQrA/JudE=
+	bh=DKa7Qj9UXI35IZM1aRSbpTHNKHEyy/5XO6y8cuSvrWQ=;
+	b=TO5quwDg+fcR5AAfn/eIguW60qpIaUmRSZqdjdJYHnwWFx3CMn6J2me3sWu11I7Mr96rtI
+	gOU3ELaMV8Um4/CmoIDXnMKcuAaao5Mzcm/bfUI6Csa81XS3+7R9Npxo5/X1VvmmQYU0Y4
+	IcByrLvIx4YqMllG1qJGdj9DFtJhgLA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UpgXaNR5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794906501;
+	b=t2e1CbDIaLp7M11Q+4BVURulPQkT9QEgAOKiOnpgHgEORySAOphdLA2l/uL7Ej+gLSa2IV
+	r/7OrRKwkqxSK6HhUzNo5qAB3ASarBMPD5HUmbRo0RSTWgivg5VXCs1usBb3YX6j29Ksde
+	7InEAMV5cSNAsN1GdEB63gNd64UsQeA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7F5662F22;
-	Tue, 17 Nov 2026 09:00:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F92E1F000C4;
-	Tue, 17 Nov 2026 09:00:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 10A9E4370C;
+	Tue, 17 Nov 2026 09:08:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AAC1F000C8;
+	Tue, 17 Nov 2026 09:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794906007;
-	bh=XgHQdBWzds2ptgggUl76prs1LWBlb+UNo9yIzg5rC2o=;
+	s=k20260515; t=1794906499;
+	bh=DKa7Qj9UXI35IZM1aRSbpTHNKHEyy/5XO6y8cuSvrWQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=k0vHivJV4vgkreK7bO+TJP1L2r/RaqhNIi1rS4+N3zRncU8SiVhyxeC8VvzkJfn8P
-	 xKTNbTuBOzzoKga4TA6+YZK6vHBOGS4meBEWRy+UYEEr0ZbP5/gYUSOVzZcEziI1du
-	 VH16nP8twID+dDXTtGVVgqNQnn67AJ1QGGI/3IArbJ+Yar3nWN8tOpGABEMbhH2jnB
-	 CTdRIy7ZSVhZa/OYcwsDVv+bpHP1eN6relwMQjOUaDZ7s4DUS9dWegz1h3UuLgsa7i
-	 x5A7MCO8kpLTOxZ8n1Sin+X1V6xaflo7RHO6gDFXBD+73tblbhuBCnZyr9vjS+Rxvp
-	 NA6dPqllVZ2Uw==
-Message-ID: <0b565b9c-1462-4fed-8836-9a7d08e4b861@kernel.org>
-Date: Tue, 17 Nov 2026 09:59:59 +0100
+	b=UpgXaNR5DTBuS3TrgJddBYnul2zvtcSTxVz2O7WqwK8N/NaZNBgcALFIa59Oh74vc
+	 /UmoeR7UKdI7oIPhm5fQr4Q+q+WdmZF85n8ln9maPP1rvx6Dg2yYU0aEJuOFAVXt6o
+	 bv/b/I1ffP2JnsNtl+Wn9kWfDEfAJ9dayZBlQcYqs/S6mFymA9KRiLC5eo//3jEbyR
+	 oQr4Ttn40o6/Lq8SdXt8KOe4misshJlT4YQeafzrG69V1xEav6EJKDN8oRuq43CaaG
+	 gN6wjJa01ljyre7M9HzzlQ/iqr/lwLMlULPVY4V29/wVzbwrmZunRBVcriFYOnVmNf
+	 uN3NcE5+13ELQ==
+Message-ID: <4649c13d-eeda-4580-8c78-67e6d3392a09@kernel.org>
+Date: Tue, 17 Nov 2026 10:08:13 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fork: mark memcpy() in dup_mm() with data_race()
-To: Muhammad Haris Awan <m.harisawan@icloud.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Kees Cook <kees@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-References: <179489519663.1444496.15875846661591982934@icloud.com>
+Subject: Re: [PATCH v2] mm: synchronize with PTE table reclaim for all folio
+ sizes
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ qi.zheng@linux.dev, baohua@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <71980310d9bf1bf9733ea0e4b772635e1b2bc5c5.1794886401.git.baolin.wang@linux.alibaba.com>
+ <20261116202726.b6690f9038557df945f8b007@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,22 +122,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <179489519663.1444496.15875846661591982934@icloud.com>
+In-Reply-To: <20261116202726.b6690f9038557df945f8b007@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 579552000C
-X-Stat-Signature: u9ozxndrjbonuuthbhbc86n84xoeicof
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9EDCD20004
+X-Stat-Signature: goowmkwr6ahwsfmreetada51knqp8mfa
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794906008-376380
-X-HE-Meta: U2FsdGVkX19SL8DJqtS1lA/EXXyS4vNxbPyroVBm7V7GzNqmLMu9HzCF21/coLnPQwT/A5kle186Niv91QUDucQsDuUzTd+m5lJVLl8NSfoAeJURvd2VS+2qoT/yfMKSgiumGAIjqo3PaBL8SLBoiidRpFkcruIYsFP2k6EH30MqOv26pLKsJrD2B+dfRC36rDyFOShH1S2wsWVKCHOSp5NRPbjuP4Siy9xa1wHQ72ZpRyWS1IDOpiUUA3O4dn/pCkL+7rcc67e5vTpNqWYmyaidqSxP99cCRWKF3tfDLwaNHFqSG05QhxDuWmq0kxQVzNJaZ5TCjluQKZQxmcWncrfBFuCRj0k7fYjrxDDBBk0OnlRLVavg/hHw1NymIapsErfNywcqtwPAWGb2ZlUGQQD7TejfxdTQV/3bISRjtRp4bBa3usV0NTABwR2zfY2+t0Xg+u5q3PTEZRDEuwtbzUv7Dt+0+pUaL8/gVVwf/7JOCAVVEQVULnrgTwXWz3oqA1eXQv75YQAn+vgJueJ1y2jx21jVWJzEtrN+NcL2lyT471VklGONlFgEKJnR4mt70P2xP0iuf89G/yRen/YBlGE55ZSbt6FTyoBP4p5mCLCsQ9U68aXUdapT/t/3GL69E4iLF7qs6kMESrkrsb72+6I7qCHYnRZdupwXsDsn1+A9UmxuU6xhsh1B9nWhE9/kVOdhhkc4kzkjFt/KgOad4PGeftYxQj/2ot8Q84wWltQAEumkkJdxkvOCNBAbjxvpATRb3+dBj4h7GjYR1bmMn4ufFPf2pDa+MCZR1W8KqWvIiSAXp+ivFTnn5Zrql3OFnoA4APKBqqqBcpmmXom3khCTP6+bRoIbueYSoTZdvNMloTWRx6KpG23cJXIf69dUxTz9/l+E6eqorfTj586ZV7PImltRhd8iHrwy8RR3UmeSbHaAwxMVgsGJW8ClMICF6kEJ+Lfd7NmlORH0dEh
- Ex23HXtO
- V++llvdCj7AMR51LIe2UiL2egjmBbFuU2A+rIfCDzykFIJPHLW9r+cgP8tgIeR9D5DsSM5xMe+EQ1IYkYLTkl+gcWJDJVfxCpVG85+MQ4YDQJrB31Uw0v0Eg9JA2QI6nUBFLBZQ/RQBx6ng0lI7Qq4bxTJd+tFAelVKiL9m5drFwmw55r0nQCWKgd8oLKGa51ggD52RKQWrXpslAMRZCEoFF1oAHLRBpB/P1sf43AdpwyZq2KJYtn3qJ3yc2mKyIQiRc9PSy+jdr9AGqby8D0BzAMnZ+qVRqryI+QqDlQY+CPIBvgB0mYjKBK8NF43x6tbs6kRUHYzcoyOBc5PQL0yx0DpkM1A0DG7N4wRU0KKNADAsz23fPZfvn8Ctb+9qVM/C/S4VEs0tdT9mGEA2dQ07FyxsbMH2KtOk6joU1fiPkOsrUD5GUJqd/GubD+GQV+IPAf
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794906501-281081
+X-HE-Meta: U2FsdGVkX19nnKY2Cq+dLb6L1peI+GvohXdI5yK11kpAJdJNQK9fIQeXRRXNIDmJucoTVfpYc/ROXnQKQcp1u23dpnVNkxLoOTMAGKLzkMtIazhH6DbTEpVOFcCWc1t8RLpnwtdZ+qH53zrEV4Wd9/eITAMDtL3jJ9eoHvbzSdCNZ4Zhcntst7aRt88ksQzCr7gzVXvLl0pdiuf3i0C/GG5v9GqebQaj5NTAtt6lfj4V34BwIgpPfzjNJpFIOThw2vP9yVuIdT++gM9z8UFD7HWyphHo+KPGfOlwOfkacuKUYnWfuHkQVy4bHlJBCKcGW2gddbP+0EReKpnsg4ZcJ69dcZdYGxy7qwoPm5PoSHyt4oqYgQuYIFrPaltopaDyM2qsRFB8hfhq1GcldC9B6XZpNwxFx5npdvIVDCDM3ImXfTZya5C8ZNUW7aurJ+GSN4+17nDU5obJAPAf3g8o7EEk54CzzI60HWzwB+UYfmGuUkMAG/b6CoygbZaqtLo5/+XKaRP53rp9x60O059elPZ8Ih0flsKdXcXfolAy5OoorcNkLA643ALigneW/rBUoMFRX6BDWzQvMq9T+fU4c1HxbicCKxqXmra0NSQdxocpJkvcpQ2xExdOzZhrAgZNN+oi+DyrZeZOL1YYhptkJ2CsM4zQiwbGmxPF/gudjZVgDtHdT+0LTcjzclqjp0MKjnn5Z69B3PYzKc1+MlIhLe+r/s/DReVseggX064k7n1GhRtytV3cf53Rf7NuVNOmfl465ywzjMRM9VcrEr34MRX4XODhzt80gXIUsKAdLzDBObhnUcR/ZVs2ccz3x9ZHe5xejN/D66kWGKdZ93Kv3GFsJL53bffSiLudDEr5FSJiw9sXdfYnscGqqZB5E5sbDsy5InkOuLFY1LjJ2EAnrm6WEixgv+6iWU0ruPNATxEA6pYdXkL7uu2SoPZalVP73SYNbifBGPq6U028G1p
+ HR1JodGF
+ ZddFrAB9gRZENWj3SNc6R9cImi1AEOD9psYR9hIg1QgcsREWJ5lnVnQnF0nkCE4MlAcZuNR8dX90MQybYzdLhnRl3BhzgPrQ4s1Vt1WVEaVU05sJ3fUkHJvdKLB5wY6m/Bv3oE2vNd9yeblzxzYZDOSyu6ICMA4HV1DQ7rcDMDK1Ew6Z1hceL3PWbtM4dLgg/BPdFdmBC/ojzM1zZIscZbMINR5i1vettHoltrhUBkoi7C6dpp57AccMxOcSETChTkqaw3PmGmekjW8mazVkXW0kc9DBGCbWxMVwH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,49 +145,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 06:59, Muhammad Haris Awan wrote:
-> KCSAN reported a data race between dup_mm() copying oldmm via
-> memcpy(mm, oldmm, sizeof(*mm)) and lru_gen_del_mm() modifying
-> oldmm->lru_gen.list when an adjacent mm_struct on the shared
-> mm_list->fifo is removed under mm_list->lock.
+On 11/17/26 05:27, Andrew Morton wrote:
+> On Tue, 17 Nov 2026 11:40:22 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 > 
-> oldmm->lru_gen and oldmm->mmlist are protected by mm_list->lock /
-> mmlist_lock (or updated locklessly via lru_gen_use_mm()), not
-> oldmm->mmap_lock. Because struct mm_struct uses __randomize_layout and
-> mm_init() immediately reinitializes these fields on the new mm, wrap
-> the memcpy() in data_race(), matching dup_vma() in mm/vma_init.c.
+>> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
+>> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
+>> with concurrent page table reclamation via zap_empty_pte_table().
+>>
+>> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
+>> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
+>> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
+>> and try_to_migrate(), the other callers do not perform post-walk accounting
+>> checks, so the race has no observable impact on them.
+>>
+>> For migration, the race can cause unnecessary retries. For reclaim via
+>> try_to_unmap(), the race can cause failure to reclaim a folio that is in
+>> fact already unmapped (as shown below), which may cause cold/hot inversion
+>> (e.g., in MGLRU) and increase refaults. In extreme cases, failing to
+>> reclaim unmapped large folios could even cause OOM in theory.
 > 
-> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-> Reported-by: syzbot+c6e1b1b32ff2fc3b7d60@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=c6e1b1b32ff2fc3b7d60
-> Signed-off-by: Muhammad Haris Awan <m.harisawan@icloud.com>
-> ---
->  kernel/fork.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 5efceb8d5..14ac9a070 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1539,7 +1539,12 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
->  		goto fail_uprobe;
->  	}
->  
-> -	memcpy(mm, oldmm, sizeof(*mm));
-> +	/*
-> +	 * oldmm->lru_gen and oldmm->mmlist may be modified concurrently under
-> +	 * mm_list->lock / mmlist_lock or locklessly via lru_gen_use_mm(),
-> +	 * and mm_init() will immediately reinitialize them.
-> +	 */
-> +	data_race(memcpy(mm, oldmm, sizeof(*mm)));
->  
->  	if (!mm_init(mm, tsk)) {
->  		mmap_write_unlock(oldmm);
+> Thanks, I've updated mm-hotfixes-unstable to this version.
 
-I hate that lru_gen_del_mm() would have to mess with that.
+Please drop it.
 
-Is there no way we can teach reclaim code to not mess with MMs that are being
-initialized?
+I'll take care of it.
+
+It would be good to delay picking stuff that I will pick once ready.
 
 -- 
 Cheers,
