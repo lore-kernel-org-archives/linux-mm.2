@@ -1,97 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D61606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89919606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=saYThnMd
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=JFtQSkzn
 Received: by kanga.kvack.org (Postfix)
-	id 232D76B05BD; Tue, 17 Nov 2026 04:34:35 -0500 (EST)
+	id 910AC6B05BE; Tue, 17 Nov 2026 04:34:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E3426B05BE; Tue, 17 Nov 2026 04:34:35 -0500 (EST)
+	id 8E88D6B05BF; Tue, 17 Nov 2026 04:34:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 120A86B05BF; Tue, 17 Nov 2026 04:34:35 -0500 (EST)
+	id 825AF6B05C0; Tue, 17 Nov 2026 04:34:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E72F06B05BD
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:34:34 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2840F120388
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:34 +0000 (UTC)
-X-FDA: 85444100868.13.816C2E1
-Received: from mta1.migadu.com (out-17.mta1.migadu.com [95.215.58.17])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 331DD1C0008
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:31 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=saYThnMd;
-	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.17 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794908072;
-	b=e+N/6/apE6GDOpIqNvquztj7g34sBQsdgfJ1iJa9pPO6KLygE7aguGwrQd5sEMcV7RoZ5J
-	bVqbwWn+V5fu5856Qx7fkj6S3BbuukN0x11O5Uk8Ed/wuK+eLcWDFJR5Qd8G4/Tl5983oy
-	rF632yIah2ePf+y02FRrI+KcL+xESxY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=saYThnMd;
-	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.17 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 639E26B05BE
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:34:40 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DBF56A036B
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:39 +0000 (UTC)
+X-FDA: 85444101078.14.96B33BC
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7B2A34000D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:34:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=JFtQSkzn;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf04.hostedemail.com: domain of evers_chen@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=evers_chen@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794908072;
+	s=arc-20220608; t=1794908078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pabw/uWm1cjpx9kdTQH80s4Ttm/z+LkqjaBTBCm9M1Q=;
-	b=515TfHx943Ii0r+Uz60MdnkObDOjg2zgZIfCH+h9l1zD31Zxt9CvpFKzWP92/DO/I+UlKb
-	O/TQDeiCE2qY9xgvGNV1WO/BtWVh+8Oi6dgOqQEmV1O5fQKACRRSTKM4jwrTEmfmp9iG0O
-	RfEm6IxAPKevkuOFbVJpCSPkkwrvafM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ILUpJ4Ob0pNFnAX2ltHw4R7fKp4fmf8Un2vNiqYU0SU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794908070; v=1; x=1795512870;
- b=saYThnMd25FwYHaO2dELkyNcwQBLYWupj19AW6inLkyGWKuqxuwnJ7ByyqAK4RKHv5kR4OdX
- Yhthf3WKRsuyJF/YVmDE/nUeZdzdiTEoE6/ot9JYdsNoQUFHSzDvn9QLDFjMJUAbiyip/DfJkfK
- juSSztSXah+aHs3j+DHUY7HQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 81f6557a191836e0;
-	Tue, 17 Nov 2026 09:34:30 +0000
-X-Mizu-Trace-ID: 81f6557a191836e0
-X-Migadu-Flow: FLOW_OUT
-From: Qi Zheng <qi.zheng@linux.dev>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	akpm@linux-foundation.org,
-	azpijr@gmail.com,
-	lance.yang@linux.dev,
-	fvdl@google.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	stable@vger.kernel.org,
-	"Oscar Salvador (SUSE)" <osalvador@kernel.org>
-Subject: [PATCH v5 3/3] mm: hugetlb: fix GFP mask propagation to CMA
-Date: Tue, 17 Nov 2026 17:33:59 +0800
-Message-ID: <990efc61c4c3b2a4186cd578a56c6a74348fcdb1.1794907279.git.zhengqi.arch@bytedance.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1794907279.git.zhengqi.arch@bytedance.com>
-References: <cover.1794907279.git.zhengqi.arch@bytedance.com>
+	bh=W1YsXbWBgPDg6QmDoypidC2lwCkMp91z6UTOMZbX2UE=;
+	b=VXbsF0+EOX9XEoghxNn0GRtd8FSPsG55GMsABOIVtkyrpMIhqugBSt0Y/QjRGSD1ED5IEa
+	SZcXHxy36KBK09SzEQ5NVT2HLEmj3n9CvBc1XX1IQODM5LLW1OtMVgsbd+Rbmd+YLpUXKu
+	mPF/zylmRZDeMDeXjBY925ePk3neSxE=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=JFtQSkzn;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf04.hostedemail.com: domain of evers_chen@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=evers_chen@163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794908078;
+	b=c3CiGwyZIOPtoynEJQZJ68v3zwPKoYXHAemGMpIEztOwwsVLIPtXI9PwN8wpFT5WuZxvhZ
+	/p8NOC1kybC1MGrFqN3x8XRhIWt3BrmKW6w3NwMlS6bkwfYWRRrLxn+9iCIIAbU9OvGGMh
+	szKSf2frw4jyx22uvSIOpVRE+rekens=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=W1YsXbWBgPDg6QmDoypidC2lwCkMp91z6UTOMZbX2UE=;
+	b=JFtQSkznZOknHa8HZjyHu84HXxspA0TJzmkgv/DYqp9Nfsxm8LvuC5m9sYJi0y
+	jPA1fgR4dcLOoxCCdlj619pnkDtcJg7UZU1Uq1gHsQ3GEzAR+WSOEtYQ99emqGsu
+	i+RyFY3rVRSMkHLxONTIdJb5FMwQvrkuwEVp9ttv90D6A=
+Message-ID: <43104eeb-100d-41c9-a783-360b866021ec@163.com>
+Date: Tue, 17 Nov 2026 17:34:16 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] selftests/mm: handle implicit read permissions in
+ madv_populate
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: shuah@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Xionggui Chen <chenxionggui@lanxincomputing.com>
+References: <20261112031811.56500-1-evers_chen@163.com>
+ <20261117070606.3752-1-evers_chen@163.com>
+ <486cd251-f7eb-4162-a1c7-92f04f480a6f@kernel.org>
+Content-Language: en-US
+From: cxg <evers_chen@163.com>
+In-Reply-To: <486cd251-f7eb-4162-a1c7-92f04f480a6f@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wDnj0mYH_xqCdPlIg--.15158S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WrWUKw1xtFWDCw4ftw1UWrg_yoW5JF1DpF
+	ykJ3WYyF4rJF17Aan7WF1xXFZ0v3Z2yF48Xw4Fqr90vwnxKFyxJr47KayYk3ykJFZ5X3Wr
+	Za45uasruw1DAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Um9aPUUUUU=
+X-CM-SenderInfo: xhyh22pbfkv0i6rwjhhfrp/xtbC6xrH0Wr8H5qycQAA33
+X-Stat-Signature: qb7j64unc33gio4otsgidjeoccfbepo9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 331DD1C0008
-X-Stat-Signature: cyxtgwhum9nyir5yxbtgamkc47cxj56c
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794908071-822097
-X-HE-Meta: U2FsdGVkX1/aLB7W4r8hkjFLipE6ePS8sxeznLaAONQ+X/rIUpxXZilji3okrwI16PXY9UlxVaZIVWuJ+wK30IaJP2eR89VzFZASKOwPrmIk4HKZPN2aRrN8H7m0wvXNUOyncVWPbJMRqq+WoE345/6r903Fj0ZrqsRqQlreIF7ISDIJ0DWAbZdi4byyqXciIZZ5HoAKPI8hES3PPyx9AC3PR7hXscPv9w2ic6T4un96u1+/cJkQNFbtJLkjqR7kO6Ft0RTOzRzRep8ZwrUk5FsQncn1d8jWUCllnrNh6H4fVskRuxyzz1gsFYMS2GbYeRjlzWCSAKVZ3/Z+GEk34rpCbnHKc4mAFcNFhRDh3pqL0lZP31ZDT6HKkUNpGeS5S/RnjAEujFEWMyUcPMJyrQ8d/DtcLfVpdplzRaYHMCROH16HTPedrhORLNk70ZmU6tgi3nDCaK+E1if/dWqD2J3WzPFYtUTr+kV2o3gH689uDngA0a6++ZnaXZ0+xwQRoJNO0rrdSBBQPZSNJ9Y1BqoN7OFCfyalmMsmlRwElOc9P43c87tW98x/7OFlxcbOhlLuXtHxKDnXRKoHdInDRc2tCpv0PmIyZxtrISDo6WJvq+PYUDwILRULb/DTdEx/dAoEddewmANps2bXOEM8/YLKbGCehjVmTl9TH7g/1mbSCOoHxyaW8BkbD9+P9FIOXx4ZvL3a+qzLzWHvSqHx4PHvjelGYmQ/sHPgHFN4krP2iOJ6pHTeXDriTeJJJtkrisI83JbcJgyKNAvP70xe+H6pA37ZUkReK7xggHv+0I/Mp/rzJAWniEE6V09Isi4DRr6nExZi9Vi9tvP4reMPmXyfex3aqgPildT7v99O4r02wfoqCHjuk3YWHtU2lzXLm2gJgsa9AZpXE4zPFpkNbLHR08ZwD39x7eKaROK3oGgMXPJkXeW/t3ltFKjJ5mv0BxVVDzDBCIIh0ZzD5F7
- 5rj7+TNh
- v1uSxOncwwa1Xp5T+ndsMBm8CQWUj6HNzeoFJVtFW/0Frmh7ppfSUs5BBiQbU3qPmnu5PCRMxRYoR+JlwYLiJudAELssVp+pfbQGotMzfXPXBq2Hozk7tGZCAczMoOL8uTIQVY/zBkMLWzhHEvqwXDXEztuFLVThnxPUt4CXNJA+9c3rfQF9y+Z6XuymDFzq52Q0olJVs2RYNJNJ6bv6JFmYxOqy5XL6yX/fI984KS0jqWqdUTGc+xKaYvXvTAJ+nBGLT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7B2A34000D
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794908075-816444
+X-HE-Meta: U2FsdGVkX1++IU1YclSKjTdjKJvEjQyzdBDqz0mhNG74MyKFI0Jzj63Wp+VPoQnQCxLl054nGRPFe+lk0GIa6nvcPaEpofKsYXr8tZn0Q+InIK5W6n6DpZnt7HN9/lO+gpsjyqbZhd2bLK1HTjsN/uAXqtqyF67eNl3044MW8IaBjBjJp+UiQqEUUHlb6lvcve4fXpxU2eqpS9LuEXnGf5UcmGgccZcTmNvnSeceWKtD783Y3fNch0LPjSqvUPKfCEXC425r7biWQ3Hcncf7CDCw2KApF/Bpe61uq+m21ts+xJ8nkOAnyt9qR6Blpr3ZVptMS5gCm/elxUNd9oPgIGFvpd0m8/BmY+L9aK1fZv61bQN1zYVR402X9uFF2nWnzR2l+FSNm/CBdA5Oh9b8j5Isw7v06mth1y3t+eW6UXDGtWM20QjoEeUcpevq+ZOU863CYD/LQIwhEzPFoeebiNl8HPxz1sU5pnUwHC65YpIC5+ZTaxz1CVBVqZBa4M4pjaj5d91dxJudL2SHEgyvb7RdPfLZyxdAknW11WiaSD8HMfyNdtwCQOoHIrTLKo1XfIih1ZCRXZG/CH8j0UnyeEBKZGjeV5r+DyTNhfPuUvCnUkT9gOgwJOkxK0pKv78/pcFf5B0Z/pYkWwzxxsQuCJUJOGFOzIGY6itXUlG20GU0cIzMvsPbvdEcRwkz0UoQlTuMCtfeokB+qSRsw/a5g+yXTPOjVbPI2VyJriiu0LbL6+1g3lkKtTXEn/MY8mRD2vdSTSMcB9uKaV0hI0NLVPdmw3WReg8G84GK9Z26NHpvl7ixlfVgvOo+JCu3AedJhvpyNXKKIoRFRayO2twPkOzz2ftBY0XbIVWYRgUoS2sr6g7bw14v7OhbrFvTPHQm1hd8rBakOLzqcVX42SoOrYjw+bTNqv+QsocRU5MNAKmhfszcxqtcUEomqx/8DhT0MnRGr0IcdnoPg+vMpjV
+ 5AnKNxyU
+ MbB8fYlGMYUA3vLeH7pYejllRTAsfu+RdMciE1Z/CH54sH8rR0UOd0IyZVyOCXilhwADwUt/sGVdEJ/rdmfpNsctXBWiCh3HvtGLAODN5VTxj3wrkEtTYaIreiENpzp3rdlji02LgquRJQZqz2rp71seSgS3NUiYuyiBR3iyJA9PczmI7Y/7/QBygE4KaDM68Am4pTmCJnRKJM35MLpwOD7+7B/VwsWH+hSMkCGYN/Fn+vbwHftJZqFUbRM5XhiTacQzAXgY8+m+QSkk71+Jcq0p8aezVw0wn0CpeE+q99seLoGQVxPLhUqCKc67Z/WSZf17f6S5yNdlP/oOs5zKilGhlosEnsf/cxz2PBFZ31MI7r2v8f3piQw28umrCPvVpEix4i2wsd+BwMV3V2NuSQ4kgPUsy3SMam3316r/7FmhU5GLPmrdfIuf0zmimdQ+0ILowYmHjXnPnLZ8AVsQKwprc7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,84 +98,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+Thanks, David, for the Acked-by.
 
-cma_alloc_frozen_compound() uses GFP_KERNEL, allowing direct reclaim
-during the first MPOL_PREFERRED_MANY allocation attempt even though
-the caller clears __GFP_DIRECT_RECLAIM.
+I'll send future patch revisions as separate threads.
 
-Pass the caller's GFP mask through the helper so CMA respects its
-reclaim constraints when trying the preferred nodes.
+Best regards,
+Xionggui
 
-Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
----
- include/linux/cma.h |  2 +-
- mm/cma.c            | 10 ++++++++--
- mm/hugetlb_cma.c    |  4 ++--
- 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index d829fd0355bae..d6e97e831d970 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -56,7 +56,7 @@ extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long
- 
- struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
- 		unsigned int align, bool no_warn);
--struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order);
-+struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order, gfp_t gfp);
- bool cma_release_frozen(struct cma *cma, const struct page *pages,
- 		unsigned long count);
- 
-diff --git a/mm/cma.c b/mm/cma.c
-index fea5d1015319d..225e3bbaecf9a 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -944,9 +944,15 @@ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
- 	return __cma_alloc_frozen(cma, count, align, gfp);
- }
- 
--struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order)
-+struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order, gfp_t gfp)
- {
--	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
-+	/*
-+	 * The only caller of cma_alloc_frozen_compound() is hugetlb, and
-+	 * hugetlb constructs its gfp mask via htlb_alloc_mask(), which already
-+	 * sets __GFP_COMP. Check here for usecases bypassing htlb_alloc_mask().
-+	 */
-+	if (WARN_ON_ONCE(!(gfp & __GFP_COMP)))
-+		return NULL;
- 
- 	return __cma_alloc_frozen(cma, 1 << order, order, gfp);
- }
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index cd6f64da31a2c..1eb9d8d8732ba 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -71,14 +71,14 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
- 	}
- 
- 	if (hugetlb_cma[nid] && node_isset(nid, *nmask))
--		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
-+		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order, gfp_mask);
- 
- 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
- 		for_each_node_mask(node, *nmask) {
- 			if (node == nid || !hugetlb_cma[node])
- 				continue;
- 
--			page = cma_alloc_frozen_compound(hugetlb_cma[node], order);
-+			page = cma_alloc_frozen_compound(hugetlb_cma[node], order, gfp_mask);
- 			if (page)
- 				break;
- 		}
--- 
-2.54.0
+On 11/17/26 16:58, David Hildenbrand (Arm) wrote:
+> On 11/17/26 08:06, Xionggui Chen wrote:
+>> From: Xionggui Chen <chenxionggui@lanxincomputing.com>
+>>
+>> The madv_populate selftest assumes that mmap(PROT_WRITE) creates a VMA
+>> without VM_READ and expects MADV_POPULATE_READ to fail with EINVAL.
+>>
+>> On RISC-V, commit 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to
+>> VM_READ | VM_WRITE") makes the kernel set VM_READ for mappings requested
+>> with PROT_WRITE. MADV_POPULATE_READ checks this VMA permission, so it
+>> succeeds and the test fails incorrectly.
+>>
+>> Adjust the expected result for RISC-V using an architecture-specific
+>> conditional, while preserving the existing behavior on other
+>> architectures.
+>>
+>> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16 tests,
+>> while the updated test passes all 16 tests.
+> Thanks, please don't send new revisions in reply to previous revisions next time.
+>
+>> Link: https://lore.kernel.org/20261112031811.56500-1-evers_chen@163.com
+>> Fixes: e5bfac53e310 ("selftests/vm: add test for MADV_POPULATE_(READ|WRITE)")
+>> Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
+>> ---
+>> Changes in v2:
+>> - Use an architecture-specific conditional for RISC-V.
+>> - Remove /proc/self/maps parsing.
+>> - Remove the additional PROT_NONE test.
+>>
+>>   tools/testing/selftests/mm/madv_populate.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
+>> index 7fce5d0b622b..fa26ca2d8cf6 100644
+>> --- a/tools/testing/selftests/mm/madv_populate.c
+>> +++ b/tools/testing/selftests/mm/madv_populate.c
+>> @@ -81,8 +81,13 @@ static void test_prot_write(void)
+>>   		ksft_exit_fail_msg("mmap failed\n");
+>>   
+>>   	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
+>> +#ifdef __riscv
+>> +	ksft_test_result(ret == 0,
+>> +			 "MADV_POPULATE_READ with PROT_WRITE\n");
+>> +#else
+>>   	ksft_test_result(ret == -1 && errno == EINVAL,
+>>   			 "MADV_POPULATE_READ with PROT_WRITE\n");
+>> +#endif
+>>   
+>>   	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
+>>   	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
+>>
+> No that's a simple fix :)
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>
 
 
