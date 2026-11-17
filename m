@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F554606A336
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF0F606A33E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=kEw4Tcpi
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=I9XHLjzW
 Received: by kanga.kvack.org (Postfix)
-	id 2E2866B05C0; Tue, 17 Nov 2026 07:07:41 -0500 (EST)
+	id 68C4D6B05C3; Tue, 17 Nov 2026 07:07:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 244396B05C1; Tue, 17 Nov 2026 07:07:41 -0500 (EST)
+	id 63CAA6B05C4; Tue, 17 Nov 2026 07:07:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10D666B05C2; Tue, 17 Nov 2026 07:07:41 -0500 (EST)
+	id 506346B05C5; Tue, 17 Nov 2026 07:07:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D00CC6B05C0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:40 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5D1201A0400
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:07:40 +0000 (UTC)
-X-FDA: 85444486680.05.680025A
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7268EA000E
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:07:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=kEw4Tcpi;
-	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26E776B05C3
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:52 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9FFC71C3BEB
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:07:51 +0000 (UTC)
+X-FDA: 85444487142.19.87258A7
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BFBB180007
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:07:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=I9XHLjzW;
+	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794917258;
-	b=bbZlqHGLaKHiRjV/M5UE6v8102568BrKWeEi/pnZfl1Yovxz2erbzz+aKgTIb/KeKmn19E
-	HjwJ6KcJZjZkyDqqr6Q+GoIZf+Z4Ke+Eh4o0kilpvRFGvL3zijCrHSfDGuBsVn7tIAEDEW
-	BQ13hBKqmSES8SXzJUz5ciI7os7kSPM=
+	t=1794917269;
+	b=hYlNOCNuuVMzJnZCWM/Mb2Heoc10fSiHhIqOdAvgk//I/icGDcVRZ3aQfQOTRDMH1kNsMS
+	8YcQGBuDG1EQPWEo5C20TKPtFGi9ldKNbGBiSJdo5PA1nSIK7r+ci7CaZ3zuuzpZuFLuBC
+	rXf7XF5XINjxrxbQZXjvBZhOXDRJTOI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=kEw4Tcpi;
-	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=I9XHLjzW;
+	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794917258;
+	s=arc-20220608; t=1794917269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gAIHywl1MwtQvs1NN9GS4hVFASUu/1jjvVICxYuSB7M=;
-	b=ioc2XxXWyZ96knOSKtTEwhaiOCQVEdFql97mkta4iGGLAaeIBJA1KmVlDdDvu8niDH7jIP
-	a8Wq0MK/ooaneKAile5i2kY4OOjz3bAMgjgvrEvqGDxi9Ynyp1w+N7EUriLdlls1qgOKWA
-	LFN0BzzN/cgnpKyqfAtlLnJdbT0RueQ=
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-1b3b4bcbfc9so5385250c88.1
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:07:38 -0800 (PST)
+	bh=WC9KwNg7vzWFhqtQelwms4WX3k2rA90664GjYEiCkuE=;
+	b=T26aPGmxv5tnck1TLr+Hd5SbA7NPqpmUFXa1cxe6AZdNtisiGL7NpCJxJhob0waY6XDJKq
+	tZOQ7TXwCtLXabRPps9QN0CVkHt+vCsVQbZzPNL0JBsRQDlAaXVOoXfcPMUYskN/BxEggS
+	6xtYnLv4rzVgF8X6NL723T/0Pf6k26M=
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-14394530ec6so5819825c88.1
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:07:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1794917257; x=1795522057; darn=kvack.org;
+        d=bytedance.com; s=google; t=1794917268; x=1795522068; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gAIHywl1MwtQvs1NN9GS4hVFASUu/1jjvVICxYuSB7M=;
-        b=kEw4TcpiTuaYlowWx5ghv074+AJiVCQyaAVTmNlo3mJk3rmZBnAy2mn6DTufx/glcH
-         jNCnful52N0tvxHoMt2jBRD7F+k5Zx6EWM7++ujhLaqOCrmA6QonVS4WmKjRxyGiVtEF
-         sWutpE6I+Y6YQWrxTOHoledl5j0/q4afeBqs8Tc6ykBC82FNphVkzxBSZ2sgb2q5US90
-         UM2D4OrWJbWSEDnTlHqk+t/K+KPz1hxi54p15ZSMOeKZAGUfW5jbenXq0NbON/cQ65Bf
-         /d+7DQslpY3wJzd2mcm2yeplnCsAWvclASPaQXt1TtGZGuKvWUgMhsAuY2VTkCqMA7YT
-         FcyQ==
+        bh=WC9KwNg7vzWFhqtQelwms4WX3k2rA90664GjYEiCkuE=;
+        b=I9XHLjzWXFo33rPckl1Xfe0fSvgEL6eQcO2WIlPYmDOYz8Jp5negcslV2p/ortXfBi
+         Qqe6z/ESaRSsXp23aSWdasm3n9ADl4JmbIXMl9LFcAP5Z/TojeSRdEdYsRq5vyUdaZjQ
+         /3NlNkXFirVU+/KnGon4sVklZCYpsgtovo5nKPbw8OSTXKlmcOp9MDvVGNrs15ghZF5o
+         fGvo3PbVF61U5W90dIz7imbdp9PoVxJGIjfG7g451BF7AE1oVpd3uWwPqv1A4FZDiA0G
+         +Bu01Zyfff9pdHVSkdcEgT/bSrQv7uu7v+ymuoPOJDVcI2WM6RmirY5MixXfVPKQHli8
+         aemA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794917257; x=1795522057;
+        d=1e100.net; s=20260707; t=1794917268; x=1795522068;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gAIHywl1MwtQvs1NN9GS4hVFASUu/1jjvVICxYuSB7M=;
-        b=gkIc4KNPrxjBBfuyuSAcZFchyPQ4DwRE2M3yQz76gJiewuFtwQO7UnzwT/y3aamosn
-         BeTIxDYFvSjAakqvFhzz9BCTiaBaiHhnXqVfBAxE4OEHHK6vHt/RugwalCLr5MQnTwqO
-         BoBs5gNPiMQ1i5D9LPBIyU/hKY7sdVPhQENKZ1db6e6FCkiPCGHJZ8bkx7UCEHsGKIz0
-         MPfEi9bh8eF/p4PZNN6K0K37f5DOK7FIy8nhETGvdpSxKQ+rDewmO2+sq/EuTBcAFntm
-         mHYorAHI1idkpL95OeTQ9CqpPE0ebP+rs3bwEVeK9i51dOq3XBLiHdlM9MuuEvL6VJo/
-         QKfA==
-X-Forwarded-Encrypted: i=1; AL+hErGSkIG5VHZrZSO7B8kiWvp/wq4HnuYMhj3GeSW6OxGigvKkaMqamIvIAgt9wkuTKEO1KY+QL+lEcg==@kvack.org
-X-Gm-Message-State: APuU4Z9B5bOMM6gvPvZPxSfR4HeUPkaUkLa6I0l96srVMAjAexG9iQgI
-	M1cBi2k/IFiHp83oUeOS36tVFGwm2O0+HgQ6aW3vqPmVwwA5Xw5FYf4HssJmmPPKuUo=
-X-Gm-Gg: AYBFou1248iIkKK5SRvAMzgXMJlcKcNA4xEnXThTOP2/PNepmRsywR/CsaC3oK6yXIi
-	4xvEPoTcNE3iT9HCQle8P58424RduByJpE3AO6wB3HcDD6bTqVJwojq2y2CeJNyWAA1hRhwLNeC
-	YHZ68yl+skkqQ1NGCcAsR19Ry/K9KnhompTPbfX3o8ENGy5XPncR+B8kBD1PjLKrCswNLp03m/n
-	2kCdbZOQJ6tzd3LpgwnVHrSWpzKb2Lg4nSRDs1SrSq2oU8/4Qmif9BFCnaMK/w5MyTc89wMZ/jX
-	GD0/Bl0QmBzi9HeV8MLYxp8w/b9d8jWg+/rI4be3GyJWEfSDnuvE1co2/7Ucp0RaEN49ActgneL
-	mKikWAPq74ifTpqOs2bJ0VJad6cNhmbOAB+K8AFlrb3+0wqBLC9Aby3Ue0/6ZVX8CVpjm15A1ay
-	t+WHKVXPpSfvqKwg7lzAmHW05SukSn3M0+cMXc+FIZdmIJIGe9+Nz4/MXMww7L7G16Ihs17gBlE
-	Wwl+g0LG2/+lFF2eP+VsxPRIOdnniLfsPLAMZ4WIJvDsYI3Oh9owXm+NxTkRJ46vKfCRQuWlBo3
-	j/R2lAJ5hPh2V/Pus681bYOoQDUq9J3YHthEWTf1FIiJ7OpWCfMz+M+tFkYTqQ5ctQ==
-X-Received: by 2002:a05:701b:4508:20b0:194:9e7a:3ba2 with SMTP id a92af1059eb24-1b50306c4d3mr13554786c88.2.1794917256945;
-        Tue, 17 Nov 2026 04:07:36 -0800 (PST)
+        bh=WC9KwNg7vzWFhqtQelwms4WX3k2rA90664GjYEiCkuE=;
+        b=Z+/7BCYNOpU2iNzcwVyNqMqBWBvvMeodDhr9l8rY6C5MLfY2lVKBWRjEbduMZYcY8D
+         NTiQR3OLNO1KVsB++YuhHS4F/P6qu6ecoDKFRhDdGa3n/wHr7ee525sZptt8pzw2H7QT
+         vabtlxsD/PvRuHmMyAbImgHpVtCifOPaVOGU9Jymvae4nS9oyxjqVxvo4oeevU7WaqRq
+         55JzgcXBhC+xtHEQTFl3OKbc9GZ4NFBaqdCcrKDZKBm2PpQ4JemE0iaCejsnLENN9AcU
+         IXfaDXI/qLHVy8S93c193u4dM81o3iPKdQTSs3I8eGY2UzhGWQHTlM/6KmKMxE7iQofE
+         meOQ==
+X-Forwarded-Encrypted: i=1; AL+hErF6VcWzy5yexo+AnpYqHZEtiGU3kSq5llpbAeSb7Bz0DhHsKRH1NNWFQ3ub+XEr0uvZdPQhHL8YzA==@kvack.org
+X-Gm-Message-State: APuU4Z+ymVE5EG0zCdKs3fhehyFF2GlIFV7G0OcpQPU8Z8eVL93jqxb1
+	BQGiEVEBPZTlYxhJOehEHjWJrE26vhrdj16YUbvHyu0oi8suUYr9Imxspmc1bzfGqas=
+X-Gm-Gg: AYBFou0bqZIwLOqkyzKt0Nx2jv5TRlAWoWgcCTGGJK8eEYm+Y5lNzzsS6d2IXNZ+3qY
+	0pgMIogvBXa+5PzW0179rVWVGm4jlmIR5+PfqQjl2eO4nLwrVWCf9Kb1d2CnHqscbnQ3mtPzdFg
+	eyimxj6EW5xroD8Ew103zVgYPRlH+XF5wXAN1rPpQxuhcmBozdz3/+kIXuHGrdaQOZcVIWHXPJT
+	hNCjO02SIfGXuqbi0kMqGxZ7UxcmYu96lv/VLcfVpp6Qu2D1V8A0V18wOByEN9KA1HY6GActPfO
+	ko5raypjM5grF646qEhYJLg6lFHNFOOlfbc6Zb2ky3pkhE7CGPQV7yJik0Hfqg9F9jmLegRHKHG
+	xUIVXMjKchS7HuTDvn1QbcbiB8vuwfwwYHmzSF4trK9gudkmXecO5EI/W6yTIJeSSg+dgPThq4z
+	g7l6PrefPqtm1639QRcchNtgAh5Y1omU78bvYxerwEjrdiHMbPZEsglMqASpoV//R+6+r1u6E9G
+	oTgODq1YMlmoGILnY66NoEvGC5sgWbylcoHsEnkfrVb+0h3OWp1nSXVOywyYR5hDNlJktl/iYXj
+	yFp6614bRGovGSAxfQ19dcZu9sjgIAtJMQkkJlEegUVMBTP7LLTNAZMorFomeGUH5OY=
+X-Received: by 2002:a05:7022:f116:b0:1b3:af3a:e793 with SMTP id a92af1059eb24-1b502fe37c6mr12306756c88.0.1794917263484;
+        Tue, 17 Nov 2026 04:07:43 -0800 (PST)
 Received: from G6L4RL2QG9.bytedance.net ([61.213.176.7])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031468b7sm47347116c88.5.2026.11.17.04.07.30
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031468b7sm47347116c88.5.2026.11.17.04.07.37
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 17 Nov 2026 04:07:36 -0800 (PST)
+        Tue, 17 Nov 2026 04:07:43 -0800 (PST)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -121,9 +121,9 @@ Cc: Marco Elver <elver@google.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v2 5/7] mm/page_ext: allocate page extensions early for SPARSEMEM
-Date: Tue, 17 Nov 2026 20:06:25 +0800
-Message-ID: <20261117120627.50601-6-songmuchun@bytedance.com>
+Subject: [PATCH v2 6/7] mm/page_ext: inline unchecked page extension lookup
+Date: Tue, 17 Nov 2026 20:06:26 +0800
+Message-ID: <20261117120627.50601-7-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261117120627.50601-1-songmuchun@bytedance.com>
 References: <20261117120627.50601-1-songmuchun@bytedance.com>
@@ -131,17 +131,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7268EA000E
-X-Stat-Signature: nzsijjffbmu4wjprsand34ec66hwj3i4
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BFBB180007
+X-Stat-Signature: g8chfky3ctxj34fcwcj7ciu8pw8fkgax
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794917258-903228
-X-HE-Meta: U2FsdGVkX1/PbR02wXVedO4xLcfLkCsWyld9+LuuIfCJWeoCLkUsykI9dfvxXLViP4jSWpv0vp2aT8r1+u3zBcSVHiw2dpFDKY1eal1SNzRm7f/7Po2MG+h1ENQLDIu5EPiaAY3f34s0P4jzHURPGIXzDKWjia0P36GynI+NF2s849zWgpeVq4eiDzZo3SS4vp/HdvAbKCZYifyfW54fXz4rtpY0csYT91Ez4qVBObqm1YVl3/N/gMmjIgB38JmGpf11tPr7mA97kk/89ihh4Fx4jyNOfYI6gn7GY2lCRsZRckuCYYs8pUuZKD+lxklPk8JVJzd+ULXHQYnwx1nRK2/f1RqnC+SCEpiGGvjz/a2+LSNgNeo2q2TYUfEYJBk3q8ur11zgEoSINXMRr7GTBmW+OlVJBuZm0SoVtmGr3kmxG8UjYRiUiH/JtujpxicsVRFtE8UDb6ATXwPh3Rg/dNUVlwJ1alAJpyscF9dZH8oedK194sgjplDgZ/XiB1qsvnb+fK0RpTozkOn0sFCCY0qHyPain5E+PYlMsb5Q+930Q5wx/qxYiubs8FjNwD+aP9kFZSiHWPfNTkiqUHL58n8Vbx4VfeqgymjGOdmsX4ZNavehArEheD135AexOSGNFC84vv6wkvK4RL+H3BbRSJ9iSGBe0A99maD9fA+D76pp9vOm4VqA+U1nEzbUzzwZQ6FKVLDwNNIyxMoUjYic+Z/ND2GUBhzWVRXLMwYgaUBi5//SOc4xr4aHd9uejsIf+NPBHQlactmBYWY7qicf3gBfhelTawRVzdw5a5KpQHLk2GGix89oifI7n3AynQvsc97OY2t+TEjrlCK6HCm/CV98CxGCnsYCdhbw/BSYTHWXaLGm+v1EmieAok9NUdEH56M173YXLH5HjMDC52YjYfsZqZD/2xlsLlth1tBp94zY7xhvD+jPI6Vv4RTOGWvA3Igz5pFifcf9eqd+O00
- FCYN9tQn
- n7fN+clTCOlAtH4ycxzmE3ak5oYrcScKw+2wgFns15YK9ak+5+LgnemcVlzCaZWw/Et7Jt5foGSmK/F9bJyY+hpIy/YTSWGZ27DzFfMmSIOZPaPMFUfseDJq4+vZO7N9PjxIXj9pJnrHUARBGkETER2C5w/5OTbwkwDXuQ+ehLUc6y4Avm5baewKixbadrWYtoaDiiml8KQBUXSL7QNVPjQDPexFOVWcrVQqezs37WLqnLqeRvurpwqGhib1SmEGdu2x7nnVsVjyzIkC0ok81l0K8GGVBj6LQ0zVzGacjPbjAZJ3aYPreeXYyIZFbFNjnbEetSQF66lnl1WiNY7+Idz2F5Y/jKUIhh9RKPd22S0swU8A=
+X-HE-Tag: 1794917269-742881
+X-HE-Meta: U2FsdGVkX1/TMOz/UtU4byErBabpMstpNI8B6DiEzrH3J+Bk5ijgjh3dQ8TolQ5PYfkbJPGqS7YPCi1CI3O2ne21gK20Y60RuCbF0Wgd/E0LsT2I+VTjkMCISpMEO88kO556ek/LxoSXVDjIVE47ddFa3wTRaGVQq0SHZef89le2moHVPML4k8tIW44vW+mZNH2joMwXo0s7y3BTaYKIkBHDaEjencTpzfQu6DrPywOHbkGTaifJqQ4Lu9Dn6VIgGXjLuxFAEN3R4njdQmYIvc8HpXf1ZlAlHEs0h6102EAv9xvV7lUwjq87b0yOk6FpOaocBQuddUIieiJrmorQpYDlc6/ow4YJP6XjVW+7asepg8LBg7+xBBYSnQvjqdnfYi13y3LObT4Z70nAC/0mGakbcoN6xX7l+DKzks6/+okDLClfnOuFWXNb0qoHmugUn+9bdLCjFMKHH8mQRkCnp4/8NKfPrOLgi8Q7C6oowCXblKE+vXvYlbCPnMR286tYdFZAq8ukVO5O+Esg4r3hysmKzNoP+SvZpYr6zHo6+pokgIzq6rk1nkqb8g6kUsuLF5BOQMU0KPVV8aCcUsd6YaRw1w1+FyBugEPOH0nWqJpBKmmDZdWRg1bXGZV903iiCyROxr0JK06S4kb/JcdeIepFnpUpmrACzLZ7pCfZc0aObh1ANHFNEQoLtJTBMQW1oeqf+J9VKYIU2lBTN5VxRSPmkcla1QhN2pvTxsZ2WmsiYYedYxsOr47h6bxJpYMaB/YadW6EnVFYtccKPQLIQIcV/BFElR65JUYWyUyimTcAPYO476QnqkYHXOzaGPIKn5TkiQ7ICLOiYyzpoJAAq0eUGKIxqAwhp2DKvA/jmpRJ9NM/zkZzra9J/iVV5qLWK4TFybuS6Y9Z7ro4DJqMp3of/6BemFKopDiEW3Q83honHFRlbZ3rB38NsWG3bhjTNuUlFoUcY6mN/4Z0J0x
+ L5wOdjU+
+ DY4Y6UmVFgG1DBxXnu1QMmuUrUn+qoFrfQKGP1EGrtS8y8ZY4G6h5pogQO8Iu2kncxFmeJRcg4w4uDwb8WCTuzvt/0YAOB+L36TjjE8988HDsEmyLAsA1B2kSvi7IJVfc2GHfVWiSiJKB/RXj5/zuSlgwyrGnQbGO9slXSg/6akVxaQb6N1FtJnNoupcIGJ5DZFajYi2sxwEFcIoIaDh3c0pLIoFqF0N1jbqqqHy2OxpjfEPGfPaU5lKcDddJe+m7UofIXb4/KAn2kR62sFhvsjbikdhR73KAICk8DEec8cxqVcDdOE2KO9t6eTtnD47zeVlUCqU+/IWYVtaxdI7zy5if+1DPUTk2RAS/wPp6VXdZtVI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,266 +150,201 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-KMSAN needs page extensions when kmsan_init_shadow() installs per-page
-metadata, before memblock_free_all() releases memory to the buddy
-allocator.  FLATMEM makes page extensions available by this point,
-whereas SPARSEMEM initializes them later in boot.
+The KMSAN runtime needs an unchecked page extension lookup that can be
+inlined into its uninstrumented compilation unit while page_ext.c remains
+instrumented.
 
-Allocate boot-time SPARSEMEM page extensions from memblock to match
-FLATMEM's initialization timing.  This gives early clients the same
-page_ext availability guarantee across both memory models, while runtime
-memory hotplug continues to use vmalloc.
+Provide an inline lookup for this use case while keeping the existing RCU
+checks for other callers.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
 v2:
-- Allocate all boot-time SPARSEMEM page extensions from memblock
-  (suggested by Mike Rapoport)
-- Keep memblock allocations above DMA and suppress per-section free
-  messages (suggested by Chris Down)
+- Add a preparatory patch that inlines the unchecked lookup (suggested
+  by Chris Down)
+- Use a PFN interface to avoid architecture header-order dependencies
 ---
- include/linux/page_ext.h |   9 +--
- mm/mm_init.c             |   4 --
- mm/page_ext.c            | 119 +++++++++++++++++++--------------------
- 3 files changed, 60 insertions(+), 72 deletions(-)
+ include/linux/page_ext.h | 46 ++++++++++++++++++++++++++++++
+ mm/page_ext.c            | 60 +++-------------------------------------
+ 2 files changed, 50 insertions(+), 56 deletions(-)
 
 diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
-index 911a84bbb3db..d00320106a58 100644
+index d00320106a58..166f8be11564 100644
 --- a/include/linux/page_ext.h
 +++ b/include/linux/page_ext.h
-@@ -61,12 +61,10 @@ static inline bool early_page_ext_enabled(void)
- 	return early_page_ext;
- }
- 
--#ifdef CONFIG_SPARSEMEM
--static inline void page_ext_alloc(void)
--{
--}
-+void page_ext_alloc(void);
+@@ -64,7 +64,14 @@ static inline bool early_page_ext_enabled(void)
+ void page_ext_alloc(void);
  void page_ext_init(void);
  
-+#ifdef CONFIG_SPARSEMEM
++static __always_inline struct page_ext *page_ext_entry(void *base, unsigned long index)
++{
++	return base + page_ext_size * index;
++}
++
+ #ifdef CONFIG_SPARSEMEM
++#define PAGE_EXT_INVALID	0x1
++
  static inline bool page_ext_iter_next_fast_possible(unsigned long next_pfn)
  {
  	/*
-@@ -76,9 +74,6 @@ static inline bool page_ext_iter_next_fast_possible(unsigned long next_pfn)
+@@ -73,11 +80,50 @@ static inline bool page_ext_iter_next_fast_possible(unsigned long next_pfn)
+ 	 */
  	return next_pfn % PAGES_PER_SECTION;
  }
++
++static __always_inline bool page_ext_invalid(struct page_ext *page_ext)
++{
++	return !page_ext || (((unsigned long)page_ext & PAGE_EXT_INVALID) == PAGE_EXT_INVALID);
++}
++
++static __always_inline struct page_ext *__page_ext_lookup(unsigned long pfn)
++{
++	struct mem_section *section = __pfn_to_section(pfn);
++	struct page_ext *page_ext = READ_ONCE(section->page_ext);
++
++	/*
++	 * The sanity checks the page allocator does upon freeing a page can
++	 * reach here before the page_ext arrays are allocated when feeding a
++	 * range of pages to the allocator for the first time during bootup or
++	 * memory hotplug.
++	 */
++	if (page_ext_invalid(page_ext))
++		return NULL;
++	return page_ext_entry(page_ext, pfn);
++}
  #else
--void page_ext_alloc(void);
--void page_ext_init(void);
--
  static inline bool page_ext_iter_next_fast_possible(unsigned long next_pfn)
  {
  	return true;
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 7344e7cb8196..baa2681857eb 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2707,10 +2707,6 @@ void __init mm_core_init(void)
- 	build_all_zonelists(NULL);
- 	page_alloc_init_cpuhp();
- 	alloc_tag_sec_init();
--	/*
--	 * page_ext requires contiguous pages,
--	 * bigger than MAX_PAGE_ORDER unless SPARSEMEM.
--	 */
- 	page_ext_alloc();
- 	mem_debugging_and_hardening_init();
- 	kfence_alloc_pool_and_metadata();
+ }
++
++static __always_inline struct page_ext *__page_ext_lookup(unsigned long pfn)
++{
++	int nid = pfn_to_nid(pfn);
++	struct page_ext *base = NODE_DATA(nid)->node_page_ext;
++	unsigned long index;
++
++	/*
++	 * The sanity checks the page allocator does upon freeing a page can
++	 * reach here before the page_ext arrays are allocated when feeding a
++	 * range of pages to the allocator for the first time during bootup or
++	 * memory hotplug.
++	 */
++	if (unlikely(!base))
++		return NULL;
++	index = pfn - round_down(node_start_pfn(nid), MAX_ORDER_NR_PAGES);
++	return page_ext_entry(base, index);
++}
+ #endif
+ 
+ extern struct page_ext *page_ext_get(const struct page *page);
 diff --git a/mm/page_ext.c b/mm/page_ext.c
-index b41d4a957bc6..2910727e99e2 100644
+index 2910727e99e2..0f31e2da2611 100644
 --- a/mm/page_ext.c
 +++ b/mm/page_ext.c
-@@ -12,6 +12,7 @@
- #include <linux/rcupdate.h>
- #include <linux/pgalloc_tag.h>
- #include <linux/iommu-debug-pagealloc.h>
-+#include <linux/slab.h>
+@@ -63,10 +63,6 @@
+  * can utilize this callback to initialize the state of it correctly.
+  */
  
- /*
-  * struct page extension
-@@ -180,11 +181,6 @@ static inline struct page_ext *get_entry(void *base, unsigned long index)
+-#ifdef CONFIG_SPARSEMEM
+-#define PAGE_EXT_INVALID       (0x1)
+-#endif
+-
+ #if defined(CONFIG_PAGE_IDLE_FLAG) && !defined(CONFIG_64BIT)
+ static bool need_page_idle(void)
+ {
+@@ -175,33 +171,7 @@ static void __init invoke_init_callbacks(void)
+ 	}
  }
  
- #ifndef CONFIG_SPARSEMEM
--void __init page_ext_init(void)
+-static inline struct page_ext *get_entry(void *base, unsigned long index)
 -{
--	invoke_init_callbacks();
+-	return base + page_ext_size * index;
 -}
 -
- static struct page_ext *lookup_page_ext(const struct page *page)
- {
- 	unsigned long pfn = page_to_pfn(page);
-@@ -238,24 +234,16 @@ static int __init alloc_node_page_ext(int nid)
- 	return 0;
- }
- 
--void __init page_ext_alloc(void)
-+static int __init __page_ext_alloc(void)
- {
--	int nid, fail;
+ #ifndef CONFIG_SPARSEMEM
+-static struct page_ext *lookup_page_ext(const struct page *page)
+-{
+-	unsigned long pfn = page_to_pfn(page);
+-	unsigned long index;
+-	struct page_ext *base;
 -
--	if (!invoke_need_callbacks())
--		return;
-+	int nid;
- 
--	for_each_online_node(nid)  {
--		fail = alloc_node_page_ext(nid);
--		if (fail)
--			goto fail;
-+	for_each_online_node(nid) {
-+		if (alloc_node_page_ext(nid))
-+			return -ENOMEM;
- 	}
--	pr_info("allocated %ld bytes of page_ext\n", total_usage);
--	return;
- 
--fail:
--	pr_crit("allocation of page_ext failed.\n");
--	panic("Out of memory");
-+	return 0;
+-	WARN_ON_ONCE(!rcu_read_lock_held());
+-	base = NODE_DATA(page_to_nid(page))->node_page_ext;
+-	/*
+-	 * The sanity checks the page allocator does upon freeing a
+-	 * page can reach here before the page_ext arrays are
+-	 * allocated when feeding a range of pages to the allocator
+-	 * for the first time during bootup or memory hotplug.
+-	 */
+-	if (unlikely(!base))
+-		return NULL;
+-	index = pfn - round_down(node_start_pfn(page_to_nid(page)),
+-					MAX_ORDER_NR_PAGES);
+-	return get_entry(base, index);
+-}
+-
+ static int __init alloc_node_page_ext(int nid)
+ {
+ 	struct page_ext *base;
+@@ -247,29 +217,6 @@ static int __init __page_ext_alloc(void)
  }
  
  #else /* CONFIG_SPARSEMEM */
-@@ -282,13 +270,21 @@ static struct page_ext *lookup_page_ext(const struct page *page)
- 	return get_entry(page_ext, pfn);
- }
- 
--static void *__meminit alloc_page_ext(size_t size, int nid)
-+static __ref void *alloc_page_ext(size_t size, int nid)
+-static bool page_ext_invalid(struct page_ext *page_ext)
+-{
+-	return !page_ext || (((unsigned long)page_ext & PAGE_EXT_INVALID) == PAGE_EXT_INVALID);
+-}
+-
+-static struct page_ext *lookup_page_ext(const struct page *page)
+-{
+-	unsigned long pfn = page_to_pfn(page);
+-	struct mem_section *section = __pfn_to_section(pfn);
+-	struct page_ext *page_ext = READ_ONCE(section->page_ext);
+-
+-	WARN_ON_ONCE(!rcu_read_lock_held());
+-	/*
+-	 * The sanity checks the page allocator does upon freeing a
+-	 * page can reach here before the page_ext arrays are
+-	 * allocated when feeding a range of pages to the allocator
+-	 * for the first time during bootup or memory hotplug.
+-	 */
+-	if (page_ext_invalid(page_ext))
+-		return NULL;
+-	return get_entry(page_ext, pfn);
+-}
+-
+ static __ref void *alloc_page_ext(size_t size, int nid)
  {
  	void *addr;
+@@ -360,7 +307,7 @@ static void __free_page_ext(unsigned long pfn)
+ 		base = (void *)base - PAGE_EXT_INVALID;
+ 	WRITE_ONCE(ms->page_ext, NULL);
  
-+	if (!slab_is_available()) {
-+		addr = memblock_alloc_try_nid(size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
-+					      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-+		if (addr)
-+			memmap_boot_pages_add(size / PAGE_SIZE);
-+		return addr;
-+	}
-+
- 	addr = vzalloc_node(size, nid);
- 	if (addr)
--		memmap_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
-+		memmap_pages_add(size / PAGE_SIZE);
- 
- 	return addr;
+-	base = get_entry(base, pfn);
++	base = page_ext_entry(base, pfn);
+ 	free_page_ext(base);
  }
-@@ -304,7 +300,7 @@ static int __meminit init_section_page_ext(unsigned long pfn, int nid)
- 	if (section->page_ext)
- 		return 0;
  
--	table_size = page_ext_size * PAGES_PER_SECTION;
-+	table_size = PAGE_ALIGN(page_ext_size * PAGES_PER_SECTION);
- 	base = alloc_page_ext(table_size, nid);
- 
- 	/*
-@@ -331,11 +327,19 @@ static int __meminit init_section_page_ext(unsigned long pfn, int nid)
- 
- static void free_page_ext(void *addr)
+@@ -503,7 +450,8 @@ void __init page_ext_init(void)
+  */
+ struct page_ext *page_ext_lookup(unsigned long pfn)
  {
--	size_t table_size;
-+	size_t table_size = PAGE_ALIGN(page_ext_size * PAGES_PER_SECTION);
-+	long nr_pages = table_size / PAGE_SIZE;
-+
-+	if (is_vmalloc_addr(addr)) {
-+		memmap_pages_add(-nr_pages);
-+		vfree(addr);
-+		return;
-+	}
- 
--	table_size = page_ext_size * PAGES_PER_SECTION;
--	memmap_pages_add(-1L * (DIV_ROUND_UP(table_size, PAGE_SIZE)));
--	vfree(addr);
-+	VM_WARN_ON_ONCE(!PageReserved(virt_to_page(addr)));
-+	memmap_boot_pages_add(-nr_pages);
-+	kmemleak_free_part_phys(__pa(addr), table_size);
-+	free_reserved_area(addr, addr + table_size, -1, NULL);
+-	return lookup_page_ext(pfn_to_page(pfn));
++	WARN_ON_ONCE(!rcu_read_lock_held());
++	return __page_ext_lookup(pfn);
  }
- 
- static void __free_page_ext(unsigned long pfn)
-@@ -449,52 +453,45 @@ static int __meminit page_ext_callback(struct notifier_block *self,
- 	return notifier_from_errno(ret);
- }
- 
--void __init page_ext_init(void)
-+static int __init __page_ext_alloc(void)
- {
--	unsigned long pfn;
--	int nid;
--
--	if (!invoke_need_callbacks())
--		return;
--
--	for_each_node_state(nid, N_MEMORY) {
--		unsigned long start_pfn, end_pfn;
--
--		start_pfn = node_start_pfn(nid);
--		end_pfn = node_end_pfn(nid);
--		/*
--		 * start_pfn and end_pfn may not be aligned to SECTION and the
--		 * page->flags of out of node pages are not initialized.  So we
--		 * scan [start_pfn, the biggest section's pfn < end_pfn) here.
--		 */
--		for (pfn = start_pfn; pfn < end_pfn;
--			pfn = ALIGN(pfn + 1, PAGES_PER_SECTION)) {
-+	unsigned long start, end, pfn;
-+	int i, nid;
- 
-+	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, &nid) {
-+		for (pfn = start; pfn < end; pfn = SECTION_ALIGN_UP(pfn + 1)) {
- 			if (!pfn_valid(pfn))
- 				continue;
--			/*
--			 * Nodes's pfns can be overlapping.
--			 * We know some arch can have a nodes layout such as
--			 * -------------pfn-------------->
--			 * N0 | N1 | N2 | N0 | N1 | N2|....
--			 */
--			if (pfn_to_nid(pfn) != nid)
--				continue;
- 			if (init_section_page_ext(pfn, nid))
--				goto oom;
--			cond_resched();
-+				return -ENOMEM;
- 		}
- 	}
--	hotplug_memory_notifier(page_ext_callback, DEFAULT_CALLBACK_PRI);
--	pr_info("allocated %ld bytes of page_ext\n", total_usage);
--	invoke_init_callbacks();
--	return;
- 
--oom:
--	panic("Out of memory");
-+	return 0;
-+}
-+
-+#endif
-+
-+void __init page_ext_alloc(void)
-+{
-+	if (!invoke_need_callbacks())
-+		return;
-+	if (__page_ext_alloc())
-+		panic("Out of memory");
-+
-+	pr_info("allocated %ld bytes of page_ext\n", total_usage);
- }
- 
-+void __init page_ext_init(void)
-+{
-+	if (!page_ext_size)
-+		return;
-+
-+#ifdef CONFIG_SPARSEMEM
-+	hotplug_memory_notifier(page_ext_callback, DEFAULT_CALLBACK_PRI);
- #endif
-+	invoke_init_callbacks();
-+}
  
  /**
-  * page_ext_lookup() - Lookup a page extension for a PFN.
+@@ -522,7 +470,7 @@ struct page_ext *page_ext_get(const struct page *page)
+ 	struct page_ext *page_ext;
+ 
+ 	rcu_read_lock();
+-	page_ext = lookup_page_ext(page);
++	page_ext = page_ext_lookup(page_to_pfn(page));
+ 	if (!page_ext) {
+ 		rcu_read_unlock();
+ 		return NULL;
 -- 
 2.54.0
 
