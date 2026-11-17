@@ -1,108 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DA6606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC321606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C26y9o1+
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WmM7GkES
 Received: by kanga.kvack.org (Postfix)
-	id C39216B00EF; Tue, 17 Nov 2026 16:22:21 -0500 (EST)
+	id 167896B05B2; Tue, 17 Nov 2026 16:24:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C10CF6B05B0; Tue, 17 Nov 2026 16:22:21 -0500 (EST)
+	id 118206B05BD; Tue, 17 Nov 2026 16:24:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B00176B05B1; Tue, 17 Nov 2026 16:22:21 -0500 (EST)
+	id 006606B05BE; Tue, 17 Nov 2026 16:24:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 92A8A6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:22:21 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E971E1205C2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:22:20 +0000 (UTC)
-X-FDA: 85445884440.15.D1DD1E3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 42647120006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:22:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C26y9o1+;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794950539;
-	b=lWJe/xKkoufOLSu/mT8vCEq6/DomvC2w/TTQwat0AlwIYMgDb7Vu2zEcf2FQ0ODA0jpPT7
-	B25bkz6duU3mtzzNT0Sf4Q0Sh53rWoIjMXpbjfPL9VuN2r0F+frvDP61uinHVGqrP/lYak
-	thSzmsosjbElb5ckWq2xgkf/EeydEtU=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C26y9o1+;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D16AF6B05B2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:24:16 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5FEB11604CF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:24:11 +0000 (UTC)
+X-FDA: 85445889102.14.83FA566
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6C2F9180004
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:24:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=WmM7GkES;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of nakixii@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=nakixii@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794950539;
+	s=arc-20220608; t=1794950649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FeCT63aSkz/VhoJT6891eWVwy4XaOtOt1ms2iF5hk/M=;
-	b=FMx4pb98Vo0W4Z8M5rkImzX7mvCvur0iMy+o7wmCIXZgG77GRvMFYWBUD1N5ei7Br1qIw2
-	nMbbRiWhL6gKJ100OfkDWn48KWX7lBMuDeNwIaHmN4h4QLyYyo0RdfZ8ZeEPmUcSy4jPRp
-	sMNkPrX76OP+20Pix4QhWU1geaKVPYE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 67D0841330;
-	Tue, 17 Nov 2026 21:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BCA1F000C4;
-	Tue, 17 Nov 2026 21:22:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794950538;
-	bh=FeCT63aSkz/VhoJT6891eWVwy4XaOtOt1ms2iF5hk/M=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=C26y9o1+nWX5rbIxEPoTXu6eAf4pOY/zxhGIIxnY9lboROWO9mDJvV1O4TONfP/pZ
-	 QqXdWdHGUxi1GCKV5ysDzii9d0HhWEINL2pff3pA3lj7kIwRGo0yji4nVz2ewPSDVY
-	 TEz/gfWJfuY7IqmG80r1CmprsRmkoDkbUVWVRzILMQqjm9YXd+vNUV9hRQiSit3pIG
-	 pbY/VvZLcp7UOs5XpARuNFnsO05dcz0v4nMEw3YfRSdc+d73XC8zvUwjgqOm+s7TfC
-	 Oh63dpOURFQ3sRV9KMKcXACtnQzqUNdbIxidyBqn9780GD++3ohF25r2kIM/Q8gsVl
-	 OskHUcArEm3Wg==
-From: David Hildenbrand <david@kernel.org>
-To: Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>, 
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, 
- Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
- Ross Zwisler <zwisler@kernel.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Chris Mason <mason@kernel.org>
-In-Reply-To: <20261116-dirty_file_pmd-v2-0-571883053174@kernel.org>
-References: <20261116-dirty_file_pmd-v2-0-571883053174@kernel.org>
-Subject: Re: [PATCH v2 0/2] mm/huge_memory: flush dirty file PMDs before
- removing rmap
-Message-Id: <179495053051.3499.18428844631976887655.b4-ty@b4>
-Date: Tue, 17 Nov 2026 22:22:10 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KUVSK4y9hdOD3jl6p+wHE+ISXrH307K2mWbZg23Omjc=;
+	b=zbX0HfP72UkywIB1uzQ/PNtqH8m7Wt8o196I4GrghUrGokd8doM4/bRD/FgCKpzseHPHjC
+	GwZgo7mxP2ze8vunkP9sfRjwb8HovwjoVWRdqTvfhCn49NsQPUKejzu+7uV9lkokBKuA2q
+	+Ae32FM3oz/gN/ITAPwJKzMSiwr55WI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=WmM7GkES;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of nakixii@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=nakixii@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794950649;
+	b=hg4n14xsg/KrU+r5SoefI8iQdOZU+CnW75b5b2cXDk/04NJHLav6sS2LMoyqcjGTFP9/Ce
+	/y7M7f5wkurVwy4+EzbI8L8BHaeA9z8P29lLcY6RWaSVE2cXKPvAozdmwmK/JuMp1wx8K3
+	kSO0ciOed5JQHrK7gsGnF7dVS8Fby8o=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8b904d10882so122973b3a.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:24:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794950648; x=1795555448; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KUVSK4y9hdOD3jl6p+wHE+ISXrH307K2mWbZg23Omjc=;
+        b=WmM7GkESgALy5rzFWht91u5QdwkANE/1N1e30pbuRBOx/GW8KbQNPna4l7tin7fOcT
+         lgonrZKSeUIXinYJo1MdHPyyDlpBKUvLT2H8eGDyt13Tc+VrRe/RqZQvvnSdxb/y+HK+
+         xZXwccUrc7z5d7dYnLdAshUnIK4SrXv6rFt+zMIaKXEUhJV2zc6d2xUMAZfQ9Qmb4o4B
+         VzUu9D6P0fGFKYeILc+G2oup2aC5v2dq2p0ptRiOiY7gbX7yvTaOjgADETnGWCCmkRuE
+         LSrHh+xPOxDdXtZrE5GCTijhKW7V9Zt8cXLRt6RDsIuHfWG7tM/aAS3+GfGOLwy2DFxs
+         hgTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794950648; x=1795555448;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KUVSK4y9hdOD3jl6p+wHE+ISXrH307K2mWbZg23Omjc=;
+        b=PtPCG633xPWxGrgnh/XrvdvuZPQv4YuNF8jBtXu3hDZL9x81Mis9QV7cmW7QZwrXIv
+         SDnfwpjFwYIgfAigeV7EoUVibEwwxJ+NV+WmSuaUCohKslQmqUzQSFJ9k0VdzTNDdu+M
+         VCXsDTUEL3xSHR6TYNoPERZWOcdxnJHtdjkFiFxfRWD/yj4gnWUEQ4QyKIhWVUC4Vq/5
+         BxU9BaGEqXflwObZaguoaYpHxN0pM5YBPffMkr7ePK8lAkZeZufOrClhgPJnlqh4vDHk
+         WqZpeCmbl7hExQ7qcpQ9aGQdg5mvfzXMisUEzVbJ3E3e5694iP8iY+hKqH5e6u0Jc8lq
+         XdgQ==
+X-Forwarded-Encrypted: i=1; AL+hErFuucfU1D9HRojFXs4DuWe2ICecC00V1xcY/qGayZWRbICzet4q6PGfMULPP3G0qXvh6bg7xwhjpg==@kvack.org
+X-Gm-Message-State: APuU4Z8iPPU9ENC2e1iK6X7PjSTEtzlCVp3m+K+TM9LGq/VoYwJhaPtk
+	taeue+6fizc5TzlsEyWNLhuxWqukX1Pu6ezq2EdVvOTkX2On+9Cgj4lp
+X-Gm-Gg: AYBFou2Vw7HjBxmqfgxyQqkJ+Fu8kv1EjymrqfTaaSrh/O/pJ9h8LbhajXh3Crf7dV+
+	F9FvMDSMXRLBPEtjGUTIFg80Y+0v5GAF1YzZykDG/tfGeI66PwPnfW3WW/qY6oWcVXmeEPfkCbw
+	C42X3pZsCrinEnmJK3o4LYGmnzMnlk443Ai0NdxEZ5YXe8sisN4f81+IBudI1RofK2DhId+W+ed
+	UH6w2maq630edJRiDTjb3qgoSIHcTK4WzHR7LwycuNMfl3OjxV95tf974i3Sy5mymOPVoAFQbbg
+	iMGQ75v9NWkQZlCgwcyt3rMMUriFBAn2imhbU5EsjauOXxdgzLmNStVesV6470wBiGeNQfjU2Af
+	lXbYYBIJwX6HECg5JI2xVFj5hzVzIYD5lOoQn9KqsSvrcauoKaSoddu6khjl2ALV5+KMY6U3ed4
+	SO2xh6YhU2nd10wuS8KWBFkEU5+KGs5L2pHQJFYV8G7oGm3r7dgDhxc8zxD3rCmh7cAHxwA0ypj
+	YIN2nEqtm9crRMl5fATaABoQEnnY7VK44+XcIEJ59mgVkaMaX0rnDZ7xA6DCJVmK9+PQEfhqNee
+	Hph1YPeJhAGEwMdc3/tpNmHRJvG12v4ldzEwwiJ7oIJJ/lQJaLakf0ZO1xnqLgNC+JqK
+X-Received: by 2002:a05:6a20:5491:b0:3e2:168b:d317 with SMTP id adf61e73a8af0-3fe97fed6femr539981637.44.1794950647990;
+        Tue, 17 Nov 2026 13:24:07 -0800 (PST)
+Received: from naki-PC.localdomain ([203.175.14.54])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde3bba8a50sm76865a12.14.2026.11.17.13.24.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 13:24:07 -0800 (PST)
+From: Eric Li <nakixii@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Kairui Song <kasong@tencent.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/userfaultfd: check exclusivity of the page being moved
+Date: Wed, 18 Nov 2026 05:24:00 +0800
+Message-ID: <20261117212400.1890820-1-nakixii@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Stat-Signature: kmmqs6ebfod5w3zfkajh3nmqmr8efnif
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6C2F9180004
+X-Stat-Signature: z8yrr87upfsje6hrwfcj18wcrrt91h3w
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 42647120006
-X-HE-Tag: 1794950539-235581
-X-HE-Meta: U2FsdGVkX180uH4HC3hqfdSrukWfCqfiQWPXtcMa4WMcxhEA4uwtfrVeCMz7HOF9uHLLFFotYhM0NMPW+tuIJFYVJElIXXo8z9RWALbQBQ6ASEsViyX/B6kYG3fufp2wVm3YtaVe6yhRPFRscNQC6JhBULxZh96FBQbs34+gTa1kOTOtEhHxAtDY2vK5xmFOdC0BVWChtyVVXtNYWkGe7wdZCkce2qW8IZHcJSLKHnzXW0/kEgC9H5TFw2aJmKwnc6hrRSr98imuKsprFQ0+mk7dP9OBGClcAP69jVUfguENX9gjsoqSydM/BGbYZ8kaxBcprKl4m2porTNTNvB2sjTOzN7fehSR0rkutOyRE521cGtOjeLlpOu9uMJQ+XBmXibm+EXMX+ATP7qFtQXdbhq/wEqaJS/hQmV0Aq2r5GFMZAAs+gH69ZSMKbejXHmiymnE5ltvn8Y+QwgG1KxY2hVV7enC39csoKDNzPCOok6UUq/pGorCa+GgoBu+jc6PWmE0UGxk59DVLwNK7lXq6ozs3c7EYD8P9TKdf5IbhYt8rcNwdEYJ9FPeG+HKG9/BMsAoU4FWUBqX3xXWG7C6hCfJ8uizGZlH1YSYllSH+WzZ2+mhvL9HuthqlNTf8t+BV2Cz8LEICOXfmk/1G80UTwsjengfFcxzmHvyArryCUrNfJn6nwCRIOzSjT9ZvxtF2DTtNCKY6zBjevlVyl3UefOxk0PLA7hluCjrBbtYOdkrsOYZueeLSzfukbxKXkXLGt0ZNuuaKarNugv5ezy8dglIsSQ32f7JDB65VHTcZVhusDDNC4Qv3R6JSl9eq5dhI/0Ezoz0B4tDkqOzSWW1AbAinR703+jstilp+7YAPPMz9q6/K1hMqx7F1O1VYZ7/Ew8noTv6eECfCuhg9zZCp4jUzofaZ+nHzLdKiEhkHYeyVeugPXZOX4XEbdevFvDZTixE+ea0DtC4pYA/zOV
- G5/zRL9V
- wo0OLSwK+5BgNnK/lwb/yahAV8XjHYEFuF+lbOwlCzEy+oLO8v9EdbM4vkAwYiM6krHJIVb1ZS2idX+vQEMHzgwX2nBMrVfyG2N554Q+7tyyW5gZ/x4LX1X/LqRA2H+sqkH4iwSxbjoI3yL2GHoXH21SEkrPTogbw06r3QMieWUvvA39U32lleNrlPtGvdyIV32loEXUVfhYBk2VK9WySC8NSplJailydKA4v60wG8OYSnDrFtq6BLkxb5h0G8vfBfDN8EDoJSX4Pk5J6KmP6FwHLttE4r+ncApFE
+X-HE-Tag: 1794950649-633602
+X-HE-Meta: U2FsdGVkX19Nwve1CUgPyBnWwp/CzBRfxxFyaiD/Uzd/cUioI+ESFK1xpkc3FcQyXCH5+HRNEjAnhTHt5P/3kGa++r7YKmaBpW1Te6p9caN6SxRMGvMbShF3TEwG6MPcf0M+TXVqOFRSrlwK2WFSEeVIxVLH8vzJdZUYN7976kYMop00y1q5IcUboLD8jD822Iq89XLrIz7cexRLrzJHiC11wgfe7IoL5teIt49/+d3wvo7rzYU6F6F6XQ7Y5ptZX8QqA1RfIoAmd1UfbKueRJ1eDBcwYKbuitfwovDMcFiNNDhUchGcf7pw6DQIXLyU/5VvQvMc+OHJHRCsQSdERwfJ/rIPo9n8I9B6/ifl4Lv8XZVyYErG3bvuuLdz0JyeIOrQ8NnrbTN3pa23asYuuHtyE9Pa4v4KcoGf0CL6W9SMREKXUDnJk39HQQ7kHzBAa6kROVyWcEA2dQWXgH76f7vbqVayUPAbZZ3Qxi34HAM4y9+FKs+ll7n5sEiRyVjfFUeCMeRCP/a4/PG07xQM30LKPxcrk8Vw0j5+K2PVmnhaFTP2Aw7bLkKGHvTBTpzVe7VleBBVduyRIKNf/6id4RFNv49kKrGtVWMcUs9MhwxS7GlNPI7thpjQjiyiOxYLoDEcGZ4FS+dvQJjvWJ/rT0Rc5W2p6kMCIj7+KS+HsGSquvXREcK1fM6L6lORA47hWVpeBylDBt+77BC8k1exGFpntxyjNELmFtzwbb2BLctqdCJzIHDhb1X/sVKCFr2TSGuUh/lmvSpjGlc2AB/de3htdkvbPx0BL6xVgcGJUIQAXPL2fqLG12pUkuvOYVl5oTCrYwP4BbC3LTtcJ1K//ERiToCry3Pm1CrclARmkElFia3Sc+Six59N6GFlZGqJxAQN+YZqArX3mV951otwxN5fGe687F1fZ5Wj9zVv2GaDXZiqXcVjnNrhAtQUwak41tVBAOUrkoWqBlYfYLi
+ dxtij1nl
+ IRWep6R9D6xqedvFlt+N3nO1efj9piYBF0mOONUFPHx7E602f16vDAFMdbMUCYTQLWakzm7OvgmpbzwzJ03cl7zMsRblPBpb4UX6rligDw1z1se2KdC9WTxKKtw8qlBr5VRAbZvfDbtrKYZLrcaYv9KK7XMYquPN922zz8KnpaghgEnoutLUtmuxSIG/aHFdra3PlGbn2+3/hQpqJrAwLjj9XufEv9gXe2V2UseCqfyjqNhc0VbWuUcJSwwbb1ekcS/zkZczWIHr2JZBueEQUVzK8xQVxWMSbFl3UWTWUHEkXwlDa4dU+6xyHsvsiK0TuUdIrBJwNWETVgn1909zQB+gwAFDQbPz9WQB526pgRLAVqxQYsgU8Cxq3MFcVNYZRjO2cTz0NMOrYmc1wjT+kXI1Mesz1H/Fl6WNJ+/FTeGlGomxrEfuo1XokVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,35 +126,109 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 16 Nov 2026 16:06:57 +0100, David Hildenbrand (Arm) wrote:
-> Details in #2. Now includes a fix for a preexisting issue on UP in #1.
+move_pages_ptes() gets the folio of a present source PTE and then checks
+PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
+is per page, so for a PTE-mapped large folio this can give the wrong
+answer for the page that is actually being moved.
 
-Applied, thanks!
+This happens after fork().  fork() clears the flag on every page of the
+folio.  Once the child exits, a write fault in the parent can reuse the
+large folio, and do_wp_page() sets the flag again only on the faulting
+page.  This case only exists since commit 1da190f4d0a6 ("mm:
+Copy-on-Write (COW) reuse support for PTE-mapped THP").  Before that,
+the same state could already come from fork() after MADV_DONTFORK on
+part of the folio, or from reclaim when try_to_unmap() replaces the
+earlier pages with swap entries and then fails on a later one.
 
-tree: mm/core.git
-branch: for-next-fixes
+Moving that page with UFFDIO_MOVE then fails with -EBUSY, even though
+the folio could be split and the page moved.  Callers that fall back to
+UFFDIO_COPY on -EBUSY end up copying instead.  It also goes wrong the
+other way: if the first page is exclusive and the page being moved is
+not, the folio is split for nothing before the retry sees the shared
+page and returns -EBUSY.
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+Check the flag on the page mapped by the source PTE and get the folio
+from that page.  Locking, refcounting and the split-and-retry path stay
+the same.  The batched path only handles small folios and the PMD path
+already checks the page the PMD maps, so they don't need this.
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
+Tested in an x86_64 KVM guest on mm-unstable with only 64K anonymous
+mTHP enabled: map a 64K-aligned region backed by one large folio, fork,
+let the child exit, write to the sixth page and move it.  Without this
+patch all 20 moves failed with -EBUSY.  With it all 20 worked and the
+data was correct.  Moving the first page right after fork() still fails
+with -EBUSY, as it should.  Writing to the first page instead and moving
+the sixth fails with -EBUSY either way, but without this patch the folio
+was also split all 20 times.  The move tests in uffd-unit-tests pass
+with and without the patch (the two swap tests were skipped, there is
+no swap in the guest).  I didn't reproduce the MADV_DONTFORK or reclaim
+cases and didn't test arm64.
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
+I found this with Claude Code while debugging an out-of-tree swap
+backend, and it wrote the first version of the fix.  This version, the
+changelog and the reproducer were also done with AI help.  I've reviewed
+all of it.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Link: https://lore.kernel.org/all/20261116110122.309748-1-nakixii@gmail.com/
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Eric Li <nakixii@gmail.com>
+---
 
-[1/2] mm/mmu_gather: delay rmap removal on UP as well
-      https://git.kernel.org/mm/core/c/7faf889c
-[2/2] mm/huge_memory: flush dirty file PMDs before removing rmap
-      https://git.kernel.org/mm/core/c/5a1f5d89
+Notes:
+    v2:
+    - Say in the changelog that the fork() case only exists since
+      1da190f4d0a6, and describe the needless split when only the first
+      page is exclusive (Mike)
+    - Mention fork() after MADV_DONTFORK on part of the folio as an older
+      way to get there (David)
+    - Check the page before taking its folio (Mike)
+    - Sign off with my real name (Mike)
+    - Add Mike's Acked-by
+    
+    v1: https://lore.kernel.org/all/20261117191853.1314834-1-nakixii@gmail.com/
 
+ mm/userfaultfd.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index d65184d9a..e270b5722 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1557,6 +1557,7 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
+ 		 */
+ 		if (!src_folio) {
+ 			struct folio *folio;
++			struct page *page;
+ 			bool locked;
+ 
+ 			/*
+@@ -1570,13 +1571,20 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
+ 				goto out;
+ 			}
+ 
+-			folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
+-			if (!folio || !PageAnonExclusive(&folio->page)) {
++			/*
++			 * PG_anon_exclusive is per page. The first page of a
++			 * large folio can be shared while the page mapped here
++			 * is still exclusive, so check the page being moved.
++			 */
++			page = vm_normal_page(src_vma, src_addr, orig_src_pte);
++			if (!page || !PageAnonExclusive(page)) {
+ 				spin_unlock(src_ptl);
+ 				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 
++			folio = page_folio(page);
++
+ 			locked = folio_trylock(folio);
+ 			/*
+ 			 * We avoid waiting for folio lock with a raised
+
+base-commit: 81188836663676f8503f3603cfe56e88264c4d50
 -- 
-Cheers,
-
-David
+2.43.0
 
 
