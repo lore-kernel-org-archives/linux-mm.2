@@ -1,131 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A619F606A33E
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 16:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EACA606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 16:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=ACMxWvYp
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kkPMKqBI
 Received: by kanga.kvack.org (Postfix)
-	id A89196B00EF; Tue, 17 Nov 2026 11:05:52 -0500 (EST)
+	id 5AE106B05B3; Tue, 17 Nov 2026 11:09:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3A0E6B05B0; Tue, 17 Nov 2026 11:05:52 -0500 (EST)
+	id 585D66B05B4; Tue, 17 Nov 2026 11:09:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9010E6B05B2; Tue, 17 Nov 2026 11:05:52 -0500 (EST)
+	id 49B1A6B05B7; Tue, 17 Nov 2026 11:09:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 65FAA6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 11:05:52 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DEA431C3D3F
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:05:51 +0000 (UTC)
-X-FDA: 85445086902.10.5EF9809
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DF05B20016
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:05:49 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ACMxWvYp;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2EBAB6B05B3
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 11:09:49 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA4441C3D1D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:09:48 +0000 (UTC)
+X-FDA: 85445096856.13.5BBFBF0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0F5FF180009
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:09:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kkPMKqBI;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794931550;
-	b=GTAoTQORAOa3HMtobWnybL65wgW6mhqXhlKXgRms6TSCa5x6EqMK4RFsi3ouZgIzNsHAXF
-	tD4tcqa3JP+CzW0KnB8OPtN+Vo4pdvhaYAOKTsy8t0Jb7SJCh+6fpu1tPFa76GPMNL/BAO
-	CN2IyBwXAGAduAocx1G83/OO2EsoIUU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794931550;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IG2RtveLbr6LLHiOkKFy7cZt2dAAYGYqRZMKbSVVxF4=;
-	b=S3bQoNjh7NSoC/F/dp1rq8SA3N3LgGjvj+MGB7UZxQgV/uktxn4FNZcjue2wnMbS19MkG/
-	fujFw+GR7GMtOmYdy3fBTk7+en8705Gpg6sJe30BkrcnXjOYP2a6PlKNG3XN5fZruzlXF1
-	vInSJLRPxaqNXdc6Y7rSW9ka83+eShY=
+	t=1794931786;
+	b=nVJ1legJ4q7UN8ODR6HCA8GCFyLekTl/991y/57X9YDJ1phUOWc7c3d0BQTGYLVjNNOk0h
+	8JEEQ8EhWTWqOFAl5B8Ig7JHkUWh89UW/fP8gQsDNQNkQukO3jb1Y6i5pparDYZhUu8tC4
+	ngPU4WYa+Xvh9V4/CizSEB0xDH3pIqo=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ACMxWvYp;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-7cc2bb73cd9so1413948137.3
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:05:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1794931549; x=1795536349; darn=kvack.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=IG2RtveLbr6LLHiOkKFy7cZt2dAAYGYqRZMKbSVVxF4=;
-        b=ACMxWvYpZDWxeQ9nluRdfuKUu1RnuGDpqvmhdA+BS1GLgPXjizVnCnxKdaG6T3eUyP
-         86FyaV4bmG3TS3BiD6aHP71w7Vg1gD0WpfETZAtMF4mt9FMm79e0dTprZEeHswSmfQUw
-         7syZOASu74m5Y6Gd+UDQlcGLZHVd+PV4TY5y10iE9e0TYEjTHjxmigz6BLV2ZRyxjKaN
-         NMKn6HLbo7eMsEzq4dXiT6ty9lrRj4w0K1daslmATyrXhqxIN/j/DXLQvdtI3nTDlRZB
-         NxFyWxtuAyIQ7dLnZvk5HzwXU1kcCKxHkEgcbF5dzJD8DitJl5MosIRUKe5iWezrlf2u
-         EFxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794931549; x=1795536349;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IG2RtveLbr6LLHiOkKFy7cZt2dAAYGYqRZMKbSVVxF4=;
-        b=yjuvkWIgbG9HNAJltrfzbcQo6hmoxF+5fkeejn3i3sZfbvlaUikbP9Cs3zeiRxr62E
-         EkTipVUSFsPZ2oN/iL3eD30jXBgey8FTHniu9/JlrOH98IJeoxtfPw/WMr1pOyWBxMdI
-         B9fQlM1jBBlFNr0PwErVjUG4NM6xzxZR08zp3ArYR2fupCNcnsVyoDL++89yZS1Xnz3l
-         P2LvPnRsn/xtdMhFfCs7xsK17kubo/BA3wWM54m3nBzcCXGE31CRm1lB2S2BeUebe7NG
-         Vg48TB0C5gXa9hJNQpOxDRgt2fj5KF9HKOBux89ww/b4zEqgvx/gEWesRiIJnx8VLpN5
-         pTKA==
-X-Forwarded-Encrypted: i=1; AL+hErGCLv/488xOv/QDTEGTr5HuqsZinjPZ6JHv7Og3FDCiX3SaH/9swJ9JknCtu5QFbI/g+AQKK2q4uQ==@kvack.org
-X-Gm-Message-State: APuU4Z/Of3I+Dc2vwsxNcbsNlfMstMTOLgh7Oi+hZC3WQShuWTT73QHb
-	ICIDhxFBtSZlBdHCedNM5uI3xZIzi5qgX3gNtqrrWzQvkaCjEkwim7YRdH0RpXCwJ3I=
-X-Gm-Gg: AYBFou2yaddx0I8Ya5AX0/wJY2r0c5692bMEqR7bealgF3FQpDeTbQb8Dpd1qnIK+6g
-	oMAdjlXQVZG8ztKdatKxi9hKTFhKb4oOwYF0GZc2vZDpj2f1e68ZmVfn0rMzbnbE9oX8Izf7OJR
-	RRObYEggNIuFl0FughfBjI2BYxDoVSZzYWOkkpfGcmFBLxpXuybhjW1UqdKdi/4ctMemdWvtSHt
-	HkjcA7FNMlniylSPd6w52RPgLPwIS88P9phrL2PbRQ+SqXuN+5LJlJcd7pAje6BYbp2MaLekUou
-	l5C0tXB4WOPhPvexyfCMoF+NAoX+HScyuSCZVjSZ+bOq7/eRuL+Xy4H0kN9weNX70TbgmULLxm5
-	nyuc+fsDZheJN6KxZzlLT2RU8CEZUUkO/eGbXpUsIwyu2wkVlmFcB/1mJORF452qLxz7R+C4K5M
-	83Foqld4Ls8nexV3sejdTFTEUl5xsNQ900FVBlRCe3cLXSYovbCrl34NjnNuE661VBDy9UC1ukJ
-	amrsRC0rZ5WeAYeGlPJvQnGSfhzMhDYmXjn+7LGSZuvu9AW/0bujHWv9lz2OQMmiLc/njIUdemg
-	zWFRf7C/O1PEyDgebPxnhIYWmsZSreCNkds6jBWdnW5OkDL/lAWAPAkNYQqs/k1gV5LkiDI+4ji
-	vhuxsTBaNlHoOYHgFX0UPlkyRCxk64Bg=
-X-Received: by 2002:a05:6102:4457:b0:7c1:8aa5:36d6 with SMTP id ada2fe7eead31-7d64d6d4a85mr3228252137.11.1794931548510;
-        Tue, 17 Nov 2026 08:05:48 -0800 (PST)
-Received: from localhost (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d69e023608sm2832234137.7.2026.11.17.08.05.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Nov 2026 08:05:47 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Nov 2026 11:05:46 -0500
-Message-Id: <DMXM4P4NQ6DH.15QJ2AU95YJRT@soleen.com>
-From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
-To: "Pratyush Yadav" <pratyush@kernel.org>
-Cc: "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike Rapoport"
- <rppt@kernel.org>, "Alexander Graf" <graf@amazon.com>, "Jonathan Corbet"
- <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy Dunlap"
- <rdunlap@infradead.org>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Tarun Sahu" <tarunsahu@google.com>, "David Matlack" <dmatlack@google.com>,
- "Samiullah Khawaja" <skhawaja@google.com>, <kexec@lists.infradead.org>,
- <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
-Subject: Re: [RFC PATCH 0/5] KHO map
-X-Mailer: aerc 0.22.0-39-g5d7784875be2
-References: <20261116134013.1636689-1-pratyush@kernel.org>
- <179486913878.127049.11178890384802388709.b4-review@b4>
- <2vxzwlqbfxtf.fsf@kernel.org> <2vxzpkw3fp2y.fsf@kernel.org>
-In-Reply-To: <2vxzpkw3fp2y.fsf@kernel.org>
-X-Rspamd-Queue-Id: DF05B20016
-X-Rspam-User:
-X-Stat-Signature: rt3fh76geqffqsfzdigd15xqyq9tt18k
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794931549-240583
-X-HE-Meta: U2FsdGVkX19zPwTg/p0zA63EdFYNLNrTcYOvfqNBqa6Z7cUd+8keE1/hryerG72/HwgD3twosalS1DfswVyFv1E2OYpabPRslDhT4ysG9Fl8Bj7uw+fFnm/xUA/RFJMPg77NwxBRnpra/g4XTwF4BF8/oUwiXfHQPYdsyNdt6skBRf7VxDXOh8cKTa3+fKFTKng7fKXsyzFmTJwm7Ig4KPxvpRYIe2UblrUUQxS7sp/1zV1LMm66KTeKwE/ajI3KHkGtuFhFDRqCwVcszyuoZx3Vgrv7VTMR1SaQKjW827l4PTzeMh9YDGy1Ei6GHRzEF8uPSYbCB4G0PSZ2HZRoRIO0ODcv4AtiC1yK8MRFkBd9X5ID5YS2XxwoNl7sXh4/M7ELXgYjQEwuQMi0m7jNYej90W1r0dSJ+BdODnOqQzYg7aB8Osjk7runmep0mt0Gj3zWWMljVOGZIyApHnOdclJLMbDODQ5KdfVTGHJI7T1mPKhmD4IhZcrLAHF2+6oTMJ+BQTFv1HQ1ZKUdPlQrYYLntiYLiscCb/+he1hwKW0gkZmChU9H1blPgKW9yc5MzpdVi2iRoekXMrMYwSIzMae0Kh3cWCCNPMqP1qkEVE8OY6+r2aTx/JRGnt63O1WbdA7zl1xlj4s3UOTI63AK6aZ8Gsd+DW76yCxnnpmki1l0PoGg9af/Una0vmZOUIylU1y6yfFHqwcvIzjMt0uQ5k/ZvVwyGMtlc7Wppo3gqUFWQ3YF7jmlpZ7CRzQoiAoYKha2uJMunY+UIdzpPzssATrjoxvT6W7+OWaQbPdAjP3CtMIjPo9xUy/LoEYh3Nc/bya2bpdy1KnwO265LzQp5YNKpuErN9sVtvqxSS02dZYxgly+f5WHCFlLQu/zpESRBREPt/dmn6Y9yfePUibS5cfOlYgTa7IY16oS4K3LMWZU7BwdYvaYB8JwiHf0Qq78RnwjIk9r/HzWT390Lhv
- UZhqXx02
- LLp60Uk82v9jJjT+/lG0OmkWt0xHM51frccQ1k/nzTYUUP7voMb+bEwXv5DTcitfpYoI4zZsjLyB/ChsHdSLVUIeT2a4VSQo3cPy1r8Jn2ec/TH/GaY/giTQtOtm/cprIg7XwSHQ9qtvBpZA+dmz1pcAUasQskNxX1WV3GLIXSaaYvidKaLPhTVlGr6XGmQKOmIpULU0Z5vXm++yIIBEgmJTJMfrORgLG2+zDcv+zK4N8PMBW3eZ8BS6Pv/DmBoOF07V+qXMLb1WYi14t/kr64Ss/bhHI6HvbDOKVxsa0V9jgbH0OGDLeFuFzMzW1zbeK3ZkqpCuvg9HWi2wvb8e5AaVGjtdnqnwWsG6Hw9wP0xHylj/3DoFo6r+OiFqOJQa9WIjiuzYwdp1/SsbipS319lrZgg7eklzyUTcGQ+LNKuc6hWrd6clsOLcfWQ+f7d8c2LCNAVHIo9gEdkBcbAS2Hj7Z4A==
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kkPMKqBI;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794931786;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=UvScUGHsM15lCFKb8FKHXeRBorNMwqwMVFB7TYVWqMM=;
+	b=toK9+NLPHVTxN57liYhlJVg47jbf9XWVJV5KIJkaE8yAjJAv1gudU/oN7LYo1NbA3KHLLS
+	0UmyVZ9mUW5A5nw2WQUdkfCC3RWOoVibZY8pA9Bofod3UYIoUN8/7lMKGyAP8xoYYwI10r
+	WqWyPdkV50rCqWDrKCOoHlRllotjvug=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794931786; x=1826467786;
+  h=date:from:to:cc:subject:message-id;
+  bh=vkshbKx18VBVh0xRXNCtSh4UARbaMCneq8MscDrz50w=;
+  b=kkPMKqBI7YidYrEe32jVn8t9r/MlkPQTX/yFiXOumH9GgZsbg2qNeUkv
+   nnrfX+ocYdsnlJ/RZwGdeJgFIJ10/bVZiHQ5A2ijU4eInCbDCyMDaeQHS
+   Wv0EI3dGcYHYQco8p/CqbEU9eku2M5JyLib1ERRhjKnwNoklrHhMdMkgN
+   na1Qzig9XqiZWG7D6s9xIOebU3FpyoX6gNsKQBxl74gSNQrivK9nDQ09t
+   bidNzlE3jDE4QhA3hHeBcbCou5/FGw2eORLb/ktbDMgFekDNpTcZ3WgiL
+   /nB8G0MPoPSniNvKvnhvwGFy35efec4emVa7LU6F9PVoa3IZVnzluEtrU
+   g==;
+X-CSE-ConnectionGUID: rHi3bShCQl6AuJaCrkDu3g==
+X-CSE-MsgGUID: F+XEiBwbRi+NZBNv63N4dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3699030"
+X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
+   d="scan'208";a="3699030"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 08:09:44 -0800
+X-CSE-ConnectionGUID: R48YbB6nSZujGKMjG4IOuw==
+X-CSE-MsgGUID: v/9V68TUQ2SSifJ3U8nRlw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
+   d="scan'208";a="10183685"
+Received: from igk-lkp-server01.igk.intel.com (HELO 1073a420ae3a) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 17 Nov 2026 08:09:43 -0800
+Received: from kbuild by 1073a420ae3a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xTLka-0000000039i-3G6D;
+	Tue, 17 Nov 2026 16:09:40 +0000
+Date: Tue, 17 Nov 2026 17:09:02 +0100
+From: kernel test robot <lkp@intel.com>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, SJ Park <sj@kernel.org>
+Subject: [akpm-mm:mm-new 316/342] mm/damon/tests/paddr-kunit.h:37:9:
+ sparse: sparse: cast truncates bits from constant value (ffffffff000 becomes
+ fffff000)
+Message-ID: <20261117170155.fEdeuuhm-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0F5FF180009
+X-Stat-Signature: a7piqdrfsr1x9pdtj1hcdfhefjwpqx3g
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794931785-727699
+X-HE-Meta: U2FsdGVkX19jQXj1MzIKbdS66QyPsAJfD+LSa3WynEuTRfj2ExF1HXA3Uk6zxkjmlkRtbdoKd9X1OFXII0Ra+pPOgifEKpr9mfVoN/4DScosSh9WQhpA7ShphGb+Dur6pB/xgzQkpy+5nL2fN1w/m80iPCM/choAyXIsL2GtpnL026ibQhSr9Ljw8nQu59oiUC2zpvyU5Ksabpt7JUDWITxjOZteiQ+sK5rfqC44FF9/E4eVWm3vKDQEWc+M3VcjhBPkbYC6EHnXfUNrPKd0sr3U48iWk/gxz3u5fI2bOCgJlc8rOZI7k7wKQzfpMsDdvKm3XPLO6o97ZKyWuxGy2NhVadYEAvN078DDEtmb6kve6ZmIz34tL9ZeakmMcqn9GucW4fLzEKpVeERFsUVcyslKHoOWhgm9VJzxitPKlaZCAGMgPXKQ5dHeDQ6m29fQZPB0JcsBcj5m7WSWB8fadsgU1razoyWwKu6JsJxP8bTauBmGNQ0CDvdCw92K/HSv4UDYA/QMQaYjBHZKPeAB6u6W5o1Upl+82vvmM/A+7WvdMjTxBd22Sh5jnPix4t77cbzO6y3UtLmARt36uCGSi5H0qcAxuuFK4a2nkTLtfKU7XGUIuy2ue+Wi0TyPAo10nZqfwju2cadXLykTW+0LyCtp8tzGvqgLnJYmHtR8ZSTseNmJy+Rb1K7MelLCPejwOmXmrQOIR8+dAluWimHOm+4uzWDA46BHBj78FLjjubqT5qWruXlD3NRfnE9s1loU8VkysYBTWtMzxTD5aVAz5RJbiiUq0dXrQwi9+zCcrBeN5Uc37d0e/+yvSIOkoOX4kuWKj7vftumxYZL1Dpim0Q6iChSxIy5Nln96SNx4D/1fW2TOQ7C2G2gu/wkbTzyWIyp2KdFz1h/QANp45/A3d3bK9h5uc6G1Cm67HgvIC1bGsWKE9OPfFGYt38D8kf1Jbs47EGl1IE6amZhgqEP
+ QcKGmsl8
+ aaNGnv0LN3ivyt/CxcdUpp6yH0q/FWk7DWkGEs8KJ83709NNUjV6qwzcyi6cSOhGWzHpqRs6uLVuKK8s7Hcd1Ih4v6tO5ERGeyQ2PMtz3d+jjQMLpD47LBr3etAZWqNpjYNkZp3Teijo37qou1/A0g7uGJOR75kV8vz0W13qGm+a/B3D7VX3O1F/IjqT02gn6CQoRxZIv13ggjQmmDd1PARUXRkrluygk8RU4Kp0H1LnbZo6YfWuDXtZG1pgkdXtpiLY6jtBhzL3KuzY5IhLkgZ7VmjN1pAwL4opi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,45 +105,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue Nov 17, 2026 at 10:35 AM EST, Pratyush Yadav wrote:
-> On Tue, Nov 17 2026, Pratyush Yadav wrote:
->
->> On Mon, Nov 16 2026, Pasha Tatashin wrote:
-> [...]
->>> Instead of caller-chosen depth, the tree should grow (and shrink?)
->>> dynamically bottom-up based on the widest key.
->>>
->>> Plus, with bit 0 tagging leaf values, 2M entries can be stored directly=
-=20
->>> at L1 and 1G at L2 (on 4K pages). Even for huge memfds, the pgoff space=
-=20
->>> is much smaller than 64 bits, so in practice the tree stays tiny in=20
->>> depth.
->>
->> I think it is a good idea to allow dynamic depth in the ABI, but I am
->> not sure if we should deal with the automatic resizing just yet. How
->> about we start with making callers specify the depth (max index/pgoff)
->> up-front for now? The ABI stays the same, so we can add support for
->> dynamic resizing later if needed.
->>
->> The reason for this is to keep things simpler to begin with. That said,
->> I don't have a _strong_ opinion about this, so if you insist, I can add
->> dynamic resizing from the get go.
->
-> I take this back. I went and looked at how xarray does it, and it is
-> pretty elegant. I thought some sort of rebalancing would be needed, but
-> all that is needed is to add a level above the root tree, and demote it
-> to a subtree. Similarly, for pruning, the subtree at index 0 can be
-> promoted if all other slots of the root are free.
->
-> So I'll add dynamic sizing and reparenting logic in v2.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   c37b2f8a996722ec8fbcfadb045f9f787df65510
+commit: 7a983cc1b57309a875a9e07a934c9944bf3d088d [316/342] mm/damon/paddr: add KUnit tests for addr_unit conversion
+config: i386-randconfig-2302-20261117 (https://download.01.org/0day-ci/archive/20261117/20261117170155.fEdeuuhm-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+sparse: v0.6.5-rc1-21-g84ec0658
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261117/20261117170155.fEdeuuhm-lkp@intel.com/reproduce)
 
-I agree; let's implement this properly from the start. Growing from the=20
-bottom up is the right approach. I am not sure whether support for=20
-shrinking is needed, so that can be added later.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/20261117170155.fEdeuuhm-lkp@intel.com/
 
---=20
-Pasha
+sparse warnings: (new ones prefixed by >>)
+   mm/damon/paddr.c: note: in included file:
+>> mm/damon/tests/paddr-kunit.h:37:9: sparse: sparse: cast truncates bits from constant value (ffffffff000 becomes fffff000)
 
+vim +37 mm/damon/tests/paddr-kunit.h
+
+    26	
+    27	static void damon_test_pa_addr_over_4g(struct kunit *test)
+    28	{
+    29		unsigned long addr = 0xffffffffUL;
+    30		unsigned long addr_unit = 0x1000;
+    31		u64 pa = 0xffffffff000ULL;
+    32	
+    33		if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
+    34			kunit_skip(test, "phys_addr_t is 32-bit");
+    35	
+    36		KUNIT_EXPECT_EQ(test, damon_pa_phys_addr(addr, addr_unit), pa);
+  > 37		KUNIT_EXPECT_EQ(test, damon_pa_core_addr(pa, addr_unit), addr);
+    38	}
+    39	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
