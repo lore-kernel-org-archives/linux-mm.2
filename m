@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7ED606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10576606A33F
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l8U7GqET
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T+3F7yW0
 Received: by kanga.kvack.org (Postfix)
-	id 922986B00EF; Tue, 17 Nov 2026 08:31:06 -0500 (EST)
+	id DFB006B00EF; Tue, 17 Nov 2026 08:48:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D27D6B05B0; Tue, 17 Nov 2026 08:31:06 -0500 (EST)
+	id DABAD6B05B0; Tue, 17 Nov 2026 08:48:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E8176B05B1; Tue, 17 Nov 2026 08:31:06 -0500 (EST)
+	id CC13B6B05B1; Tue, 17 Nov 2026 08:48:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 589BB6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:31:06 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EE2711A044F
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:31:05 +0000 (UTC)
-X-FDA: 85444696890.06.E8EEBC5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 56C954000E
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:31:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8U7GqET;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794922264;
-	b=fWHSdhAizLbdNzjnXVvPcM2sm8XfvG+idxSl2+29BNarGdKF+m0wyntH8qmrg41u9z21FH
-	TNDvAROSNhHX4yQHaD2mj55pn+wnfOfZAdOQMfKGgfdpSvzw7ha5WZ2zMr9k0YfB32zbfk
-	SGzp+S1soJaypMfUh4xvgYs/oJmUaS8=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A7AA6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:48:30 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DACF3160409
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:48:29 +0000 (UTC)
+X-FDA: 85444740738.05.6405C1C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3993018000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:48:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T+3F7yW0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794922264;
+	s=arc-20220608; t=1794923308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LbIEKVK3wtMckNJgD329X9n3dQQ2GgjJnxeeqAkeQkE=;
-	b=pfDraiFAf/wgNZcDwoYkgE+74cXYp+HtaGnQbTanCPgb6KWCsBFzBsVHix9zTmVLHU/d+l
-	wYED/HfJaC0b2rnJUga8T7ZOBjE8gQ98dALf+fbm/fhrCRZLyNVkC5XKY9nwP4Tyg5E+9o
-	6ke5dvGmKC17QwEItxZp32Nes8K9ls4=
+	bh=M6VZ7CYm+YVVdzMSRV4Ww9IA3aFQKKqL1aLxREeXniA=;
+	b=p+GX5C5kly1Cu7tF3D8jpRQ+zjyBUJYZqUpufdH3cQx9x9M5s7uIftrxFg2CJcMyoq8Bc4
+	AkjelYJjKpHtxKFEazMseBe8U8evTFC2sEmFctAc/bLq+L2BLthNu+HxyAuhpzpH4G01wG
+	PwB/BzEHXylrIJZZOj5r/5H9ndH9ki4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8U7GqET;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T+3F7yW0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794923308;
+	b=nq69DWzY5aqLyog0QMhvt32b1hgBvdIXuVj01yi6Y7meCwk3J2ifBNEoODlpEAjIDnpzS/
+	xzWxtMwq58qKFj+o32J+6fMxpHTX5Ih2v8qkCio9RdZWCijPT3qKOnmWtMSKcVFyUht0Oe
+	7bCnd5jhqHj2a6jKC/Zv8IAygl07E8k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CE3F363453;
-	Tue, 17 Nov 2026 13:31:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FED21F000C4;
-	Tue, 17 Nov 2026 13:31:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 69B8C45BB7;
+	Tue, 17 Nov 2026 13:48:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DF01F000C5;
+	Tue, 17 Nov 2026 13:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794922263;
-	bh=LbIEKVK3wtMckNJgD329X9n3dQQ2GgjJnxeeqAkeQkE=;
+	s=k20260515; t=1794923307;
+	bh=M6VZ7CYm+YVVdzMSRV4Ww9IA3aFQKKqL1aLxREeXniA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l8U7GqETRL3AIroPoYVEwG1Zqs2ydfYeVWZ0AHd/YTG9+hmsOL6kg+s4y8FVsG9VA
-	 0j0vYOygo3p8xkye+gtyOuHycs2BTfqUWA6hbuskk3EADC9KLuLlqUH0oZSx9WIDt5
-	 XALPoHwqcZ8Vgb15Q7OA4WmxhfuhMHPxZYPDn6ec8tqOqS6zK7YwKoeyau24M9GhoA
-	 yVP/kdoruOfJ2gjktLSzzSIY+FugzYKiOjN2tOTIUVp9TEueBKZld+wC5QwbRUSkA9
-	 oBtr/kvXMUMTrksntIW+V5vGdDfeFhWcChrxuK3Y0+41x4xQ5WPWHDKpA2yyf3IUbq
-	 0jhhza+q1EIHQ==
-Date: Tue, 17 Nov 2026 13:30:56 +0000
+	b=T+3F7yW0BNt6KMfaHj/yGXMeR4K2bVB+aAbodU4rPyQ4VzPuuj2Hh5mrLnivJPxk1
+	 wQ6OWg3eROScfL6IJQ5k9m1+p2bKFthWj0CGhENWdYUE5g0aRK6tZsm8dsj5Zkt23e
+	 6PqvdCv7HcR3UdB3hkJOAeKIV5poO0ldCcKvIULv30JcD+eHURWlM/BeYipWUH5AzB
+	 WIqq3HNKw5ReZoKiTay09O8/AIAJxeTouYXVCxY0aejIev/QA9S5aNR0dhL7WW28Hg
+	 eMLh63MYL9PpSyb50HZZ5HEyfiiiXkAnR1OGlXOlFD2mFODzo8UieNeUxoL/W5zf/L
+	 tAS/3pp73j/2g==
+Date: Tue, 17 Nov 2026 13:48:19 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Rik van Riel <riel@surriel.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
@@ -68,27 +68,27 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	Suren Baghdasaryan <surenb@google.com>, Christoph Hellwig <hch@infradead.org>, 
 	Yuan-Hao Hsu <aa9736195201@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
 	Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v5 0/8] mm/gup: walk and batch whole PTE tables in slow
- GUP
-Message-ID: <avxWSJNLL6znDOEg@gremlin>
+Subject: Re: [PATCH v5 5/8] mm/gup: break out gup_lookup_pte() helper
+Message-ID: <avxXgTBaJkPN6XOh@gremlin>
 References: <20261116210127.3837898-1-riel@surriel.com>
+ <20261116210127.3837898-6-riel@surriel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261116210127.3837898-1-riel@surriel.com>
-X-Rspamd-Queue-Id: 56C954000E
-X-Rspam-User:
-X-Stat-Signature: t8ku58ynrwdgbrk8s1pnowqap9ws5etw
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <20261116210127.3837898-6-riel@surriel.com>
+X-Rspamd-Queue-Id: 3993018000A
+X-Rspam-User: 
+X-Stat-Signature: 63si47uxcpa1y3auh5tz8xhwf7gu6n86
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794922264-288635
-X-HE-Meta: U2FsdGVkX18qCbcL/kT5MW7+QlaGt2cKk5RU4/66Rdet3l5BCNk0UQzCl9VYJTTMm/6/VCSPUTIBIjxYP6Em20GjzAV+ztjEPwfUOvVeTkAEwUEkQW9KJeYWxm4cCLWJOwCZ6baEWs9jpuobk+ZaxuZ+wnHupVU34NAtDRsp+pUDeEJeXqFLSvrh3Nx2Ltnrdt6KlVLZL7G1VLgZ1c8n8hBGzuA05WgM8xyR6uFfeEiGNUB605SHwF+y2JQ+yzFFPCm3VpAxr2p21zkxXYKMG945xLkYWRjzQT8grrOLO1OY+RKdJ4N3+tRjDy8Y0x2euUgEEa/yd+C3OhZM91dCRLZdA4ZO9ciMoKUWXQMA5xYoTrJDCheL13rjnUH9E0WjYAFE20BCq/0bgrBa8SYYhiNaX2okmjwKiopb6BRBEywK8g9gCxUE3vwyNIPBjseuq9fgTgpKvhCTP6GCHf6Nsm1K791sJhXE+G7kIO0KrWumHDHq/kp0lcAMbemmCVDv8h6GDqVZqz+haDxMhAqTrhPOsm4WXWDAT6nrShMI/yPrwG1hwqCFCU2i+d8aQUwslM9ZgQPi1JNa/oi3qDw1SG+lwsmgI0gOg53Xgkuuyjvogj6oCUt3RChBaKsjq8XGRGiI0YbBevCc3jP4ziQhjY3CX2qH9eA5uzRV/KVGJbVpGZ6Aon9H5OgsKowsvGo50lrq0DsMQ4okKjaDTflEXSxS/pZaXQICsa2T3mmar8zWUVoMLe7aET9QSKf8CZIxZ3rFTS3KnZHKrQDt8kGcPDZlBcNqnYNe6v8NF4oWCIUSmuwHwEpT7LdWJVjDKcA7hKws7gV1EA7S9E/OHqc4ns+0p/0pUzwEWDPUEL7I0Q82URHJFk3Q9y4sM6w5cPu/SPoF8zqieL1/nlLk6qtacXjwkMTutDm0c2JGhDltUpL37baigWPNdSfG9JDZ3gz/NRxZ1ACFF0ycv6qQmzm
- zG6FqRDx
- ezMtwXhDWr0cHysWUHwwFdKWzyyx/uW7I653tDdWBvR6v1OnfGpK1k7nUo/nb+zTHgjs7KTUZbqj/QiBZcF9b1yJYAQtbz+CBRRh3UfCB7uQxIBNF4WEgCI6o6xlLuG3XbsayccCl9Y+VL9W0CyeNRc7ZJhvV8Vljdoz1Wt2fyc0U9blgVIGhkE+cvGHQDHbRqxow5tIFpBeW/q1NM3Jdj9RPFH0RIScSkCXkHS/sOwpzuhWGhQXYri+qX7SkKY6YzN9l9H6J+0VYSUbYxHM/dsZIsH14R4nmJxXTXpEeo8Wut/DRYd212eTh+p7N0ObmhtJN+vH20zjw0tQUOYhiy5EEWhCAwELx6iH3X50Rw4giETk=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794923308-335250
+X-HE-Meta: U2FsdGVkX1/wop1Xuh8mVMZp48d7StqwmIGlFp4YbF1kEoqs8VHO2VP2RwxBQBTBzVnxizm9KAMbbdPS5nAhw0ALd65Tqgmpd+jFJn6FpPVRkiI2X7OBlNmOEnoR/s0cWleq2y7eZqHv7IRZJko3cp42ihC3fu0mQfM3B+AWVMkg+v5vJWHobGBpVX5wXryELTidJhg2R2YFtg5g9lgSJiyL/lhhtYF1Usl/AQxyXn7HH5ud8w3aMAw4o11DlBR0FTp42HIsqa9KEF7iMLMJsChrNb3Fa1YvqgJt8mcAubBiItQVP7ukza4Aesl+rlQdHhPhUC+vZVghrALKcb779nbO31v3WjQ8vXvpgsROyZNwAEcjd+/87T6F8kfrILLQMLpxsWBNn2M7jNDI0yDF2K5Da2cc0aTolB2Q5uiPf+q0rsLuNPVNnyOg6ygx6n9+9S/ejvD93jrmoYSdd2t4FRTSIMixT7nQOFcCW042S/poQEFgziJLNF6lmAm5Vnl7kE2DVvs/3xdN6/KJ78AQzdbnxvVdFHRMeB3tMVN06aLus7GDLJLpJe1cS0dhIrzrGwo4jkKNNWktA//7OhoxufSh+S4B4EfghaiWu2Yg7fn0iJKCXfFl4i+Q9Fb51GUhLC2iYUrkP8YfWZWbaSTBRq7MvAj8mY2JRebzJqQX5F6k1HUia5jftvgv+QJbzKxmc9JJTi1KPIfMAj95dZvilsFzy+1WC8QGOoDn6vvardw8EDd37rWq9RB4XEU36jn76hFtjwS8f+zKYKW7ZeT1HlEkAVvUI6XHv9HSky11wEU5i3lfmF/hZ60iIwYz4x2SYotYzgL7WyDw1cr190SoWx50qRsS3odIrkztrkCkk9kuHatTIZ99tzjOzgz9n915p6WQogPEuWuhUgynR6RHGtnhduTFvlkmQgiEnyrReMaaYiakLGrklGgPp12T+cmbCU358uOhqSjmrQVd8cx
+ ioVOwLIz
+ YQ2c5X32VmWeE5CZeY9FIgWbfF6qp1wkQpSi+m1kIYZM49buvPCL28GNxJ9wNRyt8slNI83s9WEHTyOXvzQuuB/kr6VWyFMG3L+vNUwYrq0aiAnbayGVlOqx+d36j/MtGOOpycOTUQxtgqt5M2Lk21YAh82MjylymdJ6Px4juQMvVjJ4NTgBTDQSRn7j4XxMH35aOKce6/v1Es826v/o7XwNXmZnK4ZU6ZiwyIYicclLlqzAgNxpiL4ysB5DmQdHou1AOpjbgwWE8YP7OtKI8VhWmWZalSGpzBe9GlEtOOPfIECB+teVx0oLHOLKIL94tICFugWNtgBuBI1hPNbT3OTEtYcen+tiU962xaBOoxcBPEN0vY0sAz3D+JqIM68omC4MF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,20 +97,231 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 04:01:19PM -0500, Rik van Riel wrote:
-> mm/gup.c only: 347 insertions, 226 deletions.
+On Mon, Nov 16, 2026 at 04:01:24PM -0500, Rik van Riel wrote:
+> follow_page_pte() is 92 lines and does two separate things: work out
+> which page a PTE maps, if any, and commit to the page it found. The
+> first half reaches the second through five exit paths, two of which
+> unwind the PTE lock in different ways.
+>
+> Split the resolve half into gup_lookup_pte(), which returns the page it
+> resolved, NULL when the PTE cannot be followed, or the errno the caller
+> must report. follow_page_pte() is left with one unlock and one exit.
+>
+> no_page_table() can look up the page cache, so the case that needs it is
+> recorded and the call made after dropping the PTE lock, as before.
+>
+> A none PTE still returns before any write check runs, so a FOLL_WRITE
+> failure can never reach the recorded call: the caller consults
+> no_page_table() for exactly the same PTEs the old code did.
+>
+> No functional changes intended.
+>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Rik van Riel <riel@surriel.com>
+> ---
+>  mm/gup.c | 100 +++++++++++++++++++++++++++++++------------------------
+>  1 file changed, 56 insertions(+), 44 deletions(-)
+>
+> diff --git a/mm/gup.c b/mm/gup.c
+> index efb2ad64be80..3aed0bc1c2b4 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -965,74 +965,86 @@ static long gup_grab_fill_folio_pages(struct folio *folio,
+>  	return 0;
+>  }
+>
+> -static long follow_page_pte(struct vm_area_struct *vma,
+> -		unsigned long address, pmd_t *pmd, unsigned int flags,
+> -		struct page **pages)
+> +/*
+> + * Resolve one present PTE to the page it maps. Returns no page and no error
+> + * when the PTE cannot be followed but the caller may fault it in, and a
+> + * negative errno when the caller must report the failure.
+> + */
+> +static long gup_lookup_pte(struct vm_area_struct *vma, unsigned long address,
+> +		pte_t *ptep, pte_t pte, unsigned int flags, struct page **pagep)
+>  {
+> -	struct mm_struct *mm = vma->vm_mm;
+> -	struct folio *folio;
+>  	struct page *page;
+> -	spinlock_t *ptl;
+> -	pte_t *ptep, pte;
+> -	long ret;
+>
+> -	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
+> -	if (!ptep)
+> -		return no_page_table(vma, flags, address);
+> -	pte = ptep_get(ptep);
+> +	*pagep = NULL;
+> +
+>  	if (!pte_present(pte))
+> -		goto no_page;
+> +		return 0;
+>  	if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
+> -		goto no_page;
+> +		return 0;
+>
+>  	page = vm_normal_page(vma, address, pte);
+>
+>  	/*
+>  	 * We only care about anon pages in can_follow_write_pte().
+>  	 */
+> -	if ((flags & FOLL_WRITE) &&
+> -	    !can_follow_write_pte(pte, page, vma, flags)) {
+> -		ret = 0;
+> -		goto out;
+> -	}
+> +	if ((flags & FOLL_WRITE) && !can_follow_write_pte(pte, page, vma, flags))
+> +		return 0;
+>
+>  	if (unlikely(!page)) {
+>  		if (flags & FOLL_DUMP) {
+>  			/* Avoid special (like zero) pages in core dumps */
+> -			ret = -EFAULT;
+> -			goto out;
+> -		}
+> -
+> -		if (is_zero_pfn(pte_pfn(pte))) {
+> -			page = pte_page(pte);
+> -		} else {
+> -			ret = follow_pfn_pte(vma, address, ptep, flags);
+> -			goto out;
+> +			return -EFAULT;
+>  		}
+> +		if (!is_zero_pfn(pte_pfn(pte)))
+> +			return follow_pfn_pte(vma, address, ptep, flags);
+> +		page = pte_page(pte);
+>  	}
+> -	folio = page_folio(page);
+>
+> -	if (!pte_write(pte) && gup_must_unshare(vma, flags, folio, page)) {
+> -		ret = -EMLINK;
+> -		goto out;
+> -	}
+> +	if (!pte_write(pte) &&
+> +	    gup_must_unshare(vma, flags, page_folio(page), page))
+> +		return -EMLINK;
+>
+>  	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
+>  			     !PageAnonExclusive(page), page);
+>
+> -	ret = gup_grab_fill_folio_pages(folio, page, 1,
+> -			pte_dirty(pte), flags, pages);
+> -	if (ret)
+> -		goto out;
+> -	ret = 1;
+> -out:
+> +	*pagep = page;
+> +	return 0;
+> +}
+> +
+> +static long follow_page_pte(struct vm_area_struct *vma,
+> +		unsigned long address, pmd_t *pmd, unsigned int flags,
+> +		struct page **pages)
+> +{
+> +	struct mm_struct *mm = vma->vm_mm;
+> +	bool need_no_page_table = false;
+> +	struct page *page;
+> +	spinlock_t *ptl;
+> +	pte_t *ptep, pte;
+> +	long ret;
+> +
+> +	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
+> +	if (!ptep)
 
-I'm glad you describe it here, but could we please just have a normal diffstat
-like every other series? I feel like I've asked you this before :)
+OK so this is what happens if there's no PMD entry. Maybe worth a comment?
+Especially if you have special handling for the PTE PTL being held below.
 
-I really hate a missing diffstat in the _usual_ form because it makes it hard to
-glance at it and know what's touched (and pretty much 100% of the time it turns
-out the diffstat is v. large when this happens...)
+> +		return no_page_table(vma, flags, address);
+> +	pte = ptep_get(ptep);
+> +
+> +	ret = gup_lookup_pte(vma, address, ptep, pte, flags, &page);
+> +	if (!ret && page) {
+> +		ret = gup_grab_fill_folio_pages(page_folio(page), page,
+> +						     1, pte_dirty(pte), flags, pages);
+> +		if (!ret)
+> +			ret = 1;
+> +	} else if (!ret && pte_none(pte)) {
+> +		/*
+> +		 * no_page_table() may look up the page cache, so it cannot run
+> +		 * under the PTE lock. A none PTE returns from gup_lookup_pte()
+> +		 * before any write check runs, so this is the same call the old
+> +		 * code made -- not a new failure mode for FOLL_WRITE.
+> +		 */
 
-Here it is for this one:
+This feels -- a little -- schloppy ;)
 
- mm/gup.c | 573 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------------------------------------------------------------------------------------------
- 1 file changed, 347 insertions(+), 226 deletions(-)
+Why are you referencing 'the old code' in a permanent comment for which what
+'the old code' means is super unclear?
+
+That's really just not helpful.
+
+'A none PTE returns from gup_lookup_pte() before any write check runs' also
+reads weirdly.
+
+I'm also not sure why you're sending a pte_none() PTE to gup_lookup_pte()
+anyway + checking for the error again?
+
+	if (pte_none(ptep)) {
+		... whatever ...
+		goto blah;
+	}
+
+It seems silly otherwise.
+
+
+Also isn't the page cache thing _only_ for hugetlbfs, unless you changed
+that? And aren't a number of other callers of no_page_table() also broken?
+
+But in general the comment could be made much clearer:
+
+	/*
+	 * If a hugetlb VMA it might access the page cache in no_page_table(),
+	 * which cannot be done under the PTL, so defer until it's dropped.
+	 */
+
+Or whatever, something human-written like that :)
+
+
+> +		need_no_page_table = true;
+
+This is set true but not used anywhere? This is dead code no? Am I missing
+something?
+
+Patches should be incremental but adding completely useless locals incrementally
+seems silly?
+
+> +	}
+> +
+>  	pte_unmap_unlock(ptep, ptl);
+>  	return ret;
+
+I'm guessing you forgot to include the code that works with
+need_no_page_table here?
+
+Should it have been:
+
+	if (!ret && need_no_page_table)
+		return no_page_table(vma, flags, address);
+
+Perhaps?
+
+I'm not sure any of this is really a cleanup, I'm finding this quite
+confusing, actually...
+
+'need_no_page_table' isn't a great name either. Maybe is_none or something?
+
+> -no_page:
+> -	pte_unmap_unlock(ptep, ptl);
+> -	if (!pte_none(pte))
+> -		return 0;
+> -	return no_page_table(vma, flags, address);
+>  }
+>
+>  static long follow_pmd_mask(struct vm_area_struct *vma,
+> --
+> 2.56.0
+>
 
 --
 Cheers, Lorenzo
