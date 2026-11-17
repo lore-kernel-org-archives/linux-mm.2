@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464DE606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE437606A323
 	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sh0MlkhJ
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vW35PPri
 Received: by kanga.kvack.org (Postfix)
-	id 254A96B05C3; Tue, 17 Nov 2026 02:07:08 -0500 (EST)
+	id 429486B05C2; Tue, 17 Nov 2026 02:07:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22BD96B05C4; Tue, 17 Nov 2026 02:07:08 -0500 (EST)
+	id 3D9FD6B05C3; Tue, 17 Nov 2026 02:07:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07F066B05C5; Tue, 17 Nov 2026 02:07:08 -0500 (EST)
+	id 316C46B05C4; Tue, 17 Nov 2026 02:07:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D23A56B05C3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:07:07 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3778CA035C
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:07 +0000 (UTC)
-X-FDA: 85443729294.27.FF798B0
+	by kanga.kvack.org (Postfix) with ESMTP id 0148C6B05C2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:07:03 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6DC44A0353
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:03 +0000 (UTC)
+X-FDA: 85443729126.28.FDAF6B9
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9E4C01C0006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sh0MlkhJ;
-	spf=pass (imf21.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id C2F2D40003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:07:01 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vW35PPri;
+	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794899225;
-	b=dEJRXzS7+V/lPXX7FRBtyhDjPxnuAaEDuPNzfaNPeZfxy3bxZdqIyiS8WbAEloa6frsS2C
-	MW15LFS5w0zi1nIBpkRRn134mc6vAlpq++Pu3JG6ovfEp+avF3aWRXE00zgsHW7fcHayY6
-	+h9MV0tXQDuDazIYh824TO/m36h0r1Y=
+	t=1794899221;
+	b=hGvAne5ulssdBOA1U0A3/hGW9VoDpRAaatrlpM6iG48dNOsLIdrTGrbPrODcX9yQFmHLme
+	oswl3sfKGAx36aXHaDb4O/1mSmudusLbBCqiSj3lVvf+ZoNluUjSPr3TIJH1h+VdkXMehI
+	71VepeD2JGmNQBUJOt26jzW2rg7zC/Y=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sh0MlkhJ;
-	spf=pass (imf21.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vW35PPri;
+	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794899225;
+	s=arc-20220608; t=1794899221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iv8DY4asFhTjzipaQVYQqam4Cbb+8XuirWHT+xFO2vo=;
-	b=W3nfCaqGU8e8aXQvAV7E7/ZB8Or2N2WQOusb6SIuh2k05EOkaWyN1v0frvwEo/mbyWz5Ro
-	fwAedR/8XewRiBw6Hulg6Bz7XIEUDzXrX0Hmu60FeR9aUPM8pwNojZHZZXnfT84yquiOMS
-	BvTmtmIbujMrMr2KWKXAdfa39eMuYPc=
+	bh=9XHNTvsxvTs29hz6BcMFjPlN/wv+sbJF4QuCIXu6oQQ=;
+	b=KeVv2jAbSMsQyrtbFSJZAVLYNUoe8SxFh6wPFzMN9fnaW+XplrkH7yCybTYY3rmN/cNd2v
+	857xDZm9hrY9Upyn5xanVcw/UmFKrRLn3hvLOhVpbnuxNRKwNy4MaeF/9hWckGR93uMST7
+	Tc1o5yszpjcZ9UO7x91kTShiu1cdubY=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA4C01476;
-	Mon, 16 Nov 2026 23:07:01 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 07FBD1BD0;
+	Mon, 16 Nov 2026 23:06:58 -0800 (PST)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F4733F763;
-	Mon, 16 Nov 2026 23:07:03 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3DC053F763;
+	Mon, 16 Nov 2026 23:07:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794899224; bh=gWd3VSKQGcmDL0rND+7miFz0510CU52wEGtyXPxoBxM=;
+	t=1794899221; bh=hn3PA/FHiJccaTPVEin+J5IcUo1zFJdOxKnT8wtz+xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sh0MlkhJYda5X1jALRTVT5SvRmycezCCIhbm8p177NP2BlcMJjCiUDiC4RBhdFhfe
-	 VkiqnTrU0lsjjF/kIqlsHyjzifa5Amj9xoyY8Ft6CFOG6m/Eg88bOG3jhBVJH3vB0a
-	 WDX0Jg+x0cp1/3EkuDCW+AWpbPGMvxOqWZ9VMtHM=
+	b=vW35PPriYm7NahrJU5oPMNGIRSEKeVAmNAUxuWBxWFPUWYAMtihBpIg3yzJaKagb/
+	 hQM249eT2uubKC73o+LX/+Jqtjlz+53e8UAcU7O4EbNPhc3qvDh/MiH4Ru9HVaPnME
+	 I/FcwBN/1c/Y8OukF6ZX1zitFJMADP88nzkPO/5U=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	catalin.marinas@arm.com,
@@ -71,9 +71,9 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Linu Cherian <linu.cherian@arm.com>
-Subject: [PATCH V3 11/14] arm64/mm: Enable TLBIP instruction based TLB flush
-Date: Tue, 17 Nov 2026 12:36:10 +0530
-Message-ID: <20261117070613.1183243-12-anshuman.khandual@arm.com>
+Subject: [PATCH V3 10/14] arm64/mm: Add an abstraction level for tlbi_op
+Date: Tue, 17 Nov 2026 12:36:09 +0530
+Message-ID: <20261117070613.1183243-11-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261117070613.1183243-1-anshuman.khandual@arm.com>
 References: <20261117070613.1183243-1-anshuman.khandual@arm.com>
@@ -82,17 +82,17 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9E4C01C0006
-X-Stat-Signature: y46wq6pfs9p8d3f9ghs6ty6jm5tp3o63
+X-Rspamd-Queue-Id: C2F2D40003
+X-Stat-Signature: pw8ojwsdu3ubj1hwxmxpjgteeu68ti1b
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794899225-418912
-X-HE-Meta: U2FsdGVkX18Un/Kd0QdDOqwkt9lxse87tSe72sa+XgyFNx1DFKRTxuDS/ST/emel/CAZ5wIuqQSV6EmFw7ai0MQH2XNuFgqdcYZPwaXpaulvmc/D5ovOjrHSE3bb4eSL1b07t9Uy6gBeqQoHFF9QVREBl9d9SAALageIInUdATX2FueISWQuccFPxEaMgHomLBFj8MgXCF6OJjHtiD6RhdlK0/b3tKbJWl+RlnmG1EjjaJOgqlsvJD4QwFVj8YVXWn+xSPkrJNIYAEJ9LkIIVijK/bZNjKlo+SQE/Ajw3oOtY16jlUp/QLna0rD6i6pMaul15oRDRGfrl3ZMinBqF0H/c/M0sYa2jBRTDSXftvoE8yvwklSrWSDppQs8DUPjXUBVlG91hShBGpI5jDrW++efhlCP9f9oAtVloPLTETQ9s+STChwbQB7OCy4o3bewuQikhIAf1t2ROZEdgUq54geS8shdsycNrYqMhidCFFbfquCArxFRLZyDbtZKp295DFMHRJMA1v869eocQE2kOYxM6n4WvGqEEt2uVmG3NUZWOgiGx21jDTpIxQFZTc/KB3MY1EOW7bI/shMoI7mqc3q7iyiPj6hC2ipiIiaoH8Dor5gyB5RYnKug3RujrPKspTRKHvd1tRrhu8nWaK7GiFaAvrZkUQMIu7rEx9O+BxSYZ1gGKmAXfhAe+KwjjwBghvZ1qiHS8py+qJsy4aWhVENa6q40aevucBCbTnerpZ5YuMljLutItjgQsFNn4PSjfsuYbgSWPCNtLc4fgu9/LzufAvFOMW7SzF1q1cKP3E7o5IT0nRm7m9q+aTJ6fvk7RdMIV+QjK1QLidV9KlF6P1y3y5mJ8i+VLmCkmuxlF8QQ7L3tN7DkIV4mC77EzovxPQcSr0WxBOO22ErLU0yWIbyCWDGhcbTvR2bZJmRb0xfaiKQLm7q5wePnxYBBl+/Lffst/dXP8xNCFrKecLb
- jZ2X3uoR
- tRnzrAGR2GwPBijt6YIDpiDbqscOXfalERuN5Lmy0Td9ZbfOL5USVerNRC3fvoKJRpWwzedGBjxYpifwbkGd6zKme14V1lnUbo++UooOzb0tBmwrwuvL7wlptxhgi7KZk6uNDv1NKPp83A0UayPGpzhtxW2d0qPFD+eWT6uAdiK2zhu5gCFcf2YbC7YFKEccEJtCRO7JRf6YCuO9QzjCfq63WjNzODaYLRj4PMB7Hk1G4wyu868p4jvg1Fm7OBwldToaHXHVMGLLKulPJIffh1rfXLsfBtNK6KyeKBUGqPzZaCnBmCsiXRPZ+sZrEQPpLTDuD
+X-HE-Tag: 1794899221-693824
+X-HE-Meta: U2FsdGVkX1/blIbu+qzO98eOgXBbsdhlyK19XCBECgcIzA0H1yjA8JJzBeN+8SfMtV8QsCWlQqx7tDYIshG2Mx+/rjnJmqZih0QXTGkz0pey8hStDOj4zExcOCJ+zsSvQ64d82QHmc9tOnv/emCLgbMjuv4C0BaA9RhTaZicb0FqJcbfbJgONfLUeAbSGFrq9LLRTDOwWJ9L03+zUBGE/1ToY1F9I0qfUR5o0vpd38d5kyR6riZ4onUgAQy6fUmXRDMmSqgR4YQXD/uZ4OHq5cxp8O9Qm0LvLBX7vsWoelUEdPJoyUk2hTFUL0jPXiis210Eyky5aqpLkNx06Q35AvQc1OU9FvmzbjCgvZfZFpypsOrgLUFirfZNmOcgMkD/CRCG1cy6d6zfxZ8vHCi41Y2A0gYNvfTM2HCPisiZ9XMppAgGho6yuP9iaNrwuBkzuT6hB+lPN3wS6iFF33nQzjq2ndE94KsHpkFEPvlezIqBT2rn3+htlAV0IlG5fjmMNP4hx6KMN3/FpU6ploJM+rIGf9BSZFe8JgjwtYCP3j3S2RE6MwnZbGWJeOwRqVYyyIGYNWCUqQvqo6SXXp1oN5Jjs6p2qjrTtss/Z+B52VyLnNNVDEToglewIY+cWJJpjwDs86+LWh+9yzPS80oig1IOVIGzCQ4QssczljLBY0QiiKm5aRo7ObWjxyO0GhDSbe9wJKovHlugDB5D5ZqoGkQYwzViMueej3j4J7TMs3LFn1AvcvPuTreVnfUbzGd+zzaGVX1xMv4S1lJm8C15T1AyspyaPKZwuV7I+9+1N3IlMoJE77YIvP2PKraWtvdjbJwVETSbspqAxI0VKSdMQJ0ap/wifP10ayvuC6KDI92yRZiTgEE6byYk74STlPG6b65MoMWQY+SWlkQG/A2THlbqyZBFEUDWZ6NEax+N4CvYrOBd//+FdQBtUOhkt1+xnsZNizdhINgLzjvkPVz
+ GBma7mnu
+ Xdn41LvG3t2Vu86c3VINbTw+2fV3n+VhOs7xNazOuSN7OoA3+vz39RQW8e2GtTyZtuEvix4kjd0ElC8qDUlY+T+SXhCKXjracUMZuNSGkV4db0NGC5PVP6s+yBPOnCU9ZB7fpvu12lpGIAasW18aYoWHAxXHTgMTQpMxBIgKDRI4PC8f3yK1A1MlM4f3NBsECciOv3ZhNCanpAkARi4H9vaYL1LUsFlXmYq8ELvLNcTEhUXpuHJE1kxStxeJr5tfUk6fr2a0KrmVz+kIrexLRWTZKu4vouGHoj4OqK6Cg8GorW+JH+SLZFOjSsVXEDhtkuMYlSoATzxmz6atpPoDovHMOTtgUVLbcNSTs316WqbilZPg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,9 +103,13 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Linu Cherian <linu.cherian@arm.com>
 
-Add TLBIP instruction support for TLB flush operation updating all relevant
-macros as necessary. This enables back pgtable level hint and address range
-support during TLB flush operation for D128 translation.
+With FEAT_D128, a new instruction aka TLBIP is being introduced for the TLB
+-by-range operations which has an argument size of 128 bit.
+
+Add an abstraction level to void (*tlbi_op)(u64 arg) helpers to support the
+D128 variations when applicable.
+
+No functional changes are introduced with this patch.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
@@ -114,127 +118,133 @@ Cc: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Linu Cherian <linu.cherian@arm.com>
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/tlbflush.h | 68 +++++++++++++++++++++++++++----
- 1 file changed, 59 insertions(+), 9 deletions(-)
+ arch/arm64/include/asm/tlbflush.h | 70 ++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 33 deletions(-)
 
 diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index e46bebeb230d6..a440a8fd0ebcf 100644
+index a05520d3a0131..e46bebeb230d6 100644
 --- a/arch/arm64/include/asm/tlbflush.h
 +++ b/arch/arm64/include/asm/tlbflush.h
-@@ -41,6 +41,25 @@
- 
- #define __tlbi(op, ...)		__TLBI_N(op, ##__VA_ARGS__, 1, 0)
- 
-+#ifdef CONFIG_ARM64_D128
-+#define __tlbip(op, arg) do {		\
-+	asm (ARM64_ASM_PREAMBLE		\
-+	".arch_extension d128\n\t"	\
-+	"tlbip " #op ", %0, %H0\n"	\
-+	: : "r" (arg.full));		\
-+} while (0)
-+
-+#define __tlbip_user(op, arg) do {		\
-+	if (arm64_kernel_unmapped_at_el0()) {	\
-+		arg.low |= USER_ASID_FLAG;	\
-+		__tlbip(op, (arg));		\
-+	}					\
-+} while (0)
-+
-+#endif
-+
-+#define TLBI_ASID_MASK		GENMASK_ULL(63, 48)
-+
- #define __tlbi_user(op, arg) do {						\
- 	if (arm64_kernel_unmapped_at_el0())					\
- 		__tlbi(op, (arg) | USER_ASID_FLAG);				\
-@@ -130,9 +149,15 @@ static inline void sme_dvmsync_batch(void)
+@@ -130,49 +130,53 @@ static inline void sme_dvmsync_batch(void)
  
  #define TLBI_TTL_UNKNOWN	INT_MAX
  
-+#ifdef CONFIG_ARM64_D128
-+typedef union __u128_halves tlbi_arg_t;
-+#define __tlbi_wrapper(op, arg)		__tlbip(op, arg)
-+#define __tlbi_user_wrapper(op, arg)	__tlbip_user(op, arg)
-+#else
- typedef u64 tlbi_arg_t;
- #define __tlbi_wrapper(op, arg)		__tlbi(op, arg)
- #define __tlbi_user_wrapper(op, arg)	__tlbi_user(op, arg)
-+#endif
+-typedef void (*tlbi_op)(u64 arg);
++typedef u64 tlbi_arg_t;
++#define __tlbi_wrapper(op, arg)		__tlbi(op, arg)
++#define __tlbi_user_wrapper(op, arg)	__tlbi_user(op, arg)
  
- typedef void (*tlbi_op)(tlbi_arg_t arg);
- 
-@@ -179,17 +204,28 @@ static __always_inline void ipas2e1is(tlbi_arg_t arg)
- 	__tlbi_wrapper(ipas2e1is, arg);
- }
- 
--static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
--					      u16 asid)
-+static __always_inline void __tlbi_update_level(u32 level, u64 *arg)
+-static __always_inline void vae1is(u64 arg)
++typedef void (*tlbi_op)(tlbi_arg_t arg);
++
++static __always_inline void vae1is(tlbi_arg_t arg)
  {
--	u64 arg = __TLBI_VADDR(addr, asid);
--
- 	if (alternative_has_cap_unlikely(ARM64_HAS_ARMv8_4_TTL) && level <= 3) {
- 		u64 ttl = level | (get_trans_granule() << 2);
- 
--		FIELD_MODIFY(TLBI_TTL_MASK, &arg, ttl);
-+		FIELD_MODIFY(TLBI_TTL_MASK, arg, ttl);
- 	}
-+}
-+
-+static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level, u16 asid)
-+{
-+#ifdef CONFIG_ARM64_D128
-+	union __u128_halves arg;
-+
-+	arg.low = FIELD_PREP(TLBI_ASID_MASK, asid);
-+	__tlbi_update_level(level, &arg.low);
-+	arg.high = addr >> 12;
-+#else
-+	u64 arg = __TLBI_VADDR(addr, asid);
- 
-+	__tlbi_update_level(level, &arg);
-+#endif
- 	op(arg);
+-	__tlbi(vae1is, arg);
+-	__tlbi_user(vae1is, arg);
++	__tlbi_wrapper(vae1is, arg);
++	__tlbi_user_wrapper(vae1is, arg);
  }
  
-@@ -479,19 +515,33 @@ static __always_inline void ripas2e1is(tlbi_arg_t arg)
- 	__tlbi_wrapper(ripas2e1is, arg);
- }
- 
--static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
--					 u16 asid, int scale, int num,
--					 u32 level, bool lpa2)
-+static __always_inline u64 __tlbi_range_args_encode_comm(u16 asid, int scale, int num, u32 level)
+-static __always_inline void vae2is(u64 arg)
++static __always_inline void vae2is(tlbi_arg_t arg)
  {
- 	u64 arg = 0;
- 
--	arg |= FIELD_PREP(TLBIR_BADDR_MASK, addr >> (lpa2 ? 16 : PAGE_SHIFT));
- 	arg |= FIELD_PREP(TLBIR_TTL_MASK, level > 3 ? 0 : level);
- 	arg |= FIELD_PREP(TLBIR_NUM_MASK, num);
- 	arg |= FIELD_PREP(TLBIR_SCALE_MASK, scale);
- 	arg |= FIELD_PREP(TLBIR_TG_MASK, get_trans_granule());
- 	arg |= FIELD_PREP(TLBIR_ASID_MASK, asid);
- 
-+	return arg;
-+}
-+
-+static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
-+					 u16 asid, int scale, int num,
-+					 u32 level, bool lpa2)
-+{
-+#ifdef CONFIG_ARM64_D128
-+	union __u128_halves arg;
-+
-+	arg.low = __tlbi_range_args_encode_comm(asid, scale, num, level);
-+	arg.high = addr >> 12;
-+#else
-+	u64 arg = __tlbi_range_args_encode_comm(asid, scale, num, level);
-+
-+	arg |= FIELD_PREP(TLBIR_BADDR_MASK, addr >> (lpa2 ? 16 : PAGE_SHIFT));
-+#endif
- 	op(arg);
+-	__tlbi(vae2is, arg);
++	__tlbi_wrapper(vae2is, arg);
  }
  
+-static __always_inline void vale1(u64 arg)
++static __always_inline void vale1(tlbi_arg_t arg)
+ {
+-	__tlbi(vale1, arg);
+-	__tlbi_user(vale1, arg);
++	__tlbi_wrapper(vale1, arg);
++	__tlbi_user_wrapper(vale1, arg);
+ }
+ 
+-static __always_inline void vale1is(u64 arg)
++static __always_inline void vale1is(tlbi_arg_t arg)
+ {
+-	__tlbi(vale1is, arg);
+-	__tlbi_user(vale1is, arg);
++	__tlbi_wrapper(vale1is, arg);
++	__tlbi_user_wrapper(vale1is, arg);
+ }
+ 
+-static __always_inline void vale2is(u64 arg)
++static __always_inline void vale2is(tlbi_arg_t arg)
+ {
+-	__tlbi(vale2is, arg);
++	__tlbi_wrapper(vale2is, arg);
+ }
+ 
+-static __always_inline void vaale1is(u64 arg)
++static __always_inline void vaale1is(tlbi_arg_t arg)
+ {
+-	__tlbi(vaale1is, arg);
++	__tlbi_wrapper(vaale1is, arg);
+ }
+ 
+-static __always_inline void ipas2e1(u64 arg)
++static __always_inline void ipas2e1(tlbi_arg_t arg)
+ {
+-	__tlbi(ipas2e1, arg);
++	__tlbi_wrapper(ipas2e1, arg);
+ }
+ 
+-static __always_inline void ipas2e1is(u64 arg)
++static __always_inline void ipas2e1is(tlbi_arg_t arg)
+ {
+-	__tlbi(ipas2e1is, arg);
++	__tlbi_wrapper(ipas2e1is, arg);
+ }
+ 
+ static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
+@@ -447,32 +451,32 @@ static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
+  *    operations can only span an even number of pages. We save this for last to
+  *    ensure 64KB start alignment is maintained for the LPA2 case.
+  */
+-static __always_inline void rvae1is(u64 arg)
++static __always_inline void rvae1is(tlbi_arg_t arg)
+ {
+-	__tlbi(rvae1is, arg);
+-	__tlbi_user(rvae1is, arg);
++	__tlbi_wrapper(rvae1is, arg);
++	__tlbi_user_wrapper(rvae1is, arg);
+ }
+ 
+-static __always_inline void rvale1(u64 arg)
++static __always_inline void rvale1(tlbi_arg_t arg)
+ {
+-	__tlbi(rvale1, arg);
+-	__tlbi_user(rvale1, arg);
++	__tlbi_wrapper(rvale1, arg);
++	__tlbi_user_wrapper(rvale1, arg);
+ }
+ 
+-static __always_inline void rvale1is(u64 arg)
++static __always_inline void rvale1is(tlbi_arg_t arg)
+ {
+-	__tlbi(rvale1is, arg);
+-	__tlbi_user(rvale1is, arg);
++	__tlbi_wrapper(rvale1is, arg);
++	__tlbi_user_wrapper(rvale1is, arg);
+ }
+ 
+-static __always_inline void rvaale1is(u64 arg)
++static __always_inline void rvaale1is(tlbi_arg_t arg)
+ {
+-	__tlbi(rvaale1is, arg);
++	__tlbi_wrapper(rvaale1is, arg);
+ }
+ 
+-static __always_inline void ripas2e1is(u64 arg)
++static __always_inline void ripas2e1is(tlbi_arg_t arg)
+ {
+-	__tlbi(ripas2e1is, arg);
++	__tlbi_wrapper(ripas2e1is, arg);
+ }
+ 
+ static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
 -- 
 2.43.0
 
