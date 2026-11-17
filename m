@@ -1,134 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F4F606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B266E606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AW/LeRbH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=geZMmNkz
 Received: by kanga.kvack.org (Postfix)
-	id CDB7D6B05B1; Tue, 17 Nov 2026 16:04:31 -0500 (EST)
+	id D3C966B05B0; Tue, 17 Nov 2026 16:15:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8B7C6B05B2; Tue, 17 Nov 2026 16:04:31 -0500 (EST)
+	id CC6DC6B05B2; Tue, 17 Nov 2026 16:15:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7CB36B05B3; Tue, 17 Nov 2026 16:04:31 -0500 (EST)
+	id B8F566B05B3; Tue, 17 Nov 2026 16:15:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AC1C6B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:04:31 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F3ADD1205AB
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:04:30 +0000 (UTC)
-X-FDA: 85445839500.21.7B6AE8B
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 28A34A0006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:04:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="AW/LeRbH";
-	spf=pass (imf25.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794949469;
-	b=B9+d4KSFKJW27GFeAZG9iizc0zcwkCNDTpfRTpIA0g96xCHVSZOLbN65cl2M8K+ApA/fGT
-	NnHjsdzfmTjv5R7AS0UWYSgna92IBE6r3OgXPDooI06TYNCz9+GnISH7qzIHKrRHMekdzY
-	xRIgNEJOdl3p0/cRSelmRz33UJt8nm4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="AW/LeRbH";
-	spf=pass (imf25.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EA586B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:15:20 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCBBCA05DD
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:15:19 +0000 (UTC)
+X-FDA: 85445866758.25.1C2F716
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id ED270140017
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:15:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=geZMmNkz;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794949469;
+	s=arc-20220608; t=1794950118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=DClN/PQCUc+e7hhJbYiQYreXFIiImxiZvex/Oaj/4wo=;
-	b=AaLIhoSxp4v1MB4/Px/tyEdBp9qldwKcTFxzsCqEtXwi7+lcz1zXVnKzI2VO9pxXaH4OIg
-	qy0qInxqBA4v/itjbXW+0kI+c98sasUlOI6kOPhNseCDLxQ+4q9ceolR1CPet8P4UvF226
-	KGGqvdyuS1MFXYAG5LbHcFMhtlNOUZs=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a1fbd52ab6so2418645e9.0
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:04:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794949467; x=1795554267; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DClN/PQCUc+e7hhJbYiQYreXFIiImxiZvex/Oaj/4wo=;
-        b=AW/LeRbHzfuRGmwhfTMLydScAJJdakIXnrxJdBNULwkcMhcXalN2/aVwLRE5bmQwbO
-         tS0um7kwhUMe/ret0uyNTmOPV56LdkWDnu3L1z3v6bxg9x26h1TQ9x+yyFgYjBoNV4SQ
-         MFdl2FBpx/x774h4FOtPHplDobyuMztA+0hsaVytq36w7b1IREnnCtWK/2VdodBzsOQP
-         bAaJkcyYhqgY3JnERv/+6th72dW8dz+E70wYESgdD2FIZLmmuer2zdw1uXi69TnAhvof
-         jgARjREFJnB/sw4LM+5w/HIFwbkU9ETgBYZ+5/noJv+fLlX4PP6gmuxuNzU8F3f5L6qV
-         6++Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794949467; x=1795554267;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DClN/PQCUc+e7hhJbYiQYreXFIiImxiZvex/Oaj/4wo=;
-        b=csbNrPspJWA5LpE5zTQxLVHdluuZPXFNwrfBTUFojYpGDRp6fwBvPKZ7fbRPzQhwA+
-         7ua9ez4iyeSpO5Bs1+brslcgVWm/uBam/53Wfn+5yBkIE1JU14cnMxzzUoKThlmU+bRf
-         53v/x/aPl/Y56IXAXDGXX3ff2tbhfO/PV+gPKvBdHnwhUGelDzIddIYbHHVbNuwpzQN0
-         75SxBHDaWIfn421QXqH7lyPzFLSG4K9d26wlCIfrElYrkPJwBkEE4gohsEQeykfWLF6d
-         t1QPC1cQRSQcZP4j38wbyhCTkuAUkJDpUtUh+gP37/pyJ95k9k+U7UAmQvuRW5R6p2Yd
-         QnRg==
-X-Forwarded-Encrypted: i=1; AL+hErETtlK2hFdfcebMmqI42kLdQTSefjcUulzg5DQd/BgEGX2sKcdhZ6yHEu6p8d/nstp7bsoaEKYHpg==@kvack.org
-X-Gm-Message-State: APuU4Z9NPCZNJN0IuQ+89hW681z51gYw8x1u4oC6rPaM4tdiKvq2qDL/
-	mhb8sI2SSmn4WXTmXPEgV7OmXaE5TFVme3yYdGeTSE7omWOmpum97Us5
-X-Gm-Gg: AYBFou0oEpGQAAApApswHagZmB1ZRu79pT8eAwN1wqt0T81ECq3WOyU/3TKU7HIWlyp
-	kNc6+s3w3Un8zaRroEt50k92S+ZJAAJPaIbs+JaA6X3DFKuMfotKwai2B0UPfLOkgP1/t2LX1Go
-	q9ZFh4Kzirw+9tstvh8LViJWkpSgdyAId9ab3szfdRqZ6Ug0DLz6oI+/0greV2zHNgvG83Rx1eq
-	ncoWiCQvgdFMDJbhgAK4q0DtaR2JsXesPpJ1/Zeg3mRiVKYP3gt+eZ43Kp0iEK+OuLCRCctYp0/
-	S9qHR4I4skw3q6IYmEkxk93l+YmT2jV/K0jyU/wH1XMPkwzIHE/e49SMD4ngkJRFvcifjV0epd0
-	uvQ0jLw0IXV69+kaKFxFzdPIfashTdGHmvMro2tCif4ySOJuK0TTAY1lJcot2hCWkdvBph1mEhr
-	b4L2nsXkXKj83+9tsaVv8JapboSyf7YSXf8VJz9QD1rnqRlVoRKLJUJoo+lmVZvGRGbPiBEkwQ1
-	fZs2TexOLzkn5ZAcUzyHiRAinjXuTJID/ut2gOaCvPMnl8VSSqkBXBJyuU5Aw0aXlN6VyzOsRcN
-	5DCHZKGYmAjwEaQ2BRjaRJo6AECfBtQKDZU=
-X-Received: by 2002:a05:600c:6208:b0:4a1:da58:1ee with SMTP id 5b1f17b1804b1-4bb7da46178mr7111145e9.31.1794949467262;
-        Tue, 17 Nov 2026 13:04:27 -0800 (PST)
-Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb7ddd4614sm3902895e9.6.2026.11.17.13.04.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 13:04:26 -0800 (PST)
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Peter Xu <peterx@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Tal Zussman <tz2294@columbia.edu>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Subject: [PATCH v3] Documentation/userfaultfd: document RWP behavior when the PTE is dropped
-Date: Tue, 17 Nov 2026 22:04:10 +0100
-Message-ID: <20261117210423.11598-1-azpijr@gmail.com>
-X-Mailer: git-send-email 2.56.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=edLdvJ5BDjaRt6RMx5EffH6A7el1uRIb0sy/VvsQYKw=;
+	b=m/HIdHJwylrW190lHYcpbM14Ljhtfq9SC7mZDVJn4KuWzIsdtgscsHE8UNRDtjxxLhfSYJ
+	P9hbdxEXFaFlcpK6+uW0ZHIVhSGwar5LVyYyfa2cnxQytVIGczSr7t7cvdoJB5WInxAbC3
+	wDC2szx8LHlCt+3UzpR79lPQmHk8fvk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794950118;
+	b=W9LUNfO/dMRBWIDP+zKo+2N23SrUXp1auNyhcG4N2P4U1lzIFBliDpKBhoy6OVR+dxTr7r
+	FuBzAHgq7ZZ7K4Gvxt6bqpCqvUPov4oeJcKa4V09k/CVP8SBPceiCkyxvsJmb9CqXuhqD6
+	9fgyO05SVrc/AhOrFfwcne3EgHwTtIQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=geZMmNkz;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A376860DB5;
+	Tue, 17 Nov 2026 21:15:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C561F000C4;
+	Tue, 17 Nov 2026 21:15:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794950116;
+	bh=edLdvJ5BDjaRt6RMx5EffH6A7el1uRIb0sy/VvsQYKw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=geZMmNkzgGVXwgzgiftX/pDbrM45HqLo9V6rUnvZM3za/H5jbhPJ1hU97R8l6LZFi
+	 XdCH61sbo+xgVx67ujUxGFhSOYBdxAfog3e3UpezVvy4x6O/T51qI5AUUVhiZTpS61
+	 RiolJYAKQ5g05U7taZS0nOKhsJ5oKHdrIKkDdZ92jTgqT0OHXf6otza9Q+ENu8fS7/
+	 z4ihSUCv2nfgxEqJuD6+ABu6gv3EYJSYgDNGxgvMr5zxDQ1EA5Jqklzkbg4Qle1oyZ
+	 tCWownKAnEfgdQP2+y+lnYdbk+2/VHP3qlNQ21cEQrdP6wGo0eOMNWBv2TbMNhCud/
+	 6ildXgxaLx/qg==
+Message-ID: <5fc2f2aa-a6d9-42b5-a839-48ddaad60498@kernel.org>
+Date: Tue, 17 Nov 2026 22:15:08 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/userfaultfd: check exclusivity of the page being moved
+To: nakixii <nakixii@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra
+ <lokeshgidra@google.com>, Kairui Song <kasong@tencent.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261117191853.1314834-1-nakixii@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261117191853.1314834-1-nakixii@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 28A34A0006
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: k8otxj67w513hgq94zhamiux14wpx7gs
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mohxwypaz51a1e16pki6y7supg44nu7y
 X-Rspam-User: 
-X-HE-Tag: 1794949468-458773
-X-HE-Meta: U2FsdGVkX19lXiub3A1HLH0Xf+RaNDxHDcSUiTdvPfqPbClgb+eDQAo8ic1V2a1tlO2xm5kwZDuahoaXOxCae/Gtt2v8yVO7mwazU6A4KAb5BO1mLw1bIpDmKo0m8RpUu8O92LHw2fMmqo9ngyqMNfasB+AiFZaep8I1FqEYG5XpLb3vmgO9QjqyLWAjJ68om3dwFsXgPVHbEHar7DDUEJrP4cS6DWvIGygwvIIfZUh8QxiXoTu/m/1GEM33C9Tl5Qu7WSC75BYnB7zTA5vpnmNPrencIhKOIU32mE0dvOHR9z/zXHVGmlvU+eU5IoyR/jcViYtPK6MNgMCTq3XZpdWqc2eP9Lqnf8kNsNMu4Sw1tPDQSj8oTduTzMQgLUdYMAwrnZGqncS+fNqCDIBRzgyyRbmKKukysamQXWHhffjzIATo9+SacM67DS+9diVzbMiJy/uqrHRa+Yua8YOIk/xumNKJfgHw5XaaXt+0hgbX1gOFuaTMVtSjD5huY+KYNxlhtv4tDk8Oqg7JUnCqwuXGTAT23tEyTXkLJcTqAUZcq67IJx3jNNKeW9ZOUaBub/0Ikr/BYbHc46IsC8TAFFjEWxyfFgIG0pKj3s5rGSQ2TlINTmFzR/7nbwZL3p/OfNlOsww1IEFt58lZA3yggDI0FmLD+X1bAsAc/BfSrFZwXFNDXZVufOD/wsZtybSLYkZQGuVo1uSHp0D1XqnE6HTOUW6UMxAi2RSWEnqrI9yypynosvUdH93KH1CB4s/adPYZclEEERDzv5chD9JuGlDjg3kYHA9d9pKflImR9H4xrygsZDm7jC+duSb0eEErQ9k3zpHhQ+678YC9+n0Qo0t7wJ2rbZGHRRHUzYGRNM5nNrp/uGjPDW6tjEs9Bi6bup+LmXK3AYvU51rkXD2uD1nvCjpvdNIvl68KregyO/pxtgX1/kPzxkhCwtVpmG+V0sJEwxzJgbSRz/+NTfR
- nQZ+kyJx
- JEBvYODBTLx0GZdeqU8DDs5sRj59XGQtGGpMvxbFwc57xt8pqW4Mc9HH2lZe6yNYNVXXdr57w1GvE8StBh7nIuSqK0u4wQJ2Pxm03aX+XkyCTVcexHJsVIH9gXxZXOD5NVIjhkTO73tMR0ZFVld4UQ7FAsjKaT0LxXXb41NM6en99FXAAO3uPvT47pfAF5cG5wK6bpvNtzuMQ7oQFUacyAXW08uhTMeI8Qe0qnz70bv4w4XVKmKWHLrvH2hjCUmgXuI8x5w7IsiGWt3TK2EMmV8HPwKOqHrFiKlmcY4tLifFeXY9+ZQM++KqsMDAeDmjwZaEmiMiKvtAulWoXchrhKwGuDq5BvOc32QH5idW/bAX7Q6N051ckTdUae6wkYYYWJl2YL4l66DY1jAhULnzKex6ig1HzE2OJgDhEWloGvlZN8ple6l3CG5HaEbQ2Aw6s2D7Gc2m9P3u+9uu/XOeohild6gQJLNKLaTOd
+X-Rspamd-Queue-Id: ED270140017
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794950117-933074
+X-HE-Meta: U2FsdGVkX19maj0+y9WtPu/t6o27zCwPZbMroUSFxeObC1RnK6g5+TTRVr8Lk1U0qmW7+Ijg712NQFoPyQAMmQjpwSfEA8i9oYmWOBn5fbEMNJevoXSr38TWsjuwnMqxvakjXOihqbVcLWzquRW3Ug/I9X72lGtla7eL+vLuZzTwgEDcoUUs+Mx4pCoiUwT7TnuVykEkNVl7I8c4VzyI1XWLlTyRBSRG5VvQNkZeLgK5smXs22S6hNR+LgpBUgsERkbZWhAbMC4ZJ+AU+BXO/QaHrmDsO1aQiETKVciAL+zf+VvYjOGfVJtDKW3EmtQ3wl1Zi0YbhQ6z0eecpbVARnmcYscLqj2sx6ZeJHz7pM66YKpCUvEqCJcxdR6W1OsieAKNmVdHVg7qHI2YL5dGZ5eW7iwSriH6R2zWJsF5pQUrlEaLSa0wvfft/Ncq7IygWAvoZOex+Rn/MDY4Ahpk0SkaSsnDrw2suVyCEWAFIM3pjx1DNQT0EqYq6FE38nQ4Cnsah7+86fW4lhNYRfYtZfZmR9FtdWVnDGNXVHjNix0NB26c+6uqvFjqRN8pmn6oqimqLAsgZK6r06zUG9pjoBRGp4ivM7Lrk83X/3Rji/rxOqbRxb13LjP7KPg/DOpGmJLRlUNdqZEcF8rvsPVJyEN6LTwLBLQwmCelKk26iX6HveVD3KSs6etImAmm7J7fKJvcuRA2KjISdzNnnU3vKcBmehLEG5m+a0pmDLs+iIqzBx6VVHc0Ue0Th6ShN/c2bx5mnHyZ+vXOovc5dDGfj6LVs4fNLENF7j2IhbmnaD0HCMbhiAIZ1RnuIJE5XqcZKXyoSYZD4Emzwm0U6rQ637T9KtPbhoNZJPh+CKa2pIMuAXpxBGa3nFW78854SmpBXGvaGUAKE6hI2kn31K/zv9vtzaG2odS+2J9k22SO44uMJGeO7IrpUtE8xDAkUExXtB6A7+XcmfdIzRv57zK
+ NezWhOXx
+ QmUCvsoswlFDNNrnbFtkm5jvEXRL3u37Tr9hx9YI0EVPpCMvf0qMu6PDFPvTlLJ8eDiHkX7oT7tEscwI+G2C5aX2C7GEREFc/NsbpmvNtuYjGY8oebd9U+JhlNMO7b6dgW4cJAZeVa425xZRXEfnex5b6Ey5LQWDFZtB7Vo8aqulGSLk9bppwnnQROljlN5lW+U+mlVFtDYolmjdcVQH8W5KpnkRNqBA9RScKbuCbPiB8Hy8IKNTEzMK6AzQlfOP7VryA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,170 +142,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"Scope of protection" lists only the PTE drops requested by the user and
-says the range has to be re-armed afterwards. On shmem the kernel can drop
-the PTE at any time (page reclaim and collapse are examples), and RWP has
-no marker by design: the next access is a minor or a missing fault, and
-the user is expected to register for those. Document this, together with
-the modes that sync and async tracking need.
+On 11/17/26 20:18, nakixii wrote:
+> move_pages_ptes() gets the folio of a present source PTE and then checks
+> PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
+> is per page, so for a PTE-mapped large folio this can give the wrong
+> answer for the page that is actually being moved.
+> 
+> This happens after fork().  fork() clears the flag on every page of the
+> folio.  Once the child exits, a write fault in the parent can reuse the
+> large folio, and do_wp_page() sets the flag again only on the faulting
+> page.  Reclaim can leave the same state behind when try_to_unmap()
+> replaces the earlier pages with swap entries and then fails on a later
+> one.
+> 
+> Moving that page with UFFDIO_MOVE then fails with -EBUSY, even though
+> the folio could be split and the page moved.  Callers that fall back to
+> UFFDIO_COPY on -EBUSY end up copying instead.
 
-The VMM example registers guest_mem with RWP and MISSING only, so a vCPU
-write to an offset that is not mapped there can be lost during eviction.
-Add MINOR to the registration, describe how the handler treats faults on
-offsets that are being evicted, and fix the step 1 comment, since minor
-faults block even in async mode.
+Ah, I was about to say, nothing bad will happen because we reject to move large
+folios.
 
-Link: https://lore.kernel.org/linux-mm/856cdf21-7982-475a-b244-a7ceff4eb6aa@kernel.org/
-Link: https://lore.kernel.org/linux-mm/avWnaR7VVEGa7yNp@thinkstation/
-Suggested-by: Tal Zussman <tz2294@columbia.edu>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
----
-Changes in v3:
-- registration is not fixed. MINOR can be added before switching to
-  sync and dropped after switching back
+So this is pretty harmless and pretty uncommon to hit.
 
-Changes in v2:
-- keep the migration sentence out of the anonymous-only paragraph, it
-  applies to shmem and hugetlbfs too, and say "uffd bit", not "marker"
-- state the rule instead of listing the operations that drop the PTE
-- say that a context switching to sync with UFFDIO_SET_MODE needs the
-  sync registration, and fix the step 1 comment, since minor faults
-  block in async mode
-- add {} around the comment-only if body in the example
-- make RWP and minor faults on any offset this pass will evict wait
-  until that offset is punched
+> @@ -1570,8 +1571,14 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
+>  				goto out;
+>  			}
+>  
+> -			folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
+> -			if (!folio || !PageAnonExclusive(&folio->page)) {
+> +			/*
+> +			 * PG_anon_exclusive is per page. The first page of a
+> +			 * large folio can be shared while the page mapped here
+> +			 * is still exclusive, so check the page being moved.
+> +			 */
+> +			page = vm_normal_page(src_vma, src_addr, orig_src_pte);
+> +			folio = page ? page_folio(page) : NULL;
+> +			if (!folio || !PageAnonExclusive(page)) {
 
-v2: https://lore.kernel.org/20261116101004.15322-1-azpijr@gmail.com
-v1: https://lore.kernel.org/20261113112806.109578-1-azpijr@gmail.com
+Yeah, we could have also moved it after the split and test for an early
+folio_likely_mapped_shared() first, but doesn't really matter.
 
- Documentation/admin-guide/mm/userfaultfd.rst | 89 ++++++++++++++++----
- 1 file changed, 71 insertions(+), 18 deletions(-)
+-- 
+Cheers,
 
-diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
-index 97daea83b7f1..cdc92b40aa65 100644
---- a/Documentation/admin-guide/mm/userfaultfd.rst
-+++ b/Documentation/admin-guide/mm/userfaultfd.rst
-@@ -384,17 +384,54 @@ normal missing path (``do_anonymous_page()``, ``do_swap_page()``,
- the population itself, co-register the range with
- ``UFFDIO_REGISTER_MODE_MISSING``.
-
--Protection is preserved across page reclaim: a page swapped out while
--RWP-protected carries the marker on its swap entry, and swap-in restores
--the PROT_NONE state so the first access after swap-in still faults. The
--same applies to pages temporarily replaced by migration entries.
--
--Operations that drop the PTE entirely — ``MADV_DONTNEED`` on anonymous
--memory, hole-punch on shmem, truncation of a file mapping — also drop the
--RWP marker: the next access re-populates the range without protection.
-+Protection is preserved while a page is temporarily replaced by a
-+migration entry: the migration entry keeps the uffd bit, and the PROT_NONE
-+state is restored when migration completes. This holds for anonymous,
-+shmem and hugetlbfs memory alike.
-+
-+Protection of anonymous memory is also preserved across page reclaim: a
-+page swapped out while RWP-protected keeps the uffd bit on its swap entry,
-+and swap-in restores the PROT_NONE state so the first access after swap-in
-+still faults.
-+
-+Any operation that drops the PTE also drops the RWP protection. On shmem
-+the kernel can drop the PTE at any time while the page stays in the page
-+cache or in swap; page reclaim and collapse into a huge page are examples.
- Unlike WP (which persists via ``PTE_MARKER_UFFD_WP``), there is no
--persistent RWP marker today. The user needs to re-arm the range with
--``UFFDIO_RWPROTECT`` after any operation that explicitly frees PTEs.
-+persistent RWP marker, and this is intentional: once the PTE is gone, the
-+next access takes a page fault that userfaultfd can deliver, and that fault
-+is the notification. Which fault it is depends on what happened to the
-+page:
-+
-+- The page is still in the page cache or in swap: the access is a minor
-+  fault, delivered if the range is co-registered with
-+  ``UFFDIO_REGISTER_MODE_MINOR``.
-+
-+- The page is gone: the access is a missing fault, delivered if the range
-+  is co-registered with ``UFFDIO_REGISTER_MODE_MISSING``.
-+
-+WP cannot use the same scheme — a minor fault would trap reads as well as
-+writes — which is why it needs a marker.
-+
-+Without the matching mode the page is mapped back silently and without
-+protection, so what to co-register depends on the tracking mode:
-+
-+- Sync mode: the access would be lost. Co-register shmem and hugetlbfs
-+  ranges with ``UFFDIO_REGISTER_MODE_MINOR`` (and
-+  ``UFFDIO_REGISTER_MODE_MISSING`` if the file can have holes), and
-+  anonymous ranges, where minor faults are not available, with
-+  ``UFFDIO_REGISTER_MODE_MISSING``.
-+
-+- Async mode: neither is needed. A page faulted back in is mapped without
-+  the uffd bit, so ``PAGEMAP_SCAN`` reports it as accessed.
-+
-+The registration does not follow the tracking mode: a context that
-+switches to sync mode with ``UFFDIO_SET_MODE``, as the workflow below
-+does, needs ``UFFDIO_REGISTER_MODE_MINOR`` while it is in sync mode.
-+Minor faults are always synchronous, so keeping it registered makes
-+them block in async mode as well. Re-registering the range to add
-+``UFFDIO_REGISTER_MODE_MINOR`` before switching to sync, and to drop
-+it after switching back, avoids that.
-
- **Fault Handling:**
-
-@@ -484,17 +521,24 @@ never traps on its own ::
-         .features = UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-     };
-     ioctl(uffd, UFFDIO_API, &api);
--    if (!(api.features & UFFD_FEATURE_RWP))
-+    if (!(api.features & UFFD_FEATURE_RWP)) {
-         /* RWP unavailable on this kernel/arch -- fall back. */
-+    }
-+    /*
-+     * MINOR: an offset in the page cache but not mapped in guest_mem
-+     * would be mapped back without a fault, and a vCPU write between
-+     * the pwrite() and the hole punch in step 4 would be lost.
-+     */
-     ioctl(uffd, UFFDIO_REGISTER, &(struct uffdio_register){
-         .range = { guest_mem, guest_size },
-         .mode = UFFDIO_REGISTER_MODE_RWP |
--                UFFDIO_REGISTER_MODE_MISSING,
-+                UFFDIO_REGISTER_MODE_MISSING |
-+                UFFDIO_REGISTER_MODE_MINOR,
-     });
-
-     /* Tracking loop */
-     while (vm_running) {
--        /* 1. Detection phase (async -- no vCPU stalls) */
-+        /* 1. Detection phase (RWP faults async, minor faults still block) */
-         ioctl(uffd, UFFDIO_RWPROTECT, &(struct uffdio_rwprotect){
-             .range = full_range,
-             .mode = UFFDIO_RWPROTECT_MODE_RWP });
-@@ -544,11 +588,20 @@ never traps on its own ::
-                   .enable = UFFD_FEATURE_RWP_ASYNC });
-     }
-
--During step 4, a vCPU that accesses a ``guest_mem`` offset being evicted
--blocks with a ``UFFD_PAGEFAULT_FLAG_RWP`` fault while the eviction is in
--progress. After ``fallocate()`` punches the page out and ``UFFDIO_WAKE``
--fires, the vCPU retries the access, faults as ``MISSING``, and the
--handler resolves it with ``UFFDIO_COPY`` from storage.
-+During step 4, a vCPU that accesses an offset this pass will evict blocks
-+with a ``UFFD_PAGEFAULT_FLAG_RWP`` fault, or with a
-+``UFFD_PAGEFAULT_FLAG_MINOR`` fault if the offset is not mapped in
-+``guest_mem``. The handler leaves the fault pending until that offset has
-+been punched out, even if step 4 has not reached it yet: resolving it
-+earlier would let a vCPU write land between the ``pwrite()`` and the hole
-+punch, and the write would be lost. After ``fallocate()`` punches the page
-+out and ``UFFDIO_WAKE`` fires, the vCPU retries the access, faults as
-+``MISSING``, and the handler resolves it with ``UFFDIO_COPY`` from storage.
-+
-+Faults on any other offset are resolved right away: RWP faults with
-+``UFFDIO_RWPROTECT``, minor faults with ``UFFDIO_CONTINUE``. A page mapped
-+by ``UFFDIO_CONTINUE`` does not carry the uffd bit, so the next scan reports
-+it as accessed.
-
- This workflow targets shmem and hugetlbfs (both support a private
- ``io_mem`` mapping over the same fd). Anonymous-memory backings need a
---
-2.56.0
-
+David
 
