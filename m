@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84BB606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE2C606A339
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jldaq/Z5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UZ+5BXur
 Received: by kanga.kvack.org (Postfix)
-	id BF3986B05BB; Tue, 17 Nov 2026 16:26:29 -0500 (EST)
+	id F27BE6B05B0; Tue, 17 Nov 2026 16:27:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA4636B05C3; Tue, 17 Nov 2026 16:26:29 -0500 (EST)
+	id F00386B05B3; Tue, 17 Nov 2026 16:27:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABA036B05C5; Tue, 17 Nov 2026 16:26:29 -0500 (EST)
+	id E16A06B05B4; Tue, 17 Nov 2026 16:27:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E90F6B05BB
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:26:29 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2CBAB140580
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:26:29 +0000 (UTC)
-X-FDA: 85445894898.14.7EDB817
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 685F040005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:26:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Jldaq/Z5";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C0AB06B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:27:00 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37856C05B4
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:27:00 +0000 (UTC)
+X-FDA: 85445896200.22.AE2C3F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6E64140008
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:26:58 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UZ+5BXur;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794950818;
+	b=nj1IImqf42cp/MCX0cwe39Ko1wnbePvuYFNA6vwigCOUCVK7Rxpqg3sBGNvWTQQygz/LsN
+	opJjy2HEL+03OYlGmST+A8lgbTGOQoDVjG6Yuk/Sm9EC45Na36EWFTUl6QPb/SjueFVUrf
+	ycgpArZAvzKOMH9K79PpvIupEiA+q1k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794950787;
+	s=arc-20220608; t=1794950818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2kd0LLiG6swluPh5oeg1alEcYx94n/CBaZA4CpIHZHI=;
-	b=NnbEczCsvWHnXcD+sfHO9Mb2ztBk6JP+koiuNJq2cPgkZCfcRXjwYpJ2oYHP7hsXqvztgA
-	Y4wANUYmUZ2hWYN8oTZ1ZeXDHWMi47xS2N72nhNAv28n2aHeFN5v3j9MaEmBma0A7GbP7s
-	5oSQFT3uBLlS/xneSVGzbAUaFt6LtvY=
+	bh=EpCOPggCWDAUfqUiJVhLMHoBzHXEidiolBoE7MTTYIo=;
+	b=xsRsxKhP57HqZSZPByNutSChiOjrh3j74HMHbR3L/mfD8u8dg/aql5qVdglvTT0zNyPuoq
+	8BGPGFZDMq+6Gr1u0utuxobzUmDx8P40U3XlEKH6Dq2i97tXY21V0kDRN8zSE7SxGHA859
+	wTx0YX0w7ahx82GmJYRzHDgibTal/tU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Jldaq/Z5";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794950787;
-	b=4yI2JP5i3+d6FFfy3jxRzbd1JLvYyNPwsSvqDmWsO7dZDlHlQKbms4VUdlvurz0L77YNt6
-	/IcAoNpdak/c4pvo/qT+UCdJqNboqb+4DoIofGQ+ttFactF4ZVzSClqef+HGgAk4vc+fEP
-	4jxNxbNg+I2PU1lpqV1jlfsGqu3xcuY=
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UZ+5BXur;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75E8B44D8F;
-	Tue, 17 Nov 2026 21:26:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1651F000C4;
-	Tue, 17 Nov 2026 21:26:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EA3E461540;
+	Tue, 17 Nov 2026 21:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED241F000C4;
+	Tue, 17 Nov 2026 21:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794950786;
-	bh=2kd0LLiG6swluPh5oeg1alEcYx94n/CBaZA4CpIHZHI=;
+	s=k20260515; t=1794950817;
+	bh=EpCOPggCWDAUfqUiJVhLMHoBzHXEidiolBoE7MTTYIo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Jldaq/Z5m9V9ybYeXBep3YabaYxDK+3gWf3iK4QZMiDvqEnHdaqqvbRduWVYkq0eR
-	 klJP/4lgkJP2exk52D8dK7G/y8/SnSFJuoTG4ArYUg5/RrSUZH2o4tvx+h/GdqxmcV
-	 QSWFJ8NQToG0M3OEfJhKP+Y0Z6WC6YxDwTporIDL6dYgqfOdbmELQffNaj2KeyKKyi
-	 n09p9p9r7qeFMf/c8hbjiXWxGQ/KLZzf3rNqfi38HvlZAToaVvgYSQaJ+cgRNxiR1O
-	 RjzYAEGYTyQ9nnrk+oDS5IJYIEB73dpgEbFdAOAzq47crihheAeUy0PUCCNp5xgsc0
-	 hohVP+DtIzM1w==
-Message-ID: <ababeb0f-f8c6-488c-ad97-f13245139eb6@kernel.org>
-Date: Tue, 17 Nov 2026 22:26:14 +0100
+	b=UZ+5BXurcU5jR0IslP0SCsC3k7KR1KUTfOl6LP3yyr5iFoarRW/VTYdAg0yTU1sJ+
+	 iEwEviaV+C6Erp2NrTcrRX5AQP33QzvWfDcc/IUfrltPr+qwlungFvmgiJXja4FasW
+	 f832n8DxgPWIyD1cE7R8sRogh1BajMiyMNPVrFHfPr1SKM/PEbUgJma2H4rtjE6YlJ
+	 mHcAtEVM4O+WAO88OfDfxFyRUfOfwrge+sVjpGIo9XbLIP3mNRI4XymEJ5CdbzP5KO
+	 ATeEscM658gFCvB3PxhaNvduz3rrlIhOHHqxK4DNCEVpJEpo13z+RYB8Xbtb+uwcI0
+	 2dS8cTsGjXbPw==
+Message-ID: <fb021aeb-42df-43d4-9181-5e6d730ed60b@kernel.org>
+Date: Tue, 17 Nov 2026 22:26:46 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] mm: update walk_to_pmd() to explicitly return an
- error
+Subject: Re: [PATCH v2 2/4] mm/memory: remove racy huge PMD assertion from
+ walk_to_pmd()
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -83,9 +83,12 @@ To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Saurabh Sengar <ssengar@linux.microsoft.com>,
  Naman Jain <namjain@linux.microsoft.com>,
  Michael Kelley <mhklinux@outlook.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org,
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ "Gregory Price (Meta)" <gourry@gourry.net>
 References: <20261117-huge-pfnmap-fault-races-v2-0-276007e73bcb@kernel.org>
- <20261117-huge-pfnmap-fault-races-v2-1-276007e73bcb@kernel.org>
+ <20261117-huge-pfnmap-fault-races-v2-2-276007e73bcb@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,21 +135,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261117-huge-pfnmap-fault-races-v2-1-276007e73bcb@kernel.org>
+In-Reply-To: <20261117-huge-pfnmap-fault-races-v2-2-276007e73bcb@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 685F040005
-X-Stat-Signature: 51sgwero1ftqb75sor5mdmiobs9djafp
-X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6E64140008
+X-Rspam-User:
+X-Stat-Signature: dqp91onh8o8jfkgpc56k6y5kqddnku47
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1794950787-499227
-X-HE-Meta: U2FsdGVkX186joK0IJzFu2kXQKvDQSUqQV/JteQ558J8PDsJaNSyHY/uofGV33t+YNWGre8lFWijMesoXJOVJfDSF/xODaU/Ec6PT2KgB49OXiO3alv7V9YdjJf5Ic/w/8jQBy3AOjC0TeWJCpW4qoOwaco+SnLmohB3JNHS7vpjMVNQnqeaF1VBpcM4oMigg92dPTacJ86aHuCYgiVKLarhuYWNrPSsLCwE5mIm2mAcZ2F9iAFwUxiaXM40qfZtq2jfy5dU+kcLkLLDAC+PxZjVFvgzjvt3n+0S25HHly5nW5QDoxap2TC815mXVgI2DEIZ9YDLD3rjYg2uqjrubHwwOY9XY7Ij5hzBzRtNRi6K1M7Z0ytJOPPxq71mviSNe1jbuYt6ObvrJsbPOpxa/lnY9q7WZz3E8pSl4czYGkD6FFawxjsYqdmHBRHEci3RY5GCimEXanj3YmzO9j/uqLjCd/tJuoFh/jjclEfqSzqPcEBwkCGK0u2crtVHusNjk1/+DRcpbY6ZoMDBkSM19n64PITDe3oNxMp3FdpFWOQW+akf9FE3V4yJb8gedB6QvhXCvXpzUyd409WsdFpfwbm+3JWjOOHj8kJo9/TPikZLKPA2CeuPz8ra3zW7mktuO4cHA4NUemYGCWfFFwFDk8oTjqP4daAmbUX09aF6Fu5HYMAyVZJLJFScr8FOdArmPA8W61/l8/SJBY93HiY7/h+wz10UE0zBD1zFbz6pJDClCNwzXKSL5nnl08CZQEbm4atTOUMmqH4agNs0+bKdJU6WOxlm/JBcQZgskCBjttry7fHSeGYfc9gsw8yKiZnerruyz1gNYUUdfNEY0bVEqA7DPKLhhyAD1GI1fk8L54eLPCTWl3ykNeCbqC4y4i2lXIEa96HGyYBaZeENNBwM2603m9o+lNr+r/OY9Ly8oBmQnGsDw4yj5VuSPxDIsgYpex/lw8jR/9JjG6AlMtQ
- WIhv+IKf
- ME/eltZPAjMI0I7qvg0tKa6t6PKyn5jBE7vOLRw72SOWA4cCKul2Q/qnjSSVg9JIV0g2nOjKlFhvickIF3v+1N+dEYmxWW8rulyVNXs4BgYh5E/im0aCvTmNONGc0opJZHEc2+G1kgqye5l0vC5l5AMtKwXrPMz9+qxsJiqTgAmQCATmXP//j83WSd6nKqgirB478SAUczvGVfhwF15A04WE9xAenPR97EGkoVIaWyDeRtITWyc4xmko5EPiLiNp1iOKuPciRpc087pWMd67AQybimuXQQm9c3pTvHEMdL0+q66gB6ObuB+xV+y97sj5lxTRzCAO6wwNW/dc=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794950818-547204
+X-HE-Meta: U2FsdGVkX19Tk25KQUghtryvZ6LOwOWynYv/S6J/osLcWLlbyA71hoWQdp5GX5ZNFqBJ30cPkMOzuJx8jRZFMsh93XYQUBLJR7mJugNIsNTO8DJCYZF+ob3UrjecXuWJUOEznACO2oL1LCpR4Vua/DEb21PPeZIib9ScyQGAMmI0ZCDNxau77WQZ1X7rL9dDLBcz0xntxx1+BYBJppng3T0ozRnT4qGpoMpFpFH/Lr68LHAzx93+pZ57fhpgte2d1z+qXBolpW3rwPTmXvFXQhQ83xrEmOVUs1x154YWqK/1loPuhYLf/qD0bjnw1GlmlrhA8DxPOur5NzQCyVSTV5oD8VzgyvpYEUN7qQGq9HnRL52oarA936JQ9lSbAxg1fomEWYYeGn9Nz+oYlGfChjOkCEUBDbEm8FeA76IMzR7ts5lSuQWXQ6bJ0Lp4WMs/2HNRfoMuGEHO6XzVKzLGRfd7tnBlnlkvCoo3XG9HZxAYliwZmzX+3v8ZrbERhps6H3549URsE57d+XfYmairZCVRUYhnh5tMUtIlb+q0SQIMvhCuohsMoBm1JThHXeGY++YO/X5CO6eMKIe/Hxp57MOgBH3WWcruzD6N7HaIyr8NyaFaJ0Q1rfZ2amXGT5S+1cAn9X1mB4L7lvllRCwstOjr3+5tzcsLVwqhdApMZSVhl12+MnAIWLJfaFiP/Dl5E2BoJbMULEyC8Ked4SPvFMPdNyDKLYGH/0rpALXA/VqIJ0J2WM672jEezjySu2VEjVQAdLfQBrQ33vai+/cHMKinz5E1PHnQNxzTrCHaeEz+zVA3GYb/8XWDyRCzl7oSdi8ywwhHBZwxP3ms5tfvdPTeo3O1lvHqAiqbmxzHWrj0WPip0654MyUeuHbZ9GoHlSewVFRXxoUgc6Zgw0PG3kyd1jjMceypSdKFUa3HlgBNs1UoPmHVKAn7PWvgN4Cvo6N7xW9zSjR/1i/jYX/
+ rlwyzHQb
+ 5KX+IijZt2asqGYobvG2HUVRhN4Wh3qFHH/t6J4C0fzo53wJZBLa7wTjDMefQAyWYxDZHDqcthP5txWDGvh/Z3FP0VhoOiQ1/poQ1GuBKxsBVPikX+yyQ9roXMUbmCVcFwC+N5Fle/CP3wLmpb3nF66eJAMTLvIDzOD1OBTbigT4gRmpgU9ls7Zb5zdMjwQH06YMal1mOupZrch+okcZnsi64j1eKrzjM4y0tLQXyfVrkLbFvfocu/qexn3USI9t41czNBuFcRYY9Joc/qeCZ9kJPmhdBK1HNFhQPLx54lFIek0SWL5te0Rk5whviVnKWUNcbFC8f/Sq+7N/5D5dbnzAVrT6X22P+T/6HqYq/bWKGghvJMBHxgvLyLsEcLKNu6ElDmh9Lgf3BBHFW7fWnD57gDITrwYvkUfmt3RZomUFFnMvfVSHY2DgXG46hYykjBwrk46/Zf2jdjBrsc7y2tXq+znevN6TeS9rJdlVXfozdFvY5QWvfPq4w3yUBcTO5dSbXg472F4xGAV65O2PLARJoCTjen+w4hwZNip4bbVtYsTogndVPccnH+4uiPhlJ/SqA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,20 +159,38 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/17/26 19:31, Lorenzo Stoakes (ARM) wrote:
-> Rather than callers inferring an error from a NULL pmd return, explicitly
-> return error codes.
+> From: Eliav Farber <farbere@amazon.com>
 > 
-> This allows different error codes to be returned for different failure
-> conditions.
+> walk_to_pmd() asserts that the PMD entry it returns is not huge, but does
+> so without holding the PMD lock, so the assertion is only valid if nothing
+> can concurrently install a huge PMD entry in the range.
 > 
-> No functional change intended.
+> This is not the case for a VMA whose driver implements both ->fault and
+> ->huge_fault and which invokes vmf_insert_pfn() from the former.
 > 
-> This is a prerequisite for the fix to insert_pfn() which follows, as that
-> needs to be able to tell a failure to allocate a page table apart from a
-> race with a huge fault, so mark it for stable alongside that fix.
+> The existence of prctl(PR_SET_THP_DISABLE) is problematic here, as it only
+> takes the mmap write lock and faults taken under the VMA lock are
+> unaffected by this.
 > 
+> This can result in two concurrent threads faulting the same thing
+> disagreeing as to whether to attempt a huge fault and thus ->fault and
+> ->huge_fault running at the same time and triggering this assertion.
+> 
+> So just remove the assert.
+> 
+> Target the commit which introduced the first driver able to do this for the
+> fix - vfio-pci. DAX also mixes fault orders within a VMA, but serialises
+> them using its own mapping entry lock.
+> 
+> Link: https://lore.kernel.org/all/20261112051440.16140-2-farbere@amazon.com/
 > Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
 > Cc: stable@vger.kernel.org
+> Signed-off-by: Eliav Farber <farbere@amazon.com>
+> [ ljs: rewrote commit message ]
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
 
