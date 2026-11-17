@@ -1,80 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4E5606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 08:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323CC606A338
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 08:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NXnP4h9Z
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hiDuFh5W
 Received: by kanga.kvack.org (Postfix)
-	id 1E9436B00EF; Tue, 17 Nov 2026 03:55:34 -0500 (EST)
+	id 39BE06B05B1; Tue, 17 Nov 2026 03:58:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1731D6B05B0; Tue, 17 Nov 2026 03:55:34 -0500 (EST)
+	id 34CC56B05B2; Tue, 17 Nov 2026 03:58:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03B3F6B05B1; Tue, 17 Nov 2026 03:55:33 -0500 (EST)
+	id 23BD26B05B3; Tue, 17 Nov 2026 03:58:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF4DD6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:55:33 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4641B803B0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:55:33 +0000 (UTC)
-X-FDA: 85444002546.25.313DF2A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7655A20005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:55:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NXnP4h9Z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id EF7B26B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:58:46 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B54FA7C26
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:58:46 +0000 (UTC)
+X-FDA: 85444010652.15.47131B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BD2D4A0003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:58:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hiDuFh5W;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794905924;
+	b=i5jii1wBB6Tzk8zrEN5orKq/z8g+aTEK2PJ24OryZkxQgx6f6NPaptLdppT7gPHKtv10FH
+	9kJRj3sSYhKQIbMYZ8HmeMoZKR50lVNWBTU8bqlcKYRExTpcB274KkqUTOwK4FqIEHzMe3
+	XKU0irtniHARX8Jpn819mkp/VRaPJ1o=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hiDuFh5W;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794905731;
+	s=arc-20220608; t=1794905924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pgVcSU/aMeCi5WR+Zma/r75YD6kHKzmWW1H5YA8II4I=;
-	b=YbEoJ13t3nXCVdpO7/sDvTdhG0Ek9rDgl0vOHmt2zRV1xCrRTCluWIz6LgWeh67F9mkQXE
-	Gg2KQOfPGpRT3/u6clKlkn4EcolDc0gYynowj6AOKy95fmnxRi4GLtVSt8FOcODe71aQ41
-	lrSThsEMsfd7sUEa8OMjLp+80VvO+gI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NXnP4h9Z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794905731;
-	b=ey60VO/b58au3BmnsJSsC5c5qKwf5Z9LVF6ArxnTQ0G3JVClGE45MEDuT1Kydl2Iod5NpC
-	BsiFSAo0r80XhjQ7nVGtyuY26LiWQ8ucBYfI3/ERshu484n6RoIAlYRlZjvrEWvGfKQ4kP
-	ZF7eDGqHaVhqdPC0Jg70ElIS3zcErOs=
+	bh=sdaJ46qgDtJZkPgfo2bi66ZtW6lZcvzV7LDkXsyhjRw=;
+	b=DmRaS4PO134+cMX2KoLrDYglVthyi88ZWBOKonK0R7b59Rmrjh+/HHrFCfA+cUk8bonWSG
+	djLp4/UTlhcT3twj4dk/YWD1+AfA3MVO5RxEAvJQk8tj7SlS9vY8MK84lTzij2Rvy+h7dk
+	hD+7VfL9vl3fC4/bYhDDOTPD3hrVamU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B1EBB41808;
-	Tue, 17 Nov 2026 08:55:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33DE1F000C5;
-	Tue, 17 Nov 2026 08:55:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CDB94612BA;
+	Tue, 17 Nov 2026 08:58:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCB71F000C4;
+	Tue, 17 Nov 2026 08:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794905730;
-	bh=pgVcSU/aMeCi5WR+Zma/r75YD6kHKzmWW1H5YA8II4I=;
+	s=k20260515; t=1794905923;
+	bh=sdaJ46qgDtJZkPgfo2bi66ZtW6lZcvzV7LDkXsyhjRw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NXnP4h9ZLKQp/yv6xp8Mq9D29fzGPwE702aI7YzNPbW/8XFGVjeccsbLKyQdVCQbg
-	 Xay7x1IUmBsXEAaRsiPz8hf5s31kSQ1F6We01HCjZZnDtur0imYDCbQNLIhcGbffyZ
-	 red3cbtSe2MaJL0bCPaTO30y56VaW8yFJJWOVcL/8V6i7+iRz5NEGMQw2GgNhK3Pjx
-	 fZA9RwTdqgNIWaz7NUzuRf+wGAgZ2ALAWawfZORE/x1HsdlXebiUp6XNKq3VaHmbyt
-	 NZA3nEf3FCQlJEzXRJywxptCD6y5bUhpSdV17eXe5nPg1SKVjp2QI9gCdrb91idWoT
-	 KXvOzWKxg7PeQ==
-Message-ID: <c7c8ba0f-49ff-4b22-bd24-20fc394b1e36@kernel.org>
-Date: Tue, 17 Nov 2026 09:55:24 +0100
+	b=hiDuFh5WlgG+JKxfQnO28g51JpHD1Mpwt5nYbjHiiOR8aRqwmndsTM+bhPwQirfyM
+	 s7IZng56tkBWK1cNTMafNnMeR7kd8g/EIP6m45rcIGg8RsKHKQ+qutb1ANFwdSpJTw
+	 QPsq4b2VgYBhcjvMjzxrj8EIFzBoHaqQu5LTuQyIENby1vTb/Pu90TRJyifvs3tkIT
+	 i1zp/qRsJWEGoASA0CQiCP7xo7/29BdaAXi2/9l6qNrFRmsVxZX4Z7/S/VkiMO3hmF
+	 rCeEsTOo++1erxKHvI5BP5IJmyjS8U4aTmKifv4ungSKCdKOpEEF6ibgBK/7DPsCQ/
+	 WjCBZSjVEU9Mw==
+Message-ID: <486cd251-f7eb-4162-a1c7-92f04f480a6f@kernel.org>
+Date: Tue, 17 Nov 2026 09:58:38 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory: mark unshare copies dirty to fix MADV_FREE
- data loss
-To: Daniel Wade <danjwade95@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- stable@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261116111245.28871-1-danjwade95@gmail.com>
+Subject: Re: [PATCH v2] selftests/mm: handle implicit read permissions in
+ madv_populate
+To: Xionggui Chen <evers_chen@163.com>, akpm@linux-foundation.org
+Cc: shuah@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Xionggui Chen <chenxionggui@lanxincomputing.com>
+References: <20261112031811.56500-1-evers_chen@163.com>
+ <20261117070606.3752-1-evers_chen@163.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,22 +120,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261116111245.28871-1-danjwade95@gmail.com>
+In-Reply-To: <20261117070606.3752-1-evers_chen@163.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7655A20005
 X-Rspam-User: 
-X-Stat-Signature: hoz8btw6ionk9zkchfn7g38dki9dh1rr
+X-Rspamd-Queue-Id: BD2D4A0003
+X-Stat-Signature: m559ammoym4yjc3rb7fmrsimx1rgdr7d
+X-Rspamd-Server: rspam05
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794905731-882311
-X-HE-Meta: U2FsdGVkX1/memf6V2dKvogA9YGEH7t5sWJLHdoYbM/rQhFTk301NYxHIrgCFZP/dAC78+Fc32TYlpBf7JBuuobKQcLXoHUM2FP9k85u98eQp6iScScAavfya6AoFxAOCk8L5Vca04M3s47n85DIDvCPAjZSdl7u7Qxn/SUNFsk6oh6xmzm9De/hXXUFEFk9kHk+b8aj+PIypP53wef1n8p6o1jWO+0Kz9q0pfTC6+GYSThuy5lChRjD/bG8XvZy+UGChhAVQXwM8XFqQfaT5PS/7znQspX1KuZffCOsKZanC5xCB3wK2he1aQ1kNWfbYTvws6hZVx3KQHH/x1ure2PWCwOkt93mtlEQQ8F9rOTE5QVbAw0tY17txCetYkBt3cJtKgZ48v+HvI8+0zs6cfpsXgKagXywngTJwHDIkPS7JCCqRb8OTC1oRE24o0JlwsuR3GsAJAkLr71giwhs+WR90LBhG0GEiOGO11z8Gx8oOtp8J4JjdgiPl6y+gBZ0+QUeODnHz6JiK3ZTOJ5hjBpzeRDke9GBJrGDAFVuHz95s0ZM/Lcwg/97OkW4CSlfh53jL/f83mcIUXKH6ey9b+VETpAEtJR04UiLzqpoZ+Jz06NZIwkWiV5+I+Ez09b93/zaC3iZGeMFR59lfm4Yf8KI2exC3Ed5jKN0STSZ13msOHA9cxvzRBetp0qJhpihyCwaerbJmWXE/rdcsv2ZAAN0ZdDTcymajkTclHycSeH38B6/Yz6ZX7kZkTAnisMN0XS4w3HjKATF+5JjahVbZQj/J9NxaOnWRJTvgw1zbyfBVO/sGs00oiqVWJRI7hBR2a1TwIE3+dzfPyd2m14iN0Tyzi/3JUGJoT96nSNMJxXDZlorPMkjHMxNZbPajFsbPY/q1mjcQiWciWzvYr/Oe2nk9rR5IjeOzRMVuDv/xGuTVTEqZuMOexTLdT9R82QwGmOYxU/pLHFYVdWfv7l
- hboi8PxM
- Psuddy9TPLahacfLa/4jlwWHjPK/oF0Mc7IY4wZya6ryAAypmLMT5wH4rey3kyhkET65UPUWv3pzvwjaIG/U0AAKxl7wlfEpR3m8jSuORf+lpcg85WXLbusEj8h6ZIaxqA3+lcCLLs0i/Rlll3eNGoYTsBOvzsNlxw2NGtB8fpkCBsuJxvA1mJaKSX4iICXAlm9UgrAtyAwZ+vX6KQQCXQ1T3e0WKGcD3mtMRYFrpL2x0hXyKYBkXdfUv59g4TNkZN300gRqs6oKU0eod+2qhKsfyEwldmAHDLHFSoiT4bhrbxz7oOl5GBNQhz/1e4H7S8e6Ugek4AnQEZTVrsosArWKiFMenZRVsA3+A
+X-HE-Tag: 1794905924-138248
+X-HE-Meta: U2FsdGVkX1/ri5panM1HCKoOKXSFMegafZBSvvjMzFBJdYaIUe7hcn1Mk2nxbeIlcn0eF5MJZVwZ23Mrc8IUlMMKpCKen1QmTSZOoMlCjDSgwiyKtYjoe6/Ng2vLIF3HQhNor5Qj1rNwAp3c0px9Vcbw6kAm11sASU8DMg4thAgtysmAw5Sl+meNAWN6YXIHYoE+Jl2n3wKLZ1zYLYwiJ8nmjb2lsFD870z86hYd+nGquD0k5JnP6qKnaS0NdabfBznv/u8AGJZW5u8U7uK0VKnd3Qh6L0tw7YkUK+uALOSNzcR830GMGWCItbQC6/Wg7JNxPwjbETNkF5oa7siu3DuwdKsHqZmQYHcU4QAexqEsiff0xXzQEgROfPYkdrQ6cQBJkC/Wu1K/ZFTr7k8w/FRddsjcqHZR2hz6n+uhrM1Oq4+iswehu7tawUgE/fMSCQa1D/6c8uUGWl6N1F011M+VCM2QsO2qoagnTVstcO8AIO27ItIJdQHygKL+3duKEa961P9FLJRJwvcaCm7snpiAuF2aTXSm5HZs004i2SRodqbAmq6cfKW92zk20StjI+BuOevXSv1QWEVEIajcWeOCtn7qTGX0APFP++jv/tj5g71azrKgqLEoYkiQAzDJdWUh9jBydOzfTdf6I4hKhguHuHiu0EhXq4gPZtmV2xvUdy3b3qPmvtnj78C0saENv68c0lZsyRtvt2M8tii2atunNs/ONi29MD3c79Kt1yiOSTz0KAsg94z2tjYXbQQxTCetMdNcRyIB4ykNEJbsdEmRsR4No5m/kPmv7qDUDkVhXwQJQaa9Ga8mHosgxM3U0L1AHWtIiCeE4u3Csv2hk8tWyPva7jAWFYloawHTPFh47s8XIJcBBV0RNiuatsuByuKl+OM0yL7pWJBNIg5SI+cz4uC407EG1C5HA3YyioFNHxPihh0E4M4X6YqqwqMmn60vz5S9vMAFjJHJqSJ
+ JPLvzBjj
+ AdqVVjh+OAg+kfJa0zt9tsDhb7dOOsctBpcxS0Y7XjMXk3iO4Tvj9u0Pvka3lpurcD9lg1RwaT4Gbu+kXzvSM3/2ssUdbur+cJSz7vjK3dRjFoLdfDu+xLzwMiGM+hWuDzaZ+X5BYIS3erEXjoDSlsyrGW94GiwqZVXRzqtU5H+QsZPQFPXb4XIjqU8GT9s0RE6KUpbBstSxoUkAfON0YI/o5A3sNZCoDodYJEx++wRl4NV7tVNzuVqICVrngqbqAzzoaIidVpd123t8DyUGWOiSN7gSnUB1XXPcx8dV97Pz69fOzXjffd7h9P/pNEAsi+mcRNUQVBSLfc4pNKZMl2HO3zj416e5k/FCdKKQu7y5qVxfg97gVN/1IGgRZh62swGPCW2wQNXA89YpEjVWx3GX7LaeweHj1K1aP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,241 +144,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/16/26 12:12, Daniel Wade wrote:
-> MADV_FREE in one process can make reclaim free an anonymous page that
-> another process still maps and never gave up, which then reads zeroes.
-> It happens with a page copied by an unshare fault and shared by a later
-> fork().
+On 11/17/26 08:06, Xionggui Chen wrote:
+> From: Xionggui Chen <chenxionggui@lanxincomputing.com>
+> 
+> The madv_populate selftest assumes that mmap(PROT_WRITE) creates a VMA
+> without VM_READ and expects MADV_POPULATE_READ to fail with EINVAL.
+> 
+> On RISC-V, commit 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to
+> VM_READ | VM_WRITE") makes the kernel set VM_READ for mappings requested
+> with PROT_WRITE. MADV_POPULATE_READ checks this VMA permission, so it
+> succeeds and the test fails incorrectly.
+> 
+> Adjust the expected result for RISC-V using an architecture-specific
+> conditional, while preserving the existing behavior on other
+> architectures.
+> 
+> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16 tests,
+> while the updated test passes all 16 tests.
 
-Thanks for the report.
+Thanks, please don't send new revisions in reply to previous revisions next time.
 
 > 
-> MADV_FREE and lazyfree reclaim rely on an unwritten rule: an anonymous
-> folio whose content a mapping still needs has a dirty PTE in that
-> mapping, PG_dirty set, or a swap cache entry. madvise_free_pte_range()
-> only checks for other mappers on a folio that is already dirty or in the
-> swap cache. Any other folio it covers is marked lazyfree once the
-> caller's PTEs are clean, even when other processes map it, and
-> try_to_unmap_one() then drops those clean PTEs and frees the folio.
-> 
-> The copy wp_page_copy() makes for FAULT_FLAG_UNSHARE breaks the rule:
-> pte_mkdirty() is applied only for write faults, so the copy has a clean
-> PTE, no PG_dirty and no swap cache entry. Unshare faults come from R/O
-> pins on non-exclusive anonymous pages, for example process_vm_readv() on
-> a page shared with a child, or KSM unmerging one. If the process forks
-> after the pin is gone, MADV_FREE in either process frees the page under
-> the other.
-> 
-> Mark the copy dirty with folio_set_dirty(), as ksm_might_need_to_copy()
-> does for its copy. pte_mkdirty() is not suitable: on x86 it also sets the
-> soft-dirty bit, which this path carries over from the old PTE.
-> 
-> Side effect: smaps and numa_maps now count an unshare copy as
-
-numa_maps does not show any such data. Did you mean smaps_rollup ?
-
-> Private_Dirty or Shared_Dirty rather than _Clean. The PTE is unchanged.
-> 
-> Fixes: c89357e27f20 ("mm: support GUP-triggered unsharing of anonymous pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Daniel Wade <danjwade95@gmail.com>
+> Link: https://lore.kernel.org/20261112031811.56500-1-evers_chen@163.com
+> Fixes: e5bfac53e310 ("selftests/vm: add test for MADV_POPULATE_(READ|WRITE)")
+> Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
 > ---
-> Tested on mainline b3dfbde62cf1; mm/memory.c and mm/madvise.c are identical
-> in v7.4-rc3. x86-64, KASAN and PROVE_LOCKING, 2 vCPUs under KVM, no swap,
-> as uid 65534, with only this patch applied.
+> Changes in v2:
+> - Use an architecture-specific conditional for RISC-V.
+> - Remove /proc/self/maps parsing.
+> - Remove the additional PROT_NONE test.
 > 
-> The test gives an unshare copy to a child, has the parent MADV_FREE it and
-> a control page it alone maps, then waits for reclaim.
-> - without: "test page in the child (unshare copy): present 0, 4096 of 4096
->   bytes wrong"; an ordinary shared page freed the same way stays intact.
-> - with: the child's page is intact, the control page still discarded.
-> Same two results on v6.12.117, there with folio_set_dirty() placed earlier
-> in the same function. No KASAN or lockdep report in any run.
+>  tools/testing/selftests/mm/madv_populate.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> Two other ways to reach the same state are known and unchanged here:
-> khugepaged collapse to a sub-PMD folio in a non-writable VMA (covered by
-> "mm/khugepaged: mark a collapsed mTHP dirty"), and a swap-cache-skipping
-> read fault in the stable trees that still skip it. Checking for other
-> mappers in madvise_free_pte_range() covers all three and passed the same
-> tests, but changes MADV_FREE for every shared clean page.
+> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
+> index 7fce5d0b622b..fa26ca2d8cf6 100644
+> --- a/tools/testing/selftests/mm/madv_populate.c
+> +++ b/tools/testing/selftests/mm/madv_populate.c
+> @@ -81,8 +81,13 @@ static void test_prot_write(void)
+>  		ksft_exit_fail_msg("mmap failed\n");
+>  
+>  	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
+> +#ifdef __riscv
+> +	ksft_test_result(ret == 0,
+> +			 "MADV_POPULATE_READ with PROT_WRITE\n");
+> +#else
+>  	ksft_test_result(ret == -1 && errno == EINVAL,
+>  			 "MADV_POPULATE_READ with PROT_WRITE\n");
+> +#endif
+>  
+>  	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
+>  	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
 > 
->  mm/memory.c |    8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ec3d9d99ccee..49f6dc92c020 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4130,6 +4130,14 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
->  		entry = folio_mk_pte(new_folio, vma->vm_page_prot);
->  		entry = pte_sw_mkyoung(entry);
->  		if (unlikely(unshare)) {
-> +			/*
-> +			 * The PTE stays clean, and pte_mkdirty() would also
-> +			 * set soft-dirty, which is carried over below. Mark
-> +			 * the folio dirty instead: MADV_FREE and lazyfree
-> +			 * reclaim may drop a clean anon folio that has no
-> +			 * swap entry, even one others still map.
-> +			 */
-> +			folio_set_dirty(new_folio);
->  			if (pte_soft_dirty(vmf->orig_pte))
->  				entry = pte_mksoft_dirty(entry);
->  			if (pte_uffd(vmf->orig_pte)) {
 
-We should always prefer setting the pte dirty, not the folio, as the latter
-needs atomics. If that sets the soft-dirty bit, we can clear that if
-required, So something cheaper would be:
+No that's a simple fix :)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index ec3d9d99ccee2..22106e016da91 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4130,8 +4130,16 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
-                entry = folio_mk_pte(new_folio, vma->vm_page_prot);
-                entry = pte_sw_mkyoung(entry);
-                if (unlikely(unshare)) {
-+                       entry = pte_mkdirty(entry);
-                        if (pte_soft_dirty(vmf->orig_pte))
-                                entry = pte_mksoft_dirty(entry);
-+                       else
-+                               entry = pte_clear_soft_dirty(entry);
-                        if (pte_uffd(vmf->orig_pte)) {
-                                entry = pte_mkuffd(entry);
-                                if (userfaultfd_rwp(vma))
-
-That would be acceptable as a quick fix.
-
-
-But I am wondering which rule we actually want to follow in the future.
-
-folio_add_new_anon_rmap() always sets __folio_set_swapbacked().
-
-In vmscan, we run into
-
-if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
-    !folio_test_swapcache(folio)) {
-
-	...
-	folio_mark_dirty(folio);
-}
-
-That's what traditionally meant: even if the pte+folio is not dirty, we will dirty it once during
-reclaim.
-
-So if we go down the path here, that means, any pte has to be dirty when it starts in a process.
-I think we mostly follow that logic already.
-
-But the real problem is that MADV_FREE messes with that logic as it operates on shared folios. I
-don't think it should have ever done that.
-
-A more future proof solution would be to only allow MADV_FREE if we are the exclusive folio owner, checked under
-folio lock. In madvise_free_huge_pmd() we almost do the correct thing: we would just have to recheck under
-folio lock.
-
-
-So something less shaky in the future could be:
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index eb913acb03b74..020bee9b47e93 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2437,15 +2437,19 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	if (folio_is_zone_device(folio))
- 		goto out;
- 
-+	if (folio_maybe_mapped_shared(folio))
-+		goto out;
-+	if (!folio_trylock(folio))
-+		goto out;
-+
- 	/*
- 	 * If other processes are mapping this folio, we couldn't discard
- 	 * the folio unless they all do MADV_FREE so let's skip the folio.
- 	 */
--	if (folio_maybe_mapped_shared(folio))
--		goto out;
--
--	if (!folio_trylock(folio))
-+	if (folio_maybe_mapped_shared(folio) || folio_test_swapcache(folio)) {
-+		folio_unlock(folio);
- 		goto out;
-+	}
- 
- 	/*
- 	 * If user want to discard part-pages of THP, split it so MADV_FREE
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 0214efd2a014f..9be519a72e856 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -753,38 +753,37 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 			}
- 		}
- 
--		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
--			if (!folio_trylock(folio))
--				continue;
--			/*
--			 * KSM folios can gain new mappings at any time, so we must
--			 * not clear their dirty flag.
--			 */
--			if (folio_test_ksm(folio)) {
--				folio_unlock(folio);
--				continue;
--			}
--
--			/*
--			 * If we have a large folio at this point, we know it is
--			 * fully mapped so if its mapcount is the same as its
--			 * number of pages, it must be exclusive.
--			 */
--			if (folio_mapcount(folio) != folio_nr_pages(folio)) {
--				folio_unlock(folio);
--				continue;
--			}
-+		if (folio_mapcount(folio) != folio_nr_pages(folio))
-+			continue;
-+		if (!folio_trylock(folio))
-+			continue;
-+		/*
-+		 * KSM folios can gain new mappings at any time, so we must
-+		 * not clear their dirty flag.
-+		 */
-+		if (folio_test_ksm(folio)) {
-+			folio_unlock(folio);
-+			continue;
-+		}
- 
--			if (folio_test_swapcache(folio) &&
--			    !folio_free_swap(folio)) {
--				folio_unlock(folio);
--				continue;
--			}
-+		/*
-+		 * If we have a large folio at this point, we know it is
-+		 * fully mapped so if its mapcount is the same as its
-+		 * number of pages, it must be exclusive.
-+		 */
-+		if (folio_mapcount(folio) != folio_nr_pages(folio)) {
-+			folio_unlock(folio);
-+			continue;
-+		}
- 
--			folio_clear_dirty(folio);
-+		if (folio_test_swapcache(folio) && !folio_free_swap(folio)) {
- 			folio_unlock(folio);
-+			continue;
- 		}
- 
-+		folio_clear_dirty(folio);
-+		folio_unlock(folio);
-+
- 		if (pte_young(ptent) || pte_dirty(ptent)) {
- 			clear_young_dirty_ptes(vma, addr, pte, nr, cydp_flags);
- 			tlb_remove_tlb_entries(tlb, pte, nr, addr);
-
-
-But that means that folios we cannot trylock cannot be marked lazyfree. Well, the PTE path
-would now match the PMD path.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
