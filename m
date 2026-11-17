@@ -1,100 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3536606A335
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F62606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TJ0arPoC
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=prv5Y31s
 Received: by kanga.kvack.org (Postfix)
-	id 7A07A6B00EF; Tue, 17 Nov 2026 18:04:37 -0500 (EST)
+	id 2C0316B05B1; Tue, 17 Nov 2026 18:05:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7788B6B05B0; Tue, 17 Nov 2026 18:04:37 -0500 (EST)
+	id 250BF6B05B2; Tue, 17 Nov 2026 18:05:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68DCC6B05B1; Tue, 17 Nov 2026 18:04:37 -0500 (EST)
+	id 187096B05B3; Tue, 17 Nov 2026 18:05:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EAF46B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:04:37 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFD181A05F5
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:04:35 +0000 (UTC)
-X-FDA: 85446142110.27.787C320
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E98224000A
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:04:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TJ0arPoC;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=temperror (imf27.hostedemail.com: error in processing during lookup of lkp@intel.com: DNS error) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E28A86B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:05:35 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7BEE5C05EA
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:05:35 +0000 (UTC)
+X-FDA: 85446144630.05.351AC0E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7DA8918000F
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:05:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=prv5Y31s;
+	spf=pass (imf16.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794956674;
+	s=arc-20220608; t=1794956734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=guMlWSFCL19BB4ezbXPkNCJp4j4rrvi8cCniBf2A/R0=;
-	b=OMhTVfATEso4aUXEk4TBUESPBjpmKcPM797ZZR+thFGh7xBF/aK+i4t6Sefnn8AnhL8wjt
-	wDOIEV1AnYCZJOVJJ9e4oIffDVOCeCwnrqAeODHguDMJu+mWHbqV/2IO6g4goMlDDrYIY7
-	fs/VZwFuv+2Y1X6F6auFN4tjEUwrfUI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=k9hECHMo5h9GfCY5WPKMVv4Wl81tO8IuuIh5c8IoZ9o=;
+	b=QP2vnPImcuceoy2u0sy3VKoXi10CvRrshy4XYnfD2+QEbyZo0AracAq7SxbGkPPZzL71s8
+	tkaAG2NFf6QkMKa3iQpFmf2sP577A+YAN3O4u1CYy4nVkJVZ1E4quOPZ3+lGCbFJT3ddk2
+	iOlN863gCesvPrLlN6QZxcHrf/gIjjA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794956674;
-	b=T7QBz5SfKN3Yo0lJPBuq5HVNq+yXfCL37ErQJm6Va6yJDyJCq2ZzDmwkHlzp47FjhVAG4O
-	gorzkMJC9OMjCCp/KDAcTRCluxWPMvQQdZ2vOIcb9DzzcEACOHQRotKYQ2S1CD3AEk2c78
-	yXCTnOEY3XWGvQSsd6oDPLAyJqgInfc=
+	t=1794956734;
+	b=ZwvWAOL+rlhRrRqlLVSDvFGzxXQwR1ibSnS/17Ide1NeGmgc+wTdiIU0sGZSQ+bMUGS5T6
+	wvtGRCyvtO+hmLBJmtQMw4f9ByO/Sl2RXN4F++MOVkUbbUzKWCp+9TCkNhdRJL7GMdXQRF
+	QVbsMRS69LZbfbZFCM8rAldAAcBQhPA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TJ0arPoC;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=temperror (imf27.hostedemail.com: error in processing during lookup of lkp@intel.com: DNS error) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794956669; x=1826492669;
-  h=date:from:to:cc:subject:message-id;
-  bh=D+g7kqMelYRo4+1Y+2CvcUQhXMvATeYjJdoo8Dcb9dk=;
-  b=TJ0arPoCwyiEQFG66FqzY2m0y/4q0cJEZls7CN5VjxKmdSTE2q6NGnrf
-   Le+iGYSKXM2EbxacIcQyUT88H2i2MWCFuBjicnC54US8py898haRMahxw
-   wLJ6Ya6hfoHIqTC39tXc2HRsX2b9KO9epqMlN9PmoZjaRJ3d+HE/So7/B
-   ExVpKzqpdCNfwdjtoaix1TKhlKShkoK5e4zsuqNpBEcgd+Fun8c28Xqf6
-   PRn305nu/hPhz81vyB4Nw8i6s3ojmRzRYWJGBORgMA0j5NE/o9+ig8BQS
-   xNsNEZH02E+lnsSd8o9MgBNV8UVHKwI1cxkUrsHTDnLVD0vZKZF1VG/07
-   g==;
-X-CSE-ConnectionGUID: zhoXJgFTQhmj9/0nDbJnEQ==
-X-CSE-MsgGUID: 5CrWkI+gQ8eEL47QQVDC1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3632829"
-X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="3632829"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 15:04:23 -0800
-X-CSE-ConnectionGUID: dCgBVY/ISkujx9enGffJ/w==
-X-CSE-MsgGUID: ZC2Q+vhSTuushPSb+iouSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="11780023"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa011.fm.intel.com with ESMTP; 17 Nov 2026 15:04:22 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xTSDq-00000001CcO-1DlW;
-	Tue, 17 Nov 2026 23:04:18 +0000
-Date: Wed, 18 Nov 2026 07:03:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD SUCCESS
- 749a4de370409464cf8501ec5b2451df45c84eb4
-Message-ID: <20261118070348.N2bXROb9-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E98224000A
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: jyn6cfxjwg3mdjfr1mbx8h4qc3qkp6s3
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=prv5Y31s;
+	spf=pass (imf16.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 65BD9143D;
+	Tue, 17 Nov 2026 15:05:29 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B051E3F673;
+	Tue, 17 Nov 2026 15:05:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794956732; bh=80JOiYe9nFVbLZyY5qgUN4tX8EOBOfJzJ//RidlysA8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=prv5Y31ske7iBSp/rqXiLJZUTDgOBxPFHIQ+oiGiF2V5G1DqHXKG7dU7+oUICNqCt
+	 eNo1aFAHTJe8JmSwbgKJYm5jMACcMKMuiLV9G4HLpKL2/3urSVYg8lIB5V4qoVcRGe
+	 rhl1WbBj6gFBFI5DwnFCHBxeSTQlYP2oVUjLH6aY=
+Date: Tue, 17 Nov 2026 23:05:28 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com,
+	Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH] mm/slub: don't let kmemleak report rcu sheaves
+Message-ID: <avzduIJralOKBgxK@arm.com>
+References: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
+ <0e626675-c6f9-40d7-a4ae-de069154ada2@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0e626675-c6f9-40d7-a4ae-de069154ada2@kernel.org>
+X-Stat-Signature: qphq6dtjwtxpbs6jso7ehyrjqobibaid
 X-Rspam-User: 
-X-HE-Tag: 1794956668-585165
-X-HE-Meta: U2FsdGVkX1+m/xCmTG7I9FgvnTWAOZvOAZD2GyK13wxlODQcNdE5m9A1nNUp11Dm9FSV1AjAys31tTaUakIOksCmLK97Ga1RTo8y7N/ALLczpNyp6WteMOxc5Pgj24PuBk7yxHzCpeHgYx22NeYAuV+vS8B2+iBLhs+RCGndR8jtax+P4myJHdYwDiJfSnykCl2oKbCNB2UTLgvww+h97QnUJf9bFjoQKsNGLOHHeh6blj0b4yYofocdp7EWvSZ4dO4ghN+oP1G0ZwJKoDyDRmK/aULvJU7BKpNHo46oAVDnC7V5YEtiRrqwURDU7VjLZV/lUWM0Jzui5WRJr+wv3EpKN+hCtsfQJQGkLaB3QD17wrPFimPd+d7KsH5jyoe1zMAR7cGYiGmzBtBNkXIbst2hE9NSnPHn+FZbJ11PERexX5aY5HTBv6kT4FryLlcAOX1Xmre2561JzcgbCmnBzHuYmLKQsfv0PNZGOLI1Ycd98Mr8Kz9Uh5ah+95KW+iSIN3qGriJsvD9wPzTPQ9Lm37H7kMtVUf6zZ6VWrFZNOwFK0Dwy/uVojcWEmBm9Au2OLPkXTUCSuAb47Ho28sP5GBCK9BzAtmtYw1X4Z9N4AM378n3OMbD4Rx5V03+AqaDWbieVfTF0bdfoHSvXBl9ENKSHnP3HcXfGwqlAmKkO6GBkhntMVnZeQorzMY92EaA7eaDhR0dPsrD5otBFJnu0Kkc6HfoQkwnPRCQUCiTmGbUC8Bvt8gpedvlrd8H76mWy6WUwWzJDuWrY1siO7WaRXqmTdypC93hQdPNbou1tUIlwHSurco1P/PMG88jXdOjUtq0CtnWPrT889o8jZ2Jk0GVtdAKc4Gqt1uDAdWnCBojclRz+we1tlD1WOBkSLBpQUJ52HOj6vhKC1u5O7oJ7QbXo15reyCDJ7D6T3DjTawqOv8Pf2PqkZOSEPrmZP2XVC47UivZMXpme/bDbGt
- cO+pn6pu
- ngauXli5MAtz8+W0PXIUi8iur3OcdkKEqmZMR51THMG1jwJK0sOYl7+gHKpGN7L0jn/3z6mA3x3T+hSpyl0du60F8WOpp3Uug1qnFc0CfDQz9kQxqwdqQ4Zkb8mqMGG/mcF46PRip0REkHXgHlgWwXUkNfHSoCbIW8zWbdETQSas9G7i1WwgBrLuICS4yBJB8JTYPCDbLpnHEUvs=
+X-Rspamd-Queue-Id: 7DA8918000F
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794956733-159391
+X-HE-Meta: U2FsdGVkX1/+EtHMkXMDiT8GyPt6QgV5XXTbbGc0Qrrd+wPMCLxmxfGgptRAb67ba0VhQS4Zc3WY3DGERIg2doWioieSnojZL/TaKAp2zkxDFznmfoIHVs9cW5++6A1KWPQMBKRHt8YOsIot1YlwvdswRgwQ2KhabjVRBb/sEnNAc5EC0B0E9uO9EuBwpbCnCTEkCuxZxS1vWcEtBFZTkaBOvDVCLRAPSzHvZ62MLp9o1cethNK63M3glbTzTXxguUH9m2aFX7gmIQDKAJKl2tlloiqa70ckAhpCYNiDIQN6/3MgQpvpa+cyWtSQy4YQaheqSrAJ+fNxVNQI344ZLqzBhP9iaoajOA8W8ONpCpsxl8dDJq8dL4Gt2dY/traTnlujuVQlQxCxU/c9Wa4XzxQxRAWkEWV/pVSmBAcWP4nx5p/L8fEWtDz5xPNrgfET7OAbCalS1zNljMuS9Sfjx5eU9lWKXndl5jaaDM2miYwaeWY1f4WDjWo4rM3OUWjSaj/f4akFhmlfrS4J3XWucHwwE7gn2Dy/7687N2EX2cPb7v75E9oJBT5yVBcBpLfrRxaLAMxBAFG2gOt1J+8c9zIm7LEPZfg/EhxvAFE++4n9tg+RbOGTttHE+Jv6pVjVjeZu4S2vEMG0/zqKfxUJj/ZpQRo1guypiVWPo2cS+1Bp2alsIwv+KNDtH33w3Bj4JCwwoHII83apSUU2nBS13VQp4qGqeC0GORg5MWqHsRZYSiNMxdE6DxN+CD73LinlZcr58gFZKh7voHLVjbwNbuxziGhOnT/MYQ1SLj2xaX6cjCvfNGyYEP4zLmbzdZUqPujCiSbj5hYSc2Mg19XphyOyfMwRkznHMKH9MqjlcsmOouUGGcTGqXoXgHa3P9YmOk81H2jRQC340dlNCiGU52EFkVGmUsRVwH7ewyePja/W1vmjNtzPcCKAqcgo/qH1XH+yuDv4oLjnrWvmSx1
+ vJ1kAJ9D
+ jX+/ehxcT9B91iZbRPnoD92LPmwAcuRIf5k3ghZWS52ksTza5M/9jFnoqtCAZTb2Wosy5OHWeXgnghPrO0Gq7FqKAYK+nkjI4hwNoWIf3wyDQyyj/crUoX5I5z8fC/nvVOB7fTJ7AUCBBSKTljVFmERD2vOFFIVo06D5v2REAihDJkl/LXMFfLkJPJ961MOHfsZ/zgwviXZSKyHxY4kjNzhRDPr9XSy73Mk2bmuUc4nsm3zOFBt5LKgaQNnnAS4umBXEkKNn+5tLhiVpVkVUbBzm82Ki/RU9NzBTgQWPL64DRF9NSuC+cZEKpphzOdKXC80tyNVnEMZpPQYmz5/UqKFghrlR5PhxoMWsMc2I1Ho1+pNk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,173 +98,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 749a4de370409464cf8501ec5b2451df45c84eb4  Add linux-next specific files for 20261116
+On Mon, Nov 16, 2026 at 11:54:37AM +0100, Vlastimil Babka (SUSE) wrote:
+> +CC Breno
+> 
+> On 11/13/26 16:18, Nguyen Ngoc Thang wrote:
+> > kmemleak reports full rcu sheaves as leaked:
+> > 
+> >   unreferenced object 0xffff88810005f600 (size 512):
+> >     hex dump (first 32 bytes):
+> >       e0 79 f0 2b 81 88 ff ff 20 00 b4 81 ff ff ff ff
+> >       00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00
+> >     backtrace:
+> >       __alloc_empty_sheaf mm/slub.c:2854 [inline]
+> >       alloc_empty_sheaf mm/slub.c:2874 [inline]
+> >       __pcs_replace_empty_main+0x260/0x2e0 mm/slub.c:4806
+> > 
+> > The second word is rcu_free_sheaf and the size equals the capacity: the
+> > sheaf was handed to call_rcu() by __kfree_rcu_sheaf() and is waiting for
+> > a grace period. At that point the only reference to it is the ->next
+> > pointer of the previous callback in the rcu callback list.
+> > 
+> > That previous callback may live in memory kmemleak never scans, e.g. the
+> > rcu_head of a struct slab queued by rcu_free_slab() for a
+> > SLAB_TYPESAFE_BY_RCU cache. Slab pages are frozen (page_count() == 0),
+> > so kmemleak skips their struct page. The chain from rcu_data is cut and
+> > the sheaf, typically allocated long ago and recycled, looks unreferenced.
+> > Since the sheaf is then not scanned either, the objects it is about to
+> > free can be reported as well.
+> 
+> I don't get this part. The previous object can't be that much gone, RCU
+> still needs to get to this sheaf at some point, so there has to be a live
+> pointer somewhere?
 
-elapsed time: 1533m
+After some back and forth with claude, I think there are a couple of
+places where kmemleak fails to track. Since commit 9aec2fb0fd5e ("slab:
+allocate frozen pages"), kmemleak no longer scans the slab structures in
+scan_zone_pages(). We could do something like below:
 
-configs tested: 151
-configs skipped: 3
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 20c0eb41c873..47446af5fc9f 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1875,9 +1875,13 @@ static int scan_zone_pages(struct zone *zone)
+ 		if (!(pfn & 63))
+ 			cond_resched_tasks_rcu_qs();
+ 
+-		/* only scan in-use pages belonging to this zone */
++		/*
++		 * Only scan in-use pages belonging to this zone. Slab pages
++		 * are frozen (zero refcount) but struct slab holds pointers
++		 * such as the rcu_head of a slab pending rcu_free_slab().
++		 */
+ 		if (page && (page_zone(page) != zone ||
+-			     page_count(page) == 0))
++			     (page_count(page) == 0 && !PageSlab(page))))
+ 			page = NULL;
+ 
+ 		if (page && first && page == last + 1 &&
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                              allnoconfig    gcc-16.2.0
-alpha                             allyesconfig    gcc-16.2.0
-alpha                                defconfig    gcc-16.2.0
-arc                               allmodconfig    clang-24
-arc                                allnoconfig    gcc-16.2.0
-arc                               allyesconfig    clang-24
-arc                                  defconfig    gcc-16.2.0
-arc                          haps_hs_defconfig    gcc-16.2.0
-arm                                allnoconfig    gcc-16.2.0
-arm                               allyesconfig    clang-24
-arm                                  defconfig    gcc-16.2.0
-arm                       footbridge_defconfig    gcc-16.2.0
-arm                         neponset_defconfig    gcc-16.2.0
-arm                          orion5x_defconfig    gcc-16.2.0
-arm64                             allmodconfig    clang-24
-arm64                              allnoconfig    gcc-16.2.0
-arm64                                defconfig    gcc-16.2.0
-arm64                 randconfig-1000-20261117    gcc-16.2.0
-arm64                 randconfig-1001-20261117    gcc-16.2.0
-arm64                 randconfig-1002-20261117    gcc-16.2.0
-arm64                 randconfig-1003-20261117    gcc-16.2.0
-csky                              allmodconfig    gcc-16.2.0
-csky                               allnoconfig    gcc-16.2.0
-csky                                 defconfig    gcc-16.2.0
-csky                  randconfig-1000-20261117    gcc-16.2.0
-csky                  randconfig-1001-20261117    gcc-16.2.0
-hexagon                           allmodconfig    gcc-16.2.0
-hexagon                            allnoconfig    gcc-16.2.0
-hexagon                              defconfig    gcc-16.2.0
-hexagon               randconfig-1000-20261117    clang-17
-hexagon               randconfig-1001-20261117    clang-17
-i386                              allmodconfig    clang-22
-i386                               allnoconfig    gcc-16.2.0
-i386                              allyesconfig    clang-22
-i386        buildonly-randconfig-1000-20261117    clang-22
-i386        buildonly-randconfig-1001-20261117    clang-22
-i386        buildonly-randconfig-1002-20261117    clang-22
-i386        buildonly-randconfig-1003-20261117    clang-22
-i386        buildonly-randconfig-1004-20261117    clang-22
-i386        buildonly-randconfig-1005-20261117    clang-22
-i386                                 defconfig    gcc-16.2.0
-i386                  randconfig-1000-20261117    gcc-14
-i386                  randconfig-1001-20261117    gcc-14
-i386                  randconfig-1002-20261117    gcc-14
-i386                  randconfig-1003-20261117    gcc-14
-i386                  randconfig-1004-20261117    gcc-14
-i386                  randconfig-1005-20261117    gcc-14
-i386                  randconfig-1006-20261117    gcc-14
-i386                  randconfig-1007-20261117    clang-22
-i386                  randconfig-1008-20261117    clang-22
-i386                  randconfig-1009-20261117    clang-22
-i386                  randconfig-1010-20261117    clang-22
-i386                  randconfig-1011-20261117    clang-22
-i386                  randconfig-1012-20261117    clang-22
-i386                  randconfig-1013-20261117    clang-22
-loongarch                         allmodconfig    clang-24
-loongarch                          allnoconfig    gcc-16.2.0
-loongarch                            defconfig    clang-24
-loongarch             randconfig-1000-20261117    clang-17
-loongarch             randconfig-1001-20261117    clang-17
-m68k                              allmodconfig    gcc-16.2.0
-m68k                               allnoconfig    gcc-16.2.0
-m68k                              allyesconfig    clang-24
-m68k                                 defconfig    clang-24
-microblaze                         allnoconfig    gcc-16.2.0
-microblaze                        allyesconfig    gcc-16.2.0
-microblaze                           defconfig    clang-24
-mips                              allmodconfig    gcc-16.2.0
-mips                               allnoconfig    gcc-16.2.0
-mips                              allyesconfig    gcc-16.2.0
-mips                            xway_defconfig    gcc-16.2.0
-nios2                             allmodconfig    clang-20
-nios2                              allnoconfig    clang-24
-nios2                                defconfig    clang-24
-nios2                 randconfig-1000-20261117    clang-17
-nios2                 randconfig-1001-20261117    clang-17
-openrisc                          allmodconfig    clang-20
-openrisc                           allnoconfig    clang-24
-openrisc                             defconfig    gcc-16.2.0
-parisc                            allmodconfig    gcc-16.2.0
-parisc                             allnoconfig    clang-24
-parisc                            allyesconfig    clang-17
-parisc                               defconfig    gcc-16.2.0
-parisc64                             defconfig    clang-24
-powerpc                           allmodconfig    gcc-16.2.0
-powerpc                            allnoconfig    clang-24
-powerpc                      mpc83xx_defconfig    gcc-16.2.0
-riscv                             allmodconfig    clang-24
-riscv                              allnoconfig    clang-24
-riscv                             allyesconfig    clang-24
-riscv                                defconfig    gcc-16.2.0
-s390                              allmodconfig    clang-17
-s390                               allnoconfig    clang-24
-s390                              allyesconfig    gcc-16.2.0
-s390                                 defconfig    gcc-16.2.0
-sh                                allmodconfig    gcc-16.2.0
-sh                                 allnoconfig    clang-24
-sh                                allyesconfig    clang-17
-sh                                   defconfig    gcc-14
-sh                           sdk7780_defconfig    gcc-16.2.0
-sh                      sh7710voipgw_defconfig    gcc-16.2.0
-sparc                              allnoconfig    clang-24
-sparc                                defconfig    gcc-16.2.0
-sparc                 randconfig-1000-20261117    gcc-15.3.0
-sparc                 randconfig-1001-20261117    gcc-15.3.0
-sparc64                           allmodconfig    clang-20
-sparc64                              defconfig    gcc-14
-sparc64               randconfig-1000-20261117    gcc-15.3.0
-sparc64               randconfig-1001-20261117    gcc-15.3.0
-um                                allmodconfig    clang-17
-um                                 allnoconfig    clang-24
-um                                allyesconfig    gcc-16.2.0
-um                                   defconfig    gcc-14
-um                              i386_defconfig    gcc-14
-um                    randconfig-1000-20261117    gcc-15.3.0
-um                    randconfig-1001-20261117    gcc-15.3.0
-um                            x86_64_defconfig    gcc-14
-x86_64                            allmodconfig    clang-22
-x86_64                             allnoconfig    clang-24
-x86_64                            allyesconfig    clang-22
-x86_64                               defconfig    gcc-14
-x86_64                                   kexec    clang-22
-x86_64                randconfig-1000-20261117    clang-22
-x86_64                randconfig-1001-20261117    clang-22
-x86_64                randconfig-1002-20261117    clang-22
-x86_64                randconfig-1003-20261117    clang-22
-x86_64                randconfig-1004-20261117    clang-22
-x86_64                randconfig-1005-20261117    clang-22
-x86_64                randconfig-1006-20261117    gcc-14
-x86_64                randconfig-1007-20261117    gcc-14
-x86_64                randconfig-1008-20261117    gcc-14
-x86_64                randconfig-1009-20261117    gcc-14
-x86_64                randconfig-1010-20261117    gcc-14
-x86_64                randconfig-1011-20261117    gcc-14
-x86_64                randconfig-1012-20261117    gcc-14
-x86_64                randconfig-1013-20261117    gcc-14
-x86_64                randconfig-1014-20261117    gcc-14
-x86_64                randconfig-1015-20261117    gcc-14
-x86_64                randconfig-1016-20261117    gcc-14
-x86_64                randconfig-1017-20261117    gcc-14
-x86_64                                rhel-9.4    clang-22
-x86_64                            rhel-9.4-bpf    gcc-14
-x86_64                           rhel-9.4-func    clang-22
-x86_64                     rhel-9.4-kselftests    clang-22
-x86_64                          rhel-9.4-kunit    gcc-14
-x86_64                            rhel-9.4-ltp    gcc-14
-x86_64                           rhel-9.4-rust    clang-22
-xtensa                             allnoconfig    clang-24
-xtensa                            allyesconfig    clang-20
-xtensa                randconfig-1000-20261117    gcc-15.3.0
-xtensa                randconfig-1001-20261117    gcc-15.3.0
+I don't think this is specific to sheaves, SLAB_TYPESAFE_BY_RCU may have
+a similar problem, though I don't remember to have seen such reports
+yet. It should be covered by the above.
+
+However, this only fixes the links through struct slab. The rcu list can
+also go through a sheaf allocated with kmalloc_nolock(), which kmemleak
+doesn't track. Any callback queued after it is missed (together with the
+objects queued in that sheaf that may come from ordinary kfree_rcu()).
+When kmemleak is enabled, could we simply avoid allocating sheaves with
+kmalloc_nolock(), i.e.:
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 45e077c7526c..13b8e57d6dae 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6278,6 +6278,14 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
+
+ 		local_unlock(&s->cpu_sheaves->lock);
+
++		/*
++		 * A sheaf allocated with kmalloc_nolock() is not tracked by
++		 * kmemleak, so neither its objects nor the rcu callback queued
++		 * after it would be scanned. Fall back to defer_kfree_rcu().
++		 */
++		if (IS_ENABLED(CONFIG_DEBUG_KMEMLEAK) && !allow_spin)
++			goto fail;
++
+ 		/* Don't wake up kswapd, it will cause deadlock under pi_lock */
+ 		empty = alloc_empty_sheaf(s, __GFP_NOWARN, alloc_flags);
+ 
+
+Not tested and it's possible I misunderstood how all this works. But if
+it works, I don't think the kmemleak_not_leak() annotation is needed.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Catalin
 
