@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABCC606A331
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 06:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7AF606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lXgRurMK
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=KnjddYz5
 Received: by kanga.kvack.org (Postfix)
-	id DD7546B00EF; Tue, 17 Nov 2026 01:55:47 -0500 (EST)
+	id C33866B00EF; Tue, 17 Nov 2026 02:00:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D87F66B05B0; Tue, 17 Nov 2026 01:55:47 -0500 (EST)
+	id BE4326B05B0; Tue, 17 Nov 2026 02:00:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9ED26B05B1; Tue, 17 Nov 2026 01:55:47 -0500 (EST)
+	id AFA996B05B1; Tue, 17 Nov 2026 02:00:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A9E206B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:55:47 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2BD0980390
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 06:55:47 +0000 (UTC)
-X-FDA: 85443700734.11.2657262
-Received: from mta0.migadu.com (out-103.mta0.migadu.com [91.218.175.103])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BA56720007
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 06:55:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lXgRurMK;
-	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.103 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BDEC6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:00:58 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E1D640343
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:00:57 +0000 (UTC)
+X-FDA: 85443713754.08.468D5F6
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 24478C000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:00:53 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KnjddYz5;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794898545;
-	b=P7OtSJA1IBz+lw8tSlnVnbun/VOkIq110K4FfzSsekAmar7eEAEt8Me0GYhCK0JpJSl86E
-	lzKCP95dFjVmjCvFHA1BxRHKtmusC0pnJ0J6G2hLOBwxN3fHTtQM097y05UpERE8KsPJvb
-	qfIELIPsNJEgtTY7B4R/Zt0uGr+pgpY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lXgRurMK;
-	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.103 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	t=1794898855;
+	b=MlVbE5kcWixCalqGtqcdeA0WVSQxHG73bEFTHcGE4/oP5cHgXLJIsFFUfUWywxf2dXjoql
+	Utj8gyRr3abNZkSIfrTHQFS02wdqMLPWtHyekh83d3XCt8nFk4z5niUY1ONTxpL9FIdDvD
+	SNJ1VzWctSAenVw5w52NhICreyd9Huo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794898545;
+	s=arc-20220608; t=1794898855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2oPYcBnyfKFBVmYGFPt3g8Jq1FN6zDjS6/VkvCawi+A=;
-	b=0IBpqxg7yr14VKwezMeHJ6DL447+VWCXuRDZIlL0gfk16JQD4qfj1yvw5Y1Z9DwFF8UdTY
-	B3KoL/4Weu8hqfG9tF07v3QGNxe3qBP8fBqorDLTM4fZkrCXT3fDcw71pwn3FS55t0adGB
-	nT8RINNdTAIVT3ZizR82v9scbpAczSg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=SU0b3f1zTiBLHbxV73c/5LDRiiQt2cN7KkcKdsVywD0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794898543; v=1; x=1795503343;
- b=lXgRurMK73j3nPHPEDrTPBOxyd8BD2/bhOZcU3E6iNtYJ8OIS3qBwRq8/vLYoj/f1d17VABg
- I6O9Um6r8E5j877oq1AFPW558zMJO9Bwyi2jF2lcE1g/H7Oy8y0hmLjPYr1Ew/dHp7SqifEUfes
- pqkfq9BAQZ+vFtjsHFT4EQXs=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6d3558f114912485;
-	Tue, 17 Nov 2026 06:55:42 +0000
-X-Mizu-Trace-ID: 6d3558f114912485
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c3906ff3-c5ee-4672-8bab-2318185268c8@linux.dev>
-Date: Tue, 17 Nov 2026 14:55:36 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1YXPcLXzICaGPRz8rHCfa6s3tChPEmNKPoNy40HFGsk=;
+	b=6LlRzXu4xhg2DthNY4J4C5Wp/iOdz5TD1zF8T1wuqwvzhVAjEWbPAmTqvL0QM33s1eG1NZ
+	zavSARZBAwILUXvSIL70XsjOUzQquL/NE/rgIJV0ZVQAiShI9pz6XVgfe9czXDxn6QRHey
+	wY6nF6y4brOAnOUl0bAvbxXfOPEI90s=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KnjddYz5;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794898850; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=1YXPcLXzICaGPRz8rHCfa6s3tChPEmNKPoNy40HFGsk=;
+	b=KnjddYz5xKIXC9p4vzC4vnRKCM4I5y6dpuTBpcAt7Sq1X+O/6C5qWQPniDQkrdO4DUM7PRybpd6tldrXN60wiPzwT6rGlv8M6fBjFhUAf6xXdONRjKqyM1cOx0KlqYvFH9JG11gR9GMrYc79nr+o+Oewt7TzHbfUOjww0Qe3Kls=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R791e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0XEyG6TV_1794898846;
+Received: from localhost.localdomain(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEyG6TV_1794898846 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 17 Nov 2026 15:00:48 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm: use memory barriers for non PMD-sized folios to sync
+Date: Tue, 17 Nov 2026 15:00:30 +0800
+Message-ID: <6274e62645b9f176dd10d7a79e86b900a39cec5f.1794898535.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] mm: hugetlb: fix CMA-related issues
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev,
- akpm@linux-foundation.org, osalvador@suse.de, azpijr@gmail.com,
- lance.yang@linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
- <b1c1c835-180a-49e2-86c0-bc3f65981728@kernel.org>
- <7e733c3b-2aa2-406e-a5ca-cd9a2c872f9f@bytedance.com>
- <bc6ffcff-3aaa-43da-91b4-82f27513c761@linux.dev>
- <1e0aa28d-f81b-411f-92a3-6038c3961443@kernel.org>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <1e0aa28d-f81b-411f-92a3-6038c3961443@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: BA56720007
-X-Stat-Signature: x9zehz3trq58omj3c4gbfxuputpsz9dx
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+X-Rspamd-Queue-Id: 24478C000A
+X-Rspam-User:
+X-Stat-Signature: fbgexpx8z7s51abwiosxsb4zede1nfaa
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794898544-190528
-X-HE-Meta: U2FsdGVkX18fDzibh0maiUK2RcsrFaLc+Y8ArY229MiYQQFvLsDuJwy6vqV3g92B/fdNO2gpe9Ab2MsMitFJjlay40uo8yWwCvB5JYfgBzwTIm8YrfNvB+SCQD4KshSca3lC+GP2kQIbf9U1EJtxlGqP2BN/fhh1Zn7Wa7RhISgw0dizCgqblzKQku5dvdda03gPhNcPJLZ3ZpIPxLvyidCwZxtCcWnmpXlr6w3ulmQk1f4QayIChrOVEiSrnJcX0PSCqO3ON9udFcN8siVkdCrm551+/qGhBxex1XPVGLgi8RrfSunKFi2zV9Vo5d0d9rzVCgVvwv/XNM2/vI+SRt7XOa08tlH3E5Zvk9/VfpyLDwwRBnO51gxVAjYireV5bxSiHp2HLxMmzYDzMcUuCkjDXQeXbgqFgkbOLBvfED2c/uNrvNUDXFXhrmScv/0z8607NDzwgwJWYXGIkjlaWhXQ5i6soA1UbPJyNTX6JSqwHhhy/3ibm2bpiav0mheywxW+VGgroHbqPU2hQOj346YWFkfRS1CH2eo5dDusRXT+5+IcBqv2yi/szmSAZMNGB4aphwVJFU/JYFEWQEBtLqn6S6MUNd1Hcg0D7nD+beWj/bzgWLIThXxo8pAKnIJlXyYolEpAvg9kxjc01UCS+PlRFhLQYlG8i/9DN+vuR2Poo1SOvj8Kg4ww2tMY3tcdeqvZqBCaiviH15ugpDQK9daI3KUqvqE9SD2pzjSinQJax3radZEU5PiZjMV1p/1n13/PWCdHJsu3cRpfMOI/OZG4qKxz4Twlh+QGL/sQi8cxbFeUS6HbOkViyH9pGfFgMUo9mwI/FXQhnkNnyjnKpBe2WUZSpanZ7bHmxJ1kULV7FmWgDAtz/p/rItIK2mTiNBxtTJeZRFmaAUPVkfB78jLq2X1owIHw8nZPvNiUc6tDIefTWtQKzXAyeY7dQYYKC20GMHuE/SBJehev9EZ
- ymb/oOP6
- 8FU82bB8GJDt+vCNTSHp3eUgwb7S21UySivFbk/zuDxH9Pu64N/IUOLOio22objI0UXvRb6EJGt4TsYQFe/xO26ykE5ARSmtAG0oFzQjpQcVpGFiL3cb5nnEuCV37hFLLTqihB6tu6r7gq3Wj2v+940LAdGOouqbHK0+cIXpE1vrXjoGPFoCwX43AR/27ztwJjhiQdStzPgZdFytXB5iT5XDccjXkFiRVPxVNSWk2RtvieS9bllnMGOfyfmP3pSYfYIJBwme7cTbtIKvcjLbKbdQL1/SWakyEeuoxBNFu5inY86M=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794898853-97784
+X-HE-Meta: U2FsdGVkX18n4h2Jl8FUz+sNjSCGKLhtcltNRF1vaPpAYT+lkz+r3eqee/XDjolKm6jRHwMSc5A+1N0vcBPTB8mec/e7TYHyj2v92/bFELPXphk2495zg+TYT/AQPQ5yMSndHlu+cih4DWcXb9bfneEmWq16tGNQ9cIJjr06FRh+5OjzSyyvE74ITwKnuS+07md7jRNw4Ripb+UlzqCkY2b/cCppvv8Ci8HcbLvjYjbJMsXZlCW8RdT1HQVr7e1MhP7VPsls16u8p33ZJbWfnNIwIzJ6Y33BAH6svHheIwkwtWYCEL9JvjflKxnnpV6636nK4XdeXKeBPd6YqV8oRzqwUGNc6IDqD9XbVcskDphMaXEC+8GcHGycx+wWq6zPzXi8Wh/CEbh7MmujyBISg6sRE42ncIRH+GScFcSuvMPlPKdAJRjhQRx9uO82bzpwx46Uj3/4/Sli9plCb0s7DafJOnCIaGgGKtZ7dkBL2B0+ee7BOa5W5fl8/KApzojWitz7U17iCgjDEkB2ghFAb6RgHrCl84EU4JudE1R5fgDDEUvA+M7BJPKZfbMS2m2qlyV1U81XZN5+vvmtVq5Xbu9B2q7gZv0LTEcmRbkKYQaMwUAshGzNxJntepl2XYSX99e3LLOXIwXVvvzS0Q0P5yyJrkcom6tJVqKpa7Y39+3CWGibyt9Gd2XO3FQSiJrVxeumYRytf1hy6s1RWuoFWEEM6amTOgay/2LPcecG6nLRw+w92FkvdfRsN9lIfzVsy5eZcu8WQqiGz0bQq/i48bUQkUl1WS8zjz4VtuVkWEnVhTkDcVDVwQrjZisjDNuETEbAiaTdQsadaVRj1cWYVsKxiz6E8GUmN0/4uetkd8gxMYyyiThL8F0LMTJ2UYb8SppSiljARQ1MNEZOdCrS6kmlDp5Mt6XkO8wWnRw4FnWMFZ7vo7tNh0F+gHSA3BHPx8kAPNsC56IoeJwhOX9
+ A213DeTt
+ UMPeApV5klwrFChCKvq39gnLoXVjJsQAeFPYqZPPzPpWGET5zFgWmgYhoOK98lIMZMO3DRQLfZV8PJamrJGiaAvosBJfAagvRrIYDhEGs90L3NgRtpHUfyqCADdZNgY8oc6lv1y2TSQXg7jbPk1XyWkvu53brsPSQp8cn2J25M3HasNPhDxKABfnmKH3TYr/dXLt6nrpO5/eLrAo77e4YoOC4zRcvMDjNwiG3EcUPUw+s3QMveNJSHQB5h1awC59Jo4ny6RQ/JYFL+786oJaGgf5gjtrj8MIFQbkc1dF364eMrWzz65NUS8388VHr4B1eGLYVxcgrPZsLb3syjX767cE6OFaM8MS5NWbgFoR2VcGNuA9Nan6zU1hdumgNoEDu6kHWYjWGwMUerEA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,169 +98,183 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi David,
+Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
+uses PMD lock via sync_with_folio_pmd_zap() to synchronize when a cleared
+PMD is found while unmapping a folio.
 
-On 11/16/26 8:07 PM, David Hildenbrand (Arm) wrote:
-> 
-> Hi,
-> 
-> sorry somehow I missed your mail.
-> 
-> 
->>>
->>>>
->>>> Likely cma_reserve_early() must be taught to align (and maybe consume an order
->>>> instead of a size), similar to how the dynamic cma allocations work.
->>>
->>> However, simply adding alignment would leave gaps that the
->>> current activation code cannot distinguish from actual reservations.
->>>
->>> The early allocation path would become:
->>>
->>> hugetlb_cma_alloc_bootmem()
->>>      -> cma_reserve_early()
->>>           pfn = ALIGN(cmr->early_pfn, nr_pages);
->>>           cmr->early_pfn = pfn + nr_pages;
->>>           cma->available_count -= nr_pages;
->>>
->>> For a CMA range starting at 4 GiB, reserving 32 MiB followed by 1 GiB
->>> would produce:
->>>
->>> 4 GiB       4 GiB + 32 MiB             5 GiB             6 GiB
->>> | 32 MiB used |------ 992 MiB gap ------| 1 GiB used       |
->>>                                                            ^
->>>                                                        early_pfn
->>>
->>> Later, cma_activate_area() marks the entire prefix below early_pfn as
->>> allocated, including the gap:
->>>
->>> count = early_pfn[r] - cmr->base_pfn;
->>> bitmap_count = cma_bitmap_pages_to_bits(cma, count);
->>> bitmap_set(cmr->bitmap, 0, bitmap_count);
->>>
->>> It only initializes and frees pageblocks after that cursor:
->>>
->>> for (pfn = early_pfn[r]; pfn < cmr->base_pfn + cmr->count;
->>>         pfn += pageblock_nr_pages)
->>> 	init_cma_reserved_pageblock(pfn_to_page(pfn));
->>>
->>> The gap therefore remains reserved and marked allocated. Releasing the
->>> two HugeTLB folios only clears their own ranges through
->>> cma_release_frozen(); neither release covers the gap. Those 992 MiB
->>> would be permanently lost from usable CMA capacity.
->>>
->>> So we would also need to track the gaps, clear their bitmap bits during
->>> activation, and initialize them as free CMA pageblocks.
-> 
-> Ugh, what a hacky mess people created.
-> 
->>>
->>>>
->>>
->>> Another possibility would be to give 32 MiB pages their own pool,
->>> similar to the separate PMD-sized pool proposed in the other series. On
->>> arm64 with 4 KiB base pages, 2 MiB, 32 MiB and 1 GiB allocations would
->>> then use separate pools.
-> 
-> That would be cleanest. Would it break existing setups?
+However, for non PMD-sized folios, the only PMD clear that can race with
+this unmap is PTE table reclaim, which clears the PMD only after the rmaps
+for the table have been removed. This is plain message passing, and taking
+the PMD lock is more than needed, like I did in the previous patch[1].
 
-Yes, this requires an existing user to explicitly configure a 32M memory
-pool.
+Without barriers, the walker can observe the cleared PMD but a stale
+mapcount on weakly ordered architectures:
 
-But in practice there shouldn't be such a user today, otherwise the
-misalignment issue would have surfaced long ago, wouldn't it?
+CPU 0 (unmap folio)                 CPU 1 (MADV_DONTNEED, full PMD)
+================================    ================================
+folio_lock()
+                                    lock(ptl)
+                                    clear PTEs
+                                    remove rmaps   /* W mapcount */
+[mapcount load satisfied early,
+ folio still mapped]
+                                    pmd_clear()    /* W pmd */
+                                    unlock(ptl)
+pmdp_get_lockless() -> none         /* R pmd */
+skip the PMD
+folio_mapped() -> true              /* R mapcount, stale */
+unmapping assumed to have failed
 
-> 
-> 
-> Another quick-fix idea could be to always allocate larger folios first.
-> 
-> That way we should avoid any holes, right>
+Pairing an smp_wmb() before the PMD clear with an smp_rmb() after the
+PMD read forbids this outcome:
 
-Ah, this looks feasible. How about the following?
+CPU 0 (unmap folio)                 CPU 1 (MADV_DONTNEED, full PMD)
+================================    ================================
+                                    remove rmaps   /* W mapcount */
+                                    smp_wmb()
+                                    pmd_clear()    /* W pmd */
+pmdp_get_lockless() -> none         /* R pmd */
+smp_rmb()
+folio_mapped()                      /* R mapcount */
 
-(If that looks good, this could go as a stable-first fix.)
+If R pmd observes W pmd, R mapcount must observe W mapcount, so
+folio_mapped() no longer reports the removed mappings.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 6fba92b0f6749..32e65ce347c90 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4556,6 +4556,22 @@ void __init hugetlb_bootmem_set_nodes(void)
-  		node_set(nid, hugetlb_bootmem_nodes);
-  }
+Pass a 'folio' parameter to sync_with_folio_pmd_zap(), allowing us to
+skip those pfn walkers: pfn_mkclean_range and mapping_wrprotect_range,
+which don't need synchronization.
 
-+/* Return the largest early-CMA hstate below the given order. */
-+static struct hstate * __init
-+hugetlb_next_early_cma_hstate(unsigned int order)
-+{
-+	struct hstate *h, *next = NULL;
-+
-+	for_each_hstate(h) {
-+		if (!hugetlb_early_cma(h) || huge_page_order(h) >= order)
-+			continue;
-+		if (!next || huge_page_order(h) > huge_page_order(next))
-+			next = h;
+Similarly, skip sync for page_mapped_in_vma() since the subsequent
+operations don't check the folio's mapcount.
+
+No changes for PMD-sized folios unmapping.
+
+[1] https://lore.kernel.org/all/542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com/
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+Changes from v1:
+ - Pass in a folio for sync_with_folio_pmd_zap(), per David.
+---
+ include/linux/rmap.h |  2 ++
+ mm/internal.h        | 26 ++++++++++++++++++++++----
+ mm/memory.c          | 12 ++++++++++--
+ mm/page_vma_mapped.c |  4 ++--
+ 4 files changed, 36 insertions(+), 8 deletions(-)
+
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 74cca0e3c726..62e7341de179 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -862,6 +862,7 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
+ #define PVMW_PGTABLE_CROSSED	(1 << 16)
+ 
+ struct page_vma_mapped_walk {
++	struct folio *folio;
+ 	unsigned long pfn;
+ 	unsigned long nr_pages;
+ 	pgoff_t pgoff;	/* Only meaningful if nr_pages > 1 and not a KSM walk */
+@@ -876,6 +877,7 @@ struct page_vma_mapped_walk {
+ 
+ #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
+ 	struct page_vma_mapped_walk name = {				\
++		.folio = _folio,					\
+ 		.pfn = folio_pfn(_folio),				\
+ 		.nr_pages = folio_nr_pages(_folio),			\
+ 		.pgoff = folio_pgoff(_folio),				\
+diff --git a/mm/internal.h b/mm/internal.h
+index cd3675c044e0..ad7e051cb198 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -592,6 +592,7 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+  * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
+  * @mm: The mm_struct.
+  * @pmdp: Pointer to the pmd that was found to be pmd_none().
++ * @folio: The folio being zapped.
+  *
+  * When we find a pmd_none() while unmapping a folio without holding the PTL,
+  * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
+@@ -600,13 +601,30 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+  * against later mapcount reads. Skipping the PMD without synchronization
+  * could make folio unmapping code assume that unmapping failed.
+  *
+- * Wait for concurrent zapping to complete by grabbing the PTL.
++ * Wait for concurrent zapping to complete by grabbing the PTL for PMD-sized
++ * folios, otherwise smp_rmb() is sufficient.
+  */
+-static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
++static inline void sync_with_folio_pmd_zap(struct mm_struct *mm,
++		pmd_t *pmdp, struct folio *folio)
+ {
+-	spinlock_t *ptl = pmd_lock(mm, pmdp);
++	if (folio_test_pmd_mappable(folio)) {
++		spinlock_t *ptl = pmd_lock(mm, pmdp);
+ 
+-	spin_unlock(ptl);
++		spin_unlock(ptl);
++		return;
 +	}
-+
-+	return next;
-+}
-+
-  void __init hugetlb_bootmem_alloc(void)
-  {
-  	struct hstate *h;
-@@ -4571,9 +4587,19 @@ void __init hugetlb_bootmem_alloc(void)
-  	for_each_hstate(h) {
-  		h->next_nid_to_alloc = first_online_node;
-
--		if (hstate_is_gigantic(h))
-+		if (hstate_is_gigantic(h) && !hugetlb_early_cma(h))
-  			hugetlb_hstate_alloc_pages(h);
-  	}
 +
 +	/*
-+	 * CMA ranges are aligned to the largest supported size. Allocate larger
-+	 * sizes first to keep the early reservation cursor aligned without gaps.
++	 * For non PMD-sized folios zapping, concurrent zap_empty_pte_table()
++	 * may clear the PMD after the rmaps for the table have been removed,
++	 * but later mapcount reads could still be observed before the PMD
++	 * read, making the folio appear to be still mapped after unmapping.
++	 * Order the PMD read before later mapcount reads, so that observing
++	 * the cleared PMD implies observing the rmap removals.
++	 *
++	 * Pairs with smp_wmb() in zap_pte_range().
 +	 */
-+	h = hugetlb_next_early_cma_hstate(UINT_MAX);
-+	while (h) {
-+		hugetlb_hstate_alloc_pages(h);
-+		h = hugetlb_next_early_cma_hstate(huge_page_order(h));
++	smp_rmb();
+ }
+ 
+ struct zap_details;
+diff --git a/mm/memory.c b/mm/memory.c
+index 529a9189e426..dcf205175f71 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2054,8 +2054,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 	 * Clear the PMD after the rmaps for the table have been removed, in case
+ 	 * an incorrect mapcount is observed after unmapping the folio.
+ 	 */
+-	if (can_reclaim_pt && direct_reclaim && addr == end)
++	if (can_reclaim_pt && direct_reclaim && addr == end) {
++		/*
++		 * rmap changes need to be observed before page tables get zapped.
++		 *
++		 * Pairs with smp_rmb() in sync_with_folio_pmd_zap().
++		 */
++		smp_wmb();
+ 		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
 +	}
-  }
-
-  /*
-
-> 
->>>
->>> This could work during early boot too: hugetlb_cma_reserve() establishes
->>> the CMA areas and their ranges before hugetlb_bootmem_alloc() runs.
->>> Although the bitmaps are allocated later, each range already has its
->>> own early_pfn. With naturally aligned ranges and one allocation size
->>> per pool, the cursors would stay aligned without creating gaps.
->>>
->>> What do you think?
->>
->> Hi David, gentle ping
->>
->> I’d like to update to v5 so that I can continue advancing the support
-> 
-> Feel free to fix this issue here independently from the current series.
-
-OK. I'll go ahead and post the v5.
-
-> 
->> for 2M hugetlb CMA. Regarding this issue, would you like me to include a
->> fix in v5? If you agree with the "split pool" approach, we can handle it
->> as part of the patch set for 2M hugetlb CMA support.
-> 
-> 
-> I think we want a stable-first fix for that.
-
-Got it.
-
-Thanks,
-Qi
-
-> 
-> 
+ 	pte_unmap_unlock(start_pte, ptl);
+ 
+ 	/*
+@@ -2110,7 +2117,8 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+ 			/* fall through */
+ 		} else if (pmd_none(*pmd)) {
+ 			if (details && details->single_folio)
+-				sync_with_folio_pmd_zap(tlb->mm, pmd);
++				sync_with_folio_pmd_zap(tlb->mm, pmd,
++							details->single_folio);
+ 			addr = next;
+ 			continue;
+ 		}
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index a931243ca42b..9b72ac408c70 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -294,8 +294,8 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 			spin_unlock(pvmw->ptl);
+ 			pvmw->ptl = NULL;
+ 		} else if (!pmd_present(pmde)) {
+-			if (pvmw->flags & PVMW_SYNC)
+-				sync_with_folio_pmd_zap(mm, pvmw->pmd);
++			if ((pvmw->flags & PVMW_SYNC) && pvmw->folio)
++				sync_with_folio_pmd_zap(mm, pvmw->pmd, pvmw->folio);
+ 
+ 			goto next_pmd;
+ 		}
+-- 
+2.47.3
 
 
