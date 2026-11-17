@@ -1,78 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B266E606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A819F606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=geZMmNkz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NfT3BCBl
 Received: by kanga.kvack.org (Postfix)
-	id D3C966B05B0; Tue, 17 Nov 2026 16:15:20 -0500 (EST)
+	id 96F666B00EF; Tue, 17 Nov 2026 16:16:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC6DC6B05B2; Tue, 17 Nov 2026 16:15:20 -0500 (EST)
+	id 8D2A66B05B3; Tue, 17 Nov 2026 16:16:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8F566B05B3; Tue, 17 Nov 2026 16:15:20 -0500 (EST)
+	id 7C2586B05B4; Tue, 17 Nov 2026 16:16:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EA586B05B0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:15:20 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCBBCA05DD
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:15:19 +0000 (UTC)
-X-FDA: 85445866758.25.1C2F716
+	by kanga.kvack.org (Postfix) with ESMTP id E582B6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:16:26 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D000CA05D2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:16:24 +0000 (UTC)
+X-FDA: 85445869488.26.5288CC4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id ED270140017
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:15:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=geZMmNkz;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 07D6C180006
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:16:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NfT3BCBl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794950118;
+	s=arc-20220608; t=1794950183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=edLdvJ5BDjaRt6RMx5EffH6A7el1uRIb0sy/VvsQYKw=;
-	b=m/HIdHJwylrW190lHYcpbM14Ljhtfq9SC7mZDVJn4KuWzIsdtgscsHE8UNRDtjxxLhfSYJ
-	P9hbdxEXFaFlcpK6+uW0ZHIVhSGwar5LVyYyfa2cnxQytVIGczSr7t7cvdoJB5WInxAbC3
-	wDC2szx8LHlCt+3UzpR79lPQmHk8fvk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794950118;
-	b=W9LUNfO/dMRBWIDP+zKo+2N23SrUXp1auNyhcG4N2P4U1lzIFBliDpKBhoy6OVR+dxTr7r
-	FuBzAHgq7ZZ7K4Gvxt6bqpCqvUPov4oeJcKa4V09k/CVP8SBPceiCkyxvsJmb9CqXuhqD6
-	9fgyO05SVrc/AhOrFfwcne3EgHwTtIQ=
+	bh=zqAg+LPxRBAVJs264I0Nj4xAJBhpyH8UCjGixQkGIfw=;
+	b=r7cV8zLbnZqUfFWUVWaJG5mzN1sVRdc9KntNFUaZObhNRFETC1cGntIeTS8lX/nqv2GB+P
+	fXCxBIaxaKXxEeJydnfoPMcpPMcQD0eDD4Zq6mIdqSjxIAszvVPu3PBOxEMhD4orGy4m/3
+	gLydMYbYKbwh/597PeDPeoU1nFRtj4g=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=geZMmNkz;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NfT3BCBl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794950183;
+	b=kzERo9uzgyochspIvk4XH6E3a2G7NcHe0WG54Mx+T8Lra9T1MRPsgvsHi7uCiSNUZ0pLkN
+	7cQQ7WBzk2cCfC/cs+tA+vd8mnmeAejbD8T2yfxKdimimcRoyNhgSnt2msTlhVman4Ewfx
+	qZMkKS/cM0TQxPTN9EBLDCn+KoGlzSk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A376860DB5;
-	Tue, 17 Nov 2026 21:15:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C561F000C4;
-	Tue, 17 Nov 2026 21:15:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 887AC60DB5;
+	Tue, 17 Nov 2026 21:16:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D400F1F000C4;
+	Tue, 17 Nov 2026 21:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794950116;
-	bh=edLdvJ5BDjaRt6RMx5EffH6A7el1uRIb0sy/VvsQYKw=;
+	s=k20260515; t=1794950182;
+	bh=zqAg+LPxRBAVJs264I0Nj4xAJBhpyH8UCjGixQkGIfw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=geZMmNkzgGVXwgzgiftX/pDbrM45HqLo9V6rUnvZM3za/H5jbhPJ1hU97R8l6LZFi
-	 XdCH61sbo+xgVx67ujUxGFhSOYBdxAfog3e3UpezVvy4x6O/T51qI5AUUVhiZTpS61
-	 RiolJYAKQ5g05U7taZS0nOKhsJ5oKHdrIKkDdZ92jTgqT0OHXf6otza9Q+ENu8fS7/
-	 z4ihSUCv2nfgxEqJuD6+ABu6gv3EYJSYgDNGxgvMr5zxDQ1EA5Jqklzkbg4Qle1oyZ
-	 tCWownKAnEfgdQP2+y+lnYdbk+2/VHP3qlNQ21cEQrdP6wGo0eOMNWBv2TbMNhCud/
-	 6ildXgxaLx/qg==
-Message-ID: <5fc2f2aa-a6d9-42b5-a839-48ddaad60498@kernel.org>
-Date: Tue, 17 Nov 2026 22:15:08 +0100
+	b=NfT3BCBlL2QuXC4ZmkKQKUBf34y68I4+H23xRXOWODNFtczmXf4BF7M0qvY0wOCoQ
+	 ZpCWSc3/fN8iOlEx53CxcU20Jjq0w0x40y5XvbLbYVYEjQw0gqe0LNeOrILacFjzf2
+	 YioqfyXmpZqu2ubj3sWcrJMARkdM2gxVxb9OfI3D6G5NGcuippcxs9kDiYhBDJkloO
+	 CnqYP/fT705C0nNdjq2P4oQ4AiANMUNUfv97/85fXCWrioxHP/M2hYJ59bW8NqAlkO
+	 kZNkW+qns82j0ZHEVsOHt3toN0SHcduSP5ic72rMqUWaXAhHiSyyyFOPTyxnjra9Dn
+	 iRTKC7xyHRAwg==
+Message-ID: <0efca67f-5ab1-4ab2-8607-abf94366d384@kernel.org>
+Date: Tue, 17 Nov 2026 22:16:15 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/userfaultfd: check exclusivity of the page being moved
-To: nakixii <nakixii@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
+To: Mike Rapoport <rppt@kernel.org>, nakixii <nakixii@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
  Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra
  <lokeshgidra@google.com>, Kairui Song <kasong@tencent.com>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20261117191853.1314834-1-nakixii@gmail.com>
+ <20261117195228.2675563-1-rppt@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,21 +120,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261117191853.1314834-1-nakixii@gmail.com>
+In-Reply-To: <20261117195228.2675563-1-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mohxwypaz51a1e16pki6y7supg44nu7y
+X-Stat-Signature: qqezzbejck6umpkdw95q5itmmsjdqksj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ED270140017
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 07D6C180006
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794950117-933074
-X-HE-Meta: U2FsdGVkX19maj0+y9WtPu/t6o27zCwPZbMroUSFxeObC1RnK6g5+TTRVr8Lk1U0qmW7+Ijg712NQFoPyQAMmQjpwSfEA8i9oYmWOBn5fbEMNJevoXSr38TWsjuwnMqxvakjXOihqbVcLWzquRW3Ug/I9X72lGtla7eL+vLuZzTwgEDcoUUs+Mx4pCoiUwT7TnuVykEkNVl7I8c4VzyI1XWLlTyRBSRG5VvQNkZeLgK5smXs22S6hNR+LgpBUgsERkbZWhAbMC4ZJ+AU+BXO/QaHrmDsO1aQiETKVciAL+zf+VvYjOGfVJtDKW3EmtQ3wl1Zi0YbhQ6z0eecpbVARnmcYscLqj2sx6ZeJHz7pM66YKpCUvEqCJcxdR6W1OsieAKNmVdHVg7qHI2YL5dGZ5eW7iwSriH6R2zWJsF5pQUrlEaLSa0wvfft/Ncq7IygWAvoZOex+Rn/MDY4Ahpk0SkaSsnDrw2suVyCEWAFIM3pjx1DNQT0EqYq6FE38nQ4Cnsah7+86fW4lhNYRfYtZfZmR9FtdWVnDGNXVHjNix0NB26c+6uqvFjqRN8pmn6oqimqLAsgZK6r06zUG9pjoBRGp4ivM7Lrk83X/3Rji/rxOqbRxb13LjP7KPg/DOpGmJLRlUNdqZEcF8rvsPVJyEN6LTwLBLQwmCelKk26iX6HveVD3KSs6etImAmm7J7fKJvcuRA2KjISdzNnnU3vKcBmehLEG5m+a0pmDLs+iIqzBx6VVHc0Ue0Th6ShN/c2bx5mnHyZ+vXOovc5dDGfj6LVs4fNLENF7j2IhbmnaD0HCMbhiAIZ1RnuIJE5XqcZKXyoSYZD4Emzwm0U6rQ637T9KtPbhoNZJPh+CKa2pIMuAXpxBGa3nFW78854SmpBXGvaGUAKE6hI2kn31K/zv9vtzaG2odS+2J9k22SO44uMJGeO7IrpUtE8xDAkUExXtB6A7+XcmfdIzRv57zK
- NezWhOXx
- QmUCvsoswlFDNNrnbFtkm5jvEXRL3u37Tr9hx9YI0EVPpCMvf0qMu6PDFPvTlLJ8eDiHkX7oT7tEscwI+G2C5aX2C7GEREFc/NsbpmvNtuYjGY8oebd9U+JhlNMO7b6dgW4cJAZeVa425xZRXEfnex5b6Ey5LQWDFZtB7Vo8aqulGSLk9bppwnnQROljlN5lW+U+mlVFtDYolmjdcVQH8W5KpnkRNqBA9RScKbuCbPiB8Hy8IKNTEzMK6AzQlfOP7VryA
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794950182-755028
+X-HE-Meta: U2FsdGVkX18c2wNpwLAdPmqleOfo4UHLWBp3kQ8FxyFj3YvRgIGXHW9EWT+U2krjDVr+kWE5g35YHH7yNAseTG0RkGMRVMzn26GN7BoNKAAuSJTTW7aZoOFFmLX4xLU6RkUdiJzIS017HFKXfNXh84wp/M+9NtzdM3uge3wzK1wiq7Qj0Sgbh26pcZor2FV33355+PM0UV1QfjMdztSAVpBC81F58J8IkD4YP/l6zTGK+dvaqgScLsLSkaRDNeGqJMosTvmKf4OCFA8yh9pKGWeeyixCP/o+efIsWDNjXOziTuewWv9AdY6B/RepQvGlIZL5+paZYJ75H691nBhwiC1SS1vGN1AGu/tyTsq600tD3tfOq5bzmdnJ9HpUX0dY18VlLlFdj0XWZn07cwHAJ0cvObB+GTB+xMeVV06goh7GdHajTGuWpc1Ug1vCU35hfZiA/TcBakXxkJXLwhM6+Vy9tUj1LrONsW537OBmVO94dslquIAa3yCqItre/yyITRpjdth+YlHwj/ILQcxv9+Yop0SsjhV3OHdVdKdUrd4FrefMp7Cv1tKWmQ1whV456GoNdDLcSi4rMeik2wfi4tnI0CAcXPbsG2aM8ZluJMWlcB4Q9GMOI3JY4vA3vOp9SSTQgDnStg3puerCvq0a7r5sliiWNLVGzwf7YVy3c4ECcVHO0aAahLshfNY6cMjk72440sOAfOlNthYNicKTq4bnnWXl1tAQO1X17g/0miwmt98r/UkZ6AvPDFjTjpjOOq7R0WMDhsg0rlUvGKZlXPEfgjwlm0wFLChZ5Jfgie6MIvmBKLsvherN83mVQzqup5tH2ttxuZ+X9vLZK/8tp/9Fg2vxq+0YGpSLvNdv2JVbj7/1oaFbx/jZFBaLgCKW6rKYeKBOIGN/etcTe/q6kbM3ghTetu6rGSlvWylH4OK88T5Dake7wq7CKygk60V8WO1PoDWUtV7WZTbatSr
+ XRrggZRw
+ rmtptBN2+pLyCw4Ya6FMyMLLsbkksW0PCixiBzCB9ghP8MHqXmBP2WJl9TONMtt0JdQUS6NGmXHjv2zz0o5jZHA5eLWNliN9sFC8U1I63OtcBB6IC4Eji3Gyw14CkWFcJf3AGQ/0A+IKxTZzAcEANLr+ltfQtqRUuSRODlfyktSrow4kPJVO4LOQeguWH5LRlRfdB+cin9Q+lc4euG3CxIcdXuZdUyGrg7e3VDmtG3arG9vGUF8Hv7j8t0so7A1GMgDTh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,45 +143,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 20:18, nakixii wrote:
-> move_pages_ptes() gets the folio of a present source PTE and then checks
-> PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
-> is per page, so for a PTE-mapped large folio this can give the wrong
-> answer for the page that is actually being moved.
+On 11/17/26 20:52, Mike Rapoport wrote:
+> On Wed, Nov 18, 2026 at 03:18:53AM +0800, nakixii wrote:
+>> move_pages_ptes() gets the folio of a present source PTE and then checks
+>> PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
+>> is per page, so for a PTE-mapped large folio this can give the wrong
+>> answer for the page that is actually being moved.
+>>
+>> This happens after fork().  fork() clears the flag on every page of the
+>> folio.  Once the child exits, a write fault in the parent can reuse the
+>> large folio, and do_wp_page() sets the flag again only on the faulting
+>> page.
 > 
-> This happens after fork().  fork() clears the flag on every page of the
-> folio.  Once the child exits, a write fault in the parent can reuse the
-> large folio, and do_wp_page() sets the flag again only on the faulting
-> page.  Reclaim can leave the same state behind when try_to_unmap()
-> replaces the earlier pages with swap entries and then fails on a later
-> one.
-> 
-> Moving that page with UFFDIO_MOVE then fails with -EBUSY, even though
-> the folio could be split and the page moved.  Callers that fall back to
-> UFFDIO_COPY on -EBUSY end up copying instead.
+> COW reuse of PTE-mapped large folios only appeared with commit
+> 1da190f4d0a6 ("mm: Copy-on-Write (COW) reuse support for PTE-mapped
+> THP"), so this scenario didn't exist when UFFDIO_MOVE was added.
 
-Ah, I was about to say, nothing bad will happen because we reject to move large
-folios.
-
-So this is pretty harmless and pretty uncommon to hit.
-
-> @@ -1570,8 +1571,14 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
->  				goto out;
->  			}
->  
-> -			folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
-> -			if (!folio || !PageAnonExclusive(&folio->page)) {
-> +			/*
-> +			 * PG_anon_exclusive is per page. The first page of a
-> +			 * large folio can be shared while the page mapped here
-> +			 * is still exclusive, so check the page being moved.
-> +			 */
-> +			page = vm_normal_page(src_vma, src_addr, orig_src_pte);
-> +			folio = page ? page_folio(page) : NULL;
-> +			if (!folio || !PageAnonExclusive(page)) {
-
-Yeah, we could have also moved it after the split and test for an early
-folio_likely_mapped_shared() first, but doesn't really matter.
+You could construct something odd even without that by using MADV_DONTFORK on
+parts of the folio to then fork().
 
 -- 
 Cheers,
