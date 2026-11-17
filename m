@@ -1,101 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E5C606A885
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569C2606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YBwzihIj
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=FVdHXBU9;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=lFqzxq0O
 Received: by kanga.kvack.org (Postfix)
-	id 4859F6B05B0; Tue, 17 Nov 2026 07:44:54 -0500 (EST)
+	id 5C1A26B05B1; Tue, 17 Nov 2026 07:46:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 436DD6B05B2; Tue, 17 Nov 2026 07:44:54 -0500 (EST)
+	id 572D76B05B3; Tue, 17 Nov 2026 07:46:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34CF06B05B3; Tue, 17 Nov 2026 07:44:54 -0500 (EST)
+	id 461246B05B4; Tue, 17 Nov 2026 07:46:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 099BF6B05B0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:44:54 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CD301203F7
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:44:53 +0000 (UTC)
-X-FDA: 85444580466.03.DF78580
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D4ABCA000A
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:44:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YBwzihIj;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E44A6B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:46:22 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A311B1A0417
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:46:21 +0000 (UTC)
+X-FDA: 85444584162.16.7479B84
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 638FC14000C
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:46:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=FVdHXBU9;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="l Fqzxq0";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf09.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.151 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794919491;
+	s=arc-20220608; t=1794919579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w951ovg3w2Vsfylh3ccdzN6FDyrcXZTYdvPxHdlj9QY=;
-	b=vuMqZAOgGS+FXRj7Ujp6qFbDCCd8K0zyuVVoWy9SEspuhp7XJIWaIC61O/scOJ9OAWds1o
-	EM9ZW5kMpJmFOi9Lg2CM8LDvp/1mfaheIJcBYXEVggv6+GVBBs04uoPwdzjKSzpfO5qgVo
-	L0PumEVmRh+mnn9vSWmHZvdRmUNNN8Q=
+	bh=YnxVKAW4+DdAcyfkrcKJtarFPNPOGVQzKeTY2Yur2CM=;
+	b=4lbZR5I33CVg9alB8jjVDgDlTarq0Tcwloydsv/spJjnLTj7FJiPFFUB4kt+uovcyj+29M
+	vlkDy0DNnddEDWYc70h7JWLBF3XmrZic+YduSR0UeLiuxO3MpUsdq3Zc6TyDYbtgUz1vB8
+	K8FlxU8mKDvsAKVMAHULs8AkWtVfnbU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794919491;
-	b=xuPjtobfEKF1rkHJm3aPD1TYEmsFa74DWQkZE3a84KplkuzAjCXOoiGb7oes/ehjUuL1gr
-	g9ccR6r9OXXKYXqroQdFb8OVD8MNYtDNaFBHYrjkl+hmLeuKfk/RGVsZXyf6iB1TNMUJcC
-	1NMDqUpqvEl0CZmQRUkAT63Bh8J+1As=
+	t=1794919579;
+	b=V+2Ref2/cgImeIMudo9kt5XdZL/amd6TDHwGTgkWjHKkwCTgWd5EyHv/3a94l52JCXbt7A
+	qZg+WDOjAuxKhJf5EGn520CaFYLGBxawl1AaMCgXiTqNjfWmzMcIyWKHZQATPm3mXUqXI+
+	U1I2HxJTsgxN8Con+YmT/jM8zNT5W4M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YBwzihIj;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 557FD63090;
-	Tue, 17 Nov 2026 12:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9431F000C4;
-	Tue, 17 Nov 2026 12:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794919491;
-	bh=w951ovg3w2Vsfylh3ccdzN6FDyrcXZTYdvPxHdlj9QY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YBwzihIj9Shh17NXGQFTAEvDovM8+5df3UglwbIP4LhlDO72jMNqyPF0WYqaMxoE5
-	 l5OzmmQDWs6bndpK3tF6rQ3lBt1zG/W2Vr4hLKm0xMK5Q3tuGJG1nrSyzrUsBppXaW
-	 SGkiwCNY7E+RlbeAppGntzan52lAp84hU06UHxtci+ahGbgAeTdRtu45d26OC8ja6O
-	 3fEkU5hLUtqSGA/TZDUwg1RsB15zGb0qJLGToS4ZL8Ufc4PY4HfNys3VnAcnlDfQwK
-	 nJPevvKsk4LSoOAzEx/JixDM6Bfp0Lr62Bqpj8jf8A4v/ui+HRG2kw8vE7zZM/LEt8
-	 9JwP4xNMylkVQ==
-Date: Tue, 17 Nov 2026 14:44:42 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 5/5] s390/hmcdrv: Replace page allocator calls with
- k[mz]alloc()
-Message-ID: <avxMOsbgkaC_kQA_@kernel.org>
-References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
- <20261108-s390-char-ready-v1-5-3db507722530@kernel.org>
- <20261116134656.125125Fdc-hca@linux.ibm.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=FVdHXBU9;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="l Fqzxq0";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf09.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.151 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.phl.internal (Postfix) with ESMTP id 8EB56EC08DB
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:46:18 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 17 Nov 2026 07:46:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794919575;
+	 x=1795005975; bh=YnxVKAW4+DdAcyfkrcKJtarFPNPOGVQzKeTY2Yur2CM=; b=
+	FVdHXBU9EAHNkmTDKyYCnzi9b76B81eb0z7i0qH3PcPWGKFs/WX9W6JNJB4ToM+p
+	weKy6T6F/+oFsSSDlPwae/ycxVZEjjjIt4WT6/eiD7aYiPkuIMSN1IOEhudtsc9w
+	T/uqUaix7qCCqNbG1UUy1d05XBWTrNiGjE8kwUwpya16R276DXaL9o+rGTfXH3YW
+	kBQQdgquU8Etnr2C3wRIH4+aH7UmzATRGWuusnVXaVrzr2mBPH3hYG78nu+Jm5HH
+	oDt0SKqmvOnai6Ufj5lslD/w3uEhW7ZmvJuTgg4GyZBm9MimbFEhBrF3sJVhdRwj
+	In+I822lYu23bBw6szr7Jw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794919575; x=
+	1795005975; bh=YnxVKAW4+DdAcyfkrcKJtarFPNPOGVQzKeTY2Yur2CM=; b=l
+	Fqzxq0OIGtcTJH+Ayl9lhXsRi4hQonAG7Re7Lh1eS4Hew8SM7l7LGNux2pOHaLBi
+	In8QgY7CX8YGfoIEY4FUv2xckMaoLoCXeWbDdI3RBWuAMA7WRtFGDLKHXi1d9He3
+	HDC1oSzw1iUTB4rSAvYTnkGmY7+UfefJS4s3sp44lnOszLyp/v7tw0lYFyZNWyHA
+	OQ+2NuhXafiup/56PJQk6jFklz/spItSyy+ij+OSp1Tpw3spw9SHu5ymUUEjmXKb
+	rSKnHPnXq2TKJwcUjFlg45NNnhyRbKd+06GwTdv4KvaSlIPz686ryPINArh3aDxW
+	TrQtUKx2Gv+HsLDCMLIYg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794919575; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:A5HjkA1remcdpSBZ8klzD/Ik7eun6ON6lq+0/zHASDx2rDW
+	zA+VnumNOqehM0/dUL9TApVD5iNUJIIvqPEGFCH9qHcno66j9RiGM7Vz7DFFRrJt
+	wm1C7nyA6n24+sMHwX1YtYS1HTJHJiG/WPg4j44EaPFsXHBUqX5hp5c1yrbij28I
+	n36o9npSKy1zw2//GilEweheJ1Sfr3a7Dz862dLJoOWCD9LPc7UD6zldlcIkNRFQ
+	ek6IC6nk7emUs7tn2MheVxR+dLQZL9un97SCumiSsjema2fzwjBsAxvlrzpxV5yE
+	gw3MNVggUHIpEi9WVjHQkcNISX7ehXSigvXNVCQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:l9jwFaigUlP2Semq1pBSvPA3q9zJvNN8b8OZDwzhLp8=:UPUUtkX4R6DS9/Yu6LpWZqAbGWKyCTDEJxdw++jr0Bs=;
+X-ME-Sender: <xms:kUz8agq6XN9cp_cqSuE7y9Mt7cCL-O_s_rnO4uahNRkbmFygGMr-yQ>
+    <xme:kUz8ahcGZ3IXoi7JVaLiQhj5qr40JBzC0_-BB55wmm7PqcxHic-0yOggIZg9o4rU7
+    0WKcAE3pi_56824W1PZ0dPuT_157Cq_BNjGUXXJQr1QW4DSdDwucYrw>
+X-ME-Proxy-Cause: dmFkZTEQ6l2HKVovdikndXCQnuzqOGyZJgaZz86ZLw177hPDftS30oVMEijNYMV1UfTvYh
+    gsPHRgVgloyv3vsz3E2nQEt7/GZAQYru/bf7ixTMTpCdGPjwYRslcw0pzEOSBfusBs3rkd
+    j5qv+iImW+0q3I8QiJ69Bo8VRKVEHoVvQG7wh8sowDUoa23IdW56CbW3JeJAuNl2jUckYd
+    UHFheAed3wq4x/srblo0ST6uiFq9n0zZ/Au7ja7VFUzDA51GrdgZ3+UjpWx9nwR0c+Lrb6
+    EcjyS+GLwHLnF9q+1z1ikew4hX+SJ/p+zE3/PdhMhAobNRsagxN77g+3JM+YSJ76/ZMBKA
+    hfEjtDJ3ezkKBwi2DZP536aPnz2iC9efLlmXPYMsb/JWSwEKqyDdW7bjVcX837dtfJMP47
+    r2teeJ3cbcR2+F9laJAkTs/1vT5VWhovexqg0uVYcTHAbPwY2QXRVx1B+6KbXexIDp6jAs
+    3a1HN75YvgaarUavgmHcpMMf7sEJhVBvXky4LZHtaqsTNDCeQ1UsnCzbCRXggft3Mf80kD
+    5ODjp9nFtwX5Axz80fvLxmOBm1oScxUQ7gGKx+GqmZihk4vgmS50JC5jONrTd/Of3plHx3
+    loPKDYlcZV93QFS9AZPHj5BxI8wMi6NB+GbZxL2wj5+jaQLCnkBsjBn0JQHQ
+X-ME-Proxy: <xmx:k0z8asnbc5FinHeSZn-pp9JNrkdpjs0lcPYJHc7RbYXNcqmjsa-ZEA>
+    <xmx:k0z8aiOpgUMwS6oLAjjlc7yNIPQCR3caegdZGbjDvFF-nhJZBZjLlg>
+    <xmx:k0z8am6XXv8jjTDdPcNNfqR4kuTwVWz1nWnFcPBYmZdyb1VkCZxwGg>
+    <xmx:k0z8ambtKBqrdnGPGaDjwl_K9BBiQ69q-Ze9JYtIHmVj_xYREhR9aA>
+    <xmx:l0z8aogw5VB-aSa7rqcut_3EOCZkhoCbRstY0fNmO-LuibVSkqxZ5QjY>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 942BE32A009C; Tue, 17 Nov 2026 07:46:09 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116134656.125125Fdc-hca@linux.ibm.com>
-X-Stat-Signature: xwyehfd3gio7nfme4135ztw7tim7aeha
+X-ThreadId: AqUefEB18S3J
+Date: Tue, 17 Nov 2026 13:44:50 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Gregory Price" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>, "Zi Yan" <ziy@nvidia.com>,
+ "Joshua Hahn" <joshua.hahnjy@gmail.com>, rakie.kim@sk.com,
+ "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, larips <larips950@gmail.com>,
+ stable@vger.kernel.org
+Message-Id: <3b9d974c-18d3-4113-b7a6-1f785f19b318@app.fastmail.com>
+In-Reply-To: <20261117101910.1820066-1-gourry@gourry.net>
+References: <20261117101910.1820066-1-gourry@gourry.net>
+Subject: Re: [PATCH] mm/mempolicy: limit compat bitmap reads to the source nodemask
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 638FC14000C
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: hwkjkjf1491s4oa6hetko8px8icktnfq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D4ABCA000A
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794919491-265529
-X-HE-Meta: U2FsdGVkX1+v+NHa+MeWYtSfi16FJ9Da+NVxmL0mE0+gfMDjCx0flMAHHY9yhsZpdjdiuSgDRQEvOipHsNMl2D6Wbwvw0oywM9hgmtHzvnSXGULGudodfAQDNVTNAHlraE7UsGT+oURzGzlUx+ZKtiZrYV+Bq3o0zgHr6wElK0/hS/AXFhaWUJay749pmGs27OdV0GnYnujhy/KO30M/d5Fleglt6LrfAKAq4cwui9wvIwSFdXYmNIdMARiuSthf9R4gZzf439BsGvlLlNojXw6qo87jdZU83AugcR23lk2qTNM2ONnrFveeJgctEdv06vK2zpHDV6z94R1AYIX/zuDmsunwCd8GYKa9utPuMM8TjfzY/zB/tR0FhxDHFrWsqgjgaoGcDqg60DSWrWChAq1//3VarHU/+lQxiUUFZI0JYdto3VyuFym7OqSwWJUdClHoDMZz9vR52r7Zhri4AjwTkpNFAS8zgJQzWSSDkk1eYDwUO4T6DY/zbVmvvv4dgzfhaq1uQjUopaySg6TQM/fNosZVIx3jw+n70CEbR6lPGHT2XltfiD4ScT/7CWTP/TVHsorUfM2X2HVriweLnmLsGQEhk0niIRqfNAtF3PFO1dGyJryDAoan9wIumBjkT8IiE3FcTZIQ09Hirn0EU9+8bILrCwiwMXYcOlwUF2mAWfSHoisM8HE6pVgdAXEa1ji4ptzFjD6d4U/UGIs/8ekB3m9RukCKYBNg7HY4bsggXiFmd+4p8PKrQhG8yswOshZlhQZ5VUatYLyXcHla+2fBpI9mcbAqlMMxAwW+mA0YsMVkCXU91/SFSTohvTPw0GCiO6HljCxWPSz+1+LzMCNw7LKegw3RZfafN+gyVKd8opIqs/yOh3UmyO3Nx6rFJtoyYRUtLinI0TeuN5W10c5D1ETFFNb1J5xHztGo8c/p8jJgn+kDV9kBPEoav0sZFd/Td8/4clZIohnblPS
- caMAluUN
- LtoMwVyP4tiMjRWQgZL+nX0WXRU0bvZAYTLm5I8SOi+V5+VbNETMccM8SOFlhuRDryyQl/1q5NRfHGNkE0UBxWPpuhzCOL6hLFU5jdOrHGFTGq7j64cdesMiSvxKBd0zW+7xKqv/wjSMELCRi9s7ShxvPAco5hKJYUUnEAhwAL8TNRU9KD3gVobLcK3AWIN7aydJXUZV+7RZe5jZY0U+Ab9DyRC3lT0VB8LwvvQFBBgVX+PDauZZa2SOeOVx9NCZA4gV0suPDEWVAiBL1IKTsLlgu5cQRNap50UQcmWoYi8dlx4k=
+X-HE-Tag: 1794919579-873806
+X-HE-Meta: U2FsdGVkX1/oUIGmhIVgpnH/UvZJ/AqA0XWFWst3yLD+/M9JSavds6E11qfhvfukNknof9GVOO2b/e5f/Bm/uwdRgWooP8GDMyzZNBzNJkejDUrt5DrXGQOh3f6PFffoWyidPXZPgVkMnReuIZVmW2qaXGPEk/LlnQk1kJuIuCR2qWi/i9n0s/xajgoVRJgp8coPRSjH/KWM4RXN2J8DTTOQjvN9N24lY/WWrEScSgkaAHrDpi3Omu3ZX7UbIXeZhqEcorYHDiJQWkOgEk4QlHYUIRII9q4QwwqZVrZlYMuZVoryok4RCz6bhjiHxUk3PmOKDceiHksJf2Z7dv+lMvDVNTWehMIfCyxFlEvMkSyGv3phT1fbFzHMekugDLLQ3RD/ptyO5619BxVcKvWX/e1JuKQ+aM9Zq8PnAGbQ8hshbw4cQXEhAdzsTMRKTByMdk7t+Hc/hbtXMhP70ABK9qhSICBdgNWUNYe1C0b8wRmJX6tf3qoQHC2176l5YqHOCBVgdaG3fZCrc79zvSvLBJtXnE6NsUIALopugmgNNSBLA6QePL8UGBa/CePsR/36wVn+P2Acw8FzyKMZAnkpMkdwKtE2cKN912kL625GPQFU+YvFBO/a2XPvOBmaY3vL44lqsN8MWPULAzn5YH2pE5E7knHBxwmhhVV9ZfsYzhe+Ib+vfatQrBKX15ncpCDmzq/f8VT5La9kZH5hcDTTIxHHHK5FYiKMLvm4F1MPPBypyQOMvONoCRoK3wheSDw+CsKLhRRCV9owyDljdfHsVwlJsxBysyV3SLJyGo9VEtpBiNvAEqlUYHoezW0/uaYQlL2rBP7hY/l4r8G6rdeiMzJuDw5p6tHtPsC4yqCaLWuonATALJetL+cAw6xWomqvUnCN3WB8/jbCi6Aan1QSqcO5LJj9ZmXZSUyuzMmOQCXl8yziBnO4bvYLmawIyYRNfMTpuALY5E8KRc40s5P
+ CJmlBVX7
+ 0/SogPMRL98cDB/cMfc4bRIJ0XNGg0+qujDr9OdVeQtceKzfKOhaYK98/nL5VbGMLmAggFDgjPa5/w9+P4XzPicHF2UUBTGz5gWc4Kde5y4dtXgXNjQGgxwJn3wbDyZ2CsT5VPeA4fksqnURM5bCV/QTra4LTKKC2SubdoEzPy1Mdl6YTrdBdxbexCqoiyY0zig9FogkFtG5J1u46c4eQ6tcBilOgWc36Z5PfUw6ft5+vBg2y2JR0C5sseZY36a2zeN5H9cMtiCWG4T7RipEyu9ti4uMOs9JipEarxP/F8yzrNfUB1j9XAWX/uAiBhFbeHRSHvHHWxXrVbtH6gmHZPLs9vMSG8zvHU1tU6c/+r7YhGpKqBAQgw9e9dA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,116 +155,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 02:46:56PM +0100, Heiko Carstens wrote:
-> On Sun, Nov 08, 2026 at 10:49:02AM +0200, Mike Rapoport (Microsoft) wrote:
-> > diag_ftp_cmd() allocates the DIAGNOSE 0x2C4 parameter list used for HMC
-> > file transfers under z/VM, hmcdrv_ftp_probe() and hmcdrv_ftp_cmd()
-> > allocate the data buffers used for the transfers and
-> > hmcdrv_cache_startup() allocates the buffer that caches the contents of
-> > the last file read from the HMC drive.
-> > 
-> > These buffers can be allocated with kmalloc() as there's nothing special
-> > about them to go directly to the page allocator.
-> > 
-> > kmalloc() provides a better API that does not require ugly casts and
-> > kfree() does not need to know the size of the freed object.
-> > 
-> > Performance difference between kmalloc() and __get_free_pages() is not
-> > measurable as both allocators take an object/page from a per-CPU list for
-> > fast path allocations.
-> > 
-> > For the slow path the performance is anyway determined by the amount of
-> > reclaim involved rather than by what allocator is used.
-> > 
-> > Replace use of get_zeroed_page() and __get_free_pages() with kzalloc()
-> > and kmalloc() and free_page[s]() with kfree().
-> > 
-> > Round transfer and cache buffers up to a page for the required 4K
-> > alignment, without rounding to a power-of-two number of pages. Reject
-> > unsupported sizes before rounding.
-> > 
-> > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >  drivers/s390/char/diag_ftp.c     |  5 +++--
-> >  drivers/s390/char/hmcdrv_cache.c | 18 +++++++++---------
-> >  drivers/s390/char/hmcdrv_ftp.c   | 14 +++++++-------
-> >  3 files changed, 19 insertions(+), 18 deletions(-)
-> 
-> ...
-> 
-> >  int hmcdrv_cache_startup(size_t cachesize)
-> >  {
-> > +	if (cachesize > KMALLOC_MAX_SIZE)
-> > +		return -ENOMEM;
-> 
-> What is the reason for this check? I can see that this seems to be a
-> common pattern, however the buddy allocator would warn as well for
-> allocations larger than MAX_PAGE_ORDER if I'm not mistaken.
+On Tue, Nov 17, 2026, at 11:19, Gregory Price (Meta) wrote:
+> A 32-bit get_mempolicy() call can read past the kernel's stack nodemask.
+> With 64 possible nodes and maxnode=65, copy_nodes_to_user() computes an
+> eight-byte copy, but compat_put_bitmap() reads two native words.
 
-Since cachesize is a module parameter there's a very corner case when it
-could have value within a page of ULONG_MAX. Then round_up() wraps to 0 and
-kmalloc(0) returns ZERO_SIZE_PTR rather than NULL and does not warn.
+I don't quite follow the explanation yet:
 
-The module would load with a bogus cache instead of failing as it does now.
+if maxnode=65, shouldn't that result in copying 16 bytes on x86-64
+and 12 bytes on compat mode?
 
-While it's really unlikely to happen in practice I'm sure Sashiko will be
-unhappy without this check :)
+It looks like compat mode adjusts the wrong variable and we should
+be doing this instead:
 
-> > +
-> >  	if (cachesize > 0) { /* perform caching ? */
-> > -		hmcdrv_cache_order = get_order(cachesize);
-> > +		/* the buffer must be 4k aligned, hence round up to page size */
-> >  		hmcdrv_cache_file.content =
-> > -			(void *) __get_free_pages(GFP_KERNEL | GFP_DMA,
-> > -						  hmcdrv_cache_order);
-> > +			kmalloc(round_up(cachesize, PAGE_SIZE),
-> > +				GFP_KERNEL | GFP_DMA);
-> 
-> ...and that check wasn't here before.
-> 
-> > diff --git a/drivers/s390/char/hmcdrv_ftp.c b/drivers/s390/char/hmcdrv_ftp.c
-> > index 3312b2ac00a9d..e22789b532de2 100644
-> > --- a/drivers/s390/char/hmcdrv_ftp.c
-> > +++ b/drivers/s390/char/hmcdrv_ftp.c
-> > @@ -238,16 +238,16 @@ EXPORT_SYMBOL(hmcdrv_ftp_probe);
-> >  ssize_t hmcdrv_ftp_cmd(char __kernel *cmd, loff_t offset,
-> >  		       char __user *buf, size_t len)
-> >  {
-> > -	int order;
-> > -
-> >  	struct hmcdrv_ftp_cmdspec ftp = {.len = len, .ofs = offset};
-> >  	ssize_t retlen = hmcdrv_ftp_parse(cmd, &ftp);
-> >  
-> >  	if (retlen)
-> >  		return retlen;
-> >  
-> > -	order = get_order(ftp.len);
-> > -	ftp.buf = (void *) __get_free_pages(GFP_KERNEL | GFP_DMA, order);
-> > +	if (!ftp.len || ftp.len > KMALLOC_MAX_SIZE)
-> > +		return -ENOMEM;
-> 
-> Same here, and as far as I can tell the Sashiko finding seems to be
-> valid as well, even though it looks to me as if this worked only by
-> accident. Also, as far as I can see, the reported "delete" command is
-> currently not used at all from the only existing user space
-> application that I'm aware of. But let's not change this, please.
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 6d662a9a8c74..f9a7be9f4432 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1749,12 +1749,12 @@ static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
+ static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
+ 			      nodemask_t *nodes)
+ {
+-	unsigned long copy = ALIGN(maxnode-1, 64) / 8;
++	unsigned long copy = ALIGN(maxnode-1, BITS_PER_LONG) / 8;
+ 	unsigned int nbytes = BITS_TO_LONGS(nr_node_ids) * sizeof(long);
+ 	bool compat = in_compat_syscall();
+ 
+ 	if (compat)
+-		nbytes = BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t);
++		copy = ALIGN(maxnode-1, BITS_PER_COMPAT_LONG) / 8;
+ 
+ 	if (copy > nbytes) {
+ 		if (copy > PAGE_SIZE)
 
-Sashiko is wrong about get_order(0) returning 0, it actually returns 52, so
-__get_free_pages() returns NULL and we end up with -ENOMEM anyway :)
+Now in the maxnode=65 example, it should clear 4 bytes and put copy
+the 8 byte bitmap.
 
-So it's either keep if (!ftp.len) and let it fail for "delete" like it does
-today or have
-
-	size = round_up(ftp.len, PAGE_SIZE) ? : PAGE_SIZE;
-
-and allocate at least a page for ftp.len == 0.
-
-What's your preference?
-
-The ftp.len > KMALLOC_MAX_SIZE check seems bogus indeed.
-
--- 
-Sincerely yours,
-Mike.
+      Arnd
 
