@@ -1,114 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB6B606A329
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6798C606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D4vzbT3s
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=AM8wiTwT
 Received: by kanga.kvack.org (Postfix)
-	id D66B06B00EF; Tue, 17 Nov 2026 05:21:36 -0500 (EST)
+	id 5CBD16B05B0; Tue, 17 Nov 2026 05:25:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D162E6B05B2; Tue, 17 Nov 2026 05:21:36 -0500 (EST)
+	id 57CEB6B05B2; Tue, 17 Nov 2026 05:25:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDE336B05B3; Tue, 17 Nov 2026 05:21:36 -0500 (EST)
+	id 4440C6B05B3; Tue, 17 Nov 2026 05:25:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 94D366B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:21:36 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13E69A03AC
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:21:36 +0000 (UTC)
-X-FDA: 85444219392.08.D6F208D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 360A1180003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:21:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4vzbT3s;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B3C56B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:25:14 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5533B4039E
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:25:14 +0000 (UTC)
+X-FDA: 85444228548.26.DD2FDFD
+Received: from outbound.st.icloud.com (st-2005j-snip4-6.eps.apple.com [57.103.79.119])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 60E2F20006
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:25:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=AM8wiTwT;
+	spf=pass (imf03.hostedemail.com: domain of m.harisawan@icloud.com designates 57.103.79.119 as permitted sender) smtp.mailfrom=m.harisawan@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794910894;
+	s=arc-20220608; t=1794911112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UXZ+gJIG1gP+CKxMaNvlafcmbL7c2harfJRX7gxsgMw=;
-	b=8fx/ZWMtPq5GicZh/XtDDD529e3jIewjPF2WdT7Br/Rv8dha8yZ5QJw/pmUgQOBkq73K6/
-	kBz9TGo18dLutdMKw6Mmv+K3RiyirZFHIHRix+YcpMJqe5rC7Lutfcv+GZDasV9srXV+PH
-	zIPDHMTJ3hAPQ+XynMPLgk23gP51Ch0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4vzbT3s;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=6HU+57MgwQIYqvbSD+KkyYtggnx7khmZi4J6g6F0SBM=;
+	b=lSrZgaCVPxqjaxYh3NVdsnsovXVN1kwDQWVl6S0IslzJmGHy1a2LrOQv5OOZzQj7/KItxV
+	GVk+wuqdPRM4eFFRFUghIEp2UsKSf79mewqbrqttB/OgLzetF1edp8wbj/gXrvujPPS75l
+	R3m+HnZAiIQP33oSrVMXBs8efdMqMtI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794910894;
-	b=X1JMG+ejw7jZ6TcwICjWEzqJWZcVLbnZJlHY5sn6PeP9hrnSpzwldATPmKfzX9mk4qPZuq
-	OdOk3LjEh2kR6dcE/o+75lOpCXYOCDdrhLw1rsQJ/pfp9yuBWxtaRH0XmK/dvEmCv0FF7K
-	Suk2ZDT2YKtW94IeaLqNQ6heGTaGCM8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43A6562D00;
-	Tue, 17 Nov 2026 10:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50EE1F000C7;
-	Tue, 17 Nov 2026 10:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794910893;
-	bh=UXZ+gJIG1gP+CKxMaNvlafcmbL7c2harfJRX7gxsgMw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D4vzbT3sw6LKGRN1Fg0eToodi7N2R3UHzlrzyKZcneYi5J/U0DmDi89zjIaNP7pyS
-	 o26kzC7X/Z7O6vkZCrPxe6Y2s1wjY/PAqZDwbbMBnRCtUl8eMqa0urT7Loya0Rn0lo
-	 z1KLoBuF19/bJ9Vgm/5uGC9cPGVtz4KGniyfFwyzW3XwRCzRDA39L2lWGYcWbUVUVo
-	 0Y1WxFNqDlcvdOEk8AKLlIiP2HaIqPWGjnokZeRZgiYWbhCf+xAPAX6JGK7cyWH8vY
-	 ljTYNlayqp0pdAmVEPtObScMCePJssRfTggh1ZV9DHp5hInv8hoKtVIBfM41sJ7YA+
-	 j/OEM5rAPdiDQ==
-Date: Tue, 17 Nov 2026 10:21:18 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jeff Xu <jeffxu@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver <elver@google.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Chia-I Wu <olvaffe@gmail.com>, Dev Jain <dev.jain@arm.com>, 
-	Evgenii Stepanov <eugenis@google.com>, Ian Rickards <ian.rickards@arm.com>, 
-	Jann Horn <jannh@google.com>, Jeff Vander Stoep <jeffv@google.com>, 
-	Jeff Xu <jeffxu@google.com>, Kees Cook <kees@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Peter Collingbourne <peter@pcc.me.uk>, =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi@google.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Tomasz Figa <tfiga@chromium.org>, Will Deacon <will@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Baoquan He <baoquan.he@linux.dev>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Allison Henderson <achender@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-mm@kvack.org, 
-	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, kexec@lists.infradead.org, 
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 5/7] mm: kasan: skip KASAN for GFP_HIGHUSER
-Message-ID: <avwp1ZpVudiT1Gux@gremlin>
-References: <20261116230627.3537051-1-jeffxu@chromium.org>
- <20261116230627.3537051-6-jeffxu@chromium.org>
+	t=1794911112;
+	b=osDBAkbIkLeczWq4JeldEnBnLHFZ0TnZrTQ+3Fi3/M90ewvVKloPjwsGQqYaMoKqNxUqyv
+	WIrc0M9YMpKiBmJch+r9CAcUuMWO55GydmAWgkhKFNsgENSY0zmI05/5xUEGmekFDRBvfc
+	8W012U96uMFVv7vWlBcPgrANMmp6KuA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=AM8wiTwT;
+	spf=pass (imf03.hostedemail.com: domain of m.harisawan@icloud.com designates 57.103.79.119 as permitted sender) smtp.mailfrom=m.harisawan@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-1 (Postfix) with ESMTPS id 14D9B180018A;
+	Tue, 17 Nov 2026 10:25:06 +0000 (UTC)
+X-ICL-RepId: 01a1e909-f7b8-7aba-8bfe-4e3cb1e1c272
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1794911110; x=1826447110; bh=6HU+57MgwQIYqvbSD+KkyYtggnx7khmZi4J6g6F0SBM=; h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:x-icloud-hme; b=AM8wiTwT2kgzq0qGpg9lrsxjguZZtieuJZW7JvrFoooosWMv4SMUEhU5xjGghdWM4MozLnOh3NBSKO7eNTNMdkUB/86jiSRtNTXBKiPFUmCnOr75qw6W1GzYJH1BPGqS0ebRk2y5q+HTiJYyTwuUM+naZFcKe74d1jMAjFAwwl1tmPxOn4krPsZe6+OtVXT4aGdGngwlvvQAc24ILE9bkggUMGYL0OTq1TShVeq4Cq48MmY3zwjq5nS+slv3mAIIEYQJGchLvPFx27SLmV/QH9bBZvNAGiblohpO7VDZJVKHkKl95Nb1ktzuF0NpwB+I0rikbnV5NMqJ7ENeYpVinw==
+Received: from [100.126.217.91] (unknown [17.156.216.30])
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-1 (Postfix) with ESMTPSA id E6CB41800185;
+	Tue, 17 Nov 2026 10:24:59 +0000 (UTC)
+From: Muhammad Haris Awan <m.harisawan@icloud.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Liam R. Howlett <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Subject: Re: [PATCH] fork: mark memcpy() in dup_mm() with data_race()
+Date: Tue, 17 Nov 2026 15:24:51 +0500
+Message-ID: <179491109101.4015489.11185824873441987133@icloud.com>
+In-Reply-To: <0b565b9c-1462-4fed-8836-9a7d08e4b861@kernel.org>
+References: <179489519663.1444496.15875846661591982934@icloud.com>
+ <0b565b9c-1462-4fed-8836-9a7d08e4b861@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116230627.3537051-6-jeffxu@chromium.org>
-X-Stat-Signature: xt17tupg1jtbn4rdp3c56ufcfgghayc9
+X-Proofpoint-GUID: dLUepeR5kMZHEWKIZIgDJCajbB36wGcv
+X-Proofpoint-ORIG-GUID: dLUepeR5kMZHEWKIZIgDJCajbB36wGcv
+X-Authority-Info-Out: v=2.4 cv=bISDs/+Z c=1 sm=1 tr=0 ts=6afc2b85
+ cx=c_apl:c_pps:t_out a=oyWFxbOnq+dmhQrAPgaJYA==:117
+ a=oyWFxbOnq+dmhQrAPgaJYA==:17 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=x7bEGLp0ZPQA:10 a=2kFROKt5_e8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EYaFdmsEC1CjpenOt5ir:22 a=5dLkQmbtQYkJk1E8iZFh:22 a=4JPYJV-aiw2Kicj_3zUA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE3MDA0MSBTYWx0ZWRfX/OdPMQ5kwIgE
+ TuhCSlT+3ixpEUjyETkQMRHdmLgESeXzX332IgJa5uXhSPjwbVYx4/bX2x2SxPTlZkugPkDIxAh
+ hIhGvRHYOLGPCdQaAqeMYybHsPbgD45iwudm4vplbdNBlb1kPaWv6s2uSYTgeo/iT6UWBo5I9iC
+ lpA4BjXL9eolAIqInQMZsqEs0KprTBlu3AI0/B5HvxG9UiWoKYsQ6mk6IdOK8zUEOLHNnX00w5p
+ WXqSnBTxn9Tmim8LzaC/E8XjdwNslvb+5PotXqMDCg37xQVTMzs8Zbf1X4pQlvCZg86o7FUbThU
+ wQ1DS984QvvkkDRl5JWNwb//BMAkoAqm3RPIJLXWz2jxNmSxBbgOa23nniH5L0=
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE3MDA0MSBTYWx0ZWRfXw6Md+FSiYDc3
+ 8ijTF810kZOWVKMShm9pjt+qHDCOJhFeyC1cAOA7djBjRi7lO3pRWVOwfHr1F7ZIE8KczXtu34c
+ Xd02MetYgufJf/Je/tAPrExnQZxfi/I=
+X-JNJ: AAAAAAABHYM+2uoVCH3FWr2d6COnBYmqzXEJ9EdGxFXkaqgX8h0Elg7IKTgfa9d7SkY+Eb
+ Gs1vkcPuAsrxpNoTdivFvSLKa9KAsYjzkkP6XrNeworQKUBwXrI6d3frYKk5Oab197zGRb
+ Y8AGDROudb5WqF6e6mzFIfvDAYy6JHvWgZVgw1itAPNh8oGmU2AxH+mnxNICT7e4Sb3hGW
+ 5aaojbQr5cNd2xrY5vRIwD0KKgZFQoV9ZOkhCAYQd1U5jG7txzW0Z2UrafE+HJ8Xoo47WI
+ zh14Nz+gVqxTrNDddQ76x0hDN+4kbJrk+s/LIDjjTJA4PE09PgYo8DeRMBWtLy+sBNHIYM
+ dalCl5nTxKlC/ctwlOqTiVTV8xGMyNmHXFB5AH4CR8TgJqoCY6mo/w0Cs9Z18JjZ+6k33K
+ KL5Y7FF1umXQOc1NxNBE5MvaHHywx9OANDUK/D3+K/WjfP43/N0iW5uRJJEJqMsGrDR1su
+ ge2BQuR51Ejcvhk71cFSzQ6j6MdhxKTX2WSKs6XX/orYdxHYuX2asYKlELnhtwOpiEVGn1
+ 17glkDiYRq3hvP63HhX3Ar1dlwqj8xQ3vZF8XowRX1Sg0Ag2clFepbYae20LugpmTpuh3l
+ gYqn3l18rScJZMWxfnskJVUxYw3Cta585ZUzKz/q+Mtz1L/roQHAZebxtxJ5iEpnZlklkj
+ BrmcCkGR9FOhZEpcdpxhpAPO0wS5/GcqjIkzj6JkXNraeahAeNIBko8Pze/f/OkiLepssW
+ F9e5mCv+DQ9/aG0CC20917u6RgyXvuvQeTV4bSC6McEzndL8xVLGM5dFLwMKhzjn+baHwC
+ dHDFah+vO9iO3uBsk3x14NJKi3qYSrhirXBYne2lXBYSHhQyeuBDI4XXTGJ6F8V5gC+55z
+ WVNEOk/mwO1bSBKqQx4ymGApYDtlWdGBCircbCB2h2oJge4id27xUJ86p4ocO1dyoI3IcF
+ oYX9v53iEmT+W5pJU4O0Zxb8OMwoo9ZK7ab+tBuzPhDS0Ahm+Mp/5lOmecKMTFm6hDp9P4
+ kqO0ZKb4VkunioE5+RSd6+B2fchJxYKQJEczHtznJZp4ojcp7gBnd+bHE1yQPYy1RmsCfe
+ VaWENMKuP+JhSa4Pu/6Df50yXqzsFuywHJE0vpPST+2YJiDak1REX8v0zdl+BjiVBjLmHa
+ 3l47K/zH2uRnPiUAzox2ipm5kNP7MhnwKpxMoHDBL8/KxPxwxjmxo9lVZw37xGS2ORv+wJ
+ riuNvxv8KLOjYEsuNI3/NWfJ3JT/dQ3WKx1QO8D26pRgSW2Aznl2tUNye4OJFIOmesVPzH
+ f8kgEw6QGet70wegw21nJUQ9/kQpU5YpVSr522RR/ED7FtesZIUypJv4tRHXBPfHUyJ+Rn
+ Je6Nbl8ES1UTOPp1PfH5TLZ9PkJpLmDIMlRRv8Z9sOJdiAho3Qo34rLYbDqr6a5G920szW
+ Kz5XKxDQv3xCEeIu1cedvHTImb+nTiQ2u3oAaP2jqqE6c3gZEgLp/qpHjL7j700DRdi14r
+ /ZiMfRQY
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 360A1180003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794910894-88366
-X-HE-Meta: U2FsdGVkX1+8TSXnFeCTtQk+5Ocw+a9OQeTwbsGsH3ZXY5TXojfhWAmGQn7Ucr51t02PQ9y9BBDmHxMPehAbcpv9gshRmPcAQX6cOWcWapLN+3ZNF5xqB3GKnuKtrhOtPrIsnHyQtCaZNU849X1TN+ur3DJLUUGx9NhPCBr05iaEdmcBKreZZF0BlF644DGoIEUQIgyXF6UN5gYM0dNH6hmFI02kF5zkEKoYd1U3UzTyX2MxEINmGiwxX4Ta14+2RRg8qh/VUilf/YwwkzleQW1cAfJPT7nF0O1lIjBe3LKyOuzrquyQ3E+kw9VvYXU95LYa8J8MyX3bJvxkT9n/ktOxopoERVDe4eFO2+9DY+hD632TnaCMh3YAqI+fmH7Xon3w8F8kQDRsAKDZ45xf7shpZVZ28AuQyyTK247YQBKWpU5EQuq8P1boarR7hZg34FAO2QgEtlB+56lyouPlIB/vBYouMScN3aQfKu/tgP79bfsfDmS5WLSPjF+MYhqTpFqeP+7Rra11n3zjr7ZFITkKX2jU9ASxhBWbOWwbcw8wTk7O9SA2LENysNile1Y0hwJNappzgIeuTD1Dsp9IZlczsHScR2xrA0C7MzMfB0dyHXkknpwkMhJD9j0x7UFexRtt/cWorpzyKSnTSemev/WmKDlR6KqHpUwbu0A2bOIdPOrqcKGE/UFH6dVrvxvU5sdRy1LXocTosSBsCI6LgEMVL1Bw5BEYMgYL2wbnkt1ol/FNfNGKc6ev9FmXcdTow5o2XbawkiB2npvBn9u9GUowfd4XHRlwUBA80T9Hu6eJK4IgpYAshJPKFxHVs7LgjklmIX5psLP5Tg8ZeR4yIlYTdx0ipeTUB+Ddf01QNAkOroQt4t7vYDFocfvy/Ykx0WH7efPhuA1mJMjV0jFKOdXaXwM9dTumqCoom8jIb+rEECtAkD9RA0v0LGZbwJxjiogj2CgZM9aXX8i2eOf
- dIes49Za
- blq4oEnj02LsAp4IRl9JqYoyqb1IIgAjE4fZqU5xa6gY8FmUwM/yZCBKkpwiYA6iplFRZMPRNpaTWpm1vW7yyofKMgJwcIPnASP90IFzq/5cQc4GLHkDbexcXpjAawv5cnpEnIld58pmZwTES7ydynr/0gpkJgXX68txg+hPJ4WkTXhRmB4Ecgygw5o6vKAPxuvyvRrqntidMb8ESthWSdliVxXFz3T9s/QckNGqZNgQnAX3c0wBGwRs9jJ4D9piqXjAAp4wR1c3k+Gz+Xq1nCUziUSasluQzj6NoUrw/zg4MKEAehr5bQUulic96gaCoKCIqmzj8UpaZL8MT1q8qFR5VGJaidKgD5nxICbegpNwx+OCj426A7HYT/ondJWoKGTVMw+EM/FUyOMS/ekBKdrpFiubduZy021V6K+4IlwAwp5785rUhA9S2TtnOeFdfa42P
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 60E2F20006
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: 7osd574em5txxhooxa7cdooghhpprwx1
+X-HE-Tag: 1794911112-691367
+X-HE-Meta: U2FsdGVkX18nyZBE7ORE9odb+kOVQPg1cjA06ndbqI3cxyi1qVKi3b2MIXdS02fhMHB3vBuJwIGle78CAOVBZI6Px8+p6A19wqpDoDWHmJDXXXuUogyzGRvqMg92QwhGMdWKiS1EHm17//np8DRPgKcBWXt48trFYV+LUw2dvN6/BQm62mpD67G58nY/74nubg0eLiVp23gZwpg++/A2KLOrV1qMkJDUPETQDJx/jHRU41jv8Gb2UXuHSOZjCm9HMFUef/qSpMRI4kVGStMHmMBzkA+vBut4l17XmEdhwoFL18iwVEf/9VOrPZjJ3bDGbKWJuXmfJ1NjHExi5OY5oqY71ADdyuVQXOSEVZGxIbL1feAot0ZrfyLrqpMtw+hAkB3E8FD75szgi1vkqlpre5cqVMIDMmWlNvYKMkXmZlIY9pNcpOu8xAlJqlV8DEBLhqCe98q65cPtrM3jpAdGQ7dWV9qHYp6c6LIq3NOGGtsJT1rWmP7+Wz2DchuPqWMgp58lcPP5VdLaGCBmes1d3i9CoEqwMdR2Kx9R32dtXnsx1VF2SSAPevDKjNcLA7TVuummL7oNiJaGWicetsrtOpnl+tNNCyltVSS3WblDtJ4e0EQsWmKKUb+2a5D2tuFRTFg4yl0qBMuKQvIYxHlhc6dqDOH8DCAAyW2hLHOGexsA2PDQuUwZiev8XAjj2/bWl+iBdvfMZJ91q74rTxhbpq/s+Vm05rdPPFJCfWMNB/jY5ApFnBQAz5RDUGD9/ZoBODUrGbhsdomokd20QPvLodVOqqGRdfoXANhZCVKJq7A/G3/+QAZvyeVaX/l3gveta5tqel4OmVaB0VAG8jlSDmwXCo2PEM95Ujy5mJxnwqOUtXsbKaUYlswDoVKMG8L1fBaDNybzBjG8o4cIHtub2RmGeFLYuAm3qN/o+TMJCWSCm7pf+XQvqiNhsdny13htwclb/3iKrB2pw7Pgx1o
+ h3sCj6dB
+ 1vshtenDUk31AxAnkaYkwW4BweHaRaAMdX5qLkL+cB+fKIdv2uIE+IuXqgNGAmGeObQ7PLu+wFPm/1XONnwLYbXrXCLTN3C5r4ZCF7P5DIBD4kdz+8QpnbDbptscQHxHwyP0sxrVTV9DbdoB5xtBDfK3zE0xvL4CSwUu7+VzQOC14fFs4pFc9T6zKDwg5HhZm6doD2Et1X7AYPtnsk+ulCTOjQpkT8Me8UmXfWaz1lPvC6SF27XpMxUJQBG4reaIx4qVTkhTRNqpvTvtua7zJY7yLCjqsA5a9c/k0n8XsNbacxd88VaGmJInEGsZOdKobmHqO+ywIiP8ysvi6PgT/WX6uvDSP6xl6dLJcG6LjdqMqjuCXgvs2UziH+HMVjH0NqljGsY1nvTBvFlI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,130 +138,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 03:06:25PM -0800, Jeff Xu wrote:
-> Move __GFP_SKIP_KASAN from GFP_HIGHUSER_MOVABLE to GFP_HIGHUSER so that
-> both GFP_HIGHUSER and GFP_HIGHUSER_MOVABLE allocations skip KASAN
-> unpoisoning on allocation and poisoning on free in HW_TAGS mode.
->
-> Previously, commit c275c5c6d50a ("kasan: disable freed user page
-> poisoning with HW tags"), commit 70c248aca9e7 ("mm: kasan: Skip
-> unpoisoning of user pages"), and commit 0a54864f8dfb ("kasan: remove
-> PG_skip_kasan_poison flag") added __GFP_SKIP_KASAN to
-> GFP_HIGHUSER_MOVABLE because user pages are not intended to be used as
-> directly addressable kernel data structures, and the lower likelihood of
-> catching a kernel linear-map bug on user payload pages does not justify
-> tagging all 256 16-byte MTE granules per 4 KB page on every allocation
-> and free.
->
-> GFP_HIGHUSER shares the same kernel-accessibility contract in
-> include/linux/gfp_types.h ("for userspace allocations that may be mapped
-> to userspace, do not need to be directly accessible by the kernel but
-> that cannot move once in use"). The only semantic difference between
-> GFP_HIGHUSER and GFP_HIGHUSER_MOVABLE is __GFP_MOVABLE.
->
-> For every 4 KB page without __GFP_SKIP_KASAN under CONFIG_KASAN_HW_TAGS,
-> mte_set_mem_tag_range() tags all 256 16-byte MTE granules (via STG/STZG
-> and DC GVA/GZVA) on allocation (__kasan_unpoison_pages) and again on
-> free (__kasan_poison_pages). For users of GFP_HIGHUSER, this can
-> significantly impact performance when allocating and freeing large
-> buffers. For example, in graphics and interactive UI workloads, large
-> DMA-BUF and DRM/GPU buffers are allocated with GFP_HIGHUSER: while
-> steady-state rendering reuses swapchain buffers, UI window resizes,
-> surface creation/teardown, and app or scene launches synchronously
-> allocate and release tens to hundreds of megabytes of DMA-BUF
-> framebuffers (~32 MB per 4K RGBA frame, or ~96 MB for a triple-buffered
-> surface) and GPU shmem pools directly on UI, compositor, and render
-> threads. Touching millions of 16-byte granules stalls these critical
-> threads for milliseconds per buffer, a significant share of the 8.3 ms
-> (120 Hz) / 16.7 ms (60 Hz) frame budget, while polluting CPU L1/L2 data
-> and MTE tag caches, evicting hot working-set cachelines, and saturating
-> DRAM bandwidth (especially on free when DMA pages are cold in the CPU
-> cache).
->
-> GFP_HIGHUSER is used by subsystems such as the DMA-BUF system heap, DRM
-> GEM shmem/TTM and non-movable HugeTLB. They use it instead of
-> GFP_HIGHUSER_MOVABLE only because their pages are pinned for DMA or
-> cannot migrate.
->
-> What skipping KASAN means for the kernel's own accesses to these pages:
->
-> - Through vmap(): nothing changes. With CONFIG_KASAN_HW_TAGS those
->   pointers already carry the match-all tag, so the page tags never
->   protected these accesses.
-> - Through kmap_local_page() or page_address() (for example ramfs):
->   post_alloc_hook() now gives the pages the match-all tag, so these
->   accesses are no longer checked. GFP_HIGHUSER_MOVABLE pages already
->   behave this way. Callers that want to keep the checks use
->   GFP_HIGHUSER_KASAN: the previous patches in this series converted
->   pipe, FUSE, kexec and RDS, and backports of this patch should
->   include them.
->
-> Slab allocations cannot use GFP_HIGHUSER, because they do not accept
-> __GFP_HIGHMEM. GFP_KERNEL, GFP_USER and vmalloc() allocations are not
-> affected.
->
-> This patch does not address the false-positive KASAN report after shmem
-> swap-in readahead with MTE that was reported on drm/panthor [1, 2].
-> There, swap_cluster_readahead() allocates swap-cache folios for
-> neighboring swap slots with the gfp mask of the shmem mapping being
-> swapped in. If such a slot holds a page that userspace maps with
-> PROT_MTE, the folio keeps a KASAN tag in page->flags that does not
-> match the userspace tags restored by arch_swap_restore().
->
-> This patch only removes one way to hit it: shmem mappings that use
-> GFP_HIGHUSER (such as drm_gem_shmem_helper or panthor) now pass
-> __GFP_SKIP_KASAN to readahead, so the neighboring folios no longer get
-> a KASAN tag. The readahead path itself is unchanged, and shmem mappings
-> with other gfp masks that lack __GFP_SKIP_KASAN can still trigger the
-> report. That issue should be followed up separately, for example in
-> [1].
->
-> On an Armv9.2-A device running a 6.12-based kernel with kasan.mode=sync,
-> this reduces the allocation + release time of a ~32 MB buffer from
-> /dev/dma_heap/system by ~80%: allocation is ~59% faster and release ~98%
-> faster. Poisoning on free accounted for ~55% of the total before. In an
-> application loading benchmark, the OpenGL score improves by 15-23%,
-> recovering 60-80% of the regression that enabling MTE causes.
->
+Hi David,
 
-This commit message is just inscrutable. It's like reading Finnegan's Wake :)
-LLMs are obscenely terrible at this stuff unfortunately.
+Reclaim isn't touching the new mm being initialized (which isn't added to
+mm_list->fifo until lru_gen_add_mm() at the end of copy_process()).
 
-You seem to have rewritten commit messages for the other patches, could you do
-the same for this one? Thanks.
+The KCSAN read is on oldmm inside dup_mm()'s memcpy(mm, oldmm, sizeof(*mm)):
+oldmm is an already-live mm sitting on mm_list->fifo, so when an adjacent
+exiting mm calls lru_gen_del_mm(), list_del_init() updates
+oldmm->lru_gen.list.next/.prev under mm_list->lock.
 
-> Link: https://lore.kernel.org/r/20260519-panthor-kasan-v2-1-b7384458f076@gmail.com/ [1]
-> Link: https://lore.kernel.org/r/20260521105148.5497c281@fedora/ [2]
-> Assisted-by: LLM
+Since oldmm is live, lru_gen_del_mm() has to update those list pointers.
+The alternatives in dup_mm() would be taking mm_list->lock (plus
+mmlist_lock) during fork, or avoiding copying oldmm->lru_gen / oldmm->mmlist
+(awkward because struct mm_struct uses __randomize_layout). Wrapping the
+memcpy() in data_race() avoids locking on fork and matches dup_vma() in
+mm/vma_init.c.
 
-This tag isn't used any longer! Thanks for acking LLM usage though, we prefer
-you disclose it but in the commit message or the cover letter etc.
-
-> Signed-off-by: Jeff Xu <jeffxu@chromium.org>
-> ---
->  include/linux/gfp_types.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-> index 567c93fc1cfb..bcc4827deb4c 100644
-> --- a/include/linux/gfp_types.h
-> +++ b/include/linux/gfp_types.h
-> @@ -386,9 +386,9 @@ enum {
->  #define GFP_USER	(__GFP_RECLAIM | __GFP_IO | __GFP_FS | __GFP_HARDWALL)
->  #define GFP_DMA		__GFP_DMA
->  #define GFP_DMA32	__GFP_DMA32
-> -#define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM)
-> +#define GFP_HIGHUSER	(GFP_USER | __GFP_HIGHMEM | __GFP_SKIP_KASAN)
->  #define GFP_HIGHUSER_KASAN	(GFP_USER | __GFP_HIGHMEM)
-> -#define GFP_HIGHUSER_MOVABLE	(GFP_HIGHUSER | __GFP_MOVABLE | __GFP_SKIP_KASAN)
-> +#define GFP_HIGHUSER_MOVABLE	(GFP_HIGHUSER | __GFP_MOVABLE)
->  #define GFP_TRANSHUGE_LIGHT	((GFP_HIGHUSER_MOVABLE | __GFP_COMP | \
->  			 __GFP_NOMEMALLOC | __GFP_NOWARN) & ~__GFP_RECLAIM)
->  #define GFP_TRANSHUGE	(GFP_TRANSHUGE_LIGHT | __GFP_DIRECT_RECLAIM)
-> --
-> 2.56.0.611.g1030f0b940-goog
->
-
---
-Cheers, Lorenzo
+Thanks,
+Muhammad Haris Awan
 
