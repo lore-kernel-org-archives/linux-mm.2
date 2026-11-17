@@ -1,93 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DE6606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29047606A332
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kWzwXqD3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h70sXyoh
 Received: by kanga.kvack.org (Postfix)
-	id 95E796B05B4; Tue, 17 Nov 2026 16:28:29 -0500 (EST)
+	id 4352A6B00EF; Tue, 17 Nov 2026 16:32:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 935A76B05B6; Tue, 17 Nov 2026 16:28:29 -0500 (EST)
+	id 40DAA6B05B0; Tue, 17 Nov 2026 16:32:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84BFF6B05B7; Tue, 17 Nov 2026 16:28:29 -0500 (EST)
+	id 324156B05B1; Tue, 17 Nov 2026 16:32:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 56F396B05B4
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:28:29 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE95F1C3801
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:28:28 +0000 (UTC)
-X-FDA: 85445899896.09.5B4AB45
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3DFB0C0003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:28:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kWzwXqD3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FEFF6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:32:43 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D4C3C05C9
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:32:42 +0000 (UTC)
+X-FDA: 85445910564.27.DAD80FA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 527A3180007
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:32:40 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h70sXyoh;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794951160;
+	b=wne8d60UevEjqjP3gax+1nHXtv0DNqgH2stzSL8FxVDCbXyCyDSqrYRZ2j7byu5e30ThUo
+	0AiTue4y5MOB0UegWWdthcReMk901jZYChxmJLDJrp+8GIGNLSLm22iXIdrHNwWuqSYteH
+	/MtSxql+/HNBrFKGQcKdkCZANUw1HLg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h70sXyoh;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794950907;
+	s=arc-20220608; t=1794951160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NaS7S2i9wbUWkDygLxultNfv//P9X5dElhkF+EFEXrU=;
-	b=lany+57eQB72KdggA0SEO41V4wlbf1DDncVRIpBQZGWqxwvqb2FbOmVUKqIDFCbsub+SdY
-	8TK8m9xMJXrNPMRpDYaLHY8SijbRF12xeExw8E0ivMgP2hj2L9GUlDbrB6FFOwxiHyoa2d
-	zPG69qDPiyF4Gs2JTCT8u/VqJAoRsa8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kWzwXqD3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794950907;
-	b=WcRBfZF9Y6AXuUC26WER2DJW66FuRUqZIjUddCUl+vhU1jpSFNCiqKV9Y7k8KjV+7+eMA1
-	X+C5CLC0a6z6qrZeslO0/ktyhO7XbMYEKTOgTSFNudzWAKH3in6jPsLaD8Y8JPpJ+S9nYQ
-	iJH5D7frAACgPGEx1FDIUyPA9iwNpuA=
+	bh=2NYtBZm0XInhRoJxa7FTY/jwtTSFkeJiyIlnwfaMdUw=;
+	b=hXut12Dq+zno7xwCEzgD0EOlgYhhagzETRGSj00prnSlBqrAGS/tvPb5B2Z00G2yEKpYK7
+	sJWXlLs25LlFvnYk9XA4grfoaR0zCXyDxLPoXVavREdmbx8ArGuBEWgPQDIHndAwtVkXUd
+	7lPmsZp1RufU5cA3SL3L9+pCehaV7ao=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5647F6123D;
-	Tue, 17 Nov 2026 21:28:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00231F000C4;
-	Tue, 17 Nov 2026 21:28:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5824145C9B;
+	Tue, 17 Nov 2026 21:32:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DB01F000C5;
+	Tue, 17 Nov 2026 21:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794950906;
-	bh=NaS7S2i9wbUWkDygLxultNfv//P9X5dElhkF+EFEXrU=;
+	s=k20260515; t=1794951159;
+	bh=2NYtBZm0XInhRoJxa7FTY/jwtTSFkeJiyIlnwfaMdUw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kWzwXqD3Eo62UyU5LJneyqs/4BiqrMP5vyVJIJ90uwA8QOaivNCxESFkelLVHu0BI
-	 KD/cKPSJs4oMOOa10DbX0THHD6BDDsKCxCk3O95Av7J7C0bwuNWYjtWXorIJUP7Fhu
-	 geVlCztMmGiU3VGO1EpxEeST59BuABXizwbyvIH1LzmhbnPNKVEjMCKOKMajv6s2uQ
-	 i6C24B0fSZFEhVyhqSf9kcnISPCdNNnzusGVxEWPTujoN7kwxz3hyc57ztbSUi4Q0E
-	 tAO/i2ZgcahbiX38cARQsUy4S72jjIFnwxDQbjXIqHZkNiIeX2ifT1qO6cvKzUXabP
-	 QcwE8bcZ4sMlA==
-Message-ID: <87a81131-5d3f-45e3-8c7a-ecb46d271ed1@kernel.org>
-Date: Tue, 17 Nov 2026 22:28:12 +0100
+	b=h70sXyohBz9tlH4O2TwkxZDbGTPC86Wavmpegj94NPPusEGEuSfyRpi8XPL8G3eD5
+	 nWqY0AXNEQus3YgGIY/G1poWUowRmDxDPrUKbTXau15xSGYw6FShm4N/TwlEVp/oJp
+	 ugDHGjo+cRVfxklSfo12JXJtyxOZWZZWqqcSBsxtRZCov8l4JWXAjsfhS4YB0Vu/sa
+	 bEmFvA+XSOsIH26sobkgCI1PH4Tw2uTROhRRI47TMHRmpAZAfUD62HEMCHHpyN/rO9
+	 W4PAMjdn/gnvvk5lYIe8lxiRjAEBD1nmGzs9+EEBO3tqT54zj11XVLCSBBkaOMoZgT
+	 L4l/4FP9cdyxQ==
+Message-ID: <d38d9e09-08f1-4491-b202-f0ea0f799f64@kernel.org>
+Date: Tue, 17 Nov 2026 22:32:31 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] mm/memory: do not report OOM if insert_pfn() races
- a huge fault
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>,
- Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>,
- Roman Kisel <romank@linux.microsoft.com>,
- Saurabh Sengar <ssengar@linux.microsoft.com>,
- Naman Jain <namjain@linux.microsoft.com>,
- Michael Kelley <mhklinux@outlook.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org,
- "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-References: <20261117-huge-pfnmap-fault-races-v2-0-276007e73bcb@kernel.org>
- <20261117-huge-pfnmap-fault-races-v2-3-276007e73bcb@kernel.org>
+Subject: Re: [PATCH v2 1/4] mm: define generic pudp_invalidate()
+ implementation
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ mark.rutland@arm.com, ryan.roberts@arm.com, peterx@redhat.com,
+ dave.jiang@intel.com, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20261117020237.4037980-1-tujinjiang@huawei.com>
+ <20261117020237.4037980-2-tujinjiang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,22 +122,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261117-huge-pfnmap-fault-races-v2-3-276007e73bcb@kernel.org>
+In-Reply-To: <20261117020237.4037980-2-tujinjiang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3DFB0C0003
 X-Rspam-User: 
-X-Stat-Signature: hunqma6shrch4r3p5zrqongde5kqmpja
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 527A3180007
+X-Stat-Signature: c1eyfup8io4jqyk9fdyzop5tomfbrgce
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794950907-181138
-X-HE-Meta: U2FsdGVkX1+CkcvXz5fdweS3OXxUcsWIz2GqqVqkz0MJ0hJGLTJmbb5bxhGPwm3SxOsT6BYk5u0uS9WMJomLd1TXDJ/c7r+UEmQg32I6TMGa8w+uQvOEjAQZvHACJwux424b4O/2s+nIBKoPVmeDwKARLMjZ6ww/QPQJ6cVVuRsw8/QUuEPq6XJfzKnmR+A09lkfzT5YjZMxT/IDLCGokHtauggLqQ4LoACZHEFHq3FeN8QLIRbJjKWc8KCITr8TGMRYal2IcVIy9fPMQBff3JbmaqaCaQANclM/bv/0Avs9JjfgjdoIjpHisAvyeZKUkycBux1DuQLftqweeRxxDt1qpgTPFyNbEnBLXUHvNXsiyAsE00AzATn0eIlC7RZK0yLOAa9LBrNJ9fwFzeEkyHawtduAYmXynZ3Pplc6LhqZx2oj3sBT+7dr/IF30AS3XckQrBIS1zp1SVnAGYT5V3NwAtOuSL39DGOvtc3OzFBt2Y+eZayLE8bsZ9q3TMN0iePYVQiPvJNq5ZBGXjQgycQYjYC8A6YB61jVYkIpXMWAMGeJ+qHKUsM9c65XBnX0ozwEP5PazPYRhevPYytXAeSewkUtNbc8MPyAtU6PgTvg6O5LeCaVt//OT0sHAZwhZyeDgoot5dWZRUbvNBcwHamGmQi3/hq6QX5y4RkcdaqRBAGUqzYdvF4bHruz0E1jeqc9C3SRJa94EeGTFjGFjoytLZfcHFT4QTXDj0/5fDIS2T/x20YY3RoCUyKjmzjDVSF4WkTamkNu+3uadEvzORthM/lXg+vb3Hm1wxRmc7lVyMa3Y8VAqhM87QwxulztvnhMzyx3C5STkDr7NnvvzjA0tgQGoAp+LoDS7/C1b87aG8Q7F7p9EU5WR2TUqALBPIqDXa6dIkEY/KBwRK4jG7Xi5RiYKHuEKUmtdvwDFXLc2dqpMrl69QuGqW+YrK0Vb17DFw5rFgD1eaxYxzA
- s/EZ5fPD
- Zs3J/pZ4jd9r5F2UO7dOjWnrATAKbO+3g3mWsJlSWFw8dI77VRH8BCjog24mufgvz9kB57AX+x5JwzBpGPM4s5LK6NJsmwWqReOycHL6TRStS4GH0hD+5uIvi/I7Ern7P2o7sp3N6UizBH5iF/UvBne3yorQJHs6Yb5d4uQPZ2nZiIGOeeXpKgUN3hjuFLnBoWU7I4bj7sZ+7Ox27mf256CBASoRZrI3quIf5nnIIxzer7UvazxFAE4XKX23JFz/fR2N9TCirWTQAbv3Gyx4bP+2TyxmuhvzFML1t0yd5NZwYUiK2pVkRSngGyrH4fZqIa50fItNGlPMqgrmRgrKUfZt6FfAfWXzeS0ZYsBz5S0158ZEo4wxaAc8tfQZhcvt/3MtS
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794951160-360782
+X-HE-Meta: U2FsdGVkX19Q84+ZUPRjLdENwG76qxGaO6m+HWiGTJ87nd1wmbdDEM7Pohs9uPIZI9tfTeZvJ1GwvR39xyzo1+/5HBDtv3pzNclJhD63HV3gxjI3q23AHSdwkw9CgrrhT2hfTaRsfa8u6/v+eGSzBhiyJ8Ut93AAnR9twzqWz+HbV99/WwGpJRT9hJfHWnt038yjRPEfiYzvcD5qGT7oyGHT38V44nRsFJmaZzqzHpIM2RPSh4xtPzd4AGTJiZYQBhJFAeJCe8JKaW2u1luyicEhtwXgbwMVDh2LiEKwZq5ive7FDABR2dd8LQSRzuPiVQOyXEePqV9oEqhjZ728eX5StPmf3mSkerwblFSEsQkH9eeyHiNQfUx80I+evEfzrUewVmq+PzIFrMreRjZiimMy4aA0NhuwL9xw1q003bCJ35Ms9WjMBImPix+CfNM0OTfa5IPfiJ9oC/nU9SllpRzpk/F9FvuH5PF1UG+hGmhtxIN7P76+JzofoMkWCHivAY1PlgE+gczam/IsX3L9Ye9y+eOyXkZVH+6mdk/vJ8moBONYASs5jymLw0wy/3zMdbKfQBDcpi5E/ARD6AOBYPqKarubgTLFcaOBVtdvmfu5BgLstOk8U0uB6O0UDZb34WxcQIwSjp91B/j/vslJDpQbm+iJdHNbHo2NvRAy92z3s0RgLq6qIaz69e2tMD7UYUUTjd1IInaB0hhmtAoA+1vu7IQFHUdxWcezx1dGaVsZmr6qZed78RjalY0wt3HbxcfMJG9TgnB+WwpORJvd1NGx8Ek6Jlra8MaCHD/L0R1/gxX/OznIuncl74Ap4S+RATHcYwkbBB0IM19UQFinduyKdM7FKIiZSAJh5J1XufaJuFKwj0emUmOmjPds3E5ZrFvZRofMdOkkNFojdWtRlVW4XzAYEMfOOI0ux73EulYgw0M9PyrG0SQOZjp/Y9FHiKBIgqvj2bfo6VT/Gjs
+ zjgAySOK
+ kglSXNC/gClAdvd2+gWw4HXfaJHEXh2tzn6wixPAA8EZsBkERs+/bsVfsXojO0xeKTJgBjmGap3M1VQwULpOtZa1y5fWheOPcFZtXov2FUVJLaWXsMXk2OvRoYxjMX+pjvjd6bo3ZrFGfA/+FlxvwozhooxwLfqeGiwG9oWgH862uBo88j89pEp0Z+qQ2PVSPRnIUP5Zwh8qXa8zQUNQBjMEE6LxOKjPznBN9vdG5HlgeCLeJ0zT3YVyQ1o1FDHUgTfEZSeSPVUZhVRf5IoK8pnYvxFhaH8qD2ofHJG3CVBoihvEjJxZkoVRgyYBe1gO3J118HIUfkevNymGXXuwTQPA4ZT76MILp8zcZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,78 +145,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 19:31, Lorenzo Stoakes (ARM) wrote:
-> A driver that implements both ->fault and ->huge_fault must anticipate
-> concurrent use of both.
+On 11/17/26 03:02, Jinjiang Tu wrote:
+> x86 and riscv have identical pudp_invalidate() implementations. Move it to
+> mm/pgtable-generic.c with the __HAVE_ARCH_PUDP_INVALIDATE override guard.
+> PowerPC keeps its own implementation. In the later patch, arm64 will use
+> the generic implementation too.
 > 
-> This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
-> concurrent with faulting, as that only holds the mmap write lock and thus
-> does not exclude faulting threads stabilised by VMA lock.
+> No functional change intended.
 > 
-> This is not currently safely handled by insert_pfn(), however, which
-> obtains its PTE entry via get_locked_pte(), and treats a NULL return value
-> as an allocation failure, returning VM_FAULT_OOM.
-> 
-> The issue is that get_locked_pte() also returns NULL if the PMD entry is
-> not a page table which can happen if a concurrent huge fault installs a
-> huge PMD entry between __handle_mm_fault() observing the PMD entry to be
-> empty and insert_pfn() being invoked.
-> 
-> This can result in VM_FAULT_OOM being reported incorrectly.
-> 
-> Fix this by introducing and using __get_locked_pte() which returns -ENOMEM
-> if a page table allocation fails or -EFAULT if raced.
-> 
-> This allows insert_pfn() to return VM_FAULT_OOM only when an allocation
-> fails and VM_FAULT_NOPAGE otherwise so the fault is retried.
-> 
-> The same change is applied to insert_page(), which only impacts DAX (which
-> has its own locking).
-> 
-> This means that insert_page() now propagates the returned error, so -EFAULT
-> in the case of a race. It's not possible currently, but guards against that
-> changing in future.
-> 
-> Similarly, update walk_to_pmd() to return -EFAULT if it encounters a huge
-> PUD leaf.
-> 
-> Target the commit introducing the first driver able to do this.
-> 
-> Reported-by: Eliav Farber <farbere@amazon.com>
-> Closes: https://lore.kernel.org/all/20261112051440.16140-3-farbere@amazon.com/
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 > ---
->  mm/memory.c | 48 ++++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 40 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 20b818bcdfbc..04a518d6059f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2383,19 +2383,48 @@ static int walk_to_pmd(struct mm_struct *mm, unsigned long addr, pmd_t **pmdp)
->  	pmd = pmd_alloc(mm, pud, addr);
->  	if (!pmd)
->  		return -ENOMEM;
-> +	/* We may have raced a huge PUD fault. */
-> +	if (pud_trans_unstable(pud))
-> +		return -EFAULT;
->  
->  	*pmdp = pmd;
->  	return 0;
->  }
 
-[...]
-
-> + */
-> +static int __get_locked_pte(struct mm_struct *mm, unsigned long addr,
-> +			    pte_t **ptep, spinlock_t **ptl)
-
-I'd fix that up when applying :)
-
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
