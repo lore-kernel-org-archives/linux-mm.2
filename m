@@ -1,131 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9DB606A331
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 14:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C049A606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 14:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=DowSCbg7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a786Rfbu
 Received: by kanga.kvack.org (Postfix)
-	id 42C5B6B05B6; Tue, 17 Nov 2026 09:26:25 -0500 (EST)
+	id D058F6B05B8; Tue, 17 Nov 2026 09:26:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 403836B05B7; Tue, 17 Nov 2026 09:26:25 -0500 (EST)
+	id CDD226B05B9; Tue, 17 Nov 2026 09:26:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 341126B05B8; Tue, 17 Nov 2026 09:26:25 -0500 (EST)
+	id BF3846B05BA; Tue, 17 Nov 2026 09:26:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CBDB6B05B6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:26:25 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DA4D8049D
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:26:24 +0000 (UTC)
-X-FDA: 85444836288.28.FAE1C32
-Received: from outbound.st.icloud.com (st-2006h-snip4-11.eps.apple.com [57.103.76.171])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A66FD40005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:26:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=DowSCbg7;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf17.hostedemail.com: domain of m.harisawan@icloud.com designates 57.103.76.171 as permitted sender) smtp.mailfrom=m.harisawan@icloud.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A1E6A6B05B8
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:26:38 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F97C1203C3
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:26:38 +0000 (UTC)
+X-FDA: 85444836876.02.AF71599
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7DD141C0005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:26:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a786Rfbu;
+	spf=pass (imf18.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794925582;
+	s=arc-20220608; t=1794925596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cFBQgsUKqn2SeEBgrCHrVNl21tMPPxSMfQjFRoHrS54=;
-	b=glD/1+QCtsU9uUMHfp//BuR85vdlifggQRWENS/9rjfkywZ6IU/ndXoV7d7x7qpuX1OMOB
-	Vs+U5dXC3HXeKVPakqZ7jcrv+wLMpJ5oM9O6HQzjkrtuyy6oTMnIxaRIzkZAsTkcbmXjBV
-	bagg0molNImvf/GkIJgD09Ern0lx8zc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=DowSCbg7;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf17.hostedemail.com: domain of m.harisawan@icloud.com designates 57.103.76.171 as permitted sender) smtp.mailfrom=m.harisawan@icloud.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rlQlNnIZ/8+czgBS03uRUWP6VlvdPXDkWQ0M5ulQFY4=;
+	b=G9cWLGMyxI54Pc/dzif8iSOOEX6Gg3M9Quiq8JTAtdFdg4yqul/dyPOEQaAktl88fqonBZ
+	qZMAPaDGazBIFqXqqr4lVA4laCjQrxJuR4yx2KlzY5qLi8dzA7rXfzupCLz5cWd22slvmK
+	oOvPwXig+XANHKKFb8RtVKIGNOfKG/I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794925582;
-	b=uLGbYf0xdpV+KEMKgmX9O2TMocvKSKRgtlus4eqVsZP2BHM+IrcEuQqnveyqn+n7koPhb+
-	8DeFdlCSKvKFGYVu/f5RGxOWB6hJZTJ3ZIcgVkLAJZAJbOxmLIlwehVF1hC2h71jBRYU6C
-	l0jCAc0faZgPfVnc84O5pTbHQfic2/k=
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-5 (Postfix) with ESMTPS id 83D8D18000AF;
-	Tue, 17 Nov 2026 14:26:19 +0000 (UTC)
-X-ICL-RepId: 01a1e9e6-ccc9-71e4-98a9-760f2b0e292f
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1794925582; x=1826461582; bh=cFBQgsUKqn2SeEBgrCHrVNl21tMPPxSMfQjFRoHrS54=; h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:x-icloud-hme; b=DowSCbg7YwoSsknR4EjggXyYYm02omUQrEl0OXPCqFHbWE55JH3cDwfIUUt8J+NsE64lMfuMsKxffuK/q2uAwbnAZQBhG1xb/iK5EX25+MC/1nbanytzcedOPrCtb2ULBNwwGdUqGr0foKvajRlhXIKwV6uDRXiStaVX6hEBzbroeu8qA7kVAP4kvpSAYON1xehJ+tXZdPvASAMaEpXpOWfBWgC7+htBa/f8jbb5FM/zW+URNJnAlighdoRfU5uBoI6MWB1oh/SzKWHjLICl5pV71q5NAcbWNX8V5K5c2lBkNmVZvuMGC4Jp/olqWATgjSL9lUUZP6wDsQO5zh3qcA==
-Received: from omarchy.local (unknown [17.156.216.30])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-5 (Postfix) with ESMTPSA id 621301800122;
-	Tue, 17 Nov 2026 14:26:12 +0000 (UTC)
-From: Muhammad Haris Awan <m.harisawan@icloud.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>,
- Liam R. Howlett <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Subject: Re: [PATCH] fork: mark memcpy() in dup_mm() with data_race()
-Date: Tue, 17 Nov 2026 19:26:08 +0500
-Message-ID: <179492556819.269625.4305215206796797018@icloud.com>
-In-Reply-To: <avxPvfV4NxKL58ZR@gremlin>
-References: <179489519663.1444496.15875846661591982934@icloud.com>
- <0b565b9c-1462-4fed-8836-9a7d08e4b861@kernel.org>
- <f75945f7-82bc-4ff2-92ac-9ec057347a41@kernel.org> <avxPvfV4NxKL58ZR@gremlin>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	t=1794925596;
+	b=GWypiqgxYdGOVPd0y5xl/eecTfMXYOAYzqP2+bLRfyGA3R++tx0/gzq/a77kqL1bWXSAmV
+	xISuekDPdpKB/WVXxfW/zDaGGfmlYE1ju3xOYS0mMOcxKBCWdFfKpjOptyjbmywBhXCTIQ
+	cQ0tqjghnRoh3oOFNMpFEUsUu0D4xP4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a786Rfbu;
+	spf=pass (imf18.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A38840AF4;
+	Tue, 17 Nov 2026 14:26:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97441F000C4;
+	Tue, 17 Nov 2026 14:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794925595;
+	bh=rlQlNnIZ/8+czgBS03uRUWP6VlvdPXDkWQ0M5ulQFY4=;
+	h=From:To:Cc:Subject:Date;
+	b=a786Rfbua0e0KJuPtqYPrAIOolUAlNtoH1SVZATqAvSLv5QCYzTn6e5ZZA3a3CXny
+	 cfYU2pdCDUr+8PSpqVQH45cyGXtnH0KcTKXZChHeqW3yCdz2yvjSv3dER9ldKvWinU
+	 pRybFcIIIcJ1x1gVcDse8TFcN3hO2F6bLrYBQvCAo6D7TOleOtwQ53V5oGlr7EKEM0
+	 kK5eXgT7ULE0fn5gQuNToj51Fn2ORWLRIoFLkaNQ4ZmXOovexDaF5bhF8n25xErblJ
+	 uVZYrvqMo9ETwQcBDzyZjuDO+zGRShjt5/qw3N8oqLjMr8+LEV7EHw19Fgm3n0obgH
+	 2R7eQdFuYIeTQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: David Hildenbrand <david@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Cc: larips <larips950@gmail.com>,
+	stable@vger.kernel.org,
+	Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Jackie Liu <liuyun01@kylinos.cn>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/mempolicy: fix copy_nodes_to_user() for odd inputs
+Date: Tue, 17 Nov 2026 15:25:53 +0100
+Message-ID: <20261117142628.3931151-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-GUID: p8wqqG80lPu0mQwr9KgtBsMoa_EicKJf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE3MDA1NyBTYWx0ZWRfXxui4LjhxlIV4
- DypV9iBKoe5+y/yVnE0sXJDeZm/WcuAApvJEj2MSL9X6i6mXYDN0QcTE427VRIxMaG5MevK98L+
- Op4kc4VboUyjgtdhv8pHVA8brD7VpSTHYvWiP6JQM/zvWbhqj3RYEiGkB599+/zZJC8agG3KnPp
- Uj6nBLE4AnKWBkVBQhI4drUw55ueCTDW7Ma3fQiFaD9L7UUJWwqsqb66MFD1ItEzZsoCtngcmVs
- /hNrKDSt5c/LUHu8ydkoKlHFM9+3A3ZE3GLMHIJGuIlGjpu5MFpQGGJ297sKgp/bHS5MoRjhft3
- 80FPuvjpLETj1GL2vF1ngWPUaEGDoEAXgHPrtT24NtgHUey4Q9NCfdD6TrNWik=
-X-Proofpoint-ORIG-GUID: p8wqqG80lPu0mQwr9KgtBsMoa_EicKJf
-X-Authority-Info-Out: v=2.4 cv=ZMDaWH7b c=1 sm=1 tr=0 ts=6afc640d
- cx=c_apl:c_pps:t_out a=oyWFxbOnq+dmhQrAPgaJYA==:117
- a=oyWFxbOnq+dmhQrAPgaJYA==:17 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=x7bEGLp0ZPQA:10 a=2kFROKt5_e8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=cxNFcN4zLupSoemyiDcA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
- a=zZCYzV9kfG8A:10
-X-JNJ: AAAAAAABOQLEpfW9MVVoxxro1LkZWVzM4PxAUYPKMvIDCe/LliswltnyqBAinHwTCNR2oc
- 9gVTpS92RTbdQ+h3sFHXgwKPFVx4uqmn9TdMdZdHcrfcYD7aCV75ln1eF02aXQvwNhSpfz
- qbDdn+J4UwyQ26Y/DkBtNRymeyy2eYlK9kM8qqBDD2z53qSLHwjPrOUq3ZX29w02Iha4Xm
- /HdnAhVa2t/MSMZRlfhDwcPXcb0BJZx5XzPtWmQFc650+oaYYWsHRUJuMuX+hxS5nAUqNh
- DS2KVPYsRLvFwDLFzSipOqZ0EOoS0i5BnoPv7JlUydseyJgxdj2GjeEUcLK+IfEVFwr/RT
- fARHhIrV1d4w7gevT+d7dsEABWIgVwxFiNl8M/YfSEtDiqfCOMdszXoI6G0PKMwj5VidPs
- cVpK4JpJmm8lH3HFaeM3FsXAystR+JgNvWd0n5m2zx7Fep1XpVfoXUMYMSdl7/Slwyz7ut
- 0fyZYgFfWbonBu52MJ2oEmmbwfRYQxCkl8Z+NBnsvXcv9DqFU158+Mr66uvD/QdTnKIf69
- qAyxCqzoxoY7deB0jC1d8CjN5H8SNPi41EqFFwhHTsTJugGYY3d8MTTrMqoKdKisqNABnw
- T0Uze3OtGdHBKlcHtIbUVy+zF+W0M9vkpJ47deMqaK5sfBAvwLzYer+8xbbIuLwpL4c0Up
- F4dVDxOx5+giYdkXiRzSZZvuLVp+m61LjhecQ8Ppp5OA8kFcuLXZRXSbjhxi78gnHzLYlc
- FPjF48DBA2dHiclucWwoOmk8VE01bfDJSXDtSBvk1uZDsqkSsmP8AeKxRLo1L8fQnwpWFn
- TmXf5LdQ8BSOMMzs1oM6hCx0qgsnBPARbdtCexGvpzwPgBqmJU7SaGIm/jVewn+rdk8PtM
- aIPtjywD6Q3IOlozmYp3sbZ6b2g+c3gx/7/IXMjEKP/LXkRVyvAzJqzSwo8rH/MFfZ5sTJ
- rKDMke70FROWm3tt1k/6V0zpzYUoKEk/KzjQP+oLxj5e/+7asmSG0DQoPYBmtFzngrfQ+N
- q3vF/RHaIYeZd4k9bBINfeTVp5tXss9+FldOX7a9FKPWcoXdbh5ner88i9bfUsNAn+3FQT
- c2Nn7+pVC2FC66TuNXLXfm4pT8iccg9V+2MsCKHqaERD6XEOeBz+n8jgbkssYz0go/IyZI
- 9DgmY+AUVt2mXwX6lmGKqRqYJoyqDE2S24e4XzH/HZi27a+RcCqYyySbzhi8G5IWqiAsx/
- cvXz/+u5cOBb35FLakU7cB2EXLTPORme/GGFOhe3svu7sGAltdHtu62+fYC0Fbxa4IUQlO
- ZKFoBElrFAW5Hiaiud/ZGMTzpEds40IUkHXewwnOqdbwD8KfrE6zv1wP9eYrGGI7XEAw1C
- vVZobikT/Zv8rpC6vLOPtWX28uVne+b3uZRUzQs/w1wXOhpoiPHnaWeXX0Z+vg==
-X-Stat-Signature: i7wo9m3ta4jter6mhjt4rijawwtoh966
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A66FD40005
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794925582-450383
-X-HE-Meta: U2FsdGVkX18O+RIhNxQcebHuXe8GobKNVUk1Ocap+c5hkasuEqFzjky0/TOuTsphB7B+9ddkfSSLy68quyaNFwJv9T+mbJbK0NF2OBRD81VopnqXW20ZV1YrbcnIhqDB3N6eLPod8JIIj7DOj28vs8QUkprGfr0eeifed6ARSeofkK2Tyn2e6+81L8lPk0oELeuZYbw/e26FooF+g0jdyq5M97cLN+TdnbkhH4BzfrESzh8PwRwdKU3ttBN3RGuApZOM67ekA1t0Kl+BYu8CwfMildwQOk9zU0zD11Sex0mRFkMKV0eV2dWR13SUOWmwzpYOHDNY/FiA7hQJ9z5d2y+k57bMnyqA+fHyni4jF40KioR/R5rA1uYAT1zox7rv2U+bC0tr+GHUKAEC6xx368TYYxOHZM9oBs9kvt7wzYPF+nQ1u3Nv/zI0pHRCKs0b17WSgZuy3oV+GerRAtrZz0O3+9D8+4WewqRjqXRLroY0+oQSvgrngBSeyy+QGf1aJimk3QwEFpEptNU7ewGwMIAfh9JVarybFIU3fCJx4pwBxKQ6KX9+XQ5XGQf+c26FguGlBGMHNqcp/6Nf515afHWKB8it2D6gz7bzGsD2QnVaY0gZOz9r/RFZmNm1eVZviDUHsGOXqiMe8xRRTiv6dXhnFHWu5ijyzv4PtS15NjXcM+am89hvdOmDDPfk5/cx0QVXVly3d5X9b36hOF64aykAOps8zBvTC8ThqsF51Y6asmeHu0lRiY3xonkkGG3/XZbrNumULoDopXdcgA/axe4hNHNyy22fXU+LlxkD1rFhGyexfF69qtnHI3ToxIyQXZ0mNHnlDZDxNzvBC6kOtMqfVwIkJnxq632TIGtf0vyejiwqdNFcvJyvaiiA5lgdQ2pPvLenI18fWAOX3bsSp+ABHzD/HrcFkKcXp4b7GErx5LoIA7aa9gd2I6JeFSni+PCU+jqwXUFWFLiwMLJ
- OII2JqHN
- 4U7vWA28MvF/EuYYzx2RgBlRHpYJOvqsjYABTmNGikoH9PploFkuB6jA3UWA0luMGxIGlzIVjaYu13nRmqg74fj9FCSD93/JoB3sX2kyZt+MqlOV46Ezmi/zC0fKbfjh+q0Hoyv8zGua/z1TnvtGfuntstWKrIAoDIs/djQQd5QEoLh4FXYppNhP1WWKaAgW2dbF5jNnNN717PnY7LCbKlbcD1q3P2lbSXmx4Q82TWj44TifVqEGAVgzXr0X1XTGIJzgJPfoRJRZMoJ5lgiimh1jseQBz7aYL8iy0Uxg+gNJcR/J5QcohT+KFU7G8tJef07ifL3wPJKzZzMEJWxArJ+mIeIDy8vDRmHfrlGpeWkRRgI4it3TZh/Lw254vd1meP75owF8xhIeIShRW1jFVl7GspKzeLB4Muq3tvaX2ADCaUacVBOd54RdrKw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7DD141C0005
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3jajortfugpmkfnoh1isq7tnkhmjmih8
+X-HE-Tag: 1794925596-166012
+X-HE-Meta: U2FsdGVkX19E7rFdQRvbrYw65bwsgoaVZoHGHMGtMJTK6oEvgff8DRv0iEbw02vdQL8UCOS391dhHnvfAx4pZ+BY7Oh/elIYP+FtAn8nqjQ8GARV+iOdzohUGf4QQQLT7m1sA0c7zT3YWBRiYZNIkwWRVXlbvvsVfVF4vEiVu3UcjlNnWaFd5Wr+Ry7rgsg1Vrvzfe+94CGlfQ4tdlW/6aYENdajico+NyHFJrwfHmmcnYssyOs7RvI28xCHTG/fzG8ogjBAD6Tmissv8sq/X/TL6G1dC8UFroxDOAEG1yIBU8Nt3x4GQUdMSW70/GZsK/KIkH0PHkpPUgUnJoeDFX40/VO8rXyKcS2j3Gg0wbt49Rvl3BMskWvEONmBk1GAKrroVHoaypRlJ68XJFyAL2itd0bQqpmqn02SL1K5MDVMwRG98aGuiyMWaB9CD8+TO2KASxk/tqpzMedDdgpOuNEgk5yBQYWnljGTy4ebeU0tqu3PcSY6JxACcfV4hxB9SUxfgY2GbHf8ayR9YUWOyLX2+vFMiM4NGhnMyx3ZTk+OmfYIeJmeq6c0mvqZlxBpxASKuyjI+3p4+GoqOkCXNRlyQ3Z9QddyVSiWD9xCObdk217506VjntQ4g3+MUdRJzUb3lXrKgy4FvMrykA8XlXYdLV94ZAcn7F3YcFC/KbNjpkHdyxBIvtmxDzybo812LH5cQvp3N1vv5WWPzg2Lt4MT4SSnF+BeP0UJo2NkqjXXyRNSATWZo6Hku4HNZshyBdbiD4ARPuTGEqEQDk9PjAO5l3KviSiYi5wO5XOK4oEAUW+lSkWJzdI57Ox2n1/aEKj9M1b5mE+jCoIhRNMIOO0x7c1EZkvKTRna/U52Io2qOYriB0tUPuH4QvLP48TFnJpCVaQIUiMJteH89uoJ3h8OalR9A4quG0h5FoGE7SwRjD2MtbUI2YSNACcf1yvQJi3PNkmzdgdBQEWtDEe
+ z8GWhq+b
+ Ms/xDRP8dHd47pwUuZLG4t6JCJ3EpLbCMR3wR1Y8/2mqi9GUTxCikiCFqTA2YNho80ATQn25AEdJcAkgjPiK2TO/8cmj93Yk+fV8+dbjYAhg9N86b0NQnQi+pWxe3TgZ29IegvFluSx9p+c4cajssqUUHgmCsv6Enjoscl5dQoA+UTEV3tWH+/09AJLtnHQ8hyI3+oYVGy4dTNSvOLZIB3Hndw5g6do1y/IyVrj0nlFmWmmunxjN0rBlPgadA6TV40KAe1b8nb1ix9t+zn9UrjxGotT/Jr5adLufjdeaZ/K6vMv8TCZ+VeCKtWNUckqiAW6NkP9FBPDBTAyXjBaxKHiQzzRmxfWRXy9t0u/y54HOzrzymQzU1x3g/y8e/NHDWIUszh/+b4qQwxrujk0Zv6am+/njxfwIQskDPOIl4h7f6u+uXBG4MpBE0PA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,18 +104,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-I accept the technical feedback. Silencing KCSAN on the whole dup_mm()
-memcpy is too broad so I'm dropping this patch.
+From: Arnd Bergmann <arnd@arndb.de>
 
-To be honest, I used AI to help draft the messages and I should have
-mentioned that. I picked up this open syzbot bug because I genuinely
-want to contribute to Linux and open source, and I chose a rare edge
-case because I thought no one else would pick it.
+The ALIGN(maxnode-1, 64) check has an off-by-one error that leads to
+rounding down too much, and ends up not copying the last word when
+userspace asks for one bit over a multiple of 64.
 
-A technical NACK is totally fine and I appreciate the review, but calling
-a new contributor's attempt "slop" isn't really needed to say the fix
-isn't good.
+For compat syscalls, the effect is worse, as the actual calculation for
+the size does include the extra word, but the check for the input size
+does not take it into account and can leak a word of stack data.
 
-With respect,
-Haris
+In addition, the size calculation rounds up to multiples of 64 bits
+instead of multiples of word size as documented in the man page and
+expected by numactl.
+
+Fortunately numactl always passes multiples of 64 here, so none of
+this affects userspace we care about. Finally, the 'nbytes' calculation
+for compat mode makes no sense since that is the size of the kernel's
+internal representation, not the userspace side.
+
+Fix the 'copy' calculation to address all of the above. Note that the
+off-by-one error has been in there since the beginning, but commit
+e130242dc351 ("mm: simplify compat numa syscalls") is where we starting
+copying the wrong data.
+
+Reported-by: larips <larips950@gmail.com>
+Reported-by: Gregory Price (Meta) <gourry@gourry.net>
+Fixes: e130242dc351 ("mm: simplify compat numa syscalls")
+Link: https://lore.kernel.org/all/20261117101910.1820066-1-gourry@gourry.net/
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+Please double-check the calculation and retest this with the original
+reproducer. The off-by-one error does explain all of this, I'm still
+worried about getting this version wrong again as everyone including
+myself seems to have missed this in the past 25 years and there may
+still be additional subtle issues around it. Apparently we had many
+instances of the same off-by-one in this file but all (most?) others
+got fixed inadvertently by other changes in the past.
+---
+ mm/mempolicy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 6d662a9a8c74..f318e1155770 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1749,12 +1749,12 @@ static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
+ static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
+ 			      nodemask_t *nodes)
+ {
+-	unsigned long copy = ALIGN(maxnode-1, 64) / 8;
++	unsigned long copy = ALIGN(maxnode, BITS_PER_LONG) / 8;
+ 	unsigned int nbytes = BITS_TO_LONGS(nr_node_ids) * sizeof(long);
+ 	bool compat = in_compat_syscall();
+ 
+ 	if (compat)
+-		nbytes = BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t);
++		copy = ALIGN(maxnode, BITS_PER_COMPAT_LONG) / 8;
+ 
+ 	if (copy > nbytes) {
+ 		if (copy > PAGE_SIZE)
+-- 
+2.53.0
+
 
