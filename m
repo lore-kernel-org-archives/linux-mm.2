@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F6C606A89F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71E3606A8B7
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mgn7xx4n
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UTjzZX97
 Received: by kanga.kvack.org (Postfix)
-	id 0606A6B05B9; Tue, 17 Nov 2026 18:14:26 -0500 (EST)
+	id 7D9DE6B05BC; Tue, 17 Nov 2026 18:14:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03E716B05BA; Tue, 17 Nov 2026 18:14:25 -0500 (EST)
+	id 7B1EC6B05BD; Tue, 17 Nov 2026 18:14:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1A9D6B05BB; Tue, 17 Nov 2026 18:14:25 -0500 (EST)
+	id 6A8086B05BE; Tue, 17 Nov 2026 18:14:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B0BDA6B05B9
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:14:25 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 425E71405BF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:25 +0000 (UTC)
-X-FDA: 85446166890.14.52FD01A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 93287A0005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgn7xx4n;
-	spf=pass (imf15.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 3C77E6B05BC
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:14:29 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C2FC880631
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:28 +0000 (UTC)
+X-FDA: 85446167016.27.D8133EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3470540005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UTjzZX97;
+	spf=pass (imf17.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794957267;
+	b=6iOlohBVU86tJW7kU58ybqxY3iug/siVJUQdCvcqmunK4+lp6kha7QcnhoPZJhCn6g2wKn
+	IWyDL7zLWT5cebM2RT7iR26R6LDyVq9tyMfMHZNQxas5BHuqedFp5VLeUFrn/Gs2cxw/ZJ
+	M1zHg2LVI/Jrsfc5HCZdGQ64ia84ytY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794957263;
+	s=arc-20220608; t=1794957267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z4UcpSJwQBQuoHR5qdUhHXpoXN8IDliu0g7bZUNHj/c=;
-	b=1WGSMxUlLeA9ebUoP5BW5xrTJClsQe0jn4affU8zVFLLFS0eah3/IZ5GgnQCkQ1/9aKf8d
-	f11WTIa0vhaeoZb16Mws4azlGV8OIe1Ah36a0amu9RjnqMgqalr0SeiaE0JsbdTWafOzcR
-	kc3fCm0uAbQAZSRsi3bw09VTpqSaSH4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794957263;
-	b=HsxSlf8FqB4xKx1BVyoac4uc4tgwfiN6OGUCgmVMEKKq33hjdkNA0AeQhhRkoGO1xKP8FV
-	1x7i5EtIHWs6mjFirkEpt+/yXPiJQgVqdBq2ulJhr51U0qXMkJkv1F4AHyt6/0cPk4Gr55
-	+mq7Um4PTb0yPh1vgayMS7Ed/W+AX34=
+	bh=GLkPPSN4G9oNOjjtEMLGuFRN2z4NxY+gcMx+AxGI1Nc=;
+	b=1V22/js7XPUKV6fGN/r768eUECLCV61jSbj47RG8I7d6SBTaoiPGeC4Kdt+S8mapNf+Qfy
+	rg+t808eaan45xOuxwBJ8WW3HVLSQzlGLO66WGRnktQlV9LFVxZW8D37wpsodEipServVH
+	NXLo6l/RGhlYbTE4Yl2ppJx90l8k8zU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgn7xx4n;
-	spf=pass (imf15.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UTjzZX97;
+	spf=pass (imf17.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 7FE1640A85;
-	Tue, 17 Nov 2026 23:14:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id B0ECD1F000C7;
-	Tue, 17 Nov 2026 23:14:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 9099461D7A;
+	Tue, 17 Nov 2026 23:14:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 8D9861F000CA;
+	Tue, 17 Nov 2026 23:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794957262;
-	bh=Z4UcpSJwQBQuoHR5qdUhHXpoXN8IDliu0g7bZUNHj/c=;
+	s=k20260515; t=1794957266;
+	bh=GLkPPSN4G9oNOjjtEMLGuFRN2z4NxY+gcMx+AxGI1Nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mgn7xx4nVzrINzAXPpNzP9V0SHtVBa+xtqQCzQZd01NST6UieqjbA5obv2laBEeCr
-	 XE+vNTzweH1saiAo0GjZvY+EJI3s/tWrMSSu9BGRoWseZGYIGD0bl7K9YyIsJFfLqq
-	 vwZciFmBMd181d7tGi9OjvhallGCVF3dmvRwydsTHdRXj4wWbRoSo3jweVgHoUjLZP
-	 VqMyw1R6u+YxlpI+bfPrk6ANvV0Pd/3lfrA/LTCmicouq6/QVYZyAB8rHvSEO74kb0
-	 h6+fguwFj3N6cQe/IybuBICp7rtuvtgtGFUngXM5gTKPaIyFIEbLl1yurXNHh3A948
-	 UTYFJpGqgOcQQ==
+	b=UTjzZX978haoKvloakiOf/KX2pOVH23VzeaEl7eRyIb4kreNndJnZF/cVfok/wI0g
+	 QnGijXlTQt3ElCMBf5TgDkgwphy02SDD07pnqFHHcot3ICRwxnin2U/7k1g3Mv8KZm
+	 HIrMk+8l5mG0ZPuI7Zs9qn+U9ThXL0HM+86nOguUbfOTfLUuzxBa8M/4td5H7MgVlO
+	 miR6YnE9iX3OrntxT9uhi36Zis6mXm0DM7GZwKVOVzmn+HqjnKqvagJ94rX4FKG+Dt
+	 A+4ggjYR+UYWjHkAVzuxNS7rPqnAuV1wSrH/ZwytoxpRMLITOLoD6mA5qPMpFxN115
+	 aW68+xI5+pTiQ==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -104,27 +104,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v2 03/13] rootns: Track init lifecycle via copy_process() and pid_namespace
-Date: Wed, 18 Nov 2026 01:13:42 +0200
-Message-ID: <20261117231352.3816603-4-jarkko@kernel.org>
+Subject: [RFC PATCH v2 04/13] rootns: Add rootns_create() system call
+Date: Wed, 18 Nov 2026 01:13:43 +0200
+Message-ID: <20261117231352.3816603-5-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261117231352.3816603-1-jarkko@kernel.org>
 References: <20261117231352.3816603-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 93287A0005
+X-Rspamd-Queue-Id: 3470540005
+X-Rspam-User:
+X-Stat-Signature: bmibbtuq6z9xw6tntq7ac6rtpeghx4g7
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 1bcsjewaq1fjb793pawim6w4xssfad8i
-X-HE-Tag: 1794957263-339124
-X-HE-Meta: U2FsdGVkX1+Z9Q3SPaQykh8cgkejo/oBTMX7qid5GZvIvCsAhV7AYWeJhtP/qQbeCkuOuTgyLMcPTWjDPaWqxpXvxtWnMziwFYy2+1/Ja3gLbNiqICWPZF6mYFCzep/icqYIziIQYITC4Yxj5UqOj3qlU99LJ0n/k+eVPBbWCz1Iujs3MZvzNJrSSXnKPQ+aKdk0RRZw5Z1Ui3DatGHVc3QRWVAmhBPMQLspQ2sXrvDqWTakBIb2ZcNpENrprhWlgiFTIgN4/j9DlnU9YyJQkOsqJbXF9VNMh6fdxHlKi5J2jOzI2htkHRWW0VrhXc5MjmymDakPaBf7YTWHwKIuXcDj1MusZyPXBGnBNFHe+1gEEcCruEGwb5YP5lshRsg2F2TSCkzRoKwB9AJ63RNVT2sB9vDFVlfa2WjL2h7f18xANICEZCYsYjxwYoYaX5JKzofYC3q/gp6ISOwT5sfMVVaEksM8aBPB2V66NPYOpeMK89RO4DlpfPg5/WKlJ+IcW62+9RatOx4BSI82hgCgGHtUOxkFsAGbmofMfmBRqdnHNbNB6ubGe8BObvBw9cGmSMz2rL6nPdkIy4oT3Z4oAXDp7z/pid+8N1N+BEdcR5zltGzYUJZbqZcsnXwZV3V+1VKUM4ZV9fvwzwWX/GJQgR6RImXKVLyc0X5smf3Mynjo8wWLC9FHdX/KD2r0MJiTuUziPLUNNCzB4NzmYdCut807wlzOER4gda0l9iJJINZEvRNQ+OkAx1BfPuM4jeJCBDtYPCtsXQSUCI3Ly9myAeWY4V/j9W5A6t11HsZOjljVR59zAfaa7PxcV6A098Y3ijfRnWGVPX0YIBis+v8lxFwu75kxHTKvJ5YNwNQC8SOjaoLfcC9LIED27zJOuOpk81uFjp04tuakwxFuKIT5q7a/QyXEQKnmyctIunXysCWy3HgAO/BevrG6aOFK2mZXxJXerVWQkhI5P+su9pu
- UOjNhjnj
- M/Lz2fNjRMQG1vkLemexhqR2lTOOxI5krKfklM/b48wxvHDMl4313OpPoHvkQfbfgO+qBxdopjj4nPsWqeWQY6llhZEXCFtCa33w7YD0PX4p/lGm5f1XF+6IlTGerjU7rqh0M2tVLFyPARRN2pNA3hwUtK5qpxIUYi+1338+Z69gWy5647n8sclBgMS5tNiXsNvSjhqsdGkvRTICvN5mMMoz+1M4CK1CeCAlPWqucICthlG+aeBY2iLzrxCsWvHVoI4+cE10WaJwgnNU=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794957267-11956
+X-HE-Meta: U2FsdGVkX19dCaUVz1sJi0G9snhF3g+aC92d32SvV27h/kdx6/c87Gb3ySjO5c4YJYsN69ASUT2uCWaelTM394vC8zleZHYEZLSVMrrLhwOsNS3wrs4+XUQd5mrMDaCznBto4P04yqI+NbP7LsYWVyl901y9hNvs7+mlRJcoBxuWKVbMrZ5Shez3Vi9biKut+TYZOk7PY1GCkAglxEX5sQV0WhOJGqxbcePLO8XR59y6AYHhhpALE/MP1swHlloRe3R0GvGpP/SD92zIG3EhcvuZTSxbYpIK9I6ykteGqeC6Kk7gfJc2zIHVGKM3FN7G+swCEfjQhZ91UaOcOYD2bJ5KMBcFcONv80feNZHfu027LlzRvrUU4J0HPm2i0+P2+CCfg5WiGHATLYF+w4nDcbgZQRVMZy9bc/Bvu2MU1RjFOAQaqSzLL0k9rC6Bckp485bvKBFIy0XVlBN+9qcjmSwZ6Ti7fTmiONUJO4yxSldlZs80TVB8YZ9D/r26j9ZAqZGev5uAhBKTJ5Zi72NVe4efAQdUDx99LKTs/0v73ZSZsR7ENwD5epfZlhhCE9sfcXec+jeovX6nXGWXzQ77uY+CKvTB5ZmZKU9GTfutTyWuxw23WiwORNaQBhcf8EInrP6SMmTZYSU6D13Xwy2WmsOtXgxFq0SLppiqgHzV6qKeiEoSP8zR7F9tE3Fdy2hy5AmYogS5rPZ4hPxP1j1B3lz+Qt01QrJ1Yza8RpE53ByE/TltU4RLSzcL+oj41VLxY05M70i+OIL4u0tpa3zoxNy+5DRxE4V3ToCnOcPEnnYBv58VdY4WwsdaxS6KpgeRgPBnYXPrOfpljGn/ivFX4Gw73GPBZoVCznVp8V0LzsfyGznqvvEFipJqM3LtijjmHjD+9xjORyCe7C1KEwLZ3Af9Uwm7M1ZbFzSvXcboEOwqeUe7gqQUQHTkhawnDyQoUZyjiI9DSNkvXXukCa7
+ uA4oj6QT
+ 6wPpPn/qrSTPWAiZKXJOxt2c+1YBy+7ecXIRg4T8ZjyAnPwlwRp3dAr9rLssug8YeD2nUZaVuEn6ETRtv9NpqPGNUsNFWe+wH6cMnGITMCXUXg6MkIF0S2GMyQhDZsOi/65RSB6C6cem1yNTB7JeCz3hYhCA0huAg0jNwQy/OrBgihHGskEUJTwY37+D5NNdZI4LvkJfInmg1uTVfDTlD7HPTZeCRLlU60e2+P/cfev70hKkZ3a04OlJAbMCIT4dG8W8uE9MxQsSTlZD6inBZb0XMp+XrtVvMbL64+5Z5bQ+Gl6wZrpeFZmllzD5eMi1qlhUr03d1uaXOSY9iYFnZZEHECZUNSTPbEtOj5Mdhw5xijAr6DyCM6c+1hQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,180 +133,197 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A root namespace needs to record its init thread group's PID when
-bootstrapped and capture its exit status and resource usage once all
-processes in the root namespace have terminated, without serializing
-normal fork() and exit() paths inside the container.
+Setting up an isolated namespace environment from a multithreaded
+manager process currently requires helper processes to call unshare()
+and pass file descriptors back over sockets.
 
-Commit the bootstrap init PID and wake waiters in copy_rootns(), and
-invoke exit_rootns() from zap_pid_ns_processes() after the root
-namespace's PID namespace has killed and reaped all member tasks.
+Add the rootns_create() system call to allocate a detached rootns
+instance with dedicated empty mount (CLONE_EMPTY_MNTNS) and PID
+namespaces and return its control file descriptor. Create fresh optional
+namespaces selected in flags while inheriting unset ones from the
+caller, and pin active references for the lifetime of the rootns. Leave
+the newly created rootns in ROOTNS_EMPTY until userspace installs a root
+mount.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- include/linux/pid_namespace.h |  4 ++++
- include/linux/rootns.h        | 12 +++++++++++
- kernel/fork.c                 |  2 ++
- kernel/pid_namespace.c        |  2 ++
- kernel/rootns.c               | 40 +++++++++++++++++++++++++++++++++++
- 5 files changed, 60 insertions(+)
+ include/linux/syscalls.h |   1 +
+ kernel/rootns.c          | 139 +++++++++++++++++++++++++++++++++++++++
+ kernel/sys_ni.c          |   3 +
+ 3 files changed, 143 insertions(+)
 
-diff --git a/include/linux/pid_namespace.h b/include/linux/pid_namespace.h
-index b20baaa7e62b..6fd959f4d0d4 100644
---- a/include/linux/pid_namespace.h
-+++ b/include/linux/pid_namespace.h
-@@ -15,6 +15,7 @@
- #define MAX_PID_NS_LEVEL 32
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 552d9710a0d5..272d54bddbe2 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -1006,6 +1006,7 @@ asmlinkage long sys_lsm_get_self_attr(unsigned int attr, struct lsm_ctx __user *
+ asmlinkage long sys_lsm_set_self_attr(unsigned int attr, struct lsm_ctx __user *ctx,
+ 				      u32 size, u32 flags);
+ asmlinkage long sys_lsm_list_modules(u64 __user *ids, u32 __user *size, u32 flags);
++asmlinkage long sys_rootns_create(unsigned int flags);
  
- struct fs_pin;
-+struct rootns;
- 
- #if defined(CONFIG_SYSCTL) && defined(CONFIG_MEMFD_CREATE)
- /* modes for vm.memfd_noexec sysctl */
-@@ -45,6 +46,9 @@ struct pid_namespace {
- 	struct user_namespace *user_ns;
- 	struct ucounts *ucounts;
- 	int reboot;	/* group exit code if this pidns was rebooted */
-+#ifdef CONFIG_ROOTNS
-+	struct rootns *rootns;
-+#endif
- 	struct ns_common ns;
- 	struct work_struct	work;
- } __randomize_layout;
-diff --git a/include/linux/rootns.h b/include/linux/rootns.h
-index 8464c90863ac..b8437bf21830 100644
---- a/include/linux/rootns.h
-+++ b/include/linux/rootns.h
-@@ -16,6 +16,7 @@ struct cred;
- struct file;
- struct nsproxy;
- struct pid;
-+struct pid_namespace;
- struct task_struct;
- 
- enum rootns_state {
-@@ -47,6 +48,8 @@ struct rootns {
- struct rootns *get_rootns(struct rootns *c);
- void put_rootns(struct rootns *c);
- bool is_rootns_file(struct file *file);
-+void copy_rootns(struct task_struct *tsk, struct rootns *rootns);
-+void exit_rootns(struct pid_namespace *pid_ns, struct task_struct *tsk);
- #else
- static inline struct rootns *get_rootns(struct rootns *c)
- {
-@@ -61,6 +64,15 @@ static inline bool is_rootns_file(struct file *file)
- {
- 	return false;
- }
-+
-+static inline void copy_rootns(struct task_struct *tsk, struct rootns *rootns)
-+{
-+}
-+
-+static inline void exit_rootns(struct pid_namespace *pid_ns,
-+			       struct task_struct *tsk)
-+{
-+}
- #endif /* CONFIG_ROOTNS */
- 
- #endif /* _LINUX_ROOTNS_H */
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 5efceb8d58a7..99e22b3cd213 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -83,6 +83,7 @@
- #include <linux/fs_struct.h>
- #include <linux/magic.h>
- #include <linux/perf_event.h>
-+#include <linux/rootns.h>
- #include <linux/posix-timers.h>
- #include <linux/user-return-notifier.h>
- #include <linux/oom.h>
-@@ -2565,6 +2566,7 @@ __latent_entropy struct task_struct *copy_process(
- 			attach_pid(p, PIDTYPE_TGID);
- 			attach_pid(p, PIDTYPE_PGID);
- 			attach_pid(p, PIDTYPE_SID);
-+			copy_rootns(p, NULL);
- 			__this_cpu_inc(process_counts);
- 		} else {
- 			current->signal->nr_threads++;
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 127a5fd23e70..081c27aa85bd 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -24,6 +24,7 @@
- #include <linux/sched/signal.h>
- #include <linux/idr.h>
- #include <linux/nstree.h>
-+#include <linux/rootns.h>
- #include <uapi/linux/wait.h>
- #include "pid_sysctl.h"
- 
-@@ -280,6 +281,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
- 		current->signal->group_exit_code = pid_ns->reboot;
- 
- 	acct_exit_ns(pid_ns);
-+	exit_rootns(pid_ns, me);
- 	return;
- }
- 
+ /*
+  * Architecture-specific system calls
 diff --git a/kernel/rootns.c b/kernel/rootns.c
-index e75d918b93ec..e3b203322ae2 100644
+index e3b203322ae2..caa810b65d0d 100644
 --- a/kernel/rootns.c
 +++ b/kernel/rootns.c
-@@ -16,6 +16,7 @@
- #include <linux/ns_common.h>
- #include <linux/nsfs.h>
- #include <linux/pid.h>
-+#include <linux/pid_namespace.h>
- #include <linux/user_namespace.h>
- #include <linux/compat.h>
- #include <uapi/linux/rootns.h>
-@@ -105,3 +106,42 @@ bool is_rootns_file(struct file *file)
- {
- 	return file->f_op == &rootns_fops;
+@@ -145,3 +145,142 @@ void exit_rootns(struct pid_namespace *pid_ns, struct task_struct *tsk)
+ 	wake_up_poll(&c->waitq, EPOLLHUP);
+ 	put_rootns(c);
  }
 +
-+void copy_rootns(struct task_struct *tsk, struct rootns *c)
++/*
++ * Create credentials for a rootns. Drop keyrings from the new credential to
++ * avoid unnecessary pinning.
++ */
++static const struct cred *create_rootns_creds(unsigned int flags)
 +{
-+	if (likely(!c || READ_ONCE(c->state) != ROOTNS_FORKING))
-+		return;
++	struct cred *new;
++	int ret;
 +
-+	scoped_guard(spinlock, &c->lock) {
-+		get_rootns(c);
-+		WRITE_ONCE(c->init_pid, get_task_pid(tsk, PIDTYPE_TGID));
-+		WRITE_ONCE(c->state, ROOTNS_RUNNING);
-+	}
-+	wake_up_all(&c->waitq);
++	new = prepare_creds();
++	if (!new)
++		return ERR_PTR(-ENOMEM);
++
++#ifdef CONFIG_KEYS
++	key_put(new->thread_keyring);
++	new->thread_keyring = NULL;
++	key_put(new->process_keyring);
++	new->process_keyring = NULL;
++	key_put(new->session_keyring);
++	new->session_keyring = NULL;
++	key_put(new->request_key_auth);
++	new->request_key_auth = NULL;
++#endif
++	if (!(flags & ROOTNS_USER))
++		return new;
++
++	ret = create_user_ns(new);
++	if (ret < 0)
++		goto err;
++	new->euid = new->user_ns->owner;
++	new->egid = new->user_ns->group;
++
++	new->uid = new->euid;
++	new->suid = new->euid;
++	new->fsuid = new->euid;
++	new->gid = new->egid;
++	new->sgid = new->egid;
++	new->fsgid = new->egid;
++	ret = set_cred_ucounts(new);
++	if (ret < 0)
++		goto err;
++	return new;
++
++err:
++	abort_creds(new);
++	return ERR_PTR(ret);
 +}
 +
-+void exit_rootns(struct pid_namespace *pid_ns, struct task_struct *tsk)
++/*
++ * Create a new rootns.
++ */
++static struct rootns *create_rootns(unsigned int flags)
 +{
-+	struct rootns *c = pid_ns->rootns;
-+	struct task_struct *leader;
-+	struct rusage rusage;
-+	int status;
++	u64 clone_flags = CLONE_NEWNS | CLONE_EMPTY_MNTNS | CLONE_NEWPID;
++	const struct cred *cred;
++	struct nsproxy *ns;
++	struct rootns *c;
++	int ret;
 +
++	c = kzalloc_obj(*c, GFP_KERNEL);
 +	if (!c)
-+		return;
++		return ERR_PTR(-ENOMEM);
 +
-+	leader = tsk->group_leader;
-+	status = (tsk->signal->flags & SIGNAL_GROUP_EXIT) ?
-+		 tsk->signal->group_exit_code : leader->exit_code;
-+	getrusage(leader, RUSAGE_BOTH, &rusage);
++	init_waitqueue_head(&c->waitq);
++	spin_lock_init(&c->lock);
++	refcount_set(&c->usage, 1);
++	c->flags = flags;
 +
-+	scoped_guard(spinlock, &c->lock) {
-+		c->exit_code = status;
-+		c->rusage = rusage;
-+		WRITE_ONCE(c->state, ROOTNS_DEAD);
++	cred = create_rootns_creds(flags);
++	if (IS_ERR(cred)) {
++		ret = PTR_ERR(cred);
++		goto err_put;
++	}
++	c->cred = cred;
++	ns_ref_active_get(cred->user_ns);
++
++	if (!ns_capable(cred->user_ns, CAP_SYS_ADMIN)) {
++		ret = -EPERM;
++		goto err_put;
 +	}
 +
-+	pid_ns->rootns = NULL;
-+	wake_up_poll(&c->waitq, EPOLLHUP);
++	if (flags & ROOTNS_CGROUP)
++		clone_flags |= CLONE_NEWCGROUP;
++	if (flags & ROOTNS_UTS)
++		clone_flags |= CLONE_NEWUTS;
++	if (flags & ROOTNS_IPC)
++		clone_flags |= CLONE_NEWIPC;
++	if (flags & ROOTNS_NET)
++		clone_flags |= CLONE_NEWNET;
++
++	ns = create_new_namespaces(clone_flags, current->nsproxy, cred->user_ns,
++				   NULL);
++	if (IS_ERR(ns)) {
++		ret = PTR_ERR(ns);
++		goto err_put;
++	}
++
++	c->ns = ns;
++	ns->pid_ns_for_children->rootns = c;
++	nsproxy_ns_active_get(ns);
++
++	return c;
++
++err_put:
 +	put_rootns(c);
++	return ERR_PTR(ret);
 +}
++
++/**
++ * sys_rootns_create - Create a detached root namespace
++ * @flags: Combination of &enum rootns_flags values
++ *
++ * Allocate a detached root namespace with dedicated empty mount and PID
++ * namespaces plus any optional namespaces requested in @flags.
++ *
++ * Return: Control file descriptor on success, negative error code on failure.
++ */
++SYSCALL_DEFINE1(rootns_create, unsigned int, flags)
++{
++	struct rootns *c;
++	int fd;
++
++	if (flags & ~ROOTNS_ALL_FLAGS)
++		return -EINVAL;
++	if (unlikely(!current->nsproxy))
++		return -EOPNOTSUPP;
++
++	c = create_rootns(flags);
++	if (IS_ERR(c))
++		return PTR_ERR(c);
++
++	fd = anon_inode_getfd("rootns", &rootns_fops, c,
++			      O_RDWR | (flags & ROOTNS_CLOSE_ON_EXEC ? O_CLOEXEC : 0));
++	if (fd < 0)
++		put_rootns(c);
++
++	return fd;
++}
+diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
+index c8be0abaa407..4a6c4337cc74 100644
+--- a/kernel/sys_ni.c
++++ b/kernel/sys_ni.c
+@@ -398,3 +398,6 @@ COND_SYSCALL(rseq_slice_yield);
+ 
+ COND_SYSCALL(uretprobe);
+ COND_SYSCALL(uprobe);
++
++/* kernel/rootns.c */
++COND_SYSCALL(rootns_create);
 -- 
 2.47.3
 
