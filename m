@@ -1,83 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD3D606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17748606A334
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kcSsR/nS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZDR6uB5I
 Received: by kanga.kvack.org (Postfix)
-	id 224336B00EF; Tue, 17 Nov 2026 04:46:35 -0500 (EST)
+	id 1B9DA6B05B1; Tue, 17 Nov 2026 04:51:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D4C66B05B0; Tue, 17 Nov 2026 04:46:35 -0500 (EST)
+	id 190036B05B2; Tue, 17 Nov 2026 04:51:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3D96B05B1; Tue, 17 Nov 2026 04:46:35 -0500 (EST)
+	id 07F7C6B05B3; Tue, 17 Nov 2026 04:51:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C8ECE6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:46:34 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F9481C3696
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:46:34 +0000 (UTC)
-X-FDA: 85444131108.22.BB58841
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C03DD6B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:51:10 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 46198A7A70
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:51:10 +0000 (UTC)
+X-FDA: 85444142700.23.EE100CE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 80F9240006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:46:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kcSsR/nS";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6F92640007
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:51:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZDR6uB5I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794908792;
+	s=arc-20220608; t=1794909068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iDwQbHlEpWaBUPvCAiLh/bEWUDIU/lF2tFc6FzFvoGU=;
-	b=fUACrcxhiSPD2Ti+pgB0weHGEGLuH0TqNJ9H68RM8SgWIY3Yl/DAwaawWgORggLaBJaJsy
-	hRjEg1krUFzwk18koXB67vXMgKsXcWJqD7wiOhzh8YWh6Vlj5XEPbXMr5yDtfEbLaMHfP2
-	Wt3tD6NNO/AuLfs3bxyusu8u0J/VPxE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794908792;
-	b=vUyqelExckHszxLKtKCKB04ypaZGAW9G78fFFe2LVb29HIjBojORJGtzr+iP6Si7PUqyQO
-	dqEjJlIqemz+58eO3M3IwDBE3AZerTAoGUcUZazyYAjWWQAAcSBzS/9A4qxsop63bO+F1F
-	w+rWq1typgyJc8VGMEWApGNBXISx4Rw=
+	bh=4bnvV/rZOOVemDT1lJ51Ywsx5XqM+V1JviPyoiLh9SU=;
+	b=VYYVaxAmIx01fnlzOvL7mLsMQpPVthKl6F+tnNgDKludVWWy196tYQXjPEHIH7bAxArMhE
+	umeGCEgoo0fotxI5zuerThfx3tBKljKjvosnfuv/WQd+hBwNbPFiSd4rwOed+is92I7ayn
+	GYunk8G20e3pNZqrOaJr0Ejgf709gjc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kcSsR/nS";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZDR6uB5I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794909068;
+	b=ZlGwWL8YXkK/Y4KVgqeG3aHGcy6TumWyykKNWwTJKi0RnzpbL4q8hLWQ6Z00qQmnK+s2RM
+	LFWajTo2mEcrnbVZ12CLtG/POcloECOjsNV2iRcn5SoUzp+ygU4xyH00FxCbSR43HOMFGT
+	kfKa4hJS/+Ygewnkt+xUKWacM8xdnMk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C11CB438F9;
-	Tue, 17 Nov 2026 09:46:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B0E1F000C4;
-	Tue, 17 Nov 2026 09:46:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A0F5F43791;
+	Tue, 17 Nov 2026 09:51:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7E31F000C6;
+	Tue, 17 Nov 2026 09:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794908791;
-	bh=iDwQbHlEpWaBUPvCAiLh/bEWUDIU/lF2tFc6FzFvoGU=;
+	s=k20260515; t=1794909067;
+	bh=4bnvV/rZOOVemDT1lJ51Ywsx5XqM+V1JviPyoiLh9SU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kcSsR/nScJvke0MU54aHsXdSOEoc0ZxnN39JOKfEvNqMPtKgTwCrNGMghsxBBFs/B
-	 tWbFOc/sxHg8sYyL9SNL6NiVyW1HhMeqLGl9sjqIa3KupK51H4B5ANDE1Tlmu21Rcs
-	 FzRUjLzHVWAOj0Cxz3Ij7u1DaUbNI7PXleM05nIW9fRpSdd3aT4jrXFm9US3TXiO9D
-	 pEof8wKYyxxt49SVe4oUYPgh+BvALkcLnmLV1PZ8rqI4hjW0aZZGzRDqAMctoR2T6p
-	 q9EPhSxxMc3yY9fXYT+fddFg4MCx9ET+hBFxJMNs0BbJBtlMV+SgQRTIx4Rf7RpFHH
-	 y9u0et5N+mb5w==
-Message-ID: <d463af46-13c3-47f7-8b26-702a8edcd140@kernel.org>
-Date: Tue, 17 Nov 2026 10:46:24 +0100
+	b=ZDR6uB5IRhncOd0eEWhNfPwu/dfUeJOq/EMTmFTLrYpSAG/2nRkZ7wN7bIGFIb+uv
+	 h2al1hZqRTZ1ZknB2rhHxDuIwYYy7ZVHBk4uoX6TCV7D9h79tiL60E9XAe0O0GWOy2
+	 FRnHqh+M8L+k5y/ubGQWcOreFh/sYWjoZw/wyWYqih/NmubKDRkAUux9bOa7m+4Ugi
+	 f5ZE+D3sxPc4/1qia22+B98S25i5U6GPRtAUwWv2hby+9KyWOKCOXyiFI/d5r/5H4i
+	 3JHP2cHQeKu0ZjG7yosoxew6tDXK6+PuHyIYcMfVQn+ZXOv9ghCCm2J3/eA1SsevmC
+	 ppDoCzwOue1DQ==
+Message-ID: <e971c3f2-e8cf-4eb0-ae25-e7e4d9ea02ee@kernel.org>
+Date: Tue, 17 Nov 2026 10:51:02 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate: drop the fault lock and wait killably for
- migration entries
-To: junho.cha@xcena.com, Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261117-junhomax-fix-mm-migrate-killable-v1-1-f6e7b135a159@xcena.com>
+Subject: Re: [PATCH] mm/ksm: do not inherit ksm_zero_pages counter or PTE
+ markers on fork
+To: xu.xin@linux.dev
+Cc: Donet Tom <donettom@linux.ibm.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261117081821.7211-1-xu.xin@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +120,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261117-junhomax-fix-mm-migrate-killable-v1-1-f6e7b135a159@xcena.com>
+In-Reply-To: <20261117081821.7211-1-xu.xin@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zq7safyh5nfdak938az4kgcrwcbxiggd
+X-Rspamd-Queue-Id: 6F92640007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 80F9240006
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: ubbo3hkjzhzjb4hthdz1t8cuxce97kf7
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794908792-453877
-X-HE-Meta: U2FsdGVkX1/M7/nKhnqPtNAboLcChDYGhRpxYMRJBF+Dq4nvSbAbCQCwtO9X3EAfSGJjDW+8IcxqJIUfCqZ95CdPkem3gxKO+VcY5rJgnvYaGyt4AAIbYcDvxm+SRhhOLdck7I2F4mIKpLRYz0LkT/5ncOz+RKq2ubv3afsK4mnM6vOBAavqQsUEE30ZNrTcPr8Z1VMBxEnU+MylCxs7wAdBMWlbrHC2SM++DJVWgm9z/L1kyS6YMaE03yUQg8Un3ikRhTuHXMm5hRAr2KkEKghxkwydYasocDjlGvBtgeamaUIDVdbWtfZjH6ZN9T1CCaUMq0BCQo2onvO5dDI+oywG3HFJwF84+0pjLHYYJjd9Zf/Ql4Ij7d08h3Q6ggNT3n9TuI37DKRWUnwwDFpYw47fmgP6CJJIbBOABAVNLzhGTgv7L0+3O+dTNpiTZhzhtjitXHTRjnd9KkX4n3VYHU02N22Uj38JDKHf9F3ba5+pkinB31zXat4MqqWvu+UOo9ByVmN/aR47zZVxy0U+WI+5SGaiGtE01hdYhTVAwAnOCrgNXX3F7rNH0VhHQVs2E7qdGPEmidECVqcbk6x8I1qq5YWUohoeW4cFW092arq8uXSaxJVX6CWNn+LFfLnumwLGQytnDzqkisqx/7ybhV6VP133IQbBES6bV11Ql4n7gvsP7nSzOQtPQkG9FNn8Da7LhWrXjdUCUylXU4GYeFhPe+IEoMK8n7REkjS0Lt4x1snM2aJLhEo52FLZolYCCb34QoeoroDu1Mylz29g9mknzDvZNsLBX4wzquXT+3Pe/vyh1pFEDzwcJulop2HPh4SjI8LAAFeYRbFzShlQ9PXHx4sfKE71V5xYukSiDWRkqDsnkP7clrrJj6+ViZP9NW0pKogsPHEhwBpiSrpFO/co0DeNQxdFtJFTNSdC1Xhsc4FU60VuFXnyZ2xd26+4iT2wAGm7ZzNamAKwtwt
- bX8ZETOM
- L9ywZdqjInTM64I6zHzI933ssS37wH3+TREmVb18r9wuC0F/RBI6kij0R97zR6RPjHp/jJvJ/8OaZNJ2dBfbZx/h74ukolQlKFXoTIPw5uYmEccaqZC5v9jGbSoaXb/npM6NVAoYTsOvF4LWbbKDLPFiEU9iaYQ0JXPatLsZmKvM8s2Riwjy0vUNcL9zeulOZWx7Jt8F40lO5UFynlYNSUoZ4PVYQZVoX1E+eCCkmFLFZyIFBnzPJ1nYG+/hPgBVLC4bpgB/9BTvjEeelOT1ENeGOEhXG3yCrXupahxRkqOR0cDRBHrvEex2UakYsWWpNPp+x
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794909068-918616
+X-HE-Meta: U2FsdGVkX18WuAufqUA9AicslYREL6RGMYOV8/dSO2u9hDDepRJftTbhrVoD9mpaSBrYMPeO/J34JsCTMMPVMvdgsaQ9ydsGE9INW1ag/n2ygwDxu1a0qIJzkpOL71VP78iNHY66xKENxQojX8rzKjeoGgZM4s4j3CUYVJyVJC+MmVXjHgAWF0lt/2O7Vz9uksWnDW3FTglWYPKNaNjYr6UYtnBKuWG31LcyfxUDb8xwZeWg6hC4hOHQYfz1tzDrGJ7/i97xWg25wfWZV35wpUfFzqKzP71iJmrxfBlmeFzyS4mOqoqW1lHJsQUkMx00jpPSDVhWC5qPkzNdoAlEBo3FgQVmwt+rZrFx3TCSsnffzOD126deRXmAfXQiqFbH2Hbe6Fi7DQlmUEcLfB/fpa0+rsrBVpmzgcVPhGm8Gz4uLPu6K4fecEDm0l/VhDgqDa1F8hqQTANsRAKY29OPhIsbSo8Jt6WlRpC1R6gvaizKCZbDeR4us5Zllmt18Fcxi9zg3MKsKc0tEa2IaEne/ptYbO8aimukX3o5CTHN/Jp4YBxxQnsg4D8EIN7QkHZN2rmdQg/cItYFetzWCntk2tzHSiseY/zL5T6FGuq72KvHQI+WBZIfLWzEi+dTjuI9e8sNK/J9HH38HAJKH/wF9hLYN066nSBJ3URRd4xtQ2/+H5JusE68CSJnDTsrA8A4pcKjU8IX48TQkJ+1cSUVaRThzRMDjHAjKjvubPL/rheFiwQDbVtKWTTK1GXnevDQ5kjop4IqCbXGyjVsRylaPcZoWOpXHLTQdqFVq6lewQap8e6fK/iCvIYI0plk3liutR91ApWPSTXv193aMHh2WdZhZWytpgNEqggkgbRh3djNHTb4UToelPcGOVVsKY+z987wwaUCGQx62AuLMgoKpQy9VM01OK56Gkp4I+ufrocD8mlZ+S7M0C7AN9+jcbjaLJdkmkDD4qap/QysOmb
+ UbkMSNLl
+ I2Th4/wE4D0VNgYkNfhyXflvvKqlC/8W22PEA6SkTKkgQv+JcIDQglnjUxdi0Jp05dnT/I0L6iZrIQ+7bq5g7t2ecpwDQX1CdqUDb+SDg04on1t/EK251fwr7cu+npw9hSfU8+ScxdtiHfs8LvaZuCc88VMY28CWuC1upzuaNWc8BD8KC31BhI0ccbgFEBvQXYlCkt8l0wfxgJK3rF1aXJXhrTV7fxec5xkc1hol2fSH5dAL33rpDKBr4EY1VtKXWdbARWvF/Cdg9O6qPBJ6h0Qpd4xkhfdLBYj4Xk4PfDQorTpJqjtMyTHciXnxNlp5In//bo7EjxZg2pvStxPJuGLjoRz2bSOUYHfRT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,81 +144,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 10:26, Junho Cha via B4 Relay wrote:
-> From: Junho Cha <junho.cha@xcena.com>
-> 
-> A fault that finds a migration entry sleeps in
-> softleaf_entry_wait_on_locked() until the entry goes away.  So does a
-> fault on a device-private entry whose folio is locked by another
-> thread, since commit b570f37a2ce4 ("mm: Fix a hmm_range_fault()
-> livelock / starvation problem").  The wait is in TASK_UNINTERRUPTIBLE
-> and keeps the mmap_lock or per-VMA lock held throughout.
-> 
-> That is fine while a migration takes microseconds.  It is not when the
-> migration is slow:
-> 
->  - The wait cannot be killed.  The signal_pending_state() check in the
->    wait loop never fires, because TASK_UNINTERRUPTIBLE contains neither
->    TASK_INTERRUPTIBLE nor TASK_WAKEKILL.  For example, if the
->    migrate_to_ram() handler of a device-private folio waits for a
->    device that has stalled, every other thread that faults on the page
->    sits in D state, and the only symptom is a hung task warning.
-> 
->  - The fault lock is held across the wait.  This matters when the
->    migration itself runs without that lock, as for move_pages(),
->    compaction or memory offlining.  A writer that arrives in the
->    meantime, such as munmap() of another page in the same VMA, waits
->    for the migration to finish, and faults that come after the writer
->    queue behind it.  migrate_to_ram() is called with the fault lock
->    held, so for device-private folios only the first point applies.
-> 
-> Making the wait killable alone is not enough.  A fault that returns 0
-> is retried, so a kernel-mode fault from a uaccess routine would fault
-> again on the same entry, return at once because the signal is still
-> pending, and spin until the migration completes.  The fault has to
-> return VM_FAULT_RETRY so that fault_signal_pending() can end it.
-> 
-> Handle the fault lock the way __folio_lock_or_retry() does.  Pass the
-> vm_fault to softleaf_entry_wait_on_locked() from do_swap_page().  On the
-> first attempt of a retryable fault, drop the fault lock before sleeping
-> and return VM_FAULT_RETRY, or return at once for
-> FAULT_FLAG_RETRY_NOWAIT.  A FAULT_FLAG_KILLABLE fault sleeps in
-> TASK_KILLABLE, and if a fatal signal ends a wait that still holds the
-> lock, drop it and return VM_FAULT_RETRY.
-> 
-> Dropping the lock there is safe.  The wait entry is queued before the
-> ptl is released, and the entry can only be removed under that ptl, so
-> no wake up is missed.  Nothing after that uses the vma, and
-> folio_waitqueue() points into a global hash table, not into the folio.
-> 
-> Callers outside the fault path (hmm, userfaultfd, huge_memory) and the
-> PMD and hugetlb waits pass NULL and keep the current behaviour.
-> 
-> Tested by holding the migration entries for 8 seconds, with a delay
-> added after the unmap step of move_pages() and in test_hmm's
-> migrate_to_ram():
-> 
->  - SIGKILL to a process waiting on the entry, from user mode or from a
->    write() that copies from the page, ends it within a millisecond
->    instead of after the migration.  The same holds for a thread waiting
->    on a device-private folio.
->  - munmap() of another page in the same VMA no longer waits for the
->    migration.
->  - Without a signal, the write() completes after the migration with
->    the right data, using under a millisecond of system time.
->  - hmm-tests results are unchanged, and lockdep reports nothing.
-> 
-> Signed-off-by: Junho Cha <junho.cha@xcena.com>
-> ---
+On 11/17/26 09:18, xu.xin@linux.dev wrote:
+> From: "Xu Xin (vivo)" <xu.xin@linux.dev>
 
 Hi,
 
-I assume
+thanks for the report.
 
-* this was not hit in the wild but found with an LLM.
-* Most of the code and patch description were written with an LLM.
+> 
+> As documented in Documentation/admin-guide/mm/ksm.rst, ksm_zero_pages
+> accounts only for zero pages actually placed by KSM.  However, the
+> current implementation wrongly accounts for forked zero-page PTEs as
+> KSM's contribution, inflating both the child's per-mm counter and the
+> global ksm_zero_pages counter.
 
-Correct?
+But ... they were placed by KSM?
+
+Just like any other KSM folios deduplicated before fork and then shared with the
+child?
+
+So won't there be an inconsistency when MADV_UNMERGEABLE?
+
+> 
+> Originally, commit e2942062e01d ("ksm: count all zero pages placed by
+> KSM") marked KSM-placed zero-page PTEs with the dirty bit for unmap
+> accounting, but forgot to clear this marker during fork().  Later, to
+> prevent ksm_might_unmap_zero_page() from underflowing the counters on
+> child exit[1], commit 4d6fc29f3634 ("mm/ksm: fix incorrect KSM counter
+> handling in mm_struct during fork") kept the child's inherited per-mm
+> counter and added it to the global counter.
+> 
+> Instead of inflating the counters, fix the root cause by resetting the
+> child's mm->ksm_zero_pages to 0 in ksm_fork() and clearing the dirty
+> bit marker via pte_mkclean() when copying a KSM zero PTE in
+> __copy_present_ptes().  With the marker cleared,
+> ksm_might_unmap_zero_page() will not decrement the counters on child
+> exit, MADV_UNMERGEABLE in the child will not unnecessarily unshare
+> inherited zero pages, and the global counter remains untouched.
+> 
+> [1] https://lore.kernel.org/all/53a7bf3d-843d-4e19-b0a3-cc6852fe72c1@redhat.com/
+> 
+> Fixes: 4d6fc29f3634 ("mm/ksm: fix incorrect KSM counter handling in mm_struct during fork")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
+> ---
+>  include/linux/ksm.h | 8 +++++---
+>  mm/memory.c         | 8 ++++++++
+>  2 files changed, 13 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+> index 93793ca6bcc4..3c6db19d825e 100644
+> --- a/include/linux/ksm.h
+> +++ b/include/linux/ksm.h
+> @@ -56,11 +56,13 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>  {
+>  	/* Adding mm to ksm is best effort on fork. */
+>  	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
+> -		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
+> -
+> +		/*
+> +		 * Child's inherited zero-page PTEs are unmarked on copy and
+> +		 * were not placed by KSM in the child, so reset its counter.
+> +		 */
+>  		mm->ksm_merging_pages = 0;
+>  		mm->ksm_rmap_items = 0;
+> -		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
+
+So I think there is definitely a BUG int he existing code when we skip copying
+some VMAs during fork. We should have instead adjusted the counter as we
+duplicate them into the child process.
+
+> +		atomic_long_set(&mm->ksm_zero_pages, 0);
+>  		__ksm_enter(mm);
+>  	}
+>  }
+> diff --git a/mm/memory.c b/mm/memory.c
+> index cf075fcec3c5..7dce96af2a51 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1160,6 +1160,14 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
+>  		pte = pte_mkclean(pte);
+>  	pte = pte_mkold(pte);
+>  
+> +	/*
+> +	 * Clear the dirty-bit marker on KSM-placed zero-page PTEs in the
+> +	 * child so inherited mappings are not accounted against the child or
+> +	 * unshared by MADV_UNMERGEABLE.  Special PTEs always have nr == 1.
+> +	 */
+> +	if (is_ksm_zero_pte(pte))
+> +		pte = pte_mkclean(pte);
+> +
+>  	set_ptes(dst_vma->vm_mm, addr, dst_pte, pte, nr);
+>  }
+>  
+
 
 -- 
 Cheers,
