@@ -1,69 +1,70 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E786A606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F82606A896
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X/EKTTkr
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ipfbuUt6
 Received: by kanga.kvack.org (Postfix)
-	id 1CD966B05E0; Tue, 17 Nov 2026 08:08:35 -0500 (EST)
+	id 4183C6B05E2; Tue, 17 Nov 2026 08:08:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17DA46B05E1; Tue, 17 Nov 2026 08:08:35 -0500 (EST)
+	id 3C76F6B05E3; Tue, 17 Nov 2026 08:08:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06C066B05E2; Tue, 17 Nov 2026 08:08:35 -0500 (EST)
+	id 2B7146B05E4; Tue, 17 Nov 2026 08:08:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D51E76B05E0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:08:34 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B70BA711F
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:08:34 +0000 (UTC)
-X-FDA: 85444640148.27.3C2351B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D288440017
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:08:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="X/EKTTkr";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 049866B05E2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:08:54 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8753B120426
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:08:54 +0000 (UTC)
+X-FDA: 85444640988.25.C9E61E7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id ED39C140005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:08:52 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ipfbuUt6;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794920933;
+	b=JATfcG0Lv7tTNjhhMKOtP5KYmxEsAKtFjz0Uo1FFbV7KQp4z81KmuB52hFnGlAI0M7pXmY
+	wmWkz8aLFfYNWJLjE4dfjXhiLd4FdjKDtID/HWpZTyHA8vA0CGfG5A8HMUYoygE/yAMQ9z
+	lZnAAC58IEojDw7Xo38EXeMzJVGxgUs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ipfbuUt6;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794920913;
+	s=arc-20220608; t=1794920933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BS0imCMGjfHQIl7YcMlSSRR5WwouJwY7rnnH2z0iY9k=;
-	b=gejlk3cBufXddhIcDAlOC4TiEcgNKzGLpzZib1/yrx4j92/WtRrADkg5Q5wo0UYPJdfTRr
-	TMa3OItEgvOlCB50EnE8t/5BF9/YBJH8ilyFQiwM52wFMbANzNR6gekUONfrUzyS2wwVOa
-	TpBVYlgKOUkUOu8JEFmtVRBoeF2RW4c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794920913;
-	b=QIlJoEi8qMzBzbG2sVpXa5VFXKom1aHEdO4lOlQ+2DfGZ47rmBw9kJuS99HKbtrWmMxiRf
-	/YXpNlEYwzNjn6iKgOHH0d2NvfXItLKITrKsSNxQwLEJNb8RPw6R9fJo6yhq5FXRvtBQIF
-	dTIZZdvxDmTXEnydwbu5p5bHdITGvDM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="X/EKTTkr";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=uqr3O4xFJCd//nDRyguxXGm2AzeSTGRjfBy3lG9BNl0=;
+	b=FH4tFokz9Ul6VOe96/FKcGAK79CTIN7LL1WVhLZpjLXSe49xslcbKbPnrnF+6F9WCd7nWT
+	sR2klKSOF73cibG05BRh2a3ixLccM4DyhQ/9wymalGfk1QBGjW6GVZGlH05BxcROjCcevL
+	ttvKZHn8gvUOR2Py5xWaw2Sy1o4c+gg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1659340416;
-	Tue, 17 Nov 2026 13:08:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA861F000C5;
-	Tue, 17 Nov 2026 13:08:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A205618DC;
+	Tue, 17 Nov 2026 13:08:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612531F000C4;
+	Tue, 17 Nov 2026 13:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794920912;
-	bh=BS0imCMGjfHQIl7YcMlSSRR5WwouJwY7rnnH2z0iY9k=;
+	s=k20260515; t=1794920931;
+	bh=uqr3O4xFJCd//nDRyguxXGm2AzeSTGRjfBy3lG9BNl0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X/EKTTkrhL7VBc+MAtvhnoiN6TlDDymKZP3H635lhyaJgXZPXq+CGFoCJaYsQeErf
-	 n3rH0EVLDsvvQA8N1q/GAMK75x8van3jVyPbUSImS8uutMMlB4oQbgD0Y9uw8VjkZU
-	 uPIG/3VvO19OnQn5StEm9+ThFHK5ZQkWsFAn3Ecz3ZgxTg5Ck0p5om26ccLjDsESJQ
-	 RvbUZ9QWTglB1cpSYnGDBxd0FAA6LWYxmBIVNo79dRHflXW3SHth55c7/sr/JaebYl
-	 tgwXWbE0fJj8Ls1x+6B/ycBHC+Tl8CyyLn9bAzgksVp11MM69PmicD7KGPFMrZRgFP
-	 Md+FWgg1UZ6IA==
-Date: Tue, 17 Nov 2026 15:08:26 +0200
+	b=ipfbuUt6iDNEvOEcW3itwqtyZzyCe8HrMhOaBXpKKWm20mDPL+NLsT0N38Chk95Yt
+	 h0xp4BybsS1jpB8bMG6cLoYjojA3Cn+nJDRdtdgESdiuC5C3aafZj0dIeChoxOO5Jr
+	 qHywk3g6C+YAPUfwUjPwNEHo/Md77D5e5bOk45MQHwjpwHk+BUz8aJzWKyK4jJ/sQI
+	 fth/+iTBhR/UhlXnACdWApYiwK8FcMuNf4lVM8XzL8SQ4OYK1oxnYZBVFtjIL9R3XY
+	 YS92hpKXgR3cYXUhH//A1zw6ZrrMXLcfQ9eCCCakebmlWAfAbtdrmDQjwlQuUkLTvl
+	 /5+m6pC7wTZ6A==
+Date: Tue, 17 Nov 2026 15:08:44 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
 	David Hildenbrand <david@kernel.org>,
 	Sven Schnelle <svens@linux.ibm.com>,
@@ -71,27 +72,27 @@ Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [PATCH 10/14] s390/sclp_cmd: Replace page allocator calls with
  kzalloc()
-Message-ID: <avxRyt00VGvWlKea@kernel.org>
+Message-ID: <avxR3PtPa4Zh4pxr@kernel.org>
 References: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
  <20261108-s390-sclp-ready-v1-10-3e7c90eb6676@kernel.org>
- <545cec68-2444-4dcd-987d-cea05ffe3362-agordeev@linux.ibm.com>
+ <20261116152216.165348Aa5-hca@linux.ibm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <545cec68-2444-4dcd-987d-cea05ffe3362-agordeev@linux.ibm.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D288440017
+In-Reply-To: <20261116152216.165348Aa5-hca@linux.ibm.com>
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ED39C140005
+X-Stat-Signature: 3osmf8s1khie5y175xz7cfrptiu5wsto
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: kajmqyn3io9us7799y9hp75j83omr6b4
-X-Rspam-User: 
-X-HE-Tag: 1794920912-149856
-X-HE-Meta: U2FsdGVkX18Ifx/m+N5m/X/yCPu/7+jJhG9YVimF7HhXUGBsWkOVA8g6bnfVoV+UwmNjplt23kXUEIapMDjvZsan5kmSWvcUeENbKdAVTeV92B9oOm+8xW8JsHXtouLhk1cS323PfmKKkmiVapIUxxtgdVK6MAxLAy2l790NJYsy0x5j+oNkOMZJtlN212FoLxjtYgpWkQzLxY06f+t023i+V2Sgct4QF8+eOPRotjtER7Ir9Eg5yQwiizVKWjrhjnVHuEa7/5DlIWks2lEv/IUO/RaoK0U0S1pP539+ZG+V3RG0wkEJuHQtecgKAOp7TUL25wVQpml7nKKP0/7Uw7YOjZ97pOlGN0g/ngL3omfCyjRaRjXhp6Y68e3R+dg5Ux0jhLtU/XiasDbHzMqLqHbVb9xmqtC5J036rx12O0+2uDlQd4iMGgu94k6KdLS6xeY/wx1hj+/MipgIOZb8mIxd5H2GecDm8wUPFkcd5zj9C+1urzE7W6VvI61hmtGGxwFZWDe4Z35HhsT5rhZlfIeFE5xTUiI12dJuT5fN6UiRnhm8+9RTSUL5r6vw7pXvgKguFe+ql81+GDk3fuOoYkx6W/J1Wy+TJElWKLi+r+qXSv1nXtwNfqJEI9JRl+aVLALm7bBfi+EEtFtTsD22dK4YJOJ+QTESN4HQScZp7UJEaPL4oHmg1I+twyOhKO0NHem3aKHcqQ6Z4+rIeAADa2H6DGYCxo1zUWpu3ZfXxkfdvW3bqZLxUNDLDNfgnYZkc5bOBiPfw6PSVfakNR/N+KCZhz6w0AcSN+oJUZESCKizOl/bJ36R7ubhU1FhspgeZQtbY8NBfk2ceqTUIRGzwOfNTkJ/N29zJaWTLnoeVjV28MMqcfdNZoufmgQhRNk3qQf9OPA6hlfD9fR3Pgz+YqJ7E8vGf+dR9tCe1OzgLCecRxoLDbdvhvd4DgeqIt1xpzP3Ir/1zidpt/ZDuZm
- nR/M0cEa
- y9zdeBk4i5YQe9/QiNBbM/yjHhv2/dQz9L9yug9n8oy+QuayMNbp6ErTWtun2RtR/WL/+ceUW7oJWrDbz1pDZI2NjzkmYgwx9basuXOYEj5RHKb2kDTieBXnAfRACbyUqt46HJaIa8k3j7IDfMPQz3AUEqLbCuHKpZ9gFVSLY9zghPMyg983VWn2YhYYQyjkf5V2ou5ASWsv86zHMvpUKP43yMkIdDIAuVwwzwL/9juB6lFTnGn0rpUpz0SRAuMWJ7EnVNvYo8p+m3YRv9Zff6C8znHUsyupdF4fBX0B271t9o6dGJHThzUshhlWRmsd/u9AJRcEIyyfbawM8JylOuPXsDlYIzBPwiqlI
+X-HE-Tag: 1794920932-368774
+X-HE-Meta: U2FsdGVkX18p4NCfIY8CNDmmc+KR8x2m4Tj/SJloZKa1WNKN/UsvV45omAHG3WeLqpPnJcXF/VzWaXRuKqIMoM5ER6cxSo83MDDf3SHSn4rFAAzjGU3YmaifVrBFt6I8qCb6+eFBLLdmer4JrTueMPseaq5N1DrLoYaABudcsfi8iLK/448hHO1mtkHfc84Mwss7gCQHAYi6JnufHVzfU1mrZvY6XNlSCQpkjjZYPyoBzJoW2cobLPmjc8vGJ4DMHRSi+UhI00VC9JrMancfZ7W4JsUrg03braVxBNIUDltp5LkbpyoPeofndzVaZ5R818IFuCdhnR4+dC6z13B+H0X8M9oG/yrO3R4RsuZXGVQIKlfWv/zQ6LM2uz1+kLqzkv3uEZPOXozl2L20JItizU2dUBFVn9hTaopTtlvjtwF0iAhujZTJ2sc9QbvoyiwSz1NrEDbXY+J1rOCEXn2KyzJgKWGUE2Roy4dhVuAT8SbstKw+TQUjswxa7E77qE7muNAkp4nuS/7qCqgWUEnu6mQl1ssGgxShX7wJABlmk7ItdFYyEoMcA8UlvTd1WYQ5TDF/ubcV2QatzTcXMHUNhPZ9nFEY9aTzMBtEORJQdDuxdYTuL71NYpsADGOdbJWjXTCinweLk1Tb9QRHBjAX/Bj+PZvlONcRJdFR71cNzAGKpLv+JZOsAoRH3Y5euHN8S+CAZKCZglVwMoipN/M6urJ3cwYYNtbyXQ8ooT3yagNuutnAqBNaBUvjnREA+WBcCzrTTQ3JIaO/PNe0DrS83qnj0syrA6t6DAQ/lLRqtBu3+LkAAWDz/H8ZMa67HgDuh9oaV5AHrXPAJG+eiR5dKhffyLYu0sY5eS1oeMX88LKRzDEtzPlAz7E3SIwU9JUcEFxCpzYdL+Px6GxnafaQgylvnFYHa693LdczeVE7f9pG/5aycHs0U8liwDWH7RMuxCNRKpgMFHwsu6hcBvc
+ pNd3nDdU
+ Uj8eOi/rRx8p07RxXjKnN2975lcKun6tJ6qIDYO98E+Mrln6Yml6c/1UEtbDZcMkHWdA5gP2pIFmWwkbiN54qCb4qlBkCwCLAqsDEM4QQERylCuaiHKS6ZkjTBp869mpxzdep8zxBstY9NZnhrFUBCO8nkIE8kN3+KqxdpN2oJJxDK75A4ioy4l8pCL0QHfpkGAZ+5gdLxn1lDJfZ7mIn8AbZbQmDNU/t7Gz21MS24ihuH9gBm1yd+U0DgISCY9aR6AGPdBXa2GvtjTMmGJDJ/VYpVNF7Z4mgMJql+QXmVHSIHPtFpVcpWR0JeAq229mK91QW1kCMiqNxYt2mMfXgosDvZbxfzTC8xcio
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,7 +101,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 04:12:56PM +0100, Alexander Gordeev wrote:
+On Mon, Nov 16, 2026 at 04:22:16PM +0100, Heiko Carstens wrote:
 > On Sun, Nov 08, 2026 at 10:58:41AM +0200, Mike Rapoport (Microsoft) wrote:
 > > _sclp_get_core_info(), do_chp_configure() and sclp_chp_read_info()
 > > allocate the SCCBs used to read the CPU information, to configure a
@@ -121,22 +122,10 @@ On Mon, Nov 16, 2026 at 04:12:56PM +0100, Alexander Gordeev wrote:
 > > 
 > > While on it, allocate only the amount of memory the SCCB actually
 > > requires in _sclp_get_core_info() rather than rounding it up to the next
-> > power of two.
-> 
-> This hints that the SCCB size is less than PAGE_SIZE, which is not the case.
-> 
-> > An SCCB must be page aligned and kmalloc() guarantees that
+> > power of two. An SCCB must be page aligned and kmalloc() guarantees that
 > > the alignment of an allocation is at least its largest power of two
 > > divisor, so the extended SCCB is still page aligned.
-> 
-> This implies that the slab size path was taken, which is also not
-> the case. Yes, the result is still aligned for PAGE_SIZE, but for
-> a different reason ;)
-> 
-> I would suggest removing this whole paragraph. I can do it if you agree.
-
-I'm sending v2 anyway, will drop it :)
- 
+> > 
 > > Replace use of __get_free_pages() and get_zeroed_page() with kzalloc()
 > > and free_page[s]() with kfree().
 > > 
@@ -156,57 +145,19 @@ I'm sending v2 anyway, will drop it :)
 > >  	length = test_facility(140) ? EXT_SCCB_READ_CPU : PAGE_SIZE;
 > > -	sccb = (void *)__get_free_pages(GFP_KERNEL | GFP_DMA | __GFP_ZERO, get_order(length));
 > > +	sccb = kzalloc(length, GFP_KERNEL | GFP_DMA);
-> >  	if (!sccb)
-> >  		return -ENOMEM;
-> >  	sccb->header.length = length;
-> > @@ -119,7 +119,7 @@ int _sclp_get_core_info(struct sclp_core_info *info)
-> >  	}
-> >  	sclp_fill_core_info(info, sccb);
-> >  out:
-> > -	free_pages((unsigned long)sccb, get_order(length));
-> > +	kfree(sccb);
-> >  	return rc;
-> >  }
-> >  
-> > @@ -173,7 +173,7 @@ static int do_chp_configure(sclp_cmdw_t cmd)
-> >  
-> >  	if (!SCLP_HAS_CHP_RECONFIG)
-> >  		return -EOPNOTSUPP;
-> > -	sccb = (struct chp_cfg_sccb *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-> > +	sccb = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
-> >  	if (!sccb)
-> >  		return -ENOMEM;
-> >  	sccb->header.length = sizeof(*sccb);
-> > @@ -193,7 +193,7 @@ static int do_chp_configure(sclp_cmdw_t cmd)
-> >  		break;
-> >  	}
-> >  out:
-> > -	free_page((unsigned long)sccb);
-> > +	kfree(sccb);
-> >  	return rc;
-> >  }
-> >  
-> > @@ -236,7 +236,7 @@ int sclp_chp_read_info(struct sclp_chp_info *info)
-> >  
-> >  	if (!SCLP_HAS_CHP_INFO)
-> >  		return -EOPNOTSUPP;
-> > -	sccb = (struct chp_info_sccb *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-> > +	sccb = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
-> >  	if (!sccb)
-> >  		return -ENOMEM;
-> >  	sccb->header.length = sizeof(*sccb);
-> > @@ -253,6 +253,6 @@ int sclp_chp_read_info(struct sclp_chp_info *info)
-> >  	memcpy(info->standby, sccb->standby, SCLP_CHP_INFO_MASK_SIZE);
-> >  	memcpy(info->configured, sccb->configured, SCLP_CHP_INFO_MASK_SIZE);
-> >  out:
-> > -	free_page((unsigned long)sccb);
-> > +	kfree(sccb);
-> >  	return rc;
-> >  }
-> > 
-> > -- 
-> > 2.53.0
-> > 
+> 
+> It is a bit subtle that this really works. EXT_SCCB_READ_CPU is 3 * PAGE_SIZE,
+> so we end up with a guaranteed 4k alignment from the slab cache, which is
+> indeed sufficient here. But this is really not obvious, and not as stable as
+> before, IMHO.
+> 
+> I'd prefer to have this changed to:
+> 
+> 	sccb = kzalloc(PAGE_SIZE << get_order(length), GFP_KERNEL | GFP_DMA);
+> 
+> which comes with the same alignment guarantees as before.
+
+Ack
 
 -- 
 Sincerely yours,
