@@ -1,30 +1,40 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24651606A8A2
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8752D606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=IuWBwW7q
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=CpC5ga6d
 Received: by kanga.kvack.org (Postfix)
-	id 46E546B05B2; Tue, 17 Nov 2026 08:57:35 -0500 (EST)
+	id 050436B05B3; Tue, 17 Nov 2026 08:57:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 446C56B05B3; Tue, 17 Nov 2026 08:57:35 -0500 (EST)
+	id 000936B05B6; Tue, 17 Nov 2026 08:57:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E6A86B05B6; Tue, 17 Nov 2026 08:57:35 -0500 (EST)
+	id E097A6B05B7; Tue, 17 Nov 2026 08:57:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0488D6B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:57:34 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 970FF1A046A
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:57:34 +0000 (UTC)
-X-FDA: 85444763628.21.901125A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C00DE6B05B3
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:57:35 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 503B5A7F1E
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:57:35 +0000 (UTC)
+X-FDA: 85444763670.26.D8FCAE7
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8B598100003
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:57:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ideasonboard.com header.s=mail header.b=IuWBwW7q;
-	dmarc=pass (policy=none) header.from=ideasonboard.com;
-	spf=pass (imf14.hostedemail.com: domain of alen.karnil@ideasonboard.com designates 213.167.242.64 as permitted sender) smtp.mailfrom=alen.karnil@ideasonboard.com
+	by imf07.hostedemail.com (Postfix) with ESMTP id 582464000B
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:57:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ideasonboard.com header.s=mail header.b=CpC5ga6d;
+	spf=pass (imf07.hostedemail.com: domain of alen.karnil@ideasonboard.com designates 213.167.242.64 as permitted sender) smtp.mailfrom=alen.karnil@ideasonboard.com;
+	dmarc=pass (policy=none) header.from=ideasonboard.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794923853;
+	b=KEntphkKjeXUGekc9O04R53Xc7ZblM1O22H8noEFbi3SAVxk2W0jowOmAgjuUHN7323ySI
+	BUMBmbqPUIrl9/VitpY1vqQ60OPY5YFdX70R225L8NumogWfVpqiwObdF6KWH/LQRE+D8v
+	OTTBALjNnJ2HkQ5A5aUpun5Ju5KYMMs=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ideasonboard.com header.s=mail header.b=CpC5ga6d;
+	spf=pass (imf07.hostedemail.com: domain of alen.karnil@ideasonboard.com designates 213.167.242.64 as permitted sender) smtp.mailfrom=alen.karnil@ideasonboard.com;
+	dmarc=pass (policy=none) header.from=ideasonboard.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794923853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -32,36 +42,26 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IZO31/vr2Anb44jHz73z1goyYJ+XECbiZPGQcJjHi+w=;
-	b=ZjwYEdMEJV4gUB5jyVZeKqqpmUvy84drp+PYlzpvaJIy39S3i0E7oA/R/b6VUmPKhQndfL
-	n3HNwzd37VIy5KRnqSQuD9/HB7hZZC8xzSZIMhF/x549yn9TNOPddj3UPmW10b4xTNLTGS
-	3/K+MML+dI4cKV/hOckNZy24haFG6qU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ideasonboard.com header.s=mail header.b=IuWBwW7q;
-	dmarc=pass (policy=none) header.from=ideasonboard.com;
-	spf=pass (imf14.hostedemail.com: domain of alen.karnil@ideasonboard.com designates 213.167.242.64 as permitted sender) smtp.mailfrom=alen.karnil@ideasonboard.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794923853;
-	b=fctH83j78xUrYqNbwHskroGKxwAXuOPBYjnuC3c4cHiMHBuSYW3cAk2rt07YqAucu0dQz2
-	SAe3n73rLZrhzyucWzjWRwSucTsKzzyTH6+5iiDIOLpS7NXlSbwtzR5voEVTQ0SVNLlCu6
-	bF0/kfnvKuCyW7AQEHTgvHiBQxXQn8Q=
+	bh=oHtd/pbTnvrVurwDdLnofK84OY4uScGFLO1awwqENQs=;
+	b=6Gr7kmcUg5MT4/xkACPurqymquA1gGemPrbJ5leQODUCHlIFv9VVvzp+0uw6AX3OrDltYR
+	TZRcOzVlbpHBmBDUCqBAp4az6A1LoTRteO0SAD6+4s7qPUVNk4uU5dX25z/XMBTLo9Lhgk
+	pFpUUC8d+rPUV1u4aNMVlyVjNfueBTk=
 Received: from [127.0.1.1] (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 943552022;
-	Tue, 17 Nov 2026 14:55:00 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1B85220F7;
+	Tue, 17 Nov 2026 14:55:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1794923701;
-	bh=WswJsxOBSsQrRCuzWGEZVgUOgcENdjhgoOrLkxfZu7g=;
+	s=mail; t=1794923703;
+	bh=cHwdwzNargfc3BeW78Sng/2AI2tSJgiS/RyUNFGs4no=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
-	b=IuWBwW7q9h0R86JgDPK3HAdIyVwqXjg/oKFsAkynRxGipq8FGkyDlaL1TAqtTZwBK
-	 icBRF+jK4TTQmjav2G4ZjJWfMwz9MpUJSbgQsPq2t4qZCZMoAwSh7/HlFDs0ipPJD7
-	 CQVQLfRJtmq3sVaxWVzduyy4lmztFbar2vVYy5v0=
+	b=CpC5ga6dMSesEiJ7rir/HGZ/EmCLaDwGe9KKBODAzTTQe9qb/FE9Z7pS1Vbob8EO5
+	 nao8uNB0WdtbLekaQrGnC6Mm831Sne7+b68QlWZwm9QUd20Q1PvJd+O4zQlsTY7Gqt
+	 7+BU3J/S+zF6WWD6zh/hZP6W1nQVuofFZqNsM/5Y=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 01/26] mm/fbatch: remove !CONFIG_SMP special case of
- folio_activate()
+Subject: Re: [PATCH v2 02/26] mm/fbatch: allow folios_put_refs() to skip
+ xa_is_value() entries
 From: Alen Karnil <alen.karnil@ideasonboard.com>
 To: Hugh Dickins <hughd@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -90,33 +90,33 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
  linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <b482561f-6620-d41d-eea0-a7f2a05cc444@google.com>
+In-Reply-To: <c441176c-33b7-c8f8-fb7f-51774e1fd853@google.com>
 References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
- <b482561f-6620-d41d-eea0-a7f2a05cc444@google.com>
+ <c441176c-33b7-c8f8-fb7f-51774e1fd853@google.com>
 Date: Tue, 17 Nov 2026 13:57:16 +0000
-Message-Id: <179492383659.1554713.15351223817355202820.b4-review@b4>
+Message-Id: <179492383660.1554713.7829576009911841106.b4-review@b4>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=634;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=633;
  i=alen.karnil@ideasonboard.com; h=from:subject:message-id;
- bh=WswJsxOBSsQrRCuzWGEZVgUOgcENdjhgoOrLkxfZu7g=;
- b=owGbwMvMwCUWeK6p+sMV/3mMp9WSGLL+xLpKT1rRd/LkvLUFx7cL7duefH5e5znmZoZ/rsbXd
- 51KF3/k31HKwiDGxSArpsjy5ZDM9KU2K8IuaIZwwsxhZQIZwsDFKQATUZ/LyNAgsrBHxWvG4TvH
- kmXZj29gtHjFfeC5V2sN0/X0VK0gpjsM/wOuF9jorHkwO9PKXmK9lK75yof+Rpz/5/0/ZT25T2K
- vAgMA
+ bh=cHwdwzNargfc3BeW78Sng/2AI2tSJgiS/RyUNFGs4no=;
+ b=owGbwMvMwCUWeK6p+sMV/3mMp9WSGLL+xLr5F3F9/Ne5sF+97axIV8yeF3s0wz/diZ8/a5390
+ 5kHXh7d0VHKwiDGxSArpsjy5ZDM9KU2K8IuaIZwwsxhZQIZwsDFKQATuXGY4Z8t//sVyvX7C61P
+ +zM8UP0bNMPF/HDfq3l5rku3M389btfI8D/Z+eg+wWCmdwW3Zj7QWjAxdgdjH2+hx7515lF3j9i
+ pXmABAA==
 X-Developer-Key: i=alen.karnil@ideasonboard.com; a=openpgp;
  fpr=F4C21C97A53CA856D029540951CE827BF0D44F9E
-X-Rspamd-Queue-Id: 8B598100003
-X-Stat-Signature: aiht3wtpjosw4srhtdscm5tcwthgxbtq
-X-Rspamd-Server: rspam01
+X-Stat-Signature: 973r89w3s7p8ibxrbsoexr4op1kpaxbb
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1794923852-343385
-X-HE-Meta: U2FsdGVkX1+Q5o3Jv+i7KuASjHzru9nzDjUyCz1dUh0v5EPB+h+2mlqUurqynOOMCbNgKOzN7WgzioDIFN8lFxbEyKddd/Nenh4JKNOB1rqRCNMNC4IHlF3r4hGKyuP+tkCracVNwITXatiXnLpp8gtCI4K3iHLcOLLkCuqweKsVb1D5HOKsclsnvl2AaoIu1SdAK/EPn6r0ghV1D/5+Mk2s5or5mhZFdtlj2j8MbfasL7NDhZTE2fPHsBpwUf/xurHqHi4qBj9fYpL6z2wqvg3DN9aXEWkXhJ2vrJS332w4CS6ExxH3cCoopyAPp/z77zVGkwo6cXHdjCFoHjn+Lf9iTyoIa8RMpy9YpJ0N19anxoO6FGH2WT76CAUzlRtK2bcguehnbZqaDhgcyGnr0YHq97NYgnJfGLLxHcQSYRL22P1MaBeFLBlu6tJyO2N9C19BzGfeO3iP6TK7m7dfog6gDOGxJ4z/DivsIE4/LVmDzpO/V3k2Ghv2BbGTQX1lLZxhJKoGYSSm3qnt63hobhrv5QpbDbukyUhXGqZpTutC6IVQ2DjoFdIwn/4AQ43uD2+ukh5NReKnQD5S9X0XLa3eHSJMLHx0erVqKceag8NoPvCzLVJAXBhkMu4QM4lMzbWY5bcbDWIVIL66mFv3B3H6JfdupObz7mnWC5PYsDUqAVD3vwQGFQKO/q7jJfAgEOKfwcPg6I9GxQg0F3y945DOIPptrUyN+pKAU5WPpnw672XVIQDIjHTPsa4wU9rrHDHM/BgR+2lhfkSG67QVqB2/7l2RtXf4tFmeOQqVqK26eaKE+KAbczBTGpj2SxF7eov6hLZeE8hqKldW+24itKpQeUFW4vsr54Yvh7niiCUCUgjqHoLxhhAp59YN761GXPpU+FBPlKbql3WEh7GqI+9acLQRlHxnhF2EmGJ+FWgrHaxWPjvdl16Eg0w0T4JjlNnk8IigAalNlxdRkYM
- fCFo4Eid
- gamIpSEaYOOv5ns4gWns08jwfcHwkUnF039o4InZcqa4joGjoJxwME9seAMImbS9TTDDUJHmvnnxzqDqnqLLUZJHA8ysUVgIokBi4I1Hei+T0VPO5dfV3JaDHhlwppZEyvcecz5Tfcjgz/qRsAu/7g04emsmAv/Pn7tgL4Lj38RLv5HaQal5TBIFGqVEn5qeoszhQFZWurR9oNFHdNt6AAwgL+C77PhvhKPxaBLouthcn4jJMIZK/WmsNerF4/D3t8QNyGbtEhmiV4psad4uss3Ct2tLA7e2GCYrhBkuP0rfijSx76lukPbEjcQA0evl5c8W63hAIoJ49kbXynidtM7JHgyo+p1kXvq5ifmAr/UfLul/X6FjoBDf5whz0wOwSqLS0ASxVsm78NHmCHTZd+zWX1c3Yv+9qJFxYSVlsETSMUz9Vv+9Vm0QA0o3wHUncRGBo3WU4aYCwaiv8v5zWQbYOECRtkwaS3x6yDKdPEIx3hgNZ3cfFrbFvBZOOmlbpCeCZIgh0fUkzutnOu+V2A7/T45LUmjMAxj2IHOzKmBWMWIfoVeqqlpa9rCboYegT0jn9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 582464000B
+X-HE-Tag: 1794923853-310413
+X-HE-Meta: U2FsdGVkX194pugWForW2nx3nmD7h/eBb5J4HR3H1aPAVu+NDfWUyGz2wMlliLHg0oymAb4hknYb8KkJvgEVJ+BaL/7y16nhXIdcIFfXoY6fVk47B8Iyt+4lV86mTgbkDutye8Ah3Em7vG3hFNpt5vwDD/2aSovD7jxHgx3kpax56MszX+2r7GPH+bLS4+zD13Bwhft5zD5m8v9DtmFTk2vCceE0A+hBhufdFx79Yu/HhJkb/I1ubTKMfbQNrS/jtRT1650qgdISRcFcy9k6ODiZiqBdtEgrVNQGtB25jMK73KUSmrquuLNF8gL30+sh3tMzEbr7ioL37Lj9Ft0nZA1Ivli1Kd5j2VLTeuWwBFckT6X29zCstYNrhgbuYPF1cTmOkN7RIpC9Xkaid5WEXaQw4SREJ01kHTz53VgRSoqwrQooBTobYI6tg6AXpBY5Xo7wOa0xk9yHtOaLUXq4tO96qlwMbxjGkbyp0okx6SjEk501yp3KugkoJiYDxHePuOsvVBYzL9CAqmkv4lGKgK449we3UOBZvY+1y5YP4WhFw/Dv1JHTB3JgABZcbZgRR95nPkzRxO+blfasHvlMsyk1vkYt5KZz+mlEPE4ojChvTvKLGjUzjcTXDSKzeziPcGNWZledLp/x6eUiKIPN7nFVJ9GY4WYFaTICUsx0+BqqYRxHB7XEAUUCy4wUiqfsuk5wiWp66rBhGbzqYY7+4LOcA/Jv/OWB6uMNoEMma+9THkvKMqMsfTpfslGyzLLNbv1ILHHi1z/lUCYxqMTKW4OOjFkhyy+MVymrB0WpQYK5TwSXEzDpr68NFKTcWWBv82PhmD1G0vIPs/XU1V27gaUsDIydQN9wnk1y29JZuSAWMIN3XDKML89u07dREfwXG+U5dcTxt5shayCZoeSbrTWtiT/ChzVDN4OPZMFMiE7cdTR6oa6HxJL7A7rruXJ4Zhs7gDPKeSbwN9oSHJ6
+ O2mXdaAE
+ ZV35v8vPd+D4YJLuO5PFsmB3Q18QpFEiu4B7FP7V+u0AvhqJAKNcYxnyqNdR8yJYWhCwryT2nux2J9YhYQwo9JYV3vTzAtauGNk+xVeKgu9zram9F1o+KNXP7bua42BcHvDiSz0FmMgUJdSpLHjG+ikhq5Y2WvnorkZ4rwc4+UQmQZS64FUwav7G3XmmLQGNo9Q5dsR71ixVpqtk/SQyYUWgSXFCLHRS0JmN94gaQzZW837fw4qvAwVHuD4/3Z6hFFtyuYL7Rof2VXH2t/2Qh+twn1nXxfeZecps5N/iDzbzlDqS9mi+PHirV8qHEH2IJ7ylEj5+arDZ0ZtMyKqamvsmJ3SePrP8Lm1XEJm1bJzr+BBKBm506LB1/An4p/0DY8sRk7slGgc7nXjBYk1c0oALMCZn19OPonqYv07zTrMq8otwkNeO/w2nXnm5YyCMPppiR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,14 +125,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 09 Sep 2026 02:42:10 -0700, Hugh Dickins <hughd@google.com> wrote:
-> 3.0 commit eb709b0d062e ("mm: batch activate_page() to reduce lock
-> contention") brought in an ifdef CONFIG_SMP around activate batching:
-> https://lore.kernel.org/linux-mm/20100805140755.501af8a7.akpm@linux-foundation.org/
-> shows a sensitivity to bloat that day, not any incompatibility with UP.
+On Wed, 09 Sep 2026 02:44:34 -0700, Hugh Dickins <hughd@google.com> wrote:
+> Let folios_put_refs() (hence folio_batch_release()) skip xa_is_value()
+> entries, and therefore remove unneeded folio_batch_remove_exceptionals().
 > 
-> No other batching here has a UP alternative, and it's a bit confusing:
-> simplify mm/folio.c a little by removing it now.
+> It made some sense when introduced in 3.1 for shmem swap entries only,
+> but workingset shadows popularized exceptional entries in 3.15, and it's
+> silly for so many sites to be squashing exceptionals out of the fbatch,
+> merely to suit an inadequacy in folios_put_refs().
 > 
 > [...]
 
