@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D79606A33A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2ED606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=efnLP78w
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=j/Y5K/W1
 Received: by kanga.kvack.org (Postfix)
-	id A85CC6B05B4; Mon, 16 Nov 2026 20:28:20 -0500 (EST)
+	id 63F216B05B5; Mon, 16 Nov 2026 20:28:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A35D36B05B5; Mon, 16 Nov 2026 20:28:20 -0500 (EST)
+	id 615FD6B05B6; Mon, 16 Nov 2026 20:28:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 972E66B05B6; Mon, 16 Nov 2026 20:28:20 -0500 (EST)
+	id 52BEA6B05B7; Mon, 16 Nov 2026 20:28:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 621896B05B4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:28:20 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA212C02B4
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:28:19 +0000 (UTC)
-X-FDA: 85442875518.29.8ED9B64
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C95D6B05B5
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:28:24 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88E47A793B
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:28:23 +0000 (UTC)
+X-FDA: 85442875686.12.25D13A7
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 129EA80007
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:28:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=efnLP78w;
-	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794878898;
-	b=xRQy9O+Yf61RDlZYN51E6D4zVY71JoXxACSdgLugkV30W4i6HEKtkPGUghwVbJVGxIl3T7
-	Sm3vuKxlPHU8fLG6Loh2SDFf9Yt6dyA9CHYbOKaWYUEdjyYaabTRzxDBwxVRaWY07h8gEy
-	Wmg3Murlff844ywd5z+gPWqCplglYAE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=efnLP78w;
-	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf12.hostedemail.com (Postfix) with ESMTP id B213740004
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:28:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="j/Y5K/W1";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794878898;
+	s=arc-20220608; t=1794878902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F1mKjrngqddQVF90xUO8yZ+KVFOYiz3lNSzRTt6HsWU=;
-	b=d9D3RV2dlCMDAJYBFmvjLEuP0ZTzTWVvUjB0eNYSAEiFiLN1sVP5FlR45iaGHYQXmYCzcQ
-	AsPMpc6rGpSAlrT0sXCiLlsc2SecWtslYJIU/Ot5SY9QVh5dCQY+ZKK258dyFa5ZaDIPAD
-	KWd9SRe7GJq2fqMqEfTzx4Nbrl5MVLk=
+	bh=xlQ8X6WzNhcNIgXSPIWirhAlwHa7mSr0UHoc8/wb7r0=;
+	b=UclM/OpxhIGvCkdg4eNBEVuF8PYSrWAogUL4C2rpIIj8R7FTss3+CbkaoMKJTcvoG+QRHv
+	c0GEWpzF88iUeYytpNDU7NXubX0tIPTiMkAoX4mT5K87twdUW+CcLmM5nGL1evE8Gmovj3
+	3g84JY7vOE3TpMhAo4YKx7AB9UdrwLo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="j/Y5K/W1";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794878902;
+	b=cRovVxBHEuzDKSx9NXLJRkpmpnzq6ZB00tukB5Qs7k9+w05yh2nd1YutOA8pkp78o9HNa5
+	8HeXe1CbD/oW0DzbTLPO8fWSAG030m6l6rJ9rQtviR2BkaHm+x+t9gGzGhH7O6j8VS0I35
+	iDJZ5MDsHgIY3E3xmILj7M7EczM/re8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1076E1713;
-	Mon, 16 Nov 2026 17:28:14 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D651B1764;
+	Mon, 16 Nov 2026 17:28:17 -0800 (PST)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B3EF3F673;
-	Mon, 16 Nov 2026 17:28:16 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 198043F673;
+	Mon, 16 Nov 2026 17:28:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794878897; bh=MNgJS3tmZr67R4aVtt20pj54AR+4mHx5Vy/nifYKBYY=;
+	t=1794878900; bh=LnEejaEQMb/GDrHjcskRfEjL7Sp1VSfP7vv9MQxjRyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efnLP78wsMuLSRStRhVSKzUkA1FuVJGFYLX0P/v0RCycvbOEokAVXKm+T2AE1/q0N
-	 m7ENDanLd7m8NimKVx9JTGVsjd9uLSFKDnCAOqUASCbUdnm3DUwbGepqbdmdWr/Job
-	 4iWkDuj5K3hjKUMQOlkSlPEmXjqy/BAPjVvIyc98=
+	b=j/Y5K/W1Fc9vHYcFlBQ285gLu2ZZHi5OJ9a8Dm4WVZU16NSyCgLbBqpayjL+i24Tq
+	 5RZT5c6511SxgAznUBEDh/KCj/RNl9qN/qBXvUYZQ0NJ8wgnerddSqtmwUdQd50LGL
+	 YfLAjBoIikh8CYtLxUexe2r4+wZVyf9fcpgTurP4=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	catalin.marinas@arm.com,
@@ -72,9 +72,9 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kasan-dev@googlegroups.com
-Subject: [PATCH V5 3/4] arm64/mm: Use p4dp_get() for P4D accesses
-Date: Tue, 17 Nov 2026 06:57:57 +0530
-Message-ID: <20261117012758.3814093-4-anshuman.khandual@arm.com>
+Subject: [PATCH V5 4/4] arm64/mm: Use pgdp_get() for PGD accesses
+Date: Tue, 17 Nov 2026 06:57:58 +0530
+Message-ID: <20261117012758.3814093-5-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261117012758.3814093-1-anshuman.khandual@arm.com>
 References: <20261117012758.3814093-1-anshuman.khandual@arm.com>
@@ -82,17 +82,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 129EA80007
-X-Stat-Signature: e7dit1t5t7xm6famdps8bdtx1arhaq9t
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B213740004
+X-Stat-Signature: bdwd5jb9j5z1jcrbghtx4tf31jnbkaw6
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794878897-641471
-X-HE-Meta: U2FsdGVkX1/WjTPvLu2eXwv/yn24yO+i7+LZ2W3qW3VbAKIKIehcNsige3UNFkC2Ljjg8E8mHGwULHiPstXOkj74HFQUAlyKXC/1qSyy5/oJyt0pH1X+EPiPcwzASKGTvXIdRtJ5V58feX+A43u1c6OagShv4ro40sPhkC7qvdtKWCYvjgA3gAyQEevZnX6ILnVNZIOqMds0BWZ/PSrljMa5II5Ix+jczwJ6G0Rs2C8UxhJQMNVXzut5DeL+J9CZ/KTAQBNOIbUhovz3XLEf3zQ2COKR3ioC59Q5wW5gAZSWEA5J83SBjZF8Z7Qv97STvo6vmwhr761ZUK4MP1ZZBgsxRExZ1RKgAQr5phWGB3tEKWsK6m80FUBYR5TjyRdSU2FNnGyR/ai09rpmaUKSK/rq+KloPyBJ18d46IPcP2jEc5sm/o6Se5sYrarbaOc/JEXN9Ur5NhzidfJimoFTKElNUOPmMOOSaoPvlzgVf+f1db3PL26UNlWln6JM54QLf2/HgxFfkpVu/g5DoNaIIkTABPIdn+kOlZxfeT1gCz0aukw8oKi5NJwTNmInA0qYlNcAz6v83PfXstSH/z8EoUuGzC7+GzphZnhRKpAWwyqW7EYpvHBONzz4+oO4UWy00uikpbb4jUiM8UfFlcrOB/om7N1S5AGaWHwfHH0jelEydtgN/AH2J4GlNwOkFPwQaOKr46I5MC/nk+B9RfLx3L6UdPRZ1riPEdtLwO9DEvWhH2arEHmJWbaulE/beDsib/9U+ltfBWJ8np4qXPLAUTQcX8Rwk0eLnzqSjL8+MWKyJ8obKlWO04oypTHYMx3aQQtMGRRazKGqzuj1onU1z22aR2jeYjzddPe3UP3GF/84/ggJ5oRPfEz0L+CE3DbL4dhQnG8w0Zu2BMzvOy5v9bAAG/cIBJukzEWkadsmLk0wwt13+tRqdNrGhe42Tv82t+d+JoKDW9GvBPg4GND
- itJApZgC
- YV0TviV/7Dntqx5QWxzi7nXjmYMfgo/F/Hr23e2U8JxVwYVOAnN1miSbzCIV0QKrlzBNws7DLA2wnMi2hEjW4Bz2yzv4DJC/eF/oA2ZN5x7IpncCSHEh9/vsjqp5D6x5BJv7FfEUeup3AkUDxeR6MUNzv7dEbUK6K0L5OAHQR/r4zSQ+vWiCrkwVuB/m9tUZe9+W6QZXOpqyRkEruhIbc80ylebj5hfRZKHpy13TWtLe/Zov2cpjzfu5lxYLmhWLVxHR3eW70jGHV1686kr+c7s5ivl/D4VCVCm9VCtCrtpZjam5ImCMig8kXSk64KoZLYWERwUy6lrdUStLscjuFpPsuhOUPSTzf2IITIvuy8sMm83iojOYADU/F6MAWVKIq1J6NkrPHn5atRDx53iYAmAsg2bhTfYfJy2X/ZsLCOX54dDYWnDJ51+PFG2Y5h9/J/33K2eb1XXlTKdjh6tcrneMJhS3KWmKx+hwQnOFvXmrL9sQ=
+X-HE-Tag: 1794878901-704471
+X-HE-Meta: U2FsdGVkX18fXeXTA6+4iPBQjPTV8lNa5xwhviFFLAwwS9b062UzrA7XKryJ3PFK6dbSJjCi+mHF2Cg4Oco8axxs7H0aoTfPqVWUk7HwDvd//3YUvaC2qiTYtrT8oFAKeB2UPY/pvKS7WTvjipCIxaLBv4/aRG+rZ70xlgXKX/I/nWKI8kDF4iBrMguWW0or+VrHVODGsmCszCbxtbu26IkCgjtJzdh78AHhB2beB7mWD/5UbhjdzXTg6HMvHGw/Zc3Gr4PPExvr9i7xdfNeyjGxb3b2ym4kUrOTTd9BGCgw9ptcyVVrMNU3/VEsWP6ELD3dDnOiX2MEamJdPeU+789hnpxT4Z+dCQ8Fq567xxm1W2AQojdjgUU4YSAUpoT4uLLqsG/jfOqia7RqZVbEZS+aF9+fh0MLJdU3Zkb32yzp3zeFNVzZJMSprvvTDnopvqpX5qwQIrL7B7D5C/uyWQFY5yTEmIG0PMnR6peae1QqwHJlrxecmqRmF2QiImiDobRhuPl0N0Ur2TYcuZWbJ4PDWW7r9aKuFfXOXJXOf2k8hkJI2yt65w5ne0EwMiWu/9Zs/RsXTS18YTI8DBLg5qDCFKFyndOs8DIdypfXNG9/SMC3dRr1yW/9/2DL5q8zAvom/PjebBJwzmpRm0PYZ3xQu6qh0i3DAjjYWH/AmnexcPrbfBfODOjd4kgzns8SkNfb//MgfS3gkBHJAf+XdeLxoTWOd8oLR674RWmlUgwWMydXodonvUHi/0OxIDUNZTFYi2xQqixVVlQzqQbWfPF1KmYwKH5+kO1O3Idyg2ks6PD54/oS5w8vFuqbFh+0Z4CsnivzPkFOG66WGaqf0qtTfx6LfKb31waH9Ly5b7OUtrpparRR0q0Zj7BwVDA619JDgDJGFTM/TkrD6vv+UxGcluPxjJQ8FZk8iQjyw25JVUA8+qBAQmZtQhPr1Jxue+egSRBzPU9Zo+WJYMk
+ OEt8vi6F
+ y/lWhsd4EnvGkLj/6Xn5wcZXvyMLvjK1bIdwh5tu3SKQWUSmgAUjxSqvAtEsWWHpOahV4qWgruuzVyt55RhybM7Fb47wrDK9fq9hKYBGlc6RWRqGXPROeRggTxOrF+c2NB5LFqLBPVvdTl8SHFN8CbboITnoZyN3n/+BDvEjE3Cxefyv76ZLFc02PNWtiLOUWLOXBO4wXekKjmEoAuIsW/wG6uGwDK2TO7yNXcn4X2M11tHsPFmnJz9+i4EJNX2gKDIpl+ZxuN8VT0NlphS1lpDGKDxPtU/GWAx3XVPf/nX4ZsHGM5jUk/r0QO8KWPIMUqFZeV+qAmuW1s9Q3IbEdPYoa3k+axA+jZD8fY1TVEZU3bS7fsl9AjX7H2pXSqi+JmRK5SwU05Mi1EpJLZ3jRn5libuUGc1ngc/XgW6fO4gZ8CqRPBTD8IV4uJ2Px54C34i8DKaHGn1QYnnB4im3KoL736vIZ8u7guYsC/rZHPXK0Jpc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,7 +101,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Replace READ_ONCE() with p4dp_get() for P4D accesses in preparation for
+Replace READ_ONCE() with pgdp_get() for PGD accesses in preparation for
 supporting both D64 and D128 translation table formats.
 
 READ_ONCE() cannot currently be used for 128-bit page table entries on
@@ -116,13 +116,13 @@ to build in configurations without D128 support or, if D128 becomes a
 runtime option, silently permit tearing on systems without the required
 hardware support.
 
-Instead, standardize P4D accesses on the existing page-table helpers.
+Instead, standardize PGD accesses on the existing page-table helpers.
 These can be overridden on arm64 to provide 128-bit single-copy
 atomicity when required.
 
-Override p4dp_get() on arm64 platform. Although the same as the generic MM
-default fallback for p4dp_get(), it does help avoid build problems while
-converting READ_ONCE() in pud_offset_phys() and pud_offset() because of a
+Override pgdp_get() on arm64 platform. Although the same as the generic MM
+default fallback for pgdp_get(), it does help avoid build problems while
+converting READ_ONCE() in p4d_offset_phys() and p4d_offset() because of a
 cyclic dependency between <linux/pgtable.h> and <asm/pgtable.h>.
 
 No functional change intended.
@@ -139,202 +139,170 @@ Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
  arch/arm64/include/asm/pgtable.h | 10 ++++++++--
  arch/arm64/mm/fault.c            |  2 +-
- arch/arm64/mm/fixmap.c           |  2 +-
  arch/arm64/mm/hugetlbpage.c      |  2 +-
- arch/arm64/mm/kasan_init.c       |  4 ++--
- arch/arm64/mm/mmu.c              | 12 ++++++------
+ arch/arm64/mm/kasan_init.c       |  6 +++---
+ arch/arm64/mm/mmu.c              |  6 +++---
  arch/arm64/mm/pageattr.c         |  2 +-
  arch/arm64/mm/trans_pgd.c        |  4 ++--
- 8 files changed, 22 insertions(+), 16 deletions(-)
+ 7 files changed, 19 insertions(+), 13 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index ad6cd5a71b71..7b3463ff2014 100644
+index 7b3463ff2014..a760c65de5cb 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -96,6 +96,12 @@ static inline pud_t pudp_get(const pud_t *pudp)
- 	return READ_ONCE(*pudp);
+@@ -102,6 +102,12 @@ static inline p4d_t p4dp_get(const p4d_t *p4dp)
+ 	return READ_ONCE(*p4dp);
  }
  
-+#define p4dp_get p4dp_get
-+static inline p4d_t p4dp_get(const p4d_t *p4dp)
++#define pgdp_get pgdp_get
++static inline pgd_t pgdp_get(const pgd_t *pgdp)
 +{
-+	return READ_ONCE(*p4dp);
++	return READ_ONCE(*pgdp);
 +}
 +
  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
  
-@@ -976,7 +982,7 @@ static inline phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
+@@ -1102,7 +1108,7 @@ static inline phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
  {
- 	VM_WARN_ON_ONCE(!pgtable_l4_enabled());
+ 	VM_WARN_ON_ONCE(!pgtable_l5_enabled());
  
--	return p4d_page_paddr(READ_ONCE(*p4dp)) + pud_index(addr) * sizeof(pud_t);
-+	return p4d_page_paddr(p4dp_get(p4dp)) + pud_index(addr) * sizeof(pud_t);
+-	return pgd_page_paddr(READ_ONCE(*pgdp)) + p4d_index(addr) * sizeof(p4d_t);
++	return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
  }
  
  static inline
-@@ -990,7 +996,7 @@ pud_t *pud_offset_lockless(p4d_t *p4dp, p4d_t p4d, unsigned long addr)
+@@ -1116,7 +1122,7 @@ p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd, unsigned long addr)
  
- static inline pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
+ static inline p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr)
  {
--	return pud_offset_lockless(p4dp, READ_ONCE(*p4dp), addr);
-+	return pud_offset_lockless(p4dp, p4dp_get(p4dp), addr);
+-	return p4d_offset_lockless(pgdp, READ_ONCE(*pgdp), addr);
++	return p4d_offset_lockless(pgdp, pgdp_get(pgdp), addr);
  }
- #define pud_offset	pud_offset
  
+ static inline p4d_t *p4d_set_fixmap(unsigned long addr)
 diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index ea0cdc730768..934b534c5b89 100644
+index 934b534c5b89..0b489fbeeb07 100644
 --- a/arch/arm64/mm/fault.c
 +++ b/arch/arm64/mm/fault.c
-@@ -174,7 +174,7 @@ static void show_pte(unsigned long addr)
- 			break;
+@@ -160,7 +160,7 @@ static void show_pte(unsigned long addr)
+ 	guard(irqsave)();
  
- 		p4dp = p4d_offset_lockless(pgdp, pgd, addr);
--		p4d = READ_ONCE(*p4dp);
-+		p4d = p4dp_get(p4dp);
- 		ptval_to_str(pxd_str, p4d_val(p4d));
- 		pr_cont(", p4d=%s", pxd_str);
- 		if (p4d_none(p4d) || p4d_bad(p4d))
-diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
-index d9a870836faf..2a0fe0b0f771 100644
---- a/arch/arm64/mm/fixmap.c
-+++ b/arch/arm64/mm/fixmap.c
-@@ -74,7 +74,7 @@ static void __init early_fixmap_init_pmd(pud_t *pudp, unsigned long addr,
- static void __init early_fixmap_init_pud(p4d_t *p4dp, unsigned long addr,
- 					 unsigned long end)
- {
--	p4d_t p4d = READ_ONCE(*p4dp);
-+	p4d_t p4d = p4dp_get(p4dp);
- 	pud_t *pudp;
+ 	pgdp = pgd_offset(mm, addr);
+-	pgd = READ_ONCE(*pgdp);
++	pgd = pgdp_get(pgdp);
+ 	ptval_to_str(pxd_str, pgd_val(pgd));
+ 	pr_alert("[%016lx] pgd=%s", addr, pxd_str);
  
- 	if (CONFIG_PGTABLE_LEVELS > 3 && !p4d_none(p4d) &&
 diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index ce8ecf5a308f..2620223d9218 100644
+index 2620223d9218..26efacc6c8b5 100644
 --- a/arch/arm64/mm/hugetlbpage.c
 +++ b/arch/arm64/mm/hugetlbpage.c
-@@ -288,7 +288,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+@@ -284,7 +284,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+ 	pmd_t *pmdp, pmd;
+ 
+ 	pgdp = pgd_offset(mm, addr);
+-	if (!pgd_present(READ_ONCE(*pgdp)))
++	if (!pgd_present(pgdp_get(pgdp)))
  		return NULL;
  
  	p4dp = p4d_offset(pgdp, addr);
--	if (!p4d_present(READ_ONCE(*p4dp)))
-+	if (!p4d_present(p4dp_get(p4dp)))
- 		return NULL;
- 
- 	pudp = pud_offset(p4dp, addr);
 diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
-index aad29bcc7622..4dd8c1186471 100644
+index 4dd8c1186471..f61f5bc09467 100644
 --- a/arch/arm64/mm/kasan_init.c
 +++ b/arch/arm64/mm/kasan_init.c
-@@ -89,7 +89,7 @@ static pmd_t *__init kasan_pmd_offset(pud_t *pudp, unsigned long addr, int node,
- static pud_t *__init kasan_pud_offset(p4d_t *p4dp, unsigned long addr, int node,
+@@ -102,7 +102,7 @@ static pud_t *__init kasan_pud_offset(p4d_t *p4dp, unsigned long addr, int node,
+ static p4d_t *__init kasan_p4d_offset(pgd_t *pgdp, unsigned long addr, int node,
  				      bool early)
  {
--	if (p4d_none(READ_ONCE(*p4dp))) {
-+	if (p4d_none(p4dp_get(p4dp))) {
- 		phys_addr_t pud_phys = early ?
- 				__pa_symbol(kasan_early_shadow_pud)
+-	if (pgd_none(READ_ONCE(*pgdp))) {
++	if (pgd_none(pgdp_get(pgdp))) {
+ 		phys_addr_t p4d_phys = early ?
+ 				__pa_symbol(kasan_early_shadow_p4d)
  					: kasan_alloc_zeroed_page(node);
-@@ -162,7 +162,7 @@ static void __init kasan_p4d_populate(pgd_t *pgdp, unsigned long addr,
- 	do {
- 		next = p4d_addr_end(addr, end);
- 		kasan_pud_populate(p4dp, addr, next, node, early);
--	} while (p4dp++, addr = next, addr != end && p4d_none(READ_ONCE(*p4dp)));
-+	} while (p4dp++, addr = next, addr != end && p4d_none(p4dp_get(p4dp)));
- }
+@@ -256,7 +256,7 @@ static int __init root_level_idx(u64 addr)
+ static void __init clone_next_level(u64 addr, pgd_t *tmp_pg_dir, pud_t *pud)
+ {
+ 	int idx = root_level_idx(addr);
+-	pgd_t pgd = READ_ONCE(swapper_pg_dir[idx]);
++	pgd_t pgd = pgdp_get(swapper_pg_dir + idx);
+ 	pud_t *pudp = (pud_t *)__phys_to_kimg(__pgd_to_phys(pgd));
  
- static void __init kasan_pgd_populate(unsigned long addr, unsigned long end,
+ 	memcpy(pud, pudp, PAGE_SIZE);
+@@ -280,7 +280,7 @@ static int __init next_level_idx(u64 addr)
+  */
+ static void __init clear_next_level(int pgd_idx, int start, int end)
+ {
+-	pgd_t pgd = READ_ONCE(swapper_pg_dir[pgd_idx]);
++	pgd_t pgd = pgdp_get(swapper_pg_dir + pgd_idx);
+ 	pud_t *pudp = (pud_t *)__phys_to_kimg(__pgd_to_phys(pgd));
+ 
+ 	memset(&pudp[start], 0, (end - start) * sizeof(pud_t));
 diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index c14e7404f971..a11c1949561f 100644
+index a11c1949561f..d0a4b8961c7d 100644
 --- a/arch/arm64/mm/mmu.c
 +++ b/arch/arm64/mm/mmu.c
-@@ -367,7 +367,7 @@ static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+@@ -434,7 +434,7 @@ static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
  {
- 	int ret = 0;
+ 	int ret;
  	unsigned long next;
--	p4d_t p4d = READ_ONCE(*p4dp);
-+	p4d_t p4d = p4dp_get(p4dp);
- 	pud_t *pudp;
+-	pgd_t pgd = READ_ONCE(*pgdp);
++	pgd_t pgd = pgdp_get(pgdp);
+ 	p4d_t *p4dp;
  
- 	if (p4d_none(p4d)) {
-@@ -457,7 +457,7 @@ static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 	}
- 
+ 	if (pgd_none(pgd)) {
+@@ -1649,7 +1649,7 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
  	do {
--		p4d_t old_p4d = READ_ONCE(*p4dp);
-+		p4d_t old_p4d = p4dp_get(p4dp);
- 
- 		next = p4d_addr_end(addr, end);
- 
-@@ -467,7 +467,7 @@ static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 			goto out;
- 
- 		VM_WARN_ON_ONCE(p4d_val(old_p4d) != 0 &&
--				p4d_val(old_p4d) != READ_ONCE(p4d_val(*p4dp)));
-+				p4d_val(old_p4d) != (p4d_val(p4dp_get(p4dp))));
- 
- 		phys += next - addr;
- 	} while (p4dp++, addr = next, addr != end);
-@@ -1622,7 +1622,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
- 	do {
- 		next = p4d_addr_end(addr, end);
- 		p4dp = p4d_offset(pgdp, addr);
--		p4d = READ_ONCE(*p4dp);
-+		p4d = p4dp_get(p4dp);
- 		if (p4d_none(p4d))
+ 		next = pgd_addr_end(addr, end);
+ 		pgdp = pgd_offset_k(addr);
+-		pgd = READ_ONCE(*pgdp);
++		pgd = pgdp_get(pgdp);
+ 		if (pgd_none(pgd))
  			continue;
  
-@@ -1788,7 +1788,7 @@ static void free_empty_p4d_table(pgd_t *pgdp, unsigned long addr,
+@@ -1827,7 +1827,7 @@ static void free_empty_tables(unsigned long addr, unsigned long end,
  	do {
- 		next = p4d_addr_end(addr, end);
- 		p4dp = p4d_offset(pgdp, addr);
--		p4d = READ_ONCE(*p4dp);
-+		p4d = p4dp_get(p4dp);
- 		if (p4d_none(p4d))
+ 		next = pgd_addr_end(addr, end);
+ 		pgdp = pgd_offset_k(addr);
+-		pgd = READ_ONCE(*pgdp);
++		pgd = pgdp_get(pgdp);
+ 		if (pgd_none(pgd))
  			continue;
- 
-@@ -1809,7 +1809,7 @@ static void free_empty_p4d_table(pgd_t *pgdp, unsigned long addr,
- 	 */
- 	p4dp = p4d_offset(pgdp, 0UL);
- 	for (i = 0; i < PTRS_PER_P4D; i++) {
--		if (!p4d_none(READ_ONCE(p4dp[i])))
-+		if (!p4d_none(p4dp_get(p4dp + i)))
- 			return;
- 	}
  
 diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index c544a61a5afd..172bc516164c 100644
+index 172bc516164c..b3b7c508564f 100644
 --- a/arch/arm64/mm/pageattr.c
 +++ b/arch/arm64/mm/pageattr.c
-@@ -351,7 +351,7 @@ bool kernel_page_present(struct page *page)
+@@ -347,7 +347,7 @@ bool kernel_page_present(struct page *page)
+ 	unsigned long addr = (unsigned long)page_address(page);
+ 
+ 	pgdp = pgd_offset_k(addr);
+-	if (pgd_none(READ_ONCE(*pgdp)))
++	if (pgd_none(pgdp_get(pgdp)))
  		return false;
  
  	p4dp = p4d_offset(pgdp, addr);
--	if (p4d_none(READ_ONCE(*p4dp)))
-+	if (p4d_none(p4dp_get(p4dp)))
- 		return false;
- 
- 	pudp = pud_offset(p4dp, addr);
 diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
-index d119119455f1..7afe2beca4ba 100644
+index 7afe2beca4ba..06470d690f9f 100644
 --- a/arch/arm64/mm/trans_pgd.c
 +++ b/arch/arm64/mm/trans_pgd.c
-@@ -99,7 +99,7 @@ static int copy_pud(struct trans_pgd_info *info, p4d_t *dst_p4dp,
+@@ -134,7 +134,7 @@ static int copy_p4d(struct trans_pgd_info *info, pgd_t *dst_pgdp,
  	unsigned long next;
  	unsigned long addr = start;
  
--	if (p4d_none(READ_ONCE(*dst_p4dp))) {
-+	if (p4d_none(p4dp_get(dst_p4dp))) {
- 		dst_pudp = trans_alloc(info);
- 		if (!dst_pudp)
+-	if (pgd_none(READ_ONCE(*dst_pgdp))) {
++	if (pgd_none(pgdp_get(dst_pgdp))) {
+ 		dst_p4dp = trans_alloc(info);
+ 		if (!dst_p4dp)
  			return -ENOMEM;
-@@ -145,7 +145,7 @@ static int copy_p4d(struct trans_pgd_info *info, pgd_t *dst_pgdp,
- 	src_p4dp = p4d_offset(src_pgdp, start);
+@@ -164,7 +164,7 @@ static int copy_page_tables(struct trans_pgd_info *info, pgd_t *dst_pgdp,
+ 	dst_pgdp = pgd_offset_pgd(dst_pgdp, start);
  	do {
- 		next = p4d_addr_end(addr, end);
--		if (p4d_none(READ_ONCE(*src_p4dp)))
-+		if (p4d_none(p4dp_get(src_p4dp)))
+ 		next = pgd_addr_end(addr, end);
+-		if (pgd_none(READ_ONCE(*src_pgdp)))
++		if (pgd_none(pgdp_get(src_pgdp)))
  			continue;
- 		if (copy_pud(info, dst_p4dp, src_p4dp, addr, next))
+ 		if (copy_p4d(info, dst_pgdp, src_pgdp, addr, next))
  			return -ENOMEM;
 -- 
 2.43.0
