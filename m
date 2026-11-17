@@ -1,107 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A1A606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7ED606A330
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c3hLoxO5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l8U7GqET
 Received: by kanga.kvack.org (Postfix)
-	id DCA666B05B1; Tue, 17 Nov 2026 08:21:37 -0500 (EST)
+	id 922986B00EF; Tue, 17 Nov 2026 08:31:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7B5E6B05B2; Tue, 17 Nov 2026 08:21:37 -0500 (EST)
+	id 8D27D6B05B0; Tue, 17 Nov 2026 08:31:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C91F46B05B4; Tue, 17 Nov 2026 08:21:37 -0500 (EST)
+	id 7E8176B05B1; Tue, 17 Nov 2026 08:31:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A96EA6B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:21:37 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CC3F40413
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:21:37 +0000 (UTC)
-X-FDA: 85444673034.21.132C92D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8ED0480002
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:21:35 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3hLoxO5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 589BB6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:31:06 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EE2711A044F
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:31:05 +0000 (UTC)
+X-FDA: 85444696890.06.E8EEBC5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 56C954000E
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:31:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8U7GqET;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794922264;
+	b=fWHSdhAizLbdNzjnXVvPcM2sm8XfvG+idxSl2+29BNarGdKF+m0wyntH8qmrg41u9z21FH
+	TNDvAROSNhHX4yQHaD2mj55pn+wnfOfZAdOQMfKGgfdpSvzw7ha5WZ2zMr9k0YfB32zbfk
+	SGzp+S1soJaypMfUh4xvgYs/oJmUaS8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794921695;
+	s=arc-20220608; t=1794922264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zi8OAGVQukL/w4MsMi+hTnD2T6SHZKyI0yT1q7MBUxo=;
-	b=Uk5ASp4j/LDxLsEVW5vB214bh16HG7/n3Ke4CNkrv4qnhYgjA1sdooHTJv+cmBANAZb8SP
-	YI9hzJaJ0uYBnW0E4/PThhgmQpfMPcFd0s6DgTP4+ay5KRcuDNrBLn011DuyyYHF1ziWlL
-	aequjM18HY9E7KX9C2Q+0fpB5C1THJ0=
+	bh=LbIEKVK3wtMckNJgD329X9n3dQQ2GgjJnxeeqAkeQkE=;
+	b=pfDraiFAf/wgNZcDwoYkgE+74cXYp+HtaGnQbTanCPgb6KWCsBFzBsVHix9zTmVLHU/d+l
+	wYED/HfJaC0b2rnJUga8T7ZOBjE8gQ98dALf+fbm/fhrCRZLyNVkC5XKY9nwP4Tyg5E+9o
+	6ke5dvGmKC17QwEItxZp32Nes8K9ls4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3hLoxO5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794921695;
-	b=WUwt4YuXLtpgvfhH3KvXLNYWMED35jsTWchAQAjejhyPhybAJNRVnOxr1dY3gNyZT+hei5
-	QZWuLJRZSb+9yjVsZ/fom0IIg+IJ0UQTEnpV4mGdrXXv/omJuzbjuDgCHSLqYOvMO/oz3d
-	qeAu9Jkwf82okPIcLuxZpeaUv2SUCF8=
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8U7GqET;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D12843EEA;
-	Tue, 17 Nov 2026 13:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC3D1F000C4;
-	Tue, 17 Nov 2026 13:21:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CE3F363453;
+	Tue, 17 Nov 2026 13:31:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FED21F000C4;
+	Tue, 17 Nov 2026 13:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794921694;
-	bh=Zi8OAGVQukL/w4MsMi+hTnD2T6SHZKyI0yT1q7MBUxo=;
+	s=k20260515; t=1794922263;
+	bh=LbIEKVK3wtMckNJgD329X9n3dQQ2GgjJnxeeqAkeQkE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c3hLoxO5ZMuNEHZiJATEkpv8p+udzJFUOp2pu1gs8MW23Tyjvpd3D5du5cH0GIhSj
-	 Bebp/aNm3kBkENkyreMiaaRbw5sq5B+odL+4I/OoYt/D+eq54cF1xVwOpr0ITYdl9T
-	 vFQ8MCk7K2Rv4I4qO5gXK/vWG9ZjwMRyJKbFL/jvCR6LjxpncbNktpakZhu1sTJwB9
-	 B3R1lCX99cdmrzSMZYqCxRqLSKToEIIMwr9qlspSLiulHVbGM36Uj6elUKrnV/i4i0
-	 2tey4lBw3qiOmYs4BqUHA9ian1oPvcab/cuHfj8C6pFzjqrRVluLMZ02KuMLv4qJH8
-	 tkdcJye7wDIGw==
-Date: Tue, 17 Nov 2026 15:21:25 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, Li Zhe <lizhe.67@bytedance.com>,
-	Andrew Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	James Houghton <jthoughton@google.com>,
-	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH v2 04/14] mm/mm_init: factor out common struct page
- initialization
-Message-ID: <avxU1Ypb6Vy4Sp4O@kernel.org>
-References: <20261113033442.62970-1-songmuchun@bytedance.com>
- <20261113033442.62970-5-songmuchun@bytedance.com>
- <179482576829.2379196.2091312590305150578.b4-review@b4>
- <44fc03e4-a545-465b-a7f4-174be2038884@linux.dev>
+	b=l8U7GqETRL3AIroPoYVEwG1Zqs2ydfYeVWZ0AHd/YTG9+hmsOL6kg+s4y8FVsG9VA
+	 0j0vYOygo3p8xkye+gtyOuHycs2BTfqUWA6hbuskk3EADC9KLuLlqUH0oZSx9WIDt5
+	 XALPoHwqcZ8Vgb15Q7OA4WmxhfuhMHPxZYPDn6ec8tqOqS6zK7YwKoeyau24M9GhoA
+	 yVP/kdoruOfJ2gjktLSzzSIY+FugzYKiOjN2tOTIUVp9TEueBKZld+wC5QwbRUSkA9
+	 oBtr/kvXMUMTrksntIW+V5vGdDfeFhWcChrxuK3Y0+41x4xQ5WPWHDKpA2yyf3IUbq
+	 0jhhza+q1EIHQ==
+Date: Tue, 17 Nov 2026 13:30:56 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Christoph Hellwig <hch@infradead.org>, 
+	Yuan-Hao Hsu <aa9736195201@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v5 0/8] mm/gup: walk and batch whole PTE tables in slow
+ GUP
+Message-ID: <avxWSJNLL6znDOEg@gremlin>
+References: <20261116210127.3837898-1-riel@surriel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <44fc03e4-a545-465b-a7f4-174be2038884@linux.dev>
-X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8ED0480002
-X-Stat-Signature: kiftagzmi349i3tkoyjty9jr8hcnhcys
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <20261116210127.3837898-1-riel@surriel.com>
+X-Rspamd-Queue-Id: 56C954000E
+X-Rspam-User:
+X-Stat-Signature: t8ku58ynrwdgbrk8s1pnowqap9ws5etw
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794921695-216677
-X-HE-Meta: U2FsdGVkX1+/jrUSYeygKqMIBQAa1KIZCzyD5u0t4Gtiyz3Vgq+MPgg78AQLZfgT25q9OCk7S8gJJYXJIyq3+xfTNQK6C+KY/YrwQ02vtTp8XU24eXnpLEH8zmvWLW1Sze7DR8tsEsg8LY6svjSAFUXKG+g2/DouOOrjF6c9xg3Zbc5YiesbuimJsMnJEdN62gpJomeo/hS0GOAixFSvj2OGxBtMgiMAhBmhQwzt85zU+uX4WzathZZDpF1+k1462fXD2A/kfmAF4/1zRk0IQ+sEVcQposog2v8MLGf9LbaAvK87R0OItf4BqDA0nONUO/av3v11eEggOGyYScghKBAZjz4IefbAjsLOggW4r64gsKzMqqnsntyTvAwPQJP+TGHszy2DvpoyqtJ+sroth4AEZm1W6hL5FrmTzfEhTJNhV3v4tUKPHpe5anY8qfsfUczTcZaAt22CQwn414SAwjeNOdi1ZZwtT4LQcvoN6Vh9hHe0FZ9XN3A/v0IEbZ2j4zMZbOpvYDsvwKWEungCDGf49DOxGahLSWWDueqzPYN8kKXEC/Rk6U6At0cIF3SQ28i9pqcBjbIb1l5z6MGVJVhgQyLOIU6HdRhenuGZRhG9/0fMrmdhdXNZU0HGgNUcFuBA+nf6SloGGTcuIHahAJPmEpYuEy1a6pg2kxlDUnBXZrt+uqhX5BupjzxFPUooeN8W2vBAFrtFk+B2OX5T2sjpVm0M0qvxGlIIpQ5fHmzJuvTUu80/vz1iIQRTqILGuC/SlKqkY9bZP2AVClQ4R3myJVxz3BqnGwAcb2Kuw68VK2StQm9oDBc7v6/x4qVD63eqO0rdSFTcS5K/qglYHayVnhLEpxiExbLqt/vlugjIEM+jDnfcyA81nnougSve294B/Dy0M9Gp7s1uXOYN3redJxBepH29r/aRdhf7KVAWGJeMCPzPusYdB25pxuzFC+savw0E3i1Saw0oa5C
- sOhO/ZdF
- uDp9o9lqTZapC3OSLVK/IsFZ02vGiJgn4ep2+yaMPhiynHo5k11s1q01FtWin7mieTfxXP95y3ChM79TWdHMA3GaQqVu57A0D1xmjXr1q32hmxfef92FFGPRZzWG0PVmL5ktKSpD4FbP0vxJQECzMZuAWW51ExJ7/t1NMpT3CqqMz13T/6M9qwQe2zh9FsILZdvXda6bB6q/IgZ+FNtl6qUDzmHbnlwdQevq6ojEbi5cwIlwq7HbDcNoi49Kj9pHwCPSk65oYYwtJJoQc3xtPQQ/63jqkk5xeheinUbOecgAGtW9MKBS3Yp9JU64C3sfV6iAgyZwusWTvQnA=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794922264-288635
+X-HE-Meta: U2FsdGVkX18qCbcL/kT5MW7+QlaGt2cKk5RU4/66Rdet3l5BCNk0UQzCl9VYJTTMm/6/VCSPUTIBIjxYP6Em20GjzAV+ztjEPwfUOvVeTkAEwUEkQW9KJeYWxm4cCLWJOwCZ6baEWs9jpuobk+ZaxuZ+wnHupVU34NAtDRsp+pUDeEJeXqFLSvrh3Nx2Ltnrdt6KlVLZL7G1VLgZ1c8n8hBGzuA05WgM8xyR6uFfeEiGNUB605SHwF+y2JQ+yzFFPCm3VpAxr2p21zkxXYKMG945xLkYWRjzQT8grrOLO1OY+RKdJ4N3+tRjDy8Y0x2euUgEEa/yd+C3OhZM91dCRLZdA4ZO9ciMoKUWXQMA5xYoTrJDCheL13rjnUH9E0WjYAFE20BCq/0bgrBa8SYYhiNaX2okmjwKiopb6BRBEywK8g9gCxUE3vwyNIPBjseuq9fgTgpKvhCTP6GCHf6Nsm1K791sJhXE+G7kIO0KrWumHDHq/kp0lcAMbemmCVDv8h6GDqVZqz+haDxMhAqTrhPOsm4WXWDAT6nrShMI/yPrwG1hwqCFCU2i+d8aQUwslM9ZgQPi1JNa/oi3qDw1SG+lwsmgI0gOg53Xgkuuyjvogj6oCUt3RChBaKsjq8XGRGiI0YbBevCc3jP4ziQhjY3CX2qH9eA5uzRV/KVGJbVpGZ6Aon9H5OgsKowsvGo50lrq0DsMQ4okKjaDTflEXSxS/pZaXQICsa2T3mmar8zWUVoMLe7aET9QSKf8CZIxZ3rFTS3KnZHKrQDt8kGcPDZlBcNqnYNe6v8NF4oWCIUSmuwHwEpT7LdWJVjDKcA7hKws7gV1EA7S9E/OHqc4ns+0p/0pUzwEWDPUEL7I0Q82URHJFk3Q9y4sM6w5cPu/SPoF8zqieL1/nlLk6qtacXjwkMTutDm0c2JGhDltUpL37baigWPNdSfG9JDZ3gz/NRxZ1ACFF0ycv6qQmzm
+ zG6FqRDx
+ ezMtwXhDWr0cHysWUHwwFdKWzyyx/uW7I653tDdWBvR6v1OnfGpK1k7nUo/nb+zTHgjs7KTUZbqj/QiBZcF9b1yJYAQtbz+CBRRh3UfCB7uQxIBNF4WEgCI6o6xlLuG3XbsayccCl9Y+VL9W0CyeNRc7ZJhvV8Vljdoz1Wt2fyc0U9blgVIGhkE+cvGHQDHbRqxow5tIFpBeW/q1NM3Jdj9RPFH0RIScSkCXkHS/sOwpzuhWGhQXYri+qX7SkKY6YzN9l9H6J+0VYSUbYxHM/dsZIsH14R4nmJxXTXpEeo8Wut/DRYd212eTh+p7N0ObmhtJN+vH20zjw0tQUOYhiy5EEWhCAwELx6iH3X50Rw4giETk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,43 +97,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 11:13:42AM +0800, Muchun Song wrote:
-> On 2026/11/16 18:42, Mike Rapoport wrote:
-> 
-> > >   	page_cpupid_reset_last(page);
-> > >   	page_kasan_tag_reset(page);
-> > > +	atomic_set(&page->_mapcount, -1);
-> > > +#ifdef CONFIG_ZONE_DEVICE
-> > > +	if (zone == ZONE_DEVICE)
-> > > +		__SetPageReserved(page);
-> > > +#endif
-> > Can't we keep this in ZONE_DEVICE part?
-> 
-> We can. But I put it here because there are at least two places where
-> we need to mark a ZONE_DEVICE page as reserved. Handling it in
-> memmap_init_page_common is simpler — it reduces the number of places
-> where we have to set reserved individually. Otherwise, we would need
-> to explicitly set reserved in multiple places.
-> 
-> > 
-> > If we can't, __init_single_page() sets PG_reserved for ZONE_DEVICE pages
-> > and the
-> > 
-> > if (zone == ZONE_DEVICE)
-> > 	__SetPageReserved(page);
-> > 
-> > in the MEMINIT_HOTPLUG part of memmap_init_range() becomes redundant.
-> > 
-> 
-> Good catch. I think I could remove this redundancy next version if you
-> think handing it in memmap_init_page_common is okay.
+On Mon, Nov 16, 2026 at 04:01:19PM -0500, Rik van Riel wrote:
+> mm/gup.c only: 347 insertions, 226 deletions.
 
-Let's keep the #ifdef, still better than duplication.
- 
-> Thanks,
-> Muchun
+I'm glad you describe it here, but could we please just have a normal diffstat
+like every other series? I feel like I've asked you this before :)
 
--- 
-Sincerely yours,
-Mike.
+I really hate a missing diffstat in the _usual_ form because it makes it hard to
+glance at it and know what's touched (and pretty much 100% of the time it turns
+out the diffstat is v. large when this happens...)
+
+Here it is for this one:
+
+ mm/gup.c | 573 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------------------------------------------------------------------------------------------
+ 1 file changed, 347 insertions(+), 226 deletions(-)
+
+--
+Cheers, Lorenzo
 
