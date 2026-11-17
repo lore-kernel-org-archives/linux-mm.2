@@ -1,140 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A819F606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7E5606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NfT3BCBl
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=K95kdnrD
 Received: by kanga.kvack.org (Postfix)
-	id 96F666B00EF; Tue, 17 Nov 2026 16:16:27 -0500 (EST)
+	id 21BA76B05B3; Tue, 17 Nov 2026 16:16:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D2A66B05B3; Tue, 17 Nov 2026 16:16:27 -0500 (EST)
+	id 1A4E86B05B4; Tue, 17 Nov 2026 16:16:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C2586B05B4; Tue, 17 Nov 2026 16:16:27 -0500 (EST)
+	id 06CD66B05B5; Tue, 17 Nov 2026 16:16:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E582B6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:16:26 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D000CA05D2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:16:24 +0000 (UTC)
-X-FDA: 85445869488.26.5288CC4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 07D6C180006
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:16:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NfT3BCBl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA8D36B05B3
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:16:27 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15CC6A7F2D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:16:27 +0000 (UTC)
+X-FDA: 85445869614.05.E21A0FB
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3D0C0120005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:16:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=K95kdnrD;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794950183;
+	s=arc-20220608; t=1794950185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zqAg+LPxRBAVJs264I0Nj4xAJBhpyH8UCjGixQkGIfw=;
-	b=r7cV8zLbnZqUfFWUVWaJG5mzN1sVRdc9KntNFUaZObhNRFETC1cGntIeTS8lX/nqv2GB+P
-	fXCxBIaxaKXxEeJydnfoPMcpPMcQD0eDD4Zq6mIdqSjxIAszvVPu3PBOxEMhD4orGy4m/3
-	gLydMYbYKbwh/597PeDPeoU1nFRtj4g=
+	bh=Ays1EfzTLcRjTY+4yI71x15YxEo2laYpKiSTCWHUOoo=;
+	b=qiHmqlwgr3ua1kPnDLlVdXheG0W8ps3u1GJ8JMUSYAodTPYW4FYvu+GDUN94IBE+GRGlVN
+	DXzwSDuOXLjHC8yhv9zGls90hWjkBIrvl5olC1MVKhbh7gMCVT3lsU4C/JTNQ8AScdf0NS
+	Z/EGcUf1FgDz2bJ+At+Lo7sH9YgSSnU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NfT3BCBl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=K95kdnrD;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794950183;
-	b=kzERo9uzgyochspIvk4XH6E3a2G7NcHe0WG54Mx+T8Lra9T1MRPsgvsHi7uCiSNUZ0pLkN
-	7cQQ7WBzk2cCfC/cs+tA+vd8mnmeAejbD8T2yfxKdimimcRoyNhgSnt2msTlhVman4Ewfx
-	qZMkKS/cM0TQxPTN9EBLDCn+KoGlzSk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 887AC60DB5;
-	Tue, 17 Nov 2026 21:16:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D400F1F000C4;
-	Tue, 17 Nov 2026 21:16:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794950182;
-	bh=zqAg+LPxRBAVJs264I0Nj4xAJBhpyH8UCjGixQkGIfw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NfT3BCBlL2QuXC4ZmkKQKUBf34y68I4+H23xRXOWODNFtczmXf4BF7M0qvY0wOCoQ
-	 ZpCWSc3/fN8iOlEx53CxcU20Jjq0w0x40y5XvbLbYVYEjQw0gqe0LNeOrILacFjzf2
-	 YioqfyXmpZqu2ubj3sWcrJMARkdM2gxVxb9OfI3D6G5NGcuippcxs9kDiYhBDJkloO
-	 CnqYP/fT705C0nNdjq2P4oQ4AiANMUNUfv97/85fXCWrioxHP/M2hYJ59bW8NqAlkO
-	 kZNkW+qns82j0ZHEVsOHt3toN0SHcduSP5ic72rMqUWaXAhHiSyyyFOPTyxnjra9Dn
-	 iRTKC7xyHRAwg==
-Message-ID: <0efca67f-5ab1-4ab2-8607-abf94366d384@kernel.org>
-Date: Tue, 17 Nov 2026 22:16:15 +0100
+	t=1794950185;
+	b=yHo4fMDmDJZDfNwPoSllUkdqydfwLaoH2atN2iG68NRLYd0qmo3ILFQKpt+KwiadF5+DqM
+	UGNH2erphNAiewKdnvaesjdXPm+30ZS7kvILDHuDSronZtw1yU+rz/Dfuuc9CFxB9OhueT
+	0yJQSHZv7ZCHeqw/NvhPDhp2FgahT8w=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ee1b65fdbcso1109845ad.1
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:16:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794950184; x=1795554984; darn=kvack.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Ays1EfzTLcRjTY+4yI71x15YxEo2laYpKiSTCWHUOoo=;
+        b=K95kdnrDF5RwDbT5KsvjxSDZg8fdal49dP0PxCzKAz5UktEcBBV4UTDpdVhiNBan9z
+         fNzcS7he66E060dhl0Qy9t1VjEOghWldgU/suvqGrmNITVX0DtHy+ZXUhFyv3wrdk6Ay
+         QTJmqbEs2UQzal5mbSHo0upq2qXnM+6AT+Pu5d3m6ihEw9bv4FLUsZF/usb9os2WXA8f
+         7rbe92XBT4/1bTgNfMKHQXe8DpDqERKEwnjRG/Vy7nZVJDqmk1DOlyhEdNoss96bpIAT
+         rqFxlTwS0ki46qCp4d34f3Ia7Vdp4QGE/+tZ9MaWTGcv9BuRd8NyWsWrkBA5OzDkyvaY
+         Amig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794950184; x=1795554984;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ays1EfzTLcRjTY+4yI71x15YxEo2laYpKiSTCWHUOoo=;
+        b=jQKQ4gI9rmDJ0CwGO+hQsg4nL+aOCNH8ZRJFA0mzEVb8ssfs+r6GnTIbidksnv/N0w
+         rHjMincjhEIJ/4q9ZJoEXQMJivAB6vxCanx6H3yeQzsbxlrsWpQz53VjV2W9LuPsFEBR
+         oYchK0YuCfINrmrco98kBNXn8yyyhfY3n/LqVCu9i8VUghtbLgOcy1iBILyiNua2A2i/
+         gQYNH9N2XPVxmXpeiOn4PbEo6mdXZSIwd3pU1zvIJbHtwzVhIhYIoXCAdW8/CySgsItr
+         vA1mk2SpyU67KteKFaKtLcvW0Ct2ebrXDGIgHHhvZUgzbMhcx+A3Ax3BaTG6nw0KkOPb
+         IhLA==
+X-Forwarded-Encrypted: i=1; AL+hErHRc6hGKCkKDXTVbSVu2ub3xwwkSDDI14ZEWqhDsnymu43T5V5TFuiuq9HqbZnBlA54CfO5uEDHFg==@kvack.org
+X-Gm-Message-State: APuU4Z9MMMBUdoESjL6WLyu7kmEygjHnOZN87F3QichUTrfNc4BgKuDc
+	RrY6kFbfNj9C4/Xp2gY/XXqzRi98wrFDzht49awcNTsB8axKEBvK5zpEgGUcnqzhWw==
+X-Gm-Gg: AZFdTZccTjInSpujJMjKMDz08mT8TsWZLJkVPdcfJwn1jjQp7BxUP2SA8/dNoTnTlA0
+	dpm8mrQ3b7mQID6qVbf45/Mmqh74DiBHaMa8LpB6RnBWe880aj4s201EggBoLDF140VWKtZX141
+	c8+XXHo6TPQXxeO7d07MPsL/bv1zwcuoLxaKwtaQJV4ZagXcZJTgghsk8CStP18rXQ4BcNQFtSu
+	OFQs4g7wwCGBW4Yv0d1c75i4w2haGs4JjZLyxOzjYEAVk8X6Kd1IkXR5wX5ZGpRPEMi5qYkXvZR
+	Pn3pm4cjL2xbF0OUZma4jNVhzyU2WzZG3Msu1hX8tNEZnotIEquES5QLzno9EmPs+xJ/eAcBQVL
+	lQthq4rC/Xrm4e0jJ+2uh/6E/q2qDP76sjfmFL/wDTrgvTTZXGdGyBsRDRQkY/vmp3y3VZjwZ/X
+	RfYc6LiJxl362fvDcg7Z4JBUwqGocq5C7anRKRfkGOtvrilVtpAOrFJ57Hymibldgb5Bvdm/8ma
+	6GTG1BqfUX/Gw12YEhOR0B+xpxN+L6nI3HCtG30mrcOufYPVKxqxM7psH+06AiTbVRXtDha0DCy
+	lJYZQiNi+QqidfbQbTfcktc1I5hPC8QA+eBg8T4oEsWQr2XLAnGbtxFhKIJA2hq09Dno4y6SnFH
+	Al8o7GBH1IA==
+X-Received: by 2002:a17:902:f790:b0:2e9:460e:ca57 with SMTP id d9443c01a7336-2eff7529757mr5030915ad.15.1794950183338;
+        Tue, 17 Nov 2026 13:16:23 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eff61841aasm2714705ad.34.2026.11.17.13.16.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Nov 2026 13:16:22 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/userfaultfd: check exclusivity of the page being moved
-To: Mike Rapoport <rppt@kernel.org>, nakixii <nakixii@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
- Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra
- <lokeshgidra@google.com>, Kairui Song <kasong@tencent.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261117191853.1314834-1-nakixii@gmail.com>
- <20261117195228.2675563-1-rppt@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261117195228.2675563-1-rppt@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qqezzbejck6umpkdw95q5itmmsjdqksj
+Date: Tue, 17 Nov 2026 13:16:21 -0800
+Message-Id: <DMXSQHZG5L27.2NIIT7F6FW0ME@google.com>
+To: "Alex Williamson" <alex@shazbot.org>, "David Matlack"
+ <dmatlack@google.com>
+Cc: <kexec@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-pci@vger.kernel.org>, "Adithya Jayachandran"
+ <ajayachandra@nvidia.com>, "Alexander Graf" <graf@amazon.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Chris Li" <chrisl@kernel.org>, "David
+ Rientjes" <rientjes@google.com>, "Jacob Pan"
+ <jacob.pan@linux.microsoft.com>, "Jason Gunthorpe" <jgg@nvidia.com>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Josh Hilke" <jrhilke@google.com>,
+ "Leon Romanovsky" <leonro@nvidia.com>, "Lukas Wunner" <lukas@wunner.de>,
+ "Mike Rapoport" <rppt@kernel.org>, "Parav Pandit" <parav@nvidia.com>,
+ "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pranjal Shrivastava"
+ <praan@google.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Randy Dunlap"
+ <rdunlap@infradead.org>, "Saeed Mahameed" <saeedm@nvidia.com>, "Samiullah
+ Khawaja" <skhawaja@google.com>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Vipin Sharma" <vipinsh@google.com>, "William Tu" <witu@nvidia.com>, "Yi
+ Liu" <yi.l.liu@intel.com>
+Subject: Re: [PATCH v10 09/13] PCI: liveupdate: Adopt ACS controls in
+ incoming preserved devices
+From: "David Matlack" <dmatlack@google.com>
+X-Mailer: aerc 0.21.0
+References: <20261013162529.1928093-1-dmatlack@google.com>
+ <20261013162529.1928093-10-dmatlack@google.com>
+ <20261116170942.720b06fd@shazbot.org>
+In-Reply-To: <20261116170942.720b06fd@shazbot.org>
+X-Rspamd-Queue-Id: 3D0C0120005
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 07D6C180006
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: rgyzp6cgosj8waxsc3b71j1k5bf8ndiq
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794950182-755028
-X-HE-Meta: U2FsdGVkX18c2wNpwLAdPmqleOfo4UHLWBp3kQ8FxyFj3YvRgIGXHW9EWT+U2krjDVr+kWE5g35YHH7yNAseTG0RkGMRVMzn26GN7BoNKAAuSJTTW7aZoOFFmLX4xLU6RkUdiJzIS017HFKXfNXh84wp/M+9NtzdM3uge3wzK1wiq7Qj0Sgbh26pcZor2FV33355+PM0UV1QfjMdztSAVpBC81F58J8IkD4YP/l6zTGK+dvaqgScLsLSkaRDNeGqJMosTvmKf4OCFA8yh9pKGWeeyixCP/o+efIsWDNjXOziTuewWv9AdY6B/RepQvGlIZL5+paZYJ75H691nBhwiC1SS1vGN1AGu/tyTsq600tD3tfOq5bzmdnJ9HpUX0dY18VlLlFdj0XWZn07cwHAJ0cvObB+GTB+xMeVV06goh7GdHajTGuWpc1Ug1vCU35hfZiA/TcBakXxkJXLwhM6+Vy9tUj1LrONsW537OBmVO94dslquIAa3yCqItre/yyITRpjdth+YlHwj/ILQcxv9+Yop0SsjhV3OHdVdKdUrd4FrefMp7Cv1tKWmQ1whV456GoNdDLcSi4rMeik2wfi4tnI0CAcXPbsG2aM8ZluJMWlcB4Q9GMOI3JY4vA3vOp9SSTQgDnStg3puerCvq0a7r5sliiWNLVGzwf7YVy3c4ECcVHO0aAahLshfNY6cMjk72440sOAfOlNthYNicKTq4bnnWXl1tAQO1X17g/0miwmt98r/UkZ6AvPDFjTjpjOOq7R0WMDhsg0rlUvGKZlXPEfgjwlm0wFLChZ5Jfgie6MIvmBKLsvherN83mVQzqup5tH2ttxuZ+X9vLZK/8tp/9Fg2vxq+0YGpSLvNdv2JVbj7/1oaFbx/jZFBaLgCKW6rKYeKBOIGN/etcTe/q6kbM3ghTetu6rGSlvWylH4OK88T5Dake7wq7CKygk60V8WO1PoDWUtV7WZTbatSr
- XRrggZRw
- rmtptBN2+pLyCw4Ya6FMyMLLsbkksW0PCixiBzCB9ghP8MHqXmBP2WJl9TONMtt0JdQUS6NGmXHjv2zz0o5jZHA5eLWNliN9sFC8U1I63OtcBB6IC4Eji3Gyw14CkWFcJf3AGQ/0A+IKxTZzAcEANLr+ltfQtqRUuSRODlfyktSrow4kPJVO4LOQeguWH5LRlRfdB+cin9Q+lc4euG3CxIcdXuZdUyGrg7e3VDmtG3arG9vGUF8Hv7j8t0so7A1GMgDTh
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794950185-159326
+X-HE-Meta: U2FsdGVkX19Whr/EFkMaTVX9b/Bvcw4gX8JB8fIWQcFBhoTxTEH/b4Hkd4F5eZPx+oDuDovG2ZReBuUFqe3MsFCAdYx50Ou+LlImRGm3luh/mxQpae4E7bIUeDJTyRdTWYlRx8NlJObWX7rFGcppOT1rflbwRS/eH9RiiI1kUWRDqi/CQKMsUnZc1grnGjsHz34Yy+E9WJzUMdTVVobay8cyRn5Y5ewNHpJsNqGWCbA0swJS+7X5AgaVbzu8s7JbuCwa6sDWNV4KHSxS4Rrn/KlQIQtLzF86EWrfFq9up8HMsrmqCxiaC+U0Y94tpTL5rn4sEW/sLSzDfj/jmAnqFKb8hlfiVD8d1uR7nrAe6gDDd73WbI7ve8gbz6/q27prfsQBI57k3RArNkX6q1p8T90K4vGz49GTjHy0L6iG6h3T3WVu+b8n+UgRel/vBPztGyPQyOhXZd6JoQNuGRtudKPmpMM7fqiYZy8JlYql4UEIL9oaws0xrjRVMQ2VZozQBhBbCEAqQ8RNxARPT+ye754qwXg5Ort6F9GZpk5ibluolG7tLg2NQ8LQUYHzKOnSS/DY/Tqm+agE08DdJRYGcvCYQjgpyyAJfO/eralgr1/rHdBFaLwAAhtlt64+XLIs96x1BzkOlH0r9u2Nw3TW0/YahyWboAgBZrHxTgi+SUinT1XkQrpCxJJ25q4q6Hi4l9I3IsPI6w+lKFX7ol1OkzJDn/Qu5NJMOqDz+Ul+3e6HDZLKCATgkmJgYVQqKhPZHBkbV9zxiQ4EMwWXbbPVh6h643Q2/gqJA9wnSPwcPDlfjuWPs7O7NvvpOzrip2QgtLEXhcjc+eSgQiehiuyg01e12HZdei+ZMzu3qf6TuErlhPnaBu6zD6G0o3vTpLguohD++JX9UR1jadO/Ic6E4iJ5IZyp+yBfZssEbbvR9vLDD60KpVoYEA9PaCmfZC2wk65sOssrjZXir9aYfl4
+ yN/2gM8q
+ OZ2q7PKAFlkMj2tZuW6wIF96aKKqkbLI+EssfD8ZSBXghZZjCo8nmTse3qmPjarpXusnW6xuIer9O6JKepq22EJ25vbQCvZ11UPLHPuhTSmjJjzonYhWfCuntmbD/mC5bJ5YRCFL/CBN9JBnaQTd2EFEOrhW+osifgeSFziBbjJg3bpOkMlZGoiYqRvPnnVSM36odGU50cvgN6VJ3LPjGt6veb9NCe/85I7yEqXPHy52OkBigOz7u5pyCoZ9yE9sNW8hAH+d0lj930Lo/ooV0iQxFSSkUSwmx1r+Yy2EV/Geh500lBIwpQMKlxpCfzuYRnh2mh2RjHeaLMb48L0hF4IbAJBIS0z/kSRqu1ad4PYaLnbgXfms7Om5KLI1GwV8lkmvBn8VTAGpgZ5EJfa2ujbW7zvNGAwTnsEvB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,27 +144,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 20:52, Mike Rapoport wrote:
-> On Wed, Nov 18, 2026 at 03:18:53AM +0800, nakixii wrote:
->> move_pages_ptes() gets the folio of a present source PTE and then checks
->> PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
->> is per page, so for a PTE-mapped large folio this can give the wrong
->> answer for the page that is actually being moved.
->>
->> This happens after fork().  fork() clears the flag on every page of the
->> folio.  Once the child exits, a write fault in the parent can reuse the
->> large folio, and do_wp_page() sets the flag again only on the faulting
->> page.
-> 
-> COW reuse of PTE-mapped large folios only appeared with commit
-> 1da190f4d0a6 ("mm: Copy-on-Write (COW) reuse support for PTE-mapped
-> THP"), so this scenario didn't exist when UFFDIO_MOVE was added.
+On Mon Nov 16, 2026 at 5:09 PM PST, Alex Williamson wrote:
+> On Tue, 13 Oct 2026 16:25:25 +0000
+> David Matlack <dmatlack@google.com> wrote:
+>> +int pci_liveupdate_adopt_acs(struct pci_dev *dev)
+>> +{
+>> +	/*
+>> +	 * Check if the device was preserved over a previous Live Update (even
+>> +	 * if it has already gone through pci_liveupdate_finish()). This ensur=
+es
+>> +	 * that the device continues to use the ACS controls established by th=
+e
+>> +	 * previous kernel.
+>> +	 */
+>> +	if (!dev->liveupdate.was_incoming)
+>> +		return -EINVAL;
+>> +
+>> +	/*
+>> +	 * The previous kernel should not have preserved any devices that
+>> +	 * require device-specific quirks to enable ACS, but if such a device =
+is
+>> +	 * detected (e.g. new device-specific ACS quirk in the current kernel)=
+,
+>> +	 * log a big warning and fall back to the normal enable ACS path.
+>> +	 */
+>> +	if (pci_need_dev_specific_enable_acs(dev)) {
+>> +		pci_warn(dev, "Device-specific quirk required to enable ACS!\n");
+>> +		WARN_ON_ONCE(true);
+>> +		return -EINVAL;
+>> +	}
+>
+> This looks pretty unsafe and the comment is only explaining how we
+> might get here, not why we shouldn't panic.  IIUC, the IOMMU lho
+> support requires singleton groups, but I'm not sure what it does if a
+> group becomes non-singleton in the new kernel (such as via a new quirk).
+>
+> Is a warning related to what might be a parent bridge rather than the
+> endpoint device, really sufficient here?  Thanks,
 
-You could construct something odd even without that by using MADV_DONTFORK on
-parts of the folio to then fork().
+It's not necessarily safe. The new quirk could change how TLPs are being
+routed while a downstream preserved device is still sending memory
+transactions.
 
--- 
-Cheers,
+I think a better approach would be for a preserved device to always
+adopt the ACS controls left by the previous kernel, and keep them
+across resets through the ACS save state. So a new device-specific quirk
+for the device is ignored, apart from logging a warning. IOW, new ACS
+quirks only take effect on cold boot.
 
-David
+If a preserved device has an ACS capability but no save state (i.e. the
+allocation failed), then we can panic, since its adopted controls would
+be lost by the first reset..
+
+Roughly:
+
+	int pci_liveupdate_adopt_acs(struct pci_dev *dev)
+	{
+		if (!dev->liveupdate.was_incoming)
+			return -EINVAL;
+
+		if (pci_need_dev_specific_enable_acs(dev))
+			pci_warn(dev, "Ignoring ACS quirk, adopting ACS controls from previous k=
+ernel\n");
+
+		if (dev->acs_cap && !pci_find_saved_ext_cap(dev, PCI_EXT_CAP_ID_ACS))
+			panic("%s: No ACS save state for preserved device\n",
+			      pci_name(dev));
+
+		return 0;
+	}
+
+The panic would only happen if allocating the save state fails. Ideally
+I'd like save state allocation failures to cause the whole device setup
+to fail. That's something I'm hoping to do in the future on top of the
+pci_save_state rework [1], and then we can remove this panic. Until
+then, the panic is constrained to Live Update, and the allocation
+shouldn't fail in practice.
+
+As for IOMMU groups: Sami's IOMMU Live Update series refuses to let any
+device join a group that contains a preserved device, in both the
+outgoing and incoming kernel (__iommu_probe_device() fails with -EBUSY)
+[2][3]. So if the new kernel considers the path less isolated than the
+previous kernel did, e.g. because of a new quirk, the group grows and
+the IOMMU core refuses the second device rather than putting both in
+one group. The system comes up with that device unavailable, which can
+be debugged and recovered by rebooting, instead of panicking.
+
+[1] https://lore.kernel.org/linux-pci/20261106004218.604799-1-dmatlack@goog=
+le.com/
+[2] https://lore.kernel.org/linux-iommu/20261110040828.1774343-6-skhawaja@g=
+oogle.com/
+[3] https://lore.kernel.org/linux-iommu/20261110040828.1774343-13-skhawaja@=
+google.com/
+
+Does that sound reasonable?
 
