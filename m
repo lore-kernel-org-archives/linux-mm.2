@@ -1,98 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15E1606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1946606A332
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 09:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F1+OUVYe
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c2NHoMRW
 Received: by kanga.kvack.org (Postfix)
-	id EFD416B05B5; Tue, 17 Nov 2026 04:10:30 -0500 (EST)
+	id D505E6B05B6; Tue, 17 Nov 2026 04:10:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED46C6B05B6; Tue, 17 Nov 2026 04:10:30 -0500 (EST)
+	id D27F36B05B7; Tue, 17 Nov 2026 04:10:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E12B36B05B7; Tue, 17 Nov 2026 04:10:30 -0500 (EST)
+	id C170E6B05B8; Tue, 17 Nov 2026 04:10:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C20B76B05B5
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:10:30 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31B33C0352
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:10:30 +0000 (UTC)
-X-FDA: 85444040220.24.AFDCDAB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 752C0A0004
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:10:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F1+OUVYe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A05EE6B05B6
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 04:10:44 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D0331A0399
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:10:44 +0000 (UTC)
+X-FDA: 85444040808.28.34FDB22
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6107140004
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 09:10:42 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=c2NHoMRW;
+	spf=pass (imf07.hostedemail.com: domain of danjwade95@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=danjwade95@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794906628;
+	s=arc-20220608; t=1794906642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R3xjMAAodPt6ComAZI2yr4tqLZHgVn0+opeICRnPgFQ=;
-	b=HRFetib6byl12e8Y8lvAgp9e7FV/iungMtRvRwg+uPPB4XRYIFHWbiChgQtopDeClzJBB+
-	mwy75qJict1HMtWs+kjCBR3Cq8+JIx7PttOGn2PCRm+1yz1Vjyk8Kg2A+X4JZ5CQeu0j7T
-	jBkzkrUZLWkopTyItSC9bokarh2CHjs=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F1+OUVYe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=qU+9OGvRfJV1audZnO5SC1P0nvA1K8+fKrFIUfplFUM=;
+	b=ct6vEev6vWVkTIOZBV+HqDjVyeGl9qz2JfjxD5Bxbqpwdame9XQy3J/ti3PJaPia7cd6UT
+	LjYepb/36fVqoIQtqykqmgFOTJ9Vm2SUxnC0tgY5QHdS+YMqbbk45NSSyYDQeQB4S9YG66
+	tVsNM+WS06hYYqzQ0gn291yS5HNkBxo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794906628;
-	b=eUpzaF3TVm2n/7JjO4gi7CHYpZmq/he7cvLyboAWIuEnj77j8O9UfHQIHEKrqPfEZkCIDU
-	Fo7BTFfI/LRMqNt7XLbeZrMuGL9phYXNYzxtuBIBrz23H6coY6+gTG10j4QVh/9RUzDHyT
-	uBzNnKkoR9QRQ7i65/X7b/1uAG6Qv2c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EADDD62387;
-	Tue, 17 Nov 2026 09:10:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893881F000C5;
-	Tue, 17 Nov 2026 09:10:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794906627;
-	bh=R3xjMAAodPt6ComAZI2yr4tqLZHgVn0+opeICRnPgFQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=F1+OUVYeCkol6ftrcrJuGaYnKqEUJVAZwY3HVnGUBskVzs/NkRnWDCWySGL0bl+yo
-	 aM7JrMvjYhdyE4vwrAx83WgtN4P4k7vHcJ5QOoM8bz9JhhdzlS6awcU2YUCMq7K9d6
-	 5aXBlHC58z6N/DjHWJwckfiKhCvypu/oSZ9llqTKuHrwwsWLVAuHSLdzxQTEUSkpbT
-	 7OmlIeZsSHiHVnLFhe9ozqYWzkIHbDXHSWRJJ5uw7kPOD/x+S0QpSb2YXhqcy64VkI
-	 0T9PvUFb0p+yEtWQxUsEEAj8nspU1X3lrjnFU8wAuFfKleirosh1sygjWTeA98vWZ/
-	 JZ54Og9bdKNfA==
-From: David Hildenbrand <david@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
- Luiz Capitulino <luizcap@redhat.com>, Shivank Garg <shivankg@amd.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Shao Mingyin <shao.mingyin@zte.com.cn>
-In-Reply-To: <20261116-snapshot_page_fix-v1-1-8e425984e8d1@kernel.org>
-References: <20261116-snapshot_page_fix-v1-1-8e425984e8d1@kernel.org>
-Subject: Re: [PATCH] mm/util: fix retry detection and handling in
- snapshot_page()
-Message-Id: <179490662325.3990.242767098070074559.b4-ty@b4>
-Date: Tue, 17 Nov 2026 10:10:23 +0100
+	t=1794906642;
+	b=OzMt2n9kobF6M/RdRAUih8omC4yr2b+d05RTzE3KzReFj4mtWUDk7kP2/zIVkn/7oGiA8u
+	DRRwXowWe/zRjIHsLP2wW2BOKuMNx7OudNYmy7w05mnRfGe7tO/6AayKEHSL92v4eqRm+M
+	4G/aY3p/Ol3qeM7ioebv/0GL5HLsVQ8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=c2NHoMRW;
+	spf=pass (imf07.hostedemail.com: domain of danjwade95@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=danjwade95@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e96502e447so44375915ad.1
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:10:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794906641; x=1795511441; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qU+9OGvRfJV1audZnO5SC1P0nvA1K8+fKrFIUfplFUM=;
+        b=c2NHoMRWS6gxIar0lbD5/E3AUewUOAIV2E7UJi7QAbrrNANoAIDG2F8nGz9WohVmEz
+         LHB1GZRuUV1CBmiddT8+U0Nf9uXLdxvx4rxSQ+7kcgw8pAAXi1FktQWXX046nXZi89tW
+         z5jxMoJrZfjiBNApVQyXgOWJX05l+H3A6MJtWJkTXcb75igpnYJMw80SEYE0s7aMn5n1
+         EWmTUORzy6mfb6L4fH+vqLBjtW+DgQdyFCKBVS3G+FlychXMHTBeImDyERQbUpj48KA2
+         hJSoLI90BwYIXMstzOrl7vmUlAumatRW4DFpajRJbmH146sXBcT0mwkqjZ9QC6LRBtSK
+         rQ/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794906641; x=1795511441;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qU+9OGvRfJV1audZnO5SC1P0nvA1K8+fKrFIUfplFUM=;
+        b=0qFxLVu5qlspA0vYVdjp7OUaQO1ryrULTbjbVajsPMJwCitJUIQhHB3XBZHQNXD5g/
+         V9AipE9iGuH8Q7Efy0kMmzncYJFO5D9XvsiS+iSVXihN0+t+3UFl63APz1Y2oownEgyC
+         P75G7FF5sLYTfkBm2Z6FeRs0tkqgLLogmrtL5LYLEqy2KhkK/9vKH997AoUzDMdB+zsa
+         QMAv6EubOA4iYKOTcv4LDJq5PMUflPwhI6g7EeD1GS/FFwMD1Fo5+lOHJRmRGDrjGHyJ
+         Vm+JDdveLJSnWAPTPu6CSn5s3kpyNj2nNglfFb4yBlkz+vjW+gld17hJhQWt8RfRP446
+         b8mQ==
+X-Forwarded-Encrypted: i=1; AL+hErGoQQHdtH8XJDfSYpai6HADfqexdcDMy0vFw8M9vz4Cp0EsRoitmT1KNNzwvV960T5iboETrYHA/g==@kvack.org
+X-Gm-Message-State: APuU4Z9FqziOIMK4TKyvD/pRqCTaYp2ZtWywl6xk2pIX4WoqgPpOpaYu
+	f0lsdxdzFMTGpLKsLYaYwXc62XnhmMLCBjEOlgbKQqStUNeE2glcAdhB
+X-Gm-Gg: AZFdTZf/a1xhAw3Y6BadGaAzTOCPAVyTV0XFv/BJKN/zLrxxtuKppwsIUhTYX9xWbwe
+	r5eGg1R2fhlRTaojJlc0E+AOtvnMdovs4q+hVNWXNTqEF6Bh0OwsLp5nqJcqZXLLRRSImcPm0iu
+	zHU3icZjaUUG7ek7IIgy0zaCgqz1NB6cjcsyiT9+vb/ij5ewxjyeV/dyVhpJ++sHMnrW3C74uwg
+	0YZWt19ELft0pOTmz+sihiisBB3nQCynwTDQZ6NC4xix540az1QpjGzhw6i/mYSk0Syt1ow7hUd
+	sp1w6QaYs+cZ+l8wSuwFxIBFDnp7qhWRYpCL9I4lmlc5lTMIqlmmpT/m1hNzn06NaxEYb5Xh2z3
+	fNgFNX8RQZ87VodIPsBPKPx/hjIOnJJOO5R22EYgP6xB8N6g+W4+a88/3MYUOVHVPQ/kRs5U0au
+	5TuioFrN5X57jzBF+ZXNxJdT2CrCuXpAnhvVZMUkne/d9wKMv+94ly1J2iMgtOglyMps1aUCd0C
+	hSa+AIExEYdrOJxIO2sP2RAG9rh2mwD4djjZuKXIA5wodm1lgFhCYqARf/ql8wpEwrgHsUfUBtD
+	PR5jWUy4p4G/NMruQJanMzxNZkUlR/AFsl2QiNTR7UogbbEnyhXREjYQAJTR77rQZfhV5cn+wyF
+	7gX6yUbKV/bk8RVQrhnZMt904ne2OqKejpIBtiCm9SLmi6eU4H6wG6QWcMn/mPWtvauMZh6ZnOE
+	Y15s4y9eBVtY4MzT8D7+glPEK0oiNxNNitmo+b3d6lx+K9SDh/FG/tdJEqgePiSH6GVbBu02TL4
+	2k2AMandtSERqCvwI16FHF+StywoE0oymgEU/1wnSlnBrdVfPYGimsZfgoU/wMj
+X-Received: by 2002:a17:903:390d:b0:2e9:5507:b532 with SMTP id d9443c01a7336-2ee0dc5d126mr124593155ad.43.1794906640821;
+        Tue, 17 Nov 2026 01:10:40 -0800 (PST)
+Received: from localhost.localdomain (123-243-92-89.static.tpgi.com.au. [123.243.92.89])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2efd7aa8049sm11241175ad.68.2026.11.17.01.10.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 01:10:40 -0800 (PST)
+From: Daniel Wade <danjwade95@gmail.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: mark a collapsed mTHP dirty
+Date: Tue, 17 Nov 2026 19:40:18 +1030
+Message-Id: <20261117091018.63639-1-danjwade95@gmail.com>
+X-Mailer: git-send-email 2.39.0.windows.2
+In-Reply-To: <dfbf361e-8125-4f8e-9567-65e80996e2d4@kernel.org>
+References: <dfbf361e-8125-4f8e-9567-65e80996e2d4@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Rspamd-Queue-Id: 752C0A0004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 789dhie454beb7jquyd1y1wrzw4xm377
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794906628-951493
-X-HE-Meta: U2FsdGVkX19pKjKkWc1c/uyJo6EUXvBU1pHcsK7hkiEq+l1OH65JBdkLAu+hpggBBir0eTlrn9oFmaWRMPf46Kl6H0pBMrjebu2/S+D/eBdhhWhx0Vt4KPGkSxurKk7EkadH5cOZAdub+MLRtb1Ig62Hokr9Z5F7G1IZOyc22ykAubnYddd/sxEIDgs1u/vrGygiUss3SwHcBvQGFOa5uEE2pUTB3SbHyiBxH6gaJ4k6BtLamEuavYUVKPDXo+RFYJQdxOyCpfLyGjeKH6dgqy5Jscnshbynb6wxrDZtNiKiqbCYw5EQlRQjXM/22YY8JfZJxUvjFaRNbl8M4/H6hZATnZr17Zmh3o0M1IwqEh1RryTfI9qad2KKFGuWEIqYxuOt9Xt1HYYGNmglxepJ499vc3AI0dE3mP0oY5sLxzJg1AHQJO8Tl/+B1Na5PohC/fKErzv/UTWQ8bveM82s5I1B4wkneePS3lg+EV4CEaBqs1rbCmQ3S93gnGxPY9dHgJhp2+dT/OHhsO7Z2ILTElh6+sbwUQjferCH15cMvGoy8bB0gs5slYqyZUeIVOlGFHhlersn6aG3mzhkoyY+okighMjvGKzDlMz0ChmhvmSjK7nfFXSSevpBaGUrOytOKE22U4U/opp5l7S3hVwc05mKmxqYfZT28NKOWQuQRpSkolqs7nOkPmJdY4vE2Ohjnxm6pP1oQa77uVOm5fLMOz9DRZN2Ox0MkkpiX977NEyk9DEL4K9H8tP17yJtWu42Cxe8wVDPWztGadd9DHzwMJs00gi+w1eUZ4aDczrKWcSiAkAntAQ/4rM4x2k1T/3dyw3kgxJlp0PBC3GtuEudcCyV6gOeaQw87LamS/AAlK4U2laGuI3g/RE+X+5Yo08eL12ojLmbxiIWce98qjqGa1uGGj6o2bSw/bxVeZ+Xv6etNFJxvYzU7fgR0Vys3xB9gbyt28dU5JV3fo3Qs8t
- /De9ERkk
- hH8rtM9x+6I4BXswstJPKrfsiPycnQmMBeTEkwI2dvBx5sSRO6pceXVcri8jY913SVl1hAaM2TfRBjdihwhc1R/NLqXT1rkuIjNNsJwaP+qOOdyKc0bUouFYEpYc3ciYyXZiDZ9pYtkvcsvdU8rFKnhYouDMdMRgl6doxok99GCaX7zos0aMakyIcbfySAht0XMI7zmV2yQbQF9gjUwyxBLQ+xOSOJoiKLUrJ//f8ZRoTcE4PFdG5OpUxkfnKFfL3W3ZH1h9a/p0dEqJcSqweWXUiYhME+SYnaxo/
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6107140004
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: 3mwpja3ikoxo5snqgj5izyyqoj36tahz
+X-HE-Tag: 1794906642-814640
+X-HE-Meta: U2FsdGVkX1/RKJT9Y5K8EEs9E41KTy+6vxNfow/rOenWf33piNpjUuKEEk1zkauuuXk1FnaW2oPdGsOfVobOJBO6633VYrpQmkqA+zIP3SUpyFneaKWiSgC/34BBFHT0002dgIS5PKTL5bLXDlZuykrNG7jwVnG+0FhaMqUVxd2ZKzz2VgTaU7S3yVt/eEo2J5tTjaeQXkhnGiB7jnnkojXeCCaxxlh0JWUHvKwkjutfbjEycM922eexi3u9y3XfRNUrfzC1or4cOTBTGOlzWanZKHIbP2fc7xnHJtgX/hln5WQWUYFBz6VOMHq8wqb/aLzuwkvc0f2rVyKHFA8j9fx7T8Ee6ceVXZdn+nX+YOdMla1Trpzw5MQ7qS8ZpDP6DGEZdW7gAJMQJxR6x/OdnkUdWp7AhwixboUrp93gDn8jsb5ECdyKqVf6my15+KNvcNOdZf7diD1/lWX0dlqOyLB1jD1d7Ua5FZZzSILJxPa4nEHFW3GXcDfVeUaNqfdSGKhqKFHgFlEoIHkQbneh08LqMdabXeNSEtE+LIezc6eSX0RwmsHnHteYqcFH8K1uC5XHWtq5ntfR0mgWFDLTVw1FRmjg81zi/3LDAc5x+XugjLBl1kJzFt73MjY7a6p3OpCsyUaurhE0ALVmg8or0+u6elaK16hNQjluqSHw1mcBcdbXyg6aPHEmA+e3yVPCv3oHaAHjxrx51vw+rLDyBJRRnKQ+41I640q67XqjvjjnDEd2nXILEreLDB9e6QRiJpdVzeGjfd+1vCjWqhGEIghX9fNCGAQUTRja1c4doxE+9qEvR/ps45h8Q17zFkxlhrTsDnGBQ9urXYupcdFzZsl7oDrEEHXab7mkGLyPzoLS4df0ugEPKJ+9rSmbGGliNAEYr87JC3qr66wqYbB3FJS3IW4skpbNs0eNFmBgBSFsU0z6AyZao6wutm4pYGOFQ+lG5MI45BE7J7yTn9p
+ gthf+tG5
+ KW2GWkBGWFbAzgbwfVEwYso0FXNiutd7YhSkLYZIduBl/njnzA7uYxW21RK9PmvU/9RLT5MQMafqmx3RQEVpulLnsyLxK8k8KDyDKHsXU6vCZ0eimyKWMUbYCc8/8eKMllx/mSpnSI9/4FoGLZwfdVlDLR70rBTEfj47z19OS7Or9/K+yno+6EW9tI3+lTOofn5HONJtMIPAzzoaFN8lr+FRtmM9UchftYdsSpNLFtzpQCxsVI69xvZuzP2Z4ufzor2vnCbfpuv9tH5p0M9F10/bGW/1xRTDtzyMy0SM3ShRZDX+8Sg0utyeDbjBQYoEAW32bSqsCmNYuTb67/DdyT5tkda1l/MhYiUSW6wbwjLcucrIM/AmawpPPLBqib5mJA+Dn6FfEP6fLYBMRucwnACI2lQz73HFRa2c30LCgpg2gHTl14q5FlnJisg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,41 +138,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 16 Nov 2026 15:12:13 +0100, David Hildenbrand (Arm) wrote:
-> snapshot_page() detects races with concurrent folio split+construction by
-> checking whether the given page still falls into the folio. Unfortunately,
-> we have an off-by-one error in there, and we should be checking for
-> "ps->idx >= nr_pages", because idx 0 is valid.
-> 
-> For example, we might currently report a tail page at idx 1 as faithful,
-> although the snapshotted folio is now a small folio.
-> 
-> [...]
+On Tue, 17 Nov 2026 09:13:09 +0100
+"David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-Applied, thanks!
+> I have a different patch on my queue here that fixes this as well I think. Please review.
 
-tree: mm/core.git
-branch: core-7.5.misc
+Yep had a look and yours does fix it.
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+It's more than soft-dirty though. If the folio gets dropped while
+another process still maps it that process reads zeroes, I had 64K of a
+child's memory come back wrong. So might need a stable backport.
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
+Dropping mine, yours obsoletes it.
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[1/1] mm/util: fix retry detection and handling in snapshot_page()
-      https://git.kernel.org/mm/core/c/d172918d
-
--- 
-Cheers,
-
-David
-
+Reviewed-by: Daniel Wade <danjwade95@gmail.com>
 
