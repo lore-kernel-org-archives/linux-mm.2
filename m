@@ -1,122 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246BF606A333
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 19:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307EE606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 19:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TMG9hdFI
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PEE/teTQ
 Received: by kanga.kvack.org (Postfix)
-	id E2D996B00EF; Tue, 17 Nov 2026 14:10:58 -0500 (EST)
+	id 41E426B05B1; Tue, 17 Nov 2026 14:12:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB8006B05B0; Tue, 17 Nov 2026 14:10:58 -0500 (EST)
+	id 3CE576B05B2; Tue, 17 Nov 2026 14:12:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C813E6B05B1; Tue, 17 Nov 2026 14:10:58 -0500 (EST)
+	id 2BE206B05B3; Tue, 17 Nov 2026 14:12:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CF606B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:10:58 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33ADD16056A
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:10:58 +0000 (UTC)
-X-FDA: 85445553396.30.C8FEFFB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 936D24000F
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:10:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TMG9hdFI;
-	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 096F26B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:12:16 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8AC4F16056A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:12:15 +0000 (UTC)
+X-FDA: 85445556630.18.3B3E734
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C8FE214000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:12:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="PEE/teTQ";
+	spf=pass (imf23.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794942656;
-	b=dmZH6heMBuvgG3HFv8mDkFEhtmM4F5iHit76mHYdn+mX7180tdB4tVMeMYNIe/n65ohjUG
-	o7z4JS7VCnSL3WO/B/gVCT71CKyh9xhjjxA5PfSwBugKSx8qB3RdFN/G6/24WKIVvu03rA
-	Pns43FkkmjZ8x8ljLK+iPxv3haH8cQE=
+	t=1794942733;
+	b=5rxVu861EB4b8FZ3xBDlTUWBdS88MyPEWxHvneaCwGblt+p0iueGeJt5K4JrFUfgx1FqUY
+	c71B5VbhaJAXgj8PR2xZsrb++DXG1Ocm6qZL8rJz4jBl55ujd65vT1cqSsoAz3AAjL/x8G
+	JsP92C0QTLvfhvHeLD/xmzPCQguqp2w=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TMG9hdFI;
-	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="PEE/teTQ";
+	spf=pass (imf23.hostedemail.com: domain of nakixii@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=nakixii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794942656;
+	s=arc-20220608; t=1794942733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QNfr1N4SlD4nY5lF2k9NOu1qbIPKIuO18d/t7UojEjc=;
-	b=pazpv4TffPtiryehxCO1dM12yRobS7lrQGLdbMS5TA/lRq9d/0tmMCbAx1jatHk89HJ85I
-	tD3HbkmqB+gAwVX1aGXTqVaieFq0bsVf65oPJ/X/SR1cub1ym4g6aLeMcqMo+c1YMU2Xhp
-	cea67u3CwHH8xZZfjqze/xr/wB6WwwM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 16EB3611C6;
-	Tue, 17 Nov 2026 19:10:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id F13BF1F000C5;
-	Tue, 17 Nov 2026 19:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794942655;
-	bh=QNfr1N4SlD4nY5lF2k9NOu1qbIPKIuO18d/t7UojEjc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TMG9hdFI1EiKm12mX2UfRyknIADhNhlisQjyVgB+nCZZIPENEdznv9MneSRYCr7Jv
-	 HMIiYw0QYp+qamQPfqOrdhty/ANjv5b9t7CPGrzmhSWmN0XeNjxDExZisM1vNvkZvB
-	 UpFB4zHnjkbCr/HfYSCFcCYHjOMWmCUI8BqO2hltxJwBEOdKZRFeWWXCvOnxV672ni
-	 hHG6+lRX18Q4qayZUEfaQ5BY2rNuiw3UDZQHStPfEkyhjUU3Pa3cZ+aY5TyWhz3hm2
-	 x85mHaTn5JdLS3Brs0i5acaJvE7jsp6MiQ19Qk5biIFf1aBXXwe2VxmXxpdXZJxtFy
-	 ROeBDjhz/LeQw==
-Date: Tue, 17 Nov 2026 21:10:52 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
+	bh=SoGTYtJjdTBlgzzjEp2BKIQvSbp+BHYyIKXNcsaV2lA=;
+	b=XKHUYvCsNfCI2n5ck3pwQ7RHGVkt+UATVy9kjjBConR2psLn2pNbLqWqwDQN0+HCD417sI
+	m8v4izGhiAo9h8qn+nzAgqvk7o+7Jfs0b7B2o7pJacFDqy/Zkp4rHOuAlL9aPIWgY67+Qy
+	xIbhBn/QdQ/xzG7G4KZuPjl2hMuQBok=
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1b3beeaf6f9so272164c88.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 11:12:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794942732; x=1795547532; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SoGTYtJjdTBlgzzjEp2BKIQvSbp+BHYyIKXNcsaV2lA=;
+        b=PEE/teTQrC7up8+DbDyFBDXlHyCsLHqv5D9JHbud01bf6DWNfa9eZMmjdeohcvQiQV
+         U+M336EaWoPa47j+d8tgDmwdfbOP66C3PvOY4SEwvtBT91lub0tPMMUAwaAqm2ta7fcT
+         wbn8wEHtRqHwSzETW604XQHnUOvyKzTzYsqdY4urBQnd3LmvVvVHeqIHpfDFALLH54ZK
+         ecNLfQLm9cqBW7pAM6NDMauWhtKYkQhLo1hfy7c7sO8yFXTG4/RIjIYwXwDVrkj5sc5X
+         8SnSahFH7hCKAuHTIDuEY11h1R+IpSHZzeAFWml6EO9OXSf2t9o45jzKPL6S14rzAYeW
+         j6lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794942732; x=1795547532;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SoGTYtJjdTBlgzzjEp2BKIQvSbp+BHYyIKXNcsaV2lA=;
+        b=A3NG6X8pPtFSZr0zglhqv70VO0dr4hCpmlOBljuk0GhqSEjMr/kOToy8IUhlJdNT71
+         dxBe+WxHYXyCX/Du+1FkmdNC50qWSiW1l0dmLXsnOfG5/HUs6mwmA1IQprH2fUOwSZqS
+         pEJ+UYCHJf6lXmEgQ9ImCWyeW2+vqJI0/b8cGzy/SnaaxcdUflY/jzZYaTXiGMGNvCf3
+         uQa5WndvAEYSxmCUwX4CNGMlQL0ouszLizjlLpfr4uiTzGudvtYrl4H2Sj4jHzELRfpO
+         HgwqcKc9ObCYt0V7g76UfsleTZQJ2/hQ0GguTk+GCLzVIsk3Nshj6Zk/PuiYaFJw4rsc
+         iZnQ==
+X-Gm-Message-State: APuU4Z875R4inatCXUWg4M9W/JbTuOrDqHBitRwfVARXCZImBuAGxdfv
+	17qS0QIUVN27QF7CsHkA/iBD5RgXozo+mnarB7XHStSfM1VLMseev7aT
+X-Gm-Gg: AYBFou20M7zjuOQrEjy4uNMWBdEJmcLJKtWmYz1tFDoXCyawdwRsTC+68SIITWXNzXl
+	7CjwLkuCfK/fD32YqJb3JEEGptQOJ9ucFSGANNMEi4ZbPcrZQBXBcJZwZz7tCcXpIlAA/OHiEVt
+	PQn33Pw0fTJKzgNG1GE94eTNEdNcrCij+T2zB81xCCCtygQdjdwO5PUm1ayWf5nbwTi/myBaJH/
+	MMg1Xv3SB7bkKGjohcCUgD/xvbNZGjubQWl9HfwIWOJHMRkDgJwJK3KjXEAVuc+zblnNgZSWxiT
+	6xrkxhv7bFN71IfIIvs5gGAzKjZJo0jy2YkjQioALnXEFTeqVkAGYCaofLAOKi9vtr8qRIp5+IN
+	tc1zQ4NyTOFAWBd+xABRrG2Vz7SSKM+eMfVjeyu9S9uOwZWNv1mNABvfd9XiJgy6mOcbl/9kRSH
+	NGlDaxgw3BeX5byqsmnuIAneB5t/6AQgiOkoaM8zW5XX3AG5X+lL4blF/8Vzyqyjt95s9F+WcZk
+	d5Vl0kxE+5ZMpvFpI6Kq3/vMy8vBQRlfTl0jDYoulIjk8Ek3/GbzDpdzj4dUGixU0ng0O+TjZam
+	UUTsK0Jk5WXq4Wh/BT/JIX9xFjetHWxotv6t8+twDphLKYo=
+X-Received: by 2002:a05:701b:2718:b0:1b2:6a1d:bf58 with SMTP id a92af1059eb24-1b543d4b410mr474902c88.38.1794942732411;
+        Tue, 17 Nov 2026 11:12:12 -0800 (PST)
+Received: from naki-PC.localdomain ([203.175.14.54])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5447c5b02sm211610c88.6.2026.11.17.11.12.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 11:12:11 -0800 (PST)
+From: nakixii <nakixii@gmail.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Segall <bsegall@google.com>,
-	Christian Brauner <brauner@kernel.org>,
 	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [RFC PATCH 00/13] Namespace for namespace roots
-Message-ID: <avymvCZGVcEp8mHu@kernel.org>
-References: <20261117050841.3289652-1-jarkko@kernel.org>
- <CALCETrUBUnJVhiMkft6hTZZMe8nTpMBRTGY2v=9x5ETBSvmPZQ@mail.gmail.com>
- <avyhl79pygUmV3hr@kernel.org>
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Chris Li <chrisl@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Barry Song <baohua@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [RFC PATCH 00/16] mm: add in-memory compression of reclaimed pages
+Date: Wed, 18 Nov 2026 03:10:04 +0800
+Message-ID: <20261117191004.1289281-1-nakixii@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAMgjq7B=F7grQqhUP1wGPG5uYHL44QNS023Lg4Zw0ycQEr_C0A@mail.gmail.com>
+References: <CAMgjq7B=F7grQqhUP1wGPG5uYHL44QNS023Lg4Zw0ycQEr_C0A@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avyhl79pygUmV3hr@kernel.org>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 936D24000F
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: j4ssbimoiq1adzig7id91aa4tig8c7tp
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: sr7n7mnsxbop8uioznzd4bn3ab9ok71o
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1794942656-600220
-X-HE-Meta: U2FsdGVkX18sSZODMzIWhPCArzX7v9aFFTqyuRep1wvNA7u7RMr3Uv7Y/taNsEB/C0wHJpKJk8JMecmHlExenJZRIyRr7XoSMjGtnHeqcdo7a1RX8Wx2eInBA2h6681GK2uiPOGTUt2n9zCX4lTrfksC/qxnzXIRVW51JIops5biR33Fk8OuVQlPhNBqiIoNkIv9jcwLceyEv/h5kPejTxK6c4MkXZQRY1uHEXb4VAsaUso0mujXi1LKAgM+BDFhODCtTdxHhNfgWYQRbKUobXDctC2EQSHHWIzy0oOolRvSRTWxakA5tR6WUvX/s1SGKTF/RYf1elYdOws3eC5rG0xSqZVgLJsqo+rB7SMAQgMiCxnF8rHZf7w6MC4ShRTwAs5x9tBlilj9fv7gQSU67t3N96OjlavJJhcR4M85jQ5VXkV0TqtqReI+U3SPp59A1y04XwsY6H/HCldQwBooFpZQCo+jvM2H+1irA+pNSdWAUQYlavS9X/kzpuYsnVq7w7Yta8pW0VEElhuvYE9XnRCnPPK4iuKkZSmpgqg4LWr/pM/ZfmaqLCEB1lmpVSUGIGmcsPLE9otl2nHomheAZtwTSiBLLvpHUPTISGIdUzvewe4pUxdr+zgFzsdsZiEjVVs2mj8LaMscTbmlD6yVsOA13vDN5fsuxnthju/0h9CxwAJX2rtlBmUB52/5a00UFXxN5fQQQfOslNemavNVn2qr9KdklT6/xCUFxcAIH0tR8FbecbYgwIcXuY6GDtGhyrmHhjNtecPmMZOzKsolRBnTq2reGGem9kFoE+K+TEF4m8/kE3UShbpuBMs3c+yflvAMbX10pK6oodC9Yu+BH7ZbxW9/MrTgO9Ymz39tGric1a1wfIR0UD+We4GgH33C0JXI3mC4jmSLHQHK5wPIeDEwJT6nPdydNY8SIdwrCOV36zHvXYK1hHe6zx/pcIeTzxZ86bCgCVQWT3yp26p
- yHSnRjXM
- NtJN+EHJwiYKFI72BPCYAvJ8/aJ6JmEAjzkrQBBTtEnW8StZOgbhgxzEJriUahMWSTFwuY6XEHLgyv3icsv6ViIaWwyQBNaneY9x8oE3HgAlm0iCu7xiW0Odp9MoB4KKJp2mppJ6RLGUox8Wvid00fOjA6pPLdMu2C4xH1ynWOFn9osm0jjexf1TMrsbSlO549ODnCvKSZWR4IgyQtg4jZ9vnfQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C8FE214000A
+X-HE-Tag: 1794942733-651058
+X-HE-Meta: U2FsdGVkX1+VbWVigLsa44wRGk14HFhnSu8t4+nlZTzF5v/r8r2u+CR2XJU3/VnWrggOvqNM6eWDQsFyww53mWQ/VI66AqLju9tge4LeQHoIL59n/WX6i3QQnLrhkSgVar+QGZZeR9gbWxQhnz11P/9g/7Eg7nvylTLg5rxGQf7af0fz7H4U06OdfjT9PfvNx89x4f02O7MeCrHOsV9u7wh/p7hgyXTQ5zGSpDNE76eyC8QnwwVOPtnJjGcpmF/3HSalAFP3zAn9Su6mhHirm0nqgEjOUm0DbXPl090D2d44qLvGfBLOJaDynKQ/K77tv0DoadS5jrXLl8p+VX0DZCuYwdRcil1DqXlMyzXm6xOtcv+F64tjk2wy30r/3biRjoy2IoNbuz2PlHmFb7EI1zvs6YDSxNCKFX9VuEaMrFe433jKzVJMdcWk7NWlAedBe38JgraaLIaVQEMBcuI4NXPomIgHs8tF+pKV0XpoeNCQcvFPUJEaEpA2bsBniORJCLd9dMKkOhcFxoWuTJgEEhoD1F3oKB4to2+78ujE2/c836ROcvyCweRmWRjSTHqBOrU9FyP6uyA4grRI9CJuSqIhZl6vgAOB7xAZWcKzsp4JHV83pGrBl1l5Epcoo0hXt87GkCTzWRF/1Q/KVwP0SNiSUlzkOyWPS6hnzy/3E8pF8ZyE/4UDN1J0RgN/+tbGONpJA9LYACOjpTJu+2NAkWSrerN0MeEXbhLgCXtOJtAnKXzoOYkgMACNpVL0KgYf9SssPlcM98jtqL8ckRbIyNdChGmaW0bYSvlzN1QI/V+EalUEOwPgw9poIC1TqrpMdg8GQjfwWLMs/1vyBS9u2lBtekfw9FrfPvZP+KpCddVWGrSfqaiFulaFYSchQJYZhrlMiXfG4PMZGZAR0kTRcTRM5NcyePSsMo6VM87oQDSdEYMGMWHnaqVtEF1rRovlIQt0udgcQZlJs6ixbii
+ LwEP4CWe
+ JHv5ln7wL+rycYblgrpB/ROdsyfPiu4W/ACjXEaJOI/vRrHPFKe+GOZHgM9sBn3ryB9fYPS9NBbVdgTRYhfjRaLHLTMLNIOwIhRc7jijOXq/6/+MPyFfaPhLWLvAJWMy1Of7QdQf7Jo+nxqCzSWiOuIDCHXFYCqh3xlpHWj0rxxLeDEGsQYZjiviYk9ttWt8qzmw1w0ZycVQ1gKvjXDJOLaHk1skWF5pqlhYg1mxwvCgW2v5b02xhYWnjcxMaa6A2P1cdjEjBcLJXp314+QBUD2cFSxfbpe53nz345WfZcJIZ6aoAn/ACcslw3NN7nrFG6kqLJj7EbGVqF7mqPlNHWp/q9awgKHtYZhy5EJ/hemAfv2PjgeryO0UknOALRPw+D1Zp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,45 +138,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 08:48:59PM +0200, Jarkko Sakkinen wrote:
-> On Tue, Nov 17, 2026 at 09:44:43AM -0800, Andy Lutomirski wrote:
-> > Can you clarify what this new API actually does?  I've read this three
-> > times, and the best understanding I've come up with is that you've
-> > designed a way to create a group of namespaces identified by an fd and
-> > you're adding an API to configure and enter them cleanly.  Which
-> > sounds very sensible.  But I'm completely confused as to why a
-> > namespace needs to be owned by a "rootns" or why that ownership
-> > affects even newly created sub-namespaces.
-> 
-> I think this would postulate the patch set:
-> 
-> 1. A subset of detached namespaces.
-> 2. A dedicated PID namespace for spawning into, signaling members, and
->    polling/waiting on init exit.
-> 3. Initially an empty mount mount namespace that must be populated
->    before going live.
-> 
-> I had to do some head scratching for the second question as I've worked
-> seriously on this already some time ago but I think it was as follows.
-> 
-> If recall it correctly, rootns ownership tracking was meant to stop
-> processes inside a rootns from calling setns() into host or other
-> namespaces of the other containers.
-> 
-> However, user_namespace already enforces namespace ownership for
-> setns(), and adding a separate rootns check prevents legitimately
-> entering a shared external namespace (such as a pre-created netns).
-> 
-> I will drop the rootns ownership tracking.
+Hi Kairui,
 
-While the patch set itself is manually coded, I got inspired by LLM
-agents back then. It was quite clear that in the near future OCI
-runtimes should try to minimize the live configuration surface.
+On Wed, Nov 18, 2026 at 12:27:51AM +0800, Kairui Song wrote:
+> Posting a mega-sized chunk of LLM generated unreviewable code is not
+> helpful for anyone.
 
-Another force was that whatever the solution ever can be it should be
-made migration friendly for OCI runtimes. This led to the conclusion
-that we need yet another namespace instead of a fully parallel
-framework.
+Yeah, that was a mistake. Sorry for the noise.
 
-Br, Jarkko
+> So in mainline, the win you measured is no longer there.
+
+Thanks for actually testing it and posting numbers, that helps a lot.
+I'll drop this series.
+
+> you didn't bypass swap, you just re-invented it.
+
+Fair enough, that's a better way to put it.
+
+> One thing to keep though: patch 1 (UFFDIO_MOVE exclusivity) seem
+> valid?
+
+Yes, mm-unstable still has it. I reproduced it in a VM (fork, child
+exits, parent write-faults one page of a 64K folio, then moving that
+page gets -EBUSY), and the fix makes it work. Will send it separately.
+
+The part I still want to try is packing several compressed objects
+into one swap slot on zswap writeback, so writeback doesn't need to
+decompress. If I do, it'll be a small series on mm-unstable, with
+numbers under sustained pressure. Any concerns with doing that on top
+of the swap table?
+
+Thanks,
+nakixii
 
