@@ -1,102 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1061606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821D0606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l8dNYQte
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HKFqPnH3
 Received: by kanga.kvack.org (Postfix)
-	id 8C1636B00EF; Mon, 16 Nov 2026 20:37:13 -0500 (EST)
+	id A60D86B00EF; Mon, 16 Nov 2026 20:50:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 898016B05B0; Mon, 16 Nov 2026 20:37:13 -0500 (EST)
+	id A11E36B05B0; Mon, 16 Nov 2026 20:50:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AE3B6B05B1; Mon, 16 Nov 2026 20:37:13 -0500 (EST)
+	id 900656B05B1; Mon, 16 Nov 2026 20:50:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 52E336B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:37:13 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E21591A02B3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:37:12 +0000 (UTC)
-X-FDA: 85442897904.17.B612781
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 32952140005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:37:11 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8dNYQte;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794879431;
-	b=xqpnEEB/XJpZ7aYrhPlkHUUvIWGM1B0SylUVcQBXyljXcJZqmzEclJvaYqoMkJKpoeDAZq
-	PWRLrS8WZPqQhnMtN8CjJ4POzThexkdyA5RV/TV0jBHevCxNhiucKRzRwJHox1Au3IYKw4
-	htcSReVvQ58MV2sA181Ku0NBVs6rwTQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8dNYQte;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7148A6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:50:38 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E4FC21C34A4
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:50:37 +0000 (UTC)
+X-FDA: 85442931714.02.1D60677
+Received: from mta0.migadu.com (out-101.mta0.migadu.com [91.218.175.101])
+	by imf18.hostedemail.com (Postfix) with ESMTP id CFBF31C0002
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:50:35 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HKFqPnH3;
+	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.101 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794879431;
+	s=arc-20220608; t=1794880236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BIMOnFHtb/Mb13a3T/u5ttg244elHzKV/mc7yLX3gCc=;
-	b=QnW2PzDmicJENOjOA/f773Zk9C5qh+OqZd4qLeD6V6F8GvdDUkv3hKI71OqgZn67HoBJe9
-	M7RqzdsG6xaXYOuLyGqn+F6RrlttKQnzGM0QPj3BujNHuz/C63QXrLjDUp1HgpOdoIbYsz
-	coeihhuSFk98T7gNu/MlZBDVUZ74zS8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 38EA140383;
-	Tue, 17 Nov 2026 01:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B5D1F000C4;
-	Tue, 17 Nov 2026 01:37:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794879430;
-	bh=BIMOnFHtb/Mb13a3T/u5ttg244elHzKV/mc7yLX3gCc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l8dNYQte0M53YUVdQTJ09cHEEm/GkG1g6FiQLENVmU4Tcmi9BNuZ6oyDbW3ql4gAA
-	 0Bf3rOM9FBbFbrGVScLXwmi4RN28kdCu5fxWRCh3bwbZ21zUQahXy47KY9BPFeIrjt
-	 doE5joDBU606+nuRIVWAKFzp+6zIFNYbe5IVRQS7XsfcSlfEKMJmCs1z9cieS/URJH
-	 G1CRyLA9K6YRugwzoxlLQB/ef2wT4k5Mf0eySpDmsYyfKq3Hk0TFIo3EZky9BUhcxr
-	 9/S+9I1zYLn79j9gspSdRuudOw6+UjyDsuyrppgEkgT+Vod2bKZzsEsEehkJosOCJf
-	 0W8lcSOy7js2w==
-From: SJ Park <sj@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	Dev Jain <dev.jain@arm.com>,
-	linux-mm@kvack.org,
+	 in-reply-to:references:dkim-signature;
+	bh=lmqG4T85wzH+EvkxPYNS8DJ2icFTQEKM/mrAvrY7aA8=;
+	b=J19ZsCEP7RTAeFBqieqQ7vw5e+vJBGAu0i2r+oMvkXsfAAbe+v7CRU/GtUIk4ww6b10dSV
+	F4ho21jpYgv5l62zDyvRuuA3PAv3mb4cCKaECWVQ59D2VAI1m1+Y4ofpe+LJ8aJGkTVYsL
+	6ezHEk5A6BUiziEpg4JVFEVJ1wLj730=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794880236;
+	b=S+2SaE307M9ctEwDDtk/mnAgvR2vWYGRw1do2cf5llHI9vh6c7cfna6H1WhESebbGthkyR
+	4pCMk7HirBArs+Tm3ZFhyB4I0YfPYixFvfdCrwI1KhaRh+e8sZPdsupMZLLvC3+jUzzjyC
+	cmDX0y0FqewhC9ocFKJDfRntvd59Ono=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HKFqPnH3;
+	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.101 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/IMAEuYJ6PcwjzqBNjJhlIuqxkqlOoUlO6uHl/vn3GI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794880234; v=1; x=1795485034;
+ b=HKFqPnH3Qt/0v320IBWwEgPKA9soAOJhsAVhoLMQmtkvk17FUTPtOkR5lYEBLNN7p2H2SpCE
+ 9YsRqrzSULHZNuwLQv/zXcTMurvkULB4p17VsuZzF0b+uw3XnMIGeZ6V90N5BkwPXeM0OTQB2kG
+ HHrNozmojexSFDW7sjJ0XLYo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 472675b50f597a85;
+	Tue, 17 Nov 2026 01:50:31 +0000
+X-Mizu-Trace-ID: 472675b50f597a85
+X-Migadu-Flow: FLOW_OUT
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+To: David Hildenbrand <david@kernel.org>
+Cc: chengming.zhou@linux.dev,
+	ljs@kernel.org,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/compaction: do not skip the free scanner's periodic lock drop
-Date: Mon, 16 Nov 2026 17:37:02 -0800
-Message-ID: <20261117013702.109081-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261116125746.2897395-1-kas@kernel.org>
-References: 
+	linux-mm@kvack.org,
+	xu.xin@linux.dev
+Subject: [PATCH v4 0/2] mm/ksm: clean up scan_get_next_rmap_item() initialization
+Date: Tue, 17 Nov 2026 09:50:09 +0800
+Message-Id: <20261117015009.611551-1-xu.xin@linux.dev>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 32952140005
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: trj1ykf87zcxcjkot1naqxti7n4yd8b3
+X-Stat-Signature: 59me9ja3n6qz9y8jtbrmhgen3bsxqexe
 X-Rspam-User: 
-X-HE-Tag: 1794879431-746085
-X-HE-Meta: U2FsdGVkX193c+aisNsBxki4HL3WuJJBgsfk9ASCnPqtA88AKYlNKlPyonEI3FXmDaJy0nZ8h4TlhyZeNaHiQarNMaELhVUJy/UqpJsbXSQQateWavQXs8z04l7LvGQ0TFMdQp3F6J3lfVJEtUeTJDawqahTXaTuMmuBCxEQLcroBHQJC/AbohjPgfcatAOqrGtZCWrCviX+ix7c3yMDGJCMhZ2IGmYNyOlfk9L73ZNcCEzDY503w0nRYbO9kdXbQIvkKN6CfGsvk4zKPS/hjnKHB/BI7OmpjI9CGbePOQlaicuGczE5fotWYcewOxi39F7mZvv4Kv3f/qGV5ZbuvH1FyAgUDSP0g2D05tA9DUz7CuAGquDPFRIPQ0pDInzJ3xGxRg+kqtCN8connfuiDcumRbkc3E+L35lhYwYEqwilT5MaVwLTMKnBqT5i8Y1FtrwLw2805pvoVOOsSYHHM+yxZ0ZvkEs42OoVyPYYjj38xCzJ7o4cHrATCv+wd4CSZwf56SmBAB4m7i/FEjtT6pD/59MgRZgBOjS1sp7ZYyIuJqfkOA0E5sBTsCx+P8cia1tpKpByKOzU95O7WGP2z9lrTZ8jiayGDcwKXHbxJQk5olDPd6oAOLT0e5GBk6sp1XmVvmvkWv2e7+mDPEULvvxTHFlueX1kydyKFhZOfemRvrQRoJqPoG8qHAx19L5X7hsDqRMd/GwvgGs+6rRjsAdXW901vOBEgMGWA+n4P3WP4HTjPWCUh1vIskn4Bs/mwa6hzMeDKQamwcNzav9R+yzgQF4hrCFN8cBvIZtIXEU/TPm36rp8Z+SvbFI9S0uCcIkH6nMhwj2n7MKANFBmQXjI/bv/MeNu7HFvRweeluu3ZzNqD5X2cR6DcJB0NJZ/yN8T24SWHYOiXIl2lWyDp6h+ODW6wD3gZFabj3/Qgp8oNTq9+MzUJ24+nhyvPq3C0Arkt+T1P6ZbeMDVj94
- cPrDgkSS
- e28hnOZrB4zelrH9Co1qF5Tw262C7iGecWQkM1Xe20wa6ayzrvh2eFDXOKpZcmLyUEQU1FQQfT5+N4NuJlrmnbyHIIwMWahYDA9yh9kbcZ1XLuL3qqNsVhovY5f9XkoV1uS2kJF8Yqm/rcRJpG1gweSTryzOZVypGzGe1tQZ1JOzYjAQPO2u9hqSNWA7b3tpjz6Hir72UAGqs21JeF+BPi69xVofuHZCPvfFNq3ry0sMaCcQ=
+X-Rspamd-Queue-Id: CFBF31C0002
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794880235-45282
+X-HE-Meta: U2FsdGVkX1+ddWvlgQ8GyRYAG8WOkr2l6jzXxo9AnauY7SVay0EeFZ/nL8g975sdIMlb7tQ0QE7aMSmYyGTPu0GnfgwOpxehY9L0QSMA1kKIv6Wqmzg1Lvn9UMISEOswsePKMVtJKHMEuyS6fqUtTm7bT5qbdTdxrQEWrqEmGzYRMsO9A9THk7BbrcQ27AXe4CtMVZOZrBX1WRDvbeqjLooCodTdVgmwOGETtuaQIq7+7/w2buWe8VF4ygBWyPDeTSItSmO6yxHmFwpwOSkPt8yiSXbCJCdsnttS6lj2y7kQWs2rDglkiFj/iTlzYUYu2vCxee+j2yrzJ+GRFaWhANuxiIh2FpXv/n4ri8O+zpnMl3BRrFT9fu1RsA44W3owEL+90g1rQXODSM2BuGQh2kwGcnJrsudS+Vc8tRkMNGeY3HfZg5m4IE0BNhEm4H2klN3lEazBYk7DjtkgHw25DlEUBRe2XIqQvaCWqU+DKZhvdomuW3AeR8R1+bCQHzdlMKjQ3u/u7z6AOzyBXf9f7yOuEEvWR6CoKPWYWtiw0DZvSTP5eHtZZWAsmu6iQuAna/5zNgvmBQgMGTXYjgZsGVRWLEBMZkcqLiAVm2ggRGFp0O5bYgpGXQQOXEsTlgRz33euPryPauj3t8ZhnRcG4z8c/57B9wfvOtLsZFUe0NATNL6dyU4J7sSxwE7wVapjybuVabzgtAbTBIqjP4KrdkmcPihcILTtS+m1L0Q7Ll/BV1aSpAozx7le75JIT84p1I8h5vWWuD9wLWn3G3u9ihpijlITcGc9GXMwpdeYoB73Pj2LgCwXMknXWfdqARLA70AlOfTsLp6VpJMG9SNxYJZdqM2r4q9uemS1In7Sw5sBnV53Agor2fCGW77uFVXLDVwO+7Sp96rDsEKpTZHUNNIuldcTe7IprcdI7VA7BkgnHO49P6oIQo/OYYJif0ThFUMyDLhINF8poP1TfdD
+ 8GtIWIEn
+ fR+sVxqIYcXV71a74dZkqcT155mTIkUHdlEwas88hpntbGxfQc3KXryTZ8JozT/qW1QSe8lRwS22eYThgeV3D6WVPF8BWOH1rzpDDsZRAgiK4X/oANU53IslH55LmIW/eY3qAznUkUiKTHP/zPojiw4qg3ho6lGZoecrh7X0XlreqG8zlJbkNvl4amqtCbcn+FcyM0TE0wDE0JVeHMwfQMliMFeBssYaafccGARWopP5c2BHlLuQyE3rsQfG++79lHJd/SD9td3c07T8wyzH5oFkKWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,70 +92,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 16 Nov 2026 12:57:45 +0000 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
+Currently, scan_get_next_rmap_item() has grown quite large and complex.
+When introducing new features, such as the only-merge-zero-page mode we
+are currently working on, we don't want to add more complexity to it
+and don't want to touch rmap_item structures to avoid unnecessary overhead,
+so we need to extract some common logic.
 
-> isolate_freepages_block() drops zone->lock, checks for a fatal signal
-> and calls cond_resched() at every pfn that is a multiple of
-> COMPACT_CLUSTER_MAX.
-> 
-> With a stride above one, the scan steps over a compound page, or over a
-> high-order free page it has just isolated, to a pfn that is not a
-> multiple of the stride.  From there it never reaches a multiple of
-> COMPACT_CLUSTER_MAX, so the rest of the pageblock is scanned without the
-> check, possibly with zone->lock held and interrupts off.
-> 
-> Count probes instead, and check every COMPACT_CLUSTER_MAX of them.
+With these changes, the entry of scan_get_next_rmap_item() becomes much
+cleaner and easier to follow, instead of being cluttered with unrelated
+boilerplate such as stale stable_node pruning and cycle initialization.
 
-Makes sense to me.
+Let's start by cleaning up these two parts at the beginning (where I think
+abstraction is necessary), and we can continue cleaning up further if
+needed later.
 
-> 
-> Fixes: 4fca9730c51d ("mm, compaction: sample pageblocks for free pages")
+Changes in v4:
+- [PATCH 2/2] Drop redundant comment in scan_should_start_new_cycle() and
+  update the comment in scan_get_first_mm() to refer to
+  scan_get_next_rmap_item()'s list_empty() check (Lorenzo).
+- [PATCH 2/2] Add Reviewed-by tags.
 
-I understand you intentionally not Cc-ing stable@, buecase the user impact is
-not that bad.  I think that makes sense.  I just wanted to call out this for a
-case that it was not intentional.
+Changes in v3:
+- [PATCH 2/2] Initialize mm_slot = ksm_scan.mm_slot in the else branch when
+              continuing the current scan cycle, fixing an uninitialized
+              variable warning/bug (kernel test robot).
+- [PATCH 2/2] Drop Lorenzo's Reviewed-by tag due to the v2 bug fix.
 
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  mm/compaction.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index f1b2060eb201..4465c1551406 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -579,7 +579,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
->  				unsigned int stride,
->  				bool strict)
->  {
-> -	int nr_scanned = 0, total_isolated = 0;
-> +	int nr_scanned = 0, nr_probes = 0, total_isolated = 0;
->  	struct page *page;
->  	unsigned long flags = 0;
->  	bool locked = false;
-> @@ -599,13 +599,15 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
->  		/*
->  		 * Periodically drop the lock (if held) regardless of its
->  		 * contention, to give chance to IRQs. Abort if fatal signal
-> -		 * pending.
-> +		 * pending. Count probes rather than pfns, as the scan does not
-> +		 * always land on a multiple of COMPACT_CLUSTER_MAX.
->  		 */
-> -		if (!(blockpfn % COMPACT_CLUSTER_MAX)
-> -		    && compact_unlock_should_abort(&cc->zone->lock, flags,
-> -								&locked, cc))
-> +		if (!(nr_probes % COMPACT_CLUSTER_MAX) &&
-> +		    compact_unlock_should_abort(&cc->zone->lock, flags,
-> +						&locked, cc))
+Changes in v2:
+- [PATCH 2/2] Rename scan_begin_new_cycle() to scan_should_start_new_cycle
+              and keep it simple (David).
+- [PATCH 2/2] Keep lru_add_drain_all() in scan_get_next_rmap_item (David).
+- [PATCH 2/2] Use scoped_guard(spinlock, &ksm_mmlist_lock) in
+              scan_get_first_mm() (Lorenzo).
 
-Why don't you let the later two lines unchanged?  No strong opinion, no
-blocker.
+Xu Xin (vivo) (2):
+  mm/ksm: extract helper functions for scan cycle cleanup
+  mm/ksm: add initialization helpers for scan_get_next_rmap_item()
 
-Reviewed-by: SJ Park <sj@kernel.org>
+ mm/ksm.c | 101 +++++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 65 insertions(+), 36 deletions(-)
 
+-- 
+2.34.1
 
-Thanks,
-SJ
-
-[...]
 
