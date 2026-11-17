@@ -1,96 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A499606A335
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 01:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF71B606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 02:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=twXPUU79
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=bG2aZL9w
 Received: by kanga.kvack.org (Postfix)
-	id 47B316B00EF; Mon, 16 Nov 2026 20:58:17 -0500 (EST)
+	id B88356B05B3; Mon, 16 Nov 2026 21:02:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405CA6B05B0; Mon, 16 Nov 2026 20:58:17 -0500 (EST)
+	id B391D6B05B5; Mon, 16 Nov 2026 21:02:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31B976B05B4; Mon, 16 Nov 2026 20:58:17 -0500 (EST)
+	id A4EEB6B05B6; Mon, 16 Nov 2026 21:02:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 01BA86B00EF
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 20:58:16 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 753A7A02D1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:58:16 +0000 (UTC)
-X-FDA: 85442950992.21.370FE0A
-Received: from mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 687C4100008
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 01:58:14 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=twXPUU79;
-	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 7A1E06B05B3
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 21:02:47 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CAC87A02D7
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:02:46 +0000 (UTC)
+X-FDA: 85442962332.03.506F47D
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D02CC2000D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:02:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=bG2aZL9w;
+	spf=pass (imf03.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794880694;
-	b=k7ZvU8RQ/IuNfjY+C0nSi9VSeD3A2Kv3U2cZdOdQlR100d7/GQ+i5GZpEzojVt0bvYNuAX
-	cL1bOYqn9jGBDaJnxlYgHm7YdoVjqcVv77l14MHkawfqHLQhYl/qFwqIxSu5MsaC1ZU3VE
-	v14k/qksLYapZVXNHKpqnfHhOtmVvTs=
+	t=1794880965;
+	b=4E76EaeRIm+crPHSZR12t3BtMVBV5E2Tp73QykBHDuVVWEegHoOZDoanHC0MNxbNNdo3dm
+	YiUuIyGg28zM1sbc3c1HevmqJQdnBODWJO8RbMIGCFkhfzyc5m6SdxeqU6zgmf6n5eNp4n
+	HBCeZ82QPK0/LAs3HQSLW2QdbtJ8Exs=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=twXPUU79;
-	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=bG2aZL9w;
+	spf=pass (imf03.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794880694;
+	s=arc-20220608; t=1794880965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MJaijdCSbGvAI2XUFUPLj4Bepyf0Mp+otbYEfC/h5uU=;
-	b=7Dx6wPJ/Y29lKBFy2G3n5+pb8PPwHsULISYQ+6846PqawYuBTs60/2fmHEIHzAHocLHGNY
-	CI318mjQO7pcQBEzfTrhFPloQFxQBC5Nf88ZnDSaUoIYnUR+ytE/MRMwh/NTn4hJ70+UZA
-	LHin4yvtW9Gswn/gVTUqfmTXNO7tI3s=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=3eqXtP2dV1n2wti1WI86PMgmoafgSRMDKa8er/AFqsA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794880692; v=1; x=1795485492;
- b=twXPUU79LsIubbO/MX8DOZUuHOAzG8R4zI0ANp03ggukcEHXnZfyXIDwfkzqaUg0kgaaKTcJ
- SOryyyv8UYPGh8dMVlu3yMasOd96r3W8861X2b1qQ01xvfi/wzKZrQXhEpCYPLDMtQsfWped/xi
- p8xOYrGkB0JVytdsbqa6ugIw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 663db3f24a33422a;
-	Tue, 17 Nov 2026 01:58:12 +0000
-X-Mizu-Trace-ID: 663db3f24a33422a
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	bh=cePgYs30Bcn8pusEQOJP4B1julb/89naq18hmSuJpMg=;
+	b=5EuxgYKj5N1qKbRglmjUfnC/1U1vp7T+cJs2LxOjS4vuVrBuMxLRaXYYqoDMx6RJiQBSKM
+	uhwx6/vZ9YBDCjzqZngeP9AkvIml2jvJ1UbGMIeM101ojVSU/7Dm7K3kiSeHaJUffQAWrJ
+	9JoX+ejATgMOMByfpV1TEeRg5AMC26U=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=cePgYs30Bcn8pusEQOJP4B1julb/89naq18hmSuJpMg=;
+	b=bG2aZL9wLtwMoR+eH6Ptsaon9AHyEhcKp9zMD6fLo6qLqqM7R/wqIkY1ACQdFPdxlYsVYTnQH
+	DwVgjobhKkCZalHRUUoxXCLw6z1PSAe8pMtQ8MNickJe9vcrT9wTnvmfi0UNfvIFqMsHUortU94
+	yGy7a9mOWxaNiNQFhlYDycg=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4jT7Jb6SlNzpSwK;
+	Tue, 17 Nov 2026 10:01:51 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7C0B040579;
+	Tue, 17 Nov 2026 10:02:39 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 17 Nov
+ 2026 10:02:38 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
+	<ryan.roberts@arm.com>, <peterx@redhat.com>, <dave.jiang@intel.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH v2 2/4] arm64: simplify pmd_special and pmd_mkspecial
+Date: Tue, 17 Nov 2026 10:02:35 +0800
+Message-ID: <20261117020237.4037980-3-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261117020237.4037980-1-tujinjiang@huawei.com>
+References: <20261117020237.4037980-1-tujinjiang@huawei.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH] hugetlb: Don't restore vmemmap of non-HVOed folios on
- bulk restore error
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261116221557.3128331-1-jthoughton@google.com>
-Date: Tue, 17 Nov 2026 09:57:57 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1041A207-7114-479F-AB70-8EA33AB361A5@linux.dev>
-References: <20261116221557.3128331-1-jthoughton@google.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: etfk7qk1euk49db4qfwfcf9z9n7uyb4r
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 687C4100008
-X-HE-Tag: 1794880694-788232
-X-HE-Meta: U2FsdGVkX18Db6jIUAjemhZ71LDOL/tfHxfR+W35yv9rIVFCWUfCfNCLCPnBq4KQaWw6/0e3+CsC2zoRu6NwGTsuKp8o+0453Bvh72Eep51N91VnxX0uNt0kt5D393CTU38DziYtajJFL1/t2g3cVcNGg5TmRShjaJETOKr+P1JYSH3ZN+u6g2hAbAqXsg6BgjRIlwfYu6kAhUJki+dwv62VFbIp7hCI1YjFv+rx5Z7BaToB3ywjPScOFtREvyRtD1/Ht2mOLSp+94O9MsCQmr9/hfVs0Nw6iXT20C60VeqIbtiNfJ3KkNGj1Falq4wSjUL3uxKEvElBw9JWBUu0QV9HVBB9fgyNVoyx/RBOiLm6PHvN352rwugSAdB7fLTCDerQr+VzQTL6KSMywDWfQoZpK4p5w5nHU8NXTOnh6JSmNqw0FhcS/YlVuR7deKIKlQthaVUZLe0AbT0hc9ws7gea6oThR9F6BCT4YD+ojT4LhnHi7dxg6Q/lhJwmow9fZq34K/QZoKe/mYfIidfhLSbh4g6dDI3Bo1UXALo70Ow78U7zNjyJecmFnsYou321FX7AMfffpMhA08nUWMT9pWruNU/Lb/SuWbzraSbCXg/TR4XVvCbcx161XevGEi0Yh4oyy+7uhNS5mnIhinFW4NeF66YT0/x/C1B1syyGODuQAe7WMhpV0mC+KSPGSiLJdkEpP2C5iMC0niYFpLdsCSgYMjTbmSENMJnuhCE5NawfB5BrivBEDvSJmWJ/OFr22cjtHnu5Fl/fi5DTdSgV3hD21WE3/+oUMnAlC8B94Ouf4cam9N4fekoWmRPUFrToUXELcpdtVf9Mo8RHCVteQiFYarcck4MHfKn25+P+ytajOhqAx+Y1V1Cm5rF3hYcA53EEjGx903b3+HAf5eIA9YGdz4lZUptRQ6w712Pq+c8SkzPA3uK1rGuzBq8YCuKJ7OaujndcyueuQ9fWY2M
- qbxPtl5y
- mT45ucDKMZHW+iE8kKzedC3xfvrudRRvjD7JfaHGgWhdCAqrNDrxQgWDRsE3sGXmbGQDpWIHH8ye+iIhGkiWnIwRLJZXD8sSGCll0Wua/+/4ehwNGgMX33cDwE+oT/uEICHA/gbN5QMidAUZIL3jz7+yPksaRfg3eLR2LYtpaj8enJypxzqQCDZLI/vkSnbhcM7FxBx7iygNWiage4woKfxnJom65O8s1De4E5tS7WIhqdtvNjxAVOIVeuRXACQxXqI8BC63/MFJEG+V3bHxkrm3XTPbzIjiNFvbx
+X-Rspamd-Queue-Id: D02CC2000D
+X-Stat-Signature: ca87a9qu65hiptfksbjx5defbkonq4xu
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794880963-603845
+X-HE-Meta: U2FsdGVkX189rrJlPjWebrhtT2YfBDfX/CdpTzmg6EUJKQTU2Ry1qjcY4rGsdh8Pvz4LWCV5AYpZ8arG3Hm7hz+qKMWWYV3GHa0LEzuIWJ8W29gjlyVZ4YZbbCsxIqMPfgA2emwVYlCSCJlClce0pfePORTWNevhE/EFgkthBe86JheFDs49eBmiV1i7IX+llAqea9Suf1QmQzu4+Bq/vhrvjCq7SxRBBQPrglAacn8wTMKvrJDj1nj7WwrGF4bvK8cd9qXuzx4Lq/9z/73YmiiNwxNMPdya/Lp2dY1Friah8D1T8H5xc9c3DWqoQSl9DpJ+r/OIdaudXEuRepzpe9RIS5No+8nruy6WKOkiSsh0MSIXOLTEo45/Njo0xWBh3P6jyvTUkYw1UJo3vg3rFP5bgVxadxsUpZB3Ll3SNpplT/D6y8Y53XBSkr8JUeFxwBSJ2uUYtF9N4MfxQRnir8R3s6KvZVu6EapO98sxflXPGZ9345qrCueLIqykw1Wym2iUvl/Da9+CfZXYQfZ2OM5/8EJtU0vGOCUmkHNwCsvJvYJYu0Iu19lzypN1iT8/BjT3nFLiTFvq2JRfojuiOgIN4Xtkwd41gMiyXiv3vnYZyIETx1Tg94O0qZSmIBV8UdxZyxtq0E7chS1VM9TEc1OTlnT4qgbWofjqFQtVWmecO/+Z4+3jR/i4c86XN173zFy9kB8W2eMpB/njD+rr2czXRfT3NAB3I2P6+RXSOW1BM5vB1/2qLRWGIDLfvAa5vAAqulbhZfJH0RJXtPgHAi+b1CH2AvoH2dXL0IoMfn5UjiVWyX/nLu5Q/zxqqOT+EJ4dvi0lHfiAC8GzxWVkeC7R77VgVVlmH92a9LTsmSPHtHu4mKeOo7XsB+a0gfP9Q/c7cI0nUtzVTVV+bgWh5bCmspSpqmPAzTtchl35Lc9H/wqM6l0RnPLLgM2xsQ1LzsjPM/wLdNhzV+wr3nB
+ izHi99q+
+ /KsPn5cZSLHtDxeA9B1X32ZR5LLyZTYXt10YoAkjM8Con7mPYcbFhPsTMyf2cFMPN8fDjtMntY9Ftkn+QolQoOOm/6M5Td3flrSz2UJoIjd+F4bkqouB3yfEexbDb8a440q16D5dQqTN7my2GY8POIa7zEDRyXOcvQyBePig8X5XfSEmkzPswaYWIwkqrzmPFXi7hnHXaRB4/n4zwgFLe+gvn/nI5Ygc3mtEGyXDBPQRnAd6Dzwg0/nSP9/q9FEr9V025Qhm97zP+NkUm1ooIH3UlXF40+p1dfProjqJ9jy8Ui5IHkJrLuHRIVe9+6jvvlnJlIS7tW1wyPN8GysXUGRQZyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,49 +102,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Use pte_special() and pte_mkspecial() helper to simplify pmd_special()
+and pmd_mkspecial(), and kill unused set_pmd_bit() and clear_pmd_bit()
+helper.
 
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
+ arch/arm64/include/asm/pgtable.h | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
-> On Nov 17, 2026, at 06:15, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> When hugetlb_vmemmap_restore_folios() fails, it stops processing the
-> list, so folio_list may still contain folios that were never vmemmap
-> optimized, e.g. because HVO failed when they were allocated. Their
-> hugetlb flag has already been cleared by remove_hugetlb_folio().
->=20
-> If no folios could be restored, bulk_vmemmap_restore_error() then =
-calls
-> hugetlb_vmemmap_restore_folio() on every folio left on folio_list,
-> including those, which trips the !folio_test_hugetlb() check in
-> __hugetlb_vmemmap_restore_folio():
->=20
->  page dumped because: =
-VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio))
->  WARNING: mm/hugetlb_vmemmap.c:503 at =
-__hugetlb_vmemmap_restore_folio+0x270/0x300
->  ...
->   __hugetlb_vmemmap_restore_folio+0x270/0x300 (P)
->   hugetlb_vmemmap_restore_folio+0x1c/0x30
->   update_and_free_pages_bulk+0x2c0/0x368
->   __nr_hugepages_store_common+0x2e8/0x3f0
->=20
-> Otherwise this is benign: the restore is a no-op returning success for
-> non-optimized folios, which are then freed as intended.
->=20
-> Skip the restore for folios that are not vmemmap optimized; they can =
-be
-> freed right away.
->=20
-> This is very unlikely to happen without fault injection, as it =
-requires
-> both HVO and a subsequent vmemmap restore to fail.
->=20
-> Fixes: cfb8c75099db ("hugetlb: perform vmemmap restoration on a list =
-of pages")
-> Signed-off-by: James Houghton <jthoughton@google.com>
-
-Reviewed-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
-
-Thanks.
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index a474c9fb485a..a06b0f5c3411 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -240,18 +240,6 @@ static inline pte_t set_pte_bit(pte_t pte, pgprot_t prot)
+ 	return pte;
+ }
+ 
+-static inline pmd_t clear_pmd_bit(pmd_t pmd, pgprot_t prot)
+-{
+-	pmd_val(pmd) &= ~pgprot_val(prot);
+-	return pmd;
+-}
+-
+-static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
+-{
+-	pmd_val(pmd) |= pgprot_val(prot);
+-	return pmd;
+-}
+-
+ static inline pte_t pte_mkwrite_novma(pte_t pte)
+ {
+ 	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
+@@ -577,11 +565,8 @@ static inline pmd_t pmd_mkhuge(pmd_t pmd)
+ }
+ 
+ #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+-#define pmd_special(pte)	(!!((pmd_val(pte) & PTE_SPECIAL)))
+-static inline pmd_t pmd_mkspecial(pmd_t pmd)
+-{
+-	return set_pmd_bit(pmd, __pgprot(PTE_SPECIAL));
+-}
++#define pmd_special(pmd)	pte_special(pmd_pte(pmd))
++#define pmd_mkspecial(pmd)	pte_pmd(pte_mkspecial(pmd_pte(pmd)))
+ #endif
+ 
+ #define __pmd_to_phys(pmd)	__pte_to_phys(pmd_pte(pmd))
+-- 
+2.54.0
 
 
