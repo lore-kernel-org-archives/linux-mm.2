@@ -1,94 +1,153 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10576606A33F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4467606A33B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T+3F7yW0
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Eh/Ms1hA;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=i0F0Kliz
 Received: by kanga.kvack.org (Postfix)
-	id DFB006B00EF; Tue, 17 Nov 2026 08:48:30 -0500 (EST)
+	id CF1756B05B2; Tue, 17 Nov 2026 08:52:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DABAD6B05B0; Tue, 17 Nov 2026 08:48:30 -0500 (EST)
+	id C7B626B05B3; Tue, 17 Nov 2026 08:52:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC13B6B05B1; Tue, 17 Nov 2026 08:48:30 -0500 (EST)
+	id B1E296B05B4; Tue, 17 Nov 2026 08:52:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A7AA6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:48:30 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DACF3160409
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:48:29 +0000 (UTC)
-X-FDA: 85444740738.05.6405C1C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3993018000A
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:48:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T+3F7yW0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 84B2D6B05B2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:52:24 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B8D612045D
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:52:23 +0000 (UTC)
+X-FDA: 85444750566.22.C665F58
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6048B40007
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:52:21 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b="Eh/Ms1hA";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="i 0F0Kli";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf11.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.146 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794923308;
+	s=arc-20220608; t=1794923541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M6VZ7CYm+YVVdzMSRV4Ww9IA3aFQKKqL1aLxREeXniA=;
-	b=p+GX5C5kly1Cu7tF3D8jpRQ+zjyBUJYZqUpufdH3cQx9x9M5s7uIftrxFg2CJcMyoq8Bc4
-	AkjelYJjKpHtxKFEazMseBe8U8evTFC2sEmFctAc/bLq+L2BLthNu+HxyAuhpzpH4G01wG
-	PwB/BzEHXylrIJZZOj5r/5H9ndH9ki4=
+	bh=70DfZfFKXRaieDq8Pk9B90fU5z9WYAvkXhfACEP3qcs=;
+	b=Ow9odEm0iNbbf/SJ0EcO4JQ1Ucmrhcn7ZFzl7B46oVrA9TKT5LDmdbvcxyHfY+HhFT01qP
+	KVrkqt/bYU5BzCiUHAD7d50Z2jMupiHbyMLW43stXDzaOTFX4hwUAEGkoy7fZc7uAjbWe7
+	xRyAul/roFaeyt9AbWFjzuJrT/z1Tzk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T+3F7yW0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b="Eh/Ms1hA";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="i 0F0Kli";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf11.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.146 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794923308;
-	b=nq69DWzY5aqLyog0QMhvt32b1hgBvdIXuVj01yi6Y7meCwk3J2ifBNEoODlpEAjIDnpzS/
-	xzWxtMwq58qKFj+o32J+6fMxpHTX5Ih2v8qkCio9RdZWCijPT3qKOnmWtMSKcVFyUht0Oe
-	7bCnd5jhqHj2a6jKC/Zv8IAygl07E8k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 69B8C45BB7;
-	Tue, 17 Nov 2026 13:48:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DF01F000C5;
-	Tue, 17 Nov 2026 13:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794923307;
-	bh=M6VZ7CYm+YVVdzMSRV4Ww9IA3aFQKKqL1aLxREeXniA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T+3F7yW0BNt6KMfaHj/yGXMeR4K2bVB+aAbodU4rPyQ4VzPuuj2Hh5mrLnivJPxk1
-	 wQ6OWg3eROScfL6IJQ5k9m1+p2bKFthWj0CGhENWdYUE5g0aRK6tZsm8dsj5Zkt23e
-	 6PqvdCv7HcR3UdB3hkJOAeKIV5poO0ldCcKvIULv30JcD+eHURWlM/BeYipWUH5AzB
-	 WIqq3HNKw5ReZoKiTay09O8/AIAJxeTouYXVCxY0aejIev/QA9S5aNR0dhL7WW28Hg
-	 eMLh63MYL9PpSyb50HZZ5HEyfiiiXkAnR1OGlXOlFD2mFODzo8UieNeUxoL/W5zf/L
-	 tAS/3pp73j/2g==
-Date: Tue, 17 Nov 2026 13:48:19 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Christoph Hellwig <hch@infradead.org>, 
-	Yuan-Hao Hsu <aa9736195201@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v5 5/8] mm/gup: break out gup_lookup_pte() helper
-Message-ID: <avxXgTBaJkPN6XOh@gremlin>
-References: <20261116210127.3837898-1-riel@surriel.com>
- <20261116210127.3837898-6-riel@surriel.com>
+	t=1794923541;
+	b=ukBXskOjsC9nBxYCeb73Anw3YoG75mFC6DN1E1bbMq0NsZszuwJpXWEO536XXB/IuGDAYn
+	Zb0aLWARQhXEgE6EOXbXbWrjvebVplklG4weEjdrVo5zUG6hoSAYeQzhPczpw2cf/5nxtW
+	+l7LJyml4snXvvKaYnB1vfo2wi5WcnE=
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.phl.internal (Postfix) with ESMTP id 6F83CEC018B
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:52:19 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 17 Nov 2026 08:52:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794923536;
+	 x=1795009936; bh=70DfZfFKXRaieDq8Pk9B90fU5z9WYAvkXhfACEP3qcs=; b=
+	Eh/Ms1hAquDDHtVZ27m9uvf0+ko9AoxxkgdcpMIbdyNynTXyFvMOo1JDhyt3voka
+	bV2Ek+qXrVJxOmNU0z6iH4m4eTlPwHPRMEk3GSoZPhT76s9DIpnxqx+3AygDPwra
+	FTdo1ngLGnCQfEQTOKL5jpO122Vx/wBe8u8DFFmssmuf9WKv11duwMJi4bPmJVoU
+	6Kf3YjURyqulH9uLBgSmn4PN7d3Fdd1q/DW3EoBLDmr8kqg5/BShFS9tgnhiTgFW
+	TH6AhpZuJ9F9ovqVUvf2SLoLoRqI7IpkxLSewDOyUfz+vMuHgaYwWtzjqhpDpIyb
+	TBRSghl1yrrUVNoF7O5vtA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794923536; x=
+	1795009936; bh=70DfZfFKXRaieDq8Pk9B90fU5z9WYAvkXhfACEP3qcs=; b=i
+	0F0KlizY9fYR05xWMNMBDU/8d+P0ofG+d4tvdoDPn097lZjwC7GZpPp7E6zPF1q4
+	6Q9gr7ayD2pP9bdTDpzmldv4N/7TKyfQkcHYsPeSrKmrHaeOnR7SHcbqr8g5XzmA
+	R8FMqm/SylMZDd17dUOZJqOOtKVAERWrk4iMk1hRgisRfKAoEQdHnWSQFiuj6gGL
+	d3OxvvwaW6TF3xi50PzIixbgQbGe2jWd07Jxu9frtcJYCOVk0GlgZASxUnJ6VxlR
+	bSUfl0rh0Umbq105poGhM79DGYu122515kXpllMJiwK0q+lNpwDWCBrk35Gg14vU
+	/ds3bAGYu0TZNhJD9MFeA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794923536; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:WRxttOShu11X/21XLqwxeByAL37CKI9MVybsoT6gUraPdS0
+	AcvEhp06GAREWlTggchzQb6NOANLkCrI6h0L65yS1arawuIaI+tsZhlNT4wQ2ehb
+	pnTZ9fvIhywpAv+7FCx8MaWuD5wleOyjvqCHSSK4mMnW7dWWPKNjdr2AAW+3SwGK
+	lCAdtnUgQDnEXtaD9ugX03w7hdcqAxFRURdBT4QXfhjJyBm77owQ/76cErjYrhBf
+	OE5W9iwKJnHJZQ8tziX5KEwy9fUF1c3Ovg8qQhgygwdhoxCqm0gHg5rxxtvlnOHI
+	HYy073aia3WD7QI0k6gkVW6wzxysfeTEOk488Dg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:a4sh5katwY3sk4nluWL68Ro8t3huMRlOF0IEQTQsYMo=:TWxQp3xG7bFeorA66FGctaC8sTOSNUIbVqQqm9Wca38=;
+X-ME-Sender: <xms:Clz8anWDkquIeRmPpaMC8pZGm-EbL2puLbs6CkabcerL_BCOz5RplQ>
+    <xme:Clz8aqbq5zAftxvDghU5hH1yCDKywIUASeS0Ej_kwQH130wsQdfJbBPDB65hyKCqM
+    iZ43XLeCCBFlPm8Bd4chXJtfvCwXAMavlzLbP3ckaea-FWUvnDMuAgp>
+X-ME-Proxy-Cause: dmFkZTErj3UNL1H8vGxcIV9waJUX7Kb4aDL90O1n6cyapaglOpbqhZOQHRL4N9Of3vEnk0
+    8Lq6myvF4mYoxTQq9CL5EOgkvK/82hT5/T5f4aKsrXe7EfGOtRJjJ8h7VctaTG3sQeNBAf
+    F3xW8RId3M0d3vKpfwT5opIXqB58oltuQaN6JJQR+RcaJPof7TAoZPTEoEpGSQHWw4SLOQ
+    o8lImCOOujg+ehqfhrhGAUcxXuXbuaU3WPwEohNaqepY54bYDvsMb2W2S5ZKxL4AJPTgY8
+    X67Nv8qI+ozjTEzRSyewaU5AfK5fl5kMXCITJfMMs0FY3F4MFdv+77OfgKdCFFEP7u10M0
+    Gb/3bO2hBba/HSRs1F19loLPydSszZF58tpIbbvhJkmYTN3yI3TPFQTWr+jsrrNM3WDAEY
+    nHjA0SRHcFr4b3rqIXsoh3PRSe8Wz5DG69nNweJ0VJcAe4lIkVl3ue84ebIjjNv2DxfjXz
+    bw3QbNLYAGVTyOPhpdptMW2k2AnPxOP43B4rH962wgyWDT39UVqIuDR4SFZXX3J0NYmquF
+    QcME7r+w732IQ7FRJNpR2DW5p4dTLYk+ZxhHlPrnCTsFXkOLEkmt5SrUiAUkVo9EOgJubV
+    WXIVeZCpQtihtEzmb45WEHEVw+e5H6N+3FM6t5CsQ8z/kUV1yS1rXn34ODhQ
+X-ME-Proxy: <xmx:DFz8avR48OzdtK6IPGxqK5xkTUy4IWbCcrb9QymI_xRvJ8vQ4hKXxw>
+    <xmx:DFz8anI2aVo7LJvln8G6ohYcXtwbsj2VR134nHam9AmOPVfUKuJm8w>
+    <xmx:DFz8ahG8vo86pBxJBlVeopVBl41CvjJdCZedjbtcP1_q-lMRTa6-Xg>
+    <xmx:DFz8as34RhQTeAUnYPP6HbyG7pqjwRomuz9gnjzSMuuafdsOhL_HFw>
+    <xmx:EFz8aq_gFF2O1G8MurySICHSgLzeGIYlq6FQXxG4MiDSbNrkSLkEH2u9>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 058D032A009E; Tue, 17 Nov 2026 08:52:10 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116210127.3837898-6-riel@surriel.com>
-X-Rspamd-Queue-Id: 3993018000A
+X-ThreadId: AqUefEB18S3J
+Date: Tue, 17 Nov 2026 14:51:49 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Gregory Price" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>, "Zi Yan" <ziy@nvidia.com>,
+ "Joshua Hahn" <joshua.hahnjy@gmail.com>, rakie.kim@sk.com,
+ "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, larips <larips950@gmail.com>,
+ stable@vger.kernel.org
+Message-Id: <6695bd2a-5450-48b6-8ebc-8b847e7c1dad@app.fastmail.com>
+In-Reply-To: <3b9d974c-18d3-4113-b7a6-1f785f19b318@app.fastmail.com>
+References: <20261117101910.1820066-1-gourry@gourry.net>
+ <3b9d974c-18d3-4113-b7a6-1f785f19b318@app.fastmail.com>
+Subject: Re: [PATCH] mm/mempolicy: limit compat bitmap reads to the source nodemask
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 7gia9eoxtboa1ofdcphtftxqjjw79uzj
 X-Rspam-User: 
-X-Stat-Signature: 63si47uxcpa1y3auh5tz8xhwf7gu6n86
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794923308-335250
-X-HE-Meta: U2FsdGVkX1/wop1Xuh8mVMZp48d7StqwmIGlFp4YbF1kEoqs8VHO2VP2RwxBQBTBzVnxizm9KAMbbdPS5nAhw0ALd65Tqgmpd+jFJn6FpPVRkiI2X7OBlNmOEnoR/s0cWleq2y7eZqHv7IRZJko3cp42ihC3fu0mQfM3B+AWVMkg+v5vJWHobGBpVX5wXryELTidJhg2R2YFtg5g9lgSJiyL/lhhtYF1Usl/AQxyXn7HH5ud8w3aMAw4o11DlBR0FTp42HIsqa9KEF7iMLMJsChrNb3Fa1YvqgJt8mcAubBiItQVP7ukza4Aesl+rlQdHhPhUC+vZVghrALKcb779nbO31v3WjQ8vXvpgsROyZNwAEcjd+/87T6F8kfrILLQMLpxsWBNn2M7jNDI0yDF2K5Da2cc0aTolB2Q5uiPf+q0rsLuNPVNnyOg6ygx6n9+9S/ejvD93jrmoYSdd2t4FRTSIMixT7nQOFcCW042S/poQEFgziJLNF6lmAm5Vnl7kE2DVvs/3xdN6/KJ78AQzdbnxvVdFHRMeB3tMVN06aLus7GDLJLpJe1cS0dhIrzrGwo4jkKNNWktA//7OhoxufSh+S4B4EfghaiWu2Yg7fn0iJKCXfFl4i+Q9Fb51GUhLC2iYUrkP8YfWZWbaSTBRq7MvAj8mY2JRebzJqQX5F6k1HUia5jftvgv+QJbzKxmc9JJTi1KPIfMAj95dZvilsFzy+1WC8QGOoDn6vvardw8EDd37rWq9RB4XEU36jn76hFtjwS8f+zKYKW7ZeT1HlEkAVvUI6XHv9HSky11wEU5i3lfmF/hZ60iIwYz4x2SYotYzgL7WyDw1cr190SoWx50qRsS3odIrkztrkCkk9kuHatTIZ99tzjOzgz9n915p6WQogPEuWuhUgynR6RHGtnhduTFvlkmQgiEnyrReMaaYiakLGrklGgPp12T+cmbCU358uOhqSjmrQVd8cx
- ioVOwLIz
- YQ2c5X32VmWeE5CZeY9FIgWbfF6qp1wkQpSi+m1kIYZM49buvPCL28GNxJ9wNRyt8slNI83s9WEHTyOXvzQuuB/kr6VWyFMG3L+vNUwYrq0aiAnbayGVlOqx+d36j/MtGOOpycOTUQxtgqt5M2Lk21YAh82MjylymdJ6Px4juQMvVjJ4NTgBTDQSRn7j4XxMH35aOKce6/v1Es826v/o7XwNXmZnK4ZU6ZiwyIYicclLlqzAgNxpiL4ysB5DmQdHou1AOpjbgwWE8YP7OtKI8VhWmWZalSGpzBe9GlEtOOPfIECB+teVx0oLHOLKIL94tICFugWNtgBuBI1hPNbT3OTEtYcen+tiU962xaBOoxcBPEN0vY0sAz3D+JqIM68omC4MF
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6048B40007
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794923541-33681
+X-HE-Meta: U2FsdGVkX19m+ktLzLRtoXKvzpNnStsFTgsRIw8OvGjIU/xFH012tiAdis17CbvM8zhbygtZ9SiscFvPyVy8APZHjHnLeBJakB3HW1q0kl5BPhMHPhERjHXBFWsJYG+LiVdgTkdNSCQTd2zcS7mpPVlzBYU6MPSRPMZEhyqvINr7Z8lbWq23nx2s4a0dYP0lnPamNI11dDzUR29oVG4q6K7NQkLauYnyhj1bz5lOnkEBB/sqiDMREx8p2fz+hFortWEKIXz87toSUUjoPLzOd9rBSm5rtHXURdmdWgvKrCIEdAlJMo4sYMNHwF4nevtQfIJrAYm0SMignVI0oZ8fUgBMeGRAYmdjWSoy8UxwrkzMDWWC10GgM8yon4UUMGFWgwk237Jjq+renLH1naaR7QKBx7gka+Tz/3DIy/lAYa4BMA4ICJuqJHSp2pfDQO++MxjXMsmyrwy3A0lZ3Ec+4CrBlyKh5fUqvQ+mie3bykfTsktagJjzZtC9RaLYnsICkF2KR2kJD3h7cIJ0RNHBPkiutt13IKn5JIuoXQvzRxJyima2DpHq6UeGPhZ3UMa0xLeLGSdzrAZlG4NEHEUecjmtdpjtkyhDP9k+ruL6msIGnc9j4zBBUiyZYhuwIcJnmhm++BXOsKe3ozdfG45FAytJF+GgTy1YlLIeskIgKi3ekve9U43Y3rIgyZWvRPmPVpfYmWXPCFMS8au19VdJXgdhILOL3hhP8eKkuGHH4Ig+6HuLSAr8HDk2f12M7MYDDxVDX/yZ80nfrOVoKkAivmi6GHgqF58FEcEmda4p9Hf4O7c+pCVCRBzDitgL+7CdRyxYx6fAOnN1CfjJKMuRq5dxEOv1uSxM+acLDXO0fdaSbTLRWuZGmgxjP3+VTrO4t7BsOtDvFd0F80bGFzAjUskIpMwwHjUtCY9JQr30AR8jHYu4OR4iYqC/Pu5jMteCGgT52poTWlZiAVjf+uM
+ we67TQpU
+ TaN1NUdqvcQoCCyftgvAvJGnU29meGjbFdANJ67nTkUK7+SlNxiGYh/E+habuZl6mPnRUbk2YJjUJC55bDW8KTLsLDc3kP4cWG7Cb0xHvkzvJ0oNikyew3ynski1BCXmCXSrn27mqqdg0Ws/tgaOGK9s2t/FPXAqlnbA9y+KIYKGqj13ej2y5/B7mAMZr5V82Sw5Lusw8xUbCF2xNH14J+zfpyHoAm1t665BBQkHDNClIDC8Pn0XepxCnx1PmWtd3A9hVimXIVCZe4tHXWeqPR2lrWNsLFHuNzPqQJTXHlAfj8D/xm+pPfE6EYBIuIcyJYm3podAiLngV1a26hHteihMuPbQgTJ6LbnsHuvGlwHYwzs/q0hIvClg9oQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,232 +156,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 04:01:24PM -0500, Rik van Riel wrote:
-> follow_page_pte() is 92 lines and does two separate things: work out
-> which page a PTE maps, if any, and commit to the page it found. The
-> first half reaches the second through five exit paths, two of which
-> unwind the PTE lock in different ways.
+On Tue, Nov 17, 2026, at 13:44, Arnd Bergmann wrote:
+> On Tue, Nov 17, 2026, at 11:19, Gregory Price (Meta) wrote:
+>> A 32-bit get_mempolicy() call can read past the kernel's stack nodemask.
+>> With 64 possible nodes and maxnode=65, copy_nodes_to_user() computes an
+>> eight-byte copy, but compat_put_bitmap() reads two native words.
 >
-> Split the resolve half into gup_lookup_pte(), which returns the page it
-> resolved, NULL when the PTE cannot be followed, or the errno the caller
-> must report. follow_page_pte() is left with one unlock and one exit.
+> I don't quite follow the explanation yet:
 >
-> no_page_table() can look up the page cache, so the case that needs it is
-> recorded and the call made after dropping the PTE lock, as before.
+> if maxnode=65, shouldn't that result in copying 16 bytes on x86-64
+> and 12 bytes on compat mode?
 >
-> A none PTE still returns before any write check runs, so a FOLL_WRITE
-> failure can never reach the recorded call: the caller consults
-> no_page_table() for exactly the same PTEs the old code did.
+> It looks like compat mode adjusts the wrong variable and we should
+> be doing this instead:
 >
-> No functional changes intended.
->
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Rik van Riel <riel@surriel.com>
-> ---
->  mm/gup.c | 100 +++++++++++++++++++++++++++++++------------------------
->  1 file changed, 56 insertions(+), 44 deletions(-)
->
-> diff --git a/mm/gup.c b/mm/gup.c
-> index efb2ad64be80..3aed0bc1c2b4 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -965,74 +965,86 @@ static long gup_grab_fill_folio_pages(struct folio *folio,
->  	return 0;
->  }
->
-> -static long follow_page_pte(struct vm_area_struct *vma,
-> -		unsigned long address, pmd_t *pmd, unsigned int flags,
-> -		struct page **pages)
-> +/*
-> + * Resolve one present PTE to the page it maps. Returns no page and no error
-> + * when the PTE cannot be followed but the caller may fault it in, and a
-> + * negative errno when the caller must report the failure.
-> + */
-> +static long gup_lookup_pte(struct vm_area_struct *vma, unsigned long address,
-> +		pte_t *ptep, pte_t pte, unsigned int flags, struct page **pagep)
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 6d662a9a8c74..f9a7be9f4432 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -1749,12 +1749,12 @@ static int get_nodes(nodemask_t *nodes, const 
+> unsigned long __user *nmask,
+>  static int copy_nodes_to_user(unsigned long __user *mask, unsigned 
+> long maxnode,
+>  			      nodemask_t *nodes)
 >  {
-> -	struct mm_struct *mm = vma->vm_mm;
-> -	struct folio *folio;
->  	struct page *page;
-> -	spinlock_t *ptl;
-> -	pte_t *ptep, pte;
-> -	long ret;
->
-> -	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
-> -	if (!ptep)
-> -		return no_page_table(vma, flags, address);
-> -	pte = ptep_get(ptep);
-> +	*pagep = NULL;
-> +
->  	if (!pte_present(pte))
-> -		goto no_page;
-> +		return 0;
->  	if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
-> -		goto no_page;
-> +		return 0;
->
->  	page = vm_normal_page(vma, address, pte);
->
->  	/*
->  	 * We only care about anon pages in can_follow_write_pte().
->  	 */
-> -	if ((flags & FOLL_WRITE) &&
-> -	    !can_follow_write_pte(pte, page, vma, flags)) {
-> -		ret = 0;
-> -		goto out;
-> -	}
-> +	if ((flags & FOLL_WRITE) && !can_follow_write_pte(pte, page, vma, flags))
-> +		return 0;
->
->  	if (unlikely(!page)) {
->  		if (flags & FOLL_DUMP) {
->  			/* Avoid special (like zero) pages in core dumps */
-> -			ret = -EFAULT;
-> -			goto out;
-> -		}
-> -
-> -		if (is_zero_pfn(pte_pfn(pte))) {
-> -			page = pte_page(pte);
-> -		} else {
-> -			ret = follow_pfn_pte(vma, address, ptep, flags);
-> -			goto out;
-> +			return -EFAULT;
->  		}
-> +		if (!is_zero_pfn(pte_pfn(pte)))
-> +			return follow_pfn_pte(vma, address, ptep, flags);
-> +		page = pte_page(pte);
->  	}
-> -	folio = page_folio(page);
->
-> -	if (!pte_write(pte) && gup_must_unshare(vma, flags, folio, page)) {
-> -		ret = -EMLINK;
-> -		goto out;
-> -	}
-> +	if (!pte_write(pte) &&
-> +	    gup_must_unshare(vma, flags, page_folio(page), page))
-> +		return -EMLINK;
->
->  	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
->  			     !PageAnonExclusive(page), page);
->
-> -	ret = gup_grab_fill_folio_pages(folio, page, 1,
-> -			pte_dirty(pte), flags, pages);
-> -	if (ret)
-> -		goto out;
-> -	ret = 1;
-> -out:
-> +	*pagep = page;
-> +	return 0;
-> +}
-> +
-> +static long follow_page_pte(struct vm_area_struct *vma,
-> +		unsigned long address, pmd_t *pmd, unsigned int flags,
-> +		struct page **pages)
-> +{
-> +	struct mm_struct *mm = vma->vm_mm;
-> +	bool need_no_page_table = false;
-> +	struct page *page;
-> +	spinlock_t *ptl;
-> +	pte_t *ptep, pte;
-> +	long ret;
-> +
-> +	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
-> +	if (!ptep)
+> -	unsigned long copy = ALIGN(maxnode-1, 64) / 8;
+> +	unsigned long copy = ALIGN(maxnode-1, BITS_PER_LONG) / 8;
 
-OK so this is what happens if there's no PMD entry. Maybe worth a comment?
-Especially if you have special handling for the PTE PTL being held below.
+I guess this would be an ABI change for 32-bit userspace asking for
+maxnum that results in an odd number of 32-bit words. The man
+page documents this as "The value specified by maxnode is always
+rounded to a multiple of sizeof(unsigned long)*8", while the
+code here has always rounded it up to a multiple of 64 in
+both native (no longer supported on 32-bit) and compat syscalls.
 
-> +		return no_page_table(vma, flags, address);
-> +	pte = ptep_get(ptep);
-> +
-> +	ret = gup_lookup_pte(vma, address, ptep, pte, flags, &page);
-> +	if (!ret && page) {
-> +		ret = gup_grab_fill_folio_pages(page_folio(page), page,
-> +						     1, pte_dirty(pte), flags, pages);
-> +		if (!ret)
-> +			ret = 1;
-> +	} else if (!ret && pte_none(pte)) {
-> +		/*
-> +		 * no_page_table() may look up the page cache, so it cannot run
-> +		 * under the PTE lock. A none PTE returns from gup_lookup_pte()
-> +		 * before any write check runs, so this is the same call the old
-> +		 * code made -- not a new failure mode for FOLL_WRITE.
-> +		 */
+numactl (1) always uses 128 or 2048 bit masks and won't notice
+it either way, so we can possibly change the ABI here and
+do what the man page says, or keep the current behavior and update
+the man page.
 
-This feels -- a little -- schloppy ;)
+It looks like the other part of the problem is the off-by-one
+error: the "ALIGN(maxnode-1, 64) / 8" rounds down maxnode=65
+to copy=8 which is the same as nbytes, but the compat_put_bitmap()
+treats it as a 65-bit map that needs 96 bytes. 
 
-Why are you referencing 'the old code' in a permanent comment for which what
-'the old code' means is super unclear?
+This means we have a related bug on native syscalls as well:
+asking for a 65 bit mask in mempolicy only returns 8 bytes
+without clearing the next word like it would for a 66 bit mask.
+If we just fix the off-by-one and keep the 64 bit alignment
+(with a manpage update), the version below be should be sufficient.
 
-That's really just not helpful.
+   Arnd
 
-'A none PTE returns from gup_lookup_pte() before any write check runs' also
-reads weirdly.
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1749,13 +1749,10 @@ static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
+ static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
+                              nodemask_t *nodes)
+ {
+-       unsigned long copy = ALIGN(maxnode-1, 64) / 8;
++       unsigned long copy = ALIGN(maxnode, 64) / 8;
+        unsigned int nbytes = BITS_TO_LONGS(nr_node_ids) * sizeof(long);
+        bool compat = in_compat_syscall();
+ 
+-       if (compat)
+-               nbytes = BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t);
+-
+        if (copy > nbytes) {
+                if (copy > PAGE_SIZE)
+                        return -EINVAL;
 
-I'm also not sure why you're sending a pte_none() PTE to gup_lookup_pte()
-anyway + checking for the error again?
-
-	if (pte_none(ptep)) {
-		... whatever ...
-		goto blah;
-	}
-
-It seems silly otherwise.
-
-
-Also isn't the page cache thing _only_ for hugetlbfs, unless you changed
-that? And aren't a number of other callers of no_page_table() also broken?
-
-But in general the comment could be made much clearer:
-
-	/*
-	 * If a hugetlb VMA it might access the page cache in no_page_table(),
-	 * which cannot be done under the PTL, so defer until it's dropped.
-	 */
-
-Or whatever, something human-written like that :)
-
-
-> +		need_no_page_table = true;
-
-This is set true but not used anywhere? This is dead code no? Am I missing
-something?
-
-Patches should be incremental but adding completely useless locals incrementally
-seems silly?
-
-> +	}
-> +
->  	pte_unmap_unlock(ptep, ptl);
->  	return ret;
-
-I'm guessing you forgot to include the code that works with
-need_no_page_table here?
-
-Should it have been:
-
-	if (!ret && need_no_page_table)
-		return no_page_table(vma, flags, address);
-
-Perhaps?
-
-I'm not sure any of this is really a cleanup, I'm finding this quite
-confusing, actually...
-
-'need_no_page_table' isn't a great name either. Maybe is_none or something?
-
-> -no_page:
-> -	pte_unmap_unlock(ptep, ptl);
-> -	if (!pte_none(pte))
-> -		return 0;
-> -	return no_page_table(vma, flags, address);
->  }
->
->  static long follow_pmd_mask(struct vm_area_struct *vma,
-> --
-> 2.56.0
->
-
---
-Cheers, Lorenzo
 
