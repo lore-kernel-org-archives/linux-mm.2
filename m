@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FA860A6F57
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E5460A6F75
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 13:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mS5UGHdM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dt25Ba+/
 Received: by kanga.kvack.org (Postfix)
-	id E26466B05C5; Tue, 17 Nov 2026 08:07:20 -0500 (EST)
+	id E9BF86B05C8; Tue, 17 Nov 2026 08:07:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD66A6B05C6; Tue, 17 Nov 2026 08:07:20 -0500 (EST)
+	id E25F36B05C9; Tue, 17 Nov 2026 08:07:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D13B96B05C7; Tue, 17 Nov 2026 08:07:20 -0500 (EST)
+	id D13A16B05CA; Tue, 17 Nov 2026 08:07:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B3A4A6B05C5
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:07:20 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4DA0C1A0435
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:07:20 +0000 (UTC)
-X-FDA: 85444637040.25.DD3AD30
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AEE9E6B05C8
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 08:07:23 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48D80160432
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:07:23 +0000 (UTC)
+X-FDA: 85444637166.01.00FB92C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A460740004
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:07:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mS5UGHdM;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9C59C140003
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:07:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dt25Ba+/";
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794920838;
-	b=jX80HUxOJ67r/o79cvrSm6IZ8eGfdH4cU12vJ2Gt63xw9vO4oyUMOJvING0z8H+iyYBghr
-	0RkYNURq71QKZUPMBjF7qnzTnHHvid0w88KSR0tmAt60UgYfSEjIEZJCzD3L7DN+grCGHh
-	Cwx7VGlPbmJ1KK25ZGzWzePNI7h8o9M=
+	t=1794920841;
+	b=wzZg8phpFWaCMOG+u0b2JKDasdXIUX+jFZ+cSDnon6BlZDtnWWscR7XHu/E65sN5jt4Z1C
+	OrCLmjImUbahg2vz+nwCu69sdXhhqK8Vc9HIeUrOjzSFvFEkynGr3chkIo17mTnmYow77H
+	UQjRlhU6CHlqnMJE9Dp3AwlaV4UQUsg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mS5UGHdM;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dt25Ba+/";
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794920838;
+	s=arc-20220608; t=1794920841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2iJKQ9g80TKCxV6YWL6c9OznHwGGtVqmigy8uKmIx1U=;
-	b=odQr3952AsIS9lxQXXN9k3zj1U7UJNZ5OSP533mN4zPj+IOB2kFgMZGZnsY800kzYGzUeD
-	ELDw+UYAg6MfrP/zVg0FJnmwdiVRjHxOdz8JdmTLlC+vbI1SyGoAu3GQ/jNE5juLpqNBR/
-	UVpSQ+GEObhlazPYhYoPMqXy+Z4ZXLg=
+	bh=DqGa1GEvMVM4CUAHQZQ4hNfpxe8V705FHjpxYKPLcQE=;
+	b=qTQ7LGUCCNc+59P5aU2VWIz6Z20TRFTV4rYapqRrclpsSHsGEgXW9jjLG7+vvqvvFK8p8v
+	EVffy75upv93gvwhSU/vn+xrIU+8AQA/OOXU7n7kYZEyt5ntTJlDcSmySvGvlgydJyxH/8
+	E9yg2e+32J6ltoMp++QAL81L2Qn5O/Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C742634B1;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3F77A6347C;
+	Tue, 17 Nov 2026 13:07:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0BE1F000C6;
 	Tue, 17 Nov 2026 13:07:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B021F000C4;
-	Tue, 17 Nov 2026 13:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794920838;
-	bh=2iJKQ9g80TKCxV6YWL6c9OznHwGGtVqmigy8uKmIx1U=;
+	s=k20260515; t=1794920841;
+	bh=DqGa1GEvMVM4CUAHQZQ4hNfpxe8V705FHjpxYKPLcQE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mS5UGHdM25I1zvDIW/JSvdij8sfG0xyBzoMKH2NmlGlELEvFwgGM04Ifz8uTl9+mv
-	 liwOuPzVlCZ/x0PFIqZUBjILwamoxTHCYk+kgMmRo/BHhbL40yM1n6ZD5z/9nVuTY+
-	 /Bal6Pt+cOHec+erubCJFcd3a+zc1EH2ueK/NOnVdNsVvn5WmCgnMWLc3gxWNvGxPJ
-	 GXyvaal7RA0oc2B8OSCvDVPGBJNfajf/7ZJPCKX9Zfexfqx58+vXik2EaSixMpw2fr
-	 i7zjsaqWFDix8W6Fmff9fcIIjQFNVY3DXTqdXHXqi7gmf8t3E4OQb3uamKmsO5Rhw4
-	 vg0eQ255Hum3w==
+	b=Dt25Ba+/d3PdJXh1Je/uB2LSw98YGFMW+Q+U4uVkA9E5Z2DHBmURph3zRvJU/T9GI
+	 ZzY1FqVTo1vZXhKm8RazcA8XSvCe7TqycChOfMER1kzKYA2ocX9AQ5+dUpBImmn8j3
+	 V+ykP7ihIjjgmJ+zgdsKJ0y3B3k6AXs/l9FDMuup1H68HpOMW1zlL3a0ZU+5VLfAiS
+	 ECat5yJQADnDFpDtXwy01MyNZNQA0hpylmEUd4eCqnVS3+s9MTgbjEX7eO9ZmmhqNO
+	 9QerUrcxmqbzqaw096lpJO1lhqH/PRWd7JTkT1nNWcOaeiMustWRobLwM334s+ZqT9
+	 l6yRLZjUPg2/g==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 17 Nov 2026 15:06:58 +0200
-Subject: [PATCH v2 06/14] s390/sclp_tty: Replace get_zeroed_page() with
- kzalloc()
+Date: Tue, 17 Nov 2026 15:06:59 +0200
+Subject: [PATCH v2 07/14] s390/sclp: Replace __get_free_page() with
+ kmalloc()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261117-s390-sclp-ready-v2-6-e518c99622c6@kernel.org>
+Message-Id: <20261117-s390-sclp-ready-v2-7-e518c99622c6@kernel.org>
 References: <20261117-s390-sclp-ready-v2-0-e518c99622c6@kernel.org>
 In-Reply-To: <20261117-s390-sclp-ready-v2-0-e518c99622c6@kernel.org>
 To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
@@ -80,18 +80,18 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org
 X-Mailer: b4 0.16.1-dev
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A460740004
-X-Stat-Signature: 8q3gbq1njsgz4ymnrcx41jgyo1zp9uus
+X-Stat-Signature: st68ephtp8tzzuy4i3ko6j6c3cagiifk
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794920838-880076
-X-HE-Meta: U2FsdGVkX19YZgPQeUeceXrsqAfuKthF6SRzTT5bgAGVOXS+PIU6XLPp2nSV2UV4SVTequ4+PdBtiGixFiKJnsIycsmqZQ1WMvpaFCPY7tAUFPHYLb0/ub8oCUxQy2y9CX0OkjaPjgDcDUWzh4XCjO20FQs4C+y0WJTh0vXLZmps/87bcDDsQyEWZHOZoGqzqgYYeDQ7nZurMI5gq6QMogW8ar8pegyazjckDHjIq40Px817WB/oGPf6SEcewjfC/lg0D0iAS7++aJAmRIrPqCGLnkZkw8Eiu3wH4W1T35AeuNDqowYnqSD4klQFK4ReZm9iDZlr6a5DPZMyjBTaWzmaKcTfMUSZOtKm83zap6oZtnwmb4zvlE6rj0y1bBJ/sFv9MUxlX0zFchjGpu7KQY7JfqT30B/oNhu4EMg5CGG0TUSuajvft6cLwe0Zva0KX+v36q9CTtPSlJxCqlnbSFIgsHrSzTmXw0Z5RO0RdW5fweNyh7zZwyH3TsO/dFZtvguQ/Jxb6jUm0/AtfqboFhIR0OTA5KhgfyR4y0JVbnGaZywMH79rFg2DfgXL+A0pkcPNX2tGHQdYuflom/yMPtrf7mGE8uHnhCaYN0phyABEidCqOFKl4eVmoSuHc86K/gQe+LIUfLaD910D4rJ6TctrBhnWCfKW7NAMvMqj0qHPfTFD37bjHhjnBCI1xSIYqHI3+xUTUnaXVnb4JVcFrLi0XF7vtLmWvJGQcvhSROwH/fQ1OwmqaqILL1+8R/Rd0O57ahmjTE4AfbhKHWF85Ko1btC19jAHoHIr9M1kI2kOQRfJ7rLupoVpj7PLGDCaMXiRXLbHXqmYyX6uAk50NviGHdB2g5wgNReG0FCZ7TISxT/JZAf1GnIjiPojyBknxoLdYcgpRBHb05xb2JNM6JEHv/I2B38gmo1o8z2G9VrnMYJMm0N6sxa+3lvhY6SZv8si3Xng9MtR/UedIeF
- OLCHLyTM
- k+HK0oVoZVld4k4clmkATT+XEGZoHH7dQrW5hAp3OhXQorMjCbWHFsoDhWNd6DowdTmbjRMh+SgDKbzaKF7BaTv3Rm6F+AR74QZlcvxGV59uNMTaHw4gYpF5ziCqhv3EC+yMn+mCBCSY9zSTvP+3UaXj0xeAO2nWwE7fI6OMXTtkuc7b8xD9PCxSRu3CI+hhiaQmtqlZihiVgA0BNYMC1X447Jlj+PM9yhoItY8nPzxnrNCR9/GcGnm//MJZCi/SysspEKw5AcqdA/DDIunSpX29nfIiy/YIg6ic2YysgpzdNJuyNCIAcA4EAX3b1wipb6gst2CuPW7+eSQmIFwIe4oYFuA==
+X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9C59C140003
+X-HE-Tag: 1794920841-84794
+X-HE-Meta: U2FsdGVkX18avaFu8rYXPRtFsp+APadiVUNK9WcrHW7wFSMZ/95hKEqmtu2mxDIiDKBKZWVB2QDgRiGPe+CpPMiI+ZSboBM4o6fCHdAnQ2P5P0k1JjUBYIHia4jrFm6VXACNfcm/u/Z80idfw3ypMFVOLc4kttbz6NderfU0Hnrdk0jKEUAGGte6vpqeNvENbrebMR1N/RD0e+I4Mr3AZ5EtnQ2nXjiMavnJacILCHPm+C2bcf2HugbxvYczIho3DXj5hA57onuyivq6BCzHnV6+r6oHpkdK6x0X80fmrjEJ1GcQu43fjIpNtmJJFOXl2WShb7PNz6bg0sdMdC6pGCaZvIOknroWHiDkl/x8Oc22hOfxyzQpbjjFGay45yd3LWQLZtxqhOa8mrhJeH701oZwgHnVSR02HKNdnXfp7GcTl8etT1HmEpjr+4jyf85J6O0JyDY8lahEcGyi+UKhG8w59ezjGXLPwpekmtYFxRxgTn1+La72lkEDFcjCbHiNmICI6t89h6OjX7bcHD7pCCHxRr1aZ/cIHQSBfDVLljNZMRLFjIlHotZ4PMKHi9ztito59Z5K+P42lGd4LnEDlbl2wo/3PFr3oXq3wUWimQqzmwlKR+nPbsc4M+R6x2ZopkY6XigC5+vxutT1ZPKaXth+RTaO7sHlWerNZeweLIrGX2JymnM7p8+4pfBX2o6chmc8c5A7c/2rzRhGakOf9NBy+sLhq+ICL1Vcz2Q6xxlAcdEz/lFOv8xKbRKVU0YIw9L3GdMsH7TwrLPbcot4cQQdhwfrclD9v1DMBxIgOUXE2VQvgZ6AiCs9W+QqmghuKFVAmdq3xoKxOTN/Z0q6pbE9dem4PnDVTaPwstdfr/rIt+YJMV90Q3mSrAhqnUDGbNZRMJTP6ZBdulBdDhkKLyQN4BrFYGFkAGNuqvlE8orOMVSlnsRsq2v+TXzPaHvZ4tq3DyGuTngV3/LXMZv
+ XGtU/px5
+ cvBKwBSFfCAVJZqyhkpC3/gcWOTz2lBqg5UTPOfm7fiy8U+ythay0PXhA3/9ZK8o1aqOiGDjtiGWx8PII+WQ04ZdPYXxlO/8paKbVxYxR4Q8SjWs2qhLQuz4xraxrpJVFtvgdUlcnEIZ95r51/UrDUMxAGoJMns0BjTdhdeXfkkp2k6rpC90O8XAsRLfpJ7PycWKnT/vVsctmA80emU5XsYHypV8zHEFfKIFwvSnWdyu3/sNjMbDOpbTi2sqyKzMJcbCgmIabpbzveLv2skHNPFDMpyIEr9OwZ3tpvm1BXWxezaP1gFrjZW6EZ3L5g35asXVBPHetVz141rxl3kVIYfJxqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,8 +100,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-sclp_tty_init() allocates the SCCBs that are used as the output buffers
-of the SCLP line mode terminal.
+sclp_init() allocates the SCCBs used for reading SCLP events and for
+the SCLP init mask request.
 
 These buffers can be allocated with kmalloc() as there's nothing special
 about them to go directly to the page allocator.
@@ -116,46 +116,50 @@ fast path allocations.
 For the slow path the performance is anyway determined by the amount of
 reclaim involved rather than by what allocator is used.
 
-Replace use of get_zeroed_page() with kzalloc() and free_page() with
+Replace use of __get_free_page() with kmalloc() and free_page() with
 kfree().
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/s390/char/sclp_tty.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/s390/char/sclp.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
-index 0a92d08830e7..e36739bd2732 100644
---- a/drivers/s390/char/sclp_tty.c
-+++ b/drivers/s390/char/sclp_tty.c
-@@ -9,6 +9,7 @@
-  */
- 
- #include <linux/kmod.h>
+diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
+index 98e334724a62..bfbac6dfa053 100644
+--- a/drivers/s390/char/sclp.c
++++ b/drivers/s390/char/sclp.c
+@@ -20,6 +20,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
 +#include <linux/slab.h>
- #include <linux/tty.h>
- #include <linux/tty_driver.h>
- #include <linux/tty_flip.h>
-@@ -497,7 +498,7 @@ static void __init __sclp_tty_free_pages(void)
- 
- 	list_for_each_safe(page, p, &sclp_tty_pages) {
- 		list_del(page);
--		free_page((unsigned long)page);
-+		kfree(page);
- 	}
- }
- 
-@@ -525,7 +526,7 @@ sclp_tty_init(void)
- 	}
- 	/* Allocate pages for output buffering */
- 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
--		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+		page = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
- 		if (page == NULL) {
- 			__sclp_tty_free_pages();
- 			tty_driver_kref_put(driver);
+ #include <asm/types.h>
+ #include <asm/irq.h>
+ #include <asm/debug.h>
+@@ -1268,8 +1269,8 @@ int sclp_init(void)
+ 	if (sclp_init_state != sclp_init_state_uninitialized)
+ 		goto fail_unlock;
+ 	sclp_init_state = sclp_init_state_initializing;
+-	sclp_read_sccb = (void *) __get_free_page(GFP_ATOMIC | GFP_DMA);
+-	sclp_init_sccb = (void *) __get_free_page(GFP_ATOMIC | GFP_DMA);
++	sclp_read_sccb = kmalloc(PAGE_SIZE, GFP_ATOMIC | GFP_DMA);
++	sclp_init_sccb = kmalloc(PAGE_SIZE, GFP_ATOMIC | GFP_DMA);
+ 	BUG_ON(!sclp_read_sccb || !sclp_init_sccb);
+ 	/* Set up variables */
+ 	list_add(&sclp_state_change_event.list, &sclp_reg_list);
+@@ -1302,8 +1303,8 @@ int sclp_init(void)
+ fail_init_state_uninitialized:
+ 	list_del(&sclp_state_change_event.list);
+ 	sclp_init_state = sclp_init_state_uninitialized;
+-	free_page((unsigned long) sclp_read_sccb);
+-	free_page((unsigned long) sclp_init_sccb);
++	kfree(sclp_read_sccb);
++	kfree(sclp_init_sccb);
+ fail_unlock:
+ 	spin_unlock_irqrestore(&sclp_lock, flags);
+ 	return rc;
 
 -- 
 2.53.0
