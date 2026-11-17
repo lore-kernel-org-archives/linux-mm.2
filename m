@@ -1,63 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C7A606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 16:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FF7606A883
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 16:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=Vaijihsd
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=NG2k+6pH
 Received: by kanga.kvack.org (Postfix)
-	id 965296B05C1; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
+	id B12FB6B05C5; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 915C06B05C4; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
+	id AEC7E6B05C6; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B5566B05C7; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
+	id 98A956B05C7; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A6816B05C1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 69A206B05C5
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 11:17:27 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1B6E31604E6
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E68D4A04D0
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:17:26 +0000 (UTC)
-X-FDA: 85445116092.05.C65C6B9
+X-FDA: 85445116092.25.4361C6E
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7FA4F8000E
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:17:24 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=Vaijihsd;
-	spf=pass (imf02.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5F123100012
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:17:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=NG2k+6pH;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf14.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794932244;
+	s=arc-20220608; t=1794932245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+eRx1E6OH5BWB9d5HcLPoxdra5i7n/GKknl+XwKvzvo=;
-	b=6uZ2c5tGocYyhPS1PW8u44E1OiJbaSkAdoBwVropbuSAuWTiowbZSa6PenyVsVJs/ozmAh
-	/mnU2wWkUz5TXtCrcURko5gWlocudz/nfvNwZdr5MgjlMhvJvSDmMkJfaszQtr24xtigU3
-	ctv37c2/qVoB8LQkmQxslFH314Ho1pA=
+	bh=KBBX73vanCN3RJV6WAoz27bue4rtrM6PSqgvAc6MDVc=;
+	b=CskbKeB6SJMgIh693F+r3V7sozbnnJwQCltl+ARyqs8du30jZfzlvDol6Aoes5FyvAB+mr
+	t1r5bnGCvLEedoOFG+qF4xHSFHQND4nYU4oDTaxK7OrhS4/LML4XzFvDblrIkruE4v3oc5
+	diKvmPbaLYewR6e+fq5wEjGG+IyMZoo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794932244;
-	b=p4L0ZVZdA/MJ9TiRt+qcf1gqysUBoK6BPxUnWuKenLmX5YCxvbzcqEb34+R1fajjLhsDTH
-	1ufUkmAVMNdx8XY8d4ezjGtCnUEetAxxzadXEZQjd+LFvr7gBZVfwDE0te2ZelGKuEkx4H
-	wWDVUt8c4ar0Rt8pvOSK4IDChAe+NB0=
+	t=1794932245;
+	b=S9tre/gEHSwUVpQkFH67e44DjyaliqMht2DQoKOYatJq/mlIpgtCCI+/pt3+2XjpBJ1RhM
+	RexZuvocoT92RIzKzT0vrQLhTL3n1EzwOlktrt5uylP3W3Dsi5ihT3IcmOJsdWPhX4YNvN
+	rogX4ExLkrmxGjDqSZrLq++2Vc6Jw6I=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=Vaijihsd;
-	spf=pass (imf02.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=NG2k+6pH;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf14.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1794932242;
-	bh=+eRx1E6OH5BWB9d5HcLPoxdra5i7n/GKknl+XwKvzvo=;
+	s=smtpout1; t=1794932243;
+	bh=KBBX73vanCN3RJV6WAoz27bue4rtrM6PSqgvAc6MDVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VaijihsdwJaRa3EvSnvIUEnozhcyghOQX54nWMDjeOq21qx5YlTxvH7DuenVqGtMc
-	 wHBqvaw3a9PNAv1zyJatMiqCvhf2hilK/B9dlbZyWYqgnN7orv7Kl0fBfhM4xIJJHc
-	 hhdp/r8ArlKocaYxtSTNZn30uyVXVz+7FSrUz5L2YQORjKsHXHKWj6g4Tg8379VDsR
-	 wW16RNsgg52yVWkNHPQvtfYrn4G7C5OIx+LQPa6rxFk1PmqZXiB8Nlwpq5VEFmbaTG
-	 u3cniGwtTk2Uao2D8vU0ydFmfekv3KXo4SZ59j3F9QlybLCfGec+bGD112FUmvX3yC
-	 4ArXra86KkKcQ==
+	b=NG2k+6pHGLmiJ1pROyhiRO9WtCXmNEspfqVYKoAs261FAXvbWSi4VCeVJuEmdUBAy
+	 TG4PUt02A/nI8SQ8wJ0CVc7vNApcGNlUuvKAJAhBpjJCd754C6IbyWzpoD7/swECRa
+	 nxhQi+wEiL8VC7dwuds1SLH/JdM30G2B+ShtwJL/4g+HVtME2yoUFd0bkuWfm7dqD3
+	 7OfkMuRPZoMdTmucTQwCtTvsd6xheq1sLRrrPbFGdNDPgvwO81pyDrvm9gtVXiWN53
+	 HU12V14+HItceAh8TZv0/1k1bZCZs2s1N6Adp/iNzC92pODB96DOKCLcsR2NCKS7Cq
+	 FEzsGNbePradg==
 Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jTVHk5bqrzRmt;
-	Tue, 17 Nov 2026 11:17:22 -0500 (EST)
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jTVHl593zzRZZ;
+	Tue, 17 Nov 2026 11:17:23 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: tglx@kernel.org,
 	peterz@infradead.org
@@ -86,27 +86,27 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH 08/17] selftests/rseq: Test the concurrency ID after the last user fails execve
-Date: Tue, 17 Nov 2026 11:17:08 -0500
-Message-Id: <5c5ce3c68394929160f30955037c0ba642a66d34.1794932121.git.mathieu.desnoyers@efficios.com>
+Subject: [PATCH 14/17] selftests/rseq: Test the concurrency IDs after the affinity is widened
+Date: Tue, 17 Nov 2026 11:17:14 -0500
+Message-Id: <05781fc46cb63b548588e58b356ab08b10619aac.1794932121.git.mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1794932121.git.mathieu.desnoyers@efficios.com>
 References: <cover.1794932121.git.mathieu.desnoyers@efficios.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7FA4F8000E
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5F123100012
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 613nk5wwspy96zyihkimu7baz5iw3rhs
-X-HE-Tag: 1794932244-715729
-X-HE-Meta: U2FsdGVkX19QxldoolFpIDjkPv76y6fYG44aB45VBWRmeb0F9l1A3qjlTb+AffLVWMh9GOjv9NOItjrwQDBsLI1KZIlTEgd04S+rUiD66QaPSTAkqh910rt4ScIw8ApLKZ66bgfBr34Aqe9nsDu+lcR85Ki9wLZbIpF4dNT0GBMsNCtzdsfR5uzPtsYXguabmKYIpyiRNaIcYL8XvGCqScylsNd4Phr5Ax9OR/OMS0GblQc9MOAEsEY51pRSGSqwEZC07WxTxl2bhUxcHtISjEaLGXK7DqWFGiLmHKePETp+0slH+bhAlNoZo3BQ0Da+ScpNRnXlPItjGAMIz1rtzHmLnRzD/Z4s+NHI5TSyoAoR4Ez6QQRfpoJgqzbvgpMQPBCLh0xteqQmTK9sGC3C3iCXUlS/dDnICBSOo3vlRQUB4vI02+XgTP9YbqxV2EELGnzGs1L9v7TaxUqC6yOM7YPKnbfDqRPl3TR4QToSUg8UkGQZ8Mgl4/Ps5YvHnVfEkYG5xKagBvDRu7Brr1691hBZsPrd0BtYVZrM2RjQZUqPPalvElvrWlp5YwvEoCm6TncZEA1HE8tmpB0zorD2nkRJI6JW52qDqgD1Wx3RxPqcTr/iRa4vs6PXHxsMXBpXOGcyQsoeEHVtSpaI9NToEQK59rof42TC1TVCyCK/7DkdfRIDg/QvNmE20ve3v+j5UzdZkuox/6NQGY50F+8ppXpy3GEDxhsuJQswuwapydgMzJI+EmCOJnjJxT1yOxZOj/Ci/OiupAFVTeN9mP9S+45levwZqQ4bwg3jzOda5k8ebmpKxCp6SdI4tzbzKtwqqqhDKBfFdtBKSJ5x8w/v/aTRIhtflxa4PgAtIJlBGQF95zSPEPxyHYTxQ0yNKp5NGcTNyZ0AQhlApEgiSz+FKMqZdPl7y3EfLJd7FJrz+bPUA81pDr6G38yMWnPgSlArjak743YKu/eo3SaKY38
- E9DIDo3M
- 6roXSOMpOZBYvFJwF3qJrnVnZ8/mRg2Myl0Dl86cF+FdEwqH70sNpOeyjctjslJcuaArmXHwLhxmK6W1t11eOweMVOX22FtX4F8zj/KnxHIyYsfDJKUreGMPepP9TeOTW44JFS7SWr38Zq2ivstxxmxM3Vodw5PPneHkq7fmU57p/zsfcYkUxcmt3zT8YxyL04ioY7GLUjG4f1YNgfEWdMabDVAJL8J8VQ3jrL77vXFxtQWV6COXwZZ2euSiM+D4kUjzcdGFamAP54YyjnCuDizrTPRY53oV6Pv9lr80E+O2jKc06pCLZuOAtiw==
+X-Stat-Signature: 9xiuiq4ywefpukn838x51f34x6wa7wu9
+X-Rspam-User: 
+X-HE-Tag: 1794932245-135029
+X-HE-Meta: U2FsdGVkX1/O6AGlAApno67GmZxzv7WLxEWnGTI2jmLs6vu7Nsp2G/fR9vUqLy/IiS+/xIpHFnxorsG5FZf3QP1qa6h4PGXrGbS0CsFxWfu5G5QOl6uDk2UCDmAdLQpPKntVc9XvcwS/wiKF5ttuZkE6bhRMfl6VmMCPuP01awUniV13bnIsyATfZb0IQLHx5sVfC6bONfKENrSNL1wpeHR20tnQ0jacnK9JsaP1gCwGOejKKszT65SU7iDTrbydwFzmuR4kW50NcXr2UFD3SWhEKrXcQgzG9e3Dk8YTR5VfCSID3pjJBV7COxu4WGhvXGBNOppUf5DJ1stEUC9RH3ZLfVExQDekUQrd7ilTTOoNQLe1Wixsz+iGPsNCRb98/OTSkCZ9+LwnX3gUXMAdg+e/Mj1jyjBOERsezF5dyWAgGDNtWGwEpCuAj5k+LSla5eY7CZMs/JuFV1ceUZ8Ci/HaodPs1aH8twOIHt91sQAC4Ut8ZnBYtxDASUj9rR1ajY6OkgjR1eHBkPaLo9Qlo7/DGT4RTIa+96cX0O9cNXjFEcMH8320e1lhD4PItrSbDhjdQUeZzp8CnkqgEMLnW2MSD7BsYn1Iie4fRyOVTXHIql+UNCO5fGfKFrrZgDuhouYFR5Cv9ZNA174elSj/fry7vXN94DSIvce0rItzf9Uw/IHpnOOoU5zuafjywwjFNlyRexaZL67186QJ9GeL3muFOiiORFgtKBt0ibJ3aQskz95HC9GMGZbSZO9bLCKs+tUjs94k8GJGKnNFfkAViBo/e4Bn8KSyq5+vSbBFbua5HMRmXa9jzsIPyVd7cBRbj9c/cPCyrAt6JVpe+vBJhI+lmzk9CoCLVusk7v6+io87IM0GV3MYtegC5KsidLCE7QmVK4QTZP+EW42sOBAeoIAcdeQWwti1wUVOV+IufRL81wrifC1GG7EZde/p56+56DAtr5r4k/YFd0DUigM
+ e/Q0LJPG
+ qCmxv7Bqk2DCOG3BEnDT2rDPw/nosj1LQ033xZ16vS6KhmxNVrsw1OFD/jH/px7P9gJsxBG99gQEHp95efsNwzgeXIQzhp2iRmxkgsoeCNtGR+ErgInmxXFfTq17Uvc9lePIXiDmerLujBdDPeSVJHYio4hNiWQT9vlSLMf13wzT5VMyQHeh5Q34FMJ5sHVlXC8qrSjyzns59DiND60ZYzPqeiewgIDIcH9tP4Nr7QVLHI1VDHb6vltFB5zyzVIZdqdf6i++5YwBu8R4X8BiV+xY0djxOvU0kb4t7VZyhenMOYd9MKbSVLuf8GQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,335 +115,170 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A failed execve() leaves the mm and rejoins it. When the caller is the
-only thread left, it leaves as the last user and rejoins as the first
-one. The kernel must not keep state of the previous users across that.
+When the allowed CPUs of an mm grow, the kernel can give the
+concurrency IDs back to the tasks. Commit 7dbc307b6c72 ("sched/mmcid:
+Fix affinity-triggered switch back to per-task mode") fixed a threshold
+that kept the CPUs as owners. No test shows it: the tests that widen
+the affinity only check that the IDs are unique and in range.
 
-Add a case to mm_cid_execve_test. Four threads make the mm switch to per
-CPU mode on two CPUs, then exit. The remaining thread fails execve() in
-a loop on one CPU while a helper process moves it to the other CPU. It
-then visits both CPUs and must read mm_cid 0 on each.
+Add a case to mm_cid_bound_test. Three threads start on two CPUs, so
+the CPUs own the IDs. The threads are then allowed on all CPUs and
+visit each of them. The kernel aims at an mm_cid below 3 for them. That
+is a target, not a bound. The case prints when the target is missed. It
+fails only when an mm_cid is not below the possible CPUs. The case needs
+8 CPUs: with fewer, the kernel keeps the CPUs as owners.
 
-The move has to land inside an execve(), so the case runs 50 times with
-a different delay each time.
+The target is met on guests with 8, 16 and 64 CPUs:
 
-With two allowed CPUs, the kernel keeps per CPU mode down to one thread
-only on a machine with two or three possible CPUs. Elsewhere the single
-thread reads mm_cid 0 on both CPUs before the execve(), and the case is
-skipped.
+  3 threads widened to 64 CPUs: largest mm_cid 2 on CPU 63
 
-Without "sched/mmcid: Reset stale state when the first user joins an
-mm", on guests with two and three CPUs (six runs out of six):
+A v7.1.8 kernel with 384 CPUs, which does not have the commit above,
+misses it:
 
-  single thread, mm_cid 1 on CPU 0 after a failed execve moved from CPU 0 to CPU 1
-  not ok 2 mm_cid of a single thread after a failed execve on another CPU
-
-With it (six runs out of six):
-
-  ok 2 mm_cid of a single thread after a failed execve on another CPU
+  3 threads widened to 384 CPUs: largest mm_cid 383 on CPU 383, above the thread count target
 
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 ---
- .../selftests/rseq/mm_cid_execve_test.c       | 236 +++++++++++++++---
- 1 file changed, 208 insertions(+), 28 deletions(-)
+ .../selftests/rseq/mm_cid_bound_test.c        | 88 ++++++++++++++++++-
+ 1 file changed, 87 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/rseq/mm_cid_execve_test.c b/tools/testing/selftests/rseq/mm_cid_execve_test.c
-index 3d8b9365ce91..baf06af574bd 100644
---- a/tools/testing/selftests/rseq/mm_cid_execve_test.c
-+++ b/tools/testing/selftests/rseq/mm_cid_execve_test.c
-@@ -8,6 +8,15 @@
-  * running and the other threads are still users. The task returns to user
-  * space before any schedule in, so the join has to give it a CID.
-  *
-+ * A second case covers the last user. A process that is back to a single
-+ * thread fails execve(2) while another process moves it to another CPU.
-+ * It leaves its mm as the last user on one CPU and rejoins it as the first
-+ * user on the other. A single thread must read 0 afterwards. That case
-+ * needs per CPU mode to last down to one thread. With the two allowed CPUs
-+ * of the test, the kernel only does that with at most three possible
-+ * CPUs. The case is skipped when a single thread reads 0 on both CPUs
-+ * before the execve(2).
+diff --git a/tools/testing/selftests/rseq/mm_cid_bound_test.c b/tools/testing/selftests/rseq/mm_cid_bound_test.c
+index 11332b9ff24b..a751d8929138 100644
+--- a/tools/testing/selftests/rseq/mm_cid_bound_test.c
++++ b/tools/testing/selftests/rseq/mm_cid_bound_test.c
+@@ -28,6 +28,11 @@
+  * The number of IDs follows the union of the allowed CPUs of the threads,
+  * which only grows. The affinity is therefore narrowed before the fork(2)
+  * that creates the process under test.
 + *
-  * Per CPU mode needs more threads than the mm has CIDs. The number of CIDs
-  * follows the union of the allowed CPUs of the threads, which only grows.
-  * The affinity is therefore narrowed before the fork(2) that creates the
-@@ -19,6 +28,7 @@
- #include <limits.h>
- #include <pthread.h>
- #include <sched.h>
-+#include <signal.h>
- #include <stdbool.h>
- #include <stdio.h>
- #include <stdlib.h>
-@@ -33,6 +43,8 @@
- #define NARROW_CPUS	2
- #define THREADS		4
- #define ROUNDS		100
-+#define ATTEMPTS	50
-+#define MOVE_EXECS	300
++ * A last case widens the affinity. Three threads start on two CPUs, so the
++ * CPUs own the IDs. The threads are then allowed on all CPUs. The kernel
++ * aims at giving the IDs back to the tasks, so that three threads read an
++ * mm_cid below 3. That is a target too: the case prints when it is missed.
+  */
  
- /* Exit status of the process under test. */
- #define CHILD_PASS	0
-@@ -204,6 +216,147 @@ static int run_child(void)
+ #define _GNU_SOURCE
+@@ -46,6 +51,9 @@
+ 
+ #define MAX_THREADS	1024
+ #define MAX_STEPS	64
++#define WIDEN_THREADS	3
++#define WIDEN_MIN_CPUS	8
++#define WIDEN_SETTLE_US	20000
+ 
+ /*
+  * Exit status of the process under test: a mask of the bound and of the
+@@ -67,6 +75,7 @@ struct worker {
+ static struct worker workers[MAX_THREADS];
+ static unsigned int epoch;
+ static cpu_set_t allowed;
++static cpu_set_t all_cpus;
+ static int nr_allowed;
+ static int nr_possible;
+ 
+@@ -228,6 +237,49 @@ static int run_child(const int *steps, int nr_steps)
  	return ret;
  }
  
-+/* Run on @cpu and return the mm_cid read there. */
-+static unsigned int cid_on_cpu(int cpu)
-+{
-+	cpu_set_t one;
-+
-+	CPU_ZERO(&one);
-+	CPU_SET(cpu, &one);
-+	if (sched_setaffinity(0, sizeof(one), &one))
-+		return UINT_MAX;
-+	return rseq_current_mm_cid();
-+}
-+
 +/*
-+ * The second process under test. Its threads make the mm switch to per
-+ * CPU mode and exit. The last thread then fails execve(2) in a loop on the
-+ * CPU @from. A helper process moves it to the CPU @to, @delay_us after the
-+ * start of the loop. The thread then visits both CPUs and must read 0 on
-+ * each.
-+ * Return a CHILD_* status.
++ * The process under test of the widening case. It starts on two CPUs.
++ * Return a mask of the OVER_* values.
 + */
-+static int run_child_moved(int delay_us)
++static int run_child_widen(void)
 +{
-+	pthread_t thread[THREADS];
-+	char path[PATH_MAX];
-+	int cpus[NARROW_CPUS], nr = 0, cpu, i, started = 0, ret = CHILD_PASS;
-+	int from, to, go[2], status;
-+	unsigned int cid0, cid1;
-+	cpu_set_t mask, one;
-+	pid_t helper, self = getpid();
-+	char c = 0;
++	int nr_workers = 0, ret = 0, cpu, err;
++	unsigned int cid;
 +
-+	if (sched_getaffinity(0, sizeof(mask), &mask))
++	if (sched_getaffinity(0, sizeof(allowed), &allowed))
 +		return CHILD_ERROR;
-+	for (cpu = 0; cpu < CPU_SETSIZE && nr < NARROW_CPUS; cpu++) {
-+		if (CPU_ISSET(cpu, &mask))
-+			cpus[nr++] = cpu;
-+	}
-+	if (nr < NARROW_CPUS) {
-+		fprintf(stderr, "fewer than %d allowed CPUs\n", NARROW_CPUS);
-+		return CHILD_SKIP;
-+	}
-+	if (make_unknown_format_file(path, sizeof(path))) {
-+		fprintf(stderr, "no directory to run an unknown format file from\n");
-+		return CHILD_SKIP;
-+	}
++	nr_allowed = CPU_COUNT(&allowed);
 +
-+	for (i = 0; i < THREADS; i++) {
-+		if (pthread_create(&thread[i], NULL, waiter, NULL))
-+			break;
-+		started++;
-+	}
-+	/* Run on both CPUs while the threads exist: each CPU takes a CID. */
-+	for (i = 0; i < 2 * NARROW_CPUS; i++)
-+		cid_on_cpu(cpus[i % NARROW_CPUS]);
-+	RSEQ_WRITE_ONCE(stop, 1);
-+	for (i = 0; i < started; i++) {
-+		if (join_thread(thread[i]))
-+			ret = CHILD_ERROR;
-+	}
-+	if (ret != CHILD_PASS || started < THREADS) {
-+		ret = CHILD_ERROR;
-+		goto out;
-+	}
++	err = set_workers(&nr_workers, WIDEN_THREADS - 1);
++	if (err)
++		return CHILD_ERROR;
++	measure(nr_workers, &cpu);
++	cid = measure(nr_workers, &cpu);
++	ksft_print_msg("%4d threads on %d CPUs: largest mm_cid %u on CPU %d\n",
++		       WIDEN_THREADS, nr_allowed, cid, cpu);
 +
-+	cid0 = cid_on_cpu(cpus[0]);
-+	cid1 = cid_on_cpu(cpus[1]);
-+	if (cid0 == UINT_MAX || cid1 == UINT_MAX) {
-+		ret = CHILD_ERROR;
-+		goto out;
-+	}
-+	/* The CPUs own the CIDs only if one of them reads above 0. */
-+	if (!cid0 && !cid1) {
-+		fprintf(stderr, "the mm is not in per CPU mode with a single thread\n");
-+		ret = CHILD_SKIP;
-+		goto out;
-+	}
-+	/* Leave from the CPU that does not hold CID 0, rejoin on the other. */
-+	from = cid0 ? cpus[0] : cpus[1];
-+	to = from == cpus[0] ? cpus[1] : cpus[0];
-+	cid_on_cpu(from);
-+
-+	if (pipe(go)) {
-+		ret = CHILD_ERROR;
-+		goto out;
-+	}
-+	helper = fork();
-+	if (helper < 0) {
-+		close(go[0]);
-+		close(go[1]);
-+		ret = CHILD_ERROR;
-+		goto out;
-+	}
-+	if (!helper) {
-+		/* Run beside the process under test, not on its CPU. */
-+		CPU_ZERO(&one);
-+		CPU_SET(to, &one);
-+		if (sched_setaffinity(0, sizeof(one), &one) || read(go[0], &c, 1) != 1)
-+			_exit(1);
-+		usleep(delay_us);
-+		_exit(!!sched_setaffinity(self, sizeof(one), &one));
-+	}
-+	if (write(go[1], &c, 1) != 1) {
-+		/* The helper waits for that byte. */
-+		kill(helper, SIGKILL);
-+		ret = CHILD_ERROR;
-+	}
-+	for (i = 0; i < MOVE_EXECS; i++) {
-+		char *const av[] = { path, NULL };
-+
-+		if (execve(path, av, NULL) == -1 && errno != ENOEXEC) {
-+			fprintf(stderr, "execve(%s): %s, expected ENOEXEC\n",
-+				path, strerror(errno));
-+			ret = CHILD_ERROR;
-+			break;
-+		}
-+	}
-+	if (waitpid(helper, &status, 0) != helper || !WIFEXITED(status) ||
-+	    WEXITSTATUS(status))
-+		ret = CHILD_ERROR;
-+	close(go[0]);
-+	close(go[1]);
-+
-+	/* The first visit lets the kernel settle, the second one is judged. */
-+	for (i = 0; i < 2 * NARROW_CPUS && ret == CHILD_PASS; i++) {
-+		unsigned int cid = cid_on_cpu(cpus[i % NARROW_CPUS]);
-+
-+		if (cid == UINT_MAX) {
-+			ret = CHILD_ERROR;
-+		} else if (i >= NARROW_CPUS && cid) {
-+			fprintf(stderr,
-+				"single thread, mm_cid %u on CPU %d after a failed execve moved from CPU %d to CPU %d\n",
-+				cid, cpus[i % NARROW_CPUS], from, to);
-+			ret = CHILD_FAIL;
-+		}
-+	}
-+out:
-+	if (remove_file(path) && ret == CHILD_PASS)
-+		ret = CHILD_ERROR;
++	/* Each thread widens its own affinity at the end of its next tour. */
++	allowed = all_cpus;
++	nr_allowed = CPU_COUNT(&allowed);
++	if (sched_setaffinity(0, sizeof(allowed), &allowed))
++		ret |= CHILD_ERROR;
++	measure(nr_workers, &cpu);
++	/* The kernel changes the owners of the IDs from a work item. */
++	usleep(WIDEN_SETTLE_US);
++	measure(nr_workers, &cpu);
++	cid = measure(nr_workers, &cpu);
++	if (cid >= (unsigned int)nr_possible)
++		ret |= OVER_POSSIBLE;
++	if (cid >= WIDEN_THREADS)
++		ret |= OVER_STRICT;
++	ksft_print_msg("%4d threads widened to %d CPUs: largest mm_cid %u on CPU %d%s\n",
++		       WIDEN_THREADS, nr_allowed, cid, cpu,
++		       ret & OVER_STRICT ? ", above the thread count target" : "");
++	if (set_workers(&nr_workers, 0))
++		ret |= CHILD_ERROR;
 +	return ret;
 +}
 +
  /* Keep the first @nr CPUs of @src in @dst. */
  static int narrow_cpus(cpu_set_t *dst, const cpu_set_t *src, int nr)
  {
-@@ -219,58 +372,85 @@ static int narrow_cpus(cpu_set_t *dst, const cpu_set_t *src, int nr)
- 	return taken;
+@@ -326,13 +378,46 @@ static void test_ramp(const cpu_set_t *all, int cpus, const char *name)
+ 			 "%s: below the possible CPUs\n", name);
  }
  
--int main(void)
-+/*
-+ * Run @fn(@arg) in a new process and return its exit status. The affinity
-+ * is @narrow when its mm is created. The union of allowed CPUs of an mm
-+ * starts there and only grows.
-+ */
-+static int run_under_test(int (*fn)(int), int arg, const cpu_set_t *narrow,
-+			  const cpu_set_t *allowed)
- {
--	cpu_set_t allowed, narrow;
- 	int status = 0;
- 	pid_t child;
- 
--	ksft_print_header();
--	ksft_set_plan(1);
--
--	if (!rseq_available())
--		ksft_exit_skip("rseq is unavailable\n");
--	/* glibc before 2.35 registers no rseq area. */
--	if (rseq_register_current_thread())
--		ksft_exit_fail_msg("rseq_register_current_thread: %s\n", strerror(errno));
--	if (!rseq_mm_cid_available())
--		ksft_exit_skip("the rseq mm_cid field is unavailable\n");
--	if (sched_getaffinity(0, sizeof(allowed), &allowed))
--		ksft_exit_fail_msg("sched_getaffinity: %s\n", strerror(errno));
--	if (!narrow_cpus(&narrow, &allowed, NARROW_CPUS))
--		ksft_exit_skip("no CPU to run on\n");
--
--	/*
--	 * Narrow before the fork(2). The mm of the child starts with these
--	 * allowed CPUs, and a later narrowing does not shrink them.
--	 */
--	if (sched_setaffinity(0, sizeof(narrow), &narrow))
-+	if (sched_setaffinity(0, sizeof(*narrow), narrow))
- 		ksft_exit_skip("sched_setaffinity: %s\n", strerror(errno));
- 	child = fork();
- 	if (!child)
--		_exit(run_child());
-+		_exit(fn(arg));
- 	if (child < 0)
- 		ksft_exit_fail_msg("fork: %s\n", strerror(errno));
--	if (sched_setaffinity(0, sizeof(allowed), &allowed))
-+	if (sched_setaffinity(0, sizeof(*allowed), allowed))
- 		ksft_exit_fail_msg("sched_setaffinity: %s\n", strerror(errno));
- 	if (waitpid(child, &status, 0) != child)
- 		ksft_exit_fail_msg("waitpid: %s\n", strerror(errno));
- 	if (!WIFEXITED(status))
- 		ksft_exit_fail_msg("the process under test was killed by signal %d\n",
- 				   WTERMSIG(status));
-+	return WEXITSTATUS(status);
-+}
- 
--	switch (WEXITSTATUS(status)) {
-+static void report(int status, const char *name)
++static void test_widen(const cpu_set_t *all)
 +{
-+	switch (status) {
- 	case CHILD_PASS:
--		ksft_test_result_pass("mm_cid after a failed execve\n");
-+		ksft_test_result_pass("%s\n", name);
- 		break;
- 	case CHILD_SKIP:
--		ksft_test_result_skip("mm_cid after a failed execve\n");
-+		ksft_test_result_skip("%s\n", name);
- 		break;
- 	case CHILD_FAIL:
--		ksft_test_result_fail("mm_cid after a failed execve\n");
-+		ksft_test_result_fail("%s\n", name);
- 		break;
- 	default:
- 		ksft_exit_fail_msg("the process under test failed to run\n");
- 	}
-+}
++	const char *name = "widened from 2 CPUs: below the possible CPUs";
++	cpu_set_t narrow;
++	int status = 0;
++	pid_t child;
 +
-+static int run_child_threads(int unused)
-+{
-+	return run_child();
-+}
-+
-+int main(void)
-+{
-+	cpu_set_t allowed, narrow;
-+	int status, i;
-+
-+	ksft_print_header();
-+	ksft_set_plan(2);
-+
-+	if (!rseq_available())
-+		ksft_exit_skip("rseq is unavailable\n");
-+	/* glibc before 2.35 registers no rseq area. */
-+	if (rseq_register_current_thread())
-+		ksft_exit_fail_msg("rseq_register_current_thread: %s\n", strerror(errno));
-+	if (!rseq_mm_cid_available())
-+		ksft_exit_skip("the rseq mm_cid field is unavailable\n");
-+	if (sched_getaffinity(0, sizeof(allowed), &allowed))
-+		ksft_exit_fail_msg("sched_getaffinity: %s\n", strerror(errno));
-+	if (!narrow_cpus(&narrow, &allowed, NARROW_CPUS))
-+		ksft_exit_skip("no CPU to run on\n");
-+
-+	status = run_under_test(run_child_threads, 0, &narrow, &allowed);
-+	report(status, "mm_cid after a failed execve");
-+
-+	/* The helper's move has to land inside an execve: spread its delay. */
-+	for (i = 0; i < ATTEMPTS; i++) {
-+		status = run_under_test(run_child_moved, (i * 37) % 1000, &narrow, &allowed);
-+		if (status != CHILD_PASS)
-+			break;
++	/* With fewer CPUs the kernel keeps the CPUs as owners of the IDs. */
++	if (CPU_COUNT(all) < WIDEN_MIN_CPUS || nr_possible < WIDEN_MIN_CPUS) {
++		ksft_test_result_skip("%s: fewer than %d CPUs\n", name, WIDEN_MIN_CPUS);
++		return;
 +	}
-+	report(status, "mm_cid of a single thread after a failed execve on another CPU");
++	narrow_cpus(&narrow, all, 2);
++	all_cpus = *all;
++	if (sched_setaffinity(0, sizeof(narrow), &narrow))
++		ksft_exit_fail_msg("sched_setaffinity: %s\n", strerror(errno));
++	child = fork();
++	if (!child)
++		_exit(run_child_widen());
++	if (child < 0)
++		ksft_exit_fail_msg("fork: %s\n", strerror(errno));
++	if (sched_setaffinity(0, sizeof(*all), all))
++		ksft_exit_fail_msg("sched_setaffinity: %s\n", strerror(errno));
++	if (waitpid(child, &status, 0) != child)
++		ksft_exit_fail_msg("waitpid: %s\n", strerror(errno));
++	if (!WIFEXITED(status) || (WEXITSTATUS(status) & CHILD_ERROR))
++		ksft_exit_fail_msg("the process under test failed to run\n");
++	/* The thread count is a target. Only the bound decides the result. */
++	if (WEXITSTATUS(status) & OVER_STRICT)
++		ksft_print_msg("widened from 2 CPUs: above the thread count target\n");
++	ksft_test_result(!(WEXITSTATUS(status) & OVER_POSSIBLE), "%s\n", name);
++}
++
+ int main(void)
+ {
+ 	cpu_set_t all;
+ 	int nr_all;
+ 
+ 	ksft_print_header();
+-	ksft_set_plan(3);
++	ksft_set_plan(4);
+ 
+ 	if (!rseq_available())
+ 		ksft_exit_skip("rseq is unavailable\n");
+@@ -351,5 +436,6 @@ int main(void)
+ 	test_ramp(&all, 2, "2 CPUs");
+ 	test_ramp(&all, 4, "4 CPUs");
+ 	test_ramp(&all, nr_all, "all CPUs");
++	test_widen(&all);
  	ksft_finished();
  }
 -- 
