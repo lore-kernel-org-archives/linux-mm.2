@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BED606A336
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907C0606A335
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 12:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nHR5/gGO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pv9T4iqV
 Received: by kanga.kvack.org (Postfix)
-	id 48FE66B05B7; Tue, 17 Nov 2026 07:50:00 -0500 (EST)
+	id 0BD186B05B8; Tue, 17 Nov 2026 07:50:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 441036B05B8; Tue, 17 Nov 2026 07:50:00 -0500 (EST)
+	id F3C806B05B9; Tue, 17 Nov 2026 07:50:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 292F96B05B9; Tue, 17 Nov 2026 07:50:00 -0500 (EST)
+	id E2B8D6B05BA; Tue, 17 Nov 2026 07:50:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 02ED76B05B7
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:49:59 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D4A41A0410
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:49:59 +0000 (UTC)
-X-FDA: 85444593318.10.3F14563
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BACD36B05B8
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:50:01 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32F1CC040F
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:50:01 +0000 (UTC)
+X-FDA: 85444593402.29.F6032F6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E53AFA000C
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:49:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nHR5/gGO";
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9C653140008
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 12:49:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pv9T4iqV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794919798;
+	s=arc-20220608; t=1794919799;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7CVx8eyIjx97gyeGE7phNgEBAaqqOaj/2GwlNjxj/eE=;
-	b=iRxZFMtyGgipUH9LoFrFM0ns+6CCa1bdJoQJ/nxn85fKniUGQgdd/UBpi7R3JeAlSvZu01
-	mRtVYtCF2nK29wONEfVzrUQMib4O7YgWPIBEsy9c0+oeRBsLOHDs/T+wokWVI87GzoD8N7
-	aUczB/T+skAo6IXCByIYWvOI9JqIMew=
+	bh=B3SWx7uLf7z0DoB4KPhEmf94Hne1nDAlfrus+vdbRpw=;
+	b=YYxOpBMtRY8uB7pKrlw62M6xmd8Rivm1W15UfFE9RXIf1CCgE8DjSqxnrPVVJ3oyor0pgf
+	tuFb/v9MQ3Qz/05+VytCCx68q2HgFoZNGyavSLP9YTAoF+pLzvCELIjHenLZyu6UYxFxi5
+	LobuaAujsVNMxeOeimEfwSY086RgLpA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nHR5/gGO";
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pv9T4iqV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794919798;
-	b=LA+BSdjzX4jJ9DxSa9fFCS4QX+GOQxvkkr2vCxpHOP4hvYCQ0NmhzhtUHjX+Qm0UzaoJK/
-	GKpadxL2zHuIPA1VYuO8xmajOPDvoOyiBMQyPtETHKESix5EkwpFkoSOYcJHr4/tsuOO7T
-	OCGntbg0cHdLQLF9olNqe11xJQp9gEQ=
+	t=1794919799;
+	b=fdZ3+je1mpCGfcAcjBeqP6noSYzAMWD1H/u7KI3jEQYI5eLj1Cyo+QD2CSZkWskr6Ugkfy
+	600KaZe6YFI9w+pDzpzhx30cAjOeyWptXZj2lxhIxLzYeYik2BrkRsDP9xFN2Mlrs+KiTp
+	T1g+EU8MmLr2p88ShR/6pNBfsw5t86Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 835CA63465;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3BD766346F;
+	Tue, 17 Nov 2026 12:49:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B551F000C4;
 	Tue, 17 Nov 2026 12:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0C41F000C4;
-	Tue, 17 Nov 2026 12:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794919797;
-	bh=7CVx8eyIjx97gyeGE7phNgEBAaqqOaj/2GwlNjxj/eE=;
+	s=k20260515; t=1794919798;
+	bh=B3SWx7uLf7z0DoB4KPhEmf94Hne1nDAlfrus+vdbRpw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nHR5/gGOdyHdxADk6FZwYYLQIzKQYmaWc1L4sKKMje+wLIwC0ZuY2cZgZx+sxJ0HX
-	 mEqYh9ThCpgdvwCqgHWGoy3rdOWgcIJg3lr7m/n2HxhMoS8hvrb4KYKPLZSNCDO87d
-	 Gkto5GjULHIJ1uiY+0SYvhaiOnFM2K/TfOOQg6eV8zAtJ9dkMnTDWJeG17wdzWqalO
-	 HEzGtExdpk299+RmXYgex6lMYttsllnKamiv1P4zKVw/TSk+nj50LTY0wcvC2uhxzN
-	 ZHI+jXd/smWzX42uYPKQ2JyMogBAE9ZQZHeD02NtrEEESykVgcv7qHf/OJggNaTe+j
-	 pXBISIqqnJn7Q==
-Message-ID: <sashiko-outbox-218796@kernel.org>
+	b=Pv9T4iqVA7ch6/Gx513/oIXSKMvqyBW31+b6gx1fQr4NHypnjjqFJTf4s08IEsy87
+	 qApnTnTuQ5fbVGszK0ewj2f01ZAk97yU6tA+qdR2b839/1Z/v+7xKSxISkmUvpL08O
+	 wtjCBWjSqDs91S50DbCXZzeBq5sNWR40xB+rBw4uXd1enNVZwA02/UHHxsmPEI2ZH0
+	 PbLApuvMuZ1zLKxWmmLzoVBsyZMdovL5kR+wDweMZxYv9Etrdd7UvPci+y4ydcXCX5
+	 VlDDEP7fUg6VqWuzbzUvWC8BfvCpULOz2h6UotMVDaNv6cvsgeu9qgK2PKfyWm7Ns8
+	 L9fdrZDZTESbQ==
+Message-ID: <sashiko-outbox-218799@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 01/10] ARM: remove support for highmem on VIVT
+Subject: Re: [PATCH v3 04/10] powerpc: kvm: allow flexible PAGE_OFFSET
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Arnd Bergmann" <arnd@kernel.org>, linux-mm@kvack.org
 Cc: "Arnd Bergmann" <arnd@arndb.de>, "Andreas Larsson" <andreas@gaisler.com>, "Andrew
@@ -77,24 +77,24 @@ Cc: "Arnd Bergmann" <arnd@arndb.de>, "Andreas Larsson" <andreas@gaisler.com>, "A
  Rapoport" <rppt@kernel.org>, "Nicholas Piggin" <npiggin@gmail.com>, "Nishanth
  Menon" <nm@ti.com>, "Richard Weinberger" <richard@nod.at>, "Russell King" <linux@armlinux.org.uk>, "Thomas
  Gleixner" <tglx@linutronix.de>, x86@kernel.org
-In-Reply-To: <20261116124832.662455-2-arnd@kernel.org>
+In-Reply-To: <20261116124832.662455-5-arnd@kernel.org>
 References: <20261116124832.662455-1-arnd@kernel.org>
- <20261116124832.662455-2-arnd@kernel.org>
+ <20261116124832.662455-5-arnd@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 12:49:55 +0000
-X-Rspamd-Queue-Id: E53AFA000C
+Date: Tue, 17 Nov 2026 12:49:57 +0000
+X-Stat-Signature: wttxzdi58qep8kzt9dkwf5tqsdzuyxdx
 X-Rspam-User: 
-X-Stat-Signature: h1ig5zccwf1a3cougyrqnhzc4eyu66ih
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9C653140008
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794919797-312743
-X-HE-Meta: U2FsdGVkX19U1qenBDkhwWIr0Sp3sCD8ZzAJAcd2DkW+p9/eoY9i1SLpSuKp69SO5H6opBY6vJ3ToqxqxxfxIcXJirAq2twObpZvEQyQyY+0PrnltVGdDKFpvpquyXFQbkHpc+yxkgz8kS0nA4Dhjtmqe9GlYRBlNSt8g88P6v9yX5Kt9vN0+ZuAv6zQvpNKxmAKl5/zuAk6cjIUj2T15EmjoXOOn+0xA5Px0Utewd1TJmiEOknI+wHr1hr5V0lpb59K59tX1GN99StmRs83hjSq/FcMbvlu+dATj7YUZXiDUIJcMlfZWl017SzP4bRSNaUgJt0Bc6vKgwtlP4n/m1FtFJA+GbKCZQblac1PeRwCk1ZvnKl2iUhYLRAtrZl9kNb/sou0s7xQaHMNJ5q/klc01yJ1F5IMhWggET2zjX/Q+xXDNXJWPz4m7FYLHhVIaHnAj3bqbc4zAx2My8fo7/1+xMln5LoqMqVOxGr4QXovmL2+LHpanga6AqKV7vKq8SFQUtt8wzqZ1bc6uH+5nxvK4fng4n+6ZePzieRpU+j9J5gOTfITYqpbPGlnnPXs+odAA1n/ZQpRYJr4fPARC3fuHY2qYQ684ak+0+wbjAxI9N6e4lEJTojzg4+mm9M3r1hidOk1K9ET9yCpD9ZXdPkKLWo2alsLr8PmA1rlLWdO4Jh38vuA+ZWK6ySTEE2EaNrWEzuRNK4ipzlUuI69e1zD2+nR8QWoJXUFr6Lpj2bCaJkpWviXG0naI3YSCsvtWI/iXHE+SWnuZjQaCg5l8CCV9QsfYIgpUxlAa0wnc/kJhPrVFVzIy00eHp8rAiNXx0l0Qa9a7JURtXht0qv6rkvld5GCWdnf8enCSRb/ohRfNRdle5sby+3pBu9aREwJH6lrxp6/cuViyzSBYwrDgUZ1z+dcrvlTRqAQKU8k9Y0Mo6s2fg+DeMTlOFgNuk1ffb8koSGSxzAn2CBhB1z
- TdpZ4/hz
- n+Y5sXR7FuwtGVc2u4TkHvgPRIO1hli5nC72B2lRtko1kRbphSP7lLpS3OVCDK0ZLTi/iH8A/TJpv15TnOztL3LkwfjMu3ijq1RDFY9mcth2GW7jd4AINc2sxV5ozdqwgpJk6nRB49bbuCJ+GWdSkBzPwsrpPebwVlnj5gWAxycBHuzvtqcFiA+JuH6JKZMZPQ0kncdaqW9I5ooeQaRrduHWVngc/o5D7N9g3FKOrdWgFP+gCdjNp1dDEOYQdhZ9OGJvuHOI2QeMaZPpZUYGjrhFb/Sslm0ohT9O3COfIf1XJnsHSFxjqtgISBARurABFPgk3bgwzCsONV3rHGDaxXscEP1NUxOLX3S/izAPSlQ5/pWGstNTIAWVjbQFwPg9KNInlb/+YgKyyPi7wFoAWq6GqCJLVTEdted++tMoZGLGg24ZSNdHZtmHyJK2pTBdSoz2Dyg9I0Whr3R//wMEtMohOe/NAf+YU8mxpIaAG6R1BVDm4S+7p+IsRFA0GbIlkTppvQphEgA+ZB3HULIJYbi6+xl00SEl0WNgc+N2nkXtvdBvo61gBeL4qnAxWuvT6pdYKLk3DRlEUY0dmT4Hj6nTXKfOfMvQOCaAzcVZCRGq1C1SwQghkcsggdxibFbgbWn57mjb7/ZxsYIBZY1nZEAiVzg==
+X-HE-Tag: 1794919799-689957
+X-HE-Meta: U2FsdGVkX19kxooFRXaG5lTUOvWePh3yKl7TuYWILQOrws3tYSpkWMxAHNuWuJEArEUt2knM9t2wik5HLdTTpiIejMjRrRzdVNubqo1ifsendVIPiIzvIl2TvG9F8zmWoPmifS450cCeL/hIs69SxMfL8uzMir1MYOVIBoHwlNQzf5G0Q60tDb4PGnd8S5BdUb8QLTgNXMeqfsvFjuhJI7XydCx3P4Kd24ReJ7npGXGgq5oNFduYoCxbI5kwxQuVE+5o0Za9h2vqUXBTrJr5jowWAfTfCdqjwPVRPI8iE4GOAtXHYSGMwnz7QuUk1OfXZcpblqsCnsBQsciL1/dfNCldAsiPST2ysVsU8boGxQhsgoiky7qAPGFphiXYEocUIXfQhLChT7F95E8jf2TvtyXa1qxb8U9J9nMCLALeWnP9bgFY50cu//WDeYvyRy5J1L+jQmZ3jM5xyrSffugXoo66cAEyoPzrj3ikZ7Qk55UODm/2aTqAWVQt4ZiajPIifRC35AmvmYpvmtUJpoKCS4ephqbG/cXaNH9Hr5s3/GpSK/IWY/4/EtBRBGEGhdJvMXM/RsY00tX8PZJZg/PDNoPDNXQiLETAShpeTVA3zJBRADxFuPtdS8Cj+jymtERfBaeYKTaKaFsxhHmF0UVIZDbzIBH+HMP4XdFweHTRFnf7rcglKFZB3E+YL4Muo3AtQZkszKFPy7xS9ebWjCxJ3ZduTmF9qjZ6n9DtUoqOxLBp0dkXqRMULqZ+4Bhdm01Kmu8lCTqtH71cz1c0mXHZiXB4K7Dzp+sp2gyZBW3tfN3RhzQhAjw9WsZYJ3ize8Mt/olFq7/KWu1rxNtry8mje0eLnrGzBUlO3eUitIDFmChJA7E9qOWfXXzlQN0Ui0j6CDlovhTfmhDSI7oETwvAFVK+k1//9iu8lIW2lbCtqs0Pxfp7htnQ/kEiyvYC65r4Rwweb/EnN3YJYYm4DzT
+ 5iXr8ug0
+ tSxVlag1IMRRaJfDTubMSAE/JUDpIUq7PAGfbZgwT2gJw7C+J1xgjp+KsqTttKzbZpQ1geqGj2nNnoKpSvSyep4qlWdZT/EBvtcdCP9cf2XqfpFN2jyO6Aob812mjbUnZj6ehq59lug20kI/ZfGWNxypoMyXXbWHLHCF0oXub1IobmwtUFXU1eed/zi1tdIk1WU7ElbLUP2Ts3GcXZ7/Yea3EuHAA+yGIDzZPzYMIOwJQHrkVBBEDPX1q5W09yamsvMBevYHxQyNN84nhP62jaTy8z3hzIP5UeAWII//a6hPqtdwCFjcjXS1bFjugK7yO9FYPbRtQKlyWcwN7U0PQSoXejjnYZIzosJRhNww6zzDP8FP3Nx/PceTHzFdltB4k5l+D8SO6ho/Kqgf1hTP/ZKoKTEd7hUYKsEetf1HT47ISnAOEbEWwQa+DXqvpWIDDvh8Aa4RS344GAQ7NYB1paGFJG4RV5stKUiD1YwTC/rSDK3PCL43cZA8tBP14X9QkFGI2L+OnKoRq5yVJ3MfMyu10OKtsNcps5t1drVZEdUsPIJwQXGALL4/xD0moSRkUqQ/MUIphg7BHBDSuj20JsROhxQMzKzPrA1C8VCmWP5DRhapOHR+AKqUJgPHxe51cPpE1xX+iE/vylCSHtNBJ1Xz2OGtLU+BSwy5AQEwguVMXE1U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,110 +104,55 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] ARM: dma-mapping: kmap_atomic_pfn() replaced in
-  dma_cache_maint_page()
-- [Low] ARM: cache-xsc3l2: dead vaddr =3D -1 in
-  xsc3_l2_clean/flush_range()
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] powerpc: kvm: incomplete SR restoration in LOAD_HOST_SEGMENTS
 --
 
-commit f8716df5db2cf8798681c350ff9ec3e69d48df95
+commit 32f84cc08116a09feebba0ce8cd2fcce44ce22ae
 Author: Arnd Bergmann <arnd@arndb.de>
 
-ARM: remove support for highmem on VIVT
+powerpc: kvm: allow flexible PAGE_OFFSET
 
-This commit disables CONFIG_HIGHMEM when CONFIG_CPU_CACHE_VIVT is enabled
-and removes highmem support paths specific to VIVT caches across ARM cache
-and memory management code.
+This commit replaces hardcoded 0xc0000000 assumptions in PowerPC KVM code
+with expressions derived from PAGE_OFFSET.
 
-Link: https://lore.kernel.org/all/20251219171412.GG254720@nvidia.com/
-
-> diff --git a/arch/arm/mm/cache-xsc3l2.c b/arch/arm/mm/cache-xsc3l2.c
-> index d20d7af02d10f..4770773870391 100644
-> --- a/arch/arm/mm/cache-xsc3l2.c
-> +++ b/arch/arm/mm/cache-xsc3l2.c
-
-[ ... ]
-
-> @@ -135,13 +102,11 @@ static void xsc3_l2_clean_range(unsigned long start=
-, unsigned long end)
+> diff --git a/arch/powerpc/kvm/book3s_32_sr.S b/arch/powerpc/kvm/book3s_32=
+_sr.S
+> index 6cfcd20d46686..f38377c30014f 100644
+> --- a/arch/powerpc/kvm/book3s_32_sr.S
+> +++ b/arch/powerpc/kvm/book3s_32_sr.S
+> @@ -113,8 +113,8 @@
 > =20
->  	start &=3D ~(CACHE_LINE_SIZE - 1);
->  	while (start < end) {
-> -		vaddr =3D l2_map_va(start, vaddr);
-> +		vaddr =3D __phys_to_virt(start);
->  		xsc3_l2_clean_mva(vaddr);
->  		start +=3D CACHE_LINE_SIZE;
->  	}
-> =20
-> -	l2_unmap_va(vaddr);
-> -
->  	dsb();
->  }
-> =20
-> @@ -178,14 +143,12 @@ static void xsc3_l2_flush_range(unsigned long start=
-, unsigned long end)
-> =20
->  	start &=3D ~(CACHE_LINE_SIZE - 1);
->  	while (start < end) {
-> -		vaddr =3D l2_map_va(start, vaddr);
-> +		vaddr =3D __phys_to_virt(start);
->  		xsc3_l2_clean_mva(vaddr);
->  		xsc3_l2_inv_mva(vaddr);
->  		start +=3D CACHE_LINE_SIZE;
->  	}
-> =20
-> -	l2_unmap_va(vaddr);
-> -
->  	dsb();
->  }
+>          li      r0, 4
+>          mtctr   r0
+> -	LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * 0xc))
+> -        lis     r4, 0xc000
+> +	LOAD_REG_IMMEDIATE(r3, 0x20000000 | (0x111 * (PAGE_OFFSET >> 28)))
+> +        lis     r4, (PAGE_OFFSET >> 16)
+>  3:      mtsrin  r3, r4
+>          addi    r3, r3, 0x111     /* increment VSID */
+>          addis   r4, r4, 0x1000    /* address of next segment */
 
-[Severity: Low]
-This isn't a bug, but both xsc3_l2_clean_range() and xsc3_l2_flush_range()
-still initialize vaddr =3D -1 with the comment "to force the first mapping"
-right above these loops.  With l2_map_va() and l2_unmap_va() gone, those
-initializations are dead and could be dropped just like in
-xsc3_l2_inv_range().
+[Severity: High]
+Does LOAD_HOST_SEGMENTS leave host kernel segment registers holding guest
+values on VM exit when PAGE_OFFSET is not 0xc0000000?
 
-> diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
-> index fb2eb0ed7bb87..917a546af0b90 100644
-> --- a/arch/arm/mm/dma-mapping.c
-> +++ b/arch/arm/mm/dma-mapping.c
-> @@ -647,18 +647,10 @@ static void dma_cache_maint_page(phys_addr_t phys, =
-size_t size,
->  			if (len + offset > PAGE_SIZE)
->  				len =3D PAGE_SIZE - offset;
-> =20
-> -			if (cache_is_vipt_nonaliasing()) {
-> -				vaddr =3D kmap_atomic_pfn(pfn);
-> +			vaddr =3D kmap_atomic(phys_to_page(phys));
-> +			if (vaddr) {
->  				op(vaddr + offset, len, dir);
->  				kunmap_atomic(vaddr);
-> -			} else {
-> -				struct page *page =3D phys_to_page(phys);
-> -
-> -				vaddr =3D kmap_high_get(page);
-> -				if (vaddr) {
-> -					op(vaddr + offset, len, dir);
-> -					kunmap_high(page);
-> -				}
->  			}
->  		} else {
->  			phys +=3D offset;
+LOAD_GUEST_SEGMENTS overwrites all 16 segment registers on guest entry.
+On exit, this loop keeps the iteration count in r0 hardcoded to 4, so
+when PAGE_OFFSET is below 0xc0000000 it only restores 4 segments starting
+at PAGE_OFFSET and leaves the upper kernel segment registers up to SR15
+with guest values, causing subsequent host accesses to upper kernel
+memory to translate through guest segment registers.
 
-[Severity: Low]
-Should this keep the kmap_atomic_pfn(pfn) call and drop the if (vaddr)
-check?
-
-52c9aa1adc30 ("ARM: dma-mapping: Reduce struct page exposure in
-arch_sync_dma*()") converted this path to kmap_atomic_pfn(pfn) so that
-only the kmap_high_get() branch still needed phys_to_page(phys).  Using
-kmap_atomic(phys_to_page(phys)) reintroduces a struct page round-trip, and
-kmap_atomic_pfn() never returns NULL.
+In addition, switch_mmu_context() called after this loop only restores
+user segments below ALIGN(TASK_SIZE, SZ_256M) via update_user_segment(),
+while Book3S-32 places MODULES_VADDR in the segment below PAGE_OFFSET.
+Should this loop start at NUM_USER_SEGMENTS and run for
+16 - NUM_USER_SEGMENTS iterations, matching load_segment_registers in
+arch/powerpc/kernel/head_book3s_32.S?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116124832.6624=
-55-1-arnd@kernel.org?part=3D1
+55-1-arnd@kernel.org?part=3D4
 
