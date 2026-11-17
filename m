@@ -1,138 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E443606A88A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 18:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246BF606A333
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 19:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UCFUmzxo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TMG9hdFI
 Received: by kanga.kvack.org (Postfix)
-	id 3819C6B05B1; Tue, 17 Nov 2026 13:50:17 -0500 (EST)
+	id E2D996B00EF; Tue, 17 Nov 2026 14:10:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 358D36B05B2; Tue, 17 Nov 2026 13:50:17 -0500 (EST)
+	id DB8006B05B0; Tue, 17 Nov 2026 14:10:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24AE76B05B3; Tue, 17 Nov 2026 13:50:17 -0500 (EST)
+	id C813E6B05B1; Tue, 17 Nov 2026 14:10:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F1FAD6B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:50:16 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 93A82A055B
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:50:16 +0000 (UTC)
-X-FDA: 85445501232.01.3E28C03
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CF606B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 14:10:58 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33ADD16056A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:10:58 +0000 (UTC)
+X-FDA: 85445553396.30.C8FEFFB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D9E5E140005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:50:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCFUmzxo;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 936D24000F
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:10:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TMG9hdFI;
+	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794941415;
-	b=cI03dp7JioTDOp/ujSR7fc3WmehZ4BRpQ091qY4fDU5+gftA/dy+OCjFl/Q45JIu/xn4ob
-	8ugEVhrissTLX7RazxMgoQVmGweL/GuXXtmNR6BDNvD09gikqD6z1i6tcTBXhF/Q4fCSA9
-	EdUzYmM/quDsx2P4OnnqqZIKW3xnv2w=
+	t=1794942656;
+	b=dmZH6heMBuvgG3HFv8mDkFEhtmM4F5iHit76mHYdn+mX7180tdB4tVMeMYNIe/n65ohjUG
+	o7z4JS7VCnSL3WO/B/gVCT71CKyh9xhjjxA5PfSwBugKSx8qB3RdFN/G6/24WKIVvu03rA
+	Pns43FkkmjZ8x8ljLK+iPxv3haH8cQE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCFUmzxo;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TMG9hdFI;
+	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794941415;
+	s=arc-20220608; t=1794942656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p9NeYt/WaadBbJ1e2r7STVt+39oaMfNx6g36ELKjJJk=;
-	b=lnIbY5eUyOyO9doZ5Ueqf42Q//UbN8g+wV5mNovqD7kWe4XzmQZTxIYgzrPMxrovDMK/t6
-	WpqnVtQvwFjVk+A+R8e9r3kM3CE6X6/S4Qb1PJVX/VfV0/F+WaB/BdghUxVlnASbXc6hxT
-	Ly4remU7DFwqI5OnMDyd8gn6pMGcPXk=
+	bh=QNfr1N4SlD4nY5lF2k9NOu1qbIPKIuO18d/t7UojEjc=;
+	b=pazpv4TffPtiryehxCO1dM12yRobS7lrQGLdbMS5TA/lRq9d/0tmMCbAx1jatHk89HJ85I
+	tD3HbkmqB+gAwVX1aGXTqVaieFq0bsVf65oPJ/X/SR1cub1ym4g6aLeMcqMo+c1YMU2Xhp
+	cea67u3CwHH8xZZfjqze/xr/wB6WwwM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 53DDC6127F;
-	Tue, 17 Nov 2026 18:50:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE181F000C4;
-	Tue, 17 Nov 2026 18:50:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 16EB3611C6;
+	Tue, 17 Nov 2026 19:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id F13BF1F000C5;
+	Tue, 17 Nov 2026 19:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794941414;
-	bh=p9NeYt/WaadBbJ1e2r7STVt+39oaMfNx6g36ELKjJJk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UCFUmzxokdhP8BS9o8k3QR2qX66z/9rsmtmeOyKd/DoKxSiXtmar4cr8fQJ4TLnNT
-	 x35aaxWjfhY3ocQe4oJIPu24u3K9xjdd1gtRsvygj6UF7udROGtFvYJbhdHB+rfKBr
-	 ZcQ1IGvYbUFS8U4CdeKD8k5xZYTj4dPiAYOx/qvHhFnkpUcO97LOdty03BX5/5HQy3
-	 xhJY6eK9zHQSw48Fin2SvXkxBWPwHFsg13hXr/1WdEgvKRcA95u0GKTyWKlhet91Bz
-	 mIsYTqAKlQBKy0S4j8dljG/cKuxCZAiPgl/fVMGFvxsVFKQX0ufKZbfXvsDx433B2l
-	 4YGLhwXCutNZg==
-Message-ID: <e745f91b-3312-47b9-965c-510bf0a0b7f7@kernel.org>
-Date: Tue, 17 Nov 2026 19:50:09 +0100
+	s=k20260515; t=1794942655;
+	bh=QNfr1N4SlD4nY5lF2k9NOu1qbIPKIuO18d/t7UojEjc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TMG9hdFI1EiKm12mX2UfRyknIADhNhlisQjyVgB+nCZZIPENEdznv9MneSRYCr7Jv
+	 HMIiYw0QYp+qamQPfqOrdhty/ANjv5b9t7CPGrzmhSWmN0XeNjxDExZisM1vNvkZvB
+	 UpFB4zHnjkbCr/HfYSCFcCYHjOMWmCUI8BqO2hltxJwBEOdKZRFeWWXCvOnxV672ni
+	 hHG6+lRX18Q4qayZUEfaQ5BY2rNuiw3UDZQHStPfEkyhjUU3Pa3cZ+aY5TyWhz3hm2
+	 x85mHaTn5JdLS3Brs0i5acaJvE7jsp6MiQ19Qk5biIFf1aBXXwe2VxmXxpdXZJxtFy
+	 ROeBDjhz/LeQw==
+Date: Tue, 17 Nov 2026 21:10:52 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [RFC PATCH 00/13] Namespace for namespace roots
+Message-ID: <avymvCZGVcEp8mHu@kernel.org>
+References: <20261117050841.3289652-1-jarkko@kernel.org>
+ <CALCETrUBUnJVhiMkft6hTZZMe8nTpMBRTGY2v=9x5ETBSvmPZQ@mail.gmail.com>
+ <avyhl79pygUmV3hr@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_ext: remove unused page_ext_iter_get()
-To: Shivank Garg <shivankg@amd.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Luiz Capitulino <luizcap@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avyhl79pygUmV3hr@kernel.org>
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D9E5E140005
-X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 936D24000F
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ahkidiz4cu7qft7shornx5x8t8pkj1hq
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: j4ssbimoiq1adzig7id91aa4tig8c7tp
 X-Rspam-User: 
-X-HE-Tag: 1794941414-606343
-X-HE-Meta: U2FsdGVkX18DkN0DtdCSZf4fVzGW17Yko0bVgIk589Hom2M+bkHnhFtClO8a4I53kl6vpvLi8xd/6L6LXqD0IiuKXm8S1GzN8UL8DgsDvGLmWAPJTcSzoRurJJrKLCZ3DwZOVVrmpKXkb/QIN9OwyPbMJB1E4yDrwNvAzoqemzYo+8fJ+12Jr29pMKAhMQ2oBZG6kuq1t8msqOlwyI5X9BrhstxOghHlQbsNH2E7AnD2PeelA9o/saKFie/1mxSfFjj0RqUi/nPKOi27ZTvxfqjqKbbWVAosKCYkgb3gjx+zZpOn4hb/fOeDmoy0ECzRuHqwQDvCNoFk0UH/rKUCHo0iUHcuiB5Y45ziuua/Gk9APIqktgJk1KjO1OX0ELYRVoc7k1wJ/bQD4Fsk+oUDUczOyldcjhKsj5Pf5OJLxChRUd7U0F4IxbVEC6z2rLHU2v19xLed1pOvFqE4DKh/MoRtFTG4lBzsnV7Z4j08M/NuM26wOB0NaAiyjIahC53/KPgpmhERWJbZK/6Lyi2nRKmoLGl/rmlJVaIuTde7wEaMiW1v1ZMGsEtdbxNi+aTi2wZRGzmxD+UnlPVoug4xpIwEZLqGqpjBPBgzhc6tUVfQjqR8u51fyTFiH3LYNN2yTNofJBSkgsAYqNIxPsvIeo/kIqxvPkDezQ2RrcqqP9cyucNQOh/LqtKtxS+eN1fXalUsHgsYih3ayyrpIzhZPt2HfhMX0K+oItjJwPg+SZh+n9QcW+NpAlyOAR7P0bMfB/IYbOlWE0IUExcdzx+ogDOyoe3b5dm31CBSjHj5kSNqjyREADNimQp/FEpWwrwGPXM54/z1iL0Lqd5OCocqvuUCsJFkl7ei6tvPuBLYEzSTQGyNR5ytV+jMo8B473DA4tLMJovnHe4VX43jI0ms6FMPO4iO7BOEgLvcGJdNhldXkI/D0+85SV+08c60anD0Ux0UYzceZhlWXyNNGZo
- ciyyFeyS
- Q6eP/nRK88icXUHCKkJ+1wteXexoIM2Ad34OUcZ5NxOn1KYpRY4/F7yV3WA7D/rO8PrnCWy2Pes407XXpPxrqBv2V5fzGFegybmIocRqT7B77mV7tb4k5xtz+Vg6dT0SdarZp1wnXaYcQ9X7xnWN0FI/aJkGLHHnF2NFsu+dU63nauATFfrCKFkRFJZocoFdeBzyEPjcFPpZdaIULBuqQI6oa2noAQOBJuZohD4WgNVaKFxkzP0FNpJ3BpKc/S3GM6IiyPkVOegZL1eyn3mbqjgdcfBvb62P+fIVpnOydptuJeNT+d5H2gYzCEDGL/KNl5KZ05wum5z//JQ2NsF+zcWfbLQSsRKVIU7J9zEn7TgnquaFjGxFjSHPENtBqJ1GphTix
+X-HE-Tag: 1794942656-600220
+X-HE-Meta: U2FsdGVkX18sSZODMzIWhPCArzX7v9aFFTqyuRep1wvNA7u7RMr3Uv7Y/taNsEB/C0wHJpKJk8JMecmHlExenJZRIyRr7XoSMjGtnHeqcdo7a1RX8Wx2eInBA2h6681GK2uiPOGTUt2n9zCX4lTrfksC/qxnzXIRVW51JIops5biR33Fk8OuVQlPhNBqiIoNkIv9jcwLceyEv/h5kPejTxK6c4MkXZQRY1uHEXb4VAsaUso0mujXi1LKAgM+BDFhODCtTdxHhNfgWYQRbKUobXDctC2EQSHHWIzy0oOolRvSRTWxakA5tR6WUvX/s1SGKTF/RYf1elYdOws3eC5rG0xSqZVgLJsqo+rB7SMAQgMiCxnF8rHZf7w6MC4ShRTwAs5x9tBlilj9fv7gQSU67t3N96OjlavJJhcR4M85jQ5VXkV0TqtqReI+U3SPp59A1y04XwsY6H/HCldQwBooFpZQCo+jvM2H+1irA+pNSdWAUQYlavS9X/kzpuYsnVq7w7Yta8pW0VEElhuvYE9XnRCnPPK4iuKkZSmpgqg4LWr/pM/ZfmaqLCEB1lmpVSUGIGmcsPLE9otl2nHomheAZtwTSiBLLvpHUPTISGIdUzvewe4pUxdr+zgFzsdsZiEjVVs2mj8LaMscTbmlD6yVsOA13vDN5fsuxnthju/0h9CxwAJX2rtlBmUB52/5a00UFXxN5fQQQfOslNemavNVn2qr9KdklT6/xCUFxcAIH0tR8FbecbYgwIcXuY6GDtGhyrmHhjNtecPmMZOzKsolRBnTq2reGGem9kFoE+K+TEF4m8/kE3UShbpuBMs3c+yflvAMbX10pK6oodC9Yu+BH7ZbxW9/MrTgO9Ymz39tGric1a1wfIR0UD+We4GgH33C0JXI3mC4jmSLHQHK5wPIeDEwJT6nPdydNY8SIdwrCOV36zHvXYK1hHe6zx/pcIeTzxZ86bCgCVQWT3yp26p
+ yHSnRjXM
+ NtJN+EHJwiYKFI72BPCYAvJ8/aJ6JmEAjzkrQBBTtEnW8StZOgbhgxzEJriUahMWSTFwuY6XEHLgyv3icsv6ViIaWwyQBNaneY9x8oE3HgAlm0iCu7xiW0Odp9MoB4KKJp2mppJ6RLGUox8Wvid00fOjA6pPLdMu2C4xH1ynWOFn9osm0jjexf1TMrsbSlO549ODnCvKSZWR4IgyQtg4jZ9vnfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,59 +125,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 17:26, Shivank Garg wrote:
-> It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
-> for page extensions") but has never had a caller.
+On Tue, Nov 17, 2026 at 08:48:59PM +0200, Jarkko Sakkinen wrote:
+> On Tue, Nov 17, 2026 at 09:44:43AM -0800, Andy Lutomirski wrote:
+> > Can you clarify what this new API actually does?  I've read this three
+> > times, and the best understanding I've come up with is that you've
+> > designed a way to create a group of namespaces identified by an fd and
+> > you're adding an API to configure and enter them cleanly.  Which
+> > sounds very sensible.  But I'm completely confused as to why a
+> > namespace needs to be owned by a "rootns" or why that ownership
+> > affects even newly created sub-namespaces.
 > 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> I think this would postulate the patch set:
+> 
+> 1. A subset of detached namespaces.
+> 2. A dedicated PID namespace for spawning into, signaling members, and
+>    polling/waiting on init exit.
+> 3. Initially an empty mount mount namespace that must be populated
+>    before going live.
+> 
+> I had to do some head scratching for the second question as I've worked
+> seriously on this already some time ago but I think it was as follows.
+> 
+> If recall it correctly, rootns ownership tracking was meant to stop
+> processes inside a rootns from calling setns() into host or other
+> namespaces of the other containers.
+> 
+> However, user_namespace already enforces namespace ownership for
+> setns(), and adding a separate rootns check prevents legitimately
+> entering a shared external namespace (such as a pre-created netns).
+> 
+> I will drop the rootns ownership tracking.
 
-Added to page_alloc.git for-next, thanks!
+While the patch set itself is manually coded, I got inspired by LLM
+agents back then. It was quite clear that in the near future OCI
+runtimes should try to minimize the live configuration surface.
 
-Hm page_ext.h should be added to the PAGE ALLOCATOR section. Wonder if
-Andrew's patches adding various missing bits included that too.
+Another force was that whatever the solution ever can be it should be
+made migration friendly for OCI runtimes. This led to the conclusion
+that we need yet another namespace instead of a fully parallel
+framework.
 
-> ---
-> I found this with the kunused scripts [1], which I wrote with LLM's
-> help. The v1 cover letter [2] has more details on the scripts and
-> how LLM was used.
-> 
-> Changes in v2:
-> - Split out of v1 [1], as David suggested, and based on
->   page_alloc/for-next. No changes to the patch itself.
-> 
-> [1] https://github.com/AMDESE/linux-mm/tree/shivank/kunused
-> [2] https://lore.kernel.org/r/20261026-unused-sym-v1-0-82ca2dceabe1@amd.com
-> ---
->  include/linux/page_ext.h | 11 -----------
->  1 file changed, 11 deletions(-)
-> 
-> diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
-> index 79c53ec45dfa..52a8b70c525a 100644
-> --- a/include/linux/page_ext.h
-> +++ b/include/linux/page_ext.h
-> @@ -167,17 +167,6 @@ static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *iter,
->  	return iter->page_ext;
->  }
->  
-> -/**
-> - * page_ext_iter_get() - Get current page extension
-> - * @iter: page extension iterator.
-> - *
-> - * Return: NULL if no page_ext exists for this iterator.
-> - */
-> -static inline struct page_ext *page_ext_iter_get(const struct page_ext_iter *iter)
-> -{
-> -	return iter->page_ext;
-> -}
-> -
->  /**
->   * for_each_page_ext(): iterate through page_ext objects.
->   * @__page: the page we're interested in
-> 
-> ---
-> base-commit: 3a99594e62fce8c646e8aac01d38af16d6833a40
-> change-id: 20261109-unused-sym-page-ext-3fb8316ac777
-> 
-> Best regards,
-
+Br, Jarkko
 
