@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933BF606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 15:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20AEC606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 15:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YehFc1te
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aiNgqNJC
 Received: by kanga.kvack.org (Postfix)
-	id AA2DD6B05B5; Tue, 17 Nov 2026 10:58:50 -0500 (EST)
+	id B18E16B05B6; Tue, 17 Nov 2026 10:58:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A53C56B05B6; Tue, 17 Nov 2026 10:58:50 -0500 (EST)
+	id AC94C6B05B7; Tue, 17 Nov 2026 10:58:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91B886B05B7; Tue, 17 Nov 2026 10:58:50 -0500 (EST)
+	id 991426B05B8; Tue, 17 Nov 2026 10:58:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E4CC6B05B5
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:58:50 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C643880503
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:58:49 +0000 (UTC)
-X-FDA: 85445069178.02.7D1FF4F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FE2D6B05B6
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:58:54 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3466C04CF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:58:53 +0000 (UTC)
+X-FDA: 85445069346.01.A7AE881
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2DE7718000E
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:58:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YehFc1te;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 14FA72000B
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:58:51 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aiNgqNJC;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794931128;
-	b=rLWT3KTNeUuc3IGyijrlxOEBGcCojUjibkgSyxkg+kdTWClItmZUkISWfFnVrHoTFHJX4t
-	5rQjNRRN7AfG4AUEFBrxkwSL5gPIjemPyQHej99k0HGRd6CTGZ3hzrVgkc1RvLyU3XUKsD
-	zIeDvdJfcdWBurtMaAdZhP21Eiy/wYY=
+	t=1794931132;
+	b=sUfcWSPlCDjtfGHrMwPD45JabLFE6tF9yydXZ17g2d6X7ZVAkGGau2Js9AIdzd+vsLyDjr
+	DBJta7xs4ur1UetPYjCrdnKfV6+PXGzSvUlcaYBn8NVKFsCxvOs0mdzJbHlSR/+KPJ+edy
+	VhSeCiHCln5zJEzk6tn1SVzPbNxHad8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YehFc1te;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aiNgqNJC;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794931128;
+	s=arc-20220608; t=1794931132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GI4ugfB0NhERLBcfl6RxPS7mnQ8nFflwnbD21DK5LkY=;
-	b=iSanyJGMWZD4ja3MZAnImxmZ1bQKUa12RBSkcb/9yzv716S9kZ7iUehUp4BEAJeGDsaTbh
-	1lkO35bBbZwXU0pIgsg6CTJtCC3LvBSV/g4YslNbcvFG8LHdrHJ/cELU/dPRex6+k9lT+i
-	dtRG6u24sBj6goE2WfkS/4jYYd6KYm8=
+	bh=SH3B96UoxOckJWmgiMFdQXZ6He/d2a60d40nEzWGR/Y=;
+	b=tNRAge0TejnLJIg3nQugn2AOcbqNfCCfh0Mg3RFfLdnJg/jQK3W7IHsCSx5sO7C0DPhYiM
+	9MysOADzsY9r/Q2QHUrmdP3XCuR6rNi693q9iUmPVjK+PSCwO+QjasNmnXNabitLZRQ1S6
+	aE7qUuXy0FxvuHaBlWk1gn4QAZuyWR4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B6E6460F97;
+	by tor.source.kernel.org (Postfix) with ESMTP id A795460F97;
+	Tue, 17 Nov 2026 15:58:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91E21F000C8;
 	Tue, 17 Nov 2026 15:58:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0424A1F000C5;
-	Tue, 17 Nov 2026 15:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794931127;
-	bh=GI4ugfB0NhERLBcfl6RxPS7mnQ8nFflwnbD21DK5LkY=;
+	s=k20260515; t=1794931131;
+	bh=SH3B96UoxOckJWmgiMFdQXZ6He/d2a60d40nEzWGR/Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YehFc1teF7lgykIn6zq9Yqg92QRiGkaofJEJhHVhBokkAX8uW89aySOAkjns0nV9T
-	 Vx9Tu2PAgGPFSEcwtuEHfiiw+2q84OhVlQzZjITWfm08mwB/PI6xPajjoQvcEpZQ00
-	 v/xG6IZFc4JdjN1P0EYGBEqi1kELFgmHm136qTFfIl9vHeMig+UMckDUTCRO9xjTD7
-	 //34LXR+3xB/loSMa8AiKDJxUgESpU+DH8AZXhL+vfhVDfMJ5yHin2KQ9cQ23GCJDr
-	 tuM3cfl+q5Irlta/6AcUL4JT/AcGX2kgKORTrTLj3UBNpmqkSTdZD1mQNC8bfU78E3
-	 DQ/G7eoeSZ2kg==
+	b=aiNgqNJCBDq75GpvSOEPsFj3zOzPEJ3ehg7/ZUjkX5SOrdNtkq1McDKKzKFSV8aAo
+	 WRtOVxAyES7+rdGx3KU0uqhEP2sz14f8ArxZjkHc5ESuPKR+ydPlRhhwnuCQew7tzB
+	 L8ll6paqcwd3yyCmEupFz1TFeQp9Jng+5VadnP5xKjCCvvsxpy/uqo0OBJZHdce+Os
+	 jfOdqz+rZfJBCmNfxfJdUseOQzECZpfrChosWk/L0DL7bF7Ig8aOBIZ0qQ1XPMrGdt
+	 YbvdpQz5OulOc/7+sbj0UHxhTExEHBmGYFNza4SLbyyiwk2imMiUJ8VgZmSaKAL9Iy
+	 C5sw+ZRl5fPsA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 17 Nov 2026 17:58:33 +0200
-Subject: [PATCH 2/3] mm/memory: replace uffd-wp markers in
+Date: Tue, 17 Nov 2026 17:58:34 +0200
+Subject: [PATCH 3/3] mm/memory: don't upgrade non-present PTEs in
  insert_page_into_pte_locked()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261117-uffd-dax-async-wp-fix-v1-2-c9a30f27f452@kernel.org>
+Message-Id: <20261117-uffd-dax-async-wp-fix-v1-3-c9a30f27f452@kernel.org>
 References: <20261117-uffd-dax-async-wp-fix-v1-0-c9a30f27f452@kernel.org>
 In-Reply-To: <20261117-uffd-dax-async-wp-fix-v1-0-c9a30f27f452@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -82,18 +82,18 @@ Cc: Jan Kara <jack@suse.cz>, Jingyi Sun <1045704958@qq.com>,
  Vlastimil Babka <vbabka@kernel.org>, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, nvdimm@lists.linux.dev
 X-Mailer: b4 0.16.1-dev
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DE7718000E
-X-Stat-Signature: 67ch1oc9gpg3haeftsks495r8cokh3zb
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 14FA72000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794931127-23391
-X-HE-Meta: U2FsdGVkX18J1dzL3YKxFS8expEDcabeUwFpSGIA8bOgKfUaDl0dMbkLgy/SHuvzw+V/NQRNUZaCwzFGYQlsGN+Cqgti/9+irS1uJuGBSJIr92Vr2uRyRAg2pHqMs7cY5LdLUOXovZ+sQ5t0bUgdwoQVNEVVs9I43snHUarNQW8tq/exvMXg/uIMwZ4ESX9llxTFmJoq3aES+WcZix7pgRgB6Q4BdsyIUGgz/Cl8DCCFJnvbhOEFvh/WuxH4maXE6aZHyUFIOgTFyh5OjJ3xU/bi72sBb1maqo0Re/U6yEf2wTkk/IM30Ub+g+KYnB4eDTSY0JYe8k2DHF6wbuI+EYYorpCcGmo39Y2lZjR1NFepIPdcD0lsyRFa3fQYrKuNg9/leQgyFNM/BN3VItizVVD76NKnYLoiOFecaesl7BGcd+dXKkgE18cD65Au4vxoMHnS/tQwllYBWyqlqMEFUEw7jSBZy22pbFGRRYccRmYGw9J6cTLbn4/bwvkkFu6JBAxYZSQTc/MZkdpgYCmJfy0M6pgincvSu7RJpC5w6jxXVungRSZHSboDWBgmyk6j3gfGSpxpAJ36ctvYL7uYVBQmpRTL26g1Oct9hQW3fGv7NH53dWTUxOQO3/aoZeGuwo+qtiD+ZfvyGESH5366wJUXnHZw6n9tZGfNd2ul6kYR6Te0dxp53TbGeI/NeFqV1vjHbysy3XbbblC+0RCNY+DafxY9KlutYvqrvBbYro/Wy/BlTTJzVpq/vg3gWV2GlYum8S3QWPa69S7Jr9oQWuQVSGcWQ5STJKoWIXzhObb9x1xI0Zpzcvw5vOBPMHPPT+QADOndf6Obdt2uFEWTW51G2CjCggJF5xGunXDtheKY9nqf0z0HRzSUEiySRXU/2Vv2yW1cvGGq3x8zz+kFc0tZgUqdl9gc9Bw9GwYpgFKfTcuEtfGQoiFCJuIHTNlUHICdtCT2jcEHiJ021is
- 5BBsi969
- zpEThP/75lUvmXjFUdzGOR2S/4cZhG79K9VKFb73zJW0KUqD76MPyMCt7Lg4AEUlgWoFZLl2eBXS6vbzOc8F1L/3mw4Fk+owlje3y+nkoAso7uObWBDl+zm/88toudNGJUgHbjRr/YkQz1Z5/nT214QYEteLwsu9iJsvAHjb7zAhW3pkGeoxN6lpTkVS9v/HNht5gfM4txCX76y4DZ4xnWguxhBwqdCOPVHH+X67NcD6uTfGXYU+RbTZbMFm4etBPasz02A3Glk2aj1dGq7k78GMRlQPFMm/cpXJB98ou6Bopgmg3E4016ZI8JA==
+X-Stat-Signature: rwqij7gwbsbj4uugnu9ker6ybp5ur6k7
+X-Rspam-User: 
+X-HE-Tag: 1794931131-195707
+X-HE-Meta: U2FsdGVkX1+Nt5iXy4+xjSIB5X8HGB46bcUayf6UQfS9xd+dBIrzNtd0jbiXB9izqifc/R02H7OqrWm/K5pVZLgU7touGVOEAx3wEEw+3yMYQehKrMZQqmPmUzdasYfoIlR55Tgw7Hh6fpe0rjdhzD56rKK5yVZArtkgbiorXYfhKJEL2Ci63idxA5fvKKu14tKklkHSsVRdzbYZe2G975ixA5NoSRjekfIJKP7oU8xgpVGbjDgLDFqeNNtTEQPP3qd9yIsbqDJ6x+X0BDS5mZ/DbSLxaK8PCOzV0weLAavtx56RwABwIHBCsmt3mH5Xf9sPcR6QypnvOay8lptXEHDXk8aDnXGGtZMql86KhfKDxt3U7NK136q6Qm4RCa5e91dLN+yXOzI+Ml1mTZWUSmTuMEn6k6NPpP5lpfdD8Bl44HDek8/Wv7YLYdM7oSlRTIuc/+j58LzVloyEiXfSs/wGH8SAjhO3K+A2VSm1n2eGHwyf48eSWql74kk8E6B02MM8rk+z5hqAYKaTDUaB/lvQCPPO8RU8XKFrbvB2pG0STvyuGdeV5FtP7eX0CBcm+8Cp8a7UUcL0Hqk1F52Z/dSYwdK+335exKRsytX94vXsMw25C0+TaRdAV/qaOdDB/kznW9DiJ6voeOfcXyQTtoIsw3gM6nAZrgSUn8VhnSpCPqZ8YJybmAzKVfintxaXu7osTnMyBNFKtrqoi/jFTY9/KbhfvKwLEMliSaRZap+I2+ELJeqYzEjICwJZ30p6wT01NHTDxaVmXkBptkDC6IF19bRttyIxUA0IIx5V7sVRJp6pc1ZqA1O7P9WtFkfcDe8Pgywj0WGVj/QGWoXcSBFZQV3mFt5AQtCA4BrE9JvYMTanqcVIK2AmtPG8lZgpBJhw2Whec3EcLDVrPzUriJGi75lxv2Dlr/awPTA9SW2U7r0moI6yZoj7XLLwQlDiUfC+LccX7Ul7+AAUT+U
+ 56bITikv
+ JP58qZhUVvqLxI1Knmwl1aw8s646Mg35w8mD7BvmkTkBZsSgVBzrtTc6adgks5SlUrljcI2YYX4zYv1DUQN4SY2tqcwuRXJj/kGJZWAW9Oer4FBMcUaWPUJP2yIqk9Pw31Y7m8buAUUZwTU8j36g3DSkajdMQzv3QLOyeiB7mNTCVrG943Ymtt6zDckMJgaKk9MFL5V1ZgjJxUV4foF91yGN8sUXsMnhm2PmOmZRaBGwh96pIIEWbiyNkFfoHMBKacgcnZ2vSshtVxyP2YlV+PZ0mbj9vuV/Bmny0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,30 +102,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With UFFD_FEATURE_WP_ASYNC userfaultfd write protection can be enabled
-for DAX mappings. Write protecting an empty PTE in such a mapping installs
-a uffd-wp PTE marker, and so does zapping a write-protected PTE.
+On a write fault insert_page_into_pte_locked() assumes that a non-empty PTE
+maps a page, compares its PFN with the page being inserted and upgrades
+the PTE to writable.
 
-A fault on such a PTE gets to the DAX fault handler via do_pte_missing(),
-which eventually calls insert_page_into_pte_locked():
+Since guard regions are allowed in file-backed mappings,
+MADV_GUARD_INSTALL can put a guard marker into a PTE of a DAX mapping
+after the DAX fault handler found that PTE empty and before it inserts
+the page.
 
-  handle_pte_marker()
-    pte_marker_handle_uffd_wp()
-      do_pte_missing()
-        ext4_dax_huge_fault() -> dax_iomap_fault() -> dax_fault_iter()
-          vmf_insert_page_mkwrite()
-            insert_page_into_pte_locked()
+vmf_insert_page_mkwrite() then extracts a PFN from the marker, hits the
+WARN_ON_ONCE() and fails the fault with SIGBUS instead of the SIGSEGV
+expected on access to a guard region:
 
-But insert_page_into_pte_locked() treats the marker as an existing entry.
-
-On a read fault it returns -EBUSY, the marker stays in place and the
-access refaults forever.
-
-On a write fault it extracts a PFN from the marker and fails the fault
-with SIGBUS:
-
-  WARNING: mm/memory.c:2486 at insert_page_into_pte_locked+0x401/0x410, CPU#1: repro/151
-  RIP: 0010:insert_page_into_pte_locked+0x401/0x410
+  WARNING: mm/memory.c:2489 at insert_page_into_pte_locked+0x47e/0x490, CPU#3: guard-race/157
+  RIP: 0010:insert_page_into_pte_locked+0x47e/0x490
   Call Trace:
    <TASK>
    insert_page+0x6f/0xc0
@@ -135,48 +126,36 @@ with SIGBUS:
    ext4_dax_huge_fault+0x1a4/0x2f0
    __do_fault+0x34/0xc0
    do_fault+0x179/0x610
-   __handle_mm_fault+0x943/0x1250
+   __handle_mm_fault+0x8ca/0x1250
    handle_mm_fault+0xb4/0x290
    do_user_addr_fault+0x15f/0x730
    exc_page_fault+0x83/0x190
    asm_exc_page_fault+0x26/0x30
 
-Replace uffd-wp markers with the new PTE and keep the page
-write-protected by setting the uffd-wp bit in it, like set_pte_range()
-does for other file mappings.
+Return -EBUSY for non-present PTEs on write faults like it's done for read
+faults, so that the fault is retried and handle_pte_marker() deals with
+the marker.
 
-Fixes: d61ea1cb0095 ("userfaultfd: UFFD_FEATURE_WP_ASYNC")
-Reported-by: Jingyi Sun <1045704958@qq.com>
-Closes: https://lore.kernel.org/all/tencent_1874C71D4177A1624528043E008DB1A5EF05@qq.com
+Fixes: f807123d578d ("mm: allow guard regions in file-backed and read-only mappings")
+
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/memory.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/memory.c b/mm/memory.c
-index f927f2241e40..66ad58429967 100644
+index 66ad58429967..a80925c61706 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -2452,8 +2452,9 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
- {
- 	struct folio *folio = page_folio(page);
- 	pte_t pteval = ptep_get(pte);
-+	bool uffd_wp_marker = pte_is_uffd_wp_marker(pteval);
- 
--	if (pte_none(pteval)) {
-+	if (pte_none(pteval) || uffd_wp_marker) {
- 		pteval = mk_pte(page, prot);
- 		if (unlikely(is_zero_folio(folio))) {
- 			pteval = pte_mkspecial(pteval);
-@@ -2467,6 +2468,8 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
- 			inc_mm_counter(vma->vm_mm, mm_counter_file(folio));
- 			folio_add_file_rmap_pte(folio, page, vma);
- 		}
-+		if (uffd_wp_marker && userfaultfd_wp(vma))
-+			pteval = pte_mkuffd(pteval);
- 		set_pte_at(vma->vm_mm, addr, pte, pteval);
+@@ -2474,7 +2474,7 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
  		return 0;
  	}
+ 
+-	if (!mkwrite)
++	if (!mkwrite || !pte_present(pteval))
+ 		return -EBUSY;
+ 
+ 	/*
 
 -- 
 2.53.0
