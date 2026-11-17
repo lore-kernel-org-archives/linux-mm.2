@@ -1,123 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC321606A331
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F45606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 21:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WmM7GkES
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XSc3eQIM
 Received: by kanga.kvack.org (Postfix)
-	id 167896B05B2; Tue, 17 Nov 2026 16:24:17 -0500 (EST)
+	id CB1446B05BF; Tue, 17 Nov 2026 16:24:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 118206B05BD; Tue, 17 Nov 2026 16:24:17 -0500 (EST)
+	id C62696B05C0; Tue, 17 Nov 2026 16:24:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 006606B05BE; Tue, 17 Nov 2026 16:24:16 -0500 (EST)
+	id B797F6B05C1; Tue, 17 Nov 2026 16:24:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D16AF6B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:24:16 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5FEB11604CF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:24:11 +0000 (UTC)
-X-FDA: 85445889102.14.83FA566
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6C2F9180004
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:24:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WmM7GkES;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of nakixii@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=nakixii@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F9406B05BF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:24:22 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 29B2BC05C6
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:24:20 +0000 (UTC)
+X-FDA: 85445889480.06.81FA51B
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 45F251C0006
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:24:18 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=XSc3eQIM;
+	spf=pass (imf20.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794950658;
+	b=3Av15E5ahERwgymvbKCjX93PwpGzExwENQaQxlNqxEw7xV2Lb84vbtkaK2u71rSFFR8g6N
+	lbQXG6RQZetocfZXj5UlZVyUrGVCOec7zWCLYrU8HFcBqyutoi5r4DRZX0vwM0PhO3uZZo
+	Kn3jwkan/2UvjRRWVq88gUbGNbW7+h8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=XSc3eQIM;
+	spf=pass (imf20.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794950649;
+	s=arc-20220608; t=1794950658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KUVSK4y9hdOD3jl6p+wHE+ISXrH307K2mWbZg23Omjc=;
-	b=zbX0HfP72UkywIB1uzQ/PNtqH8m7Wt8o196I4GrghUrGokd8doM4/bRD/FgCKpzseHPHjC
-	GwZgo7mxP2ze8vunkP9sfRjwb8HovwjoVWRdqTvfhCn49NsQPUKejzu+7uV9lkokBKuA2q
-	+Ae32FM3oz/gN/ITAPwJKzMSiwr55WI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WmM7GkES;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of nakixii@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=nakixii@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794950649;
-	b=hg4n14xsg/KrU+r5SoefI8iQdOZU+CnW75b5b2cXDk/04NJHLav6sS2LMoyqcjGTFP9/Ce
-	/y7M7f5wkurVwy4+EzbI8L8BHaeA9z8P29lLcY6RWaSVE2cXKPvAozdmwmK/JuMp1wx8K3
-	kSO0ciOed5JQHrK7gsGnF7dVS8Fby8o=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8b904d10882so122973b3a.0
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:24:09 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=J/fjCpBeMUF8gNXxUY7RYX8CVW+S81rP+s0YQaibwOw=;
+	b=K+izt2Z0QeO34Qu7WTpLRfqcNIR7p+EqfSlh0lG4inUZJUqyrCABAamS07RU/MZYIH5+OT
+	q09EhZr1raNzOJnTiTOZAW5SWzAk+gNeCcEQvrKcCgWvRPDM6/8FpIjdSIJUVC7vPwbHCZ
+	AoJmPiXiHpYetNQh+Z2KpEgpmzMaZms=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2efd432714aso1188265ad.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 13:24:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794950648; x=1795555448; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KUVSK4y9hdOD3jl6p+wHE+ISXrH307K2mWbZg23Omjc=;
-        b=WmM7GkESgALy5rzFWht91u5QdwkANE/1N1e30pbuRBOx/GW8KbQNPna4l7tin7fOcT
-         lgonrZKSeUIXinYJo1MdHPyyDlpBKUvLT2H8eGDyt13Tc+VrRe/RqZQvvnSdxb/y+HK+
-         xZXwccUrc7z5d7dYnLdAshUnIK4SrXv6rFt+zMIaKXEUhJV2zc6d2xUMAZfQ9Qmb4o4B
-         VzUu9D6P0fGFKYeILc+G2oup2aC5v2dq2p0ptRiOiY7gbX7yvTaOjgADETnGWCCmkRuE
-         LSrHh+xPOxDdXtZrE5GCTijhKW7V9Zt8cXLRt6RDsIuHfWG7tM/aAS3+GfGOLwy2DFxs
-         hgTQ==
+        d=google.com; s=20260707; t=1794950657; x=1795555457; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=J/fjCpBeMUF8gNXxUY7RYX8CVW+S81rP+s0YQaibwOw=;
+        b=XSc3eQIMalKzYcilUdp9fU2ZhY68g9UMM04IuLaP3xdf8cpShkuk1ZJbPFSCyIQvh7
+         W+DRQ/4WGv5E8dj0BA0NdPTemIqKbc/tCf/ScaKm+pyCfkyzzGxyuil9VpYh7jpibmnH
+         MrZ/LHhzw5dcu5RArt+NkgqMYSNml6gj42UfvodMSoSR98X3rYPK1x5LDL7DdHJY2Zdc
+         KZOJjKgdP6a7xKePVpaPhD16ZtCb0bWKW8CNbTfGBM+TlvsAUbol6BeBbg+QGAEd/a9O
+         RuhNRRJRg8X5l3+mGGWN8Kgscsq4TE3HOg8nViilylOSvBPjB3rgXNATi/pYedXtOPC0
+         T2Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794950648; x=1795555448;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KUVSK4y9hdOD3jl6p+wHE+ISXrH307K2mWbZg23Omjc=;
-        b=PtPCG633xPWxGrgnh/XrvdvuZPQv4YuNF8jBtXu3hDZL9x81Mis9QV7cmW7QZwrXIv
-         SDnfwpjFwYIgfAigeV7EoUVibEwwxJ+NV+WmSuaUCohKslQmqUzQSFJ9k0VdzTNDdu+M
-         VCXsDTUEL3xSHR6TYNoPERZWOcdxnJHtdjkFiFxfRWD/yj4gnWUEQ4QyKIhWVUC4Vq/5
-         BxU9BaGEqXflwObZaguoaYpHxN0pM5YBPffMkr7ePK8lAkZeZufOrClhgPJnlqh4vDHk
-         WqZpeCmbl7hExQ7qcpQ9aGQdg5mvfzXMisUEzVbJ3E3e5694iP8iY+hKqH5e6u0Jc8lq
-         XdgQ==
-X-Forwarded-Encrypted: i=1; AL+hErFuucfU1D9HRojFXs4DuWe2ICecC00V1xcY/qGayZWRbICzet4q6PGfMULPP3G0qXvh6bg7xwhjpg==@kvack.org
-X-Gm-Message-State: APuU4Z8iPPU9ENC2e1iK6X7PjSTEtzlCVp3m+K+TM9LGq/VoYwJhaPtk
-	taeue+6fizc5TzlsEyWNLhuxWqukX1Pu6ezq2EdVvOTkX2On+9Cgj4lp
-X-Gm-Gg: AYBFou2Vw7HjBxmqfgxyQqkJ+Fu8kv1EjymrqfTaaSrh/O/pJ9h8LbhajXh3Crf7dV+
-	F9FvMDSMXRLBPEtjGUTIFg80Y+0v5GAF1YzZykDG/tfGeI66PwPnfW3WW/qY6oWcVXmeEPfkCbw
-	C42X3pZsCrinEnmJK3o4LYGmnzMnlk443Ai0NdxEZ5YXe8sisN4f81+IBudI1RofK2DhId+W+ed
-	UH6w2maq630edJRiDTjb3qgoSIHcTK4WzHR7LwycuNMfl3OjxV95tf974i3Sy5mymOPVoAFQbbg
-	iMGQ75v9NWkQZlCgwcyt3rMMUriFBAn2imhbU5EsjauOXxdgzLmNStVesV6470wBiGeNQfjU2Af
-	lXbYYBIJwX6HECg5JI2xVFj5hzVzIYD5lOoQn9KqsSvrcauoKaSoddu6khjl2ALV5+KMY6U3ed4
-	SO2xh6YhU2nd10wuS8KWBFkEU5+KGs5L2pHQJFYV8G7oGm3r7dgDhxc8zxD3rCmh7cAHxwA0ypj
-	YIN2nEqtm9crRMl5fATaABoQEnnY7VK44+XcIEJ59mgVkaMaX0rnDZ7xA6DCJVmK9+PQEfhqNee
-	Hph1YPeJhAGEwMdc3/tpNmHRJvG12v4ldzEwwiJ7oIJJ/lQJaLakf0ZO1xnqLgNC+JqK
-X-Received: by 2002:a05:6a20:5491:b0:3e2:168b:d317 with SMTP id adf61e73a8af0-3fe97fed6femr539981637.44.1794950647990;
-        Tue, 17 Nov 2026 13:24:07 -0800 (PST)
-Received: from naki-PC.localdomain ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde3bba8a50sm76865a12.14.2026.11.17.13.24.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 13:24:07 -0800 (PST)
-From: Eric Li <nakixii@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Kairui Song <kasong@tencent.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm/userfaultfd: check exclusivity of the page being moved
-Date: Wed, 18 Nov 2026 05:24:00 +0800
-Message-ID: <20261117212400.1890820-1-nakixii@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1794950657; x=1795555457;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J/fjCpBeMUF8gNXxUY7RYX8CVW+S81rP+s0YQaibwOw=;
+        b=Ijq6iaBLCGLqNKn8zYifpT5LN86BtL/S89EgB7oCq/yeRP3BVKXoM/4C+tL3hJHVHX
+         y80jmYHIZsU7sbU5031GdGsVgPV8nYxUZ+Mz47NFtuRhINjzwxQZK147VAVCFdOP9Oag
+         0Mfk5U1a6rJiu+HpvZ1+JC5jVc4YNPM/rKKZ7JyotE5crTaMr/N5sxhnubbPCNJfdCId
+         jgtN6PTvD2eZHDdTJ410NUIBcYx2zPMdEaBMKbVTMhD/f/zve16EZCVq6xnGNEoUgRgf
+         3Q9X7wikeaiL7B88+zDbgJ898dX1ZhUdIgzzaoeeqkIReD0YRD6vMz0N/5/pEYkUzD0b
+         Ah1g==
+X-Forwarded-Encrypted: i=1; AL+hErG/JqhC/xPtgbiIzTUmV1b2rt6lVAUusbmCGpmGmDiyDmmzOAE/0h0UjkkVQ/D2ArjPw/uhXF+CDw==@kvack.org
+X-Gm-Message-State: APuU4Z+5/HMYf8NQtQvcoLcy9FngSEI6c4UtB82X8kuG3Q5DRCQ3uaPe
+	Ov/wIqmRuavhIOvAbX4f+7QxGBiABZmqlpJElxJ/40Z3cVVJFyJFMRSUR1OYcZFFRQ==
+X-Gm-Gg: AZFdTZdX/fpfcIbJSOHzzcjQ1ZC8W/n5FbDEY/sGUEv7qs5CdAXRod3fNXcHSlBpYPS
+	43HtuMmG1LYcKp6UvhXWkaZ1VOFqJWxpmt5drfnWc3ohxYw0JOpcBwNaz7xV1XFnHLF+PxRlvPO
+	pvMx2BkNeUEa40ioAHsh0PYGJ0yzReXogtkGu4Ghdb1t8Crigd44qZMzeH9bnSKvjQ6znrS7Kqw
+	22W1nF0ra9idUv2fiJ6cve+A1l+m8NtjD6zkOiIsdAZQfOGAKONrdHZtNr390Z8g689IACeDzy7
+	ulP5miG4goPrBDpu2Nxijq1kCKv5ZFL+pd4lE73bHcMdAwinsGuvZ2uv68W8DiQ58UTZdWSV8yl
+	jDJ0KhwcKTvs3hQJ/ANBNZK0cbAz+thl+5ATi2M0+JljQtLSEexeYW5xwdfPJpnN++cBGa44U2y
+	p6ZyHlP78jbnVNXhS22UaZQRP8zAXV5B+Jp3aFGWvrwO033EtcBfEDWQ5y71+cmC4e4Be79tIVo
+	YoMkp2xN2FSYxWRLbC9q6nAiW23s/ow9PwBtUGgmABZ/KyKnCPVDrVMv0afB8C55oRvolRjD+d1
+	jYeVMlc//dlU61Oh6qEmcdnLJdFlsM2whms9QOG0ivkiUezoLDeha2CyoyOMy6oX
+X-Received: by 2002:a17:902:d583:b0:2ef:ee74:78e with SMTP id d9443c01a7336-2eff72ea998mr4954175ad.13.1794950656357;
+        Tue, 17 Nov 2026 13:24:16 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eff617eb61sm2650725ad.28.2026.11.17.13.24.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Nov 2026 13:24:15 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6C2F9180004
-X-Stat-Signature: z8yrr87upfsje6hrwfcj18wcrrt91h3w
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Nov 2026 13:24:15 -0800
+Message-Id: <DMXSWJDPGJLE.30NVP7WQSZIZ7@google.com>
+Cc: <kexec@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-pci@vger.kernel.org>, "Adithya Jayachandran"
+ <ajayachandra@nvidia.com>, "Alexander Graf" <graf@amazon.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Chris Li" <chrisl@kernel.org>, "David
+ Rientjes" <rientjes@google.com>, "Jacob Pan"
+ <jacob.pan@linux.microsoft.com>, "Jason Gunthorpe" <jgg@nvidia.com>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Josh Hilke" <jrhilke@google.com>,
+ "Leon Romanovsky" <leonro@nvidia.com>, "Lukas Wunner" <lukas@wunner.de>,
+ "Mike Rapoport" <rppt@kernel.org>, "Parav Pandit" <parav@nvidia.com>,
+ "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pranjal Shrivastava"
+ <praan@google.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Randy Dunlap"
+ <rdunlap@infradead.org>, "Saeed Mahameed" <saeedm@nvidia.com>, "Samiullah
+ Khawaja" <skhawaja@google.com>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Vipin Sharma" <vipinsh@google.com>, "William Tu" <witu@nvidia.com>, "Yi
+ Liu" <yi.l.liu@intel.com>
+Subject: Re: [PATCH v10 08/13] PCI: Save and restore the ACS Control
+ register and Egress Control Vector
+From: "David Matlack" <dmatlack@google.com>
+To: "Alex Williamson" <alex.williamson@nvidia.com>, "David Matlack"
+ <dmatlack@google.com>
+X-Mailer: aerc 0.21.0
+References: <20261013162529.1928093-1-dmatlack@google.com>
+ <20261013162529.1928093-9-dmatlack@google.com>
+ <20261116171017.2342bd11@nvidia.com>
+In-Reply-To: <20261116171017.2342bd11@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1794950649-633602
-X-HE-Meta: U2FsdGVkX19Nwve1CUgPyBnWwp/CzBRfxxFyaiD/Uzd/cUioI+ESFK1xpkc3FcQyXCH5+HRNEjAnhTHt5P/3kGa++r7YKmaBpW1Te6p9caN6SxRMGvMbShF3TEwG6MPcf0M+TXVqOFRSrlwK2WFSEeVIxVLH8vzJdZUYN7976kYMop00y1q5IcUboLD8jD822Iq89XLrIz7cexRLrzJHiC11wgfe7IoL5teIt49/+d3wvo7rzYU6F6F6XQ7Y5ptZX8QqA1RfIoAmd1UfbKueRJ1eDBcwYKbuitfwovDMcFiNNDhUchGcf7pw6DQIXLyU/5VvQvMc+OHJHRCsQSdERwfJ/rIPo9n8I9B6/ifl4Lv8XZVyYErG3bvuuLdz0JyeIOrQ8NnrbTN3pa23asYuuHtyE9Pa4v4KcoGf0CL6W9SMREKXUDnJk39HQQ7kHzBAa6kROVyWcEA2dQWXgH76f7vbqVayUPAbZZ3Qxi34HAM4y9+FKs+ll7n5sEiRyVjfFUeCMeRCP/a4/PG07xQM30LKPxcrk8Vw0j5+K2PVmnhaFTP2Aw7bLkKGHvTBTpzVe7VleBBVduyRIKNf/6id4RFNv49kKrGtVWMcUs9MhwxS7GlNPI7thpjQjiyiOxYLoDEcGZ4FS+dvQJjvWJ/rT0Rc5W2p6kMCIj7+KS+HsGSquvXREcK1fM6L6lORA47hWVpeBylDBt+77BC8k1exGFpntxyjNELmFtzwbb2BLctqdCJzIHDhb1X/sVKCFr2TSGuUh/lmvSpjGlc2AB/de3htdkvbPx0BL6xVgcGJUIQAXPL2fqLG12pUkuvOYVl5oTCrYwP4BbC3LTtcJ1K//ERiToCry3Pm1CrclARmkElFia3Sc+Six59N6GFlZGqJxAQN+YZqArX3mV951otwxN5fGe687F1fZ5Wj9zVv2GaDXZiqXcVjnNrhAtQUwak41tVBAOUrkoWqBlYfYLi
- dxtij1nl
- IRWep6R9D6xqedvFlt+N3nO1efj9piYBF0mOONUFPHx7E602f16vDAFMdbMUCYTQLWakzm7OvgmpbzwzJ03cl7zMsRblPBpb4UX6rligDw1z1se2KdC9WTxKKtw8qlBr5VRAbZvfDbtrKYZLrcaYv9KK7XMYquPN922zz8KnpaghgEnoutLUtmuxSIG/aHFdra3PlGbn2+3/hQpqJrAwLjj9XufEv9gXe2V2UseCqfyjqNhc0VbWuUcJSwwbb1ekcS/zkZczWIHr2JZBueEQUVzK8xQVxWMSbFl3UWTWUHEkXwlDa4dU+6xyHsvsiK0TuUdIrBJwNWETVgn1909zQB+gwAFDQbPz9WQB526pgRLAVqxQYsgU8Cxq3MFcVNYZRjO2cTz0NMOrYmc1wjT+kXI1Mesz1H/Fl6WNJ+/FTeGlGomxrEfuo1XokVQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 45F251C0006
+X-Stat-Signature: owj35quia9mg9huufaz7swfgsc6z64sw
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794950658-784233
+X-HE-Meta: U2FsdGVkX188zRLSxX/hht/w3Hf8KXQ3il2up+Q6Sk9gHY9SRAzgy2PV99d4ScLLyL983ycQDf3qaYjw/t6OlxCgV57mKh8pxfzF5KqD1OatCj1tchksEdSbArgvwgUy82+SgxMAiFRYKC+Pq51vluKGpbVK9ruje4EEUQVo35dI8ErTuYUS94AFNTRWVE71qYwlfmQAnNv1IWe6mjxqQJWAhK/1RgRdFYK4XVQW2rfYlKBDlqLnn5B6HaUxStEyWtlLQDPEkx9ls3OiILmHd8+CxO/dKZBYmpp69szf+6AotCQd9oABg3rAXb1ZkzgH2i5l+/+O/kC3iRJWC6jtBmek3jjCDHK5c0zmmo4YxvXHnOsg1iNroxI1YVgOvOVEuFi1qiQ6hQOjqiMS7+eqYjo8Rw0NOHAb4yM3QrA4p+/4faMyeE6MB3jFYpWHvB84SQovukBaKoMLh6E4osXUUbMe5zSHHhvMbvndWqF9M2fWSPYJcZaNg31g/omWwdQIv5yrvdx26OnxcmQD1lAuL6YXxsHnRwZUcI0unGgIJLy3v7mUiy4wChb+HWuzM/IIkLKX3dJdCe9U4tK++q34sOVOTiNIc5vxW1ILW4Ict+Rwnv6e5UUjxJtQpW1KuG6UBmoQE3JlQfkF9ONcppXhrBm9TSS+5A21c3UsmKdO5N1pLS9YryZFmQrSrDBfoYLycca7nj7S7USeYgZBy98z3J7/PsBedVzE++TN9la4Q/hUDxNMjoOSbqQSHdSiMBcJen78dPyJqOfr7q9E3N2/veTkS0I7Yw7EylcfA+Ds/ZySa2zRDxmW5s4P4Wlc0Wy8SB2wE8i5arlCYqraFVVVRoZXMtptmcD5sCL9XWP0owU9PSyHcKDE65kkS77PycyvzkXIpO3/3I28lmMojXyz4G0sCzzgSVTq2sUyYpUxIPxfNRg2I8oiUPtoMxLk2ZOJy/WPO8DIGypCRfSIe72
+ XwEb6l7q
+ MUqngXXvbNF8ZQ8tOeGwSZ+txqRVMVoWRoZuO2+neolL/VlF6mJ/BXe7bb0yv48fJRg3r21tPBYq1zJ6PTzBKj6hmZGD2LmL08NY7kMeLUzwJTubhCdZpl6ybFLaa91gGPikOouX7n1rySDrh4egFbO2INaYvxVZHVhkr1eI2i/dziw6NeI4vi4L7bKM1AH9ub2aEz5zOd/it2xD+pSH4rphzYPUaVARypoVg68AIMXxafZwAJ6hDtdl+n0jF1O0ISJ5tQkbHF+qrFkiDVSLU+zHJLabC1gOUcU81VIhxbwJjKFoh8hvXopQfiMC7ti4HQfJpj4SkDLho/30+H9CFE2Ypq8wUmAmKLNizM+fxGjXEZcXFB1SB85CxObC8G/VQHXOq7LmQW8R4SpmG1u+Xr0hM3+5hYMlVi+4wRou98yQR8eK6WK0KHvNbs8QTJRisrPHb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,109 +143,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-move_pages_ptes() gets the folio of a present source PTE and then checks
-PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
-is per page, so for a PTE-mapped large folio this can give the wrong
-answer for the page that is actually being moved.
+On Mon Nov 16, 2026 at 5:10 PM PST, Alex Williamson wrote:
+> On Tue, 13 Oct 2026 16:25:24 +0000
+> David Matlack <dmatlack@google.com> wrote:
+>> +static void pci_allocate_acs_save_buffer(struct pci_dev *dev)
+>> +{
+>> +	size_t size;
+>> +	int pos;
+>> +
+>
+> Nit, moving the device specific enable test here:
+>
+> 	if (pci_need_dev_specific_enable_acs(dev))
+> 		return;
+>
+> Would avoid:
+>
+>  - Allocating a buffer that will never be restored
+>  - Saving ACS state to a buffer that will never be restored
+>  - Testing for the device specific enable at restore
+>
+> Otherwise,
+>
+> Reviewed-by: Alex Williamson <alex.williamson@nvidia.com>
 
-This happens after fork().  fork() clears the flag on every page of the
-folio.  Once the child exits, a write fault in the parent can reuse the
-large folio, and do_wp_page() sets the flag again only on the faulting
-page.  This case only exists since commit 1da190f4d0a6 ("mm:
-Copy-on-Write (COW) reuse support for PTE-mapped THP").  Before that,
-the same state could already come from fork() after MADV_DONTFORK on
-part of the folio, or from reclaim when try_to_unmap() replaces the
-earlier pages with swap entries and then fails on a later one.
+Thanks for the review.
 
-Moving that page with UFFDIO_MOVE then fails with -EBUSY, even though
-the folio could be split and the page moved.  Callers that fall back to
-UFFDIO_COPY on -EBUSY end up copying instead.  It also goes wrong the
-other way: if the first page is exclusive and the page being moved is
-not, the folio is split for nothing before the retry sees the shared
-page and returns -EBUSY.
-
-Check the flag on the page mapped by the source PTE and get the folio
-from that page.  Locking, refcounting and the split-and-retry path stay
-the same.  The batched path only handles small folios and the PMD path
-already checks the page the PMD maps, so they don't need this.
-
-Tested in an x86_64 KVM guest on mm-unstable with only 64K anonymous
-mTHP enabled: map a 64K-aligned region backed by one large folio, fork,
-let the child exit, write to the sixth page and move it.  Without this
-patch all 20 moves failed with -EBUSY.  With it all 20 worked and the
-data was correct.  Moving the first page right after fork() still fails
-with -EBUSY, as it should.  Writing to the first page instead and moving
-the sixth fails with -EBUSY either way, but without this patch the folio
-was also split all 20 times.  The move tests in uffd-unit-tests pass
-with and without the patch (the two swap tests were skipped, there is
-no swap in the guest).  I didn't reproduce the MADV_DONTFORK or reclaim
-cases and didn't test arm64.
-
-I found this with Claude Code while debugging an out-of-tree swap
-backend, and it wrote the first version of the fix.  This version, the
-changelog and the reproducer were also done with AI help.  I've reviewed
-all of it.
-
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Link: https://lore.kernel.org/all/20261116110122.309748-1-nakixii@gmail.com/
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Eric Li <nakixii@gmail.com>
----
-
-Notes:
-    v2:
-    - Say in the changelog that the fork() case only exists since
-      1da190f4d0a6, and describe the needless split when only the first
-      page is exclusive (Mike)
-    - Mention fork() after MADV_DONTFORK on part of the folio as an older
-      way to get there (David)
-    - Check the page before taking its folio (Mike)
-    - Sign off with my real name (Mike)
-    - Add Mike's Acked-by
-    
-    v1: https://lore.kernel.org/all/20261117191853.1314834-1-nakixii@gmail.com/
-
- mm/userfaultfd.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index d65184d9a..e270b5722 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1557,6 +1557,7 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
- 		 */
- 		if (!src_folio) {
- 			struct folio *folio;
-+			struct page *page;
- 			bool locked;
- 
- 			/*
-@@ -1570,13 +1571,20 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
- 				goto out;
- 			}
- 
--			folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
--			if (!folio || !PageAnonExclusive(&folio->page)) {
-+			/*
-+			 * PG_anon_exclusive is per page. The first page of a
-+			 * large folio can be shared while the page mapped here
-+			 * is still exclusive, so check the page being moved.
-+			 */
-+			page = vm_normal_page(src_vma, src_addr, orig_src_pte);
-+			if (!page || !PageAnonExclusive(page)) {
- 				spin_unlock(src_ptl);
- 				ret = -EBUSY;
- 				goto out;
- 			}
- 
-+			folio = page_folio(page);
-+
- 			locked = folio_trylock(folio);
- 			/*
- 			 * We avoid waiting for folio lock with a raised
-
-base-commit: 81188836663676f8503f3603cfe56e88264c4d50
--- 
-2.43.0
-
+I'll make this change as you described. Preserved devices will still
+need the buffer even if they match a device-specific quirk (see my reply
+on 09), so 09 will also allocate it for devices that were preserved by
+the previous kernel. Since restore then just checks whether the buffer
+exists, that is all it takes for preserved devices to keep their adopted
+controls across a reset.
 
