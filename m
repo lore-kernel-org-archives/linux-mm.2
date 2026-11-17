@@ -1,95 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2F660A2612
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C947606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 07:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=pudUAiSd
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=YJZbGCTi
 Received: by kanga.kvack.org (Postfix)
-	id 1B7096B05B9; Tue, 17 Nov 2026 02:06:42 -0500 (EST)
+	id 142446B05BB; Tue, 17 Nov 2026 02:06:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16ABC6B05BA; Tue, 17 Nov 2026 02:06:42 -0500 (EST)
+	id 119BE6B05BC; Tue, 17 Nov 2026 02:06:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02F386B05BC; Tue, 17 Nov 2026 02:06:41 -0500 (EST)
+	id 056BC6B05BD; Tue, 17 Nov 2026 02:06:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C37D36B05B9
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:06:41 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25147140314
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:06:41 +0000 (UTC)
-X-FDA: 85443728202.07.6E7E5F1
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D701E140002
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:06:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=pudUAiSd;
-	spf=pass (imf26.hostedemail.com: domain of evers_chen@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=evers_chen@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BA0D66B05BB
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 02:06:45 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEC041A036F
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:06:44 +0000 (UTC)
+X-FDA: 85443728328.20.6326DB5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6B0D7C0008
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 07:06:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YJZbGCTi;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794899199;
-	b=mb/adMMagIgC5tVz72HA92eqJHVE6DPazTQmYsLYFPDVwc3s7VSXWv1EbPkGRXI/yvRISR
-	WDXwiahWQ5jYGzDOSZWZMSy2DzXZfge6i4A/TXFrqsSo8Iymqp1+41RUlRUorp5l7Q3TAH
-	KDKy17uWDuW6tqx4YW2H49jgphaC0OU=
+	t=1794899203;
+	b=xqJLvCxkxxZ1GxmyfKQ49koETZNBLzBEAeeBgjKzHMG9FA10vGKA+OXU7hHFhLZGA1VA9v
+	j5dMZQGB6zTpNeVHFSHGs2oZ7kI0FDW9eBpO9pCJsrqNvfHkdlbm/RlqBHuNlbHP6iBkBq
+	gCGMlch9f1dK/iThrlP35T6vWvMt+48=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=pudUAiSd;
-	spf=pass (imf26.hostedemail.com: domain of evers_chen@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=evers_chen@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YJZbGCTi;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794899199;
+	s=arc-20220608; t=1794899203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nACrQh/lUVEXvo7aMroISkZXlxFvhkHh8kUoWLWdwD8=;
-	b=xhyhBQDlxctdT4MHkOZruTsIw3I10s4mUPqEXNL4lY7mAwcX1f9SDoQ64e5s8Zvfxl3vI6
-	KKHEBxUP29B2zIFcAA6ArKDfwDYKIfQrUsBOTL/x7A7sNtJzGet1BuGtxnBSg+qxsiZNfG
-	Kfwq9vj4hgDhis/lAQzFf0j3yAIKZkw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=nA
-	CrQh/lUVEXvo7aMroISkZXlxFvhkHh8kUoWLWdwD8=; b=pudUAiSd5oX/OLw4ex
-	VeoK60dUDySIAPvAu7d4Sy6ZUnsWfSmEmQtodQZNRB6rzdwaIazW8R2dsRJwkGJy
-	ieb9xIqWPIB5RIjifpgZWww+nuTrNV6ArTbjTXfQXNqSkH/jUshagJbyclZj3dK5
-	hpP260TcddnNlldDXJjcI0bmA=
-Received: from 5219-2604 (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDn79ri_Ptqb6D_Hg--.51983S2;
-	Tue, 17 Nov 2026 15:06:20 +0800 (CST)
-From: Xionggui Chen <evers_chen@163.com>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	shuah@kernel.org,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
+	bh=fwD0hDfcc92kFulqgZu2fazrryJJ+jqrlv2x46MWAcY=;
+	b=rA+L2Pxwr5VT7qq0ZibLzWshO57J26RMwi0vYnlRbwk3gPLRCrxXFtXPFhtk5N9C1QFI2v
+	566Ab73ky4ZI8dn61Cwb3YJigkOzrxCgsCoqVfgeEVB5+JLdjJRNVzKLr+7jfqJyWNtTdD
+	CWC/DgkWNQtpoeOGjNeJmYJbH0dNjiw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0547A1476;
+	Mon, 16 Nov 2026 23:06:39 -0800 (PST)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3BC7B3F763;
+	Mon, 16 Nov 2026 23:06:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794899201; bh=yC9GXzENjJXOH1CTrLMyqmXybb56e7XRWoU2chaI4Ps=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YJZbGCTiaza4+J6dPT6sY5RGknZNH3VGE6ywRMul+CMVUbZZ4eEq2GKeZa+UFBSbB
+	 o/qcSOJeyt86zlE1xaHPJF+y1DvtwocqSnPsKBVFiFU8rO3EZmkAmOJsemMGEADWXi
+	 xZLZDQoeueKVMlpUTcASr7kg9SSrSe6zPD3nFNOg=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	catalin.marinas@arm.com,
+	will@kernel.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	Xionggui Chen <chenxionggui@lanxincomputing.com>
-Subject: [PATCH v2] selftests/mm: handle implicit read permissions in madv_populate
-Date: Tue, 17 Nov 2026 07:06:06 +0000
-Message-ID: <20261117070606.3752-1-evers_chen@163.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261112031811.56500-1-evers_chen@163.com>
-References: <20261112031811.56500-1-evers_chen@163.com>
+	linux-mm@kvack.org
+Subject: [PATCH V3 05/14] arm64/mm: Override read-write accessors for vm_page_prot
+Date: Tue, 17 Nov 2026 12:36:04 +0530
+Message-ID: <20261117070613.1183243-6-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261117070613.1183243-1-anshuman.khandual@arm.com>
+References: <20261117070613.1183243-1-anshuman.khandual@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn79ri_Ptqb6D_Hg--.51983S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJrykWw1UXw4UKr17AFWrZrb_yoW8ZrWkpa
-	48Jw1YvF4rJF17Aa97GF1xXrZY9Fn2yF48Zw1rWr9IvwnxKFy8Xr47KayjkryktFZ5X3Z5
-	Zas8ur9Iva4DJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j2_M3UUUUU=
-X-CM-SenderInfo: xhyh22pbfkv0i6rwjhhfrp/xtbC7A4UHmr7-O7iJAAA3t
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6B0D7C0008
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: rstahmjgjx7jqbpedusronn4tjb83h14
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D701E140002
-X-Stat-Signature: wsapzp8enjc78888mxgoxbfgg9jbk96j
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794899197-301212
-X-HE-Meta: U2FsdGVkX19gfQecY6GqH5Ky7ATqdA8dNRqd7Yt9/nBxJ/6JuoU22WmjeLW4LQ4ntJ33e9OYJRYVsdjcmw7KE0Z+EoECbCzg/pdjzDQhi6Iq4N2yMU5dmPomz0Pye5R9zuwKU8sSFi/+UMenqVl/wQy10/A8BrEYuEZT3XzOUoEc37w9ymThBqsbqyO7G4yeBsEOyUpg5bKYcIrQCFeAh2YlYjBT5RE6oUaZ+DB+J/i/ZXs/Q5mUB/M4Tv8FKNiYqMoaR/TxMgTsF0qkXm8Pm80h07cvFVHShBl216yZ49WHeuf5r/4cOCF5xNHw7LHXOf5dIPocemG+n2vUtFz41z2SmqJBra5vx9VNBVoOkQzyglS0I4T2kB92WCSjW9luHgo4ZBEXN3elobme9Mw0dQsn2UzvdQ4Eia37LIFWQwqbhL7cokwdXJur9pkOh6alk3/roCm/VQDC+PWeUPZOup6G/rhLxyoF2AJZu3fh37+0AsN+LuoX3iaZHGVUzV79HYWzIiSwNwiZi+NSIsKPYKfzyodrmVL6OrUHjYlUYCwQwwLBxaN4wMCoRF83JSssUGgYR+S9sWDUOqshmZnZwL7QP74Gtc5IH8ChP4av1Js54eYotvduBV56kCdvP9Kwh+dN8pnt7qpZXsh124iMR91T0wc+d20+JrPbMWsaPHiJ6/jPWYV/vLGgKERmDxwYKe4caNQJCmwjD3xe75nHfL19ZdJZxeJnKVhODKjKUykbnAWciB9BobSAUL6ecPrkCAovHpAxhHQJbg7gdS1itlN1W4UCRLX4y6zyoI6V0SAJvSujM5aG0CyU1gg3SJ8PU9wOIqL53bwVySduJoIib3TfAkz1sBVfqJW2jGC8acvFfM1JO8kfCWruhSIcLhVggTRn+D9bhW4eghEWS11kuySFtACyyhE8TJCyWiP6LvBXZ3cjLQJRDQhtcOgOI16zfVjcIkSwB8Dhkv8w3rg
- 4jNekBiD
- GxKqB0kbf625Rzt2tR9Wdq1hBvd95kAz+5mSHKvUiMxSrCYW7fnBNKJj3Uu2KAOBsriPxgvWbi13bHvwKnGX8k7FjWhAuTAT9vawU4HIjKMjJc/Rb4DCui2VlQBkhxlJjybcWGiE+U0SF5vMgUB1Wc4ysyOV4Is07S+GhlLpNoGcHkhluoxuNtj4bjqY8RF+U/+1Dj7LNAKBQEimDcg8fH9fnArgzWjBfwImrEzwoXvF07UTe3UDASAYPISVWWhoId/e8xKewrFJ5kjXVeBlTH4pRe8Isxx7X0E8rU0GG50oVlGXYwt9dkdxqyvuayf5Xcd525+ZC3MfDiZ0QOvoVAqEpurMSz+evBPBe9tB6Fk0am1BbvD7i5VRi7u3zDilo9JOzIKif5y+29FI=
+X-HE-Tag: 1794899203-288181
+X-HE-Meta: U2FsdGVkX1/h8Zm6ajMy7FQe+3vt4tLCJiwltfvgL5ystCK//a6c+muiHCaxH3pNO2kk7L0lYEWlI+nNvFu5XglJEK06APbrsTKp1MwWT+s+vGzx602q0ac0gPibFzIV8sFNczG7udO4E29bey9zltGFAblZN4JpEOghlFArmbd5MaKLRCmyEDFDO5qmqYL5fLXdOcGR2uz6yg6IjBQsqDC7pDbQn6jiqEmaGM5hw4NLpD5Def5jpkgwmkppksPlGqXMA3aR8vZsGwX1Lr/5gH3stkWV0Fbd5unE3VCI2ShYqjnZDbHXhCd1bN1IAZjs0DZL1vKDRNE4qJLP2fkY6Mz2olqglRtCBYqqe/1UOzb0U15ytK3bN+km3TU9lbqMTVs/DwYU5cpMYBv3BDKdmyBav2GGAEQNAkkxeogr1QZk+DQddluHzuB3yNL3JHipW33EqW9EewXYNSYYOP2eChu69jbdmfun9pEW/QbhJCIHFSPKobaXxIEzxtpK+sHDn762HzKQmaEOqPzA163U3dzCIBc/N/vTFU3JE5DXhnu9I2kcM4PDMxAHSToJBaxlIRQuq2MxuhDlLLkrjL7QhpdJRDsOW6x4ELpXb+MQ6KQnWJ2jf5cnOFKY0qGi7cZncnKKFiXV7oCX+FDed3056jrkaLxQOUDbR0MRr/qhCbtY9gR3Ll7xzN6S33pzM0b7cWXFdUdGzoM8HZYKByEs47bt+/VuuozSC/tSoLMV09PGx8NAuzcavh4wX7S9cu0Lh46ENqxWpvQkk2OQpffV5aSEX/xNBXZLKf6zWoUXPduvKEbXeVaYu2VQCt25ct1W345aKoiporaHyrD1qVZxgDMJ2Zw1pPkXqocpElVji7wBmAYsLgPTvwF8gdbHDr50bmGp8rGIPUHC/LIGIA2LbxPWeLiJEeUNkBQeF5ir9pY/B6tJofKopNOwfRiX/P+XY7T0iZc4N5dOd0e0f0y
+ 1+w8Vv71
+ qTs7IM6ClcB8davllRo6+JwxJusCPYJxDq44Pdyt/Dd+rsEr1+0hCK7c7bzAPv1zN6yQsQgP47VnhRAgXmyRKRwkOAdXTK06ran7yC4sRV39+FWhl/t5N3/ClKKctl2p/zuNAiy5g2p7yS7E0uLuOHPSITh2yM+5ptJjZYVBMvRUSLok69jKTNkzVXyOkzG62K05aOXW5w+mNV2QbJfhrUxK6Qz5JDcX/V9UvYA5g0+k6cIHmyRNApKcpkRxJWuXre5pMMH4WrPG2O7dg6zbvMR1NKJuyAgZ4RMivKDW2jFrIN5MSvC5Vxcc6vn3h4xcOihTLdjfGUdM4nKWIdFT64L1VcyyCW0WcwQ7H/1xW3kxDhXFrkCl5Qh85y0llDY+NT14OC5kJf0A7R8o2NEsm/fPhDy1g/rNNoLmmBv6ibIxfdSs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,52 +100,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Xionggui Chen <chenxionggui@lanxincomputing.com>
+Override pgprot_[read|write]() accessors using ptval_[get|set]() providing
+required single copy atomic operation for vma->vm_page_prot.
 
-The madv_populate selftest assumes that mmap(PROT_WRITE) creates a VMA
-without VM_READ and expects MADV_POPULATE_READ to fail with EINVAL.
-
-On RISC-V, commit 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to
-VM_READ | VM_WRITE") makes the kernel set VM_READ for mappings requested
-with PROT_WRITE. MADV_POPULATE_READ checks this VMA permission, so it
-succeeds and the test fails incorrectly.
-
-Adjust the expected result for RISC-V using an architecture-specific
-conditional, while preserving the existing behavior on other
-architectures.
-
-On RISC-V with Linux 7.2.0, the original test fails 1 out of 16 tests,
-while the updated test passes all 16 tests.
-
-Link: https://lore.kernel.org/20261112031811.56500-1-evers_chen@163.com
-Fixes: e5bfac53e310 ("selftests/vm: add test for MADV_POPULATE_(READ|WRITE)")
-Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
-Changes in v2:
-- Use an architecture-specific conditional for RISC-V.
-- Remove /proc/self/maps parsing.
-- Remove the additional PROT_NONE test.
+Changes in V3:
 
- tools/testing/selftests/mm/madv_populate.c | 5 +++++
- 1 file changed, 5 insertions(+)
+- Add const pgprot_t * in pgprot_read()
 
-diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
-index 7fce5d0b622b..fa26ca2d8cf6 100644
---- a/tools/testing/selftests/mm/madv_populate.c
-+++ b/tools/testing/selftests/mm/madv_populate.c
-@@ -81,8 +81,13 @@ static void test_prot_write(void)
- 		ksft_exit_fail_msg("mmap failed\n");
+ arch/arm64/include/asm/pgtable.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index d3a50d35fd017..737e1e42f1ec0 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -122,6 +122,18 @@ static inline pgd_t pgdp_get(const pgd_t *pgdp)
+ 	return ptval_get(*pgdp);
+ }
  
- 	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
-+#ifdef __riscv
-+	ksft_test_result(ret == 0,
-+			 "MADV_POPULATE_READ with PROT_WRITE\n");
-+#else
- 	ksft_test_result(ret == -1 && errno == EINVAL,
- 			 "MADV_POPULATE_READ with PROT_WRITE\n");
-+#endif
++#define pgprot_read pgprot_read
++static inline pgprot_t pgprot_read(const pgprot_t *prot)
++{
++	return ptval_get(*prot);
++}
++
++#define pgprot_write pgprot_write
++static inline void pgprot_write(pgprot_t *prot, pgprot_t val)
++{
++	ptval_set(*prot, val);
++}
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
  
- 	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
- 	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
+-- 
+2.43.0
 
 
