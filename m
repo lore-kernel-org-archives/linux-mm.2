@@ -1,103 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D748606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 03:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555BA606A330
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 03:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IFQyfyc4
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=csZmWHhe
 Received: by kanga.kvack.org (Postfix)
-	id 4443C6B05B4; Mon, 16 Nov 2026 22:13:53 -0500 (EST)
+	id 6EB5B6B00EF; Mon, 16 Nov 2026 22:40:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F4D46B05B5; Mon, 16 Nov 2026 22:13:53 -0500 (EST)
+	id 673D46B05B0; Mon, 16 Nov 2026 22:40:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E3716B05B6; Mon, 16 Nov 2026 22:13:53 -0500 (EST)
+	id 53C526B05B1; Mon, 16 Nov 2026 22:40:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0691F6B05B4
-	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:13:52 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D71E16024F
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:13:50 +0000 (UTC)
-X-FDA: 85443141420.06.63FE6B7
-Received: from mta1.migadu.com (out-195.mta1.migadu.com [95.215.58.195])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6DA16100005
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:13:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IFQyfyc4;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794885228;
-	b=mrETMIEg21hKq3HnaA7JH/pxiL0dRa05ZoULWSnCepV0D3ydZ/0gv2VihteYCMZ2Y8cOvw
-	/6Wc9sURzbJ5hY4qWFBPyQgGPJDewLUwpEP/muE1+QcrMN14z/PrZevMXlWCCMknJE3Qr5
-	mKRvPgGfkBX2qzjHpksFfWDp/DvUIfU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IFQyfyc4;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 2636D6B00EF
+	for <linux-mm@kvack.org>; Mon, 16 Nov 2026 22:40:43 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9E58C1C36D1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:40:42 +0000 (UTC)
+X-FDA: 85443209124.04.17201C5
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 895ED40005
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 03:40:39 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=csZmWHhe;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794885228;
+	s=arc-20220608; t=1794886841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Henz0FrWmmxzwoavWH1AFferz9Sy4A9czKO41x1rhs=;
-	b=qAm+NrBEaFbvu86RhfUmFd+Sso8CXnbI+fG0cY21Tt/zvOL6Vn1CS7Y+gjuvfiLkmGtVMw
-	VoSq2HUvXEObhGvIvqKYWnIQAWFfbeXe+Us6lqB/xHvykeI/RB97xdY1qJg3EnMieJ4MOl
-	nEtfvzncNxkMdAJSV6vDHs+e1Q+NFw0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=R3QFMBD/atgM6V8xogzigzWPQmqYHpUv7HSFT3n7u58=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794885227; v=1; x=1795490027;
- b=IFQyfyc4sDt7Ud73LHiVUEWq8Soo68ERr2KoZoU8Z+GOwWqFBoogM3CuJBqsd+C9zbvckxb1
- qwZHNlPHTRN0PaLcr9XNOodg3JwOOM698v03nWbU2bWeMaGx6v6Q9fSTirWDIGKE2nZhJ5nAk/Q
- ohseESwX2PQGgp0XeoVeBxK4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id bf6838e5dd8e88ed;
-	Tue, 17 Nov 2026 03:13:46 +0000
-X-Mizu-Trace-ID: bf6838e5dd8e88ed
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <44fc03e4-a545-465b-a7f4-174be2038884@linux.dev>
-Date: Tue, 17 Nov 2026 11:13:42 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BCD+ZeAlR3HyVI1Lid6kcHhyKTsbSvUwBV1vWEpv/80=;
+	b=AVVzuGK7AV+sAMaD+5CgXIFz3ORi1CR+ywZyhNtqFkSvVt6YUqcygh0+AHS3aAxTey1RKD
+	4K1Xrfg6RBaDPYO+dC+ZMRcKyGsw1gBC/gBNRcvzjg7QPSsBXxQqFABdyIWsted8b6takf
+	DiMbLxA/KxtWM15GeUwZeMPPp17KdxI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=csZmWHhe;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794886841;
+	b=pck9ebHiaXyR1+KRN0+l/01kaRJV10IF435Ey2xZGLjsHXrFIwG6qQAAWatm6STeFk2Qaf
+	JnEGFczSzjmd70JjJ/I5Dw0IY/QxVywdCkd/vpjR0xda+BBwrYIekd/rOkccxZw+TV0bkp
+	42LC6fIUtqZkmc+GCgeC7Bh2qfSvGbg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794886836; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=BCD+ZeAlR3HyVI1Lid6kcHhyKTsbSvUwBV1vWEpv/80=;
+	b=csZmWHhenxebsDrRkKilpGU83URGAgSuwSWjbIN1AZfum1ws+t8DWNPqLCJsNnoYptn1FCp4kwax7OlOuwLGJbpZZuI+tXREar1I40hrF/RSr10JSYaHoHtpR6Rd3VKv/VQZ4gny4ew82kWuiNcs0fujCGIzXL2Y0PCXzxW+29U=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XEwzRFI_1794886835;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEwzRFI_1794886835 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 17 Nov 2026 11:40:35 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	qi.zheng@linux.dev,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm: synchronize with PTE table reclaim for all folio sizes
+Date: Tue, 17 Nov 2026 11:40:22 +0800
+Message-ID: <71980310d9bf1bf9733ea0e4b772635e1b2bc5c5.1794886401.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/14] mm/mm_init: factor out common struct page
- initialization
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Li Zhe <lizhe.67@bytedance.com>, Andrew Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, James Houghton <jthoughton@google.com>,
- Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Muchun Song <songmuchun@bytedance.com>
-References: <20261113033442.62970-1-songmuchun@bytedance.com>
- <20261113033442.62970-5-songmuchun@bytedance.com>
- <179482576829.2379196.2091312590305150578.b4-review@b4>
-Content-Language: en-US
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <179482576829.2379196.2091312590305150578.b4-review@b4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k17ohb3brjchf76fohuup5kgb84456em
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 895ED40005
+X-Rspam-User: 
+X-Stat-Signature: jjbm9a6h4ktbrc5frh76g53j8in1x5xj
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6DA16100005
-X-HE-Tag: 1794885228-793218
-X-HE-Meta: U2FsdGVkX19KosbYf7No0ATSnoKxxoTZCr+rcG3tkrIJ/YitSHE1yIpAxUN6RqHsaHaFAU0kCQHAIOg+Nk/XNnYd5bCSB9wC187bHMbL5hhop3nIXgAv60Xu3QiWWqOMYzc1cddei/jTcpUgAPaTABHpdnWp2ILb3MLS5oMvcqn0/th80IMKh2hpSaV07frTK9vt/OkqTkWbPlwp2nBDHzefoITVl3O9q1nT/Bv4P/oSom0OE/EZIQYo7Nzv6yxRH92ONxhZfYQZVk0e2yNWeAkHshDsXxk8QJf6npAIXoD13BXmNwD4Qmcj6h32XGopeIiPg8fU5nzup5Nc5uEqzu8Z4CqxcS4VdPDY79OEDR3osbj/sR+4rX/IHMFZebhH3O+99NT6zoL1mkIRNZho92cz4Ml2PWLntqJ9CaZU3N5fRuQdZpx5jJd5ZGEdQTcfpdIaiqrJYrqtZDH8TEegzshuSeCngjEW5Q0mPMkH9a7UZC863BeU/EXNW+gL5lK3wkxh7l8deXnaU+CdK1+LYDKikLiPsxiTBDwGVMZEJadWJ8hpokIixbg3sy0gjtgKazER/IAmci+db3Tjot0HQ0FetnvvQmKSjB+vKMcWGA0w2C7sSIdoGDU9BbP+9hyUMUraUnRsrWt8PA+V8VblUgJbmmrc0970JL6cgjbrwNU0goxn32M4JoDK8p8XEG8MjVe/ODMA9McEG1voL278xmNgzKfZDo0Y4QOPl8o3X/I2fXQK9niU0wbMUhkvO3h1iVwL0wPLSb3PwVYnOhawRUinklGAslpUoJluZbWaVCzvvInFWtpE9NI1zGkPub0QzDV9hnQ9VqUdw7kY/8ZyzyfIrgCOpIqU6LP/uy7RlfuAoUK4owoWVwx/udhZVwfiMwrU1HvCYq39gmGUvEPhTCstjvKlliCRJ4m0W/Lsm6JavDU7rPEKGGm1iRdoN9/S2zZ3LnfNUoNRgBPpGkn
- s+1B7fDF
- SsmjA+Hh18QyevOxbfJESNK0Byd9UJB9Iwtfr0uhx+byhJcD1v+8f4yi+oJLC/sAMiHa9QNE+y2qiMGhfdutM7UhDrRcKB63xAjvsI28Ft1uMfPn2G9SwiCG5HIvAgQn1AA/2r/Ax4b7QoHEmukg/IFpGM6L2UpRLP+LZeKJqJx0rJmbzC2l3kdzVAWBrExwvMi/Ir2dzquBnyS9aEhuwIEa2R8bzdWCXeYNZZEOEuLAX5VUtEXOYcDWOg2y08r5IHKIW3ZR0Pw3N/bv9aZMUPbkTMrzK+sxoFQcM3G59HDEiU3Id1FehrQ6qvbWqlnCma/juOOU7OIGk5Aw4iLWRPxkbstmlSZhMqiUFc+ahaPQRDRbOcxXOxa6L5w==
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794886839-789476
+X-HE-Meta: U2FsdGVkX1/Uosk+d3owIKXF23eDvCVAWBOwuOXp7e+hxzJMEHn43ChB3xVx37+tLSp0EDdJHkzP5tpK54KQA+oF88Bq5tgw4XQojlpI/kFKLqwT3P3Y09uk++ZjLTKodNkVCHWD9tIH81pAGQu0melupYS95IW7xstDspJ8XFNPzxCMfGq0VasJ/G0qktZa4jtM1o4m6Me+yzIdLOZNmvQGu3p66lWrdaLxa6630YQHo2AS2UYg4wliPqeJ2NqMeLHwEgCIQUXnkHVt9x1cLA78+SNM2YtXVVyuWN6Xb3YhtLeyutdZFgNIhYI9a1I3jc7UhtvilZtmb2GnXI/6CIlPm24Fn2RXbQZfV7o3tov28o85ft7ilTKBJBprHgaYO0B0AkuenjsEXoRrd0tgzlnZM5GTZt1EfqB4owKSht3m0bj4g5Nf2IFubksqZ8RIatZ3I3BWzkKawYCZpQyB+rS6turmqChyUrnvBewy5utv6zqnCLpDyWjAaTOSO00L1nPsjI23Nu2HUPoYcuEUCAUN+nTlMaDgg6SfFSfRHNf1s+5yNEOjZeJ1afnHMPqem6Ua0sZK5r/o7M6iW0G1VibSGHUNeOYgssb8TKDnBIwHqzNarlvkrDbjti/It+wqrMoO1wWpvg2KXrKSmfQZVGZbo3pgwcoUcxi8wQ/nv/PPV3/YEd7jqzXEMFnod8RScqWCbc2ouziDR0uC76P+q6O+DtlTrGid/wEYmjXjshqSYQ1GjBxFTD+mptvC+gU0RqBalqNKp5a6Up3bcUpay62UUIx8o7Ss2InTu1tM92zW532aSWPsHQbZKaJUwo26RAwHFf1xzuYYy1UtE0moh3EE0Ifcc0GyRgLYDRQriCIiQaYg7G7lKx21vIXISh02YidBz7FaevFrERenc63EDAFvMivHhdjNwIEgGb8uwRZC7Q+gFZ/qmJepiMWWmhCjqOe15EM3LK31yEvG8QO
+ fjwCqlKS
+ HXtNbqfeoVmKI8X4bpQdtAverPkxLEm0K6gUhK8Q8A4wFugikLDWP8G3NQkzFiWWrBL6xHeBZca42VBJnQZDyj1/y4bVXlbGTEfWXeas5ZLDWGKWkBj+OQR+BY+308SnYpW1oeMvkQryAV4ujpNKp8akCytYfRnuHwB1Ab9z02SyffEd1F8eOrdaPlTykNRpyssW+Z0Y9bRIKjAcW9biMFynbU9RclLNd4T6dAfrV5EMrnttffG/8Kkfr0boc7D9d34iyRJ30PaYI0WwL5/t0YKi8bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,108 +97,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
+folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
+with concurrent page table reclamation via zap_empty_pte_table().
 
+page_vma_mapped_walk() is used by many functions including try_to_unmap(),
+try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
+page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
+and try_to_migrate(), the other callers do not perform post-walk accounting
+checks, so the race has no observable impact on them.
 
-On 2026/11/16 18:42, Mike Rapoport wrote:
-> Hi,
+For migration, the race can cause unnecessary retries. For reclaim via
+try_to_unmap(), the race can cause failure to reclaim a folio that is in
+fact already unmapped (as shown below), which may cause cold/hot inversion
+(e.g., in MGLRU) and increase refaults. In extreme cases, failing to
+reclaim unmapped large folios could even cause OOM in theory.
 
-Hi Mike,
+CPU 0 (reclaim)                      CPU 1 (MADV_DONTNEED)
+--------------------------------    --------------------------------
+folio_lock(F)
+try_to_unmap(F, TTU_SYNC)
+                                    zap_pte_range(full PMD range)
+                                      spin_lock(ptl)
+                                      clear PTEs
+                                      zap_empty_pte_table()
+                                        spin_trylock(pml)
+                                        pmd_clear()
+                                        spin_unlock(pml)
 
->> Several struct page fields have the same initial values for every page in
->> a zone. __init_single_page() initializes this state as part of its
->> per-page setup, while the shared vmemmap tail path open-codes only a
->> subset.
->>
->> Factor the PFN-independent state into memmap_init_page_common() and use
->> it for both regular and shared tail struct pages. Keep section-, PFN-
->> and instance-specific initialization in __init_single_page().
->>
->> This also initializes the last cpupid and KASAN tag for shared tail
->> struct pages consistently with regular struct pages.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> v2:
->> - Remove __meminit from memmap_init_page_common() so HVO shared tail
->>    pages can call it after init text is freed (reported by Sashiko).
->> ---
->>   include/linux/mm.h  |  8 --------
->>   mm/mm_init.c        | 22 +++++++++++++++++-----
->>   mm/mm_init.h        |  1 +
->>   mm/sparse-vmemmap.c |  7 +------
->>   4 files changed, 19 insertions(+), 19 deletions(-)
->>
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 77b5d450fe45b..2e182498898ec 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -3022,14 +3022,6 @@ static inline void set_page_node(struct page *page, unsigned long node)
->>   	page->flags.f |= (node & NODES_MASK) << NODES_PGSHIFT;
->>   }
->>   
->> -static inline void set_page_links(struct page *page, enum zone_type zone,
->> -	unsigned long node, unsigned long pfn)
->> -{
->> -	set_page_zone(page, zone);
->> -	set_page_node(page, node);
->> -	set_page_section_from_pfn(page, pfn);
->> -}
->> -
->>   /**
->>    * folio_nr_pages - The number of pages in the folio.
->>    * @folio: The folio.
->> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index af3b81733193b..d0a11989bd249 100644
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -602,15 +602,27 @@ static inline void vmemmap_optimization_verify_zone(struct page *page)
->>   			page_zone_id(page));
->>   }
->>   
->> -void __meminit __init_single_page(struct page *page, unsigned long pfn,
->> -				unsigned long zone, int nid)
->> +/* Initialize PFN-independent fields common to pages in the same zone. */
->> +void memmap_init_page_common(struct page *page, enum zone_type zone, int nid)
-> I don't think _common adds much here, memmap_init_page() would do.
+  page_vma_mapped_walk()
+    observe !pmd_present(pmde)
+    nr_pages < HPAGE_PMD_NR
+    skip synchronization
+    return false
 
-Naming is difficult. I'm fine with memmap_init_page.
+try_to_unmap() returns
+folio_mapped(F) == true
+nr_unmap_fail += folio_nr_pages(F)
+                                    tlb_flush_mmu_tlbonly()
+                                    tlb_flush_rmaps()
+                                      remove F's rmaps
+                                    spin_unlock(ptl)
 
->
->>   {
->>   	mm_zero_struct_page(page);
->> -	set_page_links(page, zone, nid, pfn);
->> -	init_page_count(page);
->> -	atomic_set(&page->_mapcount, -1);
->> +	set_page_zone(page, zone);
->> +	set_page_node(page, nid);
->>   	page_cpupid_reset_last(page);
->>   	page_kasan_tag_reset(page);
->> +	atomic_set(&page->_mapcount, -1);
->> +#ifdef CONFIG_ZONE_DEVICE
->> +	if (zone == ZONE_DEVICE)
->> +		__SetPageReserved(page);
->> +#endif
-> Can't we keep this in ZONE_DEVICE part?
+Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
+has already moved the PMD clear operation (via zap_empty_pte_table()) to
+after tlb_flush_rmaps(). Similarly, page_vma_mapped_walk() also needs to
+use sync_with_folio_pmd_zap() to synchronize and avoid memory ordering
+issues on weakly ordered CPUs.
 
-We can. But I put it here because there are at least two places where
-we need to mark a ZONE_DEVICE page as reserved. Handling it in
-memmap_init_page_common is simpler — it reduces the number of places
-where we have to set reserved individually. Otherwise, we would need
-to explicitly set reserved in multiple places.
+Regarding performance, evaluated the impact on try_to_unmap(). Mapped a file
+to generate clean large folios, then used MADV_PAGEOUT to reclaim 1G of mapped
+clean large folios, repeated 5 times, with no measurable performance impact.
+Before: 16.031 ms over 5 loops
+After: 16.303 ms over 5 loops
 
->
-> If we can't, __init_single_page() sets PG_reserved for ZONE_DEVICE pages
-> and the
->
-> if (zone == ZONE_DEVICE)
-> 	__SetPageReserved(page);
->
-> in the MEMINIT_HOTPLUG part of memmap_init_range() becomes redundant.
->
+While the race scenario described in the patch may theoretically affect
+performance, the actual impact in real workloads is likely limited I think.
+Anyway, will use memory barriers to sync for non PMD-sized folios in a
+follow-up.
 
-Good catch. I think I could remove this redundancy next version if you
-think handing it in memmap_init_page_common is okay.
+Lance also reported the possible racy check for small folios[1]. However,
+whether to set TTU_SYNC for small folios should be done in a separate patch
+(this is a pre-existing issue) with proper measurement (though it may be
+hard to measure the actual impact).
 
-Thanks,
-Muchun
+[1] https://lore.kernel.org/all/0ddaf336-7cb7-4e83-af2c-f60d23f7aafd@linux.dev/
+Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+Cc: stable@vger.kernel.org
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+---
+Changes from v1:
+ - Update commit message per David.
+ - Add reviewed tags from Qi and Lance. Thanks.
+---
+ mm/page_vma_mapped.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index d45d52436f99..a931243ca42b 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -294,10 +294,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 			spin_unlock(pvmw->ptl);
+ 			pvmw->ptl = NULL;
+ 		} else if (!pmd_present(pmde)) {
+-			if ((pvmw->flags & PVMW_SYNC) &&
+-			    thp_vma_suitable_order(vma, pvmw->address,
+-						   PMD_ORDER) &&
+-			    (pvmw->nr_pages >= HPAGE_PMD_NR))
++			if (pvmw->flags & PVMW_SYNC)
+ 				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+ 
+ 			goto next_pmd;
+-- 
+2.47.3
+
 
