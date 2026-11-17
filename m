@@ -1,105 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830A5606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 15:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C85606A332
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 15:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mI+RtFAE
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JQWrAeZC
 Received: by kanga.kvack.org (Postfix)
-	id 9AD016B05B3; Tue, 17 Nov 2026 10:30:38 -0500 (EST)
+	id DA8E86B05B6; Tue, 17 Nov 2026 10:33:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 984426B05B4; Tue, 17 Nov 2026 10:30:38 -0500 (EST)
+	id D5A216B05B7; Tue, 17 Nov 2026 10:33:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89B2E6B05B5; Tue, 17 Nov 2026 10:30:38 -0500 (EST)
+	id C48DE6B05B8; Tue, 17 Nov 2026 10:33:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6680F6B05B3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:30:38 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09CAC1604B0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:30:38 +0000 (UTC)
-X-FDA: 85444998156.03.46C7704
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6682A4000D
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:30:36 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mI+RtFAE;
-	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A44E86B05B6
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:33:22 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DFB0A8072
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:33:22 +0000 (UTC)
+X-FDA: 85445005044.02.97B018B
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D380F80002
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 15:33:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=JQWrAeZC;
+	spf=pass (imf02.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794929600;
+	b=8E+A2pFCZIy6ceCr5RiNUxR/ejKP6j1XxDMgjq4X2gGvqlAzqf98Pi4HwmR+gETon7VRp3
+	hHgAWCUWN22+3/Gdz+dibL0rAp/vS8WUUJnVboME9aq5/GWQMrh9DRubkfSF0vFRIZkSrF
+	8tVVFgVnxhr9uPvKVGAmUYkqCxLvri8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794929436;
+	s=arc-20220608; t=1794929600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5lOKQnYpBQXP/LqZtNZmh3g/ieWlMy/xv2FIvUgYpFI=;
-	b=jCl06kkyWwBMFUgk/N11umzQYq4BuZXsAhKNBUyhN87Lk5U/Uiem2CQ3riyS2UeulMt5/i
-	RvNPxgTSXUXOpDiFwklbAAAGfNYufcEEhddeeuB4Lko7XAQa73H0w6oIvoiec7ysIsaX65
-	xEOMpO0Muv982mWzOXKZAWzBCE8MUg0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794929436;
-	b=TJaDnBO33GPz1aLPvTnXbBsfDjY5Ft0+alqouInBKS14cff2Tfffs7nDlpUDX7aTo3TIF6
-	G7gUlTxSuk3yC7urSb01vu2II5KvEfHHTNIoR3X0D8NkOM+MIHwGevpvaqsDM+4pykhYI1
-	nNysxr60qnLbZvCmn2pan/i0Jg3JpCY=
+	bh=f/fjR6CwAs3q03u3k/OuMPCkcaJFzpjKdriSKK3suK4=;
+	b=NawNg7cBVMqJqoz/mmw3/apCPrDkGRaNJxhH0HlrW4+NFGPo7ZgnOStGkbXUZ43pqunYQv
+	v9r+E9ddlxbUFPmSJQUOOv4fjUKu2lJGa2eLzDhrH6CL4KIQ3yrhArsQnj7USOlg88fk9l
+	lLXTUN289Txrg/yCmJgGREqi7toMK2w=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mI+RtFAE;
-	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99B9E438FA;
-	Tue, 17 Nov 2026 15:30:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990FC1F000C7;
-	Tue, 17 Nov 2026 15:30:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794929435;
-	bh=5lOKQnYpBQXP/LqZtNZmh3g/ieWlMy/xv2FIvUgYpFI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=mI+RtFAEcn5Hw4odFPChttgaFUbLfFiiepqhcIBr06gsDMBTbdBynxPb3I8iXZBgx
-	 sZxgiqxDSL0Mzj1HbRf6jRrhO4MbbW9cHIccSv6WE7yNQobUCJxwwTmGpSAyj2XyUT
-	 d7A1xyt7UPtnKkuKUVN5aQvH5WQjq+umbf5mAxdkiaGiiNOOVafTh0uiDePubNjp/L
-	 vzKR6ZI0CUblCj/yx5GF5M5wR6N+KpQsW4skpTahWlgB6MED0JbDdRi8HYlHxucdUn
-	 6gQUad3fBIQKidPyNLFQ6q0s5wHrkNbZ0NaI/4R5XoO5fb3ZYoPOKGKDbeWZxy7ICh
-	 HMpqNNYoPwYqw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Tamir Duberstein
- <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>,
- Matthew Wilcox <willy@infradead.org>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Harry Yoo <harry@kernel.org>, Hao Li
- <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes
- <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 08/12] rust: mm: add abstractions for allocating from
- a `sheaf`
-In-Reply-To: <8a73da1c-0167-4aa5-a62c-4190327685cd@kernel.org>
-References: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
- <20260902-xarray-entry-send-v5-8-d18adae40708@kernel.org>
- <8a73da1c-0167-4aa5-a62c-4190327685cd@kernel.org>
-Date: Tue, 17 Nov 2026 16:30:20 +0100
-Message-ID: <87cxs3v5kj.fsf@t14s.mail-host-address-is-not-set>
+	imf02.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=JQWrAeZC;
+	spf=pass (imf02.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AHFQeN72711641;
+	Tue, 17 Nov 2026 15:33:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=f/fjR6CwAs3q03u3k/OuMPCkcaJFzp
+	jKdriSKK3suK4=; b=JQWrAeZCbPTRiP0X3WbGG+y3i5dlhCDYLS5NZzRNQVAI/i
+	yoyYnzlMbQeYk1F0nuCu8cZt84NRpMeq7MDEV3+9A4dnFxcZxPyXkNosA1bFmQnj
+	S1rPaCUrnDv1L32h0i5LOJz72I40kj2ehIh2x189IOQoQzzI0BxtvgI5OnPKEDN5
+	5TnENXHrNUDnT+IAe8XnNBAH6CGK+6TwPO/tBYTvWBtxs/CK3ix5II5k1h3ri0eX
+	T5Yuh/RxzyAGENAlRv6+ycFWvwKMRyv5WtHQW0+wvBjvqopkY4tEOSE0fmE31wpx
+	BXl+bZZ696+JMcTsPV+9dxUyd1ASfUYVCwISNU/Q==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxd2m3jgr-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 17 Nov 2026 15:33:17 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AHC4svR471687;
+	Tue, 17 Nov 2026 15:33:16 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j02dfdhwh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Nov 2026 15:33:16 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AHFXCeE51315008
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Nov 2026 15:33:12 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 724D020049;
+	Tue, 17 Nov 2026 15:33:12 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 177A320040;
+	Tue, 17 Nov 2026 15:33:12 +0000 (GMT)
+Received: from osiris (unknown [9.111.0.235])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 17 Nov 2026 15:33:12 +0000 (GMT)
+Date: Tue, 17 Nov 2026 16:33:10 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 10/14] s390/sclp_cmd: Replace page allocator calls
+ with kzalloc()
+Message-ID: <20261117153310.32016B6b-hca@linux.ibm.com>
+References: <20261117-s390-sclp-ready-v2-0-e518c99622c6@kernel.org>
+ <20261117-s390-sclp-ready-v2-10-e518c99622c6@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6682A4000D
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ryrf7umfa1f866juemoou6gwem6zinum
-X-HE-Tag: 1794929436-228048
-X-HE-Meta: U2FsdGVkX18H0GYn3YjTB70p4yiCMNimMK1LTqX/Vefg0GmIfvBBFIiOGHErGYVML3zt7UhrAuruz0M6uVtiypIHLHbW1ZncDT1OmPTb30oZCM5xqHJE9JcnuwMEoYrbJ80nB0NVjHNCNEkBTpOMawNaMZG+aTTUU78w503Js9UqQ+hA5gATDBh/mjyHWgviRyOjNFmWqTTbK7PtgZ8BgLNC1i/CtRob9qzxa+tebu3WUYlh577mx1iaWHDkwhME3ZzrvLLSyyqTPcCO5KXaVlYW8jC/cLSiRzhcrXjILeVdFmxza0ZQ3Pb42cjP2aaDO6ffrS+aabzdJFtr9tm01khOZJo5HvvhJh/n1caxUQFUeASiuc5JSLvMWmcPrnIvsDo0QNHo1lshvkczpSuX1/wmKpOwrQc3/SEvgffkL3dEchmAdV7jCX2ruYRci/eJL4Q9gKwqeVXxguszrjl+kzTeijOVxx//12LNjEAoVjXI2LQYmAj4ywDj5YYG58b1m8HXt/sHzwAbzu92y9vfNI5WYBxhnl4+xkLvm+kazgRcDCp86hMR42LDQ2mpRNUIku/Ne8svQha0nreZNleOkCOdA6gHNyx3GkwhctVYQnu39IAQc7nMSteB2pDM6+6LkvaE96nQ5AFOHEuRfgI0gaCIo4IcJt91DyP6Ag+56Dy3RCQVwnbawj0jdsdlz+eTNS4B9oNySz5lH4dj+ZT92TSYQHss2RneonGAdZYvtTueLd3XIv5mI/Z3QPdohMgYlCq5Nr0d5RM6bBd3sSe0CglB93tyRe5YJrmfcsnBcc5DbeWV9n98wTkYUaapJSMXpJ/Quz9p92TyISVzil/VFBykXD3GkSNdNFwtZd/a8Anf+PfBr8xuvKauloDYJiofVxeoFXNvpU7pbSunhcPT2pTGfnC1K5yp2LWg+Fh1jrbU+zVl80oHwbhFCCIRdRWZtvecd9pqddYM1MlHEtk
- 2hRBbzkR
- 0UGNnDwAtMMbc728CVCba6a0AtRNnQsIqV/QKvu2XZ//OIJrTVsRM3NH3YkJBbsYhG6v2NPcPb3+bmMR3/7KO9+nTf14bXx3PRDYHg4JEYkz3f5L1QjLllkLFFcXzMfl0SY3aWpRx2ZAu5TXCWGlfjpk2gSCutt5gcAStLxOoIJSxDhas1F/jSWpdaLlXwJTTZGpjV0HN3pvAaSSaHFYFcXVUEqAHN/RpmeMhLzbOKKPIyxsSMEs0bV4rz8Ag2mLc5Jv4yFRLMRAIkyrg3okOE/FArSGj0kbNGrv5ICCGtQhT99eI4kiuL5clWR7P7MP4FTvhxTb8eepnQdBIavBJyXaA/jA3suZwOBZKqivCHGhYFGoiyN95rxd4Sw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261117-s390-sclp-ready-v2-10-e518c99622c6@kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=B6UsQ+tM c=1 sm=1 tr=0 ts=6afc73bd cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=Y6TpkvVB5ZIwULgkomUA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: UE2LM1lxxkyDFML1Deg6Nq8QGkCrI9fG
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE3MDA2MSBTYWx0ZWRfX776VWhTK8Cyj
+ OrZz9G8TfA0SCnR4DPhv+A4igq4HI6LefuihHMmPhRYfO/fOkRY5+yPag0WxkS6m17AeFufRghw
+ mOWRqd/+HNLRfFiFw2CFGVFYSAftFDI=
+X-Proofpoint-ORIG-GUID: UE2LM1lxxkyDFML1Deg6Nq8QGkCrI9fG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE3MDA2MSBTYWx0ZWRfX6/jvNyvwN8AO
+ TPYXKpKuHvlrOrZNnsNozkrng6Z/U//W1MVvDci+dcZ/KUNXIYFPCpFwbtZmlHpTbsaIBgksWLe
+ R5xAe6TAwamKQcFb42JTVXf6BnlAUmZaRcM7ELNvBVXSHkb7+Ir1IkXCsgeK5NKlVVNW1GlFzUc
+ 2wMfVPEf+D4PF8Mldc517LY6Fy0icmLWvsDPq9ASws8pl9kyG6ng+AK7a7EkQKxvA64YsEL9tXU
+ e6jz2UZ0vbFqaWua/UTPQEatpVOSkGFkeVtIPql6KzBcXB9KGvZls+51xb6GIPf0yH6OGHRAqa2
+ F/EcsBLnbm52CFTvvnDYx9QXXIeHNR7OTg+8bSKiDDmVdiiPzu3UFrNB1IWjH+krS4RdyA9DHaI
+ QoIYgtAdeumlJqKvAT+W/KDVYpQbHc245NOitBSg87r+p3In11FmpSBFVRIEhnBBJdGs4Jr3R8i
+ a0ru0rj5IfP6yc9E6wA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-17_03,2026-11-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611170061
+X-Rspamd-Queue-Id: D380F80002
+X-Rspam-User:
+X-Stat-Signature: c1bktpzmt1yzbfdgm7h4n3dcg8chqac3
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794929599-781077
+X-HE-Meta: U2FsdGVkX18erPXRUeeJxS4+kpIfOrF4vb9r8yQiDug8fcv2j2ko5YynyjxpEYbHxWxx8N33u6KGHcQa8JkgcGOpG+DYciHPvQ/ZdL5FyVsg+d4nrsxsQcxzopiXIBwruEh4BdQ8mIB1kbrwRadJO1ySJtebBpAQOH8w55MnMHCQtRd+Mq/ZjP9MxQbjHzK3SM5xOwC+wirVPQ+04MkwaprLbTwC1dNUGw44hMVKQrgc6ixNCwPt3Ef1KTP8sXL3K4WvkRBoe8t1K2eFS8HXa8k9it2H9BYit8mD5BRZQHBHcPdyFARLE1QXRmCoBtZ+G5nEMaWXZwO4dJ/gBW6FCLV5djyOmJAXjXknse01DUs7O5+eCJVIrxTU6wljIUrSSFY8Y+MFOUGusKSPxN8d0Rrwn9YXjo02i5X4KVEeQ2k8+4mSp625vjbGf1FOA4bMo1qP8XTmoeonk0wcE9a1Op3JTiS0OFjg7p5rO1iDy70k+xcye21U02+91UkOwOpJfsaGydbAifttBr1QkhcYrS4ZcMVjjS6Qg/Hde/zFKDltZ/tP3SuhVZo6jnbiwexHt1QIfzcGRIWcdvjEYU7OBcvLYcUFUMMrj1I4JRjX4sadGccCgTMyq8YCu1aI5vGJwsZmymYGAO+9rdZ7llZMtvyIgAE7HH5TkfXHaFhUZwb+itGURJHt7toZ1lQMYEoYAX3oQNsLPxS1dMm7moSpPbexOeQhpCP4BvfI+ziRK+CBmAzt1ZfqyID3us+nweXrAeXvAfC1YD56Ge40+/INzQeA3PpeSSq4euNaCsOOAUAtQCZTXg7rHzRBQSW+6y2BJyWciyuTnL/q6IjEn05M//HSro3KI04uIEixhqSYbWFue1v9GbpVsqj8N8U4DTneZhh+5CjPFRdc3SYtA7CmzGSYtZc4BCdDdDLV58W47ndIuWMYitKt5gN73+JXr83o7DzpNccz0YspizHrZOn
+ 9e86HRga
+ ev1lZTrOxeWkf/vOcywnmdZyN1UGX0gKk1EWQvLe3l1X+ZBcqqrsM94MyPO0LXX9qzdShwabkC7DxtIWusYeAOzss+CNr+Gu1csKSPwbtB5xwPsCXhMNB3IoFrB+yY1N9FbYAg/IKGllp/w87wHAXcR/s/pHyTVg5PMe5Lxh8nUApUDaTbWvWrGRzXVQou0rxWIpkRlSUsvFQM2Q6RL6Kier7f2Tz6DCqgfQXgHll3O81nKl2RlKqRZEyfSbNTi2cplXINXG4SX+FspuR2ycv52iboYbUi2j3UT9SAOSIzy+d8WHB2GaWR+SCqj9oyN3ZyBFT5qoHd/AdRt4LTJM5NPW8t594ZiDC0WKxQaxF+8NSpLWQC0rTb3o7LbWOmbszD1nNQ1WKNylYoN29xNPjmkx8/pgwgT68B4cUe8VR0LYV+lyybo/yuOfp5JwfOgaV3D0jMuHLRtQqLQ9SVCJ47ERndqJcj8HL+V9XIpnNe6YZAv8ZtSawaacB1YRGCXty+HFQeALFYTSU7l/o5wpJiiMlL6SJc9ILyI4JNsNX9C+4LtI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,40 +148,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"Vlastimil Babka (SUSE)" <vbabka@kernel.org> writes:
+On Tue, Nov 17, 2026 at 03:07:02PM +0200, Mike Rapoport (Microsoft) wrote:
+> _sclp_get_core_info(), do_chp_configure() and sclp_chp_read_info()
+> allocate the SCCBs used to read the CPU information, to configure a
+> channel path and to read the channel path information.
+> 
+> These buffers can be allocated with kmalloc() as there's nothing special
+> about them to go directly to the page allocator.
+> 
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
+> 
+> Performance difference between kmalloc() and __get_free_pages() is not
+> measurable as both allocators take an object/page from a per-CPU list for
+> fast path allocations.
+> 
+> For the slow path the performance is anyway determined by the amount of
+> reclaim involved rather than by what allocator is used.
+> 
+> Keep a power of two size for the SCCB in _sclp_get_core_info() so that
+> kmalloc() returns a page aligned buffer.
+> 
+> Replace use of __get_free_pages() and get_zeroed_page() with kzalloc()
+> and free_page[s]() with kfree().
+> 
+> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  drivers/s390/char/sclp_cmd.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
 
-> On 9/2/26 15:26, Andreas Hindborg wrote:
->> Add Rust APIs for allocating objects from a `sheaf`.
->> 
->> Introduce a reduced abstraction `KMemCacheInit` for `struct kmem_cache` to
->> support management of the `Sheaf`s.
->> 
->> Initialize objects using in-place initialization when objects are allocated
->> from a `Sheaf`. This is different from C which tends to do some
->> initialization when the cache is filled. This approach is chosen because
->> there is no destructor/drop capability in `struct kmem_cache` that can be
->> invoked when the cache is dropped.
->> 
->> Cc: Vlastimil Babka <vbabka@suse.cz>
->> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
->> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
->> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Cc: linux-mm@kvack.org
->> Assisted-by: LLM
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->
-> Note that currently all caches have sheaves (except CONFIG_SLUB_TINY or
-> slab_debug enabled), and sheaf_capacity on creation is treated as a minimum,
-> which the automated sizing calculation can make larger - in case you want to
-> reflect this detail in some of the description comments.
-
-Thanks, I will update the documentation sections!
-
-
-Best regards,
-Andreas Hindborg
-
-
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
 
