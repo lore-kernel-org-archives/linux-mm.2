@@ -1,130 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ED4606A336
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5543606A893
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fNQgkSHv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOjGdaBm
 Received: by kanga.kvack.org (Postfix)
-	id A4C3A6B05D1; Tue, 17 Nov 2026 18:15:04 -0500 (EST)
+	id A3B096B05B2; Tue, 17 Nov 2026 18:23:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A25BA6B05D2; Tue, 17 Nov 2026 18:15:04 -0500 (EST)
+	id 99DB36B05B7; Tue, 17 Nov 2026 18:23:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C4B96B05D3; Tue, 17 Nov 2026 18:15:04 -0500 (EST)
+	id 8857A6B05B2; Tue, 17 Nov 2026 18:23:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C5E86B05D1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:15:04 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E82A71405CC
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:15:03 +0000 (UTC)
-X-FDA: 85446168486.06.9FCED2A
+	by kanga.kvack.org (Postfix) with ESMTP id 56DF76B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:23:13 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB19EA80AA
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:23:12 +0000 (UTC)
+X-FDA: 85446189024.14.A63ADDF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 49C7714000B
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:15:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fNQgkSHv;
-	spf=pass (imf23.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794957302;
-	b=sIb3RnlzNO5vGU5LFNrUuowp1cTdkYjFn4TBW9WHQsHomRH9ih3EXe+JwhjeZ3dCpXsnHb
-	qBfUjGz9jW7tB7+p1K39uIHsZNh/0uuENJC7tIHhKWF0pCgkSkioXiv7Kuqm5sqxmVb/VY
-	pUuCJjjHWkrc8hfkm4ILFvWzfaba2V4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794957302;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	by imf07.hostedemail.com (Postfix) with ESMTP id B79EC40009
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:23:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UOjGdaBm;
+	spf=pass (imf07.hostedemail.com: domain of devnull+mattathias.pinchover.uber.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+mattathias.pinchover.uber.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794957790;
+	b=aroeA/E5Mt56MX4S1Ymiq/vfBvDyc3cOk+0d8t2W8nwLqcOHq8/ur0YiB3JtYzB1wJ+seA
+	IOCBVctKTwc3r91JoiVBB0lhAJonqqm/HDuEjJJmCZSALCiiGItPBYpaVCsV2FBx75uPj6
+	/zMPjr/b6Z6oQNkHx7FDixh8C2y6WcQ=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UOjGdaBm;
+	spf=pass (imf07.hostedemail.com: domain of devnull+mattathias.pinchover.uber.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+mattathias.pinchover.uber.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794957790;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nefIhKw4pk3hNRgKls2omID/HmfGP96iHh55NTs5Fc8=;
-	b=ZEPToG1ViyNgXK2Oe1Wu5ugwfTzhy3BdxAkpg7pzxczUaboJvWKErWJ6fwrfj7ULCjeNF/
-	/emlN03qASKxjX66Bcd9hEiSnHFuCtPGsjVTOKUa4ZlB6Qebs1+Rzyi51TCwgyTn4Oy21w
-	5NDZDcAvZ9qnD+UOg7CQEnUSOc9noXQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fNQgkSHv;
-	spf=pass (imf23.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=1JBagyXxECIQ4yhDUegePc/CqbsWLNLNpVx2YFp7Whg=;
+	b=JmAVpF0h1WHruz6cilxQv28gFXzwRBt8EpqMNoK6KMHKegqdGw+87eQt/fEqIP2pN7zGyu
+	L1/GcNAZ3odn+yjwfzIlgbQLQVO5sRb1u/+y5vz+iiMmd+RHcEGGjhRL33CvyD7BCEnUfa
+	fTUz6FgmcxOdlK+G8J09T2ULZD4dhJo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id B9DB961DB2;
-	Tue, 17 Nov 2026 23:15:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id AF1E11F000CF;
-	Tue, 17 Nov 2026 23:15:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 560A261D4F;
+	Tue, 17 Nov 2026 23:23:10 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794957790;
+	b=vfBerCRycTHxFKfN/0pumBYSq4j7o+cYUIcp0tB534h96w90GsEg4IkDam6tKkUCYdjY
+	 8gVpvwBw7e1Pd0dL0Yrodonc6Es9DAt8HjS1Ng7tU9RmwjYgshSIlDPb7vSH/wE5eOR3T
+	 dZn9QLW2H+wvBXZbHkDMo3plE9qH7tNWk6CG4qQCmT8/BW6aS/5n/qAOwNPpmN6MHVI2c
+	 sSzHBLg5eXZMd0033TJCNjcS1VzCETLDuK/DAEje8BNrrKJ+x019knEzj8gnmlD+lD+Mb
+	 I254xYi7bzIwCatzmH5euWlT2oxH4oosg9KJ1uLdtaiLVoAUEO8YlttH5u6henRTLgw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794957790;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=1JBagyXxECIQ4yhDUegePc/CqbsWLNLNpVx2YFp7Whg=;
+	b=wnuOuHyob9nadjW4I9twHDaPpruui2fhhY17/5GNU+9mVkbAImf2dhdGTZ/2hqdCnwcy
+	 QDX/rlK9fzZkuKUO2PM4/ZoaF0U/IjTHHgJgXdE7nDCgMh0EfSxrF0yImmB7/8XqaAvxG
+	 SXdhKfPulFiYmkxu0Vq6h+Fj/Wu5IjgKtPa6ADugDN6KDc0D7JrlcsCjKzFMqceIM4gje
+	 84saTEKNhH20n/sTNpS3Cn9K4hRjSPvfy6y6MB726PyV7Sb5dx+WAlQKH5rBpx6AiRlLa
+	 NqKtmOqRNr3mknDEQi6D2aSG5SIxFN25xjWUhLt1n30+zoPLSBcMidrsDuH3nc7n9cQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 427221F000C5;
+	Tue, 17 Nov 2026 23:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794957301;
-	bh=nefIhKw4pk3hNRgKls2omID/HmfGP96iHh55NTs5Fc8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fNQgkSHv1jzPUwUT8AmMKSYEji9oZi4HIMBMb5IcRcs5Y4gvlDtPgP0FmolN9UTBM
-	 blVnkOtiPmDGJ2f+Af1BvrSe9U1xok4hMhRBcUNQUYzgUEdUTzogqFqVMbTZ7JiVGG
-	 xoxqn5pC64vdPAR5ElsuRgPjFUnZGyg7fLJIz3hRTWqSAeSnsWQXL8S53jrGe83/Ny
-	 s/I0RykmvZA/8ZqQJ29vAy+wjl4MuJq6DPoPd/ogJc50wCI8k8IM9tUEsm8RlQYhfu
-	 8M8mFQK20cuhDgVuifAi7KTPKtKIfX1Bb1nLranRC5+rKjIkniUkVkEIMm14iI5TKy
-	 HKmMwislFi4/Q==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	linux-api@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Ben Segall <bsegall@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Johansen <john.johansen@canonical.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Neal Gompa <neal@gompa.dev>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v2 13/13] MAINTAINERS: Add entry for ROOT NAMESPACE
-Date: Wed, 18 Nov 2026 01:13:52 +0200
-Message-ID: <20261117231352.3816603-14-jarkko@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261117231352.3816603-1-jarkko@kernel.org>
-References: <20261117231352.3816603-1-jarkko@kernel.org>
+	s=k20260515; t=1794957789;
+	bh=1JBagyXxECIQ4yhDUegePc/CqbsWLNLNpVx2YFp7Whg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=UOjGdaBmWkKDubE4UImOKArvPgd4DJKRCJJKYCj/tIZ7SPA/mfFVt+ZAYA1kOGkas
+	 rZYJl4avTMnmQ92L8q4EUlW0hP20N8WVtESuCRExbvP82EMUM4/kVqihVH40AW0He4
+	 N8SZ2uOGSu3MNlnkXnZEmPwvICV7NrId7AXm817LWH4+bjp/QP5UW2lFUb1Mui0uTS
+	 Lig/3OifZ6DyReRtPlYhmfhSIO0S4mX1s1rM5PeZ5pye/mfRAXLbZyRvQY2byUipno
+	 dTSh+eF0eOuRq/s0YztzetsapjU6b0URUQUBaAckTu1Pi89245lny4Glaif3ymtkxy
+	 /lUWoLb5tVprQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id AEB3D4AB1F;
+	Tue, 17 Nov 2026 23:23:07 +0000 (UTC)
+From: Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org>
+Date: Tue, 17 Nov 2026 23:22:15 +0000
+Subject: [PATCH v2 1/6] mm/damon/core: introduce sz_ops_filter_passed_last
+ stat
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 49C7714000B
-X-Rspam-User:
-X-Stat-Signature: cw73ng7gqmsbnexty1meh5asecx9f49u
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261117-damon-sz-ops-b4-v2-1-439888fa04ac@uber.com>
+References: <20261117-damon-sz-ops-b4-v2-0-439888fa04ac@uber.com>
+In-Reply-To: <20261117-damon-sz-ops-b4-v2-0-439888fa04ac@uber.com>
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, 
+ Mattathias Pinchover <mattathias.pinchover@uber.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794957787; l=3175;
+ i=mattathias.pinchover@uber.com; s=20261113; h=from:subject:message-id;
+ bh=+LoR4vjeWULTWq1HaaBRt0DI5bIP4EpokrffEX6bIPk=;
+ b=nBOXKM5iPHzAj1ILlavDb0aAPQuMN5r9fq6LxK9NPV9D0KILcoJdEjHVCvjtqFuCMeHpD2Iz3
+ 5fo28ZEQAffC0GPmCeQNqzhchoE13xkTJZ+AmSmLam4X2MVtIQhMIDL
+X-Developer-Key: i=mattathias.pinchover@uber.com; a=ed25519;
+ pk=6Bh6OEwWiU6dpON0CVcoipq8fXtEgvhsM1Tmm9CTmtY=
+X-Endpoint-Received: by B4 Relay for mattathias.pinchover@uber.com/20261113
+ with auth_id=1515
+X-Original-From: Mattathias Pinchover <mattathias.pinchover@uber.com>
+Reply-To: mattathias.pinchover@uber.com
+Content-Transfer-Encoding: 7bit
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B79EC40009
+X-Stat-Signature: sjmxhp1nj8hg3e3qgjpudiz98yg5skt9
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794957302-147409
-X-HE-Meta: U2FsdGVkX19vKMxKth6/uFVaAsYUXCUUrW5eIjbE3J9yN/+HcpUFHG0QKlNkAtdoOzkJZcSO9U+AZkGChduD0nhG8yAI6WBVdbKmo3i/bZ9mwznB1TEMBFX6LLD6uIZgHrvDXbCclISgrWP1kAKavcCxs11Gs3PrfnJ65sDXbqjX2oSEalR9vXFX3uDwxv1harcOQ+Chb6mU5AyTtIabvy9USZySfx597qJOKBfhlIWt8X4Yl0rEvfzIfeHjjE0HLfKFJfguul51myPR9/5S/6x8KDSesaeDVmbAa1b5FgorI1jxd0+dUHuMNrqZud+SsxINRhaRsLgrKh+jMJsPJnYclXJng5l7fjgtsGLxZml9ZgbPi40Yg0JFF5alq9CHVWiyVIAyHXx3q+hr66RTHnxLQKKDGvfnQLnyXh4tDuW7rLnBIecbtPpzoDXgukvyAT/KSMC5riuXeAaLVltuV8nkbmrdrhNyPkMM07w28SPN6jIus3qLaALnL4ktjjDp5gCoBP1hbikfUvoupSeffs77XwfmMIGY0hWpqElnWEfIzetGoOKj/D9JWCUbrjLJ1TfFr4peyARwOrwW2VG8Vke1JRR5eU0AnbPW2imx2YPscXgwV4pwsiTzqsWEr/ZZkP6NaE7orqqO86TJaAbp35h+SKTMsanaH+VhTuPMrlgya8vWGnwUpwpFwzj9vgIOUns8u/O/19bmhko4XYMDqoAwJ16lCdtf9ct1zHPJN0NP7IUXiDrxEd9Tz9h9Xk+v6TD2RGzZ0u0a+LncCV4JM7hNOkVsAJ8R5L9mNGV0EpJnWI21qrEt0z5XFW2+NomjRtjQls3LAXuL1uZYdKpSy/p0Obs8H3OVV2VomA7h8nckwQQgS5zsAwUQth7BhQZ8vUjeMznNz68exGa5vNymk+xBNktGenyuQgtR2yVMf3JbidP+GQZAucLAMSTINTxc+cRKUp1nv0kW1S8RP98
- s+j6Otah
- bxTGVV9c3V2GQV2uk8CcsnAAH6mM3FSZWXn62Ob7wfp2cCjBFPE4W6Z2/bC//gq7MmQ2+w8qRLfVn4WZ6V1kmhAz6S+ANUFZduzVkIZoM2+e4i86/U+FPc61dgslYzaGwmahZ9ONiI/WDvsaaCiH84rMSUBKMU604w7sDL/l5UoAqEKDXK8YGXOjlkKR8D/E6WmG+4GniuSFTqmoC28pzC95RtqxXZu80wGViZ7SdTfMSaRbSps2OjRWYNmeZzjMQKLt1PXRLXYcH8lXoh1Eg5NvRafMcCmzFWBEZXbc680QGmgN6ydjvfh/PKUGVAYqQqzJ0vIIeN9aTEsrwIQdT6+mKEWGyST7wTWCA
+X-HE-Tag: 1794957790-500052
+X-HE-Meta: U2FsdGVkX18Z43Wp6+7YB9+Tv2yGjI36WMwJTr9KBnnXE2eLI+VTC9Du2bWkhjSmMQJBJaNd7rJlwGdbBi3JexlXBm8RD6H8aWNF4sYDCiOvT5jWwHX6bcStVAJbGQaQtASeGIh6vVjnE8xFIFOIhGmn6F5EAHCHlr+VB2JdxEmP9vGYeGPR1fXEctaFO/x7pIpEhk0S2SMOl1Vf1FBE4nQ9fteCMVlABmqvfJ5A1inRz0t4ym2NMUcvJh+8ONgezMzpFvr7TcvnvBq837G4pdleuOvRwRDLg84rq7f8kUsgxdC3Y2/WbL0/llb3eLr3WF3XmEyIosBqiFy5atSCC/rX1O0ZOC8tLNk9DRQBsdpBLS7WhdZ7kK4QJFcbpktiH1jsTcoARVbOeXJ8Ew/5gnt1ZPP+xZ//iZ7mE09m66HS1PiCma8662lqgqvqSZsLV4DRvCxZXdWsVTrhFdN5RnhJMAt3+jHyNTlvFroUmTnW1yvdDmjNFqzHKFL8mSrvbKTbbGhagiWg/uvPtHWoAJinzWSGZL9qsxY5qwBxhNxaFfXjpgY7wfUnHCgXO5ZSU7WhSRieOlUl+vRtdQb0KRySBLTgzeev3QblY6SB85P4RQjI1hyqcJ910U8XPLZV7A1Uu4RnMafcb3t9LowKEI7tgNk1BW/RN0z9gZ+m0H+a0kUBSVq+yEMbHX7E8g5Jg3kVXNCRlh8tEjWYkNIoP3EwZ/qvBVZkBQpnsJAFNHhXOqDsGs0mDwkTFE3yLwWsF8z4T2xC3Gw6BT7C2UZzP8lSyYATJoPTuAlyEh3pskos7XOKc61fbM5fEp1cyWLzbRvIbpXMKGYNmpKIVU1/UMpiq+cgVvLCLACMoSd5YKFTET2FSyodvH5kdI1qYHZDeMqirjS185QRBSIBBLtvKO1yukTM9Gjwze2bjI3NdH64CA3mlvKzhoAHgHwMfe53U7xY6PMgQpcnaJ0UwDk
+ TaS0yIjx
+ t7timW3EdeC5/5M0w/8kd4UeynBtBZUO7GIZkOT2o3HUEpZW/DG7OxmdBnAxiJWIF0iGq64jEZCPdncvvzQmH7pICULnukadeA/f3BM16k/Vg9mULJqR+wsxajzE+1RsMnbZzBf2AyaauVaZ7yT/NFQAsussLZ25mZOP5bIKfjvp4V5XOlDaQxlDojoU5/kiYIyyj5/HYzF3KWQwXJ63CZ8qFuqrsm5coWaWHJnFk/r8Va2ozBFj1hbTjZHN+cPTxvOOWsYz1okVkPtunZ2RtuS6ALJcZ9jQVHdNQGAVbySt13sndtojaFbmlp3zmjKVBBpwlgNVMbgmzhVXOqsTK6EaLmiOr2+9ksJihBgxTZq7IewJYn6qfmHLOdu/oHdGkv8e7KGeHQGtMug/JOieJ1laZxyHvKSCj8zb1oESdmG3hNXdAoa35ZCbxq5EixXKAOtEsVRrybL5lUY3wK2CrkzI0oi78kGNu/E97N/YwJoSuqK9D4qoQGSt1uTluPDZSc118S2fW3Fr9NYwlWctAO3u7IymqO3h5xdXuhBo8+H70EHUkPq4Z1XvE9ZZgU3ZDWFfoSYWGap9HZM2D70Mu/kYv4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,38 +140,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Record maintainership and mailing list routing for the root namespace
-subsystem across its uAPI headers, core implementation, documentation,
-and selftests.
+From: Mattathias Pinchover <mattathias.pinchover@uber.com>
 
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+DAMOS stat sz_ops_filter_passed shows the total bytes that passed
+operations layer-handled DAMOS filters, accumulated from the beginning of
+the scheme's execution.  Users who want the amount for only the latest
+apply interval, e.g., the size of a workload's anonymous memory that is
+cold as of now, need to keep the previous values in user space and
+compute the difference with the help of nr_snapshots.  Because
+nr_snapshots is increased once per target per apply interval, the
+computation is complicated and error-prone, especially for contexts
+having multiple targets.
+
+Introduce a new DAMOS stat, sz_ops_filter_passed_last.  It is
+updated at the end of each apply interval of the scheme with the amount
+of sz_ops_filter_passed increase in the interval.
+
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Mattathias Pinchover <mattathias.pinchover@uber.com>
 ---
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/linux/damon.h | 6 ++++++
+ mm/damon/core.c       | 5 +++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7cbce21ba45a..072be5ec7fd8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24533,6 +24533,17 @@ F:	include/linux/mfd/rohm-bd96802.h
- F:	include/linux/mfd/rohm-generic.h
- F:	include/linux/mfd/rohm-shared.h
- 
-+ROOT NAMESPACE
-+M:	David Howells <dhowells@redhat.com>
-+M:	Jarkko Sakkinen <jarkko@kernel.org>
-+L:	linux-fsdevel@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/userspace-api/rootns.rst
-+F:	include/linux/rootns.h
-+F:	include/uapi/linux/rootns.h
-+F:	kernel/rootns.c
-+F:	tools/testing/selftests/rootns/
-+
- ROTATION DRIVER FOR ALLWINNER A83T
- M:	Jernej Skrabec <jernej.skrabec@gmail.com>
- L:	linux-media@vger.kernel.org
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 06bd92981af2..3aff5c525132 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -351,6 +351,9 @@ struct damos_watermarks {
+  * @sz_applied:	Total size of regions that the scheme is applied.
+  * @sz_ops_filter_passed:
+  *		Total bytes that passed ops layer-handled DAMOS filters.
++ * @sz_ops_filter_passed_last:
++ *		Bytes that passed ops layer-handled DAMOS filters in the last
++ *		apply interval.
+  * @qt_exceeds: Total number of times the quota of the scheme has exceeded.
+  * @nr_snapshots:
+  *		Total number of DAMON snapshots that the scheme is completely
+@@ -379,6 +382,7 @@ struct damos_stat {
+ 	unsigned long nr_applied;
+ 	unsigned long sz_applied;
+ 	unsigned long sz_ops_filter_passed;
++	unsigned long sz_ops_filter_passed_last;
+ 	unsigned long qt_exceeds;
+ 	unsigned long nr_snapshots;
+ };
+@@ -578,6 +582,8 @@ struct damos {
+ 	 * @action
+ 	 */
+ 	unsigned long next_apply_sis;
++	/* @stat.sz_ops_filter_passed at the start of the current apply interval */
++	unsigned long sz_ops_filter_passed_at_start;
+ 	/* informs if ongoing DAMOS walk for this scheme is finished */
+ 	bool walk_completed;
+ 	/*
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 0a056949604f..6af3309691d4 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -769,6 +769,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
+ 	 * or damon_attrs are updated.
+ 	 */
+ 	scheme->next_apply_sis = 0;
++	scheme->sz_ops_filter_passed_at_start = 0;
+ 	scheme->walk_completed = false;
+ 	INIT_LIST_HEAD(&scheme->core_filters);
+ 	INIT_LIST_HEAD(&scheme->ops_filters);
+@@ -3533,6 +3534,10 @@ static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
+ 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+ 			continue;
+ 		damos_walk_complete(c, s);
++		s->stat.sz_ops_filter_passed_last =
++			s->stat.sz_ops_filter_passed -
++			s->sz_ops_filter_passed_at_start;
++		s->sz_ops_filter_passed_at_start = s->stat.sz_ops_filter_passed;
+ 		damos_set_next_apply_sis(s, c);
+ 		s->last_applied = NULL;
+ 		damos_trace_stat(c, s);
+
 -- 
-2.47.3
+2.54.0-uber3
+
 
 
