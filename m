@@ -1,119 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAEE606A32F
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8835F606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 10:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lCWhJkXx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V2SAuhWs
 Received: by kanga.kvack.org (Postfix)
-	id 1484A6B05C9; Tue, 17 Nov 2026 05:13:23 -0500 (EST)
+	id 67DEE6B00EF; Tue, 17 Nov 2026 05:16:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 120356B05CA; Tue, 17 Nov 2026 05:13:23 -0500 (EST)
+	id 62DE56B05B1; Tue, 17 Nov 2026 05:16:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 037F86B05CB; Tue, 17 Nov 2026 05:13:22 -0500 (EST)
+	id 51D1E6B05B7; Tue, 17 Nov 2026 05:16:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D05486B05C9
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:13:22 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60AF7140377
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:13:22 +0000 (UTC)
-X-FDA: 85444198644.13.9774FE2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 247706B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 05:16:16 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 75BC91202FB
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:16:15 +0000 (UTC)
+X-FDA: 85444205910.21.CB4D4A3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B61391C0008
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:13:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCWhJkXx;
-	spf=pass (imf18.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id A4DF0A000A
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 10:16:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V2SAuhWs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794910400;
+	s=arc-20220608; t=1794910573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bjegpoisEbZi471m0jCHyTug5TPNI/ZEHYUEeklKtvE=;
-	b=3adLaWf7E6MK1PCVRQnLMRT7YOVBEL8YYEbRuFjEemFAz38vC4f1vAPhrBFwfc+Pnmp2Aw
-	jdt+IL60+k/xLdTssgEG0l5gGe5cuqR97QCFgREWq5j472Miv69mBacyoIRWypZlgHVfzB
-	wKG6bU8txtfUdyaReRcJ/4KNGiBKqfI=
+	bh=l3F7MsaTa0dMzD3OO4ezzHyvu2AXC5WZNHSTj7ej3LU=;
+	b=aK5EIbFdkJMAsfH2TiUzpf1sH0BRXAE5KSgPgwe3cFYwkaZ35+TBkKk6Iy72mHUgccd/aH
+	HZXVJP5Uv/Ng03XGuyxM7kl90ZhqPPBDe2BiqSwN+7/45syIy4XWpqp74VLVomZz5OTVT6
+	kgB2d0ZCJBNpuvI6PfB007Mpzd/k/iA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794910400;
-	b=yrPMzOP5/+2a9blWOcHcJ0Bu12K89jsiPR2YRKdt/Tw+iPd7h+YOwgS8M/BQtxbAfvL4Ju
-	wwPKFiZ0S7rMvDvE6cRF0Vly8afSDIGvrgTmkYFKrvab3/gLFeYvpCB8LNKR8F9dVCvOi+
-	aSjGkiHWJtcSMF7ww/l8j+L2NbUtoKw=
+	t=1794910573;
+	b=aYeo2x1SAcjcuqrWMxGvgxKu40mNGS9NTQdf6Vu/Z22/goQneyHl1AXZbbQwPzYD6Prqse
+	ZBkreE77h2ttNAmkk+OQhlI3u5RFncUXS6ehvNyrVFG2L4H38QZjxAdl0EOM8krT+fhufr
+	1PFo55FcMnHZ5hMnyF9MlomAt/3Ftjo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCWhJkXx;
-	spf=pass (imf18.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V2SAuhWs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F25642B76;
-	Tue, 17 Nov 2026 10:13:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4161F000C4;
-	Tue, 17 Nov 2026 10:13:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E322A40185;
+	Tue, 17 Nov 2026 10:16:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D7E1F000C4;
+	Tue, 17 Nov 2026 10:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794910399;
-	bh=bjegpoisEbZi471m0jCHyTug5TPNI/ZEHYUEeklKtvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lCWhJkXxe0cd+l/aKM456yX2OjBqh13wZLpZEuhQM2jbS+ys2teSairW1BLSqz39H
-	 P4f1JlzNK1bP5fmVazLr6E5YpPmsAcCQWyZ+aMjk3YRRoY9x2c1kd2Xy11NmZPQZZ/
-	 nBLIKujMVtHAYFMKk4FRiUcSm4e9uJ2iths/rBov6xl3NUUlHEfIktYnFJkS1dsS63
-	 HpxgCf6kyYS8Gexowd2VVgg8+fLYPehQU6LUGZLe8sajy32NEX0nTKUuHyLs93tyxk
-	 991CZ2XvEZcZiNJbKxs96PsQHM3YRz2jd1+SL1g1rShIJFNzja9UdHZSDWpX+4v+Rj
-	 U++7nPWw4FK5g==
-Date: Tue, 17 Nov 2026 11:13:07 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mel Gorman <mgorman@suse.de>, Andy Whitcroft <apw@canonical.com>,
-	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
-	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>,
-	Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v2 03/15] mm/hugetlb: preserve reservations when
- shrinking on HIGHMEM
-Message-ID: <avwos-qF9ADmdHIT@localhost.localdomain>
-References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
- <20261116-fixes_hugetlb-v2-3-4dd9e94ea9ac@kernel.org>
+	s=k20260515; t=1794910572;
+	bh=l3F7MsaTa0dMzD3OO4ezzHyvu2AXC5WZNHSTj7ej3LU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=V2SAuhWs8jAcWpSSEzf+Io5Tcac0gW/AhhhNyfA6nts77Ei3uaIMdN4gRYHnZMPan
+	 ftAY8MITi4XIgLRDI+dRH4G2SzzBi75VqPfmylclgxlvpa2ejhLONEH0zRYOi0yqVp
+	 Gv4WheQs+UDBnYPyBaDYTF+xqD9O5Ton+drdPueX48pF2nt8BNhSOQ34VTUAa/4FcR
+	 36qcNgKZZvIO6BRiC4i8jLr/AYGdpKFlmrJCf2XRGoBRwF7Pw3RvQNGdvsw+kPwXuG
+	 swjG0CMWFRVlePqeMq6yGFM5Utu1nfnHaTIF3YOhCX23kWkEtJ+MbUXKFbl4vw5kri
+	 s2mpECBMWW/aQ==
+Message-ID: <1ad7a1b3-3bea-4cc6-bad9-c400046a6a88@kernel.org>
+Date: Tue, 17 Nov 2026 11:16:06 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116-fixes_hugetlb-v2-3-4dd9e94ea9ac@kernel.org>
-X-Stat-Signature: aouibqp9g8j5z8zwtzksm5oa6oneakcy
-X-Rspam-User: 
-X-Rspamd-Queue-Id: B61391C0008
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/memory: mark unshare copies dirty to fix MADV_FREE
+ data loss
+To: Daniel Wade <danjwade95@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261117100622.807-1-danjwade95@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261117100622.807-1-danjwade95@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A4DF0A000A
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794910400-272712
-X-HE-Meta: U2FsdGVkX1/dadQjDlroy3yAI2rgVcZRrWoQwL1puBFMlSVhRCXukssbve6daaNNKjMwcz4Y6EMVTKia524K5v3n3l2ayQhAxFB9OvfTM9sPpGQmYOPcgc1nxMNOiV6BGoqPayrxGvRi1DDKRoYcndjbcGqofrILeLpFCzFujJ7tnsixJQcbZdk8z9sK9ShJjdKm60xnIwo2G3AicucTeC43dgbw+wMFNBPTVHNFFsfLXsyk+9b3ZxlXNdmnIshwug4Yuiv9eBhrBBin8bJRtqDXESvSYEYS+N+DnY9Ltu1KiMpaOI6Ynu7NgrYFjfJ6KbGYjRBcZeWjORJvoxAcGeYu2XlIQhwJcMJQW4VozNCEa1oOrAgjhA31BZ39t5GW8l6qsM7ezlP60ya44YMocHKVwXBTSORuEYXrFIJ+qIEG+1r2GjCU6HfkIQxYYsY2ci41QYpuqS9df9Z9+OXUjbs33Ew/KTGhqcQjn00URZ4ddmz9gGOw2+U1b6sF9qhVoi7ymJV018ikMun9fNJayfd2fqUjjx55CptXOkmcF7SxHWTOn6HNavNv+N82rA3EGzWa5Wb5O9veM+htm5EvpBF5oNchL2MrpEb5JEqdbRWvBR3+m9Tdk7heWxB2ZYXohqhAM26bAzDfKsZqYavLF7dT9f4pLuLoSatJ1LWGQ9SZgVGtPwqvJd9IryTzrSyc/1GPrC3pFPJy9CzyzioSu+8XSVsFWgtW9XIPNpCs/guV33vHAfNDclYM5fgNUpepWuzBCGUb8HPxTDowg5Yk5JVajoVuLeLNsEFakwBiLEHxt2A/xB2dz3FZhlmrVUPFBzOSS5kKGMTOxf+lcKGoVV7F8sfsJh2YkHOy1lzO3r8U14WsSunS61/dr/MFGoo7gHlvHyzT328bruRPTaKuqws3JUXFb6wb8B5oXGRoAYmcs5Y1g1md6Ne9NCkR8p5MKJZeNjZ/8xSyF86aPY2
- O8WZRrUv
- SSCTwttMKvHQMjk7C9rWuFOZOux35GfEok9BUHgooT82LcZw+Pm+OA/HF6n7pNAkryUa2KFeuRmPU+be9R4WHf1SRMmjMdkupFyb5oU2BTWRRE/dOKCzjvrtT34Ycj998Sv0n+Oek0rJCOoHAllSgtKLsE2TUZee+bQRt6eBqKHd6TUsoWZt8oY5FzAXL6nUiIE4jcFXUQYuCZ6FKmZU97M9pEtVgyVR5bf/CSOffHJUudlpnNvSUh0W0/7szWfgLKbRqZpfsZ9ZwCThwm1joa2+91qmlxlNgo+obNbPXEz400KyIRL4TiTn/sA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: 4uaxyhupeisdimk1j14i846cou5d3175
+X-Rspam-User: 
+X-HE-Tag: 1794910573-762281
+X-HE-Meta: U2FsdGVkX18EQ8I7YnoDFqbo355/ZuMMWRqYSKOiXhUcVrQYd5Y/a4bI4qbtqIVr1hDLakQYzaK3F7EFCQBFbX16Adxs4v+8vELYT4/hPDhqQi/Wmpnkb0fX6djRJtHxPxQFP8aeFsjSUzsLw6eQZk7w3xoi0Bbkolhg1H6mLO610WJwNg5oP1hdxhfINepdhr/TUd095xLobjVrKPdbWsBWGatk+qi0ikW9frwyzh6I48g5U70C0bARbWsVyxoTlW+E8917ZTwW+4zVKEbbzG5BSezenh/CaMLtFXX6FYMvMbB7rPzXn+EhpGd4ASzk1Kgc9C8kiRGu3ytI+9svZrii0IVYs1QyYZAsOmeLTloA3Y/V1ujmeM79WCjbvTNJA+XSHzoYh3OIvtdGKeXRm1cj/1y4FCOn12KxWFpPwJmgxaN7MgSIu2SdB2NJ0mL2aZ+KeYcb377wzUM2Eh2L6zxpwPSyEJVaYzOTj52OEMY1O5Wywttuay8YUPdwmfFJt62dafzNYCMC2SP1iOEyGbglGZW1c07xFTjU5M64KrEAT9pA9LpODGC6M6CwhXJLsns6HoQ9kByIMf+ANqDWIObSEtdl6vaJT+qIjVyfBdQLcumpnHKyiSrb+yeSMC3BbYZYBTak2ArPo4BDudn4KLP302B4DUOUxy3yXvLgmpAodrL1cuGws3rSz77PVXroQmtkmSv6MR+6YZncH9UY60sE73wSe3rLIMNWvi5K1gf12bbnrXxgCzW1G4i6PWQLVRaldvxVwML40/kMS6k7K+PPsqVuvPkzUhUWOB1XfAp7ePnuPPo+ycGglmoRxCvFKMhdBKYUk8jqDQmV/nBr0I7eF6en11F7fADlN4pBJGVbzWaJdOawP1uCC+k3X9g3ZAOa6Z974xbCYBcQYbwX+dnms4qyNCDBA4hwvKjHR0iswVRMGUTnOr8WMuMl8l+2qBC33Kn92U3mfYVIfI6
+ a+8Y8IGM
+ OsyqYmsU0Bg0vli2b9bzWBAghQ5TZhaFtaLdTIYxpJNaNMsrLl5L25KPqVMCIYJCCsCE6ZWwjzNKn1Nadg19T7JIvQM1lpLtxhFZ0b7ExhgI7rS0BZiCV6W0e24Sigsi5J7+t2S8x28fkUGyZygzRqKa2uBL793NIQrJYEi8e8C+/BEQuog77pDIBoF7kbSoS9IL7a7sITghzJeqBkqMkY71Vv9R8WKiwT56esVepEv/u0bnCv9p6lkQLMpVQsd5DkvbRqqkhLr8u7u76tLujD6CTihB+kZpQingrBDTAiPelwtQ+4LXaAOYoikhD7eHVtMlnkSDL3qTDxbJ14dLDc1qx+mKzzLrOUzxY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,27 +146,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 07:29:24PM +0100, David Hildenbrand (Arm) wrote:
-> try_to_free_low() drops the hugetlb_lock while freeing lowmem folios.
-> set_max_huge_pages() then resumes freeing folios using the
-> min_count computed before that unlock. Reservations created in between
-> can consequently lose their backing.
-> 
-> Collect lowmem folios on the caller's existing page_list instead. Keep
-> the hugetlb_lock held through both selection passes, and free the combined
-> list at the caller's existing unlock point.
-> 
-> Likely not stable-worthy.
-> 
-> Fixes: 1121828a0c21 ("hugetlb: call update_and_free_page without hugetlb_lock")
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On 11/17/26 11:06, Daniel Wade wrote:
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Please don't send out stuff that fast, especially when the discussion is not
+over yet.
 
- 
+> wp_page_copy() only calls pte_mkdirty() for write faults, so the copy it
+> makes for FAULT_FLAG_UNSHARE comes out clean. Nothing marks the folio
+> dirty either and there is no swap entry.
+> 
+> Unshare faults come from R/O GUP pins, like process_vm_readv() on a page
+> shared with a child. If the process forks after the pin is gone,
+> MADV_FREE in one of them marks the folio lazyfree and reclaim frees it.
+> The other process then reads zeroes.
+> 
+> Mark the copy's PTE dirty. pte_mkdirty() also sets soft-dirty on x86, so
+> take soft-dirty from the old PTE in both directions.
+> 
+> Side effect: smaps and numa_maps count an unshare copy as Private_Dirty
+> or Shared_Dirty rather than _Clean.
+
+numa_maps still doesn't expose Private_Dirty or Shared_Dirty. So this should
+probably be be
+
+Side effect: smaps counts an unshare copy as Private_Dirty
+or Shared_Dirty, and numa_maps indicates it as dirty.
+
+> 
+> Fixes: c89357e27f20 ("mm: support GUP-triggered unsharing of anonymous pages")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Daniel Wade <danjwade95@gmail.com>
+> ---
+> v2: set the PTE dirty instead of the folio, as David suggested. No atomic,
+> and the dirty bit then also survives in the other mappings.
+> v1: https://lore.kernel.org/all/20261116111245.28871-1-danjwade95@gmail.com/
+> 
+> Tested on mainline b3dfbde62cf1, x86-64 with KASAN and PROVE_LOCKING, as
+> uid 65534. The test gives an unshare copy to a child, has the parent
+> MADV_FREE it and a control page it alone maps, then waits for reclaim.
+> Without the patch all 4096 bytes come back wrong in the child; with it the
+> child's page is intact and the control page is still discarded. Same on
+> v6.12.117.
+> 
+>  mm/memory.c |    3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ec3d9d99ccee..113b305854d5 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4130,8 +4130,11 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+>  		entry = folio_mk_pte(new_folio, vma->vm_page_prot);
+>  		entry = pte_sw_mkyoung(entry);
+>  		if (unlikely(unshare)) {
+> +			entry = pte_mkdirty(entry);
+>  			if (pte_soft_dirty(vmf->orig_pte))
+>  				entry = pte_mksoft_dirty(entry);
+> +			else
+> +				entry = pte_clear_soft_dirty(entry);
+>  			if (pte_uffd(vmf->orig_pte)) {
+>  				entry = pte_mkuffd(entry);
+>  				if (userfaultfd_rwp(vma))
+
+Apart from that LGTM
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+
+I'll wait for more review before picking this up.
 
 -- 
-Oscar Salvador
-SUSE Labs
+Cheers,
+
+David
 
