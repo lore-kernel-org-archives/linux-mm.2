@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D10606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B0A606A33B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Nov 2026 23:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nv82ikRn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HfTmLOUV
 Received: by kanga.kvack.org (Postfix)
-	id 1738B6B05C8; Tue, 17 Nov 2026 18:14:49 -0500 (EST)
+	id 4A7816B05CB; Tue, 17 Nov 2026 18:14:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14A0D6B05C9; Tue, 17 Nov 2026 18:14:49 -0500 (EST)
+	id 47FE56B05CC; Tue, 17 Nov 2026 18:14:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F062B6B05CA; Tue, 17 Nov 2026 18:14:48 -0500 (EST)
+	id 2F8386B05CD; Tue, 17 Nov 2026 18:14:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4A176B05C8
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:14:48 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2FA69405F7
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:48 +0000 (UTC)
-X-FDA: 85446167856.29.DA99B29
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F39A66B05CB
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:14:53 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCBEB1405C5
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:51 +0000 (UTC)
+X-FDA: 85446167982.24.9F0B163
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7651120008
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nv82ikRn;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 41CD41C0006
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:14:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HfTmLOUV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794957286;
+	s=arc-20220608; t=1794957290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6n34UB4IGYmqbxIeyu3C92WUyY/otUHn2KouidPimtk=;
-	b=gj6svqguTKwmA5w6PyUSCDYIjOSXXlCcrSj3c0ZrrYYLAIoiU6KXZael3IE6xT9JN/pKdv
-	/+ZvO2S3TsiU8AnZZ7Xocy+o4Q5J8cpd/JsBsjG6FfgpYyZpO3G9gs4Hp7FazmaIgOpqda
-	p6CZ2jZ7R9wkMQ09Wfunk3HfVx4n6aI=
+	bh=rnhD6tF7xb3gXg3a7yMK93SFhcbPvgN7PjvYAJdpiHc=;
+	b=NYIOl/e+vUmY12AS+yVgO2mmPIfPH+Ekl8J8pnNiR7Rofe70dpw7dZh/FOcf+zilkRrqpJ
+	ihTRengMxpJdyyHL5ZwrPiCQfIuNi5PAiV8XlzyGXfBe43N/GoGWDXk57P6xWjv4ALuRRH
+	LO3x+EwvxCMiPDxHx5LTtTec4mbk4MU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nv82ikRn;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HfTmLOUV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794957286;
-	b=R7SwHAlRNCHARfsArcCx6O29AKarn4Eha5U7/R0POcFrKGHH49z7NyllNaipZGq977mBNQ
-	LI6fZ2xqfGxOgkUvBaKN7FLWUCqQyVPSgbD4u5kTs/X4lCR2sNR1Wrv/JZn1MDS18kXv91
-	wl/o0LsXKwZK35Zzzwz0NDe/dmLiy80=
+	t=1794957290;
+	b=261i6pv5p5PGq0RcItSeTOxKEehL9s3K55sniNuvDIvRMqG2Abl1V8cvBSR/MELao2xPzv
+	fP7+WE/UKMxZ/wnsCheGo1D/84LUtAg325iigU7YOvF5XCADhfrt1px+vcDTSARS4UixEF
+	hMZMxBUg0vfenmNO+5YiFGtkZkg5KQw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id BC78A41720;
-	Tue, 17 Nov 2026 23:14:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id DE2621F00923;
-	Tue, 17 Nov 2026 23:14:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 894C3448CE;
+	Tue, 17 Nov 2026 23:14:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id BBD881F000C8;
+	Tue, 17 Nov 2026 23:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794957285;
-	bh=6n34UB4IGYmqbxIeyu3C92WUyY/otUHn2KouidPimtk=;
+	s=k20260515; t=1794957289;
+	bh=rnhD6tF7xb3gXg3a7yMK93SFhcbPvgN7PjvYAJdpiHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Nv82ikRni3pWvdz/v3Vdo+m1Anuew84FJcPoalRIkbDhe6E5zey3rFphBih5HmEi1
-	 Jdj85W4jMNmUEEYeQvn10vCL9w84rrIIQWOvHio86WhASVJSe7JhRk/BhZoA2caOMn
-	 BcQCQ1kOtz3EfRvr5RBUjeT8YZUorLG1SwZ24dQylM7CUrkAohYxDY1kC6mLaVAIpE
-	 njZnDZ9/qWUlt4Ax/p64lqw9yFXGnqjVuiOMmxjXfoqa8EuMKYBfUAzEHntS7aYcqC
-	 3KEhBzC1vPDiFvp4mnnuTvw6gT7uuc39cnywJh8Ozpp8k+cLCTOr5c8ebROGPJKW67
-	 NkI6qRuasf7jA==
+	b=HfTmLOUVS6gLgxvFdZvNX8G2CAu5/WmQ0zzV9SMNDABd5r92r2e74OYGuADjFyQSX
+	 c3c0txaes/2fL/dYmbzFCEYqxsz54RB71iVUkA4iVkOWgaGIG/d+QmPdMq6acb91Qg
+	 BJzeUEKu1KgvKN7QH9LrE8RktByfg+XkDXpdBWzBf+semaIkzVcH/ecVszvu/KqiUe
+	 uHmLfa7tOwCwWSn1XjCfsDweCekGO9WnaambZntx6taoia/sGx5in2Vtc0oOO5wBSt
+	 lFTagVBrZwwdBfC5R34DQkSNaGNtoNcNA150K7sPGnYOcIUUbg17eUblGB6iTwBuI9
+	 D2ADlX6CEMsvw==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -104,27 +104,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v2 09/13] fs: Support installing rootns mount trees via move_mount()
-Date: Wed, 18 Nov 2026 01:13:48 +0200
-Message-ID: <20261117231352.3816603-10-jarkko@kernel.org>
+Subject: [RFC PATCH v2 10/13] arch: Wire up rootns system calls
+Date: Wed, 18 Nov 2026 01:13:49 +0200
+Message-ID: <20261117231352.3816603-11-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261117231352.3816603-1-jarkko@kernel.org>
 References: <20261117231352.3816603-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7651120008
-X-Stat-Signature: wc7zbigbodctbw7w45go5466hots9nxx
+X-Rspamd-Queue-Id: 41CD41C0006
+X-Stat-Signature: f54gs6aaue5rgu6t6rcwhtza37pewiw3
 X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1794957286-122796
-X-HE-Meta: U2FsdGVkX19wFot+nclsMio6riU5rCbUOSkMUZ5dQBUVE2RrcpG4iu2f1SZhQt0l+GQoLTogtnQdululn4gaSzRFiG4yGHF7BrlGKwcmt4eC6shJ/sJefbWGDFuShAn5WEJQvSQbZubmy7MIUUH91FFW/3aHkXBO/DudaAkqmVRPFUKqBeqXZtpzT2CnIqzClWUfua/ryNShO7tqJhgwgY0BrS+wt2j387kRC23mkUouwBfxHJ1JhHxIrZ0umtT7oQ7znh/R96V5XR9FwB0j3hl2yH4ALEyuCrfeMjz9V9q9Mz//QZVVDM5jRgNoRqmO0piJzWnErKjFUx9GGEOp/ogfQeBnFkvgC9rZVjBItGKY4Rp8s2/qENRVky2DKZRB5NvInoeHOLQxEPqNbzvZhkSPgfcadpOoe+HpqrzJspF2VqtyG9CsZZUFtGeCPO49qdNQRueevflcwMDRtxiRVaiJVoA2CulVZBFCs4ECwR4Z8xciW7UjskTkNVtGICLkqIxtAbPj9QuNJ5xnacPPiEhOBFyDZK9m5QfE+And58Nqf4asvFYzdBoS8rVKCIuf2uj8/7InCvhH7Cg7G9sTHKeIQ5ujperlGQ6KjUtxTUr2n0tRpKEJR60a+XMRBQAKPO87UH3twZR0YKd1ecGwFyCpGcwz9tNxZkQmDkYUoFZrpuwSwNS7Tap8RviHJmX+oKttZUGzw9ojw5L/rl9QH5NSZNGtCbcp1tRgvtrnAHuxdBUJWxl6CAXzIYtdHCoWM+Btde99eMV+iy1aXkjZG9Ixno9pQAIZH4OCM4VV4dsRrciZHolCdD/KDKgR1QAFCwehkk6QDH2K5YZRhVZ0fJLn0AaAMpZ5PlBmyBH3AyljILrz1JDlzHAx7gAHDTqv2xH6r9RP5/K0Vn9cr86c+qew8cg/WZ+xUQpjSgN4DhgmmlDkECp2w0I5MS9R+Pu/j75kkV9vxU8i7O2Amc1
- 9bVE6bPm
- zIp7P6lGJHDV8KtgLM0mDm5MRsIaITFHAu9JS4Mis01bjuJrNwxz6ha0G6PjNMjRf/83aL4Ch7C761JCPsxQCXbXHOiypGePp7TDTH0zwKH2icDMkoiVoz+rEe1UwXo/Z5PoAyyWRXdTaUqTPJbXl/zkhvV8FxbDh7458XR5N1R8jkT96WksUl56+ZTYyiVWpGIPzJclDsguqq+HexZofoonfwLj/AOrj0oEIuyFlJaQpYH54rtX44pOaD51hmLDE6FPm+yFGGhNOwAQ=
+X-HE-Tag: 1794957290-184181
+X-HE-Meta: U2FsdGVkX19E7xQKsi8ciUqZKE6+0Xfa0US/bgNmQmAAF4ziaoqNw0cs0a1WPjA/a5VmEaLQijBChIvagUHPuQyazTCPC3svcbV2/v3nfCPzoU15pCWvIFrARu/CMQAod0Em/2EdoClX1dFdf2C/m9AqSOLfKFiWwQ/HGpKjFtzyuT7IajCp1gJSo37SFSYt2+qUn0eQFOKrx/SwaVU1/XOFgRaynzl3Nr3akeDBLzKVvcIzH3avdeiqNMSjl9Pu0nWSBZekWvIwRpW7kmjzesEj6mqLUI2kc7Lt8Q44oCJgwLG3kmpySnm5QstR4CCC/6W1ArtpzY8ExbKiJDrAPBomzyArgWwcV3ijxqVH2+87oCPaqTEABkSQegtN3paB9xArQ8ozlDMf8RMxRGPBGeMyCoXy1u3IjlSoH5apfnw3vPwCBK3/uKziv7kQF40LnI/RJH5kPBXb0veFrGZCX3tsR12p4hVil/jm6H8XYKUQ9HJjlL5eHi3FaZbFpOq9vB0FsVrta4fyeMn8Mek+JBLyloJtXUPcREP8oCfNeAj8mEXXDxF19W7+VQKSVFDTneaHL02/hSZY3TC2+3b/wifCt3C6DTG8SazWneNNlfItVnl/tjvD5RgO8JGs5Z32qUjNQjaX0Ly63s/67lyjyZMFvvfYn6gdkvfx1q014YkA2N8I489BFwlglWSVz4pFzFBQJh1cm2t/davgCCcU5L4RtdvJiifY7gdEHyvd/ePAdc6ceGXPy2sYW5fqvhrio39iQX1bjF2ywo7WDpwEoQpO+w0SZqnqRfSUqaV6/Q5Es62kyn1cFlYVOPSndldOmIier+/qZdbXXRCPRwAYHxD1tyZP2fB/6q201Q0mtzs4T/08YM7nANO9BWmIl0QUPP9ecXWpPfOYa2b7hIgopp3zP6OXXjOtq8KokHTn2oSQDxKOGfmFJPEZDl6U5DFVsDA+7ypTM/DQULVc+ZS
+ MesR7UnL
+ OTvUnzgrui4Zr4H9UPIFIz/KeSMqToIDILe7Bl4aacWz8hn8SGa1bQz87WYLUG+/mqdUezXKisamVvZxlZntIXdXKHVuxVacH31mkS5Re17EL+hdwWWHasRySN/+1PcVx9cAB/iCYgdHu2yfuMMC4YDfc0wZM3R9U0zatGDU+8McpQ84Ga284jORP1Sa5CadyBDL1TWrQ86wS8UFYLf2qHSk4dEnaqKlcNBwb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,298 +133,247 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A newly created rootns starts with an empty nullfs-rooted mount
-namespace, and move_mount() only resolves target paths against the
-caller's own filesystem view.
-
-Add MOVE_MOUNT_T_ROOTNS_ROOT to populate a rootns mount tree through its
-file descriptor before or after entry. Installing "/" attaches a
-detached anonymous mount tree onto the nullfs root of the rootns mount
-namespace once and transitions the rootns to ROOTNS_READY; relative
-target paths attach anonymous mounts underneath the installed rootns
-root while verifying the destination mount namespace.
-
-Allocate fsmount() anonymous namespaces in fc->user_ns, check target
-user namespace CAP_SYS_ADMIN for MOVE_MOUNT_T_ROOTNS_ROOT instead of
-caller may_mount(), and lock moved mount trees when crossing user
-namespace boundaries.
+Now that the core root namespace lifecycle and VFS mount-tree
+installation are in place, expose rootns_create() (473), rootns_wait()
+(474), and rootns_kill() (475) across all architecture system call
+tables and asm-generic unistd.h.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- fs/namespace.c             | 178 ++++++++++++++++++++++++++++++++-----
- include/uapi/linux/mount.h |   3 +-
- 2 files changed, 157 insertions(+), 24 deletions(-)
+ arch/alpha/kernel/syscalls/syscall.tbl      |  3 +++
+ arch/arm/tools/syscall.tbl                  |  3 +++
+ arch/arm64/tools/syscall_32.tbl             |  3 +++
+ arch/m68k/kernel/syscalls/syscall.tbl       |  3 +++
+ arch/microblaze/kernel/syscalls/syscall.tbl |  3 +++
+ arch/mips/kernel/syscalls/syscall_n32.tbl   |  3 +++
+ arch/mips/kernel/syscalls/syscall_n64.tbl   |  3 +++
+ arch/mips/kernel/syscalls/syscall_o32.tbl   |  3 +++
+ arch/parisc/kernel/syscalls/syscall.tbl     |  3 +++
+ arch/powerpc/kernel/syscalls/syscall.tbl    |  3 +++
+ arch/s390/kernel/syscalls/syscall.tbl       |  3 +++
+ arch/sh/kernel/syscalls/syscall.tbl         |  3 +++
+ arch/sparc/kernel/syscalls/syscall.tbl      |  3 +++
+ arch/x86/entry/syscalls/syscall_32.tbl      |  3 +++
+ arch/x86/entry/syscalls/syscall_64.tbl      |  3 +++
+ arch/xtensa/kernel/syscalls/syscall.tbl     |  3 +++
+ include/uapi/asm-generic/unistd.h           | 10 +++++++++-
+ scripts/syscall.tbl                         |  3 +++
+ 18 files changed, 60 insertions(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index aecd05ac0170..f8c96e4d13ee 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -34,6 +34,7 @@
- #include <linux/mnt_idmapping.h>
- #include <linux/pidfs.h>
- #include <linux/nstree.h>
-+#include <linux/rootns.h>
+diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
+index 52e3538cc7df..c7bec286deff 100644
+--- a/arch/alpha/kernel/syscalls/syscall.tbl
++++ b/arch/alpha/kernel/syscalls/syscall.tbl
+@@ -512,3 +512,6 @@
+ 580	common	listns				sys_listns
+ 581	common	rseq_slice_yield		sys_rseq_slice_yield
+ 582	common	fchroot				sys_fchroot
++583	common	rootns_create			sys_rootns_create
++584	common	rootns_wait			sys_rootns_wait
++585	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
+index 55717ed32c27..59f78bf991c9 100644
+--- a/arch/arm/tools/syscall.tbl
++++ b/arch/arm/tools/syscall.tbl
+@@ -487,3 +487,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/arm64/tools/syscall_32.tbl b/arch/arm64/tools/syscall_32.tbl
+index df2d1d82fb3c..8ef57696c6a8 100644
+--- a/arch/arm64/tools/syscall_32.tbl
++++ b/arch/arm64/tools/syscall_32.tbl
+@@ -484,3 +484,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait		compat_sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
+index ba7a4d8903d0..36eb16ae659f 100644
+--- a/arch/m68k/kernel/syscalls/syscall.tbl
++++ b/arch/m68k/kernel/syscalls/syscall.tbl
+@@ -472,3 +472,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
+index 76d7cbe2a133..54739d61a9ee 100644
+--- a/arch/microblaze/kernel/syscalls/syscall.tbl
++++ b/arch/microblaze/kernel/syscalls/syscall.tbl
+@@ -478,3 +478,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
+index 9ae88e4eac61..f0a58c6b4516 100644
+--- a/arch/mips/kernel/syscalls/syscall_n32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+@@ -411,3 +411,6 @@
+ 470	n32	listns				sys_listns
+ 471	n32	rseq_slice_yield		sys_rseq_slice_yield
+ 472	n32	fchroot				sys_fchroot
++473	n32	rootns_create			sys_rootns_create
++474	n32	rootns_wait			compat_sys_rootns_wait
++475	n32	rootns_kill			sys_rootns_kill
+diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
+index 83dc93a0712f..c1d2774c6283 100644
+--- a/arch/mips/kernel/syscalls/syscall_n64.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+@@ -387,3 +387,6 @@
+ 470	n64	listns				sys_listns
+ 471	n64	rseq_slice_yield		sys_rseq_slice_yield
+ 472	n64	fchroot				sys_fchroot
++473	n64	rootns_create			sys_rootns_create
++474	n64	rootns_wait			sys_rootns_wait
++475	n64	rootns_kill			sys_rootns_kill
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 9c62429c9b7b..99a753234dbf 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -460,3 +460,6 @@
+ 470	o32	listns				sys_listns
+ 471	o32	rseq_slice_yield		sys_rseq_slice_yield
+ 472	o32	fchroot				sys_fchroot
++473	o32	rootns_create			sys_rootns_create
++474	o32	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
++475	o32	rootns_kill			sys_rootns_kill
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index 88adc4016cce..f3bac8085491 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -471,3 +471,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index cfbb70039ff0..4cac51e4d370 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -563,3 +563,6 @@
+ 470	common	listns				sys_listns
+ 471	nospu	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+index 1b45e68a217b..7f8cd4147860 100644
+--- a/arch/s390/kernel/syscalls/syscall.tbl
++++ b/arch/s390/kernel/syscalls/syscall.tbl
+@@ -399,3 +399,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+index ace068dff0de..9bfcb96dcdeb 100644
+--- a/arch/sh/kernel/syscalls/syscall.tbl
++++ b/arch/sh/kernel/syscalls/syscall.tbl
+@@ -476,3 +476,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index 5b9fe0e8140f..a847f4cbea3a 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -518,3 +518,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index 2c172ef48dfd..e49c96692038 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -478,3 +478,6 @@
+ 470	i386	listns			sys_listns
+ 471	i386	rseq_slice_yield	sys_rseq_slice_yield
+ 472	i386	fchroot			sys_fchroot
++473	i386	rootns_create		sys_rootns_create
++474	i386	rootns_wait		sys_rootns_wait		compat_sys_rootns_wait
++475	i386	rootns_kill		sys_rootns_kill
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index d5b6045b0090..d6f7fb7be172 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -397,6 +397,9 @@
+ 470	common	listns			sys_listns
+ 471	common	rseq_slice_yield	sys_rseq_slice_yield
+ 472	common	fchroot			sys_fchroot
++473	common	rootns_create		sys_rootns_create
++474	common	rootns_wait		sys_rootns_wait
++475	common	rootns_kill		sys_rootns_kill
  
- #include "pnode.h"
- #include "internal.h"
-@@ -2564,6 +2565,8 @@ int count_mounts(struct mnt_namespace *ns, struct mount *mnt)
- enum mnt_tree_flags_t {
- 	MNT_TREE_BENEATH = BIT(0),
- 	MNT_TREE_PROPAGATION = BIT(1),
-+	MNT_TREE_ROOTNS = BIT(2),
-+	MNT_TREE_ROOTNS_INIT = BIT(3),
- };
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
+index d354bb231796..268c0d577788 100644
+--- a/arch/xtensa/kernel/syscalls/syscall.tbl
++++ b/arch/xtensa/kernel/syscalls/syscall.tbl
+@@ -443,3 +443,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index 5b7e77a7c736..571db09eb571 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -867,8 +867,16 @@ __SYSCALL(__NR_rseq_slice_yield, sys_rseq_slice_yield)
+ #define __NR_fchroot 472
+ __SYSCALL(__NR_fchroot, sys_fchroot)
  
- /**
-@@ -3781,6 +3784,7 @@ static int do_move_mount(const struct path *old_path,
- 	struct mount *old = real_mount(old_path->mnt);
- 	int err;
- 	bool beneath = flags & MNT_TREE_BENEATH;
-+	bool lock_tree;
- 
- 	if (!path_mounted(old_path))
- 		return -EINVAL;
-@@ -3792,7 +3796,13 @@ static int do_move_mount(const struct path *old_path,
- 	if (IS_ERR(mp.parent))
- 		return PTR_ERR(mp.parent);
- 
--	if (check_mnt(old)) {
-+	if (flags & MNT_TREE_ROOTNS) {
-+		if (!anon_ns_root(old) || old->mnt_ns == mp.parent->mnt_ns)
-+			return -EINVAL;
-+		if ((flags & MNT_TREE_ROOTNS_INIT) &&
-+		    mp.parent != real_mount(new_path->mnt))
-+			return -EBUSY;
-+	} else if (check_mnt(old)) {
- 		/* if the source is in our namespace... */
- 		/* ... it should be detachable from parent */
- 		if (!mnt_has_parent(old) || IS_MNT_LOCKED(old))
-@@ -3845,7 +3855,16 @@ static int do_move_mount(const struct path *old_path,
- 	if (mount_is_ancestor(old, mp.parent))
- 		return -ELOOP;
- 
--	return attach_recursive_mnt(old, &mp);
-+	lock_tree = (flags & MNT_TREE_ROOTNS) &&
-+		    old->mnt_ns->user_ns != mp.parent->mnt_ns->user_ns;
-+	err = attach_recursive_mnt(old, &mp);
-+	if (!err && lock_tree) {
-+		scoped_guard(mount_writer) {
-+			lock_mnt_tree(old);
-+			old->mnt.mnt_flags |= MNT_LOCKED;
-+		}
-+	}
-+	return err;
- }
- 
- static int do_move_mount_old(const struct path *path, const char *old_name)
-@@ -4699,7 +4718,7 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
- 		return FD_ADD((flags & FSMOUNT_CLOEXEC) ? O_CLOEXEC : 0,
- 			      open_new_namespace(&new_path, MOUNT_COPY_NEW));
- 
--	ns = alloc_mnt_ns(current->nsproxy->mnt_ns->user_ns, true);
-+	ns = alloc_mnt_ns(fc->user_ns, true);
- 	if (IS_ERR(ns))
- 		return PTR_ERR(ns);
- 	mnt = real_mount(new_path.mnt);
-@@ -4739,6 +4758,129 @@ static inline int vfs_move_mount(const struct path *from_path,
- 	return do_move_mount(from_path, to_path, mflags);
- }
- 
-+static int lookup_move_mount_from(int from_dfd,
-+				  const char __user *from_pathname,
-+				  unsigned int flags, struct path *from_path)
-+{
-+	unsigned int uflags = 0;
-+	unsigned int lflags = 0;
++/* kernel/rootns.c */
++#define __NR_rootns_create 473
++__SYSCALL(__NR_rootns_create, sys_rootns_create)
++#define __NR_rootns_wait 474
++__SC_COMP(__NR_rootns_wait, sys_rootns_wait, compat_sys_rootns_wait)
++#define __NR_rootns_kill 475
++__SYSCALL(__NR_rootns_kill, sys_rootns_kill)
 +
-+	if (flags & MOVE_MOUNT_F_EMPTY_PATH)
-+		uflags = AT_EMPTY_PATH;
-+
-+	CLASS(filename_maybe_null, from_name)(from_pathname, uflags);
-+	if (!from_name && from_dfd >= 0) {
-+		CLASS(fd_raw, f_from)(from_dfd);
-+		if (fd_empty(f_from))
-+			return -EBADF;
-+
-+		*from_path = fd_file(f_from)->f_path;
-+		path_get(from_path);
-+		return 0;
-+	}
-+
-+	if (flags & MOVE_MOUNT_F_SYMLINKS)
-+		lflags |= LOOKUP_FOLLOW;
-+	if (flags & MOVE_MOUNT_F_AUTOMOUNTS)
-+		lflags |= LOOKUP_AUTOMOUNT;
-+	return filename_lookup(from_dfd, from_name, lflags, from_path, NULL);
-+}
-+
-+/**
-+ * DOC: MOVE_MOUNT_T_ROOTNS_ROOT
-+ *
-+ * ``MOVE_MOUNT_T_ROOTNS_ROOT`` installs detached anonymous mount trees into a
-+ * target ``rootns`` control fd supplied as ``to_dfd``:
-+ *
-+ * 1. ``to_pathname`` of ``"/"`` attaches the initial root mount onto the
-+ *    ``nullfs`` root of the ``rootns`` mount namespace at most once and
-+ *    transitions the ``rootns`` to ``ROOTNS_READY``.
-+ *
-+ * 2. Relative ``to_pathname`` values resolve beneath the installed ``rootns``
-+ *    root inside the ``rootns`` mount namespace.
-+ *
-+ * Capability is checked against ``CAP_SYS_ADMIN`` in the target ``rootns``
-+ * user namespace, and source trees crossing user namespace boundaries are
-+ * locked with ``MNT_LOCKED`` and locked mount flags.
-+ */
-+static int move_mount_rootns(int from_dfd, const char __user *from_pathname,
-+			     int to_dfd, const char __user *to_pathname,
-+			     unsigned int flags, enum mnt_tree_flags_t mflags)
-+{
-+	struct path from_path __free(path_put) = {};
-+	struct path to_path __free(path_put) = {};
-+	struct mnt_namespace *rootns_mnt_ns;
-+	unsigned int lflags;
-+	struct rootns *rootns;
-+	bool is_root;
-+	int ret;
-+
-+	CLASS(filename_maybe_null, to_name)(to_pathname, AT_EMPTY_PATH);
-+	if (IS_ERR(to_name))
-+		return PTR_ERR(to_name);
-+	if (!to_name)
-+		return -EINVAL;
-+
-+	CLASS(fd, f_rootns)(to_dfd);
-+	if (fd_empty(f_rootns))
-+		return -EBADF;
-+	if (!is_rootns_file(fd_file(f_rootns)))
-+		return -EINVAL;
-+
-+	rootns = fd_file(f_rootns)->private_data;
-+	if (!ns_capable(rootns->cred->user_ns, CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	rootns_mnt_ns = rootns->ns->mnt_ns;
-+	is_root = to_name->name[0] == '/' && to_name->name[1] == '\0';
-+	if (is_root) {
-+		if (flags & MOVE_MOUNT_BENEATH)
-+			return -EINVAL;
-+		if (READ_ONCE(rootns->state) != ROOTNS_EMPTY)
-+			return -EBUSY;
-+
-+		to_path.mnt = mntget(&rootns_mnt_ns->root->mnt);
-+		to_path.dentry = dget(rootns_mnt_ns->root->mnt.mnt_root);
-+		mflags |= MNT_TREE_ROOTNS_INIT;
-+	} else {
-+		if (to_name->name[0] == '/')
-+			return -EINVAL;
-+
-+		scoped_guard(spinlock, &rootns->lock) {
-+			if (rootns->state == ROOTNS_EMPTY)
-+				return -ENOENT;
-+		}
-+
-+		lflags = 0;
-+		if (flags & MOVE_MOUNT_T_SYMLINKS)
-+			lflags |= LOOKUP_FOLLOW;
-+		if (flags & MOVE_MOUNT_T_AUTOMOUNTS)
-+			lflags |= LOOKUP_AUTOMOUNT;
-+		ret = filename_lookup(AT_FDCWD, to_name, lflags, &to_path,
-+				      &rootns->root);
-+		if (ret)
-+			return ret;
-+		if (real_mount(to_path.mnt)->mnt_ns != rootns_mnt_ns)
-+			return -EINVAL;
-+	}
-+
-+	ret = lookup_move_mount_from(from_dfd, from_pathname, flags,
-+				     &from_path);
-+	if (ret)
-+		return ret;
-+
-+	ret = vfs_move_mount(&from_path, &to_path, mflags | MNT_TREE_ROOTNS);
-+	if (!ret && is_root) {
-+		scoped_guard(spinlock, &rootns->lock) {
-+			path_get(&from_path);
-+			rootns->root = from_path;
-+			WRITE_ONCE(rootns->state, ROOTNS_READY);
-+		}
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * Move a mount from one place to another.  In combination with
-  * fsopen()/fsmount() this is used to install a new mount and in combination
-@@ -4758,7 +4900,7 @@ SYSCALL_DEFINE5(move_mount,
- 	enum mnt_tree_flags_t mflags = 0;
- 	int ret = 0;
- 
--	if (!may_mount())
-+	if (!(flags & MOVE_MOUNT_T_ROOTNS_ROOT) && !may_mount())
- 		return -EPERM;
- 
- 	if (flags & ~MOVE_MOUNT__MASK)
-@@ -4771,6 +4913,13 @@ SYSCALL_DEFINE5(move_mount,
- 	if (flags & MOVE_MOUNT_SET_GROUP)	mflags |= MNT_TREE_PROPAGATION;
- 	if (flags & MOVE_MOUNT_BENEATH)		mflags |= MNT_TREE_BENEATH;
- 
-+	if (unlikely(flags & MOVE_MOUNT_T_ROOTNS_ROOT)) {
-+		if (flags & (MOVE_MOUNT_T_EMPTY_PATH | MOVE_MOUNT_SET_GROUP))
-+			return -EINVAL;
-+		return move_mount_rootns(from_dfd, from_pathname,
-+					 to_dfd, to_pathname, flags, mflags);
-+	}
-+
- 	uflags = 0;
- 	if (flags & MOVE_MOUNT_T_EMPTY_PATH)
- 		uflags = AT_EMPTY_PATH;
-@@ -4794,25 +4943,8 @@ SYSCALL_DEFINE5(move_mount,
- 			return ret;
- 	}
- 
--	uflags = 0;
--	if (flags & MOVE_MOUNT_F_EMPTY_PATH)
--		uflags = AT_EMPTY_PATH;
--
--	CLASS(filename_maybe_null,from_name)(from_pathname, uflags);
--	if (!from_name && from_dfd >= 0) {
--		CLASS(fd_raw, f_from)(from_dfd);
--		if (fd_empty(f_from))
--			return -EBADF;
--
--		return vfs_move_mount(&fd_file(f_from)->f_path, &to_path, mflags);
--	}
--
--	lflags = 0;
--	if (flags & MOVE_MOUNT_F_SYMLINKS)
--		lflags |= LOOKUP_FOLLOW;
--	if (flags & MOVE_MOUNT_F_AUTOMOUNTS)
--		lflags |= LOOKUP_AUTOMOUNT;
--	ret = filename_lookup(from_dfd, from_name, lflags, &from_path, NULL);
-+	ret = lookup_move_mount_from(from_dfd, from_pathname, flags,
-+				     &from_path);
- 	if (ret)
- 		return ret;
- 
-diff --git a/include/uapi/linux/mount.h b/include/uapi/linux/mount.h
-index cb55cfcfc92e..7224a43af51d 100644
---- a/include/uapi/linux/mount.h
-+++ b/include/uapi/linux/mount.h
-@@ -75,9 +75,10 @@
- #define MOVE_MOUNT_T_SYMLINKS		0x00000010 /* Follow symlinks on to path */
- #define MOVE_MOUNT_T_AUTOMOUNTS		0x00000020 /* Follow automounts on to path */
- #define MOVE_MOUNT_T_EMPTY_PATH		0x00000040 /* Empty to path permitted */
-+#define MOVE_MOUNT_T_ROOTNS_ROOT	0x00000080 /* Set as rootns root */
- #define MOVE_MOUNT_SET_GROUP		0x00000100 /* Set sharing group instead */
- #define MOVE_MOUNT_BENEATH		0x00000200 /* Mount beneath top mount */
--#define MOVE_MOUNT__MASK		0x00000377
-+#define MOVE_MOUNT__MASK		0x000003f7
+ #undef __NR_syscalls
+-#define __NR_syscalls 473
++#define __NR_syscalls 476
  
  /*
-  * fsopen() flags.
+  * 32 bit systems traditionally used different
+diff --git a/scripts/syscall.tbl b/scripts/syscall.tbl
+index 0ab531605120..e9ff99c03b2b 100644
+--- a/scripts/syscall.tbl
++++ b/scripts/syscall.tbl
+@@ -413,3 +413,6 @@
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
+ 472	common	fchroot				sys_fchroot
++473	common	rootns_create			sys_rootns_create
++474	common	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
++475	common	rootns_kill			sys_rootns_kill
 -- 
 2.47.3
 
