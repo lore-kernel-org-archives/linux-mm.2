@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70DC60A383D
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF096607E703
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eDLBJCLq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rn4NJ9AI
 Received: by kanga.kvack.org (Postfix)
-	id 7CEC26B05C5; Wed, 18 Nov 2026 14:36:31 -0500 (EST)
+	id 5AAFC6B05C7; Wed, 18 Nov 2026 14:36:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A5316B05C6; Wed, 18 Nov 2026 14:36:31 -0500 (EST)
+	id 55C296B05C8; Wed, 18 Nov 2026 14:36:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66CCF6B05C7; Wed, 18 Nov 2026 14:36:31 -0500 (EST)
+	id 3FC7E6B05C9; Wed, 18 Nov 2026 14:36:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2661C6B05C5
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:36:31 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C11F81A07DE
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:36:30 +0000 (UTC)
-X-FDA: 85449246540.29.03AEDD7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1E2C81C0003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:36:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDLBJCLq;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 145406B05C7
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:36:35 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A185CA84D9
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:36:34 +0000 (UTC)
+X-FDA: 85449246708.16.3F98D8D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1102940006
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:36:32 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rn4NJ9AI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795030589;
+	s=arc-20220608; t=1795030593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RLySXlw2qkGSikQZcqQu4v/kKS57qhr6tNuPuE+peRQ=;
-	b=CAeZDJz8dStjUZjPUOgaI52qM+2yj5SKI32Bgs0V0tOAWabmx7DrlC9j3I8gE/70FbAUUl
-	EfNytrPRpI7dD1/mlYDaVoIhTvz35cx4XCEIXaO9B090FKk6KnGUjHKk2Ab/GMOz6c8I4Y
-	2RcYoDLmXmozde5IEEN69bpNGt+3iok=
+	bh=emvb8auKFt8ReD/7cfPOhlXVG+92MMR8s3O3PK6mxX4=;
+	b=yiwqH15aF+6cYK4DyIly7SBhK0b8e99F77pors3yN0DgLMc4M2sgOiGp7erRsxAs9zPzXG
+	73ar3Z+GvK6EOaNxWnkCdmBF0rpWIHdcWc1nrpiqjvqv+RflVwA2llTzrFZYc/HvDD9tT2
+	Td0hSvICALCW6h1eu0H19zlK34y87QI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDLBJCLq;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rn4NJ9AI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795030589;
-	b=v072wH2hWcfDP8dR5dBKlCH/Z/rhdOlsWDaJreQZpzKh2xEggq+4KWuRcBHaVqCL7QfHBE
-	7z5/twHFzHb6aiemE5req4RguCJedFCubfHqBcTJZT0poDIst3l6HOZsbRaKWuQ8lt5i8Y
-	u2ZRTnafmL9oZodTD15uh+G3TtHF78A=
+	t=1795030593;
+	b=vUj+74dxt+Icuihid8r2HkVm4T5z2oLmEbnML5+6ooIrD8MEGwY6twGAti8+RFywAKAGk3
+	U3Y7LujRkHlJxXRm3RxwhTEwJmjulcDylaDsi0ea5vH74edTMfQH0Po5Asi3/gc49orf9m
+	pJVv4YlzjGtZH/qFXzGOhGY+AklwMC4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 62E5C41855;
-	Wed, 18 Nov 2026 19:36:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 97DDE1F000CE;
-	Wed, 18 Nov 2026 19:36:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 860A963982;
+	Wed, 18 Nov 2026 19:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 7FD931F000C5;
+	Wed, 18 Nov 2026 19:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795030588;
-	bh=RLySXlw2qkGSikQZcqQu4v/kKS57qhr6tNuPuE+peRQ=;
+	s=k20260515; t=1795030592;
+	bh=emvb8auKFt8ReD/7cfPOhlXVG+92MMR8s3O3PK6mxX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eDLBJCLqJZOJm6cw53EhFns4WkXQwt2jO2vrFHmGVWFB8SHeoqhP9ECawkioY/t43
-	 FKoNMLI/B6NBAWq27Ycu6C8uQD3kiiOnDjUxmkSS1GUMVLwwxuhuqhlYOMct7uBjqu
-	 J+PiTUrI6SYxSVQm+0g9xFfXZNSnzIaPi4898N8NSO51faXl9cYNpYgTi0NIH/emdp
-	 eUJJX5wY7Nn2jqixOtSicGV+7Be+BgNjxsuDoMFGG6genRuaHNr3vgJsIedtMfk/AB
-	 XT+9ODK9nizQ7zek5NC/2fVsdcAWB05Igm7aA1iCC46D6v3Bfw8kU5d8/BplUluMYM
-	 fnyVoc2NpEeyw==
+	b=Rn4NJ9AI6YGF8PVWQXBRv1FiBYfqpDSxzELVRGBk54g25p1QGmG0kbWwjkVW4w2D8
+	 lNzUuvLqiYY70zuklWvAlaaxGRUO2cvanIC+l4rtHSr6wjBsvkeFQH2zeKwkHM/2HR
+	 1E03wIpBV8/JESxYLAq9/dbhxN92LOjVYCvST4kDso8ClYV5rrMrTwrfyh/ubHS4pd
+	 29LnkBtPFVtNdP00rXXeNWtMptKSanngC+X7c0JwyXA6ykEmc4izrUQaAGbXjt3Ifd
+	 lmma7UFXxVsvv8DqOK1WIAvb8JCmLv/h9lHWZ8WxweV0E5ESZyMRyrlmlwsmYGXN4M
+	 kayuyeKN8AOxA==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: David Howells <dhowells@redhat.com>
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -108,27 +108,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Vincenzo Frascino <vincenzo.frascino@arm.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v3 10/13] arch: Wire up rootns system calls
-Date: Wed, 18 Nov 2026 21:35:36 +0200
-Message-ID: <20261118193539.240065-11-jarkko@kernel.org>
+Subject: [RFC PATCH v3 11/13] docs: Document root namespace uAPI
+Date: Wed, 18 Nov 2026 21:35:37 +0200
+Message-ID: <20261118193539.240065-12-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261118193539.240065-1-jarkko@kernel.org>
 References: <20261118193539.240065-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E2C81C0003
-X-Rspam-User: 
-X-Stat-Signature: rubqzdca5fxm78oz3bmy7une1grtygp3
+X-Rspamd-Queue-Id: 1102940006
+X-Stat-Signature: w4psnrbkaucroikysf84g39d4mnr7sj7
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795030588-257961
-X-HE-Meta: U2FsdGVkX1+qBBXo8Stgwmg6i4zQRwj0nc7XMa0qbe243nPiS2/9dGagRT5DXtcs6CwVJklUSDoY6ELQa0LaEzs25gNg048yB3OBQx4oAaVKVi/ADnyScwhJGioRDQ3wbkXW6BVB4ioT0HLOfkESAjc4YKD5Lw1A0Nn0nTv2Msr1lXVNrSRSO6fy4+cy2THQP2OsziqzDa6hV88WBYOzvwWr6pm+lHsHGg0el/vkpFt710pJ7aj+ul8k83SpmAsK+AfzHJ1gG/eLqnK0QPNvaglGGB4Iapv9mhFcBpkeIZLFxvMIQdZSZ8VGGqunb2EuQEZ6eqPf4aHTz8YZmPuYWZ5ZQIdEkuAy/puUc/ncLT6EWXisEFbNoT1mavZZQ7h0gMjYVwfBB5tL8wgUVAYSDoF8PwDAkbYaXDUQyeBpksiOylDVUbqsTy6zhFP4lP1e89KX0nnWg1iWWZKpFC7gTJkbnLYroGDRVU3aaLPCY2apBnjZPPKk/9Af2crXOlJu63BLkiiKoXeI5fvmyebT3aVrjIsOTHoC5vPWpMHb0bTtipwOMBSh3Mhewr0sh8Qwh+9k58ajBZ1iPAEOaDtmkJZiEtNNQhV8bJQ6TbHEBnemtwAagO7JqfiYRz9jKv2v/1wUxHiwxrOcHr4sVn6YqaqIz91CP3X/7qIIKruHGWqDrVbpckMtXtsl/r8t+uf916yjRXfGpE5TOMfmWBBX0RFKjiu0aE7qjaAVUZPFKBs2Cw9Z4zr5J+R2KxyY2tR8DfMX0PPxLABGqwMgCVGrxOJ6iSKNSX/O3BCbMpgOWM/QTrUCOKfF0eq98/CrbwV5/w0aLbOID+D0Ri1X/s8R0W+BCPOUASCtwvtxX1wr2RJGnw+6hxXOke0EJFBi56yLdAmXC7TT3y+67tmZo6BOte3Mya6uKYl30nCQ9u1OqffHbjyVAzLqdi/jVtLjXosU7V4pVtNJ4PVc+mx1NJl
- paYNV5ZC
- SrSC8DHXHiZwKNILkmviBxhDu0VsBWOdrCQ5p+jZLf6qy+HAdfn5GOBZK8+nhRhPYejnpEJxdqbgTooEfkV1iNTe6WgZ+feMTq+G0rftOKsR8v2xddiRL6aOAvf96vZUGY7OKFBDGLpupFe5esvi7ENBf4uUc151BPk/OPfDRvk3sKvJVy59CiVlDY+DhjXHCOqOBY9rHgF2XF6XzS9u8BRKbVA==
+X-Rspam-User: 
+X-HE-Tag: 1795030592-881818
+X-HE-Meta: U2FsdGVkX19zGJT1ajV8IAuZom2/lxZIHtAqrd1l6Gplp6zJih1dqxBq+vhtrmiwdgQCcDcvyL9EZV6bhchqM/ZUeXAdeAnT3Ta4FO/Ft1APRZf4+sUt+Asr8SJhyUrF7fbVNya0950m7YMWTYuvYJyE94Iep3R2VSdptsz4EvTpnuYx8hfR0Oktuxl3ct3QfUWq24sdElQ2CfBR63wjULGuDcN3n9VLCHvLjmrRpXKSOIneO7Ps3XwqNasW6xDEFwkpksut3EWbXGWz6/VckPNv7c1NNsCiY/ZZy6NqO96wDPmV5r9dr4KCF0sWMaP1PEbYxkedk1tmeMh+idw3VU6ihFb43L3VZUS1XuuWUDqGvgprTx5r/ldX01aKY5cvBj4YXFCDJ2LxJfsOe85ZELWCMEIrZdUwWl6PiV0F/q3tTFmbWCg90i0NhUGdi1PkkdU3xyPU1KjqFUtNFPXtY8fwZ7+zQ4KL118rUIBeTDCuclQfd0YMoAJdNo9ZlEzcPAiyvd5ZsPimWLgceCCFyWwtt0C+KPI1BLyumMshQBwn/4oNygFLHmq0gDm/utwOo/6UO3kq0NHVvDuLoGi/qfZbNoN4Sydy09N4eXJaMYl515q1vMoyO2YdFa2PO1ZaukD47ki8qM17s76Z3foLYYAiYAcHz/cUFV6woT+6nrYo8fYAhZ7y4UBqBbNYddXcvLHbyA2fetgvqH3Oy5mZCFjKPDwxvupgbZVC+TpGEh6lf6rZbqD43ZgSA7IkYx7ZKgvoC2BvsNY4COENmYmQ/Ske6ayKdNEnXn7dDwoYBuBfO1fT7GfLsHoLzX+som0MHwy+/iwvRwtKKZFh6uHNQqrNnBE/Q2ppR+aG3sJYWlt03x+i+PCKIov03hAXcec+ixnUAo/UsDSooZl1orEDsB2B5gf3T3fS21Gx+k34KLMehiVoMd1RR+UmAOCwo8llr1JQw9yTVnHbE5rX9Sv
+ fprWDiTc
+ NI7DIQ+YiEHlLSzuL4QXwXnYPOz/ISZOvJy0nRJsywzMo5Gz9hvCJgyqukCpPmRsAjDE5JnFWFKeewSnfNBFHjqeoxit5Z+JdFEb2Lh8YeE1blKk6AEaoRPeSl/y4A6eGFd4ND4JExNalyO82kgSavuA75bmGwesvh/oThrZTxYCQb/ExCg+Eueqnl+USe0aIadGVY+QdbjUvzyAcAXJojxU4mLkDIFRZwdw/Lmu8z5LrtEcCxVNZKhkKPfqNsv2ZXXbRKxNMzJLETPH1704ZjzlyXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,247 +137,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Now that the core root namespace lifecycle and VFS mount-tree
-installation are in place, expose rootns_create() (473), rootns_wait()
-(474), and rootns_kill() (475) across all architecture system call
-tables and asm-generic unistd.h.
+Userspace container managers need a clear specification of rootns state
+transitions, namespace fd ioctls, mount-tree construction, credential
+rules, and process creation semantics.
+
+Add Documentation/userspace-api/rootns.rst to include the kernel-doc
+sections and system call reference from kernel/rootns.c,
+include/uapi/linux/rootns.h, fs/fsopen.c, and fs/namespace.c, and
+register the rootns ioctl magic in ioctl-number.rst.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- arch/alpha/kernel/syscalls/syscall.tbl      |  3 +++
- arch/arm/tools/syscall.tbl                  |  3 +++
- arch/arm64/tools/syscall_32.tbl             |  3 +++
- arch/m68k/kernel/syscalls/syscall.tbl       |  3 +++
- arch/microblaze/kernel/syscalls/syscall.tbl |  3 +++
- arch/mips/kernel/syscalls/syscall_n32.tbl   |  3 +++
- arch/mips/kernel/syscalls/syscall_n64.tbl   |  3 +++
- arch/mips/kernel/syscalls/syscall_o32.tbl   |  3 +++
- arch/parisc/kernel/syscalls/syscall.tbl     |  3 +++
- arch/powerpc/kernel/syscalls/syscall.tbl    |  3 +++
- arch/s390/kernel/syscalls/syscall.tbl       |  3 +++
- arch/sh/kernel/syscalls/syscall.tbl         |  3 +++
- arch/sparc/kernel/syscalls/syscall.tbl      |  3 +++
- arch/x86/entry/syscalls/syscall_32.tbl      |  3 +++
- arch/x86/entry/syscalls/syscall_64.tbl      |  3 +++
- arch/xtensa/kernel/syscalls/syscall.tbl     |  3 +++
- include/uapi/asm-generic/unistd.h           | 10 +++++++++-
- scripts/syscall.tbl                         |  3 +++
- 18 files changed, 60 insertions(+), 1 deletion(-)
+ Documentation/userspace-api/index.rst         |  1 +
+ .../userspace-api/ioctl/ioctl-number.rst      |  1 +
+ Documentation/userspace-api/rootns.rst        | 47 +++++++++++++++++++
+ 3 files changed, 49 insertions(+)
+ create mode 100644 Documentation/userspace-api/rootns.rst
 
-diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-index 52e3538cc7df..c7bec286deff 100644
---- a/arch/alpha/kernel/syscalls/syscall.tbl
-+++ b/arch/alpha/kernel/syscalls/syscall.tbl
-@@ -512,3 +512,6 @@
- 580	common	listns				sys_listns
- 581	common	rseq_slice_yield		sys_rseq_slice_yield
- 582	common	fchroot				sys_fchroot
-+583	common	rootns_create			sys_rootns_create
-+584	common	rootns_wait			sys_rootns_wait
-+585	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
-index 55717ed32c27..59f78bf991c9 100644
---- a/arch/arm/tools/syscall.tbl
-+++ b/arch/arm/tools/syscall.tbl
-@@ -487,3 +487,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/arm64/tools/syscall_32.tbl b/arch/arm64/tools/syscall_32.tbl
-index df2d1d82fb3c..8ef57696c6a8 100644
---- a/arch/arm64/tools/syscall_32.tbl
-+++ b/arch/arm64/tools/syscall_32.tbl
-@@ -484,3 +484,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait		compat_sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
-index ba7a4d8903d0..36eb16ae659f 100644
---- a/arch/m68k/kernel/syscalls/syscall.tbl
-+++ b/arch/m68k/kernel/syscalls/syscall.tbl
-@@ -472,3 +472,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
-index 76d7cbe2a133..54739d61a9ee 100644
---- a/arch/microblaze/kernel/syscalls/syscall.tbl
-+++ b/arch/microblaze/kernel/syscalls/syscall.tbl
-@@ -478,3 +478,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
-index 9ae88e4eac61..f0a58c6b4516 100644
---- a/arch/mips/kernel/syscalls/syscall_n32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
-@@ -411,3 +411,6 @@
- 470	n32	listns				sys_listns
- 471	n32	rseq_slice_yield		sys_rseq_slice_yield
- 472	n32	fchroot				sys_fchroot
-+473	n32	rootns_create			sys_rootns_create
-+474	n32	rootns_wait			compat_sys_rootns_wait
-+475	n32	rootns_kill			sys_rootns_kill
-diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-index 83dc93a0712f..c1d2774c6283 100644
---- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-@@ -387,3 +387,6 @@
- 470	n64	listns				sys_listns
- 471	n64	rseq_slice_yield		sys_rseq_slice_yield
- 472	n64	fchroot				sys_fchroot
-+473	n64	rootns_create			sys_rootns_create
-+474	n64	rootns_wait			sys_rootns_wait
-+475	n64	rootns_kill			sys_rootns_kill
-diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-index 9c62429c9b7b..99a753234dbf 100644
---- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-@@ -460,3 +460,6 @@
- 470	o32	listns				sys_listns
- 471	o32	rseq_slice_yield		sys_rseq_slice_yield
- 472	o32	fchroot				sys_fchroot
-+473	o32	rootns_create			sys_rootns_create
-+474	o32	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
-+475	o32	rootns_kill			sys_rootns_kill
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index 88adc4016cce..f3bac8085491 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -471,3 +471,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-index cfbb70039ff0..7ab1948f76b7 100644
---- a/arch/powerpc/kernel/syscalls/syscall.tbl
-+++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-@@ -563,3 +563,6 @@
- 470	common	listns				sys_listns
- 471	nospu	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	nospu	rootns_create			sys_rootns_create
-+474	nospu	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
-+475	nospu	rootns_kill			sys_rootns_kill
-diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-index 1b45e68a217b..7f8cd4147860 100644
---- a/arch/s390/kernel/syscalls/syscall.tbl
-+++ b/arch/s390/kernel/syscalls/syscall.tbl
-@@ -399,3 +399,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-index ace068dff0de..9bfcb96dcdeb 100644
---- a/arch/sh/kernel/syscalls/syscall.tbl
-+++ b/arch/sh/kernel/syscalls/syscall.tbl
-@@ -476,3 +476,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-index 5b9fe0e8140f..a847f4cbea3a 100644
---- a/arch/sparc/kernel/syscalls/syscall.tbl
-+++ b/arch/sparc/kernel/syscalls/syscall.tbl
-@@ -518,3 +518,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
-index 2c172ef48dfd..e49c96692038 100644
---- a/arch/x86/entry/syscalls/syscall_32.tbl
-+++ b/arch/x86/entry/syscalls/syscall_32.tbl
-@@ -478,3 +478,6 @@
- 470	i386	listns			sys_listns
- 471	i386	rseq_slice_yield	sys_rseq_slice_yield
- 472	i386	fchroot			sys_fchroot
-+473	i386	rootns_create		sys_rootns_create
-+474	i386	rootns_wait		sys_rootns_wait		compat_sys_rootns_wait
-+475	i386	rootns_kill		sys_rootns_kill
-diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
-index d5b6045b0090..d6f7fb7be172 100644
---- a/arch/x86/entry/syscalls/syscall_64.tbl
-+++ b/arch/x86/entry/syscalls/syscall_64.tbl
-@@ -397,6 +397,9 @@
- 470	common	listns			sys_listns
- 471	common	rseq_slice_yield	sys_rseq_slice_yield
- 472	common	fchroot			sys_fchroot
-+473	common	rootns_create		sys_rootns_create
-+474	common	rootns_wait		sys_rootns_wait
-+475	common	rootns_kill		sys_rootns_kill
+diff --git a/Documentation/userspace-api/index.rst b/Documentation/userspace-api/index.rst
+index a68b1bea57a8..56d0ac4eb087 100644
+--- a/Documentation/userspace-api/index.rst
++++ b/Documentation/userspace-api/index.rst
+@@ -17,6 +17,7 @@ System calls
+    :maxdepth: 1
  
- #
- # Due to a historical design error, certain syscalls are numbered differently
-diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
-index d354bb231796..268c0d577788 100644
---- a/arch/xtensa/kernel/syscalls/syscall.tbl
-+++ b/arch/xtensa/kernel/syscalls/syscall.tbl
-@@ -443,3 +443,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
-diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-index 5b7e77a7c736..571db09eb571 100644
---- a/include/uapi/asm-generic/unistd.h
-+++ b/include/uapi/asm-generic/unistd.h
-@@ -867,8 +867,16 @@ __SYSCALL(__NR_rseq_slice_yield, sys_rseq_slice_yield)
- #define __NR_fchroot 472
- __SYSCALL(__NR_fchroot, sys_fchroot)
- 
-+/* kernel/rootns.c */
-+#define __NR_rootns_create 473
-+__SYSCALL(__NR_rootns_create, sys_rootns_create)
-+#define __NR_rootns_wait 474
-+__SC_COMP(__NR_rootns_wait, sys_rootns_wait, compat_sys_rootns_wait)
-+#define __NR_rootns_kill 475
-+__SYSCALL(__NR_rootns_kill, sys_rootns_kill)
+    unshare
++   rootns
+    futex2
+    ebpf/index
+    ioctl/index
+diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
+index dbe462040999..d8dc926ea283 100644
+--- a/Documentation/userspace-api/ioctl/ioctl-number.rst
++++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+@@ -385,6 +385,7 @@ Code  Seq#    Include File                                             Comments
+ 0xB8  01-02  uapi/misc/mrvl_cn10k_dpi.h                                Marvell CN10K DPI driver
+ 0xB8  all    uapi/linux/mshv.h                                         Microsoft Hyper-V /dev/mshv driver
+                                                                        <mailto:linux-hyperv@vger.kernel.org>
++0xB9  00-0F  uapi/linux/rootns.h                                       Root namespace uAPI
+ 0xBA  00-0F  uapi/linux/liveupdate.h                                   Pasha Tatashin
+                                                                        <mailto:pasha.tatashin@soleen.com>
+ 0xC0  00-0F  linux/usb/iowarrior.h
+diff --git a/Documentation/userspace-api/rootns.rst b/Documentation/userspace-api/rootns.rst
+new file mode 100644
+index 000000000000..a7724539a9fe
+--- /dev/null
++++ b/Documentation/userspace-api/rootns.rst
+@@ -0,0 +1,47 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
- #undef __NR_syscalls
--#define __NR_syscalls 473
-+#define __NR_syscalls 476
- 
- /*
-  * 32 bit systems traditionally used different
-diff --git a/scripts/syscall.tbl b/scripts/syscall.tbl
-index 0ab531605120..e9ff99c03b2b 100644
---- a/scripts/syscall.tbl
-+++ b/scripts/syscall.tbl
-@@ -413,3 +413,6 @@
- 470	common	listns				sys_listns
- 471	common	rseq_slice_yield		sys_rseq_slice_yield
- 472	common	fchroot				sys_fchroot
-+473	common	rootns_create			sys_rootns_create
-+474	common	rootns_wait			sys_rootns_wait			compat_sys_rootns_wait
-+475	common	rootns_kill			sys_rootns_kill
++===================
++Root namespace uAPI
++===================
++
++Overview
++========
++
++.. kernel-doc:: kernel/rootns.c
++   :doc: Overview
++
++Flags
++=====
++
++.. kernel-doc:: include/uapi/linux/rootns.h
++   :identifiers: rootns_flags
++
++Ioctls
++======
++
++.. kernel-doc:: include/uapi/linux/rootns.h
++   :doc: ROOTNS_GET_NSFD
++
++System calls
++============
++
++.. kernel-doc:: kernel/rootns.c
++   :identifiers: sys_rootns_create sys_rootns_wait sys_rootns_kill
++
++Process creation
++================
++
++.. kernel-doc:: kernel/rootns.c
++   :doc: CLONE_INTO_ROOTNS
++
++Filesystem configuration
++========================
++
++.. kernel-doc:: fs/fsopen.c
++   :doc: FSCONFIG_SET_ROOTNS
++
++Mount tree installation
++=======================
++
++.. kernel-doc:: fs/namespace.c
++   :doc: MOVE_MOUNT_T_MNTNS
 -- 
 2.47.3
 
