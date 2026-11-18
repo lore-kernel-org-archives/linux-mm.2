@@ -1,105 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0106E60A3808
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6893060A2620
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nZpgHUGb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hNFiylac
 Received: by kanga.kvack.org (Postfix)
-	id EFF946B05B6; Wed, 18 Nov 2026 16:03:50 -0500 (EST)
+	id 0CFF46B05B8; Wed, 18 Nov 2026 16:03:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB0016B05B8; Wed, 18 Nov 2026 16:03:50 -0500 (EST)
+	id 030FB6B05BB; Wed, 18 Nov 2026 16:03:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9F986B05BA; Wed, 18 Nov 2026 16:03:50 -0500 (EST)
+	id E137E6B05B9; Wed, 18 Nov 2026 16:03:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A1C06B05B6
+	by kanga.kvack.org (Postfix) with ESMTP id B6ACF6B05B8
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:03:50 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14A2D1208BC
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C26712084A
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:03:50 +0000 (UTC)
-X-FDA: 85449466620.22.19162C4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EB8501C000A
+X-FDA: 85449466620.17.0971F03
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 237E7A000E
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:03:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nZpgHUGb;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNFiylac;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795035827;
-	b=6285VKY/KqBAqmB6gQ6uPsUqzKGOP0DBiHqmx8OorC/EAFV42Z4sHewbwUuI3KLdqAfivg
-	j6QHw5sY1h0NnTF2fMrULKPOCK7S1IY3u+SPwsnulaF1Cn/aOIsgBXZKQLJVBnKHpLNpjO
-	exwmBS2WclNkTtRAdtZFE+3JiXw3P4I=
+	t=1795035828;
+	b=TCeBT8BT7PVX92jA0mF1iiDEskZMZyV9kp4Rqyqxp1HWSJ8aKJyWxGKDHGZFEKDEvSDSIh
+	2qWQQ5EMHd7C51I1RKBAJA5sW8S6B6XqN6Sq6taGy7qpcnGEHHOx89XXn1mOW3BPPryrbH
+	Vtyxw3sE99JjN/cGx37Gtt7DB4mKpfg=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795035827;
+	s=arc-20220608; t=1795035828;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y6mYfGolJS6nXYyvKPDyCfBdq4QUzDPuKkF7vPXmNoQ=;
-	b=fTPdAlX59EL8E9/lo61iI63vYSNDw/VUIZvYvResNP871YKZHV4qKFyiyK3eDxEGI8J5Bs
-	V8O72XZyPdR9+JC0Q1LyVkrSRZOFoe6FS1Lceip4wljLuRwLCCCqAzoEFoWG6b0rwP7QDE
-	DQNP2bZ5QtHXm/ZvTCsCel9ommC5b/E=
+	bh=Rn/XVV3lJb0TjTij3sIrE+aEoTpSeaOajKlzbk7waNE=;
+	b=XrYYG0fpS5CFJSBNKEvD/cnRIdA3aM8MiPD5xtdJcKWmrNCFIVXyA7FVVSvjD11NkV7Zjs
+	VEsFeqZtuBHjUnz/WdSU29ywlMtMxIRUbtGAHAS+ovrcaahnoErwaQ1essQAlGjQ5RW6tH
+	VBQ+6rik7Owcfh5MyBDEppMM/6y78IY=
 ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nZpgHUGb;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNFiylac;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD92B639C9;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7BAEE46279;
 	Wed, 18 Nov 2026 21:03:46 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795035826;
-	b=yLxHjO1Btb/uJjk00tUMB3U2gk2+VVsq8sJ+KrQt4ADzCWQspnNMtVYn4M18WT7ytMt5
-	 uA8Cl2FnT91aAqA4RkHuz3gFkXiB/CxzxrwH3t43YGkVuvmaLj/xS7QbfWDzgF6wUXTEk
-	 aNuyVuoQdDz1yJrd8t7QUDNups120QOMlKDrZUPm+TKT6sEv8HC0ivDZvDoHEPE5sjr9d
-	 RWi67uzMmW5O5WnT+n/ZzSvz5k0crfriponTqGZ037zFP90gob++jHW9wSW84wOTRjXtt
-	 sU3AczsH/S/mCnNbiO38H+4OlzMNfQNBFARSMkbtpRszIBcfRU1PsKsLEWu02+0gFWA==
+	b=kAyAj9/z9S/tvn/7BDj7BaFbfqFE0Q+yZfVthcSaASNv9gRE7oVCw8uV/2snc0IcCxUc
+	 5z4jH7Xi5THxKX1qmGQljO6CQLZ14kfURe9h2rG8c9Re2J2f6o4Jl9S98IaTFeFm9Hl8s
+	 nFlrCgxQ6lwC/whBX3YoX3M4GU0S5S3BvzzHt4Kr4ZGIvmd6H8h8KHY3QXp+PC4vh+ZKK
+	 tY8/bidpQHl/ZklAK3s1jwoVT7o/xXkX9nAVw+Dt4eWfphaVf+8PKbkiQ/eblW5Cx2FJQ
+	 gAJfXYI8eFAu5cCdEbdMF8PsHADls+x83oWGmmj4sUJfolISt8sXmCeOoqxfJZfJ71A==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795035826;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=Y6mYfGolJS6nXYyvKPDyCfBdq4QUzDPuKkF7vPXmNoQ=;
-	b=K0SNUKghj1TwNLwdTfJ4BBdZb0TB7QKwE0PYs+EStbefC719+7x20c6hqQlOXlMFZCH5
-	 APPQdxiRO9VqdoACRsAEvp6kLJz+torXXe0RJ/U0KhuiWek0Kq3QdFXt9XA0900pedTGa
-	 00wlZkmM9KKXe6S/B7Xr6RasIr6MY19YRkbTFpRJeNjro6DVdR+fiM7YXXuJH2OBtKbcQ
-	 hd5Na4h9c2h9pX3l1rf5jllxZ96yVf3wTkp+34dGv/p719StqCBp95M24W8uvFLHC15s1
-	 1nsltViZsEOMwLl2e4dIT1YTMijhfP0QMDoTOeX2x99bkcmZKWbXg1z6RT4GmxIyDbg==
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=Rn/XVV3lJb0TjTij3sIrE+aEoTpSeaOajKlzbk7waNE=;
+	b=VDrZaYbNNIx5DFYtpkwfkKGSNAkiHoi3ei0oYIVJZifr7tOnAPpzNVqdSGaSnEaBZwDZ
+	 dKGE/7AthiLX74VEHsP5s2xkZjniqdPyGEpznTbM5Dy34Q8xeQ4NeAuVej1JxKy2BaHb6
+	 0c84TxC1ZNH8xaDkfqdJ6bTQA0RaHpBVnxuOWRojfBDhXhwnp+eFtFfR4nw37fbI4WZ1b
+	 OLGEC8u6FTXefAk6t/Ek1zTTx02QKufC8XTo67BX/d3J75AgdDs4eQoiwkrrUqPyu+z5r
+	 fm3F7BBFIRLvV1SRz76/nQSOz4DV7WKdkoY/elE8DsfgGdps5bJuaNsu4B2yBmIqYuw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A42331F000D0;
+	by smtp.kernel.org (Postfix) with ESMTPS id BFE6E1F000D2;
 	Wed, 18 Nov 2026 21:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795035826;
-	bh=Y6mYfGolJS6nXYyvKPDyCfBdq4QUzDPuKkF7vPXmNoQ=;
+	bh=Rn/XVV3lJb0TjTij3sIrE+aEoTpSeaOajKlzbk7waNE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=nZpgHUGb2YZutFzEdxfDMtOoWT1hcEfl3ZduEVBD2FmfGGfD6fkLBWF7txYv3iiFx
-	 QMri3jhUFUMManurakID0+LFfREGHX2VywFrQyNknn0tScSB2hf2Qw44p0BazS7sUa
-	 N9Uu+I24r3M6mKtyodeXjuBojJEPADGpPWu9hViG1SLVFZ5/z93XhCYN2R1X1He1Sg
-	 h/EA4JjBbuVjNtth+uft9NvOyPbbXgSyCHsZIA5VvszswiIzSw+A8eiFZ6KVj19Qrb
-	 JNstNslG+La1b//VdeLbrkZdjtxmETvJjbzM+3stFZDtBkydinRsNk9wro++GWCBsH
-	 QGXsSjwO96MEA==
+	b=hNFiylacSDkpUO63Z7zELJ42BPJJG6YKdeQb2U+m20Y47uham6njZowSJNic2f+hE
+	 PdDwQfVkBxwJDHHNG4i9tL9jYuWjLU1krdGIa0VY5DQaVgA2RVrbh0Rvk234L5+upA
+	 M/oa0DWUs8hnFgIaIwVQesv0NjBhj12X8+2zui7EUrhV0+oVdiCO5e087ZJ3lqa74b
+	 Od+rPd/bgctjHbe4K9JtXV1ioNIioxqeYR0cXb0Ahg2sqEVeW1G3KBtKumdDiD/nKK
+	 OBPF34uvE4dyAVgCJidL1eMZndzNK388I534WFEPpHwsWq/cv3iXamsypaqET7jDGC
+	 gmKkOydZVt4fA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 210B44AF82;
+	by lkml.kernel.org (Postfix) with ESMTP id 44A1D4AF8C;
 	Wed, 18 Nov 2026 21:03:43 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Thu, 19 Nov 2026 05:03:33 +0800
-Subject: [PATCH v5 01/17] mm/mglru: rename the generation offset in
- lru_gen_folio_seq()
+Date: Thu, 19 Nov 2026 05:03:34 +0800
+Subject: [PATCH v5 02/17] mm/memcontrol: allow update of LRU statistic
+ without holding LRU lock
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261119-mglru-fg-v5-1-9eee2fe97a2d@tencent.com>
+Message-Id: <20261119-mglru-fg-v5-2-9eee2fe97a2d@tencent.com>
 References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
 In-Reply-To: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
 To: linux-mm@kvack.org
@@ -133,29 +132,30 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  damon@lists.linux.dev, linux-doc@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795035819; l=2264;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795035819; l=1182;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=YwqZ+e/q+Bs63p0EPa3WlWInx++BICs4SMMeFTRMo0I=;
- b=YvPtmtaQbA6mZdFgjxoUMC6rb+7OWEf9+nliTpL4Bc3GKxUs5kNL45/RuGmCxmFZJQAo4W4WX
- afdUPeF417PBvcgFY+BnlE6WnpX3DQAkM2rk4mvWkE7Pq6SQWm5jzs8
+ bh=G0nnA5K3vgx6DnvgX5PBKRNHiMmd0ZDMM0I+7unVnUs=;
+ b=Or384oTYmhezGr12VgUCqXcg3RIjHRi1VIREbML7u8xdTtJvzi8P8v1XYtrkZ/MyxcN22pjLV
+ ZU7Emfb4fcGBc4PgU9uzX0rG1VNuzCTFopsvPnTDBNOyD35qOIS9jAr
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Stat-Signature: k6tqu39y7i6wxzwp8w5jqixrzcaeebf4
-X-Rspamd-Queue-Id: EB8501C000A
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 237E7A000E
 X-Rspam-User:
+X-Stat-Signature: kgc85wp3wo3r9qbtpqfm81ig7kak3prs
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795035827-604373
-X-HE-Meta: U2FsdGVkX19qhrvxkAf29BemU79Gp4awFyyxTnKD1q5++6FVFXuQ8KNn2nNxJmd/y4rBeKaq9Ur26vi6J9alSnP1JkEybeRKD1iHDnrzdlM23fQLCYDv48rhAmrpN0anWQPOvkXFCMLzcOw28NX/90yfWdbkCRnx4Lp42uDnGwQ8UqNfTlmiOXtxUtbuBfIs/DHVSwEtjV2JprUPb3PDfHPrfzkk8zEfhoN91kYl1134ppbtfe9yhx1UxZbb/dMWvvAwh5/FGH34dAJmjD2r4HE8cfhmVph2R9dRf8OSsGkFICLd3yozqRUxKsbZOCsYITZm+gIzNcy4RNHJYwbAnABNN8Goa/7E+6I3aP7IXeEeqsH/zeOJCCDtFx33RUOJlxBmJlQia9Dh3ldD32s4OuPTOMbXYdfkBVGh2dBP52uHWF4zbtLdGAQqA1ZfvQ+7lD01yBKTraTtkcHrAEx7a6vsaeBgBxlzamtKzUaSsYnJ60IOzoGUqWepHMncnNLJPORP32EM4u1Sciv//Qnf386EI6dxyRjJ8xudc7bMCdxLFaIkrTTxbyGu4uFA8QItsha8teYZ1ufnwwTDaoB0cxrRZnsVvrIiOZ81gXRsVzlLy7LlNOMoQMzJHY/l4m8YOaXlenbt9lX1kZxdo6w0Ux8YLxbyF2e95SC/HD3iB1Zd6m2nNelB7W0FMwQl641wYY3vXdfZKx4g7wDl40drKxICOxqzMJVDrJ8bqXiyP/wvPmI6ACNio4zCKXnnjfYDW1WuV/GW3j3PJcTQjKhltTF5vddiv3v8OUm6cScu3HYrx/rCpweCPbbKjDanqJBjuwAillbkvAJdDTsGwoRRp0QWv1pdgyymG4WaRqWc8eExokE+mK8lsWLvECgjGDHtc76doNkKUCsRt5K2Bh3piVlJuxyMd/rV8FCrkZAp27ucf9bKie0W//QojF0D4cLuoeeVnvbLWtWsJMObkZH
- drS1BAnu
- DBUHQqbrh4usdVsFWQUr9fiQqS8bX9Lj8Hbto2oVX8+HuDYmSWm6FKR3VV8paZXD7PETnPu2akQ28ag5qatIO50kn893evMyA2fxIEAz2+3xPlRWOQWjPVVQWo5RdaYarHRfEpkii4o9sC5kSFk2xs9JlgK/qg0SMDlWnwHKB1ajtJqV0v3Uk3EEvgtX+9DYMq23DgW6di3cBoC9iK/laer0+weWmlTZYbydsbTHVYEEMtWOBT/pmT+cGb4/aToQEp9yCTb/+IqCSynYiALQlBPcDmuT0pVEGiHHOwLFftzD+BfgwCHGAiVgu40LRf8bsmDLy0KSVTRxOEaxgIhq8ecPc44LJI5qFhUT0A/KLOAtg+hNEfHXhZTLbxMluca0g+SKbr5xovmDPaE8bfTmtEWLdGuN50bmkqmVRqFvNh0ueyhByjNHat8nSIEEXoKqcTdNJOxgXDsJH4FsUXFXOobtev0XsQ6/37KOzH4HBGmgCSvNu6efDgF1kh80MwZ2wp/Bjkam9oLZkCavT6CDBOPu9D126edRKFZ9HdWcYgmRi+L7HRYSmNAJlro6G9ACOgt7wMzFpIvl8CiBZFVmqFjgqojHzNaK0auK2yc06HM2V9fzQv3TUb0SktjZ+g3ykLb+7au3Urylsw7mwuQnVymn4uIE8I/pyn0WBbb02mKpi6rdtd5ZR2bF6/XEMwoeVjt8fI/lOwy9NdpfxqRoZJYZFN19nM2s+Z56m
+X-HE-Tag: 1795035827-72045
+X-HE-Meta: U2FsdGVkX19pRaMeQxrogIzuxJEVZ18YoRYLSY1hWyN0nuYoVM4buCL6Pn9XBIz+qOCozgsTIWuV4kfymHOIWi2SLkoRWEA5uVhZyBDLiJP7kkS9aB7r94f68oiz5CRKqxUMMO8QWOPubtUiKIN+kv3oGfWOGUEAth8+Bxp/dPDi0sYiGoDtEXo8mO4JY0dqIShRRSaXVKQovEsqz1o2tOHCW8XBdOD9JoTicBtLRC7v5wR8Up8Zpu14smplhgHrU5OO8q2TFmdV0L57F2o359H/AgqE8EknavjQgXA6aMjM/vXgRkCHpdRn3w/iSpTyi9A+/fnHU9nDRhtRHxaGhQifiHSaU5rtg3yUm9ZjXqPun0mNCQkHhwH7KQD+6DftjP+maUssiTQD/1QeCGOWpkZ0G9deJLM/p8xgGyn9EffM+7l4OsgtiKXiLxykCPmAIM+a5ORXOwcfT2k18kF++OnCKMHoTQsHQQ9ZNMsD44FkRVBr3K18ujiu6wKjH4j2vx/C11xZR/LpLRq7BCo5wUHK61cPr+Ng20yeTzAHFgDLuHI57z7QtRny5uNRt/AwdFd4Pz8n3D3sB+L0riRr8fEE1GgP0NospGK6ObVOtNh2sbe9P7RXDdxFERwPEObhO7h3KrJBgdP5gC5WSVwAFzRPatMqamPa+T7fjQus0wqpT50isgmRnuwl3QrWRdPF328Ri9YIK+SN1AnzLhPh829WKsBxinQvB8yQUELAY76AHfosessMwzKryF7d5GRFYIzZL5WYNQY57Mlw0dusHoIXFZjdMbtB+0xPSGJRpuwhgd+t6ZOKWCE8EPJ/EI31Mj/GBcaSN08K98tAbU1/hMZiEm0AGAG++TRYss6Ra4Df31TPjVHjEHr7bIZa+03kWw88l7ttJPYGYOHnKUNtzHdpbV70wCQKM8+1+aZM4MamWe9OP2RIy9hfycxRi0GE0vG3F0PtdZOseRapE64
+ RY7o385d
+ PW1JROONuZGPCXVh22RqwGI8b5n/KyQ1dB5oI3I8wqGWVdk7+A+kuuI36aCsjjdWDCcsT+AsXEAfAUo8A6CoWIgMTQToU0XQxAfSOMI5nXVxyjL5PnXmmLyVb/2yO11KffMI57aYzDmbFUT1HsRzmz/G9/22YdAyoRo+1Ba03Lhl7FXDbAkOFnqqIG1ZGeZEWGk5vxqm5eHJ1s/eIN1pir9SO0QTMeuTwSsiJ35znndNr85P44NDRc14h8zkFGqL2OkXprUGvXVYMFjv+lCAdDgV9wCuukHCs6Onq//b1M2omz08td6YTfxSzlhe0+Y7KV/bWe2NjyeELlg0jIemMk4iQ8cfbJyQf18pzgKO/vMpTVUJXrjxkIf3x03Apo0zKxPhg6Kia9J+fs1Sui7w7RTTJ2wIS24eSNScoflPFeb5iRLQkex/huXf/3TyfnzyWrzR6JYuDpngKO6awSbX2X95KkSJWqb8RwKmDpCDan2fMC8ZwVuD/42/2/I9TWOR1PfzdGgDqCKRo4dQCUd2vRCoHM++6MGUat2pOapbWCMnhkmNZNpwrX5DsxHhijhJ9h+1XYFI7ax4tTXABLUuc6bfKuEbIgCABh2KnSLagQsc8uzXRUL6QTtoc2nOyXcN51ZpuVAqmR+Vj72SKDWHVsfPG3vC4W/v5l8Yb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,61 +164,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Ridong Chen <chenridong@xiaomi.com>
+From: Kairui Song <kasong@tencent.com>
 
-lru_gen_folio_seq() computes how many generations below max_seq a folio
-should be added to, but stores it in a variable named "gen". Elsewhere in
-MGLRU "gen" means an index into lrugen->folios[], i.e. seq % MAX_NR_GENS,
-so reusing the name for a relative offset is confusing.
+To enable moving file pages in folio_mark_accessed directly and lazily
+for MGLRU, allow updating the LRU statistic atomically without holding a
+lock. It may cause temporary counter underflow, which should be fine as
+the counter is eventually consistent and only serves as an estimate.
 
-Rename it to "age", which matches what the value means: the newest
-generation is age 1, and a larger age is an older generation.
-
-No functional change.
-
-[kasong: dropped the comment table part, the series rewrites it]
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/mm_inline.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/mm_inline.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index f6f4bc9a704f..2395ca8ee305 100644
+index 2395ca8ee305..2edb9beef6d3 100644
 --- a/include/linux/mm_inline.h
 +++ b/include/linux/mm_inline.h
-@@ -302,7 +302,7 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 					      const struct folio *folio,
- 					      bool reclaiming)
+@@ -47,12 +47,11 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
  {
--	int gen;
-+	int age;
- 	int type = folio_is_file_lru(folio);
- 	const struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
  
-@@ -319,17 +319,17 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 	 * |<---------------------------- MAX_NR_GENS ---------------------------->|
- 	 */
- 	if (folio_test_active(folio))
--		gen = MIN_NR_GENS - folio_test_workingset(folio);
-+		age = MIN_NR_GENS - folio_test_workingset(folio);
- 	else if (reclaiming)
--		gen = MAX_NR_GENS;
-+		age = MAX_NR_GENS;
- 	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
- 		 (folio_test_reclaim(folio) &&
- 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
--		gen = MIN_NR_GENS;
-+		age = MIN_NR_GENS;
- 	else
--		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
-+		age = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
+-	lockdep_assert_held(&lruvec->lru_lock);
+ 	WARN_ON_ONCE(nr_pages != (int)nr_pages);
  
--	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
-+	return max(READ_ONCE(lrugen->max_seq) - age + 1, READ_ONCE(lrugen->min_seq[type]));
+ 	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
+-	__mod_zone_page_state(&pgdat->node_zones[zid],
+-				NR_ZONE_LRU_BASE + lru, nr_pages);
++	mod_zone_page_state(&pgdat->node_zones[zid],
++			    NR_ZONE_LRU_BASE + lru, nr_pages);
  }
  
- static inline bool __lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio,
+ static __always_inline void update_lru_size(struct lruvec *lruvec,
 
 -- 
 2.56.1
