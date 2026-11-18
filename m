@@ -1,99 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A226606A330
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 11:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8F7606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 12:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MI3cXKzl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hwcttIRx
 Received: by kanga.kvack.org (Postfix)
-	id 583E96B05B1; Wed, 18 Nov 2026 06:48:23 -0500 (EST)
+	id 6E54A6B00EF; Wed, 18 Nov 2026 07:09:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 534BA6B05B2; Wed, 18 Nov 2026 06:48:23 -0500 (EST)
+	id 696166B05B0; Wed, 18 Nov 2026 07:09:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44A9D6B05B3; Wed, 18 Nov 2026 06:48:23 -0500 (EST)
+	id 5AC226B05B1; Wed, 18 Nov 2026 07:09:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 241F26B05B1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:48:23 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA5601C408C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:48:22 +0000 (UTC)
-X-FDA: 85448066844.04.82EFB2D
-Received: from mta0.migadu.com (out-121.mta0.migadu.com [91.218.175.121])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 987531C0004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:48:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MI3cXKzl;
-	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.121 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 39C6A6B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:09:52 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CBD161A072B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:09:51 +0000 (UTC)
+X-FDA: 85448120982.22.DAFB951
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 38FE840011
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:09:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hwcttIRx;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795002501;
+	s=arc-20220608; t=1795003790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tO3TgKkDiEBpFDzUdbEPGhGOGJy6r4jFNQqVHNYhZcQ=;
-	b=h4DRrUUfgIg+rNE2vDkldFjguZjQNmgf5JUpJxLuTR/wK6GVAmgPIU9qJCYZ3Xv8haIVyD
-	jB+tGYJNOuHLtavykehAm7953/YXV88SgHP8kTb/QaztdH4byFBocQC4rNFRo1bR0Oe3Vc
-	oy6JifLJmBaf0HTEr0/PvJIKT5MVNDM=
+	bh=SliBFCiuXH8Pgow6ev+m+UUcW7KKoAdntnZ69kSC5B4=;
+	b=XBEJRZpZcJiEAZZYMslI07MvtNzBrhby4ZdJLyFQTiCOJQjJjk3q6NvdHBsjn3R66cXfsY
+	Q01OuYtoT8GDxHESocZ20++SmIVoqVS7MwfrSIIkCk4q+gpnsX1jRgGR5g0LUuglRXSCKe
+	OzlGApA/9vmzQxdILyqEpjrzTxm22y8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795002501;
-	b=CLCdNhl9iOpDDIEbDVu/GgPUcFUoNn91YwqPCV5IY/DWm3YGz2ilGdFq4/2fz8xJdO02vD
-	xWboAUsV/TeUBSGZA4w4o7hCbTJRuqXGro0Igg1xkLKafpNfanRe+MzCDompGu170rpgXU
-	qte7XDvi64qCP+bRQaOY2LGzDQzzlNw=
+	t=1795003790;
+	b=CLNy+9lwmnPaKfX0kGH8aj4RJX9Ljrdo2GlbEcseO6hPiU2KWt1qWDp+96PoCML53xl64F
+	i+PT2+ahTUuYVuJhVIfp6GRhrSzRPdvUsbPpmbre2b8QQyWqhY3xbd1cbDoCNKktqwvUB3
+	cC30X0v6CEm1uIM9wvi/BvtD4YJumdo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MI3cXKzl;
-	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.121 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=vauVE3U2RMCS1gurgi7wXZGlIMNdafXrioxA86yoBjw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795002499; v=1; x=1795607299;
- b=MI3cXKzlV7UIr/RZ0JX6zp4i0ZFe9LQp1SU4et4ivCh54T6Ja0pP9WZ9+k1/UZ+OIIv9MRlj
- IAFN8DwBWnaXQlL/Q75g862SuUeF8UnThX0fNToO6s6oeWNpqfXdxfAQmiTMPc5dh3uv8j3D5aH
- IC5m9wu5OEcUSbEJN2hAGIi4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 995b1b54c0241e97;
-	Wed, 18 Nov 2026 11:48:19 +0000
-X-Mizu-Trace-ID: 995b1b54c0241e97
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hwcttIRx;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5DB1062147;
+	Wed, 18 Nov 2026 12:09:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E211F000C4;
+	Wed, 18 Nov 2026 12:09:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795003789;
+	bh=SliBFCiuXH8Pgow6ev+m+UUcW7KKoAdntnZ69kSC5B4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hwcttIRxEQ1d1U3aHdQFf28Y+Uv3ujPjGBD0ZSyiDaBYZwWSqybmPkExviI/gmtzS
+	 2LUq+hcBLdDzdAfi9g23PAnLNhT+XIii/UxXrWSAy+8yO6EosQghwxAs1GF9aUiylq
+	 OE8cb4hVk3SSC64YKsrhu9W4m6ggDvwcL5XKQf4AnISxcpWa9yiwW1ag6BHJSV1WEI
+	 GCL36KN5QwPMbrjr0ei8RuvPjdmBavysaHvFl949vtdU4I0MS09W7Qw9wmVcEV3PHU
+	 vkw9q5O3gl1fURldMP0lwI3TDBq8df/xB4eVm2i5+0B6xNRfVjGMWwCpKXhPSc9cum
+	 nVV2++OnkoMHA==
+Date: Wed, 18 Nov 2026 12:09:44 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, mm-commits@vger.kernel.org
+Subject: Re: Using In-reply-to: <patch posting> in mm-commits mails?
+Message-ID: <av2UtIIP202zN2jJ@gremlin>
+References: <9ba54069-3dc4-422f-8cf6-f81cb806e999@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH 1/2] mm/memfd: drop redundant hugetlb allocation mask
- narrowing
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261117-for-memfd-v1-1-fa68f433171e@kylinos.cn>
-Date: Wed, 18 Nov 2026 19:47:21 +0800
-Cc: Hugh Dickins <hughd@google.com>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <87A66860-C0E1-42CF-AFF7-671D19B82E16@linux.dev>
-References: <20261117-for-memfd-v1-0-fa68f433171e@kylinos.cn>
- <20261117-for-memfd-v1-1-fa68f433171e@kylinos.cn>
-To: Hongfu Li <hongfu.li@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9ba54069-3dc4-422f-8cf6-f81cb806e999@kernel.org>
+X-Stat-Signature: ccace5tzw8cncqbsucas64ao1qbj19jz
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 987531C0004
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: wnwhfgkudffchbmxszgju1bdc53qccxt
-X-HE-Tag: 1795002500-485214
-X-HE-Meta: U2FsdGVkX19j6GvjFjVCWQY0EKykPaUakigJhrP5CIofgPd1oivY70cmX1NuXdJKcFRFjdX9xpVu/zI5nN979GAY8qSa+CEjTp/mv/rkwRS4hzSn4Gub3Z+v/W+ZoQrTInLFu46/Mn/EB9sM/jDoQJrE0ueC3JVk4YvvaDkjj7L7IywlbOVAXiAMuJJ9SuPjGfJUG9DY3NLeJ+bmR3iXwvkmvv8C7IXa1i3xXvtCGPIGYyJh56Vu4xJM4RstWmWsX/V6o3Civ2F4ckob60oA3D1MXJ4hEwiA2tuVdbdf2pORNnZXMgdTEqAC1drRYou9v268litcnooZBa4+2wb2wZJzGdqLsb1TUa5Jw4kWitloX4KxH4KPlUr0UX1gq66g2e3kSKD6yQpxY2rK4zOqZ+Yk4cPcZHZQG4dG+cw7VHwokHSM0/YdFqcaUTxKTZUa6Sqj2I0XlPRKasBVL8QP64vZGrBYqY9HLaNhkASehWwZ05liZzLxqS6+hhbsOXQt9skqLpPep4nv7z2ORwqSLkYrIsd04qrKYa7lKjinlR+NKtUX2MIexDr4cwsqWmQlrioKyhpWQTxoVeXmW9yF6JbaB+RXqWKpObECKCeDEo+pW46tANr/e7uMr7qvhJgNjONRIJd66Lxon7Zbw9fe/cYK7tWqAAEtilL6fxZklvzb/8hwYxAsFEf82/Hg1xF35c9JWnPKlrnGNqm8Di6IXXDjk6stVrBdp7mamiMkJ11/HCZ0ex20IIyV9x6RnN8dYCvvmexrFlmDOOaxuwECNmphtR9lvUpHLb8zdNIvwQ0CPePw1M8liQB0MvwHAisp2kB+Xfn7vsvuc9vDpwLXlhKCvAL3QQOtWn1HZh82IT49Rc5UnrnsG4UiKBg+qX36YZ3zdwkxELcN9e5jMea3bgv+GeI/b1uCg/+uRimBkVqKZe9xqr3KR1itcz+3UhVShXaE/ARxyhxkxk8fSMu
- pRPNESaw
- 32yulXBACxSjPvIO1czBlYcuv/5/gs5ed6lDFTRO9TP7Rdam7F3l2n3ajkR3V/Rtq9D5B/NmVRFYnvAQg+rXfKa0/lFRx4YDfSJSWDcNMMwChmYKqyJchnbmQtlXsiAEY+54WenUpENJc8JG89bnRnMMzqa9XRH+S+wCc+xPhD3Bi3ZWvNX2/RuczOz36Sz+ew6YO9EtFYplbhgNw4fh4bUSp5lNYmE+O5wxJLrrgSZmJ5CpP+s7gnUpXnpu6iPR+lD7NLjlSlW+sInkHsoP6fEtkYpX+NUJKbK9Y
+X-Rspamd-Queue-Id: 38FE840011
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795003790-786655
+X-HE-Meta: U2FsdGVkX1/k0cY+zOV0JxM5c8YsSOvYibeRxEUfiHZo9bISTmWd8l6/VE0s49CAsR1fQFsDKY17hTVDCwnr9WE8NGtzxp/s6R57/fukqn68sHkiTExl6U4XtJN8jXTAsNCEYyFKudSkrtYc6BtIF29qXHTvUpVQU+h06KTjN6ZZjIiAxqehD5Pcp6ozDjEdZfFn+QMraE02mChfFnE5X6EBK6CGyJCeDGCQjJ+1k+KjAV4kq61qNTpKbL7MFYdoV0UqnvEYTDcpJm+8fLfv5dEcTDQiLpUNgXGJ6PtA+NJgEanQDtXa59zTmXQhjDlhFl/ZrLVE7AFypo/lemcjsML32l54dG1k8F0FVDpSPGiIPgPXXmbd3nr1ugqxpRUEF6GG9sLXTrAJnmgn6IMUfnyKWPOqe1YILPy1qXm/ezI/1KbE9m04XE9SAtHq3W+/w+iKSjgrs9byNZri+AjSJUckxGXaoxm3BUOgElkQ2ZnZYBePsC0RZScICZ10nlJPQXYThQ9BY+88S0pKLR022QRvKUIlPM+vhR4m2kGtwDAivRTLuVeO3f/b/pAchw7cd3ZVqfkHi7CIhKCnBNuneeEufU4pJw8pnqwQNVT2IVD/VPilbZTa1JCo0TMOXfpqB6uYTBIzNzxhkI9hFG1ezFVxhZ5WnbiApEYljbZwXtjWBqBh7oZNVUgny/udHMvHYFokacqW4zXDtMplZM4DmgBb3bHRr08GStjoMSfWRCCcZ4g5rtGogwbbpN38PyFaQQSx+b/FypD7mTJXOnbVdac1csbCiEeTepDz2yXZbh29ar9pN3UuxBqK95GVmifdkO1QWKDw4QWU3ABcK1aVSXYEd/WapQslxGeDOkZIvVZWvG2+gCdYWspGHnmf8I93jzTzrJ0ss9ibNQut0cTpFyITFW0vrvmHXQTfux/JQthBeyWotXF7soF1ii8MAL7QAvtaHpv2UryVCy4W90J
+ 3sMzyK/S
+ lzXlJYXukHBv257WwvLfZgPJvi3TsmjNTHnIMkVuI3TgmC8tYtdFXrsiOcx9FmsjyQtPWUGV+Wm90CbEedZC09FLo7NzLHqdoESaMkMITIL+umLIBAZbhquzWZCJXkuPdFc5pDHn5Hm5e9qDBG4Bg7BiC1H+LIzPeVWz9I0CafBH/0bL1i1yvUhwQkKrfWKTPmGYEnlgLNzIgfQilHbER4UpyCutcme7S3TAMxKwHUmIjhGhzUYLs/yR61Ly80VqhXwSM9VplKZfra/hHOxaQaoMtVp2V/tDbdfK1LeXP5+evvz951HqZYpK8siex/fjwU7Q/w9yg4Q8RrU9ozD2BTO8/ArS+cGramhcW3Z+sv/blHzHtWn9kM0FpvL0Eo85qs8mRjkMkyPYsxTVqaWdy8ggaquD2qe7d1REVnnKYO0YA3zHFNHFhvrgiYQEd2syaFNcD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,93 +94,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, Nov 18, 2026 at 11:21:47AM +0100, Vlastimil Babka (SUSE) wrote:
+> Hi Andrew,
+>
+> during some chat with Lorenzo, it occured me that it could be useful if your
+> mm-commit mails (addition, merging to mm-stable, drop etc.) were replies to
+> the respective patch postings, which would put them next to the patches in
+> everyone's inboxes. I think Lorenzo started to doing that on his receive
+> side with postprocessing.
 
+Ack to confirm I had claude schlopp me something to do that and it's already
+extremely useful - let's me see at glance if a patch/series has been taken, etc.
 
-> On Nov 17, 2026, at 18:53, Hongfu Li <hongfu.li@linux.dev> wrote:
->=20
-> From: Hongfu Li <lihongfu@kylinos.cn>
->=20
-> memfd_alloc_folio() derives its allocation mask from htlb_alloc_mask()
-> and then clears __GFP_HIGHMEM and __GFP_MOVABLE. This mask handling =
-was
-> introduced by commit 89c1905d9c14 ("mm/gup: introduce =
-memfd_pin_folios()
-> for pinning memfd folios"), when the fallback path in
-> alloc_hugetlb_folio_nodemask() could still call
-> alloc_migrate_hugetlb_folio() and reach the buddy allocator, so the =
-mask
-> decided the zone and migratetype of freshly allocated pages.
->=20
-> Since commit 26a8ea80929c ("mm/hugetlb: fix memfd_pin_folios
-> resv_huge_pages leak"), this call site uses =
-alloc_hugetlb_folio_reserve(),
-> which only dequeues folios from the existing hugetlb pool and never =
-falls
-> back to the buddy allocator. The mask therefore no longer decides =
-where
-> any page comes from.
->=20
-> Long-term pinning safety no longer depends on the mask either:
-> memfd_pin_folios() obtains its folios (dequeued from the pool, or =
-freshly
-> allocated) under memalloc_pin_save(), so PF_MEMALLOC_PIN makes
-> dequeue_hugetlb_folio_node_exact() skip any folio that fails
-> folio_is_longterm_pinnable(), and current_gfp_context() already clears
-> __GFP_MOVABLE from any page allocator request made under =
-PF_MEMALLOC_PIN.
->=20
-> Drop the narrowing, which has had no effect since 26a8ea80929c.
->=20
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> ---
-> mm/memfd.c | 1 -
-> 1 file changed, 1 deletion(-)
->=20
-> diff --git a/mm/memfd.c b/mm/memfd.c
-> index 0e3ff3eebfa8..8905e3e9efc8 100644
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -85,7 +85,6 @@ struct folio *memfd_alloc_folio(struct file *memfd, =
-pgoff_t idx)
-> 	u32 hash;
->=20
-> 	gfp_mask =3D htlb_alloc_mask(h);
-> -	gfp_mask &=3D ~(__GFP_HIGHMEM | __GFP_MOVABLE);
+Especially useful in neomutt set up to show emails hierarchically.
 
-You didn't mention why __GFP_HIGHMEM can be removed safely. I have to
-investigate the reason myself.
+>
+> While I haven't checked your scripts, I naively imagine it shouldn't be hard
+> to add that In-reply-to: <msgid> header. You already have the msgid for the
+>
+> Link: https://lore.kernel.org/<msgid>
+>
+> part. Maybe it's tricky when there are more Link:'s than the patch posting
+> itself. But actually after Linus initially hated these automatic Link:
+> additions, he later settled on the Link: https://patch.msgid.link/ template
+> as acceptable to him. It's sort of documented in
+> Documentation/process/maintainer-tip.rst too. So changing to use that
+> template should allow to easily grab the right msgid to reply to even for
+> later actions on the patch, than the initial addition.
 
-During review, __GFP_HIGHMEM was cleared because "these pages might need
-to be accessible by some DMA driver, so you have HIGHMEM constraints.",
-refer to =
-https://lore.kernel.org/all/ZmvNLSUgUgFETR0M@localhost.localdomain/
+Should be straightforward I think?
 
-I think that restriction is unnecessary now: DMA and existing =
-memfd_pin_folios()
-users operate on pages or scatterlists and support highmem, while the
-shmem path already permits highmem folios. The hugetlb path therefore
-does not need a separate lowmem constraint.
+>
+> Thoughs?
+> Thanks,
+> Vlastimil
 
-Because you have removed the constrains, why you didn't remove the =
-comment
-along the way?
-
-	/*
-	 * The folio would most likely be accessed by a DMA driver,
-	 * therefore, we have zone memory constraints where we can
-	 * alloc from. Also, the folio will be pinned for an indefinite
-	 * amount of time, so it is not expected to be migrated away.
-	 */
-
-Thanks,
-Muchun
-
-> 	idx >>=3D huge_page_order(h);
->=20
-> /*
->=20
-> --=20
-> 2.54.0
->=20
-
+--
+Cheers, Lorenzo
 
