@@ -1,126 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8810C606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 00:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24B4606A333
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 00:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Ut7sEqU/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WHXDdl/0
 Received: by kanga.kvack.org (Postfix)
-	id 7C7F16B05C4; Tue, 17 Nov 2026 19:27:12 -0500 (EST)
+	id C6DE86B00EF; Tue, 17 Nov 2026 19:36:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79FCB6B05C5; Tue, 17 Nov 2026 19:27:12 -0500 (EST)
+	id C44BC6B05B2; Tue, 17 Nov 2026 19:36:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B6016B05C6; Tue, 17 Nov 2026 19:27:12 -0500 (EST)
+	id B5E1A6B05B3; Tue, 17 Nov 2026 19:36:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 333CE6B05C4
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:27:12 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8AD0AA8278
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:27:11 +0000 (UTC)
-X-FDA: 85446350262.26.4568679
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D7FAC18000A
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:27:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="Ut7sEqU/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 33PD8agwKCBEty8z9Dz9v3r4x55x2v.t532z4BE-331Crt1.58x@flex--chriswiseman.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=33PD8agwKCBEty8z9Dz9v3r4x55x2v.t532z4BE-331Crt1.58x@flex--chriswiseman.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 91C1B6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:36:20 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 052241C3F64
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:36:20 +0000 (UTC)
+X-FDA: 85446373320.06.846E1E4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6733B140002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:36:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WHXDdl/0";
+	spf=pass (imf23.hostedemail.com: domain of pjw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pjw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794961630;
+	s=arc-20220608; t=1794962178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PsHVmlswq1n5zq4kG8Bif2auVAICBU1MbvOTG3olm7c=;
-	b=TWDUu72sDTvEiZUKcImW98d48pRZ5HG9wmIioAPJTIQfniE95OKhjFiKu/QrErWSeLf8IU
-	jAl1zU4hCSoAj8Qbby1Zf+6wOER01ywoEa8HhYqf1f7R2GChriFsuZKubDFD2tGP3nF3B/
-	j31pxHfMAES2yxUuDYIemBZhK8Ani0I=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="Ut7sEqU/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 33PD8agwKCBEty8z9Dz9v3r4x55x2v.t532z4BE-331Crt1.58x@flex--chriswiseman.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=33PD8agwKCBEty8z9Dz9v3r4x55x2v.t532z4BE-331Crt1.58x@flex--chriswiseman.bounces.google.com
+	bh=r+p9CWsvki4gFWoEf4phi7R1PRk80mGP3t1GcsR85fk=;
+	b=QuGIPJaW1AyajkLwNJbSwSiK7hPqQAcD8SODfXo7ti823f7qPkqqHgpprAoO9d69s9/Z/H
+	f18hBjtjIk8VmVXS80e4jsdKXxtYBRC6KkDr1dZklo3H75gNix7Ji45Jcyu6yd0xYNi7iB
+	RejSviqeF0miNpzvjC2Wyd4ycoFrzso=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794961630;
-	b=1ARsBgTxn1qRghQQt/yBaOLnxeQE2kGZojb4Izfh+Ulbby5JZOdA15khlffLhsPW1vFysk
-	JC3HqN3menY5zYEPwvUoatX8///NTG/hHEYoh8Ud0O1nCY5Aer4n/b+/2W0ZHR/PEfwh7u
-	d//x6aDr1pPe9//j/N0+e/83prZ7PVc=
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36f26e6abe9so612077eec.0
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:27:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794961629; x=1795566429; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PsHVmlswq1n5zq4kG8Bif2auVAICBU1MbvOTG3olm7c=;
-        b=Ut7sEqU/xSp5MUrpXpBOpok2teL+owwu8I782s//dbXNYUFcumKa3nUBfACT8oBGWc
-         GQt1IGuJVIiYkfpDExETwMmclfrIH+NAKuZRumb+0Pk87ENQ3lu21SQYR4UFor6nXouc
-         0qXLtgb6eQTsrxzrSpEGbXip+g8McLUk9W6s+x7/yO89RbUz4OyjdKWbgmKBhx4lAEgn
-         BlhHj0l0GEiAtCnSgZX1nrmDBAi/wEy2sUWjiSv8fMMjBSywo1xHW50HUbxLskprtDG6
-         viQn6oqrePPlyba0uVHkeWynsYooQc2n9/DRhrJq/3+TO7duTPDjZY/S1qdZpm3HoZMV
-         GfTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794961629; x=1795566429;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PsHVmlswq1n5zq4kG8Bif2auVAICBU1MbvOTG3olm7c=;
-        b=WMb7QMfC2TvNAWmC6/VPyCt43pC1SATRomXA8M1Z3QnVoNI7JXAYG+efNGKLSxh19H
-         pt//cN/wgYpsusvEXWuB2d2dkBenj/uIN9m8c8JdVLJSmjYxPB4aFLHM3Bi5UV8OpeKG
-         wy40ZYH1esevaotf6eTb9WHI2hiIzX6eXuFByOIFPlkkKgZvO8BqmZLsWv/fWsIqCc1h
-         +AG7d1nYgTQzRyLdrs/i81Z13fVQnVKEwE2J+7iklHftHa1F2+qwdtF/oXL5VJN/OIPo
-         uYdNcU17J5mzUNdcF9tsUansB+2NDg3MR3EQ57b8b6emQgimuhQP7UZ3HcYjAm66xKvF
-         09/Q==
-X-Forwarded-Encrypted: i=1; AL+hErFeKl9rSm+N/ker+2I6kiCwMQODedpQy7aFS8mHcrlQaK2YDCj+aV4hzPAgpbkyeu0P0xaJ1JSsLQ==@kvack.org
-X-Gm-Message-State: APuU4Z9YtVbY2cqHmR+Io3Wl2MF2QmMF0L9PzwifdYJ+u6eAMWUK+70l
-	FwvKGpzzlttwzImQBclHVcJ4cXurBiu4KpUAMm6w+z+fxQ/rHwUh26JpUP99shtTsLSnKj9XuZI
-	1jblaISA/p+Kkh3CY1dREdgWpb2B2Bw==
-X-Received: from dybut12.prod.google.com ([2002:a05:7301:e0cc:b0:342:c2e6:20f7])
- (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7300:7314:b0:381:a3bb:f945 with SMTP id 5a478bee46e88-38280a386d4mr1424912eec.22.1794961628155;
- Tue, 17 Nov 2026 16:27:08 -0800 (PST)
-Date: Wed, 18 Nov 2026 00:27:07 GMT
-In-Reply-To: <CAO9r8zOtL4t5pwQOE=SAWeg=k2TkhtNXgV6CJJGNTwuTebKpBQ@mail.gmail.com>
+	t=1794962178;
+	b=nzl1WPu7ErWi5G00LyvLG/HoGnqtvxxRG/gDH/BXTKOPdhM3mRLu0ebxXOXZcJrFJcP1Es
+	6r3U7MYQfUQw5dc991k70jd3fe8FQSJwiuIj/yHCrfWVDQikFGjXzj5HWcAnIFEFtCYGEN
+	bpPYCXf2DWU/dI0aeWCZ7cggc68e6Xg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WHXDdl/0";
+	spf=pass (imf23.hostedemail.com: domain of pjw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pjw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 93AE8459CC;
+	Wed, 18 Nov 2026 00:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C80A1F000C9;
+	Wed, 18 Nov 2026 00:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794962177;
+	bh=r+p9CWsvki4gFWoEf4phi7R1PRk80mGP3t1GcsR85fk=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=WHXDdl/0EiLouLi+MGg08FvcqvqZP4js9AonYgqIzmzUe3K/XuplULWC+xJEwPygQ
+	 QvifdtnAJEtyI6bcM9i72IshrE2dTnaDjFtXILMkioUxqh+f45QAshi8Z3DjjBsS3o
+	 /pgvgpWi03BU4s0zfUOfHdvD0jWrMamvbKv7JcqCWcyu6vSEijFi+GZqVomEz78pDf
+	 AwqF33in7XSuZ3WuM3378SNDogiZPh/C5JYmA5NqvB01j+9o/WBuWB0AXyidZTYGOc
+	 8cx6E9Gnz+1UJyi2z6K1EMYCF+yHZX5pPbCDgzuZIGnN6blT2SXTSoq+KdCmVRYWu2
+	 34ueIPw6CLNFA==
+Date: Tue, 17 Nov 2026 17:36:15 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Chen Pei <cp0613@linux.alibaba.com>, rppt@kernel.org
+cc: pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr, 
+    pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com, 
+    shuah@kernel.org, guoren@kernel.org, linux-riscv@lists.infradead.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-kselftest@vger.kernel.org, kexec@lists.infradead.org
+Subject: Re: [PATCH v3 1/4] riscv: Call early_ioremap_setup() before parsing
+ the DTB
+In-Reply-To: <20261106071459.2003-2-cp0613@linux.alibaba.com>
+Message-ID: <68812baf-206e-4916-faa6-78f8e7fa4433@kernel.org>
+References: <20261106071459.2003-1-cp0613@linux.alibaba.com> <20261106071459.2003-2-cp0613@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
- <anXJ-5_vO7-toSe1@google.com> <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
- <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
- <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
- <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
- <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
- <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
- <179384102494.19062.12740032892044628762.b4-reply@b4> <auwOBaRtM9p_Wxfx@google.com>
- <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com>
- <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com>
- <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
- <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com>
- <18e53459a8013078.3137322e32332e3235332e313736.12c7b6.0000sendgmr@google.com>
- <avVVRYkIAQnLC_Yu@google.com> <18e8fb5c1c4d127f.3137322e32332e3235332e313736.289d37.0000sendgmr@google.com>
- <CAO9r8zOtL4t5pwQOE=SAWeg=k2TkhtNXgV6CJJGNTwuTebKpBQ@mail.gmail.com>
-Message-ID: <18e8fc17375582a2.3137322e32332e3235332e313736.2a6db6.0000sendgmr@google.com>
-Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
-From: Chris Wiseman <chriswiseman@google.com>
-To: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: D7FAC18000A
-X-Stat-Signature: g9dygrhpfy74k8qcff7ttxw3jpgt4shh
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1794961629-917299
-X-HE-Meta: U2FsdGVkX19LtlliSwbMnJKXh1qSBkI+yddtpXKdDTBeJKTJgbNX70C/Q95aCF4oZsyc0cEeylvIpJphm7htwIFZcXSx46ZXsBitLspe+wz8+8bm1k6t778WJrjiaVDx9t6IXli/9mkKbZ5HfcBCRpYMbTml5xouSzcdeA6JkfOG5wHw6FUQ7uAdIIlh/srJmiSkYPhStm3zP5jJSYb9gx88UO9YhAsttjTKMrjGIdJXzZDBFf0i+R1AnIq6NgL/xY2nxkSfaO1jOJpWCv1dAGffmXlclHemtrLaEVUAH9pTEtw8d8eRXI8VVsPCbPHHMd6nWZni2hNq/ldn1trbdoCANv3X7AR39xu/JxQpszDPYL36GoPNRnAi4M9oOaW+TB50XWtieCgOc2eCdwWTdR0CRgZ53QMEKvpSt3fe16dEvyFqX+bpHeISWWBG1IZY8y0rEnvOFbh+E9Fu0aPukR8ZjUpV/lzc+qR4IqNZP4c01ScRivNGmrPlxkwltZK2is/7Om0BdWEvhrXm/0napUCBjxkFhEj0a4li3JU705dsCyAhxL1g610u4sPJ9QtT6FHUQU90h7wDvpyTSwuUhwGopjwFjMi1SRZK7RCRxYgWOxjl2ChzAUOyYJeaIW76j/wyv+I9ckHS5jGg2oY6n9+BMpXaXlVOnYRnqrRS2wKPAVX5ZiYqefZdus7JH27kS2lOPuSwXitnLY1le97AxNqNgwSMhX0z3VBQzp1/QFxo3+Sz5/QHm3yTHliOvoekgaCfdagwjnn6XuhekTOFopItp4/2kYJa4hspfiygrB6SbmXY1jsBl9H3Kw419qXDLd00QpIfCmX1xe6ZDotv1LXfpiqF4MJcESg3TLI0hhHTbkdLPbKBIHMrw92liwKKO595rgUbJmnH9ktL7kTb9+bE00J/pXD+nEJfywIymCCHEsKXa/DCa+lH6z/IT4fp/SnDD7u7lqVVtvxq1vQ
- jyDnpItC
- Jw9JjRmvNXzou3gmNZeawx/Arp6szzCVf8bmrnSa81XH5agPj3QexgffUhp8bBrG66etKpIBceFYujO+UaW1/70aY4AfHROyg8AhbYv3SZe8ou1MWasZVvxrWRK4aIPbOaT1pyDdR5Sz0et2fO7cts0D5gWMIpZclCma0zJGu9clRrcWE9ehufPnqucVO7D0IZpr0zFPyA1fwX+zgWac2erDrJIyKq0OYEGBQsUsv3uNUbUyPgDqkJ3tXjWsf2jyZJAEeNacsudfgl3OS7lhSaqG50khsoSpOJeYh3AIJfY2qotfLV503Q0sfUkeljYMwmQOtY/AhcEV/mdoST1WR/AtQ97tCPbpZZQ6lSiSg8WmfqMdciEhPmSCAuQ/PbJpdMGuh0K0CgkiMERQ2cvxeCw5GMr8LUoR84PqS5rZVipPSQBrBPT/WyTI6yBdbFFiS4TBnPgRaYwbdE6gf8mlPcauYzCQSyeR702JpsNIw9sa5y534xV+70yeU1bvLbtJ5L9jRjZZEH8Oef/ukiiVyKmDzeBAb+3MOnqw4BIVbtgCyTjVfFqoVy+fTRM4lpT4f49JKO1rTfCPT/Ef5PrFXES4E7T4X0A2qFZ6c+a30WY7UI0XrUXgqA18V3Aphsc3o1FNnUsz7xvnmqX55J6MTl3WlscFILE0eoR108tHdTzGhdqbPRCSBCSugxjsXubtLmkdscsYG5HSaPZJO5Mbt4EkCBNnuaqHaSNbZXJ/4XN7Bb5ukf+ZMSDhCbcnCgmM8oTui
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6733B140002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: cz5cuu1fzo3arjow3pqh9qfe3iutf6dk
+X-HE-Tag: 1794962178-696448
+X-HE-Meta: U2FsdGVkX19btqIEJT0gMJqOR4CxZIOgj4rZqyp7NPUDWbYU1gTYk8FzqSyObo3vgFu4PlCJtpV+5ikVtDgo0f/dFGYJVZcK32AlWZ0atjF+k7MBYVddZGZpOl8ixV/YoKszgeg/Z0pfEzd01CeJiRU8qwaqKnQyUwmlUpCCUiR9cbIHSNaqywhVCjBPGHJwXM2U6ckqAUIcnxPoRE5DRCqwVC5d38pcJI1kRvwFMsyaLUt0UMOLKrUiSyT8c5ZpbWS2bqB2j+Yj0Vv+29fQh2CzBmSp7Hx2nEjea7MZWoj1iBpzOedLn0Pm2l07O1fJF0PvNxoWhw3PccSxxo94AvxWg5/HtaQKaJQIcIrTLEjGtkfexSBrh7Sl+p2ISRQ7gQZdKEVGZDSkkrvZnpUoseaYE1oRSTbLsBC8RzmF28CSJCLiFZU8QlQD6Bgf3cSDd60ssKth3TRgYPswR4yl8ZgF+gWKQNa9nYkNhDXCSQp5gumV5mEZrUl9AzLHWU/lODTFLpXUzKaEVupYoTh3vjt06+BIwl0E4xSEpH2XvkTSneAkYsiz1zGFhsk2cOFYNkMQ0HiTW1xFYRL24L7ow8UTyfISnhT6pVL5mkZo96Zg6uf51w0+OR7z2eUq/G/L6KUcL0XWPP28NIrrUrb4n3EoKRHCmN/IXw0/92250z9ExbbdUKr9Ik8UFnVLH6B3ryjUFNMwU1iPaJ2MUfrrW0d0IwK+6/XKINQLI77PCP1rKyxg0H1JFXVyJOJvtprDDtOSLAr9ECSoSenu+8mSjXdyn3JeFgG59bDbOUp+GjJZrHVlIY3WoTuHPCnsh7v2VFwcugPt3ALcyOYLCTJARmSmpveSYEIyalnSQWjpUBaMsD6C0xSDR7EXVnE9sq7TSLbbrUYMS/708mG5dvbkifGwyi3t+4cyDQQJUA+IC+7Q/pO1J0UnFqQSe4OX63Wr5rIJBVPuZpIAYtX0wj7
+ nwkJomHR
+ IthSkLTdYZ46DhPLTlOKBvltnqXIG8MBJo0kRRHPz73hXqLMEeeIb28AOK8jY63iDpv6W3eDd6hzln7TtCy08mZZcoMImAXTi0KeV8qBkx4cBiPVUKzSnX8jBzgNUcTehzh4jgZCHtorCKxBrSgZFFslxcjonDG+USOEWRjZbgyaLuA20GxTx/CZCk6l/rPFdp+UJUxk8/vxNMNEFW6pI0gs+GNYtHbgYeNYIiT2UKrNMeD0IFWayaamOAB0oph+pJHcen58WqWRoghe0+aQKmPS+MB2hZqqTSc0qbgajCSsnoYnRi0MS9ZUatb4LqxeALQLD/Keu3H9IV8Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,16 +96,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 4:23 PM Yosry Ahmed <yosry@kernel.org> wrote:
->
-> I would rather drop it right away, but I am fine if you don't wanna
-> bother with zswap.
+Hi Mike and Chen Pei,
 
-Works for me - dropping it outright is way cleaner than adding a
-Kconfig knob nobody wants to maintain.
+On Fri, 6 Nov 2026, Chen Pei wrote:
 
-Nhat / Johannes / Sergey - good with a 2-patch series that just removes
-the zsmalloc shrinker and adds the unlocked zs_can_compact() pre-check
-for manual zram compaction?  If Xueyuan doesn't grab it I'm happy to
-post it.
+> parse_dtb() can reach early_memremap(), whose return value is composed
+> from the slot table that early_ioremap_setup() fills in - and on RISC-V
+> that setup ran after the scan, so the mapping came back NULL. The DT
+> based kexec handover parsing is the first caller to hit this:
+> kho_populate() cannot map the handover FDT and the handover is dropped.
+
+This makes sense, but ...
+
+> Run early_ioremap_setup() before parse_dtb(), as arm64 and x86 already
+> do.
+
+... this statement isn't right, since neither ARM64 nor x86 have a 
+parse_dtb() function.  Better just to say that early_ioremap_setup() needs 
+to run before DT parsing.
+
+With that fixed, then 
+
+Acked-by: Paul Walmsley <pjw@kernel.org> # arch/riscv
+
+
+- Paul
 
