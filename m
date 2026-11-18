@@ -1,120 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A4D606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44E460A2615
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hgvCHIek
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TjsgJxsb
 Received: by kanga.kvack.org (Postfix)
-	id BA6986B05B6; Wed, 18 Nov 2026 09:18:47 -0500 (EST)
+	id 0F82F6B05B9; Wed, 18 Nov 2026 09:19:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7E216B05B7; Wed, 18 Nov 2026 09:18:47 -0500 (EST)
+	id 0CFD96B05BA; Wed, 18 Nov 2026 09:19:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABAE36B05B8; Wed, 18 Nov 2026 09:18:47 -0500 (EST)
+	id 00C7F6B05BB; Wed, 18 Nov 2026 09:19:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E7036B05B6
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:18:47 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1ACCFA077C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:18:47 +0000 (UTC)
-X-FDA: 85448445894.23.DD15675
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7BEDB180002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:18:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hgvCHIek;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D66706B05B9
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:19:00 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E70016074C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:19:00 +0000 (UTC)
+X-FDA: 85448446440.14.ED2864A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 74DF780002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:18:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TjsgJxsb;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795011538;
+	b=EdYLNX2k9N8caQbmFrOLDUFhdej8BmeA5FCdUwNpJxLXZkoNwkmeaTupp1uGkofbLfvykI
+	Xgez3iAuzgsLOKsd0xrE1j8RkYhqMU2X6djERHUd5FTfqiqAJ62lsXRvqqeXYYfDI46ue4
+	zIz4D3y0HIjLSXFr/AgQZdiEv/mi0bc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TjsgJxsb;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795011525;
+	s=arc-20220608; t=1795011538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=omjjlnQ1ZJ0MhBqkhPOBcLqOsv5nWuoArS+/Pbu32u4=;
-	b=NmB60bYJyWsvZc8/ofSgxnLAYPQVtanZDD4x8FwOn/qnnvx47lHwMpmIlTX79qzQRUxqbR
-	J2z7YoMFg2TA6zB9jCv7Rd1vGZ/ob95ZpBpUmpkvwyEhb55IwAzdqUSW6CS6T/t4OmklSw
-	LpVLhvEh5i2EunAWLnO5k12T/uNuh4c=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hgvCHIek;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795011525;
-	b=yZSqVpOTzZjA3rwnpIgP++SdmWDSVDL7EMruZwUA+iKaeM4l5iVKnWgGWxNPK2PNRHUTgS
-	h56d0v/gmrlaq2HAnvGu8napuJIRrDEtW5l3pYBOz+3+3rhmDH+PpJfMA3GaPKY5546MR2
-	f7G87BvfUKoSrJ5ShFqS9CaXkyDSMLo=
+	bh=yspg3RYK6hfplwr2guwVtoc91Gns2znX/lR8zgZBFVs=;
+	b=m06JwvnQeRq0ZlB/bwE+CaX0giPsBc6dkgngq3m9uQQ8IFIRBOC56fNcmGBnIY+Cb7lZ1n
+	SDm6vkvr+I+mJ2OT3Avmd/6QIRuysVBl90DXQbLm3/AxIS7Txm6E/jeAO6MDFYBAeikgX1
+	v4seUHHMh9DCmcy8ZaK/8Ly71bTZmeI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 16FB462237;
-	Wed, 18 Nov 2026 14:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 158801F000C7;
-	Wed, 18 Nov 2026 14:18:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CD7C42E7B;
+	Wed, 18 Nov 2026 14:18:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896811F000C4;
+	Wed, 18 Nov 2026 14:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795011524;
-	bh=omjjlnQ1ZJ0MhBqkhPOBcLqOsv5nWuoArS+/Pbu32u4=;
+	s=k20260515; t=1795011537;
+	bh=yspg3RYK6hfplwr2guwVtoc91Gns2znX/lR8zgZBFVs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hgvCHIekeWMD5z9HUp1GpczxJH97zCvgETH/xhnJ1ZBZgU54WIlwdNVCZoVIMjwI3
-	 b1qW6Yyr0er7e6X/pUrlbQqjyVNyy7gFVq7VyCqot1Lhaw815N8X/dieBgpgZTQM30
-	 Qp05hEFjO2SZl+t+4BUKPw2jyBR/TkO+yGVB8dEI2YkP4j11YsGyui/HsrJs5U+W5j
-	 C2693zwXc5m1ern5G23a5PK2m6IOOSafzy+UZ9Gp7W1jiSuGuaXGwFLJmcOVxFKdCk
-	 7/ojQKABwBn5p1KdHyj1DtsuL6hQ3xlABpn+YsHYSB2Qz9XSI7h4XQ+LmVDkYDN3SV
-	 Y7pzf7AQ0dlFg==
-Date: Wed, 18 Nov 2026 16:18:40 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
+	b=TjsgJxsb3omgZC7Y7BqVmG9Ex9ZO4k8c2B1tbSP/96Q0m5xKS+UvBbENGt+SaQib9
+	 9kUbL0e5wLlwJegMYSiSzUPGcows/z3EtystFW8tMA2Izw5ThIzP4oA+E73pK54zhD
+	 pTjJ+HJCkJg8pdSfKAp7mW9qElOyGSzrm+b7bTUN9wUnOrH1Au3oUxHBI9P838qb45
+	 bI41cCj3uoYB0day2lARxxnN8bF0wjB7hlN2wnAaMTIl/RtvRJOlAPdAaNrImCwE8E
+	 Q6CIIgWSCViQL/WRgnaNuQGPB7lDcH8fnD257mcfFw3w4bbDXMb7IlMJIvIb3gKmHF
+	 Jk6E5jDwzWb4A==
+Date: Wed, 18 Nov 2026 16:18:45 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Segall <bsegall@google.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Chris Down <chris@chrisdown.name>,
 	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [RFC PATCH 03/13] rootns: Track init lifecycle via
- copy_process() and pid_namespace
-Message-ID: <av2zwC5IrBXJo6QM@kernel.org>
-References: <20261117050841.3289652-1-jarkko@kernel.org>
- <20261117050841.3289652-4-jarkko@kernel.org>
- <sashiko-outbox-220138@kernel.org>
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Ketan <ketan.kishore@oss.qualcomm.com>,
+	Mostafa Saleh <smostafa@google.com>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sashiko <sashiko-bot@kernel.org>, kasan-dev@googlegroups.com,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 4/7] mm/page_ext: use common allocation and
+ initialization entry points
+Message-ID: <av2zxfDZI-ECPByB@kernel.org>
+References: <20261117120627.50601-1-songmuchun@bytedance.com>
+ <20261117120627.50601-5-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-220138@kernel.org>
+In-Reply-To: <20261117120627.50601-5-songmuchun@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7BEDB180002
-X-Stat-Signature: 1h3983e5t3c4wubhkj8cug7rh5mems5m
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 74DF780002
+X-Stat-Signature: usfoffta7djftxunqpx5ojdz1a9kpdxn
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795011525-401
-X-HE-Meta: U2FsdGVkX18dW6C9DGm7xCSLTOPrcqhc8gnk8lbcD4EZpMZ1aPzVMTYe1WZA1Y+YIa/5fdgb9toe+d2rxf6W8vQaSwWMNgfN94fxrgsC+yzMLnfxKFMCwYgTFONHQA1h5PdpEXSxqY5iaPA3ZxFwyEfW0R5npN9o2I/klf8xmHUTysUy5OyApkD91rB5gWtLirz8GXfVBqWlhveJagzwOZnwP4tt4+PVOz54emwtE3dN0DNGeEkrsah8YYWUUBwvgFRzJc9ZTDd7N9SYkxnVBEQ/VnNdxSObrZriu5d/Q9lBA0vnpYQ//PkxsWAfts9/MMjQ4yX0y4SZlDfPGKGpZTaENdFoWNzmU8t+n02Kpa50TeXRg1fkacCLHmma47m8BbeSlUK7ob6b2Qfz5jppLZZJ3AA9S35n/PUZU/rqv+xuQeXFlqA7SQEZ2z1TRDgw3HcVWK/yk2LMi/KFPPxrgQluy597YWP9oPRJi0NZkHU34preYMQsPJ44XiBuCv/1YDJJpaseVaUhUhrXMHq6FF9qWJonJonnNjqoWeM3zEHqjnZGCxgZvvEiCJLqdrrgtNyDIQ33Q33G9irUoZIG+Ow491YqoFj4uXbL6qAAs8Mp6Rjbzaq1KyBRKcuS7LKOyORDDkI/N+dNQKFyj5WlNOsCtX1bXBVwFZ+VRE3RBFTsAkg+b0G18fOQb/VYBeoN/3JGQ/tg+N2wzyOTSApsZ8u6nJp5+ove88tlxeVhxyUMmwf141qnlcwPkLvWU8jCtoAWy1NAmuQ+oIlRbEs7QOPSqlP0Si5FSDLaTEJnHTIaeGSiefDMN7ns3ykMGPC6gMeDAhermJrJJlLyfUOUcy+ULhVfxT0WXDFra1+CNCxTaLwCRz4h+zV2zBOH5pdrLYiWDzrGz+cr6ysAEHBg35bMpiUNJlmDVjzfO49vWzMt6jRApBvjBhH8sfSmB5DlOn021nFl0nTQf3J5b+C
- CHEaBa9m
- OGVbZVMTDDD5oh+YeTLLoU1kByHeHnT5SLGX8J3u0CaSN1YwIe1u8LwsxgE0Nm0I/cjGG3khHJl3mHT77oQq+QNVp0YpKGogxAoOktBUc1Y6iMjQxhSUV9zgvA+1ji5bOXQ+qVpjHpO841Y2P4TU6h8IcZAebJj0juiOeJsvuWyBTuJYkpbYmXov53234UKwqPxDNdgjjDSgXagP1uaNPvEwwZKLlHoEMivawplScXbQFy5fjWWs+RRnRBSdp6bVOHX1eh8giTqLZjGgfhKrsKZsxyHjl1Mvqx/BVvHjy7PJB1LkRbHPUu5BJqw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795011538-454759
+X-HE-Meta: U2FsdGVkX1939a5p0XZnksdOt0YCUU+bofFl7Hl3JlIzv07wsGMPahCRYvxXO9+xMHN7ZDGwT3n36Xd/vD5LJyzCPpqJ0rc208DvS1RZbCv5Y6LivlJ3/INhNqRfvcqtvkXdZ55dTKoEKx2ckrT/6rb20BjphAOHJDjmb/vSglaS8iYJIyMJAQvF3ZqG03U2fqSsL3SuaJYq26QNgFb4+kNHhSQLZ0UkLedI7k3EwuO4kj3M86aevdA/cHTqFP69LI8xEvk1RjO6E9ghmSLXntXLEzyj8ptUCNiKFzXIKF2pEgk4dQCgt94sXAKGOgYeYkn9U7JA63Tcnff3/+K2DlIVPdeika5rb22u9yDhm4chHm+lanBye1nvOEwq4hKmJdLAJ1BtPlKbHrYJKzJEbqWXlDpBsYW3AlaLjn87HrU9/9chB31lCdj7tcT+9CD+4rj2XaY0iTobybvdsO4z7UgvOficpueo38u6DNvvYM9LxBjV0DnpX4wZrF0p1jWdCYHYhTaMzoAu7wvJl8gAGnTvt8wsd97IUTtQVj3SRmbK5fYnVlqYsDc5RrL+5xq5D8gm352iNUNPXF6/tzMmyay2znPGxptarNuMA+vdVKydVKlzUWPfWAI6Ou8BiLAZAZkFXXdcwOQYHSDXqhyVA8Dtjd9pRid64L8qtD62UdLEogMXfTcR8RjCCaIbxgZ4G25+3HkcrAmRL5HLHlqJPDoW+siLWwAqYSKOWyI3UZAe5h1ozsAOMUiIh45aGCutmPJA/8+jgxFv+VaAGbBg5xj+RJ+gZnOpQDE1HqGOE6cp4OqBhg8C8+91vlo8paO2u95Wr21nMxI9U8G4gCRsvY9shrMHkRuzJs23g0IvWpPP7crYko9YktTc2ivhjc/temJmavWymZksS8kVQC7Ty0MYyN1ERtXO8dJL7Gf/Ck7Kg82igIUNgWNGMwk2FFFsh7WQa7hJPDjjY1Ws4Jc
+ 46AFpHlf
+ Lf6PMeJtzwQDKC+bDZ8eK85eFpsDH7Z8Z2Pvmn6u/dxOZKrMQFpoppp6KdUSGYbf9YBuKdw4WEPI6gAp9WTnm1SeSD+oGCg4x9IrQgw9k9TmMhT43dBw9YE8L1hEHL9L7rrNM0WT+DcrMX/1UYjUg7CzI5EjR9X3kjtjsnHEkDRwNmi3tp2TJIB3TZ8MejwmxnKHp+FC2d86zmeDv8aBlYdo+3rt1YjX+PNnS5SMqkJPI4vrAqmbEGnbid7W/D+WFP55J0ZI5vxiEbDlkET2a9FgkIU8FK0KriNXbfCrgG6YmftbbVB3pP0H32sGR7nXYQ3gDcAOC6iWmqlJsc6o9gga4RNC8WRsBiZHY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,22 +117,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 05:09:42AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issues to consider:
-> - [High] rootns: UAF and refcount imbalance in exit_rootns() via
->   unreferenced pid_ns->rootns
-> - [High] rootns: unreferenced pid_ns->rootns pointer in exit_rootns()
->   causes UAF
-> - [Medium] rootns: copy_rootns() publishes init_pid before
->   attach_pid(PIDTYPE_PID)
-> - [Medium] rootns: missing is_child_reaper() and locked state checks in
->   copy_rootns()
-> --
+On Tue, Nov 17, 2026 at 08:06:24PM +0800, Muchun Song wrote:
+> FLATMEM uses separate page_ext_init_flatmem() and
+> page_ext_init_flatmem_late() entry points, while SPARSEMEM performs its
+> work through page_ext_init().  This exposes the memory model in the
+> generic boot sequence and obscures the allocation and client
+> initialization phases.
+> 
+> Rename the early entry point to page_ext_alloc() and use
+> page_ext_init() for client callbacks in both memory models.  SPARSEMEM
+> keeps its existing late allocation behavior for now; its
+> page_ext_alloc() remains an empty configuration stub.
+> 
+> This also moves FLATMEM client callbacks from immediately after
+> kmem_cache_init() to after vmalloc_init().  The callbacks still run
+> after the buddy and slab allocators are available, as required by
+> page_owner.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-I'll address the Sashiko issues, reflecting them to v2.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-No need to spend time and effort for review before v3.
+> ---
+> v2:
+> - Split the common allocation and initialization entry points into a
+>   preparatory patch
+> - Document the later FLATMEM client callback timing (noted by Chris
+>   Down)
+> ---
+>  include/linux/page_ext.h | 20 +++++---------------
+>  mm/mm_init.c             |  7 +------
+>  mm/page_ext.c            |  5 ++---
+>  3 files changed, 8 insertions(+), 24 deletions(-)
 
-Br, Jarko
+-- 
+Sincerely yours,
+Mike.
 
