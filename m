@@ -1,96 +1,87 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10D8606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 11:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=natalenko.name header.i=@natalenko.name header.a=rsa-sha256 header.s=dkim-20170712 header.b=RQrvySj1
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729E3606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 11:43:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C5A06B05B5; Wed, 18 Nov 2026 06:26:18 -0500 (EST)
+	id 4904A6B00EF; Wed, 18 Nov 2026 06:43:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 076F66B05B6; Wed, 18 Nov 2026 06:26:18 -0500 (EST)
+	id 441966B05B0; Wed, 18 Nov 2026 06:43:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECE6C6B05B7; Wed, 18 Nov 2026 06:26:17 -0500 (EST)
+	id 3325F6B05B1; Wed, 18 Nov 2026 06:43:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C702E6B05B5
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:26:17 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C3771206D6
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:26:16 +0000 (UTC)
-X-FDA: 85448011152.26.888A71B
-Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A8AED140007
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:26:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=RQrvySj1;
-	dmarc=pass (policy=reject) header.from=natalenko.name;
-	spf=pass (imf23.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0575F6B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:43:24 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 809A8160712
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:43:23 +0000 (UTC)
+X-FDA: 85448054286.04.0B2ADF5
+Received: from a3.inai.de (a3.inai.de [144.76.212.145])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B345C1A0002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:43:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of ej@inai.de designates 144.76.212.145 as permitted sender) smtp.mailfrom=ej@inai.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795002202;
+	b=RQC1I+NTnyKplP97XbLL6rmWzOD7KXYrRMfIxv3gjen3ZsUODzQjW2xDD+yZr4pWJbydt+
+	V8CEgLAMvESI1jqDwJe3s9azIFH78VsSrwbhizN3LUQ1IBUxcTXL1Kop+UsilvmFbACWJl
+	QDlPng9fWoZoyIlmom/Lc/a+38v1jx4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of ej@inai.de designates 144.76.212.145 as permitted sender) smtp.mailfrom=ej@inai.de;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795001175;
+	s=arc-20220608; t=1795002202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1bUC3FF0uL5+gLdMvKTQBHgL5FzwCrsgHjlZq/9lfQM=;
-	b=bizLSuLG38/ZbJ8FVQZSGRHZ9qtQGqLJTtZXjU2MK2yToW1rx0isOgwsto3V2iQc+XgfJA
-	+i3NwGFMO403W41Fhq4jtjvUo6oH/eWyfRgnZnmq2zNjNa4KMtrMPx3ety1wlwGpIQfhdU
-	ZRf1Fl2lnZjndzB75GkDjce6UJUWwh0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795001175;
-	b=mPKHxWq5XSgXxKAN1Ksml6geJiHwcfh6r43oR60YEI2yFKIwPnPKPln0232+VJ9ZizKeL2
-	aJufKIIlG+DzrXUoHMJ5l5rO6dEO4K4P3urIVHrnLn+wwHxNMhdj8N+8k0raholf2c7eRE
-	1FzxwRjnWLvhwSCdmcA97XV/S5jqWwA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=RQrvySj1;
-	dmarc=pass (policy=reject) header.from=natalenko.name;
-	spf=pass (imf23.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name
-Received: from spock.kanapka.home.arpa (unknown [IPv6:2a03:a900:1010:3280:c109:c893:2bc1:6f68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by prime.voidband.net (Postfix) with ESMTPSA id 77A4A635B040;
-	Wed, 18 Nov 2026 12:26:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-	s=dkim-20170712; t=1795001171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1bUC3FF0uL5+gLdMvKTQBHgL5FzwCrsgHjlZq/9lfQM=;
-	b=RQrvySj1SCSuefZOh1iPvmOgevGs73R0IfXPg+8DT7TWsEQNrGv/Rlo8ACx+XW8FKWyeIU
-	vj/hUD+7AGtuUTyoPvqY2yzP5d2h3dPOli4GZReJtsXak6apIPLiocGQvzWglxGVt/lnFx
-	5CeI76J4Fl9OuP5FlP0wGkfMpsPrcXw=
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: linux-mm@kvack.org
-Cc: Rafael Aquini <aquini@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>
-Subject: [PATCH] mm/swapfile: really fix integer overflow in swap_show() and swapon()
-Date: Wed, 18 Nov 2026 12:26:10 +0100
-Message-ID: <20261118112610.122799-1-oleksandr@natalenko.name>
-X-Mailer: git-send-email 2.56.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iii72bAln91AxAYWqMoQsj+xak14m3uKD/kq756gkCc=;
+	b=0D7MBSIDILKIbHviV/vQiEyZWutqpEzd4fG7SIKBvr22dFjperqSZHnljYVD67+Y1OdYgM
+	zYpowAY3l8/21mM9cjSIIbsevNlhBjynt9qd8gpe2RduQlK7T7sULx1jjyAhEYgIICI+0T
+	ha+qCz2oSe53oDKFbY5vktukxcmTAwg=
+Received: by a3.inai.de (Postfix, from userid 25121)
+	id 4FF8C1022963DE; Wed, 18 Nov 2026 12:43:17 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by a3.inai.de (Postfix) with ESMTP id 4D5E811040FD86;
+	Wed, 18 Nov 2026 12:43:17 +0100 (CET)
+Date: Wed, 18 Nov 2026 12:43:17 +0100 (CET)
+From: Jan Engelhardt <ej@inai.de>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+cc: Andreas Hindborg <a.hindborg@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+    Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+    =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+    Danilo Krummrich <dakr@kernel.org>, 
+    Daniel Almeida <daniel.almeida@collabora.com>, 
+    Tamir Duberstein <tamird@kernel.org>, 
+    Alexandre Courbot <acourbot@nvidia.com>, 
+    =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+    Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+    linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] rust: block: add rbrd, a RAM backed block driver
+In-Reply-To: <20261117233211.3137168-1-vitaly.wool@konsulko.se>
+Message-ID: <176sn0r1-3s85-0nq0-p258-220pnspno416@vanv.qr>
+References: <20261117233211.3137168-1-vitaly.wool@konsulko.se>
+User-Agent: Alpine 2.26 (LSU 649 2022-06-02)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-x-ms-reactions: disallow
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A8AED140007
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: igeib6nwebxuuu1911o93fo6a4ren6af
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B345C1A0002
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: 866tpgukityk5kgkunishad5axexrb8d
 X-Rspam-User: 
-X-HE-Tag: 1795001174-598113
-X-HE-Meta: U2FsdGVkX1+m4UgR4pCgIIjuV+IZsQoPfR8gY/g/N6t4TPSRU4z+L5bko9gI+Z+QHWWEQ/CWxxudPKBl2tc8pcPUvLTfVEIobNehY4VgY6hoNesqUMciRj1YlnsM9rI+WZr0tvD9C6dWqWryNKW3wmx40fN0Y3qMqqDklP2Po7Bzpq/eQb2rOJV9MBsRR6I6PJRxQOsotJ1wSJzeg1B8/IRaIKQu5CTF2X5cYAYZDo8+yX9nXS8jSBqf36PddIZ3ITZtecIwaM92/nT+EdnWObszfcqyoF7g/ejpAjceP1ZggShXX2MFNPAHQCRI6odZSkQCFeFIvivHS5VmTCaLvyJOR6O3Qq1Dxdw+QmRG/1WlnGYSntdVOivHCCo76f4+Ah2wXsNUAqEhCi6haA3FUV2LDAK6fPkqBr6j0T1Yd8KbsxWDx4Kr66G/PR5Vb8WlThVJCZW0L5MM1vja++NKHiWft4N9Itk9UCOYv8AunEuNVavrBZeNzLTiPFhEe7eGdjiLhSPR1v4HeAoD8Zo6jYrxgHPOl/lGBkpFf0nAMqczuzeupZ1cB7lTwN6zYLjmMfvSPDCVCQbUdhjmzcZJ197M7m+y2ZWAhQmlOCCc/cpAXCcgpurFTAqiwwIG5K2DadvptSECZ+3b5s0y+u/d2W/WCqFLuagP1iOu5hj8smjHj1HGKRGHJEGRc8M6D8SobjqJg8H822xsMZOj7sQxEgkGBguWidKnOXxdSATM1n9HeZyz9Ba6YqHEFDMuwq27DyXoOHd0vC8WWDOxFDo+6lvTlboSpm3r7DauED6RNFNcLlGd9UlIN6SUGW64UGDtvhM+yf3z2ygwGwSb3n7XY5NSxn/bSYdnJgNDm79URroQlA0z8iJATfIIvI9UIJ+Q0M+LibKd6NO8lNdbZHjxF2Kg1MKKh/hOjaDPpp6o+tFqreG5Jh6pBOMIhTad83MutqK0w/wF0InaBOQx1kX
- pqoC52bN
- jK6+Ff1RdNLcJW9YcMlCVJAE3o1RoIetoJB4Fn9UR/ZNxgo3SjJkNxW4R5ZR80sxytBc52W4aMhRYBaetDEUcYShaDC0qZzCBPXskk2Oq4ete62pRZyPk6PLnHl8eCqL11yAzToPOYJDGveP/CwYcziVkv8G7XCfgwgzVXTQBPTb2UO8YuWPtgFW7WtZHy5blPKFntOeDWKnT6vKx4tqrY69OW9c+/1fmL69OALNTBjpqwnnOv+bwrHmSr95vkiRQf0oNmuQPEIsdsT6jNVqpk7pjqUjNFjLdHhnU30Xw0IjmYxpVqzq5Q12XwnV1v4Y9WY727tyJAvl2hrNPvVO3fJLyc7inI3Ohm5Ka6yjF3H5A1Px73N8vr0TCvzdx//ZbPBkUyhEIRFb0+HLZWB+4z/zvE37vxXAFSeBu96BcI6adrk0kmOCOx+oYLg==
+X-HE-Tag: 1795002201-891264
+X-HE-Meta: U2FsdGVkX18rrh3Y6v18D/X+F5U9OT95iHCxTRBxtWwlfSyy3AkKdHNHuxelObfLmwdH9RBCC77Ke9gp8RE4P+79F84wCpON+Gu1yLtoWSCRymdxJyScKbimvTVe8nnoThdg9umdVi+fjVwI7q9r+dGYWFM5xanwnipUYmUgOXlE/mJg44pC/i5Il6oOn+kQiUlDeZFciAUUH8VbL/aik0LNF5qFh6/MvVn9FzhX4MD3IunswAvlgDJEfYoONUVWgx5npKSEnh5FKdeEn7gj0RGgqtwSbMQCBJw96nxOy3jptFyQCxQ6qtJBBU1iRCQkUbohG1/jg3Tp2+q3UeYMc9yKaX547b9yl/Cq1mz7y3Ugl0eHNdptnnFY7/f+ibuxuObwoznayuu6FGCKBx+FRPINyghbdCsSdnAZ4fyYbduaeTs7C/BOsD/eSt2/TPr9mavHx0jUynoboMjdGnMIZaG43M32xAGA5j+FUeWS9GINoMvBP1QCSM0Co0X7pCxQTD1ZJg3KULk807gAwnEIrabr5FPCqP2rXRCDYQerbWb3xUYMEgutssfZGjJmS6aMw+VevcNYYHPirVDtWNho4+0epZuX1oVvZXAieJP2uU6gFvMsIJD4uSOi3aYFAo0B5hIKe7sUUrb1F4DPriG39ypeKM+GgzD1s9upVa3sWJ7/+W5lfU3wyQ/Iv0kreb13SbEo9BfqnvXf/3PvXawVS52Vl0uqZ1WLKkfIhtinem8gsHpqMfqI6Mw2jvjkYRD26D1T60xDRsOuPVuAWI8xIppmys70cVo+q6/wX4T+PT9ULdKywAuT0NQqJS2n4kWq1yqWtajK8Mn9Bc+dIpC0U5tPRnoZ85incpMQeVJJ9XMPzlsOVBSPsAf0MZupisWiaG9Ub37yFISsNOG+uXjUblNlirsH/WVPwZ413TSyUc2TtVBaUw4OUMeRyghSPqoMzLCmiQhbU9e+HcHtzwZ
+ USa1w5XV
+ P9JOE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,45 +90,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-One of the enterprise customers uses 6 TiB of swap, and the values
-reported in /proc/swaps as well as in dmesg are still not correct.
 
-Cast si->pages to long explicitly so that the bitshift in K() doesn't
-truncate the value to 32 bits.
+On Wednesday 2026-11-18 00:32, Vitaly Wool wrote:
+>
+>  test                  brd    rbrd   change
+>  write, 8 threads     2004    1563    -22%
+>
+>We think this is a small price for page integrity
 
-Also do the same in swapon() for the same reason.
-
-Fixes: 642929a2ded0 ("mm/swapfile: fix an integer overflow in swap_show()")
-Signed-off-by: Oleksandr Natalenko <oleksandr@natalenko.name>
----
- mm/swapfile.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 626f3e9afc01e..3eadddc49a9d4 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3450,7 +3450,7 @@ static int swap_show(struct seq_file *swap, void *v)
- 		return 0;
- 	}
- 
--	bytes = K(si->pages);
-+	bytes = K((unsigned long)si->pages);
- 	inuse = K(swap_usage_in_pages(si));
- 
- 	file = si->swap_file;
-@@ -3959,8 +3959,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
- 	enable_swap_info(si);
- 
--	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
--		K(si->pages), name->name, si->prio, nr_extents,
-+	pr_info("Adding %luk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
-+		K((unsigned long)si->pages), name->name, si->prio, nr_extents,
- 		K((unsigned long long)span),
- 		(si->flags & SWP_SOLIDSTATE) ? "SS" : "",
- 		(si->flags & SWP_DISCARDABLE) ? "D" : "",
--- 
-2.56.1
-
+A free 28% improvement, just by using a C driver, and a bit of 
+discipline in the program (not submitting the same page).
+Supercomputing will be all over brd if they need a ramdisk.
 
