@@ -1,95 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1479D606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F1A606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ayXUbKYv
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=N1rhLlRq
 Received: by kanga.kvack.org (Postfix)
-	id 1D9EE6B05B0; Tue, 17 Nov 2026 22:35:49 -0500 (EST)
+	id 736E86B00EF; Tue, 17 Nov 2026 22:38:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18B826B05B2; Tue, 17 Nov 2026 22:35:49 -0500 (EST)
+	id 6E8516B05B1; Tue, 17 Nov 2026 22:38:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055D56B05B3; Tue, 17 Nov 2026 22:35:49 -0500 (EST)
+	id 5D71F6B05B4; Tue, 17 Nov 2026 22:38:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D756F6B05B0
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:35:48 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D4006B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:38:51 -0500 (EST)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A5D5140603
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:35:48 +0000 (UTC)
-X-FDA: 85446825576.05.30ECF08
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C8D71100002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:35:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ayXUbKYv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3AD36A066B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:38:50 +0000 (UTC)
+X-FDA: 85446833220.05.7AC6767
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5763920004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:38:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=N1rhLlRq;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf13.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.171 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794972946;
+	s=arc-20220608; t=1794973128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+7/n42KyXg5q/rOBLOd1rb9kpcERHhPizyXCV+vNOew=;
-	b=mD6K8Izw6aLBqpc9KCmCU+IhBSLqor7N5lG+GnpguHpbQWY47F2HTfWbg7cGdI3ZiCrYOb
-	k/4kQYuIN7ISep0rle+r4SNzuZhG80eRiTllKdfFQJrdOy59ec+DSkHn3Ve34/OFqUHKJq
-	00Jj10ac3l2riw601J3NUup9b11v6f4=
+	bh=Kvmn+xw8fMzfurQj4tJUer/fYr30jKP4x1tcbpp4Ht4=;
+	b=7juvThalgNXSxoqXCZF6h5OR+clIkXaP9UMHIUWKgPxGe0FJlUNJdC0lb7OlJU6qmaCzPZ
+	51H+FLa/gDA3rODbNJGv/hTSUvUINgOfJvHul3igctyBZqtLqBr3ezJPqbDW1kmD2ppFfM
+	tLvZQ7vBx22P89Q5zShSTNiDYT40Hbg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ayXUbKYv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=N1rhLlRq;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf13.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.171 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794972946;
-	b=Tkg4zY9pytz/ie+CBH1kbHPT0rv+NEbjkDE5QGtPAbnBGet+yZW1Q103jo2wESDCixQLsH
-	yMCv27cyfsKx9ADWSxyUkrx2BaZrkCOPMGGfSVPUsMGO6UIrSEnm0moKL6ywVPAnqx33+I
-	AAPB20Lr57qyg0KhxEnmirmVbASCz00=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 210F760D29;
-	Wed, 18 Nov 2026 03:35:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CB31F000C4;
-	Wed, 18 Nov 2026 03:35:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794972945;
-	bh=+7/n42KyXg5q/rOBLOd1rb9kpcERHhPizyXCV+vNOew=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=ayXUbKYvov/6b7QYSb9hRgYh8PtUWaFSc+844sQcDselrEd5exQDL87/sBG2IwRNO
-	 FpqtxofSxtxMKbhWyEAeUL7v66hjSQQa1RG0+GezXIwZveyf54SRHe3ZSidkOL8iZw
-	 F0lXTbzwP2vkXGHzc7zQUyfG72BrgH6eakIvKKD8+f0nYZJ2KXL508tTuqaCNG7TRp
-	 vmFS8c5gayk9+NHihWEa0Kfdv3GKJR1HrEFmd3EiZm7mYWxNNx3PezcTRsnTRrIgBf
-	 bVH6iXBxNj10AW+McH0nttridsiCH54mbhkdQrh5a56Dzstx6eVXjgH/SJ0vLuDkzz
-	 FI0WWFxH20quw==
-Date: Tue, 17 Nov 2026 20:35:42 -0700 (MST)
-From: Paul Walmsley <pjw@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-cc: linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-    linux-mm@kvack.org, Paul Walmsley <pjw@kernel.org>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Alexandre Ghiti <alex@ghiti.fr>, Conor Dooley <conor.dooley@microchip.com>, 
-    Geert Uytterhoeven <geert@linux-m68k.org>, Rob Herring <robh@kernel.org>, 
-    Mike Rapoport <rppt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] riscv: mm: reserve the DTB before scanning reserved
- memory
-In-Reply-To: <20261104104604.3370384-1-m.szyprowski@samsung.com>
-Message-ID: <3e5a01c1-1d91-8bc0-0589-0621930c2d18@kernel.org>
-References: <CGME20261104104615eucas1p2583cd5bc9ae36bd9ff2d28f87d6e7583@eucas1p2.samsung.com> <20261104104604.3370384-1-m.szyprowski@samsung.com>
+	t=1794973128;
+	b=tU48aZ3I5xotkC0Wr3n+xwgUvqetVTUv5K64QRHGTK4SpCGwf8SF6clVZN0BDzfKG/Wbmz
+	MTJO63Vf/yOMj1tlowwBtygdEv9Nk6rDc4z5IaTtK0SOqmBH2h+nwMXBugPoBtom4no9td
+	Ei7OfSySlhLTKMkvqIYv42iEHQgyK44=
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-36dbde64409so1078340eec.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:38:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1794973127; x=1795577927; darn=kvack.org;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Kvmn+xw8fMzfurQj4tJUer/fYr30jKP4x1tcbpp4Ht4=;
+        b=N1rhLlRqhYOEoIgzRjsqow6HgmzRHy7z3T7BkoFjX2EF5W0X0VNnysG1XR4NxC8psB
+         MjJrvA5Zvs/mcwqU5DfP8tsFHrtZyDNYH1hjuWWWmtNINmXtIvFW2Nba7M2u+Ox8g7pO
+         45yR66XOH3jcnd1kFO9kcO9CUsouQq6pHUohs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794973127; x=1795577927;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Kvmn+xw8fMzfurQj4tJUer/fYr30jKP4x1tcbpp4Ht4=;
+        b=xvpEQcI7pyDz2d9NldXncHs1ilpWe+Df4DGFlDvFUNNNT7OggH2uTrfGkjTD1hu+nk
+         3H7QEG9+EohxuGjKSpu0Ug1GmjoA1W+5pmqPsGHLNLrgEP0/GsAULT+y/KLj5Ub4C7JR
+         r6IJzVYcgroDI/KuFCh+xrl3lnumTrUy84/3D5ODGZ/OHzwamSM4WVV41v2ffUJzwZw1
+         QIBaxrv3gjc8KIUNhnWYl2NcANHDEOVov22x2CxdDAql3x9AWbhigWz6236qp8MRapkU
+         Z8mYwQ5bQRKnSKfegGP1cx3d9p19HBCLetE5nSeMqELQz1pyM9ua4LbZNCLECek++6Bq
+         FK/w==
+X-Forwarded-Encrypted: i=1; AL+hErGIMCZWplrFV/UzGTFKdI7/C3WcNead9277yUafJHzPYvaGF4i2koqpc0l2xW0rvVmN6rO54Iz6pA==@kvack.org
+X-Gm-Message-State: APuU4Z/kyycqjlUx4T9zhSedqxlSWxFRcggNI7I4TBAX3JHN2MDeUN13
+	iQ5SLSPPwvCvmWktGD0Mo8MoSXVEjxDgTExxN+nm+Wga5OAI2svzcLSVykdPPC65o+U=
+X-Gm-Gg: AYBFou2hrgWoJ3MUMP0lqSGdDAWPDU6B3H4IclDe+DFq4/u3dU/ZTPZk1hRVhD3LyKQ
+	XwI9gZsgiVHExPKcKwoFgWzNeJLXALQwsJWIzG8bcaoJFc1YAoqeQhR3IicL8Umdh6KuHrCMZnZ
+	5xvO4AhqfW3mgJZboZhGpMyeJTIiS0z5VXBot6tYTjM3rVk4a/mOnzZ3L+DJuc5oXa18QdkJ4H9
+	ODN2fwxYKHY07mciZrG7QYkhv4aP4g/Qam9gkvJ23E+SvBcH1bHQzPMV4zczMbOchvG28f246ev
+	+8K5ybVTd+6WuDs+bejKTvurywinVlRjH8Ugq75It1H+/bPbPR4SG/5guF4hloelB574FhuPI/k
+	/AFt1Cq8wY4SpIoFIOjmU6rIkwUGm2xI81pq6pxplSEiOyl44PoDTnuaeMy61crEVFzopAo4npy
+	bEECZhps/hLPwKPNoAC/OlsQAsieyYBMBCJtmZnYId9SR/R/IO6uffOGAy+MCtrhdW6uFsa7Vq5
+	vJJrFhyHpFRQSuCu026MPgsYowswLRduWIHAlxo6roke1mut/0s0+G8gBv5Nw15mDuGi48+iHgp
+	9ZD6g92PN0afy4wBUkx+cOk1EyTk167e/qDU3QxyQ7ipWg0Y9lX+jHsfgqRTceyLPlMBd/+xg84
+	FEsnfUhTtRi1re4T7KexECIgBAMlf9JiV0RDidqTcF2ek82t3ZIl0rv/Dm+/Ugv1MmWQeFuXZz2
+	9ih+GOSTc7ZG9o6wfQnxKgjNyAmp7YJVZqUqecPEcs+GSHxrdo2eSiy1ODRXUe0B9d
+X-Received: by 2002:a05:7022:fc01:b0:1b5:1a6c:af64 with SMTP id a92af1059eb24-1b543bcd4b2mr1258863c88.17.1794973126774;
+        Tue, 17 Nov 2026 19:38:46 -0800 (PST)
+Received: from [172.20.0.2] ([172.56.235.113])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-382a63059f8sm4907822eec.9.2026.11.17.19.38.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 19:38:46 -0800 (PST)
+Date: Tue, 17 Nov 2026 19:38:43 -0800
+From: Chris Down <chris@chrisdown.name>
+To: Alireza Asgari via B4 Relay <devnull+alireza.asgari.net@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>, Shuah Khan <shuah@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Vladimir Davydov <vdavydov.dev@gmail.com>,
+	Zhang Jiao <zhangjiao2@cmss.chinamobile.com>, Song Hu <husong@kylinos.cn>,
+	cgroups@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Alireza Asgari <alireza@asgari.net>
+Subject: Re: [PATCH RFC nf-next 0/9] netfilter: nfqueue: account queued memory
+	and reserve capacity
+In-Reply-To: <20261115-b4-nfqueue-memory-accounting-v1-0-b9cc30819997@asgari.net>
+References: <20261115-b4-nfqueue-memory-accounting-v1-0-b9cc30819997@asgari.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 8fcsgu4bq57o1xienc1yg1rkqahskbn4
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Message-ID: <av0dwzvTBXXLqWCa@chrisdown.name>
+User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+X-Rspamd-Queue-Id: 5763920004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C8D71100002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794972946-411812
-X-HE-Meta: U2FsdGVkX1+xSVwlrYv3mUNUnC+Xb3yLngD+Ugk3s9VYtYKYxvh4qv9Zc9rk4ytnaq4mvsS4Qexl7l8EGQaRFF3tJC/06shXzwOUEPuNAUYNtAkqWTsdess13kMfE0AQT4yW4eg/QBv5nfwFXPrSzYbFnWEm/aAFqaWjwVF8tbK6M8FKpEDXv+pPwXs3IkkdC3G1Se2G9c0c8YuK4oM9tvHyIZmVSsOpcdzyaY8PBOIZXM4kwmTWmKt+xhx7Gi06zc9Wlrqm18qjbrfFzjhsggkNpkuSTrKUQY/3PMv4qLCFUsNH/xFnd1qvGeOXPbF69951/OVUL4llI6SZ26o8rrUtH0jaecWYrc6EtKgOvX9tKgKv+uUekAMP7W73wzyHdKBLdcNoRQWdvjdxPvvqEim5AjP6kN+j3V12D6yDu/6XdTmMIxCubFLYMpZbKTJ9fdyUUtTd5X0mka/G2XZEMmvSgnYUcIDmmyLNmsceltXT1qUE+kuPRhwdcu9lAtDIpYUEOIq+C3TaWZzmctEj9m5KVSAwM+9Y7uByxbQTaAW5D7SYppFtCAHAi5rIkeX7rBuxg+KwkQW3S1ixZidJ8d3T/wi1jkDSKdbw2jxdNXDwx3vJ64CdOa+Qre3ecAij3nav0MHTfD/kY4xIBskJTF6ueuxKQvotIrtvz89DdXhQNyww5YALdaZKNhGLPr3PsiSgJD6YWcKLeLS7WmMrqG5CiX4pkp4ra9FTfcQCWHYiTmYNzbY0/YeOgwf3MtD9IpwWn7QLWZ9J7R2oMQxgrWA6UG98oOUixvGe1npmsabL3IVT22EPCZKn+pCO0QPLdcXbr2AzilZ32PQpLRYUKpIYIPD3VbFRU6AjmaXlRLndJH0CvZb3u7NTGA7u5p4aAsULUpzPMp3cgHCobsO3obwBqgiaxRxLTGZ/sFmrZDICavZYbGDFgi3ES2/Rzr+Hp8cQMVyDFqiWMPbbS1Y
- RUtXROni
- F2/iRBYmcUfwi2JU+tKyvd8IIXY3OkfH01u3enl+NjGoE/44RoUxiKAiQJnFgj6bEAnwGgal5HKaFkZQ6z0Ee1TjTiJFoJjpm3e/AOXI1bAsz7aIUynelyShpurPXMLyUwbZhHPHBXJwNSZDiS8AsvLVywcHurEIvJZnS1RWLX3nL5EkRR0pFxI55oG1q5VGcECzGQeVIyEQ11/YNgbWenpuZfVaNoUUXE19px0k4akwmRzukenr+9otK+kaQh9nXfBR3BZafX9LIjVfSacoMNT8aUdTMyVkQ7/aFkvthNukMxSI=
+X-Stat-Signature: mg1k7cyzfry9omy3gomw9o6cwsgiht6d
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794973128-848319
+X-HE-Meta: U2FsdGVkX1/B60NkuEtplo++qWZ5qE2Jm9ZlDeqFcqwc9aU0zw2wxnMBSeCJR+w2y+vQ2b30A4IF3i94CCtMtx3AQdwZzbFJibH8PMcUCMwKhttpLq8T1MVJbaHtO2yi62SPy5IgY8EQk4Tt0/yCIp1askW6Ho7v7uKNt6oFyvL9r6+wNDJIlnVVNAb/xCMfwoWK25+Qt0OVbHVVNdL9Q+cKcevSwWcHc1i68pUdakGwck+JAzD3c3ioEZvZJlxWnuply6waEeOkDcvVl35OihA5tiIGaZ7cQ4hJBtDd61uGx1QE+9wY6gxiGI4204gBV2jPxWntI6gM7YdXy30Bc/yGsvGSwoQDZpaBxIEl1Z3030VoTDLL1gWRi8I1ffRcQDt7UWg9P8VBpbCBVuSYeLHaUA71Jfj8g2vecmFspJMHQnr4YKjTGbmLHUHpf0Abu4kySiDfx8m9qJH0MFjxEurSmwjvjmCNYGmEMly3x1jgrDw/iEYv5RsHqRoJ829wvFOkyPJwhraChIoo/NuywlmXMdT6/Gx3UbvEJM+4JIeWFIyh1+Cw2UMnLgrHg0GUq7vPBQoOvhbdg4mHI41qYIWrd9pKmic8pDTjxepZepJYzkNpWxjLXVlnI31687ot7FPw4vTTJsG6U0paWc4Gr2I+S0OFoQA33os+UFL10E+V7bGyRGTPnhWeBOVoGo5EJsD/onpB4iT81T9WyyrMWbjjoBjHw2txzKD0q2X3yxFVIA1brmjJAo6F32sEKCOM7iSPC3KYFgRALL0ASY6XiwsoCptGby7EueGKFZ1HRRFITSaZvLV8Isxf/nNBoBv8mWIvJ2muCpuuhkngwPsSlVkcidk8WNAGhvB29d6u8CChWpZQMuFzlmO2c6R4KlKt7tNHzFFU6og3hx/76JoReC6sdDZtc6djUZBfXmm1L2+KfwZJt0uJ89RkAAs5WxjbalbxyHmEhRwBcBTZLDI
+ nOL5XnQx
+ 3cguQJJI9UbbO7P/TKasKqwNWifqC340pDFwkxl2ATl4dmkP8s8eOpnwPf3VTnropelkrPqpSxgXmyhYxyPXExAQzLe2QN2u2sTLJWpnUgdQCR8xUT+jrqLaeUHVz8mWvTMns5+ymxwA/ozoZ7wJtOpNUtkIbivAFasZIyT5R47jXZzbr+uY1JoF62CqAlDhtoiJR5ehiIb3rYaAbek2BlYnACX0EgPmFGnaizDGA2dEdeMRjwySQKsi59f7fI1W5sXZ8IYZJMMF5yX8SQ/9K7diTDNXzRnpttgDN2NRyYb7eYzIgio5BDmf8XDVK5QeHIj0+p0y+ORTH0y/LRqYYua/+RIS/72Ic3EtX7tNWxdXujT8YAK/p7lCZi1i9B8VjAuwcbZA871IBT4oI3vzUHtLreALKuQ5kGyoreJiZXbSSFnAsrSSZ4/4UsLy5Q/JnJsxQThynWWa44PR3GAUjkK0GG67n1TPFZ3VTrHQjP5/8B2op/5g6rpsm7PoRGCvC0yOyu6yVDX25CC6ehLaKWceghSM8DSXk7ClZEZeIuiD/VSo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,23 +134,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 4 Nov 2026, Marek Szyprowski wrote:
+Hi Alireza,
 
-> early_init_fdt_scan_reserved_mem() allocates memory from memblock while
-> it scans /reserved-memory: the reserved_mem array, and the regions that
-> are placed dynamically by size. On RISC-V the DTB was only reserved
-> after that scan, so memblock could hand out the memory the DTB occupies
-> while the DTB was still being parsed.
-> 
-> Reserve the DTB before the scan, so that memblock never allocates from
-> it.
-> 
-> Fixes: ef69d2559fe9 ("riscv: Move early dtb mapping into the fixmap region")
-> Closes: https://lore.kernel.org/all/b71ac175-fba5-4f61-bbdb-0b98dec9ccee@samsung.com/
-> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Alireza Asgari via B4 Relay writes:
+>3. Whether the proposed bulk reservation interface is an appropriate MM
+>   interface for this use, including the explicit restriction of charged
+>   growth to 64-bit kernels. Is this compatibility tradeoff acceptable for
+>   the initial interface?
 
-Thanks, queued for v7.4-rc with a stable@ cc.
+Hmm, I don't think this needs a new interface. obj_cgroup_charge() and
+obj_cgroup_uncharge() on the objcg you take at BIND already deal with root
+ownership, reparenting and the kmem statistics, which is most of what patch
+4 reimplements. They would just need exporting.
 
+>4. Whether non-reclaiming reservation growth is the desired failure policy.
 
-- Paul
+I don't think so. A long-running cgroup usually sits at memory.max, mostly
+with page cache, so resizing the queue would fail with ENOMEM even though
+most of that memory could be reclaimed.
+
+>Increasing capacity obtains the additional reservation before publishing
+>the new limit. Failure leaves the existing configuration intact. Shrinking
+>preserves queued packets and retains page-rounded backing for the greater
+>of the configured allowance and outstanding saved charges. Excess capacity
+>is refunded as entries drain, with refund work serialized against resizing
+>and coordinated with queue destruction. Refunds settle the actual memory
+
+Keeping the charge at the larger of the limit and the bytes still queued
+makes sense. Otherwise one could shrink a full queue, charge the refund to
+another queue, and leave the old packets uncharged. But, unless I'm
+mistaken, the excess doesn't have to come back as the queue drains.
+Configuration already runs under the nfnl subsystem mutex, so if the excess
+is released at the next configuration change or when the queue is
+destroyed, it looks like mem_work, mem_mutex and mem_stopping can all go.
+
+Thanks!
+
+Chris
 
