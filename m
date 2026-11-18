@@ -1,146 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA29B606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F989606A33A
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=ZPJMuf/Y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=etms+rmi
 Received: by kanga.kvack.org (Postfix)
-	id E7E9B6B00EF; Wed, 18 Nov 2026 11:38:23 -0500 (EST)
+	id E10A86B05B2; Wed, 18 Nov 2026 11:41:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0A1D6B05B1; Wed, 18 Nov 2026 11:38:23 -0500 (EST)
+	id DE7F36B05B3; Wed, 18 Nov 2026 11:41:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF84F6B05B3; Wed, 18 Nov 2026 11:38:23 -0500 (EST)
+	id D24366B05B4; Wed, 18 Nov 2026 11:41:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 95C766B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:38:23 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0962A1407BA
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:38:23 +0000 (UTC)
-X-FDA: 85448797686.20.F03B6C4
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	by imf04.hostedemail.com (Postfix) with ESMTP id ED32340011
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:38:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="ZPJMuf/Y";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id A4C446B05B2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:41:35 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 183EEA83C1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:41:35 +0000 (UTC)
+X-FDA: 85448805750.07.4DB0DC1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6DDB1180007
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:41:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=etms+rmi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795019901;
+	s=arc-20220608; t=1795020093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LYnPwXVs5q7hiylo9HLvXwft8EbUR8+QNtfkEA01owo=;
-	b=y3lsmVkV05MsM3YvOoS0a4G6mUTEKEwzoJX/zCxWNW4W9uQFk7gBywXrNVzz/mZ86sF2s0
-	CImGiTYEfzukVCMrA8y1kHckeYvSZGO2ggqUYFPrKNkx7rVTJwzarw/7vV4K2qTz14YFIq
-	Eyj5ozrTsX3x1oGZYQw/ZkcY4RxzRsU=
+	bh=KpCOWgYItNRFdCHLthVjrjZj9hh3G9ExdOPVMRYpXJw=;
+	b=5FnosxqBMj2KJO7yI95/pcNovzisf+xRDDy5vFIfGTf8R3kfwDynUsmwVSpNp4qgZ+z21u
+	Mw7xHqkB/yc7oSVkXee6Uz0VkAp/zotg7QlYPzu5ZUIfZbGbkk4jLFmTMGFegf8lXE+gPF
+	8STaKAYy4drEmAdf2sEvx6ngvcMaoII=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="ZPJMuf/Y";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=etms+rmi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795019901;
-	b=l0ZsZnugdB+Cg/01Fr6NDj0zKe7Sd9Me38MtRRAok2/DG3Yo76g00RbRKWtnjlHJWE6kuI
-	C3jrRkUf6sYCYhXQFxlzbxakAustr+Ic9m/mb3yej/rDJMyasEA8JSSmm7Rlg0lQJgAA2c
-	B3r8zzQ/6oEkrrbz6p4mTv8/0XWLsyo=
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-7d2dc1ac787so387140137.2
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:38:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1795019900; x=1795624700; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LYnPwXVs5q7hiylo9HLvXwft8EbUR8+QNtfkEA01owo=;
-        b=ZPJMuf/YPCsPZxdZN0MEOoq22PTrOgkw/AyYJW0FmJg3zG04JXt8dWl98Yrmsq4+Rw
-         OQradkohn1db5HgyNtCUrcZZ/c49aVEi9t0XwdzNmFxdifQ16e01o0WEL/o3t3/7S2YI
-         r3rRHBb2ZuT4w/xhexy7+YudYzrUCY26mnq3TwYIvo5tCoEm5Kb3vObuTk3oqAOkrHIg
-         AwOCt7iQT1xtqhTS7VBDFb9CKZMIwwlzjK6w7wJ6sy/5LXcks0gWLuNI3DVtJgw7Sna6
-         Xd9jGg6r8rXiocm4vHzYURe14AKpZQ1yjfhRBOh/jf3YjW3A5GhayskivC0eXT70/fdQ
-         UuvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795019900; x=1795624700;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LYnPwXVs5q7hiylo9HLvXwft8EbUR8+QNtfkEA01owo=;
-        b=ztZLAyWk/B6AwSJJRf1QAhkfsUq9+7bRSyqibyL40sabl+701d2M+CdmJLMuQIltdQ
-         lmOj5ToH9llcVW/FAZiJp+/H8i6O5s/Ywgs9DaupP5ItbXzbSCcvJL2PporBX6wh2/tP
-         6MX/DPH8avvEVwk87ruT4dBMnLjxWC44r7SeZmKgDGyCzeFCBCFF3bjp62AuGTfwcMzo
-         sRdDymG2AEqkbFCdZtHM5BgHKO6/dFuNfBCsonPNbEWYscSe2sNby0Ef0C31aJ3HzYe/
-         AbR1ZH5jBUHL3LBQF0fKN5vVj+LXJHsrq9gdoYiYYFu7/NfRZpdL812foagIVlcLNyK8
-         6dbA==
-X-Forwarded-Encrypted: i=1; AL+hErHxuPEuTCHPIS+BVT0MCTG9KlriY8HlT+2PNz0x02lJdipPJCKDHIH26rlqcqQZVcDj3ggqZsYCXg==@kvack.org
-X-Gm-Message-State: APuU4Z/IF0ksPBUEpQvROjhd3XWx7ct+aDkXJfNhWxtF+Yhdtu9d5EWn
-	s0uBmdWgGyzJFVjwuMRFswqBbKd0wfLy7g6VdYW93+ptSlWYmG0uevvzC4n4tcWE4qRKAKfT5uu
-	wWheD
-X-Gm-Gg: AYBFou0eceeVI9xsTfw91MpIrJQnzpwjVbTzJ4EdZ8IZ33ZrsYR9nihLTsitTxa6+Xt
-	oDXvJvoFYo2LemC2l/0JrAioFasHAWDDgjc8OO4clJloRTMybO4clvIk/SxRROHVfXa9BvIvH4O
-	epeoKD8mqvdBCqo2Rcl/OL5V/KWHQJn4pmtWzWab88p6Do3TzNjUutpWYaHtQa7FQzxH63fCdBI
-	vW95VezpYvjKvOHD5fIJ8NL/nBq3EWwbEStrjJJn75relfoD0Lsg726Yw8Chbqb2ukbs33zKNyC
-	fPG7MWrJfJm2UwjGNB1yDSo45xw6S5K5YjdUVwPBTNtIdm2mHUGsdssecQm8lJhS5X6FNWOdEme
-	uOaC1+z4oETlldIZDsp6mQ8ktGrdmgVF/dgY6dWwasfN2/G/xIOWaZOoMxdVrIOpKD77Ho9yIr9
-	4QuUWvtZUM+4p45vo3r7jG/glaa3hnGGBq4h6PP9eoY6T3eFdm+lVb+FARUy9ZHPFb4F5VA8LLx
-	PXHKXNwB/vlRFwmzXxDhpGwTnr36hq+gA9Kf9PHscVr6r3iQ9JtQdBLhQgk/Yquxzxrkl8h78Fm
-	rUc8fEig/rP6LtFch0oYqrCG1s5C9nX1qcLrmdm8NBI/Kva7tq2Kqn3s2uWHgPevJBtxbuZBCAn
-	JdWktuJl2Z+4bXDVuX1VOxHwdxQZckn+n5VHUMSpkCdtOoaM=
-X-Received: by 2002:a05:6102:91b:b0:7d0:9587:1b99 with SMTP id ada2fe7eead31-7d6b9ee48fcmr1231586137.0.1795019899949;
-        Wed, 18 Nov 2026 08:38:19 -0800 (PST)
-Received: from soleen.c.googlers.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d6b9318565sm2190742137.9.2026.11.18.08.38.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 08:38:19 -0800 (PST)
+	t=1795020093;
+	b=nwbyb4e8p4gUkLt9S6JAJnXY03n/4ees6Yed7EW4yx/U9DMnxMJ60ycIYp/iUMV0QjnVok
+	cq0nCR8759Zy8OJIbfdv9CCva6VOElYk2q4uuqzTsVrjgXjAzwYHWkkIVEOAfGsavSb95X
+	HriRYJNC+//vyAiQ2c5Uzpw8M6bvN9A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9581B462E9;
+	Wed, 18 Nov 2026 16:41:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E0B1F000C4;
+	Wed, 18 Nov 2026 16:41:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795020092;
+	bh=KpCOWgYItNRFdCHLthVjrjZj9hh3G9ExdOPVMRYpXJw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=etms+rmi+8L/OLERxU+EOMiH1yzh7QvrCedbLLFvfyOXftr1190X213cLfSMIdQhc
+	 xktDkWAsGluc5sjs6Q+0xPnu0cRRv8WL1LtgbH7hhvypFoq0KCjcNGSmDaySPjxe57
+	 KSVCR2Ief3MVz6qMcEC3A89jIrfeeEJz4Oisdraf0VRAKp9ACtii9Nc+6p0hWsiOHC
+	 cOA3QRG4XS4ZJ0/KN+/71smKz//P77MiR2wPC2xQXa/VFXn7cC4W+hKsihDTtUOf3q
+	 FbeaJe4k0/kwhoD/wk2H7C/C6O6Lmm8fqXI0k6UkmMQ6tQVBRU1FPwwdFAJCOA/i5u
+	 /z3SJ8YKVa3QA==
+Date: Wed, 18 Nov 2026 17:41:26 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org, 
+	Chris Down <chris@chrisdown.name>, Miklos Szeredi <mszeredi@redhat.com>, 
+	linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-integrity@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 03/13] tracing/uprobes: handle errors from resolving
+ the real inode
+Message-ID: <20261118-beenden-wirken-halsschlagader-00aa2083c904@brauner>
+References: <20261116-work-ovl-d_real-v2-0-90564c4ae347@kernel.org>
+ <20261116-work-ovl-d_real-v2-3-90564c4ae347@kernel.org>
+ <undine-1794965448776121119-595ee1289c37e7d3@undined.local>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] kho: expose incoming sub-blob metadata instead of
- contents
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Long Wei <longwei27@huawei.com>
-Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
- akpm@linux-foundation.org, graf@amazon.com, leitao@debian.org, 
- corbet@lwn.net, rdunlap@infradead.org, linux-mm@kvack.org, 
- kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, hewenliang4@huawei.com
-In-Reply-To: <20261117092951.4017931-2-longwei27@huawei.com>
-References: <20261117092951.4017931-1-longwei27@huawei.com>
- <20261117092951.4017931-2-longwei27@huawei.com>
-Date: Wed, 18 Nov 2026 11:38:16 -0500
-Message-Id: <179501989658.250261.5046056769256366161.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2796;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=s2TgceZsirNjgZI66wNzdrJjtsGvWS0+fdcYU2Wc8h4=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq/dR6HI5GpH/4iewvFIx9U9up3jTt1CD0OiBfM
- tAYaHZwb4eJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCav3UegAKCRC7dyhM23N6
- 3kzeEACFJCS4M3n+dkgQTJYjctdNWWkW46rsV15OpDqGSLVsafiGK5V9DqS/YbDDUzAIL82H8ek
- ad5sQrHuBJHAawArjrrZvPvZzsjJ7BoW0DhpOcm/qpi9kWBcHFsENdJnsNI+sEKtS7RbbYWQK9j
- vUVdUL11miluOI0kgYxpgF5qaZ4UwPGOft9U1q/ZL8XoMA/wEeCWMJjAzYczqn5NlEwwa+0AB2q
- 6rV9wl/qqH3k5YypOi1mJyaSbV5EkYQGGi5oaRrSDgGgUPPySAGgd2qpPcV4/nA19UkULW5+Ytn
- maeDoReb2TGTx071O1D61DRaAQroMbESBa98ybnPDi7kYDDQ8CLtcbsoJT531hV/Rb9vSyMfua0
- WYp/jw8p6CI8ckRZakilQLC6NoROctxmAW8dgqsN7qz7E8zFTylOcMwvBnWCVv/OmeVNt//PGSZ
- 4pvr57QAYJHdwmcY+nTXPkmo8Ah6AewPJfQdfcObc/6kbkiKd/1d8lPhhzK25hDvF00YlLVIPNR
- 9tWH7znV/vhJaE8IssOJda4n+3fjfU5Kdq/BeEciQ7PR4m3bZU3IgMli5bnUzkHVn/orX7MMm3Y
- Z7klzrAJ9WeT+Ujk7U5HYuOOt2IHqPSL3QETXW/TOkr9Z1Ev36XHxJTep93cKMnaV5yhNLmn8bY
- /EvS9/hwGM3L8Hw==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <undine-1794965448776121119-595ee1289c37e7d3@undined.local>
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: ED32340011
-X-Stat-Signature: rbstc31jr37eta7ojizxs6fcu6bzn98w
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1795019900-940012
-X-HE-Meta: U2FsdGVkX18UB+qhP8/8hxhjqWbH4vH/7ZPqvl8PYrVL8t0Zv1Y53BWUrtAY2sBBJ1pKsI49M8GaFKzQJdTMQ55C9a3XC7+w4dMSaXT8WAPlbGhwgOnoqTP9leMq0tcBNVV4m/wRXFLgySvSJWmvA+Qv4KB8Z0KT1FBKgVQWgpRvPET9U49W4ZMOEhWjrFDMpmB2KA0wn6/a53/YYd3hMx3KF2II7tPsCSa8b9opCBr22E1sjEhT5XedsLsiq2U5F0ZgtxyCUg0ZgH/xmMfJHqY9iKaM+U6DOrAa9AhVFEKwedHphr0+xYs+7YPvnU24/zajWtksX8Z5kGwL2JS+9eXdDZJyC6wu+2Li60h6ArODQ7dWuqZ9uNr1HN85NOHJjAQLAdYBJHnp4zKawsA5XtmwDntg363ob2aQ7OAGWpfEUMidK1LhcLINucS+kogLIY11HukDxIiWlLOpmquEvj8VoQS39Qir6Tjv4eJyTgmyVANzVjG9XaqyIMWJPSQXe2JUBSKALiFKMMTOYFwpbAGYCqU5buB46EwQbwDsVv7h5i3UX8xh93HNobWWYAD0MP9OGaXUwloHCav5x96ZKQkbZOCz5VGcSgpXPY4Dbs+soGGFLZc74vwVBaN1vswXh1RknmE+8MukE9v+MBwdfiR6B1Ui0wYIWgWy82L+yc3aSKkw2qC6ZARSIQ+ip1av0o8nkc3IC2raeUpdHpSJUO0dJ6gs9eVI4bNSRa6JFAAXRvWZeaSOTqwaeY/D3/CIm10hNdlqxNOZqgXX5u/+ZK9KGe0CJnrin51Ii2vgPdIwqCG0k/S7FmK1mExwsyasIoiVWN5EwunlXvC7bwKNRiNlB3rSynhRPspvM++lGU7DsomzLEIJBr8eFQeEDUZ5w27lvNeI4YKlG8ILhPCJNepvLgFJghSkuyZUfo5/9qyv0ulKUkScupFIo0BAUn50clYnWClnS96pBTrWLil
- egAWjGKa
- iVUIZEcXiWACFA5jT6+rQUkoYiQu7ko3klyDgTZrMljZmdjlBKxexOBqWJrHV37EZU21+gzqAlHcPhv/bRvKpvczNp+4dNCIpOt6LjI016314HWUek7f4Go8++b4DLrNFMxEojDdiauJchUD7IcOIWhQpfH1hZQz7fobyYHKgygG1pEauqR/1QL76s6KM7FdBIkzTefvY0GVuI9ml77HxaEk8hCuDlwOeKMQn670ZgY6AB07yY3GWtavy1K2IAKqZgoVIaM8Lh5aqz2PxKhp7Xi2KAA==
+X-Rspamd-Queue-Id: 6DDB1180007
+X-Stat-Signature: 4huasq8wy841ruxb8eqd4co7cqw8ei6p
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795020093-678864
+X-HE-Meta: U2FsdGVkX18n5F5gNUl5cjLxsohmVdEECRetTWVjVq+Vs6A13dkLRgekb/05LJZ4Ix+TfVC5u+y9ir1afx5Mb9VqrUgbUjFMiFrNNk3m8eW5xLuTt1V3KgfkGXAblBat87oM9HC4P43dxoqv00nRWsN9TI63B6afW5muhRoolbRDLWAUrjAJqtQnOTE3jrvqQCn23lKDwwgZBGZhJyZYk/jNc5Izr7I3W+cSL2naFZrcoNM2IjAcS09FZlhb4tg5cmuu8JEgCGGze7jB0JOrOsUSx1VLt8y10166qSzKpUaj+qpEu57ac+JjiaI47I3atC2qASxQMRsBRGTxCL5TF065byr+QIMPp9B2g99PPi5UaZbTrnCp+t0EOfmuEIKiC+pogvan+94ySXbqsXIe6wTX0dNeElx0zvwYh6GXeYu87GsHGfS/95KFrsRsx8IvYSEWQfkTDW8UwYd0Z56GcjrpjQfbIxK9Aw9n3bAC5bl214YPD48Wkj2/ToQYCTgf4O5wT63IqAaOxtzvyQoV8TlDg3Z91vBx3SIJ6ApnvtGnZGdDyxmzQ58tBlwh/+/Udq2EPhhpY2o6rLo6Enz/6Z57jpsqsd76OxmQmfyOAwE14JS/QUFGKCdIB1V6J342e0f8qDO+FrbrEJTxOoqyU4eN8uBIAjy57fTNgt9n12bcC8T9Z5w9VxoRnaV0b/laplujD4w/3QtQ9BQdSVA6qH1fu6Ed7xMNMGgUXfg0G9fBTf2bOeM4pnfA8ryCN8o6MwwTEcAUDPkHpyG2Ou09shDKuHvV7PRPrfsxlR6oiHsiZ24QWtAP3AJsr7n67tH9XpNaid9abypPfw586OKirxErEshb9To9YDo+hbYdUFdYo+aG/qc4T8MEPhRIO2U4PZf700C12GL4LpBlAOtLMxQWsNC5srX55szwmaf49iaFa1xCdsWpBAKbFr4jtxzi54jzixS8csTjTzY/MBo
+ Boplapi1
+ 0lBLjOnXdgzdQd8Q5Tls2hcAZ64wGWhkM+Tt344IdUaIGjQpswxjnpkhw8CUNFFNKmKcQfo0iTHprlDN5G7NKQWK/WIUJNlyh63iVRAU1UrtXV+bggvwkPTawGlhPtjVVE1XZcH8vSmEKyub8lw8YEciKOU6p3spMJKFSissUB1WKfeYmPR9jCnpwbDlcYTGHeGA3yp3PMqdLZvsMg+Z5x6N6sVUtD9RHcwstPdKAwI1vq8dFdYwcte7aqVYk6NDoZg7GeEcJ7KDRn9HIEmAEH8MSFjD4fNnLts9AnlG1J8/PZ/4tfsPv5V8D7cReHObUdWjjg4HmrcMbWMk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,72 +99,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Incoming sub-blob pages are owned by their consumers and have independent
-> lifetimes.  Some consumers, such as LUO, restore and free their state in
-> early_initcall, i.e. before kho_init() (fs_initcall) builds the debugfs
-> view:
+On Wed, Nov 18, 2026 at 10:30:48AM +0900, Masami Hiramatsu (Google) wrote:
+> On Mon, 16 Nov 2026 10:44:00 +0100, Christian Brauner <brauner@kernel.org> wrote:
+> > d_real() is about to be able to fail for D_REAL_DATA. So switch
+> > trace_uprobe from d_real_inode() to d_real_data_inode() and deal with
+> > the error.
+> >
+> > Currently, nothing checks whether the data can be resolved when a uprobe
+> > is created. The first resolution happens in validate_ref_ctr_offset()
+> > under event_mutex and the last one when the event is enabled. If the
+> > data of a metacopy file in an overlayfs data-only layer can't be found
+> > the event is created just fine and enabling it fails later with an -EIO
+> > from uprobe_register() because the overlayfs inode has no
+> > ->read_folio().
+> >
+> > Instead, resolve the inode hosting the data once in
+> > __trace_uprobe_create() right after kern_path(). That happens outside
+> > of event_mutex and if it fails the write to uprobe_events or
+> > dynamic_events fails with the actual error and a new NO_FILE_DATA entry
+> > in the error log. The resolved inode is passed down to
+> > validate_ref_ctr_offset() and trace_uprobe_has_same_uprobe() so we don't
+> > resolve it again under event_mutex.
+> >
+> > Both functions still resolve the existing probes they compare against.
+> > If that fails the existing probe can't be on the same inode so we just
+> > skip it. For validate_ref_ctr_offset() that's fine because
+> > uprobe_register() refuses a mismatching reference counter offset for the
+> > same uprobe anyway.
+> >
+> > trace_uprobe_enable() returns the error and probe_event_enable()
+> > already unwinds the probes that were enabled before.
+> >
+> > While at it, resolve the data in create_local_trace_uprobe() as well.
+> > perf_event_open() of a uprobe PMU event registers the probe right away
+> > so it would fail in trace_uprobe_enable() anyway. But this way the first
+> > resolution happens before perf_uprobe_init() takes event_mutex just like
+> > for uprobes created through tracefs.
+> >
+> > This is a no-op until d_real() can actually fail.
+> >
 > 
->   early_initcall: luo_early_startup()
->                     -> kho_retrieve_subtree("LUO")
->                     -> kho_restore_free(luo_ser)   /* page is freed */
+> Looks good to me.
 > 
->   fs_initcall:    kho_init()
->                     -> kho_in_debugfs_init()
->                          -> phys_to_virt(luo_ser_phys)
->                          -> debugfs_create_blob("LUO", ...)
+> Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 > 
-> debugfs therefore ends up pointing at a page that was already handed back
-> to the page allocator, and reading the file triggers a use-after-free:
-> 
->   # cat /sys/kernel/debug/kho/in/sub_fdts/LUO
->   ==================================================================
->   BUG: KASAN: use-after-free in _copy_to_user+0x37/0x60
->   Read of size 32 at addr ffff88810309c000 by task cat/27436
-> 
->   Call Trace:
->    <TASK>
->    kasan_report+0xb9/0xf0
->    kasan_check_range+0x100/0x1b0
->    _copy_to_user+0x37/0x60
->    simple_read_from_buffer+0x77/0xd0
->    read_file_blob+0x75/0xa0
->    vfs_read+0x12d/0x520
->    ksys_read+0xc3/0x160
->    do_syscall_64+0x97/0x4b0
->    entry_SYSCALL_64_after_hwframe+0x76/0x7e
->    </TASK>
-> 
->   The buggy address belongs to the physical page:
->   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1fd
->   pfn:0x10309c
->   flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
->   page_type: f0(buddy)
->   ==================================================================
-> 
-> The page is already in the buddy allocator (page_type: f0(buddy),
-> refcount 0), which confirms it was freed before the debugfs view was
-> created.
-> 
-> KHO does not own these pages, so it cannot safely expose their contents at
-> all.  Drop the in/sub_fdts raw blob nodes and replace them with a
-> read-only in/blobs metadata file that lists the name, physical address and
-> size of every incoming sub-blob.  The FDT itself is reserved by KHO and is
-> still exposed as in/fdt.
+> However, since this conflict with commit 72d3a5cb0cd7 ("tracing/probes:
+> Enable newly appended probe when target event is enabled"), please
+> rebase it on v7.4-rc3.
 
-I suggest we simply remove in/sub_fdts without adding in/blobs. All of 
-the metadata you are proposing to expose via in/blobs is already present 
-in in/fdt (and can be parsed from userspace if needed), so I do not 
-think it warrants adding another kernel debugfs interface. Keeping this 
-to just removing in/sub_fdts (and updating the doc) also keeps the fix 
-minimal for -rc.
-
-> 
-> Fixes: 062dd306d99c ("kho: fix kho_in_debugfs_init() to handle non-FDT blobs")
-
-This UAF has been there since in/sub_fdts was first added, so I think 
-this should be: Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
-
--- 
-Pasha
-
+Yeah, I had already done that.
 
