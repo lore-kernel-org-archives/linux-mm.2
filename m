@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CB7606A32F
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2B8606A331
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YLaPgAOp
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CCq0VVyu
 Received: by kanga.kvack.org (Postfix)
-	id 869116B05BF; Wed, 18 Nov 2026 11:20:03 -0500 (EST)
+	id 4C0586B05C1; Wed, 18 Nov 2026 11:20:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 841AE6B05C0; Wed, 18 Nov 2026 11:20:03 -0500 (EST)
+	id 498D66B05C2; Wed, 18 Nov 2026 11:20:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70C076B05C1; Wed, 18 Nov 2026 11:20:03 -0500 (EST)
+	id 387F86B05C3; Wed, 18 Nov 2026 11:20:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BE736B05BF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:20:03 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1A7B1607EA
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:20:02 +0000 (UTC)
-X-FDA: 85448751444.07.B2FC096
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E99FC16000D
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:20:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLaPgAOp;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C9BF06B05C1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:20:11 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 264D81207EA
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:20:11 +0000 (UTC)
+X-FDA: 85448751822.14.62F6580
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4CB83C000E
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:20:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CCq0VVyu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795018801;
+	s=arc-20220608; t=1795018809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5PFXXPSsfMDJDlYp7yb67baZRulWZFU5L1adTXgGMhE=;
-	b=7CN4Ahpp1Bv1UbBFctShrVIhNsST+y8UqXlLk7EhsnF28OQnbfgNk8YuZ5FY1shVXcLDZF
-	TRxmmiqpBTisOkgvT2K6dlyA2H83ythP3mu1HReT3uYfyZrn6P++Cr6DQNRiSXMunxQwU4
-	J8VE2yuBHHQKN7v6qInFlfPE0Orz/Ao=
+	bh=uCzsAHfG2GG1TKcmv3qtbUoyTJ0D8//If2TmNeNJT/E=;
+	b=U2X55IfTn2dtiOmuGyj1hAVgmMKInlo3m4IaE2xQxUG2hDsP+cH3U1+xcAN7UIwv8QvJbg
+	bIp8q/CvtlcQuETqAyq29ZnVx88lNH52sSmlLfqiVak/GXqx9CTzYohDFO1e8YWEApHe0O
+	rffx9TfKVYJOZ034AdXeCf14DZjFHTk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLaPgAOp;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CCq0VVyu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795018801;
-	b=GVBI5F9hmEZOIg7FnHh3RqV/njsbFANtt8dL1YaokxI7OOKyXPTCmukG89t5RHB74k/rKF
-	GHqsBOJWkjO+sSynUzI+htzp3feBsUb8f8csl18i36hwmtpDsGo/ps+KgeMoecaYDKHX03
-	6cbqP7nzw+0vy4L54nMOgJni1ZngBcA=
+	t=1795018809;
+	b=6PMALEgEgX0Mxjlexy1hANgEqHidia4j0LqoWYaaEk+/x835QHeTZF5z4rcJNAuZZkcpc4
+	Q1XjxnMHxVLvWBxvEkKQSuVeJgWitfMd0vv5KTsaHitROiL0xUMeId4d++JnIhXVbIBdyA
+	onD0O5eSRSrTl2SsYMNYjkdCpL5tdAs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73D3C62876;
+	by sea.source.kernel.org (Postfix) with ESMTP id 910B440569;
+	Wed, 18 Nov 2026 16:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71D51F000C4;
 	Wed, 18 Nov 2026 16:20:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96CE1F000C6;
-	Wed, 18 Nov 2026 16:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795018800;
-	bh=5PFXXPSsfMDJDlYp7yb67baZRulWZFU5L1adTXgGMhE=;
+	s=k20260515; t=1795018808;
+	bh=uCzsAHfG2GG1TKcmv3qtbUoyTJ0D8//If2TmNeNJT/E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YLaPgAOpZSeqiv/GBBQHaselm8XF/xJSYxOVtQMhFqqMYSqetL9go2WuEgQ0VoDYv
-	 zY5kSp+O/lVbcAldahcH8g4jzTHZviWlt9YrIV0fQ1yRFsygzubCyq2l/lq4+KpFbt
-	 /njypUKsnCWRoXYZ0sGcRr8B4qE24ncqa6mz/ikixkEtIXR0b8yfKLfZ48YADiZ8YA
-	 uN0W1yo4/lbfDm0baixN9COrdSphJp5lToB1l4U6REi3HRiEp/FYItmRS/LbzVodTE
-	 8fIFKjZSo9y7WI4B/fIc26zKn54i5MITMj1X1vPRxLAKW7yj+HC4KxhuB4KYXBXuJv
-	 KYC62EhvxTz6g==
+	b=CCq0VVyuaZC7TMMPGtFzx0XVDuzrN8oYqqSdjQTubBqqPg+5uDqo5Vwidu0OEUGzD
+	 ts5syafrdMKiinQ2d2noDr3exdiuqZMWz2WAYaNPlU85FgzKEGUK4viWJOCjh7x0VC
+	 XYTQf7PMrTUPe6CGhmxKTl8SpxHfqJbF6Q79bgxTYDpZlUimNLJAMX188K+HxRfU3Q
+	 sayQpTC4FAuiZw3qULX7l5u7jerfC4G0XinvfREsVpnsjaWFiF2b+h4S24tikYJ/zD
+	 JdnoUbq3FxrHbX4e/ubU/0O25yU5IHGQ3+9DnHI0JCqZkuIoxkGfKeN3LZ4ITBgzQi
+	 4vd/6RUa/1nfQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 18 Nov 2026 17:18:20 +0100
-Subject: [PATCH v22 4/6] rust: page: add `Exclusive` page kind for
- race-free page access
+Date: Wed, 18 Nov 2026 17:18:18 +0100
+Subject: [PATCH v22 2/6] rust: page: add `from_raw()`
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-page-ownable-v22-4-d63ff73f4075@kernel.org>
+Message-Id: <20261118-page-ownable-v22-2-d63ff73f4075@kernel.org>
 References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
 In-Reply-To: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -100,34 +99,34 @@ Cc: Igor B <igor.b@beldev.am>, Vitaly Wool <vitaly.wool@konsulko.se>,
  linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8167; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=xY9RyFcPl4honuAuuINh1RrHDHvkwLzV3ZF38f/rZhw=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq/c/xpYsMcrhEizFw2WVSRB7xWSGK+Ui8ul2+B
- jEGczZmMiSJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCav3P8QAKCRD6UCkIqsW9
- 0HMXD/9zu76ZNSF8FD1SDk3zbkc8OAq5R3/YxNFgifz0KcGKmxzJ2nLeKvGHiRBAg8N04n4Xqxx
- xrNOsVsIn0Arlu335s0FvlE0xBczWXQUC3jlbGTvO8ijEcIT3RFir+mEMeW8cEBI9MahFxJ/3ej
- ylfJOej+4g1fAXjc54iMbNgnbZlen3WwGN9CfunPlMrd6+t0h1hmCflK2gqs8fG7+ABZIAnotsp
- uPD1Hwz2S4tHUwwb7QsJLuZKaMdL0tKVEVbdosWg33iTp1kZ2fwtoIs23hfIRQugMKMeTT+dV+o
- XK2M3dgkWP9bKvnbcC4LIlD/AqgZWbu8+KOvda+bnQJXsdKCMXabMnhHGIh9+rrzFf2391O0prR
- 8upDtDGK2CTuk3K5DSnRETPEHHoLtf+Fj0RZSn5fBT//hn0G89bDLoBwwfYxNJiDasLAGuKRuqH
- HN9g5KisLYB2wCctgtvxXBABg5mG21guJH5rlm32P4cb45NwJzZFgc/0jSZuhkex9Ie9LyY4Kj4
- u/0I1Cs5Xkkk4S+cyeNaYTSc2IgMoKZJXsEt/swm7JRJ1LyCBjxgPpp71vxI2ohi6DYnnLwPq2z
- lpUjztYtArOcyXPOJA1UtnyBtyxpGXOd1k5cLi89NdCcEFHu2srhUrwzcfLozhX0EukdmS/lmmg
- mn2iTTMQn8aCRGg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2376; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=RFqpoS61oPhlsX7JmfJMDZ9W0OPZutOP01Pks9DxGDc=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq/c/vZPk3whkK9euDvasPgkdkOb+N5sydCBf+X
+ HvnG8ly1TqJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCav3P7wAKCRD6UCkIqsW9
+ 0L3mD/970WoLXCH+ipc7bu6Yv3qRN/TjkLpw4TjzbqY2hfJtejMwLbE/1/X4JQGysFX62f6IGsj
+ KWjwkH+aaAsuCsWoYzh4UMz/e7mXUY8MRpuZ6YdvRv331JZGTgoupTq+1H9v8ae3lzsZjIhNm+E
+ 7ktho8mokfg0LCOivC6/blw4UbCZFlL98QK7sDSojzcaNQ7skfMa7OCTFnvyZPbFdKGyk73hfMv
+ caIu8D4pwKa+AK8cMcr1E5DSttZ9R79kO1HdZHmXd2NjH+D5B2oaDjGLzssLAM+gSNS/HaFfU0l
+ 2PMGeFqqKSE3JOCPXQc6Mn4rW6dl5hfy7qiyGn8ohj+QeD2iMsmlyIDSKIbTJBZyGBpstHVhJOJ
+ MhMmQI1Z23RgMMUZeqmZLYi+OVfGlQtz0W4Dgo9tYd7FeOLKIDRiuTIus3NHJXbVrU50S7Z3oFB
+ QH2EZxq7dcCff6ZhG3Lxaa08r5jEPYpYIHjxeSAZyYfQAkwExjwT/+wazrf9sKsaKy79QuzEjlX
+ bHiaEfTzY5Brx/Cl0+ZbfN169iARltNqCc3UMj2CzPh1eZaVgQ6ZHM8lzC7RfusGbCPL/HN6GZi
+ DkbTfBEMXx1QpkoAKN+YnPFa0GHO/KztcvnsAOW2ipjjqX6MkxZCoS5IbI7+VQdPCtB+w/exme8
+ VTjCniRarKb9oSA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Stat-Signature: g35az8iciouup9h6urymurfe6b61yeik
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E99FC16000D
+X-Rspamd-Queue-Id: 4CB83C000E
+X-Stat-Signature: x7eyccztwboo7weoz3j9cnso8hdmscw5
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795018800-709888
-X-HE-Meta: U2FsdGVkX1+15b6W6ORtN4wW5n9nNeHrgH2tRFeGBoYMPTWHoiQXScPT98DN3ARGtYeUt+RfZdz8zGTU+VgOAD7TuuTCrkXwdDz9h2pJGdPTNDD/NjPdgJzGgNWGsC0q50LFwjjuiiPAdsWqv4+ZGx/baUw68rzPHhwUaoGoCgyPeKWQjGBF+R/8zf+GxRYHxDEbQUJZuXWAPALeXHmFISE9ep6MH78fJO+5eYGC2XmXWeLSZg1ZuvATo2h1t42M9H7GACkyZgeOrf8C2UjqqUiYLqJXDxVRWReeIJ2OZejlZKiefFnaEOE8XFADWGqfXWXIgFc7MPrKkmUTTuJ1kLzGsofF21l9VigrCORUiT/9gsNZZmLLzNmun0UiNIBc6NLOxcVE+tm4CMxphuWOxgdIIwOdBUJ/ueSdidr2DCXV2iv6sFkYRYT33kkm71a+0JRNWw7IBj7SnnQVpQfoCHMYSGh0aLhkmotA7UqThBaJC83N8JMrf3tPVfKWMKft26myixAw0mthYvWueq/Tly/LpaGgoVedVNTb/nQh5krlTY2AlO7YNV0Dkb+q6GhOvxaYmlDt3KhOVbnZDmkjxSpP6O7qLzeN2FXUeofRgOYw0J0yMUd1M5a/2B5Nd37/3dOJgAPSdvBQMgT27T8uuQmw3kP2fHMludgC9B//h8CKg4fWdp5Ka/ZftbNTXlxLJjj53E6ieKcDZcOG8Ym+bbc0BVEcfOlwOQQduatCuJNFASEqlL76jPlQzuRq+7LhRj7IoRAcf4rHbo0jhk5pzmbvG/s275104me9Xdnpf5zGtogqmVZhD3TbddGExCpG97NZZSu8sbNFBohBA7j6OtybzadkvtHWaqCaWQoOImFw1u2hjTok/xKb14b8I6+7EJNj+4lcx+sli4cTXeriK+QT0ip4ey7BQ6AsIFNiDfrRbemug8RDPCm9QCRQKaVQhCZZP17T1Qe7UYzcTk9
- ucPiMBLa
- 3riZTsdX2mk0HnDTuzVmf8O9Wv6Jpp4tLGvfRfb3pMI2R8CZT5SYRu0t8HalXZVij5zuW4W5gw0PtzAb3FeIeZWFQcyJmnCOEAVOUlqJAbD9khYIOXR4lUh2+m+aqm+GoVfDRRuCXBWWke6xhvrL/aa7v70FInTGNsI3GtJ5cJh2xrH4FvfMhDooPhqMb9KBMzadQSYGtGn3xhpJ+3tfeDaja55PMUTBpmH1cd0TIkKKH4iuN+lwzlSqYg5necH8AUlb3299CqHcAnFKWnl/xedfFrHrxbRe2EbUNLlSmsonxeD41qDcgAkG1GumryrsetVw5C1jAJANp3Op4CboRDjrIiomyHGz9hZCiyjxSIW5CU01wk5C+P1IXbxz5MhARW1PV
+X-Rspam-User: 
+X-HE-Tag: 1795018809-968341
+X-HE-Meta: U2FsdGVkX1/9CKNC4qYAo4TqEK7jmmOUex9H58T8EA0l/RwYJV554Q5Xe7dsi3/EmpnN/qBVV9IA/bn2l3FTAulQzE47Z0Mbg6d+is6pMzkDK3/T6F1rx8wGvjlXxg2YxOTNbYLUnZmBOzv9bzfwFlXjkRmOcWUfw6D6LkPGO3cFVmy0cN9SsHRLFBJNclQ9VYq4oCu933QXXOS8C+agfmmcmx1pQICZZOZZPtz2/O2C9rzA4w1nnNjrN4f+/4F3YN5PpBuhGXsUmTb8nQrW16qeAzHU8OcfPGmrQSz65BdbsodhmC9FJ18r0oyAQQ0ctnc3EmQav330UePEl+QI5vk7vkvN7/yC5FIgIp1fTKq9xHKKNns7oELy6YQOpvrFalvVNF5igCSA9jMXBbHeotHXIMVlqB6EIKFt4h1eazn/jUqy3br0+N8DxKS7dp9gJXDYRlE9j1rP+U0e12NNTdzWXfEYf8LbwVARuucLe9bmXMqtGhHDbRg5uOWSS7MNmPIOLRcjNDUPpS8SeONsq+EEYDvA9HIWdQtKIa6tC5n5geXCP/UfNq14G7iGxifbyOV9xqyCyNXzMANixyNUwF3S9Rpl+LZjeEfVoAk7eysEwpkej37MQMOBH2VX6VD9KP5UBt7MpNWnS4/nnZVYWZHUrPld/gH5Pe+UbpiBb3Og/8nAz5Xvkxi8xgYVbVLnNW+0TAvoP6xYfvq2qZ9LCDd4DLBo7AE4WAhONfrzUSVpiib6JJdfrwkjzPWiHmvleRtB4E0MWgsmbtMjcWOqmSpsISkp/EQGtIJEKGd2tYAkZLqGmpomTnSUC9bbd7tAqMtiB2XFiR8OpsBJT/f7ztDkugjnT2Xv22rS9Xtr7zhSYdJ1gFi9KIpbm2qo/XIPQVAJgQ/G0NkMz/3cSKp5W1SHP8xorqAN+scgS5QU7O19qSd4x4vb2sdlTbaD0ikZ7+BoLUq1x/5xtVFVfAZ
+ zmdf6BhB
+ 4B9lUrc7lxh6CeE78KxFHnU7HDthJc5lMPVHNodIzq2VR/s9qtipehcqaZzXLOL5EfRI75jjfVree/VNlU+4uZXTMPMwwY469XdsgUn1BvkidLt/aYybki/847BDW8zGONuMZ7qHQNK/4boh2UjYBSpLiuWUSyRAD7eNohSgmFkEI/dNWdXCkEIUkZf0Gn254S48NhgTYCaAB7N4tA0QyJOoD3h1JzwmSdfeOtxf5Y/7AMMHFt4jg2/LPKK5/VSGjjFUScOm/p9XG/0crrP0QKLDGRolqqodwOtIGGJcFw53aiKD8zw+EnWEWFSCTo4LKlczaw00WxaGA0khrmxtOb4YEWUyWeuB4lyICA6LIe66/IdMZBdhaEimo2qoDAgMJCDxMX/Cz1czME8WKp3+ZRbIg9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,177 +135,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add the page kind `Exclusive`. A `Page<Exclusive>` is a page that is
-uniquely owned through an `Owned<Page<Exclusive>>`, with the added
-invariant that the page data area does not incur data races. This means a
-`Page<Exclusive>` cannot be mapped to user space or shared with devices,
-and it becomes simpler to directly reference the contents of the page.
+Add a method to `Page` that allows construction of a reference from a
+`struct page` pointer.
 
-Back `Page<Exclusive>` by a frozen page, allocated with
-`alloc_frozen_pages()` and freed with `free_frozen_pages()`. The reference
-count of a frozen page is zero and references to it cannot be taken, so the
-exclusive ownership is upheld by mm and not only by the Rust type system.
+The method is available for all page kinds. The caller selects the page
+kind and must ensure that the invariants of that kind hold for the page.
 
-Add `Page::alloc_exclusive()` to allocate a `Page<Exclusive>`. The function
-is not named `alloc_page()`, because inherent functions of the same name on
-two page kinds would make the call `Page::alloc_page()` ambiguous.
+A `&Page<RefCounted>` can be converted to an `ARef<Page>`. Thus, for
+`Page<RefCounted>`, the page must be managed by the page reference count
+and taking additional references to it must be permitted. This is not the
+case for all pages, for instance pages owned by the slab allocator. Such
+pages can be referenced as `Page<Base>`.
 
-`Page<Exclusive>` dereferences to `Page<Base>`. This does not allow
-safe code to break the aliasing invariant of `Page<Exclusive>`:
-`Page<Base>` does not implement `AlwaysRefCounted`, so no `ARef` to the
-page can be obtained, and the raw data accessors are unsafe and already
-require their callers to rule out races with all other accesses to the
-page.
-
-Suggested-by: Matthew Wilcox <willy@infradead.org>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/helpers/page.c |  6 ++++
- rust/kernel/page.rs | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 100 insertions(+), 2 deletions(-)
+ rust/kernel/page.rs | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/rust/helpers/page.c b/rust/helpers/page.c
-index 906eb4b18f02..8f9f624ea141 100644
---- a/rust/helpers/page.c
-+++ b/rust/helpers/page.c
-@@ -10,6 +10,12 @@ __rust_helper struct page *rust_helper_alloc_pages(gfp_t gfp_mask,
- 	return alloc_pages(gfp_mask, order);
- }
- 
-+__rust_helper struct page *rust_helper_alloc_frozen_pages(gfp_t gfp_mask,
-+							  unsigned int order)
-+{
-+	return alloc_frozen_pages(gfp_mask, order);
-+}
-+
- __rust_helper void rust_helper_get_page(struct page *page)
- {
- 	get_page(page);
 diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index 2ceeac0237d5..c885bcf4f886 100644
+index b2a17c86e7de..2ceeac0237d5 100644
 --- a/rust/kernel/page.rs
 +++ b/rust/kernel/page.rs
-@@ -17,7 +17,11 @@
-         ARef,
-         AlwaysRefCounted, //
-     },
--    types::Opaque,
-+    types::{
-+        Opaque,
-+        Ownable,
-+        Owned, //
-+    },
-     uaccess::UserSliceReader, //
- };
- use core::{
-@@ -89,7 +93,7 @@ pub trait Sealed {}
- /// Marker trait for the kinds of a [`Page`].
- ///
- /// A page kind describes what is known about a `struct page`, and thereby what a [`Page`] of that
--/// kind can be used for. See [`Base`] and [`RefCounted`].
-+/// kind can be used for. See [`Base`], [`RefCounted`] and [`Exclusive`].
- ///
- /// A [`Page`] of any other kind dereferences to a [`Page`] of the base kind [`Base`]. The
- /// purpose of the dereference is coercion: a reference to a page of any kind can be passed to code
-@@ -134,6 +138,7 @@ impl PageKind for RefCounted {}
- ///
- /// - `Page<Base>` is a page for which nothing is known beyond its validity.
- /// - `Page<RefCounted>`, or just `Page`, is a page that is managed by the page reference count.
-+/// - `Page<Exclusive>` is a uniquely owned page whose data follows standard Rust aliasing rules.
- ///
- /// Operations that are valid for any page are available for all page kinds. All other page kinds
- /// dereference to [`Page<Base>`], so that a reference to a page of any kind coerces to a
-@@ -429,3 +434,90 @@ unsafe fn dec_ref(obj: NonNull<Self>) {
- // SAFETY: All instances of `Page` are reference counted, so a `&Page` proves that the refcount is
- // non-zero and it is okay to obtain an `ARef<Page>` from it.
- unsafe impl AlwaysRefCounted for Page {}
-+
-+/// A [`PageKind`] for a page whose data area follows standard Rust aliasing rules.
-+///
-+/// A [`Page<Exclusive>`] is accessed through an owning [`Owned<Page<Exclusive>>`]. It has the same
-+/// usage constraints as other Rust types. Thus, it cannot be mapped to user space or shared with
-+/// devices. This makes it safe to reference the contents of the page while the page is mapped in
-+/// kernel space.
-+///
-+/// A [`Page<Exclusive>`] is backed by a frozen page. The reference count of a frozen page is zero,
-+/// and references to it cannot be taken. Thus, the exclusive ownership of the page is upheld by
-+/// the kernel, and not only by the Rust type system.
-+///
-+/// # Invariants
-+///
-+/// For a [`Page<Exclusive>`]:
-+///
-+/// - The page is an order 0 frozen page: it was allocated with `alloc_frozen_pages()`, and its
-+///   reference count is zero for as long as the [`Page<Exclusive>`] exists.
-+/// - The page is owned by a unique [`Owned<Page<Exclusive>>`]. No references to the page exist
-+///   together with the [`Owned<Page<Exclusive>>`], other than the ones borrowed from it.
-+/// - The data of the page is accessed only through references to the [`Page<Exclusive>`],
-+///   including the [`Page<Base>`] references it dereferences to.
-+/// - Safe code reads the data of the page only through a shared reference, and writes it only
-+///   through a mutable reference. The unsafe raw accessors of [`Page`] can write through a shared
-+///   reference, their callers are required to rule out races with all other accesses.
-+pub struct Exclusive;
-+
-+impl private::Sealed for Exclusive {}
-+impl PageKind for Exclusive {}
-+
-+impl Deref for Page<Exclusive> {
-+    type Target = Page<Base>;
-+
-+    #[inline]
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: `Page` is transparent over `struct page` for all page kinds, so the pointer cast
-+        // is valid. `Base` has no invariants in addition to the ones of `Page`, which hold for
-+        // `self`.
-+        unsafe { &*ptr::from_ref(self).cast() }
-+    }
-+}
-+
-+impl Page<Exclusive> {
-+    /// Allocates a new exclusive page.
+@@ -217,6 +217,30 @@ pub fn nid(&self) -> i32 {
+         unsafe { bindings::page_to_nid(self.as_ptr()) }
+     }
+ 
++    /// Create a `&Page<Kind>` from a raw `struct page` pointer.
 +    ///
-+    /// # Examples
++    /// It is up to the caller to select the correct [`PageKind`] for the page.
 +    ///
-+    /// ```
-+    /// use kernel::page::Page;
++    /// # Safety
 +    ///
-+    /// let page = Page::alloc_exclusive(GFP_KERNEL | __GFP_ZERO)?;
-+    /// # Ok::<(), kernel::alloc::AllocError>(())
-+    /// ```
++    /// Callers must ensure that, for the duration of `'a`:
++    /// - `ptr` is convertible to a shared reference.
++    /// - The invariants of `Kind` hold for the page pointed to by `ptr`, see the documentation of
++    ///   the [`PageKind`] types.
++    ///
++    /// Note that the invariants of [`RefCounted`] do not hold for all pages. For instance, pages
++    /// owned by the slab allocator are not managed by the page reference count. Use [`Base`] for
++    /// pages where nothing is known beyond their validity.
 +    #[inline]
-+    pub fn alloc_exclusive(flags: Flags) -> Result<Owned<Self>, AllocError> {
-+        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
-+        // is always safe to call this method.
-+        let page = unsafe { bindings::alloc_frozen_pages(flags.as_raw(), 0) };
-+        let page = NonNull::new(page).ok_or(AllocError)?;
-+
-+        // INVARIANT: The page was just allocated with `alloc_frozen_pages()`, so it is frozen, we
-+        // own it, and its data is only accessible through the returned `Owned<Page<Exclusive>>`.
-+        // SAFETY:
-+        // - We just successfully allocated the page, so `page` points to a valid `struct page`.
-+        //   Since `Page` is transparent over `struct page`, we can cast the pointer directly.
-+        // - The page was just allocated, so no other `Owned` exists for it.
-+        // - A `struct page` is never moved, so the page is pinned.
-+        // - `Page<Exclusive>` allows no other references to exist together with the `Owned`, and
-+        //   none exist, as the page is newly allocated and references cannot be taken to a frozen
-+        //   page. Thus, it is sound to hand out `&Page<Exclusive>` and
-+        //   `Pin<&mut Page<Exclusive>>`.
-+        // - Pages have no logic that relies on them staying on a given thread or on them not being
-+        //   accessed concurrently.
-+        Ok(unsafe { Owned::from_raw(page.cast()) })
++    pub unsafe fn from_raw<'a>(ptr: *const bindings::page) -> &'a Self {
++        // INVARIANT: By the function safety requirements, `ptr` refers to a valid `struct page`
++        // for which the invariants of `Kind` hold, so the returned reference upholds the type
++        // invariants of `Page<Kind>`.
++        // SAFETY: By function safety requirements, `ptr` is not null and is convertible to a shared
++        // reference.
++        unsafe { &*ptr.cast() }
 +    }
-+}
 +
-+impl Ownable for Page<Exclusive> {
-+    #[inline]
-+    unsafe fn release(this: NonNull<Self>) {
-+        // SAFETY: By the function safety requirements, we have exclusive ownership of the page, and
-+        // by the type invariant the page is an order 0 frozen page, so we can free it with
-+        // `free_frozen_pages()`. Since `Page` is transparent over `struct page`, we can cast the
-+        // pointer directly.
-+        unsafe { bindings::free_frozen_pages(this.cast().as_ptr(), 0) };
-+    }
-+}
+     /// Runs a piece of code with this page mapped to an address.
+     ///
+     /// The page is unmapped when this call returns.
 
 -- 
 2.54.0
