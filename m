@@ -1,93 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E9E606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93761606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=C3xuFqWJ
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=YbCqZfuq
 Received: by kanga.kvack.org (Postfix)
-	id 0B7946B05B5; Wed, 18 Nov 2026 11:10:25 -0500 (EST)
+	id 4B2FD6B00EF; Wed, 18 Nov 2026 11:12:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08F466B05B6; Wed, 18 Nov 2026 11:10:25 -0500 (EST)
+	id 489A86B05B2; Wed, 18 Nov 2026 11:12:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE76A6B05B7; Wed, 18 Nov 2026 11:10:24 -0500 (EST)
+	id 3C6876B05B7; Wed, 18 Nov 2026 11:12:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C59536B05B5
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:10:24 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65402A8423
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:10:24 +0000 (UTC)
-X-FDA: 85448727168.22.39D7E27
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AA436B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:12:05 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A198407D3
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:12:05 +0000 (UTC)
+X-FDA: 85448731410.11.FA9AC1B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A3B8C40005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:10:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=C3xuFqWJ;
-	spf=pass (imf11.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id A50681C0010
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:12:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YbCqZfuq;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795018222;
-	b=cxLWRd+QEoCppHKDLMwafpXvj57eCz5Pq/PB6MNLiXue5bXIXXVwReC1ckvDnbkPlDdkuD
-	kHVTVGadG3LwVH8KG+7PI5cq3KRccyzdMs3UyCAksXUjERWFxT2uoI0iklgjItBI2UYkKj
-	qiG5fBgl60UjY5cgpTxb/PIllCdp/7A=
+	t=1795018323;
+	b=6eql5Z0s3+tPbHDjMe3lJ96MTywfIyWypN86CGbSxNnFJy60BNeE+oX0Yvs4ETgmSAWDxs
+	OAfCMkjVecDBb2MO/8dmuOHHmkFpGvJCVBvnLr7VqZADhSaiOrLccdR95lumOYtjnRdJ8h
+	v2sFuRnh2S/+k8nkv3Si7BHFSIwryl4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=C3xuFqWJ;
-	spf=pass (imf11.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YbCqZfuq;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795018222;
+	s=arc-20220608; t=1795018323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZNwKoLmqeSwPydDAhEghKLHqTvIumd5TXBU/hrH7FpA=;
-	b=Xju79dcKvZOBRnIJ4sBhpxMNwDYXOd8k4MEZtDf5v2kwMZX0HQ50J7lM1K+SDLie9Z4uHn
-	yltCuNUiIBnbJJIauQETk9c3SIOSdN3e42ZNUKa4kRDqyAfadic2/Q+G2HvQ2vKjpojHU/
-	5Ja6lJlrho1L/JdSCAGb8rAWePgza08=
+	bh=LtOK71mgWL1hJ57ziMdV5/lpR6OIlsIMpvQ29Ztn9ic=;
+	b=OEroAHyUvW8HF30bFweAJoDLHd+qoa4UYGrQPCKLU7GYrHBUNju1Y0AIDiQFBfMa2Fo/ja
+	oOvUjq8yOqXSYtC7BL5PX3AKKZkOXYOi07EJc/U/i8neZN1ZxgNGFWyoMHN8IIX2DaABMK
+	Z40+K7aBaeIsOmgm91bDmLUfmgOfnN8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9EFDD339;
-	Wed, 18 Nov 2026 08:10:18 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A57E93F673;
-	Wed, 18 Nov 2026 08:10:19 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C574C339;
+	Wed, 18 Nov 2026 08:11:59 -0800 (PST)
+Received: from [10.163.128.4] (unknown [10.163.128.4])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 35E633F673;
+	Wed, 18 Nov 2026 08:11:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795018221; bh=/+padZQ2w+TGhQW06d2Ojc/kEfJW108rtB1jBbALpjQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C3xuFqWJDbpH6XEiCkUlBwXIN543SWfJMKcxccXPy9d2AfNHicO5Hj5c/DuD5pNr1
-	 KL4sq1hvast3EohM39v1bobaW+vQojqjNZn06FNSorkFZZme6DRTBtRQZSNYzWihaW
-	 9wAFlw5V69dS7yYPdmIqhzWvUOcJuuKEdBg21ZEI=
-Date: Wed, 18 Nov 2026 16:10:16 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/slub: don't let kmemleak report rcu sheaves
-Message-ID: <av3N6DGiOFK3e3Yw@arm.com>
-References: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
+	t=1795018322; bh=aYQ0HCEYlkn9BeS1THLapsztaFWJtc0g6BUkMATS0GA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YbCqZfuq9vsdroMTMmDXNL46nZtVMm9VNmLHTjEGcy2irM8ufBsCnBnRV/fVYl15N
+	 4A8TlkUJeyswfIKtt74NSDt5rlzv/pIYVVWT98EMm8puIWg5sekv6yzmy/+A0dD3h+
+	 1UzoLtCEDx4y9eRTDQ8enHNrj8UvtuZ9G8ANdCuc=
+Message-ID: <15d75748-9baa-43d9-96e0-0e49c8e27be3@arm.com>
+Date: Wed, 18 Nov 2026 21:41:52 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
-X-Rspam-User: 
-X-Rspamd-Queue-Id: A3B8C40005
-X-Stat-Signature: o5chb436trgr4dxr37iwjb871stgw9xt
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v2 1/5] mm: remove unused helpers from pagemap.h
+To: Shivank Garg <shivankg@amd.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com>
+ <20261117-unused-sym-mm-v2-1-2f845e94dd50@amd.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261117-unused-sym-mm-v2-1-2f845e94dd50@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b1s1t4detu33uho6i6omsagu5g466sn6
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795018222-656898
-X-HE-Meta: U2FsdGVkX19ltomw1i2jEKj09HmM580zdT+wFll6ej+b34li4p0WM4eKSt8XFij9WYXzOoU6CJkW4gzlRuJWcOLG9D3r9vPsGztXIf3nV5JPS3QF2nSmFf4DNTGA4+9sEjfaZJd34EJts6TWCwgAy6DiBLl6uwSl4vV5KUBExfomXFXytJmkSAf4jVjDAFk61yw3FQy1G0V4MX66E38Iqta24AhtClA4/dw6JmYzx8OutZcbWfYiOO88moOt5YNbVusj3BChZrq4c+vIl1WwLNC4/vqjmWKSsmf/sg7W6UuIBSwgnCQJyFsvROua2g2eILUQkBjL3E1jvCTVkY27AqRCTbxxzZGQz9314RPDVURoXYcB9YjnM8/+UNshRHzqZJSm7j/Ssx5FK4SZ920aMmrkKKwDZvN5JKyFIzMwFT1AQGiIb+Kp+T90D3TzlvPyPVK22KzAVW0Db4Jj59c78sADQUcYBsHB3LWNCl7RjT0XFZlFSxAflbRFDQrq0159j3IRhlLoW7xJhQuniKlFwn2kBM/ahsAl3ZmAx0vZjpFf1y3S5DYNpJwwE2An/M0ktYuvpRh3nkD8wwXo4zp4PKdJcqVQm90dYjiAbC5B9tXUh0SAttwkF7rL+cln3AMy6tX6nqNVmWnlcOHEj0O6BCXqr9rf8njOW0AG4tCTSwUBvm6pUH3s+kXOUln9kSX/lmjMWeu3mQyBafo7+4YWIyhFeI7r6+l3nsFCwHZ3PXRvTGMcWkVxb3JrmtTPYmUwlgX/4LzE7AaJNZ1XaxLifPeq0JHiy/Qg+LOcsqKJgSA3Y3BMTaU9n93ycB+SRt9zYh0lFDw2dpFDz+4PPm6QB40W51qn/dYfOTIVVpCaM94q1yLoWPRLzsg80mTV9rjGORScpCIInIS0D0upatUELJkkWq4+h3zbHvFSKD7/jIpejyZ7b/x5QlV+PihAZodO0kPD37cXxzKjz+jznf7
- RIR7RCjP
- OHROi/ng8bP1YoP3nfjzug3jVMLVwVjh+EEGsUEuT4b4kKxhg2VVaxHTAZ7LIc4MXNKEuqSR93mFNbRqaogNM8HRF0GD2qDCrAYmaVmiJ+Y0aCdmz59GVH9yL2DMnkXuHtE1mfHm13vEeV5Vinzf6+Q8F/bg7orOmDGmuulqJ0yOOduNLtTOuI9cuPDmibiYUjFOauWq9peofQE+SMGgy0cLZxtMTwWw0KeMp83lklb6k16aLIJAg/LNdjM4pf6UHYtCaftQkQn7ak64F5wT4Xhb4hi/1WhFYwAnliJkHtVX1Wl820WOWEvXuQW0OS9kWF8SfnuvdXGK1EKhlSQxmFpBZl9cg30en7bCkbc2Yek+aKtedCGvah2gW9wBZwvKUqh+ccRupdAo2zC7fHoPBmWyv1pfz5NbESK9xUH1WfI04C/roTRJY/rnJrBuZSA0oBsr5JtenkXusu4V5A+wkzCtEgw9fLsofI1btseI/04jAVhByjoUKe2djgZZVI3J+9rLdGEqaabf3MLWzmCNsAZSiQbi0gUo2vb6u4ds7u6J6MTWsy7uqDW4ihA==
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A50681C0010
+X-HE-Tag: 1795018323-252219
+X-HE-Meta: U2FsdGVkX18zvbrgXo81uNPDM4x7S85mfSu9gnMKLVA6H3MFprB893ESXH5XJaVSmGcqLYQodXzssber9xSQyDpz4O7Hqg0Wnw58RjM7SMsrkxTBey/T/GqArYSevEJswnmSFUBiznd6BJLG0N0oXBtbcqLzRi0BYICwCzT57yCt0J2sclqHVFufRsDEpzmZJrgHsBdjxnDWn4UpOYPw/C8LAjfNVSbPaDZFUBLuqKR5AHovcS0B98W0q4pNAgGzvSvkDOenfj/JtEArttZ8im42fXHGIh/My3SSw4p/5b1w5ijr0qy/p+LPFfiPNxTi47G1RRKfPGqg6n7FnyjDOO9HqYJNZd85l0HtSXnHt7l/MiyFvRIHyjWR1e650mhH01l2pYFEaetxIoP6dMaLfJdnH63S8CHhGCorh7nQt6kFWMLUTr3vuuyCADNzaeLZfYT6xXfOvUftklHB9It5uggoFaO0LdqccAGviS//TVfbUUftfwpnbYkDt5lMolkVWxIfTP/RKbkxrVqge16vQKG2jWlWBDOzdj0JBNOk3VxMLLoF4PbWTBZdLAJCDnnPL09g6IJVzwsXl4Mmhqv3XcttpjSggNXMqia1GeMpxoY8+n30YjyjX+v8Xh4N6A4t/Uwsuy4AZg3/yeU2CGk8FP8qp9K+hakCUOOm2wJ2/BpMBHpokjHXtOSAXW7pRa+QrkWoz3XvDKBU/cHqd/zI8c5tcqx0KwBMdl/F3RGgiMCf+1+6ls4P2+f4oF/DWcpuNvHyGtqx7r51Kno3SXq6icmdwVucjzt2eWMIXjttgzHJ/noHj53vrLcG2MnFFmBcX1Uxbe4hYT6wlc299e35Gn4a9sNpEnIbhbiv2GBEdWDtrViYj/M7PXL+yE3RhOwHQbT/1aIJ5WcvGI6tG/BNr2i057VHZrMrPvLiPekVtKstfjeCfsUu2Dg7Gm4XaXcV9WbfZbFkv82cvEE0dTI
+ xIFqm+P7
+ k+9W5bUv/lRAlPDEqn2lquqPlzWou1+m2mJhqG7O4eeZEYpNhe9qHD6u3G0BNazcUtC0GcZURDhvHPDZb0CF75CuxYbHufFHutRYQzri4f3Y+NgXLhoeT0wYWSDLuSkxhDOgiMItGvSJU7Il0TjV4g8g+nIdv2taQVB387gLcqml/nzK6q2cyn4qRUm7AAPwcGCpV+2hf0mByuxZyKeTU9wiGBXWaIGT3rlMMnKo4pfb+UlnIdHX0l+Na3zStpVsD9abjqkzDX6FhhhZWzHwiTdQG/ry+xsB6OZ9OYo72T3qRJfJ2OB5Aac6ut71MlXIOtkMX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,73 +105,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 10:18:37PM +0700, Nguyen Ngoc Thang wrote:
-> kmemleak reports full rcu sheaves as leaked:
-> 
->   unreferenced object 0xffff88810005f600 (size 512):
->     hex dump (first 32 bytes):
->       e0 79 f0 2b 81 88 ff ff 20 00 b4 81 ff ff ff ff
->       00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00
->     backtrace:
->       __alloc_empty_sheaf mm/slub.c:2854 [inline]
->       alloc_empty_sheaf mm/slub.c:2874 [inline]
->       __pcs_replace_empty_main+0x260/0x2e0 mm/slub.c:4806
-> 
-> The second word is rcu_free_sheaf and the size equals the capacity: the
-> sheaf was handed to call_rcu() by __kfree_rcu_sheaf() and is waiting for
-> a grace period. At that point the only reference to it is the ->next
-> pointer of the previous callback in the rcu callback list.
-> 
-> That previous callback may live in memory kmemleak never scans, e.g. the
-> rcu_head of a struct slab queued by rcu_free_slab() for a
-> SLAB_TYPESAFE_BY_RCU cache. Slab pages are frozen (page_count() == 0),
-> so kmemleak skips their struct page. The chain from rcu_data is cut and
-> the sheaf, typically allocated long ago and recycled, looks unreferenced.
-> Since the sheaf is then not scanned either, the objects it is about to
-> free can be reported as well.
-> 
-> Sheaves are allocator metadata and are always owned by a pcs, a barn or
-> an rcu callback. Mark them with kmemleak_not_leak(): they are never
-> reported but still scanned, so objects queued in them stay referenced.
-> Allocations that can't spin are not tracked by kmemleak, so skip them,
-> as alloc_slab_obj_exts() does.
-> 
-> Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
-> Reported-by: syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=527fed49e5b988882c9a
-> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-> ---
-> Reproduced in QEMU (syzbot config, 2 vCPUs, numa=fake=2) by stalling a
-> grace period with a preempted reader on CPU0 while CPU1 interleaves
-> rcu_free_slab() (filp slabs) and rcu_free_sheaf() (maple nodes freed by
-> kfree_rcu()) callbacks, then running two kmemleak scans:
-> 
->   before: 16-18 sheaves reported per run, rcu_head.func == rcu_free_sheaf,
->           plus maple nodes held by them
->   after:  no sheaf or maple node reports, no new warnings
-> 
->  mm/slub.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index cd671b934719..e01416ae0b4a 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2856,6 +2856,14 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
->  	if (unlikely(!sheaf))
->  		return NULL;
->  
-> +	/*
-> +	 * A queued rcu sheaf may only be referenced by an earlier rcu callback
-> +	 * in memory kmemleak doesn't scan (e.g. struct slab). Never report
-> +	 * sheaves, but keep scanning the objects they hold.
-> +	 */
-> +	if (alloc_flags_allow_spinning(alloc_flags))
-> +		kmemleak_not_leak(sheaf);
-> +
->  	sheaf->cache = s;
->  
->  	stat(s, SHEAF_ALLOC);
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+
+On 17/11/26 12:46 pm, Shivank Garg wrote:
+> invalidate_remote_inode() lost its last user in commit d73065e60dcc
+> ("afs: Use alternative invalidation to using launder_folio").
+> mapping_clear_release_always() has no callers.
+
+That was added in b4fa966f03b7401ceacd4ffd7227197afb2b8376.
+
+> 
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
+>  include/linux/pagemap.h | 11 -----------
+>  1 file changed, 11 deletions(-)
+> 
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 73af18a37367..e681a7ba6642 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -20,12 +20,6 @@ struct folio_batch;
+>  unsigned long invalidate_mapping_pages(struct address_space *mapping,
+>  					pgoff_t start, pgoff_t end);
+>  
+> -static inline void invalidate_remote_inode(struct inode *inode)
+> -{
+> -	if (S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode) ||
+> -	    S_ISLNK(inode->i_mode))
+> -		invalidate_mapping_pages(inode->i_mapping, 0, -1);
+> -}
+>  int invalidate_inode_pages2(struct address_space *mapping);
+>  int invalidate_inode_pages2_range(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t end);
+> @@ -298,11 +292,6 @@ static inline void mapping_set_release_always(struct address_space *mapping)
+>  	set_bit(AS_RELEASE_ALWAYS, &mapping->flags);
+>  }
+>  
+> -static inline void mapping_clear_release_always(struct address_space *mapping)
+> -{
+> -	clear_bit(AS_RELEASE_ALWAYS, &mapping->flags);
+> -}
+> -
+>  static inline bool mapping_stable_writes(const struct address_space *mapping)
+>  {
+>  	return test_bit(AS_STABLE_WRITES, &mapping->flags);
+> 
+
 
