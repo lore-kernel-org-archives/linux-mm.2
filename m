@@ -1,113 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD31E606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 10:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855F2606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 10:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G7ViuwWa
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=rfZ0hfVU
 Received: by kanga.kvack.org (Postfix)
-	id BCECD6B00EF; Wed, 18 Nov 2026 05:12:22 -0500 (EST)
+	id AE86E6B05B9; Wed, 18 Nov 2026 05:14:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7F2A6B05B1; Wed, 18 Nov 2026 05:12:22 -0500 (EST)
+	id ABF746B05BA; Wed, 18 Nov 2026 05:14:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A992C6B05B8; Wed, 18 Nov 2026 05:12:22 -0500 (EST)
+	id 9D5496B05BB; Wed, 18 Nov 2026 05:14:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 848C16B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:12:22 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 092731606D8
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:12:22 +0000 (UTC)
-X-FDA: 85447824924.04.7200AFB
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C9A4220008
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:12:18 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=G7ViuwWa;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of jiebin.sun@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=jiebin.sun@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8520F6B05B9
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:14:00 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2FE181606D1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:14:00 +0000 (UTC)
+X-FDA: 85447829040.17.E978BF4
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BDE1F140002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:13:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rfZ0hfVU;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794996838;
+	b=EnDwHd3wW9dEwSq8j641StE7QKVkYOzOCn3qbDssbP9ZVtgAP5h5g2G4pTUGCECSQBA2Az
+	5fNlk9nwW7j67XZ846Q5237Cb5FXcIwbQeVi203klZ67NVSruXRgLiXe3iTq0aWZ+GWZzY
+	HpBEpBs75gd3Mm2ObZ4BtYyPlbtlJbw=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rfZ0hfVU;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794996740;
+	s=arc-20220608; t=1794996838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wOvZstlG0NBbv/dzQM6xwLtQ/0sPGNaMMnmH8lqZPgo=;
-	b=lCGqU/ICIgIOZe1TGVzvkaaKz5oIjAXhegRNAWHDuYLYbpbHSdNlcVFHc6vhemJJCG7uMj
-	XrFt/JKxlCKy3T+zDE/bFxqP0n3EUYoOMllS9XGBh8Ing5PpsIr6ax1ih+7Nu+dt8XJduE
-	zsjuMbKbMYqbzC+EekrMaqTNMqEUATY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794996740;
-	b=6e8jiXVdKFpBak96MgWvUoYj6cuVjo0T59s4UcFa2McLXt2ZomWaKhqwwjwtyOwyi83rLU
-	XYNnGyYYT+ANGehezfGJLsEnd74RXTqwusTpedvF19CM7T2qJDemwTDs2getvGjIkzpxXL
-	BWrJOIgHhdWc3KhEkwn0ucPfAmVfOrE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=G7ViuwWa;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of jiebin.sun@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=jiebin.sun@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794996739; x=1826532739;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=FF5B0ph4nYkrwjb1C6748DuKV0yiQO0WYfTjj9OFyQw=;
-  b=G7ViuwWajQav9rOyEN7Dz3bgI7Q1V4bXUGSxQed/cSOx6vzau3ugq1md
-   qd7W6s7PBQjHJHLWH9NZdoNuJh7FePxxnOQMn564PKfVLLxl2jeYU5V8e
-   0/sAsfeGYZZ47cetnihH40P+TiwpMJ0Q+Jy1bpRQPh1SQPbW9tABCZV6J
-   3iWol6PLgYYD9gz0d/9nSFSNLyFlZTEvFGGX+ciJ4IOGF4K6XDo/HyUCt
-   vHZmsv5f+6zjXYUEvYB7ZzQvJhGbZXHATjAVb4sahnJ8pjoSFXvmkPYQt
-   zUVWoL7tQcZFYVWazzBBdpoQA1Ifv0KbeBznaJZdqztkmqY9+W6ybInjN
-   g==;
-X-CSE-ConnectionGUID: tMpOWvZXQuCA2Mlf3Dkqbg==
-X-CSE-MsgGUID: kGhbk/qNTViv1l213K5Q6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3682650"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3682650"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 02:12:18 -0800
-X-CSE-ConnectionGUID: D/5dg/T/T7egAVJfdbIJDg==
-X-CSE-MsgGUID: 7vyP09MJSo22wc5qpMf9JA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="10052164"
-Received: from linux-pnp-gnr-1.sh.intel.com ([10.239.83.186])
-  by orviesa007.jf.intel.com with ESMTP; 18 Nov 2026 02:12:15 -0800
-From: Jiebin Sun <jiebin.sun@intel.com>
-To: akpm@linux-foundation.org,
-	bigeasy@linutronix.de
-Cc: dennis@kernel.org,
-	tj@kernel.org,
-	cl@gentwo.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	linux-rt-devel@lists.linux.dev,
-	tim.c.chen@linux.intel.com,
-	tianyou.li@intel.com,
-	wangyang.guo@intel.com,
-	jiebin.sun@intel.com
-Subject: Re: [PATCH] lib/percpu_counter: allow concurrent sums with an rwlock
-Date: Wed, 18 Nov 2026 18:16:46 +0800
-Message-ID: <20261118101646.3192636-1-jiebin.sun@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261115191636.f18859e4dd5f58b9a33e7814@linux-foundation.org>
-References: <20261115191636.f18859e4dd5f58b9a33e7814@linux-foundation.org>
+	bh=gt+mGhyacKtik+zhBd0qIAApd6LUeQdQWtl+tJU7pFQ=;
+	b=GPlz3TExybqVb2ri403MYD0tXXvZYLYGEtvG+yAWkGAxvlCbZzoNQ2PQPH4WASJtpnCpRa
+	3Zf3+AAiW6gX0sgvM1wwE6AH7DGL1kFGw6/FbHWxAfOlX78c/EK4ciHS39fY9Y126nr5Zu
+	j7CK/iDV4eQy5/p0Nq6QGiCCTktI4MU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794996832; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gt+mGhyacKtik+zhBd0qIAApd6LUeQdQWtl+tJU7pFQ=;
+	b=rfZ0hfVU4wDJPmcqh7zASCYp2T8O+3h8mhB3LNJ7HHhUkhEe6Cp/iPUfZiVfvkJUifaawSx64Z1pkeCtOJ9rQ9DADNteOiM406F6K9wgh3q+nzC2pOVqVVReS4aZC/mJldwdvjrQyohHzZzbNCw7icdwQK7MZKBrp3Mrwc2MNsE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R781e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0XF0Q23H_1794996831;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XF0Q23H_1794996831 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 18 Nov 2026 18:13:52 +0800
+Message-ID: <62b07884-afca-4f81-9b22-b4f890ed68c6@linux.alibaba.com>
+Date: Wed, 18 Nov 2026 18:13:51 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C9A4220008
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: zza8k7h9r53oxipgsjer7d51guootz7r
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: shmem: limit forced anonymous shmem huge orders to
+ MAX_PAGECACHE_ORDER
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Jingyi Sun <1045704958@qq.com>, Hugh Dickins <hughd@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Luiz Capitulino <luizcap@redhat.com>
+References: <tencent_FCBAE9157D42FFF00E681A2D5EA72CEEDF08@qq.com>
+ <29bca989-c3ce-4995-ab1f-1e2c49b93e48@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <29bca989-c3ce-4995-ab1f-1e2c49b93e48@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1794996738-510039
-X-HE-Meta: U2FsdGVkX1+DEKHzmu3D4bvpT/0nCQX+rJlURd9IkMlNQgrS91cc3Y9m6pR48mxY16fLli5kBHhG49aRc9s+rD3ll+kMboWIZLuUdUWe+/mp9NUiZaEVPicYS9WAi4m7EdsFCfPzVcGaybWJxNhjQ29BrDNdZqeoZiopeTALZHUecRDOhqwimIm4lOMsis77oYeIO3v1DvKNO/4PglqauyJq9igEP9s8RkAFW/ePOI07P8TSpuUzZctke8cWqLH5yAUqmZkdYwwi+koP9p5JqzaUxrxZfWw/bfQ8Zyb/LlEgyNSe09/17pvsUCTr89eBWhv0RPTTrCyFP87JZeJRsRvqw8kSIZB3avCtj25ulM+ptdGQbCgjCTDt8xBNJclGJ+Z4dU84bki/44Hcv6c4m5j77dclBijKQl8dYa+vrRlSUR3/SUEXF+IWy+cRXTuXKEW5V0Ihb4c2O4Qtwn5VphP66JC4kOebGtai6Um2xDh6Q1v2fRuv2BBrSV4oPQRP7d5gESs9P3rY+MBn5KvtU647SdMsZSGfNzUYMT9osCcXEgN0RXfFCkW7XfEM7ZaABEEG7k2ZAU92VQPiOu1OwlEpnEGIHpP4EXkG9LIybkWeCpDtC5w/ZVG4wGzgQ3+vQl654zUL6ycQ/yy0fhANZcgJcN+8oLHzq+oHDWc5hJ0+/AjN6lmZid/HgNW6vmFTEg5U5uNefE6wAwgvw53dt+T8qOvzRIjHgCtPL2vipWqaw0uF+oypDC0wu/bbfRkREnH6a81kjjeM2a5LxHOtTcStAuzebCwkH+zNp8Y14xFhLFpQiILl7H+nS9qv700ZIUlWQPlpKyAl1OqglPCpilefwZ+NGAK2x+HRNAG0m/4gzn3AvW/+b1dic2UOTGAMeZUnZHyEFp8wLR3H/REXdZdTA3RM0hdnO2Ut2n4c+0RDmZmoATpB8kUNPBq48WI6L6x5J9cEAxYQyky4JYl
- kDmbHnSn
- qH6O4c0BnJR6ydOtmnwb84gAT+edNtU9MIAKhU528Kq7VPbYyQMGtIynsyp9CBPjZbUMzz6WqVjdhi70r82BoWIWWj+0Rg813E9GlNmX2EFlTAxhmoJvENxfpPUNDRmvPhzWcuMeAzJncVqXcP1cTgg6qvkIwOSLtS30p5WEoaoLz5qGIqLC+aF+RS1ToxntgOgZUbhTRP95TIl8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BDE1F140002
+X-Stat-Signature: hwywnu9itq6h847iaiinpj37p8yp744c
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794996836-876757
+X-HE-Meta: U2FsdGVkX18vpDInBggYDTUyIVK1UHLK2q6dS06eG9bs64AQumzxuNyOIQb1jXhef3fRR2JBkLq7Hm2gPGcSMAjzNVGWfm2Ir1zDyKd194oGjBzDr/8jvoJzpQNku4zUV6KoGY70KCDjIZIHB7P+HJZyex+ygvdR5wUHHbl8nMcw/U7LqGKxMgHI7m4AKje+45duZ6ADz6ep5caLvIy9b1YUkQA1/eteyrrwhE4Y6xwzV1isf9zujZnt7Re/IUnEB2Tvvl56YkZkGUiwDUwmizWvjS7ueYL8YMxwrpr6LgPHRxO1fPOiJcW+E/3YmTTEttxu7u1rNWcgmUloERNY5Or/1FNAojkj3cXVW5xjxCYwmADbsUL8wXj3rtGziiVfErsw5O9n5Bi1yx2/Lpy8N/73ku0DFarhPcc4xjO8gtVBY6U90z3HhHdzujb9bKq3D8vRn8GGjExSUwWMFfpP80413UHuh0asbX6Mg9KKw0Dv9bCqvJGeeBd4tp24i6jtD2mxKIQif9x2pvBVuY5Y6sqMSVOnj66f6yUW16hSmVu05F7fUIFasbVhfTpux8/4SBUyxVGZ1rpj2a4f9wDLb3wvIqKAWR7LyO0RuTkCUcjt0YnSDznsilvGkDOJHa4Dy+So7fwGQVAQ5LeolgwZOp44IY/PvKd0Euo/hR3LqwdG0/KuEAohxhRg2c+U7YaZRqmUQcwg81q2qAKWA8mGRFXkrhHYZ2XwmKm8gA4HZ9Jid+FH1XWtYOozZb4gzTcl9wles0NZoe389JtPQ8Oz6sE3rA42enry2Il09jsYlAUIvJBh6yb+F1mBc5fzHSnXDnco29F6chfhNlVAAih4tosmmazJUtWw6+q0B5MVps0Mzwrjbp8f5GOAHEFi/FhEjLjcw04K0bu6YattgdWnwoZRUnm+7aXaKf+1SRzx3EbMSQRjZ6GzdTGSvFso0nW/Tg/WHj23lpf2G3dD7sK
+ V5mzVp2q
+ 9Q7EWyz+n7mkVnAMvPtqwm5Go3BmdEZPP2ZGLLfKxzA+2XOlburKvdd+y/SbZDNgu90/nysPzhxt5DuFN3IojucGm+N+2cX+uaEk5l7y0/WSfIOfOqGW9R2FlGvlFePXO7/RTaw7AJzl3mXiQtvE4VfYXAn9H09Hw2xHGWilmuZFnEDiaZFaLNJ7xa/+IievyXcI5CUly8aGXUxrv77WcIJEo2Lm1aptNP1DznP3lalaznNqfVdpjytGZiB/l7LRGfwI5I1oCiey3vVGgMAjl4Mud6cXA0yXJCRSg0O3XGkRttKOkOnhaoLWoyR77S3fLOsc2nery75isMffMOLYj4/vhhYSMF3vpJpdu8/40DbWFiuliS/lapucLtkaXdU430BztQOOZnbl6u0dtsamlVd76gW5CbMb2D1bA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,43 +94,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Andrew and Sebastian,
 
-Thanks for the comments and the RT review.
 
-I'll replace the macros with static inline helpers, add the RT comment,
-and clarify the practical callers, including percpu_counter_sum_positive(),
-in v2.
+On 11/18/26 5:31 PM, David Hildenbrand (Arm) wrote:
+> On 11/18/26 03:45, Jingyi Sun wrote:
+>> When the top-level shmem_enabled knob is set to "force",
+>> shmem_allowable_huge_orders() returns huge_shmem_orders_inherit for
+>> anonymous shmem without masking it with THP_ORDERS_ALL_FILE_DEFAULT,
+>> unlike the other return path at the end of the same function.
+>>
+>> huge_shmem_orders_inherit defaults to BIT(HPAGE_PMD_ORDER). On arm64
+>> with 64K base pages HPAGE_PMD_ORDER is 13, while MAX_PAGECACHE_ORDER
+>> is 11 because of the xarray split limit. With shmem_enabled=force, an
+>> anonymous MAP_SHARED mapping can therefore get a 512M (order-13) folio
+>> in the page cache. Splitting it later, e.g. on swap-out from
+>> shmem_writeout(), triggers
+>>
+>>    WARNING: lib/xarray.c:1051 at xas_split_alloc
+>>
+>> and the split fails, so the folio can never be swapped out.
+>>
+>> This is the same problem that commit 9fd154ba926b ("mm/shmem: disable
+>> PMD-sized page cache if needed") and commit b66b1b71d7ff ("mm: shmem:
+>> avoid allocating huge pages larger than MAX_PAGECACHE_ORDER for shmem")
+>> fixed for the other paths; the force branch was left out. Mask it with
+>> THP_ORDERS_ALL_FILE_DEFAULT as well.
+>>
+>> Reproduced on v7.3-rc2 in QEMU (arm64, 64K pages, -cpu cortex-a72,
+>> 4G RAM, zram swap): with shmem_enabled=force, a PMD-aligned
+>> MAP_SHARED|MAP_ANONYMOUS mapping of one PMD size got a single
+>> PMD-mapped folio (ShmemPmdMapped: 524288 kB) and MADV_PAGEOUT
+>> triggered the warning above in 3/3 runs. With this change: 0/3.
+>> shmem_enabled=always and 4K pages did not show the warning. The code is
+>> unchanged in v7.4-rc3 and in mm-unstable, but the test has not been
+>> re-run on those trees.
+>>
+>> The issue was found with a research static analyzer for
+>> cross-architecture dependency bugs and confirmed with the QEMU
+>> reproducer described above.
+>>
+>> Fixes: e7a2ab7b3bb5 ("mm: shmem: add mTHP support for anonymous shmem")
+>> Cc: stable@vger.kernel.org
+>> Cc: Luiz Capitulino <luizcap@redhat.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Signed-off-by: Jingyi Sun <1045704958@qq.com>
+>> ---
+>> Changes in v2:
+>> - Dropped the Assisted-by tag (Baolin).
+>> - Collected Reviewed-by from Baolin.
+>> - Dropped the note about the overlap with Luiz's mTHP series; Luiz
+>>    confirmed his series will land after this patch.
+>>
+>> v1: https://lore.kernel.org/all/20261117121626.1058-1-1045704958@qq.com/
+>>
+>>   mm/shmem.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 10cef89b00b0..41bb3f2c6b63 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -2114,7 +2114,8 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>>   	 * means non-PMD sized THP can not override 'huge' mount option now.
+>>   	 */
+>>   	if (shmem_huge == SHMEM_HUGE_FORCE)
+>> -		return READ_ONCE(huge_shmem_orders_inherit);
+>> +		return THP_ORDERS_ALL_FILE_DEFAULT &
+>> +		       READ_ONCE(huge_shmem_orders_inherit);
+> 
+> could we instead set
+> 
+> 	mask = READ_ONCE(huge_shmem_orders_inherit);
+> 
+> And sue a goto to the end of the function  where we have
+> 
+> 	return THP_ORDERS_ALL_FILE_DEFAULT & mask;
+> 
+> Avoiding the goto means more churn I guess.
 
-Interrupt readers can bypass a WAITING writer and delay it if they keep
-overlapping. I'm considering the impact this could have on counter
-updates. If this needs addressing, we might take the write lock in
-__percpu_counter_sum() when called from interrupt context, while keeping
-the read lock for ordinary sums.
-
-I also tested buffered writes with fio.
-
-Fio (64 jobs, 3 iterations, 60s each):
-
-  +------+------------+-----------------+---------+
-  | Test | Throughput | CPU utilization | Cycles  |
-  +------+------------+-----------------+---------+
-  | Fio  |     +6.91% |         -40.41% | -40.80% |
-  +------+------------+-----------------+---------+
-
-Test configuration: ext4, 32 GiB cgroup memory limit.
-
-Commands:
-
-  sysctl -w vm.dirty_bytes=67108864 \
-             vm.dirty_background_bytes=33554432
-
-  fio --name=buffered-write --directory="$TEST_DIR" \
-      --ioengine=sync --rw=write --bs=64k --size=256m --numjobs=64 \
-      --direct=0 --fallocate=none --time_based=1 --runtime=60 \
-      --cpus_allowed=0-31,86-117 --cpus_allowed_policy=split \
-      --group_reporting --output-format=json
-
-Thanks,
-Jiebin
+Yes. This fix seems more simple, but no strong opinion on this:) .
 
