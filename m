@@ -1,92 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531ED606A32F
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B43606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxxJ1P99
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h+MqjvDX
 Received: by kanga.kvack.org (Postfix)
-	id 4B24E6B00EF; Tue, 17 Nov 2026 20:46:43 -0500 (EST)
+	id C561E6B05B2; Tue, 17 Nov 2026 20:48:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 489B56B05B0; Tue, 17 Nov 2026 20:46:43 -0500 (EST)
+	id BE0AD6B05B3; Tue, 17 Nov 2026 20:48:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C6F86B05B1; Tue, 17 Nov 2026 20:46:43 -0500 (EST)
+	id A82EB6B05B4; Tue, 17 Nov 2026 20:48:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F3156B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:46:43 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 948A4140592
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:46:42 +0000 (UTC)
-X-FDA: 85446550644.28.9329436
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 024E6C0005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:46:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WxxJ1P99;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 766696B05B2
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:48:39 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB4C5C060E
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:48:38 +0000 (UTC)
+X-FDA: 85446555516.06.F51033A
+Received: from mta1.migadu.com (out-76.mta1.migadu.com [95.215.58.76])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2AC83180006
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:48:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h+MqjvDX;
+	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794966401;
-	b=Iv4TrXXMGE/TkMmocfI+8TvL/JxwXui/Clno4soqBggeyBqY2EPoD3tryGPxw0b5XqTVK9
-	2XQwiLXEapLH6JH/gUKhRGoKaFk4yKEBtCRhr5BPn1GzTBViBpkxni4IrjgXo/AdDm60ZW
-	uIZ/E9j5N+j/kYGJuMReDbPEAiH08Y0=
+	t=1794966517;
+	b=woJLJdCLCgZ+soiM7+BoHkelR9/2XWOTeoG3UpUL/8E14FeUvd/wO3kwKxGdsGwe29ekv+
+	TsrIIs9seG7PnRtYTyitAF1Fcwm7J3RWTMlzC0S31DUXIulmDcrYrmebGt59w5GbZvM8yo
+	k5ZaWxlpkIaDiY5zQ+/JKTcgqLH3fvg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WxxJ1P99;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h+MqjvDX;
+	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794966401;
+	s=arc-20220608; t=1794966517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ij7QL2lC6iO/EW2eXzqD3vptmXnm8iDoR9KY7vOdFJY=;
-	b=VOAQNOiT85EISjhjOEkW5UyVt3eY+FO4GK0zN5sqSvyDUDf71bD1kdDcYxOD823CZQoahK
-	0H+kYVZAFpBJKkLE++w+0/v67C0P+xa0845f0LzF28EQyAtQG/tJU/gDbzZ7E3DmDLc4UP
-	Ms4hHnVGbB/ZpAVjnQD4wURUMQE7M0g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 226C9434EF;
-	Wed, 18 Nov 2026 01:46:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43A61F000C4;
-	Wed, 18 Nov 2026 01:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794966400;
-	bh=ij7QL2lC6iO/EW2eXzqD3vptmXnm8iDoR9KY7vOdFJY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WxxJ1P993x7np9WHlyZJ4QJntFW0aBEG9e0LFkNzS+Ag7AgczfP4SLgMUHol5bhFg
-	 R2cX2gN5ZjYSlHwz8zC0Ya8f5gn0BQYbZL/iLJL0YifGiEUXvNSAHKRxxw96TpTDJk
-	 /LwfilYnjusNIVO64EIDYbwpSuSILhDF7TsFvA6Ra+3TzLLtJ6NXv0vgrK3hVGj7nt
-	 5lkx/wJyGbuHnPgWX2sx2soW4S9SzHWlheKFh9Pkk9XWlaQRIhxlR5kp6ZfJsWa22/
-	 nsdaFKst/ck4eF0aGQHwJwCbIF9DhUsvk8GjRncWi6UjecYLqmkCi+y1v1iDgLhP6V
-	 Dfg/fDTCjWnDg==
-From: SJ Park <sj@kernel.org>
-To: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/damon/tests/core-kunit: add test for damon_call() with repeat control
-Date: Tue, 17 Nov 2026 17:46:32 -0800
-Message-ID: <20261118014632.95656-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261117174834.29182-1-saileshnandanavanam@gmail.com>
-References: 
+	bh=kEsuSwHhmeJEGKRuu1fKD0DbR/1Nao9WbEuVQxgyWZM=;
+	b=t7pp4MVB7JTQ/N79Hj7nUu0zf1pL4MMcCt4LHoIPYoTKIhmXEyZgGjsO1eg110A8b1pn9w
+	r324jb253HCtakVuiwc6A8qJN9G1ba2DvXerVegfGveu8pitYibNw4n01h4hnQu2pAADBr
+	Zdcvi4HgQkCzK7q6i27lXFLgKGLOc+A=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=cipxz3ByaOhwFVVoVY3xs7T+pGiwDTQ+f9P0r9E9li0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794966513; v=1; x=1795571313;
+ b=h+MqjvDXMGHHko2yXc8o3a82rh7e7cB9QabP1QfEKZwW1JgYjf/UhxxB6L+87FKipWkOnFAQ
+ M52ymobFUSr99U4ta+B9XmNK0PxaRopuRDCZ8VXfNxohCtZ5SrWNVTs7L/gEOA6k9he1ZPmBGWF
+ 7UhBDGOWYXBux9nmbbZ/4ffg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b13cb621ae958f09;
+	Wed, 18 Nov 2026 01:48:33 +0000
+X-Mizu-Trace-ID: b13cb621ae958f09
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <54e548ad-9641-4348-819a-11f29cc35ff4@linux.dev>
+Date: Wed, 18 Nov 2026 09:48:14 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: hongfu.li@linux.dev, Hugh Dickins <hughd@google.com>,
+ David Hildenbrand <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH 2/2] mm/hugetlb: remove the gfp_mask argument from
+ alloc_hugetlb_folio_reserve()
+To: Muchun Song <muchun.song@linux.dev>
+References: <20261117-for-memfd-v1-0-fa68f433171e@kylinos.cn>
+ <20261117-for-memfd-v1-2-fa68f433171e@kylinos.cn>
+ <DF9FCBFB-C1E3-497F-B7AB-567F44873B05@linux.dev>
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <DF9FCBFB-C1E3-497F-B7AB-567F44873B05@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 024E6C0005
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: etk85ammd4grmcbx89nphnpuwstmfmyj
 X-Rspam-User: 
-X-HE-Tag: 1794966400-295832
-X-HE-Meta: U2FsdGVkX1/NgO3mm7YbZZVW9jTFMc31Ey61vwAmpiu4sGPW++UCMlh/3/xoWC317Tu5PcI/fvxAzejKX2KbGuVrKd39B+WKivCb+F6kImw/2Tj9LIQYQUeVOhKOKqafep3GztHPqhFw0u1oY/x4h7QDkPlr+fNSB3tGjjFWSgUo8PZrdfkAgRj3pX21xhSstq2vBOVIwTgngDvaVx6YrvRK6xa0zqKdLE4sdrlLEigDNFVfp9f8q3fau1YIGnsTjWbt/QAVeZjDxHfIptaRkNsPp3kGGsQacZVBB1uzlByftxEAnt2SzRYzTkjWs6VY3EJe0SPpFy6yKfSpIXz+EfJfM2kdEINcreScYMfXdZjYMc7za9FxlFg1M5c922DKDp7Ym8EDOT58mjIl5deDIRaLRTC+tSzEnxLbjdaCsEd7VQbIPCnx+NCFvMzyj6qgpf2lGjZ2o2CQ01XrNsqdxrELa7a1xGvHIV/8yn3+XTXv2lwzJ/i9EXjemuFY2O17Yo/xx12Y/CBajIm79UuKA8jzjzsqCYkt2z3mRpbeKk6jVJqNoCkCPh5xjJBtN5V0j2IbdbfRyZ/bQ/61RhnASh4FCcwLeZcWVopBYPijhQl/VETkdfxpFf3bkrBfhWaq0VUleJ6RhHw23dBh8sLBHHiTCJhL5fNopyArAvQKK/sPjoUp+UHR4WX4kHs2zHxTgDVx9ejPNBbIkD9J9oQIJp5NKNCkX4NF2EkNqjtgHQ2Wp320PvkBBFi/bXaLzWsDVgXYTtcQ+V9xTsAN80sAECTSj+zbkoZqCniJIrVRGwemYODqo3uhQpbpTaLpr4ez3bbQy5zKWN4Q1dJznPX/vm0lRMRnK6IkdEUTz4a8EvlTnLV2TWirF8TBfHucmYzpNUwn3AQHhd6Uj6Y5/ZLzKnj7D6Q7wNp9Wuk9ht800SY6arklzMeBQGZikFc30C2hat4Mv3nc50TZQRVHB8V
- QynMw86z
- 0EjaODBuqFpUeM+dkqSYjE1qg4uHyfYbdmefqE7Gfs5zAh8+FDd/xsozwMCQr2TQCUtmgCwfKH5Sfi3g2q/Ansghj9kCd+qTXbV1wjybBmCSbh0QJkuW7CWgu0Y/iVuYTk9mQ8ZQeYjW6Q+D1w7igYbeYR32egg57a0ADeoyMa8/IPpiTIWTM8y21dsbFo6dsp/HMkDBlQABRTO5BwItosktSnEh3FeWGNYLL1ZGd3jNOGrR5MOG5M3pmhfybgWtFLqtyYVPdLuNR5t3Q3/Y8lCWLMnRF4vRz82D10Ps8bkfehiQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2AC83180006
+X-Stat-Signature: nfq1d5jh7c5e6zmubb5pubk8xmjy1is7
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794966514-368479
+X-HE-Meta: U2FsdGVkX189lLpRwOd/z5MlP0ffFlHAShcxy5LsO+/14ns91K1t+RA7hIKGSGLmqYDK19UKT3ZbymryPbWaBvnQU4Qkfe8+q+56AT2OsqulwGVU6zHNHKj8XnGLjKPo0usnysR0/gHs+7tBZwSrvVPD6dujwbPrCWXeaWR8tvnGh0KSCPHcaQsAoAspeGj3tP8s34tbfl4aoiitbTIcQNjuJMDmBSrgnEDAPb8TlruBJ7b0kKmvfoBkxjTRPaJAqyrQoYaymbOEmkdJaqpFgWUmFBfEt/r2ncOZ+N/s5eO4EFqZLrpApN9DCIU36UnPdI+GXG6EGZYyG6yAvojFlJTG3QU764tHNV7M9M03he9n8oBoyvS6A6jK/EVS4svkhI/oVgGHcshqc+RcNztTr0vAPpfCjOskXpD84DJJGoYnBoO6i80XcvT8l1rQMUz+t5wSFJqpJhCdWa6Cu4DhpXKbXKSnQqyjnwbqjJm3o5c1WwkJ97LuMWZ1It0tCXUu4ia8Dl6kLtAXTBHP8huvPOsEHW/NdfLXPIBQu/6IwT1g+/SdxnvBLzw9j64s06ffQ2ZqS1FgHwVnV22suwyeAvQTKXXFOqTr1+Rp/+gRUnXt+Sdq2xcJsYcCP2sYbpF4Kar0d8BbHeF3xYbEZnCq5xd1FXAW5pJii5tTbrwHmtY/5GJb27DfwSpEBIfhzn8oEEIiEYX5c18DNV1op8GOX2KNRhApjBI4EfoORUjQhchZQ1/rCvgASDJ/T6QwVzUvIb3CahZFY9Bydf5Ye4Y6UFpZ4HrzL+Qjs9Lj9H0Xs0APEUvwcuhb9GnkC0wX0SRTIdoHeJt5afwh+1OMf1WasyM/DY3g0EfX8l2yO32rRp9elxo6hEK9UoOfdjYeN2AMuT6p/64dDf4vAcnIfWX6HS/uGAzgK1ysb7yuKOM/VzJ39bKY0BVZmms9ZALTIhEr0gOxjTnvAOUyACOkHqf
+ DriUzO+z
+ zEg+GnaFfxtRR7g4ACb9gnfGdV2cTqdNlIFP3m7lgDrGjT17buztH507nBNXYzwNcRLdRhOgup0Po5mOLvmln11pYWAKjoEVxsjfLbJUq3oHc3PCxvK1Lih32FKq41iJPaOQEozmMNkiEtEqymvDHbxcR04n2ACODEPvYtoQC5RpQvaZJUsnEgr0rvpysRxQnkMC9DI2qPUVOv43SiqE0z2z07TBFmsb2N7NC/wTO+qRUC1tlakYMJlGXsDXTQHiZ1Hnakuxr5xCUylT3YbMBOHH9BNZU21fXMhSRYs21tdcrH91zxwVSvJUSknNQuJt+dOlmfHvREOgY1v8ZX1k4XVTMHrKVA1eb/8nG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,77 +101,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 17 Nov 2026 23:18:34 +0530 Sailesh Nandanavanam <saileshnandanavanam@gmail.com> wrote:
 
-> When call_controls_obsolete is unset and damon_call_control->repeat is
-> set, damon_call() should queue the request and return 0 immediately
-> without waiting for kdamond to handle it.  Add a kunit test for that.
+在 11/17/26 19:15, Muchun Song 写道:
+>
+>> On Nov 17, 2026, at 18:53, Hongfu Li <hongfu.li@linux.dev> wrote:
+>>
+>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>
+>> alloc_hugetlb_folio_reserve() takes a gfp_mask argument that
+>> memfd_alloc_folio() always sets to exactly htlb_alloc_mask(h), which the
+>> helper can derive by itself.
+>>
+>> Derive the mask inside alloc_hugetlb_folio_reserve() as
+>> alloc_hugetlb_folio() does, and drop the argument.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+>> ---
+>> include/linux/hugetlb.h |  4 ++--
+>> mm/hugetlb.c            |  3 ++-
+>> mm/memfd.c              | 13 +------------
+>> 3 files changed, 5 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>> index 69732e4cc03e..a88c59476e79 100644
+>> --- a/include/linux/hugetlb.h
+>> +++ b/include/linux/hugetlb.h
+>> @@ -735,7 +735,7 @@ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+>> 				nodemask_t *nmask, gfp_t gfp_mask,
+>> 				bool allow_alloc_fallback);
+>> struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+>> -					  nodemask_t *nmask, gfp_t gfp_mask);
+>> +					  nodemask_t *nmask);
+> To be honest, I'm not a fan of this change. This is a memory allocation
+> interface, and we shouldn't couple it with a fixed GFP mask. Sorry, I
+> can't ack.
 
-Apparently this patch was meant to be sent as a part of a series with another
-patch [1] but individually sent by a setup failure.  As a result, this patch is
-not reviewed by Sashiko.  Could you please repost as the series?
+Hi Muchun,
 
-> 
-> Signed-off-by: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
-> ---
->  mm/damon/tests/core-kunit.h | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-> 
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index 13315291f69f..bc93677487b5 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -2499,6 +2499,30 @@ static void damon_test_call_controls_obsolete(struct kunit *test)
->  	damon_destroy_ctx(ctx);
->  }
->  
-> +static void damon_test_call_repeat(struct kunit *test)
-> +{
-> +	struct damon_ctx *ctx;
-> +	struct damon_call_control control = {};
-> +	int ret;
-> +
-> +	ctx = damon_new_ctx();
-> +
-> +	if (!ctx)
-> +		kunit_skip(test, "ctx alloc fail");
-> +
-> +	ctx->call_controls_obsolete = false;
-> +	control.repeat = true;
-> +
-> +	ret = damon_call(ctx, &control);
-> +
-> +	KUNIT_EXPECT_EQ(test, ret, 0);
-> +	KUNIT_EXPECT_FALSE(test, list_empty(&ctx->call_controls));
-> +	KUNIT_EXPECT_PTR_EQ(test, ctx->call_controls.next, &control.list);
+Thanks for the review. Understood, I'll drop the interface change and keep
+the gfp_mask argument in alloc_hugetlb_folio_reserve().
 
-I think the above last two expects are somewhat too much implementation detail.
-I don't think we are promising those list status.  I'd prefer dropping those.
+Also, patch 1 is the part I'm least confident about. Your comments on
+it would be much appreciated when you have time.
 
-> +
-> +	list_del(&control.list);
+>> int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
+>> 			pgoff_t idx);
+>> @@ -1161,7 +1161,7 @@ static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>>
+>> static inline struct folio *
+>> alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+>> -			    nodemask_t *nmask, gfp_t gfp_mask)
+>> +			    nodemask_t *nmask)
+>> {
+>> 	return NULL;
+>> }
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 88c9aa700533..e84203406da3 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -2221,8 +2221,9 @@ struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
+>> }
+>>
+>> struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+>> -		nodemask_t *nmask, gfp_t gfp_mask)
+>> +		nodemask_t *nmask)
+>> {
+>> +	gfp_t gfp_mask = htlb_alloc_mask(h);
+>> 	struct hugetlb_cgroup *h_cg = NULL;
+>> 	size_t nr_pages = pages_per_huge_page(h);
+>> 	struct folio *folio;
+>> diff --git a/mm/memfd.c b/mm/memfd.c
+>> index 8905e3e9efc8..08b9d54b0d8a 100644
+>> --- a/mm/memfd.c
+>> +++ b/mm/memfd.c
+>> @@ -69,22 +69,14 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+>> {
+>> #ifdef CONFIG_HUGETLB_PAGE
+>> 	struct folio *folio;
+>> -	gfp_t gfp_mask;
+>>
+>> 	if (is_file_hugepages(memfd)) {
+>> -		/*
+>> -		 * The folio would most likely be accessed by a DMA driver,
+>> -		 * therefore, we have zone memory constraints where we can
+>> -		 * alloc from. Also, the folio will be pinned for an indefinite
+>> -		 * amount of time, so it is not expected to be migrated away.
+>> -		 */
+>> 		struct inode *inode = file_inode(memfd);
+>> 		struct hstate *h = hstate_file(memfd);
+>> 		int err = -ENOMEM;
+>> 		long nr_resv;
+>> 		u32 hash;
+>>
+>> -		gfp_mask = htlb_alloc_mask(h);
+>> 		idx >>= huge_page_order(h);
+>>
+>> 		/*
+>> @@ -101,10 +93,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+>> 			goto out_unlock;
+>> 		}
+>>
+>> -		folio = alloc_hugetlb_folio_reserve(h,
+>> -						    numa_node_id(),
+>> -						    NULL,
+>> -						    gfp_mask);
+>> +		folio = alloc_hugetlb_folio_reserve(h, numa_node_id(), NULL);
+>> 		if (folio) {
+>> 			/*
+>> 			 * Zero the folio to prevent information leaks to userspace.
+>>
+>> -- 
+>> 2.54.0
+>>
+-- 
+Best regards,
+Hongfu
 
-Can anything leak or corrupted if we don't call list_del() here?
-
-> +	damon_destroy_ctx(ctx);
-> +}
-> +
->  static struct kunit_case damon_test_cases[] = {
->  	KUNIT_CASE(damon_test_target),
->  	KUNIT_CASE(damon_test_regions),
-> @@ -2544,6 +2568,7 @@ static struct kunit_case damon_test_cases[] = {
->  	KUNIT_CASE(damos_test_esz_goal_temporal),
->  	KUNIT_CASE(damon_test_last_region_quota_reset),
->  	KUNIT_CASE(damon_test_call_controls_obsolete),
-> +	KUNIT_CASE(damon_test_call_repeat),
-
-Could we merge the above two tests into one, say, damon_test_call()?
-
-[1] https://lore.kernel.org/20261117172219.26725-1-saileshnandanavanam@gmail.com
-
-
-Thanks,
-SJ
-
-[...]
 
