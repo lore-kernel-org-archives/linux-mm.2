@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9315606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 06:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C250606A8AE
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 06:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=SXQTfpLU
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ws2Z7/Pb
 Received: by kanga.kvack.org (Postfix)
-	id D40D96B05B1; Wed, 18 Nov 2026 01:17:25 -0500 (EST)
+	id AD4936B00EF; Wed, 18 Nov 2026 01:20:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D18EB6B05B2; Wed, 18 Nov 2026 01:17:25 -0500 (EST)
+	id AAC526B05B0; Wed, 18 Nov 2026 01:20:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C562F6B05B3; Wed, 18 Nov 2026 01:17:25 -0500 (EST)
+	id 9C1B06B05B3; Wed, 18 Nov 2026 01:20:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 97E8D6B05B1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:17:25 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BBDF160696
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:17:25 +0000 (UTC)
-X-FDA: 85447232850.22.D05A5BB
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DE8AF40005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:17:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SXQTfpLU;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794982643;
-	b=bYkR0H1ZRyZfLD7XRXbUpslQDl5DcOJFStJYDnCEowV0LdK/Jbpwd40SBjF/sxPDXSwlCl
-	gDDQup31cpKazTevQV1ZboYnD7bJD38g8S/45WDIeD6hQxZM9gkRs3qIEdYZCuQqw1ntaq
-	TBODgB9UsNAVeA7hSK+DF/aJNz0+Wh8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SXQTfpLU;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5106B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:20:11 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03795120676
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:20:10 +0000 (UTC)
+X-FDA: 85447239822.26.9900BFF
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 28B1BC0003
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:20:05 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="ws2Z7/Pb";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794982643;
+	s=arc-20220608; t=1794982808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n9fOIxOwET96uC8roh03DOKW3+w63/lkWzkOzpEHPkw=;
-	b=AKX0FTfHzIr9qF1euPt1l/IqAaI3dXKkIIyo+l9rgl0UDMrxSpkAmAk6zTSG5GOX4WHwRN
-	JXVnTEVHFusU+PO+ciXPXjrDaFL/FC4zKsgP1y3ZZypsB6hxDwlQUMuPj29ONQNzpQYd0o
-	X4RfztLc8dxEg6pRemJYEo3AhWZNPOQ=
+	bh=aH8cEp7px8xcaLzznaOBQdWewlYuvVH2iWUw8OYAWwA=;
+	b=bG7wm/j7gBdtucVL2fGs1IYj1Q3SXaQaiSwBDKp1IVujMzqP+WCZr5t0igz3FAWLYMG1AV
+	2rw5X0s0jQ6oQX2cronkUADl5WaitUWcyJ0JSoS9ZflQ3uWcM6uvenTm4od/gu0IYTyeLU
+	CRjYhtttVz5WZYw631+/sia61kfB8Qs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="ws2Z7/Pb";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794982808;
+	b=yL5+OP+g4+JH6emmEPj8v+NUgVHu/Etob8TajfPnv1JaOcaHDsoGLtn+FkG4GHC0V8asTV
+	5luQYsa/rXqEgK4Ia0/de9lyGoajNDZltCy+s1ZQWTdsHqJ+zv/c0dBJ+VbzLA0StguzAk
+	ctCxfxmmHWUUh5K6AgFEt3t38ETWjk4=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1794982639; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=n9fOIxOwET96uC8roh03DOKW3+w63/lkWzkOzpEHPkw=;
-	b=SXQTfpLUbsyg5O3S9zlnRvhaopJz2jQDYm6HKEOcIWEXu+Kzjd2N3bN/bOAuoXLK8RPC18NpSANmB6Wvr7tmB8sB57NjZNi5F2OlQHg/drU/T+zAa8M/oUIXSKz7aF6WnR/SCK9Uxrg5nkY/SDvA3GL9x2SXx9iA8heQGme3AGg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R281e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XF.fYJZ_1794982636;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XF.fYJZ_1794982636 cluster:ay36)
+	t=1794982802; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=aH8cEp7px8xcaLzznaOBQdWewlYuvVH2iWUw8OYAWwA=;
+	b=ws2Z7/PbzJD/U1GPXewf79MWh0Oi37QfVzR1Q0+8XL+W7261elsX1JjkutdEN7Ccw7mvyVcSK7sfZVfg2KPMyyzmsr74lzqe+40Mv6h24Ia8mrujkd0fqFYwpvLJ6rx4vFDBzKpET1mwQm2cVS2vPvtBmeo59yALxEaslvQPvxc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R231e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XF.fZ3i_1794982798;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XF.fZ3i_1794982798 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 18 Nov 2026 14:17:17 +0800
-Message-ID: <1001fb37-5db0-4b25-9807-0cc39d9ba03a@linux.alibaba.com>
-Date: Wed, 18 Nov 2026 14:17:16 +0800
+          Wed, 18 Nov 2026 14:19:58 +0800
+Message-ID: <430c6b67-76a2-4f67-abb6-e28d07a84bd4@linux.alibaba.com>
+Date: Wed, 18 Nov 2026 14:19:56 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] mm: use memory barriers for non PMD-sized folios to
  sync
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com,
- liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ ljs@kernel.org
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
 References: <6274e62645b9f176dd10d7a79e86b900a39cec5f.1794898535.git.baolin.wang@linux.alibaba.com>
- <avxb050XeV895evT@gremlin>
+ <c254a38b-d5e5-40d0-8d70-c6baa850cf2a@kernel.org>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <avxb050XeV895evT@gremlin>
+In-Reply-To: <c254a38b-d5e5-40d0-8d70-c6baa850cf2a@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: imkgxhjx49qcz3i1iayeg46nfr774m6u
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DE8AF40005
-X-Stat-Signature: bg45uz9xphp97ueu1w4ammfx69wkdjqt
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 28B1BC0003
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794982641-41091
-X-HE-Meta: U2FsdGVkX19lZWkzyhlb3VFTldGZ0IngRF5xjcPDwAdheksIyAmBPGvvAvT2R4CJBsYGfqvH4HtYvoFz8nrz32UQpwfpBilqMev3UqCIxwxQlh6Btb0ANjN9ilj0xBaM6keKv42ainm8pyAj6qJiwMrmZC9SWSKkx0KGPCIqqVy3dMDYd8OM+d2isgS5rWC7ZROWdLGuAsphkMVrxuOyHgstq1T/JX1wcvc00pHM2uH0r8E9gN7a3NFWagmR9Y3ESfvmwpODbOneuIZegsajHMklLa1C2Mr09gHksPAsDek4geLZbCe91+dThVvL/4Y2fB9c32fg1GtUTsJV3XJ89/B+8+achD5s8fE39ZJRp5YDJENgkBZVn4FSvKZQskzpR9aw/YteO7eNAbSbugWd3n6QqNCCHpklslh+rRmOJQ8D+2/i8jcUUp9n0tZ36hKvzY2T9Von9vn05ZlXuB3PKvSwMkwmvdfhYEK2XQl4hrnHS7O92Qv4igWciA/XR9/j6qnXUYHGEXQkl6F4Uf+Vn952E86IaMhT7M36zxpJVg/8SFTlTfpFBbN1K7rbWr6pOrKxK/EuczyeqT88LPytDrSUsWXZ6CSt3EWe0xyuqkuukqRgTAsFodW7FyXkKy0G+roTvPN6nFKrMs66GgfSLSgFSa+RZd76kbmed1LU3O9rscUgaebL69QYU2Wtt1B8oKolzmPMeQRGlS5yO7gG+iLMt3x7qqZQAcbnUbclpoqKipe3YUDqYSRv0ssR4HXiBr7+59j+AfOKFsbOP0gc/RAtM2zmxgeFDiQ2n0leZvgVPTg59aweDB3HOQfftUpGcQv2eBr6YfKpnLzfm59eQQ44H7bfSKjnwTAFGkN2lk8KixL9e3G1T25soHA8mZ7Kf+lu0T7YWEasZED6HsRtoneuJCU/C7aKKz7AVZZbRqvFsB8EI4NM+1EBtCvfrDYv5j8o/70dPm84uCO04iN
- oq4hZhcA
- zCgmlFZM1qNdMbEfq8cSlZY3oYIvUnyAKZhIYImpeZCXDsSUPl+uV2OTRif5ktjRkaM3i2BaZ/0tJswnaBr94s0LxG+bG18YMMf6wWRQwAva15il1EeB4DOlAmMqy6ZCYtIEgl54IjoNsb2ipxVZZBMQxPp4+tEI9+qH0b0HNAv85j3YArdWPaOY3VjPZ9e4UGhIfbp9E/uyfcpx7LN9wh//+VPumAngpwrMTIXWghYMztrhINlZoDIiJGHho9rFexIxi+AnuIjBnoEuuMOHn3aLBRIcEf7jEecJhNBv5HPqJs0+M7/gcUZWdFCuSR+golWUo0HvD2+mtH8E=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794982805-800573
+X-HE-Meta: U2FsdGVkX1+EmXVCaRQwr3Cxhgc47qzf/k34ZQW5Uv8iHJkOyJy4odOzKBEDc8ZyI1PoZgMe+zhqkR8UTfeOwZ7FJKyuw7aAgHlAmG575TVNZZo1Zev9qe6TD9Ug5CRxdTdxA/lPY9x68PUjiGHXaG0JzeZcHg/6smAS5tSQ0sur/jqUUp1IOjQkjyD7Kb86u6AWChdmccjpojrIWZGcdoLAc8DNTwGPLovdP+mafFY5k2KIUP8XeULCyYmhv/yy5ZHfI0r1mV/sQlF7JSSyem1S1vqnzMlaTNc03VEzs5LtybDiZEMcl2fKhCMnaXxUMXIYmg/HEaIepW339uDGVKwF6Hx4Ufix/1h29R+06zyY8xW+YokhTI7IlNuj1PIeLZ1jbnvzU4mipmF9sVNxjvyOqbEix6Ekdcr0+YxAFbwPmfkeWVLW3YeVlK2QEkxN0/qmqfBmihfd6gBa+EU/8xLXqeTfjStq0Stac3bx4ouNVjbCtqNn1/zQr2j+e/0s15OBOuL4ad+aH+JyYywuR9ZuzxcAHZIrFP5IyhvevNEC9QRLcH9bfPdO58UHY5XyS4AAsRfqH3AH5I8ExW4usbiixSxXfsLji4OLiGao8h2sA2jiXrhvkWLo6Hn/2+Eyt/joICSpR5GJor8jH6uu2I2U5MrlgyRrwGqV9V0tCRWB3w0O/eQZpdGXr7O+Gu3ZA8FbRq8X3okDs++F3+Yeb2/ZZXQ02VaeTPs9KbRecViZ9Laze7o0z5ab6GztXg5FbM8riaCWhV4UjzGNb1QQAA3jGSr5nqrMVhmlNrLX1ynHU41P702b1PlUAwjpr5VWai34ekePqFPTgV+WdwoxzREM9pgYgLpkdQ4Hkj7aCjUyVxzMzFV3uw1d2J8JQfiEDyv4cbi+6w5bboO1Y4yp/ZW+mm6iUOM8c/ev+A909seRvJjx+gM8VRJ/quZInTNfcKAThQQmCq4+7NRoTGG
+ 1eEcp3u6
+ jPHq/vOmLm/hvaZHPiOapzs8ojdqTClkO8Rxx8CvhXouA9L6jBQ1Rnu0bZ4WFTZS9MbeJdUpRJ5GsPGmy+WUtIEEceCFeTFKdE3HjfqM6enzzD61Hgcv/pN29k/vgwOkcpUU2uQ8Tu+Vt+Op8zHRPAafxI6IXZqCQl+6SkLN+GIY761en4eIP3ayzvHFkug/lYulcJTrPx6HoX+aR/W5u9RKYsW5l1uVcLPYPNNCEFgQXzbKXp5jpAdBkfNvyhSLr6zAdBTnXNZsmE9Q4H1ODyznTf8lR9T0ELVEx/5xs1C9KZ3nrejmxV8/7VjNxte4YASsR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,8 +97,8 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/17/26 9:53 PM, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Nov 17, 2026 at 03:00:30PM +0800, Baolin Wang wrote:
+On 11/18/26 5:19 AM, David Hildenbrand (Arm) wrote:
+> On 11/17/26 08:00, Baolin Wang wrote:
 >> Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
 >> uses PMD lock via sync_with_folio_pmd_zap() to synchronize when a cleared
 >> PMD is found while unmapping a folio.
@@ -106,26 +107,10 @@ On 11/17/26 9:53 PM, Lorenzo Stoakes (ARM) wrote:
 >> this unmap is PTE table reclaim, which clears the PMD only after the rmaps
 >> for the table have been removed. This is plain message passing, and taking
 >> the PMD lock is more than needed, like I did in the previous patch[1].
-> 
-> But it doesn't automatically mean that you _have_ to use fragile memory
-> barriers?
-> 
-> Correctness and robustness in the future are important right? You need to
-> justify this properly.
-
-Sorry, I wasn't clear. The point of this patch is to avoid a possible 
-performance regression from taking the PMD lock to sync for non 
-PMD-sized folios. So using memory barriers can avoid this.
-
-The description below explains why memory barriers are enough here.
-
+>>
 >> Without barriers, the walker can observe the cleared PMD but a stale
 >> mapcount on weakly ordered architectures:
-> 
-> You mean without the PMD lock?
-
-Yes, will make it clear.
-
+>>
 >> CPU 0 (unmap folio)                 CPU 1 (MADV_DONTNEED, full PMD)
 >> ================================    ================================
 >> folio_lock()
@@ -155,116 +140,17 @@ Yes, will make it clear.
 >>
 >> If R pmd observes W pmd, R mapcount must observe W mapcount, so
 >> folio_mapped() no longer reports the removed mappings.
-> 
-> This is insufficient IMO, you need to explain firstly why acquire/release isn't
-> feasible (presumably because you can't synchronise the clear properly that way).
-
-Sure. Using the PMD lock (with its implicit acquire/release semantics) 
-would also work. However, as I mentioned above, the concern is the 
-potential performance regression.
-
+>>
 >> Pass a 'folio' parameter to sync_with_folio_pmd_zap(), allowing us to
 >> skip those pfn walkers: pfn_mkclean_range and mapping_wrprotect_range,
 >> which don't need synchronization.
 >>
 >> Similarly, skip sync for page_mapped_in_vma() since the subsequent
 >> operations don't check the folio's mapcount.
->>
->> No changes for PMD-sized folios unmapping.
->>
->> [1] https://lore.kernel.org/all/542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com/
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > 
-> This replaces an easy-to-reason about lock with a very-hard-to-reason about
-> memory barriers that are fragile and could easily break resulting in subtle data
-> race bugs.
-> 
-> And you don't seem to have provided any perf numbers or anything to justify it
-> unless I'm missing something?
+> Do we have any way to measure the benefit of this? I think we'll need that to
+> convince reviewers (like Lorenzo :) )
 
-Yes. Performance measument for this race path may be tricky, but I'll 
-try to see whether I can show a measurable benefit with memory barriers.
-
-> I'm a little uneasy about it honestly.
-> 
->> ---
->> Changes from v1:
->>   - Pass in a folio for sync_with_folio_pmd_zap(), per David.
->> ---
->>   include/linux/rmap.h |  2 ++
->>   mm/internal.h        | 26 ++++++++++++++++++++++----
->>   mm/memory.c          | 12 ++++++++++--
->>   mm/page_vma_mapped.c |  4 ++--
->>   4 files changed, 36 insertions(+), 8 deletions(-)
->>
->> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
->> index 74cca0e3c726..62e7341de179 100644
->> --- a/include/linux/rmap.h
->> +++ b/include/linux/rmap.h
->> @@ -862,6 +862,7 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
->>   #define PVMW_PGTABLE_CROSSED	(1 << 16)
->>
->>   struct page_vma_mapped_walk {
->> +	struct folio *folio;
->>   	unsigned long pfn;
->>   	unsigned long nr_pages;
->>   	pgoff_t pgoff;	/* Only meaningful if nr_pages > 1 and not a KSM walk */
->> @@ -876,6 +877,7 @@ struct page_vma_mapped_walk {
->>
->>   #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
->>   	struct page_vma_mapped_walk name = {				\
->> +		.folio = _folio,					\
->>   		.pfn = folio_pfn(_folio),				\
->>   		.nr_pages = folio_nr_pages(_folio),			\
->>   		.pgoff = folio_pgoff(_folio),				\
->> diff --git a/mm/internal.h b/mm/internal.h
->> index cd3675c044e0..ad7e051cb198 100644
->> --- a/mm/internal.h
->> +++ b/mm/internal.h
->> @@ -592,6 +592,7 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
->>    * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
->>    * @mm: The mm_struct.
->>    * @pmdp: Pointer to the pmd that was found to be pmd_none().
->> + * @folio: The folio being zapped.
->>    *
->>    * When we find a pmd_none() while unmapping a folio without holding the PTL,
->>    * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
->> @@ -600,13 +601,30 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
->>    * against later mapcount reads. Skipping the PMD without synchronization
->>    * could make folio unmapping code assume that unmapping failed.
->>    *
->> - * Wait for concurrent zapping to complete by grabbing the PTL.
->> + * Wait for concurrent zapping to complete by grabbing the PTL for PMD-sized
->> + * folios, otherwise smp_rmb() is sufficient.
->>    */
->> -static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
->> +static inline void sync_with_folio_pmd_zap(struct mm_struct *mm,
->> +		pmd_t *pmdp, struct folio *folio)
->>   {
->> -	spinlock_t *ptl = pmd_lock(mm, pmdp);
->> +	if (folio_test_pmd_mappable(folio)) {
->> +		spinlock_t *ptl = pmd_lock(mm, pmdp);
->>
->> -	spin_unlock(ptl);
->> +		spin_unlock(ptl);
->> +		return;
->> +	}
->> +
->> +	/*
->> +	 * For non PMD-sized folios zapping, concurrent zap_empty_pte_table()
->> +	 * may clear the PMD after the rmaps for the table have been removed,
->> +	 * but later mapcount reads could still be observed before the PMD
->> +	 * read, making the folio appear to be still mapped after unmapping.
->> +	 * Order the PMD read before later mapcount reads, so that observing
->> +	 * the cleared PMD implies observing the rmap removals.
->> +	 *
-> 
-> This also makes me very uneasy, complicated reasoning like this is asking for it
-> to break.
-> 
-> Also could this be smaller and clearer?
-
-OK. Let me try.
-
-Thanks.
+As I replied to Lorenzo, I will try, though it is hard to measure the 
+performance for this uncommon race case.
 
