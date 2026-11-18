@@ -1,105 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868FF606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 08:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0721606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 08:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Q4fUY0+g
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Jski2Vet
 Received: by kanga.kvack.org (Postfix)
-	id 9F7596B05B2; Wed, 18 Nov 2026 03:10:34 -0500 (EST)
+	id E91566B05B5; Wed, 18 Nov 2026 03:12:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A76E6B05B3; Wed, 18 Nov 2026 03:10:34 -0500 (EST)
+	id E1A5B6B05B6; Wed, 18 Nov 2026 03:12:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 897E36B05B4; Wed, 18 Nov 2026 03:10:34 -0500 (EST)
+	id D2FEF6B05B7; Wed, 18 Nov 2026 03:12:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54ABA6B05B2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:10:34 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E8714A8202
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:10:33 +0000 (UTC)
-X-FDA: 85447517946.22.F06C305
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E2CBE20004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:10:31 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Q4fUY0+g;
-	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794989432;
-	b=BMD0Af8zuydzxvCgGNQT5Jd4Z+gHdpNtmEBVLRKLPOgyo+TtVUzXK26FObwJH9PTwYa/Y3
-	cEYDuTXalWMZWm6akH78qEloc8332fgpU1crN+qKAugK+N0XB91MZ1qHTfuL/83GVvowxk
-	9BfRG1JowGV0bwjpnoAYr9p+Gxub0LE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Q4fUY0+g;
-	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AAA646B05B5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:12:14 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 275B31205C0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:12:14 +0000 (UTC)
+X-FDA: 85447522188.29.713227D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 67935180004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:12:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Jski2Vet;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794989432;
+	s=arc-20220608; t=1794989532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hj2AtJ5fdbFUi8EuCznDfKlHT8DybaNFg1VurQsunj0=;
-	b=ra0S6J0RxVceuOfFPwEkrw1FBpz4JSWmdG56Pu2GUU2xmyIeCJSjKl6iH/A0HGV03bIdoM
-	fQfVx5FivAEhdF0PNdcHZzhgDuFilba98lgzFRe6DPQdA/2n7OUCv2kX5U/DMneQ1bBJ9U
-	XO256oFPw+YA82+WlXK4QLKnqa6apws=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4C791596;
-	Wed, 18 Nov 2026 00:10:26 -0800 (PST)
-Received: from [10.163.128.4] (unknown [10.163.128.4])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B10C3F882;
-	Wed, 18 Nov 2026 00:10:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794989429; bh=0H51ijbzjs6BiH+IRFtsYcS5mGGhZK4y1Kx0/tr2CTk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q4fUY0+gWsCb9QiVpjNWATFAKLE6lh/hQh84bHsTCsALikTwDBGlwktRcFOn5qP8d
-	 6ZhyC/tO9w9jYhfsy76lfpgoaiomucKgKTuNNqYvkMovfmw/4tWOT748Lle1pSdDS0
-	 GzZcwrr9RtkPTQMuyvfABvyavwPc6jAnC8Gk5qqo=
-Message-ID: <a066d403-1608-4c0b-b06b-0b786e71b12d@arm.com>
-Date: Wed, 18 Nov 2026 13:40:17 +0530
+	bh=/jA+oDJSVCbC1D4MaARjc1w8poFChMuVZsc8cn6/jQ0=;
+	b=7bc4EBjrxGk8SoVljY0o/NCzD/KKkSlEMEIxAIRWIqbypVoW9NcXXw3YXp7SCj5U2uWvPb
+	yyrujraAw7XVwQH6h0azynhM5MV2M3EUwMz9QiDYvVh8juSBkJsBsJyg+FAJHEAjp/heEJ
+	TCvA3KjSGLM11UcGJ7f5VF6Db5Mj+OU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794989532;
+	b=7GoGqp43ML8pL62arTxygHlQV48dy91ppAkMlKhHifib03jhcYRPQNpwuBZm8HgRtuJnSv
+	XlFQSMHhBurktvTyg/TsC70q9EN8Li1D4QRKqUEy8yIwO2GUWA2oZKea/7ne4FH5iiHfYt
+	VNKIGws7yXDKh9U5dp5sOMut9ODOjZ0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Jski2Vet;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A41961F6E;
+	Wed, 18 Nov 2026 08:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D041F000C6;
+	Wed, 18 Nov 2026 08:12:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794989531;
+	bh=/jA+oDJSVCbC1D4MaARjc1w8poFChMuVZsc8cn6/jQ0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Jski2Vetfb3GPph7EA2pyQWzTuAe3AfpSXVb3sYMOMfmAIp12Tx2RaYWgcJx0DUjh
+	 bB/RZzhuHlnf0nxPso1pZ2GuJBFa+bJ25OXtTyStnzkIn3DBXDAtEGfMhy9Cx/dXel
+	 u+CREOLcs1EtGTN9F0qbSA32aXVuunQ2U+nWNDBA=
+Date: Wed, 18 Nov 2026 00:12:10 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: cxg <evers_chen@163.com>
+Cc: sashiko-reviews@lists.linux.dev, david@kernel.org, shuah@kernel.org,
+ ljs@kernel.org, linux-mm@kvack.org, Xionggui Chen
+ <chenxionggui@lanxincomputing.com>
+Subject: Re: [PATCH v2] selftests/mm: handle implicit read permissions in
+ madv_populate
+Message-Id: <20261118001210.582cf89e7479c9786e726486@linux-foundation.org>
+In-Reply-To: <138084c8-e177-42fb-b37d-7e8342ef309c@163.com>
+References: <20261112031811.56500-1-evers_chen@163.com>
+	<20261117070606.3752-1-evers_chen@163.com>
+	<sashiko-outbox-220290@kernel.org>
+	<138084c8-e177-42fb-b37d-7e8342ef309c@163.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] mm: page_alloc: make the high-order watermark
- check honour ALLOC_NOFRAGMENT
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20261116125103.2894162-1-kas@kernel.org>
- <20261116125103.2894162-3-kas@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261116125103.2894162-3-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E2CBE20004
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 86x6xa5synnx8qw633uw8y5z9ce4j49e
+X-Stat-Signature: px7yfgy9fd8z95jz69rsy4syypy8yzjm
 X-Rspam-User: 
-X-HE-Tag: 1794989431-779286
-X-HE-Meta: U2FsdGVkX1/6lFzYly/QYwNwYLgqcoph7UJeVGzTyuHtfRFg8Tjh2h6N8PU9s2W7aRbL/EXjmExwZLllolgqP6gBbY8eKQES7RDclGxbEXFWMgitJwXhecxv68UgICuBi24NrRRyI6kbRYARzJZmnW7CgaGWbwbCV3K2/x6xoue2gLY0MTZFgXS3H6MWfLzM9YcreuiNZHWXv6VLBv8R4D/nxxrpQ7+eB3W0l7yccPrIbUGqlDH98JxfT+tATYMC/hLk2wAin+mEDyRF+6lwJSDRRBwr8eRea+0KXmfhdj/7jWzszEMcYNtNss4oZYZ3eb57rkUyOOuLGVCshM0d1RsVZCZu2wrqDGebEyugo0aKUXmfF9Pe6NX0qlfL6a9cYkfufV7MtG/PMyLalmBttVzPX0Qp3q6qsdEA6bQKK5WRpyLE0cRQ60D374K/d35x8bQvTaksXLhT+radi6aWsq0PyJhabHPtiPhYIfc6imKodUxf65FrRJBrxSQmnsYbsawpEyKekmdRS43rh4I9rccrIztjk+C3wVhNbXgN41X5oQ9zRrmmpvAI+c+GnpMoeN9zKFUF0v09aDSlXo4RU5l/f3QtCwkX/l7i2ggUeoqjzWpthwk6/NvmgaZL3LPMpZnJtqN7nxKaG0dgI7yriHN2h8vLbM6JWVwP5AkP0+dORepdNdD/5qY7+vyG61xoFMGftE87knl5eM0yYx3xxq0mk0BlKcwjN5jXgwXHG2XTTPR9JPlmgF5Xvnp3mINstAoLqhyYbHuPt/38MY7rqfaUHEQqDcFQ9vn3eQ37Oypo37+AgtLOdfjSiXIQ4OhiP28wyHAjY/iUs1u7UEVra8StznDyY37Iqn9iUaqA6Jk4G0P88zxuIY5MsECDZe64IAU15FYyjeMOyDK5ZUXQTKGRlcGRqjD5OYHU+cqLorrHMM0cJDr8SsG6bMXhqJNcccVpvRoMx3ZeAW1gz4R
- oqoiCS9y
- jNYHjL8mbTU41wxEx/YYODPBQoJRcjxBUuopsryLXzr1uU/bLOcsL73T4g1DZlHo9DaI6NrCEznhFhPmOgDe4J0ga+YP5cM/E7sFvnJqLw3IByfOAIJsURPIxG9QQjiaH7+Oxb/o+TxrbvMAy+qlEbuSpcD61VSTTrw4pukgWv6SYvUipXSpJMPPP/qtTHTX3Ahve0uRakZWpqb6bAtiDBJBkKgMLSAz3Tu6sPJd8CLajumTfPlPcJdQgUQyGxLxTuKigyKVaZAezot1DQMgFZeoTM45897wueuP/GRIGRYLRdxcXpUVJKZctGz1iUR3T1Q216+yU9ZSGo0lelzqFKn5zJhewll2LZ8xTsTq1ph1Z6WGvPfutY5eReA==
+X-Rspamd-Queue-Id: 67935180004
+X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1794989532-42085
+X-HE-Meta: U2FsdGVkX1+em9G9C9MwplV01RAlqPljhrI4khWiDjRZqHbQTADIOlXRFZSojXDrwcomi3sfVDQZgm7Kb+Gmh6V2ZDcxdMLRDZvFfbQhpYEN28gmWX6u4uYSSvMaYgHYIntyyhq6UnYnY53RUK/286ibgce/olcZISkG3m9b7/Qwrc/sXm661ipuwMjsRa0Ucfcd1nmiL2dwg5kFqoPqdNeqtxyjfQMq7fMdGsAlPk7xn/kRNrazAkmNS5QEx8/rlrLHCaMRuSg2RPQwm23bpeD9WWHGQFYepJ/biobryEQViO/N3GdSrKsTZNgG/qKRrN+xOUiZVvUB0Ea2j440/VKKwlPtF6hUGPaGQt5D+o3thK4Jiz6ZpSheCFllUv2lYsEx1SONsSmXNoWTfq4uXssv5BVTMqpclgUDCJDDviqBilu3rSyvQoF/8rTJmJxO9CxOda9QIfxBEAIO8OLSorLKt5b02IVTlPU5eYxZL9bn33U4Dhcw2+/c2kJAN0mfnEHX1U29Dc7TOpMF5P5cb4gOspcoFrAbTHrgDapqvxYgEIuWzGRnqnB+NL2twe5dGX8Wyemg1m6uFeans3tFTfeBKe81BssZcpYylbe07J9iHG97DJLpCQNPYrWW00y2+6/HAug5M5T5brQcY4skLG4BHURDwdr4riqVnJ/7dWGkvWSYTQMoRjcDNkwsxk0wKTCkljf0ui0E44O9Csmjt8ZlD1YXr/OH/lDgBOUp0IXy8LL7kM1RqBH1ZcQPMklvJ2z6all4TXtSeT7ZUcQPnYs71G9/QNf4xPsoPh4pWQ3A87427NEOUTkU0NcNDlPYUM7gHo2YaMGQn2VPSWm2s0SNkSRNWCw7OHbZgPVq5MnKQrGccYxkn7sLD+0tXDDgmTx7pq5fjIQIPv+mLVZEM3kx9M9EYd5srmDtCbe3MjDqEW+Y5Wp+rCvj87s03jdMA/1t5gkymYiGfVRDqPH
+ dznEGiz7
+ Gp75JViUgmlvrSjCohYko/iTsS6ViYRl8/yBBzHrFF1cQu7f+krNHpwDPlc3Tl+d7RyoKb5LxpvoEHmvkjuwYNJYd8quOauwNGkZ0EtLos2VXF9oe9+o35/1EIZpksuGdf/AMPaFa5mqOpHR3Q2PHfx0/7Ple4Q/G0vOK8XpllXzVHlOxWPHS8IHRF7qzEmxbkOR7nLNJV3BJHJs7Z9x3UsAwxWuS06g8L2pei7ZcUl4SAiAfbh3NxC7ZGbqhXGEj1WsduBPfoLc3crp3yvCBHNmfSPxrC3wigqTswzuEjfAIbS5xTub4MhdhZQNRkh+AIBAo3rcOGzHpGGHFw3NFPW4TCpD4nm54Ih9wDf9Ge4I6Sr6M6wAYUNjEH1iZXOEAzKwljfQlyMhbalzlQnvPVJiqaZ44a89DR2sCFy6VhLqVrFE5a1y8RcxKwDs4eQcONawCFGSvdqZ2g54=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,153 +97,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, 18 Nov 2026 16:03:38 +0800 cxg <evers_chen@163.com> wrote:
 
-
-On 16/11/26 6:21 pm, Kiryl Shutsemau (Meta) wrote:
-> With defrag_mode, every slowpath allocation carries ALLOC_NOFRAGMENT.  A
-> request below pageblock_order may take a page of its own migratetype or
-> claim a whole free block, but not steal from another migratetype's block.
-> For a high-order request, the watermark check still accepts a free page
-> of any migratetype.
+> I noticed that the Fixes tag in the patch currently in mm-new points to 
+> the original selftest commit.
 > 
-> Under memory pressure, movable allocations take free movable pages as
-> soon as reclaim frees them.  Free space in unmovable and reclaimable
-> pageblocks is off-limits to them under ALLOC_NOFRAGMENT, and builds up.
-> The free pages of order 4 and up end up mostly in those pageblocks.
+> Since the test failure was introduced by the RISC-V VMA permission 
+> change, the Fixes tag should instead be:
 > 
-> A 64K mTHP fault cannot take them, but direct compaction's up-front check
-> counts them and returns COMPACT_SUCCESS without compacting anything.  The
-> allocation then fails.  Because compaction "succeeded", it is never
-> deferred, and every fault stalls in it again before falling back to small
-> pages.
+> Fixes: 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to VM_READ | 
+> VM_WRITE")
 > 
-> Dev Jain's benchmark faults 64K mTHPs under swap pressure, in a 7G VM
-> with only the 64K size enabled.  With defrag_mode, those faults stall in
-> compaction 18 times as often and get about a third of the folios
-> (medians of 15 runs):
-> 
->                               defrag_mode=0  defrag_mode=1  defrag_mode=1
->                                                             + this patch
->     compact_stall                      1690          30669          2607
->     compact_fail                        621          30531           906
->     64K faults allocated              20750           7391         11538
->     64K faults falling back to 4K       725          13832          9945
-> 
-> Make __zone_watermark_ok_mt() skip other migratetypes' free lists below
-> pageblock_order for an ALLOC_NOFRAGMENT request.  Give
-> __compact_finished() the same rule for its fallback test, so that
-> compaction, once it runs, stops on a page the request can take.
-> 
-> zone_watermark_fast() calls __zone_watermark_ok_mt() too.  With
-> defrag_mode, an allocation now wakes kswapd and starts reclaim or
-> compaction as soon as the free lists hold nothing it can take.  For the
-> orders the per-cpu lists serve, that is earlier than before: the check
-> does not count their pages, so the allocation no longer uses up the local
-> list first.  A request that may not wake kswapd or reclaim, such as an
-> mTHP fault with THP defrag=never, falls back to a smaller folio instead.
-> 
-> Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode")
-> Reported-by: Dev Jain <dev.jain@arm.com>
-> Closes: https://lore.kernel.org/all/4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com/
-> Tested-by: Dev Jain <dev.jain@arm.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
+> Could you please update the Fixes tag in mm-new?
 
-zone_watermark_ok_mt is a bad name, I am having a hard time figuring out when
-to call zone_watermark_ok and when to call zone_watermark_ok_mt. Let us look at
-what zone_watermark_ok answers currently, according to the comment above it:
-
-a) "Return true if free base pages are above 'mark'."
-b) "For high-order checks it will return true if the order-0 watermark is reached
-    and there is at least one free page of a suitable size".
-
-So there are two uses: whether we have enough free pages, then, whether
-we have enough free pages *and* we can also allocate.
-
-So let us do something like: we have zone_watermark_ok_for_alloc. It will call
-zone_watermark_ok, which will only handle the watermark computation (so this is a
-refactor for the code ending at if (!order) line in current zone_watermark_ok).
-Then it will also scan the freelists for the correct order, correct migratetype etc.
-
-Then at the callsite we clearly know whether we are just looking for enough free memory,
-or whether we are looking for an allocation too.
+No probs.
 
 
->  mm/compaction.c |  5 +++++
->  mm/page_alloc.c | 21 ++++++++++++++++++---
->  2 files changed, 23 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 6c553d0e90f8..7312f7515c53 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -2365,6 +2365,11 @@ static enum compact_result __compact_finished(struct compact_control *cc)
->  			!free_area_empty(area, MIGRATE_CMA))
->  			return COMPACT_SUCCESS;
->  #endif
-> +		/* An ALLOC_NOFRAGMENT request may only claim a whole block */
-> +		if ((cc->alloc_flags & ALLOC_NOFRAGMENT) &&
-> +		    order < pageblock_order)
-> +			continue;
-> +
->  		/*
->  		 * Job done if allocation would steal freepages from
->  		 * other migratetype buddy lists.
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 0ebfbbb5d7c5..6e75c03b303b 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -3587,6 +3587,11 @@ static inline long __zone_watermark_unusable_free(struct zone *z,
->   * will return true of the order-0 watermark is reached and there is at least
->   * one free page of a suitable size. Checking now avoids taking the zone lock
->   * to check in the allocation paths if no pages are free.
-> + *
-> + * Under ALLOC_NOFRAGMENT, a request below pageblock_order can take another
-> + * migratetype's page only by claiming the whole block, so only free pages of
-> + * @migratetype count below pageblock_order.  Without ALLOC_NOFRAGMENT,
-> + * @migratetype is not used.
->   */
->  bool __zone_watermark_ok_mt(struct zone *z, unsigned int order,
->  			    unsigned long mark, int highest_zoneidx,
-> @@ -3649,6 +3654,9 @@ bool __zone_watermark_ok_mt(struct zone *z, unsigned int order,
->  			continue;
->  
->  		for (mt = 0; mt < MIGRATE_PCPTYPES; mt++) {
-> +			if ((alloc_flags & ALLOC_NOFRAGMENT) &&
-> +			    mt != migratetype && o < pageblock_order)
-> +				continue;
->  			if (!free_area_empty(area, mt))
->  				return true;
->  		}
-> @@ -3677,8 +3685,12 @@ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
->  			 int highest_zoneidx, unsigned int alloc_flags,
->  			 long free_pages)
->  {
-> +	/* Serving an ALLOC_NOFRAGMENT request needs __zone_watermark_ok_mt() */
-> +	VM_WARN_ON_ONCE(order && order < pageblock_order &&
-> +			(alloc_flags & ALLOC_NOFRAGMENT));
->  	return __zone_watermark_ok_mt(z, order, mark, highest_zoneidx,
-> -				      alloc_flags, free_pages, MIGRATE_MOVABLE);
-> +				      alloc_flags & ~ALLOC_NOFRAGMENT,
-> +				      free_pages, MIGRATE_MOVABLE);
->  }
->  
->  bool zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
-> @@ -4693,10 +4705,13 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
->  
->  		/*
->  		 * Would the allocation succeed if we reclaimed all
-> -		 * reclaimable pages?
-> +		 * reclaimable pages?  Count free pages of all migratetypes.
-> +		 * Compaction can then free a whole pageblock for the
-> +		 * allocation to claim.
->  		 */
->  		wmark = __zone_watermark_ok(zone, order, min_wmark,
-> -				ac->highest_zoneidx, alloc_flags, available);
-> +				ac->highest_zoneidx,
-> +				alloc_flags & ~ALLOC_NOFRAGMENT, available);
->  		trace_reclaim_retry_zone(z, order, reclaimable,
->  				available, min_wmark, *no_progress_loops, wmark);
->  		if (wmark) {
+From: Xionggui Chen <chenxionggui@lanxincomputing.com>
+Subject: selftests/mm: handle implicit read permissions in madv_populate
+Date: Tue, 17 Nov 2026 07:06:06 +0000
+
+The madv_populate selftest assumes that mmap(PROT_WRITE) creates a VMA
+without VM_READ and expects MADV_POPULATE_READ to fail with EINVAL.
+
+On RISC-V, commit 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to
+VM_READ | VM_WRITE") makes the kernel set VM_READ for mappings requested
+with PROT_WRITE.  MADV_POPULATE_READ checks this VMA permission, so it
+succeeds and the test fails incorrectly.
+
+Adjust the expected result for RISC-V using an architecture-specific
+conditional, while preserving the existing behavior on other
+architectures.
+
+On RISC-V with Linux 7.2.0, the original test fails 1 out of 16 tests,
+while the updated test passes all 16 tests.
+
+Link: https://lore.kernel.org/20261117070606.3752-1-evers_chen@163.com
+Link: https://lore.kernel.org/20261112031811.56500-1-evers_chen@163.com
+Fixes: 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to VM_READ | VM_WRITE")
+Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+
+ tools/testing/selftests/mm/madv_populate.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+--- a/tools/testing/selftests/mm/madv_populate.c~selftests-mm-handle-implicit-read-permissions-in-madv_populate
++++ a/tools/testing/selftests/mm/madv_populate.c
+@@ -81,8 +81,13 @@ static void test_prot_write(void)
+ 		ksft_exit_fail_msg("mmap failed\n");
+ 
+ 	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
++#ifdef __riscv
++	ksft_test_result(ret == 0,
++			 "MADV_POPULATE_READ with PROT_WRITE\n");
++#else
+ 	ksft_test_result(ret == -1 && errno == EINVAL,
+ 			 "MADV_POPULATE_READ with PROT_WRITE\n");
++#endif
+ 
+ 	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
+ 	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
+_
 
 
