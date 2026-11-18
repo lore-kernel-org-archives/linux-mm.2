@@ -1,119 +1,171 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8BF606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 07:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CCF606A338
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 07:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=J7jSSrjT
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pGB+1JK8
 Received: by kanga.kvack.org (Postfix)
-	id 441916B05B5; Wed, 18 Nov 2026 02:00:55 -0500 (EST)
+	id 617B56B05B7; Wed, 18 Nov 2026 02:01:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 419B16B05B6; Wed, 18 Nov 2026 02:00:55 -0500 (EST)
+	id 5EF3F6B05B8; Wed, 18 Nov 2026 02:01:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32F846B05B7; Wed, 18 Nov 2026 02:00:55 -0500 (EST)
+	id 4DE7B6B05B9; Wed, 18 Nov 2026 02:01:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 043856B05B5
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:00:54 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01F1BC067F
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:00:52 +0000 (UTC)
-X-FDA: 85447342386.09.1CD2855
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 897C14000A
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:00:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=J7jSSrjT;
-	spf=pass (imf12.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794985251;
-	b=P5u+R+B1kUMrqWmB//kBgT2S05LLqXWNGWZVqGSvL1Xl+X84Tp+J2yaw8sJ1uYVKTZIu8j
-	xERV6nCzWfkw3rfOH/kkR75ha9K0o/hEO5plMeQSl4ZRKR0NhqdUcczdkT0Qcq6Amx94YW
-	xxWogbnaJewf4D9TNpTus+98gnTocpE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=J7jSSrjT;
-	spf=pass (imf12.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794985251;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 23FD46B05B7
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:01:42 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84BCF805D6
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:01:41 +0000 (UTC)
+X-FDA: 85447344402.11.3A4138E
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012038.outbound.protection.outlook.com [40.107.200.38])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BD1F62000E
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:01:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=pGB+1JK8;
+	spf=pass (imf03.hostedemail.com: domain of icheng@nvidia.com designates 40.107.200.38 as permitted sender) smtp.mailfrom=icheng@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794985299;
+	b=wTZPwIPxcqT1YUJdR+6tzsOqU9el6EzJL93druUwSetL0Tkdf7GJwIj+N7OVhIhlnuW2KG
+	UQC+qoJ7IEnADaHDhvhg7KgMEjOvNyWEdkYxZYYrgUEhEZIWn+YS7d3VSWKBPgw2dyNlXb
+	4AUrF3xi70U1t5uvCGTsjIL+zMkhVo0=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=pGB+1JK8;
+	spf=pass (imf03.hostedemail.com: domain of icheng@nvidia.com designates 40.107.200.38 as permitted sender) smtp.mailfrom=icheng@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794985299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P7MAWPsIyxJf7EbFe+B6P/kIKs4QOghNXNz4nngxpow=;
-	b=DBOsHi0TGu4gC3xcl2CpXeKTdQMWMui0jo/1M2fmwq5/tK+Gl9mH+xDTUzzoAQoh26OwsM
-	Y+Rj5Y+dFM8CzrI4ZywHsSwDx2hRNqCk78apzpCA9mEXe7WdFT4hElKz7PDpKsshvmrDYE
-	FcFrH6XXq/jZTXipC4J9e4GUILygfcc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=P7MAWPsIyxJf7EbFe+B6P/kIKs4QOghNXNz4nngxpow=;
-	b=J7jSSrjT45mE5pHwCz2jP6dil7Qtqxs30D1JSCVyUZxDpTWnLABaUARqY/hWeyFvY/IB9XGsp
-	P+tfgFIg8WIVjm1rA89skfheUdG6YkoeqBaYgCDEUNGssDh+oDpRHRydEVFk6/GpGQol0k0xnUJ
-	vFIRtHpdkDpniGa5blvowA4=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4jTstD2f2Yz1T4KR;
-	Wed, 18 Nov 2026 15:00:04 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id E0224203AB;
-	Wed, 18 Nov 2026 15:00:43 +0800 (CST)
-Received: from [10.173.125.21] (10.173.125.21) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 18 Nov 2026 15:00:40 +0800
-Subject: Re: [PATCH v6 5/7] drivers/base/memory: count the poison a block
- already holds when creating it
-To: Breno Leitao <leitao@debian.org>
-CC: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>,
-	<driver-core@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-	<rmikey@meta.com>, <riel@surriel.com>, <harry@kernel.org>,
-	<kernel-team@meta.com>, Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas
-	<ilias.apalodimas@linaro.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
-	<liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador
-	<osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Catalin
- Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Mark
- Rutland <mark.rutland@arm.com>, <kas@kernel.org>,
-	<kexec@lists.infradead.org>, Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	<shakeel.butt@linux.dev>
-References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
- <20261016-hwpoison-kho-v6-5-f304255147da@debian.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <f0f5e60a-819e-68e7-09b2-4080f4716e9e@huawei.com>
-Date: Wed, 18 Nov 2026 15:00:39 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=XrGJuOLL59oewczUcCDpvxBHZHzjD87L6DxE9Kf6thA=;
+	b=0Vl68X+H71MGiLxOaKrVUGmYciBfXguzscXO5BtaEi7SE4kj889g/XsbpXsLPEX/lCPGH+
+	tUEP7qcMVu3Ji9NzMWC6Yredq2UZCLkJOEWVEzwuU7XbknMZ+2dI0rZXdUbaQVMRHhJoIF
+	lOOQRmI9hQWOLYF2Jk3DLSmAMNeo3I8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lYwANXddT0sNsKX0CWKO7Ij2VttuEqrF8gmeLKiXoSbM8VM2INcAoDenKT8MIpBeBYY23BCQvl4mv3jtXFA3HNNdOVCiM8Eco8vcdIJEgGBK8VySD0Bu5pP7n77sIXNRQHfNjSG7xITNNDUPclhBBALLGD63gb8g0QAdt6ZajkrRFyxX5U0CByNY/Y7uzTAZSfPS8PdZf0W94sY5uSA+OaKMCVhhhMe1wIL9aGjJ+6ZMKFV/VsWhfV0LQrVAkB06Kk6iUDj0krrFoq6WujYlUYWQ9oHeXWadgiw3l5DNNG99E1v2WgSxzZaU6bZ+20VpcwU3pfnjfneNE5OITcPZGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XrGJuOLL59oewczUcCDpvxBHZHzjD87L6DxE9Kf6thA=;
+ b=HqWy+TNqkFdS1LjEbf/mbXEDALIP6R7s50+hEdux5fNCguYtVhOv6hAx3elMaZl0MtZQGtEi/6fkTNSkimjf8RcA8utjL6VrhZMkMbkq7xPiSpvCFFm2LACm5Zp1cQN/d8StQZVXMuhkRjpkHR01A1Ub4dQpBIaK4HeRq4cgLPoRWuTioO1aElQjjlMxfN88XGGGdByrP4UjvIuEFBLZo0j+M4qTxMu4FbmXJLByrx61Za+1JvHPejnZuHJPtyxORrE3H9q50cAU1MrOLr4HMZ9iZqSgEWoHqcRhmq8nJhvueoDUqOYzZFJCMXpw8xBnMQFu2tUyuJ5uTHuKG+pzPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XrGJuOLL59oewczUcCDpvxBHZHzjD87L6DxE9Kf6thA=;
+ b=pGB+1JK8+prlN7L/R9OxazA6VI+53aJVNll5JnVJCDpLWIlqpRI48oS1pGEQBXwJxrins3sHUSSJ/x/MSCxEos9BcVkWM6H/aXHPKIsUZYA8lIf578cTu7WC7aFXN7Ug/L1eS9yi+c+eXY9CR+czffPKpJLltohrbkCYODWMreV/J0wGDVThwIr+I7jCelaWMOcY7dmgIhKv9hyBMWukOP4+ykgppGt/3/5ZTmHSJLpOVFVorTRS80nDlAW5kFIrFZfeId0OTAWfj7LEGAKNKhHp3t88raPhFdv1o6BWedwsyNiOky6NB6AdbEpgI/Kj6OAZKBiITR8Wc/1lWWJcPA==
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
+ by CH3PR12MB9429.namprd12.prod.outlook.com (2603:10b6:610:1c9::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
+ 2026 07:01:27 +0000
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8]) by BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8%5]) with mapi id 15.21.0615.009; Wed, 18 Nov 2026
+ 07:01:27 +0000
+Date: Wed, 18 Nov 2026 15:01:19 +0800
+From: Richard Cheng <icheng@nvidia.com>
+To: "Gregory Price (Meta)" <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	linux-doc@vger.kernel.org, driver-core@lists.linux.dev, linux-serial@vger.kernel.org, 
+	linux-pm@vger.kernel.org, damon@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, dakr@kernel.org, johan@kernel.org, jirislaby@kernel.org, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
+	baolin.wang@linux.alibaba.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, pavel@kernel.org, 
+	lenb@kernel.org, hannes@cmpxchg.org, brendan.jackman@linux.dev, ziy@nvidia.com, 
+	sj@kernel.org, muchun.song@linux.dev, osalvador@suse.de, nico.pache@linux.dev, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
+	kas@kernel.org, xu.xin@linux.dev, chengming.zhou@linux.dev, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, 
+	matthew.brost@intel.com, byungchul@sk.com, apopple@nvidia.com, rientjes@google.com
+Subject: Re: [PATCH 00/22] mm: introduce N_MEMORY_COMMON
+Message-ID: <av1DvCQd_OvkGgLU@MWDK4CY14F>
+References: <20261114070959.3490008-1-gourry@gourry.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261114070959.3490008-1-gourry@gourry.net>
+X-ClientProxiedBy: SI2PR02CA0029.apcprd02.prod.outlook.com
+ (2603:1096:4:195::6) To BL0PR12MB2370.namprd12.prod.outlook.com
+ (2603:10b6:207:47::27)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261016-hwpoison-kho-v6-5-f304255147da@debian.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 897C14000A
-X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: ah7hhhqp7nh3idw84rauazytwdstycwe
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2370:EE_|CH3PR12MB9429:EE_
+X-MS-Office365-Filtering-Correlation-Id: 514d9fe3-4040-4515-2287-08df4541c348
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|10067099003|56012099006|261026140227099003|11063799006|261028144727099003|261021121427099003|261022105027099003|261022115727099003|261022075727099003|261026121527099003|261021123027099003|261102123227099003|261009223027099003|22082099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	/waEutd8lFNcOEAot8LrtlotdLQswvCxCLsWZI/acAHmuGfQvttoAlGTBrE5+ED60YlIv4TTyEZRblXELgkpFLE+iniSMO2COx8v3tmRRKwzPQDoTc/+YR20ou8N0+lcyZ+J4Wsn73GkbgVdNuCdZH9vrkOFQgzfKhaejDjthQ9E2Zbk0Jzyg3GLDwaaR7kvyHT1YA5En+Gq/A/CluGCdRsxkz1c1Vq2r3UFP9hU3YNRdtOJxYqOQaIzQUKWedTQyf61hUmz1jTo/KnLnbdNcXTHbMF/M3R6Qo45h9UzqTVwHc3iP3m/8r0Y3eewbRxrxAurbczSBLIQfpXkszHwZCISzkSYH6rxntiJnJzGYN6tFgn8KnIkaJdv9LhQSmPzJAbPvnJ146F0LwDaAt4RU/UZU1GhbJCnJGAN3q4vrvqtAvf8+uApzvRSxpkdlZ0E22VYrCD5xECaZlXNEmVVKZR4WMyZ++uAP7q3PsySibg6kMnwoHLyiCPxTCuWw8b67GgG92gnzgmbwQjEJemriwm0aJ8y7T3Rs5qATHA3wdGReACOfV2Y6AjbTclbGay8ONTtX5AAvh/eikhI8V/0dk9z740/YtcX9pKmKDTeahkgI677qqh8vvtfQDii9D1f5JSOJ/8LFtLoBf2Dsyk2V114L9tdSj1a6/lufXDKINI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2370.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(10067099003)(56012099006)(261026140227099003)(11063799006)(261028144727099003)(261021121427099003)(261022105027099003)(261022115727099003)(261022075727099003)(261026121527099003)(261021123027099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?aosA1/g+XuU++UnQ9BM1jBmDf9jIBhN7Qkbl5js2WzBhK2OnSED+L1T9tBfO?=
+ =?us-ascii?Q?ux/LjhFJZ+l2QQb1zZ55U1tMGoBiEVnXer5jKoTzDfxQrqx71JMyhVuZaiyc?=
+ =?us-ascii?Q?Zb9rVoYcDNepZlvV5JvAc5R8iy0UrG7gF/3QeA9cFph6EzgWZ/vq/C9uiLki?=
+ =?us-ascii?Q?ZaToUE3PnQ2qe0MFC97FcvwLWgjxFW+Nb3WOxtaUZcVqRw2VUa9JWlvSGgbX?=
+ =?us-ascii?Q?+dGVsIwl6+yrzVPu1PFyS3QVSktUZ85tLFkpwaJAEA3Vgy8cyCgbxkQvoD14?=
+ =?us-ascii?Q?H8s2ibDQaSTP+T0ruQ+27Qds4FulISY7e96zgz9JcYc2bsuKVU2OcGHl2IvE?=
+ =?us-ascii?Q?PjkJ78TmmVX6zxd0pLiBNsM8bhIfn+uEnql7qG71h+nBrXRUMGUFr/56JzNa?=
+ =?us-ascii?Q?+BN+G9QHFr9NTyjqyiYCIASyh9pYOZyjsiG2taV6rC+m9ZrGkM6kGdVQkpQz?=
+ =?us-ascii?Q?slX4lc59t+VshG/q7BbY3ioO/LUmH7+r8lsKH1/+hhBG4/4UVqUNx1sIQIdd?=
+ =?us-ascii?Q?zpC8ys+BAtueZuY5/NJ4IFEiRTc/mqNcgbp0f+tIzfS3VQrQnr11HonFKdcz?=
+ =?us-ascii?Q?T/11uKVFNWmp5EMEH5jS8taDpSXZ+16zsI6E+AIeHGcIuAa3Uwbcmv7cstDo?=
+ =?us-ascii?Q?mUL7OO3bASjzjAdnhWb7Q20pMQGGDNSIjXIZa98LT6nLcxstUFEiTAWYZVfs?=
+ =?us-ascii?Q?bgDSIkGeqWF4C853kRIXT40l/K8XI5V/o4ObTn53/dR/PZbP3/UBN2IU9YuF?=
+ =?us-ascii?Q?IXxCR74GqvN+U7K8nhhijnUKsSvrtBOmLFbM6hV3RnyUKTgycpKVNw+tuU6O?=
+ =?us-ascii?Q?KUUe8DewlvelsiBQo5SkFJ5sJyvXwmTwaIl45hKBInTjp4Lj9rZZk16BkLs/?=
+ =?us-ascii?Q?tqHRFNH+vyGbPQ+qp0Dm5maDHyPjlAr+N/tFkl85Bb4T9OHo+c4Ux0b8SthH?=
+ =?us-ascii?Q?TXCpUaexBKua7DdyejYRmBi+lVJ3PieOu0wchAnGCXReqzejr8P67U86ldR4?=
+ =?us-ascii?Q?XNVFSRUbxvCNEZQqP4LcndPdO6Mp1Nq1lYxdzEpOtgCUR1Brn1pRkVAXs1Vy?=
+ =?us-ascii?Q?h/d8kAF0vsvr66ytF1s1nJSbkVtGayJ9wW4OMVbSn3X/Uo6xuctOn3T5rSwA?=
+ =?us-ascii?Q?VAk8zXnPKKOJAvK4eVmFRMshjfk6mG4p2ou83jFFbYNL9tDsfRtIwuQOc9hg?=
+ =?us-ascii?Q?x2swxDEIhKl/2ybfQBQfnMQbcRTa35LipqCQbhf5iwIN9FLwmgWtdrOtfDKI?=
+ =?us-ascii?Q?w6mrS0XBTis0jgVjllCD9hoPh4Pka4r2Cla6osLDxNf83GiW3Q6hJfuD4gGK?=
+ =?us-ascii?Q?f5s6azE2ZIaqhrlCr2qaNW5qBl3daHFajshsVT02IkcRiBfjURGnozmZg6om?=
+ =?us-ascii?Q?p3IAQmMU6nSrQlXQvGLb5mka6T7CD0lOBX9wGMUtob1uDZ2N7xEQyAW0W7vQ?=
+ =?us-ascii?Q?WQmx0CBTnS34TohStsypvAWKLYhn6LbtwBP63RDtfDJIXfWbX1NQj3MD+qpX?=
+ =?us-ascii?Q?PMbAjmpXBzE7KIAOpOHnM0MHMqrURhFmYH6vON7RPrXP3jZ05zYDNXnly1sj?=
+ =?us-ascii?Q?zGwrXfn9zedFx7zyq9Qo0MpxWcZHf78cQcqgBZvCf7bccxXSCxBIhkajhwNg?=
+ =?us-ascii?Q?j1my5XRCeDJUJI+JLSSCT4h9lJhCyQtwiRfV1cOQ7jMeJDdd3iYTFyKRY4I0?=
+ =?us-ascii?Q?T4sd97NhNGOOsHf0pc6qbHVyqw+8/bwEJb9lWTj0IC4skUDe?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 514d9fe3-4040-4515-2287-08df4541c348
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2370.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 07:01:27.0715
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1yauRTyZWkkKOev4MHsHqbyZE3mR/9uzzN6wz8NAj5N+VBsczMQwoMmKkxT81fuaGkpvtZ5td1NAfQPwaN53Tg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9429
 X-Rspam-User: 
-X-HE-Tag: 1794985249-923841
-X-HE-Meta: U2FsdGVkX18g9Y61jh70n9RMSQlhG2141TtmXQMqwIXZtOZyaY+zRkkKwrien8wnok8eTpl7fgmbujt1+p56zyt5G6DEobP2k132N5JO2K8u+DIK7rxRXTjm4kH4+56ZyHxyTG3Yl2nJVUzrvx4/W1+hZCRWc/ry9iT4pBw8hX/bU0R3+IV3JegTTdBaKi1Se+5zkc9y9KDI67Hr8IZjqyZGkVxGSFRu9oZLAl6XOJqyf98h69ZC5VRo0/rKrtQgPd/RlMb5JH/yuNqOopwfdaeZWi7VTm8tsrIXESicBO8/XO6e8iseZ+bkvo6f1dfPRjryApY9gAZt9rtTrFeO/ZiBerpXi8LP/zZMHJk+WnykJp/5etdyhSL7Rx9POiLNcbSloLNrDrp+5DmT9UNPnSSG0OWxEzfvflieK9rsYIMj/8ugB91iWJB600gMX2nCUXc53q7OS8Jo42GxuN0pSy7WzkUK9rL/tw0G2FGjqo1KyU3+szEH76EwgzO/Q3TMq0eQhTQhndV27xSumwapsbj+4ebueuoyZ0dKwjQG6VSNmATxdfiJtxL1mNdwOsc9RCVs1oShGluBLvUaRiRj8bmSLmZhlKqIQQ737ua7XjsodvoHGRcG+dinZirNz8hbUpnxakM56h4tepPPE9/KoESY0zFphO9hJ3QdmDkKsz/3ySr4AQ3XzFdAd3gwYSRABC3OyF0H9iCapKqwlXX61OznjdkSOXGJHednND5jY3j5mO2zoVYWrKRwlqxAl/8ChQnFK/RB/xtDIrur3f/37fUK/CGcOU8+SfHsZsVhtbX0l9HJ8VSl8Wajc/+muPznP5+jgQkIYWtl8Y2F99D9Ct0AxyIXqqKBwEfLj5Ot+lUwjnyyNrRtxg2rvTJAx872le1tBC/JSmPoAkNyiQNZ2s2tGkxItY9V0fmr3/fBj94Nwj4fJQVMAyjqwobJ+VC8mqCLFTnvse7VabFuWjl
- bpcf4Sq3
- qEshn3rIB4jcczXW44xhyjqHdd7o32lOcg4Q3KeYOaWPs5NQsu9/EkSgErwtSmkMn/JtnotRSZnTeISBxexaHLFUcvCBJLsBhbW+uy1uVQW3YCO13EU/tmpKLyliXhtkHsS48RNG+MNbfMap/aMb+YOaJHdLqxIyV45pQ8vVEBt4b9msWIFE2SAjtwrgSJzE2fhvOgeXPWG9MKk6VM8WfZ8aX53ew2e3ZvMrIkhtPfxQ6EnH5dcO5Z8AKVd3/H0A/SbHqc8P9OUcvH/Kr5q2Z/YOeTHOB+KqP1xmMMmgxCKW8AaHyeJHnMHdT2NAlgRAjw1bLO9F9B8JRLqAYCKYyj1fpInhYGdg+Od0dy/S6nVQ+s9nML9H6ezBzKg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BD1F62000E
+X-Stat-Signature: 1dk4mkee9ght978dof64qnsk9ijyu7b6
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794985298-980832
+X-HE-Meta: U2FsdGVkX1/dkp9Rt3UiQzC6zJQKAkhB98L0JhuG6b+qvU7xDUeqcT8VGXBEG91vFLpyGDtoz37bOKcUfHMkF8MFHIqoFkD6DsL4inMo1gFcTED9WAz3b7F1S44FaM+07VIIClngD0Z7vFvUVQW1w8ZL3GlwuV3at7xOJ+yUVi7vmMt2fR6b5MUlL6in+5HJLcwQ4ELwg85q2yON9SrqddJP2DobHUE6GMiymArpmdmOIEANlMvCYgjgocDVI/VD0w4OQvCDh3LKKCuZ2g5L9f2qtbhqXLDL5CCV4GieOJPVp1fIdZBQTzaptgecivZ7eFFvh96cQ6hOH+iG6JUxLh/KkhacrkxydYl/CSQcrb5+BKbGfHYEjeVxWDCTQzOrHsnWb7vnxO/EQQPM+XgTcYMmP+lg3KPvype081EgJqkUHTbcRXAS95p8FlRvjCmD2qyrvdsx7vlk66fl//TI17WJcuEqpmxDwNIxV3KWSB8Mn+FNnWLrttYku0ZK/OYNvCjLMoj9UmXp3pBvyyf4Oc0mwPty/+88dCDtmZQehMCWy2QID3ZKxXf6IF5IuhUnPMKOGJkx2QSsnXD9voBYnhFeGapxuYgx9s6IzzdZHOBur2bSPGomodijq/6xbtTpLNCwK9sDvXm28UB2Fc0Yva8p63F6M/SIrLgZUk1fVdJ0PA50U1lX0TiJigcDOcHZlYI1Q+Qxtbd35f1tmfv/ShpXYhuivxIBUMF7jtoVak1MP6WcqFXyWZT4E3Iaz4Ep78NWH47Ehr5jIVDq+28/+9Y7CCRZX4e1DLD9aSynqzBphym0EKJwNihNfcafJcLqKgp10EdLpPsLzfsf3SJ+XwT/hMRId6c9SZb2lQc4jhAeLiBMAUnzwDmiwFtClpAI/o6J2N/TusMlxdb+3dYftFlrVHfUH/WAcUxZLb1pMIWKjTNshRSB0Ce9ZgF8o3HrJ/hanSXDDu/3C3GkXHP
+ 8G2qBGT8
+ 11c9kJfpCJ9rcCTI4Lg8V0sG626zj4vDydugv1GSfs7oAj/RLQ+7qu6ddup0j8yPntoBxTcvXN7vF8l+2uyNSDM0MZBI1ec+PDxrojA3Zgt8vloOKB/WYpQf4vrOlHZHnLxPvHAaw4cAa8kBFRW6sti8AxPBC5Twt/xz1Uv0Lp27inm825KbWzApZdQRzZmp8MutrPbRKugzcmTtvkos9o4Gwlsxe0AGuJYWoADJwAgRNAlRhQv1nq+xG8mrqD7/7AONUo7/fQ4uNrVQrMpYaHM+hJXzaxcMLPsEneq99CQe91NxyjAblyGAWHZmwp2SvufNRPsvtBodD8A5A/dGFr/pwgoA66TlCo6X7lFtoRZsfyRfaXUAUUhhRaxRwDWQQ32z3T8ybG9WSvMykJinL3JNh4Ove3ShI6OfrWFHJp3UCQK/ehejFnFLQg0cegvdtZVOp7NLSrHNTswL7LsjiKciK5jKUB1mny49dnHPpX9Mt8IusA2q6Z10gri4lRZvmMacTo6x/nhPe0UuoNQ06q57eLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,92 +174,181 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026/10/16 20:15, Breno Leitao wrote:
-> A frame flagged poisoned before memory_dev_init() runs cannot be counted
-> on its memory block. memblk_nr_poison_inc() divides by sections_per_block,
-> which memory_dev_init() sets, and the block does not exist yet. The block
-> is then created reading zero, however many of its frames are poisoned.
+On Sat, Nov 14, 2026 at 02:09:37AM +0800, Gregory Price (Meta) wrote:
+> This is phase 1 of the Private NUMA node series.
 > 
-> Until now nothing could poison a frame that early. It becomes possible
-> once a kernel flags the frames it inherits from the one that kexeced into
-> it, as it initializes its memmap.
+> I will send v6 "Private Memory NUMA nodes" (phases 2 and 3) separately
+> next week for further discussion - but I pulled this out ahead to make
+> the core filtering mechanism easier to review.
 > 
-> memory_block_online() refuses a block that holds a poisoned frame, and a
-> counter stuck at zero lets one through.
+> The series is now broken up like so:
 > 
-> Count what a block holds when it is created at boot. The walk sits behind
-> num_poisoned_pages, so a machine with no poison does not pay for it.
+> Phase 1: Introduce N_MEMORY_COMMON to define "general purpose" (common)
+>          memory as a concept separate from a node having memory as a
+>          topological feature (N_MEMORY).
 > 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  drivers/base/memory.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+>          This phase is a no-op for existing systems, but creates the
+>          baseline for ensuring private node memory is default opted-out
+>          of being touched by MM (much like ZONE_DEVICE).
 > 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 5eead3346f1e32..77481f375c2206 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -220,11 +220,16 @@ int memory_notify(enum memory_block_state state, void *v)
->  
->  #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
->  static unsigned long memblk_nr_poison(struct memory_block *mem);
-> +static void memblk_nr_poison_init(struct memory_block *mem);
->  #else
->  static inline unsigned long memblk_nr_poison(struct memory_block *mem)
->  {
->  	return 0;
->  }
-> +
-> +static inline void memblk_nr_poison_init(struct memory_block *mem)
-> +{
-> +}
+> 
+> Phase 2: Introduce N_MEMORY_PRIVATE to define memory not part of the
+>          general purpose pool. With this we can introduce a minimum set
+>          of KUnit tests for the page allocator to demonstrate the
+>          isolation mechanism.
+> 
+>          At this point it will be possible for a driver to re-use the
+>          buddy allocator to make uniform order-N allocations.
+> 
+> 
+> Phase 3: Introduce feature bits (COMPACTION, RECLAIM, MEMPOLICY) which
+>          is the minimum viable set to allow userland to manage a private
+>          memory node via mbind() and migrate_pages().  
+> 
+>          This enables management of HBM and Coherent GPU memory via
+>          userland tools (numactl, cpuset) while protecting them from
+>          incidental allocation (no fallbacks, only explicit placement).
+> 
+>          The memory could even be hotplugged in ZONE_NORMAL and pinned.
+> 
+> Actual cover letter for this portion
+> ====================================
+> 
+> N_MEMORY has two meanings today:
+>   1) this node has memory
+>   2) ordinary allocations and MM services can use this node's memory
+> 
+> The two are the same today. They stop being the same once a NUMA node
+> with memory isn't part of the general allocation pool.
+> 
+> This series adds N_MEMORY_COMMON for the second meaning and converts
+> the relevant N_MEMORY users accordingly. N_MEMORY continues reporting
+> memory topology - and some users (cpusets) still utilize it.
+> 
+> At the end of this series, N_MEMORY == N_MEMORY_COMMON, so the series
+> changes no behavior for existing systems. A later series will add memory
+> outside N_MEMORY_COMMON without having to audit every N_MEMORY user again.
+> 
+> Rather than add new hooks for page-table and pfn walkers, we consolidate
+> existing ZONE_DEVICE checks (page/folio_is_zone_device()) into a general
+> `page/folio_is_common_memory()` check.
+> 
+> The series is laid out as:
+> 
+>   1-3   helper functions to check node states and a folio's
+>         membership to a common memory node.  N_MEMORY_COMMON itself, and
+>         the `has_common_memory` sysfs ABI.
+>   4     zonelists: the fallback lists hold common nodes, and a node's
+>         __GFP_THISNODE list is built only for a common node
+>   5-21  N_MEMORY->N_MEMORY_COMMON and zone_device -> common_memory
+>         conversions. One component per patch.
+>   22    removal of first_memory_node/next_memory_node, which no longer
+>         have users after this series.
+> 
+> Each conversion restricts or adjusts:
+>   - an MM service (reclaim, compaction, KSM, collapse, etc)
+>   - an allocation target to common memory
+>   - accounting meant for ordinary allocations from common memory only
+> 
+> has_common_memory lists the same nodes as has_memory until memory
+> outside N_MEMORY_COMMON exists. It is added now so that userspace, such
+> as libnuma, can start choosing allocation targets from it, and so that
+> the meaning is fixed before anything makes the two lists differ.
+> 
+> first/next_memory_node() is replaced by first/next_node_state().
+>
 
-If defined(CONFIG_MEMORY_FAILURE) but CONFIG_MEMORY_HOTPLUG is not defined, memory block
-created at boot time will lose nr_hwpoison count. Is this expected?
+Hi Gregory,
 
->  #endif
->  
->  /*
-> @@ -807,6 +812,7 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
->  	mem->state = state;
->  	mem->nid = nid;
->  	INIT_LIST_HEAD(&mem->group_next);
-> +	memblk_nr_poison_init(mem);
->  
->  #ifndef CONFIG_NUMA
->  	if (state == MEM_ONLINE)
-> @@ -1251,4 +1257,28 @@ static unsigned long memblk_nr_poison(struct memory_block *mem)
->  {
->  	return atomic_long_read(&mem->nr_hwpoison);
->  }
-> +
-> +/*
-> + * Frames poisoned before the block existed were never counted on it. Count
-> + * them now, or the first unpoison takes the counter below zero.
-> + */
-> +static void memblk_nr_poison_init(struct memory_block *mem)
-> +{
-> +	unsigned long pfn = section_nr_to_pfn(mem->start_section_nr);
-> +	unsigned long end = pfn + PAGES_PER_SECTION * sections_per_block;
-> +	unsigned long nr = 0;
-> +
-> +	/* A hotplugged block is created before its pages are online. */
-> +	if (mem->state != MEM_ONLINE || !atomic_long_read(&num_poisoned_pages))
-> +		return;
-> +
-> +	for (; pfn < end; pfn++) {
-> +		struct page *page = pfn_to_online_page(pfn);
+I've browsed through the serie, I'll go into detail in each patch
+in the following days, for now I have one general question.
 
-Above comment says the pages of this memory block are not online. So pfn_to_online_page
-here will return the wanted page?
+I wonder how the "common memory only" rule is enforced ?
 
-> +
-> +		if (page && PageHWPoison(page))
-> +			nr++;
+As far as I read it, there're 2 ways:
+1. The zonelist, you build them from N_MEMORY_COMMON, so non-common
+   node isn't in any zonelist.
+2. A check at the call site, e.g. node_state(nid, N_MEMORY_COMMON) or
+   folio_is_common_memory()
 
-Now that the table is a bitmap with one bit per 2MB of physical memory, would it be more
-appropriate to process it at 2 MB granularity?
 
-Thanks.
-.
+Code reaches a node's memory in 3 ways: zonelist, node id, or by folio.
+I couldn't find a statement of which mechanism is responsible for which
+kind of path.
+
+I see some consistent issues,
+1. zonelist paths are covered by way number 1. Some of them also carry
+   way number 2, some don't
+2. node id and folio paths can only be covered by way number 2. Some entry
+   points have the check, and some do not.
+
+I can't tell when a call site has no check is deliberate or missed.
+This matters once non-common node gets its own zonelist, as patch 4 metioned I think?
+
+Could you clarify the rule ? e.g. which zonelist users must filter on N_MEMORY_COMMON
+themselves? and why the zonelist alone is not enough for them ?
+Whether every path that takes a node id or a folio must check N_MEMORY_COMMON, and
+which ones are left for the feature bits in phase 3 ?
+
+Let's get the rule settled down and make it as the foundation as well as phase 2 and
+phase 3 ?
+
+Best regards,
+Richard Cheng.
+
+
+
+ 
+> Gregory Price (Meta) (22):
+>   mm: add node-state-filtered zone and node iterators
+>   mm: publish and clear node memory states via helpers
+>   mm: introduce the common-memory node state
+>   mm/page_alloc: build zonelists from common memory
+>   mm/mempolicy: keep interleave and tmpfs mount policies on common memory
+>   mm: base hash distribution on common memory nodes
+>   mm/memory_hotplug: migrate offlined pages to common memory
+>   mm/memory-tiers: restrict demotion topology to common memory
+>   mm/ksm: restrict merging to common memory
+>   mm/khugepaged: restrict collapse to common memory
+>   mm/mempolicy: don't NUMA-hint folios outside common memory
+>   mm/damon: restrict DAMON-native folio operations to common memory
+>   mm/hugetlb: restrict pool growth to common memory
+>   mm/page_alloc: count common memory nodes for kswapd recovery
+>   mm/oom_kill: compare OOM constraints against common memory
+>   tty/sysrq: use common memory for the manual OOM zonelist
+>   mm/vmscan: restrict reclaim to common memory
+>   mm/compaction: restrict compaction to common memory
+>   mm/migrate: restrict move_pages() destinations to common memory
+>   PM: hibernate: size the image from common memory
+>   mm/khugepaged: base the recommended min_free_kbytes on common memory
+>   nodemask: remove the now-unused first_memory_node/next_memory_node
+> 
+>  Documentation/ABI/stable/sysfs-devices-node | 16 +++++++
+>  Documentation/mm/physical_memory.rst        |  8 +++-
+>  drivers/base/node.c                         |  2 +
+>  drivers/tty/sysrq.c                         |  3 +-
+>  include/linux/mmzone.h                      | 46 +++++++++++++++++++++
+>  include/linux/nodemask.h                    | 38 +++++++++++++----
+>  kernel/power/snapshot.c                     |  7 +++-
+>  mm/compaction.c                             | 14 +++----
+>  mm/damon/ops-common.c                       |  7 ++--
+>  mm/damon/vaddr.c                            |  2 +-
+>  mm/hugetlb.c                                | 44 +++++++++-----------
+>  mm/internal.h                               | 18 ++++++++
+>  mm/khugepaged.c                             | 12 ++++--
+>  mm/ksm.c                                    |  8 ++--
+>  mm/memory-tiers.c                           | 23 ++++++-----
+>  mm/memory_hotplug.c                         | 25 ++++++-----
+>  mm/mempolicy.c                              | 30 +++++++-------
+>  mm/migrate.c                                |  2 +-
+>  mm/mm_init.c                                | 16 ++++---
+>  mm/oom_kill.c                               |  7 ++--
+>  mm/page_alloc.c                             | 43 +++++++++++++------
+>  mm/vmscan.c                                 | 26 ++++++------
+>  22 files changed, 266 insertions(+), 131 deletions(-)
+> 
+> -- 
+> 2.53.1-Meta
+> 
+> 
 
