@@ -1,108 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC2C606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87188606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RQYGohhW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iYQFQ2yU
 Received: by kanga.kvack.org (Postfix)
-	id 3AD176B05B0; Wed, 18 Nov 2026 04:46:47 -0500 (EST)
+	id A66B16B05B5; Wed, 18 Nov 2026 04:48:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 385516B05B2; Wed, 18 Nov 2026 04:46:47 -0500 (EST)
+	id A44E46B05B6; Wed, 18 Nov 2026 04:48:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29BB66B05B8; Wed, 18 Nov 2026 04:46:47 -0500 (EST)
+	id 955866B05B8; Wed, 18 Nov 2026 04:48:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F0E356B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:46:46 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D659A826B
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:46:46 +0000 (UTC)
-X-FDA: 85447760412.13.5DAD380
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 745A86B05B5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:48:02 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 105EB1C3DD7
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:48:02 +0000 (UTC)
+X-FDA: 85447763604.20.35BC66F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A990740003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:46:44 +0000 (UTC)
+	by imf11.hostedemail.com (Postfix) with ESMTP id 41C4640009
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:48:00 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQYGohhW;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iYQFQ2yU;
 	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794995204;
-	b=gmdK9IaSQpMpo3lyxPj6yvvhOEFRfTEHpdLks14EUoXYTEKpcPe6+9RmXh8w2vDnb1doOT
-	X+QpBC/6r/dQ5qG4G6zsmEo/hs4zbJLvvQpVjwToVXFDR7iTOWovZ1hT9CHseu5BL/rEEg
-	M8HgyB3Ba7z/+S259AisAobnl+Ml9TE=
+	t=1794995280;
+	b=W60j/H/kPgRpcjjcu9ablHObvhrGrYhCbQ0c+IWTs+FW9EWX1UwYAq3VLCWXRoqvfFbyWl
+	UG6p8GOdgrRM/sZXdMC2ns7eUq7vH1bJph+xVK7yzUINNxDAEx09OULky5hZpiEvMr9ufx
+	Jr95CNDqBB0BCvwUnEJ6FlYOVQuSjH4=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQYGohhW;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iYQFQ2yU;
 	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794995204;
+	s=arc-20220608; t=1794995280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CtaieybfS6BQtpEqYoffKr95cQJaQPqI7rmHn30lmpg=;
-	b=PGlaokksGEhhu7pDMYdHwSaYCD0OJQUtl7X9pZ2cFmon2Bcu4C+TkxKql8ODTRVA6B62/Z
-	t8RT2at2o63ruiO50AIeZ0bukuLnSFN/9dSg982BSN/3BdC10OIRVFxBoB1MeyGW/csAT9
-	xtjwaQ7eSYAlOKldwtp22x2TZSQJxTg=
+	bh=s0Wz2n57vdZUokFSxrkbmaCxtfmXfbqv1U3m9lAxLV8=;
+	b=gFSWLM6wdCFBOaCdsjBhQmh+5f3DH2cmUyvJPXyJaiMDol7cfZeHj/tEbVdpDN+evJ823K
+	g9Ry9kGnXra98R1/tqoc+jGXGnttAdaXT68ETnb6j+RUgdSc6yc8e0pPTGuaO+8oJbQtyC
+	PK+zmMg5/MO0aEtZO51E+1Phc56xh2E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D34C94568E;
-	Wed, 18 Nov 2026 09:46:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1101F000C4;
-	Wed, 18 Nov 2026 09:46:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8631840918;
+	Wed, 18 Nov 2026 09:47:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05261F000C5;
+	Wed, 18 Nov 2026 09:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794995203;
-	bh=CtaieybfS6BQtpEqYoffKr95cQJaQPqI7rmHn30lmpg=;
+	s=k20260515; t=1794995279;
+	bh=s0Wz2n57vdZUokFSxrkbmaCxtfmXfbqv1U3m9lAxLV8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RQYGohhWWhAMmEGxIAzOYr6Fx+D3c8etuGKHMFcbyKBYk19gb0PmTU3vg4xr2/6an
-	 SJ/qop6o7easXoypEONyiMJCk8cgR+yJjAnGlWhqyYJ/ziD1aNlj2ESpXtYiDNRwlj
-	 e5B2ZdNugULbszT5sBs7bvHePzJ8bmuqz1BjALmVdtQaVhFWk40mYXG3RtN1ZfLaG8
-	 CO7RPHtrPQW3mS0ouvPJuJjTBrscheUKbE+yzjJIA5+EdbTjFPpS41EOhTYuSfpYXk
-	 m2o215lUT4PGALLB0rFVQlxsiCFea6eOd2CBZHCy/6uKXDd0NHCR7gWa9XW+UGFy9f
-	 mZGW3Ic1lhhTw==
-Message-ID: <332f315d-ea27-488a-9a3c-28cdfdcd5f27@kernel.org>
-Date: Wed, 18 Nov 2026 10:46:24 +0100
+	b=iYQFQ2yUPPHHAygrFTQLmV9BIcvsWBPutdR6UKne64hmmls4FrhwNuCdhGchWH9BE
+	 fxBJKKIoXw2SDtqD8bf6CoC6AgqfRYmwbnrY0nFpgQKfvVaBTumkOVSpheFYai/zYY
+	 pL5vyXvxNFCknv5Y9otK+p1L7dCAohmoxFyOvyo635m7v1o3eChpz+YRXPn3qDTW3J
+	 EXPWqO22znVOX5FG46X0l/ylJJuX5lIY/VqEh+SdT6p+0J4cgmeFf3ElCKCrWfUoCF
+	 JC3+FQbyupECjWTpRpgD+Kjd4a83vLvp2JURAhPMO0Ssx4Jw1Gi4sB8io+lR2fd4ei
+	 hV67Rbwa7irOA==
+Message-ID: <d7edeec8-d9c8-4516-8426-de2d8854ae06@kernel.org>
+Date: Wed, 18 Nov 2026 10:47:48 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/7] mm: kasan: skip KASAN for GFP_HIGHUSER
-To: Jeff Xu <jeffxu@chromium.org>, Tomasz Figa <tfiga@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver
- <elver@google.com>, Boris Brezillon <boris.brezillon@collabora.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Chia-I Wu <olvaffe@gmail.com>,
- Dev Jain <dev.jain@arm.com>, Evgenii Stepanov <eugenis@google.com>,
- Ian Rickards <ian.rickards@arm.com>, Jann Horn <jannh@google.com>,
- Jeff Vander Stoep <jeffv@google.com>, Jeff Xu <jeffxu@google.com>,
- Kees Cook <kees@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Peter Collingbourne <peter@pcc.me.uk>, =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?=
- <ptosi@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Miklos Szeredi <miklos@szeredi.hu>, Baoquan He <baoquan.he@linux.dev>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Allison Henderson
- <achender@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-mm@kvack.org, kasan-dev@googlegroups.com,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- fuse-devel@lists.linux.dev, kexec@lists.infradead.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <20261116230627.3537051-1-jeffxu@chromium.org>
- <2066d131-f999-4747-beb8-520d5e0ce1db@kernel.org>
- <CAAFQd5DzTmyeVQxNdhdy8pPi+ts1cCgbztVJiMoNBeJWBzjdQQ@mail.gmail.com>
- <20261118012858.289236-1-jeffxu@chromium.org>
+Subject: Re: [PATCH v2 0/4] mm: fix races between huge and non-huge faults in
+ PFN mappings
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>,
+ Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>,
+ Roman Kisel <romank@linux.microsoft.com>,
+ Saurabh Sengar <ssengar@linux.microsoft.com>,
+ Naman Jain <namjain@linux.microsoft.com>,
+ Michael Kelley <mhklinux@outlook.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Eliav Farber <farbere@amazon.com>,
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ "Gregory Price (Meta)" <gourry@gourry.net>
+References: <20261117-huge-pfnmap-fault-races-v2-0-276007e73bcb@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -149,21 +134,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261118012858.289236-1-jeffxu@chromium.org>
+In-Reply-To: <20261117-huge-pfnmap-fault-races-v2-0-276007e73bcb@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hr6nmmf88ax53wh3wnhqdaemqkok3651
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 41C4640009
+X-Stat-Signature: fqmn9ahw9wchyeu6xy57wrm1bfqsifqs
+X-Rspamd-Server: rspam05
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A990740003
-X-HE-Tag: 1794995204-782089
-X-HE-Meta: U2FsdGVkX1/JArboax11LwXx9h+5vLwtDVjtd4K75sv9QEX7ZQak6dV8gM9cbzSlD1SmJvGgRpI+KxK22MD9DjV7TE1vBh96v5BW9025goTTLd8zN/LbjZSa3etRkIL1V2IXlHPwjVbPOX1wgtuZaTcmZGeN4NUvgkf+VAGG6XSkppqBc9rSUn+4FodgETfp953isTINMryzfMQ1VROJbn4OshJjSdrhdavKRIw3dpdnbFuKa83M7MNP6cdqvIp+04ycDi59oWLM7z61ctp7EmVjUHJ3xyxnh34Xmb89WPsMiYM9iNNCZ6/dY3yAN+xJQ8Do8k/DPz6YiCi1yrYv6KbvYjlB00AwlHFSwRs/Sq2voXi2GssDvzIVBxO5cbncmvxX27htpePQHq6VBmMrsoHFg3QUkJZnH3u11jKCuXLCPNaGjOrv2sT8l0XLB0PmHDBISNF151aQfuuzRFMDpD9ANerX12yw1SWdjnl0gQxGlXZhpQ6Nn5baNW3DsZi6NmIR57V2j7AsX1URX/BXjP0MViNaRl3bjDZoC6PPduJVJwLZMiQwXzB8cnWHnVF/2XRvz+ULW7BuOu2BzMywTpATdT/lY8DSWiTiPZ7DNMlt/ysTBiRYB3FnSPzPYK/ITswACDrSCiIJZBNlboV1t8ZBqbfNdnf2VsNDj47u7kGUyB+7fnPj9h2T7f0JLsxUK9JrISCwjuY2cQxRoHGFjWJ+VKT+pU4y/OoSgPENDe7qFCy7UwRCTRwxtIDZFH6GFMp7hRciFmdF/26MygVg8Tg5y1NXqUNWwtdiv4Kq0lj31+c2T6zrEcO8EWsmmzfw03eUrmKgUugB+58H5pd8Np9/wgu2tQdOoU67lmubGqlCHxi13SDBCuI3poeyICll4cZPeKZ46wnnnQbcg8BaCCctWOvhctMSpFR+Xx0Letx0y/g2RIK/fYytdanNcVDqD+oMgAxsN1/v+e0s+Xd
- 3mSbr0tW
- 7XHdav8/OauihuXAfi7uWFS526A72Tp8it7nTNF2oPKdd6w4FMlTRwk5iYxvK8/VL06uBhx024dhViN9QSypcjdGMsQvSyxxgoK6rf32FDES1wBRSHqruErhyGzGGrNLJZp4E/O1JMs6S5TAoDHEGvBHI2aJF48L46gKldd8t4PwBPQJjn/Hx+R5wuhy4C4h8QEyq1oAObCoV2LbfmwkQ1zoYlv2TS9ejvvVY2ymXaHRmNey9/7VWGyFanm3dbFufX0mM3/qgY3LkdVcaycUkpXTONXrUAf1Mn8VsNnvWiFerHA6Jh5HkI+HI4IETJiY+iwUpOsxyw/R9nV+zTtwBpCSQsBX3jbZVmVOPgetyGaShLiGuE0L98rp8oBCJSRT3QbCl55jLbLFm/rdtV07cLptbzLN7IBiBrflL3mlZY4NCHLU=
+X-HE-Tag: 1794995280-894398
+X-HE-Meta: U2FsdGVkX18f6bSCJXpL30WTr+a5e9ZSngrua1O3IvzwcKqF0/56Hcn0EihrjBFY6/evvVvxbp31NzxVpGvfbKJQGmNXsvUUWKiR1oUH/P00hsLvzjPlaer+zLqRteQrBA8fJzRpEcAw4PiBSPbGZcHjArY1e6Pxxj4VcRmDfARS4ndNT0LJm9dd6Mpgj8W4hSDR43AAbksci/EzVOJ2fvd3XW+mrJKYWD8q85SPp9HcpNyP4JcZ5LOhOaIAPGO/kxpT2R5W3/NqWqYsfvsKm7o6YB7JtluDnhtNIpGcCG+q08V7b3GqeTb/3lK2/JvIjaC+l4UB2JMFnVyAOleWR0nh5tTLY793o9m9zNjhF37zDMKY+Di6H4XZySdoz5qaYQQ00e89ZN2m0nfv2pPG2Qs6P/PwzmVMccZJ5ugV4+8jhvhLy1mj7PXt84flQL5HHNRtfNVncMNLA56OG7OOe4NsEmNCYYN3lIaSeXSUssYsyoL1b3JArsxLP1HIgFJjlNRgUoPiMAtaSKE8MNRrBRTz+vbQIfymeyw8K6Nz9G7D53QkdVjCMM/K7uyvLwOs+q6E2P7now4esH6MyZXH/Ft1JTCJo0KXiqOkAZIGJhbAm92PMwiuyL2DcoiPMeo6Sw3bCgn0okR1lV0M+LPThRcYKKue238T+E2c2FtCpEFiELrdSvph6JOWgyTBtWOM3eVQE9xNNRp3VA8Vpb3Js6Z8lmqSsPciLj9I9YKdDHMolV5eA6CACOp6wLTHt3QttKKGViryMU8c1nFmCrT3o5fjNB9zQh70/J7DqIGg6uPb518Y5jJ469x11aAOJBJn8RE/eDPK8C161jyeWPsIXCjzHUv846LTGmRmcaQDyQpHjePsCotmN0VYuJNVZjDZHxxWjaX6q+7Leyx/azofYQ+m/LTLgY6tNf9aQJiZ604iSxofvYey8/qxKNNqls7FYFZhE4MqLVoQJyYYi++
+ 9tJF2wkJ
+ maxNehtYVqBxTb7Gt5hOPBnVKTJw9kaRfQcC946lZIGxdXmrlHk9N5rZ0d4ePnl7eXsANZGUoqLSzeLYIATvSYOUlxd6QmLq/W21Au6Zq+jixE1xNALL6wWAS8BSwulz0+GHbWV/oxw0KOGItP0vLmAHmjvMDnYgkhCkA+ajHuo3dJ9zlUJ9W5Iej4WWvAlvYmPIAHrVV+JNZdMPR7rCvOm9Xt43Zn/tVRmZVZSz/TzjID1yjKEEDwQjJmh++SEf3WwvfqgNMHiBbmHpwPGe+NNzHRifVWRddj/NTGbeF17nPLqjvtUV0NRFW+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,75 +157,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 02:28, Jeff Xu wrote:
-> On Tue, Nov 17, 2026 at 11:11 PM Tomasz Figa <tfiga@chromium.org> wrote:
->>
->> On Tue, Nov 17, 2026 at 7:10 PM David Hildenbrand (Arm)
->> <david@kernel.org> wrote:
->>>
->>> I really don't want us to spread KASAN-related GFP flags in the kernel.
->>>
->>> There must be a proper way to abstract this.
->>>
->>> Why is GFP_HIGHUSER not sufficient? We were already told that this is memory to
->>> be mapped into user space. Placing data structure on it and handing out pointers
->>> to that would already be a bit questionable.
->>>
->>> So what are the ways to avoid GFP_HIGHUSER_KASAN?
->>
->> I think the idea behind GFP_HIGHUSER_KASAN is to make it possible to
->> skip KASAN for GFP_HIGHUSER by default (for most of its users), but
->> keep it for some of the users which today use GFP_HIGHUSER for their
->> memory allocations, but could benefit from the added security. As per
->> the other patches in the series:
->>
->>   pipe, fuse: use GFP_HIGHUSER_KASAN for pipe buffer pages
->>   kexec: use GFP_HIGHUSER_KASAN for segment pages
->>   net/rds: use GFP_HIGHUSER_KASAN for message pages
->>
->> That said, I'm not familiar with any of the code mentioned by those
->> patches, so I can't really tell how much they would benefit from KASAN
->> or if their choice of GFP_HIGHUSER to begin with is correct.
+On 11/17/26 19:31, Lorenzo Stoakes (ARM) wrote:
+> A driver that implements both ->fault and ->huge_fault must anticipate
+> concurrent use of both.
 > 
-> Thanks David and Tomasz for the feedback.
+> This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
+> concurrent with faulting, as that only holds the mmap write lock and thus
+> does not exclude faulting threads stabilised by VMA lock.
 > 
-> Tomasz is right about why I added GFP_HIGHUSER_KASAN in v1: out of
-> caution, I audited existing GFP_HIGHUSER callers to find any that never
-> map the pages to userspace and instead fill/drain them in the kernel via
-> kmap_local_page() (pipe, FUSE, kexec, rds). Since this series intends to
-> improve KASAN performance while preserving its security aspects, and the
-> performance impact on pipe/FUSE/kexec/rds was negligible in my testing,
-> v1 was optimized for minimum behavioral change.
+> A number of places in the code that implements huge PFN support fail to
+> take this into account correctly, which this series aims to address.
 > 
-> Looking closer at both of your questions, I agree that the security
-> benefit of keeping those 4 under KASAN is minimal -- e.g., only linear
-> overflows out of the pipe/FUSE/kexec/rds page, since none of them store
-> kernel structures or pointers. That is the exact same trade-off we
-> already make for GFP_HIGHUSER_MOVABLE.
+> Generally the shape of the issue is that faulting the same empty page table
+> entry can result in the ->fault and ->huge_fault handlers racing and the
+> loser finding something they didn't expect.
+> 
+> The fault code must tolerate this, but fails to in 3 places:
+> 
+> 1. walk_to_pmd() asserts, without the PMD lock, that the PMD entry is not
+>    huge, so a VM_BUG_ON() triggers. [ vfio-pci, nvgrace-gpu ]
+> 
+> 2. insert_pfn() treats a failure to map the PTE table as an allocation
+>    failure and reports OOM, causing kernel accesses to the range to
+>    spuriously fail with -EFAULT. [ vfio-pci, nvgrace-gpu ]
+> 
+> 3. insert_pmd() and insert_pud() assume a populated entry is huge and
+>    compare its PFN on write fault, warning when that of a page table does
+>    not match. [ mshv_vtl, drm_gem_shmem, panthor ]
+> 
+> This was originally reported and fixed by Eliav Farber in [0], this series
+> reworks patches 1-3 of that one.
+> 
+> Patch 4 of that series (x86 PAT encoding of huge PFN mappings) is dropped -
+> it is unrelated to the above, no in-tree driver is affected by it, and it
+> needs a different approach which is better pursued separately with the x86
+> maintainers.
+> 
+> All three issues were reproduced on x86-64 under QEMU using vfio-pci in
+> no-IOMMU mode on an ivshmem BAR, with 6 threads faulting the same address
+> in each PMD or PUD aligned range of the mapping while another toggles
+> PR_SET_THP_DISABLE (note that vfio-pci had to be modified to pass the write
+> flag to reproduce the third issue).
+> 
+> Without this series the BUG is hit immediately, with only patches 1 and 2
+> applied tens of thousands of -EFAULTs are observed within seconds, and with
+> patches 1-3 (and the vfio-pci modification) both warnings fire immediately.
+> 
+> With the series applied 30 second runs at each of PMD and PUD size complete
+> with none of the above, with or without the vfio-pci modification.
+> 
+> [0]: https://lore.kernel.org/all/20261112051440.16140-1-farbere@amazon.com/
+> 
 
-Yes, that's my understanding as well.
+Lorenzo,
 
-> 
-> To avoid introducing GFP_HIGHUSER_KASAN, I see two options:
-> 
-> 1) Simply keep those 4 cases under GFP_HIGHUSER (drop patches 1-4 and
->    7), reducing the series to just the GFP_HIGHUSER change and its KUnit
->    test.
-
-That's what I would look into first.
-
-> 
-> 2) Switch those 4 callers to GFP_USER. Since CONFIG_KASAN_HW_TAGS is
->    64-bit arm64 only (!CONFIG_HIGHMEM), GFP_USER is identical to today's
->    GFP_HIGHUSER on arm64 and all other 64-bit builds (and if 32-bit
->    CONFIG_HIGHMEM=y builds still need ZONE_HIGHMEM, that could be gated
->    on CONFIG_HIGHMEM, though that feels ugly at call sites).
-> 
-> (1) seems much cleaner to me. David, would (1) work for you?
-
-Agreed, (2) looks more hacky and I don't see the value of doing it like that
-just yet.
-
+all of these are not super urgent and can wait for the next merge window, right?
 
 -- 
 Cheers,
