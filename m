@@ -1,140 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28965606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 10:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD31E606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 10:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HllsBS6e
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G7ViuwWa
 Received: by kanga.kvack.org (Postfix)
-	id 3DCFF6B05B3; Wed, 18 Nov 2026 05:10:54 -0500 (EST)
+	id BCECD6B00EF; Wed, 18 Nov 2026 05:12:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B3ED6B05B7; Wed, 18 Nov 2026 05:10:54 -0500 (EST)
+	id B7F2A6B05B1; Wed, 18 Nov 2026 05:12:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27CA26B05B8; Wed, 18 Nov 2026 05:10:54 -0500 (EST)
+	id A992C6B05B8; Wed, 18 Nov 2026 05:12:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F3AA86B05B3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:10:53 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D74268071C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:10:52 +0000 (UTC)
-X-FDA: 85447821144.24.FCFAAD6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DD507100005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:10:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HllsBS6e;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794996651;
-	b=QKKkcrqIMyB936/QQ27/CJtoOqwa246YktuPL7bfy9plI1ljBEzyEVzQ2hOVSvXwdABvwk
-	nXI9lcLggYyUnIUV9REALJvu1e/lYIYgWestDBl7qmoqCstj959SoKtNaMXiFO3+iZ4egi
-	vY6Te2M7KEul5r+GYk/khWGWOKu/s3w=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HllsBS6e;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 848C16B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:12:22 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 092731606D8
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:12:22 +0000 (UTC)
+X-FDA: 85447824924.04.7200AFB
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C9A4220008
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:12:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=G7ViuwWa;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf03.hostedemail.com: domain of jiebin.sun@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=jiebin.sun@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794996651;
+	s=arc-20220608; t=1794996740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5xQ2uInXZNMm0R6AQn2LPL3rDrnpuIT1agq9O7VBa0A=;
-	b=AWutDP+r1IbX9cmyD09ozuXhZsue25kCMR5wp21TpZDBsGoDbnQ9LafaWG6Uhpk8LnCbpf
-	R2pfDQoUcsLZL51yqDjEi6SsfC2aoyJMIwJOouqfleAvkebkiCy3Iv8Rj4Bda0aClKl72J
-	r/0b4ylnPlocGei6Hn49UGztOXubUJM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 125E045B13;
-	Wed, 18 Nov 2026 10:10:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBBD1F000C8;
-	Wed, 18 Nov 2026 10:10:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794996649;
-	bh=5xQ2uInXZNMm0R6AQn2LPL3rDrnpuIT1agq9O7VBa0A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HllsBS6eEh3h2hm7iSzKWXKDhZSKfZFbSOL4EvlBLLjbfVzybvCnjlX3BBbTQKv9H
-	 4f5i8la0iI006jW+YPVH9Thkaj33eA5s6+rLD6IPjhtjHgQmhIF6mSRurwk1ERRY/L
-	 VTKsAV8mESstu9DYLXSdG/CynNlMGVri/hOP+kYm7FutJj94HfXyTe1bnhAGHTAjx6
-	 4JKIRJDezEfobxJe5bJlGNs+mU2ULYfKik3NP+Lijue0jwlMwWbjjuzHHdyKDRDAuB
-	 cLQRVqWnQ6n3m9czgQM75ViKqRBAgYh/SeU9r9D2+sarp+9jKD0aHGqKiJ8efNWxiW
-	 5zDD6SoLkPbHw==
-Message-ID: <5541ef01-f9c0-4ce1-b77a-5bb81c6cfdd4@kernel.org>
-Date: Wed, 18 Nov 2026 11:10:45 +0100
+	bh=wOvZstlG0NBbv/dzQM6xwLtQ/0sPGNaMMnmH8lqZPgo=;
+	b=lCGqU/ICIgIOZe1TGVzvkaaKz5oIjAXhegRNAWHDuYLYbpbHSdNlcVFHc6vhemJJCG7uMj
+	XrFt/JKxlCKy3T+zDE/bFxqP0n3EUYoOMllS9XGBh8Ing5PpsIr6ax1ih+7Nu+dt8XJduE
+	zsjuMbKbMYqbzC+EekrMaqTNMqEUATY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794996740;
+	b=6e8jiXVdKFpBak96MgWvUoYj6cuVjo0T59s4UcFa2McLXt2ZomWaKhqwwjwtyOwyi83rLU
+	XYNnGyYYT+ANGehezfGJLsEnd74RXTqwusTpedvF19CM7T2qJDemwTDs2getvGjIkzpxXL
+	BWrJOIgHhdWc3KhEkwn0ucPfAmVfOrE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=G7ViuwWa;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf03.hostedemail.com: domain of jiebin.sun@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=jiebin.sun@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794996739; x=1826532739;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=FF5B0ph4nYkrwjb1C6748DuKV0yiQO0WYfTjj9OFyQw=;
+  b=G7ViuwWajQav9rOyEN7Dz3bgI7Q1V4bXUGSxQed/cSOx6vzau3ugq1md
+   qd7W6s7PBQjHJHLWH9NZdoNuJh7FePxxnOQMn564PKfVLLxl2jeYU5V8e
+   0/sAsfeGYZZ47cetnihH40P+TiwpMJ0Q+Jy1bpRQPh1SQPbW9tABCZV6J
+   3iWol6PLgYYD9gz0d/9nSFSNLyFlZTEvFGGX+ciJ4IOGF4K6XDo/HyUCt
+   vHZmsv5f+6zjXYUEvYB7ZzQvJhGbZXHATjAVb4sahnJ8pjoSFXvmkPYQt
+   zUVWoL7tQcZFYVWazzBBdpoQA1Ifv0KbeBznaJZdqztkmqY9+W6ybInjN
+   g==;
+X-CSE-ConnectionGUID: tMpOWvZXQuCA2Mlf3Dkqbg==
+X-CSE-MsgGUID: kGhbk/qNTViv1l213K5Q6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3682650"
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
+   d="scan'208";a="3682650"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 02:12:18 -0800
+X-CSE-ConnectionGUID: D/5dg/T/T7egAVJfdbIJDg==
+X-CSE-MsgGUID: 7vyP09MJSo22wc5qpMf9JA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
+   d="scan'208";a="10052164"
+Received: from linux-pnp-gnr-1.sh.intel.com ([10.239.83.186])
+  by orviesa007.jf.intel.com with ESMTP; 18 Nov 2026 02:12:15 -0800
+From: Jiebin Sun <jiebin.sun@intel.com>
+To: akpm@linux-foundation.org,
+	bigeasy@linutronix.de
+Cc: dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev,
+	tim.c.chen@linux.intel.com,
+	tianyou.li@intel.com,
+	wangyang.guo@intel.com,
+	jiebin.sun@intel.com
+Subject: Re: [PATCH] lib/percpu_counter: allow concurrent sums with an rwlock
+Date: Wed, 18 Nov 2026 18:16:46 +0800
+Message-ID: <20261118101646.3192636-1-jiebin.sun@intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261115191636.f18859e4dd5f58b9a33e7814@linux-foundation.org>
+References: <20261115191636.f18859e4dd5f58b9a33e7814@linux-foundation.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_ext: remove unused page_ext_iter_get()
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Shivank Garg <shivankg@amd.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Luiz Capitulino <luizcap@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
- <e745f91b-3312-47b9-965c-510bf0a0b7f7@kernel.org>
- <20261117111336.ee49c0d4722a042c071c68b0@linux-foundation.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261117111336.ee49c0d4722a042c071c68b0@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: tp3pufqrffoqx1q5n7kfxez41h8m3m91
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C9A4220008
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: zza8k7h9r53oxipgsjer7d51guootz7r
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DD507100005
-X-HE-Tag: 1794996650-33912
-X-HE-Meta: U2FsdGVkX1/kP9o/uMoLTtWRZRYgsBAGTmt1V8WkxzJMXgLuUONiS2ehoBTSnqGfEThjx1FB4bU+Pg0Bhy7shVOJmZjL3iUdHeh3aYxdlUNeIAdOmNATsQKi5KyaB+vMwYBttcB9qtTsbfXRlGeNiBW3YXWVURkmVBD1cdQeeuC2WSPJtLROpmps9e2IcTjvOizikYqVwRwUuyrSokZm5UlecDnrdTFx5EV59CZbbhXx5EUMqT4A41p80Wd/nprmY5d1sDXfHZZg5f+vapmmBntTV+QKwh9L2DD6y/s7mCT8UFffjPoM8L087K1xD0rhTgWg6wzrQ8FkSSMLgktQzW2Ui894Nkm6awZ/thUM4XT/oLVbBHZJo45Upym/x6V92FkQFO2s4bg42p6vx+lpHaWyvNm5Y6jkNxXTvMZ6zVlPulR4ndc4FjLsEl0N1xVU0GZwwqkFkvCC9gOZHm4ONPhB8IJSN0kQkmPKLrDK6bZYAl88zQH1qsEUI4AoDnx8yt//xk8rKI+3aVj/KJP2Ch1BxXcJaF9Br9sfiRr6Syl0q0G/4qbd2rNPBt2wIvW5lm5Ur/PQmGRJSvDTZkSv17esANCkbUwq+l7UajGNyRoIWZOrQU6FNRgfY+lsuv5ZS2xQMwnKufUB2ZoRhBYmuq69xDsYaKcGVXdtUNjw35XnQxFNM0L5yNQfWSukxxw8CSumUqAwQbqV66AY5WNLBdl+2mUHP0lxq7bVHhA6wc5dtBbJIwr/2SX9hXsDu4RPrxAt6J7GfYXFTXWi8sYWSVzTVnu8lyuVugV3Z5v8eS77FL27wx9hLIfYDLHz5ppC+ZaRDjoR8fEm7U9IHoRJYrtJxhP1qhX5zTWHldZIaEqF2e5OrSFTY2mJrF1D5g00d8EpW9RZ2L1I5HNrdh73vRiHboeXmXZjhXeMF6Hl0hYUR1XQ48U7x6Chcgdz8TtP9O5yPNkjdudv9llFfGC
- ezcwnpn2
- KU9kecw3ktipcQ2ECwB+Lnjn5D5c+QsEQXzR7JOwOuRKByBTEvmHRh5JVYNMrvNAtjbVpMKbUp+hTnau+nyI3tg2bL+qvmWzZCi8JoIMwrCYiJZCFrgxnI8tnuUUBnUajsUS+pguUHmbLt8P1zZZjxF0kGvGEAo8d+IhYLg/EVOozebsajbxe8Okx1R+DcGLDxrdB2N8lHLOqm92FFGMSXm0easkZPf9icDn5XAC+P26xtYri2MMsT+pYoXPQuNQcuyeGmjyZcnMj3xQGHWsIRcyN/PMIDqP5+rxLKTXxqtlWnqnlNkQC6FBmmKRK441MOrDeATMxoRS7vInfsTmbpubiIuSqZF+H96sjy7O4L3kORBdnyHIMs3mbPcbIZzHw0UrmeUdMz0o/SSr2Vi7FyfslbRrx3hrK+Xrt
+X-HE-Tag: 1794996738-510039
+X-HE-Meta: U2FsdGVkX1+DEKHzmu3D4bvpT/0nCQX+rJlURd9IkMlNQgrS91cc3Y9m6pR48mxY16fLli5kBHhG49aRc9s+rD3ll+kMboWIZLuUdUWe+/mp9NUiZaEVPicYS9WAi4m7EdsFCfPzVcGaybWJxNhjQ29BrDNdZqeoZiopeTALZHUecRDOhqwimIm4lOMsis77oYeIO3v1DvKNO/4PglqauyJq9igEP9s8RkAFW/ePOI07P8TSpuUzZctke8cWqLH5yAUqmZkdYwwi+koP9p5JqzaUxrxZfWw/bfQ8Zyb/LlEgyNSe09/17pvsUCTr89eBWhv0RPTTrCyFP87JZeJRsRvqw8kSIZB3avCtj25ulM+ptdGQbCgjCTDt8xBNJclGJ+Z4dU84bki/44Hcv6c4m5j77dclBijKQl8dYa+vrRlSUR3/SUEXF+IWy+cRXTuXKEW5V0Ihb4c2O4Qtwn5VphP66JC4kOebGtai6Um2xDh6Q1v2fRuv2BBrSV4oPQRP7d5gESs9P3rY+MBn5KvtU647SdMsZSGfNzUYMT9osCcXEgN0RXfFCkW7XfEM7ZaABEEG7k2ZAU92VQPiOu1OwlEpnEGIHpP4EXkG9LIybkWeCpDtC5w/ZVG4wGzgQ3+vQl654zUL6ycQ/yy0fhANZcgJcN+8oLHzq+oHDWc5hJ0+/AjN6lmZid/HgNW6vmFTEg5U5uNefE6wAwgvw53dt+T8qOvzRIjHgCtPL2vipWqaw0uF+oypDC0wu/bbfRkREnH6a81kjjeM2a5LxHOtTcStAuzebCwkH+zNp8Y14xFhLFpQiILl7H+nS9qv700ZIUlWQPlpKyAl1OqglPCpilefwZ+NGAK2x+HRNAG0m/4gzn3AvW/+b1dic2UOTGAMeZUnZHyEFp8wLR3H/REXdZdTA3RM0hdnO2Ut2n4c+0RDmZmoATpB8kUNPBq48WI6L6x5J9cEAxYQyky4JYl
+ kDmbHnSn
+ qH6O4c0BnJR6ydOtmnwb84gAT+edNtU9MIAKhU528Kq7VPbYyQMGtIynsyp9CBPjZbUMzz6WqVjdhi70r82BoWIWWj+0Rg813E9GlNmX2EFlTAxhmoJvENxfpPUNDRmvPhzWcuMeAzJncVqXcP1cTgg6qvkIwOSLtS30p5WEoaoLz5qGIqLC+aF+RS1ToxntgOgZUbhTRP95TIl8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,58 +116,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 20:13, Andrew Morton wrote:
-> On Tue, 17 Nov 2026 19:50:09 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
-> 
->> On 11/17/26 17:26, Shivank Garg wrote:
->> > It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
->> > for page extensions") but has never had a caller.
->> > 
->> > Signed-off-by: Shivank Garg <shivankg@amd.com>
->> 
->> Added to page_alloc.git for-next, thanks!
-> 
-> Thanks.  Helps.
-> 
->> Hm page_ext.h should be added to the PAGE ALLOCATOR section. Wonder if
->> Andrew's patches adding various missing bits included that too.
-> 
-> Nope.  I'll add the below.
-> 
-> A few things under mm/ include page_ext.h so perhaps more mentions are
-> needed.
+Hi Andrew and Sebastian,
 
-Thanks! Stuff that includes it are its users and not necessarily page
-allocator itself. Nothing jumped at me.
+Thanks for the comments and the RT review.
 
-> I'm presently carrying no patches which alter page_ext.h or page_ext.c
-> 
-> 
-> 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: MAINTAINERS: add page_ext.h to MEMORY MANAGEMENT - PAGE ALLOCATOR
-> Date: Tue Nov 17 11:05:44 AM PST 2026
-> 
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+I'll replace the macros with static inline helpers, add the RT comment,
+and clarify the practical callers, including percpu_counter_sum_positive(),
+in v2.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Interrupt readers can bypass a WAITING writer and delay it if they keep
+overlapping. I'm considering the impact this could have on counter
+updates. If this needs addressing, we might take the write lock in
+__percpu_counter_sum() when called from interrupt context, while keeping
+the read lock for ordinary sums.
 
-> 
->  MAINTAINERS |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> --- a/MAINTAINERS~a
-> +++ a/MAINTAINERS
-> @@ -17779,6 +17779,7 @@ F:	include/linux/compaction.h
->  F:	include/linux/gfp.h
->  F:	include/linux/page-isolation.h
->  F:	include/linux/pageblock-flags.h
-> +F:	include/linux/page_ext.h
->  F:	include/trace/events/compaction.h
->  F:	include/trace/events/page_isolation.h
->  F:	include/trace/events/page_ref.h
-> _
-> 
+I also tested buffered writes with fio.
 
+Fio (64 jobs, 3 iterations, 60s each):
+
+  +------+------------+-----------------+---------+
+  | Test | Throughput | CPU utilization | Cycles  |
+  +------+------------+-----------------+---------+
+  | Fio  |     +6.91% |         -40.41% | -40.80% |
+  +------+------------+-----------------+---------+
+
+Test configuration: ext4, 32 GiB cgroup memory limit.
+
+Commands:
+
+  sysctl -w vm.dirty_bytes=67108864 \
+             vm.dirty_background_bytes=33554432
+
+  fio --name=buffered-write --directory="$TEST_DIR" \
+      --ioengine=sync --rw=write --bs=64k --size=256m --numjobs=64 \
+      --direct=0 --fallocate=none --time_based=1 --runtime=60 \
+      --cpus_allowed=0-31,86-117 --cpus_allowed_policy=split \
+      --group_reporting --output-format=json
+
+Thanks,
+Jiebin
 
