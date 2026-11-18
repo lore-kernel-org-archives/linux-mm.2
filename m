@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6E1606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D62606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EtbFjblN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D3lo9h+g
 Received: by kanga.kvack.org (Postfix)
-	id 2A4DC6B05C1; Wed, 18 Nov 2026 16:03:58 -0500 (EST)
+	id ABAE96B05C3; Wed, 18 Nov 2026 16:04:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27BA66B05C2; Wed, 18 Nov 2026 16:03:58 -0500 (EST)
+	id A6B766B05C4; Wed, 18 Nov 2026 16:04:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1916E6B05C3; Wed, 18 Nov 2026 16:03:58 -0500 (EST)
+	id 959C46B05C5; Wed, 18 Nov 2026 16:04:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B339A6B05C2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:03:57 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CB6E51605D6
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:03:56 +0000 (UTC)
-X-FDA: 85449466872.20.C19C6B6
+	by kanga.kvack.org (Postfix) with ESMTP id 4F6C36B05C3
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:04:00 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A47DA1603F1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:03:59 +0000 (UTC)
+X-FDA: 85449466998.17.991F814
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id ACDFB40005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:03:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EtbFjblN;
-	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7F3CC40011
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:03:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D3lo9h+g;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795035834;
-	b=SL7W9kJcKuzQBhO+uPFGku3Pb/kimstYctwEtgPdONk2ikw10SnNKO8QACXMVs5nOge/A2
-	SnaCiwJhBNv8umvjBVGbC2Y33Rl0eljMlc9lp5K+jgNqRcoledy1noGmhOC1oo7sbvak7Q
-	tH6Lu0icEvHODIN1owglhtNVn8y1S9g=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EtbFjblN;
-	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795035834;
+	s=arc-20220608; t=1795035837;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KYyINE7jQPx2L1Va5b9g3LdqA+A1T8KDOMXxQcugP40=;
-	b=i6suhYIw74AYvADRjHoOtYNjFGFRlmV4bRrRpzk1lQ4ZZLsxsbstJF7bov2QE8+URGNIOM
-	XKXGwzm6WKTM741uW5GLu+E7pkNmIYGjOaL9h+aF3pEWWUJDJ8MEcYqvFDTKyapg0hfk7Z
-	vNf+KoUjn8xh8Q8rEPnkwROcU6Bu0oI=
+	bh=OzxS8FucW3HiaXjFt3oHPV/7/cOrPnUfOI6umwv44A8=;
+	b=dUP69F8TYzyku2GH975xXjhRASqqiAbSIteZK7iMz9Wll2E3UQVbeRKOjCtmgOxcsQuH5H
+	fV8lvbpfS49sAIZbiLWmI/wFp653yl2IE0qKuQfw5ifpGtcrY0t29EjujCGvabvftjfrOl
+	j9n0d0VfNfemvmgn93oJnj63v5fgGj4=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D3lo9h+g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795035837;
+	b=MsqLsPH3R0fvoPHOz5QoTZvKnzx+pqtyLCaxfnNNVHDyYlB02EaNgdXOKu9wDVqlj8BFXJ
+	op6KGA6cW8DA34xmSovXSlk0UERKT98QTQrNV9fKmpTSo5hpN4ZhRGltFgL9JMO8ZxV473
+	+XJaWqRI4/9SQCVJD+1oxAoy8rZPNO8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 744BE47598;
-	Wed, 18 Nov 2026 21:03:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BE5CE475AB;
+	Wed, 18 Nov 2026 21:03:56 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795035834;
-	b=kll0KWkyO2PheqQQOHxGrKR3EJkEwmCMd3Bc9/1PhpdsI3j3b+n5g2Wk7pjuLeR5wMky
-	 IGE8qDumObL6mwdksDjQQoYaC9rZiYmIKPmxT5Xam1xixpOWr6bC0MUBRzbmTREfAmr3Z
-	 pWUszva/4nlZDPdMfVeC9L7lCExd0oAyWQ4wpcnFfMyYOWVRs8L+tcN1YqkqE1PlDNAUd
-	 A6etILZUF6bnO3IVF1Ytj3lMZi/WwTwET1sBmod8nqH6BtFc7lRDu7jyVYTbhjkWnfpOM
-	 5QIPs74ibemT7fH2x8Exopn0PC70Wa5/r9R/PHoJ9dRebgz934SKkA/AzvBahdk6xmg==
+	t=1795035836;
+	b=uh+xdzm07rqzRQ3Ja2W6WHwX0sOidRrC4gDFML+SknfQZKf0u1Um2HSppEZL/lz40sS7
+	 X2qj3Bc9/WhDQqLI4l/lQMNbGEYDM/V1PvOmVx8EylE7BgTyrjXR770eNp4FgTXFA4Gq7
+	 /70mCINeDhLKA86ei52OqR9sp69htmsG9qjevBfy6u/0hf8FxcOBsP2XhAr5GcPuUUztp
+	 7IYp8WRWoB1ATIUM1cxCjP6oAEC8XCafOuEJQBLzXgPkAV+ZwQ08YIVmltMVCD9dlXtr2
+	 Z/3irkzsm1LqQOG5lZpNBotm+Wn5NQQKhk6ozML51TsTC5BepjwUdt7rl3n3CwO30eA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795035834;
+	c=relaxed/relaxed; t=1795035836;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=KYyINE7jQPx2L1Va5b9g3LdqA+A1T8KDOMXxQcugP40=;
-	b=uLkGPtZkGvOLBHeyhaPzdvHUzvjRWzySMokjUnK7atmrjPJtiqzfUvtTz8ew919O30Zd
-	 L6+eUb/1jjusAQa50A5QpB8pD7Q+6pn4jRxXhDs6c/27mpqCwFLyWaAeKWIuLuR0K2FAf
-	 NbbONfLaRWG0KbN37H+bf614b7mqkHNLzWm+hVqGaQP5lR1O7MIYP9pp/TwaMqQDtokzR
-	 twF1T4QQdq3dSD+zurGESf+ZLrjV+PbkOvkHc6wJD9I7XTWxi+iXZWaR+CmrgQozl71Re
-	 URj25tCK2HEv3zY/5DoNst10z0nFN2ZyEeaN1RDU19e911poSBWZTEGYxV/p6Gw7DVA==
+	bh=OzxS8FucW3HiaXjFt3oHPV/7/cOrPnUfOI6umwv44A8=;
+	b=axJF7Oo0N50wKMFvs0myxDJZzH0HhX5LUroBUTcQ/8eUwcrnSmk4wsnBdb//TI1ucIU0
+	 v4aRWapU4v5SIDlCPrzQI9XakW/71MOIzFjd0bLIW4MNdnYzjZeJ49Qga6Bp1ayquMS15
+	 WsJMp9A3NckBNvAQzonOryRJk/qVj83W0v+E9VGmDiCUdb2CKphw0wEzdvJiQQ32mKi7H
+	 Jr6QN3xMLwWxoeE/O+ekM4hYdUQl7Hltt/5R5pbibnESph02YIYkc+rsgDqCg9/NNmXB/
+	 39v7aHY0sW8pIo2ZTiT8sHPktcjRDzVMvZAoKSXTEE97AkhB7HCHN2mTCC6kSr+I+sw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id DCA831F01576;
-	Wed, 18 Nov 2026 21:03:51 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id BCB4A1F000CF;
+	Wed, 18 Nov 2026 21:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795035834;
-	bh=KYyINE7jQPx2L1Va5b9g3LdqA+A1T8KDOMXxQcugP40=;
+	s=k20260515; t=1795035836;
+	bh=OzxS8FucW3HiaXjFt3oHPV/7/cOrPnUfOI6umwv44A8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=EtbFjblN9nh5D4fls+VqfJTr0ROzGqSgQ/csxbhyAEuejXIST61I/ijBffbEKNvV0
-	 xKIMI/BRLExDws13JnyxSr35g90oBzfO8fOmqOQW1rxHmAkVJiwjcjfvvU/AoI9YbM
-	 WziZ8MkNhJCO60Va3htwrpMJ8ObYHt9Z6Dc4O+n0SgubwCdwvCi/xKY1jwY1qPL3+S
-	 ehPfZR4Z/yyWXlIyboi1qdEdHUS64cZaUrokmPKICh7VrZ351Crd5WvW0+LzvwzAzt
-	 Em4QyfduKrQq3MWCEkwAqpCfyOSQubE/fbICSIQypL5f4VsDcJdVxs3JNZQ6PgIt29
-	 EM/sfXH+g3w/w==
+	b=D3lo9h+gigqV3OulDUq27LKMkLt6nSjTbaVo2FxfQ/xK0hdn3RlotwC0ngw/LM9rn
+	 8hA6UeaLi7c9m58rb87FOsp4UdJ2AP5RHcTNeY2YR5+dqdWfGHH6243V2zuSqPeKtv
+	 8/zNvgyc7nRyGxlh2qyBbzXXHF0b133NONr6KbKrf2Tf8jBrEzEM7oadh16YY4XYy+
+	 kSvm27BAy3ukpGOdmqpqKBvrRk901GbQhUgIpPGCo93G/1G8v1fZuDWZET7D6XSzmw
+	 aC8cpwT8Fpbdbw7hKXhq/zMuPWe3i6xJUHAdXRRnlYRmm7t+c6i6LijQc8IQ0Eo/Qs
+	 1kFD3fMq3y4vw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 1FC7D4AFAC;
+	by lkml.kernel.org (Postfix) with ESMTP id 53A354AFB4;
 	Wed, 18 Nov 2026 21:03:44 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Thu, 19 Nov 2026 05:03:42 +0800
-Subject: [PATCH v5 10/17] mm/mglru, smaps: convert to LRU refs based
+Date: Thu, 19 Nov 2026 05:03:44 +0800
+Subject: [PATCH v5 12/17] mm/khugepaged: convert to LRU refs based
  operations for MGLRU
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261119-mglru-fg-v5-10-9eee2fe97a2d@tencent.com>
+Message-Id: <20261119-mglru-fg-v5-12-9eee2fe97a2d@tencent.com>
 References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
 In-Reply-To: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
 To: linux-mm@kvack.org
@@ -132,11 +132,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  damon@lists.linux.dev, linux-doc@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795035820; l=3775;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795035820; l=1308;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=VfESysdUSKNXugn/NNka7t20akprAGwUFTR67FoqbQg=;
- b=H/mlewAs5YjJbFgVwQ+pifGag4czhOpjZorx0B42RAmT7qz/Hj/bOIhUZb9NbEASZ65gD+Ksk
- v1bQBrilAKvAWuGJBDPUYmCJ52LsSbiUmfk07pf4LJFpIAUy3Pk/ugH
+ bh=GSfbPNgLMnXCEtSfL4kSp4PCNV1ejnHpWoKv9fS/jaE=;
+ b=fzCjWB4x5yy6GmzZuPiQKuZftrRJcednIvgNY0u6IIjiMANZVD50MXigQUOLXSTn1Tj0Ir4M5
+ KAHzmaqS4cFBX+0o23LoWpkoJV6E899oz/mVRQoPRYaHozTcuf+K8pv
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
@@ -144,18 +144,18 @@ X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hjnuo8yudhtt3364bmz8rf8qh8wjnm3a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ACDFB40005
-X-Stat-Signature: qtdywfwbnezfx7ijhk1sai8acqu6rsxz
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7F3CC40011
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795035834-990020
-X-HE-Meta: U2FsdGVkX19pLIbgfYt/s7z8tSm9xMAoM6CDWVabobsW2nUU5roANxNvUWl0k/v0b9YPeQI2KAMXYdJtG1XglIZ0alGoJV1qTEwsiH00xk3yYux3BTE3QudWXIZ08plDHieJLPWLEgwSZBIx2og2CwkewH0Boe1XBVpAq6jof/cOUOXmL+9Rl6j4fcuMfMjGcWrGTyymz3zB5nGTawm7/hJ0E9w3XYRg9RXNyELjC3kAMGUc6J74Dz+oqkhg5HpjBBEn/TWPCAGJz9tulsHbJUFjTl7GDWalzZFPCYATk/gdXO4jWshiotSmCREOgmIqVxp3oBO94rZ56Kyp4S7j/X1VdN4gCxUQG92Pr/IMMri9ROPPGxrm3eOXKTwYd17up9KvhqY399Y1KQ0VDc5MIsOIZopcPHhrF5504MMyXl8E5r1HhagxuQiub+LIoGf5XENZUix7rkb94jqJE+7ELgflfdB0LmRLJsmoJyBLYKSGobCDW/9adpNwZwikG+spcUZfRvkAOMHKFq1alt3StMXAl3HsUjKpw+OeyN1UZZ57Mcml3gmTEJjfBaAVFGRiq1eozF/7CtE+2ZI51xkQWYzdG40IcLnJNO7g7+9WY8jUzESUDK524BXieCAmxoJ42pPsVrY/Js8LiH5ijnPHgGmOtoc5YfHUAxDNt44cUjoQryZbgj8IhNi1HIR+IaCKfIjtWOSYTq6Nstlk7cLYwT1Kc3vbfxsiUpbMRFM73cXO5bewvx3VjDjHyPPS8vboyRZIqJJR3UZEpi4BdPHlBr4GLuI9vJRsdx6NmQRVGYesFvem+1DwJ9rWaTyrRi6a0mM/Q5n2u9YsOTxeF1GdArd9WuCdUaYButycxpzTKZU63oS6NoGtPEz5r2OtgIu4Q9MVIh1K0vU/d2aV/MZiPOLSxUFjexOI5kn0TFDYhT9bjVRhDwXSq5O4Msy77XusurqyOI8Cga9dJew4wp4
- ExIsNjie
- saGd03zKDmX63wKLLub2jwt61BOLNcK1nZyRbcdrLxFDVWQSaO8xN8CR5jcTGAvYJkImRxuq82+1s5rk0DB8IZKb1tTwMKoEq2xfaD6vjmjxfcArbm9c0NTFwLLELj6jcaUyWADI/9S66OrVkBleZ+YhVP+RZQQoZloZoQsnYYc0hMSyJY9QbTK4thdQwqcgUusB8hub1WsCgq1kSFyOJdAVnW12I3yL3bfsHI6dc1uXqGYo5mLwsbVJvD1dYRFQblugZbePMtbfAoX+qiqrJcY6iJ2lL5jNKY9iz3RWH2P4nFywLziNNdUViEqHxi7i/P8DYJ3xaaVY5NRfyp8ROYEBL9LXyB3rA7Rl7k9cOYQhZFMTmVO3LQCD5EZuIil4U8VdHONM0W3B2kWNYK03O1Lc5tYB5HYc42thmnNbKsRKdVpKy1L3mnnV1pDGNyB+dhm3lEvfdOXqhtCXkMe+hV1VwODJSrdQkvm2I3CeXlnf3/O5NMoQ1tMZ8ux397v9/r2CR
+X-HE-Tag: 1795035837-629990
+X-HE-Meta: U2FsdGVkX1+l5D7l20OSAGlR+EO9ks3X/WvCAmXP0LETRNBGb5RDb7+hozxnOD6gs4wB9yDxJ/bSdjW/FPptBVW6itgbqCHJsvJP0H2x6FysiZMWs8exlRaqpm/HWPOHV4d1POZOqwKJJmD/0u0rpvhcA7MWHtjGCsmunKilPtNGsF++SMFsLD9mvJSKilbCxHj+YZHwhJ2dtI9PTlsjlFdV5w35P6Xm+YPl7LeZ3RIrZrcJMFnZwcwHOvBySUDl4xW9GwiaMo+HWLWrNFk9hSwU55aZjQNDqzko6ZecDnQvGRTC/7aWRoCnyuEgzhCLfAw6EPUPnEfppKq4wxlETgRYD+utmq1mJLwOoKtwJXARyvzt+DH1fBLTRBTcVDGuiO1fqu9hBO43+zCVNnolj7gbNbxpJrIdm/fYdCB7U3eF5PMD5ZciGFypsB3fxkUV3X5JT7vg2jdtZYvuzWY6asEHNUtp3Uj0uNGdcUSx6VfEfYgsdlUP7/GgcVc3k6Hp7g9FeKhUQJyYMG9N6wDt7+jfzD/p5tl6gM9kpTH9BNl4OalUqsDdgMkHAGy3j0IiLisA2AznuMley1+REtvoZChcMFSCfSx0kp8uURdpAbj7VCpqbk+GPFhhFsba6Wz5aDXi3OSNPu6pQvrPUI1K9c77XKSKmag2WALRuhF7lfTzetfsdd3eNBX4qMwmNkLSgtiiM51UI7yO5jo3l8mIDrBjHEg0FDgSVAArFTCD+7lI0dAnw4SYPEWecxYs6d2MFWpUOhE/qebKvL1/PAJ8gW6pGnIy72boFLZibYHb3q81+UQHHxyL09w4tpRhakMQGsfKnrWPFIoBqYu7urkDwBJjCMmUgQ1x4YaQC5K2/BYyo1tulWCJfVPnxYBr+VNww8C+UU/QkRoYNqgwF17/vPR1FJmEVBXnThk2eqX1yOEudWKSyFFpyKvxsEgCc2zZyFrI/MI9KH5Qk2BAX+E
+ FKV3RAWt
+ aT3k9LW1J6KzmvtKGUaetE+ihIsQVBIoyRcPbrlTj26B83Gs+IuZ4eKGwFBauV8azGikFgZgsTcuzri36uOQuuoFIqiNR14CcyBkaGYFoUHOfZVwVzht07Z3E6MoKV4iwL3orL3PslUc8Ku7JAmXsYSXbkV30ez6R2CDTxXpgFKt0+re8fgXo1cvEvefjDx8CrbYKiZvzyoITkxjGHZzE8j+IKjTTublZYv4C/90GQS9Tf7e9yFZErM9/EeqBrArtlQ0k7fe32O5KRIEP5V3ASoAkwypyKXtrdsaqbDCuuPsEQNTs5OcRwr8MAecpAvKjX/hwuT2Bn+YhrxA1HNhD6uF1E01DJlsZA9WjBBkNEuwx/cUsF/17IVs05rnFzLWMztRYbF/5Sh9fLJeN/YB4Xg7xLtFLxONOTY80PmCGlYJECEDHGoM2feA6wd/pqD6STwgGJrv7zzXsCaXDho5rso6gdD4hwX7Pfjhs3MEwyIKIFb+FXXMHGqez9djqt6hKKhjhuVWiBqLgqxkhdLPk1jI4eKDgSSPb2H2HORY6a64qm2UwpbwoPvBUzZZ9+C6sr+vB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,103 +166,36 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Kairui Song <kasong@tencent.com>
 
-PG_referenced is only the lowest bit of the folio LRU refs count
-(LRU_REFS_FLAGS) now, and MGLRU never kept it stable: promotion used to
-clear it, and now it toggles as the count grows. But with the LRU
-referenced count as a stable API now, we can use two helpers to provide
-in-kernel users a stable and sane reading of the referenced status of
-an LRU managed folio.
+For MGLRU, PG_referenced is only the lowest bit of the folio LRU refs
+count, so folios with nonzero even refs no longer have the bit set.
+folio_pte_referenced() testing the raw bit misses hot folios at
+refs 2, 4 or 6, under-counting the referenced folios of a candidate range
+and aborting otherwise good collapses with SCAN_LACK_REFERENCED_PAGE.
 
-Add folio_check_lru_refs() and folio_clear_lru_refs(), which use the refs
-count when MGLRU is enabled and PG_referenced otherwise, and switch the
-smaps paths over to them. The lru_gen_enabled() test stays inside the
-helpers, so its static key is not splattered over the few call sites.
+Test the refs count directly when MGLRU is enabled, mirroring the
+smaps conversion.  The classical LRU keeps the plain bit test.
 
-Convert smaps as the first user of them. MGLRU now reports every folio
-with a nonzero count, so the reading no longer flickers and clearing no
-longer results in an ambiguous status.
-
-The classical LRU case is unchanged.
-
+Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- fs/proc/task_mmu.c        |  6 +++---
- include/linux/mm_inline.h | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+), 3 deletions(-)
+ mm/khugepaged.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 22361607020d..f76a37d052b1 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -889,7 +889,7 @@ static void smaps_account(struct mem_size_stats *mss, struct page *page,
- 
- 	mss->resident += size;
- 	/* Accumulate the size in pages that have been accessed. */
--	if (young || folio_test_young(folio) || folio_test_referenced(folio))
-+	if (young || folio_test_young(folio) || folio_check_lru_refs(folio))
- 		mss->referenced += size;
- 
- 	/*
-@@ -1686,7 +1686,7 @@ static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
- 		/* Clear accessed and referenced bits. */
- 		pmdp_test_and_clear_young(vma, addr, pmd);
- 		folio_test_clear_young(folio);
--		folio_clear_referenced(folio);
-+		folio_clear_lru_refs(folio);
- out:
- 		spin_unlock(ptl);
- 		return 0;
-@@ -1715,7 +1715,7 @@ static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
- 		/* Clear accessed and referenced bits. */
- 		ptep_test_and_clear_young(vma, addr, pte);
- 		folio_test_clear_young(folio);
--		folio_clear_referenced(folio);
-+		folio_clear_lru_refs(folio);
- 	}
- 	pte_unmap_unlock(pte - 1, ptl);
- 	cond_resched();
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 3323a3c7336b..14aab2b1ed08 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -508,6 +508,37 @@ static __always_inline void folio_inc_lru_refs_fast(struct folio *folio)
- 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
- }
- 
-+/**
-+ * folio_check_lru_refs - Test if an LRU managed folio has been referenced.
-+ * @folio: The folio to test.
-+ *
-+ * Returns true if the MGLRU refs count is nonzero, or PG_referenced is set,
-+ * which is also correct for the non-MGLRU case. Kept as a separate helper,
-+ * to avoid splattering the lru_gen_enabled() static key.
-+ */
-+static inline bool folio_check_lru_refs(const struct folio *folio)
-+{
-+	if (lru_gen_enabled())
-+		return folio_lru_refs(folio) > 0;
-+	return folio_test_referenced(folio);
-+}
-+
-+/**
-+ * folio_clear_lru_refs - Clear the referenced state of an LRU managed folio.
-+ * @folio: The folio to clear.
-+ *
-+ * Reset the MGLRU refs count to zero, or clear PG_referenced, leaving
-+ * PG_workingset alone for the non-MGLRU case. Kept as a separate helper
-+ * just like folio_check_lru_refs().
-+ */
-+static inline void folio_clear_lru_refs(struct folio *folio)
-+{
-+	if (lru_gen_enabled())
-+		folio_set_lru_refs(folio, 0);
-+	else
-+		folio_clear_referenced(folio);
-+}
-+
- static __always_inline
- void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 4bbe319ef86f..68f7a30e36be 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -579,7 +579,9 @@ static bool folio_pte_referenced(struct folio *folio,
+ 		struct vm_area_struct *vma, unsigned long addr, pte_t pteval)
  {
+ 	/* The folio was referenced previously ... */
+-	if (folio_test_young(folio) || folio_test_referenced(folio))
++	if (folio_test_young(folio))
++		return true;
++	if (folio_check_lru_refs(folio))
+ 		return true;
+ 	/* ... or the PTE mapping was recently used */
+ 	return pte_young(pteval) || mmu_notifier_test_young(vma->vm_mm, addr);
 
 -- 
 2.56.1
