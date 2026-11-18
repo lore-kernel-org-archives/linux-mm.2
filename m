@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E87606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A076606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRGdLTAs
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxLWD3N7
 Received: by kanga.kvack.org (Postfix)
-	id 9249A6B05B2; Wed, 18 Nov 2026 04:02:52 -0500 (EST)
+	id 52FDE6B05B1; Wed, 18 Nov 2026 04:04:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FBF96B05B3; Wed, 18 Nov 2026 04:02:52 -0500 (EST)
+	id 507476B05B5; Wed, 18 Nov 2026 04:04:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EAF66B05B4; Wed, 18 Nov 2026 04:02:52 -0500 (EST)
+	id 444756B05B6; Wed, 18 Nov 2026 04:04:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EF776B05B2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:02:52 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 14A676B05B1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:04:11 -0500 (EST)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE0D2806AB
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:02:51 +0000 (UTC)
-X-FDA: 85447649742.27.DCFEB24
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 44140140010
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:02:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRGdLTAs;
-	spf=pass (imf09.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794992570;
-	b=2ydcV4Deto+oR3YXK7NE26g6Tjk+OyyY1y3xebtlXR8zwdoQrnX100IwYE0wtAXkVb7YAt
-	GAtDFmwhKsS4kuJjoFQKPXe+mOEdu+9zEs52dUwUOYkWSJ8QXm4ND2NtvU0jhrYCzhbbeB
-	Bkv4avEZAdOYD4238xaRifVqCsjD60E=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRGdLTAs;
-	spf=pass (imf09.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 68BC5A832A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:04:10 +0000 (UTC)
+X-FDA: 85447653060.27.D8CC2A6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D2AC1C0006
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:04:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GxLWD3N7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794992570;
+	s=arc-20220608; t=1794992648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pLn6fncZGa4fgL+fOqpgq5YRYTggYFIcZ3+38mE0Nvc=;
-	b=BH9SFdQk02bBgtgVqmXhqrvxs3tJKfby0AzQqhblL3FJK+ZS7Hde0YAFx3+u7wswhEAOWQ
-	bB0ZhQrh6ZweivHdsmL/3AoUDEe3ECUYnfdY5NA0jeHtop4J+sNvpFEv9iNqkcjVZarjdF
-	6j7lpyl7xMnOVMqOj12hrbDQuYW5O3M=
+	bh=/ILw4EFux7bTkf5RNu3Ik+2UTxpkbYziGgraDHdKyo4=;
+	b=r5wPLlxe+D+BY0vGpvyY4VnA1W61D72TRRQeQ0+v+SyXn0+keOR64bu2gFDQhB3ach9qAY
+	ovh4g+iuYEuLvcT2Csq4i1iDFw2gSRM5TC7D5ft1GifkB/aar4rlgEeoZ8fKhmf79ZQQVn
+	y60rcdlI116DtunmA5YxB/gJw5/qOjA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GxLWD3N7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794992648;
+	b=Q0xC/ndNyJ8lJaumbZvSgOUOuy/5Cn8yUxMtGUlC07y1NSbfzQiSIuhAj6gaRSl6A1GG3n
+	euoWM4cBwpRoMEqU8GTs9ylkkqLNrplGv0NSFxHFoqXG2kcjIQKzFg0Z2/FuV8opw+QoXM
+	/Q/fflKPIMpvL/+BLV6f9qCeIp9uBLQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4275D437D9;
-	Wed, 18 Nov 2026 09:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA511F000C5;
-	Wed, 18 Nov 2026 09:02:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 253C361FAD;
+	Wed, 18 Nov 2026 09:04:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C9E1F000CE;
+	Wed, 18 Nov 2026 09:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794992569;
-	bh=pLn6fncZGa4fgL+fOqpgq5YRYTggYFIcZ3+38mE0Nvc=;
+	s=k20260515; t=1794992647;
+	bh=/ILw4EFux7bTkf5RNu3Ik+2UTxpkbYziGgraDHdKyo4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JRGdLTAsXBvvBhLBMNip+PBzFeCWDHNGjtE/29dINX+9MVgmhVBLES9E+pEgXct03
-	 EaY9TvK82FuPptmwjz5VrUCPSr+2JAdhpavzvKdMddAWW3XiiJkmTW4yxfYTFqrE4s
-	 llB+3lnJvZm6LHLGcjo+pQ0tetlRwHocyPblj+j3nThU/CjmJ/zmDUfGDxnCMo2R16
-	 ByEQjpAM4b4jvbfCpeb7+b9bdmuTsTgxEbGSutaNgNz+SAjG9Bc4/NiSb5P9tlV7Yc
-	 vqjdaNvm0Bg16bzvsTMwBHAw2pVe6rUiiZpVj+Fd4v4PtQuJ8Jwy7v5d+MplCUwp5P
-	 Py3LGm7/SaKLw==
-Date: Wed, 18 Nov 2026 10:02:36 +0100
+	b=GxLWD3N73udbUDoNblg7Ifu79ktDf2tMPQZBPZqOeRhnEGWEZm7cUXVyjJ1dnGv5i
+	 l3BIwO3wcRqh/opIRo3nC8VYsRjIQHTV2Z4Wp8Fk3nsEgpEC9o77OtjcDP3eGFN7Fb
+	 n0MZW/am2GOXPaqhqQa+rFDYtnX3TblWDpKMk25PbbLNOINBG12hHwFhiI9ihwCobM
+	 VY5YhSvOPK+r9knEQz2YZCvaUHzkAa7KgIXsQ7UnIahtmy9PqzvnfJTtC767GGKR4j
+	 o18rv44b5AyfSff3CIXYD7OvaDKnLyI1Tg9wwp9KU2+/ayRnE1vvZxgnUG/oEapTsr
+	 jDapuh74AaHyA==
+Date: Wed, 18 Nov 2026 10:03:52 +0100
 From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
@@ -92,29 +92,30 @@ Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
 	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-	stable@kernel.org, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH v2 06/15] mm/hugetlb: fix mremap() racing with page
- migration
-Message-ID: <av1prAuFVxsdBsIP@localhost.localdomain>
+	Josef Bacik <josef@toxicpanda.com>, stable@kernel.org,
+	Daehyeon Ko <4ncienth@gmail.com>
+Subject: Re: [PATCH v2 07/15] hugetlbfs: fix unmapping folios from private
+ VMAs
+Message-ID: <av1p-MN1hMfZDuBL@localhost.localdomain>
 References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
- <20261116-fixes_hugetlb-v2-6-4dd9e94ea9ac@kernel.org>
+ <20261116-fixes_hugetlb-v2-7-4dd9e94ea9ac@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261116-fixes_hugetlb-v2-6-4dd9e94ea9ac@kernel.org>
+In-Reply-To: <20261116-fixes_hugetlb-v2-7-4dd9e94ea9ac@kernel.org>
+X-Rspamd-Queue-Id: D2AC1C0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 44140140010
-X-Stat-Signature: e8i1e1h8uc4rjoo81u7ncrf6hbhrcgds
-X-Rspamd-Server: rspam05
+X-Stat-Signature: bpkc7tbbtz1ac8jegrsi1srcidpcj5du
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794992570-616243
-X-HE-Meta: U2FsdGVkX1+EUQgB6d1qFT9nvx4/yzsh1Jv7eOPYIewMzj6Y3/vhQb8Ykgd3trWwkwaIqg0U/S7cFeopzalPHudojI0HsMxKjenTHzJb3y95m6F8LV9wFRtQ8zHTTxOxOfAsIxbjEsDrH7St7pKaESwj2KoWtMxAejMfE/0SGIsAYVjC6QgpuFSauicv/TbFDaHZwSWasMjv6IiYoxifgqbUrzpBJHjfChE3Xt8K9ml6QfsgELzeYzJOE6R2uLKaSBdJZL0aNh3dQqh0ZuERldECuVPDn4x0DqNyF7p82IJ1paz/geGetDhvx7Jubv3p4ThAf/VSjYJet8iW9OpPbl0UGN/FiUJzk9qMik+itxS9XPWLK8m/w7gIRgVSUCnUqpLT/YqVWXF1BqJyIzPQWmL9YQ0OvRTMvW9u6DfS5COE0Q6hGiMyD1PM1KNNQpnmmNWhsrXD0Koah5nBd+ngbGJp1RFzzdR8TNvtpJxVEuYwSfIILJ0Xg+i3T77lSIJnA7PElOn7c/yemuKT5mFTIH9Wgnmi+10Q54qDLQG+nk1DNZ3aNpyC4cMcd0pQfWWAVZo0bWuqrfbgYrBI5l7/DlZVnSW/7Bt7BDKymG6E5CUCVAZdjWhiWbaaOh/KhJ7k1EWOGWrAkLhq6WRl/opcwSKFjH+SkXb0VhHLBuf+GaGollP8yVWxi0F8tlAGUb4IZKYSe66bVByl/kLJ+qjlz3qcgqBS1LK0q68HSd2EBT56xNLXW5XsKL0YBRtGf06gRPGyQ+LVlW8hyAbvRV4CuKgAvivzvKzRG8uyhslYOpk4AEtE3JmDjNn+U4pXJUuxJQKU5GR0j5o5Gc9K8ak77npc3o0boi1qoYBHNT1APq4Sg6MFQcEpePR8pOOJcr/WSkYOibva83LlGl+JYy7KpEDlGQJNbB4ntJm6WMfVd0lBmzJeCUe37GHRFl2LqBaEVEc87fu4vje5MI1rSBo
- Q5SYk/Cl
- kHf+s088S2JpKAYYwtvSMOpXGQJUYvdajEO5l4tpMjQezJPbf22vpC0mNotNBVehEYbBr/5II5EBJL0LW/YQ+k3bL3TjigW4jd+lun9hFrTVfn4AGiU6sJ1pgGm9PZFbVuavTG8Yr6Jhio1Rvlfko6KEN2nx/qU5gq6/DcuqzJlmnm8ukbcp4ou6N9sgjUrzeOjmROMcSl2OV36F3xdiGoRwfpsuguOcd8+3EzuaCcrltm35vnNjrKoRJr9qo61qKdAQc5ZS4B/Iq7LuVzHH52yyOuzpoMZw5nHLXD94tDR2gZx/6039oy2/G3ekvxhGR+MqiYGEYRgBc8ggBuopGhBBp0rsLPenESJDt
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1794992648-998023
+X-HE-Meta: U2FsdGVkX19XzT8qJ17xtfcNeyoiqTh/Bxn7wC8wMcKpfbrh3tCTGcMWAh7TPK7DfxCjEWMwTWGgLaowydzyWR0QlJDoPDKZD8Pdorm57xPOzvSRkiuWM/HenY4N6SbrjPrb0C01CScC/HP9Vy6+ZtO8Odpbz04e6ViSfAEfRlAhrlhcT7MZ49o6Z1QHY6nhVNIyv/CVpM7RDmP4QvX0maRw662+S3wj92gzFyQlOG8lYVttWdmP26EhwFr2QfA3GaOSlDxN5KlKdj1wYKZlr+IxaqrnjNXmy/NO18TBpkfvo8u9TVkApXJTAqT4osd30GCpyK+kzOW9f0PeIEV0v0coHUcY3+mxtXRvq3EDgEZWuNMURJBUJZAV/sz4d0TO1m4vaVm2hcnPCIuW6hqv5KALVx6901h1gx6h2+KiJPdpdinOpFo/y0eL3wtUleTKFTKec6uOmP1gKGOG3oM5G86glzeTCFI+jlHDeGeFQbmutxydYDxTLvVFHoYkdXfh0S7oZT5rw2jh5OYuSVKc/vRwptRcJcNtZ4SbK5jEWBmQPVqJY4THrva7T+yRFCOxwqCjuaF8JQ10h4gLag3VlXTPNwjoElVFOpJFTFOGezWhgJZcfDHUi20Qf7kSCihdTPXZcTHFVOVR2iuHjkiNLlwpIExQmSGXpbw1K54uEflgIV3azXmYtx3uYLV4FtA8KlrMik7znVZEHrfe3zEg+BlhI2F4ldIwInVDyOrooxIldM4x5tH5+S7DdMZ0wK36XDs6bQULS67QuSpyNI2tEyrg+DXNfX8MciZwFrNd89jRLk2Z+mGQYo8uQM6oijjn5wCMy9kh0QQW3YX35qz+NbXNZyAfnlqhFxX9lBvakgXKJWwE5LkDCsVbdm+E0ouFQwdXi0zAdilGWcxssotqeC2Bfij6LfHtscvv5Kg5ggerxbRRBCJ01+mcd1tmcp9phht71owcfyRZht7rkjb
+ pfXHeJVM
+ w4PdC7KLXyqiLwI/Q3kcFYsK8xWmDnarJsqA0jtinrQh4ut4jI9PDVSLQgbT9YD/ZcyZ7JXJZvaTC7nQHro2EgPV/vLjj67rspJ0NBeanMSAuf7o9DWp9wSw+GEGE2aEM+BdanLcMrryPQSVdLcF71nMDMHWQ6GY2gWVT++JduxtDse4B4GLvbtlxiYeN0V5cPkOPHbEt3MVo0QtnGdKSAoSsUXbY1m9majk6AsVhg8urq4gfLNlg40js3Ie/sYxwTGArgt/h+gdc0032C6v1cjhyGiGxLwete6sEQD23SoihYfiD8Bt2CAHBNrffVtDrCJ2Z7dVJGAm9gcLwaFkTDNNtvDlLfWsHMGr1wT0xRsJYacTu01zSbW7TI5hKbX1xkoox4UYTJTowymc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,41 +124,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 07:29:27PM +0100, David Hildenbrand (Arm) wrote:
-> Migration of anon hugetlb folios walks the anon_vma, so the file's
-> i_mmap_rwsem does not serialize it against move_hugetlb_page_tables().
+On Mon, Nov 16, 2026 at 07:29:28PM +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
 > 
-> There are various issues with that. Most importantly, move_huge_pte()
-> releases both page table locks before the TLB is flushed. Migration can
-> then find the destination entry and finish migration, reusing the old
-> folio while the TLB still has entries cached.
+> hugetlb_unmap_file_folio() assumes vm_private_data points to a struct
+> hugetlb_vma_lock when hugetlb_vma_trylock_write() fails. Since hugetlb VMA
+> locking was extended to private VMAs, this can also happen when
+> vm_private_data contains a resv_map pointer; treating it as a
+> hugetlb_vma_lock corrupts memory and can cause crashes or hangs.
 > 
-> Hold the anon_vma write lock across the move and the final TLB flush.
-> This also prevents concurrent rmap walks from missing entries moved
-> during rollback.
+> Only take the VMA lock when a shareable lock exists, as additional locking
+> is only needed for PMD table sharing. The fault mutex and i_mmap_rwsem
+> already provide the required protection for private VMAs.
 > 
-> When we must allocate a destination page table, flush the TLB before
-> dropping the anon_vma lock, then reacquire it after allocation.
+> Fix generated by an LLM and sent by Josef Bacik in private.
 > 
-> Dropping the lock only works around lockdep: hugetlb folios are not
-> reclaimed or migrated by allocation compaction, but their anon_vmas
-> share the lock class used by ordinary anonymous memory. Having a
-> separate lock class for hugetlb's anon_vma (like already done for
-> i_mmap_rwsem via hugetlbfs_i_mmap_rwsem_key) requires more thought.
-> 
-> There is a concern that this can block page migration of anonymous
-> folios quite a while ... which is not really different to what happens
-> to page-cache folios today. If ever a problem, we can temporarily
-> release the lock.
-> 
-> So let's keep it simple for now.
-> 
-> It is a shame that hugetlb has to implement everything core-mm implements
-> in a different way that just screams for problems.
-> 
-> Fixes: 550a7d60bd5e ("mm, hugepages: add mremap() support for hugepage backed vma")
+> Fixes: bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private VMAs")
 > Cc: stable@kernel.org
-> Reported-by: Chris Mason <mason@kernel.org>
+> Tested-by: Daehyeon Ko <4ncienth@gmail.com>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: simplify description and comment ]
 > Acked-by: Muchun Song <muchun.song@linux.dev>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
