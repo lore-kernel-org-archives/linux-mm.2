@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEAC606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 23:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3040E606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 23:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IlOffqxo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OAFSyaxy
 Received: by kanga.kvack.org (Postfix)
-	id 5E2EB6B0637; Wed, 18 Nov 2026 18:15:25 -0500 (EST)
+	id BD59D6B063A; Wed, 18 Nov 2026 18:15:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 593126B0638; Wed, 18 Nov 2026 18:15:25 -0500 (EST)
+	id B65476B063B; Wed, 18 Nov 2026 18:15:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 397976B0639; Wed, 18 Nov 2026 18:15:25 -0500 (EST)
+	id 964946B063C; Wed, 18 Nov 2026 18:15:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E2E4A6B0637
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:15:24 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6502D160918
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:15:24 +0000 (UTC)
-X-FDA: 85449798168.12.29E04DE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AE8E1100009
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:15:22 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlOffqxo;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795043722;
-	b=novogk5y0lXxpEWv4RM/Xrfq25yjjv6PAI+PcL4MZ38lkdU0UxgCMGKBgHAM2KAEu/2uNd
-	DuuFLoYxShCtMJDoWF+JlOKw9f+h9OmtjJDfs5+rMARGnMaYo3M1IipMRkXZAwt93qIvR9
-	IjnQiG8FvUHKlYPy2xyRuiXNXk3rZCE=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 666226B063A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:15:27 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0168808BF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:15:26 +0000 (UTC)
+X-FDA: 85449798252.11.C24A8E7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4B19980009
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:15:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OAFSyaxy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795043722;
+	s=arc-20220608; t=1795043725;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1eMO0ZdPCEFQ/EmxlhiA7Qy9no17Gyx6XtDtYpbkALU=;
-	b=q2nY966LT35KmrPYwj2oThNxKWU78vkgI/Cf6JYYE1E8LvG4mxzWJqnmwDhm7fCPmaZN4e
-	MYvXyEGFWGYlhigr4HB2ZOVVdVYbMZsymuu3oHbVGeAqiVCa2wunbTrLQCD0O+vJ3mp6R7
-	shqsb0rsZVZUb5Xj/y2O5PZMBS0NpGc=
+	bh=E6t5wzxGOfXIEIcg9fBtQNa9zbQEafj93QzKo1t697E=;
+	b=GBFORJMVRI5cDNs9+9lNkvY5MBA6H8F8VzKyxDm6yQLqBiEeES4I/9ntg8+n0PTNTkoJtj
+	YV3FfxaHTZGZdNvShIxaUmRS4SDcuZzLT60DqNb71WAuStu/8DHC3YCwCqEkgiqFU/lpnq
+	vEbQfsZOQgEwvJhvgHt5eMe2gUIRjBs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlOffqxo;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OAFSyaxy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795043725;
+	b=lBqg/EYCXXDEclGGrW0OpO27MBSDFi1bFs7phreeptO7xLaCgwSzIFodB5+jtozm7x/7eQ
+	Xaktfb/mZyB4cDTcdNOPYawWCjPPKmXsliozz6jBaQDJoSHI1cULtkPwnKk4O4f7bqPEg2
+	XMYDZSqVAmYCOGt/viqCShuY9hHDfHc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D7DFB467BF;
-	Wed, 18 Nov 2026 23:15:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC1C1F000C4;
-	Wed, 18 Nov 2026 23:15:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5BF24641E9;
+	Wed, 18 Nov 2026 23:15:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438451F000C4;
+	Wed, 18 Nov 2026 23:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795043721;
-	bh=1eMO0ZdPCEFQ/EmxlhiA7Qy9no17Gyx6XtDtYpbkALU=;
+	s=k20260515; t=1795043724;
+	bh=E6t5wzxGOfXIEIcg9fBtQNa9zbQEafj93QzKo1t697E=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IlOffqxoh9JmlfnCMZQpBnMTvs/2KWqdLeuDzQE5j16E6wKe6CjMnw97euijuEAMs
-	 i51UHpromUfBlyFvDmqHggTVOdFOOx8P+ANOeuIiZW0rH2w8zuWJH4Po34gqdJdcQp
-	 lwQXjqiU2PbgRYwJmb5NoJxnb+ahONiotIHfhPDcpPXDVo4v3IXUTPhJAbdKXT4VAN
-	 WWGkcCoimmcOkNuwGvd29BJdm2HSfLZFhQZf3RD9kubWumPQgIQvbQMJcWPMa/KlK5
-	 u4dqLgms+pmjCl/TyMf8V/YYNzicPq9LTJfbC+wkg+p4xu+w3ZPFzq+kNxH/UuCcjW
-	 Rt4aE1TqbQ/ag==
-Message-ID: <sashiko-outbox-222162@kernel.org>
+	b=OAFSyaxy70917NfmntbnUfCA5v823EBkhpm3W6SMckBMFSWzMrGo50v41ADUlwco0
+	 y3ozvbxwNM4VPEyMnw0QL6s992f1pqqtg0DqyHJ4eJNL8y/awT6i8yXY4HCRzY6H6D
+	 y7QyV522gVQPgb7InHSI1Ndw4ARFzTLCJQ992dstcP+q0wz0OjLts0xFVALoi2mGXB
+	 X3AHifrBD3iCXwXyoEk8q/lGi6+/XXUzTg39RLh5zkLkh6RzdLeS+scjEqEFj5mgrK
+	 MSaRMQ+relb/P3TnB9uDtzgG6mC5RkLEOXJaQq7q77+ygKDjlIRrRvQoMeldPipST9
+	 llnQHCR6zNjNQ==
+Message-ID: <sashiko-outbox-222163@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 08/13] fs: Support FSCONFIG_SET_ROOTNS in
- fsconfig()
+Subject: Re: [RFC PATCH v2 09/13] fs: Support installing rootns mount trees
+ via move_mount()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jarkko Sakkinen" <jarkko@kernel.org>
 Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
@@ -84,24 +84,24 @@ Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
  Baghdasaryan" <surenb@google.com>, "Valentin Schneider" <vschneid@redhat.com>, "Vincent
  Guittot" <vincent.guittot@linaro.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Zygmunt
  Krynicki" <zygmunt.krynicki@canonical.com>
-In-Reply-To: <20261117231352.3816603-9-jarkko@kernel.org>
+In-Reply-To: <20261117231352.3816603-10-jarkko@kernel.org>
 References: <20261117231352.3816603-1-jarkko@kernel.org>
- <20261117231352.3816603-9-jarkko@kernel.org>
+ <20261117231352.3816603-10-jarkko@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 23:15:19 +0000
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AE8E1100009
-X-Rspam-User:
-X-Stat-Signature: jop9dx8g7gi716oxsfdcox1jf4hnsarp
+Date: Wed, 18 Nov 2026 23:15:21 +0000
+X-Rspamd-Queue-Id: 4B19980009
+X-Stat-Signature: h7h9juhfs3yb13jtr64a6m137i7i43ib
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795043722-562851
-X-HE-Meta: U2FsdGVkX18tHuStdxN0UKLZuVuxmM9iGH76C9lovtfR8TQekN12ZX37aIolkWu/TktYXwZTQ41jm+5R9w7XlihZPCisxlvYrbZSZ75K5b0gZ5Ui8o3AME1MvjUTpXh0Dc+JMqFJORH/OX8we8lc18G6lT2BGOeIK6ZYe3nn3t/F8uTxpt6it6Mna7+i8Tkyt7LrG2By7kyWDE/gwLpto4Q45SfFk5/905e8t8yaKNy1ak+zs5NiaaAv/6ScIy6wwXm916l6bwBV8jGuB/uBfRDSfyBuWIYhkIg48rYd9aeUpZYmQOmcH2SNjAzIXWoe61+wqDPsLOuCnTbjtr/pEPts5IYWunvtLTU0OvloHl5+xwsb/asAfE9f8Lf/fHxFm2/q2Mr9Ek60GPmeB0zMTxdZh0o5K9iqHKtCGWHyTVj1ftyGL70RiGzUi6vKianV43KMmMJx80e3RQ5pYd97HO/7knWFFj3Jgmx7alL8RkOq0Cb5I3e1d22YhLBL9QPmA06h7KCiK0y8KRJaGy9zxcHYMA54X6Tn3V+vWt5QpxVnjyvORPubL64iyk37p68ZADS+WKkVebzubyDToBLTImU1Nxg62BZUUxqVJxfU62xSmsinloidgG0gZwH+MRfmIZne8MwH3IRchJ5rxl20Ini8xa7jDp2AG03DvjXOE5XgQ0p14oJrs23oDGLg45VE6XGEyCo0VX3WwTd+7U2BEL776oN0pEJh3xfg10zl+ZVoxM7UVrcuBd2UgAorqvSy1YhsawlXYxIFmKL/ooKwz8iw2zkAgCO+UXXAClLJvY74Bn/3+7g8spRKQ4D96RB6E5j7x80POW6imkJVXBr6fOsyLy2+Adk7jgKAkjGTzl0t0T8c3+rLSTOd2MmmxJT21rm7bdv4rUDU+0tRSQm/1si4RmQSkR4LcYIEQW9n0424SAAOHjldY5lVDpssROacDCs021z2FUbNfA0YNZc
- BiNAQRIv
- Lz3yenouofiqEfsPxnRcm1SDT/ubDDfuGky3mYW/jf6Oe72BvQQjswN1Kd8e7spvQJiSfLuurl+HCoQ2M04gGvghnmPQPR15zrGvZD8YhpsunlhmHKgQXu7HIlfwSSh4yvZSuKKr6H3GAKqmOLlf93KNdxrZ1qXkZg/IH8faXSfDM46hx1WlvI3YTvw/8z19D9oXwUVAakUCCdDJMzJJJPysbdvxrDfLOwyOE3xRb+ZqDUW0QxDtU1OArZ9NzmFgVngK3OkNF/HwGIYLPODYT8+VRPWt2Ona9OTxKtGkXTEn8Uv1rPaXcLFHJxyDchRU72VRt57gcRs16vgpls+PVCgAF8Y4hV+FQt6C06fEFK3mHTibkx7ddmoFFrtjJiYvjwtstvJmCRxFuguSCvj4CeBmup42xqPVk5BU9MXau9cNJjOh9hzthLjzlIbxapHN99BRHKJHesQ0S2l2IV9MPRkGfJNQJXTMiLaRfgjFnpEDg8w0zQdp9PN4JAtbFQMrtXICJ4TOCmjeeVBOwZYAAxyLLKic0IV72K26KX51UrvcbunfVDAOKUIfP45gfUDvvmCzRgUIrHL+nlFwLBCQKV8tUJev6Sv1OZAzxKNyVbGiGS3A2/l0Vw6EDCQdw8dgSBUve4sj+fSmw0nerBf/Vw3cpZRy/ClpQDz6mwormFrQULSDsUM5Po2koKQJ5BtrcovrNuQCSGDvz95l6Jr13fRcfft5G4JLoyfcBZkDqqbQengX5VMDwWDfFzgyKK6fIda0CqXnloXATOenQiAhNwA8Y3bROmmkVhI2c
+X-Rspam-User: 
+X-HE-Tag: 1795043725-103611
+X-HE-Meta: U2FsdGVkX1/7KSzTwX3xVkYIPKP9p0WZ1M4qiRPdFfaDLOg9SCoKuEoa43eTczUhFFYcocAwcZba+FhUCDW8DL5M6zfNzWgiIxOKfwUAmCiAmT6vprBy2gJH8tOyvD0SJDhzlvzKOjC5Fsz2sNhmvIao4zBC+/5hJ82wHria9OqZLxxYxTj5OsW95wewpPvAe0S8QlUlP+Nt8BtrTOPvHYD3tL4oE9gOz/M39rslJh+b0DTk036uHERJNmdYZbAY1t64J/IEV1ztf3uZ6KQ/pFMvYjaPmhhQnItogUBXCXtUdT/4Bft66CB1DeJbfSFjU7r3N5A+5m8d2jsJV8pQuVZmw0iuQK4joUPzQyR4Ylk8VwRFS9WLGPbYlKKycKY4kCpUOW0FgkIdXyYQbO/Fcc3zPdZPehUCr/Zd+Qad8qtRGG3C4+iucrUJkBn5+4wDQi9HdFbJKC0tHD+DXhevP5ZwGIQXtfWM49r9qWtbySkxK/X7exXKP/m3QbdXQ2x9iC1ti6RryLpBbtbIBVsDhXAO7nofRVzLR9KSYbBhiH5q4msXCLSKyCXf5NE8Y6P6w6YcJGq3zBUVf+xD9DDKiBX9Wyer7galO3rNr04JT7NstwwYxoP4hvMo7mrr6AF6WrU2gpm4v1LkKMU5CrqezCl05dubIALPAmoGP1DoNL9pnHvcibfiCYR2dJ8LlKbh1ineJGeWGkGQwK6BYa1wm9qtR+2gz2XRpHU8oA8nmOvrElIuISdcP9EeHgIoZY5QH662Mj7qt8pVo1Zxxr0DPmQY5Eo/BkKBuQ7HlGkZy74w6eqTknKk8mEiPb2IdH/4od2/fATftDH0faOrwYeQc1+eu6RrLFhJG2L72huCwNpmyc4UJeYMVQ0ae4Hspuq9CPerWtx+S8V18p2h3AwgwL8t0OMQWHnLgffP9cb89hG0xUbf1Typ1hKH3dM2yrMDfK3qkJhKrOn3tBMebY2
+ qreYbAcE
+ pP2IcCI09lULvCKfHXm5jAijbqFXnGD8uwhKGfqBMdvRWXOFa4s2P9b1sfVJKihGK7//szQ/pR7XRUMwWk+CpyHvYTne3eBkzwtcOYQ3zQJSfrlkKZ4Nkj7aQOicx/Z2TfRyX8vXZ9RWED4/PxXPW40K3LektKHTU4jGdQ/V+CAcN/1cIUiTxMRMT8Zy0seKpQ7MQcfaHD+EhmGROM8rXjBhIAK/bAKz5+PrP0dBGfZYExciQfUUEr5JRTEQI2KCd7tGUsZ90d8lLhwWt57as2aornDTWIVM1cHWy9qTOBN6Kl23XY1ZeErrtC/vYohhJx6qZWvBCAPZgZS/lzjfXyj7w54PcFcg8mtEe6eAu64nN9s54XNaG7vXZ9jjFJ41Ibky3kgdcbhSEy8/+bSzbfBm6Lfz8gR83ipCpGuvSNrLHbB+0HEfnJN3P7cun0C1NbqTXFmackpS96VI7GuHyHwrWLfTe+HeN9v7LFrKDZirCcXP8EbCulsEYULPeomO0VdLh+28m/bWmciBN1eGpBOMCTaSlqOPx8wxTHUFmgj0q9M9XvxfqMYDu2dts5zvASwN3HOoPVCUxMS/C4AhD4DeExu4fh8iBJQh7j359jprONv9sNAgv9OQKJvoff0bzQV/iMUKX6qhHmdM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,175 +111,274 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issues to consider:
-- [Critical] fs: fsconfig_set_rootns() replaces fc->net_ns after
-  init_fs_context()
-- [High] fs: proc: missing pidns_is_ancestor() check in
-  proc_set_rootns()
-- [High] fs: broken fc->user_ns delegation in fsconfig_set_rootns()
-- [Medium] fs: missing net_ns and ipc_ns capability checks in
-  fsconfig_set_rootns()
+- [High] fs: check_for_nsfs_mounts() checks caller mnt_ns instead of
+  rootns target
+- [High] fs: do_move_mount() calls lock_mnt_tree() after
+  attach_recursive_mnt()
+- [High] fs: relative target paths in move_mount_rootns() bypass is_root
+  checks
+- [High] fs: TOCTOU race on rootns->state in move_mount_rootns()
+  corrupts state
+- [High] fs: fsmount() alloc_mnt_ns(fc->user_ns) bypasses submount
+  MNT_LOCKED
 --
 
-commit 5cbef69c784337269ad86c164ca92e045e18c429
+commit f0ccb5459fd227ad26c0bf5f42a1937aaa266930
 Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
+fs: Support installing rootns mount trees via move_mount()
 
-This commit adds the FSCONFIG_SET_ROOTNS command to fsconfig() so a newly
-opened fs_context can be bound to a target root namespace before parsing
-parameters.
+This commit adds MOVE_MOUNT_T_ROOTNS_ROOT to allow attaching detached
+anonymous mount trees into a rootns mount namespace via its file descriptor,
+and allocates fsmount() anonymous mount namespaces in fc->user_ns.
 
-> diff --git a/fs/fsopen.c b/fs/fsopen.c
-> index 70024870fefa2..ca3234c8c4e47 100644
-> --- a/fs/fsopen.c
-> +++ b/fs/fsopen.c
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> index 010ed5d68d229..2dfb5e01d40f0 100644
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
+
 [ ... ]
-> +static int fsconfig_set_rootns(struct fs_context *fc, struct fs_paramete=
-r *param)
-> +{
-> +	struct user_namespace *user_ns;
-> +	struct rootns *c;
-> +
-> +	if (!is_rootns_file(param->file))
-> +		return -EINVAL;
-> +
-> +	c =3D param->file->private_data;
-> +	user_ns =3D c->cred->user_ns;
-> +	if (!ns_capable(user_ns, CAP_SYS_ADMIN))
-> +		return -EPERM;
 
-[Severity: Medium]
-Does checking CAP_SYS_ADMIN only against c->cred->user_ns allow rebinding
-fc->net_ns or mqueue's ctx->ipc_ns to an ancestor namespace where the
-caller lacks privileges?
+> @@ -3792,7 +3796,13 @@ static int do_move_mount(const struct path *old_pa=
+th,
+>  	if (IS_ERR(mp.parent))
+>  		return PTR_ERR(mp.parent);
+> =20
+> -	if (check_mnt(old)) {
+> +	if (flags & MNT_TREE_ROOTNS) {
+> +		if (!anon_ns_root(old) || old->mnt_ns =3D=3D mp.parent->mnt_ns)
+> +			return -EINVAL;
+> +		if ((flags & MNT_TREE_ROOTNS_INIT) &&
+> +		    mp.parent !=3D real_mount(new_path->mnt))
+> +			return -EBUSY;
+> +	} else if (check_mnt(old)) {
 
-In create_rootns(), when ROOTNS_USER is passed without ROOTNS_NET or
-ROOTNS_IPC, c->ns->net_ns and c->ns->ipc_ns are inherited from
-current->nsproxy and remain owned by an ancestor user namespace.  A caller
-in an isolated network or IPC namespace that holds CAP_SYS_ADMIN in
-c->cred->user_ns can then use a rootns fd to switch fc->net_ns or
-ctx->ipc_ns back to that ancestor namespace without holding CAP_SYS_ADMIN
-in c->ns->net_ns->user_ns or c->ns->ipc_ns->user_ns.
+[Severity: High]
+Can moving an nsfs mount into a rootns with MNT_TREE_ROOTNS create an
+unbreakable mount namespace reference cycle?
 
-> +
-> +	put_net(fc->net_ns);
-> +	fc->net_ns =3D get_net(c->ns->net_ns);
+Later in do_move_mount(), check_for_nsfs_mounts(old) calls mnt_ns_loop(),
+which checks against current->nsproxy->mnt_ns rather than the destination
+mp.parent->mnt_ns:
 
-[Severity: Critical]
-Can replacing and dropping fc->net_ns here after init_fs_context() has
-already run cause a use-after-free in filesystems that cache per-net state
-during fsopen()?
-
-During fsopen(), alloc_fs_context() calls fc->fs_type->init_fs_context(fc)
-with the caller's current fc->net_ns.  In kAFS, afs_init_fs_context()
-stores an unreferenced pointer into that netns:
-
-fs/afs/super.c:afs_init_fs_context() {
-	...
-	ctx->net =3D afs_net(fc->net_ns);
-
-	/* Default to the workstation cell. */
-	cell =3D afs_find_cell(ctx->net, NULL, 0, afs_cell_trace_use_fc);
-	if (IS_ERR(cell))
-		cell =3D NULL;
-	ctx->cell =3D cell;
-	...
+fs/namespace.c:mnt_ns_loop() {
+    ...
+	mnt_ns =3D to_mnt_ns(get_proc_ns(d_inode(dentry)));
+	return current->nsproxy->mnt_ns->ns.ns_id >=3D mnt_ns->ns.ns_id;
 }
 
-When fsconfig_set_rootns() calls put_net(fc->net_ns), the initial netns
-can be freed once the caller exits it, leaving ctx->net dangling when a
-subsequent fsconfig() call parses "source" via afs_parse_source() ->
-afs_lookup_cell(ctx->net, ...).  If ctx->cell was non-NULL, it instead
-holds a cell reference on the old netns and hangs afs_cell_purge() in
-wait_var_event(&net->cells_outstanding) on netns exit.
+Because the target rootns mount namespace was created after the caller's
+mount namespace, current->nsproxy->mnt_ns->ns.ns_id is smaller than
+rootns_mnt_ns->ns.ns_id.  If the caller clones an nsfs mount referring to
+rootns_mnt_ns via open_tree(OPEN_TREE_CLONE) and moves it into rootns_mnt_ns
+with MOVE_MOUNT_T_ROOTNS_ROOT, mnt_ns_loop() returns false.  The mounted
+nsfs dentry then pins rootns_mnt_ns while rootns_mnt_ns pins the mount,
+permanently leaking the mount namespace and all mounts inside it.
 
-Other filesystems also derive state from fc->net_ns during
-init_fs_context() that becomes inconsistent after fc->net_ns changes:
-nfsd_init_fs_context() and rpc_init_fs_context() set fc->user_ns from the
-initial fc->net_ns->user_ns (and nfsd_fill_super() writes
-nn->nfsd_client_dir into current->nsproxy->net_ns while keying the
-superblock to fc->net_ns), while nfs_init_fs_context() sets
-NFS_MOUNT_NETUNREACH_FATAL from fc->net_ns !=3D &init_net.
+Passing mp.parent->mnt_ns to check_for_nsfs_mounts() and mnt_ns_loop() would
+check against the actual destination namespace.
 
-> +	if (!fc->global &&
-> +	    (fc->fs_type->fs_flags & (FS_USERNS_MOUNT | FS_USERNS_DELEGATABLE))=
- &&
-> +	    kuid_has_mapping(user_ns, fc->cred->fsuid) &&
-> +	    kgid_has_mapping(user_ns, fc->cred->fsgid)) {
-> +		put_user_ns(fc->user_ns);
-> +		fc->user_ns =3D get_user_ns(user_ns);
+> @@ -3845,7 +3855,16 @@ static int do_move_mount(const struct path *old_pa=
+th,
+>  	if (mount_is_ancestor(old, mp.parent))
+>  		return -ELOOP;
+> =20
+> -	return attach_recursive_mnt(old, &mp);
+> +	lock_tree =3D (flags & MNT_TREE_ROOTNS) &&
+> +		    old->mnt_ns->user_ns !=3D mp.parent->mnt_ns->user_ns;
+> +	err =3D attach_recursive_mnt(old, &mp);
+> +	if (!err && lock_tree) {
+> +		scoped_guard(mount_writer) {
+> +			lock_mnt_tree(old);
+> +			old->mnt.mnt_flags |=3D MNT_LOCKED;
+> +		}
+> +	}
+> +	return err;
+>  }
+
+[Severity: High]
+Does calling lock_mnt_tree(old) after attach_recursive_mnt(old, &mp)
+mishandle overmounted subtrees, shared mount propagation, and concurrent
+readers?
+
+Inside attach_recursive_mnt(), any existing mount q at the target mountpoint
+(for example when MOVE_MOUNT_BENEATH or overmounting is used) is reparented
+onto topmost_overmount(old) via mnt_change_mountpoint(r, mp, q), and
+MNT_LOCKED is cleared on q so it remains unmountable.  Running
+lock_mnt_tree(old) afterwards walks into q and all of q's descendants via
+next_mnt(p, old), setting MNT_LOCKED and MNT_LOCK_* on pre-existing mounts
+in the rootns and preventing q from being unmounted.
+
+In addition, if mp.parent is a shared mount in the rootns,
+attach_recursive_mnt() clones old for propagation before lock_mnt_tree(old)
+runs.  Because attach_recursive_mnt() sets user_ns =3D ns->user_ns (the tar=
+get
+rootns user_ns rather than old->mnt_ns->user_ns), the cross-userns check
+child->mnt_parent->mnt_ns->user_ns !=3D user_ns is false for peers in the
+target user_ns, leaving propagated copies unlocked.  Finally, dropping
+mount_lock in unlock_mount_hash() before re-acquiring mount_writer leaves a
+window where old is already visible in the rootns without MNT_LOCKED or
+MNT_LOCK_* set.
+
+> @@ -4701,7 +4720,7 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, =
+flags,
+>  		return FD_ADD((flags & FSMOUNT_CLOEXEC) ? O_CLOEXEC : 0,
+>  			      open_new_namespace(&new_path, MOUNT_COPY_NEW));
+> =20
+> -	ns =3D alloc_mnt_ns(current->nsproxy->mnt_ns->user_ns, true);
+> +	ns =3D alloc_mnt_ns(fc->user_ns, true);
+>  	if (IS_ERR(ns))
+>  		return PTR_ERR(ns);
+>  	mnt =3D real_mount(new_path.mnt);
+
+[Severity: High]
+Does allocating the anonymous mount namespace in fc->user_ns allow
+submounts from a parent user namespace to be installed into an unprivileged
+rootns without MNT_LOCKED?
+
+When a process in a parent user namespace configures a superblock for an
+unprivileged rootns via FSCONFIG_SET_ROOTNS, fc->user_ns is set to the
+target rootns user_ns, so fsmount() creates a root mount M_root with
+M_root->mnt_ns->user_ns equal to the rootns user_ns.  If the process then
+attaches a host mount M_sub (for example, a read-only bind mount or masking
+mount from init_user_ns) onto M_root via move_mount(), attach_recursive_mnt=
+()
+calls lock_mnt_tree(M_sub), which only sets MNT_LOCKED on descendants p !=3D
+M_sub and leaves M_sub itself without MNT_LOCKED.
+
+When M_root is subsequently moved into the rootns with
+MOVE_MOUNT_T_ROOTNS_ROOT, do_move_mount() sees M_root->mnt_ns->user_ns =3D=
+=3D
+mp.parent->mnt_ns->user_ns and skips lock_mnt_tree(M_root).  As a result,
+M_sub is never marked MNT_LOCKED in the rootns, allowing an unprivileged
+user in the rootns to unmount M_sub and expose the underlying directory.
+Conversely, attaching another FSCONFIG_SET_ROOTNS mount onto M_root via
+normal move_mount() causes attach_recursive_mnt() to compare against
+current->nsproxy->mnt_ns->user_ns (because M_root->mnt_ns is anonymous) and
+spuriously lock the same-userns submount.
+
+> @@ -4741,6 +4760,129 @@ static inline int vfs_move_mount(const struct pat=
+h *from_path,
+
+[ ... ]
+
+> +	rootns_mnt_ns =3D rootns->ns->mnt_ns;
+> +	is_root =3D to_name->name[0] =3D=3D '/' && to_name->name[1] =3D=3D '\0';
+> +	if (is_root) {
+> +		if (flags & MOVE_MOUNT_BENEATH)
+> +			return -EINVAL;
+> +		if (READ_ONCE(rootns->state) !=3D ROOTNS_EMPTY)
+> +			return -EBUSY;
+> +
+> +		to_path.mnt =3D mntget(&rootns_mnt_ns->root->mnt);
+> +		to_path.dentry =3D dget(rootns_mnt_ns->root->mnt.mnt_root);
+> +		mflags |=3D MNT_TREE_ROOTNS_INIT;
+> +	} else {
+> +		if (to_name->name[0] =3D=3D '/')
+> +			return -EINVAL;
+> +
+> +		scoped_guard(spinlock, &rootns->lock) {
+> +			if (rootns->state =3D=3D ROOTNS_EMPTY)
+> +				return -ENOENT;
+> +		}
+> +
+> +		lflags =3D 0;
+> +		if (flags & MOVE_MOUNT_T_SYMLINKS)
+> +			lflags |=3D LOOKUP_FOLLOW;
+> +		if (flags & MOVE_MOUNT_T_AUTOMOUNTS)
+> +			lflags |=3D LOOKUP_AUTOMOUNT;
+> +		ret =3D filename_lookup(AT_FDCWD, to_name, lflags, &to_path,
+> +				      &rootns->root);
+> +		if (ret)
+> +			return ret;
+> +		if (real_mount(to_path.mnt)->mnt_ns !=3D rootns_mnt_ns)
+> +			return -EINVAL;
 > +	}
 
 [Severity: High]
-Does delegating fc->user_ns this way work for unentered ROOTNS_USER root
-namespaces or for FS_USERNS_MOUNT filesystems?
+Can relative target paths such as "." or "subdir/.." resolve to_path to
+rootns->root and bypass the is_root checks?
 
-For an unentered ROOTNS_USER rootns, create_user_ns() leaves uid_map and
-gid_map empty until a process exists in the namespace, and
-rootns_prepare_fork() rejects fork with -ENOENT while the rootns is in
-ROOTNS_EMPTY before "/" is mounted.  Because kuid_has_mapping() and
-kgid_has_mapping() are false, fsconfig_set_rootns() silently leaves
-fc->user_ns unchanged while returning 0, so a privileged manager creates
-an init_user_ns superblock (without SB_I_NODEV) and an unprivileged caller
-later fails mount_capable(fc) with -EPERM.  Meanwhile, mqueue_set_rootns()
-unconditionally overwrites fc->user_ns with ctx->ipc_ns->user_ns, so
-mqueue_get_inode() assigns unmapped current_fsuid()/current_fsgid() values
-to the root inode.
+Because is_root only tests for the literal string "/", passing "." after
+root installation enters the else branch and resolves to_path to
+rootns->root:
 
-Conversely, when uid_map and gid_map are populated and fc->user_ns is
-switched to a target userns different from current_user_ns(),
-FS_USERNS_MOUNT filesystems that require fc->user_ns =3D=3D current_user_ns=
-()
-(such as ovl_fill_super(), ovl_parse_param(), and bm_fill_super()) reject
-the mount with -EINVAL:
+1. If MOVE_MOUNT_BENEATH is set with to_pathname =3D ".", the MOVE_MOUNT_BE=
+NEATH
+   check in the is_root branch is bypassed.  do_lock_mount() selects the
+   underlying nullfs root as mp.parent and mounts the new tree beneath
+   rootns->root, clearing MNT_LOCKED on rootns->root in
+   attach_recursive_mnt() so an unprivileged rootns user can unmount a
+   locked cross-userns root mount.
 
-fs/overlayfs/super.c:ovl_fill_super() {
-	...
-	/* The fscontext fd may have been passed to another user namespace. */
-	if (fc->user_ns !=3D current_user_ns())
-		goto out_err;
-	...
-}
+2. Without MOVE_MOUNT_BENEATH, to_pathname =3D "." overmounts rootns->root
+   without updating rootns->root (and similarly on initial "/" installation
+   if from_path already has overmounts stacked on its root dentry).  Because
+   copy_fs() and preset-root lookups in path_init() do not traverse
+   overmounts on rootns->root, subsequent CLONE_INTO_ROOTNS processes and
+   move_mount_rootns() lookups stay in the shadowed lower mount.
 
-> +	if (fc->ops->set_rootns)
-> +		fc->ops->set_rootns(fc, c);
-> +	fc->phase =3D FS_CONTEXT_CREATE_PARAMS;
-> +	return 0;
-> +}
-[ ... ]
-> diff --git a/fs/proc/root.c b/fs/proc/root.c
-> index 7fbbe92bf73a7..5976029ad3f80 100644
-> --- a/fs/proc/root.c
-> +++ b/fs/proc/root.c
-[ ... ]
-> @@ -323,6 +325,16 @@ static int proc_get_tree(struct fs_context *fc)
->  	return get_tree_nodev(fc, proc_fill_super);
->  }
-> =20
-> +static void proc_set_rootns(struct fs_context *fc, struct rootns *rootns)
-> +{
-> +	struct proc_fs_context *ctx =3D fc->fs_private;
 > +
-> +	put_pid_ns(ctx->pid_ns);
-> +	ctx->pid_ns =3D get_pid_ns(rootns->ns->pid_ns_for_children);
-> +	put_user_ns(fc->user_ns);
-> +	fc->user_ns =3D get_user_ns(ctx->pid_ns->user_ns);
+> +	ret =3D lookup_move_mount_from(from_dfd, from_pathname, flags,
+> +				     &from_path);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D vfs_move_mount(&from_path, &to_path, mflags | MNT_TREE_ROOTNS);
+> +	if (!ret && is_root) {
+> +		scoped_guard(spinlock, &rootns->lock) {
+> +			path_get(&from_path);
+> +			rootns->root =3D from_path;
+> +			WRITE_ONCE(rootns->state, ROOTNS_READY);
+> +		}
+> +	}
+> +
+> +	return ret;
 > +}
 
 [Severity: High]
-Should proc_set_rootns() verify that rootns->ns->pid_ns_for_children is a
-descendant of task_active_pid_ns(current)?
+Can concurrent "/" installations race on rootns->state, leaking the previous
+rootns->root and resetting a running or dead rootns back to ROOTNS_READY?
 
-Both proc_parse_pidns_param() and rootns_prepare_fork() enforce
-pidns_is_ancestor(target, task_active_pid_ns(current)).  Without that
-check here (and a return value from ->set_rootns()), a process confined to
-a child or sibling PID namespace within the same user namespace can use a
-rootns fd to mount procfs for an ancestor or sibling PID namespace outside
-its active PID namespace hierarchy.
+When is_root is true, rootns->state =3D=3D ROOTNS_EMPTY is only checked bef=
+ore
+lookup_move_mount_from() and before namespace_lock() is taken, while
+MNT_TREE_ROOTNS_INIT in do_move_mount() only checks whether
+rootns_mnt_ns->root currently has an overmount:
+
+CPU0                                  CPU1
+move_mount_rootns(..., "/")           move_mount_rootns(..., "/")
+  READ_ONCE(rootns->state) =3D=3D
+    ROOTNS_EMPTY
+                                        READ_ONCE(rootns->state) =3D=3D
+                                          ROOTNS_EMPTY
+                                        lookup_move_mount_from()
+  vfs_move_mount() -> attaches M1
+  rootns->root =3D M1
+  rootns->state =3D ROOTNS_READY
+  ...
+  clone3(CLONE_INTO_ROOTNS)
+    rootns->state =3D ROOTNS_RUNNING
+  umount2("/", MNT_DETACH)
+    detaches M1 from nullfs
+                                        vfs_move_mount() -> attaches M2
+                                        spin_lock(&rootns->lock)
+                                        rootns->root =3D M2  <-- leaks M1 p=
+ath
+                                        rootns->state =3D ROOTNS_READY
+                                          <-- resets state from RUNNING
+
+Overwriting rootns->root without path_put() leaks M1's vfsmount and dentry
+references and races with lockless readers of rootns->root in
+filename_lookup() and copy_fs().  Resetting rootns->state to ROOTNS_READY
+also allows a second clone3(CLONE_INTO_ROOTNS) to run the init bootstrap pa=
+th
+in copy_rootns(), overwriting rootns->init_pid without put_pid() and taking
+an extra get_rootns() reference that exit_rootns() never drops.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117231352.3816=
-603-1-jarkko@kernel.org?part=3D8
+603-1-jarkko@kernel.org?part=3D9
 
