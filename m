@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64705606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C14606A337
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VpWF6okg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bAu+g7DZ
 Received: by kanga.kvack.org (Postfix)
-	id 62EFD6B05BC; Wed, 18 Nov 2026 10:23:59 -0500 (EST)
+	id A00686B05C8; Wed, 18 Nov 2026 10:24:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 607A46B05C6; Wed, 18 Nov 2026 10:23:59 -0500 (EST)
+	id 9D81A6B05C9; Wed, 18 Nov 2026 10:24:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51E3F6B05C7; Wed, 18 Nov 2026 10:23:59 -0500 (EST)
+	id 8EE1B6B05CA; Wed, 18 Nov 2026 10:24:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A0A86B05BC
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:23:59 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA98B1C411E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:23:58 +0000 (UTC)
-X-FDA: 85448610156.11.095B8AE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1CE002000A
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:23:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VpWF6okg;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 6056F6B05C8
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:24:04 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C97551C419C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:24:03 +0000 (UTC)
+X-FDA: 85448610366.09.5815DB3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 40AE9140005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:24:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bAu+g7DZ;
+	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795015437;
-	b=5OI+CS8t4SC+BlzCNZsY+nEFmd/fpSYeIQvxOOP692pFq1s2K7hwxltdFXaAhUu4Jm4eaU
-	9DBRizehnDUA/SV6FPXCoTnxkjZdD3pqptVvKfeQCi7OyBvrh5MTb5UF5zQ3KyFKVkoHYS
-	+y2jcdmoioSD5ebo6IvZmUjLlmMP2qY=
+	t=1795015442;
+	b=Rcf15vtwS8fQy541xwbL0vF5w5wC/cRnQ3SAxVH1Ip+1IHnwsCFItY88p4HTbBcZ/oMDxZ
+	2gxh2yZ+dQMFkKt0dsdqKo+/N2A8dsxrWCd62kqDkF9vk41+4TwVAnXtickPnjdfSHmEx/
+	yBmvi9teJ3D4ofT07Do7R8aOAb2qxf4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bAu+g7DZ;
+	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795015437;
+	s=arc-20220608; t=1795015442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/wWuoNoKhTnCurVf+R9Dm8cUyc6MlIAKk64n3z/RBEY=;
-	b=w7IUdv4/ICUF5KOS13WSJYm3ACbrs7XNY83Oaakl88f3QBtHXHHN9LemDRpQQHTu8Y58R7
-	xvyn9TR22HpJfkXLJNLIe06g6e+fyBIz/bHFHTOFl+UTnrk9IgY/7zzq/9nLRybqmrNiq0
-	pg7eP+sfRMNU1TsSX3tS/uIH/Au1oos=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VpWF6okg;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=RQcOM5LZ+A50DskRP5nF4QpJYB2S5F35ZVxDxecyXLE=;
+	b=I066cT3RLzEN4B1dgBdA5PnEeaTwH0hETVsnid10ftXduwr8UoikYETgGeVYgc9aabkOZf
+	oZ+e2BjUU5uWGg5vb+A3y8B1BGyJRf91dnKWWWUVwN096vgHXO0QBNhsNtqbeuR9Ub+bL9
+	UkSFKUKE8PWXYVyYSAnFK88VubfqZpQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 484FA42157;
+	by tor.source.kernel.org (Postfix) with ESMTP id 78953623A2;
+	Wed, 18 Nov 2026 15:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C755F1F000D0;
 	Wed, 18 Nov 2026 15:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03411F000C5;
-	Wed, 18 Nov 2026 15:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795015436;
-	bh=/wWuoNoKhTnCurVf+R9Dm8cUyc6MlIAKk64n3z/RBEY=;
+	s=k20260515; t=1795015441;
+	bh=RQcOM5LZ+A50DskRP5nF4QpJYB2S5F35ZVxDxecyXLE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=VpWF6okg+6brufuDUnD/0rcm3ikR/TGcAO2b+kf1nmmezjf+ioumZyaJ/hW1XAXHc
-	 i8+zQr8ldIQD0EwrkfLPgRuItBcHyIZGOM9ZjDoPmyJ1lmnkSn4IWArch/xtz+If9D
-	 DG3rxW6pXD2Lxv1OKCtUjy80q7COvdcFrxOToK+yGr980IxJ1Q+I/s65bGLw80Gp98
-	 fgGv05L88j/j0lYcRWqAAwMUORJzu7XIZ7ttOGLTRaeCxIqA75DJOHItpxUN0JKiXG
-	 ilTvBNtJXKBxAAwlwwkJ6flU0YBv1XT+qIIumi2wFcjWs/rqbqqj1cif+sSDD0fUkB
-	 i1OiklgN/SJsg==
+	b=bAu+g7DZw3J/d5gjI5fKw3TQ5XEKjEBdA61DLneCyxO9RyQFJT6NDl4rp2J/zIrby
+	 UTRU6hZ4OvYXpq9U96p5J+Jp0RqsBkW0dTjYTMVk1ETfP71i70Qnb9En+xPV1yXXsM
+	 5MPUfHlg8dz8XISX3fRv5jql4mAeUyn4Tlx/96Xz6lR1VVeDlDm4SXsJO7iB0jBfqG
+	 iACcY4jLn1auGGi1XCeSv4z5KNXdBIdEAld5BQoR4aTSY6tmKz9mgq8ojXPiafJAk1
+	 II6HR8YBy70CWBDAWiWqZVZxI7NoTPmt+kZQo2OSHntI+1N6AGCuaBk5PS6wXtHDQ3
+	 KVcn3u0OBQG1Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Vitaly Wool <vitaly.wool@konsulko.se>, Jens Axboe <axboe@kernel.dk>,
  Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>
@@ -75,29 +75,29 @@ Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
  rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Igor B <igor.b@beldev.am>, Vitaly Wool
  <vitaly.wool@konsulko.se>
-Subject: Re: [PATCH 1/3] rust: block: add bio segment iteration and request
- accessors
-In-Reply-To: <20261117233211.3137168-2-vitaly.wool@konsulko.se>
+Subject: Re: [PATCH 2/3] rust: page: add reference counting, raw pointers
+ and a private bit lock
+In-Reply-To: <20261117233211.3137168-3-vitaly.wool@konsulko.se>
 References: <20261117233211.3137168-1-vitaly.wool@konsulko.se>
- <3wemO2s0BrkamlAGBfPqORofFz9yCXPMZUZ0-dUQxmJmEhmz2T2yaCjcaTVXEB_gwLj8SdBNjkOR8r6aERjk9Q==@protonmail.internalid>
- <20261117233211.3137168-2-vitaly.wool@konsulko.se>
-Date: Wed, 18 Nov 2026 16:19:13 +0100
-Message-ID: <87a4n6upzi.fsf@t14s.mail-host-address-is-not-set>
+ <nJAtLmDmAV24rOe6aN54vqMAgr06LVJtplZTvmqfydTzMhml3convxW0wdHq0nMHqmRM7qsioK1kV78UIwCkzQ==@protonmail.internalid>
+ <20261117233211.3137168-3-vitaly.wool@konsulko.se>
+Date: Wed, 18 Nov 2026 16:23:40 +0100
+Message-ID: <877biaups3.fsf@t14s.mail-host-address-is-not-set>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 1CE002000A
-X-Rspam-User:
-X-Stat-Signature: th6qk4b3zopd18a7t7unfjd51n3gut3n
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 40AE9140005
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1795015436-474642
-X-HE-Meta: U2FsdGVkX19YbQx98Vf3Y2NIHTPxqRg2cus2k7qgN/wNc1AnSjpZ2sf+Sh+hFp4OmqrKzIU8suyWfkoFCTGV2RJjEBD/UEzHFczVHKjgvjkkMfzb4jAuDsA/rvsr4kL4Ok2pAKWI9DcvRhUYXY0lT/BXOHe8Fm2BAToad+a+x0WS5xlBIji+ycwOOZcRcsK6eN3Urn2h4hwKzSScwdneKTbmASjBYDql3o+d/VLoV95+gNTMtN0y36yYd4yfoGS7dXzY4huAxoO4pIt1efEL5KWax8mHAZNkK2+7ZEVng+s2E/CtH0mAQl8JBmoh+87UvyGvAI1bmL/EnAhbu+wvlaMiOv1du+8Nw7EttG2hv5WLgeLXBmjvNIfKA+VJy3cM6UM80oudOaPDXZ3LkzFtLzuFpTrZWTHKC2Xs9Nr0psGg1PQTi5yda9a4zE2UnJlrHUkbGfMrydDKTmatGAuEJAFLzhmr8bRGoFVyYcTT9+U2yMP1BTWZL0Xl3k/KzMwbxTrGrh4ONYnn7SNtPjb8z6ABS3h5ucVajp5nbXjfX99E4pBG3eaWSqmLIp+P86v+eN04ZSw01dX19at+7igO2GBk1LCqvyroN4cjEwLLwana2dVB6TpfJToTCxUafXHkZ4fjXjOuL9OSQ6j1h8bZOjvDxbVWAEdyPPwLF+JywS3gu8qgUUrC78TsChlHQ7IQOra/V0I6vDNdJBTCWeDuCA80AGPE0eQZvzcFzd4XeZ3X5tzVAxNNnen3LjsEMten5aqlzA+uOifBGAGwTjKGp/071uG0rXzRYCOIU58eceKAy4r55qlPhOaMPZBHXLhvzvbbMJond9g1TpdTkX0XSulAkMaiVvLfIHDAy/kC2/E7Q2yepRVk/tk01xed42A+J9PFw+0oS5USnUvFdA3Mdnjs5F2ONyQgkpNUkqQ/O1iGNk0PpKHtcthgEzgrt8moMlGyXC9jOHXJRmHfNeZ
- eQWySIAF
- VrIWMq3fVTsWrBX7NuDMAqgKbCRghGfgcO1SMR93ojQepVLMn6ztQ/O3As7ysNHq046U+fD4cNohrGzdLdIM/hyK8E3V+eig2lppgtolDYqmgkxgWQoWhbRGrdFZYE5NzJ6lt4ko1rJ5ZDcl36sh/NJ3v/wuOrQKN5l8cyOj6oxe0pUpJWV9l4n+QnHS1G2qpbbRHbhmcVAIvlhPZOANLynVxzUaqy+W+qFzvG4CuFxowDAZIet1PIQzveNtjnlNcehK2nFdM6Eq4FlIwh5n7kpbCydS2bTYOop0D1iZ56OYaTM1C0j2JI4hhabub8M5xM9dFswuqp2Gc51BID6SS23cbfzsSRYZUlAyhBpd9TQnlWUVhP5Z+4EBnxqy6Ok8Y2AeN
+X-Stat-Signature: bs3yozbd9ja4yrtgg8f658ythj6aw7rp
+X-Rspam-User: 
+X-HE-Tag: 1795015442-406693
+X-HE-Meta: U2FsdGVkX18iIj4XXr9+zy6kk17my2Y5DAWjZD2L04tG8U5VZRUUdP+/NmbDtwTOYpp7w8z0+QbJ/qNElWQOrT5wfU5KipcBujXhB8w09Fadac/hjuijlCszVHfBMuAevWwdcmiRjk03pYQYDoJiiyylv3RYVJydoseWuoNlfJy9/DHuOVipidrcc2GxEDysXAS3kSFHl7BMDOkbDV4Uo/F14P4EC2QK8GMAVPr+V5AntMFAvTtCGBR/REOigqspyWSn5FhL8Nur6ZyfeH1sJvFUzYxKZk1Jl6H6QbzbQ08nP5RrgUodQgIpwqD3/g/4noRW6UMqU1smBtG5yPqU9qjVdsfp796pDVfrAOzjYsQkPzM3fIn25z+L72DVmtel7NUCDsTu5lv7e4pnTtr2s/wLeUdQM+oCNQw6Dp4XejDUVuiJB1Wh52kbzr7GHxquT1F3gF/TQG/rS+yC3YYmvoUeEdy+e2ECKQ9NgkM4upUTekOAwd2a7zryCnMQicwCkFPNx6ehB4KGiH2MUXJl3W/Aw6uex4PlJ6wdB0kFgBIWj0Li91M6DRvfgiNNysrW0P4SaxOca9V0xuDw79JT7eEZdMqcnRodbhYFCxWhN+Uy7oPMjXfnywYG3Ul3YvNoCwuL9GE6/aWsIn3IzEYsY+WWlwVvJkkDPnG61ic1i0P0DL964pkHW5Iv3hbsYH7x6f6l7U5adaCpdGTdaAWprPUS/grAu8l4w6w6VEyGWUnngyql7vkkp7P0XTppOAYnMRiEvSsl6znmS92vZMhO5LSZiewK74NW0d2tz8IH6Faewpo++LQoor5pc4RE9ZGvaYRItBIIe39qE7Qx0kImuiGZFIGD3Wgf+tLwTPUOcKulah/EHg0ZI4rsMY8xA0B4G7oekujnGXn1SDVNuvmZOqDQWfDgCthgJr4moRYf8hXAX/rF396gU+2vKCoLGaMD7MDvtZCJXm2hhBm0U2S
+ dlN3mEKu
+ 5+Xnbix1PviHAVl2/ULwi3uu7wObB7Lb6C6vLzSF/Dk8IKrJ2GXDJINuPYNMqXDUjAsqrpZQsUPPfVrvqEmrR8vBkO/pWlEsD7GGpwJM/IfKptX3j4NzXAodGNrJO0nV3YQOX6/HfvsAPxE/GSvJdYDBCig9tLF1IDmuNTQUnGMg0uljVjDpQJo4GqJ0bGGYaXBZlqTKDPfvmBFn1s5W8BMXu67FEbLfRbajOH9jgcV5n2MMAzpIFHc8wJtDvI3Rq6gBEXCIFR0z1vqg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,48 +106,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Vitaly,
-
 "Vitaly Wool" <vitaly.wool@konsulko.se> writes:
 
 > From: Igor B <igor.b@beldev.am>
 >
-> The Rust blk-mq abstractions only cover what the null block driver
-> needs: requests can be started and ended, but a driver cannot find out
-> what a request asks for or reach its data.
+> A `Page` always owns its page exclusively, with no way to take another
+> reference or keep it as a raw pointer. Add:
 >
-> For a driver that actually transfers data we need:
+> - `Page::get()`, which takes another reference with `get_page()`;
+> - `Page::into_raw()` and `Page::from_raw()`, to convert a `Page` to and
+>   from the `struct page` pointer it holds a reference to;
+> - `Page::try_get_raw()`, which takes a reference from a possibly stale
+>   pointer with `get_page_unless_zero()`, for lock-free lookups like
+>   brd_lookup_page(). This is sound because a `struct page` is never
+>   freed, even once its memory is;
+> - `Page::lock_private_bit()`, which takes a bit spinlock in the page's
+>   `private` field and returns a guard that releases it. This gives a
+>   page used as plain memory a lock of its own at no memory cost.
 >
-> - A `bio` module with a `Bio` wrapper, an iterator over the bios of a
->   request and an iterator over the single-page segments of a bio, the
->   equivalent of rq_for_each_segment(). Segments can be copied to and
->   from a `Page` and zeroed, with bounds checks. Iteration goes through
->   two new C helpers wrapping bio_iter_iovec() and
->   bio_advance_iter_single(), so the multi-page bvec handling stays in
->   C.
+> Add Rust helpers for `get_page()`, `get_page_unless_zero()`,
+> `bit_spin_lock()` and `bit_spin_unlock()`.
 >
-> - `Request::command()`, `Request::sector()`, `Request::bytes()` and
->   `Request::bio_iter()`, exposing the operation, start sector, length
->   and bios of a request. REQ_OP_MASK is added as a constant helper,
->   since bindgen cannot evaluate it.
->
-> - `GenDiskBuilder::max_hw_discard_sectors()` and
->   `GenDiskBuilder::discard_granularity()`, so drivers can advertise
->   discard support.
->
-> These are used by the rbrd driver added in forthcoming patch.
+> This patch was tested with the help of  Claude Code AI coding assistant.
 >
 > Signed-off-by: Igor Belousov <igor.b@beldev.am>
 > Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
 
-I already submitted this [1]. I have a version rebased on v7.4 if you are
-interested.
-
+I already submitted most of this as part of the `Ownable` work [1]. I
+sent v22 of the `Ownable` series a few days ago [2]. I stripped out the
+page stuff to send as a separate series. I plan to send the page things
+this week. It covers both reference counted pages and frozen pages.
 
 Best regards,
 Andreas Hindborg
 
-
-[1] https://lore.kernel.org/all/20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org/
+[1] https://lore.kernel.org/all/20260910-unique-ref-v21-0-e83257373062@kernel.org/
+[2] https://lore.kernel.org/all/20261116-unique-ref-v22-0-12029383206d@kernel.org/
 
 
