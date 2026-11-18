@@ -1,142 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62680606A33F
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA29B606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oIaS/a3c
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=ZPJMuf/Y
 Received: by kanga.kvack.org (Postfix)
-	id 6F97C6B05B0; Wed, 18 Nov 2026 11:32:28 -0500 (EST)
+	id E7E9B6B00EF; Wed, 18 Nov 2026 11:38:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AB096B05B2; Wed, 18 Nov 2026 11:32:28 -0500 (EST)
+	id E0A1D6B05B1; Wed, 18 Nov 2026 11:38:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 598C36B05B5; Wed, 18 Nov 2026 11:32:28 -0500 (EST)
+	id CF84F6B05B3; Wed, 18 Nov 2026 11:38:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 29AEA6B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:32:28 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8066407DD
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:32:27 +0000 (UTC)
-X-FDA: 85448782734.02.048E24D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DC92E2000F
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:32:25 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oIaS/a3c";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 95C766B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:38:23 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0962A1407BA
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:38:23 +0000 (UTC)
+X-FDA: 85448797686.20.F03B6C4
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+	by imf04.hostedemail.com (Postfix) with ESMTP id ED32340011
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:38:20 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="ZPJMuf/Y";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795019546;
+	s=arc-20220608; t=1795019901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drTtZs8QFnjtIGUvlZc1Bgt1LjubynbTgCVephC51cc=;
-	b=YF3GLzuzaQCr8Brfn/Kk6ZAZV5z0H5u63sWrKJqcPxTiXm5Rl0tdJc1iO/LELfrV06Yo6W
-	6eo4x/4mgRfJEKmVgnSg88IsxljNeOYPC+wxP/eZ9a0cMzUw7PXKPpY30xYPgbP9FrTCgl
-	0GC1/7xaBhQQPjO938pANiEa7aXh7yA=
+	bh=LYnPwXVs5q7hiylo9HLvXwft8EbUR8+QNtfkEA01owo=;
+	b=y3lsmVkV05MsM3YvOoS0a4G6mUTEKEwzoJX/zCxWNW4W9uQFk7gBywXrNVzz/mZ86sF2s0
+	CImGiTYEfzukVCMrA8y1kHckeYvSZGO2ggqUYFPrKNkx7rVTJwzarw/7vV4K2qTz14YFIq
+	Eyj5ozrTsX3x1oGZYQw/ZkcY4RxzRsU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oIaS/a3c";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="ZPJMuf/Y";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795019546;
-	b=hTvCIvOVDdC9FCzM1cmcT5vhNB0X6Ah7ateKWCD4HJbB3oCBN1eNF2REhS6ZG0+GEZ+Qss
-	L5WUR7oeRBGGSRWrLsg8fcjdFRj2JZ3cMsftnOHUjfWO7YoTWzMNFf1oK/59RLa8FaVpWB
-	BEL30vT3Htl/J481VLw63Pg3w4nl2UQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 696936297A;
-	Wed, 18 Nov 2026 16:32:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6879D1F000D2;
-	Wed, 18 Nov 2026 16:32:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795019545;
-	bh=drTtZs8QFnjtIGUvlZc1Bgt1LjubynbTgCVephC51cc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oIaS/a3cfNudxVlDn5leymKjxjIpsE1Vf/XCpG8UczJek/Q4u4Dqylb8AEqRlQhl2
-	 oRtte00LwzlC4dvtHWudaypqe596Lu44XALxqq02bnhPzEakS38NQ/XcIBF7pSIn3P
-	 wXNK2QR00Cbr/Qn5INqFMK1tYyvLnCaRfGmemwfYD5SngczyLPM891HvA0jp0P8X3V
-	 aZ11nskgCxd4vvsT3spKu18qH/NV0zfVvdrge+zBylheS3rnDM8x3iHzDe0MkQ0yRE
-	 T5GwrsFIHbFoZYCZaFy+5vh4v1IpvgXTfxs1uJ/7bdG62RKO4nD5830VbxfouC8S4s
-	 yaCtNvLe5Atlw==
-Message-ID: <49cf1965-7466-42c3-bc9d-9097cc223c81@kernel.org>
-Date: Wed, 18 Nov 2026 17:32:19 +0100
+	t=1795019901;
+	b=l0ZsZnugdB+Cg/01Fr6NDj0zKe7Sd9Me38MtRRAok2/DG3Yo76g00RbRKWtnjlHJWE6kuI
+	C3jrRkUf6sYCYhXQFxlzbxakAustr+Ic9m/mb3yej/rDJMyasEA8JSSmm7Rlg0lQJgAA2c
+	B3r8zzQ/6oEkrrbz6p4mTv8/0XWLsyo=
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-7d2dc1ac787so387140137.2
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:38:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1795019900; x=1795624700; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=LYnPwXVs5q7hiylo9HLvXwft8EbUR8+QNtfkEA01owo=;
+        b=ZPJMuf/YPCsPZxdZN0MEOoq22PTrOgkw/AyYJW0FmJg3zG04JXt8dWl98Yrmsq4+Rw
+         OQradkohn1db5HgyNtCUrcZZ/c49aVEi9t0XwdzNmFxdifQ16e01o0WEL/o3t3/7S2YI
+         r3rRHBb2ZuT4w/xhexy7+YudYzrUCY26mnq3TwYIvo5tCoEm5Kb3vObuTk3oqAOkrHIg
+         AwOCt7iQT1xtqhTS7VBDFb9CKZMIwwlzjK6w7wJ6sy/5LXcks0gWLuNI3DVtJgw7Sna6
+         Xd9jGg6r8rXiocm4vHzYURe14AKpZQ1yjfhRBOh/jf3YjW3A5GhayskivC0eXT70/fdQ
+         UuvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795019900; x=1795624700;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LYnPwXVs5q7hiylo9HLvXwft8EbUR8+QNtfkEA01owo=;
+        b=ztZLAyWk/B6AwSJJRf1QAhkfsUq9+7bRSyqibyL40sabl+701d2M+CdmJLMuQIltdQ
+         lmOj5ToH9llcVW/FAZiJp+/H8i6O5s/Ywgs9DaupP5ItbXzbSCcvJL2PporBX6wh2/tP
+         6MX/DPH8avvEVwk87ruT4dBMnLjxWC44r7SeZmKgDGyCzeFCBCFF3bjp62AuGTfwcMzo
+         sRdDymG2AEqkbFCdZtHM5BgHKO6/dFuNfBCsonPNbEWYscSe2sNby0Ef0C31aJ3HzYe/
+         AbR1ZH5jBUHL3LBQF0fKN5vVj+LXJHsrq9gdoYiYYFu7/NfRZpdL812foagIVlcLNyK8
+         6dbA==
+X-Forwarded-Encrypted: i=1; AL+hErHxuPEuTCHPIS+BVT0MCTG9KlriY8HlT+2PNz0x02lJdipPJCKDHIH26rlqcqQZVcDj3ggqZsYCXg==@kvack.org
+X-Gm-Message-State: APuU4Z/IF0ksPBUEpQvROjhd3XWx7ct+aDkXJfNhWxtF+Yhdtu9d5EWn
+	s0uBmdWgGyzJFVjwuMRFswqBbKd0wfLy7g6VdYW93+ptSlWYmG0uevvzC4n4tcWE4qRKAKfT5uu
+	wWheD
+X-Gm-Gg: AYBFou0eceeVI9xsTfw91MpIrJQnzpwjVbTzJ4EdZ8IZ33ZrsYR9nihLTsitTxa6+Xt
+	oDXvJvoFYo2LemC2l/0JrAioFasHAWDDgjc8OO4clJloRTMybO4clvIk/SxRROHVfXa9BvIvH4O
+	epeoKD8mqvdBCqo2Rcl/OL5V/KWHQJn4pmtWzWab88p6Do3TzNjUutpWYaHtQa7FQzxH63fCdBI
+	vW95VezpYvjKvOHD5fIJ8NL/nBq3EWwbEStrjJJn75relfoD0Lsg726Yw8Chbqb2ukbs33zKNyC
+	fPG7MWrJfJm2UwjGNB1yDSo45xw6S5K5YjdUVwPBTNtIdm2mHUGsdssecQm8lJhS5X6FNWOdEme
+	uOaC1+z4oETlldIZDsp6mQ8ktGrdmgVF/dgY6dWwasfN2/G/xIOWaZOoMxdVrIOpKD77Ho9yIr9
+	4QuUWvtZUM+4p45vo3r7jG/glaa3hnGGBq4h6PP9eoY6T3eFdm+lVb+FARUy9ZHPFb4F5VA8LLx
+	PXHKXNwB/vlRFwmzXxDhpGwTnr36hq+gA9Kf9PHscVr6r3iQ9JtQdBLhQgk/Yquxzxrkl8h78Fm
+	rUc8fEig/rP6LtFch0oYqrCG1s5C9nX1qcLrmdm8NBI/Kva7tq2Kqn3s2uWHgPevJBtxbuZBCAn
+	JdWktuJl2Z+4bXDVuX1VOxHwdxQZckn+n5VHUMSpkCdtOoaM=
+X-Received: by 2002:a05:6102:91b:b0:7d0:9587:1b99 with SMTP id ada2fe7eead31-7d6b9ee48fcmr1231586137.0.1795019899949;
+        Wed, 18 Nov 2026 08:38:19 -0800 (PST)
+Received: from soleen.c.googlers.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d6b9318565sm2190742137.9.2026.11.18.08.38.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 08:38:19 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next v3 6/7] mm/slab: refactor free_to_pcs()
-Content-Language: en-US
-To: "Harry Yoo (Meta)" <harry@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: kernel-team@meta.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-References: <20261115-kmalloc-nolock-fixes-v3-0-9034dd4ecaab@kernel.org>
- <20261115-kmalloc-nolock-fixes-v3-6-9034dd4ecaab@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261115-kmalloc-nolock-fixes-v3-6-9034dd4ecaab@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DC92E2000F
+Subject: Re: [PATCH 1/2] kho: expose incoming sub-blob metadata instead of
+ contents
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Long Wei <longwei27@huawei.com>
+Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+ akpm@linux-foundation.org, graf@amazon.com, leitao@debian.org, 
+ corbet@lwn.net, rdunlap@infradead.org, linux-mm@kvack.org, 
+ kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, hewenliang4@huawei.com
+In-Reply-To: <20261117092951.4017931-2-longwei27@huawei.com>
+References: <20261117092951.4017931-1-longwei27@huawei.com>
+ <20261117092951.4017931-2-longwei27@huawei.com>
+Date: Wed, 18 Nov 2026 11:38:16 -0500
+Message-Id: <179501989658.250261.5046056769256366161.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2796;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=s2TgceZsirNjgZI66wNzdrJjtsGvWS0+fdcYU2Wc8h4=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq/dR6HI5GpH/4iewvFIx9U9up3jTt1CD0OiBfM
+ tAYaHZwb4eJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCav3UegAKCRC7dyhM23N6
+ 3kzeEACFJCS4M3n+dkgQTJYjctdNWWkW46rsV15OpDqGSLVsafiGK5V9DqS/YbDDUzAIL82H8ek
+ ad5sQrHuBJHAawArjrrZvPvZzsjJ7BoW0DhpOcm/qpi9kWBcHFsENdJnsNI+sEKtS7RbbYWQK9j
+ vUVdUL11miluOI0kgYxpgF5qaZ4UwPGOft9U1q/ZL8XoMA/wEeCWMJjAzYczqn5NlEwwa+0AB2q
+ 6rV9wl/qqH3k5YypOi1mJyaSbV5EkYQGGi5oaRrSDgGgUPPySAGgd2qpPcV4/nA19UkULW5+Ytn
+ maeDoReb2TGTx071O1D61DRaAQroMbESBa98ybnPDi7kYDDQ8CLtcbsoJT531hV/Rb9vSyMfua0
+ WYp/jw8p6CI8ckRZakilQLC6NoROctxmAW8dgqsN7qz7E8zFTylOcMwvBnWCVv/OmeVNt//PGSZ
+ 4pvr57QAYJHdwmcY+nTXPkmo8Ah6AewPJfQdfcObc/6kbkiKd/1d8lPhhzK25hDvF00YlLVIPNR
+ 9tWH7znV/vhJaE8IssOJda4n+3fjfU5Kdq/BeEciQ7PR4m3bZU3IgMli5bnUzkHVn/orX7MMm3Y
+ Z7klzrAJ9WeT+Ujk7U5HYuOOt2IHqPSL3QETXW/TOkr9Z1Ev36XHxJTep93cKMnaV5yhNLmn8bY
+ /EvS9/hwGM3L8Hw==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 X-Rspam-User: 
-X-Stat-Signature: mb1wyczmrr6m3kzwyha86yiykwxnw8ou
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795019545-865138
-X-HE-Meta: U2FsdGVkX1/soJN3vfh+qGetmd/Arr/RsiAFrvYbNy7yzocatnOYPoL8YB8CL1qffr1w8rRgASmJZAsVIv9sHi1ZfXbfHkaobCQ8fwyfdN4uGXrOSBekhHkNpt5rD9F8mfaPNvuG0vWQJcAcdr5nVQVufrmSIjeYF4RQ+0PDNqtxgpDgsoV+ZRnobQi/Owj/sblw7qHwuxNdmSqZNNrX4XpGC1WdiBDjaPlYS739cOLzAGRQ7YaWQG6PcoLV5nTdq/Lh318mnwhV2cEaeVoAQTZPlpfomRsL3VbQ60F5PZiS+gHnY8vZXimD/bh4VgqN8seJ7GtJoUZWs1TKK9HUWnjATKXocVF6Az2zrlREO9Nykw6ECzjRfioFJvQwOMdrA3nk/6Q8BpVQzzvajBds7CHLFYcDknyx0pJV1jUjp+NJUFO9omkp0T91NlnROx/EdFemcAfJFyBxfHkOjauEsQAdy8EbbWL5vyh2meQu8tkYnZs2gP+iPX+m8jctzZPxr0oKBEOuoUJpllmlQWR4Yp+i9x/BNpuffx12Nn3eTj0xQcc5BYPxg19MTL0rd+eAimIeJbS13LWmPa6dqrVaSYjaPentmtqgY4LsOxaUavL91bdyVmD/9Hxv86sQDpgX/E/drNJXnfjWMR8bjW7u6D/kkgKtVRbrt8bg7+A0ZHDaiBEty5M6rF4b2zaFB40AT/TjpDZVFQQtjm6bHx6IquJbkn3U2rop4XTx0ZvlroB9fuFxgt1ZG1V4ns39V4ZhMB8yetz9oKwpkxJ/iU1obxMe/D6gxMJbXAWZZaJgEVfelD4rkmfr1Ljv3lKF6eTyZWN0lApvZqocgahWdarq0MSQ06k0u2BwUgYx4viRkH94KChEKpCdJjutmsmn0L5JKUcps8kdniKmLsA021JVR8bVKcfiW4G6feBdZDsRl2I+zOcR4sRo+8MErQyblL4CRTd/7EHS8Wgfk5HD/0+
- tz9d9RXw
- d/DzTTXqXKIS0k7ss52x4H72x8a86oHF90zVtxx+0Z465RLIPIXQBAwfIXZ+hujlGj2Oie3vylp/yFRIrDSAlH6VPtoYgRMAxassae6dJ6TypP4TT39O5ckxCu0flWcfeLeogYI9h6gFJW9C6NrBU0s6EMA+tr1wQ21JmAQJAfXweqMjlN31+4hEIzcq9fgWAlCTUIk9zh8XleS7LPV+NbE2qJpshzejlK/XAQltl3xzU+7fsaXGCasID2w8og1tvVEn0cmaHxcAu3wExNRGB0gmaAVGqi42lOoHe4JVZtT1T4ZwaLrq+6Z3mFqG11tgZTV+X2+WiRQGN6Is=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: ED32340011
+X-Stat-Signature: rbstc31jr37eta7ojizxs6fcu6bzn98w
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1795019900-940012
+X-HE-Meta: U2FsdGVkX18UB+qhP8/8hxhjqWbH4vH/7ZPqvl8PYrVL8t0Zv1Y53BWUrtAY2sBBJ1pKsI49M8GaFKzQJdTMQ55C9a3XC7+w4dMSaXT8WAPlbGhwgOnoqTP9leMq0tcBNVV4m/wRXFLgySvSJWmvA+Qv4KB8Z0KT1FBKgVQWgpRvPET9U49W4ZMOEhWjrFDMpmB2KA0wn6/a53/YYd3hMx3KF2II7tPsCSa8b9opCBr22E1sjEhT5XedsLsiq2U5F0ZgtxyCUg0ZgH/xmMfJHqY9iKaM+U6DOrAa9AhVFEKwedHphr0+xYs+7YPvnU24/zajWtksX8Z5kGwL2JS+9eXdDZJyC6wu+2Li60h6ArODQ7dWuqZ9uNr1HN85NOHJjAQLAdYBJHnp4zKawsA5XtmwDntg363ob2aQ7OAGWpfEUMidK1LhcLINucS+kogLIY11HukDxIiWlLOpmquEvj8VoQS39Qir6Tjv4eJyTgmyVANzVjG9XaqyIMWJPSQXe2JUBSKALiFKMMTOYFwpbAGYCqU5buB46EwQbwDsVv7h5i3UX8xh93HNobWWYAD0MP9OGaXUwloHCav5x96ZKQkbZOCz5VGcSgpXPY4Dbs+soGGFLZc74vwVBaN1vswXh1RknmE+8MukE9v+MBwdfiR6B1Ui0wYIWgWy82L+yc3aSKkw2qC6ZARSIQ+ip1av0o8nkc3IC2raeUpdHpSJUO0dJ6gs9eVI4bNSRa6JFAAXRvWZeaSOTqwaeY/D3/CIm10hNdlqxNOZqgXX5u/+ZK9KGe0CJnrin51Ii2vgPdIwqCG0k/S7FmK1mExwsyasIoiVWN5EwunlXvC7bwKNRiNlB3rSynhRPspvM++lGU7DsomzLEIJBr8eFQeEDUZ5w27lvNeI4YKlG8ILhPCJNepvLgFJghSkuyZUfo5/9qyv0ulKUkScupFIo0BAUn50clYnWClnS96pBTrWLil
+ egAWjGKa
+ iVUIZEcXiWACFA5jT6+rQUkoYiQu7ko3klyDgTZrMljZmdjlBKxexOBqWJrHV37EZU21+gzqAlHcPhv/bRvKpvczNp+4dNCIpOt6LjI016314HWUek7f4Go8++b4DLrNFMxEojDdiauJchUD7IcOIWhQpfH1hZQz7fobyYHKgygG1pEauqR/1QL76s6KM7FdBIkzTefvY0GVuI9ml77HxaEk8hCuDlwOeKMQn670ZgY6AB07yY3GWtavy1K2IAKqZgoVIaM8Lh5aqz2PxKhp7Xi2KAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,210 +149,72 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/15/26 16:09, Harry Yoo (Meta) wrote:
-> Every caller of free_to_pcs() has to call can_free_to_pcs() before it.
-> Refactor this by adding a slab parameter and calling can_free_to_pcs()
-> from free_to_pcs(). To do this, move can_free_to_pcs() above
-> free_to_pcs().
+> Incoming sub-blob pages are owned by their consumers and have independent
+> lifetimes.  Some consumers, such as LUO, restore and free their state in
+> early_initcall, i.e. before kho_init() (fs_initcall) builds the debugfs
+> view:
 > 
-> Note that can_free_to_pcs() cannot be folded into free_to_pcs() as
-> free_to_pcs_bulk() still needs it.
+>   early_initcall: luo_early_startup()
+>                     -> kho_retrieve_subtree("LUO")
+>                     -> kho_restore_free(luo_ser)   /* page is freed */
 > 
-> While at it, let free_to_pcs() take free_flags instead of allow_spin.
+>   fs_initcall:    kho_init()
+>                     -> kho_in_debugfs_init()
+>                          -> phys_to_virt(luo_ser_phys)
+>                          -> debugfs_create_blob("LUO", ...)
 > 
-> No functional change intended.
+> debugfs therefore ends up pointing at a page that was already handed back
+> to the page allocator, and reading the file triggers a use-after-free:
 > 
-> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-
-Nice.
-
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-I see that makes the nit for 4/7 immaterial.
-But I have a new one :)
-
-> ---
->  mm/slub.c | 119 ++++++++++++++++++++++++++++++++------------------------------
->  1 file changed, 61 insertions(+), 58 deletions(-)
+>   # cat /sys/kernel/debug/kho/in/sub_fdts/LUO
+>   ==================================================================
+>   BUG: KASAN: use-after-free in _copy_to_user+0x37/0x60
+>   Read of size 32 at addr ffff88810309c000 by task cat/27436
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index aec9fb6e2235..fd3de3bee1de 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6148,15 +6148,71 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
->  	return pcs;
->  }
->  
-> +static __always_inline bool can_free_to_pcs(struct slab *slab)
-> +{
-> +	int slab_node;
-> +	int numa_node;
-> +
-> +	if (!IS_ENABLED(CONFIG_NUMA))
-> +		goto check_pfmemalloc;
-> +
-> +	slab_node = slab_nid(slab);
-> +
-> +#ifdef CONFIG_HAVE_MEMORYLESS_NODES
-> +	/*
-> +	 * numa_mem_id() points to the closest node with memory so only allow
-> +	 * objects from that node to the percpu sheaves
-> +	 */
-> +	numa_node = numa_mem_id();
-> +
-> +	if (likely(slab_node == numa_node))
-> +		goto check_pfmemalloc;
-> +#else
-> +
-> +	/*
-> +	 * numa_mem_id() is only a wrapper to numa_node_id() which is where this
-> +	 * cpu belongs to, but it might be a memoryless node anyway. We don't
-> +	 * know what the closest node is.
-> +	 */
-> +	numa_node = numa_node_id();
-> +
-> +	/* freed object is from this cpu's node, proceed */
-> +	if (likely(slab_node == numa_node))
-> +		goto check_pfmemalloc;
-> +
-> +	/*
-> +	 * Freed object isn't from this cpu's node, but that node is memoryless
-> +	 * or only has ZONE_MOVABLE memory, which slab cannot allocate from.
-> +	 * Proceed as it's better to cache remote objects than falling back to
-> +	 * the slowpath for everything. The allocation side can never obtain
-> +	 * a local object anyway, if none exist. We don't have numa_mem_id() to
-> +	 * point to the closest node as we would on a proper memoryless node
-> +	 * setup.
-> +	 */
-> +	if (unlikely(!node_state(numa_node, N_NORMAL_MEMORY)))
-> +		goto check_pfmemalloc;
-> +#endif
-> +
-> +	return false;
-> +
-> +check_pfmemalloc:
-> +	return likely(!slab_test_pfmemalloc(slab));
-> +}
-> +
->  /*
->   * Free an object to the percpu sheaves.
->   * The object is expected to have passed slab_free_hook() already.
->   */
->  static __fastpath_inline
-> -bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
-> +bool free_to_pcs(struct kmem_cache *s, struct slab *slab, void *object,
-> +		 unsigned int free_flags)
->  {
-> +	bool allow_spin = free_flags_allow_spinning(free_flags);
-
-This could be moved to the if () block below that actually uses allow_spin.
-
->  	struct slub_percpu_sheaves *pcs;
->  
-> +	if (unlikely(!can_free_to_pcs(slab)))
-> +		return false;
-> +
->  	if (!local_trylock(&s->cpu_sheaves->lock))
->  		return false;
->  
-> @@ -6355,57 +6411,6 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
->  	return false;
->  }
->  
-> -static __always_inline bool can_free_to_pcs(struct slab *slab)
-> -{
-> -	int slab_node;
-> -	int numa_node;
-> -
-> -	if (!IS_ENABLED(CONFIG_NUMA))
-> -		goto check_pfmemalloc;
-> -
-> -	slab_node = slab_nid(slab);
-> -
-> -#ifdef CONFIG_HAVE_MEMORYLESS_NODES
-> -	/*
-> -	 * numa_mem_id() points to the closest node with memory so only allow
-> -	 * objects from that node to the percpu sheaves
-> -	 */
-> -	numa_node = numa_mem_id();
-> -
-> -	if (likely(slab_node == numa_node))
-> -		goto check_pfmemalloc;
-> -#else
-> -
-> -	/*
-> -	 * numa_mem_id() is only a wrapper to numa_node_id() which is where this
-> -	 * cpu belongs to, but it might be a memoryless node anyway. We don't
-> -	 * know what the closest node is.
-> -	 */
-> -	numa_node = numa_node_id();
-> -
-> -	/* freed object is from this cpu's node, proceed */
-> -	if (likely(slab_node == numa_node))
-> -		goto check_pfmemalloc;
-> -
-> -	/*
-> -	 * Freed object isn't from this cpu's node, but that node is memoryless
-> -	 * or only has ZONE_MOVABLE memory, which slab cannot allocate from.
-> -	 * Proceed as it's better to cache remote objects than falling back to
-> -	 * the slowpath for everything. The allocation side can never obtain
-> -	 * a local object anyway, if none exist. We don't have numa_mem_id() to
-> -	 * point to the closest node as we would on a proper memoryless node
-> -	 * setup.
-> -	 */
-> -	if (unlikely(!node_state(numa_node, N_NORMAL_MEMORY)))
-> -		goto check_pfmemalloc;
-> -#endif
-> -
-> -	return false;
-> -
-> -check_pfmemalloc:
-> -	return likely(!slab_test_pfmemalloc(slab));
-> -}
-> -
->  /*
->   * Try to free as many objects (already processed by free hooks) as possible to
->   * a single per-cpu sheaf.
-> @@ -6642,7 +6647,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
->  	if (unlikely(!slab_free_hook(s, object, free_flags)))
->  		return;
->  
-> -	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, object, true)))
-> +	if (likely(free_to_pcs(s, slab, object, free_flags)))
->  		return;
->  
->  	__slab_free(s, slab, object, object, 1, addr);
-> @@ -6656,7 +6661,6 @@ void memcg_alloc_abort_single(struct kmem_cache *s, void *object,
->  			      unsigned int alloc_flags)
->  {
->  	struct slab *slab = virt_to_slab(object);
-> -	bool allow_spin = alloc_flags_allow_spinning(alloc_flags);
->  	unsigned int free_flags = to_free_flags(alloc_flags);
->  
->  	if (slab_want_init_on_free(s))
-> @@ -6667,11 +6671,10 @@ void memcg_alloc_abort_single(struct kmem_cache *s, void *object,
->  	if (unlikely(!slab_free_hook(s, object, free_flags)))
->  		return;
->  
-> -	if (likely(can_free_to_pcs(slab)) &&
-> -	    likely(free_to_pcs(s, object, allow_spin)))
-> +	if (likely(free_to_pcs(s, slab, object, free_flags)))
->  		return;
->  
-> -	if (likely(allow_spin))
-> +	if (likely(free_flags_allow_spinning(free_flags)))
->  		__slab_free(s, slab, object, object, 1, _RET_IP_);
->  	else
->  		defer_free(s, object);
-> @@ -6991,7 +6994,7 @@ void kfree_nolock(const void *object)
->  	if (unlikely(!slab_free_hook(s, x, free_flags)))
->  		return;
->  
-> -	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, x, false)))
-> +	if (likely(free_to_pcs(s, slab, x, free_flags)))
->  		return;
->  
->  	/*
+>   Call Trace:
+>    <TASK>
+>    kasan_report+0xb9/0xf0
+>    kasan_check_range+0x100/0x1b0
+>    _copy_to_user+0x37/0x60
+>    simple_read_from_buffer+0x77/0xd0
+>    read_file_blob+0x75/0xa0
+>    vfs_read+0x12d/0x520
+>    ksys_read+0xc3/0x160
+>    do_syscall_64+0x97/0x4b0
+>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>    </TASK>
 > 
+>   The buggy address belongs to the physical page:
+>   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1fd
+>   pfn:0x10309c
+>   flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
+>   page_type: f0(buddy)
+>   ==================================================================
+> 
+> The page is already in the buddy allocator (page_type: f0(buddy),
+> refcount 0), which confirms it was freed before the debugfs view was
+> created.
+> 
+> KHO does not own these pages, so it cannot safely expose their contents at
+> all.  Drop the in/sub_fdts raw blob nodes and replace them with a
+> read-only in/blobs metadata file that lists the name, physical address and
+> size of every incoming sub-blob.  The FDT itself is reserved by KHO and is
+> still exposed as in/fdt.
+
+I suggest we simply remove in/sub_fdts without adding in/blobs. All of 
+the metadata you are proposing to expose via in/blobs is already present 
+in in/fdt (and can be parsed from userspace if needed), so I do not 
+think it warrants adding another kernel debugfs interface. Keeping this 
+to just removing in/sub_fdts (and updating the doc) also keeps the fix 
+minimal for -rc.
+
+> 
+> Fixes: 062dd306d99c ("kho: fix kho_in_debugfs_init() to handle non-FDT blobs")
+
+This UAF has been there since in/sub_fdts was first added, so I think 
+this should be: Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
+
+-- 
+Pasha
 
 
