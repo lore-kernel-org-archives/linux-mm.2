@@ -1,104 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2449B606A880
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC2C606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B64ocKDl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RQYGohhW
 Received: by kanga.kvack.org (Postfix)
-	id 308AE6B00EF; Wed, 18 Nov 2026 04:42:18 -0500 (EST)
+	id 3AD176B05B0; Wed, 18 Nov 2026 04:46:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E0546B05B1; Wed, 18 Nov 2026 04:42:18 -0500 (EST)
+	id 385516B05B2; Wed, 18 Nov 2026 04:46:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A8B36B05BA; Wed, 18 Nov 2026 04:42:18 -0500 (EST)
+	id 29BB66B05B8; Wed, 18 Nov 2026 04:46:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EE1DC6B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:42:17 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9CA5120583
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:42:16 +0000 (UTC)
-X-FDA: 85447749072.27.5980162
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2021EA0006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:42:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B64ocKDl;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F0E356B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:46:46 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D659A826B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:46:46 +0000 (UTC)
+X-FDA: 85447760412.13.5DAD380
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A990740003
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:46:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQYGohhW;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794995204;
+	b=gmdK9IaSQpMpo3lyxPj6yvvhOEFRfTEHpdLks14EUoXYTEKpcPe6+9RmXh8w2vDnb1doOT
+	X+QpBC/6r/dQ5qG4G6zsmEo/hs4zbJLvvQpVjwToVXFDR7iTOWovZ1hT9CHseu5BL/rEEg
+	M8HgyB3Ba7z/+S259AisAobnl+Ml9TE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQYGohhW;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794994935;
+	s=arc-20220608; t=1794995204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9ATyR+9qHOct/xUnPH9mJnbBD7GZTG+HINgSyr3PxaI=;
-	b=MSGs9Bcjogh7rW9FT19nJ1LfcdnpiTruKjHoBLNUT66CU4XBLBwcSoTeigItXUeP6zR46g
-	cZCAv+b1GnY1Vn64tqDRoy2KfcZvhAngGJ7HTQENCBR6HcWkqvSiEdfFd8oT1xXZweUfPn
-	okj00sF9UtVQ1D4e2q0ChWWaqGsUZV0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794994935;
-	b=w0JI40Qd7ioVj325PxxSYJpIHWs1zmABo3nevGZCnnxmv8Vf+qB9GTpsZirg1babZjnt/l
-	jweptD46fI2sByACCmUOS/ppcvhInWpMclfmNHDzK7nOkh22VsFRht/VjyKSWjcvOaM95K
-	3zsoDfPa8xvJkHl+aclhseM2S6hZTCc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B64ocKDl;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=CtaieybfS6BQtpEqYoffKr95cQJaQPqI7rmHn30lmpg=;
+	b=PGlaokksGEhhu7pDMYdHwSaYCD0OJQUtl7X9pZ2cFmon2Bcu4C+TkxKql8ODTRVA6B62/Z
+	t8RT2at2o63ruiO50AIeZ0bukuLnSFN/9dSg982BSN/3BdC10OIRVFxBoB1MeyGW/csAT9
+	xtjwaQ7eSYAlOKldwtp22x2TZSQJxTg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9B8FB62081;
-	Wed, 18 Nov 2026 09:42:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0951F1F000C6;
-	Wed, 18 Nov 2026 09:41:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D34C94568E;
+	Wed, 18 Nov 2026 09:46:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1101F000C4;
+	Wed, 18 Nov 2026 09:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794994934;
-	bh=9ATyR+9qHOct/xUnPH9mJnbBD7GZTG+HINgSyr3PxaI=;
+	s=k20260515; t=1794995203;
+	bh=CtaieybfS6BQtpEqYoffKr95cQJaQPqI7rmHn30lmpg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=B64ocKDlyHLo7JKiB71qN7xPUGSas5O496TWP1Vb9kTdaWOBu3xdB4W0dYEjMGJF6
-	 wg63AHZj+PtfQQoLIvdVK5b0Pn24hBYJyxfSpX6Pbdx7+0UD7pxzuycdP5058yMa2/
-	 ETsOGLXBxuNitQ/Kl8b79+0Jb6zJ/9tkNCkDoeOp1+TbzpuDHZ0n4zlZoqpl87gr1W
-	 pPJbvsAYwFFaxlR7b0zjG5AJvUmmyOwORf3q9TMKLI+0tgiC27CXTjuz/JPWS1M1Zv
-	 +10DRh/IigcridN5ngx3Cid6k5sD2VJJyvtymSBjTvvQczytGNBB7uRDQaOstIJFHh
-	 AG2gXV+iJZLJg==
-Message-ID: <4f23b0bc-b89a-46c1-b8cd-853e7815b7ac@kernel.org>
-Date: Wed, 18 Nov 2026 10:41:55 +0100
+	b=RQYGohhWWhAMmEGxIAzOYr6Fx+D3c8etuGKHMFcbyKBYk19gb0PmTU3vg4xr2/6an
+	 SJ/qop6o7easXoypEONyiMJCk8cgR+yJjAnGlWhqyYJ/ziD1aNlj2ESpXtYiDNRwlj
+	 e5B2ZdNugULbszT5sBs7bvHePzJ8bmuqz1BjALmVdtQaVhFWk40mYXG3RtN1ZfLaG8
+	 CO7RPHtrPQW3mS0ouvPJuJjTBrscheUKbE+yzjJIA5+EdbTjFPpS41EOhTYuSfpYXk
+	 m2o215lUT4PGALLB0rFVQlxsiCFea6eOd2CBZHCy/6uKXDd0NHCR7gWa9XW+UGFy9f
+	 mZGW3Ic1lhhTw==
+Message-ID: <332f315d-ea27-488a-9a3c-28cdfdcd5f27@kernel.org>
+Date: Wed, 18 Nov 2026 10:46:24 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] userfaultfd: assorted fixes (part 1)
-To: Tal Zussman <tz2294@columbia.edu>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
- Andrea Arcangeli <aarcange@redhat.com>,
- Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Michal Hocko <mhocko@suse.com>,
- =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
- Andrei Vagin <avagin@gmail.com>, Muhammad Usama Anjum <usama.anjum@arm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
- Breno Leitao <leitao@debian.org>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- Felix Kuehling <Felix.Kuehling@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org
-References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
+Subject: Re: [PATCH v1 0/7] mm: kasan: skip KASAN for GFP_HIGHUSER
+To: Jeff Xu <jeffxu@chromium.org>, Tomasz Figa <tfiga@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver
+ <elver@google.com>, Boris Brezillon <boris.brezillon@collabora.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Chia-I Wu <olvaffe@gmail.com>,
+ Dev Jain <dev.jain@arm.com>, Evgenii Stepanov <eugenis@google.com>,
+ Ian Rickards <ian.rickards@arm.com>, Jann Horn <jannh@google.com>,
+ Jeff Vander Stoep <jeffv@google.com>, Jeff Xu <jeffxu@google.com>,
+ Kees Cook <kees@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Peter Collingbourne <peter@pcc.me.uk>, =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?=
+ <ptosi@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Miklos Szeredi <miklos@szeredi.hu>, Baoquan He <baoquan.he@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Allison Henderson
+ <achender@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ fuse-devel@lists.linux.dev, kexec@lists.infradead.org,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org,
+ Ryan Roberts <ryan.roberts@arm.com>
+References: <20261116230627.3537051-1-jeffxu@chromium.org>
+ <2066d131-f999-4747-beb8-520d5e0ce1db@kernel.org>
+ <CAAFQd5DzTmyeVQxNdhdy8pPi+ts1cCgbztVJiMoNBeJWBzjdQQ@mail.gmail.com>
+ <20261118012858.289236-1-jeffxu@chromium.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -145,21 +149,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
+In-Reply-To: <20261118012858.289236-1-jeffxu@chromium.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2021EA0006
+X-Stat-Signature: hr6nmmf88ax53wh3wnhqdaemqkok3651
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 3gyfpoh63b9yjbit7mnifkpad38ibtsz
-X-HE-Tag: 1794994934-688111
-X-HE-Meta: U2FsdGVkX18fGTGbIiEpjm/GNeynhkqwdG4YIFfBz4z3gZ5v3EfvCIu4c8DZX9iFj6vl+8XYzemMJuEW275xJZj6iacylfr2jpUU1vnHKwr3UE98hTZgEjYwsAS1gzdotflY67+mJvHrjhNev86TYaS+gKrJhhYEXGLzd8TsY+0h9Ki4zlyjCSXTdMHwCWmMzUl1I/49ekj91S/2RCqqw6BNTO1/+mkCKgKdi7eAXV3FoSUuGTrYGFlUa1kEvOOgC9Y+MkiHRk6rv1T29T9RvZ8ZzAMXVELGvPZ/FDIX/tbNgF7V8MvJ17BIh3v16ebHb6AKQXrVE6XOe9Z/mV9o534Qml+NhdJciXMZnKX+yKuSW8SERi9rPbfYr8g31Al8FWIe3EOcNwQMXH/F5D6dmu94qd9xBE3UX5EoXgR7CLVvzH+sAfeN0RFqeHrCjKRbVW0ZoSl0czwLXn6fQw61EBNkobQOYFvyFbLxHxjYuOZacx8fiAtDYmIhZm3MfcIi0u1+OGsej1Cok/OgZBjREWt6CO3puf8zCRtilu4UxOYm4jpjuOkVX8uHJI3HOEZAQTOwTrNldOpoa8pRhuoYQwJVvrpE0gD1KVbda/eDkqyj2vPX+j7rEXPmpR730GQkLXIkuFpZ4mgwbNg2tcn7g1+hoa92gu0bIrmWr4bOx7SLgK6PpMLQTyMPIDk+DRteYYhXdEeBya7wRJd5afYUAI2PlVIO6MbLQo9p2zo3hV4dSmsylWfj3MbKezHtCoF6IJ127VRW8V2+LDqsMqRsz2PWUzYfXQEWn966mRR1k9So7voJazin3u8V5bs82aYisBeiOBcCXrPYQBJeXpWWvajYtz7lIpf2+cIylGX1yJwYx1em+EbW+ETI8GzUyVzwJ6gN0eKAR2upzIfKdw+wmeO8knx60Spmzi4idatntLmH3cpu7Qec71CyJ0Gz53prHVvoM8EQzNi2x5KXNsN
- OBK5eRAx
- vRHXsvw4w7R7ZBUksrdv6tyM03KLfr6r8ncLNFu/hd22gzSE5dR1h1ulyznI4PutUzkaLZSPm4talRFh09ycqQ0klJjAD6yze6zaamhh53A4XfBRFGiYN04wT1glFvJFO5ZC78VL2e3scf3Xi8ZPWVP7tTR0AG8jxHlqdiBXasvGV74O/fLFOCQLepxE5sJWsGSfifMvTMJPWrbMqz6yROUDaCr392M8X8EGuSEIUQyRvEkA/A5eXcMKG6+LnZ47O91rjz7EvfcfY0h1drNInyM5Abi5Q6lJKXDRL/HM0DFSBIrgYNOLYgSM9BjuABoYBdMS42XtugTjTgscGeiG618tahejhOCl098uE89c4W8sOGbNJJuhLfIrLm1fnE98IeHt5y5P7QWODWN3QcagXUlgQhaDOHBE2BXFH
+X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A990740003
+X-HE-Tag: 1794995204-782089
+X-HE-Meta: U2FsdGVkX1/JArboax11LwXx9h+5vLwtDVjtd4K75sv9QEX7ZQak6dV8gM9cbzSlD1SmJvGgRpI+KxK22MD9DjV7TE1vBh96v5BW9025goTTLd8zN/LbjZSa3etRkIL1V2IXlHPwjVbPOX1wgtuZaTcmZGeN4NUvgkf+VAGG6XSkppqBc9rSUn+4FodgETfp953isTINMryzfMQ1VROJbn4OshJjSdrhdavKRIw3dpdnbFuKa83M7MNP6cdqvIp+04ycDi59oWLM7z61ctp7EmVjUHJ3xyxnh34Xmb89WPsMiYM9iNNCZ6/dY3yAN+xJQ8Do8k/DPz6YiCi1yrYv6KbvYjlB00AwlHFSwRs/Sq2voXi2GssDvzIVBxO5cbncmvxX27htpePQHq6VBmMrsoHFg3QUkJZnH3u11jKCuXLCPNaGjOrv2sT8l0XLB0PmHDBISNF151aQfuuzRFMDpD9ANerX12yw1SWdjnl0gQxGlXZhpQ6Nn5baNW3DsZi6NmIR57V2j7AsX1URX/BXjP0MViNaRl3bjDZoC6PPduJVJwLZMiQwXzB8cnWHnVF/2XRvz+ULW7BuOu2BzMywTpATdT/lY8DSWiTiPZ7DNMlt/ysTBiRYB3FnSPzPYK/ITswACDrSCiIJZBNlboV1t8ZBqbfNdnf2VsNDj47u7kGUyB+7fnPj9h2T7f0JLsxUK9JrISCwjuY2cQxRoHGFjWJ+VKT+pU4y/OoSgPENDe7qFCy7UwRCTRwxtIDZFH6GFMp7hRciFmdF/26MygVg8Tg5y1NXqUNWwtdiv4Kq0lj31+c2T6zrEcO8EWsmmzfw03eUrmKgUugB+58H5pd8Np9/wgu2tQdOoU67lmubGqlCHxi13SDBCuI3poeyICll4cZPeKZ46wnnnQbcg8BaCCctWOvhctMSpFR+Xx0Letx0y/g2RIK/fYytdanNcVDqD+oMgAxsN1/v+e0s+Xd
+ 3mSbr0tW
+ 7XHdav8/OauihuXAfi7uWFS526A72Tp8it7nTNF2oPKdd6w4FMlTRwk5iYxvK8/VL06uBhx024dhViN9QSypcjdGMsQvSyxxgoK6rf32FDES1wBRSHqruErhyGzGGrNLJZp4E/O1JMs6S5TAoDHEGvBHI2aJF48L46gKldd8t4PwBPQJjn/Hx+R5wuhy4C4h8QEyq1oAObCoV2LbfmwkQ1zoYlv2TS9ejvvVY2ymXaHRmNey9/7VWGyFanm3dbFufX0mM3/qgY3LkdVcaycUkpXTONXrUAf1Mn8VsNnvWiFerHA6Jh5HkI+HI4IETJiY+iwUpOsxyw/R9nV+zTtwBpCSQsBX3jbZVmVOPgetyGaShLiGuE0L98rp8oBCJSRT3QbCl55jLbLFm/rdtV07cLptbzLN7IBiBrflL3mlZY4NCHLU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,117 +172,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 05:28, Tal Zussman wrote:
-> This is a first batch of userfaultfd fixes, with more to come.
+On 11/18/26 02:28, Jeff Xu wrote:
+> On Tue, Nov 17, 2026 at 11:11 PM Tomasz Figa <tfiga@chromium.org> wrote:
+>>
+>> On Tue, Nov 17, 2026 at 7:10 PM David Hildenbrand (Arm)
+>> <david@kernel.org> wrote:
+>>>
+>>> I really don't want us to spread KASAN-related GFP flags in the kernel.
+>>>
+>>> There must be a proper way to abstract this.
+>>>
+>>> Why is GFP_HIGHUSER not sufficient? We were already told that this is memory to
+>>> be mapped into user space. Placing data structure on it and handing out pointers
+>>> to that would already be a bit questionable.
+>>>
+>>> So what are the ways to avoid GFP_HIGHUSER_KASAN?
+>>
+>> I think the idea behind GFP_HIGHUSER_KASAN is to make it possible to
+>> skip KASAN for GFP_HIGHUSER by default (for most of its users), but
+>> keep it for some of the users which today use GFP_HIGHUSER for their
+>> memory allocations, but could benefit from the added security. As per
+>> the other patches in the series:
+>>
+>>   pipe, fuse: use GFP_HIGHUSER_KASAN for pipe buffer pages
+>>   kexec: use GFP_HIGHUSER_KASAN for segment pages
+>>   net/rds: use GFP_HIGHUSER_KASAN for message pages
+>>
+>> That said, I'm not familiar with any of the code mentioned by those
+>> patches, so I can't really tell how much they would benefit from KASAN
+>> or if their choice of GFP_HIGHUSER to begin with is correct.
 > 
-> These were found by a mix of regular old LLM review and by having an LLM
-> write a TLA+ model of uffd interactions with PTE bits and other state
-> and seeing what issues fell out.
+> Thanks David and Tomasz for the feedback.
 > 
-> Most of these fix places where mm code loses uffd-wp or RWP protection
-> while moving or migrating an entry. Userspace then either misses writes
-> and accesses, or gets pages reported that nobody touched.
-> There is also a hang in UFFDIO_MOVE, and UFFDIO_ZEROPAGE modifying a
-> file through a private mapping.
+> Tomasz is right about why I added GFP_HIGHUSER_KASAN in v1: out of
+> caution, I audited existing GFP_HIGHUSER callers to find any that never
+> map the pages to userspace and instead fill/drain them in the kernel via
+> kmap_local_page() (pipe, FUSE, kexec, rds). Since this series intends to
+> improve KASAN performance while preserving its security aspects, and the
+> performance impact on pipe/FUSE/kexec/rds was negligible in my testing,
+> v1 was optimized for minimum behavioral change.
 > 
-> Patches 1-2:   UFFDIO_ZEROPAGE and UFFDIO_MOVE fixes, cc stable
-> Patch 3:       PAGEMAP_SCAN write-protect vs. writable migration
->                entries, cc stable
-> Patch 4:       warn on a writable migration entry with the uffd bit set
-> Patch 5:       PAGEMAP_SCAN write-protect vs. device-private THPs
-> Patch 6:       UFFDIO_MOVE of the huge zero page from an RWP source
-> Patch 7:       mremap() losing uffd state when a move fails halfway
-> Patch 8:       migrate_vma losing uffd state of a zero page
-> Patch 9:       hugetlb alignment checks in UFFDIO_REGISTER and
->                UFFDIO_UNREGISTER
-> 
-> A few of the fixes change what userspace sees:
-> 
->  - UFFDIO_ZEROPAGE on a private file mapping no longer fails with
->    -EEXIST where the file already has a page, on an mm that cannot use
->    the zero page (patch 1)
->  - UFFDIO_MOVE returns -EEXIST for any huge destination PMD, not only
->    for a present THP (patch 2)
->  - UFFDIO_UNREGISTER with a misaligned hugetlb end fails before
->    unregistering anything, also if that hugetlb VMA is not registered
->    (patch 9)
->  - UFFDIO_REGISTER and UFFDIO_UNREGISTER accept a misaligned start that
->    lies in a gap before the first hugetlb VMA of the range (patch 9)
->  - UFFDIO_REGISTER returns -EINVAL rather than -EPERM for a misaligned
->    end in a hugetlb VMA without VM_MAYWRITE (patch 9)
-> 
-> Patch 6 has little user impact on its own. It is included because,
-> together with patch 7, it allows removing clear_uffd_wp_pmd().
-> 
-> Patch 7 adds spurious write faults on shmem and hugetlb after mremap():
-> when dropping uffd protection there, change_protection() makes writable
-> pages that were never protected read-only. UFFDIO_UNREGISTER and
-> UFFDIO_WRITEPROTECT already behave this way and lead to the same
-> spurious faults. This will be fixed in change_protection() in a separate
-> series.
-> 
-> Based on mm-new.
-> 
-> ---
-> Changes in v3:
-> - Collect tags (Thanks David!)
-> - Patch 1: use vma_is_cow_mapping(), per David
-> - Patch 4: warn on a writable migration entry with the uffd bit set, and
->   make the PMD path match the PTE path, per David.
-> - Patch 4: Drop the Fixes: tag and the review tags due to changes
-> - Patch 8: add helpers and read the PMD once with pmdp_get(), per
->   David
-> - Patch 9: move the hugetlb alignment checks into a helper and use it in
->   both ioctls, per David
-> - Link to v2: https://patch.msgid.link/20261116-uffd-state-fixes-v2-0-4397a0196479@columbia.edu
-> 
-> Changes in v2:
-> - Collect tags (Thanks Kiryl, Lorenzo, Gregory, Alistair!)
-> - Patch 2: say "softleaf entry" in the commit message, per Lorenzo
-> - Patch 3: add softleaf_is_writable() and softleaf_mkreadable() to
->   leafops.h and rename the helpers to say softleaf, per Lorenzo
-> - Patch 3: add Reported-by and Closes for Breno's report, and cc stable
-> - Patch 4: explain in the commit message how PAGEMAP_SCAN set the uffd
->   bit on writable migration entries, per Lorenzo
-> - Patch 5: use pmd_is_valid_softleaf() rather than open-coding it, per
->   Lorenzo
-> - Patch 7: say "write faults" rather than "minor faults" in the commit
->   message, per Kiryl
-> - Patch 7: trim the commit message, per Lorenzo and Gregory
-> - Patch 8: trim the commit message, per Gregory
-> - Patch 8: Cc the GPU driver maintainers and lists, per Gregory and
->   Alistair
-> - Patch 9: use IS_ALIGNED() and a local variable for the VMA's ctx, and
->   shorten the comment, per Lorenzo
-> - Drop the three guard region patches, per Lorenzo
-> - Link to v1: https://patch.msgid.link/20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu
-> 
-> ---
+> Looking closer at both of your questions, I agree that the security
+> benefit of keeping those 4 under KASAN is minimal -- e.g., only linear
+> overflows out of the pipe/FUSE/kexec/rds page, since none of them store
+> kernel structures or pointers. That is the exact same trade-off we
+> already make for GFP_HIGHUSER_MOVABLE.
 
-So, I would be picking up ...
+Yes, that's my understanding as well.
 
-> Tal Zussman (9):
->       userfaultfd: use anonymous memory for UFFDIO_ZEROPAGE on private file mappings
->       userfaultfd: refuse UFFDIO_MOVE into a non-present huge destination PMD
->       fs/proc/task_mmu: downgrade writable migration entries in PAGEMAP_SCAN write-protect
->       mm/migrate: warn on a writable migration entry with the uffd bit set
+> 
+> To avoid introducing GFP_HIGHUSER_KASAN, I see two options:
+> 
+> 1) Simply keep those 4 cases under GFP_HIGHUSER (drop patches 1-4 and
+>    7), reducing the series to just the GFP_HIGHUSER change and its KUnit
+>    test.
 
-This
+That's what I would look into first.
 
->       fs/proc/task_mmu: write-protect device-private THPs in PAGEMAP_SCAN
->       mm/huge_memory: build the moved huge zero PMD from the destination VMA
+> 
+> 2) Switch those 4 callers to GFP_USER. Since CONFIG_KASAN_HW_TAGS is
+>    64-bit arm64 only (!CONFIG_HIGHMEM), GFP_USER is identical to today's
+>    GFP_HIGHUSER on arm64 and all other 64-bit builds (and if 32-bit
+>    CONFIG_HIGHMEM=y builds still need ZONE_HIGHMEM, that could be gated
+>    on CONFIG_HIGHMEM, though that feels ugly at call sites).
+> 
+> (1) seems much cleaner to me. David, would (1) work for you?
 
-This
-
->       mm/mremap: resolve uffd state when the context is dropped, not during the move
->       mm/migrate_device: do not migrate a uffd-protected zero page
-
-This
-
->       mm/userfaultfd: check the hugetlb alignment of every VMA in the pre-scan
-
-
-After waiting a bit longer for more review. Andrew can take the rest.
+Agreed, (2) looks more hacky and I don't see the value of doing it like that
+just yet.
 
 
 -- 
