@@ -1,127 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5550D606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB713606A32F
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EXUa+MkZ
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nYvU/FA4
 Received: by kanga.kvack.org (Postfix)
-	id 6CCBC6B05BB; Wed, 18 Nov 2026 10:46:54 -0500 (EST)
+	id 0DA916B05C0; Wed, 18 Nov 2026 10:47:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A7876B05BE; Wed, 18 Nov 2026 10:46:54 -0500 (EST)
+	id 08B866B05C2; Wed, 18 Nov 2026 10:47:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BCE66B05C0; Wed, 18 Nov 2026 10:46:54 -0500 (EST)
+	id F09616B05C5; Wed, 18 Nov 2026 10:47:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 38AC26B05BB
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:46:54 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C12AE1C3CB1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:46:53 +0000 (UTC)
-X-FDA: 85448667906.06.B00F8C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2BD331C0006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:46:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EXUa+MkZ;
-	spf=pass (imf20.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CCD936B05C0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:47:03 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D9ACA07CD
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:47:03 +0000 (UTC)
+X-FDA: 85448668326.03.3415D9F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7DC63100005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:47:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="nYvU/FA4";
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795016812;
-	b=TulRqm4bRJ9VWfhkP6Csa3J6unWF+3Zw1HSmVVr69CNzEGRHrebdxy0/8r+dM9z8lHd/HH
-	C1KyyXLGcEGp3N+ObReqUNIPq6aprlRCSxirbxpY68xa48Ot0XcZgIJ8hliJ8N+J1X/zBW
-	pbK9aRKHHPpsuf7kaLvFUtrAuNI84Ts=
+	t=1795016821;
+	b=0q5h8HkOID1JYSNmlorz9a6a8AKzmM5rABAKSP1E0DUVfIkCX70ET9P5jF/M2GnMLyuwEb
+	kEcRJY0VmK1ANvDZPsZa9aMl6+Nl3ffXkUc7oQ3lDgTwwfEML7HCE8lmDbS/Sme7hG898P
+	kw4mgCIa8NOuHvvtchVBMUux2fB9UZY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EXUa+MkZ;
-	spf=pass (imf20.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="nYvU/FA4";
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795016812;
+	s=arc-20220608; t=1795016821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yq7h0/bdeIgVdHwxIZvW/WAXXX6JzsrZsXwYUvWhQj0=;
-	b=aEQ5STCJ/DizPJ72OVdQkshGMBzXYi4KZRiENiOPlcbZkI3VPHraXOXiPflDO5vQjuAVUm
-	hek/LgVAeOOKZQQJQIrWqkwrlrLFLVx3G5dTAkF0gE60BcPpp2/5VE85D2531MCw+LG8gW
-	NsJ8VH5M3LdA+JSAMu/EilP0jbanJQM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id A526F62586;
-	Wed, 18 Nov 2026 15:46:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id AD8611F000C4;
-	Wed, 18 Nov 2026 15:46:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795016811;
-	bh=Yq7h0/bdeIgVdHwxIZvW/WAXXX6JzsrZsXwYUvWhQj0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EXUa+MkZ8fF06bmTmwLNd20zxEY9MBiiXX3/inLnec+f3eiqv7AFpfp0RH1t8WMYg
-	 07CRxJbvqQzFs79L2fxYmiB+GR4+a2juvf3E/xr2joNJED6DqFsGIRBDrb6+B2ex4E
-	 sg6324IqU/NJun40bRWU9DIoQ3Mo45I4I9aqgNnl26gSlTAwOU2rfIBT3J7mwlm413
-	 UJVrWzSWKUooQDs+lkwH4rZclpp4/PrgxpZq4RUvzVBa9Zs21JNDTqT58QxIZiaVTm
-	 FXz1sMD+7Og8a/cFS0ljKI59wReWg936/UQp9l6X3OLAdeUDi4zCHOdxxm9cSZA5GW
-	 Ra3dfEdI9ZjQg==
-Date: Wed, 18 Nov 2026 17:46:47 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Ben Segall <bsegall@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Johansen <john.johansen@canonical.com>,
-	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
-	Paul Moore <paul@paul-moore.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>,
-	alex@amutable.com
-Subject: Re: [RFC PATCH v2 00/13] Namespace for namespace roots
-Message-ID: <av3IZ_ZXKJWHdAl0@kernel.org>
-References: <20261117231352.3816603-1-jarkko@kernel.org>
- <wdwc3b5edgtgvrgqfhlzhrachr5hrqb7ahipcuqdz5pffxlc5b@662cpwhxwjer>
- <av3EBpSuzn_TcrDk@kernel.org>
- <av3Gv3MwP40bqvnG@kernel.org>
+	bh=Qgt/D7EjetA1zXjZ4OojFsT9YpnJKXfxEGboHnE/gd8=;
+	b=7SxlqiYIAcLi+vN7neICH4yyXxD2RPFhl9DG8Vd3Q6z4nBP70GRnMut/pulpe4jsZRD/+N
+	Ch41cUlZLzUoM8W++WUguQEqCYiedGYUCvAtmiQ68NcBujNKl3tSZb4CxhZoZj6iJchl6F
+	0fVoh6Cq8TlRsaDY68z8jxlexNCzIiU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C28A4339;
+	Wed, 18 Nov 2026 07:46:57 -0800 (PST)
+Received: from [10.163.128.4] (unknown [10.163.128.4])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0D6323F632;
+	Wed, 18 Nov 2026 07:46:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795016820; bh=AkNRT3RQuliNSsz+dDJtjd/2TDwlCHcU7deLN3qC6XE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nYvU/FA4MPmlvSnqmXps2Wbn7Huogpk0j4p9MFldIIA3Fx7wOdgDmvmbh9V4mEPa0
+	 rr5P4CpV/BmJDkS27UOK+Fx7XoY1cW67MzGMgmJ/oPBN/7Z3fFfDiaklOz0TF5I6uq
+	 gPqSmkldPvLyByemva6p/vW/kGtcQrlqDWGShTHA=
+Message-ID: <bf8692ab-f5b6-4ffe-b5ad-02ad59182cc0@arm.com>
+Date: Wed, 18 Nov 2026 21:16:51 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <av3Gv3MwP40bqvnG@kernel.org>
-X-Stat-Signature: pq5fnbhimm6garr3o4yc8b45y56q3fkr
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] mm/page_alloc: move the kswapd node skip check
+ into a helper
+To: Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20261116232346.788145-1-joshua.hahnjy@gmail.com>
+ <20261116232346.788145-3-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261116232346.788145-3-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: m4189q4nsp67x6c8yru1x1mno8gkwo4t
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2BD331C0006
-X-HE-Tag: 1795016812-546413
-X-HE-Meta: U2FsdGVkX18KFXxcXhDFN2IBzlxAKnyjEAGh7cGzzqU9AQGubPO6uTYYcH+fjtZM0vfFw38Hq6cLY1dZpy7EEqhW5WzybCQtQHk8G/8M7C51M3aPW3T5Sw61x+qE4NX4uK4nqDFVQOkur7haZBQSaEHHLeOf/bY3hz4eWRemhq9WPkBgyv5b0Zx7DL7in1Vxskv9u2ED9cxAnlc7jW/CouKKELWocoZ7l19x6cm+7Ka5TplgIe5wkFCyidfpO0olyxsgxvP1k7/bMeTJDIOb5KQW6l5RDRQoEoOfx9lSnVNloDSbSto5Vwk8+QnSJqd9mTYmOIS462U2mLrJAkkbe3wD+OGNQiyLi4+LTEKfu2jRW5uwJYdnjbU6jEmzjmQmNKlWX5uuSGDWcEEMns/K06vGUwnQ8wJsTQdYeKl02kmArcmftpZHloJnnf5a4s2Y5yxU3HpI57VKLCtUm3bmKuvfBR6jSQL0GMevFbfj3Oi2iX7O7eO5UPYU5/OXQBaIVbWpSmi/qnRYx0TaFYEj902DPAyoY/WE4T6A5fSFWyhNsegC7FjeGv6OMfschiGQsQtxP8K5C8Af0iH05G3CFfXhcFvoupYr1dTAll/onKSL5iT4PhmuDs/ps1/iYGubP/h/Fn8AhMOWQKeY/ktWDjhIPEH41FTILDKqqkuCkKr5ci59MGaS5K4r2uU5h++2h8VrisPEVHpKvgg5h157/RAg1OynqILjo/O/aLH7hn769v7pCFnIbdgC/tyE+gWCdSqxZvhaynlh+AYGeBB7e8HekvRsW+CBkj/RCB+SPrG3rKAAGm8bCjq2NNfh3MTDpNyJ6ADch+Kd9/aD3pXkRa/2ucnIWEfoVvnTr8RGAFp6r67nWQTZCnleUnKei6fIfxoaHX7hu7+jpMcTsVq46+P2WTz6h95v7Nx4Ullp3JdU2PRZfU1nkQH44gEe4DW4Jw2Kp12kVkaWhl1+Yyx
- ULtY/X63
- gWRtf+sbz4cLR8yXR1aOFKdarN8d82Uq/KLRmc26kf1S7GoPXGYtwb8SI6qj1K26PrZtrwUEsYeBaAX3PQPi/tRGqzZnAWcUqep41jtkyAnAhTGl9m5UztwhdUPykc+KKr+XHJRN0gY6GTg83RJ8PV96odGIu4ZAB5xODIESy5hC9xaxPGvuP/+k31MrYwNPin8ZDg8S1CIDvfwaYgWBW96hqtqbJb6K5Fl95+u/B2SFW30PaDaBtHLPR2GxrXXXbd7Qu2eA6PE+hnu9JapMbk07npw==
+X-Rspamd-Queue-Id: 7DC63100005
+X-HE-Tag: 1795016821-635377
+X-HE-Meta: U2FsdGVkX19iQG/GjnKeZjBSehl0xQD1tNsPD6Xa/yNqkaUuazxNcPbV0dgW1pVc5o1rlG08WzZntkbLn5CM+lL6lOw069el/lpJewsXzP0OIY69daQt1MxMdeT5qKLrNdbX2n6o1Bz8gdhj5unvsAricYP/zHW0UwN+YoH5ce4G41lcjXFWEOCRqczuyYdAIYUVkCcyBB9ziP4MITrM/rUuwZLeWS2zhrALukQreLpIPrVn8MQsLzu8R9Kfo8IPEAQM4YJG1C602AAQv8cZycRZs5U2UC/9KgSGF8BygOtwUSYyLDnnLg3TKEMvTgA8yVnpn8qxwv9NUJp6VfHJwvjB5c9wxOdQ6JuhYrq4Z4522m76IkMN6Lmu5ZCSK8i3xkQ75BUJbF4pd91k5qaysIlcb6knB5NiWS8EKCr2iURVR3ozHBRaMWS7jPTUxKxayZtcyv5wn0CsfX0CB5OUapgYhgMLS645JB/F+g9KAdRkjcxXHRrqg1TEpeGPfvnKpRoCqiLumHWnjx6Dbl6/XvstDZREsG53BcMAyXnGu4SQb3Lg/Mc5izl9zZCgYCcRqdPjgJpOZijo4lhzEmAlb41Lhw9nSib5tQBv4LSYgQScRzCnsng/ujbbBVTcV0V9nibXoI0ZoxMAu2O67yE16cmFtWyh++wfDufRmEQCnDyDxyZPHHjay56cuTL0JUQZxw8x2jBU+Rj6hnAvkyfY5HW7Cnf9QJgG456ERnjfL3sEixcoZSkW2atnyxjfOPMvABzapflWry+T6qngWqtO1261hyYRa4Di9/v8jIDDsJAAy8CNMpBFRl2xY1FG9m3lzp8BgRDIpv/+m1odiugcd/IwfO0jgs/NOq2lHe8PMTBs2mGCnIvpfoQV6QUUSoGtS99NFufxtqrivIY0aSI/iOwsen7MbqQsECfoufxEU1YDoAxCwAE4sjhlVcF1GheIY2DJfaWTylLkrQ98pjo
+ xjWNB7gX
+ 1H0iClSKI+1NJjolDOxOBz6yC7eV+htGZziZONnlDof1Z1dPhGjVTipqspWbtEo3IOXT7wh1tOXRFaAtVhlHoq4fU2//o7GvkGNklJds8SEEnARxY8bZ8isIQwvRcgAV7p/OlM8we05632T9HI+4LNdGc4A7gPptFJJJy09sX20diVOWfesdj+QBf9RvVzyklMG+i4KGHutiLTc4E048B+jcKl+bP56VvCBTvJFLVz5gFj32F5uQ4G+w/08VepY5+c9TIQx9YuNpcEin+R8LNGWK69rdC+HhraGJS24/NdUjDhy+MbKgS0X2+N2CWL1SGGppLBrxetYq56L8GGpUiruZJSCnYV0ADZqt9wTwxe+RPmOG26q8A/dxmYPs7IX0k8i26hnRP5e6sFx4APVoOc4y2XjE6ily31JQoMTOoz0VvCOZUjiG0O7ToQKhVN++DKLQ0GGD/JMB2eOZUeH5CrB1dSJ6jkJTt21W8R3D+mqF6ZD4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,65 +102,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 05:39:47PM +0200, Jarkko Sakkinen wrote:
-> On Wed, Nov 18, 2026 at 05:28:10PM +0200, Jarkko Sakkinen wrote:
-> > On Wed, Nov 18, 2026 at 02:47:34PM +0000, Josef Bacik wrote:
-> > > On Wed, Nov 18, 2026 at 01:13:39AM +0200, Jarkko Sakkinen wrote:
-> > > > OVERVIEW
-> > > > ========
-> > > > 
-> > > > A root namespace (rootns) is a kernel object backed by a file descriptor
-> > > > that binds together:
-> > > > 
-> > > > 1. A full or partial set of detached namespaces.
-> > > > 2. A dedicated PID namespace for spawning processes into, signaling
-> > > >    members, and polling or waiting on PID 1 exit.
-> > > > 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) that must be
-> > > >    populated before going live, without inheriting host mount-tree
-> > > >    ancestors.
-> > > 
-> > > This is what cells is doing https://lwn.net/Articles/1102593/, you may
-> > > want to take a look at that work. Christian, Lennart, Alex, myself
-> > > and others are working towards this in a more wholistic way. There's a
-> > > lot more that goes into this outside of just the object itself. I've got
-> > > my version deployed inside Anthropic for securing containers and I've
-> > > tripped over a lot of pre-work that needs to come because we can tackle
-> > > this. Alex has my rough outline for kuid64 for example, which is
-> > > necessary for making sure we don't overlap UID's on the system and
-> > > create holes this way. The cells work/anything that wants to have clear
-> > > security boundaries is going to require that as a pre-requisite. If
-> > > you'd like I can include you in our planning so we can get something
-> > > that will solve all of our problems. Thanks,
-> > > 
-> > > Josef
-> > 
-> > No it's not doing the same, and this why I sent the patch set.
-> > 
-> > I don't see cells fighting with rootns and given that rootns has a small
-> > surface and it leverages already battle-tested code, instead of
-> > reinventing the wheel, it also has benefits. It neither doubles the
-> > number of container frameworks in kernel.
-> > 
-> > What I'm not claiming is that this is better. I just wanted to fact
-> > correct "this is what cells is doing". It is not true. It could be
-> > better solution but still that statement is untrue.
-> 
-> For better or worse, cells does a lot more; just looking at the patch set
-> size.
-> 
-> For rootns one can point out with a finger its possible problems BUT here's
-> the thing: it does not haven unknown unknowns. Even if cells had less
-> of known problems; we have zero idea what will come up if that ever
-> lands. The possible consequence have less predictability.
-> 
-> Also, as per integration, they actually are not fighting features, as
-> they are in different layers. There's no same thing at all.
-> 
 
-Yeah, and there is no obvious causality either that would result a
-zero sum game. Rootns is something OCI runtime, any of them, can
-quickly adapt to the existing framework. Cells takes longer, but
-could be very worth of price. It's called "defense in depth".
 
-Br, Jarkko
+On 17/11/26 4:53 am, Joshua Hahn wrote:
+> get_page_from_freelist() checks many conditions for each zone, often
+> with a big comment block explaining the conditions.
+> 
+> Move the kswapd check and its comment into should_skip_kswapd_zone() to
+> make the zone iteration cleaner to read.
+> 
+> While moving this, also resolve a checkpatch warning which complains of
+> a waitqueue_active() call with no corresponding comment explaining why
+> the lockless use is OK in this case.
+> 
+> No functional change intended.
+> 
+> Reviewed-by: SJ Park <sj@kernel.org>
+> Reviewed-by: Chris Down <chris@chrisdown.name>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Tested-by: Chris Down <chris@chrisdown.name>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+
+Thanks looks better.
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+But see below.
+
+
+>  mm/page_alloc.c | 47 +++++++++++++++++++++++++++++------------------
+>  1 file changed, 29 insertions(+), 18 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 4d829e5eac49d..43929faffb989 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3785,6 +3785,32 @@ static inline unsigned int alloc_flags_cma(gfp_t gfp_mask)
+>  	return ALLOC_DEFAULT;
+>  }
+>  
+> +/*
+> + * If kswapd is already active on a node and the zone is below its kswapd
+> + * watermark for this request, keep looking for other nodes that might be idle.
+> + * This can happen if another process has NUMA bindings and is causing kswapd
+> + * wakeups on only some nodes. Avoid accidental "node_reclaim_mode"-like
+> + * behavior in this case.
+> + */
+> +static bool should_skip_kswapd_zone(struct zone *zone, unsigned int order,
+> +				    const struct alloc_context *ac)
+
+Make this inline? This is the very hot page allocator code that's why :)
+I may be overthinking but in page_alloc.c I do see functions with similar
+size being marked inline.
+
+
+
+> +{
+> +	unsigned long mark;
+> +
+> +	/*
+> +	 * This means kswapd is asleep, so don't skip the zone. This is a
+> +	 * lockless check, since a stale result only affects zone selection.
+> +	 */
+> +	if (waitqueue_active(&zone->zone_pgdat->kswapd_wait))
+> +		return false;
+> +
+> +	if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
+> +		mark = promo_wmark_pages(zone);
+> +	else
+> +		mark = high_wmark_pages(zone);
+> +	return !zone_watermark_fast(zone, order, mark, ac->highest_zoneidx, 0);
+> +}
+> +
+>  /*
+>   * get_page_from_freelist goes through the zonelist trying to allocate
+>   * a page.
+> @@ -3796,9 +3822,6 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+>  	struct zoneref *z;
+>  	struct zone *zone;
+>  	struct pglist_data *last_pgdat = NULL;
+> -	enum zone_watermarks kswapd_watermark =
+> -		sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
+> -		WMARK_PROMO : WMARK_HIGH;
+>  	bool last_pgdat_dirty_ok = false;
+>  	bool no_fallback;
+>  	bool skip_kswapd_nodes = nr_online_nodes > 1;
+> @@ -3865,22 +3888,10 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+>  			}
+>  		}
+>  
+> -		/*
+> -		 * If kswapd is already active on a node and the zone is below
+> -		 * its kswapd watermark for this request, keep looking for
+> -		 * other nodes that might be idle. This can happen if another
+> -		 * process has NUMA bindings and is causing kswapd wakeups on
+> -		 * only some nodes. Avoid accidental "node_reclaim_mode"-like
+> -		 * behavior in this case.
+> -		 */
+>  		if (skip_kswapd_nodes &&
+> -		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
+> -			mark = wmark_pages(zone, kswapd_watermark);
+> -			if (!zone_watermark_fast(zone, order, mark,
+> -					ac->highest_zoneidx, 0)) {
+> -				skipped_kswapd_nodes = true;
+> -				continue;
+> -			}
+> +		    should_skip_kswapd_zone(zone, order, ac)) {
+> +			skipped_kswapd_nodes = true;
+> +			continue;
+>  		}
+>  
+>  		cond_accept_memory(zone, order, alloc_flags);
+
 
