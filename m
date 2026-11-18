@@ -1,98 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90E1606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055CF606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OxS0Otyy
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=J+FUQh3E
 Received: by kanga.kvack.org (Postfix)
-	id CEE116B05B1; Tue, 17 Nov 2026 21:07:19 -0500 (EST)
+	id C37856B05B3; Tue, 17 Nov 2026 21:13:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9F686B05B4; Tue, 17 Nov 2026 21:07:19 -0500 (EST)
+	id C0ED16B05B4; Tue, 17 Nov 2026 21:13:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDBDC6B05B6; Tue, 17 Nov 2026 21:07:19 -0500 (EST)
+	id B00766B05B5; Tue, 17 Nov 2026 21:13:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AFE96B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:07:19 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3907C0602
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:07:18 +0000 (UTC)
-X-FDA: 85446602556.17.E671588
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 260EAA0002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:07:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OxS0Otyy;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794967637;
-	b=AT/nuO4OsSaWyKmlMKuULNhtQ916CRPIJh7muH28E2xhQgx4Y2lcx2R9FsNdao3n0OLNXq
-	PU/HGJ9Q5pp4Ck7B0erWKp4S5qKwef9FYtOgkbr5xNZM6Eb8OJMIsNxZn4HljdPuRwWJgy
-	+x/w1a8TbYwCGaHVgENJh1oEe14MNak=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OxS0Otyy;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 846396B05B3
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:13:38 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 45248140508
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:13:35 +0000 (UTC)
+X-FDA: 85446618390.28.33A7FF2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1AED040007
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:13:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=J+FUQh3E;
+	spf=pass (imf07.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794967637;
+	s=arc-20220608; t=1794968013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SfJwYwm5e4vsMzXCNz9yx/bfvNCh4e6ZadaT7dtFFCc=;
-	b=AuXZNViTKhKvoszh+AN6/WznMtZ2Kv8LNbSHiIAp4EZXIClnMzVw22/PlUcDtNbdHvlEOE
-	wVgfh6WiUml2G7cWBT/k7at933o7iirwlifKLrlrzZvLITlMDLU7MtWscxGA+ZS8vnT97p
-	wbQJ83sfe/wFBfjDZ89vBvewow0s1WY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BC6545108;
-	Wed, 18 Nov 2026 02:07:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9151F000C4;
-	Wed, 18 Nov 2026 02:07:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794967636;
-	bh=SfJwYwm5e4vsMzXCNz9yx/bfvNCh4e6ZadaT7dtFFCc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OxS0OtyyAIerLsAhqGBRZ+KTdGsIkmq3EWg7V/diqU8vep8orjnhHHMpfi8HdS/e8
-	 5CmV4owJrPu9fVMDWqrP3PXnFDuGAFxOaWbl9nbawe5aBx8OmbUcTRdGCuN+8szwLm
-	 DzEqrqHJvaQSXYaDpZsKoIjy+ePZyuap0aQ1vEfQgM6F47xKF/ewaUbsZyqE56eT1o
-	 sSZIdd8GUjB2BZqHlC4ABa4Wpfnx49lcjt5R3KAAiANpXhY/jtbLp+zRzJYnEaoAau
-	 PpPfsxAlxmuqUWpmLp45IjLc1wrfkR2ugyBHxexfl7s/cEMqNpWaGj2HapQa9pzGe3
-	 ou5Yf9OOHZUkA==
-From: SJ Park <sj@kernel.org>
-To: Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
+	 in-reply-to:references:dkim-signature;
+	bh=oMmQT4LBt4QnjZ5+vGEUUS6BupntHDb+BjkQkH+5Z5A=;
+	b=T6MwOxlpw6HYpiJmItEHUrCD0Bf5ZycDEeSUL5rzcWw3Ju+f7jU1cWRmWgCf6kEK+V1ZLO
+	HO09RRD2RYPEGfGiKrEixFbklW+BQHsIHGCDAOJhLRylN8FE3xnKuQ8/sDBfYUW5SU/SXv
+	pu15vqBQ2fL3KqANAvAGUVn1TScfja8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794968013;
+	b=1gvrlbLhav9XkuAf5qol5WwNlwwXFGWRFLAcCuTdSRV4dZ+zFD4YolgpMCrbYysVIpLLS/
+	ieKei7TuFxCw8F7jY6HnOUwp/rpo8xkeSWFQsNJlh+BivCGL1uBCQXWNaj6dFIODl5b4ZS
+	4u0Vbz3KrzPb2QaWYcfXaAQV2hckitU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=J+FUQh3E;
+	spf=pass (imf07.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=oM
+	mQT4LBt4QnjZ5+vGEUUS6BupntHDb+BjkQkH+5Z5A=; b=J+FUQh3EaYD0ZFihVE
+	5lmw7TVgIYJcKLA3wxHzUNpBucd0IqGIBzT+aUhB7JPuVmF81Pl0yQ2OadyJzZl7
+	6CTObX9LzScfzyyTrvHol1me+dHQBjncSTIaH6aDpeCmszVk2sr/z25GmB7mOU+a
+	JhwXQM6/BSnm0HM3YzVL8IJOM=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCn2J+nCf1q9_NEGg--.8212S2;
+	Wed, 18 Nov 2026 10:12:56 +0800 (CST)
+From: Xuewen Wang <wangxuewen_ky@163.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	sj@kernel.org
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Mattathias Pinchover <mattathias.pinchover@uber.com>
-Subject: Re: [PATCH v2 0/6] mm/damon: add sz_ops_filter_passed_last DAMOS stat
-Date: Tue, 17 Nov 2026 18:07:08 -0800
-Message-ID: <20261118020709.97589-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261117-damon-sz-ops-b4-v2-0-439888fa04ac@uber.com>
-References: 
+	Xuewen Wang <wangxuewen@kylinos.cn>
+Subject: [PATCH v1] tools/mm: page-types: flush pending idle bitmap bits after walking
+Date: Wed, 18 Nov 2026 10:12:53 +0800
+Message-Id: <20261118021253.1691428-1-wangxuewen_ky@163.com>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgCn2J+nCf1q9_NEGg--.8212S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZryrJrWfKr18GF4UuFy3Jwb_yoW5Wr1rpr
+	ZxK34jyw4kta4fGwnxZrnrAF1rAwn3XayfGrW7Gry5Za4UJF1jq3WxWF109w18WrWkCF43
+	Ars8GFy5WFWUAr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jpWlkUUUUU=
+X-CM-SenderInfo: pzdqw5pxhzv0xbn1qiywtou0bp/xtbC8AiGb2r9CahW0AAA3h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 260EAA0002
-X-Stat-Signature: jryf8neycjb961zccmwhn3z4ypzm74jy
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794967637-245711
-X-HE-Meta: U2FsdGVkX1+EZ5AIcAYWXKoARNjkYtsRdd7ptIJWmdyFnyYiWmS+cJLngeOpSNVmD6rnc/qCfqVW3nw69k38S+V5roVpmpaufM7syVxjUpw2ELjNIuorJJblfa5JQvpKVyV3p8vmjYf0sH823ppnNUB2gBxeRgh4UTx+T/twDYKHP+i766Ov4qGcuGoFOvExEYr8BlQpAIJIHnDeQFSKTGb/uBfjT6+talhCaA42ZlodpH74lkHRxd1iM1CWac0WFkZGEhbONiN9wrZMbO3odEyy/0HuG/HqaY1HhLr7Ivp+t3N/BWANNet9Psj5AUawMIkzSygi76LpyMrKmydUm5Tb5dtnup4LxCXNANxFJbEt2qqCk8haOq+K6TSLX65mpYEz7SDzlbq8bicxFi/bqRCOxzKvp0kFNN7H0kr6bGUrJaE9oXlAvWq9nLvth3Phs132ZH6KX7iuGyJnQur/db+0xz9rcTcF3M2eE++Ulub83Y3p2zEpI/AVDqg1er4u2cUdpAPER9iDrOJwzL2IPIVjbt+pqHogk6S51GtnWVzQCPJr+GoH3K722CRqlwZoihv2GHqehnAaA2qHOGd9B2Ky3uARunJwi/AFS7PImpJt+npibUVfddnKSXG1KWbndXOQp0t8Nmu/EJ1XC7z9yY9wO5pK6QOjZ1gV7jdL9rKZhKb4Nsojm6upvCfPtfpBf7Oprq8Jdbagf+vz0NRn9eQk0HXEpkZ2tRALjiEVM/VpQUcEmRSWGnR3tWtgIW9Z4OkzWtCNi35MI1/1gO4ylv2MmOirF+aSsdIZ/0zSnlOTEKEB8gsCsAIB6Dz25/x9XRGuQbDjLiMvgPtrYbUQ+Wf89qFkN8GPYeDDeoybgCxfqb/h1XG/3dPdPqBSV4zAqLvL/2aZwjkcyK6HLdSRl4AUF2RtMaMtXGZlkNUPBEYSDj4jKNLBeTe6Qi8IEiyz4SVnjFyFRcRBN0iUM5I
- 4KAAg4B8
- ObL/m9OeKNaSZcrlHhK9vu6vRjhGpwl5PrQcWMFO3oBZFsxz+FmHG/ZwEVwmIeV292owoqFHR2YBIKWlFDAVhS9F4RZcIHhsogIvSO2x3WVH7bYv2uilKNJBxCAemEgU8HtM+z9qkYJ21f0yAsrbYf8xlk/QvtmbU1pJ8mTTK2R3TDKE/j/pN5pxEmVGijheJpG++FRtBvJaEW2f3WrLIGEFBNWyCFFtKVuC6cpGy5Fn/Dvg0h4dH25QgEyHrFOtzH5ko4FFNi1UDzKpANOwvjSCZMrC+y3DUlyht4T6ASzwYYxryvN1ex9U6LtBoGxvVLxOpvpkkER9aoLlvVBeOB/BOyoEInWLh39qXxVxW+BeNdc9QzseQsGwP/d4r3HDfJ1cZZUImTnJeSBXZg6G3tAxdcT11f43z5/vbves4m1sEcpzmLiRA0F7uzeFaYOlGm4efcUPEf566vIFb72daBNMnuD4f3G3gVOLozcWrcEpmvI15pEWoPTDedpCWpZ/Kj4YB/A+Oz6gI7CqClEusj04gjXYhnUzgWIPus8BsQX7kAQo=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1AED040007
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: widwyya1cbmohmi4wt9ki79h6qhqcmq9
+X-HE-Tag: 1794968011-860593
+X-HE-Meta: U2FsdGVkX18SZmr221XlmDTubdlnQZnL3QqC0sEWnz1fpvlcyAVXG+3/Ij5Y9SerbUFrHfK7egB6WauEgmHmoil6CdopUpg44ITLeaA5fyZzsH/SVBUCWT7D6wIffm2/pt2dULm0RCkjD9D4hCHF94X+jMs/ykNECUkRuTYO7w3fms1L92w/lhtlD4L0/EE5+iRWgH2SMhkXVnF6MN/Rx2uyYzoeX/R9PBL7wf61zPcjnulKirfC5YT3Tnp+ddGQeNturwJawHtostyo06xKVWh7mnQ+gMaRzr7sadge/SbKNGwbQvfeliv5uPppcEtUiaLpvFvGtcJwIdWq/3l2wRHQGXdO6+A6bU3SAzwFhjZPWsKISq4g/cpTkeGjOllYGuAOyUYVCQri76cEFWxSQn3aqZGPo56CqXwTe5xVN6mec9nHKQ778y9Dnaf9b7DgKNGJU0U/f7//gAabukgjwDN/dPP6AfVfTZ3ORp206bYI8qkehORrSHi40nO3MQwKxZ2sYHu7YYWIpOaEuW1YplakufvDYqjYz4bC9yY94ko6TF3onVkuBaCMme8EwWMSw6EX8Uuuxe8uXbly3iJC3UjKzXYMO3ZxQmaMrQq0Syoxeg0EUM5da1a43n1CE6H453twx3W/aN5y5t2FeTK7Yy8zUeeAdT5D7Fb3z9YR9nRxiEr7R4t9F/kjE8vWCuonDreZxRWIbcPMFUcfNIgErf1drUxpT5n25rYJp0GXRXq4+N8C2YsjPI5k3bytwqspq+vSaUGx6OOxRzg33iTQiwefNt6h3zuYv/Xp1TzNyofGFvb9g6ndMf7yYhNhutqaUgY+Ok1s10HjiBITf4vYwVbW32SJ7Wg4U3kA0hjSoUOneFL5z1mrzFXoplc0B8LjPzIDM4NOJfL4E+n/a1uFM2RmhNlcxWognN+DBm+3AeXIq5U3twiySvTdtrVnlhSiGe0WyX+Vq1pQq/jVyul
+ SnJNXnQk
+ /KCU9nMirgFZZFzhzWLq9+NU2xY52gz56SOppvzAwkHOYRm5NULXurMqej5HjZTwUjHFD/xLqImZBjfpWmjY9Tx2w1ITgcWHNQuWIWYX3YnlKu7CcVFVxCMcEq4P7oltCV718XVq5bPCyPvikWBgdh9nX1Wsg5ntiQSyX7tB8S6raNTfgAWTga3ATI5b83MW6fnbUgHnm2d3qF60pLDdgGXrwZdMCRODqlWhFmRRxO0JDeR26sO1nuAqPXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,52 +101,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 17 Nov 2026 23:22:14 +0000 Mattathias Pinchover via B4 Relay <devnull+mattathias.pinchover.uber.com@kernel.org> wrote:
+From: Xuewen Wang <wangxuewen@kylinos.cn>
 
-> DAMOS stat sz_ops_filter_passed shows the total bytes that passed
-> operations layer-handled DAMOS filters, accumulated from the beginning
-> of the scheme's execution.  Users who want the amount for only the
-> latest apply interval, e.g., the size of a workload's anonymous memory
-> that is cold as of now, have to keep the previous value in user space
-> and compute the difference.  To know how many apply intervals a
-> difference covers, they have to rely on nr_snapshots.  But nr_snapshots
-> is increased once per target per apply interval, so the computation is
-> complicated for contexts having multiple targets.
-> 
-> This series introduces a new DAMOS stat, sz_ops_filter_passed_last.  It
-> shows the amount of sz_ops_filter_passed increase in the last apply
-> interval of the scheme.  It is updated at the end of each apply
-> interval, and kept unchanged until the next apply interval is
-> completed.  Like the other DAMOS stats, it is exposed under the stats/
-> directory of the scheme in the DAMON sysfs interface, and refreshed
-> together with the other stats when refresh_ms expires or
-> update_schemes_stats is written.
-[...]
-> Changes in v2:
-> - Patch 2: join the attribute declaration onto one line 
-> - Patch 3: call damos_set_filters_default_reject() before adding the
->   scheme 
-> - Patch 4: keep only the stats list bullet, dropping the explanation
->   that the stat is not accumulated 
-> - Patch 5: wrap the stats line in the usage document
-> - Link to v1: https://patch.msgid.link/20261116-damon-sz-ops-b4-v1-0-1cffe7227e6d@uber.com
+mark_page_idle() buffers bits for one 64-page bitmap word and writes
+that word when a page in another word is encountered.
 
-Thank you for addressing all comments I added to v1.  However, you didn't
-directly reply to the comments on the v1 thread.  That might confuse some
-future readers.  From the next time, please make sure the previous version
-thread is complete by replying to all comments and waiting sufficient time to
-let any other chime in if they have opinions.
+walk_addr_ranges() tries to flush the final word by marking PFN 0.
+If the last buffered PFN is below 64, this only adds a bit to the same
+word and nothing is written. Otherwise it writes the pending word but
+leaves an unwanted PFN 0 bit buffered. walk_page_cache() does not flush
+at all, so its final pending bits are not written.
 
-All patches in this version look good to me.
+Extract the write operation into flush_page_idle() and use it both when
+changing words and after either walker returns to main(). Clear the
+buffer after a successful write and skip writes when it is empty.
+Place the final flush before the no-summary early return.
 
-This series is applied to damon/next [1] tree.  I will repost it soon (~1 week)
-as an mm.git merge request.  So, no action from your side is needed for now.
+Use 1ULL for the bit mask so shifts by 32 through 63 are also valid
+on 32-bit hosts.
 
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+Fixes: 59ae96ffc3a67 ("tools/vm/page-types.c: add support for idle page tracking")
+Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+---
+Verified on live kernels (v5.10 and v6.6): after "page-types -f <file>
+-i" on a 100-page test file, the kernel idle bitmap held 99/100 of the
+bits before the fix and 100/100 after it.
 
+ tools/mm/page-types.c | 38 +++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
 
-Thanks,
-SJ
+diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
+index 47e4781c5fc3..3833dba3c02e 100644
+--- a/tools/mm/page-types.c
++++ b/tools/mm/page-types.c
+@@ -575,27 +575,39 @@ static int unpoison_page(unsigned long offset)
+ 	return 0;
+ }
+ 
+-static int mark_page_idle(unsigned long offset)
++static unsigned long page_idle_offset;
++static uint64_t page_idle_buf;
++
++static int flush_page_idle(void)
+ {
+-	static unsigned long off;
+-	static uint64_t buf;
+ 	int len;
+ 
+-	if ((offset / 64 == off / 64) || buf == 0) {
+-		buf |= 1UL << (offset % 64);
+-		off = offset;
++	if (!page_idle_buf)
+ 		return 0;
+-	}
+ 
+-	len = pwrite(page_idle_fd, &buf, 8, 8 * (off / 64));
++	len = pwrite(page_idle_fd, &page_idle_buf, 8,
++		     8 * (page_idle_offset / 64));
+ 	if (len < 0) {
+ 		perror("mark page idle");
+ 		return len;
+ 	}
+ 
+-	buf = 1UL << (offset % 64);
+-	off = offset;
++	page_idle_buf = 0;
++	return 0;
++}
++
++static int mark_page_idle(unsigned long offset)
++{
++	int ret;
++
++	if (offset / 64 != page_idle_offset / 64) {
++		ret = flush_page_idle();
++		if (ret < 0)
++			return ret;
++	}
+ 
++	page_idle_buf |= 1ULL << (offset % 64);
++	page_idle_offset = offset;
+ 	return 0;
+ }
+ 
+@@ -798,9 +810,6 @@ static void walk_addr_ranges(void)
+ 		else
+ 			walk_task(opt_offset[i], opt_size[i]);
+ 
+-	if (opt_mark_idle)
+-		mark_page_idle(0);
+-
+ 	close(kpageflags_fd);
+ }
+ 
+@@ -1364,6 +1373,9 @@ int main(int argc, char *argv[])
+ 	else
+ 		walk_addr_ranges();
+ 
++	if (opt_mark_idle)
++		flush_page_idle();
++
+ 	if (opt_list == 1)
+ 		flush_page_range();
+ 
+-- 
+2.25.1
 
-[...]
 
