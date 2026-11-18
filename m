@@ -1,207 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB86606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864EE60A261E
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=AvcKfCxg;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=b7r2E6fM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eHGDS24t
 Received: by kanga.kvack.org (Postfix)
-	id 1584A6B05BA; Wed, 18 Nov 2026 14:50:38 -0500 (EST)
+	id 8645C6B05B0; Wed, 18 Nov 2026 14:54:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1301E6B05BC; Wed, 18 Nov 2026 14:50:38 -0500 (EST)
+	id 814FB6B05B1; Wed, 18 Nov 2026 14:54:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01EE46B05BE; Wed, 18 Nov 2026 14:50:37 -0500 (EST)
+	id 7045A6B05B3; Wed, 18 Nov 2026 14:54:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BA6D76B05BA
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:50:37 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 425251C426A
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:50:37 +0000 (UTC)
-X-FDA: 85449282114.05.D4160AA
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4FE97C000C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:50:34 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=AvcKfCxg;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=b7r2E6fM;
-	spf=pass (imf22.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795031435;
-	b=k/vWmF+jKTWFBFPBe9UnLfDxgNkkkN66V0j5Z/2zcflEIomzKQ33IIS1lRZZAWxjKr3yLq
-	dZxly5EDgFKNNDBIXWt7aBakDfXjMRyPDM9jmEeedmQhSrd0vBYiUAZi8bHKrboaLsE3NF
-	UMHm70F0eWR6Od2MYLOEfjJTt9Gm0Lc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=AvcKfCxg;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=b7r2E6fM;
-	spf=pass (imf22.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+	by kanga.kvack.org (Postfix) with ESMTP id 3978B6B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:54:35 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E7B7160896
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:54:34 +0000 (UTC)
+X-FDA: 85449292068.20.049C148
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E24051C0012
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:54:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHGDS24t;
+	spf=pass (imf20.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795031435;
+	s=arc-20220608; t=1795031673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r7xQEq0S5madAXrgChKTKdPfHb7gKwfhdlAPY6R8vGQ=;
-	b=I+k7kvfj7mJOyCbCtfBMdBLx9k/FeB8e37l9+HUm5pEGUxz3AgZ0nTazX/Ucr0jARP+ul3
-	yDj3okOSh0Un4TOr0s2kBAhp4pIxKQP/Vz3eVFmxybocSpVOmI+Ewg4PczqgVXaWtHi82X
-	rHgmK2rA3T3l+DATMP9+42OgcEjExVU=
-Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AIJYomS3533462
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:50:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=r7xQ
-	Eq0S5madAXrgChKTKdPfHb7gKwfhdlAPY6R8vGQ=; b=AvcKfCxgh2FO1dLQ8zx+
-	4vXb/ToMs6lkdoSyUzHR7J5mA8oTJ80Evn6C7DQAcQmCKyyCXCcVPXC1AY2BPV+D
-	PrxnrOdal+rGAkWkiyrbM+AqOwlZAQ1nJhZU5MP+bzgPUyn08QXjS82Qla/J+pPH
-	iCcg3Jt/KcqKZ5SUTzgJwHBANnntnyE+Pl4ScFWubQmhtGSgKuvD11x55l/MrryD
-	qpYkODcKqypwoTWy8gK5UZs7YAS4kt/NOgHbNYfZYGtlH43Z2m+cRpG1dhxCVAtF
-	QizC4R1HjcRvzV9dgt1KKEHn2w9dfl+PcmY3Jg7zuQba4dl/aGh85fAhkp4sBQiD
-	SA==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4j1f6gj2vp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:50:32 -0500 (EST)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5383c05fb2fso34773901cf.1
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:50:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1795031431; x=1795636231; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=r7xQEq0S5madAXrgChKTKdPfHb7gKwfhdlAPY6R8vGQ=;
-        b=b7r2E6fMmOxqlq0tSYvz89Gb8nRE/zgvHBnOcUZTaumhgqzlFIrxU7F6lAFFXfWf7g
-         c9DnOA8Hto/LmYnnmLmNfDoOap2qooX5TB3FpTax2cluU8CBk/EMCvo1aAoRxqIe7udp
-         qiTeRAvxhyUg1cdNtj97ToKpNycCS3NtKF6tXBND6krferK/+8gN4OoC/8sdrUVqlsve
-         Q5oSsKjoPhpKVEqt13joAfArMwDNWIMIVqwBXp/CJsZh3wtZWI7Fkzp/qk62M1biCO9N
-         Z0tVSC3JdnQSOm9CLnnXYIo0svsPKmBwUCg23uVki1wl6Nej4hwKdSjWsQwTWyXG8nev
-         xvjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795031431; x=1795636231;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=r7xQEq0S5madAXrgChKTKdPfHb7gKwfhdlAPY6R8vGQ=;
-        b=GzMHCa5RvNPpJdpAF+sry/2qXbIYiA1S2d3Ys7g1KZl341XNVgGprP5Gph5Dg39NAj
-         Q8H3qmDqoHrKG0LY3Kxz10atHJyYMxL/6RGe9iOTMtTukCSCjarjmJ5xn6Ii/yAu355r
-         SF1QuixyqmtWuRw/tks6TPmXmWb+VpRcWu4hMRgrra0fYh54B8hY2gIVCcQ/xWDzPTby
-         VwdAKNt/lYa6KTJS4a5t2qUBKR4iCuFeT5Zf0Hx40D+L3tLwSFk1JrPHEQcSt53BV3CP
-         WYbhHe804gxsOmRG1k5rmmfHDwn0tgQHPrEo7Vg9Rwdm6EopnQ7F+rXF0Rw+B4FBQDAN
-         Y3Yg==
-X-Gm-Message-State: APuU4Z9rdq01T63JWDUog36qvb3pfbRhPvnjaZ8XBuN4/h5vNJ6/esW8
-	RhmsCaVKi6wM3jOhznSDUs4iMtZM2AzGl7dHzWLXbVvHrbLTYJGFNbcgKdLGL+5FYpLNzbvZl1X
-	wF2Xy/004s6jKe93W0vzsh+LiMmimN3qExw/XrLMkeJRnAL05
-X-Gm-Gg: AYBFou0H6wpqhES7WyhXUdJc8qnYCYzyQ0nPy1NNBX7MCY/zNJhCMKKbUmFt+n2TnD8
-	d2JEFb+vKq3NAelwj6wZy5eHatHJLl/mh+z1hM52im6hb8EvSIRFJQs/S0/cTLikoM9P7L7xI1S
-	4Oss4Mx9DHO7+lhBsrZ4KpDiybhj6DaHNxj4yBuKzug9AJBr5zilNtKj8Irsn+9bKuyLu7ByT3E
-	H9chG4N3ZP2sHIpDd0nxeZ4v6/RIQAIeXUmPIVQhVuNv45MGbOm2tcokTyyZ42GT+vQVcyo4Qou
-	NEoqyZdJppNgoOT7IvS5vSXVDZj/ESmFvUsf7f1YeIJaQLgABzZd4s2+aUO2dpKb3P6KM0VVv7n
-	qsU/uolTYIGw1lr4Uvpht3lJ1OfxTVh2TS8hUX2Aaz+ObkTRosVNQZsbf3j3lkZjnqNqi+SJhPm
-	D2lnFuCYMCWmSPatBmFNTddA==
-X-Received: by 2002:a05:622a:5807:b0:536:252a:dbf8 with SMTP id d75a77b69052e-55d5a537991mr56617241cf.14.1795031431364;
-        Wed, 18 Nov 2026 11:50:31 -0800 (PST)
-X-Received: by 2002:a05:622a:5807:b0:536:252a:dbf8 with SMTP id d75a77b69052e-55d5a537991mr56616931cf.14.1795031430933;
-        Wed, 18 Nov 2026 11:50:30 -0800 (PST)
-Received: from [10.207.2.125] (nat-128-59-176-14.net.columbia.edu. [128.59.176.14])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d66c24503sm7189751cf.20.2026.11.18.11.50.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Nov 2026 11:50:30 -0800 (PST)
-Message-ID: <9a6599cc-f47a-4a27-ae8e-91c8a1a523b5@columbia.edu>
-Date: Wed, 18 Nov 2026 14:50:28 -0500
+	bh=dOMAgC0XvS4nP90YCQcBU0h+fNv/5Kz+lJp/v4CzlRY=;
+	b=qqKf+yK6QjsndP9rLcmnFGF7LRE+bGdgMNxFgT1JbBkDUJzO4zIH4F9KNQzt+mmbKIF8sR
+	i2WCaU0u0Ul4jmwFwfLVdmGGucyF/WGcOJPaMDMihArpd6lhj16S39ykv9B4uAGYZfjcZb
+	dfSD4fqcF2FWpYiBxPGmFsLRPFiewuY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795031673;
+	b=d0hrho8GyaU2V8fUV5jRN6RJr5vtbDJ7WuQxM0vzsK8JZ9H8blxIpZaBjJIzliLwlwoCxc
+	QYNPWdvxnS7UwvvtcVGOrjETsp7ul3+ovnGZDT7uqdbLPbv/484hJsL5ETiSm/DIHCAHyU
+	ByycyTG1z3ouqfYUa9txVxDUkjqYltE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHGDS24t;
+	spf=pass (imf20.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 14C4F40A61;
+	Wed, 18 Nov 2026 19:54:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 409C51F000C4;
+	Wed, 18 Nov 2026 19:54:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795031671;
+	bh=dOMAgC0XvS4nP90YCQcBU0h+fNv/5Kz+lJp/v4CzlRY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eHGDS24tKkdUdQSDE+m8Q9U7FzbKLF5B1bDQj4MZxp+NpFTpVSXqOqxZkSbRrYUCu
+	 xtJKC8BPP86kLhKQWSGTmh00sX0NKvq9TjDCRYonSH8rUaaTLB11cllHumX66RUYyH
+	 ScOEhGBFrGL7aznIPo29PaJXS63D224351P4tQaIaa4C2w33oRPpGvjOVaJF1GWXp0
+	 yn3LJKcQWVn44OuzVcIAi7Xe0ILvDdblzEOdRn+tnrG+OFiaNe8nBeMUP2hyUdRH6G
+	 ezABsk4drujjXkdYoPEJuXtySKLyTCVIg2d2O1x+lXwN8EOL9gzFhw3UcfphSBmKst
+	 FR/hJTy4y6ubA==
+Date: Wed, 18 Nov 2026 21:54:28 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v3 00/13] Namespace for namespace roots
+Message-ID: <av4CdM-eW73oO4wB@kernel.org>
+References: <20261118193539.240065-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (subset) [PATCH v3 0/9] userfaultfd: assorted fixes (part 1)
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
-        James Houghton <jthoughton@google.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Balbir Singh <balbirs@nvidia.com>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        Michal Hocko <mhocko@suse.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Andrei Vagin <avagin@gmail.com>,
-        Muhammad Usama Anjum <usama.anjum@arm.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
-        Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang
- <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
-        Kiryl Shutsemau <kas@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
-        Breno Leitao <leitao@debian.org>,
-        =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-        Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-        dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-        nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org
-References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
- <179501525761.13527.5348420494097607881.b4-ty@b4>
- <d05636be-5a37-46e1-b6d2-30950b7778b5@kernel.org>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <d05636be-5a37-46e1-b6d2-30950b7778b5@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDA3NiBTYWx0ZWRfX0XTxnwNXoFZa
- 6nR3AF7LAhZLKDoQEo3nZsUeWLrE6UPcmefdAqxemixSuJcxX1Cq4KB/wOpq0qhQr6t71M5f7tr
- /rmyXxu304KewbIVDxLLCTn4fMQVrofxayJc7MHvXy+ljssy/qowewpMhykyITCqkH99g6ftglX
- 6kCsgAt9Gb70C6eSO0nwSaOSGGZw9eNXTgahovMTRrAY61BhQFQ6LwXGVkBNCDG9EAzLJ5z8TWF
- KbAFCITuES/21/UsjyJwb2CedqH0mOwG28R1e0oooSxSBG5fdTZB+MPVSccjutAx0c2h2aXMy9u
- 2fanKr3XOPFkzgVZFGs+t2Tyr0s4fRDRVrPXF5nmynnscbdR3TRwDB3/3oWLxiWQlo4/nN6ceSd
- PLFOJApodashG9xBFOPdYaq103KW022Yu3pTiF/R/6I44xapdvkvfQ0wiK0syoqQQS+P5+qn9HB
- XR/rE1V3a/JZfXMFkaA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDA3NiBTYWx0ZWRfX+HJqW+O2YhWf
- UFm8GFSWAput/A54dgcuHBXkGJ/0NxjIt+LiwAp3m3y41bMA+MIOIjdllhx/kKtjaB0u5l6rz5h
- 8LktQv2WLxQURFtcWG3fJmFBdQBwo13X2DZhWuCXxkBzNwFEkZSs
-X-Proofpoint-GUID: RbckQ_OH4nvTdml-fzb2-t8EMZtcrr08
-X-Proofpoint-ORIG-GUID: RbckQ_OH4nvTdml-fzb2-t8EMZtcrr08
-X-Authority-Analysis: v=2.4 cv=NeFzRGD4 c=1 sm=1 tr=0 ts=6afe0188 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=2zM0HjzktFauw5hoOd8SpA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
- a=VwQbUJbxAAAA:8 a=b7hxIIQ5yigvctP09d0A:9 a=QEXdDO2ut3YA:10
- a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11970
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 clxscore=1015 adultscore=0 bulkscore=10
- spamscore=0 malwarescore=0 lowpriorityscore=10 suspectscore=0
- impostorscore=10 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611180076
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4FE97C000C
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: j7atzt77wn4rsgxb8b95gxhckfpsnfzw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261118193539.240065-1-jarkko@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1795031434-131575
-X-HE-Meta: U2FsdGVkX1/2/8/iA/YxOlwAVInQLv+RMQW/M123fWHxfNH8/yZBRigSAtgwfZC9zpVppGMhDjD+YR365fhvj7e7nYnwwpAXMaOhUj9HV+USGFSy+uMXMO8ZDB69oUlT453/T544U8ZQ91Y9Yynr9mPQMuYFs4oqloaVfdNwd+4muDWYTDZr0VEZYSjkdyhGX8OgOwKnsA0gJTLdO2U/zr9U/9zCsXvxS4Ye0CFIQ3e/yygupW+ugQYC83mDBfOXwYyOE+Mq1qTxCZH/hLT6q75nLwK05HFaeraBldkXGHEapWuxekd+cGFa2pWoDt6vNhIwSGPsZQp4H8xsgJc8CAgO+uDq+Vx8jl2ikvJKPtMbb6VrgQoGP2KBWxUQ6nfk3wq34megFH+fDGCz8tT+juf+wFbp5zZjvcvTSvOsLfKON18arF+uaIzSM+bYEPsP5cQ4Va8iQd5DJ+RxbEnV1W2Qn1u/ntnOv4JHZjeV+IJInPJKclxuCFzeNty9nYbeMdciCwifTHfS7yOxuAUldEZCh/MxxUmdk7D1vhGvzYvHwSMYej/516FwkmUQXhWPfE8h9LVCscdHhzh1QZPcwac0JgePdJMor7ekt01G9vaDceTip0I31zzTB8VE55qti0MSywel1x47oyqxaTFC+UW3a6ogA041ym7SZ53Vi3yZ7V1PRS2KApHwaeZCuUhMw5OQMTFtGxnOJzWh4Qq0D0uh1DNJtcpZxFbxFodT4xLkMTElFQ/SZIysGuBakqHNm3Q1b62k1iCJ1XKMa0UDBNLHoMK6AB/0Z4SViHLv8sb75d9w/ieKaystmF3osLCKb2JGFdLv59fbSdd4giZ9m/OBb5y2e3JZrQ5L9RlT6ADLwjkO2wdS/NDtMfMXBbdLcyUyIObsWINk6XiS+5s0CmqI65K3HFnyhsiC6E26k5q/R7R9gKJx8xgnpMVH946tC79GQXFcBfIz7/rkXXS
- BrKOQRQ7
- aqlYeTxMTJc3LuXgzDoP1MEftvpRcPSIpuBzgj9AbIfz083wLeeAwDrCRT3EoyZ1PHPtAtElekrx4GnnWHvLD9vMzGqsMNPmJu1AW+olYLGe7FK6/Zj9mufohRlq/CHSHQXTcKnNuk23x0gWjNM2HlHUafTRjxWhDD6WxHUtoLdbcEy8ktxxPMh3SA9y05zkBg3yexS3CuVRrXv59PU4fz4dw7u9d6vz4Fs3BuuvWMMqPL0Qoszd58oj7rwC7EK5PA0HvYeI+MjBico1XSPlMDnlJgg9ErXpThLaoob0SRBbh3wKAd9CvGhycRultDZLzoxoJbAC8yYuBUqVszCriF3+gHAKFkDABGE+1M6D7esxB8VS0ygXo937MfOp7S0z+Tp5fdbCt0Mcnve8zgBAM/8d35VUucBLRuPE6/OT1VRPCCpDktjU2IixQjvHT1kDjaVT4AUdBFkKPNftnig4j/oPYWMmAP9xg3s6Oy/0M+8p+90RyWDeDrgIpxkOejJnE2Vx6CHMEz3aQTLg=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E24051C0012
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: fkyiracqdn1nsefb6xmqsox37pithn68
+X-HE-Tag: 1795031672-513829
+X-HE-Meta: U2FsdGVkX1/StBAfAPw4A674LHLU4xdYA/Q4KqJKpdz/quc4DcfgAdlfSOPtyEC/5OWzUQK26Ibhxh7IrsFTflTkDVDxOt7ka55xcEYs0+us4S4MoPySFdhuWAReHC0XZDh7QXX2xlzCaJKRNUv+V9PyDmfKXixGrrOx0oeKpg4Q2q6HoLvTX65lJ6buQTuZP9eJ2Up7jxGOcRz5HG9QKIbiTaIGMCXpoSbqIq1FmYwblMPVItJh1ZMdGvUm8yjzaKt79k72rSOwmXFZ6DosvRYaCz5Tib/I9HJyRxrOYU7JQ8Iy2+/uMhNp9gTOluzNPPXjulldx6SwPinhjSsNUxGHovK0o+amt2Y5nvIsmxG1JrIIUR+1ZF8c51qbxccXFB0jpWC5maklWeX0bU5nhTOf3Dop85GiRT4AihgAdaRla96pFGYur0QuIrfDixc7sK7Lu3Jr2a0HYCNgbWqOmp8RfuJOh3WJilR2O2YwTrt8MajBQ8rpxSbCY9N460HtJjFur0bb/KrdeOlm//IvrtdyDal91su+uQ7cWL6owr8waj3f6r9UbON7wKZ87O7EOyTAm5hCtgSyf26xuRdX/E8a5+gDhzk1Pa+WAa8vEQXnMsZIxPLLPiS6tCIYzIqvN0faaETc+uTJS27lUZL8+dhrR3Gjp6kMHQwmaPIQDa+NPEum0JGYysTJLjMQQgYPA/kKOjCaPcGERqV66Iht0E85hzOt59jDEWv5pfm5dk6TpJ6ctmacxRU3oiDBgvHvGhV9uGCGBLyW/gQ78YFPe/kvFG1r0Rw/NH652Gz0ND6S6w7yfRck3eFEc9mmZmSxb4xPTmyvvWI9NsgjmaCOyWXSl/ds4Oy+7pNfRd5W7QlZ/yCirkp++fkotinPqMbUt6ju7kFXI2P/zwLS9Xfz7b0WH6KqSKMezC7R/+fVTfw/aV3+KwYoixlVF9N485gsLsx87us5PXhqwtd6ZNG
+ N1OWmzZ3
+ WjzLUryzcy//+ZkidQOJMoU6IidQvNSMu3J1x7fJYPviQ2BAiSDA37cAsv+7ILyNJhWVLqsIUjzjrD/mP9qT8qj5TNFHwYPR59qu7rAqARrfI2bc774qDKbeKy1m5KVlbALe0AKl0epn14VGXHzgLj+MN1ty53vM673txZ1z91s4dbDd2jzlDZ7h1AZgcSTEHj/M9Wp8UcePrOvFqnqzIQdfSo8OD561ieAIXGPw4eD/uPzWnnBv5Uwx1AWepfDRkj9BxDC76NdRMnFIGirjmxS1QW9vccxl6JQp+B7I2fi3k6Wk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -210,54 +129,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 10:37 AM, David Hildenbrand (Arm) wrote:
-> On 11/18/26 16:20, David Hildenbrand wrote:
->> On Tue, 17 Nov 2026 23:28:40 -0500, Tal Zussman wrote:
->>> This is a first batch of userfaultfd fixes, with more to come.
->>>
->>> These were found by a mix of regular old LLM review and by having an LLM
->>> write a TLA+ model of uffd interactions with PTE bits and other state
->>> and seeing what issues fell out.
->>>
->>> Most of these fix places where mm code loses uffd-wp or RWP protection
->>> while moving or migrating an entry. Userspace then either misses writes
->>> and accesses, or gets pages reported that nobody touched.
->>> There is also a hang in UFFDIO_MOVE, and UFFDIO_ZEROPAGE modifying a
->>> file through a private mapping.
->>>
->>> [...]
->> 
->> Applied, thanks!
->> 
->> tree: mm/core.git
->> branch: thp-7.5.misc
->> 
->> Applied patches will appear soon in mm-next, followed by linux-next.
->> 
->> Please report any outstanding bugs that were missed during review, so we
->> can either drop the patch series or decide how to fix it up.
->> 
->> It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
->> though the patches have already been applied. If possible, patch trailers
->> will be updated.
->> 
->> Note that commit hashes shown below are subject to change due to rebase,
->> trailer updates or similar. Further, this is not a guarantee that the
->> patches will go upstream. If in doubt, please check the listed branch.
->> 
->> [6/9] mm/huge_memory: build the moved huge zero PMD from the destination VMA
->>       https://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git/commit/?id=ec36bf72
+On Wed, Nov 18, 2026 at 09:35:26PM +0200, Jarkko Sakkinen wrote:
+> OVERVIEW
+> ========
 > 
+> A root namespace (rootns) is a kernel object backed by a file descriptor
+> that binds together:
 > 
-> Aaaaaand undone. :)
+> 1. A full set of detached namespaces owned by a fresh user namespace.
+> 2. A dedicated PID namespace for spawning processes into, signaling
+>    members, and polling or waiting on PID 1 exit.
+> 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) populated
+>    directly in its target user namespace before going live, without
+>    inheriting host mounts or cloning staged trees, while still allowing
+>    new mounts to be attached at runtime.
 > 
+> Work on this feature started in 2025 from David Howells' container object
+> patch set [1], which I turned into a namespace for namespace roots and
+> rebuilt around that premise.
+> 
+> While the patch set is manually written, the original motivation came
+> from isolating LLM agents. Running untrusted agent workloads made it
+> clear that OCI runtimes need to minimize their live configuration
+> surface.
+> 
+> Assembling mounts, credentials, and namespaces inside helper processes
+> with a half-configured container is what I see as the main challenge,
+> and the existential debate around namespaces and container objects is an
+> unfocused discussion topic.
+> 
+> [1] https://lore.kernel.org/all/155059610368.17079.2220554006494174417.stgit@warthog.procyon.org.uk/
+> 
+> IMPLEMENTATION
+> ==============
+> 
+> rootns_create() allocates a rootns instance backed by a pollable
+> anonymous inode fd, creating a fresh owning user namespace and a full set
+> of detached namespaces: empty mount (CLONE_EMPTY_MNTNS), PID, UTS, IPC,
+> network, cgroup, and time. ioctl(rootnsfd, ROOTNS_GET_NSFD, nstype)
+> returns nsfs file descriptors for individual member namespaces when
+> standalone namespace operations are needed.
+> 
+> Superblocks are configured directly in the target user namespace via
+> fsopen(), FSCONFIG_SET_ROOTNS, and fsmount(), allowing unprivileged
+> callers to assemble FS_USERNS_MOUNT filesystems without holding
+> CAP_SYS_ADMIN in their own user namespace or entering the target user
+> namespace first. move_mount(..., MOVE_MOUNT_T_MNTNS) operates on any
+> non-anonymous mount namespace fd: on an empty mount namespace it installs
+> "/" onto the nullfs root once, and it attaches relative submounts both
+> before entry and into live mount namespaces.
+> 
+> Once "/" is installed, processes are spawned into the rootns via clone3()
+> with CLONE_INTO_ROOTNS and struct clone_args.rootns, without mutating the
+> caller in place. Pairing CLONE_INTO_ROOTNS with CLONE_VM | CLONE_VFORK
+> and opening the target binary via openat2(..., RESOLVE_IN_ROOT) on the
+> retained "/" mount fd allows spawning with execveat() without copying
+> page tables.
+> 
+> The first entrant becomes PID 1; once it exits and
+> zap_pid_ns_processes() reaps all members, poll() reports EPOLLHUP and
+> rootns_wait() returns init's exit status and rusage. rootns_kill() walks
+> pid_ns->idr under tasklist_lock to signal member thread groups.
+> 
+> CHANGES
+> =======
+> 
+> v3:
+> - The patch set size increased predominantly because the coverage of
+>   kselftest had to widened to cover the introduced changes.
+> - Replace MOVE_MOUNT_T_ROOTNS_ROOT with MOVE_MOUNT_T_MNTNS targeting
+>   mnt_ns nsfs fds, and add ioctl(ROOTNS_GET_NSFD) to open member
+>   namespace fds (Andy Lutomirski).
+> - Allow unprivileged fsopen(), FSCONFIG_SET_ROOTNS, and fsmount() to
+>   configure and mount FS_USERNS_MOUNT filesystems directly in the target
+>   user namespace without entering it first (Andy Lutomirski).
+> - Fix locking, refcounting, credential/dumpability/timens setup,
+>   pivot_root() lookup, and cross-userns mount checks across copy_rootns(),
+>   CLONE_INTO_ROOTNS, rootns_kill(), FSCONFIG_SET_ROOTNS, and move_mount()
+>   (Sashiko).
+> - Mark PowerPC rootns syscalls nospu (Sashiko).
+> - Update documentation and kselftests.
 
-Thank you David!!
+I.e. before PID 1 and /proc/<pid>/ns/* existss, nsfd for namespace other
+than root nsfd can be acquired as follows:
 
-> -- 
-> Cheers,
-> 
-> David
-> 
+	int mnts_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
 
+Br, Jarkko
 
