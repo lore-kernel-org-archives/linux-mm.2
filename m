@@ -1,110 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19EE606A332
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2411D606A334
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dlsig+ad
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=TOncsao7
 Received: by kanga.kvack.org (Postfix)
-	id C1C796B05E2; Wed, 18 Nov 2026 16:27:29 -0500 (EST)
+	id 2F7206B05DF; Wed, 18 Nov 2026 16:28:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF4506B05E5; Wed, 18 Nov 2026 16:27:29 -0500 (EST)
+	id 2A7F66B05E6; Wed, 18 Nov 2026 16:28:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B31216B05E6; Wed, 18 Nov 2026 16:27:29 -0500 (EST)
+	id 1E4FF6B05E7; Wed, 18 Nov 2026 16:28:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C6636B05E2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:27:29 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF732A087A
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:27:28 +0000 (UTC)
-X-FDA: 85449526176.22.0BDC408
-Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9387CC0008
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:27:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dlsig+ad;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DDBE66B05E6
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:28:54 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD30214025A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:28:53 +0000 (UTC)
+X-FDA: 85449529746.15.6571AD9
+Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E9F4520004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:28:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=TOncsao7;
+	spf=pass (imf03.hostedemail.com: domain of 3khj-agoKCBsE9C1PM19J87FF7C5.3FDC9ELO-DDBM13B.FI7@flex--nilayvaish.bounces.google.com designates 74.125.82.69 as permitted sender) smtp.mailfrom=3khj-agoKCBsE9C1PM19J87FF7C5.3FDC9ELO-DDBM13B.FI7@flex--nilayvaish.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795037247;
+	s=arc-20220608; t=1795037332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mogADoqfrbMYaLMvgpMtuagWfc8Fc+oIhYZ0ChD1RsA=;
-	b=O4I0gppBg8mX9vPkBZjcIunJUjhvEwLNrQ3SNVWUlIhp5+/AanFp2EMJ5gX8/5MA4vXRpu
-	via7O9FACugxGb+h9YaFYSu8Ws8saJc9yEsv/D9TDpnLsLU5l329MFercrm1gENMN/n9jv
-	KiLrXuGBimjthPjMeJNhgFd8LEEhAbg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dlsig+ad;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wFYUOJj2+7G2v/k9lLyOgh0sZkoos/zK1jWHhTk0qZ4=;
+	b=MP1mT2PU7njUquLECdCHTD8b3M7fLWLfH44DuM4drypNlb32MyOKQZ6hz54v8A2vaq4Z+u
+	ucPsOZbQyqUDg0UU0eTaz/vCSOtZMfLhvDh1O+HMm90doGM6pMDgl0VQjgfJOtLT1V0I1u
+	xwrm0SGkjoi0bbZacSamwSWqY4McG/A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795037247;
-	b=P4Jqt/sZwYlihJn72QEGUmzLyOHNd33sYUwoi0D00iIlEVR2tP1rWua3827h4oKw8u2don
-	SQ2g93ANpUrGkjaI0HgKJuQqDZtotwQA7bza2YGBjQRBrx7xDCNNTpougbsPXp4Go7+rvV
-	nwlsGt4rjv3J8GSyrLvOZ3ClDN1Kt04=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=qDO+A0+DzQtZ1Jpw/GJ73qszkY+5+RWSqSSSXpqLzf8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795037244; v=1; x=1795642044;
- b=dlsig+adDIK23HTMVmpI32tmQcroVlpWzqBQbpdlScFHTB4uGVRchNnY8bt3qYe1+8yVmHPQ
- 2FwSU+W/65HXMmoCOwjKJCMUA3VREeW+2h7VuO2QfHiCcNW8gPMUoMjBV3WQhWpPtWSmrM6gUOy
- xoSh1EFTjlj3C2cRnqxEgDfE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id f673159cc3706187;
-	Wed, 18 Nov 2026 21:27:24 +0000
-X-Mizu-Trace-ID: f673159cc3706187
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Yu Zhao <yuzhao@google.com>,
-	Xu Xin <xu.xin@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	aarcange@redhat.com
-Subject: Re: [PATCH v2 2/2] mm/ksm: prevent zero-page remapping during ksmd-triggered THP splits
-Date: Wed, 18 Nov 2026 13:27:21 -0800
-Message-ID: <20261118212722.3922741-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.1
-In-Reply-To: <20261025-b4-ksm_fixv2-v2-2-8b61ad0491f1@linux.dev>
-References: 
+	t=1795037332;
+	b=aEUPRcuLTaCk9FAbXPVEtobAiirg0LMzi4GjLBusLaLLMYOK9V1Iof9dPNcNp3O6+WcT5I
+	C84HYea6gOtVpbXtdYv+yWsfYeYUTG2VAv0oeRJEZe6fyIGOOWdX2hA7cFa8gOiOUr1CBK
+	bBpvatgYaBjkjN17C3uaBpunvc3IBFI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=TOncsao7;
+	spf=pass (imf03.hostedemail.com: domain of 3khj-agoKCBsE9C1PM19J87FF7C5.3FDC9ELO-DDBM13B.FI7@flex--nilayvaish.bounces.google.com designates 74.125.82.69 as permitted sender) smtp.mailfrom=3khj-agoKCBsE9C1PM19J87FF7C5.3FDC9ELO-DDBM13B.FI7@flex--nilayvaish.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1b3b45597c7so2687799c88.1
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:28:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795037330; x=1795642130; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wFYUOJj2+7G2v/k9lLyOgh0sZkoos/zK1jWHhTk0qZ4=;
+        b=TOncsao7iEDpXqIVRkMZgCwDA8C0BOh30lS6OMopL7mQhCzUbdv396IC0FJfrubT3n
+         Ljzo4cEWiIoRMenoun7AbvuC0ebekp2uzSjAgjZbF8v2DMmXgVIdc1OVFldc9gHtkWrP
+         LyNiTg2gyioRbOU8cHPsTPhnV5ysLsavQt9wyH/aCP1T64lZk9YKYMRtZEvgyOYNQS4h
+         lpE3vdHsrizOFaY7MyYUSrtjl9aBXbKsUZYMElk8ugY4b8YzfW/1YmqQQmODKaMW+xuG
+         O7pbSWIvoCiC4AmrWKPwzgXuBA8dpMt05YNZG4uRJgMQ4Q+8oJsgz6/9vQGNS4TXAAyi
+         95ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795037330; x=1795642130;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wFYUOJj2+7G2v/k9lLyOgh0sZkoos/zK1jWHhTk0qZ4=;
+        b=xjZVBHtYhm4C1w/9Bnt1K3J6DgLe5XhdMpPf7wmuLpSEsPYVds/0bqUDJhriiWj1xO
+         DJNlcUd8o+ZMi2X3EXOJuBnRAUnW+wc1Wf9NG+RzZIvQ/QXRpfQ4bO2w1ahtVFnfonhU
+         xPq5xxtXPO5ZQ7A5/tAiqW5EYB2yrHwpLxzChksgE/1SaIhx7jvDfrWXDoIrEwkpEtUs
+         1ea6R71BBV5MQRTUNPteHmPffhWknPExZ3gvaNVyv5YRE4Mb3gJNBsJlYL0peIi3Glo8
+         aEt7P3GahZOfaKc3C1k7mXKb+xbg1I2vw/tTnzPcX4d/yITBKnlnIbPaXpeoxKBSqHFZ
+         xRFw==
+X-Forwarded-Encrypted: i=1; AL+hErEF4X7HIsaiJBj0N4qjUk/IminykcCc3LBpZpoYq+3L6URe+l3waK8TXb/iPCwjGXffB7IdCEq6QQ==@kvack.org
+X-Gm-Message-State: APuU4Z+fjhsgxbmNUtcJxukjQxOAw1MSf1dCcinCEkVZnPdu6gKyojwt
+	f+ZOrNw2DCW57esaLeh8fAL+jUKj8mEOjw6ZTuvbtCYnXJCLtp1PV8a8QtA512dBgx8CYBnRISg
+	mB8XSc+HfydWKe01yJSzLhA==
+X-Received: from dlcio6.prod.google.com ([2002:a05:7023:c006:b0:196:8199:c26c])
+ (user=nilayvaish job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:7f02:b0:18c:e014:6f1d with SMTP id a92af1059eb24-1b543c38731mr3242553c88.1.1795037330212;
+ Wed, 18 Nov 2026 13:28:50 -0800 (PST)
+Date: Wed, 18 Nov 2026 13:28:19 -0800
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9387CC0008
-X-Stat-Signature: jy8ipwdjapqb8ybdy1z4pri6ut9nwtzr
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
+Message-ID: <20261118212819.403059-1-nilayvaish@google.com>
+Subject: [PATCH] mm/page_owner: fix double decrement of stack count on unpoison
+From: Nilay Vaish <nilayvaish@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Oscar Salvador <osalvador@suse.de>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	Marco Elver <elver@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Nilay Vaish <nilayvaish@google.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: ni7zxozkgsbg8auyc519ueow71qc54ix
 X-Rspam-User: 
-X-HE-Tag: 1795037246-671273
-X-HE-Meta: U2FsdGVkX1+X6XTyC9jSEsGyEEGnL1T7npmI1md6r7r8OYbGjUfoVmebvNOVIaXUj3nOJmxFGrIRNTQPpULjlsIXKnquLBPfAE6Wzhq36opGGKIW5xUqvA8XOEd5NBOYQX9r6nCIqoDbwMXdad5dVdP6rXyhrPNdGR1P211eB19IIh60dI085JnCrvKJWz9t2ME6XOmyx37jMifMCYSmQ33g8eF95W6v9jYI1IbkE+khN01+8UxStNtPxp5SksW4yMWYfxDYtBaG1mu1wygOd1ouTTrhU6/jsuw6E4OI194ds8aKxP50SiINKNENRIbzW0zyP7uCJz6sOWBlrTqJtRrRfqhZlIyX5kFHdhdP1XlP84J2qo9v9LrNzJkzYuwKiVxJ9DoEKRs98as/EG9ColVVFxqQOunpwvqQS43yAHEdVwHHWkwkJbLnblJ7SxekJTKye8k3T4FbH5l+op6S8HENIQhZULUOYZmtFw2LzAb7anIqD9BlxBqdvx6/e57inQq7oP+elkQa0JCNTeRd7TnPZUkBT1zqeFPB0jXpxK9NM5TchR5P4H3p/lgBAMLGjJdAwYsyNM3XGDof8LqfO0g/ulE355780/gfLT7hxS6Nf5aikH4iDJwhkRA5DmpCwyJ1qA3NBHTGQLTgKB6Vkgh6PKVtdyBcan4HgDgG81CpOdcXQTM5U3yKfl5+sW4VoHw1BqgsVaYedqC/UgJe6IkvYIv71nKdci4iDC4n/fOzIWT1RlTI9SPK6ClpNbXTHT+sHvnbWbA1BzaN5+vC4SrYymuIFeA/sVhyT2hftzVdz351nbGc0hIAAYPNJwGe/SGGPlseaMmTUpgUG75jXg/swgEIf+wShEQBZIugk8F7IvT5gQXyLWyOg08ZFkwgmxyyXD5vV+rjKUDBFY0oROCwTXBM+u4su1JugLXk0X3bHpVzVL66JbxPRUahzOtm7Jr4BraCmjc4Lql3g9y
- bNw6ZefR
- 6nakMxIWH6cKnELnC5DyjKlEIGVHKcNmJTsUEaHmknKT2XYaB62wh50Vfwb/0WuNaDWweN34JiIERTJFD2byOKE9DbRdqxIbgJqBMgQEQgnZNDSy8Y50v/Ac3oHCsdBvujslbyFq3RaOGhl81u27w1eM4MWtEXsbKxdqKFgqaIcwkFbKaJ9uvLUSYf2MLJ4gulo/Ah9n46AJovtZzaY9x42zoxv3p/iQi+VlKVPw4xgljyZpOsQqe6HWOKSh31+WLvn37rv2OdeI8RsTngvpqMA4T7KsdulI+mIa9OZUC9rHbw5MI7xrXZMBJlA==
+X-Rspamd-Queue-Id: E9F4520004
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795037331-56245
+X-HE-Meta: U2FsdGVkX18vKUzIHF5hs3V5nRktjHETB9hVTT8iAxaxhBQEigLm+OloUKxkOyFkxHEI4S1iRhEhrUPWw06pJHfbQTbPxHLCwjNqVr69FlpQGY3I7ElFBsy0kXgZGfLVh7W0QLQT8w6CpEZPOgP49ZdAU3lcpU3lpz473EWVgwqobgdiN3aRAdZ6Bmhsvqug68D1own1zNtG1g5y7RxaxCUUIVIaiv0y6upPmPirPlMyo4I+4AfrSEHqiAGa0xgsZJCgs5iMZPwV8O1OkOZKmexlyBLmDUQteeQsmnO4YW5yj2oGBKtu/EQevTztE12X4R/vcSNxIv5P1yUS0wgNpIzIT8gBiF+0rzuyUVEamL6ddz9E7hHMEO2S4eKwHY5DpZpWmfZbNuXdzVNXd7hZb/sfrwTQ7f8U1ssXzBXjfM1+pWwPKmO42Ibmw1ez7K86nj2GwK5zQN2bb7sFSmNWZglYZVqib3QHlRMkp7u/vaAmL5n/o5AxAZ4eowGx/8G2cenuD1seysNZ3WLnUiWxKE86D5XZxVwXP+sFw2KgLLWy874zjxf830hIPU1Nhh7Z6MPa1TFM1X+aWEKPjA5rqCpi10aD4FSA22vHc+Hc1LH8wZWP0DSt+wSzjwWJMGAn+rU0+hVr8TQiQFiGwo8YkCSqu6TJltOdVBhFnAM4cvw4QwBba52Clel3ZrlXj7bUM/ujr+i8G4qV8ClYiQndKoB0Tgyh7mDJ3aE+WQj3XTy5ygiO2UnphKog/LlHnTZbpj9aQsLbT6pDXVp0ivJNYGqcXEDj/kubqXwztTLYKjPCi+IQlWVGCdoEyo7wD6JZ+TbUh65T5OsNeDl8sWwm7DfCX+FqZ7HP86j4ZwT7Zvl8sKT8KDhRnvVsUID/6MsBKtMbwlNZQzlMMgLGlk/ferlEsopudwXBSs3fAbNChiOnUY3WE1TuTll+TS2MxK93Ns/FxXiNrdQ8Y51sxo5
+ PuXP5Xf7
+ HJxoMPVbozVacMsfzh7gMxq3OegnbnvWfQkReU94cQPle4BdBvTT6hpLrGJxi7v1cLG/OZwsG+/GGl7JX1VTClFoHrsYRRr5FqnSO5lidbptU4728nvk0671o1hPFwp45aducMLHzLwlx6QFokl20/3K8uVXtTGVPOf5Z8hkWKflYWaJBI8/vcWkatOs22mR64USndco6rzJ8tC5jpGlXjHCZbw1H3Ql6zvEFvltC5Spc2HM158ORdeyh8Y8ulgRkyh2oOOwgahL1vK7TzM59B6Sm2otWoEckHLbxltkA6mC7v89+YLzPBcyjtCJrAe+mq1d6+oBZwKYwHKZ8QYSlK9rM7cenyEhjhhLQnI5WEccty5DrLAm4vBL7QE1aeHS0uJ4UIVgM6eqdemx64Sjgt+z26G9LuljsSM5t/o2yR5jd0bmGc7YDYcEKTm8SmG35wsBHsz8vnHXI0zBV59/aLu/aHaISeSagdaJ/MSs54LsqILXd2OntEny6QNAfykemUQkDOgG5oFXxMg8qoXiGk8ADujYIXFmWB/ZC/m53Tzhn299mo4dakHHxCuTqbctdVX/1eEHxFJkfuO5OWsKVtleTW2qB4842CyfNV4gYccj8XcyD0gF2sCQrT1opH3V7Qer28a1X8Tc0Xfoe1+WBTRrvqVUMLlE7JcK6vp8ukKh5vZCeDilGWVXCRu4Q2x3udtjBUgrLgn8XJjcwzqFGs5nwgQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,120 +114,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 25 Oct 2026 11:39:47 -0600 "Nico Pache (Red Hat)" <nico.pache@linux.dev> wrote:
+page_owner counts, for each allocation stack, how many pages allocated
+from that stack are still in use. The count is incremented when a page
+is allocated and decremented in __reset_page_owner() when it is freed.
 
-> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-> when splitting isolated thp"), splitting an anonymous THP remaps all
-> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
-> This flag is set unconditionally for every anonymous folio split,
-> including splits triggered by KSM.
-> 
-> When KSM is enabled with THP=always, this causes two regressions:
-> 
-> 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
->    split_huge_page(). The split remaps all 512 zero-filled subpages to
->    the shared zeropage at once, freeing the entire 2MB THP when KSM only
->    intended to process a single 4KB page. This bypasses KSM's
->    pages_to_scan rate limiting, causing ~1GB to be freed almost
->    instantly.
+A page that is hwpoisoned while in use and later unpoisoned passes
+through free_pages_prepare() twice:
 
-Hey Nico,
+  1. On poisoning, the last reference is dropped. free_pages_prepare()
+     calls reset_page_owner() but, because the page is PageHWPoison(),
+     keeps it off the free lists.
 
-I think I have had this conversation either on the previous revision
-or the mailing list somewhere else before, so sorry for restarting this
-again.
+  2. On unpoisoning, unpoison_memory() drops the poison reference and
+     free_pages_prepare() calls reset_page_owner() again, this time
+     really freeing the page.
 
-Isnt above a good thing? KSM is a memory saving feature, and this
-is resulting in 1G being freed instantly?
+__reset_page_owner() decrements the stack count both times, although
+the page was allocated only once. The first call clears
+PAGE_EXT_OWNER_ALLOCATED, but the second call never checks it.
 
-> 
-> 2. use_zero_pages=0: The same split side-effect occurs through the
->    stable/unstable tree merge paths. Each pages_to_scan iteration
->    triggers an expensive split_huge_page() that silently frees 2MB,
->    while the scanner wastes cycles on tree searches for zero-filled
->    pages that were already freed as a side-effect.
+If this drives the count to zero while the stack is still in use,
+stackdepot treats the record as freed and warns on every later
+allocation or free that uses the same stack:
 
-As an alternate to having this patch, should we just have patch 1
-and users should turn off split_underused_thp when using KSM.
+  dec_stack_record_count: refcount went to 0 for 92274844 handle
+  WARNING: lib/stackdepot.c:517 at depot_fetch_stack+0x5c/0x70
+  Call Trace:
+   __set_page_owner+0x110/0x290
+   get_page_from_freelist+0x1225/0x1440
+   __alloc_frozen_pages_noprof+0x1fc/0x1b00
+   __folio_alloc_noprof+0x12/0xa0
+   alloc_migration_target+0x81/0x1e0
+   migrate_pages_batch+0x1f2/0x14c0
+   migrate_pages+0x9c3/0xca0
+   soft_offline_page+0x189/0x570
 
-If you have a large number of THPs on your machine, using KSM is a very
-bad idea IMO due to all the splits that happen.
-IMO, there are 2 optimum host conditions:
-- A large number of THPs, and KSM disabled, hence shrinker can stay on.
-- Very low number of THPs, KSM can be enabled or disabled, but as there
-are a low number of THPs, the shrinker can be turned off.
+A single soft offline followed by an unpoison is enough to trigger it,
+because the migration-target stack that the offlined page is accounted
+to usually has very few pages.
 
-> 
-> Introduce current_is_ksmd(), which uses kthread_func() to check whether
-> the current task is the KSM scanning thread, and use it in
-> try_to_map_unused_to_zeropage() to skip zero-page remapping when the
-> split is triggered by ksmd.
-> 
-> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
-> ---
->  include/linux/ksm.h | 6 ++++++
->  mm/ksm.c            | 5 +++++
->  mm/migrate.c        | 3 +++
->  3 files changed, 14 insertions(+)
-> 
-> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
-> index d39d0d5483a2..41c06a6abf60 100644
-> --- a/include/linux/ksm.h
-> +++ b/include/linux/ksm.h
-> @@ -17,6 +17,7 @@
->  #ifdef CONFIG_KSM
->  int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
->  		unsigned long end, int advice, vm_flags_t *vm_flags);
-> +bool current_is_ksmd(void);
->  vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
->  			  vma_flags_t vma_flags);
->  int ksm_enable_merge_any(struct mm_struct *mm);
-> @@ -144,6 +145,11 @@ static inline int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
->  	return 0;
->  }
->  
-> +static inline bool current_is_ksmd(void)
-> +{
-> +	return false;
-> +}
-> +
->  static inline struct folio *ksm_might_need_to_copy(struct folio *folio,
->  			struct vm_area_struct *vma, unsigned long addr)
->  {
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 910a1307ac9f..e3ab037b1ebe 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -2866,6 +2866,11 @@ static int ksm_scan_thread(void *nothing)
->  	return 0;
->  }
->  
-> +bool current_is_ksmd(void)
-> +{
-> +	return kthread_func(current) == ksm_scan_thread;
-> +}
-> +
->  static bool __ksm_should_add_vma(const struct file *file, vma_flags_t vma_flags)
->  {
->  	if (vma_flags_test(&vma_flags, VMA_MERGEABLE_BIT))
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 7bdcdb57652f..c33ae3fa1043 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -305,6 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->  	if (PageCompound(page) || PageHWPoison(page))
->  		return false;
->  
-> +	if (current_is_ksmd())
-> +		return false;
-> +
->  	VM_BUG_ON_PAGE(!PageAnon(page), page);
->  	VM_BUG_ON_PAGE(!PageLocked(page), page);
->  	VM_BUG_ON_PAGE(pte_present(old_pte), page);
-> 
-> -- 
-> 2.56.0
-> 
-> 
+Fix it by decrementing the stack count only if PAGE_EXT_OWNER_ALLOCATED
+was still set, i.e. only the first time the page is freed.
+
+To reproduce, boot with page_owner=on and CONFIG_HWPOISON_INJECT, soft
+offline anonymous pages with madvise(MADV_SOFT_OFFLINE), and unpoison
+each old PFN through debugfs hwpoison/unpoison-pfn. Without this patch
+the first cycle prints the message above and 2200 cycles produce 6597
+warnings. With it, the same run is clean and all stack counts return
+to their initial values.
+
+Fixes: 217b2119b9e2 ("mm,page_owner: implement the tracking of the stacks count")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nilay Vaish <nilayvaish@google.com>
+---
+ mm/page_owner.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 02bb304b53cf..0793a460d615 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -320,11 +320,13 @@ void __reset_page_owner(struct page *page, unsigned short order)
+ 	depot_stack_handle_t alloc_handle;
+ 	struct page_owner *page_owner;
+ 	u64 free_ts_nsec = local_clock();
++	bool allocated;
+ 
+ 	page_ext = page_ext_get(page);
+ 	if (unlikely(!page_ext))
+ 		return;
+ 
++	allocated = test_bit(PAGE_EXT_OWNER_ALLOCATED, &page_ext->flags);
+ 	page_owner = get_page_owner(page_ext);
+ 	alloc_handle = page_owner->handle;
+ 	page_ext_put(page_ext);
+@@ -339,7 +341,7 @@ void __reset_page_owner(struct page *page, unsigned short order)
+ 	__update_page_owner_free_handle(page, handle, order, current->pid,
+ 					current->tgid, free_ts_nsec);
+ 
+-	if (alloc_handle != early_handle)
++	if (allocated && alloc_handle != early_handle) {
+ 		/*
+ 		 * early_handle is being set as a handle for all those
+ 		 * early allocated pages. See init_pages_in_zone().
+@@ -348,6 +350,7 @@ void __reset_page_owner(struct page *page, unsigned short order)
+ 		 * their refcount either.
+ 		 */
+ 		dec_stack_record_count(alloc_handle, 1 << order);
++	}
+ }
+ 
+ noinline void __set_page_owner(struct page *page, unsigned short order,
+-- 
+2.56.1.708.g77570a6a1d-goog
+
 
