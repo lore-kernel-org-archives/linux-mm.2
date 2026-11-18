@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F024606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D1B606A331
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q9zFQRMF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bUl1Sy6w
 Received: by kanga.kvack.org (Postfix)
-	id 5AAD36B00EF; Wed, 18 Nov 2026 10:59:09 -0500 (EST)
+	id 1B2896B05B2; Wed, 18 Nov 2026 10:59:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55B6C6B05B2; Wed, 18 Nov 2026 10:59:09 -0500 (EST)
+	id 18A496B05BC; Wed, 18 Nov 2026 10:59:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 470C86B05BC; Wed, 18 Nov 2026 10:59:09 -0500 (EST)
+	id 004326B05BD; Wed, 18 Nov 2026 10:59:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 130126B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:59:09 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92E70120573
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C542A6B05B2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:59:10 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F209C07BE
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:59:10 +0000 (UTC)
+X-FDA: 85448698860.07.FF1D613
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8A5D6A000D
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:59:08 +0000 (UTC)
-X-FDA: 85448698776.01.E8136F5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F0DC320006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:59:06 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9zFQRMF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bUl1Sy6w;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795017548;
+	b=qcPE5aa8jyah/MYobNwEr7XChCtm3cQ2gMMvBGlR1t1AYU1Sn2s8RQhtX8SHFZ3RTBRNwt
+	shABD/KWFyWUHQH1CnJqKbTEEvCpvIeBy1oN32S8oj5gefiSUdcCXBPrm/btei26UN1wl0
+	zAxWQuUQeh1FwluMuDtQt6lStieIFvk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795017547;
+	s=arc-20220608; t=1795017548;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pWrk6vf2k3AbshFjf0BbK/R6P7Yi6LZ89zMfgvqB8b4=;
-	b=JKFYKEHp5GPFOAOT9ucRQ4v/pd1iJJNETtLDzyqIRADoX9Hpq4GyhwExbynZsmocfd8XWY
-	dLaysK4IlWSE+4E+TXxhG/JPz3lP1YWSfx/y6N4FybcEU/NKw+GDnpjz1Q/rCNfPJivarJ
-	5VYTTZ697GL4bxO5aAiiRi5eWWj++sA=
+	bh=4eYjkyW3i82Rheb3jflbwVIOwIt4h9ILc15rP8EiaRc=;
+	b=sT4Xwgd723qUzL0ffG2dO32fB/F5Hj7AaWmwOoa3GQ/JxlzRqSHNVEDM3HCtgfjXOBIVdV
+	fVAyGYYJDjsURQIj/rPtmW9GZSLchMIHIm7NesrINaOwHPhhLMMx5cJlB/jllhHxQcWwKg
+	xSY4tGcVpbaGU0Mv4x9xDiJIVGbeZLg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9zFQRMF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795017547;
-	b=QIbK+jbVDvaRQFW+xNsxbSh6zCgrzitcquGwzo9pO5PXecnTHtSgtYFnIPgrNtByX7C2SZ
-	2vmdEQ+NCczqm1MfigcYeZw1ELQsbsc0CietuzZ1qKwFK/zrnEhH6qLVH82BtXUP28TgJA
-	Licf1hEKHgHiqIcdfZAx1rjEw1S2pOk=
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bUl1Sy6w;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C689962696;
-	Wed, 18 Nov 2026 15:59:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59491F000C7;
-	Wed, 18 Nov 2026 15:59:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DBBE644762;
+	Wed, 18 Nov 2026 15:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6BB1F000C5;
+	Wed, 18 Nov 2026 15:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795017545;
-	bh=pWrk6vf2k3AbshFjf0BbK/R6P7Yi6LZ89zMfgvqB8b4=;
+	s=k20260515; t=1795017546;
+	bh=4eYjkyW3i82Rheb3jflbwVIOwIt4h9ILc15rP8EiaRc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Q9zFQRMFQ6HhV2DEkrOYaXCITbUEUnPtKJBsai1kVu/Su8CzrFDxpoHwiKFUxINLH
-	 LOKZzygkh6GiLluWkTubijMFRzzPeK7okMJDYTzhGAxoRteJHi77VXtTbQ9lcoADxu
-	 XaOIgVc4FuKCLi6tqtfSaNR3DC0n83CUUJfzS5DHLagjkZ9XmUxdPnUDh2Y8QozkPw
-	 +54+NQ8NQovsa4UNy88VbvQlsbMmpnrW4sET3T8H9nWlnglf6MXz+ocH/NCS8I4+pg
-	 TL9tptDlaSbSzx2TNLWTLZhLt5p3rFqIXZov7pO9ZLdQu5514XYnTLRwOLzP7jJbnD
-	 Qx8aWT80MYjIA==
-Message-ID: <sashiko-outbox-221396@kernel.org>
+	b=bUl1Sy6w8s1GIA2EqOed33vRd9QmF4UYhZwvLeLyScwpKxBovGIcZ4dThGLNXvMSK
+	 Qu+EjcRnVDccFe1edUmhR4VSGhLWFnFlhq8PoKP9tdA9nBq+/KHB627GUNdkGYzvwi
+	 O8vwBcMrf1O2e6SHRrWwfYi7LOMAu7lIqdglO6q2fJsLJgfUO2R1Ge1Ew485N+Jv7r
+	 AKlywCTOaF0/QVFy3YT8wO69NumyfwjHudep0Rkxg4cvNaPZGjFdOQv6g7imAG2nOt
+	 aLHIVgS094mSZKXrVNqNqGaoDp+Pj1YBM6M1dMCuPiMQzkiM8HR5l2PYqsZv+05Udx
+	 D9STrD34hnSDw==
+Message-ID: <sashiko-outbox-221397@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/3] mm/memory: replace uffd-wp markers in
+Subject: Re: [PATCH 3/3] mm/memory: don't upgrade non-present PTEs in
  insert_page_into_pte_locked()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?TWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KQ==?= <rppt@kernel.org>, "Andrew
@@ -72,24 +72,24 @@ Cc: "Jan Kara" <jack@suse.cz>, "Jingyi Sun" <1045704958@qq.com>, "Liam R.
  Wilcox" <willy@infradead.org>, "Michal Hocko" <mhocko@suse.com>, "Muhammad
  Usama Anjum" <usama.anjum@arm.com>, "Peter Xu" <peterx@redhat.com>, "Suren
  Baghdasaryan" <surenb@google.com>, "Vlastimil Babka" <vbabka@kernel.org>, linux-mm@kvack.org, nvdimm@lists.linux.dev
-In-Reply-To: <20261117-uffd-dax-async-wp-fix-v1-2-c9a30f27f452@kernel.org>
+In-Reply-To: <20261117-uffd-dax-async-wp-fix-v1-3-c9a30f27f452@kernel.org>
 References: <20261117-uffd-dax-async-wp-fix-v1-0-c9a30f27f452@kernel.org>
- <20261117-uffd-dax-async-wp-fix-v1-2-c9a30f27f452@kernel.org>
+ <20261117-uffd-dax-async-wp-fix-v1-3-c9a30f27f452@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 15:59:04 +0000
-X-Rspamd-Queue-Id: F0DC320006
-X-Rspam-User: 
-X-Stat-Signature: f79zwhrnmd5714hsuz8xmwux3nx7bnwe
+Date: Wed, 18 Nov 2026 15:59:05 +0000
+X-Rspamd-Queue-Id: 8A5D6A000D
+X-Rspam-User:
+X-Stat-Signature: mojnhujg1wz3sat9cyhzyih98hmb9izw
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795017546-973388
-X-HE-Meta: U2FsdGVkX1+Uip0PyyY9AIdfxBmdPpGqdtWhsuArZSEA19xFuRxQudu+LzHCcHgSgzVW8TzUKYPRFD0jFKQyvzr9KWCbLlvfhZg+V0xaNp+ZPMojUax0oYoffvXYzPjl3K+BkOjw1ltbBt+gAJo7k3tsUuEF+S7vVan4OExX+n7pmOixMFunSRxB7gktAUvrWFbauhjmcrqDgUrSLkcoz9z/1YcObokg6p2aHNGHJ+s1iAIT43Bztu5qgBZWG/PHeWYHScMqKJzDODH6n1oZikqzYPcxsZ5G1HOjZMvYmgzgI4R1L9bXB2rVk8wCNVlgH4ralT9E787lJBUIwn1uraCE0nV6z6+QYroN54ih0IXo8EJhoktN1hcUULGXpoO3A+8LHaNu5aFi6AD651gBZiN2qmt4MGx8ZVF/naAyjpoWU9gwowM9leb1l3ZqEIOQ5clHWwYyAmswpxqWHNUmcGt5TbCHHFC4DW/YGy435NMSjc7Em34OGKCYly3DWZVdTGf7BG6zhjOqG9/hqQFxXioXXxtmjtqfQd9IaR20n6iqhKUKa5W28Fnh32LkvRoMb4jsKpkp2DIEBNE5S64Xt3yJjDVJH8r/M1LP40MCVndWJnfIQIje2EvBF/yB4Hpv4+6s3LUYmYwTnfusBqL1NGuPl2B0kAsX7OVSoUyg/jvz/WvlJbDF0AC6jvO6kPzFEuICjwztLBrZbd4MESjYuci5LwTQMKpgIUq2O0jy3BbexsQze/ye5U0LSjG4GYcBTn4WHsEHVuIALG+7vmLtnJM1D9CuXOu5InEALEka0aRQj0wIV0pFXdaYa6BrDwqfS2PW20GwrKq173hvFCPgSRsaUHBFaCFtWgR6Q4xA05IQn+QxM3PtIRIK2xIKSMv9ePh2j4XEaTc37qeuq2K4kYR+Y6BXQigZRyvPe6J04HW/OTGERLnc1wB0/oy6f9YCoCieM7O9j/CrOayronk
- ErajMbDm
- 9QDd3W8DoQdWlxDvfaTFlt/QNbLKe6T11VqaCVFebaOPjJjeIDNuJGUJ8yx0CzvJcg+Z1BNvo/JDDxbIw6lUALB5+xEMvALEVTTlNtAvzbjtK6h9kF4xVfTYYquoKnWdj1GDB7s3XLVcLJj6KFcdfkALZvwLAJOz7NRdY458A7nUOt2ptO33BSeDsPMq1r4lF5/DaXB/yFoD3VREBfOFOhAPA/7Y8fniyITVK58FfT9g4NAGoIHI4fuaWu3b+mmTteyCZsNelQuD09fJ4LjKjdJUFx2HojGQjqvJ129DGl/fMRMP5q9ldh/ZjHBxPb6LwO/R0bV27nta8j9FhgZRPtW7QL+Qyfrxp0vVJBopVuKMP6Uj2PWsuIh70aTam24cjOYWmCI6wDtcDQyDAZ7c6QQJs65IPL+gWnWNlMKzBHHC1IuwcgJhnWOd6BqNde7xru9t7kt4iBXSG7xbXvNq80RJWJbkv3FrhdCclaV/LhmfPOqqXWbkw3tBYms0aHBwmuucDsxlnrmm40ZteDWhv1cN01FIhWQMWdWf1l/iN9dwgJFCaltq0AaXpWTNgd1qJUezRHQa8dUqx35j1DPUMQIj3Y64GIgdb90O9tka+pzxRFjhCx2+2m2Jrj6O0plVT8kex1odZTBX+CTp8SH3BXm5RiomqooO67ZDmpM/H4Aak5+o=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1795017548-33889
+X-HE-Meta: U2FsdGVkX18ZDmLrqUuhChTldtCHKxb6MVwW7vIlZN61zF5NBpiuukXByBE28xtkqtkJd0pN8KP/k3Vtu2wYIKYJIO9XCSAD69v2P2+YG38aoElBsMNok511EU/NHwMrsMfCx0ema2A8Qg6lpnxJuFJ5h8b5TZnmhi6rriU4Wesu40YP0NG1GcSmN+Y15qMs5AUE8c/TYweOJpPJa3QX5QJfpYo8xLgTDltMLP/3hCdUebNFdfDBuWbko2G9wLfemejbYbtvgWXg/ZaRtabq4++Er3X2BHh/1co5VG7BWUXqFA+wNajQbYWQwW+dwO55cF3BvNmq8igrEYY0NDM85Q4jqIwB+wD8DBF9eLCPU/Je/zTOi/VONSUnbw/53LH3uxr+hkWIRDv0CMjMq/ViuRypbZr79wyJlFl4GFlkTgZStsmdN0hIPGL0yTjPGeQeTgatGcIvGyBPmDSZlr2GK4AlG4W/dJqFT/uzpwDyMEZdyFxEVlp1hP15i2J89PgYeU9nHtFMcNEq/BPsn1arTqA5HU+0crgWzxeKgoKRprdf81r4vxPkX3KP1mAyqC4XUgDaO++L2kbIaY+Sq24DFQwrKhgxrjxm/5d70kIYp7xvOH19WX/ji6jiLojs0lGSLHdz9QgFkW4WaNtdFbUszuP8RWMVyZoD+1XNqbjIQ9kwLabHKY7ohUsKjTZ5eJvUvr+GC3Sq9aF0yRkbm8k79MfyTVn685m3kphB+tRPwMHDrvzv5Qkm1Yghb62Ltwf7jAckUxX1WfAKz6W/YqyKRkT5UkeWBphVZv50MfhDBFtXXRGLiFALZmWAiQu9zHmB8/FI9/4yVtt6B0zPWcEc+IP6Zuc0LHjQRHcPn/ygDKWxaiLz4agGeUKDO0w3POIr1NjZ/hp5aF1UCJKgWJt3jZ2T9j6Spl4VA/p9U9fUW8n0qQMelQyobaDoug86WVdkPurnaZyOtFno3ZvQuZB
+ IdIBMlUP
+ DpmNDEbxtji9RVR8LKbiNWa1HOj1Zl4J4ELDzD+uAakkxFWVGOtUl8iSSOJAFbzVOXt2tWq6TzJmO6nLy+/kptbHZWAjIehu1py3WuuHziDMJ6IHvw2Dk9b70zfMNI9ON3DmnOoMOCJ4QBc1+Ns228nvQzce5W7Zoh3SxBI6HRiign7JmkWx8Jq2UMBQ0vXiPXnxxfcXvU7bq2w8tm5jvXpSvCDLBjqj2Rm17Cbne/cN3aq2dkVE/OqVkDVOeBmJ6Ar0zD53ur/UVkmKSHICM7wwOobkKm2F4GPwmBN60NK+elZM5TVu1+KvenGIffniIIYjapTXRclZXj/ZSV7HMitqVv5hAEQS/VhN4W/i5XqFCbSAPtvLxTct0uJThkHjsT9+QdKIphdmFrJOGHePDSuXTzs57F5WjfEbmxgZ+AWlG7ND4BMW+Rvf21gu0d9WnqdxT2apjI/4q6Y+Tn/QUTVoc0slhq6NaT/psro9KBMSeW5IQD6U16udqYOhz8+l8CURJxOORwogSO0dTACd5Elnwtn1LPfy3NHb5lQ0Z8s1QW3d/Hq2CCTUAnKeii2O1kAdWMTl2SK0xshQk53c5tE+sfT9S/0XW5GhfcWKKhjbmmP4ipRvk6WHy5fqeHyh9nIp4xcb/9VhQeJO7SeHiqquIUtK7RXQ300+ol8fUpSvw6175gPbLeVOdlPy0ytQj44p3kZ1yvWWoaofzPoioAX0oeOx8kuDBIcxSNzgHsV2/tznlva+6D5VQz31oCnXyyLpk11dmpMJ9eStA6PQ6Jj+/UKJTWHrM/gL4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,104 +101,66 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm: uffd-wp bit not checked on mkwrite in
-  insert_page_into_pte_locked()
+- [Medium] mm/memory: insert_page_into_pte_locked() upgrades uffd-wp
+  PTEs to writable
 --
 
-commit 6bd6838d9e7f98f448f46bdb05cc4400045f49f7
+commit 62002bc33a7233bf10217f5cd96cf7d78e384960
 Author: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-mm/memory: replace uffd-wp markers in insert_page_into_pte_locked()
+mm/memory: don't upgrade non-present PTEs in insert_page_into_pte_locked()
 
-This commit updates insert_page_into_pte_locked() to replace uffd-wp PTE
-markers with a new PTE that preserves the uffd-wp bit when handling faults
-on DAX mappings.
+This commit changes insert_page_into_pte_locked() to return -EBUSY when
+encountering a non-present PTE on a write fault so that PTE markers are
+retried through handle_pte_marker() instead of being upgraded in place.
 
 > diff --git a/mm/memory.c b/mm/memory.c
-> index f927f2241e404..66ad58429967e 100644
+> index 66ad58429967e..a80925c61706d 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -2452,8 +2452,9 @@ static int insert_page_into_pte_locked(struct vm_ar=
+> @@ -2474,7 +2474,7 @@ static int insert_page_into_pte_locked(struct vm_ar=
 ea_struct *vma, pte_t *pte,
->  {
->  	struct folio *folio =3D page_folio(page);
->  	pte_t pteval =3D ptep_get(pte);
-> +	bool uffd_wp_marker =3D pte_is_uffd_wp_marker(pteval);
-> =20
-> -	if (pte_none(pteval)) {
-> +	if (pte_none(pteval) || uffd_wp_marker) {
->  		pteval =3D mk_pte(page, prot);
->  		if (unlikely(is_zero_folio(folio))) {
->  			pteval =3D pte_mkspecial(pteval);
-> @@ -2467,6 +2468,8 @@ static int insert_page_into_pte_locked(struct vm_ar=
-ea_struct *vma, pte_t *pte,
->  			inc_mm_counter(vma->vm_mm, mm_counter_file(folio));
->  			folio_add_file_rmap_pte(folio, page, vma);
->  		}
-> +		if (uffd_wp_marker && userfaultfd_wp(vma))
-> +			pteval =3D pte_mkuffd(pteval);
->  		set_pte_at(vma->vm_mm, addr, pte, pteval);
 >  		return 0;
 >  	}
+> =20
+> -	if (!mkwrite)
+> +	if (!mkwrite || !pte_present(pteval))
+>  		return -EBUSY;
 
 [Severity: Medium]
-Can a concurrent write fault in insert_page_into_pte_locked() mark a
-present uffd-wp PTE writable without clearing the uffd-wp bit?
+Can this still upgrade a present PTE that is write-protected by
+userfaultfd-wp in place?
 
-DAX fault handlers serialize on the DAX mapping entry lock in
-grab_mapping_entry() and only acquire the page table lock inside
-vmf_insert_page_mkwrite() -> insert_page() ->
-insert_page_into_pte_locked().  If a read fault and a write fault race on
-the same uffd-wp PTE marker:
+When two threads fault concurrently on a PTE_MARKER_UFFD_WP entry in a
+shared DAX mapping, the first fault installs a present read-only PTE with
+pte_mkuffd() set, and the second write fault then sees a present PTE and
+upgrades it with maybe_mkwrite():
 
 CPU0 (read fault)                 CPU1 (write fault, mkwrite =3D true)
 dax_iomap_pte_fault()             dax_iomap_pte_fault()
-  grab_mapping_entry()
-  dax_fault_iter()
-    vmf_insert_page()
-      insert_page_into_pte_locked()
-        /* replaces marker with
-         * present RO uffd-wp PTE
-         */
-        pteval =3D pte_mkuffd(pteval)
-        set_pte_at(..., pteval)
-  dax_unlock_entry()
-                                    grab_mapping_entry()
-                                    dax_fault_iter()
-                                      vmf_insert_page_mkwrite()
-                                        insert_page_into_pte_locked()
-                                          /* pte_none() and uffd_wp_marker
-                                           * are both false
-                                           */
-                                          pteval =3D maybe_mkwrite(pteval, =
-vma)
-                                          ptep_set_access_flags(..., pteval=
-, 1)
-                                            <-- pte_write() && pte_uffd()
+  vmf_insert_page()                 vmf_insert_page_mkwrite()
+    insert_page_into_pte_locked()
+      /* uffd_wp_marker is true */
+      pteval =3D pte_mkuffd(pteval)
+      set_pte_at(..., pteval)
+                                      insert_page_into_pte_locked()
+                                        /* pte_present(pteval) is true */
+                                        pteval =3D maybe_mkwrite(pteval, vm=
+a)
+                                        ptep_set_access_flags(..., pteval, =
+1)
+                                          <-- pte_uffd() && pte_write()
 
-In the existing-PTE path of insert_page_into_pte_locked(), maybe_mkwrite()
-sets the writable bit without checking userfaultfd_pte_wp(vma, pteval):
+Because maybe_mkwrite() sets the writable bit without clearing the uffd-wp
+bit, this installs a present PTE with both pte_uffd() and pte_write() set.
+That triggers the WARN_ON_ONCE(pte_uffd(pte) && pte_write(pte)) in
+page_table_check_pte_flags() and allows subsequent writes to bypass
+do_wp_page(), losing userfaultfd-wp write tracking.
 
-mm/memory.c:insert_page_into_pte_locked() {
-    ...
-	if (pte_pfn(pteval) !=3D page_to_pfn(page)) {
-		WARN_ON_ONCE(!is_zero_pfn(pte_pfn(pteval)));
-		return -EFAULT;
-	}
-	pteval =3D maybe_mkwrite(pteval, vma);
-	pteval =3D pte_mkyoung(pteval);
-	if (ptep_set_access_flags(vma, addr, pte, pteval, 1))
-		update_mmu_cache(vma, addr, pte);
-}
-
-This leaves the present PTE with both pte_write() and pte_uffd() set,
-which triggers WARN_ON_ONCE(pte_uffd(pte) && pte_write(pte)) in
-page_table_check_pte_flags() when CONFIG_PAGE_TABLE_CHECK is enabled and
-breaks UFFD_FEATURE_WP_ASYNC write tracking because hardware writes no
-longer trap into do_wp_page() while pagemap_scan sees pte_uffd() still
-set.
+Should this check also return -EBUSY when userfaultfd_pte_wp(vma, pteval)
+is true so the fault retries through do_wp_page()?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117-uffd-dax-a=
-sync-wp-fix-v1-0-c9a30f27f452@kernel.org?part=3D2
+sync-wp-fix-v1-0-c9a30f27f452@kernel.org?part=3D3
 
