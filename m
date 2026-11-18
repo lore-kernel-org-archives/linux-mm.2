@@ -1,73 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE7E606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B84606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pPOal3HM
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oRxZdjUI
 Received: by kanga.kvack.org (Postfix)
-	id 9267F6B05B3; Tue, 17 Nov 2026 22:12:08 -0500 (EST)
+	id A87D16B05B6; Tue, 17 Nov 2026 22:13:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FD6E6B05B4; Tue, 17 Nov 2026 22:12:08 -0500 (EST)
+	id A3AE56B05B7; Tue, 17 Nov 2026 22:13:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83DB86B05B5; Tue, 17 Nov 2026 22:12:08 -0500 (EST)
+	id 8DD276B05B8; Tue, 17 Nov 2026 22:13:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C0CC6B05B3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:12:08 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 062CE1C3EE9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:12:08 +0000 (UTC)
-X-FDA: 85446765936.01.85298F7
-Received: from mta0.migadu.com (out-41.mta0.migadu.com [91.218.175.41])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E5403A0004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:12:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pPOal3HM;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.41 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794971526;
-	b=S3oH2T0shyZp70ib8qJiI59+FJaOKPHk3aQ5UrEqJxNYxvdT8sqJziP6tunK4ogm4oz1Yz
-	tANZxjbMk95NO8cqX/cP3WdO5lPO/vIqsx94OwmsBvGK1CgIt4NJcG7LUXSD27DdzEIdg8
-	2Gr4b4nsLR0rjP7mQFWfyC0diqRDQhs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pPOal3HM;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.41 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 591856B05B6
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:13:17 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38333A829B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:13:16 +0000 (UTC)
+X-FDA: 85446768792.21.E8E7E4E
+Received: from mta0.migadu.com (out-54.mta0.migadu.com [91.218.175.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CB3A4100002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:13:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oRxZdjUI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.54 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794971526;
+	s=arc-20220608; t=1794971594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sjYYKwzYzONDWseS/CLLjrX/s6cX0+9HMOg7VEzcoPU=;
-	b=WTtjSaAnMy0zbCAu55kd6jNGXCaI6DBswAWPFM03H6cluS4+FwONeoqxZzllww4bbT+nke
-	b1dtl2WrnU5VeCS0bOvQPi/zPU3hwWaAyKjVIW76co5IKnXrVor3jl3QrTP6RMnMcs1YQu
-	YL25lksWJmxmPrdlattPg2VUMjTNcmo=
+	bh=3Nxi0/sOY8+VKqMZ2GbfZhgX5prfn39dCsvQzRiF+fg=;
+	b=JkVMrC2HOGuLAOqW6BF2lozDuoRaePzUaatgBa9oNyM3ODvSFdIf6TqxDF28t2j0Xr+cxI
+	vl6rcvjgYgvvK7ZxgEApnAtl5FybsKqzKvGZ+JSJtgssQ5TvYz32j38bMxfMni+3w7M6bl
+	Bj5ObhjnjWSAjKoR6JKAAEJfadzCBwc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oRxZdjUI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.54 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794971594;
+	b=UnPBXYHHXFa8IfDEybvB59SJWPAbY2ozraxsbzf76u1z34a6FHLUi5Lygbyd+Gk/nAiWu2
+	TCQcb+26PomWlhDDpubQeevmb4Co2hdVfIH3sz5f+XUNksalCoHD4BQaANDfuMceerRnmh
+	IElxr9ovG7+3IsGoebqc9w2a059Q3Hs=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=MbsFGvHGFKuYz+VZCR6SSqqFxh07MvYfS3xKWwR/Cj8=;
+DKIM-Signature: a=rsa-sha256; bh=3Nxi0/sOY8+VKqMZ2GbfZhgX5prfn39dCsvQzRiF+fg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794971524; v=1; x=1795576324;
- b=pPOal3HMUeQvg2+drPiVNCtsM2ZuSOtxTrB+m9qiILrWbhHI/YQ95VG71a75Nru6vcVXbijf
- h//SOr5Vc2b6lMHqghht3I7qOVx28FRimoyQEQ+T7+3ircBg9vfd0P0VbH6O41se9H0/UlpLvhD
- Zyf4lI7u4LyixosdJeSzGIYQ=
+ t=1794971592; v=1; x=1795576392;
+ b=oRxZdjUIVTFtNpuCG4tHhyT9WhEi06Z6YYJFMbB3a2pWb6wQj8oJ0BZz2H3OTnlIPwVy88J0
+ DtOfhdLKwUjq1hRnRRPR29e4uNGeeAfy37B+hFrmO0+JaxMzLo9XCV2o6xiizEFF9MQnWQprhgK
+ rTzswE73DOWS/gKR/pO/gd6c=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id b0d530c3b5bc4025;
-	Wed, 18 Nov 2026 03:12:03 +0000
-X-Mizu-Trace-ID: b0d530c3b5bc4025
+Received: by mta10.migadu.com with ESMTPS id 8fe63967abd7ab38;
+	Wed, 18 Nov 2026 03:13:12 +0000
+X-Mizu-Trace-ID: 8fe63967abd7ab38
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 5/7] mm/page_ext: allocate page extensions early for
- SPARSEMEM
+Subject: Re: [PATCH v2 0/7] KMSAN: Move per-page metadata out of struct page
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <avzsFxVqO27Vf4Db@chrisdown.name>
-Date: Wed, 18 Nov 2026 11:11:46 +0800
+In-Reply-To: <avzsE5wGnXji5u6-@chrisdown.name>
+Date: Wed, 18 Nov 2026 11:12:46 +0800
 Cc: Muchun Song <songmuchun@bytedance.com>,
  Alexander Potapenko <glider@google.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -97,25 +96,24 @@ Cc: Muchun Song <songmuchun@bytedance.com>,
  linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <3C50E682-848F-4788-9238-923D5E292DEE@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <DF4B7F9B-3B1E-4165-BAE4-2E05E86FB034@linux.dev>
 References: <20261117120627.50601-1-songmuchun@bytedance.com>
- <20261117120627.50601-6-songmuchun@bytedance.com>
- <avzsFxVqO27Vf4Db@chrisdown.name>
+ <avzsE5wGnXji5u6-@chrisdown.name>
 To: Chris Down <chris@chrisdown.name>
 X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: 576fyuroygff4868nx8k1gjqim64qze8
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: CB3A4100002
+X-Stat-Signature: k57sjqcxpiiuyxcbbdnrjdqzmoq7157o
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E5403A0004
-X-HE-Tag: 1794971525-139817
-X-HE-Meta: U2FsdGVkX1/j6qI3qY3MraJub9PyBqBP2UyA+O2xpl8zGX/69biUslDYITDsotVRTV7k1tjE2rfuMyNxwTKZXJisbwQNIBFAF78uOq621aVK3L/9aKVWW5ihYtGeCLnsYCyw61RlO7HcA18rygMZSosHtBLc21VBqSj66Y+dOub3fMIdx9EnWUnoufZ+m7s2yOEXuZ4eCMM7YjSkJqtjf7oUoacr/ZzEsa2NGlZa7St5EZVAasVH+kdZ4mKOTlNZ0MjhAANSWfamp5IeaZgZmBqxDiFfv2Ro8e2kK14SyBE3gcTE49xIwx3MpMxiiP4kJD9p6KV1OoaTDUnvzZWV+1wY0SiY3N0Vtw5tS+w2l4megU/jkTxT+NLBpd3hHeNSrX6VrCHc1xTtyVcg5zzENLss4fqSjv+K8ts1E0/BcsWNZcLm+Pw6gPbJm+GYGMaiBF5Ae0VQxIzMRoDRFwv+fiR/Skdwaeic9C1JjbkqKlhP/WFmRE06IvuxP3ALFbHyeEf678nLGi2Z8OPqKY5ckk7swltQNJahCjdmmQDoxTWeUlrBTJFNCestcrkLJjaIiOBjk6VI9Uq+kIXj/IstKliOyMYnpMQS82/c/oSPMzYxup727rNGYpeWsVGq0R64pEwl1p/2i6iyny+D5cIJ1fjaVEbeVpFN/XeStpKaIDzbj8MrLG7bk2V+pBN4Y1M81AJYOntiOTvmqFhWWxlgbsxW4QNOSCBN+RvjH/BAFGOwcz7lHyJnazaVyao9G7jtUCwZ0x0HGsK5fAVsGnf4IAf1mwaMFvhUg4jzxBLTB4erYxVFdZGOtkPCPepHhWC5/V+caL4VQMEYQ36r5AZTSV84gH5mTyoh7qGP5zNpXnL5UKBAAcRsqo7iEoK3P8/Yaz9OoLEVuvjRYsKcbynyVaVnItD0ERca82VdEAey9ep91f8MHjTYSLYVcugkykeV8S9JHXSbTUWRsVe0d0O
- KlKVkqFh
- KhxmEDUlaEr3svU4xdAb1lO1SRsEmy44vRZQzEUB+TBC3K6enCmZaO0x4rSzxLzyvt3LtBiPTIL5zG9oA4RSEztcQKV6wvCJ/oucMPbZ2HPzGvaoN3JrYSnwO2BV9B05K3E+yMCo2ie3uSZeDxrgkHYRO731W72GuMyyC9vty+tZ5JE8XvUvdNN4sjJMhezYTsUNKwUXHQwXPlsR42AXDu9T4fPCJLsdtm1wj9KK8sYbk3r0HHDO9FC5aGoFl/qThztZZFK5WUt0Qe83DFdD4qw+eSlFBXm6q92Kh1fsxzI2CnEnIjJ8+7gPsTg==
+X-HE-Tag: 1794971593-638796
+X-HE-Meta: U2FsdGVkX1/M8AqR+L2f4SkyX69CoOUcTmLPc0pjhRxtcDFgmAwN48oVVtIoZ9sbZlqHJMsewBXm6jV3RL9yFOcC5nR9hcaPpFpHBNmQb1MobsCr1Cj6BzxAu+11PKNOtXa/s4k0vXlyoq/St+c4w2zk0skWrux+xt2U/f4Fj6QVe/4u97PcChzt0Us2twG7FUqghrR6yeqYyWbl6toGkTvbpWQeCQAQt1HN23NGMY33Ii+LP8p79ZaeI0L/T0Zbwvn+zxF2LGHoWd38m4PZuTUNShEqrSajED0woa09AQkNPJWvHNjMbSxLEHVfYpn0o9ZGd7Lkpta5bgjnhQKjyYDPhFFLxgsZhG/T+Z8NAdspuBFRK2FBUZgVv4oHjGsj5wnwldVnUIo/4+7j4ZcoQEROfyy5L9YWQNXIvJjOFIDKcnt2XDX75PvWtXSQKuLng+OzQONn2LRelH7Fn1xnjxp5zdXo+UwQWsI8UImzmPhicG2JIu6r9Ohy5rEkipA6lLGJY6AmJTOs2vkYf/y56l4cO8zRKY0WMQwqlv0ud+dItGKQIa/DlIngVm0LYcxYknqWOWSXLd0Jrb95y7cwOp5jzHAnymQYnMk4ZybA6LBMjsqdwTMc8vPE+xjydc9gxtQmPcDDMP63ypVXXO6K0hatMlOJ7xuEuqSYZbg61cUKefFEV23N0dxMEDRQoqTGf9G3OCFPChZPTdNU6+qXhJBiOaRikuISTDUAj60Cq4nsEpss1Kxhy8wPUhfXyu2Hk3m8mOK3uXgt8C0IAw4SlvN2cyxLHN7ejrcFhHH6vDHab5zzpsMrEIDawrjrSWYYjOl9JhrIDKncosi6KU+IKoUcIeVAfUxV9+mYLsdMEbw4Hs/DqO4Aw6geqcFS1WYJ+HHYsy37hyNVizykpCTIIB9iqgEJAzqAnxLZhSfFVSJgSqQpnRSTdUs/TerktJan+XgX5VMMmtyHiesLSjR
+ 7pNpnm9H
+ O8l9ax3VheIn9sqkGKF0m5iCxRdBAfezdkFpDqUtEJVYQUgNKaaOvPlE0JH46rQkUM9cVbR4Wx+D+agp6Cwb8138NAr0BQoj0o6QkUooN8iKTgavpAKYjibYG7FQVoyQJT4dQ05ydXgjFp+e4cEsm3nLHMPJYZOim6h7a+Yg7s/HfSMRuOnEWViVmvKtL5zr7mX4ncQ+YC3WmUXgNuxKQaddp7peTTxsPlFxIIudLPnzvIXE4EkVoFvOiPFTeNjNG8xY4PGbInf2eHN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,45 +125,26 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 > On Nov 18, 2026, at 08:06, Chris Down <chris@chrisdown.name> wrote:
-> 
+>=20
 > Hi Muchun,
+>=20
+> Thanks! The changes look great, thanks for working on this.
+>=20
+> I think patch 5 still has some issues and have replied there, but for =
+patches
+> 1-4, 6, and 7, feel free to add:
+>=20
+> Reviewed-by: Chris Down <chris@chrisdown.name>
+> Tested-by: Chris Down <chris@chrisdown.name>
 
-Hi Chris,
-
-Thanks for taking a look.
-
-> 
-> Muchun Song writes:
->> + 	if (!slab_is_available()) {
->> + 		addr = memblock_alloc_try_nid(size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
->> +					      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-> 
-> Hmm, unless I'm mistaken, memblock allocates top-down, and with
-> movablecore= or kernelcore= the top of each node is ZONE_MOVABLE, so this
-> puts the page_ext tables there. It looks like that then offlining those
-> memory blocks would fail with EBUSY because of the reserved pages.
-
-Yes, this is a valid concern. However, early vmemmap backing is also
-allocated from memblock before page_ext and can have the same problem, so
-handling page_ext alone cannot guarantee successful offlining.
-
-Mike's suggestion considerably simplifies the code, and early page_ext is
-only needed by optional debugging and instrumentation users. I would prefer
-to keep this approach.
-
-What do you think?
+Really thanks for your review and test.
 
 Thanks,
 Muchun
 
-> 
-> I can see why Mike suggested always using memblock here, but only KMSAN
-> needs the tables before the buddy allocator is up. So I think this needs
-> to either go back to using memblock only for clients that need it, as v1
-> did, or keep these allocations below ZONE_MOVABLE.
-> 
+>=20
 > Thanks!
-> 
+>=20
 > Chris
 
 
