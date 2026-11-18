@@ -1,95 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D1B606A331
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D73C60A2608
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bUl1Sy6w
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=HsDdDuaO
 Received: by kanga.kvack.org (Postfix)
-	id 1B2896B05B2; Wed, 18 Nov 2026 10:59:11 -0500 (EST)
+	id 473806B05B6; Wed, 18 Nov 2026 11:00:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18A496B05BC; Wed, 18 Nov 2026 10:59:11 -0500 (EST)
+	id 423EC6B05B7; Wed, 18 Nov 2026 11:00:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 004326B05BD; Wed, 18 Nov 2026 10:59:10 -0500 (EST)
+	id 33A456B05BF; Wed, 18 Nov 2026 11:00:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C542A6B05B2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:59:10 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F209C07BE
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:59:10 +0000 (UTC)
-X-FDA: 85448698860.07.FF1D613
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8A5D6A000D
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:59:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bUl1Sy6w;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795017548;
-	b=qcPE5aa8jyah/MYobNwEr7XChCtm3cQ2gMMvBGlR1t1AYU1Sn2s8RQhtX8SHFZ3RTBRNwt
-	shABD/KWFyWUHQH1CnJqKbTEEvCpvIeBy1oN32S8oj5gefiSUdcCXBPrm/btei26UN1wl0
-	zAxWQuUQeh1FwluMuDtQt6lStieIFvk=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB5186B05B6
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:00:14 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C5391A05B5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:00:14 +0000 (UTC)
+X-FDA: 85448701548.05.D49F2B2
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 66A28C0012
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:00:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HsDdDuaO;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795017548;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1795017612;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4eYjkyW3i82Rheb3jflbwVIOwIt4h9ILc15rP8EiaRc=;
-	b=sT4Xwgd723qUzL0ffG2dO32fB/F5Hj7AaWmwOoa3GQ/JxlzRqSHNVEDM3HCtgfjXOBIVdV
-	fVAyGYYJDjsURQIj/rPtmW9GZSLchMIHIm7NesrINaOwHPhhLMMx5cJlB/jllhHxQcWwKg
-	xSY4tGcVpbaGU0Mv4x9xDiJIVGbeZLg=
+	bh=gN7nvCApkpNJjBBl+gdS00SQSe9taX0A7DICocon5Uk=;
+	b=cKtizPnJD6acsTOtQaphzwg2LfGNeUi9/4PlcM0n6Mebr+GWU3Y9QyrREFIWbH0ft1Va2H
+	p3GvQdmtSEPfX0JzOJedEsKLCiUnTFFuNX4K0ArmS330n6BQSabmumx8cXvqUCmEhNhuvz
+	6YCGJuWdh4guw+AL1Jd2F7OeXi+3a0E=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bUl1Sy6w;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DBBE644762;
-	Wed, 18 Nov 2026 15:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6BB1F000C5;
-	Wed, 18 Nov 2026 15:59:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795017546;
-	bh=4eYjkyW3i82Rheb3jflbwVIOwIt4h9ILc15rP8EiaRc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bUl1Sy6w8s1GIA2EqOed33vRd9QmF4UYhZwvLeLyScwpKxBovGIcZ4dThGLNXvMSK
-	 Qu+EjcRnVDccFe1edUmhR4VSGhLWFnFlhq8PoKP9tdA9nBq+/KHB627GUNdkGYzvwi
-	 O8vwBcMrf1O2e6SHRrWwfYi7LOMAu7lIqdglO6q2fJsLJgfUO2R1Ge1Ew485N+Jv7r
-	 AKlywCTOaF0/QVFy3YT8wO69NumyfwjHudep0Rkxg4cvNaPZGjFdOQv6g7imAG2nOt
-	 aLHIVgS094mSZKXrVNqNqGaoDp+Pj1YBM6M1dMCuPiMQzkiM8HR5l2PYqsZv+05Udx
-	 D9STrD34hnSDw==
-Message-ID: <sashiko-outbox-221397@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] mm/memory: don't upgrade non-present PTEs in
- insert_page_into_pte_locked()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KQ==?= <rppt@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>
-Cc: "Jan Kara" <jack@suse.cz>, "Jingyi Sun" <1045704958@qq.com>, "Liam R.
- Howlett" <liam@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Matthew
- Wilcox" <willy@infradead.org>, "Michal Hocko" <mhocko@suse.com>, "Muhammad
- Usama Anjum" <usama.anjum@arm.com>, "Peter Xu" <peterx@redhat.com>, "Suren
- Baghdasaryan" <surenb@google.com>, "Vlastimil Babka" <vbabka@kernel.org>, linux-mm@kvack.org, nvdimm@lists.linux.dev
-In-Reply-To: <20261117-uffd-dax-async-wp-fix-v1-3-c9a30f27f452@kernel.org>
-References: <20261117-uffd-dax-async-wp-fix-v1-0-c9a30f27f452@kernel.org>
- <20261117-uffd-dax-async-wp-fix-v1-3-c9a30f27f452@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 15:59:05 +0000
-X-Rspamd-Queue-Id: 8A5D6A000D
-X-Rspam-User:
-X-Stat-Signature: mojnhujg1wz3sat9cyhzyih98hmb9izw
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1795017548-33889
-X-HE-Meta: U2FsdGVkX18ZDmLrqUuhChTldtCHKxb6MVwW7vIlZN61zF5NBpiuukXByBE28xtkqtkJd0pN8KP/k3Vtu2wYIKYJIO9XCSAD69v2P2+YG38aoElBsMNok511EU/NHwMrsMfCx0ema2A8Qg6lpnxJuFJ5h8b5TZnmhi6rriU4Wesu40YP0NG1GcSmN+Y15qMs5AUE8c/TYweOJpPJa3QX5QJfpYo8xLgTDltMLP/3hCdUebNFdfDBuWbko2G9wLfemejbYbtvgWXg/ZaRtabq4++Er3X2BHh/1co5VG7BWUXqFA+wNajQbYWQwW+dwO55cF3BvNmq8igrEYY0NDM85Q4jqIwB+wD8DBF9eLCPU/Je/zTOi/VONSUnbw/53LH3uxr+hkWIRDv0CMjMq/ViuRypbZr79wyJlFl4GFlkTgZStsmdN0hIPGL0yTjPGeQeTgatGcIvGyBPmDSZlr2GK4AlG4W/dJqFT/uzpwDyMEZdyFxEVlp1hP15i2J89PgYeU9nHtFMcNEq/BPsn1arTqA5HU+0crgWzxeKgoKRprdf81r4vxPkX3KP1mAyqC4XUgDaO++L2kbIaY+Sq24DFQwrKhgxrjxm/5d70kIYp7xvOH19WX/ji6jiLojs0lGSLHdz9QgFkW4WaNtdFbUszuP8RWMVyZoD+1XNqbjIQ9kwLabHKY7ohUsKjTZ5eJvUvr+GC3Sq9aF0yRkbm8k79MfyTVn685m3kphB+tRPwMHDrvzv5Qkm1Yghb62Ltwf7jAckUxX1WfAKz6W/YqyKRkT5UkeWBphVZv50MfhDBFtXXRGLiFALZmWAiQu9zHmB8/FI9/4yVtt6B0zPWcEc+IP6Zuc0LHjQRHcPn/ygDKWxaiLz4agGeUKDO0w3POIr1NjZ/hp5aF1UCJKgWJt3jZ2T9j6Spl4VA/p9U9fUW8n0qQMelQyobaDoug86WVdkPurnaZyOtFno3ZvQuZB
- IdIBMlUP
- DpmNDEbxtji9RVR8LKbiNWa1HOj1Zl4J4ELDzD+uAakkxFWVGOtUl8iSSOJAFbzVOXt2tWq6TzJmO6nLy+/kptbHZWAjIehu1py3WuuHziDMJ6IHvw2Dk9b70zfMNI9ON3DmnOoMOCJ4QBc1+Ns228nvQzce5W7Zoh3SxBI6HRiign7JmkWx8Jq2UMBQ0vXiPXnxxfcXvU7bq2w8tm5jvXpSvCDLBjqj2Rm17Cbne/cN3aq2dkVE/OqVkDVOeBmJ6Ar0zD53ur/UVkmKSHICM7wwOobkKm2F4GPwmBN60NK+elZM5TVu1+KvenGIffniIIYjapTXRclZXj/ZSV7HMitqVv5hAEQS/VhN4W/i5XqFCbSAPtvLxTct0uJThkHjsT9+QdKIphdmFrJOGHePDSuXTzs57F5WjfEbmxgZ+AWlG7ND4BMW+Rvf21gu0d9WnqdxT2apjI/4q6Y+Tn/QUTVoc0slhq6NaT/psro9KBMSeW5IQD6U16udqYOhz8+l8CURJxOORwogSO0dTACd5Elnwtn1LPfy3NHb5lQ0Z8s1QW3d/Hq2CCTUAnKeii2O1kAdWMTl2SK0xshQk53c5tE+sfT9S/0XW5GhfcWKKhjbmmP4ipRvk6WHy5fqeHyh9nIp4xcb/9VhQeJO7SeHiqquIUtK7RXQ300+ol8fUpSvw6175gPbLeVOdlPy0ytQj44p3kZ1yvWWoaofzPoioAX0oeOx8kuDBIcxSNzgHsV2/tznlva+6D5VQz31oCnXyyLpk11dmpMJ9eStA6PQ6Jj+/UKJTWHrM/gL4
+	imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HsDdDuaO;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795017612;
+	b=KYaArdXuobLnF89tYN6c4r4xp4U39s9dpDeyN64DUkKAqZyFdVDXGEIyxP+zrrcgFv2BNJ
+	YoA6EYAqs3EhPDlhheJyxrkhJS1I33tEtwi+4cuSuruM3z6wJRg/zNUWWdlgPOMeZRra1n
+	ihtJnQFFrgk4jVczn0YrqYBsmZUtXdk=
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5eac319a6c2so810815e0c.0
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:00:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1795017611; x=1795622411; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gN7nvCApkpNJjBBl+gdS00SQSe9taX0A7DICocon5Uk=;
+        b=HsDdDuaOkBgN31GHfWZAC8g0ylYkA/HhNZ1Do2xI0erIo1dzWoNtNC/cvuF5/maTmX
+         BuLaqwux3FCUaKx0LCVbtquM8BvBIh3+d/9jJ8V96LB6Z3yrcn6C5LvwPC3T5lMDsUXU
+         ZIKTO0tfOHiyaOP6fomV8tZdZIWbmRvcVr9WE/vZ7FN6QcOmM+iaPXKkEGFDB5hwn84o
+         NjhhSp0qqEbN3AOr/3rxKbfwLFMYtc6D9Dt1fNX3rJ5+jdA9X7mPDmxn8kudWsSX6AxW
+         ucpbT8nlBDzaoSlCWDm578+PJCiaPFoZ3UOiySwZh6ycynoE94OK2V/neFxkWW19OXg7
+         G6xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795017611; x=1795622411;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gN7nvCApkpNJjBBl+gdS00SQSe9taX0A7DICocon5Uk=;
+        b=oEyGKkhUPM2coVSDMJ15hKaz8V0GAlForkM0WZfBsUSxtRrTAj1OhkHPwsXYZCu2T6
+         m/nZkh3c049lia3h2/538Yvp3l5I6QWym8byhuIkSOOvSr4xd/Cp6zMKIuSEUdSqoyjm
+         MmUESfiUIQxwUtZEqzgkh+Y1W1dVj3h6dmZhhX2/iK5SrSQDzSdH3Sdsli1hT4IdXxy9
+         g/c6BYcgLrpX3+bbGAsbEQxXML7vo/P4+8cXNhGop8SeK6UdDkbBJUeu+MFhS8ShIGB0
+         xhA08BWxVeKC68UQomA0ibDMjX/BQMqNxh/N6DSG7on23fKL6aTjqLtHwusQhsBFiFJr
+         qJsg==
+X-Forwarded-Encrypted: i=1; AL+hErEmj6EnRc7qIFogjK+IArRFj5yGNHyCH+L9yZ/IwP9T8WjI8GJeUnU6TRym+XVC99jyvtfFmtHXng==@kvack.org
+X-Gm-Message-State: APuU4Z/pY9+B2YKNEwMmjbX9X9L1KvQGmEouO3uhRcxgtK6mffH8Mq/J
+	efXzNzDpDlzSm3OyXOjb0C3zDbHHHeqfdIWRTB0UqwyzYFk614vOy/7NMffYogpHLzTrBBXErBS
+	2GD9e
+X-Gm-Gg: AYBFou1V1pCg1FJiTtrRda6wwGt10dtv6ojizOXj1pg9h0ahlybmlOxL/+Bf0e0mOOG
+	He2B1Fk0wRpVq635Z1dhlN9+KpLlyBVQOeCLRacn0IgAAT4w18WPLh0uNJLq+Vnm5+I1EhenU1o
+	AICeyN8pH3M8EQv8TCuVrGYZrErmCTC+BOnRChKfRKO2s/UeIZvlRJYmx7JWnw+gpTvolYQzkym
+	9twCn13v9Z/VFVVXF/NWkjcBLwROBX+rLYPw6FkfMGsUsUjiKfbZIw1VQgixORnHPTfuEzzJ6YC
+	NgZtVWJSYvSZDMlYfU2+bSQbJReO4dnuhD0IyqWJyoUWTV6eBEBpYmaYBsls+kJ7bZy/2LEiraW
+	45AALBUrkr1NbkxB9zfuN613wE/OWIMbofbsTebvpUgxS7Ng0PKMVxVQd6/RLVwTBg1E6G/udIU
+	EprGzimNhXgYKJfQr1+ep6L8H8xkN+Oy8xyeT5pU5YKQoACGerfNjVJvxH1WN3If0g0OP35hino
+	lD99fCOnfWNXw+DpiC+mSxXgQMW7OQAjQ+HkF1qsxHPJXxCSEBKGxp73HUm8KjKpv+saCdPbtfl
+	NO00eZPz768VDBCJ5F0mr1ZT9vifRaLi25bWngxDCBt0M3PtdfcEHRSJDcKfLJTn0b3syPs0x4N
+	c68q/XDQ8+LGOTrUQ2cJNj1kae6a3OCqJsr4oeUv8gM/F8t5jCv+0VpzfApUfOabJt3wq
+X-Received: by 2002:a05:6122:3a15:b0:5ea:389c:51e4 with SMTP id 71dfb90a1353d-5ee645faa03mr1663031e0c.2.1795017611348;
+        Wed, 18 Nov 2026 08:00:11 -0800 (PST)
+Received: from soleen.c.googlers.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee64ec2730sm2002506e0c.14.2026.11.18.08.00.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 08:00:10 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr, rppt@kernel.org, 
+ pratyush@kernel.org, graf@amazon.com, shuah@kernel.org, 
+ Chen Pei <cp0613@linux.alibaba.com>
+Cc: guoren@kernel.org, linux-riscv@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, kexec@lists.infradead.org
+In-Reply-To: <20261118091603.979-1-cp0613@linux.alibaba.com>
+References: <20261118091603.979-1-cp0613@linux.alibaba.com>
+Subject: Re: [PATCH v4 0/4] riscv: Enable kexec handover and live update
+Message-Id: <179501759947.250261.1712117569683645423.b4-ty@b4>
+Date: Wed, 18 Nov 2026 10:59:59 -0500
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1086;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=yx/6YU4ftdolIH+TM3tFCIqxwpFna+tV5pnuszpTgAM=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq/cuKW1Ven/TsYWcH9R9JVtNZvIr/Wrzbj9eUF
+ VZnu673CJ2JAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCav3LigAKCRC7dyhM23N6
+ 3l0zD/9GkT2xiw3xOPo4dtrl50v/Zo+28SEOr65ml35aBi52o28TK4homX8OAljUtDYygGhutpM
+ WxnvBmRGuzLI5PV5A7/SV+WgkIZ52fXibj+mPS9LI2vYsbaTB7qWpXD/tPjUXOLL3sp8s0nWgA/
+ xzgDZjJbri0YhMen/qMzef3v9u09p3Wn4uVIdtlK0LLcBqgYpEtW1xCFKqg8Plgdmm8VzBkMBqm
+ 201gts8eO1QmJ87giSN1+mgcvDTecZXC7TLBmWsfh6zueYb2h7iy18luOHRy2FcgK/fG6x6oK+/
+ q5kb3mOX9vuWeOn4JfkYG9JvRemmTyttU4mvzXS7wc56lZd8ObMBpcWCRJaliTNo4Fwky6rrbSU
+ ubyyFqvQGzUjfL2/Rp3rc+Cie1RnXgh0XXw4RSGXf6YrqAi8dVFfXKbWikrk5D9dqJ+2t6zEbFK
+ +GHKpssJeeElG+UOr2KEGjpeWljj+Alhh73XBEVezYA9oWQYDth78nJKELwFtPq8Xcfc4Br9O1V
+ Iu1DpxwaZOV4fUHtQpY9XdoUQSLklPkalqeaaIppy2vDIKY2IMWWeLNhVX7XrCsNIO3L/BO4EIS
+ BjJYaBZ3qqGAfTeisqH8//T8U/uQq7h8rHx7J2zXA1bXqN+ErinqAopKFwtALn0trP8D1sYJivX
+ Ntme4+UlYo8oAIg==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Rspamd-Queue-Id: 66A28C0012
+X-Rspam-User: 
+X-Stat-Signature: x35d5z785jukpwajwaifw39ybcyzkcxr
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795017612-45548
+X-HE-Meta: U2FsdGVkX1+mEkS3DcObCck8eDg5yYhUgXuFMFbxVhSsyRqUbV4oMoqAiySu/s93TjOkP54PmIva3tJc7d4XRP48QoOq1U9ZpGoykr62hEH2Uu00xyJSFRvq2gGR8Qa1N10dDj0QvEmfYIJvcfFCifgj4+mP02Cv9ryMTqylomY2FqlcwJDpARiln7D7VHWZolv2d0O4E6VdrqbcCk1p9kopIZdf9ZnBSTJ45AgjHC/2X8dPiJiUpEjmWW8t6z+Z92exfvJ35BLuYI5hqtwae0fwG5VnzXN1zi+sgS3Knd1YXkA/wjoroIzi/lRliudOm0xUMtHuj1JypWhl4W8ro9UmP6DK0nAKBdjYXG+DtNNSTJAMopnei+o6wYbktASlKNlgXC1aLt0UN4CBdaPj3RTefkpclGqv9V//5YyiOmSeEXDPw4TqlAEhPvu4Hoif/obEGQTPZq5phR2+UCHXGQwxD8PtbfeecHhjaliEObLceU3v7t63VlW3W54AJcMUouiQ/x00H9fG6Y2ZiqYlC7I/oTjqvEKgC2T2TvywI5VWEr+tCa7lKIlJUTS5mwKCLRTrsO7TT1Id1x8fCHDJd5c0wHlx9xUXpnnoB9HPyfJz2WRzrhQlUG4Z3KN868ThQAofnwjlmxJEKpNjA7MrwhnEKiOxfAw/O/0ta9LpD2/UAHoEc9+OnvrodvDO7ctG4GP9nIoUC2ngvp3g6XtZSjZWDbLqAbSYN80YmVv6pOQy0IqUHPvVJfRmK8VUtZAlzqomQv4oGDFyIA26kQBO/5qBV6Xcfo9KPR6LrE415H/KRdFRv4Lkz6T9Ui35m4VH4FzEdQu080CxdUaumflir+VwX+u5//BaNtoOC03Z8/O8DHH87qwPpMlpvlC+Z+CNMyR6yNuyXKkQE3hAxCV7s9DBzR4PYmTQb1iHPZlOrCC+7rln7TR+AYIMBfpFtnWI9RPwddHh2qVTbWk1nAR
+ cobBI+Mm
+ 2VW+8DNPC7WEU/SIYgDPOcUnGlxDCvRUhBibaGWIpAFFTEvNHu368Z5H7WweDEXN/uVm/U1QzuvSR8M/T0xefMQzKfweCY0P7T5lg3j/kbZR3dXUACrpFW8RJS/uD7m3kryI1F6jKaah6U8ATpOxFTsN+Syy4s6W+HGcAwBQhusvlMJ8CtqsGQRWEQCfuDiXs84zLGQF7x//kBMr9fnx3A0GP5F0gQ4c56mPLeGvV+FeZkQhwpXFHPfn3TYPgMDuVIWne9pW3ZyvtegkxPgyonDME88ysAdZZNA+nXK+eg43YJnM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,70 +146,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm/memory: insert_page_into_pte_locked() upgrades uffd-wp
-  PTEs to writable
---
+On Wed, 18 Nov 2026 17:15:59 +0800, Chen Pei wrote:
+> riscv: Enable kexec handover and live update
+> 
+> Host kernel updates in the cloud should not require draining the
+> machine: next to live migration to another host, replacing the kernel in
+> place while preserving selected workload state ("live update") is what
+> KHO/LUO were built for, and LUO's documentation names hypervisor hosts as
+> its primary use case. This series closes the gap for riscv64 and
+> validates it with both upstream test runners.
+> 
+> [...]
 
-commit 62002bc33a7233bf10217f5cd96cf7d78e384960
-Author: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Applied, thanks!
 
-mm/memory: don't upgrade non-present PTEs in insert_page_into_pte_locked()
+https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/log/?h=liveupdate-7.5
 
-This commit changes insert_page_into_pte_locked() to return -EBUSY when
-encountering a non-present PTE on a write fault so that PTE markers are
-retried through handle_pte_marker() instead of being upgraded in place.
+[1/4] riscv: Call early_ioremap_setup() before parsing the DTB
+      commit: dc821c9badf7b2558e206804c2adaae28d25477d
+[2/4] riscv: Add support for KHO
+      commit: 48ea610913a6d6fc513d082afad04ff342120931
+[3/4] selftests: kho: Add riscv support
+      commit: 30c6fc85b4fb89fc867bdea413403bf169e7e194
+[4/4] selftests: liveupdate: Add riscv support
+      commit: 9615c5074cdccb651684e61cd8872ca8b0b30e52
 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 66ad58429967e..a80925c61706d 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2474,7 +2474,7 @@ static int insert_page_into_pte_locked(struct vm_ar=
-ea_struct *vma, pte_t *pte,
->  		return 0;
->  	}
-> =20
-> -	if (!mkwrite)
-> +	if (!mkwrite || !pte_present(pteval))
->  		return -EBUSY;
+Best regards,
+-- 
+Pasha
 
-[Severity: Medium]
-Can this still upgrade a present PTE that is write-protected by
-userfaultfd-wp in place?
 
-When two threads fault concurrently on a PTE_MARKER_UFFD_WP entry in a
-shared DAX mapping, the first fault installs a present read-only PTE with
-pte_mkuffd() set, and the second write fault then sees a present PTE and
-upgrades it with maybe_mkwrite():
-
-CPU0 (read fault)                 CPU1 (write fault, mkwrite =3D true)
-dax_iomap_pte_fault()             dax_iomap_pte_fault()
-  vmf_insert_page()                 vmf_insert_page_mkwrite()
-    insert_page_into_pte_locked()
-      /* uffd_wp_marker is true */
-      pteval =3D pte_mkuffd(pteval)
-      set_pte_at(..., pteval)
-                                      insert_page_into_pte_locked()
-                                        /* pte_present(pteval) is true */
-                                        pteval =3D maybe_mkwrite(pteval, vm=
-a)
-                                        ptep_set_access_flags(..., pteval, =
-1)
-                                          <-- pte_uffd() && pte_write()
-
-Because maybe_mkwrite() sets the writable bit without clearing the uffd-wp
-bit, this installs a present PTE with both pte_uffd() and pte_write() set.
-That triggers the WARN_ON_ONCE(pte_uffd(pte) && pte_write(pte)) in
-page_table_check_pte_flags() and allows subsequent writes to bypass
-do_wp_page(), losing userfaultfd-wp write tracking.
-
-Should this check also return -EBUSY when userfaultfd_pte_wp(vma, pteval)
-is true so the fault retries through do_wp_page()?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117-uffd-dax-a=
-sync-wp-fix-v1-0-c9a30f27f452@kernel.org?part=3D3
 
