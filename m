@@ -1,136 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2CA606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56510606A893
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DwgnBSBk
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nC++JG67
 Received: by kanga.kvack.org (Postfix)
-	id 341CA6B05B8; Tue, 17 Nov 2026 21:20:04 -0500 (EST)
+	id 7B50E6B05B1; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F2E96B05B9; Tue, 17 Nov 2026 21:20:04 -0500 (EST)
+	id 73E286B05B5; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 209256B05BA; Tue, 17 Nov 2026 21:20:04 -0500 (EST)
+	id 67B346B05BB; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F3B8A6B05B8
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:20:03 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74D111405DB
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:20:03 +0000 (UTC)
-X-FDA: 85446634686.16.2DE26CC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0D4BD20008
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:20:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DwgnBSBk;
-	spf=pass (imf03.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794968401;
-	b=pjKIJQYlrXcawxCL9gBBj8Z44TfBXljJUu5d1Od1i4J+sm0jdio67dbIAHNFPhzfAZ0Q+J
-	JAHirGw2U7cLt+0cDSJK5n0i8Tv3Fb0EufK9/Wp6Dw9VMq4EvaLbSyEKp606YOa+qpE1zE
-	DUTETCEGHX07UXhekUv7cJaQk6AAF68=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DwgnBSBk;
-	spf=pass (imf03.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 477FA6B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD667160637
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:35 +0000 (UTC)
+X-FDA: 85446641070.07.6F7C2FF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 38A17160002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nC++JG67;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794968401;
+	s=arc-20220608; t=1794968554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QH7WQFtjw+b1ZB9MFgRt6yEqYhXg0aU89YQL9+GV2K4=;
-	b=PUct/lOh7dZ22k/5KgGDVkfncY20xCP+8zOF68jsJF15/wFJBbjf43HTYLAX/BqFFgindm
-	P/BM+AEYzI028OAyKOd9xL0aFZ4U1kP5BAMKzTD/Zh6U1EAIhbU0fM6U3JMBdV9jT/e/ls
-	l1T11V53DiJDCcbkU7uofaZ3ZMX3R8U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794968400;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QH7WQFtjw+b1ZB9MFgRt6yEqYhXg0aU89YQL9+GV2K4=;
-	b=DwgnBSBkL6sGMwsBFYwxfMy93bo4eBP9OZqhjxDZEL15g6fuexDE8oLfFK4IcKlWWT1C2g
-	gFnfaMawjUdGsN0LQMupfmdhirF2Jtk+v9iR7n+dKPRhbWIr8dSY3tn01ZW2hdqBHc+O81
-	xoM9i29ViPEIPVB7qI5Ye/1OnNK+xU4=
-X-MC-Rep: binary re single
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-108-SfeJPvwVMFGv-LSoMI_qtA-1; Tue, 17 Nov 2026 21:19:57 -0500
-X-MC-Unique: SfeJPvwVMFGv-LSoMI_qtA-1
-X-Mimecast-MFC-AGG-ID: SfeJPvwVMFGv-LSoMI_qtA_1794968396
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5363b06bcb2so9132781cf.2
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:19:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794968396; x=1795573196;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QH7WQFtjw+b1ZB9MFgRt6yEqYhXg0aU89YQL9+GV2K4=;
-        b=HAUfcKB/hG/C61lNnL9iT4TJ4aX0DGzJ8TLJZdCcYD5FzIV+ueAoLRqJQ/5F9ZIR76
-         T4WG0wRjJuevBQ7JvExgRaqoNf9VlnSMHOoxyHkrjxh2d2K762nTlE7S1jcrzU06OzxD
-         Oed79WVy39110BfnaGIyXCX+jRbIo56ftMja2WWU9zwiWFlqQIPGRjIhVRkVymu6mn0s
-         nmZOJo2GaewBhYkjnGJhOKJXswrjSli9n3KLxvLSQUODIGISGmdXvtA/1kTBDbhXlR6I
-         Plcd9r7yGv8Y4P/zVVSUaLE7Zlsa+7AlL8w0JDDiIKQPtABZLifcjKdoFHj5858eDFdB
-         klIQ==
-X-Gm-Message-State: APuU4Z/degS6tsPbWUP2YXPHEYBhRuD5zy2fMAFzzCLj5+DVxiVHxEZL
-	n/2BzwjszKa4aw74m4b/aQWZ1X9wWsxWoncPBlxv5ccB9gE/nYqZ8zuXW1Wwdl1fjgjnTRYjxg3
-	NLET5hHDI1XseZYackhVZ30yWYEwDDJXAME91wOIJNGu+mv4hOEdL
-X-Gm-Gg: AYBFou3HwLw+g+Lwc3RQBXO0DmBiCE1hXN7kVhghH7idqAOr1+7ajrVHL25xwX26fPG
-	OcL6JI45fHborWln0AikQKF2cLQWHPdl8wYlgF4CrXIeQa73BhmWwE8bwA8DlerHSL+PhVI0wdg
-	RlJClzjL4oD75DmH4PNHrBMSysnX1X1ZQ7yEogfbwvevBIIu5Crrmi+mAkz0VaP5i+XD/QxZQy8
-	D3xVXt+UfjVSswshfdS8McoF6h/JV5VhFhYpgDLGipRNCUgqc5CjYNEwcHKNphfZ2HkYY0zaon0
-	2eMoiNf5SIeINntAV0XrE5zdkvkNJJpkw82+ov4Wdjho30DzeTPQn6/e9UjAAitbKSpE+yJBmfW
-	FukrMXvlLdwzLeOuYUWrkkh6QB2dQ1IC5JFhjqxwWW2B9GtPpwLBl
-X-Received: by 2002:a05:622a:13c9:b0:55d:3219:352f with SMTP id d75a77b69052e-55d5a34dcb4mr21966001cf.9.1794968396451;
-        Tue, 17 Nov 2026 18:19:56 -0800 (PST)
-X-Received: by 2002:a05:622a:13c9:b0:55d:3219:352f with SMTP id d75a77b69052e-55d5a34dcb4mr21965521cf.9.1794968395922;
-        Tue, 17 Nov 2026 18:19:55 -0800 (PST)
-Received: from [192.168.2.110] ([174.93.165.160])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d58fea489sm11141401cf.6.2026.11.17.18.19.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Nov 2026 18:19:55 -0800 (PST)
-Message-ID: <23c9ac27-cd26-4995-b301-f2efe13ccf18@redhat.com>
-Date: Tue, 17 Nov 2026 21:19:44 -0500
+	bh=C57fSdsXcJ5YLRwB6q77RfzZshy+TLbem32PMMf0Xsk=;
+	b=fDPGOkIt6DrKDWeUMSXLkhtZ/AMiH6zn4d7u3vK2HFYwhTWbBX+nDEiydywraKumHPMrrO
+	EdVCiVSTUzdoVOwfVWopMSn+jRAZabP5N3VciisXn6VhaM5xDTjP4pMzeZ5C9rRs36zy6X
+	BvceC/5G8lfC9qWUkaKmsaAi1OmdcX8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nC++JG67;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794968554;
+	b=h++rkU27cdDlSK7QrIcWWCw9xLVo8dDalw6GHVKoOiS20iJ/i7bdpy1ZSpbnqqEncP/XCg
+	HRJGeWXeZrAeXbv+fBsYfhkSMOSk1SMV9th7WCMRlcHmy/za8oIBiEQhoCjEyScp9ZLkZH
+	Ti7f2TRzuTf0Hsu19nI+Zb8u0JAEGsU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 797A842E6E;
+	Wed, 18 Nov 2026 02:22:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370691F000CA;
+	Wed, 18 Nov 2026 02:22:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794968553;
+	bh=C57fSdsXcJ5YLRwB6q77RfzZshy+TLbem32PMMf0Xsk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nC++JG67OvodX7YCUzxqOSda3I2OMlBtEcWKzg6EkbYO4taqtoV30yM/okz8P9qx6
+	 /zRNELjF+7E0yvmzugdWui4CaVvvR53mkrmPw6xR4vZRT+8aRp8kgs8eAIZ4kF2XXW
+	 yjhomMWrHD0RIY0+PTWN/1SU2RedG++a5Xr+l3MQ5jM8hIiCovsB+v9ONRq9kSNP4M
+	 YTlJaZm+LPaT/ef9s44Znv+0AqvOL0Omgb2NRrpN1EV6mV4RjwVDH/HEK+pl5PyeIJ
+	 fPKiLswVxKfFbs4I6ua6bQglHs5OnLw4uYHikxy4tk3tiPdLkbIQkagCXUOf+1TdVx
+	 85KJIVGicYjcQ==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2 02/27] mm/damon/core: implement data attribute report queue
+Date: Tue, 17 Nov 2026 18:21:57 -0800
+Message-ID: <20261118022225.100659-3-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261118022225.100659-1-sj@kernel.org>
+References: <20261118022225.100659-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_ext: remove unused page_ext_iter_get()
-To: Shivank Garg <shivankg@amd.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bDM2dKWur6H2CDge5Vm3fZPhNnkpOOBCVJTkwNX7dSQ_1794968396
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D4BD20008
-X-Stat-Signature: jh1pnh1sw7dhtp419o55mrt3t1nbwrg5
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 38A17160002
+X-Stat-Signature: 7ojsg4fj8oma7xa5o5m6t5pic4uksicj
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794968400-283411
-X-HE-Meta: U2FsdGVkX19/VoWDkTljsvfCdB9Ky0mr4yEw5f+gIJ2z0kvuBj7zuP/aDZf/tcnFtrLtmj8Qfj3F6AJTZJsEBN7QNLRhggVkqpLQqKkVltz41Mb0QGNiitVsNwJDOhR+vqUIgxK0gZ3vZEKI+CQNQW1Mkta/4cqD4TUQLiMv5cZ0iJy3nyUduDooG4kkppp6xhkGUw4e4lWPMGl/EgnkcxNDpmVuDHkkMtp9ue2A1IqhO78o0/x7OaL3fzJ/st2YuIHjqr+n36EvsQqODgRsOpIfLskahOXM6pWJZGUVkcQEhJjpkDo4EYug3++QtQKA1WmeKxqpKBA1gXqjs8D9Y5mzJgYBlHL/xDCHnprYyTKT/S7Rw9JD44605WuSG65NLdqW7tN3HnuaX1SlJh79gM49OTj6UVGvg6yfrjAdKye27ZxEsNghY5tmfRpbhZSeK24H1S2IM9iKthV3ThZ7zwS9l9ur/cy5MjSJUDqlagsWLreXPO29qdGpf7nHkhNZsaMTzrwlz2s8wZe1dp3Cwxfb6J7M4Nk45f3sFwHq0GEGxwnJrS5KH5HgpL4sWSr9l17No/3J15EXSBgNbkAs7wJiPPCDvONAQMdntOvXvehYJ4g1ZYMuVXmieMUV2Xdhg81WFYawE2WV56nuwe0E8Y01uH+FsgkBdFfPMBxfPbGvBliuyyg0ApkAYjfNoDqzJ006ZGq4J5vCXrjBKlor4Qh7wzZkNGSym7I2OwaSaTbtwHWkZo6tB+wOPRr+o0TQcwftrbHlJEFY2qonvmq70PRLMOk8QsZVpHvCqEOq4ndzlbtsiT/prxjIwKPbPbFChsARBNClZ0Jnhwpxcc2HAQV7grYQm0x0UI03c83OL/I5R0ien3l0G48TYWkkcqC/jRr0GZUErnkWrvdAkPaDEbTHDV9QrIEQx91ik202YJQE+cwDikADwACY+DiDL7Smt4at75hGHRo0o5s8kc7
- 9A6HPnS0
- BWJ/fQETMBOs1JETHTV+uYpmF1bsPtLli3EhMra3wskxWzKb2O7XaLN/OIL5Jxqa9wJAljO2gEVIxcxbtviDLurTsOhzaDR7uwFCI4WgoRk5Zy0s9E2lDmVJP82aLZqhcUOSp31DH2LwQ96nVL4WKpqvRIM+Nbkf8/pLL+h+IuHR6Co9bZuBqeyqfzf7ZbwUQOVBlgyz3oEoXkLFG48MTbip9tV06bgJyfoJ004pyv4vMoycxbV6fO3GKh2oH9rHR88LRzDdkehn7bbxaoIIRdKWHyZjA9JlB8+vmMaNxm0bDWgX9FcZowX6am1LJtLdtpFqr3zr+jViwaKuBPfHBsMQapixBnvpFJvyY/8hhWcGgTftXXLz5vhycd4XJiGoJTJlO5Ed+qssMdfsurBKUps4iiHb6lt/zTDN/5pvvtGb+OqY/X4c5gxYgek1WVseE9C+6O13Bs5eOHtQ=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1794968554-243832
+X-HE-Meta: U2FsdGVkX1/C5+NSGOpNp9/FAeMeOogRWAI4bdG1+rvcdTGAStTOZfSnqHKS5FW47XDYU6B1mnmKLhD1PWPCD+1KhFQ8yt46X8ZIEgN3EliVtS/JAASvLuFl5AD6392SbbNa/1AKAeIw/PF5GxYGA0jZmvdNZmhpIbfaVkn3PQTfDaXhS07qRx5mNbE74dh/baggeF6K1kNex+jBpHWfBiUhzOx30+L8TkShqivbvk7D1oIQtLf1tPfa3DdBpHqlifUwqnF4nN9/73r0Yb7kBcQ1/HJO79b0ICIpe9AVs5wYf+bbsa9du9aP5dYUsCbjUQ/JF7JzPzksYWe4AdHhjJKW3i8mJVQ86QdgxyXMdxXGjb5HjO0n3nPNBCX7BPumj3MLDBxFyL8FgQr0Bv7WWFGN+OcgvlKdpBouazRv2O89AtdXGbRZ/SZbzST2qvEVVdovu8PUSswlk6p6i6KIZAjtsS6Gk9qcMRj9hmp9/CcF2t3xjf4D3Sca8r1lxbRCWJbIrNV9dZ3euPAeqhE3P9vkV1ifecFlOLrbZu9WdiQdV4eLXF6QjIIDGjAGqFHVJfOChtIV+ymUuAmL0C/nQDZLmpBXLqVDg7N4ZrUEf5E0ZCG2g0dJ1f1O3HVBVcA9jdhfHfbo1abOqFWgxsyCGoLkli4Ii/UJKSrbj7P+ghy1YCTnGEgPyZT7LnCgdUrnFxJ6siitjfr+h9KCzS9RFknC9BPtk9ZPNMMONSX6cP1tI569F9bUUqilYN0YBg8MwrLeNOc96yxJ1Tqd4uAVvsGdnnQxnfFTE9f+FbINXe1qyJrtVdwg4rmMbFSCeazVbRyBksVaOTzYj41PrlIuDpiKPT7IRGmkKqPz1oLrc7HiCBhHctXQ3HJyXD1aBA5QhKDlLzNrJZbH9Bk7rWnHtAGSGy3HZe8vis4JKDpiV37ljPGDNhA/IJinjJ57INgUyjjTyU+gphUyiunXag2
+ arez3K7K
+ +KV9D6lBFF43x9yBgSa+/vJUpufIUVQfS06EruuD483IN2E+/Z/dR5VvxqcsOSqd+gEIHarTLWDIt+xUb+o7VoL4D67hPEhKyCsvMpkS9g4ihLqvYJEy1ZjkNE+05n5xm3/nTaK6yqSS2uebN7cPMgS0fn+mkXFPF7I6H7u5yej3hYkyCFsmCECYngXGz1lNlohoaAGfZ1UiH4T7w12ujJdkeEGqJ4rNHFNVyL+R2vJX1N/c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,58 +96,72 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Implement DAMON core internal data structure for queuing received
+data attribute reports.  Initialize the queue for up to 1,000 reports,
+inside the DAMON init routine.  Destroy damon_region_cache and reset the
+pointer for the queue setup failures.
 
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-On 11/17/26 11:26 AM, Shivank Garg wrote:
-> It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
-> for page extensions") but has never had a caller.
-> 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-
-Reviewed-by: Luiz Capitulino (Red Hat) <luiz.capitulino@linux.dev>
-
-> ---
-> I found this with the kunused scripts [1], which I wrote with LLM's
-> help. The v1 cover letter [2] has more details on the scripts and
-> how LLM was used.
-> 
-> Changes in v2:
-> - Split out of v1 [1], as David suggested, and based on
->    page_alloc/for-next. No changes to the patch itself.
-> 
-> [1] https://github.com/AMDESE/linux-mm/tree/shivank/kunused
-> [2] https://lore.kernel.org/r/20261026-unused-sym-v1-0-82ca2dceabe1@amd.com
-> ---
->   include/linux/page_ext.h | 11 -----------
->   1 file changed, 11 deletions(-)
-> 
-> diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
-> index 79c53ec45dfa..52a8b70c525a 100644
-> --- a/include/linux/page_ext.h
-> +++ b/include/linux/page_ext.h
-> @@ -167,17 +167,6 @@ static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *iter,
->   	return iter->page_ext;
->   }
->   
-> -/**
-> - * page_ext_iter_get() - Get current page extension
-> - * @iter: page extension iterator.
-> - *
-> - * Return: NULL if no page_ext exists for this iterator.
-> - */
-> -static inline struct page_ext *page_ext_iter_get(const struct page_ext_iter *iter)
-> -{
-> -	return iter->page_ext;
-> -}
-> -
->   /**
->    * for_each_page_ext(): iterate through page_ext objects.
->    * @__page: the page we're interested in
-> 
-> ---
-> base-commit: 3a99594e62fce8c646e8aac01d38af16d6833a40
-> change-id: 20261109-unused-sym-page-ext-3fb8316ac777
-> 
-> Best regards,
-
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 0a056949604f9..0e9c1079fdb22 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2334,6 +2334,25 @@ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
+ 	return 0;
+ }
+ 
++/*
++ * struct damon_report_queue - &struct damon_report queue.
++ *
++ * @lock:	Represent if this queue is being used by someone.
++ * @tail:	Tail of the queue.
++ * @size:	Size of the queue.
++ * @nr_reports:	Number of reports stored in the queue.
++ * @reports:	Array of &struct damon_report.
++ */
++struct damon_report_queue {
++	atomic_t lock;
++	unsigned int tail;
++	unsigned int size;
++	unsigned int nr_reports;
++	struct damon_report *reports;
++};
++
++static struct damon_report_queue damon_report_queue;
++
+ /*
+  * Reset the aggregated monitoring results ('nr_accesses' of each region).
+  */
+@@ -4308,7 +4327,7 @@ void damon_update_region_access_rate(struct damon_region *r, bool accessed)
+  */
+ bool damon_initialized(void)
+ {
+-	return damon_region_cache != NULL;
++	return damon_region_cache;
+ }
+ 
+ static int __init damon_init(void)
+@@ -4319,6 +4338,16 @@ static int __init damon_init(void)
+ 		return -ENOMEM;
+ 	}
+ 
++	damon_report_queue.size = 1000;
++	damon_report_queue.reports = kmalloc_objs(*damon_report_queue.reports,
++			1000, GFP_KERNEL);
++	if (!damon_report_queue.reports) {
++		pr_err("report queue alloc fail\n");
++		kmem_cache_destroy(damon_region_cache);
++		damon_region_cache = NULL;
++		return -ENOMEM;
++	}
++
+ 	return 0;
+ }
+ 
+-- 
+2.47.3
 
