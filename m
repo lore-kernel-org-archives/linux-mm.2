@@ -1,127 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C355606A32F
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 07:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0020606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 07:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MNtaJ/TK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BVsQQo/B
 Received: by kanga.kvack.org (Postfix)
-	id 614DC6B05B4; Wed, 18 Nov 2026 02:40:28 -0500 (EST)
+	id EED4D6B05B9; Wed, 18 Nov 2026 02:40:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EB8B6B05B6; Wed, 18 Nov 2026 02:40:28 -0500 (EST)
+	id E9E3A6B05BA; Wed, 18 Nov 2026 02:40:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 503EE6B05B8; Wed, 18 Nov 2026 02:40:28 -0500 (EST)
+	id DB5446B05BB; Wed, 18 Nov 2026 02:40:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D7206B05B4
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:40:28 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4B101C3D3E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:27 +0000 (UTC)
-X-FDA: 85447442094.12.75C07A4
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D3D11180002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="MNtaJ/TK";
-	spf=pass (imf06.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.133 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794987625;
-	b=7b/HgOZQCMYbBrV3wTBJcPkvycCMWVW3plQ4wuv9XJU+wJw6b1h0CRuFCKQKSk9rjTo15a
-	WN1ry6GTVvW/GoBh8tSt1JcuhMymNQefc0js0HCkbg/nv79g3uSvwMyoYrx+tuXd+LisZv
-	aYrxf9mwIgEk6OJBff6EO7RCT6HGz1I=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="MNtaJ/TK";
-	spf=pass (imf06.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.133 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B10996B05B9
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:40:35 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B85201205C0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:34 +0000 (UTC)
+X-FDA: 85447442388.07.638CE6C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C435FC0007
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BVsQQo/B";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794987625;
+	s=arc-20220608; t=1794987633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=V+Q/b4oQQRcc2ev9VIFrb3ozJoPLTXTZ4ZqHagDQPao=;
-	b=GbnyUG/P/5TeOkcwspL5npLcMzYlq80RPGMYPxXBXaKNok7qNsQpQd5hTnWoxYrtE/+83e
-	xpIVuK4iK8Jt5JLLoZVWDHMo/UhraxZFjxJCA9iV3A/AWvepLOKoI6HnBFiEDjH371wUmr
-	JcJibR1fJfkRTNtMj+J/tdqBnP9vbKU=
-Received: by mail-pj2-f5.google.com with SMTP id d9443c01a7336-2efd4a0bd68so2281795ad.0
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:40:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794987624; x=1795592424; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=V+Q/b4oQQRcc2ev9VIFrb3ozJoPLTXTZ4ZqHagDQPao=;
-        b=MNtaJ/TKgemaLy54fed0SpYzDbDMpc/ndQHVkvnFooRZZWbaHRlZyuj5UL/aiTyYV6
-         X6xo+AMtuGkExEDeanE0IFttlgSWkelKMv0WqJVkDuZRJQuz2iX/kHKJc0s1qq3Xmfm7
-         YAbo4bWgiek233F15IL6HX9tzp5vLMPGQ6dhm86ewVkx1Uf6ClQnAJacgR+Vq4x/nXvG
-         rZpbyCfu5HgUau45QqO0X7HjCxG3Se4hrX5xqAETHesLDAjCUMFUCPFuqrl8w24mfAUJ
-         2LwQvIeSR7NP5/ERw/dyjCg90dEwuD7Wm8ihjIAxAZGkhsrwlCUA05dhKF6bX6R+Q8xs
-         t4JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794987624; x=1795592424;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=V+Q/b4oQQRcc2ev9VIFrb3ozJoPLTXTZ4ZqHagDQPao=;
-        b=vIF71vmD5SoJXL0WGS6Zr3WzI+ToICjiPFtTX9tgNfVP6d7YDEEKoIl0iA/omhusTs
-         1N5ni6Q6LOnmNzw1xpswQVtaFz+FK+bLKhUMAQmhF6k671VRsUre9OjMBT6yiT3gpCm2
-         OwHpZU6C3XI+MrJKxmaTdrRgvPLxVC6FaXHD8KOQYCHwFrKgZMF4MJB7EblUYei6s2r6
-         2OMUB9VvmBd3mWSOvNmZJ4PKN5DK1n7qrEn75q29pvN/jfaDC6yxKoAGiUHWpNZFXKA9
-         I3VPXPsbahg38TjEjQKK73smbL6gIneTa0380qc9nfTAh56YZNKhKJm3bS52dQRyQ5Kk
-         RW0g==
-X-Forwarded-Encrypted: i=1; AL+hErEhYQJqKzfaByPvSoWJRgN6IC+4MZJwHdxTwcVgpRJZXYPM2E2j+hnhUNwE+Cv1sYmIx0J9oqh2uA==@kvack.org
-X-Gm-Message-State: APuU4Z8MO2a0pXySJthJqAkpQEbBaTpI3I7+IFT8aJD3q4x31XlbdbyY
-	ilS/22Fb9QcuZ46j5LfHREJa+QfuxcxGmW2FNl1qbsrlIVfMHlPwObYm
-X-Gm-Gg: AZFdTZd1JRwXXJSnQJW3LfEKgyungdVO6NmniI7a/DhWmBVAd7UpugYJht3oItqYlMJ
-	d3ar/q9t90hHIVLZtfHJK74+J1dc2qdNBBF2HQErZhpw7ikrnuLYraWRv2ScZF60UIAvKaGQiZ3
-	MNxiyOvX7/hL9Z1o7Xg2miL9lP4To8R0JpUCkFc3EH160uMHxrOjcyU6Gicty8hjoVciNrPzHXK
-	xflALQBENtCC8jk7l82U6o+2oAKLfyT31LltLlpNO+Uyeb3UDfhLM8dZonGsN2KCPby6e/ko0nP
-	jK+IvkFSiQQyY5Vq1J8+B7o3CuPsOiAaud1bLayFYic6os4/Jx4VifaLXhyz5Slo/mc5OAS/mFd
-	huiFajimoZskkAtdso8zKUVKCLVpH9fPNuSXhixQuNQJn10ncUjccVjf+c0rMLcM0kyhxl8InZQ
-	WaEhEKQ//JV8dGxH8+2X+GETKincROj0vumlcCjSK2VCdIWiIGW6uEadZjmM4Wz3Fby8+MUxVJ6
-	9GRC8h2jBXnL2KyUsIChiTNKs1UpTXnbBHlDttvwiFu7Pi0Pt60blp9vJee5nisHGewCbkqf5Qx
-	w6RHq3v2isIvwj4IfZMCA07+cJROveSsjmVBGIgSW9DnvOh6gu4W8NzNfCg7eiDHilwLcrizpDC
-	X2EciGdvT0WPHV4UKUFRQpXWpnYhg1fasXL6gP8rsknDfbVw7fdh73d6kZtOkJg==
-X-Received: by 2002:a17:902:d505:b0:2ef:e044:290c with SMTP id d9443c01a7336-2eff75451bdmr16959655ad.25.1794987624447;
-        Tue, 17 Nov 2026 23:40:24 -0800 (PST)
-Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eff6214565sm8667315ad.42.2026.11.17.23.40.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 23:40:23 -0800 (PST)
-From: Aveline Noir <jm5905938@gmail.com>
-Date: Wed, 18 Nov 2026 03:24:28 +1100
-Subject: [PATCH v2] mm/damon/paddr: skip non-LRU folios as a whole in
- pageout
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+NO7BDo+P4bguxhOf8l6doBU3I12qHv10RKKucCA1O0=;
+	b=3Po/ZAG2T+PSuKR6GGgw062kkUJoT/AYMobxMibEXgtxqXVVzfX/i5W6qn/idruva9G2hj
+	wiYLcCEN2btp8ueNEioL64qqpRmibznHQU2K69h8sbkmz8eupJwFMVlZXCOVnohUfp7tRJ
+	zQvfF14CO1gS5gZcxfvBAASAGWZCYC0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BVsQQo/B";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794987633;
+	b=gkJaX0K9uBiX0tpsbhnpXJAZuuWrb0IbAWild1NuGzsR99sg6qfCtrrqZOqFhJJ+Iir5U8
+	OLOUZD+3DBue1jAdhXO5YTSmh59DHDhB1edjR1cfyLYlXJ5KnR9kydoAloRD7N/2NFf0PX
+	sqy/G4lxhTKCEPbUt2Zn9vHqX1llhzM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 486AC44D1C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DBA1F000C9
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794987631;
+	bh=+NO7BDo+P4bguxhOf8l6doBU3I12qHv10RKKucCA1O0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=BVsQQo/BOpYlS5nuNpobghJdfS2nQvqJanM8P/SdMM8px83LV194QwEVyng2Rfjsf
+	 vSs2PB2CO/umYB8ekgGnyqsYFy9mERoY7pZ6tqAU8IYR0RV5WJCxcWL6RUysGb0Shq
+	 mJj0fc/JnKGTqTWihY5oQdwo36yck7J99Eumom8LBSa4O3B5DTAFjtWAZkvv5nzXys
+	 nimpCc9wzS1QHpTRUiARxy13Trb6E+GFcDjJlkN00mPU9/PbrAudsyprHfIe+o2I4q
+	 cW25PzbqNIkXmjvQEodQybim/XotsvSmA4AT/Sn8xeG13oA2SCearvXgvKB7ued+uG
+	 Je4HJPMmH/ojA==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b88b74e54eso536399a12.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:40:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGlLukiti93BkQIrWtZOEktW9u6PfXj/Y5FVc7z0HgEZIKgipQlBMV1l811DNnNkiqb3VdXZp7JTg==@kvack.org
+X-Gm-Message-State: APuU4Z8SXYKUnQm6q5TdySNDQ4gnvUVLCHlfSmfMxLVH72WiOjeLdUbl
+	H7PTvVwE8J6Fcd41X+1m+uZ3xqtl118CJz7s48KsaQ27MGAgY3Xj2+kXCogIWsD7cOmNLW1s0Pq
+	/2GGWqCLRImAUzQvkWXCmOYcFjN+FYWM=
+X-Received: by 2002:a05:6402:2707:b0:6b7:ce4a:7d0b with SMTP id
+ 4fb4d7f45d1cf-6b887e9855amr1039376a12.20.1794987629740; Tue, 17 Nov 2026
+ 23:40:29 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-fix-damon-hugetlb-pageout-20261117-v2-1-547a65a3206e@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/z2N2w6CMBBEf4XssxsBRaO/QnzY0rWtkZb0IiaEf
- 7eVhMczmTmzQGBvOMC9WsDzxwTjbIb2UMGgySpGIzNDW7eXpmmu+DRflDQ6izopjm+BEyl2KeJ
- eoTPXJ3mTHXUCsmjynFf/k/6xcUjixUMs5tIQFBiFJzvoEm3+OLvdeRxHtDzDuv4Ap29dr7IAA
- AA=
-X-Change-ID: 20261117-fix-damon-hugetlb-pageout-20261117-a4e03d9d5a5b
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, sashiko-bot@kernel.org, 
- sashiko-reviews@lists.linux.dev
-X-Mailer: b4 0.16.0
-X-Stat-Signature: shs7no58dazsdtpqutdenfhp9gdooebp
-X-Spam-Status: No, score=-14.7 required=3.0 tests=BAYES_00,DATE_IN_PAST_12_24,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+References: <20261115095503.2922598-1-chenhuacai@loongson.cn> <sashiko-outbox-216668@kernel.org>
+In-Reply-To: <sashiko-outbox-216668@kernel.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 18 Nov 2026 15:40:20 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H75pFts2FxZTzrJP+T+M3m3AFzF6pqc5WK_fR0=u-PCeg@mail.gmail.com>
+X-Gm-Features: AclHuK8Di8CaNXtvY2DxNQUZd0T7YfZm_H-Rw4Q8hcNhOtGVQFiP0BTeRQ8jeuU
+Message-ID: <CAAhV-H75pFts2FxZTzrJP+T+M3m3AFzF6pqc5WK_fR0=u-PCeg@mail.gmail.com>
+Subject: Re: [PATCH V2] lib/smp_processor_id: Don't warn if there is only one CPU
+To: sashiko-reviews@lists.linux.dev
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: juuyw5w5wrbytjtop1oofismftrpg4uj
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D3D11180002
-X-HE-Tag: 1794987625-996547
-X-HE-Meta: U2FsdGVkX1+prUH5E3mWz1O44Z4lEcDf3xlS+H4e49M61BpxViiVVuk3C+OCNARZJUeSekF8iv/LdAtIwSV/2ndsZN7frZr24VorYy8/BOi78kZFz1VylZ7vWpZtTgn0Zivu+GyFaI+M/iFjibhyRwMonKPByn0JJF43wEfSXECnTB0x6mPDeygur9boea8wdjt8Eg22DFnbRXkEUAmEljsHTK6XyKkX8EUAHTmSbvz+ugtbHzoD7nj1CcY6Fg1Jr2mPh3przfnxKPj29VbJUXMzVCEZ/nXmgxJC+LMljkNb3y9cLqOpFrf+6sYAEVqcppAs2J5pALBurCQXgaqnRGZYlsXYKsUW/v+v10UmrSun1QhunwcIh4ke0RcXOyBq1W4StfDnNDCUaXXG0VFSgcKfo5u2T4/jRwk7qoSpbfvR+0wE+p2dWJQB2PAkDRuSOW0mByS67+Ta8Q6A7n1/yaxI83v72Dsz6IPhHaaPkf2vXVtypXeQ6g9qZ3+h2RgCSZIY4OUNmEmor16dSZvIFhhLXWXLBxfUh2vzb4eox366UnSHi41CbO0UCkXNVGpfCYAF85kxJGDavyvqBGL8aWS5k8QYDiZUu83jQSxt4weXPv+eBNR9QTLN5nwFDd9/sKuga841gJrfVDAuSKHWlzXuhQ43PtvgpO6WCAThPK1C3OVh/CyfOUUqHaDmpWaBjr+Lw4L2qeSNCrfGOgt+pWofB0eNsVCxG7yKbaZSyQYIQK6INKpjSuEp20TC6+HC13kk4GdG2TFk54LiNnwmW60UaSQKwIEjhvoJk0yw5Mwmx0yTjRxbggCwE97V+A+AiXpS+t46hyJBCw7Ah5MOdjOwkuqRvdQ2a5H+aCTUZcpwMmVJqTdvcw9/Z5J38x9J6i0wCDDUCGM1FKAD4qMrbjlVHPblx8uPlBeUZkbDLYLN/dpyISnT1uQxoT2E7cLY79/aDFsC24jnSRz0NXO
- 3eY6b+j5
- EkQ0Ewm7H8ZOn6sqfYGl0Lfo7XHVV3vMu67k6TuEOflzUvPRsT7QPbeb0p16Il1UtC22o40M55FHFmghKmO2Z5dxRYv3BsuyOEz3nIA9O09YSe6HdT+9fXpdHGJFRcLRaZusEq2I07YV8it3IaXl6hp8slfxTMrLVWRgnpLNArdPXeFfCYKmdwEUs7eFtI8iIK0qzchxZtm17k+0vdp7CtuDoECuv6XuVQGE5ODjaOD8O8D+QJXUrFVnSssunYtds9WYkEHxoaz56wMh7fjInHkgeOZvsO7a85iaGu88CAhh7AkyZ6KkAat56yOim0YhaNiJVSbX9cc5By7bQKNfh58KMiX7FikMy5xhaAArfCCcaUkRcymrO9aLd0eBZwqiip949AmNAkNQ0nuq7gNU0PHjeWGdz00j/SAcTHVNscZtfV+LV7ZXr9OtWtFtfpVzokOQhgC15H4YsOkJbp2kiObmZjQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C435FC0007
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794987632-166153
+X-HE-Meta: U2FsdGVkX19Ru5C/IpdHaQqZaw6rltBq0TykgxO2U0XIO84INNpbicDlm3QFx8Q+xoDeZsE5bkIrWQvZs644u05nAznzGzhggAoW+dfmbe73SorB6xxt8eKTjVjsp+ipp9IP7jgOgupKFTTGIHgbLiHKriVq5gSxZLndMcfbTn3K2aZ8h46Gg2mLIK3VB5sQ3//dgp3DgFmY4QstJYeS/xX7w8nxTDbSXfda2cbJwwLhwfXtUy8xoE/7zf7vDewJnmf6vN9AZyEMz+L1t7Z+w1IZklA8Skj2QyqcrrgQLHxE8aPfI3r5Pcc6uCkb6wmzeQAyqBSOAyMmjkhs9/baqQDsrNsu03fQQS1doB/PxvUVc3AdVXbEsx6Q641oc4qCQlAHaJxiKGaF5GW2F9Taq+qhSkoUGeOveO8iE7MZouPV6xTiexmjdA252VqZoAkFb0ZR75DFgtdJbtNyirLurXbQJhtWX1BhYjdkdcWRIDfvaLzoP7fGHO9//lxJQvlGeotgva9AQRoHbC9bj4E3xPmzqvY7LuhyGS9CkUqe9CN5CTiWQZWNUn8dvKAaqdXJ4cS9IK5+JZeRsDXW52vHqAfJJMxx8VcH5u1KL1hDj6+AjjeYYXHoZd/0bT1uwDv0ty+4a/JSZePH9CpEDJeOtuBksrS3+ZPZXEJr110jcbIkS3VbAMGkbJJ8zIW3bCKBtRNCDfeTYj05BNrMjUQVtJdMnFqSFYv/U3xLrh06H2CQFEhtYliXR5MF1ICz+TdpWphd3+BB7zHxZZ6D+VGiKxu9oG/FKlOd77g4XjeO6mAID0p8Tp0/d4vjU6rL55NEGGbK1lXVBgByOBdvvtYE6yJ/w3UWt/8g+VarDcNUFjLC4kncNUJt/RmDphChIgokEYNTRHfuA27gA9d6HZs5FJFtDHFeQ+exp2z+hhf0SFv+uczaJn3M1dGbKHgY4iL8Kg/TAnouvhQxaYQmhoe
+ kQw5sBuF
+ Y+Tsa1qvf7ruY7dBENhBWcEEKoHUU4ViJa7isNPcuSKNeDosqk8ZwM6DVr7uXSZ3Yr0fWPqJtnXYZ/5zQcahV8HmGnL0IYIFfi5sqA1G9x2k8DCHSsnBFatlrHgJ6xB6kk0D2wG7zvzMuyRPpKZglqKiqgqmjUOu598eAbEFE36CefdGBy2QzFfSFyC485dvU+BAQW/TSJZ/cg5Ye48Kwiy+EFS4eNVsuZ3pSZD5UsagylSRE+INAii156jzAS/kAjMCREpm5iO9vnFfeoNLKICCw9nMxkrqhMqSJKOMCzZ9AaaEo641Y2HHBkMiI0UVJa/F3yyYDR1q9O4qDWioBo7Z4cd0wSshE+kgzGAbp/2GmJdLdjk+DLegvCza/DXnyvVMOezJvsjkhXCd6q1Qbww+jWGKpqQbj8Dg4nMxswbwAh2bBTzArzXeJyYjUzAqwYW/wg22sl5kccNPgOmWlGb6SnJSxnsQyxIY1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,55 +109,133 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-damon_pa_pageout() uses damon_get_folio(), which rejects folios that are
-not on the LRU.  For a large non-LRU folio such as a hugetlb folio, the
-loop then looks up the same folio once per base page even though
-pageout cannot reclaim it.
+Hi, Sashiko,
 
-Use damon_get_monitor_folio() and skip any returned non-LRU folio as a
-whole by advancing to its end.  Do this before the filters, the
-accounting and the last_applied check, so that adjacent regions within
-the same non-LRU folio are not walked by base page either.
+On Mon, Nov 16, 2026 at 5:55=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issues to consider:
+> - [Medium] lib/smp_processor_id: check_preemption_disabled() skips
+>   checks on !CONFIG_SMP
+> - [Low] lib/smp_processor_id: missing Fixes trailer on stable bug-fix
+>   commit
+> --
+>
+> commit 62cd1e08e5d017184a1415887d93a1188fd3f001
+> Author: Huacai Chen <chenhuacai@kernel.org>
+>
+> > lib/smp_processor_id: Don't warn if there is only one CPU
+> >
+> > When CONFIG_DEBUG_PREEMPT is enabled on a Non-SMP (single-core) kernel,
+> > calls to smp_processor_id() in preemptible contexts trigger some false
+> > positive "BUG: using smp_processor_id() in preemptible" warnings, which
+> > are harmless noise because the process always executes on CPU 0 and CPU
+> > migration is impossible.
+> >
+> > Here are some of the trimmed log messages:
+> >
+> >   Call Trace:
+> >   [<9000000000d33e28>] show_stack+0xf8/0x1c0
+> >   [<9000000000d2fdac>] dump_stack_lvl+0x4c/0x78
+> >   [<9000000002456fc0>] check_preemption_disabled.isra.0+0x100/0x110
+> >   [<9000000002456ff8>] debug_smp_processor_id+0x18/0x40
+> >   [<9000000000d31118>] init_cache_level+0x18/0x90
+> >   [<9000000001adbe2c>] detect_cache_attributes+0x4c/0x640
+> >   [<9000000001adc44c>] cacheinfo_cpu_online+0x1c/0x310
+> >   [<9000000000d5ae04>] cpuhp_issue_call.constprop.0+0x94/0xd0
+> >   [<9000000000d5b278>] __cpuhp_setup_state_cpuslocked+0x208/0x320
+> >   [<9000000000d30148>] do_one_initcall+0x68/0x200
+> >   [<90000000024711b8>] kernel_init_freeable+0x1fc/0x294
+> >   [<900000000245824c>] kernel_init+0x20/0x134
+> >   [<9000000002455b54>] ret_from_kernel_thread+0x24/0x1d0
+> >   [<9000000000d31650>] ret_from_kernel_thread_asm+0xc/0x9c
+> >
+> > This warning only exists for the !CONFIG_SMP build. This is because for
+> > CONFIG_SMP cpuhp_issue_call() invokes callbacks in cpuhp_thread_fun()
+> > which is a percpu thread, but for !CONFIG_SMP build it invoke callbacks
+> > in the init process which is not a percpu thread. And there is such a
+> > skip condition in check_preemption_disabled():
+> >
+> >     if (is_percpu_thread())
+> >             goto out;
+> >
+> > Since there is only one CPU for the !CONFIG_SMP, we can simply skip the
+> > warning if (!IS_ENABLED(CONFIG_SMP)) in check_preemption_disabled(). Th=
+e
+> > effect is partially reverting 570a752b7a9bd03b50 ("lib/smp_processor_id=
+:
+> > Use is_percpu_thread() instead of nr_cpus_allowed"), because now in the
+> > UP case nr_cpus_allowed is 1 but PF_NO_SETAFFINITY is unset.
+> >
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>
+> [Severity: Low]
+> Since this commit is tagged for stable and addresses the !CONFIG_SMP
+> behavior changed when is_percpu_thread() stopped unconditionally returnin=
+g
+> true on UP builds, should it include a Fixes: tag such as:
+>
+>   Fixes: cac5cefbade9 ("sched/smp: Make SMP unconditional")
+>   Fixes: 06ddd17521bf ("sched/smp: Always define is_percpu_thread() and s=
+cheduler_ipi()")
+>
+> > diff --git a/lib/smp_processor_id.c b/lib/smp_processor_id.c
+> > index 94b3f6b195388..be079b9085045 100644
+> > --- a/lib/smp_processor_id.c
+> > +++ b/lib/smp_processor_id.c
+> > @@ -22,6 +22,9 @@ unsigned int check_preemption_disabled(const char *wh=
+at1, const char *what2)
+> >       if (is_percpu_thread())
+> >               goto out;
+> >
+> > +     if (!IS_ENABLED(CONFIG_SMP))
+> > +             goto out;
+> > +
+> >       if (current->migration_disabled)
+> >               goto out;
+>
+> [Severity: Medium]
+> As reported by Peter Zijlstra on v1 [1], does returning early on
+> !IS_ENABLED(CONFIG_SMP) disable all CONFIG_DEBUG_PREEMPT checks in
+> check_preemption_disabled() on UP builds?
+As I said, the effect of this patch is partially reverting
+570a752b7a9bd03b50 ("lib/smp_processor_id:
+Use is_percpu_thread() instead of nr_cpus_allowed").
 
-In an x86-64 KVM pageout microbenchmark, traversal time dropped by
-about 99.7% for regions covering whole 2 MiB hugetlb folios. For
-4 KiB regions within hugetlb folios, traversal took about 1 ns more
-per region.
+I think 570a752b7a9bd03b50 is mostly optimising the checking of
+CONFIG_SMP, so partially reverting is acceptable?
 
-Signed-off-by: Aveline Noir <jm5905938@gmail.com>
----
-Tested in x86-64 KVM guests.  DAMON KUnit tests all passed.  Ordinary-page
-and THP controls passed the 3% non-inferiority bound in the microbenchmark.
+>
+> check_preemption_disabled() also backs __this_cpu_preempt_check(), which
+> guards non-atomic __this_cpu_*() read-modify-write operations that can
+> still race across same-CPU preemption on a preemptible UP kernel, and
+> suppresses warnings for smp_processor_id() callers that would be broken o=
+n
+> SMP.  Because !IS_ENABLED(CONFIG_SMP) is a compile-time constant, this
+> also turns the remainder of check_preemption_disabled(), including the
+> current->migration_disabled check made unconditional of CONFIG_SMP by
+> 2885daf47081 ("lib/smp_processor_id: Make migration check unconditional o=
+f
+> SMP"), into dead code on !CONFIG_SMP.
+>
+> In the reported trace, init_cache_level(unsigned int cpu) in
+> arch/loongarch/kernel/cacheinfo.c already receives cpu as an argument but
+> reads current_cpu_data via smp_processor_id() instead of cpu_data[cpu],
+> while cpuhp_issue_call() invokes the callback directly in preemptible tas=
+k
+> context on !CONFIG_SMP.
+Yes, cacheinfo.c is just an example and can be fixed in other ways,
+but that doesn't mean this patch is unnecessary.
 
-Changes in v2:
-- Drop the redundant hugetlb check and update the subject and description
-  as suggested by SJ.
----
- mm/damon/paddr.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Huacai
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 5b773012a876..0a205fa8d468 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -268,7 +268,9 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
- 
- 	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
- 	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
--		folio = damon_get_folio(PHYS_PFN(addr));
-+		folio = damon_get_monitor_folio(PHYS_PFN(addr));
-+		if (folio && !folio_test_lru(folio))
-+			goto put_folio;
- 		if (damon_pa_invalid_damos_folio(folio, s)) {
- 			addr += PAGE_SIZE;
- 			continue;
-
----
-base-commit: 67f3b04b277373438f17300e056306adbd9edf7b
-change-id: 20261117-fix-damon-hugetlb-pageout-20261117-a4e03d9d5a5b
-
-Best regards,
---  
-Aveline Noir <jm5905938@gmail.com>
-
+>
+> [1] https://lore.kernel.org/r/20261111170600.GS1779021@noisy.programming.=
+kicks-ass.net
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261115095503.29=
+22598-1-chenhuacai@loongson.cn?part=3D1
 
