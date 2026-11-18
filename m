@@ -1,129 +1,210 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE9F606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D232E606A32F
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NMkuujTp
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Gt+On+x7
 Received: by kanga.kvack.org (Postfix)
-	id B6AD76B05F3; Wed, 18 Nov 2026 16:37:15 -0500 (EST)
+	id E08186B05D1; Wed, 18 Nov 2026 16:40:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1BE06B05F4; Wed, 18 Nov 2026 16:37:15 -0500 (EST)
+	id DBEF46B05F6; Wed, 18 Nov 2026 16:40:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BC1F6B05F5; Wed, 18 Nov 2026 16:37:15 -0500 (EST)
+	id C5A416B05F7; Wed, 18 Nov 2026 16:40:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 65E6B6B05F3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:37:15 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EE17E1A028B
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:37:14 +0000 (UTC)
-X-FDA: 85449550788.16.80FB95A
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1D59E1A0003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:37:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=NMkuujTp;
-	spf=pass (imf19.hostedemail.com: domain of sw.prabhu6@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=sw.prabhu6@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795037833;
-	b=DHjaJILAyU2vNcFTJfddSOEmO6XuzRZrmrG6/BWvTaZ1tx8WV56BO7A/NzrUgXK21x+dqw
-	QLtp+6jcMeowFLHhKp1vqP95GtR9y0tXJFPWZ3BPUyIoemeMrtXEsYNMVj9pRP73S1UA+J
-	GolRwjq8h5C6NIvMRowjYyVTZIO9df8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=NMkuujTp;
-	spf=pass (imf19.hostedemail.com: domain of sw.prabhu6@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=sw.prabhu6@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795037833;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 880DE6B05D1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:40:00 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 298E3A08B1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:40:00 +0000 (UTC)
+X-FDA: 85449557760.05.881AAA2
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010009.outbound.protection.outlook.com [52.101.193.9])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 53D862000A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:39:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Gt+On+x7;
+	spf=pass (imf31.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.193.9 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795037997;
+	b=WVR18ruNDyeJx/BLU0FUajCOCn+vUvCqd0OnyhOjmTBljjZxLl9Arcbj/FDfRmwyusUx5m
+	MA6tY/6QFB0OYvXwqduSC0IJciK1bYMwLtQn2qh1KKBBwhPsiUakkMHVxkchrd53h0v5SU
+	vLBtncl+QDW8K9uI3j4ptnka2GBbhsw=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Gt+On+x7;
+	spf=pass (imf31.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.193.9 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795037997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vnbJtG27pIY995fyqbhJH3BDZH2+CKUmjSvhuUbO5lA=;
-	b=tw2hx4UC/XjErEvT/EJlJhN6gkVrvLDhD48O6JlDXl80jjSpyXbgXHj3lO00p2Y2iVaxww
-	2zS2+cVMi2QmgvTOG7Ic16xuOAMwrOTCb9QGQL2HYqPWxb0z4maQKl5BCAVG8x8gjBah8m
-	As+vfbKajtHs55NIoBZOh3SpQCF2TSI=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8b30ff12f84so10315517b3.2
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:37:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795037832; x=1795642632; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vnbJtG27pIY995fyqbhJH3BDZH2+CKUmjSvhuUbO5lA=;
-        b=NMkuujTpijexHCNf/rfYMHq4PBkdNmXLbbEFsSs+4M5UwAlmEMJB+onJ/k7EDYEyKg
-         E8eNEXBY/r8HGlRgU3MFHmQHYpKzigXuK14rP3b0aQXNJKwxelmQU6fhyA6zRr0f7Dko
-         C74Hp3v9R7EKUVbdkS0/gjMplKtoUYbAZON0AfyaiwVZyFse4egKLg/Z9EwroUREZa3m
-         8SY42LYmP+g4/udwvtx0K3SePnksNH0FC6VAz8WOPOGt51xnJzPd65OIsuFL6BB1PnBD
-         kT7DowDAaPqA79zQYr1BH0rmpfhNNW5RituXtqL0drA+1KKy0iuehYx7xM83v1PBoQh7
-         U8Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795037832; x=1795642632;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vnbJtG27pIY995fyqbhJH3BDZH2+CKUmjSvhuUbO5lA=;
-        b=enFjJ2uC3klWoh1stX0EujBzAPZNtRZlcT/tDZ0AP/He9kVP/hqV6q/CjPnSXCx9cH
-         A39ivHzhmlmyKGq3OMUxkNKTervCGAwIaMOj7efdIOQ7nmOg7i/b/yXLT0ntlWA+ZG8Y
-         3CR7VaiAq2TVHOw6MFK8fvANg92st+uBJDqEWMnVRhPT/gh3ItzwSWKM8w3AFlJcReWg
-         PRF91myEJF+2+gjU5VPayDf4b794s7KhrxY2+qLu946FOzAxHTb97o6IQV92eJX1SwCg
-         f/kSEArb8IlqPgfHrR89fRXY58TjRXWRuRqjn04M5QHoLlL/1Rz34PLrur84iVazsXZG
-         cV0w==
-X-Gm-Message-State: APuU4Z9/pHW80RNC2vsxTlUkVPJ7kCrN/CZA5/jvy/hLmlW8WNB7NY7j
-	kHNk/hAde4Gfh/l3DLtW20TU0GJGsFTjCAuVH6mjWSwHf9CXvc1l2Ili
-X-Gm-Gg: AZFdTZfJFzMJC7KeqZYfoEm/ad/WWppWmwnnGrdnMG5Sc43QQ4FPBC+VFjl5nCSv23q
-	0DhGYlzdSdB3Sgjw63Kb95Cnvu2Uep8MVKQcAdsAlkK9MlHt6qPl1ibDvCM2Bj8YGiBNiPFziS+
-	YJ2i3NgZYIMb/V+zxJnvmegu9/7DzXgonVAFt4Lg4eXJeWBtjExw/xsd7DYhHdaQKKxXLb2m46D
-	1nhp4toFCWeN+E4lgwNbN/k86HUo9aYv764zThxJ3OE7mrjrKn1aootKyv6HDa+NN3EH5GgbSPH
-	sbX5BVgt8eAh583c4ct9pQz5NqUwRKxNuE22XOiSMBMxeff/IktyTR7cyG/8IYfuguRqL2c8sJn
-	dK93cAujpIWfA3Lj8JniriqVXbXbIkxJGyTA+7o2iOe375K2KdPqQm5jSN/j8bH1jKwaVs90lK3
-	IWf3deVrUSRFuR5R/6zm4SLzCeT/ZdPjB7GayJV4zsYh8Bx1t+FuCVqbkAZWQs79miBWCH6inuS
-	XHxzMMJUULW/g2g9uT/m/nsdATA8ZWeFxeDgPlAf1+n6rduAx4KATyBuzwsgycrgc+Lcb1UjqJQ
-	mxFUw6krnPbj1sfzUp297U+uGqEdvfYpLl2eSZ4r5rNt1i9MBSzEJKA=
-X-Received: by 2002:a05:690c:7486:b0:8b0:c71d:2b2b with SMTP id 00721157ae682-8b4fedae487mr20653577b3.45.1795037832273;
-        Wed, 18 Nov 2026 13:37:12 -0800 (PST)
-Received: from 5163NRD-SPrabh2.ssi.samsung.com ([50.205.20.42])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4fe030be2sm24565697b3.10.2026.11.18.13.37.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 13:37:11 -0800 (PST)
-From: Swarna Prabhu <sw.prabhu6@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	viro@zeniv.linux.org.uk
-Cc: linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dave@stgolabs.net,
-	riel@surriel.com,
-	yeoreum.yun@arm.com,
-	hch@lst.de,
-	Swarna Prabhu <s.prabhu@samsung.com>
-Subject: [PATCH 5/5] iov_iter: extract bvecs of user-backed iters from folio ranges
-Date: Wed, 18 Nov 2026 13:34:58 -0800
-Message-ID: <20261118213458.377258-6-sw.prabhu6@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261118213458.377258-1-sw.prabhu6@gmail.com>
-References: <20261118213458.377258-1-sw.prabhu6@gmail.com>
+	bh=ztrc0Yp2eDQ6TZtAfPMQ1bmjQn8htzBnLl23LuCPLh4=;
+	b=mQVr00nL9t/XBPhAjcq480DTPeXk8gEbKDOldTr06hJFZvEqZlfPglzHN0WiS4YQxW4Uu4
+	7Z5Qerm7qMe/4y7rPyDXhGmBrunAlduF0ExARedQFJOVzyzoXXXYMIwtArEavofkRLo3en
+	GGX44xqV/DDJNPhnlcfj/QVHvq1Jo9w=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sU/qXtJl9eMvdeVta6xtgiUqhc110KbAjiZf4J8ejEbLy0EtAip3BumfqrWchuwSlMSvVMonhKHAjS92ZDd6+z1sRA40xaIkZR+I3h7oDgATF+bEQXg2S59YqQT4Fe7DCtDCdQvY7uxoK6uihgPUnU3uFWgu3JyEXcJyKq8bouvfqqb3gpEzD02NozdLzQsZ6M2sRnFc3pUB2vh6pK0Gc4RhF/oYVJzd7enulwQxCBVs7TIoPDv3IuzigenbOxQfC1rUuMkuZTk4pJvhB7J72SKh1+IJpskqKwMAPIVCCNpVkgyD+QLXc/t9yIxPTaiAXAIY+8bXFaXI661iJ7vTog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ztrc0Yp2eDQ6TZtAfPMQ1bmjQn8htzBnLl23LuCPLh4=;
+ b=ZT5/zo+Wp50hopyDBCJ6mdPHAZ7u1bhav0if0+PN4dDcusYCRiW3DcUQ2zJekuZqZ0jWckzsW+gc9d+GPPBNLYO70haRTxUsHskWso4UXJUyNviRxbd3QBOvBSkM/hsmbEQm/oRMnZF8OB2IclcNyTFBbJzAnYS/1/p+LdaT4SebcroeQTklXRL2dtK/5efa3j5HYOEVAq5/Ye1W6CEuTjQgu7ThdTeCzH1n3PMKrROnI2nRHXV7HW1mbgDBHoKUvIRegymiyBAXaEH0EZ1TcVHnPdrkCUVfklHmS6u2dh+ZwibNlnQ1yT8CsabZjELqGFKSEGdrwT8z++vjtk4YLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ztrc0Yp2eDQ6TZtAfPMQ1bmjQn8htzBnLl23LuCPLh4=;
+ b=Gt+On+x7LN274xI0eFQJmxK97SaDZlc6dJgFqhxUAprJ++e9RSfhXZ0162Y+BC78sNPGDajNR6l400NKp/CtU5W36Ariq8GR6l8gU0BtUcgsEjNlaTGofwZo3bXCp0WY/pIEWTbEu2e48bSdbVh+56QkXY06zkR6RaImKKYTVTXw5SlHtjHBxgJ+gZBx+k9kYnvEVcLJz/cETPKO2PYmsvj5WCe17vJy2+Mluxzrgo65Hi6u/v2h0TqCWkp3MCo5iP7q4cLh+KFGQacXOZKeN0Wg/b2OUNqAB4bAdAPYF2H7IePOxWwp9C8pHoHBGW27ZvSDV+w0gEX/w6eqMUzDGQ==
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by MN2PR12MB4287.namprd12.prod.outlook.com (2603:10b6:208:1dd::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.19; Wed, 18 Nov
+ 2026 21:39:47 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%4]) with mapi id 15.21.0615.012; Wed, 18 Nov 2026
+ 21:39:46 +0000
+Date: Wed, 18 Nov 2026 16:39:45 -0500
+From: Yury Norov <ynorov@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Kees Cook <kees@kernel.org>,
+	Joel Granados <joel.granados@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	rcu@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-rt-devel@lists.linux.dev, llvm@lists.linux.dev,
+	Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH 00/17] Treewide: enforce static storage for object
+ initializers
+Message-ID: <av4bISGVaQNwRUmG@yury>
+References: <20260915030336.1192299-1-ynorov@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915030336.1192299-1-ynorov@nvidia.com>
+X-ClientProxiedBy: BL1P222CA0010.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c7::15) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|MN2PR12MB4287:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb494a5b-8334-4ab8-733c-08df45bc7728
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|23010399003|1800799024|10070799003|376014|261022075727099003|261021121427099003|56012099006|10067099003|261028144727099003|261022105027099003|261021123027099003|261009223027099003|261102123227099003|18002099003|6133799003|11063799006|261026140227099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	KsTh2qJIbrnqyR5HtwOmanaUdt5Qxxb0Im9OtFhIeiEe+fAV5dx14R9WUXxDwAeD1gYw7tt4duL5Lb3HqKq0bCpWsAGxE0N2WlsjxCTd5sTMWI2CV+vNp3VuHbOv8xzSrzDsgRhf3WfRg1m6sZZM9CFdWz/SORtddSzqHiVzb3lTIi276b1kjKeMTTokQnlDo/9jZsy6bMSHKjrphvp575wwP1wWDIbIiZfs7iDW+sGzD8gLfuj8ccFaD1akAHU/4FMgR67SH32yB0iyp5ltWf4afz+buam2aadgcYYP6BOkcqi/CP19OL1q7xUPJSFqJ87EFveWV26f4Sk55bjAXIRla8wJ6rPfSZNiH+88dz+GMMhUwErb8C+xxLpQjHhvUrUbtMMYqhg50943kuk03OdxP61zIwrbJ0h9tcEWbxEz9TOwZDbCg31y7/TqeZEl50p+yM4CjueVpwHnGYuCYUroH/c09s9ZVt5zcbHl6dlaJ9ZfNizAv+KfTgPVwDhqpZ8Fz0A96UsCyeonNx3jFXaC7U/5qrQz+VnsYGLJLPDsSYGVSmrqu3CiZyrcQMVwFS2vLZKC6cRW5iz67kHxv4AC224VhXIMTDuM/HBEHKl8jNSUUoLR+Cl8vtDSgcPDnhxSgB7mWnqMXtbz1RFdW/7jEmPbzenlvvl1h49kgHk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(23010399003)(1800799024)(10070799003)(376014)(261022075727099003)(261021121427099003)(56012099006)(10067099003)(261028144727099003)(261022105027099003)(261021123027099003)(261009223027099003)(261102123227099003)(18002099003)(6133799003)(11063799006)(261026140227099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+HZXWlztPnrA5ZFzmksOZgMH5WgHrJnQHSH7tRwGXb0ozDMYBnJf5U/1EwFg?=
+ =?us-ascii?Q?qS+wmI/og7Dafmf9Sk5wgckkmX3GkCIwpIg9KS1L5znF8mQz747hSjCrpXgq?=
+ =?us-ascii?Q?vjNEosmbbvUruz8McHeUW1yDnhyFGuW+Z2d5U96WPKBeb9L6+ZwmP7TIWF4Y?=
+ =?us-ascii?Q?QcNuWMahBfJXbGU0Ry/CUIybNWxbSEe/cGAQju67gU2WSZ+52V+/17WqMO/y?=
+ =?us-ascii?Q?j2UBmd/KiQermdrZ8gf/DUkZ88xrF9fC+NAlH05dUPrfiHFDQO6E1/wJW5C8?=
+ =?us-ascii?Q?2RIgCU/fd3IKrKOUvd1pGtae2wOgIy0NqxAqsqk7dB66hDct8cXpYQlgb4VU?=
+ =?us-ascii?Q?dXRwSspuqu6KY3Z/yp4kgDj/EsKsn1u5nv4aJNEo6xaqSMjeqpQLqvW4hwdQ?=
+ =?us-ascii?Q?lzxw7MM2FFutMP1IYMlKHseHzD9C5IjSRWF0xy9YZZwotE/uYy1gvfjHrREP?=
+ =?us-ascii?Q?IF65bS+QPxzLXjzwFU72P773cesKRKykaxTD96etoa14C2/XyN7IwSmGxw5j?=
+ =?us-ascii?Q?tll2PTRlEXAC10z6h9l1u/8lrtGNv9NTNo0sV4weyHlVfs5ly+CCT3RmJLEO?=
+ =?us-ascii?Q?nP/kpk8+X6nSPoI5hVDEonxvV/ZY8pz8tWNTmvXCiv/HU9Dfi0iA4CLTOwHI?=
+ =?us-ascii?Q?0jw/0zdDpFdklt2BgLUHzuDOhY+RP9jkXXlPgu1v5q04xlO+GyCVfOGsB49j?=
+ =?us-ascii?Q?vZUe1o0Pi3eJ0LlLnlJIfAo1g00uEQor8J3w896qarzG1A+K0Rp4wMfM6wuo?=
+ =?us-ascii?Q?fJUGLOe0Bf0U1zosf8uf3uXWb/WtGCJp4PgkJXeHaKIJup+R0N8AbdAo38Zo?=
+ =?us-ascii?Q?fs8gQ6jcwPIH56slC4KO6jhY3wIiS2kQNOf6bPtewdF8FchrTJRbrxT/90oi?=
+ =?us-ascii?Q?Eithaw2D8et910vIUBFlUSpUQg6G8BBtKGDGGxtJPbB3dkAAdt6Iu6um0PP0?=
+ =?us-ascii?Q?u0hhAPLYaQ8P7m+G1hJugl3uhC+dUYquFQ10IRoaPn0N7mZ7LSHNHtDvuHKj?=
+ =?us-ascii?Q?JupTeqcreoSsSvq/Qhz6CPzdDFZKObzUaaje2Ok+O7K7xT1jUWD0Fg/KsRZX?=
+ =?us-ascii?Q?5oRw+Kog2p0q1Q98i87eOit3D89hB0atSxmWFt5vTFSAlwLQEVUhsJA6DEDS?=
+ =?us-ascii?Q?+GKU8xdx0yj9grgfRN8Aw6vHsk+CB0cC+8er9YEFW5HvJ86a6i8fYW4WxQgB?=
+ =?us-ascii?Q?zuttoOrGunjzgcDyTx+ki2UdGX0Spie22ZkldM44n2QpcrfB2eGE1ryZ/8JT?=
+ =?us-ascii?Q?KQdvzAmM9VGshgUqqQSlB0h2I3RQP38WZzup/UfuUz0ZOMtw50UV3ZiOqe9S?=
+ =?us-ascii?Q?b3ubPqL0Qq2WxgtnZJpibdnW4Ogp/3Fd0NoyZ/ibn6qHlqwz8wpXsuhBKe9j?=
+ =?us-ascii?Q?0VMjcGJuyu92kqQwqHL4DeuSYwBLN47n+ZDrbn0aoi2VhSlyjzH5l0obumhL?=
+ =?us-ascii?Q?QB8NvLaJ4/98rw6rdqjmDeJXka2I69poxAzUFwzPOX78tu59gu2eIIUmDTZ2?=
+ =?us-ascii?Q?Emfg4EMS18l+TMRrDTiTdce5+cGkKX59mjrFNZIw3Th+eifVvJ/fi/LICXvV?=
+ =?us-ascii?Q?wFkOICJknVoTe0SY16SSqrTwpNkbhalN4IAQk1//t3YP3k1iNCZQjMng9evN?=
+ =?us-ascii?Q?yj5nUuUMdaaBXB81NUGBagQ54Eu/tToNc8NkqdqNJJI9jPk37kqebLpaOYC5?=
+ =?us-ascii?Q?Ss9bRUIQT5k6NDr1aChYpRP0dvgaDrRftnUZhpq9oZXxoQXiMIy6DaKo3ze5?=
+ =?us-ascii?Q?ZfVxfY6cf4W3L2SJdnUgxl9skE2wQAj+OmRvFqZjGAoa/cGjF1y7?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb494a5b-8334-4ab8-733c-08df45bc7728
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 21:39:46.8409
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VuIOe8u6/T8hb9ONElnQ3MlOXvUx5QSohWUO+1liFdy0CLRjlqwlOMsPzcNRnRUreEXQwc120y+3217IuxxY7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4287
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D59E1A0003
-X-Stat-Signature: d3uz6b1ha74r8xgehyz9xqm1o3kbnwf6
+X-Rspamd-Queue-Id: 53D862000A
+X-Stat-Signature: s1i1dxpmgub4nkgu66bhwmagu473tjrk
 X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795037832-30683
-X-HE-Meta: U2FsdGVkX18cSi937etxBOYsqZH1Urt6WBc00INCFVJhY7FfoMCTo/NMl6JkDEZ8Y2NGRc3r+adrgrtk8xH3Hq3DfWEotiTwdyeZFLaEGes8DyXsfPZj04arFIf1hN7VTnk4aW0jUWv1Ylr1xat9NYr/ZNdilvAWYBB3fHmbkSmC6X3nqSRO2j50fKJ50CZh6OI0sd93r9AlxdDSO14I/Qts3tl8I2q39o1h2XKb4pMV/ULoR8Bm3qsuJLC47KF1I2mrdjrKj7EmnPT6x0QGJn0s/6yeAdgXqkHaeqg6qlxsPdLCsqsse9PO3VxdTzQo+XHR+EEN4R75rSjYjaUvyDFiN5hk3Zzae5O14J+AbyOMRUQ3EWduPz7hVQ4+24TKszY1HfLIMZfKiX1cT0uxizgYm3P95snKMoldqSZyN+1xYCzu9YZ3seqB3Tw4ofY/8tsZLP/j1izLl9eafdpculix/Jv2/3QsLiEiYpJWh8OIv2NH+84DW0bVroINJ4CiGLTAEju+YOApy4kfN9sWlkZGwg+VyB4j7SGiApkIgLNScJHej45ZC/CGl8fsZHfxUByrTa75osCLmThWnfqdaCgn/vGwxb/yiKKM1U5apwOkinXsX+b0vN3Cm6IIFqm4EC4SDeUvfawo/vjdWfzas8H46Znzu00voLR1WJBoTJy4FZhpXH5yu9n7kFKU3eifC19SY8CFYAKPjPLryGxWTmyUgvgFImWQ6DzMqn7y7otiMN9KwViV5aGqA8SnmXR8OGLHb/yqOhb2Ix8baCmTtg6bJEzifpYt+EpodJqgM7BIH7rGMg9ebIfM2IIyp3GPGoEg9Xp6iwP7IaqXKUYSPyejha0tx9FOi2DiO63rs/Ak7IAhKPOMtXQM7ZcQyFE+z7ZBhTOOmUxyxljpjlq/xCZ7brGbjtsmhHbFVBFtzBq3OEj8WO0buA42m1pqwoZRJtzOJjDvC0oLA6p/r6z
- TlblZHoX
- KW8za6u+TKc173UkFBt0UgRvoTu5thZhvCowP6g4VskpddA2KX8amQgJzZ5XaAk/NV4CpPnLiilkb7gA+8ZFuM6c0qi2P9zmBXYiXkxZ8RwM84anpgR+g8CVK5DKqoFNVG3kw5KNfvPJIl2RpuS2gYRUVdmULaKltrkGllgCT5G33H//pLcc/3ct8LQ3BHs8GxnG2vzVSyGb1+hlsrt1IwELYJrDMM06XeBAfy7CxmJudYhE/7hEwSrDMkMKMotgDW5gDkEPXD2DCyi8SL4DE0yBrVTOv4es28omGfTlUSyOQCOhAGZNxmRpHdrcjk0D0I2Z2saycjbcfHn4b1Pzvs4UTGdHF+mTTxDV08mwPxOHHU7n7WP6essN52bYvGuV8+tx75X5Yh3c7nyN5wrKc6BZjYtjYVwfFmco1Ddeja59si5ILZkK0+tV0RgudzGKZ2BHHUgWNLmbPtFsLKcLt8+aPsNHTwNqbgqqo4DkIaO9VMldz3EMFxwpgqg==
+X-HE-Tag: 1795037997-133906
+X-HE-Meta: U2FsdGVkX1/VOQxHrhfNCW/arge7AMTmt8QK4j4hgS0cuVA/2uVsmxRmfjMp/Y+szZPUrX+fL/DgGb/hS/Sk17Bw1CuZp9fVXEoHva4B0UMhiG2tKlo41bh58WgULdk36jnh8IG/mQikZ25V8C48JTs0B9QhFpk3LI1xAE1NcPI5dHcFF5zYdHjuzAcyvMv4SqniP19A6VbwlhzjLXo9xuvYjcdY71tHX0IhYI3sLyACaDYj+jH/PHjzPAcfHNc8pA6iktuYT3RSSXssVD2J87PMMt3kVO8p4rmuWsODbvgWlny4caEcommqEgyXfQhhT5uh/1xdvOWDVEFVA+5cB+4y/vTYPTpdHVgxyBJg2hnCuUeDERD3o3/ptHlZpAMKOUWrBZ3MdoT4kZX/TUCGmNN0tlhR0Ouh0GTmzxXYveUapY2RiQA54OEVKOUDMamsEEanHoOjWaMNeArpGUxm6moPSmfoqtbXK3dPVrIWp6EcEL8VJ3yXGxBiD9RFj2N898HAXgwhNBmH9lr+v0BOaNlD2/CEUmBw3nlEYEecX2b2/O4EWRGWyTho+V4zj1J9YdQUyY3e0Nd8aAHw0U1HVZNLpnz6rVEHbk9Zw/HRowZ2K7z8v08RZLtqRyCf/48imgH8I2OYuF7BN2ZjjrpF4aJAXIjMEgQS/RVuXsPDxejealHHH0FI4ZQ07bcwYezvSxjojeZa7VuZ82aRPPzmWh0iEMavEUu+TPXyLCASqmfpdtfHJKdjWjef8VW0J8EBLk1LlHJ7b843E5alpjkFvRq8O+M634OB0iT6r4x1ddzWpPbr/H5zainWIv/eZXTNacVZ1tqaWugTqVXc+img9s4Tg8/uJ2NUTdHD+Vhhcb6f2oQC/7twoS29fKm8AvjDyCjCrQopaZoYoubEojpolRjKu0/+IoXQFFD//gFYuaux2l+92CRdpMM7zSong473k7suU9cwoa5plYNQj2Z
+ EvH+9UKV
+ 0oXQGFhcRewX+QtL4oQyhBGWDcbeip2sLUrmsLGWS5Kl9nktIiVNhIMlxHyVHkgdSb17OyXbMGqFCXdsEBLR/AtQbDCs8vry8BnRJU+vfEvbcvfID9jcw56PF3jt+iabNpHESVQk/ZIKIVmd95zG8FdWZGNab4asqIt17olkqgO0q10/3gpVPSLEA0EDgdHvOSpzr6aefkT2dbZpss1Ts0TF7JTjM1NtRa0kw9J3lIc0GsRsSD2e2MXrtBwgJBv2b22dLYK2GR2M9fGR0HjBhEjCreujttbWTG7fiN2d0/W6VdFcImN0c9PwB4wM3YOLXAGFEJ6JoSpQPqqT3HFNNy+YRIgnWAZpnhdI7+FplW6/SdHOQt1dnslygm71xdKkoDE5JsuMBJBDnnv8EkWDzVM+EUbALvGI8nWHkslC/RTh467JaShOtP3KX8sHefnlKuIn3yMcGhGBiepA6rQ+JcSC9nHXuB0aaXyBzjj4Ebgf+SkD0S+LGVApSq7oNPVgK5HEBX16nKdnbUIGDnf2eaqxaIH6xNQ1TWB48fIBNdjVs82ubOkwkorQOmaSOfgMX6D/l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,158 +213,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Swarna Prabhu <s.prabhu@samsung.com>
+So, any progress on this? Should I rebase and resend, or we can merge
+it as is? Andrew?
 
-iov_iter_extract_bvecs() pins a page array placed in the bvec array and
-then walks it with get_contig_folio_len() to merge pages that turn out to
-belong to the same folio back into one bvec.
+Thanks,
+Yury
 
-For user-backed iterators, have GUP fill folio ranges straight into the
-free part of the bvec array instead. A folio range has the same size as
-a bvec and becomes exactly one bvec, so each range is converted in its own
-slot and trimmed to the requested byte range on the way. This removes the
-page array and the merging pass. Ranges that are not converted are still
-folio ranges and are unpinned with their exact page count.
-
-Since one range covers many pages, the number of pages pinned per call is
-no longer limited to one page per bvec entry; it is bounded by the bvec
-array, plus a cap on how many pages a single GUP-fast walk looks at.
-
-Memory that is not backed by folios, such as pages a driver inserted
-into a VM_MIXEDMAP vma, makes pin_user_folio_ranges_fast() fail with
--EOPNOTSUPP when no pages were pinned; such iterators fall back to the
-page array path.
-
-Each extraction requests at most 1024 pages, bounding the amount of work
-performed by a single GUP call.
-
-Block direct I/O picks this up through bio_iov_iter_get_pages() without
-any change to the block layer.
-
-Signed-off-by: Swarna Prabhu <s.prabhu@samsung.com>
----
- lib/iov_iter.c | 100 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 100 insertions(+)
-
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index fa4fe2e92383..457e226c0251 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -1919,6 +1919,95 @@ static unsigned int get_contig_folio_len(struct page **pages,
- 
- #define PAGE_PTRS_PER_BVEC     (sizeof(struct bio_vec) / sizeof(struct page *))
- 
-+/*
-+ * Upper limit on the number of pages a single GUP-fast walk is asked to look
-+ * at to cap spending too much time in the GUP-fast path.
-+ */
-+#define EXTRACT_MAX_PAGES	1024
-+
-+/*
-+ * Extract bvecs from a user-backed iterator.  GUP fills folio ranges straight
-+ * into the free part of the bvec array, one range per run of consecutive pages
-+ * of a folio.  A folio range has the same size as a bvec and turns into
-+ * exactly one bvec, so each range is converted in its own slot.
-+ *
-+ * Returns -EOPNOTSUPP, with @iter left untouched, if the memory at the start of
-+ * @iter is not backed by folios, so the caller can extract it as pages instead.
-+ */
-+static ssize_t iov_iter_extract_user_bvecs(struct iov_iter *iter,
-+		struct bio_vec *bv, size_t max_size, unsigned short *nr_vecs,
-+		unsigned short max_vecs, iov_iter_extraction_t extraction_flags)
-+{
-+	unsigned short entries_left = max_vecs - *nr_vecs;
-+	unsigned int gup_flags = 0, nr_frs = 0, i;
-+	unsigned long addr, nr_pages;
-+	struct folio_range *frs;
-+	size_t offset, left, len;
-+	long res;
-+
-+	max_size = min_t(size_t, min_t(size_t, max_size, iter->count),
-+			 MAX_RW_COUNT);
-+	if (unlikely(!max_size))
-+		return -EFAULT;
-+	if (WARN_ON_ONCE(!entries_left))
-+		return -ENOMEM;
-+
-+	if (iter->data_source == ITER_DEST)
-+		gup_flags |= FOLL_WRITE;
-+	if (extraction_flags & ITER_ALLOW_P2PDMA)
-+		gup_flags |= FOLL_PCI_P2PDMA;
-+	if (iter->nofault)
-+		gup_flags |= FOLL_NOFAULT;
-+
-+	addr = first_iovec_segment(iter, &max_size);
-+	offset = addr % PAGE_SIZE;
-+	addr &= PAGE_MASK;
-+	nr_pages = min_t(unsigned long,
-+			 DIV_ROUND_UP(max_size + offset, PAGE_SIZE),
-+			 EXTRACT_MAX_PAGES);
-+
-+	/*
-+	 * Range i is converted into slot *nr_vecs + i, which is the memory it
-+	 * lives in, so converting cannot overwrite a range that has not been
-+	 * converted yet.
-+	 */
-+	BUILD_BUG_ON(sizeof(struct folio_range) != sizeof(struct bio_vec));
-+	frs = (struct folio_range *)(bv + *nr_vecs);
-+
-+	res = pin_user_folio_ranges_fast(addr, nr_pages, gup_flags, frs,
-+					 entries_left, &nr_frs);
-+	if (unlikely(res <= 0))
-+		return res ? res : -EFAULT;
-+
-+	/* We may have pinned fewer pages than asked for. */
-+	max_size = min_t(size_t, max_size, res * PAGE_SIZE - offset);
-+	iov_iter_advance(iter, max_size);
-+
-+	for (i = 0, left = max_size; left && i < nr_frs; i++) {
-+		/* Copy it out first: bv[*nr_vecs] is the same memory as frs[i]. */
-+		struct folio_range fr = frs[i];
-+		struct page *page = folio_range_page(&fr);
-+
-+		if (*nr_vecs > 0 &&
-+		    !zone_device_pages_have_same_pgmap(bv[*nr_vecs - 1].bv_page,
-+						       page))
-+			break;
-+
-+		len = min(folio_range_size(&fr) - offset, left);
-+		bvec_set_folio(&bv[(*nr_vecs)++], fr.folio, len,
-+			       folio_range_offset(&fr) + offset);
-+		left -= len;
-+		offset = 0;
-+	}
-+
-+	/* Not overwritten, so still folio ranges; no-op once i == nr_frs. */
-+	if (unlikely(i < nr_frs))
-+		unpin_user_folio_ranges(&frs[i], nr_frs - i);
-+
-+	iov_iter_revert(iter, left);
-+	return max_size - left;
-+}
-+
- /**
-  * iov_iter_extract_bvecs - Extract bvecs from an iterator
-  * @iter:	the iterator to extract from
-@@ -1966,6 +2055,17 @@ ssize_t iov_iter_extract_bvecs(struct iov_iter *iter, struct bio_vec *bv,
- 		return -EINVAL;
- 	}
- 
-+	if (likely(user_backed_iter(iter))) {
-+		size = iov_iter_extract_user_bvecs(iter, bv, max_size, nr_vecs,
-+						   max_vecs, extraction_flags);
-+		/*
-+		 * Memory that is not backed by folios cannot be pinned as folio
-+		 * ranges; fall back to pinning it as an array of pages.
-+		 */
-+		if (size != -EOPNOTSUPP)
-+			return size;
-+	}
-+
- 	/*
- 	 * Move page array up in the allocated memory for the bio vecs as far as
- 	 * possible so that we can start filling biovecs from the beginning
--- 
-2.53.0
-
+On Mon, Sep 14, 2026 at 11:03:18PM -0400, Yury Norov wrote:
+> On top of [1].
+> 
+> Declaration macros that statically initialize embedded locks require static
+> storage when lockdep is enabled. Automatic objects must use runtime
+> initialization so lockdep receives a persistent class key.
+> 
+> For automatic local objects, lockdep cannot use the lock address as a persistent
+> class key and reports "INFO: trying to register non-static key" before disabling
+> itself.
+> 
+> Series [1] introduces an ASSERT_STATIC_STORAGE() macro to enforce static
+> duration of an object, and applies it for DEFINE_IDA() and DEFINE_MTREE().
+> 
+> This series applies the same mechanism for the other structures of that
+> sort found by Codex.
+> 
+> Link: https://lore.kernel.org/all/20260911221444.1523311-1-ynorov@nvidia.com/ [1]
+> 
+> --
+> 
+> [1] also describes the preferred route(s) for the material. According to
+> Andrew's (and mine) preferences, sending everything together in the hope
+> that the relevant maintainers would ack the corresponding patches or
+> simply take them in their trees.
+> 
+> Yury Norov (17):
+>   locking/mutex: assert static storage for DEFINE_MUTEX()
+>   locking/rtmutex: assert static storage for DEFINE_RT_MUTEX()
+>   locking/rwsem: assert static storage for semaphore definitions
+>   locking/semaphore: assert static storage for DEFINE_SEMAPHORE()
+>   locking/seqlock: assert static storage for DEFINE_SEQLOCK()
+>   sched: assert static storage for wait queue and completion
+>     declarations
+>   xarray: assert static storage for DEFINE_XARRAY_FLAGS()
+>   idr: enforce the static-storage contract of DEFINE_IDR()
+>   radix-tree: require static storage for RADIX_TREE()
+>   klist: assert static storage for DEFINE_KLIST()
+>   workqueue: assert static storage for work declarations
+>   timers: assert static storage for DEFINE_TIMER()
+>   kthread: assert static storage for delayed work declarations
+>   ratelimit: assert static storage for DEFINE_RATELIMIT_STATE()
+>   notifier: assert static storage for locking notifier heads
+>   rcu: assert static storage for RCU sync and SRCU definitions
+>   sysctl: assert static storage for DEFINE_CTL_TABLE_POLL()
+> 
+>  drivers/macintosh/ams/ams-pmu.c              |  4 +--
+>  drivers/net/wireguard/selftest/allowedips.c  |  4 +--
+>  include/linux/completion.h                   | 10 +++++--
+>  include/linux/idr.h                          |  4 ++-
+>  include/linux/klist.h                        |  4 ++-
+>  include/linux/kthread.h                      |  4 ++-
+>  include/linux/mutex.h                        |  7 +++--
+>  include/linux/notifier.h                     | 13 ++++++---
+>  include/linux/percpu-rwsem.h                 |  4 ++-
+>  include/linux/radix-tree.h                   |  4 ++-
+>  include/linux/ratelimit_types.h              |  4 ++-
+>  include/linux/rcu_sync.h                     |  4 ++-
+>  include/linux/rtmutex.h                      |  3 +-
+>  include/linux/rwsem.h                        |  7 +++--
+>  include/linux/semaphore.h                    |  4 ++-
+>  include/linux/seqlock.h                      |  3 +-
+>  include/linux/srcutiny.h                     |  4 ++-
+>  include/linux/srcutree.h                     |  7 +++--
+>  include/linux/swait.h                        |  6 ++--
+>  include/linux/sysctl.h                       |  4 ++-
+>  include/linux/timer.h                        |  4 ++-
+>  include/linux/wait.h                         |  7 +++--
+>  include/linux/workqueue.h                    | 10 +++++--
+>  include/linux/xarray.h                       |  3 +-
+>  tools/testing/memblock/linux/mutex.h         |  8 ++++--
+>  tools/testing/radix-tree/benchmark.c         |  4 ++-
+>  tools/testing/radix-tree/idr-test.c          | 29 ++++++++++++++------
+>  tools/testing/radix-tree/iteration_check_2.c |  4 ++-
+>  tools/testing/radix-tree/main.c              | 16 ++++++++---
+>  tools/testing/radix-tree/regression3.c       |  4 ++-
+>  tools/testing/radix-tree/tag_check.c         | 28 ++++++++++++++-----
+>  tools/testing/vma/include/dup.h              |  5 +++-
+>  tools/virtio/linux/compiler.h                |  9 ++++++
+>  tools/virtio/linux/ratelimit.h               |  6 +++-
+>  34 files changed, 176 insertions(+), 65 deletions(-)
+> 
+> -- 
+> 2.53.0
 
