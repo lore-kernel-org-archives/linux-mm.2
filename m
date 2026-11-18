@@ -1,94 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFD1606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 04:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A7A606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 04:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aUlNQ8fD
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Z6IJn/EZ
 Received: by kanga.kvack.org (Postfix)
-	id 771916B05B1; Tue, 17 Nov 2026 23:09:18 -0500 (EST)
+	id 7600D6B00EF; Tue, 17 Nov 2026 23:21:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 749306B05B2; Tue, 17 Nov 2026 23:09:18 -0500 (EST)
+	id 7113F6B05B0; Tue, 17 Nov 2026 23:21:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65EE66B05B3; Tue, 17 Nov 2026 23:09:18 -0500 (EST)
+	id 600B46B05B1; Tue, 17 Nov 2026 23:21:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A1846B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:09:18 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D18A12065C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:09:17 +0000 (UTC)
-X-FDA: 85446909954.27.AB807C8
-Received: from mta1.migadu.com (out-219.mta1.migadu.com [95.215.58.219])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8871A20002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:09:15 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aUlNQ8fD;
-	spf=pass (imf31.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.219 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794974955;
-	b=s4IY6xyddUI9AlwDaNC3HQvIuNCUXbd6RNug5UHy58PZLyciJaJtCzCfsxbtAx8ldvt7QP
-	AkUzZX2+1SgBK87SQAgIurWxALPCY4CTJzv/zbRA9B/lMxQIkhXqXSgYbK+fXb8DeiIFwb
-	/vUGCIRSKpKeTZ2jj96Tb5TdiFJd6TI=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aUlNQ8fD;
-	spf=pass (imf31.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.219 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 36F476B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:21:41 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 60BC91C3FDE
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:21:40 +0000 (UTC)
+X-FDA: 85446941160.01.FD35C77
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 95FD7C0004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:21:38 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Z6IJn/EZ";
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794974955;
+	s=arc-20220608; t=1794975698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gO/JIfcgvTrlBo/baVGaxSVMIPH4zI1FEGs1Iqz/bPA=;
-	b=u/lBHoh7P6emsaZauVzG2J0IEpdERfEwsPD9VBK+XLScCIEoMUZbrvko1a9//DE9b6VKq3
-	8IF+reZb3f8qzEpGSLU+HgkG+DEQ6OK+A8xtqHA6CqgNtr9+HNLwo/qY+J1HD1cgUguhjw
-	2DylELm5NDytoqIdiKto2pBCLNQoAy4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kKP1J72ZJeOQfMxDWBKM+TEV898mVVp1LwfsakS8ddk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794974953; v=1; x=1795579753;
- b=aUlNQ8fDSTm6yVezvnyz8/frbGAzn3IEaGWblRIw4JmRsujNkcnqkn5j2cC0P+QJ0DxA9EvE
- aBXh+QBS6wklViFxgUIkJBahCQAWCsTJt0H9Sinn9bcc2m2VxOqs4/EQlBDN/bPxCkL4fV0/8TB
- yMWOnrmNT9wThxo6MUKqGnz8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 29c80f066480eadb;
-	Wed, 18 Nov 2026 04:09:13 +0000
-X-Mizu-Trace-ID: 29c80f066480eadb
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <38118330-5cd6-4f32-9098-a3d07cc7b3cf@linux.dev>
-Date: Wed, 18 Nov 2026 12:09:01 +0800
+	bh=mDxOq3MFeqPRgslRS9KcBTPZ5rg8SlBfNM7oWoWdBfI=;
+	b=PHa65hSWPawv+hEB0cqxKkGwU8JGeYsv8Oa/VcN/y/x6L/omzd/YgwRnLzg7gq9LQdLwyp
+	+OmahkblyxqxNRaU8JS+YnMsOQ/iDxEabjqguNGpOp83ie+BU8MiiAtGsMEuPfuguqP8Iq
+	daANE6eqpEXV2R922s0CLlj5t6Ay+zQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Z6IJn/EZ";
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794975698;
+	b=INEih6ypprh9oFIt8z7L7uZsTQ3u0QhuriHUf52ZCuvM6wCGQfbtL4gZ36wC62Yx0OynkF
+	N7INrsNwSeIqnU+1WbzZyb/kw2jzJxxtNGhE2F75fBbnGDsmUzE7c/irvV6JWP/tYkcgZV
+	R1Kb1TNDJaqlmcLqfp0Vi/o95Z4oyF8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 938AE602C4;
+	Wed, 18 Nov 2026 04:21:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F501F000C4;
+	Wed, 18 Nov 2026 04:21:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794975697;
+	bh=mDxOq3MFeqPRgslRS9KcBTPZ5rg8SlBfNM7oWoWdBfI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Z6IJn/EZLhpVf7Bpg4j6edLYiqsuySU/IeCVjnL+K+BMCndtR8dEQl5AFmlurEHkG
+	 Vsi40neJA1iNlrVgmZUO8K2zEcC+8AZAi+a0hQwtt0Qs7/k8nS98+PK3aIHGTC6IDP
+	 8HsdqFV95BrDVTK6YzVrb7+e4c0YXGd2qlRDzGM8=
+Date: Tue, 17 Nov 2026 20:21:36 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: sashiko-reviews@lists.linux.dev, Sashiko <sashiko-bot@kernel.org>,
+ Muchun Song <songmuchun@bytedance.com>, Alexander Potapenko
+ <glider@google.com>, Marco Elver <elver@google.com>, Dmitry Vyukov
+ <dvyukov@google.com>, Chris Down <chris@chrisdown.name>, David Hildenbrand
+ <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Johannes
+ Weiner <hannes@cmpxchg.org>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Joerg Roedel <joerg.roedel@amd.com>, Lu Baolu
+ <baolu.lu@linux.intel.com>, Pranjal Shrivastava <praan@google.com>, Ketan
+ <ketan.kishore@oss.qualcomm.com>, Mostafa Saleh <smostafa@google.com>,
+ Sang-Heon Jeon <ekffu200098@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, kasan-dev@googlegroups.com, linux-mm@kvack.org
+Subject: Re: [PATCH v2 2/7] mm/page_ext: fix client data alignment
+Message-Id: <20261117202136.9eb67013389f3bdefe9b3a15@linux-foundation.org>
+In-Reply-To: <F4EDF1D2-D02C-4339-AA30-422D576B735A@linux.dev>
+References: <20261117120627.50601-1-songmuchun@bytedance.com>
+	<20261117120627.50601-3-songmuchun@bytedance.com>
+	<sashiko-outbox-219498@kernel.org>
+	<20261117114635.37d4c1f7f1b38cc4ce7fb886@linux-foundation.org>
+	<F4EDF1D2-D02C-4339-AA30-422D576B735A@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: allocate nr_pages based on pmd size for
- uffd pmd_move tests
-To: "John J. Coleman" <jocolema@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
- ljs@kernel.org, mhocko@suse.com, peterx@redhat.com, rppt@kernel.org,
- surenb@google.com, vbabka@kernel.org, audra@redhat.com
-References: <20261113040045.1439391-1-jocolema@redhat.com>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20261113040045.1439391-1-jocolema@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: p86kyx8umosooqyizw5ngg5a3z381fb9
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 95FD7C0004
+X-Stat-Signature: o81bs138zm5gbsdudhtxtaf6rebqupdg
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8871A20002
-X-HE-Tag: 1794974955-528533
-X-HE-Meta: U2FsdGVkX19hPTWObujV7w46YLnl1C0EJn4idESdBQnB1cy2y5Pt9WtgQcWdFCMWypymFpF1sW2xBDzeSmMui4+5SPU8mg6TLihUnQ3GUbxkUFdjtzmileH9gUUUYMTZQrTHqRcn3wqK5LYn4QziAAGYmJQnm11W+ywmYmJkSQI1Ti/ztMAc3FcvVF9onaH8zC54nP4wgzF4h/GUrfeSRDJs0W897rdPuvT9tEoyTG9knd4yMApuDVVpVS4vLlSETGVZO+CrSYIMWeqP15kQSvDw837KVc+r8QtjrDGwyeU5TDRWslo+Q/xOEZ/uH3dkf9Te6GxnCPq0anffzw+CaVaCjaOqBpuqFdmDhNqlzG5yYXt95iA+hl+LGMjecgs4IIar32kG/qkpEJUF7y4OZHHj64FiYW+tlleHMkZ5+h23YzJVBUy2/iOEm2/izCU2eHwcxSNy8kOG7tBxVNsfXBp0Iovu0Adzld38JJohNgHes9fxe2sehdV7PBCGD242q1VUPbQ3HkADblb1Hm/UCPqbrftAaHyzYFAF5qN5fH/9tpg/aQzGDnyfHZykMTbYXzKFy+5Qdv3PKxHUArZBI0Z5Z4h0ckj4QjEsBlqcXRQTqX3z9O6G387FLxG9pXQ5TzOUCTz7OSbPTr6Z4YgQSxEWmTty3o9vLWklUeKHR3ynV9rOTA1XADM2n77IGHXlUuefAYmyOYwSywfTaliUoATgtQZVfA3NFH2ijn13dcvI9+XIHrhZ8xhIujplkuAJQFbnzFpGxYdak1AVVKWTmPemB1n441PugoeePihBPljUpnpV9nbNt673HGlIjdFjZm7LYV+5cY89Yd9uHAPSwwQqAy3SnVpksRK+ea4yiokK05Bg+ezmL06M6igodXWkpDP2arU9XFe/fAh5+1ntKOPT4+dNMpDVT2dqK7QdjzhDi0Zwo+TLBor8PEbo/Dmg+EQgW/xnf8fBD9nelmT
- SwaHp5gY
- Z7z3iPHdopug8GXHMyUYZ9VOB560zLIyIw9a+PhLP39nJuUXI/Cfu35KYiEfYd2iuDyT/8pQ7e4QRXKAbqlhadEhfQKzvLSwYn4WRGi1qpWDjnFRi+K9IJHMlhvWSxMIcHEZewSz3yq9WqqOxgbJeWdS7yTaz7GCcWI4HHeX9BxqUFj4k8BOmDvKVFwtSTUGp43VbwcgMNGitGlu/MBfWSwIYYwAesn3q+piM9XRd4HGOulZrq1mcoupEIszaMa4NtjC8tmNZnxWVjvLReoO8W7ek8opFSTrcKE5vqG0AXuM08xNieuR5IU1WQiNrDmvjcwvTUJ7zbv+M0B7/8LngPtoDx8DIuWUKWm125wxch0WOuiKW6E3cWcaAlQ==
+X-HE-Tag: 1794975698-62166
+X-HE-Meta: U2FsdGVkX1/hV8NM+5wDnHg+yhbj8uK5YAFfpSx4sT4G9QMBHbJ0+zFqnPkc6l1J5rYyPKERANAzYx23he2TpGNxwJJfM38cmCO0G7Xe/IVRTOwMJ6gJZMh9EQH/q7rJuh2j07e0LTx5J+AwSgdHLvZ2fQwiA9jD1RWAdPG3Q8ML9ZS/YgAS0cF9mJ1Sek7sS0xT0NE7o6nyjuTMtqBmuXjLnudHhv+k4o1AakJpXPDT6w5NS52wW/lynT/aF6kcfmKF7DMQA4t3KKuEGM+vGY/wpq1bRe/0kCcRn24397clTixE4MZBphI5OcldDiASP3NC2EHwKTpI4vzE7kajsZKjqvmj3elYU0e7MCOjUtc//Do4QTzTeqTzgsT6kDGXq/YhMq9bp963JoOc3ihxd7V15Bpy5yJ0iyYI8L+6rfO2kuJnMSfcNCNLNtZWrJLHUNKtrLJHROe79Ff1GTiXnt8fJU89c3Ji7taCyDesfN3w88vkPPozCR7j47UZs6oT0OjS5+NgGjl3IswWLVZjQyj6LwY36atLyjix1eKTDBgGCyEU0XuMaIp4GiazMmMz353Kk1BikVy0wBcsQUktRi0U9yuzWDPYn6MU261Bv1AzwKx1TZCjlmeJ8PFM4azF1fyF54E9tqtN+Cb0ra8bKMQJ+IXHxNWVkpQrMdUyT50yCpxxUiqmViSZ7ePx8fBPYRSKz5v9jPKViSY0L13nTfO5qsfSvMdQwOxL3akSsnt8aw80Tb704hg0Rg/cZZrFgIcODtk06XICTKgOYNp+AV8Idcer25UyO/l2F9AahFSI5f8pb9YhBHUUlc5tiQ41sXjcXdHkg8yeIAwk9ZiKrhYQijFj1YfyEsK+p7EW6CMusCLbylTTwSTA0VdjinxoNG7gXdG/jwWkn9gk5U04zT6mBe2qPX9xbUsLv9UrjmZ0MdJIIEq7mSoAt2pUQj7Qp3ixE43//Imw95kNxmM
+ dkSoq8U/
+ Bjls2Nh0LDNcJLLEevdOzCOK51M57KTLXp0kP1cc6LqdckbDK/UrW7dx5AWZqs6ns13cGVPyp81CYXXtcQ3b9wxITmvxVrvc122CVO2RYDxwMa66098oSTo0wRqnBrbXCpU2KlCYa4lboLGO0LL7+9jySQlflCbou/ItvRTfKXV+bFXl0jtHTvYUTyy7dlCU+GDB3K06BYk0mSK1+9IucZ7i8PEzvtll7ebVIx2OIvhXbUls/2EDzQ6dqr+E0YRRFly5BO/TtbxsXpaUhlXPYsQ+oicePkKBh128sMZCIT3JsgFY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,49 +108,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi John,
+On Wed, 18 Nov 2026 11:49:58 +0800 Muchun Song <muchun.song@linux.dev> wrote:
 
-On 11/13/26 12:00 PM, John J. Coleman wrote:
-> When executing the uffd-unit-test, the "move-pmd on anon" test will fail
-> on aarch64+64k with a segmentation fault because the initial allocated
-> memory region is too small.  This only happens with the move-pmd* tests
-> because the architecture base page size is still utilized even though the
-> memory region is specific to the size indicated by the pmd.
 > 
-> Patch 9f5c2aec3388 ("selftests/mm: fix uffd move-pmd test crash on 64K
-> base page systems") implements an initial fix to the segmentation fault
-> by skipping the test if the allocated memory region is not large enough
-> for the number of pages x page size requested.  Since this will skip over
-> the aarch64+64k pmd tests, this patch is intended to resolve the problem
-> with 64k pages by pre-allocating the memory region with 2x the pmd page
-> size (for area_src and area_dst) for only the move_pmd tests by using the
-> uffd_test_case_ops pre_alloc hook.
 > 
-> Link: https://lore.kernel.org/all/20261103202049.499206-1-jocolema@redhat.com
+> >>> +}
+> >> 
+> >> [blah blah]
+> >> 
+> > 
+> > Yeah, but the whole expression is quite reader-hostile, as min/max
+> > things often are.
+> > 
+> > How about doing
+> > 
+> > 	/* comment */
+> > 	if (this1)
+> > 		return that1;
+> > 	/* comment */
+> > 	if (this2)
+> > 		return that2;
+> > 	/* comment */
+> > 	if (this3)
+> > 		return that3;
+> > 
+> > ?
+> > 
+> > The code generation will probably be just as good and it's __init-time
+> > stuff anyway.
 > 
-> Fixes: a2bf6a9ca805 ("selftests/mm: add UFFDIO_MOVE ioctl test")
+> Something like?
 > 
-> Signed-off-by: John J. Coleman <jocolema@redhat.com>
+> static inline size_t page_ext_data_alignment(size_t size)
+> {
+>         /* No client data means no alignment requirement. */
+>         if (!size)
+>                 return 1;
+> 
+>         /* u64 has the strictest alignment required by page_ext clients. */
+>         if (IS_ALIGNED(size, __alignof__(u64)))
+>                 return __alignof__(u64);
+> 
+>         /*
+>          * A type's size is a multiple of its natural alignment, so its
+>          * lowest set bit is at least that alignment.
+>          */
+>         return 1UL << __ffs(size);
+> }
 
-Thanks for chasing it. I've tested mm-new (which already contains this
-patch) on my 64k-page-size box.
+Well I prefer it!
 
-Before this patch:
+The final bit-twiddle could be (size & ~size) but I'm not sure that's
+any clearer.
 
- ok 14 # SKIP move-pmd on anon (chunk size does not fit in the test area)
- ok 15 # SKIP move-pmd-huge-zeropage on anon (not enough pages for one PMD-sized move)
- ok 16 # SKIP move-pmd-split on anon (chunk size does not fit in the test area)
-
-After this patch:
-
- ok 14 move-pmd on anon
- ok 15 move-pmd-huge-zeropage on anon
- ok 16 move-pmd-split on anon
-
-So,
-
-Tested-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-
-Thanks,
-Zenghui
+We should have a handy helper for this operation but I can't find one. 
+max_pow_of_two_factor() is close, but only works on uint.
 
