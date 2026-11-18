@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F029D606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 17:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77CB606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 17:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=mqiVwVA0
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=eL7T0eP7
 Received: by kanga.kvack.org (Postfix)
-	id CAC846B05B9; Wed, 18 Nov 2026 12:00:55 -0500 (EST)
+	id B9B356B05BB; Wed, 18 Nov 2026 12:01:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C37186B05BA; Wed, 18 Nov 2026 12:00:55 -0500 (EST)
+	id B252B6B05BC; Wed, 18 Nov 2026 12:01:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B24AB6B05BB; Wed, 18 Nov 2026 12:00:55 -0500 (EST)
+	id 9ED596B05BD; Wed, 18 Nov 2026 12:01:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B4296B05B9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:00:55 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 014751407C7
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:00:54 +0000 (UTC)
-X-FDA: 85448854470.03.0F4F382
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D562EC000E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:00:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=mqiVwVA0;
-	spf=pass (imf10.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 658D96B05BB
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:01:01 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2427512080C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:01:00 +0000 (UTC)
+X-FDA: 85448854680.23.2F24CE5
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E49E980003
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:00:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=toxicpanda.com header.s=google header.b=eL7T0eP7;
+	spf=pass (imf02.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795021253;
+	s=arc-20220608; t=1795021258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MMjogFi81D6qY4eWtfwaW+AtVc+xlsGL1XsGC1bzDhs=;
-	b=43COGWDpeuo9d1DfiLqjjQ0W4fduiG95+XXanzPcygkJ5REpnNpIG0I+mAp3WMjo7RwPp0
-	eJoSNLUUQICb3keTXUVvrxr1VV+CgVQaGZhNZFd4oEmMy9S8+R61x4jwpebJ21Gi5d4fK5
-	PXFU2EEGUlY/eYwVmowSTLeQlstZYGg=
+	bh=DIZNwWT/uvt+A6koRQpqLPE5GQ5zGLmOz3JOqcv4seY=;
+	b=ciHICUo8QjlEtk4h/PlL/vmMgp/j6Fbw4zjDLIt0mpZyZzbGqaC8VpBPSn4w5oAxnjl+G8
+	ASFbCobV44x+oS3YS7/sgr6BchPmVKAXSzUR9Jw6QNoXXTUIh0Lj1wOcEQqX2m/wp7otM+
+	tq2x6nydBTWXqyfHjGUPW5KGIiDlFzA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795021253;
-	b=xabi8POAIoxC1xBGh6/MFoCgmWDa43hEPY2M5o4dAQYPI5BEm4pZGmBV0+BxWwdS/QNCsw
-	vqU8dsKh1zAoO0yv0w85XQTjwD9oVQff3+KfIRVCougThZO3jcqPFPHtNZCq6zcCcpayrJ
-	e7cMUcCG5hMDYAL9J4W9FjH1OcopAbU=
+	t=1795021258;
+	b=NV1MbpyV6/1xf830xSlxJi4mxBBL1GIg5TGSoY+s5O5HDGYcNg9P6tFKgtxPUibJqwkbb/
+	lCJN237vUBwImy7t2jNJwl8RIx9WZTtnhnbSfbantyovySn9ui0+P9NXFpfl2oH/37xB3e
+	GpA9G27pEZCJ4WXmEocpvYToX90j2Jk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=mqiVwVA0;
-	spf=pass (imf10.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=toxicpanda.com header.s=google header.b=eL7T0eP7;
+	spf=pass (imf02.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
 	dmarc=none
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93f2b8cf037so104933885a.1
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:00:52 -0800 (PST)
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-930c0f9c1b1so136968985a.1
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:00:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1795021252; x=1795626052; darn=kvack.org;
+        d=toxicpanda.com; s=google; t=1795021256; x=1795626056; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=MMjogFi81D6qY4eWtfwaW+AtVc+xlsGL1XsGC1bzDhs=;
-        b=mqiVwVA05ANiui87oSZgX4mZYB5RjAZ0EcZfzpgvgA20+ZZVPUWVvsPn8+h6vXN9J4
-         mS7F1FqrfLm+EMGEJYETMhB3hW0utdXjMO0+Db/by6XopDrs2b1rQIxdo3s+w8zEiOUz
-         6Bl2RkgQbx+Obq4wIuF96KNsp1Ldj+L0BwQe6h+01/O+OQ+U4ypvctD34DyDestJaZB2
-         c/bhti7nupGdnY0Q3Oe3uxUB0AMxahp4RtPKKfVxa0T1FomxV1lJ2HQOIr8fqQ8KoTaP
-         eKVfEWgNb63AKceVwH/JaG9ZcSDKI+YVLgJqLGdcZq7djMNJEsjTefyG7GYXyaWU3peH
-         mH0Q==
+        bh=DIZNwWT/uvt+A6koRQpqLPE5GQ5zGLmOz3JOqcv4seY=;
+        b=eL7T0eP7GCkJLWW8bZ5egVXrcGTUl07TgLxTQNjT4De6xNOSPCnCBtApqzyrJVgp8K
+         0TViovRLB8QCW8N99HK1TMKsiN2pb8Y/RroikPWg55LXGlL/4rPFuMe2zEkkSQgk5m24
+         7IUdGOA7/kYy25bBOin9TM2JfeeSdMARLuzrS4DUdIr2EqY7ysQomAZJY8mQ2SG9FY1u
+         mNQpXivzF1Okw3Du62s2AAwFaHKWH9S1tD1cGhSMWN5xDywXLTbibMDXCoNritWxM8cU
+         74dkk9T/N/BfbvVys19cPhNnGyjYJyP/ktgStkXbCEcPUWd8zufki64sSRWuGtNXmEsP
+         BwBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795021252; x=1795626052;
+        d=1e100.net; s=20260707; t=1795021256; x=1795626056;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MMjogFi81D6qY4eWtfwaW+AtVc+xlsGL1XsGC1bzDhs=;
-        b=z6KkIx4H0mexY5y5jPsZKH82HaPeW2L9GuBB80e3K+oQ1+koXktw7ND20sM63uBVOn
-         XH6/UJf5dNUfPCHsvbfX1vgV37AH87TNPKnuBhznUQ5V/apR4GJxhhB2XJUkK2PgZSJo
-         nJ+9UOD87/8WQGaXkSwmziL3h/kfeMORK421GPBMY2XXEhVwegxeashrXv3xpuDUn2Uv
-         ZzSeMu57fls4qplPxz6g1h0JTHDgI3NRSO/5EoCeC4YaHbxUOYy85V/J+uoLrZTP6gob
-         Bli9s558xuUYzwrq6jIp6blhabXUPnBIXRb4Wr4D6aGQNaQDoRJ5+MwWGKPxfkZ40R5G
-         MVPg==
-X-Forwarded-Encrypted: i=1; AL+hErGETEEhS/z2oUVINgLQu9MvAJgTKqG5QiMn7ZbQtSg1LsY5dfmOqHrDZBDk/v91h9QkVTTVVa6IAQ==@kvack.org
-X-Gm-Message-State: APuU4Z/WGw75M+XUgRqmXCO6rAg6ZJ2xoigPca9mdSDwloeJRLJfRBjT
-	AgEAR3/PbzmjZQB7pcuNO/Hp0t1MFyt4Wkw+yzUUrRihq5injCQNuciJ1Roj7O3mDwg=
-X-Gm-Gg: AYBFou17bsmxvI9hRVgXAcnsTQmrsxCNq49rflLxCffbsOIuAO33Yy3TXs1d/gqcOEH
-	yI0c//lKzgtE7Mgvzb7bI3TkouxV/abjCIQof6sAa1DfchOXDlP8nk+C3BK+6hw6RRRxGjdlKAM
-	A00xq+PzZ1vhDLqjaREsiLr+dZT2/BnluDZyiahDKAwhG4KQ45EjtBInJHhhfeqay6GPrGIN81Q
-	BAjvlfW0busZGNHFlf8Jg4L3QnfLatrgg0dOYpHBbGL3KCJLn6tFJ/JqUvrZ8r36Pe+NWz1oQML
-	ay71Oj6YhXUNa38krNK7zDBqOIUtbLDLb+BRpmQSv5qFTc92Y/Je6+GGOGMLmA0fTSEscJhVm1w
-	MeyZ25DK0/QiAmuWAus2kR4lTcE5CzOoEfeWjjgv38lFTdhmtUPKWIW9nFjylLwsaNU2HMcsk6Z
-	O2Tm6Ztp24BLD8af5s6BNX7CdYW16jMD698FnNvNBtb/oQd02ZNvZEjjbceJcpPL4oexXXQCabd
-	RZXubskOqoBBTR4uESVGMftUDhETtoq2KzZ2yYOuIH2dr8EDYMzHUA6XMTsOusHJzM0jtlak2Gl
-	v7JF1sVEch8LRq2ZY8TOfVUn7VOUJJLGwh4kAEprcRLt97Y=
-X-Received: by 2002:a05:620a:261f:b0:912:1206:ddd1 with SMTP id af79cd13be357-949995db0f9mr581151885a.1.1795021251794;
-        Wed, 18 Nov 2026 09:00:51 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.246])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9499b454fa1sm226497885a.3.2026.11.18.09.00.50
+        bh=DIZNwWT/uvt+A6koRQpqLPE5GQ5zGLmOz3JOqcv4seY=;
+        b=v5mX2LeXpnSvACQsySQhIJBLjCuNkDqp1ajE2biXRBcl4un/cBP8eBVirOzvOe5hd0
+         6/uly5087e69BS3W8znLJ4EA/eAHIAr8zY1Gc4kJ360tVU6TfgrKMZ9FLW0e2jY9/1xz
+         6SmoXv4f7m2IIKUW97gmUS1I/uIcWit1LqVGttZ4WfKfMdngNaGJw+QlkeQTl2bN+fn2
+         js7oYEX1NLjAtJaMAD99G7ayz8cM+eeSrFxMfAgjIAguWUbHApV1XiJbTF3W30QuN/yP
+         hYv9G+bLl9ydG1itfcu6CPocdnqMvXqo2QofOX0+5I4zOtTzog9H6JT6tM1zyhaTo+KC
+         TTPQ==
+X-Forwarded-Encrypted: i=1; AL+hErFAcbZBbaxoRv2Q7VLmNF2pyGMDFVuuBPJM7C+brj8FQTBMw7F97brATWCwS1nqCp7bXFCEw4gE9g==@kvack.org
+X-Gm-Message-State: APuU4Z/XYRm2l4jvE68mjAIH9k65Oozhlye7w3uaUkRDolKn4V38ZXBN
+	6ChU/JxfQdvwoQwPMJj8jKfYNQCx0G7mtclFFslhRfcYO1ogRgU4SzSJ78PP/vx/VPw=
+X-Gm-Gg: AYBFou2KTB68rFIvaqbOeDKZb20uPWxbASgFLG7e7kGfERFHpTmBhoqKUPZhYZ5Xyid
+	ZZUn0MSXks4544LWQUTpPkEQ5AObq4xlazgIXUTgRoCO3F3e9BLhCdJOlLGdpuaUmiVCq+C/MHI
+	JMtajtARBrB46BhdjT5xtOtribAGWbGVMm2mOdAfw+86o4w7zubDD2T/2b8sGLl1tvv3g4wxcop
+	bg+X1d7eUxLefYNT/qFilBBy0+ST8ZZp1DQgBqoux1SRQYW6RwTdv5s8oXN1vL75KWleZLz5H5a
+	25m4oDuUhvzrOrUrczTKfBFxT7z2Oj2NBqLiJ8Zv26WeC6taL0ge8D5HZPg69rKe/3SjVKnOows
+	zEJxc+8xe1bUP9VrmhUWdJnHSQoUVP/l+vNIU2NiW3ytgtpZrJkuKvwzju44hMh95/EbUTHpw+w
+	r4etwuJ3QbFWj4aUXq3pn35MvT5WzQmHeRhmYcHaKLg8PKajezG8bHT7ccgfTHCZ1TIaGFVYvZ4
+	/yf36Bpmo6gzHCEl0lUc8o6ea13SFa2ZpKGkRlAiW11dzYaxR0Y6JmzPoJBb87x9+9B7U+UxEM0
+	HAbDNhWJpbIOAbCOvQee5EBrUzdaHE3SHjEw3zpkjvtsDg==
+X-Received: by 2002:a05:620a:4556:b0:93c:2c0e:7ac with SMTP id af79cd13be357-949995dced4mr594443385a.53.1795021253478;
+        Wed, 18 Nov 2026 09:00:53 -0800 (PST)
+Received: from toxicpanda.com ([153.61.196.240])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9499b7b8444sm224085785a.31.2026.11.18.09.00.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 09:00:51 -0800 (PST)
+        Wed, 18 Nov 2026 09:00:52 -0800 (PST)
 From: Josef Bacik <josef@toxicpanda.com>
-Date: Wed, 18 Nov 2026 17:00:35 +0000
-Subject: [PATCH RFC 3/7] mm/vma: fail copy_vma() if vm_ops->open() fails
+Date: Wed, 18 Nov 2026 17:00:36 +0000
+Subject: [PATCH RFC 4/7] mm/nommu: fail the split if vm_ops->open() fails
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-b4-vma-open-fail-v1-3-c8b0209f2700@toxicpanda.com>
+Message-Id: <20261118-b4-vma-open-fail-v1-4-c8b0209f2700@toxicpanda.com>
 References: <20261118-b4-vma-open-fail-v1-0-c8b0209f2700@toxicpanda.com>
 In-Reply-To: <20261118-b4-vma-open-fail-v1-0-c8b0209f2700@toxicpanda.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -109,27 +109,27 @@ Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
  Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org, 
  Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1795021242; l=1199;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1795021242; l=806;
  i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=rgo4IdR8BQo2/dvRJ0FsuRLcIIaMK24twJ7uaCyU8AQ=;
+ bh=l3sGtJSsIXUNH1LtH48a2coOOhxjekJKvrVexVKAMZI=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
  JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QMVDhgOTt5XiWRIkOMcc8tLTJAAQ/VOzANP/Flq1CsARNP9IyP5xsAu5ZqAMhoq6PV22hd96eMT
- /wse/qii+xgY=
+ QHcZaIXSGRJhSxFOxiyyffHTmCXKS66517lCKxCfp4sxEUj3tzVms0eVrNMzOCq8ZpgxaXAzSxn
+ HzhmmrBDt7AE=
 X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
  fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+X-Stat-Signature: ryma3hgdbni3offjrnp56ezo6qgntmk5
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D562EC000E
+X-Rspamd-Queue-Id: E49E980003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 5mfjm5drdsgju3xdo5h7i7rc14y1rgp6
-X-HE-Tag: 1795021252-614079
-X-HE-Meta: U2FsdGVkX1/efeKWYHB8F742iNYsU1AW0tek3vnmqFJGfkHEyg84CkSlnAHtIswsXbSMGoTYEwdbt7fogLuYlAvtjTpS1HbA51swRLM6wGUW7RSTVruskTYZ+9rVVGETSRnQIqMiNMihZ+I0EvHMVoRFHHWz7XajIvOJC7mM1YAGU0g+n3SNowQvmj5BXORG4vZ5Lw9l6FwPw6yuBlmVg5RD01/9IiCqVx9IH+nyTo/GqR95RaY2gj3+UeH6rg8xcaqovnmWesdsbwHJll7or1iOYsmW4Zljvyxgd9XDrrRW94hE4pqXOp23dVLKZKrl6xrrpYbuA+7YUHdFmdjVpHN5eL26apdU83pjgR1nvo6LUGJqFpNkxPJrAoejSjSljf/7a/f4KsR0NlCqNO4mEoDO7gXS1z0pSe715f3cuyGTlcHE+as0mjKWu0t+ERHy7PFD8EzhLVs/zccW2ptqmpRsOW1fCaFkBOil7nAN/97XFpYkiUJ1WEvbyPxdW3cfWkyDAJsOT1519QTrYL56n+89Cyy4Fn9G5SzxWj15tQpcFSFfRfP8FYmB3u9wFJaiqxdoA7l+2qFBj2TeBVRURcxrOPHnOxR1Tryy71J63KScOxQGrWRCPoQxw2oyXLnz5dz2KABj4IyRfyAv5i5Omo7AYBMwyZSpH9mnf7DBZ8YH8Pu2472fxh+eGoRcfeqrKSaCsTNC+YNVT1ynR5AFKzWNRxVSN/SzxJyui2WEoMiV9MQ5XpelTvZaVaQGo42skk3n9f6kAhfjxo6wDC0nza6Exvh9AePW0eFl9gTMid8tFLSYIEtjdInBCqeaeEiuABWgBs1p2kCn9bQEK+YxsHdhLQeglg36cTrZxykNKk3OcbB5GRIDgBKCtFiReHCjZ6XDKKa5Ctj6uDzUjYmwtymAWzK52SXbo/OKwiOttejCZPLECwecJ+2Kp1Nd0ie+tfVyffK30dehzEaghVw
- 0BDN2YKW
- enrBsJ3ZS6AdL8KwhuYYVFucT+dmU8s//htSbDSdY0XgWj0N8fgl2N8rYO8IBlZSMob3hQIJnlPXAPUomDSKYEBNntf9kaTI9dGmDGeINO9/Fbh1rtmVgSdhPMDrRVtCP/J/wuQ9SEP+La8SjDigIK5YYPduIb0rP6CY+jw6Qn+0/NKszgce/W8Sb8XcY/b1KC/WuZwKeKtzNI7uxEeIy/7GBC33VkrpvFHYRj6+VWrjwv+4VYf+g8IsKcQk3wnv3sOObtE6BgIV3kgr8cfVEzrLYGDdEp3vnLN2pHS3A/r0KQk+X3ENJKG3xjYY4R0Mx2DLk38a6iSmBjyDPhClOtwgVe6OPwdN4ei/0wkd0goaNByQu6OTbsRSIOA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795021257-883673
+X-HE-Meta: U2FsdGVkX1/y/5nH5/NMBxayN+vzvoJMxXCOcbBoAQhq9Jo7EimXLDRJLcDrsqOsszftS4TOdpzx7KWTOoHX4MllL3HJ5O4KPCDM0P7Be3ldfiGPQ/+j1CZjyaSNY4Kgm+BQA0Vn4bNNtynmtc7TaNjwnT8k4EcbZty0olgHSeD0lCf98FZswIlO6/1bdwKxwNZI1h9Vz7Y+RQxNEkMXIjvmhxlSY4Kb5r68bjytwtqVjLL365cpB3pVKjTunWU1MzRCbDOldMKUqSjb5X4Hg5St5uNzZGTdTirt2RrfnFXqyDx1coY8vwumurXxZHeCLHy57vZzvFTqhfa9O5v+7fGQ4Vj2oEp2b7vHIGC1ALPn0vheYw8dMdnHL1dCjOSHzxJch763EhFwtfj01tJ00hjnt337ObpmjhRLXdWLnligP1xY2yQd5QiK6rJHT5x9XV6gd72WH1eSn8siVUCAjuhsRiDPY1CjNj44dxoXJG4AVtaouPgsncygStotzl64eNtl6EjziFcOuLbEBV9d8OJ2rdB8TtHyjioYbpO6mr0NZK1ZmPcY5XAKi8pRBMTeVg8ONEy4zHl8xv8g+vYh1s6v134bn0fX7mq3q4/yUmcnOyhx5jEJVqSfusZvYGaL3VrAGbClLsFpwU0fCmR2xk+WnPGhrmM7n993fR2TwqrPuXOiDFK9axsg/fU9JnJW/3j3b1LhHz4VIUHwoWyUOJ0Zqyuw1sgNqOxPF9Ep7W5CaGZc6XlUIuEgMSTJNEOQebDx3iqMRSs+EaHjSn+80jt+WKJU4kc+lIcm9RZXNYNY2X8nyDszfdK7VyGXP2sCLKLUu0AdaBEXYsIOiuZnX7e4dCBQQgPJUpSvYB9l6r/cSMrlNfDghrvevY0l7HG5MDwha3LIMaHmFjae6a0uQdqrLmkuEaOoijLxsHSmioFF3CIMF4c8r6aetBETVMRW7SP2xAMQOT3ZB9K8SRk
+ o2JGyaoO
+ 0bW4lahjrfSyMMgWcYBjqx2kNEIlhn7vKMhsPgutt0sKAPfqjmMz7j/L+9R5+mF/V+oYjBMfQty3PEddjS32IdfssguuC1Ajhe3o3ZeoXkrU1sLX0K2/3JNf1/n+ab1nDVnfX0LKiqbo9U9Re7TKjGdf9zDXIInZWX3ikSQSC92f7rQ1rOpq8zf2FeunRxGkQotpasK7RRL8TVcPdKWXlUbIWNRw46ylENa9/oeudjQP/AKmWyo5ssTRnKBDJxQdDQQQKIQ+7nZdNezg7Qj471cBmSvR1OBxAbIqPv5Wfn7ZtlatEBMtoP+7aBLn9Pl0gbjuvXuZSW6VIO574jFg1s8Ss9wwp7Ms0QyBEkZ80B178yqryRQQoXLyCBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,41 +138,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-copy_vma() ignores the result of vm_ops->open().  Discard the new VMA if it
-fails, without calling vm_ops->close() for it.  The caller reports -ENOMEM
-for a NULL return, and the page tables of this VMA haven't moved yet.
+The nommu split_vma() ignores the result of vm_ops->open().  Fail with
+-ENOMEM like its other failure paths, nothing has been changed in the
+original VMA or its region yet.
 
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
- mm/vma.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/nommu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/mm/vma.c b/mm/vma.c
-index 212c2497bad4..b2e897a301b6 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2082,10 +2082,10 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 			goto out_free_vma;
- 		if (anon_vma_clone(new_vma, vma, VMA_OP_REMAP))
- 			goto out_free_mempol;
-+		if (vma_open(new_vma))
-+			goto out_unlink_anon;
- 		if (new_vma->vm_file)
- 			get_file(new_vma->vm_file);
--		if (new_vma->vm_ops && new_vma->vm_ops->open)
--			new_vma->vm_ops->open(new_vma);
- 		if (vma_link(mm, new_vma))
- 			goto out_vma_link;
- 		*need_rmap_locks = false;
-@@ -2098,7 +2098,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+diff --git a/mm/nommu.c b/mm/nommu.c
+index df99495c8902..cd4ebac74dd2 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1373,8 +1373,10 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 		goto err_vmi_preallocate;
+ 	}
  
- 	if (new_vma->vm_file)
- 		fput(new_vma->vm_file);
--
-+out_unlink_anon:
- 	unlink_anon_vmas(new_vma);
- out_free_mempol:
- 	mpol_put(vma_policy(new_vma));
+-	if (new->vm_ops && new->vm_ops->open)
+-		new->vm_ops->open(new);
++	if (vma_open(new)) {
++		vma_iter_free(vmi);
++		goto err_vmi_preallocate;
++	}
+ 
+ 	down_write(&nommu_region_sem);
+ 	delete_nommu_region(vma->vm_region);
 
 -- 
 2.55.0
