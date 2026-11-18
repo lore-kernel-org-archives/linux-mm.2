@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003F6606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5618606A332
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AaKnaV0X
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Aa/n9neT
 Received: by kanga.kvack.org (Postfix)
-	id B4B8A6B05B4; Wed, 18 Nov 2026 11:17:44 -0500 (EST)
+	id D6F1A6B05B8; Wed, 18 Nov 2026 11:17:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B236D6B05BA; Wed, 18 Nov 2026 11:17:44 -0500 (EST)
+	id CD2346B05BA; Wed, 18 Nov 2026 11:17:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0F356B05B4; Wed, 18 Nov 2026 11:17:44 -0500 (EST)
+	id B9B5A6B05BB; Wed, 18 Nov 2026 11:17:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 58DDE6B05B4
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:17:44 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7D62C0620
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 732236B05B8
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:17:45 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2C80160723
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:17:44 +0000 (UTC)
+X-FDA: 85448745648.05.43164CC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6D8AE100009
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:17:43 +0000 (UTC)
-X-FDA: 85448745606.20.2B1643A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 26FFD40009
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:17:41 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AaKnaV0X;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795018662;
-	b=S8Ym4tQfyKgo1eqiaMUA+LkfJ3RXwyz6U2EhVeD2VGRr2SZ/qciVE3FreM0rWDEj7lV4kF
-	EDlE5qP3+Bw2jy3g7ANjQnIuJCzn7JWDtfky4CautOmemju+CVqAvtEFdi1qRdCntlYhv+
-	/0Kh1LPHZl8f39TpjPdDRKdErYVlyJM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AaKnaV0X;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Aa/n9neT";
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795018662;
+	s=arc-20220608; t=1795018663;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0wI9BAaHSpQ0HIzhM5Lg3uuaN5UlVLPwNZ6em51bIRM=;
-	b=C9ElWnv7EM8kgKfVHry8DknSthLaIXEvJVZhCtGc/EgjVQaYfiufdrppJKNhUWLAM7YxBB
-	Xxtu1RzO5cxkAUp98kKAPab925AeRrjjblwNI7VEIwFEY3/et47VYKa2fSLWT2WmEM62zR
-	O9OV9xSshg+NkRCuBWxADXXs61TBAUM=
+	bh=wdmvDL+6fG1daxzhdpbmTQI8QSWZpyN8n/MnRWQGMgg=;
+	b=sjMuDUPs9PQnl1SH7cB4sL3TmbmbO9MCKxMN0smXsj4EaA/DzxSjD/xtQGR7zl7ECTW604
+	ubQB/HFbBw4+Y7DClkRpTPWLE7qwCb+bMGL3lCKf/mxf+UbZ676AgexjBdNA34EScKmJAC
+	rI4sVXIfMhYSJo/StKoW1L3rhXZ7POY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795018663;
+	b=b7BCZUQwueJLJFj8Xzpq9IxPyAf8hWM5ZRlOFR2t7/C4DevqTWPgsxsxNX3dpIYFtQWJXT
+	kul6lKY9G7tGJkPUNqC0IXS/AmjlIcfCDUw8Tu7wfk20tMmUX/VRMcNXp1N5A4X+A5C3fz
+	ooxJgw4Xjis+PFyzXiF8ue2VVt0LLKk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Aa/n9neT";
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4DDAA4634C;
+	by tor.source.kernel.org (Postfix) with ESMTP id 10BF26283E;
+	Wed, 18 Nov 2026 16:17:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACCE1F000C6;
 	Wed, 18 Nov 2026 16:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267291F000C4;
-	Wed, 18 Nov 2026 16:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795018661;
-	bh=0wI9BAaHSpQ0HIzhM5Lg3uuaN5UlVLPwNZ6em51bIRM=;
+	s=k20260515; t=1795018662;
+	bh=wdmvDL+6fG1daxzhdpbmTQI8QSWZpyN8n/MnRWQGMgg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AaKnaV0Xl1/rtpuRl0idSlXPWETWvsBa9rvfflSsTR7Y5iK+i2QaI0zwFXcQs54Kk
-	 1p+zcUQ0n3lbC9+uQPoFgPeWlv/OevvCv/LZcn2rjXlFu0Mr0fsoPwXGrGG4T22V7n
-	 eDBsMSVObmGMmIPlzIcbnBnv4beYQn5xzsBRX74jjbSo7NnopLW6PTz4ABKWhoU5VB
-	 vCYCAogn3/npR+RSMzkFxqoZxqzBUyKUM2I3eXe9A646DDHPLNCVZaGLzxScl6WDAk
-	 WQsX2Pk0ORueBT5QQYTwTnBQuuFUAjAEz2TbQ3jkM84tq6vmYl/QNtqekzze7X1SKE
-	 +IXSB/52i8jSQ==
-Message-ID: <sashiko-outbox-221457@kernel.org>
+	b=Aa/n9neT3l+v5gPMwAxwLSIG5iPoHgzoj97KqcJlyBH6MU/lxVf/u99pjGDi+0qRQ
+	 mR4RP2o9GHem8Qv82JFkx+LQsYYJGtDTGZA+Y1UNSQyR/MjPyUeVJxL/kLVKHiUsRe
+	 gtc9zNvRW4EW0TQ9+ur/H7oyt1dyzd3kmph6ZHTAHDL82m2fkuAGcxeFJPiNNDExxB
+	 X6V7Hi4rVXuWeXcUB2qeqA4jo2Kp+rid9+jv4wTyYequ4+hcmuRMSFnOtRvvG5r8Uh
+	 0FDdBOxZ4btt9Xf3y3PiuCTCOHYk8I1fKJAhycKJ3ADAy9qs4tJ1ko9LOAWICujJXG
+	 BqsjJYApKQbsw==
+Message-ID: <sashiko-outbox-221459@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 14/17] selftests/rseq: Test the concurrency IDs after
- the affinity is widened
+Subject: Re: [PATCH 16/17] selftests/rseq: Test affinity changes while a
+ task replaces or drops its mm
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>, tglx@kernel.org, peterz@infradead.org
 Cc: mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com, paulmck@kernel.org, boqun@kernel.org, shuah@kernel.org, kees@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, oleg@redhat.com, bestswngs@gmail.com, xmei5@asu.edu, xujiakai24@mails.ucas.ac.cn, linux-mm@kvack.org
-In-Reply-To: <05781fc46cb63b548588e58b356ab08b10619aac.1794932121.git.mathieu.desnoyers@efficios.com>
+In-Reply-To: <ccc2a6c50429b1ad9c8d5cc45ec8e58c12df7fde.1794932121.git.mathieu.desnoyers@efficios.com>
 References: <cover.1794932121.git.mathieu.desnoyers@efficios.com>
- <05781fc46cb63b548588e58b356ab08b10619aac.1794932121.git.mathieu.desnoyers@efficios.com>
+ <ccc2a6c50429b1ad9c8d5cc45ec8e58c12df7fde.1794932121.git.mathieu.desnoyers@efficios.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 16:17:39 +0000
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 26FFD40009
+Date: Wed, 18 Nov 2026 16:17:41 +0000
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6D8AE100009
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: 4gzhwzyr3g9tfnojcjtmybpqirgp1ps8
-X-Rspam-User: 
-X-HE-Tag: 1795018661-81952
-X-HE-Meta: U2FsdGVkX18csDg/wHuPyHD27e0hOHVlWeXo7ypml1vd7lHSwnRkbO/0DGCRMK6d+mN0+h8HXrO1oxNcUI+pB5qBJv4TenpeaufRd2aOnm1An4esOm9Ub3IFs8V5OCZiZyLfeJroSaxURpgUm95nUn/YGoNuKknny2nqfvo/4pvr1F7vjAE3tRAcxit24WMM2XErlvw24ncKOkvIbIJhx4fRpdDLY8UI1CVHuEFzOp4kpjX5H+SrcpREpq1l2fAreKNN6WpoK5EnzHOFqFg4z2NFoe3KpRhr96EitdOcuvaUqL+mBLpWG0M0MUZyJFRSRWKbLQjFArMV4eEyWN23BQR2TUgLFyjmlCdywnpE95I5GrtyBe7HT5aajKCFW93SrWue7JN2mXgWTKaBEi8h/S9cH0/T5+6p420nWBgJaHUw4sXG3eaJfXwULfpyXwAovwczK17LvI1vQz8y8H4nJUmiPMVw9g/C2dSXsGGNWNzRDZvJ6OQoje59Doios65/XZ7I1daSaQtv0t49ya1YEfXbRjHdEHwn0kPWH1CP2ss/FdHDuV5R+0nMhAaUi8T41s7ItauFV2KDzjrX1lNYs5bWiWLaJIlgf5IDvHcPXKWtQmIjX/4dcrZC/3Eap9/ZLmIbXLlYQOvx60cW7LeRPK0B+HhcvgfHEqSW69yEy+SInO3LVy7j1AmXwT08PlxmahXGEAJPFnlYm1JIm2kfB2z9bcAm0t3gDcPpTzCbuoBfVkw2iBncy0b0hc4SYMrd7HWd4DyFARaF1D21+asI0DSxtTIY7K43eP4vkGBnOKhHAZiTcCyI3pUxWPuVw4SpYPo2mHSIMsYtYXlVT6pTowu8b6exq8lbMgm8OeMMJ1OwW0daw5+NDGXheYvyCsyH/H0GpQv5vqH8qwornwk0VXGffkXyMzw7/Vj+z4V7Gkv/69fWJbQWO0rjApd/GC5hFLjpeEtPQnlSxxndRRG
- xtyYZcFf
- 5UQhbNzW5qhY3JpftbrRZ1x0ebcUNtDEwBD2WAP9bevqTmvp3Cfw00RzHIGSxR/Z2Z4WzQZJu1/0CskRFM9T7lQhMFbAYMA1ujCpdr3w2uj/fGjmlqBSHLAKgVFrAcA6v5PKGjCKNs6598rAHFgyyi26bsJLAPMfY6Cn6SPTWl+ffdpggfrbUgINFZNjP68DIOr2uEbLujzL2ksDADVrosDzYEQHpkbcHhDYU7Z8t+c93tIFhCZgSVafj2o/502CSt3gCxnJCylmWvH6GH+IIhD9EKr7bpGJFdc9fg2QLi8nlnIJ6a78xaTtiXL1FAXi535lVDm95q48DoVz2zBue3WTWdtbfTfWJynDAo/qymV1fzhcx2DQ+/2o028YbqCTVDICzT+njmmUTajhqvxyMpmP5UGY31abO32Ud25bd+h+VSgRr+5IEKyQ22yuyZEsQ7KGK0FlR6XnCaHPQvXqXwsR8BwNwfuA0B7q3OZd3OxWYhldNPKlacWyPnQCtqwkotXVv9vqkY0D59Zw1knrlPFCwjMuM8ag3vqNFIWiRpyvDDOnHtumhkwFSvKJnwCp5zRfO9toor7Cyab9KO9KhlUYNVaw9Uzo79/p56MvLwXjEdY37eRt+f9KKRQ==
+X-Stat-Signature: nr78wd8qreexs7kt19qwxjfe4zaz4abn
+X-HE-Tag: 1795018663-113804
+X-HE-Meta: U2FsdGVkX18WDxixJVmtwydxi5qLPqGrHTg6tRnRVneR0WizmbRcdY/dn3bZJZcCYp9lvosp/Q3RyMytdzpHIMYrt6dmIyfNBdWaGLV5EI6sIWhJIK12sh94S3AGDMNB/pOQmONK4ZZJClHnpxvluS+sZJKQR1ErHCJSxoVHcDm4MPWALvAMdqt3JAu+8R+wzm9qtZP+QkLGiPZ4QNlxFH9UGgpYbE3ZSwlEqhEjnaIwZJox23RLeybyJasJBYjw2RY/gACVEuAh7XFZ0n3E6OvxJ7DUj30myvhYNaJfL09U6rsT38Oee6Lzqnai1Nwh/Vt/a/l0JlxagrZSeuqitsvJSHTq3C5YYZP+0gAOe6VLZjMoel4ge9X7U+qhPunbmefR/waRFMfDy+eO2rWsl9SIDTqRY0zFeSQ9bWllfMpFX/Y861+i0uUN6RRNbsnZiNbt4Q/CIVELcEhgBTVTN5F76TY7HUomnDtu1LGH6JIf9PggNZn2S6zCPamGDb2CFuxS5itGernl0/h6aB+B0n6tA30QgSdU1lgtX+VepizasjSprQqpUJZUQlpHwY7MGPc1AZjUIsuuFjNDp1RyF6guGt8ReblBz2UFFCmNPlUNxFphbtXBp2xL8p6fs0tyfOzRGPamYC4lOiFc/l5kNC0AouEb2thGB+DRNo6AFilLG8QYLv9ZQUUrzsJn0rmzntcwHec9V6JRROmeubNAebO4U8VYFj0NeuTnWse9CBdvYoYl9OU5Imvfr0QXxjubOK8KwZYbgGXe91zBxr3+CP3QmVCeM0OhULqJYR02DoeOrCIKl98REbeq3vcd2P/M6oDttw4owAbG57HpS8eCXqLRJfgGmGXG2AUPhsHtVk2LcGjzUBsTDhc9Z/51WG9LpHPgAI36oDQIPvCs1oMYQ7owREH50qX0v/uwXSlcZCS75+HGUlRwCj3l7Bo9Ag90vUcdFtBvw/0fzog+VJh
+ 9PGLCwiZ
+ l7zm546KgWii/D4D2zu4/J157Wudb8+xKcm04upnQ8VzD0ph/ZiTi2qzG1UfUxezdy6kiZkvUpi7T6YhiFXBHDXiC7/QcTZyHhD+U0S3K26spWKhyVWGKiewXi6m8oGY5UBzAUgp+1bgEHnq1LCJ38/Hh9K2SCqT0GHwTrkq2gJuRNMWCNXKRu7bVW1u6dpYTayUEnCixyh7JoyBdXgbB4WfqcCk+nRFEky4L5U+rG87AzGVpW1YDdZjEFN1EuMELzURt1hrvG7Er6yBgXWhx5njF76zCd02IMiv4fWcXPfec5yiv3dG181QizPW6FLcB/a+2lu9lyhftHtXyZhS2m4cDz8NH3UoBSFfwPszLMFyIBHvWDCwPU5aVLV5hxoYWeCsPHIYsL9suScuJJgGqcmn743wSnvOMJAZpqUpPY/HoNVKJOH3btdYM+oDUjY2nVM4fVdEHg+4co46qnE8WwnyPHOvUU9FgQ4nxmRIkn8IBWT6w2PQWrbL5EMvm/15LLq6ysOGzi4ZwGTkphrrrbYCjZUQozL8wLH3o6qDrcGmBqUgxfVTsLSxjiXgyeIWYl72CoQo3kdvT6+A3NYGmzv6RVsxOLIRS9PnxoBNzTFCJPzrLU9g8Hr182vFvNQihDqEa7lk0VeWhFNm40WOspgp/TJ5K+dycTvYa3tusHA+/qtsfXh+JA41BIa7fCLqlNpHt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,107 +94,171 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] selftests/rseq: missing release-acquire ordering on epoch in
-  measure()
+Thank you for your contribution! Sashiko AI review found 4 potential
+issues to consider:
+- [Low] selftests/rseq: unreset execs count in run_exec_case() weakens
+  progress check
+- [Low] selftests/rseq: victim deadline before wait_first_exec() in
+  run_exec_case()
+- [Low] selftests/rseq: unconditional increment of i in setter_main()
+  skips mm updates
+- [Low] selftests/rseq: missing mm_cid_teardown_test entry in .gitignore
 --
 
-commit c93d413e090ede336a58daf34cc339f9241ae7d4
+commit cb8cf09e0b94fdd16e87974a38605eabab39bcdf
 Author: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-selftests/rseq: Test the concurrency IDs after the affinity is widened
+selftests/rseq: Test affinity changes while a task replaces or drops its mm
 
-This commit adds a test case to mm_cid_bound_test that starts three
-threads on two CPUs and then widens their CPU affinity to all CPUs to test
-whether concurrency IDs are reassigned back to per-task mode.
+This commit adds the mm_cid_teardown_test selftest to exercise concurrent
+sched_setaffinity() calls against tasks replacing their mm via execve() or
+dropping their mm on exit.
 
-> diff --git a/tools/testing/selftests/rseq/mm_cid_bound_test.c b/tools/tes=
-ting/selftests/rseq/mm_cid_bound_test.c
-> index 11332b9ff24b8..a751d89291380 100644
-> --- a/tools/testing/selftests/rseq/mm_cid_bound_test.c
-> +++ b/tools/testing/selftests/rseq/mm_cid_bound_test.c
+Link: https://lore.kernel.org/all/20261110183809.3308868-2-bestswngs@gmail.=
+com/
 
-[ ... ]
-
-> @@ -228,6 +237,49 @@ static int run_child(const int *steps, int nr_steps)
->  	return ret;
->  }
-> =20
-> +/*
-> + * The process under test of the widening case. It starts on two CPUs.
-> + * Return a mask of the OVER_* values.
-> + */
-> +static int run_child_widen(void)
-> +{
-> +	int nr_workers =3D 0, ret =3D 0, cpu, err;
-> +	unsigned int cid;
-> +
-> +	if (sched_getaffinity(0, sizeof(allowed), &allowed))
-> +		return CHILD_ERROR;
-> +	nr_allowed =3D CPU_COUNT(&allowed);
-> +
-> +	err =3D set_workers(&nr_workers, WIDEN_THREADS - 1);
-> +	if (err)
-> +		return CHILD_ERROR;
-> +	measure(nr_workers, &cpu);
-> +	cid =3D measure(nr_workers, &cpu);
-> +	ksft_print_msg("%4d threads on %d CPUs: largest mm_cid %u on CPU %d\n",
-> +		       WIDEN_THREADS, nr_allowed, cid, cpu);
-> +
-> +	/* Each thread widens its own affinity at the end of its next tour. */
-> +	allowed =3D all_cpus;
-> +	nr_allowed =3D CPU_COUNT(&allowed);
-> +	if (sched_setaffinity(0, sizeof(allowed), &allowed))
-> +		ret |=3D CHILD_ERROR;
-> +	measure(nr_workers, &cpu);
+> diff --git a/tools/testing/selftests/rseq/Makefile b/tools/testing/selfte=
+sts/rseq/Makefile
+> index d72502fc76527..2735704f516b8 100644
+> --- a/tools/testing/selftests/rseq/Makefile
+> +++ b/tools/testing/selftests/rseq/Makefile
+> @@ -22,7 +22,7 @@ TEST_GEN_PROGS =3D basic_test basic_percpu_ops_test bas=
+ic_percpu_ops_mm_cid_test \
+>  		 param_test_benchmark param_test_mm_cid_benchmark \
+>  		 mm_cid_execve_test mm_cid_transition_test \
+>  		 mm_cid_bound_test mm_cid_exec_affinity_test \
+> -		 mm_cid_window_test
+> +		 mm_cid_window_test mm_cid_teardown_test
 
 [Severity: Low]
-Can the worker threads still observe the old 2-CPU allowed mask in tour()
-when measure() wakes them here?
+Should mm_cid_teardown_test also be added to
+tools/testing/selftests/rseq/.gitignore like the other binaries in
+TEST_GEN_PROGS so in-tree builds do not leave an untracked binary behind?
 
-Previously, allowed was only written before pthread_create() spawned the
-workers.  Here run_child_widen() updates allowed while workers are already
-spinning in worker_fn(), but measure() and worker_fn() synchronize on
-epoch with plain volatile accesses rather than release-acquire ordering:
+> diff --git a/tools/testing/selftests/rseq/mm_cid_teardown_test.c b/tools/=
+testing/selftests/rseq/mm_cid_teardown_test.c
+> new file mode 100644
+> index 0000000000000..f07a566901f83
+> --- /dev/null
+> +++ b/tools/testing/selftests/rseq/mm_cid_teardown_test.c
+[ ... ]
+> +static void setter_main(struct shared *sh, int index, pid_t pid, int cpu,
+> +			int a, int b, long long deadline)
+> +{
+> +	unsigned long long changes =3D 0;
+> +	cpu_set_t one, two;
+> +	int i =3D 0;
+> +
+[ ... ]
+> +	while (now_us() < deadline) {
+> +		const cpu_set_t *mask =3D (i++ & 1) ? &one : &two;
+> +		pid_t target =3D pid ? pid : RSEQ_READ_ONCE(sh->target);
+> +
+> +		if (!target)
+> +			continue;
+> +		if (!sched_setaffinity(target, sizeof(*mask), mask)) {
+> +			changes++;
+> +			continue;
+> +		}
 
-tools/testing/selftests/rseq/mm_cid_bound_test.c:worker_fn() {
-	while (!RSEQ_READ_ONCE(w->stop)) {
-		unsigned int e =3D RSEQ_READ_ONCE(epoch);
+[Severity: Low]
+Does incrementing i before checking target cause the first
+sched_setaffinity() call on a newly forked child in run_exit_case() to be
+a no-op half the time?
 
-		if (e =3D=3D seen) {
-			usleep(200);
-			continue;
-		}
-		tour(w);
-    ...
-}
+In run_exit_case(), the parent pins itself to CPU a (mask one), so each
+new child inherits mask one.  Because setter_main() spins while sh->target
+is 0 and does not reset i when sh->target changes, roughly half of new
+targets first receive mask one, which returns early in
+__set_cpus_allowed_ptr_locked() without updating the mm while still
+incrementing changes.  Spinning while target is 0 also advances signed int
+i without bound, which can overflow on longer runtimes passed via argv[1].
 
-tools/testing/selftests/rseq/mm_cid_bound_test.c:measure() {
-    ...
-	RSEQ_WRITE_ONCE(epoch, e);
-	tour(&self);
-    ...
-}
+[ ... ]
+> +static void run_exec_case(char *name, int runtime_s, struct shared *sh)
+> +{
+> +	unsigned long long execs =3D 0, changes =3D 0;
+> +	int a =3D cpus[nr_cpus - 2], b =3D cpus[nr_cpus - 1];
+> +	pid_t victim, setters[MAX_SETTERS];
+> +	int fd, i, nset, status =3D 0;
+> +	long long deadline;
+> +	pid_t ret;
+> +
+> +	nset =3D nr_cpus - 2 < MAX_SETTERS ? nr_cpus - 2 : MAX_SETTERS;
+> +	fd =3D eventfd(0, EFD_NONBLOCK);
+> +	if (fd < 0)
+> +		ksft_exit_fail_msg("eventfd: %s\n", strerror(errno));
+> +	/* The process under test outlives those that change its affinity. */
+> +	victim =3D start_exec_loop(name, a, fd,
+> +				 now_us() + (runtime_s + 1) * 1000000LL);
+> +	if (victim < 0)
+> +		ksft_exit_fail_msg("fork: %s\n", strerror(errno));
+> +	if (wait_first_exec(fd, &execs))
+> +		ksft_exit_fail_msg("the process under test did not call execve\n");
+> +
+> +	deadline =3D now_us() + runtime_s * 1000000LL;
+> +	for (i =3D 0; i < nset; i++) {
+> +		setters[i] =3D fork();
+> +		if (!setters[i])
+> +			setter_main(sh, i, victim, cpus[i], a, b, deadline);
+> +		if (setters[i] < 0)
+> +			ksft_exit_fail_msg("fork: %s\n", strerror(errno));
+> +	}
+> +	for (i =3D 0; i < nset; i++) {
+> +		if (wait_status(setters[i]))
+> +			ksft_exit_fail_msg("a process that changes the affinity failed\n");
+> +		changes +=3D sh->changes[i];
+> +	}
+> +	if (drain(fd, &execs))
+> +		ksft_exit_fail_msg("read the count of the execve calls: %s\n",
+> +				   strerror(errno));
+> +
+> +	/* The process under test must still be in its loop. */
+> +	ret =3D waitpid(victim, &status, WNOHANG);
+> +	if (ret < 0)
+> +		ksft_exit_fail_msg("waitpid: %s\n", strerror(errno));
+> +	if (ret) {
+> +		ksft_print_msg("the process under test left its loop: 0x%x\n",
+> +			       status);
+> +		ksft_test_result_fail("%s\n", exec_case);
 
-CPU0                              CPU1
-run_child_widen()                 worker_fn()
-  allowed =3D all_cpus;
-  measure()
-    RSEQ_WRITE_ONCE(epoch, e);
-                                    e =3D RSEQ_READ_ONCE(epoch);
-                                    tour()
-                                      CPU_ISSET(cpu, &allowed)
-                                      sched_setaffinity(..., &allowed)
-                                        <-- reads stale 2-CPU allowed
+[Severity: Low]
+Can victim reach its end timestamp before the parent reaches waitpid() if
+wait_first_exec() and forking/reaping the setters take at least one
+second?
 
-Without rseq_smp_store_release(&epoch, e) in measure() paired with
-rseq_smp_load_acquire(&epoch) in worker_fn(), either the compiler or a
-weakly-ordered CPU can reorder the non-volatile reads of allowed in tour()
-ahead of the load of epoch, leaving the workers pinned to the initial two
-CPUs during the widening tour.
+victim's end timestamp is computed before wait_first_exec() (which allows
+up to 5 seconds) as now_us() + (runtime_s + 1) seconds, whereas the
+setters' deadline is computed after wait_first_exec() returns.  On a slow
+or KASAN-enabled guest, victim can exit normally with CHILD_PASS in
+exec_loop_main() before the setters are reaped, causing waitpid(...,
+WNOHANG) here to report a failure.
+
+> +		if (close(fd))
+> +			ksft_exit_fail_msg("close: %s\n", strerror(errno));
+> +		return;
+> +	}
+> +	if (kill(victim, SIGKILL))
+> +		ksft_exit_fail_msg("kill: %s\n", strerror(errno));
+> +	if (waitpid(victim, &status, 0) !=3D victim)
+> +		ksft_exit_fail_msg("waitpid: %s\n", strerror(errno));
+> +	if (close(fd))
+> +		ksft_exit_fail_msg("close: %s\n", strerror(errno));
+> +
+> +	ksft_print_msg("%llu execve calls, %llu affinity changes\n",
+> +		       execs, changes);
+> +	ksft_test_result(execs && changes, "%s\n", exec_case);
+> +}
+
+[Severity: Low]
+Does leaving execs unreset after wait_first_exec() make the execs check in
+ksft_test_result() always true?
+
+wait_first_exec() drains the initial eventfd write into execs before any
+setter processes are forked, so execs is already at least 1 even if no
+further execve() calls complete while the affinity changes are running.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1794932121.gi=
-t.mathieu.desnoyers@efficios.com?part=3D14
+t.mathieu.desnoyers@efficios.com?part=3D16
 
