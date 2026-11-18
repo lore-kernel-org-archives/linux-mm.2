@@ -1,106 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0020606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 07:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27C9606A336
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 07:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BVsQQo/B
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Qy3l98pI
 Received: by kanga.kvack.org (Postfix)
-	id EED4D6B05B9; Wed, 18 Nov 2026 02:40:35 -0500 (EST)
+	id DA3F06B05B0; Wed, 18 Nov 2026 02:51:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9E3A6B05BA; Wed, 18 Nov 2026 02:40:35 -0500 (EST)
+	id D535F6B05B1; Wed, 18 Nov 2026 02:51:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5446B05BB; Wed, 18 Nov 2026 02:40:35 -0500 (EST)
+	id C42CD6B05B2; Wed, 18 Nov 2026 02:51:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B10996B05B9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:40:35 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B85201205C0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:34 +0000 (UTC)
-X-FDA: 85447442388.07.638CE6C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C435FC0007
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BVsQQo/B";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A2DA6B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:51:35 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 064AAC0399
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:51:35 +0000 (UTC)
+X-FDA: 85447470150.20.78A33EB
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3C53A180005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:51:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Qy3l98pI;
+	spf=pass (imf24.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=vipinsh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794988293;
+	b=ugr1yW3UWBTQr9MSXjZSEsYu88C0d93RGf83aAqapTxZhSqEM4kJroqDl+H/KQvVIj8PfV
+	zlbBqTvxlRxuI1rq3Wqjy4njErP6mjvFGKsqrLapOhXdFNHTCd08QvcyxXo3em96qLd9Dr
+	pjps9K8jVE+RCvUKNfgaRcc+Jf0qPtI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Qy3l98pI;
+	spf=pass (imf24.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=vipinsh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794987633;
+	s=arc-20220608; t=1794988293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+NO7BDo+P4bguxhOf8l6doBU3I12qHv10RKKucCA1O0=;
-	b=3Po/ZAG2T+PSuKR6GGgw062kkUJoT/AYMobxMibEXgtxqXVVzfX/i5W6qn/idruva9G2hj
-	wiYLcCEN2btp8ueNEioL64qqpRmibznHQU2K69h8sbkmz8eupJwFMVlZXCOVnohUfp7tRJ
-	zQvfF14CO1gS5gZcxfvBAASAGWZCYC0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BVsQQo/B";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794987633;
-	b=gkJaX0K9uBiX0tpsbhnpXJAZuuWrb0IbAWild1NuGzsR99sg6qfCtrrqZOqFhJJ+Iir5U8
-	OLOUZD+3DBue1jAdhXO5YTSmh59DHDhB1edjR1cfyLYlXJ5KnR9kydoAloRD7N/2NFf0PX
-	sqy/G4lxhTKCEPbUt2Zn9vHqX1llhzM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 486AC44D1C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DBA1F000C9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:40:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794987631;
-	bh=+NO7BDo+P4bguxhOf8l6doBU3I12qHv10RKKucCA1O0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BVsQQo/BOpYlS5nuNpobghJdfS2nQvqJanM8P/SdMM8px83LV194QwEVyng2Rfjsf
-	 vSs2PB2CO/umYB8ekgGnyqsYFy9mERoY7pZ6tqAU8IYR0RV5WJCxcWL6RUysGb0Shq
-	 mJj0fc/JnKGTqTWihY5oQdwo36yck7J99Eumom8LBSa4O3B5DTAFjtWAZkvv5nzXys
-	 nimpCc9wzS1QHpTRUiARxy13Trb6E+GFcDjJlkN00mPU9/PbrAudsyprHfIe+o2I4q
-	 cW25PzbqNIkXmjvQEodQybim/XotsvSmA4AT/Sn8xeG13oA2SCearvXgvKB7ued+uG
-	 Je4HJPMmH/ojA==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b88b74e54eso536399a12.0
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:40:31 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGlLukiti93BkQIrWtZOEktW9u6PfXj/Y5FVc7z0HgEZIKgipQlBMV1l811DNnNkiqb3VdXZp7JTg==@kvack.org
-X-Gm-Message-State: APuU4Z8SXYKUnQm6q5TdySNDQ4gnvUVLCHlfSmfMxLVH72WiOjeLdUbl
-	H7PTvVwE8J6Fcd41X+1m+uZ3xqtl118CJz7s48KsaQ27MGAgY3Xj2+kXCogIWsD7cOmNLW1s0Pq
-	/2GGWqCLRImAUzQvkWXCmOYcFjN+FYWM=
-X-Received: by 2002:a05:6402:2707:b0:6b7:ce4a:7d0b with SMTP id
- 4fb4d7f45d1cf-6b887e9855amr1039376a12.20.1794987629740; Tue, 17 Nov 2026
- 23:40:29 -0800 (PST)
+	bh=r1RbWjqFm7axK1WA6d2qj68hL+HcVofiqBMMK2TnnVw=;
+	b=e1tbVWKO3dWtDhyxZPeQ84qcGZddMSCf77oeMsdllJvXyTXOECC2+jYo0M737NfLyqZzge
+	n4q9PfXNXfmKF2Ino7SzOT/LusCwDTuw/D8WdiXimVFC7wYnUyG4LK7JFr9wCEub3eLMAV
+	pMrBpsXl+PDzElICiWToL8znpWELnmE=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2efc4a84e75so31195ad.1
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:51:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794988292; x=1795593092; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=r1RbWjqFm7axK1WA6d2qj68hL+HcVofiqBMMK2TnnVw=;
+        b=Qy3l98pICsn3k9WuuQB+dt40y095eXQFW6xXYq+lxKBRUQ5jfTsQ3TjZENcu5v/hED
+         slI2g+E3kG82uGPIeA2ESs7iCgVGwqoE8uRMWp17L74n0UFQ5/HsneHydizLvPNW330k
+         ILXzREdnO7bzV42oPCCm4wbxOgVwsfWN7IQPctjRDl92KWbCIdsZDLf7zGUbi0QWd59+
+         1KcwzWdsX5IIJn6P7lYWQZcEIGBBApJ6V7z68rHtzgeTaKlS11qVh8PIyyjk09emGSYZ
+         pZ6KAKKeOuv/iTGIKA9RwmsQrMplBru7YSYlOn66Vv2AArt7hqMztFwPn9HWdukfoppB
+         9Uew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794988292; x=1795593092;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=r1RbWjqFm7axK1WA6d2qj68hL+HcVofiqBMMK2TnnVw=;
+        b=eleDJkx6YkP+CceirHt5tNzjlrYu6DukllAyZzCSJt6yKStmE5qf6I30zZtkF+iKUE
+         X8AbGgFrMZdxKkKmJBbFZZ8v/jlqrAUYLyXKC4aeyLyMnEAc1A9TFlB4FZZXPPM5Nxi0
+         NGUUPJXecgjU5QSpGPaRwbwrpbiSun98UrN7Kt1CzK6ADjykO7I+TplQ0Aoc6new5FT0
+         lOol90FUFx5EDf8M5D3t7aoqCnnElqtoQagOYrqt+K9Te1MB2psrWVIFRsxEuBDRaSty
+         aMigI80eujYIHyH2zhzJ1iMa0SPudgSEWZepTQ+1i15qJA6Lg6NqF1k+dzEh211Oa36M
+         VLxA==
+X-Forwarded-Encrypted: i=1; AL+hErE0thnbmHXeYhMa872ijVK82GHzV1QNmrz++8E9Av+TlTqb8kXrIbBcvPm6piMFRpScmd7tUmruog==@kvack.org
+X-Gm-Message-State: APuU4Z+PI9zxdkTQVu7qYqTJBszhtI6cJJwd3T74LNEXi6o5SXm9MbZq
+	XGvbjHdvnaDFdFy7BSjYDI7GCXdmf/6Qrm47A+BEfDwqTj7IHTE+g1VolMFyyC86EQ==
+X-Gm-Gg: AZFdTZdCCmgFmg/nzqhOy/p6atxvLbtfMjyqIAOPHJfZPxWVEggoIL0TZuqffUD8Iu8
+	7VNGVrVLJ/5dOLUqGd8CFRV8LzaBgroo0BSWam/T16BlIVVeaCtWtbbz4sOu3k8bEcQX8we6lxf
+	/LFLj2aAXvo7kao2SGr61ZoJKHfEoxbsDDSJrezadul3GKiJGeQuLxbgEUZFZIf+WDX5PwksuTS
+	giPAhlMVcUc92hdF3/OqqBbGAKqMvCSyX7obFk5rcOTLhRMjbUjWyLQakiLg4m3WvGsNnUWZ7zK
+	abnuPA6+hPUEQ8YMWMgSGzQNzPgI434QRyTsXzS6yp96y9oLsUn9F3JN/viRR8/tMfRoLE0ReHH
+	fyJHJ4nmmzsKFGb95ZqcxhqYIT5SX5nAahAlL4yPv6jl1uXCeKPDvs76YqYlig6CG15fU+NPY/K
+	lhlmGmNi0I//mBUloMel4fBnec8eOsFpvQIaQwo58+eVN3G8ZSopfqSRUqWfDuLyuFSru+cbqCr
+	TRhftB7VY0NJ7hmut58KWF4gXur1xgQPh9w89YOhG6EWe8HRnAikHBaxAMkjCYRuW4xefrzdyul
+	ahoCWE+tgYHct9nW089pI/qPUzVeRNQ3QB+RjIMRd6ypAQA85j2YofWImbrudq9OqQ==
+X-Received: by 2002:a17:902:d544:b0:2e6:d25:d874 with SMTP id d9443c01a7336-2eff98d30f9mr2984215ad.10.1794988291451;
+        Tue, 17 Nov 2026 23:51:31 -0800 (PST)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3d56ab352sm1000229a91.2.2026.11.17.23.51.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 23:51:30 -0800 (PST)
+Date: Tue, 17 Nov 2026 23:51:26 -0800
+From: Vipin Sharma <vipinsh@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
+	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
+	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
+	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
+	jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, 
+	leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, 
+	michal.winiarski@intel.com, parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, 
+	pratyush@kernel.org, rananta@google.com, rdunlap@infradead.org, rientjes@google.com, 
+	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, schnelle@linux.ibm.com, 
+	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 11/27] vfio/pci: Retrieve preserved device files after
+ Live Update
+Message-ID: <20261118065653.GE2250529.vipinsh@google.com>
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-12-vipinsh@google.com>
+ <DMOAT4VV939P.2DI8CEOMMSKMY@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261115095503.2922598-1-chenhuacai@loongson.cn> <sashiko-outbox-216668@kernel.org>
-In-Reply-To: <sashiko-outbox-216668@kernel.org>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 18 Nov 2026 15:40:20 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H75pFts2FxZTzrJP+T+M3m3AFzF6pqc5WK_fR0=u-PCeg@mail.gmail.com>
-X-Gm-Features: AclHuK8Di8CaNXtvY2DxNQUZd0T7YfZm_H-Rw4Q8hcNhOtGVQFiP0BTeRQ8jeuU
-Message-ID: <CAAhV-H75pFts2FxZTzrJP+T+M3m3AFzF6pqc5WK_fR0=u-PCeg@mail.gmail.com>
-Subject: Re: [PATCH V2] lib/smp_processor_id: Don't warn if there is only one CPU
-To: sashiko-reviews@lists.linux.dev
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: juuyw5w5wrbytjtop1oofismftrpg4uj
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C435FC0007
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DMOAT4VV939P.2DI8CEOMMSKMY@google.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3C53A180005
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794987632-166153
-X-HE-Meta: U2FsdGVkX19Ru5C/IpdHaQqZaw6rltBq0TykgxO2U0XIO84INNpbicDlm3QFx8Q+xoDeZsE5bkIrWQvZs644u05nAznzGzhggAoW+dfmbe73SorB6xxt8eKTjVjsp+ipp9IP7jgOgupKFTTGIHgbLiHKriVq5gSxZLndMcfbTn3K2aZ8h46Gg2mLIK3VB5sQ3//dgp3DgFmY4QstJYeS/xX7w8nxTDbSXfda2cbJwwLhwfXtUy8xoE/7zf7vDewJnmf6vN9AZyEMz+L1t7Z+w1IZklA8Skj2QyqcrrgQLHxE8aPfI3r5Pcc6uCkb6wmzeQAyqBSOAyMmjkhs9/baqQDsrNsu03fQQS1doB/PxvUVc3AdVXbEsx6Q641oc4qCQlAHaJxiKGaF5GW2F9Taq+qhSkoUGeOveO8iE7MZouPV6xTiexmjdA252VqZoAkFb0ZR75DFgtdJbtNyirLurXbQJhtWX1BhYjdkdcWRIDfvaLzoP7fGHO9//lxJQvlGeotgva9AQRoHbC9bj4E3xPmzqvY7LuhyGS9CkUqe9CN5CTiWQZWNUn8dvKAaqdXJ4cS9IK5+JZeRsDXW52vHqAfJJMxx8VcH5u1KL1hDj6+AjjeYYXHoZd/0bT1uwDv0ty+4a/JSZePH9CpEDJeOtuBksrS3+ZPZXEJr110jcbIkS3VbAMGkbJJ8zIW3bCKBtRNCDfeTYj05BNrMjUQVtJdMnFqSFYv/U3xLrh06H2CQFEhtYliXR5MF1ICz+TdpWphd3+BB7zHxZZ6D+VGiKxu9oG/FKlOd77g4XjeO6mAID0p8Tp0/d4vjU6rL55NEGGbK1lXVBgByOBdvvtYE6yJ/w3UWt/8g+VarDcNUFjLC4kncNUJt/RmDphChIgokEYNTRHfuA27gA9d6HZs5FJFtDHFeQ+exp2z+hhf0SFv+uczaJn3M1dGbKHgY4iL8Kg/TAnouvhQxaYQmhoe
- kQw5sBuF
- Y+Tsa1qvf7ruY7dBENhBWcEEKoHUU4ViJa7isNPcuSKNeDosqk8ZwM6DVr7uXSZ3Yr0fWPqJtnXYZ/5zQcahV8HmGnL0IYIFfi5sqA1G9x2k8DCHSsnBFatlrHgJ6xB6kk0D2wG7zvzMuyRPpKZglqKiqgqmjUOu598eAbEFE36CefdGBy2QzFfSFyC485dvU+BAQW/TSJZ/cg5Ye48Kwiy+EFS4eNVsuZ3pSZD5UsagylSRE+INAii156jzAS/kAjMCREpm5iO9vnFfeoNLKICCw9nMxkrqhMqSJKOMCzZ9AaaEo641Y2HHBkMiI0UVJa/F3yyYDR1q9O4qDWioBo7Z4cd0wSshE+kgzGAbp/2GmJdLdjk+DLegvCza/DXnyvVMOezJvsjkhXCd6q1Qbww+jWGKpqQbj8Dg4nMxswbwAh2bBTzArzXeJyYjUzAqwYW/wg22sl5kccNPgOmWlGb6SnJSxnsQyxIY1
+	MAILING_LIST_MULTI,NEW_PRODUCTS,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: oajxu6upxpmpeb5d1uozqeqsssznkrkm
+X-Rspam-User: 
+X-HE-Tag: 1794988293-867526
+X-HE-Meta: U2FsdGVkX193V4xTF9AEGwfuf1mT1f2LaoVZFVqMshAp9zXSpikKrN1DJr9Kjr+5itcEIEg1+Van+9QjMjg21cd4ciZ6pc3XZzZUQtpYW/eq878qjjuDZ9U3op6U0IHcXvEFN9NVIvckNlmKZgiV0OsZ5AgetwNaZTiaYw+w5MKwZPLvyxKYc+FqEWgpxagtpUqel6CThN7s+E0w/vSfmw+idj5C2+FlKMZQwHLkpAd7ygswpFnKlkCJLhDCsCik+7EEkxFcPuXMcUdJq2fbJ6IwHAl/jOpS9Y62yDzSsZSu0JCBgJ6Wvg4GIueeZowofS4O5KA6rAs0z6N676qvhZvD16kxTbvKRa8f5nNj4AZ4k95Iue7nWG6gPiDxObWotodh2G4gDftr/6waoYBHQpCcrDzLF1ftz/UTyjC60uO1CHD+H31eoIFDzQPM7kye95iu+foh8RovPw/rqTc016Ap1Pn2hHu+ynEYyEyBpt9+LygtjwMmJoqRnlJEMlGpZyyUjoHTQ5PUfE7z7lY7QPqk3KSvj6kXhkMNfvvoTXn3sbtb9p5UppexOHuz9XvOCpojUpwo1MKuXJoXoEEHYI58dWH/dozREwsk6nA5YNg3NWBaYdGRzp9YLLXLWs3Wc0h+3C8dtyZ2nxyxAhurLLQf2RKLiEL8JPkZu/woMd+4gChu5KG1zPpmfEqJPIwdL8I/Sok5RLhVeIBxsu0Nnpo/RtkG6Sa65b7nM6nKitO3tEXu2HjASmsglO1gqVMgg2hd4d4ufalCF7v4e07QyuVpDkEx78lLjfDkmGkho/XDQX0mK34prOh9SiRws9/VT0HkvpVjsnMlVokTc1wPRilEMyyXVlM/AgCMA3HHSwhKLw35ffT4aGbpFA63jJxJYQQXFNt+GV70Hbke44833anftF6sqfFLvflaBCb0EZ62FE8/vpXsk4rhZ/MfPCGqwc4XD/2i5tb424OwAsH
+ 7PI7iQBG
+ LOjovlEFnyY0dlYLCgsXvxKZWszPys6aDf08w2bQ8Wu6cWYnAyawpLo0j137Iu8+B3Sf5jD4InkmMlA/NBY7cDuLh5BMrD8jUWoOKJv1aX0OwxM02qgY28TSuQ82IC0Dll3L8VKuzyj/fuRKG6WXG7fw5VstI/E7bl2keNpleeB3CvgzoQyTfyGad5WUus5TEhrhjewkRZqTZrLqstKOQaYb/pB1Qzku3FjAsUWgvv7KC/TLmu02eWe+t4zIVjnAZAj6gqvPWo1SxWNrq/ViVvMOiGoe/BQP67xF19kktN82J01US8uZmXjLz+Q2q6xdOOVJYFAycATi+jymB1OkFP7AJA+RKyjAnHlUdawQXgm76diRdZF2MHuSxZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,133 +137,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi, Sashiko,
+On Fri, Nov 06, 2026 at 05:19:28PM +0000, David Matlack wrote:
+> On Mon Nov 2, 2026 at 3:36 PM UTC, Vipin Sharma wrote:
+> > During retrieve():
+> >  * Validate the handed-over struct vfio_pci_core_device_ser header,
+> >    sizes, and flags.
+> >  * Locate the registered vfio-pci device matching the serialized domain
+> >    and BDF (requiring device->ops == &vfio_pci_ops) under the device
+> >    lock. vfio-pci registers the vfio device before its probe completes,
+> >    and the probe holds that lock, so a device that is still being probed
+> >    is not returned.
+> [...]
+> >  * Open and return an anonymous VFIO cdev file via
+> >    vfio_device_liveupdate_cdev_open().
+> 
+> Here's an idea for how the device file could be created on retrieve,
+> which I'd like to hear your thoughts on.
+> 
+> The patches from Pasha at [1] lets userspace pass a
+> file-handler-specific argument to LIVEUPDATE_SESSION_RETRIEVE_FD. In the
+> next version of the tmpfs series, I'm planning to use that to have
+> userspace create the file and pass it in the argument, and the kernel
+> then restores the preserved file into it.
+> 
+> I wonder if VFIO should work the same way, e.g.:
+> 
+>   struct liveupdate_vfio_retrieve_arg {
+>           __u32 size;
+>           __s32 fd;
+>   };
+> 
+> Userspace would open /dev/vfio/devices/noiommu-vfioX itself and pass
+> the fd. retrieve() would check that it's an unbound vfio-pci cdev file
+> for the preserved device (domain/BDF, noiommu, incoming, cfg_size),
+> attach the incoming state to that file, and LUO would track that file
+> as the retrieved file. VFIO_DEVICE_BIND_IOMMUFD would then take over the
+> device as it does now. Since VFIO preservation is new, the argument
+> could simply be required.
+> 
+> I think this could get rid of some of the special handling:
+> 
+>  - There'd be no need to fake a cdev open with an anonymous inode, so
+>    PATCH 09 and PATCH 10 could probably be dropped.
+> 
+>  - retrieve() wouldn't need to look up the device by BDF, or reason
+>    about racing with probe under the device lock. If userspace was able
+>    to open the cdev, the device is registered and probed.
+> 
+>  - The device file would be opened through the normal cdev path, so the
+>    usual permission and LSM checks on the device node would apply.
+> 
+>  - It would be the same model across file types.
+> 
+> A few things I think would need care if you go this way. The file check
+> and the attach would need to happen under dev_set->lock so they can't
+> race with a concurrent VFIO_DEVICE_BIND_IOMMUFD on the same fd. And the
+> incoming state should probably be tied to that specific
+> vfio_device_file rather than just the vdev, so only the file passed to
+> RETRIEVE_FD can take over the device.
+> 
+> It would also change PATCH 12. Opening the cdev of an incoming device
+> would have to succeed, so the check would move to the first open of the
+> device instead: fail with -EBUSY if the device is incoming and the file
+> being bound doesn't have the incoming state attached. That one check in
+> vfio-pci would also cover VFIO_GROUP_GET_DEVICE_FD, which opens the
+> device right away, so vfio_liveupdate_incoming_is_preserved() and its
+> dev_is_pci() special case could be dropped from the VFIO core.
+> 
+> The next tmpfs version will also add a way for a file handler to say a
+> failed retrieve can be retried, and a helper to claim an existing file
+> before restoring into it (so a file LUO already manages, e.g. one that
+> is preserved in an outgoing session, is rejected). Both seem useful
+> here too, e.g. so that a mistake in the argument (wrong fd, an fd for
+> another device, an already bound fd) doesn't make the device
+> unretrievable. I'll Cc you when I send it, and I'm happy to share the
+> branch before then.
+> 
+> What do you think?
 
-On Mon, Nov 16, 2026 at 5:55=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [Medium] lib/smp_processor_id: check_preemption_disabled() skips
->   checks on !CONFIG_SMP
-> - [Low] lib/smp_processor_id: missing Fixes trailer on stable bug-fix
->   commit
-> --
->
-> commit 62cd1e08e5d017184a1415887d93a1188fd3f001
-> Author: Huacai Chen <chenhuacai@kernel.org>
->
-> > lib/smp_processor_id: Don't warn if there is only one CPU
-> >
-> > When CONFIG_DEBUG_PREEMPT is enabled on a Non-SMP (single-core) kernel,
-> > calls to smp_processor_id() in preemptible contexts trigger some false
-> > positive "BUG: using smp_processor_id() in preemptible" warnings, which
-> > are harmless noise because the process always executes on CPU 0 and CPU
-> > migration is impossible.
-> >
-> > Here are some of the trimmed log messages:
-> >
-> >   Call Trace:
-> >   [<9000000000d33e28>] show_stack+0xf8/0x1c0
-> >   [<9000000000d2fdac>] dump_stack_lvl+0x4c/0x78
-> >   [<9000000002456fc0>] check_preemption_disabled.isra.0+0x100/0x110
-> >   [<9000000002456ff8>] debug_smp_processor_id+0x18/0x40
-> >   [<9000000000d31118>] init_cache_level+0x18/0x90
-> >   [<9000000001adbe2c>] detect_cache_attributes+0x4c/0x640
-> >   [<9000000001adc44c>] cacheinfo_cpu_online+0x1c/0x310
-> >   [<9000000000d5ae04>] cpuhp_issue_call.constprop.0+0x94/0xd0
-> >   [<9000000000d5b278>] __cpuhp_setup_state_cpuslocked+0x208/0x320
-> >   [<9000000000d30148>] do_one_initcall+0x68/0x200
-> >   [<90000000024711b8>] kernel_init_freeable+0x1fc/0x294
-> >   [<900000000245824c>] kernel_init+0x20/0x134
-> >   [<9000000002455b54>] ret_from_kernel_thread+0x24/0x1d0
-> >   [<9000000000d31650>] ret_from_kernel_thread_asm+0xc/0x9c
-> >
-> > This warning only exists for the !CONFIG_SMP build. This is because for
-> > CONFIG_SMP cpuhp_issue_call() invokes callbacks in cpuhp_thread_fun()
-> > which is a percpu thread, but for !CONFIG_SMP build it invoke callbacks
-> > in the init process which is not a percpu thread. And there is such a
-> > skip condition in check_preemption_disabled():
-> >
-> >     if (is_percpu_thread())
-> >             goto out;
-> >
-> > Since there is only one CPU for the !CONFIG_SMP, we can simply skip the
-> > warning if (!IS_ENABLED(CONFIG_SMP)) in check_preemption_disabled(). Th=
-e
-> > effect is partially reverting 570a752b7a9bd03b50 ("lib/smp_processor_id=
-:
-> > Use is_percpu_thread() instead of nr_cpus_allowed"), because now in the
-> > UP case nr_cpus_allowed is 1 but PF_NO_SETAFFINITY is unset.
-> >
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
->
-> [Severity: Low]
-> Since this commit is tagged for stable and addresses the !CONFIG_SMP
-> behavior changed when is_percpu_thread() stopped unconditionally returnin=
-g
-> true on UP builds, should it include a Fixes: tag such as:
->
->   Fixes: cac5cefbade9 ("sched/smp: Make SMP unconditional")
->   Fixes: 06ddd17521bf ("sched/smp: Always define is_percpu_thread() and s=
-cheduler_ipi()")
->
-> > diff --git a/lib/smp_processor_id.c b/lib/smp_processor_id.c
-> > index 94b3f6b195388..be079b9085045 100644
-> > --- a/lib/smp_processor_id.c
-> > +++ b/lib/smp_processor_id.c
-> > @@ -22,6 +22,9 @@ unsigned int check_preemption_disabled(const char *wh=
-at1, const char *what2)
-> >       if (is_percpu_thread())
-> >               goto out;
-> >
-> > +     if (!IS_ENABLED(CONFIG_SMP))
-> > +             goto out;
-> > +
-> >       if (current->migration_disabled)
-> >               goto out;
->
-> [Severity: Medium]
-> As reported by Peter Zijlstra on v1 [1], does returning early on
-> !IS_ENABLED(CONFIG_SMP) disable all CONFIG_DEBUG_PREEMPT checks in
-> check_preemption_disabled() on UP builds?
-As I said, the effect of this patch is partially reverting
-570a752b7a9bd03b50 ("lib/smp_processor_id:
-Use is_percpu_thread() instead of nr_cpus_allowed").
+Overall, I agree with the strategy. I think VFIO cdev retrieval should
+happen as the flow you mentioned above. I want to hightlight two things:
 
-I think 570a752b7a9bd03b50 is mostly optimising the checking of
-CONFIG_SMP, so partially reverting is acceptable?
+1. This will lead to lot of code changes happening in vfio core. This
+   means VFIO PCI live update code change will spill in vfio core.
+   Should I create a config VFIO_LIVEUPDATE for VFIO core code. It will
+   not be visible menuconfig option but selected when
+   VFIO_PCI_LIVEUPDATE is enabled.
+2. List of other inflight series that this series will depend on is
+   increasing. It will be 3 (reset function, pci saved state, and
+   restore into fd).
 
->
-> check_preemption_disabled() also backs __this_cpu_preempt_check(), which
-> guards non-atomic __this_cpu_*() read-modify-write operations that can
-> still race across same-CPU preemption on a preemptible UP kernel, and
-> suppresses warnings for smp_processor_id() callers that would be broken o=
-n
-> SMP.  Because !IS_ENABLED(CONFIG_SMP) is a compile-time constant, this
-> also turns the remainder of check_preemption_disabled(), including the
-> current->migration_disabled check made unconditional of CONFIG_SMP by
-> 2885daf47081 ("lib/smp_processor_id: Make migration check unconditional o=
-f
-> SMP"), into dead code on !CONFIG_SMP.
->
-> In the reported trace, init_cache_level(unsigned int cpu) in
-> arch/loongarch/kernel/cacheinfo.c already receives cpu as an argument but
-> reads current_cpu_data via smp_processor_id() instead of cpu_data[cpu],
-> while cpuhp_issue_call() invokes the callback directly in preemptible tas=
-k
-> context on !CONFIG_SMP.
-Yes, cacheinfo.c is just an example and can be fixed in other ways,
-but that doesn't mean this patch is unnecessary.
-
-Huacai
-
->
-> [1] https://lore.kernel.org/r/20261111170600.GS1779021@noisy.programming.=
-kicks-ass.net
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261115095503.29=
-22598-1-chenhuacai@loongson.cn?part=3D1
+For '2', should I send v7 without changes you are recommending in this
+patch and future version of this series can transition to the approach
+you are suggesting after LUO changes are landed. VFIO liveupdate series
+will go through more iterations, so we will have opportunity to make the
+change. WDYT?
+> 
+> [1] https://lore.kernel.org/kexec/20261103010216.3447716-1-dmatlack@google.com/
 
