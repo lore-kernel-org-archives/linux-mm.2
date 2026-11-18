@@ -1,126 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31EE0606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 10:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F190C606A332
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 10:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SwiATUi5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PKvEfQ0c
 Received: by kanga.kvack.org (Postfix)
-	id 3BC496B05B0; Wed, 18 Nov 2026 05:34:46 -0500 (EST)
+	id 1E8A86B05B3; Wed, 18 Nov 2026 05:35:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36C986B05B2; Wed, 18 Nov 2026 05:34:46 -0500 (EST)
+	id 198BE6B05B4; Wed, 18 Nov 2026 05:35:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 283B56B05B3; Wed, 18 Nov 2026 05:34:46 -0500 (EST)
+	id 0881F6B05B5; Wed, 18 Nov 2026 05:35:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 008DB6B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:34:45 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8ACA0A80AB
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:34:45 +0000 (UTC)
-X-FDA: 85447881330.17.83B763D
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AEE82160004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:34:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=SwiATUi5;
-	spf=pass (imf08.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DDDF16B05B3
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:35:12 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7CE881A06CE
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:35:12 +0000 (UTC)
+X-FDA: 85447882464.04.E4E9FBE
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BE06840005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:35:10 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PKvEfQ0c;
+	spf=pass (imf17.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794998110;
+	b=TE7plsGLFz3PLwmy2ideZjsUvhK9XNmi9ZQ0XNOGs/hhtdSVvZeo0XWlRIWTkgFzSd/YZh
+	wBOHCtTXcrSulhFwcM71qMMHmjmmZStcGJvUVOyKAFVfVNLioasW8JiV1G3dekPUOhaMEI
+	oLGzbwAta/qb6j2ygcVhiryCKJZ6iJE=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PKvEfQ0c;
+	spf=pass (imf17.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794998083;
+	s=arc-20220608; t=1794998110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VbnsRzldWLp5RM4Wbi+k8602uEkMWd5FOiwEB3P+mX0=;
-	b=WHCbEoLkoffwKAhRCUpSDsffTxIRmiQW05qxAENvLCTuCYsKsGlfbRzd1g8Ph79qtL2E8Y
-	q0KxD5l8NJ6woWqsla5iZ1VOggoEXiEkiNJRud0W3kCFLwpSaLHG6qQ+aQEZV83yGriTr0
-	v77seyLkP/5VycIjhloIck5QG9lTSEQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794998083;
-	b=ZuVZ4lpyXbrunrEpNU2EivAgFb4iNq+YcRdZly+qvFMyDy66gaV+03ild0tX342zx3F40U
-	BIot0HjxsU/QlTXD3DPhEsUj7AQ2FWMAAQiUBZimw7/ovSfnQJJ4xHk658+x4OOUHXjvZ0
-	avpwcc+wVq2VujJl/WIZ11U/BgCNuLA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=SwiATUi5;
-	spf=pass (imf08.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2ed408b0d0bso3794975ad.0
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:34:43 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ul29onCED1G/GzZehDklBOv4YKtGEiuVI0wtuD2b89k=;
+	b=qnWe43xV5D9MLX/h48Rks/2wXHfsuiKP7+CoeC6g5ZOJk+p9THssAkHyFsGHRV7fwqPzCR
+	ra54wJZ6uANEmY12MOs4rDeO5uNmED7TdTRJKGiGXHWO8KQ3r1Sdig7hR3iaViUXsw/v5f
+	ThOmlIXM2FTqwYcfi+0yf4T5SCGLZ7U=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e987a2ba0cso5508385ad.3
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:35:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794998082; x=1795602882; darn=kvack.org;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=VbnsRzldWLp5RM4Wbi+k8602uEkMWd5FOiwEB3P+mX0=;
-        b=SwiATUi5SQ7r3vyZ3+qm/ZtYxqlDAObysCSNgGf00zpio2kNolKZez4/Go09217s3n
-         LXUiQyUSppe40sUyOWevjRhEck8rnEM3RliKsAHL3QcBJ7BvJPDb6/1XQ0FcZ4rA/T8m
-         Oki9lhH+3hyEo4KpUdKa9IsSHqq2gsCSyUGxD8LPSKjkMckQxYRcisGtbEffyshotwD5
-         pqoqlkYsp1UnRKYYEl/dzoaWnl5PSftbyH3udbVYi0kgCxQ0oEtuBxUG1UqLTKJOivYI
-         Jjh0qfiRngOXJmC+Xw033MGUCrRyDxh3UOyObE7PsJRjPG2UU3aAO4M9xx985/Iv1rA7
-         ksNQ==
+        d=gmail.com; s=20260707; t=1794998109; x=1795602909; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ul29onCED1G/GzZehDklBOv4YKtGEiuVI0wtuD2b89k=;
+        b=PKvEfQ0ckXvhNdcFg6HgY2QleIBW7VykpHVIAfRehtPuPzxP1gHDOuGZ1uliBQN9WK
+         dGSD3SC021y1xeg71bSr3s+iXldWZnIt4/tQoSu4e4z/uPQtagDtwx4N9Y2TKrO+49wB
+         1I8RhFHEdA1YXGETA6O09Pg3G+QY9jEUEAhoUhegHrzuMjNGIL5dn3qcm9RUvlfIvF2y
+         yH4JqIsa5AoYniMFzb1D54YjNhBEI97YeGJL5yC3srUiq+taS5iC0dox6Ey+DYFMUaUZ
+         8m7FYo0swpHxTNccTB8LSx4NgfLhGXs3lfXwB9tiOsg5YQKN/Ub5/UE6QFFSBkjuesjh
+         Qhsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794998082; x=1795602882;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VbnsRzldWLp5RM4Wbi+k8602uEkMWd5FOiwEB3P+mX0=;
-        b=MJUHz3DMFB8Rp0yoCiL41ZI9kBdTS0ZzPoVKZRURCTt9e2GcAWNZe3hvMSbzr4dExp
-         nIxPokWHwCKV3ZeO+N+In9beQwLC8mRoRCnFDnj7yHQpHKiuU7rE3NgDJ6lWDIaCwhZj
-         +m+IslCsU48DFrm2+QreznrHVfKfOUOSgR+8YR5hPmVxVOAsAsbgG/t6gr7lZrSeHS5A
-         C5G1ITKqHrVPowWeMcQIw0jqLMudOgvhqUporR2VEWm61f7xncj2ZMh1PSOfz0Z8Cczu
-         c87ujfv7uMBACo4d1JnOPSrnjDU+WqLW8FmEVkFB8fr8rvjEFNjTEfmGR0gilJdBDEHd
-         aurg==
-X-Forwarded-Encrypted: i=1; AL+hErHvpX1ua1hs3jVIuaobnmzL22/kxE/9Wma0T12xkzZir12/gB9BW0Udr7hxFWmHtMI/k3B+ZSfbpw==@kvack.org
-X-Gm-Message-State: APuU4Z+TWrsLYe21Y/paVmPjASa2UpIcI0E6lduL+EaonbV9LmkRaZy6
-	Sxnpt6Q7ngrClTzYPhx6TMYxt+TmqDGis9NGafy4lyrORy/10MvzbhaS
-X-Gm-Gg: AZFdTZfTBYTFGHaKrL/dk38HPnZxxhIARdbLSgBWtshlUS6o0XZ2vZX3Sa4xN87zso5
-	xi7ZCkO3EuMo7VfTX6FrUNXzGrN+d8a+kRA6M5uIyUoXAu4RraX+vMKQrNcZnJ52KwP4jxFriA2
-	raIPgu1S+aA3mgeT1ah22MwhV+lr2nu76i/6+twbxJNCdQxcaCmlmH0WMfpxDrkrBxuiYSjD5BW
-	1nc2Ph48IjTLIWUSWsE12xQAM3+kiFcrqIQbBosPiwoUln6SxzDUfSv4ocWfJbyl0AvQw/na8yC
-	RcsnI5N79gSsjUqDhu6IIvMqSwJkK/3QOsgiCffntpE1sQRyEKfZA0yOvawDXfiDfH6Yz0FJjnd
-	JlCRYtaSoxEI4VK/gnxPNBXYVuyE7rcF92Y1ELx4DfSEcAxkVfUb8jikKwxOMr5Q+PMOYkTFwjT
-	8/JS/hNhCGYScjFsFipkaVrUVJ1QKmyvMDcJijNSDH2ZXVVQBk9Tiq2beZ0aqnzCUi6ydVU9e9v
-	rKbUj8O4HBHKQrODg6Z1cWsq3cQ6Us/IgL52lAvF7G+u4YTKT6FvLOWKKH+79FnZtd35yPbnoKH
-	UTiDULBQbIesxE3f6oHaV5HG+qMmcVIvHVCsQtWsiFJJ+JMAu4rbCuOnc+Q/DH1GCOr9Y1pVOXa
-	NukcP979vDtS76ezespx+ZUDX58r9Kk6piQbGmlh/JBX81w6VwGz1yk1PcFoF99quJuZEFz9js8
-	Rku4Zd+xBg
-X-Received: by 2002:a17:903:1ae4:b0:2e9:6333:fbb7 with SMTP id d9443c01a7336-2eff756dd79mr21077005ad.51.1794998082258;
-        Wed, 18 Nov 2026 02:34:42 -0800 (PST)
-Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eff6184152sm10914405ad.35.2026.11.18.02.34.35
+        d=1e100.net; s=20260707; t=1794998109; x=1795602909;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ul29onCED1G/GzZehDklBOv4YKtGEiuVI0wtuD2b89k=;
+        b=t9Zeav8CGkGArzYGRfErZFjnSW8PBu5NrZfelKIOEaqB9zgZd5LaT4Pp95mIt60ycE
+         FpTe4GRKr7d6iIcRsS/Bm/LLU36qhMjPWHlI5dHu3OA1NF7zKeyk6Td+GRpP7T9/g/nE
+         YKrffzScG3HxFg1FcpGpGqG+Q+JcqvhbFp+wYD6HKd6/Y63s5PDxuC0Rgne+3uXOqc3d
+         T+GOobs6AbV0kZkh9xy1nJvKdKXG57SUYsRa26denfGMQuZrUN1rItduU7N3XLUM/mjC
+         7kfPsueyMWfv4k08KixOZiLL/DuT11HD81mD4CmXA5nVQZaVXrZ6SbAOA34an3wRulgM
+         ZWIg==
+X-Forwarded-Encrypted: i=1; AL+hErEjSpTdffMnTz7GjIZCXBq2ibRU5uvGepP1y6J1PNM8wJ9YsswiXqIoP34F7lHGjQerh7JVB9LKvQ==@kvack.org
+X-Gm-Message-State: APuU4Z/UixoO7LE9WeSHDQqKWa40Pcr5en4a+ArFmuqeB7jcEuhus/LV
+	NZChyBa0fPXoNt4q1kbNd9NansNLa8sZ/Ukxozm71rLxQ7TT6CXJHq2G
+X-Gm-Gg: AZFdTZdc4VfA3/oMynsezqBO67h0+Twzwhv8FN87qYD04+jES2R1NJu323fSeTmBBgL
+	YAT3eP8ywa3n9aFOWgwZLvFCDdlZT51heGxGiJgmOxkVjmee1alrGqHVydUzGccLOjv0VT0q2pu
+	nKZ53PQWHlD07OC299uOwOICmFhdeSxICgimdSSUQe06XAWKHazRZDGeKlq2XrrGp8vdh0TkoED
+	V2t35nXEb3oTBXZFb43P6Gz3nLdBPUf4Q4INSQ0SvPxWFf2UeWKuYyJEiqrF7lPaIzvP6CuD4zE
+	lDATtoHrX56FE7tPXOcM5N9cKElk/dypr3ZGL4v0Ay2MtZjG8jlK8m65ugPczVUrkzR5JIEAGYq
+	EEUwwFvEOcGRqhQaRprg5aMAMnXhp49ImmTaIKIoWJ2CF9FLPLPlSGkB1piEXdwFvejWgP7+rYv
+	SsDHB61fPBU67394FDY1j5zTy2TSttJUuK4GKiiq/+jLlzriJkwWhcCtZgkyNWA36fWDbCWK+AC
+	S52k9d2apK78y6vp1G/ajO+T6p0FQ3nx25v9D8Hy69F/BQ8RJJNV8diCUV2YPshfApDd+K9xqZF
+	6WRAEqfI5adc8r0fbCMeWJG4XnqMvsa8UvxQFachIUlMHWdaQceRX00I6pjU31Zx+E2rdlWM+y+
+	7zGhvo00mzzfVP4ohrEyqQbFVxDs74PuQCHzw2SclWIkj
+X-Received: by 2002:a17:90b:39a8:b0:3b3:b0f4:1beb with SMTP id 98e67ed59e1d1-3b3d074d68emr2305361a91.16.1794998109533;
+        Wed, 18 Nov 2026 02:35:09 -0800 (PST)
+Received: from AHUANG12-3ZHH9X.lenovo.com (static-ip-4-78-56-61.rev.dyxnet.com. [61.56.78.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3d1acd118sm3757904a91.12.2026.11.18.02.35.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 02:34:41 -0800 (PST)
+        Wed, 18 Nov 2026 02:35:09 -0800 (PST)
+From: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	ahuang12@lenovo.com,
+	"Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
+Subject: [PATCH mm-unstable v2 1/1] fs/proc/task_mmu: avoid spurious seq_file warning on interrupted VMA lookup
+Date: Wed, 18 Nov 2026 18:34:21 +0800
+Message-Id: <20261118103421.776-1-adrianhuang0701@gmail.com>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] mm/damon/tests/core-kunit: add test for
- damon_call()
-From: Aveline Noir <jm5905938@gmail.com>
-Date: Wed, 18 Nov 2026 21:30:04 +1100
-Message-Id: <179499780488.5.13594313574604410531.b4-reply@b4>
-To: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
-Cc: damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- sashiko-bot@kernel.org, sashiko-reviews@lists.linux.dev, sj@kernel.org
-In-Reply-To: <20261118063755.37749-1-saileshnandanavanam@gmail.com>
-References: <20261118063755.37749-1-saileshnandanavanam@gmail.com>
-X-Mailer: b4 0.16.0
-X-Stat-Signature: 3ndisk5okgjjrr9ybuq5bxkzy4uzryat
-X-Rspam-User: 
-X-Rspamd-Queue-Id: AEE82160004
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BE06840005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794998083-638199
-X-HE-Meta: U2FsdGVkX18KvwShZYgwyIOzxpf6qWIJPXBuHumHseUnkwM583bTZhDSRrZkrfZXdU+aoU6yRojz9bV/pR7R7NF/RkLmgFK3CqqG0aJDX6X2prtM00sa54tkJ5Gylb3gvy6nyHSxvpu5pQ/hUCPEE1yMtTkwmXBS439hGPpb8571bDkp8VZgL4KqBEHzSItrwxvSR8EXI9c1JZeTFSLu0F6VBU3Qf7NY293DcwAxvJBzZMU7hcjw07WYujij4V/S36yzIIemzVi51UPcO57crYEUoT50zcpfPUA2TvFhOoZCEvoHgta6PykwEb2MOwzQBpNslfGqfIs/c4cIeeBoUiGweYSG3vfAX8P2J6j5Y+kGnexzAp9hr8b+N4L5033TCDIVIRTJRGnUZI4WkOOI1SZjIKWkBBnJ+3UB8ttW3dh4l7DJOB8izhgNCbfJylIdCObz9CLpjisKhjNwNLwa6jLz0zKdFsaPHZMXfZcBhq31o+tDz8Lz/P9ahuLSUyuNvUqw1gAG+H/YJi7i+DZuq5gXX9hMVEUelnRTh8xu2aijNHu2YiwGiHz3yea3YLWlXPuubCAycVIy2jG5adlU4bc1iH6juU/GQnV6H8yO3jVcB5zNXLX1kXmyZwbJuziVxNG6kgl41Zn95LxndsuyuPh4EodCeMrPAKE3LjCr8knjigNy8qR+1qTOV6KhHqSZZgxhki/mvgss2Kkba997O8EkasNUNqGGX2kW4kaewAqWnssOqcAVdyIDD6hw+6UQ9nfSfr16pt/kHm/I2eWgN4hwYjSyHVovs8AzzqAEuoNipxJ6QF+r+QMwAnw8a2GMC9zJTDEzO5a/dX7VnZc+MEFgXS0iBi9WocrEEx1z+k2hJHnj0E00wnFe7/2zq3xM8m2KmrDF887niOaEuR4T1+Xce0SYj5nv3RtvZsVee/gjnX47YTfBI86OCPJOwr8fbfpQ0fCiu0CqIH2ryqJ
- 5aUiJx6o
- Fj39Lecdj+morNky1YOKZayILT2VzgWUPwp1gGvjCQOM/d9VaTqIdDjNZ+e1LsH+ouO11w4Gs4LbTMOsRlQxAMErv5ZQ/Mc5rky/dGmdFrQQyBxrQkWqP5MIVVZZqJBqp72c7DpgQ27tn5mp8AnPK+EcoHlQTJ3ySlhvWP2aSnh5UfmpU/x7XMcZ3XQVOE5hzPeVd7f07x/Kf0l0xiwTEjTjMtPQr0nI09L9w3RD1cLLTwO4pe4P4vwEvgk/gwH0ZFUINniiPu7qI8kItd+uQPRDiulY7ETB2pBSbyw0/azoiBNtDWv/zk9fkWKpB6fcS4+aaNqMnj1bv3qGhCjBYVIoAPIyl18qn2MCc1Uike9RgwQqztVLMidSSy7XNmHnry6a1fcMdh4fjfEXzGPcjlcF4T5gEa4CnrEGkbr9C0hFTDF6/nUtFzzrVr8khwlaLYTZC3u/f+I1V4f/Fkibavyrz7MCeTvk0VTVpHIw2qmsjZEPfUR2jO9C8cuCmULrMzSiE
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: r7fqz3w3u9c1yi6gwwmmr3ydzcb1m6am
+X-Rspam-User: 
+X-HE-Tag: 1794998110-392530
+X-HE-Meta: U2FsdGVkX1/VBwPU839FOfyXGXS6uxxIubcIZ2etUbav+GgYMRJJGRtX6cCsrRBfItpnud7Y/HC75Vb49JtDG8VQfztxYJ0/3WGOL/m2xVjTDUso8dUYhVS/QOicDphDrPBhUXo77eifO4ATapX9LKt6ZD+OXKKrrJ6VBelN8gNgRF5eMF7ZQuxWWFIgdbAwguiT0dHfDjE3UVMrZ1XFh7hRYuzC0FdWmO/gTsd0WwELJb5IjmoM9uioMk+YopnuQboS70ud+ACMVMi5J+Z9D3ANu7dVA654bXQEoY95Hgct8dE9FHcPMQPDdLjTIS698lRs4jMkfIy5vrh3JJ4Pg8ngrLSQJXH+HjdAvZNWK2UJQDEhNvZKKi7TNPMzJM13boN//IPRCzhvDvCSuobqmxsngA45IStwR1RWZoRD2MO/RUr590hhQRRIOKlqQJgL0SZvLzzB58A0dJ0lb5cc7o73ZgrnOORWmFNO3H3UERvSF0Qqb8ouAp5McJtF1xQPxpZwtTyhmNPv3MgJDDP9cx2f4nfqi4mhfd7onYVCimq3HvZvJqXo0HXZcUrgPKJTgiYJVQiSWs2anfBJuuWF2UGctWQ41v6TMHPgzFb/h8NsPC7yqo1SEWjhVweD53g8PuQcY1BYOUaUDcHCyiGXite8k6MMgyY6pgVgSu0WGq1yz/gpogwyAH1i9rGv9vtR/0a4pDFUvC6d34f5QevaUHOep/J/zWtZVIytwy5TK9f+4Ql43rCgd5fc8k9VyOHLY3T4pYGHiK42ZTzP29BB+drGyrsNEq0kPKat3QWQPG+O/WsYIaBzxW+7j7c9e0OM8CCfhAE7j2r1MoefKdaIrfkAvFm76aSsuHCsD5c+CA6OiNwGnuQSzxOh3AXnZIixD+BU4lxk8VzudIUej8juF1q5pGqIUPZ1VzUGffbHrKliYjK++IhjEZpgG3L27kScY6HQy/eL0+oLZlAHVgc
+ nIU0gkno
+ ZhODo7LMxK47xKlzcHh2i5RLac0ZcRF8Z9uEu8axilvuxukiUoIptF+32xY3aXwewZ2gYp1rwl2BQ0ZV8zjF06Y3Ek3iXqh3enSZ025OkQ2IHRjTbs96hzRt96n6g8f4eDh5Yx0dL1P44omUvFZA3tBEn+uv4TUZ3iOJHRlUTJA2FnQumDYx/sGiKir7xWnNAhlbnPQjodx1YRXsO1/M/8yDFGA5DzgIYIpKt1OdcoGTcgQUl30fuj3J6UTTliNHqugRwGlw/n93fJ2sU9ifxUkupUAEMGIar6FjQLKJEEk4jGN/bTt+/eIZY4tloo1rzsONwQWUKxbanYi36nvfNbcjLRTRpK6AaCfdjjX5NSCoOk9EZGzwvqEku1cq/yw5wHEwvVgOB53oX938BXTUpcimNfGqhE0dO8BfQGcSu8VJLd1J3NcKa48BNYG/cZ082uINHspmPBUIcSe6FTBL7I1s7IlHiFusbNJqQ1+yCWSRzuQA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,20 +130,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Sailesh,
+Commit 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under
+per-vma lock") introduced the possibility of returning -EINTR from
+proc_get_vma() when a fatal signal interrupts mmap_read_lock_killable().
 
-On Wed, 18 Nov 2026 12:07:55 +0530 Sailesh Nandanavanam wrote:
+The issue can be reproduced using stress-ng's VMA stressor, which reads
+/proc/self/maps while concurrently modifying VMAs and periodically
+terminates child processes with SIGKILL. The reproduced command is:
 
-> Add a kunit test for the two cases.
+  # stress-ng --vma 0 -t 60
 
-Make sense. Thanks :)
+When the VMA lookup is interrupted, proc_get_vma() returns an error
+pointer without advancing the position index. Consequently,
+seq_read_iter() emits the following rate-limited informational message:
 
-Tested v2 on x86-64 QEMU with v7.4-rc3 as the base. All DAMON KUnit
-tests passed.
+  seq_file: buggy .next function m_next did not update position index
 
-Tested-by: Aveline Noir <jm5905938@gmail.com>
-Reviewed-by: Aveline Noir <jm5905938@gmail.com>
+Save the current position in priv->last_pos before checking the VMA
+lookup result, allowing it to be reused by both successful and error
+paths. Advance the position index when returning an error to avoid
+the spurious warning, while preserving the original error handling.
 
-Thanks,
-Aveline Noir
+Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+---
+Changes since v1:
+  - Simplify the error handling and comments as suggested by Lorenzo.
+  - Clarify the fatal-signal trigger and the cosmetic nature of the warning.
+
+ fs/proc/task_mmu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 22361607020d..564e52f7ddc6 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -216,16 +216,17 @@ static struct vm_area_struct *proc_get_vma(struct seq_file *m, loff_t *ppos)
+ 
+ retry:
+ 	vma = get_next_vma(priv, *ppos);
+-	/* EINTR of EAGAIN is possible */
++	/* Store previous position to be able to restart if needed */
++	priv->last_pos = *ppos;
+ 	if (IS_ERR(vma)) {
+ 		if (PTR_ERR(vma) == -EAGAIN && fallback_to_mmap_lock(priv, *ppos))
+ 			goto retry;
+ 
++		/* Advance to avoid spurious buggy seq warning in dmesg */
++		(*ppos)++;
+ 		return vma;
+ 	}
+ 
+-	/* Store previous position to be able to restart if needed */
+-	priv->last_pos = *ppos;
+ 	if (vma) {
+ 		/*
+ 		 * Track the end of the reported vma to ensure position changes
+-- 
+2.43.0
+
 
