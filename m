@@ -1,93 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1FB606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2776A606A336
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BDJGyrGl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E5OIPJD4
 Received: by kanga.kvack.org (Postfix)
-	id 8F4586B05C3; Tue, 17 Nov 2026 21:22:38 -0500 (EST)
+	id 25CE46B05C4; Tue, 17 Nov 2026 21:22:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C4296B05C6; Tue, 17 Nov 2026 21:22:38 -0500 (EST)
+	id 1BF9D6B05C5; Tue, 17 Nov 2026 21:22:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C8376B05C4; Tue, 17 Nov 2026 21:22:38 -0500 (EST)
+	id 0D51A6B05C6; Tue, 17 Nov 2026 21:22:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 491D16B05C2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA7136B05C4
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:22:38 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CFB974061E
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E4EE12063F
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:38 +0000 (UTC)
+X-FDA: 85446641196.12.A6E84B1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C3A2320008
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:36 +0000 (UTC)
-X-FDA: 85446641112.14.D17D053
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 480F440006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BDJGyrGl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E5OIPJD4;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794968555;
+	s=arc-20220608; t=1794968556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZoY4hnFbJ5g7c+Vl7aZxcV0uXn6NxmdIonYYm4S4XhY=;
-	b=PzAWaNJbtSzBQSScnYdALiWvc5OZCWUe5oh5fFvQw1HBFh+35Jj+JwwSDKLy6SU8Ug4YEg
-	DnyuZ0y6ZUW7ySXi41p9eQRMBtTY4XDtwsgq1wSIZMV+cQ6ChUy9U0sNoNg2cQoaJy3QgP
-	KxnaS8XN8/AuMcmt9ePTJ+eEs+NVvqQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BDJGyrGl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=+3VuRAkKYe8EHkp2JgLASOtjfe+EnSMbvCKOCwj6jzs=;
+	b=CMOi3hGEUtqRV2/wbSHyxW/S1Q6U+IEXgUu5L02yNvo8cJHkyUQdlI3+Rc6chgN16oCeqR
+	j5XwurCy9q9iuMh3JfbDu7q601jRUO1jUScyt4s7dzo0MWuF1PqUZrFETPtbxTMEZJg8AJ
+	aKTmMZlxZ6nWXqVdqGrdbZRqsAsa/rQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794968555;
-	b=x9+4PAdy3A1dMjid8QmnVUohkFO3NHGsqIIQKpkWrkW0HdU6ff9dWHg/ypFP4JQG7ysFvv
-	VYMX+QWmu2J2NwK7w3nVJENF6YLXgeUfaN+P5myWoFZJ9s+WyDSsyZV2DcVgQbwNeK0Ui5
-	uBIszzpugXb4f4LPXOzVFsDFzTIV5Pg=
+	t=1794968556;
+	b=6wLfAoG4h7vCszRqg0DWyXeZzcPz6kZOhDnQ2yBTe/uvR43BhnHj4YGalQLpoqFs44xSMU
+	eGXPIr38XgkLbhL8jzzKct+9Gu033/A4QYD66jLbEibwLgU/sB+XJmikyyZD3+AwJqIS5N
+	ocldI24nIwCn0XgHTvDQCVvutXtYCyY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E5OIPJD4;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7FF461F17;
-	Wed, 18 Nov 2026 02:22:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7629C1F000CF;
-	Wed, 18 Nov 2026 02:22:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 29C3945BAB;
+	Wed, 18 Nov 2026 02:22:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89DE1F000D2;
+	Wed, 18 Nov 2026 02:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794968554;
-	bh=ZoY4hnFbJ5g7c+Vl7aZxcV0uXn6NxmdIonYYm4S4XhY=;
+	s=k20260515; t=1794968556;
+	bh=+3VuRAkKYe8EHkp2JgLASOtjfe+EnSMbvCKOCwj6jzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BDJGyrGlsnnCrzFaIATHzHA0Z7QPT+Q64Nl76ExxPjh+o5nloi1fFAQcweOqz0g5Z
-	 SVvprU2m4+hjJbdPqLkI3HGdqyBo402LtyfRsGwBhqOi8hXbceS/XGXR2GOJ7UAsOE
-	 WUDqG+At3xylwtcVfFKv2rPQ+fe/jfxELLSdNhXwFyK0FkLBqi1bzhDwAjbo0ZcfiF
-	 VuJ0KlSB42mGgfJlX/y0E90hgNeicUvF5Hzodm5syQ3SwdD+FtThrYVbLqUSroPBii
-	 weK3ncRvyvvPzvI+GWKCfd2S5aps++kqFep5fimbRxJ96Q46Sn4APic5hng3reB7NP
-	 C+PbXkmv9iBbg==
+	b=E5OIPJD4OmpaRADMH53N0EpGSCnMzOef1jIUENVaS/YVrGBfeNJJb7qMVVUDBEgQc
+	 RY4rODElY7V7kq05Q4LJiTfSNkSmOqW/M6OWaTHcjLjz49fqhQFO0lN/8Te5QiL+8O
+	 4jnN1vaEQugd4Vz+ePmYCsHkSUqeA6wpenbY5veMX+6Y7dflibA4eX5udJPxrlK2A7
+	 0F8wE4A8T9/0erD8TsBrAFf1hz93h8Nuw6QHGiS+Cn8qb92PM+lq52jvrbjEoiX6Ms
+	 xEWYiXJMcK8LS4amnLuGy4Fg8mCX237dpgG0ZeHIhzSlWzYCpKWYQpjDz93LIW2/5h
+	 1awEoAVTIDJXA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 06/27] mm/damon/sysfs: add producers/nr_producers file
-Date: Tue, 17 Nov 2026 18:22:01 -0800
-Message-ID: <20261118022225.100659-7-sj@kernel.org>
+Subject: [RFC PATCH v2 10/27] Docs/admin-guide/mm/damon/usage: update for report producer sysfs
+Date: Tue, 17 Nov 2026 18:22:05 -0800
+Message-ID: <20261118022225.100659-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261118022225.100659-1-sj@kernel.org>
 References: <20261118022225.100659-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 480F440006
 X-Rspam-User: 
-X-Stat-Signature: dc1ekggfgekmk4xb7p9kkumefyybjgxs
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C3A2320008
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1794968555-805715
-X-HE-Meta: U2FsdGVkX19vqoUZz2EQk6PUsVR/WxcoTmxGFKsgBhVTrhPJCMtwmuWcGVA4tgSDWYJ822bIh6ezHxwvpxvLU8gMOEVhsK4hzBPce4rLl8kvF8VzMdEfGuyu6z56Z5z8oFYhzjGGuV6cQOy6YGmITiZsWa/N7SEAad+X4xajeZCKrap7JZvGYI6nsr+utQLleuBF4WWz9mfrxm3V+K/eU7Csh2oqigHnq+OE59OZ7JpEJRJLbYOd4TJYlI4WE591mdtepH6MA2jnPd2huDANQGQ4JOsEgyDpuVrNll7tSWRhKaFA9Wi4lmFFSdFGvp80lWuChAXwbFI8utTTVEYg+JmaBLDqZuSoeJ5vg0VG/7s96tmSeXI26jrL0G+jrybLH8CiOfewAdCFXBgQFj1kU7AlSv2nKUOH+3rJZkHDvRNetZwPkbU4eaVCl+bx69eZ/gVS39A33f6eMiBurulNxlJMF9PccdV71ojMujcrVL5EAXbsEKkj51gXoH0Iosi3keI0XRTrcJNt+qseFPEBSCWFXbkeriWpQeEBCxXomY29CP522z7AM6diLwey1l62Q1tmy1f3NNQWrd+6eQrdD5bs18EO94bLQPkn/7nsKUebr4cvt2HX1da9Up7tZgF0EZg47RETpMADKd+DG0C5ZNS4X6eZyJS1hc+5rV9PfrQfAqQQ4T/ITkj2/y6XCqBjPjL8oWzQGM43SxriKpQPue01C1JBRJdLiDVtdTPESD3tNNxkAICRr4HJCuFp97LgWDdYevL158C4jFUTjBMvbvKnJlYC43Cxi6iGC8CgBtbwNyxzhVx31uqwCmxetBZoVr9W296j1rpCQEHQ9A0mpad8wSWud+YIhAOI+NMV+AFSKyGdlwjYHmDrgLy2WvA1P1Skk8KZPANHS2uWJ9ih7vX8vJzdxUZ+bInGUFynzgTdT7wBBgI6KcD7Qq7CDsNweQbHokLux32rBUohaX2
- kgBgaOXB
- 1REBkVq8vecmYDz6PhuxAZUxqeFBDP2zuHdGv0eRIAwd5oS4nl1YlsHPd481q1CWD2Etj0svM8+4svc+XF76mjMHAB2LUKJnR0Q+T0X9kkpf98rQpcc9JgU5bstI28Dlh96YAKVBHw4WKudT08fZSDg8EEa/TuLLpCthJx0OhcBc8lJqBhOpdMvEpnq9Cg7L+UNAwePU6nM1fIf7I72a1POCME0dpwpmY+CvUKBH+gV4AOaTp2PKscDseCTjb2z55GaOsT7rC5Pv8oJr8u5+D413zZA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: mjoxg13yij4pegs4wpezt19wzarjrjk9
+X-HE-Tag: 1794968556-309196
+X-HE-Meta: U2FsdGVkX1/lwIKwLb9pndYzts3/DXRyUXcqSdj4RnrkG41JnXhRIaBRHTfi0VKeT9ohObRxLuzdLe0tBnc50jFVuGg+S94JPiCtIDGVBX5AYxrci/mTujDUDIGyOfs9Ku+UAV4AR/qpVoWF9AwbSJtcltWCmvn/lqYG/nyXy6+/DuFIxIG/4IF1VA8kT2/pwc4ked8jjusk/wqcFjDs3y3utsUZFMb9HZaLDqcnPZhEAb/re8h9xv+Ycoq4l03q3tLuKn3bTEEhM5xjnChFEgoHhdPKZUqsNV5oFzvkTF9Q8gqjK8m7qfnY5WKxwfdkd29DVH+H7DakMdbjeFHmJ8iUdHGMTLv7ien7+lSc51P4q24mekIbEDRsmvhqI+5DKA7n8GDU/OrPDYBRslgEr9hzSUWncKHaknx0bB3+obMoO0YyzhBBL7l9j0+vJGXgYkYD2csXvXIuRXwWiwM8uDoFMDwaWXxqNaNBZs5CNUf3tJMBM1WPnWhlvAmFGok/ym2Jrvgqpa9AKHUCRq+vnbDB7s2Lp28MUT6pSLLLDCpIxh0tT8JiEskltO//qzCz5wnve4QKIj7R+vKiyfxYXY1ARqRCqXbN2WulR1RO36Ju0GXVJAXV0WKX99ZQ38FLpd1pHEz1TdPHYLxvy8iqi/hzRP3yNYoRRyGCefNK5/RBPTHqou6O320kPEYkkXTkFV8WmtuoL8Tl2yQFPRSR2TLsuLfhzHBOTAkjZzymKBGywCQguZwmPkWA5J2k47NwDaa+/ne9Q2oeDKoOi2Fq7ogj6rhojvkXuPryUJC+ZHC0uhPm0ZIf6cWWtT2WIRVmqUhXKjrOJrECsO0VYTwz63sNY0/s75ETbl8PPfpXcfK7oGxum4uy9TOO666eFW8UKzixWg/M4VMDcpeIezMP2E9d4SNdIEhKIhJi2YdWXNiUUb3KJ2wfAQi/eWNvK5yhvNQVVcsfJlamQEI9PYr
+ TbHX8fJI
+ hEPYIvrEtK9nT5cmPwlgXklZ5a9Tk8bnLbK1I/nDadWvTxFPtQbwLzgoP8tIelNAI0Gusollz7qdvPWhYDWw/+HRoEJs0bm/tYTCugU7/hXzu5LIqbq9rNBwZXnK7tEM0i+jvQk4DWUNvoqC7E+drgY73FBWPdu6YO5WkYLqqfaZbmuPUMWDJiCHVALuOen/pnnrgNt4u2/lZoiukB0ReEBoSivcFpKWzKmW6M/jbEMAvJkxVzdYR2u61WlX/r7P66pIIKwWmiRqabk9ITWzwYwxRE75EGO3AfjFm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,90 +102,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement a new sysfs file, nr_producers, under the producers/
-directory.  The file will be used for generating directories for each
-report producer, in a manner that is similar to the nr_kdamonds file.
+Update DAMON usage document for the newly added report producer control
+sysfs files.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ Documentation/admin-guide/mm/damon/usage.rst | 35 ++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 75701ed662222..d3a7cb170975a 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2983,6 +2983,7 @@ static const struct kobj_type damon_sysfs_kdamonds_ktype = {
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index 6093b1c8fbfd9..644250c7bd681 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -115,6 +115,10 @@ comma (",").
+     │ │ │ │ │ │ ...
+     │ │ │ │ ...
+     │ │ ...
++    │ reports/
++    │ │ producers/nr_producers
++    │ │ │ 0/report_type,producer_state
++    │ │ │ ...
  
- struct damon_sysfs_producers {
- 	struct kobject kobj;
-+	int nr;
- };
+ .. _sysfs_root:
  
- static struct damon_sysfs_producers *damon_sysfs_producers_alloc(void)
-@@ -2990,12 +2991,62 @@ static struct damon_sysfs_producers *damon_sysfs_producers_alloc(void)
- 	return kzalloc_obj(struct damon_sysfs_producers);
- }
+@@ -729,6 +733,37 @@ Please note that it's highly recommended to use user space tools like `damo
+ <https://github.com/damonitor/damo>`_ rather than manually reading and writing
+ the files as above.  Above is only for an example.
  
-+static void damon_sysfs_producers_rm_dirs(
-+		struct damon_sysfs_producers *producers)
-+{
-+	producers->nr = 0;
-+}
++.. _damon_usage_sysfs_reports_producers:
 +
-+static int damon_sysfs_producers_add_dirs(
-+		struct damon_sysfs_producers *producers, int nr_producers)
-+{
-+	damon_sysfs_producers_rm_dirs(producers);
-+	producers->nr = nr_producers;
-+	return 0;
-+}
++reports/producers/
++------------------
 +
-+static ssize_t nr_producers_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	struct damon_sysfs_producers *producers = container_of(kobj,
-+			struct damon_sysfs_producers, kobj);
++Under the `admin/` directory, ``reports/producers/`` directory exists.  This
++directory is for configuring :ref:`DAMON report producers
++<damon_design_attr_reporting>`.  The file below exists in the directory.
 +
-+	return sysfs_emit(buf, "%d\n", producers->nr);
-+}
++``nr_producers`` file is for generating report producers setup files.  Writing
++an integer ``N`` to the file creates the number of directories named ``0`` to
++``N-1``.  Each number-named directory is for configuring each report producer
++and called "producer directory".
 +
-+static ssize_t nr_producers_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
-+{
-+	struct damon_sysfs_producers *producers;
-+	int nr, err = kstrtoint(buf, 0, &nr);
++reports/producers/<N>/
++----------------------
 +
-+	if (err)
-+		return err;
-+	if (nr < 0)
-+		return -EINVAL;
++Files below exist in each producer directory.
 +
-+	producers = container_of(kobj, struct damon_sysfs_producers, kobj);
++``report_type`` file is for setting the type of the report to produce.  Users
++can set the type by writing the type name to the file.  Reading the file shows
++the last successfully written input.  Refer to the :ref:`design document
++<damon_design_attr_reporting>` for the list of supported report types.
 +
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	err = damon_sysfs_producers_add_dirs(producers, nr);
-+	mutex_unlock(&damon_sysfs_lock);
-+	if (err)
-+		return err;
++``producer_state`` file is for reading and updating the state.  Reading it
++shows ``on`` or ``off`` if the producer is enabled or disabled, respectively.
++Users can write below keywords for the producer to the file.
 +
-+	return count;
-+}
++- ``on``: Enable the producer.
++- ``off``: Disable the producer.
 +
- static void damon_sysfs_producers_release(struct kobject *kobj)
- {
- 	kfree(container_of(kobj, struct damon_sysfs_producers, kobj));
- }
+ .. _tracepoint:
  
-+static struct kobj_attribute damon_sysfs_producers_nr_attr =
-+__ATTR_RW_MODE(nr_producers, 0600);
-+
- static struct attribute *damon_sysfs_producers_attrs[] = {
-+	&damon_sysfs_producers_nr_attr.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(damon_sysfs_producers);
+ Tracepoints for Monitoring Results
 -- 
 2.47.3
 
