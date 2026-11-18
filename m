@@ -1,111 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E6560A381D
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B51160A2629
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=juZk+Boh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QL9BK19y
 Received: by kanga.kvack.org (Postfix)
-	id 0CA7A6B05B9; Wed, 18 Nov 2026 10:38:16 -0500 (EST)
+	id 931136B05BC; Wed, 18 Nov 2026 10:39:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A1536B05CE; Wed, 18 Nov 2026 10:38:15 -0500 (EST)
+	id 9088B6B05C8; Wed, 18 Nov 2026 10:39:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5D446B05CF; Wed, 18 Nov 2026 10:38:15 -0500 (EST)
+	id 81F896B05D2; Wed, 18 Nov 2026 10:39:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCF406B05B9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:38:15 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33D8C1C41FE
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:38:15 +0000 (UTC)
-X-FDA: 85448646150.24.98BBEEA
-Received: from mta0.migadu.com (out-70.mta0.migadu.com [91.218.175.70])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E8384180005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:38:12 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=juZk+Boh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 62F9C6B05BC
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:39:50 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED65EC07AB
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:39:49 +0000 (UTC)
+X-FDA: 85448650098.25.CE790CC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 414C714000B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:39:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QL9BK19y;
+	spf=pass (imf26.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795016388;
+	b=3rH3X7ojwqVPQpKe8XBFaHKxwABfyH/vDt8Wk3zu7Quy7eberjBxXT7fBJXXaAibOKhvhY
+	lWqLWgfGld5xMn3fzsfRsUsQtm2oLBvuvv7n1GaS4JTClUjgEF4wvUnc7iNnyKWiAhH7BV
+	18z6hpNxMJelwWEK/Dh0TN9JzaskKOc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795016293;
+	s=arc-20220608; t=1795016388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RMWtXfOrBMUlXo3JAA8nnmiVWIJTNT38o6/ayrisqnY=;
-	b=BS9mq2YgcDXI25Gtv4RWFhoWdiFohCpLoUErgf4H7Lc36WL3Vo3jDDfbbxtS/awpgQ+T5Q
-	jHu4xOA2DbPmaBkwzIy7G9fj5BLaJPjGNNr/HKU3okhsmz/k89wpUuf9Ypk7GDqF9R1VtO
-	9ytnKEVCyvDre/9gLN/jCd2TOO+ylvs=
+	bh=+05d7QYBTtK1JZ1EQU9jtzeT6f65KemfkCy86aAw/hc=;
+	b=6xhL8Ky5ftzSXVwwm3TcwOgsxMNHdCzZ2wah31nPm1g+2TQNotqBwyJ4A8yWqWJS5osnQQ
+	Qlin6mp5q4OCbbhm9svxNViiTbR67kLn3UUOmnSCOlxjq1+4dwf9GUg57KtD0yHaNkEtKp
+	A3d29RT5w9xJXNmhwJrcplB5sJxxjbA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=juZk+Boh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795016293;
-	b=ooFcsiPiuFI4LJ6l+/wSj7vbAQZk+qao9d9b+apdjhtNlPilTno+Ae8/Vbq4dG5G723sbo
-	qk8iHTYwmEzG9OL8mvuSHIzTMajyUantVfyHtIKE+wZthITafMj0MEW3ibaO9Is4JCMdsu
-	sXxw54D4+qzpUJqrBMgk6AMVYqvJWLg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=tf0h0de4cYP6cKKbFkMbewM2Fg/9uzvPBvnWQQYHpdg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795016291; v=1; x=1795621091;
- b=juZk+BohpBKtZxmXEqY9oZSjFzYWzOUsKub/zu36mdnJ5CdFfAhwRmSemFjcYqd23Hkgp850
- 80MfpW9+CzlGXe55dimQGW3ZEurB0gtvPtXxY8s9Nt9I4OOURjh2dRhVwdwQH+nnG/CNgzSkn37
- YpUS+z5h932+VR58utuYRec0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id dbede086751ede28;
-	Wed, 18 Nov 2026 15:38:11 +0000
-X-Mizu-Trace-ID: dbede086751ede28
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <2e9faec6-9152-40ec-8c63-f262dc26e059@linux.dev>
-Date: Wed, 18 Nov 2026 23:37:57 +0800
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QL9BK19y;
+	spf=pass (imf26.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 7E6F043733;
+	Wed, 18 Nov 2026 15:39:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A1F7F1F000C8;
+	Wed, 18 Nov 2026 15:39:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795016387;
+	bh=+05d7QYBTtK1JZ1EQU9jtzeT6f65KemfkCy86aAw/hc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QL9BK19yEFO48QBM8Oed0W9oi92dO17PMdCUfI4Ave2mN8VCby8UeUADTDtlBlnhl
+	 8956S5U32BRlMxLcxEy6IAMqj9bT2tV2nflNwCBhCavrWkNEoQkheI2gLQvRKTpI8D
+	 OZYSUCXLOErgiBwyPwpylot9xQFP/t/vCgNg8r4flgC0gqU4eMWbyhVsOGh1EyDmdT
+	 AturQVWjzfd6JHA+/q4WxYoguSu3eaa6rEnmd+YHCgTTQhv/n26rd7Wd7ZKXXpuZ4A
+	 bPwYGWM6BkAgAblBCTxgHP1gaY/o5KKvkEmIc2++SxtdNNn83/E5nsgC10+wJUhAdr
+	 VrrU/x5wTXzoQ==
+Date: Wed, 18 Nov 2026 17:39:43 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	John Johansen <john.johansen@canonical.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>,
+	alex@amutable.com
+Subject: Re: [RFC PATCH v2 00/13] Namespace for namespace roots
+Message-ID: <av3Gv3MwP40bqvnG@kernel.org>
+References: <20261117231352.3816603-1-jarkko@kernel.org>
+ <wdwc3b5edgtgvrgqfhlzhrachr5hrqb7ahipcuqdz5pffxlc5b@662cpwhxwjer>
+ <av3EBpSuzn_TcrDk@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/7] mm/page_ext: allocate page extensions early for
- SPARSEMEM
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Joerg Roedel <joerg.roedel@amd.com>, Lu Baolu <baolu.lu@linux.intel.com>,
- Pranjal Shrivastava <praan@google.com>,
- Ketan <ketan.kishore@oss.qualcomm.com>, Mostafa Saleh <smostafa@google.com>,
- Sang-Heon Jeon <ekffu200098@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Sashiko <sashiko-bot@kernel.org>,
- kasan-dev@googlegroups.com, workflows@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Chris Down <chris@chrisdown.name>
-References: <20261117120627.50601-1-songmuchun@bytedance.com>
- <20261117120627.50601-6-songmuchun@bytedance.com>
- <avzsFxVqO27Vf4Db@chrisdown.name>
- <3C50E682-848F-4788-9238-923D5E292DEE@linux.dev>
- <av1M9itGiTF1Akqi@chrisdown.name> <av2zkUpYGmGWPx8T@kernel.org>
-Content-Language: en-US
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <av2zkUpYGmGWPx8T@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E8384180005
-X-Stat-Signature: x4bpgc7akuobzqfj8z3k3fguf3zzdn4p
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1795016292-834260
-X-HE-Meta: U2FsdGVkX1/gRsIn5k5fTRzIQjWSSvUN304lZoC8deiSp/RbweGAuKLNJo2Aq1DWg8skPe0CtaowgZ7g03BnBVwX1a9tnGrWpNrtbKOrLtCzuRrFnTt09TMzn7Pj2OzNiBNDkqQXTC+eKKqrJ4aAIZ+WZaZCj36gpgAeRc3H4xiDku4KSt7P96F7V7IOXcdndCjK2YoIf22M7KOrXXDPgPb64/nbH74GsY4hYVieqP4qzEVqccYe33G4H1tnd8OcIJJgaMr9Rny2pNSMsZJSJG3C6bJ7NkghLrf43OP8wgYjvIQpUVpuoXa9qoT2zzMQfWtrS86UZKRgrtBD23Ci8VQzBlz0Tsv2+zaloMuoKHbVerMgBLw+iLf6SzLJqQI5o+1uCG0WAmusfet9aJQD5aQoygLFIAzSAYBcc0fnZ7GK0SV0RkHbBu79H0sN8rOsCRkBx1hm1L0QwhcW5ajJkp5t1CdZ8oQJiIZ84sW19Ces2FnCTXrKT/pTOpBKWWJrLFlkBx45i6jb65s0acgo/Dc8i6eMP3j9NLrBA0gkP6bKBx7u/0ZQFB8ymuL6giNJp5bhmBfOayiAMJGUmHchu/Br9OeAwxW+6fGXKbOVyC8kjo1+3/JAj/7ldcqIhZ3WO4IH9+nBgD4md3fNxP8nU6m2OjrMsQ9/Ccxg+j/oThOV6vwfuPEDrFdXqElmUj1ZXeGEiJUcbpJJUAXH3CL7hx+1oQ9rdz++KXQujlCFmh3PHJ0vrnOgw+XaeqbBssGqtqtUDyrX3s9G58FrGR4D+kVMh0Nv5zVbs3p89lxBr/ozu2J4M+HxWe+VhgvzsyaT7yepyVnTaa2aKDUeN3K2upANuC6WaarNT4gPa9k9gob5x/k75n9VBTGKJMIos/HbJ42oNEWzt8rCuIRVhFXvUYKIUhC2s329W8dWucb2m7hsMa64kYcLVEuIyZiKUze6MU1smTxR5m2bf/p4a1H
- i27bbS2I
- tWkkB1qaxibMbmoXr9WYz4zfFCh/kfoXQDmputg2d8QoBSdqJzeonMj4vpzP6UPDALTMpwbW0Lvk0PjzwhYxmj3eYXfKoKADMH0v2PUDEtEjV/0XZc//NeedL3DPAfzCIFZTn1onFZxpTMEB73+dMwJjyvgFj2VaflB1nr2+bGohfIZuelDKHJT7by3alyllkEkVOks/ZNf7jLUnD/o+LLUk4pVacek7nK1XpdNyHft9WFCJuLqnRnGOToxz8mu/kmubFpQPUopwJ5DzfeGekavUMouZEI2oWLt/lSoNMn89FQDNU//MIVF8dnG3HXDBnVLkI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <av3EBpSuzn_TcrDk@kernel.org>
+X-Rspamd-Queue-Id: 414C714000B
+X-Rspam-User:
+X-Stat-Signature: fzuaeh3gbgej16xj7mo1nwntbggpm7s1
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1795016388-386348
+X-HE-Meta: U2FsdGVkX181DGgBffKLc3NrtsucIHOOgCGFsOKs0mejjCLN6ZTBLYzZg9Rwky9gM8g83SOw8f0XZULZNMXVONQHgI58ysNWWfbLBxDRactBWwvkJMKmaVBDdniN7wTo50fssyhnV/p/UDY+fff1Em+mF2DLYWCKp9t6D0XwunYkpAkuidfN4/mD4Wo+S7o2QBb5CdslMgEs/ZD5j+cBAqKU24Eg2GH+VzyanE1N++vsvONyVdZangys1o6MswF/6a39nxF3rI2wfTw3i/p36ZBYgWtP+nw9SDOY1ZMhzjI86wHZTjfv6cgdw/e4Or/E3MprdW0MzeTZSVZDYCXIm5bWGZC272f8T+EU0qy560QUoD6OyWZ7DOp1kA8OslzTD01nGV7+mDgMbcQdrPFlC5yinpWlRPB9a/QwdVgEp4Mfgm4SG5ZONbEuFasbBG9y/woU4HsWyEL9tOSr2UYKj2QtxwzNKsk1TOl6gvjYD4sBe0U7zSWNefvdvkFYLeIM+HAyeOCiFCh1GtNvGytrUUBZrSDCobHlWYeIidgyDIM6LBfEg9PxDf5t1M4bMIJ344KI0doGhKfr8YWU4+AojMeO1nnCW0EsZRzHwEayGfGGbgj3otMLFFEbeSbWRCxXhiF/kYzypzj6Nl6gQZKku8qfH34UpOYUCQtGCpI52J1ADkKgmJQgYHJAVjEpzKC7FptWjNxBk84hCw4KhP5fUTnYBRm1jnSCgEsANrvou2S2XEPAS/7CDQGvfRTVl+fNm/5vT58JSZc7Xkx6OjpFnug+bJGp6T7q/CHxNKY6aY9bt8KX+DiAjmSO0mQj796AxQaY6dU52ASstK/dtBmzlgfADZaqI1n0+jtdsfX0Pgk9FDgCiQH0HeRmMJxIyb1ryPUvXeCRv3abuM4po5a7ieqDeaQsJ/cNyuKBEU4/epFzVkjWM0IWSrosf5NZMe545fCi7CgCg2gTiy2rEfL
+ 7KoVGgYM
+ blEl9z4H5Y67wvpLAJt7JGDkAK0sXtbhRP2IuxfXoTSwOWQ/aTecpKkeXbahnaw3pxW5tAwMK5XtPCMTPrSYsaOyqSS0aGK/PRrP/ScjJ7OnYtizRSYmEFgoDKua1rKwi38Rn3Dl9GEsacn6ojfSW58HU6uv3J1/GuuX331fy4dRG203tovVldr/ceDLyzDjjEvfa6HaHhnVReL4vjP/zpgV8M6VXygAAcE5suAPRGjvP6FWGh/eb6AD9h07s82xG79jKkb6zd3p34L3nc0KKpVu9Wd5c2LmyZD80ZFhclsx4+BlIIdHHU4Y6otknxyU/gi6lmJrOGHiDxrmL+vrWXcFb06KzQ/vk2haoqLQgl+dE4J733DaRUDp4++pU9iCQFoAM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,70 +129,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, Nov 18, 2026 at 05:28:10PM +0200, Jarkko Sakkinen wrote:
+> On Wed, Nov 18, 2026 at 02:47:34PM +0000, Josef Bacik wrote:
+> > On Wed, Nov 18, 2026 at 01:13:39AM +0200, Jarkko Sakkinen wrote:
+> > > OVERVIEW
+> > > ========
+> > > 
+> > > A root namespace (rootns) is a kernel object backed by a file descriptor
+> > > that binds together:
+> > > 
+> > > 1. A full or partial set of detached namespaces.
+> > > 2. A dedicated PID namespace for spawning processes into, signaling
+> > >    members, and polling or waiting on PID 1 exit.
+> > > 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) that must be
+> > >    populated before going live, without inheriting host mount-tree
+> > >    ancestors.
+> > 
+> > This is what cells is doing https://lwn.net/Articles/1102593/, you may
+> > want to take a look at that work. Christian, Lennart, Alex, myself
+> > and others are working towards this in a more wholistic way. There's a
+> > lot more that goes into this outside of just the object itself. I've got
+> > my version deployed inside Anthropic for securing containers and I've
+> > tripped over a lot of pre-work that needs to come because we can tackle
+> > this. Alex has my rough outline for kuid64 for example, which is
+> > necessary for making sure we don't overlap UID's on the system and
+> > create holes this way. The cells work/anything that wants to have clear
+> > security boundaries is going to require that as a pre-requisite. If
+> > you'd like I can include you in our planning so we can get something
+> > that will solve all of our problems. Thanks,
+> > 
+> > Josef
+> 
+> No it's not doing the same, and this why I sent the patch set.
+> 
+> I don't see cells fighting with rootns and given that rootns has a small
+> surface and it leverages already battle-tested code, instead of
+> reinventing the wheel, it also has benefits. It neither doubles the
+> number of container frameworks in kernel.
+> 
+> What I'm not claiming is that this is better. I just wanted to fact
+> correct "this is what cells is doing". It is not true. It could be
+> better solution but still that statement is untrue.
+
+For better or worse, cells does a lot more; just looking at the patch set
+size.
+
+For rootns one can point out with a finger its possible problems BUT here's
+the thing: it does not haven unknown unknowns. Even if cells had less
+of known problems; we have zero idea what will come up if that ever
+lands. The possible consequence have less predictability.
+
+Also, as per integration, they actually are not fighting features, as
+they are in different layers. There's no same thing at all.
 
 
-On 2026/11/18 22:17, Mike Rapoport wrote:
-> On Tue, Nov 17, 2026 at 11:00:06PM -0800, Chris Down wrote:
->> Hi Muchun,
->>
->> Muchun Song writes:
->>> Mike's suggestion considerably simplifies the code, and early page_ext is
->>> only needed by optional debugging and instrumentation users. I would prefer
->>> to keep this approach.
->> You're probably right.
-> I think so :)
-> The memap_alloc() that essentially allocates the memory map does
->
-> 	memblock_alloc_try_nid_raw(size, align, min_addr,
-> 				   MEMBLOCK_ALLOC_NOLEAKTRACE, nid);
->
-> so we anyway may end up with reserved memory in ZONE_MOVABLE.
->
-> Until recently we had memory map allocation before the zones were setup, so
-> there wasn't much we could do about it, but ...
->
->> But can I cheekily suggest something in the middle perhaps? :-)
->>
->> Given the zones are already set up before page_ext_alloc() runs, perhaps
->> you can pass the start of the node's ZONE_MOVABLE as max_addr to
->> memblock_alloc_try_nid() when the node has one. The general idea is:
->>
->>      struct zone *movable = &NODE_DATA(nid)->node_zones[ZONE_MOVABLE];
->>      phys_addr_t max_addr = MEMBLOCK_ALLOC_ACCESSIBLE;
->>
->>      if (!zone_is_empty(movable))
->>              max_addr = PFN_PHYS(movable->zone_start_pfn);
->>      addr = memblock_alloc_try_nid(size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
->>                                    max_addr, nid);
->>      if (!addr && max_addr != MEMBLOCK_ALLOC_ACCESSIBLE)
->>              addr = memblock_alloc_try_nid(size, PAGE_SIZE,
->>                                            __pa(MAX_DMA_ADDRESS),
->>                                            MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-> ... with zone extents known we could take it even further :)
->
-> page_ext is treated as the memory map in many ways, so we can allocate the
-> early page_ext sections with memmap_alloc().
-> And since the latter always runs after zones are set up it could include
-> this change.
->
-> But I think this should come as a separate series that also could move
-> memmap_boot_pages_add to memmap_alloc().
-
-Agreed. Using memmap_alloc() for early page_ext allocations and
-teaching it to avoid ZONE_MOVABLE sounds cleaner. I'll keep this
-series as is and handle that in a separate series.
-
-Thanks!
-
->   
->> I briefly tried that and it seems to work quite nicely.
->>
->> But I don't object to it even without that, so feel free to add either way:
->>
->> Reviewed-by: Chris Down <chris@chrisdown.name>
->>
->> Thanks!
->>
->> Chris
-
+Br, Jarkko
 
