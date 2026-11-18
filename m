@@ -1,67 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B99E60A2618
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF09C60A2613
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dmMB1JqZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aIYIin49
 Received: by kanga.kvack.org (Postfix)
-	id 83DA16B05B3; Wed, 18 Nov 2026 09:52:29 -0500 (EST)
+	id 13E136B05B5; Wed, 18 Nov 2026 09:55:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EE9A6B05B7; Wed, 18 Nov 2026 09:52:29 -0500 (EST)
+	id 117B86B05B6; Wed, 18 Nov 2026 09:55:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DD036B05BB; Wed, 18 Nov 2026 09:52:29 -0500 (EST)
+	id 02C7B6B05B9; Wed, 18 Nov 2026 09:55:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 46FAF6B05B3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:52:29 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC9E7A07B7
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:52:28 +0000 (UTC)
-X-FDA: 85448530776.08.C2F782E
+	by kanga.kvack.org (Postfix) with ESMTP id D30C56B05B5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:55:42 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54434A07B2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:55:42 +0000 (UTC)
+X-FDA: 85448538924.07.921E5C6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4298C2000E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:52:27 +0000 (UTC)
+	by imf31.hostedemail.com (Postfix) with ESMTP id A687920002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:55:40 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dmMB1JqZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIYIin49;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795013740;
+	b=HdaIvifzx9jXopqY3lwEFw+rAYNV6K8lpaYYy0G3CHdeMuvbWpHWb0QY2MrF3Fgunk5CNt
+	SYSP48PNjx6Xif0YylWcT1f+mfx7HgIzN0gY7qD7vWDDwis4uUS+CIsnVuaHYL0Q3+4x74
+	Cbg681tTjkISE7RB7e1xxbIIKHSyRPY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795013547;
+	s=arc-20220608; t=1795013740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u4fw6wH7cRG89Xgv9DmNPTYzRhO7v7keamB5liM55x0=;
-	b=OYrdIOvX5/R3D7qMENsle5XrpU4IbBATjK50PJn/zmrhUAkjufdcN5fzKMEqlpWxWluie5
-	nMGFCJaeEEOxfkFdKtuG6RgKHXtoAkKrtq2dH2PYpQcHYYbb+dvWF/CNBC7alijA2sKSYP
-	fxDItraKKGnwElYIn2a1Xccj8pkXR0c=
+	bh=ijqcgAe+pRUXlQUJgaP68UktE3jKkOIl7f6QeVzcqa8=;
+	b=rwfnf9w/rQBYxf/QInZCyhoqYEblDGZ8zBcscqWKGFJtI79+g8vVzW5Tqr9Er3OWPELoc2
+	FIU27cmq57aeGfICcS6JY2+t7w6+ftTJVrtwiEGiL6sr4CqNl3pPArIzGhJYZEqkT6DmXR
+	5cjqMRr91uA/NhxHfLaYJkEU39+xL2s=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dmMB1JqZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795013547;
-	b=8dB9HsE4rhDD8A6U8xXUXkScftZx2yooMaZhI0dT8jf7hITVyoEMjsDnWJ4urqfbPvVuJS
-	v9xYzPJM64I1IhVNWkt+SAhxigrCxl1Ot0uaUBKrrQMX8JD7IukEJeLZj8hmQVe2sj/V7/
-	tzuz3Jpl2t0VAJkFzaLLmTE+Nd6KtuI=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIYIin49;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 968F662290;
-	Wed, 18 Nov 2026 14:52:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35461F000C4;
-	Wed, 18 Nov 2026 14:52:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 25D10622A2;
+	Wed, 18 Nov 2026 14:55:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A5A1F000C6;
+	Wed, 18 Nov 2026 14:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795013546;
-	bh=u4fw6wH7cRG89Xgv9DmNPTYzRhO7v7keamB5liM55x0=;
+	s=k20260515; t=1795013739;
+	bh=ijqcgAe+pRUXlQUJgaP68UktE3jKkOIl7f6QeVzcqa8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dmMB1JqZH1zCDAONsrZJ5AXpbtBhioXa5f2XoqUI4Tl4ece9yzguQMNNy7LcKcbU/
-	 SFXKxhz60iY7aZB/cKWhVkx2kI3mvr9wpdq5vhKxwcGSYKWzyPIkU95mFq6dr4X2C5
-	 8tVA+8eO+zY1sJU/8a3biSSof6aItdm5RnJ++Q3LbsjRB+MXCn4VBH0ycBgldRitLK
-	 TGKrEbeTSrAOAqVWJtDMKtfqbC7gQt794hyCBK6KLy4pjGdTSqKxfTn6assRS7ijQh
-	 IeipmuUfsmYzdar26x9qGw0mPzJfuqLKDdQ7mu2oIcFU5WCAbmwqAccEBhhK5qzqky
-	 CIG+yJLR4jpPQ==
-Date: Wed, 18 Nov 2026 16:52:10 +0200
+	b=aIYIin49xSrhz3fYpj0Knm3dUy7DYct2MAxbHOUDkYisck7LJSB+Gndhs5lT4zRp0
+	 G9yKhwIrSoMLZuvK+kh+eKEGAUD5ZD5PkCSvIc7Yh8N097/MFMZwCvJ44VkcLS1txT
+	 gmfuU5dgh9eN0rM5Eivb+hfREhloBoUPSaqyZaceB3ZLGueQNPnbEVpsPbv5gJisMA
+	 g0KDwnrs710Grb1t1KlpS4DNooZKDpOAtKxApW4TMkzSV6oxWEG4uAbHNhlEV8ZzX3
+	 F4c1H9BtHpNWWlF1dw5YbJdjG1p6nzWGMBKtwO0fiXjBq7YU1Mm5Mo1ITGy75NkD7R
+	 OyXlJ/cC3fvyA==
+Date: Wed, 18 Nov 2026 16:55:24 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Tal Zussman <tz2294@columbia.edu>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
@@ -95,36 +94,29 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
 	Oscar Salvador <osalvador@suse.de>,
 	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org
-Subject: Re: [PATCH v3 8/9] mm/migrate_device: do not migrate a
- uffd-protected zero page
-Message-ID: <av27miMZrEyB5egZ@kernel.org>
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 9/9] mm/userfaultfd: check the hugetlb alignment of
+ every VMA in the pre-scan
+Message-ID: <av28XEFwGGuNhrSE@kernel.org>
 References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
- <20261117-uffd-state-fixes-v3-8-b617009d1a4a@columbia.edu>
+ <20261117-uffd-state-fixes-v3-9-b617009d1a4a@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261117-uffd-state-fixes-v3-8-b617009d1a4a@columbia.edu>
-X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4298C2000E
-X-Stat-Signature: eckxs3yakeezwq3cfg9q4tgatydw7u3d
+In-Reply-To: <20261117-uffd-state-fixes-v3-9-b617009d1a4a@columbia.edu>
+X-Rspamd-Queue-Id: A687920002
+X-Rspam-User:
+X-Stat-Signature: sa5c846763hhoxp7yjysdfj5aru7xzi5
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795013547-670977
-X-HE-Meta: U2FsdGVkX1/tjK+P6W0vjFjEz6+qdqAAEG3MyKNNHoxYUO920UdrWVSY6KqVoGOdAcjr5MfDbg7MsqzfF9X4rRAFkRAt6Vd+ba7DrwffOb4Oda/zVnWTvfGM4dU49/60wG+RujJmZB0GD8vEP3OITPHhYSNWdt8oocs5erf4aIf2DVz5CqI4dU5q9WKWoiEMuCtESXDqtgI4zYywZez4MISFJPjnDSVnCFnNKpGJTWXJK2TqEaA0VGYpdAjStLdbdrxA9Bwqu8yTpKpRD1R2KnEuMEOTDIgy1Lfu++9dE/nmoNqfljEBljpxjYWwrLA1/kaJc/wuo5/rR+ZC8F6/3Pu9XIeytSf/jSuAKgL/4wwy4so4omGMI7TiZKYyjeoz+DFem5COM3d2Jd3axn7L8NSCCE+1x9asqW1le+5LvrkudhnmBO7ByduzbXEbjM8FlfGwNX+8pZ2zBx57LVJbZzyEs+kzNs5e5yYAv9tdmcRn7pmN3N9GBMJcPxCnZ2pt/fX60FqgtbdbcPX+oiM/J+nlIr/wWboZvDV2jWWvoZYOu7RhWrg3pAht/6CAK8eWnnldSnBGFoeN+d14jpdWHVAGKJFD9fj+/fo4zN1m5crxkjDF5L2tWTGyIYVZ1OSeg6IXaRiM5SG+zWbZJ+cGg+bfO/BPxhiJaHdiCrr9tOjJyMSxFFfOuP8NOAoUhNxTllHFEUd+bqYUlkaWthWwlBTmA6mxay9fyMemO/I2udFHhMakktIr9at19HvfWsYvNtqJotb0n04FCxLcAJKvilosNNJIBZnr/2BjphBrw1OP9T5B+YhY0dI/DFN22Yid1m81NpRUXPfGBQ61HLYiBvc73yWqcuURiu8WPXI93WmdhmAFJWmXkkbyTxOZOnknM2DZDP9JeaWPUZAeqIzAlWCF2yUSNwQnEqHQUw6RF7z2Nl1X6yTHZiBBIOtn0vkgdtA4Wx7TEDZYlEfDMrn
- +yjx6bzm
- XnlTOAaLYi+Vmhwtb/Oz5JIZdx30f3EcOwIIW74XCuTBc3+z/+yRn69R8Y8X2lwzz7bVFJvypzSm2hOeIv4/yU4edtbdBDesFEpgaX1ieoCtR3Y0L7Lql1ygSXomIeApXXkE0VvnXONPjM9s0iGvUP37x81PScl0MhVFr1hlDNIg2F1+Q5uNE35L/eF2mnBxThbxs3DgOwxpquPXvxDp4XTKrfSsrrBlTrqh4Li5nhZTvpM5R4qV4HIvWYVpmghHYTtfl+VIkqFs6QQA1QjpR1jac0ZJ9G5jp0MpWI3MgzXZ2Mf8JGdkgPbZhEG9Vqd9NnMVOP+bHEmj/6vWQyFwUzNDbdds+eNBYC4hwHprgrwl9/n87xY8K2P50X29tCwPmohBScBPiRN0hIqqNIgzSsEUedIUvdSvdfhvqD6VjVC/5zaOQhM6ZaSI/teqITTOd/t/7l46twJ+5cLDa4yaedoqoEboW+YSwfiY9np2yqpmsrbrBgthKU/li2Cc+Mj6hff1MpP+tBF6vri2OLGgFg1RxLJz4hYVWEctH1qVuq3nwqKWkZHOSToIVetLAXCazVaulbj+toKIZrcuyY14BmO4yuU4ScWq/DTK+4zqfrngw0hbYR/QDk90NW3ieNiSnx/iG
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1795013740-126362
+X-HE-Meta: U2FsdGVkX19A3JV6B3cNmP/FdsEQwdL6swHCgZ3zHvQ5gcjBOWMjvXtqKwIw99leGejK+6xj6TMnsjLfrfw6AYTCR7tHehyt8saSVRcb49BcVcuzcIK+Iy1Icqwz/FKybK4+ZfytvvavIho/iaWWh7rZwe7+JPUU5a5voGRa/ywDja7J7qJoqgJimFTYzsJKxszRIgzyXugS5U1cmsGbGp3CsUx/mPG83rRGncJle35vyZBusiASUeg+3wv9ocA8PTVAFA5Gl/EzoteAmqCq8ljT0IqfE6doQAgmB8ZgIPY3rMxrSXTDZNevE+SbopnEWI/VqoGEDwjkNGeImKrCrdyBEOZUbci9bsNyMXW1AXIGCRNsus7ePt9J85V46IJPNGeX1lsK8Oa/DEK7aer95HcrddICyTTBQ4Hyfm8Io32GqsouQR4E6BuQzJeJPa0tTDPVkLquwL/d3HBmv+mUxJQjEWskngMxemD9cXivss1yo8Td4NB56O68K9o/yqcsfzeDSaOw1a4HnTBeBfZyzH8OJoL6cPiEEZA6Mf8wSfU0nmrvO8jzhQv/eX3GzuZHrVrR4HPU5CfQK6AqrCsI72k+9Gl1hQrOcAPtqi5e+Gjq6pd2P3Nu+lc0gcGANNq3Oyo4b1QGrY/iWHpZYAc75EppJ53qiOJBr5ElqycoyWoWLSXmnAxFgc/X0n64UVa7mGpkI86giuMa+J8Y0M1himlo8pR1LY52EyuK8AF5X7XEI3S5I+OTDmPGkYWi4iYi+xkpPQgaoufbU4EkCaMmTVXh/hxODJwHLPmuoLEq1xLztHkKShUv3/4eh0JHVI8IYn2pn29U0pCJ5d1KJm7TjBCgORkzGtoOtYCtqyt8Nx5AJ5hG8JY3hylIb0xIwUITQx/8W2UVxVrDWjWq8hgGfo9EFwz9XtZb97maVEZlonouOS7XX3UgNH5no1HAhQC03vvy59ZuSAMelcc+pzB
+ WHxJFWNF
+ 72x4N+HAfbBwCM1l/qpBbtBKubSja9yBkZeps+/FypopeXrAFPlV5QA35t7C8Zss+M2lIZmQX3a71KEIoTWc5Ogv7rziCO4m+RyzLj384KawIubBt6gh+JvdhIOquqP80ms/cpmnj50nCjyGtINQrpQbR5CbGui/BQn+Pomgzl4ASlkd9w12w/FPLp3DeVkI0WBA8jkB+tTQAw8W/H08VJpRJ7vWdJiuINoz2VxsYfRfYIstKIWIN08clig0o+tM0wHKYhhIEutyqMCSt6Svlnd7dyWJfEUJomoM2RttGCf2Eu6T+U/egqeL32DPTIzphzqjqmFVfVbYYs8m4gfKnXleCi2KwkwvQdIYboLrBXnzqvtERACNBdSKFaEXpisnvsEg61a8pUTpt4WgQQJP786Wja8hjD+acx9MdWkmuUHbthsisiYBM+5xkQs1GoQPrZR2XzG7vxB1O1M5vHUYD3gllZHBTRInAhG+zqdpkSmYCG/dODpFddnI+3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,44 +125,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 11:28:48PM -0500, Tal Zussman wrote:
-> Device migration replaces a PTE that maps the zero page with a new PTE
-> that is built only from the VMA flags, so its userfaultfd WP or RWP
-> protection is lost. The same applies to the huge zero PMD. Writes and
-> accesses to the page are then no longer reported to userfaultfd.
+On Tue, Nov 17, 2026 at 11:28:49PM -0500, Tal Zussman wrote:
+> UFFDIO_REGISTER and UFFDIO_UNREGISTER both scan the VMAs of the range
+> before changing anything. For a hugetlb VMA, userfaultfd_register()
+> rejects a range whose start or end is not huge page aligned there.
+> However, userfaultfd_unregister() only checks the start.
 > 
-> To fix it, do not migrate a uffd-protected zero page. Skip it during
-> collection, and check again under the page table lock before inserting,
-> as another thread can protect the page after it was collected.
+> An unaligned end only fails later, when vma_modify_flags_uffd() cannot
+> split the VMA there. At that point, userfaultfd_clear_vma() already
+> cleared the WP or RWP protection. The ioctl returns -EINVAL and the VMA
+> stays registered, but accesses to its pages are no longer reported. This
+> requires a caller passing a misaligned range.
 > 
-> The alternative would be to carry the uffd state over to the new entry,
-> but a uffd-protected zero page in a range that a driver migrates should
-> be rare.
+> To fix it, move the alignment checks into vma_uffd_range_aligned() and
+> call it for every VMA in the pre-scan of both ioctls. UFFDIO_UNREGISTER
+> still returns -EINVAL for such a range, but no longer unregisters the
+> VMAs before the misaligned one first.
 > 
-> While at it, read the PMD once with pmdp_get() in
-> migrate_vma_collect_huge_pmd().
+> Checking every VMA the same way also changes the following:
 > 
-> Fixes: 292924b26024 ("userfaultfd: wp: apply _PAGE_UFFD_WP bit")
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Leon Romanovsky <leon@kernel.org>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: intel-xe@lists.freedesktop.org
-> Cc: nouveau@lists.freedesktop.org
-> Cc: amd-gfx@lists.freedesktop.org
-> Reviewed-by: Alistair Popple <apopple@nvidia.com>
+> - UFFDIO_UNREGISTER now returns -EINVAL if the end is not huge page
+>   aligned in a hugetlb VMA that is not registered. It used to skip that
+>   VMA and succeed.
+> 
+> - Both ioctls now accept a start that is not huge page aligned if it is
+>   not inside any VMA and the first VMA of the range is a hugetlb one.
+>   They used to return -EINVAL, although such a range covers that VMA
+>   from its start, which is always huge page aligned.
+> 
+> - UFFDIO_REGISTER now returns -EINVAL rather than -EPERM if the end is
+>   not huge page aligned in a hugetlb VMA without VM_MAYWRITE.
+> 
+> Fixes: cab350afcbc9 ("userfaultfd: hugetlbfs: allow registration of ranges containing huge pages")
+> Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/userfaultfd_k.h | 24 ++++++++++++++++++++++++
->  mm/migrate_device.c           | 34 ++++++++++++++++++++++++++--------
->  2 files changed, 50 insertions(+), 8 deletions(-)
+>  mm/userfaultfd.c | 54 ++++++++++++++++++------------------------------------
+>  1 file changed, 18 insertions(+), 36 deletions(-)
 
 -- 
 Sincerely yours,
