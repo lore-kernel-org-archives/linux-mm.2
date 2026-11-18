@@ -1,108 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4899C606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB7960A2606
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rm2Hmmb4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ca9PoyOl
 Received: by kanga.kvack.org (Postfix)
-	id 1CF116B05ED; Wed, 18 Nov 2026 16:59:29 -0500 (EST)
+	id 8FB7C6B05FD; Wed, 18 Nov 2026 16:59:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A6A66B05FD; Wed, 18 Nov 2026 16:59:29 -0500 (EST)
+	id 8D2A86B05FE; Wed, 18 Nov 2026 16:59:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BCAE6B05FE; Wed, 18 Nov 2026 16:59:29 -0500 (EST)
+	id 7C0C86B05FF; Wed, 18 Nov 2026 16:59:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C70B86B05ED
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:59:28 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57E291608E1
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 326EF6B05FD
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:59:29 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C477C0897
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:59:28 +0000 (UTC)
-X-FDA: 85449606816.03.BA0590E
+X-FDA: 85449606816.01.EA25954
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 38D47100005
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5A84214000D
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:59:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rm2Hmmb4;
-	spf=pass (imf14.hostedemail.com: domain of devnull+harrison.crosse.dev@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+harrison.crosse.dev@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ca9PoyOl;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of devnull+harrison.crosse.dev@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+harrison.crosse.dev@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1795039166;
-	b=L5uzhY+2AMzZZGG9w0wL3G1tykKnuPSdo7FSLHU/q5kYnJuuwiezNJueyCIsgDRWfHg2O0
-	L5rvG6VAMRdGB5MVhdIKWnF1c54dOtRu45psCfdOYL7HOMWpQMPE7ILrOTyGe+yr4tI6AW
-	Ze+XsjoiHY1p2ljiS+lfSzub2XMP6qo=
+	b=lHu5iYVQLVR87QW0NM8c9Z/eXXLiCpDbxCmgoIjmW3KKn0K/dFqb9b6/nHij3O2m3nGjjM
+	D++fiXxmmADA1LjhvFTfweow5tuoroMZheQsN2nSvQCw9vER7eTDS50oafmATzhK9p+rSk
+	wjlJ2VsBlqRDSEK42XXX+DNFMoe511I=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795039166;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Ea27Ot+ehzrAuRSoKcNDt2qvaz6iTBMPzRnS1G4L6jg=;
-	b=eiYHzgCF8ox7GuEeOuVnlYlHexDKBlmFXKZ8KiBxFhZZRz1BHo/cLksRVeQ1M/yKhRUGed
-	RBUJOdyhdF+sXqOn9+lMJNOkcKMoILqNTQoCk1dwJ6HjD0WOMd+oS4aA9CpE24v4tx2zQ8
-	6tHrM+Y7EXxYL4WVYLRt2kHD2CfjKN0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4ZCDMReGT8kdAAJEPyl/oDR55ZrAEtce0UDwaaBcFh8=;
+	b=s2AxMmUZpaniHQmdUSQTf9Dl6dVfzat7CY1NpK4u44R2sy99FID6i4BvpLWmgleTB9Kvx+
+	BmkZzzKNg+Wsk1qJ/LLafWrrm/G5S6AZNlRWkzySpZjmuuH/bA18nyF55sSNJUMdXiqG+x
+	q+OB4vguPiP1ADM+3QsceQ1zv5osnOk=
 ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rm2Hmmb4;
-	spf=pass (imf14.hostedemail.com: domain of devnull+harrison.crosse.dev@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+harrison.crosse.dev@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ca9PoyOl;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of devnull+harrison.crosse.dev@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+harrison.crosse.dev@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A5A246D15;
+	by sea.source.kernel.org (Postfix) with ESMTP id A9FBC40552;
 	Wed, 18 Nov 2026 21:59:25 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795039165;
-	b=DWTnBk12sZdF8zsdz9gCwZhv+vYWe3lj68ba0afbHF6Efsi5k1vx2XUhEuda9nkIsQ6U
-	 8UUCLzwgTa5yKFOsTIsR8e3ziEYEat/uHxzYc/Ap1Uft0SCK3eO/SfW/sNB30hcF9uuSn
-	 H5RGi02ffZ6P92b2XEWEEAg6fMzrwWBkCl0FHKqyqLlos6wk5SE89+iMJCgbGqdQk8rJj
-	 CzZ7isjJeChWH8Z6L4MtFvbsuXAaBabQNYgms1OT0HH54Jl/qrWwCuCuLwR1GJxLZgKrY
-	 aXJXrDE56BJ0qUVEO/uBpxgsiAu6s733FH7nl+RuliebBTn0ZSbTzItZ27CqtCCWE9g==
+	b=V5d6uCeHfdiWupTIaMf6q66dnrV7+CaXOqDPI050gifPWcRIr2K7CNSoERy38usPPWsh
+	 bTvjXjAf6Nv55pfvfabJFuBIFQCVZkFEIgku8u3K05tnxoleVsBvaP9UwIUi3X4c7Gh3Q
+	 0ajtVN9T2DL0nOuSZzTUZbLv2Eaz1gpcYvhHoLCCF60U8JMX9+MSO6gm31EjhddwNJFdq
+	 SqaHBFjlcqBTnJLG0TSxIUGbJhAtlwAHyoiBhec9KwpslHojEUVtJtzWK2dJOxOg72iqi
+	 /2Tfz5+B4mw9sizo1o7G4BUS5nD428TWWeHLt1ubUgEv8NbQuHwGCCw4C1KBNvA5lag==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795039165;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=Ea27Ot+ehzrAuRSoKcNDt2qvaz6iTBMPzRnS1G4L6jg=;
-	b=vnbrzcM0ACGiao2hpRFRi5VeEHM5OehtFUtLvx9I27CA/EcXlrYYWyUSIR39M2awf1VZ
-	 SbLxd+LYhSzluoswD5Gg7NjUYrTFqJb+w8fJgW/fYgsB8BWszPlmScYqBnxmaHp80+SXN
-	 FKOl/2FKqwOCx4l6ZP28X++XcthHU54GEnbultWoFcG79cYP1Ww6seafWvqyjUD6Bl4Vj
-	 wo4Or/VgR//a+utONeWgTh2+UObAsnbDwFLu5En7L70xoS2frXICwG3Ge3roOdJHKYDxS
-	 UTlDEs7dF360Kov6l8TU7YDrwZnjcXZ7XF49oieLLQVdZYdtSOJVB7K0/nff02JX3QQ==
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=4ZCDMReGT8kdAAJEPyl/oDR55ZrAEtce0UDwaaBcFh8=;
+	b=oxJznGWNLrywchLNefANwzdshLjbXpnb0prbuXOUJssNhaq40dIa7cleCH9+YOwHy5Rf
+	 rq7o81h50bMwHazHdo1fx8VdXEW+N+OVE2t86BrJ3/t2YQe1oG0jZ6dxguwStHYcoM0Du
+	 p+KZdV5keBpxhdNFXEzXkPU8+UNZP7tw8W0LToR5E8Qz1XTE0e4bRWHu1r6UWGzfGRPBJ
+	 7cVM25si+Y3R1YUibsEUEVJmHEOXsMxGJFLhfvbWv6GKIE8vv57mBmazkUwekJCOiWtih
+	 noSHNRx1v69Gq5Qkjo3OV4M5HZCEHIABwsKaMtCmCzalIYML5be9xXj/IjTs4MdHHZA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A6E8A1F000C4;
+	by smtp.kernel.org (Postfix) with ESMTPS id A6FAF1F000C6;
 	Wed, 18 Nov 2026 21:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795039165;
-	bh=Ea27Ot+ehzrAuRSoKcNDt2qvaz6iTBMPzRnS1G4L6jg=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=Rm2Hmmb47BdMevLkbFJQUrSi1TWermrXl3QJtZMhr8reX1J3w0EvxDUvIxw1Ac2nG
-	 7xKDUd9UPsF/R7gOFst3/YqYT0S4KpdScvIYnJh221gyUqcoJrVdmr1XRuci4ckfnv
-	 4KihRK1CEH/HWvwMohiYfdG0RSuIKbu9CIQ8HZsU5R/BQL038kNaNf3FKkBOkHUoBl
-	 Sf88wMebLLFwrZ0eYM77FkaBr4LomRTHOfThbUSBislJvdyO+ZID4lQcuyliVP9kcK
-	 V/Es5yEjQ0S5srs7LItdWvorf9FR3swXDwASJWzUZbmT8L4aBFin91NG8ig2ZUJ9gF
-	 RypFw+og+GlBA==
+	bh=4ZCDMReGT8kdAAJEPyl/oDR55ZrAEtce0UDwaaBcFh8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=ca9PoyOld873CKmQmRDFGXbPargZGbRMwzpmxt3azOypNQ7n3ayvaOKdTVwAay+KH
+	 dsgJoa6h68gsexv7gB4Un3olyuaVG+hS78CFvbKjVSSCh6ROZ5s8JX+dFmbwU7j32C
+	 +2DuFNX25O2ZJvTogzIOjkujL6fcAAOFwjbneHmFUHIV4lt+iH2gIJIj7MBf6VB32g
+	 aRIbylHfbOdrKtMVhplvDqJfb3FrGolxQA23I2/mXq/9Xa1U4K7F/fJNMU8Ltyjae/
+	 NkdAZVGHTOPCUgiMZGdrhPCXbnfDcGcPa62vaSxmXSObPlLwlKYv3SGoTFEhMiOQ42
+	 WOuZgarvqhs3Q==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 03AD94AFE3;
+	by lkml.kernel.org (Postfix) with ESMTP id 2488A4AFE1;
 	Wed, 18 Nov 2026 21:59:24 +0000 (UTC)
 From: Harrison Crosse via B4 Relay <devnull+harrison.crosse.dev@kernel.org>
-Subject: [PATCH 0/2] mm/gup: fix mlock() and MAP_POPULATE looping on read
- errors
-Date: Wed, 18 Nov 2026 16:56:40 -0500
-Message-Id: <20261118-mmpop-populate-v1-0-9c561d178d11@crosse.dev>
+Date: Wed, 18 Nov 2026 16:56:41 -0500
+Subject: [PATCH 1/2] mm/gup: make mlock() and MAP_POPULATE handle
+ VM_FAULT_RETRY properly
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDQ0ML3dzcgvwCXSAuzUksSdW1SDS2ME1NSzRPNU9TAmoqKEpNy6wAGxg
- dC+EXlyZlpSaXgExRqq0FADAipz5yAAAA
-X-Change-ID: 20261118-mmpop-populate-8a385efa7e7f
+Message-Id: <20261118-mmpop-populate-v1-1-9c561d178d11@crosse.dev>
+References: <20261118-mmpop-populate-v1-0-9c561d178d11@crosse.dev>
+In-Reply-To: <20261118-mmpop-populate-v1-0-9c561d178d11@crosse.dev>
 To: David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
  John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -114,29 +112,30 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Johannes Weiner <hannes@cmpxchg.org>, Jan Kara <jack@suse.cz>, 
  Harrison Crosse <harrison@crosse.dev>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795039163; l=2455;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795039163; l=8262;
  i=harrison@crosse.dev; s=20261117; h=from:subject:message-id;
- bh=/PkZRnZe5tu6LV293Ifp8K0JXLUKyW2KwcahuxQz4ow=;
- b=OSles3yksDQFXG/3q0tQCEMz+u/knBGbhU4exaXmvxAgSt04CoaGw4td44kcwey09njt++Nuc
- HjqbxmMiv9fDRR9KESgxdSjanyuJaf+XCzQHDuSAX5Nsnb69pTt5ZLy
+ bh=o68P5YM1Dim45OasWUC3bF7sN6yAaM3DW9PetPgRC/s=;
+ b=wMywT4ZYui4m+Gr0BQNzKVCKGUsOs8ElQLremHykfZO3gQlEasMlfWRhgJxvo670cC69t7XUb
+ CtHOhvEHU2AAP+NoMgKynw/kYmxTgANI2mN8jBocLFjhxSZWR9nw9gp
 X-Developer-Key: i=harrison@crosse.dev; a=ed25519;
  pk=fwi/XME2YaW/BDBQ76FmKgF9xHZwRb+dxlVCbxuyojo=
 X-Endpoint-Received: by B4 Relay for harrison@crosse.dev/20261117 with
  auth_id=1552
 X-Original-From: Harrison Crosse <harrison@crosse.dev>
 Reply-To: harrison@crosse.dev
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ixzuqzi1hpzip13g11q3uzs7h689moe6
 X-Rspam-User:
-X-Stat-Signature: 764h9z1xozjrtm9ygdhapmra9j7etw97
-X-Rspamd-Queue-Id: 38D47100005
+X-Rspamd-Queue-Id: 5A84214000D
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1795039166-530367
-X-HE-Meta: U2FsdGVkX18I0g2kBFfUD0qRtb5QEfykNKV5SyLxg+NFUnapH3/gOBFxxRyIapOHwxuVwPuRQqtlhgTIluh0P8CN45/E9bw+A9q3M/3HKFqv6BvBvoD1bMawBpPUmsBLSFdpl69+iYNkrD+2zQ7bi0IkVMmUnza2KXUXPmPeu/jpAR1h/+YhE3C3pPrfRchEb17gr2lmhcV5u4jGihscY1zhMhhClltt0v8Resh+arl5i+n2q3ZSZ++613mFI0tgnYN+Srbrfq2leKfAwPIizmjWf86B3U8EPtXGEh7+Yrvkl/pMDPuurfoxE85Na3MYROZ/hx0ynssHbuQ1eLuKIkRBOJd+z4zFGr9gyy2OFDyBr66LVoE6wykWqaH/ZhdDZGrIAbt5lW8QXoz1A+PZNjmewDOu63XCS4v0fS7mP7jFzuAYBEuuWWMLFveYehdv35ET1+n2eL4msk8QAQkx8I77Wq1nnScJQwpW0qi+Gy5hNmolJPkNxg9SiT3YfgVRf42YgnWWL/z9sHaM6/CKd5XBjQeYzpIwQJMNzVoMU/db2jAZLMyDoBD3YqAxYlwqU/QI8UXWEfcUaea5Vgg8HzlPYkoBoOPns1mmvEgoYEjRrz+chwhhRuBPjyluK9kcb/9YcHUhzHQtvJ3awfFnf8xFUHOcyBh8rx2IT3eBDxUWO20fdAiiYv7RS396p8Jk7WTPNEKg0O8pqDHM8YMa08tIdqEhTGunllEk1acH/kVGyrl61e05CQf7vHC7MrY5/Hdej9cUEu21HljGwxrnspNL5R1stbRayIs/wx9yCPrYIrUdPtc3mIN24IFeGMnW/T5/kefUMjlw1SZSTJzy/lbFvUh5rWOFoU78JGojk/tpxZM6Tgb4Ue+8EMJeQhFeggizGoTXjqZgEucvfeKJ97zlrA17XhFKHvogoyHZcLJB1u/mim+M8qTElRSJU6Zp45NYzvY0SHzDgNoLmFV
- Vp1qXWEV
- Wa6se2g05pawOQCZthcc8/H1imYDisURqY/qvSkmRThwvwGQ/n2DXHTyX08ps4nvpampHHXFXoVifQiAkPqSxrwY04oliDqbgYrgiIdKChef0tdpePE5LlCaUR00/sGxW/MxFwoQSjvkbVl9uQ1mi3aSouTT/NU2fEQqtOBwP9hMZAfOim5NvV9eDLLSFobjCdr/7Rp/39Hq7ESDVgCzdbxP/7sgjiPnfA1qTWaL9twkGMKMkiKQ6cv3GvFyElGxYaxccF01N+9bWXDeGIdNcqN0LytuIL97LPkZXM/fcrdlLdA9YHqkchltHIAV/fKTXEjkTQ1QAxteVjT+vZibNpmkRDOFT3QKNHiDbp1DmXOXhbHRDvaYB5JPUhjOWOD8UEAa/BhmeOn77DrI+xN96bynCrAE138u62XD9PGMOsq9D3BBbfaFbob/SpUYYMPly56HKa/BnYdNLgnBa58dtOvG/T6Xdj4V3Of8X3+qYKDMAy4CkIt1jk3oHKSTh6s8RUamk//6sMnN7uIS3Cya9hH5j2KGVCmhPqzszGgWO7P3MbzdLA19Kywj71xuX0V3jGBDMIR+u+SG5Z7ssYe1+37jKWV+ma/E7k5XkvNzVU7o9D9jWR6GCWMAqCkCjdYHhKWJmy00uUhGUYAYeV2Rsn1U1cQ==
+X-HE-Tag: 1795039166-355330
+X-HE-Meta: U2FsdGVkX18aCo6JkM+GA8HbNbURM1WGMNGhIiQRgAbI9YjPgdP1Z3sg/CtsBwEZA3zfND/IO8ST/g2Qab6nmsBDASRGN0xGXaUDUjygAFi5ruFlez7xS2PWYFkqZxqOCZynVoGYf0A5HY+XqiGFkrdyZNsB1dhNdc6ZhCWgFfOv3+oEg3yFPL9g5I77NmYkdtH9y/wpgbKkcBNho9t4eY1C+WCeq3KV2zMlO5t8KrlozDxeDMSzQV11pMnQ1t+ivrzEABLIAP6tlHuMnRCbTP6Es+DTkmFjsro2fDWe0DS0ero/54S+iDSedS17t27ojJaQZ6JLuW4MVrMGvXbom5kon6S5gSgaoYKlzrY30TXydbnc4A6xnl+ZcYLIbvHhKcgUU/N3/uuw/xbQWax37Jt4tfI9qPo+FKMZGWebVudeY/wxTYFYTIz4EkDRET8n2bntPO7jaF3Xr+CZ99rqtDHW2oRKw3JrEhZsZtWan2++XPU/9EO8nLslaMrkyrEuTG6ZAHkIGj/zmA2c58l6ciz8SyxnzVy0mMXqwj8u747QxZSPJznsNXmteVZ42GZfeZJ8086RK/8naxBP2rkDBwabfQnk+tozocv7n3p9ks2AeVuRfpWueQL2Bga2vwG16GlF8f+SU6/k+mVyoGDm+9LGZfEo9ZnlfIIdWzQhXVytAy1isPK9+gEMopB4RIQBzCGHZ9Z+dbKI16v634My/9cZ/LaLNgLtBlC/BYrJpa1qAeBfF6LT4ffv1qyUBtkhHpmtMdsFnMXYvz2FpZEDl6Gq9Ru2HNGmn50OJiXJHYPwouoF/E/WYOusddXYvA/GnFjKZ9t7ktnimFGP63oY3kPwxbC0qEZ9YWJwVWFsJmv+2EZEI0Nt774lw+a49UCUisW7mVZgvZQ60BxSPBIPDMXmPSGJuZkVNd0B122B1LLxhQqn6Xipu6QUz6AFSBLRdEx3PXhsSFkWpvPgH7i
+ UQXIM1Pn
+ Stfkn9r2i+x3Dy6/1wnZHwKx0MfqabC1CmlBL2WfF0eG6gUfaPVJcnhoqYH5nl4XRQZ6GAsRjWmaTbHJqxJihON2P4DSz4BKVgDKl3vNy11VUHIGkjrHelsD7qcJq7/RmCt9hUZ2E4w+dSKw4pPzcA1rOWCjbuCqRJpzb0eymuUGWW6lYcXsa8Mz51ls97Rk7hAzg+wCPKDW/A/Qi3sPMmhy3mn75uVNWO3EEA75hzAzfemHqQ3A+0f4XfmI3quMbx9wdCDnooYY/QVaVrWsKXeXCNi/Ulpn2tb7XcKC6AGz4G6t1nKtk2naYN+SYi+smPrfR8pNfFdgAXZYOFrnNLLOVBU4+4+uVGmIDwEo1/rNaiNdk8KeOV7u9waHV/jLCpVN0NOQMDUBVA67geCtrx82oB6T+0RTh/gHXQCy3s+GIEtzkBSnruH6Cv5GDU3iwHD2qgQxgL9ahraM+ROXz1DNVQcXNKVLXjkU4ckAWo1538+ufWsoXJcGuIJe05hDTlkVjEFxQ7J5ozNHyfWPXAg5XWoN2i+lOPeyMAbPMMuwhiiOpZCxLyTbDMiuduUnWmONjB7L+FYTx5I7CPBujGJ9okESbvOSRz17o6IbeIHsWaq36WbyY+vZ8yig1CfGQVnpiQi/xlNOJSPAshWSrHSJzJQsk9clZAjt8q8deiGtXd+D8VSfN0deppm9u/o03RCRZyAxz+Ul/QbzYUvCLwqQ2rVy5DlHfU53NZYLkRtAU6h3uYO+im5WQ/mInVAHslFls
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,58 +144,188 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-If every read of a page in a file mapping fails, mmap(MAP_POPULATE) and
-mlock() of that mapping retry the read in the kernel until the task gets
-a fatal signal. A load from the page gets SIGBUS, and MADV_POPULATE_READ
-fails with EFAULT.
+From: Harrison Crosse <harrison@crosse.dev>
 
-Patch 1 makes __mm_populate() pass FOLL_TRIED when retrying the page
-whose fault released the mmap_lock, as __get_user_pages_locked() does,
-so that a read error ends the loop. mlock() then fails with ENOMEM, and
-mmap(MAP_POPULATE) returns the mapping. Patch 2 adds populate_eio, a
-selftest that serves such a file over FUSE and fails without patch 1.
-The series is based on v7.4-rc3.
+If every read of a page of a file mapping fails, mmap(MAP_POPULATE)
+and mlock() of that mapping do not return: the task spins in
+__mm_populate(), submitting a new read of the page on each iteration,
+until it gets a fatal signal. Touching the same page gets SIGBUS, and
+madvise(MADV_POPULATE_READ) fails with -EFAULT.
 
-The bug was reproduced with the ext4 setup described in patch 1 on
-v7.4-rc3 (arm64 and x86_64), Debian 6.12.116 (arm64) and 6.6.162
-(x86_64). Under QEMU TCG, populate_eio passes its MADV_POPULATE_READ
-check and fails its mmap(MAP_POPULATE) and mlock() checks without
-patch 1 on v7.4-rc3 (arm64 and x86_64) and on 6.12.117 (x86_64), and
-passes all three checks with patch 1 on v7.4-rc3 on both architectures.
+The first fault on the page reaches filemap_fault() with
+FAULT_FLAG_ALLOW_RETRY and without FAULT_FLAG_TRIED. filemap_fault()
+releases the mmap_lock to read the page and, because it released the
+lock, returns VM_FAULT_RETRY before it looks at the result of the read.
+It cannot report the error then: a fault that has released the lock
+returns VM_FAULT_RETRY or VM_FAULT_COMPLETED, and neither carries an
+error. faultin_page() turns VM_FAULT_RETRY into -EBUSY, so
+__get_user_pages() stops at that page without an error, and
+__mm_populate() calls populate_vma_page_range() again at that address,
+again without FOLL_TRIED. The page fault handlers and
+__get_user_pages_locked() retry with FAULT_FLAG_TRIED instead, and on
+that attempt filemap_fault() reads the page with the lock held and
+returns VM_FAULT_SIGBUS if the read fails.
 
-To reproduce, build and run populate_eio from patch 2 as root on a
-kernel with CONFIG_FUSE_FS.
+Commit 631426ba1d45 ("mm/madvise: make MADV_POPULATE_(READ|WRITE) handle
+VM_FAULT_RETRY properly") fixed the same loop for MADV_POPULATE_* by
+calling __get_user_pages_locked(). That does not fit here:
+__get_user_pages_locked() retakes the mmap_lock itself and carries on
+with the GUP flags it was given, while populate_vma_page_range()
+derives those flags from the VMA that __mm_populate() looks up again,
+and may skip, after each unlock. Retrying with a NULL locked instead
+would drop FAULT_FLAG_ALLOW_RETRY and FAULT_FLAG_KILLABLE, so a
+userfaultfd range would fail rather than wait, and folio lock waits
+would not be killable.
 
-The fix was tested only on v7.4-rc3, on arm64 and x86_64 with 4K pages.
-On arm64, only populate_eio was run on the patched kernel. Also not
-tested: populate_eio in unprivileged user namespaces or on kernels older
-than 6.12, the ext4 setup on kernels older than 6.6, and populate_eio
-timing out or getting SIGKILL during a call on the patched kernel, where
-every call returns at once. The notes in each patch list the other cases
-that were not tested.
+Instead, have __mm_populate() remember the address of the page whose
+fault released the mmap_lock. When the next iteration starts at that
+address, fault in that page alone with FOLL_TRIED, as
+__get_user_pages_locked() does, then continue with the rest of the
+range as before. The retry reads the page with the mmap_lock held, as
+filemap_fault() did for a page that was not uptodate before v5.1, and
+as the other GUP retries do. With a persistent read error the retry
+fails with -EFAULT: mlock() returns -ENOMEM
+(__mlock_posix_error_return() maps -EFAULT to it), and MAP_POPULATE,
+which ignores populate errors, returns the mapping. A fatal signal
+still ends the loop, with -EINTR from __get_user_pages() or, if it
+interrupts the FOLL_TRIED read, with -EFAULT. The other callers of
+populate_vma_page_range() pass a NULL locked, so they cannot get
+VM_FAULT_RETRY and are unchanged.
 
-The analysis and the patches were prepared with the help of an AI coding
-assistant (Claude).
+Reproduced with ext4 on dm-linear over a loop device, with the eight
+sectors of one page of a file mapped to the dm "error" target, on arm64
+(Debian's 6.12.116 and v7.4-rc3) and x86_64 (v7.4-rc3): mmap(MAP_POPULATE)
+and mlock() of the file were still running in the kernel after 5 seconds
+and ended when sent SIGKILL. On 6.12.116, the block layer tracepoints
+showed about 280,000 bios a second being submitted and failed.
 
+The analysis, the patch and this changelog were prepared with the help
+of an AI coding assistant (Claude).
+
+Fixes: 6b4c9f446981 ("filemap: drop the mmap_sem for all blocking operations")
+Link: https://lore.kernel.org/all/20191105182211.GA33242@cmpxchg.org/
+Link: https://lore.kernel.org/all/20240314161300.382526-1-david@redhat.com/
+Cc: stable@vger.kernel.org
 Signed-off-by: Harrison Crosse <harrison@crosse.dev>
 ---
-Harrison Crosse (2):
-      mm/gup: make mlock() and MAP_POPULATE handle VM_FAULT_RETRY properly
-      selftests/mm: add a test for populating a page that cannot be read
+Tested on x86_64 v7.4-rc3 under QEMU (TCG): with the error page,
+mmap(MAP_POPULATE) returns the mapping and mlock() fails with ENOMEM,
+MADV_POPULATE_READ still fails with EFAULT and touching the page still
+gets SIGBUS. With reads of that page delayed by 1 s with dm-delay,
+SIGKILL during the read ends the task within 2 ms. Without a read
+error, MAP_POPULATE, MAP_LOCKED, mlock() and mlockall() map every page,
+and the map_populate, mlock2-tests, mlock-random-test, madv_populate,
+mremap_dontunmap, on-fault-limit and guard-regions selftests have no
+failures, nor does populate_eio from the next patch. On arm64 v7.4-rc3
+under QEMU (TCG), populate_eio fails its mmap(MAP_POPULATE) and mlock()
+checks without this patch and passes all three with it.
 
- mm/gup.c                                  |  36 ++-
- tools/testing/selftests/mm/Makefile       |   1 +
- tools/testing/selftests/mm/config         |   1 +
- tools/testing/selftests/mm/populate_eio.c | 410 ++++++++++++++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh |   1 +
- 5 files changed, 445 insertions(+), 4 deletions(-)
+Not tested: the other checks above on arm64, page sizes other than 4K,
+transient read errors, userfaultfd ranges, file systems other than ext4
+and FUSE, real disks, non-fatal signals, and the rest of the mm
+selftests.
 ---
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
-change-id: 20261118-mmpop-populate-8a385efa7e7f
+ mm/gup.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-Best regards,
---  
-Harrison Crosse <harrison@crosse.dev>
+diff --git a/mm/gup.c b/mm/gup.c
+index 2b405cce2..e666761ed 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1795,11 +1795,12 @@ static __always_inline long __get_user_pages_locked(struct mm_struct *mm,
+ }
+ 
+ /**
+- * populate_vma_page_range() -  populate a range of pages in the vma.
++ * __populate_vma_page_range() -  populate a range of pages in the vma.
+  * @vma:   target vma
+  * @start: start address
+  * @end:   end address
+  * @locked: whether the mmap_lock is still held
++ * @tried: whether this retries a fault that released the mmap_lock
+  *
+  * This takes care of mlocking the pages too if VM_LOCKED is set.
+  *
+@@ -1814,8 +1815,9 @@ static __always_inline long __get_user_pages_locked(struct mm_struct *mm,
+  * If @locked is non-NULL, it must held for read only and may be
+  * released.  If it's released, *@locked will be set to 0.
+  */
+-long populate_vma_page_range(struct vm_area_struct *vma,
+-		unsigned long start, unsigned long end, int *locked)
++static long __populate_vma_page_range(struct vm_area_struct *vma,
++				      unsigned long start, unsigned long end,
++				      int *locked, bool tried)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	unsigned long nr_pages = (end - start) / PAGE_SIZE;
+@@ -1860,6 +1862,8 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+ 
+ 	if (locked)
+ 		gup_flags |= FOLL_UNLOCKABLE;
++	if (tried)
++		gup_flags |= FOLL_TRIED;
+ 
+ 	/*
+ 	 * We made sure addr is within a VMA, so the following will
+@@ -1871,6 +1875,13 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+ 	return ret;
+ }
+ 
++long populate_vma_page_range(struct vm_area_struct *vma,
++			     unsigned long start, unsigned long end,
++			     int *locked)
++{
++	return __populate_vma_page_range(vma, start, end, locked, false);
++}
++
+ /*
+  * faultin_page_range() - populate (prefault) page tables inside the
+  *			  given range readable/writable
+@@ -1934,7 +1945,9 @@ int __mm_populate(unsigned long start, unsigned long len, int ignore_errors)
+ {
+ 	struct mm_struct *mm = current->mm;
+ 	unsigned long end, nstart, nend;
++	unsigned long retry_addr = 0;
+ 	struct vm_area_struct *vma = NULL;
++	bool retry = false, tried;
+ 	int locked = 0;
+ 	long ret = 0;
+ 
+@@ -1967,8 +1980,21 @@ int __mm_populate(unsigned long start, unsigned long len, int ignore_errors)
+ 		 * Now fault in a range of pages. populate_vma_page_range()
+ 		 * double checks the vma flags, so that it won't mlock pages
+ 		 * if the vma was already munlocked.
++		 *
++		 * filemap_fault() reports a read error only when
++		 * FAULT_FLAG_TRIED is set: on a first attempt it releases the
++		 * mmap_lock for the read and returns VM_FAULT_RETRY whatever
++		 * the result. So when the last call released the lock at
++		 * nstart, retry that page with FOLL_TRIED, and only that page,
++		 * so that later pages still get a first attempt that releases
++		 * the lock for the read. Compare the address because nstart
++		 * moves past that page if it is no longer mapped, or its VMA
++		 * is skipped, when the lock is retaken.
+ 		 */
+-		ret = populate_vma_page_range(vma, nstart, nend, &locked);
++		tried = retry && nstart == retry_addr;
++		ret = __populate_vma_page_range(vma, nstart,
++						tried ? nstart + PAGE_SIZE : nend,
++						&locked, tried);
+ 		if (ret < 0) {
+ 			if (ignore_errors) {
+ 				ret = 0;
+@@ -1977,6 +2003,8 @@ int __mm_populate(unsigned long start, unsigned long len, int ignore_errors)
+ 			break;
+ 		}
+ 		nend = nstart + ret * PAGE_SIZE;
++		retry = !locked;
++		retry_addr = nend;
+ 		ret = 0;
+ 	}
+ 	if (locked)
+
+-- 
+2.56.1
 
 
 
