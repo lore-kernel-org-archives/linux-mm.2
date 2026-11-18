@@ -1,96 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D68606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 12:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fGEJjeoH
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9009F606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 13:06:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 619486B05B0; Wed, 18 Nov 2026 07:26:05 -0500 (EST)
+	id AF7B96B00EF; Wed, 18 Nov 2026 08:06:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CA126B05B1; Wed, 18 Nov 2026 07:26:05 -0500 (EST)
+	id A80806B05B0; Wed, 18 Nov 2026 08:06:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BBA66B05B3; Wed, 18 Nov 2026 07:26:05 -0500 (EST)
+	id 948476B05B1; Wed, 18 Nov 2026 08:06:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BB096B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:26:05 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C26A160731
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:26:04 +0000 (UTC)
-X-FDA: 85448161848.20.10363FE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EF39E40006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:26:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fGEJjeoH;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 68E466B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:06:14 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0936E1A0746
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:06:14 +0000 (UTC)
+X-FDA: 85448263068.28.D330B41
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0C2BA180006
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:06:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of yumiao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yumiao@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795004763;
+	s=arc-20220608; t=1795007172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1AqeN0M33Tu74PsxiXUzK3ZXWPpnVIcOQcPutPsP0EE=;
-	b=mTLHdwdJP6VhXo7E8imIZjf1rWrPQpkUT0tshRlOoYMlTmd9rUWZGtuxgUkijyRR9g4znh
-	+NEkK0hRHQmqgkqUnfPwOUlR2+do0xc7oHsG8GyweUr/Q1ENec9TZuf8rzVN2wU1gAucjo
-	c72RkXmyV+PhBucAPpcATnDsh/kUEtA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795004763;
-	b=EIwwW2RgMWeRvFYNvy99hpqKEfTRlRrrezZwYlYmtTP2HQsrIydA9ZXWULIJJAnAMOobQe
-	zIunHGaKx04ugDViV4LQISxMqIp0+YqMjV26L6dcu3xWPE6tzPIVrPvXSXV3s8M2FZUT72
-	8muS15oQFVhHyU76DU2UznhtrxK35Tg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rKaTjTFeBLCTJ4hjz/H9hyLaFlLhjnai2pRctEyKKYk=;
+	b=qIJhXLEt1jBDF5oxVgNcSiNJz75eg4BRyqXciCEq5lc/uLLLwXV8q2aGkShZ2aOVlXWs0X
+	zXLAt9JjC1pimsodEl9BsgQncqWlMDvk43TBoTo4bj96nSRbTSwRDtWq+9Y5avcntI+99N
+	om9zscKh4gw/dTslYtYwmF8FAPgQWmU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fGEJjeoH;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 76764620A5;
-	Wed, 18 Nov 2026 12:26:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4801F000C4;
-	Wed, 18 Nov 2026 12:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795004762;
-	bh=1AqeN0M33Tu74PsxiXUzK3ZXWPpnVIcOQcPutPsP0EE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fGEJjeoH7ThK5cRxOIXKZPJJmrnFKqGHTZyuP5od2uJ32grmkYyfwDJ8tI7YhVHEQ
-	 savzOKmvPii9oiAiSFb5doU6fXs651q+NEfkgALqX6Gu+fcxDCllrJjTaSKI+FLRmf
-	 4XFXitmIycldLs67nQcaC8VlC3TlKva/TUnSE76uDqeZ0ncCCLNcoXmP19BQGULBVT
-	 nebQIfTy5Ey0CV8WG4vj+YANaZ+Ot3HuP116ixcZOnYNF4ciA/qqu37pPBED8KfGyc
-	 TM8zRkHTnBMIz+KZr/17L0BPjGAGdKATajcAsmlKFJDmLA1MQBhbiY/PL8347blUs0
-	 fYIj44xqtCW/A==
-Date: Wed, 18 Nov 2026 12:25:55 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	akpm@linux-foundation.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
-	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org, 
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of yumiao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yumiao@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795007172;
+	b=M1CAtTbKYrPOGDV/TUnhNWZNx1EhGPz/+piDWeijZU+uAK4DPDe0Z7Cee350l4ucgcntQ4
+	C5DAECTiY8imu+lhhkr0Jt5K+4k5P3DyL9LFFfTW8V4si98KLIMgLXZ+8jTQx9GyuP0Oe7
+	6Th0vdlixsg909Yeb7jxGSJtEU79e9U=
+X-UUID: cb91cdbce35011f19a56ed5b684f684d-20261118
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, SA_UNTRUSTED, SA_LOWREP
+	SA_EXISTED, SN_UNTRUSTED, SN_LOWREP, SN_EXISTED, SPF_NOPASS
+	DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:eb10f8cb-6cb6-4f11-91a6-58294a490a92,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:35
+X-CID-INFO: VERSION:1.3.19,REQID:eb10f8cb-6cb6-4f11-91a6-58294a490a92,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:35
+X-CID-META: VersionHash:7db8b62,CLOUDID:34c319f315fd5a0be9fdc1968f548338,BulkI
+	D:26111821060005H9O1QJ,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|153|
+	865|898,TC:nil,Content:0|15|50|99,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:n
+	il,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BR
+	E:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: cb91cdbce35011f19a56ed5b684f684d-20261118
+X-User: yumiao@kylinos.cn
+Received: from kylinos.cn [(39.156.73.11)] by mailgw.kylinos.cn
+	(envelope-from <yumiao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 102452584; Wed, 18 Nov 2026 21:05:57 +0800
+From: Yu Miao <yumiao@kylinos.cn>
+To: cgroups@vger.kernel.org,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: use memory barriers for non PMD-sized folios to
- sync
-Message-ID: <av2Y7v-PQ0vVZLSP@gremlin>
-References: <6274e62645b9f176dd10d7a79e86b900a39cec5f.1794898535.git.baolin.wang@linux.alibaba.com>
- <c254a38b-d5e5-40d0-8d70-c6baa850cf2a@kernel.org>
- <430c6b67-76a2-4f67-abb6-e28d07a84bd4@linux.alibaba.com>
+Cc: akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	jiayuan.chen@shopee.com,
+	nphamcs@gmail.com,
+	Yu Miao <yumiao@kylinos.cn>
+Subject: [PATCH v2] Docs/admin-guide/cgroup-v2: fix npn tags in memory.stat
+Date: Wed, 18 Nov 2026 21:05:37 +0800
+Message-ID: <20261118130537.750211-1-yumiao@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261117062620.346767-1-yumiao@kylinos.cn>
+References: <20261117062620.346767-1-yumiao@kylinos.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <430c6b67-76a2-4f67-abb6-e28d07a84bd4@linux.alibaba.com>
-X-Stat-Signature: jy86hrodeyn5dw1kaihd9pzbi1we9izm
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EF39E40006
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795004762-527814
-X-HE-Meta: U2FsdGVkX1+Uecgp/8DrCcffDdLS0LNNxNOTqzoY3FvNvjaI1NlRPVwcD/85+bn765pDozX/Bl79NG6DzUNkQMTgrtuKHh1tXeUivIJeccUoIljrGjplLKPfwrN7XD6/zoO47nhtI3+stS/UcFGmp1Yr/UGYvwvLvT1aEi3XKQsgheo2tGiVDxKx7OC/zMV+eJYgrnEUvMseyVzIp+73DBYBp13OjBMzzwK5cr1b+fYdr+jvOfJlnh3iGYjwgptFKwh79WYPyoDgrenx6cpxWxV4Ycd7pHONVFv+OwR9SYWidgbNf/1O6j7hECZYC0drPw6k1F9zZZykb9i8Vcf3wVlv2FDPjqItRIg/WLngakLrgIKiUcMN64D7P3cEyRdvlQtxSVve9+ELXWhb+ii0oGne4V89jShhQm+ir+LND482NX1A3CcoYJ8UjDPgqdd6nV5X8Y9lfjXbX5NScTxhaC0VadsP2+B1FexPByTMF9GsU+jOwGe4Dvj2f0TG6PAKwvgjHbUHxPgYTc5BaObBU3pWnEKOFbrwlU/B7BOyqq+HoLr/hCPQYbJv1MtrQUe60WPfXdyYSVNfJvBjG+nSid8Cv3aweoUs31g00rjVMDxKMAg9aMYsjd8fmHCcn7+r/BNdes0KBnWP+2pccIeRW39gqwNMGCtP/WSp/2fgAGcperFmUwf7Zu99aRN3oKgZNK4nKEem0LFgraPO8sY5rhRNqCJorg0SEa7EzmSviubVF0a14XvQoGQKR+DW2blH52NKa07o88G5iu4lKB2f1zQyBmHWWh5/CsR9p/gmXpq6cJ6Fp7vuo6Ci22U3moLA/HdbCZ+Ryzk6WWHttXnN9RdYkLLsqqTBeKKEX2iOF1QSyqxJ2z80Q6luWZTchreWuduGLmYaA35WIRvrD+Ii65lvPSmGeQh2EYGxoSVgKrjrj1nEsHapryofytha2xDleFIsRN5QaWTfbPSJqlR
- 6NVvBEG5
- dIxcvQ3heSE41eFQcSj0bYEZGuBFAmPiHuhn0PUkjOPac6r9EXpw/RNQ3DMWbgfrQTOG7xqz0n52AvI1BS4qwUxHVvg2AvKGSp7CeazVqRI5DJskgWiRkuOQd5PWcc8dH3D6SYWR1Fy+mEQEnaF4hWj0CUAtwx9r0UHUCszcsiCtXcPnCEn8zY/UiZ6hN+5iKS/hzWBt+Wr7/qStGO0fqWWA37Ad9U7o1j8HyEtVqRMxoFI9S+vZSfbp8FurghlmvGY/D
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0C2BA180006
+X-Stat-Signature: u17no3ke7up7ztp69asw99m37i3zombr
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795007167-800760
+X-HE-Meta: U2FsdGVkX1/MI2LsuFqwfMTIfVyINLkFYWtdUXUHo60uejSJ+LwMd9nM+VK1By0I0GJak/GK6EGp1ygWQQt7GYcECfB5WgREv5xOIAvQGtVzHChPakTHJJGuWPIfpLweRx3YTqNF8l3IxEqZDCMA0/OC+c4UBxSyzRg4OnJePh7CblwugQrwhXD2L1PSHxRV30KG5SctOMWctwwIJi7IDbK4EaperOfqOAbpWudu8l+MQID4Oj4o3l+bgF/eWWjn73IQSsqZPqtMiJ9u5qSSzyek7lsYLUxVa8ZdHf39umb0lhza5yNEEWkiAUQNiIw0WcB/SSExPKDSSTfeVHhl4cMij6yLf7vLToiomV81B61AxvU8TiKHLaLl605QXeKeGYKEX8EjdGNuEgwe5Oy3Wh6uEWV/wzE3kdJZUIG2KORf/r7XiaHR/sR9Yqzase7rniOtDNlinv5A2ErgIJv3Bmek0mVUKLwinMN5Bl14mA1hvya9paRaSH972YGFwsecV4uwfcXgKGGZKoS+WNFeMOWFG9lTp+YJAS4IXE+d5+qaiOOzx9xqZ7rP4O71Uz2HEJUoyJtCAh9cABE7+Jor6rGgEdDRHbN6NVlwO1cCCP2qf96YFz+ny4FnHqKmATIkPgwI6vDCgpWphe5YhCalyC0jODsWwZ94rWMZLlKoGffy6WlTAWs//Rh62ybmmK6CAsQCF5gTJ/mJCrlTpohf8xX8H9Bd5QxFTPLhY8d18jumrFJyV2mA1he6NVzC3MZG8BcPZbxGnYowEUjNCSuy5/u46BIESD6DcbAT6kY//54RndWQOj1XTpw16i+7TtBtAcPdkKunYeCilpDYim4iyTOhkmMVgDqq6la/8Bm09ATDJgId84KrJSTl6wsc2cm765vma3mk4pBSSpOLI7f5HsaqTxhfdMn/vtLEmO2kTv9PiQhMyq8mOVTAIoSW91uW3hi7Vnx8sO71+cI7MXH
+ oSl4rXs7
+ dJ44upRHbv5wZYBfodc31M11jexpI1hRMZMZ3N2EvYUhqzd6rY+m2WRg4kCysy+tmRBYO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,20 +117,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 02:19:56PM +0800, Baolin Wang wrote:
-> > Do we have any way to measure the benefit of this? I think we'll need that to
-> > convince reviewers (like Lorenzo :) )
->
-> As I replied to Lorenzo, I will try, though it is hard to measure the
-> performance for this uncommon race case.
+The zswap, zswapped, zswap_incomp, swpin_zero, swpout_zero, zswpin,
+zswpout and zswpwb entries never show up in memory.numa_stat, so add
+the 'npn' tag to them.  The pgscan_kswapd, pgscan_direct,
+pgscan_khugepaged, pgscan_proactive, pgsteal_kswapd, pgsteal_direct,
+pgsteal_khugepaged, pgsteal_proactive and pgrefill entries do show up
+in memory.numa_stat since commit e4f4fc7aa8b7 ("mm: move pgscan,
+pgsteal, pgrefill to node stats"), so remove their 'npn' tag.
+Also move zswap_incomp, currently listed between the zswpwb and
+thp_fault_alloc counters, next to the zswap and zswapped entries
+it belongs with.
 
-I mean it's not a race unless you stop taking the PMD lock (I think the commit
-message has to be a lot clearer about that), and I'm not really happy to move
-from easy-to-reason-about PMD lock to hard-to-reason-about and fragile memory
-barriers unless we have a _really_ good reason.
+Signed-off-by: Yu Miao <yumiao@kylinos.cn>
+---
 
-I'd say given what you've said that we don't have a really good reason :)
+Changes in v2 (per Tejun's review):
+- Add the tag to swpin_zero, swpout_zero, zswpin, zswpout and zswpwb.
+- Remove the tag from pgscan_kswapd, pgscan_direct, pgscan_khugepaged,
+  pgscan_proactive, pgsteal_kswapd, pgsteal_direct, pgsteal_khugepaged,
+  pgsteal_proactive and pgrefill, which have been in memory.numa_stat
+  since commit e4f4fc7aa8b7 ("mm: move pgscan, pgsteal, pgrefill to
+  node stats").
+- Repost via -mm with Andrew Morton and linux-mm@kvack.org cc'ed.
 
---
-Cheers, Lorenzo
+ Documentation/admin-guide/cgroup-v2.rst | 43 +++++++++++++------------
+ 1 file changed, 22 insertions(+), 21 deletions(-)
+
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index 9e3c67b02ae2..a50ce3c833c0 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1608,12 +1608,18 @@ The following nested keys are defined.
+ 		Amount of cached filesystem data that is swap-backed,
+ 		such as tmpfs, shm segments, shared anonymous mmap()s
+ 
+-	  zswap
++	  zswap (npn)
+ 		Amount of memory consumed by the zswap compression backend.
+ 
+-	  zswapped
++	  zswapped (npn)
+ 		Amount of application memory swapped out to zswap.
+ 
++	  zswap_incomp (npn)
++		Amount of memory used by incompressible pages currently
++		stored in zswap without compression. These pages could not
++		be compressed to a size smaller than PAGE_SIZE, so they are
++		stored as-is.
++
+ 	  file_mapped
+ 		Amount of cached filesystem data mapped with mmap(). Note
+ 		that some kernel configurations might account complete
+@@ -1702,28 +1708,28 @@ The following nested keys are defined.
+ 	  pgsteal (npn)
+ 		Amount of reclaimed pages
+ 
+-	  pgscan_kswapd (npn)
++	  pgscan_kswapd
+ 		Amount of scanned pages by kswapd (in an inactive LRU list)
+ 
+-	  pgscan_direct (npn)
++	  pgscan_direct
+ 		Amount of scanned pages directly  (in an inactive LRU list)
+ 
+-	  pgscan_khugepaged (npn)
++	  pgscan_khugepaged
+ 		Amount of scanned pages by khugepaged  (in an inactive LRU list)
+ 
+-	  pgscan_proactive (npn)
++	  pgscan_proactive
+ 		Amount of scanned pages proactively (in an inactive LRU list)
+ 
+-	  pgsteal_kswapd (npn)
++	  pgsteal_kswapd
+ 		Amount of reclaimed pages by kswapd
+ 
+-	  pgsteal_direct (npn)
++	  pgsteal_direct
+ 		Amount of reclaimed pages directly
+ 
+-	  pgsteal_khugepaged (npn)
++	  pgsteal_khugepaged
+ 		Amount of reclaimed pages by khugepaged
+ 
+-	  pgsteal_proactive (npn)
++	  pgsteal_proactive
+ 		Amount of reclaimed pages proactively
+ 
+ 	  pgfault (npn)
+@@ -1732,7 +1738,7 @@ The following nested keys are defined.
+ 	  pgmajfault (npn)
+ 		Number of major page faults incurred
+ 
+-	  pgrefill (npn)
++	  pgrefill
+ 		Amount of scanned pages (in an active LRU list)
+ 
+ 	  pgactivate (npn)
+@@ -1747,29 +1753,24 @@ The following nested keys are defined.
+ 	  pglazyfreed (npn)
+ 		Amount of reclaimed lazyfree pages
+ 
+-	  swpin_zero
++	  swpin_zero (npn)
+ 		Number of pages swapped into memory and filled with zero, where I/O
+ 		was optimized out because the page content was detected to be zero
+ 		during swapout.
+ 
+-	  swpout_zero
++	  swpout_zero (npn)
+ 		Number of zero-filled pages swapped out with I/O skipped due to the
+ 		content being detected as zero.
+ 
+-	  zswpin
++	  zswpin (npn)
+ 		Number of pages moved in to memory from zswap.
+ 
+-	  zswpout
++	  zswpout (npn)
+ 		Number of pages moved out of memory to zswap.
+ 
+-	  zswpwb
++	  zswpwb (npn)
+ 		Number of pages written from zswap to swap.
+ 
+-	  zswap_incomp
+-		Amount of memory used by incompressible pages currently stored in zswap
+-		without compression. These pages could not be compressed to
+-		a size smaller than PAGE_SIZE, so they are stored as-is.
+-
+ 	  thp_fault_alloc (npn)
+ 		Number of transparent hugepages which were allocated to satisfy
+ 		a page fault. This counter is not present when CONFIG_TRANSPARENT_HUGEPAGE
+-- 
+2.43.0
+
 
