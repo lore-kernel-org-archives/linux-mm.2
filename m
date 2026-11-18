@@ -1,140 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB4B606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 22:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E27606A330
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 22:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=byCLO5TS
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dRWUklhy
 Received: by kanga.kvack.org (Postfix)
-	id 515026B0601; Wed, 18 Nov 2026 17:30:41 -0500 (EST)
+	id B662B6B0604; Wed, 18 Nov 2026 17:35:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EC946B0603; Wed, 18 Nov 2026 17:30:41 -0500 (EST)
+	id AEA686B0605; Wed, 18 Nov 2026 17:35:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 402BD6B0604; Wed, 18 Nov 2026 17:30:41 -0500 (EST)
+	id 98A286B0606; Wed, 18 Nov 2026 17:35:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 17DCE6B0601
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:30:41 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A67481C3F85
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:30:40 +0000 (UTC)
-X-FDA: 85449685440.25.078BE2B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DC59EC0003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:30:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byCLO5TS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 58FFB6B0604
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:35:14 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D7BB1C08C3
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:35:13 +0000 (UTC)
+X-FDA: 85449696906.02.98CE747
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 00A7420002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:35:11 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=dRWUklhy;
+	spf=pass (imf13.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795041312;
+	b=M2UoJnnkKCPJPrMrDcQgefwCG9Xhqk/6Y4MPWPX9zdkVeMGftBcbHZ8AABT6ea770JasUK
+	MYq9qtB3T7Cj9ZiriIU0T5ak4cHtkT4nUzjQVJ4o0fAgvOJyAbUp3LPI1Fbsh2BYEXV9iF
+	82kSNZlS/vN1miifPVf7vLkHLHkmReM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795041039;
+	s=arc-20220608; t=1795041312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5HiEgnJ4vXkw0UUO+Qmnim5ib/OYOiSX2+Q+cBS3EWI=;
-	b=rmVNW+P/Mc6h5leEmQKI5NpvwhAvb8Pu459nViXDa9NRp90qsZi7TAnI+0knN4qQ5hGNGC
-	WUr899bUkxnaEBzoqwkLdT9sz0SdpEHMRoNy+NwP4KQTk5W2Iu1wN/8SCYSVkAv6/md7qM
-	i8eTu4e0qy44oFiIduWLtlTHJM4xLVg=
+	bh=+wEj8CWquloqUtruK2jACBvwnRpGsJYik9FeeinA1ng=;
+	b=XMFAni3itkHuZQyXHkr/OufutEw7mtmRTO9cDzF+NoogtVjp1Xu7tM0atz00AjHCsY60Ni
+	0nsfxhXnV/Ccc5GPm1jaOGJVOt02iErPjuqikr3i1jBWv6j3c99tUR7unAZyXYC5vHoEKg
+	dhZuSPnsypPsiKo0TWXi3YrvUARlk0g=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byCLO5TS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795041039;
-	b=7fFelm6jGBFfSBgE1glrFwbiaehbADxL0jq5XJpSa+YKfxQoC6ED6FU42d1m/39OJxRrSJ
-	qJ669gYh+PF08Pz4E74I00zON1krgx68FK5L85EqyBlB0f2+96Xo38PuLf/seJxKAAkb4y
-	Pw4V0bIdoSOhjD3n8trhADT4O4ppCs0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD0BB64024;
-	Wed, 18 Nov 2026 22:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C361F000C4;
-	Wed, 18 Nov 2026 22:30:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795041037;
-	bh=5HiEgnJ4vXkw0UUO+Qmnim5ib/OYOiSX2+Q+cBS3EWI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=byCLO5TSgk5MX23zS3L3eJl3Y8OffgcGLhmZBmk83SFsqgpsUc+/h4Cz7A0xBeiEj
-	 5WA32cYDUaDG9vw2NczJuXXxY/GMuDUAyHHLDzahXS9IlG6v+R52XnF3F7xohh24s/
-	 +amuX3K99aIi9CKsQhUupBL5urpZOuotoxpVZJ1/kLhyWKXvp+uCr78EY/rDFt1bFG
-	 hcahzk0chCmhuHN10pHAP2ajfruvC9VX0woMFAhgFxE/JGBDjH5B5KiZ8MdqiwphAC
-	 FQqo023lFQf2rCpuBE9+839cVyQt4bzE6lDnz5Kbk4KCM8daKc5tLmNK7jQjLvfLE6
-	 p5ft4dppSbjuA==
-Message-ID: <92f7177a-a48d-4824-9b63-4ff5b9b3b47d@kernel.org>
-Date: Wed, 18 Nov 2026 23:30:33 +0100
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=dRWUklhy;
+	spf=pass (imf13.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so16587255e9.3
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:35:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795041310; x=1795646110; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+wEj8CWquloqUtruK2jACBvwnRpGsJYik9FeeinA1ng=;
+        b=dRWUklhyXJ6QMWwLx51d3qwAKJgKphdKgx8bSURG+PPr0/ueZlwas+G5UJFjs68MK8
+         N+KGxfCWlkbtcPLQOGOkKvqKIoqO9bYVGjvmgdjT5Q+nD1jcHOkHirS6e3L7mftSQeoX
+         SqcTsdfYRBcAk2BifIkhx1qdLGAHD/ngP3Q7fhu0WdGNaq1YZb36yyHu92Ggaab2Hoow
+         gi+bJUSUVTmJ9t4z/uyj+iNwsR/SorNWcsv3bOxvrqNwDjH+ru7uiqdMYMlt+rxW1ykQ
+         36ORodOxbxI0xcP9okZEp9V4W8OhWTzTj3NbxVGpedMtu1NeFJOV2e2nvTPYJqGXFVQT
+         KCRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795041311; x=1795646111;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+wEj8CWquloqUtruK2jACBvwnRpGsJYik9FeeinA1ng=;
+        b=xTSnht3M1CwhQjPpjGSNnhPqBKWG4+avMmOZn/s0gmZEPDazR0s8gVU/Om3AHaES8s
+         TjVNwm+9idbRAklCQ4BmOq9SLgo/tXro567pAFKT9aQIBGGSMecl8w8KFq+C0Vxjpj6m
+         zOV7dn+xKPaUsk2ZslXaCQb6epHioynSSN8onAodFPp056My++2dd9S8kmGY1vxpBqrA
+         ciS74o8Cuju8DyHGNlX5p950PrhwjwbpbwYWxM5GkBL7TzjTwDlLd6RhyVEeHbP6+EjA
+         uEZR45aOuZVApI/qQClVkNn0rv9jGVwD0jIJXFw0Q7b3cMVv5BfF79dUydesaGdxRzct
+         /YxQ==
+X-Gm-Message-State: APuU4Z9LD9Q8CvLdIJHDMQcRzykG1F6uqo62sLNWQbRkG1g2o1DvU5qb
+	pChp7KEXk96yathilbEEx5BBlPtiIn3CAbjzzA8VLBZrVx3NmlPCnKoX
+X-Gm-Gg: AYBFou3QPpECbY+a+XYgkXfdbJ0vGje2lE5gLvTtCcmAP5dl2aoqdzh1Dx3zJwDefsX
+	PZGv1lOwnnwWY3v6Aup9Pz+dAD9+/c+CCqIU64d21rU2nIMct71MRzRAHZhvZ5CIZnv6B3WYBfz
+	5VpObkZiXKYNHyDBQNcwiWkpwwSMrmbYyGTAZneZa34rc9VXqaa1W3Z8yuCx8nb3QhH8uAi4C+1
+	/WMrCaeJ0BeeTAjbs8b+tdoLbWvb/nVPjm9N+/17owi0eX/h6M/2wTb0lYZ7U+rzhrorrvLw4/M
+	+xJ1AyFM1ODyI2p8GLJR+2C2hnoMeIi7IDMMm8jL3A6lXZEBy5GSPMAqhHMLKfIZ4aoC6s4E1Qf
+	LjLov4ojWfkxec+xw1Dzc7EJGpplbY3KaMncul/9JPgFjNOrzV1zvCdmiMUUW2aUXdS3kSXS5V8
+	HTvn4+uOs5CGX6a9IKoqScxpJRWruiCo1yXiXv10TpMNEQqElgSDCLTZFmaZiDMz4wsx6S+O8Zp
+	IebvUVvi3ky9tP1WVKlvaCPglomjwO0OOoYet0O4H7e5/slK0PaUcB/FLavMQHY5Wf41w5f2Ecl
+	z2b0b9MqoBi5NHDCkWIjnftCA0PxTJSRti618BBdJ7t+FA==
+X-Received: by 2002:a05:600c:4e92:b0:4bb:6a2d:b440 with SMTP id 5b1f17b1804b1-4bb7d6d1df0mr87283275e9.2.1795041310455;
+        Wed, 18 Nov 2026 14:35:10 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb845223b8sm2954135e9.12.2026.11.18.14.35.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Nov 2026 14:35:10 -0800 (PST)
+Message-ID: <e0a946fa-19bb-41fe-adbf-8ead08009ab9@gmail.com>
+Date: Wed, 18 Nov 2026 23:35:07 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: consolidate the memory mapping entries into
- a VMA entry
+Subject: Re: [PATCH 1/4] mm: flush stale TLB entries before installing a
+ CoW'ed folio
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ =?UTF-8?Q?Cenk_Y=C4=B1lmaz?= <cenk@deepfinresearch.com>,
+ Zhang Peng <zippermonkey@icloud.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, Mel Gorman <mgorman@suse.de>,
+ Sasha Levin <sasha.levin@oracle.com>, Rik van Riel <riel@redhat.com>,
+ Ingo Molnar <mingo@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Hugh Dickins <hughd@google.com>, Axel Rasmussen <axelrasmussen@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrea Arcangeli <aarcange@redhat.com>, Thomas Gleixner <tglx@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
+ <20261118-file_folio_flush-v1-1-e9e739ed14e0@kernel.org>
 Content-Language: en-US
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
- Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261118-maintainers-consolidate-vma-entry-v1-1-8019b0e9928f@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261118-maintainers-consolidate-vma-entry-v1-1-8019b0e9928f@kernel.org>
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261118-file_folio_flush-v1-1-e9e739ed14e0@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DC59EC0003
-X-Stat-Signature: kemjx15giht9ra3zk6z3e8j8dms1p7ur
-X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795041038-463802
-X-HE-Meta: U2FsdGVkX1+u2VOC5KpleWDT/T5fi61J0kbo0+bS0F7fLCdDVo196dDetuhO8B7sdhHeOQfv4shEs50tDHy/4jf4GZS9qzlw2NEfNw4uyHj3aFhj5qhz9NOk1tEFTlTPvc3q8xE1PxB3MIjhVH8MIk+AYDXpN+wIrHbIJ7kC65omBwJjwxRQQiARWWY/Iw9Ra/LGyZgYHSOAZj/Vy6fce8vhmqNj51/0NpUfJouz99bnbbAxYexJf5ZiAcxs4PmCzk9ROkfECQiW03eeZs/8Qe7NnnDMn0P6RIY4Jld5aFWLStWkm8ViTWfeQKMqeZ9+x0HG1BUDJXyY2F0slFyQT8gGlPokcRmEgIn2DRyyShMk5nBPwwocsxvbsKGni9K+10YrMPTddtEgn2WC1Qx7KDUwAAz2Wkz34edbxrI+mRY7AwQf/u45FFnrvKkrrRxow49NkvPGEqdpWWr4F34srsnpmYhXgb0wk6Hj1lET+sDZqskwxNagl4B5tuZbogempjKykUxEqhce5jHT0iFFrJS3DHr230viuw+EHoRd1ZuVEr4c/gr0YiT8YjAVIF2mo69fXeXfsQ6WPxeYuNiEI03/py12j1C4Lbt5VZXXuiEHj+gRJU6qZpBf6d98m1Ai7dMysswbVnqsXnfCfZWwRZQzspba2au8z/wf8K/y9eOUSS0pZkQc7EFPz0g1pByf3wG84DmZD6449vYhf1s4sRuf68wZ0r/qMmf933e3d3XW3PzEFLvfyRq0oDtdZQTIStxbER0Xn0Wxzph693eaUMw124QbKsK4K0gm5SNQhtfArKHnf/EHe2TuYK9Rk758GIk8uEGHYjEbjyidcsWrh0oe0hPT2xOpB9wftmfjAsPS/mtoghvJds7wzZVIuHzXfJ/qRE2QUBlM5EUgSmMtWlIM27OOHRA6D1Mcbf2gPjF1JPD7P9LcuQA42rkzM1Eax+7wTpXP7gOJ82fStMA
- Hk77k+gq
- bF/7mUtXD9lihaV1XVm9XIEePXytEeM7Z6eYT33OU4kZFy9sfTqNeWg+uP6BIAnjr/sysLZnsWh84A3f2HsHyOUxiOsIOSBlSvFZ9XRDaz3oMnBQYqj8JQrFvLOzyRth9zYmdK9nORwsFs2ALHg/gmxXnJap0ERhb3xLMO55REloi39beLoYRXKEtXLxEf0J/IWwcKiVRMX0as57I8n+0VjqkJQMxIyBIRtEsh1VhGQzDwY8XxulDDJFVIk56uWWyDt7LJ5KfJaXd0BCvFNsx4y19NCoo/9sZ9+rLpyM2WffVt2hIt4W8nUp5Qo8Zpy/LQfiXDMamM6YSOnIVNYqCwhRgp8abbG7BbYwLxGPKj6M+vKFgOsOyR29nF7+guA1NllfWeNY1bOSo5/XCjjbvqxTsTIIQKWlRfeiR02Gyy7rF7vcRLVWYzsXVgm4AA0Za2+r38uXt4uwHqygADIa+pif+aIAJN4MN6Dy2MiiffKUWnY6JUoJG4dkTkEnPlMFfFWO/lDSUcCmyz5bL29fW/J8Vl8l9XROCrXpgK3DLSHiZO217egL7nydRqWJ/KjeUJF1AySnE0E90YfwAQSHJ0Ef99b8ZFKF5uZAtgBDq8ShAXZsbzte9OtOZEtufXY4UjcvZ3MHljRLZxAeUe7W8l72FfQ==
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 00A7420002
+X-Rspam-User:
+X-Stat-Signature: zrq7s53ie8mkfs4arh11cr7kd9iosmiq
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795041311-414545
+X-HE-Meta: U2FsdGVkX1+HS6huwScA6QXobEOXfrzGYGePBbzq1qx5LkwwOjgmX//k3g/iyMICjZ6nr5SRuT61oJkOxewP+cTwYewxcWTZyL/kbmxkHELoejOsWzSCGPdkPIuMR+75nqmUPd1McOvuZ8+1W9/zDtjQtUVO2mukzoSVg5890hBO5SWD7AbwAIw2vPH0bUjdtBOTTyKEo70HCIhx9WUYAW6iEUsl94ZNH6t/tcDi3dzsxoaFN8ImJNdkRpZOOQBukjb/baUEBp0I1KbuXdrNY8buK5VB2uMoWuddJohsqauQJUaSCpEk3x5ZY2rLBP5+/PqEkxUqRrp+7EqVl1KndXKwzoQCw0tLFmHkJDx70lcYTTjC4CFICX4NxvGV+WZD59BwX2fgtq5xBTEKs8lVeuItpIs2sUPGRvcX3XUpzS//XqdFC4Y0TO/FJOwmpGwaAAo6CNOvjACGBiRcyGbOlYb5tpTxxpl4lmyfmbCBickVxcbXdbcsYcKAupT3MkCZHTAbAlcG7AnV8on3LBeM7ynxNhnU6lfuodsmOZD4Y0YkMM9wvncngPNKTIqFTZDtA4oMUSRlPrlP1gqNi4yRuYiIlaGThJEHCbp/zSVsArk+yEzEG0SHrpeyMyei4mHYwWC6/jIl/NsI+4vYf7eGtqHiBenSdifQfTjTotcMc5IhYzpXd3PQOwcUMJT76n9xazf7EH72i6pmB7iSPIe9xsjeCkgmNHH5UMdIw2pcDPjVNalpArEWY9eMUT88gPD55mTqz6z5kzjptKUTp9kGcKx5OwkNlvjC580qadL4j9GVfv/0zkI6TzVpZtyWhsZ1lYccev604MGhyQZ31g3JFRbUSOxWwhHjDlpr2RRo9vOQa6rqF7E1YiWNAkjueV1iQUWOGcHzWO9vVz7CNw5AHBs7J/r/OTVbp4Jh+5kmbJyx+1Oql5ceG+9dz0ee8Yd2dwZmhfJsyGP946bUfFu
+ kFdJ4XoV
+ 0XL0++dpnzed7Mc0VKNxj+51Y0JRMRHCmmc45BM3sXYY7eqeS9uNUq5lQe+Y1a0F8qNDblHx1XLI/vu1lOnG0RlIBCtRrOiPNFXIv+UDmQ330lVFgKzvRpyF9Zpq6cPs1/LhRIuBW8CV2OVokY3KrfUjIMkVx/RU/5N5TJfzskB/9Z5mcL0HS1D5r/5vaE4DqDA28OKTqm8tiuczi7wY8E5eXXnbV3fLwVXDrFnrU97F56i/FhdnBZCDTno7cvzoczJobLho7gXVVqPtPphPGDQQhOPjXgjZmHfLKN5I92CoC3J09I/VFa29feSVA/0hKtdeO0g/YDqbPVcbdeLd1PhfVyuCUqz2qVa+I0/mDKQGQBgnYxSojo1tolSRcIWT11DQidRPwOxlH9GdvjaYPqJBwBDfupUoJsdXeaRDIFxMm1lc9tFrSkjLYkFSNz1Wv/5RvPnzLC8mEcka0WV1GEVt8r1eMXm7KVZhH6NJSBhcHOyevZZZeZNIp9D0zU7GDuAgDXdn32PsEy9gvzgcwqrway3YpcMER/4yvNyGFLnNx2gFB6UOLtJBpwr5NdNRpxcotppmmwnwV8NYzwl0QtKtcXx5BnxJUjUdsRLHoWc51GV8e6s7hXS62tBozU0VMIEzEbwXGV6o+47YKS1eMIw04MN7BrBQhskXM6azErWk1b96Suah5jhZWjGanncvd253CsuNXo4VBWnbhukX6i84UeZESt1SxAMaGZZ68zYgsjQhpnEv2PC7OfTY6hEb4DYKaixd22upcFcb1To6k7Nkflug5ra9wgEsg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,153 +150,72 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 19:22, Lorenzo Stoakes (ARM) wrote:
-> Memory mapping entries were kept in three different sections in order that
-> those maintaining/reviewing each distinct part would be made responsible
-> for/cc'd on only those parts.
+On 11/18/26 10:20 AM, David Hildenbrand (Arm) wrote:
+> Zapping PTEs in zap_pte_range() defers the TLB flush until after dropping
+> the PTL for clean page-cache folios.
 > 
-> However this creates confusion as to what files belong to which component,
-> so simplify things by consolidating them into one.
+> A concurrent write fault in a MAP_PRIVATE mapping can then CoW the
+> page-cache folio and install a new anon folio without a prior TLB
+> flush:
 > 
-> Expand Suren's maintainership to the entire component, as he is a trusted
-> and valued member of the VMA kernel team and very much deserving of the
-> position.
+> 	CPU0				CPU1
+> 	LOAD(ADDR)
+> 	 -> #PF
+> 	    installs R/O PTE -> A
+> 					fuse_open()
+> 					 -> invalidate_inode_pages2()
+> 					    -> zap_pte_range()
+> 					       clears R/O PTE
+> 					       // delayed flush
+> 	// Other CPUs (incl CPU0) still cache ADDR -> A
+> 	STORE(ADDR)
+> 	 -> #PF
+> 	    do_cow_fault()
+> 	    copies A to B, installs R/W PTE -> B
+> 	    // no TLB flush: PTE was none
+> 
+> CPUs with stale TLB entries will still read from the old folio while writes
+> go to the new folio, until the TLB is flushed.
+> 
+> We really must process pending TLB flushes if we are not faulting the
+> same folio back in.
+> 
+> Fix it by flushing the TLB before installing an anon (CoW'ed) folio in
+> set_pte_range() if a TLB flush is pending. Zapping itself stays as fast
+> as before.
+> 
+> Other faults are not affected: unmap_mapping_*() users only remove
+> folios from the page-cache after their own TLB flush, so until then, a
+> refault maps the same folio again. The exception is a concurrent
+> invalidation that removes the already-unmapped folio from the
+> page-cache before the zapper flushed the TLB; that is an unlikely corner
+> case that we'll not handle for now.
+> 
+> Note that we don't care about MADV_DONTNEED followed by a new read
+> fault, as MADV_DONTNEED only guarantees its semantics once the operation
+> completed. CoW faults will flush the TLB either way.
+> 
+> For example, imagine that MADV_DONTNEED zaps a page-cache folio and
+> doesn't flush the TLB (but still holds a reference). If the page-cache
+> replaces the folio, a new read fault might map the new folio without
+> flushing the TLB. That's okay, as MADV_DONTNEED did not complete yet.
+> Same applies to MADV_DONTNEED of CoW'ed folios when re-faulting the
+> page-cache folio.
+> 
+> Memory reclaim, which removes folios from the page-cache before performing
+> its own batched TLB flush, will be handled separately.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Cenk Yılmaz <cenk@deepfinresearch.com>
+> Debugged-by: Cenk Yılmaz <cenk@deepfinresearch.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Nice!
+LGTM:
 
-> Additionally, drop Suren's core and misc reviewerships in order to focus
-> upon VMA.
-> 
-> As David is receiving pull requests directly, make him a reviewer, purely
-> as an administrative change.
-> 
-> Also specify the new tree location in preparation for the tree being
-> established for next cycle, and remove the link to the not so regularly
-> updated linux-mm website.
-> 
-> Given that, from next cycle, the tree will sit outside of Andrew's current
-> process, remove his entry, also purely as an administrative change.
-> 
-> With that said, I'd like to take the opportunity to express gratitude for
-> Andrew's huge contribution to mm, and for his being both generous and
-> gracious throughout this period of change in the subsystem.
-> 
-> Co-developed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-> ---
->  MAINTAINERS | 51 +++++++++++++--------------------------------------
->  1 file changed, 13 insertions(+), 38 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 222b7fc2c3aa..59496dd1d11e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17509,7 +17509,6 @@ R:	Lorenzo Stoakes <ljs@kernel.org>
->  R:	Liam R. Howlett <liam@infradead.org>
->  R:	Vlastimil Babka <vbabka@kernel.org>
->  R:	Mike Rapoport <rppt@kernel.org>
-> -R:	Suren Baghdasaryan <surenb@google.com>
->  R:	Michal Hocko <mhocko@suse.com>
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> @@ -17680,7 +17679,6 @@ R:	Lorenzo Stoakes <ljs@kernel.org>
->  R:	Liam R. Howlett <liam@infradead.org>
->  R:	Vlastimil Babka <vbabka@kernel.org>
->  R:	Mike Rapoport <rppt@kernel.org>
-> -R:	Suren Baghdasaryan <surenb@google.com>
->  R:	Michal Hocko <mhocko@suse.com>
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> @@ -17974,30 +17972,37 @@ F:	rust/kernel/mm.rs
->  F:	rust/kernel/mm/
->  F:	rust/kernel/page.rs
->  
-> -MEMORY MAPPING
-> -M:	Andrew Morton <akpm@linux-foundation.org>
-> -M:	Liam R. Howlett <liam@infradead.org>
-> +MEMORY MANAGEMENT - VMA
->  M:	Lorenzo Stoakes <ljs@kernel.org>
-> +M:	Liam R. Howlett <liam@infradead.org>
-> +M:	Suren Baghdasaryan <surenb@google.com>
->  R:	Vlastimil Babka <vbabka@kernel.org>
-> -R:	Jann Horn <jannh@google.com>
-> +R:	Shakeel Butt <shakeel.butt@linux.dev>
->  R:	Pedro Falcato <pfalcato@suse.de>
-> +R:	David Hildenbrand <david@kernel.org>
-> +R:	Jann Horn <jannh@google.com>
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> -W:	http://www.linux-mm.org
-> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/vma.git for-next
->  F:	Documentation/core-api/protection-keys.rst
->  F:	Documentation/filesystems/mmap_prepare.rst
-> +F:	Documentation/mm/process_addrs.rst
->  F:	Documentation/userspace-api/mseal.rst
->  F:	fs/proc/task_mmu.c
->  F:	fs/proc/task_nommu.c
->  F:	include/linux/mman.h
-> +F:	include/linux/mmap_lock.h
->  F:	include/linux/pkeys.h
->  F:	include/trace/events/mmap.h
-> +F:	include/trace/events/mmap_lock.h
-> +F:	include/uapi/asm-generic/mman-common.h
->  F:	include/uapi/linux/mman.h
->  F:	mm/char-mem.c
-> +F:	mm/madvise.c
->  F:	mm/mincore.c
->  F:	mm/mlock.c
->  F:	mm/mmap.c
-> +F:	mm/mmap_lock.c
->  F:	mm/mprotect.c
->  F:	mm/mremap.c
->  F:	mm/mseal.c
-> @@ -18011,36 +18016,6 @@ F:	mm/vma_internal.h
->  F:	tools/testing/selftests/mm/merge.c
->  F:	tools/testing/vma/
->  
-> -MEMORY MAPPING - LOCKING
-> -M:	Andrew Morton <akpm@linux-foundation.org>
-> -M:	Suren Baghdasaryan <surenb@google.com>
-> -M:	Liam R. Howlett <liam@infradead.org>
-> -M:	Lorenzo Stoakes <ljs@kernel.org>
-> -R:	Vlastimil Babka <vbabka@kernel.org>
-> -R:	Shakeel Butt <shakeel.butt@linux.dev>
-> -L:	linux-mm@kvack.org
-> -S:	Maintained
-> -W:	http://www.linux-mm.org
-> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> -F:	Documentation/mm/process_addrs.rst
-> -F:	include/linux/mmap_lock.h
-> -F:	include/trace/events/mmap_lock.h
-> -F:	mm/mmap_lock.c
-> -
-> -MEMORY MAPPING - MADVISE (MEMORY ADVICE)
-> -M:	Andrew Morton <akpm@linux-foundation.org>
-> -M:	Liam R. Howlett <liam@infradead.org>
-> -M:	Lorenzo Stoakes <ljs@kernel.org>
-> -M:	David Hildenbrand <david@kernel.org>
-> -R:	Vlastimil Babka <vbabka@kernel.org>
-> -R:	Jann Horn <jannh@google.com>
-> -L:	linux-mm@kvack.org
-> -S:	Maintained
-> -W:	http://www.linux-mm.org
-> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> -F:	include/uapi/asm-generic/mman-common.h
-> -F:	mm/madvise.c
-> -
->  MEMORY TECHNOLOGY DEVICES (MTD)
->  M:	Miquel Raynal <miquel.raynal@bootlin.com>
->  M:	Richard Weinberger <richard@nod.at>
-> 
-> ---
-> base-commit: 0c524518413094607a6178c53a65815762bc9c45
-> change-id: 20261118-maintainers-consolidate-vma-entry-ff6a360ab069
-> 
-> Cheers,
-
+-- 
+cheers,
+jose a. p-a
 
