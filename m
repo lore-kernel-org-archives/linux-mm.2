@@ -1,62 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B50606A332
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D555606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ckMIPrMU
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=re8ycFdO
 Received: by kanga.kvack.org (Postfix)
-	id 09AAD6B00EF; Tue, 17 Nov 2026 21:31:40 -0500 (EST)
+	id 2F69B6B05B0; Tue, 17 Nov 2026 21:40:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 024536B05B3; Tue, 17 Nov 2026 21:31:39 -0500 (EST)
+	id 2CF576B05B3; Tue, 17 Nov 2026 21:40:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7BA56B05B4; Tue, 17 Nov 2026 21:31:39 -0500 (EST)
+	id 20D046B05B7; Tue, 17 Nov 2026 21:40:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C18296B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:31:39 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41CCA1C3F99
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:31:39 +0000 (UTC)
-X-FDA: 85446663918.26.4F7C44D
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3AA46180005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:31:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ckMIPrMU;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794969094;
-	b=nKmGSc/b+CzQPqafelcPT+NSa1Uz0sFN9yjNiu1c/dpzA6K0To+SlgPhwH7yadFY49FML9
-	EpgV5G4OZ/qZNPHG4eNHM2eHBAwMhcmhrCiGtwoIUi0ud9n25+DRDPi0bBBDgy71gzub72
-	H0rElUkXgtEIrYTtR4aHOFoqJHtpr74=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ckMIPrMU;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E79436B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:40:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5941D1A063A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:40:18 +0000 (UTC)
+X-FDA: 85446685716.08.6C94BFF
+Received: from mta1.migadu.com (out-237.mta1.migadu.com [95.215.58.237])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2631F100005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:40:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=re8ycFdO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of luiz.capitulino@linux.dev designates 95.215.58.237 as permitted sender) smtp.mailfrom=luiz.capitulino@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794969094;
+	s=arc-20220608; t=1794969616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u9deMS9SHp1v8TdPFiTn32COaQpqdBL7sf3125pu2O8=;
-	b=2CI45W4cIM+Mug8HYbmPD0BtPslVNPHOO4MbIWXf7JvI/uTOsRHGHormS7y3p6Q88RCtXW
-	cOohhocEa8oxe0xVQbuAVse4283Vc9DARjyn3QgxxZSuPeKi73spYyCM0ByPOkBTDukDc/
-	ALKkYHONfQ1ivnBEPmXQ79Me3kK+Tyg=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794969089; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=u9deMS9SHp1v8TdPFiTn32COaQpqdBL7sf3125pu2O8=;
-	b=ckMIPrMUB5GcpcrX/MMUrtK2+158QiEz7josRtb4Bjq5EKZHvkHJk3NqO2hxAHiuD8IjGgMs97v03DknKV95fNHFuWYp3ni8AAcOR6DGR3sFqxIX96VDAYP8HVs6Tha5k5sR0y2L2QY3WFmldLA87apbu7EKShLfhwGUFdgBNFY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0XF.332t_1794969087;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XF.332t_1794969087 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 18 Nov 2026 10:31:28 +0800
-Message-ID: <7a692c99-e023-420b-832d-0727fb2f2d74@linux.alibaba.com>
-Date: Wed, 18 Nov 2026 10:31:27 +0800
+	bh=pN+R8iE5mrilm1yEawpmQGcShEPtoVSRmY5LE/o+UqM=;
+	b=cO0eu4IKC47oXv3ud7n2B5sPlnX79Eq5XFU2KAXicbnwqeb8fCbTkps9DWnarfJIgIe5OM
+	0cevvP4CdZtlDAyytWyJ+Ub9bzSobQ+vx9pIlIm9cQmmhEQqx6WG3pwKzd9oe0ogAw9vpe
+	2yyFBUkxLnlPRsaz8xvxV8R58vuz7FA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=re8ycFdO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of luiz.capitulino@linux.dev designates 95.215.58.237 as permitted sender) smtp.mailfrom=luiz.capitulino@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794969616;
+	b=e61BDFIRbHmAAcK99m8bWTDWu6BxWX8+K5pGHJr346NkLim7WC3UF6q1H20UCqCbpgFcPr
+	HSLU6eD0hqrk8ejf2fvUxzG+8vhF2HdmVrOdgOt3T8IvP+RJPfBJLul7V5YCkpo3bcq/zf
+	XV7VXCgasndZxL7lUUTyDA6Y8JjfAfg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=0YmCdvKvcbyA+q3izi5xAhGTNdvmCrKT8RtQD9KuPwU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794969614; v=1; x=1795574414;
+ b=re8ycFdOaNbBIiMScTaXBZ6twyyXjxZvbfz90jzS97241xxo6zZdTBKsC3y+khI9fI0CQwZZ
+ 3Uh0RQ2ASHh1yNf93MMMEDBtvj1up/+cwHi5zQtvwb0iIjCTwIEIqP0favDb7UP8kgENez/AfJf
+ wq10XozYV0hLlgmuovDwiKXE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ab029116bda70b98;
+	Wed, 18 Nov 2026 02:40:14 +0000
+X-Mizu-Trace-ID: ab029116bda70b98
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <2c65fe4b-bea8-45e3-b51e-352139769a59@linux.dev>
+Date: Tue, 17 Nov 2026 21:40:11 -0500
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
@@ -65,26 +69,27 @@ Subject: Re: [PATCH] mm: shmem: limit forced anonymous shmem huge orders to
 To: Jingyi Sun <1045704958@qq.com>, Hugh Dickins <hughd@google.com>,
  David Hildenbrand <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Luiz Capitulino <luizcap@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <tencent_1B8BBAF215484255F04168752D9BA778EE08@qq.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+Content-Language: en-US
+From: "Luiz Capitulino (Red Hat)" <luiz.capitulino@linux.dev>
 In-Reply-To: <tencent_1B8BBAF215484255F04168752D9BA778EE08@qq.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eex3ezbf44yhmjo3fgft4cf119tdhs7j
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3AA46180005
-X-HE-Tag: 1794969092-193258
-X-HE-Meta: U2FsdGVkX1/mdCE72xof57cFkjkdjPoJOfdBHvRLduqmu7eDOT0scWS2fOv/yGhD3A4Oz4IgJQfbJ6n6Om0Lv9GvkY1bM4ygEC8jrvkbXaca+yCsKnBzE5CI4r/T4Hgjv9uf/TXHcAS5UdD2JO3THGeL+N1EB0jzxKrMcpEUmPCoMahl+cSk/8jW04IxYFgxq7LiZqJFH8VPjSR/Nqsoa+H354YFxazBJqyygF4+jIxFtHWAIOUbRiHl2F3Nd4jqa6j0NI+LY+6L1I7zwIFCtTu1wbxzp3HKVk3gRWH/yw3UfLhtkALYjWag+HOa4ab5vCyR7NWucpb2Q7JM2p2HGWcNsQQ8ldy0BT02z7mRnBHPX937GME9l98sXgNl1Xd7cXy/aa1WV3v/27oLezfSV47C1n1rrAhmr8xd7VCSjei2Yv5e0RvXEsJ7tu7D2gIPz90dFpddNBo3XUX16+CCVpFVDqP6w7id/vQgKaITd2MDZBbhj4mvMdVspmFQgLrldLFQ9yH2fxd9Z3BmxQ2HIzzscAq/iGxR/jJOIXQupKEqQxFGsPJT3JGiXyCj45RKYk8BGIBlTBM9NU1UcpnF+bD0Ku8Pk+hBBhPWQPmW0toxX7DV45t50ycmccFF+DalSP1rVQFNV3R/iUm0I+v8w/kKqFQw1KY++wp6f9l9A9Yws2me2H+QNvJmJFrHrqcI/7oq37vKctXsaT1XcTIZePLH3OPxj5LTjpKQsE2oI9ArNergFlTtD0RTbAUSllxgANMQ9vmH8Kku1hcC8mGWoIDfXs25zk6Ig1UwIIo1eVzGf4LE2g+miyyUAXz2DLiu6EDLcG5N58vzsrIX5ICx0Ui3FCj3VlNjqoDq4KVi2XxcCrfO0OUgGNXwGM8pR5Vpj1RXT86FZo4XSCd7nt4QK043NWPIxyYUYPEf+mRFpsC/H4xP2X4NaugoK52wb7lMJflsKEkzqFl7w6hR/mb
- jGnJWMSm
- IMPNqBVJrqCrm/7FOALw/S3OI618rxcaGbovwy7pUGPXehTHxs4xgsUOuPpnDedI3CZl6QsDOlFmVh+gMjpX/lSxOmFLdehv4KpJRHL1+HwPEmzNYtk3SQB+ooe2eqdCrfMtmDfQxZTVQ1hLLQFBHI6VsTX21RPdbfbtPU/A/zIzU2eikxCL1qKX+YyAHV+Gps53dDlfhpyzfUdykQ0+vGlemcL9XnaROgPWMypv+ZWTHmRpbWjAytMgLunOVVjHnonQ0Cw9Wf2xEf6Rp6aP0SzTj4TkSgNPJs7htF32I6YpdVeidNV26iXHTq0UgxeOM3vo9wkkzibULxcDjZLTvFL1HOzUfMnnJ0xudvBOK22dRBAKocfD1asiWSZHuWbQlCwe0wq7j9pPry3+IrShz3sMfHtIgeLJ+JsW4
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2631F100005
+X-Stat-Signature: w9q5qai8cifszdaepj9hwx3ife49jcfj
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794969615-746455
+X-HE-Meta: U2FsdGVkX182WoTOCr60JAPeoMLZt2bPcw0iF/B+rya9NCNGkViw02zyEmmzmZIghay/8lPTRTs+i4vvnJXsoBHcDIViKFYr5CXZAExANIOhUJLUWf7v4qs5dhjpcYgip6jffWEhAu49TBOBd5YY17DV3mrLm7aN7ntjsZt+7hp9U+zuu0F9vHBEnXZJcIHqWLbzSjyIWbCiXIY922pSUqZTrqYf+BBOdkfYXr+FT7ah0dxUeugqXTUuy+g2hHWUlsGY5aHG2WB+18A7potKbOSexA1EtIMcFVetrpmXhzP1guUtAlbqmV9BcB9VfUJUUalpeMlPE7LVrTVNWLzBrp4BQT5Qy4CwQo+KK0xJ281RkaVQyB85MyE9dVL/+Fyle4lfllu3h45qshCXqH38W40SmcsTRCQku1nSExfuuBzUhNTYYfhfPaLsmoM1Z7ik1Zef2LhjJoysU79NMZiD1D/f49RE4mkft17hqLEKqVvdYaLiyq7HCSRnsDOVM7vrypWUWzJCH5j8s6uKHJJIGeYxLRp/tqPE+ngya7LWgbOe8UjCruEFyz0Ama+aHj13ZIBiaCB4Cex2e+GYoiWpuyWe4ARuQBcWZ2n0+UXmCONDS8Tkv4rQ26Y1ED2YMWmidzmwkIfgGw75z08MKDSRqphVB7hu0t4ZTwPISKm0qZJBDdcvaoTTgi1inGxtmw/UqUYGGprkhSEr/+CLvpzCCn+O8NhOeEQIXDYJZaAqO50N7pp07isDVsuSahJsYA4fmsF7POSdhQFwgMQ5IxAraYCu5mRc20Bk0VyAw244jyDsT142QTHrIR4xR/zDNIbBHAXER15wZyXW8k6VijcoGbRraVahE0LJ0ey+MxiWIbbKkpGr+Cy5ykGOD1M4NeFF3wLItXxj/qa/j1CGDNbIM2nn5WEVoredfushpfltdprGOIbmLXhkDvppe+ma4hdhO58kbP9qv1WGowCb/bf
+ 6+k34apT
+ hkbGzewFckAfBUEOacUD/0uXSPJkxu1aJ/vVbAows+e73whlrcrA8bTRxxp4RU4J7ZQf1KDP+mMP10WzRsLcBiZt7CMnVavnMnS80lQ2FweMk9jMoVI2hCzw5I2ls4PdYEUKFZpgjNXbLtx1TYfv7ZaPVJ2KPaJtNYDasVvOQ/qNM7JpYrSIVOJdjVLrpXLsyOLykWwwZUQFc5qFpMIExBwrTDOreQ+FEKIWkiBtDmK41s/uWylYuXDLAu1T2s+P2vI/Ky2W7/YiBh7coSD+CXfH3aCEQ5JWtZ5saPd1RTdu8CBeuYvnA0rY57/uA94/sw43f+OgQw8InVTVrus6jj7w41+F+tso0PPhBEk9I8Xfh4St6mMd9D2bWs8q6kv1VFrCu1UAjhlMun84=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,7 +100,7 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/17/26 8:16 PM, Jingyi Sun wrote:
+On 11/17/26 7:16 AM, Jingyi Sun wrote:
 > When the top-level shmem_enabled knob is set to "force",
 > shmem_allowable_huge_orders() returns huge_shmem_orders_inherit for
 > anonymous shmem without masking it with THP_ORDERS_ALL_FILE_DEFAULT,
@@ -135,12 +140,37 @@ On 11/17/26 8:16 PM, Jingyi Sun wrote:
 > Cc: stable@vger.kernel.org
 > Cc: Luiz Capitulino <luizcap@redhat.com>
 > Assisted-by: LLM
-
-Please drop this tag.
-
 > Signed-off-by: Jingyi Sun <1045704958@qq.com>
 > ---
+> Note: this touches the same line as "mm: thp: always enable mTHP
+> support" (Luiz Capitulino, v8 14/14), which is still under review. That
+> change masks the force branch with ~disabled_orders but does not add
+> THP_ORDERS_ALL_FILE_DEFAULT either, so it does not address this issue.
+> Happy to rebase on top of that series if it lands first.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+I'm late with v9 so no way my series will land before this patch, but
+thanks for the consideration :)
+
+> 
+> Link: https://lore.kernel.org/all/752f528f0fed5cdc9de12b54260b0495d4e5a6cb.1789695931.git.luizcap@redhat.com/
+> 
+>   mm/shmem.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 10cef89b00b0..41bb3f2c6b63 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -2114,7 +2114,8 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>   	 * means non-PMD sized THP can not override 'huge' mount option now.
+>   	 */
+>   	if (shmem_huge == SHMEM_HUGE_FORCE)
+> -		return READ_ONCE(huge_shmem_orders_inherit);
+> +		return THP_ORDERS_ALL_FILE_DEFAULT &
+> +		       READ_ONCE(huge_shmem_orders_inherit);
+>   
+>   	/* Allow mTHP that will be fully within i_size. */
+>   	mask |= shmem_get_orders_within_size(inode, within_size_orders, index, 0);
+> 
+> base-commit: 666539eecdf4db623f5e3c3e55cf9f2dfad24aa4
 
