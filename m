@@ -1,135 +1,192 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C53160A260A
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 17:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BCB606A33A
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 17:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=Qe2xZJm4
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CAs83lxx
 Received: by kanga.kvack.org (Postfix)
-	id 077A16B05BE; Wed, 18 Nov 2026 12:01:10 -0500 (EST)
+	id C13256B05C0; Wed, 18 Nov 2026 12:02:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 002806B05BF; Wed, 18 Nov 2026 12:01:09 -0500 (EST)
+	id BEA376B05C1; Wed, 18 Nov 2026 12:02:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34276B05C0; Wed, 18 Nov 2026 12:01:09 -0500 (EST)
+	id AD9796B05C2; Wed, 18 Nov 2026 12:02:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BD8F16B05BE
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:01:09 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5B3AA0833
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:01:03 +0000 (UTC)
-X-FDA: 85448854806.20.578F69B
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A2E814000C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:01:01 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=Qe2xZJm4;
-	spf=pass (imf17.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795021261;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E03F6B05C0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:02:14 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1777680836
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:02:14 +0000 (UTC)
+X-FDA: 85448857788.21.818B6FA
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011060.outbound.protection.outlook.com [52.101.52.60])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 282D3120018
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:02:11 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CAs83lxx;
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.60 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795021331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K0dOJrTdqvBZQHL50wcgAweuMTTjNgpoRfVJHv/VgKg=;
-	b=FI2YYifEDLJHEvY3/fr6AruSS2DKMap/VLMkHM0wiXpt9hL62SNop1BZga/suVQ2hT92Wf
-	lSWxI3uyhcfCzUWd+trQMsYClMduMIvFYMmZ6E4bvjH7FLwwhFvRUrlfctfP9ygdZAwLUf
-	45LgKkdSKYd106KYVH5x3S+OhErnjfA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795021261;
-	b=N1IRb39I3MEue+1HZsBaPot6WvOTVbAagJbQSoYbcBRDAQMp3DuICRN4zXec7JuilJ287R
-	8Rw7gq3cPtNLU0zR7PfaY8YJlFj7kwr+5FolpgxUeETpN3xaesXGHUsai5mq07UgvJITEj
-	6drDywfpm5cNIWj9l1Jr6S8BVB8P9bY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=Qe2xZJm4;
-	spf=pass (imf17.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-94958650b09so116841385a.1
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:01:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1795021260; x=1795626060; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=K0dOJrTdqvBZQHL50wcgAweuMTTjNgpoRfVJHv/VgKg=;
-        b=Qe2xZJm4YROWmsPbAy2a/3zellfW1ItubC21ScV8zFGATnsyaoFguw249uR+kw3smJ
-         Ncjd01Rw/hyHbwmQhP/coS2wLUDMDczZ4nrUWp7XFTcvT5z/+necvtmajkJdog2tE2gF
-         GZyrt4a0Y7X4D2ff5G4+jd0xVPPJCUDflUUbmqcekwLeWFK8ioLupg5sqxaz1s9CpxKk
-         KvF04+ctl2OnMEFsz19Y1nmYB+SxoM4Go0xrXWNwO9v5DjapbIslurwA/iBVANYP0WYR
-         s/8MT6+DD4+3lVFbgdCak1yae724jyKd12UGTVZPpJjXr0Ho5qbUrjlwH/apnsoPXN+m
-         Gh1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795021260; x=1795626060;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K0dOJrTdqvBZQHL50wcgAweuMTTjNgpoRfVJHv/VgKg=;
-        b=MW542GMWtLaUd1T8TqHi5+kj9OTvB6t+qLcBsqsaLMw1jpgfGw+gtWUxVJVHHdQAfj
-         QEiUcwFI3n5PBTlF8fEqsbPEGJblzNIAJGCROquAyBUcaoyT6W4GEOLaYsHFfceBdOx6
-         4UfMQFDVnSyEmtewoRNm+LJK+cYDZY40zjknqSIB3Z3d0e59figu+DJ6f1R1GoV9bg5L
-         l45uYX76GYiWVOOJv+pXmqxVkKozBQeGO7bn7tYppbXj2nHLwroTjwbTNn44smfTdyfS
-         WjbxRHmJa2BewQQXT2j7asaEWfV81n/d6HmuKEGiti4Z+9g5VwIkUiig0U5S42qdflT6
-         bDBQ==
-X-Forwarded-Encrypted: i=1; AL+hErFPvLPwW5meaYptDsRfnfOW7EkgiIjriNvuvfkrLR1j8MJqEY99AYIq+po32bn7Q44SUqQmQzQD2w==@kvack.org
-X-Gm-Message-State: APuU4Z99t+bd+lwfRKm2oP9G8rOZBospyKiZjpx/y4DzVkFEVYquJ3KI
-	zZKT7Kh5iARqiKt93ai94OgLiVUOYYANkckP9PfQXSoyRsceMmRSn91XH1Itp96VL+U=
-X-Gm-Gg: AYBFou10lJKq3n+pAmXvpoHc/+A5kWeGlToEHOysLnPHuKULqlitRdvLPv7ZJBoomhr
-	UEagb6yqKedL5BhSMlbC1mCLk8mbatWzQdjQREEdWbkU6WEFSBz4cqxGohgreyZbhgQSCmVOtkN
-	eR0Xwqqkwbnr2Cvihk6jxEbpYA6tvy9yBhCXui9JYWH1aVgJhMVscHAWsiA6VCguw6XzJKIGAuV
-	Kne7RYYz8MYgbrUb6rAj9wu05oEYgdjiC9Ln9tKp47dDrZqLO1ltho5SAz6xhTUFwlsMD6qLOEL
-	JzaNqg7V92T/5l/kVyKjQncNVMSWeopu1GJSYvrvtz7ym7o0zW7+/ZfTBLPkGKdk+mQAU0jEoQ+
-	8WB9SChdlQrbeqdBNd0uHpPEu7ytammqKqrVBdQlgH3vN4qEoXibb+gwY/oZqfeWMJxewYfgGaF
-	lNUKQpI374spwWAk1KLLUo4WVEu/qFqKmxYd/1cRXCirwF/gVpF4+d7PiBiu+nfNtPND9JxotWa
-	4peQOLxyilb8wR+bKEm8EghGbRvLRD3m6vswmiz31w1ztbWFU0Q49dGWsRTCwDYvV1GnLC0W+rQ
-	GrhJ1mWJ9Opn7oPNWZ6+2CYMI8LSdfHbNR3VUKTwtbLkpU0=
-X-Received: by 2002:a05:620a:272a:b0:949:3c50:134 with SMTP id af79cd13be357-949995a8351mr551955885a.33.1795021256584;
-        Wed, 18 Nov 2026 09:00:56 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.241])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9499b7ad72csm225447985a.29.2026.11.18.09.00.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 09:00:56 -0800 (PST)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Wed, 18 Nov 2026 17:00:37 +0000
-Subject: [PATCH RFC 5/7] mm/mmap: fail the fork if vm_ops->open() fails
+	bh=+LnS2wCZZHURH1O6WKOvzj8Jt7ypHJB7p4O6pU8YzsY=;
+	b=YoAiChdm+4ecy8+0Xl2PQeE8M1cGdOjYrS6UjxMtdrrM0p+fI+9ahUa+bKRCao65jpZY43
+	IASHJHw+nbMLAnozb3AJePaG9onrORrYHXGVLWL6maxPN5wxpvB2LAa3b9DwHY83rbH7vT
+	+cdQ6oBtq7w8HMxz/sClVxQ+eWD37pQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795021331;
+	b=ef1E0sGowFWG1kqKxOj4f58GBbbjIdMX8HDMbsjwiF97cDqelYHuKwdOVHcdgDjfbO2kSP
+	Z2TMdU+0RhyRo+Vs/KpnXGqOjzFZmOXA/Q/O4XwYYyVUlyGnIypTN/pAlIUFE79TJJTvQX
+	TzqYy186oVa6VF5+jL1k0Z5X+0PuJhA=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CAs83lxx;
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.60 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m4Mz4Q+tATCDvMMXXL2FCPqcMxK6GvmGp8arGUL00SBNsQU/MyiEzzSCZDdSQ0ibSXSgFIzb6YJF04Q15GsPempNtNg+hXvHbd7p0YOGfvVbAnRHpZn/T/x6bM7eaxgDs6kt2sqWqp5MVW+dYkX42TYmFzGhemkxj/P+AcClG20OB5l7ZPBxwsxb5kN/5IOCWCSvYQpuh9FpmKVQHDevdxg8MepTjKI3FLG0gjSYnmDXVEEdNcgLeKEOGSsGyZkKXfVTzE3BamxrZrUKH50zSNkHcxjlSBP/gHSmQhmKEACw2VQiFMnMw7YVyNPNkNz7YD2/CDBOOSV5BR157cHWGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+LnS2wCZZHURH1O6WKOvzj8Jt7ypHJB7p4O6pU8YzsY=;
+ b=WHqli8XbBbEJSEjC2q5p0eypcd9gKb8Y9e27dWmgao+Ra2UNYEoeX3PsAQ3RE+oSKks7VX1iV9Tv/Bu6GlTZRjD9q+f8bMDoETFLsOE59O+Pxnbp93eK63tSAk0FBJmPYY0nAwRxQkWA876gB4x2h+i5TEt1vW9FlGwcYXuu8URTPpKmnFFDqomqrAtYoetCQ874qtu7z+7TzX6GAmzMDuWEX6t9uedUh2g7VW2StvpRDbH3+evMiE9hYoKEJAxhyndbnV0Of8HUbqz6RUBh1Zzq2mBny82Lc65FjS3PJYYFX4RTQchL3Eqma4w0EWGjq10oU0B3/7N0sSih4UyPCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+LnS2wCZZHURH1O6WKOvzj8Jt7ypHJB7p4O6pU8YzsY=;
+ b=CAs83lxx/4T8vWgn99pbYVHoPelbq4SGEsDBMh4pRpc7/VmYYYSK41x3IzrcAKnvxCagoo7qB69CpaucyvV4G8IH4udnoC3/VIL20kXPZIyba/FBAWQHx0vCvS8X6RLu0YrAV0L+tviJbyeksXAZGS9Us/tcC5abqBi5TCykaVwE6cf/Imy/0eZNrNIpy5EIhQrIhzaQaJx7grjL7lHC6qkkWcOWoVajq/+yC67PYJa/hgGqEP5bSi6nIFrpSYB+AieiuVbd3SvSIFZQZqkMitVy7LnF0ONuyUcql9A15X4h5sHKPcqnmVoEtqg2TI7mUk6W+Xz+J+oO+Lw4mgAINA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by LV2PR12MB999096.namprd12.prod.outlook.com (2603:10b6:408:353::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
+ 2026 17:02:06 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.009; Wed, 18 Nov 2026
+ 17:02:06 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Matthew Wilcox <willy@infradead.org>, Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?utf-8?b?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, Igor B <igor.b@beldev.am>,
+ Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v22 0/6] rust: page: add page kinds
+Date: Wed, 18 Nov 2026 12:02:01 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
+In-Reply-To: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-MS-Reactions: disallow
+X-ClientProxiedBy: CH0PR03CA0346.namprd03.prod.outlook.com
+ (2603:10b6:610:11a::32) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-b4-vma-open-fail-v1-5-c8b0209f2700@toxicpanda.com>
-References: <20261118-b4-vma-open-fail-v1-0-c8b0209f2700@toxicpanda.com>
-In-Reply-To: <20261118-b4-vma-open-fail-v1-0-c8b0209f2700@toxicpanda.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- David Hildenbrand <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org, 
- Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1795021242; l=1711;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=Brz6SAGkDnCqQqo94c1+uUj/Xh83OKfMX4dA7ifQN8c=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QFUlidvx2D8H+HgGdu+TZWRv0131G5scxDAIU0nC9eYxW0cajhji/wabfprNVTsGifiB8fxgdeY
- 1HJoRP4sQ5As=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LV2PR12MB999096:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69ba2bcf-5d9c-4bd3-29ed-08df4595acce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|23010399003|22082099003|18002099003|261022105027099003|261021121427099003|261026140227099003|261026121527099003|261102123227099003|261028144727099003|11063799006|5023799004|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	IZzlUV/5ke4F0dB7PLV0hxRKPi2xTZvsfSAO7QJj1nZDuSEwDRIHQ8we2N8ZyjsPpOrikfxX9FWNM3qD8pvLQ/Cmlh5rih6aLhZZlK1//VFkK+caCzQ77QVwVDvFdfTmU9PBftCILl3cufhW3N0RyhhYVtXvuq8qo8fnKodLIaHVb4Oyhy87w8TRBETpTjdOie/Ct3r3b3/38AHj3SD22zIXdipvzB9xX7nxaIEfVisOnVv7SMs8wPn0mn58tbZnMIeT/8sP2MvrHMRmrgdy1UR5vyknqs4fpfG/B0FxRT3f1/1dFLCsZFOHrqV0sLCTgad7ZD3gurvrmQFQzkiMz0F2OvK8nFhslYMOFYuu9s0uDSMncO3KLG7p3y8VQ3ATmYUY9UHHpLqYGLrnxP4Nl1NR9EEXkJkHhwH986lVJCPyMfPGy0Bjj5pe5Ks7cX9IlN7uDyHQ+m12mDxCHI3hu4uDYLGmEpqj/wfvEZK1WPAT5HDB2SDXAWLHJwJBFsk2+rz7jpQ+heNJJI2nN7sv6KpClzgyrBIeYrYI36W4LObAwN2ADI1jj1HQyaCzHEKdEeH7GAu5Szce6Xg5whUpG4sH/V5ui9OX3TfHKaeOirsd01eK8eVqnQG+eRWy+YsMMY2d8HUzJ+pq9/ZuMWv6kEmWu8vRRnOQTXcRzH5n7dQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(23010399003)(22082099003)(18002099003)(261022105027099003)(261021121427099003)(261026140227099003)(261026121527099003)(261102123227099003)(261028144727099003)(11063799006)(5023799004)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NUo2anB6aVBFRTNMcEJKSDlJQkFWeVVCSWxnanNEV2JMYXV4QjJXaGNsZTZx?=
+ =?utf-8?B?TGFrR2FhbEFhKzU5M1JjMEZ3L2JsYjFpSWNqcVE2UXhBbjZhc0dGSjVVMEhH?=
+ =?utf-8?B?dFQ5aDFmTzUxbXRFWEpORjAwZUs3WEM5Y2xibUxWY093VXVBWS81c2llTUxL?=
+ =?utf-8?B?NWkzUU1rcGpRUFNxZEJnMitCV0p5eldISHNQSFdtanJUb2lTUWl4OUtnWVhY?=
+ =?utf-8?B?R0tQK0NZTnZlN1dJRmRuTENmZlNHUWJDcGFLN1g0KzJPNHMvUi80M0YwSHFU?=
+ =?utf-8?B?WjMzWE43VmpVMmdCcUU5TDlYYUp5U2gyVnI5UHdqVmI0RmNURUVYQ1g3dXZh?=
+ =?utf-8?B?K2Y3MTZEZWI1RnVJN2ptVGNXejNsMklBVHhBVmUwOEZ4dkVpVDNMTm1PS01j?=
+ =?utf-8?B?Rk5YM3I1QUNhenhoS01aTmFUbisyQVdCZy92dGZrdkhWRHRsZDdrcU05YWJS?=
+ =?utf-8?B?eHljc1hhd0F1Qm9xU0F6WmJWOTZKN0hHTWVjQkk4cnI1Y0QyaTVlcDRZL1Ax?=
+ =?utf-8?B?aG9kTDRsTXZtMGNib01nVjBhZnMxeER1TU9PbmJieWNIc0w4ZnJLUEs2R2pO?=
+ =?utf-8?B?amp4dW9oQVp5cG43cDRWVzBMZTBRNnZlMnM2OSt5ZHNPSGxuT1dISzJJQkgv?=
+ =?utf-8?B?MGhFcEcvNkF0S21hRU9QVWRJNDgvVVlOVzRSOThTNjZqaXp2Y1pyNXFFMFZ6?=
+ =?utf-8?B?ak1IOGhCOXVOMm1neldrWUk3S2F0R0J6YWZWTGVtTEsyUXN6N3pucDREN0pF?=
+ =?utf-8?B?MGJPYlhVekFvQ2kzS1F1QnplMFlaMWlnZlRRbmIyZC85ZE9jMVBZS0JuZHpT?=
+ =?utf-8?B?eFo4bkc4Z282OVozdHBYOVFZU3B5OTI0TzJ1d0JvdGMrV0pkSHRZajY3dUdq?=
+ =?utf-8?B?S0hoRGJUM3VpcFArWUZQalRiNnR3WG5BREFldGRvWkxZMjlkVWtZZFdZMThW?=
+ =?utf-8?B?SXQ2ZjZUOE1SbGNPOHl5MklkVDlpTmdjc2hNWEpDWWlUWjJ0TUhnZ3lKV1d3?=
+ =?utf-8?B?L2dwVnBrTzdRaHhBT1JTeVVJM2l0N3pmQXZydWROMFNGL0lzbmxtYXY4ZXZT?=
+ =?utf-8?B?Y3UvQ0VUSVVSYi9IWTMyWXNBK1ZTdGhrdXVpWGZJYnVDN2QyNFJacG05b01j?=
+ =?utf-8?B?SHkvUmRiRnZhNnFaait0cXZGVUJtQjBPbmJWcVN6WklLRWZRdngwbURNUUls?=
+ =?utf-8?B?MVVINjVvVXRadUcvT2FMVDlidTh0MGN2NzhUNW1YeWtVbzBjUFpORDBkSnlV?=
+ =?utf-8?B?RTk3VWFtc1l0WlpUbkV3a3oxakVKMGhIWk44NllXeWVHOFozM0lBOHFMUFZB?=
+ =?utf-8?B?UEcwbEJDMW5OL0NENFZ0QnBlemZVeFR3Qmc3Q0xEMkdsMitQRmlhdUJOREZK?=
+ =?utf-8?B?UFFueTRpZTd0eG01NFdSKytaUXl3UkNzeE9sTUdlbHcvZWJOVFpCK3JZak9L?=
+ =?utf-8?B?d1JucXMyNkRCbSsxcHRNbWN2cHhWeWVJM0VDRDRBZ0FrYVlFUXMyL25CUjJK?=
+ =?utf-8?B?aHg4YmZUZGhLNzN0R2YycWYvOW9TaHR5cTV0b1V3YWdhR0d5M0xPWi81U2k5?=
+ =?utf-8?B?NUV5QmhNRlY5bmVnRmFYd1NRa0w0b1ZFTzdISnhhOFFUMEw2ekV5ODkyRGll?=
+ =?utf-8?B?N2RWWHZvcmhKaWhRM2xCVWlzWE5COWY0U3NVYlp5ajhMbkpwUkJpeGFzWUpU?=
+ =?utf-8?B?L08rTGhBSk5vd1AwRTA3bElWc1g4N2pWbWpGMDU4Smhjb2xGZlRsSTR0YlJX?=
+ =?utf-8?B?QmNCY0pvUjkyQmRHNXdabHc3VHdUTVJicEpmZFVyajNtaDVHZVk1YzZYaFFo?=
+ =?utf-8?B?L1ZEVWd0OW13RjZDMXdEOFVVbDBuUWZzbXkrQ0VRVDI5eXJJT04xTWc3Wkdz?=
+ =?utf-8?B?bnlFM1NLWk1CUEwwaXZyOXZOU0ttbGhlRVJVQnYyTmxZcUJyRmR0NmM5cG8x?=
+ =?utf-8?B?QWdqSVFpdW5TVlVCOXo2anduS1hQNVNiWmR1SWl1b1NyQ2x3TXlLazZFdTRa?=
+ =?utf-8?B?MjVxWnErVjBkZmJKZW9YODVEWEt2dWZjb3ZWajNKckgwTHV6d09BTWlqTTB5?=
+ =?utf-8?B?Zk1OWnpCc1dUWFNqN2hCb3VVc1VVZUVnVUQ4TExROWZoVTBoMlZaSGlyNGUy?=
+ =?utf-8?B?dENXczdOUkp0dlhRcEhHRVhZYzdCL2hQdUVZYXBOZzRvTGdESTI4TllYZk9w?=
+ =?utf-8?B?VW5iTk4vRkpNVERzbHlNSWNDSllGSmtWNDlyVFVXenYxelBUcU1abDQ0OUYy?=
+ =?utf-8?B?cFo5Y1ltNVRpbkZoSnEzYUJsMHIxb2p2US95SEE2eDVpb0FuajJvT0JjZFBB?=
+ =?utf-8?B?czNhWHhiWUNRRXdiWFRVODE0QnNJMzN6dVIwb1NIYnVvYTFxdXZXUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69ba2bcf-5d9c-4bd3-29ed-08df4595acce
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 17:02:06.2943
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: N3lgXYpESyVcTlfRg9x9B1QHSBbXGRHt5JIAWLIaMjDTQObY71TUI3hDCU+ccyYS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB999096
+X-Stat-Signature: zshzi5uhkzjsibpe54whg6dxc6ph5c61
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A2E814000C
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: icw967wiikq9opu44p9643tkq8bbe9bt
-X-HE-Tag: 1795021261-982956
-X-HE-Meta: U2FsdGVkX183tPb9Lt9+c+v1pMxsplWaw3//Tvx5T/3vf0dDfmN5Uj/F2Fxc2ABmMY2zgaEaO4bDEJQvnPOd7d9ZdPSuhnCfcC5xBC0Cfd2OGm4zSvVaJq9DtPB8o/ilw7ZeA8oPER5tsJxMZjMZ9IjHPToRpmkpEAMgOuHvYCAOqpwzTe66IiiZymRGaCJviSPRefbLanj6ZtVIOY73o86gQuZ+hTsVyCNoWQ+65fTFA+1SSV3cq0n+9kSNJFkl+Z4gZUYEFWNI36OMCOOhlH88w1LJujynPHCVT1HFDRcqUcoIweRJTeaJfXQmAUBnog9S/sIGYk4bsszvyfQlnzIGGLHyrE3qW7Jgm7ulgX+MILpSfTmIKOJ5B94MHJlxCiYyc6nCd8eDFLYkqO9SKBDVFIzWgQ0N7XGTyQbd0Y6W/h+053PcdnXPpKvYDqQtvrnG1c91iu8UqsoP6gmJUHop9Sru3XpSDBGU4AZxctr/ZuWozTk1EaFKjnKYnhXUpNzbJu54v6VqPrySrrZvsZLuT5YFHrF3HsuUgkQ8Fi9Eme9b2G0PvCRNSxFqvdYhAhe/SOX1HvH9Q11nrfY0K+nLqChYbR8l5Pe4c6rX8I5LmiSkct8J6QaVmubxz6YqhbrG9zC/a+8h2SiK57BDvRM6zAt4P8+AxkWrQ3iUY+LyfgzPPOoFC/6veHlXWc7YQ8sz2K/OoQR+I/Q+eKIR9/2qOdK0YwoDvnjwYs+qN4cuhBoU8xhbR5R4HoE1tDMVc+rcOHQrpwFeV7cr8lgCGoiUmpRYW/ndibGARodtSUoPtfVxFpuYnDGiIQYA1mNia6leCsdkIhe9ND9si+ZaO46PN0rVIH1FhPoqG8aHp5ymTFMh2BqislFVNFSsXYWaoO4QgCDVwwNiuB7hq5KitG2VbWXZZNzFCmABRf5JbpcCuIHlzZ4iJnAciieRq6YLpcozZ3fiFOoioi5YT82
- dlrqfFrM
- b7I+WAZndgaQthPiAzSKJKuiMp8NVuwxFjX4/HO4+GpLRz6QYCPSc4phnoimTQMcD/FM3s3wsH3rS8sr3G54cxV8nvDlYbKOUKVyyNywfWDN3ag4GUmMTN7CdoSVkhJm6LpF2BN+85YQ88O9NbGu7VdVZXOwyIqf/nfVNScYVqe4Cs8WQ9Zm2Df1MRiGt1V9MW0oFybFZWEt83wi/CE1l+FOuSNWmMkyxll9Uot6g5WZDZKmGB6PFnHkM1fXAyiD5mauAqvbtC6CvMIhah6n66Al/8dmQXcdlutosJNByEKNK1B8O1ddDbWuUPqd0SJGC84SVoO0ecL0lD/26gp8Us9HftFr5rOhFT+4iN8XhkCXtrXk2IZ29+0PzFw==
+X-Rspamd-Queue-Id: 282D3120018
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795021331-586620
+X-HE-Meta: U2FsdGVkX18wSkVenAgaRb8LDj7mIqe8EJlcWUMPrZE5smBNSLzTqxXDqLj1LaSHzN7SpDjG6ODQl7J6BbyRbF/avwCQfuthamqsYTQabVdD9MiyLlnVwnwjW82QubW70UE7rrZbjXIZ1hC6XJppK3Remo+RXYqBeJJvZhjTsji7fwXnmrTz/qLMl6ltynJ0JGd1Q6pQJDj7LOTt+Wp46G5TJILbreJx/9O/dTFOudwupHP8DNjZuZOmCj9oHDHKBatPWVUWjS3OtS4rfoGvI18w6m3KisobU8zuPqv4rHbVjp2ZvVte4pX1gDLXwMViNjuQUlf2d6CrGRwLGlGTaA4QYip9TJqzMriN/4r3f90+bE0EswPx6uMOW70pakEz6sg6GZZAzKOxTkX3HBvmyKt5kWRvCq0hy34B6uQn+vmrqy8VI54Tdpp/8mOgLQsGyhs0C0X1F0Rsk/4mnn+/1MHTYkhRJtqp12na43a238Rn04rBdcgV2KhFSTrQVUgm0wzE22YkcPalp2owQxtLoMy4As8nzYciCGD7e97a8Qib9zVuUnCCnHw+ssS8jppYPkzH02SD5j0199OUW/Tkb9y7+cgDpM4+pq61f6ock2lDACdiuG1/69O0myyrTiddMehV5/1hYPb9vQXy4+sjEcEOlwUc/B0p4EAx6FzX7jmNNU7+gUl2+M+YTcP72xjwERJbXSzJJ4soMgWpZOCWFDKrJIlj+KA+9Vi2Am9bkhO3dG9CHE3SyUPweyox8L9NyuM5OlGaw6OOTlRWOcE8TdFxdhNIhavPe9dYH9dIm+jmfezC1Boi5zzN81PBDNI1O/Ff0/b9zxGtOVo6pydQllN1C/VrP5snrnB1g+wThhlZejWfMfnRuEHhCiYPI4LIyNA7/EgINbuTf3M1DT33QT0tgEgwCfcMUpJI3y+LaOoWqmMxFwRaYPsBQp7tY0eYl5iHVrKeaz1JRh3PAbH
+ 09Qy/Q+m
+ 4ceHruBgoNNcri6x5ZLGwVGYyiWHxekhQcIHAFabc736k2zGrsUv5VdkpybZ7gJligrgfKj6b0YBqo6P9xMKydISB9dCD/xNrfWx/GvZW7sESAyi05fblsEBLRPCh/vhdiQJxAnAW+qXHIZzOA9Y9rfSp6S/QwjOk5fQbguxd0fDjjnxS4XHCAFSyM+xjti7KYS1zZDTsS4FufDjXyOocJDL4KRQt8jM0UIDq1J95MNw3UjggCFk9bIIszeShkNpFFWvW5edaD+qSpEtX/GEj57PDTcX7dZXrS05DnXmpQQAJBaqjJc12rIyVAdZt/25wmT8lRr6e56U+Ab79zD+NFFA+KSRBZ2M+UF/iWMgF3RZ79LCeOkgKtCW6zC57TUUoS2z8KvKlXXU3BK+i0h319iOoX9rMHThyqdOrt6QxG9JTJ9Nu6Ypqk3m/2YHJUh85StyPoKNWJBD0Dvmpaka1yHadO46dT1mleoeA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,56 +195,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-dup_mmap() ignores the result of vm_ops->open(), and calls it after the new
-VMA is in the tree, where a failure would have the exit path call
-vm_ops->close() for a VMA that was never opened.
+On 18 Nov 2026, at 11:18, Andreas Hindborg wrote:
 
-Call it just before the VMA goes into the tree.  __split_vma() and
-copy_vma() already call it for a VMA that isn't in the tree, so callbacks
-can cope with that.  If it fails then mpnt is still the VMA being copied,
-and the failure path clears the rest of the tree from there as it does for
-the other allocations in this loop.
+> Note: The page patches were part of the `Ownable` series [1] until v21.
+> This series continues the version numbering of that series, and it depends
+> on v22 of that series for `Ownable`, `Owned` and the split of `RefCounted`
+> and `AlwaysRefCounted`.
+>
+> Not all pages can be treated the same way. A page allocated with
+> `alloc_pages()` is managed by the page reference count, and kernel C code
+> routinely takes its own references to such a page. A page owned by the
+> slab allocator must not have references taken to it, but it can still
+> show up in places such as a bio vector. A frozen page has a reference
+> count of zero and is exclusively owned by the party that allocated it.
+>
+> A single `Page` type cannot describe all of these. This series makes
+> `Page` generic over a sealed `PageKind` that describes what is known about
+> the page:
+>
+>  - `Page<Base>` is the base kind. Nothing is known about the page
+>    beyond the validity of the `struct page`.
+>  - `Page<RefCounted>` is the default kind. The page is managed by the
+>    page reference count, and `Page<RefCounted>` implements
+>    `AlwaysRefCounted`.
+>  - `Page<Exclusive>` is a uniquely owned frozen page whose data area
+>    follows standard Rust aliasing rules, so the data is available as
+>    `&[u8]` and `&mut [u8]`. It is handled through
+>    `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
+>  - `Page<Frozen>` is a frozen page whose allocation is uniquely owned.
+>    Unlike for `Page<Exclusive>`, nothing is known about who accesses the
+>    data of the page, so the data is only available through the unsafe
+>    raw accessors.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- mm/mmap.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Why do we need to allocate Page<Frozen> when we can allocate Page<Exclusive>?
+To me, Page<Frozen> is an observed page state from a non-owner point
+of view.
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 7618e72766a5..de7e007d6c45 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1783,6 +1783,9 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 		if (vma_is_hugetlb(tmp))
- 			hugetlb_dup_vma_private(tmp);
- 
-+		if (vma_open(tmp))
-+			goto fail_nomem_open;
-+
- 		/*
- 		 * Link the vma into the MT. After using __mt_dup(), memory
- 		 * allocation is not necessary here, so it cannot fail.
-@@ -1791,9 +1794,6 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 
- 		mm->map_count++;
- 
--		if (tmp->vm_ops && tmp->vm_ops->open)
--			tmp->vm_ops->open(tmp);
--
- 		file = tmp->vm_file;
- 		if (file) {
- 			struct address_space *mapping = file->f_mapping;
-@@ -1883,6 +1883,8 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 		dup_userfaultfd_fail(&uf);
- 	return retval;
- 
-+fail_nomem_open:
-+	unlink_anon_vmas(tmp);
- fail_nomem_anon_vma_fork:
- 	mpol_put(vma_policy(tmp));
- fail_nomem_policy:
+In core-mm, a page is frozen, when its refcount == 0. The code looking
+at the page knows the page is exclusively owned by others. If the code
+allocates a frozen page, it will not check its refcount, because
+the code knows it has the exclusive ownership of the page. To reflect
+this, the code calling alloc_frozen_pages() should just get Page<Exclusive>
+and if the code encounters a Page<Base> and finds it has no refcount,
+it should convert it to Page<Frozen> or there should be a method
+that accepts PFN and return Page<Frozen> if the page of the PFN has no
+refcount, for PFN walkers.
 
--- 
-2.55.0
+“the data” mentioned in Page<Exclusive> and Page<Frozen> is struct page
+data or the data in the physical frame pointed by Page<...>? If it
+is the former, is it better to use metadata?
 
+I am new to Rust, so feel free to correct me. Thanks. :)
+
+>
+> Operations that are valid for any page are available for all page kinds.
+> All other page kinds dereference to `Page<Base>`. The purpose of the
+> dereference is coercion: a reference to a page of any kind can be passed
+> to code that takes a `&Page<Base>`.
+>
+> `Page<Exclusive>` is backed by a frozen page, as suggested by Matthew
+> Wilcox in the review of v21. References cannot be taken to a frozen page,
+> so the exclusive ownership is upheld by mm rather than only by the Rust
+> type system.
+>
+
+
+Best Regards,
+Yan, Zi
 
