@@ -1,123 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E605606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64705606A32C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zatd8Vt0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VpWF6okg
 Received: by kanga.kvack.org (Postfix)
-	id 7D8576B05C2; Wed, 18 Nov 2026 10:21:54 -0500 (EST)
+	id 62EFD6B05BC; Wed, 18 Nov 2026 10:23:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AD7E6B05C3; Wed, 18 Nov 2026 10:21:54 -0500 (EST)
+	id 607A46B05C6; Wed, 18 Nov 2026 10:23:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 677686B05C4; Wed, 18 Nov 2026 10:21:54 -0500 (EST)
+	id 51E3F6B05C7; Wed, 18 Nov 2026 10:23:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 43B846B05C2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:21:54 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD53A1A075D
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:21:53 +0000 (UTC)
-X-FDA: 85448604906.19.BAB2625
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A0A86B05BC
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:23:59 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA98B1C411E
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:23:58 +0000 (UTC)
+X-FDA: 85448610156.11.095B8AE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E9EBA1C0012
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:21:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zatd8Vt0;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1CE002000A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:23:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VpWF6okg;
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795015312;
-	b=RwQSq7EnvxI8KSvLBS90E47LFV/leyaALDdn/NKWdgis1nEY08W/wmUmHDzEOHrXCQtz7P
-	4VGZjDOVXK1rUKnokgYOscIJuT2+qfGIVQ0qw8FFqA9tFUqIxRTkBLgngv/PPpk2niutVK
-	lHFnc9jIuq+r2Eu0+vXB52StCWUmSLk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zatd8Vt0;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1795015437;
+	b=5OI+CS8t4SC+BlzCNZsY+nEFmd/fpSYeIQvxOOP692pFq1s2K7hwxltdFXaAhUu4Jm4eaU
+	9DBRizehnDUA/SV6FPXCoTnxkjZdD3pqptVvKfeQCi7OyBvrh5MTb5UF5zQ3KyFKVkoHYS
+	+y2jcdmoioSD5ebo6IvZmUjLlmMP2qY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795015312;
+	s=arc-20220608; t=1795015437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zjHf/N+E74CHlMypQ6kG0MO/j1AaxlMnO45unT7fRs8=;
-	b=qIfPIMCvyyadaJvkguOmvffXiqzgTw1+uJsJNqEJImHS3GZD7Oem4NnrfVgrCx3lKGR2mW
-	1HJcbJt/MIAC/Z57ZYmxvp8Mz7GJ9Otdw0EPDFhNvkt7Yw3HgSaGE/W1Yok8Qr5HmoEghx
-	OffyApOJLwsIee0ODrrVCSJ3gwrgDeU=
+	bh=/wWuoNoKhTnCurVf+R9Dm8cUyc6MlIAKk64n3z/RBEY=;
+	b=w7IUdv4/ICUF5KOS13WSJYm3ACbrs7XNY83Oaakl88f3QBtHXHHN9LemDRpQQHTu8Y58R7
+	xvyn9TR22HpJfkXLJNLIe06g6e+fyBIz/bHFHTOFl+UTnrk9IgY/7zzq/9nLRybqmrNiq0
+	pg7eP+sfRMNU1TsSX3tS/uIH/Au1oos=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VpWF6okg;
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 46F7340601;
-	Wed, 18 Nov 2026 15:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587FD1F000C4;
-	Wed, 18 Nov 2026 15:21:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 484FA42157;
+	Wed, 18 Nov 2026 15:23:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03411F000C5;
+	Wed, 18 Nov 2026 15:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795015311;
-	bh=zjHf/N+E74CHlMypQ6kG0MO/j1AaxlMnO45unT7fRs8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Zatd8Vt0ywkplJtY52sv1C6gqcSe5RQKIFV+5E71Yls+0SNUpVBiJwgzdPLtELYUe
-	 lMEeHjRrAnWCh2jU/xSsBaecsX4m19vZToDTdpSksFBkKQ+BznUVf+kzqQpRE594cl
-	 xI8Xzi02t1DvZZ4QYsxI3pXSUlMMlXjiS6thpbcD+kd0ditk+o0zuiajNisMWqprBJ
-	 /63zF2q7x1g0nOMjPpptKxP3+nsGFzPTU+2b5WqClj1L/DhevvwIx0kJR7RAEdV+V1
-	 Jl3RUAzke75z/aoxyBUnO1R5v5m1VuTsvFwkZGVLKCc2UzrfJ4Rc20DHv+e1oARAVi
-	 NavFFG/ZUVtzw==
-From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
- James Houghton <jthoughton@google.com>, 
- Andrea Arcangeli <aarcange@redhat.com>, 
- Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, 
- Michal Hocko <mhocko@suse.com>, 
- =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
- Andrei Vagin <avagin@gmail.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
- Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, 
- =?utf-8?q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>, 
- Tal Zussman <tz2294@columbia.edu>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
- Felix Kuehling <Felix.Kuehling@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Leon Romanovsky <leon@kernel.org>, dri-devel@lists.freedesktop.org, 
- intel-xe@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
- amd-gfx@lists.freedesktop.org
-In-Reply-To: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
-References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
-Subject: Re: (subset) [PATCH v3 0/9] userfaultfd: assorted fixes (part 1)
-Message-Id: <179501529906.13844.1913398195867025027.b4-ty@b4>
-Date: Wed, 18 Nov 2026 16:21:39 +0100
+	s=k20260515; t=1795015436;
+	bh=/wWuoNoKhTnCurVf+R9Dm8cUyc6MlIAKk64n3z/RBEY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VpWF6okg+6brufuDUnD/0rcm3ikR/TGcAO2b+kf1nmmezjf+ioumZyaJ/hW1XAXHc
+	 i8+zQr8ldIQD0EwrkfLPgRuItBcHyIZGOM9ZjDoPmyJ1lmnkSn4IWArch/xtz+If9D
+	 DG3rxW6pXD2Lxv1OKCtUjy80q7COvdcFrxOToK+yGr980IxJ1Q+I/s65bGLw80Gp98
+	 fgGv05L88j/j0lYcRWqAAwMUORJzu7XIZ7ttOGLTRaeCxIqA75DJOHItpxUN0JKiXG
+	 ilTvBNtJXKBxAAwlwwkJ6flU0YBv1XT+qIIumi2wFcjWs/rqbqqj1cif+sSDD0fUkB
+	 i1OiklgN/SJsg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Vitaly Wool <vitaly.wool@konsulko.se>, Jens Axboe <axboe@kernel.dk>,
+ Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R
+ . Howlett" <liam@infradead.org>, linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Igor B <igor.b@beldev.am>, Vitaly Wool
+ <vitaly.wool@konsulko.se>
+Subject: Re: [PATCH 1/3] rust: block: add bio segment iteration and request
+ accessors
+In-Reply-To: <20261117233211.3137168-2-vitaly.wool@konsulko.se>
+References: <20261117233211.3137168-1-vitaly.wool@konsulko.se>
+ <3wemO2s0BrkamlAGBfPqORofFz9yCXPMZUZ0-dUQxmJmEhmz2T2yaCjcaTVXEB_gwLj8SdBNjkOR8r6aERjk9Q==@protonmail.internalid>
+ <20261117233211.3137168-2-vitaly.wool@konsulko.se>
+Date: Wed, 18 Nov 2026 16:19:13 +0100
+Message-ID: <87a4n6upzi.fsf@t14s.mail-host-address-is-not-set>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Rspam-User: 
-X-Rspamd-Queue-Id: E9EBA1C0012
-X-Stat-Signature: 91wqnotdi4y4wkuyzs3x4w3uxwub6rp5
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 1CE002000A
+X-Rspam-User:
+X-Stat-Signature: th6qk4b3zopd18a7t7unfjd51n3gut3n
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795015311-60062
-X-HE-Meta: U2FsdGVkX18TUunI5xzHc+OXVhSZzN049SmOj15IA/i8l6ls6lUjAWzfzKg/PF6aHTNC+SRrOgwmH4qs5VgRRi5xrOllKExO3THlKSb7EbFlBnPLMqIBFi6gdo0r8on/YruLXUkN2GtAhpY5TgzA9gCNexG5hMNIxRKJ3tHY6v0YEXZk1MG5aQmjDRaWs8y0JZkr1D2b/IfQPU4LPvjfYjLkee3MIR94pul0ndmjsLxzUgPBbXyRZ9ciklD4DnmgqzictGHNb4V01r56R18BWx4+ih4C8wVsAzSDQHUJyseHNkUrS3NNljaUDrEmRdQcTQlVxgAAn6NAy8jnMMf3DaOi7qq6kw8VmnfRv+JhOAJQLyCg5O7wYbMrlqWMDTxbT4K2C/l2yfjQwbJOmqqBk66wcm20GoqP3MK6KFYThFmd2RZk8BxTCiO6oDmcvSwqaO+VgLyKlRoshWrSNv+SS+iTSERzcQqKJZGKjVoDQ6vCuifWvcfZhnI2RI4F7D/qIA5VckV95T6zHW4v7K4r2fSsC50YmFmj0rmpfSB0mO1+uKxfKNEgNV8U07ZD5RqLNn4tGHhwkFGjxoa4F4IqkSeqKLV4GFq9T/GkI0EXS8ylJ/5t7JvzSUP8fYYaE7x2trCg6w0F8eO9hdEFoJWUlF/AGdMDTt3wPovBLkv/GbYyHz6KCxQeuUM4bf5JBru/v+JJqMt+E9RPq9bZb1vp/oL0E04YSNA0G7PNeUetZBS6701F9qSAy4Tqblb2VQYGCBiNc3tY1X65qIlpcXbZIWl7V62EsK4cA6TmgC+tJjrWDIXHKT3ctffrzhE3Yq3q5Btd0+GFLDSJfqngXPEs8C+Tx3I07teJqe6E9kq/EBVMkvjCzVPzHG/PVYdPqUTlKYvkc/8yglg+jxyxSKCBCU+FO8BG2dYVxK6QRrJHUKXjmusUXQB5Nkb1gS2f+r7f3HY4LD3r4YP+DHgPYAU
- +t+5eF59
- k6LTSZYsxtWPaKBbQULOhqBWFpesY9ls+6NkdMfKHGfxk1bNy9aU8lQCXrh1ZkSbpiXsVwg29Xjm+VHPqx6+nVnp4QA0S0n3Auqlz8Gpy3sKya75ibpbtdA0OxY3e59tKwyx80ZDd9/MqK7inh6U8K49TqMGuBgBb5sHMJwWcJjnjgXxIlTFEOrGtBWhudIaSrsri/PDFT4MheIXuXCBWHS7JzlG5D7ahoTx5nB5RQ7Wuiz0YmUpLDbACyhsBm3JkARBP3My/EYPcQ21W3la6h1liVTr4UFE2QtRQ0I+e4yyxrqyD4cT5Em2T7skTMVzBRyp4
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1795015436-474642
+X-HE-Meta: U2FsdGVkX19YbQx98Vf3Y2NIHTPxqRg2cus2k7qgN/wNc1AnSjpZ2sf+Sh+hFp4OmqrKzIU8suyWfkoFCTGV2RJjEBD/UEzHFczVHKjgvjkkMfzb4jAuDsA/rvsr4kL4Ok2pAKWI9DcvRhUYXY0lT/BXOHe8Fm2BAToad+a+x0WS5xlBIji+ycwOOZcRcsK6eN3Urn2h4hwKzSScwdneKTbmASjBYDql3o+d/VLoV95+gNTMtN0y36yYd4yfoGS7dXzY4huAxoO4pIt1efEL5KWax8mHAZNkK2+7ZEVng+s2E/CtH0mAQl8JBmoh+87UvyGvAI1bmL/EnAhbu+wvlaMiOv1du+8Nw7EttG2hv5WLgeLXBmjvNIfKA+VJy3cM6UM80oudOaPDXZ3LkzFtLzuFpTrZWTHKC2Xs9Nr0psGg1PQTi5yda9a4zE2UnJlrHUkbGfMrydDKTmatGAuEJAFLzhmr8bRGoFVyYcTT9+U2yMP1BTWZL0Xl3k/KzMwbxTrGrh4ONYnn7SNtPjb8z6ABS3h5ucVajp5nbXjfX99E4pBG3eaWSqmLIp+P86v+eN04ZSw01dX19at+7igO2GBk1LCqvyroN4cjEwLLwana2dVB6TpfJToTCxUafXHkZ4fjXjOuL9OSQ6j1h8bZOjvDxbVWAEdyPPwLF+JywS3gu8qgUUrC78TsChlHQ7IQOra/V0I6vDNdJBTCWeDuCA80AGPE0eQZvzcFzd4XeZ3X5tzVAxNNnen3LjsEMten5aqlzA+uOifBGAGwTjKGp/071uG0rXzRYCOIU58eceKAy4r55qlPhOaMPZBHXLhvzvbbMJond9g1TpdTkX0XSulAkMaiVvLfIHDAy/kC2/E7Q2yepRVk/tk01xed42A+J9PFw+0oS5USnUvFdA3Mdnjs5F2ONyQgkpNUkqQ/O1iGNk0PpKHtcthgEzgrt8moMlGyXC9jOHXJRmHfNeZ
+ eQWySIAF
+ VrIWMq3fVTsWrBX7NuDMAqgKbCRghGfgcO1SMR93ojQepVLMn6ztQ/O3As7ysNHq046U+fD4cNohrGzdLdIM/hyK8E3V+eig2lppgtolDYqmgkxgWQoWhbRGrdFZYE5NzJ6lt4ko1rJ5ZDcl36sh/NJ3v/wuOrQKN5l8cyOj6oxe0pUpJWV9l4n+QnHS1G2qpbbRHbhmcVAIvlhPZOANLynVxzUaqy+W+qFzvG4CuFxowDAZIet1PIQzveNtjnlNcehK2nFdM6Eq4FlIwh5n7kpbCydS2bTYOop0D1iZ56OYaTM1C0j2JI4hhabub8M5xM9dFswuqp2Gc51BID6SS23cbfzsSRYZUlAyhBpd9TQnlWUVhP5Z+4EBnxqy6Ok8Y2AeN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,45 +106,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 17 Nov 2026 23:28:40 -0500, Tal Zussman wrote:
-> This is a first batch of userfaultfd fixes, with more to come.
-> 
-> These were found by a mix of regular old LLM review and by having an LLM
-> write a TLA+ model of uffd interactions with PTE bits and other state
-> and seeing what issues fell out.
-> 
-> Most of these fix places where mm code loses uffd-wp or RWP protection
-> while moving or migrating an entry. Userspace then either misses writes
-> and accesses, or gets pages reported that nobody touched.
-> There is also a hang in UFFDIO_MOVE, and UFFDIO_ZEROPAGE modifying a
-> file through a private mapping.
-> 
-> [...]
+Hi Vitaly,
 
-Applied, thanks!
+"Vitaly Wool" <vitaly.wool@konsulko.se> writes:
 
-tree: mm/core.git
-branch: migrate-7.5.misc
+> From: Igor B <igor.b@beldev.am>
+>
+> The Rust blk-mq abstractions only cover what the null block driver
+> needs: requests can be started and ended, but a driver cannot find out
+> what a request asks for or reach its data.
+>
+> For a driver that actually transfers data we need:
+>
+> - A `bio` module with a `Bio` wrapper, an iterator over the bios of a
+>   request and an iterator over the single-page segments of a bio, the
+>   equivalent of rq_for_each_segment(). Segments can be copied to and
+>   from a `Page` and zeroed, with bounds checks. Iteration goes through
+>   two new C helpers wrapping bio_iter_iovec() and
+>   bio_advance_iter_single(), so the multi-page bvec handling stays in
+>   C.
+>
+> - `Request::command()`, `Request::sector()`, `Request::bytes()` and
+>   `Request::bio_iter()`, exposing the operation, start sector, length
+>   and bios of a request. REQ_OP_MASK is added as a constant helper,
+>   since bindgen cannot evaluate it.
+>
+> - `GenDiskBuilder::max_hw_discard_sectors()` and
+>   `GenDiskBuilder::discard_granularity()`, so drivers can advertise
+>   discard support.
+>
+> These are used by the rbrd driver added in forthcoming patch.
+>
+> Signed-off-by: Igor Belousov <igor.b@beldev.am>
+> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+I already submitted this [1]. I have a version rebased on v7.4 if you are
+interested.
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
+Best regards,
+Andreas Hindborg
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
 
-[8/9] mm/migrate_device: do not migrate a uffd-protected zero page
-      https://git.kernel.org/mm/core/c/a37a6cf0
-
--- 
-Cheers,
-
-David
+[1] https://lore.kernel.org/all/20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org/
 
 
