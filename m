@@ -1,102 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F24E606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB0060A2638
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i/qK1c/w
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=ctkDejQj
 Received: by kanga.kvack.org (Postfix)
-	id 613E06B05B0; Wed, 18 Nov 2026 09:07:31 -0500 (EST)
+	id 9021F6B05B3; Wed, 18 Nov 2026 09:12:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C4636B05B1; Wed, 18 Nov 2026 09:07:31 -0500 (EST)
+	id 8D9C26B05B4; Wed, 18 Nov 2026 09:12:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B6FE6B05B2; Wed, 18 Nov 2026 09:07:31 -0500 (EST)
+	id 7F0A66B05B5; Wed, 18 Nov 2026 09:12:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5166B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:07:31 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3740807B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:07:30 +0000 (UTC)
-X-FDA: 85448417460.22.384D30A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 34F6D1C0006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:07:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="i/qK1c/w";
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795010849;
-	b=chZsV5tLe/v4NtJ2Q89pgBDO5wAHL1yJEXu6+hJUulopCm2cIT38Q7FTEgfT66erOaZYOq
-	UVaqsqBcEMRq3KYaptJLJCiwCjnwYeLLXqDaamBX0OxEL47AUf6zOB7/+Cvli02CI9QhLO
-	UoAuA9dBpsAvgmyNVdJT1hfRWNLA4Ug=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="i/qK1c/w";
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 509C66B05B3
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:12:22 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFD2CA842A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:12:21 +0000 (UTC)
+X-FDA: 85448429682.01.365897F
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EAC1640010
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:12:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ctkDejQj;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795010849;
+	s=arc-20220608; t=1795011140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k5lNlxAoGPg806PTxIoKtyPv+dx1Gfpw3t9P/RGtzac=;
-	b=qY4npuN0ojAKg3W4nwlKZ7QPNrU4Wk1bdHX0WSsiQumR7DWBXkY8L3iJssFIZR+c/7lkJ3
-	0XrrUH0OHaBI8DhLtIy8Eh9p5DKXiAZkNtsP53oA/rPAOohIdEEVcstEBNAiHl6JNkCTG7
-	ndUAsFU/l9/3nGQ6XiHemIfJ/oQDr6k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B5406223A;
-	Wed, 18 Nov 2026 14:07:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8272C1F000C4;
-	Wed, 18 Nov 2026 14:07:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795010848;
-	bh=k5lNlxAoGPg806PTxIoKtyPv+dx1Gfpw3t9P/RGtzac=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i/qK1c/wDYDTdZDrhx9JaMqoN3swoPbXUD1ba1bvT++6dL51gYeXNUGjk906z7mNR
-	 N5LunQHFijq2OsxbhpkGl8x4vTEiTlogtfEGDocavH0SHDxxHzu+3TQnqlGkS4omm+
-	 +bDmYrQ7QInWgvSb4LnBz3ATcFuc6vOu9bGerA1kydBbmytp+KpFquhRzIieBKQNLv
-	 IiHenjryKZh7DyXL4y22k4yfRthPyz+rcx4g6d1LtDFw/RoLtW4FYfzBjne5gVwMdP
-	 ymyrHvS04VW8CQJVKsqBG8FzSxG2TImUyo17+tALc1Og71joQgK18heBqZHYLkE/bw
-	 lnVG3mtOmkRxQ==
-Date: Wed, 18 Nov 2026 14:07:18 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>, 
-	Roman Kisel <romank@linux.microsoft.com>, Saurabh Sengar <ssengar@linux.microsoft.com>, 
-	Naman Jain <namjain@linux.microsoft.com>, Michael Kelley <mhklinux@outlook.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Eliav Farber <farbere@amazon.com>, 
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>, "Gregory Price (Meta)" <gourry@gourry.net>
-Subject: Re: [PATCH v2 0/4] mm: fix races between huge and non-huge faults in
- PFN mappings
-Message-ID: <av2cagI4ccMR7jJz@gremlin>
-References: <20261117-huge-pfnmap-fault-races-v2-0-276007e73bcb@kernel.org>
- <d7edeec8-d9c8-4516-8426-de2d8854ae06@kernel.org>
+	bh=aZUtL6/Zh+PGwvVCL/LrsblWzIm0zKOhzUlFpTCrzCY=;
+	b=d2mzYLQ3ZhhR7qS3A8zeUly+ynrvbecbNMMefqAh9KpJlPw2ZJjIH5BYDepLiwhFt30Qk6
+	SSCZXHnt6K5NebFRlKLwngdab3hfRTpW/y5ZwTSSKr38wn/aXjlrncKOPljAi9CQesBHLX
+	6iJ15u2nKCdU5BIqMiepfD2yXgo35VU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ctkDejQj;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795011140;
+	b=XCEkb+ICV9tbncBr3KQUVCm9m8zmjalIVS9JE1VV3GQEAdIcxRDUJq3reN8IQCxwj8xD67
+	8Kj2JVJIPjEkOjuxAjhnL3vUk66oCx2TimQh76wAT4Brm5gVLOWuLLamOJkCowR5dOOxmU
+	LWT/eNPO2CBIGaj9pMCknagBIVBJStY=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-94999a08973so106680385a.0
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:12:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1795011139; x=1795615939; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aZUtL6/Zh+PGwvVCL/LrsblWzIm0zKOhzUlFpTCrzCY=;
+        b=ctkDejQjXKd1WudD/wdH7lJw3+JsNAPzJBMehlacEZavY3ke6finp0HjY0EQcznMPj
+         x6SnkptGkLmxf3o4PvQX2edFy06neGRQYRwrgQI+ostfEI2CJcvrhvYaRpVOXy/cgEtf
+         cD4PCPmHVjwwzjoRZxGHdB9YMnOZ+6XdU2ovHVjjAq8X9R+CupB56x5DbCts96goN9ZO
+         4HH8Dmt3o9lJ7GgCSlOQufaNrWrvXVrGtvURLzKlW8zhsGQomUaNHMbDlS/vIgc/h/ht
+         gfR0P+NoiWAMKkCdJZphSS8IuhmyQNB/8zIL+o6CjWJWEwua4BtX4rOl2Lg6jP1Fuabp
+         NY0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795011139; x=1795615939;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aZUtL6/Zh+PGwvVCL/LrsblWzIm0zKOhzUlFpTCrzCY=;
+        b=oWBYUMiU5V5DOZvpCE/Xg7SpS+34nOXOiJhEYrFOwEpf7tBauaWuI2z6Kh66Xsp9y9
+         9kz8wP7vLYgdNbmHSBVUhqiy2zXLF1n1/GDLlzByPzV6CbW5cLTDuCEeJQdv2CRRe51P
+         i/LroCPKcwBRyxhpfYbbOXcvI+MeiPhWng4eP/Ou5218QOzIFKQI0VLFQBzxyQ4CRMf9
+         SdLC0B3gbts84c5eMIQesEwKoGQkQfnE+m5KDtZWb0vWLmUUpX7qB51Ed7ZJYJhNIlH0
+         d8ZuYr4AjnIj9OHDicY0bOGCBl9eMeQ339z7k6hWX2fZGREW8y2zQRJVmmO5+sX5sEjm
+         BVGg==
+X-Forwarded-Encrypted: i=1; AL+hErE6N7xqcoJxBOW4BQ3+PmAsjBVNc0XYh2n3YSo/RS2hLo3sByoFh7EYoPS+KrdrMPbxE7QIUQW3mg==@kvack.org
+X-Gm-Message-State: APuU4Z9xP9CEnl2BpxpiLiirg199VGRIYiFHmr3vs8K2mqUBddaDdumE
+	LkDRXjq9Ji153e1FY3OVsYDKF9VRtEjc4Q95fFJCU6lwv2GJyUAPRrsUVC0xpICNOjo=
+X-Gm-Gg: AYBFou05tLnxUjzdTKy2+h5RMy4wGC+yBXtapX2v8b2Eb483mFhQ9OuUKtfENnB9DBV
+	ZIAbarVkjfaqUPDsPGcFN+zaXRM2IivXC0crunTHt7oUs4OHaxcDqwtz+HDG0RzB36sOI+s5Yxx
+	eQkfpNZ5MXmsbyDmuA6zcvnyTpIrQTG+rdiL+wNE+emKt+Q6mYyC8KcodsmOvXSCjAp7qu+PbuO
+	tGNY6S6NkzBiDCr1qpcuqtja7B3zY5MnXIfEpNHxlCkOK4u+DYZJfrG+m4ZYEMQK+unb19of1Tz
+	uR6fN0DFl9/zfpRAM5TyeQrGASXfCaHQ3AkyZbVxLMHDwr12CZjtvqo3sF4BPwdEvHMGrfsi1Rr
+	Lf3nV5zJFMm+mhHp1G/1ihgOfXAj6/PiIVdme5lWWKWVeqSpb9cTZMZbDR18/4k9h+jNTXJfk30
+	m8vypsse6F4F9VhmphFpDh1/IrUyhypUbds3pDHQROkNiOs2+7CKJzyRtEVbSW0J5/IRqWaMRhg
+	xUvmE9TpWSDxGJjGcGc6oafwyoc0eE0MRTbYqe6Ixp2J1itz+KnsLatHEHqe/GjZG+1+5Xmx6fH
+	W7SNZHF35n0ft2MLUspNkDx4aoTPu9F0+R+s1ZPfCi3R8w52SH7Feq5cw783mYmRo0vvOnCKogl
+	aPiMaLOo=
+X-Received: by 2002:a05:620a:44ca:b0:93f:3163:3e25 with SMTP id af79cd13be357-949996e2da8mr497886585a.24.1795011138732;
+        Wed, 18 Nov 2026 06:12:18 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9499b454facsm191203985a.5.2026.11.18.06.12.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 06:12:18 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d7edeec8-d9c8-4516-8426-de2d8854ae06@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/userfaultfd: reject DAX mappings
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+ Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, 
+ Jingyi Sun <1045704958@qq.com>
+In-Reply-To: <20261118-dax_uffd-v1-1-d776cca1ae17@kernel.org>
+References: <20261118-dax_uffd-v1-1-d776cca1ae17@kernel.org>
+Date: Wed, 18 Nov 2026 09:12:17 -0500
+Message-Id: <179501113767.2932576.9608927748315673286.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: EAC1640010
+X-Stat-Signature: wyrudtj4xrzuoyhau3c3ofx3acuhtzjp
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 34F6D1C0006
-X-Stat-Signature: n5pk1o5r8kzcoqy83f6kegcqbwzcwxxa
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795010849-945478
-X-HE-Meta: U2FsdGVkX19+aVAwAwNnttd39VF8NyL3pTG7VhlVKh7BY5Kk11PJXiVOnKIe7CGYb56f+Ln9N04hnagMUWkhisDlDrvBPFfz2DA6oUxb4H9PW1xWCsu9/8U/NUQgoBYQt8p4/V+YZL62zdfSMmXTvNe1mmwdKck+loSooPzaYmb4xiUy3Zdrwl44Gebf5u2d1evcyrnK4pUT6T1tR/B4gYRytZFNZrZK8wD1uhLCRPgXb1FTh/vSabcn1+jRC5CDv7u6bnWxmMortZNIK2e/xEz02E+1j5q7bMJ0taceNmjnSHC6kz6GfuvfdRrXdm1usC+7ShHyyHxfPj3sybh6bAPt00r+THPEXvO8lbup4awGaOJfGopfhEzqQCG8M0QepHngA9xzC7jGGy4sF5pXFr6cDy1lHAQ/kpFoM4MutYVid2SOYvLrc+uTlDunZxGdyjxBGw07kFRDSFIpxgN1MzIsIo3tRqhwOOllX1YorzaMTrB2vyYDkDuh02daYEMRt0zwWeH5XCPCu5mimLwknVhfdmbf/9SHzXN0JleeExQJdbh00iwJL6PzwyFo48frqxxkvHO2nXuwajHaUotCPrbGvOPqVb+o/d4re1jf4iRK1KmBJc26RkHtNEJNiNQzGlwjLJQpF5pFlkqHnSxWlinHEiSD7/6y1qqJY94Zt6uywWC2n49KsyHzbpFIICJlqQlyUyZOD5fmvWngoSecT4GeTO6Ja8/cOyKMPhfA8t+i+ocVR5E98XCkwZKFdFDKKn+NPHn9308LvTaeuXIuWPK4nwmbEGXSnSkZonaqFzX4HTLl6Z+lyy3Z5FuRytVLeZqaaodqJ7GV0YE+z6HgDoO2/697pi/1i0HZYnS6p0nS90N9uPmULMnhwia9ivs7+jJqhjcjW5Vd/KFeUdzc7Jf+VpO7SnLgvmNgKpCrwCdl53tCx/2mTy0ATvkom0C7aGW/GQQfAhozEiTVs9/
- a2DIXNEK
- RvGGOSdVGZPFtB2wzIKjEN2oLAbik2GORYth5MSmxZgtOwFMYz+fWgV/9TpePakMamPIWOrXP/JJY5B1nrzSXXF0YusUQbvl3a7CquNulEDXCRm6NzDNndI1Un9ZfYsV4zp2AaNK7fju8r9UZ3BSrvDG5avG1kWVE6kAgInl3A4KgeU8sFXLcgpOnilZXm7Yi+mF7j7zNIZoaQJhS/iD2WaCroQpRPsQftvhfE52moWPmF08J19kOav8uLSc0bJROmDwv
+X-HE-Tag: 1795011139-769755
+X-HE-Meta: U2FsdGVkX1+SkMPofgetTYnyqRwlv9QbJwLFaAaUO/JvGE0YzAwfZ2Cq8q2KUVEqa+sgV3LAaW3zio1okl1IBjgs/JCPXRxGglWYzUcf72s28BN3V12aaQwQ2rp5A2u4zeAIVLxAlVbk98KPC+u17BJ+PRIrYmhVheAKIf02tqWzPkE51Xsw/yJYz3bu+sMRwfIaG3RAUYypYyPXqoG8UrB4HGmmEVhpeEIRrtE6Ig4SgGrLgclec6tLPDKwhnTCCieuNufql34wQc2Idoj+IXu/L5qVSytrIP8FPX+/sXXXlulYzrSm6hPPybBw6bpA8JPZj965o/qkkgnunWjxrGfeZmBatcEdMzoXgbXu0Kw05poll7iVH+XdqtoNZM0h0pc1wPovxd9HBpjT1iYCWNJ99twW6V7wlYjrXamjV9A/KK4z/+JD1gUO/jc4YiN2MmtkI+CWC93sBm/24eSV5ofIa5/d8dv8oQ47arzSCqPazBgG7RQpGJSjevSql3R+rbB4a/B5HG3aKpQi5mClL7hKCe14UMBHiemWQAx+prxF7Xj07NbGyJWldAljWrDJebBeK+bcsxa632I4fIZdluT0gGZ9F3W2Mm17sJYmpXCULdEsJPu8Z2hq2Wg7EoXHSXioy4lGGwnkJFM3eB61/UYqa7B1e2gR/im7UvRIOXUddVMSDt9IJ4ibVdxnqFyridjunowHz/v4rkQqiDbbL1EXaLCYQ4zJBlG9W3vl4jyUiMW+T6v1ttBDqgOA8fTDnCUaybKyQxQmSdVDU7lg+YuOo3Bc8O6kSJRGrsrxNHHA0JpyCmZnUkJRv1FtVN9kF5YJMJikQZAPqkZZq3imVLCwLpDRsfHj5cDMNZSd+mnY/Og5Sv3WDJiPpUnlglZyaFOTSYRlAouGcpDdW5k42WpyT3Fw6wc6S1MdGITG/XkR51ZR9Uy4RA086+dBUUU0NRt5gqLWuRVPuXpFTOw
+ 7Ec0krPC
+ OOas+dc1sNIYrY1KtyYkhBRqYm/olh5R3yCTrMNKfZkJG4i1AGQK5GDrFe+HU560fBTZrHfoeLX+Mo5kMC4EcJ0yAjRvszWjfGmgRHpodjmYBpeYkginaZ9rWwY2BjFGfIoSXxd3rQT4VL9hbmh9jntW5id0LOhcRo7KUcHMgIgMvMhI4gcYZwGWzTq2ZIa86rOQAMbI+KiFHsl4LGq63Jj9J/loLstTWrPe6tQ4bHwPLFgV4eCT779l96muKu1zL3e7/YmIqSDuPR9cny+ne/2Nr59xY6dFa5GwJn0Y1gTmsOvIxP0az1BkqQ2BCWJ8zfT7ohcy8wAN2iFeC5qteA2lNWZ7aOWohoKVIKI5EKLQnass=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,13 +129,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 10:47:48AM +0100, David Hildenbrand (Arm) wrote:
-> Lorenzo,
->
-> all of these are not super urgent and can wait for the next merge window, right?
+On 2026-11-18 11:03 +0100, David Hildenbrand (Arm) wrote:
+> UFFD_FEATURE_WP_ASYNC made DAX mappings eligible for userfaultfd
+> write-protection, but the DAX fault paths have never fully supported it.
+> 
+> DAX faults use vmf_insert_mixed() and vmf_insert_mixed_mkwrite(), which
+> treats any non-empty PTE, including uffd-wp markers, as an existing mapping.
+> A read fault on an uffd-wp marker therefore returns VM_FAULT_NOPAGE without
+> replacing the marker, causing the fault to repeat indefinitely.
+> 
+> PAGEMAP_SCAN can also write-protect a DAX PMD, but the huge DAX write-fault
+> path can make it writable without clearing its uffd-wp bit, breaking async
+> write tracking.
+> 
+> Device DAX mappings requiring huge-page alignment and cannot serve PTE
+> faults after UFFDIO_WRITEPROTECT has split their huge mappings.
+> 
+> So let's just disallow DAX mappings in vma_can_userfault() entirely,
+> making UFFDIO_REGISTER fail with EINVAL.
+> 
+> Fixes: d61ea1cb0095 ("userfaultfd: UFFD_FEATURE_WP_ASYNC")
+> Reported-by: Chris Mason <mason@kernel.org>
+> Reported-by: Jingyi Sun <1045704958@qq.com>
+> Closes: https://lore.kernel.org/all/tencent_1874C71D4177A1624528043E008DB1A5EF05@qq.com
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Sure.
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
---
-Cheers, Lorenzo
+-- 
+~Gregory
+
 
