@@ -1,130 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2A5606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845B5606A336
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gwqv+vQo
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=RAeJpJy2
 Received: by kanga.kvack.org (Postfix)
-	id 16D416B05B0; Wed, 18 Nov 2026 04:11:33 -0500 (EST)
+	id A4F9C6B05B1; Wed, 18 Nov 2026 04:16:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F7DD6B05B3; Wed, 18 Nov 2026 04:11:33 -0500 (EST)
+	id A27FE6B05B4; Wed, 18 Nov 2026 04:16:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00E56B05B4; Wed, 18 Nov 2026 04:11:32 -0500 (EST)
+	id 93DEA6B05B5; Wed, 18 Nov 2026 04:16:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C4A426B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:11:32 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6A81160290
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:11:30 +0000 (UTC)
-X-FDA: 85447671540.30.CF753A4
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F326EA0004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:11:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Gwqv+vQo;
-	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F42F6B05B1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:16:21 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 72E7B1A0106
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:16:20 +0000 (UTC)
+X-FDA: 85447683720.04.E04A93A
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2BDA540007
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:16:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RAeJpJy2;
+	spf=pass (imf01.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794993378;
+	b=ZANBcNPcLurerAhzRMS8xUvg96AYH/WKHCzFVWbBzpwEMRYGRch4+j9lMYQNFcoMoqOTm+
+	LC0w0qhsBaFH7BJ3xhihlyGQk5zN56IxpEoPo+CMVi9lnBuGtFypuX4KXYsQFYdOqzhGXj
+	4/xqcmpNBhMFW+6QYfFxnUUAyDHI/JE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RAeJpJy2;
+	spf=pass (imf01.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794993089;
+	s=arc-20220608; t=1794993378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YGpixNBxWXCW1MjpAmJloCJpQLDbcvvCFftHkMbvGwc=;
-	b=d4OgEqDX76l6+jV1wtdQREN61b/99gd2OEpRzn7lxO3/LXfaozbkvellGdxCfmvhzkR9S1
-	lzxkh6uE6GMSnqrJLV75LS5VZfrUon3uW2JwPdEitjZF6xH1TPiP6o4i+WtuNdvXTot/RW
-	cLP5sxntMnASlN9OxLidIRaCFcRsI5w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794993089;
-	b=MblGREQOOM1yGNLMff6YU1ydTMp/Fhe1PoC6WfooSQqXeEM4qAhN2Gu+6SYqtgs7qBv0ba
-	t8OMQ+jaRHZ65yYKPF/GF6Sdf9kO7Jb9CSOpjIkPjQeDE85bC5LMx6pZn3lsnfg8WoNZYU
-	rSxbuw/TELcjHkipHEPrgSy/cyZ5OZI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Gwqv+vQo;
-	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so7389585e9.3
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:11:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794993087; x=1795597887; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YGpixNBxWXCW1MjpAmJloCJpQLDbcvvCFftHkMbvGwc=;
-        b=Gwqv+vQo/p4/EL5I5Ih7oTXuQx6tPR7ftCpr+MmwsuvgBT1bdI67t8X42X7LcQwWd2
-         TFxgDOyyD74P0A4jHfundOkJ1lexO/Q9AXdFbrK7Eu2KkDVeqj4obtOsKl2D4uLRtsnF
-         AdqYI4WgNPT6yOWcQddva0JvmAvtufiTbPh28hU55T51T9keECu/ymlOSWpw606UKvxH
-         4a2dYv6gO+wPSuMd65FEUbl86NwPKjJOFBTTLepLYIlS67XrDHD2ePYZ6kRy/Ud3ybjX
-         /5DLajCHC5FE7hkClhIaYljNvimIOcwt91DS2ThbWzVmG+PfhBJMCuJENxYGojAxvc4L
-         xorg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794993087; x=1795597887;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YGpixNBxWXCW1MjpAmJloCJpQLDbcvvCFftHkMbvGwc=;
-        b=a5yfxPySa3JNGsKKad5YfO9WJX17gdz8MQ4vQUScuux4SKUgAFE3eza+o5//GDIWa4
-         cQ6d3QmiLefM6+nfLc974IGOARRWpHGBL2we/RBzvzVxdB8rL3752318fH3clSCyn3BA
-         CQ5pHwGbCmuz+cMd48USD13cM2/cABntK20e1H7/8wqI8pvjfN1+vfqCT5M8V5ONQ+lx
-         MDp3AWCeDlAD5VOr0Ea7QLEUBGl47SEedN9Ub/8TmuzbXr+K/vtolXUTMUDoe3Mbqadz
-         QJ2LkMOplD3PTTYQOM3lcGfFuOKLQ5rKOnAhpRCeEM3RLEYXYxThFwUVu844iREFh2/y
-         qFIg==
-X-Forwarded-Encrypted: i=1; AL+hErHXxl4EeDGGK+tjwWPIlf9vkXUiYKWdBmsrQ78pyzgFnbd0fW2yKSatqFRASqm0LyDOUgIYdc8b5A==@kvack.org
-X-Gm-Message-State: APuU4Z+u4x82RBxGpXk28rZLHkV7CSKnMUe1RXsIkKqLylCcpjq+PH8C
-	lbD3JITsvRJBQGk68UTRO8S42tga12iqayjN74/yZ1eiMgsUZXQwA+rN
-X-Gm-Gg: AYBFou18d2ScRIIXQ3jzxpJFVVP6UFq3p0hYHenNz/oyWOju6tuSntI03+dPpSO1s8P
-	hZt+gYlsUrhF3qapkiLyN162Y+SPGcN3IPOK3AcmgY7Lm/YvXPpNnqySHQZKhb4TzxTDZwMQ6Ca
-	v/d4bgTW0OOZzQn3yMlJFbroe6OZg06JiNo9PhExC1SEg4o+finQLyCNVQR2TVUIugDs0LLMHSp
-	SMzJ4GFROCQm5rrrj6YCNBXU/6VVxA8yK3dmouXkfxTCEN5kaP6MHQFH5BwhOKv5VeE8dZI1xzE
-	ubMLGRnzn89GyUMky+z11taqbw/JBcd+bdjPKJ1yre8hVuP8UYL1ckIidJbBTQF5LZFT2Snbe8B
-	2ZznYD2V7Z1A7jtzuTKmgw9CLkNnNk58Gr4YSu4I8mMC9YYydlDdOkOZRzki4NhLBN6tq1oZjhQ
-	W82tT+LrAPlEe1lTN8dC6y75JK4l6PbW3Ezy6cIwqEZF3hLRNpLZwVrEjnK1rB6e2FkRC6Obfc+
-	MaDyJ8/vXDOtDDrwWGqWZM6/BYI7xfS3QR2AScjr4tp/Y6EP66w3+8zVekII8zJG/Nm+bkBystT
-	RscpgRyAV/1icOpbzqu9immA9RanPqiT5+iPVQBjcrVWwd7Gy9vUeRuoYq0nKn+7mw==
-X-Received: by 2002:a05:600d:6011:b0:4a2:1050:aff with SMTP id 5b1f17b1804b1-4bb7da12dd2mr34320085e9.6.1794993087333;
-        Wed, 18 Nov 2026 01:11:27 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb78430752sm137000655e9.12.2026.11.18.01.11.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 01:11:27 -0800 (PST)
-Date: Wed, 18 Nov 2026 09:11:26 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Vasily Gorbik
- <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Christian
- Borntraeger <borntraeger@linux.ibm.com>, David Hildenbrand
- <david@kernel.org>, Sven Schnelle <svens@linux.ibm.com>, Vlastimil Babka
- <vbabka@kernel.org>, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 10/14] s390/sclp_cmd: Replace page allocator calls with
- kzalloc()
-Message-ID: <20261118091126.25efaea8@pumpkin>
-In-Reply-To: <20261116152216.165348Aa5-hca@linux.ibm.com>
-References: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
-	<20261108-s390-sclp-ready-v1-10-3e7c90eb6676@kernel.org>
-	<20261116152216.165348Aa5-hca@linux.ibm.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hGfK5Hi5QOdXQbsME0+GiG+Fz4TcL5XOwxtDG4CKWPw=;
+	b=JbSyuA4gssDi0L+JUQx6TX8MOqmz05S/r7yTCrix0kcHFs9KTKj6+7RaAVxzbvrxrO8c2p
+	SNbxViOG4WCJusHpNtejDFjx0zCxb7ugHMJEP641ecNnxY9BgkczwfzDyeHSZt24eNUlbA
+	UjVRTzLKJ/jQalQqPEQGiZ8NCzyuSY0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794993373; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=hGfK5Hi5QOdXQbsME0+GiG+Fz4TcL5XOwxtDG4CKWPw=;
+	b=RAeJpJy2cCk/Nmv2pzPjctOI9rCOtGGLL2S9sdNtJq1o99n6kGgApjE5kNIW/mjEkWeWhvtXKCwhNCututH5F4X7nnYUcCtES3mO+dsGJhCRDrIrmqWiFRAjyc4dEhaD+LaZ2NjFJ0ulHxTfSut4mo/nbKP2KUD0FaPhrFIm190=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=cp0613@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XF0HHZg_1794993365;
+Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com fp:SMTPD_---0XF0HHZg_1794993365 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 18 Nov 2026 17:16:11 +0800
+From: Chen Pei <cp0613@linux.alibaba.com>
+To: pjw@kernel.org,
+	palmer@dabbelt.com,
+	alex@ghiti.fr,
+	rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	graf@amazon.com,
+	shuah@kernel.org
+Cc: guoren@kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	kexec@lists.infradead.org
+Subject: [PATCH v4 0/4] riscv: Enable kexec handover and live update
+Date: Wed, 18 Nov 2026 17:15:59 +0800
+Message-ID: <20261118091603.979-1-cp0613@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2BDA540007
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: wqb38hmydps3ayuhxkmbncswkx471ch9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F326EA0004
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_2
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: br3he1z9ah83dywhpa9wmzf6xqh5krwc
-X-HE-Tag: 1794993088-323325
-X-HE-Meta: U2FsdGVkX193IuftzUa5YaIMHuaG7/1e/n93aDjgYaeF6oyLHZYzudH9CjjdOLvztZOE65m+7IAgmFzV3zER0qewQA5Tf/b67ZumUtfMmSPmSDtLXbPA2q8lbZK5FcHNSLtC3Jsh4cnpAEkfjv3Azvn9cv7j+0XwxUh6vbuRL1SHjqaw5Kr/uTsyZ7zI82qvnUcNFDWoEgxtB2vujSE8KrXwcrLF28dzHu1O5y1IBGQEVh9B5qgvNfsEBiQGeM3A5LxiIFZb/M2XhhTW+0LB8DeAvalhyxTG/rlqBRGB+ZhKDErzeFMjnrf8yV3PutnpzUB9vxmCkTDkjFz1iMpL/jSZavewRU8HYYfZrpCiAoibHndWCiq0aZ5alS+DKnrITlyyrsHW85b7QtgUpgv0xQWTguoY5JRqQe3s7WAJAENjaDptUiMJ3TrW9w3JOSqtIvgH8RSznUUjUotHi9Ws99Ke7zqcAkYQwC4YzWSlg3Wg8gidL86JxJyc/Aqe46u1MSYEiR24MmisOLv6cFq+kGV9hP8rmpQF7iJkdXNZ/L5w325oZrLwBPyVlTzGNDVNuJ1j6La4GovSd/3Ht0hnfljvDrI515Qn54I6ltpZVuqzWXTKxxJWvJKOpylQQhpUImBHamWWKPjRUugU5q/6u4cZw0+LJEMpXP5Iu6IZDI821ZGqwwKLCWevxRbtJ8+Gk0ZFa8fNvuJIwih06a/14ZKpKGHQDqgmzNcXWVnKG/37m4oqaVObIlhXSfC5/0VSL9qnP6qipai6J0Y1TU6RtJ3GtgPVsXmT914R5Eb5swieelMkM4DGrPwMfEfwEupGwJhVuN0N2lidp1820m7DrBRI559NengEjV6Vwl/XzouP1iyQJnElewlr3Ik5LyVhjW7Y5h5xH0jC0qcXNNBZy2S9OshYT7MDiq8VUFeqqm0efRBiGRg3dN725bBwdfrjW1bJY1OAACSVXzHbj3q
- s4Qnf3TH
- O28ZR5PxspcxBX70ODiNM2mPaqu+1r1LHI2HGMHRB7JW2G+zHTrRKFN8bNPwq97NEP3NjHIDAxiHzBtY016z1GsfnOA+nxfb6XZZMRJnRG2jUiPSNOPwvucMUtGvdITkyH3Vfd8ebc/+riZN0f63BVa9wjg9owGFV6nE7AsWqj/bFa116hrS54w2G4fgDRxTFk2ip34K9r7MYzqHApDtqi7V5rwOaa2J4zi2ZX9S9mHpHmLZ/i67g1zkp+QfVPQb7noc8yEsPr1dZZBgvWC9WcI4Y0IyP7dNVgLgSfQgjyN1IizS1knruBAziWNBqZmKk3hXZMLOf6TwDokXJLM+oDTnK+O68027Cesk/aRRewldfqJIoaeaWykTr/Wt5MI57OeMlAmHOPy9GMSbDzRu1dANN2LvcKF4DZhBiosMEHmPwUH0J4dHDhbvEb4SKq45W10mT3YRNarUjINf1isIE6PI6u3QAT2D+Tk0OZ+yuDhH6e9Mh/slqmmNTKjOmiRmR6c39VEVNWTNcUf/u5wKTcQ3XRMzuGLsSMo2U7ymsbeflM+M=
+X-HE-Tag: 1794993376-869165
+X-HE-Meta: U2FsdGVkX1+lRapMBql9uyBF4eq+DmFmO9UtzkqBIhpQ+PtnKy6+ogQ7ZZtJpk1Qn9bOCKemWMBAW4PjsPPHaEa0iergKX27pgLHArzDG/mbI6oIk7kbaN7LoOSPsByHYXlJWM/RW/e5ySC5CzV0G/T1HPyuxVt454LAbmb7XqVuJ5b0qCp1YanmFwY5+ws7rkZ0Udw2lMpjGgoFLj3u86D9AdOrPSqUtEOsOqP/cA4bfqqLva0iD7onK29MPgc8OoeKHKJY1JcGUIUTMLeTsV4qdlm9MteqHAAixqOsqi/8jHho+0+Ae6Bg38DdGbWVvuILSHjJXmiKi7dqw2NFniDXnlDelEzQwfdclAFd8rb7ypyfG6Sn7qfe+ZsjqxnvtbAQnMRc7iNnmcu/akOKmT8ngCPNTt0cwtKwfHx+7TsFBwtSKoAKzPhaROOfAstcgKLoJG04vBtTdcRfK2vkW6WxQzYr1X/RqBWDsiCzqwMTMxWeArYH17i7N5aDp0TWuz6UvK+HPOdx/TeJ68tMj+/aN8a0YEtHaa+lFxo7GBVLkNgpjPrWz23Q8raY+27KbDMxj2rWfJ3hboxI29oocJ87zFsngCiZakbh4Q3TmyKJYAhHyjEwMujOm7noBEnhLqiaxrP22o+MV4Oi27/ke7//LZAMaOPT47SA51gDreXjzp7UT4U7EFUpFWjwmzK1V+Hvnw8CjN8g3/l3iIoHuVgW3JbA6FZdyrv76HiHYLcwQ43T7PllnlhSEVCC5O6V705hPHWj+5TrT8SxrezCcl7LJ9yMepERlbz5DYsctL+MZ6mP3jI8PiTX/lORGc1mP/t5yLU/5uDY0E9MvVCageid3iZ9LZHbEcO+CI3hCvjWZPp5XBfEVuskn7mflaJmajaOQMbsQh7bblADn9R5ntvs7O+RLdHwm1BwAliiea9EDL06NQ9c5cqhzWlNoaYBOrwNL5EDFveoVaU2LCf
+ NZfuPdX9
+ CWpov2ozfE4mPVanIxdGTcBiJYVGiLgP347xmU/wYGERcnpwOHLiwJYK+G6p1bdEz3+13jnegJRlGe2lAxY8BGRIhNcVxnu5I+DfuX/HaZKfApYtFtzL1K5ws6dLu2Ebr3TfQdgk3TTC+CeBLx+KkcDeWy9v4SCeLTLBkQxc7Ef0Z8+Y2j61OY8egCnPIY7YOvpO0SxHvDK2Selr4aD8OO3hsJQgisYH3gIl1qzjnruBXzQHNzTo245nSTOASDjM3BBqCfTRvMO72zRh096F0JTPoO0rrkp/X3itVFWnGu6XKBeZx/zYO8BhTDM7iijLGa2x8oClLAIVIDHllUW19TWwje1Wg3HMCyBvKAb+gpCA1iqdq46xabmzVqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,66 +97,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 16 Nov 2026 16:22:16 +0100
-Heiko Carstens <hca@linux.ibm.com> wrote:
+Host kernel updates in the cloud should not require draining the
+machine: next to live migration to another host, replacing the kernel in
+place while preserving selected workload state ("live update") is what
+KHO/LUO were built for, and LUO's documentation names hypervisor hosts as
+its primary use case. This series closes the gap for riscv64 and
+validates it with both upstream test runners.
 
-> On Sun, Nov 08, 2026 at 10:58:41AM +0200, Mike Rapoport (Microsoft) wrote:
-> > _sclp_get_core_info(), do_chp_configure() and sclp_chp_read_info()
-> > allocate the SCCBs used to read the CPU information, to configure a
-> > channel path and to read the channel path information.
-> > 
-> > These buffers can be allocated with kmalloc() as there's nothing special
-> > about them to go directly to the page allocator.
-> > 
-> > kmalloc() provides a better API that does not require ugly casts and
-> > kfree() does not need to know the size of the freed object.
-> > 
-> > Performance difference between kmalloc() and __get_free_pages() is not
-> > measurable as both allocators take an object/page from a per-CPU list for
-> > fast path allocations.
-> > 
-> > For the slow path the performance is anyway determined by the amount of
-> > reclaim involved rather than by what allocator is used.
-> > 
-> > While on it, allocate only the amount of memory the SCCB actually
-> > requires in _sclp_get_core_info() rather than rounding it up to the next
-> > power of two. An SCCB must be page aligned and kmalloc() guarantees that
-> > the alignment of an allocation is at least its largest power of two
-> > divisor, so the extended SCCB is still page aligned.
-> > 
-> > Replace use of __get_free_pages() and get_zeroed_page() with kzalloc()
-> > and free_page[s]() with kfree().
-> > 
-> > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >  drivers/s390/char/sclp_cmd.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/s390/char/sclp_cmd.c b/drivers/s390/char/sclp_cmd.c
-> > index 1dc93d945be6f..6aaf1f6a3633f 100644
-> > --- a/drivers/s390/char/sclp_cmd.c
-> > +++ b/drivers/s390/char/sclp_cmd.c
-> > @@ -102,7 +102,7 @@ int _sclp_get_core_info(struct sclp_core_info *info)
-> >  		return -EOPNOTSUPP;
-> >  
-> >  	length = test_facility(140) ? EXT_SCCB_READ_CPU : PAGE_SIZE;
-> > -	sccb = (void *)__get_free_pages(GFP_KERNEL | GFP_DMA | __GFP_ZERO, get_order(length));
-> > +	sccb = kzalloc(length, GFP_KERNEL | GFP_DMA);  
-> 
-> It is a bit subtle that this really works. EXT_SCCB_READ_CPU is 3 * PAGE_SIZE,
-> so we end up with a guaranteed 4k alignment from the slab cache, which is
-> indeed sufficient here. But this is really not obvious, and not as stable as
-> before, IMHO.
-> 
-> I'd prefer to have this changed to:
-> 
-> 	sccb = kzalloc(PAGE_SIZE << get_order(length), GFP_KERNEL | GFP_DMA);
-> 
-> which comes with the same alignment guarantees as before.
-> 
+KHO has been architecture independent since it was merged: the outgoing
+kernel publishes the handover FDT and the bootmem descriptor array in
+the /chosen node of the DTB it builds for the incoming kernel, and the
+incoming kernel collects both while scanning that node -- which is why
+the arm64 integration (commit 274cdcb1c004) needed only three lines of
+arch code.
 
-Would it be better (more obvious) to round up EXT_SCCB_READ_CPU ?
+RISC-V already walks those generic paths. The blocker is ordering:
+setup_arch() runs early_ioremap_setup() after parse_dtb(), so the early
+mapping kho_populate() needs for the handover FDT is not set up yet and
+the handover is dropped. Patch 1 fixes that ordering and stands on its
+own regardless of KHO. Patch 2 enables ARCH_SUPPORTS_KEXEC_HANDOVER as
+"def_bool 64BIT && MMU" rather than arm64's "def_bool y":
+ARCH_SUPPORTS_KEXEC_FILE is already 64BIT only, and KEXEC_HANDOVER
+selects CMA, which depends on MMU. LIVEUPDATE depends only on
+KEXEC_HANDOVER, so patch 2 makes it selectable on riscv as well.
+Patches 3 and 4 teach the two upstream vmtest runners about riscv64.
 
-David
+This base already contains Greg Thelen's is_kho_boot() fix [1] and Mike
+Rapoport's bootmem sizing rework [2], so the series carries no generic
+KHO changes and neither patch is needed on top.
+
+No DT schema changes are needed: linux,kho-fdt / linux,kho-bootmem are
+the properties arm64 introduced (commit 274cdcb1c004), and their binding
+lives in the external dt-schema repository [3] rather than in
+Documentation.
+
+[1] https://lore.kernel.org/all/20261023054518.3258350-1-gthelen@google.com/
+[2] https://lore.kernel.org/kexec/20261112-kho-bootmem-sizing-v3-0-f0c8d00295d5@kernel.org/
+[3] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/chosen.yaml
+
+Changes since v3:
+ - Dropped the arm64/x86 comparison from patch 1 and this cover letter.
+ - Renamed patch 2 to "riscv: Add support for KHO" and spelled out the
+   acronym on first use in its body.
+ - Dropped the dependency note; both generic fixes are in this base.
+ - Collected Reviewed-by and Acked-by tags.
+ - Rebased onto linux-next-20261117 (7cfbf79c66c6).
+
+Changes since v2:
+ - Dropped "kho: Do not translate the handover FDT address in
+   is_kho_boot()", which Greg Thelen's fix does as well.
+ - Commit messages cut back to the reason for the change.
+ - Rebased onto linux-next-20261105 (ddfe51b0a0f5).
+
+Changes since v1:
+ - New patch 1: kho: Do not translate the handover FDT address in
+   is_kho_boot(), a generic fix the riscv enablement needs.
+ - Rebased onto linux-next-20261102 (2637bdec0535).
+
+Test
+----
+Testing on linux-next-20261117 (7cfbf79c66c6) with qemu-system-riscv64
+(virt, -cpu max, TCG); method and logs under the --- of patches 3 and 4:
+  - kho vmtest: "ok 1 KHO succeeded", Totals pass:1 fail:0
+  - liveupdate vmtest, all four suites passed one by one (simple,
+    multi-session, 500 files, 2000 sessions)
+  - riscv defconfig with and without CONFIG_KEXEC_HANDOVER both boot to
+    userspace with no oops on the console; builds: riscv defconfig
+    (+KHO), rv32_defconfig, arm64 defconfig (+KHO), x86_64 defconfig
+    (+KHO)
+  - UEFI handover boot (edk2 on pflash over OpenSBI fw_dynamic,
+    DEBUG_VIRTUAL=y): 28 consecutive handovers and no BUG
+
+Additionally, a workload-continuity test was run outside the selftests:
+a counter process was snapshot with criu 4.3, the dump was carried
+across the kexec in an LUO-preserved memfd, and criu restored it in the
+new kernel. The process resumed with the same PID and open log file and
+kept counting from where it was dumped (500006 -> 500007, no lost or
+duplicated ticks).
+
+
+Chen Pei (4):
+  riscv: Call early_ioremap_setup() before parsing the DTB
+  riscv: Add support for KHO
+  selftests: kho: Add riscv support
+  selftests: liveupdate: Add riscv support
+
+ arch/riscv/Kconfig                                | 3 +++
+ arch/riscv/kernel/setup.c                         | 2 +-
+ tools/testing/selftests/kho/riscv.conf            | 9 +++++++++
+ tools/testing/selftests/kho/vmtest.sh             | 3 ++-
+ tools/testing/selftests/liveupdate/config.riscv64 | 3 +++
+ tools/testing/selftests/liveupdate/run-vmtests.sh | 2 +-
+ tools/testing/selftests/liveupdate/vmtest.sh      | 8 +++++++-
+ 7 files changed, 26 insertions(+), 4 deletions(-)
+ create mode 100644 tools/testing/selftests/kho/riscv.conf
+ create mode 100644 tools/testing/selftests/liveupdate/config.riscv64
+
+
+base-commit: 7cfbf79c66c63e807ea452abf0546e6f6d6833a6
+-- 
+2.50.1
+
 
