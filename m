@@ -1,93 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3318A60A5BE8
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B0E606B54E
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m7ogZmjJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K6UXXAEu
 Received: by kanga.kvack.org (Postfix)
-	id BFA366B05BB; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
+	id EE0756B05B5; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD9DC6B05BC; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
+	id E910E6B05BC; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE6D36B05BC; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
+	id DCD066B05BD; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C7976B05B5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B370F6B05B5
 	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:22:36 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D20A1405D7
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:36 +0000 (UTC)
-X-FDA: 85446641112.17.211E214
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B3281A0628
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:35 +0000 (UTC)
+X-FDA: 85446641070.07.62D32EE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 79735180002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m7ogZmjJ;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794968554;
-	b=lC23JFpVvnypv9sThXSiUIydrvh0ij57ewgjt0OUhpRCjpVM26552J+xZhK2tSuyZCucjF
-	33IpHf6IzlC22gpdUPHB5UMts2B4Q7Ogt7BfDi+vN18Pet1NFiia61Jip2dLPkZVk2zMJU
-	MolmSNtpOpMH+gNZDT+uR0cB7o0rtNs=
+	by imf19.hostedemail.com (Postfix) with ESMTP id 90AD21A000A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:22:33 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K6UXXAEu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794968554;
+	s=arc-20220608; t=1794968553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ki1YfSbeSA9MKlcLCTk/glJl7KkUIkyI9Al2InfuFgI=;
-	b=HW2Lxdxs78vKu7gDBdTcyD3wZj7p+7n9+Dta4L/TdgFPsKJEloM7hE0OPly1jsiCLIbYnU
-	6fCJP01Rzn0LwvbDPVcx5CxR5MN4GETbIuSYM/QeOkx/eHvYsw6zc7z7IJe8QzwP7q7g1s
-	GSUcl2WYjcZJg6/R7uQApTQ+Ps1W+b8=
+	 in-reply-to:references:dkim-signature;
+	bh=X43bfUVIU4U5IfEMt1euy8/oc1PvYkfwsviremK5otk=;
+	b=A9zOVuTrFTPjgkUixyh0AFx8QihmhwmJWmzWbeUg/+bdql44XMjYKIAH64/UZCCPcA3xXh
+	sd3A6ZhUh75uVycXM2RGZohT/i6V9ETnJ6h59rd68TMh6OKykYrgv9L7Xqx4MjbxVu1dZc
+	QkklUcfRfmFYviXMMELeMLyQTvLKLkQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m7ogZmjJ;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K6UXXAEu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794968553;
+	b=Uve+bK5QYjSH2Vy4Vcyqj0IwTyVosQRC8jyiJ/JyrCpn1uYs2JJ4xuLDlYAz0fre4XEHWj
+	W1DWEq/84adj/ArBtEaloHRkO36H8J8ve/B3sljONKZTZDbDPfnGHfTVmgumMvFGQ6nYao
+	0XQx+MPHpCAM5x+exBXgGcCS/RW3r8w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C1AD845BAB;
-	Wed, 18 Nov 2026 02:22:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CE81F000C9;
-	Wed, 18 Nov 2026 02:22:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D923C42AB8;
+	Wed, 18 Nov 2026 02:22:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A691F000C4;
+	Wed, 18 Nov 2026 02:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794968553;
-	bh=Ki1YfSbeSA9MKlcLCTk/glJl7KkUIkyI9Al2InfuFgI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m7ogZmjJ/ZB8aJR3Q7GUxTz0cb4qh3s/GFbJK2USDaOILuJeglry3P/iYVr1W8F4r
-	 NUZJ/FDH6lyEmvs9xIa/QAhMAIIJssMzQnTsaUqA0u73qGJOO7UqGkd38aj78ZMkbr
-	 5t4FfIlk1VrBI8coL4XSlHIyJDp++bkeuIS/FaXT5WlsTS7w2ZkmcB30vZOvIYeTXx
-	 PVOWpPwI15q2qnWHzEsl2NP/hB+6YRlbdgaGFz8fR8+hSzn4eI0ynTMQLdAwTMAM1P
-	 cETWpsBM96y7qcZAQykBg2tnsR5dLbxAfgBEBWlhvavTb2Kj1WApiNHZmv/pAVNSuM
-	 n5+856BDBrZbA==
+	s=k20260515; t=1794968552;
+	bh=X43bfUVIU4U5IfEMt1euy8/oc1PvYkfwsviremK5otk=;
+	h=From:To:Cc:Subject:Date;
+	b=K6UXXAEurIkaYo7fXKkZiIRsL84E1zN7XIH1cz8BSiDgttabAhkkLkElutARAKRGI
+	 CGhDkyI72c8dPaWFat4d8yErSwLI40sRfMR8brKq2AHstOu+1V92FijRF+Qvt1tifN
+	 hy20EEg759LKfWXqlap5tGLr+Qg+fshjCkNa9Rp46BVm6rvNS8PaOGkH8wUWf7XI6e
+	 9LIgwJ2SRy1KutoAduyBNZvBceiOsID0IZ4fpDJczzm9JbtUVY//ar7em3wVOuqN+R
+	 dTQ00Zh1PyScsTAgT5KU5Crh8eH5WbnjDn4R/R1nPodYc/vl3y+okQGhEARSzVH2QK
+	 A4xW3c9sDfnqA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 03/27] mm/damon/core: introduce damon_submit_report()
-Date: Tue, 17 Nov 2026 18:21:58 -0800
-Message-ID: <20261118022225.100659-4-sj@kernel.org>
+Subject: [RFC PATCH v2 00/27] mm/damon: let users report their data attribute findings
+Date: Tue, 17 Nov 2026 18:21:55 -0800
+Message-ID: <20261118022225.100659-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261118022225.100659-1-sj@kernel.org>
-References: <20261118022225.100659-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 79735180002
-X-Rspam-User:
-X-Stat-Signature: cnogawo1wqwujejqh9er5uu5zeqeiz7f
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspam-User: 
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 90AD21A000A
+X-Stat-Signature: nda3o79bf6xgkx3rfwjrz1drm681m48m
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794968554-556002
-X-HE-Meta: U2FsdGVkX1/8VRHDB0E9dk27hGFutPEBFV0XUTNcalmcDI29rn6e0+eIBJaaeEt/CSJL/NWGUNqS/urQe9IPivbTtiMgPHQ9V+zoRn5ws8GGjMquzgu8i5nsCEUOWWSZki3A60hha42WSQ/AOpysejd77+ZafaB8DQas6O1C1GxYUU0sj1ko+eO7FbVWvBoRPfqX95UmfT7LucGmv4QnqVugEKFrNTrONpCOSEnqn7ykcFXg/ehg4JifNSz6kvF1/WcWUWDuaBAEUGqQ0CS2hz24PlZtCvz5GWH65QjU+kmvcULkSqFRFKscnJFip068QKKNvEtcFJ6tCYQFNef8BlkCk7NhouerJ60A8lWwswIlh7DTKp+XP75U7FsGzWKVrjfEqCABt89aOZNJiv+3hxytCswacYS83HkIhr7Lw71zuovjKfa+CS8Xyos5Rp2WeHcV/Snbm1J3MnbB/B34RqEo0Di7/mdi+Z6Bi8BzmkjFsDjq5L+NZURsFqxoux0pHO5KSC5VEPAoV+n11GriQb+etkWB/6vemj+UPQiKcEJq1jFgMwO7eKiEIOuPSWV0ZwUcQxi/ELj1JDv8q1X0P3PyZHZ3stD6YcnIGX6+B+rdL5XN0EoHbHKDItLWHmoDDCRa5JU46iGFzjHvDiK7sv0wz45MFA8etL4Frt1fFzjmU8EypZJ6zuGY5vovCIS3v2lz7cg36vbzSLmDqLYBKo375MMxALvewe3Hpvdxkfxbxa4HvgsuOCXt/NuPc+Vy/crB0qsPGXC8ZYE1Jsnhzrk6neKiljl8ybUL6gL60KTgV3vLbc8+vTAs0PPQwnE+p9l7Bx0OEZ7p4mKV350G1k6S/JTKjCv+hu9Mz0t84tgm9xtX1UG3dcmFke6vtF8hqkfyz/3z7DUNdmrcoOjWJGq+IeQsk/um7ajW/Mi64zYaV6oBLb2W+jphYRwc7RAQWHErpq0hzrxKaSZB8qv
- spxSOnr4
- Ubm52364tX2T0quQm/0KCA8V49+uSnafEyFMB3Q3Wsce6nMSqREClSQhb3MUx+ssHD9p7caJVgQy3amOeZ2fkonnkf5IN2BVKsz54JtuR5/1MKgxK62jSYlS29aRt/etIhSoEMPpNsqxYjGRaX2D3YyW1HdvUaKNLkqC7hJ+oQ+0xK6YUv3ekU7KminVIFfYtxSSRo2xmUZyoJbDx3SocPlB9MzSTEd9fhZtIxlPrsqTZv4Kfgf56r5xFD4l8xluJAGmrIvrdmU5UQjzIXwynoSUF2H5LOZ9jjgLwbocM0qEf397W8g3C9vMPYKHD0apzG8S/MW10h4U3Wupw5Ywl2fUzfAhnE6NEASHVhz9OpBx2DirSmitnaRB4KrK0dFNRmOL/f3YpHH1rfGo=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794968553-109922
+X-HE-Meta: U2FsdGVkX1/DJDHHOARzBBWcwSL5qHey21yZDOqfp6jiAV9FVQMmX5qvSV3Ag9mDEFzfKj4G4C392wA71Dg+AmxlozGJSJjOBJ+0MCPsjdfQ76nVMatHBVsgTuYf8RW9+UjkPzUGf9hEeRep5uGshNUreUAp0Ob5K9P3jzMpyndQr1Lca0HMZc3ks5NOl3Cjtz5jBaT8WmsM1PlrpFe60nEYrDq9OkvYTLC5+IrgY1j4BTC0Wu8uuuQnPN3YTohPJfXSnhGaA3G1U8rDEND/HzOS1Qmt2CsD004xyN7Fg5mBEYae/RGsBgImsBWOrDXItiFaUia9eQlaMpn4GhQ2ql8UPobIaSe0cRY/jZ4YkwPFYY2+BgAgc3kZqm4Q6znJAcjlOkhSAvrni+gNkNVcgY4YPvIX+r4k/jmdittW8pzeqBosaUj0LycwR8j9XsOC/bBqVR7lW16SNG/cq7d3FJHn8T93Ab4ddsy7KZAP0i5Ac59q246BLHa64yjpxw7MJDH+Q5ol1KkK3j9EoSY4MdJF43PE81cKRjIaWCLsOjAGRRHPxa1Qhg9pYnOht4znxGfrYALsik3kuMK4P4xNXPXCh4YBi52H6230sts/HlF0PwHJ3MQ9/l0baFVJY37SjiDMS7RQGIqR5A0d+tdUSXTmyHIkBEbk7HFIdWlDro2akgeWz8IM421ArTRn8+5jL8EELiRk8/yerW5OPa0cdK5M0gTmDPDVzVeTnJPFtsg1YDHnURKo4N+ECukYtGZqwSr0/5YlxFC0JGvyXvXBY9tE1Y4Kqn6DlCEEWSa25rlsmlI1+IWedTpsG6AmceAYmv+n16O/rttTntOWz5kfvNmpDDDctBeJn/ivB97a1+HrqxGcmL5Xlx4ru9dCqqw8QPcLwPwa+DRaP7c9/1eSQ1HhmTdYSobmlkbKXLuYToVIxxaCKmvrTFCxol9KDwIhNdtu6/vXYKy/ejm7wH9
+ vzaAGs21
+ KbkEcZjMmG6F/P45N0CQR5aMGRKdpLz0sNu+P8z7BR9KRnVYAjWKwpfy8tBYA37t9UMwdaWVA4VOU38E5Fq/o4nsBKzgMb9tk7TVFqfPl6zhUeLzYtdf/TUmMNhlNWUxb3BsxfvJN1lIc7AJ0Qap+lZV11sI75lSJbxvgkB6IqYTuqoxgXEHQlADPDdkzJVVp6z6HSoLJjAZGgmdXEK2+kEC+LrPBJurh4DPlmjowZ+SHnXM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,79 +100,232 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement and expose a new DAMON API function for submitting a data
-attribute report.  Any kernel component in any context including NMI
-context can use it to report their finding of data attribute information
-for a given memory.
+TL;DR
+=====
 
-The function copies the content of the report into the DAMON-internal
-report queue.  The copy is done in a ring buffer-like manner, without
-being blocked for consumption.  As a result, the queue keeps the latest
-reports up to its capacity.
+Build a system for letting DAMON-external entities report their data
+attribute findings to DAMON.  Let users report their data attribute
+findings to DAMON using the report system.
 
-Use simple CAS-based try-locking.  If any parallel submission is
-detected, simply forgive the submission.
+When DAMON Extension Becomes Challenging
+========================================
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- include/linux/damon.h |  2 ++
- mm/damon/core.c       | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+DAMON's probe based data attributes monitoring system allows flexible
+extension of it for new types of information.  Such extensions are not
+always easy, though.  That's because DAMON is collecting the information
+on its own worker threads, kdamonds.  If the new information to extend
+for is not already stored in a data structure that kdamonds can read,
+the extension becomes difficult.
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index cac1329397a4f..35ad002d1536c 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1187,6 +1187,8 @@ int damon_kdamond_pid(struct damon_ctx *ctx);
- int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
- int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
- 
-+int damon_submit_report(struct damon_report *report);
-+
- int damon_set_region_system_rams_default(struct damon_target *t,
- 				unsigned long *start, unsigned long *end,
- 				unsigned long addr_unit,
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 0e9c1079fdb22..9d492a9aaf550 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2353,6 +2353,36 @@ struct damon_report_queue {
- 
- static struct damon_report_queue damon_report_queue;
- 
-+/**
-+ * damon_submit_report() - Enqueue a given report to DAMON internal buffer.
-+ * @report:	The report to enqueue.
-+ *
-+ * This function can be called from any context including the NMI context.
-+ *
-+ * Return: 0 on success, negative error code otherwise.
-+ */
-+int damon_submit_report(struct damon_report *report)
-+{
-+	struct damon_report_queue *queue;
-+	int lock_old_val;
-+
-+	queue = &damon_report_queue;
-+	report->jiffies = jiffies;
-+	lock_old_val = atomic_cmpxchg(&queue->lock, 0, 1);
-+	if (lock_old_val)
-+		return -EBUSY;
-+
-+	if (queue->tail == queue->size)
-+		queue->tail = 0;
-+	queue->reports[queue->tail] = *report;
-+	queue->tail++;
-+	if (queue->nr_reports < queue->size)
-+		queue->nr_reports++;
-+	/* cmpxchg is known to be faster than xchg */
-+	atomic_cmpxchg(&queue->lock, 1, 0);
-+	return 0;
-+}
-+
- /*
-  * Reset the aggregated monitoring results ('nr_accesses' of each region).
-  */
+For example, extending DAMON for hugepage size of the given memory was
+straightforward.  kdamonds can read that from folios.  Extending DAMON
+for accessors or writes-only accesses is challenging because there is no
+existing easy way to get that information from arbitrary threads like
+kdamonds.
+
+Extending DAMON for information that is not already available to
+kdamonds requires two works.  Finding DAMON-external kernel components
+that already have the information.  And modifying it to pass the
+information to DAMON.  Finding and modifying the components inherently
+need to be done for each of such extensions.  Building a universal way
+to report the information to DAMON could make it much easier.
+
+Modifying the component would be particularly challenging and even
+controversial depending on each case.  Some components wouldn't want to
+add a hacky change only for DAMON.  Having the universal report system
+that is well maintained will be useful at convincing the component, too.
+
+User Information
+================
+
+Users sometimes know some data attribute information more than what the
+kernel can know.  They could know frequently accessed data.  They could
+know that because they have access to the source code of the workload.
+They could know that using non-DAMON kernel features.  They could know
+that from some special tools and hardware.
+
+DAMON is not only for monitoring but also operations.  DAMON finds
+operation targets based on only its self monitoring results, though.
+Letting users report their data attribute information allows more
+flexible and effective control of the DAMON operations.  Users can make
+DAMON to find operation targets based on both its self monitoring and
+user-provided reports.
+
+DAMON is not providing such ways to let users report their information,
+though.
+
+Report System and User Report Support
+=====================================
+
+DAMON lacks efficient DAMON-external information report system and user
+report support.  Fill the gap.
+
+Introduce a system to report information from kdamond-external entities
+to DAMON.  Extend DAMON to monitor those reported information.  Build a
+user interface for letting users report their findings.
+
+Data Attribute Report System
+============================
+
+Introduce a system to report information from kdamond-external entities
+to DAMON.  The report system let any kernel components in any context
+including NMI context pass their data attribute finding to DAMON as a
+report.
+
+The system provides a data structure for such reports.  Using the report
+data structure, a flexible data attribute information for a given memory
+can be built.  The data structure also embeds a field for the type of
+the report.  The report producer can specify what data attribute type
+the report is providing, using the field.
+
+The system exposes an API function, damon_submit_report(), for
+submitting the report of the data type to DAMON.  The submit function
+can be called from any context including NMI context.
+
+DAMON Probe for Reports
+=======================
+
+Extend the DAMON probe filter to connect the report system with the
+existing monitoring part of DAMON.  Introduce a new DAMON probe filter
+type, report.  When the type is "report", it receives the report type
+argument.  Filters of the type match to a given memory if a report of
+the given type for the memory is made in the last sampling interval.
+Update DAMON sysfs ABI for probe filters setup to support the new filter
+type and the new argument for the report type.
+
+User Report Support
+===================
+
+Let users report their findings.  Introduce a report type for the users
+provided report.  Extend DAMON sysfs ABI to let users manually configure
+and submit such reports one by one.  Users can specify for what memory
+the report is made, with an arbitrary address range.
+
+Using the new support, users can control DAMON using their own
+information.  They can control DAMON using their information as only a
+source, or an additional source to existing ones.  For example, they can
+let DAMON do page table accessed-bit based access monitoring.  In
+addition to that, if they know some hot data that might not be found by
+the page table information, they can let DAMON know the hot data using
+the report system.
+
+Ongoing and Future Works
+========================
+
+This is a part of the "beyond page table accessed-bit DAMON extension"
+project [1] milestone 2.  This patch series provides the initial and
+essential part of the data attribute report system.
+
+I will implement a cpu cycle sampling based extension based on the
+report system that is implemented by this series.  It is for providing
+accessor and type-aware access monitoring.  Using it, users will be able
+to monitor access for given CPUs, tasks and types (read and/or write) of
+accesses.
+
+While doing that, the report system will also be advanced in a way that
+can be used for reports that are not manually produced by the user but
+by the kernel or hardware itself.  That will be the completion of the
+second milestone of the parent project.  After that, people will be able
+to build more extensions including AMD IBS-like hardware based
+monitoring, using the advanced report system.
+
+Patches Sequence
+================
+
+Introduce the data attribute report system with the first eleven patches
+(patches 1-11).  Define the data structure for each report and expose
+via DAMON core API, via patch 1.  Implement an internal data structure
+for saving the reports, struct damon_report, via patch 2.  Introduce
+another DAMON core API function for submitting each report,
+damon_submit_report(), via patch 3.  Implement reports/producers/
+sysfs directory next to the kdamonds/ directory, for controlling report
+producers, via patches 4-8.  Update the design, the usage and the ABI
+documents for the report system, with patches 9-11.
+
+Extend the DAMON probe filter for the reports, with the following eight
+patches (patches 12-19).  Introduce a new filter type, REPORT_MADE,
+which matches if a report for the probing memory is made in last
+sampling interval, via patch 12.  Implement and expose a DAMON core API
+function, damon_report_exist(), that returns if a report of given
+condition exist in the report queue, via patch 13.  Add support of the
+new filter type in paddr operation set, via patch 14.  Implement sysfs
+files for setting the new type of filter, via patches 15 and 16.  Update
+the design, the usage and the ABI documents for the new filter type and
+its user interface, via patches 17-19.
+
+Finally, implement user report support with the subsequent eight patches
+(patches 20-27).  Introduce a new report type DAMON core API,
+USER_REPORT, via patch 20.  Add a user keyword for the new report type
+to sysfs files, via patch 21.  Implement sysfs files for manually
+generating and submitting user reports, via patches 22 and 23.  Add a
+simple selftest for new sysfs files, via patch 24.  Update the design,
+the usage and the ABI documents for the new report type and its user
+interface, via patches 25-27.
+
+References
+==========
+
+[1] Beyond page table accessed bits DAMON extension roadmap:
+    https://lore.kernel.org/20260525225208.1179-1-sj@kernel.org/
+
+Changes from RFC
+- RFC: https://lore.kernel.org/20261115202849.99134-1-sj@kernel.org
+- Add parent project roadmap link in the cover letter.
+- Fixup kernel-doc comments.
+- Mark damon_report_queue as static.
+- Destroy damon_region_cache for queue setup failure.
+- Fix out-of-bound writing in damon_submit_report().
+- Setup damon_filter->report_type in damon_commit_filters() path, too.
+- Fix wrong index referencing in damon_report_exist().
+- Rebase to the latest mm-new.
+Changes from RFC v0
+- RFC v0: https://lore.kernel.org/20261017195747.89961-1-sj@kernel.org
+- Implement the code.
+- Update the documentation to be less like Cover letter.
+- Rebase to the latest mm-new.
+
+SJ Park (27):
+  mm/damon/api: introduce struct damon_report
+  mm/damon/core: implement data attribute report queue
+  mm/damon/core: introduce damon_submit_report()
+  mm/damon/sysfs: add admin/reports/ directory
+  mm/damon/sysfs: add reports/producers/ directory
+  mm/damon/sysfs: add producers/nr_producers file
+  mm/damon/sysfs: implement report producer directory
+  mm/damon/sysfs: implement report producer type and state files
+  Docs/mm/damon/design: update for report system
+  Docs/admin-guide/mm/damon/usage: update for report producer sysfs
+  Docs/ABI/damon: update for report producer sysfs files
+  mm/damon/core: introduce DAMON_FILTER_TYPE_REPORT_MADE
+  mm/damon/core: introduce damon_report_exist()
+  mm/damon/paddr: support REPORT_MADE type probe filter
+  mm/damon/sysfs: add filter_report_type file under probe filter
+    directory
+  mm/damon/sysfs: support REPORT_MADE type probe filter setup
+  Docs/mm/damon/design: update for report_made probe filter type
+  Docs/admin-guide/mm/damon/usage: update for REPORT_MADE probe filter
+  Docs/ABI/damon: update for REPORT_MADE probe filter
+  mm/damon/api: introduce user_report report type
+  mm/damon/sysfs: add user_report support for report type input
+  mm/damon/sysfs: implement report producer addr_{start,end} files
+  mm/damon/sysfs: implement submit command for report producer
+  selftests/damon/sysfs.sh: add basic tests for admin/reports/
+  Docs/mm/damon/design: update for user report support
+  Docs/admin-guide/mm/damon/usage: update for user_report report support
+  Docs/ABI/damon: update for user_report report support
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  43 ++
+ Documentation/admin-guide/mm/damon/usage.rst  |  50 ++-
+ Documentation/mm/damon/design.rst             |  45 ++
+ include/linux/damon.h                         |  33 ++
+ mm/damon/core.c                               | 113 ++++-
+ mm/damon/paddr.c                              |  17 +-
+ mm/damon/sysfs.c                              | 420 +++++++++++++++++-
+ tools/testing/selftests/damon/sysfs.sh        |  52 +++
+ 8 files changed, 763 insertions(+), 10 deletions(-)
+
+
+base-commit: 595ae33ab080415771ec5707280ac89f40eeb75d
 -- 
 2.47.3
 
