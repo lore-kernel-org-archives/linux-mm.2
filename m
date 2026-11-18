@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44E460A2615
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB84606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TjsgJxsb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PnizEqc3
 Received: by kanga.kvack.org (Postfix)
-	id 0F82F6B05B9; Wed, 18 Nov 2026 09:19:01 -0500 (EST)
+	id B0FBE6B05B2; Wed, 18 Nov 2026 09:22:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CFD96B05BA; Wed, 18 Nov 2026 09:19:01 -0500 (EST)
+	id AE77E6B05B3; Wed, 18 Nov 2026 09:22:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00C7F6B05BB; Wed, 18 Nov 2026 09:19:00 -0500 (EST)
+	id 9FDA76B05BC; Wed, 18 Nov 2026 09:22:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D66706B05B9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:19:00 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E70016074C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:19:00 +0000 (UTC)
-X-FDA: 85448446440.14.ED2864A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 74DF780002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:18:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TjsgJxsb;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795011538;
-	b=EdYLNX2k9N8caQbmFrOLDUFhdej8BmeA5FCdUwNpJxLXZkoNwkmeaTupp1uGkofbLfvykI
-	Xgez3iAuzgsLOKsd0xrE1j8RkYhqMU2X6djERHUd5FTfqiqAJ62lsXRvqqeXYYfDI46ue4
-	zIz4D3y0HIjLSXFr/AgQZdiEv/mi0bc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TjsgJxsb;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 84F316B05B2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:22:21 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E36C4C0755
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:22:20 +0000 (UTC)
+X-FDA: 85448454840.26.794967C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 53D57A0008
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:22:19 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnizEqc3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795011538;
+	s=arc-20220608; t=1795011739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yspg3RYK6hfplwr2guwVtoc91Gns2znX/lR8zgZBFVs=;
-	b=m06JwvnQeRq0ZlB/bwE+CaX0giPsBc6dkgngq3m9uQQ8IFIRBOC56fNcmGBnIY+Cb7lZ1n
-	SDm6vkvr+I+mJ2OT3Avmd/6QIRuysVBl90DXQbLm3/AxIS7Txm6E/jeAO6MDFYBAeikgX1
-	v4seUHHMh9DCmcy8ZaK/8Ly71bTZmeI=
+	bh=wQ/P0S/BIwLbAm3SwXm7MlYVraP/+sqEwKu2qG1M6g4=;
+	b=piEIFoLQQbjNjtnbX0Ww0IupVhG/jVt1uzxXT1wDPA9vkbGkSZHgjz4F/9i2MD9L/CaXLU
+	goi7Yj8Y3eqC8kUKeeZvfWywjjERSkivcT7zp32o/HjWkxLRHCGcapnwhCTlTDfGRqk8to
+	ywjXEo7OKCKzWb65g2FJwco9sEkL8dU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnizEqc3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795011739;
+	b=mZ8geMGvpgLeDiCiznrquVjy/FBhSoShFYxbOM9tbMYNwWdN7c62ra+Q7Jy3DcMGhyO6ho
+	RArPZZGH1LdgdiJbfBOkwOvGt/mUJ6j4PsmYBIbLi3EoSgmgdgL/kz8cBEtYqx23aRM2PL
+	OBaNA+/TfOIedUmg9N6bEwrDQJ+7Jcw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9CD7C42E7B;
-	Wed, 18 Nov 2026 14:18:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896811F000C4;
-	Wed, 18 Nov 2026 14:18:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CDAFE6224B;
+	Wed, 18 Nov 2026 14:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8FF1F000CC;
+	Wed, 18 Nov 2026 14:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795011537;
-	bh=yspg3RYK6hfplwr2guwVtoc91Gns2znX/lR8zgZBFVs=;
+	s=k20260515; t=1795011738;
+	bh=wQ/P0S/BIwLbAm3SwXm7MlYVraP/+sqEwKu2qG1M6g4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TjsgJxsb3omgZC7Y7BqVmG9Ex9ZO4k8c2B1tbSP/96Q0m5xKS+UvBbENGt+SaQib9
-	 9kUbL0e5wLlwJegMYSiSzUPGcows/z3EtystFW8tMA2Izw5ThIzP4oA+E73pK54zhD
-	 pTjJ+HJCkJg8pdSfKAp7mW9qElOyGSzrm+b7bTUN9wUnOrH1Au3oUxHBI9P838qb45
-	 bI41cCj3uoYB0day2lARxxnN8bF0wjB7hlN2wnAaMTIl/RtvRJOlAPdAaNrImCwE8E
-	 Q6CIIgWSCViQL/WRgnaNuQGPB7lDcH8fnD257mcfFw3w4bbDXMb7IlMJIvIb3gKmHF
-	 Jk6E5jDwzWb4A==
-Date: Wed, 18 Nov 2026 16:18:45 +0200
+	b=PnizEqc3duk8cYNxG5qGYHzwEoF+La9oGAi8pJGK9qXZcAv3wu/S8lvPf3PlCLFNX
+	 //mLiYaJ5aV1BWHge/nKYmGK+aCkhIbb5oU9XMvP4IFkSOORivHfYnAt9bGZyXpeKh
+	 Y858N4ekCEGW6tAiolhdqT4gMpWa1yltL+Kz8VN1ujdXnukHxAmxtgs/7xzW7e4bvx
+	 VXFOM1e7HjLm7XniR+DbNVU6dhqAaXV8djy+yP7OvAcNIo+8kp41tilnabUC2fNmlk
+	 l6G37fDwn1RJTgTT2PL4qy061Tr0IgTS6fz0aV832Uv9+RPpoEi/L4bVZIWv3EcEDQ
+	 Y6KdCOczQMvbg==
+Date: Wed, 18 Nov 2026 16:22:06 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Alexander Potapenko <glider@google.com>,
@@ -87,28 +87,28 @@ Cc: Alexander Potapenko <glider@google.com>,
 	Sashiko <sashiko-bot@kernel.org>, kasan-dev@googlegroups.com,
 	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 4/7] mm/page_ext: use common allocation and
- initialization entry points
-Message-ID: <av2zxfDZI-ECPByB@kernel.org>
+Subject: Re: [PATCH v2 5/7] mm/page_ext: allocate page extensions early for
+ SPARSEMEM
+Message-ID: <av20jiGZH5uYV6LT@kernel.org>
 References: <20261117120627.50601-1-songmuchun@bytedance.com>
- <20261117120627.50601-5-songmuchun@bytedance.com>
+ <20261117120627.50601-6-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261117120627.50601-5-songmuchun@bytedance.com>
+In-Reply-To: <20261117120627.50601-6-songmuchun@bytedance.com>
+X-Rspamd-Queue-Id: 53D57A0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 74DF780002
-X-Stat-Signature: usfoffta7djftxunqpx5ojdz1a9kpdxn
+X-Stat-Signature: ju5a7fpxbceua6e7noa1385r7cfddzrh
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795011538-454759
-X-HE-Meta: U2FsdGVkX1939a5p0XZnksdOt0YCUU+bofFl7Hl3JlIzv07wsGMPahCRYvxXO9+xMHN7ZDGwT3n36Xd/vD5LJyzCPpqJ0rc208DvS1RZbCv5Y6LivlJ3/INhNqRfvcqtvkXdZ55dTKoEKx2ckrT/6rb20BjphAOHJDjmb/vSglaS8iYJIyMJAQvF3ZqG03U2fqSsL3SuaJYq26QNgFb4+kNHhSQLZ0UkLedI7k3EwuO4kj3M86aevdA/cHTqFP69LI8xEvk1RjO6E9ghmSLXntXLEzyj8ptUCNiKFzXIKF2pEgk4dQCgt94sXAKGOgYeYkn9U7JA63Tcnff3/+K2DlIVPdeika5rb22u9yDhm4chHm+lanBye1nvOEwq4hKmJdLAJ1BtPlKbHrYJKzJEbqWXlDpBsYW3AlaLjn87HrU9/9chB31lCdj7tcT+9CD+4rj2XaY0iTobybvdsO4z7UgvOficpueo38u6DNvvYM9LxBjV0DnpX4wZrF0p1jWdCYHYhTaMzoAu7wvJl8gAGnTvt8wsd97IUTtQVj3SRmbK5fYnVlqYsDc5RrL+5xq5D8gm352iNUNPXF6/tzMmyay2znPGxptarNuMA+vdVKydVKlzUWPfWAI6Ou8BiLAZAZkFXXdcwOQYHSDXqhyVA8Dtjd9pRid64L8qtD62UdLEogMXfTcR8RjCCaIbxgZ4G25+3HkcrAmRL5HLHlqJPDoW+siLWwAqYSKOWyI3UZAe5h1ozsAOMUiIh45aGCutmPJA/8+jgxFv+VaAGbBg5xj+RJ+gZnOpQDE1HqGOE6cp4OqBhg8C8+91vlo8paO2u95Wr21nMxI9U8G4gCRsvY9shrMHkRuzJs23g0IvWpPP7crYko9YktTc2ivhjc/temJmavWymZksS8kVQC7Ty0MYyN1ERtXO8dJL7Gf/Ck7Kg82igIUNgWNGMwk2FFFsh7WQa7hJPDjjY1Ws4Jc
- 46AFpHlf
- Lf6PMeJtzwQDKC+bDZ8eK85eFpsDH7Z8Z2Pvmn6u/dxOZKrMQFpoppp6KdUSGYbf9YBuKdw4WEPI6gAp9WTnm1SeSD+oGCg4x9IrQgw9k9TmMhT43dBw9YE8L1hEHL9L7rrNM0WT+DcrMX/1UYjUg7CzI5EjR9X3kjtjsnHEkDRwNmi3tp2TJIB3TZ8MejwmxnKHp+FC2d86zmeDv8aBlYdo+3rt1YjX+PNnS5SMqkJPI4vrAqmbEGnbid7W/D+WFP55J0ZI5vxiEbDlkET2a9FgkIU8FK0KriNXbfCrgG6YmftbbVB3pP0H32sGR7nXYQ3gDcAOC6iWmqlJsc6o9gga4RNC8WRsBiZHY
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795011739-685440
+X-HE-Meta: U2FsdGVkX1//6nacvghDhzsDppg3i3AULAv1ox+1QUhpokmhrS2f7ZxD2Ap4tXjtXQD3LNEXd0hxUQZfB58BQ7Glkw0zWp47uOSmNR76tVimUnGuiF9xbG9+OWw1y0Tf0cSgks1npMcmGxNjDwuam5pdic/06X7G8LtZ9pLmgM7MVdxa60iKcyMTCuVtvECiNlBA5Z7kgB1gXoH2iEjZ9qw3PjkU/tcllzots9oD/KHnZWHA0U00fY8zZqpPv9FMsuCvamN5NCBb6JuAJ7vTyYtkYklLmmjzr0L+v6/jC6j7LM4GwDfcpmftlZhqPJYcP6EwaNJ0MyU55bmaokjrXdLxcSOG1EtRK+gabyGa7GRbS44fhJigN8EmH65L5SUzMmHyCX402Z4OKmbgU/Yld93c94eUOr46m+TP+OUJpLgC9QSqjPfBs6EQRZg/6e4a8SqWWBpG/AHk5gpBrmsUhuuwxaEUPminffHkc1g8dpvmMNLI5Y/VP9eeT4Wl1jj0BhtV/9JPR0tHWt4wZG4Hi3iXZOBaPdddimvfYRBmeq5D5x211C5y7ARiGr+pEAvl9UTNzy8HxjH3uULwkI+YRKdMWSc8kmNMI0igUmnHPgnAxCnUdTR2SEhRyvidSLFFuhTWHbn5L3T0OyZpJoalaLyUTdUAB/D3xsNVpkiQioS4Im2U3HnUQqnwFT9FM06W+XJ5gI3JuSOIwgBGeQrGXLkWg2WXOybZ2H53KazvRz+7iuPWxhuli2BNRvqIpv6mc5FC4O5U3joxJHduUePXenoMVnrb5VY5+wUJqmhW0ZnJG0tZieGI1Yf0Wu4I2SsUGZJnVeAoX6B3X3Xjqo8R10RwkxxS4QrLWHPXMHy/2ewD7B2e4t/SOJ3JylJatmb5B8JyueF8OkDYqqy/K6Jlt1C9vd2wD5kIa/sf1U5oBP8A/100t0+Cd/DUe/HQQfoTATiZ87wwxA3fMcdMS2v
+ xAhZvu/Q
+ yr8ttBRKgN3YFzV2MYfXTY+HvI8vSVFRna7b4v7zNkuxBT2ykAZ7+jhmjQEC7GQftHfDS/vAjbdZEwSRlOJY4yqkiGrK+CtBNvZz+mfmdlnjhRnkL/b5DPkDJFE5tFnrtv0x9aGuqo4zbjRIfklnpaEq3e2e6EU3pDSB8cJXiRWDJWeDrRU5FmDPezBICDyilJJ9rk1XtPQW6zY8gleyQjZ1UDyVqPqS9WV1590/hc6ikLTuSkU1tB3q4B567hza6axHIAH18zDQnKcFAbhgusoF3v5cJtO/5FHXLe0kTeEvDnPX9lg3C/0i45uxwSNTedbk/nDu+22Gq7v35Exp4tl1zvRDi4Dpmc6Kp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,38 +117,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 08:06:24PM +0800, Muchun Song wrote:
-> FLATMEM uses separate page_ext_init_flatmem() and
-> page_ext_init_flatmem_late() entry points, while SPARSEMEM performs its
-> work through page_ext_init().  This exposes the memory model in the
-> generic boot sequence and obscures the allocation and client
-> initialization phases.
+On Tue, Nov 17, 2026 at 08:06:25PM +0800, Muchun Song wrote:
+> KMSAN needs page extensions when kmsan_init_shadow() installs per-page
+> metadata, before memblock_free_all() releases memory to the buddy
+> allocator.  FLATMEM makes page extensions available by this point,
+> whereas SPARSEMEM initializes them later in boot.
 > 
-> Rename the early entry point to page_ext_alloc() and use
-> page_ext_init() for client callbacks in both memory models.  SPARSEMEM
-> keeps its existing late allocation behavior for now; its
-> page_ext_alloc() remains an empty configuration stub.
-> 
-> This also moves FLATMEM client callbacks from immediately after
-> kmem_cache_init() to after vmalloc_init().  The callbacks still run
-> after the buddy and slab allocators are available, as required by
-> page_owner.
+> Allocate boot-time SPARSEMEM page extensions from memblock to match
+> FLATMEM's initialization timing.  This gives early clients the same
+> page_ext availability guarantee across both memory models, while runtime
+> memory hotplug continues to use vmalloc.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
+with a nit below
+
 > ---
 > v2:
-> - Split the common allocation and initialization entry points into a
->   preparatory patch
-> - Document the later FLATMEM client callback timing (noted by Chris
->   Down)
+> - Allocate all boot-time SPARSEMEM page extensions from memblock
+>   (suggested by Mike Rapoport)
+> - Keep memblock allocations above DMA and suppress per-section free
+>   messages (suggested by Chris Down)
 > ---
->  include/linux/page_ext.h | 20 +++++---------------
->  mm/mm_init.c             |  7 +------
->  mm/page_ext.c            |  5 ++---
->  3 files changed, 8 insertions(+), 24 deletions(-)
+>  include/linux/page_ext.h |   9 +--
+>  mm/mm_init.c             |   4 --
+>  mm/page_ext.c            | 119 +++++++++++++++++++--------------------
+>  3 files changed, 60 insertions(+), 72 deletions(-)
+>
+> +static __ref void *alloc_page_ext(size_t size, int nid)
+>  {
+>  	void *addr;
+>  
+> +	if (!slab_is_available()) {
+> +		addr = memblock_alloc_try_nid(size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
+> +					      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
+> +		if (addr)
+> +			memmap_boot_pages_add(size / PAGE_SIZE);
+
+I think it should be DIV_ROUND_UP().
+
+> +		return addr;
+> +	}
+> +
+>  	addr = vzalloc_node(size, nid);
+>  	if (addr)
+> -		memmap_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
+> +		memmap_pages_add(size / PAGE_SIZE);
+
+And here too.
+
+>  
+>  	return addr;
+>  }
+> @@ -304,7 +300,7 @@ static int __meminit init_section_page_ext(unsigned long pfn, int nid)
+>  	if (section->page_ext)
+>  		return 0;
+>  
+> -	table_size = page_ext_size * PAGES_PER_SECTION;
+> +	table_size = PAGE_ALIGN(page_ext_size * PAGES_PER_SECTION);
+>  	base = alloc_page_ext(table_size, nid);
+>  
+>  	/*
 
 -- 
 Sincerely yours,
