@@ -1,89 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D2D606A335
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1479D606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=TvEqUEM4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ayXUbKYv
 Received: by kanga.kvack.org (Postfix)
-	id 8D29C6B00EF; Tue, 17 Nov 2026 22:29:52 -0500 (EST)
+	id 1D9EE6B05B0; Tue, 17 Nov 2026 22:35:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8838B6B05B0; Tue, 17 Nov 2026 22:29:52 -0500 (EST)
+	id 18B826B05B2; Tue, 17 Nov 2026 22:35:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 775126B05B1; Tue, 17 Nov 2026 22:29:52 -0500 (EST)
+	id 055D56B05B3; Tue, 17 Nov 2026 22:35:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F76E6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:29:52 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 381231405F9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:29:51 +0000 (UTC)
-X-FDA: 85446810582.13.5064B9A
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 821E4180002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:29:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TvEqUEM4;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794972589;
-	b=pVPU3ovC33/YTqt+LX1/TsuxEFdyQUFdlEicagRr/9P5finY46kTrMn6Xmvb0qEghVxwpI
-	+h+7L8107ubJ6bMpcHnr847zvfsaY65t6fzHIfTxpcXot/6qI3WTl+RjwMe+kTOSxQFNfk
-	GtzjYe+LEdHbUfrfeE4gp74y4LCBsKY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TvEqUEM4;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id D756F6B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:35:48 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A5D5140603
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:35:48 +0000 (UTC)
+X-FDA: 85446825576.05.30ECF08
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C8D71100002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:35:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ayXUbKYv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794972589;
+	s=arc-20220608; t=1794972946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IMLr7cDs8jSU5K/R3Qlsx01wbp/x5n9NRNsZwAR7Ef4=;
-	b=wM/b/gzu6KVnna6vr+IRtACS/4wbsyHGR23h6bVkqpnuDEW+61yngBg22DxhpoSQvzsgjd
-	9eRZPqUc/zvAjH6MM1aQSZxJlWkqHVULf16RMsnAKWh3Cw4Bl+e2PjUfqnK6X/o280VnFJ
-	jml7SOGgVx7PWG2xriDYHJhC8QafIVU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794972582; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=IMLr7cDs8jSU5K/R3Qlsx01wbp/x5n9NRNsZwAR7Ef4=;
-	b=TvEqUEM4LZK/cCDFe75dqgjFqc+A3H0IDYhJzLCj0RU9xeehmF72NUMqZj2aCvwWoNqK+N13bnlIMokeMWkosztjWhO1Uonn9xMQ02NJzN/p2atOAFzQ3KzRMEqe6QVI2bcNuViZFZwRC5HQZPyN5Sx4mPePCK05uq3MXfdhWqg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XF.Bvbd_1794972581;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XF.Bvbd_1794972581 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 18 Nov 2026 11:29:42 +0800
-Message-ID: <8d90ee6b-ed72-4ace-b667-42e35c5baa5a@linux.alibaba.com>
-Date: Wed, 18 Nov 2026 11:29:41 +0800
+	bh=+7/n42KyXg5q/rOBLOd1rb9kpcERHhPizyXCV+vNOew=;
+	b=mD6K8Izw6aLBqpc9KCmCU+IhBSLqor7N5lG+GnpguHpbQWY47F2HTfWbg7cGdI3ZiCrYOb
+	k/4kQYuIN7ISep0rle+r4SNzuZhG80eRiTllKdfFQJrdOy59ec+DSkHn3Ve34/OFqUHKJq
+	00Jj10ac3l2riw601J3NUup9b11v6f4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ayXUbKYv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794972946;
+	b=Tkg4zY9pytz/ie+CBH1kbHPT0rv+NEbjkDE5QGtPAbnBGet+yZW1Q103jo2wESDCixQLsH
+	yMCv27cyfsKx9ADWSxyUkrx2BaZrkCOPMGGfSVPUsMGO6UIrSEnm0moKL6ywVPAnqx33+I
+	AAPB20Lr57qyg0KhxEnmirmVbASCz00=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 210F760D29;
+	Wed, 18 Nov 2026 03:35:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CB31F000C4;
+	Wed, 18 Nov 2026 03:35:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794972945;
+	bh=+7/n42KyXg5q/rOBLOd1rb9kpcERHhPizyXCV+vNOew=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=ayXUbKYvov/6b7QYSb9hRgYh8PtUWaFSc+844sQcDselrEd5exQDL87/sBG2IwRNO
+	 FpqtxofSxtxMKbhWyEAeUL7v66hjSQQa1RG0+GezXIwZveyf54SRHe3ZSidkOL8iZw
+	 F0lXTbzwP2vkXGHzc7zQUyfG72BrgH6eakIvKKD8+f0nYZJ2KXL508tTuqaCNG7TRp
+	 vmFS8c5gayk9+NHihWEa0Kfdv3GKJR1HrEFmd3EiZm7mYWxNNx3PezcTRsnTRrIgBf
+	 bVH6iXBxNj10AW+McH0nttridsiCH54mbhkdQrh5a56Dzstx6eVXjgH/SJ0vLuDkzz
+	 FI0WWFxH20quw==
+Date: Tue, 17 Nov 2026 20:35:42 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+cc: linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+    linux-mm@kvack.org, Paul Walmsley <pjw@kernel.org>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Alexandre Ghiti <alex@ghiti.fr>, Conor Dooley <conor.dooley@microchip.com>, 
+    Geert Uytterhoeven <geert@linux-m68k.org>, Rob Herring <robh@kernel.org>, 
+    Mike Rapoport <rppt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+    Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] riscv: mm: reserve the DTB before scanning reserved
+ memory
+In-Reply-To: <20261104104604.3370384-1-m.szyprowski@samsung.com>
+Message-ID: <3e5a01c1-1d91-8bc0-0589-0621930c2d18@kernel.org>
+References: <CGME20261104104615eucas1p2583cd5bc9ae36bd9ff2d28f87d6e7583@eucas1p2.samsung.com> <20261104104604.3370384-1-m.szyprowski@samsung.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: avoid zeroing new folios twice with
- init_on_alloc=1
-To: samridh@modal.com, Hugh Dickins <hughd@google.com>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261117-samridh-shmem-send-v1-1-1b897ff562d9@modal.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261117-samridh-shmem-send-v1-1-1b897ff562d9@modal.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: 8fcsgu4bq57o1xienc1yg1rkqahskbn4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 821E4180002
-X-Stat-Signature: x7kdawxhwcb4kjnxztdmracdeduhzf71
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C8D71100002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794972587-701448
-X-HE-Meta: U2FsdGVkX1/c391lrRj4m9Om1Fr8/idToDmPuAB7/nDeffkM/aAZgJdFUafVgOlhg9ByqwpJQRm4PNJ4xwwyS/UjMDaZ4ir7V83Zoi6gS5bVcdPZxyLAJ79CbSKhk4XiD2uTyMpNtIpHSwuhNYeNmNGcfv6UGLNfQBokie5s2oCC/9aPz8OEaFc9IH2d62NRsDIklQhELlB/CcAwgzGJkh8uzrjicuLuopYIGOEMy2jaEVdzVFJfQf5nNHoaKKvpjvG+2lGOBIK0/6FyU0iwRueTicVyjJymX54qkWIt1aY2mOYPKgB18AP1uXYNE8osx5rIk1qb6wyX6vPxSwmP1WoxXjIzsRX2kp3qIAoX6YGAp3N9TwDUoRVij/toIsOlAEJKDv6CoSToQH9XLlbECp64vVc9r+uc3bFZmv0lkXCX4p/uq/xCHLvA4Fqnj7eyeX4Q4fnySHe/V6pddfOuwZlQSu4K8vGxZAl6pDYDNo5e/XhtqRqK+qhv+t8VB4gvc9RO9fOsztCTk16oVjc8OTvXboFywjQGNaS+bOjX8Iuas2cHOGnQK7/rPlQZvV6KsLq9lxyhnBBC5QAFMEwLy1JHE4/yiZ+1kZJWyiCSkE3k6iTI3GQJbAD0CgvDdHtTb4W0IjDZnVsQFv0Fjq8n+tHaFeJsPNh06BRoBOiLO16QfIsBiPQ77lOeLcR2yVepZyS2z/B1I3+4CfbscVt+Z+TBEJI68C14VwFEWzn4dPdxyFb5/3dO542ZXrd5KK3WCgjJxX6wi7D0lMJndzD9/jo8wm/0aLTnY7NvWhyDqzSNIZK4/8wXjJZH09u4E4VKJTzznNgMXZgcxzCA0v5T/qz7loN9oOfC8O2Wdz0jf5KshXT/8XfNtTTuGjjzNjFRpkeAX8EpZQQtDwzaQSq+EG422tKaJIefjJ6ZQU8I2kI6wcpKGUKfZTo/GClVoOirEDGlJhFbnbTKDzIijLC
- I0ExGukL
- tmIjXDma1QQnl1RPIomtLuKe8bUTn4BPaJGS0J8yL6Hi02itaJZfvxIVLyPmVaU62ROyP3RegBFxPHsaXb2Q1+iX9cc1ztO04G4u/Gt+mNsKtCsjAjPuX9lZYI+DVU8TZI+4i6mFUnDXEUmzFjbLzr/H9xkVvBTFuztWKjaqxDEzrQS1O5kND0emixHDvf/cHc+MzDsIA/aq9ydtex2f70JZR1yIwiOjC6RMCGl4BqUd66Hfl9E9UusRZ3mnV768Bpc37JcFqO1wmTE+KYicezZNDLdltXcmVAzGc19mJ0iJmfs6CWRdv8FevyWol81O2iVmsxadf9yp44J0+xnNlbVPaYcn8PiIT06RVFY9UwOIY2fgeXE9kMj9z03REOkDXW/LHvmWBjLBNefv+wRUW69LjJyd3OTWvZBbPoujXKheikJrebjz87OcOhay72uFc+//c
+X-HE-Tag: 1794972946-411812
+X-HE-Meta: U2FsdGVkX1+xSVwlrYv3mUNUnC+Xb3yLngD+Ugk3s9VYtYKYxvh4qv9Zc9rk4ytnaq4mvsS4Qexl7l8EGQaRFF3tJC/06shXzwOUEPuNAUYNtAkqWTsdess13kMfE0AQT4yW4eg/QBv5nfwFXPrSzYbFnWEm/aAFqaWjwVF8tbK6M8FKpEDXv+pPwXs3IkkdC3G1Se2G9c0c8YuK4oM9tvHyIZmVSsOpcdzyaY8PBOIZXM4kwmTWmKt+xhx7Gi06zc9Wlrqm18qjbrfFzjhsggkNpkuSTrKUQY/3PMv4qLCFUsNH/xFnd1qvGeOXPbF69951/OVUL4llI6SZ26o8rrUtH0jaecWYrc6EtKgOvX9tKgKv+uUekAMP7W73wzyHdKBLdcNoRQWdvjdxPvvqEim5AjP6kN+j3V12D6yDu/6XdTmMIxCubFLYMpZbKTJ9fdyUUtTd5X0mka/G2XZEMmvSgnYUcIDmmyLNmsceltXT1qUE+kuPRhwdcu9lAtDIpYUEOIq+C3TaWZzmctEj9m5KVSAwM+9Y7uByxbQTaAW5D7SYppFtCAHAi5rIkeX7rBuxg+KwkQW3S1ixZidJ8d3T/wi1jkDSKdbw2jxdNXDwx3vJ64CdOa+Qre3ecAij3nav0MHTfD/kY4xIBskJTF6ueuxKQvotIrtvz89DdXhQNyww5YALdaZKNhGLPr3PsiSgJD6YWcKLeLS7WmMrqG5CiX4pkp4ra9FTfcQCWHYiTmYNzbY0/YeOgwf3MtD9IpwWn7QLWZ9J7R2oMQxgrWA6UG98oOUixvGe1npmsabL3IVT22EPCZKn+pCO0QPLdcXbr2AzilZ32PQpLRYUKpIYIPD3VbFRU6AjmaXlRLndJH0CvZb3u7NTGA7u5p4aAsULUpzPMp3cgHCobsO3obwBqgiaxRxLTGZ/sFmrZDICavZYbGDFgi3ES2/Rzr+Hp8cQMVyDFqiWMPbbS1Y
+ RUtXROni
+ F2/iRBYmcUfwi2JU+tKyvd8IIXY3OkfH01u3enl+NjGoE/44RoUxiKAiQJnFgj6bEAnwGgal5HKaFkZQ6z0Ee1TjTiJFoJjpm3e/AOXI1bAsz7aIUynelyShpurPXMLyUwbZhHPHBXJwNSZDiS8AsvLVywcHurEIvJZnS1RWLX3nL5EkRR0pFxI55oG1q5VGcECzGQeVIyEQ11/YNgbWenpuZfVaNoUUXE19px0k4akwmRzukenr+9otK+kaQh9nXfBR3BZafX9LIjVfSacoMNT8aUdTMyVkQ7/aFkvthNukMxSI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,96 +98,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, 4 Nov 2026, Marek Szyprowski wrote:
+
+> early_init_fdt_scan_reserved_mem() allocates memory from memblock while
+> it scans /reserved-memory: the reserved_mem array, and the regions that
+> are placed dynamically by size. On RISC-V the DTB was only reserved
+> after that scan, so memblock could hand out the memory the DTB occupies
+> while the DTB was still being parsed.
+> 
+> Reserve the DTB before the scan, so that memblock never allocates from
+> it.
+> 
+> Fixes: ef69d2559fe9 ("riscv: Move early dtb mapping into the fixmap region")
+> Closes: https://lore.kernel.org/all/b71ac175-fba5-4f61-bbdb-0b98dec9ccee@samsung.com/
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+
+Thanks, queued for v7.4-rc with a stable@ cc.
 
 
-On 11/18/26 3:32 AM, Samridh via B4 Relay wrote:
-> From: Samridh <samridh@modal.com>
-> 
-> shmem_get_folio_gfp() clears a new folio before marking it uptodate.
-> With init_on_alloc=1 the page allocator has already zeroed it, so the
-> folio ends up being zeroed twice.
-> 
-> For SGP_CACHE, the only mode that clears a new folio, ask the page
-> allocator for a zeroed folio with __GFP_ZERO. Folios that are already in
-> the page cache but not uptodate, such as those left by fallocate(), are
-> still cleared. With init_on_alloc=0 the zeroing moves into the
-> allocator, so a folio is zeroed for nothing when the memcg charge, the
-> page cache insert or the block accounting fails.
-> 
-> Time to write one byte to each page of a new 4 GiB memfd mapping, with
-> shmem_enabled=always and init_on_alloc=1 (median of 24 runs on 6.18.55,
-> x86_64 VMs):
-> 
->                    before   after
->    Xeon 6975P-C    0.620s   0.416s
->    EPYC 9R14       0.216s   0.158s
-> 
-> With 4K folios, or with init_on_alloc=0, the times change by 3% or
-> less. We found this while running gVisor, which keeps sandbox memory in
-> a memfd.
-> 
-> I wrote this patch with help from an AI coding assistant (Claude Code),
-> then reviewed and tested it.
-> 
-> Signed-off-by: Samridh <samridh@modal.com>
-> ---
-> Tested on 6.18.55 with this change backported, on Intel and AMD x86_64
-> VMs, and build-tested on mm/core for-next. I also wrote a simple test.
-> It fills memory with data, frees it, and then checks that new memfd
-> pages read as zero. It covers MADV_HUGEPAGE and MADV_NOHUGEPAGE on the
-> fault and fallocate paths. It passes on both machines with
-> init_on_alloc/init_on_free at 1/0, 0/0 and 1/1.
-> 
-> The idea came from David's comment on the __GFP_PREZEROED RFC [1].
-> One thing I'm not sure about is whether flush_dcache_folio() after the
-> allocator has zeroed the folio is enough on architectures with cache
-> aliasing, so a second look there would be welcome.
-> 
-> [1] https://lore.kernel.org/all/b258160c-5287-43dd-b56e-268c403b85ea@kernel.org/
-> ---
->   mm/shmem.c | 13 +++++++++----
->   1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 5cb628cc9c6b..d2c6781e86a5 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2692,6 +2692,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
->   	int error;
->   	bool alloced;
->   	unsigned long orders = 0;
-> +	gfp_t zero_gfp = sgp == SGP_CACHE ? __GFP_ZERO : 0;
->   
->   	if (WARN_ON_ONCE(!shmem_mapping(inode->i_mapping)))
->   		return -EINVAL;
-> @@ -2770,7 +2771,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
->   
->   		huge_gfp = vma_thp_gfp_mask(vma);
->   		huge_gfp = thp_shmem_limit_gfp_mask(huge_gfp, gfp);
-> -		folio = shmem_alloc_and_add_folio(vmf, huge_gfp,
-> +		folio = shmem_alloc_and_add_folio(vmf, huge_gfp | zero_gfp,
->   				inode, index, fault_mm, orders);
->   		if (!IS_ERR(folio)) {
->   			if (folio_test_pmd_mappable(folio))
-> @@ -2782,7 +2783,8 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
->   			goto repeat;
->   	}
->   
-> -	folio = shmem_alloc_and_add_folio(vmf, gfp, inode, index, fault_mm, 0);
-> +	folio = shmem_alloc_and_add_folio(vmf, gfp | zero_gfp, inode, index,
-> +					  fault_mm, 0);
->   	if (IS_ERR(folio)) {
->   		error = PTR_ERR(folio);
->   		if (error == -EEXIST)
-> @@ -2810,8 +2812,11 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
->   	if (sgp != SGP_WRITE && !folio_test_uptodate(folio)) {
->   		long i, n = folio_nr_pages(folio);
->   
-> -		for (i = 0; i < n; i++)
-> -			clear_highpage(folio_page(folio, i));
-> +		/* A folio allocated with __GFP_ZERO is already zeroed. */
-> +		if (!alloced || !zero_gfp) {
-
-I don't like the GFP flag hack. Why not use user_alloc_needs_zeroing() 
-to decide whether we need to zero folios, like anonymous memory does?
+- Paul
 
