@@ -1,129 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13EC606A330
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 23:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE72606A330
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 23:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nvl0qdtA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oOtIbFcu
 Received: by kanga.kvack.org (Postfix)
-	id 754706B0654; Wed, 18 Nov 2026 18:46:09 -0500 (EST)
+	id 166996B05D5; Wed, 18 Nov 2026 18:49:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 704576B0655; Wed, 18 Nov 2026 18:46:09 -0500 (EST)
+	id 1180C6B05F0; Wed, 18 Nov 2026 18:49:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61B756B0656; Wed, 18 Nov 2026 18:46:09 -0500 (EST)
+	id F21546B0656; Wed, 18 Nov 2026 18:49:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D60B6B0654
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:46:09 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F1401A08FE
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:46:08 +0000 (UTC)
-X-FDA: 85449875616.28.D229CBC
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9F0321A000E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:46:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=nvl0qdtA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C60AD6B05D5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:49:02 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B2D314091E
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:49:02 +0000 (UTC)
+X-FDA: 85449882924.07.826CF3F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6033416000C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:49:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oOtIbFcu;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795045566;
-	b=gFNSZQhoj8gbRz7km6Ivxxw5NVVELhLw4sTL80SbbnbM7Azmu1GashbQoifiw04Dt5dfIM
-	ZpaIrOmNoKiTF4y2tWY0Z+H5GEnpTMnEX+tWL7oNhedPnrIiHCOrKOvEqfLn8KT9dt34re
-	gIUfDMd9lA7IAmS8Pya4xLHULjGi/18=
+	t=1795045740;
+	b=L/F4BZWo68kji6Uten5ia2unRiews2LgBDBGavRXK93Op6qyZKaFPsbDBT0Z06gWUqKuEh
+	Eezc3nGFwpHkHAsG1iQ8wK6e68Gnx6izAlxgoVrUcEsWjgb8vvuph6nnaqzJ/rAJwVLsep
+	+ecOaTEZLG997Qlqg12ccutvMhf/Dvw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795045566;
+	s=arc-20220608; t=1795045740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Mlcn6Z7k5JuV2YJbcakE860i/4laekzSJhBTVmexSI=;
-	b=dX+Ow9alJ9vKy/tGXRbmMth3sKpliVPoAQlefG1PveUWxX8BWr1RdxdoOfF5JJoE0xfeR2
-	ta5QWNeyoq/Wf5RTP36EyTOgHamUdpLhnnBaWoMloBwfBUgTUOUCaizo9A37gSKTzxgtnN
-	psYQ/wiaCStOgeHTDfCGydnD+qegrmY=
+	bh=JokRczt5mVEgHxRUZJg6jCnvGvoAs9YtaIgcq2+6nkw=;
+	b=OIkXt70dfaoKzcMnj9D72Ac4Ja0aDEL8+peYmReE8/JPzFioJHM3gFlnnL0A+grimbyNNj
+	JUzZUfKTMyyP6Zx1UB3GJPGYS07U0fBlZK3yyWV2kvk51s3+JjFDmS8mCaA5iaUCMgvDzk
+	EMlfWeEPgAXOqSpCZxmC1mlnqNLYtto=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=nvl0qdtA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-498f5fa4f70so1482739f8f.0
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:46:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795045565; x=1795650365; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0Mlcn6Z7k5JuV2YJbcakE860i/4laekzSJhBTVmexSI=;
-        b=nvl0qdtAIbSQIpMbtUwkDF1VGy7M2mjJtCUV/FsQY6fm8a9Qum+lChI/ThJnmOofCv
-         en8Qz7Tz/lg6Q0IajK6lMGijDPOYIGvwW5E/ux63ABLpmDbL9zbwdBZ8vG9Q6+RBH5d2
-         plvOJtoKLoauPTTdCbFzy4bWZ9Pf8dakPIhs85Al76mCnU74UNqC7QbXM3GsdnLB7cWJ
-         otkeN8iew2IVGb+q6Ze0yBiGPCqjm0XXhhwE64So2CnxdYxFr7YpEX7AxbO/RzfZ6iYm
-         QWn4Kj+D7bBhcHzjU2/E62pFPZdojKGMVKuxZkqTfLcaeftAI6mDdsMI5iTKtf5ruBen
-         ueAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795045565; x=1795650365;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0Mlcn6Z7k5JuV2YJbcakE860i/4laekzSJhBTVmexSI=;
-        b=k6Rg9oUz8egyhyW5ccy5+eFjK79CQz326dr3gvtSiNAtxO0Ghhd3+jv43ZXkxqbWI4
-         Y/c8QcgPa4WEMdA9pFlNAcpwzTjdv0LmcAkt/u7EfXwR690zOvGSV49QmzC+CE6bUFr+
-         fexKTOYOhdGzCiJEjpC5qOehZ3UIr2T9z+V9jPNfTnh9VLPDKqUgOydjhObuc097adyA
-         FxQzPF+UBGq+Ld0YXJtIjHOiz6UFdOidT7LlujCwKHZbJZWtlW1+pCAYR5WUqY1CR3L+
-         e0UbOX0oREcekwghfiOS3nmksSWyPZ1ewREcWkQeXKjGnexgXsA36Fjmpk6PPEwufJfL
-         yPNw==
-X-Forwarded-Encrypted: i=1; AL+hErHcPjO+DqXh37kAd2pva574g8WX1aXk6jdADnk15veE8kzVvSU7ZaslEFFKfLWwVh9ALAc/ZsuSnA==@kvack.org
-X-Gm-Message-State: APuU4Z8aCal3LOAwcPKj7X6olhrDNBwS7yWubxEXFPLyT9Jds02eqwlk
-	3OgqPpEjEfGkrwhyHnxkl16dI7hxyjJ7dwYS5Dg+OveEfbwBT/EnHWJp
-X-Gm-Gg: AZFdTZcIxwPWAUlPVthbCN/Di5PbYw/cmMd+WMyilvY5mPGILrnijXJ5/L/PO+aOXnb
-	foPF32jKdHYAAduijjTMTO86RpSmp9mPfRurXY5vLINs5L9Ir2CWxJ6aDeArurTm/6yktoF4HBd
-	kONUZUZj7n1alDMu2EI0aKCgrQDBZHJnMGtELNK+Qg/RBJiF2v0S3ulN0DIiPrW5GKVypR+MCH0
-	yYKFdIgEFXoxula0Wt0EgxVPTxUa5hqwYhUDOPRejbs2tSA30yjqqI9SYWGD9drnXT19ZEFrDfT
-	xjRBb4sQDnw8Qu2Ji6erR358ySsRxnyoKETBxKJNaiQIMCMWq4KBpkamZO2m9UqPdXjSbN270Gj
-	925RPwjFFWw5AGuIyUwxy9MsSktGk/Iq5puHztqo5VCtm6JTYJeHSOU8ek160VKaMO815wJ+rwo
-	cG7QQTng39CGRPKO3AIgWtogTxEDeXvNBl8BvZdRuJGFgnAsjFOLH2ds/4DpKGvU9IZSva/rcPD
-	1CmBmB2vk0CAsK4oi1bRPTjAG5r8zy7+27aykLXNGMTm/ilmTAE/cNqv0S/FuB8VM4aG++SUSgX
-	lbXxbrZMBGabJDygfc+zKbZc
-X-Received: by 2002:a05:6000:2406:b0:4a6:a5f0:be41 with SMTP id ffacd0b85a97d-4a6a5f0be8fmr7445862f8f.54.1795045565105;
-        Wed, 18 Nov 2026 15:46:05 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a6575a5c28sm7553171f8f.59.2026.11.18.15.46.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Nov 2026 15:46:03 -0800 (PST)
-Message-ID: <09a96936-795e-43f6-a6db-03f30f20b5a7@gmail.com>
-Date: Thu, 19 Nov 2026 00:46:02 +0100
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oOtIbFcu;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8EA02478EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:48:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F3B1F000CC
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:48:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795045739;
+	bh=JokRczt5mVEgHxRUZJg6jCnvGvoAs9YtaIgcq2+6nkw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oOtIbFcuKGbYPJjGa5ZVRGgeaHzVpkuzTXPOHw3vnuvhUPE0HTqYt0h0Uu8QqgGoQ
+	 lHisu5eSwPTqn+hazJGGckQw7QYoOw74bD+Q7J0bQa3ZjO33n1LrifNjwALxz0sKO/
+	 ZiKWXd3uPAP25HAeA50GCqokAX30GY1Ls5njzH47WPY8ZOWYehCS967DqOuug9xhTk
+	 4XB4RjRd3GNXjADRae5CqMbtxeWGpJQypzhX8TLu5u60aiH7mygtuVQ/ZTqR82/NJ8
+	 wAWsKgPDoZC7QUVNCJni4vteyzyqcsmVvk1u0aMF6Z/iEaHvmy0u+5fIXLnaoPEx9G
+	 4HZAtrraj0hcQ==
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-9496473b511so49569785a.0
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:48:59 -0800 (PST)
+X-Gm-Message-State: APuU4Z+tpRnPjbhY+gaXZwiStVK6g2uholoVrC7Y4vpfIan0VjbmsYX9
+	/90m9ylUaS1J/oLSj0sjFmSULbZNbsjO5n3URGkVeZ+sW4WGoHFrLPIQV+RZbs+WIFkFAKIx5lU
+	2n63IL01KviZ0dsWfzuIyjO3JR49iu7s=
+X-Received: by 2002:a05:620a:260a:b0:949:6b5e:33ee with SMTP id
+ af79cd13be357-949ad938bc0mr22211185a.31.1795045738801; Wed, 18 Nov 2026
+ 15:48:58 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/userfaultfd: check exclusivity of the page being
- moved
-To: Eric Li <nakixii@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Lokesh Gidra <lokeshgidra@google.com>,
- Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261117212400.1890820-1-nakixii@gmail.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261117212400.1890820-1-nakixii@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-1-9eee2fe97a2d@tencent.com>
+In-Reply-To: <20261119-mglru-fg-v5-1-9eee2fe97a2d@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 19 Nov 2026 07:48:47 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yUH9EG=kPWkkp_jm2Fy7e1D20f+uod1_9fUypW1G5sgg@mail.gmail.com>
+X-Gm-Features: AclHuK8u8pAmVqW9yFgv9yKvnlXrt2QgHUMeTnuokLmXwaR9lnc-LtRTxLtZGq8
+Message-ID: <CAGsJ_4yUH9EG=kPWkkp_jm2Fy7e1D20f+uod1_9fUypW1G5sgg@mail.gmail.com>
+Subject: Re: [PATCH v5 01/17] mm/mglru: rename the generation offset in lru_gen_folio_seq()
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
+	Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>, 
+	Ehab Ababneh <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, 
+	Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>, 
+	Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ep7tx4jpm5gk3jfq3m69jpuiyzxdobjg
+X-Rspamd-Queue-Id: 6033416000C
+X-Rspamd-Server: rspam12
 X-Rspam-User:
-X-Rspamd-Server: rspam07
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9F0321A000E
-X-Stat-Signature: ea9q5z1q9sowpakkbaxf15eqn7gfsym9
-X-HE-Tag: 1795045566-746361
-X-HE-Meta: U2FsdGVkX1+n4apVA8IN5cXDKPNqG60LSlp4NpSF8jrE7kDkZyMhFW9aCBzqBTgZcP7ESdwlPjJaMDuCyJslW4VkilcLKoE6W394iEXEb8CTo/Kl3JIk3RvOG4nt3K/cFirArn6rRatPjvCH3t0sZiTm1OmKL8hJ/o6bob+i+ElacVvTon1PCSdMH6oK1eEXXG+/I6foxsnU45wjlLmOKWBkM7r/zqayxc1lREgousN//Var8INZqwEk71BLd5BjQzV9nTEZSSAt7SxDVE/xc9AbIKmCTWY0LjxkptJIJOuZEDdTLC3EqBLHc6Svh3K9cquQO/7GMgBRwR2qUhFvuQIJcI4H/jDnRiHaCWj/YGQAmaeMteTSFGyLy2nk2rmg10TJz/I11xdDaoWMQWSSk12ZOPepe5KNJqekJR23rAkyx3b6c/EbAm1OIKLYV+nhaWW2C391CtLIH9x7TOPYphLfwqbXVE51ZVKcr1Khiza//6sVZzvbLIDl26iE+f20Rs+X5GD+oIReC1R58aPJlx2XVd0DluDz+7wM33e1tHuWFWTCb0SmY5LhKopkLa9BuBoE1MKm8RYz2tHHHYj1HwZWWvlcb8HVDnY+vV2Uth4lpZeKKshbjyGrh2G/nAt5KrJnA9feMkXPE67LwQXi5mj1E11YpGHAhwabqd6tnjiEnUsgK40/TS+vNLg3hWcTdyN8gKHb82D3ygSVk1pA3oUM6lJPSWQHNVqHxmUzewjG6AM43Izy/c9b7lxcvdRTWbnnfLXWFg4s2+aXM8nDxr1Y8WA2CRRHHkG3hnKlzOHthSRWQYd1Yx5tK7xsAMUesc5SuXCD9Xg62mSznttMwaSifvPeWKFxUN8m+1xkvz54KIf9H0Ne8KFFCCIyyZ7guWhaU74IgzTMOpJ8QT8fv2pUZlkAwM2Oo3C3IC8YS5oQnm+pNxsKYUUFkj5luhO0Me0tv38fBy+pevS8jco
- uGiefgpO
- cQcScS21tT3eWFXqRBjTDu+bITX5UYAzriKZ7QgAeE86d1WHFVMS6dxltLHNtGxlkQuIDV2IawbUh5FIMIHCPZCnRgv/tSeXik6L2oWvnbDhb1GUJ4KQwC0RAunmVJotuSg/1pZqixnsWS1Byf9CV44s+T3vg5tGTzGjNsR6G8QLKkk3Y69/59ptpyFWfWsqkY6jUqpf+53NRMzFlXAg7GVTAtUScBbvWvWaIP2MfdhYk8IXHpk8a2vqEexfFaeH5YbUIL+mZBWh6u4i7j6IcIYswKsd2KdnZAupbQqCpFtqvrRybiI68Ngqzv/fBCxKryiIAh29EE8mDXyY/yYUIH5Iae7Cl7wK5E8losZjTEBQApvir6HICsl9rKkqUkOFDXfNuZQzsPK5SlkXD51NQfg782EjtlPZssgLrTw5Vx/aTuEYp3sYb/1T1kyp9D1uQ0iiG06LrZh5c9mj6PqAL+HIML4KTGVq4RyBl/C9vWYhmno66rO4PD/AtlXVvYkk8axaeZDrLG71OCn2opm2RALJKceQwtS2zm8wRQiFGMpE6yzhYlyW8G8xYrrgnZuJCntWxPFTP5HY1uweBuZJE/bCTGJ5sGkQrdSufzFTJqhM1QfybyiydXt8rbALPvpEKKJaY
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795045740-765446
+X-HE-Meta: U2FsdGVkX19RIdSdYpykey3djrCgD0eH3JefnIsF3ODfC32MWF8Er+r/FI3AxjF5ArOXrYigjJ+z6PEwC3uqO3nUtAS+iY2YCK4iNJ3BBR+kUcp5tkfGZP2s84yCFu1kYc3wYOK1fy5HRTdxQh6IXzhCyxuMdroyLn3LODD0HEnUXZCBzCqLGWs0uqnqm9B1TmQ2ZryMlL/GctlfvwpJ5dd6adB5teoE6ocyP9lHUfZ3KcEoQlqfuoiUkY3jeWHag3d8ktRnzSuQ7myHpV2QZnj77EhFiCDC5tWpYk5rvGTxsrBiK390CQgph77Wu8FiN3qQaFElC/YQta5VOOtJAHoHebfeA33JmE9Q5tHQDa8gvsd5hKY964AaFXNNBsj+AI3kDo1elsyEyLqQXLRGJbCUl6YyFXOmVwYgYvzXyFQt1+KMnRMhnIkuOxf17TXRME0eJZPnlH6UKVLV847Jbj1xoSGN5lDYpSeCYjnEFDYnacs0yQKc9rDrwhGD6j2UJTF3J0eSrX9BefmZ6664raF3xV/GI4s5fMRktn8Ar3du6aHZ7cfN+bBb121TeonBg/cJRXJBMQRh2j3YpiB1HAUUC45hXLHNOn3uNF7Z4f+30izGgJ2CJSnSpAe7mU75RZJ1FSkH0iADSyOoiHsIScQFHbmxSCjFfyZ0lI30s8cNMj+Ze68jjw3l2zKBZ7M08PHZqGihpbwJPbd+i3TQuzaN4ZwAVo2Jiqko3gWV9SVo1hR9H24Xv0dDn9b0iNA+OlSqE6PQaRhWrDj45MLDXjPGN1qZlMLjDGSq+y2slhfq/4syB0QSGTjcqHcKOdiY5uEPDxjRqNSZz0LFYvPwERMx8iGxzb2u9VqPIEtL1Vp31rL7miplWjHpQIHxf1CE/h/Yypr5t9AzP6tYvQRxU3RQdgTg03Sruvz/wloCn35Rnsvh7vuZt0H8de0+FBzXEk+I15lokGd6gPhnCjY
+ aD9Tx4D1
+ yyFU2ef4Cjk5+s3UzFxwdtpDxbkgDnoEwjwVYjPg0IQWTo6tedvE9NrUiInb/FRaagZ6FVmoS/Z8q8vjnXKkDMDTvDaWF7FLTAgP10g+5Hg3ru8JES5fR5Y35gzWXBbXLPM8MQCRkFi5UzaA5ks25X1OZ+U1lbHGi3MD1sHFoVOGezujN2yYCA3mqYVMuvGu+NFoIs7MYtHJP2q89sJNT7gQSOHP6tF1JPh8mbVNUvtLxPLRj3QDxyIRbbkPz4AE5KLwJ0mstOcDz9RniH6gkC5+kbynEt0MjWaUz4lq85hhHu+Y2FrrhNqkw5cqNgzRdrWIWO0epnlRajd4H0Nt5kYcr6tz3NZk1CHYfEZvEpdZ5cVRfSjn0T8Lh0C5tHSNrTJxo06mEaSgy6YcNjQ69l8Ist+AR7MwVI/LGU64pTM5PxiaSMo/X3WHPV0G53TwSdULVQ1dsMeQvZn1DMNh3UUDn6Ri8S4MfRGZr6YppSfn1lupBIArzNNolwNp1DimOA2GU5RP7hehyGKsQ1/iFFZ9PXSQZgmnjgnQ6z0NyBRRf/q/22PGsrku5kSwry33WcBJ0IHxiw8pilFW91fE2dYGNjyQfXXvni3q53tnHxc8DMACPeVkKPp4xGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,60 +125,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 10:24 PM, Eric Li wrote:
-> move_pages_ptes() gets the folio of a present source PTE and then checks
-> PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
-> is per page, so for a PTE-mapped large folio this can give the wrong
-> answer for the page that is actually being moved.
-> 
-> This happens after fork().  fork() clears the flag on every page of the
-> folio.  Once the child exits, a write fault in the parent can reuse the
-> large folio, and do_wp_page() sets the flag again only on the faulting
-> page.  This case only exists since commit 1da190f4d0a6 ("mm:
-> Copy-on-Write (COW) reuse support for PTE-mapped THP").  Before that,
-> the same state could already come from fork() after MADV_DONTFORK on
-> part of the folio, or from reclaim when try_to_unmap() replaces the
-> earlier pages with swap entries and then fails on a later one.
-> 
-> Moving that page with UFFDIO_MOVE then fails with -EBUSY, even though
-> the folio could be split and the page moved.  Callers that fall back to
-> UFFDIO_COPY on -EBUSY end up copying instead.  It also goes wrong the
-> other way: if the first page is exclusive and the page being moved is
-> not, the folio is split for nothing before the retry sees the shared
-> page and returns -EBUSY.
-> 
-> Check the flag on the page mapped by the source PTE and get the folio
-> from that page.  Locking, refcounting and the split-and-retry path stay
-> the same.  The batched path only handles small folios and the PMD path
-> already checks the page the PMD maps, so they don't need this.
-> 
-> Tested in an x86_64 KVM guest on mm-unstable with only 64K anonymous
-> mTHP enabled: map a 64K-aligned region backed by one large folio, fork,
-> let the child exit, write to the sixth page and move it.  Without this
-> patch all 20 moves failed with -EBUSY.  With it all 20 worked and the
-> data was correct.  Moving the first page right after fork() still fails
-> with -EBUSY, as it should.  Writing to the first page instead and moving
-> the sixth fails with -EBUSY either way, but without this patch the folio
-> was also split all 20 times.  The move tests in uffd-unit-tests pass
-> with and without the patch (the two swap tests were skipped, there is
-> no swap in the guest).  I didn't reproduce the MADV_DONTFORK or reclaim
-> cases and didn't test arm64.
-> 
-> I found this with Claude Code while debugging an out-of-tree swap
-> backend, and it wrote the first version of the fix.  This version, the
-> changelog and the reproducer were also done with AI help.  I've reviewed
-> all of it.
-> 
-> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> Link: https://lore.kernel.org/all/20261116110122.309748-1-nakixii@gmail.com/
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Eric Li <nakixii@gmail.com>
+On Thu, Nov 19, 2026 at 5:03=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> lru_gen_folio_seq() computes how many generations below max_seq a folio
+> should be added to, but stores it in a variable named "gen". Elsewhere in
+> MGLRU "gen" means an index into lrugen->folios[], i.e. seq % MAX_NR_GENS,
+> so reusing the name for a relative offset is confusing.
+>
+> Rename it to "age", which matches what the value means: the newest
+> generation is age 1, and a larger age is an older generation.
+>
+> No functional change.
+>
+> [kasong: dropped the comment table part, the series rewrites it]
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
 
-LGTM:
-
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-
--- 
-cheers,
-jose a. p-a
+LGTM,
+Reviewed-by: Barry Song <baohua@kernel.org>
 
