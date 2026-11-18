@@ -1,136 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16C8606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 00:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A35606A330
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 00:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=Jj6xFzeY
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Jma0BAlt
 Received: by kanga.kvack.org (Postfix)
-	id 7C8396B05B3; Tue, 17 Nov 2026 19:06:55 -0500 (EST)
+	id A46786B05B0; Tue, 17 Nov 2026 19:13:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 779426B05B4; Tue, 17 Nov 2026 19:06:55 -0500 (EST)
+	id A1EBC6B05B1; Tue, 17 Nov 2026 19:13:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 667626B05B5; Tue, 17 Nov 2026 19:06:55 -0500 (EST)
+	id 90F5A6B05B5; Tue, 17 Nov 2026 19:13:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E31C6B05B3
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:06:55 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B7B011C3F49
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:06:54 +0000 (UTC)
-X-FDA: 85446299148.06.8BE9301
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CE756C0004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:06:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=Jj6xFzeY;
-	spf=pass (imf10.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.176 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794960413;
-	b=JEFVuH2E8WhGQZmxS0Ei8hmq6rVeeCuyPGEMX7dUej9guuVyucIDGhJMKrGQR0zeFu8bdz
-	P5ifmee3QbiM3VKEETjTudzCz+NO+MQBL3GXVIGLSTmra/MJqZ7vplgZo+PNz1VLu9xOZa
-	77le0Zc3BuYJFKIL0/FO+4X+nWhR6xM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=Jj6xFzeY;
-	spf=pass (imf10.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.176 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+	by kanga.kvack.org (Postfix) with ESMTP id 738006B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:13:48 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0CEEC1C3F26
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:13:48 +0000 (UTC)
+X-FDA: 85446316536.04.0842987
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5F93BC0005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:13:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Jma0BAlt;
+	spf=pass (imf22.hostedemail.com: domain of 3uO38agwKCOUJOYPZdPZLTHUNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--chriswiseman.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3uO38agwKCOUJOYPZdPZLTHUNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794960413;
+	s=arc-20220608; t=1794960826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=whdIwtpmJAdRFtIWUAbtiFqajWsbSsIAg/rpjYImvLo=;
-	b=B/FgZIdXk+Eru/ToxVXfnCrf7mi9l+aiNTb1yYbFweBaRbnJQDztxO9z+yyOn/sFzZozGj
-	3EUm5d2xuL7zwSh9e2Yvs6icDylw0ix0FK0Kp3/iJahuzUYojCz4p6PSlYRwwLda1712H5
-	mZ4VEc+XwGn57tgfbCiu8Vv9HQRccVU=
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-381f65e4e4bso767258eec.0
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:06:52 -0800 (PST)
+	bh=zjqK1ZKqoTJgPH+MFlEIuxyYmJgHMciHIUmqwesN1rM=;
+	b=ND/mrPlMXAU+YDZQ31ztuOzl7yW6nHiq2/qHWPy4oV+YdrxGJreF9eHE87sjB0++Q5ssRk
+	W7Vr0bRo57XVQkxQE/u9EIYnr5qt4Lu34VlcOjN/ltlpMShm1/EpVO/evu03xBjhR8O5KQ
+	GiohPCV6CoFHP2LlCPQz4KypQeGTuEw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794960826;
+	b=RilD2KH5/C7LkDXGs1+y9nMV2k6Ia0MyB/dB3sF73xcb6qEpSj2XCCUNJt9wPNHxI7JhPw
+	l6oSm4jZKWl+M0uB1WD/sLZodpBGsyfdVz/KPiikrju8qlOtCIT9gmGTt6S6vH23uEzy+I
+	FmbjxiOVMfmSmJ6wjDBFCxqHPMxR03g=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Jma0BAlt;
+	spf=pass (imf22.hostedemail.com: domain of 3uO38agwKCOUJOYPZdPZLTHUNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--chriswiseman.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3uO38agwKCOUJOYPZdPZLTHUNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-341eff9e381so644500eec.1
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:13:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794960412; x=1795565212; darn=kvack.org;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=whdIwtpmJAdRFtIWUAbtiFqajWsbSsIAg/rpjYImvLo=;
-        b=Jj6xFzeY18HtRxiq+AlTYBqOspwx+8sOncRugQCsQxn91zmlBaZcVJjFZevJZHu7zm
-         XGHQP9z2qo4W2HrFKSdRoeAQouVxYWS6t3KOLE+GgbLS1f8zskkLXpoPrFSbLv95nR7p
-         UkRQNUhxdYQcNjSRlmvNwmQcKMxwxGMby14rI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794960412; x=1795565212;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794960825; x=1795565625; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=whdIwtpmJAdRFtIWUAbtiFqajWsbSsIAg/rpjYImvLo=;
-        b=M+tDgZzhADPRtaT+dvHb/USroAPh8DypmQJIAGVJ2IfUQD6KxOYPBBJJ5RI0xoQYpi
-         8r6GVCUlpaYJ2fVgBg+us3J+n5zktxnhGMJgdvtbqvi+IgDxwSWz03bVewYUMeL1bGEV
-         mUYpA62HOjusIkU+iZekimGcAp2PJXcE9Ful5fjWKQvwwxft5AQhG7rX/Xi0YDRdiJ9Z
-         4b03EETKA9WvJU+YnCbKrgp5umozBI0BycdHd4t0Ug29IxMwrctW/tV5+VJkPw/G9/f1
-         NOtQVi5619zwLy9jgvYe/8D0+SBomGuSOkiulhZ6NBxDzZwX+sQQc2ITZtfnBHOQ1/IP
-         IU/Q==
-X-Forwarded-Encrypted: i=1; AL+hErE/KmvVgiY7TgktG19BaeNRiH+GzTllm5VXcSQHXWgjFQ12RDBAgXnhua3PHYfStYVdL3kjM9xfIQ==@kvack.org
-X-Gm-Message-State: APuU4Z+yHn4kO5fOcOLo2u7DgcqyCxBOOmoI65Hi8gHr2JaDloPwSV+M
-	4aolZxzIgCq/7vb6jxCxzMx8Pyf9CADs72IbpvEtTIkSQsjJipr6vBKE14cO30Hexdk=
-X-Gm-Gg: AZFdTZe4lTLRsbNe0WK2p9BCK+uHeJz7bQFpNK+OAZzRGh9zeR75VPPxMpHGoW+hbP/
-	fPaGbltDdZ76F/M7niKaCeZu6599K1x5Sh11KHRDO1vzKxZTkKdgawKtU5iRQLjVivZN5/UYh1M
-	8j9z8HHHXYnQBNKLLdpLieW28FBiw9cmH+hQJgSoOFeWQlD70SA1oi8x37OS4biCNzklsTRIcAK
-	dm7Aod+YiivHdTjUjupQFi2Z+GdCZlCUaqT1o/LannTQ+1oAOB+cSrpC4nn+dJPzPjvF2Zrow5I
-	oD4+iC2sPMPyqcgzTcbz2EidtMDYvZOfduqOtdYWY6AMhIS41eEN75U1+7xAa1ezGq3wJBVatE+
-	ccp7QVm5LwTPMZp4RS6JKaCudsEpoVqMK1AqoGazYKaN2o466/6sOkQekfXKvm6TTKNT5k6+8Nq
-	ggkpPOSuQ2sgTPjnQtTx7AX/fwCULKZe6ACo0PKSE7PMuQULtvSgi0Dd/3SboDEsCXUCP4HvXUM
-	wwLTKATxV1lywETa8vNcKqE6b2xyRFqXPE70z28EGiNdhVun8Rq7srn+8Byn6BVuGk+8aNJSpB5
-	YQfCLQsQ3kVHk449Pa5NWfoJSc1BHzgKTnvLDHYiSyLaJRJw5HunnPzI8DfqQF1YT4URumFHbV3
-	VXa4YjHo87JqE+VYxiwBEBjh6x373H9dqryM+v3LLJlQ8jiUooG/dswNiZtsi7/PQH2fUZw1luR
-	CLVvY7qedKWwX5eZfAPClrLXwjWGceD0SjSFJqvuKiv/NterJJL9Qf6Qbti566Ah7Mxy48EjR5U
-	TZuaIAgpRogbQ==
-X-Received: by 2002:a05:7300:d210:b0:36d:4135:cd7 with SMTP id 5a478bee46e88-3828083e094mr888033eec.18.1794960411569;
-        Tue, 17 Nov 2026 16:06:51 -0800 (PST)
-Received: from [172.20.0.3] ([172.56.235.113])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-382a63054ddsm1519563eec.4.2026.11.17.16.06.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 16:06:50 -0800 (PST)
-Date: Tue, 17 Nov 2026 16:06:47 -0800
-From: Chris Down <chris@chrisdown.name>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
-	Muchun Song <muchun.song@linux.dev>, Joerg Roedel <joerg.roedel@amd.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Pranjal Shrivastava <praan@google.com>,
-	Ketan <ketan.kishore@oss.qualcomm.com>, Mostafa Saleh <smostafa@google.com>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
-	Sashiko <sashiko-bot@kernel.org>, kasan-dev@googlegroups.com,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 5/7] mm/page_ext: allocate page extensions early for
-	SPARSEMEM
-In-Reply-To: <20261117120627.50601-6-songmuchun@bytedance.com>
-References: <20261117120627.50601-1-songmuchun@bytedance.com>
-	<20261117120627.50601-6-songmuchun@bytedance.com>
+        bh=zjqK1ZKqoTJgPH+MFlEIuxyYmJgHMciHIUmqwesN1rM=;
+        b=Jma0BAltQXhbEClEcm8yLPmwiTmYuWnPJxZAJD8pjXmoGOx9TtNbJTXvIjOCCCIylm
+         V44llgEFs2oSUpwk2ne9yVO7rnXw1TIxYcK5pMIKiivllxZnLwvBQnWhLZ3pDEelZ3ON
+         v0kfPHpZxtSaYgxLXiII7QIObad2IznmTWfV56bhqu7ruXRdzI+0R+rBER52v3dHGs/d
+         HbG5Lz8fCBTNykXG7P8laujUk5LczR0tL1SId2dCZyjJkBST5rNtjs/OSV7ktJZnUJ/z
+         Vrsccqs8kFLb8O4DR1YkXI1kHTW8s1s74Q3A71I8JYIZCy9KFAwy2Pr/EipP/P+ksCve
+         kCzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794960825; x=1795565625;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zjqK1ZKqoTJgPH+MFlEIuxyYmJgHMciHIUmqwesN1rM=;
+        b=xmWFlh7RSHZZkL++XTeusSMjsF+nzk1OeY1X2tYbNJOHamwrnNr6iZfKAabGQKeZRj
+         2VcQmin2B7neMQaMhgJXdxkgfFLAT+EGPo4aMhHtc1wKL/yTG3DWv0EEvq9Ev1JT8cWC
+         hYVVe9B2+HrhKhA8EuY822wEBGv7on9psUQO7prmouBMyoVV5kJ18h8x3GlOZSz+rpkd
+         /WogbisfnJqb4eTKhAeMacVpYJVQW4bqE2oZQ94f2RUvPijxejTz6q8g1EBULhCqRVHN
+         TbrM7YQvrhGCzayZMJIMPNT3sXk8N8Nty5zG9+VLCKu3DGrZxkwOGsJUgoNV1Huf/MKY
+         U8Gw==
+X-Forwarded-Encrypted: i=1; AL+hErGWDzOqyg/T5jbrjRQ9Ex3nSLcI0NGy17VMTj//SzQs9Iq+MnderFJViJpkNQ4aZmoHDS3GNvJWow==@kvack.org
+X-Gm-Message-State: APuU4Z+XDZ5sva4cmrkiU3UUILvricYkzY9rLVMsPpUhrY20fOtDaL58
+	QYlnPrGd+M8bTauWsnJxErtev64okxHKPQ1+rJZ0S/kM3PicUHP5FrHiT4D/OUCasN/9ErkJoW9
+	dHAaIrobSFuFvAmu0sVTeyYH07wiFug==
+X-Received: from dycjq7.prod.google.com ([2002:a05:7301:5807:b0:35d:1771:4816])
+ (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:2291:b0:36e:ff7e:e57f with SMTP id 5a478bee46e88-3828083e1e0mr821168eec.19.1794960824542;
+ Tue, 17 Nov 2026 16:13:44 -0800 (PST)
+Date: Wed, 18 Nov 2026 00:13:43 GMT
+In-Reply-To: <avVVRYkIAQnLC_Yu@google.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Message-ID: <avzsFxVqO27Vf4Db@chrisdown.name>
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
-X-Stat-Signature: heaqdejua7qstnse9ijr6g6syqeyxhqq
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+ <anXJ-5_vO7-toSe1@google.com> <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+ <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
+ <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
+ <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
+ <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
+ <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
+ <179384102494.19062.12740032892044628762.b4-reply@b4> <auwOBaRtM9p_Wxfx@google.com>
+ <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com>
+ <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com>
+ <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
+ <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com>
+ <18e53459a8013078.3137322e32332e3235332e313736.12c7b6.0000sendgmr@google.com> <avVVRYkIAQnLC_Yu@google.com>
+Message-ID: <18e8fb5c1c4d127f.3137322e32332e3235332e313736.289d37.0000sendgmr@google.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
+From: Chris Wiseman <chriswiseman@google.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+	Xueyuan Chen <xueyuan.chen@vivo.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CE756C0004
-X-HE-Tag: 1794960412-546279
-X-HE-Meta: U2FsdGVkX19w+Pa+S3OHpR5oMro4ClgixchVTL1S6dqWl6CFvt8JGPHS1PFZPAZmqx6TDhIcRbxSOfVxkq/KE277UhHV/fywA8qDgewWnOBZ1eg+8662f+Lg7hE9lFhcXGVnxKbUr0Zx9AIJiuEb+REC8UzjefLdtnWGKw/DMJN7Hf6Fn8hNMkAPZW12wKpG7NDanI1du+xLUzhb0EuJ/Cwkcw6dS7d4e3F/BxUwH6g4UbU7l71z09Y+kv63K2GgqvJsm2JJOfS3B1ly0CUbGRKWK7csVyW2hncPdOPF66LXxD0j5W46oRtYe/5l0w4A6SwsYtf+ehkF7t0NivvsgWhO1nCm1vl+UPBwxzQ4oXcl7a1fGAkR25nGMv04oIxUaibdqnOxBujR57KhzGrqV1PejiORTxkRFzvAhE5GubOJGcUbOcF4Yw3zO/QqkbHlJRi+AMU6DZC942ijRQlCZWK+/CSVzbT57th33W03n/Zi6vtbU3eOSeFYe+Jmgvtr14NowjAMJGSTOQDYxoSTMgoFC+2g1g9y6opCGNtqdr2ne1JrSUqK7B7GE4IWfo/X0pxQTeO6dmXcqncNjrmWHAHZBY8GYL42xuEiA+Ab/P8Q+MZA9yiz+hADNjuNbXbWP3GQfq9RORlqlBv8A5VJFcD87AhjJq3DeJTGe+BSfi/CcpViykxOh3qwpZW7dODJDbY2CdFpHt3yP3H65b6oie56XWScaEt/jKW6Ui4e6VH4fXpGiWvB81/1NQrim/8zEekHGG2wb+z7St7fewur2wYkyVayjlnMrKCy5I+ApfmS+BvujQd40kwCw2cd1S5xIPoawjHftVwsVY2cz8TkkOkpzeOFz4zPrOBV2a6rozAZ31LW48mzBT4Ej+NabGwV8lwq45Uwl+mJ5SnjPiDhwpkjSbEpoTsQVDeKejDWcXQzxnMZy5NKq8VY5FoP5BmwY2X0GVHTpRARc/mQb6D
- Lqr1sL1T
- 7Jsg9LR+OXdDKtFAaD0Ml2R7w7XGjWWxamZIQ/AatgI2UIIlUCSqJQt9lztnCqGCot4jwVEpAcgjFppUHemyTj30yLF11El9bmaNgecpBlxHee3mw3b4zxtEZGFmOv7203lwSuBcebztiYPbU3h89s7WQtdjhwDE1K7fiJSDXtUgvvujVi76wcOUQLM/kVs82JP/wkkbJGGrbnuZEGqZPu201mrOe+zirvT7ta5sB0nXogictYqSvi7x8/1se/Zb1iPq7+pAjsnAvnSeaMmzFy5A8IEEyEIX5lXZwKjs53tgRhfTZmtgsEk0nuPcvCbxVaUp8CkCNDVhngFH5J3mWwwVWE8Dz2ZHqhAZnblv65T0VmJBTNkaQ0+6JrITxA1vs1sWwtSWM2oJg/+M5xM+VxtPCQ8awTpdGy2hUlh5Hepab9YqSRs4tK7ahv8lOxqTR2PJtjxFDEDcNyDxP302eG2ZzAg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5F93BC0005
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: gwaj3n8n8h3d1cue815ugebntuq6czjp
+X-HE-Tag: 1794960826-466621
+X-HE-Meta: U2FsdGVkX19l9bblMyHw5KM32OotT2/TUm/II+yrIRGmUJ7rXAgY2tq8u6mdL0ubkurKkq+HWq2cagAM0rHddpm+T/MDwgrlpC+TcHrmfdij4bsI718HJbvpa56ZehVOS1B2B1XHlMjP3JhA2UgAldai+xw8ErUXdZASQBaQ5DDBh0wD8RYeQa8O41wkeNmwd4IutIUPh4BizUsqG6M/aptODkvv2CzbZWRqeZfJRmoabWfA6mjYlrzZuHvS2VrEPEbo3kB+WGU+5+rg96yxutPBaZr7NgQwo4n6U0RSE01FqbIuD84irFwJewIFq55xZGFL5k7hjW2I83H6TXvxp1qpVCZZQ4Ivi8ZDtLdIVyZTcOpHkTxjam4tn37G1zNESqrVSmhfDPZQlpARsdf8vqwfz1v46L50mP+6kTc9DppmgdAJ0pmlXnEzFPZ10A4dfJM5F+HddmlICVSiWJAk7aTgV/gQyWoL5pn9WChQMnWi/ZUllLuxTHwhdrtcCpTHixA7PlaiYT/3lTUylcEraqaBtpaEyLuNg9sG5mO9Z+/kLkkt3PZ2hbsSac3p67KyIYD+uLXBLkqO+k7lYjXOM0O8/UmQ5I4qY64wfXAeBNvP8Och7ZO95wW1FGJih0Nuxvrr1bOzmVLmnP8TcTqxXVXVNEvJj9b6WwTD97TgxQLgJnwKi0d0yel2HW/z7LwB485RBCRKwcSNm0DaBLzUCOzT6lCJbMEp3VEP+S5+Fp0Gwx4wo3jsS23inB+U+QYZqvODE1dajQ7Yi2HUEwNdqfHlZNuWIp2K2+wpADaFe6xIyTnh3PDgAh0IAE/SPRT6bRKyUtvMpe4LmpAmpnahDbP+qi6nk5/8xRCFH8Zb37diik7vceS1CYRBOa7yT9Rhbd2WeysvFiUZL32NTct5GZybe+wcUGWW0WlajWoVB8ZVTIWTvPFeP1vzj20I+fDL5OQfhQnZPlXDFavfHLZ
+ yTwlq4Sn
+ XdyTrTqSCHmyfjSxgwdWqprwBgYq/BFplPrkD6gyLzTq8FvNsbZ4Z0hJ003ZtXtNTE/oh1YlLHlS6riz/g/7lU5bbno6wp9z/6oF0hw2G6D7ip0aG1G26iaPly+5kFUYvR3fYuR+NcebE/xcBECR/8IgnxGYQPhf8+5+k1Uy5Bxv2drBbeetr19uw+8Xm1I+5/HD3hx4+ZB3jfTMcs9gj9/RiXJrnsjOAwh4WCbsxalnI9GqfpLij0B+9qMLTTgIgmnWrE8p2bsfKWoPbxc8Sh6L5f/GNz9hYw5Hc13S1FD5JFEg3NG2xCqzzOGZYHPdE20a41AxloieT/OQWLJh9hLRDlbvbvX5iwtx9fAeZL1gW3YmjK297m0nSDHTMMwQ7ftnKOjiBjn6gimQwI+yuTfBf9ITJDy2rC5KPRaVPh+CaEfZeecE9V/lUbFm9GsJOUaOGMPzjt1b3QbWy6J88rh7JmADiUu9ma3iGj601LGN1S55xcwai4diBLVcId0jd5Dtk83c1mt2n9+wXCZfY+N9aW4kFs/99sO6gYi6iOJkHz6cKKk77CQrbpf7dz9a9ubU6xA1lhnM3CXRRv3S6FH4iAo+44KJIHSEpBTq9fW1vTI1ugWUt8WOMCWYdjX37O8gH6pjpW2ren6TuzlVLsXOI7D+eKG6oV1llr3cgYAidOVKPX7lEj/EkVRmbPgJKWKFlcy5/EmcmmvtDpdis0zycxh7fvbsw2Uf1SHR0nF7viH4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,24 +127,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Muchun,
+On Thu, Nov 12, 2026 at 2:58 PM Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
+>
+> On (26/11/05 16:53), Chris Wiseman wrote:
+> [..]
+> > Maybe we go with Nhat's idea (CONFIG_ZSMALLOC_SHRINKER defaulting to
+> > ZSWAP_DEFAULT_ON) for now, and if zswap adds a proactive compact knob
+> > later we can just kill the shrinker?
+>
+> Sounds good to me (on the zram side).
 
-Muchun Song writes:
->+	if (!slab_is_available()) {
->+		addr = memblock_alloc_try_nid(size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
->+					      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
+Thanks Sergey.  Xueyuan, are you still planning to send the 2-patch
+series (CONFIG_ZSMALLOC_SHRINKER + unlocked zs_can_compact() pre-check),
+or want me to spin and post it?
 
-Hmm, unless I'm mistaken, memblock allocates top-down, and with
-movablecore= or kernelcore= the top of each node is ZONE_MOVABLE, so this
-puts the page_ext tables there. It looks like that then offlining those
-memory blocks would fail with EBUSY because of the reserved pages.
-
-I can see why Mike suggested always using memblock here, but only KMSAN
-needs the tables before the buddy allocator is up. So I think this needs
-to either go back to using memblock only for clients that need it, as v1
-did, or keep these allocations below ZONE_MOVABLE.
-
-Thanks!
-
-Chris
+Yosry / Nhat - any objection to starting with CONFIG_ZSMALLOC_SHRINKER
+defaulting to ZSWAP_DEFAULT_ON so zram users can turn it off right away
+while we decide whether to drop the shrinker completely?
 
