@@ -1,93 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8352606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE7E606A333
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vamNkQ+K
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pPOal3HM
 Received: by kanga.kvack.org (Postfix)
-	id 8AE886B05B1; Tue, 17 Nov 2026 22:10:51 -0500 (EST)
+	id 9267F6B05B3; Tue, 17 Nov 2026 22:12:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 885B46B05B2; Tue, 17 Nov 2026 22:10:51 -0500 (EST)
+	id 8FD6E6B05B4; Tue, 17 Nov 2026 22:12:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79C9F6B05B3; Tue, 17 Nov 2026 22:10:51 -0500 (EST)
+	id 83DB86B05B5; Tue, 17 Nov 2026 22:12:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 454A06B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:10:51 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F84C40647
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:10:50 +0000 (UTC)
-X-FDA: 85446762660.21.A542306
-Received: from mta0.migadu.com (out-28.mta0.migadu.com [91.218.175.28])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6E22A1C0002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:10:48 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vamNkQ+K;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.28 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C0CC6B05B3
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:12:08 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 062CE1C3EE9
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:12:08 +0000 (UTC)
+X-FDA: 85446765936.01.85298F7
+Received: from mta0.migadu.com (out-41.mta0.migadu.com [91.218.175.41])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E5403A0004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:12:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pPOal3HM;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.41 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794971526;
+	b=S3oH2T0shyZp70ib8qJiI59+FJaOKPHk3aQ5UrEqJxNYxvdT8sqJziP6tunK4ogm4oz1Yz
+	tANZxjbMk95NO8cqX/cP3WdO5lPO/vIqsx94OwmsBvGK1CgIt4NJcG7LUXSD27DdzEIdg8
+	2Gr4b4nsLR0rjP7mQFWfyC0diqRDQhs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pPOal3HM;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.41 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794971448;
+	s=arc-20220608; t=1794971526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nfA5i4d2gCwIuNfl/V1REoqxWlwBpLBqgHxGC6bP5bg=;
-	b=DwgwGgnPHRLcswtRmnzudjU9jwRcrn7TA2arqSwbMMQPdh8GYgi6EUeKjdh1CBXAN1KLlS
-	u3wcCweKtZ7VQ4fQ2T4naGJVjGMEOcqBU0eBDsENlsfROCPMc5EyiXJBCuL9PDBiE+M1Jo
-	gpAMOxhzqckGTAkeiZqunw4u1RS52Js=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vamNkQ+K;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.28 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794971449;
-	b=lyHyevVzonj+1Vmsbq9ZM5RN9WbtFtwmCJBM7qCDz+YiNMeAJ+d0+4746oigjHfdcqCwA+
-	WsWpbjQBera0KmVnYsj7bi5rh0mryDjupvZECUnY3QMLWLdcvrS8xVaRd5tso5AGEZaGIi
-	mg4ygE44LiGrzaCGMAUdfek9B0R6y5A=
+	bh=sjYYKwzYzONDWseS/CLLjrX/s6cX0+9HMOg7VEzcoPU=;
+	b=WTtjSaAnMy0zbCAu55kd6jNGXCaI6DBswAWPFM03H6cluS4+FwONeoqxZzllww4bbT+nke
+	b1dtl2WrnU5VeCS0bOvQPi/zPU3hwWaAyKjVIW76co5IKnXrVor3jl3QrTP6RMnMcs1YQu
+	YL25lksWJmxmPrdlattPg2VUMjTNcmo=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=eEhQXNIJ/LtAn0ef1h8RiySWKjEFVX1iaNKIEFjrPfY=;
+DKIM-Signature: a=rsa-sha256; bh=MbsFGvHGFKuYz+VZCR6SSqqFxh07MvYfS3xKWwR/Cj8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794971445; v=1; x=1795576245;
- b=vamNkQ+KDQxz1fvgSr5uSrJNBhqZkNgjq0BHyNAyJFjJL6SgEcnAN/PeohSqcL/kh7m4DZtd
- O9aImLfuDPm5MS5bMdOS6A1nZWNIbHSiJtt+HLIAl0B6a1mlkltw+sy6YauXIPhC6L268b4MgHA
- dIS3fG44WPxGIL190MJglMu0=
+ t=1794971524; v=1; x=1795576324;
+ b=pPOal3HMUeQvg2+drPiVNCtsM2ZuSOtxTrB+m9qiILrWbhHI/YQ95VG71a75Nru6vcVXbijf
+ h//SOr5Vc2b6lMHqghht3I7qOVx28FRimoyQEQ+T7+3ircBg9vfd0P0VbH6O41se9H0/UlpLvhD
+ Zyf4lI7u4LyixosdJeSzGIYQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 3059d6b605696205;
-	Wed, 18 Nov 2026 03:10:45 +0000
-X-Mizu-Trace-ID: 3059d6b605696205
+Received: by mta12.migadu.com with ESMTPS id b0d530c3b5bc4025;
+	Wed, 18 Nov 2026 03:12:03 +0000
+X-Mizu-Trace-ID: b0d530c3b5bc4025
 X-Migadu-Flow: FLOW_OUT
-From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	chengming.zhou@linux.dev,
-	donettom@linux.ibm.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	xu.xin@linux.dev
-Subject: Re: [PATCH] mm/ksm: do not inherit ksm_zero_pages counter or PTE markers on fork
-Date: Wed, 18 Nov 2026 11:10:38 +0800
-Message-Id: <20261118031038.75525-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <e971c3f2-e8cf-4eb0-ae25-e7e4d9ea02ee@kernel.org>
-References: <e971c3f2-e8cf-4eb0-ae25-e7e4d9ea02ee@kernel.org>
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 94sq9qfbo331hrhqgfprpkgwk38ahb87
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6E22A1C0002
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v2 5/7] mm/page_ext: allocate page extensions early for
+ SPARSEMEM
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <avzsFxVqO27Vf4Db@chrisdown.name>
+Date: Wed, 18 Nov 2026 11:11:46 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Zi Yan <ziy@nvidia.com>,
+ Joerg Roedel <joerg.roedel@amd.com>,
+ Lu Baolu <baolu.lu@linux.intel.com>,
+ Pranjal Shrivastava <praan@google.com>,
+ Ketan <ketan.kishore@oss.qualcomm.com>,
+ Mostafa Saleh <smostafa@google.com>,
+ Sang-Heon Jeon <ekffu200098@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Sashiko <sashiko-bot@kernel.org>,
+ kasan-dev@googlegroups.com,
+ workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <3C50E682-848F-4788-9238-923D5E292DEE@linux.dev>
+References: <20261117120627.50601-1-songmuchun@bytedance.com>
+ <20261117120627.50601-6-songmuchun@bytedance.com>
+ <avzsFxVqO27Vf4Db@chrisdown.name>
+To: Chris Down <chris@chrisdown.name>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: 576fyuroygff4868nx8k1gjqim64qze8
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794971448-233645
-X-HE-Meta: U2FsdGVkX1/K3OAfNoQg3xo+1kHz5mqGEsrgi+VonERfOIb3pSRzgXbSwiy9sdyn9Tj3xgzePYeHNb9bjwbNUGYNbeTzLkcMplOwgjvlm8Kz8M2Z/NT4mzrNt6wwy0TGmzLnZQtMpB7THHJSfA2Bd/kjL277tdhbV+79SJmI2zFc1AnRpY7QBqSrZG1tYbGzGRO27JLTyo1z2/9sM/yEClqa+fX8gVel3pb8yCfoTJ2C5d1QYWfNGKKxbYiOciW18cW6KI6GOR2nzdmYGZUqlhqlbU+GC8aM/1ZAcs2Ihd6+M/JVXW8YvY7tYfhdj7KGXxjvzTMG4LE3msGNs/1KfGQWcGaoHPV7ahuxe5WFHddTuiLgbbknn7Z3k/ZOWdEujpBjPYBmC4FHP8r/qFTePXteh7HUmVcqR2RseQMiCPD53AIDsiJNRAVOp/s1CSfQD3VcXE69+JHBxBqo12vhZmGCK9hZKYpJZKzH28CQM9QMc7WB34/7LfEKpdUq7GdiGoDR1rC4OtSRvFrvKbwkALKdDcjU1R97wps4haOeSjYTI9KiptPb2nmuCTLit3dIqzmN/ZztcmlMearmgDi/KY3OJ64bw8jKa5B3A0zxVeEFR8NCMWgewGN9P3RpDN9Fq8koZtxLe/ZuvnKDAzhgpxwAVWROJpWVSX0b2gxW9HZutqK8G8Uiq6gP0eKClGHuRF5NZ0I8QPXuBgHoNH3yGn+cQVWVqN2vDZlEihhZ1tW/jDDxyLmsJhrpEfqsrYptDTpBOY2tIvfLuXCcLZohMulBOEnyZ9TFASAXfOIWvPbh/wA8uuiDJpL9T8QygWH1A1e5aGoHL2mwLUMt93m8LB6y+mCWJmV8bgHwWemuUHImpO/XBq2UupX2UxWIdFdfMKNXbyAmdfLjBzi/2+k0MzfXU1Cz5oo0l44SQEA+uvuVnJP6AnzwgoG37kCq/rbTHo4/c34YjbWCAImdmYc
- edxdXXwS
- XsCKyfsgRb+7tbfPTZEhetC8Wa7fA8yMPohYcwsgpZLOe3qKqmqMb9TbbpVhefttbC8Zqc+e5vPUnT2UJB8NMGE7zX4AtO+pUxvsgmvhAF5cO1gM3hFwzPPFweMX+JVzqg9R6qswYfPOI0HFl7S845gGXLFOlQkravtJHKkE/UMEuAxEAoz7JR5KbMJHkgiwYImoDXQ+V5M6TAhGcsWdHTMh2yILkiPReXMDp2m4mvBuy+C5tBORZ/mt8m0OUWCommRPVrcyy0zMEIZNT/WW/eYokm52v4EztTFnuMcEJ+ikBGkUfFtHlg3KLZyJ5/eSwfCcy
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E5403A0004
+X-HE-Tag: 1794971525-139817
+X-HE-Meta: U2FsdGVkX1/j6qI3qY3MraJub9PyBqBP2UyA+O2xpl8zGX/69biUslDYITDsotVRTV7k1tjE2rfuMyNxwTKZXJisbwQNIBFAF78uOq621aVK3L/9aKVWW5ihYtGeCLnsYCyw61RlO7HcA18rygMZSosHtBLc21VBqSj66Y+dOub3fMIdx9EnWUnoufZ+m7s2yOEXuZ4eCMM7YjSkJqtjf7oUoacr/ZzEsa2NGlZa7St5EZVAasVH+kdZ4mKOTlNZ0MjhAANSWfamp5IeaZgZmBqxDiFfv2Ro8e2kK14SyBE3gcTE49xIwx3MpMxiiP4kJD9p6KV1OoaTDUnvzZWV+1wY0SiY3N0Vtw5tS+w2l4megU/jkTxT+NLBpd3hHeNSrX6VrCHc1xTtyVcg5zzENLss4fqSjv+K8ts1E0/BcsWNZcLm+Pw6gPbJm+GYGMaiBF5Ae0VQxIzMRoDRFwv+fiR/Skdwaeic9C1JjbkqKlhP/WFmRE06IvuxP3ALFbHyeEf678nLGi2Z8OPqKY5ckk7swltQNJahCjdmmQDoxTWeUlrBTJFNCestcrkLJjaIiOBjk6VI9Uq+kIXj/IstKliOyMYnpMQS82/c/oSPMzYxup727rNGYpeWsVGq0R64pEwl1p/2i6iyny+D5cIJ1fjaVEbeVpFN/XeStpKaIDzbj8MrLG7bk2V+pBN4Y1M81AJYOntiOTvmqFhWWxlgbsxW4QNOSCBN+RvjH/BAFGOwcz7lHyJnazaVyao9G7jtUCwZ0x0HGsK5fAVsGnf4IAf1mwaMFvhUg4jzxBLTB4erYxVFdZGOtkPCPepHhWC5/V+caL4VQMEYQ36r5AZTSV84gH5mTyoh7qGP5zNpXnL5UKBAAcRsqo7iEoK3P8/Yaz9OoLEVuvjRYsKcbynyVaVnItD0ERca82VdEAey9ep91f8MHjTYSLYVcugkykeV8S9JHXSbTUWRsVe0d0O
+ KlKVkqFh
+ KhxmEDUlaEr3svU4xdAb1lO1SRsEmy44vRZQzEUB+TBC3K6enCmZaO0x4rSzxLzyvt3LtBiPTIL5zG9oA4RSEztcQKV6wvCJ/oucMPbZ2HPzGvaoN3JrYSnwO2BV9B05K3E+yMCo2ie3uSZeDxrgkHYRO731W72GuMyyC9vty+tZ5JE8XvUvdNN4sjJMhezYTsUNKwUXHQwXPlsR42AXDu9T4fPCJLsdtm1wj9KK8sYbk3r0HHDO9FC5aGoFl/qThztZZFK5WUt0Qe83DFdD4qw+eSlFBXm6q92Kh1fsxzI2CnEnIjJ8+7gPsTg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,97 +124,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> On 11/17/26 09:18, xu.xin@linux.dev wrote:
-> > From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-> 
-> Hi,
-> 
-> thanks for the report.
 
-Hi David,
 
-Thanks for the feedback!
-
+> On Nov 18, 2026, at 08:06, Chris Down <chris@chrisdown.name> wrote:
 > 
-> > 
-> > As documented in Documentation/admin-guide/mm/ksm.rst, ksm_zero_pages
-> > accounts only for zero pages actually placed by KSM.  However, the
-> > current implementation wrongly accounts for forked zero-page PTEs as
-> > KSM's contribution, inflating both the child's per-mm counter and the
-> > global ksm_zero_pages counter.
-> 
-> But ... they were placed by KSM?
-> 
-> Just like any other KSM folios deduplicated before fork and then shared with the
-> child?
+> Hi Muchun,
 
-I see your point, but in practice, people evaluating use_zero_pages=1 often
-look at ksm_zero_pages to gauge how much memory KSM actually saved. Since
-forked pages already share the same physical frame via COW even without KSM,
-counting them across many forked children can give a somewhat misleading
-impression of KSM's actual savings.
+Hi Chris,
 
-Also, ksm_merging_pages right next to it is already reset to 0 on fork (even
-when regular KSM folios are shared with the child), so resetting ksm_zero_pages
-keeps the two counters consistent. 
+Thanks for taking a look.
 
 > 
-> So won't there be an inconsistency when MADV_UNMERGEABLE?
+> Muchun Song writes:
+>> + 	if (!slab_is_available()) {
+>> + 		addr = memblock_alloc_try_nid(size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
+>> +					      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
 > 
+> Hmm, unless I'm mistaken, memblock allocates top-down, and with
+> movablecore= or kernelcore= the top of each node is ZONE_MOVABLE, so this
+> puts the page_ext tables there. It looks like that then offlining those
+> memory blocks would fail with EBUSY because of the reserved pages.
 
-As for MADV_UNMERGEABLE, leaving the child's mapping as a normal read-only shared
-zero page is safe and avoids extra allocations. Plus it naturally avoids the
-skipped-VMA (MADV_DONTFORK) accounting bug you spotted, and does so
-without extra per-PTE overhead.
+Yes, this is a valid concern. However, early vmemmap backing is also
+allocated from memblock before page_ext and can have the same problem, so
+handling page_ext alone cannot guarantee successful offlining.
+
+Mike's suggestion considerably simplifies the code, and early page_ext is
+only needed by optional debugging and instrumentation users. I would prefer
+to keep this approach.
 
 What do you think?
 
-> > 
-> > Originally, commit e2942062e01d ("ksm: count all zero pages placed by
-> > KSM") marked KSM-placed zero-page PTEs with the dirty bit for unmap
-> > accounting, but forgot to clear this marker during fork().  Later, to
-> > prevent ksm_might_unmap_zero_page() from underflowing the counters on
-> > child exit[1], commit 4d6fc29f3634 ("mm/ksm: fix incorrect KSM counter
-> > handling in mm_struct during fork") kept the child's inherited per-mm
-> > counter and added it to the global counter.
-> > 
-> > Instead of inflating the counters, fix the root cause by resetting the
-> > child's mm->ksm_zero_pages to 0 in ksm_fork() and clearing the dirty
-> > bit marker via pte_mkclean() when copying a KSM zero PTE in
-> > __copy_present_ptes().  With the marker cleared,
-> > ksm_might_unmap_zero_page() will not decrement the counters on child
-> > exit, MADV_UNMERGEABLE in the child will not unnecessarily unshare
-> > inherited zero pages, and the global counter remains untouched.
-> > 
-> > [1] https://lore.kernel.org/all/53a7bf3d-843d-4e19-b0a3-cc6852fe72c1@redhat.com/
-> > 
-> > Fixes: 4d6fc29f3634 ("mm/ksm: fix incorrect KSM counter handling in mm_struct during fork")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
-> > ---
-> >  include/linux/ksm.h | 8 +++++---
-> >  mm/memory.c         | 8 ++++++++
-> >  2 files changed, 13 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/include/linux/ksm.h b/include/linux/ksm.h
-> > index 93793ca6bcc4..3c6db19d825e 100644
-> > --- a/include/linux/ksm.h
-> > +++ b/include/linux/ksm.h
-> > @@ -56,11 +56,13 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
-> >  {
-> >  	/* Adding mm to ksm is best effort on fork. */
-> >  	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
-> > -		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
-> > -
-> > +		/*
-> > +		 * Child's inherited zero-page PTEs are unmarked on copy and
-> > +		 * were not placed by KSM in the child, so reset its counter.
-> > +		 */
-> >  		mm->ksm_merging_pages = 0;
-> >  		mm->ksm_rmap_items = 0;
-> > -		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
+Thanks,
+Muchun
+
 > 
-> So I think there is definitely a BUG int he existing code when we skip copying
-> some VMAs during fork. We should have instead adjusted the counter as we
-> duplicate them into the child process.
+> I can see why Mike suggested always using memblock here, but only KMSAN
+> needs the tables before the buddy allocator is up. So I think this needs
+> to either go back to using memblock only for clients that need it, as v1
+> did, or keep these allocations below ZONE_MOVABLE.
+> 
+> Thanks!
+> 
+> Chris
+
 
