@@ -1,102 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2016E606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 13:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QnXDe1Br
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BCC606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 13:40:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4813D6B00EF; Wed, 18 Nov 2026 08:39:46 -0500 (EST)
+	id F0ADE6B05B4; Wed, 18 Nov 2026 08:40:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 431D36B05B0; Wed, 18 Nov 2026 08:39:46 -0500 (EST)
+	id EE22A6B05B5; Wed, 18 Nov 2026 08:40:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36F8C6B05B4; Wed, 18 Nov 2026 08:39:46 -0500 (EST)
+	id DD0CE6B05B6; Wed, 18 Nov 2026 08:40:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AA9D6B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:39:46 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A275F120742
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:39:45 +0000 (UTC)
-X-FDA: 85448347530.28.F0A813B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 10026180009
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:39:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QnXDe1Br;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BCA906B05B4
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:40:35 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 81CB7A8441
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:40:34 +0000 (UTC)
+X-FDA: 85448349588.24.4C8B3D3
+Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EA1B1C000B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:40:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795009231;
+	b=wSf22mEwHuKNriVWbWrDRKsd89lukFDIXifxtljSWTNN4/3eGKPq8F9E4Vq5wL/p5Xde9U
+	7CAQ+fn3yNq2GM82GsVys9s/vmyIKm67+47lPRm+3KM1QhnFAGrwSBFKa1GN4/w3grfX6z
+	NKZfRQoDqlQhz3R75V0uC0HxEqgQ2Nc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795009184;
+	s=arc-20220608; t=1795009231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H16wPM7V43qGhOUqYIC9Lq66inZTiW4pkuJdkCDBv0k=;
-	b=0PUVjMJzPxKkiNKyViqfVRvh95SjgvIkHy3flTdGRniO4nQ0/vcEouPxArzr/nCCKYxR3S
-	wiqsbm6lklzeBP3IT0mP6PAgweijBslRNqLLQoPJ+2azRfxQjLBADAHnykBCy2iFtLEEQS
-	eIhIcFMudiBADqmZcuUaAHGCw8lfFac=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QnXDe1Br;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795009184;
-	b=Q+JODUA2KAY9jv7+feKV8MnQ3nDxNm7yTKYaJF1f/j5YqadnbOgTfWwWefCtcYHiLannmc
-	Iv56KTgJGpnfBU5VrPrdwB756l7UHBqtL5TugFptMN/d5VUDnn6rdkM4tAJnIFqx2d68Vu
-	AR64GIZeyii6bLc9t6GK3tNdSc49E3Y=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C75961CA8;
-	Wed, 18 Nov 2026 13:39:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57A61F000C4;
-	Wed, 18 Nov 2026 13:39:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795009183;
-	bh=H16wPM7V43qGhOUqYIC9Lq66inZTiW4pkuJdkCDBv0k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QnXDe1Brr0lrrc+WoVXWDQAuB6mqEFMBO+0+D9laEIhooYb5UkBJwdxFGdNoFKZ8o
-	 WsN/4VSJX8Ukxv40UAWQeosgaBpENKCEoKAhEJU/n0HJDVG7RFGt5Tf+O6Qqk0oOjB
-	 tUWVsP80MgMO5zLwbQe5JOvapb4ltLtoalyxyxnqfxQKI2Ncsk0gfqz5wwMgWAyR0R
-	 wSEiN0O+h+OsCr45zE/AVP0h9V7vjw+iklvGxntQ/cwEjQ668fX+q7ZNvsAWAuCnbX
-	 ByuKEzWtSQ71KctGcmmul6ypubbhZDF4k5uirUtO+pJuonoIRG+0CxaBJLCwoUTHn7
-	 9DPdbMnx3vQEw==
-Date: Wed, 18 Nov 2026 15:39:36 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shivank Garg <shivankg@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>, Luiz Capitulino <luizcap@redhat.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page_ext: remove unused page_ext_iter_get()
-Message-ID: <av2qmOfuu9QMny5o@kernel.org>
-References: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
- <e745f91b-3312-47b9-965c-510bf0a0b7f7@kernel.org>
- <20261117111336.ee49c0d4722a042c071c68b0@linux-foundation.org>
- <5541ef01-f9c0-4ce1-b77a-5bb81c6cfdd4@kernel.org>
+	 in-reply-to:in-reply-to:references:references;
+	bh=VSl6vmKd8F9dLMXuhSHY6FVcVpFiASZcDBBbw9C+TP4=;
+	b=M5fcaqom3sfGshmd/20GvxoUgvLBYYHkqlM7x16pVI6Q1yJaQaEPyMbEBU9xo1WbOqfJpa
+	SEwPDigU6yvH3p+aIbmG/kCgz+Osiun17VPzZep5Q9QPDuliCMugJHzkZj96aUAe2H6LtS
+	Bcnh7UcJ2cMnfdrYNwIq4e2e7VOdnMk=
+Received: from unknown (HELO lgemrelse7q.lge.com) (156.147.1.151)
+	by 156.147.23.51 with ESMTP; 18 Nov 2026 22:40:20 +0900
+X-Original-SENDERIP: 156.147.1.151
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.151 with ESMTP; 18 Nov 2026 22:40:20 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Wed, 18 Nov 2026 22:40:20 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc: linux-mm@kvack.org, Rafael Aquini <aquini@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>
+Subject: Re: [PATCH] mm/swapfile: really fix integer overflow in swap_show()
+ and swapon()
+Message-ID: <av2qxMxZXDIlGsX4@yjaykim-PowerEdge-T330>
+References: <20261118112610.122799-1-oleksandr@natalenko.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5541ef01-f9c0-4ce1-b77a-5bb81c6cfdd4@kernel.org>
-X-Rspamd-Queue-Id: 10026180009
+In-Reply-To: <20261118112610.122799-1-oleksandr@natalenko.name>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EA1B1C000B
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3s1q8uruaetd57ykrem6y1rdkn5wtip9
 X-Rspam-User: 
-X-Stat-Signature: fc6a33btytb4m3yrq19bdt64a9wbea6o
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795009183-407142
-X-HE-Meta: U2FsdGVkX1+3WiU0rYblnvq54juxYZRwP7fM0yIJZN75emTHFbB27xZqlb6BHmW+XbOcl54OJDmJkqzPVZJlj4JtXHPN36uptVr2MGXlKB/CHWqGTRAEoVVHvtPFLEWNRRaKaHDo1PVge9pKJDDq5t3miFBQqG+Acwvv/ghdEX9lBuV6AG9+gz7rlco8C7GIfMkbeWxK+u7Jb/XUyMcj+TiOEE+03eDzbgdzJWn2uavxVYgpWij+fccpFkfVPdcKxOL/BsOnUtF5Ihi+NF6q4680DjXfo3WwxWgXN2fh5swASwyGv2ppie4trHY06SB708wr+eJY4Y17EUPEvBz9jSDYWpCDEu06T4KvlCkS3bQ4BSFIcoIo6lSHKFqlJ5+9xZa0tnHpNQXuk+DdjSh9B0Tmq0X6nxZjMyfJuL1KgrG8xlvbzwtCzkgknD8amCiwTPg+y4xzSMkPgfvKNm4MquTx3vMQuAZCDdcXPtdXQfu4L2lvAiIE5UWqR0az6hTqM/r0k2bgDz8Hw+0PtF5eq+KCd4jR/Eu4yTLJQOSwv6FjU2tpJJU0scykWg2kxM1XAm41PbRAMuhVrExJPvVFsvraZTS+9kbk8quGDRg67vH4pcZ7oaWfhjkKqkOsPagZ5ArGwnOeaR1Ri8zL+bV6rSONt8NZ2mdznIxSV78K5I65IAYY3mrzpvXnUaK+cubjmD+kMc9zbiyr6QsNj/yRg3C/2mqX5UnyruOW+zXjbBN6THg2AvDWj/Ewwp3W6ycNpNmj/WfqUimgciBnLbtw1++n7D7ijlITE3gBKZNJF+cvkNJ5EuOXqvj+pXMxoYGgQageQqDZn1iWZEO/cSAg7rWSxcuNVQPOS8njZCB91GwIylT/DgOjovHCK+XVx98s63Ndj9Z5m3JawUOgn/706VfLIxWzrkAxuETR0retpn/YFrFko3LQxpVjuV8+i4m7x0WfKUiX3KI7yNH6+iS
- FO4BT4WM
- zQ56o6r69kmvxQpd7NSYv7oGO9amM6a4/JVfGlG/jD7vaPhkq/OdoKCaY+0DWhbmlfxVmnaDzQKD1jH77VRkN35Jjeot+AF+fxXNuSzNiwj4bIXYUnuYessiEsWSQVOWtjXoOdOLDMYMz3ch0Irv8yPyHfaHgEbzrfL8lbHr3s/NA55UObZvpob7ODjBZVoulezzKvZ5dGKwllLJQ0j3guuV4a0PFhxC+p9K7eiB531/DWbxhZkwTtDLZ31Tp1gBLJfNJ/9vdRJTXAcatZ7iryHQM6mAwuEMDtfwLvOZL5SPJvvYhGzybtAqio6t+5hKd0t0tdLRVeHtLYrNhmrpFInnwbfxBf7fn86EG/fBtX2sVFl7qJqpVJINwKCBbUt2TlxvRpOJPxJBdcqwtv2FfOWQQ6A==
+X-HE-Tag: 1795009229-443352
+X-HE-Meta: U2FsdGVkX1+/Uesbpf/NVFxjmw0lLfsJQIh3JkHqGb3F9/enocqXgQe+Yl8wtv1ZxtT+fCpXsi24nrlyO0+ObVxylA4JP4TWQmW+2mFfcx7hy7L9x+mMzwhw8YMM1aLee0S7ma8zAdkqrHBFwXo485P4cyE7pITp1/KDLp98Fp4PEiwn5PxGPsplrNl6XgOWQJeM3oBaNAEmtJto/n+yyl3KwaGY0J8JMm2yJug2EfF5IPVGOlSdXSmlYzVYkD3ap+q8xj5Aqm6fvaQK0htEc2U9i/cszyxtAbn3ovvk8TutxqOEzgcbTYor58ubaXxqJy9/sp8PBLgzlRiWBvW/dXXPloUm0hF2RBIGRyT1TfW0m5O60/HoGQTP+z2OCkxedPm9j8fUzZbD7PXHiv/E7Mb0SGd35W1BtC3gYLLaXcQKWEf+pC9Ua+ffQC9DHABpw5IkCmcGJwM0ce22QqOsBf+FEEyXwfM68oyT+wF+UINcgQTeW9O3ShOzAmC5LU8h5ukrHtBhU6YSZ2PlTJ5Gv/Su2siwkDjYIFlao9H09GBEnyeynfyHYol9LmhvKdfm4iR1s2muBW53wTHJQwiMwDiXtAaq4dUiXnzfjWtysBh1yk4cxR/doJGSYgx2/B1iWWlpwLu7zjq9wpA8ncBuC99JJNpHMht5a3viE/fBQJRQmmb2Rg0g5M+7Kj4EujjWgfbJJFeUOiPCSETmgmuVvcCr1xqS2YqnLHqSH0miCFrGp+/vBPg0EzelrSlSUCHU+TXUdhX5bDPkj1Cgt66N8cFFKcKgDP4z9sFY0Ml89UndV/OJofyaxx9VqGgQjgPl53ionBm5CUQWRuNMY/9H6J1OPpSTICQYjBW6lkYtqDQiwSwG2DazI69v1gG+DFYDQa5QsXhkOKD4gwi/qHyawAc0MlOqi2OV7fM4/VX6qCorg5TwKZaqAJshlv7kcKKF1I/BgvBdQIFY0Fg0nkW
+ o23UWWFS
+ AjJsxRNtIKzqMMpSY2hccT6QMCn8Uues7KdhGY6fgUniYl2BvT0yUuSviIRtgoThaY2dmuL8DMkiXs87/eSVu6WxrFVfryXq3c9t6G+0v9kkx+GG4KckjVGCpLmheUdmGtF2a0EG+oelimWIwSod7v3OcytO219HzmRuY9tFlIAPp4tTSr8nmIlgVhDWeaEXalTyI6IW5VCn91RG5oYSnUQFzCLOZGQDKpag6Vqu0TLnAN0m/XNbh18/9K0fdHmfZkW+Y5GbjB7ivrFLkYyGJfI/d8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,65 +88,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 11:10:45AM +0100, Vlastimil Babka (SUSE) wrote:
-> On 11/17/26 20:13, Andrew Morton wrote:
-> > On Tue, 17 Nov 2026 19:50:09 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
-> > 
-> >> On 11/17/26 17:26, Shivank Garg wrote:
-> >> > It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
-> >> > for page extensions") but has never had a caller.
-> >> > 
-> >> > Signed-off-by: Shivank Garg <shivankg@amd.com>
-> >> 
-> >> Added to page_alloc.git for-next, thanks!
-> > 
-> > Thanks.  Helps.
-> > 
-> >> Hm page_ext.h should be added to the PAGE ALLOCATOR section. Wonder if
-> >> Andrew's patches adding various missing bits included that too.
-> > 
-> > Nope.  I'll add the below.
-> > 
-> > A few things under mm/ include page_ext.h so perhaps more mentions are
-> > needed.
-> 
-> Thanks! Stuff that includes it are its users and not necessarily page
-> allocator itself. Nothing jumped at me.
+Hi Oleksandr,
 
-The whole initialization part is in a way mm_init ;-)
- 
-> > I'm presently carrying no patches which alter page_ext.h or page_ext.c
-> > 
-> > 
-> > 
-> > From: Andrew Morton <akpm@linux-foundation.org>
-> > Subject: MAINTAINERS: add page_ext.h to MEMORY MANAGEMENT - PAGE ALLOCATOR
-> > Date: Tue Nov 17 11:05:44 AM PST 2026
-> > 
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-> 
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> > 
-> >  MAINTAINERS |    1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > --- a/MAINTAINERS~a
-> > +++ a/MAINTAINERS
-> > @@ -17779,6 +17779,7 @@ F:	include/linux/compaction.h
-> >  F:	include/linux/gfp.h
-> >  F:	include/linux/page-isolation.h
-> >  F:	include/linux/pageblock-flags.h
-> > +F:	include/linux/page_ext.h
-> >  F:	include/trace/events/compaction.h
-> >  F:	include/trace/events/page_isolation.h
-> >  F:	include/trace/events/page_ref.h
-> > _
-> > 
-> 
+> Cast si->pages to long explicitly so that the bitshift in K() doesn't
+> truncate the value to 32 bits.
 
--- 
-Sincerely yours,
-Mike.
+Nice catch. 642929a2ded0 widened bytes but left the shift in 32 bits.
+
+> Fixes: 642929a2ded0 ("mm/swapfile: fix an integer overflow in swap_show()")
+
+stable kernels show the same wrong size, should this also
+carry Cc: stable@vger.kernel.org?
+
+Reviewed-by: Youngjun Park <youngjun.park@lge.com>
+
+Thanks,
+Youngjun
 
