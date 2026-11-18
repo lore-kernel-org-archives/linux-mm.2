@@ -1,98 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B43606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADC3606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h+MqjvDX
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ThrwtBHp
 Received: by kanga.kvack.org (Postfix)
-	id C561E6B05B2; Tue, 17 Nov 2026 20:48:39 -0500 (EST)
+	id 52F066B05B4; Tue, 17 Nov 2026 20:51:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE0AD6B05B3; Tue, 17 Nov 2026 20:48:39 -0500 (EST)
+	id 4DF9F6B05B5; Tue, 17 Nov 2026 20:51:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A82EB6B05B4; Tue, 17 Nov 2026 20:48:39 -0500 (EST)
+	id 3F5196B05B6; Tue, 17 Nov 2026 20:51:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 766696B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:48:39 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB4C5C060E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:48:38 +0000 (UTC)
-X-FDA: 85446555516.06.F51033A
-Received: from mta1.migadu.com (out-76.mta1.migadu.com [95.215.58.76])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2AC83180006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:48:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h+MqjvDX;
-	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794966517;
-	b=woJLJdCLCgZ+soiM7+BoHkelR9/2XWOTeoG3UpUL/8E14FeUvd/wO3kwKxGdsGwe29ekv+
-	TsrIIs9seG7PnRtYTyitAF1Fcwm7J3RWTMlzC0S31DUXIulmDcrYrmebGt59w5GbZvM8yo
-	k5ZaWxlpkIaDiY5zQ+/JKTcgqLH3fvg=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h+MqjvDX;
-	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 126DD6B05B4
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:51:11 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C5851A060C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:51:11 +0000 (UTC)
+X-FDA: 85446561942.19.8AD0879
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DA2861C0009
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:51:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ThrwtBHp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794966517;
+	s=arc-20220608; t=1794966670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kEsuSwHhmeJEGKRuu1fKD0DbR/1Nao9WbEuVQxgyWZM=;
-	b=t7pp4MVB7JTQ/N79Hj7nUu0zf1pL4MMcCt4LHoIPYoTKIhmXEyZgGjsO1eg110A8b1pn9w
-	r324jb253HCtakVuiwc6A8qJN9G1ba2DvXerVegfGveu8pitYibNw4n01h4hnQu2pAADBr
-	Zdcvi4HgQkCzK7q6i27lXFLgKGLOc+A=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=cipxz3ByaOhwFVVoVY3xs7T+pGiwDTQ+f9P0r9E9li0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794966513; v=1; x=1795571313;
- b=h+MqjvDXMGHHko2yXc8o3a82rh7e7cB9QabP1QfEKZwW1JgYjf/UhxxB6L+87FKipWkOnFAQ
- M52ymobFUSr99U4ta+B9XmNK0PxaRopuRDCZ8VXfNxohCtZ5SrWNVTs7L/gEOA6k9he1ZPmBGWF
- 7UhBDGOWYXBux9nmbbZ/4ffg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b13cb621ae958f09;
-	Wed, 18 Nov 2026 01:48:33 +0000
-X-Mizu-Trace-ID: b13cb621ae958f09
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <54e548ad-9641-4348-819a-11f29cc35ff4@linux.dev>
-Date: Wed, 18 Nov 2026 09:48:14 +0800
+	bh=OszsEJToNze6tnzlcvPsV51oFOJRwGBjy9Ri823e+68=;
+	b=Cg0jYC3AHo0DdUVPyvqQvKJ4Y3YUK7yWrbuhJSkJsd8SItFy73GblVrWakc7XTyX+VaXUh
+	db/NUZFES4fq2UxD1prbCdBj28pMf1PthFaESkBm0sWnUGtfuo4Tk0aZx3jGSFbO633GIJ
+	anEqvXucS3g71o9vAmIC+l+F1rjnGH4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ThrwtBHp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794966670;
+	b=Jst3Ofj3u14ot6OG3GIIXZWln0ZX8l+p2aTaw86tm6/t0O67+V9tJIU8DfddqDMi2UT+zw
+	A/x5mrIF1d+CaVjeVagUrTzOlSzsXx5ksa6q/kjNUIeqazZAWK7+3I+ahi/Xxej8y1WcNv
+	GIvY0+hMA7AIXjoC6f0gE5NtSYyN1fE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 10E2840DFA;
+	Wed, 18 Nov 2026 01:51:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAB61F000C4;
+	Wed, 18 Nov 2026 01:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794966668;
+	bh=OszsEJToNze6tnzlcvPsV51oFOJRwGBjy9Ri823e+68=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ThrwtBHpTaXzf7hassKaKBcUyzwDmGgefOFtf6hJdkgZJjnMXGIbtvBZXQKoyZCtt
+	 +MJdcR5DkVpwEGdqNthqxNFo2bYfiMBufYpH5otviGB5eMPoBtMjfBjl+ujAR8Q6pK
+	 FWfnPfqU4c7QakERFWloJeY+amgH+ep80Y7wd8DBEfvSKmAXBLfeDNXVCcohp/5nWT
+	 z+aTBNVIkh3dCQnbkh1sCSuEnFv3HkTIic3D6yUyw0ifyHcuMsXFEVzmhu2oVVQyKd
+	 CJbjQ+p2Lz50jjITHtZyV3EKFBgn7EsdQ33RUrpoqGrd++kbjzVGUOlt/WxQHe0a6/
+	 0tdEykQIgFjRw==
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org, Chris Down <chris@chrisdown.name>, Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 12/13] selftests/ftrace: add uprobe tests on overlayfs
+Date: Wed, 18 Nov 2026 10:51:04 +0900
+Message-ID: <undine-1794966664951744079-93786e4e480023ea@undined.local>
+X-Mailer: UndineD 0.1
+In-Reply-To: <20261116-work-ovl-d_real-v2-12-90564c4ae347@kernel.org>
+References: <20261116-work-ovl-d_real-v2-0-90564c4ae347@kernel.org> <20261116-work-ovl-d_real-v2-12-90564c4ae347@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: hongfu.li@linux.dev, Hugh Dickins <hughd@google.com>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH 2/2] mm/hugetlb: remove the gfp_mask argument from
- alloc_hugetlb_folio_reserve()
-To: Muchun Song <muchun.song@linux.dev>
-References: <20261117-for-memfd-v1-0-fa68f433171e@kylinos.cn>
- <20261117-for-memfd-v1-2-fa68f433171e@kylinos.cn>
- <DF9FCBFB-C1E3-497F-B7AB-567F44873B05@linux.dev>
-From: Hongfu Li <hongfu.li@linux.dev>
-In-Reply-To: <DF9FCBFB-C1E3-497F-B7AB-567F44873B05@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2AC83180006
-X-Stat-Signature: nfq1d5jh7c5e6zmubb5pubk8xmjy1is7
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794966514-368479
-X-HE-Meta: U2FsdGVkX189lLpRwOd/z5MlP0ffFlHAShcxy5LsO+/14ns91K1t+RA7hIKGSGLmqYDK19UKT3ZbymryPbWaBvnQU4Qkfe8+q+56AT2OsqulwGVU6zHNHKj8XnGLjKPo0usnysR0/gHs+7tBZwSrvVPD6dujwbPrCWXeaWR8tvnGh0KSCPHcaQsAoAspeGj3tP8s34tbfl4aoiitbTIcQNjuJMDmBSrgnEDAPb8TlruBJ7b0kKmvfoBkxjTRPaJAqyrQoYaymbOEmkdJaqpFgWUmFBfEt/r2ncOZ+N/s5eO4EFqZLrpApN9DCIU36UnPdI+GXG6EGZYyG6yAvojFlJTG3QU764tHNV7M9M03he9n8oBoyvS6A6jK/EVS4svkhI/oVgGHcshqc+RcNztTr0vAPpfCjOskXpD84DJJGoYnBoO6i80XcvT8l1rQMUz+t5wSFJqpJhCdWa6Cu4DhpXKbXKSnQqyjnwbqjJm3o5c1WwkJ97LuMWZ1It0tCXUu4ia8Dl6kLtAXTBHP8huvPOsEHW/NdfLXPIBQu/6IwT1g+/SdxnvBLzw9j64s06ffQ2ZqS1FgHwVnV22suwyeAvQTKXXFOqTr1+Rp/+gRUnXt+Sdq2xcJsYcCP2sYbpF4Kar0d8BbHeF3xYbEZnCq5xd1FXAW5pJii5tTbrwHmtY/5GJb27DfwSpEBIfhzn8oEEIiEYX5c18DNV1op8GOX2KNRhApjBI4EfoORUjQhchZQ1/rCvgASDJ/T6QwVzUvIb3CahZFY9Bydf5Ye4Y6UFpZ4HrzL+Qjs9Lj9H0Xs0APEUvwcuhb9GnkC0wX0SRTIdoHeJt5afwh+1OMf1WasyM/DY3g0EfX8l2yO32rRp9elxo6hEK9UoOfdjYeN2AMuT6p/64dDf4vAcnIfWX6HS/uGAzgK1ysb7yuKOM/VzJ39bKY0BVZmms9ZALTIhEr0gOxjTnvAOUyACOkHqf
- DriUzO+z
- zEg+GnaFfxtRR7g4ACb9gnfGdV2cTqdNlIFP3m7lgDrGjT17buztH507nBNXYzwNcRLdRhOgup0Po5mOLvmln11pYWAKjoEVxsjfLbJUq3oHc3PCxvK1Lih32FKq41iJPaOQEozmMNkiEtEqymvDHbxcR04n2ACODEPvYtoQC5RpQvaZJUsnEgr0rvpysRxQnkMC9DI2qPUVOv43SiqE0z2z07TBFmsb2N7NC/wTO+qRUC1tlakYMJlGXsDXTQHiZ1Hnakuxr5xCUylT3YbMBOHH9BNZU21fXMhSRYs21tdcrH91zxwVSvJUSknNQuJt+dOlmfHvREOgY1v8ZX1k4XVTMHrKVA1eb/8nG
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DA2861C0009
+X-Stat-Signature: pz9dsbphqx889ma3gk1kh3iuzoeh78no
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794966669-398059
+X-HE-Meta: U2FsdGVkX1+xqBdUMmsX3/Xxtl8AlW474riGEUF5CywnPk9MK4uxz67ywPnn8IJIJ6FWJgLj04qwxcr5wQIGLXlMrLdExpboDChCQ5JVve3Qnew8u44AQDchx27MK9QuZe2h7UUJBOn5iZLnV3NMml902kZSypXzoRnUV8vbAI+HRHzBQ/Z0D6H+3BOl2kJnCkevnYppY2/av1JnlqtPcujJM+dTrlvmcASlzONz4fn9v99otNTYFxzN7od+gd5Axnf71/kevUYv/Ug3wy/nrJJhUiJHFe6c8cpVGh12JWpun6w5wdtukh26DbVjklxKWEw+y6RPU3FHlNWbWGaDuYqEgbyHFQqC4FbTUDMuam8KUDzLiqPtBgW4trbBjo8PA1BI3dtzwBOqgPf+VZZpNuEUu/Oy5QWqAFN1YugueTG3epyDTQF8g8RHjAqhPw8YVaE/fVYYHlWLFX/f7CASV2r2aHGiZ2lkOZhRmQY+CvXsjbT+qu3WmzY2lQ6/t0X/9O4J1yxmdqOafbIH5cdqQdjDaE5XS+1+oy8zh1pWv60rS+Ye5RHhM/HlAaxMLY57l6paq/co2Nfdr9X068PGzH+/bQuo8rp+81YZx1sfkwyiqPvvQIj7XiCrXiRHUBjlJAlQ1q0NyHBrLrombogF7EAh3pm1V7RCfW2OD9UacQPX6tT7nEYD+XGwBiLqRQXW781K3r721Wh0WWVivobEk6BQZ0Jm4zN2MOSSt+EPtjDlqUSoCEyNrhnfyfSFGRFv2DDgkpj7hMTE841yUCM3o/Me9mnuyhFezmIlayFQdnIudY4Yp6lpNwqJwyq16jQNjCleMzkKI3AG6PWksn2qSSu7bYkQudHeWo5pRlilL386E9y3Bh2sEtI5aXK2wxL2F3q1ApmTAjmjzN3ySzBCJWeUBdRePP+PnVODWRxVbFSoHcf9lY5PxZoY1F38t21HI4rNFTTQk4hwjo9ZZnD
+ bD2X6wpE
+ fRXn5sGRqgTcOf69j9LFtEV8xWp7DuVHIoO+CBTrsiY4gNUgyYJuXLSBi3qN6w++ymfugpNn32rpJPzZtaIV0+u2KuABhurKWhUL0iYo4frYbK8NJP5c164meDzyz4JPQUueasess0Y/3M6p2bVUNCnXrt6GuxnE1qxiZp5EbjGJwMJMNWDQ/5TmE2mf3IsLbzPK8tGRtA3+9/wk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,122 +94,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Mon, 16 Nov 2026 10:44:09 +0100, Christian Brauner <brauner@kernel.org> wrote:
 
-在 11/17/26 19:15, Muchun Song 写道:
->
->> On Nov 17, 2026, at 18:53, Hongfu Li <hongfu.li@linux.dev> wrote:
->>
->> From: Hongfu Li <lihongfu@kylinos.cn>
->>
->> alloc_hugetlb_folio_reserve() takes a gfp_mask argument that
->> memfd_alloc_folio() always sets to exactly htlb_alloc_mask(h), which the
->> helper can derive by itself.
->>
->> Derive the mask inside alloc_hugetlb_folio_reserve() as
->> alloc_hugetlb_folio() does, and drop the argument.
->>
->> No functional change intended.
->>
->> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
->> ---
->> include/linux/hugetlb.h |  4 ++--
->> mm/hugetlb.c            |  3 ++-
->> mm/memfd.c              | 13 +------------
->> 3 files changed, 5 insertions(+), 15 deletions(-)
->>
->> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->> index 69732e4cc03e..a88c59476e79 100644
->> --- a/include/linux/hugetlb.h
->> +++ b/include/linux/hugetlb.h
->> @@ -735,7 +735,7 @@ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
->> 				nodemask_t *nmask, gfp_t gfp_mask,
->> 				bool allow_alloc_fallback);
->> struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
->> -					  nodemask_t *nmask, gfp_t gfp_mask);
->> +					  nodemask_t *nmask);
-> To be honest, I'm not a fan of this change. This is a memory allocation
-> interface, and we shouldn't couple it with a fixed GFP mask. Sorry, I
-> can't ack.
+> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_uprobe_overlayfs.tc b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_uprobe_overlayfs.tc
+> --- a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_uprobe_overlayfs.tc
+> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_uprobe_overlayfs.tc
+> @@ -0,0 +1,96 @@
+> +
+> +OVL=$TMPDIR/ovl
+> +mkdir $OVL
+> +mount -t tmpfs tmpfs $OVL
 
-Hi Muchun,
+nit: If `CONFIG_TMPFS` is not enabled in the running kernel, `mount -t
+tmpfs` will fail under `set -e` and report `[FAIL]` instead of
+`[UNSUPPORTED]`.
 
-Thanks for the review. Understood, I'll drop the interface change and keep
-the gfp_mask argument in alloc_hugetlb_folio_reserve().
+Maybe you need to check tmpfs support in /proc/filesystems too?
 
-Also, patch 1 is the part I'm least confident about. Your comments on
-it would be much appreciated when you have time.
+> +
+> +cleanup() {
+> +  echo 0 > events/enable
+> [...]
+> +setfattr -n trusted.overlay.metacopy $OVL/lower/broken
+> +setfattr -n trusted.overlay.redirect -v /missing $OVL/lower/broken
+> +
+> +mount -t overlay overlay -o lowerdir=$OVL/lower::$OVL/data $OVL/merged
 
->> int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
->> 			pgoff_t idx);
->> @@ -1161,7 +1161,7 @@ static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->>
->> static inline struct folio *
->> alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
->> -			    nodemask_t *nmask, gfp_t gfp_mask)
->> +			    nodemask_t *nmask)
->> {
->> 	return NULL;
->> }
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 88c9aa700533..e84203406da3 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -2221,8 +2221,9 @@ struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
->> }
->>
->> struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
->> -		nodemask_t *nmask, gfp_t gfp_mask)
->> +		nodemask_t *nmask)
->> {
->> +	gfp_t gfp_mask = htlb_alloc_mask(h);
->> 	struct hugetlb_cgroup *h_cg = NULL;
->> 	size_t nr_pages = pages_per_huge_page(h);
->> 	struct folio *folio;
->> diff --git a/mm/memfd.c b/mm/memfd.c
->> index 8905e3e9efc8..08b9d54b0d8a 100644
->> --- a/mm/memfd.c
->> +++ b/mm/memfd.c
->> @@ -69,22 +69,14 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
->> {
->> #ifdef CONFIG_HUGETLB_PAGE
->> 	struct folio *folio;
->> -	gfp_t gfp_mask;
->>
->> 	if (is_file_hugepages(memfd)) {
->> -		/*
->> -		 * The folio would most likely be accessed by a DMA driver,
->> -		 * therefore, we have zone memory constraints where we can
->> -		 * alloc from. Also, the folio will be pinned for an indefinite
->> -		 * amount of time, so it is not expected to be migrated away.
->> -		 */
->> 		struct inode *inode = file_inode(memfd);
->> 		struct hstate *h = hstate_file(memfd);
->> 		int err = -ENOMEM;
->> 		long nr_resv;
->> 		u32 hash;
->>
->> -		gfp_mask = htlb_alloc_mask(h);
->> 		idx >>= huge_page_order(h);
->>
->> 		/*
->> @@ -101,10 +93,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
->> 			goto out_unlock;
->> 		}
->>
->> -		folio = alloc_hugetlb_folio_reserve(h,
->> -						    numa_node_id(),
->> -						    NULL,
->> -						    gfp_mask);
->> +		folio = alloc_hugetlb_folio_reserve(h, numa_node_id(), NULL);
->> 		if (folio) {
->> 			/*
->> 			 * Zero the folio to prevent information leaks to userspace.
->>
->> -- 
->> 2.54.0
->>
+Similarly to `test_attach_api_fails_ovl_no_data()` in patch 13/13, if
+mounting overlayfs with data-only lower layers
+(`lowerdir=$OVL/lower::$OVL/data`) fails (e.g., on an older kernel that
+lacks data-only layer support), it would be better to skip with
+`exit_unsupported` rather than failing the test.
+
+(Note that this selftest can be ran on older stable kernels.)
+
+Thank you,
+
+> +
+> +TAINT_WARN=512
+> +TAINTED=`cat /proc/sys/kernel/tainted`
+
 -- 
-Best regards,
-Hongfu
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
