@@ -1,108 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBC660A2601
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 18:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141D360A2619
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 18:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ODZK9b7w
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=KWfjA+/O
 Received: by kanga.kvack.org (Postfix)
-	id 2894F6B00EF; Wed, 18 Nov 2026 13:22:46 -0500 (EST)
+	id 326BA6B05B1; Wed, 18 Nov 2026 13:23:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 239C66B05B0; Wed, 18 Nov 2026 13:22:46 -0500 (EST)
+	id 2D71D6B05B2; Wed, 18 Nov 2026 13:23:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 128926B05B1; Wed, 18 Nov 2026 13:22:46 -0500 (EST)
+	id 1ECEF6B05B3; Wed, 18 Nov 2026 13:23:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D13316B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:22:45 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E0D2C1C3C99
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:22:43 +0000 (UTC)
-X-FDA: 85449060606.23.B84E763
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 297F9160004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:22:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODZK9b7w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E75D26B05B1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:23:09 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90CE2C0826
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:23:08 +0000 (UTC)
+X-FDA: 85449061656.21.3B5B115
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F186920004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:23:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="KWfjA+/O";
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795026162;
+	s=arc-20220608; t=1795026187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xvB8IhYRPSnbnj2uCIAQHzMiYpbNgO0dDpgbm6C1Dps=;
-	b=LLr36kcfTjZ3FDt1dnl4Z379vTMttoB4lzLnCRr5fXEC5LQtylKQTYQKnvUWuJUMgBV/2y
-	cR+/r/Cywt+QF6+YSiqzum1BIYkvv6W3Y3joPI45qSX/TZqVOWoPzWrw+ZmwKAO8KB+SO0
-	120XPa7oRBPrinuGFdFVs/kqEVGkw1Y=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=EU0w2Pj7eYZo7t7cHwVW7q82EN7P2iEY8kXTkymFoF4=;
+	b=q6YQ7+DUZHNm1lhVWibk2LOKvZFSEXnKlsQ48Y5zZnmSE3lVTxAcKZhP9/qv1CFGCAuymY
+	6cHtpaytqjkBStiWNrEfH9sd/yBcwtOVYXUzofHn+MgJGzTX3yixyt/jH+e+L2160Sx8wK
+	lIs2XvVnnDgwxIPfSLYPUMYpLoBj95M=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODZK9b7w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="KWfjA+/O";
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795026162;
-	b=b/X+ogShvG+FvIdlClVLNprqlTWF2hfvOI2jEuj/YsZW4nTv/24teMCMWWbepadGhTKIxy
-	qqZOyiugGCtNHuJgGr+XrhGRmFOK0Yqk/xWE2d2qyAt0u8fDR2lqICIHz4HpalCRj/u5yJ
-	4yB3QhMbFsWTJOzoEvz0FlwdTRfV4YE=
+	t=1795026187;
+	b=uWI3cLuu2lP6g4Oy2G4Z0ePhUJDqR65/RMKdLoZEPneh4riOgZyidX8wMGMwyruG+7+xgm
+	T1yI+/jl2T2xd+z87RZSICwZ4gcgqZ75Y8oMyiXGHyuPTYgc2Kj8luhbPsNVmtVcXNFtKu
+	+ItNi6UUSmdhzwnPJw73UL7Kl14j9K8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 77A4C636D9;
-	Wed, 18 Nov 2026 18:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6571F000C4;
-	Wed, 18 Nov 2026 18:22:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795026161;
-	bh=xvB8IhYRPSnbnj2uCIAQHzMiYpbNgO0dDpgbm6C1Dps=;
-	h=From:Date:Subject:To:Cc;
-	b=ODZK9b7wAy+7knSx5IdGq47OxYc/w6wlve6EX4WhEEofAft1dtcexWSkfUhq+/7G4
-	 xmHel7e0ZkMNcepri9ctwPko4OE+uDGGjVIYfa2U+quHtXGNo2RzkoIjTHs8v4TrHZ
-	 wbxiD2HbDSz+7T3SJOokPcpXsQ5lpMkV5wjMPxaOK6kAVKFZ7mU1jDM9ts/W+/YWYB
-	 T7CIeqSyM8ze/TXw3XTE1O8tR8Iv1D8gFU6OoEWDX0vfFmPcvwFpFkk3gzrDPTHXaG
-	 OodFbQOhiT1Pe6x+nj3Da+6fhoTZ+jz1NWCxQCN1iHGeWlTszHrrbantqG6LozlYGL
-	 Zk6q0tBAEH31w==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 18 Nov 2026 18:22:10 +0000
-Subject: [PATCH] MAINTAINERS: consolidate the memory mapping entries into a
- VMA entry
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-maintainers-consolidate-vma-entry-v1-1-8019b0e9928f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NMQrDMAwAvxI0V2CnYJp8pXRQE7kRJHKRTGgJ+
- XtNhxtuuTvA2YQdxu4A411cijaJlw6mhfTFKHNz6EOfYow33Ei0Ntgcp6JeVpmpMu4bIWu1L+a
- c6JoCPUMaoHXexlk+/8f9cZ4/533uRHMAAAA=
-X-Change-ID: 20261118-maintainers-consolidate-vma-entry-ff6a360ab069
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, 
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, 
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5075; i=ljs@kernel.org;
- h=from:subject:message-id; bh=avC9Gd6INiMLB87wWgBdV52PLjJojmtRdMkvf72D52E=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLL+vnmgWPR1cTCT+oFt7iIvN3LJGa0y+FnwPdTQ7MAll
- YJd+WpNHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiIhyPDP8O/pyP+sR7RfHg4
- x5l7ncSVSU5yLSnfazdPuMCqeFxszQ9GhkuPDsx8nJ1QHFfockovemI1U/pe3ZCHvledC3ZKrpg
- 4hxEA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: qtg6mxqmmq9hk6cup7fow6s878i9ecip
+	by sea.source.kernel.org (Postfix) with ESMTP id 10F6646F1F;
+	Wed, 18 Nov 2026 18:23:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64531F000D1;
+	Wed, 18 Nov 2026 18:23:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1795026185;
+	bh=EU0w2Pj7eYZo7t7cHwVW7q82EN7P2iEY8kXTkymFoF4=;
+	h=Date:To:Cc:From:Subject;
+	b=KWfjA+/OMvOcJKU7kDKY+pGt1QJ2Z+wc3E2Lk1dFAkFKbiPY0t7/40JEp9Rmukcno
+	 b/DPcqypQEYGvEl/sk6k/mdsxqoW6eItFpo4APZsrQ7qS1Nfz0g6NOLxzIxTPDHqoi
+	 k8Fu1l3Q+e/5iv1IBlaUP+1+iJrtdVydfZ4+g6Ls=
+Date: Wed, 18 Nov 2026 10:23:05 -0800
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com,
+ Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Miklos Szeredi <mszeredi@redhat.com>
+From: Andrew Morton <akpm@linux-foundation.org>
+Message-Id: <00461f0c866d4a4eb9f50792f0e1f3d0.1@linux-foundation.org>
+Subject: [PATCH] shmem: consume the reserved xattr space despite remount
+X-Stat-Signature: npwjn1d6i89yj9x3q3aicssx7onj9643
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 297F9160004
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795026162-822373
-X-HE-Meta: U2FsdGVkX1/LS+qX/VTMd9R4/4EgwSLTc5CYpmH0gRWMzx4fj0WqLEmwbew2Kb0CoRHn9X5y9tfiif5A6ow1lTL/COLwBm0GIzkUxgMrRh9zPc4S23WD+FNHhDRiycx2DE27ySjZHyVfsnhTeBeouhKN1kLkWRXj8ENvVwXR6AkPqXxbj1d4MWbhhQoyFqEkChEG9DOhTgqztJ6J6dfzzwIhBSLiyVUZZuCWisaRX0zw1Aachw5f1R1VRu1dl/6NiYVwQBVhRdHz5/nVj05QD4NBWUWJSUL9dFBUY6p4Ph2UDSmmDQCjVa/VNp/sRmEAb4ipZgaP/jGlUZ7BYuHRCiiXDZDUnWPIXasblgV7+uWhrrdcdSz5LpzyE8kDOphCdufp4S4lSccdQoJj2BkID03BrrVPTKPQQQ4Ry2782drT8rsv9o0WKZGpIJrfgREwmYMYNwjaygHw1sDIoeWDLReInI5z8Q6W5zoczrGea6BIUVGNCp7H0R0eo2sx0XUnCyjD7YWnFAh6M1uuU7HvDe2KtQVDCKTYHUfCX8x/VJtOw44U8aq2Di8AU6oNZeiIm1/Z1rnEQnNIELf3zSDyaYi9QEBEraEeSc6DIHLXGysqaEg0HP5tnbS250homG0F0ZD0PijLtwQsZuU9nF/Dx7hu0ZYcBKtNTfTDhdLtQhpE4adL1A6s4JmC7vS5MrrPQYwI7CZ6jsZinY9NZU2USjMg6DF5q8iv15l5ugNdFHkJ5jEgxkWYPmQC1KOem25UKZvJ5pz0zKE0HYzpnwzxNOXgfCJzQ5QMtE9q86eXbcs9J0OexE9RpiX7vaFh0oVERotLcmy5/a863SKe5IDEEBjD0UEVF/xtUqVB0KVVJbFW9YqwY3isIuCgq7Pfv3rOEyl49R0z65Bvr3N892273xNGkH7GOK7cq1acDiebiXY1U2GTusmtk9fbP6681EyWHYUUfvMQA5nwte/iXy6
- pRp5gY26
- jO90Nwl7NyQQjzF5iUpsjhbLoluALDzg9/FUOg5UTS3bzZVpjp+ZsVHqb5J8wIk+NfpK0WSAro91gkNSA7vElk7rZBSL/fZEDf57Jl5yv4G83U368diaGHEcBAm4Koo9sEa3vLNdEeXEm6TTgixFQs+1QUDbH7DqflE1Uw5xuHkN8SDFDPrNDoY1Snm4Vjnz/mZYPYfIPqYUXVfdaFaqWrsorQdkz/+M+Tr0UMbc4VC5pKTZ4oDYxofQ0qwn+I1bWhSZIZgR6UwKll09WOEd5wLul7aWn54I7zmT0pAvQl/FbMF4W+5QeKRMzmouPjXaLtpzdkoWAsjycop404dGigfwZt0In6CHe/dFFFsK6a84Mjsl0SzQiajrnz1iUKZhLf82oN/GW0tGVKTjffIA85FzbAqw3bQ3RtnG4gz+7RpnBGszEnrKXGhMV7GMDZJVo5mFv3rqk7h9wbBi9znbIMFQrCzFPZcSiLOkKk96IpfvpZQZw2mK8oL/D6VP1d1hdMugLK4G4eWN42SGZvngNlZ88OoqyzFaRqqUBEhEW9dDCF8bsp4dwzJjTrDviQnRJBCqoomMwn2kz9WcDzO4jo/gziwaKmVjFLXm2MLSrgJYD73b2yIF/ehpmVQ==
+X-Rspamd-Queue-Id: F186920004
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795026186-437009
+X-HE-Meta: U2FsdGVkX1+sg3+e3VmopAm46fDcVJ3v5xnL9BtEoVAcx0AmtMxhMnhtoLbe64YnATKZh3KFXmlAVrgQyoUoQRSGgQepRb6IpyKtl7p9NyxQUsVJcNYoLmt0WV4br80CXr96BseZnXV+fDdOyBcz0BvJjvao8n/+YbVDDJCSmZwEmxpv0jC3JS8YuTr3iYDCiuxx1YTJ0KT+WTnD0ILWWYCYCBQCRQ4t1FZO73OrTnsvfiwNKRtjSvy5EbOdGesiGcG6z84oD/g8cPw305r0a15IK+GqI7dOoI9JNAcg9BKgDucNF5+VRuUzl+GhmE6fPj3DUU5fvMsPoJeWHg4FEqUMd6XWjGeMYGFUswcOFX185SxcHOyQMRUiJYNFVw3Wz0JTSuGUcVoikRDE7usszcUlNVCEWh0l4gMMx1tn9bU3yaD7KxUqb8PBekPgvye6TljLtJhCoDTSWg5EK6hiCiKOHBFQJgwk+W30VnoOuTNebd+BidF6Ylwf0HAmT5xPnf18vCcapTrh2G2SozMQndEpRUtXNuQRM3mIka6Tewpf3tqmdpFjKw/+T9TTgeo7jlFw9LhyQ+X+N9l8vLohi3Wd9REnAch9D0ZCZHdDMAGb8txUPo3Li8u6zMqOwIllM31iMCxJl4nMzUrItQ6IzctMHsaVqcj8kDcZ2qTFkk3FnzYjt1nBo4bw6RvySgTV58N+Hlcy3dzgb4kH4ZbURbRJkAk1AlMsb6u1YGTS1lM1Y7Sr480FSw3fJSwXukgn2+TOoxcfq3UjhpmxC+LEW7crG2tkyWS9FxEK4OxSGvph7YcfiMwTFtRe7dle8KLa8un5m6kNrpPZCv3d1gBVWgxv16QUApigWMj/4lL7SrIYw6EwSxNaiuzb0/GHq2my1l1/8uqg5VXM0YHhMLaAnzyk6IHIR/28pUi5qz9T6NOOPbK67aOeJPZ3xGPBvWQNEnwPUhE0dmG+3FHboLF
+ apWKUoeC
+ pYG4GDWHzvrXmCJjDBr0eRKGAb88E+8qWNBFZLzdkIuMvlVWEW3OrX+gPHE0Q8zfnnQX52A4LAM6mBiK3QlXNMtPHeYTwbJ0vwJPHJy2fC5rPZbXxmTo4/T+KhBbWH9q3aCB1nIgo4W7xeHuZofR9QxzNJKjxM1vT5rSLKDQdkti4vmM9l/shLmsMBVReCb7nQo/fS/F/+9n0pcwT87oTejcrKDx/G0UmjxvxRgzWB3KdVzFI5uqUGlX3O59nJO8/h+1O05TyOHk//smt9/322GIksRV5zpr6FGTYq8HyHcABCbgSUykxHYNv2H7dzOkkwUxhGgCUjLDEOoisx90C97/B9ADV/OFwMBvVcWd5ro+gThb9XiCulQ8nIVejB6liCfUEcIfS12BC0RmOxS1pyuFnkZLxG4N28TQvT8irGEB7NtNV7UfdRiFlDFt6LMebNjoFHPBTV/LEzGLhMgW0GB7PRd7DZtsDhPm1DIdaNbNlvm+M7fBIe1pYlNY48BFkxo5+aLuvi/MsZ2auRr5WjObWYKojZuSEG4tYAb6oYeo1jExVSC+Zvgc7E9Emes8/2MYUQ0Tyi4Q2j4FMqA6GTkIIiT0s24Rwa+exefRCJuOcSHCJiEfBhbJAZZE4o6C7iAuP+/IIupnC0Zw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,150 +85,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Memory mapping entries were kept in three different sections in order that
-those maintaining/reviewing each distinct part would be made responsible
-for/cc'd on only those parts.
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: shmem: consume the reserved xattr space despite remount
+Date: Thu, 05 Nov 2026 08:08:06 -0800
 
-However this creates confusion as to what files belong to which component,
-so simplify things by consolidating them into one.
+Creating a tmpfs inode can trigger WARN_ON(ispace) in shmem_initxattrs()
+when a concurrent remount sets nr_inodes=0.  With panic_on_warn enabled,
+this warning can panic the machine.
 
-Expand Suren's maintainership to the entire component, as he is a trusted
-and valued member of the VMA kernel team and very much deserving of the
-position.
+shmem_initxattrs() reserves space for the security xattrs while inode
+limits are enabled.  It later tests max_inodes again before consuming that
+reservation for each installed xattr.  If remount disables the limit
+between those steps, successfully installed xattrs leave a nonzero
+reservation behind.
 
-Additionally, drop Suren's core and misc reviewerships in order to focus
-upon VMA.
+Use the remaining reservation, rather than the current mount policy, to
+decide whether to subtract the installed xattr's space.  This also leaves
+the failure path with only the unconsumed reservation to refund.
 
-As David is receiving pull requests directly, make him a reviewer, purely
-as an administrative change.
+An initially unlimited filesystem cannot acquire an inode limit through
+remount: shmem_reconfigure() rejects that transition.
 
-Also specify the new tree location in preparation for the tree being
-established for next cycle, and remove the link to the not so regularly
-updated linux-mm website.
-
-Given that, from next cycle, the tree will sit outside of Andrew's current
-process, remove his entry, also purely as an administrative change.
-
-With that said, I'd like to take the opportunity to express gratitude for
-Andrew's huge contribution to mm, and for his being both generous and
-gracious throughout this period of change in the subsystem.
-
-Co-developed-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Link: https://lore.kernel.org/20261105082717.c459bb33778fcf27e5675082@linux-foundation.org
+Fixes: 076e5cef28e2 ("simple_xattr: change interface to pass struct simple_xattrs")
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
+Tested-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Miklos Szeredi <mszeredi@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>
 ---
- MAINTAINERS | 51 +++++++++++++--------------------------------------
- 1 file changed, 13 insertions(+), 38 deletions(-)
+Reproduced the warning before the fix and verified its absence
+afterward in a Debian 13 guest with SELinux enabled (permissive).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 222b7fc2c3aa..59496dd1d11e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17509,7 +17509,6 @@ R:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Liam R. Howlett <liam@infradead.org>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Mike Rapoport <rppt@kernel.org>
--R:	Suren Baghdasaryan <surenb@google.com>
- R:	Michal Hocko <mhocko@suse.com>
- L:	linux-mm@kvack.org
- S:	Maintained
-@@ -17680,7 +17679,6 @@ R:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Liam R. Howlett <liam@infradead.org>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Mike Rapoport <rppt@kernel.org>
--R:	Suren Baghdasaryan <surenb@google.com>
- R:	Michal Hocko <mhocko@suse.com>
- L:	linux-mm@kvack.org
- S:	Maintained
-@@ -17974,30 +17972,37 @@ F:	rust/kernel/mm.rs
- F:	rust/kernel/mm/
- F:	rust/kernel/page.rs
+A temporary hook paused file creation after reserving security-xattr
+space. Another process completed a real nr_inodes=0 remount before
+creation resumed. The unpatched kernel left 94 bytes unconsumed and
+triggered WARN_ON(ispace); the patched kernel consumed the reservation
+completely. File contents and the security xattr were verified.
+
+Ordinary creation on limited and unlimited tmpfs mounts also passed
+on both kernels. No additional KASAN or lockdep reports occurred.
+
+Tested Linux 7.4.0-rc1 with GCC 13.3, KASAN and lockdep, using KVM:
+8 GiB RAM, four vCPUs and one virtual NUMA node, backed by a
+Threadripper PRO 3995WX. Both kernels had the same diagnostic hook;
+the ordering was forced rather than left to random stress.
+
+ mm/shmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/shmem.c~shmem-consume-the-reserved-xattr-space-despite-remount
++++ a/mm/shmem.c
+@@ -4491,7 +4491,7 @@ static int shmem_initxattrs(struct inode
+ 		if (simple_xattr_add(&sbinfo->xa_cache, &info->xattrs, new_xattr))
+ 			break;
  
--MEMORY MAPPING
--M:	Andrew Morton <akpm@linux-foundation.org>
--M:	Liam R. Howlett <liam@infradead.org>
-+MEMORY MANAGEMENT - VMA
- M:	Lorenzo Stoakes <ljs@kernel.org>
-+M:	Liam R. Howlett <liam@infradead.org>
-+M:	Suren Baghdasaryan <surenb@google.com>
- R:	Vlastimil Babka <vbabka@kernel.org>
--R:	Jann Horn <jannh@google.com>
-+R:	Shakeel Butt <shakeel.butt@linux.dev>
- R:	Pedro Falcato <pfalcato@suse.de>
-+R:	David Hildenbrand <david@kernel.org>
-+R:	Jann Horn <jannh@google.com>
- L:	linux-mm@kvack.org
- S:	Maintained
--W:	http://www.linux-mm.org
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/vma.git for-next
- F:	Documentation/core-api/protection-keys.rst
- F:	Documentation/filesystems/mmap_prepare.rst
-+F:	Documentation/mm/process_addrs.rst
- F:	Documentation/userspace-api/mseal.rst
- F:	fs/proc/task_mmu.c
- F:	fs/proc/task_nommu.c
- F:	include/linux/mman.h
-+F:	include/linux/mmap_lock.h
- F:	include/linux/pkeys.h
- F:	include/trace/events/mmap.h
-+F:	include/trace/events/mmap_lock.h
-+F:	include/uapi/asm-generic/mman-common.h
- F:	include/uapi/linux/mman.h
- F:	mm/char-mem.c
-+F:	mm/madvise.c
- F:	mm/mincore.c
- F:	mm/mlock.c
- F:	mm/mmap.c
-+F:	mm/mmap_lock.c
- F:	mm/mprotect.c
- F:	mm/mremap.c
- F:	mm/mseal.c
-@@ -18011,36 +18016,6 @@ F:	mm/vma_internal.h
- F:	tools/testing/selftests/mm/merge.c
- F:	tools/testing/vma/
- 
--MEMORY MAPPING - LOCKING
--M:	Andrew Morton <akpm@linux-foundation.org>
--M:	Suren Baghdasaryan <surenb@google.com>
--M:	Liam R. Howlett <liam@infradead.org>
--M:	Lorenzo Stoakes <ljs@kernel.org>
--R:	Vlastimil Babka <vbabka@kernel.org>
--R:	Shakeel Butt <shakeel.butt@linux.dev>
--L:	linux-mm@kvack.org
--S:	Maintained
--W:	http://www.linux-mm.org
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
--F:	Documentation/mm/process_addrs.rst
--F:	include/linux/mmap_lock.h
--F:	include/trace/events/mmap_lock.h
--F:	mm/mmap_lock.c
--
--MEMORY MAPPING - MADVISE (MEMORY ADVICE)
--M:	Andrew Morton <akpm@linux-foundation.org>
--M:	Liam R. Howlett <liam@infradead.org>
--M:	Lorenzo Stoakes <ljs@kernel.org>
--M:	David Hildenbrand <david@kernel.org>
--R:	Vlastimil Babka <vbabka@kernel.org>
--R:	Jann Horn <jannh@google.com>
--L:	linux-mm@kvack.org
--S:	Maintained
--W:	http://www.linux-mm.org
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
--F:	include/uapi/asm-generic/mman-common.h
--F:	mm/madvise.c
--
- MEMORY TECHNOLOGY DEVICES (MTD)
- M:	Miquel Raynal <miquel.raynal@bootlin.com>
- M:	Richard Weinberger <richard@nod.at>
-
----
-base-commit: 0c524518413094607a6178c53a65815762bc9c45
-change-id: 20261118-maintainers-consolidate-vma-entry-ff6a360ab069
-
-Cheers,
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+-		if (sbinfo->max_inodes)
++		if (ispace)
+ 			ispace -= simple_xattr_space(new_xattr->name, new_xattr->size);
+ 		retain_and_null_ptr(new_xattr);
+ 	}
+_
 
