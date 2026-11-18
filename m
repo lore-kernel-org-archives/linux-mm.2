@@ -1,115 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AB0606A331
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5153E606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gBGjUbGI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldFyW8Sv
 Received: by kanga.kvack.org (Postfix)
-	id 876576B05B1; Wed, 18 Nov 2026 09:41:40 -0500 (EST)
+	id 606526B05B7; Wed, 18 Nov 2026 09:42:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84DAB6B05B3; Wed, 18 Nov 2026 09:41:40 -0500 (EST)
+	id 5DD7A6B05BA; Wed, 18 Nov 2026 09:42:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78AB36B05B6; Wed, 18 Nov 2026 09:41:40 -0500 (EST)
+	id 4CD186B05BB; Wed, 18 Nov 2026 09:42:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CBA36B05B1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:41:40 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED3E51607A6
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:41:39 +0000 (UTC)
-X-FDA: 85448503518.18.41C9A91
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E76361C0007
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:41:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gBGjUbGI;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of jocolema@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B8D76B05B7
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:42:07 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5142BA831E
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:42:06 +0000 (UTC)
+X-FDA: 85448504652.10.252B28E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 98978C000A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:42:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ldFyW8Sv;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795012898;
+	s=arc-20220608; t=1795012924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wxU3d2BtYa9n3sGwgS81YBp+BaQBDVvXZNu9QMElTjM=;
-	b=dzTF1cOVpi76A1HSevYX1BaQl2RfXLrXd5WtNWEAz54Sn6oScUsBrYOU5swWhY7vSqxit4
-	bCx2QZqspkLgokKjuwMjayLfOYx2S0A51bg4eciNPINlwVTKO3vutdZdvUprqGddP2TQLV
-	OSq17TqOC+tdiEqk1MpsbxHEsclGuc4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gBGjUbGI;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of jocolema@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com
+	bh=QT+a4lJEqwyl0jCFNYDDkazhdWIsc4Kyy0uQnU2xGfA=;
+	b=lm/+eN5VM8z/c128qLP0ni89N9pxZxVeQIlJabmgFB7TXVYNqwDniu5XaG2tcqT0dTD+pS
+	GHAclWxd40QqN3upeTXDWopJvEjxA+d5BhhJaXreFxnHmAbfFsWTfm0lx64hR+xBtMwd+J
+	39+12NOpnBMwSLMno1CWZ4woEQYTz5g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795012898;
-	b=sjRp6byk/7gxpAZ9YLImPMIsJZZW8WSLUDcprTzGCZaF7ZqGFg0QC7hzognwEvLH1MOdPU
-	et5iW5UEsrPaV3KFPNt5Z9/83n0Z6qo48XfTfQO7SouVzy8uQSF6ysnsV94nwTkbyUkEs5
-	c/mURArY//JQXF8G1i8V9MjfFMHITNQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795012897;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wxU3d2BtYa9n3sGwgS81YBp+BaQBDVvXZNu9QMElTjM=;
-	b=gBGjUbGIo8UaQG1wpauhtekf9NJvkr3+aq6T9DNuoWUzRzFMwTcPztztSY5lDJX7WRC24u
-	nfWBZnzie+eO+RMDvg4JxZ/ar1ZjRg3P3qj+xmiL2M4e2dR2HrutFD0HQ4rfa+MAaM921E
-	wk15h0m5sn8ZUN0OWMVDdc0uJvpTQfQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-2uacoIF3MgCeoqTcc7XjLA-1; Wed,
- 18 Nov 2026 09:41:34 -0500
-X-MC-Unique: 2uacoIF3MgCeoqTcc7XjLA-1
-X-Mimecast-MFC-AGG-ID: 2uacoIF3MgCeoqTcc7XjLA_1795012892
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D6E4819560B4;
-	Wed, 18 Nov 2026 14:41:31 +0000 (UTC)
-Received: from jocolema-thinkpadp1gen4i.rmtusco.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 728361801977;
-	Wed, 18 Nov 2026 14:41:28 +0000 (UTC)
-From: "John J. Coleman" <jocolema@redhat.com>
-To: zenghui.yu@linux.dev
-Cc: akpm@linux-foundation.org,
-	audra@redhat.com,
-	david@kernel.org,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH] selftests/mm: allocate nr_pages based on pmd size for uffd pmd_move tests
-Date: Wed, 18 Nov 2026 07:41:15 -0700
-Message-ID: <20261118144115.2112331-1-jocolema@redhat.com>
-In-Reply-To: <38118330-5cd6-4f32-9098-a3d07cc7b3cf@linux.dev>
-References: <38118330-5cd6-4f32-9098-a3d07cc7b3cf@linux.dev>
+	t=1795012924;
+	b=qKp+CuQgQO7iOBtJC4MQVj8slrPNfs9TcUelzSeGZM89CwX1cv49qUCoWvvR6IzN06/JPV
+	sIKzo2PgCWsqv4Ay2sei5tChgAnhGUlfWf+vs3WuigAz2UnDiCBTh88G68UCc5UzO17PNt
+	hAtYuSQYZdWXklgqUN2RnNyC2jw4Sww=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ldFyW8Sv;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BC96645FE6;
+	Wed, 18 Nov 2026 14:42:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962D71F000C4;
+	Wed, 18 Nov 2026 14:41:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795012923;
+	bh=QT+a4lJEqwyl0jCFNYDDkazhdWIsc4Kyy0uQnU2xGfA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ldFyW8SvbFTu9lKav0563xlXtSIQDbuyg1xw2e1nayTCk55kJzo/1oIgWmE26bdOW
+	 I8FzmF9aprimQoIkvuWBfuRY1tWhSSga7PfFDuWSQ6p27JjzMI1gpVFv7QncfHIceS
+	 Zg39lJed+6fQnfUKqsghD2+ChKDtMGhkscJqAmH6f/MUVEVwDQ8iubpD1Uqgg84icI
+	 kqWCa6Fp6kVxQMdfkTTMTddleIftE+RdOCb0XKwdKuTAap/o5R3JPQ1qou/Bm2QEb2
+	 G69xSnyim1VrnLrmx+XsOW/vLjQquvVTdfu7545IancepkA4OFfUHYuBPgSrwAt3ax
+	 uu7WGXF8ov5zA==
+Date: Wed, 18 Nov 2026 16:41:49 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+	James Houghton <jthoughton@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+	Andrei Vagin <avagin@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@arm.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 6/9] mm/huge_memory: build the moved huge zero PMD
+ from the destination VMA
+Message-ID: <av25LTtBq1hWfEIC@kernel.org>
+References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
+ <20261117-uffd-state-fixes-v3-6-b617009d1a4a@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: ug1a6eaySApozEoktk_-aAwGLsDwxmbNttGTfFX2t00_1795012892
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: E76361C0007
-X-Stat-Signature: ca8ky491t39cx8o4w7ba5ru78fcbqezf
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261117-uffd-state-fixes-v3-6-b617009d1a4a@columbia.edu>
 X-Rspam-User: 
-X-HE-Tag: 1795012897-128068
-X-HE-Meta: U2FsdGVkX1/ZNuxfSKqCP/nsDYYdDOHKdHAztfzPNwm3mKYQsycE9RUVaM4Eb6tQ8vINFlGUlI/9opBE5x2Xd7q9J/hMMBEnpVa9hNFsQsBy9fdmjZVVWnVQMR+ZonucH1HCDUwLyS9niaPyLfqGT8ZmZmwKXAxgyC8wvFMCQ0s+kdXySHTxM5xEFAVm0B6L1TmPefyG5CK4/sY+sV/zphjST7Fg/yCIKqS8ydsmkpFe1QWJ0s9gtc3NHl+cg5tD/xRm+cZrmJgcF8KMTL62jOPLyWqHoEU3gV/YguBg4dAEgW6KAYK0becaG0GUxpvqgbnELdrI4cOr3X/lkXcZb0V17a/luiNClZtpjD1Qt80BwbFoqXQ6jaSBM6+GXHGT+MY5Nlw2D6NxJkH71o/05TZRGWpro255TQ37SqEvJmUyukCkoTetPDfxeHLljCH1y29IEafWzKSi6bNguwem261GZhGTfX2AaZRviJtrGqUdFi/hVT766L+9Mbn3Hzzg9+aBNwTKVXj/8g0lxReMS6O3ybF/nggg22BhYBssOeXzFzTANbgema4Y1+0M0e4f6cYnbp4z7eM1UjTOKcqwHB1LzLNdS5+Zu/JDPl2DBFV6hRw86PT2OdNKQnhJ6JmmPcRx6GtFM2pJC3G3EQhK9pY5CNCIHm7pSulkpKLrCFRBU0XWWivq4K4hPnU5OuT0T8ZTyfUeLlt/E0pllcL4/9Y5JGt2D1LRphc1othxfggpk+wRTRaNbV+qFrqenlrBwqrX4optUNVnzFTvyLTsOKpjFw+8L67eHib/vgcPXRyiRXKh/L6L3VejkjfqUHt9zAfDOPs3B7QAABUiXY+uvpS4/xzMbbYzpWI+hYEIRVcsw+L6Sfl0lAa+aWXNu3WG0WLrWV2/Qro7iQ8ScoBfeaNbDgogLRjpRIwVY+8QiUsZatbWOPjzwY0GiPE4jMbqdCbo2GNxEAglhB3A0An
- wuKXt23n
- 2epJ+UalJDGPlW3W7TwlVu8O2JJAPHxqUDNcK6KXB+uquDC9bA63XbD5CWnG8sASzxQL0QsN+MEU8ZvpWbVPkXxagIKrs+hHkNwCP0E3goqmLaOhtNqv1fk1Ohj9SJDgCXeOc/6MxZO5AMs3s6oSN9WYI04MlbTEz/uzNrX/BEyh0aZ84LiYeDdoW2RBU1uy7l04VGykbChy/Hbq8gdlO6/eVfzVzUnSoID8pzOT2thsk6nrMNRF8Dw2rmUn9mt3beetQDPz/bJeRJn3WERa2EOKgEbXNFhoSMTjp8GGOqbMoc2rMZep2K29BH1UcnMQqyWeEO/Cb5kKpNHpXvzCTnUybaGIh+v+iZ3r/7SR/wLfPot17w3VgGB+0/IWMQ7bfRiHyMuhAkZF4FAZGiRiloPlGLA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 98978C000A
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: z1go9878egj7e6yb3bi7iatp467qdzeg
+X-HE-Tag: 1795012924-137508
+X-HE-Meta: U2FsdGVkX19vw09thHuqZjp+Fx+vlJQXsqjJADfvKSUfcnRKembe9P1e1RPi4/DBWMCqnRFhLa2ZkE+YYGotc7YrDsl9HL+LgR5lXosZY2jypRu4e4BW+5GaEqX/xZcEpgYcoSvIUsuK0+Ta3P8NKZh3jiQtiZMc5sBpPGGwIhHDACrW+B8+h3IhXpLcPkiOrJvGcESbgs4TJPMZAd54t6WZ3+QInxHwcbNCTtRL85jp9vGLNDgjAi7ePAYRA+iaiIonhlfY/PLyN9dAN9itnjCosD2My+P784siziKSDV7/2PfD+gEoPfVDj+2crdZq+49HJi2R5lQ4i0/osQNaNdoAkQZbdkq7VsMgjykZSWtym/1VeX9+0qukOyvZafgrh+LEflm1bbqWdJgTl3iZ2hriUXg7+QNbGF2J4RO+52wXeaVgqbx3ceUT+50FRPm9LFczUoCly+3UVGxnimRx3Jn4g/FW/4LI557kunoKi7+TzgkBr9PdoEyo3qH77EvSRdl2hGhQm0+fjPX/hFQflf350i0i1jRnJfwLw/ULN9MCdHWO3k2EG1BK0BecvH1B8T23HTO463QTT3XoVBUyhv0odnVZV/JgRjJGdIYqzdxxk0yC5+64In1Ku2TasytMKWRSbewbmvyttjZubz5EfL0di9sxZ/UD88I4zg8aj+lnWM007xJzfYSBwuKVfomQSH2q0jMYRZZLGacLS1F05Hb/nC00aDY6QTSVS4bYRAYFUpvmqEOqwNTBhSfKa2KFYAftMWpYTkJZbDTGr9lZu+yomYugdaI8tGdpJpbHM+1OgbsTjhMwyDYNAEP6UpRyGbNYHda4B0TvE4SbqwVgTrS0lw+FcwEthq9KJWRbO7tWoOw7/J7KyhUWnVaTANwgpP1mS4oKceFnWz8H0iETn9T3ZBIjCFG/NcvRgZSDHXwcvsPQkQnt9TpBF58ycnaKeAHtj9T1pB6itYyw+kU
+ ryh4KzDi
+ uetr5gR1v484TOOh3zYz7Dgv5XjQuPqnFLbcCPRMnCApCbWQjG7bP7yv9HYRzToOWbqKcht4blYhVO7fIU0LjGnblJNxSoIZAZar4gUOBKfBO9oiauGZxETx58gzK/F0Uj+B8BeM2Iz6Mtoi3xlp6Aq736nzigQa/6gKW2ftw/vkwkPOwxN3fiGPmn61tOCeT0aKw2IEHPa9GOfyfQwCFrArTK13n9ubYjzR8m0ijqhsj2ir1lhhfuBLnGC32ZhkZx8jRBe6mDKMww9HLXxL98rOLQILgzEJpgr7saZK7Y4xqOI7UQUxc7Oo1HJtnmlCIkPPAQ24E++4JhVFeMCRK1Cx7Jxthyi9+5Gu7BinlP0S22QCRM8x2jmtmFpGeswmKvPMQg5cuK+dClfXoQcUMZYKOQWqQc5yZgJWEZUQYZYtVQaBq69hZJBdzyG3dl+7w+p337SjU9Ve3w5fi6E+9OovwiQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,6 +125,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Thank you Zenghui, I appreciate it!
+On Tue, Nov 17, 2026 at 11:28:46PM -0500, Tal Zussman wrote:
+> move_pages_huge_pmd() builds the destination PMD for the huge zero page
+> by copying the source PMD and clearing its uffd bit, so the destination
+> keeps the protection of the source.
+> 
+> A source VMA registered for RWP can map the huge zero page with a
+> PAGE_NONE PMD, and UFFDIO_MOVE does not check how the source is
+> registered. The destination then gets a PAGE_NONE PMD without the uffd
+> bit, although nothing asked for that in the destination VMA.
+> 
+> The next access fixes it up through the NUMA hinting fault path. Until
+> then, the first access to the destination takes a spurious fault and GUP
+> has to take the fault path. The impact on userspace is small.
+> 
+> The moved entry must have the protection of the destination VMA. To fix
+> it, build the entry from the vm_page_prot of the destination VMA, as
+> move_zeropage_pte() does for the small zero page, and keep marking it
+> soft-dirty. A destination VMA registered for RWP still gets its PMD
+> re-armed afterwards.
+> 
+> Fixes: 763f43865fc4 ("mm: preserve RWP marker across PTE rewrites")
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+> ---
+>  mm/huge_memory.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+
+-- 
+Sincerely yours,
+Mike.
 
