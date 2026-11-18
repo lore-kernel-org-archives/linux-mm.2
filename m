@@ -1,91 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601A2606A32F
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2591B606A337
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l31FgM/Z
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J+o8YWMj
 Received: by kanga.kvack.org (Postfix)
-	id 707116B05B5; Tue, 17 Nov 2026 20:30:56 -0500 (EST)
+	id 905706B05B8; Tue, 17 Nov 2026 20:32:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B6D06B05B6; Tue, 17 Nov 2026 20:30:56 -0500 (EST)
+	id 8B6286B05B9; Tue, 17 Nov 2026 20:32:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CD626B05B7; Tue, 17 Nov 2026 20:30:56 -0500 (EST)
+	id 7A4EE6B05BA; Tue, 17 Nov 2026 20:32:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 34C756B05B5
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:30:56 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AFC43A063D
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:30:55 +0000 (UTC)
-X-FDA: 85446510870.19.90D0757
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 430116B05B8
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:32:41 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05D5080663
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:32:40 +0000 (UTC)
+X-FDA: 85446515280.14.470E64E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F3BA7C0003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:30:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l31FgM/Z";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4C7E320007
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:32:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J+o8YWMj;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794965558;
+	b=qJ2VJHZd2Mwkgj0OlX1qDbU6S4DLi9d96R9BmbFmpf5DYJXW0ZEcOI1WHRPBC8siE2Ipos
+	6ZMeAeN6ZwvXRuu59yVrO0Q9Yrysuq3ytGZ4r8IG5daKCZm4BWTjZ4jZNRFZShacZW136/
+	x5DRqRlKcjyNk/nBFDLzMz6mKdw3Qpw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J+o8YWMj;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794965454;
+	s=arc-20220608; t=1794965558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SYxJl/ui6AD3kajNhdADlMAkHr2mk3aeY3/59dkg6Lw=;
-	b=hSxIPM3Qs3uo6puGi3xv2TwiQpW14gDXd5YQfmFGfT4GUnrZcJQuWpSQQ9JPbW4rMXaVLR
-	aunzDpo260FhzD5TttfLPWIXxfG5dlyJZ94a4tSymyP3XmARyUIGXyVHUpzGK0S8fBzABT
-	abri15SoSqXCOE0mVkKRJnqh/CcwK/g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794965454;
-	b=URaBaiGR0doKWYSODmsFsJrvX+9nbpVC2zIkTouEmQxEbPLgaDZGggenUAc7JZIPmBd6xY
-	RuSVZkk7b4IqQDFsg2f92239re/K8AMh9rufpEUmi3wfQ2aTBE8sxq9Z6n2ou7XG6N8nol
-	raxwe1Mg79M3I3zJspeXSXvV7LS1VjI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l31FgM/Z";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org
+	bh=60eiZsC1vQ0qBVJ9i90dmpYE8S+lEjH9IMSqx80A0ng=;
+	b=b7JR9c7cZoSQzgfEHKap7XzwTg/FPcCDfbV7Vj6XMGa5LuS+4GqIOyru5KJweLyKX00MeV
+	xmHikqfwlp5xH5nio8iE6IVBD0+45Vmb3ATpdQOExHZRN58IPQl5w48ickYybPHTo6MI0u
+	RYwGZ4SUgEKMKNQ7uZ/d6wHMmgS38+I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E939F4166F;
-	Wed, 18 Nov 2026 01:30:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B061F000C4;
-	Wed, 18 Nov 2026 01:30:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 78A6B43F8B;
+	Wed, 18 Nov 2026 01:32:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1581F000C4;
+	Wed, 18 Nov 2026 01:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794965452;
-	bh=SYxJl/ui6AD3kajNhdADlMAkHr2mk3aeY3/59dkg6Lw=;
+	s=k20260515; t=1794965557;
+	bh=60eiZsC1vQ0qBVJ9i90dmpYE8S+lEjH9IMSqx80A0ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l31FgM/ZjLtH40ctlLvybLwXbLE+3+wF4z5UuiB1y8c/cjf0fv3wl6rF6n8KnN00d
-	 hnUYi24/uEvPi9j1PoaxJo7QXsbljWERK8J3Pc4lC1vUqjBjU+X4+fVvpxWLH6ghV8
-	 WwnA3+sKuPJVToL9ZSeUx1LXDOnLQVOaY0Q5YZXLjWCI3q47MgE1PM/Bs7SEvvAzAI
-	 QYF4ReA4rdx6/PLLUv0uxngeIAnagio6XTnN6OxkehL4g2143roOX2nHEbV9XGeF2V
-	 3AHqznVQbcbhmgY0SdLmZPe8v+YS7UkwMFkXZoYLaUes5Q5QvXFmYbEz2UANpRbPOS
-	 VU2pGfAAJOFJQ==
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org, Chris Down <chris@chrisdown.name>, Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 03/13] tracing/uprobes: handle errors from resolving the real inode
-Date: Wed, 18 Nov 2026 10:30:48 +0900
-Message-ID: <undine-1794965448776121119-595ee1289c37e7d3@undined.local>
-X-Mailer: UndineD 0.1
-In-Reply-To: <20261116-work-ovl-d_real-v2-3-90564c4ae347@kernel.org>
-References: <20261116-work-ovl-d_real-v2-0-90564c4ae347@kernel.org> <20261116-work-ovl-d_real-v2-3-90564c4ae347@kernel.org>
+	b=J+o8YWMjgX9T+5jaNOFnKzda/YbY1BNrE/oTberX3jpMzeB7wh97ZK10rgf3CwYSY
+	 zq8mfbmcExTlNGaPUAdcqtmjnW+KVJR/dZpuwoTUH/GAizTqsbJ5pmwDSrNCULxRcJ
+	 3ejeOy1vgVYdhIvtqX9U1pC4IRSEVtZrjI2QnNJD5vP+9t/V0MgcmVgC2z4cRDrCjS
+	 f5XF/8p4dyvTiyWMKx9wr8jsREZ7FvT4FdC0ipJFFrF/iUn5TZCsahLeC9HttFpdF2
+	 nQ4SAofcjof1wqiK4mRA0JHf6ohnn+LhWahQwWRci43iLDHiUygj6j9tIsPsOPevBX
+	 J4VNdsXdz4+WA==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	David Hildenbrand <david@kernel.org>,
+	Justin Stitt <justinstitt@google.com>,
+	lienze@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	kernel test robot <lkp@intel.com>,
+	llvm@lists.linux.dev,
+	mm-commits@vger.kernel.org,
+	Bill Wendling <morbo@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	oe-kbuild-all@lists.linux.dev,
+	rdunlap@infradead.org,
+	sashiko-bot@kernel.org,
+	sashiko-reviews@lists.linux.dev
+Subject: Re: [PATCH] mm/damon/paddr: avoid truncation warning in high-address KUnit test
+Date: Tue, 17 Nov 2026 17:32:28 -0800
+Message-ID: <20261118013229.94629-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261118-fix-damon-paddr-sparse-20261118-v1-1-3a0e943406d5@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F3BA7C0003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: muubhweaqzxcepqaw693xk3oowq7fu75
 X-Rspam-User: 
-X-HE-Tag: 1794965453-865988
-X-HE-Meta: U2FsdGVkX19AxYoQ0qggnN+k3rzMSIBGr4KXFnrye3Ve6jADUS5itG06WNkTLoJ0if9LqetrOhOaPUYYloefJTFNyoFF3Nrr2uuq4MPfc9YflYY6eXoOxSSOgcMQrhpTT9aZGcT9WdLnkvPUHY68tGNpRZInwcAJcj5/dxOQJl0g1kGE/vVuNXfQ4FHvpZlVcR/wfeYxp4EQ6OLwFrDrRVB+6kWAWDA5I8YqAU6eSc+cf8wlkrgbQnot/cmFA7AMrRIisq0Rl6BeEV9iupnl/Shar/VUGR+YkFerfM6Z6jvNQ2HCEZ2GTiR0A1qnX5XWkSfjgsxYBfEKz47t/oRCIT9JXcjM9Rapyrd/G318jFuqH+IB/zlx+byQgwo93G+q2/tWbDy617ptGZggqo4qVpTsYiHWkiPJ1ciEagI1O9f0TiK8rYh5R8uG/7ZZZj6vSAmtWjDcWJAOG5CZVO3BEXXnHcTKMObUk7Ta0XfSWZVw/4B4VEFIhsMShwbomgaipg9mzcT0vCz3OOYAqf/nZbMLaYVsBo4iGwrgCTrGyDYrSIvd6HSyoGgwZZuFuTdvdkySuMcfFxsLvL+vNEVsZyJSDVGWoxM5S71apar1EG+nrjzH1fcV6xM2Kxwvquf6RNQXwzG/nWdjx6ag4BpY4HChanoj+fakxReOnVIeOPDY2vQTCRXQ2NeG0dA+fYzbBzQ43ZGuJ7KRTjSub+gKsokTvsGWXsWQCXPQEkhEncTA2ArhhkpyQo8nXvy1zlM7yY+Tq1e4peup8UWUky/viyvV21da819Z+/VXA61Wg5gvLMYkOfnL0xSBBnb8PRAGB50Q7COJr+knbjXbx3cCT0UvvPRpA702VnewkWE1a11exk44L8B1YAHD+Lh8B6T1mqiiRyu0AZAwhp9ogN/U55kFDlXNPqlSR056tTIuiNc7pjvpdHLLyRsbgxVkq2hjOXiWI7cNExYTrtPrQSX
- UpPc2+Li
- kolhM1xnLNf6BKeFfPvH5O1S5Yoy0v0FezLFqd54WJvoUTxQXm/PUR8xCoyE/MJ1A9rwwsFCES7DlCNy19I6gsHPiH0/3v4c0BK+sdQZcfr/k1zR8CElUd52eUwlNERMh03eN7yk2PHo6WgM0I0yEplpvf1MSHxvq7IlCAUYu0ZM1HyUdmfiMhjhB10EbzSG6WBiQ891Ou2VA5QtCxXHm+g/vH0RF+UgjxTDk1B3b5iu+PSk=
+X-Rspamd-Queue-Id: 4C7E320007
+X-Stat-Signature: xouiirpt8gpzspaz81o38phgj3qd6d9u
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794965558-674946
+X-HE-Meta: U2FsdGVkX187vYJq03d1plQYyD8ncQ0MHTd6yzv/7nB/nzFid7vjLoSskJB1L+CvitxsSLhQQuUwQk1jUqHqLTzwpkYrwgRXCQyEsF/ImgdGXlWKA5UGH/L7lcmINAHcyncEZEPNGrs6CW81axqzVVNuQuIozQj2Q7WE7eJLq5p7fpDKRWilTqKh2JEri8oDotO2mvZIk9/eiAQVVLll7PIvWdphtwVF+rONGpqmqboDz4/TmGtEqJuCw3+ElfEMzUiulQVwJZdkW4/4rVtkRfNaLbGf0xys3a2Qs9lrz0uuf+kLnK6pEbeC9PP/9laQrrKfbVbUwvUPWkk0x1SwhraUDb/ZQz6PznH2l3/8N1q1DfUgqD8WEo0UkmPzF3wXUibj3tRKBblqkLtwBXrN5sDsJ53TzhzXFHu83XGlg9XW1GmYTXht87aP5Qqk04QaTUxHScE+2upfTrDPJAK5l79d8DAQehKx2hqMxVvBGWEGXa9UIaeenVn/x9N5EBE7QB/HR0Q+B5OTLVIq2HgshTjhtlHL2cPvnRDVn8huqSaAjNWv7QE4uDkPeGi/silL7ofL6IkIbAJ3AxSeThPmAd+qzoagfNsY3o5hSGADAMK+2XjNCBFqDTfz4fWGSGPGJm2ZELTccVd6ykbKaPXrTaZeLvJbW0wxTz6WTpWBFc8LBycAUl9lveMNcZ3B7ACWdjMYhNboZFDzS4J6RtoI/50pClrsO8vhvw1Y1pD5V77Mnrfj4kIV8PG8AM8OCSNwWCuBX3YkM9ckakJ/PWO29hPRlUk4tYlX4RfMTWxBssrUGsa5V1vaiduXh2SIKR/1vRJqBHR2iAv4GG1gZsLXNLyh1SrtpRpmUzUCrtRpdgLGoL2HU9ZcdPJuQZas4A0T/QtBURW2e8Gg8ma2H3v8TnLcW9BUnBdIh7whuZ++Q4o97HY0Y7EJ1kkM2wqmx9M1ieq1COzoCwHWTX0KGXF
+ 7MQununU
+ //zJP3M2oePCKMHDDnErhwAkCp4rbeEUPex9H46se0BobgP3df8+IouZP+j2IYiAxpBh0Y2IMHsRHqLLWC3g4UjRBeEKNO0ch3KK1r/jwRVSucgWoC+Lac+/lX2W/+kPbR1HqQZywQ9UiL+DlFQE9q18PTwOa2F0sBdo0TU6j9+3SUTP1n+FXzkRIWz+TzIHNi3Lln2kbg8PToyuGaU6GKkoLk9hnCzj/qmyiHXckRBVgyVY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,62 +109,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 16 Nov 2026 10:44:00 +0100, Christian Brauner <brauner@kernel.org> wrote:
-> d_real() is about to be able to fail for D_REAL_DATA. So switch
-> trace_uprobe from d_real_inode() to d_real_data_inode() and deal with
-> the error.
->
-> Currently, nothing checks whether the data can be resolved when a uprobe
-> is created. The first resolution happens in validate_ref_ctr_offset()
-> under event_mutex and the last one when the event is enabled. If the
-> data of a metacopy file in an overlayfs data-only layer can't be found
-> the event is created just fine and enabling it fails later with an -EIO
-> from uprobe_register() because the overlayfs inode has no
-> ->read_folio().
->
-> Instead, resolve the inode hosting the data once in
-> __trace_uprobe_create() right after kern_path(). That happens outside
-> of event_mutex and if it fails the write to uprobe_events or
-> dynamic_events fails with the actual error and a new NO_FILE_DATA entry
-> in the error log. The resolved inode is passed down to
-> validate_ref_ctr_offset() and trace_uprobe_has_same_uprobe() so we don't
-> resolve it again under event_mutex.
->
-> Both functions still resolve the existing probes they compare against.
-> If that fails the existing probe can't be on the same inode so we just
-> skip it. For validate_ref_ctr_offset() that's fine because
-> uprobe_register() refuses a mismatching reference counter offset for the
-> same uprobe anyway.
->
-> trace_uprobe_enable() returns the error and probe_event_enable()
-> already unwinds the probes that were enabled before.
->
-> While at it, resolve the data in create_local_trace_uprobe() as well.
-> perf_event_open() of a uprobe PMU event registers the probe right away
-> so it would fail in trace_uprobe_enable() anyway. But this way the first
-> resolution happens before perf_uprobe_init() takes event_mutex just like
-> for uprobes created through tracefs.
->
-> This is a no-op until d_real() can actually fail.
->
+Hi Aveline,
 
-Looks good to me.
+On Wed, 18 Nov 2026 04:04:33 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
 
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> Hi SJ, Andrew,
+> 
+> The kernel test robot caught this issue in my earlier addr_unit KUnit
+> patch. Feel free to fold this fix into that patch.
 
-However, since this conflict with commit 72d3a5cb0cd7 ("tracing/probes:
-Enable newly appended probe when target event is enabled"), please
-rebase it on v7.4-rc3.
+I will ping Andrew again on Thursday, if Andrew doesn't add this fixup to
+mm.git by the time.
 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  kernel/trace/trace_probe.h  |  1 +
->  kernel/trace/trace_uprobe.c | 57 ++++++++++++++++++++++++++++++++++-----------
->  2 files changed, 45 insertions(+), 13 deletions(-)
->
 
 Thanks,
+SJ
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+[...]
 
