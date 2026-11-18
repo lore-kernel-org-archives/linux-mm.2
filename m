@@ -1,83 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141D360A2619
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 18:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D557606A338
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 18:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=KWfjA+/O
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SSexoLIK
 Received: by kanga.kvack.org (Postfix)
-	id 326BA6B05B1; Wed, 18 Nov 2026 13:23:10 -0500 (EST)
+	id 6829A6B05B2; Wed, 18 Nov 2026 13:23:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D71D6B05B2; Wed, 18 Nov 2026 13:23:10 -0500 (EST)
+	id 6123E6B05B3; Wed, 18 Nov 2026 13:23:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ECEF6B05B3; Wed, 18 Nov 2026 13:23:10 -0500 (EST)
+	id 485B16B05B4; Wed, 18 Nov 2026 13:23:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E75D26B05B1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:23:09 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90CE2C0826
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:23:08 +0000 (UTC)
-X-FDA: 85449061656.21.3B5B115
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id F186920004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:23:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="KWfjA+/O";
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CEB16B05B2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:23:13 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B0DB120836
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:23:11 +0000 (UTC)
+X-FDA: 85449061782.11.5BCCC19
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0371D100006
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:23:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SSexoLIK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795026187;
+	s=arc-20220608; t=1795026190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=EU0w2Pj7eYZo7t7cHwVW7q82EN7P2iEY8kXTkymFoF4=;
-	b=q6YQ7+DUZHNm1lhVWibk2LOKvZFSEXnKlsQ48Y5zZnmSE3lVTxAcKZhP9/qv1CFGCAuymY
-	6cHtpaytqjkBStiWNrEfH9sd/yBcwtOVYXUzofHn+MgJGzTX3yixyt/jH+e+L2160Sx8wK
-	lIs2XvVnnDgwxIPfSLYPUMYpLoBj95M=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=foArwJppdw7wxwAIXrJloa09SFBAq+aNRAw3uRfRo00=;
+	b=V9UuEacBlo5o6GJKblw2YSaqeTy3/gT6+imRPOM/H5XpbVCYfc5AulPJkqU7r1rDPYbXfA
+	RgZ9i9Z0a4GWggwN9eu7vTPySgMqOKxd3+O85KGpfw9dmPSjvSsnnoF/bV+KxtyG2NHu9w
+	hE22ztt7VyuQxznw+PvZaB6F1sf3s+s=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="KWfjA+/O";
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SSexoLIK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795026187;
-	b=uWI3cLuu2lP6g4Oy2G4Z0ePhUJDqR65/RMKdLoZEPneh4riOgZyidX8wMGMwyruG+7+xgm
-	T1yI+/jl2T2xd+z87RZSICwZ4gcgqZ75Y8oMyiXGHyuPTYgc2Kj8luhbPsNVmtVcXNFtKu
-	+ItNi6UUSmdhzwnPJw73UL7Kl14j9K8=
+	t=1795026190;
+	b=v4suECGVD4hD79qBBXbAjhb93enghDpXjE0xBPOAD0wBdC0LcW1Bh/6bXYgS2uqfqaWWJU
+	E78Kk4q/fRf8fRRDxqNVRIzGBIaRsPmKThmYdpZJredD+e6Hruk+j+ejzAiyXiOIVgmlsK
+	VCmlS6w+S7+2Uc7yXbPxHvWCB9r6fkc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10F6646F1F;
-	Wed, 18 Nov 2026 18:23:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64531F000D1;
-	Wed, 18 Nov 2026 18:23:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795026185;
-	bh=EU0w2Pj7eYZo7t7cHwVW7q82EN7P2iEY8kXTkymFoF4=;
-	h=Date:To:Cc:From:Subject;
-	b=KWfjA+/OMvOcJKU7kDKY+pGt1QJ2Z+wc3E2Lk1dFAkFKbiPY0t7/40JEp9Rmukcno
-	 b/DPcqypQEYGvEl/sk6k/mdsxqoW6eItFpo4APZsrQ7qS1Nfz0g6NOLxzIxTPDHqoi
-	 k8Fu1l3Q+e/5iv1IBlaUP+1+iJrtdVydfZ4+g6Ls=
-Date: Wed, 18 Nov 2026 10:23:05 -0800
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com,
- Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Miklos Szeredi <mszeredi@redhat.com>
-From: Andrew Morton <akpm@linux-foundation.org>
-Message-Id: <00461f0c866d4a4eb9f50792f0e1f3d0.1@linux-foundation.org>
-Subject: [PATCH] shmem: consume the reserved xattr space despite remount
-X-Stat-Signature: npwjn1d6i89yj9x3q3aicssx7onj9643
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 7066963677;
+	Wed, 18 Nov 2026 18:23:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 6DD3E1F000C5;
+	Wed, 18 Nov 2026 18:23:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795026189;
+	bh=foArwJppdw7wxwAIXrJloa09SFBAq+aNRAw3uRfRo00=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SSexoLIKwBoPiLX/UCNvXMAvv4Xqx3dXaulr2O2mznCKKpg7Gl+XFyR5jDdZdWAUN
+	 Bm2Ym5u52HNVVRFXbz+lZpqqUqdI0QIVX/BnBolTVOjdqbWIRa9ZL/AQfHb7tP0tHy
+	 Bo3R6lGQHJTvQrtUZUBLV22APvmXIw2J9PMILe+xCzHOUZKAi5UWfm9zvRyK2Mg+0I
+	 M+H6ts9MMhrB3C9VnwqV5X6yDzwsL/MkVrIZfX8RVMJAzd9mqBMK3WoZuQhU6CTmSZ
+	 37+m6Xg9yYUbnkS2hE09G723J8T6okkYA03L/UmQUJFycH5/CD9SmRDukHGn7s1/6U
+	 Jq9Ur6XjHy3ig==
+Date: Wed, 18 Nov 2026 20:23:05 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: josef@toxicpanda.com, linux-fsdevel@vger.kernel.org,
+	linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	John Johansen <john.johansen@canonical.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v2 00/13] Namespace for namespace roots
+Message-ID: <av3tCT5lQTu7qBMz@kernel.org>
+References: <20261117231352.3816603-1-jarkko@kernel.org>
+ <CALCETrVUkbpoFjwSAejyA4b_9qEauAP_36i=O8Op1ifp8aUkqA@mail.gmail.com>
+ <av3akYFOYaeQZauZ@kernel.org>
+ <av3bkDnwmjunTleX@kernel.org>
+ <CALCETrXPLeUgxyhjP4XuWS46FKB0TUHF5PcMkdMf+qeEXbyXRA@mail.gmail.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALCETrXPLeUgxyhjP4XuWS46FKB0TUHF5PcMkdMf+qeEXbyXRA@mail.gmail.com>
+X-Rspamd-Queue-Id: 0371D100006
+X-Stat-Signature: tw6qxw6txufo8brfo4o5w4boaasj38oh
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F186920004
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795026186-437009
-X-HE-Meta: U2FsdGVkX1+sg3+e3VmopAm46fDcVJ3v5xnL9BtEoVAcx0AmtMxhMnhtoLbe64YnATKZh3KFXmlAVrgQyoUoQRSGgQepRb6IpyKtl7p9NyxQUsVJcNYoLmt0WV4br80CXr96BseZnXV+fDdOyBcz0BvJjvao8n/+YbVDDJCSmZwEmxpv0jC3JS8YuTr3iYDCiuxx1YTJ0KT+WTnD0ILWWYCYCBQCRQ4t1FZO73OrTnsvfiwNKRtjSvy5EbOdGesiGcG6z84oD/g8cPw305r0a15IK+GqI7dOoI9JNAcg9BKgDucNF5+VRuUzl+GhmE6fPj3DUU5fvMsPoJeWHg4FEqUMd6XWjGeMYGFUswcOFX185SxcHOyQMRUiJYNFVw3Wz0JTSuGUcVoikRDE7usszcUlNVCEWh0l4gMMx1tn9bU3yaD7KxUqb8PBekPgvye6TljLtJhCoDTSWg5EK6hiCiKOHBFQJgwk+W30VnoOuTNebd+BidF6Ylwf0HAmT5xPnf18vCcapTrh2G2SozMQndEpRUtXNuQRM3mIka6Tewpf3tqmdpFjKw/+T9TTgeo7jlFw9LhyQ+X+N9l8vLohi3Wd9REnAch9D0ZCZHdDMAGb8txUPo3Li8u6zMqOwIllM31iMCxJl4nMzUrItQ6IzctMHsaVqcj8kDcZ2qTFkk3FnzYjt1nBo4bw6RvySgTV58N+Hlcy3dzgb4kH4ZbURbRJkAk1AlMsb6u1YGTS1lM1Y7Sr480FSw3fJSwXukgn2+TOoxcfq3UjhpmxC+LEW7crG2tkyWS9FxEK4OxSGvph7YcfiMwTFtRe7dle8KLa8un5m6kNrpPZCv3d1gBVWgxv16QUApigWMj/4lL7SrIYw6EwSxNaiuzb0/GHq2my1l1/8uqg5VXM0YHhMLaAnzyk6IHIR/28pUi5qz9T6NOOPbK67aOeJPZ3xGPBvWQNEnwPUhE0dmG+3FHboLF
- apWKUoeC
- pYG4GDWHzvrXmCJjDBr0eRKGAb88E+8qWNBFZLzdkIuMvlVWEW3OrX+gPHE0Q8zfnnQX52A4LAM6mBiK3QlXNMtPHeYTwbJ0vwJPHJy2fC5rPZbXxmTo4/T+KhBbWH9q3aCB1nIgo4W7xeHuZofR9QxzNJKjxM1vT5rSLKDQdkti4vmM9l/shLmsMBVReCb7nQo/fS/F/+9n0pcwT87oTejcrKDx/G0UmjxvxRgzWB3KdVzFI5uqUGlX3O59nJO8/h+1O05TyOHk//smt9/322GIksRV5zpr6FGTYq8HyHcABCbgSUykxHYNv2H7dzOkkwUxhGgCUjLDEOoisx90C97/B9ADV/OFwMBvVcWd5ro+gThb9XiCulQ8nIVejB6liCfUEcIfS12BC0RmOxS1pyuFnkZLxG4N28TQvT8irGEB7NtNV7UfdRiFlDFt6LMebNjoFHPBTV/LEzGLhMgW0GB7PRd7DZtsDhPm1DIdaNbNlvm+M7fBIe1pYlNY48BFkxo5+aLuvi/MsZ2auRr5WjObWYKojZuSEG4tYAb6oYeo1jExVSC+Zvgc7E9Emes8/2MYUQ0Tyi4Q2j4FMqA6GTkIIiT0s24Rwa+exefRCJuOcSHCJiEfBhbJAZZE4o6C7iAuP+/IIupnC0Zw=
+X-HE-Tag: 1795026189-296000
+X-HE-Meta: U2FsdGVkX19TI0vshJSG54wB8n7J10iU5/ClhQMrj9ayCEgAUejP+LL1BDTynGyBW1mdZkXvMc18/OqmbD/Kkrc6KR+75l2e0H/q15onZp8jsag5pqeXzD8YPu9qD7DG0c+iqzFkEJtUcKZVdZGunzi/+EYEXoKZSiREYZVmFkjxgBKAS8ERk2PNqlk8SbvzZW72qpe4ggsJwg4AJhjBuwX8X7Hrv/K9d6nn9EjWi8UopvYNo89siIMNfR/TRRWyUY58OuKPfxPqVO4gyzOnw9EpZOl3ldWHTMF2HU+yWjT0SOZ0YCIlQNX1/WxlNOf14A7634BzSaZfTf5KB8CFAbecclfO0NmOCiugGc+Z+/IwPJAPllqmYwBVaKEar38LfQLBYgUi3GVZAWARtRmkxk80NafU9veKyuL8/VuO52L5ACuoUcVEcRgoQmhjNBbt1hUiEVRneGp0oXDUahBbeXloVntJ0QrTQ9egpsshQopkszoGlreArL8L8ZC983CUYbtwLYraW6up6PeettE32+zpqVV9m4LioT34KksBv8c/feoZsnd/X8JuT4Cr0JU87WRQvkaGnyRqmnIJFfuu4/pEFLjhWBSR1lcIJ83YSp+9OtpddUI81SizqnI0C7LlYAkpEoGMYfsv+Apc8g3yBPipI2B1WCCBHblu32HOCrNOrG8V1Dwm6W1g0KbXsw7/MPQLtDWH5jZu+BmAyWVIF7WFFYsYFeO52V5b4oaoMBEsLAOcXQR0LtFXnF7T/7doloS7/fw2CueppHtpLL45t4OjGH2r/CYDIRYn/1kQ1LnyRuwr5kZzyQ6vcZ3uz6oqYbmahLbkgFnXtUK3Dc4/tIwvgOrJZj2cbUGTq1m8XXMMMztFAJRdtLbXvnVlhUXBTh5Gy7+wt43ZszoWsbzmLYbyrcQmtjPqC9gScmF6mhcIkC4TR4nw9DGrV9cxf/NJFsurmwkh9b9E2og4h0g
+ SDZyXw7M
+ EArIfyXUJcDXP/Z6HZJdN/KrJqaNBk8UQ9jK6P4zUt6QJSnAjvrjmKyrc+Evr/lFfQFC7dA7jOpee0E6lyyXNF1UDnfijJAMwWCAJXO5ETEIOBCr5o8srhEiQ51mdsLvx7bIFEdZLdam1wJf+5oHWH4q/S4AYHLu4EwvNKjI8BVKPODL3d700Wch9E1kfT85EL+O35MKo4sOpCuDdBveNHIp1RqeWmRJyZ9Dqpr8JhbyrVOhxGZsoEwq/h/s3Ro6CydkuXYo3k5XbFGVCTmATioqOuUvMTvN/iZRAODxj/7W9jqAN3FSPu9rL3z4G38OxYHnA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,70 +130,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: shmem: consume the reserved xattr space despite remount
-Date: Thu, 05 Nov 2026 08:08:06 -0800
+On Wed, Nov 18, 2026 at 09:46:02AM -0800, Andy Lutomirski wrote:
+> On Wed, Nov 18, 2026 at 9:08 AM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Wed, Nov 18, 2026 at 07:04:21PM +0200, Jarkko Sakkinen wrote:
+> > > On Wed, Nov 18, 2026 at 08:59:39AM -0800, Andy Lutomirski wrote:
+> > > > On Tue, Nov 17, 2026 at 3:14 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > > >
+> > > > > OVERVIEW
+> > > > > ========
+> > > > >
+> > > > > A root namespace (rootns) is a kernel object backed by a file descriptor
+> > > > > that binds together:
+> > > > >
+> > > > > 1. A full or partial set of detached namespaces.
+> > > > > 2. A dedicated PID namespace for spawning processes into, signaling
+> > > > >    members, and polling or waiting on PID 1 exit.
+> > > > > 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) that must be
+> > > > >    populated before going live, without inheriting host mount-tree
+> > > > >    ancestors.
+> > > > >
+> > > > > Work on this feature started in 2025 from David Howells' container object
+> > > > > patch set [1], which I turned into a namespace for namespace roots and
+> > > > > rebuilt around that premise.
+> > > > >
+> > > > > While the patch set is manually written, the original motivation came
+> > > > > from isolating LLM agents. Running untrusted agent workloads made it
+> > > > > clear that OCI runtimes need to minimize their live configuration
+> > > > > surface.
+> > > > >
+> > > > > Assembling mounts, credentials, and namespaces inside helper processes
+> > > > > with a half-configured container is what I see as the main challenge,
+> > > > > and the existential debate around namespaces and container objects is an
+> > > > > unfocused discussion topic.
+> > > >
+> > > >
+> > > > I've skimmed some of the series, and I see a bunch of good ideas that
+> > > > involve using an fd to manage a thing.  But I'm wondering how much of
+> > > > the value is added by that and how much is added by having a new
+> > > > *type* of thing: the "rootns".
+> > > >
+> > > > How much of the value comes from the rootns vs the new APIs to
+> > > > configure namespaces without entering them first?
+> > > >
+> > > > For that matter, the cells series also seems to contain a (possibly
+> > > > very similar) variant of the same thing.
+> > > >
+> > > > Would it make sense to come up with a patchset that does *just* the
+> > > > configure-a-namespace-by-fd part?  It seems to me that this should be
+> > > > an easier thing to agree on, and it's a big part of the complexity of
+> > > > all of this, and it solves a real problem even without
+> > > > cells/rootnses/jails/whatever.
+> > >
+> > > Is it  more accurately scope the part that is "just the fd-part" and
+> > > what you consider as "extra cruft"?
+> 
+> I'm not actually trying to say that anything is "extra cruft".  What I
+> mean is: there seems to be somewhat of a core that is pretty similar
+> between the two patchsets, and that core seems independently useful.
+> 
+> > >
+> > > I.e., where do you draw the border?
+> >
+> > I'm asking this because I had similar thoughts when I started this back
+> > in 2025. David had some good ideas but it did more than having a fd
+> > that does not go live before everything is set up properly.
+> 
+> I don't know that I have a very clear border, but here's an example:
+> 
+> rootns has MOVE_MOUNT_T_ROOTNS_ROOT.
+> 
+> cells has:
+> 
+> +What else goes into the tree is mounted on it before it becomes a
+> mount namespace.  A
+> +filesystem for the cell to write to is mapped in the same way:
+> +
+> +.. code-block:: c
+> +
+> +   fs = fsopen("tmpfs", 0);
+> +   fsconfig(fs, FSCONFIG_SET_STRING, "mode", "1777", 0);
+> +   fsconfig(fs, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+> +   mnt = fsmount(fs, 0, MOUNT_ATTR_NOSUID | MOUNT_ATTR_NODEV);
+> +   mount_setattr(mnt, "", AT_EMPTY_PATH, &attr, sizeof(attr));
+> +   move_mount(mnt, "", tree, "tmp", MOVE_MOUNT_F_EMPTY_PATH);
+> 
+> (Source: https://lore.kernel.org/all/20261105-b4-cells-v3-2-bc9095937a84@toxicpanda.com/)
+> 
+> I feel like you are both *so close* to something that would stand
+> alone and make perfect sense.  I also feel like, if that's a goal,
+> then both series are slightly off from the bulls-eye.  (Keep in mind
+> that I've spend a total of about ten minutes looking at the relevant
+> parts of the series.)
 
-Creating a tmpfs inode can trigger WARN_ON(ispace) in shmem_initxattrs()
-when a concurrent remount sets nr_inodes=0.  With panic_on_warn enabled,
-this warning can panic the machine.
+Thanks, there was still a lot of relevant feedback to address.
 
-shmem_initxattrs() reserves space for the security xattrs while inode
-limits are enabled.  It later tests max_inodes again before consuming that
-reservation for each installed xattr.  If remount disables the limit
-between those steps, successfully installed xattrs leave a nonzero
-reservation behind.
+And who knows, perhaps there's a sweet spot intersection. I would not
+mind that, as I only pursue for something simple and practical.
 
-Use the remaining reservation, rather than the current mount policy, to
-decide whether to subtract the installed xattr's space.  This also leaves
-the failure path with only the unconsumed reservation to refund.
+For the time being, I'll update this series simply because there's less
+to change, and polish the implementation. That does not hurt even if
+cells were the ultimate solution. Part of this series can still be
+useful.
 
-An initially unlimited filesystem cannot acquire an inode limit through
-remount: shmem_reconfigure() rejects that transition.
+> 
+> 
+> -- 
+> Andy Lutomirski
+> AMA Capital Management, LLC
 
-Link: https://lore.kernel.org/20261105082717.c459bb33778fcf27e5675082@linux-foundation.org
-Fixes: 076e5cef28e2 ("simple_xattr: change interface to pass struct simple_xattrs")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
-Tested-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Miklos Szeredi <mszeredi@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>
----
-Reproduced the warning before the fix and verified its absence
-afterward in a Debian 13 guest with SELinux enabled (permissive).
-
-A temporary hook paused file creation after reserving security-xattr
-space. Another process completed a real nr_inodes=0 remount before
-creation resumed. The unpatched kernel left 94 bytes unconsumed and
-triggered WARN_ON(ispace); the patched kernel consumed the reservation
-completely. File contents and the security xattr were verified.
-
-Ordinary creation on limited and unlimited tmpfs mounts also passed
-on both kernels. No additional KASAN or lockdep reports occurred.
-
-Tested Linux 7.4.0-rc1 with GCC 13.3, KASAN and lockdep, using KVM:
-8 GiB RAM, four vCPUs and one virtual NUMA node, backed by a
-Threadripper PRO 3995WX. Both kernels had the same diagnostic hook;
-the ordering was forced rather than left to random stress.
-
- mm/shmem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/shmem.c~shmem-consume-the-reserved-xattr-space-despite-remount
-+++ a/mm/shmem.c
-@@ -4491,7 +4491,7 @@ static int shmem_initxattrs(struct inode
- 		if (simple_xattr_add(&sbinfo->xa_cache, &info->xattrs, new_xattr))
- 			break;
- 
--		if (sbinfo->max_inodes)
-+		if (ispace)
- 			ispace -= simple_xattr_space(new_xattr->name, new_xattr->size);
- 		retain_and_null_ptr(new_xattr);
- 	}
-_
+Br, Jarkko
 
