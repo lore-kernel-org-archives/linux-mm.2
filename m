@@ -1,106 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65282606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F75606A32F
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 13:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PnAvX89B
 Received: by kanga.kvack.org (Postfix)
-	id F2E5C6B05B1; Wed, 18 Nov 2026 08:18:42 -0500 (EST)
+	id 4D5AB6B05B4; Wed, 18 Nov 2026 08:22:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F05E76B05B2; Wed, 18 Nov 2026 08:18:42 -0500 (EST)
+	id 4ACF26B05B5; Wed, 18 Nov 2026 08:22:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E436C6B05B3; Wed, 18 Nov 2026 08:18:42 -0500 (EST)
+	id 3C3156B05B6; Wed, 18 Nov 2026 08:22:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C325B6B05B1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:18:42 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4957E4071F
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:18:42 +0000 (UTC)
-X-FDA: 85448294484.29.415997C
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2D8F3120009
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:18:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F23D6B05B4
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:22:39 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 95F0580780
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:22:38 +0000 (UTC)
+X-FDA: 85448304396.03.A8B9738
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BF559A0008
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:22:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnAvX89B;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795008156;
+	b=MLtoTvGCXj0ydBy4QxDYI1Onrcdr04iCIox5cEBFSmxaP2jLy1R0Zv0utBC4uSiwSqZyV/
+	tD3MuHL+u/v2LQaP6TbXtDHRmbyXGgrwkiG6eDSMW/ekoAx+FhEVxjk3zfrjCdbNO+95wa
+	T5fl12W8BlbKXOVddFl/vn01br3FHeM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PnAvX89B;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795007920;
+	s=arc-20220608; t=1795008156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=upd0IxCj2792Sd+Vd6lDIAbHvUW1f3kpvaia8Zd/3Ck=;
-	b=AqUVz0B+Dhhk0UON+Ez82r2F7QC+OkqdF7ETBEtKGbXjOB7KaQ8kZrZnHZqn9MSmGWvn0y
-	SZ+Y0tm00yao+byyOxsjuy8gWSl9Y2j7VEv15hCvi3uWzWrupMvUs+qCxY7RHp2+fAE5kO
-	5FYttS0uHMeApQdLxlw8xQP9UGw0XRg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795007920;
-	b=YpMa2pfb4FlNyba1MM7KCwKKTPIO+V9s/L2D2uNSfxL4/b4oapOS1+v6BxQOirczCEbUzK
-	LqxfKpyuto8zawpRAw9Kn+QZg3+TGmkEIbNZF3HKdXaDdu/zm9kRMZ32FMFbpdNt/6CP1D
-	ouBz+KPPp991p7jC/fEVSZyAoiSqsjs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
-	dmarc=none
-X-UUID: 8c311e00e35211f19a56ed5b684f684d-20261118
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:8e9c81ca-96b8-4040-b02f-cb5bf20b073f,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:8e9c81ca-96b8-4040-b02f-cb5bf20b073f,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:590b889ced8d4f83e2e07ffedd64af85,BulkI
-	D:261118093247FQF070YS,BulkQuantity:2,SF:17|19|38|64|66|78|80|81|82|83|102
-	|127|136|153|841|865|898,TC:nil,Content:0|15|16|50|99,EDM:-3|-100,IP:-2,UR
-	L:99|1,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1
-	,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 8c311e00e35211f19a56ed5b684f684d-20261118
-X-User: lienze@kylinos.cn
-Received: from [192.168.3.106] [(111.193.136.161)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 603697062; Wed, 18 Nov 2026 21:18:30 +0800
-Message-ID: <06e16d01-328b-4267-902b-1b4821139029@kylinos.cn>
-Date: Wed, 18 Nov 2026 21:18:26 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8TF6UKCst8lzq0LV30okvmZ/jdB3sqBqVgF0ME6NPUU=;
+	b=i2DaQpwKqpMSIqqKM5j74aGgQMeAmDcxvbF9OBhrO08TagJ0sAEIZRQZM6N2bxFu0/zVS5
+	aFyfOeuJobieed+uAXIe+5l9kVEFWozgJ4ApqiKuYSwsXCBC+5e8yeuJUkaUxhNxUPZIDd
+	geucDOFhwzY4o8E/F+NSWpyJ070+sd0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 78CF460D5D;
+	Wed, 18 Nov 2026 13:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142691F000C4;
+	Wed, 18 Nov 2026 13:22:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795008155;
+	bh=8TF6UKCst8lzq0LV30okvmZ/jdB3sqBqVgF0ME6NPUU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PnAvX89BLlompbeCCkZjl3vr9MCqKZciuydSOpL0eogzTLskwf3xZTohivEs0roUy
+	 SGHE3ptZwvcw56AzvAQmWHU2AKWfZBJ1Q+aHQiUujgs16dQbeouPrsRjUXjxqwCmzL
+	 Ic0BLwqP6KqS0jGWCMS2T/Ixdqkpxh4ygAhpATxyMBjSiigYgk4GNjPL5CPg7RuAHm
+	 2wFGRm0miTBwzMDFzEuxnDS2tc8VOXV/OZSGQmr95YsoKwOuCDUI0e75scvGjYgnhZ
+	 3DWuuj7B7Ts5+S7mf+y4R+8vNESPWSyJ/M9EWivAgicYCJ5uI0mObnGGnufPMbHttt
+	 d5ZeN50+Ga+jQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Julian Sun <sunjunchao@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Breno Leitao <leitao@debian.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 0/4] writeback: make slow writeback report more actionable
+Date: Wed, 18 Nov 2026 14:21:46 +0100
+Message-ID: <20261118-abhaken-flocken-popmusik-322cfc4cfb7b@brauner>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
+References: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon/paddr: avoid truncation warning in high-address
- KUnit test
-To: Aveline Noir <jm5905938@gmail.com>, SJ Park <sj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
- Linux Memory Management List <linux-mm@kvack.org>,
- kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
- mm-commits@vger.kernel.org, Bill Wendling <morbo@google.com>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, oe-kbuild-all@lists.linux.dev,
- rdunlap@infradead.org, sashiko-bot@kernel.org,
- sashiko-reviews@lists.linux.dev
-References: <20261118-fix-damon-paddr-sparse-20261118-v1-1-3a0e943406d5@gmail.com>
-Content-Language: en-US
-From: Enze Li <lienze@kylinos.cn>
-In-Reply-To: <20261118-fix-damon-paddr-sparse-20261118-v1-1-3a0e943406d5@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: m7eojsh5ywefrks1uebycnqumhxrww6m
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1641; i=brauner@kernel.org; h=from:subject:message-id; bh=17BmXY+svo1KKAU3k/ez0FW6KIlSlOJjiwLKTuSYAHE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9XdZ/5kOhJceeRM/vHyZofy/xnxT4zdrUsSbiyamTA sbRT85N6ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI74UM/z3e+ShL79f9uLr3 jg/fksyjM6fc89T1ub/9mXZq3aXuc4GMDA1OrMk/izVsRdd9amKoZV95hK0/V3jVt8rFS0XKtr+ 6yQ8A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D8F3120009
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795007917-754748
-X-HE-Meta: U2FsdGVkX18zetBCyXWEN8N70N85CpwIiUtqowuvXOuJqj9jOJPlA+8FURHPEb+FBHe3Pxb9kvisQard1lK89ir2SZ482pWYSCYnJjqZoTKS0hkO7DueA62PtL/UGI0rL7AU+mS/lsSOijg6lBKEWhgdmh7sghCzJ/WslbReHs5D5VrOSXBOYmRTCnKHq6DRL1qVebOVtGHzYdUg4D/twEoaXD3k4YVSKTQ24jVkDPReoIYCx747j9LTT/UouIMYS+cCJSTaTWhFBGTlWIrKL0G+N1KM9K8yzUcDqlV889RN4VUPvtFhrTncF3Ieao5ocXiPWU2LF0tTEn0MRES2I+0FOHMUt83vhWQhCLcXR7lyCr/rP57jy/GZO+Z3BqKuXD/ZTgLN+kAGNW94tApWjOyNSK7Mx6pjPmFTD700jZ0G+W7rv6VJg1VtKuLUFOXf7oTSDY9VzRuB24Q8vgvXhJQL18xPFB9aCVVn853EQFkuXJ1lkj2QbsplLG1I3T1j/u8FAkT0Z+nkU5mIfFmkhPmNjVW8qXJNizYvBPy2LBDmUTjyoy6NW8xkhmbvz/dzaamvUW45F3T7Sq9LPI5qwa79uGWcqOJE/NRe91g0U/uIEwf39vK73lkPu1JTn0V8zTTgTtSlvR4h8EnGDOP8cSR/QK4b6iXTivNgNI1uSoOWp7djDofxkIyfkUdnKReq7KRB4QHyqoXn0ZbXaNz4W6uvPw446qePpFguvt1Uu2Iz+FQD0Fji0bHxtjB9PLxBYyCkfJkd8+ZP4IrP9NYGmRSynY1ET6wYH+MwxSXHc1fJPhwIUUaAMxpJgVjCrIGDUfVgjn2Pqukm230289fG7H18d7tlUYNmxa7mlyF+CPew+nzPMX0veoAyO07jai9DhtoibiQ6pBZ1bNu6UPv5fxrxK4wTR8hhCHaMm8ohr5tH5ZB3yKQVj6zTE99FqiBDkWNCx7PQ7QiJDwmyccg
- /fRixGXt
- 1seXRM5a2QRkAbvtM5NQXL/cukiAEXRcdFiF27dM9czAkYRYbzXq8VvHkpzclht3jAfVASJz7econiJPb9E+dkDK00uOuk3rxUeuliDxwX+aH/+t/I8UFy12uog==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BF559A0008
+X-Stat-Signature: shskijjj9eqwqfxg9c5khbe68ondksna
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795008156-971576
+X-HE-Meta: U2FsdGVkX19RGxarNw4sYaU430CaomplquyKQajtjpBEPlRG9EPgrCRadtuVN8AM9DY2zUBuW/D44dxQNeC3E9T/7k7bwR0l6bO/HvnzFX1r6NqTSmJeZWnZogbDpkqa7Lsqd7f5MzwTPy9lcefiOmvBvOrNbZCkYKEy9qubhi6Mnr3ZmI8so1j7ykeyNUYJAaQj1VO4TGQgUDjTjZFjIDup62cu0MSqCTAQBsL9bpMEnUbLDVJL+7YrF8k0XG7wVHJkDXZpI6/ZV9FFB0xvkq8Ib6o/HDV0naNMd424WjLgphyBUuJi54fefNXvRM56nis6mINdTA2Y8jWpzzxYNFgY4eEFfavvUjf3xBxmIG7LT7HsGvkPt9Qi9u4CagWM7dSVLXdnRiSOKwvmPrrd7HVmxght/k+ueFcyaC7rao+cCOJ6kZerFrTd+EauIUqb3Dgu7D9ZlOS3h2Xoz6xFsQcW3k0Zky2Ds0Y91eY4aNc77YxmNWh9BrWKnZxZRIxs7+qDNYp0pxeibRkHvA50zABAqBq9JJU5m4Yd/2DtlhsHSbVA7Fa4FS/Tx/gfx5VycN1RgpVq2oRX6ipomoBH0XJKNqNLiSPU4Semd8tzrdQFQuakSmvtj51ZnfwUkdzxpQp9tLvaU+N16mzWuz00smZPXVmNwioY5ccJ8DHPzy3+S7LSflfqFaUBpEdBo4gdmRBYiULMDQ/Ngf34MdB3MdwKvSLF/6JfPqtFSpdMQ8jCQ5O+Do2lEBfE5pFVtCnL9nVgD+EFEVQ7fzQDtgkjasEqcl3jbAmg0kCbPEBOSoN9yZ8jXqubP/PcYIenaEsFlwmm/vZS2D2CUtsOEq2hJetjZfsEwtK/ysRZbpYRaUccA8Q735SwgKqP7Q9OKE3C2MdTg/8Uo1j4fEPJapTPDtTsuejvj5TdsXjzREhGzCXmcAj9ZU2m2LCTQ0kVBm1RqdM66oRvUXaU9VJGoFY
+ t+3Ahlim
+ 7sp4BWqW9pm6wR9sPUfFRgabgj+no4/l/CoM/eLwvyyvG2LHa5mW/Cf+jKG92qDS5kKL1x1mBcRcMeZPta9wJlGVqbKGigdPs3p+vi+91wljhMzC+5w2CnhZtGGzrqyCa42UHYnCfIP8ypSs5PCCuSm49HE6PsFYuybsiyhUVQgGqTta/fYOkRJlcKhIg3bRU7QD0teCwEOlZH3+6W/yfTEbuVqFe1mXEz5cSu6anEf4Ra+84kRMlxu7cmkNwhuylIItTJ6s2R+3tK7G80q0lVXOm8oBX2WsMw1l6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,72 +117,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue, 10 Nov 2026 03:39:26 -0800, Breno Leitao wrote:
+> Since v6.19, writeback waiters are woken while their writeback makes
+> progress, so a slow sync no longer trips the hung task detector.
+> Instead, a waiter past hung_task_timeout_secs logs:
+> 
+>   INFO: The task sync:180 has been waiting for writeback completion for more than 28 seconds.
+> 
+> Across the Meta fleet, this line is logged about 19,000 times a day
+> (the median over 40 days), and up to 82,000 times on a busy day.
+> 
+> [...]
 
+I took 1-3 as they're fairly separate fixes. Please rework 4 as agreed on the
+thread and send it.
 
-On 2026/11/18 01:04, Aveline Noir wrote:
-> Hi SJ, Andrew,
-> 
-> The kernel test robot caught this issue in my earlier addr_unit KUnit
-> patch. Feel free to fold this fix into that patch.
-> 
-> Thanks,
-> Aveline Noir
-> 
-> -- >8 --
-> When phys_addr_t is 32-bit, Sparse warns about truncating the u64 address
-> passed to damon_pa_core_addr() in damon_test_pa_addr_over_4g().  The
-> runtime kunit_skip() does not prevent Sparse from checking that
-> conversion.
-> 
-> Compile the high-address assertions only with CONFIG_PHYS_ADDR_T_64BIT,
-> and keep the test skipped otherwise.
-> 
-> Fixes: 7a983cc1b573 ("mm/damon/paddr: add KUnit tests for addr_unit conversion")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/20261117170155.fEdeuuhm-lkp@intel.com/
-> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+---
 
-Reviewed-by: Enze Li <lienze@kylinos.cn>
+Applied to the vfs-7.5.writeback branch of the vfs/vfs.git tree.
+Patches in the vfs-7.5.writeback branch should appear in linux-next soon.
 
-Thanks,
-Enze
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-> ---
-> The reported warning is gone with the original i386 config, Clang 22.1.8
-> and Sparse v0.6.5-rc1-21-g84ec0658. All executed DAMON KUnit tests passed
-> on x86_64 and i386 with and without PAE; the high-address case skips
-> without PAE.
-> ---
->  mm/damon/tests/paddr-kunit.h | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/damon/tests/paddr-kunit.h b/mm/damon/tests/paddr-kunit.h
-> index 9839cc233071..2b11f0e67a12 100644
-> --- a/mm/damon/tests/paddr-kunit.h
-> +++ b/mm/damon/tests/paddr-kunit.h
-> @@ -26,15 +26,16 @@ static void damon_test_pa_core_addr(struct kunit *test)
->  
->  static void damon_test_pa_addr_over_4g(struct kunit *test)
->  {
-> +#ifdef CONFIG_PHYS_ADDR_T_64BIT
->  	unsigned long addr = 0xffffffffUL;
->  	unsigned long addr_unit = 0x1000;
->  	u64 pa = 0xffffffff000ULL;
->  
-> -	if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
-> -		kunit_skip(test, "phys_addr_t is 32-bit");
-> -
->  	KUNIT_EXPECT_EQ(test, damon_pa_phys_addr(addr, addr_unit), pa);
->  	KUNIT_EXPECT_EQ(test, damon_pa_core_addr(pa, addr_unit), addr);
-> +#else
-> +	kunit_skip(test, "phys_addr_t is 32-bit");
-> +#endif
->  }
->  
->  static struct kunit_case damon_paddr_test_cases[] = {
-> 
-> ---
-> base-commit: 7a983cc1b57309a875a9e07a934c9944bf3d088d
-> change-id: 20261118-fix-damon-paddr-sparse-20261118-fb08902768d7
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.5.writeback
+
+[1/4] writeback: add the missing newline to the slow writeback report
+      https://git.kernel.org/vfs/vfs/c/82da6ca38c26
+[2/4] writeback: name the bdi in the slow writeback report
+      https://git.kernel.org/vfs/vfs/c/8dd5775aab52
+[3/4] writeback: log the end of a slow writeback wait
+      https://git.kernel.org/vfs/vfs/c/26286f60c266
 
