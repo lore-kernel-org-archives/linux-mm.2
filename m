@@ -1,143 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3AC606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735A4606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=lML0ho4B
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=G3jyXppC
 Received: by kanga.kvack.org (Postfix)
-	id 9C4386B05B1; Wed, 18 Nov 2026 10:13:18 -0500 (EST)
+	id 976D56B05B5; Wed, 18 Nov 2026 10:13:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 975C76B05B3; Wed, 18 Nov 2026 10:13:18 -0500 (EST)
+	id 9285F6B05B6; Wed, 18 Nov 2026 10:13:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8674E6B05B4; Wed, 18 Nov 2026 10:13:18 -0500 (EST)
+	id 817786B05B7; Wed, 18 Nov 2026 10:13:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5789D6B05B1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:13:18 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DAEC6160790
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:13:17 +0000 (UTC)
-X-FDA: 85448583234.13.13670FB
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F1819C0005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:13:15 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lML0ho4B;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795014796;
-	b=QkhfgB0WvBNK9LwVkqCmkHruan+U9wH7lB+4RsW04f7CoGZWuAHha/XqC3KnOxeIvryF01
-	0PMXVzUmK2Q9douP4KaeCDubhD7rzzxWyXri6DV/L3jCVJlrfoI1txCgA8RhBk9P4av9sM
-	c2jkfmrzuFwlDTcbAtAYXHtuAycgu/Q=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lML0ho4B;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EB186B05B5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:13:47 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5272A1A0799
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:13:45 +0000 (UTC)
+X-FDA: 85448584410.18.F05B592
+Received: from mta0.migadu.com (out-155.mta0.migadu.com [91.218.175.155])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 23B271C000D
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:13:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G3jyXppC;
+	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.155 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795014796;
+	s=arc-20220608; t=1795014823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RMVcoG7RRC5e+6Od8G0B0oNhz3JqDhu+jU7/dRmM0d0=;
-	b=qgjmw6Q12C2VZAjDJlQRZpxI+ewEvfLIS6/XF4w+ug/iMkm+kngTefASaDu9CXxiqJbchg
-	xKO/TJJDkDMrUrv3c2+42CWkYNuQKU84myfOZGTnwgJ0o3Gvd+O+WicdPS08jyEsQeGnfi
-	pfl3VIUONYshRKzQ5ZMMDhj2K88mef0=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-921159376efso10661216d6.2
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:13:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1795014795; x=1795619595; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RMVcoG7RRC5e+6Od8G0B0oNhz3JqDhu+jU7/dRmM0d0=;
-        b=lML0ho4B7L1OMk7cj73ksIYLBW/Cl16GqJT1GGRz4OHasI0cQvc+NXkSuxEhlqfUz6
-         miXrB5iQUf7fGjNerDxFvZv50dSvmUWl8YxtN3IfYFrKzjSPc/quBSgclXf3VrN47Fwp
-         TKqQ2TD1FxyE59gwphZrrIrCAfHqrMzeX5lfPfocDIM7CMJ9llkv+XG1DbnboFwBV81X
-         21phmhWdx6wlDtdA8RVaL738yOcrBc5JS7SqUGL6cjF/DY1h6i0RBHd0TDXXP+OT2wzm
-         Qnm3/N3M7+V9sYQvJczgG1sxSIeTs2KBn5TZ+bSGuyRG/42XFEwxmV3drrp00henYC1E
-         At/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795014795; x=1795619595;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RMVcoG7RRC5e+6Od8G0B0oNhz3JqDhu+jU7/dRmM0d0=;
-        b=2Cte8bkxGluvd7lz/CBoxxmNj2u751H4KQCtsoXruYqXDcUHhW4XrC8i/x0CoUyygH
-         JZWEVr3TnnWPNDDyACTfhqA5Eoe70F6FkNrUxvYFczXP8m8cMgh3ee3XLBclEONGaNhe
-         3G0tNbRjOeiiiCd0zcgV7RHV5AIO/aMcbE94SbS6pUtvreDUlb4aUuzcP4yvSCxIl02/
-         odfRLJCDKTbF88yO1RkkIuFy0qtS43UqDbxJSfWNLwxzJER9oj1U/LKfu+9gt4YcoqfW
-         TRvAt0D74b8XV3QBlnOCLpKrR0Jojx4YBr3NG3HWRoxfNmozT4dmF3vKlcyGx3t1rqgq
-         Q5iQ==
-X-Forwarded-Encrypted: i=1; AL+hErEdA9T1afGzJzh21rPQ4PIo14A9MJOOykDZrYL4Vpe3BgomtyC1VZxtdkmN9nTvnRRQYzv/XcUayw==@kvack.org
-X-Gm-Message-State: APuU4Z+RS8RG74gx2Qr7Mmelw1ZggfupWCpmhhGkq7sGdUEv9r0j7Hel
-	5Vri5Cnjd38/11MSS0Oc8BpX/s2ODWkduDmMgOWkvK2/7dvNVcAVh3Hqdhuy/JRMZyk=
-X-Gm-Gg: AYBFou2MhLoJqcNZtaj+yx5BAdRi0gPYesWDk8aTxlF8AKSx1EL6Z9lhcry5GgE8nr1
-	a8DJSMcXaPvWMyfVGKd7VxJyHS+WmuHMHlkAZCUQtwkwGZPISkXrxbea54FH8A6km/myJYAmO31
-	RMaGEQRL+BSOOO6BW8lBDtAAG7Rs/RTozEnDhKH0X5dcfx9vTp3UFCvltIZRdgo7pLLcfj99Vol
-	8+M8brYq88KCaYlT0uiRTZ4C0zxpFR+0bixYs0DDiwS4nOEg3hUCDAn23+RXezYqXq03/uqdds5
-	TCYoRrTtkYfbpSMsgUtNG2zpYA2y3/HxiXWBmngWU1ARiAsIRIsnMHLv2HHHvAnKS+kPxk1tSZ3
-	8t8MmI/cVsjenzSBGkO2+n2Bku5aCF5avBE0ZKgOqMIBm31bHHXqcqwVEFHpNlHxW1o05AdacKk
-	jFdXXwFu8OkPRhhtrm6ZNgzGaPDGupuOWtc65HF/j1pIxpx2M1Ly0tUM3vBlNzj7hYp98zpfKXj
-	utdHp13YU+JcxhPmjxkyPez4MhG1JfQhSPYjG63MusHWGcoSHdtklLWoXzCe7h8GMgVDQuSDik6
-	eymhzGELFjQ9IroPQZ0nvwiRsInx+d2pYeRYbbn5wrROlddSwaeqZQzRxkB60rkH5VgOWdVwn7Z
-	W4cQCDRI=
-X-Received: by 2002:a05:620a:444b:b0:949:6d95:f63a with SMTP id af79cd13be357-94999810096mr508584985a.78.1795014794676;
-        Wed, 18 Nov 2026 07:13:14 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92114d70a8fsm23976506d6.30.2026.11.18.07.13.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 07:13:14 -0800 (PST)
+	bh=g2iLF+agFOr+5qfKvMC8Xc/GyatOwNTMKNF1bh2bdjo=;
+	b=kMRltJzhQxAzS8RKkfYq9GCy4uzkt00TndGaenAlGpOubdpZReRed+P3nQPKnshXWRB03V
+	TZhrK5cdQ1glCMfx/CuwzDF6vsabjJKL+LYkx7dy8y4T+Od5swf55bhXJV2w6T4uSwmRGg
+	jTA2HkGkvMTiDn/NABOx/7P/Jm0qeQ8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795014823;
+	b=gv3wIpTWEZz0MbH2gINB/2Q+quqwiaj807Z7MCoWPcfiEr845NPuKHWTjzM2Ync7Oi+QVm
+	ca3sAjkCegoTZyhxEocIXsce2Nnk5sRbxZLPer1CL/vjQMODyVsSMrSmLgH1aAsnVQ8w4P
+	DU3q6ORjzBP+UrOYVb7zMVfxWMObxQU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G3jyXppC;
+	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.155 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=h45+YJ4kOROsdNUEmNnHaz4GNgM/EKN9DOgOJ5uwQ8Q=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795014821; v=1; x=1795619621;
+ b=G3jyXppCZgoid61RQ8NDedy0MoUyfE4vTHR6888w7r8bSUBza9EEKFv8RQfdXHO/YciNrwFe
+ UKcSQAAziDqZkQJb3U/Xwb0Bgw/EeiiBCHsiDFzoXFoV6+cC67khw19Hex6X+FdMwOfETk/oEE+
+ zuhEsSRSXtlulGe3othizhGc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id bedab4fb268803f4;
+	Wed, 18 Nov 2026 15:13:41 +0000
+X-Mizu-Trace-ID: bedab4fb268803f4
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <7f651049-f0dd-4053-a666-ea1c5d49669e@linux.dev>
+Date: Wed, 18 Nov 2026 23:13:29 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/7] mm/page_ext: allocate page extensions early for
+ SPARSEMEM
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Chris Down <chris@chrisdown.name>,
+ David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Joerg Roedel <joerg.roedel@amd.com>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Pranjal Shrivastava <praan@google.com>,
+ Ketan <ketan.kishore@oss.qualcomm.com>, Mostafa Saleh <smostafa@google.com>,
+ Muchun Song <songmuchun@bytedance.com>,
+ Sang-Heon Jeon <ekffu200098@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Sashiko <sashiko-bot@kernel.org>,
+ kasan-dev@googlegroups.com, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20261117120627.50601-1-songmuchun@bytedance.com>
+ <20261117120627.50601-6-songmuchun@bytedance.com>
+ <av20jiGZH5uYV6LT@kernel.org>
+Content-Language: en-US
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <av20jiGZH5uYV6LT@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 00/22] mm: introduce N_MEMORY_COMMON
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Richard Cheng <icheng@nvidia.com>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- linux-doc@vger.kernel.org, driver-core@lists.linux.dev, 
- linux-serial@vger.kernel.org, linux-pm@vger.kernel.org, 
- damon@lists.linux.dev, linux-cxl@vger.kernel.org, akpm@linux-foundation.org, 
- david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
- surenb@google.com, mhocko@suse.com, corbet@lwn.net, 
- skhan@linuxfoundation.org, rdunlap@infradead.org, 
- gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
- johan@kernel.org, jirislaby@kernel.org, kasong@tencent.com, 
- qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
- baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, yury.norov@gmail.com, 
- linux@rasmusvillemoes.dk, pavel@kernel.org, lenb@kernel.org, 
- hannes@cmpxchg.org, brendan.jackman@linux.dev, ziy@nvidia.com, 
- sj@kernel.org, muchun.song@linux.dev, osalvador@suse.de, 
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
- lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, 
- xu.xin@linux.dev, chengming.zhou@linux.dev, joshua.hahnjy@gmail.com, 
- rakie.kim@sk.com, ying.huang@linux.alibaba.com, matthew.brost@intel.com, 
- byungchul@sk.com, apopple@nvidia.com, rientjes@google.com
-In-Reply-To: <av1DvCQd_OvkGgLU@MWDK4CY14F>
-References: <20261114070959.3490008-1-gourry@gourry.net>
- <av1DvCQd_OvkGgLU@MWDK4CY14F>
-Date: Wed, 18 Nov 2026 10:13:12 -0500
-Message-Id: <179501479267.1206716.268867271510310543.b4-reply@b4>
-X-Mailer: b4 0.17-dev
+X-Stat-Signature: tyaep1ts7icpp9exeqfy1zk5xt6n9syj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F1819C0005
-X-Stat-Signature: akfg1jjcaqic3s4ydnqfazz8ywqoea3x
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 23B271C000D
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795014795-592825
-X-HE-Meta: U2FsdGVkX1+OLafu62VPcMWOtic8OzxebTKgj/KTdeElhxPxGtxuVDb9uonqo5SzuoYpmoyueNx09cuTNnp6iucoLa661HGiqzocfwI0964ldNJoW1JCTdJLKUN1lk4DcO1XPfoE8bAE9C6jWeqgdXRCUu54zVSYyuI4J0jMVQi1fcdGnAASoDkcciqyyN0WzewXqHYmtOZRGxkha5wVzfZxIylzkORGlWKq++xLQG/PqlF0CCXZwbUyhH9l7tH/uNhEfe9OYcSTRMsa7tHQ7Abm/NvNahR0fIXD7dPyBvRCnmLdva/9ojEIJiQ4Z0K9Bsg1AEKwFUqV5+6qUIlV+P4hfvjDFmknFP7gtIlHetDxJOoMld1vPCpCpdmba2gUq8kpg1Gvt0Fc9VJnMqNRiPx9rKRWPoWO3KRQWhaHZOAMeMuoJctan/vf3idsby0Tq5trGUJsh5VFdAnwC259sUpORtk7g7iXmkC7F6/nrgOG+4uJeCZSAJVolDvezhlgheJK8LR89Y/bPjAiyIlF/YW9yFY+qJgVN964FtIyC//u/gD7dacDfXMd6Xu3H2fu9GtX6vfZ2F6zeohzO4fkdF6I/2KpJJW3zNbgS8o+w2ocA0+RoUmSWMFKiy92Y7jEQY9mR+TE2WEGtYqLWzeTIDGboFqCBhDwZUJcnQk4NOEvDvGhm87aJawsnsmmEYElTRsfBkKNTU0vqutzB5OCeioAqosRvIV+Y0Vc3O7zQVznYX/xI+5nnhS6bLL12UxGVGKQ/Qr4QH3riIuSGDd8tbHxb63dKt7/mzvY8af3Y5Dvpr+Bq80h2PaObs5rvt5Fe9Agdb3PvRMeIkuMjbnGqC4zYNcxElL45HC2lSMUVEnbclOdsf0NZLErdhjKh9mO6rT4AYSKa2vbjIk0UwnqTWkQamzdUAxcipwJqwcd6o6HBiJg+JtcZNywwlYJ3fH5iicdEnqE+F7AXoYmaIu
- Fmty0B1c
- 4vk4YQ/ohq0nw3MyRRCQumUcMfq6hENGsh8dX6gPa3nMmmV/zSY1zBqa+b3otiaKoW7umFEkuTHTIBlvZwUsY4A3pIN6Ci2Tdu/z/m9+MXb3z4T1H8z94frYy9dYrD4/498Nnc9CY6cNAPUxOfM5GmDxSNq6cqk1AZMYkx79HbmH3r0ttoglqGFsWefSHW7pUTzedHzFH3anA7gdKXQ9t8tMuoptfJeQLJKAkIwLZuGFaC4ahuXIWAbk4gON6YBU0bCYMeRm+0NMqx8futvVo+4VlGSjJiF4FtiQ1h+t4ZPJVaSO+VMeGZDYrR8yPJekffBCR39C8ah2udxZaqt21ohUvq3I+E9ljOvJid/T87mEzKA0jNJO6vRtVif3sOq2KzlTv
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795014822-640126
+X-HE-Meta: U2FsdGVkX18n/7kH8WtcCDlAqZ/LJnv7j0lfRgfNtZIU09i3VTlsOEKPYNk03Njx6/YyOa4N+w6zL1OEnEWZ+I3VL0ObdYTBYwOmzYrxofS1av1v76wsnwZdhYd6DdpuE4G1TxfKe5J+jxvqyt+D7OG+f69E5g/QfX4fY47KPhoOApJfpbUnkOT5xIBdfhTtzJSu8561FpM+lsYYiPx+XsbaWu09pCr05NwbyFQuG8sn1E3XGHnFtIMhiUM2MR+f75U24vcgJ8HVpE/7mvO33fxYSz4VIXvf4aNwJ8mhLrI8oShaJVWoluOcN4vk8rWLyP+jIIJgSxtNh5oo3nYtZ55OvPw9l+VH7eq8a6Q3/bOnlUWngt4zbHo7fNUgpT/b52Pmo4w450CgMi39gyfXh69IhgYrsvrQrWS0FXfKWFc3qeIxXCPBMtTW7qPqyE4VoP13qk4NR2il/Zw8FVv7RW5LbHLGdNCAEpqfcG89HTLD6qXtUoFLTascasTp8qZ7u6i3wna+Lsx9lpD8qpN1irOI/zUrQCaJD7u86UKkpFucxDebZe0kTncOGGPaz4Vs/cxPUVU2B302lwb5zppzsq8yA0BHyeEzwhvC3PGDcaVpgzuWBEmdLJVGYkNzQFvmyGEyr+1+a+fh+hkjtNO7LxVjRCR4I7R/ad+vverGwqmy2RLfdluAVUC5aVR9pem/6xx3E8SPonmdfsXHGVePiHMw/3Uwpe7WTGCCm+A5edZvq8HPykZBD15b3QV5d04A3daIGiQb4zYhL+JgV5uHlvcrajxC6UF1maxbAw4mpac7p8SgiuAq0j/8MHJyXSvRaOGazv1KHoGlDfoKYjsmWkU8PkxumfQ3E41b9u3ujgPe0W2ZbzTX9yEgnXd1qOxNLWmuWiCMWq7YAEoE0owMGW8D+q8HxE/6b34FnqcloN+96Y7PjlW2D96uEoqafut2HzS/kjHCOoHOUk+nLXW
+ 4h/FaaZ5
+ RDAPIC+TKUmRyy0eAOT55fbPjRYE+tZuCZs0tapcYtkDjA90K0C5MzBheTx72Wx5/2iBHpMwkksQthlxdPOgX2isE4h5fm1MUON7x3pGzadxCFmM4t8taWk7mgv8xlDsIqNY9qXYT7Q1CxTocbvt6yT+sV+QSmodoTqWPw48kDaTHnw/l7GmY9mKKywhKQd9OFcGyJNActojX3MQdsn6YKubjBCspv8kM/8Mdm6LGnaVA//XfX1CPgv8dfhCTWiuLsSE1tCNJ962U7upNAuIBJEJ1snJnvHhQ4daF/jJrHBEbOEzpsS1ebCdzPCRwajwkXyaZSzTnuVz6pF53LYw6aGjayZ+ejGrA3bfLb6q9Z5DoZtifkm0A60a/rQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,123 +113,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-18 15:01 +0800, Richard Cheng wrote:
-> Hi Gregory,
-> 
-> I've browsed through the serie, I'll go into detail in each patch
-> in the following days, for now I have one general question.
+
+
+On 2026/11/18 22:22, Mike Rapoport wrote:
+> On Tue, Nov 17, 2026 at 08:06:25PM +0800, Muchun Song wrote:
+>> KMSAN needs page extensions when kmsan_init_shadow() installs per-page
+>> metadata, before memblock_free_all() releases memory to the buddy
+>> allocator.  FLATMEM makes page extensions available by this point,
+>> whereas SPARSEMEM initializes them later in boot.
+>>
+>> Allocate boot-time SPARSEMEM page extensions from memblock to match
+>> FLATMEM's initialization timing.  This gives early clients the same
+>> page_ext availability guarantee across both memory models, while runtime
+>> memory hotplug continues to use vmalloc.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+Thanks for reviewing.
+
 >
-
-Thank you for the read and the feedback!
-
-> I wonder how the "common memory only" rule is enforced ?
-> 
-> As far as I read it, there're 2 ways:
-> 1. The zonelist, you build them from N_MEMORY_COMMON, so non-common
->    node isn't in any zonelist.
-> 2. A check at the call site, e.g. node_state(nid, N_MEMORY_COMMON) or
->    folio_is_common_memory()
-> 
-
-Those are essentially the two cases, which are already present in the
-code in one shape or another in the existing shape:
-
-   node_state(nid, N_MEMORY);
-        or
-   folio_is_zone_device(folio)
-
-With the exception of one or two places, the series largely modifies
-these locations to use N_MEMORY_COMMON instead (or in addition, in the
-case of zone device).  There are a few places we add common checks where
-zone device checks were not already present (because they were missing
-or did not apply, usually PMD scenarios).
-
-> 
-> Code reaches a node's memory in 3 ways: zonelist, node id, or by folio.
-> I couldn't find a statement of which mechanism is responsible for which
-> kind of path.
+> with a nit below
 >
+>> ---
+>> v2:
+>> - Allocate all boot-time SPARSEMEM page extensions from memblock
+>>    (suggested by Mike Rapoport)
+>> - Keep memblock allocations above DMA and suppress per-section free
+>>    messages (suggested by Chris Down)
+>> ---
+>>   include/linux/page_ext.h |   9 +--
+>>   mm/mm_init.c             |   4 --
+>>   mm/page_ext.c            | 119 +++++++++++++++++++--------------------
+>>   3 files changed, 60 insertions(+), 72 deletions(-)
+>>
+>> +static __ref void *alloc_page_ext(size_t size, int nid)
+>>   {
+>>   	void *addr;
+>>   
+>> +	if (!slab_is_available()) {
+>> +		addr = memblock_alloc_try_nid(size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
+>> +					      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
+>> +		if (addr)
+>> +			memmap_boot_pages_add(size / PAGE_SIZE);
+> I think it should be DIV_ROUND_UP().
 
-Being a bit more precise: How do we reach a node's folios/pages?
+size is currently page-aligned by init_section_page_ext(), so both forms are
+equivalent here. Is the suggestion to avoid relying on this caller-side
+invariant and make it more robust? If so, I'll use DIV_ROUND_UP() for both
+accounting calls.
 
- 1) through some kernel structure, obvious examples:
-    - page tables
-    - VMAs / pagemaps / xarrays
-    - LRUs
+Thanks,
+Muchun
 
- 2) pfn walks
-    - memory hot-unplug
-    - contiguous allocation
-    - DAMON
-
- 3) page allocator
-    - freelists (page allocator)
-    Sort of its own category since you ask it for folios from a node
-
-> I see some consistent issues,
-> 1. zonelist paths are covered by way number 1. Some of them also carry
->    way number 2, some don't
-> 2. node id and folio paths can only be covered by way number 2. Some entry
->    points have the check, and some do not.
-> 
-> I can't tell when a call site has no check is deliberate or missed.
-> This matters once non-common node gets its own zonelist, as patch 4 metioned I think?
 >
-> Could you clarify the rule ? e.g. which zonelist users must filter on N_MEMORY_COMMON
-> themselves? and why the zonelist alone is not enough for them ?
-
-Some of this is obfuscated by the fact that the existing code already
-does this filtering for you.
-
-I suppose I have some premature changes to add additional filtering
-where it isn't needed yet to reduce the complexity of later patches,
-but I can see why this is confusing when introduced by itself.
-
-Consider this:
-
--       for_each_zone_zonelist_nodemask(zone, z, zonelist,
--                                       gfp_zone(gfp_mask), nodemask) {
-+       for_each_zone_node_state(zone, z, zonelist, gfp_zone(gfp_mask),
-+                                nodemask, N_MEMORY_COMMON) {
-
-This is a bit of a preparatory change to later convert this to:
-
-+       for_each_zone_node_state(zone, z, zonelist, gfp_zone(gfp_mask),
-+                                nodemask, N_MEMORY_RECLAIM) {
-
-It looks like we're filtering by N_MEMORY_COMMON, but we're actually
-iterating the fallback zonelist (constructed from N_MEMORY_COMMON)
-
-  struct zonelist *zonelist = node_zonelist(numa_node_id(), sc.gfp_mask);
-
-Later we update this node_zonelist() call to determine whether the
-private nodelist should be walked, at which point you do have to filter
-for service support.
-
-> Whether every path that takes a node id or a folio must check N_MEMORY_COMMON, and
-> which ones are left for the feature bits in phase 3 ?
-> 
-> Let's get the rule settled down and make it as the foundation as well as phase 2 and
-> phase 3 ?
-
-So:
-  1) If you're walking the normal zonelists, you're already filtered
-
-  2) If you're walking nodelists, you need to filter on N_MEMORY_COMMON
-
-  3) If you're operating on folios, you need to check common_memory()
-
-  4) If you're walking the private zonelist, filter on N_MEMORY_COMMON
-
-
-So let me do this:
-  1) i'll restructure this phase to omit premature changes like above
-     (they'll move into N_MEMORY_PRIVATE and N_MEMORY_<FEATURE> commits).
-
-  2) I'll restructure N_MEMORY_COMMON commits here to handle cases 1-3
-     above in that order, and that'll hopefully clear up the confusion.
-
--- 
-~Gregory
+>> +		return addr;
+>> +	}
+>> +
+>>   	addr = vzalloc_node(size, nid);
+>>   	if (addr)
+>> -		memmap_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
+>> +		memmap_pages_add(size / PAGE_SIZE);
+> And here too.
+>
+>>   
+>>   	return addr;
+>>   }
+>> @@ -304,7 +300,7 @@ static int __meminit init_section_page_ext(unsigned long pfn, int nid)
+>>   	if (section->page_ext)
+>>   		return 0;
+>>   
+>> -	table_size = page_ext_size * PAGES_PER_SECTION;
+>> +	table_size = PAGE_ALIGN(page_ext_size * PAGES_PER_SECTION);
+>>   	base = alloc_page_ext(table_size, nid);
+>>   
+>>   	/*
 
 
