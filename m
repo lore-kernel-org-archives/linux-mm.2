@@ -1,83 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96F460A2618
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5527D606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=KKCV8xwO;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=KKCV8xwO
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=JLib3Knl;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=JLib3Knl
 Received: by kanga.kvack.org (Postfix)
-	id 3D3E76B05F8; Wed, 18 Nov 2026 16:42:32 -0500 (EST)
+	id 566A16B05B2; Wed, 18 Nov 2026 16:49:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 383F16B05F9; Wed, 18 Nov 2026 16:42:32 -0500 (EST)
+	id 517016B05FA; Wed, 18 Nov 2026 16:49:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24C176B05FA; Wed, 18 Nov 2026 16:42:32 -0500 (EST)
+	id 3DEF16B05FB; Wed, 18 Nov 2026 16:49:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E8A046B05F8
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:42:31 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 59D7E1C41B3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:42:31 +0000 (UTC)
-X-FDA: 85449564102.24.D5BDB44
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011026.outbound.protection.outlook.com [40.107.130.26])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 127B420003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:42:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=KKCV8xwO;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=KKCV8xwO;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 032136B05B2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:49:29 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D6571408BB
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:49:29 +0000 (UTC)
+X-FDA: 85449581658.20.8142ACD
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011040.outbound.protection.outlook.com [52.101.70.40])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4915440003
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:49:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=JLib3Knl;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=JLib3Knl;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf13.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.130.26 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	spf=pass (imf04.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.70.40 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=2")
 ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795038147;
+	s=arc-20220608; t=1795038565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iWkougLfY8DBu/z7WG2F7sgZM3/v0HMzoh0y03bZqiE=;
-	b=JW7Hs3N9lBUp1DajbTLAS9IQkoScQPK96yHEPXfbbpqWblSwqkufPXKD+EXk21R1Fr4WiN
-	xc9Ac7TqCdWnMkSDgNTWFdCF8o9qx/ZtcZghWOOr0vNiFlxySSvAaO1lI2O3xYDpZ1YM41
-	sxICQ2DS4846SbwRKQOM+kX19GU1Q4w=
+	bh=Fv3VJjpEWYvS7/LP0rPxB9tRVxo1/qO/1eP1hB2c8ng=;
+	b=wZvyDLtefQbJ17lEX6D1icayQ85cZYKS0ipjIytQ/u/7Hm8WJi9felAE43LXGtXDTiXTy7
+	BqZ+vn4EOmdVri/J0dpRAxSttI6JBDMik5Z5nZ4YTjYa3RdQj/5sVG2GFe+123eyc5Fqy7
+	9dhhpw87/3P4J0o5n9W0DTG1FwTVnOg=
 ARC-Authentication-Results: i=3;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=KKCV8xwO;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=KKCV8xwO;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=JLib3Knl;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=JLib3Knl;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf13.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.130.26 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	spf=pass (imf04.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.70.40 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=2")
 ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795038147;
-	b=bZ8zWWZZD4A/dHb0hELbtYGGr9hZyfO1wx+FdtU6yQXRZ8hxTXXsI0w9th9KtoNYRldtm8
-	oLA1iMG2km5tbzm6SR8vC9dMnLaqaO91hBYWXXSbrmOVOmHEFpLk8qMdoGxmYMBlRiAwL+
-	F6DvxlpzZMECacnX9YWHO29Kg/bfHZs=
+	t=1795038565;
+	b=5T+mVzjG4riuGOkOVtlCOp//57FdSZLomJprC0LjztY5rarJnjRrPfNzjc+/kDaxnBaAvY
+	ySyDXrxwBNPili8YWB/6SzKLfoS7wNtOUKjrEY/Mmtcksc/jMV81zLVr5XHAjSBMM0L5qO
+	S4CCzWv8iZZCNggcQxxtPBauhTVMQR4=
 ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=WOdyakrMeDLsk/6pW/kszbIXTec4jL6PMT/N5gGALKoyBJfRH5rKDydo1/HemTwQqm05XBluImCrO/e5sZky64UJkQIbJHpezKWe7DZAiqfirL073lzCkoWdhYZz3cXhHNQG3Nez8j9iAz4yjOxNGR8eNAhGuly8yFs8bGUBf5xfsU6NbOpLxnzb21kZ/Vbt4I7j0FsEwM24OJ3RckIgblOVXuTPzmsI0oFxDwk8VIF+OV3lxQ3wjDC63WoclHrADTwgH+vsa++qKpcV3zPtZckqdE51otDkZgwPLGYwjT4DVqhKu0XrevAS4YBRzBp7wDMvz5l9Zu1xgzaw2XBkzA==
+ b=R+FBNCGC62bBP6QKjPGlOEk9mU8VgI8Ckh9XdcX1+b1h+jpiPaWTXVqG5ZBwHwWu7XLUKummkG4NBzj90x41QwHuucWmoFV+fRHn+e1qHCz5g2+uvf47aJpW6150aD+o2NLm6qwBbSmsVLpkWmnnhaOdZEK/P+79haMDLT0Y/ew13mzetTliePKNMfFDfzCCpL4gUaIwLVnrrI7UOnKORymgfus0SiCGboqTJ9k+xhfBcVqY1KRPXkz5dIRcV+8Cq2SZgYMApNaAf9/918fRL0hb1XWkcdwQ2E/OQrOitGN7EJNhuTV41Z0DRsCDivBaF0NWtuW2uML9/9HFFlAdUQ==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iWkougLfY8DBu/z7WG2F7sgZM3/v0HMzoh0y03bZqiE=;
- b=nAawEQXitKJUGga4DF2UVoqBydOVBqGWCcddvpIAplsJwTfUNlZMStH1WmYrl+t82vew11q2XisZnsU0F6ETy2oJhnw1WRZpwFjGy5Yr5jrdHcF1sj3cN7tAw7M1pIUGt2PFFk+XNAUehnnYVXGFQVYKS6jXSTKj79XKkNYluyafa8tixEnc5EcvG80PGDNhd23662femXRDrNfaN7dVwLjsqrSXNFvk2qoxmK1jrRE+9rzm4n3mCoU5cwhQkGuQMYGLdzzxiQ5wlhhUZO4SfxSiXyE/dIKceDoZnCRvnKk9H7fObZClmaUNt4w9SpF1F5ky6WvcM4pA6hFCLYcuQw==
+ bh=Fv3VJjpEWYvS7/LP0rPxB9tRVxo1/qO/1eP1hB2c8ng=;
+ b=qH/EpjNcWBxKKR+yEajTgaIp75QR0c3PgfHcPFsViQUc966Kl+Z95gv7Xv9m4nm3Ma8kXYElHfNqRhfhGSaoJwo1yfXT3VuTEqxPCHOMnVZ/klzkIOnyZEwvJhHw42ai6/IppTF8Eq01Wh+vMjimNgQou470lQmfiC3hxqqFuG0VBuOuRv+oCioaXqTmXXWBrre5GuuLCUD9mslfSo3gD3o6nlRAYFdanqIc+iTw9Y2Shy7RxWjb//RwV73GP4WdVgbun6JAphrb2qRGS5BEbODhQwSOV/Wwsrbqta7zAztnKxbtGvZizR9ELkoT2JwsECra+c2Tw6J3ZLd+risw+A==
 ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
  spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
  dmarc=[1,1,header.from=arm.com])
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iWkougLfY8DBu/z7WG2F7sgZM3/v0HMzoh0y03bZqiE=;
- b=KKCV8xwOwHfsUyt8ejeT4EufBv68xUd9JaM7fpJgnh9CDx0tOBAI7+CeDuUWQHAjIuu5blR3C4kEtmuulrtpkyVyNoLwNyH08vZB7a4MJmL26sMBJtVy10WUifTzuBAMqFUd35iDHDXA6dBURv3SoLCC0APwUQJjTev4e2+O7FI=
-Received: from AS4P190CA0030.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:5d0::20)
- by DB9PR08MB7724.eurprd08.prod.outlook.com (2603:10a6:10:393::12) with
+ bh=Fv3VJjpEWYvS7/LP0rPxB9tRVxo1/qO/1eP1hB2c8ng=;
+ b=JLib3KnlPZn1VqS0elIkRGylf78JMUdTQYNuC5qrcnY805Fp/UODt1vdqX8+REcO1ztkuwNpdgMyrG6/izvJLDBuHBBcClbSAO9d5KuN0PMUqBmhl4VnnotkB8w00qhYzRqPGNYfM5oinkvY3LswPZDsZR532eyBzz22CYztcrg=
+Received: from DU2P250CA0028.EURP250.PROD.OUTLOOK.COM (2603:10a6:10:231::33)
+ by AS2PR08MB10156.eurprd08.prod.outlook.com (2603:10a6:20b:64e::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Wed, 18 Nov
- 2026 21:42:19 +0000
-Received: from AMS0EPF00000568.eurprd02.prod.outlook.com
- (2603:10a6:20b:5d0:cafe::20) by AS4P190CA0030.outlook.office365.com
- (2603:10a6:20b:5d0::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.14 via Frontend Transport; Wed,
- 18 Nov 2026 21:42:19 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
+ 2026 21:49:20 +0000
+Received: from DB1PEPF000509F8.eurprd02.prod.outlook.com
+ (2603:10a6:10:231:cafe::11) by DU2P250CA0028.outlook.office365.com
+ (2603:10a6:10:231::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.13 via Frontend Transport; Wed,
+ 18 Nov 2026 21:49:20 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 4.158.2.129) smtp.mailfrom=arm.com; dkim=pass (signature was verified)
  header.d=arm.com;dmarc=pass action=none header.from=arm.com;
@@ -85,41 +85,40 @@ Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
  4.158.2.129 as permitted sender) receiver=protection.outlook.com;
  client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
 Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS0EPF00000568.mail.protection.outlook.com (10.167.242.118) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.4
- via Frontend Transport; Wed, 18 Nov 2026 21:42:18 +0000
+ DB1PEPF000509F8.mail.protection.outlook.com (10.167.242.154) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.5
+ via Frontend Transport; Wed, 18 Nov 2026 21:49:19 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XAqA/pr6WB8BIbERXYfdJmKVzu5YPoHq5rMSQ6/X6ph8kTiafLZVgdPQvNzXwxyn4NDwD13Lan3uqXcywBpsgXZXJ8L9RnHRUsstznE6DM5t5dl33yOOnbepRGPi4GJ4kDIOwEWMKe25YZctiIqUDtO13svWSycQ5yPXjz/1EV5xi7+USpldG9uP/fu4XCgzNAffLWRErZlq1JdqKzIWimNc1XAL1wB5DtA3CCyRgkj5qfK2g2oIpC1VnmNFVRvjiiiDZ4ABW4GTjH8M/83bgUkDLf9U9bycn+i+DfUU3tAPSZgtIMohukrHDCyN/iBjVi9IsJqljl0AoU75y3TvjQ==
+ b=q2u19dPfOrn9LA+bPT+OloTtq+BBKpXoqkLubqtGY1z68I3GdE1D7X69uS4iO7wVjLiN6MzoAPbHqYpXZyqUhnQCoNsKERJiDrTozvYHxgboBFUaNbdO0oa7Z0ZmY/M6dOnvAZf0lAMp0/HxvOF3UhrLgIbCZ//Q+S9FH+o4Ao/uCCwlDe/jku30oKnaivoG4eUKFs7QYApBSS0Xie08B7AD8S0P/V1QfYhz+ZaMHuwNK5uP96kbZvoOmY+FUvbHIeq/OqRr6zFevc/N0GXv0jrK//X60yQsxZcl+JMwMr0/IdzvneiRt6QMjp6DJ1+pzH4Ml1Qx4y1GX753j4v3xQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iWkougLfY8DBu/z7WG2F7sgZM3/v0HMzoh0y03bZqiE=;
- b=NUTvhx2ZNG6Um0O0lk+ZRmyeH3Y5gFt76ZUb+wqVA7r73Z1FI1mj4qdC+V3iJsWNqvo8pBHEWPEARch0Ca69h/R+pD6XHYL6LmIIpTn8dSxuj6PIY9w2dV6+hMkR3wwK5K4YWoJpyhjwzSkf4buVk9gLy95RUzGiRnijDqyamg3r6AYBeSX+dYNB/MFybMlqPLRNgxuqpknDpyGC2hk1NFltyzeYgcM+5RsqWzuujkTxZwXsf0p7gf2ApZHlbXWnuvL6+1ZYGCnM53NJcv8Yr4JQV87WHqoeqmM/T1ES8lO6BTd+6M9brmZ38OoRWg+jNfwGmKlKirIWUz9JI3fisQ==
+ bh=Fv3VJjpEWYvS7/LP0rPxB9tRVxo1/qO/1eP1hB2c8ng=;
+ b=UsQwJ/vmiyoTgdHZO7Nvs5iMhuBjkE4JNa7/QlOeys+1JoZRQu2Kpb3pwKbioexAM6Suj7jRe+hFxgJfGn8E4Oyp5HriOTkx4bkA0EiE2/NRo2zwcNx/UNLi1Xv/5wlUDPwQQGIlFh3MmrUblKG0Shge9LwR6sUt9i+n1J5kDEou4zd1y5e5HIrWqnDhxpSGhvtlu/4kwN/YB9XoZqA4UEy7Kl0Iv5FeTRpIvE0Zf93J+LpuYqDm/Ho7N2Bx2WpIX7NFCDPcrl0rzFmIb1Ip4g4BR62+1FKn7Cp8yfNB0CZXCSUTz3NwUf/Ms5S825/9Dzbw66qEHFDEsZTLn3Ambg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
  header.d=arm.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iWkougLfY8DBu/z7WG2F7sgZM3/v0HMzoh0y03bZqiE=;
- b=KKCV8xwOwHfsUyt8ejeT4EufBv68xUd9JaM7fpJgnh9CDx0tOBAI7+CeDuUWQHAjIuu5blR3C4kEtmuulrtpkyVyNoLwNyH08vZB7a4MJmL26sMBJtVy10WUifTzuBAMqFUd35iDHDXA6dBURv3SoLCC0APwUQJjTev4e2+O7FI=
+ bh=Fv3VJjpEWYvS7/LP0rPxB9tRVxo1/qO/1eP1hB2c8ng=;
+ b=JLib3KnlPZn1VqS0elIkRGylf78JMUdTQYNuC5qrcnY805Fp/UODt1vdqX8+REcO1ztkuwNpdgMyrG6/izvJLDBuHBBcClbSAO9d5KuN0PMUqBmhl4VnnotkB8w00qhYzRqPGNYfM5oinkvY3LswPZDsZR532eyBzz22CYztcrg=
 Authentication-Results-Original: mx.microsoft.com 1; dkim=none (message not
  signed) header.d=none;dmarc=none action=none header.from=arm.com;
 Received: from GV2PR08MB9229.eurprd08.prod.outlook.com (2603:10a6:150:d5::21)
  by DB9PR08MB9828.eurprd08.prod.outlook.com (2603:10a6:10:45f::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Wed, 18 Nov
- 2026 21:41:44 +0000
+ 2026 21:48:46 +0000
 Received: from GV2PR08MB9229.eurprd08.prod.outlook.com
  ([fe80::4dea:4c1:9d33:db7f]) by GV2PR08MB9229.eurprd08.prod.outlook.com
  ([fe80::4dea:4c1:9d33:db7f%7]) with mapi id 15.21.0615.009; Wed, 18 Nov 2026
- 21:41:43 +0000
-Message-ID: <959a843d-f579-4aa7-8299-c6e9c5d03812@arm.com>
-Date: Wed, 18 Nov 2026 21:41:41 +0000
+ 21:48:46 +0000
+Message-ID: <2a84fa4f-655d-4c4d-b6ad-b2ee9d37d972@arm.com>
+Date: Wed, 18 Nov 2026 21:48:45 +0000
 User-Agent: Mozilla Thunderbird
 Cc: usama.anjum@arm.com, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
  Anshuman Khandual <anshuman.khandual@arm.com>, Zi Yan <ziy@nvidia.com>,
  Alexander Gordeev <agordeev@linux.ibm.com>,
  Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
@@ -127,73 +126,74 @@ Cc: usama.anjum@arm.com, Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 0/9] mm: distinguish HW PTE pointers from SW PTE value
  pointers
-To: Catalin Marinas <catalin.marinas@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>
 References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
- <avtAQCkvRr1xkxMF@arm.com>
-Content-Language: en-US
+ <avtAQCkvRr1xkxMF@arm.com> <5a6f351e-0a68-4bbf-a9fc-5bb39d8439a4@kernel.org>
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
-In-Reply-To: <avtAQCkvRr1xkxMF@arm.com>
+Content-Language: en-US
+In-Reply-To: <5a6f351e-0a68-4bbf-a9fc-5bb39d8439a4@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0366.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18e::11) To GV2PR08MB9229.eurprd08.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0368.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18e::13) To GV2PR08MB9229.eurprd08.prod.outlook.com
  (2603:10a6:150:d5::21)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-TrafficTypeDiagnostic:
-	GV2PR08MB9229:EE_|DB9PR08MB9828:EE_|AMS0EPF00000568:EE_|DB9PR08MB7724:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdcc6a8e-d352-48b4-6ac5-08df45bcd1ca
+	GV2PR08MB9229:EE_|DB9PR08MB9828:EE_|DB1PEPF000509F8:EE_|AS2PR08MB10156:EE_
+X-MS-Office365-Filtering-Correlation-Id: e49d3fbf-58b3-487c-b17d-08df45bdccb6
 x-checkrecipientrouted: true
 NoDisclaimer: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|22082099003|18002099003|6133799003|3023799007|261028144727099003|56012099006|4143699003|11063799006|261026140227099003|261102123227099003|261026121527099003|261022105027099003|261021123027099003|261021121427099003|261022075727099003|261009223027099003|10067099003;
+ BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|22082099003|18002099003|6133799003|3023799007|261028144727099003|56012099006|4143699003|11063799006|261026140227099003|261102123227099003|261026121527099003|261021135927099003|261022105027099003|261021123027099003|261021121427099003|261022075727099003|261009223027099003|10067099003;
 X-Microsoft-Antispam-Message-Info-Original:
- l3P0q8zyjDOhnDMdWr4OjxOkPek2/d6R7l73n2dxMg1nhGnxUxMpXwfUN+TP7DWHTf6qkeCwEIRu/elBqSMUWm+u6LGJTNc2Ep5lUfAHHbtC7nugeD60U9n/sjqyKl90SX8eClA4zknHGsylw7xLSKX8cJ6v+NmpE1yxyWnAJWBfmfcv9tnNuNnAqP8OFhFT/JKy0skit1m/tuESwXPIg9inYwP+iMBvshceQKaTV1AnILH7fmFyWHXVH6bvDkFS5GOMi5gTY3EiulyDipqpifbnoUTsOxhJNvTg+1WaKQ6vh33hBiuY+vyXR1qZkUiaIEsxgpQu/BKHJ892TqyDAOtJmf1folRCw7+h2y+CF1UciuNQ43rzTh7F1dJza3IZXs/Alv3hxtnY4n6XFYRJenztFKMNLzl4hWpbC5P8JEgCTZykmlR8b7egrrIhnxAX5SZZWtdWj/DlR8pMOXCZoL3974rGDD2t/nPf8miV2lAiSAgrZHzj6mtnAwQW063fpPB2weyxEuBmrZUwFi/pRVlcK8KWOj1bXi8WMFvVuGJCCwOp2k3pXzhyQGj8Bc5uGsucUGynJ+nTfgXLH1fEgbYa9oqCvi5ZhQfETIfGlQc=
+ E/y3NBWXwZW5kX8KKqp07dhXrq33EFukUT2JqQQblEhxVX4a90MV5/qbddmuiwXFWBsR9ecPG/LYYd1dC9eiTj8NC75RoBU6prAe+FY5m9wNjhkaATYEeUfU7t2bhs2y5P2wG4U/f7Ga8X9QYncd1PZ91P/MITBD6xSMdd6f6o6HgeY9N58CUn8JG8pjVlxEb6h+L+q4PQ2WiWDlWE6ZiYru2dgoQq1jMO3WG4C9zzUDoVIxA3rIBG5KH4ujdlx4c0ZPbMpENpP657FuiBHRnLwOkEOvv7EwHy+qqe/YhKCM5Eo4enDBpaorzMVk3r2kOefJ4k2VL/znoq4KuuX++NUptVodxBLlTrRA9hjDYygtOZimJ4bVaqNTk74+AokLqBTGqHeEFpXZQRgC1nhTNbiCdmYhO3pECP6zFaWevjbqMh+yh2wXma5mRHqEHnxRXclQlht7jZ/2wvS9uCxz40yrmkmj8hcuAZXAo/1mnfiGgBiMSYQhYXPEim535bH9NJX/RvshKjOvh9aoeleTQzYx6lYEPJtBnDp26Xv/mhhf79nxJSn3zpffgAWffDn219gJr0E8+mZucBGL2aq96cC71VUUHb8E5B05QVI4UKpYeFXzaZncadHRgyqxSF5D36kMY2s7t7I+S4Vvn3sWucu2U1wRwqs7M6CYWK9Wn8c=
 X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR08MB9229.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(22082099003)(18002099003)(6133799003)(3023799007)(261028144727099003)(56012099006)(4143699003)(11063799006)(261026140227099003)(261102123227099003)(261026121527099003)(261022105027099003)(261021123027099003)(261021121427099003)(261022075727099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR08MB9229.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(22082099003)(18002099003)(6133799003)(3023799007)(261028144727099003)(56012099006)(4143699003)(11063799006)(261026140227099003)(261102123227099003)(261026121527099003)(261021135927099003)(261022105027099003)(261021123027099003)(261021121427099003)(261022075727099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
 X-Exchange-RoutingPolicyChecked:
- u3iQJ3ZkHpXIb4elOaAy+2lusnBVKbeXa1M1X9Px+5c290cjp6T17sL2D3E/UMKPteER4ch6TyW2nXvxSbW9KR/RxfGC3NfGk1RmSbiZNanal63MY7cA/p0ZkqoNsGY8w78DrrQvnH+RNOuaEdBdFAzXkA8hNOPpRjgafzqnAFicnRpKa1MTkW4AGqZpAjORNNShAL5soAHhdh7Av6wMxpWSQRU6yxEMuJDFGo7vTHLgMBP4YLXeogQ5+CLlodq5AZwuW9FsxId2IJ0rYuAS9u2WylLsAryjGxsLlqJnqFALE/HrLtQRk5IJCBH7tPyJ1M5RNEZhAl9T/2O8vfFAUA==
+ zUftiiIUt6TqgahAzA952imQ2i9aF59Iw57pXlwMtRBJrKTR3zOFUkHFlGn4ueXmdybDVM9IiyP1m/v86P8HNm739pe4yICDqrf7G0wnVEuxlfZ/EZ2O1J4UjkL08eaeeixnffoEoQSHiUj+c4qih7hufbVqcozurUOXifkthv9neR0U7ogcPcM0c7ABPQLk4I6yTh+L2LRNGVKhfghqWZcb1OpSyzFdTcWoDuDU3STJeSH17nS8aaV2KKFNEA/YjVetAkUckRekhEeKObxvDBoqKLEkhv12vbTxukmE49ONyiPMhBdlp2kiNFSaiBWxK4ZyT70rbpXRQmTTWVIsSw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB9828
 X-EOPAttributedMessage: 0
 X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS0EPF00000568.eurprd02.prod.outlook.com
+ DB1PEPF000509F8.eurprd02.prod.outlook.com
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	1962b341-d478-4c3a-cea1-08df45bcbca1
+	8a651e6d-5b94-4d72-d4c8-08df45bdb8ff
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700016|82310400026|14060799003|35042699022|23010399003|18002099003|22082099003|261009223027099003|6133799003|3023799007|13003099007|11063799006|4143699003|56012099006|261102123227099003|10067099003|261026121527099003|261026140227099003|261022075727099003|261028144727099003|261021121427099003|261022105027099003|261021123027099003;
+	BCL:0;ARA:13230040|1800799024|23010399003|82310400026|14060799003|36860700016|376014|35042699022|7416014|22082099003|18002099003|6133799003|261009223027099003|3023799007|4143699003|261022075727099003|11063799006|56012099006|261102123227099003|10067099003|261021135927099003|261022105027099003|261021121427099003|261026121527099003|261028144727099003|261026140227099003|261021123027099003;
 X-Microsoft-Antispam-Message-Info:
-	PRoI86T+ONOOgXMjPnfxy3Zssm8/O2RF7n6luSS1iIl4w5LznUVZscSSJH+SUxtPoLO7IGyYQLwnZ8WGE8TTsAOxD7PCapaaRwGdjAsacE99mbqfNdxR6r9lztLfJeTCf2WqV3aEIvvVTv0TFMSDKs7o+UAy+WJcdhl1+WWoDtdGFPSEZd7/i+d0toYzJYeRDS9Dx6ENHNlNYUSQZ8i1l9wZj2+lK5Lt1m7yXamVuY/j05D0DJGtTiadXCFFwbSRlX04KQj7PJAZXm37eWZqDq+REvVc9FA3Zx7uyQO4H1Yol3DZ1P7sN0E2E2ASJjyRtow2DX1VLNhIE/x97bkcRj4pgKLvay6kD2XZ3xSf26XSbHBnANU39Gd0FMM2Y0arc5bxv3FLIR+WVNURxhW5DdImiiBBgQpyeSPo0sCLoHGHSeBwbjsW/rr+rSNrhYIBzodBoelXXwb+pb8P9BTu/5GifDqc92QZVtpNOaN8uO4G4+3Jq/qjhD+mqx4qwvhvC8ncvS3uRDGaDd3Myk9PtijDistct6p266VS5U5PTM4sWgWtOzd4G+J5nYmJIVb7iRIP7LtPgMyIEYIxtRxSQICb0uqujqUYW/WWAE+6LIateJoFMFjHXFTW3tVOaXC6QdNrz+VTIOTRDn/cXQV4Ng==
+	2hV7WztJQVWh+mBG5+JfK6fR9vbo4i62lOggvBoxwY6nOuwJcWqKfq9W9+EAh3MXOqZYlrh6XiNawnytaJZJR4ji+/tp4HdA4Yq0YZJwqX9moKQMBeAqVK0LdpnGABSIJllrKDd74gDVA1deUFUR0X8PD40n6t1kiAVUYYSCiQ7tjgC0qS9d6AJkQIEfQkJJCg8IBPLJH4k66PlwhRKOhziqucXrytn5qzfDyMiFRfZwhD4d5f7N5sLukSSI9cUcJV+wdro5nqxgh5ob30+WtrwQ8AQ/kaByvpqA3gzHgxZDT7pvzAdW6/uV9cUfBX/0e1GZV4eBNyFUZMwk/3padY+lO8uSOawuYr2kt4FYoYz/7MN/4+xZA8YD4TSQW2LWkX6siofY2wMZbMgQYcqkIsnyvpsaM5/OReEol330atKz4V6hx9vjsqvqxamSHvEpTV8wnkNODVbxZwMRviM/PXhsG+hyYSt7nIYWOS6n6TcwYf6h6EQb+TtFyBEgtfLq8eynHGVo/AXz9Tk65vM/oo7Fv+BHCwOiY/rd/XyR7PH2AaBhZ2gZqIzKkc3fLArTciVvU0hjkycUZzeCd+UBQ1BnEE4pBpFWL67ig6bUif+UtXxZHVTNGMjQpQqjVIou3ftV81pQQGyGsa01qf75XlGeybbZ6pCi4Hnpx7S+EWniRxChQlxb3XicfOyMiaOfmjurJKKnMnQYsee0freIFg==
 X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700016)(82310400026)(14060799003)(35042699022)(23010399003)(18002099003)(22082099003)(261009223027099003)(6133799003)(3023799007)(13003099007)(11063799006)(4143699003)(56012099006)(261102123227099003)(10067099003)(261026121527099003)(261026140227099003)(261022075727099003)(261028144727099003)(261021121427099003)(261022105027099003)(261021123027099003);DIR:OUT;SFP:1101;
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(82310400026)(14060799003)(36860700016)(376014)(35042699022)(7416014)(22082099003)(18002099003)(6133799003)(261009223027099003)(3023799007)(4143699003)(261022075727099003)(11063799006)(56012099006)(261102123227099003)(10067099003)(261021135927099003)(261022105027099003)(261021121427099003)(261026121527099003)(261028144727099003)(261026140227099003)(261021123027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	R+LssrseZTZoeqW9j/43RnvxG5Qv3banTtyuccdEjGKMwjNVrslgzTnN1DcsNU3TPx4FbnN7oJnI3KabrsxtKPijz2Qh93uNB/FEO6lC40LOcElBLYRLYcB/EbEPrVkeWJbcyuauUUBlEJ+mDBRc21lqKjwoNDchpljtqOIV/Ykh9reHePOzyrLrlg+4C044GfCF8BDbT7+Z67woUZobhORuPjf8FheTk/GlKZ3cBS4zZkcw8YiYV5nsMWjW8UVDQcxLqSFDyMOJnelVGAttJ60rGxgqvrhjTs2o4/SgsYZh2HXK6nA9fZTFdvqFQsIWTFavGYN0d+oM//t0iBcB6A/BMQlqWUAv4Jvhswn87oPNudIw4GnrT4atQumtaG9I6c2Su2LsyFpkOOc27fQ0Ma+P0STmFX7kiA74ORwvz5v9hnpmtLObjFBTVbNgvGyV
+	o4QX4L3hCZKPxRoKcgmfPKytdMhBuDRUTuMKs3aTQttd6+tg53+NzuZiRoemL3grqLUMtGw/ZAwZfSn3SNItx/ijA+Gguf2V7Xh8oSyOZ9FtN0/Y+y2xqkhFdovJ6+U2gWJuYH9/0HclpTiorxIZ/qbUBYJoww2JojCRCdkh+ipPqpbH15E8XFiAdZ516qbgzNjUyZn/Fc7MWNvwTrlWXrUIWZTzFiAzDinafOAhvA/CJIXllaUiCiJ2kGum0vbuJteFkxonaof5D7kTnEYn66wcpOkEvsWUwmkFgWEAk7dubvx1QeEPbz+PAJJxa2mDJE5IxMHB+Mp4awe7rj9w8TYWSezwChK4D1fsulnEgH5J9KblGTi8xH9YonaSD3u5yIxaPDpDGBWcAD8gcQE/t+xDhDSxntyP7GGrbjQgAFlK1b0O2Xhk17+825uUQhdy
 X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 21:42:18.4802
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 21:49:19.4303
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdcc6a8e-d352-48b4-6ac5-08df45bcd1ca
+X-MS-Exchange-CrossTenant-Network-Message-Id: e49d3fbf-58b3-487c-b17d-08df45bdccb6
 X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF00000568.eurprd02.prod.outlook.com
+	DB1PEPF000509F8.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB7724
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB10156
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 127B420003
-X-Stat-Signature: geukfexsrtcw8yu1tgzezypw5nnjyjc9
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Queue-Id: 4915440003
+X-Stat-Signature: 439cgedwzzkskypi9pszrq1emjcsj4gs
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795038146-757597
-X-HE-Meta: U2FsdGVkX1+nP2FMk9Oj1jUvgJrXbkz6Ss3dZxUi4cpTFBFwr3AKe+ZuIEfQ9IZGn9k3DnuzIE6WbAwNUxjE6Iu1lQpyjknLGTzGBu6vsRTlVyCPEkMvLM5fNCyraE7XrtkghjQyyRFbnX3BnRRnLyds12VSsLRBgMnWtZ+RWmS2nJie58DTd1q6TBojlCOaJ/2aQ0G8z+s87Oqt/A/kruJEr1taAAXPcRjrS3BJBbR++lBXzpbiRwVUF6E1FeuAqYdG4/cBC6smJcMGSp52ceFjt2CxTrc7cKloxNfKYkS/CTKEflKIyURjtU3+XukI2IfsywHySd2lXyb2NnFtwaK3RnnouFW+ABnbB1zB+bpc5J3K4m08hH/vppQkIQYamzf5jAAVcswheqiZ3mL1ckgV7/g8G3Gogn/LqsKSCwMkbDGyFYRnOwuW7Q4zRObeZE4Owm1QVxu7XNFvJ52lgB3yQDSsRC+9UVXuE3t8bbRLy5bp5MFgK2a5gVBKQFu90ud6o/lPb/icyveCaS2gYBWt1pSFIU26huXQlYxUIlyrlCL+vUMGeqzwP4/q+2BYp3IGY3KQUvuksrpeJN8rOuhb94WxSilyzUieePHr2PhyNhpHuDfbr/6CYYww3zCT2c/FlXm4NDOo21BBTAve9gxStzw1W9pmxOPEpH9P1ylzv8WWOqOJ0g9rCyw/2rXgL9kU8yW8ub5yu7kHVR7hgViImv2XjNggyA9j7jnovj3PcXqNxe5AgPLFq46CgktoqyyZKuS8bfNb4qLGKAlitj2EGlaiDFAKL630/l80sCiTzJWOfrsm783O3vMUGgLGERTnpO03BtavDdJdMAFJEBRekJcb6S6kcick9FRx1iTrSFMix2W7ttcgIA4eBSilaTXQTVj6ODRtsQTH9zSJ6RkBOMIaYPwXUoKgzMjfp9I13dXWnhG+ogqTzA24qVuwfu3kloRASOkmZ/bhz5S
- ww8HeI0Y
- RT/DDUvJWMzk4awdcxomhnIek6PjEtNYewu8twylJM/erPXjHiLiVcF9wPoCHOh6IuNhcwgZX/zZR1JknHmaDoQGRjbIXm+rmVTe0xHCY+IWMANPZYWVITSuMpcJ9y8e3IuwP9TeyPP9ll+5W6XunsU93iaxm8/UdYCDQNfeqSIpLcoRVo/sr7zZX2FdUFHXGiqigIPWweYOYGl6pJn3vnbnmAk+QvnwzX512yOfJa/jCOjDe58Ug49H6On54110+LEVskTzLmAocXt2HMYApX9Bj9ds2VYihG5u6s+FSgNGMfAW/oFAj084zcSVj/q6ZIvTOmfprZV75ysuz7KB4ZnpljRHoU7qGl4jIIWc6FqgLDSNOh15GhqUxGT60CcthurF3kkOQnskboxznjeMkcHOusNX9sF5eU2b4ncsO4f3/Suw7N2HuNLD0RdKW/AGww1bIPnwe3Uc5ActHKNK49lqcfr6A1B4YPKahRC1OgaSoOrToeSiRbeWoCwbsDsNTO71BRC7V6FYjLcexkomGB5IKy8Z1pIIk6EKUi0aBo3RxqRPK2OHTU61mIjcOirzzsbkXM87RrGZdRbzryYqTb3dW+CDnEtJMknuZm4hdilNMFEPUmvMHfcM7Bw==
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795038565-937614
+X-HE-Meta: U2FsdGVkX19vkzKu1wuGysX0bQV77KbP40ntETFYBLanmIMlG4V0+1tQ4DJ3a+4CRc8fUS/t9LUSjKuXNpxMmNlxAxu/PDvfNJF2Q5jox1O71rbK3F4tHLyxB+yhcjjc4voUJqtCGdVUGNLvBIJdPTU+mTsBt8PL85UNLwxEDk0J7OBax5nqkfQFGfIpll/r7yLteVbobZ1tR23hmUcDGznZc0g/tD7Ysaysot8nQxa5BCgB6KALLJdTf7iIF3PXZMesMHnVne2j3vwYoPpWYZHZVGODSDle3l0lp5gR5itiWxxeBw+8g9yf9tjyDx7QgTdtB/Y9frLVKb7hQTmz8QoBlNnj2K+IRLP4pKx28hul2JWlKX+2x69jhEz1N3a+a9Ui7r5n0V1NHpM4vkQ8nPUTL8dqGCm4zhrSSCDg6Er9FhJzt/cgIZ2JXE87SMheabDSgLK1uhnA6b50vKLGqI1s3vssvzu2tw55gyam9DCDqvTDS3eQsen9djxHsL1hXmGw4oCKRPEJ/q6PDZGXLGLDyvqiDUZ1vL8BAH+w75Rsr86yor4ZQ8/m6sdRHR/jm9irSW74btep/AQ44al1bPjXlx2kdYyEjmaqsg564tQwuHDV9lnBjVAYcBqEMidkbdbqaCBp51xjNvGs5cCCUOnYxk02XG6Cx7c1OG+JNNm5wh0jrdKtzHOVttRbp3nWJDFhCFmw/ZjR9SGjQKHzGLx0sE46J8BiAuDxKjor1cHhQJLIFhpAkcbnkS8jQur4aV716qgxA49/Ph0BtNrF2yMfZs21iBjb0e2+pkOqonJ7DI4uFP/f1lhEWWNFocYAd1vOnD2Lm+AVkOeHignzOcNuxnAKSsMjd71/unKjQNhxmz9DLAYifnWOixliKggZWqmP4yzNgAvXAp3+QXekYiibgVgcsmILbToLfSc3N6EwTWFC5ZITQtfTgpAicA5GAX/5nveykeGrNa2DZqh
+ qwyf0OVl
+ RRaJjgSXPEXy08mEIIf02jvNynzG2AsQ7GZ71Sa/ajiJJbf1NRu4ayC1E7hRtfksGAs8Z+8BYWyd05k6ZYkK5D8tozUCxZOXDAQWuh/amehp4xzKWkaeGDbMXu14y0clz4c6wa2rQzyT3+0LsLMyu6SQ2mQjFWLgaPQB8Y8kWohBlHp8b18Z8dxxaZNkLKRwVyoqh3XKBEN9dWQS3gJ6AGtonhOe/KZse5ZY3Hvx1PVwGhoIvFewKh7P8YvwLG6A1ZleesSKUp2KcLiPDsHu8zEmC0EDyD2BMDPdIPY5Uz6um+IaPcQ+zADt8u5qo6ElgrFpptX3f1SWdm8R1uwN3MPtmKGF/MQgvBepCk2lbncmkwUMyjg4ZHfOfL//BoU/yKiJosUxdKDFLZEouxT2sLavblhNbLeGLKJ29wlqJdWSAWAelWd3PuFfjZJvrCqDjDcR6y5w2ICCw005jUVVlBiWvJ8C3sz8oSGinyaOXfDpuWV07qTIkB1oTEyXdx66htJux0Uvbo2ugMX8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,132 +202,138 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 16/11/2026 5:41 pm, Catalin Marinas wrote:
-> Hi Usama,
-> 
-> (trimmed the Cc list, some lists reject it as too many recipients)
-> 
-> On Tue, Sep 22, 2026 at 06:12:28PM +0100, Muhammad Usama Anjum wrote:
->> pte_t currently describes both a software PTE value and an element stored
->> in a PTE table. Consequently, pte_t * can point either to a software PTE
->> value, often a stack copy, or to a PTE-table slot. The compiler cannot
->> distinguish these cases. A value pointer can therefore be passed to an
->> interface that expects table storage, while table storage can be read by
->> direct dereference instead of the architecture accessor.
+On 16/11/2026 6:18 pm, David Hildenbrand (Arm) wrote:
+> On 11/16/26 18:41, Catalin Marinas wrote:
+>> Hi Usama,
 >>
->> This series begins a staged conversion at the PTE level. It introduces
->> hw_pte_t as the element type for PTE-table storage and converts generic
->> MM to use hw_pte_t *. Software PTE values remain pte_t. Interfaces that
->> intentionally return a value through pte_t *, such as install_pte,
->> remain value interfaces; the relevant parameters are named ptentp to
->> make that distinction explicit.
+> Hi,
 > 
-> [...]
+> David here :)
 > 
->> PMD, PUD, P4D and PGD storage are deliberately out of scope. They can be
->> converted in later series after the PTE boundary is agreed, avoiding the
->> PMD-specific cases that made an all-level conversion difficult to
->> review.
+>> (trimmed the Cc list, some lists reject it as too many recipients)
+>>
+>> On Tue, Sep 22, 2026 at 06:12:28PM +0100, Muhammad Usama Anjum wrote:
+>>> pte_t currently describes both a software PTE value and an element stored
+>>> in a PTE table. Consequently, pte_t * can point either to a software PTE
+>>> value, often a stack copy, or to a PTE-table slot. The compiler cannot
+>>> distinguish these cases. A value pointer can therefore be passed to an
+>>> interface that expects table storage, while table storage can be read by
+>>> direct dereference instead of the architecture accessor.
+>>>
+>>> This series begins a staged conversion at the PTE level. It introduces
+>>> hw_pte_t as the element type for PTE-table storage and converts generic
+>>> MM to use hw_pte_t *. Software PTE values remain pte_t. Interfaces that
+>>> intentionally return a value through pte_t *, such as install_pte,
+>>> remain value interfaces; the relevant parameters are named ptentp to
+>>> make that distinction explicit.
+>>
+>> [...]
+>>
+>>> PMD, PUD, P4D and PGD storage are deliberately out of scope. They can be
+>>> converted in later series after the PTE boundary is agreed, avoiding the
+>>> PMD-specific cases that made an all-level conversion difficult to
+>>> review.
+>>
+>> I looked at this (and the arm64 counterpart) and I'm not fully convinced
+>> it's worth the effort (but I won't oppose it if the mm folk decide to go
+>> this route).
 > 
-> I looked at this (and the arm64 counterpart) and I'm not fully convinced
-> it's worth the effort (but I won't oppose it if the mm folk decide to go
-> this route).
-
-I've found direct interest from s390 as well as arm64 devs other than us.
-We all want a sustainable solution.
-
+> I think this is the right thing to do to get type safety.
 > 
-> First, I'd like to see all such on-stack p*d pointers addressed as a
-> prerequisite (e.g. fix pmd_populate() in __split_huge_zero_page_pmd()).
-> If for some reason we deem pmd not fixable, I don't like half (or
-> quarter) baked solutions just addressing the pte.
-
-Only pmd pointers conversions may require careful review and some discussion.
-Other remaining p*d would be straight forward again. I think if I convert
-everything, we'll have 30-35 patches for generic side only. It would a little
-time consuming to rebase that again and again.
-
-I think, a simpler plan can be to post the pmd pointer conversion series
-as well  in the open to get better acceptance of this overall effort.
-
+>>
+>> First, I'd like to see all such on-stack p*d pointers addressed as a
+>> prerequisite (e.g. fix pmd_populate() in __split_huge_zero_page_pmd()).
+>> If for some reason we deem pmd not fixable, I don't like half (or
+>> quarter) baked solutions just addressing the pte.
 > 
-> Second, we could add a run-time page table check, at least for pmd/pte.
-> Something like below, gated by CONFIG_PAGE_TABLE_CHECK or
-> CONFIG_DEBUG_VM (untested and not entirely sure about using
-> PageTable()):
+> IIRC doing the full PxD conversion is quite big; doens't make sense to post
+> these on the list and instead move stepwise.
 > 
-> static inline void pgtable_ptr_check(struct mm_struct *mm, const void *p)
-> {
-> 	if (object_is_on_stack(p)) {
-> 		WARN_ON_ONCE(1);
-> 		return;
-> 	}
-> 	if (mm != &init_mm && virt_addr_valid(p))
-> 		WARN_ON_ONCE(!PageTable(virt_to_page(p)));
-> }
-
-s390 already has CONFIG_STRICT_MM_TYPECHECKS, but that only provides type
-checking for page-table values. It cannot distinguish a pointer to
-page-table storage from a pointer to a copied value. Consequently, direct
-dereferences still appear in generic code and can bypass s390’s
-architecture-specific handling. They have been trying to fix [1] differently.
-
-RISC-V has independently encountered the same problem. Some RISC-V
-platforms must transform page-table entries whenever they are read from
-or written to hardware page tables, so generic code must consistently
-use the architecture accessors. They were trying to fix it [2].
-
-These requirements are therefore not specific to arm64. The aim of this
-work is to provide architecture interfaces for manipulating page-table
-storage correctly and to make accidental bypasses compile-time errors.
-Architectures that do not require special handling can retain the generic
-representation and trivial accessor implementations.
-
+> Agreed that it would be nice to get rid of all stack usage first.
 > 
-> You already have some coccinelle patches to make the conversion. Could
-> we turn them into a coccicheck to detect new uses? With LLM reviews like
-> Sashiko, we can probably catch new uses violating the requirement (we
-> need to document it).
-
-Coccinelle can identify common syntax, but cannot reliably distinguish the     
-meaning of two pointers when both are pte_t *.
-
+>>
+>> Second, we could add a run-time page table check, at least for pmd/pte.
+>> Something like below, gated by CONFIG_PAGE_TABLE_CHECK or
+>> CONFIG_DEBUG_VM (untested and not entirely sure about using
+>> PageTable()):
+>>
+>> static inline void pgtable_ptr_check(struct mm_struct *mm, const void *p)
+>> {
+>> 	if (object_is_on_stack(p)) {
+>> 		WARN_ON_ONCE(1);
+>> 		return;
+>> 	}
+>> 	if (mm != &init_mm && virt_addr_valid(p))
+>> 		WARN_ON_ONCE(!PageTable(virt_to_page(p)));
+>> }
+>>
+>> You already have some coccinelle patches to make the conversion. Could
+>> we turn them into a coccicheck to detect new uses? With LLM reviews like
+>> Sashiko, we can probably catch new uses violating the requirement (we
+>> need to document it).
+>>
+>> LLMs and coccicheck won't catch all abuses nor does this series prevent
+>> one from declaring hw_pte_t on the stack.
+>>
+>> Once the above are in place, I'd look again at these patches and see
+>> whether they improve code clarity and are worth the churn.
+>>
+>> Maybe an argument in favour of these patchsets is future dynamic support
+>> for FEAT_D128, we'd need to separate the software representation of a
+>> pte from the hardware one but we've done this before (arm32 non-LPAE has
+>> different representations).
 > 
-> LLMs and coccicheck won't catch all abuses nor does this series prevent
-> one from declaring hw_pte_t on the stack.
+> Exactly; we'll need this and go one step further and disallow any ptep++ to
+> instead route this through helpers.
 
-By using Coccinelle and LLMs we can still get regressions which arch-es
-have been doing over the year.
+Agreed, after the current series, we can easily make hw_pte_t opaque like the
+following (or in even better way if we spend some more time thinking about it):
 
-hw_pte_t * makes accidental violations compilation errors in every build.                                                                                          
-Deliberately declaring hw_pte_t on the stack remains possible, but is explicit                                                                                     
-and reviewable. (RFC of this series has info on why we aren't using opaque
-objects.)
+diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
+index ee4eace5c3e1c..9898c0613e170 100644
+--- a/include/linux/pgtable_types.h
++++ b/include/linux/pgtable_types.h
+@@ -7,17 +7,38 @@
+ #ifndef __ASSEMBLY__
+ 
+ #ifdef CONFIG_ARCH_HAS_HW_PTE_T
+-typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
++typedef struct __hw_pte_t hw_pte_t;
++typedef struct { pte_t __pte; } __hw_pte_storage_t;
+ #define __pte_from_hw(pte)	((pte).__pte)
+ 
+ #define hw_pte_val(x)  pte_val((x).__pte)
+ #else
+ #define hw_pte_t pte_t
++typedef pte_t __hw_pte_storage_t;
+ #define __pte_from_hw(pte)	(pte)
+ 
+ #define hw_pte_val(x)  pte_val(x)
+ #endif
+ 
++static inline hw_pte_t *ptep_advance(hw_pte_t *ptep, long nr)
++{
++	return (hw_pte_t *)((__hw_pte_storage_t *)ptep + nr);
++}
++
++static inline hw_pte_t *ptep_align_down(hw_pte_t *ptep, unsigned long nr)
++{
++	unsigned long size = sizeof(__hw_pte_storage_t) * nr;
++
++	return (hw_pte_t *)((unsigned long)ptep & ~(size - 1));
++}
++
++static inline long ptep_diff(const hw_pte_t *ptep,
++		const hw_pte_t *start_ptep)
++{
++	return (const __hw_pte_storage_t *)ptep -
++		(const __hw_pte_storage_t *)start_ptep;
++}
++
+ #endif /* !__ASSEMBLY__ */
+ 
+ #endif /* _LINUX_PGTABLE_TYPES_H */
 
-> 
-> Once the above are in place, I'd look again at these patches and see
-> whether they improve code clarity and are worth the churn.
-> 
-> Maybe an argument in favour of these patchsets is future dynamic support
-> for FEAT_D128, we'd need to separate the software representation of a
-> pte from the hardware one but we've done this before (arm32 non-LPAE has
-> different representations).
-
-Yes, that's also the big motivation of this work. We don't want to depend on
-the config options to turn on/off features. Arch should be able to turn on/off
-code based on the cpu features.
-> 
-> That said, patch 2 (naming the software PTE value pointers ptentp) could
-> go in independently. Same for David's suggestion on patch 5 to replace
-> the huge_ptep_clear_flush() stub with a plain declaration.
-> 
-> Thanks.
-> 
-
-This is one time churn for multiple kinds of benefits.
-
-[1] https://lore.kernel.org/linux-s390/e50fb51d-72ac-4ace-b532-5cf32ecd80f1@kernel.org
-[2] https://lore.kernel.org/all/20251113014656.2605447-7-samuel.holland@sifive.com/
 
 -- 
 Thanks,
