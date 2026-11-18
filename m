@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BED4606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26629606A32C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n82NdDEF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GpcaUxFb
 Received: by kanga.kvack.org (Postfix)
-	id 462456B05B0; Wed, 18 Nov 2026 04:39:04 -0500 (EST)
+	id 463C06B05B3; Wed, 18 Nov 2026 04:40:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 439BA6B05B2; Wed, 18 Nov 2026 04:39:04 -0500 (EST)
+	id 43B486B05B4; Wed, 18 Nov 2026 04:40:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34F336B05B3; Wed, 18 Nov 2026 04:39:04 -0500 (EST)
+	id 3515A6B05B6; Wed, 18 Nov 2026 04:40:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B4A46B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:39:04 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A14A01606CB
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:39:03 +0000 (UTC)
-X-FDA: 85447740966.12.B54B34F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C5C1BC0006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:39:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n82NdDEF;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794994742;
-	b=kieVkAM5U8eopYTOPM2H8vblM8eYF9FvlZ2Q41KaiKu+wQXuZvmxkbN1swa932hS5Xwte/
-	TPBNaSq82oEXqK/1RJ4QOpXrdW7nlYoJiiouKffkEqV1BAJjwl8LxSHKGYkqonofhFLCxu
-	Y2MqDvKZz5bRvk6gDLtW9Tp+imfxT0c=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n82NdDEF;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 104326B05B3
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:40:00 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A31621C3F82
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:39:59 +0000 (UTC)
+X-FDA: 85447743318.14.3ED7159
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D3E7B80006
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:39:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GpcaUxFb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794994742;
+	s=arc-20220608; t=1794994797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pFcykN8FbTzlkQb2QKEzQvmDwgjWoZpHj6xZz+E6k4M=;
-	b=TI99CMM8dTUotKIalCI7gkAgQH8R5BempBPqk9fHkuV6WqSesladc1mqfVSP8yOp8Djxs6
-	uPCleKoRRADtf18/mxX8+wLUqeYEigjHuKYmwucD6TXVsHMSbIbx+vY6/DQuYJZpJxGQ+c
-	H2rJTAHZ1FcuXUAs9zTQ7RG7TTfKtTE=
+	bh=kQg3KGb7GYq22ZHkNPQqW4NEqCB8YAgXiGER+D6cdok=;
+	b=d5uQ7/utcL4lrf0M40ht+CDHJ+aC4FoDQrw6yBs0ZHSM4gI4E9g1bdy65VeZDmfKKArrJs
+	HwEGvqCT7vkFY8DlbO4rqim9FmjwCMB9F4CRUOWCrS5zGk5GMPR8CdMFft6I64jNnr3fyi
+	kMifr1t+3CmeQwPU07pYMl4OzkGFM18=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GpcaUxFb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794994797;
+	b=ofk6mjLU9qclvU/A4r1P68Qhcekj3pU6ZSh4PrWFzyjjCbWgEKkTQYYGuvU5OuesjAZJan
+	mLwNHG37uhbgwMaZmcjgFRXmdAg8Du/bGFls+J5I99n+EGpXRhWDefX4cgAqx4D6+rAYVJ
+	hE8qIFyzFFAS1nlnJIiyor7wLpr1bis=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E2CC043A36;
-	Wed, 18 Nov 2026 09:39:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF601F000C5;
-	Wed, 18 Nov 2026 09:38:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 64CB6609CE;
+	Wed, 18 Nov 2026 09:39:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905DC1F000C4;
+	Wed, 18 Nov 2026 09:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794994740;
-	bh=pFcykN8FbTzlkQb2QKEzQvmDwgjWoZpHj6xZz+E6k4M=;
+	s=k20260515; t=1794994797;
+	bh=kQg3KGb7GYq22ZHkNPQqW4NEqCB8YAgXiGER+D6cdok=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n82NdDEF2Y36movBI2landvuiWeoHOsmHhM0axpee/x9FcrkaT0e7kHegUZLC0CvF
-	 qSvYrAS1IbaeJgTOvIYTCMd6GgQYjC/tfTiJ8h00Q3mKJ7YS6pb9Q7i1/8jl3xVCyW
-	 QaL07DWQ/xNeUW9xMBJ2DHZOe2ctnISw2rNuK9eOpzWD4Nzm+/RHaXBoSiBEOaoo51
-	 plyeS3IfMN9yjUGHkaR8vM6lc6WeDANPUDcmhkd+abr6XWQALHYCyIl0x3BanWBsr8
-	 5ZnW5vVA6nyfhNIOmPbF1b9264K0HKSqoU67uP/QLdAuzAQ251KopKwjWu+lfYE/B1
-	 Mn+2t1rW1PM5w==
-Message-ID: <5b195d44-66f5-4d9b-bb79-259fa938cc59@kernel.org>
-Date: Wed, 18 Nov 2026 10:38:46 +0100
+	b=GpcaUxFbHR9dMI5Bvkr3hUHr3/rN1SQXygpuxyMfV/mzR4t+3Zj5WZ3bmdmS9jxH3
+	 QUZ/LG78QFpmxhtVN1td0C+3zH50ucLvT7f9SOrIU+Y7SR/teEKcIxEfU8Hkq3MV4T
+	 oAkowGalKjtwqxDV9lm3aQDQwKH3OpgElmV4CNbcSfVDeNWiCKbAyb4AirlB/EWuJT
+	 ZD4MxMEnRBgL6K/oJpbiy266LNRcpLyfLMUyh3GNAj00rHpgauWG+aiKlCbvROKrje
+	 WmS4UBO6YpEIsx94/P7QkA7YpGjUc7m0TLyH9+Nv8xTHKr+942fOdRXQnyN2b8chxb
+	 jiRWHQnNPS/JA==
+Message-ID: <de532d85-c6f6-425b-86c5-08094cd28a29@kernel.org>
+Date: Wed, 18 Nov 2026 10:39:42 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 9/9] mm/userfaultfd: check the hugetlb alignment of
- every VMA in the pre-scan
+Subject: Re: [PATCH v3 4/9] mm/migrate: warn on a writable migration entry
+ with the uffd bit set
 To: Tal Zussman <tz2294@columbia.edu>,
  Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
@@ -93,7 +93,7 @@ To: Tal Zussman <tz2294@columbia.edu>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org
 References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
- <20261117-uffd-state-fixes-v3-9-b617009d1a4a@columbia.edu>
+ <20261117-uffd-state-fixes-v3-4-b617009d1a4a@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,21 +140,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261117-uffd-state-fixes-v3-9-b617009d1a4a@columbia.edu>
+In-Reply-To: <20261117-uffd-state-fixes-v3-4-b617009d1a4a@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: yng4z7xp1fh53aqgxo6p7e8cq7xgwcqd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5C1BC0006
-X-Stat-Signature: 1e5pu6aq6eycmtq6siwokom8for7jytw
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D3E7B80006
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794994741-153471
-X-HE-Meta: U2FsdGVkX18EEy2Y8D8kmEtd45RNTpFj1ijgtP7TbCpB2IyM/IuIOWT5Dt9BP6e0lRTHobvHe8nCwyPRD26KInU4MNrMcjiwgPUy521J0E7Fpjolzli18lKrxe7ArGwWH5xT4CDBfN4Aal3Wn9drX1iOq4nMiTObvSMz534oTFise1tWIp484BzESVanzLejbK7DXN0M6rnlryh17etdoL/8PhLXgkQ7+xBfUswHzFV8qkI0H5SExiANnOaawMEgnbFPcq5CNVOrLep4XXfhkUzTgsQQQ5sIZKI5w5ULmPJgbUHUpTbQ6qfZ9tSeW0VT8XCBwm9RXQd4thYq7c+OeIwfsWxhAe4XOgHisIcxPVPf6w1g0nUopYIVZ2zQ5W6wXjVRG+BzbgcwzSoI7O2ONyEpDqZBpXTbqfw0HNzCk50neSBIvd0CRhivTLI3DsT3CG1N3nZ/KjZcmUmZpEL014zU1sOOI4e7n+R9XDgMtxhb+oZRUocfmG0O11LrnlNMva/UYED0h8RGTnDE8cby1OCoLMXm1XMy7FX8wlECKXshBrZ7UjplGlLo6g+2VARVegsyMo93dVnfloWRBEtzUGpTpkG0u+SG37yND0Tb7GLAqaGEiS+MReI8PeFtLG3WeDW83D56wK2GMFYu3wx73IEg7AJezXxf7+fjbZZqhAza56hXzZgJ+ZQTrLjoc5Gufoo+qVwGBlAsT6F6cxbXEGBCYNgnyyADMr+dfwfREjiHlTf5IHHw1MiyOGUCOqeMjFng+og5j1A9yFtzEGuYn0bHKTwaalitQ/37FS0xMlezsu1GjABuniUZybcq0cb5jqUKctZ0hHwIWvPKMkRTxFKjy4g8EwILEUfbLsCdH8GHuapl+kSLjh53GNP/dWgjnhLgSQYfjfjRHyqkEKDpH808OjwQCL2/6eukus9EP+GfLlkN4cr0OsyoWzwUQkIv1c163ZblIEWCu27uSZg
- GWW5gMl2
- tqNcuKQYNRNAu+E8R9/ca1LwS+daEWApN4p+0uCM/0hEzBXQERD16AAqmul8RavEv/kkGTryV21IEna8+5vME2eIx+1WsJnTl9Umi8ys8CT1ccpss/z2BB5JAhtZg6esLcKXCGy0KpDbftSyTshR3YXkReEnHPWvWM7mTXizDBHpI82jxmliA7yqC9mqbwCXUtZmJplfC6EvVOHfYc1dNiQccOKj3+Ch7KBZLH6k7pAI9aQeG+JZ/djKS5/RAS9yjEQgatPl/LPZlNhhA9tWt0nNuVS9soomAzVCZKv79vPy/F4vRdC1OaAV/eSarxjBW6mXU0u+FassD+3JYKh3rGmthcNlaaCSbKFU2ylUJ1PrQsMpXMoMqyai0iRZPsofNYUP3
+X-HE-Tag: 1794994797-735649
+X-HE-Meta: U2FsdGVkX18VKMCnuhlvlnoxjvtwfoLIRv//wq7TZf6NgtUNbJ2yo+8XJBh5nEj0KKfm9JRTrXVrXv8XM/risudqwVrueUiUMExJn/KxZPFwDnEa8v76hk4eDdwWFvIhEX4nhp2tPaqC1VHDA2YecqhKFfuv69PR2DhSh+nkkDfnrpsEvwmk8co+PiKscTfLOkK9o/cXw9qXykkxorBHVIomrbnrBsa/wG8dGSpupv7hIsuzxmUcj1+WNsHbKF9KDvQt7PkiDhrUEnznSQRS96NEDGo0KzJybsPXGAcIvFoWOZPxSBiGgxtKCVke5+HT7QseHAlGogQngQbkfUw/LLpzHfQB3wh7SgewBx+ClVSB/GIOwW6vOn5d/BNozVmMGil1wGcKQXOWuPeymBJpZ/sJc49iqGxg7lk7H5Q5YuAo5kaV8Qkf49HnHzaYGDJe7YDh8N0ey5dMT4MWTKcBm9otFLjGpXld2o5LCxYe+SyzTq+3cF5amUlAp+WrpISVRTD/s0cjBUUBWUIMTzjo9DCBC90fzJOJyYzqfi6uAlPNzbcmDxIaK07aM+Z5s0d3GwQDWCfD2wSU4Cydv7LvpvPTeMUSeJFdrjNog4M6+MpY3byKhu5XKfZ2BJorgCjMVOr+f8zW0PeRWY1t1NyDHf6cKWo+Rv29gVsTeBFF3VcrcrUCBWs0tLTsgi/mpySK9fZG9j7R2sO9UrKZIQ7pmkw1OcU8I/sY9pYPTiNMySXLumPy9wOKNRurh4zj/rFuIEKtSFDV5WAM6C8Mcu2wYvavAr9kD0IpXXv9jHE9Nbc0hq+oq9lw3rvl73EdgRQVghZKwR3KSsTgR+XHXsRDC1lysj/xDbhVXPbo13t6ocOroV2hdin1E72XAtaMr1wx6wiDsFiEJ5YWrsHkEm5C4IINzxC+38SyaBQ6JN4/OGD6F9iakkp23qq8A7rEA/W+c6b97aUM/i4huO1NgSj
+ HskRRTmY
+ qLiBGvZjv9JfJ//ISTNvfAodQYcXGqfZyDDcOJgJ4j533oBZJi1y8hUzU1RwhxOxNxiI81orr/rSm/GhMhQmNZjnQFagzkP/tTuSuCg1/qiBHg0Lmz1k+7Ywc/81j8v/HMSF5j10WP2R8In3sZ1QeIcV6KK1D6gRS5Q+5NgRmj530k4VlOw08y/kPucCt3gMTy/mzH0K7uAbGK1nrc+sfiIjekLRAhMk0ejEUtTFkWN7RYZA4iM1Vqpz6Q7dCsrGcbUzjIMGhBe3T1Jhb8t/MMQ72F8n1UXuc2vKGVMgjML1tvARRO24nmVL18Chd2gT++Xlwt+kfoTKZuz6h3y9sFaPJ23eL5ObtOLtYBWWUs9M4PHv4n33IPeVvrcEF1xd1TF4m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,43 +164,20 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/18/26 05:28, Tal Zussman wrote:
-> UFFDIO_REGISTER and UFFDIO_UNREGISTER both scan the VMAs of the range
-> before changing anything. For a hugetlb VMA, userfaultfd_register()
-> rejects a range whose start or end is not huge page aligned there.
-> However, userfaultfd_unregister() only checks the start.
+> A writable migration entry must not have the uffd bit set. Every path
+> that sets the bit on a migration entry makes the entry read-only first.
+> PAGEMAP_SCAN was the one path that did not, and it now does as well.
 > 
-> An unaligned end only fails later, when vma_modify_flags_uffd() cannot
-> split the VMA there. At that point, userfaultfd_clear_vma() already
-> cleared the WP or RWP protection. The ioctl returns -EINVAL and the VMA
-> stays registered, but accesses to its pages are no longer reported. This
-> requires a caller passing a misaligned range.
+> remove_migration_pte() restores such an entry writable and drops the
+> uffd bit, while remove_migration_pmd() sets the bit and write-protects
+> the PMD.
 > 
-> To fix it, move the alignment checks into vma_uffd_range_aligned() and
-> call it for every VMA in the pre-scan of both ioctls. UFFDIO_UNREGISTER
-> still returns -EINVAL for such a range, but no longer unregisters the
-> VMAs before the misaligned one first.
+> Warn in both paths on a writable entry with the uffd bit set. Also make
+> the PMD path only set the uffd bit for a read-only entry, like the PTE
+> path, so that the two behave the same, as this should never happen.
 > 
-> Checking every VMA the same way also changes the following:
-> 
-> - UFFDIO_UNREGISTER now returns -EINVAL if the end is not huge page
->   aligned in a hugetlb VMA that is not registered. It used to skip that
->   VMA and succeed.
-> 
-> - Both ioctls now accept a start that is not huge page aligned if it is
->   not inside any VMA and the first VMA of the range is a hugetlb one.
->   They used to return -EINVAL, although such a range covers that VMA
->   from its start, which is always huge page aligned.
-> 
-> - UFFDIO_REGISTER now returns -EINVAL rather than -EPERM if the end is
->   not huge page aligned in a hugetlb VMA without VM_MAYWRITE.
-> 
-> Fixes: cab350afcbc9 ("userfaultfd: hugetlbfs: allow registration of ranges containing huge pages")
-> Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 > ---
-
-Thanks!
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
