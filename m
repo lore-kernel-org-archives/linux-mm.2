@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FA4606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22ED3606A33D
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ouBLsAtQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=he36b/6E
 Received: by kanga.kvack.org (Postfix)
-	id BED096B05BE; Wed, 18 Nov 2026 10:37:21 -0500 (EST)
+	id 1B4A36B05B0; Wed, 18 Nov 2026 10:38:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9C746B05CC; Wed, 18 Nov 2026 10:37:21 -0500 (EST)
+	id 1650C6B05B9; Wed, 18 Nov 2026 10:38:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A64406B05CD; Wed, 18 Nov 2026 10:37:21 -0500 (EST)
+	id 0058E6B05CE; Wed, 18 Nov 2026 10:38:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 838976B05BE
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:37:21 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECDE2C07A8
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:37:20 +0000 (UTC)
-X-FDA: 85448643840.09.C959536
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D632820006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:37:18 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ouBLsAtQ;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B8BAD6B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:38:13 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 22A8B140786
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:38:13 +0000 (UTC)
+X-FDA: 85448646066.08.53C1EC0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 08DFC4000B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:38:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="he36b/6E";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795016239;
-	b=1VGgox+OMeDCMqz36uUdK82JkzMwpWiclTSWT7y2iDvWUwL4SReu6ML4sDQmvWUWm3aEgb
-	pGJik46MGlEznUfhcdJHcPNOThU3N2u6NOLnySXiVbDASSXCKXrI2LVGOkF3GlShKGlEcg
-	rBuK8iZZQ+ESCMH9PCI7v43SwkyhuaY=
+	t=1795016290;
+	b=lcsgA/x7eONjuDQrGas6SgDTiVosfF69OzrwRry58MqNF1Hh4XH8vVqhI0YSs8z+74HV6c
+	Vqxtmx6Dxe4uO5jJ33rGOS9enFK/KODetHlZdjSeUrwvkuDZ6WPFabGSwFOCHaE6xqurut
+	fTo9VOJlIW4HB75phB+jU9G/yfMrmik=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ouBLsAtQ;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="he36b/6E";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795016239;
+	s=arc-20220608; t=1795016290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RGtuOoXmARbodH7Cw+9F0C3TnVxoO+KV9KQKzi8RPLo=;
-	b=RMbur/3Q70BSbveilbixkDkje2ix/MhY/s+ZqnF7VQ4BXZuGoT22GHyDQQE1RXY04dOTLx
-	CESYDLDcgSwTXMgjnz4Yflfipee263+0lON7WeoneVavR/n6ug39LgaGPiyMUsjYIogeVh
-	xtjrZAWZ95cbesSiga6rp04loxzyge8=
+	bh=jIGDyzvPixsYlZiwHZ7n3WuXYMcBKEBGbB/tgkrjMOE=;
+	b=AaLqDhYzMwZlevNVeo3zb7rAjik6+gvh6O4YZNOonqmHpovwHb1y1LEZ6b70+nG/ODtwuO
+	6lAUMuK+Uh+RvmEJ6YDW1EA95Yx51zXOIiswMKVJzva8LNMWVsMsCnM490BwMXCQ0dkrl+
+	yMq2U5FIWDhAVtebzqNLK/Bu5khxHhU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 03C4D42D89;
-	Wed, 18 Nov 2026 15:37:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5A11F000C4;
-	Wed, 18 Nov 2026 15:37:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2F60360A7F;
+	Wed, 18 Nov 2026 15:38:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC80A1F000C6;
+	Wed, 18 Nov 2026 15:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795016237;
-	bh=RGtuOoXmARbodH7Cw+9F0C3TnVxoO+KV9KQKzi8RPLo=;
+	s=k20260515; t=1795016288;
+	bh=jIGDyzvPixsYlZiwHZ7n3WuXYMcBKEBGbB/tgkrjMOE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ouBLsAtQ40oLsAZd1zjg2WJWLNqzwMhUfP/CPv4ev3jpHGU+8ovI1/XzIoAmz8sD/
-	 lALlKPHLFGVk4NjtK7nu7+IC9x+zjveLhbSdUOcABwiWN0XcUaBLkBnCKRhfMiJS6j
-	 6MuhpQLTkoL6xFlR6wr4KQucYsPJLIIfhxqdi8MPcQo6W1TlysTrTpIr1O0w+OSgI0
-	 uWYIlMYVajF4C6MaMZcxEmnBMWa/Cr8RKwpqycTbBpEcLTmMWwnR7X7RQkJRkxLBc9
-	 +9akaPTYA131z09+z3n9TjrBVHq1EHMQPMWrUJwPJPfEHVDvJ0Zsuh8UnZ3Xhomzxq
-	 S2bEBglFbbZkw==
-Message-ID: <bdd849e3-0a0f-4655-9c76-7e40d1e4eb66@kernel.org>
-Date: Wed, 18 Nov 2026 16:37:01 +0100
+	b=he36b/6ExIluxhS6fD8EE+OrESiMUvOsH6TIF2u3W59D82dL+HTWsu0/TFIofuwdR
+	 G6xqvNe31LWTTGZhOVEFwDQPkFjflpIPu6Z4W0Gug4RXFek702hxbRI6Wd6+sIFCvw
+	 VTznp9fKSRNDWRmax9MHhw1PSZd3cXIGFT+9K2xvWLImeHn5XprOL4u5ARPQW+Luhl
+	 zAlM+qNSD71sGU9tEIlIAgq1D71kwzQddNfmlI+yeoZHCvu6W+ebYo6a85jacJxNm3
+	 JS1MOj67VkIo4x+PjOA12EFczi8U6R6POyNzOkMPAKJlToymzEYjYsr+4fDxCJVngZ
+	 sQX4EqWiD0qhg==
+Message-ID: <d05636be-5a37-46e1-b6d2-30950b7778b5@kernel.org>
+Date: Wed, 18 Nov 2026 16:37:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] userfaultfd: assorted fixes (part 1)
-To: Tal Zussman <tz2294@columbia.edu>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
+Subject: Re: (subset) [PATCH v3 0/9] userfaultfd: assorted fixes (part 1)
+To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport
+ <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
+ James Houghton <jthoughton@google.com>,
  Andrea Arcangeli <aarcange@redhat.com>,
  Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>,
  "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -88,7 +88,8 @@ To: Tal Zussman <tz2294@columbia.edu>,
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
  Kiryl Shutsemau <kas@kernel.org>, Muchun Song <muchun.song@linux.dev>,
  Oscar Salvador <osalvador@suse.de>,
- =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>
+ =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>,
+ Tal Zussman <tz2294@columbia.edu>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
  Breno Leitao <leitao@debian.org>,
@@ -99,8 +100,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  intel-xe@lists.freedesktop.org, nouveau@lists.freedesktop.org,
  amd-gfx@lists.freedesktop.org
 References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
- <4f23b0bc-b89a-46c1-b8cd-853e7815b7ac@kernel.org>
- <7d31ba34-8b5f-4eb2-9864-145ea80c3412@columbia.edu>
+ <179501525761.13527.5348420494097607881.b4-ty@b4>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,21 +147,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <7d31ba34-8b5f-4eb2-9864-145ea80c3412@columbia.edu>
+In-Reply-To: <179501525761.13527.5348420494097607881.b4-ty@b4>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D632820006
-X-Stat-Signature: u156zo1otun35bxfhfmhs4j9zs7x6wx9
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 08DFC4000B
+X-Stat-Signature: psgnou1ua57zoje66u6orwfoy8jabnmr
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795016238-382355
-X-HE-Meta: U2FsdGVkX1+ts1zS3ELdcW032Vsty7/xi5SbirG1mW5XtrGyZTGj5kpZesAn8574sjEzi7hp7t4pN3WEfTbRlYz+yMM8ynaaG+Gme1Td2tkcctH1q4285EQQS7Awkc6zYDkIpC/1/7FgMhqr9AmCAGGnjH51JWRrnUoA1QOKjMYu1Xf/wBEBgVQHSjGwZAERFS5kcxEKHrqJux1gUgcKZzMvBmyPgKbtTt8LctS7hecme7jbPoHYTDEsveFqp9b//i81MolLEuP4+2iQSHcFEAut2t3yuao/BR01FnQZCIxipnmsAENxxcsSMAOnrdeJft+pgjO3/66ZIVoGkTpB/tuPFGaWfSdmL46HF8KowxTZSV4d2UuimusjwjfiyXg3NSQ8mUOAyjB43hRAAc9+vWrXleJidA8/poK5krD/8/VuM+59h6QqR8LqvSZn9aCm54bzvbzlF8CFZmIYcKKQirKLP7tFrH/8GzwdmKTR98XrcfwOO3E/2PYwt3qdSKOHf8NOwOPb/8GgYihT7KocWmjM51OYa/0M/zMOFtqV3iVTDVnjvMIHOSYoR2XcnFfNUhM7RUoChVBhpq1Rth4DfOE0i9SLUR7wTUS/f9ul+bO8ZhCp4iSxKM3zjOdBsQhEJR7R9+RHB2siIuRW6bf6kyHA+u1uMkmI7MSgE1Xcy09sHugNBVfC2fM/WG3b0HzHUnFD82yhZGK0WfgqcMSIkfJ6Hfat+vppYED+XOK0rt4l9gv5G5wRausBISn0ccs9voyDboIRVUTRtVOD+260JikeVfIG49FpmIos48lNDaqq9DpfamMWfQtOzN5Sqw7bo+7hNJyi2hGXg2qGCtLvQGYgzU0fAl8de9+9/ElNgL91MpJ5mnEXhk1KwM9g8vTRiwR2rjaEut2AFpZ04WN9SA6v+gGGe/0QFic8we4sIGYNn+7vtSfKXAqn/opqvBdoUgBsXDcd3fuNlSYgDPK
- vuGx3s97
- 6xDHvofNceui56mZChshIONrB6U24qW7fBfuvZuygmp2P3xKvAUgVnTncH5+sDqln09EhmWyAOFigQj+hFsa7+qkwdpHgjmUUjUyESJzZQR7phCK2Xg9ur79nQRb0kiEP6OhhV7D+waGpWPtMtJSS/lD1XY606brQjEHucrukYS15RVLa5PJsL6nc7Xlnw7FLw6tlEIScxr6RyaZP65+36waF/cIulwTAWubS8cMt+mZ4hdNpfTIs4NAFVmvsYmlxg5w1YxQMpnpCuxCmr871FDrFU7vOQ9xlvMZYpgejg4eCxU+bVOAaLMbiPQDA/TavJwZTSA2v2IO6dXk=
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795016289-502778
+X-HE-Meta: U2FsdGVkX1+kh5jnIWpECKEtDm4kPz0gWVO9Q7AQeXNIpvXbu0+9Jadm602xTioDQdmGu0ZoE8dFwYwYuK3URCGiO/JLi1ORf3+GJ+pOce1y2OGY2Oc2nkxe0vBezJ7EwCZE2bCcxuu3B6EHYcFVoQUDcZmk2PdGUtLPlabEV1HVt7RLhi55+xc1DLC05idEfPtsKgX9gRDmJ7Gv+FQ5cwhxZmJQTd72RX20xZU6SY6F6mgyFhjn+vw+iojER1cD2nmeNE8zrKA1BSPbyfgosoCB9cF2wQxNcegYbEvOJChERBhCq+k7qmhTshcmw423N2ObM1WE0V9/AcUvUw7Bqe7CIRTeh5EeWRvPuChjGnbHhMlXAf9eCeh7B47DsYTGoVa/uMdAosS6Lb0flEkJ7khmDhzqLuubTVutIzucN4NHkjok47xp49iQ5NgqOH721/RC09o8yxvqZNmEKyjVAbml7/PUZbcR7Sj22LkMTTb1ZuEz81nZL1R+kaIYcrRjhj+5UEKd+UgMpM/FvTvX8Go0xv/+9F5MlrvwQmdFTDbH/Yto5zFdZjudLJ6/Bbk1dgvEJa5TW3+VZrphZ3nrI6NRMIPWXKLUIQfCaAR2Mda+HCASiPyyHaXjCu69qQBCa/BBy0+yweF9GvvKsZCYDRYo4Pj7P7qscgjvtvNmjOL/GG4cRRXb7a5Zhcd+oP4klOFqcQlzIh+O/rOJjysDxKjhv00CJmRUKd2emtPyAc7LT7jP2/5vjsbGU0b59UaFksj56haNqQm4ux2b6O4ZSm9R+GD3WlF/9vvjxswYCCrLjh8JnubN4/1XpuFyNBdoqnlX5k9JQF8/FOsppy8wsCDjJcMI5rWjaGCIymroiJdbLgKfVuQMl/Fhb7lSkLmElUoon67XSRCHzdBSrajYO0ggmWJga+x6D5vdRDe1gQq+yrv6KTbZzVcwA6B45Ck/0ucA2UOoTXTGQNcmt36
+ R9Kk9mit
+ 2/e1N8yHHxYbGT5JLUuX2U5rVNBl+xvjwxAlo91KnuO9NHHX4cfwMdeA37CgE/ohwX8+7Imy52Z+PKmgzHTogDpZVviuQYGaZSfVLt5pGTArjkziPBb6QBEF4J3LhCymdKMdV8Aa33eYQk8ovFFKsczbErZcciaIX9uwZbTn4e0trFH78KVth5Kzl32WV9AaheXDBeReg7nPCFw5/ZQLsl5rmk7LSNfpgst4aj/HGH/IgE08u3h//c3wGlT6NgmEbs37BH7zBB7Yk4si1gcoWCpTGkFtKSIRqvXq3ylEgDRpUalwu/363TI1GX+FabuVwkwiM0f88alNNjXRWm9SU7pm+m5xaBiQwHlUZgbsJDypAFl0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,38 +170,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 16:26, Tal Zussman wrote:
-> On 11/18/26 4:41 AM, David Hildenbrand (Arm) wrote:
->> On 11/18/26 05:28, Tal Zussman wrote:
-> ...
+On 11/18/26 16:20, David Hildenbrand wrote:
+> On Tue, 17 Nov 2026 23:28:40 -0500, Tal Zussman wrote:
+>> This is a first batch of userfaultfd fixes, with more to come.
+>>
+>> These were found by a mix of regular old LLM review and by having an LLM
+>> write a TLA+ model of uffd interactions with PTE bits and other state
+>> and seeing what issues fell out.
+>>
+>> Most of these fix places where mm code loses uffd-wp or RWP protection
+>> while moving or migrating an entry. Userspace then either misses writes
+>> and accesses, or gets pages reported that nobody touched.
+>> There is also a hang in UFFDIO_MOVE, and UFFDIO_ZEROPAGE modifying a
+>> file through a private mapping.
+>>
+>> [...]
 > 
->>> Patch 6 has little user impact on its own. It is included because,
->>> together with patch 7, it allows removing clear_uffd_wp_pmd().
->>>
+> Applied, thanks!
 > 
-> ...> 
->> So, I would be picking up ...
->>
->>> Tal Zussman (9):
->>>       userfaultfd: use anonymous memory for UFFDIO_ZEROPAGE on private file mappings
->>>       userfaultfd: refuse UFFDIO_MOVE into a non-present huge destination PMD
->>>       fs/proc/task_mmu: downgrade writable migration entries in PAGEMAP_SCAN write-protect
->>>       mm/migrate: warn on a writable migration entry with the uffd bit set
->>
->> This
->>
->>>       fs/proc/task_mmu: write-protect device-private THPs in PAGEMAP_SCAN
->>>       mm/huge_memory: build the moved huge zero PMD from the destination VMA
->>
->> This
->>
+> tree: mm/core.git
+> branch: thp-7.5.misc
 > 
-> So my one concern is that (as per above), the mremap patch removes 
-> clear_uffd_wp_pmd() after the huge_memory patch removes the other user.
-> Splitting them may break compilation. I would've left clear_uffd_wp_pmd()
-> alone but then it throws a nice ugly unused code warning :\
+> Applied patches will appear soon in mm-next, followed by linux-next.
+> 
+> Please report any outstanding bugs that were missed during review, so we
+> can either drop the patch series or decide how to fix it up.
+> 
+> It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+> though the patches have already been applied. If possible, patch trailers
+> will be updated.
+> 
+> Note that commit hashes shown below are subject to change due to rebase,
+> trailer updates or similar. Further, this is not a guarantee that the
+> patches will go upstream. If in doubt, please check the listed branch.
+> 
+> [6/9] mm/huge_memory: build the moved huge zero PMD from the destination VMA
+>       https://git.kernel.org/mm/core/c/ec36bf72
 
-Ah, so it's best Andrew picks that up as well then?
+
+Aaaaaand undone. :)
 
 -- 
 Cheers,
