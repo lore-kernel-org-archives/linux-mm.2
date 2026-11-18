@@ -1,144 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B15606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 23:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68745606A332
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 23:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rg4q7NTA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RlG75yjz
 Received: by kanga.kvack.org (Postfix)
-	id 361C66B05CF; Wed, 18 Nov 2026 18:06:26 -0500 (EST)
+	id 482A06B0632; Wed, 18 Nov 2026 18:15:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 338066B05F6; Wed, 18 Nov 2026 18:06:26 -0500 (EST)
+	id 3E5376B0633; Wed, 18 Nov 2026 18:15:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 225F66B0621; Wed, 18 Nov 2026 18:06:26 -0500 (EST)
+	id 2AE716B0634; Wed, 18 Nov 2026 18:15:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D887A6B05CF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:06:25 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3CF861208EE
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:06:25 +0000 (UTC)
-X-FDA: 85449775530.19.9E6257A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5B6DE160003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:06:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rg4q7NTA;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DDBCC6B0632
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:15:13 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5807CA08B4
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:15:13 +0000 (UTC)
+X-FDA: 85449797706.06.DEC3644
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B6C544000A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:15:11 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RlG75yjz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795043183;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795043711;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d2Hfc7KPFw5DIs6U1CzLiXGJSakBlFr3RRwCIqZUq30=;
-	b=HLLb1IHqZD1/8WX3WI12Nv052pl0Eb+hhVJXGo9bZW3+KaSoclCP151IRX7qx0pmoN6JAK
-	ZTZU9qmSEO9RwxZsPPYFMajQa9ka8uPYqXsCPFmCshrNN9Q7tu3dm69FKP2o3bPTskztNj
-	pvjazuGq9kRELLlahbmYTm+zuHlWjv4=
+	bh=37KQFyYqNaiMVNsMx7OvyN5THAcOSDmWoKkeRI19o0s=;
+	b=UaHeNNZPTfQCQ9GZdqmwPhBAsejRUOjzRqKZG11hLFnUlzIRJbNznAs0Box80ZkbQppQA3
+	tC45d7wbLG/p3Pt5X+NLUvD56Mx0pWIBNCn9NMlUo9dLtynYyXRyoGxevaEmxPUXzcvgpR
+	6vo6aJ/zGmsrbUnmF7xSKBLidNDrJQc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rg4q7NTA;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RlG75yjz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795043183;
-	b=qVdaHmJzPEg97uT8KYraT9ijmxBcQeZTS0V+FdMwdULgTT1TnIpirNQG+iuqiWWuusYQp8
-	NQpG/SO/54sM34EJqDY/d0ySAV3MvTJSBXpnufVWbyhojVqnGtEq5p8G+hazxgNTTBzJJT
-	5cvJBOKGXZL2pMOzze2HX7kLNyrtyfY=
+	t=1795043711;
+	b=hdwC0kmUfT48nbY52lWwcIW4TsrOeFdQtQFatDNn9BaHbqoNsW1X1al1VGWn1WyAucInBK
+	m/DIrzttZuljQ5boyZ/7OfxdK92caw+4JJJciK5G4wrMdhVphKuFSlt0373N1v7sjXkqET
+	AigzzkbeXJuna8cwePoKBlCNEgzKVMM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D06C478A8;
-	Wed, 18 Nov 2026 23:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A30E1F000C4;
-	Wed, 18 Nov 2026 23:06:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E7C75641DB;
+	Wed, 18 Nov 2026 23:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BED1F000C5;
+	Wed, 18 Nov 2026 23:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795043182;
-	bh=d2Hfc7KPFw5DIs6U1CzLiXGJSakBlFr3RRwCIqZUq30=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Rg4q7NTAUqV/9yuq3GSHxO8lC470OmPvn2+1MpQ73rIJri3+E+i2MyLhM5wkbhtQp
-	 roGY16V45fVOUYtzXmb/qmSiiQol3j3qXVgPnPJY3qT8cVfz2vsFvvgFnxHpZog7gt
-	 QetzGzjVj4fSAIthWnQldKmx6v54IPUTIBpbm3ldR1Wj5wy0aghIJJmQHLdUYVfQie
-	 E/+rKIIUZuQmIhOa50c/ZzFm9UWup+rHQ8ekkZPtF0Sq5fYZfaW7vgmooPp0627N22
-	 BZ1koCMMTgy4KuTGWaju1IBQ0fg+llx4DoNUz2Ak5T6mTIi+D/ZtAVySaRc82i6vC8
-	 DwrMt1aoQHdXA==
-Message-ID: <3c61a49f-6a0d-49eb-8682-aece4e7e7226@kernel.org>
-Date: Thu, 19 Nov 2026 00:06:15 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: fix swapin livelock on a mismatched large swap
- cache folio
-To: mt4022@columbia.edu, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- stable@vger.kernel.org
-References: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xocyzkqs46xq3buix3n8ba7ghpb99nsn
+	s=k20260515; t=1795043710;
+	bh=37KQFyYqNaiMVNsMx7OvyN5THAcOSDmWoKkeRI19o0s=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=RlG75yjzShz6nLKZShB7DwOzVWp/unj9UCiEr0KvHCY16Q80QaEg60+IEiCW7p789
+	 nsaj4QO3S4EoaPYSM0svgYQ7yl/Q6ghUZfRDBM+Ih7jMnxvFmp7SwpbA8ml3fa3gF6
+	 irPSxbX2Rt9W/KJnAbA6K7a7+QX2+P/HzoW4Uy7JUI6l+J/zjUBj5xXamJWcDoujnG
+	 NzBvtnPGYHdyIj5JcZ6poO6d8LHZ/c4e8H+tw71KWMsCFv5kZWD4eKhzpyhl3nPWCE
+	 fbVEMUYCyAwq/MAshbqgC8qf5Amt6ct6It3pPSHpewiR/KSmUttsDX3ohzLtTzVtgo
+	 nh4fFrdeHAVYw==
+Message-ID: <sashiko-outbox-222157@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v2 03/13] rootns: Track init lifecycle via
+ copy_process() and pid_namespace
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jarkko Sakkinen" <jarkko@kernel.org>
+Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Andrew Morton" <akpm@linux-foundation.org>, "Andy
+ Lutomirski" <luto@amacapital.net>, "Ben Segall" <bsegall@google.com>, "Christian
+ Brauner" <brauner@kernel.org>, "David Hildenbrand" <david@kernel.org>, "David
+ Howells" <dhowells@redhat.com>, "Davidlohr Bueso" <dave@stgolabs.net>, "Dietmar
+ Eggemann" <dietmar.eggemann@arm.com>, "Ingo Molnar" <mingo@redhat.com>, "Jan
+ Kara" <jack@suse.cz>, "Jonathan Corbet" <corbet@lwn.net>, "John Johansen" <john.johansen@canonical.com>, "Juri
+ Lelli" <juri.lelli@redhat.com>, "Kees Cook" <kees@kernel.org>, "K Prateek
+ Nayak" <kprateek.nayak@amd.com>, "Liam R. Howlett" <liam@infradead.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Manfred Spraul" <manfred@colorfullife.com>, "Mel
+ Gorman" <mgorman@suse.de>, "Michal Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Neal
+ Gompa" <neal@gompa.dev>, "Paul Moore" <paul@paul-moore.com>, "Pavel
+ Tikhomirov" <ptikhomirov@virtuozzo.com>, "Peter Zijlstra" <peterz@infradead.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Serge Hallyn" <sergeh@kernel.org>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Steven Rostedt" <rostedt@goodmis.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Valentin Schneider" <vschneid@redhat.com>, "Vincent
+ Guittot" <vincent.guittot@linaro.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Zygmunt
+ Krynicki" <zygmunt.krynicki@canonical.com>
+In-Reply-To: <20261117231352.3816603-4-jarkko@kernel.org>
+References: <20261117231352.3816603-1-jarkko@kernel.org>
+ <20261117231352.3816603-4-jarkko@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 18 Nov 2026 23:15:08 +0000
+X-Stat-Signature: hdrhdh7obdmr4euyz8kpc8q7fokbypay
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5B6DE160003
-X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: B6C544000A
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795043183-190029
-X-HE-Meta: U2FsdGVkX189UWU7FAiaRGPdGVtM0mhDMhBFc7cwbBuGKR3LHnkIIvmNKlYbUSpAk9Gc6pjQuwAb0Zg9/t/t6usW2G3wG3Z3LcF4AwFx1YTyLBNpzKoglpKn1XeHUxmAu5Em9jn96H/TRSUfIRTy3BDI37p5uuQbU4n1MzBYyF4GGIk4+kJAC/aEXQlebuQB5EnxRhJq+6Al+uZSrFmKHcqCwZwo5d/XI/PGtXKasZbRAI95ubdJ6agQUviSQL8rEtkvZLX1pp5Ozmdpgl6wkkvSNzvz9cyEP4ig1FiA2hNT+rYXKtbodtZlq6+ZdOoDr1iVpbzMvxM81kx4q/I4SGuDI2MmulYVGIH6w5T+mdQdfyZEeCmAxW6BGwa2TWSPoi42k2zDMmnnB4Dr4g6YLOFn0Nqo0VeOvGdxZ139trK5saecIvNHFCUlGwUR1svzJl7nh973NCVBkpyCV/mN8/phhMwgTHWCCqfDQ2wwS5SD/Wv19su1uWNMtHPl8uRWnrNUUoBvBwxKPNAQ1gnlRqnoc9vpauIajNp5+KCWodkwVYGGrXbYzOQmicxe+MJGb2HiuhS657/UzDuUC2D2tMsfX5zmSsIb4W+0zsvlHRDt7m4fPZDU7CEoSERIu4LDhTEtQmQqop1A62Hf1rh6e7ZMlwszkMYPM5VXbR09+nXA0O1FoM1F9u6c1i+FmAv0zyvCntixnXi2On+VlCr9a7+ArOdfazta3Fz3OK/d3G/cT6jPNwbrnt1xb10EkkFmIgDYjj7gd7YZnuwyDeSHMm15K1LJ7orODVIfAiXk7c5UM/I9k4cLXLXVuQMknYNvS9NAN944KDsXqQCuWa+NMOcr1OG1+6E/qScj77ePpAVn2E07/Hg+JC1uVTeOenHU8DtpS30yjYcw6cPnwo58ZufoxnIYoeU4GmN37bEE3rGTbbZG+KD7A9ZsmP8JwVPipp7toZzUuoxQ9Cn3IXR
- fA8MJ2BL
- g5YW0MJTUXdyORPzQclIWqkMb+OAMWY4ryggf4s/Tzw66GK4SNayk/Lvco6tRAl7de2pwDnktmtuOXbd3kiFSTApgtdHV7TZTljv9vJmJj5tz53RowRX0LAsq2OGJ2xHwVSbwFqNbgAQCrtY0UwO944UUgI6gKTK+K+Z7qPcfu2oI9VNwgoSkYoyW+0k/Gthra5QRIl9OZ46ivG0yx3jxOsi3911a/yf1ChGNvyxrLehkbnAeYToHKGwxJg+XPT3fnMF7Nx/dOSIC99r0t3Scf4HSAdm+yAR0MO88anvq6boJoHQ+PNgUheX8HuPcVAAyOcm/M0ih1JRlXsx5BprOxAPKmhu1QOHD7YVWk23GwLaNgaaPQpSi1DbqKuvcfigVrYqK
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795043711-535287
+X-HE-Meta: U2FsdGVkX18hDUmnvV/g8cgLfkxjzQ1JmjfHXlynBbsRy8kOe+PQfvPXJaqH9CWdywmVLfKfzLbcWn+GZBT/omwX+Q1oqeTmUVSQvRVhrQ7t75rn0XInUmNZF+2FP/NiLhULD8SfQBtKK4IQ0hzZBZGiwYKCohAV7gTvDiQp10WjuGhwPkF5mu+sqaNF+rtPOAdpIlXXwGIUJNpYzfZpwOvRRqtw9ugSCTY7RrJndbo/z9YOnxt6trj2n/de9HEXgXqNIhFA6h6BWTMqa8uqQi04UskrZ8xZmolt+hlGEg64Jya2s8z/yY5CUcNtmw44ZAF/20oWw7NL695kW6pruZk2Q6PkG91h8sCiTns4WSdmC463R5n7RXFAbybDVOWl8tcUvMi/FrAZKpGY1nD0XkjahWIBvpBcPE+kS4+E+eJA9gyo86wS0NpvqHBu2j3omSG5lBohexS3oBudP8b6bmlzeSILzKCW4A/ovzSUd8OBTVvfeTdtpCdez76+iVEnohoZWygzUFfN8zc/Ntotbfa6K6O+LS6KynVdO+6CgcWRk840bhF7dQw7rryM8f+40dI3fnk3wHS2+iIqtq/NwoOhSzHzJPuMFg0IRZzgDV0jSADWXrfVhacOJNl5FiXgpNpJ/ImTssp25nXt4Kx9Tn4Vhipa/LkKxUnXOItIZmeUuxW6C6GPhVWt5LfLL61X7p7TAfWOOBj4oXS5hzadrO+Zc+BuX4rMjfwNFIhjN1BQfLQO+T9ACo4y00f+RJbVFzD14q7n8ww6Ssp3ITJWiZsTEh0jBwDkdVwlhMjSAEML3nch0kgS0g2XXNmcXEXBZjcYhT/K6CNMebfEUcpLc5H2dSiYE57VcGU1c/N2JdPxsQ0/6A2GwJsPqwpSV+hYoHIrvsBj4mME1A6702USHgMsRjz9yIcx+2qDe1I/MMFcAZ+20w9VY9bFqoDeEa5+h9jLZw/6045rJc32tKJ
+ DVZAZvPe
+ rX57KrtCCkWDaVMFpZIZVR8IMf0/BWCAfgECmraGpSk1TLoBZm36bdxfuS3IGMRKrlUbIiPilmh/DV4NOCI+EM13PkJKwWaZ0F7O2/O1lzzGqYfkMwKZ0V6RUsTGM6wVTsJmDoxGjWVvWiYB63WxqmWdDU5nDFKwkT8u48NwNdhrr6j+yIxoWTdUnaeYVEgqxW3KKs5YLGHD8UdXXMsu9SaH0+gwt8iqaVH+25GPy+UpJu5GFNH0zRUhTGsCiWaOC0g+aiztQICVJ5Kd1QPfyUk2Rs6s3Dz3R9NB+CSZUtQyLIBexTTm+NCSLxzNGeQaWH8/RRvc9dLFFXhoXhMiSFDX0cg4bARUI+YVfg7mnttVIgCH0CQ3hOOVRX9fKNSfj+o+5dJeRaLo6zAZCaBvEpZ095cwxqQZJyYhfoaavrxGZ1NC+giOjwhzJyeDO9BKjOZIGHdHz8BiCZ1j6OQNU4CbByd4eK2nD58CADLNSuZW/eU1XyceuCIhuaKRoMHNORkIOUgw2Mh1IoarwGm95VN3S59tixhIjHa+EbyNaWMdjzLw/psVFZL/7u2Cn4gHxr8yZ3CX8blyUeHJb26TBKM1rJxtrH3zszG2NJ0vdIKCpja5t5RlGgW1uY9B71jQjfOD+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,189 +109,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 10/27/26 21:33, Mani Tofigh via B4 Relay wrote:
-> From: Mani Tofigh <mt4022@columbia.edu>
-> 
-> On a SWP_SYNCHRONOUS_IO swap device, a large shmem folio can be left in
-> the swap cache over swap slots that another file now uses.  Reading
-> that other file then loops forever in shmem_get_folio_gfp():
-> shmem_swapin_folio() finds the large folio, rounds the index and the
-> swap entry down to the folio's size, finds no matching entry in the
-> file and returns -EEXIST, and the retry finds the same folio again.
-> Since the task keeps the mapping locked, a munmap() of the same mapping
-> waits forever.
-> 
-> The folio is left behind when the slots are freed and reused while the
-> swapin is still allocating it:
-> 
->   Task A (reads X)                      Task B
->   ----------------                      ------
->   shmem_swapin_folio()
->     allocate a large folio
->     for X's slots
->                                         punch a hole in X
->                                         /* X's slots freed */
->                                         swap out file Y
->                                         /* Y reuses those slots */
->     add the folio to the swap
->     cache over those slots
->     shmem_confirm_swap() fails
->     /* -EEXIST, the folio stays
->        in the swap cache */
-> 
->   Task C (reads Y)
->   ----------------
->   shmem_swapin_folio()
->     finds the large folio
->     rounds down to its start,
->     where Y has no entry
->     /* -EEXIST, retried forever */
-> 
-> Before commit c246d236b18b ("mm/shmem: never bypass the swap cache for
-> SWP_SYNCHRONOUS_IO"), a direct swapin that failed this way freed its
-> folio instead of leaving it in the swap cache.
-> 
-> do_swap_page() already drops a large swap cache folio that does not
-> fit for anonymous memory.  Do the same in shmem_swapin_folio() and on
-> a -EEXIST, remove a large folio that is not
-> anonymous/dirty/under-writeback from the swap cache so that the retry
-> swaps in a folio that fits.
-> 
-> The reproducer below fills a small brd swap device so that a 64K shmem
-> folio and the 4K pages of another file land in the same slots, and races
-> a read of the first file with a hole punch and a swapout of the second.
-> This bug was identified and confirmed with the help of a deterministic
-> hypervisor currently under development, but the non-deterministic C
-> reproducer can typically trigger it in the 2-4s time range.  With the
-> fix, nothing is triggered after 600 seconds.
-> 
-> Fixes: c246d236b18b ("mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
-> ---
-> Two patches in David Hildenbrand's v2 shmem fixes series are related
-> to this one.  "mm/shmem: fix truncate hang in large swap entry" [1]
-> makes truncation retry -EEXIST directly, so it can also loop on such a
-> folio.  "mm/shmem: preserve allocation errors when swapping in large
-> entries" [2] fixes a different -EEXIST loop, where a failed allocation
-> is reported as -EEXIST.
-> 
-> [1] https://lore.kernel.org/all/20261027-fixes_shmem-v2-10-86a00952acb9@kernel.org/
-> [2] https://lore.kernel.org/all/20261027-fixes_shmem-v2-11-86a00952acb9@kernel.org/
-> 
-> Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/shmemloop.c
-> ---
->  mm/shmem.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 13e0786436cd..f1da8432d55c 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2568,11 +2568,14 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
->  	 * and swap cache folios are never partially freed.
->  	 */
->  	folio_lock(folio);
-> -	if (!folio_matches_swap_entry(folio, swap) ||
-> -	    shmem_confirm_swap(mapping, index, swap) < 0) {
-> +	if (!folio_matches_swap_entry(folio, swap)) {
->  		error = -EEXIST;
->  		goto unlock;
->  	}
-> +	if (shmem_confirm_swap(mapping, index, swap) < 0) {
-> +		error = -EEXIST;
-> +		goto failed;
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [High] rootns: unpaired pid_ns->rootns and refcount in copy_rootns()
+  and exit_rootns()
+- [Medium] rootns: copy_rootns() publishes init_pid before
+  attach_pid(PIDTYPE_PID)
+- [Medium] rootns: missing is_child_reaper() and locked state checks in
+  copy_rootns()
+--
+
+commit ad1de852195b8caa7fd9ea3eac031f0716f9fc81
+Author: Jarkko Sakkinen <jarkko@kernel.org>
+
+rootns: Track init lifecycle via copy_process() and pid_namespace
+
+This commit adds copy_rootns() and exit_rootns() hooks to copy_process()
+and zap_pid_ns_processes() to record the root namespace's init PID and
+capture its exit status and rusage when the PID namespace shuts down.
+
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 5efceb8d58a78..99e22b3cd213e 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+[ ... ]
+> @@ -2565,6 +2566,7 @@ __latent_entropy struct task_struct *copy_process(
+>  			attach_pid(p, PIDTYPE_TGID);
+>  			attach_pid(p, PIDTYPE_PGID);
+>  			attach_pid(p, PIDTYPE_SID);
+> +			copy_rootns(p, NULL);
+>  			__this_cpu_inc(process_counts);
+>  		} else {
+>  			current->signal->nr_threads++;
+
+[Severity: Medium]
+Does calling copy_rootns() before attach_pid(p, PIDTYPE_PID) allow
+__rootns_kill() to miss the new init process?
+
+__rootns_kill() synchronizes only on rootns->lock (not tasklist_lock) and
+calls kill_pid(), which looks up pid_task(pid, PIDTYPE_PID):
+
+CPU0                              CPU1
+copy_process()
+  write_lock_irq(&tasklist_lock)
+  attach_pid(p, PIDTYPE_TGID)
+  copy_rootns(p, c)
+    lock(&c->lock)
+    c->init_pid =3D get_task_pid(p, PIDTYPE_TGID)
+    c->state =3D ROOTNS_RUNNING
+    unlock(&c->lock)
+                                  rootns_release()
+                                    __rootns_kill(c, SIGKILL, true)
+                                      kill_pid(pid, SIGKILL, true)
+                                        pid_task(pid, PIDTYPE_PID)
+                                          --> NULL, returns -ESRCH
+  attach_pid(p, PIDTYPE_PID)
+
+If a ROOTNS_KILL_ON_CLOSE file descriptor is closed during that window,
+the SIGKILL is dropped and the container init process escapes termination.
+
+> diff --git a/kernel/rootns.c b/kernel/rootns.c
+> index e75d918b93ec5..e3b203322ae23 100644
+> --- a/kernel/rootns.c
+> +++ b/kernel/rootns.c
+[ ... ]
+> @@ -105,3 +106,42 @@ bool is_rootns_file(struct file *file)
+>  {
+>  	return file->f_op =3D=3D &rootns_fops;
+>  }
+> +
+> +void copy_rootns(struct task_struct *tsk, struct rootns *c)
+> +{
+> +	if (likely(!c || READ_ONCE(c->state) !=3D ROOTNS_FORKING))
+> +		return;
+> +
+> +	scoped_guard(spinlock, &c->lock) {
+> +		get_rootns(c);
+> +		WRITE_ONCE(c->init_pid, get_task_pid(tsk, PIDTYPE_TGID));
+> +		WRITE_ONCE(c->state, ROOTNS_RUNNING);
 > +	}
->  	if (!folio_test_uptodate(folio)) {
->  		error = -EIO;
->  		goto failed;
-> @@ -2613,6 +2616,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
->  		error = -EEXIST;
->  	if (error == -EIO)
->  		shmem_set_folio_swapin_error(inode, index, folio, swap);
-> +	/*
-> +	 * A large folio that does not fit the mapping, e.g. because its swap
-> +	 * entries were freed and reused, would be found again on every retry.
-> +	 * Drop it from the swap cache so the retry can swap in a fitting one.
-> +	 */
-> +	if (error == -EEXIST && folio && folio_test_large(folio) &&
-> +	    !folio_test_anon(folio) && !folio_test_dirty(folio) &&
-> +	    !folio_test_writeback(folio))
-> +		swap_cache_del_folio(folio);
->  unlock:
->  	if (folio)
->  		folio_unlock(folio);
-> 
-> ---
+> +	wake_up_all(&c->waitq);
+> +}
 
-I have an AI fix here:
+[Severity: Medium]
+Can copy_rootns() record a non-reaper task as c->init_pid or overwrite
+ROOTNS_DEAD back to ROOTNS_RUNNING?
 
-Author: Chris Mason <mason@kernel.org>
-Date:   Wed Nov 11 18:44:55 2026 +0000
+If a caller with may_see_all_namespaces() opens the root namespace's PID
+namespace via open_by_handle_at(FD_NSFS_ROOT, ...), enters it with
+setns(CLONE_NEWPID), and forks PID 1 before bootstrap, c->state stays
+ROOTNS_READY.  Because copy_process() calls copy_rootns() for every
+thread_group_leader(p) rather than checking is_child_reaper(pid), a later
+bootstrap clone spawns PID 2 and commits it as c->init_pid.
 
-    mm/shmem: don't drop a folio whose swap write failed
+In addition, c->state =3D=3D ROOTNS_FORKING is only checked before acquiring
+c->lock.  If that external child reaper exits while bootstrap is in
+flight, exit_rootns() sets c->state to ROOTNS_DEAD under c->lock, and
+copy_rootns() can then overwrite c->state back to ROOTNS_RUNNING.
 
-    If the swap write of a large shmem folio fails while a swap-in of
-    another file finds that folio in the swap cache, its data can be
-    silently lost. A read of the file then returns whatever the swap device
-    holds.
+> +
+> +void exit_rootns(struct pid_namespace *pid_ns, struct task_struct *tsk)
+> +{
+> +	struct rootns *c =3D pid_ns->rootns;
+> +	struct task_struct *leader;
+> +	struct rusage rusage;
+> +	int status;
+> +
+> +	if (!c)
+> +		return;
+> +
+> +	leader =3D tsk->group_leader;
+> +	status =3D (tsk->signal->flags & SIGNAL_GROUP_EXIT) ?
+> +		 tsk->signal->group_exit_code : leader->exit_code;
+> +	getrusage(leader, RUSAGE_BOTH, &rusage);
+> +
+> +	scoped_guard(spinlock, &c->lock) {
+> +		c->exit_code =3D status;
+> +		c->rusage =3D rusage;
+> +		WRITE_ONCE(c->state, ROOTNS_DEAD);
+> +	}
+> +
+> +	pid_ns->rootns =3D NULL;
+> +	wake_up_poll(&c->waitq, EPOLLHUP);
+> +	put_rootns(c);
+> +}
 
-    "mm/shmem: fix swapin livelock on a mismatched large swap cache folio",
-    earlier in this series, lets shmem_swapin_folio() drop a large folio
-    from the swap cache, if the folio does not fit the file that is swapped
-    in and is neither dirty nor under writeback. A folio that does not fit
-    can belong to another file, with its swap write still in flight.
+[Severity: High]
+Can exit_rootns() drop a reference that copy_rootns() never took, or
+dereference a freed struct rootns via pid_ns->rootns?
 
-    shmem_swapin_folio() holds the folio lock, but the code that completes a
-    write does not take that lock. And a failed write sets dirty before it
-    ends writeback. So the folio can look clean and written, although its
-    write has failed:
+copy_rootns() acquires the reference dropped by exit_rootns(), but it
+never sets pid_ns->rootns =3D c.  Even when create_rootns() later sets
+ns->pid_ns_for_children->rootns =3D c without taking a reference,
+put_rootns() frees c without clearing pid_ns->rootns.
 
-        shmem_swapin_folio()              swap_write_end(), failed write
-        ====================              ==============================
-        folio_test_dirty() == false
-                                          folio_mark_dirty()
-                                          folio_end_writeback()
-        folio_test_writeback() == false
-        swap_cache_del_folio()
-          /* the only copy of the data */
+If pid_ns is opened via open_by_handle_at(FD_NSFS_ROOT, ...) and the
+rootns file descriptor is closed before bootstrap, c is freed while
+pid_ns->rootns still points to it.  Forking and exiting a child reaper in
+pid_ns via setns(CLONE_NEWPID) then runs zap_pid_ns_processes() ->
+exit_rootns(), causing a use-after-free and double put_rootns(c) (or
+dropping the open control file descriptor's own reference if it was not
+closed yet).
 
-    The fix used here is to test writeback first, and dirty second.
+Setting task_active_pid_ns(tsk)->rootns =3D get_rootns(c) in copy_rootns()
+instead of at creation time would keep pid_ns->rootns paired with the
+reference dropped in exit_rootns().
 
-    Signed-off-by: Chris Mason <mason@kernel.org>
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 915b312e14175..457a502353a9a 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2809,10 +2809,13 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
-         * A large folio that does not fit the mapping, e.g. because its swap
-         * entries were freed and reused, would be found again on every retry.
-         * Drop it from the swap cache so the retry can swap in a fitting one.
-+        * A failed write sets dirty and then ends writeback, with no folio
-+        * lock, so test writeback first. Both flags share folio->flags, so the
-+        * order of the two loads holds.
-         */
-        if (error == -EEXIST && folio && folio_test_large(folio) &&
--           !folio_test_anon(folio) && !folio_test_dirty(folio) &&
--           !folio_test_writeback(folio))
-+           !folio_test_anon(folio) && !folio_test_writeback(folio) &&
-+           !folio_test_dirty(folio))
-                swap_cache_del_folio(folio);
- unlock:
-        if (folio)
-
-
-@Mani, can you double check if that makes sense (can we actually trigger that), and
-if so, send it out officially, with Fixes tag ?
-
-Feel free to rework the patch as you please.
-
-
-
--- 
-Cheers,
-
-David
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117231352.3816=
+603-1-jarkko@kernel.org?part=3D3
 
