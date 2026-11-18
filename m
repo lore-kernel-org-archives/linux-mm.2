@@ -1,144 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D73C60A2608
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D7B606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=HsDdDuaO
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OzEu8UrK
 Received: by kanga.kvack.org (Postfix)
-	id 473806B05B6; Wed, 18 Nov 2026 11:00:15 -0500 (EST)
+	id 207876B05BD; Wed, 18 Nov 2026 11:01:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 423EC6B05B7; Wed, 18 Nov 2026 11:00:15 -0500 (EST)
+	id 1DEEB6B05BF; Wed, 18 Nov 2026 11:01:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33A456B05BF; Wed, 18 Nov 2026 11:00:15 -0500 (EST)
+	id E89906B05C0; Wed, 18 Nov 2026 11:01:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DB5186B05B6
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:00:14 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C5391A05B5
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:00:14 +0000 (UTC)
-X-FDA: 85448701548.05.D49F2B2
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 66A28C0012
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:00:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HsDdDuaO;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DBF96B05BD
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:01:44 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A8751207D8
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:01:44 +0000 (UTC)
+X-FDA: 85448705328.23.F678D95
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D321D1C0013
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:01:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OzEu8UrK;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795017702;
+	b=SUB3c9AfnH38BOsh0VBlfISK+vFSLV7g3ehJax5zHS7MXGhfC1Hp9QCkoaNlDQd6bKnd5j
+	2M76/BD/hYZ1t1bro9UntZ6SNyjzEIs7s/k9p+K5kcxbMs7+gMSm5J1ZztQD/zOPAWYP6B
+	qY9/SM/eogCCpoGGSmYvA6VBzGfyf6g=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OzEu8UrK;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795017612;
+	s=arc-20220608; t=1795017702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gN7nvCApkpNJjBBl+gdS00SQSe9taX0A7DICocon5Uk=;
-	b=cKtizPnJD6acsTOtQaphzwg2LfGNeUi9/4PlcM0n6Mebr+GWU3Y9QyrREFIWbH0ft1Va2H
-	p3GvQdmtSEPfX0JzOJedEsKLCiUnTFFuNX4K0ArmS330n6BQSabmumx8cXvqUCmEhNhuvz
-	6YCGJuWdh4guw+AL1Jd2F7OeXi+3a0E=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HsDdDuaO;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795017612;
-	b=KYaArdXuobLnF89tYN6c4r4xp4U39s9dpDeyN64DUkKAqZyFdVDXGEIyxP+zrrcgFv2BNJ
-	YoA6EYAqs3EhPDlhheJyxrkhJS1I33tEtwi+4cuSuruM3z6wJRg/zNUWWdlgPOMeZRra1n
-	ihtJnQFFrgk4jVczn0YrqYBsmZUtXdk=
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5eac319a6c2so810815e0c.0
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:00:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1795017611; x=1795622411; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gN7nvCApkpNJjBBl+gdS00SQSe9taX0A7DICocon5Uk=;
-        b=HsDdDuaOkBgN31GHfWZAC8g0ylYkA/HhNZ1Do2xI0erIo1dzWoNtNC/cvuF5/maTmX
-         BuLaqwux3FCUaKx0LCVbtquM8BvBIh3+d/9jJ8V96LB6Z3yrcn6C5LvwPC3T5lMDsUXU
-         ZIKTO0tfOHiyaOP6fomV8tZdZIWbmRvcVr9WE/vZ7FN6QcOmM+iaPXKkEGFDB5hwn84o
-         NjhhSp0qqEbN3AOr/3rxKbfwLFMYtc6D9Dt1fNX3rJ5+jdA9X7mPDmxn8kudWsSX6AxW
-         ucpbT8nlBDzaoSlCWDm578+PJCiaPFoZ3UOiySwZh6ycynoE94OK2V/neFxkWW19OXg7
-         G6xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795017611; x=1795622411;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gN7nvCApkpNJjBBl+gdS00SQSe9taX0A7DICocon5Uk=;
-        b=oEyGKkhUPM2coVSDMJ15hKaz8V0GAlForkM0WZfBsUSxtRrTAj1OhkHPwsXYZCu2T6
-         m/nZkh3c049lia3h2/538Yvp3l5I6QWym8byhuIkSOOvSr4xd/Cp6zMKIuSEUdSqoyjm
-         MmUESfiUIQxwUtZEqzgkh+Y1W1dVj3h6dmZhhX2/iK5SrSQDzSdH3Sdsli1hT4IdXxy9
-         g/c6BYcgLrpX3+bbGAsbEQxXML7vo/P4+8cXNhGop8SeK6UdDkbBJUeu+MFhS8ShIGB0
-         xhA08BWxVeKC68UQomA0ibDMjX/BQMqNxh/N6DSG7on23fKL6aTjqLtHwusQhsBFiFJr
-         qJsg==
-X-Forwarded-Encrypted: i=1; AL+hErEmj6EnRc7qIFogjK+IArRFj5yGNHyCH+L9yZ/IwP9T8WjI8GJeUnU6TRym+XVC99jyvtfFmtHXng==@kvack.org
-X-Gm-Message-State: APuU4Z/pY9+B2YKNEwMmjbX9X9L1KvQGmEouO3uhRcxgtK6mffH8Mq/J
-	efXzNzDpDlzSm3OyXOjb0C3zDbHHHeqfdIWRTB0UqwyzYFk614vOy/7NMffYogpHLzTrBBXErBS
-	2GD9e
-X-Gm-Gg: AYBFou1V1pCg1FJiTtrRda6wwGt10dtv6ojizOXj1pg9h0ahlybmlOxL/+Bf0e0mOOG
-	He2B1Fk0wRpVq635Z1dhlN9+KpLlyBVQOeCLRacn0IgAAT4w18WPLh0uNJLq+Vnm5+I1EhenU1o
-	AICeyN8pH3M8EQv8TCuVrGYZrErmCTC+BOnRChKfRKO2s/UeIZvlRJYmx7JWnw+gpTvolYQzkym
-	9twCn13v9Z/VFVVXF/NWkjcBLwROBX+rLYPw6FkfMGsUsUjiKfbZIw1VQgixORnHPTfuEzzJ6YC
-	NgZtVWJSYvSZDMlYfU2+bSQbJReO4dnuhD0IyqWJyoUWTV6eBEBpYmaYBsls+kJ7bZy/2LEiraW
-	45AALBUrkr1NbkxB9zfuN613wE/OWIMbofbsTebvpUgxS7Ng0PKMVxVQd6/RLVwTBg1E6G/udIU
-	EprGzimNhXgYKJfQr1+ep6L8H8xkN+Oy8xyeT5pU5YKQoACGerfNjVJvxH1WN3If0g0OP35hino
-	lD99fCOnfWNXw+DpiC+mSxXgQMW7OQAjQ+HkF1qsxHPJXxCSEBKGxp73HUm8KjKpv+saCdPbtfl
-	NO00eZPz768VDBCJ5F0mr1ZT9vifRaLi25bWngxDCBt0M3PtdfcEHRSJDcKfLJTn0b3syPs0x4N
-	c68q/XDQ8+LGOTrUQ2cJNj1kae6a3OCqJsr4oeUv8gM/F8t5jCv+0VpzfApUfOabJt3wq
-X-Received: by 2002:a05:6122:3a15:b0:5ea:389c:51e4 with SMTP id 71dfb90a1353d-5ee645faa03mr1663031e0c.2.1795017611348;
-        Wed, 18 Nov 2026 08:00:11 -0800 (PST)
-Received: from soleen.c.googlers.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee64ec2730sm2002506e0c.14.2026.11.18.08.00.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 08:00:10 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr, rppt@kernel.org, 
- pratyush@kernel.org, graf@amazon.com, shuah@kernel.org, 
- Chen Pei <cp0613@linux.alibaba.com>
-Cc: guoren@kernel.org, linux-riscv@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, kexec@lists.infradead.org
-In-Reply-To: <20261118091603.979-1-cp0613@linux.alibaba.com>
-References: <20261118091603.979-1-cp0613@linux.alibaba.com>
-Subject: Re: [PATCH v4 0/4] riscv: Enable kexec handover and live update
-Message-Id: <179501759947.250261.1712117569683645423.b4-ty@b4>
-Date: Wed, 18 Nov 2026 10:59:59 -0500
+	bh=LY5KnYEg62Pp1LvL2umBEQ+TtbgoJI72sal+2fBuBKo=;
+	b=23Rwwxf0Ii31Es9W8UD8jCAB1P3hzA5MTg6Mcobjkdl09B2Np2yAE2DYdt2CeF+7g//zaK
+	ax6L+qKQKQnLshOFzB/qGrpchJtSJeNvh4GDzI9eLmXZQDHyZ2PPWx0rCcX1qn+5gX9FFi
+	TMZt4zsQlPPW5l3zzP3I2OGhbloy9LM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0C135339;
+	Wed, 18 Nov 2026 08:01:38 -0800 (PST)
+Received: from [10.163.128.4] (unknown [10.163.128.4])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 214843F632;
+	Wed, 18 Nov 2026 08:01:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795017701; bh=hkXZYgY3e5AOogVCwFiSPcIssJ7tU5GIgVmY2/vcSPw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OzEu8UrKkTwbKYrQaFm5nAwdhmP5LhADhtVLtftu+FWwlL+6u/SoOj/j2smR5D+qY
+	 Hm6S3yq97wLpReP+9UdpiZXJtzV/jJrmpfIL7OgwVDEA7it3Ox58btH8isXP0rCtIR
+	 ptUOeqN8o0c9d5YHL/MQuUOz20H8BVhdms3QcOuQ=
+Message-ID: <8cc96362-462e-4033-8e37-f9fc9128f6b0@arm.com>
+Date: Wed, 18 Nov 2026 21:31:32 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/page_ext: remove unused page_ext_iter_get()
+To: Shivank Garg <shivankg@amd.com>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Luiz Capitulino <luizcap@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1086;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=yx/6YU4ftdolIH+TM3tFCIqxwpFna+tV5pnuszpTgAM=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq/cuKW1Ven/TsYWcH9R9JVtNZvIr/Wrzbj9eUF
- VZnu673CJ2JAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCav3LigAKCRC7dyhM23N6
- 3l0zD/9GkT2xiw3xOPo4dtrl50v/Zo+28SEOr65ml35aBi52o28TK4homX8OAljUtDYygGhutpM
- WxnvBmRGuzLI5PV5A7/SV+WgkIZ52fXibj+mPS9LI2vYsbaTB7qWpXD/tPjUXOLL3sp8s0nWgA/
- xzgDZjJbri0YhMen/qMzef3v9u09p3Wn4uVIdtlK0LLcBqgYpEtW1xCFKqg8Plgdmm8VzBkMBqm
- 201gts8eO1QmJ87giSN1+mgcvDTecZXC7TLBmWsfh6zueYb2h7iy18luOHRy2FcgK/fG6x6oK+/
- q5kb3mOX9vuWeOn4JfkYG9JvRemmTyttU4mvzXS7wc56lZd8ObMBpcWCRJaliTNo4Fwky6rrbSU
- ubyyFqvQGzUjfL2/Rp3rc+Cie1RnXgh0XXw4RSGXf6YrqAi8dVFfXKbWikrk5D9dqJ+2t6zEbFK
- +GHKpssJeeElG+UOr2KEGjpeWljj+Alhh73XBEVezYA9oWQYDth78nJKELwFtPq8Xcfc4Br9O1V
- Iu1DpxwaZOV4fUHtQpY9XdoUQSLklPkalqeaaIppy2vDIKY2IMWWeLNhVX7XrCsNIO3L/BO4EIS
- BjJYaBZ3qqGAfTeisqH8//T8U/uQq7h8rHx7J2zXA1bXqN+ErinqAopKFwtALn0trP8D1sYJivX
- Ntme4+UlYo8oAIg==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
-X-Rspamd-Queue-Id: 66A28C0012
-X-Rspam-User: 
-X-Stat-Signature: x35d5z785jukpwajwaifw39ybcyzkcxr
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D321D1C0013
+X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795017612-45548
-X-HE-Meta: U2FsdGVkX1+mEkS3DcObCck8eDg5yYhUgXuFMFbxVhSsyRqUbV4oMoqAiySu/s93TjOkP54PmIva3tJc7d4XRP48QoOq1U9ZpGoykr62hEH2Uu00xyJSFRvq2gGR8Qa1N10dDj0QvEmfYIJvcfFCifgj4+mP02Cv9ryMTqylomY2FqlcwJDpARiln7D7VHWZolv2d0O4E6VdrqbcCk1p9kopIZdf9ZnBSTJ45AgjHC/2X8dPiJiUpEjmWW8t6z+Z92exfvJ35BLuYI5hqtwae0fwG5VnzXN1zi+sgS3Knd1YXkA/wjoroIzi/lRliudOm0xUMtHuj1JypWhl4W8ro9UmP6DK0nAKBdjYXG+DtNNSTJAMopnei+o6wYbktASlKNlgXC1aLt0UN4CBdaPj3RTefkpclGqv9V//5YyiOmSeEXDPw4TqlAEhPvu4Hoif/obEGQTPZq5phR2+UCHXGQwxD8PtbfeecHhjaliEObLceU3v7t63VlW3W54AJcMUouiQ/x00H9fG6Y2ZiqYlC7I/oTjqvEKgC2T2TvywI5VWEr+tCa7lKIlJUTS5mwKCLRTrsO7TT1Id1x8fCHDJd5c0wHlx9xUXpnnoB9HPyfJz2WRzrhQlUG4Z3KN868ThQAofnwjlmxJEKpNjA7MrwhnEKiOxfAw/O/0ta9LpD2/UAHoEc9+OnvrodvDO7ctG4GP9nIoUC2ngvp3g6XtZSjZWDbLqAbSYN80YmVv6pOQy0IqUHPvVJfRmK8VUtZAlzqomQv4oGDFyIA26kQBO/5qBV6Xcfo9KPR6LrE415H/KRdFRv4Lkz6T9Ui35m4VH4FzEdQu080CxdUaumflir+VwX+u5//BaNtoOC03Z8/O8DHH87qwPpMlpvlC+Z+CNMyR6yNuyXKkQE3hAxCV7s9DBzR4PYmTQb1iHPZlOrCC+7rln7TR+AYIMBfpFtnWI9RPwddHh2qVTbWk1nAR
- cobBI+Mm
- 2VW+8DNPC7WEU/SIYgDPOcUnGlxDCvRUhBibaGWIpAFFTEvNHu368Z5H7WweDEXN/uVm/U1QzuvSR8M/T0xefMQzKfweCY0P7T5lg3j/kbZR3dXUACrpFW8RJS/uD7m3kryI1F6jKaah6U8ATpOxFTsN+Syy4s6W+HGcAwBQhusvlMJ8CtqsGQRWEQCfuDiXs84zLGQF7x//kBMr9fnx3A0GP5F0gQ4c56mPLeGvV+FeZkQhwpXFHPfn3TYPgMDuVIWne9pW3ZyvtegkxPgyonDME88ysAdZZNA+nXK+eg43YJnM=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 8dwu1p4raqs6yfj15iuq56e6p3wctgaf
+X-Rspam-User: 
+X-HE-Tag: 1795017701-443569
+X-HE-Meta: U2FsdGVkX1+PzAfctzWMo8SPiIIEx2U59n3wLOShx04zlGseQyQ0St+Cuxid6ep4WqYRJJJhXJkQ5W2/dA9zwncoGIQDg757sV+p9ltY6bmJxVqSSB0A4nMHJUo54yHpIIbtzmALw/sLbOrVnNd6cJxT/V6tCildq5X2sqvej1woVRYP6/ATYeJCZLgXxEhf06dqNtWWzrRe0Ph3ukHXPaVtMSvlxqXnVXV6hjggyLKXI+IvL6vOIv9GbkvvoaJ5VHWX8W5P0IMYh+MbsBrnc6s7S286GExfc2yR1ZllrvxBcK9DSVzOtrYR8Y2brHexkyd8noVVGeBnR/9wNY92ePbn38+Tf9g1N78RhAbXf0kDcxEAZRk07Tbl5N8fY+y1EBPfzwDCndreE0koUKV31w/gAJIip1PYX/EmgmDk0jIOgV8IaFpxHXvSSVeKEk7Kc+uQ3KTx58oRH4aRhhYsBm3X8RZ9cW7P9q36jdLCV3PPLxaOCbnZxCL2/3WHDj5ab6GDB7h8/qk7SvKpBZt/k6PWKjgw8A0FwfmOCfmgYkFyo+J1qpLYNJM5vTCjJBVBIvjng5RPPT7XkH9gWAz2CE/FoU0OkAaAdwdo7We2GZaxqBXy6194Bn7ZUb6qCXa3Acs/T1qQYkxlD/5sb2br1Hw+HqllBS+m10P+OiiQh3SxWUB1emJBz9FNY+ShVzom+sms9/+ICzm3akwR0q6AQGZAE3xVVvMKdRc4Jb7ajYTG9RLCn70VFVTg9GcNs3+hieOaOr/TxHe0QjEMKiDXs0d90XMpXWkZg6IIv+e4m9zZAyNqlVLQ5n8KJjV1gIu4vRT7AaYRDuNZySWoSsgtlm7mjW3jNiP1xIleNashlLIUZuZkrSEKZW4sv10+iyerlnpqQ3YpuLEzQYprUYQoXRS68bzPbiLFfYTzFhef+vkzCOwXsJ5U4wogWcA0sCtJijUD4l/lSW6uMtk2RZA
+ Y84PVcyK
+ Uva8a8obOJoFvyT0v4/xMCqKCLEypE80vs9g1KewbvYcbYtdCTC6PQJXjZjx+dfrrBStsXnOkBn9jVeNwCbvX6otW77uBWtC5hHT/L3/m5EFcwkmCI7KqCCFN9S1oysDKI7lZBJCUIlaXAyxgzxt1av070awvbzXZLf9Zj4iWNRzga9lzsZDzL0RXcOah6P8fIe1W6573YrSk87QJyUQZVydN3dV9kqBabwMKFKat0uTT5wv7T/QnK1wrz/m418z7DbeQqW0lO00jCB0eB6GUAW6xy/JocnCD9mIl/tgPXtE4XuNl6rBYXwdEmJ2iyEXxMk3WLt9ktChEzRtoSBBW+8Dn9VzaYpr3DJiFWbfAkgPBVNYgDQnLnD+9zlJH5zQS5CZdWJPn7jNBNC25YnZXtY2aAKT/kzQb+Abz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,34 +100,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 18 Nov 2026 17:15:59 +0800, Chen Pei wrote:
-> riscv: Enable kexec handover and live update
+
+
+On 17/11/26 9:56 pm, Shivank Garg wrote:
+> It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
+> for page extensions") but has never had a caller.
 > 
-> Host kernel updates in the cloud should not require draining the
-> machine: next to live migration to another host, replacing the kernel in
-> place while preserving selected workload state ("live update") is what
-> KHO/LUO were built for, and LUO's documentation names hypervisor hosts as
-> its primary use case. This series closes the gap for riscv64 and
-> validates it with both upstream test runners.
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+> I found this with the kunused scripts [1], which I wrote with LLM's
+> help. The v1 cover letter [2] has more details on the scripts and
+> how LLM was used.
 > 
-> [...]
+> Changes in v2:
+> - Split out of v1 [1], as David suggested, and based on
+>   page_alloc/for-next. No changes to the patch itself.
+> 
+> [1] https://github.com/AMDESE/linux-mm/tree/shivank/kunused
+> [2] https://lore.kernel.org/r/20261026-unused-sym-v1-0-82ca2dceabe1@amd.com
+> ---
 
-Applied, thanks!
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/log/?h=liveupdate-7.5
 
-[1/4] riscv: Call early_ioremap_setup() before parsing the DTB
-      commit: dc821c9badf7b2558e206804c2adaae28d25477d
-[2/4] riscv: Add support for KHO
-      commit: 48ea610913a6d6fc513d082afad04ff342120931
-[3/4] selftests: kho: Add riscv support
-      commit: 30c6fc85b4fb89fc867bdea413403bf169e7e194
-[4/4] selftests: liveupdate: Add riscv support
-      commit: 9615c5074cdccb651684e61cd8872ca8b0b30e52
 
-Best regards,
--- 
-Pasha
-
+>  include/linux/page_ext.h | 11 -----------
+>  1 file changed, 11 deletions(-)
+> 
+> diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
+> index 79c53ec45dfa..52a8b70c525a 100644
+> --- a/include/linux/page_ext.h
+> +++ b/include/linux/page_ext.h
+> @@ -167,17 +167,6 @@ static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *iter,
+>  	return iter->page_ext;
+>  }
+>  
+> -/**
+> - * page_ext_iter_get() - Get current page extension
+> - * @iter: page extension iterator.
+> - *
+> - * Return: NULL if no page_ext exists for this iterator.
+> - */
+> -static inline struct page_ext *page_ext_iter_get(const struct page_ext_iter *iter)
+> -{
+> -	return iter->page_ext;
+> -}
+> -
+>  /**
+>   * for_each_page_ext(): iterate through page_ext objects.
+>   * @__page: the page we're interested in
+> 
+> ---
+> base-commit: 3a99594e62fce8c646e8aac01d38af16d6833a40
+> change-id: 20261109-unused-sym-page-ext-3fb8316ac777
+> 
+> Best regards,
 
 
