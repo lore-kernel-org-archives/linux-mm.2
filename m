@@ -1,122 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF09C60A2613
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DAE606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aIYIin49
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dVUdI3GB
 Received: by kanga.kvack.org (Postfix)
-	id 13E136B05B5; Wed, 18 Nov 2026 09:55:43 -0500 (EST)
+	id CD8CC6B05BB; Wed, 18 Nov 2026 09:56:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 117B86B05B6; Wed, 18 Nov 2026 09:55:43 -0500 (EST)
+	id CB07C6B05BC; Wed, 18 Nov 2026 09:56:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02C7B6B05B9; Wed, 18 Nov 2026 09:55:42 -0500 (EST)
+	id BECFE6B05BD; Wed, 18 Nov 2026 09:56:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D30C56B05B5
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:55:42 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54434A07B2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:55:42 +0000 (UTC)
-X-FDA: 85448538924.07.921E5C6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E78B6B05BB
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:56:24 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 278CA12079A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:56:24 +0000 (UTC)
+X-FDA: 85448540688.17.FB45A84
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id A687920002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:55:40 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIYIin49;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 665CC1C0009
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:56:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dVUdI3GB;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795013740;
-	b=HdaIvifzx9jXopqY3lwEFw+rAYNV6K8lpaYYy0G3CHdeMuvbWpHWb0QY2MrF3Fgunk5CNt
-	SYSP48PNjx6Xif0YylWcT1f+mfx7HgIzN0gY7qD7vWDDwis4uUS+CIsnVuaHYL0Q3+4x74
-	Cbg681tTjkISE7RB7e1xxbIIKHSyRPY=
+	t=1795013782;
+	b=6dWe5NTYvcvdgJkEzhQwAU8pcMvColPU7QEfTgZbqFDPamMO4MEcndMARB/2fy19oCmWTR
+	JD/Ol738mirYZM99owH7J5TOqQTRT+aX8ARb2GKcswF7sy1l+VyICZ+wcd2TLdcUVVn5Yr
+	zSQHQNgXkMoHH4Q1n67R/tVDznhiNQE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dVUdI3GB;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795013740;
+	s=arc-20220608; t=1795013782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ijqcgAe+pRUXlQUJgaP68UktE3jKkOIl7f6QeVzcqa8=;
-	b=rwfnf9w/rQBYxf/QInZCyhoqYEblDGZ8zBcscqWKGFJtI79+g8vVzW5Tqr9Er3OWPELoc2
-	FIU27cmq57aeGfICcS6JY2+t7w6+ftTJVrtwiEGiL6sr4CqNl3pPArIzGhJYZEqkT6DmXR
-	5cjqMRr91uA/NhxHfLaYJkEU39+xL2s=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIYIin49;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=adL7jX6Yj0zfzxNXCqGjb+oq/ba6DVUeZOr2j2Db+wc=;
+	b=l57k5yovpA9CRou+f6nEZUE612OkGj8U2Xh75T/kbMjD0AFcsv+MdF2NK7ghB2SR0XvFay
+	ScG7nWDwbezpkfZe/kelnJNsBo2ilc9VVOwwiku/wWT43IGtdOx6C20rw2jNUCa/7rZSXD
+	c3ID9QNDE81CHowLhDoVxwTlMsGint4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 25D10622A2;
-	Wed, 18 Nov 2026 14:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A5A1F000C6;
-	Wed, 18 Nov 2026 14:55:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 021F66229A;
+	Wed, 18 Nov 2026 14:56:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CAE1F000C4;
+	Wed, 18 Nov 2026 14:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795013739;
-	bh=ijqcgAe+pRUXlQUJgaP68UktE3jKkOIl7f6QeVzcqa8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aIYIin49xSrhz3fYpj0Knm3dUy7DYct2MAxbHOUDkYisck7LJSB+Gndhs5lT4zRp0
-	 G9yKhwIrSoMLZuvK+kh+eKEGAUD5ZD5PkCSvIc7Yh8N097/MFMZwCvJ44VkcLS1txT
-	 gmfuU5dgh9eN0rM5Eivb+hfREhloBoUPSaqyZaceB3ZLGueQNPnbEVpsPbv5gJisMA
-	 g0KDwnrs710Grb1t1KlpS4DNooZKDpOAtKxApW4TMkzSV6oxWEG4uAbHNhlEV8ZzX3
-	 F4c1H9BtHpNWWlF1dw5YbJdjG1p6nzWGMBKtwO0fiXjBq7YU1Mm5Mo1ITGy75NkD7R
-	 OyXlJ/cC3fvyA==
-Date: Wed, 18 Nov 2026 16:55:24 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
-	James Houghton <jthoughton@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-	Andrei Vagin <avagin@gmail.com>,
-	Muhammad Usama Anjum <usama.anjum@arm.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 9/9] mm/userfaultfd: check the hugetlb alignment of
- every VMA in the pre-scan
-Message-ID: <av28XEFwGGuNhrSE@kernel.org>
-References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
- <20261117-uffd-state-fixes-v3-9-b617009d1a4a@columbia.edu>
+	s=k20260515; t=1795013781;
+	bh=adL7jX6Yj0zfzxNXCqGjb+oq/ba6DVUeZOr2j2Db+wc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=dVUdI3GBPeIX5A4sxo1sodZL/BJP/U1IngusWrZbMa/dLnX8gGi9pZQkRGLNN+mYy
+	 vNJBO1FJgg3LyUPMBfZI+MWsWAdltM4aGMdqv5bRM9/PbSn4z2w3Zz99fWoPapahCg
+	 5jd/xFqF+o47NFgRJ1OkXNgvAtTiAWrILVEdu2bFlOf/t3cc4eDi+yBjiD16xSCWYL
+	 74cv0lIsmrQAg6gHZ0ZhMI+WmVQRGBK4kPocSy5PA4P/q5GkprGW4QpDh4P7qHpI0v
+	 ibXVyi3ABfcbjYGr+aPwXZqMIUAQNHp7wHVdG89ztZIj8zmwx8X3mA3e/Ha7k+6znI
+	 KbceUgizfo6dA==
+From: David Hildenbrand <david@kernel.org>
+To: akpm@linux-foundation.org, david@kernel.org, 
+ Yuanhe Shu <xiangzao@linux.alibaba.com>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>, 
+ Kaitao Cheng <kaitao.cheng@linux.dev>, "Garg, Shivank" <shivankg@amd.com>, 
+ vbabka@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org, 
+ surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com, 
+ nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com, 
+ tujinjiang@huawei.com, mgorman@techsingularity.net, chengkaitao@kylinos.cn, 
+ muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
+ !copy_mc fallbacks
+Message-Id: <179501377550.5042.12629270943219413525.b4-ty@b4>
+Date: Wed, 18 Nov 2026 15:56:15 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117-uffd-state-fixes-v3-9-b617009d1a4a@columbia.edu>
-X-Rspamd-Queue-Id: A687920002
-X-Rspam-User:
-X-Stat-Signature: sa5c846763hhoxp7yjysdfj5aru7xzi5
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 665CC1C0009
+X-Stat-Signature: o6qdpfzzcpd8xobtmo9gfx7fh6tuuiyi
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1795013740-126362
-X-HE-Meta: U2FsdGVkX19A3JV6B3cNmP/FdsEQwdL6swHCgZ3zHvQ5gcjBOWMjvXtqKwIw99leGejK+6xj6TMnsjLfrfw6AYTCR7tHehyt8saSVRcb49BcVcuzcIK+Iy1Icqwz/FKybK4+ZfytvvavIho/iaWWh7rZwe7+JPUU5a5voGRa/ywDja7J7qJoqgJimFTYzsJKxszRIgzyXugS5U1cmsGbGp3CsUx/mPG83rRGncJle35vyZBusiASUeg+3wv9ocA8PTVAFA5Gl/EzoteAmqCq8ljT0IqfE6doQAgmB8ZgIPY3rMxrSXTDZNevE+SbopnEWI/VqoGEDwjkNGeImKrCrdyBEOZUbci9bsNyMXW1AXIGCRNsus7ePt9J85V46IJPNGeX1lsK8Oa/DEK7aer95HcrddICyTTBQ4Hyfm8Io32GqsouQR4E6BuQzJeJPa0tTDPVkLquwL/d3HBmv+mUxJQjEWskngMxemD9cXivss1yo8Td4NB56O68K9o/yqcsfzeDSaOw1a4HnTBeBfZyzH8OJoL6cPiEEZA6Mf8wSfU0nmrvO8jzhQv/eX3GzuZHrVrR4HPU5CfQK6AqrCsI72k+9Gl1hQrOcAPtqi5e+Gjq6pd2P3Nu+lc0gcGANNq3Oyo4b1QGrY/iWHpZYAc75EppJ53qiOJBr5ElqycoyWoWLSXmnAxFgc/X0n64UVa7mGpkI86giuMa+J8Y0M1himlo8pR1LY52EyuK8AF5X7XEI3S5I+OTDmPGkYWi4iYi+xkpPQgaoufbU4EkCaMmTVXh/hxODJwHLPmuoLEq1xLztHkKShUv3/4eh0JHVI8IYn2pn29U0pCJ5d1KJm7TjBCgORkzGtoOtYCtqyt8Nx5AJ5hG8JY3hylIb0xIwUITQx/8W2UVxVrDWjWq8hgGfo9EFwz9XtZb97maVEZlonouOS7XX3UgNH5no1HAhQC03vvy59ZuSAMelcc+pzB
- WHxJFWNF
- 72x4N+HAfbBwCM1l/qpBbtBKubSja9yBkZeps+/FypopeXrAFPlV5QA35t7C8Zss+M2lIZmQX3a71KEIoTWc5Ogv7rziCO4m+RyzLj384KawIubBt6gh+JvdhIOquqP80ms/cpmnj50nCjyGtINQrpQbR5CbGui/BQn+Pomgzl4ASlkd9w12w/FPLp3DeVkI0WBA8jkB+tTQAw8W/H08VJpRJ7vWdJiuINoz2VxsYfRfYIstKIWIN08clig0o+tM0wHKYhhIEutyqMCSt6Svlnd7dyWJfEUJomoM2RttGCf2Eu6T+U/egqeL32DPTIzphzqjqmFVfVbYYs8m4gfKnXleCi2KwkwvQdIYboLrBXnzqvtERACNBdSKFaEXpisnvsEg61a8pUTpt4WgQQJP786Wja8hjD+acx9MdWkmuUHbthsisiYBM+5xkQs1GoQPrZR2XzG7vxB1O1M5vHUYD3gllZHBTRInAhG+zqdpkSmYCG/dODpFddnI+3A==
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795013782-35363
+X-HE-Meta: U2FsdGVkX1+9qKit6FFsG7N/Fdh2K1tOeerJbAoQYkrHHxsRdSdZzbzNm7qHW4X0Bdi/gQMgWWtMS5SJ7DRnk2laaOpxuNUqD+oyqyhvrny3CrbcyN7Awq2UQSzbug9NIeyD0t1Dk7P3urG8/25EMC2EN9uekaTsW6DKrNF+s0bU3gxBEd8ky6wf1xSJY3R4cTYJTPKrD/ft2UptPRpQHPgtz/IzWBPlJj086dccFdHcij0u3M7NcA4coh7NopkY6ZmBYOdLkcGzIN7w8sbtL4No798ejrVy22fNRzbNllHM9XAh0JaLqNgPZa+NzsOAIKCy/rtxM/sA1WIlHjPzEVNQy7Ig8kukKsw/8Fv+rGxDhue2ZTuK9jPfD+wfQcTw30ff5cKTdBvVEhUQw0bTVS0Op1k2YY7wY/GHRKctk2S60dzCc2kHDWWNUxnmLTConQvdBMFEIHftRU9/R9811XTqTk6EDR/xt/v/Kp2kulBzWRb5vabifmfScf2o2SbPJo60o7nB6XXFO+New37qmD/hPJeg/cUa2zTy8A5B9gmPKdohxVh60Hg8acwjkMQWgusrs2gOcfOXhMWBXHSKdIxT9L1tAn41MiNtrYLC5zT+1CTqiPaE3CZXFZrpi7JpFD527UOhcufMRX7ehRi9IutP52YtzSZL7Kdkz81N7Y69XnXDjiZKIFGaQEJq4bYBqaUws+nATkvm4IVyCrsPVxaQzCEHXEJ7GD4//MXAcCcZzVJ1cGUG3Bl8zHSMhK7qP/DizoeQmDYzkcHtIiL0N87bndJ2a4jKxe60VWwVhtS1VNQRGGuPu+V85+IRZgqvNTRLAqXCOgqCRmf7rkPt2f3VUoaTSt5xVsEy3DoA8zxnKBFUtMGzrNTes5qeltTT9elI55KlBFapCKB/YZDD2/LExWOq2VvPPkH9iiKxI475D+KiPDc44zrA1eghai5oN5U0wBHbD0sNAYQWyBF
+ vUh26Bc/
+ 4tRpz9u1RHubGvXg5se9Cz1nVIXQM04wMGDlFj4EjdLg2u1tXZfoVOu0rqsdL77lEmLBLzceboeTCL98yZk9NEXYzUiZpMTiEtaXyKeBMeyTf54RUEBoOrCl0r8DWQ0WfOlFF31rj6UStje02QVHAmBkKNB/HXWUneyQPVSfr5hY26x+EYjRvBkdyySSA3ceBNBnC2AoG7d5cKIzCI9Np1EbZtVcccGY6IjSld9ADzH1dd1habJZEEBPNZZuvEcP7wx5Y9mW36Xs9g7QILEpTGnG1KNYf3JDq7fwWnffczZjfX4xvOOkDfZgEbXKcJ+7s9P9DYcjUPeAO1NkIPQDgtrW+pN8oFyZKGaFO+lG+MAwFWYAjHQRGAvxgOShGnp1XW/Y1TZlecOlybKSTitR4/v1/3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,49 +102,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 11:28:49PM -0500, Tal Zussman wrote:
-> UFFDIO_REGISTER and UFFDIO_UNREGISTER both scan the VMAs of the range
-> before changing anything. For a hugetlb VMA, userfaultfd_register()
-> rejects a range whose start or end is not huge page aligned there.
-> However, userfaultfd_unregister() only checks the start.
+On Tue, 10 Nov 2026 19:26:41 +0800, Yuanhe Shu wrote:
+> The !copy_mc fallbacks of copy_mc_user_highpage() and
+> copy_mc_highpage() return 0 after a plain copy.  With PG_hwpoison
+> set while the data stays readable, there is no fault to recover
+> from: the copy completes, the destination folio carries no poison
+> marker, and the poison is consumed silently.
 > 
-> An unaligned end only fails later, when vma_modify_flags_uffd() cannot
-> split the VMA there. At that point, userfaultfd_clear_vma() already
-> cleared the WP or RWP protection. The ioctl returns -EINVAL and the VMA
-> stays registered, but accesses to its pages are no longer reported. This
-> requires a caller passing a misaligned range.
+> Check the source page with is_page_hwpoison() in both fallbacks,
+> before the copy, and return PAGE_SIZE, the not-copied-bytes
+> convention of the real copy_mc paths, so the callers take their
+> existing error paths.  On archs with copy_mc this code does not
+> compile.
 > 
-> To fix it, move the alignment checks into vma_uffd_range_aligned() and
-> call it for every VMA in the pre-scan of both ioctls. UFFDIO_UNREGISTER
-> still returns -EINVAL for such a range, but no longer unregisters the
-> VMAs before the misaligned one first.
-> 
-> Checking every VMA the same way also changes the following:
-> 
-> - UFFDIO_UNREGISTER now returns -EINVAL if the end is not huge page
->   aligned in a hugetlb VMA that is not registered. It used to skip that
->   VMA and succeed.
-> 
-> - Both ioctls now accept a start that is not huge page aligned if it is
->   not inside any VMA and the first VMA of the range is a hugetlb one.
->   They used to return -EINVAL, although such a range covers that VMA
->   from its start, which is always huge page aligned.
-> 
-> - UFFDIO_REGISTER now returns -EINVAL rather than -EPERM if the end is
->   not huge page aligned in a hugetlb VMA without VM_MAYWRITE.
-> 
-> Fixes: cab350afcbc9 ("userfaultfd: hugetlbfs: allow registration of ranges containing huge pages")
-> Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> [...]
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Applied, thanks!
 
-> ---
->  mm/userfaultfd.c | 54 ++++++++++++++++++------------------------------------
->  1 file changed, 18 insertions(+), 36 deletions(-)
+tree: mm/core.git
+branch: core-7.5.misc
+
+Applied patches will appear soon in mm-next, followed by linux-next.
+
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
+
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[1/1] mm/highmem: refuse to copy hwpoisoned folios in the !copy_mc fallbacks
+      https://git.kernel.org/mm/core/c/35c0195e
 
 -- 
-Sincerely yours,
-Mike.
+Cheers,
+
+David
+
 
