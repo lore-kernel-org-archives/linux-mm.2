@@ -1,101 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B91606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 11:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10D8606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 11:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lVyk9HkT
+	dkim=pass (1024-bit key, unprotected) header.d=natalenko.name header.i=@natalenko.name header.a=rsa-sha256 header.s=dkim-20170712 header.b=RQrvySj1
 Received: by kanga.kvack.org (Postfix)
-	id A37AC6B05B2; Wed, 18 Nov 2026 06:24:10 -0500 (EST)
+	id 0C5A06B05B5; Wed, 18 Nov 2026 06:26:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0F866B05B3; Wed, 18 Nov 2026 06:24:10 -0500 (EST)
+	id 076F66B05B6; Wed, 18 Nov 2026 06:26:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 925216B05B4; Wed, 18 Nov 2026 06:24:10 -0500 (EST)
+	id ECE6C6B05B7; Wed, 18 Nov 2026 06:26:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 74C676B05B2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:24:10 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14371A82C0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:24:10 +0000 (UTC)
-X-FDA: 85448005860.09.1E15658
-Received: from mta1.migadu.com (out-124.mta1.migadu.com [95.215.58.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CB4AD20006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:24:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lVyk9HkT;
-	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.124 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795001048;
-	b=eoI0JSLCVl4YbrT6WkDVoCCcyCpuKIhnkbzgIQvwdYHwbbUl+PLSLXqEhemusnM5oi/QSo
-	pSZKWS5045jXW2IinhAvds/Q74pTHcFYQQ0qe9hHX3rT4E4ZeRMZWYzGuZmu+KNOKQ+7jz
-	uwDNxj75o0J/WzAM2eHpNz/4BDz6a7s=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lVyk9HkT;
-	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.124 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C702E6B05B5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:26:17 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C3771206D6
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:26:16 +0000 (UTC)
+X-FDA: 85448011152.26.888A71B
+Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A8AED140007
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:26:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=RQrvySj1;
+	dmarc=pass (policy=reject) header.from=natalenko.name;
+	spf=pass (imf23.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795001048;
+	s=arc-20220608; t=1795001175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kGbil/6uybiLL1poJa3GteC+l0GAriycnTYZK5gcfN4=;
-	b=dRF/sMhOEeMB8I1ZIVHZf27GgeEuA5DOMZBgB8fpyLg7WqQfjFntwGHgpMu2pa3WiDGNgn
-	TlJufN47kncdFe/GGoSY5BaTE4Ab7wXPem280NL+rySmefyKnofwU4ev125Nax80PwEhZv
-	z0+ryLcS74b61VKjb0dNzVonoPXISSc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ceQJf4xOqkkLiYn2mCtm+HSzCEGYSqHZfwzWPUGAHIY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795001046; v=1; x=1795605846;
- b=lVyk9HkTrctueEmt15F1jiyRMHgiqX1V/tFI4EpAMcVHYh46SloY/QfA3at1qJWfn7PKz/g0
- 2tTrnNfvhel7ZiHjtNcUCPSRfl9aWDWk1a5zYGftGKiTrkCl0cRkjAwzlmYZSR4gxpya4KkeFrp
- 8i4iROYxx/hnh2OtTDZG1+5U=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 35a978f1a9a4df4f;
-	Wed, 18 Nov 2026 11:24:06 +0000
-X-Mizu-Trace-ID: 35a978f1a9a4df4f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e8ee4599-5006-43da-88c9-5aeaf2306c6e@linux.dev>
-Date: Wed, 18 Nov 2026 19:23:56 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1bUC3FF0uL5+gLdMvKTQBHgL5FzwCrsgHjlZq/9lfQM=;
+	b=bizLSuLG38/ZbJ8FVQZSGRHZ9qtQGqLJTtZXjU2MK2yToW1rx0isOgwsto3V2iQc+XgfJA
+	+i3NwGFMO403W41Fhq4jtjvUo6oH/eWyfRgnZnmq2zNjNa4KMtrMPx3ety1wlwGpIQfhdU
+	ZRf1Fl2lnZjndzB75GkDjce6UJUWwh0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795001175;
+	b=mPKHxWq5XSgXxKAN1Ksml6geJiHwcfh6r43oR60YEI2yFKIwPnPKPln0232+VJ9ZizKeL2
+	aJufKIIlG+DzrXUoHMJ5l5rO6dEO4K4P3urIVHrnLn+wwHxNMhdj8N+8k0raholf2c7eRE
+	1FzxwRjnWLvhwSCdmcA97XV/S5jqWwA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=RQrvySj1;
+	dmarc=pass (policy=reject) header.from=natalenko.name;
+	spf=pass (imf23.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name
+Received: from spock.kanapka.home.arpa (unknown [IPv6:2a03:a900:1010:3280:c109:c893:2bc1:6f68])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by prime.voidband.net (Postfix) with ESMTPSA id 77A4A635B040;
+	Wed, 18 Nov 2026 12:26:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+	s=dkim-20170712; t=1795001171;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1bUC3FF0uL5+gLdMvKTQBHgL5FzwCrsgHjlZq/9lfQM=;
+	b=RQrvySj1SCSuefZOh1iPvmOgevGs73R0IfXPg+8DT7TWsEQNrGv/Rlo8ACx+XW8FKWyeIU
+	vj/hUD+7AGtuUTyoPvqY2yzP5d2h3dPOli4GZReJtsXak6apIPLiocGQvzWglxGVt/lnFx
+	5CeI76J4Fl9OuP5FlP0wGkfMpsPrcXw=
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: linux-mm@kvack.org
+Cc: Rafael Aquini <aquini@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>
+Subject: [PATCH] mm/swapfile: really fix integer overflow in swap_show() and swapon()
+Date: Wed, 18 Nov 2026 12:26:10 +0100
+Message-ID: <20261118112610.122799-1-oleksandr@natalenko.name>
+X-Mailer: git-send-email 2.56.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 06/16] mm/mglru: return for unavailable anon reclaim
- earlier
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
- baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev,
- kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org,
- lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
- liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org,
- mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org, ryncsn@gmail.com,
- shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com,
- weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
- zhuhui@kylinos.cn, sidchintamaneni@gmail.com
-References: <20261114200803.23129-1-baohua@kernel.org>
- <20261114200803.23129-7-baohua@kernel.org>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20261114200803.23129-7-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CB4AD20006
-X-Stat-Signature: gm835hiqxdtmnk1sj384mjpaym8sqk38
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+x-ms-reactions: disallow
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A8AED140007
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795001047-97552
-X-HE-Meta: U2FsdGVkX1+wyaT8Ia5zeLmOWFgJoNEJOzB605w1LTUyB8/VueY+2ySGmEFHv5N4ZcnP7rld8UkcQGLAeQDkX/s5yesMVURd+MHDQDwZ2IjH1elb3Y75rPBLX36HShV2SJK+gy/bYQ2LYuL2mgZqKygT55TJR1D6wcLq7UH2/9sVW0L+XNbJb2bklu+sweZrZif6lLRmkHHWX10xEmfcO4bXE1smvEgoxnN8u4r2eLqIkPEE2V4k8iBRE/Ltcv42F+CgnTfXHANeR6Y4e9Qp//WibL3nbbhd21kWzbHn+JWzEKTq/NYRbjctVYf1V+aPKZk65I51+aFcz6/7H8ZYPLYxKb1Q2ZH9AEDJ5Tv2DA/c6wOWVNNDhz42T5xxQ0kd+Cd5TkBBzwaSHiNfTZ+LydE0de3YQuhAB0psW1K8F4Dzwifq6KjqvGZRMWvdI4hCHuJpfUtrwW4rCbHIXHoR/qWm+Gsjv+3z+P4mKgO9xg6uM0RvsUY8cN61hDeENe/Sln1y402xetUCXPomKTsuvPSIbZ0PntZuNraQX2Mt3OGRt2uZM2WZrjd9JuH40rzsMZ6Iwikypj9HFLaFdE8uNsEwg4pb8BNha9GeqsbWCyp61tu4UMqKD1jWv+qkr4/u2t3CD+fB6TKwG6tuu100bYtsqjSWU3fFj4L1Jxy28KhIvEvNp0o6XSI2rd53/yJpC1BHXOWSAx/NizStRGD6zInEPOzwfHUPUekyELsx+3LcjRmxKGMHDVeOYFuMj7rK2Da7y5Z50cbUGHydA+eIQDAxIvTUG5Odw6DXqQbZoLNoXPoigHiY4B0gcmMgdZwlb02/EKB9BxfmVmLauJjjK2EV6fK35Htlg0y6CpVXytn6/uoYRIahOGqev65YNVfGId8yYt2cVg1qv8mjOojc3I7a5fkQKLeoz6vyMTTW0kw7oZO6ycUWArE1nMun7/OF5J7WO0J3ohi4ovXKtHx
- mRk09O5k
- 9U2nTnMlp1z6oSm/BeT5DafJDF2ruI/TSM12DKkte+Kh/xGovuOgWu/71f2jekipQR+kYeY9htAPl9qFnwB1mL0CSuW8cxVOi6on8j0jibI2z39DspYYYLJQ/5dBMUrJbKUqk0n+eI23fVlCdt2dOawriQEFZb8/vXjd38SvptM5leG0OSSdV6Fj5tEW6sfpuscRCkAeZudU0Dq2eo7ZMYRQjNDK/wShpK30AM4XZ2WfX0OnbifCY3wJFV9gV9S/qoLUCo61qZ1e23CREWEOrXWAYFRvU0J6t4ZBojKdrIlwfNPMgkq8lhHCnzhgYw4xCzCi8EeEQPMr/VRiPaHm8QNqhNzl2p/M3gsCE19oex6mxjD7j/kGKDwVCRvXYURUZPbTX3ZLG7uRW0s5GGhYeAXa/cto75KOTj19qQoQexCmeJuw=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: igeib6nwebxuuu1911o93fo6a4ren6af
+X-Rspam-User: 
+X-HE-Tag: 1795001174-598113
+X-HE-Meta: U2FsdGVkX1+m4UgR4pCgIIjuV+IZsQoPfR8gY/g/N6t4TPSRU4z+L5bko9gI+Z+QHWWEQ/CWxxudPKBl2tc8pcPUvLTfVEIobNehY4VgY6hoNesqUMciRj1YlnsM9rI+WZr0tvD9C6dWqWryNKW3wmx40fN0Y3qMqqDklP2Po7Bzpq/eQb2rOJV9MBsRR6I6PJRxQOsotJ1wSJzeg1B8/IRaIKQu5CTF2X5cYAYZDo8+yX9nXS8jSBqf36PddIZ3ITZtecIwaM92/nT+EdnWObszfcqyoF7g/ejpAjceP1ZggShXX2MFNPAHQCRI6odZSkQCFeFIvivHS5VmTCaLvyJOR6O3Qq1Dxdw+QmRG/1WlnGYSntdVOivHCCo76f4+Ah2wXsNUAqEhCi6haA3FUV2LDAK6fPkqBr6j0T1Yd8KbsxWDx4Kr66G/PR5Vb8WlThVJCZW0L5MM1vja++NKHiWft4N9Itk9UCOYv8AunEuNVavrBZeNzLTiPFhEe7eGdjiLhSPR1v4HeAoD8Zo6jYrxgHPOl/lGBkpFf0nAMqczuzeupZ1cB7lTwN6zYLjmMfvSPDCVCQbUdhjmzcZJ197M7m+y2ZWAhQmlOCCc/cpAXCcgpurFTAqiwwIG5K2DadvptSECZ+3b5s0y+u/d2W/WCqFLuagP1iOu5hj8smjHj1HGKRGHJEGRc8M6D8SobjqJg8H822xsMZOj7sQxEgkGBguWidKnOXxdSATM1n9HeZyz9Ba6YqHEFDMuwq27DyXoOHd0vC8WWDOxFDo+6lvTlboSpm3r7DauED6RNFNcLlGd9UlIN6SUGW64UGDtvhM+yf3z2ygwGwSb3n7XY5NSxn/bSYdnJgNDm79URroQlA0z8iJATfIIvI9UIJ+Q0M+LibKd6NO8lNdbZHjxF2Kg1MKKh/hOjaDPpp6o+tFqreG5Jh6pBOMIhTad83MutqK0w/wF0InaBOQx1kX
+ pqoC52bN
+ jK6+Ff1RdNLcJW9YcMlCVJAE3o1RoIetoJB4Fn9UR/ZNxgo3SjJkNxW4R5ZR80sxytBc52W4aMhRYBaetDEUcYShaDC0qZzCBPXskk2Oq4ete62pRZyPk6PLnHl8eCqL11yAzToPOYJDGveP/CwYcziVkv8G7XCfgwgzVXTQBPTb2UO8YuWPtgFW7WtZHy5blPKFntOeDWKnT6vKx4tqrY69OW9c+/1fmL69OALNTBjpqwnnOv+bwrHmSr95vkiRQf0oNmuQPEIsdsT6jNVqpk7pjqUjNFjLdHhnU30Xw0IjmYxpVqzq5Q12XwnV1v4Y9WY727tyJAvl2hrNPvVO3fJLyc7inI3Ohm5Ka6yjF3H5A1Px73N8vr0TCvzdx//ZbPBkUyhEIRFb0+HLZWB+4z/zvE37vxXAFSeBu96BcI6adrk0kmOCOx+oYLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,71 +99,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+One of the enterprise customers uses 6 TiB of swap, and the values
+reported in /proc/swaps as well as in dmesg are still not correct.
 
+Cast si->pages to long explicitly so that the bitshift in K() doesn't
+truncate the value to 32 bits.
 
-On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> No feature change, just shuffle some code, prepare for later commits.
-> 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> ---
->   mm/vmscan.c | 27 +++++++++++++--------------
->   1 file changed, 13 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index b3ce4a550a62..f7fbe91fedf3 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -5060,20 +5060,6 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
->   			   struct mem_cgroup *memcg, int swappiness)
->   {
->   	unsigned long nr_to_scan, evictable, sizes[ANON_AND_FILE];
-> -	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-> -
-> -	/*
-> -	 * Proactive reclaim initiated by userspace for anonymous memory only.
-> -	 * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path, so
-> -	 * warn if it shows up elsewhere. When anon cannot be reclaimed (e.g.
-> -	 * no swap), return 0 to skip the scan entirely, avoiding useless scan
-> -	 * work when there is nothing eligible to reclaim.
-> -	 */
-> -	if (swappiness == SWAPPINESS_ANON_ONLY) {
-> -		WARN_ON_ONCE(!sc->proactive);
-> -		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc))
-> -			return 0;
-> -	}
->   
->   	lruvec_evictable_size(lruvec, swappiness, sizes);
->   	evictable = sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
-> @@ -5126,6 +5112,19 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->   	int swappiness = get_swappiness(lruvec, sc);
->   	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->   
-> +	/*
-> +	 * Proactive reclaim initiated by userspace for anonymous memory only.
-> +	 * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path, so
-> +	 * warn if it shows up elsewhere. When anon cannot be reclaimed (e.g.
-> +	 * no swap), return 0 to skip the scan entirely, avoiding useless scan
-> +	 * work when there is nothing eligible to reclaim.
-> +	 */
-> +	if (swappiness == SWAPPINESS_ANON_ONLY) {
-> +		WARN_ON_ONCE(!sc->proactive);
-> +		if (!can_reclaim_anon_pages(memcg, lruvec_pgdat(lruvec)->node_id, sc))
-> +			return false;
-> +	}
-> +
->   	nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, swappiness);
->   	while (nr_to_scan > 0) {
->   		int delta;
+Also do the same in swapon() for the same reason.
 
-Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
-Thanks.
+Fixes: 642929a2ded0 ("mm/swapfile: fix an integer overflow in swap_show()")
+Signed-off-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+---
+ mm/swapfile.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 626f3e9afc01e..3eadddc49a9d4 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3450,7 +3450,7 @@ static int swap_show(struct seq_file *swap, void *v)
+ 		return 0;
+ 	}
+ 
+-	bytes = K(si->pages);
++	bytes = K((unsigned long)si->pages);
+ 	inuse = K(swap_usage_in_pages(si));
+ 
+ 	file = si->swap_file;
+@@ -3959,8 +3959,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
+ 	enable_swap_info(si);
+ 
+-	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
+-		K(si->pages), name->name, si->prio, nr_extents,
++	pr_info("Adding %luk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
++		K((unsigned long)si->pages), name->name, si->prio, nr_extents,
+ 		K((unsigned long long)span),
+ 		(si->flags & SWP_SOLIDSTATE) ? "SS" : "",
+ 		(si->flags & SWP_DISCARDABLE) ? "D" : "",
 -- 
-Best regards
-Ridong
+2.56.1
 
 
