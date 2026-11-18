@@ -1,125 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54639606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AF5606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 02:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=bAao3yuS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PyWxjUBT
 Received: by kanga.kvack.org (Postfix)
-	id 6722D6B05B6; Tue, 17 Nov 2026 21:17:53 -0500 (EST)
+	id 368126B00EF; Tue, 17 Nov 2026 21:19:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6230C6B05B7; Tue, 17 Nov 2026 21:17:53 -0500 (EST)
+	id 33F8E6B05B2; Tue, 17 Nov 2026 21:19:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 514686B05B8; Tue, 17 Nov 2026 21:17:53 -0500 (EST)
+	id 27CBB6B05B4; Tue, 17 Nov 2026 21:19:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 297F96B05B6
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:17:53 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A03312062D
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:17:52 +0000 (UTC)
-X-FDA: 85446629184.28.797C4CC
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 890B9180003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:17:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=bAao3yuS;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 051AC6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 21:19:02 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 973F716062D
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:19:02 +0000 (UTC)
+X-FDA: 85446632124.27.8BF1E86
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 098831C0005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 02:19:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyWxjUBT;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794968341;
+	b=fbZbgXzlgFftAxIMQFWruJa38muG6jyHX3juAtcFEpTth1+Fp2JF19tt8kT2Hb7t/1aGr4
+	cBBwv0SyH0RxmRioV01njgVMrZkxGdm+Ifo8IWS30VYOGEgYTcQDMThxpPrnRslDieDxUp
+	xD4aatPljoqGbFvCNzgsMi2JyxW3hU4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyWxjUBT;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794968270;
+	s=arc-20220608; t=1794968341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=za7hVhqCXuZnylgObAS3b8lRUZxmuRElCIY9CGv7ZSI=;
-	b=K+zl72DWf/ZmqP00AfGVuWuNN6V4J/FIcaYSVqAxd5+8Z9TfHF3Kh6pPO2qfVvf89U2pMX
-	fH+QczHmzKWM58llb7kR2Z2Baw3sHuVBDLK7tvwu9SnAarQOC9woztPGkTvQ0+qc9tFpqT
-	XPs//TLwEUlknRwh7WFHHIbH3+0H7XI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794968270;
-	b=j+/uC0Bvr/4TsPLlbX8lWDbq42HIw8WRmqIx2lY7fcB8JRF4ufuWuZ+Tof1PQSKIy4XXC3
-	9UNNpjojBScuhM3I/25HwEBf+zz0dCIPNMwPJ3+tlYvJBVzoCuD45R7AzEJUh8zrqdW3v1
-	fN0O3Q3dltF75WvFNm6dk2Skhehxytg=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=bAao3yuS;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1b3b4944abeso458335c88.1
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 18:17:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794968269; x=1795573069; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=za7hVhqCXuZnylgObAS3b8lRUZxmuRElCIY9CGv7ZSI=;
-        b=bAao3yuSohgRSCnH3Zza5g2TuE1/MJdnZukDbr3Dv2J2M5OzKhNmO4+q3NRzIDf4K4
-         dDR5ZA9HoNgh3Fu5c0+dMAFD83LWJ1z0H+WDqEke195MbqnJiOgcLy4s969ne+yWJcu4
-         kL8ow9hVF6Ui5F2SRiL0fQ0Z+U9qlcsjTFGZs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794968269; x=1795573069;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=za7hVhqCXuZnylgObAS3b8lRUZxmuRElCIY9CGv7ZSI=;
-        b=OmxB5h3wghvEpXuSohaiO5n/1+a3MdQTi0wtSKzcKzaLO5qtdHMLRcI1lGh0PynRGE
-         IH0KJUJo3V19vwPq7xiUPiY65ZJeJSfF3QziMa98WB18g+L32uza0AqlqJUU37+bQ3It
-         tl/f9IXDwgzdKcGzwwb/zoOCO1mkyunQPuolCY/08enJ/4WfNHNHRe1voRMRI0DR8W0e
-         qGD3mKgsXnN/hcmJd3ZqQW4Daf1P2RIUruZtyeiiwbNV+fXqfH4lpHlXH5GuGh/XzrHH
-         VZtYu8rk6bsZPUo7Vq17aDRojKbgumb8NsnWb9qJb+YtBrS66ccrs/aZxk2qT/iCRLSr
-         4zkw==
-X-Forwarded-Encrypted: i=1; AL+hErHNG9Y2KM5wpIUl4lmVpFAid2UesL6HiDoCHGLWV0L5RiEViCSxul8iPKtXUcL33A8IjZqgPF6JIQ==@kvack.org
-X-Gm-Message-State: APuU4Z+u1+j4uI5ldYrJZQ5N4NilHv74dPpu3yLUIGsvezpWfUEWOnFZ
-	Y5aZyZI2wiExN2QaO9ao/r0jBFsLWNqudw5i1s/Egx9bcQDXRLY5Y8f0BhZLw4m3Ew==
-X-Gm-Gg: AYBFou3Ypo25a4uiZ8DPFMm+9dZjQKTBz9GOTsNxk/PMYG5cGieYnt+c+97Df2nzOPB
-	Q3tEreiXuc50Qekqa2XebuhAfGPOlbpib7gkCSXRWp5Gk4QCjCNNKh56Ykg523Y5mcremjaeVkE
-	ggb248PuKOz5l+lZstNwKLR/K7GWYengggiKRafGe5utifRiiGlyF1WiYqZpgHaedzA1TQTW0/H
-	O8nJv+DHHVvwmxWjMZ3IbD35exWyzAK9f9heOw8hcxMjzDOiNd7ZE3TtdJtkChhPmwRvm0Bi7Yl
-	M2tRk2Y2G6bmrCzV/3sUy/BCvCR0bzGUUwzhNt2I9m0/vX9k2hczfCAhkOZkKHo9C28EFHKs6T9
-	yW0DN0m08z3+t4BTzhbjjr3g+LYbTXkNr044FGSwMtXvRnpo1i51JZssFULqLjHwtBoPoG04e0i
-	radG3X3sB4+Ydr6ssiCGSeDx4S+5tnqJxkhjHFbOAAdEQnmlDSOKwj/scbeAXZMf6qXZTNL7frV
-	riRAktkadY4NSdWlROCQoDDivwNlNhaGxZqllmYb/loVFg8qj9R7ik5+Hsarmu9NYgMQCwBSkLW
-	HZn+kON2KXfY+PZqtWAhv7zWRaEysklqXJx/+KmBL36mmqUUINa7q2gq4D4HJHSYiQL7iA==
-X-Received: by 2002:a05:701b:2097:10b0:1b5:281e:1702 with SMTP id a92af1059eb24-1b543d270d7mr1285759c88.41.1794968269079;
-        Tue, 17 Nov 2026 18:17:49 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:cdce:1079:e29c:bb93])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-382a7eaf3b3sm2155994eec.27.2026.11.17.18.17.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 18:17:48 -0800 (PST)
-Date: Wed, 18 Nov 2026 11:17:43 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Shivank Garg <shivankg@amd.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-new v2 4/5] mm/zsmalloc: remove unused zpdesc_lock()
-Message-ID: <av0KlWcq9TgxiSoT@google.com>
-References: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com>
- <20261117-unused-sym-mm-v2-4-2f845e94dd50@amd.com>
+	bh=0QuAID6gYCgQHLnYu2K0S2/YQFv95gs4xYpBZYbbrMY=;
+	b=uNpf5pcOwApAW4PFQxZkad6t/MeH+QVcUcTKbcDCTdpK5NoyCPZOjtAr1W2RAdZSfoBVJz
+	5k/fSZFDYkc37w/yncwJOoIEzybgq3hbD6cOVAomkGLTDH37KJvXs5haN8ceFEmga2+Olr
+	QnSfgxaLlrxdKHFkHEb6mL7cJxn0zKE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3EEB843E76;
+	Wed, 18 Nov 2026 02:19:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4C31F000C4;
+	Wed, 18 Nov 2026 02:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794968340;
+	bh=0QuAID6gYCgQHLnYu2K0S2/YQFv95gs4xYpBZYbbrMY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PyWxjUBTcge2zprNhDW5qHno/QbUTPi0FHn1B6mxQ0AZp5yajfTuET3DOHi2jWL04
+	 c3/cmNMroDwrMWdgmZ5UD8F4ALizOCi1ih2Vi6YsMe37YfwNbZJM1AqwryEsqpa2dG
+	 mk+UPwwHbyJ3V99nnrIr6m4nDASTQD4iWkwtL3w20ndnpXBfi9tmMfqz8kGfxgdwX4
+	 OJkfHhOEu/PekVgSwJr/j3YP4fwjGvK78CYFTKwniMsNKZYaabR9jjbTtBgadvpVjq
+	 mRLmVc+1+u+JstZMu2X2f6/eXiDubM2bIdo5faiE1dzGUJn3GoeYHGkekYSjQrZAh4
+	 XGwN/a9/ZMMfw==
+From: SJ Park <sj@kernel.org>
+To: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/tests/core-kunit: add test for damon_call() on obsolete ctx
+Date: Tue, 17 Nov 2026 18:18:52 -0800
+Message-ID: <20261118021852.99595-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261117172219.26725-1-saileshnandanavanam@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117-unused-sym-mm-v2-4-2f845e94dd50@amd.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 890B9180003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 098831C0005
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: mgsk7k13irb3td1ed91cjmoi5iem7psw
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: fkg1h4ox6mkm9msrffc49e4rr43dr549
 X-Rspam-User: 
-X-HE-Tag: 1794968270-721217
-X-HE-Meta: U2FsdGVkX1/9FRH7luurKtqJWMuIaMA85zgcTky0CaloVzZWTMepgMfWCHCtj+uquUY1oGbqMR/rIZwgHBq9gW6gGAyReDzZWrFhkopCuBhK/4tB3CoNwaxiMbj06QU+HZogAf+fgTZkYChizLlsErV03+S5cPeY4JlzooNCB2c+Zftx6t4bjrGXQaMf0qVA5J8yDFeoiTQV0Npa2BMThIe5ywOlMmgXWtPE8Ia3NQ4RxylDvfhfAx71byHzX49gwX9rhj4ODf7y4ZgJnFrFzVGCxhR/FbHFCUuTncGnyHcDiERVJMQF1q59U/npoCTP+VjnEF0vfMTqzjkP5kUF6J0uqwh2BRdZx4ZpWJO9dFmEYBg9DTW6MQB8N0oLwdsuJKkBO5tqQUa+K0B2YbuZ+M87Ahfo0UP63Jpg6lIucT1gKl0A1XH1cw/Kw3m1YskHTbjX+Yb/B5G/VfXVxKC93wdfttl06HihpXKRr/tkbU0PR1b7+HNOiqlEtfFkQC0EqjrOBvn6SyhzEgisZOlXbb7sxZcNZdDTQnLbp2awtQwPsfwXG455AcGGquWQAUlZrJKlJvmUg1U1/m/Fvro+iS9SW8zhMSytzdJnaFSe2+n+jKu3M5lFnsbRkrYCOlb9YqNhgHH6f3TK0478jsSXV/9YzZwwAVU/OZDKUuIxEEukLl1SzMR+XjHfOlpOB+2qWhtydaqkS/bbh6uqBL0ePjaFQDLsGrCSN1uSt75eGzhmpQqDFtK80INYiK95CQMtKkJr1lKOIA2/OOQaxOpMlPdXkbwiJS+u9XIXczdAUoGCY3j7YEQZz9AwqrxgoV0eSviSm7AUTrA66Y6yJvdDKHaV7Ubg8jqDzBssd/YuzAnfUZs4qcSnq3/OSqSI294SnUHpz88LG8rlsySU6Xk29ZHNDJ7wKgerDziOyHHCaGoDcseQdCxVPilj9RgQiLCRgnpjqUVcE3826puCrmz
- 5ckMt/WV
- VRDt0AYEB79REKTkyovn3B0XjKlOXnELFk2u0SHi5ovznx5Jumas3gP/JyFDsMo8rNZWvH2auH9GqGQkYy/+4WZ59K9cj9wl909iN5UCNvmRT1BMwzSgmUf/jQl5o/dyu89D1Hv/OuZ3uorVMjblcMc8xJqfp/vJczvLOJ92wo4u8Klf2LBH3EsGiiUIEWCS7au2paxo5HTDsW84qDjGCIgDcZZ1bUnAyyw49SwlgmSzohvn173WdRKA8hA7IKIuCO0IZqZHr4VpFkIEGUSU0SePnypxeeBRFg+IoIfXPh+XZ3y2d+VSkXXOHvStc/gWyGAXysvAVg/u7IVDS5iIBjMEYLqUph275Z/KsGOSRKLsDS2xbW7CCDaXo0mULJEvPkoUE290zPXSg8F1f0ShczAk+wAZ4QTP+HSHbwlQNYOmHGA/sBXjpCho8jA==
+X-HE-Tag: 1794968340-995520
+X-HE-Meta: U2FsdGVkX1/sAbr3oPmBo2efsTtYCJt7fahypf+bVyxOEsw1meARj7hnrly16rzvv6FjMQqeg/9Kuqh+6pBLjukZjTe0/I6xlQramF4v+nSQY7X20gN1vAPTr2PzJtgpsI9Geao3lO8CDkM6vHolFwrgxXGP0REuxSd/pg2CxL/8K3nAgf7Y49je/wshOYerzhCL4RjiFSMG2qMlb1fG1yz3k7i9uh3onGxqXXuH/ixrMmgDf3ZPoc96/68rVDsOyqRdxfPvtR2CfnKh0NqU4lzOmQnf73nCz6tIWTDEsxz+wCD5AAgHlM69Oi+bdeDgWnzxiOn/0/5xmNZGnVLdE1uSwPAiwjNzzpLJ9wKEpw8jZsfXlaj9fd7wc/ATFTryvLkWOyR35AJW4hb7pID+egbtOEqK/2gmyvTktg1bsGTHuBQ1ECTe+3AsT09YLWs9xzb2sJ7/xB6MyWaYb8XGkg06pOLkmuWvVDutIv/V/IWUmGPKNEjlYHYItvS03aE9kTH289gWSUwSBeSOx71dUKDLDZ8M6EG0UkWmWdfRpviRsbCgqG0o3Oap+ofbNtYzEpJOc4AdznNVAf5laMlh6+J1CTJyEHKZP3Xp4SNnWoze5UBUItdna22jLbtiQZ2Lx/lNUjiCPcqYYjQhepv0m8pIiWYTYqg+DtNB7VxIslQ3vYS8SvSh/ij7/uzzcHOAh/Fk4Dz0n1ObInARgvr2ocAlAtXjhiymL2zxwJireXFkBfVmhGlaEoaQtgLOgFPkkQtdLvsZaTdFcL13ypniBNON89I2JBoUOgiiQfDwg2wtS6FTOiw9yPPdk/3hFmsVgd7qj701QTZ1QurpVSXZ7/rD8r7J3xnnXbQpQca25hfwr5+iCbL9rPKu98J6knLIPMUi7AwOrOVRmqA0Bbi+D4WX2wJUXvpqtJkYau5xlZ1KHdiGgppVwX79sbH0t1n5v/b1H6Uw77t/EPy468m
+ y5qLCbWP
+ eC39IAUcSlKC617mKwUQ1VLbIwVZ1jW4YcBcXXFEycxCgR9k9mzWv9twBT75xB+IPMDVYEdztoFWfm023gOn66y2t/3hFYAbn3X1t3fXdUQBeoRJHMy64Gu+pyd2LhgtJokhctlU7Pua0U3poIUJR+Fqa6C06x4GhESkzBdEcIBzgx3KrR4FGpAw/J6pGMseC9AWI2FYkIKPVIS2e0hUKcMOCKumFCh67EeqwDO7evt9bGjCJCXDHFjoywXHDHEpeTiOtEsjCUApN/LKzIM6qfE+ixYiQDxapvkytbChsOn1ShaE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,11 +95,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/17 07:16), Shivank Garg wrote:
-> It was added in commit c1b3bb73d55e ("mm/zsmalloc: use zpdesc in
-> trylock_zspage()/lock_zspage()") but has never had a caller.
-> 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+On Tue, 17 Nov 2026 22:52:19 +0530 Sailesh Nandanavanam <saileshnandanavanam@gmail.com> wrote:
 
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> A newly allocated damon_ctx has call_controls_obsolete set, meaning no
+> kdamond is available to handle call requests.  damon_call() should
+> return -ECANCELED in that case instead of queueing the request and
+> waiting forever.  Add a kunit test for that.
+
+Please check my suggestions on the reply [1] to your another patch.
+
+[1] https://lore.kernel.org/20261118014632.95656-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
