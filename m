@@ -1,117 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6AD606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 04:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12332606A330
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 04:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=p0UjN81h
+	dkim=pass (2048-bit key) header.d=modal.com header.i=@modal.com header.a=rsa-sha256 header.s=google header.b=cp8snKXq
 Received: by kanga.kvack.org (Postfix)
-	id 06EA86B00EF; Tue, 17 Nov 2026 23:32:30 -0500 (EST)
+	id 18A216B05B1; Tue, 17 Nov 2026 23:59:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01F8E6B05CD; Tue, 17 Nov 2026 23:32:29 -0500 (EST)
+	id 114F76B05B2; Tue, 17 Nov 2026 23:59:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7B2A6B05CE; Tue, 17 Nov 2026 23:32:29 -0500 (EST)
+	id F1E2F6B05B3; Tue, 17 Nov 2026 23:59:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BAE5B6B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:32:29 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C07966B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 23:59:15 -0500 (EST)
 Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4099AA067B
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:32:29 +0000 (UTC)
-X-FDA: 85446968418.04.0AA4B53
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1C67CC0009
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:32:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p0UjN81h;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794976347;
-	b=iK3oaQP04LGnLnEvFp0tFwjIAPBB4AVsAk7tny9o9uCcGwWbyPCxIj4mvoDul9C/9hDb7d
-	VlAguXB98iJsX2rufxmnHFdF8nlMKC9kQnprqpiw2dTXYtUD5GJn4lJ9NSfn0Mcz79xZnz
-	VWtw2lbK97R6xxmJCL380pba8lmARno=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794976347;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2744E80681
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:59:15 +0000 (UTC)
+X-FDA: 85447035870.04.655095C
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 37386100005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:59:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=modal.com header.s=google header.b=cp8snKXq;
+	spf=pass (imf05.hostedemail.com: domain of samridh@modal.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=samridh@modal.com;
+	dmarc=pass (policy=reject) header.from=modal.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794977953;
+	b=xvYVSEnaespQucNdYNLjcFtYrZ1vAy39K5Ri5hFLJp1Fjx7RAwdGzRKjjsUcaUBk+SxQBz
+	CNvgQvJkY138Hw2Zu1ggO/XVpQyJmRplSvydEfQaleGKUiEVSsVQ5EgmqbjBGe26lhSURy
+	O3hW5Dn9iJ5OnlTBJEwGI0NhaS2HljE=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=modal.com header.s=google header.b=cp8snKXq;
+	spf=pass (imf05.hostedemail.com: domain of samridh@modal.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=samridh@modal.com;
+	dmarc=pass (policy=reject) header.from=modal.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794977953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7MS9sX+VwlIh4X9xAEq10Tl8H83Ldhcl5BWCWkiO/T4=;
-	b=AnY0GjMqH06jKIbXdCffpUnX2pRYz4vjPf7IxBJcCSicW7ihFjTSt9qZLsZWDpSyv79dED
-	zJx6XjJ1gANuUB6bIiGcIqpB4topfehZ/itPZAA0dzFYcBUC60ktJxtFW8bV9LniuiClvR
-	uTP5fk1U6zaykWK5/Jt1TL5W/a2iwKg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p0UjN81h;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECCCA1596;
-	Tue, 17 Nov 2026 20:32:22 -0800 (PST)
-Received: from [10.163.128.4] (unknown [10.163.128.4])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 339513F882;
-	Tue, 17 Nov 2026 20:32:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794976345; bh=mGDSNtodI21bLq4+K4VQm6Lw0wUHcWZaLpeVsLI8sl8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=p0UjN81hgfNuYJHbl7yquDsT3i72OvHpwNBMIyqfWFMgSGo89/71Q7Sok0hzEiMaq
-	 j3LGaIu8n7IHqWAPU+8tkD0AKEx6AzV6qY543089IEqaaXTn9ZLFgAKQvXPDiKD3RS
-	 hA2IEUpDwaPsa3QUdfrIDnEp4BPvA6DqnJzyyFkY=
-Message-ID: <a45d7c1a-08a8-4f18-82cb-535b6d1d3aab@arm.com>
-Date: Wed, 18 Nov 2026 10:02:12 +0530
+	bh=L15FRrjBvmM4ofKQ3Ff812vzjU+8L3wtPEj17f9j0B4=;
+	b=QP2JDA4a6oJs9Agtg4P2Eyl5e+vMc5NGeCUpRpPgBgxSEf+ts8oJXxANMZKbKXa+o8s+FQ
+	OvKHG+LbbYz0X8KKui/sZXzQXrysW3hloq/JqKRAVBhs/rf7nv56sWV246rVjLB8yVeItu
+	NVDftDQul8+JY8t4KZaBBtiemcwpJVA=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8b10d24345dso4548337b3.3
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:59:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794977952; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ptymd+kU90pj4t2gqXCrocDQto9Npj47pg0CRdj/xeYOyBf8mRmFv2CGm9aPiDKKuL
+         IbEtw7pcerCb43n6nF5KmYujcCL1sgawccRFnczX5wbm3O5lk7WkMFrgrIFxQTkyVhx5
+         Ohcg5RLrWTQcLer2bCMQbnM/yiuPInHbZl2tsHnTvikFN5YsBgvk+9Xq4GmnhSvtZyUO
+         kPk0UkYBgyGIJ1NgDyy8fET3sIOQ6L+wIPfzJf1O3IJqwo9riNb5jNbgr0Rsw4wQrNL4
+         2fG+Xbk9itAnhQlie7UscSul/zTS4AzwO9zsaofd6eUwg/5A26WSD4qPbt/Ke175GN6h
+         3pUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=L15FRrjBvmM4ofKQ3Ff812vzjU+8L3wtPEj17f9j0B4=;
+        fh=cL+dmY26rejL/J5M//GtRzhE8WhgraKwqYXp4p857+U=;
+        b=oyVoVWwKpmkHGHuxubOBdj9PcV1hWGMHeSswZUdP6KhnviVvZy9zeLiX5+8Aa+5GzP
+         0TiDSo2fmkBsYPN/4NZ76j5UjTa3vVBzGRDL6/efR9wGHbd37M7WJFZVusP21cE7LrEj
+         yWMGFtCUA2AFX59l8gtcxrpIzmY76S+k+R7t3gwerHUS6N7iOArYn7TneNM33pFxlkBb
+         vbelzq08nW+72Cv6n4qWrjGyVTcpNCNKkVmhSImh9o6HGNfiKtEJPD1+y9y7RLELlDZR
+         3TUYLH+eY3o0u5QcAL1FIZ7TN6sshBIxQFTd+XBKHR7l/7KmsVPBBybxQZjbYs501T1j
+         4aaw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=modal.com; s=google; t=1794977952; x=1795582752; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L15FRrjBvmM4ofKQ3Ff812vzjU+8L3wtPEj17f9j0B4=;
+        b=cp8snKXqBd84LcCdZjlObMJHdwsWPpRyRWLWJtJ5XWYqdUW8fBa4ttgr4o2pBxopuv
+         ogqiNO/L9bfGvyMyE8QwyWBwEoAF8/s1qvyhxwhp34tG6y1/bAcSIejBj0jK1LZi6R7L
+         zTlYGHRUBKw481PxB2yPs/2BFRojAoeC0wKufpLR+PHjMiHIUK2RjPO0YQhl0lxVMjHf
+         Erv20CH7rg3rK+1h6eZGLxD19QG7tcDLiPVHaThUcO5juWYOozXpCgjHaewXAfZvq6+b
+         /FDLJZzgh/92Tp3N1DFnXlc3QR1KxOHJsrrEGYNPxCA3qYaEXrQQuLyQHBU+IMd+PMPu
+         W6vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794977952; x=1795582752;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=L15FRrjBvmM4ofKQ3Ff812vzjU+8L3wtPEj17f9j0B4=;
+        b=rvEPykpn4pcIXQTp/8rWzB5ak7ueqnlUdmGydTkOg1ez07kGncUvZsABUTlfMzJlBU
+         YcShhQqYmvwzSAtcK+PnNDlxmmDMGOV0dXhTVfGt1GnX6bUYCEXiz0QE22rRzhle/egA
+         kJ/3ou3u0FB60SyCjhX6guGIJflmoIqPop3OsqbVmPuSs5lCsGUdfvTxIr6FcEOq2TTB
+         RgMZFtUUC3xYknwJLHRQ02LAb3mYF5JW/ivwnbjxgq5wZo7bgacznOrj/wiU34rRnd2h
+         oiPdydtY7zSiv49MOXqW8TcWVzrBYy0Dk2Aq9Vm/q0PvXyBbZ5L14Dz7Pk++XilYq1Jf
+         wUfA==
+X-Forwarded-Encrypted: i=1; AL+hErHf7/uDlzNPMuqhuQyrn3RL5khHGnu6baWkN9STDrNoe5W+Egd3fX/mQsXCKD3Jlu/iQdFo25BtuQ==@kvack.org
+X-Gm-Message-State: APuU4Z9ifxL1fyMFk6ADrN7pJz62rWZww6a+SXBhTp+02yvUU/Q1/VHj
+	Ulo9EJ/LFm1dCGwZ6iPwL2E9DEI+mt4JTmEDY0gF26Q6huTec/HR57PwdY5oMpQlf1VLe7rEsZZ
+	ewUIyABy/ygcFtPZWCY3zxQ7vEe5c++jdxDpp9wL3yn5d795294wall0owg==
+X-Gm-Gg: AZFdTZcO6eeRL31WvR3Lq2I0ONpHo1t9G/vZ0o1ymO+afwPmHfgPWyqT0titP+Bzl2X
+	MdVjXAwA/NsKAAhShp4FGgNW3i6u5BOqua/WakNKtS6Ft4bdJ/oqiKVnM//2QsrwRxzkqOudQBj
+	YeU0SZ/MjxIKTwRP9zFjD4Xwtxi9BkLGRrYFS61F6uFmO5UwNQ9TFhh0pdzWHme5b4O67h+2pwP
+	ZfIGPlAh272dn7bmyo2QkaVN5YME0RDxir9ig0fhIJCIYqF+Q1l2fGQW/ACd8OMYRsucTbFsau7
+	I+DD3cTLY/AyvXS1M8vOyMZv47q3W5PxyX8U2NSrateL5GS40B2yd8sV5i0UDeh2nv4eAU3EpTO
+	KCoEBV3Ict6k+FAPpklr1bt9Blq6G+xt1e3BzczeAXEBvAQeL7EAAFrJSGWtm2agNqAdQmRw=
+X-Received: by 2002:a05:690c:6c91:b0:8a1:781f:4aa0 with SMTP id
+ 00721157ae682-8b4fedb40ccmr7127757b3.56.1794977952130; Tue, 17 Nov 2026
+ 20:59:12 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/9] Optimize anonymous swapbacked large folio
- unmapping
-To: "Garg, Shivank" <shivankg@amd.com>,
- "andreas@gaisler.com" <andreas@gaisler.com>,
- "david@kernel.org" <david@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "hughd@google.com" <hughd@google.com>, "ljs@kernel.org" <ljs@kernel.org>,
- "chrisl@kernel.org" <chrisl@kernel.org>,
- "kasong@tencent.com" <kasong@tencent.com>,
- "davem@davemloft.net" <davem@davemloft.net>
-Cc: "geert@linux-m68k.org" <geert@linux-m68k.org>,
- "rppt@kernel.org" <rppt@kernel.org>, "nphamcs@gmail.com"
- <nphamcs@gmail.com>, "shikemeng@huaweicloud.com"
- <shikemeng@huaweicloud.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
- "harry@kernel.org" <harry@kernel.org>, "riel@surriel.com"
- <riel@surriel.com>, "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "surenb@google.com" <surenb@google.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "youngjun.park@lge.com" <youngjun.park@lge.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "jannh@google.com" <jannh@google.com>,
- "liam@infradead.org" <liam@infradead.org>,
- "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
- "mhocko@suse.com" <mhocko@suse.com>,
- "lance.yang@linux.dev" <lance.yang@linux.dev>,
- "baohua@kernel.org" <baohua@kernel.org>,
- "baoquan.he@linux.dev" <baoquan.he@linux.dev>,
- "pfalcato@suse.de" <pfalcato@suse.de>
-References: <20261115143905.3045084-1-dev.jain@arm.com>
- <4c351ae2672a817df071b5a8b6b402846b897a75.camel@amd.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <4c351ae2672a817df071b5a8b6b402846b897a75.camel@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1C67CC0009
-X-Rspam-User:
-X-Stat-Signature: 1h7e5jked7wjxotoxoczbk56wqnbtodr
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794976346-874717
-X-HE-Meta: U2FsdGVkX18aA+beAaUOxYPoVnR+cTnOS7MTStVnNF4x/+lrLMtVieCKdZptdCywD2dirWUkNX69wQXrUr42QyasI5ppU0ask1rRNeluuIQA8OuhmnhU4/2jGn9TW0gGqjK514r8+nBfdtKi5Az8ajxl6gXI+A9v7pJrwPmO66SdnGWWO67BURMjtE6Y6MmvDYl1jhxoDpje9SAy2RgMmQkaoBq4z+BsVo/GcF+82WDODYpXNOTxFxi3T5VDjaWFX0xr/LhmXfLboB8gQ9PRi0aePJvGlMjKZFdxWjfrjZD76/D3J4+66jpJm88sDeiGXg6OChl0OIIl9wHN7f37TdV7UlaBqeG6LX5IlW7yxIcrLKrK4ZvADSAtVTfG8y7uKtR9mo3fvbWCbQxzp0MypaR/+5NZeieGqckiUSVw+Uxc0aqNnZtK9khnlsORj4ctrXL10ubB4jLiTrTGryRUHhxtkeF/D1tbtb//e7cFqbAoyU7kaPNXVGYWrO8EUOAGVh/7xd7M0FyJX0eR9Ud0YxAm7AE2hg7VgKsxLs8Ngc4CAMiooYk//8UTHVidWQ64cXHbddH2jU/6uWhxSpdi4ovkdqfX1t1M/3m1iRFPWRpYP8ke/DG2270w0UOD/jErgkc6fTto//ndqa2Wjaak0L8N+9gK7wnNQLNZtAjZMXP7zc/YHSzgNVPF+eHu4g0r6+0u5F1PG7ZTbhlHhU8Z5enM9xt90HGhA3MbW5tITS9hAd2FZAn0vZ20RtMlLCfdP+cS1/hp5EgwNC6vYo80EMblnCZVTaMIrbO4LPrTeaVZRRdJI1liaFJqqOJjS7SWmRXUvUIrLXIrdv1VjGFzXYLPPYMVJHvDGhSIJWAejjA5ThW9+o3ak58rCs9uJ3SqVHnQSL87FfgvtgxYlUL/ogf0R81rMGt8U/fKQt0qBI2CwzUDWI/BpGcZAdrrgNYLQVJPpHzfww3pfN4GER5
- +tio+gtR
- NAPbsylFQidtfqATKS56JLUZ5Ttim9bsGk16pLeutThRvEZw9EDbxRy/mzA/eincEP7Exuc3i0tdaHG9e+5EJIf2lFTBVnsKemeuGyKnCtnQyWs0M6kY/qkhAERADFf4teaR8kHD6ENDDPPsRAATdP44Zj0NmkgOHuq94xZFlPkt3eRXFd46+H1LBehJMO7+gjuhb3WYSAg+fdtJZ7mcsOgRoaMnE0PCNzYvoIUCcAWe7FdynqdNc7rKmSfMOv5eoMDmOv2qGKlJoJWopdYuNKbrlT7ezydTcQJSr+fKC6tfliRKkxVzJ0tqu0F8ZgAsbSuLVRtOFAaImISLdaSneHcf5gBaxTDQmsL0KsTQ1f4z9UlxmmTNM7rdlrs7ZgDtTFykUs39Gl7B9O3AbEV8K4Y5ftbgnlq7NFDKVtbGr9aM9MERk9rDa4hvu/KrnE/P5mswe7muKS7+EL0Bh3hFdbbhhCH7VpkekS9pT
+References: <20261117-samridh-shmem-send-v1-1-1b897ff562d9@modal.com> <8d90ee6b-ed72-4ace-b667-42e35c5baa5a@linux.alibaba.com>
+In-Reply-To: <8d90ee6b-ed72-4ace-b667-42e35c5baa5a@linux.alibaba.com>
+From: Fnu Samridh <samridh@modal.com>
+Date: Tue, 17 Nov 2026 23:59:01 -0500
+X-Gm-Features: AclHuK_HM_FofLuPSN0Y7ZflCaBv9_Ptu4MF3HkZBfGCwfv9f5hrG09K70kQ8wY
+Message-ID: <CAKyepcRQntK6TPGXxaz3rpV3qJ_oQdjL4utnocwzS1xt-t7tGg@mail.gmail.com>
+Subject: Re: [PATCH] mm/shmem: avoid zeroing new folios twice with init_on_alloc=1
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Hugh Dickins <hughd@google.com>, David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 37386100005
+X-Stat-Signature: b7sma3z7mbijb1jysctz85d3mh5bcoc7
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794977953-672045
+X-HE-Meta: U2FsdGVkX1/bNEreEAlcjKH8FWSY3KpOnrYVTNPaKZvoQ3NtMmSFVO5smaY2aVPRrzTtqN6iI/sO+oWrJkSKJ0oi3JePZ0qG1jdtnG0JH+xCdjejclsPnocBIO79WEKH399Waye92ye57X9Is0NwnwlYLBpIgwRzuZVP6cOEHYy73rh74qOIyRnhqSh/2nlKlWDMoTAIiqTpM5OxgI0N7UG7tPxBqXLQ7KF6eI3ExGhOEhzxP0cqB2f8nn1IwmbfoBidKNsE+Z1z8VN3nb/d0yTwU6uUiuALtTCO5D5Uzue54L0YlGFpODEpCnU0drxICH2/KXMwk/Mbj194/EJ5hvLXuX74fNOY1kPce1FdRfQ2Vi0GhP69tpDelFItx0wGXO8tPfenoZEauvuaAaeGKXIXhr/3MzJeA9zEa5F1XTBwOtuFYaFNNwBCwURhOjX9XzUEf1IWe2Lk5xSGCerU2sxtRFLd9XVyPFEDk9g4uhWu9MmucqoeaQ8l2v4Yy03ECzd1V5+2XKdxPgDbm16844/d2PzZhkKsWP5QpAGK5OTFLsQxBee8hWKX1zM+jjnYak3pyQrDm6Itn8n5AcjRv1vrzU0D2Q4Qal0sGJH1wofweZXQxdeUWq+Ps27bNq3ZxArvsop5oehgE6SZyZA9O5rRNIt72G1oLV2GaCxQW+/8rwysZW+i1Mcj/0DZPquLZy6iuEk9dXX4p8gMVhiFKcEF3LpRBUaZasYJxEH3TudOpzx8Bfy6ChuUKVoGRfcO8dBpn36BCeHLzgId8OcLtVWMGcpIY4C0N51XSAh//PE3+4nQsEpbDEaCba/+s3Oe3Lc859XFHQEwoZveJog+TMskF0/7mEK2p/N0iaHCS2SG4xxkXJ4+OnUB/oRa5LUe+Cial6lvIBlGv+nqV+1DVzd4XjLrbBIDlsNgkLGmZcpcWsqKpTWJ6UEjkQnqTEISsW0imMA2TXP8ssaWZaO
+ wZvjuChb
+ kYAFbFVk4+ehvfCDeeuwtdqlxjDXHRaX/Y5xmrbxU15iZ12KZnh6LcG2/c5NBy4HlklrLb6C/Pa+y1h8MhqocBcqsoqSLXmGSk6sUhA2+hbMnspEvR5fKapf0uVJEYG826uhfbTmiYNaGOfI8KaGFa9iGCSogjBRjuV1kAxw5mf6q7H88Vm+uadSzAcOH2Y/d2BN/E0t+ZjrUJ8SQV55ltMB7z+NJ8HtPvI6U7ibbP1SQt4f3Yrk4yp15M1dNzvfa+v3okcDBuGyMtmYYLt8g3lcKR9+nMKH9FvqTlVxV0TB5Lac=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,148 +141,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue, Nov 17, 2026 at 10:29 PM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+> I don't like the GFP flag hack. Why not use user_alloc_needs_zeroing()
+> to decide whether we need to zero folios, like anonymous memory does?
 
-
-On 17/11/26 10:19 pm, Garg, Shivank wrote:
-> On Sun, 2026-11-15 at 14:38 +0000, Dev Jain wrote:
->> Speed up unmapping of anonymous swapbacked large folios by clearing
->> the ptes, and setting swap ptes, in one go.
->>
->> The following benchmark (stolen from Barry) is used to measure the
->> time taken to swapout 256M worth of memory backed by 64K large folios:
->>
->>  #define _GNU_SOURCE
->>  #include <stdio.h>
->>  #include <stdlib.h>
->>  #include <sys/mman.h>
->>  #include <string.h>
->>  #include <time.h>
->>  #include <unistd.h>
->>  #include <errno.h>
->>
->>  #define SIZE_MB 256
->>  #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
->>
->>  int main() {
->>      void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
->>                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->>      if (addr == MAP_FAILED) {
->>          perror("mmap failed");
->>          return 1;
->>      }
->>
->>      memset(addr, 0, SIZE_BYTES);
->>
->>      struct timespec start, end;
->>      clock_gettime(CLOCK_MONOTONIC, &start);
->>
->>      if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
->>          perror("madvise(MADV_PAGEOUT) failed");
->>          munmap(addr, SIZE_BYTES);
->>          return 1;
->>      }
->>
->>      clock_gettime(CLOCK_MONOTONIC, &end);
->>
->>      long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
->>                         (end.tv_nsec - start.tv_nsec);
->>      printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
->>             duration_ns, duration_ns / 1e6);
->>
->>      munmap(addr, SIZE_BYTES);
->>      return 0;
->>  }
->>
->> Performance as measured on a Linux VM on Apple M3 (arm64):
->>
->> Vanilla - Mean: 37401913 ns, std dev: 12%
->> Patched - Mean: 17420282 ns, std dev: 11%
->>
->> resulting in more than 2x speedup.
->>
->> No regression observed on 4K folios.
->>
->> Performance as measured on bare metal x86:
->>
->> Vanilla - mean: 54986286 ns, std dev: 1.5%
->> Patched - mean: 51930795 ns, std dev: 3%
->>
->> I tried magnifying the difference on x86 by using 1M large folios, but
->> can't spot an obvious improvement (looks like my system is too fast to
->> benefit from batched atomic operations!), hinting that the benefit lies
->> mainly in the reduction of ptep_get() calls and the reduction of TLB
->> flushes during contpte-unfolding, on arm64.
->>
->> No regression is observed on 4K folios on x86 too.
->>
->> ---
->> Applies on mm-unstable (24231596edf2).
-> 
-> Hi Dev,
-> 
-> Most of this series touches rmap and core MM code, which now go
-> through the new MM core tree:
-> 
-> T: git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
-
-Oh I just saw the update in MAINTAINERS, thanks for informing didn't know
-about this. I'll send v5.
-
-
-> 
-> So, it would probably be better to base the next version on this rather than mm-unstable.
-> 
-> Thanks,
-> Shivank
-> 
->>
->> mm-selftests pass.
->>
->> This breakout patchset is the final completion of
->> https://lore.kernel.org/all/20260526063635.61721-1-dev.jain@arm.com/
->>
->> The extra addition is the generic set_softleaf_ptes() helper.
->>
->> v3->v4:
->>  - Make page_anon_exclusive_batch return the exclusivity instead of
->>    computing that in the caller
->>  - Make ttu_anon_folio() return the number of unmapped pages, to simplify
->>    the code
->>
->> v2->v3:
->>  - page_anon_exclusive_batch returns unsigned long, shift to rmap.h
->>  - Drop a para in description of patch 5, use softleaf_is_swap to gate
->>    pte_swp_exclusive
->>  - finish_folio_unmap -> finish_folio_unmap_batch
->>  - Add patch 9 to do batching for sparc
->>    
->> v1->v2:
->>  - Add WARNs for folio span in folio_*_swap_pages
->>  - Trivial changes to page_anon_exclusive_batch
->>  - Add two sanity checks in patch 4
->>
->> Dev Jain (9):
->>   mm/swapfile: add batched version of folio_dup_swap
->>   mm/swapfile: add batched version of folio_put_swap
->>   mm: move anon-exclusive batch helper to rmap.h
->>   mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
->>   mm/internal: rename swap offset helpers to softleaf offset
->>   mm/internal: add set_softleaf_ptes
->>   mm/memory: use set_softleaf_ptes for uffd-wp markers
->>   mm/rmap: batch unmap anonymous swap-backed large folios
->>   mm, sparc: batch arch_unmap_one()
->>
->>  arch/sparc/include/asm/pgtable_64.h |  10 ++-
->>  arch/sparc/kernel/adi_64.c          |  21 +++++
->>  include/linux/pgtable.h             |   6 +-
->>  include/linux/rmap.h                |  76 ++++++++++++++----
->>  mm/internal.h                       |  64 +++++++++++----
->>  mm/memory.c                         |  23 +++---
->>  mm/mprotect.c                       |  25 +-----
->>  mm/rmap.c                           | 119 ++++++++++++++++++++--------
->>  mm/shmem.c                          |   8 +-
->>  mm/swap.h                           |  35 +++++++-
->>  mm/swapfile.c                       |  39 +++++----
->>  11 files changed, 289 insertions(+), 137 deletions(-)
-
+I started with user_alloc_needs_zeroing(), but switched after a comment
+on the list, thinking the helper wouldn't be accepted here. My mistake.
+I'll go back to it in v2, which also takes care of my flush_dcache_folio()
+question. Thanks!
 
