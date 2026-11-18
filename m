@@ -1,136 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FA3606A331
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 00:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0936606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=dv+UlE7D
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YDZbyLBc
 Received: by kanga.kvack.org (Postfix)
-	id 66EF56B05B2; Tue, 17 Nov 2026 19:49:53 -0500 (EST)
+	id B8AAA6B05B0; Tue, 17 Nov 2026 20:01:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6200B6B05B4; Tue, 17 Nov 2026 19:49:53 -0500 (EST)
+	id B3C1F6B05B1; Tue, 17 Nov 2026 20:01:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E91B6B05B5; Tue, 17 Nov 2026 19:49:53 -0500 (EST)
+	id A2AA56B05B3; Tue, 17 Nov 2026 20:01:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D4766B05B2
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:49:53 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96EB7C05D1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:49:52 +0000 (UTC)
-X-FDA: 85446407424.19.53FC599
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D3BA8180002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:49:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dv+UlE7D;
-	spf=pass (imf06.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 81FC96B05B0
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:01:22 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07992C0603
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:01:22 +0000 (UTC)
+X-FDA: 85446436404.13.A4E3FFD
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 16F2E4000F
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:01:19 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=YDZbyLBc;
+	spf=pass (imf27.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794963680;
+	b=Tmd29s1Hi0rsD6lCU0Mu4QBWR9nlpdLopzpSIaWFmVVfQRrnSPP5Hf5hfuWoVN58dYDos2
+	R83J4FXf4MJFYAMwaei726VyJZ88Ajkif+jPZ8rtI5OfmMS7zk58VFdNt+sQj1NynUW4Ed
+	wrYdoWGDFahZO6kLJ/Ix28po2SQu8+k=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=YDZbyLBc;
+	spf=pass (imf27.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794962991;
+	s=arc-20220608; t=1794963680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X1mRNb9No3wdnTR/cMHZKezqf8q53Bzdh8b1/a21plE=;
-	b=be4kwR0g4vT6FakNfVO4NjdFlvLH6BNIB5AlyeoHnQC5MyxQip44DoqdNebdB/t5kvtq7V
-	mEO5XhN/k8rUbpA6yGFFiv3LEU+5amiMzue/nlwuxPdLgGh2v4KnG2yXfJNECBGcPzG7yo
-	T0zfs2YsbNLVDYE2hNncm15llxOONFk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794962991;
-	b=WCbop0GGY+zuB+TbGYItCZQRECKwRxUGlGP3If6eGVhDK/hbErOs9HDJRMP5WzYHjPUf1Y
-	sl9nP4CrTGKNu2sJJbdeg9iHwKzJgLl1cFspQew4lCqu+ld3jVFw6Ne2iPianO4/mMTzg2
-	Rs1JkFYsyZgC7SvcexmNb4ipA71gdaQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dv+UlE7D;
-	spf=pass (imf06.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=X1mRNb9No3wdnTR/cMHZKezqf8q53Bzdh8b1/a21plE=; b=dv+UlE7D0vybkp2FFYzNVNv6tm
-	zuETQaw8E6xBRIiGf3XrdmMTGCImEG/hGKGwMuJ7CT58L6L1y6BHWR1FYaQve6JaIFsv0ISM2sMJx
-	8jAWIyB13E0JYfbhkuwbqpTPS9B2dOpD2JlFRWg8y9c1FQiQhBb4rKxPs1Hgycu2lCiv7O43j4UPS
-	7RA3u1p6jp7RnjHRo7iObXjiXdgaou2K+XNoFnLv/G+NOYOowQFgY7dqYq1ReDt5U2TnxKsVY+WD0
-	8/o+99/RZuj1sQMk2r3zRJ/Xp4lmlrEtBAp5LKX9JOjA2VYJlOnSYRluHFMJFWl7bKg/+hNKg3ahe
-	3rwqX+mw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTTrj-00000007PFp-2tTG;
-	Wed, 18 Nov 2026 00:49:35 +0000
-Message-ID: <aab3bd74-80c6-4d51-a433-140b1d27946e@infradead.org>
-Date: Tue, 17 Nov 2026 16:49:32 -0800
+	bh=m8/kejje43/iSzUQBqp60HPt96dBU49CmzQKrHbpHKA=;
+	b=fBMhdIz9Yc/BNIA5zLf4V74ZEALcN7xZxswlc7N4HF0QbD29DG3K+eVz+EK+tysIpUSqCm
+	M8VQA/5y2sjPQuM0exqQuAoRtut8zas1XNiXphpt3ezwgg7u4Nm6/PMfm9rLVOiuDFbDLC
+	kKH9WbXP24rbYox2DFzNZm4/R2Gi//Y=
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1b1cc08166bso2260c88.3
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 17:01:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794963679; x=1795568479; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=m8/kejje43/iSzUQBqp60HPt96dBU49CmzQKrHbpHKA=;
+        b=YDZbyLBcbqXXXSpMx1lyIqtYwaEawvHciK9YKom5aTbSCiL1Ef94/ql9OBBYpDyeHF
+         OjlhjNlSa0MMd31Od2EX3lf0eEqpmLvCzyuvYn3s6Hd+WJrpmUdwgRCF4/kpOdXHI9ED
+         sndbR7T3hFkvwU/EC9PN2e3bqbgP2ge4vzNFqMUGW2f7EWeN6eE/Ug+nb/gPbgBo/r0h
+         9BUTlUAY+0I/m/OA3yzFkC7WpM8If0EHZwBqmTtF5nZG6qqQQzH7+SGSpn1CcsEkTzPu
+         WBG8otDbyATWZdHBYZ6Xfii5WmBm2EL43YkDlXnlhFjalpyWKrjaXovllGvwaqg1+URu
+         EBaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794963679; x=1795568479;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m8/kejje43/iSzUQBqp60HPt96dBU49CmzQKrHbpHKA=;
+        b=v76uvdPy+DtocMt++hJM/DZCms+gXwLPBNPm8DYqQVSxyNNwb0qzhUPhWWVZ0qsa0d
+         bzz3E40hwJctSeyP8DiuPTGYQQjI2MjOEtO0QgaoU/xYoPmqGTv7m0lUNSa4sGJN6yYo
+         C/JWbnF7RifH2s3ZY1vBoj8fzHzIddPbxnwh5xGaczdKTOo2BFMyrPsPmTLgH7ZxXOid
+         TiDYQhbCQuet2hFVMTpGM1QVE+97U+M35AKVGpikNqyVQnXO26BupHH+BFlqeoG21pQP
+         QQfIdezYTZsgNeNBOQOA8vd45up7xAUIWgF8CyQkkLrlCGgpLpf7Qayb9SqemU/e1UEH
+         /FBw==
+X-Forwarded-Encrypted: i=1; AL+hErHE9m9YCO19+cL3Bxb39nR3d7MN15LPsm7h5zugljtqpe8MSeX5Wt2nIpFvaggZXGePBwg1/AZrmw==@kvack.org
+X-Gm-Message-State: APuU4Z+7WTZJoPodDF1+vnu4EqTp1w2l0UVPn2cLlT0LmlOSbXm29SUa
+	rp8Fb9hy23rH4atInySQYjy6wScPCtI0fuv6p3o5FSGFKYlcqHrpkG6a
+X-Gm-Gg: AYBFou1D3y6j7+Hldq7W7utgrF/dm4nryIZdILAGcO3fuGaOxfVCM41fCh90IP89cni
+	BiMoj/8G2cxyXTeSLgGP9NQFL4AoaIAorNDa8OnvOE6HYYOBLOip6nu5YjJGLz+mmgnEEQJGCUe
+	GnIV93+gzuaUh5t9tRbkQ5tiO7GW2LJa5IG1FXYeQ5Wwzqg/sj+xEVpdLI5OowKL5f17LBoJoWN
+	T0TGkWdoFDpkMjzn2cZFl8VRJ7sjOmBPokaE3CANR1TNtc9OXv+3QxzbQmLzBY7tPN4cIlpzVg5
+	74AyE3aSyNHPnj6oRudvewxnXnGYxorj+QVPThhF05yx4W9JwHbjI98K6OgHsKZNFh/qb1SGFWa
+	325vfBgIEeF4EucZgUh7x5sNxZhYpyGHzrTrKofk9RR+/fIqHQlxZCNBbC2q7PMBxuyO6DQyouN
+	LnTWu/GrJe5Zmmy+BUXEy1SKV9EyepCxtY37i5BeUBLCKmTl1I8wnw3J3lLONwYbd+UDS1iXE7W
+	p7Nz9rDeKWT2Da3R/fE0bWfhKebwi17ZtnOjPR8FSKd1wxiUafFMj8GvfwyxQGH6ydg2O5T0FKI
+	WEHDAQC32bedZoPwcOlH7i0Wc3jA7rXUjr4zyJWmaHrPTp7xi3xy50sWqxOLe1QFZao=
+X-Received: by 2002:a05:7022:ea8b:b0:1b3:a881:a67b with SMTP id a92af1059eb24-1b543b7ba68mr1691999c88.1.1794963678164;
+        Tue, 17 Nov 2026 17:01:18 -0800 (PST)
+Received: from o6.lan ([2602:fce1:44f:115e::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5447da7e0sm2636759c88.9.2026.11.17.17.01.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 17:01:17 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/12] docs: ioctl-number: update FS entries
-To: sashiko-reviews@lists.linux.dev
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
- Marcel Holtmann <marcel@holtmann.org>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
- Chas Williams <3chas3@gmail.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Helge Deller <deller@gmx.de>,
- dri-devel@lists.freedesktop.org, MPT-FusionLinux.pdl@broadcom.com,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Zhihao Cheng <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org,
- Neill Kapron <nkapron@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Hans de Goede <hansg@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev,
- Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>,
- linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
- devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
- Namjae Jeon <linkinjeon@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
- Chao Yu <chao@kernel.org>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
- Benson Leung <bleung@chromium.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- amd-gfx@lists.freedesktop.org, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org,
- Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-References: <20261114202653.3113381-1-rdunlap@infradead.org>
- <20261114202653.3113381-11-rdunlap@infradead.org>
- <sashiko-outbox-215810@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <sashiko-outbox-215810@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cf5g4demnyzcqqz4eada68ioxnsdt9tb
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction
+ budget-aware
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: Chris Wiseman <chriswiseman@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+ Xueyuan Chen <xueyuan.chen@vivo.com>, Barry Song <baohua@kernel.org>, 
+ Yosry Ahmed <yosry.ahmed@linux.dev>, Brian Geffon <bgeffon@google.com>, 
+ Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <18e8fc17375582a2.3137322e32332e3235332e313736.2a6db6.0000sendgmr@google.com>
+References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+ <anXJ-5_vO7-toSe1@google.com>
+ <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+ <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
+ <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
+ <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
+ <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
+ <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
+ <179384102494.19062.12740032892044628762.b4-reply@b4>
+ <auwOBaRtM9p_Wxfx@google.com>
+ <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com>
+ <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com>
+ <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
+ <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com>
+ <18e53459a8013078.3137322e32332e3235332e313736.12c7b6.0000sendgmr@google.com>
+ <avVVRYkIAQnLC_Yu@google.com>
+ <18e8fb5c1c4d127f.3137322e32332e3235332e313736.289d37.0000sendgmr@google.com>
+ <CAO9r8zOtL4t5pwQOE=SAWeg=k2TkhtNXgV6CJJGNTwuTebKpBQ@mail.gmail.com>
+ <18e8fc17375582a2.3137322e32332e3235332e313736.2a6db6.0000sendgmr@google.com>
+Date: Wed, 18 Nov 2026 09:01:11 +0800
+Message-Id: <179496367147.1128372.9610535275148675145.b4-reply@b4>
+X-Mailer: b4 0.16.0
+X-Stat-Signature: jjp1drkd6z7a7t6dbkkbs3iy9sad9soj
+X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D3BA8180002
-X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1794962990-572168
-X-HE-Meta: U2FsdGVkX1/pNEZWle5xaYSPfZHV3aVb0OGxSXpJEWke2/y+OQuJknSoREwOLyMQkPSzvHl8LpyJiDTsUdI1+9WuMIcNdEHD2cdtLssi4VFoU7SHq/lLkUDGF6gd224VqOabgenoH+Mbpmlj58vMJVT5r4rgqDTqYMdlre7bbDZtf7iz4nzRhZ6O6voVw9z0mNOs7pv0nhqhhJSCMS0PAyqAAKHBKeKHpolN5kH2z6/yjhIjtkDG0BRW1C7LklymKb9y9kQF9Fp1LaBhYbRzFRbLY3A9z/+t2JL+SAFPennrv+/klQE5ISB3KF212vyoaQR91R6VN5I26mXOJXX6pxdBBZGyuqy05azrqwZroVImZ29sT5rFZmzT/lHkQdg3PsbdUwRzW1g4xB3LZINCPLur4Wi5DWGnDQ4rXGsk1I3djaAKIHGIjSM798ZmGZXzqYAbdrbVtSCjbG+lPH2dKU9oUtlb+VYqK5LetFiikOqkrJ9R8i7sse4MpqzIGwwSs1p65BuF1/hbWxXkzXSWIu2F3xhfchGzCVrSIytb6sa000aGUJ7YRkI6aado12E0JwFoohfmRTsvZDfLGEqmwTBJCZYfGcTjuv6zzO26Q6n46NPwKZ/etCclpyv4DBhCwBc6hZOfoL1kIcmv7oKTRPmRVOSkQYGMzIxoEYVxU8qHZNu0iAH5t+lFcANmyicN5haPiJjedw9zPBO+5qEfCBYApcYB24fme5hjn1v7JJbzlpFnHAut11EtFgID62nqUV51LGfq+kZZZ/BHIFGuVBbDUEz46mHPFU4QdDK4gc6b0RGDUzmImAIdBED87nSy15yIc7iT9uYQaoV5hWDs5+D+aYV5LpA9YT1leYWxraA4A9TeBm+cRLU7H2FwAxftqGs+NQLtqlepP51kDRI6kMWjtxNt4NjtaXAMtjX858TfEFgWGUB2G6K19yvhq3TPFB0R6KVCv+iaw/wk5Us
- 0lrniVNx
- nuCuc/p91bl/+o8UilCfOIK894j730ilKeDMYkc1tsd0IJLj3Woap/9m1W+4E+4C5+OY+EWNs8j65qZMy6/V8e+jTl3bX41oo4coGJBEBhu+GnDuibjTu/apT9mja9hdDbiM5D8rp6crQPMil2g1RJCoZac4yjftaNSucqdrMGRUHkF+XYoHSiTkeJiX4gINOicJO6g0i639Ih3MG4KXH8QzQzf3DkOTLe5XLO2wjMSW9SJKuULfvRskF83c7uon9F9ZdDJHL+LqJTPO6n0o9uwtJi++KMU5Oy8Y+1i0Ezsccdwk1kamjSlYKtbXwahxGBgR0H2eAxGL6+lQ0Jf2qNG7oXx6Og/srhpZo+d5fqEsLSlvWKgkZ6mM0pG8PgrSBSDz6cyab0bISr4WgDxwndqaYJu8PtoVL4g70HG4wLSl2P/UNUfs7hD7jmauDfS8ZliJ8
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 16F2E4000F
+X-HE-Tag: 1794963679-618017
+X-HE-Meta: U2FsdGVkX1+jG7N4o3KnB2N9Vbb5g2/dwlmsdwrGmoEOQYDQn4MtYZZ5f91SwUldvUXDwnoArr+QgVyEgDj7QOpCnNH55RLxYBKibO56XgMPL5JmmOamV/hnz+0zJpzfJuNZPZ0bcFdIGZCPi/JgtAt9NDK4F5A/MpC65AjjiEcMFPT24RRzcCUvvGUSOIyOdPL3ZuwWyI26fGkLX158i2bWruB2ekcas/oREFEIlTQ+jtb/fao7lxU4gC3w+q/WfXM3DtkhC4kAPqG1tvMfUwBaZG+i1kRQGjHHp32U0ATsD/LsI2a80wqGWMqbdh55hDjduKcQfazU9X8jttJCMA9rSZxW2U2zPcOeeSEjAValTe5hSzHMMLZ2GFZ3aYXUtl8vvmtLIfGX3Oj3BhkKuPECQZK5CafNTSZsQ0cQg1UXenWiiqVGyx33gBuUerFK2zxPU2Jy3YFeOX9N/fJkZBB/UnR+hd9nKQth2+Mv8mlBhWjgn8sWVUqEmGl0N63JS+P3j8pjIfQujUYu45L9PfmZysW2dfkdOAPdLiSyd40aTGjF4Zr9kg3UQpVqCI1aFicqhyMBST5Zn9kiwdwktvHecUPetXjyYHO712/XPX2Gz3FI3jELlqevKh69t2GBilR1b1NObF1IofxEbC/Qu3HdXCxk9NX0rNVLxGFZhxCCz72VeXeqORGB/dkwHR+QVm6bwMSdkPMG+Xwm36yBTleJXlNXQMbAwCzSm0JmzUKSPM56Bw+OHEF7fbUbGt7HmyLfanA8HHlAeSiqnW8ICOEmhq3tYMs9fSvsjliMgWZnKuI+b7xHYs3O3oI8yNSjLPg4fCUMdDIZv4A9hwkBYltdMUoHyNkWdbxPedaUF6Xdt9VhS0oa/fVjJ9HMRcs5Kv61IIhWHuza9mC+SRogoVsTEBxK90iKYltqAoFEarERNiyDYLUeLIY2u0+LB2ja1xqWVs8McRQuec08zmh
+ dDw2aLAZ
+ CT8l/Oy155YFZaO1pVHQUANQVUdmMeqiPd6ljTDPOwx9YxCU5wF3in62wVlDlZv6ipy2++sfB1eO/U0hE+dCSNCUuz+7VPgRmY+xqDX8RaKjIhXMdiFVMzwwMSET3+KdfbRey42ZTOwulPVqmpp49ZnOrVfXxfkoyqMeGd41D108c0SjLgV7UCc8zMBExT6IoJrGTZKPR4FvshUIqhasmyp00tKOkHXJ5ECCxVynegCUQvQ7ZvuBgURGXcYVyZBkozDJsXGj1PkJ5NMPBetIyWwqaTLLF0JzAUqrGYU9IwStQ3jhkB5CqazE5e8lFR+e1lO6IfJCbDIAmj7T2TOlVwXz2q2pWvO6B5gXySfh6JP1oNxRDH5ft6AolR2eFHEjYW0m3D/wB+XrWjkj8qnJh5jyMkAVCdBSw7oTaLW56FJXBlozLMhnmP61dutMpr9WZeKQ23/zO78DcN2tPB0jF8H12ilmCzW/4n66Vz83cjYFBOVXiYli0tAFL0Zx5lMKO42E395Jsk90+snUBgHsu4WhXskt4mSmCoCzV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,49 +151,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 11/15/26 12:27 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Low] docs: ioctl-number: ext4 00-2F ioctl range points to
->   fs/ext4/ext4.h instead of uapi/linux/ext4.h
-> --
+On 2026-11-18 00:27 +0000, Chris Wiseman wrote:
+> On Tue, Nov 17, 2026 at 4:23 PM Yosry Ahmed <yosry@kernel.org> wrote:
+> >
+> > I would rather drop it right away, but I am fine if you don't wanna
+> > bother with zswap.
 > 
-> commit 9072a8199d2be085dc5ab2567392180faf810c6d
-> Author: Randy Dunlap <rdunlap@infradead.org>
+> Works for me - dropping it outright is way cleaner than adding a
+> Kconfig knob nobody wants to maintain.
 > 
-> docs: ioctl-number: update FS entries
+> Nhat / Johannes / Sergey - good with a 2-patch series that just removes
+> the zsmalloc shrinker and adds the unlocked zs_can_compact() pre-check
+> for manual zram compaction?  If Xueyuan doesn't grab it I'm happy to
+> post it.
 > 
-> This commit updates the header file paths and sequence number ranges for
-> filesystem ioctls in Documentation/userspace-api/ioctl/ioctl-number.rst.
 > 
->> diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
->> index 87e547be9e2ac..abc89b6288ba3 100644
->> --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
->> +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-> 
-> [ ... ]
-> 
->> @@ -275,7 +276,7 @@ Code  Seq#    Include File                                             Comments
->>  'f'   00-1F  linux/ext2_fs.h                                           conflict!
->>  'f'   00-1F  linux/ext3_fs.h                                           conflict!
->>  'f'   00-0F  fs/jfs/jfs_dinode.h                                       conflict!
->> -'f'   00-0F  fs/ext4/ext4.h                                            conflict!
->> +'f'   00-2F  fs/ext4/ext4.h                                            conflict!
-> 
-> [Severity: Low]
-> Should this entry point to uapi/linux/ext4.h (or both headers) instead of
-> only fs/ext4/ext4.h?
-> 
-> Commit 519fe1bae7e2 ("ext4: Add a uapi header for ext4 userspace APIs")
-> moved the EXT4_IOC_* definitions spanning 0x03 through 0x2E into
-> include/uapi/linux/ext4.h, leaving only the compat EXT4_IOC32_* definitions
-> (0x03 through 0x08) in fs/ext4/ext4.h.
-
-Done.
-
--- 
-~Randy
+:) Thanks, Chris. Feel free to take over the series.
 
 
