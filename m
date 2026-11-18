@@ -1,121 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E1E606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 06:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2950B606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 06:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=o9/s13Wi
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=eDdeS7wX
 Received: by kanga.kvack.org (Postfix)
-	id 29C5F6B05B2; Wed, 18 Nov 2026 01:02:22 -0500 (EST)
+	id 316896B05B0; Wed, 18 Nov 2026 01:04:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2272E6B05B3; Wed, 18 Nov 2026 01:02:22 -0500 (EST)
+	id 2C78C6B05B5; Wed, 18 Nov 2026 01:04:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EE446B05B4; Wed, 18 Nov 2026 01:02:22 -0500 (EST)
+	id 1B92E6B05B6; Wed, 18 Nov 2026 01:04:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DFA1E6B05B2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:02:21 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B582806B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:02:21 +0000 (UTC)
-X-FDA: 85447194882.28.FC99239
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8E7EC40003
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:02:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="o9/s13Wi";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ECB236B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:04:28 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F941C0443
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:04:28 +0000 (UTC)
+X-FDA: 85447200216.25.D99688B
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7396640003
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:04:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=eDdeS7wX;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf01.hostedemail.com: domain of wangxuewen_ky@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794981739;
+	s=arc-20220608; t=1794981866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LaBm9JAGPw/iEA5LuoUSy3PZbBdZOK0pwal6A+I9F3k=;
-	b=Pqe0g3Y4hPPp1hOE6V5lmKXJOwrH0FzsSDP7HgkNevmk8EMNCFaWY90GfvRnLnpBOC4EfO
-	xFq+dbBB1OrtAQsOjUGePpWeqyvfoG8gjOrkAbT8DnK0gzAXU7xsz6Z//JrgKFjCSkdQ+s
-	wO/laHxLEaVVGdxDnxkcq6ai+WrdbnQ=
+	 in-reply-to:references:dkim-signature;
+	bh=50UO4spYDICj4mi3ZdEnXll2Arr6GI+je5ElQT9Qz3E=;
+	b=Yzbnww9mLTQIKdDjp74sBY7+YheQctjjaMtTWhG6NADofMA+ag+YBSUwhv54gWCNwLDVAU
+	J/duEJJP0YEvkXnVJ0KaXo3OUpJ+leJPR43CHmFJu0ltLzOSXXVtFAadz72rTtwuIRr7N6
+	3QSXdqHWmVzFJuqgwe3Ty+S/nJaAnxA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="o9/s13Wi";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=eDdeS7wX;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf01.hostedemail.com: domain of wangxuewen_ky@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794981739;
-	b=ociHNRBYRMOOHsZ6398cDINeNeOMcBaKpH9hevfGozQ2SjHX+zP+yHBIN+e/51oXM5kCnl
-	+sVsurHaqvbNjiO1QfMXmpPUDiVXp9tn+qvf4xYqW9qchB5PkhL+BMY2dIgh/Km3er56Kd
-	GO1N3EO7xF2rXF/mfU71MG3l0baJ51Y=
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1a607a2e2bcso10311c88.2
-        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:02:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794981738; x=1795586538; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LaBm9JAGPw/iEA5LuoUSy3PZbBdZOK0pwal6A+I9F3k=;
-        b=o9/s13WivO/u9pr9opwhRntpYruu5GAG5SWm0VtAhi5JYVGP1UCFNbpt2+YhpGIgqz
-         IoiTr5fvXaLunyK5nG0IXYgs/VoDff2Jl0lW5Z+3te7oBYvceAXtPD0sNyoMC6UIfhvY
-         WW4SogT2vyPEn7cGiq4s8OCzEJ7820KPDNCFXtsAKm85rI7WE+3Gkpa9LopGGSiZyEA/
-         Iw/MiBzm+Elm4OAfndftScb+YPphMCp2/QeDPDUQvCBodhC9q1bcT7B18biNa3j2QpBm
-         iPoLQEgy2VqDtUc752kHCwNSMcqS1iDQGm5nj0o1WHBPOHBbuljzVXCU0lrkZTANrSM1
-         IWyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794981738; x=1795586538;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LaBm9JAGPw/iEA5LuoUSy3PZbBdZOK0pwal6A+I9F3k=;
-        b=cgdGbTt9DmIi1yMOxAF4Uf0qoJT3x4nN7r+mgpVn1ZqQ3Rc+7d5PAdTIqXssubxoWY
-         mUyVOm+73aWv/w7hDivKvmKwaxIBRitTrOmPuMqxvz0iSCEbUZlSZcBCjbiM8qMjoD9R
-         cVESyuhoBXd46t+s232b5uJzBGSKgh7dcaCJGa0quZn1l99wzUyWGNq9KfD9VnFskqjV
-         6buYKzbQQ2uOWrlWBzSOg/xogtUDn8uCxjQrGAvO+bg/kKKL/iy6iDy3VwG/COCUKE/y
-         8Y2VnrSZLBr14Wlm+72aeI0JPHD/HK6iMTWqZAFeZOg+CI3nbeU+oMyNfehxrdxiPT0d
-         a4ng==
-X-Forwarded-Encrypted: i=1; AL+hErGYTRuxiHs/cG/PmZI2WnL7ZEUNKJ88wi2oAuaXc9CId5EpsqfWaPFBlGgTU8OMH/84bz27DnZIbw==@kvack.org
-X-Gm-Message-State: APuU4Z/1H8w4u2jZCF4BAwuuwv5E2SUJutct7hPQfgAU9G5EdqcdqsY1
-	G6PW7wsVPvhbzaL+kUUmG4wbA0PhzUYLopr9K9d2ZVi7PINIK2O6qUtq
-X-Gm-Gg: AYBFou2htAC1lLltXMCycxSg2vbHo3kT/eC8ev+Pt82Ol5uiSkJr+crwK0u1eXKTTXn
-	kQpm1X5kidrKTyve/01i+CePrZsYn/0dGwnhD6zoyahU7BP4+6giRNBnlrGm22QHRHvtK4P6TLZ
-	Npv0GkyXLjoZCh7hv2rlUcmeJYwEZCK0Jqo53bD20KArtoElsEQksaEFuZpklx3jISHM0yv7lAz
-	2M8O6gyf6cfeuJ4qF5plwfO9a2eApB8MyeyLQ1l+XY5I9lMuCGZvLenUpvE0RQEGAvJtFcN1/+X
-	o1FKlgw4LTKdgu6BTxCsPvt4jRGtHDjphopTim2hQ+VfSnggBQIEF6QmJytsRq5OQ2+3sHmSARl
-	xfhae/N7EwZRRZV6mn6MKc6ufxSISii1acAuiNc2iSSqhExatr7UfSDY++z/XIKuWdSd80o0u8C
-	lwMh9QDVy+BKyadfw90tdv5XDOXegRCiL8xa9VoV/+OLfw3LuKPYbxrmr9KrMQw4PtIXHeGWmq6
-	XSvtZIktY3kUDLFuNqMKuhVPXXXE8AolawiMpM0nb48GRhen49CUeXXyIOYuM+GPyDGMJSsWUSj
-	Cj289HN+zkSpo3WtDj7D4FyKYDTh8z/vZCNcoCIvvmxGXCiRQbV8
-X-Received: by 2002:a05:7022:f202:b0:16b:4f52:a08 with SMTP id a92af1059eb24-1b543a14345mr3293891c88.0.1794981738026;
-        Tue, 17 Nov 2026 22:02:18 -0800 (PST)
-Received: from localhost.localdomain ([27.59.52.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5447f4e19sm5317147c88.13.2026.11.17.22.02.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 22:02:17 -0800 (PST)
-From: Sailesh-003 <saileshnandanavanam@gmail.com>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
+	t=1794981866;
+	b=OINhJ7qOWG776HOUJy/LznhJro8qZuAmLrwPXgu+r0bgpEUsXsUcsJ8cq/e+zOMtBtaKKB
+	NC8MH6lo+bhiGF1707Y1bxCnfZkMtobH0jNCd6kXFldMHVzYunzzbnkHm/NB/pYaIw5SJE
+	FlvS1o+2oA5fTNM91XEAdZkCDZyrOR8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=50
+	UO4spYDICj4mi3ZdEnXll2Arr6GI+je5ElQT9Qz3E=; b=eDdeS7wXUAFpBLXrBb
+	yKsK4gq0d8phNCG45nQzHS2uQBaxX4YcBESGkEoXbLRjU/q/Hctxinct6a1jwcCe
+	OHL3WOC2c7/1z2/Gvo4BMP73t5SybZJEBxzjhx4kdemmasPsDPo8XCPIhPhrF5zs
+	MKcEAViMvaq5i11hMkgur7Yic=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3HwjJP_1qmvfEIw--.16665S2;
+	Wed, 18 Nov 2026 14:03:54 +0800 (CST)
+From: Xuewen Wang <wangxuewen_ky@163.com>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	hao.li@linux.dev,
+	cl@gentwo.org,
+	rientjes@google.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	rppt@kernel.org,
+	mhocko@suse.com,
+	surenb@google.com,
+	sj@kernel.org
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
-Subject: Re: [PATCH 2/2] mm/damon/tests/core-kunit: add test for damon_call() with repeat control
-Date: Wed, 18 Nov 2026 11:32:06 +0530
-Message-Id: <20261118060206.29439-1-saileshnandanavanam@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261118014632.95656-1-sj@kernel.org>
-References: <20261118014632.95656-1-sj@kernel.org>
+	Xuewen Wang <wangxuewen@kylinos.cn>
+Subject: [PATCH v1 0/2] tools/mm: slabinfo: fix inverted sorting and totals
+Date: Wed, 18 Nov 2026 14:03:15 +0800
+Message-Id: <20261118060317.1802620-1-wangxuewen_ky@163.com>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rdou5w5stmcnbcdtwnai795widxzspnf
+X-CM-TRANSID:_____wD3HwjJP_1qmvfEIw--.16665S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZF4xGryUGF1xZFy5ZFW8WFg_yoWDuwb_Wr
+	Z7Xw1Igws2vr4xtwn7ZFsxXr4fWa4akFW8A34qq343Gw15CwnYvFn2y343tF1F9FZ5Xr4a
+	9rn0qryayw43CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUnk9N7UUUUU==
+X-CM-SenderInfo: pzdqw5pxhzv0xbn1qiywtou0bp/xtbCzgocBWr9P8ri1AAA3J
+X-Stat-Signature: h8zzy3znt47iqnw8bqar79dxbqyhoqdx
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8E7EC40003
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 7396640003
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794981739-730151
-X-HE-Meta: U2FsdGVkX1/8jojd6PYyHlJys1ARUPjv9ZctxDN9WHvOMdtr1gt7Hi8PL+GBNG7cDMGWZ4/IS8jmKN94OY7KfiUDvHNPzJaWTCcuvuZnemFgyp9bzR4j1mDf7d8AL/hc5qHo3xlVg4rrUfOBNu8MuryZGd5HmsI28wYTEYV8VhaXDYIKqmqhP3RPDQrg2iMTw+5Lsdew5/Qx4pBog0LIjKx1oMk8hc5j8WoeeNJY+ErJMRdZ0CauvGZoefV4zSfwcP7fsRXs6ajcojXavP4/aCq1FOpPvaL8IL0HATGpUeTyIkxOLG4m9jWpMYbeOlZwEk3FBZSeIHlxe7kYBClyTZVAXfU4HG6l2CBq5lbj+CauDTZ1UgBT0huz3xIWxOqFPd7c2+JdjZXPGamph9T0ntZ1ZSmPoyigJ5Co9yCAbwG4jq0DrV+CsrWIXzigrT9sRi7l0oERgPZ8ua8r1sknSiYUy24krjKRS6thztGEBk5cl612/U9YGN6dWbSF0GiKVW0MJuT+iVW01gM+WQOclw9a8gosQXBS50+tau6+kFiTidv0ymNPYP+qkGtTXiKgrcAcw4bdxiq5i75UsDBahhAlx9wMn7eXWeGvE72DrkY9XJ1WZg4AOBmRj1gZtz8niYdwcdHcI9JkOLFsrR2K9MjxbCY3/O9Zl8GOzZtEKyOBfsgTjpZBIESH8IqaCtlpEtOhPvSw9xR/j/cj5jg1cupVWn0TKYkIaypSK+/k/5SEbW0CIqgJjEAVkQrjTxkBwIOkgihnBY5PgZVTwsGS1VpLPfDncjznPH4qxQedbCK7baylmXegGbNBUat2r7XRcCMBhtslJNyhnzZSqGQ+Y8FTm6YHpBlL7ZBKkRXn0a+OkvR4PRP4kMC2pkedQkNHmf2YAGhnNa+JxjN6Lum8hfxFlQhvfTLI+yxF6YffypOh9GI6cCcCuhzT3Z3LhXYTeN6MzJjQ82TuRDhfGrN
- URsSviAz
- Ua7Ep7lnP4l3czcG5k3cYEGS8HojWqW+ThMQTy28HeW91b6Vc2Rtvsfe2LF8gmK98z64jl1LBiTPiOwT+uJy1MuLayva91J19DlGn5plD6ymtwuVWRyo3cZ36KbqyFXRC8tdlirl5uQhLFYmSHL71YQpRSMGW2ETpOIIikmy+fiy1EBLLu/SH+E3qY6v9oUarnSsGwhxxE8/9z/t2qZUYVHQAD5ckAiyTFEsUl+Mwl9uXVohvz0R2qc3mcjS8TQbt+Q9qIvNGfFyIquIkC42AfXQ2mcw0mWeVsdFFRokLLemQQ1598V/VLME95CbjQB6cz36HNUOzy6e/ll8HfBdBbKozQoOSg4TdZcXxnaqRzxHm0m77tpo22jPTAXBCo/K9acb5mVR5kKIfZTXtyEoIFQa3vwDfGtgNFb/F3mAaSWlT2fNqtV09rSg8OD8FEH6jn/P2CRyPTO4lRZPu7f1K6Smv01215VJWGUC0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794981865-229999
+X-HE-Meta: U2FsdGVkX1/t+b3I4jFafvSsAKPH9m6qnUPQeGDGhs9ppiKwafNXGCD2Uv0zoaTSDlAnoxypsjokxba9pFm7m/fFn5Yo3jctjC8V+SZDcNLd1CZ7oZ1Ja1PNk5RXOvvioP06M4J44R+1gAypCQl8aj4wBZh8gHT0TgqbESh6dz9ofjkWNWWLV3xUoydEMlZq4jpWPNQIDq7nhHB7qDEME0i2df1zgeDVgTJHzUuwohFv9agJCeAYXOfV0vP55Dlgn1UcPE60gUXqow4c3CU1kxhQaLbrCKg2WaaLgTPfhBNyMrf1Wm+6capnbFm3mgdkYdNSMB37FCSWN98SlznVUgyfha75hAUdeB1Jdv1Ia/2vcdhZ5/vAGJP3vDM+CyPKxwdZ/fxXumVmctq8BccSFzgIF9gmOXDyP1wVRX2YCdDuM8xNq4/1QIygO6GnKcwJaZKOETJzvCISrp4W73RZWLljbup1EL/0xNsJggXW3qajoWr0dgUO1l1RDc0h5HJoYBwWBdc4zccH4WfjcFfUv/MKCPqPhpFop0s4N8uc5KF4CjeLOYSCVTX7YAO62sZ+tAe3UBfoX8kSIl11KcGiRJalZ1F1Xw9h+BMwz05iAtrdvZoNt0HAHxVG1GQzyOnWpWeDxfi9jxNlBxAf3Aqve0Sfo7oYIvgdV3erD75SxHszJEqpB8g6hnY8m+Upu7A0dZ4J8aZFaYiNLbxC0egHYG3kgR8R/hrvuDjt6vJ4WughXTcPDbjjLFy2cwaaE71H1+G/4PDY+tuJfG6yw/gfaaLWej85I/P8bdRi+O5UB6ceJkVr6bxI0Ef+gw53ODotbZKgqVI0X8wxqdo74NDmzi6dQ1ajqDzGRf0KdK/kXEB/3AItil4P+2T3goc3ISJ8wYraxKeVAjoB2PpQdGgjyMHd19qzjhHEAvc1JfpduZGGXoBhoPuGMBxgZC0vKv9dWd93kno95Nk5+UfUxE0
+ DqJqBGkA
+ xoyvNCDH4cg0x3QGRnDFHzfAruNgqiekp7fKbj4J6YqjePqURcLjhrpdOC1DGXeNMFrh8zsdQwswVaAo6rc0crr6/ZqotyAvy34Uh+Jclvm+orF7p5mNDkKCFNhOZvWDvuJWNLduTY9AY/zlgU0dj9q44ngjuPZigTOO0D89wW778vB+d7kZF7VvE5Hw5QTmYI0xdy4ei3quxbv/W616e3WHuicXP/kLgPj+PMdCn7z/gOsriibtWi2mLOIoGPPqXirKfIDOJdYK0apFJJSNl9CsYAAE6s/TXfs5fDC8tW4VYEqEH9ZwzsZFux9VOXCsjdCCagcywFgpaoBE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,33 +103,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
+From: Xuewen Wang <wangxuewen@kylinos.cn>
 
-On Wed, 18 Nov 2026 SJ Park <sj@kernel.org> wrote:
+This series fixes two independent bugs in slabinfo:
 
-> I think the above last two expects are somewhat too much implementation detail.
-> I don't think we are promising those list status.  I'd prefer dropping those.
+  1. Return signed comparison results for unequal numeric sort keys so
+     that -i correctly reverses size, activity, loss and partial sorting.
+  2. Keep the per-cache partial-object average instead of overwriting it
+     with a percentage before printing the PartObjs row.
 
-Agreed, dropping both list assertions.
+Validation:
 
-> Can anything leak or corrupted if we don't call list_del() here?
+The sorting and totals fixes were additionally verified on live kernels
+(v5.10 and v6.6) with root access: "slabinfo -l -S -i" is unsorted before
+the sorting fix and ascending after it, with descending output unchanged;
+"slabinfo -B -T" reports the PartObjs Average as a percentage (8 and 67)
+before the totals fix and as the correct per-cache average
+(2362 = 262202/111 and 48867 = 10897410/223) after it. No kernel slab
+settings were modified.
 
-No.  The control is stack-allocated and damon_destroy_ctx() does not
-touch call_controls, so nothing is leaked or accessed afterwards.  Will
-drop the list_del().
+Xuewen Wang (2):
+  tools/mm: slabinfo: fix inverted numeric sorting
+  tools/mm: slabinfo: preserve the average partial object count
 
-> Could we merge the above two tests into one, say, damon_test_call()?
+ tools/mm/slabinfo.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Will merge them into damon_test_call() and send v2 as a single patch.
+-- 
+2.25.1
 
-> Apparently this patch was meant to be sent as a part of a series with another
-> patch [1] but individually sent by a setup failure.  As a result, this patch is
-> not reviewed by Sashiko.  Could you please repost as the series?
-
-Sorry for the mess.  Since the two tests will be merged, v2 will be a
-single patch, so Sashiko will review it.
-
-
-Thanks,
-Sailesh
 
