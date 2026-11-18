@@ -1,96 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A7F606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 12:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D68606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 12:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X+sSyWJd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fGEJjeoH
 Received: by kanga.kvack.org (Postfix)
-	id 283A06B00EF; Wed, 18 Nov 2026 07:15:21 -0500 (EST)
+	id 619486B05B0; Wed, 18 Nov 2026 07:26:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25AB76B05B0; Wed, 18 Nov 2026 07:15:21 -0500 (EST)
+	id 5CA126B05B1; Wed, 18 Nov 2026 07:26:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 198AC6B05B4; Wed, 18 Nov 2026 07:15:21 -0500 (EST)
+	id 4BBA66B05B3; Wed, 18 Nov 2026 07:26:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E83E16B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:15:20 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 55E55C06E4
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:15:20 +0000 (UTC)
-X-FDA: 85448134800.21.1F335C2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BB096B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 07:26:05 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C26A160731
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:26:04 +0000 (UTC)
+X-FDA: 85448161848.20.10363FE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A8B4440004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:15:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X+sSyWJd;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id EF39E40006
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:26:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fGEJjeoH;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795004118;
+	s=arc-20220608; t=1795004763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MZT8OsyWtlECLblK22MqWE/7zRD3o2ixQEVKNmjYjq0=;
-	b=WKd0Itx7az1EjWWiaAT0Gf6VHHJLvDtNhsfTIV68cT4gUOz0jNAGHHDkjOBeOTFgxaxBof
-	VMGAqtY3jf3BC3Sdg05DoPTVMFKFYpN3xRPI9vKcVqAz2wXN60btxXAhkkLkXNPS2mKJbJ
-	zioyg65C16m9SI/N0ZUtp3Hx8PjNvUE=
+	bh=1AqeN0M33Tu74PsxiXUzK3ZXWPpnVIcOQcPutPsP0EE=;
+	b=mTLHdwdJP6VhXo7E8imIZjf1rWrPQpkUT0tshRlOoYMlTmd9rUWZGtuxgUkijyRR9g4znh
+	+NEkK0hRHQmqgkqUnfPwOUlR2+do0xc7oHsG8GyweUr/Q1ENec9TZuf8rzVN2wU1gAucjo
+	c72RkXmyV+PhBucAPpcATnDsh/kUEtA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795004118;
-	b=7E2St+kV5gp9lwlgc0tlEXw2RO08ijVMAaK/MEGPVSMcIHYsKsCCIixaQlHPtGO7zk+Doh
-	exDt1MKWbanxrx48YqRV3GyK1pICioSCXPb0GdZ5g5eJkIz7/hRFxDSL/9cZ5ScStsUOJB
-	3n0dygJu/zZ7thUZ425a83tXBDkZaJw=
+	t=1795004763;
+	b=EIwwW2RgMWeRvFYNvy99hpqKEfTRlRrrezZwYlYmtTP2HQsrIydA9ZXWULIJJAnAMOobQe
+	zIunHGaKx04ugDViV4LQISxMqIp0+YqMjV26L6dcu3xWPE6tzPIVrPvXSXV3s8M2FZUT72
+	8muS15oQFVhHyU76DU2UznhtrxK35Tg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X+sSyWJd;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fGEJjeoH;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C9B362164;
-	Wed, 18 Nov 2026 12:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713881F000C4;
-	Wed, 18 Nov 2026 12:15:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 76764620A5;
+	Wed, 18 Nov 2026 12:26:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4801F000C4;
+	Wed, 18 Nov 2026 12:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795004117;
-	bh=MZT8OsyWtlECLblK22MqWE/7zRD3o2ixQEVKNmjYjq0=;
+	s=k20260515; t=1795004762;
+	bh=1AqeN0M33Tu74PsxiXUzK3ZXWPpnVIcOQcPutPsP0EE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X+sSyWJdLT9spChVvpuBa/0po6wyQQR26ogbloXmNyDH3KPO6MeTYi/gK0EqUgTJU
-	 b5/l+qAPxlaQOwo8H68jwEK85JLP67GJkNUUi0Im/2AQKPfSrIs5MxBUXvN4pwZywT
-	 384dXtqN+qjKbtzC5mMhSgr1rXhElmUjvj2iLzkvRjjQBiRd79U0IoqDPGQ4g7TzcR
-	 USNe0XIGCgk6jravjfM6vxf0F+h1HmG/BEOVJOXU6BN8iB3MbauPgG3mRRtO4mg+81
-	 hjp3PWIGIUyue99a8Kll9MqXxzZyeSZhXRTmLRQUzn06AK1rFwc3mYAr83iLmd5nen
-	 oNYa7bC7nqamw==
-Date: Wed, 18 Nov 2026 12:15:11 +0000
+	b=fGEJjeoH7ThK5cRxOIXKZPJJmrnFKqGHTZyuP5od2uJ32grmkYyfwDJ8tI7YhVHEQ
+	 savzOKmvPii9oiAiSFb5doU6fXs651q+NEfkgALqX6Gu+fcxDCllrJjTaSKI+FLRmf
+	 4XFXitmIycldLs67nQcaC8VlC3TlKva/TUnSE76uDqeZ0ncCCLNcoXmP19BQGULBVT
+	 nebQIfTy5Ey0CV8WG4vj+YANaZ+Ot3HuP116ixcZOnYNF4ciA/qqu37pPBED8KfGyc
+	 TM8zRkHTnBMIz+KZr/17L0BPjGAGdKATajcAsmlKFJDmLA1MQBhbiY/PL8347blUs0
+	 fYIj44xqtCW/A==
+Date: Wed, 18 Nov 2026 12:25:55 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Shivank Garg <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Zi Yan <ziy@nvidia.com>, Luiz Capitulino <luizcap@redhat.com>, linux-mm@kvack.org, 
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	akpm@linux-foundation.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page_ext: remove unused page_ext_iter_get()
-Message-ID: <av2WmHeZlw0b6lOs@gremlin>
-References: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
+Subject: Re: [PATCH v2] mm: use memory barriers for non PMD-sized folios to
+ sync
+Message-ID: <av2Y7v-PQ0vVZLSP@gremlin>
+References: <6274e62645b9f176dd10d7a79e86b900a39cec5f.1794898535.git.baolin.wang@linux.alibaba.com>
+ <c254a38b-d5e5-40d0-8d70-c6baa850cf2a@kernel.org>
+ <430c6b67-76a2-4f67-abb6-e28d07a84bd4@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261117-unused-sym-page-ext-v2-1-900f4c3c6856@amd.com>
+In-Reply-To: <430c6b67-76a2-4f67-abb6-e28d07a84bd4@linux.alibaba.com>
+X-Stat-Signature: jy86hrodeyn5dw1kaihd9pzbi1we9izm
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A8B4440004
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: EF39E40006
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: gzbhqmksmx9zzr1bwfm4indta9saax6y
-X-HE-Tag: 1795004118-960583
-X-HE-Meta: U2FsdGVkX19q8yVpxI0dXf6luXztRQf1U8QyPBGl+1EKATRXswugBOCfkfdvyYvuusz5FBt3FUHrwBDjZUd0ZvqpTluyBT+D1E/GFfknkb2iYfRQ6YA5YZvHJ61ly0C4E4CK17sFCifUj9xmHxVbVhnLbP4VIJZidtmvpmYnTNKPhpGidCY6txWj5/vn4nUlPW1h81+/ziS73hfjhZEfAj/+rRCn6fZqbRHuKO+wPgCnhXcJgOE36TTc1BPOgOARAX7xhTq2X5S03AC9c95aZG8op9CdnyHDHrb1pDyXZBIcuaSKf7ihgsRuP5+gld3WKli49KQXdYuNktuiaVw1i87/ivFw8xYualNQ8UEv0FfuOxAd4xbExjPnlU2FMhgwhxw5CUgALtUKfnKzyewo5jZtIoM5P8mB12AmoTbhJP9sIvr3yiALnNSLltd3Lw/TriaJ6xJjtprf6jqjEInqIOctYK5/9PcSTMvltt+S9nwK1VWtrcf3ZAle9tFbr/NaeP+SahiKyhVZ5dfNM6tTjZTI4S30gOgIJisAaxs3Rodp+VFY0WQcEMAAVeU1TGu6G42r0p0YlmqWPSTI0AElDfMes79r5+sefschk6uV8UzeLeZf+3ZHQtuahS98hqZlZh+QUS166//h0ASEbF4YNqM4sAFntyT2FqBJOdjzTht/o5OTY3AZYAMe3IJkvLJmIXwJL20fYBtPWkQe0lM1onMZ/dzqGJG3BHdGPJ78enWuhyX6FIqGPjmvbQ6UIfNM+K08Ta7oRTOb7UJjrTKLAJocvTrTBnFqewhKAg4fLLMyGvzXcTuO928EqSLRLgMRD0+iP/SePgdyP8fnf+dGLQTU9ku1xlTyqZrD/fYY7cre1+ku+50GffkHLi24K9Rh2d6s9rrwwi0o9Dv+rEKcZ9GRXnVfB7UkL44PSqhxu0cpAKvqsmqRzVOdP6minQwpkRmjNnGsWJLeRDkRb4i
- FLE2Tr9B
- 2nmr7qEh4l8gt+GIYCjuv/mQP1T7SkUf0G2Gf+j4PAHJ4W4TPtiEHR37SvSXM6rx45VlA5H0w2bTYnPMBKt8gmZ1rlqqsZr9nY/cRK2DJU28y3UC+l5wf8+LNYebEakV5WwREZPtp0pwqruZg4aWruR1xdupq52binTzob4cG82gA2Emj3ThDcQZ8iIquGOkZSppQlcDanq2y+B+bnOcEsp4aoCW+zAKGTB/mX5tMNlX2MPWx3WIJgU0wpqjiChFYNSq82RM46rCEq5HZx7n/WNuiorW/9Z4Vz2kSRAV6dLQiN2bUYgqN8eoqh9ozayc0Sh//YUtyUIncvIkW4BrTFWhRFiQnBbRYx/xQ6LZ2P5qBefyJ2R8oYnykkg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795004762-527814
+X-HE-Meta: U2FsdGVkX1+Uecgp/8DrCcffDdLS0LNNxNOTqzoY3FvNvjaI1NlRPVwcD/85+bn765pDozX/Bl79NG6DzUNkQMTgrtuKHh1tXeUivIJeccUoIljrGjplLKPfwrN7XD6/zoO47nhtI3+stS/UcFGmp1Yr/UGYvwvLvT1aEi3XKQsgheo2tGiVDxKx7OC/zMV+eJYgrnEUvMseyVzIp+73DBYBp13OjBMzzwK5cr1b+fYdr+jvOfJlnh3iGYjwgptFKwh79WYPyoDgrenx6cpxWxV4Ycd7pHONVFv+OwR9SYWidgbNf/1O6j7hECZYC0drPw6k1F9zZZykb9i8Vcf3wVlv2FDPjqItRIg/WLngakLrgIKiUcMN64D7P3cEyRdvlQtxSVve9+ELXWhb+ii0oGne4V89jShhQm+ir+LND482NX1A3CcoYJ8UjDPgqdd6nV5X8Y9lfjXbX5NScTxhaC0VadsP2+B1FexPByTMF9GsU+jOwGe4Dvj2f0TG6PAKwvgjHbUHxPgYTc5BaObBU3pWnEKOFbrwlU/B7BOyqq+HoLr/hCPQYbJv1MtrQUe60WPfXdyYSVNfJvBjG+nSid8Cv3aweoUs31g00rjVMDxKMAg9aMYsjd8fmHCcn7+r/BNdes0KBnWP+2pccIeRW39gqwNMGCtP/WSp/2fgAGcperFmUwf7Zu99aRN3oKgZNK4nKEem0LFgraPO8sY5rhRNqCJorg0SEa7EzmSviubVF0a14XvQoGQKR+DW2blH52NKa07o88G5iu4lKB2f1zQyBmHWWh5/CsR9p/gmXpq6cJ6Fp7vuo6Ci22U3moLA/HdbCZ+Ryzk6WWHttXnN9RdYkLLsqqTBeKKEX2iOF1QSyqxJ2z80Q6luWZTchreWuduGLmYaA35WIRvrD+Ii65lvPSmGeQh2EYGxoSVgKrjrj1nEsHapryofytha2xDleFIsRN5QaWTfbPSJqlR
+ 6NVvBEG5
+ dIxcvQ3heSE41eFQcSj0bYEZGuBFAmPiHuhn0PUkjOPac6r9EXpw/RNQ3DMWbgfrQTOG7xqz0n52AvI1BS4qwUxHVvg2AvKGSp7CeazVqRI5DJskgWiRkuOQd5PWcc8dH3D6SYWR1Fy+mEQEnaF4hWj0CUAtwx9r0UHUCszcsiCtXcPnCEn8zY/UiZ6hN+5iKS/hzWBt+Wr7/qStGO0fqWWA37Ad9U7o1j8HyEtVqRMxoFI9S+vZSfbp8FurghlmvGY/D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,62 +99,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 04:26:18PM +0000, Shivank Garg wrote:
-> It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
-> for page extensions") but has never had a caller.
+On Wed, Nov 18, 2026 at 02:19:56PM +0800, Baolin Wang wrote:
+> > Do we have any way to measure the benefit of this? I think we'll need that to
+> > convince reviewers (like Lorenzo :) )
 >
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> As I replied to Lorenzo, I will try, though it is hard to measure the
+> performance for this uncommon race case.
 
-(with MAINTAINERS change included) LGTM so:
+I mean it's not a race unless you stop taking the PMD lock (I think the commit
+message has to be a lot clearer about that), and I'm not really happy to move
+from easy-to-reason-about PMD lock to hard-to-reason-about and fragile memory
+barriers unless we have a _really_ good reason.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
-> I found this with the kunused scripts [1], which I wrote with LLM's
-> help. The v1 cover letter [2] has more details on the scripts and
-> how LLM was used.
->
-> Changes in v2:
-> - Split out of v1 [1], as David suggested, and based on
->   page_alloc/for-next. No changes to the patch itself.
->
-> [1] https://github.com/AMDESE/linux-mm/tree/shivank/kunused
-> [2] https://lore.kernel.org/r/20261026-unused-sym-v1-0-82ca2dceabe1@amd.com
-> ---
->  include/linux/page_ext.h | 11 -----------
->  1 file changed, 11 deletions(-)
->
-> diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
-> index 79c53ec45dfa..52a8b70c525a 100644
-> --- a/include/linux/page_ext.h
-> +++ b/include/linux/page_ext.h
-> @@ -167,17 +167,6 @@ static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *iter,
->  	return iter->page_ext;
->  }
->
-> -/**
-> - * page_ext_iter_get() - Get current page extension
-> - * @iter: page extension iterator.
-> - *
-> - * Return: NULL if no page_ext exists for this iterator.
-> - */
-> -static inline struct page_ext *page_ext_iter_get(const struct page_ext_iter *iter)
-> -{
-> -	return iter->page_ext;
-> -}
-> -
->  /**
->   * for_each_page_ext(): iterate through page_ext objects.
->   * @__page: the page we're interested in
->
-> ---
-> base-commit: 3a99594e62fce8c646e8aac01d38af16d6833a40
-> change-id: 20261109-unused-sym-page-ext-3fb8316ac777
->
-> Best regards,
-> --
-> Shivank Garg <shivankg@amd.com>
->
+I'd say given what you've said that we don't have a really good reason :)
 
 --
 Cheers, Lorenzo
