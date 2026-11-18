@@ -1,122 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBB0606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AB0606A331
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NH0OyTPs
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gBGjUbGI
 Received: by kanga.kvack.org (Postfix)
-	id 934566B05C4; Wed, 18 Nov 2026 09:38:43 -0500 (EST)
+	id 876576B05B1; Wed, 18 Nov 2026 09:41:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90AB56B05C5; Wed, 18 Nov 2026 09:38:43 -0500 (EST)
+	id 84DAB6B05B3; Wed, 18 Nov 2026 09:41:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FA6D6B05C6; Wed, 18 Nov 2026 09:38:43 -0500 (EST)
+	id 78AB36B05B6; Wed, 18 Nov 2026 09:41:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 586BB6B05C4
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:38:43 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DE96AC076E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:38:42 +0000 (UTC)
-X-FDA: 85448496084.04.07C107B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 446F440008
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:38:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NH0OyTPs;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795012721;
-	b=kQADO0XFP3oM6ekPmt6Zzr1/VsZU87KPyWVOwfCGD8T1cKjQKXaNvjXuhZbIhpc5IPf+Tg
-	YdnGE4QfJDLEl6cNvbHPJmbrwrXJczLrCSqfO6Ov5Oemk8xWhmiTw07w1YamWS8M5HA61i
-	mNoWRp1JyJ1KYdmLlEo2q1tdESIU7Yg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NH0OyTPs;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CBA36B05B1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:41:40 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED3E51607A6
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:41:39 +0000 (UTC)
+X-FDA: 85448503518.18.41C9A91
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E76361C0007
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:41:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gBGjUbGI;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf20.hostedemail.com: domain of jocolema@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795012721;
+	s=arc-20220608; t=1795012898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0eSFRUxNp/7+gMqqEqt2trFE9S3TEcIfNW65n8uJu4s=;
-	b=Ave4dOYVzjh3e956LXBrk2NFGt4shz3VPfwlerqoRChRoP9npZNg4Zt8PtaQBFhHvSnwRn
-	lpEdulC7Z9ALYdAVeisHa6MpvrhIrlFujafLqoBIUkN4kxDalcYO4CJwcHTx8oSLBolq/K
-	3/KLn96QlHiUqOLTUJ+GRSi3X1DsuDw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 755DA4069A;
-	Wed, 18 Nov 2026 14:38:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21511F000C4;
-	Wed, 18 Nov 2026 14:38:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795012720;
-	bh=0eSFRUxNp/7+gMqqEqt2trFE9S3TEcIfNW65n8uJu4s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NH0OyTPsYET+SG6a8MQ7AB6SuivmK3D31Odv4Mz5qV9Vxa7UCoLuM6lCqbI9VfRGu
-	 4vdNtxmYCHKVbsdIzhQHoMsqN4BjqTE1o6hU+4Dnzbkpx5NJrGyjQNCyP2oCpLapwj
-	 4PoaOsC4h5mrBt1U3dzstt+W6Ae3loDNa7H22Xp42jJq8pcrKnNWiB88USqBPcOACw
-	 84tG5o+PkO5FpxJdEMb/yw2u7ye6ccTPuV7hze80ccDnq8oG1HkcUcbE4eU4SFyBGE
-	 xdyEYvUFPxeGwx3RBAoLVBkEbewAfS7CVNF5uxg3AiYq8z2uOdczc/oZjqhitie6u9
-	 syPOVIDqiuqIw==
-Date: Wed, 18 Nov 2026 16:38:26 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
-	James Houghton <jthoughton@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-	Andrei Vagin <avagin@gmail.com>,
-	Muhammad Usama Anjum <usama.anjum@arm.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 5/9] fs/proc/task_mmu: write-protect device-private
- THPs in PAGEMAP_SCAN
-Message-ID: <av24YrE4rbg2x6c4@kernel.org>
-References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
- <20261117-uffd-state-fixes-v3-5-b617009d1a4a@columbia.edu>
+	bh=wxU3d2BtYa9n3sGwgS81YBp+BaQBDVvXZNu9QMElTjM=;
+	b=dzTF1cOVpi76A1HSevYX1BaQl2RfXLrXd5WtNWEAz54Sn6oScUsBrYOU5swWhY7vSqxit4
+	bCx2QZqspkLgokKjuwMjayLfOYx2S0A51bg4eciNPINlwVTKO3vutdZdvUprqGddP2TQLV
+	OSq17TqOC+tdiEqk1MpsbxHEsclGuc4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gBGjUbGI;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf20.hostedemail.com: domain of jocolema@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795012898;
+	b=sjRp6byk/7gxpAZ9YLImPMIsJZZW8WSLUDcprTzGCZaF7ZqGFg0QC7hzognwEvLH1MOdPU
+	et5iW5UEsrPaV3KFPNt5Z9/83n0Z6qo48XfTfQO7SouVzy8uQSF6ysnsV94nwTkbyUkEs5
+	c/mURArY//JQXF8G1i8V9MjfFMHITNQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795012897;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wxU3d2BtYa9n3sGwgS81YBp+BaQBDVvXZNu9QMElTjM=;
+	b=gBGjUbGIo8UaQG1wpauhtekf9NJvkr3+aq6T9DNuoWUzRzFMwTcPztztSY5lDJX7WRC24u
+	nfWBZnzie+eO+RMDvg4JxZ/ar1ZjRg3P3qj+xmiL2M4e2dR2HrutFD0HQ4rfa+MAaM921E
+	wk15h0m5sn8ZUN0OWMVDdc0uJvpTQfQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-2uacoIF3MgCeoqTcc7XjLA-1; Wed,
+ 18 Nov 2026 09:41:34 -0500
+X-MC-Unique: 2uacoIF3MgCeoqTcc7XjLA-1
+X-Mimecast-MFC-AGG-ID: 2uacoIF3MgCeoqTcc7XjLA_1795012892
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D6E4819560B4;
+	Wed, 18 Nov 2026 14:41:31 +0000 (UTC)
+Received: from jocolema-thinkpadp1gen4i.rmtusco.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 728361801977;
+	Wed, 18 Nov 2026 14:41:28 +0000 (UTC)
+From: "John J. Coleman" <jocolema@redhat.com>
+To: zenghui.yu@linux.dev
+Cc: akpm@linux-foundation.org,
+	audra@redhat.com,
+	david@kernel.org,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH] selftests/mm: allocate nr_pages based on pmd size for uffd pmd_move tests
+Date: Wed, 18 Nov 2026 07:41:15 -0700
+Message-ID: <20261118144115.2112331-1-jocolema@redhat.com>
+In-Reply-To: <38118330-5cd6-4f32-9098-a3d07cc7b3cf@linux.dev>
+References: <38118330-5cd6-4f32-9098-a3d07cc7b3cf@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117-uffd-state-fixes-v3-5-b617009d1a4a@columbia.edu>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 446F440008
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: ug1a6eaySApozEoktk_-aAwGLsDwxmbNttGTfFX2t00_1795012892
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Queue-Id: E76361C0007
+X-Stat-Signature: ca8ky491t39cx8o4w7ba5ru78fcbqezf
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: e1hzmiwhf6p6fd8e46oonb6m7tp8yjw1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1795012721-700119
-X-HE-Meta: U2FsdGVkX1+nL9JwV52tKRGXBV6uFSRH1Mm6weMcA85HbCvPucvnqIevRN/avVDIJhdulNQ8eZbzkm2KCn7wgrqsmZMI51IDAG4IwZS3SNKE8CoO888w4jEZaDbtL/ZFyLRyBx9XufKFoMdketyFtGGnzUr3QbAh35BryrabRUras1c7crU1mMTRxDaOfggayJgUN93At5STH4/4xTzms5PoUwLXQw9QBCrtaSkExx3uTGtFTHvR9fEWYzQrQ6AU+m8u5BloMFIa+gB6sfKni5cCEPh+KVm6CX5i7zz/+NwsvhEjgllnxviYI3RwV768dcDi0qXRfqYxaYkRGcr7LACvUltuaoV2i40lWEjPenwS9mS3+R+Xe2WefAAZvfi9c79vpd7RSU3dOfv1B3RuQSNICCETQFjuC3m0tS2hLPF44LPFdpmfiSrx4JSPVYDRfkPGxEaikBWZtnQFe/3AvYLX1ZLbzZ0Nx40Ko7lsbDfUjGY5hwnA3llJM0Lp4w/NNRINzuE+uaEacMVZsUfqUbd7A0PUDmgTH5lwjZTp42aLbJq2dj5Qmn+PL1oXqOxwBzUsQ4q80JI5CE9BxD6RCkRNRclJiyY6kz1aDRce7ImpZXimZIVej8763BXI/j9VUUMPW++Cley7qSSG5Ee3wynm0GgupLUqmn4wvV36kbe8rFkPiqpIZHlKJgki2MOJnHg8AN648COZ+dp2L2IVzw2ubyB++sfZxsoPhmKqaXmp2EMpYiYoXJIWw/wJYHZk/SWQkbO9VhE08fZC4IizKV37WE/zU3DzfGqFkXfH+VMIEzBd9Q+LRHm8sbGeyVB64aK1Oxe5U9vVKPZPgKf2Immclg5pNUrojzI2qv1auOQATfuclSDhyPGfg4LikJYl3e64Q13fm9+CdCpCwZ4uRW608YoOyNpfV4dgEANO4FM49iHkduIbTvpoR7TeyUFVcsdl2f0iS1VGyf30upI
- G1TwU2Tb
- arZAbyUR3CUdEsLb5Paae0Vgt/ZaPU2YW7Qf5dD0HH4CZB0Kz8lvBIpARgmCM2dHNNEgKNFBy5V/k27k+WRPvn4KN6+i6rxW0sSfvU/4eDaKpgpdzkxl74nGq9vRKf3ty3oD78S8Lwq5iZs0F756zFki4S2mm+A/X89QfEPGuK876SnFy04fkHu0sJSzhAN59RdMa2SZ4jghvxKdSrejaeznsH1yMbhjYvDPk06uIyheue4PKGRMSM2CxbwxkVKFAjSSPeW7/FyRRH5OXjkmnGHgVJtQivCaFrLSsmGl/nAjNlgk9AY8d/q4YRtVsfiDhBxxSSl6/6BBeIOYA100xG+wbZgkF4UKJ5C1KUqJZcKLaMp41RYI/SKsP7n4r2qDXxDjxqImPM4+pcc+mbB4vXIWNKE1GScPPdva3d0IHFgPGxY1B6jENW5qsZcDaX02xVFial1+p4tV+rthYGac1+cqPaw==
+X-HE-Tag: 1795012897-128068
+X-HE-Meta: U2FsdGVkX1/ZNuxfSKqCP/nsDYYdDOHKdHAztfzPNwm3mKYQsycE9RUVaM4Eb6tQ8vINFlGUlI/9opBE5x2Xd7q9J/hMMBEnpVa9hNFsQsBy9fdmjZVVWnVQMR+ZonucH1HCDUwLyS9niaPyLfqGT8ZmZmwKXAxgyC8wvFMCQ0s+kdXySHTxM5xEFAVm0B6L1TmPefyG5CK4/sY+sV/zphjST7Fg/yCIKqS8ydsmkpFe1QWJ0s9gtc3NHl+cg5tD/xRm+cZrmJgcF8KMTL62jOPLyWqHoEU3gV/YguBg4dAEgW6KAYK0becaG0GUxpvqgbnELdrI4cOr3X/lkXcZb0V17a/luiNClZtpjD1Qt80BwbFoqXQ6jaSBM6+GXHGT+MY5Nlw2D6NxJkH71o/05TZRGWpro255TQ37SqEvJmUyukCkoTetPDfxeHLljCH1y29IEafWzKSi6bNguwem261GZhGTfX2AaZRviJtrGqUdFi/hVT766L+9Mbn3Hzzg9+aBNwTKVXj/8g0lxReMS6O3ybF/nggg22BhYBssOeXzFzTANbgema4Y1+0M0e4f6cYnbp4z7eM1UjTOKcqwHB1LzLNdS5+Zu/JDPl2DBFV6hRw86PT2OdNKQnhJ6JmmPcRx6GtFM2pJC3G3EQhK9pY5CNCIHm7pSulkpKLrCFRBU0XWWivq4K4hPnU5OuT0T8ZTyfUeLlt/E0pllcL4/9Y5JGt2D1LRphc1othxfggpk+wRTRaNbV+qFrqenlrBwqrX4optUNVnzFTvyLTsOKpjFw+8L67eHib/vgcPXRyiRXKh/L6L3VejkjfqUHt9zAfDOPs3B7QAABUiXY+uvpS4/xzMbbYzpWI+hYEIRVcsw+L6Sfl0lAa+aWXNu3WG0WLrWV2/Qro7iQ8ScoBfeaNbDgogLRjpRIwVY+8QiUsZatbWOPjzwY0GiPE4jMbqdCbo2GNxEAglhB3A0An
+ wuKXt23n
+ 2epJ+UalJDGPlW3W7TwlVu8O2JJAPHxqUDNcK6KXB+uquDC9bA63XbD5CWnG8sASzxQL0QsN+MEU8ZvpWbVPkXxagIKrs+hHkNwCP0E3goqmLaOhtNqv1fk1Ohj9SJDgCXeOc/6MxZO5AMs3s6oSN9WYI04MlbTEz/uzNrX/BEyh0aZ84LiYeDdoW2RBU1uy7l04VGykbChy/Hbq8gdlO6/eVfzVzUnSoID8pzOT2thsk6nrMNRF8Dw2rmUn9mt3beetQDPz/bJeRJn3WERa2EOKgEbXNFhoSMTjp8GGOqbMoc2rMZep2K29BH1UcnMQqyWeEO/Cb5kKpNHpXvzCTnUybaGIh+v+iZ3r/7SR/wLfPot17w3VgGB+0/IWMQ7bfRiHyMuhAkZF4FAZGiRiloPlGLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,37 +118,6 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 11:28:45PM -0500, Tal Zussman wrote:
-> PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects a huge PMD through
-> make_uffd_wp_pmd(), which handles a present THP and a migration entry
-> but does nothing for a device-private THP. The PMD never gets the uffd
-> bit.
-> 
-> pagemap_thp_category() reports a non-present PMD without the uffd bit as
-> written. A user tracking writes with async uffd-wp therefore sees every
-> page of a device-private THP as written on every scan, whether it was
-> written to or not. This requires a driver that migrates THPs to device
-> memory.
-> 
-> A device-private PMD must be write-protected like any other huge PMD. To
-> fix it, pass any valid PMD softleaf entry to set_uffd_wp_softleaf_pmd(),
-> not only a migration entry. It downgrades a writable entry and sets the
-> uffd bit. When the THP migrates back, set_pmd_migration_entry() carries
-> the uffd bit over to the migration entry, so the write protection is
-> kept.
-> 
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+Thank you Zenghui, I appreciate it!
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  fs/proc/task_mmu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
--- 
-Sincerely yours,
-Mike.
 
