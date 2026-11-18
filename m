@@ -1,97 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A744606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 05:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5110B606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 05:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AZpGlpev
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Cua1W+Jv
 Received: by kanga.kvack.org (Postfix)
-	id D6C0F6B00EF; Wed, 18 Nov 2026 00:38:56 -0500 (EST)
+	id 669746B05B2; Wed, 18 Nov 2026 00:39:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1CC06B05B0; Wed, 18 Nov 2026 00:38:56 -0500 (EST)
+	id 619516B05B3; Wed, 18 Nov 2026 00:39:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C33D26B05B1; Wed, 18 Nov 2026 00:38:56 -0500 (EST)
+	id 555F06B05B4; Wed, 18 Nov 2026 00:39:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D0FF6B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:38:56 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E892A82A6
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:38:54 +0000 (UTC)
-X-FDA: 85447135788.30.8B2A5BC
-Received: from mta0.migadu.com (out-208.mta0.migadu.com [91.218.175.208])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 329864000A
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:38:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AZpGlpev;
-	spf=pass (imf27.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.208 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794980332;
-	b=r5gDi0h0aQTaoD43BW4XZJQmeW5mEqi1zPdRB8nWaQFW81lfQE7H3pSzdrk5OXM0LSDO5v
-	JzjBOSDGIlMuQfISRbJ/2Y6ns2eB8YW6aYZT4d7YiE0QijJEdSZ2lU2y56i64jDlIrm+TZ
-	oP2uw+BUxoU/Fv+xPTPIysAnFNX2iHQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AZpGlpev;
-	spf=pass (imf27.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.208 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 343306B05B2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:39:28 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4831BA82A6
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:39:27 +0000 (UTC)
+X-FDA: 85447137174.01.46C49D7
+Received: from mta1.migadu.com (out-232.mta1.migadu.com [95.215.58.232])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3130120005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:39:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Cua1W+Jv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.232 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794980332;
+	s=arc-20220608; t=1794980365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uPAqbowMtLzbIekB9EQTVpQCqoE4uZmeuAc0TOycEFk=;
-	b=HCjwNRGoOKHwvyZK5rRIE9+Uo38HRQq4ZilZV/VhysF/t0dJ3QykuhenRDOOnjEckG8ruh
-	S3B2qkdChtxGZkzD53ZgIv2HYSPYh15n+5nfY9P1nEjXHH56SIkSZVpQsH47otMKJ9Hkd+
-	pSa+6o/JLRsRHOL3r7SY7FvoN0LNL9M=
+	bh=ivtPd5ttNuyhfy98ioQJITuu8jfayeumroo16CmslDc=;
+	b=udh/f6rZXpDyLWTgJqpce0g6EOdPhhxrELnkYqgLSz2mrhQyXRWSRzvwNHzYsAzRchvrzv
+	iF42VkO4Sd0Z7aSzzU1CMTddMYvoEXaPjFr3/oMPNv/+T/8aFAz/Pan/EYSmUp8O6OP//V
+	+PT/KIqj8Nu+hCGpH0b/aixLGckdw+M=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Cua1W+Jv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.232 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794980365;
+	b=htb5ppmDv/ZAIbmMA9r4rLtDRNqSu6CNerg6hSqj4mpg1tSLQpdppZTqPqYaKUk+at/HjL
+	GT6hNJKBgTZNSGZ2WViUpNDnryeFey6q+4MaQr4n01E/Q5qeZHjQMZJVLX7sQB3YDNuHTx
+	v3nPoWBQhOuOhsp/y+Ap8g1zT70xRDY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2FR8HM/p++ob46YeHJNL26wRuxeb82p19yKGmVM2grk=;
+DKIM-Signature: a=rsa-sha256; bh=H/f7fxK9dSXTVO4fB0pNECpC88jXcYa6XPqhZn4b2dU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794980330; v=1; x=1795585130;
- b=AZpGlpevNzmKYFzyNrix7BV0m72pm7SAjYAoEEcUOGwPCwLzuNQLxjdPm5QF/VrNx1i+awcS
- 8YDgkK/VPB4bRgMNfjE9HImHhyQizmcuTQQOJvlskVkVTdclFqYbF36Xs/00h/yQvwDObCPoOQm
- s7r2v/b/BameUUb3MzjmXQJU=
+ t=1794980363; v=1; x=1795585163;
+ b=Cua1W+JvpxUG61rrVgT7xcr6R31Xd9mkZ6xfki7rUjVUofsHwhdLJ93e37hWK7VYxF/tVxGi
+ hMCMYtBT7khXZ/+9kWPZ1T7uDdwixYsm35xUyh2J/MKIG0FbdwaNuS7YF/b2dqRtIJmzHpuC/B+
+ HxrX2Sbtelk4WwyaxE2ksCYU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 67d94c72d45337b4;
-	Wed, 18 Nov 2026 05:38:50 +0000
-X-Mizu-Trace-ID: 67d94c72d45337b4
+Received: by mta11.migadu.com with ESMTPS id 6c1682f25ee54883;
+	Wed, 18 Nov 2026 05:39:23 +0000
+X-Mizu-Trace-ID: 6c1682f25ee54883
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <6e73ae4b-5400-4f6d-bf5b-2892827ea144@linux.dev>
-Date: Wed, 18 Nov 2026 13:38:41 +0800
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH 0/2] mm: memcg: fix memory.high allocator throttling
-To: Chris Down <chris@chrisdown.name>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu
- <zhuhui@kylinos.cn>, Song Hu <husong@kylinos.cn>
-References: <cover.1794902513.git.zhuhui@kylinos.cn>
- <avzSkT9-jsCrMoeX@chrisdown.name>
-Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <avzSkT9-jsCrMoeX@chrisdown.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: a4r9qigidd9s5g99dr9ia85t4jsgscts
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v2 2/7] mm/page_ext: fix client data alignment
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261117202136.9eb67013389f3bdefe9b3a15@linux-foundation.org>
+Date: Wed, 18 Nov 2026 13:39:04 +0800
+Cc: sashiko-reviews@lists.linux.dev,
+ Sashiko <sashiko-bot@kernel.org>,
+ Muchun Song <songmuchun@bytedance.com>,
+ Alexander Potapenko <glider@google.com>,
+ Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>,
+ Chris Down <chris@chrisdown.name>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Zi Yan <ziy@nvidia.com>,
+ Joerg Roedel <joerg.roedel@amd.com>,
+ Lu Baolu <baolu.lu@linux.intel.com>,
+ Pranjal Shrivastava <praan@google.com>,
+ Ketan <ketan.kishore@oss.qualcomm.com>,
+ Mostafa Saleh <smostafa@google.com>,
+ Sang-Heon Jeon <ekffu200098@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ kasan-dev@googlegroups.com,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <11DE08A1-5F83-4BE2-B8C0-B426441A957A@linux.dev>
+References: <20261117120627.50601-1-songmuchun@bytedance.com>
+ <20261117120627.50601-3-songmuchun@bytedance.com>
+ <sashiko-outbox-219498@kernel.org>
+ <20261117114635.37d4c1f7f1b38cc4ce7fb886@linux-foundation.org>
+ <F4EDF1D2-D02C-4339-AA30-422D576B735A@linux.dev>
+ <20261117202136.9eb67013389f3bdefe9b3a15@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Queue-Id: 3130120005
+X-Stat-Signature: pcbxumz4jzg1kb1jx9pwdduaofof31ue
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 329864000A
-X-HE-Tag: 1794980331-692050
-X-HE-Meta: U2FsdGVkX1+weoNBEJTT9W5RITTWUHSlVklwCxnFGtNvJUSFcakRQABwtxMoSymtM4yZvRcwdivG6zdkIVPh6oWNSTvR2Omxyovj30NbZmnAUPAG9dhfxkrZ/Jr6JOoprJIHQj1ZLyT3ZGlCpgPtlgxDYdUgre2prIHwHnJNCQtBtUUJz4VQf4fUECPxmNIjSWAAf/WlOtTiK4NRfk09ubKLQ+w5A76Qk7AMQSXUxJO0hVApdtizWhcDoHvBUKERxL/1pvf2f1jKT2iuFjdRWfcqvh1KPbNa/zeTeNI8veppfyMUfpALlfQYGml4akefaRYP+kdrzqvtH5igOF446m9tSrVRBKGkcbhlPZcP+Coh1bRYR+dna4mfC/MmmRMuoEGtKzcdvGMFHWnwvld1m96vlMKJftfRXXzbvOoxSHZjfq4Xx+s+YMS6IqL0fIaeuxCUbztNw9ja/7b48P304Bfrmsv0lHBOp+Z4wCyL4yynAwYskX8i3hQlqbGHgjCkNCPxtk6e3wa803fR//ms44gaMHqIjpnMKmMx4W1Wrrr31DmaaoTHFRDaxpjyEu40QOWeCOsQbCvoscMCyOmGPjkZ4RbyTb0oK2OYE2XJsEGcxzMDYJP3RRBZ9CRgqEo88Wny666L7lJf30xJ3vpSUWn6LXxVpLgEopVELCTodNr19R0GZveIzMVDaj+qJfEG04fkhBFpfPCW+MhikGuw8LGjpai14e0zLxhVMatOJb/JR8CAI2m1XrcQ6z4gV3gSayi81FBivrPDUo7qu7ZiAqPU32fpgzaVdrUzj2/7Yz2T81JLptoLotCISblcQGvwWoVMn9xQb0X5I4httuf0rl90+D9NHegX3NIM2o8UUiGe4hlMP/vHWPV6NULYD+LQ/VXbJU7ilshPDCVRp4FWK7OU3KXGHb0G4MkIRgh+1DNa1UyppxXREpo4intfnFlFDAiihotzRnYaA/1k2a2
- IXM7fweT
- Pe2j6DxMcHxrh3nam9Im3zwTkef+11QK9GB8m0G9XeD3OifCOzgM70QM5o49dGz+0yIj6q5DMpy+auR4LPgCGCyecKrUS1tQHOcf2DFBNmx34xhGhFMSvWZn2b2gtljvdCL3d0fHc+wiP0QDJ104+T/Bbpmk6WsGw3VN04FBnNWmwAKfjLy54ayQOfyDurLytcVejNBRNLkH+P9K/fk2yIMqZ7fbObJ8zcSemDYpyYLBkicqD6Nh/NwJ7RxU9ITlcWQisUv3X8XUydiIAHKxGEaegMvDs+qPBEnRWObG84KAZtZ+mjcb1qtJLMJgOLElSq4a9l1FFIQfd0TnEmSyv4s0iudwybd9yIkpsJUWiqFj0yJqJ0xEl0Z5vcCk5AKaVbQXTJznpc3S7qDb5FTpli/v7lZUUP0C7G8Yj/9Y27VJIUK0na/6NNNAUgElhgA94Re0Wb+cvzya31zWX1yoMUnhPhbt61r4zk12ckSuJnzpaCh0=
+X-HE-Tag: 1794980364-488998
+X-HE-Meta: U2FsdGVkX1+m62zpsYSUzwLRXXIytlv76vkpbeu5DHRNyKjRB0CRmMspbQlFQZaChCSFLojXtKCeKtmz/7SYlBKrEQj3AyEM0RZpPrSvs5hYdw6st5gK8nt0F5Uzfki+sxXlfbLY6ei+lyL1segWuua07aVURuYSZ9I1GkFim2Y7DnrmZ3ko9qIemrfQxGTwzC2k3a2erkgbHa3LWpN7XWVsQFJvQsw9bDi2ujjFc+lad/u7Px5dC2SmdzlAEvqDL28cSCj7F+a9KCox1XHPPwNjF8NIHv29iYBfrv/vWprHVKlOpLEGZe2w5XkxhsOTMjEz2Gjq/WvcMP2YgPBcUoHoPbpqCPNGdudKFUL/7bbvkGNMtsqNbXubcRP7YZ/bHdSmEG1hq8i4fNfovyR7d8nOUYDeYng5krWi75Tgn3TfRvhZ1YvNgri05r8iGUMgU33+1bOJde+I8rpydqf4eZR7QiCsTEf2Hynm/VNzX3IP32hq+vVFbeezAn29JAwVKTgf2gXoBchfJX2XJ7MdTpJMhL/sYfaxyFJL6Glm67TTrv8lkKnN3ImY/dpk0q/Lc7S4fKwsrp1vAO0C528AzwC1TONb9bXcAmB5pMShv9deQ/PNPSZXUNybaa3IcbiPsmcfIUB52GL6irWbwr8CRhlBDphtRktXE/lntiF8jhCAX5N2Kl4PDuUKsvJvjDyTYfa3Bdx72OL0nT6GN34GAYzZEzWSdy6rbuam6EqHe9wFfjXUjUqV/u2asom3A+dBnHPSKuMHHVQFphJbnglMZlGKRbs8VU3tvAmXZflCTMzASOabrJPO5NBcl6P4H2YfpIDQWZUJVUjr//KnPPilyJLa7XXJQ99E0TI2Nwu9RZAWQhsaZfYtOIB+AJu6ptiZmP9qODcBYwAgpV0+L9Nkfc8V2OeAhtwjCz/e7BumjtqXWYNpT5wOVzDddMALIoN8xNxhNXffZali4UFnDPO
+ F3pl0U4P
+ ZLUBJAdpFKRaG1qhHTxbvGiz1XwO0wcyGmPgw+6y09APINA2cU+uwIEVGaca7lcDNkWt7ljBZZPIX2yg3+d6ELTi75OozxsxbGzltjnSC6hd+aqZCfc6myBJIxGRqkU1+FduouqR/DgjqUC6PW8+11tJcD9wWz+wx6QM5MT+HZGYwYyXp8RQcqoRUvq4HcTwrc7UIjHXPV1eOSh0kMUoxyr9yrSYyrrx5Sgi+XqhUoJZ4lEnmZ+apqvFVHbczdiEFd/pi9R8fh/dspqbaeiXwSKgdwdRFRajwsPSAA59w4wCwUWPguIo9uBmhekF/UvlmTnw8eUoPkBmhY5wUNfJVr3CVE5DrM++tT33nvFzC8+/3qN8Q+4IW4Xw1Iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,91 +125,83 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-2026/11/18 06:17, Chris Down:
-> Hi Hui,
->
-> Thanks for fixing these, I've verified that these fix the issues
-> reported.
->
-> That said, Zhang Jiao sent a fix for the same two problems a few weeks
-> ago, and Johannes thought the overage cap there was a bit of a magic
-> value, which we have plenty of in mm already, and I agree we shouldn't
-> add more [1].
->
-> Could you please coordinate so we don't have two patchsets doing the
-> same thing?
->
-> Chris
->
-> [1] https://lore.kernel.org/all/auNrakxaET8qkuAn@cmpxchg.org/
 
-Hi Chris, Joshua, Zhang Jiao,
+> On Nov 18, 2026, at 12:21, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>=20
+> On Wed, 18 Nov 2026 11:49:58 +0800 Muchun Song <muchun.song@linux.dev> =
+wrote:
+>=20
+>>=20
+>>=20
+>>>>> +}
+>>>>=20
+>>>> [blah blah]
+>>>>=20
+>>>=20
+>>> Yeah, but the whole expression is quite reader-hostile, as min/max
+>>> things often are.
+>>>=20
+>>> How about doing
+>>>=20
+>>> /* comment */
+>>> if (this1)
+>>> return that1;
+>>> /* comment */
+>>> if (this2)
+>>> return that2;
+>>> /* comment */
+>>> if (this3)
+>>> return that3;
+>>>=20
+>>> ?
+>>>=20
+>>> The code generation will probably be just as good and it's =
+__init-time
+>>> stuff anyway.
+>>=20
+>> Something like?
+>>=20
+>> static inline size_t page_ext_data_alignment(size_t size)
+>> {
+>>        /* No client data means no alignment requirement. */
+>>        if (!size)
+>>                return 1;
+>>=20
+>>        /* u64 has the strictest alignment required by page_ext =
+clients. */
+>>        if (IS_ALIGNED(size, __alignof__(u64)))
+>>                return __alignof__(u64);
+>>=20
+>>        /*
+>>         * A type's size is a multiple of its natural alignment, so =
+its
+>>         * lowest set bit is at least that alignment.
+>>         */
+>>        return 1UL << __ffs(size);
+>> }
+>=20
+> Well I prefer it!
+>=20
+> The final bit-twiddle could be (size & ~size) but I'm not sure that's
+> any clearer.
+>=20
+> We should have a handy helper for this operation but I can't find one.=20=
 
-Chris: thanks for the pointer, and apologies for the duplicate. I missed
-Zhang Jiao's patch [1], and Song Hu's earlier report of the overflow, which
-already proposed check_mul_overflow() [2]. I've added Zhang Jiao to the
-thread so we can settle the coordination here rather than off-list.
+> max_pow_of_two_factor() is close, but only works on uint.
 
-You and Johannes are right about the cap. I've dropped
-MEMCG_MAX_DELAY_OVERAGE and reworked 2/2 into the shape Johannes suggested,
-with calculate_high_delay() and the caller's penalty_jiffies both in u64 so
-the value is narrowed only after the caller's clamp. That also removes the
-in-function min() from 1/2, which was undoing ff144e69f733 ("mm/memcg: move
-penalty delay clamping out of calculate_high_delay()"). The series shrinks
-from 19 insertions to 9.
+How about changing the helper to
 
-Joshua: the Fixes tag is the right one, though I can see why the diff
-suggested otherwise. The division comes from 0e4b01df8659; my patch only
-touched that line to add the clamp. The bug is the reordering in
-e26733e0d0ec, which replaced
+#define max_pow_of_two_factor(n) ({					=
+\
+	typeof(n) __n =3D (n);						=
+\
+	static_assert(__same_type(__n, 0U) || __same_type(__n, 0UL));	=
+\
+	__n & -__n;							=
+\
+})
 
-     penalty_jiffies = ((u64)overage * overage * HZ)
-         >> (MEMCG_DELAY_PRECISION_SHIFT + MEMCG_DELAY_SCALING_SHIFT);
-
-with
-
-     penalty_jiffies = max_overage * max_overage * HZ;
-     penalty_jiffies >>= MEMCG_DELAY_PRECISION_SHIFT;
-     penalty_jiffies >>= MEMCG_DELAY_SCALING_SHIFT;
-
-Before that, the shift ran on the u64 temporary and the narrowing into
-unsigned long happened afterwards. After it, the value is narrowed
-first, so shifting it right by 34 always yields zero. The division plays
-no part, and in v2 the diff no longer goes near it. Your other point is
-settled by the same rework: with the clamp gone, the comment goes too.
-
-How I'd like to proceed:
-
-  - Zhang Jiao: would it be OK if I send the combined series? The overflow
-    fix stays under your name and keeps your changelog, in the shape
-    Johannes suggested, and I'd carry the 32-bit truncation alongside it in
-    the same series. If you would rather send it yourself, or split it
-    differently, say so and I'll follow.
-
-  - Song Hu and I have been in touch off-list, and they are working in this
-    area as well, so the patches under my name will carry them as
-    Co-developed-by.
-
-  - v2 will include what was missing before: a Fixes tag for each of the two
-    regressions (e26733e0d0ec, v5.6, for the 32-bit truncation;
-    0e4b01df8659, v5.4, for the overflow), Cc: stable, a changelog that says
-    plainly that throttling was completely inert on 32-bit, and the wrap
-    threshold corrected to about 130x at HZ=1000 -- the 4096x figure misses
-    the HZ factor.
-
-Two separate patches rather than one, because they are different
-regressions with different lifetimes, which matters for the stable
-backports.
-
-One number that may be worth putting in the changelog: the smallest
-exact-zero case is memory.high at one page with usage at 2049 pages, where
-max_overage is exactly 2^31 and the product wraps to zero.
-
-Thanks,
-Hui
-
-[1] 
-https://lore.kernel.org/all/20261029073857.974-1-zhangjiao2@cmss.chinamobile.com/
-[2] https://lore.kernel.org/all/20260818012115.65838-1-husong@kylinos.cn/
+?
 
 
