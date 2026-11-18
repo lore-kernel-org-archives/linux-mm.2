@@ -1,101 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68D9606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 17:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8256C606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 17:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=njD0pyUP
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ai7InkSx
 Received: by kanga.kvack.org (Postfix)
-	id C40666B05B0; Wed, 18 Nov 2026 12:05:46 -0500 (EST)
+	id 6A06E6B05C2; Wed, 18 Nov 2026 12:08:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C18BB6B05B2; Wed, 18 Nov 2026 12:05:46 -0500 (EST)
+	id 678616B05C3; Wed, 18 Nov 2026 12:08:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B56196B05C2; Wed, 18 Nov 2026 12:05:46 -0500 (EST)
+	id 58C746B05C4; Wed, 18 Nov 2026 12:08:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 884866B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:05:46 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0ECF680835
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:05:46 +0000 (UTC)
-X-FDA: 85448866692.19.B30C5E1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 024D540017
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:05:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=njD0pyUP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ECC26B05C2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:08:41 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1BE15407EA
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:08:39 +0000 (UTC)
+X-FDA: 85448873958.23.123962D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4CB4014000B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:08:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ai7InkSx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795021544;
+	s=arc-20220608; t=1795021717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQd7Q59/uJ09RDtnXaaw3syKdDGR5e1uWMGq/9Jn6+U=;
-	b=TvudRvQj4dPKdgBS1NVvKVrH5JWazj1Ww/qXh1fYTPHx2e+4EJIrEaRTcswgjD54wdmzi/
-	zL539dFaEvY/pile01pz5eZ4e8jhMRbZYPvjzY5zMBL/0kZ9H+ysoTZEGE2jv/LGHA4GtQ
-	D/8UeqVZBhG6NVzbMgMI71SmP2tcRw4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=njD0pyUP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	bh=zINOi7QPXEvi98cbqP6TjwwtqfWoUArKawL5JYAavAU=;
+	b=T9rwQ70wOOlNVLIiBH5cbMQYiSGZZvE4nbgrnV33e/RUrqmL8RkQ2HUAfNIEeyubaby2j0
+	d82Zbogxr3ZryYMCtqEp/h+OP1M5i0zV62Z+MUZ4qN8pAvxQRLWBoA5i0NPMN9QwDbYPla
+	lDMKj5dyMpi8vfPpS2KW1BBenAqRZEs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795021544;
-	b=C3T/MHVA5odUWk7dh2Yt3EbWlnMQjKKYc5CEUZNQLv2g6Mf3+A2HAXMlde3f/PquKQ55rA
-	8HZ3M8mKRUjALRID9ugv96beo946Nyy/STCE0APbo4ILnsLLsLJ1+yBuUNI1EAFVrLEypB
-	6L3hosE67aOI4E975EnuCT/MHZmZO7Y=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F6F01477;
-	Wed, 18 Nov 2026 09:05:40 -0800 (PST)
-Received: from [10.163.128.4] (unknown [10.163.128.4])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3386E3F632;
-	Wed, 18 Nov 2026 09:05:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795021543; bh=lm8fR4VGPjinFRA2VTQV8MBU1YPZJR5e08gMeF/5ntA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=njD0pyUP0lvvOgYBBd1phTCojAQtgwJJe0bSG2aHoDsu5LGv3u9LxG2/95Se29cZ2
-	 ZxB+zeWoPWlqia5030YhGIOEFbjM8ukjEvdI2mVqqP0SPIXi6mT+zZPZsvZUgBbnFn
-	 SumFgAPdZeQqht5/9YBht7kT3VM+GxwiZQRpz7iQ=
-Message-ID: <f3219880-c944-473e-82cc-bd6b4196badf@arm.com>
-Date: Wed, 18 Nov 2026 22:35:32 +0530
+	t=1795021717;
+	b=7Yof9RkcYS8TdjyVhvafauy+GgmARPqFpWffqE+C+GLYLgZtAJ8AlWdR0+UHKPJA2hbqxh
+	46LIw2oUPsrrEKVuyQUGFa00TiFXL6OY2Ay1oRgx109ow9eAFvtoDkLsODdX+73kHWGWXI
+	0xMR2bDxBzLUGTa6lrv/WVDpcA+pNGw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ai7InkSx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id D3BBE625DB;
+	Wed, 18 Nov 2026 17:08:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id CEC651F000C6;
+	Wed, 18 Nov 2026 17:08:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795021716;
+	bh=zINOi7QPXEvi98cbqP6TjwwtqfWoUArKawL5JYAavAU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ai7InkSxjpjgivgeXU6eK1BzM9SMFaBHZ97FKtVTgzZrgbTvyMLm/yoQ5iDK2F15o
+	 iTRkDOM5FMMC7Su4PQB1NNwWaeJVN/3Q/mYacYUCeTZRfLZiNbc0Psa/woPxI9priV
+	 o794AiIxzMMqwmGdfxK1sVY51lnnoLeRxopyMxm3Fw2Wn75jZxgMjWDWGbfvJwR/F7
+	 55uapbzqrx1sE6psi4VAyHUC+D/mArx5ooB7wwR90Jm3Q5Q2x2m32mx71CpDNud7Ql
+	 0+EGSljYTSewzaz+DAbOKH8by3wxtDmKxsjPI2frMrPXcPdOdqYqLiNXz6oTJsS+vw
+	 QjKJcR1CdMiUg==
+Date: Wed, 18 Nov 2026 19:08:32 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: josef@toxicpanda.com, linux-fsdevel@vger.kernel.org,
+	linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	John Johansen <john.johansen@canonical.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v2 00/13] Namespace for namespace roots
+Message-ID: <av3bkDnwmjunTleX@kernel.org>
+References: <20261117231352.3816603-1-jarkko@kernel.org>
+ <CALCETrVUkbpoFjwSAejyA4b_9qEauAP_36i=O8Op1ifp8aUkqA@mail.gmail.com>
+ <av3akYFOYaeQZauZ@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v2 0/5] mm: remove unused functions
-To: Shivank Garg <shivankg@amd.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <av3akYFOYaeQZauZ@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4CB4014000B
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: gop5gwmdmeyhcwh5qaxur6z44at3u3zw
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 024D540017
-X-Stat-Signature: ww16kfm6bpyimgiaqsmnbxpcop6wjd5a
-X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795021543-619694
-X-HE-Meta: U2FsdGVkX1+SHbDmXZa5IpMy3SSXn39hRZmVI3rCH7QNy4df3YrCd4ghXfWdlEtu+mzGdZGYYhh3Q4lsiQqRSxNtFpkAR5JIU+YdE6GDYRC6cm5iHavMgUDFrSueMaj9mcES6iHDmWxrMQ5C9tv1qu5hJkRS0kssarXRzQwOgXgNnxp176GRV+w0CfXDkUbeUm9J/Mi/QhjAo1/sQnKe6bsGzybdyyvHii+N8efqxGPug1x+NJv+FwTfK6B9Jp5SdN8tir59BWwSSDkc2s3ozBW5dst/UvS2/AELOl9n0sOeXacDzBr5pr4NXuItQi+Z71a8UbZ37z/+uoKxXmBuN4wc//c5D9EwIssIkJnSLZ8N7oMbmRTUSbR9GxouUpFTJPx3xlvzn/zamCShqF0z7q8DfGeAy39yIVYQVjn+mam1ipBnDkAraslJXL5cpTrbqzGZxPMWFaZLaIwzpC+NJP5dEsdjQ+Dw+KbltaCNfdQifo5gUBhlSiKEETWx5NYl03mIYF1yIPZOR7QxIsbaNw6bx0UV+s2YyqPVXwKO/lExjNx1sORvnxG77WqqTy2oJc/C460bfNsW1wKEUyvFi/oMKP0zSSiiqx2jX+/2/rftKAKSBwFCIEdps62y3ES/eQrug07faKCD4H3gyVvJEEVAwZOCPx6Yq4vg2K/+ErL5es1LMxdwonBB9vwLf2AojByXLQ9DdNoOLBopuRJuaNrSss2/HO5KczLZWiUNyb3ftS2QeO94kXgterOjdYg9IM+yMuIbvrF5or3RcYkdu7qaqEPHtTr0kn0X3D857HXQ6Jkj+QLp3t9JfiiZwyRlbXrz4vFrCZYd+rGDmklY8bCZxJ4FDz2mq19uOFjotWKYrXsLLR5N04qwKMtbhQSgHzUpL8ZvPsN0l/Dzqg0OZwGqIB42DVPv0QrDPcZDnVnb6PMqBXugaJ3AvHQAzKR58Uca5zbtmvUDbwFkQ3c
- MZL9xl/7
- P156ZRJdFRm3AZDN8B6yVxQyTdpVamQLgJmxH/woEOq6EGcXVSmnNrShrSZKe3c8AOUxIAj7X8lhCyoUlJ0h2XpBWQnPzu03a8B9r338qAT1j/cKXMdxAQ+bXDKliPCfyhDm3pIESql6gKQxb762cZUc14hRHwB1wVFsAsjFNhwjCkYVtjeN7NMcojtXuIXmU2IwQkPoj46H6WKU/1lQcql//mfzltD5m655dIGq27Pf8VakGLl/8k6m3S1Vwz2CsX3zAX6mEB3j/4FIuWxlZOSaAy7jaKmtNKRVHoQ3AkDL51D/ZPiV8sonOiRzerhjTPq+I/ndZgwW6+L4=
+X-HE-Tag: 1795021717-222537
+X-HE-Meta: U2FsdGVkX1/EpEiZn2G4SMn6FE00qNQXb7AhuOryRChVIJIcWoYQXXqGb36U5N9l35Mz2SUkuaGSnGn6S9tf0647teeCpJlTVE2EyGfQaOQPNxPrPHnMOZj9Tx6eWdM+Q4V31ltKuBU/gsJWH7A2bWpkMN9r8UCBQchz9/IVusFHqyfjX4/lL8MJh7NaAyhvxnzgGQxfkWuSUruEn5Ee2rrJ+2z02OunJurw8bvuFb16BZmQ0SfNXTXrp5WxeKUWcPRuXuhgGz4Tf0cyU6YxFTI7Y+vM+ORhnaOTr5MU33lU6uSRr5atz23WslTUyrfKKh4nZ2eotRLOw1Gsn/m3IdKcEkRqsmlW1RDM2oADLTW8fGGRHxtd+OwrKWs1qOcnnmlVwyeT/xo/b/5AkOdEXZn3+aE3Ufc5ybpKPwa+LPFKlqQNOD4nnsKKd29SYMFFZ+DGPwUE4xXVizyj/6yNdfweDhIbScNJg2ztBdt0MBQHqR8ZEZBHrHx9T3W/7fNdjuThsfil7Xdldr1hkZTaxis3+weJVe6o7ACQchx3VNpunDz3xtYRQZY81AiRNnVjVgUisuVz6GYnQR5nqG2CD+mp1YZSuEafTIKc5Tbbe/uEEQKhfUtp6JKHDLU+cDMCWaS2TffLhvsLNlHS9bxgrIcSii/EXa1LhgNQD5afSVZXuS18Sp7IK2YA9WiMPgfAcjTYlOcOp97+eCURNIaq65Wy+VDG3O9LDQi+BSaw204Hb2AjWE+zKmwy53QxQTFU+ieMW0vIdr6L/3v4Fbo6+Jfya424MwIANKUJG+41sCabs1gP7+6MIOkAYn1PI5mBIdI9fyglRch8gAxdVnfpH4ICwdo5uTw9Ee/TFFvfgJC+SZFS7hmykCUO1Z12agUOnmptWgOXm9RfmrwdR1jWbw9XUhadL2jG0s6wHSLQ0T9MMkJZPxpQtHp3WnLlmqa1vhcx6YSLQxHbzpjc94/
+ C3VMpxiB
+ iweSMR4L2Xqrn3qfpCOn0Kx3wOYLOcUD0H8/gzcB/XguhY1RAqPdptRS9SEOu2oCSput6UjP2otb36vpZZJ7i9J81LTgPSiOBss5nngg+lPFy2yziROqQevSShOcKLfZaCJ54Pd3neQy3F1erMRRsbNnG5amWDTuWXPOJeP+J3Ducw5SMAcrSycDyvgaxJCwCj5V2D62sxLrBrRfguPn8PgpWLHTi0zt25wjPyCMB2lj8HcYcA3F2QE1knV5F7uUCS/KC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,55 +129,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 17/11/26 12:46 pm, Shivank Garg wrote:
-> This series removes five functions and one variable in mm that have no
-> users left anywhere in the tree. I found them with the kunused scripts
-> [1], which I wrote with LLM's help. The v1 cover letter [2] has more
-> details on the scripts and how LLM was used.
+On Wed, Nov 18, 2026 at 07:04:21PM +0200, Jarkko Sakkinen wrote:
+> On Wed, Nov 18, 2026 at 08:59:39AM -0800, Andy Lutomirski wrote:
+> > On Tue, Nov 17, 2026 at 3:14 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > >
+> > > OVERVIEW
+> > > ========
+> > >
+> > > A root namespace (rootns) is a kernel object backed by a file descriptor
+> > > that binds together:
+> > >
+> > > 1. A full or partial set of detached namespaces.
+> > > 2. A dedicated PID namespace for spawning processes into, signaling
+> > >    members, and polling or waiting on PID 1 exit.
+> > > 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) that must be
+> > >    populated before going live, without inheriting host mount-tree
+> > >    ancestors.
+> > >
+> > > Work on this feature started in 2025 from David Howells' container object
+> > > patch set [1], which I turned into a namespace for namespace roots and
+> > > rebuilt around that premise.
+> > >
+> > > While the patch set is manually written, the original motivation came
+> > > from isolating LLM agents. Running untrusted agent workloads made it
+> > > clear that OCI runtimes need to minimize their live configuration
+> > > surface.
+> > >
+> > > Assembling mounts, credentials, and namespaces inside helper processes
+> > > with a half-configured container is what I see as the main challenge,
+> > > and the existential debate around namespaces and container objects is an
+> > > unfocused discussion topic.
+> > 
+> > 
+> > I've skimmed some of the series, and I see a bunch of good ideas that
+> > involve using an fd to manage a thing.  But I'm wondering how much of
+> > the value is added by that and how much is added by having a new
+> > *type* of thing: the "rootns".
+> > 
+> > How much of the value comes from the rootns vs the new APIs to
+> > configure namespaces without entering them first?
+> > 
+> > For that matter, the cells series also seems to contain a (possibly
+> > very similar) variant of the same thing.
+> > 
+> > Would it make sense to come up with a patchset that does *just* the
+> > configure-a-namespace-by-fd part?  It seems to me that this should be
+> > an easier thing to agree on, and it's a big part of the complexity of
+> > all of this, and it solves a real problem even without
+> > cells/rootnses/jails/whatever.
 > 
-> Changes in v2:
-> - Split v1 [2] up by MM tree, as David suggested. These five patches
->   are based on mm-new. 
-> - No changes to the patches themselves.
+> Is it  more accurately scope the part that is "just the fd-part" and
+> what you consider as "extra cruft"?
 > 
-> [1] https://github.com/AMDESE/linux-mm/tree/shivank/kunused
-> [2] https://lore.kernel.org/r/20261026-unused-sym-v1-0-82ca2dceabe1@amd.com
+> I.e., where do you draw the border?
+
+I'm asking this because I had similar thoughts when I started this back
+in 2025. David had some good ideas but it did more than having a fd
+that does not go live before everything is set up properly.
+
+Then I thought that, I guess people who proactively on the topic do
+something more lean and compact, and never sent roonts patches.
+I'm not seeing anything more lean and compact.
+
 > 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
-
-Okay I just recalled that there have been numerous cases where people ran
-scripts / compiler with flags etc and sent patches to remove unused functions,
-but maintainers rejected them citing they are there for a future use. Here
-are some of those instances:
-
-https://lore.kernel.org/all/20240907021506.4018676-1-Liam.Howlett@oracle.com/
-https://lore.kernel.org/linux-mm/20100211052247.GA15392@localhost/
-
-So I think the commit messages need to do more, they need to prove that the
-unused function was a genuine oversight.
-
-
-
-> Shivank Garg (5):
->       mm: remove unused helpers from pagemap.h
->       mm/swapops: remove unused make_guard_swp_entry()
->       mm/swap: remove unused folio_to_swp_tb()
->       mm/zsmalloc: remove unused zpdesc_lock()
->       mm: nommu: remove unused heap_stack_gap
+> > 
+> > --Andy
 > 
->  include/linux/pagemap.h | 11 -----------
->  include/linux/swapops.h |  5 -----
->  mm/nommu.c              |  1 -
->  mm/swap_table.h         |  5 -----
->  mm/zpdesc.h             |  5 -----
->  5 files changed, 27 deletions(-)
-> ---
-> base-commit: 67f3b04b277373438f17300e056306adbd9edf7b
-> change-id: 20261109-unused-sym-mm-8fa76462573e
-> 
-> Best regards,
+> Br, Jarkko
 
+Br, Jarkko
 
