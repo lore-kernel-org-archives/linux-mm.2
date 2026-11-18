@@ -1,91 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC66606B105
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1223606B13E
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QF+5/olx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=caoGkr+z
 Received: by kanga.kvack.org (Postfix)
-	id DBA286B05B3; Wed, 18 Nov 2026 14:32:42 -0500 (EST)
+	id 116466B05B5; Wed, 18 Nov 2026 14:34:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D92296B05B4; Wed, 18 Nov 2026 14:32:42 -0500 (EST)
+	id 0C5766B05B6; Wed, 18 Nov 2026 14:34:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA7B36B05B5; Wed, 18 Nov 2026 14:32:42 -0500 (EST)
+	id F1CB16B05B7; Wed, 18 Nov 2026 14:34:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E2616B05B3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:32:42 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F69BC0872
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:32:42 +0000 (UTC)
-X-FDA: 85449236964.08.288FAEE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6DB7040005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:32:40 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QF+5/olx";
+	by kanga.kvack.org (Postfix) with ESMTP id D15A46B05B5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:34:55 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5800C0876
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:34:53 +0000 (UTC)
+X-FDA: 85449242466.11.504AA0C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 268231C0004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:34:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=caoGkr+z;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795030360;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1795030492;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3lqCKHGP4NPPkZjb/PHIe+Us5IVzoa0YCjJzMTNgr1g=;
-	b=ewvyED7UaYoN/MFqa+V/sApskU+Vo7OAj0YCtVbgP0qxc1lud9cxm7Up3ksg8bCrMvbbc0
-	muGCyTvRqKCW8fu5cwGUlNcZpJW0Bgegwb0UKcnWVbAzMNpK69h4JlBixURxqzLLEBydd1
-	2jr94YsJSvx2M+xPSJcdSsE5X+M1yxw=
+	bh=8RxXpz7hlprBpizDk9lL07D5e79Ppid8aeCKYprG2ME=;
+	b=W4p98EQoybASWWIW32cBe75xBZLs/Z1GWnMcwOYG0qJlWIKllUkJngnvulw2ZOpTf49f5X
+	DDQU3apEW5vJ+/60ox0FSKmu+Mf2n62/Bg+QbWUdWjEuvhsDSP3Y2zhXhU8+83/c147obF
+	uy+P+qG1b1w6hHdw1ILJ3QrZqbCq7Mg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QF+5/olx";
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=caoGkr+z;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795030360;
-	b=2si/sviFhLzcVrZkhKhvFcLnhSWoEhr/qb3gjLQp8E3Gk18U9/3rbgmepgR9idO/e0Atcu
-	aEURiL5AbVxVfz+vhICoPwMylNsGLuLH37W64zT4XgaN0emRR3g7rWDqy6gRWPUA89MqOw
-	0ob0/XtxUbh566lHoQz7vE99UuWDmcM=
+	t=1795030492;
+	b=wvI8Aq/809s5kyx6i/K74oKbeI5s3vQ5o+7iw9izq7VbDWLrSp7hxEyuu+UISA+Zbj8N4c
+	OsfYtr0AbNTmedxr5VXvM852gN55Eq+HV3MDLq5yB8oKBP0c0DrXwntYDqrNv7Bhbph9Td
+	IWCnwuEXUxWQDHRP81knXqHdCWNQqLs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 55F4944869;
-	Wed, 18 Nov 2026 19:32:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C991F000C5;
-	Wed, 18 Nov 2026 19:32:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EC37F6226C;
+	Wed, 18 Nov 2026 19:34:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529431F000C4;
+	Wed, 18 Nov 2026 19:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795030359;
-	bh=3lqCKHGP4NPPkZjb/PHIe+Us5IVzoa0YCjJzMTNgr1g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QF+5/olxJtjwNaJPV96bw0pqKg6FelZ78n4exRIbrbrChyUN0b0yq2m/xABpbOnEx
-	 BUG7B/SyIBFrr4f7Au38U/BcpGDfwW8NQMuppZMct9uashSLZVmicj75a19qSbuESf
-	 4f1VzoOn+n3IjNlAHo3KymqaGuxpkCWykgPmlnrGydtPnA/W1zggKwgzHhXitTAqiB
-	 NrwusXdfDwmj1mNeqRgiF5b9n9EAKDH65F5aommnlJng10Gl6T545SZrgblSb0NeU7
-	 piMvTVT63lmz2oDAIs0UaEiKlREEhU7dcpzEJD4YdYnNUqlbP+1nFCrtWi4k4YbkX1
-	 WxXSrud4T3FEA==
-Message-ID: <sashiko-outbox-221869@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/shmem: avoid zeroing new folios twice with
- init_on_alloc=1
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Samridh <samridh@modal.com>, "Hugh Dickins" <hughd@google.com>, "David
- Hildenbrand" <david@kernel.org>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Andrew
- Morton" <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-In-Reply-To: <20261117-samridh-shmem-send-v1-1-1b897ff562d9@modal.com>
-References: <20261117-samridh-shmem-send-v1-1-1b897ff562d9@modal.com>
+	s=k20260515; t=1795030490;
+	bh=8RxXpz7hlprBpizDk9lL07D5e79Ppid8aeCKYprG2ME=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=caoGkr+zi/fmbkrr6iGkrj0lzntp1e/kLAEuFcRbtktyvJK3yN3X8rgZDmtbwYUQr
+	 6ytq8smNIkQQivbFExvo7pKBefVUcpxEXMIxFKWiDjN7pNkIeHK8C/p53IGsVfgFMh
+	 Q1vr3TshI+heEGfti+KqZJHs5fkBzaCGPG5RZn9LR8jfuGr1LQChhKuQRv2bZZvuZp
+	 zHuqWeftO6eyNXWCaPUbRiH1I9XDagZin13eFA2ReaVkEN4yOSjcOfVN8pR6ccYZ1K
+	 h8j7JIthGjIqSk0TsFcWwqmR+H1FrUWSPuLwwIz4lSwQdkAzIA8tsTitcQ3VsAdUpq
+	 GZT0wyHNfvUGg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, David
+ Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Mike
+ Rapoport <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie
+ Kim <rakie.kim@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Matthew Wilcox <willy@infradead.org>,
+ Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5u?=
+ =?utf-8?B?ZXbDpWc=?=
+ <arve@android.com>, Todd Kjos <tkjos@android.com>, Christian Brauner
+ <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Igor B
+ <igor.b@beldev.am>, Vitaly Wool <vitaly.wool@konsulko.se>,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v22 0/6] rust: page: add page kinds
+In-Reply-To: <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
+References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+ <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
+Date: Wed, 18 Nov 2026 20:34:33 +0100
+Message-ID: <871p8iue5y.fsf@t14s.mail-host-address-is-not-set>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 19:32:38 +0000
-X-Stat-Signature: s4wke8ae4ifkcton7phjnfhcg6nz8uwd
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6DB7040005
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 268231C0004
+X-Stat-Signature: pgi9j64q8b8zmokc7f67yu7uf4oy7enb
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795030360-655018
-X-HE-Meta: U2FsdGVkX18xALRXgbpHM6IhX6ZaqprszFF1i8fi2kiQsvtpdv98TnFFM4+G6lb/lHZ9kDZMVWzX7nhEvFhbOJC8fUF43BmauDoJbIp+SAnEyfF/aPMZCh//OyrMk+o0w8EYdSDk1EMTlKIn8kX4grPqHs20Q5dOgjmZYqCC20kNd+r1qOlIa0YC1YWHsMiJ0LSlZl7gBszmi/gf0VH6FlrdSsCGMiOJPwmQT3e+9BYagwOhTpiqKyPrO6VyIuSC3W3AEofyw/llGfkYTRGdjTN1E3Xc3r2j1LFOBCCH2ZWl/zX101AlV7cPhZgsp0tA+pUxTLMvuWWWcpRIaMktbSN6/mnSbwpgNCgag/iytApBEdrRPOTJbMJYZlOym4dMDBR9ky8JJoXR3obp/BslwezhdEWTPpqfsh6Q16sNIee2Mz6avPHDsLAmw4Vh8S+/JBPdd+SimKjpqd5umXEejYFem7xU9F4VatXI390OZyUVGz0sJav0+OIYSn+9/xmgnM9Oo5w/zXwa+fXJCXzPRCrSgFX35OL+4jdXW7nt4LsZOZRz06N2iG2DOXywb1rJwCQfBC/jc8rpnnvIT5BpYBa11C5feYhvCZV4n56yZoi/A8r7lmi//YkDWKKvieVaTQAiiZ/quac4vAldVi1dIe6i1XY53ADq6y6gGkxGFmChjrrhc4hkzIi5MEAofRpxe5AJOPLEzmfam+iPaLLoXqn8gLTlGLqhkzEqBwrmyhnTLSCyhtaqlEcjNc4oF4LauKSHxbPisNnlMzHLVDrJ0gk6oB5M5TDl3AIWZOL4lBroHBSgQqftWwyKBMxLpKQi/Dl2lbAXXh361Sn85XKq87fPM5ZoSNdaddEMd9yDZP+VHQnOccB34k6zCSiohRyuXuumuH9g27VvV0tV1Iox53+SrUqsxwh3RsLwVZUiuD7KqtS2Iy2o+ys8DfJTgdZJCqqJvoYldrpOyqbPDHE
- BniVZeHf
- FH6vEP2RWJGR9Y41IRQQ7dVhrU4xFRT2meLGvNxIUvVNc3xmP5oW73tkLZvQ9YvH3k9X130wnVzmkemv9hLE0ZJXGnFzxfh1KOq86tHzByOzhCqWO7vPFWtEvg19DnWrgqFCfUTGGRtNkSz7Ahu20m4trUSR8u7uBYpYXoaR40Jj+QzBDolxyrTgC2EyJany53PAJp70QGl/4O8MOI+gqOf0BwAhOOuF0wVw1n0LWUZRBXvSRUYi6rrA0VVgPe0Hy9m9dpe+68BdFgXgcA3zSnXV89qLS1tUXvVGSkVst7dl7wyntx5ugKRof/usGzhRfrewsglKopGI4ULKbzwCzwd3hohfzxhMIkAdqThtGi2DtJoh3uVebu/Y27YxmeHxWqI6F39wVd2SFOi98MwhNOfMz5up9B5s2fBwwbZH7onxFBSYQ7yldPwl/QZOZVTl9SCnDd+JaZMGjdysh8i0V3v+XKqJPxDfiYV65zjs46DrxMlrOZ0ZT7CLOXGgcxjY9huC3J7vAenV2l241fp/zvQO1vvGwQ42pCChV6zFggai/2EQHnLwnoBXNuCRaJaEGA8o5ceWvjm95qyZlSZ5J9LBOrSqXO1G86ifa8qRIOTKxgkzyk7ywmIKQtUN1G6uM0INWsg2g4XZ0qRsVflcFuuPgcR1dTpvI5jqunTg3ACx9X0w=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1795030491-863326
+X-HE-Meta: U2FsdGVkX19QLH52uRk8Y8DSCSI37E/3H99l501b3+tAxHz8bRVTXSFw2W2mvdJnuT9wSueGtyUZlppsKgC/Yp7mACgqxFNTNBkLLfjtCLelz0v6+Ng2lo2kk+Jy0teXtN2aoog8Ahm38UAFaa2tFQSMw4meN/4IPCZ1oO0j3FIDFelCmOf4lsH7EMoqXNNDi7/c9ZnziJqnHCD73BdXQfQYwIFT50wgXyE+N9/M+j9YnJqDi/zrgGTkRXeTU9cqM6Vruc73QshmVeONJeAB97J02zC3TNLNMSoD/00P2azb2uCoKhQnUHrzg/J0gjATIABAOh2KifrMSEWl4XxfAQ02eSaaEIbnZLQkM3ZxKr1HxC7n397vTtTsg1jJD/BPGReXCjwYFbxXvISNc16DZA3zBEiVzo/1MAn9P200oY8LgGJI8RHP02OUoFbk8nlL897nZNBC64qnYXHYnVYcGrXehwzTZLPgPgg2WCEA8t/LEkPl2BphZrc7ooo6XNdCz34csBzH14hDJ7dAI8VbPOkFl4qjjWbPeuB6sCm2+K3fiZ1B6ERfth1lGRegRbza20ier4LVmj9rBJpek1ReOzYQfiEbF3zRA4SOJE6CjAyMYw5LCHmMQNEvnMaQVU/smj3wFFm5WRYOJ539byQgwGFN+1bEeU01vX1slfuNfdXPsIZX3mIvak3Z7Yj5GAWy84qpB6S3WDzozkB20ZNUW5D1sXmUyD99OafcMeNOAH3t288lUZTxhoFul3wkka3iZhk9jUjGR9d24cV474Dlm1ULUJ+D6QzCblWpEKdNW7Mu2YI5di6q1grrVXWCHSAyKEGsU2jQ7H3EEMt5zbS/JB8+0OAUD5ucJvWHWA9R0lcqm1Jvy+2tnYj+goJIm1GVTNCJHzsxMHkmUEWopnP0NBUhEmD1n1Xo7XkFWDHvlFD0UMFgogXgapcv2iyQEK3yRn49SjuuWkyLrEDGnN3
+ 7hH6zQGF
+ h0TVcINAENQ5ElNa0lKgU3RAg3vXcGUtMj1/Tw/5MgS2K9un/XNXnOicf05HcZKnruPqUgTzlPKC+Q/We6944NGxoc55w5vXIkudErHvVLy4EK4rQV+H8Rj/Wxxrc/k4TSebh6s8hsVOXOYOh4vOggsOk0xmHWZglttuK0ChjhmTFiLCqZXNGVi29kYgZLVOvFNJOQW31X98f4MMXttNcTPBQcKuLxf+0hqq46bGAtIYoOzdM/IFZD+Zc0GtNEtJvAH22GiIp2oq1V3cTuupvV1RYmPDJe1+ms68chMLg1jiZbAf5RIiWYnsYHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,162 +116,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] mm/shmem: single-word Signed-off-by identity in commit message
-- [High] mm/shmem: cross-CPU dcache flush after __GFP_ZERO in
-  shmem_get_folio_gfp()
---
+Zi Yan <ziy@nvidia.com> writes:
 
-commit acaf023dbfc00405b46eac6010b09d293eda6ffd
-Author: Samridh <samridh@modal.com>
-
-> mm/shmem: avoid zeroing new folios twice with init_on_alloc=3D1
+> On 18 Nov 2026, at 11:18, Andreas Hindborg wrote:
 >
-> shmem_get_folio_gfp() clears a new folio before marking it uptodate.
-> With init_on_alloc=3D1 the page allocator has already zeroed it, so the
-> folio ends up being zeroed twice.
+>> Note: The page patches were part of the `Ownable` series [1] until v21.
+>> This series continues the version numbering of that series, and it depen=
+ds
+>> on v22 of that series for `Ownable`, `Owned` and the split of `RefCounte=
+d`
+>> and `AlwaysRefCounted`.
+>>
+>> Not all pages can be treated the same way. A page allocated with
+>> `alloc_pages()` is managed by the page reference count, and kernel C code
+>> routinely takes its own references to such a page. A page owned by the
+>> slab allocator must not have references taken to it, but it can still
+>> show up in places such as a bio vector. A frozen page has a reference
+>> count of zero and is exclusively owned by the party that allocated it.
+>>
+>> A single `Page` type cannot describe all of these. This series makes
+>> `Page` generic over a sealed `PageKind` that describes what is known abo=
+ut
+>> the page:
+>>
+>>  - `Page<Base>` is the base kind. Nothing is known about the page
+>>    beyond the validity of the `struct page`.
+>>  - `Page<RefCounted>` is the default kind. The page is managed by the
+>>    page reference count, and `Page<RefCounted>` implements
+>>    `AlwaysRefCounted`.
+>>  - `Page<Exclusive>` is a uniquely owned frozen page whose data area
+>>    follows standard Rust aliasing rules, so the data is available as
+>>    `&[u8]` and `&mut [u8]`. It is handled through
+>>    `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
+>>  - `Page<Frozen>` is a frozen page whose allocation is uniquely owned.
+>>    Unlike for `Page<Exclusive>`, nothing is known about who accesses the
+>>    data of the page, so the data is only available through the unsafe
+>>    raw accessors.
 >
-> For SGP_CACHE, the only mode that clears a new folio, ask the page
-> allocator for a zeroed folio with __GFP_ZERO. Folios that are already in
-> the page cache but not uptodate, such as those left by fallocate(), are
-> still cleared. With init_on_alloc=3D0 the zeroing moves into the
-> allocator, so a folio is zeroed for nothing when the memcg charge, the
-> page cache insert or the block accounting fails.
+> Why do we need to allocate Page<Frozen> when we can allocate Page<Exclusi=
+ve>?
+> To me, Page<Frozen> is an observed page state from a non-owner point
+> of view.
+
+I'm not sure we need it, which is why I added this note:
+
+ This currently has no users, but I add it here for completeness. Let's
+ discuss if we should keep it or not.
+
+The difference between the `Page<Frozen>` and `Page<Exclusive>` is that
+`Page<Exclusive>` has stronger invariants. Namely that the (physical)
+memory region of the page does not incur data races, and that the page
+not in highmem. From a Rust point of view, this allows us to obtain a
+reference to the page contents without jumping through any hoops.
+
+I do not have a user for a frozen page without these invariants, but I
+would assume there are use cases?
+
+> In core-mm, a page is frozen, when its refcount =3D=3D 0. The code looking
+> at the page knows the page is exclusively owned by others. If the code
+> allocates a frozen page, it will not check its refcount, because
+> the code knows it has the exclusive ownership of the page. To reflect
+> this, the code calling alloc_frozen_pages() should just get
+> Page<Exclusive>
+
+Is it always the case that users of frozen pages will use them in such a
+way that they can guarantee no races to the page contents (physical
+memory)? They cannot be mapped for DMA access or anything like that -
+that always requires a refcount?
+
+> and if the code encounters a Page<Base> and finds it has no refcount,
+> it should convert it to Page<Frozen> or there should be a method
+> that accepts PFN and return Page<Frozen> if the page of the PFN has no
+> refcount, for PFN walkers.
+
+We can add conversion functions, that makes sense.
+
 >
-> Time to write one byte to each page of a new 4 GiB memfd mapping, with
-> shmem_enabled=3Dalways and init_on_alloc=3D1 (median of 24 runs on 6.18.5=
-5,
-> x86_64 VMs):
+> =E2=80=9Cthe data=E2=80=9D mentioned in Page<Exclusive> and Page<Frozen> =
+is struct page
+> data or the data in the physical frame pointed by Page<...>? If it
+> is the former, is it better to use metadata?
+
+I'm referring to the actual physical memory region that the struct page
+describes.
+
 >
->                   before   after
->   Xeon 6975P-C    0.620s   0.416s
->   EPYC 9R14       0.216s   0.158s
+> I am new to Rust, so feel free to correct me. Thanks. :)
 >
-> With 4K folios, or with init_on_alloc=3D0, the times change by 3% or
-> less. We found this while running gVisor, which keeps sandbox memory in
-> a memfd.
->
-> I wrote this patch with help from an AI coding assistant (Claude Code),
-> then reviewed and tested it.
->
-> Signed-off-by: Samridh <samridh@modal.com>
 
-[Severity: High]
-Documentation/process/submitting-patches.rst requires a full real name in
-the Author header and Signed-off-by: tag rather than a single-word name or
-handle.
+I'm new to mm, I really appreciate your eyes on this.
 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 5cb628cc9c6bb..d2c6781e86a55 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2692,6 +2692,7 @@ static int shmem_get_folio_gfp(struct inode *inode,=
- pgoff_t index,
->  	int error;
->  	bool alloced;
->  	unsigned long orders =3D 0;
-> +	gfp_t zero_gfp =3D sgp =3D=3D SGP_CACHE ? __GFP_ZERO : 0;
-> =20
->  	if (WARN_ON_ONCE(!shmem_mapping(inode->i_mapping)))
->  		return -EINVAL;
-> @@ -2770,7 +2771,7 @@ static int shmem_get_folio_gfp(struct inode *inode,=
- pgoff_t index,
-> =20
->  		huge_gfp =3D vma_thp_gfp_mask(vma);
->  		huge_gfp =3D thp_shmem_limit_gfp_mask(huge_gfp, gfp);
-> -		folio =3D shmem_alloc_and_add_folio(vmf, huge_gfp,
-> +		folio =3D shmem_alloc_and_add_folio(vmf, huge_gfp | zero_gfp,
->  				inode, index, fault_mm, orders);
->  		if (!IS_ERR(folio)) {
->  			if (folio_test_pmd_mappable(folio))
-> @@ -2782,7 +2783,8 @@ static int shmem_get_folio_gfp(struct inode *inode,=
- pgoff_t index,
->  			goto repeat;
->  	}
-> =20
-> -	folio =3D shmem_alloc_and_add_folio(vmf, gfp, inode, index, fault_mm, 0=
-);
-> +	folio =3D shmem_alloc_and_add_folio(vmf, gfp | zero_gfp, inode, index,
-> +					  fault_mm, 0);
->  	if (IS_ERR(folio)) {
->  		error =3D PTR_ERR(folio);
->  		if (error =3D=3D -EEXIST)
-> @@ -2810,8 +2812,11 @@ static int shmem_get_folio_gfp(struct inode *inode=
-, pgoff_t index,
->  	if (sgp !=3D SGP_WRITE && !folio_test_uptodate(folio)) {
->  		long i, n =3D folio_nr_pages(folio);
-> =20
-> -		for (i =3D 0; i < n; i++)
-> -			clear_highpage(folio_page(folio, i));
-> +		/* A folio allocated with __GFP_ZERO is already zeroed. */
-> +		if (!alloced || !zero_gfp) {
-> +			for (i =3D 0; i < n; i++)
-> +				clear_highpage(folio_page(folio, i));
-> +		}
->  		flush_dcache_folio(folio);
->  		folio_mark_uptodate(folio);
->  	}
 
-[Severity: High]
-Can skipping clear_highpage() here cause flush_dcache_folio(folio) to run
-on a different CPU from the one that zeroed the folio?
+Best regards,
+Andreas Hindborg
 
-flush_dcache_folio() requires running on the CPU that performed the kernel
-stores into the folio.  On sparc64 and on 32-bit SMP ARM (when
-cache_ops_need_broadcast() is true), flush_dcache_folio() only flushes or
-records the local CPU's D-cache:
 
-arch/sparc/mm/init_64.c:flush_dcache_folio() {
-	...
-	this_cpu =3D get_cpu();
-
-	mapping =3D folio_flush_mapping(folio);
-	if (mapping && !mapping_mapped(mapping)) {
-		bool dirty =3D test_bit(PG_dcache_dirty, &folio->flags.f);
-		if (dirty) {
-			int dirty_cpu =3D dcache_dirty_cpu(folio);
-
-			if (dirty_cpu =3D=3D this_cpu)
-				goto out;
-			smp_flush_dcache_folio_impl(folio, dirty_cpu);
-		}
-		set_dcache_dirty(folio, this_cpu);
-	} else {
-		flush_dcache_folio_impl(folio);
-	}
-	...
-}
-
-With __GFP_ZERO, the zeroing stores can happen on another CPU before
-flush_dcache_folio(folio) is reached:
-
-CPU0                              CPU1
-shmem_get_folio_gfp()
-  shmem_alloc_and_add_folio()
-    shmem_alloc_folio(..., __GFP_ZERO)
-      post_alloc_hook()
-        kernel_init_pages()
-    mem_cgroup_charge() (sleeps, task migrates)
-                                  ...
-                                  flush_dcache_folio(folio)
-                                    /* flushes/records CPU1, leaving
-                                     * zeroed lines dirty in CPU0's L1 */
-
-In addition, when init_on_free=3D1, post_alloc_hook() skips zeroing on
-allocation because the page was zeroed when freed in
-__free_pages_prepare(), which may have happened on another CPU without a
-D-cache flush.  In either case, a userspace mapping at an aliasing virtual
-address can read stale non-zero data from memory instead of the zeroed
-L1 cache lines.
-
-Anonymous folio allocations avoid this by checking
-user_alloc_needs_zeroing(), which keeps explicit post-allocation zeroing
-when cpu_dcache_is_aliasing() || cpu_icache_is_aliasing() is true.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117-samridh-sh=
-mem-send-v1-1-1b897ff562d9@modal.com?part=3D1
 
