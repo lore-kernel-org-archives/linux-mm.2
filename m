@@ -1,179 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562C5606A330
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 20:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E51606A330
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 20:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=BUflXr28
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HOD98SOo
 Received: by kanga.kvack.org (Postfix)
-	id 70CD16B05B7; Wed, 18 Nov 2026 15:40:23 -0500 (EST)
+	id 822BC6B05B3; Wed, 18 Nov 2026 15:42:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E3F66B05B8; Wed, 18 Nov 2026 15:40:23 -0500 (EST)
+	id 7F8D46B05B4; Wed, 18 Nov 2026 15:42:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D2BA6B05B9; Wed, 18 Nov 2026 15:40:23 -0500 (EST)
+	id 70F1E6B05B9; Wed, 18 Nov 2026 15:42:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D38A6B05B7
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:40:23 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B3E1812089A
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 20:40:22 +0000 (UTC)
-X-FDA: 85449407484.20.7EFD8A1
-Received: from YT6PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11022120.outbound.protection.outlook.com [40.107.193.120])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DBD4B1C0005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 20:40:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=BUflXr28;
-	spf=pass (imf21.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.193.120 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795034420;
+	by kanga.kvack.org (Postfix) with ESMTP id 4F3666B05B3
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:42:18 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D516C12089D
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 20:42:17 +0000 (UTC)
+X-FDA: 85449412314.29.C4AE491
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 409378000C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 20:42:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOD98SOo;
+	spf=pass (imf02.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795034536;
+	b=UFUdiDaoXFd1UtHDbdR+GZ+nDNj6MySXDU2uJd+muLY11/ZQ1dpV0R3IaunWDazuHLKfha
+	pn/KOlzkGnLdGdmHNsjnV9XhkBGR4YVgXu6Sulm7kmOEF3BqHNCv0KJxcDFEiW3UWevgb2
+	oY2DCMHutQGqCyLPTUbvAeCcZ80mwZc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795034536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d8rquWTazZ5G8aGa44Uo1MnSmHARaJ15nMAitm9qRQU=;
-	b=KvrnS4kQPqEMr5FaGCNw4KIDwpv68iiYHYbgDgpq4q+rP8qLtwViGuL/K9xzqUJpz3F5VD
-	hB7J16Uq9cqqL0HCLR00zhCnUHftJicxpuE6/4sOqGFPKgktnia0WTcOGCaJnayQKBSxZT
-	fq1VvcRxfqWyR8dRCcfyJKUhKk+sttw=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795034420;
-	b=uU5iY3HYbJBr1LUkpuz6nXaE2uEqLGjixPkEXRausx4T2zK+0GGLZx/4k+sXCFC9blXBgD
-	+FoAdrnqMSa3vhzmrO/VC9HfHAEf8i2E5PaRQNVJJX6qcfI6yflkCDfbhG3yRiMExp+Wcz
-	HWMxxAZDDLlihStZ3dx5M9EWp8eqVMM=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=BUflXr28;
-	spf=pass (imf21.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.193.120 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oKdWDC4AEBk2Hcf/+7yXG8kZ+O8lQe87nnHRZUzrqqs8aKgxlc47T6G3UxAk/u7yVjAHLmut17VwKgNMjEf8H7wK+x0VPY7Hu8RYoZg9zR9t7ll2C19MVi1rKdKLD39ffmMwM2zUvKD5eMnOPjTgb2oa/xH8//eAvS0c0gkF46bsd+Z2VHHWxyY4p+xydW6/umy1rr5vplE6oWi0/I0IjBMKb+OQlooTgFPxE0KeFjdivMAGm5ZGuxxlu5nDd6UiprfYrB1EslAjyFknftIpdf60CmAy2fSWI5lMNcmZ2dqz0aKPVOh/27pNepu23UnM/EVhC9asjKS+SyFoauSIJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d8rquWTazZ5G8aGa44Uo1MnSmHARaJ15nMAitm9qRQU=;
- b=mwSdsyfnZmUyOYRKkas9xHfL7p9Rs3o+Y4S/26CKfsAkG6Zji6TDTyPZfpCERb767m5R0Tu8x67ZEafm92JlmRmxXZcDTm66qxrG4AM3BbWcqg+oHJhlaok/MVe/qM1RXydY2PohqwU0mYTVO33VzUlCflmJ2GP52YZmdTL/CpC8VXMgkfohHQWwKr/BjOWu7fUjL17L6GYyU/Z/Yr0YTknh1V78x6zg/xT/9of7d9p56C5LOIqjCDTsAi3lmamlBlCuR6j/SqAs9uhkCGq8JZKRL37pNr7A3Ikc1/xFkG08FlvZGiMBftcNncXJPTAv0LAExMhAIsPBdJryTfLUjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d8rquWTazZ5G8aGa44Uo1MnSmHARaJ15nMAitm9qRQU=;
- b=BUflXr28xaoI3uHNG0lO4VDJWrUIhZZs4weFVsBrxUad1/uBnR3WM51vwGP2GGKPIjgBa+hk/b3YTDiuVwvwK7VMQbVKj9pjHcuif1VoWKpkZq28+6BPxOeN10lM5ZJTHhd8CwJiE6SBCTAGKXaeXPaODAKBRyjHRwIqQG/XTJcrchqQE/6Vb93iEG01201a7SFsmObBjcDgUMdYyPe1vvh54lYAEQJqU5cWhoI6LuKV84kY4RSwIYvfC+QZR5MYDYKMw7lzpZZIe6qp0cMDyOJBWZxpMou9nqASnljeDjwH29FfXNYgGJJ5Cjdau3QNvjL7uHhrfL91g1xeWH0oXw==
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10) by YT2PR01MB6029.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:59::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
- 2026 20:40:18 +0000
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc]) by YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc%6]) with mapi id 15.21.0615.013; Wed, 18 Nov 2026
- 20:40:18 +0000
-Message-ID: <049bdfaa-2e0a-4536-9552-a6d609f1e3a9@efficios.com>
-Date: Wed, 18 Nov 2026 15:40:17 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/17] selftests/rseq: Test affinity changes while a task
- replaces or drops its mm
-To: sashiko-reviews@lists.linux.dev, tglx@kernel.org, peterz@infradead.org
-Cc: mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
- paulmck@kernel.org, boqun@kernel.org, shuah@kernel.org, kees@kernel.org,
- viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, oleg@redhat.com,
- bestswngs@gmail.com, xmei5@asu.edu, xujiakai24@mails.ucas.ac.cn,
- linux-mm@kvack.org
-References: <cover.1794932121.git.mathieu.desnoyers@efficios.com>
- <ccc2a6c50429b1ad9c8d5cc45ec8e58c12df7fde.1794932121.git.mathieu.desnoyers@efficios.com>
- <sashiko-outbox-221459@kernel.org>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <sashiko-outbox-221459@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQ1P288CA0021.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:c01:9e::27) To YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10)
+	bh=yGYFAZyPSCRNjDclcP1I3y+zEfg7NXEfs5NTufJGWEA=;
+	b=lxocp7lf0dt+41g5q2Kx+c6ptRwKzRnjS9H5b7wnt1BnBK4YYZ4iF/rGod7Kb+z/Fv0DOl
+	Bz1n0MQV28Pr0KhcDuYw0KsZ+ui6G4tivTgpQH8vhaZmmWa2SHJ+XCU/QEaTHY7BCVze/Y
+	00vtT3B5I8mHrbTt+aej8wpLRXR/RuE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOD98SOo;
+	spf=pass (imf02.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 0B70863BDD;
+	Wed, 18 Nov 2026 20:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 04AA41F000C5;
+	Wed, 18 Nov 2026 20:42:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795034534;
+	bh=yGYFAZyPSCRNjDclcP1I3y+zEfg7NXEfs5NTufJGWEA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HOD98SOo2y7LisIyear+vmT71uL7GcKw4TOcb4yz+HJhLShq9FVnXgPGBj0IeH7nB
+	 NkHXUPLZ6DRpt4YwIsK/2RvI8yv0k+FRz+5enF8Ej27HdLMrk4C6B2ytR0+pLqQK/z
+	 oMprkQ42FVzf6Xihen6u2RRCEMBBDP6MuBmjUaMjT1cdjCXVhnN+aewx89/JyIs4Gi
+	 z3B+N334YoohR8XLQNcnWbDUIliIcKGMIxLBPHjkMAQHHjbscX63CQ3tBhM7+cFll9
+	 GoLv7GUXN2rPT8+o/rRkgW8EvF037oveTAIM4TQRC1KdjuJH1V1Z49qgse9IJGO+tp
+	 XSe3e2bfxSr/A==
+Date: Wed, 18 Nov 2026 22:42:10 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v3 00/13] Namespace for namespace roots
+Message-ID: <av4NonrcCxzMoDyz@kernel.org>
+References: <20261118193539.240065-1-jarkko@kernel.org>
+ <av4CdM-eW73oO4wB@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT6PR01MB491026:EE_|YT2PR01MB6029:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8207e728-fac5-4185-de7f-08df45b42870
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|6133799003|22082099003|18002099003|261009223027099003|56012099006|4143699003|261026121527099003|261102123227099003|10067099003|261028144727099003|261026140227099003|261021121427099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	2e/XpcRoqa618ESVIc2RbVKcE2VzMU/Nx+S0tHd2+u4NVn6lRra+Y6Db8IdVzBacfwKEFp5vcjRg/sddyU8lD8mhVlup2ImTEGhTH2wh6S1LX/iSLJ1G/O/Upt7sGlvRj2Q85W9hlPqVkhY4/YixKOHZ/7A1H71yTMgIv1iGBNqZNP1imhxkFTmSyBiOmS4skylb0MtFzU3IEjtCi8w66VmUCmOpaM8fXYjM5uA5rD3TT6MM7LAVzpNUqGO0zCokmKve0Xs/P6u2cMjIL8TXw7nCG5lTWk6YqVlUd9cEVD+qP+aRuo4mh/fkl6K6JLa5c5a1q40FnKm/OuxYMzUUTJQ1nLuwEvBc2PTYvhP6GQC7J44KTDrb+0BTL66OxAXOsN2Ut0th6B4iVWlLXBe9wh1RcwWSzrj+fP8+roD0o/fxNY0cCDBjOS4w7QdQS7MyMC04Vz+G3gdnhwC5RvwLyz8EbSaqx2KfVj3kBIXdCsfFmrjmxZ9QZfyprS0Rkqd3u9FfEcsLXJl/b8DM10r0qcmAly5Ft61P++FJQKdjnPWsDCb5N6HdVjDpr/wnBURrtORrKlCCAzR6dpHR2yx3jzhr0GrU/TCgJwo3l3Wuleo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(6133799003)(22082099003)(18002099003)(261009223027099003)(56012099006)(4143699003)(261026121527099003)(261102123227099003)(10067099003)(261028144727099003)(261026140227099003)(261021121427099003)(261022105027099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MmhuZ1cwSFU0Njh0Y202YVhQSkYzSENLaWJTQWRwMDVIRHJERkw4RUs0cUhz?=
- =?utf-8?B?ZG9MTmxjVFIyQkdndkhpT2o0dFlzeC9RaTIvaUhyeUpPb2FNSUlMWFZPWW5R?=
- =?utf-8?B?TGFHZWVsSWJCbEhGRVpDRTArZmpiRGYvVHdoZTFrdlIySlczcUhlbkpzQlhj?=
- =?utf-8?B?WXI4d3VGak9pdVgwZnNWRXIwSGcyeCswUEF2MndqWTB5Y3RIcGhJVU5DbExo?=
- =?utf-8?B?OGdBVGgyellnQkQ2em1PLzdiQ29VMjhsWno3WHhGY1R2WW40MXUwcHRGYm52?=
- =?utf-8?B?eXhKdnNGcFcrNFo4eGN1SFN1MUZjV0NmREhZdk14NXJldkdyMVl3LzRRTmtS?=
- =?utf-8?B?aTBqV2tQUkFXUTU0Y0pJVDdYNFJ6emVWajREcGZtZlF1VlNDajhERWE4S09w?=
- =?utf-8?B?M3JaaUNDb05zQ3B5aktlVTFpdUlDaHZwK3ZmVkJyTHI3WWF5YnFJRVNZS1BR?=
- =?utf-8?B?MTZqeGNrNjBzS1U5cWRKN0c1cHVPekVIcGs5VmhqWDFnUHJBWGdIR0dyM2Nv?=
- =?utf-8?B?ZXMwOGRiNEI1ZHJmbWg1QjkySXdGY3BvZm5mNGNBcmJlNzJGQTMwTVNFS1Nm?=
- =?utf-8?B?MzEzL3hzOFIwODRLZGt1NTVURlg5ampTOEtNRmg4akxRanBzV0MyQnQ3cFkz?=
- =?utf-8?B?eERMNHYrZ2hIMHBFK2pPUGNVaVhuWGlFWkl4dUNSTU5uOXhkSU50TzN6WGV3?=
- =?utf-8?B?MXEra1B3K0ZVZDRIbnIrbkRRUFhQTlVhazhVdkZqL2ZXZkZvOVhKQ3B0YkV1?=
- =?utf-8?B?RUs2SzFnL0hxYk40SmFtakVjNFBCL0QycXZ5TWt3YkdSeW14bHdtby96VDRY?=
- =?utf-8?B?MUhhaEdqbUt1QmtrTmVmajFwSGpNVWNSTmZXTmRidGc5U0I5YlBPYWlpUVlL?=
- =?utf-8?B?OElobWc5ZkRaYnNBYXlXQlBGcTY2WUZRbnhNcnhjY0JieUdweXZRbVJwTngy?=
- =?utf-8?B?VjZmdzBlaEU2STR6RHFITE8xKzdoVXM5ZWw2dlYrTEg2N1l6MktlV3lGYW5q?=
- =?utf-8?B?aURkcmRtbm9JVXNxSklyc2U3T0o2VGd4OUJ6VEc5SHA4eldHLzVFYzExVkkz?=
- =?utf-8?B?QVN3aUNMLy80VW5GT1hZWHVLKzBPK3Y0QmdVRGZoYnpaUzRCNnpERkcvUlZW?=
- =?utf-8?B?czgzYkR5Vng1ZmNSUThVM0NkV1d1R3ZuVVV1c2I2RHdxMzIxM3Rtc2NjcTYz?=
- =?utf-8?B?YmZmdFhWenVzMit6a3pZWEdDa0JTb2pheWU1dU9VL2I0Um8rZDRRWlhoNmZs?=
- =?utf-8?B?WldaVjdXNDY2NjlOVkF5U3kvZENob25YdHNVZlRiYmxhdFNIR0dxd01NdndI?=
- =?utf-8?B?eGRxeHVZM0IrMUE4b0pTODhLQVpSNHBZZXhSUFNud3NTQzBvRVg5alRJbjlD?=
- =?utf-8?B?d1Q2S0pHTHAzRy9xVDN5TWxrNmhhbDgvYjJhOFJ6ejVyQmpuNHJzWFBGRXRD?=
- =?utf-8?B?WEtSUXJucUFPZ0tSQ21YYlNFNzA1YVhva1NEalNqVVlNVGVaYXhtQURIOWx4?=
- =?utf-8?B?eXdSVkZEY2RBSmJXR2JEU0IvQ25DY3ZuQVdjTUhLdzRWZjBFMWtYRDFla3Fh?=
- =?utf-8?B?VHJYYjZ5N1lVSUtlVUtQdDlsQ2tHZzFZRmZnZnVzTWNYeFMreDNFZGxEbURh?=
- =?utf-8?B?OFdMQWIxMkdxNEVkRC9iNU9vYTM3YUxhQ2F6K0pnVGJGZmVNVVlnQy9JK2U5?=
- =?utf-8?B?Vjh5V00razQvY2xleWZSa2JVaFhCNjQ2c0ZxZ0kxTWRXUmVaeGs3Q0g2ZmFM?=
- =?utf-8?B?MTVBUHVnN2pJdm9ReUxZczFlNUp2UWZUUVA5RlFBU1ZiNkpQdCsycE91ejI2?=
- =?utf-8?B?RXRiY1NXR3g4Uzh1Z3c1bXdYb0JiUUVTWFl3Sk9SZ1dxU092dWxZbWZjeTQz?=
- =?utf-8?B?TGZ5WjZxb0RhYWVOTDgwdnBrV2Q3RG52ODhsdDJ1VFZUTGxzY0IwMTl1SEUx?=
- =?utf-8?B?QUx0MHU5NHdPVnlMTU5YTUI0OFAwdi9ETWdRUkhiUWQzZFJycXI4ZFpnMHVK?=
- =?utf-8?B?eWcxLytOTXZUNXYrbS9qZHlnanJvWkN2MklyQWZma1JGUUtzZEllc29hbVJ5?=
- =?utf-8?B?Y0hOWjhzbmw1Z2RiUEFJY1RTaFBlOStYdnRnSy9IUXZwMDlZMkh5emlGcHpn?=
- =?utf-8?B?eFIwbzNzQTI1U2c1YVJwOE9IM2k5LzdQRDM3ZG9MOG1LNUNzNnFsUm5yUzFE?=
- =?utf-8?B?WXN3M1N3N1lVRllOYWU0amF2QWRyR3NyeUFvU0tZL3VHdzlzclNpdnloV1Nn?=
- =?utf-8?B?MnFRUGdBaytIRnh6U2VlWlgyT1RSL0krYzBLK2NRNDdrZktHeU5ZdEJpYlBl?=
- =?utf-8?B?eEdpOXk4bCtyRDE2MGZlODdmZFQyREJ3aFdqc2MzcU16Mk1zOFgvVEpJUHRK?=
- =?utf-8?Q?ZY54BDv6KwWKdbKL6+l5M8FllYYgo50nr8Dv7?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8207e728-fac5-4185-de7f-08df45b42870
-X-MS-Exchange-CrossTenant-AuthSource: YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 20:40:18.5646
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: npHnAiuLajxrSSnyfIkrruZTJv9X+P5hPbpUlPz2im/JheACzP/ADGDAKGWgbB94IF2UFFx1gi+4ClpaBnUBk8HAmSbh3uTQE3r3XHsrlmA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT2PR01MB6029
-X-Stat-Signature: efgh4khzwg5r1xu3n1xzczfr3fbung5i
-X-Rspam-User: 
-X-Rspamd-Queue-Id: DBD4B1C0005
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795034419-641846
-X-HE-Meta: U2FsdGVkX19oaKbwaeFfS6GCfmYwR3uxAfCbO+cx1T8eKRliYvWU1xQmcqcfoA9xVvbdz0KyHDJ61QtEUVUSmML9G9RnL2qRD+k0GtmU1Lg69EHXQ72WUnmmeYFJRqYIRVQsVJod3iQLVnT/ZtxkW3S1wVbVHBNHJM6VdiiJOicmEopH20tG90/3Kn5/yiCDlGdM/6QLniDMYjtjkK4cPJnNOLQyx+4rmG2bjMfXv5mlJQktuch/6CO3tvvTFkaVUBIfibl2j3zFHpsIQz7P9ZhML/UQNBSNzu8v2M8Tk80Q+EGWiSbQ/AbjPxheZ+btedWUDBovzRq/5xcC/TqLC/uw8ng3ChZB0PItZmHRTObX9ON/nx+jheMp5CJv4WsBYkJnRcdPcBabmFoD8bpsyBiLBhjvvO6E9hR/ajNdCyZsGelsr75z2iia/rCJJHuoVioX+iHou9EVcamNgkBCPIKwSDVvvcYiVhyEdOCNTfqWpHZqSSfsx+/M2+NthQTqRUizqD6kMTvg+rVp9ZsHkIPQTrdPjSegN8LdKUG9tj/rtGsXiOS0lrb/q50vLoRYgHTqDIMxutyLNMU81Ru91D3oP29PXrem12bCVrNcyAP9EmQoUQBA7gyaynDIuh2+SgpNx/aLgVMblGffc4Bs4mjL9k/nJa00i9ZHEh1bN1iYmIHmk28UK6ap4gsFltb3DivDktziXtTsWg51MbXgdtJ97AP8xRm1M6mEL5BKSyCUn5Umbw0XPHc+EwhLrxNnj24386C8QQqfpATUUfSw2frUGgR56vBS0AWJDCh3e9iWPicGPtSH7l2RZSzZ9oMBGPLH0Vrt7dS7xnaWhumkratinNfeOTzbdKfFJNR8PN+aE2wUtcBAnojen21EUNjLP2u76MRZsrccS3jzGw7X69nTf8iQJZqZH2P2Hq1gmRQUr+6aa8ZsYvfdAhZRdY3HmWkhkr4YHqQ6mQhAxD8
- OHOrNjCG
- svxN2douU80V5vdtiS5sqPKw59pWR0oYENgAY8/8OSmHIby4RMNRbxobGcUd2ceDpSay8I6T+B58XQLHRTf8B9BdSyfsLs2rY0KNQzD1IhUxZjwSBvv3HPNPTMkNSDUeiCJZbGQ9b06vIgvt2vKG5S15Eb/fvEoIns90RyQ9MTrjaRch0NUjMdJ0tQR9vzp2Qd3IvlxpICL8VBGL1VQOIqtVJeS9bSxXlx1ZUpnjNsc0JfhVhleOXOKiMcsIVdVkeKNApMuOqZUdMdeXDPDN+laj815ACzJTP4XE/Hc506O7rteJjNpDXCgJZKGpMdm+b5pbujsqV0m6y8q5v5vYpJTsvKXEqGNqZSvudF8Jp1w7dGzGtFDrH5eTgqXCTtLWxJUXYlyAYvnGU1T/vic/3e5jybrkMbblxe0fabmf2ThDcupTg6EPdH1w+owG7XxUaAbsWIdaDx+7DhoNs3dzkhVN1EVXTs+e+aMexJnYjdK38ibGk6FvW6gUpqw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <av4CdM-eW73oO4wB@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 409378000C
+X-Rspam-User:
+X-Stat-Signature: mqx4hpekaxsmfjco6mf5hrocknm39or5
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795034536-114459
+X-HE-Meta: U2FsdGVkX1+jGrotWbo3K9ZQ8XmFbdMZ2lB2uhN0Pg7460C0WNLojSa88vglN84kn4GzXr1WBZXODBcCOcsLguv3WTTicdxvYX/RV6xQl5pDIewT58OrNxwStXvhHe61vAJK0C6zn9/+Q++INIqLx6qW72Sp6zKJxXiiNX/UpkikRUA1/roTOjt5I6XRWFhzJwa3LuSVMt72oVVW6B/KTVXJkPjKsKYONvwtobEwbPGIS2AAOEIneEULFTPJ3/rwwfRHtvRU/eZ18rfD+TvBBIaubteaxPX8+FDBNkajrnmUahzymI7NHYXkcdL1AhMxcNvfBhjMBtK9H9KTdNKMtNmbhkBd4p3yYKd4+470B/kwubP0R53iIVfbwcUw4dQWbMtMOzfcz9orAP1qhFIXoLrKZTmFsri/VmavFMMZtO7Uv5nKvpNHpstRurUsBEDFT62vc2zibROXUkHbymIHJf+0K3wNfESXFwTwUjdex+BzBJa0Cl8Stdbqyp863vdjWSlvCS2plfKD7B6z0CtEz6Sw+An2EvnX6w67zyG+PQAIPKQ08ttLOKUuVJGUll8WdKQbvPq4TzOX8czHrkbJtHuSOu9RrGijKk4k1qdGLgBa37fwn6Mo3nN+WLABdKMGxOXo08KdJJj7Lg1cHFeJ+36KdQk1FMS7HMywR40D5RZ6swEbzNSLiFTWcG4qOQRM06yJNS+y11+ktCN7zTkvJmsilOCWfAere14h2+25FjznuTQK9kiS2qcGGAiKHFKAdM0eZGlC5WIB3WKAtmchc5g4WbzRupM5o5jt26JIQVz4J5Onry4rOEysWQujdeXbzlDUkwRbVA5sTcALzddqYalroIQmBhfR+t1zEVt6t/Q5EpWp+h1yjGpkKtzlvQALWqhZ/Wrx//NxS1f6F+iDtZ5JKdVQ7QMKF/6SySm6lQoGmYe0rCoDi3ouh6m6JvytsrVxkp+TLBCeFllsLsr
+ IZnmOw+T
+ xHXj0kxqDHo7Kyxsp5nPwdC+EzQv0fN8PkC8ldGFgp9EZ7GzR5RBwfz4di+6T0wrRv8HTiM878oZHgoz5iQiNOOyX4U04P3468pMVFkM47HxfdUt/BpzVGhc/nzLfMuh/QCfUWcfQeQgswAQPQ2zy3ymYig8ywAs6kmgUEEV66acQLtUYzJHzyxiv2VKTNDXysTxEPTlPkUhBabxyZOimqsNv4CDCMw9fur+8uE6BESN2QuYhjpfBHISRYVzzsTK01xucdHCb9+O4L8jPvED8ycV2EyZRkcQVUZmvPxVsoA9XPQkPfm6UWlNgXFCtJn5gH23I5UOhcAB3SC8HUOe39gExB55zO6w3waXdbLekP7AZRCwTU+uKNM70S1oks9WGZUnjSCKbIBHHcfmrR3iZC6UbnZHKOymvOSAB1zmZl0Y4Rzf6snce2Qt19UkZVuuk/bp9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,46 +130,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Should mm_cid_teardown_test also be added to 
-> tools/testing/selftests/rseq/.gitignore like the other binaries in
-> TEST_GEN_PROGS so in-tree builds do not leave an untracked binary behind?
+On Wed, Nov 18, 2026 at 09:54:32PM +0200, Jarkko Sakkinen wrote:
+> On Wed, Nov 18, 2026 at 09:35:26PM +0200, Jarkko Sakkinen wrote:
+> > OVERVIEW
+> > ========
+> > 
+> > A root namespace (rootns) is a kernel object backed by a file descriptor
+> > that binds together:
+> > 
+> > 1. A full set of detached namespaces owned by a fresh user namespace.
+> > 2. A dedicated PID namespace for spawning processes into, signaling
+> >    members, and polling or waiting on PID 1 exit.
+> > 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) populated
+> >    directly in its target user namespace before going live, without
+> >    inheriting host mounts or cloning staged trees, while still allowing
+> >    new mounts to be attached at runtime.
+> > 
+> > Work on this feature started in 2025 from David Howells' container object
+> > patch set [1], which I turned into a namespace for namespace roots and
+> > rebuilt around that premise.
+> > 
+> > While the patch set is manually written, the original motivation came
+> > from isolating LLM agents. Running untrusted agent workloads made it
+> > clear that OCI runtimes need to minimize their live configuration
+> > surface.
+> > 
+> > Assembling mounts, credentials, and namespaces inside helper processes
+> > with a half-configured container is what I see as the main challenge,
+> > and the existential debate around namespaces and container objects is an
+> > unfocused discussion topic.
+> > 
+> > [1] https://lore.kernel.org/all/155059610368.17079.2220554006494174417.stgit@warthog.procyon.org.uk/
+> > 
+> > IMPLEMENTATION
+> > ==============
+> > 
+> > rootns_create() allocates a rootns instance backed by a pollable
+> > anonymous inode fd, creating a fresh owning user namespace and a full set
+> > of detached namespaces: empty mount (CLONE_EMPTY_MNTNS), PID, UTS, IPC,
+> > network, cgroup, and time. ioctl(rootnsfd, ROOTNS_GET_NSFD, nstype)
+> > returns nsfs file descriptors for individual member namespaces when
+> > standalone namespace operations are needed.
+> > 
+> > Superblocks are configured directly in the target user namespace via
+> > fsopen(), FSCONFIG_SET_ROOTNS, and fsmount(), allowing unprivileged
+> > callers to assemble FS_USERNS_MOUNT filesystems without holding
+> > CAP_SYS_ADMIN in their own user namespace or entering the target user
+> > namespace first. move_mount(..., MOVE_MOUNT_T_MNTNS) operates on any
+> > non-anonymous mount namespace fd: on an empty mount namespace it installs
+> > "/" onto the nullfs root once, and it attaches relative submounts both
+> > before entry and into live mount namespaces.
+> > 
+> > Once "/" is installed, processes are spawned into the rootns via clone3()
+> > with CLONE_INTO_ROOTNS and struct clone_args.rootns, without mutating the
+> > caller in place. Pairing CLONE_INTO_ROOTNS with CLONE_VM | CLONE_VFORK
+> > and opening the target binary via openat2(..., RESOLVE_IN_ROOT) on the
+> > retained "/" mount fd allows spawning with execveat() without copying
+> > page tables.
+> > 
+> > The first entrant becomes PID 1; once it exits and
+> > zap_pid_ns_processes() reaps all members, poll() reports EPOLLHUP and
+> > rootns_wait() returns init's exit status and rusage. rootns_kill() walks
+> > pid_ns->idr under tasklist_lock to signal member thread groups.
+> > 
+> > CHANGES
+> > =======
+> > 
+> > v3:
+> > - The patch set size increased predominantly because the coverage of
+> >   kselftest had to widened to cover the introduced changes.
+> > - Replace MOVE_MOUNT_T_ROOTNS_ROOT with MOVE_MOUNT_T_MNTNS targeting
+> >   mnt_ns nsfs fds, and add ioctl(ROOTNS_GET_NSFD) to open member
+> >   namespace fds (Andy Lutomirski).
+> > - Allow unprivileged fsopen(), FSCONFIG_SET_ROOTNS, and fsmount() to
+> >   configure and mount FS_USERNS_MOUNT filesystems directly in the target
+> >   user namespace without entering it first (Andy Lutomirski).
+> > - Fix locking, refcounting, credential/dumpability/timens setup,
+> >   pivot_root() lookup, and cross-userns mount checks across copy_rootns(),
+> >   CLONE_INTO_ROOTNS, rootns_kill(), FSCONFIG_SET_ROOTNS, and move_mount()
+> >   (Sashiko).
+> > - Mark PowerPC rootns syscalls nospu (Sashiko).
+> > - Update documentation and kselftests.
+> 
+> I.e. before PID 1 and /proc/<pid>/ns/* existss, nsfd for namespace other
+> than root nsfd can be acquired as follows:
+> 
+> 	int mnts_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
 
-Yes. The next version adds it.
 
-> Does incrementing i before checking target cause the first
-> sched_setaffinity() call on a newly forked child in run_exit_case() to be
-> a no-op half the time?
+Unprivileged caller becomes the owner of rootns->user_ns. Each mount
+syscall then just checks CAP_SYS_ADMIN against rootns->user_ns.
 
-Yes. A child inherits the pin to CPU a, which is mask one. A change to
-that mask returns early, reaches no mm, and still counts as a change. A
-child that exits soon can then get no real change at all. The next
-version restarts the alternation on each new target, with mask two
-first, and makes i unsigned.
+The user space wiring goes along the lines of:
 
-> Can victim reach its end timestamp before the parent reaches waitpid() if
-> wait_first_exec() and forking/reaping the setters take at least one
-> second?
+        int root_fd = rootns_create(ROOTNS_KILL_ON_CLOSE | ROOTNS_CLOSE_ON_EXEC);
+        int mntns_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
 
-Yes. Its end is set before wait_first_exec(), which can wait up to 5s.
-The next version adds that wait to its end. The case kills it with
-SIGKILL anyway.
+        int tmpfs_fd = fsopen("tmpfs", 0);
+        fsconfig(tmpfs_fd, FSCONFIG_SET_ROOTNS, NULL, NULL, root_fd);
+        fsconfig(tmpfs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+        int rootfs_fd = fsmount(tmpfs_fd, 0, 0);
 
-> Does leaving execs unreset after wait_first_exec() make the execs check in
-> ksft_test_result() always true?
+        move_mount(rootfs_fd, "", mntns_fd, "/", MOVE_MOUNT_F_EMPTY_PATH | MOVE_MOUNT_T_MNTNS);
 
-Yes. The next version counts the first execve(2) apart, so the check
-needs execve(2) calls after it. In 8 VMs, the case saw 594 to 758 of
-them.
+        struct clone_args args = {
+                .flags  = CLONE_INTO_ROOTNS,
+                .rootns = root_fd,
+        };
+        pid_t pid = clone3(&args, sizeof(args));
 
-All four were found by reading. The tests passed before and after the
-changes.
+Note that example is uncompiled :-)
 
-Thanks,
+This example makes me feel that perhaps RootNS is not the best possible
+name for this but this rather should be e.g., NullNS?
 
-Mathieu
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+Br, Jarkko
 
