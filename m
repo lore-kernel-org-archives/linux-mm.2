@@ -1,85 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BCC606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 13:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E235960A2609
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 13:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PFIGUSfI
 Received: by kanga.kvack.org (Postfix)
-	id F0ADE6B05B4; Wed, 18 Nov 2026 08:40:35 -0500 (EST)
+	id 0DACA6B05B7; Wed, 18 Nov 2026 08:41:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE22A6B05B5; Wed, 18 Nov 2026 08:40:35 -0500 (EST)
+	id 0B2F96B05B8; Wed, 18 Nov 2026 08:41:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD0CE6B05B6; Wed, 18 Nov 2026 08:40:35 -0500 (EST)
+	id F315F6B05B9; Wed, 18 Nov 2026 08:41:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BCA906B05B4
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:40:35 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 81CB7A8441
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:40:34 +0000 (UTC)
-X-FDA: 85448349588.24.4C8B3D3
-Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EA1B1C000B
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:40:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id D46F26B05B7
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:41:01 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75A18A7E69
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:41:01 +0000 (UTC)
+X-FDA: 85448350722.12.BD1B07A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D01421C000F
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:40:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PFIGUSfI;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795009231;
-	b=wSf22mEwHuKNriVWbWrDRKsd89lukFDIXifxtljSWTNN4/3eGKPq8F9E4Vq5wL/p5Xde9U
-	7CAQ+fn3yNq2GM82GsVys9s/vmyIKm67+47lPRm+3KM1QhnFAGrwSBFKa1GN4/w3grfX6z
-	NKZfRQoDqlQhz3R75V0uC0HxEqgQ2Nc=
+	t=1795009260;
+	b=mmak+EUP3BL5XHXc/IYinCKU0EdcF/Tah2crSiBHONjwZ7t/Oa/lDjlhITtSWSz6lgr4qK
+	Uq4mCrhhst0vXtWvXuJ3D5gsw8MPCoHNCXlW51Q1yLdWg0bQCCxVeA5BvKD8jl1+IzoL60
+	fC6r5iZqvDoNwaGLAT626PKNuOHduJM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PFIGUSfI;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795009231;
+	s=arc-20220608; t=1795009260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VSl6vmKd8F9dLMXuhSHY6FVcVpFiASZcDBBbw9C+TP4=;
-	b=M5fcaqom3sfGshmd/20GvxoUgvLBYYHkqlM7x16pVI6Q1yJaQaEPyMbEBU9xo1WbOqfJpa
-	SEwPDigU6yvH3p+aIbmG/kCgz+Osiun17VPzZep5Q9QPDuliCMugJHzkZj96aUAe2H6LtS
-	Bcnh7UcJ2cMnfdrYNwIq4e2e7VOdnMk=
-Received: from unknown (HELO lgemrelse7q.lge.com) (156.147.1.151)
-	by 156.147.23.51 with ESMTP; 18 Nov 2026 22:40:20 +0900
-X-Original-SENDERIP: 156.147.1.151
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.151 with ESMTP; 18 Nov 2026 22:40:20 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 18 Nov 2026 22:40:20 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc: linux-mm@kvack.org, Rafael Aquini <aquini@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>
-Subject: Re: [PATCH] mm/swapfile: really fix integer overflow in swap_show()
- and swapon()
-Message-ID: <av2qxMxZXDIlGsX4@yjaykim-PowerEdge-T330>
-References: <20261118112610.122799-1-oleksandr@natalenko.name>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BALo+4Kg6TAxK4vlJgbnPV/8t94beUsE1Sdo+uMvRH8=;
+	b=WXswD6OuwURYqwD9LjHEI4sEdHpmVBl9u8LSiv3Pu2206EbSlqACvnk+EMlhyJrh/iz7f6
+	VYQ/QuLlxcj1m59viiG42K+H0/Fgk8g/qQ4wlJDJHuTThSH52BmUkNTKa1K2a3NXbKl3cw
+	QHmpUCf/8MUzA4q7TRXx2zg1L9OQLiE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AF54F40935;
+	Wed, 18 Nov 2026 13:40:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6239F1F000C9;
+	Wed, 18 Nov 2026 13:40:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795009258;
+	bh=BALo+4Kg6TAxK4vlJgbnPV/8t94beUsE1Sdo+uMvRH8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PFIGUSfI/35m8Ua7f4BVsaqrMghKl4zuRtAbIzKtXIute+iKRBxAzlJUFmC/G7N7S
+	 HXewHpvz5HY1unvNcp0UxbMVFK9FfX68Oro4z2qqTOhfVvBQ1F95QfYvQpNaJVAzjm
+	 E8QFjkFRhjb+9YIfhSWS6AqlonxffQsQKR9UR7Lca5cLRnXNc+dyr4/b1ceURtj+al
+	 yjfU9VA3Ahcopav2U26moJ7zMnEEGvhZe3vUK6jPB49L9gX0QcH6YVgpDHQIjraEls
+	 /kX/y4yYnIijIFV8UDhdB9aMcgl3xtem8Q3YV7JuRN4ecYWlbUDFFILz/GiwRTTagC
+	 rcxis6dahl09w==
+Date: Wed, 18 Nov 2026 15:40:49 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	sashiko-reviews@lists.linux.dev, Sashiko <sashiko-bot@kernel.org>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Chris Down <chris@chrisdown.name>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>, Joerg Roedel <joerg.roedel@amd.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Ketan <ketan.kishore@oss.qualcomm.com>,
+	Mostafa Saleh <smostafa@google.com>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, kasan-dev@googlegroups.com,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 2/7] mm/page_ext: fix client data alignment
+Message-ID: <av2q4RAESvKh0chV@kernel.org>
+References: <20261117120627.50601-1-songmuchun@bytedance.com>
+ <20261117120627.50601-3-songmuchun@bytedance.com>
+ <sashiko-outbox-219498@kernel.org>
+ <20261117114635.37d4c1f7f1b38cc4ce7fb886@linux-foundation.org>
+ <F4EDF1D2-D02C-4339-AA30-422D576B735A@linux.dev>
+ <20261117202136.9eb67013389f3bdefe9b3a15@linux-foundation.org>
+ <11DE08A1-5F83-4BE2-B8C0-B426441A957A@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261118112610.122799-1-oleksandr@natalenko.name>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EA1B1C000B
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3s1q8uruaetd57ykrem6y1rdkn5wtip9
+In-Reply-To: <11DE08A1-5F83-4BE2-B8C0-B426441A957A@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1795009229-443352
-X-HE-Meta: U2FsdGVkX1+/Uesbpf/NVFxjmw0lLfsJQIh3JkHqGb3F9/enocqXgQe+Yl8wtv1ZxtT+fCpXsi24nrlyO0+ObVxylA4JP4TWQmW+2mFfcx7hy7L9x+mMzwhw8YMM1aLee0S7ma8zAdkqrHBFwXo485P4cyE7pITp1/KDLp98Fp4PEiwn5PxGPsplrNl6XgOWQJeM3oBaNAEmtJto/n+yyl3KwaGY0J8JMm2yJug2EfF5IPVGOlSdXSmlYzVYkD3ap+q8xj5Aqm6fvaQK0htEc2U9i/cszyxtAbn3ovvk8TutxqOEzgcbTYor58ubaXxqJy9/sp8PBLgzlRiWBvW/dXXPloUm0hF2RBIGRyT1TfW0m5O60/HoGQTP+z2OCkxedPm9j8fUzZbD7PXHiv/E7Mb0SGd35W1BtC3gYLLaXcQKWEf+pC9Ua+ffQC9DHABpw5IkCmcGJwM0ce22QqOsBf+FEEyXwfM68oyT+wF+UINcgQTeW9O3ShOzAmC5LU8h5ukrHtBhU6YSZ2PlTJ5Gv/Su2siwkDjYIFlao9H09GBEnyeynfyHYol9LmhvKdfm4iR1s2muBW53wTHJQwiMwDiXtAaq4dUiXnzfjWtysBh1yk4cxR/doJGSYgx2/B1iWWlpwLu7zjq9wpA8ncBuC99JJNpHMht5a3viE/fBQJRQmmb2Rg0g5M+7Kj4EujjWgfbJJFeUOiPCSETmgmuVvcCr1xqS2YqnLHqSH0miCFrGp+/vBPg0EzelrSlSUCHU+TXUdhX5bDPkj1Cgt66N8cFFKcKgDP4z9sFY0Ml89UndV/OJofyaxx9VqGgQjgPl53ionBm5CUQWRuNMY/9H6J1OPpSTICQYjBW6lkYtqDQiwSwG2DazI69v1gG+DFYDQa5QsXhkOKD4gwi/qHyawAc0MlOqi2OV7fM4/VX6qCorg5TwKZaqAJshlv7kcKKF1I/BgvBdQIFY0Fg0nkW
- o23UWWFS
- AjJsxRNtIKzqMMpSY2hccT6QMCn8Uues7KdhGY6fgUniYl2BvT0yUuSviIRtgoThaY2dmuL8DMkiXs87/eSVu6WxrFVfryXq3c9t6G+0v9kkx+GG4KckjVGCpLmheUdmGtF2a0EG+oelimWIwSod7v3OcytO219HzmRuY9tFlIAPp4tTSr8nmIlgVhDWeaEXalTyI6IW5VCn91RG5oYSnUQFzCLOZGQDKpag6Vqu0TLnAN0m/XNbh18/9K0fdHmfZkW+Y5GbjB7ivrFLkYyGJfI/d8A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D01421C000F
+X-Stat-Signature: iznzgqb9y4bj7uii7c8u9e39dbamhm7z
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795009259-669221
+X-HE-Meta: U2FsdGVkX1+cveZ9eXwx7/Lmym3kTueG2+heUTCJKx2O+E4ymOHJCqF1Ifh63tmN4wdIZDOHBrWoTDEdwHGNuAV8o8oVimQ08mG5AVsaw2l5Or13sbiUD8edjOzoFseoUl9/Wcg62knSh1U8N63nHUiJl736+ChtvdgMOiOrCaiNWlhZf5xtlr1u93bq7rIGY//wr5Yz38zvAcl1G6laQ+SGJgE4MgSY+ezBxQCxzlkMd9QT1J/gdwCyLH+YUvt3/dcTkvLrXqnubz7zit55DDrMV5fFVniQwNJqbAb6c27OwjxEuI1JMZJC31GZTvR9xKLgj723JjSevbpH0uEl2xyA4lzuXZr0/fnEmA26n+s8IVCcPWpVgWV1kPRqCv147oA7TcgTJDfUczB9s9m+HOjMcTU1kpgguFRakeX5cKs6ZdyOqj56sDcP52rt6PVB+KsVDd11M5GDiQVjIxisUXKWyjTOnHizLnLIGuANJdJhuG2ySzL8srA50kQKE/Y0X6jgpLYmDhbWypLPg1r0tBYm82k21r2KOvf6YrRkmw5trVxoJm8IsZNWjPKptOnF68pio9H0E1MRMnj79cMH4xuFpO5A2j7c6lEcCAob7lU4iJNYRySX/oSKHlh5Qic7pCslJkZlwmuHkPbvtx8W1EJ2Wd5ZoMhlkaUenef4vht1K82GMjtKfhPkz3Y2HIgLaRLi4ShxLDTGrT/wzuOkdT7acyHbGj6hdtiU1vabbzqPzX8syTtAeYfAGN48WzGibrqHB5z32HoORJ34vXqlSh3LZh7z/gGtRhvbBbhIjf69xSvFPSrSRdB+neM0uzJEv7mxlaudTU7z0ThoBlrmoS14AlErvv6rG2VoytyWbvIVEMPMX05ImeZmGFa8SRbS/GDGLXv79g4cOHWbPRPwNTYq04iBAqMS/e3+o90ZhK+QNUXhfEdfnBnvxl6XuCYr5ikAKsDFqxlHBhLqnYQ
+ st/lbQ8z
+ Q+Vhjuy/I4renWbXG4iAyEWWYncGIo01CKjiCzAkTt7sMPEaOX57w7BqqOmTKbChdOMo9yv0VZBbDkE7tlGkcmcZjp2IW2BFP/Ly3E0FgvR1X0zuPOfJvpEg3zLTf/iAz+f0EFEPIk3trJ2NcTQUP7oZquSyCVi7bswkWSqaNAuhaoh1mv7OPDqll19RRmbiuzEgsYGwShLN55q//Tie0skA71uRhXrF/gRpS7HYoAnmmT0DV+m65uDH3xYTxYHQ5w0FgteLgtGsuqDRN2wRI/xDSLZiP4E/vLlabJOxkTl9OFmT3pOocFPpgbCttC4SHMdIihdABA9aDW+qyFtZeWjG25op/LWGmWC63zMfxw6dTEPA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,20 +120,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Oleksandr,
+On Wed, Nov 18, 2026 at 01:39:04PM +0800, Muchun Song wrote:
+> 
+> 
+> > On Nov 18, 2026, at 12:21, Andrew Morton <akpm@linux-foundation.org> wrote:
+> > 
+> > On Wed, 18 Nov 2026 11:49:58 +0800 Muchun Song <muchun.song@linux.dev> wrote:
+> > 
+> >> 
+> >> 
+> >>>>> +}
+> >>>> 
+> >>>> [blah blah]
+> >>>> 
+> >>> 
+> >>> Yeah, but the whole expression is quite reader-hostile, as min/max
+> >>> things often are.
+> >>> 
+> >>> How about doing
+> >>> 
+> >>> /* comment */
+> >>> if (this1)
+> >>> return that1;
+> >>> /* comment */
+> >>> if (this2)
+> >>> return that2;
+> >>> /* comment */
+> >>> if (this3)
+> >>> return that3;
+> >>> 
+> >>> ?
+> >>> 
+> >>> The code generation will probably be just as good and it's __init-time
+> >>> stuff anyway.
+> >> 
+> >> Something like?
+> >> 
+> >> static inline size_t page_ext_data_alignment(size_t size)
+> >> {
+> >>        /* No client data means no alignment requirement. */
+> >>        if (!size)
+> >>                return 1;
+> >> 
+> >>        /* u64 has the strictest alignment required by page_ext clients. */
+> >>        if (IS_ALIGNED(size, __alignof__(u64)))
+> >>                return __alignof__(u64);
 
-> Cast si->pages to long explicitly so that the bitshift in K() doesn't
-> truncate the value to 32 bits.
+Maybe add a const local for __alignof__(u64)? 
+No strong feelings about it.
 
-Nice catch. 642929a2ded0 widened bytes but left the shift in 32 bits.
+> >> 
+> >>        /*
+> >>         * A type's size is a multiple of its natural alignment, so its
+> >>         * lowest set bit is at least that alignment.
+> >>         */
+> >>        return 1UL << __ffs(size);
+> >> }
+> > 
+> > Well I prefer it!
+> > 
+> > The final bit-twiddle could be (size & ~size) but I'm not sure that's
+> > any clearer.
+> > 
+> > We should have a handy helper for this operation but I can't find one. 
+> > max_pow_of_two_factor() is close, but only works on uint.
+> 
+> How about changing the helper to
+> 
+> #define max_pow_of_two_factor(n) ({					\
+> 	typeof(n) __n = (n);						\
+> 	static_assert(__same_type(__n, 0U) || __same_type(__n, 0UL));	\
+> 	__n & -__n;							\
+> })
+> 
+> ?
+> 
 
-> Fixes: 642929a2ded0 ("mm/swapfile: fix an integer overflow in swap_show()")
-
-stable kernels show the same wrong size, should this also
-carry Cc: stable@vger.kernel.org?
-
-Reviewed-by: Youngjun Park <youngjun.park@lge.com>
-
-Thanks,
-Youngjun
+-- 
+Sincerely yours,
+Mike.
 
