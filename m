@@ -1,138 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5965960A2628
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021D7606A330
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=UGB+QvoT
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AONlAC63
 Received: by kanga.kvack.org (Postfix)
-	id 7E5AA6B00EF; Wed, 18 Nov 2026 09:47:41 -0500 (EST)
+	id 2685B6B05B0; Wed, 18 Nov 2026 09:48:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BD5A6B05B4; Wed, 18 Nov 2026 09:47:41 -0500 (EST)
+	id 23FA06B05B9; Wed, 18 Nov 2026 09:48:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ABBA6B05BE; Wed, 18 Nov 2026 09:47:41 -0500 (EST)
+	id 156096B05BA; Wed, 18 Nov 2026 09:48:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A9876B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:47:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E7F361C41D0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:47:40 +0000 (UTC)
-X-FDA: 85448518680.27.D1842BD
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id F2D611C0002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:47:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=UGB+QvoT;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=josef@toxicpanda.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E63026B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:48:06 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 795441A07A8
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:48:06 +0000 (UTC)
+X-FDA: 85448519772.09.705D60E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 99D7E4000B
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:48:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AONlAC63;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795013284;
+	b=ZRLhTlNbdhHS/8bbclmzHzI9wzzs+YqU4o5Yk2aSYuH54a1sTGfREgdm7/PRiZU/56G3E/
+	yz/75Pqv7a+5GMbRH5+r9yw3ZQAbeL4O0qPNEiarByWxbCUSNQZxjfC4lZEy0C9GNjlm4C
+	MZN4CQ9ATEJQEGtb9hGTqNcFvOt0CJk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795013259;
+	s=arc-20220608; t=1795013284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IgtmGgLwdp7YHZZLZXtmuM3LeEAEVVcvQiETOOFbu8o=;
-	b=aQ297mLyHyca4KcZSAnclwOzbWaN6nRKBogMGSTJQMsFCk0+Co5G2LeACyLKiUTgufvaCE
-	6F83YrzLuC0SD11j9IJzJXrQqUNote7oBgbZqloOWHqnO7+w8t5N3wVrhoLOTFL1CYzyUc
-	JHDhzcngBqvF4XJ29CCk5txIjO3YgRk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795013259;
-	b=g9VtPASzZZC1BQ4tCFO2AH/O+6tWJPF7Z9jz6+RvqzvE/jfOJqXHeP0FkXrqo+3DewP5as
-	B2Y8jT/X9LfCty3LS8CgTVZQ+v4jN2iL412Lo4SidIkMj5sS5rMzHw1E0Xl2JQZXwohYRS
-	K1aWsrg5LW3UjH9xORk/SklG+HMUVyw=
+	bh=dgIk0c6UNS62mWYSKVJA5NNvjxDOsVkTrIzwZXXROI0=;
+	b=PYr1flPpYxyRvhIIgzMi0JrXr0uvEmh+RAc44rJD06XUrzhrqaIVeRFxuCXEpETFYv5C0t
+	tc4EMumLcgWmWaQJ9sKulrRRBU2azEpOmr9MEhLLKk5vVjy0E4Ht3QR1vjKEk6g0JEe/cg
+	XYVM7ySDJr3gI5IvgKZ7YGT8AAO2rZM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=UGB+QvoT;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=josef@toxicpanda.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-949664ee41cso133415785a.3
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 06:47:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1795013258; x=1795618058; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IgtmGgLwdp7YHZZLZXtmuM3LeEAEVVcvQiETOOFbu8o=;
-        b=UGB+QvoTkmRi2i/+YTJXpCXcL+ZCyNVY3D5PuRUyA1MBxio1jQWEjyZlVaF/6sRKp8
-         B1jvoIcPA7brpbuz1LtlzOjU2kxzTsETlGjKl6CxG45sRB7hGj3QM+sJiztfy01NXg0u
-         4UzJSQcb7SVlXM737Jd7CalJs0A9CbrmylP+txY/BR8a3royc51i9ERaS/vcsdzmLC3d
-         3RAFZ9tEIXuBHkqUGkL2yRA7IwiSJirHcYzgthb8ncdrVKejAJsKpOuGaNuYz79LnSLo
-         Jdq5+FrgV7X622gBhO7065E6oKz0fB00LVGiczisUB9LdZO41xb4JTQ7qh9SxkMWLwIW
-         bwAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795013258; x=1795618058;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IgtmGgLwdp7YHZZLZXtmuM3LeEAEVVcvQiETOOFbu8o=;
-        b=udT0wz32Dpk/M85lL3y6Q+P5TVkh43Rus6gpLSHOQ21nzpPUfRzxePs/1ZAg97FEkq
-         VEUcvvo4PMZwXqnsXgW0/8BT3un4df4hX1fUUw0aaPlflgU1CvauIL39M3hT2c2LuWWz
-         b+Nsqo9xEi8mM7bL7p5xAFnZMbwy51ZCSBucTuAfnaEG2x9DUTpJFTv/LRGZQ50WAHR2
-         amsbONVf0sj8pb6FK3J01d1vT2zd8hsAiCXPk9ywICEBZk7IU5LCHVnZli/zMxg6Qqpu
-         Bo9Y6QXYuaaLg8e4qEjrYsigpcytXmzdbXXRjMU2msuUdtZ5gC9mwre2uNJjxwGkZQOn
-         8j5w==
-X-Forwarded-Encrypted: i=1; AL+hErHM8vFPd+R6mFs7iFGNRh+GESae9AePgFXgWPiJ5VgUG0M//OX+7rPWXmApdYPjaZdXA/fM0QG17g==@kvack.org
-X-Gm-Message-State: APuU4Z8oxGGUFUMiNtuKqsewcb/uLzgPmriDogjjFavBUSDgs5czeQPJ
-	SebjclvpnXNekA8XB72ZAQmu9T72dmkuaVwyIH8RRmDsiPwS/mp1SBFoym+cz1anXcU=
-X-Gm-Gg: AYBFou3qug1qEkYpmt13FZ+BQ7yiBcm0fb2dBObP/b9wmNyYBhLP/xgsriCq462yvnP
-	Z65JUqFhPYrGA/vWqRO5QEKtseHe/LL1cgv3GlpOv7hZFa8ANBVcjI3HPTbPaFuI1r48oaXSuR4
-	PIM32DRMxAhfb6jsx+tdfrdwwTtn1VyhKiFLeVZCs/vdaoLSVo6JXqb+w1PSswMyPTjjAu3JJMQ
-	y7JmpRpiHX5+zBX+KdfJMde+OFnRM2o3+ZpnM4NKh80BISuZ3c2OmdfgfPA32goGDYKIDn+m7pT
-	8CYE/y1llqJtlk/nxoC+h04Ob4Pb9lrKI9CKty/CZXZ7CzTHuDvg5DFb9AdouDRGn+aT+stZjSA
-	mq2Wd3GsebF3KDG1eHuYgE+RIew5ZR2sRG0x50WLEHeFWmvgKuEg47IkVqRX1gBS5ABEzawSg7N
-	8mi33w+VueEu3eyUnrP8fGGAIUsEIuFai4vq/Ftp7jz1FIccOlqKNhkUmCXXzDYOnu9JDnPp1tk
-	nOfVxRqtovJE21O4GtJsHwlAAZW+yhLAVh9dKSqpRDmpXsUyjfTlET3hlC3AoimfJK+3Ijx3eQz
-	WzdDtbSDRf7Rchm/XxGe+0M21/Y1pjzZdE1EwbdiftHKou4=
-X-Received: by 2002:a05:620a:880a:b0:93c:b5fd:f33f with SMTP id af79cd13be357-94999722106mr491978585a.27.1795013257845;
-        Wed, 18 Nov 2026 06:47:37 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9499b81d4a0sm193898585a.43.2026.11.18.06.47.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 06:47:37 -0800 (PST)
-Date: Wed, 18 Nov 2026 14:47:34 +0000
-From: Josef Bacik <josef@toxicpanda.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Lutomirski <luto@amacapital.net>, Ben Segall <bsegall@google.com>, 
-	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	David Howells <dhowells@redhat.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>, 
-	Jonathan Corbet <corbet@lwn.net>, John Johansen <john.johansen@canonical.com>, 
-	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>, 
-	K Prateek Nayak <kprateek.nayak@amd.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Manfred Spraul <manfred@colorfullife.com>, 
-	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>, 
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Serge Hallyn <sergeh@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Valentin Schneider <vschneid@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>, alex@amutable.com
-Subject: Re: [RFC PATCH v2 00/13] Namespace for namespace roots
-Message-ID: <wdwc3b5edgtgvrgqfhlzhrachr5hrqb7ahipcuqdz5pffxlc5b@662cpwhxwjer>
-References: <20261117231352.3816603-1-jarkko@kernel.org>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AONlAC63;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B83884053E;
+	Wed, 18 Nov 2026 14:48:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BAF1F000C4;
+	Wed, 18 Nov 2026 14:47:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795013283;
+	bh=dgIk0c6UNS62mWYSKVJA5NNvjxDOsVkTrIzwZXXROI0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AONlAC63rN6sslNW3flaTilNQZcValUiEiEcrea9nIx6rCmjZQjcKw76isozjWcxX
+	 Fg9tlu2BTWxcI1fyVWKg1Z9g2ZgzgRsqPvHSCW0LBu4XD6BRuQJf1Rtk5o2T4PpD+1
+	 LHViGyl4FS4ZHLksKNRTxLIzXAz+NJJYlvpF6cokCL5E0neMnbskv1sja+jSLGFmSf
+	 aXaRVUQXitaqehwlNAOAMdnLk9UbL0V6sADNKslipxzZOV61QjaLSSHuq1YDk19Fh+
+	 PXVWCWpF0RTKKZGDB2EWUdHFVFasZl/X83Pk6bXgarRHUfSYTweUwQ8qJpeHLLxSWr
+	 mlxD+NfnAcdRQ==
+Message-ID: <0da29b65-fd6e-4b5d-92eb-0a8f0c25999e@kernel.org>
+Date: Wed, 18 Nov 2026 15:47:56 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117231352.3816603-1-jarkko@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F2D611C0002
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: kc8an684ptmeg1onihdjhhqth1u19yyf
-X-Rspam-User: 
-X-HE-Tag: 1795013258-859670
-X-HE-Meta: U2FsdGVkX1908IujJ5WsmqWr/U2WfVTM7Sng1GiSbyNT0XxP5tZ2Dqs2fkcsbdobOskD9wkbjeiaiOMTx9J16GgIwt+0KbOEbh5z1wz+JGJCBr0pREgIaAxgjN7A10OngA09DGVPUWFy2o8fOZwTEQTOJDOGGOc7KVp1PeftP+4q0RdNxasZY6tN0+9zyjTLLTFGrqcLZ0/Q9OPQcVWPAYrL+lWcDNmQEEytMKrMcnWDVe2pRnqapdNE5i4EPT9nXJFfTen3vtikgcxsjz6TQ2kA5a+Hm4/H+GMNEXKf4PAoagU6PvgEoCG3qVwDNDYG8v6wkVV5LUEfegzuRVEgkbMlLo6aZOyOBIc/cEZCdh8dZnlmzhIMj8kWHmTO9NysBgi/eiZ3IAztK29jRP3nNzf0ngIV4eoBa/jBr0Y9Vi6/G73n6X6DipM1WB0Xy4Iw7MnYRdL2X+adb0z8FfHD687icFMXYFEZJYXJ5LgRESND8glOHYXLBetUt90y6YEisgvzYlhCK15QwpcdCaSi8nQgWD1D21TIeZymGcQB0y3JYTBPUNnl+fW7yolS+ITpaN8aJIdmprpUmukcrU4VImlOS6yzDMftg3f2JgJF1KlCS7mjjEVhFTqclR48tX/yrCbAh1Nhd8Ao64scxZdas1gWnwZvb2Fl5MVgGah5JvpOE33vYW/TzfZ+QhkY4lanT5MDBC3BTqQGCJOjVlHCFRob1qxapM4oUGXoSIaud6JamWcYOjuVBU/MAaH+Ge8v3xk4c8+TLpRSKWQfjYQ8UZFGt1bsl6NXhUd/24ZuVnv99dq80EXUWr+WtdyUgG3tyJIdn83uDTikPY0Y8MQ5hcyUwb8buAYS8I1kdK0klbpjrPvIEAmTMjYEOhWNOp9OpNbOahJa2SgV3Pl5JffPZtVhGFd4jPHJvGyiLN/VO5ttZMFzSofk/WT1SGxTJm7izxwYwZicNj6kC8hC8im
- 9p4L6L+9
- E+T69FAxczh1WxPUkUDwfRhBANGEK5eOw7eEpbB0JGYeWXvi3fbrLZO7p7giZOKCWFFn5Tp7OPPXoOf+dTlp4vzX4xj/wenxq3Mnqw4j5nki7nVfKmh5ZT6WUgashEhpPl6Zq5E5s2NRdYLOc6EeL6CIVKmLyYhKyOsN5KmwfiUaG9f+DPh1BsD0zoTngOGoJ6V/3sROoBkahFsPhI4kVW+iVyLbkBEqeGRK9lULZ5sPpphZSrGzDMfwfQtZ06R6Ued9HE85m3vNmWc2LHLHF5oYA/D1BAldfVTUggy+QQz/jTw655z1TMQUYv9zLKOFeIlm/ZKqNp5aj83+mZEYG6JzQE/YXXxWoygaLIj0+PuDFWhI=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] mm/memory: don't upgrade non-present PTEs in
+ insert_page_into_pte_locked()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jan Kara <jack@suse.cz>, Jingyi Sun <1045704958@qq.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>, Peter Xu <peterx@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, nvdimm@lists.linux.dev
+References: <20261117-uffd-dax-async-wp-fix-v1-0-c9a30f27f452@kernel.org>
+ <20261117-uffd-dax-async-wp-fix-v1-3-c9a30f27f452@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261117-uffd-dax-async-wp-fix-v1-3-c9a30f27f452@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 99D7E4000B
+X-Rspam-User:
+X-Stat-Signature: n4fg8qa6m914bcp7yteuezun4xu853j1
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1795013284-411244
+X-HE-Meta: U2FsdGVkX18aejnOFDFNq8kKQOCnW54hlmtBATKAalBd7SA7GbZTGDkDKGnc7JfiUFEFUj6SqFP7KHqXxEDzmGgkXPPnAjcV2uoVvsge5v81yX8tFz5od/8/+xV5nC3qnminWOXXzsdbSesalpuZyNKBC5iu09GT/MgCCUtL+Zh/EezCy4LQfNp6PXdOi0uexCfTBLHIp6D3eai4ccUu7JD2tTFolLYVEQ+1Y6dMF0KJckhpE6d2QX5fjzNcwXN87ithgkk4ijYKhn2+66XeazT4KyIeN7SlxQVN8tysPUbwncSTYtds8eS1gFAfqLOhX6m4mrvV1giSy82l2jqZxMnCsqV1KzXIfHxGIcLVjUevwrnFdTS93iJzIdQyzu9CYJ5Axs0t8ApHb/K5GS900E+IUYVLQPbQT5fezmGkouLTM3eM3KLmy9ssuwVyX0vChDsBYed5EueZ8phShuuVdI5oxzMXa+RIeDJbHNWC7LKD41NuWQ5po6gbN5IOxqyAw2+iw4Fwwn97JjrY6AVHV0Mu/4YClwON7EnAR1DVzWcoexjnkXdJMn7cwaLbn2K9Yf0VfPUUjrVncYv2YZGDvjCgOuYR1FWIVAOt+r/KRKdUUpr3leSor1sjQt2Reo0+a7H4kQ749/zNJGEGIMpbpilaO4ByfY1/s+zih0bKR3qLu5XsJM6xQ2C975T3pH/WM7aRNLoEiNlj+BQGNwN92/tc+v3cupJtZpoeF7ZErAapoJPxj068uOVGvIxSBAqzNejutB0UuiFfyA22S4j3rJZALNhy9BexRDK1i+zTJizMXQS8+1n2Rc2TIMg9Wtj2lKYQinI/IHtsq2uMg9bkospdvt2v3gwXA+FPBbHq5Jsky6GMbuWit86+vLF+XpbHxMSiqfVQDApq0aAGi3x9xyVuQVv+8eKS+5VqCxVomd9DH7TuL62S4soBXFxPaQgtOmgkCWymz4+m8Xi3VG3
+ EirzSUQN
+ Q0sm2FOaZjbucvhxzLmHUDrxS/GzdJG7R37NuqqyJv7B2ciXvyagiBm+liZJfv4NNh4WjuBh4d3P7BWwYAGR/AnAqAL9te6kUC5WXgvRU7eTX/7i49o6kXSWrMpG+BZJHrQSLJQ/JVCxvIQr0MsfMCLkMN9xFp7pm4tG33s4JHlIPCSLjdppCrMXRy1xrfnWNQx3jGZX3J9OZ/xDmJhH6FEFuTJIeEGiqfk0uVHvSqLGApAIUj27TzLdoZkL1+jKjKCfVfjfC5/Q3EwSb5YX2OYwnl9rv+pq7yT85mMEz/w6q4Fj5QWtsPBmJpCkn5aEveVDr53C6faTtk5bkS2uEFzlgwBidjJfzXpYV1a0les+4lkpYaPjMVDXo6ML+wiLpHDMa19oj6vg9PuG/ZTDI8QY6u4zPU+op/qHGlt+a3MC1KEybsL/EEGm9UvxdYuSF1RV/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,32 +148,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 01:13:39AM +0200, Jarkko Sakkinen wrote:
-> OVERVIEW
-> ========
+On 11/17/26 16:58, Mike Rapoport (Microsoft) wrote:
+> On a write fault insert_page_into_pte_locked() assumes that a non-empty PTE
+> maps a page, compares its PFN with the page being inserted and upgrades
+> the PTE to writable.
 > 
-> A root namespace (rootns) is a kernel object backed by a file descriptor
-> that binds together:
+> Since guard regions are allowed in file-backed mappings,
+> MADV_GUARD_INSTALL can put a guard marker into a PTE of a DAX mapping
+> after the DAX fault handler found that PTE empty and before it inserts
+> the page.
 > 
-> 1. A full or partial set of detached namespaces.
-> 2. A dedicated PID namespace for spawning processes into, signaling
->    members, and polling or waiting on PID 1 exit.
-> 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) that must be
->    populated before going live, without inheriting host mount-tree
->    ancestors.
+> vmf_insert_page_mkwrite() then extracts a PFN from the marker, hits the
+> WARN_ON_ONCE() and fails the fault with SIGBUS instead of the SIGSEGV
+> expected on access to a guard region:
+> 
+>   WARNING: mm/memory.c:2489 at insert_page_into_pte_locked+0x47e/0x490, CPU#3: guard-race/157
+>   RIP: 0010:insert_page_into_pte_locked+0x47e/0x490
+>   Call Trace:
+>    <TASK>
+>    insert_page+0x6f/0xc0
+>    vmf_insert_page_mkwrite+0x31/0x60
+>    dax_fault_iter+0x3be/0x5f0
+>    dax_iomap_pte_fault+0x1b8/0x390
+>    ext4_dax_huge_fault+0x1a4/0x2f0
+>    __do_fault+0x34/0xc0
+>    do_fault+0x179/0x610
+>    __handle_mm_fault+0x8ca/0x1250
+>    handle_mm_fault+0xb4/0x290
+>    do_user_addr_fault+0x15f/0x730
+>    exc_page_fault+0x83/0x190
+>    asm_exc_page_fault+0x26/0x30
+> 
+> Return -EBUSY for non-present PTEs on write faults like it's done for read
+> faults, so that the fault is retried and handle_pte_marker() deals with
+> the marker.
+> 
+> Fixes: f807123d578d ("mm: allow guard regions in file-backed and read-only mappings")
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  mm/memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 66ad58429967..a80925c61706 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2474,7 +2474,7 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
+>  		return 0;
+>  	}
+>  
+> -	if (!mkwrite)
+> +	if (!mkwrite || !pte_present(pteval))
+>  		return -EBUSY;
+>  
+>  	/*
+> 
 
-This is what cells is doing https://lwn.net/Articles/1102593/, you may
-want to take a look at that work. Christian, Lennart, Alex, myself
-and others are working towards this in a more wholistic way. There's a
-lot more that goes into this outside of just the object itself. I've got
-my version deployed inside Anthropic for securing containers and I've
-tripped over a lot of pre-work that needs to come because we can tackle
-this. Alex has my rough outline for kuid64 for example, which is
-necessary for making sure we don't overlap UID's on the system and
-create holes this way. The cells work/anything that wants to have clear
-security boundaries is going to require that as a pre-requisite. If
-you'd like I can include you in our planning so we can get something
-that will solve all of our problems. Thanks,
+Ugh, so this depends on some changes in Andrew's tree that should not be there ...
 
-Josef
+Let me figure this out.
+
+-- 
+Cheers,
+
+David
 
