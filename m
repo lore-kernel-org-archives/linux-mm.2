@@ -1,143 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA1C606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E14606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 10:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fEUuEoZt
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AarKLyam
 Received: by kanga.kvack.org (Postfix)
-	id 080CA6B05B3; Wed, 18 Nov 2026 04:50:54 -0500 (EST)
+	id 358A06B00EF; Wed, 18 Nov 2026 05:03:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 058DD6B05B7; Wed, 18 Nov 2026 04:50:54 -0500 (EST)
+	id 309AC6B05B0; Wed, 18 Nov 2026 05:03:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB58D6B05BA; Wed, 18 Nov 2026 04:50:53 -0500 (EST)
+	id 1F95F6B05B1; Wed, 18 Nov 2026 05:03:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA2776B05B3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:50:53 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2ADC480568
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:50:53 +0000 (UTC)
-X-FDA: 85447770786.27.33E6D83
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F0EDC6B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:03:10 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E82EAA06D5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:03:09 +0000 (UTC)
+X-FDA: 85447801698.22.66A2D12
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 58064180002
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:50:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fEUuEoZt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id EF10340005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:03:07 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AarKLyam;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794996188;
+	b=W0YYGc0V7XGcvyDN7tn6eW4Jr2xrmRTU4/sOwrFl3OCJSWhAQNHUGVhzIATh8uamh5NJ+C
+	J/iMvRWisc0LR1qIKX8g9/ijQ8FA7eWZC0H8X6Msk85I8I8DIuxryimkD7PtM6xm5ZYgqR
+	7E3lBuBc+1XmGX78ENDbC2HmnKLoY2E=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AarKLyam;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794995451;
+	s=arc-20220608; t=1794996188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sip8MOxQ14qtH7OEbhwEmEcfkAVdDDdsrxzfAF6moMs=;
-	b=7PaqeLeoCfxViMFeZvymP97fCkNwP4lgYytZsuqkDFA8RSSwHdOeGil3IPPdee5yFoN86e
-	xuX9MyHk7mU5SWukJfcxYV/pKgcbuWjiD/KnxRYOzx3jwYG3+mZQym7GqeBjvY/PGz/MYT
-	AgAdVNKi5KQ7B2rbsLhtjGjyT7InGA0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fEUuEoZt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794995451;
-	b=D8bsicfj70yQPvxEBENm2sh6wAwjhDgdfRStfYV41Tv0qEKG17HN3aaGL6enTTuC82roSw
-	krlJC3RjyZ/CWOukDlvGu+n8JOdbM1yL/yexNh4LbJebxRa5FEGw0X2k6v+JD08YnWpSfd
-	sUav2rewFUQH4nCgQnMVIz1vQ6/gKQA=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Z0El5ud21hvo9zkOQkpb06wEE6/0ipRpI83CeEG4nzE=;
+	b=V3BIljfhd7Oc56XeePw4S4zG0Fj/OkAkFlOASyGbqqoyukiApA5NwkF1K6Dgc8/Df4xE08
+	WIwtFGuFmoOE8vY+pLpWUsfCXw2ABZ+7NTIU5sIvFi7Rwx6OzgQIkSK3TabGqPifhK2qKz
+	wFSkT8ZEPirxOITMAkDndJLT3MBJHpo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86AC8458B9;
-	Wed, 18 Nov 2026 09:50:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930381F000C4;
-	Wed, 18 Nov 2026 09:50:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DDB2041E58;
+	Wed, 18 Nov 2026 10:03:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3631F000C4;
+	Wed, 18 Nov 2026 10:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794995450;
-	bh=sip8MOxQ14qtH7OEbhwEmEcfkAVdDDdsrxzfAF6moMs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fEUuEoZtj+T1g5XxEGGea51aJtI40E5FEa7gGfdXuh1rCBAC7rBu3c+Nlu26PlDdc
-	 MNrTLNG67SW3oSTyQroJtE1hx6PEieY7XQWdQnUxtzt0qRZNBQNxjeiOxZmDiC27jI
-	 nnKH8xHgBuIXu3527CXofm7N7BfdGORGV3QzdhRPez/Yl/gTrEqFOQsjsfAu2rwh8Y
-	 xG93fZEyE2FNWSJjZDXhZmmI2b+1HuTSwDzYLFQ1jRi9mfBcU2a05IAc5/DjCM3+jL
-	 +DeLJfZOeoPoCVYPkOdAaey5YORIfZpVYb9CTH8HB9EKA6iO9qWo3IYpMmjFaCHQV7
-	 1lv9H5GE9rO2A==
-Message-ID: <17456889-f94b-438f-85b3-45e9d51272ee@kernel.org>
-Date: Wed, 18 Nov 2026 10:50:44 +0100
+	s=k20260515; t=1794996186;
+	bh=Z0El5ud21hvo9zkOQkpb06wEE6/0ipRpI83CeEG4nzE=;
+	h=From:Date:Subject:To:Cc;
+	b=AarKLyamz6h/SnGWiV/CtG5grW3wHr33Xq8qhuemIbmwM3uNzUUzdkxUiiwOIQqsq
+	 LklnrdydfIr+01eZOkMXVUDBFxMOfLBEyhpdBacHcdVy3TX3jNGmCO/Ah7rdoM6K5t
+	 lFygxMM0JrJWVzXvkDoKsQ9z4SWmrhtDUhI+JCznZD1yuWHR5LwF/EKxMDE5/Lm++k
+	 +luS4FZeqk9DkWGVf8JTzR0Fv188xVcr3RfbWH1fAUMjtYFOdgfCo58KvvOsU5TAYG
+	 6hOK74Wxv0WjBUujadXoj6fhVGQh9128hpwjKafVukssWaPWP4EBwY0clZwx1butO9
+	 Uk5if/PsqyaCQ==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Wed, 18 Nov 2026 11:03:00 +0100
+Subject: [PATCH] mm/userfaultfd: reject DAX mappings
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: don't undo another caller's pageblock
- isolation
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261118000014.1474617-1-d-tatianin@yandex-team.ru>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261118000014.1474617-1-d-tatianin@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 58064180002
-X-Stat-Signature: 6kpscycahodtejspy5r3j5hozcuep1ue
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
+Message-Id: <20261118-dax_uffd-v1-1-d776cca1ae17@kernel.org>
+X-B4-Tracking: v=1; b=H4sIANN3/WoC/yXMQQqAIBCF4avErBMcFyZdJSJKx5oWFVohRHfPa
+ vnB/94FkQJThLq4INDJkdclA8sC7NQvIwl22aCk0ohohOtTd3jvhPSDstqhlaaCnG+BPKfvqml
+ /x2OYye7vHu77ATZX1sxsAAAA
+X-Change-ID: 20261118-dax_uffd-0fb2c6d1c087
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+ Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Chris Mason <mason@kernel.org>, Jingyi Sun <1045704958@qq.com>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1948; i=david@kernel.org;
+ h=from:subject:message-id; bh=L99WB27VpnqQcZGVfFWLDDBDfUeAgBjYMyJA4p7jg7M=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+ll/7bbC447R6+s+7cn12UyVdvQq+zXkZk+fCJ/c48
+ VRtC8v/jlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACay2JqR4aJ9BcOWxXPP782b
+ pj9N7mqg//VTBvkz3h0XuG5z+YZWfwjDP1PPDcfPK+nbFjdUOxouuXmiXMhiosXtPDFL0arE/aG
+ aXAA=
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User: 
-X-HE-Tag: 1794995451-593234
-X-HE-Meta: U2FsdGVkX1+mkn5xKq9fvF6dKz/g1dauQorMQa5gKxwfqOiy1N61OPiSFjbUE2VsgMV1RgfEwR4cmnmQmNcd4qtP5MiN27Y7lrupLCwItHIDvLBW+OouAhnNvc+Yg5kA71SKWEZLETQ+CuMcKneQ76nCtHmJ1FVaMd8HFJNkjrDhMqQZL5xF2Qmz9fUDAr1unPSYBZyKvS3rDLxurahhpWRoCU67kyMcz4ggsurxFeom8sXujiN7i7k7Wd7nWleg/cXKQQTS3xvJ28Npj3AVw6pfKeTOtfKJnVAXd5CKfJvXUe4ujaY43Qof5ui/llzYXb8nMvbtSHHnGpZ7q4qw+ESLjF0BN/VdzMbzvj0S+n/rDoQyUHCSDIyT3ilcIlc1K9Pbf/HsQzLNwnxtDFGHHEJkkOiTYhO5rcSl7jzAa3A9gxOva9j19IPn+/vbuuEN7ad5z4kT48YtJVxpjacntmwS+uzTresPNM0jEOqlkSem0/gBtDPAFpcBIecMVottbEQt4x0aNs3sa589Fz2Cbg0huTk3TmEJpCTguEFn8m4FS4VcpF08TGhA9I+IgWcvnu8RiVC8NVjIG3vok4hFe3JquvvWA4cXV4sJkMfhxCPYfAnD7DwJ0ETN5HNl8q6yhGfwgeRElw5BO2DArPlo/U9snnq47XEPkK9h/fay34LeR7CLk5PuWa7DGpEyl+vv4KFnyBrWibIagqTJar+ARggPFT966nNdOKD5/Etr8LrGM4NhB7ty+yZvB9Hca/YakOVwpx/AmSEMpliG39HbmmwJLA/pOGSIuWF+uHgoSVGLSn/FltLn4mBKr3iE1rMXEk4rB8UCpjkj7ECcdadr8ZaJZn26nUvgP9a7DpYq7eMZ7GzoqdgBJHGaQ1z6YNXr7U74EYxocvDYY1q/yUHnXt82RTf3i1zYYfytHgakHynvZcMqKQfOixKN/buk3fkX9DG+NAksXUfa5T7DMH8
- clYck45f
- SfOJB4pw7u0XNaCjQUVtDIfKGgF5OLKKFhwqQYCqJFWkRWXtqIGRcHakf370riX+SU0p4kN2iC44h5D/wBNGo8AAgvvFOAmG22mrQnCL99T1ueNytmavKMgLPJCavzo0CxxvvAmsHJX+7SkcuIII+0FfkLGoliFmKiNzHffO3SeO1bSJ8mLWi5wWBjWFA6Qf97Z2SsBMxEAi/dHqJKxi0xWPO/tY59rSdatdq0T/WZ5Bbla0Z9MaOZ6etm2gSAz1lFdPKBLdBe2A6XGK/+Hom5LsqgPYTsJQeVuZmoOWSRSnHMhA1GcUD4mhRHrFYAgZQzX8qvlljxPHkrFt+OmMVfV8O/XiqIl1dY9P1LbVE1v3WRJ9X0dM574S0e6qL8rzavp3d6fVmWMcjD1g=
+X-Rspamd-Queue-Id: EF10340005
+X-Stat-Signature: gsi4p4mm16hbnu6am9j6bbha9gwkboop
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794996187-9524
+X-HE-Meta: U2FsdGVkX19XZ5GeE59I9JNc4J3fUESYLZZedz108C5N1od2aYzMQbkMR2NuS04mMxx2EK7KFx3SOzdHucxdv1F7qWFxeSEKV/T2vwr90LjPm2awsJPV1Di9EirsoF+LbbeQ9UbSGPRHWgqfn6/6jL3LCyALSH6OTemTGI/MLKXRJx0YahLbQaVzhZHBfWDGVcH77+nwHiYxPYoxhLEG8v0SCL5XCpHN+SF5iHmrZI1Zj1+JPsuomu5Q8JfY3jeF2Z3dvFSmQxBVRFwk2DfOC8/wv5I6K10tQOZUsbv8jAvJAGt2yjCAOzvJQmpwndDg6QlTonwVaxeDwj/Zf4SPnshuRzm794eBwQiOSvC1GC3ZO8Y9NHClyVG4bg3cPH3ZM5VNPpuhpUPXOMW6kONVo6T2uPniKAAIUIBpsbFQFTtObepPY8mHZkklMnNfWjDnqI1v6ZSWFsXlMX3juRVbPd9S+u42uSEqiCb4gBc2onEojUN64aDJsU3cGunuwTTSI3ijnVVLZftjgd1QhEVEHwwnH7RE6L/pyhbu1OGbrsSNICNh4g4puth5I8zPwcI2RKYchPgh3zVND9r1gvoQquRuBpMaDjAxl3FfcII4pQL1PN8TFNAtneqipsPMAcei8GXQOcA2DdnEQtgPdsiw/aQtZN3wdjVwROXcgkTA3cykWU1dpyXJr9iOafBgfxXBB7TzlW31W3aPDqU+73hwd7rSTPYw4D/hRh7MJHPyHPFp4DbUArYUt2ao+6m23gIivP24aJr3CvBYqdltYE5eIe0qTj2hS97cryrc5m6LLCp9mkxleWbEFrVsZJefqKJZBe7Zsw/oXmW48FW72ct+lzF5xcG2W8xDiQOsmTpUY9eswIAJ2QChXiNizi7RbCMd5VMthMVnUw99zta71q2qmQU7bvrjpIkmv+LkuEp32nNegRlJQiUFgiZVTSM89sfl0hMZWs+3XxAIP91VTCP
+ ZBGoojgk
+ LtgDxA8ixYBpG/1Rt+D2tMqqHbTFaadPSpTl01hJuo5Fmkwj4ZAVsE76ayikwyWLr9k+07q/gOfp19RtW6/yFvXOGg3GDv7oOGa+Ntj1/tZZNgVTc+kkQKJ5/GqtacZt+8OnypdD5O7LzO+STyeQrpZ7l3ArP3hpYiC2rRAhlIityFHWdBiBQXyBlJ365bXlZv2VDC+cJaYt+CLZxHk6il8LjAmDOAbiEJXDi1SK8xXRU7NtdeT3/CbJnmce9Zv2SaR5EZIZ0t55j4K4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,52 +107,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 01:00, Daniil Tatianin wrote:
-> start_isolate_page_range() fails with -EBUSY when a pageblock in the
-> range is already isolated, after it has undone the isolation it did
-> itself. Commit 2c7452a075d4 ("mm/page_isolation.c: make
-> start_isolate_page_range() fail if already isolated") made it work this
-> way, so that users of overlapping ranges, such as CMA, memory offlining
-> and gigantic hugetlb pages, can use pageblock isolation to stay out of
-> each other's way.
-> 
-> Since commit b2c9e2fbba32 ("mm: make alloc_contig_range work at
-> pageblock granularity"), alloc_contig_frozen_range() handles this
-> failure by jumping to its common exit path, which calls
-> undo_isolate_page_range() on the whole range. What is still isolated
-> there at this point belongs to the other user, so this takes the
-> isolation away while that user is still working on the pageblock. The
-> page allocator can then hand out its free pages again.
-> 
-> Return right away instead, like offline_pages() does when
-> start_isolate_page_range() fails.
-> 
-> Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
-> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-> ---
->  mm/page_alloc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 12fac9084c48..151a8d64783d 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7335,8 +7335,9 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
->  	 */
->  
->  	ret = start_isolate_page_range(start, end, mode);
-> +	/* After a failure, whatever is still isolated belongs to someone else */
->  	if (ret)
-> -		goto done;
-> +		return ret;
->  
->  	drain_all_pages(cc.zone);
->  
+UFFD_FEATURE_WP_ASYNC made DAX mappings eligible for userfaultfd
+write-protection, but the DAX fault paths have never fully supported it.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7d9c29ed8feec8bfbe5e5f673ba2b5926da11375
+DAX faults use vmf_insert_mixed() and vmf_insert_mixed_mkwrite(), which
+treats any non-empty PTE, including uffd-wp markers, as an existing mapping.
+A read fault on an uffd-wp marker therefore returns VM_FAULT_NOPAGE without
+replacing the marker, causing the fault to repeat indefinitely.
 
--- 
+PAGEMAP_SCAN can also write-protect a DAX PMD, but the huge DAX write-fault
+path can make it writable without clearing its uffd-wp bit, breaking async
+write tracking.
+
+Device DAX mappings requiring huge-page alignment and cannot serve PTE
+faults after UFFDIO_WRITEPROTECT has split their huge mappings.
+
+So let's just disallow DAX mappings in vma_can_userfault() entirely,
+making UFFDIO_REGISTER fail with EINVAL.
+
+Fixes: d61ea1cb0095 ("userfaultfd: UFFD_FEATURE_WP_ASYNC")
+Reported-by: Chris Mason <mason@kernel.org>
+Reported-by: Jingyi Sun <1045704958@qq.com>
+Closes: https://lore.kernel.org/all/tencent_1874C71D4177A1624528043E008DB1A5EF05@qq.com
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/userfaultfd.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 169f681f9849b..6656233d5dcc7 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2131,6 +2131,9 @@ static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+ 	/* Only mm-backed memory can have its faults handled by userspace. */
+ 	if (!vma_is_mm_backed(vma))
+ 		return false;
++	/* DAX fault handlers do not support uffd-wp. */
++	if (vma_is_dax(vma))
++		return false;
+ 	/* Core mm may discard droppable memory at any time. */
+ 	if (vma_test_single_mask(vma, VMA_DROPPABLE))
+ 		return false;
+
+---
+
+base-commit: fa4ad798f6f681031775266044ba1b0cf3c670bd
+
+change-id: 20261118-dax_uffd-0fb2c6d1c087
+
+--
+
 Cheers,
 
 David
+
 
