@@ -1,164 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996C9606A330
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA1C606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=S6WXGb+q;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=LNPA9bF6
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fEUuEoZt
 Received: by kanga.kvack.org (Postfix)
-	id A68876B05B9; Wed, 18 Nov 2026 04:48:38 -0500 (EST)
+	id 080CA6B05B3; Wed, 18 Nov 2026 04:50:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A41016B05BB; Wed, 18 Nov 2026 04:48:38 -0500 (EST)
+	id 058DD6B05B7; Wed, 18 Nov 2026 04:50:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 955DA6B05BC; Wed, 18 Nov 2026 04:48:38 -0500 (EST)
+	id EB58D6B05BA; Wed, 18 Nov 2026 04:50:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CF746B05B9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:48:38 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5ED501606A5
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:48:37 +0000 (UTC)
-X-FDA: 85447765074.16.1CC5E64
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1EEB040006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:48:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=S6WXGb+q;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="L NPA9bF";
-	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.149 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CA2776B05B3
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:50:53 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2ADC480568
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:50:53 +0000 (UTC)
+X-FDA: 85447770786.27.33E6D83
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 58064180002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:50:51 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fEUuEoZt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794995315;
+	s=arc-20220608; t=1794995451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P3tTzRsiHEws2zlKl6166Pd8xjKFQ47hlRmRKJ7QcwM=;
-	b=0kTlRnuLBibMEAfkOAj8NVbiVn9rwRuBTX3z+utbMKf1KDrKsrEOij7mY73REtppJv3vII
-	pn/3nCjA+/UVUD+txjQC1bM3hDH4HJLcbPOvGRq2i0dL/9J3MhC8PKaxRQ8iUi1tSSzy6b
-	K51nKI8512kcTWD7AtGRbEB5EhXOSHA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794995315;
-	b=h6KjiRS398w4LbYIqEutCUKP5NvS+JanAE6PVlL+3ch+X1K1XvXC/MuZQD41CD18XTwant
-	0dZo3y7yIN5av+eAGh+3UUzHEsKzd1mS1xhQxbM6Gc2RH5OO2a/kBcB/xqyCKgUSMjwoVR
-	ABi0ZUb2t476pAMyNLdiXE1c8Yjbigo=
+	bh=sip8MOxQ14qtH7OEbhwEmEcfkAVdDDdsrxzfAF6moMs=;
+	b=7PaqeLeoCfxViMFeZvymP97fCkNwP4lgYytZsuqkDFA8RSSwHdOeGil3IPPdee5yFoN86e
+	xuX9MyHk7mU5SWukJfcxYV/pKgcbuWjiD/KnxRYOzx3jwYG3+mZQym7GqeBjvY/PGz/MYT
+	AgAdVNKi5KQ7B2rbsLhtjGjyT7InGA0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=S6WXGb+q;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="L NPA9bF";
-	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.149 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.phl.internal (Postfix) with ESMTP id 5E2C6EC060D
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:48:34 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Wed, 18 Nov 2026 04:48:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794995307;
-	 x=1795081707; bh=P3tTzRsiHEws2zlKl6166Pd8xjKFQ47hlRmRKJ7QcwM=; b=
-	S6WXGb+qbJjbxUTgKfFh0DTFPnWUpI9EQ+MRJzPPcNmAqRlbnpsva0qN9N+2q6I1
-	dqzevcSRtCaEb476kPBOUue9URUESewonWa5r/65b9m6O0O/iv/BZrRKjKQUeHA/
-	R0vKqxC0BjTzE2EcIwHO2i8nUu30LC+S6gSryejfz9wJGukJHShsIrVIjafQeh17
-	xGED/AUQMmUDCk3D0TohSBicE93927kxRBa/0fS6FaGQ1EvXnywxD14LLt2cE2EX
-	mXYNWp+bD5K+mGUKjoaSG+HGj4xLX+oscKmxbLTGAqv0y5tZqZCK+CKMNf25QVT0
-	0qLQ0hV8FK7mrYvbtP24eg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794995307; x=
-	1795081707; bh=P3tTzRsiHEws2zlKl6166Pd8xjKFQ47hlRmRKJ7QcwM=; b=L
-	NPA9bF6KLr5hK9v17V9Y0UTrumaVYezQw1gruXqHLxW/7cpDBatGe6yZZJeWSkpa
-	/ZT6gM9NeMeUV1SEeqNmZoirxtlYxbKV4OHWwNhpXYogfJ0JKjnMhVdFmANzrYZN
-	jqsRWuVSvzKHJksYX8cmZ78jNtB9QvMs1jT0Vou7k4UMr82LJyo3C30YlAjJFFq4
-	cpHXw0SqSdG1A+tqCuVPCxTv4zU54hXH8x6xvarwD7lPnHZDJ4Wu3H4s4MYOV9Sw
-	nwLwbtNZSHypozMZwRCIqsD2DJq6X2s3n5MS2a7Oq7NPHktYMSUyK3jJ46FJCPEy
-	zKS8r9x30BI4ZpaHHe5Dw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794995307; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:ICcJp8qGSuMnqMwxDVs4/cDwdcFuNIqAOQZpW2jbPAhng5z
-	SD59J+YOqk9M6PJ0rLHXsx8NNEeSMZ1OIsUAMk3pppvfErFnp6PXK+0oZYhEQxD1
-	fwDaUnzhHTnqOWloRvfWht19moDoU44LdDVSu7xsv8T4TpfM3WIXn4R/S2TtvMz0
-	E/AsoypbyxvUzEl87E+Mgpw4/Pie/KZVpqUAJlQXgIK8cPPN22RCC44x4vq5rB4G
-	xznEebuam9c8h+E2QDxsUVEDONJAyprPImLR5jpB0xkAYR03adhIEMwiVvp5lD3E
-	6iujAlVxC2FJLgRpjjPCUgREgUcud7h4Jxfk4hg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:o1ZNBUMdgmZRFjQGvJCT8X1PeIOdnxDpY9ythOT5Mkc=:NdQqLdoVcsTAskrYI1FJtDTJy8FiZWNAwAbqq3w3to8=;
-X-ME-Sender: <xms:YHT9alvCuN3JL_9c-toAGogtzwhCInTBjFViYNiov90YhiWcf_dniw>
-    <xme:YHT9apRWu1eRnRfg6iuE3qiVLkmbB9qpJ27NADGLhq_X75viSN23swABlSi_N5uv_
-    c3pWbFy7tZdQ7YRi6PBU_4H2Lf7Fw8GwcUIqAPbc6UUDg825fqpMj0>
-X-ME-Proxy-Cause: dmFkZTEQnUw3sFO/J+KDZ5wTMqryjhyx7/y6yNzE9VcfWSQ2np6l+Yf+6Au26OrFy23XHD
-    q+kC97X6kGXgA6vqSPGPEfQDWQ2vMTbJNlSqeMjc5kYk5NUK55hZXYfIPeSXR7fybsijJe
-    3ldwVajPYU1lVvXUgbx6LqumEjlYZOyUCH31hVtg8wyJp1X0BNA9d9duqEwIcVZnRO+cZV
-    0ze2wT7H5qksb2DY7cWBKvYNWqBrrQ3erPktQrTZu8vhtaVVjGR8q1vZOY9xYbpve8xolF
-    /VpnRWtZLTOj+r2SFWPfJzqFFS017/XR4aLoUuUnQh/4PQDJnR8Ny6JeIi3Rj+OWCUAVSw
-    USzYGuaD6wWc19GQqM8uBzzUQ5Pwq77McE8zw1Nr+eaYDOPtWyb784NtLyXUE75SRx97m0
-    2RbY+WTXnYbF2NMhmoM0MNWQg+VIV0nIoboZks2dOKBJXBk8/cNqQyzaA9+E6PvHnkVaOS
-    IGPa5nEB7GEfiGo21WrViSNW/W/YwQYiHx89/y8OpZu/NMDTDZaoQA1dTNNm19jSrHUOWH
-    6lGvsHFhw1TzUqVwV2QQU/aPuC0HLnIiLZ3tFwirVJmVT3dEQXzsgcMMixR2yvAOGFr33h
-    dxh/y9EfxAXGYv+0A2zSYuSc4/3H5eip4VmlfKT+PxCpj/aDLIoS/WDR2/xg
-X-ME-Proxy: <xmx:ZXT9amc-jikSr7ODgA86wfQA4FAc6om2UhHVQYMYvOZKLhasITEamw>
-    <xmx:ZXT9atphb6k7Rvu90VtwmzepKlAPL4YNd8LJtn4a0UTqVMOlK3Mjxg>
-    <xmx:ZXT9andBn5XjFKBp8p0GZ-sO31k5S8dYKkEkflv5Yj4RzU_srqvOww>
-    <xmx:ZXT9allimL9RLpsxW_AkORfJTK-jeUc1qIB4wVunFIbgAtoJXOXzIg>
-    <xmx:a3T9aqUluMyKPmnty1ayKQTOHrsEPnZ6BdR6xTbyt9RixJCoIigugnse>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 43D7232A009C; Wed, 18 Nov 2026 04:48:16 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fEUuEoZt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794995451;
+	b=D8bsicfj70yQPvxEBENm2sh6wAwjhDgdfRStfYV41Tv0qEKG17HN3aaGL6enTTuC82roSw
+	krlJC3RjyZ/CWOukDlvGu+n8JOdbM1yL/yexNh4LbJebxRa5FEGw0X2k6v+JD08YnWpSfd
+	sUav2rewFUQH4nCgQnMVIz1vQ6/gKQA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 86AC8458B9;
+	Wed, 18 Nov 2026 09:50:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930381F000C4;
+	Wed, 18 Nov 2026 09:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794995450;
+	bh=sip8MOxQ14qtH7OEbhwEmEcfkAVdDDdsrxzfAF6moMs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fEUuEoZtj+T1g5XxEGGea51aJtI40E5FEa7gGfdXuh1rCBAC7rBu3c+Nlu26PlDdc
+	 MNrTLNG67SW3oSTyQroJtE1hx6PEieY7XQWdQnUxtzt0qRZNBQNxjeiOxZmDiC27jI
+	 nnKH8xHgBuIXu3527CXofm7N7BfdGORGV3QzdhRPez/Yl/gTrEqFOQsjsfAu2rwh8Y
+	 xG93fZEyE2FNWSJjZDXhZmmI2b+1HuTSwDzYLFQ1jRi9mfBcU2a05IAc5/DjCM3+jL
+	 +DeLJfZOeoPoCVYPkOdAaey5YORIfZpVYb9CTH8HB9EKA6iO9qWo3IYpMmjFaCHQV7
+	 1lv9H5GE9rO2A==
+Message-ID: <17456889-f94b-438f-85b3-45e9d51272ee@kernel.org>
+Date: Wed, 18 Nov 2026 10:50:44 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A70rKOtn2eLk
-Date: Wed, 18 Nov 2026 10:47:55 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: sashiko-reviews@lists.linux.dev, "Arnd Bergmann" <arnd@kernel.org>,
- linux-mm@kvack.org
-Cc: "Andreas Larsson" <andreas@gaisler.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Christophe Leroy" <chleroy@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, "Ingo Molnar" <mingo@redhat.com>,
- "Jason Gunthorpe" <jgg@nvidia.com>, "Linus Walleij" <linusw@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Lucas Stach" <l.stach@pengutronix.de>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Malin Jonsson" <malin.jonsson@est.tech>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Michael Ellerman" <mpe@ellerman.id.au>, "Michal Simek" <monstr@monstr.eu>,
- "Mike Rapoport" <rppt@kernel.org>, "Nicholas Piggin" <npiggin@gmail.com>,
- "Nishanth Menon" <nm@ti.com>, "Richard Weinberger" <richard@nod.at>,
- "Russell King" <linux@armlinux.org.uk>,
- "Thomas Gleixner" <tglx@linutronix.de>, x86@kernel.org
-Message-Id: <c8f80ac0-83ba-4d59-9930-ef497312e2b7@app.fastmail.com>
-In-Reply-To: <sashiko-outbox-218796@kernel.org>
-References: <20261116124832.662455-1-arnd@kernel.org>
- <20261116124832.662455-2-arnd@kernel.org> <sashiko-outbox-218796@kernel.org>
-Subject: Re: [PATCH v3 01/10] ARM: remove support for highmem on VIVT
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: don't undo another caller's pageblock
+ isolation
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261118000014.1474617-1-d-tatianin@yandex-team.ru>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261118000014.1474617-1-d-tatianin@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 58064180002
+X-Stat-Signature: 6kpscycahodtejspy5r3j5hozcuep1ue
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1EEB040006
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: q46p8njbnricand5mq5dyebbwsy73onq
-X-HE-Tag: 1794995314-841610
-X-HE-Meta: U2FsdGVkX1/7BtmkwPEoa7KAs1HfdbAZoVpOjhDZr5U09UafKaQEO1b4py1rhNj4+TPprCl3U+qzULIKIE++hEAF0GDjTx5tSJCzJs4wfsMzGuiU6EJ+h3SvS+f1CuKNaq6U099hZK1tmZuTfai15ASV3Qmph3PGyyC30g9PhIzxcViA61NfxaUs1r0UjPA8EA+3mT/gzHcrvUdF7Vu2/Y7Z5nh9ws1MESmx9papxY8jxHhFIuLrjzkfPsUxVH82JOiVr9dAIIgXr2GXZoQGxNm0h8xOpOBAgPPr698phc3kCwmT1mQiZIZB3G/A927JlwnVv+B3ybn14nrYD6VqYnWYmexVsyM9ADZsGKMc7cdgv9PVHAC0Mesc0xKaNL6hENanFlpCb3bPiAoyRR2d2ymzQwIDkVYspK2XObJHe5TpvcksmdPVNEO4CimTgL0dNgS9FGQFx8cuQS7Zz9hIHML0Iwav3Ke5HvZuNwYEGZII8Ncz0PZKqgT90eYuB5blkBNHE39FFW3UqkkZh2OOIlTXWKJnMXLnfMmrSIGZ4RsMDK6LEPNeREt/vQb50wWBCI1n1/aY8Z1DA3jotHMFeWLf0ZCcFlJuEl7x9Jdc8fIHwRNWg3TvJ3izWC5fQNGtAIKk0nfPFwUxcB2njGSdmYv+1q/SPzQ5a+TNwW3a1PapLY42etBd9Qlw58i9Tct+8ncsmI9fgo0MnRCAhBP6A8tCDTwthlFyU+SMLB4HKtf5t3guTbqjJWZwXtja4dscfa+cq8f9q3ZahGQtpxtTKl34OrO5Vbgotl5E4GOJKiYENOu5FUQyT97y9ifvXUWtKHZ2y7au1xBNmQYA7QjOg8Ua2vv487jaPOJrShE67Pee6IdaOLzvxb/Vt6lrEraXOabqSgEyjeRkNRm9hiqQSGSRtMxxFz1DH6rdFbF4u3tI53ZPRoiGSZwUgUOmdZ9oyeDO6NGzxRv8gmQFC23
- OEqkXnQK
- ZqHGlr32XjLMJD1BXQfbUlYyblAe0Gv0HKGfaafPZbqTWKxTfqj1ARM0vmn/E7UPk2Hpawr6MgSFHdmcBDX0ThHicBx66D52UQqQu0KiZTLmx6WGNJTtWzPvBKK/vqDVAkVN7DwGT1JdvmMdA6Iv4U0H5T8eWntuPjODhGsGK+72GaRXvEbr4zobxnEI5VdqdVV238yvCptropAsKNbNhXN5tKSJDBqd2naATilb9Tl7lSFnN0U8QEkccrqdSEGHrYlEU3fzfehIg9n+Emf16mhsQTW88s8PoekNhovSI0A89dGlkK405jjIGx8NLbxzgwx8v
+X-HE-Tag: 1794995451-593234
+X-HE-Meta: U2FsdGVkX1+mkn5xKq9fvF6dKz/g1dauQorMQa5gKxwfqOiy1N61OPiSFjbUE2VsgMV1RgfEwR4cmnmQmNcd4qtP5MiN27Y7lrupLCwItHIDvLBW+OouAhnNvc+Yg5kA71SKWEZLETQ+CuMcKneQ76nCtHmJ1FVaMd8HFJNkjrDhMqQZL5xF2Qmz9fUDAr1unPSYBZyKvS3rDLxurahhpWRoCU67kyMcz4ggsurxFeom8sXujiN7i7k7Wd7nWleg/cXKQQTS3xvJ28Npj3AVw6pfKeTOtfKJnVAXd5CKfJvXUe4ujaY43Qof5ui/llzYXb8nMvbtSHHnGpZ7q4qw+ESLjF0BN/VdzMbzvj0S+n/rDoQyUHCSDIyT3ilcIlc1K9Pbf/HsQzLNwnxtDFGHHEJkkOiTYhO5rcSl7jzAa3A9gxOva9j19IPn+/vbuuEN7ad5z4kT48YtJVxpjacntmwS+uzTresPNM0jEOqlkSem0/gBtDPAFpcBIecMVottbEQt4x0aNs3sa589Fz2Cbg0huTk3TmEJpCTguEFn8m4FS4VcpF08TGhA9I+IgWcvnu8RiVC8NVjIG3vok4hFe3JquvvWA4cXV4sJkMfhxCPYfAnD7DwJ0ETN5HNl8q6yhGfwgeRElw5BO2DArPlo/U9snnq47XEPkK9h/fay34LeR7CLk5PuWa7DGpEyl+vv4KFnyBrWibIagqTJar+ARggPFT966nNdOKD5/Etr8LrGM4NhB7ty+yZvB9Hca/YakOVwpx/AmSEMpliG39HbmmwJLA/pOGSIuWF+uHgoSVGLSn/FltLn4mBKr3iE1rMXEk4rB8UCpjkj7ECcdadr8ZaJZn26nUvgP9a7DpYq7eMZ7GzoqdgBJHGaQ1z6YNXr7U74EYxocvDYY1q/yUHnXt82RTf3i1zYYfytHgakHynvZcMqKQfOixKN/buk3fkX9DG+NAksXUfa5T7DMH8
+ clYck45f
+ SfOJB4pw7u0XNaCjQUVtDIfKGgF5OLKKFhwqQYCqJFWkRWXtqIGRcHakf370riX+SU0p4kN2iC44h5D/wBNGo8AAgvvFOAmG22mrQnCL99T1ueNytmavKMgLPJCavzo0CxxvvAmsHJX+7SkcuIII+0FfkLGoliFmKiNzHffO3SeO1bSJ8mLWi5wWBjWFA6Qf97Z2SsBMxEAi/dHqJKxi0xWPO/tY59rSdatdq0T/WZ5Bbla0Z9MaOZ6etm2gSAz1lFdPKBLdBe2A6XGK/+Hom5LsqgPYTsJQeVuZmoOWSRSnHMhA1GcUD4mhRHrFYAgZQzX8qvlljxPHkrFt+OmMVfV8O/XiqIl1dY9P1LbVE1v3WRJ9X0dM574S0e6qL8rzavp3d6fVmWMcjD1g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,70 +146,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026, at 13:49, sashiko-bot@kernel.org wrote:
+On 11/18/26 01:00, Daniil Tatianin wrote:
+> start_isolate_page_range() fails with -EBUSY when a pageblock in the
+> range is already isolated, after it has undone the isolation it did
+> itself. Commit 2c7452a075d4 ("mm/page_isolation.c: make
+> start_isolate_page_range() fail if already isolated") made it work this
+> way, so that users of overlapping ranges, such as CMA, memory offlining
+> and gigantic hugetlb pages, can use pageblock isolation to stay out of
+> each other's way.
+> 
+> Since commit b2c9e2fbba32 ("mm: make alloc_contig_range work at
+> pageblock granularity"), alloc_contig_frozen_range() handles this
+> failure by jumping to its common exit path, which calls
+> undo_isolate_page_range() on the whole range. What is still isolated
+> there at this point belongs to the other user, so this takes the
+> isolation away while that user is still working on the pageblock. The
+> page allocator can then hand out its free pages again.
+> 
+> Return right away instead, like offline_pages() does when
+> start_isolate_page_range() fails.
+> 
+> Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
+> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+> ---
+>  mm/page_alloc.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 12fac9084c48..151a8d64783d 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7335,8 +7335,9 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+>  	 */
+>  
+>  	ret = start_isolate_page_range(start, end, mode);
+> +	/* After a failure, whatever is still isolated belongs to someone else */
+>  	if (ret)
+> -		goto done;
+> +		return ret;
+>  
+>  	drain_all_pages(cc.zone);
+>  
 
->> @@ -178,14 +143,12 @@ static void xsc3_l2_flush_range(unsigned long start, unsigned long end)
->>  
->>  	start &= ~(CACHE_LINE_SIZE - 1);
->>  	while (start < end) {
->> -		vaddr = l2_map_va(start, vaddr);
->> +		vaddr = __phys_to_virt(start);
->>  		xsc3_l2_clean_mva(vaddr);
->>  		xsc3_l2_inv_mva(vaddr);
->>  		start += CACHE_LINE_SIZE;
->>  	}
->>  
->> -	l2_unmap_va(vaddr);
->> -
->>  	dsb();
->>  }
->
-> [Severity: Low]
-> This isn't a bug, but both xsc3_l2_clean_range() and xsc3_l2_flush_range()
-> still initialize vaddr = -1 with the comment "to force the first mapping"
-> right above these loops.  With l2_map_va() and l2_unmap_va() gone, those
-> initializations are dead and could be dropped just like in
-> xsc3_l2_inv_range().
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7d9c29ed8feec8bfbe5e5f673ba2b5926da11375
 
-ok, fixed.
+-- 
+Cheers,
 
->> diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
->> index fb2eb0ed7bb87..917a546af0b90 100644
->> --- a/arch/arm/mm/dma-mapping.c
->> +++ b/arch/arm/mm/dma-mapping.c
->> @@ -647,18 +647,10 @@ static void dma_cache_maint_page(phys_addr_t phys, size_t size,
->>  			if (len + offset > PAGE_SIZE)
->>  				len = PAGE_SIZE - offset;
->>  
->> -			if (cache_is_vipt_nonaliasing()) {
->> -				vaddr = kmap_atomic_pfn(pfn);
->> +			vaddr = kmap_atomic(phys_to_page(phys));
->> +			if (vaddr) {
->>  				op(vaddr + offset, len, dir);
->>  				kunmap_atomic(vaddr);
->> -			} else {
->> -				struct page *page = phys_to_page(phys);
->> -
->> -				vaddr = kmap_high_get(page);
->> -				if (vaddr) {
->> -					op(vaddr + offset, len, dir);
->> -					kunmap_high(page);
->> -				}
->>  			}
->>  		} else {
->>  			phys += offset;
->
-> [Severity: Low]
-> Should this keep the kmap_atomic_pfn(pfn) call and drop the if (vaddr)
-> check?
->
-> 52c9aa1adc30 ("ARM: dma-mapping: Reduce struct page exposure in
-> arch_sync_dma*()") converted this path to kmap_atomic_pfn(pfn) so that
-> only the kmap_high_get() branch still needed phys_to_page(phys).  Using
-> kmap_atomic(phys_to_page(phys)) reintroduces a struct page round-trip, and
-> kmap_atomic_pfn() never returns NULL.
-
-done.
-
-    Arnd
+David
 
