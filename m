@@ -1,137 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585A8606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C45C606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K4BleWLG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CX/Mok6m
 Received: by kanga.kvack.org (Postfix)
-	id 735446B00EF; Wed, 18 Nov 2026 14:16:48 -0500 (EST)
+	id B33046B05B0; Wed, 18 Nov 2026 14:21:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E3FB6B05B4; Wed, 18 Nov 2026 14:16:48 -0500 (EST)
+	id AE3946B05B1; Wed, 18 Nov 2026 14:21:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D3116B05B5; Wed, 18 Nov 2026 14:16:48 -0500 (EST)
+	id A20876B05B2; Wed, 18 Nov 2026 14:21:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA916B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:16:48 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B143E140866
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:16:47 +0000 (UTC)
-X-FDA: 85449196854.16.9F79589
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B62374000D
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:16:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=K4BleWLG;
-	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795029405;
-	b=GWOq13VC/OPrwSK84UKBOgwVIZ/rBKn0jA0hX9/P2HMxu/TsQYs/HVV9zQLLNCfqlvSFsZ
-	DXwAf98Q0FpJ51lgrdPnuMEYOrg+d0VmzD7LEC1rhek1aZXa/yQwTAsA3WRcX2ZAQ1zDwD
-	s9VruFwb0rBMitgGakp3K/lklhDX8WQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=K4BleWLG;
-	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 803E96B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:21:13 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 132AE140867
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:21:13 +0000 (UTC)
+X-FDA: 85449208026.04.53305FD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 786F74000F
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:21:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CX/Mok6m";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795029405;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1795029671;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wesoUpV5LSWdODsu/SFZafU9p7VW5qMB6GV5WAXmCps=;
-	b=W2v0fBUNucwmyTT0jbfkFWpVFmEqw/nomMRANUybTLnsEQ0CQr2fkisyQIcy1Q8rys/h7S
-	S7kvAoDajpC54t5T5x0EacsUYvpQrbAQmBhPTp7VGEymn/RRMlNIPs0SXQihfQReT/wZ6X
-	LuLtAlsZvHSH6CsbV1VGeUwbiZH5BLE=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c4cdc606b47so237430466b.0
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:16:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795029404; x=1795634204; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wesoUpV5LSWdODsu/SFZafU9p7VW5qMB6GV5WAXmCps=;
-        b=K4BleWLG9pLItRSeAf50vWSk+NT4wLZLYsTgFmzOTPc8XiToDo9abvoIgjOcKQaexQ
-         8p9vu9ruWnM7vuLtqebGGJjCVvDCljWeh21Jd8M3pZrJvrGEVMN3VE7WKjTDdwUxRapy
-         uJocT67xxhzaoqgABCZfCVMwIM49HSszKj/VEMXJZwfYj/KPUGwu10ZA7Bl1HTu8kbkx
-         rMhOibZhxugcHAFI1GotzQi4ZJvyaqlJvnuTZoO5TmudQA86fSD3WzguhEzu1h3Gf2oT
-         iEsQnE1VuSernov6YbHLWD5+fE1IoDd7Ot5Z6fDcUli/V+VHpbLDH4Fwz35pig8+GyXF
-         X6Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795029404; x=1795634204;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wesoUpV5LSWdODsu/SFZafU9p7VW5qMB6GV5WAXmCps=;
-        b=p3NzWKR09n3ehrkqgP7qFNBQJyz8IkV7i5jJtD+ZwCxRw8niH5sPHgJSYn7u8IqjvJ
-         3PUiYd1+CsQUhPpgslirK6YevT1WtQn634emdLvwdtAj4oq87kpRev9RF63ud8RYu0yP
-         Hu1sebiqBAGmOr4MmSZ5sgy+B6a9m96B6l89RPkqLro+KpfY1wT94v05ztQY5CMBCIvF
-         0MTxVUDyn1Ft0Vvas7PsZUsV4KUvy5j24K26wlhBltefNHKGGLYTdTfciCJob4YblVUZ
-         wD5dgnhPvrd+g64n/crS6bfbRgJXuhfVH9653amWNZPWP5UHlfVvk+BDsHsbWvzm3P3H
-         1BRg==
-X-Forwarded-Encrypted: i=1; AL+hErEXbwN9XOYaW8WndliCPnv+tPrB4Hz+xDF+zS0y1dcYL/a2Qq7QO/9XRXM9W8wBDoFPC6JYqu4Zxg==@kvack.org
-X-Gm-Message-State: APuU4Z/iUawx/2cHqnOCR8AOYu1X4BThAiVuHXV3fPawTlpbjmafr75k
-	0tOUWDG/7EGuAfAjKehczVov3+yJtOqZJYxp0EyIz1ZKzxDJzLyAEjPQ
-X-Gm-Gg: AYBFou0A4Se28mVXkWP9T4R3/qly55+ekEVEPq+VOEMFZp7BRC68nTLNzPOy7XylOvA
-	9gQ3Yh8ctW8sgneohNB7Rz9pmG9FDnkeoPltgOPeW6dtMDEnyLRG8zl+WHoeTZNIo2+2QUIJNy7
-	QHkTCFrTtsiurTQZygVQ43Da6MzNNGbwzk1qQfKcYJB34QlfL96ERaNQeLbjirU6/tYkZLq60Ht
-	1cfz4fmnvAtHZFUEpcmxcuePEMq4iyO/b3BJzbAgmO0wJ58sfAIhl+ZMOTPerFYwWW2rq7DwUg4
-	xPJXgkpsoQtxAGi6NxlJPdDAqgmSBFa+nsyPDDb5jO5iHQ0XTiUvO26sf7+hSjv5zVtVNcQ+Vzr
-	DtIyAAVcAZK94d217vQy7SCBADLmvf+75EYv2YM5+FeJe/t14+F7iRj9xyrCAcu4qk85NW+CaYW
-	OXHa+tz7yNsRZQU3PEOkEnH44DJXSMZvQb0sXfxpog+alajn7Z1JuKCTJ+6Ebas9oSJFgGzLCCq
-	Z/7LRz1NCwt31zXor8lQjOKeCVbRhxOdN4rqiR1jvuiQQq3bcESnvTsOKyHLBp6hV8WTg==
-X-Received: by 2002:a17:907:3e9b:b0:c50:5186:a428 with SMTP id a640c23a62f3a-c510e2d83ecmr343950166b.27.1795029404223;
-        Wed, 18 Nov 2026 11:16:44 -0800 (PST)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c51233c4cf4sm30980066b.29.2026.11.18.11.16.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 11:16:43 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 18 Nov 2026 20:16:40 +0100
-To: Dev Jain <dev.jain@arm.com>
-Cc: Hao Ge <hao.ge@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	linux-mm@kvack.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH v5 04/11] mm/vmalloc: reject an unaligned range in
- __vunmap_range_noflush()
-Message-ID: <av35mNq7RrxN56Tp@milan>
-References: <20261116071325.263682-1-hao.ge@linux.dev>
- <20261116071325.263682-5-hao.ge@linux.dev>
- <4c233641-15ad-4e5a-a106-423bc31f357c@arm.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4c233641-15ad-4e5a-a106-423bc31f357c@arm.com>
-X-Stat-Signature: 44xg7ecp14cfxf6zogo7hstso51fa1dp
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	bh=BJx+U7zia+nE9EeEvwYhNLjJLv5dhCpyIAGJ6raVPUk=;
+	b=SBrJkliMmNmNKsd7H7gW8qiFP1Q4uDA5pOSH9+vW5W/ShhE78CDkIY74QIRN4QpdkVuxZ1
+	YqLJNKC/HsE30IQouaSAdmNw3UKPAboJNIoUlaq/P2BM23e5vCLMEllN/bmou/VZpxi7oV
+	IlAoy4kWphUDlIG2/56TtTcZ4erTLp4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CX/Mok6m";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795029671;
+	b=KzuIulxqueH+coyfBx3ooIZ+JEe6aIjPVoCTSGcdXyRHnYQ3neKdUg/L2nIrhRTMx2jYb9
+	hg0l8B+tDCaWliBNiin1m9603/vgbyCbsNF6TqL474ZqFes0HcgXZonGBd/MS8WeTBh60C
+	l+OUiwf2rqjrez3/vZyGoASFufyAeZE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E1F02638DE;
+	Wed, 18 Nov 2026 19:21:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFCD1F000C4;
+	Wed, 18 Nov 2026 19:21:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795029670;
+	bh=BJx+U7zia+nE9EeEvwYhNLjJLv5dhCpyIAGJ6raVPUk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CX/Mok6mXw3S4iCP7f7/eBP2B/NiOkfCwjoQWNU/Yyx2VwwinY4vpt19gOWxz+Gid
+	 ggTxwdGggM25dIjqf4SGOaG5uTSM0KX+fLNom0SOeJhmUGvyC54EYjv4LO9zVnVK5o
+	 6jz+PHFx2prehfs9fwnoCTRoACrglv4yrcIXyQ98gzLGQGB0Htdz4dJjzy13j8VjC+
+	 KT/HNpSAP5lusoEoaV6M2g3EC5a5h3bMirgFNwicvAToqRon4dImGB9oKd7M7miThY
+	 Gd36+oeMjPpIg4IfsOT+yl4OVaB/O+DJWMtqQCZ5OG9Q0NDPaGUtYY1drGsyO/5wB0
+	 agxnpAbBY1rbA==
+Message-ID: <sashiko-outbox-221844@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/userfaultfd: check exclusivity of the page being
+ moved
+Reply-To: sashiko-reviews@lists.linux.dev
+To: nakixii <nakixii@gmail.com>, "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "Mike Rapoport" <rppt@kernel.org>, "Peter Xu" <peterx@redhat.com>, "David
+ Hildenbrand" <david@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Lokesh
+ Gidra" <lokeshgidra@google.com>, "Kairui Song" <kasong@tencent.com>, linux-mm@kvack.org
+In-Reply-To: <20261117191853.1314834-1-nakixii@gmail.com>
+References: <20261117191853.1314834-1-nakixii@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 18 Nov 2026 19:21:09 +0000
+X-Rspamd-Queue-Id: 786F74000F
+X-Stat-Signature: wkpd4qqo7zehqhd6k8f95tgesbrdbzu9
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B62374000D
-X-HE-Tag: 1795029405-143427
-X-HE-Meta: U2FsdGVkX18F8w8T2aU+0v4h2FO1ZHeqDiMWaQi+Effquvo1fYp8aZx/ocAe2CMxrMbBLdq3NgPRNJJU7wb2VSoXfRLd413mFkdE4rWLc8daJD+xyfgn7C6rLIE0o2fIdpSe6d/f4oL39oGRzfrKLfFzVSlN6TpOpkzCSE3qQvLZZpnKfAIe4j82AaZs7M77uuXxriyPbv2bS8B3aKQeQc9ly3tOeIOfm54ebmIH2HXVIUFLm5Dy5EIHxy1KV5xo6iX6MGEuRbZym3rxQ+oYPGZujUSwwFPrvxBJ8L0FJn0m90XJSTKLp4WANMh555IGnWpfSAWxRi3vi1uj8GsTPZHBRuBuwWK4Nid9eqAZaSeYtXswcLDpa+y0pon45S8vOwuxbyjsYNnK5w/qkmMZbwZOkpcp116OGWwDg36mRbPjIAULMxFmhw8TYH6x87Llx+siKdZOlCBE+D1wtmB4SOvQ7RoI99fe/N1iiqPWVosLxqsfvEDI1utrdLt8pOhc8vzPgHU6+S5/mcLxbjWBxdm+w/11iuHnFnMogaTUBEzdleZePUiaGZdoiPqOBcTcWXs/EG79u2c/bgSTe19oD0iUjjNo5IyAsdaFTgJVglYeu2W47+nYx6BDSh1IPGxTsxJ65p5kXTmfDXmqInuBMAoHjW/frUFsq48TAJGilyZOWKGpdkc5n8LgH/DHrfQnDNE6TOS5bAs64SDoAolmkNpPexH8Ouk6lBC7ctHC5gMeo9hU09P7QOJxVpF45xhOyjqYdaC5NKEP13ABSECGrrE+hwv3vgas8DF7VWhr8Gh0VA/QglFeAJDjfbomtmBRiiyBnsjVXg76y8bIq9IPE8lAGtzXE88HGvtqosHZym+08XUPCpY35ufIDJPYyqF5Vs83nFu0+wrKX/fbcGZmzmhv/f/OTd0rKeipWLK9ynfOucwj4EmH21zYgzqcbUe1X9G3xcivYNW8xAikXAc
- nz3RAcpV
- sqBSQAjAL0m6X05YPllmjIFnx06B3Uu/+Sy2ncGzdzy1rmAjwFbH5cVEl6/XG6C8rSHes4rgESRoCXsQ8Sxgk+j5OQb2HYw2hVAeWFj6XBVeiCGtVg+3NHeZXE7HiqNXRYlpvy+N4MJHd8mDf7gmwXzFRA+0UiLV/vNbA7d2gwnK4T8wm7LGS3GukLtK1TFKPcSuaWT1o9gTHTCH8pLUWIv2Q4DsHD/57wbx2sIXQgA0sCBm4IdHOyiOD+3RRYVeqMQ7YkbApghPu8biEYox9c35CZkLr4q1g3Y0LMoH3urhEER1+gmt/+0D6lCsR9BC/+VwJ3jSNwAs0PRYMVMWET5yidiou3MiqdRs6xAOw/lNJepmSE8wzKZdEbMaPNJeUErpiHS79c5EaPMdA+LIsWUgQltW5CVQgu+ZNL3S/JLxOJv56bKhyYRY03FyOhLqTogrL9eu/UQ0LA+IH7t2ZBSwfgrSk69fpPl8qUmH1fUgNO/TB9IH5HV2cDTSRFyQh+xYbAKpfMnpY/OlqqY+PebZMeUMAUoX/irN1YW95RFwKizJ5qvqoqgEu1yvQMv3hrIqKzdK4XTNEIh9KH439b1NawfZZM+4qUBkwvANdgoDueF4x7yKvSswndh4bUCi5ULWk+lQsIUHTk0wZK7kNYhGPvTV9uGbN/tce
+X-HE-Tag: 1795029671-726335
+X-HE-Meta: U2FsdGVkX1/GGQubXfTH1WGJn8o4H6gjcSidkB6m4qWbv7NOwVYOlClz4KLHzLQL7lR7eT8nb4YzOGUOlAQ/W8KZ6uFmIEsiBSd/6b+BkVZAD0wOeATDW5YTKfF8F6Twd/HxJwZCzq1W96ZGjHJdgUXQ6+MNK1quT5qo63GjMEJ+P44hDVfnp5/9WRSrUdJsRu8YPWqRuzigWbduxuMi9sUVOj5DKw1PX9my39ycvJCnFT7JNaWAs0AWp2AHvzXxlDo46DaCO9tbj8hNSst1RBTINGMWLwLKEizJjJfsMWORee9GNT77LLZ66DHVgk5qJc/8/7MeEkKK8IUeWwnNF0BHTJMlysaEV/+254dcGQGxHZCSB37e23SIdFd6aCS1lX4SHMtZqtZ+RyF7+Xy3zmc61ALOklmymUWZR2bDYt20JmsfnnPuo4k/jrhHNh8VtZTeVODBO6u/eZLe2TUEAD779EEv15tg9mL7S4+btMrxUtC0vZQBe/JFJ41Cl30VKvNga24n4d1q/KVJuar84e65v320A+2Lr8IfyCUbk45z2Thhk18cmzCvEoyVJ9zVXrkaTStHnNfKTe/PvrvQ1GLIMwBPdB7M2ex7rVJp0DbZRhSjqq5jZXjhlUpWlx7tCh30ttIDIrzD1orhWCkZPBC/ZG5TOfYLiYNQyHVQsEviJDFLhBQy/HZmGR5kaG7z1pXb3ERwO9WWWeCqb/OlYMgN/7iQaCTY7DpWhAlfKjJHi5AmZpvmG+HOimNZduwSYKQeoYMzc1j29Bi4y+PE/E+dNiZeTYHR5IC2mSL4OFF6aQXryuV/inplCNJ58egBLebGcDs0516tLf4cTeTS5jylc92msjZYAhAnryPLjz7SrSN+Femt6GPah4QQZswUMEix+YUGQ1bCvB4ursx44m3QV7h7RxfdludmZ2Gu9F0uhCAlzNKTr5KUQFoSG39rN9sy1ZC4j3GSRgAIDsa
+ lDrIk34H
+ KI26dHNljwrILdNTg7ao0o9zn1JAkNHmtnnMOyQEjdciSyL/SZPop5qVhbTGpV/f1JyEuty/prHtZedZ4KJ/IS9BmiHywA/HHwsPkM8MSYX3upF/+yyDEtdFWnISkMZ/Rzyg8DxXEJpKkfNPlTQ1FQ1R5UVDcsrOArftJg0ZaICgIduiwnGdhwNP+cPXyyJFaRay6ilfvhK4Q7uud9rk++jYb0oCG1oUEdKoaBItx3gphop3Ftk8jnhQZKYtUsuFNeMN+2TlgI4ZPztl8J+Op7OfJ7OckWtxmK993AuvIczex03kiOXQG9T5sq53h6rY1mPs6M/FvRKpwnuw7PMRu/Na1TFWfrb9w9ELZX4c6TxAHqf+OoVJwpsAScDeOPxCJn8HYtf1AVqiwF4aExJTR410yvb6Rbocg6CIJoeUWR6qQJsW4EXscCtt4cg3QobW7ibiRXtSydSK/8LWd6Aq4piEyODhTvL1Ku3jhqmweleykolEnKRmj478yRQNMNxMb5dRRSmwulk3NKN1bsbqwEdNvNI0o4TrJCvHrsuioOk4dhPBWLOIYMsKFVl5dnH5bPdDUUX53EH470BCoShllLUV1w/LtP46AaA94iMDiXfzD5oY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,49 +93,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue, Nov 17, 2026 at 11:35:24AM +0530, Dev Jain wrote:
-> 
-> 
-> On 16/11/26 12:43 pm, Hao Ge wrote:
-> > The PTE loop stops only at addr == end. An unaligned end is never
-> > reached, so the loop keeps clearing past the range. An unaligned
-> > start clears the page below the range first. Both are caller bugs,
-> > and the damage is hard to attribute afterwards.
-> > 
-> > vmap only installs page aligned mappings, so an unaligned unmap
-> > request is never a legitimate teardown. Warn and bail out at the
-> > entry of __vunmap_range_noflush(), before any PTE is cleared.
-> > 
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Closes: https://lore.kernel.org/all/sashiko-outbox-178439@kernel.org/
-> > Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> > ---
-> >  mm/vmalloc.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index a168f6f20f4f..e2b63cb1592b 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -523,6 +523,9 @@ void __vunmap_range_noflush(unsigned long start, unsigned long end,
-> >  	pgtbl_mod_mask mask = 0;
-> >  
-> >  	BUG_ON(addr >= end);
-> 
-> Nit: It is usually a practice to change the existing BUG_ON's to
-> WARN_ON's too, if you are changing around that part.
-> 
-> 
-> > +	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(end)))
-> > +		return;
-> 
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> 
-Agree, please also replace BUG_ON() and feel free to add:
-
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] mm/userfaultfd: Signed-off-by trailer uses handle instead of
+  real name
 --
-Uladzislau Rezki
+
+commit 888d38f960fc9868b79456db2818f9a7357f85a5
+Author: nakixii <nakixii@gmail.com>
+
+> mm/userfaultfd: check exclusivity of the page being moved
+>
+> move_pages_ptes() gets the folio of a present source PTE and then checks
+> PageAnonExclusive() on the first page of that folio.  PG_anon_exclusive
+> is per page, so for a PTE-mapped large folio this can give the wrong
+> answer for the page that is actually being moved.
+>
+> This happens after fork().  fork() clears the flag on every page of the
+> folio.  Once the child exits, a write fault in the parent can reuse the
+> large folio, and do_wp_page() sets the flag again only on the faulting
+> page.  Reclaim can leave the same state behind when try_to_unmap()
+> replaces the earlier pages with swap entries and then fails on a later
+> one.
+>
+> Moving that page with UFFDIO_MOVE then fails with -EBUSY, even though
+> the folio could be split and the page moved.  Callers that fall back to
+> UFFDIO_COPY on -EBUSY end up copying instead.
+>
+> Check the flag on the page mapped by the source PTE and get the folio
+> from that page.  Locking, refcounting and the split-and-retry path stay
+> the same.  The batched path only handles small folios and the PMD path
+> already checks the page the PMD maps, so they don't need this.
+>
+> Tested in an x86_64 KVM guest on mm-unstable with only 64K anonymous
+> mTHP enabled: map a 64K-aligned region backed by one large folio, fork,
+> let the child exit, write to the sixth page and move it.  Without this
+> patch all 20 moves failed with -EBUSY.  With it all 20 worked and the
+> data was correct.  Moving the first page right after fork() still fails
+> with -EBUSY, as it should.  The move tests in uffd-unit-tests pass with
+> and without the patch (the two swap tests were skipped, there is no
+> swap in the guest).  I didn't reproduce the reclaim case and didn't
+> test arm64.
+>
+> I found this with Claude Code while debugging an out-of-tree swap
+> backend, and it wrote the first version of the fix.  This version, the
+> changelog and the reproducer were also done with AI help.  I've reviewed
+> all of it.
+>
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Link: https://lore.kernel.org/all/20261116110122.309748-1-nakixii@gmail.c=
+om/
+> Signed-off-by: nakixii <nakixii@gmail.com>
+
+[Severity: High]
+Per Documentation/process/submitting-patches.rst, the Author header and
+Signed-off-by trailer must use a real name rather than a handle or
+username ("nakixii") to satisfy the Developer's Certificate of Origin.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117191853.1314=
+834-1-nakixii@gmail.com?part=3D1
 
