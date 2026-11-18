@@ -1,106 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2591B606A337
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531ED606A32F
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 01:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J+o8YWMj
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxxJ1P99
 Received: by kanga.kvack.org (Postfix)
-	id 905706B05B8; Tue, 17 Nov 2026 20:32:41 -0500 (EST)
+	id 4B24E6B00EF; Tue, 17 Nov 2026 20:46:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B6286B05B9; Tue, 17 Nov 2026 20:32:41 -0500 (EST)
+	id 489B56B05B0; Tue, 17 Nov 2026 20:46:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A4EE6B05BA; Tue, 17 Nov 2026 20:32:41 -0500 (EST)
+	id 3C6F86B05B1; Tue, 17 Nov 2026 20:46:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 430116B05B8
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:32:41 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05D5080663
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:32:40 +0000 (UTC)
-X-FDA: 85446515280.14.470E64E
+	by kanga.kvack.org (Postfix) with ESMTP id 1F3156B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 20:46:43 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 948A4140592
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:46:42 +0000 (UTC)
+X-FDA: 85446550644.28.9329436
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4C7E320007
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:32:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J+o8YWMj;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 024E6C0005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 01:46:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WxxJ1P99;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794965558;
-	b=qJ2VJHZd2Mwkgj0OlX1qDbU6S4DLi9d96R9BmbFmpf5DYJXW0ZEcOI1WHRPBC8siE2Ipos
-	6ZMeAeN6ZwvXRuu59yVrO0Q9Yrysuq3ytGZ4r8IG5daKCZm4BWTjZ4jZNRFZShacZW136/
-	x5DRqRlKcjyNk/nBFDLzMz6mKdw3Qpw=
+	t=1794966401;
+	b=Iv4TrXXMGE/TkMmocfI+8TvL/JxwXui/Clno4soqBggeyBqY2EPoD3tryGPxw0b5XqTVK9
+	2XQwiLXEapLH6JH/gUKhRGoKaFk4yKEBtCRhr5BPn1GzTBViBpkxni4IrjgXo/AdDm60ZW
+	uIZ/E9j5N+j/kYGJuMReDbPEAiH08Y0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J+o8YWMj;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WxxJ1P99;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794965558;
+	s=arc-20220608; t=1794966401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=60eiZsC1vQ0qBVJ9i90dmpYE8S+lEjH9IMSqx80A0ng=;
-	b=b7JR9c7cZoSQzgfEHKap7XzwTg/FPcCDfbV7Vj6XMGa5LuS+4GqIOyru5KJweLyKX00MeV
-	xmHikqfwlp5xH5nio8iE6IVBD0+45Vmb3ATpdQOExHZRN58IPQl5w48ickYybPHTo6MI0u
-	RYwGZ4SUgEKMKNQ7uZ/d6wHMmgS38+I=
+	bh=ij7QL2lC6iO/EW2eXzqD3vptmXnm8iDoR9KY7vOdFJY=;
+	b=VOAQNOiT85EISjhjOEkW5UyVt3eY+FO4GK0zN5sqSvyDUDf71bD1kdDcYxOD823CZQoahK
+	0H+kYVZAFpBJKkLE++w+0/v67C0P+xa0845f0LzF28EQyAtQG/tJU/gDbzZ7E3DmDLc4UP
+	Ms4hHnVGbB/ZpAVjnQD4wURUMQE7M0g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78A6B43F8B;
-	Wed, 18 Nov 2026 01:32:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1581F000C4;
-	Wed, 18 Nov 2026 01:32:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 226C9434EF;
+	Wed, 18 Nov 2026 01:46:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43A61F000C4;
+	Wed, 18 Nov 2026 01:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794965557;
-	bh=60eiZsC1vQ0qBVJ9i90dmpYE8S+lEjH9IMSqx80A0ng=;
+	s=k20260515; t=1794966400;
+	bh=ij7QL2lC6iO/EW2eXzqD3vptmXnm8iDoR9KY7vOdFJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J+o8YWMjgX9T+5jaNOFnKzda/YbY1BNrE/oTberX3jpMzeB7wh97ZK10rgf3CwYSY
-	 zq8mfbmcExTlNGaPUAdcqtmjnW+KVJR/dZpuwoTUH/GAizTqsbJ5pmwDSrNCULxRcJ
-	 3ejeOy1vgVYdhIvtqX9U1pC4IRSEVtZrjI2QnNJD5vP+9t/V0MgcmVgC2z4cRDrCjS
-	 f5XF/8p4dyvTiyWMKx9wr8jsREZ7FvT4FdC0ipJFFrF/iUn5TZCsahLeC9HttFpdF2
-	 nQ4SAofcjof1wqiK4mRA0JHf6ohnn+LhWahQwWRci43iLDHiUygj6j9tIsPsOPevBX
-	 J4VNdsXdz4+WA==
+	b=WxxJ1P993x7np9WHlyZJ4QJntFW0aBEG9e0LFkNzS+Ag7AgczfP4SLgMUHol5bhFg
+	 R2cX2gN5ZjYSlHwz8zC0Ya8f5gn0BQYbZL/iLJL0YifGiEUXvNSAHKRxxw96TpTDJk
+	 /LwfilYnjusNIVO64EIDYbwpSuSILhDF7TsFvA6Ra+3TzLLtJ6NXv0vgrK3hVGj7nt
+	 5lkx/wJyGbuHnPgWX2sx2soW4S9SzHWlheKFh9Pkk9XWlaQRIhxlR5kp6ZfJsWa22/
+	 nsdaFKst/ck4eF0aGQHwJwCbIF9DhUsvk8GjRncWi6UjecYLqmkCi+y1v1iDgLhP6V
+	 Dfg/fDTCjWnDg==
 From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
+To: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
-	David Hildenbrand <david@kernel.org>,
-	Justin Stitt <justinstitt@google.com>,
-	lienze@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	kernel test robot <lkp@intel.com>,
-	llvm@lists.linux.dev,
-	mm-commits@vger.kernel.org,
-	Bill Wendling <morbo@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	oe-kbuild-all@lists.linux.dev,
-	rdunlap@infradead.org,
-	sashiko-bot@kernel.org,
-	sashiko-reviews@lists.linux.dev
-Subject: Re: [PATCH] mm/damon/paddr: avoid truncation warning in high-address KUnit test
-Date: Tue, 17 Nov 2026 17:32:28 -0800
-Message-ID: <20261118013229.94629-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/damon/tests/core-kunit: add test for damon_call() with repeat control
+Date: Tue, 17 Nov 2026 17:46:32 -0800
+Message-ID: <20261118014632.95656-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261118-fix-damon-paddr-sparse-20261118-v1-1-3a0e943406d5@gmail.com>
+In-Reply-To: <20261117174834.29182-1-saileshnandanavanam@gmail.com>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 4C7E320007
-X-Stat-Signature: xouiirpt8gpzspaz81o38phgj3qd6d9u
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 024E6C0005
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794965558-674946
-X-HE-Meta: U2FsdGVkX187vYJq03d1plQYyD8ncQ0MHTd6yzv/7nB/nzFid7vjLoSskJB1L+CvitxsSLhQQuUwQk1jUqHqLTzwpkYrwgRXCQyEsF/ImgdGXlWKA5UGH/L7lcmINAHcyncEZEPNGrs6CW81axqzVVNuQuIozQj2Q7WE7eJLq5p7fpDKRWilTqKh2JEri8oDotO2mvZIk9/eiAQVVLll7PIvWdphtwVF+rONGpqmqboDz4/TmGtEqJuCw3+ElfEMzUiulQVwJZdkW4/4rVtkRfNaLbGf0xys3a2Qs9lrz0uuf+kLnK6pEbeC9PP/9laQrrKfbVbUwvUPWkk0x1SwhraUDb/ZQz6PznH2l3/8N1q1DfUgqD8WEo0UkmPzF3wXUibj3tRKBblqkLtwBXrN5sDsJ53TzhzXFHu83XGlg9XW1GmYTXht87aP5Qqk04QaTUxHScE+2upfTrDPJAK5l79d8DAQehKx2hqMxVvBGWEGXa9UIaeenVn/x9N5EBE7QB/HR0Q+B5OTLVIq2HgshTjhtlHL2cPvnRDVn8huqSaAjNWv7QE4uDkPeGi/silL7ofL6IkIbAJ3AxSeThPmAd+qzoagfNsY3o5hSGADAMK+2XjNCBFqDTfz4fWGSGPGJm2ZELTccVd6ykbKaPXrTaZeLvJbW0wxTz6WTpWBFc8LBycAUl9lveMNcZ3B7ACWdjMYhNboZFDzS4J6RtoI/50pClrsO8vhvw1Y1pD5V77Mnrfj4kIV8PG8AM8OCSNwWCuBX3YkM9ckakJ/PWO29hPRlUk4tYlX4RfMTWxBssrUGsa5V1vaiduXh2SIKR/1vRJqBHR2iAv4GG1gZsLXNLyh1SrtpRpmUzUCrtRpdgLGoL2HU9ZcdPJuQZas4A0T/QtBURW2e8Gg8ma2H3v8TnLcW9BUnBdIh7whuZ++Q4o97HY0Y7EJ1kkM2wqmx9M1ieq1COzoCwHWTX0KGXF
- 7MQununU
- //zJP3M2oePCKMHDDnErhwAkCp4rbeEUPex9H46se0BobgP3df8+IouZP+j2IYiAxpBh0Y2IMHsRHqLLWC3g4UjRBeEKNO0ch3KK1r/jwRVSucgWoC+Lac+/lX2W/+kPbR1HqQZywQ9UiL+DlFQE9q18PTwOa2F0sBdo0TU6j9+3SUTP1n+FXzkRIWz+TzIHNi3Lln2kbg8PToyuGaU6GKkoLk9hnCzj/qmyiHXckRBVgyVY=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: etk85ammd4grmcbx89nphnpuwstmfmyj
+X-Rspam-User: 
+X-HE-Tag: 1794966400-295832
+X-HE-Meta: U2FsdGVkX1/NgO3mm7YbZZVW9jTFMc31Ey61vwAmpiu4sGPW++UCMlh/3/xoWC317Tu5PcI/fvxAzejKX2KbGuVrKd39B+WKivCb+F6kImw/2Tj9LIQYQUeVOhKOKqafep3GztHPqhFw0u1oY/x4h7QDkPlr+fNSB3tGjjFWSgUo8PZrdfkAgRj3pX21xhSstq2vBOVIwTgngDvaVx6YrvRK6xa0zqKdLE4sdrlLEigDNFVfp9f8q3fau1YIGnsTjWbt/QAVeZjDxHfIptaRkNsPp3kGGsQacZVBB1uzlByftxEAnt2SzRYzTkjWs6VY3EJe0SPpFy6yKfSpIXz+EfJfM2kdEINcreScYMfXdZjYMc7za9FxlFg1M5c922DKDp7Ym8EDOT58mjIl5deDIRaLRTC+tSzEnxLbjdaCsEd7VQbIPCnx+NCFvMzyj6qgpf2lGjZ2o2CQ01XrNsqdxrELa7a1xGvHIV/8yn3+XTXv2lwzJ/i9EXjemuFY2O17Yo/xx12Y/CBajIm79UuKA8jzjzsqCYkt2z3mRpbeKk6jVJqNoCkCPh5xjJBtN5V0j2IbdbfRyZ/bQ/61RhnASh4FCcwLeZcWVopBYPijhQl/VETkdfxpFf3bkrBfhWaq0VUleJ6RhHw23dBh8sLBHHiTCJhL5fNopyArAvQKK/sPjoUp+UHR4WX4kHs2zHxTgDVx9ejPNBbIkD9J9oQIJp5NKNCkX4NF2EkNqjtgHQ2Wp320PvkBBFi/bXaLzWsDVgXYTtcQ+V9xTsAN80sAECTSj+zbkoZqCniJIrVRGwemYODqo3uhQpbpTaLpr4ez3bbQy5zKWN4Q1dJznPX/vm0lRMRnK6IkdEUTz4a8EvlTnLV2TWirF8TBfHucmYzpNUwn3AQHhd6Uj6Y5/ZLzKnj7D6Q7wNp9Wuk9ht800SY6arklzMeBQGZikFc30C2hat4Mv3nc50TZQRVHB8V
+ QynMw86z
+ 0EjaODBuqFpUeM+dkqSYjE1qg4uHyfYbdmefqE7Gfs5zAh8+FDd/xsozwMCQr2TQCUtmgCwfKH5Sfi3g2q/Ansghj9kCd+qTXbV1wjybBmCSbh0QJkuW7CWgu0Y/iVuYTk9mQ8ZQeYjW6Q+D1w7igYbeYR32egg57a0ADeoyMa8/IPpiTIWTM8y21dsbFo6dsp/HMkDBlQABRTO5BwItosktSnEh3FeWGNYLL1ZGd3jNOGrR5MOG5M3pmhfybgWtFLqtyYVPdLuNR5t3Q3/Y8lCWLMnRF4vRz82D10Ps8bkfehiQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,17 +95,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Aveline,
+On Tue, 17 Nov 2026 23:18:34 +0530 Sailesh Nandanavanam <saileshnandanavanam@gmail.com> wrote:
 
-On Wed, 18 Nov 2026 04:04:33 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+> When call_controls_obsolete is unset and damon_call_control->repeat is
+> set, damon_call() should queue the request and return 0 immediately
+> without waiting for kdamond to handle it.  Add a kunit test for that.
 
-> Hi SJ, Andrew,
+Apparently this patch was meant to be sent as a part of a series with another
+patch [1] but individually sent by a setup failure.  As a result, this patch is
+not reviewed by Sashiko.  Could you please repost as the series?
+
 > 
-> The kernel test robot caught this issue in my earlier addr_unit KUnit
-> patch. Feel free to fold this fix into that patch.
+> Signed-off-by: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
+> ---
+>  mm/damon/tests/core-kunit.h | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+> 
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index 13315291f69f..bc93677487b5 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -2499,6 +2499,30 @@ static void damon_test_call_controls_obsolete(struct kunit *test)
+>  	damon_destroy_ctx(ctx);
+>  }
+>  
+> +static void damon_test_call_repeat(struct kunit *test)
+> +{
+> +	struct damon_ctx *ctx;
+> +	struct damon_call_control control = {};
+> +	int ret;
+> +
+> +	ctx = damon_new_ctx();
+> +
+> +	if (!ctx)
+> +		kunit_skip(test, "ctx alloc fail");
+> +
+> +	ctx->call_controls_obsolete = false;
+> +	control.repeat = true;
+> +
+> +	ret = damon_call(ctx, &control);
+> +
+> +	KUNIT_EXPECT_EQ(test, ret, 0);
+> +	KUNIT_EXPECT_FALSE(test, list_empty(&ctx->call_controls));
+> +	KUNIT_EXPECT_PTR_EQ(test, ctx->call_controls.next, &control.list);
 
-I will ping Andrew again on Thursday, if Andrew doesn't add this fixup to
-mm.git by the time.
+I think the above last two expects are somewhat too much implementation detail.
+I don't think we are promising those list status.  I'd prefer dropping those.
+
+> +
+> +	list_del(&control.list);
+
+Can anything leak or corrupted if we don't call list_del() here?
+
+> +	damon_destroy_ctx(ctx);
+> +}
+> +
+>  static struct kunit_case damon_test_cases[] = {
+>  	KUNIT_CASE(damon_test_target),
+>  	KUNIT_CASE(damon_test_regions),
+> @@ -2544,6 +2568,7 @@ static struct kunit_case damon_test_cases[] = {
+>  	KUNIT_CASE(damos_test_esz_goal_temporal),
+>  	KUNIT_CASE(damon_test_last_region_quota_reset),
+>  	KUNIT_CASE(damon_test_call_controls_obsolete),
+> +	KUNIT_CASE(damon_test_call_repeat),
+
+Could we merge the above two tests into one, say, damon_test_call()?
+
+[1] https://lore.kernel.org/20261117172219.26725-1-saileshnandanavanam@gmail.com
 
 
 Thanks,
