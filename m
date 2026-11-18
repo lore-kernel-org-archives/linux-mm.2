@@ -1,95 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042B5606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559FC606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TQ2pXbMM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kp9aWV9V
 Received: by kanga.kvack.org (Postfix)
-	id F1C986B05B5; Wed, 18 Nov 2026 09:33:39 -0500 (EST)
+	id 5A7C46B05B9; Wed, 18 Nov 2026 09:33:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA75D6B05B8; Wed, 18 Nov 2026 09:33:39 -0500 (EST)
+	id 57F4B6B05BA; Wed, 18 Nov 2026 09:33:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBD7C6B05B9; Wed, 18 Nov 2026 09:33:39 -0500 (EST)
+	id 494F46B05BE; Wed, 18 Nov 2026 09:33:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4EEE6B05B5
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:33:39 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F58D1A07A6
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:33:39 +0000 (UTC)
-X-FDA: 85448483358.15.F1C4961
+	by kanga.kvack.org (Postfix) with ESMTP id 1E4436B05B9
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:33:58 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9F4404077A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:33:57 +0000 (UTC)
+X-FDA: 85448484114.11.27C1FC6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9F90F1A0008
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:33:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TQ2pXbMM;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id EBB6B180004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:33:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kp9aWV9V;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795012417;
-	b=N+cQb9FwERPIbEjOhE1cUPcZi2vO+gAAocXnoP+4teTKxcF71vmMgsuHzvbdmqvWalx3rt
-	Z+ZCc5z691S45JbkWhyL936FwsQb3aaiTLhzKhueXsqCgebgwWA3tupnCAgI/JTn5wb0Z7
-	wCLIVOeOgHeUf5qKPO6zlak2qaOC8sM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795012417;
+	s=arc-20220608; t=1795012436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lnjKgTm5vSNYR4pLlmAjDVsgJphmcl/khyWsdGHeBCY=;
-	b=RoGFN5ucrHvpjVyN34FT4ztE1J0w7jr7lqZYygxH2YPxglNOSUEVjhI2Jr3Zvko7tf5UY4
-	emaRk9yXFWgEpYrxmIyX3hVXModKZ/R1O4Mc/DlR5lnej43o773hbHpRhbYO6fkRzfIBiA
-	66D2d7XSX0S7EHfpHSWmhPnmoVbJBYU=
+	bh=r0M7bUtZEofsoW8E6XLzL0ND8blGJ4WCG6thjd+0hTw=;
+	b=eRVijVwBvm1sZ52Hqh4kx+8S2xs3cLTLCwy0EwH4gu79AKTA4skA2aheiE3MkanMsey+zf
+	ZrHHanjMLX6sZdG+DRWB9abXZEOSg2ej7iKxD99/8iv2I39mewBgvNd3a7VlE8kkx1BDF2
+	0UonajRD3slUcKmcG2aw24kkt1G1SOY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795012436;
+	b=W4EMcy0cLq164jHJq5Xyb9JHSdbo9gQa8GsBb3iERn3skf0ryuoKC+38f3PwfGZ2Cgv7wu
+	agtv8+/ogzOdsSzdjkKBdRtOloySwM8RZKp1ZUECLaZmTf6QVy4pGVxQzcvCiq4ec0hF2l
+	fdQQxQRd+xjVucmLiqUVME9oA7Q/mVc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TQ2pXbMM;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kp9aWV9V;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C12914112F;
-	Wed, 18 Nov 2026 14:33:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681EE1F000C4;
-	Wed, 18 Nov 2026 14:33:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F310543612;
+	Wed, 18 Nov 2026 14:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D43D1F000C4;
+	Wed, 18 Nov 2026 14:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795012416;
-	bh=lnjKgTm5vSNYR4pLlmAjDVsgJphmcl/khyWsdGHeBCY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TQ2pXbMM8T1oX7wrQMY/hn6f1+xlHKRWE2PRIKDD/C+GPWSnoePr+Y84oMgigX5W+
-	 oDYCAON3LXdYPMVXQXH6+cKWl8YgltIJFPwG6hsUqY7krMleYaa/qmEgxml1Tjo4HM
-	 24MlTMxa3rBKD9Xi3czpMVqJYzNvVjf6y4dNl8muT25FY1OutVFES9qzdDLwjABHWW
-	 f/5n/I8sSgbk50WZnUHIeVO2ANd9qI7oaAs0163Bcy+rsK2MZZL3LHAX3qtZsfMkv/
-	 7wRIosaqy1C3ud+1g2rZwDZ9qKwdhPhxtIXt3nsR8zCqt1R6t+Jb1x9GV4Oe83R5ak
-	 YzBQEwonLtJzA==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	sashiko-bot@kernel.org,
-	sashiko-reviews@lists.linux.dev
-Subject: Re: [PATCH v2] mm/damon/paddr: skip non-LRU folios as a whole in pageout
-Date: Wed, 18 Nov 2026 06:33:18 -0800
-Message-ID: <20261118143329.92901-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261118-fix-damon-hugetlb-pageout-20261117-v2-1-547a65a3206e@gmail.com>
-References: 
+	s=k20260515; t=1795012434;
+	bh=r0M7bUtZEofsoW8E6XLzL0ND8blGJ4WCG6thjd+0hTw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Kp9aWV9VMOCglS7T1p8dI1UFHOj3QgFUQWE27OP4HKp8U3+jjxoxZ5MiJj4la/XvM
+	 5g271rkeXZHxD1RQZeYy9sJtGReqx/Wu2njRPkXusfpMZXxCGIR5ZzMv8YoTGpm6hg
+	 Z6tgqCBkZgIcFlZSz6035WSZxIeGPy+JrC1PJGNpvJDd48S1qhJk/hFuZsiCPChbpz
+	 cbipzUh3C8OOrW/AvXUuXYqzav1/ZSNl5r9u80mpnTju6Ee+vMAghVK8OCjuuDA05S
+	 HY68vn5JPr7XXFHUq32yMMFYFnOyzSscbzp0r5NSgcm81ZAyPEr+jLZrZyeSuycfOU
+	 fAGNDFU01uI8Q==
+Date: Wed, 18 Nov 2026 16:33:41 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+	James Houghton <jthoughton@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+	Andrei Vagin <avagin@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@arm.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/9] userfaultfd: refuse UFFDIO_MOVE into a
+ non-present huge destination PMD
+Message-ID: <av23RfHuKjWeeEnN@kernel.org>
+References: <20261117-uffd-state-fixes-v3-0-b617009d1a4a@columbia.edu>
+ <20261117-uffd-state-fixes-v3-2-b617009d1a4a@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9F90F1A0008
-X-Rspam-User:
-X-Stat-Signature: umgiwhg48ws4wufmf8yp1ig8fkbutnkm
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261117-uffd-state-fixes-v3-2-b617009d1a4a@columbia.edu>
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EBB6B180004
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1795012417-392759
-X-HE-Meta: U2FsdGVkX18QIMN63EkkWVdWVWMSWL9Fj1pXqVno2VK9wOkHDyzYEk1cEgIS7p8A9PbMZmwSsT5Xw7gT2zk/DgCfOZS3jMyIar1AtT7yzOR1Hq/6h8WALjAlimucXPHe1MpT8JA0DNPA3+Ls/11ttLgiJkpt2EvG90Df2dPKQJzWHXdIOyXMYs7FIwSABZCwFDEp8qYQ8ji+xe+22n2Wwt2iJiKnyNRrEIuqGpziAAB2ZL/nWJ5zR6s+3hgDqAp0nIFtfN1NsUvFAyffRxjsI+0V6BU7g2xpDlSpgd2PPu1ze9RPEHNTarFC5icTfGGbZCxp2hekoqF3cEPuSbMfmV+TEcphQ5roTnH63QACR0htBniMpEsDqO2gQwRBBHbifsm7YkZJbcNa7IGaY698kk+erjfu3FZIYhWms4rD8riXkZEQ7IuFVZIDjtJwKh6CRJvFseCcTpNDPOEb55pcAxlX6jOMjHWVmNdB60qCFDzHthzfzAg/XgMLwcqnT/DJP8caMGbPO7YnFDuEdCwD9Svlr2LjU/W0wPsGad+w7tRmRYM5Kn3tEgzuXrxumvfXvYbkV18TRJkXj/xEi5VwZOrghhgRBPc2H7NKG9FZKkp2x25oHE8LjLafBHa298g56Xf//WmYJ4xmk7sQ5iai47Y/t+CL9xWM30/TOsAOZoSU7+X/YE9l6Ztte514T3P+53aNsWxtyti+OyszHxbUmANDwm2e471BamzJgag+AlPmquE+V77xEoPl4Fg6DPgSqsTrqDuRwIsQy+zywaGxrKygpxgEcK3J+a+TMDnM98swIzMCGay6jF8H9sSPKB/k3uUwzo0pY/7kFHcO62FRXHid5vOvrUjX1xYTrxQHdV9/8s9ShIpcaGfVzm9CWYK0TQqlj8RnjLfdO0iFCgPppmat2X3FnRKpYeGvYkR1aQ+zsr/FcgTZ2ULEYEK5mOSkq73iCetIF9TDUWiBKhf
- C74/YEaj
- HXXGmJ0lc2VC4G0HpL8UwSe36/3a6KGkA6fxa9KjjGgiDsi+xaI0282YWS+YxvRBcOkrp/HYFDddxusdM2jBFWze+GfSbTnqJjKhvc4Kfrp+BWNIqkkf4VZEC+258GFeSszoWYOJKoomWha5b87bAw760rU+mLYVlBtxufrSf2UoR9ea1Re74XtVFbiik2xkFu8RVz13M86XgtOPeyJt5J6mKzAlOWxrLpfnybIW2jOyaIaiy2Z1TA2T/CpZndTK49fM9R6MmceZbnOqyFkUh2yN2203ZRG/5Ms/qGi9xASZc6FYTBRXtnteUcS8JhXZPaqLAeUma+D5k1IeAuIK+WJ2J3yWAD+11nHynMoJzlu06VGjcJIS8CXCQLA+qUPIWFfCzm+KVZZPK1ao=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: jcgsfw3q41pm1ww9dc4i7xky4ysyyfqe
+X-HE-Tag: 1795012435-304912
+X-HE-Meta: U2FsdGVkX18StLK3+P/yPrSv2Th7n4/+7MHvL4dnn29X1UV5khMb3QyXG88b23Q/t58jjOwQXffDNTRrrfOEDe23VHuGOt6/71lbMlHouRLhgQN8YmqJ6DexucSNQtpf+nPhKpontiq9E+JqSblhK+mGSXeqAzQNrC+qJHaqeWJjNbQnL4tfMI/um4Q276A20nttOTrdgp6FxGeW/koVlvloxF1xgfaW5uQWMl+o+Lifi2l7miE6PgQdM1le96/0uF1vSU7/oXYk1alYeoOIwXhjxfNstQxubMnnFgqmSJnheHXjwNUCeCaUcENDIg+uBCDE6DLaCeTCtbcEhvw286gO0ffrEgAcuiREieA2kxkLnZ6yyRSkOSCtvwCfWwPh/hpbP4mqnxEUMOEmMpHqVymINaXwj0cUFdvPuDkr9xqFF4GimwQ7CijqlUni41Q2kFQWUMsQDDK+vJnUAmWlThGhmUPbXXsIxDvmyXgDaNEpYyiu6XeDY/1eEW4uT+95aloxYutDckWl3vr7GBSEd5s8tsGc7XUveg6tUa9Y3hWjpf9ww9EFGYTvalOl9CXLz3O+qVjIM1Wi8kMdCAS7NZxmp6xAzWID+frBMSS84ryK3Cl8g40ghbuQN6JZHRSggczz5T9JT0FXqrIA6E9BygQR8bdYdxhLqKUUfp7SCl+mATPJpgSFOwMeieMiyT8QeCWupzkKEN5mn/LDX2eSYEaDBvOuYgDb752qkMH0uOei/Sb+48ZFr+ibQL7cTILFnJvobkC2RUMfCLah2eegGbunK1PLtLvveb/WY2Vit7CwFqntlHTn9YhuYkNK5e2ZY+1I1RVAVQcQzUFZPvBUlnJEnR1wI+uN/HnFw5NBAbcVT/gizG836epUfH6WBZfKO1X5mUk4M38cl3OkjMH6AX4zR9QlgmptTD9S3QIQKQFD2UbqUboqnMspuK/C5B6Vjoqq/lbd50C6huim0Sy
+ LWK1Vud7
+ xh5TxqjkFGvrhEqPsFv/JE+dAMuiiwa2UuCAWimEzLTamKBuNUthMlc9giTy5UosGtV7YWWts2nmtnEkWK65OrUnG8VNeRWNlmlz5V99vAfs7TRXaWfgPuydfVqvjAsw/W3y0SCr6J96hz0IMTnNVJX8CJAw2EepxVo0vrhdbmmvUQrcZvlYyzoUexRvvbP43JHccsWvymAnD4ebYbNSTWWHiiCHNu4xyva6/p0Ro4dusNl5OHzeQPnOK6+3rdaiKmbiYXi38ErtiLUPdjqXmGRaF9zwoezAAFQHYlSJqDr2SB/QcJnJVUzf3iFXm0/IeM9JPFl/OdJKUyK2AOasKjetKmnpYgL/NOLiMgj57fIAxnVOa8MwSzwieKdgSmzFJ8r3ys1oweO1MkLl3Jz57xoqemW+TKVszFtptrDjHFfXSinE4AGFe/4SJSHKfDXHpOI6pua2o+8Gf8QDuWX0hEHo+VQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,38 +125,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 18 Nov 2026 03:24:28 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
-
-> damon_pa_pageout() uses damon_get_folio(), which rejects folios that are
-> not on the LRU.  For a large non-LRU folio such as a hugetlb folio, the
-> loop then looks up the same folio once per base page even though
-> pageout cannot reclaim it.
+On Tue, Nov 17, 2026 at 11:28:42PM -0500, Tal Zussman wrote:
+> move_pages() refuses to move into a destination PMD that already maps a
+> THP, but checks for that with pmd_trans_huge(), which is only true for a
+> present THP. A device-private THP or a THP under migration is a PMD
+> softleaf entry and is not refused.
 > 
-> Use damon_get_monitor_folio() and skip any returned non-LRU folio as a
-> whole by advancing to its end.  Do this before the filters, the
-> accounting and the last_applied check, so that adjacent regions within
-> the same non-LRU folio are not walked by base page either.
+> The destination PMD is then treated as if it pointed to a PTE table. It
+> is not empty, so pte_alloc() leaves it alone, and move_pages_ptes()
+> fails to map a PTE table from it and returns -EAGAIN. move_pages()
+> retries on -EAGAIN, with both VMA read locks held. If the source is a
+> THP, it is split first for nothing.
 > 
-> In an x86-64 KVM pageout microbenchmark, traversal time dropped by
-> about 99.7% for regions covering whole 2 MiB hugetlb folios. For
-> 4 KiB regions within hugetlb folios, traversal took about 1 ns more
-> per region.
-
-Looks good to me.
-
+> For a THP under migration, the loop ends once the migration finishes.
+> A device-private THP can remain in device memory indefinitely, so the
+> caller of UFFDIO_MOVE hangs until it receives a fatal signal, and
+> anything in the mm that needs to write-lock one of the VMAs blocks along
+> with it. This requires a driver that migrates THPs to device memory.
 > 
-> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> To fix it, check the destination with pmd_is_huge(), which is true for
+> a present THP and for a PMD softleaf entry. UFFDIO_MOVE now fails with
+> -EEXIST in these cases, as it already does for a present THP.
+> 
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+> Cc: stable@vger.kernel.org
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-Reviewed-by: SJ Park <sj@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-This patch is applied to damon/next [1] tree.  I will repost it soon (~1 week)
-as an mm.git merge request.  So, no action from your side is needed for now.
+> ---
+>  mm/userfaultfd.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
 
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Sincerely yours,
+Mike.
 
