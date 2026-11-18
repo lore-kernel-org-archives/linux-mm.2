@@ -1,96 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67256606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 00:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B626606A33F
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 00:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=yandex-team.ru header.i=@yandex-team.ru header.a=rsa-sha256 header.s=default header.b=L6u3caU5
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=pP49Uczo
 Received: by kanga.kvack.org (Postfix)
-	id 4134E6B05B1; Tue, 17 Nov 2026 19:00:34 -0500 (EST)
+	id C0DE56B00EF; Tue, 17 Nov 2026 19:06:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EA9A6B05B5; Tue, 17 Nov 2026 19:00:34 -0500 (EST)
+	id BE5196B05B0; Tue, 17 Nov 2026 19:06:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 327DE6B05B6; Tue, 17 Nov 2026 19:00:34 -0500 (EST)
+	id AD4146B05B2; Tue, 17 Nov 2026 19:06:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 11E586B05B1
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:00:34 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 372E7A81FC
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:00:33 +0000 (UTC)
-X-FDA: 85446283146.03.E4AE9BB
-Received: from forwardcorp2e.mail.yandex.net (forwardcorp2e.mail.yandex.net [93.77.172.5])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2D3BC40009
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:00:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=yandex-team.ru header.s=default header.b=L6u3caU5;
-	dmarc=pass (policy=none) header.from=yandex-team.ru;
-	spf=pass (imf27.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 93.77.172.5 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C8DE6B00EF
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:06:51 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 18AA71A0614
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:06:51 +0000 (UTC)
+X-FDA: 85446299022.21.FAB0C5A
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2C9B8140003
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:06:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=pP49Uczo;
+	spf=pass (imf23.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.170 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794960409;
+	b=A7v9LR8jJTCf/A0dNFbtI+hJpwQEBTAVvLG/WRnCKIE3ACX8bXmEUqefgJkF+aafla+7IM
+	3t+3m1h+iaru3LOyeNCj34GFFnw7UIG5EVGJkhFtypLQYw5g296qV1ZQf/rERIgU0FuMsW
+	DKSfxog57pFIkRYlgNlk8MdYV0J9pFc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=pP49Uczo;
+	spf=pass (imf23.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.170 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794960031;
+	s=arc-20220608; t=1794960409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7IO9qqU3wnMoibykZ1N5l5PPq7ErE0eqGwekZqMRpqE=;
-	b=bXoQkDtTDyJ89nv8hVUPvMIvRddODzJl3pJbb3WyW55jvA7Xh5JwDeGDHPCwYu9vc4MnGH
-	ibjh2Pn7xi72mOIzubs+JXyP5a80b3+8/3wwXzRe+utxXNfSDntRtP83gKRFLnUCxUaEdu
-	Iy6NmblO+d5QRr6mXlNFV+XC57N84KA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=yandex-team.ru header.s=default header.b=L6u3caU5;
-	dmarc=pass (policy=none) header.from=yandex-team.ru;
-	spf=pass (imf27.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 93.77.172.5 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794960031;
-	b=kw6tz2uXlNb5cZcy61ptX6NJeVyBfTnxCT0v6TTy4FGiBcMnnodo7gJjsIGuj1O+Fy8ErD
-	IZlycFXXMjp5Y7NF4r5mCKaXb8O1SuUD8PKMxRFDJWXxuFQWFDvTMwYSBohmf8N91CbVK7
-	2ONB7SvfWUIJGPoyvyjF04rQv2r+W54=
-Received: from mail-nwsmtp-smtp-corp-main-80 (mail-nwsmtp-smtp-corp-main-80.yp-c.yandex.net)
-	by forwardcorp2e.mail.yandex.net (postfix) with ESMTPS id 52195C0053;
-	Wed, 18 Nov 2026 03:00:27 +0300 (MSK)
-Received: from i101646577.yandex-team.ru
-	by mail-nwsmtp-smtp-corp-main-80 with ESMTPSA id L0NFxU0Yj0U0-eYG64ehH;
-	Wed, 18 Nov 2026 03:00:26 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1794960026;
-	bh=7IO9qqU3wnMoibykZ1N5l5PPq7ErE0eqGwekZqMRpqE=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=L6u3caU5HDhbgq9gNGbkegT7GZ25C9gWnv+Cczano/c6tPTYjfBNCFO13jqGgR/eS
-	 igXD0bTj49EYDSYLvCJdgkuxvgy1atUs4tZBB6pwYj5x7WF4NJd5NM879JF4b8tAG+
-	 fxYbTCVTregpSMs+qUzBJW4gqBP1Ubu03nVdCyOk=
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/page_alloc: don't undo another caller's pageblock isolation
-Date: Wed, 18 Nov 2026 03:00:13 +0300
-Message-ID: <20261118000014.1474617-1-d-tatianin@yandex-team.ru>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EFsKUadGG4JNXWjlD0c48hYv79rszfYTM4l79IQ0eAg=;
+	b=1PWl7//gwYEFtD223jBV6F38nCp4IgDRykHL6ra9QuH13AgKuSHz1ehbvsl9Rjq4HB3jny
+	fFa+/6e7+2Xay+X1kTtizcM0IUD6kNJwexIqMENsx2WTPHPno3X0ts2TIEMs/ds6D7zR22
+	tF6tq859vDmQIsXr35a2EV366XhQo+o=
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-380b40319bdso773167eec.1
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 16:06:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1794960408; x=1795565208; darn=kvack.org;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EFsKUadGG4JNXWjlD0c48hYv79rszfYTM4l79IQ0eAg=;
+        b=pP49Uczo6+r0iZ7vUVRxbRYgpOWw2EYTiUoVANRRbRjhYe8l5wqD0F9G+lyrV1on2Q
+         Lco1dTq+9oi+ZLWUqpJIhl9DeQzRkkm2QRSvC5267kfCMGwN0ahGN6hTLkrJRDji66w3
+         t4uEKo2KZeJGwmWmvXlOfYa6uiW+ZuazgBvV4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794960408; x=1795565208;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EFsKUadGG4JNXWjlD0c48hYv79rszfYTM4l79IQ0eAg=;
+        b=ZE7GtKLmXxoG8PQF3XfaoZ/sYtp+jyhhiTNvtFOCxiK4IZKgQUzuWw7oRWQfiKkFyT
+         yPo1Ne6kV0J418Yaa5HFne96SjM5ZITyRZ0PYPP/oUA4ypbQPZN15yYe6iLVplnRYPGp
+         XXvv8ct/r5lccNV1xErGtwxR/woBEaP1Fz12agctxcmiQojsKo/BiJJHxx0Gg9pVIqI9
+         yV/jEbRnU+u3XT5WQvNDPLWhTkO3vxV0ghsQy2Hbh93S5gZ14VTMn/8yCZknnmzg+COg
+         Gt064JEjNiJMeK+rsxflMNLMqMF6NB4DI/XZaC2OmWhyV1aofptmFs/cY1X0oAFhnYey
+         MIOg==
+X-Forwarded-Encrypted: i=1; AL+hErEbHCZ3HuDyn5fYXpZ+VjpC3WVee7Tqc1Yc6d0wb2c8z1kHIMToXOuSx0uueLm34/fBfz4WQS+41g==@kvack.org
+X-Gm-Message-State: APuU4Z+FcQutw0pcqmh3eAch9JRlZLVNp25RtfBieO49QaBMo4hcR5wn
+	iKGED9GdEmAqrBM/1q05jBsJKI1We3Ghy2djuLInjwwUNwNV+jOBQ5RGVOseMLmhTAs=
+X-Gm-Gg: AZFdTZdF0+7eFMWEkcBMQMrbRc2RrdBJcO5QibKTWsDPJIKZ+5buslAVQbhplS3LQ08
+	3kjlziVdZ08w5vTPHyan5yo24/ucQPNGnmK/2YQUkYsgMyMuf3rvO0pduWLZxIwcEAK+Aa33M4D
+	3rKmRnSwypqs3amZEbREgJGrsSkIbQr4LnRQP1WudAbAveu4V64lfuWvNm3wpaXI8HaVwAtsm23
+	UG91X4EjZFGWgJ04Yicxejtx6O1vqMQncjbiKnBaenFci19bK9n18t5tlMajkwcWEOjBAsQ70ed
+	iIxwbdN7buBX+szWhhEG9RHU/tLtz7ngwt3u8wLZsgmHsyT1vM2pSljRjt/CIsiPKynu+hzZSh0
+	r9uWESs1POE33nLJiKput92BmYPjdTQSFu0DJEAA2UI+/HwpKwKwhgFNohjG6xOYwYzh7zpjRqq
+	yF6Y/aa4yJ1+95HY9kuSC/khXZKo7KzPfpikKlUo1Ra8BNVuoQHT39iSxqF/eCO8c5dh5bNDOdY
+	55ZY2EVUOsj6xFSWbyVteJVXMTtXPPiVuGQQbchOnVVLorkp/Ielww0zihnETT3C5LEN46ukzKb
+	Ca1/sYal9NIxmOZx18YRgDB9ekZx9hFVcRlpT4KSb3oQ+XAjJKdnW2yd3ehvjPI0RMg9XsYtrro
+	n8bHRwR29r8uI1Hl04HnlJlmSbjteYtJGt8V6+UdMXpLdh5bOfXKQ/+tOX8HoH8AAPtyL1fNL76
+	BNM7XlK7zOnRoLkOau4HmefN+MRQwtLM3mVQqL9PydrCRUX0E2jp8X1zVICCFlZnUZ
+X-Received: by 2002:a05:7301:618b:20b0:380:f32e:d257 with SMTP id 5a478bee46e88-3827f98bff7mr824254eec.13.1794960407817;
+        Tue, 17 Nov 2026 16:06:47 -0800 (PST)
+Received: from [172.20.0.3] ([172.56.235.113])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-382a6800338sm1714896eec.11.2026.11.17.16.06.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 16:06:47 -0800 (PST)
+Date: Tue, 17 Nov 2026 16:06:43 -0800
+From: Chris Down <chris@chrisdown.name>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>, David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+	Muchun Song <muchun.song@linux.dev>, Joerg Roedel <joerg.roedel@amd.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Pranjal Shrivastava <praan@google.com>,
+	Ketan <ketan.kishore@oss.qualcomm.com>, Mostafa Saleh <smostafa@google.com>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+	Sashiko <sashiko-bot@kernel.org>, kasan-dev@googlegroups.com,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 0/7] KMSAN: Move per-page metadata out of struct page
+In-Reply-To: <20261117120627.50601-1-songmuchun@bytedance.com>
+References: <20261117120627.50601-1-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: i63i9ga3utswuanonyn3ha5tfar4bmic
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2D3BC40009
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Message-ID: <avzsE5wGnXji5u6-@chrisdown.name>
+User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+X-Stat-Signature: fn3k5ga4eedjgjir6qy1iwm7srxw1b6t
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794960031-483894
-X-HE-Meta: U2FsdGVkX1+cGKNwdjqqlGfHaGatEfeFc3XHVdspK3T5U7xsfo3v3g3ckXzQAMk8lUfMyZpIvdUa31RR8Obmvh9ixc9Qf2O3Elpsy5w/+Adz7rMGtTCiaXLSxMaelrRF7eGvXnrRya3XKJdCJ5jbfEfRv3gLvgwT8NhlDCMcXfxL2SZp+mpumcoCNZ36EybCHRWUllISoiZrgaXH8iH2BodH0izlwnDu66yjBWcubMB1QyO5nKQDjfQuCNHa787v7kGP75W4zrSF8584o4/QRSU3iEtZaij7hC0BGPoaM8wXGPTg8x+bdtSBD/vx12ddlRtBy7QbWhrYhDRmAOzpSMeefaTE2Nz+AKQb0GPbB87BJHD70JRadxeOqXhH2FV8tLKmor4LFdfFtTVakax1Ufz3jXomk/HgEwQM18viwVOp/357VtlKIc9xHGNn7xjJEKwPaq1tgFgHEiHFe+EhhjQXIjOE6vzb85NCIpOolwCH879AHTv5DeQIeFXIPLU6z8rIFAnJobrtBggjG00dR+A7Ohl6WZdsb0lzMhYvYEXzPKD34yb7P9/RXa4PY+IhrTvVpKqxQG8IGeU2MF0batZV50Xnw/ZMLlVMstTYzVIxlaWYyhb40+RvV9lwZiKt3aHAMfgM0VtlkMXrUMGhylOX5iEWuiQp0sbjwt4aQRcDCq18oCvwMEIHaGm7koCnwVThogxc+xlmhZZfTRCZxB8Gz35XvwuM5ie0r5LzoX/PuH20MAGdq6z1ilP0xSP20Eu+hfE89/l+8ypKo9CGrLHGX2B3h4YP6qzWGjLZ10SWUJds+MwMz3kLIasRkl4urVM38nM2373BWfc3Ouk7ZCVgb1Nu+zuThqfQfa4vYKZYQSJHkxNn7QYG8VjGsqHE1WRsvcekBlUHQdq3wONRCqUiQpGd0OVCL33CW3uTAE4b4MvKaK18PVsaKRdD59cUpc+kBh5sgdnM5/HjZQ0
- eA2KkYt8
- hKm2SWHh8JCi6+Z2rxOE1KVnjbBUd2oPo9DvLHihfk5QSwxOmxJaRxae+wCUz522751FWG50gbpr82X36Mca/mj5MdILYFEyGwUDOVClf47wjwc48+cjereN29Lzy02zgqym5da05VgUi6ISzIxV3MylB0pNRi0Oh/vzdHTbNc2KqGdG9vwzyAYaDXOGtq/xBr7WgW9ixCoHEIo6wzSY7X/DMkYsGgBM+IdfzF/2/+6GX6x+QIt3SoGYpZBFKLPrU2YV/lb8kdW3m7eNY/dYXEuZLDvSWqa+rwgz7n9dDNvVDsDuMQpnp6rDa5hZ82vO0oQKSy2cNnSR3nvg5e1iS30TgqnIcNoStNKqyFyiGVh4aIbVevSPrvj+bTH17pgnWvBoR0KqCuZAY2hucIWA4IeH15A==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2C9B8140003
+X-HE-Tag: 1794960409-861130
+X-HE-Meta: U2FsdGVkX186wIOVWQTVmkn/7ofQk3VtTISA+YApK07Wzuql/JgytQCKyv5nkCTD6+0Tn8e9OByRSp+6X17CuE1hpVntIxbutT17Fo97rUWlRl+mIK6WqFy0/MCTLE8gF1CXxQoFW4FpnUN2IkSWwlkUfOmNWIENF9X21FzI3qmJ8226zUOi2EM7lhGFY7Oj9m4p4u97u13shmSlqcDxi4ffnKVw0gz1dfmNGnoyPf3U1Uh/NR1Ig3YNMuTHPFx2RKmlPiWfFPldNzCXxKmhPVYdab+kDyhNqGypFWElgfYSIK98TWXOQuGnvpWJHeRrn7P4av72tUbXyiRFvLNcWn7pPEqrm3hgylMxW+2dPFSXZYcDUlYuUil17G5UrLXlNA40YUTftb4OAxhNIggLJe7Kv3SlH5JGC10LLdxrf2F11vfiF0HkMdF8vdqpvf0neEuoqMXp7YiNdau1ker14Uta8grANw8A2KAZG6H1ol3uEUEBcZqJvYqjCg6N4lcyYIOyounmYdevpXawg8plnOGd9KQ9UNrKeXABzqfgYD6L8egzoGRYDtUX4kU7mf60H11I44XW/WhB5xsTlb8StydWiQnMNTIPzD64JeYdiLHVH8eijvzjCK4Dq/qJxN7QshZzGW4MMTxbdn7rTNpNyA6TPUtsjmoEIRASp74bOZcKXwmz9eST/yNUqJry4rQIJT4tXatq8ocERh590UgE9K8PAuHiHVz/Y06bRKJmBwzOt5xg2Q6zRs7XIemAsSaUB2Dzu+pDU9QEi7eH/gcwqERP8D+xFSywbfORFG80RPv+enZ/ohPL9OQhsq9fDoXFi7Mw+ZYhwIWbJJC0PQiaQBxtPuwKim1FZQYPwCgvu7Lsbki7DfoULU37TrhUSI8eGCc3Orfb7GygGz1hTGDuYR/i2h4jBbCpjMOpMMV5DWJsgHQRAkYL8RnJKdnScb/qKGiFsS5+7LnLaZO+Fzn
+ q9tacTKP
+ 4LFtBkyxvfD5cTOdx2KpX6eRw7Fwgi9/MFT25BSxt5n3z0OCVXadJCabOCBrOg9oRZHbxBazqQ9Y+n3+5+lxvR+IqZK4Pn+rUjsl/WapN+sYjhj9CE8mzGKsZU0IuvLYAs/Ja3MWsbdbibZ5R+/BRQrNykaMv2arpAmTeeK0GbvTpAqo5cgC2xg9GVzmE/BCqFGaxRWXJ8qwM8edxRad20AbYNRLsacWG/F1kcye5/t/BJzg09FjEYpABqhmW3IkjhDwffXlkQqhQx0FsaBAZ1XajJyNrzS1UJRP8NxfLnxd1jivlFSquES/cbuPr5hNMZqbq17Denwz3g2DyWahYt2ZTyswEnxzgb+OHS5+tQf1QcsADfLOkFQjfbsQTEkTGOdmYcNCNJZYY2AeHjb3G1PGbRVpUYjQ2OYYOYLTjfW/R/LnQ+oFWSrUR06xn5AxtDSTTTJT11qXSesc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,44 +136,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-start_isolate_page_range() fails with -EBUSY when a pageblock in the
-range is already isolated, after it has undone the isolation it did
-itself. Commit 2c7452a075d4 ("mm/page_isolation.c: make
-start_isolate_page_range() fail if already isolated") made it work this
-way, so that users of overlapping ranges, such as CMA, memory offlining
-and gigantic hugetlb pages, can use pageblock isolation to stay out of
-each other's way.
+Hi Muchun,
 
-Since commit b2c9e2fbba32 ("mm: make alloc_contig_range work at
-pageblock granularity"), alloc_contig_frozen_range() handles this
-failure by jumping to its common exit path, which calls
-undo_isolate_page_range() on the whole range. What is still isolated
-there at this point belongs to the other user, so this takes the
-isolation away while that user is still working on the pageblock. The
-page allocator can then hand out its free pages again.
+Thanks! The changes look great, thanks for working on this.
 
-Return right away instead, like offline_pages() does when
-start_isolate_page_range() fails.
+I think patch 5 still has some issues and have replied there, but for patches
+1-4, 6, and 7, feel free to add:
 
-Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
----
- mm/page_alloc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Tested-by: Chris Down <chris@chrisdown.name>
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c48..151a8d64783d 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7335,8 +7335,9 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
- 	 */
- 
- 	ret = start_isolate_page_range(start, end, mode);
-+	/* After a failure, whatever is still isolated belongs to someone else */
- 	if (ret)
--		goto done;
-+		return ret;
- 
- 	drain_all_pages(cc.zone);
- 
+Thanks!
+
+Chris
 
