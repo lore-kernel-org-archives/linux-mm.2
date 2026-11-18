@@ -1,138 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3ABA606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762B7606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j5bWsZdV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ml+aVGKv
 Received: by kanga.kvack.org (Postfix)
-	id CAE626B05DB; Wed, 18 Nov 2026 16:21:25 -0500 (EST)
+	id 586566B05E3; Wed, 18 Nov 2026 16:22:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C85856B05E0; Wed, 18 Nov 2026 16:21:25 -0500 (EST)
+	id 5351B6B05E4; Wed, 18 Nov 2026 16:22:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9BB86B05E1; Wed, 18 Nov 2026 16:21:25 -0500 (EST)
+	id 424C96B05E5; Wed, 18 Nov 2026 16:22:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A09B6B05DB
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:21:25 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 67F7D1608C8
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:21:24 +0000 (UTC)
-X-FDA: 85449510888.06.C4AAEDE
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7E0F916000C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:21:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=j5bWsZdV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 06A916B05E2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:22:58 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 884421C429C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:22:58 +0000 (UTC)
+X-FDA: 85449514836.21.8653CCB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F35D512000A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:22:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ml+aVGKv;
+	spf=pass (imf29.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795036882;
+	s=arc-20220608; t=1795036977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b5FVwTr0+ioK5OPo7LsDsfPzhpde0ciar5bplP2bt1E=;
-	b=ZIUZ3RNWL92zxhvEE2OqTfxQou+z/Sheikxsr9L2y8Dcr2BONYPA173O4M5broyjYDk8rm
-	AsMS39aHL1eSwdTCd5zBY7Q1UANbJ+jHk+szzgpbveYHIVRQszn6KwKGA58KIeWruH5wl2
-	J8BNGDT3iuvThc1PvgTSqTy07l1C57o=
+	bh=vqtZas3t5wXmBF7qeLP24ETZ+NnHhg0AAw7WUrgO5/M=;
+	b=QKfpsYDud5uJ7THu7R5KQ9Ymwd+WD3MQyAR8mqN/+Pq8tl+eBfapnP4uTb2yG0SyIF/W3M
+	JjR4awo+l07valJZSxX+apsfQjC3pi1unJXzVtvlQbt1w+hSd2Z4Sgdv/voAbNyZ8ybfbr
+	Di6O+57QuSPEMN+bZ9DWIePvC3MJB98=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=j5bWsZdV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ml+aVGKv;
+	spf=pass (imf29.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795036882;
-	b=oIaM2oKkYTfQYGDU1sVGfeq02ugK58q4yDOMSKyGYNCimaQzUAp95+Vz3j33fTuYH9tew2
-	nWr3/btEHBGfCXVmHWQFwyQpgpymusyeMnnlLbYBiFs7nXUfigq3PjO8d6j8xhi8McJI20
-	sOLJ1Oj//GDbV5FMIGGhTs+elU0wcqE=
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-43bf9548df4so1565863fac.0
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:21:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795036881; x=1795641681; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=b5FVwTr0+ioK5OPo7LsDsfPzhpde0ciar5bplP2bt1E=;
-        b=j5bWsZdVlDjh2eMAu9CVfdCzVrZgATX+xuRt9b+rYDyIvm/jJv9vKg5XQyfx+0abjc
-         4/ubHzSdX4CoAFU+QPVOcz+qtzta8Yuv0Z/zijjB9RxEF43x0x5GOP3HWy0TwKGkm0ts
-         5z33pkHnaZkh5gHGV/VoTrBjA+cag6t9g03QRfVJgLev8P7jJKbFyLhko+Sq0Gnr+H/O
-         Ew6YLyISrDT1nyZekdHCxAfhyrpAjG0xkgg61KqW9gBaYuFwermiyA1p2daMXMLa6ofR
-         jZdSzX1IpOXUmhvRvRR+5kqAwESKel13XxKaRcrretJ5DFyRA3bHa9w1Rpqvv05JtJ2A
-         G8uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795036881; x=1795641681;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=b5FVwTr0+ioK5OPo7LsDsfPzhpde0ciar5bplP2bt1E=;
-        b=JNfm2CzKGaxBpBnDPQl3Mcev8/Lu7YHf2icQSkdU5DfU5q5WXClYYeorc7XVzVKEvE
-         uRbzef4qvbAPUhGaiSFdZV3DPLYXQu+hAq1f3g81/OkYrKoAivKMMKnDoSC2sKBitfYL
-         WMCLhJrCs86j82XfNFb3MdZUJ/I10Bd/4b6tG3RTPvOpR+0U5a5LUd7GII+/qSs95VKS
-         kULGgEtQtPTcrSqEOqOj9zOwGnXFFjqE6eGp5K/AyTrPGfchJ8lmxstxGfdk/+b+TQQg
-         OjfE0nuT0XUyd7Lp/rgOa7/8WHGvIDOgizdRO8vJN/uboxZWUDA8TgavbkVqV7JIY3Zp
-         CJ+A==
-X-Forwarded-Encrypted: i=1; AL+hErEsMeooXssaL2q6AQ5YB6H/xkqqB2rh9kCnp9WaoxkHrJha6p35PAAiPoLyv0oVd/Ku6M52Wz5aUQ==@kvack.org
-X-Gm-Message-State: APuU4Z88fwPI77yJXTCJe9FjWUIXok0zU6WuJx12TQTeKEu+gRnQRmto
-	gqlowrraMpB2jNpeBRbE+Fqb6gl5OOHMUkQpd555wN3cDlY2fISp03z/
-X-Gm-Gg: AYBFou1RVrTBZLYxCXVmZTvLDP5kmetR8+bAt2BIQSuEEfvKBV4nPQE9Wt63c/sxNku
-	k0eU33yTKUuuYl+daKwqojHPEAFcx0zSzN4xQ5ptSxrHAeeus0JNOwhNCRNzqUWjX2qkrbI9roB
-	s5+FU3SFonBQYPURAGr6NuuOzFIsYREqgHC/eho0DbAWV90egLkMH/CVtKklz2Gq5xVKSwhRUWo
-	UmtCIFkYv4UvY4n7dhbgKYE/0xaQIjgJUza5VSZxPj4gQmXt+BzHae6Ato2EQKBl6KPcC41BeO3
-	2SVvsvA/VYdCMvAbkYR8oPoB7LZA9K2mMRxlveC+UFbs1l7+f9aboILbkRoRkLIlR55ifu2amve
-	BpyFJNb7j1Cu/pZo7q7Or+ihgWy7D1WZw0+lvFJOGd/4ZXf2sjsjLlLORPsEbXJpJp8zOR6BTzM
-	++fkBJDbKNjAuXnbNhD9k7RjZxX/moCm+VReC2nGULZXyxBdDgJM+h19989nPMwN3sdhpAJeubU
-	2Lkviml5xQef8LulDr8xWjwS69QJM9zH3i0kQRjhTPHNa9ay+db05oy01lFYTTfcntmJ/yfvVSR
-	WH5bC+D8E7Avl4I/ZqkEgflUrbcH2LjOk/CjzSJBlNVgKp4sblhDq87W/0E4
-X-Received: by 2002:a05:6870:262:b0:4a7:6c8a:f47f with SMTP id 586e51a60fabf-4b75d26dc2fmr3227807fac.37.1795036881334;
-        Wed, 18 Nov 2026 13:21:21 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:4f::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4b744928389sm3266157fac.12.2026.11.18.13.21.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 13:21:20 -0800 (PST)
-Date: Wed, 18 Nov 2026 13:21:20 -0800
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 2/3] mm/page_alloc: move the kswapd node skip check
- into a helper
-Message-ID: <av4V1AzQXSZbtSei@devbig011.atn3.facebook.com>
-Mail-Followup-To: Dev Jain <dev.jain@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20261116232346.788145-1-joshua.hahnjy@gmail.com>
- <20261116232346.788145-3-joshua.hahnjy@gmail.com>
- <bf8692ab-f5b6-4ffe-b5ad-02ad59182cc0@arm.com>
+	t=1795036977;
+	b=R/RzOLUlBcspj6HxPkt/qIJnJ3d9vn84uYnI27skHiTNL7B8S1sLjEGwuGoimOV4O8Kdrd
+	k7QxtE2gf/uQIcVrWW0TOrXV/+kX8BenutyVn47emEs47KjZ/Y6unR3slgCEZxVT7i1g1p
+	Q83E2ZutlI5WAYAaYlTWqN2pzc+yMCc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 78EDA63E2F;
+	Wed, 18 Nov 2026 21:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 733A41F000C4;
+	Wed, 18 Nov 2026 21:22:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795036976;
+	bh=vqtZas3t5wXmBF7qeLP24ETZ+NnHhg0AAw7WUrgO5/M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ml+aVGKvvIC5pcrzx9ZzwGHLtrNZnut1ESXjSEU2HVNx6KxFl13Zr+qffUFbbPCwW
+	 V83mH7Py3EnQBPKdeQ6gpt7TyHQQlg5bEPLKqrq2wu1xjOrLWufishv37LqIoW8BFs
+	 YQp1QvRsDrJQWGENlrzay8K370ntnq0LSRLNiftl+fd7XrzLs8QDVSKZwPJ3ElX+vi
+	 OjP/miHHrlWI0I0NTP6aPNfvZ2Uz7sgVwWjL+HOqy7hVzjmWfdLN31G6Jok2wePmbd
+	 RziLHmPCbpggAo4Y/HUC9dK4Gjc1b5IRHx6l3+MHzVFmMxy1ndqJ3CxDspiyEHOVVd
+	 1GWZ+a/AyLQMA==
+Date: Wed, 18 Nov 2026 23:22:52 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v3 00/13] Namespace for namespace roots
+Message-ID: <av4XLJcO0y8CbGT-@kernel.org>
+References: <20261118193539.240065-1-jarkko@kernel.org>
+ <av4CdM-eW73oO4wB@kernel.org>
+ <av4NonrcCxzMoDyz@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bf8692ab-f5b6-4ffe-b5ad-02ad59182cc0@arm.com>
-X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7E0F916000C
-X-Stat-Signature: kty3n5amzmzegjp5w7k6us7tbqgwkika
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+In-Reply-To: <av4NonrcCxzMoDyz@kernel.org>
+X-Stat-Signature: xb6pd8qet43sdemmaawd58sa7fn7x6bo
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795036882-351827
-X-HE-Meta: U2FsdGVkX1+zQjploGvKJiF3flSPehSAKBY6YI55FO5X0SEcY+ztPGNh1+EA7qFvPVO+UjG+Vz8L8ZG4VZRYE3w0ZqQMxyKLymhAk8XvgWkaPUWkysLBBCUOF01mrRVttmm/gmU19DUbR1IAln0uf6zkpPckU6/KXd1kAeNrrWU4M/msWHJjcdoQQU4y63Yw8v1Efz/EkGJrUZBf0JIvpRGZpg41KAtbz21rrZEEeX20DQLDXOEQ/GNyfL9jW7rAwaGUKKCscq7mCZZnwC3ap8IAzFj9DArERusy4KjhOcHwIoPs627VU+T7aEQUhlJ4T86bLO/PO9M6tmEcqStrTZPDzaqNCYdvTgXkGgjVRTvPBQAeNQLCdDGUUj5j0uKa+S8CS8une+6DA4GAE+MSL/VnPyc4/7sO09uG1VGo8ofP0RKN2BvXi+oK1NfDsK7sJQNUblONdO5OZ++OF2NKqkyCBZ59GoxF1VByXwwSRp3pVjrpdoKpOW6VfCS8Z81J3pmzNHkDc3/aqSO7CjJ6QHWi0dscTk3ZaMOaaVtYMDL55ao3KZjf0KsznSwX2ahD8LTvQI94+L2hv3ymgxL2rC2O7g51/UUffeiOlkckGkTTzi7Oapg+b7jnYgOmr67a9+U2L7HdupKILQ8rV6uz0ybNOV42VmdCdsJDSmaLKiK9CqPmx3sEzMROpHOvJgZciL7Mrcf/WKnIZRYz2Mqi7k/h1yZh7tZNjT06OlyLCjoR3ygSUEaL62ZoMQb5V/BhtvIyKHHHZhZ6Qqv5utm6zxMYwJB1uijeK0OiNRq54H7HWrqNkbtZ37i9skdYpPXD05r605V1/mq0xu32Re/R75LxU/ba6ffqp0pYr8YXfE14PKVtIH8aRB+GtNmrXEgRR0VxzBSlW6oQ47pdPNAmJesJ1ft9QOVr42ITUf3itodfuUc5h68PRLFPuEHbY5XQd23gmu+n4hYEwsdOW+x
- MjOVTutE
- VQQd02dLS8/fefcPqFMCUcGp0UiFREv4KNkqjU6aEaSzJQoZI1pGnYsT4fzjU/bqJYdZZQ1vg1l48dU6KpPu5Tgb/klMQ2K6HoUCWXrjkDC1Db/rB5Fmqex6Cm0NCGY8T6B/KN/hNAOzBzdTHE6/NMsHEd+oJfVHd2UNz/M2s9oxDDo2oU7EBx2V4tgDfFaqJKp8R9Bu0YZGZEa4OKM//WMDR8lycTuzMNEKm7XM7Hv27d/QVolWBcFIvWIKJNUHGMitUn/xf9VhwCBj56lIVhxJHX66o3uPwsBkd07JEI9UlobgDy/eESUDDzw+m8Z8NDwpGLz1Y+RbdYDV1bd8TVpmp0yry78T66jNZ2fLx2MN+x48+A6ekT3z+HsP+EAHhvFq6GHzP7ObP83AmP8FsuDttwGuat88D9zATPZU1wvQEPARhc+a/t1fR66RbddGBwZrLx8xU5urPtJhNMgeY7zLBOiKCeoo9enuM+PIjvWsZXgVU4MKWrFIjQ9F9nwDbLHU95Qhy/bc8JxG+kX4R9RcVFdJMZISuqsApXFVA4UPFnKCObc7iFJLqnZLTWklpLizeFmqLb+iP//oGKbd9hPISYRClEHMp4Ay5BvQBSqSR05q0Mrbu6LMhBlC17VuIxmKqEJAfwD5YBw/F6oqWwwx/cY/QoR45dZSnXcBo44VHnTu0uIG0/9ySsSIXjHPm4o4z
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F35D512000A
+X-HE-Tag: 1795036976-839163
+X-HE-Meta: U2FsdGVkX18sT1vK+ckuLzWUpmxOkzIMTePRMDbyMtddyShst2O48NBW8lUhZ1CmZ2cNb68zS9TmjRQWwzBxSUaViWEByR7I5+vZ4cFbvvVUW5fTStay6mX9NiaCwzsRHc5xzT52MuoRaWkMlgcOAY+BAjGR/3mGAD1DReudslKGwqHppjBFnSlX09OutaF3gj/0E8DgT8PT8PsSKviCwYRSac31uUL57o9/ncQMMzRl2WHsbyUhlNmoB82YlzrFCNxL/dkTSwgpzvguPBDmHRszIyofZmT2M8G2t7gKTnpD+HFAzqgqcjexqL5irk44iw8Awmgaw976ssCOnBEw8CGOYTDOTEMr4uVNRzR6akaLegscC9wFWjnIl9sIAcN/FYJwyESramWxJZ5ECDfKjyqWpJDfCJmHpDzW5erDOFxHWS4OVj0YbNG7189hhDhooKh9XXhK7aD/rSqzEDiJiVD9QSOyYObXjJvxqdBZAmec7a00iVa5JqGPoYHIAo2oYf8jMFxQtTMEQWRSnHrfjZ23QFXP81bxVvGLtPHuDnMimPtDkZQmhgIo1AJq3ceBV8MEOP5A6RIw2M8cRq7bR5e9MHoHfCDUtUPIAqbG9VOHexfyksBXWPm1nIRkWTxWggaF1rdl53Q8v4rvsx/l2+TztcY/S1uN40/IV5o8Y87+rilHa1YUu24iPybyoWxnuT6eAaG73NMH8Q6p3DoaY6YcJmD78WsvVQZJL1buwFvn0NItzPdSoVJKKHFZ59oH9yAyVGJ6bUzeM4kQuu1+sIyJ2Dav5KRymw7FrV4+w2zddmlm+nGd4cQBC5oyhKb2wGDzwAJ0lyg1O5UgdwLPl+oC7Fjlg4skf3MU3szl54UfHEWUk5oXVTUcGoOTRUtu904MVcTrIQfOhV0RTfTRpPrv/jOMBy24BSrV0e64V1UQGctEDOvnpSF2fRO0OHFUK3XeyuQWSlYWk1OdYFR
+ z5RSDMx+
+ /LqgRGWSKfl80y+LU+O5DuhjyfZEayhDLJ3llpZM9Z1p5VoajrR11WDBrbrpfIYluZaea3kLhrQaNgY72gjhNtfVNZeMV8+zUj1Ai5bYS7+MK0Wtu0xY6An7qLttQHjHyFlRhHzvaSLPFOvdNl1XsEnpMWWJQCP25lProPj5gAx2zMoNelG4cIw2PPiaV74Z0dZ1zA898z12SkSlOKhyJTsfMH4b7havWYxWonqiEJy3iSlpuTZ5QR37gAe7glwj2sLP1ljTtOlw+s2cTWlh0LCifEJCXDVWi7ynG9Yn2HYCsmfA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,122 +131,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 09:16:51PM +0530, Dev Jain wrote:
-> 
-> 
-> On 17/11/26 4:53 am, Joshua Hahn wrote:
-> > get_page_from_freelist() checks many conditions for each zone, often
-> > with a big comment block explaining the conditions.
+On Wed, Nov 18, 2026 at 10:42:15PM +0200, Jarkko Sakkinen wrote:
+> On Wed, Nov 18, 2026 at 09:54:32PM +0200, Jarkko Sakkinen wrote:
+> > On Wed, Nov 18, 2026 at 09:35:26PM +0200, Jarkko Sakkinen wrote:
+> > > OVERVIEW
+> > > ========
+> > > 
+> > > A root namespace (rootns) is a kernel object backed by a file descriptor
+> > > that binds together:
+> > > 
+> > > 1. A full set of detached namespaces owned by a fresh user namespace.
+> > > 2. A dedicated PID namespace for spawning processes into, signaling
+> > >    members, and polling or waiting on PID 1 exit.
+> > > 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) populated
+> > >    directly in its target user namespace before going live, without
+> > >    inheriting host mounts or cloning staged trees, while still allowing
+> > >    new mounts to be attached at runtime.
+> > > 
+> > > Work on this feature started in 2025 from David Howells' container object
+> > > patch set [1], which I turned into a namespace for namespace roots and
+> > > rebuilt around that premise.
+> > > 
+> > > While the patch set is manually written, the original motivation came
+> > > from isolating LLM agents. Running untrusted agent workloads made it
+> > > clear that OCI runtimes need to minimize their live configuration
+> > > surface.
+> > > 
+> > > Assembling mounts, credentials, and namespaces inside helper processes
+> > > with a half-configured container is what I see as the main challenge,
+> > > and the existential debate around namespaces and container objects is an
+> > > unfocused discussion topic.
+> > > 
+> > > [1] https://lore.kernel.org/all/155059610368.17079.2220554006494174417.stgit@warthog.procyon.org.uk/
+> > > 
+> > > IMPLEMENTATION
+> > > ==============
+> > > 
+> > > rootns_create() allocates a rootns instance backed by a pollable
+> > > anonymous inode fd, creating a fresh owning user namespace and a full set
+> > > of detached namespaces: empty mount (CLONE_EMPTY_MNTNS), PID, UTS, IPC,
+> > > network, cgroup, and time. ioctl(rootnsfd, ROOTNS_GET_NSFD, nstype)
+> > > returns nsfs file descriptors for individual member namespaces when
+> > > standalone namespace operations are needed.
+> > > 
+> > > Superblocks are configured directly in the target user namespace via
+> > > fsopen(), FSCONFIG_SET_ROOTNS, and fsmount(), allowing unprivileged
+> > > callers to assemble FS_USERNS_MOUNT filesystems without holding
+> > > CAP_SYS_ADMIN in their own user namespace or entering the target user
+> > > namespace first. move_mount(..., MOVE_MOUNT_T_MNTNS) operates on any
+> > > non-anonymous mount namespace fd: on an empty mount namespace it installs
+> > > "/" onto the nullfs root once, and it attaches relative submounts both
+> > > before entry and into live mount namespaces.
+> > > 
+> > > Once "/" is installed, processes are spawned into the rootns via clone3()
+> > > with CLONE_INTO_ROOTNS and struct clone_args.rootns, without mutating the
+> > > caller in place. Pairing CLONE_INTO_ROOTNS with CLONE_VM | CLONE_VFORK
+> > > and opening the target binary via openat2(..., RESOLVE_IN_ROOT) on the
+> > > retained "/" mount fd allows spawning with execveat() without copying
+> > > page tables.
+> > > 
+> > > The first entrant becomes PID 1; once it exits and
+> > > zap_pid_ns_processes() reaps all members, poll() reports EPOLLHUP and
+> > > rootns_wait() returns init's exit status and rusage. rootns_kill() walks
+> > > pid_ns->idr under tasklist_lock to signal member thread groups.
+> > > 
+> > > CHANGES
+> > > =======
+> > > 
+> > > v3:
+> > > - The patch set size increased predominantly because the coverage of
+> > >   kselftest had to widened to cover the introduced changes.
+> > > - Replace MOVE_MOUNT_T_ROOTNS_ROOT with MOVE_MOUNT_T_MNTNS targeting
+> > >   mnt_ns nsfs fds, and add ioctl(ROOTNS_GET_NSFD) to open member
+> > >   namespace fds (Andy Lutomirski).
+> > > - Allow unprivileged fsopen(), FSCONFIG_SET_ROOTNS, and fsmount() to
+> > >   configure and mount FS_USERNS_MOUNT filesystems directly in the target
+> > >   user namespace without entering it first (Andy Lutomirski).
+> > > - Fix locking, refcounting, credential/dumpability/timens setup,
+> > >   pivot_root() lookup, and cross-userns mount checks across copy_rootns(),
+> > >   CLONE_INTO_ROOTNS, rootns_kill(), FSCONFIG_SET_ROOTNS, and move_mount()
+> > >   (Sashiko).
+> > > - Mark PowerPC rootns syscalls nospu (Sashiko).
+> > > - Update documentation and kselftests.
 > > 
-> > Move the kswapd check and its comment into should_skip_kswapd_zone() to
-> > make the zone iteration cleaner to read.
+> > I.e. before PID 1 and /proc/<pid>/ns/* existss, nsfd for namespace other
+> > than root nsfd can be acquired as follows:
 > > 
-> > While moving this, also resolve a checkpatch warning which complains of
-> > a waitqueue_active() call with no corresponding comment explaining why
-> > the lockless use is OK in this case.
-> > 
-> > No functional change intended.
-> > 
-> > Reviewed-by: SJ Park <sj@kernel.org>
-> > Reviewed-by: Chris Down <chris@chrisdown.name>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Tested-by: Chris Down <chris@chrisdown.name>
-> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > ---
-> 
-> Thanks looks better.
-> 
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> 
-> But see below.
+> > 	int mnts_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
 > 
 > 
-> >  mm/page_alloc.c | 47 +++++++++++++++++++++++++++++------------------
-> >  1 file changed, 29 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index 4d829e5eac49d..43929faffb989 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -3785,6 +3785,32 @@ static inline unsigned int alloc_flags_cma(gfp_t gfp_mask)
-> >  	return ALLOC_DEFAULT;
-> >  }
-> >  
-> > +/*
-> > + * If kswapd is already active on a node and the zone is below its kswapd
-> > + * watermark for this request, keep looking for other nodes that might be idle.
-> > + * This can happen if another process has NUMA bindings and is causing kswapd
-> > + * wakeups on only some nodes. Avoid accidental "node_reclaim_mode"-like
-> > + * behavior in this case.
-> > + */
-> > +static bool should_skip_kswapd_zone(struct zone *zone, unsigned int order,
-> > +				    const struct alloc_context *ac)
+> Unprivileged caller becomes the owner of rootns->user_ns. Each mount
+> syscall then just checks CAP_SYS_ADMIN against rootns->user_ns.
 > 
-> Make this inline? This is the very hot page allocator code that's why :)
-> I may be overthinking but in page_alloc.c I do see functions with similar
-> size being marked inline.
+> The user space wiring goes along the lines of:
+> 
+>         int root_fd = rootns_create(ROOTNS_KILL_ON_CLOSE | ROOTNS_CLOSE_ON_EXEC);
+>         int mntns_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
+> 
+>         int tmpfs_fd = fsopen("tmpfs", 0);
+>         fsconfig(tmpfs_fd, FSCONFIG_SET_ROOTNS, NULL, NULL, root_fd);
+>         fsconfig(tmpfs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+>         int rootfs_fd = fsmount(tmpfs_fd, 0, 0);
+> 
+>         move_mount(rootfs_fd, "", mntns_fd, "/", MOVE_MOUNT_F_EMPTY_PATH | MOVE_MOUNT_T_MNTNS);
+> 
+>         struct clone_args args = {
+>                 .flags  = CLONE_INTO_ROOTNS,
+>                 .rootns = root_fd,
+>         };
+>         pid_t pid = clone3(&args, sizeof(args));
+> 
+> Note that example is uncompiled :-)
+> 
+> This example makes me feel that perhaps RootNS is not the best possible
+> name for this but this rather should be e.g., NullNS?
 
-Very reasonable! I think it's just a few checks and bitwise comparisons
-at most (apart from the zone watermark checks). I'll make that change.
+Before judging this, keep in mind that I've not just suddenly invented
+this. I first encountered the topic when David posted his patches, and
+felt that they were a bit unfairly judged.
 
-Thanks Dev!
-Joshua
+Somewhere at 2025 David rebased his branch when I asked, and slow-cooked
+the result that we're seeing during a period of 1.5 years. It has not
+been a priority topic at work so this has been more like a spare time
+sudoku.
 
-> > +{
-> > +	unsigned long mark;
-> > +
-> > +	/*
-> > +	 * This means kswapd is asleep, so don't skip the zone. This is a
-> > +	 * lockless check, since a stale result only affects zone selection.
-> > +	 */
-> > +	if (waitqueue_active(&zone->zone_pgdat->kswapd_wait))
-> > +		return false;
-> > +
-> > +	if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> > +		mark = promo_wmark_pages(zone);
-> > +	else
-> > +		mark = high_wmark_pages(zone);
-> > +	return !zone_watermark_fast(zone, order, mark, ac->highest_zoneidx, 0);
-> > +}
-> > +
-> >  /*
-> >   * get_page_from_freelist goes through the zonelist trying to allocate
-> >   * a page.
-> > @@ -3796,9 +3822,6 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
-> >  	struct zoneref *z;
-> >  	struct zone *zone;
-> >  	struct pglist_data *last_pgdat = NULL;
-> > -	enum zone_watermarks kswapd_watermark =
-> > -		sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
-> > -		WMARK_PROMO : WMARK_HIGH;
-> >  	bool last_pgdat_dirty_ok = false;
-> >  	bool no_fallback;
-> >  	bool skip_kswapd_nodes = nr_online_nodes > 1;
-> > @@ -3865,22 +3888,10 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
-> >  			}
-> >  		}
-> >  
-> > -		/*
-> > -		 * If kswapd is already active on a node and the zone is below
-> > -		 * its kswapd watermark for this request, keep looking for
-> > -		 * other nodes that might be idle. This can happen if another
-> > -		 * process has NUMA bindings and is causing kswapd wakeups on
-> > -		 * only some nodes. Avoid accidental "node_reclaim_mode"-like
-> > -		 * behavior in this case.
-> > -		 */
-> >  		if (skip_kswapd_nodes &&
-> > -		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
-> > -			mark = wmark_pages(zone, kswapd_watermark);
-> > -			if (!zone_watermark_fast(zone, order, mark,
-> > -					ac->highest_zoneidx, 0)) {
-> > -				skipped_kswapd_nodes = true;
-> > -				continue;
-> > -			}
-> > +		    should_skip_kswapd_zone(zone, order, ac)) {
-> > +			skipped_kswapd_nodes = true;
-> > +			continue;
-> >  		}
-> >  
-> >  		cond_accept_memory(zone, order, alloc_flags);
-> 
+So if you count the David's original patch set version, this has
+history spanning since 2017.
+
+Br, Jarkko
 
