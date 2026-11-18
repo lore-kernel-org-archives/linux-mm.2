@@ -1,101 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217A860A2617
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5550D606A32C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=AicKIVyW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EXUa+MkZ
 Received: by kanga.kvack.org (Postfix)
-	id 454D56B05B2; Wed, 18 Nov 2026 10:43:04 -0500 (EST)
+	id 6CCBC6B05BB; Wed, 18 Nov 2026 10:46:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42C356B05B4; Wed, 18 Nov 2026 10:43:04 -0500 (EST)
+	id 6A7876B05BE; Wed, 18 Nov 2026 10:46:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36A626B05B6; Wed, 18 Nov 2026 10:43:04 -0500 (EST)
+	id 5BCE66B05C0; Wed, 18 Nov 2026 10:46:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C80E6B05B2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:43:04 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EFE81407B7
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:43:02 +0000 (UTC)
-X-FDA: 85448658204.22.2651DB2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E602B8000E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:43:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AicKIVyW;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 38AC26B05BB
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:46:54 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C12AE1C3CB1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:46:53 +0000 (UTC)
+X-FDA: 85448667906.06.B00F8C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2BD331C0006
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:46:52 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EXUa+MkZ;
+	spf=pass (imf20.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795016812;
+	b=TulRqm4bRJ9VWfhkP6Csa3J6unWF+3Zw1HSmVVr69CNzEGRHrebdxy0/8r+dM9z8lHd/HH
+	C1KyyXLGcEGp3N+ObReqUNIPq6aprlRCSxirbxpY68xa48Ot0XcZgIJ8hliJ8N+J1X/zBW
+	pbK9aRKHHPpsuf7kaLvFUtrAuNI84Ts=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EXUa+MkZ;
+	spf=pass (imf20.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795016581;
+	s=arc-20220608; t=1795016812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KQ5oaAo2g4AxeKoLp9ICVB4rcwj10IiXbO1gaMudEFI=;
-	b=rhQEOAsTK1SY2dqkmQc/ZHtKyrGgJjPzmC90iMa0YBBARe+QDo3GItD0xtXPH81em6VMQO
-	sRvyb1r1FM9gJhxvfarBmbZwlJBlGpxSACB99f6iQ4JpB1/Z4mzrjtkAIRB8Wo0VoqkzFf
-	HPRLzJ/TF77Lp5oCpV3QLpIy+IJLD0o=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AicKIVyW;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795016581;
-	b=uDp4k+Tyn+DlW7Ms1PEdWMLlPYo/0a1IB5VqQkj8IZHey9+4O7GozO+Q18qPHACO/GM4cd
-	traXN4vQCFbXZhGwLTDAagQ99EejaO8KXUN87MkdCh0nQGEazCbQ2zut2zn5BxnUW+kJKm
-	wX5me3CwfrXGBoVeXuEM/+UAMwVvxDw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E3EF71596;
-	Wed, 18 Nov 2026 07:42:56 -0800 (PST)
-Received: from [10.163.128.4] (unknown [10.163.128.4])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5DFFF3F632;
-	Wed, 18 Nov 2026 07:42:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795016579; bh=R2COxjpCbGZ0nol+4Q+5ncT7lyJrH77FgloWD2fkEvk=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=AicKIVyWmUxwI+xckwdtAChNrjacuR/Jb4h/8E753JCvDT0wnlzzDOpEHF84OtlUB
-	 wCbzIaNhRlizhRB0hP8nDSAFjbi0niDwlJ2o+LJ0NyabT63GvPNzh3sKBHL3Lwd2IY
-	 wRu8EJIQnrwTL9Lc9Ov7xtwi1RmPD2cGi1KDfD2w=
-Message-ID: <7770de02-3f4a-4db8-9e02-5e95b148b809@arm.com>
-Date: Wed, 18 Nov 2026 21:12:51 +0530
+	bh=Yq7h0/bdeIgVdHwxIZvW/WAXXX6JzsrZsXwYUvWhQj0=;
+	b=aEQ5STCJ/DizPJ72OVdQkshGMBzXYi4KZRiENiOPlcbZkI3VPHraXOXiPflDO5vQjuAVUm
+	hek/LgVAeOOKZQQJQIrWqkwrlrLFLVx3G5dTAkF0gE60BcPpp2/5VE85D2531MCw+LG8gW
+	NsJ8VH5M3LdA+JSAMu/EilP0jbanJQM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id A526F62586;
+	Wed, 18 Nov 2026 15:46:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id AD8611F000C4;
+	Wed, 18 Nov 2026 15:46:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795016811;
+	bh=Yq7h0/bdeIgVdHwxIZvW/WAXXX6JzsrZsXwYUvWhQj0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EXUa+MkZ8fF06bmTmwLNd20zxEY9MBiiXX3/inLnec+f3eiqv7AFpfp0RH1t8WMYg
+	 07CRxJbvqQzFs79L2fxYmiB+GR4+a2juvf3E/xr2joNJED6DqFsGIRBDrb6+B2ex4E
+	 sg6324IqU/NJun40bRWU9DIoQ3Mo45I4I9aqgNnl26gSlTAwOU2rfIBT3J7mwlm413
+	 UJVrWzSWKUooQDs+lkwH4rZclpp4/PrgxpZq4RUvzVBa9Zs21JNDTqT58QxIZiaVTm
+	 FXz1sMD+7Og8a/cFS0ljKI59wReWg936/UQp9l6X3OLAdeUDi4zCHOdxxm9cSZA5GW
+	 Ra3dfEdI9ZjQg==
+Date: Wed, 18 Nov 2026 17:46:47 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	John Johansen <john.johansen@canonical.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>,
+	alex@amutable.com
+Subject: Re: [RFC PATCH v2 00/13] Namespace for namespace roots
+Message-ID: <av3IZ_ZXKJWHdAl0@kernel.org>
+References: <20261117231352.3816603-1-jarkko@kernel.org>
+ <wdwc3b5edgtgvrgqfhlzhrachr5hrqb7ahipcuqdz5pffxlc5b@662cpwhxwjer>
+ <av3EBpSuzn_TcrDk@kernel.org>
+ <av3Gv3MwP40bqvnG@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] mm/page_alloc: drop unused gfp_mask from
- zone_watermark_fast()
-From: Dev Jain <dev.jain@arm.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Kiryl Shutsemau <kas@kernel.org>
-References: <20261116232346.788145-1-joshua.hahnjy@gmail.com>
- <20261116232346.788145-2-joshua.hahnjy@gmail.com>
- <b2093f38-e3e3-494e-a27b-afc91c578053@arm.com>
-Content-Language: en-US
-In-Reply-To: <b2093f38-e3e3-494e-a27b-afc91c578053@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E602B8000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <av3Gv3MwP40bqvnG@kernel.org>
+X-Stat-Signature: pq5fnbhimm6garr3o4yc8b45y56q3fkr
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: rc3q8yio54gkbbhgbumtnnn8hm5hp49h
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1795016580-512777
-X-HE-Meta: U2FsdGVkX1/rrWMS/9GNSel6R4GnKY3SnxJcyhyVwKKxHSkJfDdropVt4Eb+wbo0fvsQxgf2m4shkuhqh1WKJMJhNETIYk4NYsAPTkuMY8Efd7aj09t6J/bfcB1p+4TQYlyu5FUhzbO2LI9rFiWiU6y5EGcUxTwFtyrahvJt2l9DDILxR9Qbvf+GrkJkDiapXPVVqukkx1NP8fVJuHaY9pL2auLxWv6YToxEOdnTie6BfOZBImKUTsA2qqqYA0tNfgjiMoR5nQv2TGKl23yWbybB8QFXOgwvbK9xAPpDH/FJJi0ZjU/AyN5a+0niY/jVOBnMKVpxTAxkeAJXWzHm97ASGH3ukgm8HqjIltOaU2GXciC+5mYJIUuTVcUE/pE+oYTyP/o1NVciGRhLnh9t9HuA8WKUTf+X9aGVkKG87k/63kDDN+UFpUrX2peNkmY2GZJTrRxPOAoQGivDYJkP3i5JJXbZUzE/NdbjJqspRxP5OXvDX8e0JxLm2JkOX8h3mDevJQsz3YmXmgt+I5C5droFoPHYade40cc8e8rHOfMSIRt10brFlf3tg1r6cbyzkk/KgtisGL93dm5BTC4XBI7GW9JvWTh8fhrP/iYgnn4CkMwUkWOmGTB1nJBhmFHpr+7Jpj5d3YUBNdd+BCDPHMnRCDLlv6QOqJjigK1b5KctcLWgK2+9BAjFwLylDlwcj/T16v27MzqE/GVQvA2ltMyX37eAzB19L3/4m/WHOLIBWyOHTpnkZivDiCQFEMcC0b9rB6AShg5G67zM0mqj+g/LDcDUACwFMzqDUx1VKZVohp1xdlDmObO+hTlHqSJpeSW4NmlC3cd9iNn1bwQWYQAn9Eq6Zllw5FzCzASZ8qhVkXihUVnkvIC4kRWoRAEKEdA11a0jINy1KY3bH4EjndLr84oF83olXuqyrns+blp4v5oNeqdx1lW4Yhtmf5jn9XKj1dyJ6CPwDYwaEto
- r1gPJAVq
- kxbAI46MvVI2e7sMuzCvXEpQosvlvPVBDbJUd7OcXXFA7Inp20GUvMgZ11W67u9MVQFj00Gd3Bpz5Ner4VTwkGw8oXwXOpO/FIn4pwUMy0tSvt+5ZQ9qHE1k0bWDi1HZMK7JrK9qrD4IdR9ASHe4viTMy9CVeviogiT8E7h4ggPLF/U0NEc9LvRTG5odlNXeS0OAf0cj5BG5TEVj4HGGHTnObYBiWURT8x9JrPH7lqNthR0fVnhw3vvdfiSGDPTzxG8Wj2wm/zxiGcZBUJ09zir+C/uPwR0aec1kWpmhvnlfRFxRqAptpQXG1itAKHOeZ2bngWO2Z2a4plQOv43dBZuSpUFPYZ6uXVldQpJxO7V8D1bMk7zFzx5Z0HhosaYo5Ro3XWdwshIttRK0DSoORxQ/UFAbMeiW5l8Ie6zZoYO7pLX7upDetzGFxmw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2BD331C0006
+X-HE-Tag: 1795016812-546413
+X-HE-Meta: U2FsdGVkX18KFXxcXhDFN2IBzlxAKnyjEAGh7cGzzqU9AQGubPO6uTYYcH+fjtZM0vfFw38Hq6cLY1dZpy7EEqhW5WzybCQtQHk8G/8M7C51M3aPW3T5Sw61x+qE4NX4uK4nqDFVQOkur7haZBQSaEHHLeOf/bY3hz4eWRemhq9WPkBgyv5b0Zx7DL7in1Vxskv9u2ED9cxAnlc7jW/CouKKELWocoZ7l19x6cm+7Ka5TplgIe5wkFCyidfpO0olyxsgxvP1k7/bMeTJDIOb5KQW6l5RDRQoEoOfx9lSnVNloDSbSto5Vwk8+QnSJqd9mTYmOIS462U2mLrJAkkbe3wD+OGNQiyLi4+LTEKfu2jRW5uwJYdnjbU6jEmzjmQmNKlWX5uuSGDWcEEMns/K06vGUwnQ8wJsTQdYeKl02kmArcmftpZHloJnnf5a4s2Y5yxU3HpI57VKLCtUm3bmKuvfBR6jSQL0GMevFbfj3Oi2iX7O7eO5UPYU5/OXQBaIVbWpSmi/qnRYx0TaFYEj902DPAyoY/WE4T6A5fSFWyhNsegC7FjeGv6OMfschiGQsQtxP8K5C8Af0iH05G3CFfXhcFvoupYr1dTAll/onKSL5iT4PhmuDs/ps1/iYGubP/h/Fn8AhMOWQKeY/ktWDjhIPEH41FTILDKqqkuCkKr5ci59MGaS5K4r2uU5h++2h8VrisPEVHpKvgg5h157/RAg1OynqILjo/O/aLH7hn769v7pCFnIbdgC/tyE+gWCdSqxZvhaynlh+AYGeBB7e8HekvRsW+CBkj/RCB+SPrG3rKAAGm8bCjq2NNfh3MTDpNyJ6ADch+Kd9/aD3pXkRa/2ucnIWEfoVvnTr8RGAFp6r67nWQTZCnleUnKei6fIfxoaHX7hu7+jpMcTsVq46+P2WTz6h95v7Nx4Ullp3JdU2PRZfU1nkQH44gEe4DW4Jw2Kp12kVkaWhl1+Yyx
+ ULtY/X63
+ gWRtf+sbz4cLR8yXR1aOFKdarN8d82Uq/KLRmc26kf1S7GoPXGYtwb8SI6qj1K26PrZtrwUEsYeBaAX3PQPi/tRGqzZnAWcUqep41jtkyAnAhTGl9m5UztwhdUPykc+KKr+XHJRN0gY6GTg83RJ8PV96odGIu4ZAB5xODIESy5hC9xaxPGvuP/+k31MrYwNPin8ZDg8S1CIDvfwaYgWBW96hqtqbJb6K5Fl95+u/B2SFW30PaDaBtHLPR2GxrXXXbd7Qu2eA6PE+hnu9JapMbk07npw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,85 +130,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-+ Kiryl if he has different opinions
-
-On 18/11/26 8:29 pm, Dev Jain wrote:
+On Wed, Nov 18, 2026 at 05:39:47PM +0200, Jarkko Sakkinen wrote:
+> On Wed, Nov 18, 2026 at 05:28:10PM +0200, Jarkko Sakkinen wrote:
+> > On Wed, Nov 18, 2026 at 02:47:34PM +0000, Josef Bacik wrote:
+> > > On Wed, Nov 18, 2026 at 01:13:39AM +0200, Jarkko Sakkinen wrote:
+> > > > OVERVIEW
+> > > > ========
+> > > > 
+> > > > A root namespace (rootns) is a kernel object backed by a file descriptor
+> > > > that binds together:
+> > > > 
+> > > > 1. A full or partial set of detached namespaces.
+> > > > 2. A dedicated PID namespace for spawning processes into, signaling
+> > > >    members, and polling or waiting on PID 1 exit.
+> > > > 3. An initially empty mount namespace (CLONE_EMPTY_MNTNS) that must be
+> > > >    populated before going live, without inheriting host mount-tree
+> > > >    ancestors.
+> > > 
+> > > This is what cells is doing https://lwn.net/Articles/1102593/, you may
+> > > want to take a look at that work. Christian, Lennart, Alex, myself
+> > > and others are working towards this in a more wholistic way. There's a
+> > > lot more that goes into this outside of just the object itself. I've got
+> > > my version deployed inside Anthropic for securing containers and I've
+> > > tripped over a lot of pre-work that needs to come because we can tackle
+> > > this. Alex has my rough outline for kuid64 for example, which is
+> > > necessary for making sure we don't overlap UID's on the system and
+> > > create holes this way. The cells work/anything that wants to have clear
+> > > security boundaries is going to require that as a pre-requisite. If
+> > > you'd like I can include you in our planning so we can get something
+> > > that will solve all of our problems. Thanks,
+> > > 
+> > > Josef
+> > 
+> > No it's not doing the same, and this why I sent the patch set.
+> > 
+> > I don't see cells fighting with rootns and given that rootns has a small
+> > surface and it leverages already battle-tested code, instead of
+> > reinventing the wheel, it also has benefits. It neither doubles the
+> > number of container frameworks in kernel.
+> > 
+> > What I'm not claiming is that this is better. I just wanted to fact
+> > correct "this is what cells is doing". It is not true. It could be
+> > better solution but still that statement is untrue.
 > 
+> For better or worse, cells does a lot more; just looking at the patch set
+> size.
 > 
-> On 17/11/26 4:53 am, Joshua Hahn wrote:
->> zone_watermark_fast() has not used its gfp_mask argument since commit
->> 2973d8229b78 ("mm: discard __GFP_ATOMIC") switched the watermark boost
->> check from __GFP_ATOMIC to ALLOC_MIN_RESERVE.
->>
->> Remove the argument, no functional changes intended.
->>
->> Reviewed-by: SJ Park <sj@kernel.org>
->> Reviewed-by: Chris Down <chris@chrisdown.name>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->> ---
+> For rootns one can point out with a finger its possible problems BUT here's
+> the thing: it does not haven unknown unknowns. Even if cells had less
+> of known problems; we have zero idea what will come up if that ever
+> lands. The possible consequence have less predictability.
 > 
-> Note that this series:
-> https://lore.kernel.org/all/20261116125103.2894162-1-kas@kernel.org/
-> 
-> needs to use the gfp mask. So perhaps drop this patch? Otherwise we will
-> just make noise on the list by adding it back :)
-> 
-> 
->>  mm/page_alloc.c | 12 +++++-------
->>  1 file changed, 5 insertions(+), 7 deletions(-)
->>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 9e1261521b6a3..4d829e5eac49d 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -3675,7 +3675,7 @@ bool zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
->>  
->>  static inline bool zone_watermark_fast(struct zone *z, unsigned int order,
->>  				unsigned long mark, int highest_zoneidx,
->> -				unsigned int alloc_flags, gfp_t gfp_mask)
->> +				unsigned int alloc_flags)
->>  {
->>  	long free_pages;
->>  
->> @@ -3877,7 +3877,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->>  		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
->>  			mark = wmark_pages(zone, kswapd_watermark);
->>  			if (!zone_watermark_fast(zone, order, mark,
->> -					ac->highest_zoneidx, 0, gfp_mask)) {
->> +					ac->highest_zoneidx, 0)) {
->>  				skipped_kswapd_nodes = true;
->>  				continue;
->>  			}
->> @@ -3897,8 +3897,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->>  
->>  		mark = high_wmark_pages(zone);
->>  		if (zone_watermark_fast(zone, order, mark,
->> -					ac->highest_zoneidx, alloc_flags,
->> -					gfp_mask))
->> +					ac->highest_zoneidx, alloc_flags))
->>  			goto try_this_zone;
->>  		else
->>  			set_bit(ZONE_BELOW_HIGH, &zone->flags);
->> @@ -3906,8 +3905,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->>  check_alloc_wmark:
->>  		mark = wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK);
->>  		if (!zone_watermark_fast(zone, order, mark,
->> -				       ac->highest_zoneidx, alloc_flags,
->> -				       gfp_mask)) {
->> +				       ac->highest_zoneidx, alloc_flags)) {
->>  			if (cond_accept_memory(zone, order, alloc_flags))
->>  				goto try_this_zone;
->>  
->> @@ -5245,7 +5243,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->>  		mark = wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK) + nr_pages - nr_populated;
->>  		if (zone_watermark_fast(zone, 0,  mark,
->>  				zonelist_zone_idx(ac.preferred_zoneref),
->> -				alloc_flags, gfp)) {
->> +				alloc_flags)) {
->>  			break;
->>  		}
->>  
+> Also, as per integration, they actually are not fighting features, as
+> they are in different layers. There's no same thing at all.
 > 
 
+Yeah, and there is no obvious causality either that would result a
+zero sum game. Rootns is something OCI runtime, any of them, can
+quickly adapt to the existing framework. Cells takes longer, but
+could be very worth of price. It's called "defense in depth".
+
+Br, Jarkko
 
