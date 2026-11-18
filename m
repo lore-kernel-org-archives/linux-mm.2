@@ -1,99 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00ED60A3834
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 14:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3BF606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 15:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HNQAplAi
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SS02ieOm
 Received: by kanga.kvack.org (Postfix)
-	id BF4F06B05C7; Wed, 18 Nov 2026 09:59:57 -0500 (EST)
+	id 45CD36B05B0; Wed, 18 Nov 2026 10:04:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCC916B05C8; Wed, 18 Nov 2026 09:59:57 -0500 (EST)
+	id 434FB6B05B6; Wed, 18 Nov 2026 10:04:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0A306B05C9; Wed, 18 Nov 2026 09:59:57 -0500 (EST)
+	id 371416B05B8; Wed, 18 Nov 2026 10:04:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 912C16B05C7
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:59:57 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 342AA1A07B1
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:59:57 +0000 (UTC)
-X-FDA: 85448549634.19.6823D61
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D16C010000B
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:59:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HNQAplAi;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795013995;
-	b=PDIg1yfPd9Q3/2Y+5AtomyTtqOL19TXEvJn7oAPOpuW3aEfMKmsilBwu5pJLNfxADv3L0F
-	JZSQKrayImWdtQqnVwYolNNe6QWfLVqV6uSw7kUuEuLAFp5TuaggZ3ibt7/cpVf2cveFUU
-	6MuMzTmpchIP+/ZC8NWTr8DauyJqHBk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HNQAplAi;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D0CA6B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 10:04:10 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5D6B71607D2
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:04:10 +0000 (UTC)
+X-FDA: 85448560260.18.351D74A
+Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 09B0D140004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:04:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SS02ieOm;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795013995;
+	s=arc-20220608; t=1795014248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UHA2gSMreq5NvV78ff3NkuJxnwpR2g2o/LhjS2wMs8A=;
-	b=M1UhKp0+sXkxpfABe6qwHx5SGR5ExeWDZ2MRWWS5yPigKpSGV5R/A+yZMJqA67yHCwbjSP
-	OiiqNOQdpxcvnhL+ymPXjsNtOxlOkFlhXHJe80PcC5ip+aqNDb1KgteSUOitaJ8nqP+cwc
-	1PPOmnpnvUy+Zsw7DnxWu+s/2wwvCOk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A55EC1477;
-	Wed, 18 Nov 2026 06:59:50 -0800 (PST)
-Received: from [10.163.128.4] (unknown [10.163.128.4])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 66DC33F632;
-	Wed, 18 Nov 2026 06:59:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795013993; bh=YniiAGhFs3f6RndqIyYnDs1IU7RZgamrSEyiFvFrpD8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HNQAplAiLMoNveoYkT2JyRS41v1GiH0guf1kxhNgsdRvvQf0dUA2DKfmDGxR0PNwu
-	 FhzNBR1nlLkEfVfyBrjg85ooYVWz1HickJ83DYukJrIarRHYwLEysWl/ynz+SXDJbu
-	 7pboArrQDJja4AqSVQAiXmFjvdRYLVxq9adSxc+g=
-Message-ID: <b2093f38-e3e3-494e-a27b-afc91c578053@arm.com>
-Date: Wed, 18 Nov 2026 20:29:44 +0530
+	bh=Yfwtmuh15e5L/fsscSO213kl0aITGy03gz7OI2vHFYU=;
+	b=KtfbwIyqLYgz/elfNiJ4U5dtUws0V/+aVk61zrJwveM2Cj3lrd9AO77xD+wNQr4bC7dxDo
+	uP7USQeVNpOyvtI6k9OGj8UL7ZKR+dV7c6LF5go3vPl8suyfiQhiHVXKdrP0PMNGJbYPwv
+	gkot6or/TLTpkgFI1IwD1BW1VYZi8oE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SS02ieOm;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795014248;
+	b=P1MRswzu8rhWjYkyrkq9BJOzz+TV98uSRjvDJsdZEKyNwd4INws5Q/AknBkyU63jfZexBl
+	bWuCoCdMWZU3gvSdZ3ndmPbxlBa6yEmuG14vRe6LU/iga/A8HJ3KwfEvquEEenXgamVjBe
+	4zLxn3tvk/A29vFnrSvUZv8X89bNrIs=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=XhbjaJ8im/VrH8GwiaavZ+shVr7GKVnu9JIrbTmImk8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795014245; v=1; x=1795619045;
+ b=SS02ieOm8mSQdZMt8RfMzTwzPVp4tvbhfgGwPXrJkqiJLrnambkdgGaltn1zYpC2oDaZuE/l
+ GMt19qiaiHln5apXEU+n4D8pM2WJ4HGSIDcs056wKodAg1ETMuJMGxhF1BEKXWA+iQFh760zj8i
+ uobwQdeyeNh1lcdGLMnGu5g4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id bb9e3daad670b11f;
+	Wed, 18 Nov 2026 15:04:05 +0000
+X-Mizu-Trace-ID: bb9e3daad670b11f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <45cca73c-9846-42a8-a505-65b90a7cd3c0@linux.dev>
+Date: Wed, 18 Nov 2026 23:03:48 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] mm/page_alloc: drop unused gfp_mask from
- zone_watermark_fast()
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20261116232346.788145-1-joshua.hahnjy@gmail.com>
- <20261116232346.788145-2-joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH v2 2/7] mm/page_ext: fix client data alignment
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ sashiko-reviews@lists.linux.dev, Sashiko <sashiko-bot@kernel.org>,
+ Muchun Song <songmuchun@bytedance.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Chris Down <chris@chrisdown.name>,
+ David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Joerg Roedel <joerg.roedel@amd.com>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Pranjal Shrivastava <praan@google.com>,
+ Ketan <ketan.kishore@oss.qualcomm.com>, Mostafa Saleh <smostafa@google.com>,
+ Sang-Heon Jeon <ekffu200098@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, kasan-dev@googlegroups.com, linux-mm@kvack.org
+References: <20261117120627.50601-1-songmuchun@bytedance.com>
+ <20261117120627.50601-3-songmuchun@bytedance.com>
+ <sashiko-outbox-219498@kernel.org>
+ <20261117114635.37d4c1f7f1b38cc4ce7fb886@linux-foundation.org>
+ <F4EDF1D2-D02C-4339-AA30-422D576B735A@linux.dev>
+ <20261117202136.9eb67013389f3bdefe9b3a15@linux-foundation.org>
+ <11DE08A1-5F83-4BE2-B8C0-B426441A957A@linux.dev>
+ <av2q4RAESvKh0chV@kernel.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261116232346.788145-2-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <av2q4RAESvKh0chV@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: i7ud3msuotebbupag967hsqjsfepdjxg
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D16C010000B
-X-HE-Tag: 1795013994-985250
-X-HE-Meta: U2FsdGVkX1/XAIBVUIDagH/LG3G6CzcJOVBdw/MaJ2C23Tb70TbXvfyjjXq/HYT+6QBX5AZZeeWplPMrD323rucOhhmLz7FxmvpFurt7nD+toIb2optfmAeshnrXPlk0aj7ijHmVeMDLqRi0CJejHW3HXi5f9vKUDqZ3Y3aEHdYoyjPCPV42Ez/OijiTNQE3LDQUnO9J+O6Zijx5YfFMDfpHq7MQ7CzgftU9GgpP5WiwpvYeDmny7CYdFiVFlo00zVFs8Lq0c7BxRWf1cv/NcBPsyT2tDus3XEkkkgNKyzvWRl6mPiqGPqARShlnO6wn8Jcv6wga5Zbb0GDEFoPtlvQLRgL7Sz2nQBRlBmH3ansxBQ5U8NKrIZK76AEAwS+q3PgptR/bAJLp8HwroueTa4PnysU8OHWftHUZdyyLjtwC1fa86Q/91LAtcSivvj2QwjNiETBZhasup5mZ9K9dE3azQYE6VsZWcu0y9q4qlTWNiwRD00qchoXVqeyiRZsmzDI7zdZzD7DV3tMpamXue5FQDI8kVrHA+yK3aXg5IHrfcTHGwuRzXkXpADZVgyNe+rJDeYfy8tzDBkEl61kGomzgYXfuV/YFpQ8//u2EN1zNpXS6mz5hb/BgUOmi9g77hNVl7bFwhMCFp46bhJPdCfRBNmqK+ZPjycojWB63oHUigrxGcyqNXJwgO7y+JK1tJ3KlMd0py0hSje9r1EUzhK1lKhwR5Lc/YflmGAWTL5jqYubxGw1PLpZH5/EHZppgq9AwPaqi45XaXgQF0LfHWCXeuIjAoKu9VB1wXQ+jq0u1gYnDzddENtas2cmGeyL5WPMdFkFZgbrNoeW4TQBgdYCMGKtA5UDW78GlT7x2x2vrppcW57x2wUdZVThGdwEe0lcvQUhSg3eB02pss4EdkJw/J2+cUATymhkNIiMGJaYEclSRrUTZQYArIIDXv4269c7XyrnJE8Z0K2Pv1dd
- nelsEtOL
- QpJGDTl+vg+CtiONN98u0hOx5K2hYe9QDUIoHsEQJsYrRAXUuzuQgpLk6SQsSK4UV7FYemvnNyPVPSCGocwvzKw9uXtef4SKBrHQkgSZWcSf9F5Y7ePN55x8bV6KUrf9sAz43zBa/4HsL4ohaXNSyXcRW6GPcc7RwmVZU4bmSAaP5UgRvi8DKXLA0hTUJZR9X/KP1SU8xvDhEe/QYnF3B3GsLgkRpJ+x+ntqeChaJxY/TIYjV/ID1z/fD9XqeW2AVRyKYdJeqIVC1nc/l2UnLu0roxObpVjpd6OPR8CfqbWDikyWbU6Gr02dVcNogM52tZbS5X50LXfRMVooB1C1GWskJ+OvGbqJ9E9hC91FTQlIM/xwpzclZQWbikCngVZtrHp+/hZuxKvUo9o6y+DYOOsREFdrWtqo7aYsBBGURwYQqTGog2skOdhAeLA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 09B0D140004
+X-Stat-Signature: mua1myhtrwzqp8k7y6p5m8znghgutjid
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795014247-679044
+X-HE-Meta: U2FsdGVkX18gz1GLcE+D3zRfOmWHvbQGzOuPFudLgqnpdu8cBQuXdkhTECPooGi6VXZxceSRuuLf8bDBgVrEtNjGIQm/kcFKaRD6iLjyWgw367jldpa+KPcW3k1mYmma+BDW0Bu47ifr10AZcAHkU9bEKvxiTuzo1SApWdZynkSiMpmThRwR0Ljh6A0340YW8swtZRLYxjvT6N0rML9u6lmCa8Zw2gcjtVal4UGTgCv9YxHCy5cP6q+AZDXSKYUyCd91DfkPO+iMw15LFmZbzBad52/SZfLjppP0NsQ7ROtmDC4hKhB8QrRfKeTUPpjcMspDhianOy3OwZZCjXQmXglH/jc73R+hPbqq/dklgkbM1lPKnHRFo5fc7WWXRBN8wS4P/p0z8miZP3qMYnvks3lPEQPbxyxgtGMDAERSctHVRP4+0c+zUhhmRT+cRpY71QnW+7rcxdgj84lCmNDRfu9TNM+ur9J1OXvKQgTq1EXgnCPI6+djlVYySem1L2uy5/OpLzuMrU34amICuFVv3LmGT9Xb/WDMS8YJi7tp7KgsOCags4TGvu6Vp/zV8ADhyBPlBgwHPckvpK6l1F2FxTaUG+Toa0pgQzvSH+mYWRRSksWGY+ootyv2Ap+UHTQzmvyL5s8FN50TG2BMtc/9d3Sl6OhD/D3Iwph378IjsdKuIiefeTPXMhpTLg1edAf2lzeNSpyZpl87jQXKSZxr6U0H+MmrGU+yfdAWy2jbyZmJJYTlh647ngZMUfEyB5legRQuf5lv6nbheCAWrFa26bLjQFjjdlJAPhEtzWS1Fdfw2ulOhTA40867zOGVlBYj17owPLDsviale+AXvAH25VB8re1esVfp/YJrdlTsG0BBh213nYNI1rC1eEVLGo36CN/u/dtiOLsefkGr4MU2ck4y4IdG0++dsvqeGvJ+DliXe1i/JEnmwmCf1sZpFF9Ph4pjlD6bkxToitsho8g
+ +JrVv3aF
+ OhiS0fIdIHkDUaO8NV2O13eP/X1TjClzsQfhMGxfk5Ry3iZ8QeIOE3LwyaUczOUoRQn48KtYmVKbXMzDXgJsTSUCv24iaW6YAOYQ6/0ZT3C/6mdY2/1RmTWiHJkZY6s+EQ11TN+HusxY1AbfXZZjkdv9FXc57gjKX7EeqF7yuAvUX25JcYb2Zvu/VkPHiXQ19Svp72NScB21M2VKp85W9K8Q/GOMypMBCdzbCwLJZvcCQCxwyKqDf19PoJsNrJoqxHGnqCxU+TZioB7veZGDpXOuKSINmcTJZHH0Gax+ThlntMfUsMlDOmr9YPN8jxpHB8eVvT9wd2B54R9dTswGXGyQdTdDwsETqyhrwwx84tOoHcPU4RO8vrdj6O8Zyj2IirCok
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,79 +117,75 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 17/11/26 4:53 am, Joshua Hahn wrote:
-> zone_watermark_fast() has not used its gfp_mask argument since commit
-> 2973d8229b78 ("mm: discard __GFP_ATOMIC") switched the watermark boost
-> check from __GFP_ATOMIC to ALLOC_MIN_RESERVE.
-> 
-> Remove the argument, no functional changes intended.
-> 
-> Reviewed-by: SJ Park <sj@kernel.org>
-> Reviewed-by: Chris Down <chris@chrisdown.name>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
+On 2026/11/18 21:40, Mike Rapoport wrote:
+> On Wed, Nov 18, 2026 at 01:39:04PM +0800, Muchun Song wrote:
+>>
+>>> On Nov 18, 2026, at 12:21, Andrew Morton <akpm@linux-foundation.org> wrote:
+>>>
+>>> On Wed, 18 Nov 2026 11:49:58 +0800 Muchun Song <muchun.song@linux.dev> wrote:
+>>>
+>>>>
+>>>>>>> +}
+>>>>>> [blah blah]
+>>>>>>
+>>>>> Yeah, but the whole expression is quite reader-hostile, as min/max
+>>>>> things often are.
+>>>>>
+>>>>> How about doing
+>>>>>
+>>>>> /* comment */
+>>>>> if (this1)
+>>>>> return that1;
+>>>>> /* comment */
+>>>>> if (this2)
+>>>>> return that2;
+>>>>> /* comment */
+>>>>> if (this3)
+>>>>> return that3;
+>>>>>
+>>>>> ?
+>>>>>
+>>>>> The code generation will probably be just as good and it's __init-time
+>>>>> stuff anyway.
+>>>> Something like?
+>>>>
+>>>> static inline size_t page_ext_data_alignment(size_t size)
+>>>> {
+>>>>         /* No client data means no alignment requirement. */
+>>>>         if (!size)
+>>>>                 return 1;
+>>>>
+>>>>         /* u64 has the strictest alignment required by page_ext clients. */
+>>>>         if (IS_ALIGNED(size, __alignof__(u64)))
+>>>>                 return __alignof__(u64);
+> Maybe add a const local for __alignof__(u64)?
+> No strong feelings about it.
 
-Note that this series:
-https://lore.kernel.org/all/20261116125103.2894162-1-kas@kernel.org/
+Maybe better. I can give it a try.
 
-needs to use the gfp mask. So perhaps drop this patch? Otherwise we will
-just make noise on the list by adding it back :)
-
-
->  mm/page_alloc.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 9e1261521b6a3..4d829e5eac49d 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -3675,7 +3675,7 @@ bool zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
->  
->  static inline bool zone_watermark_fast(struct zone *z, unsigned int order,
->  				unsigned long mark, int highest_zoneidx,
-> -				unsigned int alloc_flags, gfp_t gfp_mask)
-> +				unsigned int alloc_flags)
->  {
->  	long free_pages;
->  
-> @@ -3877,7 +3877,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->  		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
->  			mark = wmark_pages(zone, kswapd_watermark);
->  			if (!zone_watermark_fast(zone, order, mark,
-> -					ac->highest_zoneidx, 0, gfp_mask)) {
-> +					ac->highest_zoneidx, 0)) {
->  				skipped_kswapd_nodes = true;
->  				continue;
->  			}
-> @@ -3897,8 +3897,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->  
->  		mark = high_wmark_pages(zone);
->  		if (zone_watermark_fast(zone, order, mark,
-> -					ac->highest_zoneidx, alloc_flags,
-> -					gfp_mask))
-> +					ac->highest_zoneidx, alloc_flags))
->  			goto try_this_zone;
->  		else
->  			set_bit(ZONE_BELOW_HIGH, &zone->flags);
-> @@ -3906,8 +3905,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->  check_alloc_wmark:
->  		mark = wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK);
->  		if (!zone_watermark_fast(zone, order, mark,
-> -				       ac->highest_zoneidx, alloc_flags,
-> -				       gfp_mask)) {
-> +				       ac->highest_zoneidx, alloc_flags)) {
->  			if (cond_accept_memory(zone, order, alloc_flags))
->  				goto try_this_zone;
->  
-> @@ -5245,7 +5243,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  		mark = wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK) + nr_pages - nr_populated;
->  		if (zone_watermark_fast(zone, 0,  mark,
->  				zonelist_zone_idx(ac.preferred_zoneref),
-> -				alloc_flags, gfp)) {
-> +				alloc_flags)) {
->  			break;
->  		}
->  
+>
+>>>>         /*
+>>>>          * A type's size is a multiple of its natural alignment, so its
+>>>>          * lowest set bit is at least that alignment.
+>>>>          */
+>>>>         return 1UL << __ffs(size);
+>>>> }
+>>> Well I prefer it!
+>>>
+>>> The final bit-twiddle could be (size & ~size) but I'm not sure that's
+>>> any clearer.
+>>>
+>>> We should have a handy helper for this operation but I can't find one.
+>>> max_pow_of_two_factor() is close, but only works on uint.
+>> How about changing the helper to
+>>
+>> #define max_pow_of_two_factor(n) ({					\
+>> 	typeof(n) __n = (n);						\
+>> 	static_assert(__same_type(__n, 0U) || __same_type(__n, 0UL));	\
+>> 	__n & -__n;							\
+>> })
+>>
+>> ?
+>>
 
 
