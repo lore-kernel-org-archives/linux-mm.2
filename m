@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CF3606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 05:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E414606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 05:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZwUzcB70
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AJHnCTFZ
 Received: by kanga.kvack.org (Postfix)
-	id 398DB6B05B2; Wed, 18 Nov 2026 00:09:51 -0500 (EST)
+	id 212B86B05B4; Wed, 18 Nov 2026 00:09:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 349DE6B05B4; Wed, 18 Nov 2026 00:09:51 -0500 (EST)
+	id 1EA656B05B5; Wed, 18 Nov 2026 00:09:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C3AB6B05B5; Wed, 18 Nov 2026 00:09:51 -0500 (EST)
+	id 0B2276B05B6; Wed, 18 Nov 2026 00:09:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D75756B05B2
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:09:50 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4FDAF160606
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:09:50 +0000 (UTC)
-X-FDA: 85447062540.22.4032959
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C96C66B05B4
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 00:09:52 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C2DE120664
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:09:52 +0000 (UTC)
+X-FDA: 85447062624.12.806139C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A9A211A0005
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:09:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZwUzcB70;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794978588;
-	b=QgaLyfRA/jIBr20eJU0HuuSwlhFfPoKywvJoqVsimnCQEHRHEpFE7kPZo7H/GJZVGufz+O
-	jB57PMEe1WkaGjr3chOHYJwrVdNS8rY3hJWAj4IlraEaE0/haWB1PhxT1YRi71ixqX0or2
-	3gXHDGIAEm36msoTq+znyjf7Xv7nNDU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZwUzcB70;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5985240003
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 05:09:50 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AJHnCTFZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794978588;
+	s=arc-20220608; t=1794978590;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M1t0OG5hPXiCiaFk6hIj2QHLA/2XZTBsU25238l1JRs=;
-	b=G2mNQuDLv1+x+1xuN7LV5DtEo8rvwEqg3RvJoUDc9n8lXcUcWqaZcTetWOs2pdrUI2jcQd
-	YTGISy243d4l1BIXmLynyT/uxRw2YZ0sVj5HKXz8bTO6rkGFm0QbAbG5QakEh4tkOePbkC
-	bm6ftRUx5Wkz9eeuGrOAq/lhmaPXta8=
+	bh=YTkB6IegYKkCKN9TMyQsZjUMGenXx9DRYi/wt9UPTmg=;
+	b=ZNCzTfOvQMtlWR84dhK5kPk7TKCj+UWQyXwwhoA6gLxFb9lh+00mrsk+PWh3iU1+VaIwLH
+	DLUrPTaaqK9CkvuV4Dm7Op/QO7dHOluT5i4GVPaSlSM5wIfTbg6N03PzxqvrXljdbDCQp6
+	MTYQTL8y/0ugOIs/TZvCIYdxvHnlupo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794978590;
+	b=TsqxXwSmOeSju8u3eIittqh/0jNnNeMw6cEXUl0D3Z2XkrOiqNm5/8J7/fZ7bvWVheT3mw
+	BGM16PaxU2+EKQhpjpIEyHebDQJ7A5u8L2XJPwefy29vPmBwK6ruPSDXuVKKkFvToTAB/o
+	YdkES7gRcMNdA0uFOMjvNAzpAlLigX0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AJHnCTFZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 16A6144896;
+	by sea.source.kernel.org (Postfix) with ESMTP id B122D4088E;
+	Wed, 18 Nov 2026 05:09:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F751F000C4;
 	Wed, 18 Nov 2026 05:09:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8291F000C4;
-	Wed, 18 Nov 2026 05:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794978587;
-	bh=M1t0OG5hPXiCiaFk6hIj2QHLA/2XZTBsU25238l1JRs=;
+	s=k20260515; t=1794978589;
+	bh=YTkB6IegYKkCKN9TMyQsZjUMGenXx9DRYi/wt9UPTmg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZwUzcB70grBFLs9IGOjbyF70guJqjsxk88ZAUaiytABfn6ddCHSRmOVmLhb7zEaRn
-	 HrFxNNyM1NhJLr9E+BEFYYCvbPvnEHixd6OvpfG9xzKUXgIlJWTONC5Rd1Jb1VioOq
-	 jhOSfj7leJNVLVPiKqDFqj5Y4n8AZj9pyozGacNzkix2nzC8LVNvDYlNdPSS6YhFUP
-	 qCCP0Py9RukHEw2pAJqhIt8ByUG1mNECibnNhlsqhrWSs8PPQ4oSOXLfHczy1EbThH
-	 kB1clV3JBRnp0IydGuampvhC6YsMD5LVx6fzvvuOtbOYZuJS2atXiNI/ZL5TIui8XM
-	 IRdyK02nsrf2A==
-Message-ID: <sashiko-outbox-220139@kernel.org>
+	b=AJHnCTFZOlT1hBVJ/ns2h3RREYp++TG43Nzlfhh3u26BmU9sAUTT8AOx3CZGOFzSq
+	 l0vQ/tQIvCwKAfcAKwEse7RAODQyHQPC1Bhx3a/wp+beqeS0Y95RzBlvrSYt25IZxy
+	 NkeRwlwVyJsPik5HkrtdUYn6dML/oB7nn6BxRG/nq2QrqQO1/3QPXAKgaxG64SZw39
+	 b1i57klcqPtQoR6zTrdfBlrp2BTGgmuOSyIstpgGbfVBeO+qZBQxh8xKvuoRT/dRw8
+	 9G9xhqvr9MI9j6mxByShb79pTTgdw3Iq9MpJvSN4yzcq+hxVkvzsic7XzN2vi47rmn
+	 ++sZNGT+a6RdQ==
+Message-ID: <sashiko-outbox-220141@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 04/13] rootns: Add rootns_create() system call
+Subject: Re: [RFC PATCH 06/13] rootns: Add rootns_kill() system call
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jarkko Sakkinen" <jarkko@kernel.org>
 Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
@@ -81,24 +81,24 @@ Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
  Khan" <skhan@linuxfoundation.org>, "Steven Rostedt" <rostedt@goodmis.org>, "Suren
  Baghdasaryan" <surenb@google.com>, "Valentin Schneider" <vschneid@redhat.com>, "Vincent
  Guittot" <vincent.guittot@linaro.org>, "Vlastimil Babka" <vbabka@kernel.org>
-In-Reply-To: <20261117050841.3289652-5-jarkko@kernel.org>
+In-Reply-To: <20261117050841.3289652-7-jarkko@kernel.org>
 References: <20261117050841.3289652-1-jarkko@kernel.org>
- <20261117050841.3289652-5-jarkko@kernel.org>
+ <20261117050841.3289652-7-jarkko@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 05:09:44 +0000
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A9A211A0005
+Date: Wed, 18 Nov 2026 05:09:47 +0000
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5985240003
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: 8j9jcjmurmhzzrbk7fdyjihdrhtgskw5
+X-Stat-Signature: 69t4e3szczktn6aiynbn55mmbcmyumms
 X-Rspam-User: 
-X-HE-Tag: 1794978588-172500
-X-HE-Meta: U2FsdGVkX1//qiNjaoxwYfaFD2FrlTuhFQa6xjkOIm/v9esFhNtpGvHeLkM0e7pLngNxjDRhhv6JiAP1E7PHcoAZjSBFmRMZyA6hT85aWnfd6owjevH8xmrwYcenq+wJfu7fX9DeBv8vatp+53DsRFQK+UL38PpqmU9mK9rKrHBIjYSHJMsgDGCM/lhXOTDgXI3ilH45rBdR2eR8ivYz/UDkG/E47z2F1nHw5KhWM/ZCuNxYrtbdpCkNzu9LPGjxHwIng9ejVPOmJ14aHKQS/6w8QKQaMtDwgSHHhhbVhmggTJV5yAd/8xgeb4C+3TdHx7DolZmouTxjgP2z2/X/FVN9iWerPuR6rhR2CwTpm0vUWe53IwX/apQYBKamBHFZILkcsNTXMkh+QaDs5UZcmew0cbJvHa0SR9JGXA4WqHoaN2p/8v5Cxqr2WZSPy6OYYhYj/GyFh2lQn6mXyAvpkpSZXer3awYKXuyDJXlZB6zp31tHWiZdVsWaArXCZvz17Jz55KgbbYQCh5QyixdRxfinFp/BaY0fCd6Ot6pUXe7L9LrzYbvNPkunbLsVjlD7YzIeSes5tr2T1GuHpmzvKc1SIr5LrS7XDRt94PMzrOBCTS4FFldig6o8b437NQhjU/IcdvtGSEHzdk3J7Ojrb0zU6rtsXEoKPrfclREovsb2HLzE5pJwRt44GLi8ZDLEKWzlv4bCFmmaTbsj/bXivXd9yGkK3coMl10ewun3XCrlkHeM2A7p8wKdIv5maYAwXjCxTyurM0OfiGmhPLej95w06NtjBu37+4J5UbEj+KUaFJhQOTC9FfgHBimfvajR2AGv34YQMpnrJ+hG/8/5lgHLaG5ZnlZ5Pq6uKbqbL5UvRDseKbPcccngFyhlcb7TGcgqSVRyiR8sHc+1TZ6zQj5F6r5dhTlyLHXq1EyVjB2jG9kpeFqUxiWfEsYryeBp+xVfxWz8Yopjhac2FCx
- iOJTtoxX
- yA7A8jEz3qd4pGH9ny3o8XFK7SUrosS+HrUMehKxHSw1s2xSWJTjuNyymYqw8iw8FdmIhRti/BWowPBOYndzt2oiO6Wy/EdsyGriYb2o2/m8/BOdR+3IpeRQ+Nc75ph1MUJ4vhtJudYkIK4l7GHKMSo6gfxaqf+KZP3hZOQtn2yKuRO96Jmbu1eEpGgIX41hedSYAmzFX3oHFt8zeDyWUmJOY4DNT3sYkvVn/gMaDbiLVgoTjFFFqCvsUhE0VbgqsAxICOBjQ8A5tNTq57xSB/p8LxruJ50K6ACLvbktFIGR9jHRKzO1YHgLqHmrqrTpPw9RuMVminFYzFEgRKYi0Nm8MX304Zn25Jce9/WVb2AX010khdbC0zCezYmPjdJj4py/1VOqKxf8Xy0LMHCt4A+k2olT4E/REPDAEvhMNP+nqFSm1kYFrIoa3s2xqzIlPmLmZmcduyCcLoH1Q55mXQZYY52KS17URrmjfYQujSbib5rQpOlyxYnWyiJX9ROGAsCewYeteTxCndkrKj410OjUK94RYp7bokKQn2sWy2uYH7h34qUWFh2mC0QkXT09uBX5Hzmsb9TQ8muZLnd1yCNZSlfy9hKvAmRPV+BxqIWtyKMBxzMAjQMZG4w/f6mlz9VbAAIpJGbWvNIM=
+X-HE-Tag: 1794978590-969629
+X-HE-Meta: U2FsdGVkX1+eKVq8LdBrSZ2KdR3MfRD7SVBmM4y7HnSG5tKy354wfr5DOxgCCdyjMSUN2zdYHVielFQu1r4uP5m2EmUfzzrD8d0xj1EJOcBqf+AKcp4y9vA7DqyyhsU4UFyi/9z2AyZepI5DdBFi7QXmF3eQRcGHTSxDMrJIMZ8syI6Aty9zWmWd/XNUSwfw/MtX3zl7pm+MLdPEKTEShf2KPKG4GQ9MoZs0vv4XfsGcJR++WoCHIfHkzF0377CZTrZM+ipTRzYvwPyPm8I+5BAFTjRXvmxjeULDwoCnuHfwTdMAmSUPcv1zaKtuctZaez4S18sO4TTobSb6p1J/iIz6t4iiOAhhjaDzyYNwTmW49hRoVVoM+vzGR3rCj+pbDGPi/XSAdOf5KyRxV9fsypZ5DVXQA12jAC5JQBZvdZvZq8A21AChTpoHDUrpReK8lW3nnsSXmg+CkEcN2vSOlz70IcRuFRe1esyu/sv1pySVtQezlGMB0AVzbiXoyXM+AJlLM/AZem8h4MRsBh/WGsXKodxSrDoZJnKo9qnJoN5TlLWQTVbMCozWEqePO9a5/qOWznXr8mQBcwCaW6hbUwfSDH2Cqz/tx2TuDkSATqRXLrTMH3LE2rL1e0GAf0piRJiGpnJx02PyzZ1E7xOnlzBxr5umLYwkIUszR+lhHO+RI81Wb9/s/BCYfqvr4wTxioIDDYue9xZsmBJLV+sBg8+VPq/5knoKL4nhzrqTNegQNm3m/RrdYz8FTeAfwvDOBwmLsYR0yxPG4KzHDxvGQoaiSFo/ZL+0WFSiRgJm2VbVUf3fT8koar98ppC1hzQMmUAPIotrr7bMbit9lqSX9GC3q0yHTnHMWDtunbTA12MLPjKmQ5CpRU7FqdAY4yqzpGlIU0xi+zrNaMebQ423Xx4xmDmKlWR5kMfNKU/NY3qLXFl6xcha3N6zbFLcZHT8YIp9GIEnX3xSGxqRT7w
+ U+lHLc0Z
+ UuO+vP5iYetW0JJ0EYuLn6jS01gwDEkshObtOcWkcApnjIV7cWo8T45VJWOhKoMh3ps0qwIWZzTgYb0m7R/Y0F8ZM68zOn4oVd7CGiURhBI6nRVBQAu8E9e2vHTjtjNq82O0+WvvLeLEpI8Sf+OW9f+wtTGbP1smAjrK6s3AH3J0bRwPZR/MmdRTJDMjhGC7hUlMCu4DCAtBtV+qocdHaWasRKGethpHidnXObL4bgdJHF3UXqTzP9uIBbxSU6ZwSjMj3901H0JB+Rario1+6vlMqhliPSDhnDk7wWifUfM4496RpAaFCtpzl9j3ekBz7ecic7KbHrpWDp30FOZVgdyN8MejvH1Y7AoaG0p5K3m0hq3r8FffG/22XBTVfIEcfmLlteR4naJOUFO2tC7MaO5SrLnapQBu13D6hgV35gUem+C/QcVfgqlMwcv6s5zL3Pdj7m62AeOHH4MmaVJXouUmV0+y2zfo/+V1nsuY7E3M6WA9MjgeETq2hcz6xIVYjTD1lmfgewxHMDj3y7BubTAT2EIm9dymPSKdf5I0Cw/MmqGmK+4lhyrHjH3DWGz76XjGTwn2UvHAxb7jYQ+Bs93V7uCT5lggSgPZpa5t8iJmklMJXOsA0EzFAevB49PQz0V46/coYiiP0Aqk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,147 +110,119 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [High] rootns: cred->user mismatch in create_rootns_creds() when
-  ROOTNS_USER is set
-- [High] rootns: UAF via unreferenced pid_ns_for_children->rootns in
-  create_rootns()
+- [High] rootns: fork() race in rootns_kill_members() missing
+  tasklist_lock
+- [High] rootns: missing PID namespace ancestry check in
+  rootns_kill_members()
 --
 
-commit b0275fb9f88bbbd1444c1c6937b46e36c52e8fe7
+commit af3e55bb2ee92ebb14699cd9c72b34e3ddb26ffe
 Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-rootns: Add rootns_create() system call
+rootns: Add rootns_kill() system call
 
-This commit adds the rootns_create() system call to allocate a detached
-root namespace with dedicated mount and PID namespaces plus optional
-namespaces selected by flags, returning a control file descriptor.
+This commit adds the rootns_kill() system call to walk a root namespace's
+PID namespace IDR and send a signal to every member thread group.
 
 > diff --git a/kernel/rootns.c b/kernel/rootns.c
-> index e3b203322ae23..904d75ce9d909 100644
+> index 8a1254db69df7..f59b2fe9910de 100644
 > --- a/kernel/rootns.c
 > +++ b/kernel/rootns.c
-> @@ -145,3 +145,143 @@ void exit_rootns(struct pid_namespace *pid_ns, stru=
-ct task_struct *tsk)
->  	wake_up_poll(&c->waitq, EPOLLHUP);
->  	put_rootns(c);
->  }
-> +
-> +/*
-> + * Create credentials for a rootns. Drop keyrings from the new credentia=
-l to
-> + * avoid unnecessary pinning.
-> + */
-> +static const struct cred *create_rootns_creds(unsigned int flags)
-> +{
-> +	struct cred *new;
-> +	int ret;
-> +
-> +	new =3D prepare_creds();
-> +	if (!new)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +#ifdef CONFIG_KEYS
-> +	key_put(new->thread_keyring);
-> +	new->thread_keyring =3D NULL;
-> +	key_put(new->process_keyring);
-> +	new->process_keyring =3D NULL;
-> +	key_put(new->session_keyring);
-> +	new->session_keyring =3D NULL;
-> +	key_put(new->request_key_auth);
-> +	new->request_key_auth =3D NULL;
-> +#endif
-> +	if (!(flags & ROOTNS_USER))
-> +		return new;
-> +
-> +	ret =3D create_user_ns(new);
-> +	if (ret < 0)
-> +		goto err;
-> +	new->euid =3D new->user_ns->owner;
-> +	new->egid =3D new->user_ns->group;
-> +
-> +	new->uid =3D new->euid;
-> +	new->suid =3D new->euid;
-> +	new->fsuid =3D new->euid;
-> +	new->gid =3D new->egid;
-> +	new->sgid =3D new->egid;
-> +	new->fsgid =3D new->egid;
-> +	ret =3D set_cred_ucounts(new);
-
-[Severity: High]
-Does updating new->uid to new->euid without updating new->user leave
-new->user pointing to the caller's old real UID user_struct?
-
-prepare_creds() clones new->user from current->cred->user.  When the
-caller's real UID differs from its effective UID (for example, a manager
-process with real UID 0 that switched its effective UID via seteuid()
-before calling rootns_create(ROOTNS_USER)), tasks entering the rootns
-inherit new->user =3D=3D INIT_USER while running as the unprivileged UID,
-bypassing RLIMIT_NPROC checks in copy_process() and misattributing
-per-user_struct resource accounting.
-
-Updating new->user via alloc_uid(new->uid) and freeing the old reference
-with free_uid(), as set_user() does in kernel/sys.c, would keep new->user
-consistent with new->uid.
-
-> +	if (ret < 0)
-> +		goto err;
-> +	return new;
-> +
-> +err:
-> +	abort_creds(new);
-> +	return ERR_PTR(ret);
-> +}
-> +
-> +/*
-> + * Create a new rootns.
-> + */
-> +static struct rootns *create_rootns(unsigned int flags)
-> +{
 
 [ ... ]
 
-> +	ns =3D create_new_namespaces(clone_flags, current->nsproxy, cred->user_=
-ns,
-> +				   NULL);
-> +	if (IS_ERR(ns)) {
-> +		ret =3D PTR_ERR(ns);
-> +		goto err_put;
-> +	}
+> @@ -390,3 +391,67 @@ COMPAT_SYSCALL_DEFINE4(rootns_wait, int, rootnsfd,
+>  	return ret;
+>  }
+>  #endif
 > +
-> +	c->ns =3D ns;
-> +	ns->rootns =3D c;
-> +	ns->pid_ns_for_children->rootns =3D c;
-> +	nsproxy_ns_active_get(ns);
+> +static int rootns_kill_members(struct rootns *rootns, int sig)
+> +{
+> +	struct pid_namespace *pid_ns =3D rootns->ns->pid_ns_for_children;
 
 [Severity: High]
-Can storing an uncounted pointer in ns->pid_ns_for_children->rootns before
-copy_rootns() runs lead to a use-after-free in exit_rootns()?
+Should rootns_kill_members() verify that the caller's active PID namespace
+is equal to or an ancestor of pid_ns before delivering signals?
 
-create_new_namespaces() adds ns->pid_ns_for_children to the namespace tree
-and nsproxy_ns_active_get() marks it active, while the reference on c that
-pairs with exit_rootns() -> put_rootns(c) is only taken later in
-copy_rootns() when c->state is ROOTNS_FORKING:
+Without an ancestry check, a caller holding rootnsfd in a sibling or
+descendant PID namespace can signal processes outside its PID namespace
+hierarchy.  Because kill_pid() passes SEND_SIG_NOINFO to
+send_signal_locked():
 
-kernel/rootns.c:copy_rootns() {
+kernel/signal.c:send_signal_locked() {
     ...
-	scoped_guard(spinlock, &c->lock) {
-		get_rootns(c);
-		WRITE_ONCE(c->init_pid, get_task_pid(tsk, PIDTYPE_TGID));
-		WRITE_ONCE(c->state, ROOTNS_RUNNING);
+	if (info =3D=3D SEND_SIG_NOINFO) {
+		/* Force if sent from an ancestor pid namespace */
+		force =3D !task_pid_nr_ns(current, task_active_pid_ns(t));
 	}
+    ...
 }
 
-A process with CAP_SYS_ADMIN in init_user_ns and init_pid_ns can open the
-active PID namespace via open_by_handle_at(FD_NSFS_ROOT, ...), enter it
-with setns(), and fork a child that becomes child_reaper without going
-through ROOTNS_FORKING.  If the rootns fd was already closed, put_rootns()
-frees c without clearing pid_ns->rootns, and when that child exits,
-zap_pid_ns_processes() -> exit_rootns() dereferences and frees c a second
-time.  If the rootns fd is still open when the child exits, exit_rootns()
-drops the control fd's sole reference on c, freeing it while the fd still
-references it.
+when current has no PID in task_active_pid_ns(t), send_signal_locked()
+treats the signal as coming from an ancestor PID namespace and sets
+force =3D true, bypassing SIGNAL_UNKILLABLE and allowing SIGKILL or SIGSTOP
+to kill or stop the PID namespace init process.
+
+> +	bool any_success =3D false;
+> +	bool any_other =3D false;
+> +	bool any_perm =3D false;
+> +	int other_err =3D 0;
+> +	struct pid *pid;
+> +	int nr;
+> +
+> +	if (READ_ONCE(rootns->state) !=3D ROOTNS_RUNNING)
+> +		return -ESRCH;
+> +
+> +	scoped_guard(rcu) {
+> +		idr_for_each_entry(&pid_ns->idr, pid, nr) {
+> +			int err;
+> +
+> +			if (!pid_task(pid, PIDTYPE_TGID))
+> +				continue;
+> +
+> +			err =3D kill_pid(pid, sig, 0);
+
+[Severity: High]
+Can a concurrent fork() still escape signals sent by rootns_kill_members()?
+
+CPU0                              CPU1
+copy_process()
+  hlist_add_head(&delayed.node,
+    &current->signal->multiprocess)
+  ...
+  pid =3D alloc_pid(...)
+                                  rootns_kill_members()
+                                    idr_for_each_entry(&pid_ns->idr, ...)
+                                      /* parent: kill_pid() uses
+                                       * PIDTYPE_TGID, so delayed.signal
+                                       * is not updated */
+                                      kill_pid(parent_pid, SIGTERM, 0)
+                                      /* child: not attached yet */
+                                      !pid_task(child_pid, PIDTYPE_TGID)
+                                        -> continue
+  write_lock_irq(&tasklist_lock)
+  p->signal->shared_pending.signal =3D
+    delayed.signal
+  attach_pid(p, PIDTYPE_TGID)
+  attach_pid(p, PIDTYPE_PID)
+  write_unlock_irq(&tasklist_lock)
+                                    /* child escapes SIGTERM */
+
+__send_signal_locked() only records signals in t->signal->multiprocess for
+in-flight forks when type > PIDTYPE_TGID, whereas kill_pid() passes
+PIDTYPE_TGID.  In addition, because pid_ns->idr is walked without holding
+read_lock(&tasklist_lock), a parent at a higher IDR entry can fork and
+attach a child at a lower, already-scanned IDR entry (via PID wrap-around
+or clone3() set_tid) before the scan reaches the parent, allowing the child
+to escape even SIGKILL, or rootns_kill_members() can observe
+pid_task(pid, PIDTYPE_TGID) before attach_pid(p, PIDTYPE_PID) completes and
+get -ESRCH from kill_pid().
+
+Holding read_lock(&tasklist_lock) during the IDR walk and signaling via
+group_send_sig_info(sig, SEND_SIG_NOINFO, task, PIDTYPE_MAX), as
+zap_pid_ns_processes() and kill(-1, sig) do, would close these races.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117050841.3289=
-652-1-jarkko@kernel.org?part=3D4
+652-1-jarkko@kernel.org?part=3D6
 
