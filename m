@@ -1,100 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7558606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 20:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAA7606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 20:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EvJO3zIw
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=WGeymg4H
 Received: by kanga.kvack.org (Postfix)
-	id C58466B00EF; Wed, 18 Nov 2026 15:13:42 -0500 (EST)
+	id BC1786B05B0; Wed, 18 Nov 2026 15:15:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C30AE6B05B0; Wed, 18 Nov 2026 15:13:42 -0500 (EST)
+	id B71FE6B05B1; Wed, 18 Nov 2026 15:15:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B46476B05B1; Wed, 18 Nov 2026 15:13:42 -0500 (EST)
+	id A88FD6B05B2; Wed, 18 Nov 2026 15:15:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 82F986B00EF
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:13:42 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1396F4084E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 20:13:42 +0000 (UTC)
-X-FDA: 85449340284.11.8B327FE
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A735A40009
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 20:13:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EvJO3zIw;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795032820;
-	b=MmGFYsxSqa0bFjOO19f/3yJ4Xf+NBY55+0gvv7IUdvws9YEUgkq+vxdM/1q4yoiKIZ4ibO
-	ttBD9MDu1HcIL42UDPCVu5dJJtxVewsEpSBBKYdmDrOxOzGvjzrY0ocUAna1F+w4SiebLi
-	Hp09K5af3a8oM/DACx5lzdl4qPdv6uw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EvJO3zIw;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7583F6B05B0
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 15:15:55 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04762A0858
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 20:15:54 +0000 (UTC)
+X-FDA: 85449345870.26.C1FB9C5
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0E05F40005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 20:15:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=WGeymg4H;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf07.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795032820;
+	s=arc-20220608; t=1795032953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=A4UANdgbRQv/Nud1dbXYRxTDlZU8SXCll4rX6/tnHa8=;
-	b=fy4eMfyOGsFeSFJJSRezTEF6M7bgvX2ltKAinv9Myk7B2AfCQuhE7Nl0H7c8mdHokGrQCP
-	NgiwCRxkqiOOB3Cd+Snw30OmZyUI5nYvfyuhJNsMh925XnRGHFpoPK+GXYbxMwTMQYFj19
-	xVmzEx7b7QZGwNnZuu+YVfMO4F9PW14=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795032819; x=1826568819;
-  h=date:from:to:cc:subject:message-id;
-  bh=dBYKY4db5uu/mLqk1U4EiEAES636+EV4smJ40ZykoQc=;
-  b=EvJO3zIwI+SoexUkF1pv6uT/jTmtxuZwev1hKGJDjL7lrIlnLzuvpyVg
-   xFRBC22ptkUZj0eJV021koWHlON5af1BmC0pfXH3Sp2hK2lvumirxA5hS
-   bXLPoAluuxRmtBAXbt0Q2De62q82Tf3HyaIi1x4RyUkV2SZIUEfI+OWBH
-   k7VPze3Q3gzUuotk19ExGmQEX4VZRhavvwrQVa2ui0orS55gScSbRVyXX
-   z+0lpDk5LN44SFq5bneK5zx7HiBPx7UWiAp2FoOQJDazrRbhFAE+qFmIq
-   LAVZQOgfRrKj1rimZziH+Pm8nUCYW/sDSAd208xP4cqdGLJCJMTi7eOne
-   w==;
-X-CSE-ConnectionGUID: vNwigW7OQt2Y4mcy0PhSFA==
-X-CSE-MsgGUID: 67ty4Y5rQwy1q/803H8sxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3752523"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3752523"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 12:13:36 -0800
-X-CSE-ConnectionGUID: ldPafGgKTiSKyuz4RjBaoA==
-X-CSE-MsgGUID: GEBEVX3zRby7tJlFG2ZTng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="10236714"
-Received: from igk-lkp-server01.igk.intel.com (HELO 1073a420ae3a) ([10.211.93.152])
-  by orviesa006.jf.intel.com with ESMTP; 18 Nov 2026 12:13:33 -0800
-Received: from kbuild by 1073a420ae3a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xTm26-000000003Sf-1yx9;
-	Wed, 18 Nov 2026 20:13:30 +0000
-Date: Wed, 18 Nov 2026 21:12:55 +0100
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [mm:for-test 9/9] mm/hugetlb.c:5543:38: error: implicit
- declaration of function 'tlb_delay_rmap'; did you mean 'tlb_can_delay_rmap'?
-Message-ID: <20261118211118.1eyeqdYF-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=t46oCZlEPTr5mTMcBQO1+iAphJVAGxOpg+yCTJY7ELc=;
+	b=IlmRgV1qzKe+Dx+KSkg+FYKhi/RoojCkojs0mJrGh+FT2AKjL5mlpaZfNuiGVidk9GoA1x
+	34LEd0ADCB2G9748usm+GHJagCijEIh3NKAnukhamAkWtFv1WX+1FmX9mHirI7cP3n6KB0
+	lO+FErOsGcaBRZYDfBqi6bVIbo+azOo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=WGeymg4H;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf07.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795032953;
+	b=olsGLtL0ycZZDkeeWtNdLQ0CKvRxYIaM8dK/5tqrWtxArCePNo7/Oj7kWRYMJuAG22XPpw
+	w/oOwHkvE2w2EYrsq1BXZb9ipD7w2npoZTGqpQ1hsBZdfnXOQMb06MXFMcrG552KnHAyNi
+	EIMFb1zeAw9ayrwx40Noh+o2qTsFqnQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=t46oCZlEPTr5mTMcBQO1+iAphJVAGxOpg+yCTJY7ELc=; b=WGeymg4HyfLLCD02rVRbeH66gh
+	DlppyLse3qppMUZ1SNctkolV/9THkuLRy37LfplwZetrsGg80vw2WWpE/6HyAj5CttbrBwfdF6Uqw
+	+j3w8CgjznkmAhDrhpDtJZMItwlUy9ok/2P3l9IaEPPQNdmyrvPN1U7IFpAbmYNFF+FUTzRh4t9/h
+	h6iaT+m/DI18b8kKJ0keCcE6B8WzSzB+dOwOZFtjuOK7CQEpRM+0Ze1Sav/nRxQ28Kg2vQszlsFTL
+	NuI8bPgus//uPJHb23MFC6D30xMSAkW1gmNCG0MgBNpyKwIF7YWbFbTzluEYy8qS0ezEjB5Nc5seL
+	LMqCrkew==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xTm4M-0000000ACGb-38U7;
+	Wed, 18 Nov 2026 20:15:51 +0000
+Date: Wed, 18 Nov 2026 15:15:47 -0500
+From: "Liam R. Howlett" <liam@infradead.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Pedro Falcato <pfalcato@suse.de>, Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: consolidate the memory mapping entries into
+ a VMA entry
+Message-ID: <pczhkwshm2stepxznvaxynkp5svfuc5kdzmwenyrxjp2tm32p6@bdbuvvak7vow>
+References: <20261118-maintainers-consolidate-vma-entry-v1-1-8019b0e9928f@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261118-maintainers-consolidate-vma-entry-v1-1-8019b0e9928f@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A735A40009
-X-Stat-Signature: 1khkwda7sqysttea3nfyekxbza5a4s36
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795032818-738224
-X-HE-Meta: U2FsdGVkX18UsEUkCu9l9ZOdPBIye2jR+TQnp9jjRmQgqbrui+8n4dDFm5AAkvhHI3fal4utirHm4Fjqf64LtfoxypsC8GzAc76M7xREU1kJlTphqyNClI7+cXBdJy7hl4wsDlb7noCPsYX9z+Ay2orDS61Fws6RpTleOxJS7JHs/Yt7S4l16OTRkjfg6PLYM2Mrun1ZJSzdcA0keqYi0qlYqf4v9iR1R4aWv9UqOLi5aZ4SibEmOyC9FhbG3P48OPp5tisviqPB4//YA5n0qhLtkj4prg6G4Vxi0e8gxwAt3+LsVZi6JLMBkmK7Ey++NTGxQDgAYH1YDjfFpbnA1crrPuJfrTDbAcmydbrPH0elKMH0jG/uXdyfFH1lGl05Lp3kZha38sjzBby4LYlGxXsYyLGb4XTj3b+9buc+dY4T75OMPUpqun346WtBK7LdSW2b0pYBXZ3St33nCHsHCkwrhLty+6l0zxVTE5eRolUtXadyArVLwNxfv7O+h3OdA+R52oQALXw/WrDG5A5cAe6BdIndqBLuY74VS+TJ+biU1fnYRMqe18ZDs+9hwXSapukKYCNnKdssfLVY9O1gzDGa+si3VIHM6IBbzYgCnj6pBTgd5itqz4R8m2LijFT9SyJr4IAJxMg5QRYpHyuq1gZaXPiVXIs4aqzysBZe0WCOVggbgFSUDdIsMdxFXhqYTyybd4SXTmmhsLvpT5d0q4I/qLZ2hkdq55jBEdEpNrO6yFQ92HcfqfPbNdui4Mgd/MqFdkhZIMckb1LKOfS6sBWiXsOK5HRWMCemozAoMrpjq2ChbhClUFnNhWuSWwFXp7mfN2JhkGfOdUFPU5nk82mz+D/sRvtqMSnNbh7JXetH5oj1hVhigPQIHqtn1TPbkMN1zK+aI7bHsPN8fvLidxMN2xYgjRSCYD14b/KqyMPB0ewWujX75WyadZ2I1LVkPfw/PbxVMNZbQMuetvL
- vxqkSaup
- VlUFmqfoThIHy4f07dHs0PPLD68e24XdEpOHOQyoTozNeVHXyds+uUy4cFBAaTBspk/QNye6MpLHzdxtTY32vZLffAo/FiangEOct0CjBxLLfn8UKEDXpgyrbJlpz2uhqkjH9SQj40AvYdDG+FRq09CrpSs/zz3X4/n318q8q0Tu8YOQB8SIzEH68Anr6rHgKwrNymC+BwEq+uzN2O7xkVDG9++rid/c98iQo9UpgI977Oyj9v5Nk1EbmOZlRdp+BJHa59rnPq+sOrrRZWclxFObfozJHfCZEwg/DUFhLHif5TX11IZ8Ft6nkPnXcQlWPboKQYoWixJ5pXcqBvh70RfVmrVRJnxgDW6RbLmAAB0zttNYXEJtBtR6t5lg1hWsC/SPQkSOUi8t+GwuUxgc5eeWumAGst8A6yMAAxobLA66rCplLwzrcwzlEhw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0E05F40005
+X-Stat-Signature: yejzip4bbz654s1np19zqarffajhsnaf
+X-Spam-Status: No, score=-18.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795032952-383496
+X-HE-Meta: U2FsdGVkX196Y/QEkcA7q+VUaMy9ffTJIRENFqSMU9UXK/W5t4PPMR2aK1cBs8QHhZ8FtXglKGjVQz454vbRiecfk2zl+87DeR0rn9x8NTiQJVjgk5+IhwuwBvgOUUloUmhmqnXi1mdcYPDN7+/6NNq3TB6WexTV8aT3OhhzlCTeHIRTHSPJw4K9QW5ugM+0mKC8Wl9drOsHtghsPy1DQqrQ+8BER/AUD26Zz7iVZ80+GA1Oefpp5TuAzqPI3jaUaQl8tz857tnsT6vMTaNCu52wyOVDI+nwb+/+DTJidn2hT8kWgoQniRNUv+ZZhRD9TIoGdQrdKoXCd7soUgdv4lrk84tCmSSnYXWSgpZHPAPaCFD/ic64arWhtkHQJVq6e3jxCvkZX1JYh8gO+ragrSgGvaXVZL5aX+C12CeWXzXBPjjpHLc+XUnhtm9D1fIFEhwSxoR5HdYcuQlCuru7TytIO4UFes/Gd2TcrERzbQevg82pN+IQx3mK/q8F0YSsuZbk6Rct1AIHaUIzvWXeTZkB9PYTU5Z/BXVIclXG8+t7FgnD23vk4C8Q0WDDpo4QmwInn+2/KZ86HkQSa1H8Yusb+L1QA10zEFaWRA10ajvlkZpgbF6U+4qlWTuJSBw2oAGZjLA6hR8TxpIENHZRA6uoJPjkvH9OdjHQOXCzDYSk7PtFi3pnXb8yNrGmP4Dlf5chAmTKbSqf88jPdRejGslTrr8RJoID14NP+UxmDcNNt9qtIXi6WhjaVCZoYjZhThO8HbCQYese8inwugFGkocbCuNw3Dh8QGqDtczmlMHNQVuOCJnaUM74Rn2nuwJV2Y8qEkW9Np1RJfkrep2K95ZKg3hHpQ5n/8VowHngyZF9EasG+Rpfqvj+wqjfTv/odobyizh5ltzw1ZXbjdeGLpBJ5VubuVMlIK9fChd59757Ze735eskkBay/LoTbvl8/U/0ulZNWxJ/lYdbwgs
+ E/TOFhOL
+ t29nQqDvoaX6HVM/xf4kL2J/oymyT9i8PpXol3okfv/j471NvKDP2WPVl54//bF7Xyk1fHWeWTIP/EQioPDSpTj1LUG3a5boH9QNoAxuy/QdXmsscHqCLL0aipAIDKo0iPmfN3dPAi2a7KC/VamtQ/0+sx3LZ74Mo5mTwPeeqznlXOTjRzLxcamPfrLR1J6hFy5TEEwltnbxc/TGJIINc+VUQPDAVjI5Lk4f1PqWGFhWh1dF6keVSfS0g4KCptAJSUPRFJXyG1+X4TnVuHPALCnfbHd7HX0xaSUPDYGqyeTYQ/O1OfHXhtMFkXBp2+v5ZqMgrSAAONbWuOmyy2XvmUEXwAmCGyNuxhVue2brhFkYbAtMNCivYACcFSVA1+Gr3ow3Tfv+H8Kl/qSqEh/4GQvNkv3ucV5cxB05ZKq+D65FXBh7rar68v3r6uDvfTKSST8fflNwNE1Be6l740sKviak8q0y0D+u2JX/oJoljQ4IzWijtUdjjInSJzXM116gm+aHI45NuKJM5gW/rU4PF+jwzmWR7x2NFwfN7/P63Tra1EkStxLQVVH+hpNgtkGjvOSIsWjZGZQhfMAjiDpPf8V3W+ocZdezYBUSkpgdLd2TFp5ae4RZk4zdU+Rc2mFHVolTWMxbcHMGd3XT5m7TeHyQhTzCbII7ehn84UmdNJZk/HqGjaS8ddW9eUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,189 +95,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mm/linux.git for-test
-head:   6cbe7dfca3ecd261d1579cb588b53d38cc6ce8c7
-commit: 6cbe7dfca3ecd261d1579cb588b53d38cc6ce8c7 [9/9] Merge https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new into for-test
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20261118/20261118211118.1eyeqdYF-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261118/20261118211118.1eyeqdYF-lkp@intel.com/reproduce)
+On 26/11/18 06:22PM, Lorenzo Stoakes (ARM) wrote:
+> Memory mapping entries were kept in three different sections in order that
+> those maintaining/reviewing each distinct part would be made responsible
+> for/cc'd on only those parts.
+> 
+> However this creates confusion as to what files belong to which component,
+> so simplify things by consolidating them into one.
+> 
+> Expand Suren's maintainership to the entire component, as he is a trusted
+> and valued member of the VMA kernel team and very much deserving of the
+> position.
+> 
+> Additionally, drop Suren's core and misc reviewerships in order to focus
+> upon VMA.
+> 
+> As David is receiving pull requests directly, make him a reviewer, purely
+> as an administrative change.
+> 
+> Also specify the new tree location in preparation for the tree being
+> established for next cycle, and remove the link to the not so regularly
+> updated linux-mm website.
+> 
+> Given that, from next cycle, the tree will sit outside of Andrew's current
+> process, remove his entry, also purely as an administrative change.
+> 
+> With that said, I'd like to take the opportunity to express gratitude for
+> Andrew's huge contribution to mm, and for his being both generous and
+> gracious throughout this period of change in the subsystem.
+> 
+> Co-developed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/20261118211118.1eyeqdYF-lkp@intel.com/
+Acked-by: Liam R. Howlett (Google) <liam@infradead.org>
 
-All errors (new ones prefixed by >>):
-
-   mm/hugetlb.c: In function 'hugetlb_unmap_range':
->> mm/hugetlb.c:5543:38: error: implicit declaration of function 'tlb_delay_rmap'; did you mean 'tlb_can_delay_rmap'? [-Wimplicit-function-declaration]
-    5543 |                         delay_rmap = tlb_delay_rmap(tlb);
-         |                                      ^~~~~~~~~~~~~~
-         |                                      tlb_can_delay_rmap
---
-   mm/huge_memory.c: In function 'zap_huge_pmd_folio':
->> mm/huge_memory.c:2559:18: error: too few arguments to function '__tlb_remove_page_size'
-    2559 |         else if (__tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE))
-         |                  ^~~~~~~~~~~~~~~~~~~~~~
-   In file included from arch/x86/include/asm/tlb.h:8,
-                    from mm/huge_memory.c:46:
-   include/asm-generic/tlb.h:248:6: note: declared here
-     248 | bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
-         |      ^~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +5543 mm/hugetlb.c
-
-09c48feb742108 David Hildenbrand (Arm      2026-11-16  5439) 
-92daa8652f88c8 Li Zhe                      2026-10-22  5440  static void hugetlb_unmap_range(struct mmu_gather *tlb,
-92daa8652f88c8 Li Zhe                      2026-10-22  5441  				struct vm_area_struct *vma, unsigned long start,
-92daa8652f88c8 Li Zhe                      2026-10-22  5442  				unsigned long end, struct folio *folio,
-92daa8652f88c8 Li Zhe                      2026-10-22  5443  				zap_flags_t zap_flags)
-63551ae0feaaa2 David Gibson                2005-06-21  5444  {
-63551ae0feaaa2 David Gibson                2005-06-21  5445  	struct mm_struct *mm = vma->vm_mm;
-05275594a311cd Fan Ni                      2025-05-05  5446  	const bool folio_provided = !!folio;
-63551ae0feaaa2 David Gibson                2005-06-21  5447  	unsigned long address;
-c7546f8f03f5a4 David Gibson                2005-08-05  5448  	pte_t *ptep;
-63551ae0feaaa2 David Gibson                2005-06-21  5449  	pte_t pte;
-cb900f41215447 Kiryl Shutsemau             2013-11-14  5450  	spinlock_t *ptl;
-a5516438959d90 Andi Kleen                  2008-07-23  5451  	struct hstate *h = hstate_vma(vma);
-a5516438959d90 Andi Kleen                  2008-07-23  5452  	unsigned long sz = huge_page_size(h);
-e95a9851787bbb Mike Kravetz                2022-06-21  5453  	unsigned long last_addr_mask;
-a5516438959d90 Andi Kleen                  2008-07-23  5454  
-5120b1e048d485 Guillaume Morin             2026-07-28  5455  	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-c911e7ebebf58c Lorenzo Stoakes (ARM        2026-10-13  5456) 	WARN_ON(!vma_is_hugetlb(vma));
-a5516438959d90 Andi Kleen                  2008-07-23  5457  	BUG_ON(start & ~huge_page_mask(h));
-a5516438959d90 Andi Kleen                  2008-07-23  5458  	BUG_ON(end & ~huge_page_mask(h));
-63551ae0feaaa2 David Gibson                2005-06-21  5459  
-e95a9851787bbb Mike Kravetz                2022-06-21  5460  	last_addr_mask = hugetlb_mask_last_page(h);
-569f48b85813f0 Hillf Danton                2014-12-10  5461  	address = start;
-569f48b85813f0 Hillf Danton                2014-12-10  5462  	for (; address < end; address += sz) {
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5463) 		bool delay_rmap = false;
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5464) 
-9c67a20704e763 Peter Xu                    2022-12-16  5465  		ptep = hugetlb_walk(vma, address, sz);
-e95a9851787bbb Mike Kravetz                2022-06-21  5466  		if (!ptep) {
-e95a9851787bbb Mike Kravetz                2022-06-21  5467  			address |= last_addr_mask;
-c7546f8f03f5a4 David Gibson                2005-08-05  5468  			continue;
-e95a9851787bbb Mike Kravetz                2022-06-21  5469  		}
-c7546f8f03f5a4 David Gibson                2005-08-05  5470  
-cb900f41215447 Kiryl Shutsemau             2013-11-14  5471  		ptl = huge_pte_lock(h, mm, ptep);
-8ce720d5bd91e9 David Hildenbrand (Red Hat  2025-12-23  5472) 		if (huge_pmd_unshare(tlb, vma, address, ptep)) {
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5473  			spin_unlock(ptl);
-4ddb4d91b82f4b Mike Kravetz                2022-06-21  5474  			address |= last_addr_mask;
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5475  			continue;
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5476  		}
-39dde65c9940c9 Kenneth W Chen              2006-12-06  5477  
-e6c0c03245b14d Christophe Leroy            2024-07-02  5478  		pte = huge_ptep_get(mm, address, ptep);
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5479  		if (huge_pte_none(pte)) {
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5480  			spin_unlock(ptl);
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5481  			continue;
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5482  		}
-6629326b89b6e6 Hillf Danton                2012-03-23  5483  
-6629326b89b6e6 Hillf Danton                2012-03-23  5484  		/*
-9fbc1f635fd0bd Naoya Horiguchi             2015-02-11  5485  		 * Migrating hugepage or HWPoisoned hugepage is already
-9fbc1f635fd0bd Naoya Horiguchi             2015-02-11  5486  		 * unmapped and its refcount is dropped, so just clear pte here.
-6629326b89b6e6 Hillf Danton                2012-03-23  5487  		 */
-9fbc1f635fd0bd Naoya Horiguchi             2015-02-11  5488  		if (unlikely(!pte_present(pte))) {
-05e90bd05eea33 Peter Xu                    2022-05-12  5489  			/*
-05e90bd05eea33 Peter Xu                    2022-05-12  5490  			 * If the pte was wr-protected by uffd-wp in any of the
-05e90bd05eea33 Peter Xu                    2022-05-12  5491  			 * swap forms, meanwhile the caller does not want to
-05e90bd05eea33 Peter Xu                    2022-05-12  5492  			 * drop the uffd-wp bit in this zap, then replace the
-05e90bd05eea33 Peter Xu                    2022-05-12  5493  			 * pte with a marker.
-05e90bd05eea33 Peter Xu                    2022-05-12  5494  			 */
-f6605fc6b14bd5 Josef Bacik                 2026-10-15  5495  			if (userfaultfd_wp(vma) && pte_swp_uffd_any(pte) &&
-05e90bd05eea33 Peter Xu                    2022-05-12  5496  			    !(zap_flags & ZAP_FLAG_DROP_MARKER))
-05e90bd05eea33 Peter Xu                    2022-05-12  5497  				set_huge_pte_at(mm, address, ptep,
-935d4f0c6dc8b3 Ryan Roberts                2023-09-22  5498  						make_pte_marker(PTE_MARKER_UFFD_WP),
-935d4f0c6dc8b3 Ryan Roberts                2023-09-22  5499  						sz);
-05e90bd05eea33 Peter Xu                    2022-05-12  5500  			else
-9386fac34c7cbe Punit Agrawal               2017-07-06  5501  				huge_pte_clear(mm, address, ptep, sz);
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5502  			spin_unlock(ptl);
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5503  			continue;
-8c4894c6bc790d Naoya Horiguchi             2012-12-12  5504  		}
-6629326b89b6e6 Hillf Danton                2012-03-23  5505  
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5506  		/*
-7f4b6065d9a842 Fan Ni                      2025-05-05  5507  		 * If a folio is supplied, it is because a specific
-7f4b6065d9a842 Fan Ni                      2025-05-05  5508  		 * folio is being unmapped, not a range. Ensure the folio we
-7f4b6065d9a842 Fan Ni                      2025-05-05  5509  		 * are about to unmap is the actual folio of interest.
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5510  		 */
-05275594a311cd Fan Ni                      2025-05-05  5511  		if (folio_provided) {
-05275594a311cd Fan Ni                      2025-05-05  5512  			if (folio != page_folio(pte_page(pte))) {
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5513  				spin_unlock(ptl);
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5514  				continue;
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5515  			}
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5516  			/*
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5517  			 * Mark the VMA as having unmapped its page so that
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5518  			 * future faults in this VMA will fail rather than
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5519  			 * looking like data was lost
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5520  			 */
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5521  			set_vma_resv_flags(vma, HPAGE_RESV_UNMAPPED);
-05275594a311cd Fan Ni                      2025-05-05  5522  		} else {
-05275594a311cd Fan Ni                      2025-05-05  5523  			folio = page_folio(pte_page(pte));
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5524  		}
-04f2cbe35699d2 Mel Gorman                  2008-07-23  5525  
-02410ac72ac370 Ryan Roberts                2025-02-26  5526  		pte = huge_ptep_get_and_clear(mm, address, ptep, sz);
-b528e4b6405b9f Aneesh Kumar K.V            2016-12-12  5527  		tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
-106c992a5ebef2 Gerald Schaefer             2013-04-29  5528  		if (huge_pte_dirty(pte))
-05275594a311cd Fan Ni                      2025-05-05  5529  			folio_mark_dirty(folio);
-05e90bd05eea33 Peter Xu                    2022-05-12  5530  		/* Leave a uffd-wp pte marker if needed */
-f6605fc6b14bd5 Josef Bacik                 2026-10-15  5531  		if (userfaultfd_wp(vma) && huge_pte_uffd(pte) &&
-05e90bd05eea33 Peter Xu                    2022-05-12  5532  		    !(zap_flags & ZAP_FLAG_DROP_MARKER))
-05e90bd05eea33 Peter Xu                    2022-05-12  5533  			set_huge_pte_at(mm, address, ptep,
-935d4f0c6dc8b3 Ryan Roberts                2023-09-22  5534  					make_pte_marker(PTE_MARKER_UFFD_WP),
-935d4f0c6dc8b3 Ryan Roberts                2023-09-22  5535  					sz);
-5d317b2b653659 Naoya Horiguchi             2015-11-05  5536  		hugetlb_count_sub(pages_per_huge_page(h), mm);
-df7a6d1f64056a Breno Leitao                2024-02-05  5537  		/*
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5538) 		 * hugetlb_wp() uses mapcount to decide whether an anonymous
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5539) 		 * folio can be reused. Delay rmap removal until stale TLB
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5540) 		 * entries are gone, unless the mm has no users left.
-df7a6d1f64056a Breno Leitao                2024-02-05  5541  		 */
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5542) 		if (folio_test_anon(folio) && !tlb->fullmm) {
-93487434a683c0 David Hildenbrand (Arm      2026-11-16 @5543) 			delay_rmap = tlb_delay_rmap(tlb);
-df7a6d1f64056a Breno Leitao                2024-02-05  5544  			/*
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5545) 			 * Without delay-rmap support, just flush before
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5546) 			 * dropping the PTL. Except with MMU_GATHER_NO_GATHER
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5547) 			 * where clearing already flushed the TLB.
-df7a6d1f64056a Breno Leitao                2024-02-05  5548  			 */
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5549) 			if (!delay_rmap && !IS_ENABLED(CONFIG_MMU_GATHER_NO_GATHER))
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5550) 				flush_hugetlb_tlb_range(vma, address, address + sz);
-8daf9c702ee7f8 Oscar Salvador              2024-05-28  5551  		}
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5552) 		if (!delay_rmap)
-05275594a311cd Fan Ni                      2025-05-05  5553  			hugetlb_remove_rmap(folio);
-21cc2b5c5062a2 Jeongjun Park               2025-08-24  5554  		spin_unlock(ptl);
-df7a6d1f64056a Breno Leitao                2024-02-05  5555  
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5556) 		if (!delay_rmap)
-09c48feb742108 David Hildenbrand (Arm      2026-11-16  5557) 			hugetlb_folio_restore_rsv_on_unmap(vma, folio);
-df7a6d1f64056a Breno Leitao                2024-02-05  5558  
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5559) 		if (__tlb_remove_page_size(tlb, folio_page(folio, 0), sz,
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5560) 					   delay_rmap)) {
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5561) 			tlb_flush_mmu_tlbonly(tlb);
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5562) 			tlb_flush_rmaps(tlb, vma);
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5563) 			tlb_flush_mmu(tlb);
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5564) 		}
-24669e58477e27 Aneesh Kumar K.V            2012-07-31  5565  		/*
-7f4b6065d9a842 Fan Ni                      2025-05-05  5566  		 * If we were instructed to unmap a specific folio, we're done.
-24669e58477e27 Aneesh Kumar K.V            2012-07-31  5567  		 */
-05275594a311cd Fan Ni                      2025-05-05  5568  		if (folio_provided)
-31d49da5ad0172 Aneesh Kumar K.V            2016-07-26  5569  			break;
-fe1668ae5bf014 Kenneth W Chen              2006-10-04  5570  	}
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5571) 
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5572) 	if (tlb->delayed_rmap) {
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5573) 		tlb_flush_mmu_tlbonly(tlb);
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5574) 		tlb_flush_rmaps(tlb, vma);
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5575) 		tlb_flush_mmu(tlb);
-93487434a683c0 David Hildenbrand (Arm      2026-11-16  5576) 	}
-92daa8652f88c8 Li Zhe                      2026-10-22  5577  }
-92daa8652f88c8 Li Zhe                      2026-10-22  5578  
-
-:::::: The code at line 5543 was first introduced by commit
-:::::: 93487434a683c0385b51501f686a7979d8bcbc2f mm/hugetlb: delay anon folio rmap removal until after the TLB flush
-
-:::::: TO: David Hildenbrand (Arm) <david@kernel.org>
-:::::: CC: Andrew Morton <akpm@linux-foundation.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+>  MAINTAINERS | 51 +++++++++++++--------------------------------------
+>  1 file changed, 13 insertions(+), 38 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 222b7fc2c3aa..59496dd1d11e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17509,7 +17509,6 @@ R:	Lorenzo Stoakes <ljs@kernel.org>
+>  R:	Liam R. Howlett <liam@infradead.org>
+>  R:	Vlastimil Babka <vbabka@kernel.org>
+>  R:	Mike Rapoport <rppt@kernel.org>
+> -R:	Suren Baghdasaryan <surenb@google.com>
+>  R:	Michal Hocko <mhocko@suse.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> @@ -17680,7 +17679,6 @@ R:	Lorenzo Stoakes <ljs@kernel.org>
+>  R:	Liam R. Howlett <liam@infradead.org>
+>  R:	Vlastimil Babka <vbabka@kernel.org>
+>  R:	Mike Rapoport <rppt@kernel.org>
+> -R:	Suren Baghdasaryan <surenb@google.com>
+>  R:	Michal Hocko <mhocko@suse.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> @@ -17974,30 +17972,37 @@ F:	rust/kernel/mm.rs
+>  F:	rust/kernel/mm/
+>  F:	rust/kernel/page.rs
+>  
+> -MEMORY MAPPING
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+> -M:	Liam R. Howlett <liam@infradead.org>
+> +MEMORY MANAGEMENT - VMA
+>  M:	Lorenzo Stoakes <ljs@kernel.org>
+> +M:	Liam R. Howlett <liam@infradead.org>
+> +M:	Suren Baghdasaryan <surenb@google.com>
+>  R:	Vlastimil Babka <vbabka@kernel.org>
+> -R:	Jann Horn <jannh@google.com>
+> +R:	Shakeel Butt <shakeel.butt@linux.dev>
+>  R:	Pedro Falcato <pfalcato@suse.de>
+> +R:	David Hildenbrand <david@kernel.org>
+> +R:	Jann Horn <jannh@google.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/vma.git for-next
+>  F:	Documentation/core-api/protection-keys.rst
+>  F:	Documentation/filesystems/mmap_prepare.rst
+> +F:	Documentation/mm/process_addrs.rst
+>  F:	Documentation/userspace-api/mseal.rst
+>  F:	fs/proc/task_mmu.c
+>  F:	fs/proc/task_nommu.c
+>  F:	include/linux/mman.h
+> +F:	include/linux/mmap_lock.h
+>  F:	include/linux/pkeys.h
+>  F:	include/trace/events/mmap.h
+> +F:	include/trace/events/mmap_lock.h
+> +F:	include/uapi/asm-generic/mman-common.h
+>  F:	include/uapi/linux/mman.h
+>  F:	mm/char-mem.c
+> +F:	mm/madvise.c
+>  F:	mm/mincore.c
+>  F:	mm/mlock.c
+>  F:	mm/mmap.c
+> +F:	mm/mmap_lock.c
+>  F:	mm/mprotect.c
+>  F:	mm/mremap.c
+>  F:	mm/mseal.c
+> @@ -18011,36 +18016,6 @@ F:	mm/vma_internal.h
+>  F:	tools/testing/selftests/mm/merge.c
+>  F:	tools/testing/vma/
+>  
+> -MEMORY MAPPING - LOCKING
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+> -M:	Suren Baghdasaryan <surenb@google.com>
+> -M:	Liam R. Howlett <liam@infradead.org>
+> -M:	Lorenzo Stoakes <ljs@kernel.org>
+> -R:	Vlastimil Babka <vbabka@kernel.org>
+> -R:	Shakeel Butt <shakeel.butt@linux.dev>
+> -L:	linux-mm@kvack.org
+> -S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> -F:	Documentation/mm/process_addrs.rst
+> -F:	include/linux/mmap_lock.h
+> -F:	include/trace/events/mmap_lock.h
+> -F:	mm/mmap_lock.c
+> -
+> -MEMORY MAPPING - MADVISE (MEMORY ADVICE)
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+> -M:	Liam R. Howlett <liam@infradead.org>
+> -M:	Lorenzo Stoakes <ljs@kernel.org>
+> -M:	David Hildenbrand <david@kernel.org>
+> -R:	Vlastimil Babka <vbabka@kernel.org>
+> -R:	Jann Horn <jannh@google.com>
+> -L:	linux-mm@kvack.org
+> -S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> -F:	include/uapi/asm-generic/mman-common.h
+> -F:	mm/madvise.c
+> -
+>  MEMORY TECHNOLOGY DEVICES (MTD)
+>  M:	Miquel Raynal <miquel.raynal@bootlin.com>
+>  M:	Richard Weinberger <richard@nod.at>
+> 
+> ---
+> base-commit: 0c524518413094607a6178c53a65815762bc9c45
+> change-id: 20261118-maintainers-consolidate-vma-entry-ff6a360ab069
+> 
+> Cheers,
+> -- 
+> Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
 
