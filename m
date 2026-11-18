@@ -1,96 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A44606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3ABA606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 21:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZvQNE8at
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j5bWsZdV
 Received: by kanga.kvack.org (Postfix)
-	id 861476B05DD; Wed, 18 Nov 2026 16:17:00 -0500 (EST)
+	id CAE626B05DB; Wed, 18 Nov 2026 16:21:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 811696B05DE; Wed, 18 Nov 2026 16:17:00 -0500 (EST)
+	id C85856B05E0; Wed, 18 Nov 2026 16:21:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 700616B05DF; Wed, 18 Nov 2026 16:17:00 -0500 (EST)
+	id B9BB86B05E1; Wed, 18 Nov 2026 16:21:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B8BA6B05DD
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:17:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8186A1A0790
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:16:59 +0000 (UTC)
-X-FDA: 85449499758.03.9ED1F9B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E292740010
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:16:57 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZvQNE8at;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795036617;
-	b=qfLxJa9il5r1BZVK2+xaQbmCwvC0TGc0+l6tqaXYTj85zqTYdJOwaqdP7HHhxWmGw5IeTF
-	yFBHHxhAI3ZGlynFRw6MsJB94uMPqj6GwEk+z3OM5AbRVmr85YFOzM5ywPL/uHQ6+NY0h4
-	bFHW2tRqGcZ/LxW5wnJt/aXO287nR7I=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A09B6B05DB
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:21:25 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 67F7D1608C8
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:21:24 +0000 (UTC)
+X-FDA: 85449510888.06.C4AAEDE
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7E0F916000C
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:21:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=j5bWsZdV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795036617;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795036882;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sJGJy+mnoW83ohEBNWbuL9yI4yI37aMf0neuVdmknf4=;
-	b=YJV/jyNuIeddLulNTGavKAMeFG+i3iYuSGb1DnGUZ3xRCI7j/TwIIYvT332yawD3YNbjlD
-	QdjC55a5uC8kzvIcxMGj0wtv+eXvW+0q9tMKZnpcoOt1BzLjqggt5ksvn0RcQ5jv6F3I0x
-	ebNN9a7HAvRsGWimrblurMEw5l1aAZA=
+	bh=b5FVwTr0+ioK5OPo7LsDsfPzhpde0ciar5bplP2bt1E=;
+	b=ZIUZ3RNWL92zxhvEE2OqTfxQou+z/Sheikxsr9L2y8Dcr2BONYPA173O4M5broyjYDk8rm
+	AsMS39aHL1eSwdTCd5zBY7Q1UANbJ+jHk+szzgpbveYHIVRQszn6KwKGA58KIeWruH5wl2
+	J8BNGDT3iuvThc1PvgTSqTy07l1C57o=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZvQNE8at;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 80D8E63E09;
-	Wed, 18 Nov 2026 21:16:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C4F1F000C4;
-	Wed, 18 Nov 2026 21:16:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795036617;
-	bh=sJGJy+mnoW83ohEBNWbuL9yI4yI37aMf0neuVdmknf4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZvQNE8atQYI6cs4IZqGvJ2LE5E7XiCXiMjGdpU27VfbuLCr6JnFIvgpMRvEavVKzm
-	 VQ/waJcq5WAktrShedwoYdvF+kUxjSldFu9FQhnbxQxuf55Qd6+qepAr8ZWTGFkwwn
-	 b6Lykns3woMy/bI+Y8WyWesR+TUxDs/OrO8BbB2PYqI8ZIYxBj4iEhmNw9RjEB4ANB
-	 8kS+8U3qh1mnhvSjbNfjjiAToFsmM9imZOH8vh/g3cc8Z6PMLzq/BSZYWULWJmt7gp
-	 5sGwaq6MZ2XgyINVRgR7rtHGPv2aej6aMsaCXdDHgCxZ88dm8oWQzq90l79NLFa4N5
-	 Ke43UcA9AjUBA==
-Message-ID: <sashiko-outbox-221984@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] [v2] mm/mempolicy: replace copy_nodes_to_user()
- interface with put_nodes()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Arnd Bergmann" <arnd@kernel.org>, "David Hildenbrand" <david@kernel.org>, "Gregory
- Price" <gourry@gourry.net>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Arnd Bergmann" <arnd@arndb.de>, larips <larips950@gmail.com>, "Zi Yan" <ziy@nvidia.com>, "Joshua
- Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Ying
- Huang" <ying.huang@linux.alibaba.com>, =?utf-8?b?TG9yZW56byBTdG9ha2Vz?=
- =?utf-8?b?IChBUk0p?= <ljs@kernel.org>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Jackie Liu" <liuyun01@kylinos.cn>, linux-mm@kvack.org, "Kees
- Cook" <kees+treewide@kernel.org>
-In-Reply-To: <20261117211635.2472067-2-arnd@kernel.org>
-References: <20261117211635.2472067-1-arnd@kernel.org>
- <20261117211635.2472067-2-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 21:16:56 +0000
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E292740010
-X-Rspam-User:
-X-Stat-Signature: wzmdqjgf6tr4skq6onge4twi4j8n38zp
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=j5bWsZdV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795036882;
+	b=oIaM2oKkYTfQYGDU1sVGfeq02ugK58q4yDOMSKyGYNCimaQzUAp95+Vz3j33fTuYH9tew2
+	nWr3/btEHBGfCXVmHWQFwyQpgpymusyeMnnlLbYBiFs7nXUfigq3PjO8d6j8xhi8McJI20
+	sOLJ1Oj//GDbV5FMIGGhTs+elU0wcqE=
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-43bf9548df4so1565863fac.0
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 13:21:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795036881; x=1795641681; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b5FVwTr0+ioK5OPo7LsDsfPzhpde0ciar5bplP2bt1E=;
+        b=j5bWsZdVlDjh2eMAu9CVfdCzVrZgATX+xuRt9b+rYDyIvm/jJv9vKg5XQyfx+0abjc
+         4/ubHzSdX4CoAFU+QPVOcz+qtzta8Yuv0Z/zijjB9RxEF43x0x5GOP3HWy0TwKGkm0ts
+         5z33pkHnaZkh5gHGV/VoTrBjA+cag6t9g03QRfVJgLev8P7jJKbFyLhko+Sq0Gnr+H/O
+         Ew6YLyISrDT1nyZekdHCxAfhyrpAjG0xkgg61KqW9gBaYuFwermiyA1p2daMXMLa6ofR
+         jZdSzX1IpOXUmhvRvRR+5kqAwESKel13XxKaRcrretJ5DFyRA3bHa9w1Rpqvv05JtJ2A
+         G8uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795036881; x=1795641681;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=b5FVwTr0+ioK5OPo7LsDsfPzhpde0ciar5bplP2bt1E=;
+        b=JNfm2CzKGaxBpBnDPQl3Mcev8/Lu7YHf2icQSkdU5DfU5q5WXClYYeorc7XVzVKEvE
+         uRbzef4qvbAPUhGaiSFdZV3DPLYXQu+hAq1f3g81/OkYrKoAivKMMKnDoSC2sKBitfYL
+         WMCLhJrCs86j82XfNFb3MdZUJ/I10Bd/4b6tG3RTPvOpR+0U5a5LUd7GII+/qSs95VKS
+         kULGgEtQtPTcrSqEOqOj9zOwGnXFFjqE6eGp5K/AyTrPGfchJ8lmxstxGfdk/+b+TQQg
+         OjfE0nuT0XUyd7Lp/rgOa7/8WHGvIDOgizdRO8vJN/uboxZWUDA8TgavbkVqV7JIY3Zp
+         CJ+A==
+X-Forwarded-Encrypted: i=1; AL+hErEsMeooXssaL2q6AQ5YB6H/xkqqB2rh9kCnp9WaoxkHrJha6p35PAAiPoLyv0oVd/Ku6M52Wz5aUQ==@kvack.org
+X-Gm-Message-State: APuU4Z88fwPI77yJXTCJe9FjWUIXok0zU6WuJx12TQTeKEu+gRnQRmto
+	gqlowrraMpB2jNpeBRbE+Fqb6gl5OOHMUkQpd555wN3cDlY2fISp03z/
+X-Gm-Gg: AYBFou1RVrTBZLYxCXVmZTvLDP5kmetR8+bAt2BIQSuEEfvKBV4nPQE9Wt63c/sxNku
+	k0eU33yTKUuuYl+daKwqojHPEAFcx0zSzN4xQ5ptSxrHAeeus0JNOwhNCRNzqUWjX2qkrbI9roB
+	s5+FU3SFonBQYPURAGr6NuuOzFIsYREqgHC/eho0DbAWV90egLkMH/CVtKklz2Gq5xVKSwhRUWo
+	UmtCIFkYv4UvY4n7dhbgKYE/0xaQIjgJUza5VSZxPj4gQmXt+BzHae6Ato2EQKBl6KPcC41BeO3
+	2SVvsvA/VYdCMvAbkYR8oPoB7LZA9K2mMRxlveC+UFbs1l7+f9aboILbkRoRkLIlR55ifu2amve
+	BpyFJNb7j1Cu/pZo7q7Or+ihgWy7D1WZw0+lvFJOGd/4ZXf2sjsjLlLORPsEbXJpJp8zOR6BTzM
+	++fkBJDbKNjAuXnbNhD9k7RjZxX/moCm+VReC2nGULZXyxBdDgJM+h19989nPMwN3sdhpAJeubU
+	2Lkviml5xQef8LulDr8xWjwS69QJM9zH3i0kQRjhTPHNa9ay+db05oy01lFYTTfcntmJ/yfvVSR
+	WH5bC+D8E7Avl4I/ZqkEgflUrbcH2LjOk/CjzSJBlNVgKp4sblhDq87W/0E4
+X-Received: by 2002:a05:6870:262:b0:4a7:6c8a:f47f with SMTP id 586e51a60fabf-4b75d26dc2fmr3227807fac.37.1795036881334;
+        Wed, 18 Nov 2026 13:21:21 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:4f::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4b744928389sm3266157fac.12.2026.11.18.13.21.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 13:21:20 -0800 (PST)
+Date: Wed, 18 Nov 2026 13:21:20 -0800
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/3] mm/page_alloc: move the kswapd node skip check
+ into a helper
+Message-ID: <av4V1AzQXSZbtSei@devbig011.atn3.facebook.com>
+Mail-Followup-To: Dev Jain <dev.jain@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20261116232346.788145-1-joshua.hahnjy@gmail.com>
+ <20261116232346.788145-3-joshua.hahnjy@gmail.com>
+ <bf8692ab-f5b6-4ffe-b5ad-02ad59182cc0@arm.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf8692ab-f5b6-4ffe-b5ad-02ad59182cc0@arm.com>
+X-Rspam-User: 
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7E0F916000C
+X-Stat-Signature: kty3n5amzmzegjp5w7k6us7tbqgwkika
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795036617-554371
-X-HE-Meta: U2FsdGVkX1/zBBeh2nKhn5hzeYc7aobtR2Z/fVAJPqnCUO7CEuHob2+LUO+BHyTPfNYMcIqloBQfiIyJmZvXljKp2kByLnEbbqQnjWOi9NvpwJVP2gFuXpqzVHMjsGELorB9dQb1o024eLxTo4OEjgnHEzKdUmE2c9oZsu9CavuhxW4nmAZauBxJX1TCkHdeiPaWafQB5gMQnZFHcsz024Y5r6yKTy0lNpUyJzdZ32YUQe/MKYW2KN7Ja6u1aRQAV4TUmZtwGBtQF3QrD8ozV7PoTlNw6DhQh/PHXDGPpY8rG6qW/Ph9Aj4oo5Fm8wL/fC1sbuxXiEcuygFJwz4QGI233irJB2eI6XwAeyHXhJyNG+ULZPgkhJtV++69UsQN0KMIA7JHZnVfwhT26RU4AnO7RSak+K6W6y+NQ9gcYuNklUpCP/ObDcOz59l3jvWnTZg9tSyAt9BgXN2vSe41n6rxN+daiBtd9GVY5cz2ne8mVNuv/6+0x2z2nn2PBNTNCxKnw6Ir9yuH4vnBJ6viXEJ3c8mI1gigJfz5CVHA3SJRvdq895ke+ivlzwXU3HOsqaPJ21b8HijxqXZimPYuM52FKxE8zzillF3Lebt3CPCRis8Ktkd+Vg4vX86drcxm3aMFW3Z5hu3RJ/1aMhBCJtkO8a0RbaRyUV2U3GdGLvnlp+dLWVh88cFIG5FpZi3AMXF9wjbFQ95LYBKAtzzaJNXSzjDTH9WSJ+WEPEtyR2DVMfjwDYm6UXoW73QnrqPUZuS5mRiW/qJrUDRymub5MVeqrrm8sK6pDuVdsy9RLo4zHbsDlAI4Z8nqEIkf+ey89/k3jF1xPkvAlYwFPK97eUjwro2gpE/QRsjQ3+7RuYVZjn4CASSNe5UtMGOQlo5MeaSLxZIB/HF6uWvWGBxg+udNwr9zQ7oBmnu/ZLsessnffjaiq+k98L/GzqzaftG9eAS2qJ+EvJZlutJpcxJ
- YHKO8GBU
- KqivgbiLWKL+cRmhNF1B/q3RU92S11rgdFR7VLxONLpU4I7Nfx8ZstJXTJNcee0q15x9IzUtZF5Cn1CTXTq9IqAvrYxGrfwowMfttDqNDsRJX+wopAhQkYfjtQoeDPGHtP/yv9foDicoFxRUvcFURE+RTzgwAd6ABUi0fpSbm1PCJWagMed8q1jLw1t2p5dEG3x5DBA8X+ZBE5cvYrmZCeULMaYu/R81QUWTdhgEn+5AdRtNI/0QkW3HOO97rFzhCDPLDpU1NKVlmp3ICcTG+raRI9UzUAhM5ArVLUI6BH/LyDFIlIDyvBqMnYx06xZ5KmMeLMXD+YLrGFHJ4oqVUirAcrIN38vJBItXtZC4VdBiP7iZXpRsG7wvxqcCcquBuF0zu4NC0k9O0y1J0mTvX3uJBXxq8FHQ3b6lI0/k9rO/S3e5icKu3LaO1BG38i58ldXJaIcHPu0mdE9lX9qsChS95qJZfmTZTDU0+k3WttdAMhk39HmksBxLW9kLUgCJRWqIOv2XOsgbSR0+WUlzH0QhvDpTenZjVm0sEwT/uATQYFQVzpH5n/RV5bxBLNSPxpnCfl4DUNajWBsw9f0fNNFjF3XajxtnZ0m/vfB4V/EY4NAh5s3PH3pJtriSqALKv8gAlKBkCC/LTpBB/+ZSDZSPUhDljGteD0zmK+wdwHPsSDoskVc7feuPJP1PgHcf6hRSwqu86mXKtp9Eq+ufwnHFU27yiJEP3/nhy3FKLnua1/l6MeQn+7VtunkODBqh/YWFC2WycL5Ru1TXAra+v5yDN/dkYMLQjBkj1jlzjU60ivJ5o8eB1TYgE+eU1S+4AzKi2um+IP2ChUljIoRZSA126A0W0AflqUN4FXWKb7Ak6zHhzLkLGwxlTg9A4YY5dZrrisDgYEp9G4jAyGI7DhbEhVG3xznXJfLqGBZozwKbiW0vH2rXATnpRgQ==
+X-HE-Tag: 1795036882-351827
+X-HE-Meta: U2FsdGVkX1+zQjploGvKJiF3flSPehSAKBY6YI55FO5X0SEcY+ztPGNh1+EA7qFvPVO+UjG+Vz8L8ZG4VZRYE3w0ZqQMxyKLymhAk8XvgWkaPUWkysLBBCUOF01mrRVttmm/gmU19DUbR1IAln0uf6zkpPckU6/KXd1kAeNrrWU4M/msWHJjcdoQQU4y63Yw8v1Efz/EkGJrUZBf0JIvpRGZpg41KAtbz21rrZEEeX20DQLDXOEQ/GNyfL9jW7rAwaGUKKCscq7mCZZnwC3ap8IAzFj9DArERusy4KjhOcHwIoPs627VU+T7aEQUhlJ4T86bLO/PO9M6tmEcqStrTZPDzaqNCYdvTgXkGgjVRTvPBQAeNQLCdDGUUj5j0uKa+S8CS8une+6DA4GAE+MSL/VnPyc4/7sO09uG1VGo8ofP0RKN2BvXi+oK1NfDsK7sJQNUblONdO5OZ++OF2NKqkyCBZ59GoxF1VByXwwSRp3pVjrpdoKpOW6VfCS8Z81J3pmzNHkDc3/aqSO7CjJ6QHWi0dscTk3ZaMOaaVtYMDL55ao3KZjf0KsznSwX2ahD8LTvQI94+L2hv3ymgxL2rC2O7g51/UUffeiOlkckGkTTzi7Oapg+b7jnYgOmr67a9+U2L7HdupKILQ8rV6uz0ybNOV42VmdCdsJDSmaLKiK9CqPmx3sEzMROpHOvJgZciL7Mrcf/WKnIZRYz2Mqi7k/h1yZh7tZNjT06OlyLCjoR3ygSUEaL62ZoMQb5V/BhtvIyKHHHZhZ6Qqv5utm6zxMYwJB1uijeK0OiNRq54H7HWrqNkbtZ37i9skdYpPXD05r605V1/mq0xu32Re/R75LxU/ba6ffqp0pYr8YXfE14PKVtIH8aRB+GtNmrXEgRR0VxzBSlW6oQ47pdPNAmJesJ1ft9QOVr42ITUf3itodfuUc5h68PRLFPuEHbY5XQd23gmu+n4hYEwsdOW+x
+ MjOVTutE
+ VQQd02dLS8/fefcPqFMCUcGp0UiFREv4KNkqjU6aEaSzJQoZI1pGnYsT4fzjU/bqJYdZZQ1vg1l48dU6KpPu5Tgb/klMQ2K6HoUCWXrjkDC1Db/rB5Fmqex6Cm0NCGY8T6B/KN/hNAOzBzdTHE6/NMsHEd+oJfVHd2UNz/M2s9oxDDo2oU7EBx2V4tgDfFaqJKp8R9Bu0YZGZEa4OKM//WMDR8lycTuzMNEKm7XM7Hv27d/QVolWBcFIvWIKJNUHGMitUn/xf9VhwCBj56lIVhxJHX66o3uPwsBkd07JEI9UlobgDy/eESUDDzw+m8Z8NDwpGLz1Y+RbdYDV1bd8TVpmp0yry78T66jNZ2fLx2MN+x48+A6ekT3z+HsP+EAHhvFq6GHzP7ObP83AmP8FsuDttwGuat88D9zATPZU1wvQEPARhc+a/t1fR66RbddGBwZrLx8xU5urPtJhNMgeY7zLBOiKCeoo9enuM+PIjvWsZXgVU4MKWrFIjQ9F9nwDbLHU95Qhy/bc8JxG+kX4R9RcVFdJMZISuqsApXFVA4UPFnKCObc7iFJLqnZLTWklpLizeFmqLb+iP//oGKbd9hPISYRClEHMp4Ay5BvQBSqSR05q0Mrbu6LMhBlC17VuIxmKqEJAfwD5YBw/F6oqWwwx/cY/QoR45dZSnXcBo44VHnTu0uIG0/9ySsSIXjHPm4o4z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,94 +140,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] mm/mempolicy: unadjusted nbytes for compat in put_nodes()
-  leaves 4-byte gap
---
+On Wed, Nov 18, 2026 at 09:16:51PM +0530, Dev Jain wrote:
+> 
+> 
+> On 17/11/26 4:53 am, Joshua Hahn wrote:
+> > get_page_from_freelist() checks many conditions for each zone, often
+> > with a big comment block explaining the conditions.
+> > 
+> > Move the kswapd check and its comment into should_skip_kswapd_zone() to
+> > make the zone iteration cleaner to read.
+> > 
+> > While moving this, also resolve a checkpatch warning which complains of
+> > a waitqueue_active() call with no corresponding comment explaining why
+> > the lockless use is OK in this case.
+> > 
+> > No functional change intended.
+> > 
+> > Reviewed-by: SJ Park <sj@kernel.org>
+> > Reviewed-by: Chris Down <chris@chrisdown.name>
+> > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > Tested-by: Chris Down <chris@chrisdown.name>
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > ---
+> 
+> Thanks looks better.
+> 
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> 
+> But see below.
+> 
+> 
+> >  mm/page_alloc.c | 47 +++++++++++++++++++++++++++++------------------
+> >  1 file changed, 29 insertions(+), 18 deletions(-)
+> > 
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index 4d829e5eac49d..43929faffb989 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -3785,6 +3785,32 @@ static inline unsigned int alloc_flags_cma(gfp_t gfp_mask)
+> >  	return ALLOC_DEFAULT;
+> >  }
+> >  
+> > +/*
+> > + * If kswapd is already active on a node and the zone is below its kswapd
+> > + * watermark for this request, keep looking for other nodes that might be idle.
+> > + * This can happen if another process has NUMA bindings and is causing kswapd
+> > + * wakeups on only some nodes. Avoid accidental "node_reclaim_mode"-like
+> > + * behavior in this case.
+> > + */
+> > +static bool should_skip_kswapd_zone(struct zone *zone, unsigned int order,
+> > +				    const struct alloc_context *ac)
+> 
+> Make this inline? This is the very hot page allocator code that's why :)
+> I may be overthinking but in page_alloc.c I do see functions with similar
+> size being marked inline.
 
-commit 2830eda1a2add7e034fa70931e6090d2764cf894
-Author: Arnd Bergmann <arnd@arndb.de>
+Very reasonable! I think it's just a few checks and bitwise comparisons
+at most (apart from the zone watermark checks). I'll make that change.
 
-mm/mempolicy: replace copy_nodes_to_user() interface with put_nodes()
+Thanks Dev!
+Joshua
 
-This commit renames copy_nodes_to_user() to put_nodes(), reorders its
-arguments to match get_nodes(), and decrements maxnode once at the start
-of the function.
-
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index c10f9d4ba38f8..47bd36ac70787 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-
-[ ... ]
-
-> @@ -1717,15 +1717,18 @@ static int get_nodes(nodemask_t *nodes, const uns=
-igned long __user *nmask,
->  }
-> =20
->  /* Copy a kernel node mask to user space */
-> -static int copy_nodes_to_user(unsigned long __user *mask, unsigned long =
-maxnode,
-> -			      nodemask_t *nodes)
-> +static int put_nodes(unsigned long __user *mask, nodemask_t *nodes,
-> +		     unsigned long maxnode)
->  {
-> -	unsigned long copy =3D ALIGN(maxnode-1, BITS_PER_LONG) / 8;
->  	unsigned int nbytes =3D BITS_TO_LONGS(nr_node_ids) * sizeof(long);
->  	bool compat =3D in_compat_syscall();
-> +	unsigned long copy;
-> +
-> +	--maxnode; /* user space ABI uses number of bits plus 1 */
-> =20
-> +	copy =3D ALIGN(maxnode, BITS_PER_LONG) / 8;
->  	if (compat)
-> -		copy =3D ALIGN(maxnode-1, BITS_PER_COMPAT_LONG) / 8;
-> +		copy =3D ALIGN(maxnode, BITS_PER_COMPAT_LONG) / 8;
-> =20
->  	if (copy > nbytes) {
->  		if (copy > PAGE_SIZE)
-> @@ -1733,12 +1736,12 @@ static int copy_nodes_to_user(unsigned long __use=
-r *mask, unsigned long maxnode,
->  		if (clear_user((char __user *)mask + nbytes, copy - nbytes))
->  			return -EFAULT;
->  		copy =3D nbytes;
-> -		maxnode =3D nr_node_ids+1;
-> +		maxnode =3D nr_node_ids;
->  	}
-> =20
->  	if (compat)
->  		return compat_put_bitmap((compat_ulong_t __user *)mask,
-> -					 nodes_addr(*nodes), maxnode-1);
-> +					 nodes_addr(*nodes), maxnode);
-
-[Severity: High]
-Can this leave a 4-byte gap of uninitialized user memory in mask when
-called from a 32-bit compat syscall?
-
-nbytes is sized in unsigned long units (a multiple of 8 bytes on 64-bit
-kernels) and is not adjusted for compat, whereas compat_put_bitmap()
-rounds bitmap_size up to a 32-bit compat_ulong_t boundary:
-
-kernel/compat.c:compat_put_bitmap() {
-	/* align bitmap up to nearest compat_long_t boundary */
-	bitmap_size =3D ALIGN(bitmap_size, BITS_PER_COMPAT_LONG);
-	nr_compat_longs =3D BITS_TO_COMPAT_LONGS(bitmap_size);
-    ...
-}
-
-When nr_node_ids spans an odd number of 32-bit words (for example, 1 to
-32 nodes, where nbytes is 8) and a compat caller passes a buffer with
-copy > nbytes, clear_user() zeroes starting at mask + nbytes while
-compat_put_bitmap() with maxnode =3D nr_node_ids writes only nbytes - 4
-bytes, leaving the 4 bytes at [nbytes - 4, nbytes) untouched.  In
-addition, when maxnode is between 34 and 65 on such a system, copy is 8
-(equal to nbytes), so the copy > nbytes check is skipped and maxnode is
-not clamped to nr_node_ids.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117211635.2472=
-067-1-arnd@kernel.org?part=3D2
+> > +{
+> > +	unsigned long mark;
+> > +
+> > +	/*
+> > +	 * This means kswapd is asleep, so don't skip the zone. This is a
+> > +	 * lockless check, since a stale result only affects zone selection.
+> > +	 */
+> > +	if (waitqueue_active(&zone->zone_pgdat->kswapd_wait))
+> > +		return false;
+> > +
+> > +	if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
+> > +		mark = promo_wmark_pages(zone);
+> > +	else
+> > +		mark = high_wmark_pages(zone);
+> > +	return !zone_watermark_fast(zone, order, mark, ac->highest_zoneidx, 0);
+> > +}
+> > +
+> >  /*
+> >   * get_page_from_freelist goes through the zonelist trying to allocate
+> >   * a page.
+> > @@ -3796,9 +3822,6 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+> >  	struct zoneref *z;
+> >  	struct zone *zone;
+> >  	struct pglist_data *last_pgdat = NULL;
+> > -	enum zone_watermarks kswapd_watermark =
+> > -		sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
+> > -		WMARK_PROMO : WMARK_HIGH;
+> >  	bool last_pgdat_dirty_ok = false;
+> >  	bool no_fallback;
+> >  	bool skip_kswapd_nodes = nr_online_nodes > 1;
+> > @@ -3865,22 +3888,10 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+> >  			}
+> >  		}
+> >  
+> > -		/*
+> > -		 * If kswapd is already active on a node and the zone is below
+> > -		 * its kswapd watermark for this request, keep looking for
+> > -		 * other nodes that might be idle. This can happen if another
+> > -		 * process has NUMA bindings and is causing kswapd wakeups on
+> > -		 * only some nodes. Avoid accidental "node_reclaim_mode"-like
+> > -		 * behavior in this case.
+> > -		 */
+> >  		if (skip_kswapd_nodes &&
+> > -		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
+> > -			mark = wmark_pages(zone, kswapd_watermark);
+> > -			if (!zone_watermark_fast(zone, order, mark,
+> > -					ac->highest_zoneidx, 0)) {
+> > -				skipped_kswapd_nodes = true;
+> > -				continue;
+> > -			}
+> > +		    should_skip_kswapd_zone(zone, order, ac)) {
+> > +			skipped_kswapd_nodes = true;
+> > +			continue;
+> >  		}
+> >  
+> >  		cond_accept_memory(zone, order, alloc_flags);
+> 
 
