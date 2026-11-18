@@ -1,118 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D2C606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2980606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 03:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=cBhdqaVh
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KWaFSMrp
 Received: by kanga.kvack.org (Postfix)
-	id A17906B00EF; Tue, 17 Nov 2026 22:15:37 -0500 (EST)
+	id C42786B05B1; Tue, 17 Nov 2026 22:19:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C89B6B05B0; Tue, 17 Nov 2026 22:15:37 -0500 (EST)
+	id C19F86B05B2; Tue, 17 Nov 2026 22:19:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8904A6B05B8; Tue, 17 Nov 2026 22:15:37 -0500 (EST)
+	id B30B36B05B6; Tue, 17 Nov 2026 22:19:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C1926B00EF
-	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:15:37 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 35064C0616
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:15:35 +0000 (UTC)
-X-FDA: 85446774630.24.F54A037
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E2868120004
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:15:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cBhdqaVh;
-	spf=pass (imf29.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FD956B05B1
+	for <linux-mm@kvack.org>; Tue, 17 Nov 2026 22:19:40 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3C2F1A0656
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:19:39 +0000 (UTC)
+X-FDA: 85446784878.18.19A24D1
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 490C420002
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 03:19:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=KWaFSMrp;
+	spf=pass (imf31.hostedemail.com: domain of 3SBn9agwKCM0v0A1BF1Bx5t6z77z4x.v75416DG-553Etv3.7Az@flex--chriswiseman.bounces.google.com designates 74.125.82.72 as permitted sender) smtp.mailfrom=3SBn9agwKCM0v0A1BF1Bx5t6z77z4x.v75416DG-553Etv3.7Az@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794971733;
-	b=nsOPzP0WBxvDV97EbWu293cz6Jul1iHGFlqtzEsn5QTN0xfP+PHzlAT2xsZl1D9yFyNfWA
-	zJsCYoTZnhljcBx77coaOmD/B5NSn7eG6ZlX/0FH6PmbMfW6OxVFv3O8++xHRZuljC/5gL
-	2IBJq9MbZFyvmqpu2KxfgV6C0XN6UJQ=
+	t=1794971978;
+	b=X1RI4dnYITeev46BACVDie/Htda9HGp4gpjzJPOOvLKW/gOSoMM2ez4HnBN8n75dO9Hfqt
+	/nMDPknm3Fcp+O4uRFmby08BWC7o5VgDwA/jr2qpNeyeFECaoAnd83u5HAengoLudnTvPr
+	G65KRRrABcAEiS6MVjFonnb3ZkQHifo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cBhdqaVh;
-	spf=pass (imf29.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=KWaFSMrp;
+	spf=pass (imf31.hostedemail.com: domain of 3SBn9agwKCM0v0A1BF1Bx5t6z77z4x.v75416DG-553Etv3.7Az@flex--chriswiseman.bounces.google.com designates 74.125.82.72 as permitted sender) smtp.mailfrom=3SBn9agwKCM0v0A1BF1Bx5t6z77z4x.v75416DG-553Etv3.7Az@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794971733;
+	s=arc-20220608; t=1794971978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P7/kyS9l6HIQUAqBUN+YxuO5FauaTl0UWkoVbtz13p4=;
-	b=7NYvzbF4zR4GoQOCpD0o43Jc9xJCmrtRjMdMwbMitWh+amPQg091nu+5yeeCnsG+DU7vxn
-	GZASz4UR5lj08uq6So2hYBAXror+9Pe5aGV3Ibm1YMA6YAvST4tO8MpvoxecYZCGk+5h7t
-	1+sJMfbCy10UCY/1226h4zDBgrP3sxQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=P7/kyS9l6HIQUAqBUN+YxuO5FauaTl0UWkoVbtz13p4=;
-	b=cBhdqaVh7yNNkzn8OO/qioycrsE3eP0yGoeP0e53wznJ64ZIOKtSoUGGlF1dmLY1iCCgebgvc
-	HcWUk7UU37j493HIaRidoSf2i2sVgCB2XX0s/1IqD3TcxYAdP6roJTXvtEevs8UX6fsAuvpmjzT
-	WCXJdBHz+CQ9JaWt0JzJZp4=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jTmsv5c7fz12Ldt;
-	Wed, 18 Nov 2026 11:14:27 +0800 (CST)
-Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2D16C4057F;
-	Wed, 18 Nov 2026 11:15:20 +0800 (CST)
-Received: from [10.67.110.68] (10.67.110.68) by kwepemk200008.china.huawei.com
- (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 18 Nov
- 2026 11:15:18 +0800
-Message-ID: <1772fffa-b938-4fa7-bd47-ff7c03552efa@huawei.com>
-Date: Wed, 18 Nov 2026 11:15:17 +0800
+	bh=jHnNDDFVc/Jbb9T25AViGkeUZ2CVD8Ckp6mVqsJ9Za0=;
+	b=GzL+dO7t71jwjEOrVhY8ahEHAKUXn1s1bvARLr729VNZlU4wPK5BBH4FlXHCWeNGu0DBEC
+	mm1ykjMlXypnByeaH2KgGNVFHfwg8Ctmlyd4KLC5mGwwtHa37y2pptXa5K5B8gmiMxnNeq
+	utCBGKjqkg3u3ld1g/RPf20p9XvEMZc=
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1a5005fd0f8so1050460c88.0
+        for <linux-mm@kvack.org>; Tue, 17 Nov 2026 19:19:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794971977; x=1795576777; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jHnNDDFVc/Jbb9T25AViGkeUZ2CVD8Ckp6mVqsJ9Za0=;
+        b=KWaFSMrphEqAsFdfuY7oaHKyq2uEcrxSKZKrpl+e+iodaCOxuxZ5whjQrFTUF5ZC/j
+         wb+DRNULPURySs0sjUUsMK8T2kd2w/Y/Vic6qc8GTt8vJtw6bVAlOdrlZQ8qyg8CdK5x
+         NPEFE1Xea12S6t0qJunrr8WFPcpVmLENqp4hcPQdjQ9vaizmMEMAHVlUXhG8prhmcY5a
+         1xSDH0/l8MI2KMeq622I78CD102bwN9CMbdeH0qyacC5bZqHMY0rCVC8k8mIpYLr/GBT
+         t8KOZl7IUkik9A4vd2x3QQIIfBeGznzp90f3fupUpNAc7F7VxutaPlXbtAeCNkSE01dk
+         i1Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794971977; x=1795576777;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jHnNDDFVc/Jbb9T25AViGkeUZ2CVD8Ckp6mVqsJ9Za0=;
+        b=hyksttOtNe9hKAW3ejuo/+oA3AD/Jkmi7lU2AbRKeoF8t6tdFiQppj7qvwkuduw97C
+         b9z3RjZl/ah1XJenKhPomipLtr+FSI/gUF/eGBWGTZDfmEcuX+LrBxlscxFk0Uynow8T
+         7TNRnLqHyty7mpu6wcz3LikTdNv63n7IyO3xa1UwuhJkV0ZD8Rel3U7SUv24hDBuPhFk
+         HHaytmgjG0EMB8YDTqgLooMB7zrVSppWqvxvrdqM1Iutc2jyMz7p4UiYmKJigpGIE2No
+         pv6lN8vhc1c0YPdU+E88qTXeQZxxOyYafBsrf36qqS+RqikS8t3nZhzUU28PM+QdlrBY
+         Camw==
+X-Forwarded-Encrypted: i=1; AL+hErFcSdSVTAbXApnSJOXmFjf3sT2gZMNlWwcbCAmrvJzMOM5Zt6me8NuJohiL2x7m7t7dZWEH8b98Xw==@kvack.org
+X-Gm-Message-State: APuU4Z+UG09xJFWDcmQnIdSKrHoHCa8s9OjELCDM2k6amv+XJ1BFgJND
+	IWHlWV0V5l0ldLjuHs0DM8tZCLQlX7pGpp3iufYpJj8IdDfHnApetaQoF53FDEn8RWZsg52E5Mm
+	N1T6cz0sTDdGTnebQyzJwuUYL4Ztx2A==
+X-Received: from dloo22-n2.prod.google.com ([2002:a05:7023:a56:20b0:1a1:ce17:436b])
+ (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:2204:b0:1a7:78a3:bda8 with SMTP id a92af1059eb24-1b543c25a69mr1958847c88.27.1794971976348;
+ Tue, 17 Nov 2026 19:19:36 -0800 (PST)
+Date: Wed, 18 Nov 2026 03:19:35 GMT
+In-Reply-To: <av0L2-OtxcWpQ09m@google.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/3] security: Add PR_CAPBSET_DROP_MASK for
- process-wide bounding-set drops
-To: "Andrew G. Morgan" <morgan@kernel.org>
-CC: "Serge E. Hallyn" <serge@hallyn.com>, Oleg Nesterov <oleg@redhat.com>,
-	<kees@kernel.org>, <akpm@linux-foundation.org>, <david@kernel.org>,
-	<ljs@kernel.org>, <liam@infradead.org>, <vbabka@kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<mingo@redhat.com>, <peterz@infradead.org>, <juri.lelli@redhat.com>,
-	<vincent.guittot@linaro.org>, <dietmar.eggemann@arm.com>,
-	<rostedt@goodmis.org>, <bsegall@google.com>, <mgorman@suse.de>,
-	<vschneid@redhat.com>, <kprateek.nayak@amd.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <shuah@kernel.org>, <brauner@kernel.org>,
-	<alexjlzheng@tencent.com>, <jannh@google.com>, <jaime.saguillo@gmail.com>,
-	<elver@google.com>, <blbllhy@gmail.com>, <bvanassche@acm.org>,
-	<pjw@kernel.org>, <broonie@kernel.org>, <debug@rivosinc.com>,
-	<tglx@kernel.org>, <aleksey.oladko@virtuozzo.com>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20260929130200.1638343-1-ruanjinjie@huawei.com>
- <20260929130200.1638343-3-ruanjinjie@huawei.com>
- <atjN3JX7sWx9kpQ5@hallyn.com>
- <CACmP8ULW+COA17s6_UUKhQrJaviWmnUCjfite43Y0FgPN30-AQ@mail.gmail.com>
- <avHfxe++P4WLUQxf@hallyn.com>
- <80ff9aea-3a5c-4c92-b713-99c249564008@huawei.com>
- <CACmP8UK=b4Hkivzf77BJ-S_CR94+AgpNs_EfQ4i=CHL3+=0Y6Q@mail.gmail.com>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <CACmP8UK=b4Hkivzf77BJ-S_CR94+AgpNs_EfQ4i=CHL3+=0Y6Q@mail.gmail.com>
+Mime-Version: 1.0
+References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+ <auwOBaRtM9p_Wxfx@google.com> <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com>
+ <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com>
+ <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
+ <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com>
+ <18e53459a8013078.3137322e32332e3235332e313736.12c7b6.0000sendgmr@google.com>
+ <avVVRYkIAQnLC_Yu@google.com> <18e8fb5c1c4d127f.3137322e32332e3235332e313736.289d37.0000sendgmr@google.com>
+ <CAO9r8zOtL4t5pwQOE=SAWeg=k2TkhtNXgV6CJJGNTwuTebKpBQ@mail.gmail.com>
+ <18e8fc17375582a2.3137322e32332e3235332e313736.2a6db6.0000sendgmr@google.com> <av0L2-OtxcWpQ09m@google.com>
+Message-ID: <18e9058097a70f62.3137322e32332e3235332e313736.3e9981.0000sendgmr@google.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
+From: Chris Wiseman <chriswiseman@google.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+	Xueyuan Chen <xueyuan.chen@vivo.com>, Barry Song <baohua@kernel.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk200008.china.huawei.com (7.202.194.74)
-X-Stat-Signature: gf6cbxp9mgk3wtrbgof9ixt9qpozgf4c
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 490C420002
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: 9j6gdiqyb8a8ghfj4agimsuos3dj48hi
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E2868120004
-X-HE-Tag: 1794971731-192467
-X-HE-Meta: U2FsdGVkX18yHih5pCABZx4MR49P6Tvc9H+HN0bS7e6CH3pElT9UXxe+dKYn6xnRIfD79+s2E+IBk4cAwoLfGwBhkHBwsbMYv7stsg+PBlwtILlyeNEnnUt0l6/FMvh2IhqmxvMGGBhMrU2Asu81nd6NuX1yOkgjwwR7LBSBpXdqRGbZYkJ1Y1/EL4WKMe+PXDRqhEamfuX0L6AUdLjirnHohr1RDAsX7SnMLOgsHTCNEa6scOtOk1Xd8I+U7Y/1Ni52D/lbLXSapSwV3l2PSw4pZxIF/1LPtLcS9Zo8wDAlK3eiXOQr0cshEaegr/DP0+eC5deZIbNzDGclCBaRr+qKJTv285KLygv+nuiy3/ePyypMlm6186flWQtnrOydJnEdTVm1gaj2AyQ5ORqlzvMQca/pQmgsK25ZcLKief0tRhpM5LSlrR3iBJcveTANzVZrf+emph4fu3ZHUKPV4gmLMITSKubbPQVjKSG15wT4G0kVNG7+ko9J0dP5gMo5Vio50J5v2Pm831BCAXIQnKGYmHtvb2/2t+vLXwQdZIiv9igE9A63MaXqtEXRIRuqDbiZkc9EXZY5zvE3r7bsvHVH5BYjoG1jHvkuitPSpvdIh1l4eN7FFy6afI2qvbC91nMrke0BXEsGQX5rkv4bEUYTsL424hGiuyyGqJQx4nj/+u9O99RzSlWpbtfoIqvGYWCoY8F+YAYv0wnGUB7/fXQJVSvExspdjOoYYr8fKnShRPtE7z/XJkjA/vFNQZBMKdPmfie5pQiXL+2c7zHpVnk3trJQq7TtpV0c2Z95Fu+dc58ldwEb6UkGwjzyUlfDz9QCAJmZAV8jaH3kXnINjDbpGOW9ZWfMxUYTttcpkFsnqptDSIoxL6BzNaCWbDLTAi6SSeNaGoSWvWhLKzOiqu2FiM4cmBxKdVriRv2QjiziVntIakS1GBYw60gEIvcTLnCTQ6G6gJ+kjKz58lr
- IBHobQS7
- klKnNPkKpiKdFbkr3a9T4gqK7nXVUu50lpsntZeb0Zdq+BRNQ7Y3n+7nsIhH6IV+QXQmTqF5EkwuiabJVpP5K6Kav8+JKyzHo0aKhR7qdcR0jQIfv7h6fkstZ4SUbv9p631FpUQ4Bxh0m6ZZnTH9YzXYFqEqSTAq6JAFI1qpPx0ptJoD3tE6zXJcEPE1RhmDqP96CPGi91UqJK57DyEyRuEsBW2u7JHi/PvGsAyKrdvkMwTP8iM5VDO5+y29tubZhb4t1lG5bnu0Z6qHMxwXyEQXCq8ALnNLQmQpF59nQ6cqk/LeL5iWNXj8mVUnykGcZzP1fsMxUfaKQQ0I03oNPB6C+5a+u57Eqor4ViU+k5Am9sfWAur9FbJSv6qK6l1h7Ethfr5AMRy9aSs8gnEJGiepyahuGZ52+MvYYWpRYM/vt3BsDjaL0+H19rw2BB2agagqSt+C0heCfn2Wc50BV8XOq4ymqoR1gv2mkHKAyuzwCGGesspLpRQ/YM3vYV/pjYwkKhBtuB6kIBXEI9oyWYUNymEk8zjTt4VBkgvFR7Cbg0Y4=
+X-HE-Tag: 1794971978-709651
+X-HE-Meta: U2FsdGVkX18XFj0W+XmstxSQEZsAnhG+z0Aze4nlBjPKvRzPlJXPLnqW6V/Rlr13+K1mnyp866fY41uWCAw5bJuz0C/C0bmuBOM2tVLaqlL4Itg2yn1crQa31W7i4C7pq+t4eefaQe9M5WM52KCjWh6+0JiBPWDm87kMCJVPojk90frpd8Ma3THRhfUuLHrnBQdAi5UnhHcc3ZbFLRvXXMI62yU7b24zgLd1Qk1KBnUEmcnLpggtS5oKhqr3G7WOwzyofmkFcfSGxIVGkeAqlvE+SXbPhI+EsoMgYA0KIJ+Y46RscaLUf8s2eSnSzt7Dxf8XVxpSsO3CE7xM8tDPWbJaK3Cf6qPAuqX1H4r+ymbedx4gYCsESQ/GlsM/gmDy2Q6DgtvG7hxi3U4mRwYICtO1teIr2ikfIdbPkYNQ/Rhj53kMjlGw1dRWBiSAYxtsv9qoZOltym23E250t5cbOtxxYJKDZfpXHdju4buNsXsTpz2Emo6Ydz4Xet52WQLpGOAB7djQ6qRCPQGJeI4yDAM/DvSKitdIcLjhe4tCUbMmV00XLJSukILhtULgU+WqU0CJO4iPklPqKN6HOnHkTjE5S+pFltZdmEv+dvHhKFZn6M5qkBr1Lbp94pxJnp1IsCT/RT//1WRUsjEgvMcRvVeB0VFT6i0k3DXp1K/vaLseQ/M+VQaMkJnfM7Yi9iVXRGSbSCVtePln5E5MXgHW5V3mANSaXzJ4FFN59pT37VBoqJKoReVJMTwTXqFxQko96KcSnPLUeyCW5oSqzDK2QHbtCQ5SmnFoX/JVv0bjcQgVBbsn7QfQ6iaqQppTk7ER7Q1rRRYTnwpciBsxQyua20Cd7bxSabm5TO4LcSAfJjFxvmKBYsGBBi/5B4vvYouL9vOMoEsqPpVtdxq1SOp6x4IM4h3J/zcRzaXbJcVKzsZPjM03ke5jW9f53wleDczVW6aHh9XrxRiBXl8KRe/
+ QXaLIYoK
+ da5Grvjx8KHjVpKJm9Rxxr/IZ5s1xhJu3UZCt28UGYabVkhtN0WuYbepxj0MUTOXohcPUWB8eOhjwFgIIYtnLBRb8Zv3bjN+KYuxFPlW0bov4xwAJwyeCHb26yw8KmucbpOsDTCyxJxOV0rKRXeWCjZX5+TwI50aTWrtdho7a35MnKkNK8sdyBMk7tD9bVcd9lE+IohxsLu24G/JEOp3BNxykHoUwV97/2ztW4l6oEl+15g9TzBOmiTEyliKbQVkKLbPO6QgVOLuLOj7umf4mFmMfkSfr0/Znw4pF0krgU+Bt4seVceQ1e2ypTzfv25aEsxNEPwZKwYfZzo6uc3CWdC6Yrd1812/F/juSKLGQ3gyoJJk/onfAEbhtnwvQJcZW4Yw/zIa8AfOYn+J2iCM6C2Yb6yl9NsuiUzrr2KRoi34tVuXkv/fCthLI9OAHabXW+wTkiHzA8WoD8ZGp85z4/5BiCMXqN+/u4GCG0aQ1i201Q/IJSLFNJfMfqLMW6FK73KCKwm239fAjjO/jSBDo7ikbAa7wTaGYHom/LoyR4LKrg5HqqU0are7Yt7e+81yfRxiXJa9T0nEUJAX/t8dOf3cNqUfnRfHA4JM1IWsqRSJhigLl2JBugESZIYNsX/N+07M1eGM11qmeBweBz1XxT+MmW65M8H72uyJCvZai4MVJFhv5z1qhKIglfiee4T0e1wOJHdIxpr4xUK5TM5RgtQ7HLo5lKDlMrinHb4aNs7hVLsM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,393 +123,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, Nov 18, 2026 at 11:25 AM Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
+>
+> On (26/11/18 00:27), Chris Wiseman wrote:
+> > Nhat / Johannes / Sergey - good with a 2-patch series that just removes
+> > the zsmalloc shrinker and adds the unlocked zs_can_compact() pre-check
+> > for manual zram compaction?
+>
+> If there is no shrinker now then does unlocked zs_can_compact() matter
+> that much?  I assume zs_can_compact() is now called only from external
+> code, so it's not expected to be executed nearly as often as before, or
+> is there some other reason to make it unlocked?
 
+Ha, fair enough - started this whole thread trying to shave 70 us off
+the shrinker and somehow talked ourselves into deleting the whole thing.
+Definitely not worth adding lockless reads just for the occasional
+manual zram compact.
 
-在 2026/11/18 4:32, Andrew G. Morgan 写道:
-> LGTM but reflecting on the likely lack of further expansion for that
-> new argument, I would have likely gone with different
-> prctl(PR_CAPBSET_*,...) values for the two scopes of operation.
-
-Hi Andrew and Serge,
-
-Do I need to resubmit RFC v3 based on your suggestion and address the
-sashiko review issues besides sighand?
-
-Or wait for the results of new discussions?
-
-> 
-> Cheers
-> 
-> Andrew
-> 
-> On Mon, Nov 16, 2026 at 10:39 PM Jinjie Ruan <ruanjinjie@huawei.com> wrote:
->>
->>
->>
->> 在 2026/11/9 22:59, Serge E. Hallyn 写道:
->>> Hi Jinjie,
->>>
->>> how do you feel about adding something like a thread | process flag?
->>
->> Hi Serge, Andrew,
->>
->> Sorry for replying so late.
->>
->> I think this sounds good for me, similar to seccomp's
->> SECCOMP_FILTER_FLAG_TSYNC: by default only the calling thread's bounding
->> set is trimmed (so a later fork() inherits it while the rest of the
->> process is untouched), and PR_CAPBSET_DROP_PROCESS applies it to the
->> whole thread group.
->>
->> Is it similar to the following code?
->>
->>
->> #define PR_CAPBSET_DROP_MASK          <n>
->> #define PR_CAPBSET_DROP_THREAD         0
->> #define PR_CAPBSET_DROP_PROCESS        1
->>
->> User space use as below:
->>
->>         prctl(PR_CAPBSET_DROP_MASK, lo, hi, PR_CAPBSET_DROP_THREAD, 0);
->>         prctl(PR_CAPBSET_DROP_MASK, lo, hi, PR_CAPBSET_DROP_PROCESS, 0);
->>
->> # cap_task_prctl()
->> case PR_CAPBSET_DROP_MASK:
->>         switch (arg4) {
->>         case PR_CAPBSET_DROP_THREAD:
->>                 return cap_prctl_drop_mask(arg2, arg3, false);
->>
->>         case PR_CAPBSET_DROP_PROCESS:
->>                 return cap_prctl_drop_mask(arg2, arg3, true);
->>
->>         default:
->>                 return -EINVAL;
->>         }
->>
->> static int cap_bset_drop_thread(kernel_cap_t mask)
->> {
->>         struct cred *new = prepare_creds();
->>
->>         if (!new)
->>                 return -ENOMEM;
->>
->>         new->cap_bset = cap_drop(new->cap_bset, mask);
->>         return commit_creds(new);
->> }
->>
->> Best regards,
->> Jinjie
->>
->>>
->>> On Wed, Oct 21, 2026 at 07:42:43AM -0700, Andrew G. Morgan wrote:
->>>> There are a number of situations where existing code wants to
->>>> (temporarily) affect the capabilities of a single thread, so a
->>>> subsequent fork() starts with those without affecting the parent
->>>> process as a whole. I've been wondering if this code could be
->>>> structured to allow an argument of the prctl() to indicate if the call
->>>> is "whole process" or "just this thread" scoped?
->>>>
->>>> Cheers
->>>>
->>>> Andrew
->>>>
->>>> On Wed, Oct 21, 2026 at 7:36 AM Serge E. Hallyn <serge@hallyn.com> wrote:
->>>>>
->>>>> On Tue, Sep 29, 2026 at 09:01:59PM +0800, Jinjie Ruan wrote:
->>>>>> PR_CAPBSET_DROP only affects the calling thread. Process-wide capability
->>>>>> dropping requires user space to loop over every thread and every
->>>>>> capability, which is highly expensive. For instance, long-lived
->>>>>> multi-threaded processes (like gVisor's sentry) spend milliseconds
->>>>>> trimming the bounding set because the runtime has to coordinate
->>>>>> and signal every thread.
->>>>>>
->>>>>> Add PR_CAPBSET_DROP_MASK, an opt-in prctl that removes a set of
->>>>>> capabilities from the entire thread group's bounding set in a single call.
->>>>>> The capabilities are specified via a 64-bit mask across arg2 (low 32 bits)
->>>>>> and arg3 (high 32 bits).
->>>>>>
->>>>>> The drop is recorded in a per-thread-group mask,
->>>>>> signal_struct::cap_bset_pending, under sighand->siglock. This pending drop
->>>>>> is dynamically folded into the bounding set in critical paths:
->>>>>> cap_capset(), PR_CAPBSET_READ(), and cap_bprm_creds_from_file().
->>>>>> Running, concurrently created, or future threads within the group will
->>>>>> all immediately observe the drop. A forked child inherits this mask
->>>>>> in cap_bset_drop_fork() under siglock to close the race window
->>>>>> against clone().
->>>>>>
->>>>>> The operation is drop-only, so concurrent callers commute and a single
->>>>>> atomic OR is the linearization point.  It performs no per-thread allocation
->>>>>> and only the caller's replacement cred can fail, reported synchronously as
->>>>>> -ENOMEM before anything changes.
->>>>>>
->>>>>> In an arm64 KVM guest, trimming 41 capabilities of a multi-threaded Go
->>>>>> process takes ~8.5-23.6ms with the per-thread PR_CAPBSET_DROP loop and
->>>>>> ~11-14us with PR_CAPBSET_DROP_MASK, independent of the thread count.
->>>>>>
->>>>>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
->>>>>
->>>>> Interesting idea, storing it in the sighand.
->>>>>
->>>>> Oleg, do you see any issues with that part of this?
->>>>>
->>>>> Overall, this seems ok to me.  That is, I think it addresses all the
->>>>> concerns I had with the previous version.
->>>>>
->>>>>> ---
->>>>>>  fs/proc/array.c              |  3 +-
->>>>>>  include/linux/capability.h   |  5 ++
->>>>>>  include/linux/sched/signal.h |  8 ++++
->>>>>>  include/uapi/linux/prctl.h   |  1 +
->>>>>>  kernel/fork.c                |  1 +
->>>>>>  security/commoncap.c         | 91 ++++++++++++++++++++++++++++++++++--
->>>>>>  6 files changed, 105 insertions(+), 4 deletions(-)
->>>>>>
->>>>>> diff --git a/fs/proc/array.c b/fs/proc/array.c
->>>>>> index f6f75d206762..f1cde26d079c 100644
->>>>>> --- a/fs/proc/array.c
->>>>>> +++ b/fs/proc/array.c
->>>>>> @@ -63,6 +63,7 @@
->>>>>>  #include <linux/tty.h>
->>>>>>  #include <linux/string.h>
->>>>>>  #include <linux/mman.h>
->>>>>> +#include <linux/capability.h>
->>>>>>  #include <linux/sched/mm.h>
->>>>>>  #include <linux/sched/numa_balancing.h>
->>>>>>  #include <linux/sched/task_stack.h>
->>>>>> @@ -318,7 +319,7 @@ static inline void task_cap(struct seq_file *m, struct task_struct *p)
->>>>>>       cap_inheritable = cred->cap_inheritable;
->>>>>>       cap_permitted   = cred->cap_permitted;
->>>>>>       cap_effective   = cred->cap_effective;
->>>>>> -     cap_bset        = cred->cap_bset;
->>>>>> +     cap_bset        = cap_bset_effective(p, cred);
->>>>>>       cap_ambient     = cred->cap_ambient;
->>>>>>       rcu_read_unlock();
->>>>>>
->>>>>> diff --git a/include/linux/capability.h b/include/linux/capability.h
->>>>>> index 7921a0b3b04a..6413c7fedb69 100644
->>>>>> --- a/include/linux/capability.h
->>>>>> +++ b/include/linux/capability.h
->>>>>> @@ -38,6 +38,7 @@ struct file;
->>>>>>  struct inode;
->>>>>>  struct dentry;
->>>>>>  struct task_struct;
->>>>>> +struct cred;
->>>>>>  struct user_namespace;
->>>>>>  struct mnt_idmap;
->>>>>>
->>>>>> @@ -197,6 +198,10 @@ bool capable_wrt_inode_uidgid(struct mnt_idmap *idmap,
->>>>>>                             const struct inode *inode, int cap);
->>>>>>  extern bool file_ns_capable(const struct file *file, struct user_namespace *ns, int cap);
->>>>>>  extern bool ptracer_capable(struct task_struct *tsk, struct user_namespace *ns);
->>>>>> +extern kernel_cap_t cap_bset_effective(const struct task_struct *task,
->>>>>> +                                    const struct cred *cred);
->>>>>> +extern void cap_bset_drop_fork(struct task_struct *p);
->>>>>> +
->>>>>>  static inline bool perfmon_capable(void)
->>>>>>  {
->>>>>>       return capable(CAP_PERFMON) || capable(CAP_SYS_ADMIN);
->>>>>> diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
->>>>>> index d45a5476b97d..bda6f18b65b9 100644
->>>>>> --- a/include/linux/sched/signal.h
->>>>>> +++ b/include/linux/sched/signal.h
->>>>>> @@ -98,6 +98,14 @@ struct signal_struct {
->>>>>>       int                     quick_threads;
->>>>>>       struct list_head        thread_head;
->>>>>>
->>>>>> +     /*
->>>>>> +      * Capabilities being removed from the bounding set of every thread in
->>>>>> +      * this group by PR_CAPBSET_DROP_MASK.  Read on capability-transition
->>>>>> +      * paths without sighand->siglock, hence atomic64 (a 64-bit value would
->>>>>> +      * otherwise tear on 32-bit).
->>>>>> +      */
->>>>>> +     atomic64_t              cap_bset_pending;
->>>>>> +
->>>>>>       wait_queue_head_t       wait_chldexit;  /* for wait4() */
->>>>>>
->>>>>>       /* current thread group signal load-balancing target: */
->>>>>> diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
->>>>>> index b6ec6f693719..85ac71897070 100644
->>>>>> --- a/include/uapi/linux/prctl.h
->>>>>> +++ b/include/uapi/linux/prctl.h
->>>>>> @@ -70,6 +70,7 @@
->>>>>>  /* Get/set the capability bounding set (as per security/commoncap.c) */
->>>>>>  #define PR_CAPBSET_READ 23
->>>>>>  #define PR_CAPBSET_DROP 24
->>>>>> +#define PR_CAPBSET_DROP_MASK 82
->>>>>>
->>>>>>  /* Get/set the process' ability to use the timestamp counter instruction */
->>>>>>  #define PR_GET_TSC 25
->>>>>> diff --git a/kernel/fork.c b/kernel/fork.c
->>>>>> index 5ef413368912..bf671a85d39d 100644
->>>>>> --- a/kernel/fork.c
->>>>>> +++ b/kernel/fork.c
->>>>>> @@ -2504,6 +2504,7 @@ __latent_entropy struct task_struct *copy_process(
->>>>>>        * before holding sighand lock.
->>>>>>        */
->>>>>>       copy_seccomp(p);
->>>>>> +     cap_bset_drop_fork(p);
->>>>>>
->>>>>>       if (clone_flags & CLONE_NNP)
->>>>>>               task_set_no_new_privs(p);
->>>>>> diff --git a/security/commoncap.c b/security/commoncap.c
->>>>>> index 3399535808fe..3bec15d43731 100644
->>>>>> --- a/security/commoncap.c
->>>>>> +++ b/security/commoncap.c
->>>>>> @@ -3,6 +3,7 @@
->>>>>>   */
->>>>>>
->>>>>>  #include <linux/capability.h>
->>>>>> +#include <linux/cred.h>
->>>>>>  #include <linux/audit.h>
->>>>>>  #include <linux/init.h>
->>>>>>  #include <linux/kernel.h>
->>>>>> @@ -19,6 +20,7 @@
->>>>>>  #include <linux/hugetlb.h>
->>>>>>  #include <linux/mount.h>
->>>>>>  #include <linux/sched.h>
->>>>>> +#include <linux/sched/signal.h>
->>>>>>  #include <linux/prctl.h>
->>>>>>  #include <linux/securebits.h>
->>>>>>  #include <linux/user_namespace.h>
->>>>>> @@ -30,6 +32,25 @@
->>>>>>  #define CREATE_TRACE_POINTS
->>>>>>  #include <trace/events/capability.h>
->>>>>>
->>>>>> +/**
->>>>>> + * Effective bounding set of @cred in @task's thread group
->>>>>> + * @task: task whose thread group's pending drop applies
->>>>>> + * @cred: credentials to read the bounding set from
->>>>>> + *
->>>>>> + * A drop recorded by PR_CAPBSET_DROP_MASK is authoritative on the thread group
->>>>>> + * and may not have been materialized into every thread's cred yet, so the
->>>>>> + * effective bounding set is the cred's own set minus the group's pending drop.
->>>>>> + */
->>>>>> +kernel_cap_t cap_bset_effective(const struct task_struct *task,
->>>>>> +                             const struct cred *cred)
->>>>>> +{
->>>>>> +     kernel_cap_t pending = {
->>>>>> +             .val = atomic64_read(&task->signal->cap_bset_pending),
->>>>>> +     };
->>>>>> +
->>>>>> +     return cap_drop(cred->cap_bset, pending);
->>>>>> +}
->>>>>> +
->>>>>>  /*
->>>>>>   * If a non-root user executes a setuid-root binary in
->>>>>>   * !secure(SECURE_NOROOT) mode, then we raise capabilities.
->>>>>> @@ -284,8 +305,8 @@ int cap_capset(struct cred *new,
->>>>>>
->>>>>>       if (!cap_issubset(*inheritable,
->>>>>>                         cap_combine(old->cap_inheritable,
->>>>>> -                                   old->cap_bset)))
->>>>>>               /* no new pI capabilities outside bounding set */
->>>>>> +                                   cap_bset_effective(current, old))))
->>>>>>               return -EPERM;
->>>>>>
->>>>>>       /* verify restrictions on target's new Permitted set */
->>>>>> @@ -849,7 +870,7 @@ static void handle_privileged_root(struct linux_binprm *bprm, bool has_fcap,
->>>>>>        */
->>>>>>       if (__is_eff(root_uid, new) || __is_real(root_uid, new)) {
->>>>>>               /* pP' = (cap_bset & ~0) | (pI & ~0) */
->>>>>> -             new->cap_permitted = cap_combine(old->cap_bset,
->>>>>> +             new->cap_permitted = cap_combine(new->cap_bset,
->>>>>>                                                old->cap_inheritable);
->>>>>>       }
->>>>>>       /*
->>>>>> @@ -925,6 +946,8 @@ int cap_bprm_creds_from_file(struct linux_binprm *bprm, const struct file *file)
->>>>>>       int ret;
->>>>>>       kuid_t root_uid;
->>>>>>
->>>>>> +     new->cap_bset = cap_bset_effective(current, new);
->>>>>> +
->>>>>>       if (WARN_ON(!cap_ambient_invariant_ok(old)))
->>>>>>               return -EPERM;
->>>>>>
->>>>>> @@ -1283,6 +1306,63 @@ static int cap_prctl_drop(unsigned long cap)
->>>>>>       return commit_creds(new);
->>>>>>  }
->>>>>>
->>>>>> +static int cap_bset_drop_process(kernel_cap_t mask)
->>>>>> +{
->>>>>> +     kernel_cap_t pending;
->>>>>> +     struct cred *new;
->>>>>> +
->>>>>> +     new = prepare_creds();
->>>>>> +     if (!new)
->>>>>> +             return -ENOMEM;
->>>>>> +
->>>>>> +     /*
->>>>>> +      * Record the drop before committing the caller's cred, so that a
->>>>>> +      * thread created from now on is guaranteed to observe it.  Apply the
->>>>>> +      * current union, not just this call's mask, to the caller's cred.
->>>>>> +      */
->>>>>> +     spin_lock_irq(&current->sighand->siglock);
->>>>>> +     atomic64_or(mask.val, &current->signal->cap_bset_pending);
->>>>>> +     pending.val = atomic64_read(&current->signal->cap_bset_pending);
->>>>>> +     spin_unlock_irq(&current->sighand->siglock);
->>>>>> +
->>>>>> +     new->cap_bset = cap_drop(new->cap_bset, pending);
->>>>>> +     commit_creds(new);
->>>>>> +
->>>>>> +     return 0;
->>>>>> +}
->>>>>> +
->>>>>> +/*
->>>>>> + * Propagate a pending process-wide bounding-set drop to @p, a task being
->>>>>> + * created by the current thread.  Threads sharing the group read
->>>>>> + * current->signal->cap_bset_pending directly; a forked child gets its own
->>>>>> + * signal_struct and must carry the mask itself.  Called under
->>>>>> + * current->sighand->siglock, which serializes it with cap_bset_drop_process().
->>>>>> + */
->>>>>> +void cap_bset_drop_fork(struct task_struct *p)
->>>>>> +{
->>>>>> +     kernel_cap_t mask = {
->>>>>> +             .val = atomic64_read(&current->signal->cap_bset_pending),
->>>>>> +     };
->>>>>> +
->>>>>> +     if (cap_isclear(mask) || p->signal == current->signal)
->>>>>> +             return;
->>>>>> +
->>>>>> +     atomic64_or(mask.val, &p->signal->cap_bset_pending);
->>>>>> +}
->>>>>> +
->>>>>> +static int cap_prctl_drop_mask(unsigned long low, unsigned long high)
->>>>>> +{
->>>>>> +     kernel_cap_t mask = mk_kernel_cap((u32)low, (u32)high);
->>>>>> +
->>>>>> +     if (cap_isclear(mask))
->>>>>> +             return 0;
->>>>>> +
->>>>>> +     if (!ns_capable(current_user_ns(), CAP_SETPCAP))
->>>>>> +             return -EPERM;
->>>>>> +
->>>>>> +     return cap_bset_drop_process(mask);
->>>>>> +}
->>>>>> +
->>>>>>  /**
->>>>>>   * cap_task_prctl - Implement process control functions for this security module
->>>>>>   * @option: The process control function requested
->>>>>> @@ -1308,11 +1388,16 @@ int cap_task_prctl(int option, unsigned long arg2, unsigned long arg3,
->>>>>>       case PR_CAPBSET_READ:
->>>>>>               if (!cap_valid(arg2))
->>>>>>                       return -EINVAL;
->>>>>> -             return !!cap_raised(old->cap_bset, arg2);
->>>>>> +             return !!cap_raised(cap_bset_effective(current, old), arg2);
->>>>>>
->>>>>>       case PR_CAPBSET_DROP:
->>>>>>               return cap_prctl_drop(arg2);
->>>>>>
->>>>>> +     case PR_CAPBSET_DROP_MASK:
->>>>>> +             if (arg4 || arg5)
->>>>>> +                     return -EINVAL;
->>>>>> +             return cap_prctl_drop_mask(arg2, arg3);
->>>>>> +
->>>>>>       /*
->>>>>>        * The next four prctl's remain to assist with transitioning a
->>>>>>        * system from legacy UID=0 based privilege (when filesystem
->>>>>> --
->>>>>> 2.34.1
->>
-> 
-
+Happy to drop the pre-check and just send a single patch removing the
+zsmalloc shrinker once Nhat and Johannes are good with it.
 
