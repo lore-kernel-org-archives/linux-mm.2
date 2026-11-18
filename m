@@ -1,145 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54F1606A32F
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E9E606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 16:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZRoHMhL7
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=C3xuFqWJ
 Received: by kanga.kvack.org (Postfix)
-	id 91AF76B05B4; Wed, 18 Nov 2026 11:10:04 -0500 (EST)
+	id 0B7946B05B5; Wed, 18 Nov 2026 11:10:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F2856B05B5; Wed, 18 Nov 2026 11:10:04 -0500 (EST)
+	id 08F466B05B6; Wed, 18 Nov 2026 11:10:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 807A96B05B6; Wed, 18 Nov 2026 11:10:04 -0500 (EST)
+	id EE76A6B05B7; Wed, 18 Nov 2026 11:10:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 465A46B05B4
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:10:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 675271407B3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:10:03 +0000 (UTC)
-X-FDA: 85448726286.17.784312E
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 602AE1A000C
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:10:01 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZRoHMhL7;
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795018201;
-	b=kQCpEaB/wU3CO8j1ktSz99RfpF+nfi6btyknwlFmkhoN1muPFQkb4Wn1UEbtAvJKro1140
-	OURpTaiKBUxRoJjQWHtiXQCJMR+LOI4jqYmJCprsCTKZlkbuuF6CPB30cnCgJazqaRlLYh
-	VC+BCeVewWuBL5EAqxghYmiWmfgutQ8=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795018201;
+	by kanga.kvack.org (Postfix) with ESMTP id C59536B05B5
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:10:24 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65402A8423
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:10:24 +0000 (UTC)
+X-FDA: 85448727168.22.39D7E27
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A3B8C40005
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:10:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=C3xuFqWJ;
+	spf=pass (imf11.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795018222;
+	b=cxLWRd+QEoCppHKDLMwafpXvj57eCz5Pq/PB6MNLiXue5bXIXXVwReC1ckvDnbkPlDdkuD
+	kHVTVGadG3LwVH8KG+7PI5cq3KRccyzdMs3UyCAksXUjERWFxT2uoI0iklgjItBI2UYkKj
+	qiG5fBgl60UjY5cgpTxb/PIllCdp/7A=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=C3xuFqWJ;
+	spf=pass (imf11.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795018222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HbYXoP2RPMw58RAwQCFRXLN2yd0B0w7a3Dun8Sb9Zn8=;
-	b=YtILlP2hDNP9qpVMyGDN+2jW2tTcIDHxuaqZdAGyzEnfIT+CnN4xcjMguRLLPQeirpdS3y
-	arrrVuGJvpPlyMi3sbiofKUkSaVII2pvYt1C58PGneGW/QBJPFk3ojUR2o/s8H5wuYHcFt
-	KgEHnKZ2DM1GwyZwk20N7LzDEz6fpxw=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZRoHMhL7;
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4bb55cda775so7125715e9.0
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 08:10:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795018200; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L1U0OFLDxTlMdMghlKX0u3K3mWEEgArh6n73Wq07oFY/P/Py/hBkKMEB6+cJ7SQAwA
-         jXFb5t9Yjj70vLZtLvzhUZ8kwq82rrauFemL4SpUumFaOiK4ByfZhwnx9gqY3l8+Kte+
-         YteuJmB/BBuxVFwZLeMu7arGDyA++iSMolsvyDeHOYrSb6KMQ1BFanPj4nrvXvtQGvaH
-         Zs4nfqRT1B4+kvEXFRUtI0EuiRjYkpdER4C7BrZ6DhTJ1hMkztggtyCf+Bc5n4ldD2tW
-         WLG/HYnuibtMoovp+ZlljA7WvFfB+1/eV/ojX1lXbvkoqNNGIZA5PYrI71bpOzWegRO4
-         +BtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HbYXoP2RPMw58RAwQCFRXLN2yd0B0w7a3Dun8Sb9Zn8=;
-        fh=J05y/aS0Wq4eozvrkWZeatYt4Fl4HoZIe2rmTtPw6I4=;
-        b=MSoGIlzX3bC5WnkUp1QLc3yEKCIg2S7zM5HL4Ikbe0pL3o/kuMd7Y421zatkJS9X+J
-         Jxb4+yJmRjAb+j+e0h42tQKQsZymy4drQ7G1r53a3cX4Z9xo4BCL7tmqMi/MsjjyED+z
-         fnFzj+WQcNj4cNPhPVJ551zE42s5UAS6y7KYpQS3OrLedvBA5EzJWb16teIVdaX2FOR8
-         vBMfSOBY4Z/zVUayUrTyofT45W1GzmPSlWBWzRwdO5pgfbICE+lR2vNnejXT5O9ZqEPm
-         zX0BfNxa1yIKF72Rk/BxuuTvtIf4mmo6Or1aOODD6HT7dgYuxRjRjiTmyLShn1I1XwPP
-         WeAQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795018200; x=1795623000; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HbYXoP2RPMw58RAwQCFRXLN2yd0B0w7a3Dun8Sb9Zn8=;
-        b=ZRoHMhL7JzIDIOd8UNHz1+qqo+LlenafLDu6+G38sAsOmK0UW6ltaah+7sT97l5vUS
-         frpsXNAweAjAOTxr9Ca//t7HioqLKfPZPykdV8WWo61GMJIljwpNJqCskR2eKq8TLlGo
-         Ee6joMvnhO79eEVII+CyKPfGGwrrWyiIKtceRAdMowfwMVFAm27t1k//OmsZkJ3VZH4z
-         IqtCT1NM/iAi4I3Ggc/+f6m6/VuC0vp5ICpIT8u2w8v/JkCzXXEuJQtWb9aXetIYRktw
-         PsHEEoJbCV8qAKIJNBXhL5WSOSkj4zAQBXLgBcivhbYgAEXQvjWXdSbsrhovcp6HvOtM
-         Ex9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795018200; x=1795623000;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HbYXoP2RPMw58RAwQCFRXLN2yd0B0w7a3Dun8Sb9Zn8=;
-        b=xvzmwO9HW19q/ON1GzaKnqxYMxktDSlxIDOVJ8DDuITKBNo9zUUvKdDZCPQvUmcGbS
-         Ivam9sPyd787poejsHBqzjiUwVI0EwxX8p/RzT4ex+wOFaYnTtUDxNgga38AhDCaL7BW
-         B7LZr+WSqyYoAk1T6Eiv8JQ7htsiObGkvdgQD6SYn1XvxzucqvAAao2w92GtAaEqNZPy
-         Yd7ZS0PkmjhP3i/1I4PbV4u1AYmyshDVoFSyS3CxhNlNOBVuxnDtMplvkNc4+XmwLGwG
-         b2HSnvykYH/nkwTwrg6n0qRFdiJ71AdRbNiL9Ra5qoGEQHKX7M2s1bVrazidZwibotF/
-         gT7Q==
-X-Forwarded-Encrypted: i=1; AL+hErHS+43XipvzaHFhwnBSdPUgC+PCFvIz5x6RlE3rbacHya+RSCxpIfxvjT4WalzNB6U6d1n/hymMsQ==@kvack.org
-X-Gm-Message-State: APuU4Z8xhkxCd34TZWY/+tSNCViwK75xAc49dJj1irINBrVEbhG3qYA9
-	e4qPCCRxIzcQhHQYDgn6HZaoXu8hQqr3MzM7tVm1BwTNN0ZQsQui4NSNr3Qt6ihpkdX5y/ngRbW
-	yow5MPnoT28HNYPb144+IPdjklmTy7bI=
-X-Gm-Gg: AYBFou0NR8y3hFAKufuo2iwIvjQhL5LSZTaKfOTKacjNyeMvKbIZYjlzPflnlifPjyc
-	+ohUjYBExvrxPAOh+oH4DP0gvo1IINYWogBpMsv8F5zsIH3uelPxoaoWfdXslSzKs2x26YJRxAq
-	TfDC5+rsq7+vvsPmHjxtNc+p3JZu1yjDqW14ZSLUT9DlmPO7HXaRMvTm+F82QUgn4B2MT5/W77e
-	BX+0wyYKkKRPrt0whUfGQPqVXeI8VGUU6g6QwhIPknTBYAYY7ysgVnRGCj/dYS1sn64UUFI5rWs
-	EQe8/4QmT78xQUE/MaO0rHzpRDBeZQkjRZN+FsZ3ISy89JM83kqhS3sobZGAHl4nPhJYcMCeF6D
-	xjyBGdy/Uv42QzYOaG0bTHyf0mBmSTSvoPzGcbZoTT1xMYbJ7//0MrcqxqvNxUvfNAttZDS1fyQ
-	jG+wkiLsSfFjUpGfpaia/Ej0AYMQj4X/7HH0c5w1lnWM1tWoLU6uVaizxcOS5tdlEP+MVI1+8oD
-	8er
-X-Received: by 2002:a05:600c:3b1c:b0:4bb:5d38:259f with SMTP id
- 5b1f17b1804b1-4bb7da24a26mr60211045e9.12.1795018199716; Wed, 18 Nov 2026
- 08:09:59 -0800 (PST)
+	bh=ZNwKoLmqeSwPydDAhEghKLHqTvIumd5TXBU/hrH7FpA=;
+	b=Xju79dcKvZOBRnIJ4sBhpxMNwDYXOd8k4MEZtDf5v2kwMZX0HQ50J7lM1K+SDLie9Z4uHn
+	yltCuNUiIBnbJJIauQETk9c3SIOSdN3e42ZNUKa4kRDqyAfadic2/Q+G2HvQ2vKjpojHU/
+	5Ja6lJlrho1L/JdSCAGb8rAWePgza08=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9EFDD339;
+	Wed, 18 Nov 2026 08:10:18 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A57E93F673;
+	Wed, 18 Nov 2026 08:10:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795018221; bh=/+padZQ2w+TGhQW06d2Ojc/kEfJW108rtB1jBbALpjQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C3xuFqWJDbpH6XEiCkUlBwXIN543SWfJMKcxccXPy9d2AfNHicO5Hj5c/DuD5pNr1
+	 KL4sq1hvast3EohM39v1bobaW+vQojqjNZn06FNSorkFZZme6DRTBtRQZSNYzWihaW
+	 9wAFlw5V69dS7yYPdmIqhzWvUOcJuuKEdBg21ZEI=
+Date: Wed, 18 Nov 2026 16:10:16 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/slub: don't let kmemleak report rcu sheaves
+Message-ID: <av3N6DGiOFK3e3Yw@arm.com>
+References: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261117062620.346767-1-yumiao@kylinos.cn> <20261118130537.750211-1-yumiao@kylinos.cn>
-In-Reply-To: <20261118130537.750211-1-yumiao@kylinos.cn>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 18 Nov 2026 08:09:47 -0800
-X-Gm-Features: Aa3M54qRdo3OaZ77M4orB5mZ70nSvNFV6Jxp2gOAsd1jbRDwyTe3QzmeCNTj854
-Message-ID: <CAKEwX=MssYOr0J7tk54qUF7DbNb550KZrFmwnBD40L+tWde+5A@mail.gmail.com>
-Subject: Re: [PATCH v2] Docs/admin-guide/cgroup-v2: fix npn tags in memory.stat
-To: Yu Miao <yumiao@kylinos.cn>
-Cc: cgroups@vger.kernel.org, tj@kernel.org, hannes@cmpxchg.org, 
-	mkoutny@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	rdunlap@infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	jiayuan.chen@shopee.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 602AE1A000C
-X-Rspam-User:
-X-Stat-Signature: bjdd8bzqsqdx7uwhatwmi68zbjh4uw9p
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1795018201-838495
-X-HE-Meta: U2FsdGVkX19l98/tE22Geywf9UsD/qJLyfW8Zb5CeVj9z/HBtw9n9lZi2W84N0qwRZ16dRj0w9MGbP4jZi7Ereb2G3V9qnd6Z38NZoS8+ia0Zc4V7gbx6rEFijAJZ2Rr44GHEhUnila0w//1dny/H/DW46aibzYGVzLpzGQ+colzPqmwJiSNCtKo8MiOLBqpOpFeDT5cOfcEiKxYmjvSsvTlWSqwcrwWdTDwpAW15zEVhZJ77Ocp4y2ZkhZvzxrqX0e6ydeqoVHWODfijd8ar3a7WD5G0YkXB62kVyuzH8LKY6u+AS3GAYdHaZ3S1HcqH6r2RT7ln9s1ElH5KObkWKTz+PSFfo8SIDMuGn2wJ2FeVDJrR01O6bb83imCpG3Z4S7HO8uN2SJdwurjYbmFF+1e/CERAQ7zTg6ShfbgE3lOn39m+80Lkj0skQRgoqfxdpdct6BRsF+qg5GQlGacoFQOrL8G0eYQq/oIzmUUs+k4krb3zvlQranOc8i3AstDonS8YBzjnDpqpdpI7HrXTig4CZfgseAuZFhis9zW+ouXXqCPnJB1mmjlbQ/9f9hFboDre0KPBAkeWllJkt6CiFzz88Wt4rLfEcO8LrC7sGzT5Ufp8+sbCJwhiEBWi1LYXlYhT6NrJ7mKTBBLjucXv+0wzBjUEUUTQJc/qVtZbGT4/DCm98r2lRrNl8mB38DsY85XULAQsfIjq3DbNkdE1WRcLEVKYhFgJv0XrdvEZmTbQviKpcD/wAaOEV6nfZaHl5pVjRjzDqoGEgoFbqVo5RBpdb02S6s8bfNDeFe9NfQIIullD0cB8kQDns4Y9aB2TFkkpauSy9mtjZX6XFP0lLgXKNW2o+k7lS8i7OIqoYdQrnkvswcHXgI/m+09pqiHxvaf+b127TCsC+xpfeBCG24WN8RgpZVJfPLM+l+PRDp4zi3g1n1ZdEL8BV+vtPqow2vIGfGLXHZuyw7WhKa
- fDaen15a
- nnGqY2K9+MgxOWQjT/wDiPpSLOFGbPTfSzdCFhnG3ZnDIVWdyCMKuzIAwRCfWtIN71O+0M0TarMFDAq5RNLVoRNdAqjNvIjXGULu39zBxOpcZyokbtMsZTw37XuFFCHMMTcUr01ZQdtCdW+Py6g3W3jYZ9jWON/xJPhBjZCipM2kJJCYSHtNdAS+lsVQINHFA4YE/JO5K1DJN5V9c6AUFO3/qxPBYNIG19fKRXot1lC0XQYEloh33uDzBWaGW606/vXQiItO7549UNhrcFZ4fUKhgswPTNromorzssoi/b3Ld2dz/LmGMzMzXn2UeF8YjBzwJCXkjeG5+pOF2Mz054lRfjCphk13U/VsSECULOB519tPwWAnvCR1VNneyPu3lNa+0jgh3CDjTL49rVFQcpxv18NgJPbeQ984L2PtvEGMvHu9Pk36T9EXCUbHm1fx3fp0rEnO7RSCVCXeQ3DWuYaPNUNfi53bYN6Rkoot4ZHtAgKF06Bcqxq02L3/IPf/5vmD6sppXNiXq4+6dtYzqm7WLp6lIOJQuRS0i/qO9oNjfgIhNiTmiWeSH+yBHQ988BC+8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113151837.123795-1-ngocthang2710.1999@gmail.com>
+X-Rspam-User: 
+X-Rspamd-Queue-Id: A3B8C40005
+X-Stat-Signature: o5chb436trgr4dxr37iwjb871stgw9xt
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795018222-656898
+X-HE-Meta: U2FsdGVkX19ltomw1i2jEKj09HmM580zdT+wFll6ej+b34li4p0WM4eKSt8XFij9WYXzOoU6CJkW4gzlRuJWcOLG9D3r9vPsGztXIf3nV5JPS3QF2nSmFf4DNTGA4+9sEjfaZJd34EJts6TWCwgAy6DiBLl6uwSl4vV5KUBExfomXFXytJmkSAf4jVjDAFk61yw3FQy1G0V4MX66E38Iqta24AhtClA4/dw6JmYzx8OutZcbWfYiOO88moOt5YNbVusj3BChZrq4c+vIl1WwLNC4/vqjmWKSsmf/sg7W6UuIBSwgnCQJyFsvROua2g2eILUQkBjL3E1jvCTVkY27AqRCTbxxzZGQz9314RPDVURoXYcB9YjnM8/+UNshRHzqZJSm7j/Ssx5FK4SZ920aMmrkKKwDZvN5JKyFIzMwFT1AQGiIb+Kp+T90D3TzlvPyPVK22KzAVW0Db4Jj59c78sADQUcYBsHB3LWNCl7RjT0XFZlFSxAflbRFDQrq0159j3IRhlLoW7xJhQuniKlFwn2kBM/ahsAl3ZmAx0vZjpFf1y3S5DYNpJwwE2An/M0ktYuvpRh3nkD8wwXo4zp4PKdJcqVQm90dYjiAbC5B9tXUh0SAttwkF7rL+cln3AMy6tX6nqNVmWnlcOHEj0O6BCXqr9rf8njOW0AG4tCTSwUBvm6pUH3s+kXOUln9kSX/lmjMWeu3mQyBafo7+4YWIyhFeI7r6+l3nsFCwHZ3PXRvTGMcWkVxb3JrmtTPYmUwlgX/4LzE7AaJNZ1XaxLifPeq0JHiy/Qg+LOcsqKJgSA3Y3BMTaU9n93ycB+SRt9zYh0lFDw2dpFDz+4PPm6QB40W51qn/dYfOTIVVpCaM94q1yLoWPRLzsg80mTV9rjGORScpCIInIS0D0upatUELJkkWq4+h3zbHvFSKD7/jIpejyZ7b/x5QlV+PihAZodO0kPD37cXxzKjz+jznf7
+ RIR7RCjP
+ OHROi/ng8bP1YoP3nfjzug3jVMLVwVjh+EEGsUEuT4b4kKxhg2VVaxHTAZ7LIc4MXNKEuqSR93mFNbRqaogNM8HRF0GD2qDCrAYmaVmiJ+Y0aCdmz59GVH9yL2DMnkXuHtE1mfHm13vEeV5Vinzf6+Q8F/bg7orOmDGmuulqJ0yOOduNLtTOuI9cuPDmibiYUjFOauWq9peofQE+SMGgy0cLZxtMTwWw0KeMp83lklb6k16aLIJAg/LNdjM4pf6UHYtCaftQkQn7ak64F5wT4Xhb4hi/1WhFYwAnliJkHtVX1Wl820WOWEvXuQW0OS9kWF8SfnuvdXGK1EKhlSQxmFpBZl9cg30en7bCkbc2Yek+aKtedCGvah2gW9wBZwvKUqh+ccRupdAo2zC7fHoPBmWyv1pfz5NbESK9xUH1WfI04C/roTRJY/rnJrBuZSA0oBsr5JtenkXusu4V5A+wkzCtEgw9fLsofI1btseI/04jAVhByjoUKe2djgZZVI3J+9rLdGEqaabf3MLWzmCNsAZSiQbi0gUo2vb6u4ds7u6J6MTWsy7uqDW4ihA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,14 +96,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 5:06=E2=80=AFAM Yu Miao <yumiao@kylinos.cn> wrote:
->
-> The zswap, zswapped, zswap_incomp, swpin_zero, swpout_zero, zswpin,
-> zswpout and zswpwb entries never show up in memory.numa_stat, so add
+On Fri, Nov 13, 2026 at 10:18:37PM +0700, Nguyen Ngoc Thang wrote:
+> kmemleak reports full rcu sheaves as leaked:
+> 
+>   unreferenced object 0xffff88810005f600 (size 512):
+>     hex dump (first 32 bytes):
+>       e0 79 f0 2b 81 88 ff ff 20 00 b4 81 ff ff ff ff
+>       00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00
+>     backtrace:
+>       __alloc_empty_sheaf mm/slub.c:2854 [inline]
+>       alloc_empty_sheaf mm/slub.c:2874 [inline]
+>       __pcs_replace_empty_main+0x260/0x2e0 mm/slub.c:4806
+> 
+> The second word is rcu_free_sheaf and the size equals the capacity: the
+> sheaf was handed to call_rcu() by __kfree_rcu_sheaf() and is waiting for
+> a grace period. At that point the only reference to it is the ->next
+> pointer of the previous callback in the rcu callback list.
+> 
+> That previous callback may live in memory kmemleak never scans, e.g. the
+> rcu_head of a struct slab queued by rcu_free_slab() for a
+> SLAB_TYPESAFE_BY_RCU cache. Slab pages are frozen (page_count() == 0),
+> so kmemleak skips their struct page. The chain from rcu_data is cut and
+> the sheaf, typically allocated long ago and recycled, looks unreferenced.
+> Since the sheaf is then not scanned either, the objects it is about to
+> free can be reported as well.
+> 
+> Sheaves are allocator metadata and are always owned by a pcs, a barn or
+> an rcu callback. Mark them with kmemleak_not_leak(): they are never
+> reported but still scanned, so objects queued in them stay referenced.
+> Allocations that can't spin are not tracked by kmemleak, so skip them,
+> as alloc_slab_obj_exts() does.
+> 
+> Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
+> Reported-by: syzbot+527fed49e5b988882c9a@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=527fed49e5b988882c9a
+> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+> ---
+> Reproduced in QEMU (syzbot config, 2 vCPUs, numa=fake=2) by stalling a
+> grace period with a preempted reader on CPU0 while CPU1 interleaves
+> rcu_free_slab() (filp slabs) and rcu_free_sheaf() (maple nodes freed by
+> kfree_rcu()) callbacks, then running two kmemleak scans:
+> 
+>   before: 16-18 sheaves reported per run, rcu_head.func == rcu_free_sheaf,
+>           plus maple nodes held by them
+>   after:  no sheaf or maple node reports, no new warnings
+> 
+>  mm/slub.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index cd671b934719..e01416ae0b4a 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2856,6 +2856,14 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+>  	if (unlikely(!sheaf))
+>  		return NULL;
+>  
+> +	/*
+> +	 * A queued rcu sheaf may only be referenced by an earlier rcu callback
+> +	 * in memory kmemleak doesn't scan (e.g. struct slab). Never report
+> +	 * sheaves, but keep scanning the objects they hold.
+> +	 */
+> +	if (alloc_flags_allow_spinning(alloc_flags))
+> +		kmemleak_not_leak(sheaf);
+> +
+>  	sheaf->cache = s;
+>  
+>  	stat(s, SHEAF_ALLOC);
 
-For the (z)swap one:
-
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-
-(but the rest LGTM too FWIW).
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
