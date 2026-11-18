@@ -1,39 +1,39 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B74D606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B199D606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 09:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=B/tIkVxi
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=sYP5BPJt
 Received: by kanga.kvack.org (Postfix)
-	id 85B4D6B05B4; Wed, 18 Nov 2026 04:16:22 -0500 (EST)
+	id BD9186B05B6; Wed, 18 Nov 2026 04:16:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65BBC6B05B6; Wed, 18 Nov 2026 04:16:22 -0500 (EST)
+	id B870D6B05B8; Wed, 18 Nov 2026 04:16:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45AA56B05B9; Wed, 18 Nov 2026 04:16:22 -0500 (EST)
+	id A75A96B05B9; Wed, 18 Nov 2026 04:16:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 035B56B05B6
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:16:21 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8AB47806A8
+	by kanga.kvack.org (Postfix) with ESMTP id 741B76B05B8
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 04:16:22 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF5D9A8192
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:16:21 +0000 (UTC)
-X-FDA: 85447683762.11.546D923
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EE178A0006
+X-FDA: 85447683762.27.79B2CFD
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F231E20004
 	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 09:16:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="B/tIkVxi";
-	spf=pass (imf25.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sYP5BPJt;
+	spf=pass (imf03.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1794993380;
-	b=AkW90Ny2oEE634qrAYzsTUKUzy67SigdhvG4kIrBJ7cPBHoy8JJiV7smybj2JqK1wfcU0M
-	z2FqiUz+CbVkMaVaLYQ8+fTdNP2wHJOp5dHB8BoeS6r9D9SwqMBFD2g8RLo9RGa58L5Lsf
-	ZZA74LS7KXtUurz2zNCZlY40WWULxQQ=
+	b=C//idNNdApr2Vs4QPJiyxMgUgPGT+uoXyr4KgULW8wsboSxQMP72lipbXk9qSQc2Wjt2AZ
+	jCP9Jt5QDkYaRiHE+TJKP0Famu8jbRqEaBmGMQqZ2PivWCdFcMZ9NB4pTmNlgVaXN8UHxr
+	rD2a18bEmmZwqci42d85qp4JvzkFK70=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="B/tIkVxi";
-	spf=pass (imf25.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sYP5BPJt;
+	spf=pass (imf03.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794993380;
@@ -41,19 +41,19 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cXMHSSOYVw74OronUDzpBoUxN/GzmRZG6et2woHsVBw=;
-	b=XMw2se19sIS6TbKYZG6dQY5v2oaCvVj1rTfXbDIGVevc3P2jZoDZs4y/q4fYR6HC/WDbYg
-	ZpGkPmqGmr9Yqb9DSgm7i70bJfcAxYWVAu1HzWgclgYPFPH+UKAEvTHBhH7N2Id8WkZauu
-	HXszLjVxzZ60CI/KkjaXCqnZ46bTaco=
+	bh=/p1Aibx+fESAoq7Mn088hKyuz3N34SXVD24S7wMWTbk=;
+	b=0DR0VUdvtk9fMJ1fX8P/SqSnHyUC+XOco3J5ll6lIpRO6uAHUQdS4Sx3h6m8mrZ5dNTT/r
+	rw9pl+BtSl6juS/suqjxEEHqaHPJArVFE+DB5ipu3tDk/iLmUxnYRi9RqGq6EBm+bxFJ/2
+	GTmc1LjGIQzJKGYE/MeWvA2WMgtWb6Q=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
 	t=1794993376; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=cXMHSSOYVw74OronUDzpBoUxN/GzmRZG6et2woHsVBw=;
-	b=B/tIkVxivco22qOAJ+uM8H8SMeUQh9SHkWAz4hapVNxoA0Ua7SeQEPLIBdPszFTQgpEuSUu7hZOgANNVZ5jXcmZCcDJsWFYa07K06SqrF8yabCiMpVQHAOG0/CM7ux+OYSPVxnc4FW/O5c4nUT2lR6SZekhBnqOE846chNB82N4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R691e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=cp0613@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XF0HHbl_1794993372;
-Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com fp:SMTPD_---0XF0HHbl_1794993372 cluster:ay36)
+	bh=/p1Aibx+fESAoq7Mn088hKyuz3N34SXVD24S7wMWTbk=;
+	b=sYP5BPJtOg+mrYm+Dk/FSjUMMVoa+fnyhmdn+KqVXRHmaz+T7E6VeRUrYyFepUAK469TYU65POWpJjdputIei+Ruygc2yHZu749/ja4u83cS4JYbWeVfIL5Xl/VTEq1iEN0iP4jx2KznouUzTdesjVAbq0cbOyVEdFsLRBJw1yo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=cp0613@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XF0HHbZ_1794993372;
+Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com fp:SMTPD_---0XF0HHbZ_1794993372 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 18 Nov 2026 17:16:13 +0800
+          Wed, 18 Nov 2026 17:16:12 +0800
 From: Chen Pei <cp0613@linux.alibaba.com>
 To: pjw@kernel.org,
 	palmer@dabbelt.com,
@@ -69,28 +69,28 @@ Cc: guoren@kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	kexec@lists.infradead.org
-Subject: [PATCH v4 2/4] riscv: Add support for KHO
-Date: Wed, 18 Nov 2026 17:16:01 +0800
-Message-ID: <20261118091603.979-3-cp0613@linux.alibaba.com>
+Subject: [PATCH v4 1/4] riscv: Call early_ioremap_setup() before parsing the DTB
+Date: Wed, 18 Nov 2026 17:16:00 +0800
+Message-ID: <20261118091603.979-2-cp0613@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261118091603.979-1-cp0613@linux.alibaba.com>
 References: <20261118091603.979-1-cp0613@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: EE178A0006
-X-Stat-Signature: hjshj44co4bfnc75wboz9j6tx14y6ihm
-X-Rspamd-Server: rspam05
+X-Stat-Signature: jweapwudf4xx93cs96z5ijkx63kyxpyp
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794993378-698719
-X-HE-Meta: U2FsdGVkX18bc75Z8ySLv1OYrxIOmnOTwQMGksgZUwxk1hsLCwcEzQNKgHVUA06HYjfSVcZ0ZyDyVchZocUiE67KZFcAO7dDB5+PdH16YPItPzsfUJPc8xpiaX9ZBgSUJmvpazTzf1SJ//5CARru74owdAIWfHQ6tysW2Z7UQlg90OTacDsXSOblGoSCvxuS3s/bm4A3cmoN1NdwobVVP4P1f4HUv91Jvwlf5c8SQGMQWb7UUvImYMvIII8v19VMuOaCEaVma1haQ3IvQteyT7BQ9qHKnlvEfZBV5DidpOnZhTX6H87zGTS76IAkso4mxCq4acKbtexMSuGpt4qWJFT/RNS6m+3SLidVQAAPcFJd/GOhiuLXTMB0XJhy4XBLMIWTfuFSnqwlL7wKThJlO6dKtYapB/9djm0t2IqrbfygvsI4QaOg9JQ+wHFUfm1uMzUgKvgKsVbAYhns1YP9akACGc4rW/ykOC2oZIRjs3D59oeuCehazCLSKRdKvKExMp8+CIifEcNqcQC1FYOGInR/il78bSyZC1j6Mc8zb7DHU1eqY9wFdU6dpF7i3jZ/4kZYZ8JXUk0D7enHPCXWRQg4s8pNZRVnrAccQIPCvjY4saqBxpueRd+6pprgMCrEysykcbUhXbH4WnA8iCorYjruFky7dXWMYGj5sFWueL7ej5EqS4Jo8uqiNHyJZWI9ccHOsewU6jQ1ZmxVEWkLRMAAyofe8ekpYs4IiATQUTtnVFuSgNPElwAJwZEWqTLDmsIbaE2UbD2zWItwAezTfkR4fno+Q7sXDo+puFlI29shgG8CbFNpwjSKNK34dUveAx4kssGpl3QCJGQKMvyFk7P+PCtiCOndc4S3XjATwfWwvwTWJJ27/z04XoJWEwLP0jnyUxX6pn6dLM5G2udV4lQKIkJCRAEu0xDoLpdoIeJPNdzAbCtp9Pb0hCJKCz8wtnGYxJpVR9QeqOtoeur
- 5LwcZePU
- 9qnmIYSLwjIA/bzUqhlezQ7qc298vBK5O3pLoXMVCfQ8cbPoWEZOffbuKmUTEOD9JPtx+yomYMLN+OzUekczleBYXy6dmEbuStdNqSSiOor/DROcdXH+OiH9Bz2AZBRIU9CLgev2DtHzoiqL+z+HXLchAlfilbNP+yE3+qHsHGn5FSRoOXcZNgzro9VcmVwzzDulgkIcCaHnJGfjSr/YT9kxsR1feLMi7Eljiw+pexZEqQvONoBmbXqNPtfNJ2E/KRcMniEKRfsJiYcYH0feOkCaheQyPJOGy7cB/8reDROpaoNcwEwIEAPsTOncLA67JvR4gDctQuUQ0krRIm8oyQmrDsw==
+X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F231E20004
+X-HE-Tag: 1794993378-905905
+X-HE-Meta: U2FsdGVkX18yU4NqSw7R00tnj67ATu5e79936FNZHBTQz0rFPwmoCYXKwQ0lzcghPGeBtl3Lftxmgj0VVTLRNqpBGFKzycpHYDjpVP5y+UrlbheGdr6hyQg+F/M938h77xhogNrdTJSZTWHlpQ0sMsyNpNnotpy07EKVMoMGUEZMKGp7LeeFqOotMcFJooWdNgYQj5bbHJWEkSrCzr4tjxqZGIf079B9k/Eq1bpY4Bd6aWV5rsAOu5WIJvgLIkmEw/KPLvgjYJPa0Qfzf+2AXL6OKMp3J1deVcIRPiYKy9Dz3Lae8UagCcm7p1G4SaN5Qu6AomAjErNbeRAc8DigWS4d6iaeN2cCSw2z7VUSxYsyuhqi4pBVSLgN8INwIClPCZ55wLaEUT+ylZimA8VlyZ7KQS/VUSyT/zxBYwgvWOGnPMJbnFAW+sY9+3Eyns3rbWV4BdU8+8PGq7QtjIp8IULLDlhozBRtWhRkMDrfp1cnox1mnMN9r3yQ9yyaPdMgYzjl64zkx9pNsYnOyqT34SZbICckPYkymikYtY6amKRaC0SX5l/VT34VyzfPROgWlkWLGFUhTK9Wd8N2DqYkayfag3Qcvp9eF/FFOMVJC8yKCsI1jo9UHARYJec6fTpb4dO4Q8MCNNbgWMx02r4ThJxNE2OWoylj7DT3POXkxKA/EKpLcEYIbJJC4s8MywmNyra+CtwAARbpYhu7tC05/YYyu4u1F9KaDI1Np8ftt0JJiRLRay4MetiaeeO1aWMDkdolrigxt7IfdxTg8GiRsf3d+HhAGzwAXtOOaKfSfn58p2pTIv1Je7UGYOycYSkoDbB2ApzVHeQVuNWg0rkeWxVHOyQf7pHiygN4OuifGD6XdbN+ywxdw9280Yx+Vua27oFAmSPX3GciaOi0Mz80kXT4iSdBv3i89oVr3/+cGt5wTml8l1j4tI94q5M0JCAp+MKCNItWMif7K6ifSni
+ NJT2vdk8
+ QCTFThrCGxIUY1su71Ro29u7hef3Ibo7DpZfd1v6GmAOFt5J6aQvltzeeofXq5E+pLd6WWkZ0r5eb2qz2rKGceb0wrmsqWsrxjm3K3EhzSCsdBvl9BGTDz0h2v2mOZp3Seyht0g68CcYqtbAcwbYetsZqnBtoCCItXVQI/kCaCiahhZmOSbMOq9QKDPz9HKqq/WUQFc7X083EM+obeMibLqOFT8URyWf/cvN2nDTrQdBFv7QUe1aXN1Ju64UCNJetq7L/8mXJ3HYh+/Rtoy4TybZVLz6iS+8K6+lZqSTMNHEK0XBDijXWND0DPVMFNBoZKyIFkPTEdR5mvtQoYkxoj++hh0ubqc6/kf2q0Vf8Hver9L5xJE1VHfBQuEGtqhZo4key
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,36 +99,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The generic kexec handover (KHO) paths are already in place on RISC-V:
-the outgoing kernel publishes the handover FDT and the bootmem list in
-/chosen of the DTB built by of_kexec_alloc_and_setup_fdt(), and the
-incoming kernel picks both up while scanning that node. Only the
-architecture symbol is missing.
+parse_dtb() can reach early_memremap(), whose return value is composed
+from the slot table that early_ioremap_setup() fills in - and on RISC-V
+that setup ran after the scan, so the mapping came back NULL. The DT
+based kexec handover parsing is the first caller to hit this:
+kho_populate() cannot map the handover FDT and the handover is dropped.
 
-Set it to 64BIT && MMU: ARCH_SUPPORTS_KEXEC_FILE is already 64BIT only,
-and KEXEC_HANDOVER selects CMA, which depends on MMU.
+Run early_ioremap_setup() before the DT is parsed.
 
 Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Acked-by: Paul Walmsley <pjw@kernel.org> # arch/riscv
 ---
- arch/riscv/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/riscv/kernel/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index bde1f1885038..bffef6b903e1 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -1125,6 +1125,9 @@ config ARCH_SELECTS_KEXEC_FILE
- config ARCH_SUPPORTS_KEXEC_PURGATORY
- 	def_bool ARCH_SUPPORTS_KEXEC_FILE
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index d79f99b86033..45e2ef9d32fa 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -308,12 +308,12 @@ extern void __init init_rt_signal_env(void);
  
-+config ARCH_SUPPORTS_KEXEC_HANDOVER
-+	def_bool 64BIT && MMU
-+
- config ARCH_SUPPORTS_CRASH_DUMP
- 	def_bool y
+ void __init setup_arch(char **cmdline_p)
+ {
++	early_ioremap_setup();
+ 	parse_dtb();
+ 	setup_initial_init_mm(_stext, _etext, _edata, _end);
  
+ 	*cmdline_p = boot_command_line;
+ 
+-	early_ioremap_setup();
+ 	sbi_init();
+ 	jump_label_init();
+ 	parse_early_param();
 -- 
 2.50.1
 
