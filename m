@@ -1,95 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC9D606A332
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 17:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BE0606A32C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 17:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gj57/5xQ
+	dkim=pass (2048-bit key, unprotected) header.d=tychen.cc header.i=@tychen.cc header.a=rsa-sha256 header.s=spacemail header.b=DRfjL9oY
 Received: by kanga.kvack.org (Postfix)
-	id 6A1016B05B0; Wed, 18 Nov 2026 12:56:17 -0500 (EST)
+	id 6FBF66B05B1; Wed, 18 Nov 2026 12:59:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 678C36B05B1; Wed, 18 Nov 2026 12:56:17 -0500 (EST)
+	id 67D486B05B2; Wed, 18 Nov 2026 12:59:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 567336B05B2; Wed, 18 Nov 2026 12:56:17 -0500 (EST)
+	id 56BD06B05B3; Wed, 18 Nov 2026 12:59:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 359E96B05B0
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:56:17 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 577031206DE
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:56:16 +0000 (UTC)
-X-FDA: 85448993952.18.0D5BF2F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7CF14140009
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:56:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Gj57/5xQ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 319466B05B1
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 12:59:56 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B9EB2120821
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:59:55 +0000 (UTC)
+X-FDA: 85449003150.27.EFA819A
+Received: from out-93wp-a34.jellyfish.systems (out-93wp-a34.jellyfish.systems [104.207.68.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5949620004
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 17:59:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=DRfjL9oY;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf03.hostedemail.com: domain of hi@tychen.cc designates 104.207.68.34 as permitted sender) smtp.mailfrom=hi@tychen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795024574;
+	s=arc-20220608; t=1795024794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=13046BEyk3OL0XiJDfnqzRxyQM4EIUQxyIC+qg+uPx4=;
-	b=vwgD6QBCBIMOeBMaj4LmAm/XA263eGZwSQqjDzW/0TaIz/mX2zDL7SZOTazjUspLLUDkpO
-	mlfgtFy+uftdZEf+tKO04EsEP/M4IknilX3Cgv3986a6fUg5xLILQKNyeDeqAA0CKIgUAZ
-	wq9CNJKdJjoJkxctd67ZfzqafW4Hgp0=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L+MOui2s3VHNLY4HwO4iWqmzRT/5htSkOilNN5UtE+k=;
+	b=x3dAY7bD15W8l6pF5XQ63PiiBWCNu/ti71lxuq7A715S0vTN/b4qxVoDecsv6xzlw2MZv6
+	DraVmgSfWDigibTh2bEmHO058kQuCYxV0D75YYXMw2vMQGNOrcstNtBVIW2i3V98vDlHt7
+	s7BE3ND//vwhJBzDtHPn+F4ecod99Gs=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Gj57/5xQ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=DRfjL9oY;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf03.hostedemail.com: domain of hi@tychen.cc designates 104.207.68.34 as permitted sender) smtp.mailfrom=hi@tychen.cc
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795024574;
-	b=nV0lEBaIQ336yg1qU7MnlmJNSNWYmSgWuJ0VMVRnWkhSqZuUzvEES5OEq1VQPJA7C8RhTx
-	ye8j/KDzybYo0XF27pb4CIFKyRL3MejlItyfOrt1n/X5/sIyi9YFOwD37nICbfYoFKgij9
-	vv/2OumJW3lTwFuXBekJefirqh1VLZg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B0DC40508;
-	Wed, 18 Nov 2026 17:56:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0771F000C6;
-	Wed, 18 Nov 2026 17:56:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795024572;
-	bh=13046BEyk3OL0XiJDfnqzRxyQM4EIUQxyIC+qg+uPx4=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=Gj57/5xQvx96AFQb5qSmSIAvCs/NDEgpjKn9AwD+XaaF6SCgRpFyvf2Px4UGCV/fU
-	 uGHtFLLfhF7abcL36OCI0/GAHN3DrhR1QiNN5PGDKAwLtkOq6mCqn5GfBVZLmnJkrw
-	 flW1AnyzCUNsiM7ds9ZqdLrybqaCBaJ+BQAQszenljMg446FHHqRx8v/dyiuYGExgR
-	 UC2ogdwIW9DxiygNAlFOUNuGZx5jLHVBFV9M10er/v2KJWHUFscqCwlYjDL9MV5CGy
-	 19X2Fq7si5Nu1kzGF3JNtJq2WjEGrdogLOIRpicBDaLFc48qdSJBm5Rt7/4IZCnJWk
-	 dUwMnT8eubnNg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 772B43808210;
-	Wed, 18 Nov 2026 17:56:12 +0000 (UTC)
-Subject: Re: [GIT PULL] Non-mm hotfixes for 7.4.rc4
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20261118000947.a86e7241c67d295c40eb8b71@linux-foundation.org>
-References: <20261118000947.a86e7241c67d295c40eb8b71@linux-foundation.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20261118000947.a86e7241c67d295c40eb8b71@linux-foundation.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-hotfixes-stable-2026-11-18-00-06
-X-PR-Tracked-Commit-Id: a001666afbf9d2a6096fea95686549b9b1c9d968
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
-Message-Id: <179502457112.1929586.16741761767129300180.pr-tracker-bot@kernel.org>
-Date: Wed, 18 Nov 2026 17:56:11 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, mm-commits@vger.kernel.org
-X-Stat-Signature: tupyqqtncw63kegij7kkg7t3ob6q6oih
+	t=1795024794;
+	b=ZlGhsv2GuI01Kq+eo9hq5p8IDJMdtqMKAp91GMPw3AriXbB/gaw0oHY+f9sDCZ3hGN7t3Y
+	UGY5lgv55XpwS0cSPamClw50rkpkSflXSAM2Eu8fq82a+VTg/nIIa0eBTTqsReJUyXGzMS
+	QhRZxE+f9KRsL/MN0rQ45D2GKebhZGo=
+Received: from [10.18.116.108] (ec2-52-197-241-54.ap-northeast-1.compute.amazonaws.com [52.197.241.54])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4jV8WP4qhYz8sWV;
+	Wed, 18 Nov 2026 17:59:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
+	s=spacemail; t=1795024786;
+	bh=L+MOui2s3VHNLY4HwO4iWqmzRT/5htSkOilNN5UtE+k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DRfjL9oY6na0hu2GW5M0C1ivQzkKtqT0YzFYQ2EpNA57VyD2xtYoptOK5YARgKhbP
+	 YKEiZeZcHEYGYT2RpEQEzvvqujTw17Tzmi/Sx0tmC7voh99InZxYA434pmPzujPjcf
+	 6ZQPRVwB/lyNCdbuwlsQgzuZZsO3F1dP6TetGNHjzv5qMB4c4XtekShVcJeL5HnkSU
+	 YXwodlwmv9xYTElwJ/dv322O+DAQeeGAIaa5zkrtitcdZt2al29QG6kU4hpIccMxqT
+	 ie27i82ms8IaZYphlAt7vJtYL4o0lCUclqEmUnYcke1VyPid1DlQsxWXyiTrfAnEAM
+	 wPrlHgpdScXBA==
+From: Tianyi Chen <hi@tychen.cc>
+To: Maxim Muzafarov <maxmuzaf@gmail.com>, linux-mm@kvack.org
+Cc: Kairui Song <kasong@tencent.com>
+Subject: Re: [RFC PATCH 0/1] mm/mglru: MADV_RANDOM page cache never ages and
+ thrashes the oldest generation
+In-Reply-To: <20261101160427.85701-1-maxmuzaf@gmail.com>
+References: <20261101160427.85701-1-maxmuzaf@gmail.com>
+Date: Wed, 18 Nov 2026 17:59:43 -0000
+Message-ID: <179502478384.194898.8139869410612997037.streamfolio@tychen.cc>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-Envelope-From: hi@tychen.cc
+X-Rspamd-Queue-Id: 5949620004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7CF14140009
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795024573-779344
-X-HE-Meta: U2FsdGVkX1/jVjZ/mTDBTgjTGcOWlaI3uHsHsrSLJONHNEEZuZQkblirFjRsPPcT25HC/Bv2ywajZf8Z5ccmDSVYRCp2sZEHg0V+WrTLK50qLykfmesxxkC+I9iXNkT2amhWepnxSVWI0pv2oQqN1dua79EjND5IROPP7Ns0oX+HFrweIV5Mqm5/ZOl72Ann7lsxcCwIY6p6K0g2Ks0QmyKzAF5kcHIIf5EUrjfvBzKkhRFDKn3m9WfdHO4WyXnC6ZrrspnVXMqBS6ddhkgepyI3VTnV1NfIeqZnMudSsamppPtNYxOq301tcf5J2ddM6tpWAgtqx/vz4jZ3DM+fnjquylodj10Ya0KiocemNUCYCcmVP7TN5YY7Lj+utsNo/rKHuqDEyRIuJDYkoqKc2HL9UjZpamzYsotfjwlVd4zYuwpZx2TjEvEK7jgeFz4x64Dm8Dw+03OyEfyeuTurY6Gj55vMXvYUJEkOJecue1Y1ZYBrJ5KwrjDN5ix3H1zvO/h2esjiLDipA9z5xDfXDwcYyvy/Ez4VyKpCe4+D24OuB1N68iLjV5NFeEaknUGlm6jYlNrC3cO9TGfg9f+5d02xY+ND6GE7b1q/QWyLwjhcdquQglDOHZXk+7/3EDJBGzrhp/sQz0BYBnYuH2HUZf4OFUG32kryMBKuN1HdQ+QKP7gOmqdiJOHDYa/62OkzXSllBGVJcAe/OgD5txsb0ri4M5t9sO/WcfSi6G4P7d7qG7skQwDibYzHX3htILg/WlzbDzuiSqIVreBjm+MYFDzNhqkvQjLUNjFxQxNFMWjClksESzR+rYlMd3Dbbosl4lV44WSs0pqeOZwOd8uovyuUmz7muxA6dH9NCGgakSN2GNn0uNX5/2Wm/M6EuA8vqy5OycUvBECuLFJAaNFa5cNMj0VaaYqZdi7dI3uMAquTR9TgoubIFgZW7xeVWw7MIQApPJ5TRraTMfLHqk5
- oSU/Jplm
- tjP6Lp6XQJySRyWIdnYU9B5riQfDxhkDLzMefIzdg2xM2Lc3BADy+/t3G53KNU8RS67qm1A49pRTYGOSotMwJtdT0Iz++XVKxP51H+qKcDdS4NFyNWQVhNQjW/pfirZoFQOfn0WZ4phjA3Vg996+ovCZbC6DFGQ8XoxrRCBPdUvj8qUHeOdhJgNuFPS6CF0bTK4ji7oi1j3bQihsnqshEOYQQnjz6duMYiTfDFQy6otR33QnpnUX3YCN4b9su2Hr9J1QcG2MixDbUQRZeSDon7qzyy1E/d/TfMvDHcWPKdHPpG+htZZMbvgv+vHuD1r8fpdXKEenfKlqsxQ4p+8bmhDPAS62ss+W9+tHmt7E+idHh2AV5C24BMBB0HhQRfxF7J+8ENZTOsSCH9uQysxhhgADKz+0ki/PpJZsBVPWuXYykqdWnRKP4H1AhVw==
+X-Stat-Signature: qfh1ty6cdcqghtpjcnx59enq3m367anz
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1795024793-939976
+X-HE-Meta: U2FsdGVkX19WCF5y1bHgnkZ4hDXF5rM6zkYJjq1E0nFcJzEuT35d6AvuEvYwifgp0rfzk/bTlQ7n8Gcx0wQnK9U+CA2gaWnaeUCypXOvwVD+4GyUqa870Q8M0gffLlhkpFbkg3YnlFP9y0xGxWBRQMEUoMHPnIYP17Z79z/jF3Gm7dqK18tx43HbNZ3jB6eRnES4I9odMIqhnSoUQDL/8CAibMBQtOVXe5uXFszcmEQQGWo3UZklOijPyflEtTUQKfuHIm02lUTUimTSQPpom+/tXtEA4vszT7JKFbggxe3mvOuOsT0rxnL1lKGEkaMeyPpLSNNevAjlTASW+lN67P5dP6sbDT08DY7CixcCZVFwPR9zVl6hkQM/v0dYEWGrizhWyFhkyMbtEX4O2OoQcAarvDvnJv9hL2jLAdm5NfjQJ0ljBb5BAjSl0yJC86GSbddtPZatuWDAr3QvgwN0l7rbyyyV8IgjXjYukJJJT+SxQKdwHpOwBv1pafBuso4wIqkg4w5QCcGG2w/+dwakfyinXmxqc48yA+pMGY1g36FtgpjxizZUnpWoGtOD//gXiZY5rUbWMsp27fYm/Uaj5skq3He01bZSeF+MWxRhlOvbvrFvKBgMLiGunE9lq31qSki+L7Kl0L4SDIbeeSFc+e6s+apjkS8IPGoMnm4B6oEnxxi7Qn87zl1mOgzaMOtfWLgkbLRneUSMWo2yVSsvlG4+DINwagelSp+w1Im6SGz/eMCc15R2m+UUM2M2Fs0jFyKsjpTHixQbbrbIWJHuN5KgnsSaqUNODHM3gkHaOir1G76tWEIuMo+eHzZjUb3/m6GxR2PG12X+YXU5WWDsGumHqVBi0wFKwTrmemEPiK6YKodiGUXWUrKsgMnElyrcAbre3AQbF0I1EW1wMekex8eraFAj05dPHvcCF3kDaPXVXN0n9GVIKBSDB/whS7JtBZ1uRbRs5Incn+p2pcR
+ 17ulCPCl
+ Gh4lglulTt2Zvbqngu7lUJyuUdvAkBemm6EuZcV74MNSasFP+wnY+VJnORgdgPB92yG4piyLcvr/0Q13Frd9xWOpdJvWecKXtb1dGVB70fGUQg0DdHCBXZ3KrmCjwW33VHZPY1CUKHxscgd3NqIU462dujn0ko3Ltw+r9p7g4yl8MahYuhZr4ujau08e+k5EaNmLSeLJW5vGenrZm0HOJ0VWuUOGJ08feBmzZuTQzBATuBzr3P/83Dsb6ubBug0o79SqpeN7XxYR2vkQdHTOHy7icXcHvuF5ydFdIB2hsuNSpkKUh2Gnut9xLROR8DcGgsYRJbZs74/JoywwzrB5k10ORcfPqONCM6ZChdwKLQFfOr+jI0XfBUT6DUOIelNLEZ+fJWhmoL8M4W+uPL0ryTLl5JmUnjm/s3XwfF+xEySHMkCtggLbYMaHY4t+wK9XqWQzGErkJOeHF37D9l2srvOha7L8riB1UsiFKZkhtQBVhRW1hf89NeRDM/EopvOo3qgmUUAbB3Q2Xfjq+k8PS6nWAUk6YrVsTwLg1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,18 +95,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-The pull request you sent on Wed, 18 Nov 2026 00:09:47 -0800:
+Hi Maxim,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-hotfixes-stable-2026-11-18-00-06
+I can still reproduce this on mm-unstable (1b697248a755). I used a
+scaled-down version of your fio script: a 120 MiB vector file, a 38 MiB
+scan file, and a 128 MiB memcg without swap in a KVM guest (scan at
+about 5 seconds, vector readers for 14 seconds).
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
+It looks like vma_has_recency() is why the hot pages aren't promoted.
+It returns false for VM_RAND_READ, so the MGLRU page-table walk and rmap
+skip the accessed bits for those mappings. Letting reclaim see those
+accesses again stops the thrashing. I don't think that's the right fix,
+though. In a single-pass random read test (warm a 64 MiB file, then read
+a 352 MiB file once in random order with MADV_RANDOM, in an 88 MiB memcg),
+that change evicted the whole hot set every time. I suspect that's the
+kind of case the check is meant to protect.
 
-Thank you!
+Your threshold stops the thrashing too, with more faults before things
+settle. Your patch no longer applies as-is, so I ported just the
+threshold to the current code. It never fired in the same single-pass
+test, and the hot set stayed resident. I'd fix this on the recovery
+side, along the lines of your patch or Kairui's refault-distance idea.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Major faults/s over the last four seconds or so, median of five runs:
+
+  Configuration                          Major faults/s
+  Stock MGLRU                                    27,283
+  MGLRU, count mapped accesses again                  0
+  MGLRU, ported threshold                             0
+  MGLRU, no random advice                             0
+  Classic LRU, keep random advice                     0
+
+I saw the same difference between MGLRU and classic LRU in a small
+synthetic OpenSearch 3.6 test. The median post-scan p99 was 109 ms
+with MGLRU and 5.5 ms with classic LRU.
+
+Tianyi Chen
+
+Assisted-by: LLM
 
