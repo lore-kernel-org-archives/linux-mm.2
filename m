@@ -1,116 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9222B606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B77E60A261D
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Nov 2026 19:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hf/HT3xD
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WbH3djcK
 Received: by kanga.kvack.org (Postfix)
-	id B39516B05B3; Wed, 18 Nov 2026 14:04:06 -0500 (EST)
+	id AF7426B00EF; Wed, 18 Nov 2026 14:10:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC3246B05B4; Wed, 18 Nov 2026 14:04:06 -0500 (EST)
+	id AA8EE6B05B0; Wed, 18 Nov 2026 14:10:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98AF46B05B5; Wed, 18 Nov 2026 14:04:06 -0500 (EST)
+	id 997EC6B05B5; Wed, 18 Nov 2026 14:10:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 73F6B6B05B3
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:04:06 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1DEDB1C3EBA
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:04:06 +0000 (UTC)
-X-FDA: 85449164892.16.AFD4161
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6FC8D40006
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:04:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hf/HT3xD";
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795028644;
-	b=iaOwUBJS8Z5RlvnbEc/FG3iFzEjJHy8StqfOgYYB9JLYfRLX3Tb3a9+HEBTfTuqMzWtoLc
-	Mc+Yj1jhMqhHqiUATfVvXjoTPMNKhss7t/mopOn2IyONbBkloJTWeleJ7gHMyLbfNUsThB
-	6Y3qRJltMqTGKalKh8hUrV/YXnZ7DCs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hf/HT3xD";
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 703F16B00EF
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 14:10:35 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC5C9A089A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:10:34 +0000 (UTC)
+X-FDA: 85449181188.09.D614A1B
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EDA47C000A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:10:32 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=WbH3djcK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795028644;
+	s=arc-20220608; t=1795029033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8TBn9ubKDLYTz56NEzeNdxWEl3UJisiQtWy9Az8Fes=;
-	b=V16FaxDNEaahGaXsxHfNHvQXoiQSCRbgakQWNDtlEscTOrFUSvBl+JCwy5OZFyUGj+n0jR
-	XkbEEsziIWlg1knmSt8BerPav3i5dewNC2TUIqiUQK+DqAs/LPxqm8dYgz5pRkr+wpQwlc
-	f0nY455eFDRaQglmFOhl9ZvilomuZ+4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D769A401BF;
-	Wed, 18 Nov 2026 19:04:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153DC1F000C5;
-	Wed, 18 Nov 2026 19:03:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795028642;
-	bh=Q8TBn9ubKDLYTz56NEzeNdxWEl3UJisiQtWy9Az8Fes=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hf/HT3xDB2Pi3lfXWtso17LwDxUnrHlSV61cn70iJMfDo0CMpHaClOs/z09FJNAzT
-	 3JOTEDkxPohQigfU5UkFK6cGTmPJT5xXWQk0ujZI7KiJVC8YbNcVbSrkGGJPxwe+xr
-	 Mh1+shtCkM83jgtfy2fVf3x6DZ+T12QstaIgvKdSfK7whOr4UrPrYNLpTUxwVlzytW
-	 Qc67JPOt0UqfuFdhngtW4MmODE7597ZsjHCBxBcnh42oERDV6ucAJ2UMPLOnn3696Q
-	 dw/VTwIgI6blwV2Ejya7jYgO3KkAIwvqbjHEWfppyz5ojLv+W547233hDCoS5yDUxK
-	 p5dGd3uWal6jQ==
-Date: Wed, 18 Nov 2026 21:03:50 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Alexander Potapenko <glider@google.com>,
+	bh=iVQ48tYQcgbZ0/KEDLqaISGszEZvhwKB3BC0TwvqE4M=;
+	b=ENvczg/jrA6yGg0YISwFU3Mq9x3c+jqo1xU7BfGuukdiCXzhWcNWRfO5B2UszIKhXpD1bo
+	fSJ52BL7hZcnI5fvvhQqilUMn6jOsE001Kvi+6w5DHU89YgvHnkR7JvzKbqcVmPEheTDPC
+	Hs6CNkQ4JuTjG1rbT1RfYRHddw9NxVU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=WbH3djcK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795029033;
+	b=jXtH2X/BhCqDubF0F8nIll3hMKmCqZv4CkX/VFwSdsYLKHfeXytIV/XVP2PIJomvIMvcNh
+	6M9MiyeI5aAb/1K/VA7sQ7ebufjHp/MmOy1Y365fXcb/8uWoA06D5YOJcNH8761nDR8Fdo
+	lHcDzsYxH970lDPXw5P2RDt8korGE5w=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b7ddb99db4so2025794a12.0
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 11:10:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795029031; x=1795633831; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=iVQ48tYQcgbZ0/KEDLqaISGszEZvhwKB3BC0TwvqE4M=;
+        b=WbH3djcKCEI9A8hgnfx5GA6aL2Yo3E8ox7aKPlTGWI/XUSZpR5Xxxts8v/18MpL9c0
+         KVzTRnt5bIhaO3E5QcDhdYbDTmJXB0j63lyx13V2DvaJfYC/fDy7lt29E6C+kHf++PQv
+         FWks36xVSjyRLjMJK2zn0Xhcb0xJYs3ugLgBxKJnoYPoRCOWY822vusPM2rfwyMLyNlX
+         UF1YbsfDTSKG6ZoQtMTmxsMsh7eR+YA3o3D6wvRi3GS5c1eDhU+Oy9rfWO9Nuq40UGX7
+         jWiXj3S/oOn+o6hymrlhJFqmw7ntUVJDKy8pvoE+g8MpRWEYedliBxkH3vkWb33wZfba
+         ERYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795029031; x=1795633831;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iVQ48tYQcgbZ0/KEDLqaISGszEZvhwKB3BC0TwvqE4M=;
+        b=cyO6LPiUG55ulATFX1r3r8PRf2mw/CzU9HE84hCbw0y99JuSIWZCcBgYwtriiWyNIQ
+         P9sS53aiXTH0o3xxOPGKrdenKMzyR9BHbNWl0Rmx42pUu0o9WpEOxbXG9Qt4j9rbcCRi
+         Y2trPPDqG/+iqOMWKgITkqZ7m8bxegREx9e1ZOYOX5mMaAspTEXDZ1jy/AeF0QPdn0ew
+         OoZAakcLmCMkOKy5XzWTXt5C8gWkPCXdA2u5gCKUBgQYtCDqRIHaZQuQ+rbPl09aoRkc
+         yrKPkrJBCaBm2E/zMmrtdfYcQZExFfEVoyjWm4ACqL9UNA5OSZV+FXcpmct+0Snzc6yv
+         9mfg==
+X-Forwarded-Encrypted: i=1; AL+hErGlTj291w7Hh6sLVR3mWVYKwTlCafvi8KGrTp1aduCBIuTSmBvnTTYnYxebVG7+5bbZaOhBPwSPlA==@kvack.org
+X-Gm-Message-State: APuU4Z8FWeFSCK72jOysa6Yrsmak+t3+lR/8mRuMyjaEqcXYRUkH90IS
+	HkneBMbvVBzdpE4GlXyqHlp/+A4Mfjn2SVEhVmLeqtdkLXpNtKG05Zz5
+X-Gm-Gg: AYBFou0HoI8qE13c0YMwivXX4YVTISgCxBHN7NEm0inW83V6qPDUJC70AZ9XmE2knF3
+	5gstyy3IC0sw5Qa3dYAayHGw00Myn2N8W+yZsENA06VlFCGnzyW5vnOysAI1KAGoEzyxhriRIkS
+	2ZBk7BiOMyVqMzWPqJep5RTS0PLN1MXIPj9pqMkKLJQMskds4MTH3uWX7d5QI5JKU6qg00Ah9rz
+	lo+OZHyMhSRTujN750RUy6+kH8ak/dgUDVRCe8CR2Sqw/2re2XAFWDSwcm8iwOp8BlandzvhOiA
+	vJbFLNT6styOmfohFuyqq9/RXcut/82glFOt1UagRO9pLfBbihxu7e6xQkNcz6yqiDhB6+YKyON
+	STLtypGF2bY4lh2PZjx+s7TC5Hvvyzq9YwPQ/3n33KEBNCUsaTn7M1xz6mc4U2yT9Oyd2jxptK4
+	kBdLkuVkyCfWD22GGRWRjUTV8D/rEtELAk17+woOuxeZGXzW1Aq0wEOw/7rG+uNmYnZIpvnlgNa
+	BqpcWt28BoqUAqtmy3oc/aZgS33xwq6AZ/wjrO4Ufw2/c0IamkUaOVeAmWRuVMGImatcQ==
+X-Received: by 2002:a05:6402:1d4b:b0:6b8:80e3:d58a with SMTP id 4fb4d7f45d1cf-6b887eb1272mr2966644a12.23.1795029031397;
+        Wed, 18 Nov 2026 11:10:31 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b888ef9423sm1460511a12.3.2026.11.18.11.10.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 11:10:30 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 18 Nov 2026 20:10:28 +0100
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Potapenko <glider@google.com>,
 	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Chris Down <chris@chrisdown.name>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>, Joerg Roedel <joerg.roedel@amd.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Ketan <ketan.kishore@oss.qualcomm.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sashiko <sashiko-bot@kernel.org>, kasan-dev@googlegroups.com,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 5/7] mm/page_ext: allocate page extensions early for
- SPARSEMEM
-Message-ID: <av32ls56XJmaAO8C@kernel.org>
-References: <20261117120627.50601-1-songmuchun@bytedance.com>
- <20261117120627.50601-6-songmuchun@bytedance.com>
- <av20jiGZH5uYV6LT@kernel.org>
- <7f651049-f0dd-4053-a666-ea1c5d49669e@linux.dev>
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v5 03/11] mm/vmalloc: reject an unaligned range in
+ vmap_page_range()
+Message-ID: <av34JPIcIOVdF0kL@milan>
+References: <20261116071325.263682-1-hao.ge@linux.dev>
+ <20261116071325.263682-4-hao.ge@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7f651049-f0dd-4053-a666-ea1c5d49669e@linux.dev>
-X-Stat-Signature: rddkt9i58964azyw7i5j4cu6am8zphse
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+In-Reply-To: <20261116071325.263682-4-hao.ge@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6FC8D40006
-X-HE-Tag: 1795028644-727693
-X-HE-Meta: U2FsdGVkX1+ZZosdKxDtD/x3OvMMBMoU98xJ2mkhPGhaW14V4vAWcxNh1AjbvoCmSBghGP04lB+ha+DaPUxMOjvvJ90roC5v5Nv+mXJ9T3cTK4nfZoKjuDa20klc9kyEk2WwMzgazNHyfD2xadh3mOFezhF9r9v8/374LRQt9gKa53DmKlOWPXkkf/c7ONqohoPMkox8duOD5QynpHGjUi8bGCzn73p2iY5yrC9L0VHqnHlaXli2nTNLi25g5IY307SzaDum7KPRWWOXJfK/mt/4v20IBWb+PbhsufRkntrEB3zKweNr3TZ1MXfbv3IaVKsKJiEAuCQ1MV3586xPTnppRhnwZNpOWj5ulvzfmF5fdim70/bfLHdx7oPjrOcP/jDkV6oqSudiMNJZqJHw/j/zpJdIOzqmMPzYBRbHvLp9sdTo9rSBakztYBcagbGGN4wIH0vzP7fPHqIvWlYprvGwTX35r5XxWK3bRoNv+a5AqRfsfExbuC0kEFVVpRz5jm1s5Umvx/G5upwxBowuXg/4sX8Vf8NoeMiBjqGvK/VhODIITtTckeschpP0P5pnvkzom5Z1NefEnZ9O7lT8caU3QGMjGZYLf2lvkNrs+1sH3JJWMltSIa2fSd1rHUJswlQbdVJ0Zo/Fr1DI2QMyvIK/Bnunxx19IG5w37jteC9KitOdWsimthRyD8ASlg70jI4FWYkjK7vSUwjJS+0jSGdvunc3nD1uUeRQCUuE8bWeG83I/PCuChi628Fe+EHntmWG9H5nKMZ2GLDfYDBXMzKZJkd+zHUSIBszqILoy322/y9qIOzYIqv0yX51jDCnuuE/kAg0XUrrPx25GhQQIar6ACWgJbziKodGEO0qJ9N/08c3UrGh2gTC8RJE2qHtb9DU5MGxpSimC07PS355A8pGwAQtnU1w/7E7iRmv1eS+e1Q4f8Q/ap4AgHXpAblVLOrpoPzdVpC83JpVJQS
- rYylUQ+I
- z6CUlU6/ibYvjeWwc6DtPZAqA77gg/HHxzkviI0pjaEL47EAWcfsY2qRMZAhCfmomeYQFa0zG208Oa59M5ExRvDiXiui2z/Sc8aOcIagqvIICqK7+8y1JRuBeRFKf5UJaJIAITJVpf0xWba2DHjg55Om4CZL/jMjIJh5KapF2a8Qf5Hg8j31SUmxZnlaBjlfOls6xDhbtzllep7rzmOlaei/bP2ACoPvln6L2XW9dKZrhpWxQcVHvi9w2lKkmwzdD8NxEQM8xdm78zaApLhf0Mf7vMPmdCO8F2auwiDI79WcpkiDUGKK5GvbqzdKc4XpF1EkZ+u0EQ4f17hFrs8VZJIcZVtpVUJOotYhP
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EDA47C000A
+X-Stat-Signature: 1con3ttdtr9wwzbor4n6o5hdissqcpih
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795029032-358773
+X-HE-Meta: U2FsdGVkX1/qaIYQ+NnDxgKn9EC1bYUdcRuBIgCJTvTdMDGqOrSt1aG22H64O1TSk1GFOayTa3tl7aRvBCR/u4s1Zj9dilsNyU760Nj4FrJIQx/kUjnTNey4afcnwTd52DK7QKoNiBWyH5GwtC0IbAadglHc8Ly3pNCHG7O2GLdIBIcXbf+XWIzgeSM7SACPxaeOD8BCMtidLoFCJM5qFAouHmbQze3gG75uYkaNEHhfyXhdP18+Uuor0a8sgXBNYm7CPt6hjZZb9dihgA6TBcdf6qSj++bZfM3LUy+Zal6oHZzvQ0wWjLvUgsMCYACPBl8ClUOWPsHQ7tsFoBE2HyxacF08bcSNbNVs6O7daofN39gqNoVOM9u1wPsdUmwMHde9iTwSCrz7vwjnJ4mLKSeH2qSTpDP9m5FJv5Uw379l81Vcy80oBgQbLsLTxjTViV1bKdHey6WCnEoK8XtHMGxhmwEEKL+k7TY0lsgtd+87MWzMhAQY0cGwwLVw7ZOucIr/fif72sMeyqUZzJ8h+l3Ew67BIbISN+ga6QsS6iAF3BQy29P5lZXtMLhGJmp10i+s1NrduvvdBZGWTJIyYL7MsZ5n4+STA7HFZhhcBKvkmpFzyYt2ip22E0cfVWA6xpF8K6Ws9ihp6AomK6s6YV3ur0e05O5VVxiw7WXTcBUlwrQPsQ5pOxLLr7fXcsSgiqHyew4icPy7226gjtE0sAI58deBOeocPN3lJe4uZi2P5lsvxQA5oYXkZHoYRCKOaI+iyM+um3wv/d0r4pfqHqH/3SR1UOuVZBr7QZ3/3EF11TPKJfyiE4JpYhd/dOirXsMeP1FH39QfwkNWKHCogQZNkx29Wd2sAV5JsqR56pVHs7h5peGxeo4x5LUzDIRykZdbAgvojEEu2inxR0Yl123qZucg7GOFhIPHwhQIQoAIiQcURoBloujw+Sa8jXh+8URjRg6wN1EyHGX1JeM
+ KQ2uuKf8
+ duHA5MSy/qCeVglA3b8yv4++VI7OuMcNNA1LY1ESzTsjPEWxtnm4J5J5vYv9uBu8hZj6Io9mv5IhGrim+Cp4jdu436yhA8V8gV1/ADxAA8utLg/Wjk249Z3GwO6/GuD7JypzihlAbT5v+qLNbOsc9QKrKnShiifM+3RK5Ie1OboCMhcGoKiRklH+CcIReOD5/ZAqInxebjz5qiwy9LlPqldxV6b05NCZGC/HohOOum66a5ll6Eetyo/TJcunbJ2JddHGDGxozbSdvlTEg+POUJboQkWXSPht9FUUBHZSKpzeF7FEJj5W+zP2QRfZU2adVtB4vSo9JG9ee95rpABHPMxqkxz+sME6I1HkMSvNRxZQrh4dHhospqHDq1VeJDl76wSHT9YBcPd8ZedQ6BIPRyaovg9gRHIBdREcz2wKXPIqX/eevpKYDZsobk2tzdl8KYSB0/E5bpPyFpoLLdTlp7ijCk2valu2tZdXGHTbJh41FQadeOEA0trLsnXf/+rspuLieLlEhWgP+vTNWlKKAJZ2x4hEsHy901AXpsCPfKF+7S5rCOFGJbEHnt4Ipk7nE2Zls+bucg6dLB8cXmJ2KrG1FM26vw1pwXc3+G1Y+0IHm9N9RZ9romV7Q4I4EsNAqckqYh/39OizwNfqbE9H3/5uRXH8ZNflaLhvL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,86 +139,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 11:13:29PM +0800, Muchun Song wrote:
+On Mon, Nov 16, 2026 at 03:13:17PM +0800, Hao Ge wrote:
+> commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not
+> PAGE_SIZE aligned") put the check in vmap_pte_range(), which is too
+> late, because the upper levels may already have installed page tables
+> for a range that is rejected anyway.
 > 
+> The pte loop maps whole pages and stops only when addr lands exactly
+> on end. An unaligned end lets addr jump over it and the loop keeps
+> mapping past the range. An unaligned start maps the page below the
+> range and usually misses end too. Such a range is never a legitimate
+> request.
 > 
-> On 2026/11/18 22:22, Mike Rapoport wrote:
-> > On Tue, Nov 17, 2026 at 08:06:25PM +0800, Muchun Song wrote:
-> > > KMSAN needs page extensions when kmsan_init_shadow() installs per-page
-> > > metadata, before memblock_free_all() releases memory to the buddy
-> > > allocator.  FLATMEM makes page extensions available by this point,
-> > > whereas SPARSEMEM initializes them later in boot.
-> > > 
-> > > Allocate boot-time SPARSEMEM page extensions from memblock to match
-> > > FLATMEM's initialization timing.  This gives early clients the same
-> > > page_ext availability guarantee across both memory models, while runtime
-> > > memory hotplug continues to use vmalloc.
-> > > 
-> > > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> vmap_range_noflush() has a single caller, vmap_page_range(). Warn on
+> addr and end there and bail out with -EINVAL before any page table is
+> installed, and drop the check from vmap_pte_range().
 > 
-> Thanks for reviewing.
+> Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> Suggested-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> ---
+>  mm/vmalloc.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> > 
-> > with a nit below
-> > 
-> > > ---
-> > > v2:
-> > > - Allocate all boot-time SPARSEMEM page extensions from memblock
-> > >    (suggested by Mike Rapoport)
-> > > - Keep memblock allocations above DMA and suppress per-section free
-> > >    messages (suggested by Chris Down)
-> > > ---
-> > >   include/linux/page_ext.h |   9 +--
-> > >   mm/mm_init.c             |   4 --
-> > >   mm/page_ext.c            | 119 +++++++++++++++++++--------------------
-> > >   3 files changed, 60 insertions(+), 72 deletions(-)
-> > > 
-> > > +static __ref void *alloc_page_ext(size_t size, int nid)
-> > >   {
-> > >   	void *addr;
-> > > +	if (!slab_is_available()) {
-> > > +		addr = memblock_alloc_try_nid(size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
-> > > +					      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-> > > +		if (addr)
-> > > +			memmap_boot_pages_add(size / PAGE_SIZE);
-> > I think it should be DIV_ROUND_UP().
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 3c0d9e69b886..a168f6f20f4f 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -125,9 +125,6 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>  	unsigned long size;
+>  	unsigned int nr_pages;
+>  
+> -	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
+> -		return -EINVAL;
+> -
+>  	pfn = phys_addr >> PAGE_SHIFT;
+>  	pte = pte_alloc_kernel_track(pmd, addr, mask);
+>  	if (!pte)
+> @@ -369,6 +366,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
+>  {
+>  	int err;
+>  
+> +	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(end)))
+> +		return -EINVAL;
+> +
+>  	err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
+>  				 ioremap_max_page_shift);
+>  	flush_cache_vmap(addr, end);
+> -- 
+> 2.25.1
 > 
-> size is currently page-aligned by init_section_page_ext(), so both forms are
-> equivalent here. Is the suggestion to avoid relying on this caller-side
-> invariant and make it more robust? If so, I'll use DIV_ROUND_UP() for both
-> accounting calls.
+LGTM,
 
-Yeah, keeping it here does not cost much and whatever
-init_section_page_ext() does we still count the pages right.
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-Especially if we move the whole thingy to memmap_alloc().
- 
-> Thanks,
-> Muchun
-> 
-> > 
-> > > +		return addr;
-> > > +	}
-> > > +
-> > >   	addr = vzalloc_node(size, nid);
-> > >   	if (addr)
-> > > -		memmap_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
-> > > +		memmap_pages_add(size / PAGE_SIZE);
-> > And here too.
-> > 
-> > >   	return addr;
-> > >   }
-> > > @@ -304,7 +300,7 @@ static int __meminit init_section_page_ext(unsigned long pfn, int nid)
-> > >   	if (section->page_ext)
-> > >   		return 0;
-> > > -	table_size = page_ext_size * PAGES_PER_SECTION;
-> > > +	table_size = PAGE_ALIGN(page_ext_size * PAGES_PER_SECTION);
-> > >   	base = alloc_page_ext(table_size, nid);
-> > >   	/*
-> 
-
--- 
-Sincerely yours,
-Mike.
+--
+Uladzislau Rezki
 
