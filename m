@@ -1,147 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8588606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 07:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=hHLUDObh
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3DA606A333
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 07:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5CDD6B05B8; Thu, 19 Nov 2026 02:00:26 -0500 (EST)
+	id DC0C86B05B9; Thu, 19 Nov 2026 02:00:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE7626B05B9; Thu, 19 Nov 2026 02:00:26 -0500 (EST)
+	id D79D86B05BA; Thu, 19 Nov 2026 02:00:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAE8A6B05BA; Thu, 19 Nov 2026 02:00:26 -0500 (EST)
+	id C39836B05BB; Thu, 19 Nov 2026 02:00:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FD3E6B05B8
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:00:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2389412097B
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:00:26 +0000 (UTC)
-X-FDA: 85450970052.27.DF9F69F
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7BA0520003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:00:22 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=hHLUDObh;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf13.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id A44F16B05B9
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:00:33 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FF52120981
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:00:33 +0000 (UTC)
+X-FDA: 85450970346.06.830CDD5
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7C51640007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:00:31 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of 3jp7-agkbACUTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3jp7-agkbACUTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795071631;
+	b=IoZIzSk0s6AxDJWBWg7rrNuvnv+7m1r7ciY+ffko+WTpItynxEGgHqUhwkxFgp/aKBdo+Z
+	DskEKghudNX7uBnggBcsDzbxV3PPctJqrN9qrAXpSuPiInSuXRiV6ekkYD4g7f0acDU9hu
+	ok5qls3jE/VS/gabgFVDJmlD3qFfbaQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795071624;
+	s=arc-20220608; t=1795071631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kPhQ9i3kP4x8JhqjD5K1C3dirUBtl6z9jPgg1a9BJHE=;
-	b=4tXEtiTIPqxEEyIwKy7gSaSv1qw+u9BFByG0BWURKeuV6L9s2+wczoF60noJpGXwgIhsfK
-	YEQmW1mkRsqoX7FFpuuPV2oHL3uu6hxIFwUzX8KqohvVuFS4Z5uxWBQj94WP4nB7cvtrWG
-	7dlV8PQ/C5NfpWEMopv5S8JeZazocTQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=43dOOzPr4kWGfR+oDKr9fjX9nu8m4LA8+j1vqIMP6kc=;
+	b=TLVXwnGr82LxGgR2KwOoVSj2KM5XN9jJ/2nXe6Tv/PlWKs2uHaVa0WTiunitk6FD4VCQE+
+	NW5a4Qj29Xf+31AUOnjZFfZvBQ2qjwzaHLWayut2PKu9wtfpu5YTQyOvgerVCqcG58O5Jy
+	egm4sGdJLLVNTjrkbm2O4JgyYOtWq6Q=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=hHLUDObh;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf13.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795071624;
-	b=JfCWJlK6kQprxgMQ8AwJYJ+yDGx0mfmhMIHTQi7+FvFR3sDZVH+l9tKXmOYmaafqXYAllR
-	PzYWlZ53kUO1nQrCt6OOudFzijvdj7/Uznw3tgeHWGFMR/2CRTkHfe6sRaz+cT1Mwo+Ifv
-	DUWlQ9wyf2lcFhYfPdhN5zBB0Q7FuOg=
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b094e649d3so1280775a91.0
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:00:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1795071621; x=1795676421; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kPhQ9i3kP4x8JhqjD5K1C3dirUBtl6z9jPgg1a9BJHE=;
-        b=hHLUDObhVKMOFeYhuO30WXnBzPHi6ltL9FmerTHJWzklTU4lPj8nexaK7DTPbq2Xm2
-         jnmYU3NiZEM8FAM1sPFr2u+bjPTp/nxxVMsUMJ5fczrn40gowuBAozDuFN3TyOm87QlH
-         dABgWFq+hVhktbfh8puW2zMBDvaOLJDJWH42CxjojZjVkbuHnaVW3apqn2/E/dSha7Nv
-         AafbDt8kBj48YgWaMm/Dlm66bwr44hHF7JIcXek/w0QcE/mCsDXJVdorKTzjg7BuRDx9
-         1O0hNjh1CX4Ypme/cXfrJMTuNQCJMwnYvs8hQRTp7uw6HBtdLfaUqxh8LQf1Ga9/wmem
-         rGKA==
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of 3jp7-agkbACUTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3jp7-agkbACUTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=appspotmail.com (policy=none)
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-5587351d419so1429400b6e.1
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:00:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795071621; x=1795676421;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kPhQ9i3kP4x8JhqjD5K1C3dirUBtl6z9jPgg1a9BJHE=;
-        b=Rciv90tqB5ejvwRfrzqhDUGi49PAHRpDBBBjYQMhQTtqeAnkO+uQN5hxpNLmKmo1IG
-         zuzauByJ+hefN+YP4lpJ/bqQqaynXVbY05wRJjmH8lb7gvxDk6eWCYbqzT1NPdsdZSvt
-         9YFUJWs9aTkAwxob339AvHel9741kdJ4r/19cgtxUtKw4r3e1+YQyuoe6Ukg9jDV7KPx
-         mByCNDdStYbNjcykLhOXWvZe3qKwJ0X+61rvkncQSrzzviOkfTtChC5dUOkLhdqBHNA2
-         fX5gxFonmDWK8LGjXGcIwXRpCeorn1JqA0nH0E4jLaQXSddS4o4zCUGpBxvE6sa8E/GG
-         ZmDA==
-X-Forwarded-Encrypted: i=1; AL+hErEh17FnRGflHHlZha9Rbgw9HbWav5AU3QHpdC7tyPD1eRtiotXm0Ra6exJ/GeGcHWJY6Xg6BfY4Bw==@kvack.org
-X-Gm-Message-State: APuU4Z9wBlzdzIDgSEYadSTGlc0wKL3rKzwN3PcVs4Esjm+el+MfnPqf
-	tDUxKzBRENwaADNMBJmxRcgghAj3AeSgj9ACauhnAh0ktcIVP6xT2XMG9wQdGaDl7k4=
-X-Gm-Gg: AZFdTZfnhrn4Kf+Kou8QLjhs3B63dquOh90wSXJh6FhTzd1W4GgUYJ8qXG0zaNFTMHN
-	4MjMJLZtwerg7+4gBrYI7v7KT4UY92eHTFgiSTdtpNiSK0AkxtAJ74LHYG/qkICoVtRYSYLYtfF
-	s5TGIBXDtwjvuG2cNA8oV4OaLMI8NJcK2z74odBMLZkwVPaqGn17X3Yy73j3XIOx1GvlCRgG/Pj
-	6UsEs34wFVROW6boQU3OI2hB5seRCOaqBv8CG9l0bZ7qiFGEfSiLsk2Te+3pSTRBfdRbPnSDxyr
-	k8r8ip12gqXMae/bqex4dTKC3KHCf1NbaQaoh0gSQQjdEvWQSjCmNu4UcrK36K+bKqdEKZSq+cn
-	oLdWi0b4fIONiB4+SSD750VarNR0gi3RYp4PuMgTs5gBhOTkiW/tiPp8gtHBEU4O5QkUNEtz+qX
-	0E613COTLxARMAKvsgRp/sVTBJZkfTPkBH7DRI5QJSIPZ4M/VeFE0NJT24HgWN3Gx5Oah3pBdGt
-	bH4lm5kWkEbqCiv3B/PTzQ1j/RmOARKQeWoEtc//7kFZsKbeRoJHJYqqGWC02eIP8u6InUxDLcj
-	Pul8S64/1vIywzPUY3kvTqtgLovJ9ZAhJg/rR0rG3rA37/j4i6q9gtDDIVc=
-X-Received: by 2002:a17:90b:1802:b0:3b1:922a:7b22 with SMTP id 98e67ed59e1d1-3b3d07c66b8mr5528227a91.60.1795071620802;
-        Wed, 18 Nov 2026 23:00:20 -0800 (PST)
-Received: from G6L4RL2QG9 ([2408:8440:c38:5ca5:3175:932a:757b:716a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b402e75223sm597488a91.4.2026.11.18.23.00.00
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 18 Nov 2026 23:00:20 -0800 (PST)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Chris Down <chris@chrisdown.name>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Ketan <ketan.kishore@oss.qualcomm.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sashiko <sashiko-bot@kernel.org>,
-	kasan-dev@googlegroups.com,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 3/7] mm/page_ext: always use vmalloc for section page extensions
-Date: Thu, 19 Nov 2026 14:58:08 +0800
-Message-ID: <20261119065812.89959-4-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261119065812.89959-1-songmuchun@bytedance.com>
-References: <20261119065812.89959-1-songmuchun@bytedance.com>
+        d=1e100.net; s=20260707; t=1795071630; x=1795676430;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=43dOOzPr4kWGfR+oDKr9fjX9nu8m4LA8+j1vqIMP6kc=;
+        b=vXRo2SJLMzNYvLGOfQZCiTJOcvICf23yKt2tIz8tbG2At1jO0+et0zKwiYXS29pL0h
+         9OaXikGR4u8m5XRh1iL3p/1PeeC+/ssEtlbinALhbFbPA8RlWpSKyY+V1Px0PN1t45aK
+         AY/4pHG0U/k7cdn2JTERr5LMHtA8HHWc8jfTg0RiX6Eh12iKx9bO/SIt+6F9chtd2wvg
+         NisQTA5ok10kRUzoAu7ns5qmysvJaz3+xMV7dsrEAHpWC9OFYIChc0aUvtJjssxh/bp+
+         U0mJXl8afvY+0qLyWjEPshDNwnalCf95ILD2kv6/GYX7GWBIJb9Ur74fcuryOecevL92
+         +BHA==
+X-Forwarded-Encrypted: i=1; AL+hErFZ2WJrsf5kJtFEXhCUk0KGifK9u1KQ9H54BarnUwGHVdHgini9UXUk+g8FHXhW4qDatTUkDNxVZg==@kvack.org
+X-Gm-Message-State: APuU4Z+rOXbtDtgGHbClee8o0og88JkqHfjlIki8O0lzfK27XgjGJPsa
+	CR8+Nvc/7srdZYLVSJU9oUuhGQ9xhWcx+745PgC2HS5zvNgA2Zg1TOPXxGqJQUtcB+o1D9S9ZKt
+	IUCb9NrKpGQtX3aJW86jOnPbMWCpmI46U3YUORl6gBEq6VkUW3Uqu0EHS9ZA=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7BA0520003
-X-Stat-Signature: n99ttjgxg1kpzcoxhrmraa9amdrujn8t
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795071622-131825
-X-HE-Meta: U2FsdGVkX1/MusSmvaCbbZC24NSzknogZcbFQullN5yrYNg0/As9pTH7/Eoub3ZXjd1O3N08b+OTk+D40Lx+yoW5voBnoXUEqOniHuaByddhlqfxTQKW1APr9eeqcFzc2TmBPgm6gWMaFw+TcOUGDn4YnrMC4p50w96B74LVHfBsCFUR7WLwO9HlTRmNnDBueZkftS4B9gH8jehWGJ3NfutterbR6OWdxWjoRBU+DZdGVxpA778W+O/qnDMkejgAE3MVo2HYtvaWcGPA/7Ap0xiBpBjY4t92ddu2ESC5ay8KIKed984FD03i5Ff1CzqCDEfDJAQyRYJowqX/3KiKgKWTV9DPBMdJnd7jAEuzFPiqlsd6HNIczGCtPPXuOjakW3CBTBfvTCCVK1vXevbNID/r586yJAXglhSOU+XzNmHDEqiqvEDBNpf7akRqqj0FceSZyRNFoHVawLTH41JWAROASWWM6G7lirdo+2nKkPNGevUq2pZbvV7UU8gSpLmciNO3WiUBbmHptqgyK2y4DA/kSml8MJPUUu27T9idFI/egDLz6lS1RGuuEg0HAFD3MtIdrQsSv2gSqg1q+OjR8Z6kz4W3NTURqjJaIsw/4qR3bZbUkDc42xxLH3xpJTaDJnGrQQ1wbd1UmIq1baCoQ/M2POYdgry3A2kkKr/Bwpd5vyiWU+JJNwG3ssMksTbrPBN+XSxytGuxES5NjtX0czQZwMcHvNZscf1jNXFFwPyDgJ+XJkk3YfJpM5MR6GTMn3KWlBeXEmpYfreULQ8RX3/aSB9PVaGviVpujkGS1nl5KFA4CJT3tFkh7SOmLFB33m7m9SBEAu9JyfPzkYaDOoK7OIF9Ec/8A4uu8DtqpSyLZoFByoic3aRuTKAlFFTGZpLUU8o/f5U9ey/c8jy0yvRLMsUopgokN3Gzgs2kr1zrkCw4hTmJC9NOPMy0G4WwfPpuOiFAKnfA6BASXBA
- 1BYNeezy
- giyPas8C5g+GEVLpJFYOmD0NPYYcZdefa5pJTQ+rqYEDHIW+t5PqM1fVYVU6YMJ9vu7lXNfd/8RKSKEam/sgRoJRWe1h0lfadarZDDMyqtV/vQ4OYJ0d1V9RwVrVQiGKGFayAIyWKx2phKUn1o7R+6XcbSZSVZ2npSN8skxBjpZVqjQ0VcyzIapnOdkwaVA0wcsCw/wNpSXVxcQKJlKedmNayCEbmNaTW6phRvmQNMgKbgWMKXvrjo+TfqSqPMm/8hQa6ssayTd007E3tvIUQ1b3GInMR4MYeSjNXa+VxkovTt25gwMPtiVBLg8/LEvkreLtgL22adduiT9R1hetPaRnd1KjooqOTJjkYVswE+biOPR+BgrAtDVtMrzTCE0k1b9weunFZhHkWvU8=
+X-Received: by 2002:a05:6808:5088:b0:4a4:744:a4ff with SMTP id
+ 5614622812f47-5773db24bc2mr5642223b6e.4.1795071630660; Wed, 18 Nov 2026
+ 23:00:30 -0800 (PST)
+Date: Wed, 18 Nov 2026 23:00:30 -0800
+In-Reply-To: <20261115075832.132109-1-xu.xin@linux.dev>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6afe9e8e.92f98041.20636d.0002.GAE@google.com>
+Subject: [syzbot ci] Re: mm/ksm: clean up scan_get_next_rmap_item() initialization
+From: syzbot ci <syzbot+ci7e1f981ab411668d@syzkaller.appspotmail.com>
+To: chengming.zhou@linux.dev, david@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, xu.xin@linux.dev
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspam-User:
+X-Stat-Signature: q46qmuetxedho143jbr38hxmi11cpumc
+X-Rspamd-Queue-Id: 7C51640007
+X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1795071631-742279
+X-HE-Meta: U2FsdGVkX1+A6h1nwAkB8V1ShIjog7/LuuHl84XFpsRsrG0hOKFV0mxf03siS6lsfYXfUPDmGQSo9mXpO34bzLXLzgAlnE9EltYgpyZndo0tVx+vbUa51TTMpsHmaPujsgFLhtCKbQHycHQncZTTZcChwRZATNYs76bHTjc5hFJWFC94GI+HVfb8mCcAXEcy3oG89oOIQYUYgOX/3iyL2+RqgVeJkLWBeXEZhwL4BD119sVL5NKa3OX9QZkQ7NEACRRTPRrG5UYwTDNNz3LP6FdsKpxxdbtM8tQvt7t0RcFgJ88T2Caro8u+De1uGTXg7S31t2OV3+UxMBKLg/brcthfUBDyAl6vmuCSKXhUq2qc/AzJT/GpG+1Ws9IecuT3sDE2osew9z7s2eDi75zoM3EeEt4UgVTMUPyjiXO58wAN3SudH/ghvQx8ukYIn/zY/J+FFNGRa5RpbNOko64hTSKNZBZptvsCbVQcnK9ggNvhCrTZ4NkOlgUbxMOIGspUYNQ6lu7mxtWRqXAjedkCtNM6Bq+EmYO+unEZhWWaBGXTKukwtSFtxEWrDVdpaYqD//0YDOzDck8y0uoWnGKwhFp5cXxwqAH6N0NvMO+wD8XzF9Dztml1fWOx0+6ViTSolfkDSCCPp3rW4bpG7sx+l9MP48potrLNx9UUwP49TBgpj7iBf4iNJlZ184prJukymFNsDFnlNjac42W+EI/DncNsVYDff1K/BehgprLyRnQExvLzAxDVXw/lCG+9UBoTyf1CesHY5f3hmKf+fxRT4ls0JHefnxzqdWZ8W5IlzMPYoXriWozuJaZPoTehGXxFEu9qc3s6e/Lw2ThsIWfyvCgmGSJ+vTcGvSjYJri8a3qeNjd/pFdUlidSoVkyM2VC6DFQoJixS86+0cZP2RlkzXBwLwsZ2Vxl9hPjewvjdsyQ0futUxJrK8zwPNHuoAASJgG4iaeZee4xM3XYyEC
+ qMa9SX0I
+ jF09XUdq+IpGVTjWS1z4jdRYJAgUKIjf4dXl/vw0o2s60Pkq5uxEdiRP38HIgWKUPFdt9tvJDxNkSvZsPRV52WnR67zsSS8quNLJ/RjPClJGLsrN5oeCwcOo9x1/qBhRUg73MHTol2OMtUdhN9/BfJMAP+zHeZHoThHHRV1ClBr5poelZRvpyMsTbSa6uCq6K39gTJY+h40GmZS9HkK7qDeo6TXEb+l+ll8qhOe6Oq+B/GgPz8qhwAZUPXWvcgCgmkfLyGY9i5PGNzGiwWU71OGKTr41Bl9DEhpd5mR8yW9h/hkWPJvN/OZt2np3OTYRePxeAQpIWK6OjN99xzSV6LhxGLl55RATX617az2SMV+4/9S8HABoT85haUJqpTceZWYPCWibcAafgJbd3kU+tiQ9PH58X0t+JqjtMf1FEHsiNM67jpQDEJ8Dr1a6tmGMT6vUaM0gA2SFaijzA9Gz/DV6FCfioeEDApTgRfIBVMuUqxlfu//1FFTr2olhyDyuQLqY2R0gfQRF2oIXnXqXlqxUNRoZkCt+KNicVwhkIT4nmQwKPhS3LfcgBLPPVSTDhty5VZJUGsO0i5qDOmvliv1ZElA9GvkKwNHNAMdx4bKGLyfRy5w80Hp4H2UicRxYhvJfxrNsLFVBrcoGh/vnXxmAFfSvUIfB0hyIkGnlNA29UqBY//QA1Q82BURHBCmBa4XCblY79yj0mELInxMJZsf3Q28UGjrlCRBqIRaik+FF/TJ5nrIo1Wi7kgdMBibzj+kKm9wWo7mq2n/NQ1ZyYsMgYAKfe28+Oi4wG2x0EttVNg+dKygYLB3K5HBed23cFJs3UwDwClCi+QqRi19amM5BFue1uDAEQ3jjEcXtbi+x4VJr6mxLyzXW68JzjdRtZbCbNVnQXWjS6Esqa2DbmYsTm66jV2VH44cbkVrTcHlzqCZa51/uzNCIno8ix1wouDHFQhV0DJk4Yv3E9teapTRQzsS5g
+ zpyzAl+T
+ NkHrq35LhVbI5Rr8bU81Z1TJUz5WG3bVBHoFirsFLgh0HYSJpH8xMgZvsM4CoLsL5f1n8sFvnr4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,76 +98,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-SPARSEMEM currently tries to allocate each section's page extensions
-from the buddy allocator before falling back to vmalloc.  Boot-time
-section allocation happens after vmalloc is available, and memory
-hotplug allocations do not require physically contiguous backing.
+syzbot ci has tested the following series
 
-Use vzalloc_node() directly and remove the buddy-specific allocation,
-free, and kmemleak bookkeeping.  This leaves one runtime backing type
-and lets a later change add memblock as the distinct boot-time path
-to simplify the code.
+[v2] mm/ksm: clean up scan_get_next_rmap_item() initialization
+https://lore.kernel.org/all/20261115075832.132109-1-xu.xin@linux.dev
+* [PATCH v2 1/2] mm/ksm: extract helper functions for scan cycle cleanup
+* [PATCH v2 2/2] mm/ksm: add initialization helpers for scan_get_next_rmap_item()
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Chris Down <chris@chrisdown.name>
-Tested-by: Chris Down <chris@chrisdown.name>
+and found the following issue:
+general protection fault in ksm_do_scan
+
+Full report is available here:
+https://ci.syzbot.org/series/cc51d824-2b5d-4c6d-bd56-c5bdb2bf5e12
+
+***
+
+general protection fault in ksm_do_scan
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      3dfc09a9493ddaa5e7722a29165d8450b55b4d3f
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/6f9c12e2-f68e-40ee-bbac-84e33b709dfb/config
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000004: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+CPU: 1 UID: 0 PID: 44 Comm: ksmd Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:ksm_do_scan+0x5da/0x6f40
+Code: c7 05 86 a2 b1 19 00 00 00 00 48 8d 43 28 48 89 05 9b a2 b1 19 48 89 4c 24 40 48 8d 59 20 48 89 d8 48 c1 e8 03 48 89 44 24 78 <42> 80 3c 28 00 74 08 48 89 df e8 47 3a 01 00 48 89 5c 24 30 48 8b
+RSP: 0018:ffffc90000b47a60 EFLAGS: 00010202
+RAX: 0000000000000004 RBX: 0000000000000020 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc90000b47c08
+RBP: ffffc90000b47cd0 R08: ffffc90000b47c07 R09: 0000000000000000
+R10: ffffc90000b47bb0 R11: fffff52000168f81 R12: 1ffff92000168f68
+R13: dffffc0000000000 R14: ffffea00046aca00 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8882a77fd000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f15aa3f8c38 CR3: 0000000170aa2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ksm_scan_thread+0x114/0x520
+ kthread+0x38b/0x480
+ ret_from_fork+0x514/0xb70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:ksm_do_scan+0x5da/0x6f40
+Code: c7 05 86 a2 b1 19 00 00 00 00 48 8d 43 28 48 89 05 9b a2 b1 19 48 89 4c 24 40 48 8d 59 20 48 89 d8 48 c1 e8 03 48 89 44 24 78 <42> 80 3c 28 00 74 08 48 89 df e8 47 3a 01 00 48 89 5c 24 30 48 8b
+RSP: 0018:ffffc90000b47a60 EFLAGS: 00010202
+RAX: 0000000000000004 RBX: 0000000000000020 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc90000b47c08
+RBP: ffffc90000b47cd0 R08: ffffc90000b47c07 R09: 0000000000000000
+R10: ffffc90000b47bb0 R11: fffff52000168f81 R12: 1ffff92000168f68
+R13: dffffc0000000000 R14: ffffea00046aca00 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff88818bdfd000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000110c27b575 CR3: 000000010233e000 CR4: 00000000000006f0
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
-v3:
-- Collect Reviewed-by from Mike Rapoport and Chris Down
-- Collect Tested-by from Chris Down
-
-v2:
-- Add a preparatory cleanup that always uses vmalloc for SPARSEMEM
-  section page extensions (suggested by Mike Rapoport)
----
- mm/page_ext.c | 21 +++------------------
- 1 file changed, 3 insertions(+), 18 deletions(-)
-
-diff --git a/mm/page_ext.c b/mm/page_ext.c
-index 39a4464fc979..6196bab6868c 100644
---- a/mm/page_ext.c
-+++ b/mm/page_ext.c
-@@ -290,15 +290,9 @@ static struct page_ext *lookup_page_ext(const struct page *page)
- 
- static void *__meminit alloc_page_ext(size_t size, int nid)
- {
--	gfp_t flags = GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN;
--	void *addr = NULL;
--
--	addr = alloc_pages_exact_nid(nid, size, flags);
--	if (addr)
--		kmemleak_alloc(addr, size, 1, flags);
--	else
--		addr = vzalloc_node(size, nid);
-+	void *addr;
- 
-+	addr = vzalloc_node(size, nid);
- 	if (addr)
- 		memmap_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
- 
-@@ -344,19 +338,10 @@ static int __meminit init_section_page_ext(unsigned long pfn, int nid)
- static void free_page_ext(void *addr)
- {
- 	size_t table_size;
--	struct page *page;
- 
- 	table_size = page_ext_size * PAGES_PER_SECTION;
- 	memmap_pages_add(-1L * (DIV_ROUND_UP(table_size, PAGE_SIZE)));
--
--	if (is_vmalloc_addr(addr)) {
--		vfree(addr);
--	} else {
--		page = virt_to_page(addr);
--		BUG_ON(PageReserved(page));
--		kmemleak_free(addr);
--		free_pages_exact(addr, table_size);
--	}
-+	vfree(addr);
- }
- 
- static void __free_page_ext(unsigned long pfn)
--- 
-2.54.0
-
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
