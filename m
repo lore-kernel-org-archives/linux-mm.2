@@ -1,91 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2D7606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C4E606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mgEUf9NT
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ahkG59L9
 Received: by kanga.kvack.org (Postfix)
-	id 9A8B86B0606; Thu, 19 Nov 2026 05:35:26 -0500 (EST)
+	id 1AF846B05F3; Thu, 19 Nov 2026 05:51:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 959FD6B0607; Thu, 19 Nov 2026 05:35:26 -0500 (EST)
+	id 160AF6B05F6; Thu, 19 Nov 2026 05:51:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86FCD6B0608; Thu, 19 Nov 2026 05:35:26 -0500 (EST)
+	id 076C36B05FB; Thu, 19 Nov 2026 05:51:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 663FA6B0606
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:26 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 031341409D4
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:35:25 +0000 (UTC)
-X-FDA: 85451511852.17.6E66131
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 71A93C0003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:35:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgEUf9NT;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E190E6B05F3
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:51:04 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DFDB120A3E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:51:04 +0000 (UTC)
+X-FDA: 85451551248.09.B3D40CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C2DBC20002
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:51:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahkG59L9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795084524;
-	b=WdmdXUCJetRsx9zz1fiPlXtilTOF2U80ecf/e2wzPtlwWYHNYBsCqpQn6FO4aaOJwJCG1Z
-	Nv/Bd/rF7oSVO7Ee882njSEQKa66NwIoIKgMvLH8CV7wmvcOvlAtJ9q5kTqhKLzOSM4MEH
-	JBUdzHz3KGEIevOmEYRwvFooxR69jYk=
+	t=1795085463;
+	b=u48O8XxwbXSduiOVvqQcYC9sKOPGp/8cyONcs9UOLa8AmdZ5FKGKHpog4BLkWpcFlSbRqD
+	kQo9Fb0cNoq0/jOxFRNd7KDOWKl2MxXrbV1EQsM+QsEN3wlwbUm/2/01wI5l2fsOIJX59g
+	XxcTmz0mvzgBSzmilHKjj6tg7Eewemg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795084524;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795085463;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JsGJnh1Us1nFR2tI0H992ADBy4V/O/OzAtsn6t0WKfI=;
-	b=HQ3Te6fCRn0es10rpkfucOPjp5QnsYdY1hhA0onZb07NO/EOy93h0BgyR1hMyk0GLiBmh9
-	SG1HxONLmTS8R3xUNHShVi0I9SoLjQjzp1ZnRqNiWDqMXNn8wlMX+FmTIKF/PacNf0KjU8
-	OY3erAnOrhAXcFarB5LlmNv+5fF/OGg=
+	bh=yfuI/yQuKLje7JCp8sAUMNEURSvgN1RcCGOMjucNHBQ=;
+	b=VfnDXEvsZjqzqEILfEDx4LepaT0fKGA97j4FyUNMiBaVxIdU0l0N66WFPh9J0QQ3Mtgh2H
+	P/Nzm6RXld5saRRFrX8HB5DopwDvzliqYYA+SX5tKd6LjC8pg62PgPnN0fr+4cdmOsOx35
+	fd92S4goVeOl9prqL9u5+5YgsEFwwlU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgEUf9NT;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahkG59L9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1250262399;
-	Thu, 19 Nov 2026 10:35:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4471F000C4;
-	Thu, 19 Nov 2026 10:35:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DDB14571D;
+	Thu, 19 Nov 2026 10:51:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC8C1F000C5;
+	Thu, 19 Nov 2026 10:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795084522;
-	bh=JsGJnh1Us1nFR2tI0H992ADBy4V/O/OzAtsn6t0WKfI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mgEUf9NTEDNqcpkcQdxykTbsz66R8+TlS0h9eX29pv5i80HtUv3mM09IXMHQXiiHW
-	 SZwP+7AuP1LJCa5Ndk8ozkx/2Dnro0kFhdJfw9BZxJ4IQdPbM8MuqOU07y9lXQOMcJ
-	 nQmU44n5aDMW6nNJyIxE8O2aBXJhhUyiDNxRGP0gtp9fUple2SCXltXcZfUdubVyPb
-	 Au3pRJre86FqFpllT2zTPaVMoq/hIbnrhLpcovtZy2268TLN+j3C4gmxfGmHyZrepk
-	 CPwGN+1V+iIFj6KAv5MzsYqQ1tlsXFkgvA1HA+CTv5PNDudoxWMSoL3LZUwu+rKgjq
-	 BgbeLY+DTwvKg==
-Message-ID: <sashiko-outbox-222962@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH mm-unstable v2 1/1] fs/proc/task_mmu: avoid spurious
- seq_file warning on interrupted VMA lookup
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QWRyaWFuIEh1YW5nIChMZW5vdm8p?= <adrianhuang0701@gmail.com>, "Suren
- Baghdasaryan" <surenb@google.com>, "Lorenzo Stoakes" <ljs@kernel.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R . Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org, ahuang12@lenovo.com
-In-Reply-To: <20261118103421.776-1-adrianhuang0701@gmail.com>
-References: <20261118103421.776-1-adrianhuang0701@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 10:35:21 +0000
-X-Stat-Signature: apkfnt36zn66toprrz5n8cam9q8qx3oo
-X-Rspamd-Queue-Id: 71A93C0003
-X-Rspamd-Server: rspam12
+	s=k20260515; t=1795085461;
+	bh=yfuI/yQuKLje7JCp8sAUMNEURSvgN1RcCGOMjucNHBQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ahkG59L9dcE4oY2xp+HrfLQSf7g8rFpsotvFwG75x/1ZyP/Bh85uerHgyhAly93Om
+	 cKdmDBP75o98gpk588HUBuXcp79fJM/peujxMHMVas40lukKb+jfeDn4xit2/bJBSE
+	 uzBOtyeEAoXAqZRcgzD75C5z0JpcYs3MbGDNWuu8eLHD14e0+UxgvckXHejIe8RxXW
+	 EhEL3GYn9D8TATyT9Fo2j0vR8+sUjJmbkBcpee7DvX8IjR5cli7tXojZbj35AvEuDe
+	 6jhNPmjO3eDcDe53iTyFvAyMFjMlMhDMb8G3FVZmjzeJ8Lz7dC5g0blte6gHdrE5LM
+	 2kWOkOWV62mRw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Long Wei <longwei27@huawei.com>
+Cc: <rppt@kernel.org>,  <pasha.tatashin@soleen.com>,  <pratyush@kernel.org>,
+  <akpm@linux-foundation.org>,  <graf@amazon.com>,  <leitao@debian.org>,
+  <corbet@lwn.net>,  <rdunlap@infradead.org>,  <linux-mm@kvack.org>,
+  <kexec@lists.infradead.org>,  <linux-doc@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <hewenliang4@huawei.com>
+Subject: Re: [PATCH v3] kho: do not expose incoming sub-blob contents in
+ debugfs
+In-Reply-To: <20261119095937.826980-1-longwei27@huawei.com> (Long Wei's
+	message of "Thu, 19 Nov 2026 17:59:37 +0800")
+References: <20261119095937.826980-1-longwei27@huawei.com>
+Date: Thu, 19 Nov 2026 10:50:56 +0000
+Message-ID: <2vxzik1t3xin.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Stat-Signature: prf9dzyc7nnf1g3gqranprqetfnymdrn
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: C2DBC20002
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795084524-919856
-X-HE-Meta: U2FsdGVkX1+EfR1se/0rjw6nzDYEI09b7nksMw6HKWxennZLlqntmoDK20jtyo63pGKegWb4AbuTv9AF62S4nnyjjCEAXFhebnbfX3qH2b+9uVtxKLuUyyOijBljg2o3ooU4E/tDEbWcGx4GB4cIIUiYmCofX1NBAzg6Afl7Ueknd+xPygFhghAIgKzFW4fV8+P9ISF4nd84x7/42EmFXWpnYx65+IF/GECnNARCEMvDIHMUSY0FR5qDdtL7vtBqbmVGWiUP4UP8xwyyqzBY7p0VKrvW8D9qEIWibCbavgU+XtmF5xOwK8A7VI1voBbQSAMYD+aXAa5+Vet+KyqQ+fx+05XBGucFezX0+WRghrWstbAJKa9JoQEV6UPWD7QEPyrbe7MEhrgdnM2C3pIjjOI786OHymotIxPodXNF3+kvVbuoB56Y/jb7vTuS5X7X8iZTnZgOs0BAocxMjykMbIxUHJMy+2SgktEWQE57c+O5vd+rhp0heXHwLJ7lTBJp8jQwL+cD5y66ZH9kpqnTYXYn1JwulX4HjDqFyZcfuNlfR3M02W5+JbBseWJjf/CkjORLDHUXwNy1O1Y8tMDJWRxjxVQllH9FCRpdvsRBntxIF8TokYKhDSfelufhKJuKWURVaiCAD6Gp/w64YRM6EuLC/M/yfzH2OfmDg4zvk89f5pQz10paE+MjqMiXpvenji7gBd9cABAUCQjwzR2Ej/Vs53maSnJYxN6WnvDO5rJbGyHA24WR9kW/xQcQ2PNtEETEeCS2fWuawhxWc+K9fpfTHEaYiLnIfWuMlQ8HjpicVMgjRct7JucbvB9ClvagdQe9uifsB9lWINLRT0opYbqUQTVDIsAYBY39n148uH5Zr4oNeON9dNMBvurlEPuKQN/TW/OBdtXKqaWRnBlrjRev56kNvQvnMkvc8Li2Z0urCmmw7prB4tGDx6agn+4YNWoRhv9vguRrorqwDIO
- sm3UGE8g
- i3J1YtCZB6mjPkOgeRJfK3u/2+woDQHrwffBCmgtedUM0HqCYX/JDyifFRs3n+DboJ/TAzM+9K3fF4mypfsYPAVZ3egw2kaxU/ZPww64pCTPKUY0i+HgDinuLAmkqlXfrDgck7pkF27LoT3TcCMmcupeQkApH9lcSK0ChO0tQnLzdNIYCaBVzqj7qXI4AIpAyvctLgk8WigrPOMjCYh+ZCViplRN7xJVngbyd0bpkzsqAsF+WXiDfKT5zSf+HNOVI8v0OFB7/+an4SGQPNwdsGIL/MzrpLQlfa6Xg7sOarWX5BxBMnVbS9IyeNC45i6NPPehSmKq66ZaWgI56IBGKG4qfnQZibfKfN79EIh0jMBOl6XeseZiIRj5aTgnIESSHGdICNrgctsxafxRxJ7C2Y8B44v4mAF41p1dIMW5BcD13MwkJCkMb8NHDvvdfk5iH2eMgu2QxaCC1pPTQenZ8K6ru0vEGBsSySe3xsGzHyoVxsPZyIiU0Dgrt8X81tCjLBRF25AaszmQdjNAbGaFtMfBeGpVhPEsOOshjgB7FD48ZyT4mgGjMpTYjYLhufslgbNFpj+g8S398gxTn5kRaZDL1r865RAfeU4OmJnGk3RPyB2nwb/kKKylG1nqmOl4ChLbjh8rHXGRBeP0y337wSCwN/kAMWhK3/24nAGaWbqSamYj9zIhwmR1VIrHXgz1z2dIZ0SbJ6prQ38obuCv/Qh+5hOR8oT0415m6S7cEzG5uiOpVoCbOTJc5S2qPpFCmfqNdLgM/XN0CLzihQt8goq8V88Jvm73b/LcGvT8DkEG2/gXVOg+Azkeh7BidI3rBlsyJH0zr/c9/8onyXITxXsm5kE1DmH80ILoj
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795085462-303962
+X-HE-Meta: U2FsdGVkX1+ArB2wUDnEg3FJ847LyGjMZSrFYjgcYgzVXM6KOQ9x+OeMzHCV97Zp0QPWRuNcpR2DHWc81hJxpggN6/+qxcQ7k9n72AeZaaugK0Tw7rkKJxzIcx03xocKHLSFvbUTswTPZGfV9gM3YIbLTmDwCUa53Yw3bX3iyW1J/jWROdsMOrwNzjZQlArqK+nE/urqUJBi2P5qgloygaTBGQ2WWCUPI1w2+QvvHe8sy17LSW2di8IYKB87EcEV065xQRFYAGQVX72jse48AKjCo/W6XynCjdx7opJPvewkj/YOEv0QXVNuMk7+ZkloHyN1IlpdJd5oNyXPKgBc6zwOnDzIwq4Yzh5AVqFNF3V1bECajxhK/r3GRzJ8b/wsD+wiguY3iJJqsukvZAOzGAcRqsT1IhwfRPcRTelxosgRUvp43J6UAhnzNjPUhTodHdVjOPR6Y9mjvCp6y0SoZP1cevAoaaf1RNPgEwFSd6tG+JpoSKbLSLMl29UoB4gR+c0/8CDDRU+0HUJipijVcABEpSZCvxSgJGBz99gSnQQJ2QzxgJzd9ZVe+EDfcWnk04Px3sHlCsoYv3ecyKcqn2mJFF6IxMQ8nSB3r/zw2iJU2pgLJqERSnJaV54anaojr3hF6cDBn5kBMIMb+AiWQmDIG/Yl9NDRq3VMX9jKCiON2hsRzK5t2TrQVP32rvp42cA4aBKaewoxxdVSantLhRWzf3JD9FN7bkwqnQ6JiXUIoZEMLIuP9bey8cuRqFJhyN0vve6VcxMau8MdP65SG36qpnBcE/6L5Ls08mwTMb0XARZKBfYbn06K0GsJyXectCM2eaKcP8qLQnMGaSZQevZJC71oan0G0rFvH/WjvVhJbAD6iIZHaQ/xd5okBRKJy6BDafH67byaiI9Q1+M6J+KfrkIhZX88fb7ir7+EKyVWT/gFcac7AvC1SjYr9kql9CZca6Z2GsVpZokqToL
+ /TQ/THBb
+ cqXnrP2G0J19GWqwGGEiCGg7SP+qzK5JKJaaSYPT5DGkKs5pXZZVgmCX8IGr89FqmccuwKs+P2PXYxH2csqehnLAo72yTZdOJEGVlrQOCyZ0qL2I93+vgn98rs7g55znRS37gGl5pqLA29oqFJoL96/PkzIP9CG5fOkcVlXnX0aN69XUj/dqHuW93KQuukojbKNCnYhgyRm8WhtaC3eS8y7GoLs7NYg2KRPbdFOlCJ/mHl61atL1NpOtZwzob/HekzRP8EnRJjPFBdORBzDQe65Fcdrses7QBqiZMkR5fwhUTJ6qjUr5/zHJvXx7Tckxva7pvPlOlW1PqpS1hE+sxZGbS8cLlxU6w2jBPcwIG2spRcU/DFrDbcpw5B4qy8TCB5a4VquzT6FtDq2e/4fGDnRJ5kiPdRvBaGzwfy4dMpWW1rdV5ajl5kRVG8prGXs3gPPDJK6ziUlwlFQzeg5Hkp0epbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,50 +98,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] fs/proc/task_mmu: missing Fixes trailer for commit 5631da56c9a8
---
+On Thu, Nov 19 2026, Long Wei wrote:
 
-commit ea1e2d22fcfe8a8b373cfb53c201e13a9ff8f69b
-Author: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+> Incoming sub-blob pages are owned by their consumers and have independent
+> lifetimes.  Some consumers, such as LUO, restore and free their state in
+> early_initcall, i.e. before kho_init() (fs_initcall) builds the debugfs
+> view:
+>
+>   early_initcall: luo_early_startup()
+>                     -> kho_retrieve_subtree("LUO")
+>                     -> kho_restore_free(luo_ser)   /* page is freed */
+>
+>   fs_initcall:    kho_init()
+>                     -> kho_in_debugfs_init()
+>                          -> phys_to_virt(luo_ser_phys)
+>                          -> debugfs_create_blob("LUO", ...)
+>
+> debugfs therefore ends up pointing at a page that was already handed back
+> to the page allocator, and reading the file triggers a use-after-free:
+>
+>   # cat /sys/kernel/debug/kho/in/sub_fdts/LUO
+>   ==================================================================
+>   BUG: KASAN: use-after-free in _copy_to_user+0x37/0x60
+>   Read of size 32 at addr ffff88810309c000 by task cat/27436
+>
+>   Call Trace:
+>    <TASK>
+>    kasan_report+0xb9/0xf0
+>    kasan_check_range+0x100/0x1b0
+>    _copy_to_user+0x37/0x60
+>    simple_read_from_buffer+0x77/0xd0
+>    read_file_blob+0x75/0xa0
+>    vfs_read+0x12d/0x520
+>    ksys_read+0xc3/0x160
+>    do_syscall_64+0x97/0x4b0
+>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>    </TASK>
+>
+>   The buggy address belongs to the physical page:
+>   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1fd
+>   pfn:0x10309c
+>   flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
+>   page_type: f0(buddy)
+>   ==================================================================
+>
+> The page is already in the buddy allocator (page_type: f0(buddy),
+> refcount 0), which confirms it was freed before the debugfs view was
+> created.
+>
+> KHO does not own these pages, so it cannot safely expose their contents at
+> all.  Drop the in/sub_fdts directory.  The incoming FDT is reserved by KHO
+> and remains exposed as in/fdt, where the same metadata is available.
+>
+> The incoming sub-blob debugfs directory is gone, so remove its description
+> from the KHO admin guide as well.
+>
+> Note that in/sub_fdts has exposed memory KHO does not own since
+> commit c609c144b0e8 ("kexec: add KHO parsing support"), but the
+> use-after-free only became reachable after commit d376e4b55c9a0
+> ("liveupdate: centralize state management into struct luo_ser") which
+> added kho_restore_free()
+>
+> Fixes: d376e4b55c9a0 ("liveupdate: centralize state management into struct luo_ser")
+> Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Signed-off-by: Long Wei <longwei27@huawei.com>
 
-> fs/proc/task_mmu: avoid spurious seq_file warning on interrupted VMA look=
-up
->
-> Commit 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under
-> per-vma lock") introduced the possibility of returning -EINTR from
-> proc_get_vma() when a fatal signal interrupts mmap_read_lock_killable().
->
-> The issue can be reproduced using stress-ng's VMA stressor, which reads
-> /proc/self/maps while concurrently modifying VMAs and periodically
-> terminates child processes with SIGKILL. The reproduced command is:
->
->   # stress-ng --vma 0 -t 60
->
-> When the VMA lookup is interrupted, proc_get_vma() returns an error
-> pointer without advancing the position index. Consequently,
-> seq_read_iter() emits the following rate-limited informational message:
->
->   seq_file: buggy .next function m_next did not update position index
->
-> Save the current position in priv->last_pos before checking the VMA
-> lookup result, allowing it to be reused by both successful and error
-> paths. Advance the position index when returning an error to avoid
-> the spurious warning, while preserving the original error handling.
->
-> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-[Severity: Low]
-Should this commit include a Fixes tag for the commit it identifies?
+[...]
 
-  Fixes: 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under per-vma =
-lock")
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118103421.776-=
-1-adrianhuang0701@gmail.com?part=3D1
+-- 
+Regards,
+Pratyush Yadav
 
