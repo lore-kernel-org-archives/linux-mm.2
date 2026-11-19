@@ -1,101 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465D5606A335
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F12A606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=B+Mfu50Z
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MIHzLV8A
 Received: by kanga.kvack.org (Postfix)
-	id 629746B05D8; Thu, 19 Nov 2026 05:57:57 -0500 (EST)
+	id 937036B060A; Thu, 19 Nov 2026 05:58:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DACF6B0609; Thu, 19 Nov 2026 05:57:57 -0500 (EST)
+	id 90F376B060B; Thu, 19 Nov 2026 05:58:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EFC26B060A; Thu, 19 Nov 2026 05:57:57 -0500 (EST)
+	id 84DAD6B060C; Thu, 19 Nov 2026 05:58:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F43C6B05D8
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:57:57 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B618160A42
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:57:56 +0000 (UTC)
-X-FDA: 85451568552.28.CBA2418
-Received: from mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3EC64C0003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:57:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B+Mfu50Z;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 61B396B060A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:58:20 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F250FA8764
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:58:19 +0000 (UTC)
+X-FDA: 85451569518.30.8C153FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 576654000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:58:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIHzLV8A;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795085898;
+	b=r/NKrZTp31zlV4nADfTIAf5avyRsXe/P4fgRUlIwDhjpjmt5wulh8MqZis9cTgSdGk6OlP
+	Hog7nNMKoutLdLPJlpJStP3wVgxfVektH4wtqme2KGLnmpwWfYDF4XtpwE+w2eEVU5ED/p
+	SO0FDeiD8rgtF3aM06VrQvQZixrIsgU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795085874;
+	s=arc-20220608; t=1795085898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nkep9V+9M81dGzA4DVoTUAoMFfZAfhwxu8MxQVdO5n4=;
-	b=vaqXMrLui+GPlsDJu01ggxT2weeuG854D78tW1dLsFAj0NDX/4IGW35RjSZ10LkO5QmNoz
-	d1LRTQt33hEBERYwlPwcM5V6/im9fe4a0lfr0mIh5Gb/v8x71Ji1fydoKlC1vsSqcZ4er7
-	9WUAThZ8IVNRweVJ1yQZz+RT0gRxvgU=
+	bh=+o0bQUd8q0A+WRUXZxAmN8P7csYU6Eu6m9jj0vuUv3w=;
+	b=gFgWRnYRQ1CN1OOxJ3JV8iPdZOlS+NefZ/GPA41s7T/iA3HZwpCKV2QBrzn1HaNrn9FzUR
+	dSKRFnNYdZgzEuFlBd/OfrYbr0vD1xMYNjSIIY8jpX9CiYEMYpqW7ywHfQA3MKya9M9t/n
+	5FfVEWuEqkObp8lem/nc7l1u0W7EsbA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B+Mfu50Z;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795085874;
-	b=lz66R9cScQLm/tCsDvUtla99/zi+2tFSHbvUgozyNEYUnq39ed8eczy98C2PZedSiy9LNz
-	VI11eKYjn5Lp+XgNMY7hpp86K5lUjJude+jiPDU2kASLUlf7US3zdRPUyGzUJK5QD1k84F
-	Jrwd6em+u5g7oeWJyy3wyvPhHNddenY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NEZHan1kWUfbBPUsTRpDo31GyAtxZjws+3uudEspXMo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795085872; v=1; x=1795690672;
- b=B+Mfu50Z1lUc65cuVrDJPztWYlRgjPCUnEdUzC3yz15EYrgDUMBUzeTHVt3I8xp0ux5LYg8j
- 2wfeFB+VtW6S4P9mwexfDThe+mHv4LCiOVIOnI6kaTEtgmoydy1TxhdqdrGjspc9wyU0qk5AZTp
- SRokNbBU7sXYBuL73OOxgbGU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d39bc78d310ad665;
-	Thu, 19 Nov 2026 10:57:52 +0000
-X-Mizu-Trace-ID: d39bc78d310ad665
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c86a3b79-353d-48b8-ac7d-eb87920feb66@linux.dev>
-Date: Thu, 19 Nov 2026 18:57:40 +0800
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIHzLV8A;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 050A1612E9;
+	Thu, 19 Nov 2026 10:58:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA28D1F000C4;
+	Thu, 19 Nov 2026 10:58:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795085896;
+	bh=+o0bQUd8q0A+WRUXZxAmN8P7csYU6Eu6m9jj0vuUv3w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=MIHzLV8As6nXxtqY6me3mqzdXMBaRaBOWQfGJwhvK3jossC2GDG2Ra6MFKWW4G+PA
+	 FSE2j3Y2nrgYKsoZRqeaQlmmR8HldEkKQX/ibJlGfPtyxwuDyYtL+xn/5wmzzz9v7l
+	 5FGWgzmXPkWsCVt8Us7AHZKoM27j4CijTLiDv3A5kZZVUgHGXiPdfaNJLoY6UIIyb3
+	 5zUQWEG9CGNQ5rsRZ+yKBwxyMv1MVd/HvFPW6rmUc8+i1/G3rENaOYczrKWZpdGWCp
+	 PdEYWVcB7FsPeI2kwfT60Qzmw+M8L3OMHvVFc0+jgQvHEL/6alUpmO0kf3kFqCnvDg
+	 nyLPMZIojBYvw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: George Guo <dongtai.guo@linux.dev>
+Cc: chenhuacai@kernel.org,  ardb@kernel.org,  pratyush@kernel.org,
+  rppt@kernel.org,  pasha.tatashin@soleen.com,  shuah@kernel.org,
+  ilias.apalodimas@linaro.org,  akpm@linux-foundation.org,
+  baoquan.he@linux.dev,  ruirui.yang@linux.dev,  guodongtai@kylinos.cn,
+  kernel@xen0n.name,  graf@amazon.com,  liukexin@kylinos.cn,
+  loongarch@lists.linux.dev,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kselftest@vger.kernel.org,  linux-efi@vger.kernel.org
+Subject: Re: [PATCH v6 1/8] efi: Pass KHO state to the next kernel in a
+ configuration table
+In-Reply-To: <20261119082252.9120-1-dongtai.guo@linux.dev> (George Guo's
+	message of "Thu, 19 Nov 2026 17:22:52 +0900")
+References: <CAAhV-H5Vse=pKC3Beqhqxa7fqadiGVNqkSy_06HZ3Luw2Pmj5Q@mail.gmail.com>
+	<20261119082252.9120-1-dongtai.guo@linux.dev>
+Date: Thu, 19 Nov 2026 10:58:11 +0000
+Message-ID: <2vxzecch3x6k.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 08/16] mm/mglru: lift youngest gen protection for
- higher priority
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
- baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev,
- kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org,
- lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
- liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org,
- mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org, ryncsn@gmail.com,
- shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com,
- weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
- zhuhui@kylinos.cn, sidchintamaneni@gmail.com
-References: <20261114200803.23129-1-baohua@kernel.org>
- <20261114200803.23129-9-baohua@kernel.org>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20261114200803.23129-9-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zr1s9ka8w7j1o7jjmtbbp5uch8zhjri9
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3EC64C0003
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795085874-645472
-X-HE-Meta: U2FsdGVkX19sBXov1JIDZMMdcQNt52cVPTTgeVSmcwYoFAAlEX/XdaelN6jGxeXBtV/bu8pGTlE6C38yZdNb3+Bfyb0T4PNJM4ftC1qe1YZnOmNujGbVd+mUDVEXuyLacEoUaKj0aSv2en9vpBYd5zCBYKS7/MPOQPIEaAgUUGEa/pCMqSYklByY32CHCshjrZwe3MXpuDNZHYOleusiM7ETTqDTXL/hSrRizwkCgDGafzpT/CBclP3Vy5TQwgkIOkxFARnalN2oRDlzziEgekpbACB9kfeiy3l4PfctlI4I1ryB2g4SVO6rh1YIcyKPqrga6I3HnFqw70KlqlTL1fxFDc0QQDQAGENZ7ncTD1uqrvi98RG3rEXRGSV6dcccLR+3QSkgK2YzeUUSjFxECtmFmzwU63OC30XYL/gZRrmIWfigy5lDbE6/DarHxfNi+9kC3VuDsS39/EKiBY9TvVhG5HM9/0oGYOsi1RBfJMqQ9ibtPGQPmlp+Jkz1wuq67YJwWJx4Qq9gFuW1gNV5UfQ8dKkxbj3/7RpQDMQ7W3u3kGh0eHoyAWLOFmSDaib606izgbcqwdfBFbjUBLAvJ/Gr3eV0i7eA536nhGrSxgSSS3+x4yiXC400a8ev1A2lE0i2uJKfp8kN1LhTDqFvqatszYwt+qPs9tP7MrSlDaKwL6q1Hm9qT3N13YnKaY0wDZdkBo9LRzmPo7vCgkAqn84be34lFDcyAXHoW01OUnqyN+W2xJ/ITRlVNOk2ACcAZBgVMoxxhEJb03HxDH6PzTnLW/jv57VKeJyyX/2TsvPhaQRTbmbHk0UOAM6LJsXyhCxep9HTRIy9mvFOZPdiN5xAEkEWZn2/lvUJsovCJeV1ixYkHQ2aIsUTdNzCJSW24edl3bHnxmGXkTiJwsIH1yiXxzIfUgiEo5sv8zcANmkHyX0Tl64XTGfh/hCfPZHKHTWlcW/E+WyqmOtyyNG
- LrYsv06O
- fr7wq/d5ys4v/b1CDl5VNfDzUU3qo0lTL+qpRsGIELPNXVzboViFl44YRSW5ubwSahyk8pdoIPs8C3oGvtkjyJ1prQVKxvWPlEmjObxBcArhc53XCg4gAjSQIRcvDvRGmgCwiZiqbIk/LBiR4l2SOeesrRW45vvXUQHZgjVyCxcKUaVu/HU/Rb+A1vYJ3pGQ+X6L7NYUM1tphsmtZaW3rMjqBq9YhyfC8RIcEqGdXD7m7XE1bnq2Rdq5T1D/lYWbofGM0RGNLKc4VX70TBQbJ4UlNP8s3W0nQbogtDKam7/D8DzwphNsJvPeEyBQW8u+8zOFdtlkgLSCLdfc/IuF79yI4I6zn6PAGFLXi3ufc/FupI4jLVQU1/gZQsDf7u3L1o3QpnLjo12Kjo4b0oYoTi+vlpbO7aUV6zNwRh5VBIc8CPr8=
+Content-Type: text/plain
+X-Rspam-User:
+X-Stat-Signature: c6k95ofio7e6f53xib5s4cj4yjot1wem
+X-Rspamd-Queue-Id: 576654000A
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1795085898-542356
+X-HE-Meta: U2FsdGVkX19Uhdt7yAFoqF3Denr23UK3fVvrhX19BMq+jLE69JawIWLpWu3wyp4PLqBpUZcSAWCpGPVAsAYWZcXhHkpXBmMyN4DNFZtKRa0HRaLfXJfvkEpLGesGkjtl759/rDOM9R2Dbn3lv459mIJE0cb2h084aTtnDF3921gHgABaw/RNmNWoIIMRxuoi+E/98Pe7FX9F5yO81lZdj/NLcnIPAvNo3yJRVi57Don41losJ3vBIggDuA6BQ9jAa6hRi/WVk3z7GboTFpfoy7QikZ6a3HNDOfNPQCm05SXlNBUA3o+1OON6vL/UvZrPQu2a749ehAR5IlryQF+ncKNwe8A5tqpVP7h6NEfu/xs7rha9dtx9qNFrCuyDR5sZqDk9c1oqaMPVJcRIPTdTDBJhTsV6Lkwc/FB+WCBU7PER3HHoHHO++38/3uHPWTQkRHRPhvTfC/gLGzo8BFZktZz0/T5TJHmJ4d8WJA1vmCyX+3OjSfS3qM7T7W/LqvccJU6OFzS0FdL5fqgmSO9I76Agv4hys3efz2XaPKJ0Df9wiCmc2P7b2yaBTGy/NYBAIYTOulKGa+G3Mrc16SRVzbNju9MVN81RoZ1hM1eKchN0dnYxNoGOk7lB9jvckjTE8U9OYYPyMTnVpt2/qiq+UnpPn9/q0k6U4wU+EZNANM1aOZrr5E7gc322cj5xJ3lZiW9/4LtsjV4orhHwgO12D65vgnre1g0nstSOTSmJwlUpZAFnxCLhkytUFhA12YR45BxfAWujuQR95K5oj0N6g3VYFHQiDDUtcE0knKepYkvwrXCqDApsj2lImit98g34j7QcZucCUVw81GesGyJoYqnZDLs+anaTJMtH1CWLZeTt4V846JcZtKLKuS7gxBPRDgZ9ES9Da30OS4n6lyuYcAbrY7YXZqSpPNZnnVV4Hyo+HIXwMerN2YKasUpS2khU1qrt8FzL5uDJTiRTcJk
+ NNxZ3L60
+ 2zgtWPDCj8vCr/2/opA8n91yh7IjjvRD/H0K1so4zYhlScJfg3hybIpiOcMX43wyAKit/tgGGWdBOVyNrl3UbdKkUiGpuVkSXYB08iTO9a+QGIPyKAw83/03MEusyqnyXN8vbpclqIvWGpi6wF8xH7UFQx3dycZK7nZ7UtcRo1ba+P3EFmrLG3aoOlssEU0+TBjpzwgkB5JbLpjtv6UqaksSGRMIkQxg4Nf5NaCqSf6oftttWpgzG+OJoZzkzHPPQAuvgWShXPvj0x8p2tXrj73yNnGmNP0ZjeNIEzw3GM049nOcsCuM7Dwn3gB97QmNEvpzHAGE+KttkvhNWAlp4Jen6q0JQG9sGDoVWHNFwvnXyl/unvR2W5cSp2uNsKoiNQY0OUiSF0B1Oi+E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,80 +102,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Nov 19 2026, George Guo wrote:
 
+> Hi Huacai, Ard, Pratyush,
+>
+> On Wed, Nov 04 2026, Huacai Chen wrote:
+>> I prefer to keep it in LoongArch until a second architecture, and I
+>> think Ard is the same. But this is not a strong objection to Pratyush.
+>
+> Kexin Liu and I have tried x86 as the second user, to see whether the
+> common table holds up. It needed only small changes:
+>
+> - The x86 EFI stub installs the table, as the LoongArch stub does.
+>   install_kho_table() moves from efi-stub.c to efi-stub-helper.c so
+>   that the x86 stub can call it.
+>
+> - kexec_file_load() skips the SETUP_KEXEC_KHO record when the table
+>   exists and the next kernel will get efi_info. Otherwise, for example
+>   on a legacy BIOS boot or with noefi, it falls back to setup_data.
 
-On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> The forced protection of younger generations contradicts the
-> goal of minimizing the I/O cost of reclaim. Under high memory
-> pressure, MGLRU can repeatedly trigger premature OOMs, while
-> the classic LRU does not.
-> The problem is that aging may fail to keep up with reclaim.
-> When this happens, reclaimers may all abort prematurely
-> because they see only empty generations or just two
-> generations remaining.
-> Proactive aging does not solve this problem either. The
-> number of threads performing proactive aging is limited,
-> while the number of concurrent reclaimers can be much
-> larger. This is a fundamental limitation of MGLRU. One
-> possible solution is to use an aging lock. However, the
-> aging lock introduces significant jitter under heavy memory
-> pressure and has been reported to cause noticeable lags
-> on Android.
-> Furthermore, the generation-based reclaim model can
-> conflict with the goal of swappiness, which is to minimize
-> I/O cost rather than blindly follow folio hotness.
-> The previous commit allowed reclaimers running at
-> non-default priorities to reclaim up to `lrugen->max_seq`,
-> while reclaimers at the default priority could reclaim only
-> up to `lrugen->min_seq`.
-> This patch further refines generation protection based on
-> reclaim priority. At the default priority, reclaimers can
-> reclaim generations down to `lrugen->max_seq - MIN_NR_GENS`.
-> As reclaim priority increases, reclaimers are progressively
-> allowed to reclaim younger generations.
-> With this graduated protection, premature OOMs are no
-> longer observed, while swappiness is also respected.
-> 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> ---
->   mm/vmscan.c | 10 ++++++----
->   1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 18cf1c084e78..b538abf02578 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4772,12 +4772,14 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   	VM_WARN_ON_ONCE(!list_empty(list));
->   
->   	/*
-> -	 * Respect the gen hotness distribution at low priority to avoid
-> -	 * aging and scan cost, but prefer to satisfy the reclaimers request
-> -	 * when under pressure to respect swappiness more and reduce IO cost.
-> +	 * Respect hotness at default priority, and only reach into the
-> +	 * newest generation when under severe pressure, so hot folios are
-> +	 * not evicted as soon as priority is raised.
->   	 */
->   	if (sc->priority == DEF_PRIORITY)
-> -		seq = lrugen->min_seq[type];
-> +		seq = lrugen->max_seq - MIN_NR_GENS;
-> +	else if (sc->priority > DEF_PRIORITY / 2)
-> +		seq = lrugen->max_seq - 1;
->   	else
->   		seq = lrugen->max_seq;
->   
+Do we even care about non-EFI boot? I'd say ignore that for now until
+someone comes with a real use case for KHO on such systems.
 
-Reasonable.
+>
+> - When there is no SETUP_KEXEC_KHO record, the decompressor's KASLR
+>   code looks up the KHO bootmem areas in the table, so the kernel is
+>   not decompressed onto preserved memory.
+>
+> The table layout did not change. The only change to the common code is
+> that efi_kho_table_found() is no longer __init, since x86 calls it at
+> kexec load time.
+>
+> Tested in QEMU on x86_64. With OVMF, the KHO vmtest and
+> luo_kexec_simple pass, and the second kernel finds the KHO state
+> through the table. With SeaBIOS, the KHO vmtest passes through
+> setup_data.
+>
+> So I would like to keep the table common in v7. Would you prefer the
+> x86 patches in the same series, so that the generic code comes with a
+> second user, or as a separate series on top?
 
-Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
-Thanks.
+This should be a follow up series. Don't get your series get caught up
+in x86 changes.
+
+>
+> Pratyush, does this match what you had in mind for x86?
+
+Sounds good to me. You will still need to chase Ard for an ACK on the
+generic EFI table though.
 
 -- 
-Best regards
-Ridong
-
+Regards,
+Pratyush Yadav
 
