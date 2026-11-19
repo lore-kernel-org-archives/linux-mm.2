@@ -1,163 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A8C606A335
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FCB606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AnfNxf5L
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ernvEvoL
 Received: by kanga.kvack.org (Postfix)
-	id 5938B6B065C; Thu, 19 Nov 2026 12:27:55 -0500 (EST)
+	id 613CF6B05FE; Thu, 19 Nov 2026 12:34:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56AF36B06B6; Thu, 19 Nov 2026 12:27:55 -0500 (EST)
+	id 5C4286B0643; Thu, 19 Nov 2026 12:34:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4585B6B06B8; Thu, 19 Nov 2026 12:27:55 -0500 (EST)
+	id 4B2EB6B064C; Thu, 19 Nov 2026 12:34:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2192D6B065C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:27:55 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3DADA8736
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:27:54 +0000 (UTC)
-X-FDA: 85452551268.09.5C10E9A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DB357140015
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:27:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AnfNxf5L;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795109273;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zRB2iBq3b1trvS3BaRFp13nknOER9bN5W242hzxBiKw=;
-	b=D+H09+6wRaCGllF5I4HDglguT7QcNF5fH8e5gL1iTh6sSb4ql1QpGxXLo5cCVyytsii/fz
-	G0PjKUr+WCmlr1ZHVn1wN/XzyJ/tIHWuWP/Km/PKEC4uhmWzSkq40IFKJwfmQ8vW6d5NPs
-	syCV8JSukjX+3AiYQUhS2wYIfiYy5uc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AnfNxf5L;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795109273;
-	b=dNK/XWGbHxLNvS/A9EZT9xleX51JgKt+uOaoEcx0JLzKxyI8Kkdxkmf1jU4TpnAl8PCJwm
-	WWbLR4xc46nFZsWIb8eJwPsWJYbi4da0vnpC5Q7b/EgBfMtvlbUUUVKqV8oIjeiP7DCyRT
-	FkY2WEQna7xCzeNyBsFwLLzmBr20YQo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 412EF618B1;
-	Thu, 19 Nov 2026 17:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739DC1F000C5;
-	Thu, 19 Nov 2026 17:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795109272;
-	bh=zRB2iBq3b1trvS3BaRFp13nknOER9bN5W242hzxBiKw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AnfNxf5LM22vzZD8nXcrD/0SG2E9fTT8YWOR6JzapSJ7AcyQ2Klpfhu1KKu/qTUjO
-	 OfE5NBQDq8R2209ewjOjWZHcgu6heHG9j6IVM73UtkJtf5dzMvym7ZRAYQeqxBwqec
-	 v8+GIOGl9amaTNmHImGr9XH5erfGIbN/1yoNi3PJwA9UVXi5mzo4Z/FTuaIch7CvhL
-	 27IAVgOtmDPkh7UHu1IaDDW5NnI/2oZCWHQvcdx7dSqcXDcy1purPDlSihoO0bqjax
-	 plIaUUvArqjr3jd+rEebKHEFyezYY6J7mOhAENFtSfDZHevO+fwzmxV7xebUbizqFt
-	 YlU7nDiUyQDcA==
-Message-ID: <80849862-19d6-4497-902d-8acee4e2a3a8@kernel.org>
-Date: Thu, 19 Nov 2026 18:27:41 +0100
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CF616B05FE
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:34:31 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A6D7160BB1
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:34:30 +0000 (UTC)
+X-FDA: 85452567900.11.A8D3D26
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D80BD1C0015
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:34:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	none
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c50a2efbe1dso2436266b.3
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:34:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795109649; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BBEwQsWU59hVMkBox8x4zI9YMxoXNXR9seosNSOZy303akHHwglUOsrDDoG1/bf8mB
+         m2lMWA8dD5mqT2c8+X7RRaBPT9fh3UguU6MpEXsksBeD/+YDP1ksCqHncHRTszXb/Jgs
+         Q6wOKEPNO/+2BTwHQDTdjKGiK8hSgqIQTAMS/66uIZFxeHApaP2TfLN51QGdT/nA6xQC
+         eLVAwG2DJEPqYpROegCNckL0Tkn+x0bOwkK8CspEgtolYgoaJjBzSlg+kzKK70Ar2kSM
+         QZzPU5WEWkobTdYkRX56kms6Ff1mnIdiRgCRxDXlZbv9CoXB7Wfgh9L1arkOGdTyMmHQ
+         uRrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GU/DHzsJXxqhMdzOYAA9Okmyib9cC+TRn+DETm5eoNw=;
+        fh=5z1VCU5jPLFuEM7U1Y1xnQj1jWK0DDszicBWVLWc78Y=;
+        b=L24I3YxVuziQ9KAxcOY5WO7Tp4gVs+XMp9sp6608YxNeNtU/UuIt/9r1iysRZ7cLJL
+         wZRYLMZMYsywUi0s1ui5j4Byc0r6Ig+u0i2ndKuoq3L48fi5iAnsiOIIiUaVKMiLHXie
+         3XyzcaQE+tWSFs+XYSWWJdBUBNKX5gXETQb1THiu7tdk28dTKrNu1bPvzGNh9EnXLovE
+         29uY5oP9/OzVrw0maLN2ug6MAnXy/FROCl8X9EvG5UMEUVrP4bONgx3Cz8RU7QC3wcaf
+         Bm/5uA3I0oOFTG7Qyc3lrFLUD0kANgd/jy89aDB/a97oZvaRjgB4zMTzUBAG2fpo7AIc
+         kuWA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795109649; x=1795714449; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GU/DHzsJXxqhMdzOYAA9Okmyib9cC+TRn+DETm5eoNw=;
+        b=ernvEvoLEZeAL7a8n418hhxlOhO0m/bfvhJIzEXcXQU/nlFDyQchHt8MO7hzrD4/rD
+         VI5wSQyvP3VVrr0HmQJXLCz2n9MnBv/rZuhDjzFP00TeZ1iv3lGxXNU96+W0PCJgsGU1
+         LGGyw/nMESqqpLDjLV0h+dHv+OAhkgMGw09743jm8W3zC4mwphXGVsp/fcBURHV/VJ8o
+         4N12I0wsWNWWG8YNF9o0lvPES/qTBx5At3A1G2Qt0QgOB8cMeQJvHVwnMkd/PnB8vWHv
+         KUIYVfdDd++tYtfEMi8OWuIJLznMiETybj7VsHybFkQ4UT+gQx40OPkTMg+uzCLCaYit
+         AF/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795109649; x=1795714449;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GU/DHzsJXxqhMdzOYAA9Okmyib9cC+TRn+DETm5eoNw=;
+        b=EZ9/2p3l3N744tUqE8pV1ObOBEfXMItqc9eBbPKB7az1TRMtlO+2zE6gq0mVJazwrP
+         RYbn8MfMAsRynKLeQbXJi6g+pcGjEEuAYUob6mJmau+cSt6tefY1EubfVSv2rstm0Aah
+         jmqseP0+PZaFa6hzikWnCbkom6Bw4Wb7xwHdWrr06PXseM1QS77zQJrU+6i8Qd6aqO5A
+         omMIao6qvb8/5RZ7yFKVemXS5G1ZxG/cNGhF8/Pais39X1CdDulO4mbAsFQIr/IeXFxe
+         bldpFHgJIE2Cvgwu3A0nvDcksnAkqcQXCYT2cf/qATTZH601rQBHUzg4l6X0fUDaPfJ/
+         jZ8Q==
+X-Gm-Message-State: APuU4Z/60X48kcdqS+E4ObVmfhsndxIDKL9IBWrMHLWSskQf5v9lDLZg
+	5a10bQJajxTzRyxia6Um2U8YFpsAqdUyepUm3qHyaDrUD20IiOBGTqv7SN2lUFlMnZbFkhDn9ri
+	xUDoP/kkdtQAXD0NpBGgjqQxL91ExSog=
+X-Gm-Gg: AYBFou2/ppi8V9K38377dY4UOPz0cLxARHokV6sEO2pQqKYXyTUUzRgNf9aDL0dnVyz
+	Gx5XmYHM31C85damsFsQZbeuHuMfKlAndCEUNbBtEOTZuHE29ezdQlP7WUe7NFlrnjVimqv2aO7
+	Rddw9kD1EXSyypjgxfVfdO75MYEkdmm23ssXxo63Z9SGT7sp/M5kPa0GzwGi9Pht5NwPe0Uqx9i
+	ODshuQxB0PVWrM68HntL/icY+GEMhd8Mnl/LAsCg5EAHNeoN6/tWi9d5U8uH9CaLY+8qUGi6jhx
+	9DLeCmdUdVmTVxlRkl8I9RpPt/IcZTlFsokF6w0J4EtLm8Eu4wrjrK+fqJyWFjWCHKfppbcaZVt
+	OnqpttKQ1fhphgD8GGRyS5U9wLrhr7LyRznskiSS6eLvWnjCkNMjoQNkms2jS8FPR7OgcYTY=
+X-Received: by 2002:a17:907:9693:b0:c4d:331c:2e97 with SMTP id
+ a640c23a62f3a-c513ab47f5fmr64354966b.36.1795109649032; Thu, 19 Nov 2026
+ 09:34:09 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: introduce copy_mc_highpages() and batch copy in
- folio_mc_copy()
-To: "Garg, Shivank" <shivankg@amd.com>,
- "tejavojjala@google.com" <tejavojjala@google.com>,
- "Rao, Bharata Bhasker" <bharata@amd.com>, "rppt@kernel.org"
- <rppt@kernel.org>,
- "david.laight.linux@gmail.com" <david.laight.linux@gmail.com>,
- "ankur.a.arora@oracle.com" <ankur.a.arora@oracle.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "vbabka@kernel.org" <vbabka@kernel.org>,
- "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "surenb@google.com"
- <surenb@google.com>,
- "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>,
- "xiangzao@linux.alibaba.com" <xiangzao@linux.alibaba.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "nhuhuan@google.com" <nhuhuan@google.com>,
- "Salunke, Hrushikesh" <Hrushikesh.Salunke@amd.com>,
- "tglx@kernel.org" <tglx@kernel.org>, "liam@infradead.org"
- <liam@infradead.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "mhocko@suse.com" <mhocko@suse.com>, "bp@alien8.de" <bp@alien8.de>,
- "ljs@kernel.org" <ljs@kernel.org>, "rientjes@google.com"
- <rientjes@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "torvalds@linuxfoundation.org" <torvalds@linuxfoundation.org>,
- "kaitao.cheng@linux.dev" <kaitao.cheng@linux.dev>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "x86@kernel.org"
- <x86@kernel.org>
-References: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
- <sashiko-outbox-214828@kernel.org>
- <2dd5ed03f167563d8b37a4e1ae4b17d2d8aa31a2.camel@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2dd5ed03f167563d8b37a4e1ae4b17d2d8aa31a2.camel@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Stat-Signature: ntmfgk59ogmizjmbeharctzuydxo6apw
-X-Rspamd-Queue-Id: DB357140015
-X-Rspamd-Server: rspam02
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795109272-532951
-X-HE-Meta: U2FsdGVkX19slbvMKt7Vmt9n1mOlPjn8GudUYsUwCoGOchSQ/K0z2N1A2VjClcMLSPOKWgMy7KPeNvo3b7VLQIT02ay8i+j1BDN/ieq38OkI6TmBlrAh1/n8s/fcZnvSrJuYP739b/GcHaB0KccTD1AkE5z+XPd39H/5KeuIk12ZoG5UsqLE1cXIqT/k/9xUmHjLs1aRhNbxVbx7EL6nNtEzEipqA0cT1m6cTkuEX27dGR0QZ/dSnkUiuLRlCf+NqpcHXo6B/75xQ5QUy2wuZ07GNq3o1lXv9/QhueKUxEaXCBZSQrsJdHHWJu++173L+3ZDA/qDrHMmfh8kytCB9kSmWCgqErTPJD3ckPRdoGhZWlejkA+zW44evXMVHXBrwEwiAnty6cz6QNYgZN1Mhip13SDAjASrrNesbwXpjjSAEWHpbrUUR6qKNDLkHGYvR7d6TFIV44ukJ9gi7Be0rCG5B0wK79L8sTb9+FvcUGNHzAQOZ+M4HYyjzvs57wTL/1ymlkz/LGxjUVNZjaBjwA/lY050xes9ukoN1ZD1TrwvrupGlr85JTwiN6nY1XU7o/VPDHFAlAu0itN/IuDg+lmY0qhoBiESUrKDyQAzt91E62FVo5XceJk+RqdlJ5rspy8AYUbJwV9svoxuzFZEBFGHFeGLqb5GVLyv5JWT8c/8Kg+Yqv4s7GRl9+YdicsvzVrcIrWUDx7wzxTD+dlhQ7genuGg1FGyykHOVo3Z5PsAqFq5GacI11TN29TO9Pr76MiMO3Qt081pkSd6gPAFEbJWjcjL3o0dgRr+Sske0ja/AB8I3KIIGFculel0Pq68FzjDW7CRMc/cIuejFF6Bf8zGocdjYX4Os79QoDysLPAPE3fsE7jaUVJuOk37h6I5A1/NdxjuM9l6a2vcwigk4dxpt7EQjaho4YnMuFBlZMF8BOWkzvaEBAMkRXRUVGvuyz1yTWgB09Ipwf13cnd
- /VtVluIy
- oLT1NGi1vJNyHT2xqXVBdpT9Lq0gm2/yoOgdksQOMeA3RvvqEmYOoQJWoVvNFO0Kz9rxs91UOHuCK7S5Zyj42JoWoEPJlRdfFO/FgDQGPBo8BtV3z3Av4V8UViPhtwXuLS2yruMOei+PJYp5JPNVRgjNc+1UpHmXPYR9c7ZabhdMGbEDbXYccfdIlubMaFLn3Sdf4w1JeP0JNRMlaRI0QUiK5ZKYzSfLRNMSnUgfXVOd47ITV9qRAQR67XFePHqIXmM1a+sQLen6/3W87SNvBrRjP+kVVowXz+F4VND1SE29cegaw3YFthe7oUBMHeFWok4frPpSbsja/Hw4wcE22B6bvwrZfUjToRv8Cj6m0/6tUr7Gg1IO5OhGM17YGITxRYFtp4+Y1AIN5GlF7NUYB/J4loEfoYizCNGoODNclVaFss0f0qcDQIxTPOwrCUTYHes8C8jp5rcR77gQSEmfgMBeKQA==
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119112357.275352-1-hi@tychen.cc>
+In-Reply-To: <20261119112357.275352-1-hi@tychen.cc>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 20 Nov 2026 01:33:32 +0800
+X-Gm-Features: AclHuK_14i71TxMIEATGAgIqE0r8tCGaC_TLqpyybte_WVRWpRVBP4hHZoQKFT8
+Message-ID: <CAMgjq7Dnjsq4vid7H4usOB4f5AS8XzhG75mvf4-Y=an95gBERw@mail.gmail.com>
+Subject: Re: [PATCH v5 00/17] mm/mglru: frequency guided promotion (MGLRU-FG)
+To: Tianyi Chen <hi@tychen.cc>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
+	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
+	Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
+	Joanne Koong <joannelkoong@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, 
+	Hui Zhu <hui.zhu@linux.dev>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev, linux-doc@vger.kernel.org, 
+	Maxim Muzafarov <maxmuzaf@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: y9aqm1ykd87zij1f6hfjprgoajefkj17
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D80BD1C0015
+X-HE-Tag: 1795109650-197386
+X-HE-Meta: U2FsdGVkX19lJNoc7LANoKFG2vRrGXn0QQaUvFZnShLSRpQ8HML58mOUkQE7dT9xFBg3cfkzqsGA2bfsYjnuISk6SSi1JO6uycikn/uMgIA7xICl/IbR7+VzGBbgLQSrzsjhtxVkQaU7ZW4KJKLERS+ec8tFm3iqRuZSttTVphzAAZJNqMToM+LAaxS4/LmBJk5XnTOUx+bShgosYAYnoNIOUZkkW7gtkcHA7WAgAjg+b+3DZ7N28x+5l7OGSF+/KgMj9pHFkO2XmuGPneC3lSgXtLhO7/6l7u0ktnNDOWmMfmXkzes57xXyd40EbV6Xqsy+WiUXmiGwuYVIW4UzkJu85lC3GDsKa+2sop/Rx0zGc/QhanMAorn3D9c3DxmTcDf7kYUoJhAXiG0cYc2HBLE9xw35vA3p2Rzu5e9qRs30soMecGDmlh2y+qeoGaQ3Eps7ntBurdxtIX7/54YT0KCQduc91aGI8STYAakCPSA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,98 +137,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 06:27, Garg, Shivank wrote:
-> On Sat, 2026-11-14 at 17:12 +0000, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found no new issues
->> in this patch, but noticed 1 related pre-existing issue it does not
->> introduce:
->> - [Critical] mm: missing hwpoison check in copy_mc_user_highpage() and
->>   copy_mc_highpage() [1]
->> --
->>
->> commit fae95970ccf2607d670f06862e40d3ba9313200a
->> Author: Shivank Garg <shivankg@amd.com>
->>
->> mm: introduce copy_mc_highpages() and batch copy in folio_mc_copy()
->>
->> This commit introduces copy_mc_highpages() to copy page ranges with a
->> single copy_mc_to_kernel() call when possible and updates folio_mc_copy()
->> to use it.
->>
->>> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
->>> index d7aac9de1c8a4..a79e9d68359c8 100644
->>> --- a/include/linux/highmem.h
->>> +++ b/include/linux/highmem.h
->>> @@ -484,6 +484,57 @@ static inline int copy_mc_highpage(struct page *to, struct page *from)
->>>  }
->>>  #endif
->>>  
->>> +/**
->>> + * copy_mc_highpages() - copy a page range with machine check handling
->>> + * @to: first destination page
->>> + * @from: first source page
->>> + * @nr_pages: number of pages
->>> + *
->>> + * Range variant of copy_mc_highpage(). On a machine check, the poisoned
->>> + * source page is queued for memory_failure().
->>> + *
->>> + * Context: Process context. May sleep.
->>> + * Return: 0 on success, -EHWPOISON if a machine check was handled.
->>> + */
->>> +static inline int copy_mc_highpages(struct page *to, struct page *from,
->>> +		unsigned long nr_pages)
->>> +{
->>> +	unsigned long len = nr_pages << PAGE_SHIFT;
->>> +	unsigned long i, ret;
->>> +
->>> +	might_sleep();
->>> +
->>> +	/*
->>> +	 * When copying we want to operate on the largest extent possible to
->>> +	 * allow for architecture specific extent based optimizations.
->>> +	 *
->>> +	 * copy_mc_to_kernel() does not call cond_resched(). That is fine on
->>> +	 * preemptible kernels, where the scheduler can preempt the copy at
->>> +	 * any point, so copy the whole range at once if copy_mc_to_kernel() is
->>> +	 * available and the pages are in the linear map. Otherwise, copy one
->>> +	 * page at a time and reschedule in between.
->>> +	 */
->>> +	if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC) && IS_ENABLED(CONFIG_PREEMPTION) &&
->>> +	    !IS_ENABLED(CONFIG_HIGHMEM)) {
->>> +		ret = copy_mc_to_kernel(page_address(to), page_address(from), len);
->>> +		if (ret) {
->>> +			memory_failure_queue(page_to_pfn(from) +
->>> +					     ((len - ret) >> PAGE_SHIFT), 0);
->>> +			return -EHWPOISON;
->>> +		}
->>> +		for (i = 0; i < nr_pages; i++)
->>> +			kmsan_copy_page_meta(to + i, from + i);
->>> +		return 0;
->>> +	}
->>> +
->>> +	for (i = 0; i < nr_pages; i++) {
->>> +		cond_resched();
->>> +		if (copy_mc_highpage(to + i, from + i))
->>> +			return -EHWPOISON;
->>> +	}
->>
->> [Severity: Critical]
->> This problem wasn't introduced by this patch, but can copy_mc_highpage()
->> and copy_mc_user_highpage() (as well as the new copy_mc_highpages() fast
->> path) return 0 when the source page or its containing folio is already
->> marked PG_hwpoison [1]?
-> 
-> 
-> Yes, the patch keeps the existing behavior. PG_hwpoison marked pages are copied without errors but Real poison issue returns non-zero and folio_mc_copy() fails! Should we consider this as blocker?
-> 
-> Yuanhe's patch adds the check to copy !copy_mc branch but copy_mc branch can still copy such a page. [1]
-> 
-> Since it's pre-existing issue, I'd prefer to keep it out of this patch.
+On Thu, Nov 19, 2026 at 7:24=E2=80=AFPM Tianyi Chen <hi@tychen.cc> wrote:
+>
+> On Thu, Nov 19, 2026 at 05:03:32AM +0800, Kairui Song wrote:
+> > That's because MGLRU deliberately disables hotness tracking for
+> > MADV_RANDOM areas while CLRU still has refault distance.
+> [...]
+>
+> I ran the OpenSearch k-NN test from the RFC thread [1] on this series.
+> Its .vec/.vex index files are mapped with MADV_RANDOM, so from the
+> paragraph above I expected no change. With FG the gap is gone in this
+> test.
+>
+> Setup: 25fee5b1762b with and without all 17 patches (they applied
+> cleanly), the same .config, and a fresh 4 vCPU / 5 GiB KVM guest per
+> kernel. OpenSearch and a one-pass 96 MiB mmap scan share a 1 GiB memcg
+> with no swap. 5 seeds, lru_gen enabled=3D7 vs 0. The script is unchanged
+> from [1].
+>
+> Medians over the 5 seeds, last 1,000 queries after the scan:
+>
+>                   p99 (ms)   memcg file refaults   .vec resident (MiB)
+>  base, MGLRU         66.18               144,387                 99.98
+>  base, lru_gen=3D0      2.09                     0                117.19
+>  FG, MGLRU            2.16                     0                117.19
+>  FG, lru_gen=3D0        2.12                     0                117.19
+>
+> Right after the scan, base MGLRU had already dropped .vec from 117.2
+> MiB to 54-71 MiB (median 66.3) in all 5 runs. FG kept the full 117.2
+> MiB in all 5. All 5 seeds go the same way, and classic LRU is the same
+> on both kernels.
+>
+> This is one synthetic setup and I tested the series as a whole, so I
+> can't say which patch makes the difference.
 
-Ack.
+Thanks! That's good news.
 
--- 
-Cheers,
+I think the reason is some of the hardcoded biases this series
+removed: FG places purely by refs. Less hackish checks, more generic
+performance :) I reproduced it locally on the base kernel too.
 
-David
+FG still doesn't track MADV_RANDOM accesses though, and still no
+proactive workingset shift protection. Refault distance will cover the
+rest including Maxim's case IIUC, as demonstrated before, it's better
+to do that later as it fits much better with FG merged first.
 
