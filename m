@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6A760A2606
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F6560A2611
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HC8W9Wjx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QphYPBjP
 Received: by kanga.kvack.org (Postfix)
-	id BCAC36B06E9; Thu, 19 Nov 2026 17:43:58 -0500 (EST)
+	id 2CCBB6B0662; Thu, 19 Nov 2026 17:44:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B56B36B06ED; Thu, 19 Nov 2026 17:43:58 -0500 (EST)
+	id 27D746B068C; Thu, 19 Nov 2026 17:44:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1EBC6B070A; Thu, 19 Nov 2026 17:43:58 -0500 (EST)
+	id 16C746B06A5; Thu, 19 Nov 2026 17:44:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 750A66B06E9
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:43:58 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8CDD140C1D
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:43:57 +0000 (UTC)
-X-FDA: 85453347714.04.47C8E18
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 577B04000A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:43:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HC8W9Wjx;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DC5486B0662
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:44:02 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6285E1609FB
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:44:02 +0000 (UTC)
+X-FDA: 85453347924.13.E5FDB30
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BEA0880008
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:44:00 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QphYPBjP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795128236;
-	b=BwTf9DHuG80VMELyiMnCFUqaT7EfW163xSjhH89ua/EueBdOVgPynjnMqqpeSXsV5mEVHl
-	IoibOrxF3c6oQ58sYRmIKO5AvzYucMA5EReg7mQwQ8hyzggdqd15KMNm1DZRoNgQZ9+/ZX
-	BQSROt0PPQ3Z5ot1n3nm2gpF6l6q7Xk=
+	t=1795128240;
+	b=bvGWR8PHH2Ap2xGhi0TuTR6FRhI9TvFI+P8o1pXR/OxwCJ7ZpsBG7uyJB5OIX2wILxRGFw
+	jbVjFnY6XBQcvl4HoShmr5e+rKdxJESyHiJUr3O2lpN9jdHbKM17rt180As5E2yTquOJ0e
+	knkOktzn3h9FqfLss01Sdv8YRkhtogA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795128236;
+	s=arc-20220608; t=1795128240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VgOViuFvQ1WLBdTgeo0xBwSjxxf619C+mTR7GkYLz0I=;
-	b=Mqzg4eMVjGOXjZciktUfsmBGxM89ZV/VNpuQcYprvYQnmAecOTDb0uxBwSH7Qn7oCdfYRk
-	NoxjbswvKXKN6M49scT17nZWogE0cN6Nz8roiZii0arGpvc/uV8vpewQaAzVGe2VbMdw+l
-	SRlIRlRhvGXFnk/Wz25cfEDoKJ43cM4=
+	bh=/v9IHIQfBFo4cKfBGfZrf+LNHbfeOaf3MnUUufo6luY=;
+	b=C/PlUlLCSoADG+Drx4RCU2UQ1sn/6A8V77rmomlDy/ErLWS7RWaGhAEQjeEAvycwzJNJpt
+	OoVEjJkPOPzfqb7BPkdnb+Kc6W7KIpqrBS+bnOi2A4CERdFKrHTSb/tR8slk3Y0qvI6rX4
+	Robm4UBX2CyStxvYmu7AkVADR+XNKMw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HC8W9Wjx;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QphYPBjP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id EBC0D6298D;
-	Thu, 19 Nov 2026 22:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0F42C1F000EF;
-	Thu, 19 Nov 2026 22:43:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 041A246EA8;
+	Thu, 19 Nov 2026 22:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id F1DA11F000CF;
+	Thu, 19 Nov 2026 22:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795128235;
-	bh=VgOViuFvQ1WLBdTgeo0xBwSjxxf619C+mTR7GkYLz0I=;
+	s=k20260515; t=1795128239;
+	bh=/v9IHIQfBFo4cKfBGfZrf+LNHbfeOaf3MnUUufo6luY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HC8W9WjxhO4iHCFx5ER3+ZmW2t7L+2P4zUurqe98F/Lvvhw8xIi1zCmlHrOVbm/81
-	 kQQauMVeRfBsEspfcxnerySlinGDiwTyxXGoXNt4eTwin6LReM70QBdaeB0k31MTQS
-	 wghGogcrqFKCmL7Q+6qsLbjGoYeZeMgB36JY1UkqUAup23NwLQWNvUI74t++Np2flf
-	 /NSSESeDRIzNzPSLfh3bZwiG+xilQwJz8T9qfYEJZGRml/MvWnKCqWrxYkYCpwCTkH
-	 Sy33ZPrHxWaECiltE4d3JNTsN9FL2SpMblL/W84E9WqTX0lmWT6hCeOpPqstxJz3HH
-	 IsmM7K7tfV3zA==
+	b=QphYPBjPecjxc8HqyLgYZ6xkp3DDLvhzQ9YSQ3Gv+e1/rGQeKKZlBkJXq8h6Bp4HG
+	 FKw8KmZ+OTLztb+jSmAMB1FdXDXMB2eqNBhS5b78Irn2DQjrVfq8BxC/fxzbswZJPf
+	 8YO1vBKxU/BNZsCJtIaH8vT2kViDwxpOIG4z4nLaAeWTihR1nCPhYR9EQ5cI5dIyKT
+	 raULLIAu6vDfZHO58Fs16aB4l/AkpaEMIoanMN6PIXpfre0MCrGz+P4ams0LQK359u
+	 Pt9eOOW5HQL2kMgR6hdqbCQXuu1TOoDVBshAhzddt53CEWMxXbEoxMUWZMJE4Xeamg
+	 45Qp0qQkIOKvA==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -151,9 +151,9 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Will Deacon <will@kernel.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v4 06/14] rootns: Add ROOTNS_KILL ioctl
-Date: Fri, 20 Nov 2026 00:43:04 +0200
-Message-ID: <20261119224312.1037966-7-jarkko@kernel.org>
+Subject: [RFC PATCH v4 07/14] fork: Support CLONE_INTO_ROOTNS in clone3()
+Date: Fri, 20 Nov 2026 00:43:05 +0200
+Message-ID: <20261119224312.1037966-8-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261119224312.1037966-1-jarkko@kernel.org>
 References: <20261119224312.1037966-1-jarkko@kernel.org>
@@ -161,17 +161,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Rspamd-Queue-Id: 577B04000A
-X-Stat-Signature: ktih5ug7i3s38eo3efkeodwsj4zshtmn
-X-Rspamd-Server: rspam10
+X-Stat-Signature: qx3kxzifztahfmaq6jdg3roadpz99bi4
+X-Rspamd-Queue-Id: BEA0880008
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795128236-750120
-X-HE-Meta: U2FsdGVkX18HtZFhLd+7qapkM6EhMMgtnaU1ZOJ5nLeSHpngGkwDiJv0hDtAf5fd62/KtAK8nsdyYpfnSUOHfLD/pFfFIt8XaZpOvo/cauv8bbMHAF5edr1VmUpuzlrZ3FLXp0jrs+4VTkFSylm21OnMgarasptZr9qERb2SGgJmdtWWKwOerl60RZfn9Sn6LPQFv63P3fMZuS/PZQk8Sq+f6cS1ZDuLvaVUZ55AtTb2v8kYAy+OKcp2p+8udgyAtebG+by35g7mFXZKT5CFOC6tvhSTOQ5+yGMy9w8gXXEHO0FCN7AKCCJ2xj4ltS4iVwt2SUWeHFwoAeihB7VoccaV2jr+1/kOc6mYHJOP8R3lPPmSVsCYqJCWC78xbGPvVegrr2UphtVDDfnfYZbDkhYCNxvIH56Yqj1ul2S2QyzW0EiYvXk9BO+y22GQl5nUQTtN7kdDwWp0q1dpZeXHDO7ViuXMLmFL3RFvtMq4oa45aLDz8GVwrGKpluipPIYoAEi1wuky0nhHNmDjWGqsLiCKkQDrjPMllv0kESlPh3CQ2DLB0lHIHAZZVNws20CyS7rQVyOG0v5T70MvYCpeNdzewU12qQdDGB2aeBeBAJd5xyB7LrKC0tj+R6VNu6hMEwbnqP4+ZAtlpZUyn7EHzKP5aSfE7QaaatSZFLVGm9+Pq+jr2EkSn8o5hdP3r8RlAOrw1ODvUjiNIFU74wYDI+CLeIAxcOtOtVIOmhUU6aFywgXnvnn9jEcN+MTVUdZ3H5WBA7GKw3jXAl/a89Yt1jTzDkXjEdcFEq75VUEzEiy1QR3UndJ6ANxQYV7FG7ZqhuKX1XewK5Mfg+xPW2PGOcmrRy8ivqPAOmQfVCmt2IGGQQmu6eBfpvj+MRUvXNOXe4Qj3VORi9qqFD9rfbxta5CG8sxWS5u4aqv9417Cw75wFHRpChsL3COLng9Urg5im7rPYnNPSKjpwmJ3ecf
- AItuXNFF
- icLR3UyBY7Ivg//tjUJE3GlToOM6VHMTCtag1+fWvGXSS8br63SkPMAZISc5lVv8Hera1bw1F/XHfhtimIXAcHAN/40iFQJ0xDHv6fbpu/9vK0uJ0bvzOoPN0XOdRH1EbCz2SGq7qIMB9Ytt9CwRqUYcZPk3R21hWf1rI8Jv/cVr9ShSW6g8zYXXKP0VQ9yxe/YwgduEHzThoKXnLD8YqOeKaffSvDyfPUGqSsC2k9mxwEULH0YyPa2IslYtFb5g8ECrVtOQ3fUAr5VLFhkD4IqE2GSoA2PBiSnOZx+LF1zZpDJXEB26NrbHoDiE3MMHkRjXBOoRhp+UICcVDHaKFXHwCV8xEgAGqle1gCofMKDbkhKDcaPJYBDNzr1hz9iiAII6OrJjjnKvdZeKBOHJX58kyN42nTtteR1l2747aiE2kCfYdeJ7by94gAaK8INSdxKjG8HzSPaXnxQStVDeb0mDFEw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1795128240-852903
+X-HE-Meta: U2FsdGVkX19ua5SzA8M+NoVrCM7Or0ITgIkpL+XqJy4i66F6Rt4rRMJLtzq/FMLefrA63nz1GA+3WwFsxgZHo5FLF/bUJi5CA6oIbbOA2g/x1d8H2rv0RMyRPSDhr0YVkQtG13z3BgdHXZ2HaYm/J/YBhXkbiDQqyUKFOJ+B3ErnHwiOTGQvwg1xvT9yd0bM5nLpmBotrdESLbHFCuHGNC+92HceKHcNZ9AHg4MGjjZxAoiZzmXcSR3ueJqvCMA2bbHnilmFE6wR7FycIRGoSI+b0Cyo9xk9lIBy+aH++B+fNX4lHGhPXpSZAmXCW1e6OQHlAp0WqBNoUH3EC4wldscdNmNkGeO+Oymyk6hOsXuFAs0WQnLDBAUzizg6jToxysMhJjdBuPBOc9HIoAFng0SCykwOYIExOXM4eGle1dL/t3XTKLulBL5bymfOiM0taqnQsDWWH50x3qgPcFKKqJFnyBXim2J8zsdkyWDRyf8Pv+ZKnigATxdcrVKxln2ReXaTyVb6CDbK0PVnUDDBkHJrcQR1rCEdLfch1RWBOrAg9chRwy8Em8ygGd/7oO1eJ/VwcLgTh8YGM6EX9rbE+KXwbnl2yNNX/hOdIDpmVKFGZ94tKErO+S0bP5CseDyGCLpJX9pAib4+sE9yH15ouShJzcqUOei3bwHh2p8g9DmI1GzoDZFyyilPjDumxrs/c+LBD4xDXpF+cvjvwJ3abrkI0gEKvWm4B76hXdw+ZNq8FABVfcM80+30MRkUFNy0fPZjPgXbgBW+ZiHLo8HlqWQLWlJRWdJupxfp9YsuClchvgsNLn+r67nXqy55BO2Tq8Iqn0sSnCgD4u0r8/kpuQOPkP2FGyGtPI5NiyoV0XKdGI3CNs2Hxx2ib5lLFS7JCYtiqgOUB8qiT6DZ8dpVoLXb4vq4JF1rxC1pdGWvLs1+OmE16aPc0zbeTKC7yZbViTNKli4cCQOTaStVGoR
+ 9Su20MuW
+ /ppdUt/uWceUDXVGeZn2qzgP0oxjiEniXNJrRYo9rDUWlGA+fI//MUoymwj1lA9xzFCY6K7OMSMsRraSJK/Gpmrb/mNQ1v381Sg0uvAYa7FAeRLwj+ketQw/1cBLA/sfnTgNn5gUO/aHJlgzoGbfKnIkVqfKYtBpiBl0jjDbafDd+7iUBz/N8MM7eqIe6WP2qjUde61B7/pHSpvDuIy8+K+Ix9KXwwDV81xZjJlZhjMSSBMHlKW6NW8rgZHX60HGHoXku7eW2RpFriGp1uYNtXqek8rQ4FGHiUZrg9mo11z5KY6GVy4On8aUFGQBjqZ0VNUjXoRyA69waq1rdbR/L2PJI6iqETtak5pEKz5pgTKnr4vhUIWzWawQE69wRdj1PBnGqjcpwj2SCO3jqMMO9KkIm0iWYYaytAeDi6hrSW/YAUHUKYmaipnJWyqnEkyjkaDqTRgIrHxyZMP8PkNiV4/0e8ZAXmkjY2sM0oCc7t58iCn91c5lntbWZaI6FQAzQIWRNfyA3EsAwRFn8eec8pzVa+pb/9Azm/F77Kq7smFAXBUM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,119 +180,784 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Signaling every process inside a container from userspace via /proc is
-racy against concurrent fork() calls.
+Multithreaded userspace daemons cannot call setns(CLONE_NEWUSER) or
+safely mutate process-wide filesystem state in place before spawning a
+child into a target namespace set.
 
-Add the ROOTNS_KILL ioctl to require an ancestor active PID namespace,
-walk the root namespace's PID namespace IDR under tasklist_lock, and
-deliver a validated signal once to each thread group including in-flight
-forks, aggregating per-process delivery results.
+Add CLONE_INTO_ROOTNS and struct clone_args.rootns (CLONE_ARGS_SIZE_VER3)
+to spawn a child process directly into a rootns whose root mount has
+been installed. Transition the rootns from ROOTNS_INIT through
+ROOTNS_FORKING to ROOTNS_RUNNING for the first process so it becomes
+PID 1, serialize concurrent entrants on waitq until bootstrap resolves,
+and admit subsequent callers into the running PID namespace until
+teardown begins.
 
+Derive child credentials from current, require CAP_SYS_ADMIN and
+CAP_SYS_CHROOT in the target user namespace and an ancestor active PID
+namespace, preserve caller umask, reset dumpability across user namespace
+transitions, commit time namespace vvar mappings after copy_process()
+succeeds, and look up the live mount namespace root. Restrict companion
+flags to CLONE_VFORK, CLONE_PIDFD, CLONE_PIDFD_AUTOKILL, CLONE_AUTOREAP,
+CLONE_CLEAR_SIGHAND, CLONE_INTO_CGROUP, and CLONE_NNP.
+
+Co-developed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- include/uapi/linux/rootns.h | 13 ++++++++++
- kernel/rootns.c             | 52 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+ fs/namespace.c                 |  16 ++++
+ include/linux/cred.h           |   4 +-
+ include/linux/mnt_namespace.h  |   2 +
+ include/linux/nsproxy.h        |   4 +-
+ include/linux/rootns.h         |  14 ++++
+ include/linux/sched/task.h     |   8 ++
+ include/linux/user_namespace.h |   7 ++
+ include/uapi/linux/sched.h     |   5 ++
+ kernel/cred.c                  |  32 +++++++-
+ kernel/fork.c                  |  94 ++++++++++++++++++++---
+ kernel/nsproxy.c               |  11 ++-
+ kernel/rootns.c                | 136 +++++++++++++++++++++++++++++++++
+ kernel/user_namespace.c        |  12 ++-
+ 13 files changed, 327 insertions(+), 18 deletions(-)
 
-diff --git a/include/uapi/linux/rootns.h b/include/uapi/linux/rootns.h
-index 3fd215185398..acd91d895c63 100644
---- a/include/uapi/linux/rootns.h
-+++ b/include/uapi/linux/rootns.h
-@@ -67,4 +67,17 @@ struct rootns_wait_args {
-  */
- #define ROOTNS_WAIT		_IOWR(ROOTNS_IOCTL_MAGIC, 0x02, struct rootns_wait_args)
- 
-+/**
-+ * DOC: ROOTNS_KILL
-+ *
-+ * ``ioctl(rootnsfd, ROOTNS_KILL, sig)`` walks the target root namespace's PID
-+ * namespace IDR under ``tasklist_lock`` and delivers ``sig`` (or ``0`` for a
-+ * permission check) once to each member thread group.
-+ *
-+ * Returns ``0`` if at least one thread group was signaled, or ``-1`` with
-+ * ``errno`` set to ``EXDEV`` if the caller's active PID namespace is not an
-+ * ancestor or ``ESRCH`` if the ``rootns`` is not running or has no members.
-+ */
-+#define ROOTNS_KILL		_IO(ROOTNS_IOCTL_MAGIC, 0x03)
-+
- #endif /* _UAPI_LINUX_ROOTNS_H */
-diff --git a/kernel/rootns.c b/kernel/rootns.c
-index 5f03b6ba4a54..ce012a07e982 100644
---- a/kernel/rootns.c
-+++ b/kernel/rootns.c
-@@ -154,6 +154,53 @@ static long rootns_wait(struct rootns *rootns, void __user *uarg)
- 	return ret;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index aecd05ac0170..781380945d78 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -6708,6 +6708,22 @@ static void mntns_put(struct ns_common *ns)
+ 	put_mnt_ns(to_mnt_ns(ns));
  }
  
-+static int rootns_kill_members(struct rootns *rootns, int sig)
++int mnt_ns_get_root(struct mnt_namespace *mnt_ns, struct path *root)
 +{
-+	struct pid_namespace *pid_ns = rootns->ns->pid_ns_for_children;
-+	bool any_success = false;
-+	bool any_other = false;
-+	bool any_perm = false;
-+	int other_err = 0;
-+	struct pid *pid;
-+	int nr;
++	int err;
 +
-+	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
-+		return -EXDEV;
-+	if (READ_ONCE(rootns->state) != ROOTNS_RUNNING)
-+		return -ESRCH;
-+
-+	scoped_guard(rcu) {
-+		read_lock(&tasklist_lock);
-+		idr_for_each_entry(&pid_ns->idr, pid, nr) {
-+			struct task_struct *task = pid_task(pid, PIDTYPE_TGID);
-+			int err;
-+
-+			if (!task)
-+				continue;
-+
-+			err = group_send_sig_info(sig, SEND_SIG_NOINFO, task,
-+						  PIDTYPE_MAX);
-+			if (!err) {
-+				any_success = true;
-+			} else if (err == -EPERM) {
-+				any_perm = true;
-+			} else if (err != -ESRCH && !any_other) {
-+				any_other = true;
-+				other_err = err;
-+			}
-+		}
-+		read_unlock(&tasklist_lock);
++	err = vfs_path_lookup(mnt_ns->root->mnt.mnt_root, &mnt_ns->root->mnt,
++			      "/", LOOKUP_DOWN, root);
++	if (err)
++		return err;
++	if (root->mnt == &mnt_ns->root->mnt) {
++		path_put(root);
++		*root = (struct path){};
++		return -ENOENT;
 +	}
-+
-+	if (any_success)
-+		return 0;
-+	if (any_other)
-+		return other_err;
-+	if (any_perm)
-+		return -EPERM;
-+	return -ESRCH;
++	return 0;
 +}
 +
- static long rootns_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ static int mntns_install(struct nsset *nsset, struct ns_common *ns)
  {
- 	struct rootns *rootns = file->private_data;
-@@ -163,6 +210,10 @@ static long rootns_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 		return rootns_get_nsfd(rootns, arg);
- 	case ROOTNS_WAIT:
- 		return rootns_wait(rootns, (void __user *)arg);
-+	case ROOTNS_KILL:
-+		if (arg > INT_MAX || !valid_signal(arg))
-+			return -EINVAL;
-+		return rootns_kill_members(rootns, arg);
- 	default:
- 		return -ENOIOCTLCMD;
+ 	struct nsproxy *nsproxy = nsset->nsproxy;
+diff --git a/include/linux/cred.h b/include/linux/cred.h
+index 49c26af37349..9849366fd44b 100644
+--- a/include/linux/cred.h
++++ b/include/linux/cred.h
+@@ -19,6 +19,7 @@
+ 
+ struct cred;
+ struct inode;
++struct rootns;
+ 
+ extern struct task_struct init_task;
+ 
+@@ -152,7 +153,8 @@ struct cred {
+ 
+ extern void __put_cred(struct cred *);
+ extern void exit_creds(struct task_struct *);
+-extern int copy_creds(struct task_struct *, u64);
++int copy_creds(struct task_struct *tsk, u64 clone_flags,
++	       struct rootns *rootns);
+ extern const struct cred *get_task_cred(struct task_struct *);
+ extern struct cred *cred_alloc_blank(void);
+ extern struct cred *prepare_creds(void);
+diff --git a/include/linux/mnt_namespace.h b/include/linux/mnt_namespace.h
+index 0acd1089d149..98188d1f7428 100644
+--- a/include/linux/mnt_namespace.h
++++ b/include/linux/mnt_namespace.h
+@@ -8,6 +8,7 @@
+ 
+ struct mnt_namespace;
+ struct fs_struct;
++struct path;
+ struct user_namespace;
+ struct ns_common;
+ 
+@@ -15,6 +16,7 @@ extern struct mnt_namespace init_mnt_ns;
+ 
+ extern struct mnt_namespace *copy_mnt_ns(u64, struct mnt_namespace *,
+ 		struct user_namespace *, struct fs_struct *);
++int mnt_ns_get_root(struct mnt_namespace *mnt_ns, struct path *root);
+ extern void put_mnt_ns(struct mnt_namespace *ns);
+ DEFINE_FREE(put_mnt_ns, struct mnt_namespace *, if (!IS_ERR_OR_NULL(_T)) put_mnt_ns(_T))
+ extern struct ns_common *from_mnt_ns(struct mnt_namespace *);
+diff --git a/include/linux/nsproxy.h b/include/linux/nsproxy.h
+index cacbbbe3f1ce..26b3b788cc90 100644
+--- a/include/linux/nsproxy.h
++++ b/include/linux/nsproxy.h
+@@ -12,6 +12,7 @@ struct ipc_namespace;
+ struct pid_namespace;
+ struct cgroup_namespace;
+ struct fs_struct;
++struct rootns;
+ struct user_namespace;
+ 
+ /*
+@@ -97,7 +98,8 @@ struct nsproxy *create_new_namespaces(u64 flags,
+ 				      struct nsproxy *ns,
+ 				      struct user_namespace *user_ns,
+ 				      struct fs_struct *new_fs);
+-int copy_namespaces(u64 flags, struct task_struct *tsk);
++int copy_namespaces(u64 flags, struct task_struct *tsk,
++		    struct rootns *rootns);
+ void switch_cred_namespaces(const struct cred *old, const struct cred *new);
+ void exit_nsproxy_namespaces(struct task_struct *tsk);
+ void get_cred_namespaces(struct task_struct *tsk);
+diff --git a/include/linux/rootns.h b/include/linux/rootns.h
+index 0557ce75195d..802fc76bb66e 100644
+--- a/include/linux/rootns.h
++++ b/include/linux/rootns.h
+@@ -11,6 +11,7 @@
+ #include <linux/wait.h>
+ 
+ struct file;
++struct kernel_clone_args;
+ struct nsproxy;
+ struct pid;
+ struct pid_namespace;
+@@ -46,6 +47,8 @@ bool is_rootns_file(struct file *file);
+ void copy_rootns(struct task_struct *tsk, struct pid *pid,
+ 		 struct rootns *rootns);
+ void exit_rootns(struct pid_namespace *pid_ns, struct task_struct *tsk);
++int rootns_prepare_fork(struct kernel_clone_args *args);
++int rootns_finish_fork(struct kernel_clone_args *args, struct task_struct *p);
+ #else
+ static inline struct rootns *get_rootns(struct rootns *c)
+ {
+@@ -70,6 +73,17 @@ static inline void exit_rootns(struct pid_namespace *pid_ns,
+ 			       struct task_struct *tsk)
+ {
+ }
++
++static inline int rootns_prepare_fork(struct kernel_clone_args *args)
++{
++	return -EINVAL;
++}
++
++static inline int rootns_finish_fork(struct kernel_clone_args *args,
++				     struct task_struct *p)
++{
++	return 0;
++}
+ #endif /* CONFIG_ROOTNS */
+ 
+ #endif /* _LINUX_ROOTNS_H */
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index 90ed5bc3c7af..e0c4e8ab02f1 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -16,6 +16,8 @@ struct task_struct;
+ struct rusage;
+ union thread_union;
+ struct css_set;
++struct file;
++struct rootns;
+ 
+ /* All the bits taken by the old clone syscall. */
+ #define CLONE_LEGACY_FLAGS 0xffffffffULL
+@@ -39,11 +41,17 @@ struct kernel_clone_args {
+ 	/* Number of elements in *set_tid */
+ 	size_t set_tid_size;
+ 	int cgroup;
++	int rootns_fd;
+ 	int idle;
+ 	int (*fn)(void *);
+ 	void *fn_arg;
+ 	struct cgroup *cgrp;
+ 	struct css_set *cset;
++#ifdef CONFIG_ROOTNS
++	struct file *rootns_file;
++	struct rootns *rootns;
++	bool rootns_bootstrapping;
++#endif
+ 	unsigned int kill_seq;
+ };
+ 
+diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
+index 91232053775d..3600a903442e 100644
+--- a/include/linux/user_namespace.h
++++ b/include/linux/user_namespace.h
+@@ -184,6 +184,7 @@ static inline struct user_namespace *get_user_ns(struct user_namespace *ns)
+ }
+ 
+ extern int create_user_ns(struct cred *new);
++int install_user_ns_cred(struct cred *cred, struct user_namespace *user_ns);
+ extern int unshare_userns(unsigned long unshare_flags, struct cred **new_cred);
+ extern void __put_user_ns(struct user_namespace *ns);
+ 
+@@ -226,6 +227,12 @@ static inline int create_user_ns(struct cred *new)
+ 	return -EINVAL;
+ }
+ 
++static inline int install_user_ns_cred(struct cred *cred,
++				       struct user_namespace *user_ns)
++{
++	return -EINVAL;
++}
++
+ static inline int unshare_userns(unsigned long unshare_flags,
+ 				 struct cred **new_cred)
+ {
+diff --git a/include/uapi/linux/sched.h b/include/uapi/linux/sched.h
+index 19ffeba89428..405cfc954ae1 100644
+--- a/include/uapi/linux/sched.h
++++ b/include/uapi/linux/sched.h
+@@ -40,6 +40,7 @@
+ #define CLONE_NNP		(1ULL << 35) /* Set no_new_privs on child. */
+ #define CLONE_PIDFD_AUTOKILL	(1ULL << 36) /* Kill child when clone pidfd closes. */
+ #define CLONE_EMPTY_MNTNS	(1ULL << 37) /* Create an empty mount namespace. */
++#define CLONE_INTO_ROOTNS	(1ULL << 38) /* Clone into a specific root namespace. */
+ 
+ /*
+  * cloning flags intersect with CSIGNAL so can be used with unshare and clone3
+@@ -94,6 +95,8 @@
+  *                kernel's limit of nested PID namespaces.
+  * @cgroup:       If CLONE_INTO_CGROUP is specified set this to
+  *                a file descriptor for the cgroup.
++ * @rootns:       If CLONE_INTO_ROOTNS is specified set this to
++ *                a file descriptor for the root namespace.
+  *
+  * The structure is versioned by size and thus extensible.
+  * New struct members must go at the end of the struct and
+@@ -111,12 +114,14 @@ struct clone_args {
+ 	__aligned_u64 set_tid;
+ 	__aligned_u64 set_tid_size;
+ 	__aligned_u64 cgroup;
++	__aligned_u64 rootns;
+ };
+ #endif
+ 
+ #define CLONE_ARGS_SIZE_VER0 64 /* sizeof first published struct */
+ #define CLONE_ARGS_SIZE_VER1 80 /* sizeof second published struct */
+ #define CLONE_ARGS_SIZE_VER2 88 /* sizeof third published struct */
++#define CLONE_ARGS_SIZE_VER3 96 /* sizeof fourth published struct */
+ 
+ /*
+  * Scheduling policies
+diff --git a/kernel/cred.c b/kernel/cred.c
+index d01df40a9a38..48a8852dab4a 100644
+--- a/kernel/cred.c
++++ b/kernel/cred.c
+@@ -12,13 +12,16 @@
+ #include <linux/slab.h>
+ #include <linux/sched.h>
+ #include <linux/sched/coredump.h>
++#include <linux/sched/exec_state.h>
+ #include <linux/key.h>
+ #include <linux/keyctl.h>
+ #include <linux/init_task.h>
++#include <linux/rootns.h>
+ #include <linux/security.h>
+ #include <linux/binfmts.h>
+ #include <linux/cn_proc.h>
+ #include <linux/uidgid.h>
++#include <linux/user_namespace.h>
+ 
+ #if 0
+ #define kdebug(FMT, ...)						\
+@@ -251,6 +254,9 @@ struct cred *prepare_exec_creds(void)
+ 	return new;
+ }
+ 
++static bool cred_cap_issubset(const struct cred *set,
++			      const struct cred *subset);
++
+ /*
+  * Copy credentials for the new process created by fork()
+  *
+@@ -260,7 +266,8 @@ struct cred *prepare_exec_creds(void)
+  * The new process gets the current process's subjective credentials as its
+  * objective and subjective credentials
+  */
+-int copy_creds(struct task_struct *p, u64 clone_flags)
++int copy_creds(struct task_struct *p, u64 clone_flags,
++	       struct rootns *rootns)
+ {
+ 	struct cred *new;
+ 	int ret;
+@@ -287,6 +294,29 @@ int copy_creds(struct task_struct *p, u64 clone_flags)
+ 	if (!new)
+ 		return -ENOMEM;
+ 
++	if (rootns) {
++		const struct cred *old = current_cred();
++
++		if (!ns_capable(rootns->user_ns, CAP_SYS_ADMIN) ||
++		    !ns_capable(rootns->user_ns, CAP_SYS_CHROOT)) {
++			ret = -EPERM;
++			goto error_put;
++		}
++		if (new->user_ns != rootns->user_ns) {
++			ret = install_user_ns_cred(new, rootns->user_ns);
++			if (ret < 0)
++				goto error_put;
++		}
++		if (!cred_cap_issubset(old, new) ||
++		    old->user_ns != new->user_ns) {
++			struct task_exec_state *exec_state;
++
++			exec_state = rcu_dereference_protected(p->exec_state, true);
++			if (exec_state != &init_task_exec_state)
++				WRITE_ONCE(exec_state->dumpable, suid_dumpable);
++		}
++	}
++
+ 	if (clone_flags & CLONE_NEWUSER) {
+ 		ret = create_user_ns(new);
+ 		if (ret < 0)
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 08fc28ad1eed..ac0497ff410c 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -65,6 +65,7 @@
+ #include <linux/rcupdate.h>
+ #include <linux/ptrace.h>
+ #include <linux/mount.h>
++#include <linux/mnt_namespace.h>
+ #include <linux/audit.h>
+ #include <linux/memcontrol.h>
+ #include <linux/ftrace.h>
+@@ -1616,7 +1617,7 @@ static int copy_exec_state(u64 clone_flags, struct task_struct *tsk)
+ 	struct task_exec_state *exec_state;
+ 
+ 	/* CLONE_VM siblings refcount-share the parent's exec_state. */
+-	if (clone_flags & CLONE_VM) {
++	if ((clone_flags & (CLONE_VM | CLONE_INTO_ROOTNS)) == CLONE_VM) {
+ 		exec_state = rcu_dereference_protected(current->exec_state, true);
+ 		refcount_inc(&exec_state->count);
+ 		rcu_assign_pointer(tsk->exec_state, exec_state);
+@@ -1632,8 +1633,30 @@ enum copy_fs_flags_t {
+ 	COPY_FS_IDLE	= (1 << 1),
+ };
+ 
++#ifdef CONFIG_ROOTNS
++static inline struct rootns *clone_args_rootns(const struct kernel_clone_args *args)
++{
++	return args->rootns;
++}
++
++static inline bool clone_args_rootns_bootstrapping(const struct kernel_clone_args *args)
++{
++	return args->rootns_bootstrapping;
++}
++#else
++static inline struct rootns *clone_args_rootns(const struct kernel_clone_args *args)
++{
++	return NULL;
++}
++
++static inline bool clone_args_rootns_bootstrapping(const struct kernel_clone_args *args)
++{
++	return false;
++}
++#endif
++
+ static int copy_fs(u64 clone_flags, struct task_struct *tsk,
+-		   enum copy_fs_flags_t flags)
++		   enum copy_fs_flags_t flags, struct rootns *rootns)
+ {
+ 	struct fs_struct *fs;
+ 
+@@ -1649,7 +1672,7 @@ static int copy_fs(u64 clone_flags, struct task_struct *tsk,
+ 		if (current->nsproxy->mnt_ns != &init_mnt_ns)
+ 			return -EINVAL;
+ 		fs = userspace_init_fs;
+-	} else if (flags & COPY_FS_IDLE) {
++	} else if (flags & COPY_FS_IDLE || rootns) {
+ 		fs = &init_fs;
+ 	} else {
+ 		fs = current->fs;
+@@ -1671,6 +1694,21 @@ static int copy_fs(u64 clone_flags, struct task_struct *tsk,
+ 	tsk->real_fs = tsk->fs = copy_fs_struct(fs);
+ 	if (!tsk->fs)
+ 		return -ENOMEM;
++	if (rootns) {
++		struct path root __free(path_put) = {};
++		int err;
++
++		err = mnt_ns_get_root(rootns->ns->mnt_ns, &root);
++		if (err) {
++			free_fs_struct(tsk->fs);
++			tsk->real_fs = NULL;
++			tsk->fs = NULL;
++			return err;
++		}
++		tsk->fs->umask = READ_ONCE(current->fs->umask);
++		set_fs_root(tsk->fs, &root);
++		set_fs_pwd(tsk->fs, &root);
++	}
+ 	return 0;
+ }
+ 
+@@ -2186,7 +2224,7 @@ __latent_entropy struct task_struct *copy_process(
+ #ifdef CONFIG_PROVE_LOCKING
+ 	DEBUG_LOCKS_WARN_ON(!p->softirqs_enabled);
+ #endif
+-	retval = copy_creds(p, clone_flags);
++	retval = copy_creds(p, clone_flags, clone_args_rootns(args));
+ 	if (retval < 0)
+ 		goto bad_fork_free;
+ 
+@@ -2317,7 +2355,8 @@ __latent_entropy struct task_struct *copy_process(
+ 		goto bad_fork_cleanup_semundo;
+ 	retval = copy_fs(clone_flags, p,
+ 			 (args->umh ? COPY_FS_UMH : 0) |
+-			 (args->idle ? COPY_FS_IDLE : 0));
++			 (args->idle ? COPY_FS_IDLE : 0),
++			 clone_args_rootns(args));
+ 	if (retval)
+ 		goto bad_fork_cleanup_semundo;
+ 	retval = copy_sighand(clone_flags, p);
+@@ -2329,7 +2368,7 @@ __latent_entropy struct task_struct *copy_process(
+ 	retval = copy_mm(clone_flags, p);
+ 	if (retval)
+ 		goto bad_fork_cleanup_signal;
+-	retval = copy_namespaces(clone_flags, p);
++	retval = copy_namespaces(clone_flags, p, clone_args_rootns(args));
+ 	if (retval)
+ 		goto bad_fork_cleanup_mm;
+ 	retval = copy_io(clone_flags, p);
+@@ -2510,6 +2549,12 @@ __latent_entropy struct task_struct *copy_process(
+ 		goto bad_fork_core_free;
  	}
-@@ -176,6 +227,7 @@ static long rootns_compat_ioctl(struct file *file, unsigned int cmd,
- 	case ROOTNS_WAIT:
- 		return rootns_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
- 	case ROOTNS_GET_NSFD:
-+	case ROOTNS_KILL:
- 		return rootns_ioctl(file, cmd, arg);
- 	default:
- 		return -ENOIOCTLCMD;
+ 
++	if (unlikely(clone_args_rootns_bootstrapping(args) &&
++		     !is_child_reaper(pid))) {
++		retval = -EBUSY;
++		goto bad_fork_core_free;
++	}
++
+ 	/* Let kill terminate clone/fork in the middle */
+ 	if (fatal_signal_pending(current)) {
+ 		retval = -EINTR;
+@@ -2578,7 +2623,7 @@ __latent_entropy struct task_struct *copy_process(
+ 		}
+ 		attach_pid(p, PIDTYPE_PID);
+ 		if (thread_group_leader(p))
+-			copy_rootns(p, pid, NULL);
++			copy_rootns(p, pid, clone_args_rootns(args));
+ 		nr_threads++;
+ 	}
+ 	total_forks++;
+@@ -2780,6 +2825,13 @@ pid_t kernel_clone(struct kernel_clone_args *args)
+ 	if (!valid_signal(args->exit_signal))
+ 		return -EINVAL;
+ 
++	if (unlikely(clone_flags & CLONE_INTO_ROOTNS)) {
++		int err = rootns_prepare_fork(args);
++
++		if (err)
++			return err;
++	}
++
+ 	/*
+ 	 * Determine whether and which event to report to ptracer.  When
+ 	 * called from kernel_thread or CLONE_UNTRACED is explicitly
+@@ -2801,6 +2853,13 @@ pid_t kernel_clone(struct kernel_clone_args *args)
+ 	p = copy_process(NULL, trace, NUMA_NO_NODE, args);
+ 	add_latent_entropy();
+ 
++	if (unlikely(clone_flags & CLONE_INTO_ROOTNS)) {
++		int err = rootns_finish_fork(args, p);
++
++		if (err)
++			return err;
++	}
++
+ 	if (IS_ERR(p))
+ 		return PTR_ERR(p);
+ 
+@@ -2958,7 +3017,9 @@ static noinline int copy_clone_args_from_user(struct kernel_clone_args *kargs,
+ 		     CLONE_ARGS_SIZE_VER1);
+ 	BUILD_BUG_ON(offsetofend(struct clone_args, cgroup) !=
+ 		     CLONE_ARGS_SIZE_VER2);
+-	BUILD_BUG_ON(sizeof(struct clone_args) != CLONE_ARGS_SIZE_VER2);
++	BUILD_BUG_ON(offsetofend(struct clone_args, rootns) !=
++		     CLONE_ARGS_SIZE_VER3);
++	BUILD_BUG_ON(sizeof(struct clone_args) != CLONE_ARGS_SIZE_VER3);
+ 
+ 	if (unlikely(usize > PAGE_SIZE))
+ 		return -E2BIG;
+@@ -2988,6 +3049,10 @@ static noinline int copy_clone_args_from_user(struct kernel_clone_args *kargs,
+ 	    (args.cgroup > INT_MAX || usize < CLONE_ARGS_SIZE_VER2))
+ 		return -EINVAL;
+ 
++	if ((args.flags & CLONE_INTO_ROOTNS) &&
++	    (args.rootns > INT_MAX || usize < CLONE_ARGS_SIZE_VER3))
++		return -EINVAL;
++
+ 	*kargs = (struct kernel_clone_args){
+ 		.flags		= args.flags,
+ 		.pidfd		= u64_to_user_ptr(args.pidfd),
+@@ -2999,6 +3064,7 @@ static noinline int copy_clone_args_from_user(struct kernel_clone_args *kargs,
+ 		.tls		= args.tls,
+ 		.set_tid_size	= args.set_tid_size,
+ 		.cgroup		= args.cgroup,
++		.rootns_fd	= args.rootns,
+ 	};
+ 
+ 	if (args.set_tid &&
+@@ -3039,13 +3105,19 @@ static inline bool clone3_stack_valid(struct kernel_clone_args *kargs)
+ 	return true;
+ }
+ 
++#define CLONE_INTO_ROOTNS_FLAGS \
++	(CLONE_INTO_ROOTNS | CLONE_VFORK | CLONE_PIDFD | \
++	 CLONE_CLEAR_SIGHAND | CLONE_INTO_CGROUP | CLONE_AUTOREAP | \
++	 CLONE_NNP | CLONE_PIDFD_AUTOKILL)
++
+ static bool clone3_args_valid(struct kernel_clone_args *kargs)
+ {
+ 	/* Verify that no unknown flags are passed along. */
+ 	if (kargs->flags &
+ 	    ~(CLONE_LEGACY_FLAGS | CLONE_CLEAR_SIGHAND |
+ 	      CLONE_INTO_CGROUP | CLONE_AUTOREAP | CLONE_NNP |
+-	      CLONE_PIDFD_AUTOKILL | CLONE_EMPTY_MNTNS))
++	      CLONE_PIDFD_AUTOKILL | CLONE_EMPTY_MNTNS |
++	      CLONE_INTO_ROOTNS))
+ 		return false;
+ 
+ 	/*
+@@ -3063,6 +3135,10 @@ static bool clone3_args_valid(struct kernel_clone_args *kargs)
+ 	    kargs->exit_signal)
+ 		return false;
+ 
++	if ((kargs->flags & CLONE_INTO_ROOTNS) &&
++	    (kargs->flags & ~CLONE_INTO_ROOTNS_FLAGS))
++		return false;
++
+ 	if (!clone3_stack_valid(kargs))
+ 		return false;
+ 
+diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
+index 8a3c6d4e94e2..78a1e1fb2cfd 100644
+--- a/kernel/nsproxy.c
++++ b/kernel/nsproxy.c
+@@ -13,6 +13,7 @@
+ #include <linux/export.h>
+ #include <linux/nsproxy.h>
+ #include <linux/ns/ns_common_types.h>
++#include <linux/rootns.h>
+ #include <linux/init_task.h>
+ #include <linux/mnt_namespace.h>
+ #include <linux/utsname.h>
+@@ -166,12 +167,18 @@ struct nsproxy *create_new_namespaces(u64 flags,
+  * called from clone.  This now handles copy for nsproxy and all
+  * namespaces therein.
+  */
+-int copy_namespaces(u64 flags, struct task_struct *tsk)
++int copy_namespaces(u64 flags, struct task_struct *tsk,
++		    struct rootns *rootns)
+ {
+ 	struct nsproxy *old_ns = tsk->nsproxy;
+ 	struct user_namespace *user_ns = task_cred_xxx(tsk, user_ns);
+ 	struct nsproxy *new_ns;
+ 
++	if (rootns) {
++		get_nsproxy(rootns->ns);
++		tsk->nsproxy = rootns->ns;
++		return 0;
++	}
+ 	if (likely(!(flags & (CLONE_NS_ALL & ~CLONE_NEWUSER)))) {
+ 		if ((flags & CLONE_VM) ||
+ 		    likely(old_ns->time_ns_for_children == old_ns->time_ns)) {
+@@ -192,7 +199,7 @@ int copy_namespaces(u64 flags, struct task_struct *tsk)
+ 		(CLONE_NEWIPC | CLONE_SYSVSEM))
+ 		return -EINVAL;
+ 
+-	new_ns = create_new_namespaces(flags, tsk->nsproxy, user_ns, tsk->fs);
++	new_ns = create_new_namespaces(flags, old_ns, user_ns, tsk->fs);
+ 	if (IS_ERR(new_ns))
+ 		return  PTR_ERR(new_ns);
+ 
+diff --git a/kernel/rootns.c b/kernel/rootns.c
+index ce012a07e982..865689eed69c 100644
+--- a/kernel/rootns.c
++++ b/kernel/rootns.c
+@@ -34,6 +34,7 @@
+ #include <uapi/linux/wait.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
++#include <linux/fs_struct.h>
+ #include <linux/anon_inodes.h>
+ #include <linux/rootns.h>
+ #include <linux/sched/signal.h>
+@@ -423,3 +424,138 @@ SYSCALL_DEFINE1(rootns, unsigned int, flags)
+ 	return fd;
+ }
+ 
++/**
++ * DOC: CLONE_INTO_ROOTNS
++ *
++ * Passing ``CLONE_INTO_ROOTNS`` in ``struct clone_args.flags`` (with
++ * ``size >= CLONE_ARGS_SIZE_VER3``) spawns the child process into the root
++ * namespace identified by ``struct clone_args.rootns``.
++ *
++ * Once ``"/"`` is mounted in the root namespace's mount namespace, the first
++ * caller transitions the ``rootns`` from ``ROOTNS_INIT`` through
++ * ``ROOTNS_FORKING`` to ``ROOTNS_RUNNING`` as PID 1 of its PID namespace
++ * while concurrent bootstrap callers wait killably. Subsequent callers join
++ * the running PID namespace until teardown begins.
++ *
++ * The caller must hold ``CAP_SYS_ADMIN`` and ``CAP_SYS_CHROOT`` in the target
++ * user namespace (and ``CAP_SYS_CHROOT`` in its current user namespace when
++ * chrooted) and run in an ancestor active PID namespace. The child inherits
++ * the caller's credentials and switches to the target user namespace.
++ *
++ * ``CLONE_INTO_ROOTNS`` may be combined with the following ``CLONE_*`` flags:
++ *
++ * - ``CLONE_VFORK``
++ * - ``CLONE_PIDFD``
++ * - ``CLONE_PIDFD_AUTOKILL``
++ * - ``CLONE_AUTOREAP``
++ * - ``CLONE_CLEAR_SIGHAND``
++ * - ``CLONE_INTO_CGROUP``
++ * - ``CLONE_NNP``
++ *
++ * Returns ``-EBADF`` if ``rootns`` is not an open file descriptor, ``-EINVAL``
++ * for unsupported flags, invalid argument size, or non-``rootns`` file
++ * descriptors, ``-ENOENT`` before ``"/"`` is installed, ``-EXDEV`` if the
++ * caller's active PID namespace is not an ancestor, ``-EPERM`` without
++ * required capabilities, ``-EBUSY`` if the PID
++ * namespace already has an external init process, and ``-ESRCH`` once teardown
++ * has started.
++ */
++int rootns_prepare_fork(struct kernel_clone_args *args)
++{
++	struct file *file __free(fput) = fget(args->rootns_fd);
++	struct path root __free(path_put) = {};
++	struct pid_namespace *pid_ns;
++	bool bootstrapping = false;
++	struct rootns *rootns;
++	int ret;
++
++	if (!file)
++		return -EBADF;
++	if (!is_rootns_file(file))
++		return -EINVAL;
++
++	rootns = file->private_data;
++	if (!ns_capable(rootns->user_ns, CAP_SYS_ADMIN) ||
++	    !ns_capable(rootns->user_ns, CAP_SYS_CHROOT))
++		return -EPERM;
++	if (current_chrooted() && !ns_capable(current_user_ns(), CAP_SYS_CHROOT))
++		return -EPERM;
++
++	pid_ns = rootns->ns->pid_ns_for_children;
++	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
++		return -EXDEV;
++
++	ret = mnt_ns_get_root(rootns->ns->mnt_ns, &root);
++	if (ret)
++		return ret;
++
++	for (;;) {
++		bool wait = false;
++
++		scoped_guard(spinlock, &rootns->lock) {
++			switch (rootns->state) {
++			case ROOTNS_INIT:
++				if (READ_ONCE(pid_ns->child_reaper))
++					return -EBUSY;
++				if (!(READ_ONCE(pid_ns->pid_allocated) & PIDNS_ADDING))
++					return -ESRCH;
++				WRITE_ONCE(rootns->state, ROOTNS_FORKING);
++				bootstrapping = true;
++				break;
++			case ROOTNS_FORKING:
++				wait = true;
++				break;
++			case ROOTNS_RUNNING:
++				if (!(READ_ONCE(pid_ns->pid_allocated) & PIDNS_ADDING))
++					return -ESRCH;
++				break;
++			case ROOTNS_DEAD:
++				return -ESRCH;
++			}
++		}
++		if (!wait)
++			break;
++
++		ret = wait_event_killable(rootns->waitq,
++					  READ_ONCE(rootns->state) != ROOTNS_FORKING);
++		if (ret)
++			return ret;
++	}
++
++	args->rootns_file = no_free_ptr(file);
++	args->rootns = rootns;
++	args->rootns_bootstrapping = bootstrapping;
++	return 0;
++}
++
++int rootns_finish_fork(struct kernel_clone_args *args, struct task_struct *p)
++{
++	struct file *file __free(fput) = args->rootns_file;
++	struct rootns *rootns = args->rootns;
++	struct pid_namespace *pid_ns = rootns->ns->pid_ns_for_children;
++	int ret;
++
++	args->rootns_file = NULL;
++	args->rootns = NULL;
++	if (!IS_ERR(p)) {
++		if (current->nsproxy->time_ns != rootns->ns->time_ns)
++			timens_commit(p, rootns->ns->time_ns);
++		return 0;
++	}
++
++	ret = PTR_ERR(p);
++	if (args->rootns_bootstrapping) {
++		scoped_guard(spinlock, &rootns->lock) {
++			if (rootns->state == ROOTNS_FORKING)
++				WRITE_ONCE(rootns->state, ROOTNS_INIT);
++		}
++		wake_up_all(&rootns->waitq);
++		if (ret == -EINVAL && !args->set_tid_size)
++			ret = -EBUSY;
++	}
++	if ((ret == -ENOMEM || ret == -EBUSY) &&
++	    !(READ_ONCE(pid_ns->pid_allocated) & PIDNS_ADDING))
++		return -ESRCH;
++
++	return ret;
++}
+diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
+index cd748e1cbace..3bea86647191 100644
+--- a/kernel/user_namespace.c
++++ b/kernel/user_namespace.c
+@@ -1372,6 +1372,13 @@ static void userns_put(struct ns_common *ns)
+ 	put_user_ns(to_user_ns(ns));
+ }
+ 
++int install_user_ns_cred(struct cred *cred, struct user_namespace *user_ns)
++{
++	put_user_ns(cred->user_ns);
++	set_cred_user_ns(cred, get_user_ns(user_ns));
++	return set_cred_ucounts(cred);
++}
++
+ static int userns_install(struct nsset *nsset, struct ns_common *ns)
+ {
+ 	struct user_namespace *user_ns = to_user_ns(ns);
+@@ -1397,10 +1404,7 @@ static int userns_install(struct nsset *nsset, struct ns_common *ns)
+ 	if (!cred)
+ 		return -EINVAL;
+ 
+-	put_user_ns(cred->user_ns);
+-	set_cred_user_ns(cred, get_user_ns(user_ns));
+-
+-	if (set_cred_ucounts(cred) < 0)
++	if (install_user_ns_cred(cred, user_ns) < 0)
+ 		return -EINVAL;
+ 
+ 	return 0;
 -- 
 2.47.3
 
