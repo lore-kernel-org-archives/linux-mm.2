@@ -1,228 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48E0606A93B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 20:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDEF606B77A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 20:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AaQ231OR;
-	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=UjhJeFxa
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uREuKfZf
 Received: by kanga.kvack.org (Postfix)
-	id 90F966B0637; Thu, 19 Nov 2026 15:40:59 -0500 (EST)
+	id 431FD6B0686; Thu, 19 Nov 2026 15:42:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C0506B0694; Thu, 19 Nov 2026 15:40:59 -0500 (EST)
+	id 3BC116B068C; Thu, 19 Nov 2026 15:42:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 789606B06EF; Thu, 19 Nov 2026 15:40:59 -0500 (EST)
+	id 283A76B06CF; Thu, 19 Nov 2026 15:42:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 439D56B0637
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:40:59 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AABB41C4679
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:40:58 +0000 (UTC)
-X-FDA: 85453037796.06.3F083C6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 02D481C0004
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:40:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AaQ231OR;
-	dkim=pass header.d=intel.com header.s=selector1 header.b=UjhJeFxa;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of rick.p.edgecombe@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=rick.p.edgecombe@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795120855;
-	b=n7L9G6aMXC+b5tZFPqsVlBPphr3YdB+t0FOCUz7pNcxYhfCKI6U8EoGdij7EmpkMILYauQ
-	jAq2HRJwyM5EJCUNBNVeLJxcz0FGX+A6QQ0IYMa7/deTsNc1YVJlJ158XrDIRihiJdXqzj
-	7xKuhWU3cKsl2lw7jRBDbrDPfmFfZ6M=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AaQ231OR;
-	dkim=pass header.d=intel.com header.s=selector1 header.b=UjhJeFxa;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of rick.p.edgecombe@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=rick.p.edgecombe@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795120855;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E471D6B0686
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:42:43 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6093CC0BC4
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:42:43 +0000 (UTC)
+X-FDA: 85453042206.16.A50F8A3
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6F1D0C000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:42:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=uREuKfZf;
+	spf=pass (imf10.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795120961;
+	b=tMKxPs42pDgta+20WaLHOID0egJoVJp1G/gd+2P2WfwvXQzX9AbKhOWS8M5rdANvQYUR+G
+	M7cwHajjeYcsPGJbb38E3vTcMjc7UtCB4hAGs1uF09cSBuMP0tyZQjLoqbIl0Ma7ua/Vy4
+	HjRziQsNTVbJWVgdeG7nQjZhxBlb2x0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=uREuKfZf;
+	spf=pass (imf10.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795120961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eX/xzoa4y7JeAgJc3+QLzXwEm/kqLcsaDykE/9OKGl8=;
-	b=cKsDBy1dPdczGhCvjrZXKI3sUTxTJPf/0vvclfTytUiDh49UpRn3hnu6bK8+FLO+HjDuc2
-	iFSsS5OQlgdYczQ4UMUZH0oIm0++HrFPkmkc6+BjF/padw0vKLQCGRMK8imFR4/8ft05cn
-	ILATn7+mRdB4ghh/LUmF8+JS7oEjeRk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795120854; x=1826656854;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=eX/xzoa4y7JeAgJc3+QLzXwEm/kqLcsaDykE/9OKGl8=;
-  b=AaQ231ORtVrTCdaxyODkE2TskvThzquChRYZZ75WYLa+yOS9Kb9idATj
-   Vf4N/rtO1c6sxhpsUx4Ir2Ggqnj6Ql1QpgX1N0Nkr9Jf975XRo37iCPmj
-   5C+VuMSZdAebbImGVMAnwBX3ABSKxrRReayKeQZSM4KC29VGUVBWdeTRT
-   1yx8jmV5mKHGURCxu71KfYv5eU+tB/8PDUxdBYUUL0S9pZwH7avtSpIAn
-   eaB1jGfD6+XzS6FvG/srN8iGhQO7jy625+7AHrnPRtEq91YbeJRke/eK2
-   SI4zmTyD7jv61ZVjLCzbvjG5GGnPE9YQ2ZOT4c48F4T2YZ1WJNJHWMnWk
-   g==;
-X-CSE-ConnectionGUID: W+iE8LCNRTaxP7pSVC+xNA==
-X-CSE-MsgGUID: mNxzULjGTKu+UP0b8fdvcA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3877029"
-X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="3877029"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 12:40:52 -0800
-X-CSE-ConnectionGUID: NjiyuN5pQHmGkbcVzlb0fw==
-X-CSE-MsgGUID: Oy6i4C2BRBemQuxUXiLr2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="12240167"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 12:40:52 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 19 Nov 2026 12:40:51 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Thu, 19 Nov 2026 12:40:51 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.18) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 19 Nov 2026 12:40:51 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fVWQ3yYKgP44xvfmmpFQcaT2nZaScIz0TSLryfEhBtScZKlAGajZqRZfV1I4AzTCXYdaLZyH8XHvAuDqYsJOTqf9uu/RXMTnXD1uB5aV2TGlAulGYl7d/4GaI+cpgJbFLY3G+lbpYKpabNnMmcGln/8wyJokiQnl5gv2WZ3dKhTzi70FcWGzXdw5NXjft1GwbQo13nlQGrPD0PqtzIWtO7W2JK8n04NQ9+4jmPQKLr7lL9c65zNlnFdHuQaefsyMAkh4O4GjoPH+UtK6+LCEJkpV2PCgUSOneysB3DouQNbDy9HNgX0IUYxq2smY6ueSPQqDLroVm44V64nHnbPaYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eX/xzoa4y7JeAgJc3+QLzXwEm/kqLcsaDykE/9OKGl8=;
- b=JmLJ3W3ivwqPCMSoVCwum5mOXo/2H3ckbxdFuOPZYyD8+UfyEwXw7R4Qw9elrV3t6PqCUZ1rJgITUgryfGEVOk8MdDvCWmnsdTy0HN+Y8PFIswB2JSJtPb1oZ7gyCDg+fo5tt6TAsKLIM0uN9r61RbhOiuPJqnDu4LM0nweEB/1T/OLJlL1BHO70FtdBe/C1eqEAqfJ8jv0aJMdjZxwSxolhs9PLxbWEznPKD4OdEJzSnYtLj1n4m8bzfBxKa7CFuI0083/BLK0a4L/h7fK2tBAXa/Jbpy8KfS0m7LUIzSYcSwJ/VjVq08jKUkZm0YT2XUeTHlFRAhazRcwSW+Gv+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eX/xzoa4y7JeAgJc3+QLzXwEm/kqLcsaDykE/9OKGl8=;
- b=UjhJeFxafDFrLSJE9aCSeWL1TY/v2epujmQIEUOdSm7l+vHolemRotcqAbZgLY8ZnS4/hjPDBuScWT0cIYJLSSsKms2mrcUNw7Edkc8gilhBEdiiyxEQ9NtG+bgzSy3oj38H3yhSK5nFlOctdm0OKJbVvc1msxDB07AY4mAeUnA=
-Received: from IA3PR11MB634048.namprd11.prod.outlook.com
- (2603:10b6:208:549::23) by DSSPR11MB9618.namprd11.prod.outlook.com
- (2603:10b6:8:375::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Thu, 19 Nov
- 2026 20:40:49 +0000
-Received: from IA3PR11MB634048.namprd11.prod.outlook.com
- ([fe80::760f:f0a4:7417:6e57]) by IA3PR11MB634048.namprd11.prod.outlook.com
- ([fe80::760f:f0a4:7417:6e57%5]) with mapi id 15.21.0615.013; Thu, 19 Nov 2026
- 20:40:49 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "jgg@nvidia.com" <jgg@nvidia.com>, "Hansen, Dave" <dave.hansen@intel.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>
-CC: "ljs@kernel.org" <ljs@kernel.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "david@kernel.org" <david@kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "kernel-team@meta.com"
-	<kernel-team@meta.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "rppt@kernel.org" <rppt@kernel.org>,
-	"bp@alien8.de" <bp@alien8.de>, "kas@kernel.org" <kas@kernel.org>,
-	"leon@kernel.org" <leon@kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "gourry@gourry.net" <gourry@gourry.net>
-Subject: Re: [PATCH] mm/hmm: reject shadow-stack mappings
-Thread-Topic: [PATCH] mm/hmm: reject shadow-stack mappings
-Thread-Index: AQHdeGZBH1l7ImqEJ0KOHtCVGoraMQ==
-Date: Thu, 19 Nov 2026 20:40:48 +0000
-Message-ID: <0c6fcb3daeab0ab3df0593cf389124e38e1d7f3f.camel@intel.com>
-References: <20261113195536.2660763-1-gourry@gourry.net>
-	 <20261113200303.GA395967@nvidia.com>
-	 <179460249376.482102.14669935557901467762.b4-reply@b4>
-	 <20261114002027.GE3706007@nvidia.com>
-	 <20261113181025.6e8b9475b29c13d29f59e02e@linux-foundation.org>
-	 <20261115000005.GG3706007@nvidia.com>
-	 <20261114170127.3d29199864eb352d9045eaba@linux-foundation.org>
-	 <55034934-8aab-4e8a-a74a-b30c977670ed@intel.com>
-In-Reply-To: <55034934-8aab-4e8a-a74a-b30c977670ed@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB634048:EE_|DSSPR11MB9618:EE_
-x-ms-office365-filtering-correlation-id: c8e38b27-2063-4e6b-0b54-08df467d650c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|3023799007|4143699003|11063799006|10067099003|261022075727099003|261026121527099003|56012099006|261021121427099003|261009223027099003|261102123227099003|38070700021;
-x-microsoft-antispam-message-info: sgwzx6ibgiYRm3Gacchf01dzF5+pWvE1A/PKX+HD2jgtmEgldohYhF6YRD2NngBln8xS42/XwTtYg2m7bUu4iGuQgTMyR0PGlBtgzguFw7Soem2UVKFFs4R6wzjQoJZRUd8z5k3PiTa4RQsu43nSnFPOP7KoiG/O+biRMUthuIcQMYM93ijmQ+KqBxaO0/ddkJGcjLjZAV2vg1tmq4Nr3Pcl70KBKeum5AAxrGXjladE8AEClRNCIrBspjME16ddzqyFvCT7npoNhw0YzpIZKbV/aY6gtJxRawBX41tucwghnE+nJkE+KkZGa1YA+WQvpHflIRRyh6Phh5QhSLbgfMpPj09+7/YROmbajc8J6gHVIGZUdPlh4QVZzPfUF9QnX2Lz0xeMUNh6/4sbuF4jsjaPdoDCqwYw5T6udqwvwpSRGDhuNixlwHEd5saS+BN8UNNTLerjgg3bt03llUodSpbUY8xD3SDUKfLatkovFNUXE74hPi7baeyrNoMgwrJ/UVlKpCNkwoQz+Ld3bjd9OhMxqsXg61Gn7HcQO45UEUYwR/Pi9FEmFM8g3mIglPOuB5NqV4weRBWdIG2II4Thievzc2g1FqLAbX4nJPNxsL6Hu4AlWSGFa564Qx1c0MoKW1K23t0V/5qOMsOl2CQBDtJR8fzX1Y3fn/Gzv+T3iIRHH2MOnmoK1jMkeY4/FP+jQAaTXLWDzlIGRBzIgEI66Q==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB634048.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(3023799007)(4143699003)(11063799006)(10067099003)(261022075727099003)(261026121527099003)(56012099006)(261021121427099003)(261009223027099003)(261102123227099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dE9Pb1E4TnVyYlhkMXZJdDVlMVRGcWlyVHBSb0xJTDRQb2VoRHhZQVNXZlpY?=
- =?utf-8?B?bzVIUWk0TGlBNlR2ang3KzlaODhjRU1KZk9EN1lkczFmRkZ6ajBKN0xjNkR5?=
- =?utf-8?B?RTNNWU9Id3RQTTl1bjRnMWMreVc2eVQ1Vjd4bk16aTBRM1ozRG10eUw0Vk43?=
- =?utf-8?B?S0Q3T3haaEZRcFJzSFBCdTArTkFwTm43WkQzbW5adjJmQW0xSWRQdkpzSG1S?=
- =?utf-8?B?YmV0bm9DZGJxUmNJcTlGeExFQjNLQkhYWGJpOGY1UzRxc0R6ZlRYY3ZoMFR0?=
- =?utf-8?B?VzZOaDFzOHRQM25hWWtiNmRKWUEwVmM3RlpaOHk4aVVOMEduV1Yzdk5xQjYy?=
- =?utf-8?B?NFl4MVVGSGNCa3pkWHgxckIvMVhrSHhlZ3pnUkU2OEV3b1RBbjI4Nm04Zm54?=
- =?utf-8?B?SnBVVkVmZHpKdWlRTEU1TmZPTkVTU2hWNjU3azVubDdXVENqZi9HRFBITkl5?=
- =?utf-8?B?VVlQQzJTQUlEZnB6N0Y0eGJQem01RXMxNUR5aE10VklnaXVEcTA3eTVLRTVr?=
- =?utf-8?B?L2JCT05FaFQwK0FyTyszNGlnUWdtekNFSmhHRHNyNzdvRXJ3ZnFKTDB2dkZy?=
- =?utf-8?B?NFgwKzZQZnlYa2RlMUx2STBQN0VMT3dTdTBJTngrUDZqT3dJSXd6cm1tbUxK?=
- =?utf-8?B?QlRjV1orcGllRHI0YU5LREtoYXVlV0RaMml4NFVmcEhrZ2NLcW1lWVBrS0R0?=
- =?utf-8?B?aXlETHZqRkpSV3dlZ0tvRnNSSGgzK2IxNENrbVFFdDJsWXF5bSsxaER2V0th?=
- =?utf-8?B?Q2xRNmhwSGJ3eFozN24zRnlEak9xV1pIN2VweDBkMWhKc0t4b2cvcjY0ZWZL?=
- =?utf-8?B?d2Vta3NDYWNFOGRrNGtUcXgrZjJ5clFOS1VRR2dZRkdQUlpTUFJvTDJGTWNO?=
- =?utf-8?B?SW5xOWtDc1Z6WVUwRUd2WWh1QTNQZHpIdEhwNlJsdU1rTmRtZDBjVmlSTFIz?=
- =?utf-8?B?TnVzeFFLbnkyTU1vUVpnR0xDaFUvZDgzTE11N2JONGw4QmdTS0lhS1ZsSjcr?=
- =?utf-8?B?ei9HSnVGdTZ0VWpBdEpYYjFsanFPN00zaHA2NjlzcXNoblFEZEZlNGxZOHNQ?=
- =?utf-8?B?Nmh2UnhwUmo3M1pOY3JReVZjeUxiNHNIZ0dvZDNOY2VFMmtkcVpSaVE0TDl5?=
- =?utf-8?B?S3BsL3FGaWo3N1hBZ3VnMWhhazdmbmlwOEY1SXFWQVdsWi8vQjNUYTU2Qjdm?=
- =?utf-8?B?QTFNZG4wRjJHaE9IbE5HMG1zc1o1bDh0RXplVUtXamhjcHRmdERzVE90aks1?=
- =?utf-8?B?Y3Z6Q05Xamczcm1PV1lGTUFtNWl1L05MWDNEaTAySzVCTGxkTlR2ajJIZ0hK?=
- =?utf-8?B?MjhvaExPZTBmRHRmTkMzZzlVQUhuSWNucGVUUlVsSXdVekkwMURDeFk3Rkhl?=
- =?utf-8?B?aWNmeUdQcVJMeHlqbGp0UFg0ZXB2NjNwdUlEMkNEOW9ub3h0QisxcVRmY3I5?=
- =?utf-8?B?ckZidUcyeTFkb2JTdW95R2hncUkrcXFqTHYrS1RVMFgvME5jYmJDcnQ4aWxk?=
- =?utf-8?B?b2hqamxxODhzOTU0dFZzdWo3Yjh1MGhyUHVXZGs3L21KTDlMR1N5ejlQbXNq?=
- =?utf-8?B?dmxnZjc2M0kxaFhwblNFYUhicnVGNEdQTUc3WnFvdFV4SjJBY3RQQWFma0NL?=
- =?utf-8?B?ZmdEbHRibjJhblFEeHNMN0Zha1JBaUtBZGU3NHhQZmxWaDMrUithZmhVcmZK?=
- =?utf-8?B?L1dJWnJ2bzB0aUNxdFdCaytOWFhnUWNocDRmeXhGbTRHWVd0azk2T3RBcUhK?=
- =?utf-8?B?UXdTQnFzT2RORE9GWHh5VUVEcGpZdjN1ZTJ2TlRFY2VpTHRyS3VubSs2YWRL?=
- =?utf-8?B?d2l5Y1V5WndKdGVLV3kvRS9ydEIvdkpPMTU3SUhTNHdJOWUzMkd0ZmZLNVEx?=
- =?utf-8?B?aE9iVVF2S1RlYWlHTVlnV3VQdit1bjNxWElwc1ZyVTBGV2EvWWhkaWJxMWdM?=
- =?utf-8?B?Zzh2L0w1Z0cwUVRqNXZOdktrNUk4d0NYVjk5SGYwNEZNQ3BFeUo3eVlyMFVK?=
- =?utf-8?B?ZnpWVzJmZTN4NXVuWFNVS0pvOEZocnF5eXptWE02Q29CUU1pS3hZaGtGTHlh?=
- =?utf-8?B?VG1jRTV1NVdwYmtCa3U2NVlGWW9kZzhwMXB0azlmZmFMekJBVDkwMjRTN1cz?=
- =?utf-8?B?b3B4c1VUTDZnQXZZUU9rMUtUZ001T2wzSVJHZW9vUys4NXY5bU1FYUhjVWM3?=
- =?utf-8?B?NGU2QzU0RWdyakZpellSSW14SGZoRE8zYmpJYkRCOHNYSWdLanBHcFBwK0Zx?=
- =?utf-8?B?ZktIc3d3by93aktlMEVpRCtBSlFySjk0a0d6QnFiTEt3RG10c3kyd2grZ1Ri?=
- =?utf-8?B?Ulh3TUVNWU44MTUwMjEyTkU0Q0JSZ244d0s1THowZE5pSTJ2SjdSc0ZQeFFn?=
- =?utf-8?Q?+7uZ/0L49vszBiAg=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1333F367832D3342832C6E54E19CE913@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	bh=ZBFQR7u8Ee3YVRPu1eQVodXE/UpYLg54xCAcuhe+MAs=;
+	b=ynIsPkosf5NsO57Hmu9Ma+dqR654G5xGNC8l4Gct0QpDZ3XoninqylVVT8UuRws6h8uSy9
+	YufM8SUsvVnE4A8bstxEKWVDok0XNckytIMsQvBCkvVze0KlbkZs79CQz71NS6sgyuM1Dy
+	eOhggY8X0CualhnwEkFaqTkYRNuU2YY=
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-372bdb942dbso168997eec.1
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:42:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795120960; x=1795725760; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZBFQR7u8Ee3YVRPu1eQVodXE/UpYLg54xCAcuhe+MAs=;
+        b=uREuKfZfKjHoaIcJVf+REDXQ0bnGu/6FcaNXLt5OE1a6fwK9z9Jkjx1OvmHM0ka1n/
+         o+z7nFkmAuJW2DbmQi9uCke0Z52nS7rZPztBx5jGl2J7qzGt7wnFXJU9K9dUrQlLgeYP
+         k91uuTUAX1DGnrboNR2LA5PWTg7hwMJKB8iDvHUCCnmxbcsBbS4nAtpF4Lv+pMwBzQhT
+         CakkZINLt34OyYfjdhjubDoHT+s8lsGSG9kcwmIbRlgJPZS5GmGneszhW/f2cLRQg4UR
+         ZdBEh3b22u9uhIuqnziJPamOcgKWXVwyqGwZeUp7lYWmXKUhZwuq7oxOdTBC6Aq1SG+c
+         +yyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795120960; x=1795725760;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZBFQR7u8Ee3YVRPu1eQVodXE/UpYLg54xCAcuhe+MAs=;
+        b=ZqLE/OHMAsiaMBkZAxS3/g3l/AAbfig4PGJcsMm4vl25RxEbPp/oHyN7MyWerbpBws
+         pAGADFWYHaGEwrbULtgtGxPuNTEXlXNjfSBcdHElzJdv52xv8tOtPU63BqF79z7/6HlH
+         fXZCifll01iMyFjBvYxQMMhmQG0T/ifUwKcZ7LBqnBINGtcg5RLGayH4UJZ1KOeVdF66
+         bWQnenS+GKehXfYjZbn8usCKcubMw0bRL95HKIM2Ybz9atSk6AncyPfg2TweWCkxqi5Q
+         urPRIUhFmTz7qyPpL4qGVF9v4KBuqiOPy6s3QWhRXp2a5dx/B+8lScVZWYvOvtaMxAig
+         mtbA==
+X-Forwarded-Encrypted: i=1; AL+hErH6bbqoFSfCBPruDwbvx8ybjP0Ua5RunHSq0mXuNCrcMbjwnER2KkPOH78ohZ8/pyRMpev26YMviQ==@kvack.org
+X-Gm-Message-State: APuU4Z9IOT8h6Tn+E/ZmIjiR7wN/U17EpADftoArg8/YLOMp491oYjSA
+	fopG2v99Am8cS965+RyN6UZuUk0iCQNrib3Q6K4SVlUu7Kg6iWXJx+KX
+X-Gm-Gg: AZFdTZfbs5dGnyDMSTcj3beRsvWQbKJ2a/Y3T8dLDeuX1Ph8atKHYP6tyMONbXz3SvQ
+	4ghJO3/y8Z9Bl3i8zXHLZIAQNvsDiFqbpoxvrh8c6FFKNCuMQh4HXCjHTHWGA7FbkQkdMs5H8YK
+	aW986EpIZQa+eBYn4lDVyd+OgXIjCm1TMI0A1NpT7jylw/UOipsogS+1wJPHEtHjNWOSP2N7Ny8
+	slS4D5/B0BV1hyIntMHf97bI8GFLEpTbdW+rmcqRafNgx7IwZakaKE8tvYYPYAVvusb2ZIhfzXE
+	SW4of+/Iz64hVw8IHI1XjAzDiJMfR/wr+UeJD7n2B3su8A6Rrj5bVzxrTSzyhiefHwuL4blVcH9
+	797CbA0LrhetfQw/hDdbsb8HHsR90vcKkbtOmeiW2UgxAQpAhRmWgUkvnDBP4tFXa6sJk2ZHKeN
+	1Dprv7eNydslrlIjSa9Y4iEBER6/SERx148cpN1XVUp2m0wlJYVU2kzAvcJHllO7zpi4LGSIzP2
+	Bjb0ulEUoSCqJR/dCVHf7tLqmK3Pmrqm8VMKQsqxqoX/BkBElVrlBt6uoJ4A+p8bh3/milxWffj
+	5cygOIeU1q28IRNo93Ie6LuRIHyqjMbmuA==
+X-Received: by 2002:a05:7301:4306:b0:351:29c8:643 with SMTP id 5a478bee46e88-3856f65cb16mr430705eec.18.1795120959979;
+        Thu, 19 Nov 2026 12:42:39 -0800 (PST)
+Received: from localhost ([115.96.176.220])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385677c0c1dsm1079684eec.21.2026.11.19.12.42.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Nov 2026 12:42:39 -0800 (PST)
+Date: Fri, 20 Nov 2026 02:12:36 +0530
+From: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dan Williams <djbw@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Breno Leitao <leitao@debian.org>, Ira Weiny <iweiny@kernel.org>,
+	Li Ming <ming.li@zohomail.com>, Richard Cheng <icheng@nvidia.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Kiryl Shutsemau <kas@kernel.org>, Harry Yoo <harry@kernel.org>
+Subject: Re: [RFC PATCH 5/5] cxl/region: Register device poison before
+ exposing RAM
+Message-ID: <av9fPGZHfa8yOnq7@acer-nitro-anv15-41>
+References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+ <20261010162017.62506-6-shaikhkamal2012@gmail.com>
+ <20261016233532.51766fc4@jic23-hlaptop>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: XZPfRCzQStqlvQxbq1VvLGYcFWKOkIQlwpa4yT+6DACMnzoBf6RbaBbvJDbHd55KEiWOuaySqLIe6yyiFfA9P25DS3GTuNVZZjEOrOQv4Eilb1sbwG4KE4m70egbDNkD4/EQjhDoJBPXV7703doBu1WefQgtC0GDImNvUWxeOAuL2iIgTPE0n72feHF/yMGKVK5NCGn9EMU3zjlTYnooNncNo0jyfcCgTSeSBoDpJJXXAInqSlOM4gOe4icG7EMr1Hc9CePCt0t9L44yNFN2fqJXypgwHIP2UAfbpDhimwdmIjy3dUdZp2+dbFDZi7V+/WO/jzNaNfHOlQsyec01Jg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB634048.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8e38b27-2063-4e6b-0b54-08df467d650c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Nov 2026 20:40:48.9528
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yWSuPuUPFpKrILTdvU2asb7UTa4knRZFrSdH0ZtWnQU+vZV21d9Pn3SdvIoMYj5+m2/ycEdHwAYR291n1hNi/b4dVqn1MHefS9CwfWOeQ4Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSSPR11MB9618
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 02D481C0004
-X-Stat-Signature: k3ngh5fyqx9azagrp6yymhgi5t5o894r
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261016233532.51766fc4@jic23-hlaptop>
+X-Stat-Signature: j7t1row6o4zmpq9gzo6xorfy9f4whwx1
+X-Rspamd-Queue-Id: 6F1D0C000A
 X-Rspam-User: 
-X-HE-Tag: 1795120853-602146
-X-HE-Meta: U2FsdGVkX1/8ZW2WrbAxuHR3OLI6k5PaU1ZTe8/ilHSJgGm3mSfP5u/tB9JUZ3KDNVheNzuS6eWNukr54mtM9vM7R3QQeBnW4GLuI/K9P8hCLLeFMsPNoKCLHCZXJKhHLED/I7itnzdVonEvVxVSKb7EE1iEjWTZJU/ybzSbr1Mh/GdL9ViWu3oCKNFJZxmxkZ6dpRMC5V/QHQseDPVl+nXWVX+pmLsCSCpJqyNVQZ1Liu7SjSt5wu26NtgYTaSCnjcIjuZwSsJiQS4H/KwNHRv+fbnAO1llAf2cg+eZRZCpVhzj3efevDxz/+iOvyZ3hQW09jW36uQcsaJ327OC0q0ThltLz+MVCppdxgC4IWR5IJlviGFpVuaHCEnN8WhtB9FAPX9PhLGI1rcCx3bTcPumaWsnVIcrUB+YdfQpAjkqc45AGAc0ngh8rzqoHFn87zbNV6SdsI/64VsxF/ijqyYxizrUSB07Yw5qn5+BBuLSsZOuPXnfvovS09OxrIs0oCS5jFwdLqR9Vg0L1RALyRy34/LfZx7OUYwwHF3M3eItmqcpBiLrMxPjFnCFUfeLbYyHziVVBBsowUF3QJopKIYit450gF0kOJ8C8WHpqkjuFSxSMB9eBMV1+ckSJ236S5X6aesZstXcK5S0efYiSdbo36q5z4c8VXG1AqbJtgvB5uK0H3VPZHWUbq9mSaAH9IzI39p1yMAYtMi4EJ/B1S/plTL2l2zEgBVSfD4veJ1CSVKxyEk/qFjfPExN3CXyc8uF1k6sOhVcbcs7ENZebDUUPnpj5t4Ku/CJuZahh7JQclFVRZWGY5zOZK92CmI9C0OgINKs2LqoO83yYLcaTZV4CXSJevR8YCrPlPNqH1IMiEy9vDlNjNZXw39qOkq2InOCyKZlCKNPOyrv/JdsHjSTWwT5oEU3+dQ2A2RuDpzkcn4nUchEsiYY076q0X2BcHPy2e3GvouvTn6Jv8W
- 24eOMhVK
- Srw3No9ANodUA3MLuRCRl3zNwSQaLSdl+Rkgv9kYedp4spKt12hJuBOeXaBywyqbamEHVJko5EYVzqBqipl77/gUFP+CI/SHOavygc3gJqpx2VcvD/i8p+q7HLIPXXg+Ykafcw+ln4hrP23c4sLcPJRxNshIk4p6jtQ4cGPlNhbi+Q/XBLqAsYy8HCGVHnmgN/8JDnCdP2QmFe/M1Oc+OKshS7qUw+aQwv5TCqkz3cqjPG7Qd4+uI4W1ArZtDD66aVMyqe4CYVfq/amYKFVgfIn9lhHJW/ClRX4uJzhdtuWJmIasaOd4phSHvs1NUXarDm8h07Sg+Nmiv2DTxbx2HTyhozIS4E9sbFyoeZvIUVKVNeMJQGtnKoRTrYJqU6sc/WbiLpAHCHOmMQ59fNPjDhv3CN8tAhdPObCKnUKds1M46zYd5jrUxA3xl7G+PkQd19E5Aydjz2nsSpOCZkLOpwdtxBg==
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795120961-212810
+X-HE-Meta: U2FsdGVkX1+e2t0tbErXp1t5U4VpP9ZXJ8SRKtuH9kzEtxjDdFZVuARSn0/f727AGFpiLiGffdZS5/dGZL5HMhbc7s5ZFAGrNueMatqbXkzKbFg2VpbJhvp1dlgPnaIwEozckxYlMuyssZUTNQ1cEjw6X2qjgfA3VHTiapZoXgXDRY+5vnmpI7RDkc488LuWTd5+tl2KC1lypFnYEdQlDGBBQBYgfCe8HRc4HgX/k9LqM7DQcGjaupHgSJPCPPUFBW+KvjXDGB03gv5HQ9FOynIgFXTCLqt2WZ4m1AKAtCxmrFGD65WoXM8EsV5L+fH4E64rJ3P92GEcqvUx1c1WisRs0yPclMAHqQLjKwXVYxfXm9MdzjNYnP7SASjksnPpe73l0Xdb7cKvrJ9g7SFoobhO4mnXmyn+FzXG2aaf7t3ytP0IZNqnHKQKMx8kTBjhqfjFN5ocKqGcfrVUIqGA1DnKcVgGSIXWeitIBETBBt60lxI6nWZ0C6hLDxQMnBnAddyqjpUHDzjxmRKLiSaEOhjNk/rgBuvEPrnKi7Zn/09z5wmyUDBnac50bfKQgDFHYPyi6dD9gX6Yun6Bzdk3U3hM7RSLCje1nxc97HFLaSzwj+USf9KPgWCpZeXpnecU6Dg5xhA3uG3wpTT9FH/Irn2o+Zxzf3t6Npt0GUWhdXgZ5WpSP20YbaNymg95NYaJ/gAJWPgQtpkpEzaY6gadV8/q6QSlSgOiufQzXi3QOBzlWUJN7FYB4F+bx2X54KcHxIcZ7H4H68PwP/GrT3o8vGLzEakHYft8ywPsuZd3MuZMYgnwBg6kPGx3Q+7o33WIDn/Vo2TWNJQqUgV9z1hj6dGYZrc55u9BlH3fyN+C52yUIoZph7Cvtzg8gC1/bBl3+iwkddt7A6e6+GSPNkDRcTYlgZRvfUKh/YhHDb4nBzNhB9j+mfrqSK8Lnqpty7p7y03V8N0nHDtwSjqqkvF
+ FzfwJFA0
+ TyTbV+iVwx5oXbqgTvKS4BfDT3M422y6jfvkMSpObFlQq7IaBDtk3D2cNxRf++qVnwEHWN/jzLNVVZav99WhxC+G+c5TzRTppKQxFe7svHYFEmx2nyFVZqNTXuPtCGDWWpi6b03qyMV2PV0SnZbuImoou92lORN8jZf2Zw/0NnWfCl4EmIXUmZ5fsflTr3X77gHBB27sSGyIJGfpd5vnT7XVl95VmrOFDO1Yjv7hWUVdyWsx0BVnWZnfYg9TikzhWmgOtjIbr67VLJzu55s8FHxf4+zziSUbGgMa1QlLZiGR7TZK5+XI0GO5QNjRNZP72goA5Pw5zgfVHicRlnBOtlQwOp9M2FzAWts949rDwhT9cri6DT9XJZLk2A6WFWoocmFmb/vgggH88PwM5aQG9zzMuLAql4XZd1kScxXzUKEa0XliymgOmrdZLep4xL9doE+1KLKZAbeNye4HxqlVMlG8NgGpBpk9+93vf5UKn58In8d4jchF7X8c95m56528XCuyVhiAU4JMtm8kZAheRq3rw88cL68TV/BylCSx3LZJFWiXw6kFVCx1m5oXvcS+/MrOghNpekqrVwMw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -231,38 +142,402 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-T24gVGh1LCAyMDI2LTExLTE5IGF0IDEyOjA1IC0wODAwLCBEYXZlIEhhbnNlbiB3cm90ZToNCj4g
-T24gMTEvMTQvMjYgMTc6MDEsIEFuZHJldyBNb3J0b24gd3JvdGU6DQo+ID4gT24geDg2LCBhIHNo
-YWRvdy1zdGFjayBQVEUgaGFzIGl0cyBvcmRpbmFyeSB3cml0ZSBiaXQgY2xlYXIuwqAgVGhlIENQ
-VQ0KPiA+IHJlamVjdHMgb3JkaW5hcnkgc3RvcmVzLCBidXQgcHRlX3dyaXRlKCkgcmVwb3J0cyBp
-dCB3cml0YWJsZSBiZWNhdXNlDQo+ID4gc2hhZG93LXN0YWNrIGluc3RydWN0aW9ucyBjYW4gd3Jp
-dGUgaXQuwqAgSE1NIGNvbnNlcXVlbnRseSBzZXRzDQo+ID4gSE1NX1BGTl9XUklURS7CoCBOb3V2
-ZWF1IHVzZXMgdGhhdCBmbGFnIGZvciBHUFUgd3JpdGUgcGVybWlzc2lvbiwgYW5kDQo+ID4gUkRN
-QSBvbi1kZW1hbmQgcGFnaW5nIGNhbiB1c2UgaXQgdG8gZ3JhbnQgZGV2aWNlIHdyaXRlIHBlcm1p
-c3Npb24gdG8gYQ0KPiA+IHJlZ2lzdGVyZWQgbWVtb3J5IHJlZ2lvbi7CoCBBIGRldmljZSwgb3Ig
-YW4gUkRNQSBwZWVyIHdpdGggd3JpdGUgYWNjZXNzDQo+ID4gdG8gdGhhdCByZWdpb24sIGNhbiB0
-aGVuIG92ZXJ3cml0ZSB0aGUgcHJvY2VzcydzIHNoYWRvdyBzdGFjaywNCj4gPiBwb3RlbnRpYWxs
-eSBjb3JydXB0aW5nIHJldHVybiBhZGRyZXNzZXMgb3IgYnlwYXNzaW5nIHRoYXQgcHJvdGVjdGlv
-bi4NCj4gPiANCj4gPiBSZWplY3Qgc2hhZG93LXN0YWNrIFZNQXMgaW4gaG1tX3ZtYV93YWxrX3Rl
-c3QoKSwgaW5jbHVkaW5nIHJlYWQgYWNjZXNzLg0KPiA+IEEgcmVxdWVzdGVkIGZhdWx0IHJldHVy
-bnMgLUVGQVVMVDsgYSBzbmFwc2hvdCByZWNvcmRzIEhNTV9QRk5fRVJST1IuDQo+IA0KPiBUaGlz
-IGlzIGEgZnVuIG9uZS4NCj4gDQo+IEkgYWxtb3N0IHdvbmRlciBpZiB3ZSB3YW50IHRvIGdvIG9u
-ZSBzdGVwIGZ1cnRoZXIgYW5kIGRpc2FsbG93IEdVUHMgd2l0aA0KPiBGT0xMX1dSSVRFIG9uIHRo
-ZXNlIFBURXMuIFRoZXJlIHNob3VsZCBiZSBwcmVjaW91cyBmZXcgcmVhc29ucyBmb3INCj4gZGV2
-aWNlcyB0byBiZSB3cml0aW5nIHRvIHNoYWRvdyBzdGFjayBwYWdlcy4NCj4gDQo+IElzbid0IHRo
-aXMgYSBiaWdnZXIgaXNzdWUgdGhhbiBITU0/IFNob3VsZCB0aGUgZml4IGJlIGluIEhNTT8NCg0K
-V2UgZG8gcmVqZWN0IEdVUHMgdG8gc2hhZG93IHN0YWNrIFBURXMgd2l0aCBGT0xMX1dSSVRFLCB1
-bmxlc3MgRk9MTF9GT1JDRSBpcw0KcGFzc2VkLiBUaGUgdHJpY2t5IHRoaW5nIGFzIG1lbnRpb25l
-ZCBteSBvdGhlcnMgaW4gdGhpcyB0aHJlYWQgaXMgdGhhdCBzaGFkb3cNCnN0YWNrIG1lbW9yeSAq
-aXMqIHdyaXRhYmxlIGJ5IHVzZXJzcGFjZS4gQnV0IGFsc28gdGhlIGtlcm5lbCBzaG91bGQgbm90
-IHRyZWF0IGl0DQphcyBzdWNoDQoNCkEgZmFsc2UgbmVnYXRpdmUgZm9yIHB0ZV93cml0ZSgpIGlz
-IGRhbmdlcm91cyB3aGVuIHRoZSBrZXJuZWwgbmVlZHMgdG8gZGVjaWRlDQp3aGVuIHRvIHJldm9r
-ZSBhY2Nlc3MuIChpLmUuIGZvcmspIEkgdGhpbmsgYSBtaXN0YWtlIHRoZXJlIGlzIHNvbWV3aGF0
-IHdvcnNlDQp0aGVuIG1pc3NpbmcgYW4gZXhvdGljIHdheSB0byBjYWpvbGUgdGhlIGtlcm5lbCBp
-bnRvIHdyaXRpbmcgdG8gYSB1c2VyJ3Mgc2hhZG93DQpzdGFjayBsaWtlIHRoaXMuIFNvIEkgdGhp
-bmsgcHRlX3dyaXRlKCkgYmVpbmcgdHJ1ZSBmb3Igc2hhZG93IHN0YWNrcyBpcyB0aGUNCmNvcnJl
-Y3QgaW1wbGVtZW50YXRpb24uDQoNCkJ1dCwgbWF5YmUgdGhlIHByb2JsZW0gaXMgdGhhdCBwdGVf
-d3JpdGUoKSBpcyBkb2luZyB0aGUgam9iIG9mIHR3byBzZXBhcmF0ZQ0KY29uY2VwdHMuIFdoYXQg
-aWYgdGhlcmUgd2FzIGEgcHRlX3VzZXJzcGFjZV9jb3VsZF93cml0ZSgpIGFuZCBhDQpwdGVfa2Vy
-bmVsX3Nob3VsZF9ub3Rfd3JpdGUoKT8gTmFtZXMgd291bGQgbmVlZCBzb21lIHdvcmsuLi4NCg==
+On Fri, Oct 16, 2026 at 11:35:32PM +0100, Jonathan Cameron wrote:
+> On Sat, 10 Oct 2026 21:50:13 +0530
+> Shaikh Kamaluddin <shaikhkamal2012@gmail.com> wrote:
+> 
+> > The trigger_poison_list interface may retrieve poison after CXL memory
+> > is already online, which is too late to prevent known-bad frames from
+> > entering the page allocator.
+> > 
+> > During RAM-region probe, retrieve a poison-list snapshot for each
+> > participating endpoint decoder. Validate each record against the
+> > decoder's assigned DPA range, translate its poisoned DPA units to HPA
+> > and PFN, and collect the affected PFNs in an xarray. Coalesce consecutive
+> > PFNs and register the resulting ranges with the pre-online hwpoison
+> > registry before creating the DAX region.
+> > 
+> > When Get Poison List is supported, abort region probe if the list is
+> > incomplete, malformed, or cannot be translated. If volatile poison-list
+> > retrieval is unsupported, preserve the existing behavior and warn that
+> > poison cannot be withheld before memory onlining.
+> > 
+> > Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+> A few comments inline.  I wouldn't rush to revise this though as I think
+> the whole concept needs more input from others.
+> 
+
+Hi Jonathan,
+
+Agreed. There are open comments on the mm side too (3/5 and 4/5), so I
+will get the design settled before sending v2.
+
+
+> Jonathan
+> 
+> > ---
+> >  drivers/cxl/core/region.c | 322 ++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 322 insertions(+)
+> > 
+> > diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> > index c72524923b38..e3ffa77927df 100644
+> > --- a/drivers/cxl/core/region.c
+> > +++ b/drivers/cxl/core/region.c
+> > @@ -14,6 +14,7 @@
+> >  #include <linux/string_choices.h>
+> >  #include <cxlmem.h>
+> >  #include <cxl.h>
+> > +#include <linux/memory-failure.h>
+> >  #include "core.h"
+> >  #include "mce.h"
+> >  
+> > @@ -3038,6 +3039,323 @@ int cxl_get_poison_by_endpoint(struct cxl_port *port)
+> >  	return rc;
+> >  }
+> >  
+> > +/*
+> > + * Device-reported poison is gathered at RAM-region probe, before the range
+> > + * reaches dax/kmem, and registered with the pre-online registry so the
+> > + * frames it covers are withheld when the memory is onlined.
+> > + */
+> > +static int cxl_poison_store_pfn(struct xarray *pfns, u64 hpa)
+> > +{
+> > +	return xa_err(xa_store(pfns, PHYS_PFN(hpa), xa_mk_value(1),
+> > +			GFP_KERNEL));
+> 
+> Fix alignment of the line above. Right now it isn't visually clear
+> which function call the parameter is for.
+>
+
+Will fix.
+
+> > +}
+> 
+> > +static int cxl_poison_record_to_pfns(struct cxl_region *cxlr,
+> > +				     struct cxl_memdev *cxlmd,
+> > +				     const struct cxl_poison_record *record,
+> > +				     struct xarray *pfns)
+> > +{
+> > +	struct cxl_region_params *p = &cxlr->params;
+> > +	u64 raw = le64_to_cpu(record->address);
+> > +	u64 units = le32_to_cpu(record->length);
+> > +	u64 dpa = raw & CXL_POISON_START_MASK;
+> > +	u8 source = raw & CXL_POISON_SOURCE_MASK;
+> > +	u64 length, end, step, cur;
+> > +
+> > +	if (!units ||
+> > +	    check_mul_overflow(units, (u64)CXL_POISON_LEN_MULT, &length) ||
+> > +	    check_add_overflow(dpa, length, &end))
+> > +		return -EPROTO;
+> > +
+> > +	/*
+> > +	 * A corrected error never reaches the poison list, so every record
+> > +	 * is uncorrectable. Only a failure of the device's own media is
+> > +	 * withheld: External poison was written by the host into healthy
+> > +	 * media and a rewrite or Clear Poison recovers it, and Injected
+> > +	 * poison is a test artifact. Withholding either would make a
+> > +	 * recoverable state permanent.
+> 
+> This reflects back to the comment I made in the cover letter.
+> Device discovered poison can be ephemeral. 
+
+Agreed. If the error was only temporary, the next write would fix it.
+But nothing ever writes a withheld frame, so it stays on the list and
+we keep withholding it forever.
+
+>I'm also not sure for volatile
+> where any poison record would come from if you are doing this for newly 
+> powered up devices - they might scan whilst initializing but might not as
+> that is very very slow to do.  Typically poison is found much later by
+> patrol scrub (or synchronous read).
+
+A real media fault is still there after a power cycle, which is why
+PPR exists, at boot or at runtime. But on a volatile device the poison
+list may not remember it: until patrol scrub or a read finds it again,
+the list can be empty. So this mainly helps when the device stays
+powered while the host restarts, like kexec or a driver re-bind, or
+with a device that keeps its error records across a power cycle.
+
+>This may be more interesting for
+> persistent memory where the persistence is used, but you aren't addressing
+> that as far as I can tell.
+>
+
+Agreed, that is the stronger case. Today the CXL driver doesn't feed
+the poison list into the nvdimm bad ranges at all, so pmem and devdax
+on CXL don't see known-bad locations either. cxl_pmem_ctl() also
+returns -ENOTTY for ND_CMD_CLEAR_ERROR, so a bad block couldn't be
+cleared by a write even if it were listed.
+
+I will  look at both as a separate series: bad ranges from the poison
+list at pmem region probe, plus clear-error support. kmem could then
+use the same list when a pmem range becomes system RAM.
+
+> > +	 */
+> > +	if (source != CXL_POISON_SOURCE_INTERNAL) {
+> > +		dev_dbg(&cxlr->dev, "%s: dpa %#llx source %u not withheld\n",
+> > +			dev_name(&cxlmd->dev), dpa, source);
+> > +		return 0;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Translate once per unit of HPA contiguity rather than per 64
+> > +	 * bytes. Consecutive DPAs within an interleave granule map to
+> > +	 * consecutive HPAs, and a granule no larger than a page lies within
+> > +	 * one page, so stepping by min(granule, PAGE_SIZE) from an aligned
+> > +	 * start reaches every page the record covers.
+> > +	 */
+> > +	step = clamp_t(u64, p->interleave_granularity, CXL_POISON_LEN_MULT,
+> > +		       PAGE_SIZE);
+> > +
+> > +	for (cur = ALIGN_DOWN(dpa, step); cur < end; cur += step) {
+> > +		u64 hpa = cxl_dpa_to_hpa(cxlr, cxlmd, max(cur, dpa));
+> > +		int rc;
+> > +
+> > +		/* Not mapped by this region; nothing here to withhold. */
+> > +		if (hpa == ULLONG_MAX)
+> > +			continue;
+> > +
+> > +		rc = cxl_poison_store_hpa(cxlr, pfns, hpa);
+> > +		if (rc)
+> > +			return rc;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int cxl_region_collect_decoder_poison(struct cxl_region *cxlr,
+> > +					     struct cxl_endpoint_decoder *cxled,
+> > +					     struct xarray *pfns)
+> > +{
+> > +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
+> > +	struct cxl_poison_snapshot snapshot;
+> > +	int rc;
+> > +
+> > +	rc = cxl_poison_snapshot_init(cxlmd, &snapshot);
+> > +	if (rc == -EOPNOTSUPP) {
+> > +		dev_info(&cxlr->dev,
+> > +			 "%s: no Get Poison List support, nothing withheld\n",
+> > +			 dev_name(&cxlmd->dev));
+> > +		return 0;
+> > +	}
+> > +	if (rc)
+> > +		return rc;
+> > +
+> > +	rc = cxl_get_poison_by_decoder(cxled, &snapshot,
+> > +				       CXL_POISON_QUERY_PREONLINE);
+> > +	if (rc == -EFAULT) {
+> > +		/*
+> > +		 * The device keeps no poison list for volatile ranges, which
+> > +		 * CXL r3.2 8.2.9.8.4.1 permits. Online the region as today.
+> 
+> Use latest available spec for references (they don't make old ones easy
+> to download!)
+> 
+
+Will update the latest references.
+
+> > +		 */
+> > +		dev_info(&cxlr->dev,
+> > +			 "%s: no volatile poison list, nothing withheld\n",
+> > +			 dev_name(&cxlmd->dev));
+> too noisy.
+>
+
+Will drop it.
+
+> > +		rc = 0;
+> > +		goto out;
+> > +	}
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	/*
+> > +	 * Withholding from a partial list would online the region on the
+> > +	 * belief that every bad frame had been named.
+> > +	 */
+> > +	if (snapshot.truncated ||
+> > +	    (snapshot.device_flags & CXL_POISON_FLAG_OVERFLOW)) {
+> > +		dev_err(&cxlr->dev, "%s: poison list incomplete\n",
+> > +			dev_name(&cxlmd->dev));
+> > +		rc = -EOVERFLOW;
+> > +		goto out;
+> > +	}
+> > +	if (snapshot.device_flags & CXL_POISON_FLAG_SCANNING) {
+> 
+> That one seems wrong. We don't prevent memory from coming online because
+> there might be poison to be found.
+
+Agreed, I will drop that check. Anything the scan finds later is handled
+like any other poison found at runtime.
+
+> 
+> > +		dev_err(&cxlr->dev, "%s: media scan in progress\n",
+> > +			dev_name(&cxlmd->dev));
+> > +		rc = -EBUSY;
+> > +		goto out;
+> > +	}
+> > +
+> > +	for (u32 i = 0; i < snapshot.nr_records; i++) {
+> > +		rc = cxl_poison_record_to_pfns(cxlr, cxlmd,
+> > +					       &snapshot.records[i], pfns);
+> > +		if (rc)
+> > +			break;
+> > +	}
+> > +out:
+> > +	cxl_poison_snapshot_destroy(&snapshot);
+> > +	return rc;
+> > +}
+> > +
+> > +static unsigned int cxl_count_poison_ranges(struct xarray *pfns)
+> > +{
+> > +	unsigned long index, previous = 0;
+> > +	unsigned int nr = 0;
+> > +	void *entry;
+> > +	bool first = true;
+> > +
+> > +	xa_for_each(pfns, index, entry) {
+> > +		if (first || index != previous + 1)
+> > +			nr++;
+> > +		first = false;
+> > +		previous = index;
+> > +	}
+> > +	return nr;
+> > +}
+> > +
+> > +/*
+> > + * The xarray holds each PFN once and xa_for_each() walks them in ascending
+> > + * order, so runs of consecutive indices are exactly the sorted,
+> > + * nonoverlapping ranges preonline_hwpoison_register() requires.
+> > + */
+> > +static int cxl_pfns_to_ranges(struct xarray *pfns,
+> > +			      struct preonline_hwpoison_range **ranges_out,
+> > +			      unsigned int *nr_ranges_out)
+> > +{
+> > +	struct preonline_hwpoison_range *ranges;
+> > +	unsigned long index, previous = 0, run_start = 0;
+> > +	unsigned int nr_ranges, nr = 0;
+> > +	void *entry;
+> > +	bool first = true;
+> > +
+> > +	nr_ranges = cxl_count_poison_ranges(pfns);
+> > +	if (!nr_ranges) {
+> > +		*ranges_out = NULL;
+> > +		*nr_ranges_out = 0;
+> > +		return 0;
+> > +	}
+> > +
+> > +	ranges = kvmalloc_array(nr_ranges, sizeof(*ranges), GFP_KERNEL);
+> 
+> kvmalloc_objs()
+> 
+
+Will switch.
+
+Thanks,
+Shaikh Kamal
+
+> > +	if (!ranges)
+> > +		return -ENOMEM;
+> > +
+> > +	xa_for_each(pfns, index, entry) {
+> > +		if (first) {
+> > +			run_start = index;
+> > +			previous = index;
+> > +			first = false;
+> > +			continue;
+> > +		}
+> > +		if (index == previous + 1) {
+> > +			previous = index;
+> > +			continue;
+> > +		}
+> > +		ranges[nr++] = (struct preonline_hwpoison_range) {
+> > +			.start_pfn = run_start,
+> > +			.nr_pages = previous - run_start + 1,
+> > +		};
+> > +		run_start = index;
+> > +		previous = index;
+> > +	}
+> > +	ranges[nr++] = (struct preonline_hwpoison_range){
+> > +		.start_pfn = run_start,
+> > +		.nr_pages = previous - run_start + 1,
+> > +	};
+> > +
+> > +	WARN_ON_ONCE(nr != nr_ranges);
+> > +	*ranges_out = ranges;
+> > +	*nr_ranges_out = nr;
+> > +	return 0;
+> > +}
+> > +
+> > +static void cxl_unregister_device_poison(void *data)
+> > +{
+> > +	preonline_hwpoison_unregister(data);
+> > +}
+> > +
+> > +static int cxl_region_register_device_poison(struct cxl_region *cxlr)
+> > +{
+> > +	struct cxl_region_params *p = &cxlr->params;
+> > +	struct preonline_hwpoison_range *ranges = NULL;
+> > +	struct preonline_hwpoison *handle;
+> > +	unsigned int nr_ranges = 0;
+> > +	unsigned long nr_frames = 0;
+> > +	struct xarray pfns;
+> > +	int rc = 0;
+> > +
+> > +	lockdep_assert_held(&cxl_rwsem.region);
+> > +	lockdep_assert_held(&cxl_rwsem.dpa);
+> > +
+> > +	/* The region may have been decommitted while the lock was dropped. */
+> > +	if (p->state < CXL_CONFIG_COMMIT)
+> > +		return -ENXIO;
+> > +
+> > +	if (test_bit(CXL_REGION_F_NORMALIZED_ADDRESSING, &cxlr->flags)) {
+> > +		dev_info(&cxlr->dev,
+> > +			 "normalized addressing, poison not translated\n");
+> > +		return 0;
+> > +	}
+> > +
+> > +	xa_init(&pfns);
+> > +
+> > +	for (int i = 0; i < p->nr_targets; i++) {
+> > +		struct cxl_endpoint_decoder *cxled = p->targets[i];
+> > +
+> > +		if (!cxled->dpa_res || !resource_size(cxled->dpa_res))
+> > +			continue;
+> > +		rc = cxl_region_collect_decoder_poison(cxlr, cxled, &pfns);
+> > +		if (rc)
+> > +			goto out;
+> > +	}
+> > +
+> > +	if (xa_empty(&pfns))
+> > +		goto out;
+> > +
+> > +	rc = cxl_pfns_to_ranges(&pfns, &ranges, &nr_ranges);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = preonline_hwpoison_register(ranges, nr_ranges, &handle);
+> > +	if (rc == -EOPNOTSUPP) {
+> > +		/* No poison tracking in this kernel; nothing to withhold. */
+> > +		rc = 0;
+> > +		goto out;
+> > +	}
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	for (unsigned int i = 0; i < nr_ranges; i++)
+> > +		nr_frames += ranges[i].nr_pages;
+> > +	dev_warn(&cxlr->dev,
+> > +		 "withholding %lu frame(s) reported poisoned by the device\n",
+> > +		 nr_frames);
+> > +
+> > +	rc = devm_add_action_or_reset(&cxlr->dev, cxl_unregister_device_poison,
+> > +				      handle);
+> > +out:
+> > +	kvfree(ranges);
+> > +	xa_destroy(&pfns);
+> > +	return rc;
+> > +}
+> 
+> 
 
