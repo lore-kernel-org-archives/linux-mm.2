@@ -1,101 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5703B606A33D
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2F9606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Kjagh+CI
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Z+JKqeSH
 Received: by kanga.kvack.org (Postfix)
-	id 78B386B05E5; Thu, 19 Nov 2026 04:36:16 -0500 (EST)
+	id 59D086B05F8; Thu, 19 Nov 2026 04:43:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 762B56B05F6; Thu, 19 Nov 2026 04:36:16 -0500 (EST)
+	id 54E1D6B05F9; Thu, 19 Nov 2026 04:43:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A0356B05F7; Thu, 19 Nov 2026 04:36:16 -0500 (EST)
+	id 464846B05FA; Thu, 19 Nov 2026 04:43:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 42E276B05E5
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:36:16 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9D291409BD
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:36:15 +0000 (UTC)
-X-FDA: 85451362710.04.C088C64
-Received: from mta0.migadu.com (out-29.mta0.migadu.com [91.218.175.29])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3074B180007
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:36:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kjagh+CI;
-	spf=pass (imf16.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.29 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1C9D36B05F8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:43:40 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9445714094E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:43:39 +0000 (UTC)
+X-FDA: 85451381358.08.409EEE0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 81E3EA0005
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:43:37 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Z+JKqeSH;
+	spf=pass (imf15.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795081418;
+	b=DlpV7fHdCEpmYEjQ8s1esVOowMHB9cAJuteCotlCYZCgVNoHVQdh7D1bjJWzmlZxPkIFPO
+	46RBiBk2PjFk3hBuauftoXB6eVKStgnjvG/yxtRSLmV0uqhg8g5AyS2b0EtgtdDNSmlsFE
+	fC7ApE3SbmPtjyNxx2Crj9Z8IERsJDk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795080974;
+	s=arc-20220608; t=1795081418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=igdFWy6CMNTS7sv5o5j1ZIrF2rr0ZWKOfYYSmUoY0q4=;
-	b=1JxHakmnCREH0/XGygXDcUwMP7bV4LSNtVwArna4792xek9qexvslmtgETg0x/P1flDnpG
-	sqz2HucViX0vkowNz2dGfYfR1KiuzHSCYiXgfJPob2+pAWQbQ4tWXpI2BIZqYneC+EumV7
-	Via8rQD86L/8MqcIZin+XabVxCQlDIw=
+	bh=6Ftv5ohlhONZ/yV4mvsRDwnVdXpNIjyErplRrdF7F4s=;
+	b=24ffuK3s4yLH/KvIek3my0QVCyV5X0F6m8II2EOhISEP0jH1X303fgbuxWaJP0kU4/rxxT
+	KgZjLM3EV+gQDXhNZWpP8f4AwWOUvfHrSdvjkFfOo/If731oQYvNkpbamJpabzUpyDgYPL
+	sWxEwA+uWtCbhvcDJdol5AMjY/rLpNY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kjagh+CI;
-	spf=pass (imf16.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.29 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795080974;
-	b=UMMedxuXqbfARVa6ZSTrrlbk+uGX1b2i++872ujUnYVdjUx3KPWmUO/U4L+ivsx2Xb4yGI
-	7SXMwOGGOXFvlQfWZWBpp76a5a0rwuMhE76TCAz5cTkz+73dQy4xOT2L4EdD6aFz9G6dGy
-	GaTZT5osJ+2i0cDnKdqC6KUv8jTpz4M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FyyB2+EMJUxYLUau/jQ5mXJ3d+z/p5uRxFEljvc09D0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795080969; v=1; x=1795685769;
- b=Kjagh+CIAdQ/9Ozz+5xSZ+gQdakx8nHUEPACuc82FbvgqVLjd0XadE+gvS4egwVwjQOxjzYL
- IuMu4bC/HXZUHYSjK5+E1Zt4VkEE3f8K3seAIEzEswIx1bjPNYfA9ikeIC/i3xgm7RPtECvzOrl
- zHjbt5ZuiwvRzbirJ+OZ0JNU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 2da72c0dcd2ffa2e;
-	Thu, 19 Nov 2026 09:36:08 +0000
-X-Mizu-Trace-ID: 2da72c0dcd2ffa2e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0e42e0c4-c1f9-4778-a979-404fbb68130a@linux.dev>
-Date: Thu, 19 Nov 2026 17:35:58 +0800
+	imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Z+JKqeSH;
+	spf=pass (imf15.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8611B1575;
+	Thu, 19 Nov 2026 01:43:33 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 019EE3F882;
+	Thu, 19 Nov 2026 01:43:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795081416; bh=sSQ2QhhUSs69+oHeCq7tqoe+5F8pEeWToCcaQfTg/Bw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z+JKqeSH7mlb/yir8Memf0lOOD1DP5+CGVbkXwtHuiXgfIezHWEuwjY4iypaGvt49
+	 3XwCieSPiNCi9PzFQQgdvIfUJXJPOzNDHEEdh5RsY+rrFOa0/C886+Wfa5lnZjkHTt
+	 8y6mWryJ6LKvgsg918NaCBLgfmR/QV4ctgzWe44E=
+Date: Thu, 19 Nov 2026 09:43:31 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: harrison@crosse.dev, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Josef Bacik <josef@toxicpanda.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Jan Kara <jack@suse.cz>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/gup: make mlock() and MAP_POPULATE handle
+ VM_FAULT_RETRY properly
+Message-ID: <av7EwyB0V8DFqPzG@e129823.arm.com>
+References: <20261118-mmpop-populate-v1-0-9c561d178d11@crosse.dev>
+ <20261118-mmpop-populate-v1-1-9c561d178d11@crosse.dev>
+ <e32482de-295a-4e26-b6ae-5b8b58f8b98c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH] mm: mglru: reset the mm iteration cursor in
- try_to_inc_max_seq_nowalk()
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Harry Yoo <harry@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>,
- stable@vger.kernel.org
-References: <20261117113700.453044-1-hui.zhu@linux.dev>
- <av6lVy5fW47XPxre@fedora>
-Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <av6lVy5fW47XPxre@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: abfxtaixximpgdt373rkc5c7fr3akdr5
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e32482de-295a-4e26-b6ae-5b8b58f8b98c@kernel.org>
+X-Stat-Signature: grjr7f36bodiw7iqco1ya9tqfjhhifa1
+X-Rspamd-Queue-Id: 81E3EA0005
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3074B180007
-X-HE-Tag: 1795080971-681832
-X-HE-Meta: U2FsdGVkX1+PmOF3n66cpNq9iqY2svHfWxwFuqTRMoFt9z46VIOGhuKAlPKoTokyguZ4oIvKAiqDlbNu1rbbqx0Ar2tbBVbj2obaImZQ2FGQ/ylP+ifKK2ZgkgBomOuuWOPNKxPfy5t6o53DviqWN/nbdWE4yHHeZQ0I1122qjHVP5BB/mXDGRKo04P3BaRFJtPAyky52498IK/VU4K2wT/DskL5rQofSoazLXa4uMAfUT1FsjlYFWZOVbc+2s4yvNi++Uk5RxgG3qzySP7irtfAWaXegQTzRm2OBdx1GCHn1rNBB2c6RFD58IsGZMLpBrT2pHe61Lmz7aOECT6+ElLsIahI4e56MvV0A7wkYcQc0q6x0E2tJ4WeYrLfNd7C7yd1HvAOlAbwPubabnJa6CgBgxYKRWCR/2acXo+kr7+6tk+L2DxAWlcEn1A8STw8nubGeHwWZm53NSwxTDhxhxwzhynwKNFza66gMYqElWQ1tTaLsjBE4kRwKl3/2Hd/WwFvHbSNsD0fJlueQ7A+7h7TEuZehXCkijHgUSCwH6Puf7pU6F9jA2Y6SbhLeunC7cVU9TcjefdLpSDW+4G0kdwRVQJFxzwPFWfF4mzUkfTHUmcyND481xERA4MaveXzMEQXx6/h7X/StG1XROO/ZlOmdYcjFlySGxvkQsoAmcCrlHp1/AAtMH2o5ev5xE3ZSJnjkoA/WCIV1NTcMo4KV+OeMd/gzdxQYbZJgnCwTMtwu6aXkLDDXE8NVC/PNHqKfp8VlGFXZdCsWM1ZQ+y8S47UuyFCQgryl2tOKXpAEqeqyM9qHChjaghAnsEHfOrlKp/ORH+dIsFQXXP0GoKShU3ToE7qgM/sSHGL/ATut56qdThsuaSytElFO1bOBlzZ9vIhLoXGKo0PoWZj727neD0QV+hChADFw8oggVYNNyasu8Zxr/b48EzhWtr5AoxoumXWJL6lmshiJlyp082
- /XsfZpDU
- CK6rwOrQolOZld7JdEeTmUFG8UgmW0tb541boT0f3m3RkPq2XM92XKx0TcR/CSf5kPdYV04vv9R1f0O7Bdx+Tv9DZsnvkUaN4kwxEmYdCuiod8vuzCHXL24tbu/vIxblI5isW4ngEk1Ek597vqerZhuXbXPqm02KSbtdAHJg1DG2XXr8rQfaXIpTsZlf20xxz2EQO5YgePrbBqKBmyh2W96l+IZVGuf6Zu7ifc63lerJEj5mpl4y7evQOVx9Zi16Zaab1nx/NZOJYhMtFbWus/AiRy8YKoqqXmzdJHVJjkeOCiekkkO0WTn0liIMd/j+ex7x/NFdqp5wz+SqriXXLV/NHGnFNdvU/vjuiGW/7d52Bo9sxd3+HDJb8F8J9ctJmFZMZyeYpAiJxocTmX+wh4zNWno1HRbLQcln1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795081417-748853
+X-HE-Meta: U2FsdGVkX195Qt5DTZ0FAkp/ktPUqRWApx7x/k6MN96qS8KPehVgafmveTH9IqfoyeJsUn4Nxmft1i9WJOYtyhDkl5zzRvt4Zpb9NG7tjGC1edzPj8ZMYLNSQXx8QGPt2Tr2+atvBTaBuMVFt3ZlzuY8vUAjZPfr5t5q+FBrlqk3bf+OQDSN6bAQvP7YB0Gj1dNpUsmLDUlZHX54kfl1/v5V2fajIq7SEI1n8Ze8jdw5gw8XHQSpJmUT6OVeb3RkEfg3q3U5E1TzNsaYfZSmF7ZpJaEijk//QAZe9r4jrYJ75Ym2YM3GHSwsnOo9TW9TjEBGdhmlDRVQPT755m1f/FoLDO2ER+Vmq1PXrKpuajoA4E+ZJCuG5GJqstOwn61o1NDRIRcUkwUJkOeAEosRebdYLPmBeOgCAGDijTI3EFYRA/c8XRKnUQTm4812NOS6UMAWAztGPPMxTHUSS+nY7RXRYDz2/pEu6s/36sNnEQwS5h2xcjo6RbknrDTNmbNkm1XMrpYbpPaLssJ4Mft7KRbA+rZIH20X1wPQ0oeMtZ5Og79NRRyChEjSCRWyVp7uV42RRiqAZaAHTGILV8SwY3Aj2NrPCyNIfAfbjF5NiC9ETWwferC8lnW0pY2pVHycvl20ZOj7Hsbtw2VwSr8oO0SsyhegrKXGOvRsqiPmHMaOlY18564xi0a+TiOm0zSV0fMXMtQbANe5CsWonVxjfZcbNapsxZRE08uEIOM6ZgMS5RGpAecC9o7AWie1BLH8hRvFD//vKTjaDePcMaXhqCJ21hSzS9+b1WgXTL8O7abN/beApSRP9mXViVapTR5fuFgXMvRMD35KGCNsRNxSo8Uv4yw2mMhCk/Jf30nyBBgu4cUkCIjrwLlDPQGN9utVk94FwTdbUIfvjrTeuUEyDo7dHGPNI++obMRgrq+ONfzS2NW5BXVNTzY2iBT1DMEoF4P7qw2IKgIxvX4lAgP
+ av+XFlg7
+ +f2LB9Z7jxDzSyt6GjeWh4sZeEHeabC1DR3ksFxF09Y4EoYAlMaD46048tpJ5vzLz0cIp9S/Y4xGhk+NTVGcXdGh37tZxFJt01LDdbT/Gxdz/+pesUvHh9Sv5ubGglurGVReM6CE3a7gMIEAV1oHpedXoC8R7Qr4pGTCvwuiwwA13SRtvM2Ou3zRYYCXXBAaLlhL8dCQQPwh2MmefjJ+FkIpXxyW/LgfH1vVKjJkpBG3JQHDwWArpc352WKA1/51T4fy2X6gNO2MRIYx9/h5LlTPR3j8gNWipZ2+OFhRhtBvhq3wXbc3ZmEahrZTNUzfHAAA2M7UUSwvRoSAjqdlArYIlwlVOukhgSirns07BRRcNe8lqomKokDFtyxJv8iWmkQXC+D5k8+YVi2SL+cByM/nH7LsoygK86VwzrjaRJmb4x54NlMD2+mYD1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,144 +105,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Nov 19, 2026 at 12:25:31AM +0100, David Hildenbrand (Arm) wrote:
+> On 11/18/26 22:56, Harrison Crosse via B4 Relay wrote:
+> > From: Harrison Crosse <harrison@crosse.dev>
+> > 
+> > If every read of a page of a file mapping fails, mmap(MAP_POPULATE)
+> > and mlock() of that mapping do not return: the task spins in
+> > __mm_populate(), submitting a new read of the page on each iteration,
+> > until it gets a fatal signal. Touching the same page gets SIGBUS, and
+> > madvise(MADV_POPULATE_READ) fails with -EFAULT.
+> > 
+> > The first fault on the page reaches filemap_fault() with
+> > FAULT_FLAG_ALLOW_RETRY and without FAULT_FLAG_TRIED. filemap_fault()
+> > releases the mmap_lock to read the page and, because it released the
+> > lock, returns VM_FAULT_RETRY before it looks at the result of the read.
+> > It cannot report the error then: a fault that has released the lock
+> > returns VM_FAULT_RETRY or VM_FAULT_COMPLETED, and neither carries an
+> > error. faultin_page() turns VM_FAULT_RETRY into -EBUSY, so
+> > __get_user_pages() stops at that page without an error, and
+> > __mm_populate() calls populate_vma_page_range() again at that address,
+> > again without FOLL_TRIED. The page fault handlers and
+> > __get_user_pages_locked() retry with FAULT_FLAG_TRIED instead, and on
+> > that attempt filemap_fault() reads the page with the lock held and
+> > returns VM_FAULT_SIGBUS if the read fails.
+> > 
+> > Commit 631426ba1d45 ("mm/madvise: make MADV_POPULATE_(READ|WRITE) handle
+> > VM_FAULT_RETRY properly") fixed the same loop for MADV_POPULATE_* by
+> > calling __get_user_pages_locked(). That does not fit here:
+> > __get_user_pages_locked() retakes the mmap_lock itself and carries on
+> > with the GUP flags it was given, while populate_vma_page_range()
+> > derives those flags from the VMA that __mm_populate() looks up again,
+> > and may skip, after each unlock. Retrying with a NULL locked instead
+> > would drop FAULT_FLAG_ALLOW_RETRY and FAULT_FLAG_KILLABLE, so a
+> > userfaultfd range would fail rather than wait, and folio lock waits
+> > would not be killable.
+> > 
+> > Instead, have __mm_populate() remember the address of the page whose
+> > fault released the mmap_lock. When the next iteration starts at that
+> > address, fault in that page alone with FOLL_TRIED, as
+> > __get_user_pages_locked() does, then continue with the rest of the
+> > range as before. The retry reads the page with the mmap_lock held, as
+> > filemap_fault() did for a page that was not uptodate before v5.1, and
+> > as the other GUP retries do. With a persistent read error the retry
+> > fails with -EFAULT: mlock() returns -ENOMEM
+> > (__mlock_posix_error_return() maps -EFAULT to it), and MAP_POPULATE,
+> > which ignores populate errors, returns the mapping. A fatal signal
+> > still ends the loop, with -EINTR from __get_user_pages() or, if it
+> > interrupts the FOLL_TRIED read, with -EFAULT. The other callers of
+> > populate_vma_page_range() pass a NULL locked, so they cannot get
+> > VM_FAULT_RETRY and are unchanged.
+> > 
+> > Reproduced with ext4 on dm-linear over a loop device, with the eight
+> > sectors of one page of a file mapped to the dm "error" target, on arm64
+> > (Debian's 6.12.116 and v7.4-rc3) and x86_64 (v7.4-rc3): mmap(MAP_POPULATE)
+> > and mlock() of the file were still running in the kernel after 5 seconds
+> > and ended when sent SIGKILL. On 6.12.116, the block layer tracepoints
+> > showed about 280,000 bios a second being submitted and failed.
+> > 
+> > The analysis, the patch and this changelog were prepared with the help
+> > of an AI coding assistant (Claude).
+> 
+> Yes, that's rather obvious from looking at it, thanks for documenting that :)
+> 
+> Thanks for the report!
+> 
+> [...]
+> 
+> > +		 *
+> > +		 * filemap_fault() reports a read error only when
+> > +		 * FAULT_FLAG_TRIED is set: on a first attempt it releases the
+> > +		 * mmap_lock for the read and returns VM_FAULT_RETRY whatever
+> > +		 * the result. So when the last call released the lock at
+> > +		 * nstart, retry that page with FOLL_TRIED, and only that page,
+> > +		 * so that later pages still get a first attempt that releases
+> > +		 * the lock for the read. Compare the address because nstart
+> > +		 * moves past that page if it is no longer mapped, or its VMA
+> > +		 * is skipped, when the lock is retaken.
+> >  		 */
+> > -		ret = populate_vma_page_range(vma, nstart, nend, &locked);
+> > +		tried = retry && nstart == retry_addr;
+> > +		ret = __populate_vma_page_range(vma, nstart,
+> > +						tried ? nstart + PAGE_SIZE : nend,
+> > +						&locked, tried);
+> 
+> Yeah, that's quite the ugly code. Let me take care of this (or find someone more
+> familiar with that code that can help).
+> 
+> @Yeoreum, do you have some spare cycles?
 
-2026/11/19 15:29, Baoquan He:
-> On 11/17/26 at 07:37pm, Hui Zhu wrote:
->> From: Hui Zhu <zhuhui@kylinos.cn>
->>
->> iterate_mm_list_nowalk() and try_to_inc_max_seq_nowalk() both advance
->> mm_state->seq without walking the mm_list, but only the former drops the
->> cursor. When the latter races with an ongoing page table walk, head is
->> left pointing into the middle of the fifo.
->>
->> The next walker reads that as "this generation already started": it skips
->> reset_bloom_filter() and resumes after the cursor. Every mm before the
->> cursor is skipped, and none of them have bits in the filter being read, so
-> Nit:
-> Isn't it that mm after the cursor is skipped, none of them have bits in
-> the filter being read? Because bits in the filter are set in the last
-> generation iteration, mm after cursor didn't iterate, so no bites set
-> for them?
-You are right, thanks for catching it. test_bloom_filter() reads
-filters[walk->seq % 2], and that buffer was filled by the aborted walk of
-the previous generation, which only got as far as the cursor. So the mm
-the resumed walk visits -- the ones after the cursor -- are exactly the
-ones with no bits in it, and they lose their non-leaf walk. The mm before
-the cursor are simply left out of this generation. I will fix the wording
-in v2.
->> walk_pmd_range() descends into none of their PMDs and harvests no accessed
->> bits. try_to_shrink_lruvec() ignores the failed try_to_inc_max_seq() and
->> keeps evicting, so those hot folios become reclaim candidates and refault
->> in the parent memcg, until head wraps around a generation later.
->>
->> Factor the pattern into skip_mm_iteration(), which carries the rationale
->> that used to sit in a comment in try_to_inc_max_seq_nowalk(), so the two
->> callers cannot drift apart again. The wrap-around in iterate_mm_list() is
->> left open-coded on purpose: there head is already back at the fifo, and
->> tail has to survive for the force_scan test. Dropping the cursor is safe:
->> get_next_mm() holds an mmgrab() reference, and a concurrent walker bails
->> out at "walk->seq <= mm_state->seq" before touching head again. The
->> unwalked part of the fifo restarts from the head next generation, as
->> iterate_mm_list_nowalk() already does.
->>
->> Only reachable from memcg_reparent_objcgs() -> max_lru_gen_memcg(); not a
->> memory safety issue, since lru_gen_del_mm() repoints head and tail under
->> mm_list->lock.
->>
->> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->> ---
->>   mm/vmscan.c | 23 +++++++++++++++--------
->>   1 file changed, 15 insertions(+), 8 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 6a1af9b92349..0dc4017b87e4 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -3235,6 +3235,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
->>   	do {
->>   		mm_state->head = mm_state->head->next;
->>   		if (mm_state->head == &mm_list->fifo) {
->> +			/* head is back at the fifo; keep tail for force_scan below */
->>   			WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
->>   			last = true;
->>   			break;
->> @@ -3263,6 +3264,18 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
->>   	return last;
->>   }
->>   
->> +/*
->> + * Advance mm_state->seq without walking the mm_list. The cursor must be
->> + * dropped as well: iterate_mm_list() resumes from head, and resets the Bloom
->> + * filter only when head == &mm_list->fifo.
->> + */
-> This looks like a good catch, while the function name here is a little bit
-> confusing. From the code block inside, we can't see it's doing iteration,
-> just a pair of pointer resetting and a max_seq advancing. I would rather
-> not wrap up them if no good name is concluded. Personal opinion.
-How about inc_mm_state_seq(), after inc_max_seq(), leaving the "why"
-to the comment:
+Yeap. I'll take a look soon!
 
-     /*
-      * The cursor must be dropped along with mm_state->seq:
-      * iterate_mm_list() resumes from head, and resets the Bloom filter
-      * only when head == &mm_list->fifo.
-      */
-     static void inc_mm_state_seq(struct lru_gen_mm_state *mm_state)
-
-If that still does not read well to you, I will drop the helper in v2 and
-keep the two lines open-coded.
->
-> Other than the nits,
->
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-
-Thank you!
-
-Best,
-Hui
-
->
->> +static void skip_mm_iteration(struct lru_gen_mm_state *mm_state)
->> +{
->> +	mm_state->head = NULL;
->> +	mm_state->tail = NULL;
->> +	WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
->> +}
->> +
->>   static bool iterate_mm_list_nowalk(struct lruvec *lruvec, unsigned long seq)
->>   {
->>   	bool success = false;
->> @@ -3275,9 +3288,7 @@ static bool iterate_mm_list_nowalk(struct lruvec *lruvec, unsigned long seq)
->>   	VM_WARN_ON_ONCE(mm_state->seq + 1 < seq);
->>   
->>   	if (seq > mm_state->seq) {
->> -		mm_state->head = NULL;
->> -		mm_state->tail = NULL;
->> -		WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
->> +		skip_mm_iteration(mm_state);
->>   		success = true;
->>   	}
->>   
->> @@ -4686,15 +4697,11 @@ static void try_to_inc_max_seq_nowalk(struct mem_cgroup *memcg,
->>   	DEFINE_MAX_SEQ(lruvec);
->>   	bool success = false;
->>   
->> -	/*
->> -	 * We are not iterating the mm_list here, updating mm_state->seq is just
->> -	 * to make mm walkers work properly.
->> -	 */
->>   	if (mm_state) {
->>   		spin_lock(&mm_list->lock);
->>   		VM_WARN_ON_ONCE(mm_state->seq + 1 < max_seq);
->>   		if (max_seq > mm_state->seq) {
->> -			WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
->> +			skip_mm_iteration(mm_state);
->>   			success = true;
->>   		}
->>   		spin_unlock(&mm_list->lock);
->> -- 
->> 2.53.0
->>
+-- 
+Sincerely,
+Yeoreum Yun
 
