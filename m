@@ -1,101 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30057606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 06:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6101760A2601
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 06:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=GrSmFFMN
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QYgS7wPd
 Received: by kanga.kvack.org (Postfix)
-	id EACDD6B05B3; Thu, 19 Nov 2026 01:40:59 -0500 (EST)
+	id 598776B00EF; Thu, 19 Nov 2026 01:51:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0EFE6B05B4; Thu, 19 Nov 2026 01:40:59 -0500 (EST)
+	id 56FE66B05B0; Thu, 19 Nov 2026 01:51:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB02D6B05B5; Thu, 19 Nov 2026 01:40:59 -0500 (EST)
+	id 45EEB6B05B1; Thu, 19 Nov 2026 01:51:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A6386B05B3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 01:40:59 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 297AC1A0965
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:40:59 +0000 (UTC)
-X-FDA: 85450921038.01.B15F5C0
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C23FD1A000A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:40:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GrSmFFMN;
-	spf=pass (imf19.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=longwei27@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795070457;
-	b=xwL0TeNgzJNVx1EalyvN/0IpSMmc6RyyVID7Qa3nC6aeQnu0FppTBCmHH6aX7SS1wUIwoC
-	dSGvHc7jHnATvjupl/JbHZKYC4LGWTVhOEoHBND0cocPlMl4umGrSYeTCYpZoMKw+Bh244
-	sqFLoJnoVryWLs/UHIYsf9v0kcYJDgI=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FD6C6B00EF
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 01:51:08 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA627120964
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:51:06 +0000 (UTC)
+X-FDA: 85450946532.09.6EC78E5
+Received: from mta0.migadu.com (out-135.mta0.migadu.com [91.218.175.135])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C123818000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:51:04 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QYgS7wPd;
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.135 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795070457;
+	s=arc-20220608; t=1795071065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P6tm7LnDa5d5V2BsH/GMpXWLmcsqjeCKsjklUdm51D0=;
-	b=jMAbEnwhlkIfmJJKsq7YMhbHu7jyUQ7PZHimDgQbPx4LSN9kYK2sAoRiykbjDkBevKQhDc
-	laUJZjRf1tUhkw+LLvWC+8oUlIPDdWcIJdv8zD8NS5zjCCAyOg4yra0+kTZSugcR4BZJAq
-	cM/Qgf19i0ntqi9zyZFl6knXIYVYSbY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oxe9tcjSi0QCiPtTzsid5HMhZRPZANjJh4JprpeMQdM=;
+	b=xJJ3tTQjglxBpMtd5SldjMajfp5EJ/wkqDu2Lgd0TSUHVIUls40MYtFeS7sTY6A4w3NfQY
+	qv24ERrjb10NHXDDOYlZrvH1AbZ1USrK1CbBtX0qkEqxuBbpIV5KRYrrsPENPK5zkLup4I
+	+qQwHmuuMdVB+4xEU3XJlsLOwB41iKg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795071065;
+	b=hDPeSb/SzB4PmXytcWbUyUPl5g4Ufkq7PbOiHWnrVbHS0S/bWhlrpm1dPIROdAQslQDggv
+	pm3f++MwM87AsTw6GaXLnflB26pZb6rXXmR+K/KhEgWn04Uymbp4O1fGMobFhuKBEpdheK
+	hDqN/xeXqh7CQmTFw1CIuhUkmP1yEGg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GrSmFFMN;
-	spf=pass (imf19.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=longwei27@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=P6tm7LnDa5d5V2BsH/GMpXWLmcsqjeCKsjklUdm51D0=;
-	b=GrSmFFMN3PMyGzQB42WLWdiPokP3GC7aB/JDex7tzaXzJ7+LujTSMa5iTXIMbhgrCmy0da8I1
-	Rfqj9ZXXGlhq0rurZGTvm/1hBIe6BXZ8Ecem+RKe7F24AT/5yd/zn+wqMlEG0YJua4aKE7oo7FM
-	WFAiXhx95fHvEQA3MYMihno=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jVTNZ1MN9z12LCr;
-	Thu, 19 Nov 2026 14:39:58 +0800 (CST)
-Received: from kwepemo200009.china.huawei.com (unknown [7.202.195.26])
-	by mail.maildlp.com (Postfix) with ESMTPS id E103140685;
-	Thu, 19 Nov 2026 14:40:49 +0800 (CST)
-Received: from localhost.localdomain (10.50.159.234) by
- kwepemo200009.china.huawei.com (7.202.195.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 19 Nov 2026 14:40:49 +0800
-From: Long Wei <longwei27@huawei.com>
-To: <rppt@kernel.org>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>,
-	<akpm@linux-foundation.org>
-CC: <graf@amazon.com>, <leitao@debian.org>, <corbet@lwn.net>,
-	<rdunlap@infradead.org>, <linux-mm@kvack.org>, <kexec@lists.infradead.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<hewenliang4@huawei.com>, Long Wei <longwei27@huawei.com>
-Subject: [PATCH v2 1/2] kho: do not expose incoming sub-blob contents in debugfs
-Date: Thu, 19 Nov 2026 14:37:59 +0800
-Message-ID: <20261119063800.698863-2-longwei27@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261119063800.698863-1-longwei27@huawei.com>
-References: <20261117092951.4017931-1-longwei27@huawei.com>
- <20261119063800.698863-1-longwei27@huawei.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QYgS7wPd;
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.135 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Kifhb9KzRshoED1TAZ/g0GQIA1JTT3G4naGWm6atlWg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795071063; v=1; x=1795675863;
+ b=QYgS7wPdtqbOpiv+sjDhqPnJQz8LzEbH1mHr3sJzs9KAtlUamvGTHxU/vWXvaqOMNCbrVnsR
+ YFkHXj1+wXs00TSp2BeMf0MCkzwlULvxkhTLdFWtmGnXyMPILTKEXrX85c8DPLu1/vUIYHVIMwk
+ imC5kid+U22dj9jA6Qn5+SmQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8729af0b12027f20;
+	Thu, 19 Nov 2026 06:51:02 +0000
+X-Mizu-Trace-ID: 8729af0b12027f20
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)),
+	linux-kernel@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [RFC patch] mm/mglru: advance memcg generation when reclaimers pile up
+Date: Thu, 19 Nov 2026 14:50:43 +0800
+Message-Id: <20261119065043.398-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemo200009.china.huawei.com (7.202.195.26)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C23FD1A000A
-X-Rspam-User:
-X-Stat-Signature: 1hwfw7ssdsbpjxuxftfiqqi4pwawy7qb
+X-Stat-Signature: s4r7t6ascd7g91famz6nkfjrf4fythzi
+X-Rspam-User: 
+X-Rspamd-Queue-Id: C123818000A
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795070456-823657
-X-HE-Meta: U2FsdGVkX1/4HJ2sJ3SdVD1qqQJtcBPZ9mvM3JKekWcdq/DgQhLRlXGeGF+XDw9P4bTcJyZZEHw0nCk7++QGZD75UWyzH9/5Vd41Ylo78RWxpDm8lBwuta8HhtGKoKpKhd/XpvZHhSo2JFSNssFkR5bcXMjjFpmF+251QbpARe8GMqEee95foE4uhenz4KMPLQ9MCq9n7Imm3520BLhy+szDQun3IldFVlmuvgVyufPWTrUGY9PTmaCeKrv8n0yychqGu5/wr99UBk3Ppt4nIdtn1xLmvYf7YuHwKJLdSDEgrQhf/+CQfpjlIR/tXAJOOaokN5fu/lDn6wwcdWRl32v1UMU2Dhe6Ati74wgy5HTpIOO5oAnyHUfmg/MGGLqWbzcvO/JKD6jwcttZhxlt2NBmus8S3CdHXWGFwlFla6IglXdCNK3xW/W6CGAk/nrkyiEArd39Y+YpHLdhRMqNX4MSCs6/qFJNAQu8tqn6lmBmv190F/w2YpystWYMMWaKSpbEQW9g9//tvtP13mhxqA8fqEn2BMPbWtxAipYcu7q9QwELz7pZcNelvsD23O+VBfP1iQmtNFdusU6Em8o/lgC2K4AmaG7V/iY53dIb1TcwwQbeZEuohRuZuaHn5y8CAgat/yo7Q7mCMk43jO9Lx7q3cPxnUgkufdyKs4XWxMZFazwWolMg4uHjiy5XSjraXAk6TLuPWALgckNOga+eE6CWPAIur5AXztFmdyE/yjOpeTrCyl1CkBzUa0kAuMMG4IbqJXEgPWPWmixZ7AYI8cPh/KWN11maxJ5wkId9SlTrc7kEpRVeajKl2SwstFM/gBuJbs1wK1t1v9o51Z6mUmpcGl7IylxWKvKD4oTGmkfELpPkusNQttVSBaEe4oD+kctT3mWsVgfX07hS+5zF3XOBwMWR99PKJzyxpZ4QZbhQ2mTd6XUSejCuf4WFEPjFqv3YziM83foBy5Giqiv
- Hoqc3lNO
- 0C6jRCAfL+ch4R0gMv0grjT3DV3KIWeMAlv/7yeAn6lY4qm5h5LPPlC2gfFXtMXOqV3vHtix1/I6G2cpXQ5zIREPC+IS0GK/B1VSWb/XallsywdKD9Dwz5ZnkwCMXSoFhgTCtsiSkWoxbszysb0AzhxGKkzPY9DRcB2wchficdzbtrBrN3QO1Bnj3Bl+CR7+nki6et2FOQDSQM6UBl4habZlXwdnAgILnnPO6InK8BQQKUik7Z2gN4OrjgSPGMnazxq99dHazjdjBYtZCJFWY+Qkk+dojodXQFk/g/DaNouhc56HITPw7P7MjQhVR3Fs9APrczSF23QW+XcenWdqj9g5kg5Jbd6c8NQJOZWPOCuch0FkjHasURT4SzeGYDA9MdN/2pTVdSziCtgIIqjqGoE4qI+p+jh7YOkMTGnzYjAa0QnlE6VFhZJfo3I7IshbKUUC8TCJyVum5S6VfDmFk/5n+S8V6g9LxBt8T
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795071064-185002
+X-HE-Meta: U2FsdGVkX1/HWctOr1zD1PuGK1hKTUTVS7yhfEdzxQ2jSgjHRQqVKuh8WuROj19QKO0AFDSYU1ta6N3LfeFejlgASURcSi5KAsHZ9LkytmXs8XJDg5pOqFGw+E6Qex9IYXz9MTnpq/dPpjhmpGB1xxMGSzVn4/tHv36cW6IY9HSJUeW+eJef0YjqnDlfpDy262uJGysS3uUP7MmwgpXOuCUPRHDmTFoSPedMEdNNjr1SOIC7cDjyy0XE2lwkPMowZ+A1hRNY0qhpEIczl+5su7n4TwXOBl42yC1Piqup3Vi0eipuKoh4llldCh0jwv3R0r3jhUjqzV2ArbTOuGyhR7eFqRVYh4xuuWwq0sSS2T6i+vH1u4/8KAPmxEjXrCdyZfvy8U4/Q+xJEwTTambWxFuritRJrW4COFFDoGSboitG75moMIDaPq91wu+sgryylcsEIhfqyqqjWBwycpqz/yn+nKus7mMU1mfO3M13Oe9M+YpTDlmM3XipJBle+wz5lkB1tndk4oRu8grD81QUfQQDmvZcFp9uW25uViS8rMRLzPA8q7hWQWaYhOhQ8E8bPPyPJoG6/nxL1rha4Isj1DtJb1oX2tiiZYJIMA3phT2dOqT1/Kx6SYKC68FqS7O5lt4cqU7GL+mf9+gSeONacLaqvd7c82vzR8l3FnjCfJhCZ3Y8EP2D7GXcFTG0t0UtimyXSgmz1jxt9aFIyWJ5/zjA09TQUVoRqntxu23U9ZFrOlTGqtcb0nAWn7Tn+PDnO/fHv4PWhzxX/YaKnHbYWoiqv6e0wv2wRE2QFBohU9OYyFUIw+Msd/vzPOArP6jqjM5vo6qKoJWpi8+p0Zs/friqY58NAgYoYCNF9InE2tzb0bf++3l16wgqPmwxo9qZkHmCtPg1uy9wXK+bi1ewSjQYaMiN/pPYI5SNq//a243TIWBloC3po+AH5iRWBknV0crdJzPPeqt4iRYCjWp
+ JHbrEd2T
+ ZtcMbRP1g595jWFv3X/V+9y2IkzoFCkTaxPkZ63fogwu8GJ1l6Yn8AXKqmHlJQJGQrhJ8C3/7kRt97BnMeg/8SG+FjChp+cot860KKwlLEtnSk9nYaNa965w7cPH3tcotDg1bxLsiZxji3dlOpZjgSSX20ZJrZ+D9kpuME1PFerXBUvqIy9ibGOCReKhBb8q3+J9ryY/Yxlrg8P2qqYRu4jegynuh0CHvDeeQVckavCxSimkA/2vZ+O+CV9S3dfCO5Fj8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,141 +107,243 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Incoming sub-blob pages are owned by their consumers and have independent
-lifetimes.  Some consumers, such as LUO, restore and free their state in
-early_initcall, i.e. before kho_init() (fs_initcall) builds the debugfs
-view:
+From: Ridong Chen <chenridong@xiaomi.com>
 
-  early_initcall: luo_early_startup()
-                    -> kho_retrieve_subtree("LUO")
-                    -> kho_restore_free(luo_ser)   /* page is freed */
+On Android, memcgs are used to group and account memory rather than to
+limit it, so direct reclaim never hits a memcg limit and is always
+global reclaim through shrink_many(). We observed long direct reclaim
+latency on Android devices under memory pressure, when many tasks enter
+direct reclaim at the same time and all of them walk the same per-node
+memcg LRU. Some of the slow calls piled up on a few memcgs.
 
-  fs_initcall:    kho_init()
-                    -> kho_in_debugfs_init()
-                         -> phys_to_virt(luo_ser_phys)
-                         -> debugfs_create_blob("LUO", ...)
+shrink_many() picks a random bin in the old memcg generation and moves
+on to the next bin if it is empty. When only a few old bins still hold
+memcgs, all reclaimers end up on those bins and pile up on the same
+memcgs, which makes direct reclaim take much longer.
 
-debugfs therefore ends up pointing at a page that was already handed back
-to the page allocator, and reading the file triggers a use-after-free:
+Count the reclaimers in shrink_many() per node. Before walking a bin,
+advance the memcg generation when there are more reclaimers than
+non-empty old bins and advancing would add bins: splice each old bin in
+front of the young bin with the same index, so in each bin the
+remaining old memcgs are still reclaimed first in the same order, and
+bump the generation counter. The condition is checked again under
+memcg_lru->lock before splicing. The per-memcg segment is kept, so a
+memcg already moved to the tail segment (below memory.low or too small)
+still gets its second visit before the young memcgs in its bin.
 
-  # cat /sys/kernel/debug/kho/in/sub_fdts/LUO
-  ==================================================================
-  BUG: KASAN: use-after-free in _copy_to_user+0x37/0x60
-  Read of size 32 at addr ffff88810309c000 by task cat/27436
+shrink_many() now reads the generation again at each restart instead of
+once at entry, so reclaimers in the loop follow the new old generation
+instead of walking drained bins. A walker can also go more than one
+generation stale while it is in shrink_one(), and two advances would
+wrap its stale generation around to the young one. Skip the rest of the
+walk once the generation no longer matches the counter.
 
-  Call Trace:
-   <TASK>
-   kasan_report+0xb9/0xf0
-   kasan_check_range+0x100/0x1b0
-   _copy_to_user+0x37/0x60
-   simple_read_from_buffer+0x77/0xd0
-   read_file_blob+0x75/0xa0
-   vfs_read+0x12d/0x520
-   ksys_read+0xc3/0x160
-   do_syscall_64+0x97/0x4b0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+Advancing earlier means memcgs that were just rotated to the young
+generation become eligible for reclaim sooner than before, when the old
+generation had to drain first, and the order is only kept within each
+bin. The splice walks the remaining old memcgs under memcg_lru->lock
+with interrupts off; it only runs when some old bin is empty while the
+young bin with the same index is not.
 
-  The buggy address belongs to the physical page:
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1fd
-  pfn:0x10309c
-  flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
-  page_type: f0(buddy)
-  ==================================================================
+The pattern can be reproduced on x86. Test on an x86_64 machine
+(i7-13700HX, 24 CPUs, zram swap): 64 memcgs each churning 24MiB of anon
+memory, 16 threads writing 128K to the root memory.reclaim in a loop,
+which goes through shrink_many(). Each run is 120s; the patch is turned
+off (A) and on (B) at runtime with a debug knob that is not part of this
+patch, alternating A B A B A B in the same boot.
+Latency of each memory.reclaim write, in ms, averaged over the three
+runs:
 
-The page is already in the buddy allocator (page_type: f0(buddy),
-refcount 0), which confirms it was freed before the debugfs view was
-created.
+                    A        B      change
+    p50          1.95     2.08       +6%
+    p95          4.88     4.29      -12%
+    p99          8.06     6.25      -22%
+    p99.9       13.08    10.40      -20%
+    avg          2.32     2.32        0%
+    >= 10ms      3240      894      -72%  (calls per run)
 
-KHO does not own these pages, so it cannot safely expose their contents at
-all.  Drop the in/sub_fdts directory.  The incoming FDT is reserved by KHO
-and remains exposed as in/fdt, where the same metadata is available.
+The time with at most 4 non-empty old bins drops from 2.6% to 0.02%.
+The cost is that each call visits about 7% more memcgs (shrink_one()
+calls per call 118 -> 126), since reclaimers following the new old
+generation may revisit memcgs they rotated earlier in the same call,
+which shows up as the higher p50. Anon refaults, pswpin and pswpout
+are within 2% between A and B.
 
-Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
-Signed-off-by: Long Wei <longwei27@huawei.com>
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- kernel/liveupdate/kexec_handover_debugfs.c | 47 +---------------------
- 1 file changed, 2 insertions(+), 45 deletions(-)
+ include/linux/mmzone.h |  9 ++++-
+ mm/vmscan.c            | 86 ++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 90 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-index 7d74477da0b7..3a91c47ad7a6 100644
---- a/kernel/liveupdate/kexec_handover_debugfs.c
-+++ b/kernel/liveupdate/kexec_handover_debugfs.c
-@@ -10,7 +10,6 @@
- #define pr_fmt(fmt) "KHO: " fmt
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7d6e830c2420..bc9f9224bf79 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -624,7 +624,9 @@ struct lru_gen_mm_walk {
+  * An onlining memcg is added to the tail of a random bin in the old generation.
+  * The eviction starts at the head of a random bin in the old generation. The
+  * per-node memcg generation counter, whose reminder (mod MEMCG_NR_GENS) indexes
+- * the old generation, is incremented when all its bins become empty.
++ * the old generation, is incremented when all its bins become empty, or when
++ * there are more reclaimers than non-empty old bins and advancing adds bins
++ * (see try_to_inc_memcg_seq()).
+  *
+  * There are two operations:
+  * 1. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
+@@ -649,7 +651,8 @@ struct lru_gen_mm_walk {
+  *    memcgs. For memcg reclaim, it still relies on mem_cgroup_iter().
+  * 2. There are only two valid generations: old (seq) and young (seq+1).
+  *    MEMCG_NR_GENS is set to three so that when reading the generation counter
+- *    locklessly, a stale value (seq-1) does not wraparound to young.
++ *    locklessly, a stale value (seq-1) does not wraparound to young. Walkers
++ *    that can be more stale, e.g. across shrink_one(), recheck seq.
+  */
+ #define MEMCG_NR_GENS	3
+ #define MEMCG_NR_BINS	8
+@@ -663,6 +666,8 @@ struct lru_gen_memcg {
+ 	struct hlist_nulls_head	fifo[MEMCG_NR_GENS][MEMCG_NR_BINS];
+ 	/* protects the above */
+ 	spinlock_t lock;
++	/* the number of reclaimers in shrink_many() */
++	atomic_t nr_reclaimers;
+ };
  
- #include <linux/init.h>
--#include <linux/io.h>
- #include <linux/libfdt.h>
- #include <linux/mm.h>
- #include <linux/kho/abi/kexec_handover.h>
-@@ -97,8 +96,8 @@ DEFINE_SHOW_ATTRIBUTE(bootmem_len);
+ void lru_gen_init_pgdat(struct pglist_data *pgdat);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 2d061439a863..cd8ceadbe74a 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5337,6 +5337,76 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+ 	       MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
+ }
  
- __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
++/*
++ * Advance the memcg generation when there are more reclaimers than non-empty
++ * old bins and advancing adds bins, so that they spread over more bins.
++ */
++static bool should_inc_memcg_seq(struct lru_gen_memcg *memcg_lru, int old)
++{
++	int bin;
++	int nr_old = 0, nr_new = 0;
++	int young = get_memcg_gen(old + 1);
++
++	/* non-empty old bins now and after the splice */
++	for (bin = 0; bin < MEMCG_NR_BINS; bin++) {
++		bool o = !hlist_nulls_empty(&memcg_lru->fifo[old][bin]);
++		bool y = !hlist_nulls_empty(&memcg_lru->fifo[young][bin]);
++
++		nr_old += o;
++		nr_new += o || y;
++	}
++
++	return atomic_read(&memcg_lru->nr_reclaimers) > nr_old && nr_new > nr_old;
++}
++
++static void try_to_inc_memcg_seq(struct pglist_data *pgdat)
++{
++	int old, young, bin;
++	unsigned long flags;
++	struct lru_gen_memcg *memcg_lru = &pgdat->memcg_lru;
++
++	old = get_memcg_gen(READ_ONCE(memcg_lru->seq));
++	if (!should_inc_memcg_seq(memcg_lru, old))
++		return;
++
++	young = get_memcg_gen(old + 1);
++
++	spin_lock_irqsave(&memcg_lru->lock, flags);
++
++	/* recheck under the lock, the bins may have changed */
++	if (old != get_memcg_gen(memcg_lru->seq) ||
++	    !should_inc_memcg_seq(memcg_lru, old))
++		goto unlock;
++
++	for (bin = 0; bin < MEMCG_NR_BINS; bin++) {
++		struct hlist_nulls_head *src = &memcg_lru->fifo[old][bin];
++		struct hlist_nulls_head *dst = &memcg_lru->fifo[young][bin];
++		struct hlist_nulls_node *node, *last = NULL;
++		struct lru_gen_folio *lrugen;
++
++		hlist_nulls_for_each_entry(lrugen, node, src, list) {
++			WRITE_ONCE(lrugen->gen, young);
++			last = node;
++		}
++		if (!last)
++			continue;
++
++		/* splice src in front of dst */
++		WRITE_ONCE(last->next, dst->first);
++		if (!is_a_nulls(dst->first))
++			WRITE_ONCE(dst->first->pprev, &last->next);
++		WRITE_ONCE(src->first->pprev, &dst->first);
++		rcu_assign_pointer(hlist_nulls_first_rcu(dst), src->first);
++		WRITE_ONCE(src->first, (struct hlist_nulls_node *)NULLS_MARKER(old));
++	}
++
++	memcg_lru->nr_memcgs[young] += memcg_lru->nr_memcgs[old];
++	memcg_lru->nr_memcgs[old] = 0;
++	WRITE_ONCE(memcg_lru->seq, memcg_lru->seq + 1);
++unlock:
++	spin_unlock_irqrestore(&memcg_lru->lock, flags);
++}
++
+ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
  {
--	struct dentry *dir, *sub_fdt_dir;
--	int err, child;
-+	struct dentry *dir;
-+	int err;
+ 	int op;
+@@ -5348,9 +5418,14 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+ 	struct mem_cgroup *memcg;
+ 	struct hlist_nulls_node *pos;
  
- 	INIT_LIST_HEAD(&dbg->fdt_list);
+-	gen = get_memcg_gen(READ_ONCE(pgdat->memcg_lru.seq));
++	atomic_inc(&pgdat->memcg_lru.nr_reclaimers);
++
+ 	bin = first_bin = get_random_u32_below(MEMCG_NR_BINS);
+ restart:
++	/* advance the generation if needed and walk the current old one */
++	try_to_inc_memcg_seq(pgdat);
++	gen = get_memcg_gen(READ_ONCE(pgdat->memcg_lru.seq));
++
+ 	op = 0;
+ 	memcg = NULL;
  
-@@ -108,54 +107,12 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
- 		goto err_out;
- 	}
+@@ -5365,7 +5440,9 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+ 		mem_cgroup_put(memcg);
+ 		memcg = NULL;
  
--	sub_fdt_dir = debugfs_create_dir("sub_fdts", dir);
--	if (IS_ERR(sub_fdt_dir)) {
--		err = PTR_ERR(sub_fdt_dir);
--		goto err_rmdir;
--	}
--
- 	err = __kho_debugfs_blob_add(&dbg->fdt_list, dir, "fdt", fdt,
- 				     fdt_totalsize(fdt));
- 	if (err)
- 		goto err_rmdir;
+-		if (gen != READ_ONCE(lrugen->gen))
++		/* skip the rest if gen has gone stale, e.g. across shrink_one() */
++		if (gen != READ_ONCE(lrugen->gen) ||
++		    gen != get_memcg_gen(READ_ONCE(pgdat->memcg_lru.seq)))
+ 			continue;
  
--	fdt_for_each_subnode(child, fdt, 0) {
--		int len = 0;
--		const char *name = fdt_get_name(fdt, child, NULL);
--		const u64 *blob_phys;
--		const u64 *blob_size;
--		void *blob;
--
--		blob_phys = fdt_getprop(fdt, child,
--					KHO_SUB_TREE_PROP_NAME, &len);
--		if (!blob_phys)
--			continue;
--		if (len != sizeof(*blob_phys)) {
--			pr_warn("node %s prop %s has invalid length: %d\n",
--				name, KHO_SUB_TREE_PROP_NAME, len);
--			continue;
--		}
--
--		blob_size = fdt_getprop(fdt, child,
--					KHO_SUB_TREE_SIZE_PROP_NAME, &len);
--		if (!blob_size || len != sizeof(*blob_size)) {
--			pr_warn("node %s missing or invalid %s property\n",
--				name, KHO_SUB_TREE_SIZE_PROP_NAME);
--			continue;
--		}
--
--		blob = phys_to_virt(*blob_phys);
--		err = __kho_debugfs_blob_add(&dbg->fdt_list, sub_fdt_dir, name,
--					     blob, *blob_size);
--		if (err) {
--			pr_warn("failed to add blob %s to debugfs: %pe\n",
--				name, ERR_PTR(err));
--			continue;
--		}
--	}
--
- 	dbg->dir = dir;
--	dbg->sub_fdt_dir = sub_fdt_dir;
+ 		lruvec = container_of(lrugen, struct lruvec, lrugen);
+@@ -5395,7 +5472,7 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+ 	mem_cgroup_put(memcg);
  
- 	return;
- err_rmdir:
+ 	if (!is_a_nulls(pos))
+-		return;
++		goto done;
+ 
+ 	/* restart if raced with lru_gen_rotate_memcg() */
+ 	if (gen != get_nulls_value(pos))
+@@ -5405,6 +5482,8 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+ 	bin = get_memcg_bin(bin + 1);
+ 	if (bin != first_bin)
+ 		goto restart;
++done:
++	atomic_dec(&pgdat->memcg_lru.nr_reclaimers);
+ }
+ 
+ static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+@@ -6081,6 +6160,7 @@ void lru_gen_init_pgdat(struct pglist_data *pgdat)
+ 	int i, j;
+ 
+ 	spin_lock_init(&pgdat->memcg_lru.lock);
++	atomic_set(&pgdat->memcg_lru.nr_reclaimers, 0);
+ 
+ 	for (i = 0; i < MEMCG_NR_GENS; i++) {
+ 		for (j = 0; j < MEMCG_NR_BINS; j++)
 -- 
-2.43.0
+2.34.1
 
 
