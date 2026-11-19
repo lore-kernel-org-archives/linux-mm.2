@@ -1,108 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497E360A2607
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF49D606A337
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QsW9leLb
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=H589cwGa
 Received: by kanga.kvack.org (Postfix)
-	id 450726B06B0; Thu, 19 Nov 2026 11:44:10 -0500 (EST)
+	id D2A9E6B0661; Thu, 19 Nov 2026 11:44:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4284D6B06B1; Thu, 19 Nov 2026 11:44:10 -0500 (EST)
+	id CDB336B06B5; Thu, 19 Nov 2026 11:44:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 364346B06B2; Thu, 19 Nov 2026 11:44:10 -0500 (EST)
+	id BF0E16B06B4; Thu, 19 Nov 2026 11:44:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 08B986B06B0
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:44:09 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5CA93160B71
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:44:09 +0000 (UTC)
-X-FDA: 85452441018.09.4DE0CC1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AE032100006
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:44:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QsW9leLb;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795106647;
-	b=KMgM+1Jc+E0fzPOpv1n892NABraRXjkmi337Fiteh/MirHxc4GG3Nmv3DfH5UckzwwA8h0
-	TmaKyEEmsAlaEEKa0WFFEq6HwB3jd2nPdSFy2/liywtYa6D86jHCKbhi9nE/rH1+zSzL/7
-	9rjwmJbjEHvl02J8SXA+kLzeJ8Nwg24=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 94D246B0661
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:44:22 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC19940B56
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:44:21 +0000 (UTC)
+X-FDA: 85452441522.15.8E987C9
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A6268140009
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:44:19 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=H589cwGa;
+	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795106647;
+	s=arc-20220608; t=1795106660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xWoQbusH/Y8VjnnYyYVr0K3Xy3KNrjFcQdKBH99Yds=;
-	b=7ztCK7EOn4+3zoe69aafWOrejoi2UaksMqD3n7j+2TFvE7aRIFFweMQBuV2yAZjt52s1KE
-	/us+j6Lyuw8zVhCcuI9dUPoxW4tXfv0yn2apiMQTMphu6iTLp8dJbwFAoza2tl2016D1+m
-	J/c8a4lbZOtUIbDsi/0uqS5FHJ1zi68=
+	bh=zDXF/eCRhk1uzVkaxBfPvONixANJAFGM6Jb/fbAScSs=;
+	b=Gt2IJEqwPd+d2ocmhCQzWNX3tAs5NmiquurzeLvDu5GO0Jyhc0saETO1UlCt9ixow+19ux
+	LbkKUsWLpyQ+1DzO7k/Y325SfhMnZByzy9ppkG237czdZQB/OZeqHqcDRpqM7pqOus6Vk6
+	Q02lRK+jOhgwlMmmQsZRmWxOarPCTjM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795106660;
+	b=Ym2BD1NfzG7wHN+SkDt3MMGU06I7ggjnoNp6EfxHEHKMCxryeWlQlclSNUIk+bWA59CyN5
+	DpyensNlR7GCqVShisnQYkxkuAex0w+c0bIZmEVVxTVWYf7mKGkQGKCKRPmzuwxARZ9aZm
+	2f/FLiMUAX5uNKmY5n2ZNhjrv+Hvteg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QsW9leLb;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C1686128E;
-	Thu, 19 Nov 2026 16:44:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF201F000C5;
-	Thu, 19 Nov 2026 16:43:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795106646;
-	bh=7xWoQbusH/Y8VjnnYyYVr0K3Xy3KNrjFcQdKBH99Yds=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=QsW9leLbkV8LZAS329LVHxGUpItBJP0N7LvKGT4sjgKn3hsERkmCmqmPw2ygtdiml
-	 Vc4Zh14sCdqnThkaeyA6qe0pTyCvSFYZHewnhMSet6OgR22sXW5ijY97aPVibyrTGH
-	 +I2w4gZvpicpV8n3LOer+JiUaVzXiD+dozmZ82l9rsO9LYyjkDIxAKHOGB8EQBkUqI
-	 vb3rM7mym9bgs8DxkV07ZblLMnflwn99V4cv/BFl+DcKgLD01AyspKKwZP+ceaqHtN
-	 Ubqx8ZlAoZhptgjBc9LFE0zC3liRqK1fUsV0LgzYBGD4qq6PluFntuDfd3r5/5o8/h
-	 eXWTEfFDXLi3A==
-From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
- K Prateek Nayak <kprateek.nayak@amd.com>, Kees Cook <kees@kernel.org>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, 
- Alexei Starovoitov <ast@kernel.org>, Song Liu <songliubraving@fb.com>, 
- Yonghong Song <yhs@fb.com>, Ingo Molnar <mingo@kernel.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, Sashiko <sashiko-bot@kernel.org>, 
- stable@vger.kernel.org
-In-Reply-To: <20261119-mm_failed_fork-v1-1-b3019f43d197@kernel.org>
-References: <20261119-mm_failed_fork-v1-1-b3019f43d197@kernel.org>
-Subject: Re: [PATCH] fork: clear p->mm when copy_process() fails
-Message-Id: <179510663721.2987.3052403624854778254.b4-ty@b4>
-Date: Thu, 19 Nov 2026 17:43:57 +0100
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=H589cwGa;
+	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4a3e706b5dfso1611248f8f.2
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:44:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1795106658; x=1795711458; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zDXF/eCRhk1uzVkaxBfPvONixANJAFGM6Jb/fbAScSs=;
+        b=H589cwGaugqA9YAHhVUmzzO5NxEHkaUj/JyD12brCkRQeReHk5S7aaKzvKJsGLBd54
+         644fn8hrPCnKXe8vjWIvYdL4/2hN7GFGixNx79s2Er0KaScWgxIhXtApJDgB5jf8qnr6
+         3hymMyRW1hgtHwpnNuj9tiZoP4NiRbDVbWAv73n9ze+UpiOl6UsTXbw6GBUpJJZwe3zd
+         r1wOYYoQ8ABoGsnz+2TCi/NVX66H3pkEKyc3wKkSoRUXqNy9+isrvWGWc6S+akbvSeAZ
+         /GQP5kjCwY3eoMU1aHJL4hH6RqSu34xfzh4c5+fAh7BdfD6sJ4vCEy9AsguMRWQqaAUc
+         ikCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795106658; x=1795711458;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zDXF/eCRhk1uzVkaxBfPvONixANJAFGM6Jb/fbAScSs=;
+        b=i96a/jy/UR5iuvITevMOZlzSEE5cbTNX8qMsRBaQxQkzyq8rK4AWsQxBG4walowI1g
+         aE9EfReLuu5PyVswydlxYC6/DP8OuVoRrCYGk9/Efv1zeBmeEYx8ymcDguC+nFyXafdZ
+         ML3yJJ4MC8IVkeGyulXPlbu2hRWfeWmbEBJmgmRzp700YdR9vENDpUSYETpsM85x1gUx
+         h277b2MNB6DV7TGiUAk/nOHJYKuvBx61S/D7Wg6vgZqJsidvI9dX/sVUAiLd2oYDhXiM
+         OGCEhiGFb9mbCKq++49Wvs99J6qDnjq83G7lHMJpMpZQuoMx34he0WPC0n+pycLRT944
+         Bd1w==
+X-Forwarded-Encrypted: i=1; AL+hErFNV882bkHm/Tdmc4Cqbe5GDrGuJCgrft4TL9iV7Bc7PQ9Nl3By3IWx/2KYL62XDgMbBhZW3OXbwA==@kvack.org
+X-Gm-Message-State: APuU4Z/Ii2p+UumLXjzf0ikBMDt6kRrD4xuuUwgadyMVSYlcwzVkeBpY
+	NHqoWywCS1mRhP0QO+meL3XlLocCCxdZgCBPoh25IKLVKuttKIINvpJGFu7hsFTuTy4=
+X-Gm-Gg: AZFdTZdmG1kR/bakQWBN2uHpzKBoWzkz0KSB9UnbGkLFPSM7PqyUHvXjfVwVbDah8iZ
+	ybnmOlW5zuEdXf7MIx0CBA3XDKdYJLVBC4BsIS/uBC1njfCs0Vjwrq9nK+PLz+7prAAkOYhN6MP
+	3ebSFkKFMjffyIlqS0HNVoYqC5l49WFBTfAOrfRk8mhj+WsbiBmcLc3nSIqGAxxDM0Y+iYjeHuF
+	lJkU7M3ttERLwjL78T6qaXfaLK4shIERWWzXrQKgKs2iLBL0NBgbQaDSOOI3XIPXNLI6CZmDdhT
+	I3L/KSV8fi01/r75Kq5r7u4lHC+jslSrep5EckgELjbaR2MyJvD7rWnKWMKElkkiVUo0TowHrGd
+	NktAcFS3h9w9OzZceWY6LuYmL8lHo2vleEGTHEl85kag5sqQNNZ4pH7ZD8dlOE0J5X7Kn3oTZa9
+	n7UwWvmbYU6vPfupeW4DlpuzB+sJERwT7UqRtWwUfYvLxz+j/qcVfprDiXHoPgpKzaqSJSQpG3x
+	rpiSMXk/Tzu1FSSu3t3rj4L2AMZI/dN50Enpnh53WHgz+igEojYZfHHS+GkXFbtCKsDwtzr1VCQ
+	6ZO+bcg6HswH40fRILIxaMDjmOXSZINj0117XA==
+X-Received: by 2002:a05:6000:2087:b0:48b:db7:86a7 with SMTP id ffacd0b85a97d-4a63e223fb6mr14422264f8f.50.1795106658000;
+        Thu, 19 Nov 2026 08:44:18 -0800 (PST)
+Received: from localhost (109-81-24-9.rct.o2.cz. [109.81.24.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6bb98b4dsm632121f8f.53.2026.11.19.08.44.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Nov 2026 08:44:17 -0800 (PST)
+Date: Thu, 19 Nov 2026 17:44:16 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jann Horn <jannh@google.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Chris Mason <mason@kernel.org>, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH] mm/madvise: fix MADV_FREE handling for PMD-mapped THPs
+Message-ID: <av8nYAco3bMhUIBI@tiehlicka>
+References: <20261119-madv_free_thp-v1-1-a312919e1ee5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Rspam-User:
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AE032100006
-X-Stat-Signature: 89jhytec188iegj5jru5gfoend1rubp3
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795106647-636922
-X-HE-Meta: U2FsdGVkX1+xB3bj9BdPVrAJcrxjivTM8lzydN/dnFWKdVKyNMREVGJiMfifeVT18OE7d5FCjKfB5l3WHKnOTGDexzJDPVe3NA+LLvK2M7e7y6Hl2b+eE6AvNoHKegenYBurl2TNB+RJ9CM33ZFpHlU6kFglvpGv6CUh+hHJfmyl8ffaJ1YwTr6HYkHMAnbxZRsmgKNGNkyYSIS+bvk6Yq0H+Ko6CYooZuaKL3eCXTKLcfmSdPyyQQizNN3zXDpQepLkGlD25hIbXeyyQwFqZ2gyHnQhyULo7yr9+7NyEYQYx6MxSlTJzaNr/PPA58OE+knPmq1Q3ze0HEba8E25+vVWbRjJ8H/hrAIx+1E4sxn8VGrS03XvnVWsFev5mqLxB/To6vWfm1GPG+xebry0Ns/JmuzDsq8eQiRp0Z0vMQ06sk3ybtxQFBv6XBc27iiENIYlrhCe4agYIVwNPJ2KtzFfXsC8L2yQPDxdPXQP6EY2vwKblGk7T5uRmqie2GOOJO7YXBiTCPjlkyFZKMwrND5C4FAGR+G6HfHqaRsAVGr9jgSNR86D9u2/8K6ImBoFRx6ULV4c3j5DnEwBX/3GlYI9RmXuF+7WC9XXJyuYHLXwd+vARXJWJiOhrvwrL9YWKvb3om4VqE8w82S1/0GTRkjBd9jyidbGb7xuK776Hg4Bb4pIWidpdWSgx/vEE4fS2leljGFksBv8/DwChB/pIYeGclkreertpwQ+pREHNftCf5hKfjQSc/6lAk9lScNsVIs6gqPBbGaGVU0F590uFCbF4RrVJFKvAr/DCzfmOwkwUH4zBQVCwfLgAf61+d57j2M/CM2qwH06JMQ0jE+zC8i7hxyDZcC/FFRZYfehLscO78O19jUEHkV9lCa73CCMtQS0JShjGNrKjV/jrfHj6+EhndCyBlny26VxhiZZ1EhAhCHYEJcDcEWWP1aqsysBwJiCQXfPLxeMSJ0V0g3
- /pjVNe01
- TIA0qVI2KEP1lRqJzPaDEXUT4iFPBTeh6+tXY0F48E58AYefkZPezBoe5BagSWYvzZt46mBbqBjDjw8G2zZBbZwyaqPFfjlhRQ8gaFPwewjKSE/sMoid6eQGLC6U9pVyUC7+eD2FloCVVtRZqUbZdmmXWwTuEUSgsrHdI1s83HgDqFEx7sqPOezya1uzwH0NzlL1xMZaQ9khkF5IKTOYaTH8tSONzdx5Z2FtvqhMfIWeIrwLR7D5c94hrMGy13BgXntfgT6PiY8UFTmxnJ+wjQMeL32J8GOLObrH7tWBf9r6Pry2r0edVvbXRLsSyuLvW2CQy2XA9WZ3bgoK0Sm0GkNM1VYRo4IMlBu6/vYjgmT6GS/xqrcFSZxbRAdIKpEMhRSB95sp0dAd6P/8oB7zfDarAj6h0myiBX+XiUEfeLakRdueLiqtI3G4S6g==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261119-madv_free_thp-v1-1-a312919e1ee5@kernel.org>
+X-Rspamd-Queue-Id: A6268140009
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: d9q5hd7ji4d86iw1nh6eahbnpep6aa3g
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1795106659-630502
+X-HE-Meta: U2FsdGVkX18LmPgw5wn71Cpq3pQ2XEB8H/OOFk7Fr8vGAQmOnMGSzUMU5elBJna+wu0PLvnRDjnBXQze/LratPV8leddWrBJ+CfNp2VtlXVzsvLN75S5eagKN1na51/O7L5kI7pH7U4JItT68/FU2X73orVuY0yRCEKqOxF5gSZWWh59LEkrJAYN2F0TJgyjp1I1w1uAcuq+y7Dmkqi8CbB+N8/88lF1WpkN3E9x9Bw8OVamXP5vlkPvShTlmM1+oqtUMtxaCnhreB5DZGbBmA7WXjothnCNtpfN3IrSrOq6/n/2eECndnXgCyT7gWU+qKFrRKEIU55fSJjQCE0gXRBt8otq/MexAzcFVuy7OeaZA0jw4xKGZkJt+ClagJrLQzi4e4VHvAUc7CZMfrBzcQRZKaR2oeRJabQJmdtb/tAv8/5lYRa/XSDNedtzJgCqE4B8PjQsWHHKqtIEpGGojTyYHVe1zMLq8a99TUyz3lR/69NUyFELDnpi8JMkZ9q5l97nWeHlifSZZeazpX5rz+bbRwcLK0MoobEyjsv0IPPNMPIV7rQR/I6XHnzctND2OWvF0OjWjFLRu+u6xq+nxxFxDkquKVgYDGHqitQT+Ir6BwwsMNHnN3X3aC1SUhczMrpsHnXT7GvN82MNz2URu7euHGHkXd0cLcAlRe/57ye3NSXZZXVSFy06+lp/diYK12WI6oefMbFCp73FHycLZJmq6kXOEJjS9Mx/a22vJl8fRd5HvRBEnliVRx8ErkFQPqihrMZC/i41Yyin7SJnns6r9gYDGWr54PTDOs69/RLaRSa1p/ZKTqOftaonePMag2HLiDXkxrJGKav04GCCgvMk2J3Wc6xF1W8/7Skf+s7tqaOKOd7NzB1w0RRjpUwTP0lBi9FRafwMj38bBPy6PeuqEUBTVQtifCZ2Q1zYdtj4FqbFpjL9HWUUTIdovX026gPSC5XWg0KYnvqp40i
+ TQeMeBOQ
+ XWAauu1W2mNnVxS7SNcyurWHzUH+t4P6iWeV7mhBkOO/BQMrluLFbtzZ79QRLumJ718wPKG1T0iRbSAe9cyxeCerZ5L8Jrw/gkLy06AvSyhBOjJ47luiOYnnCZapqQDGNWdALqckxtbwPox+KLswVX0j6jhJTHuEaNX3IAORYoAGAWJQ4LM4ACTSgAt0AmQMy54tQDSxIt1MMAbR4KkWokj+BlI3Q1oqdKN0MG5EW3tb1p47ngV3f109/3dh838j9Zjq96VLK0OOGcmy0/z96ior4w5ww2RvVrYoGNm7YntHMo4T0Ow7kCc4EjpGAf2U5AReHQXxj+DePuauhvfKyup0KgYLCxcWlS+ihf2r6OoH6Da5xT9Bhns/LQPsv+wdKck4YXl3z//dDEFdGACt84AgvB77MPSpGsnKm66ruRccvmUoz6Cx5zZuE2U8Z/Crp43lootxav4siuANQvzPtEs9f3+yRctCm6qpBoQbmyfRdsMJGWDY7dCHiHCe5U0vGwtAcn+q+fL8JExZ82b0Ywph/M9WLO7tuQ5pfD/TW79QCWj79Dfe3hPYlYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,49 +136,228 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 19 Nov 2026 09:04:58 +0100, David Hildenbrand (Arm) wrote:
-> When copy_process() fails after copy_mm(), the error path drops the mm
-> reference but leaves p->mm set. Perf and BPF can still reach the
-> task, and take a reference on the already freed mm through get_task_mm()
-> or bpf_find_vma(), resulting in a use-after-free:
+On Thu 19-11-26 17:04:34, David Hildenbrand wrote:
+> After MADV_FREE cleared the dirty flag of an anonymous folio, reclaim will
+> later free the folio without writing it back if no mappings are dirty.
 > 
->     copy_process()               PERF_EVENT_IOC_SET_FILTER
->     ==============               =========================
->     perf_event_init_task(p)
->     copy_mm(p)
->     a later step fails
->     mmput(p->mm)
->       /* frees the mm */
->                                  perf_event_addr_filters_apply()
->                                    get_task_mm(p)
->                                      /* use-after-free */
+> If our folio is still in the swap cache, the swap entries then point at
+> swap slots that were never written, exposing stale content of the swap
+> device. Bad.
 > 
-> [...]
+> madvise_free_pte_range() therefore frees the swap slots first, and skips
+> the folio if that is impossible. madvise_free_huge_pmd() does not, and a
+> PMD-mapped THP can be in the swap cache if try_to_unmap() failed during
+> reclaim, for example due to a racing mlock().
+> 
+> Further, madvise_free_huge_pmd() checks whether the THP is mapped by
+> other processes before taking the folio lock. Another process that still
+> has swap entries for the THP can concurrently map it from the swap cache,
+> and we might end up clearing the dirty flag of a shared folio.
+> 
+> Fix it by factoring out the folio handling of madvise_free_pte_range()
+> into madvise_free_try_prepare_folio(), and using it for PMD-mapped THPs
+> as well. Hopefully this prevents further bugs.
+> 
+> For PMD-mapped THPs, this change implies:
+> 
+> 1. We free the swap slots of a THP in the swap cache, and skip the THP if
+>    that is impossible.
+> 2. We check the mapcount under the folio lock.
+> 3. We no longer lock and check THPs that are neither dirty nor in the
+>    swap cache, just like for PTE-mapped folios.
+> 
+> For PTE-mapped folios, this means:
+> 
+> 4. We check the mapcount once before taking the folio lock, to not lock
+>    folios that are mapped by other processes.
+> 
+> Only compile madvise_free_huge_pmd() with CONFIG_ADVISE_SYSCALLS to keep
+> !CONFIG_ADVISE_SYSCALLS builds working.
+> 
+> Chris and Sashiko reported the missing swap cache handling for PMD-mapped
+> THPs, the other issue was found by code inspection.
+> 
+> This has medium urgency.
+> 
+> Fixes: bd4c82c22c36 ("mm, THP, swap: delay splitting THP after swapped out")
+> Cc: stable@vger.kernel.org
+> Reported-by: Chris Mason <mason@kernel.org>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/sashiko-outbox-202086@kernel.org/
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Applied, thanks!
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 
-tree: mm/core.git
-branch: for-next-fixes
-
-Applied patches will appear soon in mm-next, followed by linux-next.
-
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
-
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[1/1] fork: clear p->mm when copy_process() fails
-      https://git.kernel.org/mm/core/c/c9b8c9bd
+> ---
+> I would queue this fairly soon on mm-core/for-next-fixes
+> ---
+>  mm/huge_memory.c | 19 ++++++-----------
+>  mm/internal.h    |  1 +
+>  mm/madvise.c     | 65 +++++++++++++++++++++++++++++---------------------------
+>  3 files changed, 41 insertions(+), 44 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 79d400ea9553d..e22daf846dbe3 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2421,6 +2421,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+>  	return 0;
+>  }
+>  
+> +#ifdef CONFIG_ADVISE_SYSCALLS
+>  /*
+>   * Return true if we do MADV_FREE successfully on entire pmd page.
+>   * Otherwise, return false.
+> @@ -2455,21 +2456,13 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  	if (folio_is_zone_device(folio))
+>  		goto out;
+>  
+> -	/*
+> -	 * If other processes are mapping this folio, we couldn't discard
+> -	 * the folio unless they all do MADV_FREE so let's skip the folio.
+> -	 */
+> -	if (folio_maybe_mapped_shared(folio))
+> -		goto out;
+> -
+> -	if (!folio_trylock(folio))
+> -		goto out;
+> -
+>  	/*
+>  	 * If user want to discard part-pages of THP, split it so MADV_FREE
+>  	 * will deactivate only them.
+>  	 */
+>  	if (next - addr != HPAGE_PMD_SIZE) {
+> +		if (folio_maybe_mapped_shared(folio) || !folio_trylock(folio))
+> +			goto out;
+>  		folio_get(folio);
+>  		spin_unlock(ptl);
+>  		split_folio(folio);
+> @@ -2478,9 +2471,8 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  		goto out_unlocked;
+>  	}
+>  
+> -	if (folio_test_dirty(folio))
+> -		folio_clear_dirty(folio);
+> -	folio_unlock(folio);
+> +	if (!madvise_free_try_prepare_folio(folio, 1))
+> +		goto out;
+>  
+>  	if (pmd_young(orig_pmd) || pmd_dirty(orig_pmd)) {
+>  		pmdp_invalidate(vma, addr, pmd);
+> @@ -2498,6 +2490,7 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  out_unlocked:
+>  	return ret;
+>  }
+> +#endif /* CONFIG_ADVISE_SYSCALLS */
+>  
+>  static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
+>  {
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 85cf7becf8588..96cb55d7816b1 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -61,6 +61,7 @@ void lru_add_drain_cpu(int cpu);
+>  void lru_add_drain_cpu_zone(struct zone *zone);
+>  void folio_deactivate(struct folio *folio);
+>  void folio_mark_lazyfree(struct folio *folio);
+> +bool madvise_free_try_prepare_folio(struct folio *folio, int nr_mappings);
+>  
+>  /* mm/vmscan.c */
+>  unsigned long zone_reclaimable_pages(struct zone *zone);
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 0214efd2a014f..ebb4ce7daf6cb 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -661,6 +661,38 @@ static long madvise_pageout(struct madvise_behavior *madv_behavior)
+>  	return 0;
+>  }
+>  
+> +bool madvise_free_try_prepare_folio(struct folio *folio, int nr_mappings)
+> +{
+> +	if (!folio_test_swapcache(folio) && !folio_test_dirty(folio))
+> +		return true;
+> +
+> +	if (folio_mapcount(folio) != nr_mappings || !folio_trylock(folio))
+> +		return false;
+> +
+> +	/*
+> +	 * KSM folios can gain new mappings at any time, so we must
+> +	 * not clear their dirty flag.
+> +	 */
+> +	if (folio_test_ksm(folio))
+> +		goto unlock;
+> +
+> +	/*
+> +	 * Check under the folio lock that the folio is exclusive: we own all
+> +	 * mappings, and there are no references from swap entries.
+> +	 */
+> +	if (folio_mapcount(folio) != nr_mappings)
+> +		goto unlock;
+> +	if (folio_test_swapcache(folio) && !folio_free_swap(folio))
+> +		goto unlock;
+> +
+> +	folio_clear_dirty(folio);
+> +	folio_unlock(folio);
+> +	return true;
+> +unlock:
+> +	folio_unlock(folio);
+> +	return false;
+> +}
+> +
+>  static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+>  				unsigned long end, struct mm_walk *walk)
+>  
+> @@ -753,37 +785,8 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+>  			}
+>  		}
+>  
+> -		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
+> -			if (!folio_trylock(folio))
+> -				continue;
+> -			/*
+> -			 * KSM folios can gain new mappings at any time, so we must
+> -			 * not clear their dirty flag.
+> -			 */
+> -			if (folio_test_ksm(folio)) {
+> -				folio_unlock(folio);
+> -				continue;
+> -			}
+> -
+> -			/*
+> -			 * If we have a large folio at this point, we know it is
+> -			 * fully mapped so if its mapcount is the same as its
+> -			 * number of pages, it must be exclusive.
+> -			 */
+> -			if (folio_mapcount(folio) != folio_nr_pages(folio)) {
+> -				folio_unlock(folio);
+> -				continue;
+> -			}
+> -
+> -			if (folio_test_swapcache(folio) &&
+> -			    !folio_free_swap(folio)) {
+> -				folio_unlock(folio);
+> -				continue;
+> -			}
+> -
+> -			folio_clear_dirty(folio);
+> -			folio_unlock(folio);
+> -		}
+> +		if (!madvise_free_try_prepare_folio(folio, folio_nr_pages(folio)))
+> +			continue;
+>  
+>  		if (pte_young(ptent) || pte_dirty(ptent)) {
+>  			clear_young_dirty_ptes(vma, addr, pte, nr, cydp_flags);
+> 
+> ---
+> base-commit: 5e600d79135124a4eb8e9db30ad524224c267c07
+> change-id: 20261119-madv_free_thp-3c2a9887a722
+> 
+> Best regards,
+> --  
+> David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Cheers,
-
-David
-
+Michal Hocko
+SUSE Labs
 
