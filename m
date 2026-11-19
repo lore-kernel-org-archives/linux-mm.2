@@ -1,91 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C686606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D252606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=mZmgybaJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j1Nz+8cR
 Received: by kanga.kvack.org (Postfix)
-	id 41EDB6B05D4; Thu, 19 Nov 2026 03:43:44 -0500 (EST)
+	id 3E5876B05D6; Thu, 19 Nov 2026 03:52:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F4CA6B05D5; Thu, 19 Nov 2026 03:43:44 -0500 (EST)
+	id 38F456B05D7; Thu, 19 Nov 2026 03:52:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 330F46B05D6; Thu, 19 Nov 2026 03:43:44 -0500 (EST)
+	id 2A5976B05D8; Thu, 19 Nov 2026 03:52:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15AAA6B05D4
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:43:44 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 861271408D3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:43:43 +0000 (UTC)
-X-FDA: 85451230326.15.F93F73C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B9087C0005
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:43:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mZmgybaJ;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 03E266B05D6
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:52:38 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 860A414098E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:38 +0000 (UTC)
+X-FDA: 85451252796.11.6811374
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B1DEB180009
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1Nz+8cR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795077822;
+	s=arc-20220608; t=1795078356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rtghJIjWql+xP2DKVq/IwfJvHxOsZQ8g4qMYFaP1EDA=;
-	b=XbVfwVdJe8FkBjzBvMA6vSAU7/nLeK8tBg8j0Rvnv8ZacpYAKIUwXamg5WW8cf546hCzhi
-	MeHkdSvl2V43a26W1Eo1o1XOu7SFeJsU7OVtf6uSkcF4rN4r6WID5uU1tYinqhQfDSkc5q
-	V/5GEwbNtM2R3MR50IhmlGwZXH3wQ1U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795077822;
-	b=FbpUBBeLO/u7I79f0o+8NYGLpSlyDCNfvnnhEHHre20EXgn5xU8yRNaJyuyE/7u/tUNg29
-	7a0LlSoZ8wHuhPKkchdnd1ubm+pekBi3+JjFuIUbpwtkASW7pNMgIuhx61l9S47voURrj+
-	l8Wb9yFNrtwakIrnk5SD3KuKJmsh5fM=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=IPndn90TrWiuxkQkUrYep5mzt6mXRFlXBfoASzSRQGU=;
+	b=bq37H4yPLp3Wgotr5p8sgjtTlwosxQ6wFYvoa8qjXWY4o0CfJ/qA6TiXLTzTZAOEXV0qda
+	XFP5wLtKcHEjyATIsAH5MEF7uSghviYK1nSlHKRCYf3G088GMaj2GTdjROaTnylTqY0EXk
+	DvfyRn+ljkeu9B42COYdlUrEDfMYzEY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mZmgybaJ;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1Nz+8cR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795078356;
+	b=3uNw4jfJbabBCepld+BvgNJykUNYpFVdO0LMP4kkAUJ6o5yxHgl9CAIhTfMRIAIzDahBDY
+	yUicF9JezEAPLYHUl5vX2AU1TZs6xeM3vigoATk8VzTmXpKIehn0Y9oVsPZnblGj3LWw6t
+	tEnf88kx4qXaxYLnrRni9QhrEu94fII=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 189C960EE9;
-	Thu, 19 Nov 2026 08:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729B81F000C4;
-	Thu, 19 Nov 2026 08:43:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795077820;
-	bh=rtghJIjWql+xP2DKVq/IwfJvHxOsZQ8g4qMYFaP1EDA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mZmgybaJg/L2vOzYXR9VuaQbUN59V4Q9issn5IeVH5fWmmbGuYLdTVH8e5kAqkzsR
-	 u/n+KaV5BBry8nJCAWIPUSETtpucShA8286lPYdkMMMhWwyZHLOph6eDqC+yBsgU0O
-	 JZ0i62IgfmDVJFBqGH7vRP79oQGZl+o6pxzZ3vkk=
-Date: Thu, 19 Nov 2026 00:43:39 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- azpijr@gmail.com, lance.yang@linux.dev, fvdl@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, Qi Zheng
- <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v5 0/3] mm: hugetlb: fix CMA-related issues
-Message-Id: <20261119004339.98c7e39ba863695691c7b921@linux-foundation.org>
-In-Reply-To: <cover.1794907279.git.zhengqi.arch@bytedance.com>
-References: <cover.1794907279.git.zhengqi.arch@bytedance.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id E1E7247817;
+	Thu, 19 Nov 2026 08:52:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE001F000C4;
+	Thu, 19 Nov 2026 08:52:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795078355;
+	bh=IPndn90TrWiuxkQkUrYep5mzt6mXRFlXBfoASzSRQGU=;
+	h=From:Subject:Date:To:Cc;
+	b=j1Nz+8cR0jTce7Lp+aDCmO2fQowwUJsL1pf8Qlim9IPCU5cSF9GJDtXCEhrOFoGx2
+	 j1QZyZsXieQmfRHnwmre7bjUH7/mRoJWdXGYPmuzoqjhjHQ8IAw+g+NuVicE2HsgsB
+	 MarSJWRIFV4o2pte5enKAV5QrizPpKEtCcykq1M/0xJzL/o7pa/5q0UfOKHnBEf9hT
+	 aSExsypAUGBR7OTzqNq/MTVjl8laEYCAtfG8gQldsH2vBoHIUgpCUDGqUOHhVJDxXw
+	 XWNtIvzvxLXYauMlcTju6j4Pd4tVD3f1FC6xCWgGn4ExBG+beaCsHId1qfl/r+ADwa
+	 g5MYsDz4abbTA==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 0/3] alloc_tag: two fixes and one cleanup
+Date: Thu, 19 Nov 2026 09:52:19 +0100
+Message-Id: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pauk7x387j8gm8nhnb15kzp9yyaxuea9
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXM0QqCQBAF0F8Z7rMLzoZa+ysRsU2zOiEauxaB+
+ O9SPZ6Xs6JoNi0ItCLr24rNEwJxRZAhTr06uyMQfO1bZj65OI6zXJfYu6Y7+DZxEjk2qAjPrMk
+ +v+t8+bu8bg+V5Rtg23ZSZGd0bQAAAA==
+X-Change-ID: 20261119-alloc_tag-57326f1fcc85
+To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Usama Arif <usamaarif642@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-mm@kvack.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
+ stable@vger.kernel.org, Chris Mason <mason@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=988; i=david@kernel.org;
+ h=from:subject:message-id; bh=pTjq0ySpnKkGB96QfwvsYQaekk2YVWDvbC/xe0dtpSY=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+7TjhMY9nipNo7srX+5Ov2c6RiDDZepnxXTnjF+20/
+ 272P6KVOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZiIgivD/3LRO8tiHh63iFpa
+ efzgHrGD6Qc/KWn6v3vsW1grnVt37hwjQ9euXI8qntVm5sfbdpZvbn+UXH+7InVl2zQHP6fPk6e
+ JMQEA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Stat-Signature: jqgke8to7nu4tfjmigoj17gphcufkgsd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B9087C0005
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795077821-357959
-X-HE-Meta: U2FsdGVkX19A/GgsXsow8CHIkRFNmOHk535cxYiLPHkVbASml21WSAWGe4CtARJBcM3Zq6oBV58e8QkL4lmN0l/bG/R9ShU8thJmyH6x5ag5x+F2wPk9bYlbGWibqSjQbD8HKHoHNeZ0K/769fcMpm9iRtmvpuL2iNsDC7IX8hsCat0abqmUXFfM4C1FHhxM+V95B8swD2ZkbD+G/QBaF4dKGqZ+Cgzpmv5Opv2KMld7kpG1sMTZGAIRoFJxCSSoVMGpZE6R86QdEZag7KqcndVjsFeF8NzJLSe47IEf1pNSfCIH/wyCwHzYlcMmZ4fKNA3GSW0UjOomNGhDtNTx5oBnVwjDtKJ2mf+5UbTTX+Ww4m+bHITgq3f26J+zP1Vkubmw4qqKvK+m6rVa1/2EE3xZXL2MixR3DmtVQEAwWoub1bf3wI+o1nHm1gMLnFRQkIJ2cAmcdSqYyg7BK/tm79z3yyfOg7tFO1xyheuVy3pQYKidLr1l1R0CiNSkUBqVqNG+SsRm4K955fFfSwo4bBBMidsXWqHlvLHbo+cfDklky1pOlCEVOf+dw5X0kSp8ziVn25Rk7SlnkMUJ5f++wyK3dzEckOoK1BwnonZVnOlCuxl88cGozWqOHcs3Tto9iuXlsRQCN5d7wLGnmyFtmpYJYr8WXIycDXYj+lYaVVbUFNdJdrglS75uRHzwnu6rD/IalrmcaCufCFSQYB1TelNwBDZm+I9ZSd7lg0oZiBeZs4XDVatLzH+K9gErWIZquWnsjdFC1MalyztdNHYSrVIknFRbd9iG/f7rDEos3uJkfBwlya6PIZKd8X7qind809MtYWGNBBwvbDxsdcB0Q5OHnX6J2xUChKM1pDA1zUduZv3epupSZfKZMJMw3zOyBmkGtsNNXQGvoj5+MlkEa6omgkBrClZoPp/k2kgy9VKYXhLjB0kKW7Q6xvaK1ADgd+5+WuResyyjIVFvaPq
- 7Wr4w/Ha
- 0xHafOeTbJb+5LEnfiwRk41QpoFhwbBz260MAU1JpAh9TivMSIm+WYNr+pIUJduD/ePh7glpiqNY/4DBOiTVM2FRn2nH9gQ2akQiNbo8Yv5DQCJGEiHXIhTgUJ0JJttGEzC1iDQo4CBX89wfONu9wxu2KleW4+5QoFnz1zRN+UJWBJecBQKiWAlmPRFOZjTaHwUsn6bplTz6fSP9hiGOu4vrWCL6BVqhO9mvh6L4DPLn6T9XGgbNzXOZoR63SzbQtK5PprLCtUMxqWUtDw0Sxt9Lt6LvgNuHKkkhMjvnX2Zdq/wixPi6P+L/Ktg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B1DEB180009
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795078356-198287
+X-HE-Meta: U2FsdGVkX1922NW+43lJ/GFc0dh7IMiAmmTECLZ/Ts1O2AMTrNaRh1AeID6InzKdCzjYrokwTXVIPT9Fm5AJwVQI3DjxB+OfmoyC+ajmhDMUi+DwoBpN2sPOsAJ0EWdwCvLLOF+YLEx+SiKHNE2Qj0qwkUo5l7raS66nA54awgBSBHUfObI4bvKZtEOb8qtKDJQx0L30WwzpI71GuNWz/T5eGGeWxUAqL+BEVnw88SQHxB4qOWW4b9DpxxKDh7q/sAN4bfFw5A5YbK9L7s38WBzhZolmPZUyufr1q0LuVgwgKZtZs+rnmfhYHyhK85gaJb3JJGXvfYj2QFj9bghq2C2tKlqdVz4dSFbb/mw7YGoVMX2WHxQg5O5DhakFNFHH6tAWpJmqXPrk6uJ1nqw5lKc1Segb00Al1iOrVlGPZZQiemWJ4NFHq/cI5iVZMnQtE5AGxwqjd4zgG8O1+J//uWc54+/SF+Gam7ceN+xGFhYpcO8iepcqVDzTsCX4k3+TJUMxd7+2UKuJAxGR8sHWAA4y+F8OEzxVK6PRNrl9frdagQoxM5+ROvz4Dh19dQhgA8huUQNPF64Dg2xh/IhiFDu6NoIhnh3pptVPYsjktKu9Wd1SJeN32/yD02/Sz5ndZOiQ84yTwsVYgwr4aFQdPogvIkox1ZPNGDNU+7xXzvr7hns1XeZJrpwkNm2Gb0t9riR054wRAB07wez6E41lFhB99uAwhTbMgcI2FvH7k8Nd2m0bjjf/mwmx5KxydVRhxYlKtApR5PsWSFHSu/P9Tcmg6EXI0scMRu4hMwThyHnufSsmN1srwds8flMSd3fXoSDZ+NM2aR5ILDu29hBqT1sfs6whNxlaSDOItDJvaE7GZtWHNqB9Hof6AyR1miJ6TqDY3dAAWcmjmxfltEdGh77LxbZsj/30hdQu/pBDdZxLSB4MSYW7fvCGRbjNvIR07vmWeffJKgOHC9/tJcv
+ L8t3PP9s
+ vB+ELKkkX8FIcnGf5UnLNuEwfn6p2kziYCYrXZ3j358IhJ9orqc3sMEyV3i0ib1Oi6KnCFlOwF1SoY/9Ix+6+ePlZYvH8MFggPfIrkJv2aHFCMqeOEd5Wt0GHjcqFPgpdN/HcRfJ44PR/KC8U97BL1b2lXkEg3PLE4fnmxDVdyNB84bk1pqaxsfPfGvFYxnoyiupK7v6yS0QcJAfFXv2t6ak6yC56+1gD+3BRy/pIFn2/BcII2aQJCxt8sewyTVap3b4ReDI31WTx2nqZwRIfg1pAG0KnmhZ6r0VyX/MIRmy+1lgO57o/IbzZ6fiE4wj1kp5g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,54 +111,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 17 Nov 2026 17:33:56 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+Hi,
 
-> This series fixes three CMA-related issues in HugeTLB reservation,
-> long-term pinning and allocation:
-> 
->  - Avoid ineffective CMA reservations on 32-bit x86 kernels running on
->    CPUs that advertise 1 GiB page support.
->  - Allow long-term pins of explicitly CMA-allocated HugeTLB folios,
->    which already own the CMA memory.
->  - Preserve the caller's GFP mask when allocating from CMA.
+two fixes (one for alloc_tag as triggered by slab, one for mempool) and
+one related cleanup to make things consistent.
 
-I fed this into LLM-driven testbot, both confirmatory and adversarial
-testing.  All looks good.
+Quickly reproduced and tested the warnings in a x86-64 VM.
 
-Tested-by: Andrew Morton <akpm@linux-foundation.org>
+This should go through Andrew's tree. No need to rush, it can wait until
+the next merge window.
 
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Chris Mason (1):
+      mempool: fix missing alloc tagging in mempool_resize()
 
-: Tested the three-patch mm: hugetlb: fix CMA-related issues v5
-: series before and after applying it. The 32-bit boots covered non-PAE
-: and PAE kernels. The 64-bit tests used a two-node VM with 12 GiB of
-: RAM and CMA-backed 1 GiB HugeTLB pages.
-: 
-: 1. x86: hugetlb: disable default CMA reservations on 32-bit kernel
-: 
-: Without the series, non-PAE boot warned and reserved an unusable
-: 64 MiB CMA area. A PAE boot also reserved an unusable 1 GiB area.
-: With the series, both kernels rejected hugetlb_cma= and reserved
-: neither area.
-: 
-: 2. mm: gup: allow long-term pins of CMA-allocated HugeTLB folios
-: 
-: A long-term pin of a HugeTLB page allocated from CMA failed with
-: ENOMEM before the series and succeeded afterward. As a negative
-: control, I found an ordinary anonymous page inside CMA on each
-: kernel. Long-term pinning migrated it out of CMA before succeeding
-: on both. The change did not permit pinning that borrowed page in
-: place.
-: 
-: 3. mm: hugetlb: fix GFP mask propagation to CMA
-: 
-: On a preferred-node allocation, the caller cleared
-: __GFP_DIRECT_RECLAIM. CMA received it set before the series and
-: clear afterward. I then exhausted node 0's CMA area: further 1 GiB
-: pages fell back to node 1 on both kernels, and a fourth fault raised
-: SIGBUS after both areas were full. The fallback's reclaim-enabled
-: mask reached CMA on both kernels.
-: 
-: Allocation latency and general memory-pressure behavior were not
-: measured.
+David Hildenbrand (Arm) (2):
+      alloc_tag: handle a NULL tag in alloc_tag_set_inaccurate()
+      mempool: account the element array to the caller
+
+ include/linux/alloc_tag.h |  3 ++-
+ include/linux/mempool.h   |  7 +++----
+ mm/mempool.c              | 23 ++++++++++++-----------
+ mm/page_alloc.c           |  3 +--
+ 4 files changed, 18 insertions(+), 18 deletions(-)
+---
+base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
+change-id: 20261119-alloc_tag-57326f1fcc85
+
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
 
 
