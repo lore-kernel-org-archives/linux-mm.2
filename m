@@ -1,78 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA63E60A2607
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA8F606A32C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O8Uodhrb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tw73Jwlq
 Received: by kanga.kvack.org (Postfix)
-	id D56E66B0696; Thu, 19 Nov 2026 12:06:12 -0500 (EST)
+	id C47F26B063A; Thu, 19 Nov 2026 12:07:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2E5C6B06C9; Thu, 19 Nov 2026 12:06:12 -0500 (EST)
+	id C1FEE6B0681; Thu, 19 Nov 2026 12:07:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1CCC6B06CA; Thu, 19 Nov 2026 12:06:12 -0500 (EST)
+	id B0F066B0682; Thu, 19 Nov 2026 12:07:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9828D6B0696
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:06:12 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E1436B063A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:07:49 -0500 (EST)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 320CC120BAA
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:06:11 +0000 (UTC)
-X-FDA: 85452496542.03.13610A5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 323631A000C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:06:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O8Uodhrb;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EE2B1C0B59
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:07:48 +0000 (UTC)
+X-FDA: 85452500616.03.D786AF1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9266F40039
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:07:31 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795107969;
-	b=jc5WHVt3o3+mSoipStjSbC8gDn1+GEmCddUVmqy3v+sp7SZ/YtoPRYMce2SOKGZnWAoe7b
-	TaRtPRU/8KhpLHEAd9GdqTY1nnt5apnECECYixb3tgjjxbuniH1sCKre8Mwb+UxBpjvqfa
-	4Po5ZxTzPehSe05R5yAhC7M2AdCzGck=
+	t=1795108051;
+	b=l+AJhOumQ3hFtegm3FV42ePW06kKWzqzTXT/dco2MtFu32BDLCBPwkTap1jv0CnbglFLx/
+	nKXPXJSgz9r+k+G03+K875wT2DjGjObwzeT2ouoSH8jXhs71u57mzBvqym4X6Fo6ehUrTR
+	zlZ3T2MOamPpZCLBbiI53i9v0G2kkxs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795107969;
+	s=arc-20220608; t=1795108051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M118Bq4qG+fvAk7cRNW6vz/xHAeyvgF0gxIP/5adlFc=;
-	b=Btv/IKq8SEgMky+jAC/D8ORk8s46BBAfra/zgueGF05VmjlBuJ+Bo7j8k2XgJkFIV+1f0Q
-	z4lPO6/4nFFz+THA5DIygbph7D+5QyVSNlDyCLHSzi4uf/rCwt8uGYqGGn/3IAS4kumOol
-	7GQQZ/sAkgiLTnK2s5wm5qOIHQY2kt0=
+	bh=Lmd+HN5A49APWYRaGvhwi4FWVWa2U7qDUZEWshdNk+8=;
+	b=uvgH2THf4hH7WKEm4aMwQeICePaOjsHL2r0XDHYkj8CiePD3Klwn8TlWvn6SxHTQs9OaAn
+	GcbcmwJcpAQKbRMZ/Aaff63yZMmf8siDRWApeG3x3uDkgqTN3ayCe80raWUeeY5r1rDTi/
+	XzDHu1IQYIyEBERUjRAPvujlUgngV+s=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O8Uodhrb;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tw73Jwlq;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5C2C140264;
-	Thu, 19 Nov 2026 17:06:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACDB1F000C8;
-	Thu, 19 Nov 2026 17:06:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EE451612DE;
+	Thu, 19 Nov 2026 17:07:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485C41F000C7;
+	Thu, 19 Nov 2026 17:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795107968;
-	bh=M118Bq4qG+fvAk7cRNW6vz/xHAeyvgF0gxIP/5adlFc=;
+	s=k20260515; t=1795108050;
+	bh=Lmd+HN5A49APWYRaGvhwi4FWVWa2U7qDUZEWshdNk+8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O8UodhrbFFlwGqaHVvd5Mvauk7njRUBxMaON7Wa0SpioC6+vdgy9M8tQ09zxHhrxF
-	 lGofD0WoVkRPFhrZ+70sM/v0SFGRsPjPQsjkDh2pJZyG6N+GcZIrnWb8JBLaXEgMRx
-	 k8AMraCYCQvtFzG0EWI+y2JIeTphuc7Kt4Jcv4GtahwBvy90TzDyCqkBBRok3vypkh
-	 rYYkrEOrK4iYz2mTvRVLRkoOqPst6PUO+v3qo4HW7PoMiBec5/RWn7lr7VqWw3omiG
-	 7MkFV9Pcao3uFEiV+ggPB+wskYUMo1FcsozEWmnIi8WkphujmlbodFngsf1Eo++QvQ
-	 c+tL523KvvSMQ==
-Message-ID: <e4c0fcf1-b70e-4d22-9c4a-5829e1438ce5@kernel.org>
-Date: Thu, 19 Nov 2026 18:06:03 +0100
+	b=Tw73JwlqyNhTeVcBiwc5SKmOQEOcfXMgENPmLT3agybAuVQak0sPd6X4t10dkW72s
+	 gtecLGAMPbcBaFgj5Ctm7dOE73HW0/WT7bxfhbZUQd3K6oo8HAz6LYkP0ka2y6gE1Y
+	 AMqam3UnOwqCC6Gc8Roa4zA1wRwPkabAAR9vPhCJvS+pbSmK4zyxbNhaD89GFLTSmr
+	 vIl5Rn7eRsulf5THMxxAWDCg/q/xkQ1hqLmHfBt7ZIR4p7dVBT1v2Le6/KTcdsO7Qr
+	 xq2F7p2tKtFCxazK+kDHsfNj+fRN59iwT7PYVvwPBUsqtbZaq4HdEYtzKhFn3om1S+
+	 WsSYD/ebPxzpA==
+Message-ID: <33d2664c-cfb9-4d35-a75c-70c424bb290d@kernel.org>
+Date: Thu, 19 Nov 2026 18:07:16 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/shmem: avoid zeroing new folios twice with
- init_on_alloc=1
-To: samridh@modal.com, Hugh Dickins <hughd@google.com>,
+Subject: Re: [PATCH 1/4] mm: flush stale TLB entries before installing a
+ CoW'ed folio
+To: Zi Yan <ziy@nvidia.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ =?UTF-8?Q?Cenk_Y=C4=B1lmaz?= <cenk@deepfinresearch.com>,
+ Zhang Peng <zippermonkey@icloud.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, Mel Gorman <mgorman@suse.de>,
+ Sasha Levin <sasha.levin@oracle.com>, Rik van Riel <riel@redhat.com>,
+ Ingo Molnar <mingo@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Hugh Dickins <hughd@google.com>, Axel Rasmussen <axelrasmussen@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261118-samridh-shmem-send-v2-1-f2ea01bfc178@modal.com>
+ Andrea Arcangeli <aarcange@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
+ <20261118-file_folio_flush-v1-1-e9e739ed14e0@kernel.org>
+ <22DF2F1E-2692-48AC-AEE5-79B61947D86D@nvidia.com>
+ <98be89bc-1394-406b-8723-0032a7b57ad1@kernel.org>
+ <FBB72DA3-74B8-468B-9857-4397C18D4F38@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,94 +139,45 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261118-samridh-shmem-send-v2-1-f2ea01bfc178@modal.com>
+In-Reply-To: <FBB72DA3-74B8-468B-9857-4397C18D4F38@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 323631A000C
-X-Stat-Signature: pfacq85f9a64gxr4fi8yck8kkqim67oj
-X-Rspam-User:
-X-HE-Tag: 1795107969-553392
-X-HE-Meta: U2FsdGVkX1948w2NH6sliDxZiVHZX0L/FRb3D39DRbTT1PST48ktxngDGPyzbHhJ45hlvJk3246ydzHcBZI5zuJVqq0X9MeXa2tVbw3O0AJ95p/IwCiedL9Gj2hV/VqaMAqBOUFid+9Jp0AqiglnoT633YXIlf8/tFHPnJPQAP0TosO0IdqUiCs5P2pqkqv0Y4nnVVJYcb3L1WtaEkAGXfhGGrACam8WUqyd65b7qSdLARDBsoqgTzOuD8Fo4+4XE2JRyYafH9wYu1dhIwoSZjwVnatzrTSjz49hJOfLq2OBAnhYhrbINYmzF+fitThY61jZzuikg6FgRJ+Ouaj3sxpuEMBL96/dI4sI9+kAPO8D7K9OZ824gSyUwRPOsCPt+f6LfGsUj1E88mFwHwG7Sprfp2K20q3n85igEj7SJ7TO5Ut0he86VyL/U8HuRwIZzCpV30ff1AzwW7d+IUp+53aWvCBMpFzyMFOh0/AfG0hTy6FaHxwmChCawHR4l+Jgu147VJC9AWOhm/CsCOXrMhfywnpSVBeN65DQ9KEaI3P//ZkBCHmO13g3H2xzrUkq/2UlMeI5HD47C+MmBlYI4eutk3yUs2f+BvJS2FYHys0nMfLsBj22MB2sr1AyzybVbw+v3dYD+IT3Cc3EbaXZ1l7LQ2lm12+KJFJx0yvfVV7JYq4TOTKXd2BiE6JUE3RzZnrnhThxZrshvGXwCqg7Sjfz9y/LtVJ7EnWnT7NAvcGF1RJbD3o3czIlra7/eDgxaLXxIRxbfA1jwX6DorJDK+2124hfqqeobOU42GDCSD/Dl1Rm3q1JnsT32uwIwkk1qBVq7bj8dJk2xzKwwyxfhtMR3W59FkR49nNe77+R8xeO2McpbRcwErOaZJZNGlHTNmtnitDNRz/nowxE6Y2mhAT8ontlGHtK0dbJLFfJX9Pcb+fiZ4N5KKIlnMC8/kPK5ny2Dm37bfxjjEtqxPh
- 5L4piLbT
- PvLVJmOFzXysSAdpc3tqXeWfZShrNcdB1E96s4kQaRVfb0QSyBL7dKXDpZO4dd4+mC2tFpboXjdfwWG793UhmCYCb++hTroc5PEYqnlXnxZfBj3o5NKGI0i7JuST+uFDBN2ghORfdxs+cj3jw12uPWvSYFCvTGJc8Ham5kEq+DgF/jV8TNqkP3emoKDW+iZGZsAB+3LBus8ujrmUcvGtHClb6pbNfnDprwYsT+lldEvZKq9KPdDuqrAdLFlWd1vWYb275gpQPPy4lejnVEgFssy0TRFwFL1GxDgVEk642ngx4xszQnbZJPHiF6rP+jrm5YjrBKGA56QtPO+NBJRzSeNzYeXkPzHlEaqP1cn/VsNE3POF4VGWGEC9Ta6EN2nYF70wt8B0dS6zcRznFH7yhy9LhEbFpZeI0YaconI7UaOUCNCKauWb4fgw6tGcW+WB7iAhfMwslUQhvQa0pTIawa/d9Tfza8SOxEf2IU9FMAYvwqi2Pkr3vxH4USS9FexAprjSa71ehJMUgyGie375PbaljOQ8DuJu3CkYCB5aQ5xU64/hq50nLymk0MKfOyrhFKbfzNIze6ZbD/itEcswxERsV6A==
+X-HE-Tag: 1795108051-497690
+X-HE-Meta: U2FsdGVkX19LBC9Gy+RyzuAqTIpCwKLSyoxOI+21gfGetvhydals7fmzxxJ6YG6SA9z6YvxD8QQm/grBugy19wvxGHzpbZY6cpOYdZZ5L/pfCOp/g9ChDFMbU9zWoCzYgulb70lONDBgs5FMYWs8XEFNmXWwyMMqTTYlLLVuAb6yCwNzbH6i7ndIEM7z41jZwevzSC1F9r0BQwXyod2iieXkOJa7nbqatAVRKJsDT8xhM4ZecyBGjV9LJYxEAcy9wQLWxO+JoUNy3iKKFxYqLj7sIHbu+gT0/K+9iXiBikGNh9FPdpY52hjS1rfnzeU5ri/kz36Y7Evg8Cn1K4oUzdCHWg1/slYx4u53XeWxOiuJejpchsD2bg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 21:28, Samridh via B4 Relay wrote:
-> From: Samridh <samridh@modal.com>
+On 11/19/26 18:04, Zi Yan wrote:
+> On 19 Nov 2026, at 11:49, David Hildenbrand (Arm) wrote:
 > 
-> shmem_get_folio_gfp() clears a new folio before marking it uptodate.
-> With init_on_alloc=1 the page allocator has already zeroed it, so the
-> folio ends up being zeroed twice.
+>> On 11/19/26 17:47, Zi Yan wrote:
+>>>
+>>>
+>>> This is really old.
+>>>
+>>>
+>>> This looks like an adhoc fix, but it is minimal for backport.
+>>> Hopefully we can find a cleaner refactoring later.
+>>
+>> I'm afraid if we don't want to throw away performance there is no way around it.
+>>
+>> We have similar handling on the uffd-wp path ...
 > 
-> Skip the clear for a folio that was just allocated when
-> user_alloc_needs_zeroing() says it is not needed, like anonymous memory
-> does. Folios that are already in the page cache but not uptodate, such
-> as those left by fallocate(), are still cleared, and so is every folio
-> on CPUs with cache aliasing.
-> 
-> Time to write one byte to each page of a new 4 GiB memfd mapping, with
-> shmem_enabled=always and init_on_alloc=1 (median of 24 runs on 6.18.55,
-> x86_64 VMs):
-> 
->                   before   after
->   Xeon 6975P-C    0.625s   0.420s
->   EPYC 9R14       0.216s   0.160s
-> 
-> With 4K folios the times change by 3% or less, and init_on_alloc=0 is
-> not affected. We found this while running gVisor, which keeps sandbox
-> memory in a memfd.
-> 
-> I wrote this patch with help from an AI coding assistant (Claude Code),
-> then reviewed and tested it.
-> 
-> Signed-off-by: Samridh <samridh@modal.com>
-> ---
-> Tested on 6.18.55 with this change backported, on Intel and AMD x86_64
-> VMs, and build-tested on mm/core for-next. A simple test fills memory
-> with data, frees it, and then checks that new memfd pages read as zero,
-> with MADV_HUGEPAGE and MADV_NOHUGEPAGE on the fault and fallocate paths.
-> It passes on both machines with init_on_alloc=1.
-> ---
-> Changes in v2:
-> - Use user_alloc_needs_zeroing() instead of __GFP_ZERO (Baolin).
-> - Link to v1: https://patch.msgid.link/20261117-samridh-shmem-send-v1-1-1b897ff562d9@modal.com
-> ---
->  mm/shmem.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index c769d0bc7df9..1a78d15a768e 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2810,8 +2810,11 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
->  	if (sgp != SGP_WRITE && !folio_test_uptodate(folio)) {
->  		long i, n = folio_nr_pages(folio);
->  
-> -		for (i = 0; i < n; i++)
-> -			clear_highpage(folio_page(folio, i));
-> +		/* init_on_alloc already zeroed a new folio. */
-> +		if (!alloced || user_alloc_needs_zeroing()) {
-> +			for (i = 0; i < n; i++)
-> +				clear_highpage(folio_page(folio, i));
-> +		}
->  		flush_dcache_folio(folio);
+> Performance or our sanity. :)
 
-I do wonder whether that could go into the loop, because I faintly remember that
-user_alloc_needs_zeroing() is disabled when CPUs have dcache aliasing.
+I'm afraid that ship has sailed :)
 
-In general LGTM, but I'll wait for more feedback from shmem maintainers.
+I would really appreciate review on #4, I lost half my hair figuring that out
+... and how to keep performance.
 
 -- 
 Cheers,
