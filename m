@@ -1,108 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA64F606A32F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 07:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF92606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 07:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=PF4iTM6k
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A/hzQNo+
 Received: by kanga.kvack.org (Postfix)
-	id B3B296B05B2; Thu, 19 Nov 2026 02:30:44 -0500 (EST)
+	id 948F16B00EF; Thu, 19 Nov 2026 02:36:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B12FE6B05B3; Thu, 19 Nov 2026 02:30:44 -0500 (EST)
+	id 8FA596B05B4; Thu, 19 Nov 2026 02:36:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A29486B05B4; Thu, 19 Nov 2026 02:30:44 -0500 (EST)
+	id 80F546B05B5; Thu, 19 Nov 2026 02:36:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8204B6B05B2
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:30:44 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A507A09B9
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:30:44 +0000 (UTC)
-X-FDA: 85451046408.02.3B25F78
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B0A1D80003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:30:39 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PF4iTM6k;
-	spf=pass (imf30.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795073442;
-	b=bw5/vVSijk8uRCadYsKP8jyvtkRpjnwpPlWf70XlZXy1JBCHmAdXPEpG2p3m4LeBSeFM4b
-	LS/5wont/OnM7ahYslWdZf8tmlK0joSNnGdhuGAzoSp0U/9HwGMsG/K+ety7HABlOmudwx
-	OEIKG2QUO6zMTYwl2H3KmZTBh1oRRmU=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 60BF86B00EF
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:36:13 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C87A5809B1
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:36:12 +0000 (UTC)
+X-FDA: 85451060184.15.912B197
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 37E1D40007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:36:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/hzQNo+";
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795073442;
+	s=arc-20220608; t=1795073771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WRIZGSNX1SJo4wwhmW/nPOy71Xv/LXzRQReFt3dC9Lw=;
-	b=veiuAoKkltY7yxZp3W3ZCs8KSxPil4SDyF5Mib0x2rJTDmRfnnhk1KWGa+svcBYrBJMYRL
-	Wyfkk0vTYZFek2VmkQ5Vnb1CDalrjjAATGmPluZsX0izkao9pSyD9xarGKB5w/5oZFCr2U
-	qlrFjuOAiWk0Z4pG/bXS1JTxM3VCQfo=
+	bh=TYXQVdddJMJhgchsWgkvy/MvJAjZnwkHSiuLmFLtt2c=;
+	b=ZBwWROjdliIhqRtxtr80uGmbPkV6QPd6ZG/IpSKlQbRORSht/jKgrmV7bL+sjqtSENITvE
+	SS3IDJTet9gTy5FJQCaUVY0Xeoiw4CN0/JXLqzOLuM8GZLRAAP9mQpb/tcP6al9cUyK4I0
+	jUdhacDWEyG81F3l+lvLrx9Vv4GHWxs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PF4iTM6k;
-	spf=pass (imf30.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=WRIZGSNX1SJo4wwhmW/nPOy71Xv/LXzRQReFt3dC9Lw=;
-	b=PF4iTM6ktsux6ow5pg7V5xCa2osrwLKrEphmhfonI7KPivX0vm5gzTgB9o1uza6b9/r6DBAWN
-	hoog2L7+F3ULC9c3KYAbyfj9itXvV55mS9uMdQrkN5eoSyQq+/NEyd2aTRy/PSjZmEK8+qSeDt8
-	Dt58kOcgMPpS4MRwtuq34VY=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4jVVVf0lvwzKm4h;
-	Thu, 19 Nov 2026 15:30:18 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0B85C40561;
-	Thu, 19 Nov 2026 15:30:33 +0800 (CST)
-Received: from [10.173.125.21] (10.173.125.21) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 19 Nov 2026 15:30:31 +0800
-Subject: Re: [PATCH v2 1/2] mm/memory-failure: don't unpoison a leaked
- raw_hwp_unreliable folio
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: <mt4022@columbia.edu>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Matthew
- Wilcox <willy@infradead.org>, Jane Chu <jane.chu@oracle.com>, Zi Yan
-	<ziy@nvidia.com>, Kaitao Cheng <kaitao.cheng@linux.dev>, Mike Rapoport
-	<rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>, Yu Zhao
-	<yuzhao@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<tz2294@columbia.edu>, <stable@vger.kernel.org>, Muchun Song
-	<muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
- Hildenbrand <david@kernel.org>
-References: <20261103-hugetlb-hwpoison-leak-v2-0-98085750c145@columbia.edu>
- <20261103-hugetlb-hwpoison-leak-v2-1-98085750c145@columbia.edu>
- <11f434ce-58c4-ff16-9c93-946a1e83eb10@huawei.com>
- <20261118231118.ca2d773881cd953d1efee4ca@linux-foundation.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <fa02b7d2-fa2c-aacc-ab16-c475885a7dfa@huawei.com>
-Date: Thu, 19 Nov 2026 15:30:30 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/hzQNo+";
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795073771;
+	b=MoaswlYmJ40tQkfjganCX7LwZINSpxVd1EMnro8v1LDLvNNFskyHF/rbt68IWWabczbADx
+	EWXMvSy92EFbfD7pcF5eMU5U1OMs3u+r/1GjfM/ZzxXxlji+B5C/x6ndsV/eRxAA5AIUFg
+	JTDDmkQtVXXhBtFOJdgTVMRB+EuoTJA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E93C62556;
+	Thu, 19 Nov 2026 07:36:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F0C1F000C4;
+	Thu, 19 Nov 2026 07:36:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795073769;
+	bh=TYXQVdddJMJhgchsWgkvy/MvJAjZnwkHSiuLmFLtt2c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=A/hzQNo+xCwvXgKK2H7WPL+/+TuZkNqeVUTjGQ15SgSf9JQR4byzRy+16HIRYORcR
+	 1nHKUf0MWnl+LiPIxK286nvsMFhM0O/9HxRrdYhboemO7RrusvmZ8HldFWHfcv4cZ9
+	 WMGbTIXTNG76T+MJdlAaudlQ7lD4Xhi5HXV6SahVqmg9s+hom0hYSrgX9PTuqdKIkz
+	 Nl7TXTBtVpusPvzDuMLc7J9i5yOFN7f2bYSOPR3REHGVfmm5U5j4aWeN/hkc4KYhl1
+	 o9tf/GsebHCqqeZ3wRzUUfs7mI9GU4nJ7VZ3NxXsYbOI3xltdpRsFUUKlYKfomWsrF
+	 HqpNyOvDVnq2w==
+Date: Thu, 19 Nov 2026 09:36:03 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Lorenzo Stoakes (Arm)" <ljs@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: Keep locked memory accounting until inode
+ eviction
+Message-ID: <av6m4wU7iDOGviIa@kernel.org>
+References: <20261030152407.113568-1-pocj8ur4in@gmail.com>
+ <45ce0b42-d45a-44e3-b300-607989e618c5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261118231118.ca2d773881cd953d1efee4ca@linux-foundation.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Stat-Signature: ks7oqwp9fzc68pu1w39so73k5cfnabub
-X-Rspamd-Queue-Id: B0A1D80003
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795073439-209641
-X-HE-Meta: U2FsdGVkX1/V1ppBazIo5A7UbD8j6ZzS0k6FaxOEPgSXwbf32Y6OFLgMUhXtTIGWc6vthF3giBRfjGHz9wmlK6ee1SPXV6FnQtbEiMUOyiJZbT3y3jFnzIflhyqNB98vskDZgtT8eSQZRjnxgD/d2n8Xoo4m+NNBM/VewvTx7Ug3cxSxR9qcWehUhfpuYnhoJFgiTVRGKWajUL+9NQJmM+K2C1P7FgtrVIOsN02ND2NNL6+CajfCIzNtHGmHEwuFKXRwCBuOyIp7WUvBpqZqgUHbaDipsPMdK/rur0lp7NZx/PN6Debge+7dAe0g80Mex9GaUnuHhhgqz/rGSAjxi+rSljoW/k8or+2MwrTcwjkBM5ZBM8nG8DvBALNJti+xgc0CSSadHF9bqQukuWmM5NNbfoLtf42b3zBiRlavl7UQ9xoYt5iFLyNRwOt50J0FhPw+Kbw4MwEQg8IrX2XJfPCqYLXt1ZjZpalV9SQW9czyBQpWeP1aSNv5C1ovcmj3pdgVoef6mId1WYxLsYfWKxnY9hG0aAG4LsfFDdUWSIISlcaz0GPP1Y0748ftUe/hDsC0YuavYWNjf9hI7grWyFtfp4HtvoLv8dQYYFx8T4nRX080Vb1YpQHORn2AuYXF3voOLtnGDoxv+H7rCktGx0/u+1uoS4LEYaF11E2dA+O87ps5cLmv7EuJbToZvpKmcp5OWnuuYOBUxCv38Uxs1ZvfpUQt2pleXbaYLgMbisDy+oqyvyE03oWyG8TWL+sOq6lq2wnAsP7TY2NHIY7CUsqiUm32S6ryIVCEGqZvjZCVmj8aele1/9iGYj/BCEV4aWI90AfGHaRWsdHQAs0KIxfg0s6h0iwTnVuKGmNvpcmD2bb9Zxc1/N8rsX8ynl4HiATX2OIY0w9sqBxvJSvMl+tv6hQBFiOOKIBojsfUhusVerzjNhgtYQi1T4BgBctAlxWsLncP1S/H1EbaAy2
- wOSpfp82
- JdHZiJkqKiuMXREh+N47jbUi6dOyBuSfWybJ1o9BoyPjt4kf/H5f/6EHKtGiXEjRlUYl1ckFa1O2SXChd9Ppz5J0MJ7Y/wSZHHMa68hQ2FB0We0LMSFT6su1zGeCBs+X5LT8+66puR/0qVr3NH1g+PMO3Rn4gWmNdLFDEMNp13Ly3/5Bdc1DYOUDGcFO0PL6qf9ZXsAJkOJeZG9mHF6o5b5JZX61InjVaSRIImWwuBpcgPwIT2SrsCV/nv3XscSNz0O+BKnUEeUSDLdLEjh87JGlspqNipx8l1WmjnDfouvKozRWrrJ7Sr7DGOeVp5pcPctm79QvaV0TRiMo9AZzwOFq/OqiPtAEAeq7dATWE2yQXNzq65dsuwYHNalKUfxWyDfeZPXluyfqoEgppMD3fVjeHuddzgH/D0Reo57823Esifi05bdVh2Mutgbra+o5/5pIPhSNrIl3HuT40dQRzj1cXaxMuCs749dAdcvIxIyxjayGWBiK5ddbTHld+TTDABjcyz9eycxyQS9QGGd1Q4vFC7wmm38yu4dkyORmSE3psAgi/ODjAHYTAt+P3MD2VvuYN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <45ce0b42-d45a-44e3-b300-607989e618c5@kernel.org>
+X-Stat-Signature: 8exhbbgri73ke5gzyiw3gdanizsygf8e
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 37E1D40007
+X-HE-Tag: 1795073771-805675
+X-HE-Meta: U2FsdGVkX19MLBbXL+oQvElDRT1hRs89nVAmMDPn/7GmYmo4qrCgn3BzctsHAcaQemAG7YGACAMLCfyxWWwU8xhExo7V70rU9xOcOqtdA4A/KDEDWuw1gRQkqYnaeOXTD7Yr09mjr90nc3fC8CnkxuP84CAF2hyejKAuZiXm3YSO4BqNTlHmtZaLCvrFkujA4FWmDQkfeWXozXfQYKj/H+jXcpQc67OlZCXO/8iI1oFE6dgFdLKAa2MDFWNT0uAVXjmcD5s45dg4ckMPETAeH25NfGCqDuF8CjhmRWlXYFz0WMZcYTo9P0hNxGCo4Uj6pluT5CRuRvLR17RPs/8/LBwUxGt4Vl9zZRZvzIaFNUDClL/vjmsisw7pJRkrmdiwCohwoaJCYVgS6o+2+hjAKiCf1aWv8f0e/dszs0skk2PXTrnyXM76kSpBmgvt8/hclSN5TfhEdTlbjF1AMPCVZjIXs5DtI5ycwVmg5TGnQ4yhG1PAFwCGq8s9TrmPwqzlIpGLXqcenKwjDj3x3hvCiwkECs3KyIqEhqN1zBEJcaZi9DuMkG5qyKcc0xwFcbHF5Ma+XUlBfRUZWK+EJYbjokekte27k4BHho/urrRKkOYY4EFqLy0oXl/oOLtrdlw5q0og64YDtBMlJZQbxJ4ihvvKeNIN/Fl+08KwKb8oYK1EpEZGcYUg6IEelwfyzJg3w7d3opWNEEGsPisKDs2XADN+PypP/PTTx+nos1V06BQQV5J0kCUcM5lQb/iQs47wCdj1J8xoSXGSNKT+slzxKsTKKoOBzYz9g4gkdvBl1/XMquvFjr4SF/mLI2QgVQAoExxOiv7zXV5lCalUj/nfUdFREPTkvD9/GoY0n5qm9Xh6IVCZ2I60Jivuf6C1Qzpqte+yFM9qVNGRpqwDiD+gsjWmcjIOOr5sdICY61MD9sNrgPrWOEgEC47IccTGDYYaKD/jxVPsqVf3N3IdPJy
+ jTp4ru6H
+ yFn2dX417plCx2W1FsLgxT1P1mzwOmcG/QbEUUve4hWlOyjLm3RfLs4OmgfC+0JY/zJ34NnkaNsVXhVyRxNqvRorTTGHL/u77oIP6FCiAtp4RJKcvuKbA4dqw+vZmwkRJA21A/Z7KMEeU/uzhKlvVf5omCcK8pFswV9th94oOMGu4qqvFy/jDNHGLkpi2k/lRD5kWZ3qrgSftvlIs+4HUXobDS0ueH2sHSAMsZCi2MRTQGGW/OT+GcmoX+phITPxj0QNNd5hJYGxc8G2VuQ/k9DTSxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,44 +97,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026/11/19 15:11, Andrew Morton wrote:
-> On Thu, 19 Nov 2026 14:39:24 +0800 Miaohe Lin <linmiaohe@huawei.com> wrote:
-> 
->>> +	/*
->>> +	 * A hugetlb folio without reliable raw error info is leaked once it
->>> +	 * is freed, and its hugetlb flag may be cleared by then.  Check the
->>> +	 * flag in folio->private, which stays set on the leaked folio.
->>> +	 */
->>> +	if (folio_test_large(folio) &&
->>> +	    folio_test_hugetlb_raw_hwp_unreliable(folio))
->>
->> It might be better to add a unpoison_pr_info here?
-> 
-> How does this look?
-> 
-> --- a/mm/memory-failure.c~mm-memory-failure-dont-unpoison-a-leaked-raw_hwp_unreliable-folio-fix
-> +++ a/mm/memory-failure.c
-> @@ -2818,8 +2818,12 @@ int unpoison_memory(unsigned long pfn)
->  	 * flag in folio->private, which stays set on the leaked folio.
->  	 */
->  	if (folio_test_large(folio) &&
-> -	    folio_test_hugetlb_raw_hwp_unreliable(folio))
-> +	    folio_test_hugetlb_raw_hwp_unreliable(folio)) {
-> +		unpoison_pr_info("%#lx: cannot unpoison, poisoned subpages are unknown\n",
-> +				 pfn, &unpoison_rs);
-> +					
->  		goto unlock_mutex;
-> +	}
->  
+On Wed, Nov 18, 2026 at 11:59:57PM +0100, David Hildenbrand (Arm) wrote:
+> On 10/30/26 16:24, Baek Kyu, Kim wrote:
+> > A secretmem inode can outlive its original file. An O_PATH descriptor
+> > opened through /proc/self/fd keeps the inode and its unevictable folios
+> > alive after the mapping and original descriptor are closed. The file
+> > release path nevertheless drops the locked-memory charge, allowing the
+> > same user to reuse RLIMIT_MEMLOCK while those folios remain allocated.
+> > 
+> > Move private-state and locked-memory accounting cleanup to inode eviction,
+> > after truncating the page cache. Keep secretmem_users active over the same
+> > lifetime so that the hibernation guard covers retained secret pages. Let
+> > iput() handle file-creation failures and tolerate an inode with no private
+> > state.
 
-Looks good to me. Thanks Andrew.
+I don't like the last part, see below.
 
->  	ghp = get_hwpoison_page(p, MF_UNPOISON);
->  	if (!ghp) {
-> _
+> > Fixes: 97d34aa65c29 ("mm/secretmem: properly account locked pages")
+> > Signed-off-by: Baek Kyu, Kim <pocj8ur4in@gmail.com>
 > 
-> 
-> .
-> 
+> Lorenzo, Mike, this problem seems real to me. Can you take a look?
 
+Yep, it's real and the fix is correct.
+ 
+> > ---
+> > On an arm64 QEMU guest with an 8 KiB RLIMIT_MEMLOCK, an O_PATH reference
+> > retained two secretmem pages. The baseline dropped the charge to zero and
+> > allowed a further one-page fault; the patch kept both pages charged and
+> > rejected that fault until the last path reference closed. The Image
+> > was built with KASAN and lockdep. Hibernation, other architectures,
+> > and long-running concurrency were not tested.
+> > 
+> >  mm/secretmem.c | 31 ++++++++++++++++++-------------
+> >  1 file changed, 18 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/mm/secretmem.c b/mm/secretmem.c
+> > index 384f5cfc457f..fa8be360bd2a 100644
+> > --- a/mm/secretmem.c
+> > +++ b/mm/secretmem.c
+> > @@ -185,18 +185,14 @@ static void secretmem_destroy_inode_priv(struct inode *inode)
+> >  {
+> >  	struct secretmem_inode_state *state = inode->i_private;
+> >  
+> > +	if (!state)
+> > +		return;
+> > +
+
+Its really not obvious how we can get here with state == NULL. 
+
+And since it is needed only for error path in secretmem_file_create(), I
+suggest rearranging the initialization so that we never get here with NULL
+state. 
+Allocate the state before creating the inode and adjust error handling in
+secretmem_file_create() so that we always get to iput with valid i_private.
+
+
+> >  	secretmem_unaccount_all_folios(state);
+> >  	free_uid(state->user);
+> >  	kfree(state);
+> >  	inode->i_private = NULL;
+> > -}
+> > -
+> > @@ -296,7 +292,7 @@ static struct file *secretmem_file_create(unsigned long flags)
+> >  				 O_RDWR | O_LARGEFILE, &secretmem_fops);
+> >  	if (IS_ERR(file)) {
+> >  		err = PTR_ERR(file);
+> > -		goto err_free_priv;
+> > +		goto err_free_inode;
+> >  	}
+> >  
+> >  	mapping_set_gfp_mask(inode->i_mapping, GFP_USER);
+> > @@ -309,11 +305,7 @@ static struct file *secretmem_file_create(unsigned long flags)
+> >  	inode->i_mode |= S_IFREG;
+> >  	inode->i_size = 0;
+> >  
+> > -	atomic_inc(&secretmem_users);
+> > -
+> >  	return file;
+> > -err_free_priv:
+> > -	secretmem_destroy_inode_priv(inode);
+> >  err_free_inode:
+> >  	iput(inode);
+> >  	return ERR_PTR(err);
+> > @@ -335,6 +327,18 @@ SYSCALL_DEFINE1(memfd_secret, unsigned int, flags)
+> >  	return FD_ADD(flags & O_CLOEXEC, secretmem_file_create(flags));
+> >  }
+
+-- 
+Sincerely yours,
+Mike.
 
