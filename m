@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC12606A32C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00893606A332
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NuwjnRJ7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K84lAhix
 Received: by kanga.kvack.org (Postfix)
-	id 7F2516B05DB; Thu, 19 Nov 2026 17:38:43 -0500 (EST)
+	id 0C5D76B0687; Thu, 19 Nov 2026 17:38:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CA266B0651; Thu, 19 Nov 2026 17:38:43 -0500 (EST)
+	id 09DF16B06D6; Thu, 19 Nov 2026 17:38:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 708146B06F9; Thu, 19 Nov 2026 17:38:43 -0500 (EST)
+	id F1D296B06FA; Thu, 19 Nov 2026 17:38:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AA246B05DB
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:38:43 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EB481C3F52
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:38:42 +0000 (UTC)
-X-FDA: 85453334484.21.50C2EAC
+	by kanga.kvack.org (Postfix) with ESMTP id C4BBF6B0687
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:38:47 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50A5A160CA9
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:38:47 +0000 (UTC)
+X-FDA: 85453334694.26.254F7EA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0E2E1140003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:38:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NuwjnRJ7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id ACB281C0009
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:38:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K84lAhix;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795127921;
-	b=Tln1Zmz90Fgwf6CvMc4AX6QjR/Tpt+XoI+mJS4l0xb6kMTbAuv7toJQpvb3CsSuRPU6CLl
-	UWNMmW0EfEnpjZupOb817QwaoCz9ouNrbX7x+1gFFiBd36lHQ4TiIOiumcpZzPDg4erjL8
-	s6q0LbnijEwc01pg1c476vHdFjMNJEI=
+	t=1795127925;
+	b=dYCRjCfFFF4Dwpcj3C2fo+hGqyiD/NHkNfLcppePhYbHE2EAH5mRbkG2coxVyThw5I2Zng
+	IuskySuPUtxKjMpF7B9+jmT0IKK8CHMXJvSY3tcIHgrXETlooGchPkvu4lMMHljcFSTk/U
+	LFqu80bZdRqlTXmQnoxdS4m3dOi2E10=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795127921;
+	s=arc-20220608; t=1795127925;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cj8MKy2tc3Sx1JwUpxECQgdXmsrh1YRqOP4Sl+8Dj74=;
-	b=sREJDYGN/zDZp74nMcsjyP5eo3IPlj6gwrAFYlvE4xxKtBzQD34CfPmWmRchkv+JGqe3hV
-	fkRcrv/D6+MgJu1ixbKhbEh6FrY2pQHUBORftyXM7C6kgFUfvsqDdbK2qlqX6DT4sZii91
-	j+M+/wHMFRgtDnNysKYjDZM17KS0v7E=
+	bh=Oub/Ol/8+MHQZEeLyeMANUxv5ii8PId82e+apI4K+qk=;
+	b=zuL2c2VPVfLjQ7J7vVJjg2HZ2w9XN6qaXNCaS3jK+o56J9kXwmXQh3UOdfhghA7vAUubgz
+	umtelrr/btCp5LXhCufXpR7CXl5YH5TGPY02eNfmSV+jZng39l+UnzXzw0TQHiEYHkYPql
+	yQlWbzGkPoZoOZWIfu1dYvU2C5orO3Q=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NuwjnRJ7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K84lAhix;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59D3961F65;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E71760D29;
+	Thu, 19 Nov 2026 22:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7FB1F000C6;
 	Thu, 19 Nov 2026 22:38:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EBA1F000CF;
-	Thu, 19 Nov 2026 22:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795127920;
-	bh=cj8MKy2tc3Sx1JwUpxECQgdXmsrh1YRqOP4Sl+8Dj74=;
+	s=k20260515; t=1795127925;
+	bh=Oub/Ol/8+MHQZEeLyeMANUxv5ii8PId82e+apI4K+qk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NuwjnRJ77VaBWoVlfrRYMOPJitsXnO0CmQ0ewhyBdvVQIUMa/2Lla85Nd6sVLcqSO
-	 rBSZstLLajgdg7CE+ZtMUiIPEv7PaFl58FO+wjyZERXsQJXc1P+8EZBEsc/pc0Li1r
-	 dSkKtAQNhJuxTDl75YrxBtqZBBY5rTx9XQlDa6MrD3Mm2Dx+CX2hcFoQ7EkEK4jzX2
-	 ix5bmcrCXaw7nWXSZsh23FNASS8JJ6jpmZa+nRvl4KCo6luiLjhnX2QZ86aYoWNNTT
-	 gsxJFCM+Haoqlx6Fd3JAZz1snnrO7gz1yCU4oh1Hz3OR/4LMVYS79qCG5O55gft1aC
-	 rAn9WVkFg2HcA==
-Message-ID: <sashiko-outbox-224145@kernel.org>
+	b=K84lAhix8cpsbsDJfvQeFZGr+Kk8Lz8wqX8LsgOt1bVOP+kEieFCct6YVOzjhHp7x
+	 OpyQVrxppkAYDnQubFP54zWqkFntRE+SzwrlCoyTrb6gIfcBHRgyAl9fNELbzT9wIP
+	 6f9ZdkqZ6lOgxy7x4VJM1SJ1d4POd7ZESTcYetGoupVdU2w1on2fb0QaqmkLBOqhtC
+	 TKbTLWHkGCIcLv8A0bmo4qecQBFq9m10SQYtCJ3KEVvJEMkjG4sq8l96fdqwsvGenS
+	 Y6q1K78HFEyAwsZkjf+8XUozb1Vkb18oCul+Cu3Ve0N4JuLuM2KR6sZBu2CYgu1gIv
+	 JK4CKeGZzvC5A==
+Message-ID: <sashiko-outbox-224146@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 10/13] PCI: liveupdate: Adopt ARI Forwarding Enable
- on preserved bridges
+Subject: Re: [PATCH v11 11/13] PCI: liveupdate: Freeze preservation status
+ during shutdown
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Matlack" <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
 Cc: "Adithya Jayachandran" <ajayachandra@nvidia.com>, "Alexander Graf" <graf@amazon.com>, "Alex
@@ -78,24 +78,24 @@ Cc: "Adithya Jayachandran" <ajayachandra@nvidia.com>, "Alexander Graf" <graf@ama
  Mahameed" <saeedm@nvidia.com>, "Samiullah Khawaja" <skhawaja@google.com>, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Vipin Sharma" <vipinsh@google.com>, "William
  Tu" <witu@nvidia.com>, "Yi Liu" <yi.l.liu@intel.com>
-In-Reply-To: <20261118223704.3286085-11-dmatlack@google.com>
+In-Reply-To: <20261118223704.3286085-12-dmatlack@google.com>
 References: <20261118223704.3286085-1-dmatlack@google.com>
- <20261118223704.3286085-11-dmatlack@google.com>
+ <20261118223704.3286085-12-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 22:38:38 +0000
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0E2E1140003
-X-Rspam-User:
+Date: Thu, 19 Nov 2026 22:38:40 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: fchx96yqczts6kr97k8bb81cqt3x88fi
-X-HE-Tag: 1795127920-539609
-X-HE-Meta: U2FsdGVkX1/1WJy0VFnL7RLN44QZHD46cRZRD1zexLtW4gRHeTdQijrL50oIVjiG/bKVCVPoG3NGPoaknXKNdcF/PRCas15I3X26S7PRVRltWZ+Pb2RA5RO+RP8HZN+YUPmsNwyBlWQSPUbQ/5sDzVcT5mBibizs26fyLQR8BI1cvZDM3n0h38ddl4ms6PhtggSROrOtaBJjcuQonKpmivshwTC834RW0XnGIYFiNcE4Oj95DwsO7WuwDk8iIJnXk0Arv6BflJMNZ/uUWdGUdPBeJaHoF7ihSmW8IcTlL1pZ2gTPcJSZRTVG/XuEfA35cyLPCEW7qfE1WRywYzT2fPg9P+2id8isW7pDBs17LDxunHDB0Zdtzh/XA3hkcj9JNj2/b5bMyFoy9Xu3VzWWw8CC+c4K+uyOErt+CQl+euQx0eM1yMWdKNY+BEPlNxH86Oj5CL8SJedkM1nV1a+AAEdQDsUkKMy6EYLbNjb5Q5P5281bevA6shnE9CRN7lP3AYLa9kMiUDzfCZKQW5jDWrnYtA0xgaagdwnA8Mphw5vgtrJAY3WhoYG2jV3T5TlatBzHqTlLzNePaP8crB+1kxoUpO9NXnsinbbev7tdIwaqIqhkvavXGcpTWOJ+EDmqGA1IQxYLex8CoMJmmIkOxiv4aDc2O1YYKZ4QIwK6gcB/RMQDSaaM/VCisd02UFkUiQSiyl6FFgcIfYZZAvEBJ9eWXiZiys0BnVKocxC6XCm6hhkcasfrZO4op+RnSiyc9iDPyY+6XMnXyk+DzQ0LyX4hK+dx/ubahv1enA0v3o8qEJPe3Wt8/h0FLLcUK3/4TLi0bfyD/bVw5luCE4xxSgMHEoApa+8bvNZ53yMlYPPlGa3SK7igWbDc+3oB7fi3ZaY2wQleIMtHGZLBJMFZEVhhg3mgwneoQ34tYAUKvXP4DOcvCjLgEevEmsoXs15VSQJzMd8AdVc8xg2pmMe
- Z49Ac8eV
- FZMP1pTI5PgLL2+MRsLEBRPuuzWMkWAVClvhheCB794+w5uAqUc+elVoLXJpXB6dFKtXyneMw+uL6WKMz7ueON4PGaZrWhZjQXhRURBsX35Tf9w+TxpSVqtozgDSVq35Tnu8P/JkAVQmwayUsU97bRAqMuQ0QbI3ake7RfGcAaETbiH+Jri0xSxOL/7gv6uijMUwTEs2Boqn5CgWfoWYLEzv1WEByrpX409rMfmQuW3gX/Gc0qakqzT93jB61GoUiPQQRt3oZmgrfAPNWF+m+OdPYtmKhQPaN/TMLPp7rzh+yG9cR536/JJlDLWZtTrNK3LOWFPV34gzTT9BYg/jSjGGkQ0vWGRv4LuTWQswnUeon5lbbQdhnedmnSAiYFQqpiodIUF9cSod9X3jkB7SZjj4/EHuvqbaFygo5bJ0SPLpJF8vnocdJ9f2mWQm/6qUq6QnVa26WeDeXUPFVAQyc/WXAp8Mzf6XqwQcT3wU/pflaGOv9c4zDt41YvTVMfmNUK93/7GuRQ0sdvCjCJLNwqfyxeofWIT82EzQtp2Mu+WfUg3PfwpMEiipv9o+Tlz6QltcQG5NoOLWDGCgB4dkm/Uy/FrsLuJOoGwc/CsijIQHmxOOnbnHo1h4DvLiu9i/Swys0aNyy3mM9PoOPLpUcq1hgMFVNbRtZya9eyvz4z7XoI5Ae5ufg1kU8vSgPMfrfjichCR0io6iOrrqQrLxbdqBT4OcP3fRsc3RWJZ2WgbyFdGCdQJQPtZ8eZg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ACB281C0009
+X-Rspam-User:
+X-Stat-Signature: hs4sewm6bkrpxp7eg68d4tfu43txweog
+X-HE-Tag: 1795127925-235159
+X-HE-Meta: U2FsdGVkX18mKThdjgmMi4NxG99n9KHRr5cX4WFMFYZdTTu9gFiAFYDxABsNKekEL4CNRz0z+z8cRYbiH19T2kmS3vEJnVlOL6zXl6R0uDX6vVtkCrYAiq9mGNcWX/u1RaQbN3SIzZueny2e+XZx4b5I7OJkdRS59BYdeELCKySYWFc5odZqlbRGyc+Lh3Uu5UAyf1My7pUBfKbXPSiierfVZX/7gYOeiE7kQPE+LYz/jxGC9y7FRJHyIB0HHM8hVJJOhUozkkrgyBNRLz9V4cSJt7K/bInmZOKwNL6YdoredwSqOzzn4XFYKWKbLkYgOHYrydQCIkEJDaek9nAmFmeZUZFw1lleQPYbiKmReeSPJMYYebBet1K54valXlssl1s2I6uep3bHs3UXtPpDuPwWBiejhfnoZSbftxchAL79qPu+rwD6h/ZwP3dWOt3xiqwA8zbQnYeMb2YcEiSM9ktm57U0d2VoOC7Qeof/fXFHgcbFze8BG8gPywhOkgYMteH2x5lM83uWuCyzRHSrQa20Rp9svoodYk7EKIVYAxY4THuAkZtIbpJQQr/GEaQt2My43/A98eU7/K0nknwHa6svIUOY4YOwVSDiacxCA+e4pe1Ym6eAt5Cx/1gxknTVHQqqKNBRym40oKga6dfxe7m9A+iGJYFPQkyNh8MyfqnxQOLNT2ur8A9oXB3LKI8S2SolwFf8jk8Ny66qV1X0upNI5IK1KC5k2UQinSiJnr4vCEtKQdM2G669X2+DYlaOJr5IDt1XRBpJp9KTDnEuF8bn8yC+65k7VNSY90WVk0oE4rfWYelhDCKPv83ODwjceKY0fm1EmQ3qkr7wRyHdd0CbGfFHcPhZ+jUT3QIfgK6q9d5H/RLCb+s7j4jTCopeWuwqx8TLvv3Fbx29cLwK1serDpv1SyVFSGWX0nLO5eZlYgP/bkIPTbeWe6p0FE7SqqmqB2rDrvP0OlxAqAS
+ vSGJYcNu
+ 5abKBud+hMUqGen+8LfecENvKUEbCkGD9kMJd9KCCg54wg1thNr9+IcE25Wi6/vbXfyCWtBX5aFjV6x7ImMnSYjYZVQAiNOmTcijSdr+LGIqbnmpBrUdovn2HjOpt1uyBLSlhCuDoLM1bkUFDHhQkgd80fesnNFaIY/cHqH03KjbZoEqdjNKAjNsVcqmadb9BhvP4JGaJvSiFBD/sda6fRTIyYYTkNVJlRrGciE440mEJgD7Zr4ufEQRw20+PFc2jkiYWZFqkiLmaCNOiJlHayyyNJvjUTD4Fc6zycQ3b6+IwC28vhqZKS1SgNzyyir4mvxamg+QEFKrYFVfWQXHNzzvfrVnJwFXafF/tDGGP4uQo0ZnewTA91h2y/c/IFRxaCHJNfDI1+y+gdSub5+oUQGshWrq0/yttKB5YbfnKMrBCCty50lwSRoz4RB8//Z6HcOen3NcPE/w9QEElLMGVkPOpC89088RLECtN9zA4M2xOsuAng8Qup9A7+uzQHP6aJlYt2/POSjzDsnhSQ1tAD31q7NGyaS6id56jESMQyUoC+KN3dCO8PITfQxww2oUDKClbO2EmJtp11XQv36RkcOrFJFugo601m5s2TWBgHqXoGqFYQ1tTGFddryODMDfszxdtxg4g1j1lfchShGXgMvJZToJSaXemQ+duYwpGC+UmdJDq3UpL+bQwTkJAnZCs2TKN/VOREHLClrNGQhy3ngA8F9nWNo77jJ0UL0JYX0v97v4+TaYz2tla8s6TlibA0uTJGhTuX/uijG0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,66 +107,67 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] PCI: liveupdate: stale ARI state in pci_configure_ari() with
-  pci=3Dnoari
+- [High] pci: liveupdate: panic on session teardown after
+  pci_liveupdate_freeze()
 --
 
-commit ee2b5e1cebde3231a1c9acaaf68c272dbf3c6e8e
+commit a3120ec70b92ea26f3e1d92d3bd0d1531b5a73b6
 Author: David Matlack <dmatlack@google.com>
 
-PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
+PCI: liveupdate: Freeze preservation status during shutdown
 
-This commit adopts the ARI Forwarding Enable bit from hardware on
-incoming-preserved bridges during a Live Update, even when pci=3Dnoari is
-passed on the kernel command line.
+This commit freezes a PCI device's outgoing live update preservation
+status in pci_device_shutdown() so that devices cannot be preserved or
+unpreserved once shutdown begins.
 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index ebc565b4780a1..b5b578355a1b6 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -3748,7 +3748,7 @@ void pci_configure_ari(struct pci_dev *dev)
->  	u32 cap;
->  	struct pci_dev *bridge;
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index a45ad86370d5d..e26d2f5c2338c 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+
+[ ... ]
+
+> @@ -520,6 +523,11 @@ static int pci_liveupdate_unpreserve_device(struct p=
+ci_flb_outgoing *outgoing,
+>  {
+>  	struct pci_dev_ser *dev_ser =3D dev->liveupdate.outgoing;
 > =20
-> -	if (pcie_ari_disabled || !pci_is_pcie(dev) || dev->devfn)
-> +	if (!pci_is_pcie(dev) || dev->devfn)
->  		return;
-> =20
->  	bridge =3D dev->bus->self;
-> @@ -3759,6 +3759,12 @@ void pci_configure_ari(struct pci_dev *dev)
->  	if (!(cap & PCI_EXP_DEVCAP2_ARI))
->  		return;
-> =20
-> +	if (!pci_liveupdate_adopt_ari(bridge))
-> +		return;
-> +
-> +	if (pcie_ari_disabled)
-> +		return;
-> +
->  	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ARI)) {
->  		pcie_capability_set_word(bridge, PCI_EXP_DEVCTL2,
->  					 PCI_EXP_DEVCTL2_ARI);
+> +	if (dev->liveupdate.frozen) {
+> +		pci_warn(dev, "Cannot unpreserve device after it is frozen!\n");
+> +		return -EINVAL;
+> +	}
 
-[Severity: Medium]
-Does returning early on pcie_ari_disabled leave PCI_EXP_DEVCTL2_ARI and
-bridge->ari_enabled set to 1 if a new device is hot-plugged after the
-preserved devices below the bridge have finished Live Update?
+[Severity: High]
+Can rejecting pci_liveupdate_unpreserve_device() on a frozen device trigger=
+ a
+panic in pci_check_all_devices_released() when a Live Update session is
+closed during a non-kexec shutdown?
 
-When booting with pci=3Dnoari, pci_liveupdate_adopt_ari() sets
-bridge->ari_enabled =3D 1 while bridge->liveupdate.incoming is set.  Once
-the preserved devices finish Live Update and bridge->liveupdate.incoming
-is cleared, hot-plugging or rescanning a non-ARI multi-function device
-below the bridge causes pci_liveupdate_adopt_ari() to return -EINVAL and
-pci_configure_ari() to return at pcie_ari_disabled without reaching the
-else branch that clears PCI_EXP_DEVCTL2_ARI and bridge->ari_enabled.
-Because bridge->ari_enabled stays 1, next_fn() calls next_ari_fn(), which
-returns -ENODEV and skips enumerating functions 1..7 on the new device.
+Unlike kernel_kexec(), which calls liveupdate_reboot() to serialize sessions
+before device_shutdown(), non-kexec shutdown paths (kernel_restart(),
+kernel_halt(), and kernel_power_off()) call device_shutdown() ->
+pci_device_shutdown() -> pci_liveupdate_freeze() without serializing Live
+Update sessions.
 
-Checking !pcie_ari_disabled alongside pci_find_ext_capability(dev,
-PCI_EXT_CAP_ID_ARI) instead of returning early would allow the else branch
-to clear PCI_EXP_DEVCTL2_ARI and bridge->ari_enabled.
+If a task closes an open session FD with a preserved PCI device during or
+after pci_device_shutdown(), luo_file_unpreserve_files() invokes the file
+handler's .unpreserve() callback and then unconditionally drops the outgoing
+FLB reference:
+
+kernel/liveupdate/luo_file.c:luo_file_unpreserve_files() {
+    ...
+		luo_file->fh->ops->unpreserve(&args);
+		luo_flb_file_unpreserve(luo_file->fh);
+    ...
+}
+
+Because dev->liveupdate.frozen is set, pci_liveupdate_unpreserve_device()
+returns -EINVAL without decrementing dev_ser->refcount or
+outgoing->ser->nr_devices.  When luo_flb_file_unpreserve() drops the final
+FLB reference, pci_flb_unpreserve() calls pci_check_all_devices_released(),
+which panics because outgoing->ser->nr_devices is still non-zero.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118223704.3286=
-085-1-dmatlack@google.com?part=3D10
+085-1-dmatlack@google.com?part=3D11
 
