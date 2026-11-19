@@ -1,107 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70C260A261B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886F9606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=MjoeKzAj
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=neDjzNmX
 Received: by kanga.kvack.org (Postfix)
-	id B91E06B05EC; Thu, 19 Nov 2026 04:23:56 -0500 (EST)
+	id 9E36D6B05B6; Thu, 19 Nov 2026 04:24:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B43CB6B05ED; Thu, 19 Nov 2026 04:23:56 -0500 (EST)
+	id 9975F6B05CE; Thu, 19 Nov 2026 04:24:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A59E56B05EE; Thu, 19 Nov 2026 04:23:56 -0500 (EST)
+	id 8ACF56B05EE; Thu, 19 Nov 2026 04:24:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 80DDD6B05EC
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:23:56 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 113341409B2
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:23:56 +0000 (UTC)
-X-FDA: 85451331672.13.4BAA2D6
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BA34240007
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:23:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=MjoeKzAj;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 674A76B05B6
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:24:55 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C36F68099C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:24:54 +0000 (UTC)
+X-FDA: 85451334108.01.8E32651
+Received: from mta1.migadu.com (out-91.mta1.migadu.com [95.215.58.91])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7E58E40006
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:24:52 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=neDjzNmX;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795080293;
+	b=6CRISYy6VkylCvz5wufonBVfYkUysExIxvvmCeZW7/hsfiwLQpgax+XEp1fUVkmfA2j6vZ
+	86fi8hIau0+qiLlEBLiJLjrhOwMRn1AwTB1kqxHpUjMcQZAqMx2z+53px2m3LyACva0+bh
+	QCbeU/PosCUuXOh3bW+ryQums+aLcTk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795080234;
+	s=arc-20220608; t=1795080293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8BbZkq+DmyFDYud+in+NzZnjvISsdRt+bXMusCvgfHk=;
-	b=o4V2bY2AqxZ2flNfN7pNzkolZHfyQgQjQl8R+QY+sg7Z4tqdTNpq3JtkYmWxIH017IamIn
-	XHmyrSSsxjNJTMLXh8KPWgtUTKvUcrr3dFbBS+9ldByrsumetfrsnxx8xnqbv4ZfkEMXDN
-	NTEn2yTxFcEZUHUElmjRp3ItWj+ONYA=
+	bh=cCe8wn7rXIQDY9mJX+i674ZbYVhG3egsT2+B2uCc1sQ=;
+	b=1AI1RAAa6oYHoo0zG408Bd6Q314DXwBUDMTjSlKUJxboh7XDY6gasAq/ppnEdQA8pEggZb
+	zEaBjwr1bbge43MzVWMfGbvUtej9Em2jeHhVTCCichxrhmyMvgCuagVLYlJeAdK3EcFx9l
+	B8JPYcR7QM3fVnvl9Qu84doiJWu+eM0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=MjoeKzAj;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795080234;
-	b=h53N/sYL++vSOg8ZGmKQ0YVxHyKW39LLBCgognl4xLkV8bpIOO8fQbF3ZKbXOobztv/ChN
-	oo39EqLme9YXBl0p5gfW+QSmHNFNtm5tDuYkQKMxkyR3sCYUSI1LjcQQ3/FqxoXUgAs8Fy
-	QlSFSEHrN6SgeWuWNxx5hBEe/0BPkS0=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=8BbZkq+DmyFDYud+in+NzZnjvISsdRt+bXMusCvgfHk=;
-	b=MjoeKzAjt6NTNI1C8Hfiliqm/LHebpFMg2BTpiBkAuHBOlFsqKLJDpaAYAhOv2sEa/6eTnntA
-	opOGiCj4OVATWyDQX8KPLumcQHGY0SdCrGDSzy9I91p9fY70O5JUgs87YGWgas16Gql9Ub8pAgb
-	5E23jIqpglwcGzZ79aTvDbY=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jVY183phdz1cyQ2;
-	Thu, 19 Nov 2026 17:23:24 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 03ABA40586;
-	Thu, 19 Nov 2026 17:23:45 +0800 (CST)
-Received: from [10.173.125.21] (10.173.125.21) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 19 Nov 2026 17:23:42 +0800
-Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
- !copy_mc fallbacks
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>
-CC: "Huang, Ying" <ying.huang@linux.alibaba.com>, Kaitao Cheng
-	<kaitao.cheng@linux.dev>, "Garg, Shivank" <shivankg@amd.com>,
-	<vbabka@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<nao.horiguchi@gmail.com>, <ziy@nvidia.com>, <wangkefeng.wang@huawei.com>,
-	<tujinjiang@huawei.com>, <mgorman@techsingularity.net>,
-	<chengkaitao@kylinos.cn>, <muchun.song@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
-	<david@kernel.org>
-References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <6536c6f9-4cab-9f64-53fc-897f3bd9c9a8@huawei.com>
-Date: Thu, 19 Nov 2026 17:23:41 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=neDjzNmX;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=W345cDTFz+dZOqJx8GXphTmXARBFaFLNDZgCFqVrQDM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795080290; v=1; x=1795685090;
+ b=neDjzNmX2peKmf/8HN4GiVI/3CxB8kAj/le4Idy95zMywuRzUZyHIN/Sd9w7qNxNP0Qj+0Mk
+ dqvQWJFf5KKSGBSAMLxab5um+mWcWyTNHUPjEKdyLncg3LHPou+woAkExgVKOkNioxrO8ix7Btg
+ oneC8aLpIbuIGa8mWympZNf4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 54021951ad124a27;
+	Thu, 19 Nov 2026 09:24:50 +0000
+X-Mizu-Trace-ID: 54021951ad124a27
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 19 Nov 2026 17:24:43 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org,
+	kasong@tencent.com, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: Re: [PATCH v3 2/4] mm/mglru: add PUD-level Bloom filter state and
+ generic helpers
+Message-ID: <av7AW0kaJTUnucuC@fedora>
+References: <20261113084953.412919-1-baoquan.he@linux.dev>
+ <20261113084953.412919-3-baoquan.he@linux.dev>
+ <avq-hc6E4Urpf6x4@KASONG-MC4>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Stat-Signature: rmgwmtxboyct1rqopmn8cdu6kdbuo91e
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avq-hc6E4Urpf6x4@KASONG-MC4>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7E58E40006
+X-Rspam-User:
+X-Stat-Signature: fyqzajnjq7m9j8h79feeoymr8mwud3jo
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BA34240007
-X-HE-Tag: 1795080232-165575
-X-HE-Meta: U2FsdGVkX1/nT0AkOhhMczQ3DW3TzxfaCS1iZLqgzQZjO7xL6lZJG0wVxN3efX6sP519rXjBxsk1+6xDQ6/BVvXkRJvXuq2qujLwxD82kv25ktIX/0pBfPXiTOieMbjjrCuva3D7LbQloRzC5sOhHBvDwIO+QT+dzKUYViZe9CuVOvktCKcs+1ulpxQ7jwZNlj8rIWk9QHJiaRYarKmTWiHa5f1fwV+FwspIRbjXER/xC2Q8qSVH1/kG6Wu/BG0A9T+jWz75JUp3010rr0CY2LyOhv1ljy7vyV1MKHG+bwvUZn5+DxeywwsUrHY+lxYKqTG56fVLoaNk0F/2/WjkjAuOGyvkriMdmrMGNYsJZ+kCwa6yJCIgZU5hd2dVkIHU+q9uSwg4okJB6po4TBCkAhk7gfSmMfd0gomF4ISxdGnmFQ7CdmA4seZjyL42aNTmZWQzdFWQGOXbaZp85LZvUEfv0+mqAX9m/a8pyLP3QrwEjrJVu9xGJeEiSYK23uy6xS33FZ0uFZ9a/M0RjiSujnmK2In9bOCaFTa6kbcRn2FF0wn47SN/qqHlayOcn9lVhlP+ajG3vm2hxUCVtc1YqeRlrh+sB7mPUue2MPRBptZPBMEVJw3xVC2KCTvSUACVWdKnt1Vot/uvhZ0qT1TUb3tS6TkUUzZvHa77+h3SwfqraQ4gS1LKruC1Qle0r9fSBNZRPp3kRVQ6HvCPPlS36i2YO8Jp2uaANWj/L+ftgt/PjaRbzuMTEa+PwGdjs7ccv1R9JstiFLlAo6pqMIu5q7va853A4coRPSK5SYwjuDgsh7d8HhHInDaQPGsFqiq+oWxqGnou5GYij27OL86YV6LbNtFs0jex2QJnmyyUgoyXd9Bf4o0XS11LDcL0rURIxQP9bfYTloRvpmTp2uIJLhgztrltfjfX8vkVPJVRziIZu0krhyVqXzdEkz89hdFpb9Viu9PmOtDsh/1bU9t
- l5i2OSzI
- oSXJRrwKTysih7OtYOOZuKY5rOg1PIIMM9b6LK/d13eItx2vDvbmCmyYeX+6BKd/hDViv+q8ck+0xT6JLrd5h2XUSGRcwcwSuz5Xx8oF0ZHLGvS+O9MoOnCYDqtpd+F59Plj3yW7RIGzQ4lPVUwkxryhMWMFUQo5G7ZQaJnqJ5cD2W4xvGTfY7vOWf/N5EpTYZO2kfbM1GBDMih34b50MI0TdsYnjf67deJz7v8o9Qhz7/9JN2rV1HA54HFqzcTJhNaLZNDfoIPMdy8XTbTyF3V1zOIlGEYcpFmyW4BfdGtS8eivtutL7orpenDbB5MZmfrhIIUPu2wyHZKYILa3DQ41+ObK3h/6witLlueUfKOgz6IXUjKMaZH9sjU/WSi/Oksy78wTofFSVOx3oRl+ApLhVxM5VJqXlfXML/f/zISw5PLtQSzgk1zwoEe8ywiKi3n+Oh2fBY7cukgHpENt9mRNQ4oRO5ICwGkWRNqGPPDESsi4=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795080292-986040
+X-HE-Meta: U2FsdGVkX18a3X0KMbIn9TKtKmHJZsv3NGqsaxKQDoPv9pjBXtHvWbv8ujHX1nWj3R21gvD5xptxJraFNrgk1pZthWl9WDbHPk6VmQHgvDqizdMMCDdx6GQU8gRG6KMaioB/WrLzgGsOglviFPznIZKY3UmULl2G9DFYf5GBOIp/axjwWIXU3tJOOrVPw1L2WaxZGDdnZMaDFpj/yh/zcJKN0ClqhpO+0qmXXUWjCfeMdg6MG1eyhGJdsarRQLn9/hA+PFjn3/aYQyK1oiWfhgg41zp3rhDqM3E+0SNiGAZJqv3CAGQaPu7AYw3CRQJIiOF4c1sHcAkxQi5FqlH/JCpYQPtme37/IyQMt2bDUYYhEHunO6BDx/9tDZvevHDAC9S2UgdAGGdZIaHYBVJK/a494f5VDf+ec50QffZMNXVDhyukZYoXiXzLn5S3pNL8/BUkXXfhMMwtwI3yPxzSco8DfMzl1TKq7gIRa7hPbRhjAtFe2W2bSWl+9Zu82gud1H43wAgJMiUeYwKKO3USQnpsL7EzADgQiGNEcrkADJLkNXfHgZiKSX6esE96QtBOBeMRS0dS1NnV9YIvfGYAo2sHrxt8TeeaIxA9U0jBGn2V8M/AZI6uL4arSfDUYM08IM+hU7vNsY3tg5PKPoD5xNY4EyVqVfcO7pDdJCdDWnD0aD09JXPwZ8ViXHU7i7E6mFYUODZKFpm3+Uybf7VrZB4DNtt5Zent7glIbJKc7jRNsXw7/keLgqM5aIMWBIbT9s97IGNtOJRdMHqzuigaIEXZn35pGLvW7Abb5My0euRe9NUYTQpeeUssduZM9U9Pdju4s64weyXkHgJwfGA3UA6V/9q9BQRM8bqlPtdlR6WpL0g2IbHvJI/CAyxK/kxZOgVQQZD45Icy8ocGsjPtiTU5nAL+DqJcvcEehYY+rdtClmKIAMYfuPmBgvNMgXzas9Ewj1pCggcRDttqjwn
+ bkpv2jt7
+ KHdPkZhwC4tLPNU/SeGCc7pc5k4wXs/cRRJwH+h3iJZgfqqdjf8HUVxTtwrXB2uSW7uCiOCpSloiuwstPNmftkCm7/9nSWtoR9K02lSFnFq1A/2yjY/ZsMtKpPs4hIvpL7hSMpccIjxOptC49mmcu2uxXD5gKsYHRzXToYWCLbQ+n3yZELs3s3PSNUDXl/zpQze95jonLaIZRU304mPTieJWeVfFjL+pgdlrQawkTxVly+R0NIy6QlyQQJx7vIPXC7c/42E1yCiymvJBqUusmwvMcdfN9bJrKAauvdGfgVUBnwIl84Q1GWTeKpLXg9QJA9KJx8YYkUqU47v06PWiH3wECB9EjNjrLwJxxzn7xOFf2UJCxos4MPMh+AMA2miunD2+3n/BYT6AEHB8+lNPH4Qk8v0W79GiPKIn1+v4kQgf/DzswEetnzcivC7ppbsCWcLExNzZpo+NlPDnTgYzJ01nzjqm3ZsqcgfOlTvmmwyseBOZ8UPrPTXwbOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,30 +98,229 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026/11/10 19:26, Yuanhe Shu wrote:
-> The !copy_mc fallbacks of copy_mc_user_highpage() and
-> copy_mc_highpage() return 0 after a plain copy.  With PG_hwpoison
-> set while the data stays readable, there is no fault to recover
-> from: the copy completes, the destination folio carries no poison
-> marker, and the poison is consumed silently.
+On 11/17/26 at 12:24am, Kairui Song wrote:
+> On Fri, Nov 13, 2026 at 04:49:51PM +0800, Baoquan He wrote:
+> > From: Baoquan He <hebaoquan@kylinos.cn>
+> > 
+> > Generalize the Bloom filter state and helpers so that another filter
+> > level can reuse the same hash, double-buffering and reset logic.
+> > 
+> > Replace the PMD-level filter array with a two-dimensional filters array
+> > indexed by level, and add BLOOM_FILTER_PUD and BLOOM_FILTER_PMD. The
+> > PUD-level filters operate at PUD granularity and generalize the
+> > suppression one level up: when all PMDs under a PUD fail the PMD-level
+> > filter, the whole PMD iteration can be skipped. Cross-node empty walks
+> > are the most visible case: a foreign mm's PUDs have no young entries for
+> > this lruvec, so the entire PMD iteration is pure waste.
+> > 
+> > The existing PMD-level code now goes through the generic
+> > test/update/reset_bloom_filter() helpers.
+> > 
+> > No behavior change yet; the PUD-level filters are populated and used by
+> > the next patch.
+> > 
+> > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+> > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
 > 
-> Check the source page with is_page_hwpoison() in both fallbacks,
-> before the copy, and return PAGE_SIZE, the not-copied-bytes
-> convention of the real copy_mc paths, so the callers take their
-> existing error paths.  On archs with copy_mc this code does not
-> compile.
+> ...
 > 
-> Measured on arm64, where the fallback code compiles: a
-> kernel-space microbenchmark measures 90.00 ns per copy before the
-> patch and 90.71 ns after, 0.8% of the copy itself.
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 98037a562ab6..9dbb3f477d7d 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -2798,6 +2798,10 @@ static bool __maybe_unused seq_is_valid(struct lruvec *lruvec)
+> >   * walk_pmd_range(); the eviction also report them when walking the rmap
+> >   * in lru_gen_look_around().
+> >   *
 > 
-> Suggested-by: "Huang, Ying" <ying.huang@linux.alibaba.com>
-> Suggested-by: Kaitao Cheng <kaitao.cheng@linux.dev>
-> Assisted-by: LLM
-> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+> Not a problem for this patch, but the comment above may want an update
+> in the next commit. This describes things only at the PMD level, while
+> the PUD level, the ~1/5 and ~1/2 FP figures still hold for (same m, k
+> and n). But the PMD false positive only causes a wasted PTE walk if
+> the PUD gate also passes, so the effective FP rate is weighted by
+> the PUD part too.  The PUD filter has its own FP, which is rarer but
+> costs a whole 1 GiB subtree, so maybe the 4 KiB bitmap for PUD
+> is not that obviously oversized (despite the PUD number are much
+> lower than PMD we are using same sized bitmaps).
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+OK, makes sense, will update.
 
-Thanks.
-.
+> 
+> > + * A second, coarser pair of filters sits one level up. The filters are
+> > + * indexed by level: BLOOM_FILTER_PMD for the PMD-level filters above, and
+> > + * BLOOM_FILTER_PUD for the PUD-level pair.
+> > + *
+> >   * For future optimizations:
+> >   * 1. It's not necessary to keep both filters all the time. The spare one can be
+> >   *    freed after the RCU grace period and reallocated if needed again.
+> 
+> Still not a problem but this optimization is more important now. We have a
+> extra 8KB peak overhead per lruvec if I did the math right, not too bad
+> as there won't be too many of them, even on large machines (memcg number
+> is currently hard limited to 64k and they are lazily allocated). But
+> worth mentioning and optimized later.
+
+Agree but don't worry, I have considered this and queued patch in my
+local branch. Will post them after this pud filter series.
+
+> 
+> > @@ -2823,14 +2827,13 @@ static void get_item_key(void *item, int *key)
+> >  	key[1] = hash >> BLOOM_FILTER_SHIFT;
+> >  }
+> >  
+> > -static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
+> > -			      void *item)
+> > +static bool __test_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
+> 
+> There is only one caller of this (test_bloom_filter), do we really
+> need the __ version?
+
+OK, will remove them.
+
+> 
+> >  {
+> >  	int key[2];
+> >  	unsigned long *filter;
+> >  	int gen = filter_gen_from_seq(seq);
+> >  
+> > -	filter = READ_ONCE(mm_state->filters[gen]);
+> > +	filter = READ_ONCE(filters[gen]);
+> >  	if (!filter)
+> >  		return true;
+> >  
+> > @@ -2839,14 +2842,13 @@ static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long s
+> >  	return test_bit(key[0], filter) && test_bit(key[1], filter);
+> >  }
+> >  
+> > -static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
+> > -				void *item)
+> > +static void __update_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
+> 
+> Also this one, only one caller, the __ intermediate layer seems unnecessary.
+
+Ditto.
+
+> 
+> >  {
+> >  	int key[2];
+> >  	unsigned long *filter;
+> >  	int gen = filter_gen_from_seq(seq);
+> >  
+> > -	filter = READ_ONCE(mm_state->filters[gen]);
+> > +	filter = READ_ONCE(filters[gen]);
+> >  	if (!filter)
+> >  		return;
+> >  
+> > @@ -2858,12 +2860,12 @@ static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
+> >  		set_bit(key[1], filter);
+> >  }
+> >  
+> > -static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
+> > +static void __reset_bloom_filter(unsigned long **filters, unsigned long seq)
+> >  {
+> >  	unsigned long *filter;
+> >  	int gen = filter_gen_from_seq(seq);
+> >  
+> > -	filter = mm_state->filters[gen];
+> > +	filter = filters[gen];
+> >  	if (filter) {
+> >  		bitmap_clear(filter, 0, BIT(BLOOM_FILTER_SHIFT));
+> >  		return;
+> > @@ -2871,7 +2873,25 @@ static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
+> >  
+> >  	filter = bitmap_zalloc(BIT(BLOOM_FILTER_SHIFT),
+> >  			       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
+> > -	WRITE_ONCE(mm_state->filters[gen], filter);
+> > +	WRITE_ONCE(filters[gen], filter);
+> > +}
+> > +
+> > +static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
+> > +			      unsigned long seq, void *item)
+> > +{
+> > +	return __test_bloom_filter(mm_state->filters[level], seq, item);
+> > +}
+> > +
+> > +static void update_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
+> > +				unsigned long seq, void *item)
+> > +{
+> > +	__update_bloom_filter(mm_state->filters[level], seq, item);
+> > +}
+> > +
+> > +static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
+> > +			       unsigned long seq)
+> > +{
+> > +	__reset_bloom_filter(mm_state->filters[level], seq);
+> >  }
+> >  
+> >  /******************************************************************************
+> > @@ -3114,7 +3134,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+> >  	spin_unlock(&mm_list->lock);
+> >  
+> >  	if (mm && first)
+> > -		reset_bloom_filter(mm_state, walk->seq + 1);
+> > +		reset_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1);
+> >  
+> >  	if (*iter)
+> >  		mmdrop(*iter);
+> > @@ -3771,7 +3791,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+> >  			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
+> >  		}
+> >  
+> > -		if (!walk->force_scan && !test_bloom_filter(mm_state, walk->seq, pmd + i))
+> > +		if (!walk->force_scan &&
+> > +		    !test_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq, pmd + i))
+> 
+> This looks nice.
+> 
+> >  			continue;
+> >  
+> >  		walk->mm_stats[MM_NONLEAF_FOUND]++;
+> > @@ -3782,7 +3803,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+> >  		walk->mm_stats[MM_NONLEAF_ADDED]++;
+> >  
+> >  		/* carry over to the next generation */
+> > -		update_bloom_filter(mm_state, walk->seq + 1, pmd + i);
+> > +		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i);
+> >  	}
+> >  
+> >  	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
+> > @@ -4417,8 +4438,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+> >  
+> >  	/* feedback from rmap walkers to page table walkers */
+> >  	if (mm_state && suitable_to_scan(i, young))
+> > -		update_bloom_filter(mm_state, READ_ONCE(lruvec->lrugen.max_seq),
+> > -				    pvmw->pmd);
+> > +		update_bloom_filter(mm_state, BLOOM_FILTER_PMD,
+> > +				    READ_ONCE(lruvec->lrugen.max_seq), pvmw->pmd);
+> >  
+> >  	mem_cgroup_put(memcg);
+> >  
+> > @@ -5981,6 +6002,7 @@ void lru_gen_init_memcg(struct mem_cgroup *memcg)
+> >  void lru_gen_exit_memcg(struct mem_cgroup *memcg)
+> >  {
+> >  	int i;
+> > +	int level;
+> >  	int nid;
+> >  	struct lru_gen_mm_list *mm_list = get_mm_list(memcg);
+> >  
+> > @@ -5998,9 +6020,11 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
+> >  		if (!mm_state)
+> >  			continue;
+> >  
+> > -		for (i = 0; i < NR_BLOOM_FILTERS; i++) {
+> > -			bitmap_free(mm_state->filters[i]);
+> > -			mm_state->filters[i] = NULL;
+> > +		for (level = 0; level < BLOOM_FILTER_LEVELS; level++) {
+> > +			for (i = 0; i < NR_BLOOM_FILTERS; i++) {
+> > +				bitmap_free(mm_state->filters[level][i]);
+> > +				mm_state->filters[level][i] = NULL;
+> > +			}
+> 
+> So just a few nit style and comment issue from me, rest looks good, thanks!
+> 
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+
+Thanks for careful reviewing and great suggestion.
+
+
 
