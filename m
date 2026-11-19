@@ -1,152 +1,173 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D73E60A2605
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 00:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CE7606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 00:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=jveJF1b7
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=K4Pn1zdY
 Received: by kanga.kvack.org (Postfix)
-	id 84B476B05FA; Wed, 18 Nov 2026 19:13:23 -0500 (EST)
+	id 744726B064A; Wed, 18 Nov 2026 19:19:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 822B26B065E; Wed, 18 Nov 2026 19:13:23 -0500 (EST)
+	id 6F5706B064B; Wed, 18 Nov 2026 19:19:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 710F86B060F; Wed, 18 Nov 2026 19:13:23 -0500 (EST)
+	id 5BD196B0660; Wed, 18 Nov 2026 19:19:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 475716B065E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:13:23 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C09EA808BF
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:13:22 +0000 (UTC)
-X-FDA: 85449944244.28.36EEB9B
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C4411C0008
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:13:20 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=jveJF1b7;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf22.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795047201;
-	b=yhuIxYZzXKrXpIUj4wC4l7+5DUJO7bDR0k7edX8gk09HwAYZKbEpMtblDOSXNbFhYJLL7o
-	NUn8sosQHJzncAOoOMhvMQRvb1102qF3AZcSXVYVXsW6o4o9Xxf/0Kzm3AWb7+QG/6/21P
-	zMAJA3KA6O3lTYz5IdAHlXE8z0OyFt8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795047201;
+	by kanga.kvack.org (Postfix) with ESMTP id 2AB8A6B064A
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:19:33 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B55CBA861C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:19:32 +0000 (UTC)
+X-FDA: 85449959784.09.A7CE1E0
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012027.outbound.protection.outlook.com [52.101.48.27])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AF03FA0004
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:19:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=K4Pn1zdY;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf25.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.48.27 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795047570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z+4T7HksHFh0HyOVyESymA8Z3DhRY0Y5VmPHJCOWPKw=;
-	b=xY7kDvAy2WLa4QjBEvZOugj+74M/kNWyxJrndsVTnbvUEP0vC61b0T/FSeaGAqBop0M9Ed
-	gtgd6B6h1TrTgF+vxAnQYHxRT9WM2Ed5Pl/o3SycRGYyDQfDuvDVNZW30W51UQsID1X9DC
-	bMnAFBWI7OR6IBeHVtuOHeKiqvDVdrI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=jveJF1b7;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf22.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-679aeeddc6bso1483927d50.2
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:13:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1795047200; x=1795652000; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Z+4T7HksHFh0HyOVyESymA8Z3DhRY0Y5VmPHJCOWPKw=;
-        b=jveJF1b7HYaLHgVNIq29s6mVxxCVXIQfWLiCkuh33P5mfRUPHXTV/i/W+FClw5iPNc
-         sOZO0riLpgTRyUT3vEkE2pu3jn8x7ZqI5Z5mIKHlqchTuXc/MrsZzvq0F78SoO2Tdqbc
-         9S/Iurlj5r26yNGIJNUqxjAgLT47jFB0wWcA5gV9dwPBDjvABFFlvuppgMOkgkIXhMwL
-         11ytRST4qnruODaFxISGjfU2ou1Vu31sJ66F7+0MFUYaAxDAFixZi4iIG/f0ROFwY9Gq
-         GZJFzOSv907ll8kuBS7DUkE7/V9Ebjnu2UnlTBJaag3S+M/DKi9zsf3Js8YtcV5c4WzJ
-         xN5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795047200; x=1795652000;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Z+4T7HksHFh0HyOVyESymA8Z3DhRY0Y5VmPHJCOWPKw=;
-        b=tm82O7q9FJmKzlW1RIOWgu7AUw4xfa3SJgzIs/pTR/JD+Jqkt2mWr25kvQAgHVMjQd
-         LAiHWG0ertpU9qCwNoVvQb0IEqUgpihik04XVcK53Or847qJwk0HRgokhfSSJA7txr0w
-         K6Q173LI4tNHyaMHdziOOec56lPdVwW+IJDVpnIBQCBoKX7/RnOroCvtbWeUb7Nskj/+
-         w/ZtKcPJXC5dHVAGLp9SntpfzMSLJGI1vo7ojHMPYC7UkJpeIf0U0Wq/nDYZphRSOSne
-         rrrsEYeQEK88VBmzF8hd2bF+VJxLBfnbMNQz99Hq6RY79NaHDf6Ptm0DGG/rLb8x2FSX
-         qxVw==
-X-Forwarded-Encrypted: i=1; AL+hErEw9MJNLE/wGQWNu4K5Jip9yIXEKZuepT2iF9G1zSYiXZME1PtMbVIVEVfnm5dsSYddmon7tKvZ1A==@kvack.org
-X-Gm-Message-State: APuU4Z+XNamShFBuv8dOYb0bIei2wrfSmcGRWg/DRGMnV2wb2urlg3at
-	4y+7vUnVwjqY8WnYgSZNMwiPRuU0mt8m3tChGA7N2ds8xcNDrBqtwi2qkYYOgYeiTx8=
-X-Gm-Gg: AZFdTZdDatXNmr1nRPk++zuPerrsKsrw5n9PuIhQggZ8uu64UixxqrMVZ/rfxLdzfyf
-	eaKoQn0iziVIkMWdvDEzJQLYRQ1UMsXaL6TbMsc0lAQsjZ4PC53Fmp4DfxbEKAr4xTOy1q8Jq+x
-	w4QLrjmE0fW2vS94nbLyHnFy13Ur2hUf90DDfkRN1zWw0lleKp2ZePOkr7bz+ATFpsNnINngnFN
-	tSWza5kYf5CM0jYprFUIdEoPGHNibqXtR6Tz45wDnPsKvxfNW7t8SF/ZMnAl64BvE/5XuVDPdH0
-	wL7u5OvF30ppKfdeD/EQajHBaNrG43zfYtuWPH8OV7zGQT5v2CcuEHDQ/nnQaYuSle8zeicE+L8
-	8Aelon4I2TC+H3gi6vKbfr47DE8pv4QHr7tb4jIorxEv15PMOSu1TtM6ubmrlIagCtIG9Ac2od8
-	1bmKxwRTzCkg/PbfN2XKC3B+LqU8lL4qVAHOgxShrfPUdp/XXlUm9fyEOO0rqasYOfyg7HD9G4S
-	JPZIx5atObWV+na9hy3yXEKB1Oco6B6JgoXAbDFoKpQQ2QLXYFYasr4rgXIgIaF9kZrZNU1UnH5
-	vdfQU7egq3viscVjpIC8sb6NZp7d
-X-Received: by 2002:a53:d005:0:b0:67c:6e1b:84d2 with SMTP id 956f58d0204a3-67dd460a10amr1474859d50.101.1795047199791;
-        Wed, 18 Nov 2026 16:13:19 -0800 (PST)
-Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67dd5843177sm2483921d50.5.2026.11.18.16.13.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 16:13:19 -0800 (PST)
-Date: Wed, 18 Nov 2026 19:13:18 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Cenk =?utf-8?Q?Y=C4=B1lmaz?= <cenk@deepfinresearch.com>,
-	Zhang Peng <zippermonkey@icloud.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>, Mel Gorman <mgorman@suse.de>,
-	Sasha Levin <sasha.levin@oracle.com>,
-	Rik van Riel <riel@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm/vmscan: flush deferred writable TLB entries
- before unlocking the folio
-Message-ID: <av4_Hkq1kNQUyIeI@cmpxchg.org>
-References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
- <20261118-file_folio_flush-v1-2-e9e739ed14e0@kernel.org>
+	bh=b2iWOMkOOrJXcXP48QdCvlsxKBp7T1cxHopv55FZL9Q=;
+	b=zfyD5IpOPahHlKa1DuC5yWxdk8h7Ro32d31Dte0T4dux8drJr+z0rKd4NoNQkyUZyrAk8N
+	/IryQDdaCu/oFwiBUvMg4SnOCFPt51VHTA3VUSPJphrRWbGnvaB7qLQCSU06sPwnO8XS69
+	KReSYV7B03LspNZ/aNcLx8tQKjQtj/Y=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=K4Pn1zdY;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf25.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.48.27 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795047570;
+	b=aFbbOd9vEjGm9xqz50kiXdt3MDDQYPbY6Fx8yAmutiMQRnuf30jF66Iie72evaxFJGm2Jf
+	qJ3olhBtXiL2A9HEoB6qeYMt1lPa/Z9J/WJh6RvW/ve+ojpuH1xsMOwbXgrUkoBpNMtS8/
+	gL9s937G2s6a/DNhTNKtxU2yj5PxOGg=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TCqV+bOxL72uLEyqU8dNfQpfuqoyPssagyUCijMUSNSCZreFh+FLITIKUCu3aod9b1yaR0si2s611MveN2G9OkDcGIHZIgnzmsG/uNYw8NHFFDi5UYlBIehYCQQqi/l1PIgPDIp7u9HJhz1tkk2UH7/qHMLAI+Y7Hmdc0qlqarO6NEmveDs34NM5EBTXRy05R+jI7XMW0wGAAtb8BKzQ7/sRGsqmhl5si1fowdhYfOSwXGycQOJEItZ4DzvR97+QmjRc4fnKZhrApzm+UdIKJI2LiZaEJSbbWSJjntDOzs8iGWQHP2AUhTsvcDQ++mlD13Lx3x4Jcnqx++gx/HAR2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b2iWOMkOOrJXcXP48QdCvlsxKBp7T1cxHopv55FZL9Q=;
+ b=aYjvnN4i8UTF9s7BzxTM/a5DMqKBI9DCoj8tfQjYveUYZOj3cGS8+JQx9w3iYSsppTdFP6g6I7iJnXwiAYHD/zBC0LKQ62rc203KdxACXzDZZ9jLO7Aj9t5DzNK03UuUq17/717HX3UD9olrFqU3WMcykCzIIvN2/SQtw4R+65vwC6qBi/Aslh1jctylJF/DDECpVqO3q7T2J7WL6Cl9oo7LKgiYdxW37bmJOG/LLRlpdTrn5m+juZOCEklLj6VRatGwtBCUb770oCLAKTngKCpQk5TBQ3A5YzJ/C8VjQuBh8cL+0dIaFWVp18EtWIwe0iLEHG/vQG5nFDX/nje8ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b2iWOMkOOrJXcXP48QdCvlsxKBp7T1cxHopv55FZL9Q=;
+ b=K4Pn1zdYZKw19eFlkAbLmNyQOEtZt9b8s2xl3l6ZkWvGYIWBY7Pj9oZZ3JDc8GvfMCLEEHeIKC8IHTRI2RjKRbD+hHUdc6Nd3jKskYBCYfRLCi30sKRn2cpv0VKLWbVNbwb40Xs/3AjYfJbqS1vTPKcI168/IN8ZzGUV+1Hs8Y8oi3cZ5qVFquKpFNUUtSPWdnlLYS0aLM8P9rmi9nqtGAATNrwqKzs0An8ZOk2sXaA+PCkAW4XPSlsh0TsZWenJ61c0Fid/gHJO7Xd0ZVEmkLLFNdgMy5rADVoG+KEdiEVdUVoQUwUsjNzTkUBsysWaYWFJioM2XByM59xlfxMmQw==
+Received: from SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7)
+ by PH7PR12MB5687.namprd12.prod.outlook.com (2603:10b6:510:13e::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Thu, 19 Nov
+ 2026 00:19:23 +0000
+Received: from SA1PR12MB5614.namprd12.prod.outlook.com
+ ([fe80::1a0c:e9e8:f3a5:d9d6]) by SA1PR12MB5614.namprd12.prod.outlook.com
+ ([fe80::1a0c:e9e8:f3a5:d9d6%6]) with mapi id 15.21.0615.013; Thu, 19 Nov 2026
+ 00:19:23 +0000
+Message-ID: <41616012-6526-4350-b348-96d2c4946a7c@nvidia.com>
+Date: Wed, 18 Nov 2026 16:19:21 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] gup: introduce folio-range interface for pinning
+ user memory
+To: Swarna Prabhu <sw.prabhu6@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, jgg@ziepe.ca, viro@zeniv.linux.org.uk
+Cc: linux-mm@kvack.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dave@stgolabs.net, riel@surriel.com,
+ yeoreum.yun@arm.com, hch@lst.de, Swarna Prabhu <s.prabhu@samsung.com>
+References: <20261118213458.377258-1-sw.prabhu6@gmail.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20261118213458.377258-1-sw.prabhu6@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0271.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::6) To SA1PR12MB5614.namprd12.prod.outlook.com
+ (2603:10b6:806:228::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261118-file_folio_flush-v1-2-e9e739ed14e0@kernel.org>
-X-Rspam-User:
-X-Rspamd-Server: rspam07
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C4411C0008
-X-Stat-Signature: gp3waiexy47i5ds3w9pctcdfx1ypix5p
-X-HE-Tag: 1795047200-892601
-X-HE-Meta: U2FsdGVkX1/UNGJb2YFZ8BPBcxaL0HN2MZiY/kgjc2EOal7oIJ+SzxECAQlizc++ULHoqJwhcn2qLo+SD/q2tmciJt3PG4KgG0VqMUFMPoSNcnLezs2VawFWMTD+RuxrZJqSJ6mnaShJO7KG3f5lTAKvFhdV8IgdWZro3jiCRYa6HJPbpq3isWzcr8WqQ1+CmlBa7G+SbCKDgtf8tnc+cBvP8nxTmHKQxDExqQz7ZjI2XY5qn6bKTHxCpyy5dNZ6ARlqLC+EENYyEtmU30XfGzOF8LRwK5h2DchdE3s+h1e0BIsjVPTJje4X1OqW+/Kfa4fUiF2q3lASEPzOhoD4Jr+8fAjR/M4pMVSoeth+WnPxyUjfDiUeFGovdwvvBkFryu0AW9nHSs8brqxOYnwBlSA4gPvJzSKV0d+wOZT+QbmeKqR4oAoA3wB+ggw37kmPw0b3VmiEom9cYRFCIvj4oO2fiUJORx2c8kd3YUUYF0MbRTuG5c2jszrpR1OqP9/oIf4J/q8lkmAAvQWMxtpCrUUl0s4AQzEplyvV16qySgMOBIwVw3SE8AgNq0EBrYXuNljL48Gfj5ZEGrWpXOx16+sXlkj4KRz1+Gk1ivMQLofAS1UxdkA5YckE+LBnBZXNuisDOF3DFqr2bL4JrERPwtgspbEqV5thPRJvyXBvI47BZMMoVs/xqS2fryirx9V1JZ+tJ6GSzfkVfMOAXtUPaGRFcsalUL2QpEeqWhVoTY29Dj2tE2SlaSRJpA3CIS2uXqBmc0no5HhXRsf78j4pTjQYpyu9TlTC1nNAoE9AxJOsaqDdRZeO7Dpj35oOXBFyp/t+DJvuIjjxp1nmCnHXe2SEv/MQvdGLhbqHfACJLox7bIt3+fSF+V7yANvrtx+tN4gilna7A2ynZMqrIxa/0/9yYDxItBCkjHzDCf8c97WGbQU6WbCJF687z/8U/U8ryuTM0EpoXkVkdtuF0eu
- eAkgROsa
- kUaXrvjg/xtU42MtQgQsEHaNPm4KAbx4VjifgS44YsNfhSn5cW5JT/VdboI48RdbQ64e4dQVTyrM4tq7lfRZ1t+h1RaAAH2ekURVGgsAoXrlpBQs8HEfax7lh8uKUoTnk3MVcaRZiIQF9iLKoFvAJw2fIRAnLowuyu4m960Ej0Hg4mRgiPyWYL6+58XgkrIGaqg05L+2OvdUnQQGekOzmEEfLwY3LvjViSNS7RZPZ7H4R9Rx78+mPFGys0jnLXudkAiIKOFnjOfS/d+CMkRPvj+WWz4Sxnx2c9IGiZ8dc2MRwx3d9ncQNNlCCta8gKopzcbB/tB/PMwSy+s5m4jJwKJNKT8wuDuFWbv9BTBMTaMsMG/paBHKlvyaDCj+R1S3Z6y3zQ+QQmUePPk9A7d1Bi3ABDv7oKfyLUEai+CffeUQLRBH2KJF6XOiwzAmxoVV9ZWH2Ll7lxBWMX48ztwSaxoB/E01F4UKXMpUqr6aczw5D+KpLptcjhA/8o5nUp1HXgTfNZ4z1eiHdtTakxmx54Zq0msJspcl+Lma1dNYw3HEqObOFS/xFFsvIv48FYkBQIHIVsMG/NlDY2KPU2M4KujPmHSQ6QJu7isQP8Upo3CmgzKa7OyP5W6PLlwnkm2tOUtmeVLEFxSugL4dTEUUrw7izLyWT1ne5s87a7WbgOavlD/M=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB5614:EE_|PH7PR12MB5687:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54b4a242-f9fa-41f2-de2a-08df45d2c32d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|261022113327099003|261022075727099003|261021123027099003|260925021311599003|260925022911599003|11063799006|260925021911599003|56012099006|261026140227099003|10067099003|261028144727099003|261021121427099003|261022105027099003|261026121527099003|261102123227099003|261009223027099003|22082099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	uEo4sqyKcmBf673s7hQRLOQC3DWHVOS0GuIsT3Rs4N3zQ+xPlXeDg6FODH5PkeZEE30W7b63FjEUZg169EAK+RRhddrSMWR4ON6rISK0vA9A6Nr3KEDRgC/YRyV3qRextRyMNdQOYPtJG/Tn4RTU+WLIJ5FNbv26JlBByWmsydzo4p63QwSEuPJ+jA4s4gX52TIj6C8C+aeKNP2rnOOb3n1xEXVsKFW36o5dIpnR7R4MR1Om2mgAc+ssGGeVjJHCgQ3NRml8PzfJ/mMSANgWUOAOueP0jid+De1/y/x4JFPPmD0unIs2XeBFGKXUWayjQI1PsKZayfS+oledecNTDzxhEXarpujocSZw5OqV+y88g+2IuLnU7cBGx5UEexbOq+TgZl+7JhV+V2YtUZ37cgc+cdLj+dXdqyZoLNZdBvTw1m8ooou/hM1yg7NpECOaGCclZqJ9Itw7JLaB8LIqwtouY82fGd6t1ttkAfMrYnq1B6qKA5YMUQewaKJ0WZauXeR4XPsC9ZTTTYtyu1dQoInmDbP64nKNkCgBv70PfAckaFpCKF1I6ZGsYeHs6cNPSQhXjXnloNLB5xRVanEZzC2rSK2hOd4t9u4i+4ZU6AMn2SPGhTnD4Yteo8DBHFsKWyZ3e2QOIiwhW7FRi6uRdH57e/1IYb43lSP9/UTJjTE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB5614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(261022113327099003)(261022075727099003)(261021123027099003)(260925021311599003)(260925022911599003)(11063799006)(260925021911599003)(56012099006)(261026140227099003)(10067099003)(261028144727099003)(261021121427099003)(261022105027099003)(261026121527099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N2VpRWZxMWJMbXVzeWpkaEczdlYrbkFta2pDaUVQRCtZZnQ0R096K3dtV0Zm?=
+ =?utf-8?B?V3drV20zbnVKYzliWTZaRGVIcTBlUlhqeTRDQ3Y4QzdjZDBYR2dIdnJpamFp?=
+ =?utf-8?B?ck81anJGYS9YYmFzUFdYQjg3cUlWaFJ1cnl1UUpvNDNGR2dadGdwSVdvZVFS?=
+ =?utf-8?B?YmVJQ0lkb2Z0dk93VjBLMzllejhXOStMTmdPVkpoNTJoVGQ5WkplVGg3Rnpn?=
+ =?utf-8?B?K1dmZXQzeC9sUk03a2dMTkNOaTZqY2ptdnB4VzdqYW94L1BDRytzNjNhYTBS?=
+ =?utf-8?B?RW5TRFlxalhEa0ZmUEEyRTFqYzllNSttVWFkSlAyVDNYRVFXSFAvdXErMXhG?=
+ =?utf-8?B?ZzA2WW9MYWVlNTc3MUluRXk0RHU5OWh6NTRVN1B5Vzg4U1d0cFN5bDBqbFkx?=
+ =?utf-8?B?bk9XOXd2U0tZV3U0WlNhTmFLcEdsYmhrL3RMdE0zaHdWWittRi9aV3VTd0RM?=
+ =?utf-8?B?NFJURHpZUmorZEdMaEhSSGxUejJHb2ZpT3IxNjFjT3UvOXRscTBXUGRzbWI0?=
+ =?utf-8?B?Wk1ySEQvVUZwbjVmWWVOcmFWOCtCeG0xczRoNGdzeHZmb2NlT0RSaGR5ZVpj?=
+ =?utf-8?B?Z3VjS2xmSXdPZFlEeGk1TmhUN2YvOXl4SGM4anhmOEx3WXcrbXR2Y3cxd2VE?=
+ =?utf-8?B?SE0ySUg3am5mVitMTnVzNzZDOWxkRit1TmFuWGNzYTBaWnhGMFgzT3JuSGo3?=
+ =?utf-8?B?REtZQ3FScmpKQmhDWFl6cGJYU25idTU1d2JTb1F5cC82QmRMSGpxNTV6WVVQ?=
+ =?utf-8?B?MGRkTGFjQUNtY29hTEo0ME5ua0Z1bEdzeEdabmdCL0YvQ0F2ZFZUTXVjVktE?=
+ =?utf-8?B?QURuOHJ3NWMyWExBdGN1UzZFcjIzaDV2WHFVN0c1VjNRUmovSlNMdjhBa3lG?=
+ =?utf-8?B?LzZnK3JXUDZkUlpBS3dLZG8xU1UzaTZvdmY3dzhSMVN4dlZWQXB5WTV5TE1L?=
+ =?utf-8?B?YnJyQWp1dWpEeFJvYmp0VWlQY2x4RUtrQ1pvcTI2MW5UUjUwVnlrTTkzSE4y?=
+ =?utf-8?B?aHo4YXdmVEN2T1V2VFBiclZWL3k4SWRVcmh3REszanZXV1JvV25pLzZ6R20v?=
+ =?utf-8?B?alR4RWhTajdnQ1Z0THJ6aWdMN2FrVnBoRGU0TzZwenJ1VzQwTnY3OE1tUnR6?=
+ =?utf-8?B?R3l1Zno5OHoxTlQ1UUE2L1NVejhCbyt1REI5NmlnMXF1QzMvbnZTczJicG9Z?=
+ =?utf-8?B?WXNlS1dpU2p2aE9kdlFURFlUeXFVNURxR0R2WXN1Z2FacTdWUmlnNCtLMkFx?=
+ =?utf-8?B?SEFGVzhQMkxuR3lodlRSdWV6OXRONEZwVnZkSmUyckQwNUROaFJrMFhPZXR3?=
+ =?utf-8?B?bWY4bmZ6LytSRlpZM09aZ3ArL3ZaQlhkZG1OZVVmdkNPZlJLeS9EVkNZeVZI?=
+ =?utf-8?B?dlVEQi81cjdJUXJGcllEY1F3MTdwVGJhQUIvaTBVVHREcXAxODBIS3BuWTJC?=
+ =?utf-8?B?VTcxV29aN1hOakdvT0p6eDJ3dGtHaStBbDFubnlFRTBJUGd4N1VWRXVpTklC?=
+ =?utf-8?B?V29EeFd1Y3FveXQwWUNIbDFOOUNLUUdESE1JdE5IdjZpVnlZTTFqSGtRL0hK?=
+ =?utf-8?B?STNjTU9hK1g2SHpnaWdIaVFyZHQ5NE9CaTVzSU4xZDFmZjQ0ZkxvVzd1QlV4?=
+ =?utf-8?B?d3BDNmhkVDd3eUFrbUQ3MnNWSHJnVGw3VlFvTUV4V2NDY3Y0N0puNitRN2pu?=
+ =?utf-8?B?NnVhditRbklSclJCV3paemRtdlYzVWlsaFltalFLZ2JkeWtLZXlyWS8wL3lB?=
+ =?utf-8?B?cG9sL3Z1Tk45RHEySk1BOERrWE1pQkJzYWl5cmZTSnM0ZGJsck8vdHZ0QnV2?=
+ =?utf-8?B?d2JKckpOb20rdUZXQm81UWVhWHIwTFZ4dE96SUxucDdaTmpGSVN1bkFKL3U2?=
+ =?utf-8?B?Qk9RdlZPMmdqOVBxcWhWUGRwUmllaHNwRjFtbU1wOHp6R1p0QnNHb0c2MHZU?=
+ =?utf-8?B?VGkxeFpZSjBKTHFPMzl0eWp5bDFxck12MlJReDlxM0NBYUFvRDRzNVpVSEh3?=
+ =?utf-8?B?NWtqTHdLaU10ZjYyVVhJY244VjJqMjdROTIzSDdaZXYvYlp6amE5YW50YmdS?=
+ =?utf-8?B?NllvSmRxalRxS1JJb0dwQ0lVV2hacW5qNVRFTVhqc3BoVmxVemlEOWhvaUFF?=
+ =?utf-8?B?ZHkxRHlUVkVVSnp3UDIweG9qRnpHN3FTVkhPaVJOenZxdXJhMDhIZ3VHT3Jz?=
+ =?utf-8?B?bDV6L1JJNzI0VWNnbFZIa1FPU3V6dVNZRHN3VG1KRWd0M0p2L1RMR0E2U0Vo?=
+ =?utf-8?B?YjA0cUVhR1VzZFhmVWQrbTNCTG1pVkIxaWthQllyNVJyZHlYZ3dQSkNIdnRh?=
+ =?utf-8?B?dHo1Q0NNb3JHbGN3VU5LZ2picVdPWkNUSzdLT3ZIS2poR0IzbCtrZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54b4a242-f9fa-41f2-de2a-08df45d2c32d
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB5614.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 00:19:23.1714
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IxcTHxXsY2KKsWyoawg09f/TDudrgMx02T7rorEW/zKNoLOOMmANuf2yoSFe9K+aC+CUDvtGgU2Ukb0kFmRUTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5687
+X-Rspamd-Queue-Id: AF03FA0004
+X-Stat-Signature: dyonz6zaha3434jwy9gkju86qm9uhw35
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1795047569-549786
+X-HE-Meta: U2FsdGVkX1/yo6L//QWv9cPfO8IUQ8T5Gs9pICNEYStdLFqKnE769AV0HBBqh6kQShkj2/0v+kP1NEux16RBats9wW9ZRGf9KGKUXiP0TKPuQM2qsIP556IY6fhfW992k17hoexeIoC6wNU6+p3HbIQssFBVtRUuhMiVLD2YhLN7n/qg53iTqBDpdmYtH6NN/PfXuJyvPfzdcLfRIakIWN/INqxQWsyFGTRhbWmdsMQEJXBqLgJCsNLpESUBTlNLHmnSvTG+Z0W3hJlL7pikoGz2c85v5h6QNslbwZM7+8SaEoi3PBd/+11yxKTmDFjJhEyUY7VzUgZcHUbGzzRK1iRQKWc2QHlYqsGrVW0YdX+EXFCwhi6dtx3S+yAatp5+J8dNEhzDGNPDmE9nqxEX7iAtCWVuzcyO07wZcEUA2zu86lijFfHODkLLHOooKUSMF7L5GT+KkcebM+IAirzvEfCcGxrL3tEmw7W9tItlnpmotF5N8CQqG5nJdFblhNqDhSN6mdJv2snhby/FOTsi8ElcSweLMoDjOwGb2Rra15p5kBvchWEbZx/iVH/5CJkprXx0nPWs8Zy2K3TmVMOiLSdqHjDunvRwSuzlKWkHOKxWIYbgOWchm8Q/6a8CfyBjx/Lt6fYBH6rpOsaE9CCOzxqZIzPme+KazY1rnOH1oZP5g2mywY5KebWFgi7L01G0a2AbsR0qctLwGxnfd5QF79NIbJJjlROplVSsTW9zuEW0BFha95LbqceJvj/+eSBO5HWFwTuEjBEaN7yS5UZVT3k6IXDmld/D5FcbqjNuHEB6qa4diu+AxJr2PTBtKxHY9sGmPbu59+iZBdPYLo9dAYPMlyxS3CyoUAxKrzSt2uemoGiFnXwoOec2sOoNsevGvSSguyyi9xHST+jn3OC71MmI0wMauugc3IKHY5SvbbU2415Oqfq4rao00ih19XBnKQE9pdlvw1kOH/iijTu
+ FsBUUTW7
+ YDU2WpGuWiT33mi3pPMura8CVJLlI43I1CcYZ2fXBDj1K2QZpBR3wzpywh7xiU0atjrVgZtTFS1fdagX36wpxolyKjpk2WpeZg0CwSyqzr6O2M/ZXWwwusut9vfjSs3QEjUoPfcTo8giOtQmn04CZ0iZZiBZRsJ6fqHAI+s8/Uv+Ri90jYmglNmfh1q8WHRy82kAuzfZRCT09QbhPFJeQUXUgAxZHFx+/hLBsMuKPYO1S4owOew2E0Rn1/AzjvvMqJ4eI9PTlvCPQ9SX5RPMD6FIEFAbvx03hY+cfClnDpVlHvVG5rK6StdnCoNliToqBNBqbJLJU/o6XN+ER8I+WBO15bB0n5UPMpcGPpSuvxE68I5SUHyDC7TW73yEg4j7PvxUy9Z8vg4+UCbAez2364351lLFxNUrssVvjGFc3l9+sh1W8nhUhd4GQ58xWKm3dMWHdvRxE9DOLac26Nqae+JU2la940cgCbtC8Xwea5FqgSbLUNKysh9he3Nf6n/rbvY0vzCHsqBapzznh7obJTzKuYNniKdjCO+GdO7aQc0JkDE6nhtQsbJrQs1SDBNRLQfLc0LSYtP2EjyvXf7Pcc05UBoBEnObOBO1ZiREKF0F8ZTI42APXLP/5cZ65HC6TUgPpAfieg3ra5SCLG6UTglgAb4U6xQtMLzqTopEjlwJGv9BaIb7KhNabLJ2RH3vzIfA/9VhKlfmvbwWqmw4jJZSUrSWSDTAjIHZuV4Tk19uDhZkVo3qpRl9KAuX6AGFwFL65
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,32 +176,172 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 10:20:37AM +0100, David Hildenbrand (Arm) wrote:
-> try_to_unmap() with TTU_BATCH_FLUSH transfers the PTE dirty bit to the
-> folio and defers the TLB flush.
+On 11/18/26 1:34 PM, Swarna Prabhu wrote:
+> From: Swarna Prabhu <s.prabhu@samsung.com>
 > 
-> Reclaim must flush the TLB before unlocking the folio, otherwise stale
-> writable TLB entries might be left behind temporarily: writeback started
-> by other mechanisms (e.g., fsync) will not find any mappings in
-> folio_mkclean(), so it will neither write-protect nor flush anything.
+> This series is an RFC to gather design feedback to introduce a folio-range 
+> interface for pinning user memory in the GUP fast path. Pinned memory is 
+> returned as folio ranges instead of a page array: a run of consecutive PTEs 
+> mapping consecutive pages of one folio is pinned once and handed back as a single 
+> range. Block direct I/O converts each range into a single bvec, hence reducing the 
+> per-page pin and merge work.
 > 
-> A write through a stale TLB entry after the folio was cleaned gets lost
-> once the folio is reclaimed.
+> Base and dependencies
+> =====================
 > 
-> However, reclaim currently does not flush the TLB if the now-dirty folio
-> does not get written back (e.g., gets activated or kept instead). Fix it
-> by flushing right after try_to_unmap() if the folio is dirty, which makes
-> the existing flush before pageout() unnecessary.
+> This series is rebased on the following two series applied:
 > 
-> For dirty page-cache folios that reclaim activates, we will now flush the
-> TLB immediately after unmapping them instead of batching the flush, which
-> is the right thing to do. Performance-wise, it shouldn't really matter
-> much, because folios with dirty PTEs are usually young and reclaim won't
-> even try to unmap them.
+>   - "mm: gup: batch PTE-mapped large folios in gup_fast_pte_range()"
+>     v4 (Yeoreum Yun; originally posted by Yuan-Hao Hsu [3]), applied to
+>     mm/core.git gup-7.5.ptebatch [4]. It batches the reference grabs for
+>     PTE-mapped large folios in GUP-fast.
 > 
-> Fixes: d950c9477d51 ("mm: defer flush of writable TLB entries")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>   - "batch lookups in follow_page_mask()" v5 (Rik van Riel) [5]. It makes
+>     follow_page_mask() return a page count and record pages through
+>     gup_fill_pages().
+> 
+>     Note: "[PATCH v5 1/8] mm/gup: break out gup_fill_pages() helper" was
+>     posted just as testing for this RFC was done. To avoid delaying
+>     feedback on the overall design, this RFC retains the tested base
+>     linked in [5] and will be rebased onto the latest revision for next
+>     version.
+> 
+> This series builds on both: the run detection in gup_fast_pte_range() and
+> the batched slow-path lookup are reused, and this series changes how the
+> result of a run is recorded and returned.
+> 
+> Background
+> ==========
+> 
+> Kundan's LPC '24 talk "Transitioning get_user_pages to folio based mapping"
+> [1] proposed a struct folio_vec (based on bcachefs) passed in place of a
+> pages array. Building on that and on suggestions from the community [2], 
+> this series exposes folio + index + nr_pages, where each range spans a 
+> single folio:
+> 
+>         struct folio_range {
+>                 struct folio *folio;
+>                 unsigned int  idx;
+>                 unsigned int  nr_pages;
+>         };
+> 
+> Design
+> ======
+> 
+> A "struct gup_out" descriptor in mm/gup.c holds either the page array or
+> the folio-range array. The fast and slow page-table walkers append to the
+> descriptor instead of advancing a pages[] pointer, so a single walk
+> serves both interfaces without duplicating the walkers.
+> 
+> The PTE batching in gup_fast_pte_range() is provided by Yeoreum Yun's
+> series [4], which this RFC builds on. This series reuses that batching
+> and its page-table revalidation logic. For the folio-range interface,
+> each pinned run is recorded directly as a folio range instead of being
+> expanded into individual page pointers in the output array.
+> 
+> pin_user_folio_ranges_fast() stops once the caller's range array is
+> full, so callers size the array in ranges, independently of the number
+> of pages requested. A single GUP-fast walk is additionally capped at
+> EXTRACT_MAX_PAGES (1024 pages) to bound the time spent with interrupts
+> disabled when the buffer is backed by small pages.
+> 
+> unpin_user_folio_ranges() walks the range array and calls gup_put_folio()
+> once per range, releasing the references pin_user_folio_ranges_fast()
+> took for it.
+> 
+> In iov_iter_extract_bvecs(), the pinned folio ranges are stored into the 
+> free slot of the bvec array and converted in place, one bvec per range. 
+> Block direct I/O picks this up through bio_iov_iter_get_pages() without 
+> changes to the block layer.
+> 
+> Non-folio mappings
+> ==================
+> 
+> Memory that is not backed by folios, such as pages a driver inserted
+> into a VM_MIXEDMAP VMA, makes pin_user_folio_ranges_fast() fail with
+> -EOPNOTSUPP when no pages were pinned; such iterators fall back to the
+> page-array path.
+> 
+> For folio-range output, gup_fast_folio_allowed() additionally requires
+> a non-NULL folio->mapping, except for hugetlb folios. If the mapping is
+> NULL, it falls back to the slow path, where the VMA can be checked.
+> The existing file-backed and secretmem restrictions remain unchanged.
+> 
+> FOLL_LONGTERM is not supported yet and is rejected.
+> 
+> Testing
+> =======
+> 
+> Measured the time spent in bio_iov_iter_get_pages() per I/O with
+> function_graph, on the baseline and the baseline plus this series.
+> Both kernels ran with the performance governor, boost disabled, all
+> C-states except POLL disabled, and fio pinned to one CPU:
+> 
+>   trace-cmd record -p function_graph -g bio_iov_iter_get_pages \
+>     --max-graph-depth 8 -O funcgraph-overhead -O nofuncgraph-irqs -F -c \
+>     fio --name=io_uring_test --filename=/dev/nvme1n1 --ioengine=io_uring \
+>         --rw=randwrite --direct=1 --bs=<bs> --iodepth=8 --iomem=mmap \
+>         --iomem_align=2M --numjobs=1 --size=64M --cpus_allowed=23
+> 
+> Median of calls not interrupted during the walk:
+> 
+>   bs    buffer          baseline        patched          result
+>   128K  64 kB mTHP      13.08 us        13.09 us         neutral
+>   1M    64 kB mTHP      63.0 us         63.6 us          neutral
+>   4M    2 MB THP (PMD)  25.9 us         8.65 us          ~3.0x faster
+>   8M    2 MB THP (PMD)  49.4 us        ~17.0 us          ~2.9x faster
+> 
+> Note: the baseline is the upstream kernel with Yeoreum Yun's [4] and
+> Rik van Riel's [5] changes applied.
+> 
+> For larger I/O, the baseline's bio extraction path requests at max
+> 256 pages per GUP call, limited by the available bvec slots. This
+> series instead uses those slots for folio ranges, each of which can 
+> describe many pages, thereby allowing the series to request up to 1024 
+> pages per call which accounts for the speed up observed in 
+> 'bio_iov_iter_get_pages' for 4MB and 8MB DIRECT I/Os.
+> 
+> Testing: Ran selftests gup_test, gup_longterm and cow on the patched kernel
+> and no regressions were observed.
 
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+This is very light testing for such an intrusive set of changes.
+
+The series was clearly written via LLMs, and patchset submission requires
+mentioning that in the cover letter.
+
+I see that FOLL_LONGTERM is not supported.
+
+So I think this is one of those series that will basically required the
+reviewers to rewrite all of the commit messages, the prose, and probably
+lots of the code too. People might be up for doing this if you were already
+a contributor, but as a first submission, it is a lopsided request imho.
+
+I'd suggest trying something 10x smaller, and with less AI bloat, first.
+
+thanks,
+-- 
+John Hubbard
+
+> 
+> Link [1]: https://lpc.events/event/18/contributions/1773/
+> Link [2]: https://lore.kernel.org/all/f2b5189f-10de-4685-97f3-6ee08d159743@kernel.org/
+> Link [3]: https://lore.kernel.org/all/20260917083747.786-1-aa9736195201@gmail.com/
+> Link [4]: https://lore.kernel.org/all/20261110-refactor_gup_fast-v4-0-e779a7674274@arm.com/
+> Link [5]: https://lore.kernel.org/all/20261102193026.3860700-1-riel@surriel.com/
+> 
+> Swarna Prabhu (5):
+>   mm/gup: add struct gup_out output descriptor
+>   mm/gup: make the slow path walkers record into struct gup_out
+>   mm/gup: make the GUP-fast walkers record into struct gup_out
+>   mm/gup: return pinned memory as folio ranges
+>   iov_iter: extract bvecs of user-backed iters from folio ranges
+> 
+>  include/linux/mm.h       |  37 +++
+>  include/linux/mm_types.h |  23 ++
+>  lib/iov_iter.c           | 100 ++++++
+>  mm/gup.c                 | 695 +++++++++++++++++++++++++++++++--------
+>  4 files changed, 717 insertions(+), 138 deletions(-)
+> 
+
+
 
