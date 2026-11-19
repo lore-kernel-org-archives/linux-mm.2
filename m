@@ -1,64 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8F4606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 05:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66750606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 05:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=pfPcCYsQ
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=oPKecQNT
 Received: by kanga.kvack.org (Postfix)
-	id 55B7C6B05C0; Thu, 19 Nov 2026 00:35:45 -0500 (EST)
+	id 6E2D06B05C1; Thu, 19 Nov 2026 00:35:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BE146B05C1; Thu, 19 Nov 2026 00:35:45 -0500 (EST)
+	id 692DD6B05C2; Thu, 19 Nov 2026 00:35:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 311266B05C2; Thu, 19 Nov 2026 00:35:45 -0500 (EST)
+	id 55BC56B05C3; Thu, 19 Nov 2026 00:35:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E0A666B05C0
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:35:44 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6EC45160917
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:44 +0000 (UTC)
-X-FDA: 85450756608.10.9B096A2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 143536B05C1
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:35:48 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74ECCA0983
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:47 +0000 (UTC)
+X-FDA: 85450756734.11.43B2C07
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A532A40008
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pfPcCYsQ;
-	spf=pass (imf27.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id D56ED1C0004
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=oPKecQNT;
+	spf=pass (imf18.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795066542;
+	s=arc-20220608; t=1795066545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4HnqDLCNCiAOQ9sq1Q6ULWGj/wzn4gKYXx5Raw5Q7fU=;
-	b=uqHd7sPuFbpHDDGYAq5o+Lg/dxksCY6baNm6G/gfOC2h3EvBFg7dSrcly2jr6KlM0hALPC
-	yajJHXQlmZPxeTn6X0g6b2TR0zfEWki2cZI48/hvNz4q5k55Yx2g4pGuMtQZY9jUBa12GC
-	Y0aX3jqCJiKAvdV1xO6E1oa4J3RgEDM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795066542;
-	b=QvboVtWKTIwOjbYy386oA/tAufOlmWurX8r31REnTcHLxbZujEQGngsecaXrReyRMxNJ0o
-	RJBhTzPOba95o5c7mG4Y593+1bZqZ+YULDbAKXtbGsUo7aJWsy5w9eqfEo6FIaSB4efQW+
-	UYwIQQNHBjncYiY2CVm2S0vElFmWKyk=
+	bh=ELh5lc2aPOWRUhM5D4IHCHtXzMf4oMgv7S6UUVSFuJE=;
+	b=ZYX3uUFb+B9iSJXOgoRw4XJKrQHrOc81eChUkbZTsglO7xUh7+0y+izW9PXfZKYAholx7l
+	o8iria/y07Lg/8/LkXUHfaeZcEjyzFSZkqFgaqoJ4cGQo/gfZTHW+l3G5+C/iedFX5JlFE
+	S8UKVYbgd6idyI0LSOfpbs51WvGWO/c=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pfPcCYsQ;
-	spf=pass (imf27.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=oPKecQNT;
+	spf=pass (imf18.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795066545;
+	b=5aMBDK1GmNe8uOogVPFnq81LGxQeGaKZisEC4CdnSKHdMu0wLQTRT5E9Yt4Qbo32Z9jOk7
+	6/VENjT4yA02eLKwZHqgEx3M+jLxBqajbBEuCN1x++P1vM9LCFsnBuTm3L5F69pf+Nlmti
+	+qybmgVhhzKdrc07vbnjMXJy2BiSNf8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=4HnqDLCNCiAOQ9sq1Q6ULWGj/wzn4gKYXx5Raw5Q7fU=; b=pfPcCYsQEwWHQjf5W29Fay/2Uv
-	UJCzM/N8GPrKSlfa0kFLlCQSAsxwysOlDXJuf47g1kmF+Z2a4A6aqLLaImJuq+Uw0Pr+eVVIL20WJ
-	0+QsE2toVIUeuAewEy/xGnT7NZ6A5Ekqo5aDPryoX6bp/PFb3d+d1wjBI+Wlyl30Pa2FKn+cnqbDv
-	4+km0I/8557GlM9yhg4WcFnQT9PDGri91LWN2jFxyHexdEYpPDz1TuclUwMaVWFLOsyTLkgl2Bs2+
-	gZQ+OUl6AGwuouyQ5KZhilUoxyrUBrMlpuvuiGEbOw7LPa0k+AQixDX+f23ld5jyeNVdBvzyUTiy3
-	LAKnDb0w==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=ELh5lc2aPOWRUhM5D4IHCHtXzMf4oMgv7S6UUVSFuJE=; b=oPKecQNTYubY0Dp8vcR5jIBDM2
+	3Go3aVyKAU8FdmIpJi0naXVl32KClQXNvqJdTYxwmyxklmJW1MrA7JPp/pE6mBxz2VslXr2LvZSl+
+	AsGoZqPUrizrPpY6noR/PEqIyZBoLu8l8FRiHTaAyMwQOskhrXcfXawpj9H2ly2y9+K2mcen5J5Di
+	Ll7sBPow7Tfn5dKijG8+yV7rRHysHc8oY+2/SqopSy+k/yed8FxbJcCx/nEhEQ43n7Bgb2Nd7MSgh
+	h1tzWKOF5S/oRaOnw2K7+kpqzYEXYQ9BLusF1w+9yCNworNuHqSQVRF0wWahdtCddIrUJPapoQNHk
+	wSYPaUjg==;
 Received: from [50.53.43.113] (helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTuo9-0000000Aufu-0VZ6;
-	Thu, 19 Nov 2026 05:35:41 +0000
+	id 1xTuoB-0000000Aufu-26GP;
+	Thu, 19 Nov 2026 05:35:43 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
 Cc: Randy Dunlap <rdunlap@infradead.org>,
@@ -144,27 +145,28 @@ Cc: Randy Dunlap <rdunlap@infradead.org>,
 	Matthew Brost <matthew.brost@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	intel-xe@lists.freedesktop.org
-Subject: [PATCH v2 08/12] docs: ioctl-number: update USB entries
-Date: Wed, 18 Nov 2026 21:35:09 -0800
-Message-ID: <20261119053514.255348-9-rdunlap@infradead.org>
+Subject: [PATCH v2 09/12] docs: ioctl-number: update virtualization entries
+Date: Wed, 18 Nov 2026 21:35:10 -0800
+Message-ID: <20261119053514.255348-10-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261119053514.255348-1-rdunlap@infradead.org>
 References: <20261119053514.255348-1-rdunlap@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 66xkoytkas63j1owmrcwpeoyhpdjr3nf
-X-Rspam-User: 
-X-Rspamd-Queue-Id: A532A40008
+X-Stat-Signature: xca5yehff77usw6ribyf5jb4cje1apef
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795066542-221848
-X-HE-Meta: U2FsdGVkX1/3rCeYl5eNwup4BF62Hw6/5i05emtcRVJtVDUCxmwWkCIa24ETbfjZKr/p0Qk7OVaGAIp0fZiHhQbuQle6C8hwwrcasJErvYrXjVAQvYDNGORqFywl139PtYFfO8djiUljIQIi60gocg1x5FQlIYrbSVJXUxEebBgJeAju4Dyl5UVrU1RRfDZOiDgth8yxFd7I1gLpWbxNcK0yFqFfGy5YLL40UE3zM+oAoN0pnKcpc/3LLfryP0g2o7fMeQpb7lyKWZrSVqlpjzXqfHsfjjCBDYaC8fu1JnYglcWEKwGEfII01FvhETYmbbcxWhRTNzhC0JJ4P98YAohuvvkzQH5WdpuL1G0NyPU1XkN0PQyjgA2Cjw+8s9BRfjkHnqKGbKxfRpvMZkSy+hdZXIP41CbvWKIb7I1DBgJX8tZ5VAwCNWt6XkhcHegZ7IlH94eeTyAEwmr6GJ202QdBlU56A1uIeTLMqnj8AsRWFpny2AblaO7+R0WGk4srSnj6xyg/HFrKnPQVU6Av14/wfJm/BJUff6NRRFoQLGFStqof+OaVJZwTJv+MAkiJq8jUE428DoJriZcuUWwHLOLBAeC2dXnIYQ8hLh2Syf+VbjbQJfvlx1LL2DlNlQjXmKaReOdWVqm1m938XUZBlm7fGsd/9GmgCFI6dWtw5Yyi6UHCXls8sn7kYqI1xI+Do+x2OAU/CVcNlxWyu+3f03o+LjNBL3reN+AipKqKwOaWk5btx+pEW53k1HrizQ1VgOvAvmI6RTlepOI8R576gXo2dmwlcNGfcvUewt67AmyFoby3YwOuZlid1URC06fQyGLAmMs3vWFej4lmyZmRhzrcSvXeEOeq4lzx0cJzhlXSStlyI9r2DRLNT9QfnnkwvB5BtUYo6xP3o38rzkzSap9HI0KZJPnq93HZIbkRU7ggJM6MKhAe6ED+UGoIFYddMRVeyqD4jO30AhK9d7E
- OpGmthDr
- weI73x0C7EngiTE3SpubZx1Urz/3YI46/7vHVJDyeRRLJRijAVkZ6gsOVsrhmraonRGxMAjNLXp2BAAM+j6Ra+0hHGp2SsHbTr2jLMbqvIRR/fBcSW6PUQ/lpcg28oOzdvO3Fl4ogXhP7Bj4IETulFBoGViuuI1jaVLNumnoFlYXpCaqHDWl/YCoOHjg8+uHCtPLG7mI9j9VUgRxO2u3DQvEP15gC5UPDgNI4S0psVNIdOq1O1aJ7of/f0+w6oF2lE+81o5ycKzHdA+SXup8lvbTd2gAkiXDltrmiPreFtQBQp/JCdV4hKEWID2MQwq3aUMgM/N3J66sMS3thOB+6Wt22Ii2mba1u9ivIN8MilgIZG0ukLQ9Dp9GXUGhn5XFVDDNxsYMhHixkTMNp4lLQRd7nys5j1oT5vJ5ks7BGZ8LzrrN7wS8o/zP+0uHK3G7nNPxG2b7g8iL/xnZj3O1QqrHaUyrotSbXcXj1FKFVy3eYrWQumZMTw5/f0SwrD1TRj7BXcSbA6blioZ5gj0HVlRYeIS1R7QgAqFbYI3wyM2KmXbzxXX12SSKQYa6X9dB4SbZ6o3VZPxpqrHjBzPGzCsDxG0a/2XLhemWmEwzWwCpO1itjrnfZrM+s6ZAbomYlC3QdrZbZh6aqQN29v56Kox/ndroi5RZxcvcZlSAVGc1qseg=
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D56ED1C0004
+X-HE-Tag: 1795066545-124721
+X-HE-Meta: U2FsdGVkX191XTNMrREHUPWJ5lIiDy6wtG90u9QjsgDqdgpafAR+l0XJOiLWNc9iTOSBeF8NEPxFD4wsEkU3Az94s+l2//ev9HH8BGS671bDbX3xdJZFmroLu6MYVlliXCdFreoZKLpAm+jWSGSz4cF6cnlwhr4V3tQVduCKnOHILkMnhcJBst+8RTX3jqH/oIKTxbxIp+b4cZJO5U8aQrRhbzfErDayEuAZ442wyMWIGDMeEYioUO5bE9jbC8QAWSf3Y/AAkTq22BBubHm7UT2kZXpRJlj8MvJHCX/GjRXz12s1bJoIECJOJ3p9MVyiV7cnLh3kHMiOoY3HkZE73Vg87RsYTZ/68jfdIr6NJlvAsopTEOfKWr2/zjXCT/qmg1/KzgPRzGRJQpJWrMVGtlP8AuhsE89k9/CyMBVgF4n2KVdU87jLuxN45xy2sOR55CHBIoqRv46nHA4jsnitjZzfEphdJ1HEliJ9b6ckLk7PDkdRvogr4thlCxYKAKF4IOofkiIuvLZDZVzOmifldl4Ymg41PN6OYRHSa/ny46acZlyE77NspXzQxQn0UEd1SkfgajmngDb9M3fp5STK3NnOtZnySSHzXeS0p9URivfhRishpzU2+KTZ0Gjaq2mJUIqergUPBRsq9mmq853i9kogbZdKV7CUvMoWLa2yF1DyNDsTJC7WhcMTUeemIVro58aKS+1qeiNk9sQijtRPRFS8lv3YRs+e1eNwwnmJFbjFDZcqoHW7E+ZEEr1C8/oLRepyFLV1I6uZ5LYfzksEsjoYU3LQoi3+0nb+8auPV4iAqz39PvXNKjp/ervr8pAV4gmU3YexoRUQPkV3BFKG3DDU7pGABVV+wZ3I8+gYuT5K+FOqTkebTZpKNJKP2oYbPLOLzAjKk0gXYVtKNbXJQOdLQ7AkRPiY0orJS4/mTx69CEz55j9r9RDlXyimAeE3sS2gUnCNe27a/txCPc+
+ Bg65YcTS
+ VCXeUDspLwlJy+tnFV468ow4TenzWOGcbFJia5HpvaS/5Hl5RqjAC/y1BLbQ/GHGtKTF9MVHoX4C04kg3MO/oibi7FNAhbmud/mMrDYyQ5wtMW2hw73JBrGB1POdfM/Ma5U+cGMcyv863vzezSGmTYWQRe3cJbQuYlvoSSAnDRDOhHzbaZlve+Ik/k3YtCYZy4FI17gY//D5JgZ3Te3jSfqhej8H4OvxvFSDDb0A8k0UQaTrm7Ye2PXPQtQSwHGP/xDQ2SpK5RG6CDGwKhi1QA2ZC9d1MVBir4lB2If4JUI9PjklLGtylQ+KIyV2MNiTVZ8LBQYfD057D6SG9blxap93aJHxWUg75p6lZn7T8nwzjXWvVKrSE61gWMZxY/j4CZx9grURp6UDs4PJX8FK8sWHJ1jDByDSQ5MVuUHnw4sybTVUcr+JFySulb8yhaKkGyRZ0mM8TyuQV1BGPjxy234Y/sXjgZtrJC5oyIK4/b15IilnTcOVtoh9eD1+wuIP2CGnswJaflRhIzdQyzx1sS9dVBsNUJrZwmTBueqoDw8NoLbjZ1pWP9JObeNRtbS0GIaBXgBXvf+bc6baq7wcNVxQErr5SbEasjfd6Hva+JQiH+ICPdAgKgkAtAEIOSqCPEdpUARRTxYllOMG8aTM48B8bit3oyKnsU+BHT/+qC6ZQSDanVLcTupmXraFaULvHt5UGpB9p3jsUmUCMVi/pfODmKfRhXF0UcEW6uYqkvV63spY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,11 +175,12 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Update the list of files where USB ioctls are defined.
+Update the list of files where virtualization ioctls are defined.
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 ---
-v2: no change
+v2: drop 0xAE, C6, arch/x86/kvm/x86.c (covered by line above;
+    Sean Christopherson)
 
 [Since having multiple maintainers trying to merge these would
 cause some conflicts, it would be more manageable for Jon to
@@ -186,34 +189,56 @@ take all of these through the docs-next tree.]
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: Shuah Khan <skhan@linuxfoundation.org>
 Cc: linux-doc@vger.kernel.org
-Cc: Neill Kapron <nkapron@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: xen-devel@lists.xenproject.org
+Cc: Hans de Goede <hansg@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowangio@gmail.com>
+Cc: Eugenio Pérez <eperezma@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+Cc: virtualization@lists.linux.dev
 
- Documentation/userspace-api/ioctl/ioctl-number.rst |    6 ++++++
- 1 file changed, 6 insertions(+)
+ Documentation/userspace-api/ioctl/ioctl-number.rst |    5 +++++
+ 1 file changed, 5 insertions(+)
 
 --- linux-next-20261116.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
 +++ linux-next-20261116/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -233,6 +233,9 @@ Code  Seq#    Include File
- 'U'   00-EF  linux/usbdevice_fs.h
- 'U'   C0-CF  drivers/bluetooth/hci_uart.h
- 'U'   00     net/nfc/nci_core.h                                        conflict!
-+'U'   00-0F  linux/usb/raw_gadget.h                                    conflict!
-+'U'   01     linux/usb/g_uvc.h                                         conflict!
-+'U'   64     drivers/usb/misc/usbtest.c                                conflict!
+@@ -198,6 +198,7 @@ Code  Seq#    Include File
+ 'M'   01-03  drivers/scsi/megaraid/megaraid_sas.h
+ 'M'   00-03  drivers/video/fbdev/mb862xx/mb862xxfb.h
+ 'M'   00-0F  drivers/video/fsl-diu-fb.h                                conflict!
++'M'   01-03  xen/interface/xen-mca.h                                   conflict!
+ 'N'   00-1F  drivers/usb/scanner.h
+ 'N'   40-7F  uapi/linux/nvme_ioctl.h
+ 'N'   80-83  uapi/linux/ntsync.h and uapi/linux/nvme_ioctl.h           conflict!
+@@ -238,6 +239,7 @@ Code  Seq#    Include File
+ 'U'   64     drivers/usb/misc/usbtest.c                                conflict!
  'V'   all    linux/vt.h                                                conflict!
  'V'   all    linux/videodev2.h                                         conflict!
++'V'   00-1F  linux/vboxguest.h                                         conflict!
  'V'   C0     linux/ivtvfb.h                                            conflict!
-@@ -279,6 +282,9 @@ Code  Seq#    Include File
- 'g'   20-2F  linux/usb/g_printer.h
- 'g'   01-0F  mm/gup_test.h                                             conflict!
-                                                                        <mailto:linux-mm@kvack.org>
-+'g'   01-03  linux/usb/functionfs.h                                    conflict!
-+      80-86
-+'g'   41-42  linux/usb/g_hid.h
- 'h'   00-7F                                                            conflict! Charon filesystem
-                                                                        <mailto:zapman@interlan.net>
- 'h'   00-1F  linux/hpet.h                                              conflict!
+ 'V'   C0     linux/ivtv.h                                              conflict!
+ 'V'   C0     media/si4713.h                                            conflict!
+@@ -356,6 +358,7 @@ Code  Seq#    Include File
+ '|'   80-9F  samples/                                                  Any sample and example drivers
+ 0x80  00-1F  linux/fb.h
+ 0x81  00-1F  linux/vduse.h
++             drivers/vdpa/vdpa_user/vduse_dev.c
+ 0x89  00-07  asm-generic/sockios.h
+ 0x89  06-07  linux/sockios.h
+ 0x89  0B-DF  linux/sockios.h
+@@ -399,6 +402,8 @@ Code  Seq#    Include File
+                                                                        <mailto:kvm@vger.kernel.org>
+ 0xAE  20-3F  linux/nitro_enclaves.h                                    Nitro Enclaves
+ 0xAF  00-1F  linux/fsl_hypervisor.h                                    Freescale hypervisor
++0xAF  00-8F  linux/vhost.h                                             conflict!
++0xAF  31-32  drivers/vhost/test.h                                      conflict!
+ 0xB0  all                                                              RATIO devices in development:
+                                                                        <mailto:vgo@ratio.de>
+ 0xB1  00-1F                                                            PPPoX
 
