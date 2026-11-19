@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FCD60A2624
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6A760A2606
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nls9+NC+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HC8W9Wjx
 Received: by kanga.kvack.org (Postfix)
-	id BF5C06B0709; Thu, 19 Nov 2026 17:43:54 -0500 (EST)
+	id BCAC36B06E9; Thu, 19 Nov 2026 17:43:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCC1A6B070A; Thu, 19 Nov 2026 17:43:54 -0500 (EST)
+	id B56B36B06ED; Thu, 19 Nov 2026 17:43:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABBCF6B070B; Thu, 19 Nov 2026 17:43:54 -0500 (EST)
+	id A1EBC6B070A; Thu, 19 Nov 2026 17:43:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8651D6B0709
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:43:54 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BD048029B
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:43:54 +0000 (UTC)
-X-FDA: 85453347588.19.FBF45C7
+	by kanga.kvack.org (Postfix) with ESMTP id 750A66B06E9
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:43:58 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8CDD140C1D
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:43:57 +0000 (UTC)
+X-FDA: 85453347714.04.47C8E18
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 85B6E40009
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:43:52 +0000 (UTC)
+	by imf11.hostedemail.com (Postfix) with ESMTP id 577B04000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:43:56 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nls9+NC+;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HC8W9Wjx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795128232;
-	b=1ersLUjBf1pZFhbFCnKr6yfjpY6wVPpnhIvs4JiIvT28WgHkn/PfHlwituONfqBCqkHFqB
-	ZBp0LnZDPVkedB+UxZT5CrAKcuRkUJgaRF3VwBoNpg5H2dmfxO13noP0FWOems9pVMsXMA
-	A5nYtElQowT35TWdPFofQpidVCajZjg=
+	t=1795128236;
+	b=BwTf9DHuG80VMELyiMnCFUqaT7EfW163xSjhH89ua/EueBdOVgPynjnMqqpeSXsV5mEVHl
+	IoibOrxF3c6oQ58sYRmIKO5AvzYucMA5EReg7mQwQ8hyzggdqd15KMNm1DZRoNgQZ9+/ZX
+	BQSROt0PPQ3Z5ot1n3nm2gpF6l6q7Xk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795128232;
+	s=arc-20220608; t=1795128236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PPc6X12QD2WGk+0rx20RHiBwFPirneFugf7ZxndZfj4=;
-	b=oe0fyQjtmPGpKCoDrTzIaxzbtDAjti3h54KlxvXmfy9hqBTYn6gFt0i7ZeK+WJKoD9vRiI
-	ddqJVZfDUZLYW7bv0JRZKwjBMBtXJ/UIp87yktI04JFN7rdXfLFjqySSSZF8yodg0EcFDV
-	NpYfb4via5R43BH2PFLxKphr6Mvnth4=
+	bh=VgOViuFvQ1WLBdTgeo0xBwSjxxf619C+mTR7GkYLz0I=;
+	b=Mqzg4eMVjGOXjZciktUfsmBGxM89ZV/VNpuQcYprvYQnmAecOTDb0uxBwSH7Qn7oCdfYRk
+	NoxjbswvKXKN6M49scT17nZWogE0cN6Nz8roiZii0arGpvc/uV8vpewQaAzVGe2VbMdw+l
+	SRlIRlRhvGXFnk/Wz25cfEDoKJ43cM4=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nls9+NC+;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HC8W9Wjx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 0E1EC62220;
-	Thu, 19 Nov 2026 22:43:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id E9D5D1F000C6;
-	Thu, 19 Nov 2026 22:43:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id EBC0D6298D;
+	Thu, 19 Nov 2026 22:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0F42C1F000EF;
+	Thu, 19 Nov 2026 22:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795128231;
-	bh=PPc6X12QD2WGk+0rx20RHiBwFPirneFugf7ZxndZfj4=;
+	s=k20260515; t=1795128235;
+	bh=VgOViuFvQ1WLBdTgeo0xBwSjxxf619C+mTR7GkYLz0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Nls9+NC+jPxJH+ylhTtYG2RiRETSIYO+HjpUXY9ef4CcJxkDE4CkPLHxHdDUW2Tmj
-	 752KbGp0rM99OWj5cyTa3wSxeelbeRoB78h0qW1yErVRDU1I1+Ud43kPcUQiDijFMH
-	 HCiZeURym1/VTQJ3Ewob1zRPOMUIiakm1SipjrDUzO0Z6sfGqzXa30wu5zkrnX7dsp
-	 it4NxW5Z+GetL0aBY8tAas+aPg46L7FMI/M3eUGUkgDDF3eZ5E+Tq1VuUe2fYurSMP
-	 OZIkNr0BU1GNEJfvJlyVXrAe4LEUj4rnODSc1MejhGXa9CQFYAwM1VRp9wwp8nsVbB
-	 UM2WYYdP8rTAw==
+	b=HC8W9WjxhO4iHCFx5ER3+ZmW2t7L+2P4zUurqe98F/Lvvhw8xIi1zCmlHrOVbm/81
+	 kQQauMVeRfBsEspfcxnerySlinGDiwTyxXGoXNt4eTwin6LReM70QBdaeB0k31MTQS
+	 wghGogcrqFKCmL7Q+6qsLbjGoYeZeMgB36JY1UkqUAup23NwLQWNvUI74t++Np2flf
+	 /NSSESeDRIzNzPSLfh3bZwiG+xilQwJz8T9qfYEJZGRml/MvWnKCqWrxYkYCpwCTkH
+	 Sy33ZPrHxWaECiltE4d3JNTsN9FL2SpMblL/W84E9WqTX0lmWT6hCeOpPqstxJz3HH
+	 IsmM7K7tfV3zA==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -151,27 +151,27 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Will Deacon <will@kernel.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v4 05/14] rootns: Add ROOTNS_WAIT ioctl
-Date: Fri, 20 Nov 2026 00:43:03 +0200
-Message-ID: <20261119224312.1037966-6-jarkko@kernel.org>
+Subject: [RFC PATCH v4 06/14] rootns: Add ROOTNS_KILL ioctl
+Date: Fri, 20 Nov 2026 00:43:04 +0200
+Message-ID: <20261119224312.1037966-7-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261119224312.1037966-1-jarkko@kernel.org>
 References: <20261119224312.1037966-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 85B6E40009
 X-Rspam-User:
+X-Rspamd-Queue-Id: 577B04000A
+X-Stat-Signature: ktih5ug7i3s38eo3efkeodwsj4zshtmn
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: n3pnaa8koaqxz5tujdxrbm7rdhepakku
-X-HE-Tag: 1795128232-221807
-X-HE-Meta: U2FsdGVkX1/dwsGJDINi3zZLyMZxM8dthqXfb6JFOB7s1TCUsZS+XSJ4nXuYaxG19BHHTbEKA9L19lU8/cjfzHng3E7Lnc7LqikP+yEBq3Q9CWIANaPY0mkSOCETyDewtjMyULFKigOoD7f6EH9hcVC+8KLzCcXfTuGWMILfCUTcj6F3MY93n1qjDT3pIjTT3cx0oC4kKMyRX87a4jL315qtieuDczF9OfgMKt/bhxqbWv1xcAKJLXYhcoSNEMSm/94Ef65VJf0sBFcApi4uj4UhTSwrM6J40pr2G5aBnAu7wVFevaIYaPRm/Hfj1lymmsd08HZtZSXr2kprSpgVaWdB8V7zkNv+j9aZ9Nqn+4dY+67+Cb00LneWKnf/M05Yhm9DVHcRGCl7wpM2uo7qYdLP4TCZNwb3ylINJPoMhkrlw6YjFIzlJdobakAvNkXYolRWzYTSXkhsrmz7qndDr34ab8GvwY6nQK0CaiBc+ZR5QIE4PC1qoO1uyaiKJU6Hc78mO243wXKSBMzygRy1afKkX5B7a7pnXGMc+UEClkBQzSwabqSjmUMdqtOYKJvWWQ6f4jhxOR7F3052vjGHABdCLKj9pKcdgD6R524kyQwHOvf44MCk/bwKk5oGSFngZdfwuByaIpoj4r2vvMjMrSp9sMa4i2YFUACgW7AGneC3nfUopDu44n6m9WWCy58rdJtqjjat0xFmL1+DpBuwiOhciMBjn5DIa8y+2pnCEYcsaq+rM9RANPBUsbO4a1OE09o15cvbQkHEFbEnFLH91ajQxNYzu+4BUpxeqIVl0YJJEbCxdEmpwpn3sP0vI8fAwAzIPHKmdaEDlAztzZVxB2W4stvVLTkCMGI0q+bSXXdEQSDP5gHrywioOVlF+7qOs8BUKSIDMRoIES3H5f8J8w4y69rNjIRRTuGXbfHZB719YU6peB4YSXrTuLYn9bDgoVGajCM3+qwx1DUuBR3
- jpyNqor4
- jAjaU8H9G4B/fRr9ZqErElSC9PJ4Kd0p2ANNNC+ljjhGKPT2IgVQ5XuYq5BRnTjvh2FK0+zexlpNZcFJN9Z9vQYFKFy2yzF2NODdobz9YaJKMVLjujKMYELrMwVrk4tHOKTReFvT4WmuaJkQEOhtOE8F4uesN1UFB5SMsSo3tliyo9Pvsh6N72JgvF29iqtfGS69iHRHrLZrpDLNEiPjtxr3W8RWmfWfIfJJ8C2jXQJ0l+IW/4nW1WR3EY0OyzPOlrNDvud0SJoBcycnl5gD5EoZFLLZbHx4fwXPH6MUdCE0sMFRNOBxgb5oKF6R8ucMCbZJ187kkQHHx9PtWUH2vmO07ykew49i2NHrReFv8YCFBz3wdDq6H9rcioXHumxah38DTm2peyJ9z5cVL+dfGEvS/ex3Ltteozq/Kh2vykbYl1/7inLXI7aVgneO8lCC4r3528FjjNf9eHRQVPyuaYw2nCsBFr+f+leyNSNlKnwxEUpM=
+X-HE-Tag: 1795128236-750120
+X-HE-Meta: U2FsdGVkX18HtZFhLd+7qapkM6EhMMgtnaU1ZOJ5nLeSHpngGkwDiJv0hDtAf5fd62/KtAK8nsdyYpfnSUOHfLD/pFfFIt8XaZpOvo/cauv8bbMHAF5edr1VmUpuzlrZ3FLXp0jrs+4VTkFSylm21OnMgarasptZr9qERb2SGgJmdtWWKwOerl60RZfn9Sn6LPQFv63P3fMZuS/PZQk8Sq+f6cS1ZDuLvaVUZ55AtTb2v8kYAy+OKcp2p+8udgyAtebG+by35g7mFXZKT5CFOC6tvhSTOQ5+yGMy9w8gXXEHO0FCN7AKCCJ2xj4ltS4iVwt2SUWeHFwoAeihB7VoccaV2jr+1/kOc6mYHJOP8R3lPPmSVsCYqJCWC78xbGPvVegrr2UphtVDDfnfYZbDkhYCNxvIH56Yqj1ul2S2QyzW0EiYvXk9BO+y22GQl5nUQTtN7kdDwWp0q1dpZeXHDO7ViuXMLmFL3RFvtMq4oa45aLDz8GVwrGKpluipPIYoAEi1wuky0nhHNmDjWGqsLiCKkQDrjPMllv0kESlPh3CQ2DLB0lHIHAZZVNws20CyS7rQVyOG0v5T70MvYCpeNdzewU12qQdDGB2aeBeBAJd5xyB7LrKC0tj+R6VNu6hMEwbnqP4+ZAtlpZUyn7EHzKP5aSfE7QaaatSZFLVGm9+Pq+jr2EkSn8o5hdP3r8RlAOrw1ODvUjiNIFU74wYDI+CLeIAxcOtOtVIOmhUU6aFywgXnvnn9jEcN+MTVUdZ3H5WBA7GKw3jXAl/a89Yt1jTzDkXjEdcFEq75VUEzEiy1QR3UndJ6ANxQYV7FG7ZqhuKX1XewK5Mfg+xPW2PGOcmrRy8ivqPAOmQfVCmt2IGGQQmu6eBfpvj+MRUvXNOXe4Qj3VORi9qqFD9rfbxta5CG8sxWS5u4aqv9417Cw75wFHRpChsL3COLng9Urg5im7rPYnNPSKjpwmJ3ecf
+ AItuXNFF
+ icLR3UyBY7Ivg//tjUJE3GlToOM6VHMTCtag1+fWvGXSS8br63SkPMAZISc5lVv8Hera1bw1F/XHfhtimIXAcHAN/40iFQJ0xDHv6fbpu/9vK0uJ0bvzOoPN0XOdRH1EbCz2SGq7qIMB9Ytt9CwRqUYcZPk3R21hWf1rI8Jv/cVr9ShSW6g8zYXXKP0VQ9yxe/YwgduEHzThoKXnLD8YqOeKaffSvDyfPUGqSsC2k9mxwEULH0YyPa2IslYtFb5g8ECrVtOQ3fUAr5VLFhkD4IqE2GSoA2PBiSnOZx+LF1zZpDJXEB26NrbHoDiE3MMHkRjXBOoRhp+UICcVDHaKFXHwCV8xEgAGqle1gCofMKDbkhKDcaPJYBDNzr1hz9iiAII6OrJjjnKvdZeKBOHJX58kyN42nTtteR1l2747aiE2kCfYdeJ7by94gAaK8INSdxKjG8HzSPaXnxQStVDeb0mDFEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,148 +180,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-wait4() and waitid() only allow a parent or subreaper to collect exit
-status, so an external manager holding a rootns file descriptor cannot
-wait on a rootns init process forked by another process or observe exit
-status multiple times across observers.
+Signaling every process inside a container from userspace via /proc is
+racy against concurrent fork() calls.
 
-Add the ROOTNS_WAIT ioctl and struct rootns_wait_args to wait freezably
-and interruptibly on a rootns file descriptor until its init thread group
-exits and report the recorded wait status. Return the init TGID
-translated into the caller's active PID namespace, 0 for WNOHANG while
-running, or -ECHILD if init was never started or is not visible to the
-caller.
+Add the ROOTNS_KILL ioctl to require an ancestor active PID namespace,
+walk the root namespace's PID namespace IDR under tasklist_lock, and
+deliver a validated signal once to each thread group including in-flight
+forks, aggregating per-process delivery results.
 
-Co-developed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- include/uapi/linux/rootns.h | 26 ++++++++++++++++++++++
- kernel/rootns.c             | 44 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 70 insertions(+)
+ include/uapi/linux/rootns.h | 13 ++++++++++
+ kernel/rootns.c             | 52 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
 
 diff --git a/include/uapi/linux/rootns.h b/include/uapi/linux/rootns.h
-index bd643bdfb43c..3fd215185398 100644
+index 3fd215185398..acd91d895c63 100644
 --- a/include/uapi/linux/rootns.h
 +++ b/include/uapi/linux/rootns.h
-@@ -8,6 +8,7 @@
- #define _UAPI_LINUX_ROOTNS_H
- 
- #include <linux/ioctl.h>
-+#include <linux/types.h>
- 
- /**
-  * enum rootns_flags - Flags for rootns()
-@@ -24,6 +25,16 @@ enum rootns_flags {
- 	ROOTNS_ALL_FLAGS	= 0x00000003,
- };
- 
-+/**
-+ * struct rootns_wait_args - Arguments for %ROOTNS_WAIT
-+ * @flags: Wait options (0 or %WNOHANG).
-+ * @status: Output wait status of rootns init in waitpid(2) format.
-+ */
-+struct rootns_wait_args {
-+	__u32 flags;
-+	__s32 status;
-+};
-+
- #define ROOTNS_IOCTL_MAGIC	0xB9
- 
- /**
-@@ -41,4 +52,19 @@ enum rootns_flags {
+@@ -67,4 +67,17 @@ struct rootns_wait_args {
   */
- #define ROOTNS_GET_NSFD		_IO(ROOTNS_IOCTL_MAGIC, 0x01)
+ #define ROOTNS_WAIT		_IOWR(ROOTNS_IOCTL_MAGIC, 0x02, struct rootns_wait_args)
  
 +/**
-+ * DOC: ROOTNS_WAIT
++ * DOC: ROOTNS_KILL
 + *
-+ * ``ioctl(rootnsfd, ROOTNS_WAIT, &args)`` waits interruptibly (unless
-+ * ``WNOHANG`` is set in ``args.flags``) until ``rootnsfd`` reaches
-+ * ``ROOTNS_DEAD``, then writes the recorded exit status of ``rootns`` init
-+ * into ``args.status``.
++ * ``ioctl(rootnsfd, ROOTNS_KILL, sig)`` walks the target root namespace's PID
++ * namespace IDR under ``tasklist_lock`` and delivers ``sig`` (or ``0`` for a
++ * permission check) once to each member thread group.
 + *
-+ * Returns the caller-visible TGID of ``rootns`` init on success, ``0`` if
-+ * ``WNOHANG`` is set and the ``rootns`` has not terminated, or ``-1`` with
-+ * ``errno`` set to ``ECHILD`` if init was never started or is not visible in
-+ * the caller's active PID namespace.
++ * Returns ``0`` if at least one thread group was signaled, or ``-1`` with
++ * ``errno`` set to ``EXDEV`` if the caller's active PID namespace is not an
++ * ancestor or ``ESRCH`` if the ``rootns`` is not running or has no members.
 + */
-+#define ROOTNS_WAIT		_IOWR(ROOTNS_IOCTL_MAGIC, 0x02, struct rootns_wait_args)
++#define ROOTNS_KILL		_IO(ROOTNS_IOCTL_MAGIC, 0x03)
 +
  #endif /* _UAPI_LINUX_ROOTNS_H */
 diff --git a/kernel/rootns.c b/kernel/rootns.c
-index d9ef68d603a2..5f03b6ba4a54 100644
+index 5f03b6ba4a54..ce012a07e982 100644
 --- a/kernel/rootns.c
 +++ b/kernel/rootns.c
-@@ -115,6 +115,45 @@ static long rootns_get_nsfd(struct rootns *rootns, unsigned long nstype)
- 	return nsproxy_open_namespace(rootns->ns, rootns->user_ns, nstype);
+@@ -154,6 +154,53 @@ static long rootns_wait(struct rootns *rootns, void __user *uarg)
+ 	return ret;
  }
  
-+static long rootns_wait(struct rootns *rootns, void __user *uarg)
++static int rootns_kill_members(struct rootns *rootns, int sig)
 +{
-+	struct pid_namespace *pid_ns = task_active_pid_ns(current);
-+	struct rootns_wait_args args;
-+	long ret;
++	struct pid_namespace *pid_ns = rootns->ns->pid_ns_for_children;
++	bool any_success = false;
++	bool any_other = false;
++	bool any_perm = false;
++	int other_err = 0;
++	struct pid *pid;
++	int nr;
 +
-+	if (!uarg)
-+		return -EINVAL;
-+	if (copy_from_user(&args, uarg, sizeof(args)))
-+		return -EFAULT;
-+	if (args.flags & ~WNOHANG)
-+		return -EINVAL;
-+	if (READ_ONCE(rootns->state) == ROOTNS_INIT)
-+		return -ECHILD;
++	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
++		return -EXDEV;
++	if (READ_ONCE(rootns->state) != ROOTNS_RUNNING)
++		return -ESRCH;
 +
-+	if (!(args.flags & WNOHANG)) {
-+		ret = wait_event_freezable(rootns->waitq,
-+					   READ_ONCE(rootns->state) == ROOTNS_DEAD ||
-+					   READ_ONCE(rootns->state) == ROOTNS_INIT);
-+		if (ret)
-+			return ret;
++	scoped_guard(rcu) {
++		read_lock(&tasklist_lock);
++		idr_for_each_entry(&pid_ns->idr, pid, nr) {
++			struct task_struct *task = pid_task(pid, PIDTYPE_TGID);
++			int err;
++
++			if (!task)
++				continue;
++
++			err = group_send_sig_info(sig, SEND_SIG_NOINFO, task,
++						  PIDTYPE_MAX);
++			if (!err) {
++				any_success = true;
++			} else if (err == -EPERM) {
++				any_perm = true;
++			} else if (err != -ESRCH && !any_other) {
++				any_other = true;
++				other_err = err;
++			}
++		}
++		read_unlock(&tasklist_lock);
 +	}
 +
-+	scoped_guard(spinlock, &rootns->lock) {
-+		if (rootns->state == ROOTNS_INIT)
-+			return -ECHILD;
-+		if (rootns->state != ROOTNS_DEAD)
-+			return 0;
-+		ret = pid_nr_ns(rootns->init_pid, pid_ns);
-+		if (ret <= 0)
-+			return -ECHILD;
-+		args.status = rootns->exit_code;
-+	}
-+
-+	if (copy_to_user(uarg, &args, sizeof(args)))
-+		return -EFAULT;
-+	return ret;
++	if (any_success)
++		return 0;
++	if (any_other)
++		return other_err;
++	if (any_perm)
++		return -EPERM;
++	return -ESRCH;
 +}
 +
  static long rootns_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
  {
  	struct rootns *rootns = file->private_data;
-@@ -122,6 +161,8 @@ static long rootns_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 	switch (cmd) {
- 	case ROOTNS_GET_NSFD:
+@@ -163,6 +210,10 @@ static long rootns_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
  		return rootns_get_nsfd(rootns, arg);
-+	case ROOTNS_WAIT:
-+		return rootns_wait(rootns, (void __user *)arg);
+ 	case ROOTNS_WAIT:
+ 		return rootns_wait(rootns, (void __user *)arg);
++	case ROOTNS_KILL:
++		if (arg > INT_MAX || !valid_signal(arg))
++			return -EINVAL;
++		return rootns_kill_members(rootns, arg);
  	default:
  		return -ENOIOCTLCMD;
  	}
-@@ -132,6 +173,8 @@ static long rootns_compat_ioctl(struct file *file, unsigned int cmd,
- 				unsigned long arg)
- {
- 	switch (cmd) {
-+	case ROOTNS_WAIT:
-+		return rootns_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
+@@ -176,6 +227,7 @@ static long rootns_compat_ioctl(struct file *file, unsigned int cmd,
+ 	case ROOTNS_WAIT:
+ 		return rootns_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
  	case ROOTNS_GET_NSFD:
++	case ROOTNS_KILL:
  		return rootns_ioctl(file, cmd, arg);
  	default:
-@@ -327,3 +370,4 @@ SYSCALL_DEFINE1(rootns, unsigned int, flags)
- 
- 	return fd;
- }
-+
+ 		return -ENOIOCTLCMD;
 -- 
 2.47.3
 
