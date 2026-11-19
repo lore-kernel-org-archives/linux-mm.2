@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9648606A334
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC12606A32C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RHfDuebs
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NuwjnRJ7
 Received: by kanga.kvack.org (Postfix)
-	id BC2E26B06C2; Thu, 19 Nov 2026 17:38:23 -0500 (EST)
+	id 7F2516B05DB; Thu, 19 Nov 2026 17:38:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B737B6B06F7; Thu, 19 Nov 2026 17:38:23 -0500 (EST)
+	id 7CA266B0651; Thu, 19 Nov 2026 17:38:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A88C26B0700; Thu, 19 Nov 2026 17:38:23 -0500 (EST)
+	id 708146B06F9; Thu, 19 Nov 2026 17:38:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 857186B06C2
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:38:23 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 07A6C40C57
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:38:23 +0000 (UTC)
-X-FDA: 85453333686.14.2A1262D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5E10340006
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:38:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RHfDuebs;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AA246B05DB
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:38:43 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EB481C3F52
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:38:42 +0000 (UTC)
+X-FDA: 85453334484.21.50C2EAC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0E2E1140003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:38:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NuwjnRJ7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795127901;
-	b=b9f/BhB1U0cePlmV1bIZ6wUD2v6RqfNGH8E7OFnsOY+WixPJM+DeDVov9pJCQDp2nVcDJ7
-	JZIfFEmcTpk1Ep7DAFUWfpxZjdKkpwq9R8abP6mLUXOD/FGxHOZ9wut8J44uCen8aG4+Xw
-	SZSBJV/Ke9q476+WXYcxLysNzTrR7Vw=
+	t=1795127921;
+	b=Tln1Zmz90Fgwf6CvMc4AX6QjR/Tpt+XoI+mJS4l0xb6kMTbAuv7toJQpvb3CsSuRPU6CLl
+	UWNMmW0EfEnpjZupOb817QwaoCz9ouNrbX7x+1gFFiBd36lHQ4TiIOiumcpZzPDg4erjL8
+	s6q0LbnijEwc01pg1c476vHdFjMNJEI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795127901;
+	s=arc-20220608; t=1795127921;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rft8BhkDVgM3lrqAebPZw2F/X34gjZWU1HoE0P/PeGI=;
-	b=Fc1bO7kmzkQZunOsmGHvGxKpoMMC7wqyWDDkQvoqqjod+7XOylnM6CROeO6UneFXIykaE2
-	cfpJ8IF/pBer43w3L7hkdxZ6UINHa16rEuapXPabf7kbrNjDjmLpyfiFRRK8FnuISDe3cy
-	iixLWCg/7OQYCxdZWdRYRPwIyySFAdQ=
+	bh=cj8MKy2tc3Sx1JwUpxECQgdXmsrh1YRqOP4Sl+8Dj74=;
+	b=sREJDYGN/zDZp74nMcsjyP5eo3IPlj6gwrAFYlvE4xxKtBzQD34CfPmWmRchkv+JGqe3hV
+	fkRcrv/D6+MgJu1ixbKhbEh6FrY2pQHUBORftyXM7C6kgFUfvsqDdbK2qlqX6DT4sZii91
+	j+M+/wHMFRgtDnNysKYjDZM17KS0v7E=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RHfDuebs;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NuwjnRJ7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC09046518;
-	Thu, 19 Nov 2026 22:38:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E381F000C4;
-	Thu, 19 Nov 2026 22:38:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 59D3961F65;
+	Thu, 19 Nov 2026 22:38:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EBA1F000CF;
+	Thu, 19 Nov 2026 22:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795127899;
-	bh=Rft8BhkDVgM3lrqAebPZw2F/X34gjZWU1HoE0P/PeGI=;
+	s=k20260515; t=1795127920;
+	bh=cj8MKy2tc3Sx1JwUpxECQgdXmsrh1YRqOP4Sl+8Dj74=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RHfDuebsp9CcyVmwxWUNXy+YCzZcEgiFPXgtRTSnZSmDVvReT+Y1Unlbgw5YwLN68
-	 w5hDOJUJwfpjeOFPGxLU4u26V+preUnnSiyVqvwPie6NotkKMgDHwPwlN7L5KsAy+S
-	 IEqOXxIWh8h65+cBkF1/tctlMmgfGG0Qi2sScY6jT66idOoGakVgkRY3QyLevQ9lQ3
-	 +kPxMK3ee3RDYmhxoC8wL/3bAH5/ffLDZhvIC8JeJQASxgJWhopV+kXPMlYC+Qj45S
-	 L0mCjBwYmWrGdOUSfKTfBwTN2Z5BrPH1s28LWv7Kx+UcPsStIXCOj2woBgb4c9dGAB
-	 OTCJm1k7ZKEWQ==
-Message-ID: <sashiko-outbox-224136@kernel.org>
+	b=NuwjnRJ77VaBWoVlfrRYMOPJitsXnO0CmQ0ewhyBdvVQIUMa/2Lla85Nd6sVLcqSO
+	 rBSZstLLajgdg7CE+ZtMUiIPEv7PaFl58FO+wjyZERXsQJXc1P+8EZBEsc/pc0Li1r
+	 dSkKtAQNhJuxTDl75YrxBtqZBBY5rTx9XQlDa6MrD3Mm2Dx+CX2hcFoQ7EkEK4jzX2
+	 ix5bmcrCXaw7nWXSZsh23FNASS8JJ6jpmZa+nRvl4KCo6luiLjhnX2QZ86aYoWNNTT
+	 gsxJFCM+Haoqlx6Fd3JAZz1snnrO7gz1yCU4oh1Hz3OR/4LMVYS79qCG5O55gft1aC
+	 rAn9WVkFg2HcA==
+Message-ID: <sashiko-outbox-224145@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 01/13] PCI: liveupdate: Set up FLB handler for the
- PCI core
+Subject: Re: [PATCH v11 10/13] PCI: liveupdate: Adopt ARI Forwarding Enable
+ on preserved bridges
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Matlack" <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
 Cc: "Adithya Jayachandran" <ajayachandra@nvidia.com>, "Alexander Graf" <graf@amazon.com>, "Alex
@@ -78,24 +78,24 @@ Cc: "Adithya Jayachandran" <ajayachandra@nvidia.com>, "Alexander Graf" <graf@ama
  Mahameed" <saeedm@nvidia.com>, "Samiullah Khawaja" <skhawaja@google.com>, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Vipin Sharma" <vipinsh@google.com>, "William
  Tu" <witu@nvidia.com>, "Yi Liu" <yi.l.liu@intel.com>
-In-Reply-To: <20261118223704.3286085-2-dmatlack@google.com>
+In-Reply-To: <20261118223704.3286085-11-dmatlack@google.com>
 References: <20261118223704.3286085-1-dmatlack@google.com>
- <20261118223704.3286085-2-dmatlack@google.com>
+ <20261118223704.3286085-11-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 22:38:17 +0000
-X-Rspamd-Queue-Id: 5E10340006
-X-Stat-Signature: krbjjjrczeyog8iyt65o51h79ujd4unr
+Date: Thu, 19 Nov 2026 22:38:38 +0000
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0E2E1140003
 X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1795127901-714755
-X-HE-Meta: U2FsdGVkX18FilwLJU+kWWed1bnzjcIkIz7490DyV6OjhJF45MpCQ0bikz/uvRY9+fVzPUI20Gu6r0o3zwDs7dxT5uDMjkDka95OLe2NMknHKIAJfM4cO7of8AYFYiBz/RPGyDxiqQ2bKCAQ//GzGe+iOI192b+ezgbnLK6RIEImDzV9A8eeOj04DXCQ3YhvvEl/Rx5uGkko5sGZ8aPUJaH+DAwrEe3xLOtj61nYE8rJqv8MhBxlRA2zbPEVX6uqI0hHceDB+VbDB6nB5hZr6D0h6GUwQyK4PLcZ+FXzH0Bra8dtbuAEH/tz4gSJL9FJk9z2+1RuWOK8Cg1sB23f9mOADvq+AfjRm6aR7rL9Lh2/7xR6MKtbMThQUyTDy1mpm/FvjWvXNzgm59AV+PGUTMU0Mdo/G5wxbEQui5//NXj9EwBnKVugHfwfxFip46NaypOyqug0ys+vKCkQDpNnD2zJ/DHHseIT1OdOY7uKooxFbchqS3mJxuVLTF1TMn4fuO/8IL+tdpSDxQyQ0H36B+eCsxwkwjIyVlE3kV787OP+OWbWTjUEvjduNKmab2SEzR6NfIfhRDWj8jONIz5bwufRNQ24ziWYfHt7MczRJk2QBlyMT9bkIXeA2PiOaR5gescnXsMnLkwfadnA4+AyHFfxYIuBbD4nqmmIKik8f38amcOTh5mzTyxi+VOl3Bl2mUFC7rxoISSbTp6EnS7GK+3zLYI42BkORO3W9xmEUNI2nNodPeOgzON3J+VXwVu13ZFvNxytKMM88FHvkhFlnNfbttv9yH3QeVx9d+KtsMkS/I4pMB3mcFLytEtZn9Axx2B9W/aQuYO83Au2MOrxq/igNyPX8NNYyNrN/aXhqeg4mNsBFIwePYmjbGtGEdm9t/DCEen3BzF1UXOkBNHs6dAbEPtMtw+VyYQhOXUaO/ku+V3Cx6E44Vf4JInmUDDOfvx8dAtps3jMn+g4C+V
- fjLXhSPI
- 06QJFExoP4kBDHT0/C4YAWqcKpwgit6bWHHYDoyCK462Pu3zH8n/39kxkgRHm9Ud5+fdbN1myKv1BmYsMEdQxYWGizKX5j/J7Vm/AOgnn8AvtkqQC869fzQLxRgd32GX3mSol+0xZJQNLaAMtVi2CTPHNx/hnyqerLybbWDLxeH3es/wHH4phgfzybdJnYn5f0TfULFIl4DBynSRRrYp4kGu5eUt5a/lUffYrvqaq97Wdz4lUib8HnPa66/vjYqoX7xtuT1eFZPwEUZxkDrSadoGLk6tEJymRj5qHDf3+x2JNLSVnY5D5WWJMuy6ZMhFpFovuUYiOpGp4zV2dzYI8nSXdisWCTOvniOtizujZXKMMPj1jVk7jiHbTHOE2qNmWv5+ylzdKCQJ6KrW0xcJRiZmmWmleRFrRSFRXhrl/lwOR3YCSJbyCUFIIVp0gkkE9a+tnuUhOBX1QtfFDIDMgptwnc2rjrZosGFCbZevCHSqT/0SCANWYxauTqXV/hrFbMxSeUjmKqZHVpzEn1Mqz77UQezcfY57MYHp2NbimolKiEpVOAbUBKH57GY6o5xkQFYwTIKS8yB04Ku6vxv8gpi3d6jMNmFC45I9Y5QZG0tRm+T1Qtsu8i3Hqj1JjfBW0C+lHVhyncWbczM8dPZpHC4fRYMeV0Xj8qlCmk4lviDWi9pgecDA/nzjFNaxf7DcYtPZnYsf2VzQ9VKZe+qJYJ+wRGcc1bkkmBtwnz6jIKZz19taU9KTjTLH/lQ==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: fchx96yqczts6kr97k8bb81cqt3x88fi
+X-HE-Tag: 1795127920-539609
+X-HE-Meta: U2FsdGVkX1/1WJy0VFnL7RLN44QZHD46cRZRD1zexLtW4gRHeTdQijrL50oIVjiG/bKVCVPoG3NGPoaknXKNdcF/PRCas15I3X26S7PRVRltWZ+Pb2RA5RO+RP8HZN+YUPmsNwyBlWQSPUbQ/5sDzVcT5mBibizs26fyLQR8BI1cvZDM3n0h38ddl4ms6PhtggSROrOtaBJjcuQonKpmivshwTC834RW0XnGIYFiNcE4Oj95DwsO7WuwDk8iIJnXk0Arv6BflJMNZ/uUWdGUdPBeJaHoF7ihSmW8IcTlL1pZ2gTPcJSZRTVG/XuEfA35cyLPCEW7qfE1WRywYzT2fPg9P+2id8isW7pDBs17LDxunHDB0Zdtzh/XA3hkcj9JNj2/b5bMyFoy9Xu3VzWWw8CC+c4K+uyOErt+CQl+euQx0eM1yMWdKNY+BEPlNxH86Oj5CL8SJedkM1nV1a+AAEdQDsUkKMy6EYLbNjb5Q5P5281bevA6shnE9CRN7lP3AYLa9kMiUDzfCZKQW5jDWrnYtA0xgaagdwnA8Mphw5vgtrJAY3WhoYG2jV3T5TlatBzHqTlLzNePaP8crB+1kxoUpO9NXnsinbbev7tdIwaqIqhkvavXGcpTWOJ+EDmqGA1IQxYLex8CoMJmmIkOxiv4aDc2O1YYKZ4QIwK6gcB/RMQDSaaM/VCisd02UFkUiQSiyl6FFgcIfYZZAvEBJ9eWXiZiys0BnVKocxC6XCm6hhkcasfrZO4op+RnSiyc9iDPyY+6XMnXyk+DzQ0LyX4hK+dx/ubahv1enA0v3o8qEJPe3Wt8/h0FLLcUK3/4TLi0bfyD/bVw5luCE4xxSgMHEoApa+8bvNZ53yMlYPPlGa3SK7igWbDc+3oB7fi3ZaY2wQleIMtHGZLBJMFZEVhhg3mgwneoQ34tYAUKvXP4DOcvCjLgEevEmsoXs15VSQJzMd8AdVc8xg2pmMe
+ Z49Ac8eV
+ FZMP1pTI5PgLL2+MRsLEBRPuuzWMkWAVClvhheCB794+w5uAqUc+elVoLXJpXB6dFKtXyneMw+uL6WKMz7ueON4PGaZrWhZjQXhRURBsX35Tf9w+TxpSVqtozgDSVq35Tnu8P/JkAVQmwayUsU97bRAqMuQ0QbI3ake7RfGcAaETbiH+Jri0xSxOL/7gv6uijMUwTEs2Boqn5CgWfoWYLEzv1WEByrpX409rMfmQuW3gX/Gc0qakqzT93jB61GoUiPQQRt3oZmgrfAPNWF+m+OdPYtmKhQPaN/TMLPp7rzh+yG9cR536/JJlDLWZtTrNK3LOWFPV34gzTT9BYg/jSjGGkQ0vWGRv4LuTWQswnUeon5lbbQdhnedmnSAiYFQqpiodIUF9cSod9X3jkB7SZjj4/EHuvqbaFygo5bJ0SPLpJF8vnocdJ9f2mWQm/6qUq6QnVa26WeDeXUPFVAQyc/WXAp8Mzf6XqwQcT3wU/pflaGOv9c4zDt41YvTVMfmNUK93/7GuRQ0sdvCjCJLNwqfyxeofWIT82EzQtp2Mu+WfUg3PfwpMEiipv9o+Tlz6QltcQG5NoOLWDGCgB4dkm/Uy/FrsLuJOoGwc/CsijIQHmxOOnbnHo1h4DvLiu9i/Swys0aNyy3mM9PoOPLpUcq1hgMFVNbRtZya9eyvz4z7XoI5Ae5ufg1kU8vSgPMfrfjichCR0io6iOrrqQrLxbdqBT4OcP3fRsc3RWJZ2WgbyFdGCdQJQPtZ8eZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,61 +105,68 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] PCI: liveupdate: pci_flb_finish() logs unpopulated args->data
-- [Low] PCI: liveupdate: separate __free() declaration and init in
-  pci_flb_preserve()
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] PCI: liveupdate: stale ARI state in pci_configure_ari() with
+  pci=3Dnoari
 --
 
-commit 525f211f02fbb47d85199fbccf703e0ddc3e892e
+commit ee2b5e1cebde3231a1c9acaaf68c272dbf3c6e8e
 Author: David Matlack <dmatlack@google.com>
 
-PCI: liveupdate: Set up FLB handler for the PCI core
+PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
 
-This commit introduces a File-Lifecycle-Bound (FLB) handler and KHO ABI
-for the PCI core so that PCI core state (struct pci_ser) can be allocated,
-preserved, retrieved, and freed across a Live Update kexec.
+This commit adopts the ARI Forwarding Enable bit from hardware on
+incoming-preserved bridges during a Live Update, even when pci=3Dnoari is
+passed on the kernel command line.
 
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> new file mode 100644
-> index 0000000000000..173433f64d002
-> --- /dev/null
-> +++ b/drivers/pci/liveupdate.c
-[ ... ]
-> +static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
-> +{
-> +	struct pci_flb_outgoing *outgoing __free(kfree) =3D NULL;
-> +	struct pci_ser *ser;
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index ebc565b4780a1..b5b578355a1b6 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -3748,7 +3748,7 @@ void pci_configure_ari(struct pci_dev *dev)
+>  	u32 cap;
+>  	struct pci_dev *bridge;
+> =20
+> -	if (pcie_ari_disabled || !pci_is_pcie(dev) || dev->devfn)
+> +	if (!pci_is_pcie(dev) || dev->devfn)
+>  		return;
+> =20
+>  	bridge =3D dev->bus->self;
+> @@ -3759,6 +3759,12 @@ void pci_configure_ari(struct pci_dev *dev)
+>  	if (!(cap & PCI_EXP_DEVCAP2_ARI))
+>  		return;
+> =20
+> +	if (!pci_liveupdate_adopt_ari(bridge))
+> +		return;
 > +
-> +	outgoing =3D kzalloc_obj(*outgoing);
-> +	if (!outgoing)
-> +		return -ENOMEM;
+> +	if (pcie_ari_disabled)
+> +		return;
+> +
+>  	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ARI)) {
+>  		pcie_capability_set_word(bridge, PCI_EXP_DEVCTL2,
+>  					 PCI_EXP_DEVCTL2_ARI);
 
-[Severity: Low]
-This isn't a bug, but per the Cleanup API conventions, outgoing can be
-defined and initialized in a single statement:
+[Severity: Medium]
+Does returning early on pcie_ari_disabled leave PCI_EXP_DEVCTL2_ARI and
+bridge->ari_enabled set to 1 if a new device is hot-plugged after the
+preserved devices below the bridge have finished Live Update?
 
-	struct pci_flb_outgoing *outgoing __free(kfree) =3D kzalloc_obj(*outgoing);
+When booting with pci=3Dnoari, pci_liveupdate_adopt_ari() sets
+bridge->ari_enabled =3D 1 while bridge->liveupdate.incoming is set.  Once
+the preserved devices finish Live Update and bridge->liveupdate.incoming
+is cleared, hot-plugging or rescanning a non-ARI multi-function device
+below the bridge causes pci_liveupdate_adopt_ari() to return -EINVAL and
+pci_configure_ari() to return at pcie_ari_disabled without reaching the
+else branch that clears PCI_EXP_DEVCTL2_ARI and bridge->ari_enabled.
+Because bridge->ari_enabled stays 1, next_fn() calls next_ari_fn(), which
+returns -ENODEV and skips enumerating functions 1..7 on the new device.
 
-[ ... ]
-
-> +static void pci_flb_finish(struct liveupdate_flb_op_args *args)
-> +{
-> +	pr_debug("Finished struct pci_ser (0x%llx)\n", args->data);
-> +	kho_restore_free(args->obj);
-> +}
-
-[Severity: Low]
-Will pci_flb_finish() always log 0x0 for the address of struct pci_ser?
-
-liveupdate_flb_put_incoming() zero-initializes args and only populates
-args.flb and args.obj before calling flb->ops->finish(&args) (matching
-the struct liveupdate_flb_op_args contract where @data is only provided
-to .unpreserve() and .retrieve()). Logging virt_to_phys(args->obj) would
-print the actual physical address.
+Checking !pcie_ari_disabled alongside pci_find_ext_capability(dev,
+PCI_EXT_CAP_ID_ARI) instead of returning early would allow the else branch
+to clear PCI_EXP_DEVCTL2_ARI and bridge->ari_enabled.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118223704.3286=
-085-1-dmatlack@google.com?part=3D1
+085-1-dmatlack@google.com?part=3D10
 
