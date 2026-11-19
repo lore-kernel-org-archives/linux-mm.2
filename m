@@ -1,133 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF49D606A337
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65A6606A338
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=H589cwGa
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LYdOIthY
 Received: by kanga.kvack.org (Postfix)
-	id D2A9E6B0661; Thu, 19 Nov 2026 11:44:22 -0500 (EST)
+	id C1B626B0659; Thu, 19 Nov 2026 11:45:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDB336B06B5; Thu, 19 Nov 2026 11:44:22 -0500 (EST)
+	id BF4036B0676; Thu, 19 Nov 2026 11:45:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF0E16B06B4; Thu, 19 Nov 2026 11:44:22 -0500 (EST)
+	id B09156B06B6; Thu, 19 Nov 2026 11:45:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 94D246B0661
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:44:22 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC19940B56
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:44:21 +0000 (UTC)
-X-FDA: 85452441522.15.8E987C9
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A6268140009
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:44:19 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=H589cwGa;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F3366B0659
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:45:40 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18630160B82
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:45:40 +0000 (UTC)
+X-FDA: 85452444840.24.833EB7E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3E0B2C000C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:45:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LYdOIthY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795106738;
+	b=dGMe8mM/YV0Lu6FzXuWpAhvpC8oZVAjWGsSUz1hfK2CGpMjmjzKn3esdLE3iOPqDoVsPlV
+	VeapS1uoFGURdVh6Z+wXInT7KKD8abM45oYYfv0BqvC+ThKqqoEPj4fF8/nK0MaAbDqn/y
+	UsR2yixRgj9i4A4+y9A4Jfue0i5Tb4o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795106660;
+	s=arc-20220608; t=1795106738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zDXF/eCRhk1uzVkaxBfPvONixANJAFGM6Jb/fbAScSs=;
-	b=Gt2IJEqwPd+d2ocmhCQzWNX3tAs5NmiquurzeLvDu5GO0Jyhc0saETO1UlCt9ixow+19ux
-	LbkKUsWLpyQ+1DzO7k/Y325SfhMnZByzy9ppkG237czdZQB/OZeqHqcDRpqM7pqOus6Vk6
-	Q02lRK+jOhgwlMmmQsZRmWxOarPCTjM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795106660;
-	b=Ym2BD1NfzG7wHN+SkDt3MMGU06I7ggjnoNp6EfxHEHKMCxryeWlQlclSNUIk+bWA59CyN5
-	DpyensNlR7GCqVShisnQYkxkuAex0w+c0bIZmEVVxTVWYf7mKGkQGKCKRPmzuwxARZ9aZm
-	2f/FLiMUAX5uNKmY5n2ZNhjrv+Hvteg=
+	bh=droRF3Lbij+Y8BnqHPbxoGvs+aJlZy+IqYKUZOyHaLc=;
+	b=JjpAYKx8DAz3rcEEUdu4FeLOy3IM0jwZ/z9E6w2nwc2Kd3rlKH67OeEYbPzIictV8NwdaG
+	zHDVJuDuOtOEhmIw4Fgksf4Kp11Boaswn6DRK8ZP4yFMFNcn4qpch0S5nXngHsGgJ1aSzg
+	IdOPSBjy+ZASzBRHb16PA8I3v1ls6/0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=H589cwGa;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4a3e706b5dfso1611248f8f.2
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:44:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1795106658; x=1795711458; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zDXF/eCRhk1uzVkaxBfPvONixANJAFGM6Jb/fbAScSs=;
-        b=H589cwGaugqA9YAHhVUmzzO5NxEHkaUj/JyD12brCkRQeReHk5S7aaKzvKJsGLBd54
-         644fn8hrPCnKXe8vjWIvYdL4/2hN7GFGixNx79s2Er0KaScWgxIhXtApJDgB5jf8qnr6
-         3hymMyRW1hgtHwpnNuj9tiZoP4NiRbDVbWAv73n9ze+UpiOl6UsTXbw6GBUpJJZwe3zd
-         r1wOYYoQ8ABoGsnz+2TCi/NVX66H3pkEKyc3wKkSoRUXqNy9+isrvWGWc6S+akbvSeAZ
-         /GQP5kjCwY3eoMU1aHJL4hH6RqSu34xfzh4c5+fAh7BdfD6sJ4vCEy9AsguMRWQqaAUc
-         ikCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795106658; x=1795711458;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zDXF/eCRhk1uzVkaxBfPvONixANJAFGM6Jb/fbAScSs=;
-        b=i96a/jy/UR5iuvITevMOZlzSEE5cbTNX8qMsRBaQxQkzyq8rK4AWsQxBG4walowI1g
-         aE9EfReLuu5PyVswydlxYC6/DP8OuVoRrCYGk9/Efv1zeBmeEYx8ymcDguC+nFyXafdZ
-         ML3yJJ4MC8IVkeGyulXPlbu2hRWfeWmbEBJmgmRzp700YdR9vENDpUSYETpsM85x1gUx
-         h277b2MNB6DV7TGiUAk/nOHJYKuvBx61S/D7Wg6vgZqJsidvI9dX/sVUAiLd2oYDhXiM
-         OGCEhiGFb9mbCKq++49Wvs99J6qDnjq83G7lHMJpMpZQuoMx34he0WPC0n+pycLRT944
-         Bd1w==
-X-Forwarded-Encrypted: i=1; AL+hErFNV882bkHm/Tdmc4Cqbe5GDrGuJCgrft4TL9iV7Bc7PQ9Nl3By3IWx/2KYL62XDgMbBhZW3OXbwA==@kvack.org
-X-Gm-Message-State: APuU4Z/Ii2p+UumLXjzf0ikBMDt6kRrD4xuuUwgadyMVSYlcwzVkeBpY
-	NHqoWywCS1mRhP0QO+meL3XlLocCCxdZgCBPoh25IKLVKuttKIINvpJGFu7hsFTuTy4=
-X-Gm-Gg: AZFdTZdmG1kR/bakQWBN2uHpzKBoWzkz0KSB9UnbGkLFPSM7PqyUHvXjfVwVbDah8iZ
-	ybnmOlW5zuEdXf7MIx0CBA3XDKdYJLVBC4BsIS/uBC1njfCs0Vjwrq9nK+PLz+7prAAkOYhN6MP
-	3ebSFkKFMjffyIlqS0HNVoYqC5l49WFBTfAOrfRk8mhj+WsbiBmcLc3nSIqGAxxDM0Y+iYjeHuF
-	lJkU7M3ttERLwjL78T6qaXfaLK4shIERWWzXrQKgKs2iLBL0NBgbQaDSOOI3XIPXNLI6CZmDdhT
-	I3L/KSV8fi01/r75Kq5r7u4lHC+jslSrep5EckgELjbaR2MyJvD7rWnKWMKElkkiVUo0TowHrGd
-	NktAcFS3h9w9OzZceWY6LuYmL8lHo2vleEGTHEl85kag5sqQNNZ4pH7ZD8dlOE0J5X7Kn3oTZa9
-	n7UwWvmbYU6vPfupeW4DlpuzB+sJERwT7UqRtWwUfYvLxz+j/qcVfprDiXHoPgpKzaqSJSQpG3x
-	rpiSMXk/Tzu1FSSu3t3rj4L2AMZI/dN50Enpnh53WHgz+igEojYZfHHS+GkXFbtCKsDwtzr1VCQ
-	6ZO+bcg6HswH40fRILIxaMDjmOXSZINj0117XA==
-X-Received: by 2002:a05:6000:2087:b0:48b:db7:86a7 with SMTP id ffacd0b85a97d-4a63e223fb6mr14422264f8f.50.1795106658000;
-        Thu, 19 Nov 2026 08:44:18 -0800 (PST)
-Received: from localhost (109-81-24-9.rct.o2.cz. [109.81.24.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6bb98b4dsm632121f8f.53.2026.11.19.08.44.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 08:44:17 -0800 (PST)
-Date: Thu, 19 Nov 2026 17:44:16 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jann Horn <jannh@google.com>,
-	Ying Huang <huang.ying.caritas@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Chris Mason <mason@kernel.org>, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] mm/madvise: fix MADV_FREE handling for PMD-mapped THPs
-Message-ID: <av8nYAco3bMhUIBI@tiehlicka>
-References: <20261119-madv_free_thp-v1-1-a312919e1ee5@kernel.org>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LYdOIthY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 418F240494;
+	Thu, 19 Nov 2026 16:45:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCDE1F000C5;
+	Thu, 19 Nov 2026 16:45:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795106737;
+	bh=droRF3Lbij+Y8BnqHPbxoGvs+aJlZy+IqYKUZOyHaLc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LYdOIthYIHWz1yQ5BaDsqC0vczLJ0VVMjDCqY7IBjQZkkI2CxuPTjI5sftcqxV5tY
+	 AemuXlWJcQlRFf7XNeXgvYQiSLIvbSf5OXaxRDOYF+9+0pxx1rnTP+8qNxuHu/Ckw/
+	 7O5lmDe2N6XrhVRB7gWKoKc9Uey9bwtfXtvQK3MoGeChidMlCIgZc7zjQGoJGhq8hy
+	 unFoisFtRyy1gndqj662f+v1aTKTUUoCPL2qAhJV41ubco5T1XwhYB3STLWGTiZzVZ
+	 pUhAekavt/d6zgCcPSzip1EHhM4LBWhmweQb+C/FG0bI3Mv03ASTHUmdW5mb3JrUC+
+	 V1zD2CqPgazYQ==
+Message-ID: <cfe54790-1cea-47f8-bcc8-a7d950bb7c76@kernel.org>
+Date: Thu, 19 Nov 2026 17:45:30 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261119-madv_free_thp-v1-1-a312919e1ee5@kernel.org>
-X-Rspamd-Queue-Id: A6268140009
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: d9q5hd7ji4d86iw1nh6eahbnpep6aa3g
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1795106659-630502
-X-HE-Meta: U2FsdGVkX18LmPgw5wn71Cpq3pQ2XEB8H/OOFk7Fr8vGAQmOnMGSzUMU5elBJna+wu0PLvnRDjnBXQze/LratPV8leddWrBJ+CfNp2VtlXVzsvLN75S5eagKN1na51/O7L5kI7pH7U4JItT68/FU2X73orVuY0yRCEKqOxF5gSZWWh59LEkrJAYN2F0TJgyjp1I1w1uAcuq+y7Dmkqi8CbB+N8/88lF1WpkN3E9x9Bw8OVamXP5vlkPvShTlmM1+oqtUMtxaCnhreB5DZGbBmA7WXjothnCNtpfN3IrSrOq6/n/2eECndnXgCyT7gWU+qKFrRKEIU55fSJjQCE0gXRBt8otq/MexAzcFVuy7OeaZA0jw4xKGZkJt+ClagJrLQzi4e4VHvAUc7CZMfrBzcQRZKaR2oeRJabQJmdtb/tAv8/5lYRa/XSDNedtzJgCqE4B8PjQsWHHKqtIEpGGojTyYHVe1zMLq8a99TUyz3lR/69NUyFELDnpi8JMkZ9q5l97nWeHlifSZZeazpX5rz+bbRwcLK0MoobEyjsv0IPPNMPIV7rQR/I6XHnzctND2OWvF0OjWjFLRu+u6xq+nxxFxDkquKVgYDGHqitQT+Ir6BwwsMNHnN3X3aC1SUhczMrpsHnXT7GvN82MNz2URu7euHGHkXd0cLcAlRe/57ye3NSXZZXVSFy06+lp/diYK12WI6oefMbFCp73FHycLZJmq6kXOEJjS9Mx/a22vJl8fRd5HvRBEnliVRx8ErkFQPqihrMZC/i41Yyin7SJnns6r9gYDGWr54PTDOs69/RLaRSa1p/ZKTqOftaonePMag2HLiDXkxrJGKav04GCCgvMk2J3Wc6xF1W8/7Skf+s7tqaOKOd7NzB1w0RRjpUwTP0lBi9FRafwMj38bBPy6PeuqEUBTVQtifCZ2Q1zYdtj4FqbFpjL9HWUUTIdovX026gPSC5XWg0KYnvqp40i
- TQeMeBOQ
- XWAauu1W2mNnVxS7SNcyurWHzUH+t4P6iWeV7mhBkOO/BQMrluLFbtzZ79QRLumJ718wPKG1T0iRbSAe9cyxeCerZ5L8Jrw/gkLy06AvSyhBOjJ47luiOYnnCZapqQDGNWdALqckxtbwPox+KLswVX0j6jhJTHuEaNX3IAORYoAGAWJQ4LM4ACTSgAt0AmQMy54tQDSxIt1MMAbR4KkWokj+BlI3Q1oqdKN0MG5EW3tb1p47ngV3f109/3dh838j9Zjq96VLK0OOGcmy0/z96ior4w5ww2RvVrYoGNm7YntHMo4T0Ow7kCc4EjpGAf2U5AReHQXxj+DePuauhvfKyup0KgYLCxcWlS+ihf2r6OoH6Da5xT9Bhns/LQPsv+wdKck4YXl3z//dDEFdGACt84AgvB77MPSpGsnKm66ruRccvmUoz6Cx5zZuE2U8Z/Crp43lootxav4siuANQvzPtEs9f3+yRctCm6qpBoQbmyfRdsMJGWDY7dCHiHCe5U0vGwtAcn+q+fL8JExZ82b0Ywph/M9WLO7tuQ5pfD/TW79QCWj79Dfe3hPYlYg==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory: don't map hardware-poisoned pages in
+ finish_fault()
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, Usama Arif <usama.arif@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ stable@vger.kernel.org
+References: <20261119134236.3745231-1-kas@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261119134236.3745231-1-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3E0B2C000C
+X-Stat-Signature: zmzyyyjq7otjdkpjxksxmug519szsk7g
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795106738-418947
+X-HE-Meta: U2FsdGVkX1/qdAT95oG6+Rl/Z3FPuy0cO5jcsGbpc5mv+J2jr5sjFQU9oy9NvjUjek07CicQiIwapLi1tM2iSogvP9K5/oq9tCZYOkChmh46NEL1gT8GGwYGMlgXOt66LwvTq0UwgM7Z6EwpV2LygBmOY6Py7Cnss5RHf670dXNVBpFUMR5lMNquIFP0XcvzkRl6zG5BxnpEiQZGF6JDxFbGUoj9Fong890f3owK4bUCKgzJNvatiIwF1osXd6B0w6Dhq8nuQ7n0ZcAIsHBbd2grBMVymZo3LW8lbe2G+UGiLNjNa6X+l1iM7oN87zlNb8xKVtxfoWJKllbxbFHiFBYbddKJBbyJiMEuObjNm/U5Yh8IOJNIqPHCZLL4ywk640WK9SVPpXK9dr9RH5y5NgEmJrynYLlURO9Loca7fvsPMigxfpcUHslMtI1oSYyU0OVBpRwC5iL3lqW7TcP9Zxu0Mlf7YxT/TQ3ERLR7OgpAjG/89d+TycC6n3wr0I7E9WHaOks6S0cj0wasLgTbNHaraYuwzCciBG6+mj+tS6xZ7Kj7uYU9Gk6rajCbEkmwQN2MSNDvK0k33Kw0uzypW4KyyPyWX7/z98QDt4ubux1BLyoLqxzEZEHD8sB2I1yjd0t3bx6WviK5KJrdKexBUVi3rsHjEw34gMu7lr3RX1kPwmA3RiZCZRWnRXhgDMvYiX2vtMrxr8vUvJwiiORwZ4SBmZ/KWQ1LmY6R7ZkMbxhlhWCEDun+JAvtAaW8y7WZl95OPZSIO8e97JNDgGPDry6EFbibKljYA+5+8gCZ+AdIHuqqL8luZXF62tboo7VmSDjA0aIGYMHpwi9V7HJrNBp8eizrqfDW2I87gyRwgxSLT9jWdHeK5sqpkr1bHZxFfE4fvi29TpEUCRG1lIvMhIWaE5yKX6BXIbv1UXbtSx6BFcCEytq+PUzlIdWEB4uKcV+oWrSuNvH18dbsY12
+ v4l3ADuD
+ G9TkuX2uO826JPeFYi7OOFzXygk1AKEb1v5TiTrpMycZWlPxz5HrGi9DQaQXPkXdu98IIgIb+lJ59i+m33RMZlU8V3pvbl6xY5KxNrS/V9Vh0PJfksDoQQQ5grt8n5/momws+KDc6EvufX2iUzDcnQLpAqy4hj1HnxA+2C2YDy4cvxj5XkAkPY7Oef5ZePykBEfJfW9df5t8FKpDYzJIvFFixH+yMRsWs7BKSXKUnLPHQqhYFwaXnV+oLLj3XbsAoRKkCyxosUzyApL0zF9rpCrSW+eUG/3hi97nh0ozcPHagoFW8kny/vAEDekFBV+6IIzHjYEJ1meW8TAY3b2wccxkT8dPzR4H1m39nltcOds9lwo6+TKHf98vwoV5PbqK6+NKaR43HbslnSts1UNRBGVs3+RA0QJbz/pB5mGNMiRP7PrgNl5FOeHimNZvOKEg3vmq7NdG9oeH/WO9VWp64EW/ixmZJ1MWAWENbOcb4amlknXxOlIG/SOq4xOiFKeS3O9AfMJZlkNprgNxQOKKn4aZIfAwaYyL0qbf0Fg+7Ap/jK6T5qQ0JrqVqww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,228 +148,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu 19-11-26 17:04:34, David Hildenbrand wrote:
-> After MADV_FREE cleared the dirty flag of an anonymous folio, reclaim will
-> later free the folio without writing it back if no mappings are dirty.
+On 11/19/26 14:42, Kiryl Shutsemau (Meta) wrote:
+> When memory_failure() cannot split a large file folio, the folio stays in
+> the page cache with the poisoned page in it. do_set_pmd() refuses to map
+> such a folio with a PMD, so that the poisoned page gets its own fault and
+> SIGBUS. finish_fault() then falls back to PTEs, but maps the whole folio:
 > 
-> If our folio is still in the swap cache, the swap entries then point at
-> swap slots that were never written, exposing stale content of the swap
-> device. Bad.
+>     do_shared_fault()
+>       __do_fault()
+>         PageHWPoison(vmf->page)
+>           // the faulting page only
+>       finish_fault()
+>         do_set_pmd()
+>           // backs off on has_hwpoisoned
+>         set_pte_range(vmf, folio, &folio->page, folio_nr_pages(folio), ...)
+>           // maps the poisoned page as well
 > 
-> madvise_free_pte_range() therefore frees the swap slots first, and skips
-> the folio if that is impossible. madvise_free_huge_pmd() does not, and a
-> PMD-mapped THP can be in the swap cache if try_to_unmap() failed during
-> reclaim, for example due to a racing mlock().
+> A process that touches the poisoned page takes a machine check instead
+> of SIGBUS from the fault.
 > 
-> Further, madvise_free_huge_pmd() checks whether the THP is mapped by
-> other processes before taking the folio lock. Another process that still
-> has swap entries for the THP can concurrently map it from the swap cache,
-> and we might end up clearing the dirty flag of a shared folio.
+> Map a folio with a poisoned page one page at a time. The poisoned page
+> then takes its own fault, which __do_fault() turns into SIGBUS.
 > 
-> Fix it by factoring out the folio handling of madvise_free_pte_range()
-> into madvise_free_try_prepare_folio(), and using it for PMD-mapped THPs
-> as well. Hopefully this prevents further bugs.
-> 
-> For PMD-mapped THPs, this change implies:
-> 
-> 1. We free the swap slots of a THP in the swap cache, and skip the THP if
->    that is impossible.
-> 2. We check the mapcount under the folio lock.
-> 3. We no longer lock and check THPs that are neither dirty nor in the
->    swap cache, just like for PTE-mapped folios.
-> 
-> For PTE-mapped folios, this means:
-> 
-> 4. We check the mapcount once before taking the folio lock, to not lock
->    folios that are mapped by other processes.
-> 
-> Only compile madvise_free_huge_pmd() with CONFIG_ADVISE_SYSCALLS to keep
-> !CONFIG_ADVISE_SYSCALLS builds working.
-> 
-> Chris and Sashiko reported the missing swap cache handling for PMD-mapped
-> THPs, the other issue was found by code inspection.
-> 
-> This has medium urgency.
-> 
-> Fixes: bd4c82c22c36 ("mm, THP, swap: delay splitting THP after swapped out")
+> Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support large folio")
 > Cc: stable@vger.kernel.org
-> Reported-by: Chris Mason <mason@kernel.org>
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/sashiko-outbox-202086@kernel.org/
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> ---
-> I would queue this fairly soon on mm-core/for-next-fixes
-> ---
->  mm/huge_memory.c | 19 ++++++-----------
->  mm/internal.h    |  1 +
->  mm/madvise.c     | 65 +++++++++++++++++++++++++++++---------------------------
->  3 files changed, 41 insertions(+), 44 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 79d400ea9553d..e22daf846dbe3 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2421,6 +2421,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_ADVISE_SYSCALLS
->  /*
->   * Return true if we do MADV_FREE successfully on entire pmd page.
->   * Otherwise, return false.
-> @@ -2455,21 +2456,13 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	if (folio_is_zone_device(folio))
->  		goto out;
->  
-> -	/*
-> -	 * If other processes are mapping this folio, we couldn't discard
-> -	 * the folio unless they all do MADV_FREE so let's skip the folio.
-> -	 */
-> -	if (folio_maybe_mapped_shared(folio))
-> -		goto out;
-> -
-> -	if (!folio_trylock(folio))
-> -		goto out;
-> -
->  	/*
->  	 * If user want to discard part-pages of THP, split it so MADV_FREE
->  	 * will deactivate only them.
->  	 */
->  	if (next - addr != HPAGE_PMD_SIZE) {
-> +		if (folio_maybe_mapped_shared(folio) || !folio_trylock(folio))
-> +			goto out;
->  		folio_get(folio);
->  		spin_unlock(ptl);
->  		split_folio(folio);
-> @@ -2478,9 +2471,8 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  		goto out_unlocked;
->  	}
->  
-> -	if (folio_test_dirty(folio))
-> -		folio_clear_dirty(folio);
-> -	folio_unlock(folio);
-> +	if (!madvise_free_try_prepare_folio(folio, 1))
-> +		goto out;
->  
->  	if (pmd_young(orig_pmd) || pmd_dirty(orig_pmd)) {
->  		pmdp_invalidate(vma, addr, pmd);
-> @@ -2498,6 +2490,7 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  out_unlocked:
->  	return ret;
->  }
-> +#endif /* CONFIG_ADVISE_SYSCALLS */
->  
->  static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
->  {
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 85cf7becf8588..96cb55d7816b1 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -61,6 +61,7 @@ void lru_add_drain_cpu(int cpu);
->  void lru_add_drain_cpu_zone(struct zone *zone);
->  void folio_deactivate(struct folio *folio);
->  void folio_mark_lazyfree(struct folio *folio);
-> +bool madvise_free_try_prepare_folio(struct folio *folio, int nr_mappings);
->  
->  /* mm/vmscan.c */
->  unsigned long zone_reclaimable_pages(struct zone *zone);
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 0214efd2a014f..ebb4ce7daf6cb 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -661,6 +661,38 @@ static long madvise_pageout(struct madvise_behavior *madv_behavior)
->  	return 0;
->  }
->  
-> +bool madvise_free_try_prepare_folio(struct folio *folio, int nr_mappings)
-> +{
-> +	if (!folio_test_swapcache(folio) && !folio_test_dirty(folio))
-> +		return true;
-> +
-> +	if (folio_mapcount(folio) != nr_mappings || !folio_trylock(folio))
-> +		return false;
-> +
-> +	/*
-> +	 * KSM folios can gain new mappings at any time, so we must
-> +	 * not clear their dirty flag.
-> +	 */
-> +	if (folio_test_ksm(folio))
-> +		goto unlock;
-> +
-> +	/*
-> +	 * Check under the folio lock that the folio is exclusive: we own all
-> +	 * mappings, and there are no references from swap entries.
-> +	 */
-> +	if (folio_mapcount(folio) != nr_mappings)
-> +		goto unlock;
-> +	if (folio_test_swapcache(folio) && !folio_free_swap(folio))
-> +		goto unlock;
-> +
-> +	folio_clear_dirty(folio);
-> +	folio_unlock(folio);
-> +	return true;
-> +unlock:
-> +	folio_unlock(folio);
-> +	return false;
-> +}
-> +
->  static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
->  				unsigned long end, struct mm_walk *walk)
->  
-> @@ -753,37 +785,8 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
->  			}
->  		}
->  
-> -		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
-> -			if (!folio_trylock(folio))
-> -				continue;
-> -			/*
-> -			 * KSM folios can gain new mappings at any time, so we must
-> -			 * not clear their dirty flag.
-> -			 */
-> -			if (folio_test_ksm(folio)) {
-> -				folio_unlock(folio);
-> -				continue;
-> -			}
-> -
-> -			/*
-> -			 * If we have a large folio at this point, we know it is
-> -			 * fully mapped so if its mapcount is the same as its
-> -			 * number of pages, it must be exclusive.
-> -			 */
-> -			if (folio_mapcount(folio) != folio_nr_pages(folio)) {
-> -				folio_unlock(folio);
-> -				continue;
-> -			}
-> -
-> -			if (folio_test_swapcache(folio) &&
-> -			    !folio_free_swap(folio)) {
-> -				folio_unlock(folio);
-> -				continue;
-> -			}
-> -
-> -			folio_clear_dirty(folio);
-> -			folio_unlock(folio);
-> -		}
-> +		if (!madvise_free_try_prepare_folio(folio, folio_nr_pages(folio)))
-> +			continue;
->  
->  		if (pte_young(ptent) || pte_dirty(ptent)) {
->  			clear_young_dirty_ptes(vma, addr, pte, nr, cydp_flags);
-> 
-> ---
-> base-commit: 5e600d79135124a4eb8e9db30ad524224c267c07
-> change-id: 20261119-madv_free_thp-3c2a9887a722
-> 
-> Best regards,
-> --  
-> David Hildenbrand (Arm) <david@kernel.org>
+Queuing this for next merge window.
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
