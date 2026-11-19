@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080EF606A33D
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C7560A2601
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=db3StkjD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=McIT8YM5
 Received: by kanga.kvack.org (Postfix)
-	id D542F6B0667; Thu, 19 Nov 2026 17:44:10 -0500 (EST)
+	id A94F86B070E; Thu, 19 Nov 2026 17:44:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2C106B06A6; Thu, 19 Nov 2026 17:44:10 -0500 (EST)
+	id A6C6C6B070F; Thu, 19 Nov 2026 17:44:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF3E16B06A9; Thu, 19 Nov 2026 17:44:10 -0500 (EST)
+	id 897986B0710; Thu, 19 Nov 2026 17:44:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 935DE6B0667
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:44:10 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E719160700
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:44:10 +0000 (UTC)
-X-FDA: 85453348260.02.DCFE526
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6F83B4000A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:44:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=db3StkjD;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B2416B070E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:44:14 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D73FE40C49
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:44:13 +0000 (UTC)
+X-FDA: 85453348386.27.6C643F1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 455B814000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:44:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=McIT8YM5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795128248;
-	b=CIMGqD/EzVvrZInd6Jn38w/CU0rKKoz9swtS8v4pCswUe8nlpTfNR2pX/BxLRjnrm1YvSJ
-	s7itwUFErKMGHMcaboL6FlDQzNHWiAnoj9pNvMU6Ri6GmyV2yDFCwLwuLLx37lzZsraSnb
-	cNum8vcm1QquBH8wDsMKPsRh6iI/gOQ=
+	t=1795128252;
+	b=cDd/l8x7ghGq9kIAaWpYRe8RGHLVzC73tjXP1nSyV3X9yNqaLy1Ko3Pe3Z1GgYfBKETZ27
+	BfCZWkWATKGV7ZFTaagXm4QSajz5SszH26SArnNVueh1NUxZtrHIA9gl6PbIteP6z6Pqwe
+	l+9/t7IMBs0jgJEsLPY7PzxAmCbnFGM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795128248;
+	s=arc-20220608; t=1795128252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0eEe2r2EBx2FnK3ZzLaNRPJmy07FKDKEoTlSvzlDsMA=;
-	b=Dd3X021uXs8Cl5FOaGCaObkIiDNfidAZutqJ9cgeGXKYm0BkFTKiwLLSjoYqccjPnvNQOJ
-	23V/91J9P/MKTjVaHOgzCDc5Cixtt+HTYZGIXKVHsvl297KITRFXAS/DbvDsQt25w7sDN6
-	vhVpgTXmXxakFCc7RVh/eIRe4NCKXCY=
+	bh=ZUPWkkE68jOh2Dy3OmF8abkOmHVnuLQLMnwupYGDDDM=;
+	b=6Pmpbiwq3ZVEo7rxs6w+qpH03vTQf+C3rdGjfHuzW1xV+CL71VqY3iYW9IXjxVcMSbrS3w
+	yYtDQE+ldPrAJa86NVmhppc1Elrgi6CM4CCIogd9UWjjExu0gy9Ld0ixjjCxYWswhmleCn
+	TuPiTvf/CkdpR2GkC3f4d+CTH3ELjpY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=db3StkjD;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=McIT8YM5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id ADFF744D05;
-	Thu, 19 Nov 2026 22:44:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id DECFA1F000D0;
-	Thu, 19 Nov 2026 22:44:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id C683362985;
+	Thu, 19 Nov 2026 22:44:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id C21131F000C6;
+	Thu, 19 Nov 2026 22:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795128247;
-	bh=0eEe2r2EBx2FnK3ZzLaNRPJmy07FKDKEoTlSvzlDsMA=;
+	s=k20260515; t=1795128251;
+	bh=ZUPWkkE68jOh2Dy3OmF8abkOmHVnuLQLMnwupYGDDDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=db3StkjDLhRvHzsZ6va3WlmKUzfMU6/r2x3vb/zSxzgPFoWhzZKXiVin+Z6roSZ9x
-	 gZkBmX2AnhJXekRAKXMd3dpRBFGuJHAKoeM96V8Ry4rtWBapdbACP36Iug+XLAUBhH
-	 VhfyFqJrra5fnDL+v7zimjczw9juYVjZYmv03gVgYBek1DQcv/ytbOaJCXESl3mLEi
-	 P+PKmH1Yz2cmx0jdBhRvBnRoQt7szKZJViim+To8oq6h8jcjcVk1DMWcXZyXCnoTdq
-	 EUg2YbDubuRd6piqxV//D3wQiv0rqbkUFMLT4UZuyC2IiK1MStPUw97vmVspi2y9dy
-	 SVsUNfCsTG8KA==
+	b=McIT8YM55Zqm3s0Hqh01RDE2HZrcXt1IeAGS0yQqhulEa1+zI+D5LHivPSyJwejWW
+	 jhUj83ZTrqHYQeVoQHE1od7gXMF2USIxEfGTfmYY3Z7BnjH4WqCgAiYpDygf3mN/kZ
+	 zKHpvpC1Qitfe8iyR2nJ3WRm0/9rMZpkSRDAN5hVrVkQTXi7PjTFSRf65uZIqr6G4o
+	 3Mam5iVe8gFolLzfF+G3yvERzvb3OShVC8eXiynB7ZkrmKfCFrLbHSoHceIehQi6UB
+	 JAY/epiegoOoTgfBIqMhxjfJvO8jGTfbapVvhAeW/UKe8zo5U8kOUcpbRys/puTrm6
+	 8CXTbjX1X6y3Q==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -151,9 +151,9 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Will Deacon <will@kernel.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: [RFC PATCH v4 09/14] fs: Support MOVE_MOUNT_T_MNTNS in move_mount()
-Date: Fri, 20 Nov 2026 00:43:07 +0200
-Message-ID: <20261119224312.1037966-10-jarkko@kernel.org>
+Subject: [RFC PATCH v4 10/14] security: Add rootns LSM hooks
+Date: Fri, 20 Nov 2026 00:43:08 +0200
+Message-ID: <20261119224312.1037966-11-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261119224312.1037966-1-jarkko@kernel.org>
 References: <20261119224312.1037966-1-jarkko@kernel.org>
@@ -161,17 +161,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6F83B4000A
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 455B814000A
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: zjqhjfejixtke1tooyt4hehcryff4k8n
-X-HE-Tag: 1795128248-500902
-X-HE-Meta: U2FsdGVkX1+ZlxPEsgUArNdUyvwl6SjsF+sCPioTIFLP8m69tsWD4HqCFKAXhAHlwdyyTTlxzuWxHr4NPjAGJdiCY1GA91EAfkKVHtfS6uf1H/1cZSjed04Cc61Ie8OParVhaBS8K26mXUZV3OTP3xDyvAfqVVMrHbR8gvXha/U+/3eFfLmpLPHyTtLWvZZExrGpDjsg8Dq1CPCcjD56MH3Rt+poanae2fxQDyCx2zpWEAwW5HkoqSxEE3aYSGu4qQ10wxq1H1sCDdbbdEHvaBiIcRag4OvRvwytWET925lsh5bJDgRoWBlg5IJU5rJQKGktqOms7/qEh+T44NNv+4Qeukepcoew9mY1a0b7VtgrubkNSf0/aXldAu4vbYbONUayEyq4c1GGADtycorBmePXXzn+ps82aCiC2fSLxRAkwmeqyAUsxLu0kPOcdzD+MCwVbLkZhg6GEHhY9nzmH/cgsclZZa05q6mG2Sxq0y5tmAplNKHAHQXlBPxVXo0ReIwSqC+muDc9SrF2OkQ1Rmx5VHJ6CHbE1XYBx216HvL7CxR0xVI64X4LY7Bv8dNEgWPjVLv5yJ8J9BEL6Xu9/Q9flxSvEa6hxxvhtG+YX3mDgPNnXIlBaASYwI7ib1Z+cz3dCkM94S+PHkbZhBFGyHX81Br/+vHs88zpKbszOby8gCNz7MPVhXPrsMCSuR9aHNwooP/98cJCnoas3h/Ct6cbDhuX0YBCPFcJTb04z3/GkxlR/YU1RTcpFRJY+aXsRD1/9XjK8UXDbXprhd/Hg/MQdWtSkx4NiR3VLoDXSmuztN8wZJ25zh3FOLEFNyBAz2VyNaEMIvChuuUGEJz/A0WamlLuf1t0xzOeGKtYa4tUvi9FLBYfdtjQqR+Dmn2EW4PATTY2VJ5t4ksLW9m4nROcK34vZ8oLbhGZBju2GogmFcPZcTIineRZmPx/uN76hz0kbU1fyJXG5ThGbhT
- SC3a1FCV
- d/t5u9MmUBSCBlebw+HT0PbPTAurZy2U4EB0FbmpKLOH5Mkeh5TPpu/yuuCAOVapD8HEb7O1/0Fd/03/142DQqfK5QXuegWandaIPrbUMvbtrzwG/KdHgcuCQIHvUROvegIYTcWz0IyOXZ1V/psP9wDS1B51u3XsT0bREhuLl8dIzWtniha41aOKEORm8T6CwYdIV9MsvMPeLAK39/fUtmLsm2JZHs6VnVrcNbp10l6aIxzm8Z9aFqVqT5YMB6YeQsOG9wYtrPV+zuL/aLg6EgjkOTkcJ2r3qfk6dT8W7RW+QfG0PjtEmwDEXb93Tu+8YiBapO8wFK0DrTGIIa2WXzqlJT82R6NJTojkpdWcTxP5pqGqyundgS9YK8B/TEJlxYWz5mnQtz/kxZg295KxaT+V//O1xWEKMgJuEN5e0nfpyO593D/z1KwjbelFufKjnsiettP2KYBbikHuWCNj14nRFojXwsKcgXSReNcdqY/TT1tw=
+X-Stat-Signature: ms7tnijtp7ebqqx4z7ma1tbnt7ra3rxe
+X-HE-Tag: 1795128252-730383
+X-HE-Meta: U2FsdGVkX1+YgN2QyKPHDaa9emol8aVKdsxvZF+NKhE8B61FpbBCLcE1eaO2ZqbNoKv72YGbR32Gub13pesFHcyjeGpUIQ6PvfAgAQJL//Wnd71xoSnQsIs3nf1ekVMGtqtpg8L4usx4iIj+23hUfHM1FeXmvpUpKmgaXWvohAf/yNUWty5gKfqlupCFl0qnKM61J1ZsyJ94Q1eIqB/dnklR0zUQ86cVdF3+zXRJdlAKFfSQ7MxHNoZxj2VAa4reRJvg6FdvTd7cYb2Q6Eieqz5TitV+AqV/lDvoJvJ9psMqmvfdCE1XzQLr+s99HjG28pUOXHBNuHSHc3pdJ8uarcOWaUSFJDO0KE6+mBTyF5B1dGunObGnlDUpjKLDm4c4mm+RWJ9gyTF7As2GvEThOgVly2B0+Z8HJ/8z8KjP3b3bzrzp87XX4k6RVqpFnNF692dtaQZsfL0YvtFWZi4Vfhuhe3TT+Uf/qMbU3UZcpp0gPJZSpoKrtjuzKOynWasN+i31SyqytDNVEuvYrehd27jo+5p63OXLwGemMHLB7GP/+u1m6/omOIyoNpGvCtSs2OS0TaLnoTya0aEWCALi+1I4MzIUQMtBdF5Yn9+OLSXJ5B3ZFJ91YZ6+pPHT9FfmnmpByNN9VqXTMCD2eA4zzRLbVzE+woeqomwduKzLZ/CtKPKaPuWkX32UgVYRnF/gvj/ABwKSd+fLclCKFLfDerBfojduzJUBC7KJG7S0V3p/rlUlH7VBS35qEfBge4HMCl89j9om2kHB7yTH7hZNFKbdIpBNCjvjOXkjZG2YTFN3Vq+vXwtbI8Fh/D8dZyjNTq5pNGhTASSsVgR6h+UhbVB4nDZ6gf6LSFjT+GQjekz2PK9cwB2eTSQMygL2itl8htErSo9wSN19x4F0I4BYGj/mYvw5Q8/HkZgN45+nbW/reE6BImHYFsvwLk2hs3doDIlYtgz9JkVhT+hwvYS
+ utEnAOIv
+ 90XmYecZYFUHuZpnJsispGxJz9iqwiPuugIuxvPJEfK4XTmL4+g1+ste2PougBa22q/LHM7LI8wJuhqOBxBv03MaBDzOdpHMTPM9t1pP7rMU93fcL6yY6GcH+ZMlrY5ISgMI3kthxo46R+QKpYEVWANuobKhRITSsPFQJOZApPhDfqE529KSkNep/CTserFtVBCLXjHhvJfYaAyMIqFIvwGs/pNOu4hM0Pb/PhZ28uCNq72H5zFjWkOxIjVz/hoME8UAsdyRZaW1GbcqSn3eUn/PHsRtkKPYjoCYJYiE2cobZt15vE5jxDRFlvB7QFb74iIak3dG79qh1UFZEChyNuLz1quQtCc8tfEACqrPjLuUn/1+GR93wQr/RxodLx/RBQUOJ4mvOwu99oWTwVkmh3tLH70pFD5IRpz6iLXIr8eBcOFVjteomC5HPBLM6/xoJyt4S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,426 +180,404 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-move_mount() currently resolves target paths only against the caller's
-filesystem view or anonymous mount fds, preventing an external manager
-from populating an empty mount namespace or hot-mounting into an
-existing container's mount namespace without entering it first.
+Security modules need visibility into root namespace creation, teardown,
+process entry, and container-wide signal delivery so policies and BPF LSM
+programs can attach per-rootns security state and mediate operations on
+rootns file descriptors.
 
-Add MOVE_MOUNT_T_MNTNS to attach detached anonymous mount trees into a
-target mount namespace nsfs file descriptor. Installing "/" attaches the
-initial root mount onto the nullfs root of an empty mount namespace at
-most once, while relative target paths resolve with LOOKUP_IN_ROOT
-beneath the live mount namespace root and reject root-mount aliases
-under namespace_lock().
-
-Check CAP_SYS_ADMIN in the target mount namespace's owning user
-namespace instead of caller may_mount(), check nsfs mount loops against
-the destination mount namespace, and lock moved mount trees inside
-attach_recursive_mnt() when crossing user namespace boundaries.
+Add lbs_rootns and rootns->security blob management alongside
+security_rootns_alloc(), security_rootns_free(), security_rootns_clone(),
+and security_rootns_kill(), and register the new hooks in bpf_lsm.c's
+sleepable and untrusted hook sets.
 
 Co-developed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- fs/namespace.c             | 218 +++++++++++++++++++++++++++++++------
- include/uapi/linux/mount.h |   3 +-
- 2 files changed, 184 insertions(+), 37 deletions(-)
+ include/linux/lsm_hook_defs.h |  7 +++
+ include/linux/lsm_hooks.h     |  3 ++
+ include/linux/rootns.h        |  3 ++
+ include/linux/security.h      | 30 ++++++++++++
+ kernel/bpf/bpf_lsm.c          | 10 ++++
+ kernel/rootns.c               | 44 +++++++++++++-----
+ security/lsm_init.c           |  6 +++
+ security/security.c           | 86 +++++++++++++++++++++++++++++++++++
+ 8 files changed, 177 insertions(+), 12 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index dfe0ee9ecdcd..36ed48c3f646 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2202,7 +2202,8 @@ struct mnt_namespace *mnt_ns_from_dentry(struct dentry *dentry)
- 	return to_mnt_ns(get_proc_ns(dentry->d_inode));
- }
- 
--static bool mnt_ns_loop(struct dentry *dentry)
-+static bool mnt_ns_loop_target(struct dentry *dentry,
-+			       struct mnt_namespace *target_mnt_ns)
- {
- 	/* Could bind mounting the mount namespace inode cause a
- 	 * mount namespace loop?
-@@ -2212,7 +2213,12 @@ static bool mnt_ns_loop(struct dentry *dentry)
- 	if (!mnt_ns)
- 		return false;
- 
--	return current->nsproxy->mnt_ns->ns.ns_id >= mnt_ns->ns.ns_id;
-+	return target_mnt_ns->ns.ns_id >= mnt_ns->ns.ns_id;
-+}
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 87d9d06710cb..2cb90ddedc14 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -480,3 +480,10 @@ LSM_HOOK(int, 0, bdev_alloc_security, struct block_device *bdev)
+ LSM_HOOK(void, LSM_RET_VOID, bdev_free_security, struct block_device *bdev)
+ LSM_HOOK(int, 0, bdev_setintegrity, struct block_device *bdev,
+ 	 enum lsm_integrity_type type, const void *value, size_t size)
 +
-+static bool mnt_ns_loop(struct dentry *dentry)
-+{
-+	return mnt_ns_loop_target(dentry, current->nsproxy->mnt_ns);
- }
- 
- struct mount *copy_tree(struct mount *src_root, struct dentry *dentry,
-@@ -2423,10 +2429,11 @@ static bool __has_children(struct mount *mnt, struct dentry *dentry)
-  *
-  * locks: mount_locked_reader || namespace_shared && pinned(subtree)
-  */
--static bool check_for_nsfs_mounts(struct mount *subtree)
-+static bool check_for_nsfs_mounts(struct mount *subtree,
-+				  struct mnt_namespace *target_mnt_ns)
- {
- 	for (struct mount *p = subtree; p; p = next_mnt(p, subtree))
--		if (mnt_ns_loop(p->mnt.mnt_root))
-+		if (mnt_ns_loop_target(p->mnt.mnt_root, target_mnt_ns))
- 			return false;
- 	return true;
- }
-@@ -2464,7 +2471,7 @@ struct vfsmount *clone_private_mount(const struct path *path)
- 		if (!anon_ns_root(old_mnt))
- 			return ERR_PTR(-EINVAL);
- 
--		if (!check_for_nsfs_mounts(old_mnt))
-+		if (!check_for_nsfs_mounts(old_mnt, current->nsproxy->mnt_ns))
- 			return ERR_PTR(-EINVAL);
- 	}
- 
-@@ -2564,12 +2571,15 @@ int count_mounts(struct mnt_namespace *ns, struct mount *mnt)
- enum mnt_tree_flags_t {
- 	MNT_TREE_BENEATH = BIT(0),
- 	MNT_TREE_PROPAGATION = BIT(1),
-+	MNT_TREE_MNTNS = BIT(2),
-+	MNT_TREE_MNTNS_INIT = BIT(3),
++#ifdef CONFIG_ROOTNS
++LSM_HOOK(int, 0, rootns_alloc, struct rootns *rootns, unsigned int flags)
++LSM_HOOK(void, LSM_RET_VOID, rootns_free, struct rootns *rootns)
++LSM_HOOK(int, 0, rootns_clone, struct rootns *rootns)
++LSM_HOOK(int, 0, rootns_kill, struct rootns *rootns, int sig)
++#endif /* CONFIG_ROOTNS */
+diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
+index 13621e9e233e..217a59d428b1 100644
+--- a/include/linux/lsm_hooks.h
++++ b/include/linux/lsm_hooks.h
+@@ -121,6 +121,9 @@ struct lsm_blob_sizes {
+ 	unsigned int lbs_bpf_map;
+ 	unsigned int lbs_bpf_prog;
+ 	unsigned int lbs_bpf_token;
++#ifdef CONFIG_ROOTNS
++	unsigned int lbs_rootns;
++#endif
  };
  
- /**
-  * attach_recursive_mnt - attach a source mount tree
-  * @source_mnt: mount tree to be attached
-  * @dest:	the context for mounting at the place where the tree should go
-+ * @move_mntns:	whether @source_mnt is attached via MOVE_MOUNT_T_MNTNS
-  *
-  *  NOTE: in the table below explains the semantics when a source mount
-  *  of a given type is attached to a destination mount of a given type.
-@@ -2632,7 +2642,8 @@ enum mnt_tree_flags_t {
-  *         Otherwise a negative error code is returned.
-  */
- static int attach_recursive_mnt(struct mount *source_mnt,
--				const struct pinned_mountpoint *dest)
-+				const struct pinned_mountpoint *dest,
-+				bool move_mntns)
- {
- 	struct mount *dest_mnt = dest->parent;
- 	struct mountpoint *dest_mp = dest->mp;
-@@ -2641,6 +2652,7 @@ static int attach_recursive_mnt(struct mount *source_mnt,
- 	struct user_namespace *user_ns = ns->user_ns;
- 	struct pinned_mountpoint root = {};
- 	struct mountpoint *shorter = NULL;
-+	struct mnt_namespace *src_ns;
- 	struct mount *child, *p;
- 	struct mount *top;
- 	struct hlist_node *n;
-@@ -2662,6 +2674,7 @@ static int attach_recursive_mnt(struct mount *source_mnt,
- 		user_ns = current->nsproxy->mnt_ns->user_ns;
- 	else
- 		user_ns = ns->user_ns;
-+	src_ns = moving ? NULL : source_mnt->mnt_ns;
+ /*
+diff --git a/include/linux/rootns.h b/include/linux/rootns.h
+index 802fc76bb66e..795a79584231 100644
+--- a/include/linux/rootns.h
++++ b/include/linux/rootns.h
+@@ -31,6 +31,9 @@ enum rootns_state {
+ struct rootns {
+ 	refcount_t		usage;
+ 	int			exit_code;	/* The exit code of 'init' */
++#ifdef CONFIG_SECURITY
++	void			*security;	/* LSM security blob */
++#endif
+ 	struct user_namespace	*user_ns;	/* Owning user namespace */
+ 	struct nsproxy		*ns;		/* This rootns's namespaces */
+ 	struct pid		*init_pid;	/* The 'init' task's TGID (pid ref) */
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 40831fab5470..995292f1c92e 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -84,6 +84,7 @@ struct audit_krule;
+ struct ns_common;
+ struct user_namespace;
+ struct timezone;
++struct rootns;
  
- 	/*
- 	 * Preallocate a mountpoint in case the new mounts need to be
-@@ -2694,6 +2707,12 @@ static int attach_recursive_mnt(struct mount *source_mnt,
- 	if (err)
- 		goto out_cleanup_ids;
+ enum lsm_event {
+ 	LSM_POLICY_CHANGE,
+@@ -2469,4 +2470,33 @@ static inline void security_initramfs_populated(void)
+ }
+ #endif /* CONFIG_SECURITY */
  
-+	if (move_mntns && src_ns && src_ns->user_ns != user_ns) {
-+		lock_mnt_tree(source_mnt);
-+		if (list_empty(&source_mnt->mnt_expire))
-+			source_mnt->mnt.mnt_flags |= MNT_LOCKED;
-+	}
++#ifdef CONFIG_ROOTNS
++#ifdef CONFIG_SECURITY
++int security_rootns_alloc(struct rootns *rootns, unsigned int flags);
++void security_rootns_free(struct rootns *rootns);
++int security_rootns_clone(struct rootns *rootns);
++int security_rootns_kill(struct rootns *rootns, int sig);
++#else
++static inline int security_rootns_alloc(struct rootns *rootns,
++					unsigned int flags)
++{
++	return 0;
++}
 +
- 	if (IS_MNT_SHARED(dest_mnt)) {
- 		for (p = source_mnt; p; p = next_mnt(p, source_mnt))
- 			set_mnt_shared(p);
-@@ -2937,7 +2956,7 @@ static int graft_tree(struct mount *mnt, const struct pinned_mountpoint *mp)
- 	      d_is_dir(mnt->mnt.mnt_root))
- 		return -ENOTDIR;
- 
--	return attach_recursive_mnt(mnt, mp);
-+	return attach_recursive_mnt(mnt, mp, false);
- }
- 
- static int may_change_propagation(const struct mount *m)
-@@ -3131,7 +3150,7 @@ static int do_loopback(const struct path *path, const char *old_name,
- 		return PTR_ERR(mnt);
- 
- 	/* the copy may carry mount namespace files from below the source */
--	if (recurse && !check_for_nsfs_mounts(mnt))
-+	if (recurse && !check_for_nsfs_mounts(mnt, current->nsproxy->mnt_ns))
- 		err = -EINVAL;
- 	else
- 		err = graft_tree(mnt, &mp);
-@@ -3776,9 +3795,11 @@ static inline bool may_use_mount(struct mount *mnt)
- 
- static int do_move_mount(const struct path *old_path,
- 			 const struct path *new_path,
--			 enum mnt_tree_flags_t flags)
-+			 enum mnt_tree_flags_t flags,
-+			 struct mnt_namespace *target_mnt_ns)
- {
- 	struct mount *old = real_mount(old_path->mnt);
-+	struct mnt_namespace *dest_mnt_ns;
- 	int err;
- 	bool beneath = flags & MNT_TREE_BENEATH;
- 
-@@ -3792,7 +3813,23 @@ static int do_move_mount(const struct path *old_path,
- 	if (IS_ERR(mp.parent))
- 		return PTR_ERR(mp.parent);
- 
--	if (check_mnt(old)) {
-+	if (flags & MNT_TREE_MNTNS) {
-+		if (!anon_ns_root(old) || old->mnt_ns == mp.parent->mnt_ns ||
-+		    mp.parent->mnt_ns != target_mnt_ns)
-+			return -EINVAL;
-+		if (flags & MNT_TREE_MNTNS_INIT) {
-+			if (mp.parent != target_mnt_ns->root)
-+				return -EBUSY;
-+		} else if (mp.mp->m_dentry == mp.parent->mnt.mnt_root) {
-+			const struct mount *m = mp.parent;
++static inline void security_rootns_free(struct rootns *rootns)
++{
++}
 +
-+			while (m != target_mnt_ns->root && mnt_has_parent(m) &&
-+			       m->mnt_mountpoint == m->mnt_parent->mnt.mnt_root)
-+				m = m->mnt_parent;
-+			if (m == target_mnt_ns->root)
-+				return beneath ? -EINVAL : -EBUSY;
-+		}
-+	} else if (check_mnt(old)) {
- 		/* if the source is in our namespace... */
- 		/* ... it should be detachable from parent */
- 		if (!mnt_has_parent(old) || IS_MNT_LOCKED(old))
-@@ -3840,12 +3877,14 @@ static int do_move_mount(const struct path *old_path,
- 	 */
- 	if (IS_MNT_SHARED(mp.parent) && tree_contains_unbindable(old))
- 		return -EINVAL;
--	if (!check_for_nsfs_mounts(old))
-+	dest_mnt_ns = is_anon_ns(mp.parent->mnt_ns) ?
-+		      current->nsproxy->mnt_ns : mp.parent->mnt_ns;
-+	if (!check_for_nsfs_mounts(old, dest_mnt_ns))
- 		return -ELOOP;
- 	if (mount_is_ancestor(old, mp.parent))
- 		return -ELOOP;
++static inline int security_rootns_clone(struct rootns *rootns)
++{
++	return 0;
++}
++
++static inline int security_rootns_kill(struct rootns *rootns, int sig)
++{
++	return 0;
++}
++#endif /* CONFIG_SECURITY */
++#endif /* CONFIG_ROOTNS */
++
+ #endif /* ! __LINUX_SECURITY_H */
+diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
+index 468e63dbd922..bbcf1433fdc2 100644
+--- a/kernel/bpf/bpf_lsm.c
++++ b/kernel/bpf/bpf_lsm.c
+@@ -16,6 +16,7 @@
+ #include <linux/btf_ids.h>
+ #include <linux/ima.h>
+ #include <linux/bpf-cgroup.h>
++#include <linux/rootns.h>
  
--	return attach_recursive_mnt(old, &mp);
-+	return attach_recursive_mnt(old, &mp, flags & MNT_TREE_MNTNS);
- }
+ /* For every LSM hook that allows attachment of BPF programs, declare a nop
+  * function where a BPF program can be attached. Notably, we qualify each with
+@@ -404,6 +405,11 @@ BTF_ID(func, bpf_lsm_task_setscheduler)
+ BTF_ID(func, bpf_lsm_userns_create)
+ BTF_ID(func, bpf_lsm_bdev_alloc_security)
+ BTF_ID(func, bpf_lsm_bdev_setintegrity)
++#ifdef CONFIG_ROOTNS
++BTF_ID(func, bpf_lsm_rootns_alloc)
++BTF_ID(func, bpf_lsm_rootns_clone)
++BTF_ID(func, bpf_lsm_rootns_kill)
++#endif /* CONFIG_ROOTNS */
+ BTF_SET_END(sleepable_lsm_hooks)
  
- static int do_move_mount_old(const struct path *path, const char *old_name)
-@@ -3860,7 +3899,7 @@ static int do_move_mount_old(const struct path *path, const char *old_name)
- 	if (err)
- 		return err;
+ BTF_SET_START(untrusted_lsm_hooks)
+@@ -420,6 +426,10 @@ BTF_ID(func, bpf_lsm_sk_free_security)
+ BTF_ID(func, bpf_lsm_task_free)
+ BTF_ID(func, bpf_lsm_bdev_alloc_security)
+ BTF_ID(func, bpf_lsm_bdev_free_security)
++#ifdef CONFIG_ROOTNS
++BTF_ID(func, bpf_lsm_rootns_alloc)
++BTF_ID(func, bpf_lsm_rootns_free)
++#endif /* CONFIG_ROOTNS */
+ BTF_SET_END(untrusted_lsm_hooks)
  
--	return do_move_mount(&old_path, path, 0);
-+	return do_move_mount(&old_path, path, 0, NULL);
- }
+ bool bpf_lsm_is_sleepable_hook(u32 btf_id)
+diff --git a/kernel/rootns.c b/kernel/rootns.c
+index 865689eed69c..3733a249feca 100644
+--- a/kernel/rootns.c
++++ b/kernel/rootns.c
+@@ -52,6 +52,7 @@
+ #include <linux/user_namespace.h>
+ #include <linux/compat.h>
+ #include <linux/idr.h>
++#include <linux/security.h>
+ #include <uapi/linux/rootns.h>
  
  /*
-@@ -4740,7 +4779,8 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
+@@ -63,14 +64,8 @@ struct rootns *get_rootns(struct rootns *c)
+ 	return c;
+ }
  
- static inline int vfs_move_mount(const struct path *from_path,
- 				 const struct path *to_path,
--				 enum mnt_tree_flags_t mflags)
-+				 enum mnt_tree_flags_t mflags,
-+				 struct mnt_namespace *target_mnt_ns)
+-/*
+- * Drop a reference on a rootns and clear it if it is no longer in use.
+- */
+-void put_rootns(struct rootns *c)
++static void free_rootns(struct rootns *c)
  {
- 	int ret;
+-	if (!c || !refcount_dec_and_test(&c->usage))
+-		return;
+-
+ 	if (c->ns)
+ 		put_nsproxy(c->ns);
+ 	if (c->init_pid)
+@@ -82,6 +77,18 @@ void put_rootns(struct rootns *c)
+ 	kfree(c);
+ }
  
-@@ -4751,7 +4791,123 @@ static inline int vfs_move_mount(const struct path *from_path,
- 	if (mflags & MNT_TREE_PROPAGATION)
- 		return do_set_group(from_path, to_path);
- 
--	return do_move_mount(from_path, to_path, mflags);
-+	return do_move_mount(from_path, to_path, mflags, target_mnt_ns);
-+}
-+
-+static int lookup_move_mount_from(int from_dfd,
-+				  const char __user *from_pathname,
-+				  unsigned int flags, struct path *from_path)
-+{
-+	unsigned int uflags = 0;
-+	unsigned int lflags = 0;
-+
-+	if (flags & MOVE_MOUNT_F_EMPTY_PATH)
-+		uflags = AT_EMPTY_PATH;
-+
-+	CLASS(filename_maybe_null, from_name)(from_pathname, uflags);
-+	if (!from_name && from_dfd >= 0) {
-+		CLASS(fd_raw, f_from)(from_dfd);
-+		if (fd_empty(f_from))
-+			return -EBADF;
-+
-+		*from_path = fd_file(f_from)->f_path;
-+		path_get(from_path);
-+		return 0;
-+	}
-+
-+	if (flags & MOVE_MOUNT_F_SYMLINKS)
-+		lflags |= LOOKUP_FOLLOW;
-+	if (flags & MOVE_MOUNT_F_AUTOMOUNTS)
-+		lflags |= LOOKUP_AUTOMOUNT;
-+	return filename_lookup(from_dfd, from_name, lflags, from_path, NULL);
-+}
-+
-+/**
-+ * DOC: MOVE_MOUNT_T_MNTNS
-+ *
-+ * ``MOVE_MOUNT_T_MNTNS`` installs detached anonymous mount trees into a target
-+ * mount namespace ``nsfs`` file descriptor supplied as ``to_dfd``:
-+ *
-+ * 1. ``to_pathname`` of ``"/"`` attaches the initial root mount onto the
-+ *    ``nullfs`` root of an empty mount namespace at most once.
-+ *
-+ * 2. Relative ``to_pathname`` values resolve beneath the live root of the
-+ *    target mount namespace.
-+ *
-+ * Capability is checked against ``CAP_SYS_ADMIN`` in the target mount
-+ * namespace's owning user namespace, and source trees crossing user namespace
-+ * boundaries are locked with ``MNT_LOCKED`` and locked mount flags.
++/*
++ * Drop a reference on a rootns and clear it if it is no longer in use.
 + */
-+static int move_mount_mntns(int from_dfd, const char __user *from_pathname,
-+			    int to_dfd, const char __user *to_pathname,
-+			    unsigned int flags, enum mnt_tree_flags_t mflags)
++void put_rootns(struct rootns *c)
 +{
-+	struct path from_path __free(path_put) = {};
-+	struct path to_path __free(path_put) = {};
-+	struct mnt_namespace *target_mnt_ns;
-+	unsigned int lflags;
-+	struct ns_common *ns;
-+	bool is_root;
++	if (!c || !refcount_dec_and_test(&c->usage))
++		return;
++
++	security_rootns_free(c);
++	free_rootns(c);
++}
++
+ /*
+  * Allow the user to poll for the rootns dying.
+  */
+@@ -163,6 +170,7 @@ static int rootns_kill_members(struct rootns *rootns, int sig)
+ 	bool any_perm = false;
+ 	int other_err = 0;
+ 	struct pid *pid;
 +	int ret;
-+
-+	CLASS(filename_maybe_null, to_name)(to_pathname, AT_EMPTY_PATH);
-+	if (IS_ERR(to_name))
-+		return PTR_ERR(to_name);
-+	if (!to_name)
-+		return -EINVAL;
-+
-+	CLASS(fd, f_mntns)(to_dfd);
-+	if (fd_empty(f_mntns))
-+		return -EBADF;
-+	if (!proc_ns_file(fd_file(f_mntns)))
-+		return -EINVAL;
-+
-+	ns = get_proc_ns(file_inode(fd_file(f_mntns)));
-+	if (ns->ns_type != CLONE_NEWNS)
-+		return -EINVAL;
-+
-+	target_mnt_ns = to_mnt_ns(ns);
-+	if (is_anon_ns(target_mnt_ns))
-+		return -EINVAL;
-+	if (!ns_capable(target_mnt_ns->user_ns, CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	is_root = to_name->name[0] == '/' && to_name->name[1] == '\0';
-+	if (is_root) {
-+		if (flags & MOVE_MOUNT_BENEATH)
-+			return -EINVAL;
-+
-+		to_path.mnt = mntget(&target_mnt_ns->root->mnt);
-+		to_path.dentry = dget(target_mnt_ns->root->mnt.mnt_root);
-+		mflags |= MNT_TREE_MNTNS_INIT;
-+	} else {
-+		struct path mntns_root __free(path_put) = {};
-+
-+		if (to_name->name[0] == '/')
-+			return -EINVAL;
-+
-+		ret = mnt_ns_get_root(target_mnt_ns, &mntns_root);
-+		if (ret)
-+			return ret;
-+
-+		lflags = LOOKUP_IN_ROOT;
-+		if (flags & MOVE_MOUNT_T_SYMLINKS)
-+			lflags |= LOOKUP_FOLLOW;
-+		if (flags & MOVE_MOUNT_T_AUTOMOUNTS)
-+			lflags |= LOOKUP_AUTOMOUNT;
-+		ret = filename_lookup(AT_FDCWD, to_name, lflags, &to_path,
-+				      &mntns_root);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = lookup_move_mount_from(from_dfd, from_pathname, flags,
-+				     &from_path);
+ 	int nr;
+ 
+ 	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
+@@ -170,6 +178,10 @@ static int rootns_kill_members(struct rootns *rootns, int sig)
+ 	if (READ_ONCE(rootns->state) != ROOTNS_RUNNING)
+ 		return -ESRCH;
+ 
++	ret = security_rootns_kill(rootns, sig);
 +	if (ret)
 +		return ret;
 +
-+	return vfs_move_mount(&from_path, &to_path, mflags | MNT_TREE_MNTNS,
-+			      target_mnt_ns);
- }
+ 	scoped_guard(rcu) {
+ 		read_lock(&tasklist_lock);
+ 		idr_for_each_entry(&pid_ns->idr, pid, nr) {
+@@ -365,31 +377,35 @@ static struct rootns *create_rootns(unsigned int flags)
+ 	user_ns = create_rootns_user_ns();
+ 	if (IS_ERR(user_ns)) {
+ 		ret = PTR_ERR(user_ns);
+-		goto err_put;
++		goto err_free;
+ 	}
+ 	c->user_ns = user_ns;
+ 	ns_ref_active_get(user_ns);
  
- /*
-@@ -4773,7 +4929,7 @@ SYSCALL_DEFINE5(move_mount,
- 	enum mnt_tree_flags_t mflags = 0;
- 	int ret = 0;
- 
--	if (!may_mount())
-+	if (!(flags & MOVE_MOUNT_T_MNTNS) && !may_mount())
- 		return -EPERM;
- 
- 	if (flags & ~MOVE_MOUNT__MASK)
-@@ -4786,6 +4942,13 @@ SYSCALL_DEFINE5(move_mount,
- 	if (flags & MOVE_MOUNT_SET_GROUP)	mflags |= MNT_TREE_PROPAGATION;
- 	if (flags & MOVE_MOUNT_BENEATH)		mflags |= MNT_TREE_BENEATH;
- 
-+	if (unlikely(flags & MOVE_MOUNT_T_MNTNS)) {
-+		if (flags & (MOVE_MOUNT_T_EMPTY_PATH | MOVE_MOUNT_SET_GROUP))
-+			return -EINVAL;
-+		return move_mount_mntns(from_dfd, from_pathname,
-+					to_dfd, to_pathname, flags, mflags);
-+	}
-+
- 	uflags = 0;
- 	if (flags & MOVE_MOUNT_T_EMPTY_PATH)
- 		uflags = AT_EMPTY_PATH;
-@@ -4809,29 +4972,12 @@ SYSCALL_DEFINE5(move_mount,
- 			return ret;
+ 	if (!ns_capable(user_ns, CAP_SYS_ADMIN)) {
+ 		ret = -EPERM;
+-		goto err_put;
++		goto err_free;
  	}
  
--	uflags = 0;
--	if (flags & MOVE_MOUNT_F_EMPTY_PATH)
--		uflags = AT_EMPTY_PATH;
--
--	CLASS(filename_maybe_null,from_name)(from_pathname, uflags);
--	if (!from_name && from_dfd >= 0) {
--		CLASS(fd_raw, f_from)(from_dfd);
--		if (fd_empty(f_from))
--			return -EBADF;
--
--		return vfs_move_mount(&fd_file(f_from)->f_path, &to_path, mflags);
--	}
--
--	lflags = 0;
--	if (flags & MOVE_MOUNT_F_SYMLINKS)
--		lflags |= LOOKUP_FOLLOW;
--	if (flags & MOVE_MOUNT_F_AUTOMOUNTS)
--		lflags |= LOOKUP_AUTOMOUNT;
--	ret = filename_lookup(from_dfd, from_name, lflags, &from_path, NULL);
-+	ret = lookup_move_mount_from(from_dfd, from_pathname, flags,
-+				     &from_path);
- 	if (ret)
- 		return ret;
+ 	ns = create_new_namespaces(clone_flags, current->nsproxy, user_ns,
+ 				   NULL);
+ 	if (IS_ERR(ns)) {
+ 		ret = PTR_ERR(ns);
+-		goto err_put;
++		goto err_free;
+ 	}
  
--	return vfs_move_mount(&from_path, &to_path, mflags);
-+	return vfs_move_mount(&from_path, &to_path, mflags, NULL);
+ 	timens_activate_nsproxy(ns);
+ 	c->ns = ns;
+ 	nsproxy_ns_active_get(ns);
+ 
++	ret = security_rootns_alloc(c, flags);
++	if (ret < 0)
++		goto err_free;
++
+ 	return c;
+ 
+-err_put:
+-	put_rootns(c);
++err_free:
++	free_rootns(c);
+ 	return ERR_PTR(ret);
  }
  
- /*
-diff --git a/include/uapi/linux/mount.h b/include/uapi/linux/mount.h
-index cb55cfcfc92e..7fa93de08ceb 100644
---- a/include/uapi/linux/mount.h
-+++ b/include/uapi/linux/mount.h
-@@ -75,9 +75,10 @@
- #define MOVE_MOUNT_T_SYMLINKS		0x00000010 /* Follow symlinks on to path */
- #define MOVE_MOUNT_T_AUTOMOUNTS		0x00000020 /* Follow automounts on to path */
- #define MOVE_MOUNT_T_EMPTY_PATH		0x00000040 /* Empty to path permitted */
-+#define MOVE_MOUNT_T_MNTNS		0x00000080 /* Resolve to_dfd as mntns fd */
- #define MOVE_MOUNT_SET_GROUP		0x00000100 /* Set sharing group instead */
- #define MOVE_MOUNT_BENEATH		0x00000200 /* Mount beneath top mount */
--#define MOVE_MOUNT__MASK		0x00000377
-+#define MOVE_MOUNT__MASK		0x000003f7
+@@ -485,6 +501,10 @@ int rootns_prepare_fork(struct kernel_clone_args *args)
+ 	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
+ 		return -EXDEV;
  
- /*
-  * fsopen() flags.
++	ret = security_rootns_clone(rootns);
++	if (ret)
++		return ret;
++
+ 	ret = mnt_ns_get_root(rootns->ns->mnt_ns, &root);
+ 	if (ret)
+ 		return ret;
+diff --git a/security/lsm_init.c b/security/lsm_init.c
+index 8d5ecea99c46..56b515b20812 100644
+--- a/security/lsm_init.c
++++ b/security/lsm_init.c
+@@ -316,6 +316,9 @@ static void __init lsm_prepare(struct lsm_info *lsm)
+ 	lsm_blob_size_update(&blobs->lbs_bpf_map, &blob_sizes.lbs_bpf_map);
+ 	lsm_blob_size_update(&blobs->lbs_bpf_prog, &blob_sizes.lbs_bpf_prog);
+ 	lsm_blob_size_update(&blobs->lbs_bpf_token, &blob_sizes.lbs_bpf_token);
++#ifdef CONFIG_ROOTNS
++	lsm_blob_size_update(&blobs->lbs_rootns, &blob_sizes.lbs_rootns);
++#endif
+ }
+ 
+ /**
+@@ -460,6 +463,9 @@ int __init security_init(void)
+ 		lsm_pr("blob(bpf_map) size %d\n", blob_sizes.lbs_bpf_map);
+ 		lsm_pr("blob(bpf_prog) size %d\n", blob_sizes.lbs_bpf_prog);
+ 		lsm_pr("blob(bpf_token) size %d\n", blob_sizes.lbs_bpf_token);
++#ifdef CONFIG_ROOTNS
++		lsm_pr("blob(rootns) size %d\n", blob_sizes.lbs_rootns);
++#endif
+ 	}
+ 
+ 	if (blob_sizes.lbs_file)
+diff --git a/security/security.c b/security/security.c
+index 4727b8347fc4..919d4bb63701 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -30,6 +30,7 @@
+ #include <linux/overflow.h>
+ #include <linux/perf_event.h>
+ #include <linux/fs.h>
++#include <linux/rootns.h>
+ #include <net/flow.h>
+ #include <net/sock.h>
+ 
+@@ -395,6 +396,22 @@ static int lsm_ns_alloc(struct ns_common *ns)
+ 	return lsm_blob_alloc(&ns->ns_security, blob_sizes.lbs_ns, GFP_KERNEL);
+ }
+ 
++#ifdef CONFIG_ROOTNS
++/**
++ * lsm_rootns_alloc - allocate a composite rootns blob
++ * @rootns: the rootns that needs a blob
++ *
++ * Allocate the rootns blob for all the modules
++ *
++ * Return: Returns 0, or -ENOMEM if memory can't be allocated.
++ */
++static int lsm_rootns_alloc(struct rootns *rootns)
++{
++	return lsm_blob_alloc(&rootns->security, blob_sizes.lbs_rootns,
++			      GFP_KERNEL);
++}
++#endif /* CONFIG_ROOTNS */
++
+ /**
+  * lsm_fill_user_ctx - Fill a user space lsm_ctx structure
+  * @uctx: a userspace LSM context to be filled
+@@ -5795,3 +5812,72 @@ void security_initramfs_populated(void)
+ {
+ 	call_void_hook(initramfs_populated);
+ }
++
++#ifdef CONFIG_ROOTNS
++/**
++ * security_rootns_alloc() - Check creation of a new rootns and init LSM blob
++ * @rootns: the new rootns
++ * @flags: creation flags passed to rootns()
++ *
++ * Check whether a new rootns may be created and initialize its LSM security
++ * blob.
++ *
++ * Return: Returns 0 on success, negative error code on failure.
++ */
++int security_rootns_alloc(struct rootns *rootns, unsigned int flags)
++{
++	int rc;
++
++	rc = lsm_rootns_alloc(rootns);
++	if (unlikely(rc))
++		return rc;
++
++	rc = call_int_hook(rootns_alloc, rootns, flags);
++	if (unlikely(rc))
++		security_rootns_free(rootns);
++
++	return rc;
++}
++
++/**
++ * security_rootns_free() - Release LSM security data from a rootns
++ * @rootns: the rootns being freed
++ *
++ * Release security data attached to @rootns before the structure is freed.
++ */
++void security_rootns_free(struct rootns *rootns)
++{
++	call_void_hook(rootns_free, rootns);
++	kfree(rootns->security);
++	rootns->security = NULL;
++}
++
++/**
++ * security_rootns_clone() - Check permission to spawn a task into a rootns
++ * @rootns: the target rootns
++ *
++ * Check permission before spawning a child process into @rootns via
++ * clone3(CLONE_INTO_ROOTNS).
++ *
++ * Return: Returns 0 if permission is granted, negative error code on failure.
++ */
++int security_rootns_clone(struct rootns *rootns)
++{
++	return call_int_hook(rootns_clone, rootns);
++}
++
++/**
++ * security_rootns_kill() - Check permission to signal a rootns
++ * @rootns: the target rootns
++ * @sig: signal number to deliver (or 0 for permission check)
++ *
++ * Check permission before broadcasting @sig to member thread groups in @rootns
++ * via ioctl(ROOTNS_KILL).
++ *
++ * Return: Returns 0 if permission is granted, negative error code on failure.
++ */
++int security_rootns_kill(struct rootns *rootns, int sig)
++{
++	return call_int_hook(rootns_kill, rootns, sig);
++}
++#endif /* CONFIG_ROOTNS */
 -- 
 2.47.3
 
