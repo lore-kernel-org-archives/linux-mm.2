@@ -1,98 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643C2606A331
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 02:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D3B606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 03:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=rItD+Bs3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=o4uqhJRx
 Received: by kanga.kvack.org (Postfix)
-	id 785786B0665; Wed, 18 Nov 2026 21:57:27 -0500 (EST)
+	id 1B8846B0600; Wed, 18 Nov 2026 22:35:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73A216B0667; Wed, 18 Nov 2026 21:57:27 -0500 (EST)
+	id 16FED6B062C; Wed, 18 Nov 2026 22:35:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64D166B066C; Wed, 18 Nov 2026 21:57:27 -0500 (EST)
+	id 058526B0661; Wed, 18 Nov 2026 22:35:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E4ED6B0665
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:57:27 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91666C0911
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:57:26 +0000 (UTC)
-X-FDA: 85450357692.17.417B7B6
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AE828100006
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:57:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=rItD+Bs3;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
-	spf=pass (imf14.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.151 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795057044;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD8666B0600
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:35:33 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13133140909
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:35:33 +0000 (UTC)
+X-FDA: 85450453746.09.486E6A0
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 23B5A20002
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:35:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=o4uqhJRx;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of wakel@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=wakel@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795059331;
+	b=l/cvwiptApgzODlLtxpsWWP//Mc8ktA0W7nwy/3ksa8GLBIG3QvLT7HfIO/qq+lKT5NJjn
+	3IGkuyEAyZkf0LFFlHf2BqlwOvXXfAtlDfOUzYcgJz+qjK/oR+FVg+Z9r3Uv9UUCZ5wlpu
+	jIBYnS0tTb0EPvuWENpEVYvrE1yq8Cw=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795059331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4NdHmfe8yI77qDKx7cyN5pAzKdZzXmgNff3sue1UTXU=;
-	b=O8YcGmU376Dr6azss9mqCKZlTRI5VTQmWNXqsIwU6dDO7NEDWYiTc+MA6CscdVYYI0M1k6
-	TVUH/ggq5U96cP+IhddNYF7lF5BU3BbRbBdqlIAD8RuUeI3YexuckF/rYPNT9s4D9svAVW
-	DEOpvmVChBt8+fLToC3X9lHBKJ2c5d8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=rItD+Bs3;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
-	spf=pass (imf14.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.151 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795057044;
-	b=8rwrVabVfYsTa+8X9PTk3Dx0nIjUpGyfX+BkS30vmX2A6OQ5iWBlr+0TbDsNoH7VTjh4gS
-	gj7rOLcxUo3EDhAEHnfdB/q/BK5Qwypog5miMQGsmNTb2aRxxXXrVFc4uMz9b0IKqtn10p
-	zQXhqdbrgvewjRYiibLk8vMfnE6Zlsk=
+	bh=dTwcKDHMNVZfmdNV5lW/CAgV1zVqOVJlSSJv03x7V3c=;
+	b=LWqgxS3lXq9zL2WeuRwVoGUCleHpG55yXZdxhBdAutfRtqXFE699AYarr65VX/zWvDsTXN
+	h+IrfmVpFTq+M7reDhVlfmRyy8E3I40Hi9O9Hzf47S2vMkUBgr9Xdhloh/ZJq73ynkL6PC
+	TWaIIumQdUCx8t9V1b2dNepxHKVlJrU=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=o4uqhJRx;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of wakel@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=wakel@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b2d14968c9so16793037b3.0
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:35:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795059330; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jDF4ftAuLPzKm0hQnUoNXSBCtUc8aD+B65w4m39hOuGmFtwrt39pYj26KGzh9+T4WE
+         B0RkrH7yW1ROT8dbO+evQMe7rm3ON2XQKtldQWUGs25ZanFxLZkLGI3BUeweUSWgyjxE
+         QD5YxPHxoGesJL5w0+WWxC5k5cS5RPMXw1/Rj/IqBmQxvLVDccrzWRtecSr0L3uVwwbR
+         z9jtPWbeuFjtHimbk17c0msyRXomnUAjaeN55IpFvff/1Fc+qOUnc3NmbR9avTJdAcDX
+         PdWzoP01HZuDsLJ0/dg3lSROLnwLmNX0fIIA+0Fw9q9xURPKkzVshL0zU1vaEYHYIUIJ
+         Sesw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:dkim-signature;
+        bh=dTwcKDHMNVZfmdNV5lW/CAgV1zVqOVJlSSJv03x7V3c=;
+        fh=NdC6KXiRGPe7r9T+iNQ8NKsezm/krXSkSZDg82vjVlw=;
+        b=g2axwgQFYDdba+0QUQyToK1i2IqggDJ+GQd1YTzsg8kMGQWEKPji2reD9Iacpp67vr
+         NgMO1/RQS0pqfRMoPR7zq447KMmFcvsdZUTzIpHZ4jPhFBJp6BeyHiZ5P4X4DK4vJWph
+         io9Hcbwb7Z6Is3BHdZE+VQxUJyQMaMprItXaP1d2KYEgadce+anKchmiQsHvHBpG5qns
+         zby6+XHNP2QCTZO8kLaYlht7EhSIGRO1rGwoMMoS2t3/A90zXyqfYNO9iiJrwSvt4Elz
+         t6Z3KSBAM/TOH+BwQFpBLrNafW2FJA7QOVXJRk+beJxWB7NT+3ALQ3Rkm7A93xJNtCUK
+         SLLA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=rItD+Bs3Ba485YEI+up8kA+1rzBWyGIGyh7av54OD1yf4np/gZgO8lHGsArvngO1h/9auzoXJRdbi
-	 Iu1JWt2xFX/JfKKKmlibolX65qaTWfE4PWXAaXSj/eHoddKssemRmiC4tG8Jna3HvkSKL30v6jlTGP
-	 lhQs/8LJIBZKwnPQ=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26afe6443614-54b8e;
-	Thu, 19 Nov 2026 10:51:47 +0800 (CST)
-X-RM-TRANSID:2ee26afe6443614-54b8e
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from [25.255.2.225] (unknown[10.55.1.70])
-	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36afe6441bb2-05c83;
-	Thu, 19 Nov 2026 10:51:47 +0800 (CST)
-X-RM-TRANSID:2ee36afe6441bb2-05c83
-From: Jiahao Xu <xujiahao@cmss.chinamobile.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Samiullah Khawaja <skhawaja@google.com>,
-	syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com, Jiahao Xu <xujiahao@cmss.chinamobile.com>
-Subject: [PATCH 2/2] iommufd: only hold references to files memfd_pin_folios() can pin
-Date: Thu, 19 Nov 2026 10:44:17 +0800
-Message-ID: <20261119104417.459962-1-xujiahao@cmss.chinamobile.com>
-In-Reply-To: <20261119104417.312237-1-xujiahao@cmss.chinamobile.com>
-References: <20261119104417.312237-1-xujiahao@cmss.chinamobile.com> <20261119104417.312237-1-xujiahao@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+        d=google.com; s=20260707; t=1795059330; x=1795664130; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :references:in-reply-to:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dTwcKDHMNVZfmdNV5lW/CAgV1zVqOVJlSSJv03x7V3c=;
+        b=o4uqhJRxAAmZ3jKjY/G2J0kDoeqXLwlypgHRisPdm9r7qgPaT6Rb95qUBMAbTP5CV/
+         zyuZvV2wmz/jt0EJz4c/rn86oGMk4XPona0pbnRL856BqBdeXkzihh3St2r+cW5A6a8N
+         B77LXI6JrQEeUekC2KLIrG5/nlvXgfGPcwQ4buIHomttnzuT9lvKRPYAIZiLiDkc0OSc
+         3JKWQ8ZMy7nkZYBJ9rnp1wu9wtMxjzF37xmsWQi+N1Q97so4X3TmpOTDqaZo+BEuhneO
+         WpE8pLp4ZINguAWZnC3OLYK7gx8DrfLnNXfgLkM/p+QhPNcpLwg1dN45hgy6DZJBNuqW
+         R8vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795059330; x=1795664130;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :references:in-reply-to:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=dTwcKDHMNVZfmdNV5lW/CAgV1zVqOVJlSSJv03x7V3c=;
+        b=MIMIOLUrCnWjqCaNd8BD/RXD9sl47YMYACA4ijLfc31Pieh+IaCedBZNC/vF2tYuAM
+         L4co5qprgBY1AoxickJ1CCrqUWk3wnQGfi9vte/Af9oBqK/oH4+87mhrr4YxZA1f+Q32
+         Gs9NHdm/8vER9+/SCMOHtsO9kxTZrJl0K42ut31wxpoVqjh3ZprafkxGq4qp7hvvvpjT
+         CIvTK4Zv1B+o1Tus2ndkQu0hI+JcN0f01h02ih02OVdPzgG3BGBX6Fu0viHKRGs9dKF2
+         eya41ZiNSnGkC23HY7ZAVmUA5ToBY3YVxshr2VKuksk330tRZEj8CXj0gf3+SLC9CjH6
+         rXUA==
+X-Forwarded-Encrypted: i=1; AL+hErHAD3siIveMEQRuxuL3MM8mcNMVqeA3TN9oEl2H7xm6pkJYJX4Y/Eyy1KaawSqMYu5eeUlDoaVTkA==@kvack.org
+X-Gm-Message-State: APuU4Z8doNyoSxxy8Y2yEnURh8YLBOGrVv9OhPXltEyEJqssmJtXytGI
+	TMSiy4bPPKtJfYzcbChTYjbD6kvjX4nyRLFiTZohKqM6Lb4oHiskP7qjkSQfzz926eteVFlH6lE
+	ECVYfxHPKxgaiXjJQR0za0LLI8Iz9hxTaTZatCE5/
+X-Gm-Gg: AZFdTZcy+bUlZhpyuzVsb3uGNRSU9LO8npK3be5cFLUcU3ZfaioA/5YOzfzr18SJK61
+	/frvodG1XYrTHsDeW5MiZa2Dlp2o13GDixdM84KYc11zdLtP5TpOVHuxOjp9/FwLjB9TGSKSalM
+	q0WrXn3bA/UPROq3SL1/8dgcvydHn+hd4OBIuDMOSNoegjmwyv/wX/1BBJgK8b1uvWBxI9Ny39a
+	nTBeRAOTIjnQ1vgJQXb9nKC+HzHyj+aKNi0GvzTa9dLPgEYhE+zU8nqNKJbwwfgXgJMdaR58pTr
+	Mm6LYRtYOk5lcebbXBqo2ntlpqN4iLGREB5cyW3Ah1eXt8sy7rUH0bn5TNnK8AGmx5Pcxy1533p
+	hMeb1d2a9JPoLbxweu68KAPraZ9MPw96LrJAVDzj2jJvOeB+hmF0gvg0OuJGIKyKic2+yUT/VkI
+	vdoOMhinZ7ed4VEN1+ZXdyOvSQJagGBjL9vVlKB3ekeS2pFknLihIYj/uxrMwzle4ccJGd
+X-Received: by 2002:a05:690c:b85:b0:8b4:d554:3267 with SMTP id
+ 00721157ae682-8b4fea7b90emr18155827b3.0.1795059329731; Wed, 18 Nov 2026
+ 19:35:29 -0800 (PST)
+Received: from 913411032810 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 18 Nov 2026 19:35:27 -0800
+In-Reply-To: <20261105030843.3319056-1-wakel@google.com>
+References: <20261105030843.3319056-1-wakel@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pyrqxprfd9a18oqpjyt14awtoqszx7cz
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AE828100006
-X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795057039-190341
-X-HE-Meta: U2FsdGVkX18Y6E8hla7ibwk1EGzV+z2RVJEj9K1ft56zz8mHOnTY6VCNi0ey7s+ZSsQjbaMM/X4T6bJzGtX49Y4NO0YVIwa79AOPbbCDdFqJ/pwDJ5miK+zOqlwK+JbcrIjYKj0rKp6WojpL8LvyeethA6kzdUb9VAW6glPR48mOQDgseD0hzaCmQhgE3bHpyZ1DBQNbsz1ssyiG1V0wKS1bgJzOz8Mskmyltm7/mSfa+ejcC4zqo6J/O+5tLxNBdoVtM6nFk2ojISttDLff3WncxxAFvATs6sWxjJdbnnWBUi5c5aVCM8hn04NCThQd5J9Pk8bQHtek9SMPEam/asJxVT+3KvR9ggpaHm+/EGdQ4dNPuWv3b5G+WHNaEYJ2fcGytNeaajGsA3XprTmpUCefT2QRGQRfJI6nKSoureZ1UUiInOMf5tnDFuzKmf//8fW16tUiRPPEtRzE8f3viP5MS7hMfZiNsI2Tn3H8P18Fn4O01nF9Y2wxqCroWtj0hY33ZlkmREOhVAGuntPOALqs3Ky73ALThfTPkxr1wv+UXav8sCIr+iTj2AKRk/v6RC1+qLDz9UoEv4OqtPgG5VcjDqZWEGV1U/BPGC+SAWlmWXGG3UQUtD3q82Uc/8ztBmDddrGlad6FJfmUzpIFsQXYGm0SjmwhCZ/5zhEf+ZcJhBrsJ/+gQWFY+PAd7saQax7TpAdRxEOx3lxYmj1KdzcSQOjxzhCKV/1L06JqqiYYWWs032MeLExSpE3eX9n4i/T2JS0Qx2gzst6lRwLyCATMS0sD3tf59zfggOgd9U6jrtQTsQ6NMIaJkMxa2RGiSjK56bqo9ZUd8L6RheO3TcwsZbrpLxUDTcrIurAdkerdpYgF4r/nSI9cyNxjMFbwCauAN0YeIeZyE9oHHIRZK8RvwMQCpgTqRX9IBQ1tNFElUKPoBVXci1EjkazAq8Dn4RSnlkS34rll+w0sIfY
- DGqNQuZk
- HevfgiLGV7l2niCWgOmq30JDuz9e3iCv+CtBmEPFypOixZgVOVzjmjeM0kzF4UuE/XV5lM2r2jZyLGknjf9MlwGoTp1K58RKp9RDsUKyuyBeJ7CPfIigcoSxKJF3HC5O5uK3LQZD5Hp3w6IMbLCHfYP32HX2xALzHr+qXIsf6DP131vxMsMjAc1zEPzMF1I5NS5pxp7+p25l/JSAM++70Gy5dHyDIIl6FdOWxu2yby5gx6eEDy/2T2fjjqUgjshrDC91BWp+JsjElYvuyCPf4ZtSdUBjf8UnCeWOcBzW3imHb6uVQRAxafwYvT4HOrnBKIKzmEWnGdVbU68OIZToP1KR91ZC7JfUwq1Qkx+LhqMm+Ni6TnxTggsxOmVzdekdSXCO6ZlqZ/8CkXqPZu/3YuZGNKXt3AFcj7K3CQT25Cq1X9DE6RJT3KAdN9W2oLIPTCWeYoCpXhQB1jWVZmG3lU5HXU4beHCMd3yKeQ2nOIy9W7XjhZcfsDO0X61zYIQHCVdOm6TadMMy3aPB9bi89/xd7CW000BykI/19UAdFujhBlYTRD9JzSYm7/i4BGYn5aH/BGw3p80uhaf8I26/KQqywh6gyAcHwflEa
+From: Wake Liu <wakel@google.com>
+Date: Wed, 18 Nov 2026 19:35:27 -0800
+X-Gm-Features: Aa3M54rGVyaPN88KSs8RaBBU3XJWLg8t07Bk5yW9RZ-7pR4m_ECj9go4X8bhqeU
+Message-ID: <CAOcRiAF6kacjWRdUq=rETV3bO30yk272_PZV7sQn=t31_4ww9g@mail.gmail.com>
+Subject: Re: [PATCH] selftests/memfd: Rename local union semun to avoid bionic clash
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: Aristeu Rozanski <aris@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 1b7fm91k3tux1o3c5yya6ysbto431n4p
+X-Rspam-User:
+X-Rspamd-Queue-Id: 23B5A20002
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795059331-518400
+X-HE-Meta: U2FsdGVkX1+6BO4iAo1dZKXhiTKoeZb7cxZFOslOG2aJsAOhnYFwxJ0ZPQCA4JLTI4P9h5JD6dyHUFwPx5fu9gu4GjRJf5cTrR1aNMmbvmGIzNxRNVwV1bFwb9pIEeUipMksN6IVjMU2txQIbv24xI40SsUgslcLgm2GtpJ5Tokvxg5xsbWpucTde6D4POC85uSlL3jcus/YzrQkJODht5u141nlYnDcO7i7/+nMo6ikejCgp5W6IdIcmgz2DI4y+VqIsXlB1Xvkxog/FyE0EyIt+5SpwKZLhedjWdSHHVlSxHkKiDrL/+lt7IGtNBoX2KwoGJQaF3LWb0eo3QK6MEyCgmez/2T3OD5hLz2liY/N5paeUgS4NVal1zihTjcBiLcbffoCiBk9QMh1A5cHRcwC7aw80iltWJPXWbFpZmGUDd31nSEjbxX8ZkjxCLJOATBcWbwJX0BTEdbZMVpBAYoXEHihJGV9mlZmnU9TaGIe11iMAhh/AX3Gy3TRTLlGkHjF8+eUHjYN5VIAdKNGdjIyryr+f6gX2yYqOERmOwGaUxRS2GDyLWjxOof7pzC5A16YAR5hYaccqwhUtc7i+ac71nLX/uQH5Qy3fL8FfRv3mvVshej2L569gLkeBM9VVh6rNPNiBo1u7NQDg/PrBqYlzI/4upKm/Ca6+e0xfnwEGkYryVeBzQCgpiCi9mxWMvG/auhHNmUjtlEFgOaQUjSgpcX7OATmYudQpiRWz0KwfURmi7cEEwbXqBhDBkHd2DfV9zyBwO757sjgfwQfNJZPr1614imHpSEsv6r3A2v3VWENBbpm0UGVJjbkHc7lQMLqU4nSbvuBlGaQc65h2cEzTStqlVz4i9x8QmLHH+nK8Ykz+olIaeCdF2wOy0++WCVJj9YVp016g6EnRSBLIA/8DfVgaA+C1EzPNklkt90CZ9PKBHBTkx0Sax3IQ0eeYK/moWDvADVaOnbtg/w
+ gjEWtFkJ
+ /T+rcPiZGCHacc+h639/Jar5ZIAysv6v9z0f7OrFmgtD+fBBU1LikhK9Ws/J6l3XPoSN7IWo5SOOjbYQDLq0dnvMRNRSdqp+g5/aoX0Xgq5VNTWeuf3YR6QjkJ7fLs2IblgBsVSr2l/cMbLy78cT7fEPXDoGZ9Aetw69mPP1QDAYjtER1Kgoc2qxvkq4X3DR+XEcB5DX7qLTnPHprQCtsnfl2WyhyZ5EhWKrLWqUiaY8BTttUO/fW9D7Bo1hGomHd5w6JNVgSlhlipoZH8p1Fy1dzHHgQEgyMmkvache4ls7fOYl3PmQMOb9hWy+0qbSKICxh5xFqHp46CiDF/EQBtEy65+jgKyJ6F97JKEGzYtsG3hE6TKJjl+Mxe/+l8fzxcqfIkeaLW0Kncq0WECYGMgRlRB6GmgZgd55TO+b40fxIvg74W5wdN/aUaOe0BvhW9OGvXOeP0KvpuYrggG0MArsCpPkNqq9vNZIHkX8kpSpY7h5y/r/qxjJk2gK0Dxcv29dvSq/PDooKnC73Yx5G92aC7dJneL7ZE9+tux4KkB/Zfv7jljSzodGVhgAvAW3VOcxeHoXSjZPwrR7frHfzsQnjWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,73 +145,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-iopt_map_file_pages() stores a reference to the file passed to
-IOMMU_IOAS_MAP_FILE in the iopt_pages of the new mapping:
+Hi Andrew, Shuah,
 
-	iopt_map_file_pages()
-	  iopt_alloc_file_pages()
-	    pages->file = get_file(file)
+Gentle ping on this build fix for memfd_test against bionic:
+https://lore.kernel.org/all/20261105030843.3319056-1-wakel@google.com/
 
-iopt_release_pages() drops that reference only when the iopt_pages is
-destroyed, which for a file mapping happens while the iommufd file is
-being torn down.  Nothing restricts which file can be passed, so
-userspace can map the iommufd file itself, or a vfio device fd bound to
-the same iommufd, both of which own an iommufd_ctx reference.  The
-reference graph then contains a cycle and the file, the iopt_pages, the
-IOAS and the iommufd_ctx are all leaked; kmemleak reports it as
-"memory leak in path_openat" with the holder taken through
-iopt_map_file_pages().
+Since b24335521de9 went through the mm tree, Andrew, would you mind
+picking this up, or should it go via Shuah's kselftest tree?
 
-Reverse the test instead of trying to enumerate the files that own an
-iommufd_ctx: accept only the files that memfd_pin_folios() is able to
-pin, which is exactly the set of files the mapping can be built from.
-memfd_pin_folios_supported() reports that set, so the same test can run
-here before the reference is handed to iopt_pages.  dma-bufs are
-unaffected: they are taken by the dma_buf_get() branch above and never
-reach the file branch, and iopt_pages holds the dma_buf there, not a
-struct file.
-
-Fixes: f4986a72d6e4 ("iommufd: Add IOMMU_IOAS_MAP_FILE")
-Reported-by: syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7666ed2c3d42196bf7e3
-Signed-off-by: Jiahao Xu <xujiahao@cmss.chinamobile.com>
----
-v3:
- - Call the new memfd_pin_folios_supported() helper instead of shmem_file().
-   shmem_file() became an out-of-line function in mm/shmem.c that is not
-   exported, so calling it from iommufd.ko failed at modpost with
-   "symbol 'shmem_file' undefined!".  Reported by Jason Gunthorpe.
-v2: https://lore.kernel.org/all/20261117093244.652569-1-xujiahao@cmss.chinamobile.com/
-v1: https://lore.kernel.org/all/20261112105945.285526-1-xujiahao@cmss.chinamobile.com/
----
- drivers/iommu/iommufd/io_pagetable.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/iommu/iommufd/io_pagetable.c b/drivers/iommu/iommufd/io_pagetable.c
-index 5ac736cf5..ab43e656d 100644
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -515,6 +515,18 @@ int iopt_map_file_pages(struct iommufd_ctx *ictx, struct io_pagetable *iopt,
- 		if (!file)
- 			return -EBADF;
- 
-+		/*
-+		 * iopt_pages keeps a reference to the file until the mapping is
-+		 * destroyed, so only accept the files memfd_pin_folios() is able
-+		 * to pin.  Any other fd, in particular one that itself owns an
-+		 * iommufd_ctx (iommufd, vfio, ...), would put the file into a
-+		 * reference cycle with this iommufd and never be released.
-+		 */
-+		if (!memfd_pin_folios_supported(file)) {
-+			fput(file);
-+			return -EINVAL;
-+		}
-+
- 		pages = iopt_alloc_file_pages(file, start_byte, start, length,
- 					      iommu_prot & IOMMU_WRITE);
- 		fput(file);
--- 
-2.43.0
-
-
+Thanks,
+Wake
 
