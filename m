@@ -1,60 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EAE606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C93606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IeVLrVCS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OaoXci3l
 Received: by kanga.kvack.org (Postfix)
-	id 4D8216B066F; Thu, 19 Nov 2026 14:44:29 -0500 (EST)
+	id E4FF66B0682; Thu, 19 Nov 2026 14:44:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 489016B06B4; Thu, 19 Nov 2026 14:44:29 -0500 (EST)
+	id E26B56B06D8; Thu, 19 Nov 2026 14:44:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 377A36B06BC; Thu, 19 Nov 2026 14:44:29 -0500 (EST)
+	id CEEE76B06D9; Thu, 19 Nov 2026 14:44:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 165B66B066F
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:44:29 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA969A03E3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:28 +0000 (UTC)
-X-FDA: 85452895416.30.3F1A858
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AAEFB6B0682
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:44:56 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 04D491208BA
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:55 +0000 (UTC)
+X-FDA: 85452896592.20.1B4DE39
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3A877180028
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:11 +0000 (UTC)
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7304918000F
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:38 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795117478;
+	b=IsMe+qZJv0SrM6/a0tyKCC5wWt00XD7CZBB2Qq1GVaQzMdV3xkXaVK+hTPcAPYwZJaSsIL
+	VSfVoBS0FRZDcVbUWOy7hATJVJg6G8Yznyb27bT+5SEXsKr81J4C1z153BoyDS0eiLuWkY
+	I6lLc0WM4bX/9xXfBgCNYzkJkCPrvFE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795117478;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YKyrivJzo+Mben9cmzx8JhnXyAay12IuEg5j9gR3E6E=;
+	b=gWHS4ehnZmq4gwcnhZmPy0oxHUWfYaYdMTV5ne/qHnh9XzEOoXYbiI8h9aI9RoPXDeCoIf
+	nJfLbuThscolItqMAFCT89UfH6HtYZ7PS4RWKTD679zoEnFORNmxwqhgVz3sOdtDkUaFbP
+	GSb03SeF+L5xWStq0gyHMgs4Mr+GSao=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OaoXci3l;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABBD34740C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0A51F0092F
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BC13044199
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3CD1F000C7
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795117449;
-	bh=sB1Pq7vBNntqu94r/2oUTzxPCprX1DSImM5jhZ6L7Ys=;
+	s=k20260515; t=1795117477;
+	bh=YKyrivJzo+Mben9cmzx8JhnXyAay12IuEg5j9gR3E6E=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IeVLrVCSsRPiQX0drUz2UWM7wWQUoOv9UhM9eXUGEnnoMcl+sQW+qiCun3+CTmWkV
-	 mi/z8zorQ0ZxXwChyn2aP6ccRSaXE9uwamxIHeos9YGbYyFT2rbjndXO694GPBly+2
-	 6KuZK6TJIwcGzxnyatmp98KHy8TPz+7rfIzZRNZp0T5Li9IYVmSLsp8gOT9puZ22bv
-	 xvd0gn6xaYu+9VYtSV98kfDQkkgDxi0n63CKvmRsbGvvKr9aiBgR8OVAiNJmkLOF0O
-	 2WDCxDrm02ztgXhsgGUGkmjZPeUM+3m4wl+RxhVKX+MYCKfabM6JTsL9CTVKC4O29a
-	 EBOJBLo2oZtzA==
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-94961bfe1a0so10606985a.3
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:44:09 -0800 (PST)
-X-Gm-Message-State: APuU4Z/cBfstZPnpRCsxv6AdUismxzPRInNS/sEzBWq3vDBi1++jNPSC
-	AbB6t6NVlL3I9BZlXlx4rUvCDAQtKelYuLrKSe2pBasj97vxt0Oodu6MmvGqiHSgP12ISEjRbQA
-	oMQlsf2VuuS3wDa02RRq29z5/x7NM3TU=
-X-Received: by 2002:a05:620a:130d:b0:943:f301:49b9 with SMTP id
- af79cd13be357-949bab32ac3mr114181385a.53.1795117448550; Thu, 19 Nov 2026
- 11:44:08 -0800 (PST)
+	b=OaoXci3lHVzfeCba3lln8uF7Qn9l96givMQbGbGKWNk7T3kABm78qlP4MdS4F2Fqu
+	 /Y4lzfYPSQbPYX8HLaFPQqkRqRinSsLy7Vpz45XPcYOzATFoPJpOHNHjfGpSDDYrjj
+	 TffPUltbSp9ZowtNe2jRuvCW2Qz4JzGn+hjouog7Cs7/mbtsW70Jxv9+lU57+sQkzd
+	 CZ46yF4bryVojOPkVGe4AUHNOQlOW3G6NZ+jU3PO+JE90rMbrSU1GNBfzixhvtYMey
+	 mfzINn1iW9Q9zHeH7kun39HuPeDfujI6kZnHIzb3UjSnlox3D4jA+qKJJQt7/nWmzG
+	 KSVcUcLVqnyGw==
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-9497a167a6aso159278185a.1
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:44:37 -0800 (PST)
+X-Gm-Message-State: APuU4Z+AqWjbxcrPDk+egTs93+p1FM/ZzMQrBt7Hkrk+IZEio1RgU/X/
+	e5Zkm37TEQ0Ys+UDazVMZa2hzemx/Tzy2fn2Ww8jtooNBCwKsizkAhkXMCJXvfo6OUGWb2MR4pH
+	Qbht+pdtfs6H40JbM4JN/1HsxmTlqgDA=
+X-Received: by 2002:a05:620a:261d:b0:93e:c12d:4ec7 with SMTP id
+ af79cd13be357-949b3841debmr323824085a.39.1795117477060; Thu, 19 Nov 2026
+ 11:44:37 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-2-9eee2fe97a2d@tencent.com>
-In-Reply-To: <20261119-mglru-fg-v5-2-9eee2fe97a2d@tencent.com>
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-3-9eee2fe97a2d@tencent.com>
+In-Reply-To: <20261119-mglru-fg-v5-3-9eee2fe97a2d@tencent.com>
 From: Barry Song <baohua@kernel.org>
-Date: Fri, 20 Nov 2026 03:43:57 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z93rWEzqAQ_sWWVKbmQ5M3qjxX4o_qYzeX3xs+=2V8yA@mail.gmail.com>
-X-Gm-Features: AclHuK83S9SvqTl7DWMa7lyKfrDc7jrgO_opWySalBDGVE3ZIlzAIZT17fPF3ZA
-Message-ID: <CAGsJ_4z93rWEzqAQ_sWWVKbmQ5M3qjxX4o_qYzeX3xs+=2V8yA@mail.gmail.com>
-Subject: Re: [PATCH v5 02/17] mm/memcontrol: allow update of LRU statistic
- without holding LRU lock
+Date: Fri, 20 Nov 2026 03:44:24 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xXdPsnHFX6SUff_1vbsEmGCHdZcXAmOumiN8EMar+KAA@mail.gmail.com>
+X-Gm-Features: AclHuK_KKF5P4wFEq4Ot8gOVbDoJlPrF_Qs2r1floMy82S2ahYTVnc8-alAnTWA
+Message-ID: <CAGsJ_4xXdPsnHFX6SUff_1vbsEmGCHdZcXAmOumiN8EMar+KAA@mail.gmail.com>
+Subject: Re: [PATCH v5 03/17] mm/mglru: make generation page counters atomic
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
@@ -81,8 +101,8 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-HE-Tag: 1795117451-100693
-X-HE-Meta: U2FsdGVkX19JB7wPQZBGJEYbmsmIBzJW9fPdbdWC4v1eQmXnjw/WUakrfg0U8Gcc74rBqorD+q/oRjI9iHYmrSRNlHgOtakpc13uMmPJhkwdUVOO8RLFimRDbBLBAPH8UCvF7c3z7hZQxTZegCRDd92c1Yxn9TOQS+RmA/si75gK8xiEhlJ4/eXumX2FoIsxI9XyKu5hGxhOeyKH29bqrjPZ1BSEkhEaZwaQWgST3uBRa4jQw8ks7kOU09sCn6s+Y76yu1Uoe5WiaeAsuNmuqaN4IIRZUKuOHRf1wWzknw7HUNAH/koMQr1G71xj+irKFRsapgYFU1Kg7WD/wGcrU1zfxvZ+boWzRROYWoSyBPLwV/w/iOmQQ+i5me+dems3ab5xU1Xu+jt0mk6Gni+yyILaC9mmVQSZ
+X-HE-Tag: 1795117478-747736
+X-HE-Meta: U2FsdGVkX1/Jc7U2tzZlVJ9O3fqf2qlCIrSDKNRqOy7eszbgxTMLcjewxYk+VDeO1vIU3oSLA+qpRy6flGM5XBAUMTcxHelEbdRRz/lbFWLx8oznUiVmcDXgHOHcI8ruWJcrtbMw4sHocq3gQ2SARc8TTXy3iJFeglxHwYSIsE+/nAy+iTxt2zNMggf6//kLCLZgYEgJzW61lOkGzA50bPinYyusxRx+cZze9VyeguojrQLPP+2QxQAetP5hQxCRGhcGSRD6/NTdijCU8BwfxExRsDafvglfQn7P5BQ/1mn+GpMUlAXNyRkD3fNQ+af8wlxf83Pr0eKBqAf/BcSuwQhBNAwNcR5nlqivol4MW9iWS5h2jOXkKR8fu7w78RG+/6UoFl0M31WRKKkwBdanPi99gaBsp6vmDOHDfglFHf7V+MqgTehSbs5Yb75UKgMC4DUz2Mxr1SmXy/prNbac5IWeGzY10tWQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,11 +120,12 @@ On Thu, Nov 19, 2026 at 5:03=E2=80=AFAM Kairui Song via B4 Relay
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> To enable moving file pages in folio_mark_accessed directly and lazily
-> for MGLRU, allow updating the LRU statistic atomically without holding a
-> lock. It may cause temporary counter underflow, which should be fine as
-> the counter is eventually consistent and only serves as an estimate.
+> No feature change, convert them to atomic so we can update them without
+> holding the LRU lock. A temporary underflow is fine: readers clamp a
+> negative value to zero, and the counters only need to be eventually
+> consistent.
 >
+> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 
 LGTM,
@@ -112,6 +133,9 @@ LGTM,
 Reviewed-by: Barry Song <baohua@kernel.org>
 
 > ---
->  include/linux/mm_inline.h | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  include/linux/mm_inline.h |  6 ++----
+>  include/linux/mmzone.h    |  2 +-
+>  mm/vmscan.c               | 26 +++++++++++++-------------
+>  mm/vmscan.h               |  2 +-
+>  4 files changed, 17 insertions(+), 19 deletions(-)
 
