@@ -1,103 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F16606B422
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3FC606A61D
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ltpszXxF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hui6CRpH
 Received: by kanga.kvack.org (Postfix)
-	id 571A76B06BD; Thu, 19 Nov 2026 12:11:15 -0500 (EST)
+	id C79326B066C; Thu, 19 Nov 2026 12:12:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 521956B06D1; Thu, 19 Nov 2026 12:11:15 -0500 (EST)
+	id C299C6B066D; Thu, 19 Nov 2026 12:12:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4112E6B06D2; Thu, 19 Nov 2026 12:11:15 -0500 (EST)
+	id B40406B066F; Thu, 19 Nov 2026 12:12:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D3406B06BD
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:11:15 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D035140B71
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:11:14 +0000 (UTC)
-X-FDA: 85452509268.30.AA6610C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 250E818000C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:10:56 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 449196B066C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:12:51 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B99501C4659
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:12:50 +0000 (UTC)
+X-FDA: 85452513300.22.B2C9E5C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5F06D4000F
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:12:33 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795108257;
-	b=mYVf6KGfix1C3KjAeAxuUxa0+P5HyQnQcqcQaaGYO60k7c0c//p0VllC+UINhyDWL70o2p
-	w+o/Em5lm4VODJOvCImGC9l7PEikaElDs8kV1EWQbx9SdM2gpIBjkbyOGejqyKJJYQbWoF
-	NhRB4ceHGShyK1Q5jYvGURChTKNPJx4=
+	t=1795108353;
+	b=JzBQA7pIvL+dYJgY5qG+cz87iOF19J8413NZQEqralpDOLA7GQ8oWUc6h4Pmt0UXT3ESXF
+	BEW13Tlf553h2UBCy74OnHll502Y7fNSBjKSM4B8ktLa3W1CFvxPVmwLBeMViniiNj1y/j
+	CUJyo4Nl7VkzytoVmN4F32Plb9xgsco=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795108257;
+	s=arc-20220608; t=1795108353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NE1INRl0OWxnNGr8U70vlE+S1wMHUVyOCaS5QMEsf7M=;
-	b=0bLZqnMPDMwObSCCVENQMXkOXJXE1T6KlaXAf7QihfWiEPwE+9tsRGTWfiSZ37xeqyxVJB
-	V6ObJiPiFjPUvixJKQYSA5QA0VJl6jeelEVHgZVQy5pAz4Vp3yF9yTujlxAXv37jST1YFW
-	nPHKUf/yuBMxTP5iCT78nwKU0B6n30Y=
+	bh=O5byhV97n6P3OBfGuLDvdezO+quTywLYBChMiMmstwM=;
+	b=k4mYePEP3i72mnQmsPW/CWlg/EUtcCrWNd19OVDNUfabWaGPt7uPC6D+zabt2YjmiuuUN/
+	iIGqV1aL9I/grnFC2JCueFXxUbtpaFnuQpzKcRsJ3ZZZcMw0Znm6xiZ1f56YAOWbZKPSsH
+	85ajMcVhJq8qnbHV31uFFSSahk/MSO4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ltpszXxF;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hui6CRpH;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A5CF263984;
-	Thu, 19 Nov 2026 17:10:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866931F000C5;
-	Thu, 19 Nov 2026 17:10:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 854004422B;
+	Thu, 19 Nov 2026 17:12:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96E71F000C5;
+	Thu, 19 Nov 2026 17:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795108256;
-	bh=NE1INRl0OWxnNGr8U70vlE+S1wMHUVyOCaS5QMEsf7M=;
+	s=k20260515; t=1795108352;
+	bh=O5byhV97n6P3OBfGuLDvdezO+quTywLYBChMiMmstwM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=ltpszXxFqV0AAQqTyrnIS0Id3IfThC9AIODIr8UqR376J1BiffWgOtqMu0oXLbqhu
-	 /OjZ+P+fR8DCvcgViGavzX019M1Myv96jTmpVUOHNlTSdYZ2sPSoK7E46MZyY/vQ80
-	 yHEI1wyXTkexOkE++mB7R2HOJNQbIdCF6xaIZfsxwkWDwdY8SxNKZZTx9wyZ6qpVrx
-	 CDfEwcz3yrRVRF+QX5HjKleBXp6DZnOXPebaztPYhsf08IDYeH6hYMUu/rFlRPENiG
-	 59CioBBEOPdfUCy9tGWOCjKdtq0s9Yr8U7fNgzPhoteVDfi7EO9sBg2V8qi8pBmuJn
-	 SG7UNKN8fwkmw==
+	b=Hui6CRpHqGNGxr5oPed/8hLSI5FAFf8smhFqWGEzeO65nkP2/gqPWEh/wOT7IOl5T
+	 jPKDvKHd8hbz/KKTZQ6x+4vz4bONaOonPX75U+uUSI9x31wwAYTCONHOWZ2WaCNRp0
+	 cmu4uF335ewBG/Iq7JkMw8KEeiWx3K7XIAgHE7WG0wK3/HixUY/P27J2ODwSw+g+Dl
+	 YplXojF3grj1QdqgffjCClxv4tnFyjY4KEBV8bmKLqhUWyvQ7KFi8r917qanOmlVgf
+	 2939LiAPdDLBcX2MPjy0JEag2cEXxZMuC2U8mA2f0wmN5ToORsAYyuZGjfcf243IQ4
+	 PbhdqtmOZmf4A==
 From: David Hildenbrand <david@kernel.org>
-To: David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
- Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
- =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
- Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
- Chris Mason <mason@kernel.org>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
- Mark Brown <broonie@kernel.org>, 
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>
-In-Reply-To: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
-References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
-Subject: Re: (subset) [PATCH v2 00/13] mm: batch of (urgentish?) fixes in
- oomk, cachestat, dev-migrate, percpu
-Message-Id: <179510824418.6720.13392203778507016783.b4-ty@b4>
-Date: Thu, 19 Nov 2026 18:10:44 +0100
+To: Hugh Dickins <hughd@google.com>, David Hildenbrand <david@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Jingyi Sun <1045704958@qq.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <tencent_69A761EE2ABA6F15B942EBF0EE686B2DE608@qq.com>
+References: <tencent_69A761EE2ABA6F15B942EBF0EE686B2DE608@qq.com>
+Subject: Re: [PATCH v3] mm: shmem: limit forced anonymous shmem huge orders
+ to MAX_PAGECACHE_ORDER
+Message-Id: <179510834962.6900.17066358141269764658.b4-ty@b4>
+Date: Thu, 19 Nov 2026 18:12:29 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
-X-HE-Tag: 1795108256-779824
-X-HE-Meta: U2FsdGVkX18f3tObySEqWyLo8ALyLJ3Hm2VcwMcY2IW1tC4sb08JYfA2TgHbetmTzxevvFGXyTwtH5B7d2ha2T1a8RFUqlrGm4FpMLRjGc81lf6MJ1GzsP72q1yS1O3rkB2Ee+kvSnBIlkVNi1kmutznlFuuu5tYTO67YaMjQG9iDCgdO9AwYEo0TAlLSLv0eNLf3zdv94t9LWmJA71elP1/ZuN595E7e6ZsbdK/9t9zoIKqCRFI3Oj6JAMSNbfFFCl69r+54pL4zigF+vEBCpye1UJO0vToYVugSyvZ3SNPTED9yadkSvGvZTi7CehzZoQw0+PZ/kj0Jszj03l/OaAoc37bDV6wrDGA9cZXqWiwZYGKcEBrmVFl3T4t62/4FD2UPANb+6M=
+X-HE-Tag: 1795108353-891706
+X-HE-Meta: U2FsdGVkX19Qokp/I0qHv63nFhMia5+gsSgPpQdSlMLSN60kQNC2NrZWcwrAOKh07Nq+TgXmbVq44blXdDSWYJorLRHBakYJjxMAxpzxpScsnbr1wOcDxgukLsn7Qt1T3WU1Jv3cH6541fEvm59nO0UaLPmPa04bvXvJlPCLACRcYJDJi/quVao0m4z2Gs78TTaHsYmvRfvtZBbdpF+6Ts+JfgfUdP7cpT6+1skvCazRPY1kdmRfD8CBEfWksc7J7kI+0utEwsZOGDOYVuVKmDDMztAVyGlZEMRASCjHqXXQoeG6C8UyMuZzcRfC422BUMcktnrdAx53aADxsu7awiCxtGIzK3tDG+12JS2g35NrL625lg75nyz8FFTQosc4fDfco9vBxN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,23 +88,25 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 21:45:18 +0000, Lorenzo Stoakes (ARM) wrote:
-> A bunch of fixes for oomk, cachestat, device migration and the per-CPU
-> allocator.
+On Wed, 18 Nov 2026 18:22:07 +0800, Jingyi Sun wrote:
+> When the top-level shmem_enabled knob is set to "force",
+> shmem_allowable_huge_orders() returns huge_shmem_orders_inherit for
+> anonymous shmem without masking it with THP_ORDERS_ALL_FILE_DEFAULT,
+> unlike the other return path at the end of the same function.
 > 
-> These patches were originally AI-generated, tamed into upstreamable state.
-> 
-> Some are more reworked than others. Those which needed a significant
-> rethink are submitted as mine and marked as Reported-by the relevant
-> original author, others are smaller edits which are annotated as such in
-> the usual fashion.
+> huge_shmem_orders_inherit defaults to BIT(HPAGE_PMD_ORDER). On arm64
+> with 64K base pages HPAGE_PMD_ORDER is 13, while MAX_PAGECACHE_ORDER
+> is 11 because of the xarray split limit. With shmem_enabled=force, an
+> anonymous MAP_SHARED mapping can therefore get a 512M (order-13) folio
+> in the page cache. Splitting it later, e.g. on swap-out from
+> shmem_writeout(), triggers
 > 
 > [...]
 
 Applied, thanks!
 
 tree: mm/core.git
-branch: for-next-fixes
+branch: shmem-7.5.misc
 
 Applied patches will appear soon in mm-next, followed by linux-next.
 
@@ -141,18 +121,8 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[04/13] mm/migrate_device: allocate THP deferred split heads
-        https://git.kernel.org/mm/core/c/dd3f0a40
-[05/13] mm/migrate_device: don't collect a range twice
-        https://git.kernel.org/mm/core/c/bedd0a3a
-[06/13] mm/migrate_device: don't let go of the fault page
-        https://git.kernel.org/mm/core/c/34f3affb
-[07/13] mm/migrate_device: look up fault folio after a split
-        https://git.kernel.org/mm/core/c/00cd1f21
-[08/13] mm/migrate_device: fix ksmd oops on a migrated KSM page
-        https://git.kernel.org/mm/core/c/e0a839b2
-[09/13] mm/migrate_device: fix use-after-free of the anon rmap
-        https://git.kernel.org/mm/core/c/9663aa0d
+[1/1] mm: shmem: limit forced anonymous shmem huge orders to MAX_PAGECACHE_ORDER
+      https://git.kernel.org/mm/core/c/a0dc4b77
 
 -- 
 Cheers,
