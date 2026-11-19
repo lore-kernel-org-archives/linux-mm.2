@@ -1,96 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4EB606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 13:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7B560A2610
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 13:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YhIDgp/g
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ka+7fJsS
 Received: by kanga.kvack.org (Postfix)
-	id 656936B0620; Thu, 19 Nov 2026 08:46:58 -0500 (EST)
+	id 521566B0648; Thu, 19 Nov 2026 08:48:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 607156B0653; Thu, 19 Nov 2026 08:46:58 -0500 (EST)
+	id 4F7526B0662; Thu, 19 Nov 2026 08:48:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 543D96B0660; Thu, 19 Nov 2026 08:46:58 -0500 (EST)
+	id 434E76B0663; Thu, 19 Nov 2026 08:48:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F7B26B0620
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:46:58 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3179AA0B07
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:46:57 +0000 (UTC)
-X-FDA: 85451994474.14.26B7098
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8BB7B4000F
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:46:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YhIDgp/g";
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 262516B0648
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:48:03 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC52AA0B0B
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:48:02 +0000 (UTC)
+X-FDA: 85451997204.05.A9D60C6
+Received: from mta0.migadu.com (out-74.mta0.migadu.com [91.218.175.74])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B96FB180009
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:48:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ka+7fJsS;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.74 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795096015;
-	b=e4auFH8HcnTgvVk9R/Txxc0Z9U6LLWklKO8DQqdBuT0HhVIUODKEPra2F5HxcQx2KhnYQg
-	uW93BKdpELcnJP54cQO5NABtcoOn0naRS4wlr3+JhH7FanJhAsuvlOVlOloZdnuYe0o10z
-	bcMGJBb8DlBOhWMgcxwUAWiOpc0uJ50=
+	t=1795096081;
+	b=mEFP/CYKltNyRdLQgOR9MOeDcxZSgLpaKkpkb1wNBBEgeV2HgCkbsagkfPdwlxQYI0+39J
+	VTclXH01hhCHJADrPo30zpOpOut4LScwc7vRNtrqBdpUb4SyKkM852g7UjnG6X4R8LidSY
+	Ti8dPsMvrS20dSKM0n3FuV42IaytQCc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795096015;
+	s=arc-20220608; t=1795096081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p2A5NZTqls9QFw63SbXMQUkuhwEvR7r1jIlMHqoli2s=;
-	b=sKuiw8XzM74cocWZCNsnLqtB5vozHrdNCDvjnTfMK9kynVnigt42QkzhjAPyY1fd/VbEA7
-	KDCSsRvo6x5LBeNybTn5ZJ1BTr/YD6KzgYLYnJ0ZZdYrk9CEUYZQKI+OikVP8kEpCmqbcj
-	oHcoecSmieM68q7Xrh1GpQ5XEWyfaCM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=epUEM61tSIbeG7G9xLmoC9buJM08L91atKkwLhgoWaQ=;
+	b=hCCmCJYfD47KNIGt3RX6wiVAK+6dXIBpCV0KUA3vhoO/l6qIK8tTER3qgIPmIE7YGtDmd1
+	XwLwSsfh+Sg0rXjCEcQxOo2lTxJMXUwslikF41fY6BqCnQJp9IJ4RUbw2lDrxnWRpM3qku
+	9U3PnIwCnL2gqXRCQbApIm4meOrQqsc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YhIDgp/g";
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD11B62383;
-	Thu, 19 Nov 2026 13:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313681F000C4;
-	Thu, 19 Nov 2026 13:46:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795096014;
-	bh=p2A5NZTqls9QFw63SbXMQUkuhwEvR7r1jIlMHqoli2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YhIDgp/gwt5U8Q6JNCbruZo5se2dpM1Q8YIhAT57WtkPXD4xwr/p+LwXY7wlicBvS
-	 o6yd4ag1x9MEtMKQ75XVgiI7Tk32WHCyfXRomq9cG7Rzs+s6tF37ypHgjIqaSXQYAB
-	 Kd8/Mnx5S2SQx+65k5CxWUUFlat1w5dL4wc03TCpgrygAKr9BSjKc6T1fCPGWG0mlT
-	 8X9JAhUfqcIBvEn98AXqn35feK1kOaEJjhdZGbnJSPNxz0QVWnF1Ts2Tp+0gX6zb/M
-	 5sHqYMwcT3KyQQ7/qyT72TpdSK2LRE9zZBusN/26f5RSKXQC0PNzodiTjrlyH2j1Yw
-	 y+PW2/jGyyY0w==
-Date: Thu, 19 Nov 2026 13:46:48 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Anshuman Khandual <anshuman.khandual@arm.com>, 
-	"Jose A . Perez de Azpillaga" <azpijr@gmail.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Michal Hocko <mhocko@suse.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v2 1/3] mm/memory: remove unused
- vmf_insert_mixed_mkwrite()
-Message-ID: <av79tKo4-uM5oZbh@gremlin>
-References: <20261002160535.661399-1-ekffu200098@gmail.com>
- <20261002160535.661399-2-ekffu200098@gmail.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ka+7fJsS;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.74 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=VUmg4W77vE4zI3vWHsCmeHOudio6f+zaYVY+h+k2DdA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795096079; v=1; x=1795700879;
+ b=Ka+7fJsSniJYnQACLYCqGeFg4sRC5jkN4OD01djS1ZTT/ps77mqlUFPNOofp2887xGVwbwqL
+ oT8Bfeeh3BVnGuSeN+Htzii0F6jUksvoKNOy4MysXUFnhZ88H3FQ/PU6qhM1yAGOD0EvMlNbeAE
+ GJ6JnM9YssrK7ovmmN30odaQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 207d303acc29d7de;
+	Thu, 19 Nov 2026 13:47:59 +0000
+X-Mizu-Trace-ID: 207d303acc29d7de
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: Barry Song <baohua@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Yu Zhao <yuzhao@google.com>,
+	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)),
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH v2 0/2] mm/mglru: deactivate anon folios into the oldest generation
+Date: Thu, 19 Nov 2026 21:47:38 +0800
+Message-Id: <20261119134740.514632-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261002160535.661399-2-ekffu200098@gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8BB7B4000F
+Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Stat-Signature: 494xz7wcrpihxnoqih1159we9ku9akab
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795096015-242767
-X-HE-Meta: U2FsdGVkX183M0KFjojmQ2vRiEKZCANlXwvGKv8O/iyd8YEhddmVHzjvxyS5jojvUPiGVGxwWf2oItBbQCNbdEOL6bdXKvsx+FuJZNpNtwOjLQPKTb9WezSEjePn5bwDQ5/RfHzfvI5ZjuxzSW1gc5ZqonYx/UbIoPgN67GKf/+Nmwkd0mbgNqFnVWnH8+MtsC1GbqrbX+RTkxAvuoyvxcBV6ck9eo2qmTh7btPByiP2bJr0N+IV0CVkdWFPPQUAW/d08ZlsDGWPXg/gZlXn4HDilXP2+4RcSwqc9bzHH6DWGE4zZj9rvwZKraRLm3w3KRVoghKmCIHICrAjRiZLxevemd6pLhFMmp7RwFg+hjCh0CuZ9LXMjY7QaaNMwjFVjah55iqfCSh1MHUZFzcVKiCWxLblnwirn0/dbtmXPxZetoRaoW7iZAMH+xEYWxZpEBKveUAfeG5+HcUPUNKTI7rgRhL8HXV1Bibg1joez6WNdiXBiDDzK7g6ISh6F7eTLtj1EqbLRk7VBZ91xz4e9L+kirUjAXI2UwNin8B7ZeSE0qjxQCPU5wQxnHIjcap556vTN7Xdceqszt07hnQ0V8FIiNQg5EAK/BZFrnzZPWsU8gguga5/Afi76ZXj6Wg3be/Y9A9xFapTM9DL05XzKGn2OJNQcSkq7ToWixCYh6HEf4Gr8IjV6qzN/Ebvu9n5QIbLKD2tEazf/Cn5ekRa/wwVS4x76RRiMnmbFN9qXVwImLf/+QGUJ0zEWN01ae70RjHFNkFpEwbGdOtp+mWQrPvclYmndYV4gfM5f/D7J4GTO+rdHUt9GwA/l8WJhHNdoBcIVzRob8OfRrfpZOnkAn8yoJDpBk11l7A0NouO8qdfQijTdhjGRaEMsiic/d0jNZa2SnNUO8PeJs/3yWd0y5njkAukJ4OqOsfqwPrsN6TUx5qzu9cVsD3QQd4z3Dx8F7dM49hu1T+58h14ldg
- 3AMbOs0u
- +P8jiS0CbFRCkWzTYIbsjSjy+O+dPMkw3OwZMoNQ1qCqtnmKtnQIQzzoXY+QyXrJ+SQSc/amhFfcCpcyw3ahUlqCjXA9Z0KRW4BLjuic6mfcKzmnW37ynVy5nWbagyvj/oGdaFdgin61HMsEVYcQ3nkU0nmWImB3T+F4wXoEURRUa9445oJf/a40mpDN2gUZTblbNGEuTuO61JcTmvYh5XRHzaMkNCjgnVDbwfKqsNasGJxNIHbdTj+1L/DjAkBMC/i3/Uo8mW3TLxW66OIu10pnQ3XExAEmIM3I4Dk006vGTovAD7WGk3npWng6LlXgDxayc1b7XM1NHZzdvgRo8sowHRyjdbAhN9sng9sgH3wS/GC/FEldt3nIH8HB/4VQYJHuwRbxi0ssQ6MVeQvSg/KdxR6DfEZd0I7RygA+HfAyAlDrjlq+SkdyR5ZzS+ktKbDzz6iQ+xyd0J6DYnMvukxHdokWBa0Ejrk9HHfJlzYXfWzlvrHhum0SA/Q==
+X-Rspamd-Server: rspam07
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: B96FB180009
+X-Stat-Signature: yer6eikp9io79njaxj7s6dzgzajfdymi
+X-HE-Tag: 1795096080-868315
+X-HE-Meta: U2FsdGVkX1/4YRbMNZlBLFsFtj6EiOz8cH8z9b2Bbni6uB9j5vYjAEqhgc6x/kKeKLMqjmgDe7SEeoLvCMHX4XF/x47i4sJ7ac2abxNIRaLMDpJZ6fuqGU7/Ibwgp+EiIJ2MdzxAkv++PYVNtwcD5ig7e23PbRF+ZdkaoLLWfcWYlEmao/Ac+WNRygPECWVFggZE6SoGEMvOuUTSpMHcqlrp1QeVAcx6DYD1Na5ivN52BgKFtzXlh4yCUmAkDVzJ7n24cdndbLmIqY5Vdl+GLr9xhAlLv422F77+3UFIakjwbd19l87G4nQFOBwVGxKfxfZMC2Y+jJRT6ai0KrK3KPkduE3QrPNV2ks3pSLILi4pzfBDd0bFVz/H7JoMWURAPMPFu5bvv+Fz0H53dHXHwfhsbo3m76iRaIVCQyHz0AbN7uDS233N1LuB5+gKfIXVmMzkYMyAkYw3LCJXNemV/MpghZFw1yKT7Yu6dVnbMPkqm9Qb0exOyos6QDLc9jaUvedDzqy0JabSjPntvF14WcddHemkRu5TBx6ky6kXORsQE7IEH8DHADXRg8FOphSVSP0JuiZnHRlh7YwmcMrVhX61Jq180jh8ABCq0kANE8k1V1Bv1BlZl5L64iA/1NQLZSuv+kdt5eNnDXcWAisQ6U6bgjkkkSdnzI2qqk8sW3BETQQSKVIQIYRnRgzoUoGR+dsl69pK479J2DvMnbJK40Ee99gSVHNXp3Jotlk3ioNxO5EZWAtB46smvDRWSIBjfniCETlXp3+Nl28nqt/a1Fkd4ZM6PvvEklgCUOqZ4cIhVBGk5kAGALmtuXrrLUMYVM6HBgJlSS9x11ckScPp4u7J3TGOzuEjvq18TRYLauUN5EJq6iqZ4N5d+OgGP/ty1EU+G8aDKtfRyUJb+3w/X1M4hhU3h6ijn2Zye4/jDMXsHGUVYh6w0/+opD4ZCM3DbXpdTRTsSRuQV7Lea78
+ GS5gCIvK
+ WtYpIkJAyk+sgXbx+wmPGb+SUaEI4jiZu8CKmoXjMx1coWSlkKofa5IWDtcUQZ/BuW9qG9cPHGbQFtuN+wEYB5ZQCZvy0jA1FaEUzQLblSA1w5AYetoCe/FyyCybJST9emXnwkzV9COcQrsQqVeV285UaFwLj/TW0pbhi0N1iA1nIrPaFoNtQ6DWnHPl2LTdYBpA2zKS50E73IwTkdhlqYxd3Zeri+G7U5ZzGW0nkEQRlNBzyiGy0T1t79TCIl2aM3dBbNmV4K7/Rc0m2MOsGR7gtNsJ7QgmpEbkXinJ+Pmx3FRQNRzh3kr6s27F6xk+UMxJ1VVOB4S7lTJEMMxtu5ukMJyj3nRbGlSApIeTB3RgqH7ttvY+0hyREi1W70bBiFugTRyYckis25xs5wNJcYf2OrZaWuf+DeEv1hqEwqlCivzU6W/V8arH1DUlqoB1QH18/89HtURvfw6q6MhTJu0vozvPB6DHC2i5JMmUor3cor3c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,79 +106,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 03, 2026 at 01:05:32AM +0900, Sang-Heon Jeon wrote:
-> Since commit 38607c62b34b ("fs/dax: properly refcount fs dax pages"),
-> vmf_insert_mixed_mkwrite() has no callers.
->
-> So remove the function and its declaration.
->
-> The comment above the function describes the -EBUSY handling in
-> __vm_insert_mixed(). Move it above that check.
->
-> No functional change.
->
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+From: Ridong Chen <chenridong@xiaomi.com>
 
-LGTM so:
+With MGLRU, folio_deactivate() puts anon folios that are not in the
+swap cache into max_seq - 1, an active generation, so MADV_COLD and
+DAMOS_LRU_DEPRIO move them away from eviction instead of towards it.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Patch 1 lets lru_gen_add_folio() take a [min_seq, max_seq] range for the
+target generation and renames "reclaiming" to "tail", as Kairui
+suggested. No functional change intended.
 
-> ---
->  include/linux/mm.h |  2 --
->  mm/memory.c        | 16 +++++-----------
->  2 files changed, 5 insertions(+), 13 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index c038d06825c3..2ac734efd4ec 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5008,8 +5008,6 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
->  			unsigned long pfn, pgprot_t pgprot);
->  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
->  			unsigned long pfn);
-> -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
-> -		unsigned long addr, unsigned long pfn);
->  int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
->
->  static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 330cde31bf8b..4b2e4be28031 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -3052,6 +3052,11 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
->
->  	if (err == -ENOMEM)
->  		return VM_FAULT_OOM;
-> +	/*
-> +	 *  If the insertion of PTE failed because someone else already added a
-> +	 *  different entry in the mean time, we treat that as success as we assume
-> +	 *  the same entry was actually inserted.
-> +	 */
->  	if (err < 0 && err != -EBUSY)
->  		return VM_FAULT_SIGBUS;
->
-> @@ -3085,17 +3090,6 @@ vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
->  }
->  EXPORT_SYMBOL(vmf_insert_mixed);
->
-> -/*
-> - *  If the insertion of PTE failed because someone else already added a
-> - *  different entry in the mean time, we treat that as success as we assume
-> - *  the same entry was actually inserted.
-> - */
-> -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
-> -		unsigned long addr, unsigned long pfn)
-> -{
-> -	return __vm_insert_mixed(vma, addr, pfn, true);
-> -}
-> -
->  /*
->   * maps a range of physical memory into the requested pages. the old
->   * mappings are removed. any references to nonexistent pages results
-> --
-> 2.43.0
->
+Patch 2 uses it in lru_deactivate() to add the folio to the head of the
+oldest generation, which matches the classic LRU, as Barry suggested.
 
---
-Cheers, Lorenzo
+Changes in v2:
+- Add the folio to the head of the oldest generation instead of its
+  tail, so file folios keep their old position and anon folios are not
+  put ahead of them (Barry).
+- Build on top of the scanned_seq change in mm-new and add a seq range
+  to lru_gen_add_folio() instead of open coding the move (Kairui).
+- Keep the per-cpu batching in folio_deactivate().
+
+Link to v1:
+https://lore.kernel.org/linux-mm/20261112081928.3014946-1-ridong.chen@linux.dev/
+
+This series was developed with the help of an AI coding assistant
+(Claude).
+
+Ridong Chen (2):
+  mm/mglru: pass a seq range to lru_gen_add_folio()
+  mm/mglru: deactivate anon folios into the oldest generation
+
+ include/linux/mm_inline.h | 52 +++++++++++++++++----------------------
+ mm/folio.c                | 16 +++++++++++-
+ mm/vmscan.c               | 11 +++------
+ 3 files changed, 41 insertions(+), 38 deletions(-)
+
+
+base-commit: 9f004372ebeb18fdeb699f9880a0e472df90135b
+-- 
+2.34.1
+
 
