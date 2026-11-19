@@ -1,95 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886F9606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0754606A326
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=neDjzNmX
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U/a7b/tR
 Received: by kanga.kvack.org (Postfix)
-	id 9E36D6B05B6; Thu, 19 Nov 2026 04:24:55 -0500 (EST)
+	id 183586B05F0; Thu, 19 Nov 2026 04:25:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9975F6B05CE; Thu, 19 Nov 2026 04:24:55 -0500 (EST)
+	id 15B366B05F1; Thu, 19 Nov 2026 04:25:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ACF56B05EE; Thu, 19 Nov 2026 04:24:55 -0500 (EST)
+	id 0721A6B05F2; Thu, 19 Nov 2026 04:25:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 674A76B05B6
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:24:55 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C36F68099C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:24:54 +0000 (UTC)
-X-FDA: 85451334108.01.8E32651
-Received: from mta1.migadu.com (out-91.mta1.migadu.com [95.215.58.91])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7E58E40006
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:24:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=neDjzNmX;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D294A6B05F0
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:25:34 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26ED31A09F8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:25:34 +0000 (UTC)
+X-FDA: 85451335788.16.B9F0181
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5980B4000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:25:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/a7b/tR";
+	spf=pass (imf12.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795080293;
-	b=6CRISYy6VkylCvz5wufonBVfYkUysExIxvvmCeZW7/hsfiwLQpgax+XEp1fUVkmfA2j6vZ
-	86fi8hIau0+qiLlEBLiJLjrhOwMRn1AwTB1kqxHpUjMcQZAqMx2z+53px2m3LyACva0+bh
-	QCbeU/PosCUuXOh3bW+ryQums+aLcTk=
+	t=1795080332;
+	b=JG/Rhh7K9XRrfozV3z7Mua1BkCoE1v2o6xtBMCbqpEYM1v8WQDSh9OGEiN/zS2Zh+5KCQQ
+	hMY3oUktd2QwEXC/cZJKx3Rw9fzlzJsQPZ8ahdXlKMFFcaIJACufQQSDG9IxUk88FVG4vX
+	N47w+/zgjGIcFmpHoHMQl0A/LPw9xCU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795080293;
+	s=arc-20220608; t=1795080332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cCe8wn7rXIQDY9mJX+i674ZbYVhG3egsT2+B2uCc1sQ=;
-	b=1AI1RAAa6oYHoo0zG408Bd6Q314DXwBUDMTjSlKUJxboh7XDY6gasAq/ppnEdQA8pEggZb
-	zEaBjwr1bbge43MzVWMfGbvUtej9Em2jeHhVTCCichxrhmyMvgCuagVLYlJeAdK3EcFx9l
-	B8JPYcR7QM3fVnvl9Qu84doiJWu+eM0=
+	bh=ykzNXonS4EXpUTddVAokRRmNVBMx3zTvxuXv3tt6jrA=;
+	b=vwlLc/ibJNTZD3qoUiepsDDtMMRdISHy7P6wmRR1PS69TUzFghoVtyTK8egCK9XknvXPjQ
+	d5kUjaOm1h4yYU+3yJvKIInqaCBpqVyvBGYAO9xFdoOdg9k3MKufow2tnoc1YJ/7RFcFWF
+	7bZFBPI7YSZJNC6Qv3VoZE26epKGOSo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=neDjzNmX;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=W345cDTFz+dZOqJx8GXphTmXARBFaFLNDZgCFqVrQDM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795080290; v=1; x=1795685090;
- b=neDjzNmX2peKmf/8HN4GiVI/3CxB8kAj/le4Idy95zMywuRzUZyHIN/Sd9w7qNxNP0Qj+0Mk
- dqvQWJFf5KKSGBSAMLxab5um+mWcWyTNHUPjEKdyLncg3LHPou+woAkExgVKOkNioxrO8ix7Btg
- oneC8aLpIbuIGa8mWympZNf4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 54021951ad124a27;
-	Thu, 19 Nov 2026 09:24:50 +0000
-X-Mizu-Trace-ID: 54021951ad124a27
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 19 Nov 2026 17:24:43 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org,
-	kasong@tencent.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: Re: [PATCH v3 2/4] mm/mglru: add PUD-level Bloom filter state and
- generic helpers
-Message-ID: <av7AW0kaJTUnucuC@fedora>
-References: <20261113084953.412919-1-baoquan.he@linux.dev>
- <20261113084953.412919-3-baoquan.he@linux.dev>
- <avq-hc6E4Urpf6x4@KASONG-MC4>
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/a7b/tR";
+	spf=pass (imf12.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 826B545FB8;
+	Thu, 19 Nov 2026 09:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2281F000C5;
+	Thu, 19 Nov 2026 09:25:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795080331;
+	bh=ykzNXonS4EXpUTddVAokRRmNVBMx3zTvxuXv3tt6jrA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U/a7b/tRhB8CSGT20eIHplkYFnOjIl0jl1P2BKWpqserpdTar8rZB/iL+28k4xgEX
+	 RAe4srUmFH860mmQuuqauf+aCBEZMA05LBWTZJeFuWc4/pDEw7H4zNwyJ9jjFBkEgO
+	 P1oN9DABuhlAvY9p6B9nv+OU3L2aK6i2S3Z5jBQRrL3hBhH6u7EDKVIkeVQpciiQ3s
+	 gzclqEsBfSrLpqV19oScY15ygIOAL6spSiDl9Ma8gcJSmE8KSomJVIfweRJutFtVJ2
+	 gFuDyLF9ZxXpXQaziu8mrHK12yt2wZuazhsdwVwHpf+Sge8TYoD6aWdk9lFGdz4FmE
+	 XzmO5ASh87W4w==
+Date: Thu, 19 Nov 2026 10:25:18 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mel Gorman <mgorman@suse.de>, Andy Whitcroft <apw@canonical.com>,
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
+	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>,
+	Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+	Chris Mason <mason@kernel.org>, stable@kernel.org,
+	"Gregory Price (Meta)" <gourry@gourry.net>
+Subject: Re: [PATCH v2 13/15] mm/hugetlb: fix reservation leak on min_size=
+ mounts
+Message-ID: <av7Afqpp-C9pqcR3@localhost.localdomain>
+References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
+ <20261116-fixes_hugetlb-v2-13-4dd9e94ea9ac@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <avq-hc6E4Urpf6x4@KASONG-MC4>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7E58E40006
+In-Reply-To: <20261116-fixes_hugetlb-v2-13-4dd9e94ea9ac@kernel.org>
 X-Rspam-User:
-X-Stat-Signature: fyqzajnjq7m9j8h79feeoymr8mwud3jo
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795080292-986040
-X-HE-Meta: U2FsdGVkX18a3X0KMbIn9TKtKmHJZsv3NGqsaxKQDoPv9pjBXtHvWbv8ujHX1nWj3R21gvD5xptxJraFNrgk1pZthWl9WDbHPk6VmQHgvDqizdMMCDdx6GQU8gRG6KMaioB/WrLzgGsOglviFPznIZKY3UmULl2G9DFYf5GBOIp/axjwWIXU3tJOOrVPw1L2WaxZGDdnZMaDFpj/yh/zcJKN0ClqhpO+0qmXXUWjCfeMdg6MG1eyhGJdsarRQLn9/hA+PFjn3/aYQyK1oiWfhgg41zp3rhDqM3E+0SNiGAZJqv3CAGQaPu7AYw3CRQJIiOF4c1sHcAkxQi5FqlH/JCpYQPtme37/IyQMt2bDUYYhEHunO6BDx/9tDZvevHDAC9S2UgdAGGdZIaHYBVJK/a494f5VDf+ec50QffZMNXVDhyukZYoXiXzLn5S3pNL8/BUkXXfhMMwtwI3yPxzSco8DfMzl1TKq7gIRa7hPbRhjAtFe2W2bSWl+9Zu82gud1H43wAgJMiUeYwKKO3USQnpsL7EzADgQiGNEcrkADJLkNXfHgZiKSX6esE96QtBOBeMRS0dS1NnV9YIvfGYAo2sHrxt8TeeaIxA9U0jBGn2V8M/AZI6uL4arSfDUYM08IM+hU7vNsY3tg5PKPoD5xNY4EyVqVfcO7pDdJCdDWnD0aD09JXPwZ8ViXHU7i7E6mFYUODZKFpm3+Uybf7VrZB4DNtt5Zent7glIbJKc7jRNsXw7/keLgqM5aIMWBIbT9s97IGNtOJRdMHqzuigaIEXZn35pGLvW7Abb5My0euRe9NUYTQpeeUssduZM9U9Pdju4s64weyXkHgJwfGA3UA6V/9q9BQRM8bqlPtdlR6WpL0g2IbHvJI/CAyxK/kxZOgVQQZD45Icy8ocGsjPtiTU5nAL+DqJcvcEehYY+rdtClmKIAMYfuPmBgvNMgXzas9Ewj1pCggcRDttqjwn
- bkpv2jt7
- KHdPkZhwC4tLPNU/SeGCc7pc5k4wXs/cRRJwH+h3iJZgfqqdjf8HUVxTtwrXB2uSW7uCiOCpSloiuwstPNmftkCm7/9nSWtoR9K02lSFnFq1A/2yjY/ZsMtKpPs4hIvpL7hSMpccIjxOptC49mmcu2uxXD5gKsYHRzXToYWCLbQ+n3yZELs3s3PSNUDXl/zpQze95jonLaIZRU304mPTieJWeVfFjL+pgdlrQawkTxVly+R0NIy6QlyQQJx7vIPXC7c/42E1yCiymvJBqUusmwvMcdfN9bJrKAauvdGfgVUBnwIl84Q1GWTeKpLXg9QJA9KJx8YYkUqU47v06PWiH3wECB9EjNjrLwJxxzn7xOFf2UJCxos4MPMh+AMA2miunD2+3n/BYT6AEHB8+lNPH4Qk8v0W79GiPKIn1+v4kQgf/DzswEetnzcivC7ppbsCWcLExNzZpo+NlPDnTgYzJ01nzjqm3ZsqcgfOlTvmmwyseBOZ8UPrPTXwbOQ==
+X-Stat-Signature: eikncrhunfe8xmhod59arnfzk433opz5
+X-Rspamd-Queue-Id: 5980B4000A
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1795080332-581843
+X-HE-Meta: U2FsdGVkX1/3QCZyxx/RLGJuYd4zoEh0Ecnd8LYCGdKE8xfxd++Ea1QHxKRaEtecycRJywvoSRngk1EdKnUCx0+0meJsudXtzF7+BVI5/06VMVCzTaWSPkuIG655CCCOgYin2FWgZRugPqYaB+9xvN8CDHNsWkS+dcwCbwLSjSRKip3d51IsFLe33gW987OP8jFHq67gBOIx3kZAFQw1iWuMkeKhrbK/mZFItKWhV1gnQaqbGWkfwexWLS8uaT3J+p6YW/IDzlTCi6kOUcB+2zYzdNUMmW6AU0uKjfxBO4225QC/KnX5Y8UhxjOz6dOc0U/ilHSi48bA0kPxRNGrbIqOQA5y8AyeLI1r2gTrY4nRXw1Q5+Y3hUb+6wVWH6uaAo9ivA0J3wvFgeVF0VO7hR2DEhXpiVCDRXS2l2xR7XIGtwL81GZDp95Pcg1Su8Cy4yJB3DrLVf9uRpbj3NY53xUM9tR1pUE0iCLjWDFkCmKGMsnvCc0SfwGTXSMJYhOuhhuqGt5jgGfh7X4DN9uyCWVGfpVsf+39jhSSaQ5ITOJQsnTMjKM7B1VAglH2zFzISAfLdIJDJdKZcBlfmh5vFd5mPg12QHQ0TsD5koiudjeJH0/u+sQepWRp6LZYf94OELi6cCQNq1RoDpUiE4pDVYuaMJVtNNuLX2q1bwR+N6OyyAmTpnaumEHUV54PIQqoopY67Z3X3dCHfQ1APxuF1QbUHwSUPIn/A/DLaF/cqfP8U2cJ+LrZAVYXVVucr/XUUjhM5L0MiUYu20XNaHr7vitWGNXO8IUqRtMJnr0VmPXHIMhWtLN5MdIZhy7tr0KMCvwBsi10g3woHzwxdNqP48+ezQlDWVJWj52Y+MFmZC0M/eCxi6PD6t5nijAqyJHWR44asclJ5uOop/DFd6ijh1bOMI+OQs7fD2S31moPTvoZzmz9ifk8ftQCwGAefeW24aM/s2zwSl53WXRPTij
+ fbqAfzHG
+ AZmKEvh932ryuRXgsjM2A92EhfRr+GhqWIMNBmWlScEP5lIjzlc/1eKqNET4Bc3KAo3MPh6w+5Giv+Ht7kcZpYwq93YZv7QtSsClP8FEXK0lWE3/gqsjJpFPisZHJwVAOxB5EXnJwp7kc3wO5hcLLowrNvOdkTPLnFqlIau7fKRSxjJW7GqYmt5j4R8x880GOlTG4DL5VraKwtviowzP7f5uSYLKflV2vcNxXhRFScZ+Ef7mPPIDPbnaw9UoDPgO0HMR6foNGjFZmOKakpw7kjn1buVV4qefyI+7ZpwMQi7W//SgPGFugP/61HAY1EHQ+WW/6wpm7loSdPb6al5Q+zVajlQyAl8JVlfFtMPbLxpsmEu+n+mpEqMSV6kgEXxNwwPTIvdieruU4egoKeE0BUbQ+hNulI95oOYS4D8jUT1XZgBi7UC5JJEFDlkCUu9UlBLi4MdBrPhc+8SOZd2lKY9Ts87vkI7sX8zdwOo/7pc2RBsqQuytT146MbWA3QEMoAv8Y5293He4dcK7uw2zzBcXrjMs7KhxQlnktb8aa9sX+0DLZ0woVb/wxrOWj/13sxdC4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,229 +124,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/17/26 at 12:24am, Kairui Song wrote:
-> On Fri, Nov 13, 2026 at 04:49:51PM +0800, Baoquan He wrote:
-> > From: Baoquan He <hebaoquan@kylinos.cn>
-> > 
-> > Generalize the Bloom filter state and helpers so that another filter
-> > level can reuse the same hash, double-buffering and reset logic.
-> > 
-> > Replace the PMD-level filter array with a two-dimensional filters array
-> > indexed by level, and add BLOOM_FILTER_PUD and BLOOM_FILTER_PMD. The
-> > PUD-level filters operate at PUD granularity and generalize the
-> > suppression one level up: when all PMDs under a PUD fail the PMD-level
-> > filter, the whole PMD iteration can be skipped. Cross-node empty walks
-> > are the most visible case: a foreign mm's PUDs have no young entries for
-> > this lruvec, so the entire PMD iteration is pure waste.
-> > 
-> > The existing PMD-level code now goes through the generic
-> > test/update/reset_bloom_filter() helpers.
-> > 
-> > No behavior change yet; the PUD-level filters are populated and used by
-> > the next patch.
-> > 
-> > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+On Mon, Nov 16, 2026 at 07:29:34PM +0100, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
 > 
-> ...
+> Failed allocations for CoW mappings can leak reservations on hugetlbfs
+> mounts with min_size= and no size=. The leaked reservations survive
+> unmount.
 > 
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 98037a562ab6..9dbb3f477d7d 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -2798,6 +2798,10 @@ static bool __maybe_unused seq_is_valid(struct lruvec *lruvec)
-> >   * walk_pmd_range(); the eviction also report them when walking the rmap
-> >   * in lru_gen_look_around().
-> >   *
+> Note that this is only an accounting error and not a memory leak.
 > 
-> Not a problem for this patch, but the comment above may want an update
-> in the next commit. This describes things only at the PMD level, while
-> the PUD level, the ~1/5 and ~1/2 FP figures still hold for (same m, k
-> and n). But the PMD false positive only causes a wasted PTE walk if
-> the PUD gate also passes, so the effective FP rate is weighted by
-> the PUD part too.  The PUD filter has its own FP, which is rarer but
-> costs a whole 1 GiB subtree, so maybe the 4 KiB bitmap for PUD
-> is not that obviously oversized (despite the PUD number are much
-> lower than PMD we are using same sized bitmaps).
+> HPG_restore_reserve makes free_huge_folio() restore the global
+> reservation without returning it to the subpool. This assumes the
+> reserve map holds the reservation. However, a CoW mapping may have no
+> reserve map, or the map may already account for another folio at the
+> same index.
+> 
+> Commit 58db7c5fbe7d ("mm/hugetlb: fix avoid_reserve to allow taking
+> folio from subpool") allowed owner CoW allocations to consume subpool
+> reservations. Commit 51e1de00acdb ("mm/hugetlb: simplify
+> vma_has_reserves()") later extended this to CoW mappings without a
+> reserve map.
+> 
+> For example, with a subpool minimum of one page and a
+> MAP_PRIVATE|MAP_NORESERVE mapping:
+> 
+>                                       subpool       global
+>                                       rsv_hpages    resv_huge_pages
+>   1. Mount                             1             1
+>   2. Allocate using subpool reserve    0             0
+>   3. Free on error with flag set       0             1
+>   4. Allocate without a reservation    0             1
+>   5. Free and return to subpool        1             2
+> 
+> Call folio_clear_hugetlb_restore_reserve() for CoW mappings when
+> map_chg != MAP_CHG_REUSE, meaning no reserve-map reservation was consumed.
+> This lets free_huge_folio() return subpool reservations to the subpool
+> on error.
+> 
+> Do not set the flag again if region-cache allocation fails during
+> rollback: that would undo the flag clearing and skip returning the
+> reservation to the subpool. This also fixes the older case where setting
+> the flag invents a reservation for an unreserved allocation for a CoW
+> mapping.
+> 
+> The doc still mentions PagePrivate at various places: future work should
+> clean that up.
+> 
+> Fix generated by an LLM and sent by Chris Mason in private.
+> 
+> Fixes: 846be08578ed ("mm/hugetlb: expand restore_reserve_on_error functionality")
+> Fixes: 58db7c5fbe7d ("mm/hugetlb: fix avoid_reserve to allow taking folio from subpool")
+> Cc: stable@kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: simplify comments and improve description; updated Fixes ]
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-OK, makes sense, will update.
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-> 
-> > + * A second, coarser pair of filters sits one level up. The filters are
-> > + * indexed by level: BLOOM_FILTER_PMD for the PMD-level filters above, and
-> > + * BLOOM_FILTER_PUD for the PUD-level pair.
-> > + *
-> >   * For future optimizations:
-> >   * 1. It's not necessary to keep both filters all the time. The spare one can be
-> >   *    freed after the RCU grace period and reallocated if needed again.
-> 
-> Still not a problem but this optimization is more important now. We have a
-> extra 8KB peak overhead per lruvec if I did the math right, not too bad
-> as there won't be too many of them, even on large machines (memcg number
-> is currently hard limited to 64k and they are lazily allocated). But
-> worth mentioning and optimized later.
+ 
 
-Agree but don't worry, I have considered this and queued patch in my
-local branch. Will post them after this pud filter series.
-
-> 
-> > @@ -2823,14 +2827,13 @@ static void get_item_key(void *item, int *key)
-> >  	key[1] = hash >> BLOOM_FILTER_SHIFT;
-> >  }
-> >  
-> > -static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
-> > -			      void *item)
-> > +static bool __test_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
-> 
-> There is only one caller of this (test_bloom_filter), do we really
-> need the __ version?
-
-OK, will remove them.
-
-> 
-> >  {
-> >  	int key[2];
-> >  	unsigned long *filter;
-> >  	int gen = filter_gen_from_seq(seq);
-> >  
-> > -	filter = READ_ONCE(mm_state->filters[gen]);
-> > +	filter = READ_ONCE(filters[gen]);
-> >  	if (!filter)
-> >  		return true;
-> >  
-> > @@ -2839,14 +2842,13 @@ static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long s
-> >  	return test_bit(key[0], filter) && test_bit(key[1], filter);
-> >  }
-> >  
-> > -static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
-> > -				void *item)
-> > +static void __update_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
-> 
-> Also this one, only one caller, the __ intermediate layer seems unnecessary.
-
-Ditto.
-
-> 
-> >  {
-> >  	int key[2];
-> >  	unsigned long *filter;
-> >  	int gen = filter_gen_from_seq(seq);
-> >  
-> > -	filter = READ_ONCE(mm_state->filters[gen]);
-> > +	filter = READ_ONCE(filters[gen]);
-> >  	if (!filter)
-> >  		return;
-> >  
-> > @@ -2858,12 +2860,12 @@ static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
-> >  		set_bit(key[1], filter);
-> >  }
-> >  
-> > -static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
-> > +static void __reset_bloom_filter(unsigned long **filters, unsigned long seq)
-> >  {
-> >  	unsigned long *filter;
-> >  	int gen = filter_gen_from_seq(seq);
-> >  
-> > -	filter = mm_state->filters[gen];
-> > +	filter = filters[gen];
-> >  	if (filter) {
-> >  		bitmap_clear(filter, 0, BIT(BLOOM_FILTER_SHIFT));
-> >  		return;
-> > @@ -2871,7 +2873,25 @@ static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
-> >  
-> >  	filter = bitmap_zalloc(BIT(BLOOM_FILTER_SHIFT),
-> >  			       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
-> > -	WRITE_ONCE(mm_state->filters[gen], filter);
-> > +	WRITE_ONCE(filters[gen], filter);
-> > +}
-> > +
-> > +static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-> > +			      unsigned long seq, void *item)
-> > +{
-> > +	return __test_bloom_filter(mm_state->filters[level], seq, item);
-> > +}
-> > +
-> > +static void update_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-> > +				unsigned long seq, void *item)
-> > +{
-> > +	__update_bloom_filter(mm_state->filters[level], seq, item);
-> > +}
-> > +
-> > +static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-> > +			       unsigned long seq)
-> > +{
-> > +	__reset_bloom_filter(mm_state->filters[level], seq);
-> >  }
-> >  
-> >  /******************************************************************************
-> > @@ -3114,7 +3134,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
-> >  	spin_unlock(&mm_list->lock);
-> >  
-> >  	if (mm && first)
-> > -		reset_bloom_filter(mm_state, walk->seq + 1);
-> > +		reset_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1);
-> >  
-> >  	if (*iter)
-> >  		mmdrop(*iter);
-> > @@ -3771,7 +3791,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> >  			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
-> >  		}
-> >  
-> > -		if (!walk->force_scan && !test_bloom_filter(mm_state, walk->seq, pmd + i))
-> > +		if (!walk->force_scan &&
-> > +		    !test_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq, pmd + i))
-> 
-> This looks nice.
-> 
-> >  			continue;
-> >  
-> >  		walk->mm_stats[MM_NONLEAF_FOUND]++;
-> > @@ -3782,7 +3803,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-> >  		walk->mm_stats[MM_NONLEAF_ADDED]++;
-> >  
-> >  		/* carry over to the next generation */
-> > -		update_bloom_filter(mm_state, walk->seq + 1, pmd + i);
-> > +		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i);
-> >  	}
-> >  
-> >  	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
-> > @@ -4417,8 +4438,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
-> >  
-> >  	/* feedback from rmap walkers to page table walkers */
-> >  	if (mm_state && suitable_to_scan(i, young))
-> > -		update_bloom_filter(mm_state, READ_ONCE(lruvec->lrugen.max_seq),
-> > -				    pvmw->pmd);
-> > +		update_bloom_filter(mm_state, BLOOM_FILTER_PMD,
-> > +				    READ_ONCE(lruvec->lrugen.max_seq), pvmw->pmd);
-> >  
-> >  	mem_cgroup_put(memcg);
-> >  
-> > @@ -5981,6 +6002,7 @@ void lru_gen_init_memcg(struct mem_cgroup *memcg)
-> >  void lru_gen_exit_memcg(struct mem_cgroup *memcg)
-> >  {
-> >  	int i;
-> > +	int level;
-> >  	int nid;
-> >  	struct lru_gen_mm_list *mm_list = get_mm_list(memcg);
-> >  
-> > @@ -5998,9 +6020,11 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
-> >  		if (!mm_state)
-> >  			continue;
-> >  
-> > -		for (i = 0; i < NR_BLOOM_FILTERS; i++) {
-> > -			bitmap_free(mm_state->filters[i]);
-> > -			mm_state->filters[i] = NULL;
-> > +		for (level = 0; level < BLOOM_FILTER_LEVELS; level++) {
-> > +			for (i = 0; i < NR_BLOOM_FILTERS; i++) {
-> > +				bitmap_free(mm_state->filters[level][i]);
-> > +				mm_state->filters[level][i] = NULL;
-> > +			}
-> 
-> So just a few nit style and comment issue from me, rest looks good, thanks!
-> 
-> Reviewed-by: Kairui Song <kasong@tencent.com>
-
-Thanks for careful reviewing and great suggestion.
-
-
+-- 
+Oscar Salvador
+SUSE Labs
 
