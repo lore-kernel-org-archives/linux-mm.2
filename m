@@ -1,111 +1,173 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BD8606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6781C606A336
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PdLqVltT
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nn4QsVcq
 Received: by kanga.kvack.org (Postfix)
-	id E8CCB6B06B3; Thu, 19 Nov 2026 11:04:50 -0500 (EST)
+	id 872426B061F; Thu, 19 Nov 2026 11:04:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3D6E6B06B4; Thu, 19 Nov 2026 11:04:50 -0500 (EST)
+	id 824396B063E; Thu, 19 Nov 2026 11:04:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D530D6B06B5; Thu, 19 Nov 2026 11:04:50 -0500 (EST)
+	id 739966B0676; Thu, 19 Nov 2026 11:04:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B48A56B06B3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:04:50 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45BF7A834A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:04:50 +0000 (UTC)
-X-FDA: 85452341940.22.5BAA033
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 80F9B140009
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:04:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PdLqVltT;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795104288;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 41F106B061F
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:04:58 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 551F9A0B97
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:04:57 +0000 (UTC)
+X-FDA: 85452342234.28.1A53379
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012022.outbound.protection.outlook.com [40.93.195.22])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7644980009
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:04:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=nn4QsVcq;
+	spf=pass (imf02.hostedemail.com: domain of arighi@nvidia.com designates 40.93.195.22 as permitted sender) smtp.mailfrom=arighi@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795104294;
+	b=WAzzyya0eHqzS5PhLH+Xp9M/QH99jZ0PNbxSX/FIchzSw168wUgCt2dsziZkY3DfYsdn5P
+	efWdbTaCofgwjBUdSODo5ZCpoFci4J8/WV3cnG4RCrbQWmXbVbLAwakAABHcVLSiU3PEi9
+	unAL2oOeMN3dcu7tcFNUX+6XD7MC4/A=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795104294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=yhaisaAAN1Avtw/qa8Xj7ZQOfB9giXxwqMgpPlclG0w=;
-	b=MFYJNSKnImFr3ktOhUTDMHiYWmHOWImg7HKp3eGFK6zsRUpJpVVC0u0RZdoimMW0V2uY8W
-	IqCitg0zuBBMLc6pNwoA8QQjJb13GmoNIsEgH5dG/YYN+hENYkSYzP5VOTiGkafvVJP46K
-	acAAlHHTzlPwYCP0oiRADZbExiqm0MM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PdLqVltT;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795104288;
-	b=YJuRnTeTysnlGMkBFJGmAYza7++5+coFAwNu0n+fGYMrgwrLkjJ3T3cQBmLFGyL8Fmc4oQ
-	x9EdwweXuI19e1eRI2y+gKwxlSd/VU28hUV1Su3NFyFYSI3nTC9029JN/u1JZh4ZoUjsna
-	Zsii+viiQ1ycw2lyKy1C/MBvZtUgQqc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E6F962C8F;
-	Thu, 19 Nov 2026 16:04:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCA51F000C4;
-	Thu, 19 Nov 2026 16:04:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795104287;
-	bh=yhaisaAAN1Avtw/qa8Xj7ZQOfB9giXxwqMgpPlclG0w=;
-	h=From:Date:Subject:To:Cc;
-	b=PdLqVltToPcnV2Kr96HMTvrYV9O486YB5OgE2IXS7ZoweYhsRhmhnLstNVaEUIi8b
-	 v5TB8wShJq7LkbWiDqzEk2OYi/qQXgE603SFXFE5Y9nf9rvBfVFZpg5uByOUnu3841
-	 ac9E90IUbgE8Q3sRmFdisH+KFtPI9fzPHdHlF8e3XRAjqZ/GxxSVyXdle0dmvV4MNG
-	 vOrTSxKhHkc3or71n+2v5Bm+HlTCjkORqrqwiDCz29A94nf0ySwbPXpIkaRBD9YfRV
-	 jy3dmvHCocKC9BG5Utbh5BzC7xIrmgZo3ojJbKqeTiL8AQI0+sc48HHjaMO27ZDZ4W
-	 97tCgMoPIIPoA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 19 Nov 2026 17:04:34 +0100
-Subject: [PATCH] mm/madvise: fix MADV_FREE handling for PMD-mapped THPs
+	 references:dkim-signature; bh=2VwYLXQRF1Oe4BHKGcYS9KbJ7dq3PPmwmcRcBHMWLoY=;
+	b=mxBmOHv3nLWD6xhvq+SUDJMXN76sUbFo11Qi6G7Y1M6Mf7Je4eZscJj1egDNGIHwK/sUcm
+	WuHJ9CZNlId38ViAi7DH89JrE77tEkTPB/Rbv+pwcqepZLk3ZO+ueCJecYHESYeqeK0hG7
+	7Hfz4rS1g+6UAUciYWZsQegkDGl9os4=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=nn4QsVcq;
+	spf=pass (imf02.hostedemail.com: domain of arighi@nvidia.com designates 40.93.195.22 as permitted sender) smtp.mailfrom=arighi@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LLigE3C6GCroX5Kv83TMz4Ea3IJpVIT50XVT4q694VsJMgyO6nh9zxuOwsbkNaZ9umap1vfb+uqJY/eC9kA6B3YDf8CH0bei1fXaEAbH9lfuDrXNti6P61D2zT1QZSBYYLOKlk/SDSG1lYJYfJaHsYpNtUw4/ySUENFeEO7QTJSyjNss/Qj/3HOumwbufXAsW/zj5zFhqKvGlk6m5vQrifRTevVJVeSQV+J1rb2cICcy992sanC5u3m/j4ZNUXgTJv/UcO7M09pmjFU5NnkUm+k+LPErZ7BskDsQBy1nIL4DOnLrVo77vcnw6ktMN4H94K4NXhBTznKknf+YQz03QQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2VwYLXQRF1Oe4BHKGcYS9KbJ7dq3PPmwmcRcBHMWLoY=;
+ b=Avf4Di934LvjQEpbnRcdRmNmN5/kmPoZq99AoUnUk2BTBT5FnlFFXWiPCT+EQSdBL8Qx5CqJdy7tHPvreilbCV81i/aX3tuZCEi0SMszHVEDyiaL+JpCkp9aNZjsAn2bi4ziEd22+aq60xKicgo5raqxal0Eoxfwj+hv89+NSnv2I8FzQQntUS8vyYsuVSO6JjoOs0zBdLpxiJP8r30oFf2/97+k1qmeyIbJXoZ6eRn9P3xfAx9XGFpwMTRoDIQhvuAkSZ7nqCz7oD+gx7cL7vw2p4ee3IFAd2Jy58Fy4CItbGufru8wvShxLT235xhRy+UF64JiO7UYeN/AljfV3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2VwYLXQRF1Oe4BHKGcYS9KbJ7dq3PPmwmcRcBHMWLoY=;
+ b=nn4QsVcq+UVF36z3Em8LhHOcsPBojWYy9MT93Bs9vXwrhjQ2cQcaOIqyCWXUaEntm8gsgQGeRIX0qfkjMoxfZ6xoS48ys0JfiPS80ZM9HN0aWeHj+GizcaoEcAUtpQHO+PfOJiRXRCtGiVx6SuDA9qM/1kP+eEqPPNWiDbRBysKBMEVgJcsRO4Oxq20OLAPyD5Dbknbj/CWEiySnt1MTPDN4U0EiA98BmFvjPQFFtoAlCBAOa9thj/THShehB72KnAePzJdvO83UVav5FWKpqk3XAphhSkknSzRPQoFwegaUqULnMF+9FCZcrwYmJ7IQxFGKoddYGEf+PbzU9jbaEA==
+Received: from BL1PR12MB5174.namprd12.prod.outlook.com (2603:10b6:208:31c::19)
+ by BL3PR12MB6378.namprd12.prod.outlook.com (2603:10b6:208:3b1::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
+ 2026 16:04:43 +0000
+Received: from BL1PR12MB5174.namprd12.prod.outlook.com
+ ([fe80::58de:822b:868:96e9]) by BL1PR12MB5174.namprd12.prod.outlook.com
+ ([fe80::58de:822b:868:96e9%6]) with mapi id 15.21.0639.010; Thu, 19 Nov 2026
+ 16:04:43 +0000
+From: Andrea Righi <arighi@nvidia.com>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Harry Yoo <harry@kernel.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Quan Liu <qualiu@nvidia.com>,
+	Lee Trager <ltrager@nvidia.com>,
+	Seth Forshee <sforshee@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/slub: Respect MPOL_BIND when taking remote partial slabs
+Date: Thu, 19 Nov 2026 17:04:30 +0100
+Message-ID: <20261119160430.1113397-1-arighi@nvidia.com>
+X-Mailer: git-send-email 2.56.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MI2PEPF000016AC.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:298:1::4e7) To BL1PR12MB5174.namprd12.prod.outlook.com
+ (2603:10b6:208:31c::19)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261119-madv_free_thp-v1-1-a312919e1ee5@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXMywqDMBAF0F8Z7tpAM4KP/EopEuNYp+CDREUQ/
- 13aLs/mnEgSVRIcnYiya9J5giObEcLgp7cY7eAI/ODCWlub0Xd700eRZh0Wkwf2dVWVvmRGRli
- i9Hr8vufr77S1HwnrN8F13ezBYKxxAAAA
-X-Change-ID: 20261119-madv_free_thp-3c2a9887a722
-To: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jann Horn <jannh@google.com>, Ying Huang <huang.ying.caritas@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Chris Mason <mason@kernel.org>, 
- Sashiko <sashiko-bot@kernel.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7097; i=david@kernel.org;
- h=from:subject:message-id; bh=KreIxZq3TY8k1cY6VRwhN5I7d4jwyXkzZnKkz4xPVPc=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+y0nkeZ/ZuDW9y/L//eV/z2z31ux+yjI1+sjJky75v
- x6feroho6OUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJnMlk+B+8f897xtAjM6b9
- vOxvNs2u8mJf/1fx8qCs9rs/rm+cvG0lw/98y3NaqxZeOyp3c/18zZVpHz7+dOJPbgtglTp6oN/
- //DF+AA==
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspam-User: 
-X-Stat-Signature: az7da5qzw3fiduhuhaauordyjhrqg86g
-X-Rspamd-Queue-Id: 80F9B140009
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5174:EE_|BL3PR12MB6378:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3495c606-f6d1-418d-3e78-08df4656d2f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|10067099003|11063799006|5023799004|56012099006|261022075727099003|261022105027099003|261021123027099003|261021121427099003|261026121527099003|261026140227099003|261028144727099003|261102123227099003|261009223027099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	aQUaF7sKvUiHZbaec1I2g4rsAcg9SBl3TlIWrF5h1m5As6LBfgXnNj0iPm2OzBetdQMtkjLTZx8jYArbbfFopfyG5d4ptqI7vXfT62yS8Bs//CekzpL3tS6Qmyx5MCyLmovdmlmPn+RaPBxnOVVS0INlj6R30ZyaPEihjkZaklh7zeBTDmJHDHkaG1GPpP7uyM3WdZlcqN+XNDhwsdBs22dxO8mAKbAJssHO6k/P0MePUODG42LRTugZyi9HUP/hP4SSag6HdF9Bd7GOL9JICfFgOIKWwo87XZlaT/T7RUR54W6GSd+KT/psq+U2bxp1N547WnNm24kOzPRQvmTOeEtjFCZudjgKU9bIEgSJrsY6iSh5Fll2PoxBZBM8q3SVRK4YxX5+ZjMQeol+EJ/X9Mvge6f5Boo5rZRBZAGzxmkikljEl11zM1sv20/w5ijIcmBb+SdrjjyyJSq/GVjxZtdUqEYIcJJkuYTNZxfCENL0HfkP83tXTDa7HS7Hr+HLRrC5HeAsi1xe+dzehZJK5qBS7HSaV5qgbPRiaFCS0Et1cbqwrnVUJVKSXbpDVJaAUPDEIr0qR6jZakjpMFLtAqj9pPEbMm3tm9QYydXqFzNXg/A1wUBZaKXCu4uaKm5Eu+yRj5uJkZSGXBkYPKnnMVjazOGvk8ohbyfIJGwpfps=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5174.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(10067099003)(11063799006)(5023799004)(56012099006)(261022075727099003)(261022105027099003)(261021123027099003)(261021121427099003)(261026121527099003)(261026140227099003)(261028144727099003)(261102123227099003)(261009223027099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?e///1obahl0OQb2mRX0ZE9YKGakhDVIAu7Nv7wh+groUGwTIJsmgjqF8Hh8B?=
+ =?us-ascii?Q?9Oys2+jUWdqDG30Y/JFSLOIelkTXFCHf5Mpp/ARbGf68bNLXCKpAUxHRLxKP?=
+ =?us-ascii?Q?CbMHIW+zlSucI4UypI3Y80YJdqYrtOkehnE/rNBAJLUVFAyl82wpXN/RS27r?=
+ =?us-ascii?Q?21OfWPtvA1sFRTBR1j9O9cRZdpyG7NOnMV4lQVmABWCGbImQjITI/fFSfmFV?=
+ =?us-ascii?Q?iADcy8YBfRczCmVoM6DVXN/oDy1SNuGH563stbhWd2oy7NpFXX6QkF7tCGYp?=
+ =?us-ascii?Q?g6aEoLqHuQbBEGeIX45R8kQ3apZ7h75ChEjRXTRpK0XZpZ1Aw/h6q7UyjuBd?=
+ =?us-ascii?Q?Lv7u8yWHSgJ0cAkhhqPLvk0ISGzj4BEcfzk1MkPvhrLW6tNiuM9tahyrY8Gg?=
+ =?us-ascii?Q?+zbS+uh2kvXIk98JJnYF+kEMD9sX8Fz3Z2OrBwgC9iWU6jTZMoKLK7aR+TR3?=
+ =?us-ascii?Q?+W7MqVv4RwMRjIvV/UI4Lf+b0n+aMEVe76EfFLnDpr7yDQPJ0pLLk3jU6SCh?=
+ =?us-ascii?Q?D6jWCZvgnrUFxx1AN3BonueRBcc8lPKmkXxYisYr+YqrbokK9GTFV8UosKil?=
+ =?us-ascii?Q?0CsvWzd2ejmHAzLfAUi+fS9ujkb5ybRr6/LEJNzJrWt+xxzH0TBNpHn6xwnx?=
+ =?us-ascii?Q?qCwd6cUzvx6LLrbfJdsSLirIubT1X12/H0H5tXdvxexSROGRKEMn4JqOo2x8?=
+ =?us-ascii?Q?vQ7t7qkZlFt8byMxIB43y9JET1y0XRyYoq+V/grT0YkkO6KGkt/5076S/7av?=
+ =?us-ascii?Q?iqwVua14ZLmLq7N84RJtSCpGcHa3MqOMQ0VcbusLQx1QshlhfAk4hZHE9e/W?=
+ =?us-ascii?Q?MCXuvfWvDdJh4kXbsEuzE2NYpp29IK3yakKjA9+g/z5ZV2soZrmmffD5pSK4?=
+ =?us-ascii?Q?Db2AiYN+IfCg7UfD9wws9t0OO3qseURyC4XrNqzzeaS99JrYuZGMPcYkRUNn?=
+ =?us-ascii?Q?Nt08iDL8Jr8QfnzPP+AyplPRL3WLHKNM/rrVBH/c6zf6uQo0fO/tk210iSag?=
+ =?us-ascii?Q?lRd48ULMKImyf7wwf90R7DgNoAkRLysnUdu7YEfWv4T+in5Ie4WbdHmZdHtQ?=
+ =?us-ascii?Q?LAGJgI7vvxIautJAyDFNbAygZ8LAbmInEujUoqe/B4c0UoWQohvKWWdy3Bsw?=
+ =?us-ascii?Q?CWRVytUZatokrslizCBvsfHs89kA9EHqjr3LhF5r8dT/Og+omh9Ec2rm9glD?=
+ =?us-ascii?Q?FPE4VYC/IbBkXa3bJf7589Qr0LP+iwNRrrkFUjWDnNTlN9x9RoTpMiKlBxOc?=
+ =?us-ascii?Q?72d2ocZv3ti6lAW19gxO7jMPw0coWLQGaJN1fQABT6K/oZ0PwhRnYNlkgDRv?=
+ =?us-ascii?Q?YUu/OuA3mN+kQn9XuhPGWtJxpt1Ze4DcRiiVV2AtSr+qWdbYw2WiMxskcWCz?=
+ =?us-ascii?Q?CUxo1V7FZXFMxmB1GHozPapaZtrq5e79TcCdRBy0pUmfvKJb/62Mafg83vgD?=
+ =?us-ascii?Q?3PQismTzTzeJglyXpImQO/iyNiIwIRcBx3mOWgjuqg0D3SQEo6a2138VMFsd?=
+ =?us-ascii?Q?ITyhFAmWwM/YS7F4qa1HfKmj3T7v80E3Odbytv1aHOV5L2C4lM9yLLMFOrKE?=
+ =?us-ascii?Q?2Qjg7DDkFa0AN5+/aWDEFoB+44SBSdUHmxO5xvObwEqGbGNxtAvcO6wOiOjK?=
+ =?us-ascii?Q?SJNtgHcIUnhQYKNqttMqC4VW6SaJOJ1kRmL6ueXv9iDLhs5MndlMuWIxlZ/S?=
+ =?us-ascii?Q?tkdUgd/OvgSwberCrgkkrkXEl7520BINQbfqxaxAUb7uDJLyr4oYM2hpqMRZ?=
+ =?us-ascii?Q?IKauwm+Shw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3495c606-f6d1-418d-3e78-08df4656d2f1
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5174.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 16:04:43.2109
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7ZVVBBLP2JtB2KnKjkrvMZL20MOwJojBOgNGwuSDzCfhJfiUPNRzk7bkLq++C1t0Ci5ULW2gmsErPFSDSVdjJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6378
+X-Stat-Signature: 7b4teytwemqyzmhmy6enby7raoirhn1f
+X-Rspamd-Queue-Id: 7644980009
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1795104288-94318
-X-HE-Meta: U2FsdGVkX1+y0eWyydmXAJYUWtbx9LmHJWtWx25uo7Hd2NAZ8f898C3D+jicINuR5tMS27I8Eu0RLAIYX8mslUL7BZA61r7nT1ghnKFVWvbH4T0U4DQr+hH6XsS1CspNgLuJLCQiKfWoDTK+5e2OdMAE990qt+9pgJ02yOHs3k0J+w+eaCBHFekViCwq2KzhrJTKO6QfsWsAe28d20I8tGyMh06QMQ4HmP5BHWZZLjWpnf1vTm/wCHO2TNcihi6IaKKdS5TS3oiGaMfZewCZTyM2an+isOQUQbJzX28yZl2wEdOE85jDSq+wP0KQVTeKL0MfYv+R21JFiGNXOL+2uztKKTsSLxb2aKxfQE6HvQj19Mg3uZTQYoRHuhHkjWrM7gNKA6UOUxnDVO3hBUbgOg1ojLY7U8gVg5gEkzq+EmnePqeNFghMGxlVnLYVcER2WP6lWHGkUKHvWYXmvYjsRygbUZIllM5lcSdYHy8+1f07nDkk9xCeokKl8GtC1lezCENg626zSMZqftGCtPz4Bctv+yjq/2JtOMUB1b8mAu5BnyPzvB5G6gRyp/W+P6xSN1n9OHC+Fx2lJs5sqXq4gY7S/GgM2kYcdsjsfbWp7QkK4kUjQXxeK+EhDq+//1uFh/rVpcELhTafzej62G7dzQkWhpxqFyc9FLpv0UNDMDH7ocMHCACnOkv20zo7iwmot+z200O5qGltLr9QHQqPsg2WL+vpIPamPum4oCAckPk9Q4aX8HxzlzxMXH715MlOn3OVZLoHhNpI2ozGxmD2Vs1oEJ/6LOOv+agqf7lxGxgmL2c19bkS3Ee+CSVZLluPt0VFnCbK/uSDFrLnnxuWM4miXSMF+50jLbA8Tz9A1E8ZIFpEg7vc7KEPOiIStL+SU6k7CQXPQ0t1UY5tNmIhFtq+NpH2JUXDwEq9llaLnMbVc0jLs6Ze5SaAuVGAV51qRF3L9TOhQAp6ngY/I3G
- FT2PqCQt
- ZZCiCNwv3pZS36RixH5Dh4Df/f5HHWnsP/t1r9/nCztWEEv/9nLaqzGW4aMNe4KZg8hTzYk7nznJec3Hcn97yy3rNKKjtYR8GyoNY0Yf+q+6H79RtzPocV/cU8c5vIhKJVWUPB1NgA9gLCPlypfQkoa4rroUHiEdiIyUn4i8lVmKaSX/eVRE/DR8J4PrSNZivlntF8vM2StvLdxg9RUJtaudAt52/Pax1SzpHGAfjU5m+BzHtn/LmhkjB7KiHukHIhNXoJ7e+VkRYc58ilbD8T979tPlEp8uMQbEhW9GewNSGU1r8hXRMy8gvHmYvE4Pq18hRWlr9K5GvgP7v5P0bxJISdiW1D8StvpbKnKBGP1968fyxOUcDiYdP7A==
+X-Rspam-User:
+X-HE-Tag: 1795104294-235728
+X-HE-Meta: U2FsdGVkX185wE51/YT4eSYaNT4gQwnHIF/jBxaGrFLMCWiWLZaoljKirccuy2b5Sc0GrpC8fnQHlGUQwruDbvND2MrFhM4vliTxd1aoRlJWPxJjYm49Lr2mD/y57nAQ3Wi+dIHAh7KGkVHTqe2LeiUbyZ8Wq2B8xLbKwtOrwDRsPqB9GMaTta+RatOfdnuMQqaB/Idt0rDO9Q/tEeIVQAwpkEEXYh3o5qsyzttpsF6OVwz5KkRXTX2y6h1o8mfM58Y2sOZ7veovhTZydfQGkvaXspBHXK3snBB4ZW6q0R/06U8DbXgTy0IRubW6+W0Kp8ukzRpCSbI9DuVgiPY/Jrr5Ktpf6U2vRy0zOabye7O4DRrhxT+QJ8Q60rPTx+oVg7diciK2dfm77SwKF5rj5ey0G7a4EDkOQ0Yc3iYGEe3/nXKwsvEfj62uwH3P5+apO6wm2h7UHtT3xPVrCHd6dxatU68VBji9FbKzOGJPKNwcte8n8v/fzL5QkuseZ9mWnOHJaaov3NUsxLaFbX07OtFG3vYY4EGi4cqLtAIRSLS4P5M3zZVL7TwKYNUkO90dJZLmlt8x4lRzA3syQuSw8FFOUW3fi9mRWCMt8wJtEUQO2+qmITy9sE3B5Ws8iZ096DZ+IN6dDxLKsQONE9FfGrhHUtjlM7KLPxHeT7blINDCdZ/dUJyHRIev5y0di8qgTW1p+LOn3gYmEklVyWkgqDSc0yNj2FP9K8kFWIJgrAwlBApf7yJ8nDaciQ7Sm5BQZ8oA7dj20WXYeHOSPOKVEZoxvTLt/Q242DJDeCwlJH2TteAH2kwpSQDuSj91xrRfBk7XROLRT82pR6NLiEzXQtk/w8vP08OwwirVt4IcampuKod9VPY5taKOcTgbX/8wNJ8wR0QWP8h4HZsRRb2CVaObqXf2tiZPd4wbc7s5qdq3PJiWMA2k4X6pztVmdM0/CY6yNF2d4g2T2LV6CrK
+ 86IdHoPl
+ N3YZjMrCAKVhbw6ej1VH6OJFhrp0RHGoYavgl8VIF087zz6nq/QJQ66g9gl+yNlIjJ0bCs+KflbLIAIrnuCQZDAzmGFmKcCn9ZmEZT4NLhGZW9bN6PFjFrbXvTIUi9LwSwQ3OVRPrnHe5Uv7ABRssoTWyGRDX+lc0n/6UR6XBF5BY9WNkx7H/56L89MNqrCVOk1ZfB5qFbxjQVtHcH0Q+aqvTyaoBy6avT8IH37br727vIlXc5vO9+g/q72XYN+c0PGJUeaMYbU57mNUiY80fcBXkrATU5/qXLgqczgZ1ZOFSkX7c9gkztIhHEFdpUT2zJzgsgDvtwklvKuMbLkF9qyioTW2zxqpjVW5Hn7bBAzeYuo5/lcfIA5sxuoivZhclbTfaSB3VAD1unXAh+YXjhICKfDltFme+5JcPBaO3l1uV9LwlE5NInvbJg+ojEciQ8eFTaZVhiunQ3tsIOL+zMhHni598uLGdLX7QDncq92O4lMoLUjWhWN1ONVYb90LdH11okvW9NdBQ72A/OvGeGRqd2rrME/+Ay5iRUYPgwdVYghsWKVxyGyCSv0Jv074T6i/+kDGo0A01+4maBzHaYt5M8d/DgQlT9d3Md1Tiy9wbnQ4hxH3r3lny4KUQHqWK8X3ZwGVvEwGaWpy52TJCvIFgrKmoCA9VoMYF5U8K0I5i5/kCqvZKji88hcughepJsNpomXTOoomhXqPgZYvdQERtvNY9Kkh6FxgZ0lSTvnnwVz6jbYi0D/hJb1KNC55thy5O9wceXOo9vKQQ8DrtM0guFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,220 +176,191 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-After MADV_FREE cleared the dirty flag of an anonymous folio, reclaim will
-later free the folio without writing it back if no mappings are dirty.
+When the local node has no partial slabs, get_from_any_partial() and
+__refill_objects_any() take partial slabs from other nodes. The scan
+only checks cpuset_zone_allowed(), not the task's mempolicy, so a task
+bound to a node with MPOL_BIND can get objects from nodes outside its
+policy, even though new slabs for it are allocated on the allowed nodes.
 
-If our folio is still in the swap cache, the swap entries then point at
-swap slots that were never written, exposing stale content of the swap
-device. Bad.
+slab_strict_numa doesn't help here: when the local node is in the bind
+mask, apply_strict_numa_policy() leaves the node as NUMA_NO_NODE and the
+allocation takes the same path.
 
-madvise_free_pte_range() therefore frees the swap slots first, and skips
-the folio if that is impossible. madvise_free_huge_pmd() does not, and a
-PMD-mapped THP can be in the swap cache if try_to_unmap() failed during
-reclaim, for example due to a racing mlock().
+Add mempolicy_slab_nodemask(), which returns the MPOL_BIND nodemask, and
+use it to restrict the remote partial scan. The nodemask is used only
+when the page allocator would also apply it to new slabs: the allocation
+is not for an explicit node, not __GFP_THISNODE, not in interrupt
+context or with BH disabled, spinning is allowed, the cache's zone is
+subject to the policy and the nodemask is valid for the task's cpuset.
 
-Further, madvise_free_huge_pmd() checks whether the THP is mapped by
-other processes before taking the folio lock. Another process that still
-has swap entries for the THP can concurrently map it from the swap cache,
-and we might end up clearing the dirty flag of a shared folio.
+Sheaf refills allocate new slabs on the local node, so for them the
+local node must also be in the nodemask. Otherwise new slabs can come
+from any node anyway, and skipping remote partial slabs would only grow
+the cache (e.g., a task bound to a node with only ZONE_MOVABLE memory,
+or a GFP_DMA cache). Skipping it when spinning is not allowed also keeps
+kmalloc_nolock() from reading current->mems_allowed_seq. Other policies
+and tasks without a policy are not affected.
 
-Fix it by factoring out the folio handling of madvise_free_pte_range()
-into madvise_free_try_prepare_folio(), and using it for PMD-mapped THPs
-as well. Hopefully this prevents further bugs.
+This was originally reported as a ~30% hackbench regression that turned
+out to depend on the slab state of each boot. On a dual-socket NVIDIA
+Vera system (node 0: CPUs 0-87, node 1: CPUs 88-175), running right
+after boot without touching the slab caches:
 
-For PMD-mapped THPs, this change implies:
+  $ numactl --physcpubind=0-87 --membind=0 \
+      hackbench -P -p -g 10 -f 20 -s 100 -l 100000
 
-1. We free the swap slots of a THP in the swap cache, and skip the THP if
-   that is impossible.
-2. We check the mapcount under the folio lock.
-3. We no longer lock and check THPs that are neither dirty nor in the
-   swap cache, just like for PTE-mapped folios.
+                avg (5 runs)   remote pipe buffer arrays
+  before        7.021s         160 / 1010
+  after         5.222s           5 / 1010
 
-For PTE-mapped folios, this means:
+To make it deterministic, the slab state can be seeded before each run
+by holding ~4K pipes created on a node 0 CPU (no partial slabs left on
+node 0), then creating 1K pipes on a node 1 CPU and closing 7 out of 8
+of them (sparse partial slabs on node 1). With seeding and the same
+hackbench command:
 
-4. We check the mapcount once before taking the folio lock, to not lock
-   folios that are mapped by other processes.
+                avg (10 runs)  remote pipe buffer arrays
+  before        9.885s         1682 / 2020
+  after         5.114s            0 / 2020
 
-Only compile madvise_free_huge_pmd() with CONFIG_ADVISE_SYSCALLS to keep
-!CONFIG_ADVISE_SYSCALLS builds working.
+With --membind=0,1, --interleave=0,1, --preferred=0 or no policy,
+nothing changes (within noise), as expected.
 
-Chris and Sashiko reported the missing swap cache handling for PMD-mapped
-THPs, the other issue was found by code inspection.
-
-This has medium urgency.
-
-Fixes: bd4c82c22c36 ("mm, THP, swap: delay splitting THP after swapped out")
-Cc: stable@vger.kernel.org
-Reported-by: Chris Mason <mason@kernel.org>
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/sashiko-outbox-202086@kernel.org/
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Reported-by: Quan Liu <qualiu@nvidia.com>
+Link: https://lore.kernel.org/all/20261110065219.894219-1-arighi@nvidia.com/
+Suggested-by: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
 ---
-I would queue this fairly soon on mm-core/for-next-fixes
----
- mm/huge_memory.c | 19 ++++++-----------
- mm/internal.h    |  1 +
- mm/madvise.c     | 65 +++++++++++++++++++++++++++++---------------------------
- 3 files changed, 41 insertions(+), 44 deletions(-)
+Changes in v2:
+ - Replace the pipe-specific kmalloc_node() approach with a generic fix
+   in SLUB: restrict the remote partial scan to the MPOL_BIND nodemask
+   (Vlastimil Babka)
+ - Link to v1:
+   https://lore.kernel.org/r/20261110065219.894219-1-arighi@nvidia.com
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 79d400ea9553d..e22daf846dbe3 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2421,6 +2421,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
- 	return 0;
- }
+ include/linux/mempolicy.h |  1 +
+ mm/mempolicy.c            | 24 ++++++++++++++++++++++++
+ mm/slub.c                 | 25 +++++++++++++++++++++----
+ 3 files changed, 46 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
+index 65c732d440d2f..129ae718c75b0 100644
+--- a/include/linux/mempolicy.h
++++ b/include/linux/mempolicy.h
+@@ -147,6 +147,7 @@ extern bool init_nodemask_of_mempolicy(nodemask_t *mask);
+ extern bool mempolicy_in_oom_domain(struct task_struct *tsk,
+ 				const nodemask_t *mask);
+ extern unsigned int mempolicy_slab_node(void);
++extern nodemask_t *mempolicy_slab_nodemask(gfp_t gfp);
  
-+#ifdef CONFIG_ADVISE_SYSCALLS
- /*
-  * Return true if we do MADV_FREE successfully on entire pmd page.
-  * Otherwise, return false.
-@@ -2455,21 +2456,13 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	if (folio_is_zone_device(folio))
- 		goto out;
+ extern enum zone_type policy_zone;
  
--	/*
--	 * If other processes are mapping this folio, we couldn't discard
--	 * the folio unless they all do MADV_FREE so let's skip the folio.
--	 */
--	if (folio_maybe_mapped_shared(folio))
--		goto out;
--
--	if (!folio_trylock(folio))
--		goto out;
--
- 	/*
- 	 * If user want to discard part-pages of THP, split it so MADV_FREE
- 	 * will deactivate only them.
- 	 */
- 	if (next - addr != HPAGE_PMD_SIZE) {
-+		if (folio_maybe_mapped_shared(folio) || !folio_trylock(folio))
-+			goto out;
- 		folio_get(folio);
- 		spin_unlock(ptl);
- 		split_folio(folio);
-@@ -2478,9 +2471,8 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		goto out_unlocked;
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index c7d4d149c9b88..8b29be7ee246c 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -2198,6 +2198,30 @@ unsigned int mempolicy_slab_node(void)
  	}
- 
--	if (folio_test_dirty(folio))
--		folio_clear_dirty(folio);
--	folio_unlock(folio);
-+	if (!madvise_free_try_prepare_folio(folio, 1))
-+		goto out;
- 
- 	if (pmd_young(orig_pmd) || pmd_dirty(orig_pmd)) {
- 		pmdp_invalidate(vma, addr, pmd);
-@@ -2498,6 +2490,7 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- out_unlocked:
- 	return ret;
- }
-+#endif /* CONFIG_ADVISE_SYSCALLS */
- 
- static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
- {
-diff --git a/mm/internal.h b/mm/internal.h
-index 85cf7becf8588..96cb55d7816b1 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -61,6 +61,7 @@ void lru_add_drain_cpu(int cpu);
- void lru_add_drain_cpu_zone(struct zone *zone);
- void folio_deactivate(struct folio *folio);
- void folio_mark_lazyfree(struct folio *folio);
-+bool madvise_free_try_prepare_folio(struct folio *folio, int nr_mappings);
- 
- /* mm/vmscan.c */
- unsigned long zone_reclaimable_pages(struct zone *zone);
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 0214efd2a014f..ebb4ce7daf6cb 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -661,6 +661,38 @@ static long madvise_pageout(struct madvise_behavior *madv_behavior)
- 	return 0;
  }
  
-+bool madvise_free_try_prepare_folio(struct folio *folio, int nr_mappings)
++/*
++ * Return the nodes the task's MPOL_BIND policy restricts new slabs allocated
++ * with @gfp to, or NULL if they are not restricted. This follows the checks
++ * of alloc_frozen_pages_noprof() and policy_nodemask(), so that the nodes
++ * are returned only if the page allocator would also apply them.
++ */
++nodemask_t *mempolicy_slab_nodemask(gfp_t gfp)
 +{
-+	if (!folio_test_swapcache(folio) && !folio_test_dirty(folio))
-+		return true;
++	struct mempolicy *policy;
 +
-+	if (folio_mapcount(folio) != nr_mappings || !folio_trylock(folio))
-+		return false;
++	if (in_interrupt() || (gfp & __GFP_THISNODE))
++		return NULL;
 +
-+	/*
-+	 * KSM folios can gain new mappings at any time, so we must
-+	 * not clear their dirty flag.
-+	 */
-+	if (folio_test_ksm(folio))
-+		goto unlock;
++	policy = current->mempolicy;
++	if (!policy || policy->mode != MPOL_BIND)
++		return NULL;
 +
-+	/*
-+	 * Check under the folio lock that the folio is exclusive: we own all
-+	 * mappings, and there are no references from swap entries.
-+	 */
-+	if (folio_mapcount(folio) != nr_mappings)
-+		goto unlock;
-+	if (folio_test_swapcache(folio) && !folio_free_swap(folio))
-+		goto unlock;
++	if (!apply_policy_zone(policy, gfp_zone(current_gfp_context(gfp))) ||
++	    !cpuset_nodemask_valid_mems_allowed(&policy->nodes))
++		return NULL;
 +
-+	folio_clear_dirty(folio);
-+	folio_unlock(folio);
-+	return true;
-+unlock:
-+	folio_unlock(folio);
-+	return false;
++	return &policy->nodes;
 +}
 +
- static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 				unsigned long end, struct mm_walk *walk)
+ static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
+ {
+ 	struct weighted_interleave_state *state;
+diff --git a/mm/slub.c b/mm/slub.c
+index cd671b9347191..1177d76a1cb90 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3984,11 +3984,12 @@ static void *get_from_partial_node(struct kmem_cache *s,
+ /*
+  * Get an object from somewhere. Search in increasing NUMA distances.
+  */
+-static void *get_from_any_partial(struct kmem_cache *s, gfp_t gfp_flags,
++static void *get_from_any_partial(struct kmem_cache *s, int node, gfp_t gfp_flags,
+ 				  const struct slab_alloc_context *ac)
+ {
+ #ifdef CONFIG_NUMA
+ 	struct zonelist *zonelist;
++	nodemask_t *nodemask = NULL;
+ 	struct zoneref *z;
+ 	struct zone *zone;
+ 	enum zone_type highest_zoneidx = gfp_zone(gfp_flags);
+@@ -4027,8 +4028,19 @@ static void *get_from_any_partial(struct kmem_cache *s, gfp_t gfp_flags,
+ 		if (allow_spin)
+ 			cpuset_mems_cookie = read_mems_allowed_begin();
  
-@@ -753,37 +785,8 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 			}
- 		}
++		/*
++		 * Restrict the scan to the nodes of the task's MPOL_BIND
++		 * policy, but only when new slabs are also allocated from
++		 * them. With an explicit node or when spinning is not allowed,
++		 * new slabs ignore the mempolicy. The latter case must also
++		 * avoid mempolicy_slab_nodemask(), which reads
++		 * current->mems_allowed_seq.
++		 */
++		if (allow_spin && node == NUMA_NO_NODE)
++			nodemask = mempolicy_slab_nodemask(gfp_flags | s->allocflags);
++
+ 		zonelist = node_zonelist(mempolicy_slab_node(), gfp_flags);
+-		for_each_zone_zonelist(zone, z, zonelist, highest_zoneidx) {
++		for_each_zone_zonelist_nodemask(zone, z, zonelist, highest_zoneidx, nodemask) {
+ 			struct kmem_cache_node *n;
  
--		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
--			if (!folio_trylock(folio))
--				continue;
--			/*
--			 * KSM folios can gain new mappings at any time, so we must
--			 * not clear their dirty flag.
--			 */
--			if (folio_test_ksm(folio)) {
--				folio_unlock(folio);
--				continue;
--			}
--
--			/*
--			 * If we have a large folio at this point, we know it is
--			 * fully mapped so if its mapcount is the same as its
--			 * number of pages, it must be exclusive.
--			 */
--			if (folio_mapcount(folio) != folio_nr_pages(folio)) {
--				folio_unlock(folio);
--				continue;
--			}
--
--			if (folio_test_swapcache(folio) &&
--			    !folio_free_swap(folio)) {
--				folio_unlock(folio);
--				continue;
--			}
--
--			folio_clear_dirty(folio);
--			folio_unlock(folio);
--		}
-+		if (!madvise_free_try_prepare_folio(folio, folio_nr_pages(folio)))
-+			continue;
+ 			n = get_node(s, zone_to_nid(zone));
+@@ -4072,7 +4084,7 @@ static void *get_from_partial(struct kmem_cache *s, int node, gfp_t flags,
+ 	if (object || (node != NUMA_NO_NODE && (flags & __GFP_THISNODE)))
+ 		return object;
  
- 		if (pte_young(ptent) || pte_dirty(ptent)) {
- 			clear_young_dirty_ptes(vma, addr, pte, nr, cydp_flags);
-
----
-base-commit: 5e600d79135124a4eb8e9db30ad524224c267c07
-change-id: 20261119-madv_free_thp-3c2a9887a722
-
-Best regards,
---  
-David Hildenbrand (Arm) <david@kernel.org>
+-	return get_from_any_partial(s, flags, ac);
++	return get_from_any_partial(s, node, flags, ac);
+ }
+ 
+ static bool has_pcs_used(int cpu, struct kmem_cache *s)
+@@ -7461,6 +7473,7 @@ __refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min
+ 		     unsigned int max)
+ {
+ 	struct zonelist *zonelist;
++	nodemask_t *nodemask;
+ 	struct zoneref *z;
+ 	struct zone *zone;
+ 	enum zone_type highest_zoneidx = gfp_zone(gfp);
+@@ -7474,8 +7487,12 @@ __refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min
+ 
+ 	do {
+ 		cpuset_mems_cookie = read_mems_allowed_begin();
++		nodemask = mempolicy_slab_nodemask(gfp | s->allocflags);
++		/* new slabs for the refill are allocated on the local node */
++		if (nodemask && !node_isset(numa_mem_id(), *nodemask))
++			nodemask = NULL;
+ 		zonelist = node_zonelist(mempolicy_slab_node(), gfp);
+-		for_each_zone_zonelist(zone, z, zonelist, highest_zoneidx) {
++		for_each_zone_zonelist_nodemask(zone, z, zonelist, highest_zoneidx, nodemask) {
+ 			struct kmem_cache_node *n;
+ 			unsigned int r;
+ 
+-- 
+2.56.1
 
 
