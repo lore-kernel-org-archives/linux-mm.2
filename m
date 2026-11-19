@@ -1,96 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C89606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB3460A2600
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ngrIqHBj
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=trPf9+9S
 Received: by kanga.kvack.org (Postfix)
-	id 4A0B56B05F2; Thu, 19 Nov 2026 04:33:39 -0500 (EST)
+	id 4068A6B05D1; Thu, 19 Nov 2026 04:35:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4783F6B05F3; Thu, 19 Nov 2026 04:33:39 -0500 (EST)
+	id 3DE666B05EF; Thu, 19 Nov 2026 04:35:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B4DA6B05F4; Thu, 19 Nov 2026 04:33:39 -0500 (EST)
+	id 2CD186B05F4; Thu, 19 Nov 2026 04:35:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1266D6B05F2
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:33:39 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9EED7409D3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:33:38 +0000 (UTC)
-X-FDA: 85451356116.19.ADBAEB5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1163D20007
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:33:36 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ngrIqHBj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 05C866B05D1
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:35:12 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6EFB6A0A35
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:35:12 +0000 (UTC)
+X-FDA: 85451360064.14.470EB26
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 46723120003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:35:10 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=trPf9+9S;
+	spf=pass (imf29.hostedemail.com: domain of miquel.raynal@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=miquel.raynal@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795080910;
+	b=2dDWEhSdJwHMhYO+VTJG2t9eSt8fTMHZc0/Uhbi2ZYInj9MP82ylNAPa8D4gacMqxx9yqw
+	I59JitFC7af3C5OyAQ0WfOqSDt0pPrCugzdkZD27bim/K6NWWOnaa3kr2SmTqtVibDvrmd
+	hY6oFy8UdhY5myG5sIL0T0rGJSb14Oc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795080817;
+	s=arc-20220608; t=1795080910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zs8KmS6M0tc9kdI4/Q5qCxRWf3GKyv2JX51WYmX/Mp4=;
-	b=elLwMPApOtDMRPaTRS5jNusRGvjetyK6fY1s9jJh5NDVRE+Dk18QFvqMDm1sPTYy2nswLr
-	+nJZPisc8skWGmYqHGLd4RR+G1eKWQjqlDQihfK+9LwAhTB33B92P9E+OAl6hGuC1Y+amR
-	aW889KSyUHnj+1Qqt6CAgJSFb2d8MDc=
+	bh=CQyK9hhzQUtdCIaKwh8qFL6kiw3hBK7e02jXrxk3Q5M=;
+	b=IFuNiBAOBPe47Qfur5rzO5OUniDCbOwtbRfWpcMCZoJcUpzOcUDLaCQa3Lr1yZdmOitIS5
+	BWIoh3Y7t3PpLNvHAZW44TwXfUxYHLqCBBYD7aoM0K/jeGCx2ozUYwfCx4wHaSYOlkyvBf
+	KiKlvZ+RqclRnZmpCtAuA2QNeRdjMxw=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ngrIqHBj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795080817;
-	b=5cr3iR4yWuge+ttqjwiONKCI/M3rZhozBlQnu15VTaVDLniZKTuYQmnrowvdnkZtI+kI2/
-	rya6uoeIJ+6LnUstny6HnAAoOp7UxTVkYesdZC+LsJi3uMpZtbW01ax3Hb1pZrwbp62ne8
-	8kyyNISq3YxR9z5d1I+XWJRB15HKDtk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 84D81612A7;
-	Thu, 19 Nov 2026 09:33:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51011F000C9;
-	Thu, 19 Nov 2026 09:33:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795080816;
-	bh=zs8KmS6M0tc9kdI4/Q5qCxRWf3GKyv2JX51WYmX/Mp4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ngrIqHBjgVYdx/F+VW2lBwdufHaaLpZ49uNS+5QElhcbhKI7WUfcXO5XcpWxdaZer
-	 5I12Pj2zNHxyR7JKGqjEageIt60T85FtPYb3L9n8ToxBAgovwz/E5D96mwlOhhniuu
-	 OG/U8Ui1vqEh3B5gxHtEQCACMhuUCYlBkRdaipBu3WNcz7svfU/221+kSCtmSYiDDL
-	 gryUxrqGnwNwCjVPBAuiCKfrgkVk7mEsXDY4Qa1F086QTGLabM4C+Y8OL6/Vn2nuTA
-	 75gwcgYKo4KXq6XplCTi9qW9uo63hudHLggJNcjcaJKqIirxi4XXXGk0X74An23PVO
-	 KK5RxRkZQqGUg==
-Date: Thu, 19 Nov 2026 09:33:28 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH] Docs/mm: fix stale split page table lock references
-Message-ID: <av7CVzXLButoMsSi@gremlin>
-References: <32FBD023F945BCCE+20261119074854.252609-1-zhaozhengzhuo@uniontech.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=trPf9+9S;
+	spf=pass (imf29.hostedemail.com: domain of miquel.raynal@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=miquel.raynal@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 7829C4E415F3;
+	Thu, 19 Nov 2026 09:35:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3D57560271;
+	Thu, 19 Nov 2026 09:35:08 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 145C311BC315F;
+	Thu, 19 Nov 2026 10:34:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795080902; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=CQyK9hhzQUtdCIaKwh8qFL6kiw3hBK7e02jXrxk3Q5M=;
+	b=trPf9+9SmvXq7f3i06Ocu8PXp2wkKO6ORNKTA4/AjOKcQKVFePqcO/1BhMn+K4JKXgVetW
+	9Yr+85a0u4rw/+pGQPZDRSMsRMDGawEXfnQ9jCtNv2zr3C8ZQd4iUe048cU50ECPRyFurf
+	rsmMLyDo3rueQxG7RuwY+EBebjyTZuhqh1PyoyvCDfGRSYoPSTyfx/hwy85QgTWFsAil0Q
+	X6TU5TJA2EpRSA3/3QyU7eQBfCRlHqNmOlSA+ByZVazhopQuZSLgxPNhpRVe5QgDh43L/T
+	HBMPjxwGs9avJmS68J25IgXRGZqvRkZ+RC3EyDq//xlN7GCwXICCDykv7Bhitw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org,  Jonathan Corbet <corbet@lwn.net>,  Shuah
+ Khan <skhan@linuxfoundation.org>,  linux-doc@vger.kernel.org,  David
+ Hildenbrand <david@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Jason Gunthorpe <jgg@nvidia.com>,  Leon
+ Romanovsky <leonro@nvidia.com>,  linux-mm@kvack.org,  Jaroslav Kysela
+ <perex@perex.cz>,  Takashi Iwai <tiwai@suse.com>,
+  linux-sound@vger.kernel.org,  Jens Axboe <axboe@kernel.dk>,
+  linux-block@vger.kernel.org,  Marcel Holtmann <marcel@holtmann.org>,
+  Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+  linux-bluetooth@vger.kernel.org,  Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
+  David Heidelberg <david@ixit.cz>,  oe-linux-nfc@lists.linux.dev,  Chas
+ Williams <3chas3@gmail.com>,  "David S. Miller" <davem@davemloft.net>,
+  Eric Dumazet <edumazet@kernel.org>,  Jakub Kicinski <kuba@kernel.org>,
+  Paolo Abeni <pabeni@redhat.com>,  netdev@vger.kernel.org,  Helge Deller
+ <deller@gmx.de>,  linux-fbdev@vger.kernel.org,
+  dri-devel@lists.freedesktop.org,  MPT-FusionLinux.pdl@broadcom.com,
+  "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,  "Martin
+ K. Petersen" <mkp@kernel.org>,  linux-scsi@vger.kernel.org,  Richard
+ Weinberger <richard@nod.at>,  Vignesh Raghavendra <vigneshr@ti.com>,
+  Zhihao Cheng <chengzhihao1@huawei.com>,  linux-mtd@lists.infradead.org,
+  Neill Kapron <nkapron@google.com>,  Andrey Konovalov
+ <andreyknvl@gmail.com>,  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+  linux-usb@vger.kernel.org,  Juergen Gross <jgross@suse.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  xen-devel@lists.xenproject.org,
+  Hans de Goede <hansg@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
+  "Michael S. Tsirkin" <mst@redhat.com>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
+ <eperezma@redhat.com>,  Sean Christopherson <seanjc@google.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  kvm@vger.kernel.org,
+  virtualization@lists.linux.dev,  Jan Kara <jack@suse.cz>,
+  linux-fsdevel@vger.kernel.org,  "Theodore Ts'o" <tytso@mit.edu>,
+  linux-ext4@vger.kernel.org,  Mike Marshall <hubcap@omnibond.com>,
+  devel@lists.orangefs.org,  Paulo Alcantara <pc@manguebit.org>,  Namjae
+ Jeon <linkinjeon@kernel.org>,  linux-cifs@vger.kernel.org,  Jaegeuk Kim
+ <jaegeuk@kernel.org>,  Chao Yu <chao@kernel.org>,
+  linux-f2fs-devel@lists.sourceforge.net,  Florian Fainelli
+ <florian.fainelli@broadcom.com>,  Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,  Tzung-Bi Shih
+ <tzungbi@kernel.org>,  Benson Leung <bleung@chromium.org>,  David Airlie
+ <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>,  Alex Deucher
+ <alexander.deucher@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+  amd-gfx@lists.freedesktop.org,  Jani Nikula
+ <jani.nikula@linux.intel.com>,  Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
+  Tvrtko Ursulin <tursulin@ursulin.net>,  intel-gfx@lists.freedesktop.org,
+  Matthew Brost <matthew.brost@intel.com>,  Thomas =?utf-8?Q?Hellstr=C3=B6?=
+ =?utf-8?Q?m?=
+ <thomas.hellstrom@linux.intel.com>,  intel-xe@lists.freedesktop.org
+Subject: Re: [PATCH v2 07/12] docs: ioctl-number: update MTD entries
+In-Reply-To: <20261119053514.255348-8-rdunlap@infradead.org> (Randy Dunlap's
+	message of "Wed, 18 Nov 2026 21:35:08 -0800")
+References: <20261119053514.255348-1-rdunlap@infradead.org>
+	<20261119053514.255348-8-rdunlap@infradead.org>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Thu, 19 Nov 2026 10:34:37 +0100
+Message-ID: <87bj7lf9le.fsf@bootlin.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <32FBD023F945BCCE+20261119074854.252609-1-zhaozhengzhuo@uniontech.com>
-X-Rspamd-Queue-Id: 1163D20007
-X-Stat-Signature: p48byf3r58xnn397z5n4t4z11xdbrz4k
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1795080816-236082
-X-HE-Meta: U2FsdGVkX19zzMsu5ILiBa1nFK71i4FIUcMNfv95x1FVEbvEmaaN3Bc2vvVZABUsS9Aw0dfybrGYbrsUZoPU3jWivEdMucOcSBTakWYaGQa+gggYNg+cYSxp6ceBSqD4G+rfI5RYTTV6c8Tmnwg1KvamvdaEkxPh0Rzhy1pbXGqcRfcWfeGJ8X4xS/WNdHv2LNX94SZddasDPPq7ixvoD+15e4t6lTxg8KBZk4ILRFMDFbv+qJg13VQx0esvYfdJH/nJb4ezMy7Uq1sv9YOeQ3h7r3sof4xRJD8o6CJ77eO6e+QLKcRprhwrYxeEL8yUKz8DzxWnzNwdiZUbHv4SXY420xmRtKu/e8pRBfu0Ak1mVzJLAh0L3jobeA0K0nOM7QIBfiJX5nuA8o8DutY9jQfxITM7TpT2AOKdKRGqeLr0nW6MgEItmjUicJhaiXvC6svSgixQlpYoakvAUUyAwcTs/YTT7e7FlHGgAzmd8B507x039OS6tTToFZkQyff6EDa3hFQSX52o7OoDasQVDhGrEbsJxQ7SPrr5UFSsuxjQOAUZeiHveUDucSLVL4RK20poE13ThC/GRH+6G5lf8MyxovbmYoqWXuQq2Y8znxOdqCNTtsM/oYnGFK08rs38GRqDWiFrjy/STCq1ebRTMvQ2eFQh9V9k04YCX+E/Hl2/AlXV+msIP1UahHOiGqSbnfgMzACGNDds+SQ2Bx59ARMJPNaiHFqtL0KaFWl0Ja4L/vfi0HgE1RqMZp7/DhODkETxGwnnxA5k3J0F7a1hTDkVuliIwV4yxh6BFXdqWxaukFPpJgSd2kRk02fnVN7wdvn2iOhhj9oP9hXfzimZQ3VO6ZA9FdUSzQuUfAkquijnEka1YyMjK2aMxIJVbomlCMoC0VACrU8h60xq9ShEEBEoOK4LF0pdpuG1wQFn7W0u+5E8Kar8736MHP1CIYuwn2BaIAKIW0nKG6PlFYt
- 5csA78vb
- rVbBXowxEpAEEceweay16rqHRBupFJcQgkeJRMCHRbYe8a7B4i8phjSnRyAEFyCUXcEqaQbLpZE9EHFErQiNEBR2/JNdMUbIoxmRSfMcJvL5VpllxSpLo0VVf84IJTBYbeZtmIQxpHSfaBz5qNBOCvQgqyrddsXVmI5f07qcry8EjgfNW0H8lc80lvtPMUyg4QdMZZDHLXvic7nfnH2C4IX2/TH1sFqBJ/5trYisZ1p/VTUPgjl6DmoSONzEBp6scQfnQgOiJynsA9vYEN5gfLub6Kpy/0YAqOLW/KctyrGwFccuhqgWk5JUD2GkbJv69xNY3SIzO8z5OlJdbVe1JleR09/9LND9PfNAtGG1FrBLqChPItvkEnVLyHeVc6VxV3SA5v9yrN0GHkz4bpEIT+GwBXcjjoUIU0FVn4nk38QX+FS+hMil3IMj5XDGskVMBB5GW6VwdV0cthF8=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 46723120003
+X-Rspam-User:
+X-Stat-Signature: wi89nm1q41sopkss3ox5i7krt4wyx4he
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795080910-96071
+X-HE-Meta: U2FsdGVkX18bYlKqLInGEN6fPyvihMXc2ApTjjBFXBKNKGhgdrVB+qFb+8YT3h6P9VmvEmkp/K1wk57A+Hgmdotwgcl1P16jrJiPa6yU45bgS0pavZ/6mxjKmyjoYP2/FlFuMvlg28mlIzZpH5Hbi5vbRnc5eKngdEsFwa6hv2+OqYPL7hZqH0d9XxDHVLHofToP08WY9oYqavd6e/gb2UFnOdQJfwbuYKNlHtfa7JsoWMRv7J77LVNHcCjJVh9vNFquHEwlpgkhbf696aA4P79lHSWYfqFfKrKwsElMGv/dUCnud9kmsofpvHp4gwJHjIXBwsjjYM0ll7R+pJBCUbriFweRdqF0f23hl/P2vv06fP0e+J1cT81xxeN8/Nu9wE2fT5icpDRqc6/B3pIcC6ugDL2D/cARWVO1aO0SyWPZJwd3TxZrB4ZTp03PwpZoUjxpHNe9FN5QRObzhuU6tn5a4dP4I24ZEguWdwPaamWkw6n3eDV7kzwRZDkY8As+rnbHhSCUSiWsAA3hlfbV6qO6VhmM21Gd35y2KLQZFjN/kOUtuFVS+KPKeaXi+79yUmPnrg2rjslxkX86SzGCJ8lWi7uur6spCO/kjtZXwUJIbk9M405XmcPxtpUqzfizDUSBpJhP8sST6olv9AySyb34LbJstUZjQO6xvzLzUVCWlFD91DPonXYrYHHlvFvAsYKUoLSHUL1EuSqds0TUh7CYdxeksjdOooXfx/+e2DAzyq88HWHdP4hYjz2w8WJ0pP4UA3kt26aQkFkImak8vF65hU8xnbpBt+df+n6m78YyhVvR4HdWtFnNLCo1DtR4clvAnZiFNKiMJd+eFIsU8RQuU7dZzV4MMQP3U1kHmBJ1IuuCVOMTEA1J6Di9U0A+nu0MPxC3Of7pnwLDbIJ7GxB1gJIHcLwYp4Z15DFfi2oP9hA1kyM3W5Co9xxzJv6Tii5KT9La1jtCd1rIKOH
+ glc9l45D
+ Vo7Jm9wGqv+cxpojCJ16Y/ISXkDi2xAPq8OLXzhTzzp+n+jX4KcgVXbFt622nFGvY6gewMMAklSqC7AhpKaQlp7FZrI6hc33WG1gJQWk3FASBeuKl0PbBEUjinaJU98MGQV6+C4QrgewpDE1YX7szBaE5zyI16rVIGuWcvmrbHU4Kal2xgIVa1grJPeEmCzrS7wbQzytmrAyBSECd0thpN5fQOJHTe0Htcrpf2kcK8v9H/JJcpIPEv5gFXD26evbSo03ZBYku0T/o7c4QEW/4ScNfMwGaYnpdCUWDMmEyesJUrFItTZ7uVD/at9CpVh8AJPzUJFlslW1/KH61GRdmpb2O2c4hlNORqeE4ysvwq/KOM5GS89nxCNLbROLvo7iO9ClbWCUuk1ak+/1zJ1Bv/AejFFf9Y6MUZ94RcUOfvRBq6OOKz+GI9DeS9X+TX90nvskv1EVCBgMffvWXd7hL5akd/jdK4X8Z0o1GCTm9tvzwuEHQ4L+Bvnh0XBc6/5NwZgXI87yIp8mwRsALfcHmaTN4BIbOo6eWQb7N6f7fERG70aTji6XxXRD4fQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,61 +147,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 03:48:53PM +0800, zhaozhengzhuo wrote:
-> The USE_SPLIT_PTE_PTLOCKS and USE_SPLIT_PMD_PTLOCKS macros were turned
-> into Kconfig options, and CONFIG_SPLIT_PTLOCK_CPUS was replaced, but two
-> Documentation/mm files still refer to the old names.
->
-> Update both references.
->
-> Fixes: 394290cba966 ("mm: turn USE_SPLIT_PTE_PTLOCKS / USE_SPLIT_PTE_PTLOCKS into Kconfig options")
-> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Hi Randy,
 
-Seems reasonable, so:
+On 18/11/2026 at 21:35:08 -08, Randy Dunlap <rdunlap@infradead.org> wrote:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Update the list of files where MTD ioctls are defined and update
+> the ranges of function numbers that are used.
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-> ---
->  Documentation/mm/process_addrs.rst         | 2 +-
->  Documentation/mm/split_page_table_lock.rst | 8 +++++---
->  2 files changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
-> index 04b649818cc1..0b6355e6d1d5 100644
-> --- a/Documentation/mm/process_addrs.rst
-> +++ b/Documentation/mm/process_addrs.rst
-> @@ -659,7 +659,7 @@ acquired in :c:func:`!__p4d_alloc`, :c:func:`!__pud_alloc` and
->     references the :c:member:`!mm->page_table_lock`.
->
->  Allocating a PTE will either use the :c:member:`!mm->page_table_lock` or, if
-> -:c:macro:`!USE_SPLIT_PMD_PTLOCKS` is defined, a lock embedded in the PMD
-> +:c:macro:`!CONFIG_SPLIT_PMD_PTLOCKS` is enabled, a lock embedded in the PMD
->  physical page metadata in the form of a :c:struct:`!struct ptdesc`, acquired by
->  :c:func:`!pmd_ptdesc` called from :c:func:`!pmd_lock` and ultimately
->  :c:func:`!__pte_alloc`.
-> diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
-> index cc3cd46abd1b..ce7908bebce9 100644
-> --- a/Documentation/mm/split_page_table_lock.rst
-> +++ b/Documentation/mm/split_page_table_lock.rst
-> @@ -37,9 +37,11 @@ There are helpers to lock/unlock a table and other accessor functions:
->   - pmd_lockptr()
->  	returns pointer to PMD table lock;
->
-> -Split page table lock for PTE tables is enabled compile-time if
-> -CONFIG_SPLIT_PTLOCK_CPUS (usually 4) is less or equal to NR_CPUS.
-> -If split lock is disabled, all tables are guarded by mm->page_table_lock.
-> +Split page table lock for PTE tables is enabled at compile time when
-> +CONFIG_SPLIT_PTE_PTLOCKS is enabled.  This option requires CONFIG_MMU and
-> +CONFIG_SMP, with CONFIG_NR_CPUS set to at least 4 (see mm/Kconfig for
-> +architecture-specific restrictions).  If split lock is disabled, all
-> +tables are guarded by mm->page_table_lock.
->
->  Split page table lock for PMD tables is enabled, if it's enabled for PTE
->  tables and the architecture supports it (see below).
-> --
-> 2.50.1
->
+Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
---
-Cheers, Lorenzo
+> [Since having multiple maintainers trying to merge these would
+> cause some conflicts, it would be more manageable for Jon to
+> take all of these through the docs-next tree.]
+
+Agreed.
+
+Thanks,
+Miqu=C3=A8l
 
