@@ -1,146 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B43606A336
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 12:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F97C606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 12:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GONRuns4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F19LKSe7
 Received: by kanga.kvack.org (Postfix)
-	id 8C77A6B0631; Thu, 19 Nov 2026 07:03:14 -0500 (EST)
+	id 71DAA6B0622; Thu, 19 Nov 2026 07:05:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 851A56B0632; Thu, 19 Nov 2026 07:03:14 -0500 (EST)
+	id 6CE956B0634; Thu, 19 Nov 2026 07:05:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 657426B0633; Thu, 19 Nov 2026 07:03:14 -0500 (EST)
+	id 60B236B0635; Thu, 19 Nov 2026 07:05:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38BF46B0631
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:03:14 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1A2080AA0
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:03:13 +0000 (UTC)
-X-FDA: 85451733066.04.6902480
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3A33818000C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:03:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GONRuns4;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 334546B0622
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:05:24 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A56EFC0A6C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:05:23 +0000 (UTC)
+X-FDA: 85451738526.12.9A7197E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B4CDD4000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:05:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F19LKSe7;
+	spf=pass (imf17.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795089921;
+	b=qXfJQ/LQ4/V10Q15ruieKncZ9Due6w2676f+ro6W5rlDGdIXNNpwBBK+VV71jCiJkpVJkb
+	StUjwe35hqvDveSzZahnT/ULABUCYvgYvNdQxIeb9gI9Ok5tJBduz6vttJ2fKZhaf4JH9p
+	s+ylCmuJSuceZFq7WacyLV6WYYMUFJ0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795089791;
+	s=arc-20220608; t=1795089921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zApCp1xwVg9dKanzxdxazWSeTQXz+Vf+a7PGogJltFw=;
-	b=rdqA9c/c03VGRyd7JtbqOcCklU4ZvE76LauwxpFGTp1zgiqYuOkDR/Y+jGh4xFa2adWREG
-	LY01FkZMy+Vx1wMYvHHl4ASxgKpqvckTYFQr3Le87sco8iqyMfoiuK9s+p/mTBhnZQvOfy
-	H7SHb+MdEBSVXFoxQJw4gK9ljAM8xrw=
+	bh=FBxJcPXeAm8QKAUiFswz58ZNqPTA/e/PJf+hWh7nZOk=;
+	b=g/wWsxvpsY/YHV6jFIt5g+xyeU1EMMmqlMMJoivwHUCDQeIytYPHL75z6B1of8GbOU/z6K
+	3FHs+ql6fGlSfRxAlv/oNU88mq0ImOu37OO/pvBHLF1eieUCoLU9XSPwc4v5IMPoj1k6Z8
+	7qiaDAVE4jLgUyLy36JciilcRf8s/pM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GONRuns4;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795089791;
-	b=Ph1MTfwyedBMMzdc5U3cFdcXWlP1Do5bWg3b94spZIQZFCPvpoWoxFKHWOa4XiN0UFNSIS
-	gpw0jWQyQKgL8fD3zdlGG2qPC43yxehHD2gtiyFPYGewUiiU8MJn/Qm6p84Mr1cPmLtkTx
-	MVt5dvATkP4Dnsx/3t9FHLYJr6er1v0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795089790;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zApCp1xwVg9dKanzxdxazWSeTQXz+Vf+a7PGogJltFw=;
-	b=GONRuns4tcJQPVGpoDG2p2zXYyihcoVRpfizk0Gq4iqlG4T8XUoYmf+//JZ2ZWYEbd9Zb/
-	Oyf0d/HfMs5k+/uxpPkdQQeJUMJGbaqljBcwRAzr6BTbpBNIz5tCodBRTFX8qnQq1knfRV
-	DnHjm/Ts/IVRxjOE6JUp56K2Ap2XERI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-YUSJNFnGPkSSswpTC3dwJA-1; Thu, 19 Nov 2026 07:03:09 -0500
-X-MC-Unique: YUSJNFnGPkSSswpTC3dwJA-1
-X-Mimecast-MFC-AGG-ID: YUSJNFnGPkSSswpTC3dwJA_1795089788
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a359b714f8so13039155e9.2
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:03:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795089788; x=1795694588;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zApCp1xwVg9dKanzxdxazWSeTQXz+Vf+a7PGogJltFw=;
-        b=KK7zYMH7570k/N5ExIO61HvyBlkogXA6zXfPAkOHGs9Pdkc3hVBjq7ZJwVKy7xeRgt
-         82DuQqOAxx2kk3lt2Xp4JxVfDnOIGIAkZdHd1TrWF7BLJkVEBIl5m9Zi9u2KZtzR2Vor
-         6uOt3hM6tqnqCuZvww/SbnmKPvhHTouLGo6J0d0mLCHzhuVVodD0LskO+0S0szybWP8s
-         tUCKx/kG341/hFcDTxCx6yQtDy84NyQ6/XwmYSGME36QNaK6ER0A7jPLC9apF50e1GHA
-         wzm43JwRDrZyPpy9qoTbTiaQ06DwtaGRjStPcyqyutu209frJHJRMV3dqP+YG3dzbgkG
-         a6Cw==
-X-Forwarded-Encrypted: i=1; AL+hErF+nOTIDWvzXi35+iIMsDSOvbHE24Sjnmm46056Tn32z31ds0Uw6M2fJPysIo+dRrVdg+Bt3fphrw==@kvack.org
-X-Gm-Message-State: APuU4Z/ubvokef+hUPePFjryYaZbsxhfjr9j98utDmO+/oFmuyaVlqi+
-	CN0wVsRi41NV4m4az/KOoIXqA9DXQCeXCUvAo4u/4JxP2EONGHAFdb5EGlef3prpLhJkjq/pecA
-	qJY613vxOIar+b6bAv6ITTmjcZObhxHyGLsRuiw2q9FOROtx3e0Nc
-X-Gm-Gg: AYBFou3CptaYbp0nqCyxNyS/t95Nh6XODkTh3P9eRtK2bUb661QemUJyFwI0Gn7pURm
-	HEBAxDVT59VNv+RB4FPr5pIuwQQgw7eqh9zlf1jXr1aZtyK+app8oIfNudR4L9nEzz5tDjPjm2c
-	L8+LCeghgGOskLQ131BsFAtAi4tQDhJWWwli0ylXsI0wa92P+GXuFI+cPfANK4S/C0cnyDVRZCK
-	LPLxDr+4ai+4duREuLT9Af+2Ze2Y7D1AHfp3mvwfT0RovEY45/6d/gSm6wRmQrV36C8znbQvwuy
-	da9zGlL5Cf9ePydtx4eh/aa/18VnqH4tGDPtLWvz7JXoz6bsmt6FH0frvx+SU0/+8p4fcmYolZh
-	7dfMwHac5ZDJY0SUbqubPyp9Lppjqp1b/dI5LioHxvh0=
-X-Received: by 2002:a05:600c:a303:b0:4a2:84c:52f3 with SMTP id 5b1f17b1804b1-4bb7da13acdmr100153235e9.6.1795089788078;
-        Thu, 19 Nov 2026 04:03:08 -0800 (PST)
-X-Received: by 2002:a05:600c:a303:b0:4a2:84c:52f3 with SMTP id 5b1f17b1804b1-4bb7da13acdmr100152535e9.6.1795089787463;
-        Thu, 19 Nov 2026 04:03:07 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1520:4400:d78d:7b2d:2f5d:e08f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853b216esm32981455e9.12.2026.11.19.04.03.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 04:03:03 -0800 (PST)
-Date: Thu, 19 Nov 2026 07:03:00 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>, Dev Jain <dev.jain@arm.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Greg Ungerer <gerg@linux-m68k.org>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Lance Yang <lance.yang@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, virtualization@lists.linux.dev,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brendan Jackman <brendan.jackman@linux.dev>
-Subject: [PATCH v11 7/7] mm: page_reporting: add flush parameter with page
- budget
-Message-ID: <2d518dd7b8f7be147b9a957ad94f6c6641e4b5ef.1795089715.git.mst@redhat.com>
-References: <cover.1795089715.git.mst@redhat.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F19LKSe7;
+	spf=pass (imf17.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DCE59624F5
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:05:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A7D1F000C5
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:05:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795089920;
+	bh=FBxJcPXeAm8QKAUiFswz58ZNqPTA/e/PJf+hWh7nZOk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=F19LKSe7uDen+UvWYVGeYYdk9oWw0ri9Y5JIS3d16mhgInPtDp0AyEAPEY0AK/AJA
+	 AWBSc0NV1eTlvSs2pabj0ptMpNlbCbQFGTo+bzKE+2Z/wTM09vqSwxUF624zvojg86
+	 EE+98soll+0f2PeedrC8zb0l867y9yYGNOgRjexyc+1YqR32fk0DDkLFsqwv8tRKr6
+	 KEE8YMnYIdneUSySln43y+p+2irxKQ/JgWo8FKZhtuQyzKHVa6TrxEQX/hckIl/btV
+	 A3bUjmy9zwA8+VgRGdOwjPQnu/hlCuA8gGwOLVmEM+K9r6r2AVkKrjpGacHWgi/wpn
+	 tChIou+xt4Fbw==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b88d143160so2687120a12.1
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:05:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHky7VRNIj2MaVfy4OkbbO67p3zC0wHuyiUrYvfrLdI9l58DtdG93Yo7c0izAKC8eR2FR/iodYG1g==@kvack.org
+X-Gm-Message-State: APuU4Z+GSj/bJ0xBemsSxG2HC95I4lfyGgfL4t3d5wtEH1QuGu0kMBDF
+	er23HWvyvtFwTxGPRsUFu/LrPaSjNARTrsM2y28pG315dynAC3hrNEcx3U+SAyRqadfP43PPVme
+	mZ2wS3j6OEIWDR2HGrP56zLksivhvIlY=
+X-Received: by 2002:a05:6402:1ed4:b0:6b5:5530:c9af with SMTP id
+ 4fb4d7f45d1cf-6b887e83a81mr4871588a12.15.1795089919238; Thu, 19 Nov 2026
+ 04:05:19 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <cover.1795089715.git.mst@redhat.com>
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: gKBNsRDph8_Jfw4398byBXLLjJJD38tq06XUCyefBAA_1795089788
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 3A33818000C
-X-Stat-Signature: xf4xrsp5uar36cwpdey5sgnj4ygiamwn
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261119100216.10182-1-dongtai.guo@linux.dev>
+In-Reply-To: <20261119100216.10182-1-dongtai.guo@linux.dev>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 19 Nov 2026 20:05:08 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4pmcV8hah8sPyQn3nR9cO-NwkXMPLeSABAO-VEnS08fg@mail.gmail.com>
+X-Gm-Features: AclHuK_cEZcZkwIHDpc5O50alIIDUZZaaZh_szL239OmmvVzzDhSkIejCjgHXmg
+Message-ID: <CAAhV-H4pmcV8hah8sPyQn3nR9cO-NwkXMPLeSABAO-VEnS08fg@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: Allow memblock arrays to resize
+To: George Guo <dongtai.guo@linux.dev>
+Cc: kernel@xen0n.name, rppt@kernel.org, liukexin@kylinos.cn, 
+	guodongtai@kylinos.cn, loongarch@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B4CDD4000A
+X-Rspam-User:
+X-Stat-Signature: eg66ytsjc5mu7of6jbk9qdj5dyrjrxso
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1795089791-279238
-X-HE-Meta: U2FsdGVkX19C34RIdvIPa8eVKulV+a+VkdODK25dUoV/X9TH0AjDBGPAQFvmSCpH4dHK6FCGLHgQ39uOMacEcZJduRqD8CXTXWMLdHwuURmYvWkOdGqhZtDZ7K98m+HTe3QnJlOMo9FspznqzLaVJBFxAxRc5I+X692TPEfK7wf3riU4z4hjX6eKZumIyslHEurKwxTTV8r5r4D2w20w+sw/lDmKrB7rve8pOQPaeVz2c8VxsW7LqKCCe1zhPriiHm7A35iNaNiV5U2sEbhcxH7hWQmkbIwvQAD83rGuKKeY3pOZdRIqbv7dYP1F9ql83kUtMz8+F/Csm5kGDs+E44PSLl4Ddmp/K85lE5lJt+h2WTn6Q2OOrL1DgYbUUJRwI6DOUWfES8L04gYossddqrSDn0QhG4oBA2/Hvd1zNKqGkcL5WQPmeEyprkXXNGGYhyx1KANEI89TTBo1Opcy6W/C5EiBDJaAurFOiCjurDWtU9y7PDAUFguf1b5OdzYHQrNE8Rd+f98ydBb/wAsJpanWvPiDkQo4TSmRBnYv6eMfhgxMvPWwJAfoji07p2ZAkF91YPGXS3Q5xV+/GUYPAfWp85X58k1herBmYrmvIqA3bACxgQjlTC+1YtOagtSo1GiMblu0/yS32ZBfFgXYGIkPYFocSvEoVLbEZw3KDgCg22gVjtTMTFyWDD4CXmkfofkVjB9brKmVwtEsW0+UOXc4bDndHzrlx3Rf0K3En+U5nJIRTFkpHB4TrmkYzqJqx3dXy/Jh9SWmHb11JfbStuTSDkrqSDDFdFGTgic5XaAByyQBElCMoeYbK8j/H8/0A0Jj23phJ1qbJZ806PUwd/STBqS+vhvO1+nnm9HL6q8R3OTCERQUNeLO1Hc80FL8IW7oTTfTOsDhZ5WHCGvlhrpsh1l6U+AcRruYaohpwHpAzHc1yv6fve6Mp52G2lM5UYxnXmz6qZu4mC88TOV
- J3QgnZti
- 79hWb/CVWW38pql9362R/i3bOmCUugVgCtVbxfuDEASxWbBlXVV+Pf6knQqgcL4M/R4Y7qnBDYoB/WxcMGTSKGdQQp1X08tfJtjGYIyCojU38y9qYtwPgc34rPTl8zNitsdH7nlHcUI1+4LppUpQwsc/hNkdZ3o+tECGP5DPu9MOcpg6XWXVBVHdDI3jnRZrzoE213g30BzrapPMfCUPBlKapyaCxzYImxkG/hzx81q8HF3VhHpYSUp5DJ0kdAHNoy9aPgmcTKi0lClME9yBgrToflX8sGTtv/tn+/V2mmq2LeOzMwL7xpdBH3fLDZMGl0eYxX3/JbFYyFKxeaxXihaaUBGESe4f1GSoRoT7m7QKToCT31H0AayDer18tShCM8li3
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795089921-501939
+X-HE-Meta: U2FsdGVkX19B9XifqP954ORN0z31t5UDhaTNjgRxKNZRbrT5Q0734ANdv0yP+EDHIpA31JUZ97W1FPXCtunFMg/2G+4tKAc9nuNdEOWMPq6lNR0vTMDqAu41naNhqg3PLY1lGUwBdCq/8F75JO+WZ00XvUKSG/epxGeMBruHA5Rdnzz/6gX3+A2nWkh3f3WBfeS7qEl0XRL1hMPAKqnxYMH+1QLecwhwHntgIfyD4ArYD6v24cE+fbYAH2JPvu7M5LjQfFF5NHwZcEOw68nzaQuHrfhMFvyPSsBqyqqaEFAHr3VH9upKjkxCWfyipnfHCVQ8pT/2YDlR65bmMUdx1pxQBlxPTCC43le/6WyP99qzTXfbnyhp0fZeZ0dyJ7VDCEWsfbNdcUQ0bnc1FCfttlf3Ql/WD9qNWjMPMOake9qmOBhjkGIGv1Aub1mvIXJWccGDE7OyVJQWVlJ9P2JQGYjqY8Os01AtydY5taPD4dpkhM+QuhYcH6bTxDRB56ZdZZk0uNJUNqxNb7ZfLt9iMc2xEL9rwSPZNiakTyUNsmJNIDjGHULa/qGBObKNyORYnQ53AV3J67zMEB53Gq8FWXoJ2ozuzMdFNi2qgSDdIGsqNtabl1GhN9BX62McNvVApcuJ/IQNUg3RGdWWJapXGugE8HLWyZoC+sqbnPqGUAyjyiRba0uvMXJcyx5VQJZ7y5xs5ptVaCQWiwzbstNZ/+1GK7O4Z/OR5lpgnvrjb/dBFlpl24aYPa9UcUBsdgouHdOOkhdMw1uYauS6zxMX7fnzrbX5IklzUUSOUGSmXodQCR3phgvGT2MyTa3rjy4rRc+Xc5GTtTeCj/vN6b0HlakpWdsrtwGRfFOSTk0oiobd7A5gXLHRfVG9xl08iAb9I5CaY3yMcvXHtzGc/MoffnxzntsKA8Y4yA9WAz0AgHky3djCkDJPptkMqEa2Du9ijPe1fBpymza/CaAyEp6
+ NO9Qy7Lm
+ 90SH1CNQCWYWuS/9l5lcZhDUuYhuorV2BprqXeXvSTRuQKqq6W3BOgHg73xNI11xzaDs90CoWGmLvZ/EC1xfZwWllndIEC6e4H+gQjct7O6D3HuIiVyvXwseq9fDHIQOS42YO/Q1HS5QgV2JUkiHiflshB7SXf8zLzNGRanxMEQH177hqFTU9V+jvEgV06FCG7+kRnTur+aCGJAxrqvpqVrr27stv8AxOFMDSa9x9zHvm7NPhZGYmJJHpDRO/o6F+uMNpWDgaRyrs8eHlucqD31O6IuYqU55smy+ukD5hsvuqJhS7BTUXPjum/GRZhRlxZg1UqkLIVhFKn3eXMiBA499tWoaTfcomMe/M41tHoZcjt0A1HQ3GiJGMnjY7tKueuJU16/aijgwg77JcOcvyq62wA9v0xEw+YoTcjkh5OkdEr5+gyXsnwwEQ6eXVjMQOgffs54woAi2KLqL+gWLF2UtcdqdHqRCsybT6+6V3937q0g4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,72 +106,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add a write-only module parameter "flush" that triggers immediate
-page reporting.  The value specifies approximately how many pages
-(at page_reporting_order) to report.  And I mean, very approximately.
-The flush loops through reporting cycles until the budget is exhausted,
-all pages are reported, or a signal is pending.
+Hi, George,
 
-  echo 512 > /sys/module/page_reporting/parameters/flush
+On Thu, Nov 19, 2026 at 6:02=E2=80=AFPM George Guo <dongtai.guo@linux.dev> =
+wrote:
+>
+> From: George Guo <guodongtai@kylinos.cn>
+>
+> LoongArch never calls memblock_allow_resize(), so the memblock region
+> arrays cannot grow beyond their static sizes. For the reserved array
+> that is INIT_MEMBLOCK_RESERVED_REGIONS (INIT_MEMBLOCK_REGIONS +
+> NR_CPUS) entries. Once it is full, the next reservation that needs a
+> new region panics:
+>
+>   Kernel panic - not syncing: memblock: cannot resize reserved array
+>
+> The memory setup code was derived from MIPS, which never enables
+> resizing either. Nothing on LoongArch needs the arrays to stay static.
+>
+> When an array is full, memblock allocates a bigger one from free
+> memory, so resizing is only safe once all memory in use is reserved.
+> By the time setup_arch() calls arch_mem_init(), the kernel image, the
+> initrd, the firmware memory map, the device tree reserved-memory
+> regions and the crash kernel are reserved, so enable resizing there.
+>
+> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
+> ---
+> This was patch 5/8 of the LoongArch KHO series v6 [1]. Mike suggested
+> fixing it independently of KHO, and Huacai preferred arch_mem_init()
+> to platform_init() [1].
+>
+> KHO for LoongArch needs this: after kexec, kho_memory_init() reserves
+> every preserved range, and luo_stress_files with 500 files overflows
+> the reserved array without CONFIG_SMP. A bigger array cannot land on
+> preserved memory, because KHO limits memblock allocations to its
+> bootmem areas by then.
+>
+> Changes since v6 5/8:
+> - Sent on its own, without the KHO series.
+> - Reworded the commit message and the comment so they do not depend
+>   on KHO.
+>
+> [1] https://lore.kernel.org/all/20261029172956.20791-6-dongtai.guo@linux.=
+dev/
+>
+>  arch/loongarch/kernel/setup.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.=
+c
+> index 6fa4a22a58fd..8c33346a123a 100644
+> --- a/arch/loongarch/kernel/setup.c
+> +++ b/arch/loongarch/kernel/setup.c
+> @@ -402,6 +402,9 @@ static void __init arch_mem_init(char **cmdline_p)
+>
+>         check_kernel_sections_mem();
+>
+> +       /* All memory in use is reserved now, so memblock can grow its ar=
+rays. */
+> +       memblock_allow_resize();
+Would you mind if I move it between memblock_dump_all() and
+memblock_set_bottom_up(false)?
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: LLM
----
- mm/page_reporting.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+Huacai
 
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index 841dcd64777d1..74c03844fc3e9 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -360,6 +360,46 @@ static void page_reporting_process(struct work_struct *work)
- static DEFINE_MUTEX(page_reporting_mutex);
- DEFINE_STATIC_KEY_FALSE(page_reporting_enabled);
- 
-+static int page_reporting_flush_set(const char *val,
-+				    const struct kernel_param *kp)
-+{
-+	struct page_reporting_dev_info *prdev;
-+	unsigned int budget;
-+	int err;
-+
-+	err = kstrtouint(val, 0, &budget);
-+	if (err)
-+		return err;
-+	if (!budget)
-+		return 0;
-+
-+	mutex_lock(&page_reporting_mutex);
-+	prdev = rcu_dereference_protected(pr_dev_info,
-+				lockdep_is_held(&page_reporting_mutex));
-+	if (prdev) {
-+		while (budget) {
-+			budget -= min(budget, PAGE_REPORTING_CAPACITY);
-+			flush_delayed_work(&prdev->work);
-+			__page_reporting_request(prdev);
-+			flush_delayed_work(&prdev->work);
-+			if (atomic_read(&prdev->state) == PAGE_REPORTING_IDLE)
-+				break;
-+			if (signal_pending(current))
-+				break;
-+		}
-+	}
-+	mutex_unlock(&page_reporting_mutex);
-+	return 0;
-+}
-+
-+static const struct kernel_param_ops flush_ops = {
-+	.set = page_reporting_flush_set,
-+	.get = param_get_uint,
-+};
-+static unsigned int page_reporting_flush;
-+module_param_cb(flush, &flush_ops, &page_reporting_flush, 0200);
-+MODULE_PARM_DESC(flush, "Report up to N pages at page_reporting_order");
-+
- int page_reporting_register(struct page_reporting_dev_info *prdev)
- {
- 	int err = 0;
--- 
-MST
-
+> +
+>         memblock_set_bottom_up(true);
+>
+>         swiotlb_init(true, SWIOTLB_VERBOSE);
+>
+> base-commit: 422e532809572ba1043192bf6a0c653bc68b3140
+> --
+> 2.53.0
+>
 
