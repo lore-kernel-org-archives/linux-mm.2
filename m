@@ -1,142 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045BD606A334
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B336606B12C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=aWzX7qvR
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=DhgOlSo8
 Received: by kanga.kvack.org (Postfix)
-	id 059BA6B05BA; Thu, 19 Nov 2026 03:29:24 -0500 (EST)
+	id 269E56B05B3; Thu, 19 Nov 2026 03:40:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00ACC6B05BC; Thu, 19 Nov 2026 03:29:23 -0500 (EST)
+	id 21A636B05CB; Thu, 19 Nov 2026 03:40:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3CC96B05C9; Thu, 19 Nov 2026 03:29:23 -0500 (EST)
+	id 131106B05B8; Thu, 19 Nov 2026 03:40:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A98226B05BA
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:29:23 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D74BFA8767
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:29:22 +0000 (UTC)
-X-FDA: 85451194164.02.7089626
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C499320004
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:29:20 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=aWzX7qvR;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id E65E86B05CB
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:40:39 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62A5B14094F
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:40:39 +0000 (UTC)
+X-FDA: 85451222598.13.FBE4C91
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4DF74180008
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:40:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=DhgOlSo8;
+	spf=pass (imf06.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.135 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795076961;
-	b=rEwnwPWhoLtCaxFMvf91xUz1Ar17/fDJxJZ+MokxD+DS5rgERYXt0v4hSzukNP3xcfryKn
-	6bg44CjW5AWcmBAaDXePHGf/ugir1slNc/Tc2BHkD3R6sZBXODRnauLcoGF9SkbeWEkr7X
-	+Rpfbd8a7EOWpL4xvopXd+EBjYkgo7k=
+	t=1795077637;
+	b=QF0Wop3GZBt3BDU7eAyM/s9IDN+MmNbhui1jTtbICrQZ13iVCuercyB3S02TcP94mTVwIz
+	edgke0TrD0w78jMiXLHiRyXNs1N68Q7V1nyBHVy+JHfq/3lpxMr3kPnX+jBOyP0wo6ngWv
+	rgwCVCDbgVAIrPOBkI5Ctubed7UiRCU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795076961;
+	s=arc-20220608; t=1795077637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5EhIH0GsNWo/xExkiXtvhKm+Q3j5FK0DSxcIP+QAZxE=;
-	b=KkSsdL3/wHyRiWwH8ORSJL9rKuMySke2/Fkwk3vhTWY1Bna6nE6R51VOjnZgRS7L4qTS9q
-	5PCkaU8Sog4dM6OzCapeDWdCehG5KXGbaUqEABWB56WoLyjukBhxR14MLUPn0IoXwf5gMx
-	+DUE5KzxvU9iUAZt+8059KOu6amFLj8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fypsmh/yalmylSlR4JWqGqknVIfjPZ3AfNYwQxJkT78=;
+	b=ORMlZM9HuAFjzz4Bo+vmpe0F2pJX424EXBKMc81t0dMbNQpdoSTdmH5owZzPA4zPbWGvm3
+	2kkGZ/HmzuXoKkZAw4RukKlCMV4X31ADndQcTzUCUiDZIjffG1eyf4aZgeYQVQUhMyArSD
+	SWmaXoI9rieQE9LbefPyq5zdPkET/mg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=aWzX7qvR;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4bb61185057so15332715e9.1
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:29:20 -0800 (PST)
+	imf06.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=DhgOlSo8;
+	spf=pass (imf06.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.135 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1795076959; x=1795681759; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5EhIH0GsNWo/xExkiXtvhKm+Q3j5FK0DSxcIP+QAZxE=;
-        b=aWzX7qvR0C18degsqZtHns2VKgmy06Dic/5HbTLcSNqx4zjY5Go71PCQNLli99PqWk
-         uNHnQIHyfX097GfneCUqzeOHqGD6t36BqO0lEaZ0DtaAGVbmKYORrYaF21BwsxprLGgM
-         FlDAOkZQvkQ0FxmHUQ3Ds7pmDqxQDHuOLl5PbpWwJZmoc/UG7NDdZ1FexkG86nC7H3HA
-         5Q+akuqi0ZuJ7rcns7juiOZyRb9oK/0RQnZ9ddCb2SWOFGIeyunvTw5Ur8wZnj9CIBqP
-         7ZxAxUqMf1xSipB4WHa2HflHeqaST7DbFHcsv518gEmJ1DQBYgk8GVgVUoe7hKp9GMdn
-         oMBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795076959; x=1795681759;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5EhIH0GsNWo/xExkiXtvhKm+Q3j5FK0DSxcIP+QAZxE=;
-        b=ZC5o+XYlnBzyOejqiAj+3Yz1kAMi8hl/NpSh64cWIKQnLWjCiAm+2TbTDBGITOXNVa
-         G4GAZQJ73jNrV/7c9oxaKX/s5mvg2zszuwuYQsK/6acIo649VoCOKGlt8NuOlrbut98G
-         XUlpzJkUfRsGxFBIZO8MVasHQsS9YSqJh6OYXbed2z8mdvIFFLWuh4nC1MeRko8DsYGj
-         0I2yvVqdOFALPdtW+3Vggigq1R+bZYgu3Z6d4CISz24ovRgN87Y65SEU+BYu7hPepIF0
-         cC5+o+hO8tahxjDlDoYU4ceTgImvlqVMiBvN+ZZhKre9Gdr7ti7ka9kZnQFWueW+unZG
-         ggIQ==
-X-Forwarded-Encrypted: i=1; AL+hErFX7IvAwT4AmgVxqT/4RwN8XRCTHoSQ/74KcgWtQ3/WjW/rKy+orgmGc9NG+Wxpm+oDc3a/+GX6pQ==@kvack.org
-X-Gm-Message-State: APuU4Z/smU/fWA/ViqzrmJ4Fl1cTWpn6Wjmz9tN7lmQg6OTkMOCs1h8c
-	o7wCsbRUgNKmjT05EovXUU82CXoAu/0sNIZw2JAKwWRz2ushDyQb8SJcfKmir8TkOzQ=
-X-Gm-Gg: AYBFou01YBxVjz4eF+J9VQxyYbIC7lMhuXG1UPvz0RZQUk7nygJVyoQTkuQbXMMgS83
-	VeRdx2M4qUpLNLxXC738O63StkRZdKfJvB6tfnb1w30K8iNClINoTgjPrqOQTbMHBTTUZ5EaWlE
-	Vhg1qsGrga5BpypBIB47sviyNOF4EC0oGd/HxIHhN0kzdSJ8Xc2CowNwjRflOHVaeh4xSm8BoVT
-	w3cMu5cR0CEb9pjdm0pzecc5c/Th84yhLKqRp6PmeRi5Nw+yChdArmu5n+D3iLqoMMIrtoUqB/Z
-	/01HjV55hbo4y3NVNljaAcsB7fSrGLyKh7rNJgtwdM2b0zZ09vMLgx292xC4cWH7DhH/yefvjbM
-	6FfFqDtKgcJ8+5eSD4AZKxyrWSkGwyrhQNE3hgDmFS15TjiYbbPqBDxpa6NxL8aueKaL7ulR8B9
-	4RdcbjP1LdNhTwDjyo+0pLIepf0GXo/UVMdXviOda0WEdj4R8wuXsBZ/5HuUPEB3bZsMCTBLu3V
-	/iZtjuVxSfb8aKxR7qRSUy1yzoeSR2pXOkCZa779Km5AdCb4jdPXM7NwDGX6asSJxU9K6vD0TxF
-	zWujBJsLGlXiC9w7ccwC4Mqyp237v2ygIJM77TLv50w=
-X-Received: by 2002:a05:600c:1d9c:b0:4a9:2a92:231f with SMTP id 5b1f17b1804b1-4bb7da21ffcmr108691355e9.7.1795076959257;
-        Thu, 19 Nov 2026 00:29:19 -0800 (PST)
-Received: from localhost (109-81-80-145.rct.o2.cz. [109.81.80.145])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb84e5edf5sm11159705e9.4.2026.11.19.00.29.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 00:29:18 -0800 (PST)
-Date: Thu, 19 Nov 2026 09:29:17 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Kees Cook <kees@kernel.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-	Ingo Molnar <mingo@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	Chris Mason <mason@kernel.org>, Sashiko <sashiko-bot@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fork: clear p->mm when copy_process() fails
-Message-ID: <av6zXTxe0fAaHrzb@tiehlicka>
-References: <20261119-mm_failed_fork-v1-1-b3019f43d197@kernel.org>
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=DhgOlSo8ucLm1RtvW2+pJEPUAmE0+8OXc+rtX1kNNc8cEUFMQ4PmvjfhO/B6i6K34xdCRsxK8bPp7
+	 58zcZlhPP3bM7P2B8jpD1/k0Y2gDjglHcZGZ151gN/upTiCxvxLZeEDdg28+nKnXk/RiHeSY2+sSq6
+	 Hj7iQpjZlHxhgDik=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36afeb5fe415-e8358;
+	Thu, 19 Nov 2026 16:40:31 +0800 (CST)
+X-RM-TRANSID:2ee36afeb5fe415-e8358
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [25.255.2.225] (unknown[10.55.1.70])
+	by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee46afeb5fe31f-f6eb7;
+	Thu, 19 Nov 2026 16:40:31 +0800 (CST)
+X-RM-TRANSID:2ee46afeb5fe31f-f6eb7
+From: Jiahao Xu <xujiahao@cmss.chinamobile.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Samiullah Khawaja <skhawaja@google.com>,
+	syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com, Jiahao Xu <xujiahao@cmss.chinamobile.com>
+Subject: [PATCH v2 1/2] mm/gup: add file_is_memfd_compatible() helper
+Date: Thu, 19 Nov 2026 16:35:31 +0800
+Message-ID: <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261119-mm_failed_fork-v1-1-b3019f43d197@kernel.org>
-X-Stat-Signature: 1q8uzpmd1enydatrtshtqnz7y6rcdixp
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ps8orimqc74x8j49g4opcid3k95eem3e
+X-Rspamd-Queue-Id: 4DF74180008
+X-Rspamd-Server: rspam12
 X-Rspam-User:
-X-Rspamd-Queue-Id: C499320004
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795076960-49540
-X-HE-Meta: U2FsdGVkX1/Sx5Re9E4+Wf0IJt+JYpLgvvQmqSF3ANsRMUdsql1LH2vLyofXcdi+omKsjw2ZzNcpcgyhTW1P0HUw1gYoTwybkwhkhULeo9hzz3gTJBaNr/eyl5ye2hQ7yGZVg1GGrP4nml/ncBq4yAfeBk1TzMSqVdwOugCTQNLYL6qOZoFp7AZW6xD7bJtDst0HgG0YwdI7Mmay1yyzCM0bky+qaAE1q3BeQi6EQPouIq6Aj4SF0mjfuF/blDsM7RGVl5LaDIabR6n75XGkGHcq8uGCW+N8tWC20JgnID/Agq4XEeN+Y3FmXr9LeGdmvDUhtzHPIwWHHKp55rbi9whiZGN0e5okt9temgPY9bN/cYxROCBopI8fTPs9Nb8zPWR6CjOnbPIXU+uAYORFXkHvn0LllcjpUIa/ibtSmcHDqdjQ0kH12HEbwu9iXPtvM4cD3fKNiqZZcc6YwtlMoHRJv1H56SkwkXqgVRJiwsxPnTzck4fA2r/0lDpICRUW6471MUR/Y2k+HO9r6VaL0hJ8nddd66BmFL3mN9JJRuew/n+HSVJaP02ma8KxWBV76/MVzx8XISAumtnMC/eEeDZUPv5z08XNpSsmcpo2B/gd+2wFH0Z6b4KvhazQqzEPFYh/JxeSyFsLyKZMA0p0bhtXU7J1O3+QF3CIAwHkmBnRutH+zA83pZ+sn65QB1qbEloSWcxHDtcb3FoY27md+xzDzapkvBbLI79WIcEhvO+Tx13Rxx2k1BxDs/IsCIzwKwKPNtAvUru6NIDXYymmyh/omjJzYRjjWyn9/XkzWPNPGlYT7L8ISLbSam0gPzBfEadO4DfE8a00YdZ3ckMDWqPBLgiXMiS8lVzxAxD/b8c5//4ThYz6Qxkkkogvs2hw1IViqnjbtS25i9aQ07t7Z0qG6eIVMhR3qUpXgZi0mkXLw9FSzvEDyeffRiCao+sQ/G+wPiaCZrmK0Js03LU
- bzyFMG6I
- JIMR4y8xEJTGDHs3jEworKsPb0qg2vkalgFCI6YrHIiG6VmRKLM3Y8jPSMtyQmpAj6CHjoZ03ozPoJ91axzrBzHnvPP9w6Ofxfi+7UKss/GMlqTHWTuGpG/F40TSvE65y7Ncsn60gIaOoRK3NCN9fLZUlldaSffMRjwOMvWUTtvv+rDlSoxREN3p+KjY95DurMRgTpfa9pvhbKxIX+vrA0lNW4RBgmF1M3Y+s1x7O8d6KagDbOhNciZ09gQ7QdrH4T7ITSGqhrOKVTYwSCOYOPDV45q+nqPWL8jdVtEo2RFckEgMcSZVqN+bImjbW3Q/NAd1mfUewTY19iwAf/zgMbd6cYsrWwscMgGIG8r/tdfqIuznbsfl+V97mGAhFp5Xera6W3VsEGAepLDW7vm7MLNfCvWtjhIRKNZPSLMovbRZTvctBXyNmUe8chzxq5PE6+p2zsMZxG8OfGF4v2iIx7bVjHRpHA5k/yd4rplioIrBu/b+t+TMoyPpqVeodRl1JSeMNRyWMiUKlGa/trs2Z0VdCxWq0xBl0ji7eGDC8k6FDVE60w3CcuAdZLfYQQYNEOKg1D8IicuydUEVzHF3ztcAUkzzHaOab1wMT6grnNDZpCTUTneO1QWAStLTDCFNaCsD4m0QiIIbkD1F0THUk2WjZtVygR2qwBEducZBHCH/mHcjEtM3gMNkOW39iMD3/6XCIgXw7fXLBGcA=
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795077634-844922
+X-HE-Meta: U2FsdGVkX1/wJklLIW9sIVCxoP3ncYNQGoqpLEjT30/J8C9ClwTqhJSEepy/xX56N4ObK+PnRWlDrY6iFpkGwDr2ZbXRDYANxkYxqYhDFYwcIgLba5GTeJn/Ha0GJNxYk+Dly2ngYH6BTj7kSWG4kEqbKEWb6PFD+Kjmy2I/+BTdM3uSFxrq5ewNB3WnUQy8uf+8jdGzbM6VipCXH8EVz2nJf0Uo2TJ2sotg+uJyR8MvXIoUPoOHubxim3arn5pYw+7JkfwzjnBaIvXfeQ9ssHlb3O8Yva01Pkx/g7OFQq1jL/ZPmcbQyGEN/Q5Ms4MIpfpviOr/x26pqaaYIUCkkayUmI+fV6DxvojAe17YdH56v5aWml7Nt63zwDkI3TUDmd9Ra/88orpg32EwZ6nk2GwFFKBeOSXn2WDKnb2oS73HOi/QcY0UKtBbW4qX6Wju0YTi1h7tLYd8AGXI7p93fkZKK0MPzxMalgUuYusjW9+DhZLvG1UJrqk+UtSvtwxDUJZoM2fAi4o4pliP6oth4QUvHpcnrd175jGakOrR0IKKAllS4e+5+HYzF7E2w/Kbq0IrgN4CODEY7FANnhNSBomlPnT+V4nhKhDf8uHr6IyT2csMVcmn1O9P1T01gNEA5+kaLRNaAYem7Iq5pqy64dQo2fD2GxU2bbxaUrXq4BVSMLUWV5QzlGzpzmKhPH+wi0XH/0FNzZmMvEd2+N3hQ4vhCX2Vp+Qoyim03tE8lBTuqziXeGW93WXKQI4HeE7DVo312kg5dcLxlPHvIVIyg98ygI+qpmRU68LfuKDW/GcjKgreUDQA9V6DI5cCek2/fxDyt7AUZgSfJoI3DPeskWmYRc6lmmSgV2q+ZMdb3rGT+GHV7g0D4c+E8gLohLecVKn6w66FFMOz5MWC/8rkJ/xRI3g1DphU4BJJP3SSi0v8aKjJ7g2ze8n3K7IZm/bgB+my6q+pQn1WMhj+KM5
+ fPeyI9Un
+ 2L9BuYihR5zb6W6+T9UENWtkFS38WwtyrfkimXD2SiYo41GRY2azQjogplU5JiV+QVIvQuqviwBEcyRlatCSRIPtRKW13PvEu7Ja9ouxiVpRvs4Fauy5LrhEiEa0uWNom1p6TfL2A/AWlNQTzlYEc1rt3hk201qmvVBn9U7tHMeDTmPpWATtDxC/XWTD4L8kHlvvAVwXxRP5wUaFwPJsNvkIZSaivv/hLxrZqYTBDMViZU97ZYl7tSOH8vF3MC7h/R9UNCOYUlmbxlRoj7nf7vxGpw+gLbkrazeHcgLmJsEQ7ZI4JXi+qK7kWvV5CyDvp1jDd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,107 +99,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu 19-11-26 09:04:58, David Hildenbrand wrote:
-> From: Chris Mason <mason@kernel.org>
-> 
-> When copy_process() fails after copy_mm(), the error path drops the mm
-> reference but leaves p->mm set. Perf and BPF can still reach the
-> task, and take a reference on the already freed mm through get_task_mm()
-> or bpf_find_vma(), resulting in a use-after-free:
-> 
->     copy_process()               PERF_EVENT_IOC_SET_FILTER
->     ==============               =========================
->     perf_event_init_task(p)
->     copy_mm(p)
->     a later step fails
->     mmput(p->mm)
->       /* frees the mm */
->                                  perf_event_addr_filters_apply()
->                                    get_task_mm(p)
->                                      /* use-after-free */
-> 
-> Similarly, a BPF program on the task_free LSM hook can call bpf_find_vma(p)
-> before the task is freed.
-> 
-> Fix it by clearing p->mm under task_lock() before dropping the reference,
-> just like exit_mm() does.
-> 
-> Further, if copy_process() fails before copy_mm(), p->mm is still the
-> parent's mm pointer copied by dup_task_struct(), without having taken a
-> reference. While nobody can access it concurrently, there is the
-> chance that it might get accessed later when a BPF program is attached
-> to free_task().
-> 
-> With CONFIG_MEMCG the task is freed after an RCU grace period, so the
-> parent might already be gone and p->mm in the child points at something
-> that was already freed. So let's just clear p->mm before freeing the
-> task. No lock is required as there cannot be concurrent access (and we
-> might not even have the lock initialized yet).
-> 
-> This has medium urgency.
-> 
-> Fixes: 375637bc5249 ("perf/core: Introduce address range filtering")
-> Fixes: 7c7e3d31e785 ("bpf: Introduce helper bpf_find_vma")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/sashiko-outbox-180866@kernel.org/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: simplify description and comments ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+memfd_pin_folios() accepts only shmem and file-hugetlb files and enforces
+that inline with shmem_file() and is_file_hugepages().  A caller that has
+to know up front whether a file may be handed to memfd_pin_folios()
+cannot use those predicates: since d3710111839d ("mm/shmem: make
+shmem_file() check the file's inode") shmem_file() is an out-of-line
+function in mm/shmem.c which is not exported, so modules cannot call it,
+and is_file_hugepages() on its own is not the same question.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+Provide the check as an exported helper next to memfd_pin_folios() and
+use it inside memfd_pin_folios() itself, so that a single place decides
+which files may be pinned.
 
-> ---
-> I can take this through my tree (rather soonish) unless someone else
-> wants to pick this up.
-> ---
->  kernel/fork.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 5efceb8d58a78..77d6c8fc38c66 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -2628,8 +2628,14 @@ __latent_entropy struct task_struct *copy_process(
->  bad_fork_cleanup_mm:
->  	sched_cache_fork_cleanup(p);
->  	if (p->mm) {
-> -		mm_clear_owner(p->mm, p);
-> -		mmput(p->mm);
-> +		struct mm_struct *mm = p->mm;
-> +
-> +		/* Perf events and BPF programs can still reach p. */
-> +		task_lock(p);
-> +		p->mm = NULL;
-> +		task_unlock(p);
-> +		mm_clear_owner(mm, p);
-> +		mmput(mm);
->  	}
->  bad_fork_cleanup_signal:
->  	if (!(clone_flags & CLONE_THREAD))
-> @@ -2663,6 +2669,11 @@ __latent_entropy struct task_struct *copy_process(
->  	exit_cred_namespaces(p);
->  	exit_creds(p);
->  bad_fork_free:
-> +	/*
-> +	 * If set, p->mm points at the parent's mm without a reference. Nobody
-> +	 * can access it concurrently anymore, but prevent later access.
-> +	 */
-> +	p->mm = NULL;
->  	WRITE_ONCE(p->__state, TASK_DEAD);
->  	exit_task_stack_account(p);
->  	put_task_stack(p);
-> 
-> ---
-> base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
-> change-id: 20261119-mm_failed_fork-a46141b503d0
-> 
-> Best regards,
-> --  
-> David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Jiahao Xu <xujiahao@cmss.chinamobile.com>
+---
+v2:
+ - Rename memfd_pin_folios_supported() to file_is_memfd_compatible(),
+   suggested by David Hildenbrand: the predicate asks about the file, not
+   about the memfd interface.
+v1: https://lore.kernel.org/all/20261119104417.312237-1-xujiahao@cmss.chinamobile.com/
+---
+ include/linux/mm.h |  1 +
+ mm/gup.c           | 23 ++++++++++++++++++++++-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 040cff643..dffcc0b5a 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3600,6 +3600,7 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
+ 		      struct folio **folios, unsigned int max_folios,
+ 		      pgoff_t *offset);
++bool file_is_memfd_compatible(struct file *file);
+ int folio_add_pins(struct folio *folio, unsigned int pins);
+ 
+ int get_user_pages_fast(unsigned long start, int nr_pages,
+diff --git a/mm/gup.c b/mm/gup.c
+index 7605da0e0..da8a2c29b 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -3449,6 +3449,27 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+ }
+ EXPORT_SYMBOL(pin_user_pages_unlocked);
+ 
++/**
++ * file_is_memfd_compatible() - check if a file may be used with
++ *				memfd_pin_folios()
++ * @file: the file to check
++ *
++ * memfd_pin_folios() only accepts files backed by shmem or by hugetlb.
++ * This is wider than "is a memfd": every shmem file matches, not only the
++ * unlinked ones memfd_create() produces, and file-hugetlb files are not
++ * memfds at all.
++ *
++ * Callers that have to validate a file before pinning it, or before taking
++ * a reference to it, can use this helper instead of duplicating the check.
++ *
++ * Return: true if @file may be passed to memfd_pin_folios().
++ */
++bool file_is_memfd_compatible(struct file *file)
++{
++	return shmem_file(file) || is_file_hugepages(file);
++}
++EXPORT_SYMBOL_GPL(file_is_memfd_compatible);
++
+ /**
+  * memfd_pin_folios() - pin folios associated with a memfd
+  * @memfd:      the memfd whose folios are to be pinned
+@@ -3493,7 +3514,7 @@ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
+ 	if (!memfd)
+ 		return -EINVAL;
+ 
+-	if (!shmem_file(memfd) && !is_file_hugepages(memfd))
++	if (!file_is_memfd_compatible(memfd))
+ 		return -EINVAL;
+ 
+ 	if (end >= i_size_read(file_inode(memfd)))
 -- 
-Michal Hocko
-SUSE Labs
+2.43.0
+
+
 
