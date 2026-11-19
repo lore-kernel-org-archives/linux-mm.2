@@ -1,182 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271AD606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58263606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 22:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=dtutlTMB
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G6Ihx2Fp
 Received: by kanga.kvack.org (Postfix)
-	id 0E0596B06D1; Thu, 19 Nov 2026 17:10:52 -0500 (EST)
+	id 7F5B76B06E8; Thu, 19 Nov 2026 17:19:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0960E6B06D4; Thu, 19 Nov 2026 17:10:52 -0500 (EST)
+	id 7CCF06B06FD; Thu, 19 Nov 2026 17:19:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E73B56B06D5; Thu, 19 Nov 2026 17:10:51 -0500 (EST)
+	id 6BBED6B06FE; Thu, 19 Nov 2026 17:19:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC3D26B06D1
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:10:51 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8277140C20
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:10:50 +0000 (UTC)
-X-FDA: 85453264260.29.7A1F9F2
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010022.outbound.protection.outlook.com [52.101.56.22])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A927DC0009
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:10:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=dtutlTMB;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795126245;
-	b=Q0bUTkfkxJFZWQQifk6o5Bnc3NSBoDYeXi9xXIUoAyKM+FfoVJvIhog+EQ2MMZcq1nS0KW
-	QmjhE8FtbTYP6r0NFWcWDLfCQfyof+FMaZGyKj+5cyTr890yy4fhXD7y3R4VtR3ri/WTAS
-	yelAuAFs2I+LChOl4sLc/blogy3kYw4=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795126245;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DC046B06E8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:19:51 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB371C0C33
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:19:50 +0000 (UTC)
+X-FDA: 85453286940.30.E0A7225
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E48D5180007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:19:48 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G6Ihx2Fp;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795126789;
+	b=XLwmz1Jel3H22qeTkJGGlDsN5FNnjEN8kM2gftXPXQ/LIzVei5J2hOcEBaDaszFygRW+Ey
+	+GMgtht0kBCNyIwYvChVv6t8Ax6iGRbh+BFa6V5PrkfJmjWbqptwmVPOeQOeglPaXNJbhX
+	NH7Fz0RSYEK2RrKu3TDuNSTD3wOhOeU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795126789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q16wtGOavbPIAGC4+aWBnZ2UkK/yRQBQbfQX15aLa8c=;
-	b=iUDZi2Xiv1vW0YlHFTiNe2dlMYn92xzF0Q3YmDThPgzGqRKSjFByF22hznURHC63g3Icw6
-	P/e2JtdW4CyoxPChKl1pYJNLC0ABG994qqvTsZHJhUPM3xcxWyaIceNpi9tpOuvcLPOwDj
-	dCBNpVtcXQeiA9pVhV+gfst5dBj+Fdg=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=dtutlTMB;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jLnH52jX3nro6rFJAa0KjS5VZCjmt1Bf+bhj/q9Y5OY8tA4A5Uv27F4ivTfu72X8zzZMBPjD7vChu6Y+zmwU7+Lr5U3KgfiggPgD9fbCfztOwUssLNuxk4wUu4HhhAyunPbF+jidX+2U639+Hfg4X/KYqyLTUjlJgydYuXouunVa3/U85RA1QF7rEf9/1J5UwNDSfQmFaHFh06YtyRgf3F5tutnacSkMnXXotrxsrsNTOMmCqnrhXIo9twFTFZYflK1gcHbL4pJ6P+6icW9y/5/WddP/LH2zvS0oakYlEEERxM1DzbEklmtREuoGdNsIaxKTVuPduqUuy5b4D8vojw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q16wtGOavbPIAGC4+aWBnZ2UkK/yRQBQbfQX15aLa8c=;
- b=cSJFbR/aZv2gbL7qiBesUFMV4Isk9GrcEsoO6W6LM787GiKYgNFb0fXemsq4Xpaq+NJunZFFvV6kNbFc4ynJ6LPTm8oA4Lqy0VGtCHrBVk5RIMh2Wu1tWI82IzYAnMcdQXhw5NjkRPewtc7X7nlh/kjve3ZhVoHHqIlUcLkoxp2f8RJglq7LfytW/VMmiEwZZquS5LG+NmmhgttlFCXivQzV671tHxSzxDsifpZCAO51VB3zxsNKL5eQXGePZmugI/8NmJenE856avNEeuHF2cksTGCZ6B7eYP32cD+r2FJdL38dKO+wycEUBDJMq2kwN61tYoID+Yz5a476xTThog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q16wtGOavbPIAGC4+aWBnZ2UkK/yRQBQbfQX15aLa8c=;
- b=dtutlTMB4ZJ8aD135i3v7Vwv4pnBDNNTlLIAi2ayYhd8HbmvTzFRQajASChiP2OeFh/FrQ2/YbsUy4wbH0bcziuPTrI4V4bBN3NWv8hxCoumTlup1+T++UmD1Vc3jz+Nn7BncPHGkDkvne3ps3Qrscd0wQe+9NfFuejXjpe/T8dJ58QLV6uHS9tZ1cDpnOCObnzutoFhxPZwRtWfrTJW/96d6JEuoxao9WM4NLX+NaxP5hc/jHCSYkIUTL+X9gtAwa9fvfRkpi2r0TKYJ5BasR4DIMNIlU5iNYFz8S2YaX3GFQ2zb660Sf9KUMpdPLy6lbWtwlriw+zKILy5YL+dpQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CH3PR12MB8509.namprd12.prod.outlook.com (2603:10b6:610:157::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
- 2026 22:10:35 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.009; Thu, 19 Nov 2026
- 22:10:35 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- =?utf-8?q?Cenk_Y=C4=B1lmaz?= <cenk@deepfinresearch.com>,
- Zhang Peng <zippermonkey@icloud.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Mel Gorman <mgorman@suse.de>, Sasha Levin <sasha.levin@oracle.com>,
- Rik van Riel <riel@redhat.com>, Ingo Molnar <mingo@kernel.org>,
- Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrea Arcangeli <aarcange@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 3/4] RFC: mm/rmap: don't defer TLB flushes when unmapping
- lazyfree folios
-Date: Thu, 19 Nov 2026 17:10:32 -0500
-X-Mailer: MailMate (3.0r7038)
-Message-ID: <884244A6-9EBE-4579-A6D9-D510FEBD1D34@nvidia.com>
-In-Reply-To: <20261118-file_folio_flush-v1-3-e9e739ed14e0@kernel.org>
-References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
- <20261118-file_folio_flush-v1-3-e9e739ed14e0@kernel.org>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: IA1P220CA0007.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:461::17) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=AiPQ4wl6tF2e90uhD0HmkSpXHz6ccxWLOtHHkF4KxNg=;
+	b=3LrzYkpvkcKrJJmdXcvLNkTnUvRWyf25BVZHfIW65vQfAT89GmZj2l4qe/SuHTP3UU2Hqb
+	0nbbK71J+AISeFgNrI8OIVNcZw2YqKki6UfDbVby/735oCkIZRNp3HV6gxd6RiZlHFs8NJ
+	Y8wob0J4XEX7G71HXGk+F4CC5YZTAi0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G6Ihx2Fp;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B5717602CA;
+	Thu, 19 Nov 2026 22:19:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74DA1F000C6;
+	Thu, 19 Nov 2026 22:19:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795126787;
+	bh=AiPQ4wl6tF2e90uhD0HmkSpXHz6ccxWLOtHHkF4KxNg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=G6Ihx2Fpp/Dy57CCYAyiaqVtXntjB8VAYpH4cw8ydBW5EOTje8iTEujXpMSO/JcqO
+	 oEg06AcBjBNeRcUg1pBPJhTGDsJsWaR0MnDSzOoJtORkODc15tx1kfIg9Fd1ocaE1v
+	 A7e/EIS3osWR/oylCwh8Lwf1iwaQDv7lNmhN8XD6ZFW4bqsdi+YbX4Gagm7UUpRvsT
+	 wWN16VGpxmQw2+0jLej738gnehufQqV/tYQ7JEz5nTmvZ5RBn2oE9A7bYQQjOYtuHs
+	 RcLa92YrubfjxIB6banH0SIBL1dj8Ms/SiFK8Asi+PsLtyiI51mmztQnQwwdpqpKPs
+	 L37pGn5IuqoKQ==
+Message-ID: <421ee488-e2a1-4deb-9ffb-7fc712c811de@kernel.org>
+Date: Thu, 19 Nov 2026 23:19:40 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH3PR12MB8509:EE_
-X-MS-Office365-Filtering-Correlation-Id: 037af25c-feb3-474c-017d-08df4689ef97
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|7416014|1800799024|376014|18002099003|22082099003|6133799003|56012099006|4143699003|261102123227099003|261026121527099003|261026140227099003|261022075727099003|261022105027099003|261021121427099003|261021123027099003|261028144727099003|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	G1FdHXWqlLyi4FYvG60g3rpTXWX4JJ4VHllz4XGGN2u9RAlRt9btNsuTSmun+4ZUHX9YcfGlDwCucHuG51Gj9fQvLSlkybcBhJvoI1AJA4lyAa3WzwdkxsbjMyxGw/pLEcGcfWtsGvFU8peinhslh+xd+EIY7q+56/5R/VJtPsZi/jdEbnOyG2OfBg/QQazDlWMnbhCeDVz8nLoQKOU9HfyjmzcuierXJ29uTVZrrGwJKoSie2mBjYzRbbNhC9IuhKm6UGaRyi5+TEegGA/e+jR6oS3dINgM6mA/yyXJ3dL/3f1qfNRqs89QhIPaLEalQ+3L+ogqq1fplGlva95otKQ/WBOL3AWi/R7gUSVP48UHsrqTfsKQGCGOVdOWZXoqjPBIDDIJJ+dgWKitVBYgEr9PHDV1qwSeRZRPJPuE+VddYaUPbswcJNETqzJ9wuQxTxFy+I71eK1ZO5hDA506rX1g2ArDxk3gFwuO4wqSGqm/CroqTEDayBMNihr9/U7fvm1MjpaISoG5zXBRR0/ho8pHxXYxn+rHcX6t5wP95EmzytkblIvqprHTqsDQbcKd7Q+Nn0zrwqqsd0vn8CTK4l4b3YByf2yvhjZwVQu66K6JGzMbACViQYfxLpSl3CqzO4S3p/j0/98XrauPFQHcBS9tVpkODAcWt/M6CDj7mVU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(1800799024)(376014)(18002099003)(22082099003)(6133799003)(56012099006)(4143699003)(261102123227099003)(261026121527099003)(261026140227099003)(261022075727099003)(261022105027099003)(261021121427099003)(261021123027099003)(261028144727099003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7+idSxc/61vft/GOQJ4C78NFrErV82La3JQoHRf+1zSatpM4ioBJBuW3Cxsi?=
- =?us-ascii?Q?eA6sSZ8ubNi1TmUaRT8ovre1G9ixqrmrv6mDwA4e0ZOHvBNbSqNQ7BIMOzyt?=
- =?us-ascii?Q?avOhrXSpBYnXCm0RNOfKzyxTOB6G06k4QvFDFdJSBnJnNiCTscp9dzCQfq1T?=
- =?us-ascii?Q?pQu+lujx6ksWYi6tFcbUdokSefQLzh9qV0j2xoK+zOU3QTHT8Bc6ha8cUxmj?=
- =?us-ascii?Q?4257BcY1hgfidKZKUYcsBQew4xvgtJMEyCeqBU+Y8fhid33QhSjY/J7z5x2g?=
- =?us-ascii?Q?5ADQBIA79DJgro9tLDE9H1nrWcynMAtCjYO8OgPWlIhs19AcLFEdFOjgjLsz?=
- =?us-ascii?Q?xsCamZf3V2vi3dSxVIPGjBBUGl4g+3zpCdGgwUvYfDPPrwaE8nouDT3iqe2q?=
- =?us-ascii?Q?bAlBwNgqdpEHJt3V8p+NArNz0bfjIk0Dp5kN8dQbkzHAtWiUPFC88XiGAC+U?=
- =?us-ascii?Q?wmAbe+KFJXw2ZedquFhwHlrfy0FCxDHEZZKzj1T1t0w+KYhSeUEeuBtUh+Co?=
- =?us-ascii?Q?3wfLijb/68lzCWpbQ1qkUgQ+xFwD1WTz52kBGHkmeHb77afa4iv7cKPUR0jk?=
- =?us-ascii?Q?+gNcIQ/6hHIarq69VKYe/NFLUYkDQpescLCK+s4C2o12LH0MmZtyKj8ql3cJ?=
- =?us-ascii?Q?kfm7pZ7IlLLxUHRU4aZOirA7iIG46ZW+rN9UCn71UOebCT15NtjyMFpzJS2V?=
- =?us-ascii?Q?ccJs6m2cVzvBuX9s1Pwc4SR4h+loqHq5tw1KwFPsJ7/pR61EfJTXawF+fWsZ?=
- =?us-ascii?Q?XQKnpXjRR8DomrVIuMHF8Waw3swkjNGOmuPacMgdTnv1ATzCnkH915HUy077?=
- =?us-ascii?Q?oNNNkXFJvy7vEjXU8TpuLPf+GDNd5Qvto9OnctlRfQbsLX7ET6yL/NMKTj5F?=
- =?us-ascii?Q?SfvDDy/ZItpY6MEjOVReJvjpTY1qZ/wVnGYDe+ogtQX0EjMyZoL+41tx3Hor?=
- =?us-ascii?Q?sMVsXiaQATGWDj37j6m68ZUaYUFgsq6G5JhGJSGfP8tExeuEYsXhXgrfHe08?=
- =?us-ascii?Q?xQhxhHwCSasb+nxFesYs4dT3siyG0QFr/uCjSbjQXrkdmmjb710nUXI9C0Wc?=
- =?us-ascii?Q?/9U1WS9xcaChoSX9EEjF+uXc0K2zuAEWsxKm/FfbdbejcRnflimrsjSXrnGO?=
- =?us-ascii?Q?2fG3wxRF7rCbrbBjAcLmF7fEROFQ7/q1Ueym+izGsEXS0Q67tlJttGW2HQSv?=
- =?us-ascii?Q?k3cdiypV/inkZIPGh56wWkzp87CUdjaksR+e5ayP7RiEfugoPPHLLEnFUObM?=
- =?us-ascii?Q?zPy5S4Q72AKXCL7VWNa2+zHLos/A4j7Rio56oIA0UXu1Q1fgELjiLH+5VFDd?=
- =?us-ascii?Q?NoWfc/tem/049Q6Eed99J8uFiWicEMWtgdrRP1u7GvO2mEP3evX6Y9UjyEaD?=
- =?us-ascii?Q?u3iVlB5wFdIYk/4wyI0LGZNkY3bo1SmAZGyqFWEHbyIWQRlSJSNbSMGEdTu8?=
- =?us-ascii?Q?y6R1DsGksTnrhabaYml0whG9Nm2OlQdLCzTfe0PSGSRAVCTAgPEPAQOLnTDH?=
- =?us-ascii?Q?Nm+4ao9Fj5zEt5oWlMyR7dwp+1QZ/ZF2WpJCgsjHMcIEiIZoswnzkqgNceLb?=
- =?us-ascii?Q?HNurI+UbimhLx7dNtXxH/B1BBVvkUzXuYGyyzhtW2EPXRzD7Eek0G81Zfsxi?=
- =?us-ascii?Q?ianyXWTLsvTZH4okegro4HdlzgSHMXPTsJ8IYJEwr3Oov9hDjjbuz6ZctbSx?=
- =?us-ascii?Q?+7XghciWa7pMA2/A1/XhVmIwTtivJXSqMCUDVkQAYlNnaIBZoRlGZz8s9o0K?=
- =?us-ascii?Q?/7PDT0yv4Q=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 037af25c-feb3-474c-017d-08df4689ef97
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 22:10:35.5189
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zr6TmxHwDukSJmwZycik7NLvbOEWYELPChdXadAZcnHyTCp3Q+29xkFRURrWwosH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8509
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A927DC0009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hmm: reject shadow-stack mappings
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "Hansen, Dave" <dave.hansen@intel.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+Cc: "ljs@kernel.org" <ljs@kernel.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "kernel-team@meta.com" <kernel-team@meta.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "rppt@kernel.org" <rppt@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+ "kas@kernel.org" <kas@kernel.org>, "leon@kernel.org" <leon@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "gourry@gourry.net" <gourry@gourry.net>
+References: <20261113195536.2660763-1-gourry@gourry.net>
+ <20261113200303.GA395967@nvidia.com>
+ <179460249376.482102.14669935557901467762.b4-reply@b4>
+ <20261114002027.GE3706007@nvidia.com>
+ <20261113181025.6e8b9475b29c13d29f59e02e@linux-foundation.org>
+ <20261115000005.GG3706007@nvidia.com>
+ <20261114170127.3d29199864eb352d9045eaba@linux-foundation.org>
+ <55034934-8aab-4e8a-a74a-b30c977670ed@intel.com>
+ <0c6fcb3daeab0ab3df0593cf389124e38e1d7f3f.camel@intel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <0c6fcb3daeab0ab3df0593cf389124e38e1d7f3f.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E48D5180007
+X-Stat-Signature: xrupe1rn8ms7wft3gxhxys4wdcy1joub
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: smnpti3zeyn4cwyxmxirq37jnftakwun
-X-HE-Tag: 1795126245-651633
-X-HE-Meta: U2FsdGVkX18sFPiB+QiRnGrIMUBvsTvs1G8wTxLJKm8OWpM2i3kOJmKnnY10tsTFEbJfXKwpcaXEotY3kuFwBCbYqhpEMPhPIwKMOUayc70jKiFcYTd160vyJWdB584ZsHUA0/xBvPgbi8p/DgdDUmgl4jhqJM/RuQFRYO4Tb06Y4AVoh8kiAZbqAS5EO2kCJF/kmCrmJ9txGyMFSNyC3FjKc9VN4vnw29bdAN99eKd063Fl+7JUJ9F26wY7vtITIwIuSI4iYxC6JQ3x8Kr7OT0038QRqJy43VQkymD+sMLPaf8/EAc8X3XX4ziZIVX/9grmFtW6T3z7g5ACOd+AETcslLddFUwuWac7J08bfRxE5aMu1pjoXypvJsUraAAqHGMJ8hKb7uwsM7ZuHbzo5+ffROvUDHmG9mLMat4w1vH1BL0jcUpxitt3+AmwPi35lo92HGLLkTcmuf0ZQLnujMhY9CXsWLSFwIVGH5pUYVNLBbDVpZ4Zir9+LovcOGWl0XzhHL3JA1M6L+xr8LQogFZsSviFa4Ow8WQiRsr8QzJNcM4YsKed1Uf+owWBNVZ0igBwLwBOVUcjSTZuiFfKVTJwtCRhEb6CANTeAq/GXjI2zcUtZc2fN2CExq/SCbNEFkYvZHoblklR+z3SwEAk050v77EIrHugNnk2RfzbheYBzD+R9VQEufmKLjouoGl6Egaea7BYbfE4s1vTDSkt2LtG3x+jY9tD7QDT0bHDYpxh8VzPJMOdpyaDB52elEpEgOyAwrvj/hMCFfsE944LG7vGHTSTzi+v0tXbzABT6urHCJu2p2/hwFzV4n+oVFO0TRRU6GASOYCM+KwLKG4ajQ4bkkeV9eSKydkM22aBl0q0s/cR6foK0ydA3oOsfKCtTSop3x3zrx9bFfZz+YPWtjAV746IeiqgxMagGBTZnjdRfG9rebeBivwHrzWyug8JhUt4DvnVBosUtY5B3JY
- SHX9bcSR
- /nKELKhefEGULv5Zrt5FN/pq1J/H5dvnG6Ng85ZZYvEYz7YmY4YhfVjCshuss2WJIHcHe5YvUQ9mPi2P98dPa4Xp6UgXm1vOXyyKhoPUzx0vWPnY9u9WM2zh9Mbw8RBKFn2d1oSH6LypRkZ+k74DdSfQ0+rGdA8h2pWdE0lzjftNP59JtK/tDL7lJiRPv/ZD8tgYgZ7ou5umRtM7cDpZyAnpAskdiWJbT5ThzUc5CUvXxcPitSSIYsr3f488HledpcLI9Ot0PqVPhBuk1raCubXymJM7OzYiUTkOdWXmYru2TIXWyK0pap02ZS6NNJYH1N9Q2aGEPW1xB/TRNQ1i0n39cIrZlrrGy4yfuTyhGCl4Ld+5Fxpho5+POs0j+K3v2tkhVQ/xAhdsPUXIHkFl/MkeIBQZkK037Swao169KbG6/jT7c2POFd88rIdURjoSMH9n4oEz/0l3qKW9Pdv0oK+v36wL0yLCgRC097zOw+qGwiy3oONAEktp8RLKqRuksjDmgEnawN0pmCHbHuSHeRPeS3NvSfrYlHt3B/Y6c8oPR062S47juoQlEky21TPibGVDummnf5O3xjVYyDR7tZ3j56iHqIcwMRIg2fFgvj87SqQ31PwheGZ+KkvvJ/ew87SRoHtXFFodG2PUsBQY1rE3HF1U8OatecLGqlYCafn5RS7vfGD76SCHNIvuClwHFKxrNyojyuAa+bKZn0NwZ/JLIekbMQWu4kYr6snB44tpeVTE=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1795126788-563446
+X-HE-Meta: U2FsdGVkX1+8HZ28WBJ16mHlkwRrvxJoW544NeRDk9309WLWYoHoUFEmYKyuqdDqd7b+M5XONGyIUUujOdzcD9uACA9VZfBlR0TGXTzsTy0xkSIwsJTVAKuXqrrHGVO5nAAaliU6IvBcfXIoj4kHSSo+45FhIhEMdNS9f+Mjmvf1OpOWsUsj+rLe+8kS9kb0MmUP+JgrX6r0qhqYZx5K/qH5R8D5v2QX/mJc+iT2XUyVuiLF0iFUUgEstDXIPw/YH2xKScycpYogwoWsnH0kmspkyBKoXQnx76U1izohjSbqq2auRmtggSoVwZ7DRbm7zcu+BEBgGwOf6v1BNgXP9QSkcMLKrrzXnGIR6fJ/he+tone4IJLv9JysbX05XVOFGTIrk+j8Rc5ntFjY5uRg27aKRrzGXtAsP6W28TcOuyjfgM8xZ9JTzoyRynY0gV1t9sD/TylzrryWomvz0tY4J/MRnIH1liQvKyGdHeuulIm0OL3ogxgW9svT8b2CuRiEbcqbBtoiB+Hca1dKpS5vcOZ6b4TNFGioW6QWhoLamVcljP+hdyHUwk5uIYA81SddZr6FoXYjLUbSzmph+oTU+1nNbdIj5dwV5wEyT14TzKcg+zEFFsgdeY63sIJxs8H7v2fLqS0lRSoMcou53pvkZN8J1wisGIj1XodvhgOJzjcXISlr0BFloBVu5yHmQF3/91kyfMy2N/niii+gRw4vST4ObfgMv0JCxC00JDCfI5wQpLJxLZPpcVuZGd8pGbOft55qRVaPsKL7kkblyaWZsg6ODzXOCorDZToNcgeAws1i9O5FuNXNErySQIPqAKAnDuKcB8FiV+zGZkd5K/z7qIBLyfFqcESnZsHc2jGmiBFc+jox4UXQ8Z2xDPkuY+j4jDEdZxMfFimBBOqpDwqIa9pp9NuZIOpuDJeazwhJSEcy5qGV8tXrCU3cxXQOeErbSVz0J+YyiRfN8IiKkKR
+ TBYapB0y
+ jq+ukjDoNpV3QolmYhSvz5A4URNJN7zlLKt0eLJU0sv0Vgi7e3y/Ft5ZxcK7EhYL6eyjkT90nqhBTGdJmpyY23h01vnypHjn5d7S53dDSjIFIXbHtvaqiulV1KLBgT6vW7pw3rRpSENHGyUBuweGiHFWDG0SMOBkxcwPnLnKMGvhxdLNoM2QXfENmnjMEgubvhYp5xcc6YL0s781b4voeNSP5fj12UCRv/Kpcpr8mB7IEes8oaxEFz9uX0VlcxtKBKf8fnVxRr5VeNSA1EelM5ACYhdQZglyyqWKJJIfPmF1o8S7LDHepHOKeN/UFQr1IhNDYl6dAp5pCogx/7KVzE6IIEgQaKor1n7rR3M1AJfsAZ50gU1hmF3x3J7dR9t3HERDQU1nMgGY8Ho3LNF2E7xYe4srrNwhRw1bruFfYDi7WXhrwsgiw9+itN1dETiUmerNKO95iA5QZOfgcvB7buGi+ZGrhhD6b+wZh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,62 +157,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 18 Nov 2026, at 4:20, David Hildenbrand (Arm) wrote:
+On 11/19/26 21:40, Edgecombe, Rick P wrote:
+> On Thu, 2026-11-19 at 12:05 -0800, Dave Hansen wrote:
+>> On 11/14/26 17:01, Andrew Morton wrote:
+>>> On x86, a shadow-stack PTE has its ordinary write bit clear.  The CPU
+>>> rejects ordinary stores, but pte_write() reports it writable because
+>>> shadow-stack instructions can write it.  HMM consequently sets
+>>> HMM_PFN_WRITE.  Nouveau uses that flag for GPU write permission, and
+>>> RDMA on-demand paging can use it to grant device write permission to a
+>>> registered memory region.  A device, or an RDMA peer with write access
+>>> to that region, can then overwrite the process's shadow stack,
+>>> potentially corrupting return addresses or bypassing that protection.
+>>>
+>>> Reject shadow-stack VMAs in hmm_vma_walk_test(), including read access.
+>>> A requested fault returns -EFAULT; a snapshot records HMM_PFN_ERROR.
+>>
+>> This is a fun one.
+>>
+>> I almost wonder if we want to go one step further and disallow GUPs with
+>> FOLL_WRITE on these PTEs. There should be precious few reasons for
+>> devices to be writing to shadow stack pages.
+>>
+>> Isn't this a bigger issue than HMM? Should the fix be in HMM?
+> 
+> We do reject GUPs to shadow stack PTEs with FOLL_WRITE, unless FOLL_FORCE is
+> passed. The tricky thing as mentioned my others in this thread is that shadow
+> stack memory *is* writable by userspace. But also the kernel should not treat it
+> as such
+> 
+> A false negative for pte_write() is dangerous when the kernel needs to decide
+> when to revoke access. (i.e. fork) I think a mistake there is somewhat worse
+> then missing an exotic way to cajole the kernel into writing to a user's shadow
+> stack like this. So I think pte_write() being true for shadow stacks is the
+> correct implementation.
+> 
+> But, maybe the problem is that pte_write() is doing the job of two separate
+> concepts. What if there was a pte_userspace_could_write() and a
+> pte_kernel_should_not_write()? Names would need some work...
 
-> When reclaim discards a lazyfree folio, it clears the PTE but delays the
-> TLB flush. Until flushed, mapping a new folio into the now-none PTE
-> can leave some CPUs still reading from the old folio while others
-> already write to the new folio.
->
-> This is hard to trigger in practice and would mostly look like a weird
-> use-after-free bug in an allocator that uses MADV_FREE, but it can be
-> reproduced reliably with three threads pinned to different CPUs:
->
-> (1) Thread A populates the pages, MADV_FREE's them and then
->     MADV_PAGEOUT's them.
-> (2) Thread B reads all pages to keep TLB entries cached and verifies the
->     content of pages published by thread C.
-> (3) Thread C waits until mincore() indicates that a page is no longer
->     present, writes a new value to it, and publishes it to thread B.
->
-> Thread B can then read the old value after the new folio was mapped and
-> the content updated.
->
-> One way to handle it would be adding conditional flushes to
-> do_anonymous_page(), migrate_vma_insert_page(), UFFDIO_COPY and
-> UFFDIO_MOVE ... essentially anywhere we install new anonymous folios,
-> which would mean that these places flush quite frequently on concurrent
-> reclaim.
->
-> To perform targeted flushes, we'd have to keep some PTE markers behind,
-> which is also rather nasty and not an easy fix.
+Gah, nak,
 
-Maybe that is the long term solution. We basically overloads p*d_none()
-with multiple meanings.
+pte_write() just says "something might be able to write to it".
 
->
-> So let's not defer the TLB flush for lazyfree folios, which includes
-> folios in VM_DROPPABLE mappings.
->
-> To avoid flushing if the folio was redirtied or has additional
-> references, perform all non-deferred TLB flushes only once we know that
-> we won't restore the PTEs, right before removing the rmap.
->
-> The downside is that we no longer batch TLB flushes when discarding
-> lazyfree folios, which harms performance, but is the right thing to do
-> for now.
->
-> Fixes: 854e9ed09ded ("mm: support madvise(MADV_FREE)")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  mm/rmap.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
->
-Anyway,
+If that's actually true depends on other factors. Like the access+dirty on HW
+that manages that in software.
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+I repeat: *no code* in Linux besides core-mm should ever interpret "pte_write()"
+as "cool, I can write to it". The exception is GUP and unfortunately HMM.
 
-Best Regards,
-Yan, Zi
+-- 
+Cheers,
+
+David
 
