@@ -1,144 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC25D606A32C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 06:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Gjr0Q0KB
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F77606A332
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 06:59:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD7EB6B05B2; Thu, 19 Nov 2026 01:59:19 -0500 (EST)
+	id 1B1546B05B3; Thu, 19 Nov 2026 01:59:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A619B6B05B3; Thu, 19 Nov 2026 01:59:19 -0500 (EST)
+	id 161426B05B5; Thu, 19 Nov 2026 01:59:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DBC06B05B5; Thu, 19 Nov 2026 01:59:19 -0500 (EST)
+	id 04FF76B05B6; Thu, 19 Nov 2026 01:59:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CE8F6B05B2
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 01:59:19 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B9FBF1C43DD
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:59:18 +0000 (UTC)
-X-FDA: 85450967196.21.8FC0D0E
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DAEAA80004
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:59:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Gjr0Q0KB;
-	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D144D6B05B3
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 01:59:32 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69B3840935
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:59:32 +0000 (UTC)
+X-FDA: 85450967784.04.5B8C090
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A801B80008
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:59:30 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3UZ7-agkbAOYaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.70 as permitted sender) smtp.mailfrom=3UZ7-agkbAOYaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795071570;
+	b=O0rqnrkk67o0lBjaEnY7ngMixxosN+bJhrgy+n8KWAQnJDqggC25mcKCyZ4XZDMWdUZNI/
+	mFxRBloznwvSnf1IE4OOvMxyv6TQp0amdyD1aSfJQ8c9gZtqUnEasRYLb/M33YxuU7ea13
+	9MS7Z3xjkwgSTgNHxgx3uJHPkxhhevw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795071556;
+	s=arc-20220608; t=1795071570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=EpkpAe8MEN5BuQD0iXz34+1elSDBS0pp25xEYHL3/ks=;
-	b=Axj1+HclODvGxn/SJU50l45W/M/8haVNuQViaGZScdik2HlCyWVmp/sA6Y9WnGBjdFwA0G
-	/Dc/f4ck4PzG5HGa6yFY33HwIQw505Z2qES5ff6LLtz+tv1Gj8vZYh1ySzNqDr5CK+BHOZ
-	I09iFYqK1sdgldhJ0ky6aN7xMFOTZW0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=JtxaAGlAPvYqJWwVU+/bBzfLRLBaPLHwCoCpjeQC2h8=;
+	b=evcnp1fxfsz0QIihlPF/K5KWN6oonCUx0XX1R8S8TOriuPYrAsOk7ivqT56IxI9KmHV3Fn
+	2gWdgdpZ+VnYLoaxhMar+MbZIVEhOUTSGx1wJ2UqUA2FJmhBxR2fgCJ3Lroo1pqyxWQ+zP
+	fBugmBZ4psgbWpnEVCfBh5hPS7IMtdE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Gjr0Q0KB;
-	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795071556;
-	b=cckTP3O8IR18yAdPay9Q2ox0vXtWeP5ssTkbI4E9q77ohxFyAXwLSlGOcprbaTdeuZ/yVr
-	e3OkJjK4MExx2bL1tBuwZTLFzhMH5exZ+SvaPHUC3mmyG0rqEWZ/M5xcTBYBS5n2z/ggkP
-	jVUwTU/DoOBGwq9kHKCfvLIs5y2tkX4=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3b3e85baf7cso756933a91.0
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:59:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1795071554; x=1795676354; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EpkpAe8MEN5BuQD0iXz34+1elSDBS0pp25xEYHL3/ks=;
-        b=Gjr0Q0KB9LRAzKYx1QNqFK6ren8EHAznsdFX8EZXhKE3aSm7UEpSoWGiCdpepcWHI2
-         t8+4ltTkKN3vbeSX2KZfx9a3ui959J9d5+TPkhA6BJVWokKsQBWOyQQFb42VN+oeDURE
-         v0mXvIrzq9zLTArh2XaAaYjJmTdG8e9yEvfcxj/GvX2CixrNOTNo3T5eGkpjypxcFeVu
-         oVCOk3o58dPfsbvtJWFRQIXtHNAqQ9zk7vC64SE5K/8vw91hetN629F0Md2Qx8c5UUK0
-         L06BWHmat+3qAICaJbxD2NZ9oZwzw0JmzPtS33w6Ax5Exr6fj7fv3lmwzBY5aQrT87aP
-         +8LA==
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3UZ7-agkbAOYaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.70 as permitted sender) smtp.mailfrom=3UZ7-agkbAOYaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=appspotmail.com (policy=none)
+Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-448d51840c4so1295299fac.1
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:59:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795071554; x=1795676354;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EpkpAe8MEN5BuQD0iXz34+1elSDBS0pp25xEYHL3/ks=;
-        b=oxcAJ+WaXkqRqyJ6wepnJ9zqghciCKLaW2tCwCzsMG+MjOdsLPf/Rboqc9RgBW6oL1
-         n+5ih71ZD55uPCPRqa/6RkA7R7WMBlEYgiZnstGUz4d0yKhhEcg/rTQN25sSVsUtRuRv
-         7ZjsUgkzXTWye2SJQCv8zafheCmJ6IwXQmfkbq/+FFA8RgX8KYb+82SDRTV+miDsWSjD
-         OqpxILgypgJGsnfefWOIuid2pghPqdd95SAXdOi1z0CFYVANEtcXWZxQJehMJgKWUG/U
-         XE4iFol9ljm/p5XwsnhexMz6bj9NxhmWQozWWSZEZl1lL4pV3eGPAYiojEVVFjxGDFgg
-         cfeg==
-X-Forwarded-Encrypted: i=1; AL+hErEJ+T3jCcCBKtWPtwp68iDamAZ/09VzNwH3/P4VffZ1O4z+PatTadSmm2s9d4EFgDVzyBL7tXfVQA==@kvack.org
-X-Gm-Message-State: APuU4Z+ROi8e0iqwvjU+pt9taFoep5zHKWI6juJsiz0NKW6rDi0fn/yY
-	vDDhdrSQAoUK3CW8j8uPOgg16KPArklZBPpqjwCs0lQp1Nrz9EbF6lG/wUgdk1T4jkY=
-X-Gm-Gg: AZFdTZfDBQcNg1/Jwd1gJVI5Jp1wXzzRQBmFKkjE16JrylkYjdeJMMvHqY5Q11OZgxp
-	g9XAI53tLjJAmygPxYlr+2Dn5va5YNS86in+vJhEFDWvql03t6WJJ4eIm1gxc32QlIN/WeoUq0t
-	1w65Wd9uQMXVnph662Nhk4OJg/fSbgV45BI7iIdhAiVSJJ4Kclj2+9n8Ok8cljaOWWsgibDnUeq
-	DM49oy24yXPwUJ5gFu/rLmnF2GSerlxeJ9TtTEaObMoLB/6eQVoM2B3lnZYwNg16CKuUaAMLLYp
-	2iVejcxWHdyT8tA4V5HoUzrR/fmpUx8NHPJM+WWrB+lrqsLwHBUNfy7x/V6o5tgaislMDNvoAIW
-	7aZqQTphjby99TtiVRj3s5k4clSxaEGQsVuWuTcrTRo8Kyt5avDhEQE5rA7jvOhBhPfDL3saUcu
-	/rmBmzN5yft1dXDwXxMSiFyjUgMro+pAbm90W+5oWwoEjJb3QF0BabJXbhXW7LfQjtUW3GFS5tt
-	iJ14Yl9l5oIW4lsYfnyrCoTzFsNlpTIPZIrrkVZieGd2KEY+KqCka5i3QwN7tTCretFjI/6IK5z
-	SiL8yhMNV1LGWZhCNQeMHBIhBzNGh34wd2Wi/ASAEF8P4GBCwft2D+s4F0M=
-X-Received: by 2002:a17:90a:d60f:b0:3b0:a7b5:c037 with SMTP id 98e67ed59e1d1-3b3d063e959mr4839420a91.1.1795071553983;
-        Wed, 18 Nov 2026 22:59:13 -0800 (PST)
-Received: from G6L4RL2QG9 ([2408:8440:c38:5ca5:3175:932a:757b:716a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b402e75223sm597488a91.4.2026.11.18.22.58.52
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 18 Nov 2026 22:59:13 -0800 (PST)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Chris Down <chris@chrisdown.name>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Ketan <ketan.kishore@oss.qualcomm.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sashiko <sashiko-bot@kernel.org>,
-	kasan-dev@googlegroups.com,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 0/7] KMSAN: Move per-page metadata out of struct page
-Date: Thu, 19 Nov 2026 14:58:05 +0800
-Message-ID: <20261119065812.89959-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20260707; t=1795071570; x=1795676370;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=JtxaAGlAPvYqJWwVU+/bBzfLRLBaPLHwCoCpjeQC2h8=;
+        b=yY0XGbSuJ17tDx50iVskvGJqByWjk9Zyi0aL8D5KN2w8skg+zj+MTnBOUnxTQ+jCJB
+         Ny+pSm22peYNU5KkEQ6Hyvda1Kv+Z/g3PczQcSrUjYLEDBN9mU+t1SupcMFYGRF1Zz5f
+         cxxV4HCdZI5aanIJ/18K43SVxV8octvy69U1MoBmWKCDhPYk/gmrE97vxwp6I959tnWW
+         dHKOqNR/BHNmCp7kuIHPl3DSAlVRmHlFAeYGvs7Bqe2grR52+qOC0CXBgQ3NVNuTXPGx
+         ySMk/G0zwZkuGjwhCx4RWk5O7fe5d8zNg/84Aixvk8jvdnXGABSfiwNRO8Eq5xyy/B2c
+         lq1w==
+X-Forwarded-Encrypted: i=1; AL+hErGQk8dgKq4RyVXTw/kG93y6wz8OeeVE01jVvZC/icbVoi6XJkWKPbE/zRAO6oloEsXBASpbeBAgcw==@kvack.org
+X-Gm-Message-State: APuU4Z/wGc/KiWhCov1cykVZ37tzF+76jCm84hMYxVddDEGQ+PmyMzHs
+	iNJD2LhlFzPQX4O2NUpBNl3eiBPjUCjR9NGhL8w4eo0ZawuviEZLZNegl0uy4UH5x7SUxOCqlNL
+	BWF8aNPtOt5EjgxnsWUYemvLcJjME+HDO6qbg43Tre8nSgtB7L9kqVgPSjJ0=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: x418qhhiu4yt7sg3dg3utwf5tnspwy4s
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DAEAA80004
-X-HE-Tag: 1795071555-714820
-X-HE-Meta: U2FsdGVkX1+mzl9z0qEQ187mWgL0mWxvQmEenuzVNJuflnYm1yOkih/fDBcKx9fU2z3loj7fxeu2IGl7qFTMS6q3wM8P6vjERSaQWpaugrhzhHzwrVrWgFByYgzIwIKfTBo8apCuovUttIuiZnBrzwiZu1BAvJMvVoTZsMHKgN3Guh6nwNfmkNp50yvYLg0cCdgg/aWafVBLDmtyUSj7dlrw9oloIIJGOcRh69Ap4OpoXl3k1pvvuX7kT/C9Join32JBbvV3tSRGQrdv4Be9DSb7EVPJ+x3AyXEytYFyouDCnLl1zcbvDfpy3CTZHYPGKHxaAEjelL8yz/LguzOPgIT+WlTHf0Pe7ZitpOkLWzCrgjj5zsgp07d24Tb8dvJcFT+QeoOV/pS3mPAUpfGQ1S12IAfbIteO6AytP2MaKPOJmqXKxCWVvUjdY7+rWublGAGvbKpCJS6mf+kiVa1dBGCcNu0pUxOQJXmUjVIBurBB7X9A7hGDLdX56Cje4B4AETrnfiqxIWNBUYyeaSG2YzqUlMeTMzjW99FeZz3LoyThxOteRLIRCn5hQWu3gQOYGlKu5Fzho5cT4DPy0X4i2eh87SOcxkpVPEsq3QVtLxdgeIYyYaDJhE5CQOh09zisUm1z+Dv+86tF7F1dVUglXAOpunEpt9a6T3ysIqvfrDYGN836GyFGd60ZQ2lsT05+gOyTZc/IQ/gTAaC5geDVG7V+GzDIANOX4GEogZhzGL7G62LugKGxISfFhSRBj6pGy8Ob0AllDAGv6crLiWdMDW2ZxG/5hmkpO+Y7XeSsc0USxrkTLCid6oXVLA/licynzkDU2C+kmxbHgDhPfOsTGlKAWZVq+R7mFSEV8JRiBfcmi2L6pHwOvWt/zoihUf7sK8sBmez/vEQg+a5K+IGPJOH4Ah/8n9sDSzxI/2JB6ltjKicCvswuwWb00rFiw7U+n5We0ZZWVl5fyAm83PE
- /Pq7iKN5
- Bl38PQc5oHiz9CyruU1+dL2qsbPHgys99ozpYjcWIxk03FEnJYvXfvr1W7v6XcbA6a9FaGM0JrLIrtgrWhpu8+rD5OxbEPXeZhIeq1kzKMlc+HjN1+ooFOzZDxkFV2XBSaFcpjdmSO3FBEo7aeLRZUlrdX3Yk8n7zlvuuif3xXQaKHjmd6a3hIfScbJRwiCREL3c7ROFU+ilbQjNtaUSVz54fiuUwRpTVLC98zG1tnqxrkXnWrXWfZuBD+hAV17SU5CaKHIv35bSJCynUnHaDmdfarC/eu1UNyxaiW8B/QHcUlDLhpgktF/Uf1QxwK+9k0vsj3AsPJDWTKOJY7OpJo1rQWw==
+X-Received: by 2002:a05:6808:50a5:b0:4ec:d580:2440 with SMTP id
+ 5614622812f47-5773d832984mr6120735b6e.54.1795071569762; Wed, 18 Nov 2026
+ 22:59:29 -0800 (PST)
+Date: Wed, 18 Nov 2026 22:59:29 -0800
+In-Reply-To: <20261115024455.1465726-1-zhaonanzhe@xiaomi.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6afe9e51.6dd4714a.145012.0000.GAE@google.com>
+Subject: [syzbot ci] Re: mTHP-friendly compression in zsmalloc and zram based
+ on multi-pages
+From: syzbot ci <syzbot+ci5f7ebc1818317786@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, axboe@kernel.dk, 
+	bala.seshasayee@linux.intel.com, baohua@kernel.org, chengming.zhou@linux.dev, 
+	chrisl@kernel.org, david@kernel.org, hannes@cmpxchg.org, 
+	kanchana.p.sridhar@intel.com, kasong@tencent.com, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, 
+	nphamcs@gmail.com, ryan.roberts@arm.com, senozhatsky@chromium.org, 
+	surenb@google.com, terrelln@fb.com, usama.arif@linux.dev, 
+	wajdi.k.feghali@intel.com, ying.huang@intel.com, yosry@kernel.org, 
+	zhangbo56@xiaomi.com, zhaonanzhe@xiaomi.com, zhengtangquan@oppo.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A801B80008
+X-Rspam-User:
+X-Stat-Signature: ohk1g48rxc97ky94pdbpqxochx6mwd54
+X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795071570-581071
+X-HE-Meta: U2FsdGVkX185PVw27xyAGgiQpsm29Ae6l66KoWT88N3pEeDNeqIDdEuUkj0n0tyInIkeSdqWLRoADVN82DGfg3jmRzb58c/K1Oky29tzbJu6wGBxGPRSQ7OC1XjtUWuEQkMihPasoRd/KNi2cXIl1uz2K+iC29rqNQjI4l2LLH7Mo1CzASwdOvB7AYLQT6Vp2oButYmublcIoxH0ULf70ihur10ZBrFfJmEdZdGOyzlQP2sHNLRiTKHwTa11eYt445DRns2WQizS4H+R/182uJCs6AB96lLmyzywFbaRqUWg/IwpxYvtI4Av3nVHQ8kOtlMMrsk1GHFvnraojjfsO2tSjmrkf3fNMN7ppyaHbd7HhJwWynzxwbmWhedM7HLMwFaehaWfvAzsaFu0psZcJ0fvtCcqciC13RnUZW44MWwSrFYXL3OTjnDNenrjIoKa+t572TV19GyS0sMeBpfzy5xJNJXvLsWwEVSwRtoH0sT561Kw4YLMI5JLW1YOMW/oPAHSn6ByoBupkRT0OBj5TknAcmFrqi1NeplOcBm4XqXF6gs8bhY4QpyWuiEZwWtLDT2P5jADwQWRPQNa7SvER7u72bcpqgsxY9XymGZ42xZ3DsNp7dfumnKclOf/sb+QqMxuXXAIcvnDKEppBtZNcKRAu+iCkOihm2s7VGzlKigBq7Vh3AXTpFXU3Ajcg1TojFhTxQt2NyXItDJ8M4qOGAfDL7P9APj83KOLAl3nZi4+SYicW/ER/0qVYXg8+VqsEttf1Fr4MBtVTCwyppCf6AjsKZirMK2NUNhRRjW7FCBPXgjxnpVbSHa/BXOJk+Xjynvv/w1AYxMC+zncI3waZ7KMCat3NBgSnKUWK2ldVgRRrTPOKVaXArXC9Oz2sXaE3WfGKOQ+Owc3m5hpc65K4b0aHPfwpLm+PVayNloTPGco84xNfB4T3XjVVY8f33OfSL8GwNAgo9i+RD7AncO
+ M4yAy2U6
+ e037cnwUbjeznChOEt1tdprr1L4aEfx1RcktuNPXwx97Qcy2qbK01Xyvjm5rxPX0dxF+bfZ1KlBsDbbfFgwt2orhRxQAZUUS10k9JeNm7J4LMTnEbF5XDzT2iacaU1F2UkeipHtUMB54diSzo/60IJxomMMdsi/cddqadXHobfTaIs3M1YYJ2ESaVvdja9yRfnW87OsCPrGNQ7KSY99CuQ4ji18mSiez5Z1dvPa1Pely7zAAZ5INMyNAzRW9APVJpx23fvN9hOTm1MJFtQmRvvI5NArQWiG44fb7LxoVMmg+scuN45+yFEuXS5+iwdQQPWhDnPO0MlKa4XHa8szHo/KiDY8WZh4MYZSHkPGz02LRHnwJRZ4TLnOsL2RbYfR0c6oucqe0/Rq3imvlN+AvmsQiNYfa2OKjTN3Op+dI884lK5B76fXeAs0B7/IOcBXWGcxwZjQ5oQE5togUS2SC6NvdEcvgekL56KPV1dnHgCIn3iSEzw4/gTSNskYfwTHVfoi2NfU5G/5dh47aRfR9OWehLMsRVOLt7uaDzeSkzrTivimjKYtijvZuDex+De9ALp/iPFrEXHqxqkTWcdeW/KrN2uisDGoTlFrZHtZr4EVqNShDdooyRRcBH1Kb2REPtEVfg6byRamILOEiqnexxo1AXKLADdYvR+xLPbfsTpUYzrTUAnFYq6cVoDgIk1Qn2dQucrQvCS7gW+LYgXpZ4UkF3fLBMw/ilgVWZO/ZgqRY3VbQFwmTRRRvFY9fPw6GKewAAN826f9/XyVfo/IlhvPAbDP2ypz08OD6sTUon/1CJgdIvkWuSfAMOfN78l0FaW+G0crQn/m1PtCU0aqmUUVjZ/9WxQr+TTJBNqzBrZgdX1nbTvz6RtBmH1K9wPROL5zIZGrQHnQtxLZ1t39/tyXEh2F25/t4IBdVRmOJZIafiNn6u4m0FFO8z4ZudB50AcuH/Qb3akE/5xkzblUMw3Yt/GCIe
+ xQ+MeOlM
+ diZAYif4Vw8bmZVADeIND6cOA3IONqu7iGbNqYW9lPA+yxMiLT61Sg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,87 +106,230 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series fixes a KMSAN metadata-loss bug triggered when boot-time
-gigantic HugeTLB pages reinitialize their page descriptors after
-kmsan_init_shadow(). KMSAN currently stores each page's shadow and
-origin pointers in struct page, so the later initialization drops the
-metadata mappings and leaves their backing pages unreachable.
+syzbot ci has tested the following series
 
-Preserving the pointers around the HugeTLB initialization would add
-KMSAN-specific state handling to the memmap path. Moving
-kmsan_init_shadow() later is not viable either, because it allocates
-metadata from memblock while gigantic page descriptors are initialized
-after memblock teardown.
+[v4] mTHP-friendly compression in zsmalloc and zram based on multi-pages
+https://lore.kernel.org/all/20261115024455.1465726-1-zhaonanzhe@xiaomi.com
+* [RFC PATCH v4 1/4] mm: zsmalloc: support objects compressed based on multiple pages
+* [RFC PATCH v4 2/4] zram: support compression at the granularity of multi-pages
+* [RFC PATCH v4 3/4] zram: backend_zstd: use multi-page size for zstd parameter setup
+* [RFC PATCH v4 4/4] mm: swap: allow direct reclaim for synchronous multi-page swapin
 
-Move the metadata pointers to page_ext instead. page_ext storage is
-independent of struct page contents and is made available before
-kmsan_init_shadow(), so later page-descriptor initialization cannot
-erase the mappings.
+and found the following issues:
+* KASAN: vmalloc-out-of-bounds Read in zram_submit_bio
+* WARNING in __mod_zone_page_state
 
-The series first decouples KMSAN metadata access from its storage, then
-makes page_ext safe and available during early boot, and finally moves
-the metadata pointers. The move also shrinks struct page from 80 to 64
-bytes on x86-64 KMSAN builds, allowing HugeTLB Vmemmap Optimization to
-be used with KMSAN.
+Full report is available here:
+https://ci.syzbot.org/series/fbfb33eb-ef1c-41ea-aa01-54cbecf7c03c
 
-v3:
-- Fix page_ext client alignment on 32-bit architectures by using u64
-  alignment as the cap (reported by Sashiko).
-- Open-code the lowest power-of-two factor and use a local for the u64
-  alignment (suggested by Andrew Morton and Mike Rapoport).
-- Use DIV_ROUND_UP() for page_ext accounting instead of relying on the
-  caller's size alignment (suggested by Mike Rapoport).
-- Simplify the page_ext alignment commit message.
-- Collect Reviewed-by and Tested-by tags from Chris Down for patches
-  1-4, 6, and 7, and Reviewed-by for patch 5.
-- Collect Reviewed-by tags from Mike Rapoport for patches 3-5.
-- Rebase onto mm/mm-new.
+***
 
-v2: https://lore.kernel.org/20261117120627.50601-1-songmuchun@bytedance.com/
-- Fetch shadow and origin through one masked metadata resolver
-  (suggested by Chris Down).
-- Add a fix for pre-existing page_ext client misalignment.
-- Use vmalloc for runtime SPARSEMEM page_ext backing
-  (suggested by Mike Rapoport).
-- Unify page_ext allocation and initialization entry points and document
-  the later FLATMEM callback timing (noted by Chris Down).
-- Allocate all boot-time SPARSEMEM page_ext from memblock
-  (suggested by Mike Rapoport).
-- Keep memblock allocations above DMA and suppress per-section free
-  messages (suggested by Chris Down).
-- Inline the unchecked page_ext lookup while keeping page_ext.c
-  instrumented (suggested by Chris Down).
-- Update the KMSAN metadata documentation and describe HVO enablement
-  (suggested by Chris Down).
-- Expand the series from three to seven patches.
-- Drop all v1 Reviewed-by tags because the affected patches were
-  substantially reworked and split.
+KASAN: vmalloc-out-of-bounds Read in zram_submit_bio
 
-v1: https://lore.kernel.org/20261114104150.58424-1-songmuchun@bytedance.com/
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      40a41254dc1cf8babbd9178a1c87535695255bf1
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/0826548c-74e7-4858-8bd7-d0550838a241/config
+syz repro: https://ci.syzbot.org/findings/50cc4432-dd6a-4eee-9faf-f854d755d423/syz_repro
 
-Muchun Song (7):
-  kmsan: encapsulate per-page metadata access
-  mm/page_ext: fix client data alignment
-  mm/page_ext: always use vmalloc for section page extensions
-  mm/page_ext: use common allocation and initialization entry points
-  mm/page_ext: allocate page extensions early for SPARSEMEM
-  mm/page_ext: inline unchecked page extension lookup
-  kmsan: fix metadata loss during HugeTLB struct page reinitialization
+zram0: detected capacity change from 0 to 8
+==================================================================
+BUG: KASAN: vmalloc-out-of-bounds in test_slot_flag drivers/block/zram/zram_drv.c:118 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in __test_multi_pages_comp drivers/block/zram/zram_drv.c:2836 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in test_multi_pages_comp drivers/block/zram/zram_drv.c:2864 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in zram_bio_read drivers/block/zram/zram_drv.c:3094 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in zram_submit_bio+0x2593/0x2790 drivers/block/zram/zram_drv.c:3164
+Read of size 4 at addr ffffc9000343c018 by task syz.1.18/5883
 
- Documentation/dev-tools/kmsan.rst |   8 +-
- include/linux/kmsan.h             |   2 +
- include/linux/mm.h                |  12 +-
- include/linux/mm_types.h          |  12 --
- include/linux/page_ext.h          |  61 +++++++--
- lib/Kconfig.kmsan                 |   1 +
- mm/kmsan/shadow.c                 | 199 +++++++++++++++++++--------
- mm/mm_init.c                      |  11 +-
- mm/page_ext.c                     | 221 ++++++++++++------------------
- 9 files changed, 290 insertions(+), 237 deletions(-)
+CPU: 1 UID: 0 PID: 5883 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description+0x55/0x1e0 mm/kasan/report.c:378
+ print_report+0x58/0x70 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ test_slot_flag drivers/block/zram/zram_drv.c:118 [inline]
+ __test_multi_pages_comp drivers/block/zram/zram_drv.c:2836 [inline]
+ test_multi_pages_comp drivers/block/zram/zram_drv.c:2864 [inline]
+ zram_bio_read drivers/block/zram/zram_drv.c:3094 [inline]
+ zram_submit_bio+0x2593/0x2790 drivers/block/zram/zram_drv.c:3164
+ __submit_bio+0x27f/0x340 block/blk-core.c:682
+ __submit_bio_noacct block/blk-core.c:725 [inline]
+ submit_bio_noacct_nocheck+0x4f2/0xb10 block/blk-core.c:793
+ bh_submit fs/buffer.c:1150 [inline]
+ __bh_read fs/buffer.c:2944 [inline]
+ bh_read_nowait include/linux/buffer_head.h:504 [inline]
+ __block_write_begin_int+0x147c/0x1930 fs/buffer.c:2060
+ iomap_write_begin+0x1075/0x1530 fs/iomap/buffered-io.c:1105
+ iomap_write_iter fs/iomap/buffered-io.c:1233 [inline]
+ iomap_file_buffered_write+0x494/0xbb0 fs/iomap/buffered-io.c:1318
+ blkdev_buffered_write+0xee/0x160 block/fops.c:739
+ blkdev_write_iter+0x4f5/0x820 block/fops.c:829
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_pwrite64 fs/read_write.c:794 [inline]
+ __do_sys_pwrite64 fs/read_write.c:802 [inline]
+ __se_sys_pwrite64 fs/read_write.c:799 [inline]
+ __x64_sys_pwrite64+0x210/0x2c0 fs/read_write.c:799
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f06c93a8fd9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f06ca353028 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
+RAX: ffffffffffffffda RBX: 00007f06c9625fa0 RCX: 00007f06c93a8fd9
+RDX: 0000000000000001 RSI: 00002000000007c0 RDI: 0000000000000004
+RBP: 00007f06c9437fed R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000000000c4 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f06c9626038 R14: 00007f06c9625fa0 R15: 00007ffe748226b8
+ </TASK>
+
+The buggy address belongs to a 1-page vmalloc region starting at 0xffffc9000343c000 allocated at zram_meta_alloc drivers/block/zram/zram_drv.c:2043 [inline]
+The buggy address belongs to a 1-page vmalloc region starting at 0xffffc9000343c000 allocated at disksize_store+0x11d/0x430 drivers/block/zram/zram_drv.c:3304
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888170b2c000 pfn:0x170b2c
+flags: 0x57ff00000000000(node=1|zone=2|lastcpupid=0x7ff)
+raw: 057ff00000000000 0000000000000000 dead000000000122 0000000000000000
+raw: ffff888170b2c000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x2dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_ZERO|__GFP_NOWARN), pid 5883, tgid 5882 (syz.1.18), ts 56638265335
+ set_page_owner include/linux/page_owner.h:33 [inline]
+ post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1858
+ prep_new_page mm/page_alloc.c:1866 [inline]
+ get_page_from_freelist+0x2224/0x2290 mm/page_alloc.c:3939
+ __alloc_frozen_pages_noprof+0x1fe/0x410 mm/page_alloc.c:5463
+ __alloc_pages_noprof+0x10/0x100 mm/page_alloc.c:5498
+ alloc_pages_bulk_noprof+0x67a/0x8a0 mm/page_alloc.c:5322
+ vm_area_alloc_pages mm/vmalloc.c:3948 [inline]
+ __vmalloc_area_node mm/vmalloc.c:4123 [inline]
+ __vmalloc_node_range_noprof+0xad1/0x16f0 mm/vmalloc.c:4323
+ __vmalloc_node_noprof mm/vmalloc.c:4384 [inline]
+ vzalloc_noprof+0xb2/0xe0 mm/vmalloc.c:4462
+ zram_meta_alloc drivers/block/zram/zram_drv.c:2043 [inline]
+ disksize_store+0x11d/0x430 drivers/block/zram/zram_drv.c:3304
+ kernfs_fop_write_iter+0x3a4/0x540 fs/kernfs/file.c:345
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_write+0x150/0x270 fs/read_write.c:739
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 5883 tgid 5882 ts 56638249897 stack trace:
+ reset_page_owner include/linux/page_owner.h:26 [inline]
+ __free_pages_prepare mm/page_alloc.c:1402 [inline]
+ __free_frozen_pages+0xc97/0xd90 mm/page_alloc.c:2956
+ __kasan_populate_vmalloc_do mm/kasan/shadow.c:393 [inline]
+ __kasan_populate_vmalloc+0x1a8/0x1c0 mm/kasan/shadow.c:424
+ kasan_populate_vmalloc include/linux/kasan.h:587 [inline]
+ alloc_vmap_area+0xd10/0x1410 mm/vmalloc.c:2190
+ __get_vm_area_node+0x24a/0x330 mm/vmalloc.c:3334
+ __vmalloc_node_range_noprof+0x36e/0x16f0 mm/vmalloc.c:4283
+ __vmalloc_node_noprof mm/vmalloc.c:4384 [inline]
+ vzalloc_noprof+0xb2/0xe0 mm/vmalloc.c:4462
+ zram_meta_alloc drivers/block/zram/zram_drv.c:2043 [inline]
+ disksize_store+0x11d/0x430 drivers/block/zram/zram_drv.c:3304
+ kernfs_fop_write_iter+0x3a4/0x540 fs/kernfs/file.c:345
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_write+0x150/0x270 fs/read_write.c:739
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffffc9000343bf00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+ ffffc9000343bf80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+>ffffc9000343c000: 00 00 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                            ^
+ ffffc9000343c080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+ ffffc9000343c100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+==================================================================
 
 
-base-commit: 3dfc09a9493ddaa5e7722a29165d8450b55b4d3f
--- 
-2.54.0
+***
 
+WARNING in __mod_zone_page_state
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      40a41254dc1cf8babbd9178a1c87535695255bf1
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/0826548c-74e7-4858-8bd7-d0550838a241/config
+syz repro: https://ci.syzbot.org/findings/02951484-1645-42b3-8301-7ebe9e49ee59/syz_repro
+
+------------[ cut here ]------------
+IS_ENABLED(CONFIG_PREEMPT_COUNT) && __lockdep_enabled && (preempt_count() == 0 && this_cpu_read(hardirqs_enabled))
+WARNING: mm/vmstat.c:361 at __mod_zone_page_state+0xfc/0x140 mm/vmstat.c:361, CPU#0: syz.0.21/5857
+Modules linked in:
+CPU: 0 UID: 0 PID: 5857 Comm: syz.0.21 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:__mod_zone_page_state+0xfc/0x140 mm/vmstat.c:361
+Code: d3 e8 09 65 43 88 1c 34 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 48 89 df 4c 89 fe 89 ea e8 59 00 00 00 31 db eb ce 90 <0f> 0b 90 eb 8b 48 c7 c7 00 44 26 90 4c 89 f6 e8 70 4d 10 03 e9 34
+RSP: 0018:ffffc90003a2e2e8 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000001 RCX: ffff888103b33c00
+RDX: 0000000000000001 RSI: 0000000000000009 RDI: ffff88815fffbb00
+RBP: 0000000000000009 R08: ffffea000080de07 R09: 1ffffd4000101bc0
+R10: dffffc0000000000 R11: fffff94000101bc1 R12: ffffffff94e3d1c0
+R13: dffffc0000000000 R14: 0000000000000009 R15: ffff88815fffbb00
+FS:  00007fca0f3e26c0(0000) GS:ffff88818be05000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fca0e471a20 CR3: 00000001bab1c000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ __zone_stat_add_folio include/linux/vmstat.h:437 [inline]
+ zpdesc_inc_zone_page_state mm/zsmalloc.c:346 [inline]
+ alloc_zspage+0x73c/0x1510 mm/zsmalloc.c:1121
+ zs_store+0x906/0xd50 mm/zsmalloc.c:1407
+ zswap_compress mm/zswap.c:953 [inline]
+ zswap_store_page mm/zswap.c:1542 [inline]
+ zswap_store+0x12aa/0x2230 mm/zswap.c:1657
+ swap_writeout+0x9bc/0x1700 mm/page_io.c:248
+ pageout mm/vmscan.c:619 [inline]
+ shrink_folio_list+0x3135/0x4e90 mm/vmscan.c:1392
+ reclaim_folio_list+0x141/0x4a0 mm/vmscan.c:2176
+ reclaim_pages+0x452/0x530 mm/vmscan.c:2213
+ madvise_cold_or_pageout_pte_range+0x1b7e/0x2390 mm/madvise.c:574
+ walk_pmd_range mm/pagewalk.c:147 [inline]
+ walk_pud_range mm/pagewalk.c:237 [inline]
+ walk_p4d_range mm/pagewalk.c:278 [inline]
+ walk_pgd_range+0x102d/0x1dc0 mm/pagewalk.c:319
+ __walk_page_range+0x16d/0x720 mm/pagewalk.c:427
+ walk_page_range_vma_unsafe+0x309/0x410 mm/pagewalk.c:735
+ madvise_pageout_page_range mm/madvise.c:633 [inline]
+ madvise_pageout mm/madvise.c:658 [inline]
+ madvise_vma_behavior+0x2db7/0x47f0 mm/madvise.c:1393
+ madvise_walk_vmas+0x576/0xb10 mm/madvise.c:1751
+ madvise_do_behavior+0x385/0x540 mm/madvise.c:1947
+ do_madvise+0x33a/0x3c0 mm/madvise.c:2045
+ __do_sys_madvise mm/madvise.c:2054 [inline]
+ __se_sys_madvise mm/madvise.c:2052 [inline]
+ __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2052
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fca0e5a8fd9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fca0f3e2028 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007fca0e825fa0 RCX: 00007fca0e5a8fd9
+RDX: 0000000000000015 RSI: 0000000000600003 RDI: 0000200000000000
+RBP: 00007fca0e637fed R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fca0e826038 R14: 00007fca0e825fa0 R15: 00007fff2ba215c8
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
