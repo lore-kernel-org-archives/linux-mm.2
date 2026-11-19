@@ -1,93 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170B5606B195
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 13:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47EA606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 13:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JGgKZMQu
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lRSsvKq9
 Received: by kanga.kvack.org (Postfix)
-	id 3BBB36B0644; Thu, 19 Nov 2026 08:04:52 -0500 (EST)
+	id 05E3F6B05CE; Thu, 19 Nov 2026 08:23:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36CFE6B0645; Thu, 19 Nov 2026 08:04:52 -0500 (EST)
+	id 034B26B05DA; Thu, 19 Nov 2026 08:23:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 282436B0646; Thu, 19 Nov 2026 08:04:52 -0500 (EST)
+	id E8D936B0646; Thu, 19 Nov 2026 08:23:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 087316B0644
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:04:52 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F1EE120AB2
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:04:51 +0000 (UTC)
-X-FDA: 85451888382.19.3757289
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B98126B05CE
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:23:35 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 43657A893F
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:23:35 +0000 (UTC)
+X-FDA: 85451935590.14.6972F9B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D2E4440008
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:04:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGgKZMQu;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 848A1A000C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:23:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRSsvKq9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795093490;
-	b=7DmztjmMw713jU9jz0bg4EzvJZ7z4/E1hW01DzLWKZw1vvgcxwWbdxKFd4LM4jxXAkpUUO
-	QvuZYxWAMBvMsBSEYGw6o8Ezq+zP0kf6qLE04eO5kTfTCwQwwV2FLtkzr0GYBoYw6tKIEw
-	r2kvLDUNDJoa0TfKjkIcnwCfmH5frIk=
+	t=1795094613;
+	b=YTf1YXj5eXZl/t4A5ADKTvdx/PAAgEZa4h6CU15U0+nAOzNOLu7Ci7HfpBMbXZfZJPv4qB
+	XxLO429pgIiW9lsRZt9EpDfmFzeYk23Ld+cS54RN+wlXUluxdaONH98wcs3yVP+P7fYoBh
+	4TdeGaJXfbeJw1iNk0mcUjCZWu5OJMg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795093490;
+	s=arc-20220608; t=1795094613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4c8ungyxd7RexQhrWA/AoLG0CKBNNbv9BDRY26QePAo=;
-	b=V580O8qRNcFcYQ3rd/yr5Rur9oBHrErsy37rANlN2s3+5ZLWyRYAw6+pLJhwnHt5iz48zg
-	EcWfV45AEl6oAknykJ6qbtQeyshOMUP6RC7jmcedDlYlQxwD9kX+9qyGEtFmBA5lZ02nLR
-	tcp3Xq+WVMqeHLs9DYYRTj8J3Oo0PWA=
+	bh=NTpzirKbp7wgHPt5BJeerlD4lUmv8WbyAY5FQdaUO/o=;
+	b=r61/ch6kRQRwEcFUW98NeiweG8JAnLVW05HJXbLO0m886Morq8f3ppY3PatiXI2yMhT4Qi
+	RK1/fTVAB/G5qcAGgE00l2MiOlZ4i4yB0CtNxSaVy9t94qpEHc7kBIxCiGk9zje3P0IHgi
+	+oq4SU+sUFYVgKLOhfffyExz8DBkHD8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGgKZMQu;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRSsvKq9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D31BA407BC;
-	Thu, 19 Nov 2026 13:04:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11DD1F000C4;
-	Thu, 19 Nov 2026 13:04:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9132840B84;
+	Thu, 19 Nov 2026 13:23:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29741F000C5;
+	Thu, 19 Nov 2026 13:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795093488;
-	bh=4c8ungyxd7RexQhrWA/AoLG0CKBNNbv9BDRY26QePAo=;
+	s=k20260515; t=1795094612;
+	bh=NTpzirKbp7wgHPt5BJeerlD4lUmv8WbyAY5FQdaUO/o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JGgKZMQuxgk09BHdmqO2j2nlgUEpHHOj1xGRM1Xotj3U8BRm4bf16g1xavHCr+G3l
-	 u+mD0GxxJPxcvAmfmim3h8jcNhLxT4WkjUh9kxYYKnVhB1A1s+Li4DaabxcdWAnNbW
-	 7sEihZNT/OITB118S5flqdaQbyoS1Tjoa01oF9SwpgWPcGfINtIilkA0UPNacAQVTt
-	 XNxljucTL1IVkUcgSd8dy9pe5CNHC+8KFMo7DGb92Cg9ujqa2Xktu5tYPzDcqnBKgl
-	 ObdtLxc6VwFuHon8akz9sj0juhx3vaer+5hNKe2nJNIOYZnws1kKyAT1khMqc3LIp/
-	 vgPfH7UqzHDKA==
-Date: Thu, 19 Nov 2026 14:04:44 +0100
+	b=lRSsvKq96cZP+ZvRxMNmPxuVc7KhlNo9eMqm29qw5DCKm45kIjq33tGklLv9RPJtf
+	 t6RczbudOiO2LMymrjP1y6LNb0aKcSGmOGp5FyT39efpLlLCf4U5LM+D+0c/GEkpEk
+	 gzlaW5UItrxJlnlfb6IGjMLEfo+1drnDc6D3D5fDt3ljoFk7YVMqR5uyF224lzM8BC
+	 YpzLpMQHBIf97+teq849ecYAptGyyN8oUAFtXco7o1CZm37j9zpvCmiY+QZUqaDYUX
+	 tgLbo8AGY4TxoMAcqT7WjgnDica4lHZWfD+Fxm5cNuVOxC/Nms9Huo8Cruy2SVPeqx
+	 icQJxqxZWq4zA==
+Date: Thu, 19 Nov 2026 14:23:26 +0100
 From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: Nilay Vaish <nilayvaish@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Oscar Salvador <osalvador@suse.de>,
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH] mm/mm_init: don't subtract managed CMA pages twice
-Message-ID: <av7z7Im4bGE93zQ7@localhost.localdomain>
-References: <20261119-cma_managed-v1-1-385751505e24@kernel.org>
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>, Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/page_owner: fix double decrement of stack count on
+ unpoison
+Message-ID: <av74TpCUPQkXFkOH@localhost.localdomain>
+References: <20261118212819.403059-1-nilayvaish@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261119-cma_managed-v1-1-385751505e24@kernel.org>
-X-Stat-Signature: jxz6tac738gn8ggnwd4q5cy1fsygtkzr
-X-Rspamd-Queue-Id: D2E4440008
-X-Rspamd-Server: rspam12
+In-Reply-To: <20261118212819.403059-1-nilayvaish@google.com>
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam07
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795093489-177983
-X-HE-Meta: U2FsdGVkX1/ZmaoGIvz7HUxnWAAfDSrQxlNg7mJOEt+X4I1Cv+DXzpYRloD/yojuZ7RJyXZJbLwvD33dc7oOFHoa4h5mnBDepWvTjwW+/dNOxpPJ023MeKeU2zdlDwD+MRG1JZy9rzmFm/CTAxwGjvfKysm4zv3+lmiv7nQEjULpu9kH8EYOPjg9XrfZlDcdppn3/ulf3F12WsDGEiECNsP71Ef7X9gAO7Upe90rDNs2X2HcwzKE6bxnT6vnbRJIR4uN0drMot1fHQm59czpFnn4DIcsOoGRsmGEoKfI9269SBhf5V2wsOUPLktYBdU7Gp9A/DFzPiT0QXRbA7ShnLJZDeeDlpf/DokyaQpBqkr8rByY+qM374abhMQw58zjB/hiqxjmSHtgfOIM6hVhU4iVRbQeWNCQZ6/njlW0Cl85rfvuvY2z8cmMBszRgmO8iWIqeyNHSxzM3p7CCyvefpB1IF59EOp5kCOHarf8iBhGcMnPcoXUhUzsngeIf6lA+MQ6w5GwZpgZb6loHk5S5T7EuB+G3hx192AXKRnriQwNvIzqXdAAS8OZL0telfoQ07Zg7jlsNTBWjP9K6I69Esrz73+VTFZ8QztZk5ETSb12J4+vZxgG+XyDS6CZBzUW8ryZE963dIyW1Bj7YCFrIehyTTM5mcaEd81uIy2ipVWbt/K9wwJ5Hg1znRje+uRZjkrP+s99JcpDkXSCpIhI99LevqOhcFgvxtPP8fxKJQbWKGZ76Zw/Ag46lwBJC43mgBcL+U4AjKU+BXHNK5Yz6u8BQlzTdr9OkzVrT3SDI9/B++UUwYJ0y2SHVPV3Nn/wLlvPErXHu6ykb3nvptg8Rz+x2x7czT3omNxsqNJo0jpNSC7jq7o9lCKnrTMoHl0m6he+/scTJT/+zWuifgcwviVg9UgeLWR5Rtj7kunQiklT4/0VcoDjs25hpDi1jRqkE7aJz0cepFI1R941R23
- uVMFEWH7
- QOvKHJeaIC+sk2L5aCAp+/VubFz9sYkFdeT+pMxz46cqMiGbMrL8akKH+20U8G6WKWL9R8WcscecWkktpl2yFaoyXu3PkhMEoiqtAc4R0gRvwgnWWfOQkHnlUl9sNto9Bb/otqmqL31IFHEPzKF/QR65SpLzZ0+AE4oXSAkfJGYp0ulDeRxB044lb+f1tS3kAdDv/AqVcqoikmZ8U9AHidhJ1uSA/aoBYZP8ncoOgErT91TSrSt0rS124CwLn4lzLBdWchFau/7x+JLZ2rzrjh4veEkaL7JRXJ3XJaVzVXAXMXVEld+fF9l7jrX7hrvV+vqiNJVlJdAayULwCKI2nV6CvBVoIsIJdQwaMiVKr+zkF/9u7KQUuMaEeZlCPfTNRSA1v9SS/aY9Gs/fqQwg+H857ABc2WzuxKE3dUrqsQvGtEEmz0svHXdiDvC+3hI7Xbg9ETpDyQ8K/DQ+Q2GZyYlbYrtn9WJiLFA754ieHimN1RPobsVYx9lDwmeo7kpiyDMkImvdfMbU6W4sCf5NCPDKNlry6XgWLBE5Q
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 848A1A000C
+X-Stat-Signature: edybj6nae3mf3jh756cqro6dogksaibr
+X-HE-Tag: 1795094613-726010
+X-HE-Meta: U2FsdGVkX19XgGlSp9aJ7NYH+cEN25WFEj8ooZbrH/fyJ/h5ijzJaKzNKxYgA6CQL+HyqtXp28mVXzThf2N20rfwYzu6Sn+bCLaCRMlEyspzsQxkdSdmTK7QcYBpZ2ch/pfpch8sIpFWrCz54bUCzq26G0mmGGlcb0KwcfSfaTc0Fo6GmoELKVtFHd9rtxx+5k3OsNhgVP9OQZ1pNQhN9h/2Svi31OF76AN4A3xNNRN4L+PLBeC8JvpIHoQhJ5By3sFU1gMkjYDFESv/uyVQTXpU0fhMeIbcR6l55TYuitVSWjw9X9DltEGslvCbrnIYkGQSOA5AzjsCaVs4fPPNZ8JYNUv3drbx81Hr85cDhk7bpffRrIaC5Q9sCFHb1Ae5/DZgW0bflloBSdYGMJzej+eSzaU79ji+oM9VlKu47/W0TgxdXc2KjGqtjwJ38F1lrgYs3nr5XDFrXm9BG7h6T0Yf1sZWn776yo3Gp5CqLN160EY1+TBTP5sU/A61nAb5febjZqN2fHFGk0/uw+b6yBM1Vvy2rxagMVVNZYrXYMIPxSt7nyDoY8cW0zD7PGwMXgmHufYKUh0WjSvetLE31ZZvxnwi18TC7FZ43tSfHOPrfvqoLVgtrvAMrQOzs6wqPbHhJPd0sdlckxqfqFlgv15z84ssBTz4n3vXOJxbog++H+6EkM5CJekIgqkw6gWyxM23ZVtjVNNebDqXFSjju5Cwm+BVC5CYcTcz+8cBpZbdgEnJJbEozglfvCiweS24Y0WwF/+vfJkdVBkYp7qk5mpRPPrXJuZEjNK67RTYXlj227jvf8nkxmqmQqYVd7CqzhUaCXfTpvbb0UYsNHAv2yQxQErk5Q0pR7Sj11s4NTwzntH8p54rUdGVqCkunXKzgf4JfjSC/shVuGCzaRvrkHeKJ/TNt4cgEA6tmyQY7FDQJfzI0JGMspbWFI10upDLPCChiNBg0UqLEQTzv07
+ dp2oqbuG
+ BRC4ZUPABYDCNKfmMZHU1VlLHLg0eacwCDE6t836OfWVRDBER+Oi2fX+NzkxeJdEgOJqeO8QO4LTYQcy39cHLPZ8nzCrP3r7bwymJ28FggbzLn/i+ku9OOQLZpHRUgVxbCchrhEC/H14l8WGp7ZwEftTdFso66KiuqjaNI6NG/huWThv/A21+T5nA+iRZMq6cA8dd+c4cNJjP/y/KXgCg1dPCZfdVpJUn1h2O3BTNbMYMJni+YpV8FXfpQGD10jHSWZW/qBeH6mQXBtTqKCwO8d/ggwnYlKumaXXYKVuNInFT1UGIIhZb+J4XvKRPjiGcwUC72QlHJbfCiiFy549O6ahk0Ydbh7WIaecfa2EYFZ/f3Ywk0fVtwc7Hngv1ZgDaBvFBxYsmqkAnmGdG/IQ6Dj8hYPCwisC8er2h4bXNn6URA4/rSS2HvxvQ3e81NuyhskFgvXEkc3pgRmLnMuT8LpUc6Ifxi1hf22MWsWambxDnO37qX1wfzePD8Lb/RVD7v0lvNXVx6aEq2EkGhzlHOAXB5LNURrL6iSGZtOV5ckdP0WK6D6pEvMPIJa4O5LhLgx4P6Ss3+jHN2LLm413P3qotovVsyO47qzkg+9cwjp6p0l8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,26 +104,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 12:19:06PM +0100, David Hildenbrand (Arm) wrote:
-> From: Chris Mason <mason@kernel.org>
+On Wed, Nov 18, 2026 at 01:28:19PM -0800, Nilay Vaish wrote:
+> page_owner counts, for each allocation stack, how many pages allocated
+> from that stack are still in use. The count is incremented when a page
+> is allocated and decremented in __reset_page_owner() when it is freed.
 > 
-> With hugetlb_cma_only, the "reserved" value in the "Memory:" boot message
-> can be wrong (small or underflowed).
+> A page that is hwpoisoned while in use and later unpoisoned passes
+> through free_pages_prepare() twice:
 > 
-> When mem_init_print_info() calculates the reserved memory, it assumes that
-> no CMA pages are managed yet. However, some CMA pages from hugetlb might
-> already be managed at that point, so we end up subtracting them twice.
+>   1. On poisoning, the last reference is dropped. free_pages_prepare()
+>      calls reset_page_owner() but, because the page is PageHWPoison(),
+>      keeps it off the free lists.
 > 
-> Fix it by only subtracting CMA pages that are not managed yet.
+>   2. On unpoisoning, unpoison_memory() drops the poison reference and
+>      free_pages_prepare() calls reset_page_owner() again, this time
+>      really freeing the page.
 > 
-> This has very low urgency, as it only affects a boot message.
+> __reset_page_owner() decrements the stack count both times, although
+> the page was allocated only once. The first call clears
+> PAGE_EXT_OWNER_ALLOCATED, but the second call never checks it.
 > 
-> Fixes: b1b7c045e808 ("mm/hugetlb: initialize gigantic bootmem hugepage struct pages earlier")
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: improve description and comment ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> If this drives the count to zero while the stack is still in use,
+> stackdepot treats the record as freed and warns on every later
+> allocation or free that uses the same stack:
+> 
+>   dec_stack_record_count: refcount went to 0 for 92274844 handle
+>   WARNING: lib/stackdepot.c:517 at depot_fetch_stack+0x5c/0x70
+>   Call Trace:
+>    __set_page_owner+0x110/0x290
+>    get_page_from_freelist+0x1225/0x1440
+>    __alloc_frozen_pages_noprof+0x1fc/0x1b00
+>    __folio_alloc_noprof+0x12/0xa0
+>    alloc_migration_target+0x81/0x1e0
+>    migrate_pages_batch+0x1f2/0x14c0
+>    migrate_pages+0x9c3/0xca0
+>    soft_offline_page+0x189/0x570
+> 
+> A single soft offline followed by an unpoison is enough to trigger it,
+> because the migration-target stack that the offlined page is accounted
+> to usually has very few pages.
+> 
+> Fix it by decrementing the stack count only if PAGE_EXT_OWNER_ALLOCATED
+> was still set, i.e. only the first time the page is freed.
+> 
+> To reproduce, boot with page_owner=on and CONFIG_HWPOISON_INJECT, soft
+> offline anonymous pages with madvise(MADV_SOFT_OFFLINE), and unpoison
+> each old PFN through debugfs hwpoison/unpoison-pfn. Without this patch
+> the first cycle prints the message above and 2200 cycles produce 6597
+> warnings. With it, the same run is clean and all stack counts return
+> to their initial values.
+> 
+> Fixes: 217b2119b9e2 ("mm,page_owner: implement the tracking of the stacks count")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nilay Vaish <nilayvaish@google.com>
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+
+Nit below:
+
+> ---
+>  mm/page_owner.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_owner.c b/mm/page_owner.c
+> index 02bb304b53cf..0793a460d615 100644
+> --- a/mm/page_owner.c
+> +++ b/mm/page_owner.c
+> @@ -320,11 +320,13 @@ void __reset_page_owner(struct page *page, unsigned short order)
+>  	depot_stack_handle_t alloc_handle;
+>  	struct page_owner *page_owner;
+>  	u64 free_ts_nsec = local_clock();
+> +	bool allocated;
+>  
+>  	page_ext = page_ext_get(page);
+>  	if (unlikely(!page_ext))
+>  		return;
+>  
+> +	allocated = test_bit(PAGE_EXT_OWNER_ALLOCATED, &page_ext->flags);
+>  	page_owner = get_page_owner(page_ext);
+>  	alloc_handle = page_owner->handle;
+>  	page_ext_put(page_ext);
+> @@ -339,7 +341,7 @@ void __reset_page_owner(struct page *page, unsigned short order)
+>  	__update_page_owner_free_handle(page, handle, order, current->pid,
+>  					current->tgid, free_ts_nsec);
+>  
+> -	if (alloc_handle != early_handle)
+> +	if (allocated && alloc_handle != early_handle) {
+>  		/*
+>  		 * early_handle is being set as a handle for all those
+>  		 * early allocated pages. See init_pages_in_zone().
+> @@ -348,6 +350,7 @@ void __reset_page_owner(struct page *page, unsigned short order)
+>  		 * their refcount either.
+>  		 */
+
+I would expand this comment to integrate the allocated logic.
+Because someone might think that every page hitting this function should have
+been previously allocated. 
 
  
 
