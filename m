@@ -1,98 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B293F606A339
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 15:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA28606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tgaFkcWP
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tLo+B+xe
 Received: by kanga.kvack.org (Postfix)
-	id B725D6B0603; Thu, 19 Nov 2026 10:57:38 -0500 (EST)
+	id 5AB116B05F4; Thu, 19 Nov 2026 11:00:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B499A6B0672; Thu, 19 Nov 2026 10:57:38 -0500 (EST)
+	id 55C3D6B06A5; Thu, 19 Nov 2026 11:00:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A878C6B0673; Thu, 19 Nov 2026 10:57:38 -0500 (EST)
+	id 4719C6B0637; Thu, 19 Nov 2026 11:00:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85D9A6B0603
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:57:38 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28B79A7F34
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:57:38 +0000 (UTC)
-X-FDA: 85452323796.09.345599F
-Received: from mta1.migadu.com (out-194.mta1.migadu.com [95.215.58.194])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0C685100005
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:57:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tgaFkcWP;
-	spf=pass (imf14.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.194 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2188C6B06A5
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:00:39 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF262120B6D
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:00:34 +0000 (UTC)
+X-FDA: 85452331188.25.AA11E83
+Received: from mta1.migadu.com (out-69.mta1.migadu.com [95.215.58.69])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8115320004
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:00:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tLo+B+xe;
+	spf=pass (imf03.hostedemail.com: domain of bradley.morgan@linux.dev designates 95.215.58.69 as permitted sender) smtp.mailfrom=bradley.morgan@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795104033;
+	b=ArTlRDH65oHdOfGxOkjBdN1RzDOO3qmJqk2fKAXiT9Ja9/brR1NXKjBmwWhytaATCwdwbQ
+	LPU7krjd6HKrmBoUrWYjdG+ML2S+3u1lyosLPPEBvtPvQfkO6wE4yJi0c8caKOClTHyzcA
+	UyqoKrH5+bJiotO7PTB6iByPqKj4n+Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795103856;
+	s=arc-20220608; t=1795104033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sNN1731RXRr0vyB+I+4Vk0Kb65E7JyUhQG5+tsFjqJg=;
-	b=fJZUSPx6uwkf7wq5fJL7AAVhCuoc0UFXfXH/pPgHaY0swdqK10yiOeeWnskKn+ySZ1Yj6T
-	H4OpfOJ0t3V8rBqFPUY9bZHMqf7cWPKYzgBEgSPNW+ilqYY1A/UdZLxT5ZkphUr5a97ncr
-	7+XJJqlWQyiZWzU+x476d5x9PcQyri8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795103856;
-	b=JxaXwPmZz11rLTQ4C6sG+wl4VrfHx+/pXGiPWJmJlW7yuc9CzTDYSfFKgYw92dRNUThOhU
-	ljRtL3hTKT9OhYrCyl2ABcpNUeKVwoiz9t8WjlmFZBdcAvA+YNbzSWGKCaHVZx2EsDxWVc
-	2BF1VTtvg/DbYPm3AdpQLVYZlh8T8HI=
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=ghdvXRs6WeD3J65MxVpuLnA2rqhyvwGZJnk+T3/dQgs=;
+	b=WFx59ed7+LyxZb2slcOydqanZCC3nC7bvnMQ6w9uosLVTBL2lYx5uHdt0D+lLQx3y1z7S2
+	E/aIyoRB7jNhzHzj+Onl4QiZu5ORMiBeU2XVYGKMLF5iQby/rGq50wQUTiNAawWJtJtX0y
+	aEf9Sy5YNdSS6YA1y34LBfQ0iErmxaM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tgaFkcWP;
-	spf=pass (imf14.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.194 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tLo+B+xe;
+	spf=pass (imf03.hostedemail.com: domain of bradley.morgan@linux.dev designates 95.215.58.69 as permitted sender) smtp.mailfrom=bradley.morgan@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=E1Mtv6PwMAjNgu+Yqi3TMm4tWjlWRE3n2A0rfbbvK3Y=;
+DKIM-Signature: a=rsa-sha256; bh=muSluvC1BBHfMSuECvqWpxXBduhSE0/vxCvegiCzjJc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795103854; v=1; x=1795708654;
- b=tgaFkcWPzhiH88uxNrb8BDATZnFgWbgpInWy1MXUj2VR8nMoVFYxquGWP43wvIFfDRg0u7wk
- +VFC7wqWFujvC+Y0BoQiXJmLwTrmzfOBrHTxzKyX6CEwfmMksI9NbXHIFBpM8SfBeTnVzwsOP1l
- 9sQUMP8FlyRcgT+pFU+mX41g=
+ t=1795104031; v=1; x=1795708831;
+ b=tLo+B+xeCoSz52Ak/4uTpwVZqOwrb+rQ/CatO3ImXSVHuqnOp9h9UjWf+ggGqjrj2LOKzRoZ
+ P1RQgF817y4R/hgad8n2Lyq0EdBtQQam5gsytoRtxMuZer73TP2gVpucEYc0r/5sxf1sBqMcL/o
+ U7U6f20hfFgFf0v/hSZDGfRw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 79771307de0e0cf3;
-	Thu, 19 Nov 2026 15:57:34 +0000
-X-Mizu-Trace-ID: 79771307de0e0cf3
+Received: by smtp.migadu.com with ESMTPS id d38b154e6baa8d3a;
+	Thu, 19 Nov 2026 16:00:27 +0000
+X-Mizu-Trace-ID: d38b154e6baa8d3a
 X-Migadu-Flow: FLOW_OUT
+Date: Thu, 19 Nov 2026 16:00:23 +0000
+From: Bradley Morgan <bradley.morgan@linux.dev>
+To: david@kernel.org
+CC: akpm@linux-foundation.org, alexander.shishkin@linux.intel.com, ast@kernel.org,
+ bpf@vger.kernel.org, bsegall@google.com, dietmar.eggemann@arm.com,
+ juri.lelli@redhat.com, kees@kernel.org, kprateek.nayak@amd.com,
+ liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ljs@kernel.org, mason@kernel.org, mathieu.poirier@linaro.org,
+ mgorman@suse.de, mhocko@suse.com, mingo@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org,
+ sashiko-bot@kernel.org, songliubraving@fb.com, stable@vger.kernel.org,
+ surenb@google.com, vbabka@kernel.org, vincent.guittot@linaro.org,
+ vschneid@redhat.com, yhs@fb.com
+Subject: Re: [PATCH] fork: clear p->mm when copy_process() fails
+In-Reply-To: <20261119-mm_failed_fork-v1-1-b3019f43d197@kernel.org>
+Message-ID: <7F08BE59-B6F6-4884-AD56-8178335F2C15@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 19 Nov 2026 15:57:34 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Kunwu Chan" <kunwu.chan@linux.dev>
-Message-ID: <6b898ffecaa5b82e06613c60ed0bda6c7df292f0@linux.dev>
-TLS-Required: No
-Subject: Re: [RFC PATCH v4 02/18] mm/swap: clean up hibernation error
- handling
-To: "Lian Wang" <lianux.mm@gmail.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, "Andrew Morton"
- <akpm@linux-foundation.org>, "Chris Li" <chrisl@kernel.org>, "Nhat Pham"
- <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, "Barry Song"
- <baohua@kernel.org>, "Youngjun Park" <youngjun.park@lge.com>, "Kemeng
- Shi" <shikemeng@huaweicloud.com>, "Kairui Song" <kasong@tencent.com>,
- "Jihan LIN" <linjh22s@gmail.com>, "Kees Cook" <kees@kernel.org>, "Gustavo
- A. R. Silva" <gustavoars@kernel.org>, "Thomas Gleixner"
- <tglx@kernel.org>, linux-hardening@vger.kernel.org
-In-Reply-To: <2951eed4feabbf1a72dbcaedfc011782d9885604.1794666741.git.lianux.mm@gmail.com>
-References: <cover.1794666741.git.lianux.mm@gmail.com>
- <2951eed4feabbf1a72dbcaedfc011782d9885604.1794666741.git.lianux.mm@gmail.com>
-X-Rspamd-Queue-Id: 0C685100005
-X-Stat-Signature: 7gw3uqadyzzkji7xnngpo6z8dccf5kdi
-X-Rspam-User: 
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8115320004
+X-Rspam-User:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1795103855-540425
-X-HE-Meta: U2FsdGVkX18tQD3ul56bQjZuM6AyJ7IbRWCsShsLXs+MhZ1VpTdnCX91fqMosACBpIMr3N1trRt3R+03abdacNkva3u6Eird2WLo0Qp0BOCk0LOYjjrqPbbM4KPrG3/o1cMFSfU7qQSxoAIZN9NFGSNzvOZYIcuwLOIrNeiKXa1sfXKn902k33Mo2TH/5Yyhb4NpTRzIldGpPQyIHGJ37kLems6zRuChuKPTkVgKwe7SmZ7UFWn0eUqEZ4VUaqjGsbnuA1kBOzgiJ0uUsGivjxuOyWpYCP5pn5s5B6t4f7s6GGaF3ttS9SxOxajz44gnwfTG+lQn+gbA2sD0Tb1pmnA5vbwdDovkOgOgAOJloeuwmk3DJM0NsqWhy0CekPBEvwyFHhYIp53h0r1P+eFdf3prWa+Pz6SFHl+0SYo796mbDr/FfUaPFF5kxl1stCTpLJF1OkwPnwhHG7En4U/ubtVZy3SrG94DIJWXGHNC05e1RKrZ5cOzazef4um7R4/dP2T2MO+CxgDqYsj4jFqdUGer+hVlWjzEhUE8r5InjsN7760ukGXX9Jg7ZMxNUjWnaN37l+iuC2CxipeClpWEl5rL5N9o3d6miKPhZZAm+gCmYGYRPoaiH/xjJ9NbUtv7kZOR5YpzWaDpGKwOZ+LsCZn8C7PPqqMVaWUQZ9thaiph4Z+s23pqBelYlVkPVzM4rNexSHRCjfz47/0GCZtu3pSSdGFF3zjWjvro7rYwEJpTx/BKqcDeFtPfuxzbGKPC6uul/FFCoGgcemOH2ptbrqMTLeG49wihuRG+vjyAVf33WOJP6R9bu7PviuQ/k7/IfuTqNzpmA+T+cFge6bPf0QzuQLnKrbUdnC0HeNlI8rrfzSlSIy/kHzgN/TS3VYsXWZARSJqGYUyWyXRYuYgevfuMlKhhtOgbuO2b7tYL812pwa/+tpnoSRUCbYXzvkzKUJyWz3KIj+PUa/AdOWG
- GM+cm3Bv
- d4tJxRXhvhfG2TMp35q9uSt5UiaUPy6/Nvz4h7vd4QuTRJi98oJkLlH4h0oZqY7O341PF89YB9iBjgb/pveO7CKYWti1bRqObT064EmChUiMfKr9HPFZw2wfVI+1vuldN3/B58yZivAvBD9CJupb9oVzkHSfunOlWKbRdwQIaur3e2HLF72i/CiXU0IeXRiZdoIiC/VxrzbOMOpd0TLnR9c1sdiXjWiY0X7xsQRw4mwHVZG5wqjsTChkCAuWz5sgfQeePyIq9iDvBLBuXm+fPSE0JZn7Rky0BTv3PExMTmoh/y5cZBiHlcGa5OcFW9ifqmxDm/Hqr9y53c5LGdWdSIPC8Rcb1hnwVi0DTvkBTvebgpxhZssl+JE659iTtGFj2YlwCFEOz+THVGhA=
+X-Stat-Signature: 19sxjugh4mo66u45q91ofnfjdtrucn9j
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1795104032-911100
+X-HE-Meta: U2FsdGVkX18SYxWTViFXIxHqAB7wVEtIzHXzWebAzH7833kPXUVn37gnwt6vdmOEiqoGDS6GyhEYpuWsRmP1BSQZe6e9s4gJHYKtfevKEneaIatr65gRG2hMlPWVmrRd2BAoTbxP0LVheSb/wLjLKU5CKZI5/VG+6IW6K2tL+0D5cAqsc6xKLEbvI1fIHaKs4+rfFOJsJ80DXCGy6gqQIlZv+TNxEqFWJSR41aEJ5/ig76H6aERjyExvuNEAqgG7bWxPROsdXlXrDLQSKzUyILozVTnrdU82afMIvyO1ATiTKadn8gApOCE1ESa1hPmVbS5thjKkn5aA9maw2sFuPUGdcakyjECq+tjcT6t7YRxu2wKnAhpsSUOsC6UnFFba05hRf7bOuj51b8Bsbw5fq/4H0UmdfV8+JIXU6StkO/YKxzGadV7l6cI+D8/W5dizDpcGDWl0OLqT0TP+MGvz4b16XZRYs42jMtD3u2ryTTdxx29Jh1bc04iDRJAHyiXDsaiJR6I8kctDAhnIPqIjVUEUNmjgB+vD0bWBWfL183m5YDhA+hYbj1rDjE0ihqGP/oKloWjK/S6TZuCMrzl0KR/ezRhXzok1zPS8zxk6ACokki0gLDPZemvjgZWiYy4kbmURJDHnFZEwnoSR0/5R6oIal4eUFEpq490VA5MfHTPBpuoY/3HHLM6NZ1BrFUFOPpUpXkZj36pLfSdkP7moihZeY7iwhkOy8U3NAxCrvSKMFPJYJzj2o+vQOVSs2f6DHiurbVyNVWzIWNcDLWNF47FLQKyXAntpVDSRxNH+53dJlFNp1DOxHBfKd38idf9GKNpgsHZdqcVHrzTigD1NTtsk+K2g53KuElQTgsAn2JZopSZXK3KrKm9SGM5fRQzRq4qy+6JOKpkwkLmK8740NAly0UaQdqhAR3N3FEZA2LI7g19lTrpT77pnd7DuKqtJ6xGLIwJaQGpW04aaN6U
+ Tx/8s7y2
+ 2Vu/a7f9K4mVOFRMihUmEREb9Il9yLWKHrwgf4ZL4Pu1oLZIRrXCYtdpQsc/wOEexJ+OlA/wkn2gpokysxr4Bd1g4a02r7DEl5baCZtbO/0lZIWiKOZ+5sbPy1G+2KD2pvY6HUBUZJchfV3nJwnurbouOeg9JVKS9cIhi7GfuNve2jGuqRQtZeR+F3YeD7083kcfGv1K0g2KjugmT2xtVF8XjJpYlHMQZRK58+8SL8favSjV/BF0ypmqs2MSrXckzQvOE0cfpvb+ttjVyKTd5ljkr3bxM0S32IGvDiRxgJO1DeRU/968Ed60fT8ISWmvS0FS+rHP4l3rOsFW/yfjPUwLhp5TXpwmRDBMXJ/l1p3BQqpii8vvKQPa0+lLET4Ba8SZuPX3cM9uhftmARbYzkV9DBfpLuWHGLXLaDgOc7fcY1J3PPYWI/e9IMVrjw4XAtdXbP7V/nyaPvwYG38282K/v+PggCiYDOQDjhEF7T0qFYrligwu0Tk4SiWKhRypQBXGIGp9fh3xUkOArlngcpSPgBWBCZY+O+WFavJzY2XmJvJ99olEBSE+viJ0BAKNJgLJZSrSNc3u479sS/d+zfX6sbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,117 +100,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
->=20
->=20From: Kairui Song <kasong@tencent.com>
->=20
->=20Restructure the error paths in pin_hibernation_swap_type() using a
-> goto out pattern to avoid repeated spin_unlock() calls and simplify
-> the return flow. Also simplify unpin_hibernation_swap_type() by
-> making the si NULL check inline, and clean up find_first_swap() to
-> avoid an early return inside the loop.
->=20
->=20Signed-off-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
-> ---
->  mm/swapfile.c | 39 +++++++++++++++++----------------------
->  1 file changed, 17 insertions(+), 22 deletions(-)
->=20
->=20diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index c41c4d26a7e6..c69a924acb74 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -2331,21 +2331,18 @@ static int __find_hibernation_swap_type(dev_t d=
-evice, sector_t offset)
->  */
->  int pin_hibernation_swap_type(dev_t device, sector_t offset)
->  {
-> - int type;
-> + int ret;
->  struct swap_info_struct *si;
->=20=20
->=20 spin_lock(&swap_lock);
-> + ret =3D __find_hibernation_swap_type(device, offset);
-> + if (ret < 0)
-> + goto out;
->=20=20
->=20- type =3D __find_hibernation_swap_type(device, offset);
-> - if (type < 0) {
-> - spin_unlock(&swap_lock);
-> - return type;
-> - }
-> -
-> - si =3D swap_type_to_info(type);
-> + si =3D swap_type_to_info(ret);
->  if (WARN_ON_ONCE(!si)) {
-> - spin_unlock(&swap_lock);
-> - return -ENODEV;
-> + ret =3D -ENODEV;
-> + goto out;
->  }
->=20=20
->=20 /*
-> @@ -2354,14 +2351,15 @@ int pin_hibernation_swap_type(dev_t device, sec=
-tor_t offset)
->  * the same session.
->  */
->  if (WARN_ON_ONCE(si->flags & SWP_HIBERNATION)) {
-> - spin_unlock(&swap_lock);
-> - return -EBUSY;
-> + ret =3D -EBUSY;
-> + goto out;
->  }
->=20=20
->=20 si->flags |=3D SWP_HIBERNATION;
->=20=20
->=20+out:
->  spin_unlock(&swap_lock);
-> - return type;
-> + return ret;
->  }
->=20=20
->=20 /**
-> @@ -2441,11 +2439,8 @@ void unpin_hibernation_swap_type(int type)
->=20=20
->=20 spin_lock(&swap_lock);
->  si =3D swap_type_to_info(type);
-> - if (!si) {
-> - spin_unlock(&swap_lock);
-> - return;
-> - }
-> - si->flags &=3D ~SWP_HIBERNATION;
-> + if (si)
-> + si->flags &=3D ~SWP_HIBERNATION;
->  spin_unlock(&swap_lock);
->  }
->=20=20
->=20@@ -2480,7 +2475,7 @@ int find_hibernation_swap_type(dev_t device, se=
-ctor_t offset)
->=20=20
->=20 int find_first_swap(dev_t *device)
->  {
-> - int type;
-> + int type, ret =3D -ENODEV;
->=20=20
->=20 spin_lock(&swap_lock);
->  for (type =3D 0; type < nr_swapfiles; type++) {
-> @@ -2489,11 +2484,11 @@ int find_first_swap(dev_t *device)
->  if (!(sis->flags & SWP_WRITEOK))
->  continue;
->  *device =3D sis->bdev->bd_dev;
-> - spin_unlock(&swap_lock);
-> - return type;
-> + ret =3D type;
-> + break;
->  }
->  spin_unlock(&swap_lock);
-> - return -ENODEV;
-> + return ret;
->  }
->=20=20
->=20 /*
+On 19 November 2026 08:04:58 GMT, "David Hildenbrand (Arm)"
+<david@kernel.org> wrote:
+>From: Chris Mason <mason@kernel.org>
+>
+>When copy_process() fails after copy_mm(), the error path drops the mm
+>reference but leaves p->mm set. Perf and BPF can still reach the
+>task, and take a reference on the already freed mm through get_task_mm()
+>or bpf_find_vma(), resulting in a use-after-free:
+>
+>    copy_process()               PERF_EVENT_IOC_SET_FILTER
+>    ==============               =========================
+>    perf_event_init_task(p)
+>    copy_mm(p)
+>    a later step fails
+>    mmput(p->mm)
+>      /* frees the mm */
+>                                 perf_event_addr_filters_apply()
+>                                   get_task_mm(p)
+>                                     /* use-after-free */
+>
+>Similarly, a BPF program on the task_free LSM hook can call
+>bpf_find_vma(p)
+>before the task is freed.
+>
+>Fix it by clearing p->mm under task_lock() before dropping the reference,
+>just like exit_mm() does.
+>
+>Further, if copy_process() fails before copy_mm(), p->mm is still the
+>parent's mm pointer copied by dup_task_struct(), without having taken a
+>reference. While nobody can access it concurrently, there is the
+>chance that it might get accessed later when a BPF program is attached
+>to free_task().
+>
+>With CONFIG_MEMCG the task is freed after an RCU grace period, so the
+>parent might already be gone and p->mm in the child points at something
+>that was already freed. So let's just clear p->mm before freeing the
+>task. No lock is required as there cannot be concurrent access (and we
+>might not even have the lock initialized yet).
+>
+>This has medium urgency.
+>
+>Fixes: 375637bc5249 ("perf/core: Introduce address range filtering")
+>Fixes: 7c7e3d31e785 ("bpf: Introduce helper bpf_find_vma")
+>Reported-by: Sashiko <sashiko-bot@kernel.org>
+>Closes: https://lore.kernel.org/sashiko-outbox-180866@kernel.org/
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Chris Mason <mason@kernel.org>
+>[ david: simplify description and comments ]
+
+Reviewed-by: Bradley Morgan <bradley.morgan@linux.dev>
+
+
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+>I can take this through my tree (rather soonish) unless someone else
+>wants to pick this up.
+>---
+> kernel/fork.c | 15 +++++++++++++--
+> 1 file changed, 13 insertions(+), 2 deletions(-)
+>
+>diff --git a/kernel/fork.c b/kernel/fork.c
+>index 5efceb8d58a78..77d6c8fc38c66 100644
+>--- a/kernel/fork.c
+>+++ b/kernel/fork.c
+>@@ -2628,8 +2628,14 @@ __latent_entropy struct task_struct *copy_process(
+> bad_fork_cleanup_mm:
+> 	sched_cache_fork_cleanup(p);
+> 	if (p->mm) {
+>-		mm_clear_owner(p->mm, p);
+>-		mmput(p->mm);
+>+		struct mm_struct *mm = p->mm;
+>+
+>+		/* Perf events and BPF programs can still reach p. */
+>+		task_lock(p);
+>+		p->mm = NULL;
+>+		task_unlock(p);
+>+		mm_clear_owner(mm, p);
+>+		mmput(mm);
+> 	}
+> bad_fork_cleanup_signal:
+> 	if (!(clone_flags & CLONE_THREAD))
+>@@ -2663,6 +2669,11 @@ __latent_entropy struct task_struct *copy_process(
+> 	exit_cred_namespaces(p);
+> 	exit_creds(p);
+> bad_fork_free:
+>+	/*
+>+	 * If set, p->mm points at the parent's mm without a reference. Nobody
+>+	 * can access it concurrently anymore, but prevent later access.
+>+	 */
+>+	p->mm = NULL;
+> 	WRITE_ONCE(p->__state, TASK_DEAD);
+> 	exit_task_stack_account(p);
+> 	put_task_stack(p);
+>
+>---
+>base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
+>change-id: 20261119-mm_failed_fork-a46141b503d0
+>
+>Best regards,
+>--  
+>David Hildenbrand (Arm) <david@kernel.org>
+>
+>
 >
 
-Thanks!
 
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+--- Thanks!
 
