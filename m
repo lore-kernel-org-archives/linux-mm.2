@@ -1,144 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8E3606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 07:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74527606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 07:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ciq6flFz
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=mSQMNIms
 Received: by kanga.kvack.org (Postfix)
-	id D0A4A6B05B5; Thu, 19 Nov 2026 02:48:55 -0500 (EST)
+	id 7BA756B05B4; Thu, 19 Nov 2026 02:51:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE2316B05B6; Thu, 19 Nov 2026 02:48:55 -0500 (EST)
+	id 7900D6B05B7; Thu, 19 Nov 2026 02:51:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF8036B05B7; Thu, 19 Nov 2026 02:48:55 -0500 (EST)
+	id 6A6146B05B8; Thu, 19 Nov 2026 02:51:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 83A586B05B5
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:48:55 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 02B7D1C3EBB
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:48:54 +0000 (UTC)
-X-FDA: 85451092230.01.B36BDC2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 46B7920006
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:48:53 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ciq6flFz;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 343A66B05B4
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:51:27 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 828B3140962
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:51:26 +0000 (UTC)
+X-FDA: 85451098572.15.CE725BF
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9FE53120003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:51:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=mSQMNIms;
+	spf=pass (imf29.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795074533;
-	b=lXyD2+IMrV+aWNpsfkMwqU286pJOVyT2RYw3wzWYBsP93FALChS5FjcwL66MDLIe1lCHnp
-	HbvX7eyoz3inZGFhGfcRsTzNs32vfTWRH4v3cKvY+jSly3oJkPhu9j/ufTKCnW4jHwJCD1
-	lPbMHlDJzPAwwwa0ubwiRBbowbwKLSs=
+	t=1795074684;
+	b=LlyCmAda0P/MvOR4Ux/LiBAHMmSGalaCWmVmg48el0haIk84CSTgtWbK41sJHBw9xcuhy9
+	77FBLBl//mZYd10EzqG79XmEDMgBBlqcPzRXz1Gmu3/p1qWqfTejxU6NA3o7saBoMgVFpM
+	ZuZMl0QcsMoiQzx30Pn3vabI52VeB6g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795074533;
+	s=arc-20220608; t=1795074684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fmEEuBhQEJvXv8kkt6xrkH1QI8J0H1ekkc6D5vAoRVM=;
-	b=pXjGnXyeFoLFb7p3eC8C4ngyQn/1aLLMEi8ab1WnAS0YRfJPeWg4KZR4vEXtZ1WsQ639pe
-	MXeEGZkAUa8OI2qujNbB0bUHXwyPHDAva3DeIbVLmO5kUyJ7QXo/DyGqRQTmJ2cte7TUPY
-	A63Gz4ah+VnO9zPFlwqAhs1XS//IgCw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Ba+Nnv4ioOHEAc+i4gjL1aVglKq6uZ57iPLZC0JP+/0=;
+	b=rHtVuF/yMe4NBXJPHZr9QPz130Ya8qTpg33OooA1ah5YVY2TpSeWW1RAwAhiudGxQhy193
+	5xH32IEMm+TVl7l/twHaZL5QbzIDNEXF4k2gsfdOwYe+Qe6Yg5reU6SjvNQv3wd+YUmxmo
+	0aBQ2dXG8tjICfHCzFudBCg/FScgb58=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ciq6flFz;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D582D611AB;
-	Thu, 19 Nov 2026 07:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD601F000C4;
-	Thu, 19 Nov 2026 07:48:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795074532;
-	bh=fmEEuBhQEJvXv8kkt6xrkH1QI8J0H1ekkc6D5vAoRVM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ciq6flFzwdeRLc7uUxncc+kZ3xdYzvcYlSCy71E8AlS0DHPOb6uW/8SBI1HGGRttH
-	 SOABX52VWPvnCy5v6k0R5k4qGvsaEFBNUJWIcPDBN8t6J8YbfVookkAwHhlIkH9YDT
-	 CE4CqGKkZaXYpASzRCAT7gier5sdUp628xa/ozuqXaKWmdPoWkSVZps45eMMGtzgEC
-	 BOH8Rk6VPSUbjglXKZJGAAxqBo+1NOEwGJI1zxo8A1v57gGRuDBbz63a3dL45IVy5F
-	 P+ymYgGewPwP9ifIm30BWsXR2VpP8dZifC2l93ECd1VHXIm6VPFFLGKtC1Fvc697wP
-	 1Brt7TJfTvo2w==
-Message-ID: <8f2a0f78-6f76-4a5e-a6c9-b36638addc78@kernel.org>
-Date: Thu, 19 Nov 2026 08:48:45 +0100
+	imf29.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=mSQMNIms;
+	spf=pass (imf29.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1795074578;
+	bh=Ba+Nnv4ioOHEAc+i4gjL1aVglKq6uZ57iPLZC0JP+/0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=mSQMNIms6b2a847Jv0CgJNJV6Yl+BsggwHWjh9g2APDz6npLJmeQTsJjoBAl8zBU9
+	 6xlhSRnv4OXGNVqp4Rjxep8LZXJJtV7C4cr3+MsaSsBBmZVkxxPZ9Ow0BOQKbOlRIJ
+	 /KjHyZtvBlohbGVHlBemOYJe/2lyZpuolJq54c3w=
+X-QQ-mid: esmtpsz20t1795074573t21a8dba9
+X-QQ-Originating-IP: g/JHC0RTM9WfBbnsRPMGVVkJ0qD18o0qUXMwBFz46jY=
+Received: from PECI3347 ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 19 Nov 2026 15:49:25 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 6967146943735712994
+EX-QQ-RecipientCnt: 18
+From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+To: linux-mm@kvack.org,
+	linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Qi Zheng <qi.zheng@linux.dev>
+Subject: [PATCH] Docs/mm: fix stale split page table lock references
+Date: Thu, 19 Nov 2026 15:48:53 +0800
+Message-ID: <32FBD023F945BCCE+20261119074854.252609-1-zhaozhengzhuo@uniontech.com>
+X-Mailer: git-send-email 2.50.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/gup: add memfd_pin_folios_supported() helper
-To: Jiahao Xu <xujiahao@cmss.chinamobile.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- Samiullah Khawaja <skhawaja@google.com>,
- syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com
-References: <20261119104417.312237-1-xujiahao@cmss.chinamobile.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261119104417.312237-1-xujiahao@cmss.chinamobile.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pfkknj783gd1kq67x91z64gp1k9sdpge
-X-Rspamd-Queue-Id: 46B7920006
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: Nm3/xtCLAPd0xZhFJxT4TR8Of5LS6XRU+SWytWF0VPwHy0CRNWSnWjEq
+	HPuOb0jJ1eoBS3FIktmCpB4jDKfHE2srNMVBv15Y4SPnblH+aIraKCSn5VZzTwjgzMT5LJL
+	YNn3D7FzNqb683PGEgbvGX60E3DQKGht7YBYZHob6wMQ6XIEiJ6KdIe8GAaO+j2FaT/tqvv
+	dKvHDZzERZRleXgfS6dsEXMMUsaDW5vSStUkMVepJdPRlgmLAIadon5h3+JDxV1bNf20ZDO
+	Vv9XAsAhoTclQobIhqtTfzd1iNVRqBBp5eiBjrIN9frb36Q9jN2r4FsNHhDJ9NmK0qo7q8/
+	Wo3slUYCmdm+/rJp7spJeh+b6jAfTqbX+igRqepyJzo2C6CbTlXIm15JZiNPS+M+Vq/itlA
+	FTlIeHU04U5MGa3X4qQlU/26dP0lFAgTpb+u4MezS2urW3Jy9Njk5T1lnXeAjhaGkAH0NaI
+	/dSQgXKz8zfatRE/p+NCwOOp1Z8JPChowq7wMwtI18uUF7IbRTzltu+xFEz9NDofiv6ZFVL
+	kjlnlT8UPljb4AkneEbzFxYubOhsvA21jwUPm4prKY7QgQFogLCiPydjnIJXM27OXXXODjD
+	l5WeB1/i29eB5aS2nkkhhfPTfRhi5FGLJ/EaL3EahbDsqSA+q48IFDW6ZmFp6RkUMYQecgZ
+	C0l44RrahBkrx6sCKTm/FWIHboL5Dm+kmr+mN6m6ByX89gXsk41O5/sqE9Cy6rWwFOQJ4+E
+	/m/NtSZ4KsMhZgWbrqzf+mLDWvCG8ySx0280oZHJRi6EudFCa+r5M6B06vnpUvLdGfhIf1t
+	MkZmgh/uDZSIpN6AmpJTnST1CfqHsySP+0Hp9r30GBWsW10YYBN6aPJcBYN/Dx31BGxPhCS
+	NnQf7NJGP5jizgPdMYrnC5/diZXERBj8qa5ETSXMHWAiXtfbVQLvERd/5qZwbf9P1UcOpw7
+	sGYlXJ6p53aWVodL1ROrvtoYDHUV90Xb63GkR7VbdA7O6UypohLTb7ah14DbD/Sk9oEPfQb
+	KbGAPOkPa0ECegsGSeHat3Wn1qy01oz/3UxvbxnuoLWhVkKQ/uiJR6T8w7hMAtBqn1CjqZ0
+	De5PVNbA3THHxIs1MdOzYnRvuyIgiC2ygzG3IiTukM4n+COanQXcKI+ClUR6jRywUn1ZG68
+	1Kef
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9FE53120003
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Stat-Signature: meqa9nfh5dmind35p6k3pifu8wi5qcwo
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795074533-36115
-X-HE-Meta: U2FsdGVkX18T93WJBHKgfIIUuOUsRrUzqXwcSJcPVW2uE9XwaXUo0tmW3yO/e7/PLt/8hnnTA7SbEPoY0dPQqUCDINIChkUtb0o1rX86jdCWSKKLMqgZO6tXmbeXkMISl/U5CIMSyfEqYiL0hYilceQgPyvkEYii8uwdM3S85XZHp8CouSDIFBqlySZmozDxLZm27uksAIbz/qoJ7DyVpX6tMKPafVfepyhii7DJEouEiSbALIZOS9l0YqlYNBvW9BzjStZVmJPHA6iA/BSESh6UBT0gjf47vIIMESlp9Da+Qpf75Y6SrZZBpQGDBAjqfsvchMaklQJ80NNPfocV6huVcpZL88gManNniSTUeDXp0igLkOlDqADkfyDV91bSmkgpjbKVt8DM/blFUQ+6QVeU4o0Y98PBNOuScK8+scnOP4zECNHKVmgyDl8zqoO4mstE25D1z59SoscVYNo/XcL+53L1P0eT3uvU9NIbrSg+M6vpWpGtwu6Ncc8+Vcbure4+QWP53yGxtCX9m7le57Or4uBBDUe9cRC1VKWyhsj6pbud3rzQOiDwx1Yr6C3d9gVQlx4LwXcOMKY9r3MxnjTC5EYcMFawhTd5C7jz0oQ6O0Hq0pZQ/Iok1SM8a93MG1DxKpQ51zkvMlhemDAtpysIAEFR5y2XVsENZfnhIQcEcT+pRRhbDFjXyU8DtOEO7+uFEr0e/SqxlZ6g5edDRH/n0KV3QeKbujJmtjOmSvCQfE9Fc/Ms2jx5ysylUxAaOufEP8ODUdaoLV3zI5YHGpZB3suleIe4F/ZRAJ50KnKjHuw3vLMwU8QC0jAxFBNNszvzA64EQVPhT4JY5a+Md3L36KOAdmHflMyBeZBTbc6vuPx8zctfqTJWw36s1cwiFrrCk/Gx7x0mCDWr4czn61Rl7kl2khQZYL5nFht/bpO749p5VMbn8xCv558PCmnFbBw2o87K7E83cBfSFXk
- Ry3qxOqI
- 84VsD0vPsuXmPZYtHGBi+CKKWcMwHK1XicIWtCQC2avNyuCXykOYK+WOis155yvejP9F3jbdGjlxvgD7GePyfD49YftCqRJInK6Vzu5aFl9cw6PIM3+Z5fflt97Pz04MWY+VnKvkQBnVBu21jgjEyd32i7PvomXS69QFylX8ByydIZKrr0cgBNJai4YexI9JJ1Vlsd7LNaEQDSBqA94FaSsvWJOPgjRLL3krIx7+qir7KC4sTljBpDu5OBnZ1FrmpDvkAMrXLb7NVapFXQ+/MRJF66QR0iwKQxqYMaEONl157y1bf/ZSHt1jScFYHEEL8CXIDYnE440HahvNJbhNvSZ/HIL+gaV5pOEZzi5VsFhGzEIl3/saG2iJ75HJLTINyIAF20lvtwrSxClj4XodOl1qECfCzb3Ucnkv3KejtdJu4U0Xf0Tqrpjh+OOsYyLqAwXgh03MIubXo3RBlpyyH0OV5k7Kn4tdSKhfAJ5UKGzRgQF0f5yFuEMf7QCZE3DjoaqsDuWhmJmQsTAPeTkcwNP9HkPlZuDiGNJHg9DwXuxWQXoZkssy2FXnacL3SM40eAg2YBs/BL8MJsrrQSGsr5jfFvYXE6/z9t9N94WJDbDac/x4=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795074682-641481
+X-HE-Meta: U2FsdGVkX19g9OMz2thXPSCgVfQ2SfymUXJ4jbdaEBkql1wULniFeTuWLZs66ckJuXTRHDmmKHt1ONxxqpsO9r76QZqdCP6xAo/mO9jWUaMS2s/ZC4SQM76AjLIoC79OxW+U64S1wZJj/GoQ47EVetB9leHK9xwXCnfz9c2En+7E8FJnfMnepHWSEv7WIomH4lJzbVG4XPWTWAKbQo3rKuOEhPg+BrDaKZhZbn1aagVkJzP4bL8Hv4ifRGijUIyBn3pYroLHtHAhODdX0h1NZVmPL4sKFy2AOTzvFgrzbRijSpX940WBGqg+ZcZG2zBEJKwdZost6m0Pz//O++IWr6OzPTIT5U1c0QuGnV8M/VAUhqXKyA70HRqIxiWKJXD2L8vAcrx45S0DOCt/fKKYD2v0LdkLj6s3tQL6jTEuphtAJajFhoi2fJO5jRJMQxEOIPqplf4oucCbo2yw4irTAuJBF7EGmWZTdysQfNAqRZ/RL89ILp4rDCV+Rt5wJM9F6dS1EqwAMOrF6jAwv7exyfTZPh6cwLJck890HIHDdblEBaEQvQYBhuv5Skmpr5w5kJtYKYsWJwR1yJ9tIwLH8Zkf8dT/+UPo8MZXbeHwIht0J6VkePeXALhn9Odt9PhNwRqE2OXl5P0gJJVFm0j697m9CnJz6m/U0+dQxVfgUlgj9ulmieO0PcMDP2mCqFfpWyWSleRIchWv2AFQoloYL5HttqrkDHtRxk8rwAes9cQmFzq1/Htf9fXVjM/cZFtb3KgAF4THvHY5DRX8XeVQjonCNn6xgTRlls8xOguXi7EkKGbHQP2PmApLTp6jDHXd7rS+4O5xgMayvfDRa/dFAuh6XEu34XT74VA6NPhnq8DvyzFFweUXKrSINRNpa13dv9sAhP5F3SugX/zXHjnYr9peQ37tdRUkOvkzI+GCWDLsYYWjDHV3GJDENHi3OGfwdYuXSJx7EYO250gQ23S
+ yBRMDUlD
+ 5ocEKImzmdEIY/8+TCHNU1+rW+YptNLH5/AN868q/vxS9sSJMKgQGT68vx63Y4/sjGVG8dpmn52oEk7PvJNzcRNPDtKN1NMLdKPa70fQbVul2Ai9xV8MgeztZlhLm+LjiYxcfSCA57XrkhyIwWbDC/cOj0ev4nKzj0qX5aw+slIeC7bS7NB8Ga2ZhHcFkI0BzqBRzMoUR6l3FWyApFlQbrmIyP7IOupsqds8dybo4/r0StU9mGQcfsrbODZfWN6TYKtkugTySVs5S3qHkWLPv4u+JdaL4X2CxUAB7W/QKX/bPLXiTBcNUp3WMMH/+eQLQK91qnXwz82EqKoAg5GB+C4siAGdUCkUrwt39nZkmq8DX8P1krpDwh/YrySdauNp+eQrXDc7dw2ine6npl2nLUEMKFL5VSVzGc5FyxSQ8Xf7hp5NCt9z/ZfGQxTzSwWhpJ7U8V90Vt1PiLBR+GND2KxMjhjjm8yeWeqLMPrBpIflamvzr3ln7XZCKCnsWcplOJbyfjIQ8npD4A5+ZOdCybYXJXsQ1gQEmktJQWot3hKupjFqtf5vjdAk/ChW94h9YkIAxAWhG63VjANOYVF1BgBu6/Kb4XTZHtxxL4TYJD/VHsBI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,75 +129,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 03:44, Jiahao Xu wrote:
-> memfd_pin_folios() accepts only shmem and file-hugetlb files and enforces
-> that inline with shmem_file() and is_file_hugepages().  A caller that has
-> to know up front whether a file may be handed to memfd_pin_folios()
-> cannot use those predicates: since d3710111839d ("mm/shmem: make
-> shmem_file() check the file's inode") shmem_file() is an out-of-line
-> function in mm/shmem.c which is not exported, so modules cannot call it,
-> and is_file_hugepages() on its own is not the same question.
-> 
-> Provide the check as an exported helper next to memfd_pin_folios() and
-> use it inside memfd_pin_folios() itself, so that a single place decides
-> which files may be pinned.
-> 
-> Signed-off-by: Jiahao Xu <xujiahao@cmss.chinamobile.com>
-> ---
->  include/linux/mm.h |  1 +
->  mm/gup.c           | 18 +++++++++++++++++-
->  2 files changed, 18 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 040cff643..e401edc93 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3600,6 +3600,7 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
->  long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
->  		      struct folio **folios, unsigned int max_folios,
->  		      pgoff_t *offset);
-> +bool memfd_pin_folios_supported(struct file *file);
->  int folio_add_pins(struct folio *folio, unsigned int pins);
->  
->  int get_user_pages_fast(unsigned long start, int nr_pages,
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 7605da0e0..90ac51207 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -3449,6 +3449,22 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
->  }
->  EXPORT_SYMBOL(pin_user_pages_unlocked);
->  
-> +/**
-> + * memfd_pin_folios_supported() - check if memfd_pin_folios() can pin a file
-> + * @file: the file to check
-> + *
-> + * memfd_pin_folios() only accepts files backed by shmem or by hugetlb, so
-> + * callers that have to validate a file before pinning it, or before taking a
-> + * reference to it, can use this helper instead of duplicating the check.
-> + *
-> + * Return: true if @file may be passed to memfd_pin_folios().
-> + */
-> +bool memfd_pin_folios_supported(struct file *file)
-> +{
-> +	return shmem_file(file) || is_file_hugepages(file);
+The USE_SPLIT_PTE_PTLOCKS and USE_SPLIT_PMD_PTLOCKS macros were turned
+into Kconfig options, and CONFIG_SPLIT_PTLOCK_CPUS was replaced, but two
+Documentation/mm files still refer to the old names.
 
-It's odd that you would be asking an interface specific for "memfd" whether some
-random file would be supported. It's in the name: memfd.
+Update both references.
 
-I think the better question is: "is this a memfd". or "is this compatible with
-memfd thingies" ?
+Fixes: 394290cba966 ("mm: turn USE_SPLIT_PTE_PTLOCKS / USE_SPLIT_PTE_PTLOCKS into Kconfig options")
+Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+---
+ Documentation/mm/process_addrs.rst         | 2 +-
+ Documentation/mm/split_page_table_lock.rst | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-file_is_memfd -- but we accept also other files, there are not strictly memfds
-
-Hm.
-
-file_is_memfd_compatible ?
-
-Maybe there are better suggestions.
-
+diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
+index 04b649818cc1..0b6355e6d1d5 100644
+--- a/Documentation/mm/process_addrs.rst
++++ b/Documentation/mm/process_addrs.rst
+@@ -659,7 +659,7 @@ acquired in :c:func:`!__p4d_alloc`, :c:func:`!__pud_alloc` and
+    references the :c:member:`!mm->page_table_lock`.
+ 
+ Allocating a PTE will either use the :c:member:`!mm->page_table_lock` or, if
+-:c:macro:`!USE_SPLIT_PMD_PTLOCKS` is defined, a lock embedded in the PMD
++:c:macro:`!CONFIG_SPLIT_PMD_PTLOCKS` is enabled, a lock embedded in the PMD
+ physical page metadata in the form of a :c:struct:`!struct ptdesc`, acquired by
+ :c:func:`!pmd_ptdesc` called from :c:func:`!pmd_lock` and ultimately
+ :c:func:`!__pte_alloc`.
+diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
+index cc3cd46abd1b..ce7908bebce9 100644
+--- a/Documentation/mm/split_page_table_lock.rst
++++ b/Documentation/mm/split_page_table_lock.rst
+@@ -37,9 +37,11 @@ There are helpers to lock/unlock a table and other accessor functions:
+  - pmd_lockptr()
+ 	returns pointer to PMD table lock;
+ 
+-Split page table lock for PTE tables is enabled compile-time if
+-CONFIG_SPLIT_PTLOCK_CPUS (usually 4) is less or equal to NR_CPUS.
+-If split lock is disabled, all tables are guarded by mm->page_table_lock.
++Split page table lock for PTE tables is enabled at compile time when
++CONFIG_SPLIT_PTE_PTLOCKS is enabled.  This option requires CONFIG_MMU and
++CONFIG_SMP, with CONFIG_NR_CPUS set to at least 4 (see mm/Kconfig for
++architecture-specific restrictions).  If split lock is disabled, all
++tables are guarded by mm->page_table_lock.
+ 
+ Split page table lock for PMD tables is enabled, if it's enabled for PTE
+ tables and the architecture supports it (see below).
 -- 
-Cheers,
+2.50.1
 
-David
 
