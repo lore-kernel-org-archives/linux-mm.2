@@ -1,68 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697E5606A333
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 18:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942E6606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 18:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SXMU8n0n
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=amrJ4pzI
 Received: by kanga.kvack.org (Postfix)
-	id 81A3B6B0634; Thu, 19 Nov 2026 13:23:15 -0500 (EST)
+	id 97A986B0638; Thu, 19 Nov 2026 13:23:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CB226B06BB; Thu, 19 Nov 2026 13:23:15 -0500 (EST)
+	id 92B226B06C9; Thu, 19 Nov 2026 13:23:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B9356B0681; Thu, 19 Nov 2026 13:23:15 -0500 (EST)
+	id 840F66B06CA; Thu, 19 Nov 2026 13:23:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 479C86B06C3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:23:15 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C71CF1604A6
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:23:14 +0000 (UTC)
-X-FDA: 85452690708.01.7E611CD
+	by kanga.kvack.org (Postfix) with ESMTP id 4FE706B0638
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 13:23:45 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C12081C4641
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:23:44 +0000 (UTC)
+X-FDA: 85452691968.15.7E10FC1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3DE0D40009
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:22:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	none
+	by imf12.hostedemail.com (Postfix) with ESMTP id 347F240011
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:23:25 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=amrJ4pzI;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795112605;
+	b=dGUQ+kkOCcAXnqmFMT91Ka/LbXZ/rnQzjv4f8+ITzwR97T5i+HBmqKmtuaUV2E9omgsdDe
+	Wmire4OxFnFJ3GB3nsCkT0feialnGdjhWmmPJ3a8GgC53ejn1asfJ84rJ9L/x5PXW7Y34c
+	9GeZWgH2HQ+XmK7207l7SZDeBfQcnNw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795112605;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Z8mpR5ylQkmnGXWRC1m21E/yL3AzzQUM7LJwaY7fu9w=;
+	b=Ig7vfxei2EfxoS9B9w0njdnYGoV4M/3dv0BVakK4Txq7FW/XAKqidcOlFqj0v6L/pScWMi
+	kbGAzaDwqoy+nJu9xIQIbaReQmlQ7MGxkwWUD/UBBUq9yFxEmw1hU5z+VVbMdbzv2/VgBP
+	Fa38zGN1o/7d8poNghMOFZ3rWkM4cJg=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=amrJ4pzI;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 80B5360D43;
-	Thu, 19 Nov 2026 18:22:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA991F000C5;
-	Thu, 19 Nov 2026 18:22:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C657D60D43;
+	Thu, 19 Nov 2026 18:23:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCBD1F000C7;
+	Thu, 19 Nov 2026 18:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795112574;
-	bh=ZfsfFEJM82krByuOVGPOZZKv9Osma7QbzsdrPPTac/s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SXMU8n0n7HXvIZMBaIH/Sj2ALikU/NZyraGWrOKCkESGWY7SJKRbHud/A4KvFVB4Q
-	 SbIrRDc/P6vWCjfXMaopS3UWETKT4B6yGuhi+pwrAK8SNQHvCfylkkG1NBFmw6gvIu
-	 H3bN2qXd0b/JXtif/5WkqT0iz3DHkOvjB2r7E99qPBiDguG886zzvpVAVt5VbyxTVj
-	 mvOAFdaP+g0/FxNTAcjBBPTeOdxC2LqscC2wf1QFaL1OyJoBzvlXAfw305Xvet0ALF
-	 Z4+TZF+DOH1qNJmzg77iUGY0b74R0BV3AqdQ7EEpvR+VrwctmUyYm024rgLCT4LAsn
-	 V5LIXAAUjSKNw==
-Date: Thu, 19 Nov 2026 18:22:49 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Avi Weiss <thnkslprpt@gmail.com>
-Cc: david@kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
-	peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	liam@infradead.org, mhocko@suse.com, surenb@google.com, vbabka@kernel.org
-Subject: Re: [PATCH] mm: skip temporary folio allocation for anonymous UFFD
- missing faults
-Message-ID: <av88TW3GQRvXJDwA@gremlin>
-References: <20261119180015.933433-1-thnkslprpt@gmail.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261119180015.933433-1-thnkslprpt@gmail.com>
-X-Rspamd-Queue-Id: 3DE0D40009
-X-Stat-Signature: wcm6x3cah1zfy5a4ndrnn6j68wuyfahk
-X-Rspam-User: nil
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1795112604;
+	bh=Z8mpR5ylQkmnGXWRC1m21E/yL3AzzQUM7LJwaY7fu9w=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=amrJ4pzIElTsGWji6XhhRlfF41ctICr/xuoE7aQgTnFgJDIFj5qqGzf1sumLb+MCo
+	 Myes8EYfjtW1OrsyvSCtsLqwEWkAaWR+VbiE7/rLr55/7j4jrkAVcjDPtgyiEywdR+
+	 I+NTq5YTFTXLm/bMIotAm5BcV0Y1JudFUfgl/Rab40i6DK0SQ26Js8CY2f2kGcG5GF
+	 ZVsHiKDAF/iF4RQLRWdHnSuqKqerR8ZlIxhwNTRB1Rg8L56m2W0/on2a1emakncskv
+	 EKsACL4kYLUeKRrxvtaWZsM5KSC97Z/us/SzztHA+dCNJL3d2v9dKDutE0U9DyFxc4
+	 MWCbcF8QmVW6Q==
+Message-ID: <sashiko-outbox-223766@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] shmem: consume the reserved xattr space despite remount
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Andrew Morton" <akpm@linux-foundation.org>, "Christian Brauner" <brauner@kernel.org>
+Cc: linux-mm@kvack.org, syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com, "Hugh
+ Dickins" <hughd@google.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Miklos
+ Szeredi" <mszeredi@redhat.com>
+In-Reply-To: <00461f0c866d4a4eb9f50792f0e1f3d0.1@linux-foundation.org>
+References: <00461f0c866d4a4eb9f50792f0e1f3d0.1@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 19 Nov 2026 18:23:23 +0000
+X-Rspamd-Queue-Id: 347F240011
+X-Stat-Signature: p5p477tecuo1acywpj5pzusdp4hi5acs
+X-Rspam-User:
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1795112575-545862
-X-HE-Meta: U2FsdGVkX195x85qoelobhUr2Px7DU2OxmMkFP5qiaCbKLUsWV13G4snzwLQPOrCmodjqh9Drgi5L71Q0oQhr6ZrMQGsclCOUdcjs+0ow1fQC8VDIJdkY6kEjFXkha+aSnxMdOg7einbu5aOT1N6NqRNIlj8uReFJjkxiZjz9OVhx/pGfTE6xKW00zey3+xvrRi/w+HWBH7F/9vAwurJq5Lybvt3nzUx2ClI1wskT/yXTB3Crfr2o4dEKGbPWLWiZzvh0oES0wbqd1ZMHRPm3JMuo3QHL6AL7wHws0v3oppfbVhLqoxw8p+Lnnb5U3gwIX95n2JW6sVE31xg79YzN5BfxZI+jXgb40R9FV5ao5d6COuHu2B97BUgFyegxZagurmY469ibqBBmd4TPoWBpksbVe8BL4Co2MGyD5bfEKavgTCOdf+70jmhay2rBgMvbWEBZebx/JhjAMBWJwMy2CoSIk7tOY+8
+X-HE-Tag: 1795112605-35980
+X-HE-Meta: U2FsdGVkX1/NBIdsdh2jeTkiETwSYZcf2psfk1SY26XrbEyjG6Q0HLGyV64Ai8hpoMAMcHgZfax0a8Sv6eAOZTgiMWb4jms2XU831q//DxB9JZ3VauYsSEOSe4A/QozcDRerSTqccFTBoG1FSxa/JSDpEPwovH7rGyjMNRJFXRVjcrg95yNuUeinK4blfu0ygv4Hzf1kV1A8WVeVGFvWHy/YSXOP9KKRfKpMnNcj2z+hIn+vHq3s2sLkjjZ5upHCetUGYEpJeuks24jy3YS5bClBzRm8C/39PlxOTijC7k2v1mE/jritd5HJXsIpSP73A5RrgYpPtJphcgvCDlQYKhK3xAHwukUYgF88CrgE43k8D79xmhKirLdQVG4bCzbmuIngu//EWyoZihve2GRxYun1Y+j+9BvR7blQeuP15ZB4Yt5NDSPs0jj+X2G776ZYBKEWpYQRt6auGG+oby3dNX2lYBuZB/YraP13n+GV5iMZHswrEIGAsl/urpiK9gOs34mJ/dvYMm60ZzOA9VXy7HtYRQyuNJn04ljQxq3jcPI3k7HuejWG0OKrW2M1jvxsL3ENH5vfYRVMxl8BZoSfzMaTSzr8qHwusIUkPcUb/TtsOR8o9yobDcEGbV7MSpYyZ8/R1C8n7UsatmgIXZVbeUuD6/0FEAy4Iuicb9HlcnKm+Sj/lcfFqARM9Gh0nkhYSuWbfuyL4ANkBMjRFwQyWdNy3CNqEOScw4W4Nz/F0HASMIkhtEwpRTw3dQz3fmzy1l7AwYBMNkLhZxOBIEUpuZJcb5xa7TDa4tlFp8u3E6SyBQPqwjMoYbTLUXwQcrX2ysd7Cgh9LDMEAbNwyiNYYFjLPWOm5VWzrnzqp9wLCppDzQDada1motxeTcJanUwIyOl5nmfrywhCKZ3FHA7WLZF2ZJJl6Q4WK3imcyhmg4hxrxOrnpdW6BCcm1J9raZYXXpatkcVIJcXI2T/dvg
+ PAra9dZd
+ pCx22Oj+nKOBgJuwHORBthvIs9Jj131xG/mcEKtX3D4BpLRnwb/jKw5cRwse4WL9Kqece9NJ4bv2KjCosMghWIy4W3Xh/RALX7ueV/TUbicoCrqhRGDJaVEuDH0sWBHZYUB/SfzOfwDFudhJUTthnQDtvLwxAKHqmzUfx+ncYjrS8Rp57jEe8+zd1K7OLQiRTg4spXPSDcDjW8KyEPDs41DFo91dPrNv4tteJt4hxShW5putpCWYutnjj8UtONnRrnNEmcchJJ8ZPep03mOvRPG3Ele76FnbPPB8Cvnt0rrnZMtqUd/ZkCHA95R9d3Unn1KGq2y53fNT9incph03tEBWfaz/Ejd36TbiIhN/3OL4NwopToMqwBOZLDexu3xHHWHP3LQ0Y1OF7pLz40uBTpcvwh1+Xe4Z1ooVZ69QfSGJDV5o0aFiOEcfrG7lDmIb6T8j0H+TbNWIwoqKFukRGhrpj1FGqoHVFkYaWN6sSKlVAN+pZkP61qoKRkRIWxbPXBy2CLw8/ENA7Vffjkjmxt+2gRhGdxvTvf/UyCJAmMoRO9wcu1FJDLn8orqbp8fqHO/DcDEUk3PRDvViFkSe9ba7iihi6lvUCnLNB6nCtc6LconlGSFWg0Ygv8mHEVF+zy6R+rnjn3EqqxRE7fyVyh6Z9Nertqzf4S4d+c7Fx7vdgRhLMh7g0J2/COSxfJcPdmo3TFZyX/BE6q7LIoF76NpneDwgTm0pD0k5cuGqidJ/gASheTVUmbC4WJD8BtbpAIoJMbRuBEp4ivsKbH5huD13avwm0H5V9I3l1uTZZwR4UFS2ilgLgSprCv+ntJJEzMdCqd1dNyCji8BWGPzfVFYrbRzvEnHIdshXVAcvtVWh8gs9cWOVUiK2vYt7J3qXiMIw6kXjo1fPPbuPdmQrm7uyOump0ZkdKu/a3TMvvfum1HlshfoFNYJm5C7Z2iYig0k9AWudZUm/tTPgHWcayE+i4xmY1
+ ePYKW+Ed
+ sfGpGrbYmX09JnmlTR2QO0irO4geHcAZMJPWE3LpZO8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -70,104 +94,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-+cc missing.
-
-Please just stop. You sent 7 series across 6 different subsystems over 11
-hours. You(r AI) even failed to cc the right people (added).
-
-On Thu, Nov 19, 2026 at 08:00:15PM +0200, Avi Weiss wrote:
-> An anonymous write fault on a VMA registered for missing userfaultfd
-> faults currently allocates, zeroes and memcg-charges a folio before
-> checking the PTE and handing the fault to userspace. The folio is then
-> immediately discarded without ever being mapped.
->
-> Check the PTE and address-space stability under the PTE lock before
-> allocating a folio when missing faults are registered. Deliver the fault
-> to userfaultfd without allocating and discarding a temporary folio.
->
-> In a four-boot native B/P/B/P comparison, the mean UFFD fault median
-> fell from 13,997.75 ns to 13,093.55 ns (-904.2 ns, -6.46%). A guest
-> allocation trace saw 256 fewer allocations in the faulting task for
-> 256 registered missing faults.
-
-A .9us delta on a _uffd_ fault (nobody in their right mind puts it on a hot
-path) with no standard deviation? Seriously?
-
->
-> Note: this changes OOM ordering. In a fixed 18 MiB memcg test, the
-> baseline OOM-killed only the faulting client before delivering a UFFD
-> event. With this change, the event reached an unprotected shared handler,
-> and its UFFDIO_COPY allocation could trigger an additional OOM kill of the
-> handler. A separate surviving client consequently lost its handler and
-> failed a page-content check after the UFFD registration was released.
-> The same handler-death mechanism was reproducible on the unmodified
-> (mainline) kernel when memory pressure was imposed after event delivery
-> but before UFFDIO_COPY, although the fixed-limit outcomes differed.
-
-This is both unreadable word salad and alludes to you causing possibly
-breaking changes for a barely-distinguishable-from-noise fault time
-improvement.
-
->
-> Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
-
-Please stop submitting patches, thanks.
-
-"You are expected to understand and to be able to defend everything you
-submit. If you are unable to do so, then do not submit the resulting
-changes."
-
-https://docs.kernel.org/process/generated-content.html
-
-> ---
->  mm/memory.c | 22 ++++++++++++++++------
->  1 file changed, 16 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 0fb676d..63b39fa 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5547,6 +5547,22 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
->  	ret = vmf_anon_prepare(vmf);
->  	if (ret)
->  		return ret;
-> +
-> +	if (unlikely(userfaultfd_missing(vma))) {
-> +		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-> +				vmf->address, &vmf->ptl);
-> +		if (!vmf->pte)
-> +			goto unlock;
-> +		if (vmf_pte_changed(vmf)) {
-> +			update_mmu_tlb(vma, vmf->address, vmf->pte);
-> +			goto unlock;
-> +		}
-> +		ret = check_stable_address_space(vma->vm_mm);
-> +		if (ret)
-> +			goto unlock;
-> +		pte_unmap_unlock(vmf->pte, vmf->ptl);
-> +		return handle_userfault(vmf, VM_UFFD_MISSING);
-> +	}
->  	/* Returns NULL on OOM or ERR_PTR(-EAGAIN) if we must retry the fault */
->  	folio = alloc_anon_folio(vmf);
->  	if (IS_ERR(folio))
-> @@ -5579,12 +5595,6 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
->  	if (ret)
->  		goto release;
->
-> -	/* Deliver the page fault to userland, check inside PT lock */
-> -	if (userfaultfd_missing(vma)) {
-> -		pte_unmap_unlock(vmf->pte, vmf->ptl);
-> -		folio_put(folio);
-> -		return handle_userfault(vmf, VM_UFFD_MISSING);
-> -	}
->  	map_anon_folio_pte_pf(folio, vmf->pte, vma, addr,
->  			      vmf_orig_pte_uffd_wp(vmf));
->  unlock:
-> --
-> 2.43.0
->
-
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] shmem: Fixes trailer subject omits trailing pointer asterisks
 --
-Cheers, Lorenzo
+
+commit 2c1ee388f6f3d6454e93c257214769e6a996663f
+Author: Andrew Morton <akpm@linux-foundation.org>
+
+> shmem: consume the reserved xattr space despite remount
+>
+> Creating a tmpfs inode can trigger WARN_ON(ispace) in shmem_initxattrs()
+> when a concurrent remount sets nr_inodes=3D0.  With panic_on_warn enabled,
+> this warning can panic the machine.
+>
+> shmem_initxattrs() reserves space for the security xattrs while inode
+> limits are enabled.  It later tests max_inodes again before consuming that
+> reservation for each installed xattr.  If remount disables the limit
+> between those steps, successfully installed xattrs leave a nonzero
+> reservation behind.
+>
+> Use the remaining reservation, rather than the current mount policy, to
+> decide whether to subtract the installed xattr's space.  This also leaves
+> the failure path with only the unconsumed reservation to refund.
+>
+> An initially unlimited filesystem cannot acquire an inode limit through
+> remount: shmem_reconfigure() rejects that transition.
+>
+> Link: https://lore.kernel.org/20261105082717.c459bb33778fcf27e5675082@lin=
+ux-foundation.org
+> Fixes: 076e5cef28e2 ("simple_xattr: change interface to pass struct simpl=
+e_xattrs")
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Reported-by: <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
+> Closes: https://syzkaller.appspotcom/bug?extid=3D4324f771847cecb27c54
+> Tested-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Miklos Szeredi <mszeredi@redhat.com>
+> Cc: Christian Brauner <brauner@kernel.org>
+
+[Severity: Low]
+The subject in the Fixes: tag is missing the trailing " **" from commit
+076e5cef28e2 ("simple_xattr: change interface to pass struct simple_xattrs =
+**").
+Should this be:
+
+  Fixes: 076e5cef28e2 ("simple_xattr: change interface to pass struct simpl=
+e_xattrs **")
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/00461f0c866d4a4eb9f=
+50792f0e1f3d0.1@linux-foundation.org?part=3D1
 
