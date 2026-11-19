@@ -1,71 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13530606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189DE60A2608
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sj8B4eAd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmEtFyZi
 Received: by kanga.kvack.org (Postfix)
-	id 2C7836B05C5; Thu, 19 Nov 2026 03:26:36 -0500 (EST)
+	id 33CCB6B05C6; Thu, 19 Nov 2026 03:26:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2774D6B05C6; Thu, 19 Nov 2026 03:26:36 -0500 (EST)
+	id 2EC046B05C7; Thu, 19 Nov 2026 03:26:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18CB46B05C7; Thu, 19 Nov 2026 03:26:36 -0500 (EST)
+	id 1DC146B05C8; Thu, 19 Nov 2026 03:26:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E44B66B05C5
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:26:35 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 753E81209B8
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:26:35 +0000 (UTC)
-X-FDA: 85451187150.29.894FE40
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CAD72C0005
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:26:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sj8B4eAd;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E261F6B05C6
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:26:39 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C765809D8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:26:39 +0000 (UTC)
+X-FDA: 85451187318.10.2AD5F01
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C4C2E4000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:26:37 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nmEtFyZi;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795076793;
+	s=arc-20220608; t=1795076797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lD0avvf7a0W4YUjuR/w8gv8cSrs+orKdOF7+3MwyUNQ=;
-	b=3KM8SiYWbk1GY3PAnOtfiHpJIXr1qw+63BlBkq/EiZbmKmCZvmUc7CBHAU0Zhfrtc1wkk2
-	Ok4JZX6SqV0KwfhLRbIz2JHnPi7NUPU2TGogvohBE6xrhTaD36kU5QYzoTDTBYbza3/w0h
-	qOZbI7lPI1wNV3wt9rtNl6FUrQG5jOU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sj8B4eAd;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=jSCtwnWUqF8YnYGIgXEXWun4ZyiCBhUzU9yeZz4svZQ=;
+	b=0p+LyAOOQe1q7zCnbeYtE1yT67Y+DF4IC/PwA6TpzSRYD1JsVRqQXlYgVkwSkTvyqrrx3i
+	K/PJ/Jg1x8Z8sKVQbIf5qvGbkqvGYZtwaeJ+2swHgRZjZ3FFHVJbNrjVo1iPVlYJcDLwwr
+	6nM3vQuEuK9ylTEhr7DeJ+vuWVGSSYs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795076793;
-	b=aM1Y2oHK0lj77e9JBfsDYP2l/iv/gBiq2UWBmGjs4uAoU68+1pWgev94LlO+VCFl4cqdC3
-	RW1prE914frVig3E8/V49aoYD10f/B7eB7xIlP+GQG0MpiTDSyOTGu6ADRsgKyr6HynOds
-	kAugn1ozTikuAvRD8XmfsrG21uiVf4g=
+	t=1795076797;
+	b=ypbmpiH9t5IQD4Kdq8eNDk2QvmJqQmtdm6AFj3pXjS6CiaheG2t5QCTZygOKCgvxdgaCoV
+	+alAACfEhfZvLA753uuXwjfboukOQyArBVqJq0umxhh35CGE75L6Ss/fS17Yossp6lkVFO
+	RMFSu2L4K/qheWLlRCTY9YHs5VBMASM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nmEtFyZi;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F02FE477F6;
-	Thu, 19 Nov 2026 08:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79641F000C7;
-	Thu, 19 Nov 2026 08:26:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BB7A1628B7;
+	Thu, 19 Nov 2026 08:26:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBE51F000C6;
+	Thu, 19 Nov 2026 08:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795076792;
-	bh=lD0avvf7a0W4YUjuR/w8gv8cSrs+orKdOF7+3MwyUNQ=;
+	s=k20260515; t=1795076796;
+	bh=jSCtwnWUqF8YnYGIgXEXWun4ZyiCBhUzU9yeZz4svZQ=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=Sj8B4eAdm1rPA9A9kvkOW8aa2I5KLj2Xu/ZsKGea/JgXDyGjOlLQUJtWAc0TAxLtg
-	 eJ2tczDWSyNfNQwR4liU98aTbgD5uB3R7u42kznXNtoxXjknWDEOEPssSP/IP/eD2V
-	 hllgA1tTb5DIeyTnCjLheGcOjcgekHLHkk8H+85MimiyKJ/LE6FvyQtLBUwE82qMIZ
-	 e2y0muasl5jH+rFsYyYpQVYpUQItMrhoO4w+o4NMMFtJB5b6p1LMBxB9GA2D4qzdV5
-	 J34lgUafiEKU5K/Km9nyJjLo7P7cuZ01M6BzfiCxMDeMxnmgxW1T+zdxRh2GyQoXJS
-	 jg6Uopcz1f/0w==
+	b=nmEtFyZiww1LJNKlUpo4ZjlAKUT7UsDEi3xnuE7TENc3M5NLKwSnx/kV9xNf2uKsg
+	 JeAcPslwklvyugoXMQxbyHqifsGyAPtdOTHWrUS2PNNzoXMZ7pm6iX8UzczXiaRKcc
+	 7tHa2qgTya3FigLBDL/BEeGoVsfhH0ceSXyBU09bGs1M198jn1Apg2Ir40RkzY2vSL
+	 IMT9EgkHOaBOdbUWOytTAqNWyserWZwE+VVswtUfYCe6Y80VcnCn4QEfQwpA2MNK2a
+	 3gWjbg07bIYFNnx7wcVacHuX2C/kx3dKp7fasreNjzfc67XRyHR+xj4VxBivad1BR/
+	 E/mGJ0+/t2qDQ==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 0/2] kho: drop the incoming sub-blob debugfs view
+Subject: Re: [PATCH v2 1/2] kho: do not expose incoming sub-blob contents
+ in debugfs
 From: Mike Rapoport <rppt@kernel.org>
 To: Long Wei <longwei27@huawei.com>
 Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
@@ -73,24 +74,25 @@ Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
  corbet@lwn.net, rdunlap@infradead.org, linux-mm@kvack.org, 
  kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
  linux-kernel@vger.kernel.org, hewenliang4@huawei.com
-In-Reply-To: <20261119063800.698863-1-longwei27@huawei.com>
+In-Reply-To: <20261119063800.698863-2-longwei27@huawei.com>
 References: <20261117092951.4017931-1-longwei27@huawei.com>
  <20261119063800.698863-1-longwei27@huawei.com>
+ <20261119063800.698863-2-longwei27@huawei.com>
 Date: Thu, 19 Nov 2026 10:26:26 +0200
-Message-Id: <179507678647.425130.13205346175314463200.b4-review@b4>
+Message-Id: <179507678647.425130.8287708904179232007.b4-review@b4>
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: fxxobbfmxaxmisubb8wiawyyyws9upzm
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: 19uk17ap9hmrmtu3kagnnbwwh8aradpb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CAD72C0005
-X-HE-Tag: 1795076793-193034
-X-HE-Meta: U2FsdGVkX19XuQHfHp6ObOd8MV5dVBAiXOjixhdeu8r9B7hbJBkKaq6h3kVwskD09cpGa1LNuP8UEI4uXee7NJAxUxsUPT4P0dAqRDlNnppp59z6tNGumPqNPFSwO96ud5JiEnzu7G+5x4+JrpbrDms25EB10t35Ek6thmXsFPHlRpPjC6GLgvthSx+g4SvsF/9iYMJid9mIIjI23w9XYy6qcawq7Y/HKasTN1peepM4Zxpy5dCrv/f1RYBb1zzCvdGy2hjm6RVIucKAmFXlBC9jWNcFZW54N5DzzUU9BLcDelZcWCf+Xx/Z+QzyoT2DK0QSV13BrssyEJL5nvNaN11BZiL6X90f7GqkrHeA7PLE01fx5K97DnjeuP4NVpjKE6eVSTCx7uQAKs+p2EARF5g6FZK0pYhvLJE3OTnZ87wkUVmiFjo+HHi3cJU/VC3rgH0NB2cbxz9gCF9vcVKJ+2OENjPTsmZd8NUF0xcUjhqSaRhbGFEaLkJOGxPxOpUAryEcHNJo+9UttbyS+hOy4GMmbvlOjvuKlu4GSsPeieCkH9j5S8RNt4VE45zvRCarzQR2JZLd7IUti8dhkuyPoRU3RQZOITmbtF5QstaKullfZRs4w3IF0vBr2R/ASsYMxqa7bV9FE7TIsoAnoeZSJ5S34wdU/CJfXOGShNGw3NfVG2kHtd1Z9Jm3T3O2VMMEO9wTdDFExDQTnRqvH5QQ7jEsg4/ESPV5PsGHjBrh16UVrQ5AGw0RjgHVf4+PymVsPIVKe6Gxk35BXEdtgUH1mEBRBIl9e6xjx0+VUDtKBIwn1R5FNCIXwqIZC82IoQOv3LrHJ/WaN1qgsYOi68i0kfxez2e2LUZZIVrAwhUA5zjkhlrhAvAzG5YuMQNc3BzMHkD/kVip/E+huaFiXlOG5DcC39bgOw3yES2DmfaFNyBRE08eA7RNY9SDJsWh5JtWU5g6qq6hPOSVYLmC3zm
- n+4tBZ6T
- L0zEMYwHwjtzWw6xOJRQNPXoEqAzic3bC/z8DuE0QeLIuOCww1E7V2svzkJBvR718tY6C1lseSpXfCxrXnrPqf11REmfTGSx3PWVHUP8fRGZERMYIq2G8KVZ9Ehb14SAv5mRsXMFvg+tCEGSoj/MZ7CT74ZTmD/jV+4qj/RLvyTIYwyA33a3JlMRKpV22/GvgAgRupVgw75JJwW9myvoHcM9/A1elY1trF+C2
+X-Rspamd-Queue-Id: C4C2E4000A
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795076797-84570
+X-HE-Meta: U2FsdGVkX19872dUHgwajX024Mt0GkzobL28RTROgOE/7GBnoDLyV5Ws82DOmXqTKk5rjhSp4193ZaG4NbCs22UwQs338cJsu086oiVDUpBObROfzbNrDU3hJQQBa3VrHFt9gHLvgXRBb4KCAh8b8bfvgDybjtXphxDDYIVfNFgUou0BucQyeCbrj28BDzEn1swhaF7j+SBN0Aldj8cypQN1AKA7VdCtmmxacClk8jJaXQeSfU0+mI+pWoE4HID/t4EizgsC8SPLKuf+baX+w+wu/VYFolJ35I0pc/Sr9Ahrc0x03NwLrj5vixo7+4VVkJt769/5LYMasE/9rxn6RM95AiwQXKzgmlCu07aEZY1lJb49XeCisPKGxNuv6fuCHTxFH3nHIc+yAfXfHDlnmIqk+/9JaOv1DORqrg8FmH9SsV8x6kbOY22j1RVDg9OH5y/rOr2+59/cAWFKNRvBNjENG2CfYweV+C1C1/Dh5/hkl7DeuQ1qgYV/GoOKTxRkZ1KAHQOJwWc3MIHSH8+dUEPcJSVislhft/N0nRnNWv1Bupj7UTWtZjMroflx0dmQfSAAPYKrhPRLPQ+EC3zCd/48fCVAbJ8oAnNaqRpYdC9awyqBg2A3/eOC/WP2b51HTITicc8uXus7KPQkhitpvPU4nyGFnD3T4XudrSwNjJ/jEiY0NZXp+nadvDLVRVmwAduweQg9cOa3YfkqZVHtxpgkqhTg5tMkTNwoPpmbCE8OfRO1l0TL5oFK2nxkGRjRUCcW6DPU5bQa0pdzwbmcyDrvrDw9xajn6j8dxzF0bSlpk/Bpl2F1PhYxTBQ/U8J5JY3RWX+NAAN9lda1+VSTWBOfVbdRJzlGsQKDPQp809qpB061g0PfYjmCHPWJ61X0C8vWboLhBmGa1/jej38q7n7fUpZb50sx6uOiWTk9QQoECXeEdZDb//ktnVJ7awAPnP4eQ2pfbV97I8+8sAx
+ h+XvftDf
+ jMCG/GHvQ1SKBWLksexS4FUAflGS8uPW7uO2QQjopdjUTW6rV/NgesHdcSyL9euvxUi7CUqiAEGkHwRL+im3omyD6vbmYiqfkTcD1rDTEjFB1a17gmljLL1dIYCsEpHmotULyIsSYRHLWgiIj8lZbiT92Rt7HNeggpz8Ed209cFLnCVXJo3i9/koAkJVQPChwTMP0AjnC/Ws2Yt0n4QMFxfX6DuUTrGukSv/JZ4vDDEnY8ZJe5xGNi8oAww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,25 +103,83 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hi,
 
-Please don't send vN+1 as a reply to vN.
-
-> kho/in/sub_fdts exposes the raw contents of the sub-blobs described by
-> the incoming KHO FDT.  KHO does not own those pages: they belong to the
-> producers' consumers and have independent lifetimes.  LUO, for example,
-> restores and frees its state in early_initcall, before kho_init()
-> (fs_initcall) creates the debugfs view, so the blobs point at pages that
-> are already back in the buddy allocator.  Reading them triggers a KASAN
-> use-after-free in _copy_to_user().
+> Incoming sub-blob pages are owned by their consumers and have independent
+> lifetimes.  Some consumers, such as LUO, restore and free their state in
+> early_initcall, i.e. before kho_init() (fs_initcall) builds the debugfs
+> view:
 > 
-> The same information is already available to user space from in/fdt,
-> which KHO does own and which stays reserved.  Drop the directory rather
-> than adding another interface to describe it, keeping the -rc fix small.
+>   early_initcall: luo_early_startup()
+>                     -> kho_retrieve_subtree("LUO")
+>                     -> kho_restore_free(luo_ser)   /* page is freed */
 > 
-> Patch 1 removes the interface, patch 2 drops its documentation.
+>   fs_initcall:    kho_init()
+>                     -> kho_in_debugfs_init()
+>                          -> phys_to_virt(luo_ser_phys)
+>                          -> debugfs_create_blob("LUO", ...)
+> 
+> debugfs therefore ends up pointing at a page that was already handed back
+> to the page allocator, and reading the file triggers a use-after-free:
+> 
+>   # cat /sys/kernel/debug/kho/in/sub_fdts/LUO
+>   ==================================================================
+>   BUG: KASAN: use-after-free in _copy_to_user+0x37/0x60
+>   Read of size 32 at addr ffff88810309c000 by task cat/27436
+> 
+>   Call Trace:
+>    <TASK>
+>    kasan_report+0xb9/0xf0
+>    kasan_check_range+0x100/0x1b0
+>    _copy_to_user+0x37/0x60
+>    simple_read_from_buffer+0x77/0xd0
+>    read_file_blob+0x75/0xa0
+>    vfs_read+0x12d/0x520
+>    ksys_read+0xc3/0x160
+>    do_syscall_64+0x97/0x4b0
+>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>    </TASK>
+> 
+>   The buggy address belongs to the physical page:
+>   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1fd
+>   pfn:0x10309c
+>   flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
+>   page_type: f0(buddy)
+>   ==================================================================
+> 
+> The page is already in the buddy allocator (page_type: f0(buddy),
+> refcount 0), which confirms it was freed before the debugfs view was
+> created.
+> 
+> KHO does not own these pages, so it cannot safely expose their contents at
+> all.  Drop the in/sub_fdts directory.  The incoming FDT is reserved by KHO
+> and remains exposed as in/fdt, where the same metadata is available.
+> 
+> Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
+> Signed-off-by: Long Wei <longwei27@huawei.com>
 
-Patch 2 is only four lines of documentation for the interface patch 1
-removes. It could be folded into patch 1 so that a stable backport
-removes the documentation together with the code.
+The change is fine, but the Fixes: tag should name the commit that
+made the use-after-free reachable.
+
+c609c144b0e8 ("kexec: add KHO parsing support") added in/sub_fdts, but
+only memblock consumed an incoming sub-tree back then, and it never
+freed it. Preserved pages that nobody restores stay reserved, so the
+debugfs blobs pointed at valid memory. The same was true for test_kho
+and for LUO while it kept luo_global.fdt_in.
+
+The page is first freed early in boot by d376e4b55c9a0 ("liveupdate:
+centralize state management into struct luo_ser"). That commit added
+kho_restore_free(luo_ser) to luo_early_startup(), and it is the path
+in the changelog and the KASAN report. It went into v7.2-rc1.
+
+Pasha asked for c609c144b0e8 in v1 because in/sub_fdts never owned
+those pages. That is a fair point about the design, but with that tag
+stable will try to backport the patch to every tree since v6.16. There
+is no bug in those trees, and the code there lives in
+kernel/kexec_handover.c, so the patch won't apply. I'd use
+
+  Fixes: d376e4b55c9a0 ("liveupdate: centralize state management into struct luo_ser")
+
+and say in the changelog that in/sub_fdts has exposed memory KHO does not
+own since c609c144b0e8.
 
 -- 
 Sincerely yours,
