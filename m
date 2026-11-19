@@ -1,90 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310F8606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8749560A2600
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aywVmztn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NBOLjtDN
 Received: by kanga.kvack.org (Postfix)
-	id 47D666B05DE; Thu, 19 Nov 2026 03:53:59 -0500 (EST)
+	id 9CA006B05E0; Thu, 19 Nov 2026 04:10:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 454F36B05DF; Thu, 19 Nov 2026 03:53:59 -0500 (EST)
+	id 97B626B05E1; Thu, 19 Nov 2026 04:10:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36E6B6B05E0; Thu, 19 Nov 2026 03:53:59 -0500 (EST)
+	id 841D26B05E2; Thu, 19 Nov 2026 04:10:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 18D2F6B05DE
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:53:59 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB101A0A01
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:53:58 +0000 (UTC)
-X-FDA: 85451256156.03.B98052F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1E5E01C0005
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:53:57 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aywVmztn;
-	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 573136B05E0
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:10:03 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C335AC09B3
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:10:02 +0000 (UTC)
+X-FDA: 85451296644.25.02651CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1C7C540007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:10:00 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NBOLjtDN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795078437;
-	b=EOeKxD9EETNuPjp4J6u/8TfZzhvmcxTqyqAJkI1EiiMs6Euzrv76eoGKoIsbfDcwM+BWM8
-	+n4Lw2bRHzo1gcnsz7Yazqa7fikESRNJXS3QHmoBRnyV7jhzOnlf7dhVe74F/3swK6Stn+
-	Kpmf0W60qMT+ESRIwS8OhGFe9PTX6+Q=
+	t=1795079401;
+	b=wnmkKBm7th5QKxpbUDz1FZpXI+KOUV9PbRbTtjoNv/eas2mhu+r3xBySjIrZCTORrVJJ6D
+	mfrOC9xBhswUBxtZceYjoUD0JzFu+B4t0CJEGUBEpBZWU9kDxhFwvIOG0/GXVVjCzRwtUJ
+	UVS1b6lpoqiM9GQRqDlOPxFjAR93lBI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795078437;
+	s=arc-20220608; t=1795079401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cWV5J4xvs6iOHJRl3GmyFLPLpFYLz1h0yKGuTf7y6A4=;
-	b=JJM0nCe81xJ9tTqYzX4dRcFdtvheTX4ybNfZOjprdSTgr6UCKFD80gOF47IUndmWq0Swtr
-	30b+iP+4koelTCazqzN7lY42R+hn9zcq9uafWZbarBoxwkm7vmmyBauRtcj3dsYnIIEefz
-	EuWfdlIFB1smtQ+zhx3UcfPsPnZFncE=
+	bh=ZGhE24qIBqiTNN8z+BFa93ke6YAjy7suuxpu/4LDT3E=;
+	b=6hU+Q1LvIhOKn9CwulRIcZmbY3I+lBO1VHqSBnxCcJwfrjTi5hsRJMXlkF5eWDAm8KXgDv
+	nL+18UZhwdAXp89NjNZsM5ASEwcfy5n6zECg/OfnsXDJNq95IfpDXTnqPusP1tz7zmctmN
+	hM27Lg8bwizb2V8JClMcL+U8lH5N6jM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aywVmztn;
-	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NBOLjtDN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A776E6117E;
-	Thu, 19 Nov 2026 08:53:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363351F000C6;
-	Thu, 19 Nov 2026 08:53:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1612343B8D;
+	Thu, 19 Nov 2026 09:10:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2A51F000C4;
+	Thu, 19 Nov 2026 09:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795078436;
-	bh=cWV5J4xvs6iOHJRl3GmyFLPLpFYLz1h0yKGuTf7y6A4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aywVmztn6lCDhWsbgc4gtgi8iWWjN5vcmsHnF5y3sQ8I42pjbvqdMXtmN30PfZ0FD
-	 CEzPxLz3uJw/JlppC6KA93q8Ojx4GyyViZSlndgLmSmyykXfprp7qXbEbp7OSOHLeo
-	 wBFnuvVsiImNqVhE75Dwt44E/o5SKzu7fxJkRWvNaUtAokJPEak9GDB6j2AJNIFuxM
-	 zVPGwIp0GZEDvgil+8ynHv1OBfJpSeqBrnjZ8PpUilF3bsiyRGXOJ1UyfHsEC1W8ve
-	 0BjT2hUlyFCZszaUMgwmvW1kj203jynHnVeaii/f+FINcfWuK7Z2p59RVlIw37VpOg
-	 K5qqDo8ymBFWA==
-Date: Wed, 18 Nov 2026 22:53:55 -1000
-Message-ID: <74ad05b502dc12632e7a831be7641388@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Yu Miao <yumiao@kylinos.cn>
-Cc: cgroups@vger.kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, jiayuan.chen@shopee.com, nphamcs@gmail.com
-Subject: Re: [PATCH v2] Docs/admin-guide/cgroup-v2: fix npn tags in memory.stat
-In-Reply-To: <20261118130537.750211-1-yumiao@kylinos.cn>
-References: <20261117062620.346767-1-yumiao@kylinos.cn> <20261118130537.750211-1-yumiao@kylinos.cn>
+	s=k20260515; t=1795079400;
+	bh=ZGhE24qIBqiTNN8z+BFa93ke6YAjy7suuxpu/4LDT3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NBOLjtDNHucTwb27MjevugAZuIv7/bosEyeF0DijnNaXGSk17S47LQkxkz6Wi2F02
+	 +bEWRZhQGyz1eabWT0EqltvKgLkeniA4fJ+KRGAhWgvhip5VALR992fXbQDwRqbhpz
+	 KpUWQc60q5yZcpiUVe8o4+EjpocWIzN075V/ZUg90SIx7d6cICIXOCxGc9oKiYeHLT
+	 zOxQUhJHODAaVcgTSL6YBIpPUOiX8/6xnbJbJZb/lm+rArzgjy1fOiKtj47JjLHy2f
+	 H2MhsQ01rf8p0pTvHKT3BkH/KsDrBKz8g17dBXVKzS60/L2AHKoCMYG6nMpy01udOW
+	 QygD50i/z1d8Q==
+Date: Thu, 19 Nov 2026 10:09:48 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mel Gorman <mgorman@suse.de>, Andy Whitcroft <apw@canonical.com>,
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
+	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>,
+	Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+	stable@kernel.org, Josef Bacik <josef@toxicpanda.com>
+Subject: Re: [PATCH v2 08/15] mm/hugetlb: serialize page-cache allocations
+ with truncation
+Message-ID: <av683B0FDj-xB-7w@localhost.localdomain>
+References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
+ <20261116-fixes_hugetlb-v2-8-4dd9e94ea9ac@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1knwsofjb57ei3wyc3rk3t39sr4jompx
-X-Rspamd-Queue-Id: 1E5E01C0005
-X-Rspamd-Server: rspam12
+Content-Disposition: inline
+In-Reply-To: <20261116-fixes_hugetlb-v2-8-4dd9e94ea9ac@kernel.org>
 X-Rspam-User:
+X-Rspamd-Server: rspam07
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795078436-156286
-X-HE-Meta: U2FsdGVkX1/g7E76QSfGv+s6QcIBKc2g+VrrcpMGqN6v3HMVakjsqNFWPsvZB11nkvt+dn5HNpHa+w3VZCfCWWdoEP8HXWHViGL48bBoocqyBekRLC0l2r1ikr1L5fUmWeK/imNKYZpnbQamhIqYqB5HU6iOuxpTtqE0YpSLgj2G/8+UdCE5a/TIxMBsdtqtI3VX0/60PoTiDQmU2P6EKzOJgkMnMzbEj+Uj+FAdvfPAnWdGrWRMqgKbp6o9WzQk1k3HLt/y9S0gtGnD1RRp7MWDFJPGz8JwpErAJuC0LSUQz9+0GRwlVLwgBkLUq5PQVOILUgj1+U8GAMdd5vrbwDteIkiRLSHE5UqQII5k6ZHZFEvTN5SD6jb//XnnszSl/QylfwN6iN5AJViYLpKmfrv+U44mTfX9JiU/vJ6PPSj4+EF40O+LKo9AoqGMdi0kaTKOZpYRR8TqTeLOKW1eoJ6oHw0jtBXcdjZIOUY6vhbuCYFppIFVniuKRS96Um8p7hSNwd/XSilfecZA68XfpoO2AZHFW5+XBhIERU8LcrfGr0rw+nUFDnonIeMLBKsgX0ruJvDy64BYMpLKPey0qdpzRtPwb4bBFghLYceis8Sg95FRSON7DiKcRsrr8N10LmqCl6zUp53YCBYctqCdVv4+vy4dZCMSDzcSoW86U1MA83yNae481wEQnHX8zpFlMTKot9IZXhuJSOXJtEGh6FLm4ZZL8sJOnAliYXLSYakbCFNfhgbG1PPhpcWPPd2JOu3A16riYHhrcrPprKiVgQKdOsAI5hQ0R/SpCqBxtico1QGfX7qrtL0ETh9vmjHWZcgFQ2fye5MTz4TY62T0/nffwCMMHNu7sg0k+RbkSwRd3yFYRQQSBb3osgbJ8qtQ8zbtS9yJjFPc0rO0JHfWbl59XxNMyMNLoycxBLu1thvUCaYgV4YLCxGj40nLMNoo9mzahpWfloByU5F73Kh
- 3bU82xVb
- k1Ytid56G0GlCc2r4RvSCx/btiVUuBOYBiFN9lLKzbc3OOFB3IbjoPRgBMeQccgj8aaHMxvexwwUG7ugzF5PLqZkMA8/o+l6Lk8gY/0SoY8O+o6/MuKWVizjVol/e6M24ns2xApDf6++VG+BK+qiMTUIuR4dtk47g4bvxVHezPD9o9AslsqoEN2T18TzaRAS/jVrfHv5GOGjNzcXM743+nJHgvt0aDmztXNUYSSzWhyOVD/X8KODPaIMwPuCN0O7CfUsFOVbazXRjjbTxh5iY187Vpfw7yE9NZ3xYB4H+LwLFPz3GZ0BHgoN+Z0fKaMbCCpcdMQeJGiZ2ID2lumhOrxzADRpS4/L1ZqaiCcSLruMKjUy4kYFRH4hq3lX5wwB2v0tRKflV60qU2jMDT60js0mX18CcrUMEP3G1YxQ02nGYDLWtJdj+Zafr5w==
+X-Rspamd-Queue-Id: 1C7C540007
+X-Stat-Signature: cui847uybxm1y156whc5gqm3y3t88knn
+X-HE-Tag: 1795079400-732611
+X-HE-Meta: U2FsdGVkX18FxDLcwvLBXEmXzA6fgMF2+mPNE2+SJAKW7uAEvKiz4d7ezVurP+9ZFiLT7cQDeDeDdKataGD6vAWUliqOv09H0owivoIUcPzJPhwZMPv5smwV0LLuF/dHLHlC+23AGk5U04lpHT6VQ7tDmxRVWFYXOmKW1mGJ+quOBlMHPfuG+mXm0w8qNax2QSy8O6VFgviHeK7xAk0iKYjN4s0WGLRvA/AOnqzWm9jx9Zb8Fcm3+hSfnDZee3okZYNmS8J0utvB6ek72IJs9hgwQ2UAWqtA2MLX2AdfYDuIrw7KTKfpZCYoGJOwYTrDw5fmBU5sFMDP9WZfGUDgQ8iqdgQJAcb5Cawh4dECi0Q42B0UBaPS5uxBWvADUPotu99IvWXncJeyrcmB3mScwVDg+sgNTqmIJwDtBJ9fG2ExiG0CzDvvNPx/Wm2y6EwLU3OxDld/ZaknV5ddnRsybHQMLJ/AfY+oBDF51Hc9DOXHyCfo70xa6GdEekzkrKOpT0WW2qAXOsr/FVqj/h8Xx1u1xyT3HKG61FqsALOxO2WgQU9n/K1kZ0Go0Yg19UeMHgd0JbHKQeAf0ZTk/QklY48Jl3xJM+7Aw1zmReaQAKXP8qZ97dQ2gcO2oMV4HicciQZVO7yilLUOGGioNrvOLATzyBVPEXizwH+jhzWx+bgiX5sADYtPDcYUzhXOJvAkyGqNY5QUblWZJZtAre3dERd6cW0yhd2CpYhII4Cw9RiREGetn4gSTm7Z+cljXYodRgqLgufxPWpGkvqcRBXxvHDm/N+Qbc19PejkkAhor8pt7u6gaV40CA8dvRjJCResp7OmH73hx9rb/5Mpn+Grdq4kB1Oz47U0xZiSX2oX1PBdY3Q6wzPGARw66+qppZFG81l7OGpY56FOC/YvfBVBPTtrvCd18IBQCJyII1xgpZOnWxl4w1J98xn0jxfzwecR0CvXcae6rwS1k9TeOxy
+ S/1WZy7M
+ ucK7EIXB8Gy+jU3OcQ/Ksqek2C5olujCSq/pqJ/T9IuJ+rVma3H8KCvasRN5yR0HdHPyji+QTVj5KiZD5WN1cuy/laqZBwFyX3j7sDtheJ6j4/QUE1u+akFaNnwt7MI90rGgnfgMfujdOJOZK55MlRGI4r23E5F1/isAw+QByi9f+qDwCNauJBEy3ZJmiJ6v4uo4w7QuLBnRz7ENUU9n2FYgDVPaGy9h4QaPcvAuB/z+KqfEaZI7ePsWlScdjZGQd9G+pLe5sz8jnUGzt/ap8YuwOn4SI60ZE0lKMfst5oHsAWHhVr0WNQDX6rr131V4BA/T9S6oht7Us8IGI0C76dboc6AyRxNkvvS2GqYNnBwwbqYZKrvr8rRRBvMxOnQHEh0BEPyYC8Fva5Ujh2hzE69g4uz6CYs83rcg48iAPI4bM37mx1t3agFLYbzhJW+OOGKe5K6peqmI2yKNt9S7+t2w+JGOmXZLojFg55odPvyYLHKGmX/O3qpP7obpe1NyjnCt4rgPJ1ZGeR/mj5yHWYzhwZKTrBVmX5JhGYkdMBDonvX7ot4o43KfMqKTxV337rakNmFWV726EZh0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,24 +123,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 09:05:37PM +0800, Yu Miao wrote:
-> The zswap, zswapped, zswap_incomp, swpin_zero, swpout_zero, zswpin,
-> zswpout and zswpwb entries never show up in memory.numa_stat, so add
-> the 'npn' tag to them.  The pgscan_kswapd, pgscan_direct,
-> pgscan_khugepaged, pgscan_proactive, pgsteal_kswapd, pgsteal_direct,
-> pgsteal_khugepaged, pgsteal_proactive and pgrefill entries do show up
-> in memory.numa_stat since commit e4f4fc7aa8b7 ("mm: move pgscan,
-> pgsteal, pgrefill to node stats"), so remove their 'npn' tag.
-> Also move zswap_incomp, currently listed between the zswpwb and
-> thp_fault_alloc counters, next to the zswap and zswapped entries
-> it belongs with.
->
-> Signed-off-by: Yu Miao <yumiao@kylinos.cn>
+On Mon, Nov 16, 2026 at 07:29:29PM +0100, David Hildenbrand (Arm) wrote:
+> Truncation can remove an inode reservation while a fault is still
+> allocating its folio. UFFDIO_COPY and memfd pinning can also consume
+> reservations beyond the new i_size. This can underflow resv_huge_pages
+> and leave folios beyond EOF.
+> 
+> The main issue is that truncation takes the fault mutex for folios in
+> the page-cache, but it has no clue about faults that are still being
+> processed concurrently.
+> 
+> Matthew Wilcox raised mapping->invalidate_lock in a different upstream
+> hugetlb locking discussion:
+> 
+>   "although I wonder if we still need the fault mutex array, given that we
+>    now have mapping->invalidate_lock?"
+> 
+> While it likely cannot remove the mutex array entirely (concurrent page
+> faults have to sync ... ), we can at least use it to fix this problem.
+> 
+> Hold mapping->invalidate_lock shared across the size check, allocation
+> and page cache insertion or reservation rollback. Truncation takes it
+> exclusively around i_size_write() only for now: it waits for concurrent
+> allocations to finish updating the page-cache or rolling back reservations
+> before changing the size. Subsequent allocations see the updated i_size.
+> 
+> Let truncation release the lock for now before unmapping and removing
+> folios to preserve the existing lock ordering. Cached-folio faults and
+> private allocations do not acquire the new lock.
+> 
+> Use it to synchronize with truncation, keeping the fault mutexes to
+> serialize allocations for the same index.
+> 
+> Locking order is now:
+> 
+>   fault mutex -> hugetlb VMA lock (read) -> invalidate lock (read) ->
+>   folio lock -> PTE lock
+> 
+> And on truncation:
+> 
+>   i_rwsem (write) -> invalidate lock (write)
+> 
+> Add hugetlb_pgoff_valid() to not repeat the same size check multiple
+> times. Memfd needs a bit of care, as it traditionally allowed partial
+> folios to be pinned: the size check in memfd_pin_folios() allows for
+> that.
+> 
+> Fixes: 1c9e8def43a3 ("userfaultfd: hugetlbfs: add UFFDIO_COPY support for shared mappings")
+> Fixes: 188a39725ad7 ("hugetlbfs: revert use i_mmap_rwsem to address page fault/truncate race")
+> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+> Cc: stable@kernel.org
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Link: https://lore.kernel.org/all/ajMfdQf-Fspwmstr@casper.infradead.org/
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Acked-by: Tejun Heo <tj@kernel.org>
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-Thanks.
+Just one thing:
 
---
-tejun
+mm/rmap.c has a description of the lock ordering for hugetlb:
+
+ "
+   * hugetlbfs PageHuge() take locks in this order:
+   *   hugetlb_fault_mutex (hugetlbfs specific page fault mutex)
+   *     vma_lock (hugetlb specific lock for pmd_sharing)
+   *       mapping->i_mmap_rwsem (also used for hugetlb pmd sharing)
+   *         folio_lock
+ "
+
+We should update it to reflect the updated locking order, right?
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
