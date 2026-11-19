@@ -1,96 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C4E606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F02606A339
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ahkG59L9
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kh4fzztJ
 Received: by kanga.kvack.org (Postfix)
-	id 1AF846B05F3; Thu, 19 Nov 2026 05:51:05 -0500 (EST)
+	id CD8866B05EA; Thu, 19 Nov 2026 05:54:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 160AF6B05F6; Thu, 19 Nov 2026 05:51:05 -0500 (EST)
+	id C63716B0605; Thu, 19 Nov 2026 05:54:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 076C36B05FB; Thu, 19 Nov 2026 05:51:05 -0500 (EST)
+	id B2ACF6B0607; Thu, 19 Nov 2026 05:54:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E190E6B05F3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:51:04 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DFDB120A3E
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:51:04 +0000 (UTC)
-X-FDA: 85451551248.09.B3D40CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C2DBC20002
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:51:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahkG59L9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CA3F6B05EA
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:54:04 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90BCC160A35
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:54:02 +0000 (UTC)
+X-FDA: 85451558724.11.F95C1CE
+Received: from mta0.migadu.com (out-142.mta0.migadu.com [91.218.175.142])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 58DD1180007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:54:00 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kh4fzztJ;
+	spf=pass (imf16.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.142 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795085463;
-	b=u48O8XxwbXSduiOVvqQcYC9sKOPGp/8cyONcs9UOLa8AmdZ5FKGKHpog4BLkWpcFlSbRqD
-	kQo9Fb0cNoq0/jOxFRNd7KDOWKl2MxXrbV1EQsM+QsEN3wlwbUm/2/01wI5l2fsOIJX59g
-	XxcTmz0mvzgBSzmilHKjj6tg7Eewemg=
+	t=1795085640;
+	b=JgWbC6BQHhxMMcio/HyiIowIjbmYjW+bxgWBMS6Y142uLdvhLYCafSHdSyB//+rToJdI3r
+	3z9blNffKbM5KT8Y4mwz/gsHYWGUwYMsSOqD5nE9jp0AYKWMx+31a9oabxNlvWaXCjFd8Y
+	tTtu9sVJ1PHGVGym+55ke9BbKEiVpDY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kh4fzztJ;
+	spf=pass (imf16.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.142 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795085463;
+	s=arc-20220608; t=1795085640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yfuI/yQuKLje7JCp8sAUMNEURSvgN1RcCGOMjucNHBQ=;
-	b=VfnDXEvsZjqzqEILfEDx4LepaT0fKGA97j4FyUNMiBaVxIdU0l0N66WFPh9J0QQ3Mtgh2H
-	P/Nzm6RXld5saRRFrX8HB5DopwDvzliqYYA+SX5tKd6LjC8pg62PgPnN0fr+4cdmOsOx35
-	fd92S4goVeOl9prqL9u5+5YgsEFwwlU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahkG59L9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5DDB14571D;
-	Thu, 19 Nov 2026 10:51:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC8C1F000C5;
-	Thu, 19 Nov 2026 10:50:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795085461;
-	bh=yfuI/yQuKLje7JCp8sAUMNEURSvgN1RcCGOMjucNHBQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ahkG59L9dcE4oY2xp+HrfLQSf7g8rFpsotvFwG75x/1ZyP/Bh85uerHgyhAly93Om
-	 cKdmDBP75o98gpk588HUBuXcp79fJM/peujxMHMVas40lukKb+jfeDn4xit2/bJBSE
-	 uzBOtyeEAoXAqZRcgzD75C5z0JpcYs3MbGDNWuu8eLHD14e0+UxgvckXHejIe8RxXW
-	 EhEL3GYn9D8TATyT9Fo2j0vR8+sUjJmbkBcpee7DvX8IjR5cli7tXojZbj35AvEuDe
-	 6jhNPmjO3eDcDe53iTyFvAyMFjMlMhDMb8G3FVZmjzeJ8Lz7dC5g0blte6gHdrE5LM
-	 2kWOkOWV62mRw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Long Wei <longwei27@huawei.com>
-Cc: <rppt@kernel.org>,  <pasha.tatashin@soleen.com>,  <pratyush@kernel.org>,
-  <akpm@linux-foundation.org>,  <graf@amazon.com>,  <leitao@debian.org>,
-  <corbet@lwn.net>,  <rdunlap@infradead.org>,  <linux-mm@kvack.org>,
-  <kexec@lists.infradead.org>,  <linux-doc@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <hewenliang4@huawei.com>
-Subject: Re: [PATCH v3] kho: do not expose incoming sub-blob contents in
- debugfs
-In-Reply-To: <20261119095937.826980-1-longwei27@huawei.com> (Long Wei's
-	message of "Thu, 19 Nov 2026 17:59:37 +0800")
-References: <20261119095937.826980-1-longwei27@huawei.com>
-Date: Thu, 19 Nov 2026 10:50:56 +0000
-Message-ID: <2vxzik1t3xin.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=o4DSb8O5B5HDKJHtAiV5LnHaoIIXUo9MJFuaEaQpxIc=;
+	b=KJAPOpBNh7iTJrO3/dtmw4IKVhsgiGzfi1d53K5tUOJ7FOOik4oslT8xOE2LlwO4JtPQUk
+	K5Whapofah3IjEGCKJeibWM7u62wcMmSYrmhjxQgQRRnJOoi4m8p46uxUA/kwIv0K438QG
+	CkRGQrSpzYm89sGBPoHwmVB1UvtDAWg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=L7sCtNoyyz4AOhvKZSKvMdeJDCNqtf9hXe6yH6IKk3Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795085638; v=1; x=1795690438;
+ b=kh4fzztJIush2phlTFhuk0xD7JfXKks2nDdAMlXUgmGoTrxzgRwgun7sahZtJFoyH3YZXr03
+ TfUQ5/w7zHr99j/y0ISIcypW7Bng2+kJeo/vkZPpNs4wTVXMKwlliIYLsfmvTXl3lh7LHhQlcQW
+ a3mxLf8e20A25WfiLxqK/1NY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id c67fc910d9f71c9e;
+	Thu, 19 Nov 2026 10:53:58 +0000
+X-Mizu-Trace-ID: c67fc910d9f71c9e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ee77a886-44b8-44b9-b21e-2c03729e9566@linux.dev>
+Date: Thu, 19 Nov 2026 18:53:44 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: prf9dzyc7nnf1g3gqranprqetfnymdrn
-X-Rspam-User:
-X-Rspamd-Queue-Id: C2DBC20002
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795085462-303962
-X-HE-Meta: U2FsdGVkX1+ArB2wUDnEg3FJ847LyGjMZSrFYjgcYgzVXM6KOQ9x+OeMzHCV97Zp0QPWRuNcpR2DHWc81hJxpggN6/+qxcQ7k9n72AeZaaugK0Tw7rkKJxzIcx03xocKHLSFvbUTswTPZGfV9gM3YIbLTmDwCUa53Yw3bX3iyW1J/jWROdsMOrwNzjZQlArqK+nE/urqUJBi2P5qgloygaTBGQ2WWCUPI1w2+QvvHe8sy17LSW2di8IYKB87EcEV065xQRFYAGQVX72jse48AKjCo/W6XynCjdx7opJPvewkj/YOEv0QXVNuMk7+ZkloHyN1IlpdJd5oNyXPKgBc6zwOnDzIwq4Yzh5AVqFNF3V1bECajxhK/r3GRzJ8b/wsD+wiguY3iJJqsukvZAOzGAcRqsT1IhwfRPcRTelxosgRUvp43J6UAhnzNjPUhTodHdVjOPR6Y9mjvCp6y0SoZP1cevAoaaf1RNPgEwFSd6tG+JpoSKbLSLMl29UoB4gR+c0/8CDDRU+0HUJipijVcABEpSZCvxSgJGBz99gSnQQJ2QzxgJzd9ZVe+EDfcWnk04Px3sHlCsoYv3ecyKcqn2mJFF6IxMQ8nSB3r/zw2iJU2pgLJqERSnJaV54anaojr3hF6cDBn5kBMIMb+AiWQmDIG/Yl9NDRq3VMX9jKCiON2hsRzK5t2TrQVP32rvp42cA4aBKaewoxxdVSantLhRWzf3JD9FN7bkwqnQ6JiXUIoZEMLIuP9bey8cuRqFJhyN0vve6VcxMau8MdP65SG36qpnBcE/6L5Ls08mwTMb0XARZKBfYbn06K0GsJyXectCM2eaKcP8qLQnMGaSZQevZJC71oan0G0rFvH/WjvVhJbAD6iIZHaQ/xd5okBRKJy6BDafH67byaiI9Q1+M6J+KfrkIhZX88fb7ir7+EKyVWT/gFcac7AvC1SjYr9kql9CZca6Z2GsVpZokqToL
- /TQ/THBb
- cqXnrP2G0J19GWqwGGEiCGg7SP+qzK5JKJaaSYPT5DGkKs5pXZZVgmCX8IGr89FqmccuwKs+P2PXYxH2csqehnLAo72yTZdOJEGVlrQOCyZ0qL2I93+vgn98rs7g55znRS37gGl5pqLA29oqFJoL96/PkzIP9CG5fOkcVlXnX0aN69XUj/dqHuW93KQuukojbKNCnYhgyRm8WhtaC3eS8y7GoLs7NYg2KRPbdFOlCJ/mHl61atL1NpOtZwzob/HekzRP8EnRJjPFBdORBzDQe65Fcdrses7QBqiZMkR5fwhUTJ6qjUr5/zHJvXx7Tckxva7pvPlOlW1PqpS1hE+sxZGbS8cLlxU6w2jBPcwIG2spRcU/DFrDbcpw5B4qy8TCB5a4VquzT6FtDq2e/4fGDnRJ5kiPdRvBaGzwfy4dMpWW1rdV5ajl5kRVG8prGXs3gPPDJK6ziUlwlFQzeg5Hkp0epbg==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] lib/test_hmm: fix alloc tag leak when splitting
+ device-private folios
+To: Nilay Vaish <nilayvaish@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Balbir Singh <balbirs@nvidia.com>, David Hildenbrand <david@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261118230044.683221-1-nilayvaish@google.com>
+Content-Language: en-US
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <20261118230044.683221-1-nilayvaish@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 58DD1180007
+X-Stat-Signature: go8q86dgtfcmyhoygut657po49q5g7bn
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795085640-82552
+X-HE-Meta: U2FsdGVkX19J44SPOWYPISdL+zOF/IuVPWeIUEG73HOrkQLfBxIi24scyUgB65PRcW5Fdre6jGQgTJKK1M4HcZi/q7/1ZYlB3i1tB8whsWN2gaE7C4hmqhI8suzAQw1CXzBVQYM+fQ32ZAlfqD5Y65bABLPW/5UmR22dSgefbIyffgGRFhLkgxKXMv6mEnJk6whkSnzfKXkraFAnGvxX4zTrpYYd3ewPqayCufR6nyr2eLMfAbCzvzl23WyKHTHxbrlBrX9At4vwrXvi5Cwhtitq4FdhNYB1OMclTZnAf8O28pvqIwp0rEE8Pu0f6Uq52Ce4cR44kIlvXDnRJEH1ly+6FbdeuGcMOE9p3h5ItjH6RfzknygDeQ2FEDBwMdGgxsjqfFU3MPXSRhz2Kt7o0GBnEyZNGyM8VeYYA/Fk0CvJgX6R0UzzxigNfIvf1iQd4uAcSB0BOAibbMtKgXDRstfirn6LcPnTAIe/uehhdWtHB0hLlJ2DVraW2FFSQcCF0tkKVo0L8pVlDM1Uv8pvL65DVqi9RKCK456xdAIFG+iimFJ+Lfn0iDpQSukSZFMtAUWOdnLg41pXfUDbzMdvkM7b1r1XC0d9EMZNvUqxNUbuAr2lxmizqkC7pWHfQpvZvjztKJuVRmz3XVatJ6ZB0M51puO0f8F1dijbLT+Y8pcWXsCQXNnnwQhG+1JX24CG2qM+nJJVWv9O8Fu1OAdd95vwA5SefLO3a3m6RbOIP3cZHVBOKNwFPx6FFNvKeIho0olj4Z8gi6WPZlsM6x2/38emXetVhoZionB5qrjqmPwXuQ8993UnXsdVTeL1DHtp3jEGGUUl9HmK38ePjlnDV0RiIqWH09UvFRt4rvu0U5dZBrA0GWNoxjJKFRiyDoOHZ8thO+S9iEINCHmW5OTPEkcOzEXapAwaZW8ihfZicU+msQqJIP6+mwxFl81HhcnZUGgUOtA7G7elnyyH5oX
+ IGY0Hagr
+ lUL2e4o/YlCdWKrxZf/oY15vFcqjC9n0WC2C6dbRIKDA4Dzfiz7cGrTanl1kg+mxCLVs5j+bAtq4Po5DIK1ziy+2VPUWmUiJDdoBNHOG0NdaixF8aGIoTCr54HOsTyMLPKWIc0nMuQkYcE+b+hTOmXmHI5OhAsvSC/GdL2R1mA8/iLh4KwqiNeifRaASzAopSeHK3tCqmnD0Wo6y7UqWnQiwJ0V5cuGG1BHmt2eIei8JT3Ngtxr/4gXW1re3+ME23FGW9qmLBG6zlnbGrQxrxqYKLAJbXUswoeXzGh5DtE5YNO8L+4Kem9l0ctvtH6QmK+pup
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,76 +99,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19 2026, Long Wei wrote:
+On 11/19/26 7:00 AM, Nilay Vaish wrote:
+> For device-private memory, test_hmm backs each fake device folio with
+> real system RAM of the same order, allocated with folio_alloc() in
+> dmirror_devmem_alloc_page().
+> 
+> When the core MM splits a large device-private folio, the driver's
+> ->folio_split() callback, dmirror_devmem_folio_split(), has to split
+> the backing memory as well. It does that by hand: clear_compound_head()
+> on the tail pages, folio_reset_order() on the head page, and
+> folio_set_count() on each of them. dmirror_devmem_free() then frees
+> every backing page as an order-0 page.
+> 
+> This open-coded split does not split the allocator's metadata. The
+> allocation tag and the page_owner record still describe one high-order
+> allocation, and PG_head stays set on the head page. When the pages are
+> freed one by one, the tag is debited for only one page when the head is
+> freed, and the tail pages carry no tag at all. With
+> CONFIG_MEM_ALLOC_PROFILING, running the HMM selftests and unloading the
+> module reports the leak:
+> 
+>   lib/test_hmm.c:808 module test_hmm func:dmirror_devmem_alloc_page has 16744448 allocated at module unload
+> 
+> and with CONFIG_MEM_ALLOC_PROFILING_DEBUG freeing a tail page triggers:
+> 
+>   alloc_tag was not set
+>   WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0
+> 
+> The backing memory is a private buffer of the test driver and nothing
+> requires it to be a folio. Allocate it with alloc_pages() instead and
+> split it right away with split_page(), which splits the allocation tag,
+> page_owner and memcg state and is already exported to modules. It is
+> still allocated as one high-order block rather than as individual
+> order-0 pages because the driver finds the backing page of the Nth page
+> of a device folio by offsetting from the first backing page, so the
+> backing pages have to be physically contiguous. Every backing page is
+> then an independent order-0 page for its whole lifetime, so
+> dmirror_devmem_folio_split() only has to point the new device folio at
+> its backing page, and dmirror_devmem_free() frees the backing pages one
+> at a time.
+> 
+> As the backing pages no longer form a folio, take the order from the
+> device folio rather than from the backing page, and index and copy the
+> backing pages individually instead of using folio_page() and
+> folio_copy().
+> 
+> With this patch the device-private HMM selftests pass and the module
+> unloads without the messages above.
 
-> Incoming sub-blob pages are owned by their consumers and have independent
-> lifetimes.  Some consumers, such as LUO, restore and free their state in
-> early_initcall, i.e. before kho_init() (fs_initcall) builds the debugfs
-> view:
->
->   early_initcall: luo_early_startup()
->                     -> kho_retrieve_subtree("LUO")
->                     -> kho_restore_free(luo_ser)   /* page is freed */
->
->   fs_initcall:    kho_init()
->                     -> kho_in_debugfs_init()
->                          -> phys_to_virt(luo_ser_phys)
->                          -> debugfs_create_blob("LUO", ...)
->
-> debugfs therefore ends up pointing at a page that was already handed back
-> to the page allocator, and reading the file triggers a use-after-free:
->
->   # cat /sys/kernel/debug/kho/in/sub_fdts/LUO
->   ==================================================================
->   BUG: KASAN: use-after-free in _copy_to_user+0x37/0x60
->   Read of size 32 at addr ffff88810309c000 by task cat/27436
->
->   Call Trace:
->    <TASK>
->    kasan_report+0xb9/0xf0
->    kasan_check_range+0x100/0x1b0
->    _copy_to_user+0x37/0x60
->    simple_read_from_buffer+0x77/0xd0
->    read_file_blob+0x75/0xa0
->    vfs_read+0x12d/0x520
->    ksys_read+0xc3/0x160
->    do_syscall_64+0x97/0x4b0
->    entry_SYSCALL_64_after_hwframe+0x76/0x7e
->    </TASK>
->
->   The buggy address belongs to the physical page:
->   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1fd
->   pfn:0x10309c
->   flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
->   page_type: f0(buddy)
->   ==================================================================
->
-> The page is already in the buddy allocator (page_type: f0(buddy),
-> refcount 0), which confirms it was freed before the debugfs view was
-> created.
->
-> KHO does not own these pages, so it cannot safely expose their contents at
-> all.  Drop the in/sub_fdts directory.  The incoming FDT is reserved by KHO
-> and remains exposed as in/fdt, where the same metadata is available.
->
-> The incoming sub-blob debugfs directory is gone, so remove its description
-> from the KHO admin guide as well.
->
-> Note that in/sub_fdts has exposed memory KHO does not own since
-> commit c609c144b0e8 ("kexec: add KHO parsing support"), but the
-> use-after-free only became reachable after commit d376e4b55c9a0
-> ("liveupdate: centralize state management into struct luo_ser") which
-> added kho_restore_free()
->
-> Fixes: d376e4b55c9a0 ("liveupdate: centralize state management into struct luo_ser")
-> Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Long Wei <longwei27@huawei.com>
+I did a quick test and confirmed that the original splat has
+disappeared :-)
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+Thanks,
+Zenghui
 
