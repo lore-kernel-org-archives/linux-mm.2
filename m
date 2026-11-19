@@ -1,129 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411DD606A336
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 14:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF6D606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 14:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BFrwIpRG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PwJkoISq
 Received: by kanga.kvack.org (Postfix)
-	id 64C856B05D3; Thu, 19 Nov 2026 09:02:57 -0500 (EST)
+	id 4F1206B060C; Thu, 19 Nov 2026 09:03:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D6E06B0636; Thu, 19 Nov 2026 09:02:57 -0500 (EST)
+	id 4A0576B065B; Thu, 19 Nov 2026 09:03:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49F186B0638; Thu, 19 Nov 2026 09:02:57 -0500 (EST)
+	id 3685F6B066C; Thu, 19 Nov 2026 09:03:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F5656B05D3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:02:57 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 992A9C0ACA
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:02:56 +0000 (UTC)
-X-FDA: 85452034752.29.AEF604A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8111340017
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:02:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BFrwIpRG;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F2C0B6B060C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:03:45 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6F65D1C43F5
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:03:45 +0000 (UTC)
+X-FDA: 85452036810.01.9961511
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5BEB640010
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:03:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PwJkoISq;
+	spf=pass (imf01.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795097023;
+	b=xw2UTyNUYE9Hdz8lbgB/NKOP0ZBw26qBeC/TnUBTe4VNH40hE3UfHsCQTtquY1dkieHbV+
+	Y+Qrl69yid4kuytzWcvkhLaiAIW/646E9wnx81zHJfLyrVWK7Kazs3QnQ9K/EbuW4Q/i8a
+	W2GFvNGsXhbQuoAnqzve1Z2UK8pelgw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795096974;
+	s=arc-20220608; t=1795097023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f/AGc49co9IRdKpA2VFSfedJ8sUlancWLOq8E/XkKss=;
-	b=8oosXWxIcAdhkFWoPZZ/S9gnqTdhdkYFG2zh3pbtjCPQnEjKQ+OnRUt3yfY47Z2ZWDW8/D
-	JRcgF8vnPN1ZrsVsuA0czJqvolyvDacOX0Ib161gaE9I9ZQzhHcP0XnL3N9gdY5deUfYe4
-	gA8oIcBHhjpjFI4Sqh/j2huu4j/evGY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795096974;
-	b=d1xmZRyzBE5ujDof99dJl5plUdijGRpnFz0qV7HLxQaA4ro+oySZi115NnU5FHj4XlzNmp
-	u4Chq+DXatmkSRfSlCi6xUMtYe1K2OtU3dWbWj9tgHjm4ZO2RKh7zjdGcpfYlB5vjqbpPy
-	tFLOgPByhNEI4Ihse1l/TOg68pnEwDA=
+	bh=e11EI5HUYH38rhtF9FVzG/dbODjC6Dq9r2AF5SdURro=;
+	b=KOtCzOFPdWPHV/jCiF/2T4O2bzQ8kYhdXvKQIDgIPjbJd67O1R8XgcC64d7uZ4m5CMnfDq
+	L31JvvHZ4hwsFyJHX9ZeqhmIdjSHbW16AkMJLKN7yde2UDMYOw+eXJCbZjIvoCzgQ6eoNu
+	O6gZDdUoCEFDpD3ElbwY44bnq44S+7Q=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BFrwIpRG;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PwJkoISq;
+	spf=pass (imf01.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0845862397;
-	Thu, 19 Nov 2026 14:02:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A3F1F000C9;
-	Thu, 19 Nov 2026 14:02:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8BE3441083;
+	Thu, 19 Nov 2026 14:03:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF91D1F000C7;
+	Thu, 19 Nov 2026 14:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795096973;
-	bh=f/AGc49co9IRdKpA2VFSfedJ8sUlancWLOq8E/XkKss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BFrwIpRGtLzoYyMsETfOISsbAGyDWgsUmZt3nbKFqhI/NZsuNqPLN3opz99iC5nSk
-	 jQysfrYKrylKh+sMQbPCc+ZIVhgvJ4yZpg/gbNUg1F3cQMiElSfqp5pFCK0XNkWhrz
-	 Ue8QBfmz+hU1yWq/gMxiuf2WYZSfBU/91yTqLKnWo+FjwuwHjmXp9pQRLP9KNrgZ4E
-	 T34Uho3e1NHgDm9BoV/hY9H9Gz0G66tcNeojvEjRcdfD4VNJOBpJGXLUSK58DwAnvd
-	 topmyP3WsHsHpCUIGrmyC3eL0Be/sAyOCFGo1yjeHmmYdrwX9cEyNaan8dA4vR6wQT
-	 1EZz2em4IiyIQ==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 0A4D0198004A;
-	Thu, 19 Nov 2026 09:02:46 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Thu, 19 Nov 2026 09:02:51 -0500
-X-ME-Sender: <xms:hgH_amOYzRd7dVr8m0X7g4dhd52vpzYJP1__3mwQAoDj21RoOUuaDg>
-    <xme:hgH_ajblJ4HPIBLUWaGI1DWJQ136TS6re2StEokZsZvx-Bao24jjuPRzvVL74BJOe
-    3slNYq_lo972JdrbJvulUs1XmG_fGDmmYfKnbtCo0NUPooQCSIQPpFi>
-X-ME-Received: <xmr:hgH_akajH_cplzEjSWRHxBPGZ_2sXbW5vYbeMz7bc8JNOuF-kKV6XLluWto>
-X-ME-Proxy-Cause: dmFkZTGFFndgKVGI0oIvIBSZPYQMK+0+oHzR5AlkCgqNSv1APO1ZQxm+uD+BvHYnVxxgIB
-    vSa5Zu78mA2Z2TePm6M6ndOlVZNwLHPnGbsavVyB4WQBW4lwfnz0iuMkTDNVmdXQnJ0z9R
-    GSN82/7XQuqaLWFh6FTgvfw5TxqQkzkRqm5vUsD6EckF5MHALw4sle52/BFHjuEU5DQrFj
-    O3b3bbvAoOkNVtTr6U35Lw0WpGVSONOa2Xcs273V7ZNh8J0uZ8Mq5q35rHyJnRmjOAZxSu
-    Kq9oEepCa16IqD6r3owF4meYch2O/Sla+Ux0SA/V7ySnd6g4D89XLPu9CdxS9eRg7wvICZ
-    Dr19o2X6VOMBl6x0ulunXyQZmMptdfIt1lN5VMUsVsVPCH7KeQ6uGqqYNUw/P+kRfDfYke
-    VRaaL/4HNc9Nr+naMn2EqtnGPx94HcVrlHkyYZ2xiWKaKpPAW5jbSCXidDAgh0MXhVXS+6
-    6Y1uqfrF3ZGImkVwLYgZUFrND7SmXyjnxCFTgHPYuuQeqGovwuAY8reY2C1Y+jTQPOoDYy
-    ebVOof5U9J0ftBfrU54j2pDTDOUB64nsIGGRFeYcUNRVYNAGv9epZ5ffK7p1xc4FDHjyeE
-    ihNzPqoWaalJ+YTTb9J5ojlLAcW24SATMaufEvr6iFdrxOmL+yk3HYs4OVqw
-X-ME-Proxy: <xmx:hgH_aqQd7I9EvoDTH1ZlmphDB8mtkMBxYQSXM-eoRAVfgIW7SKZmjg>
-    <xmx:hgH_ah0TPhcqs1kMRujzA2hnzOvByiCmTAAUYkMCvq8DzVo3SvrTIQ>
-    <xmx:hgH_aoXm9znKxPe_jWJaaeRYKzd_okbM5eepRY4ZyEFPGvH0fG3Xkw>
-    <xmx:hgH_aqxXc7oNOWhbttdfR8sTObCmoFjtZdGOjn6snZsn4p5TVJ7pcA>
-    <xmx:hgH_aivB3jDIaRSZ8NA7AapUST-bjmtZLRskw0QzGjBZauwhIcW8eVGB>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Nov 2026 09:02:45 -0500 (EST)
-Date: Thu, 19 Nov 2026 14:02:44 +0000
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 2/3] mm: page_alloc: make the high-order watermark
- check honour ALLOC_NOFRAGMENT
-Message-ID: <av7_n5llADUbJI-r@shutemov.name>
-References: <20261116125103.2894162-1-kas@kernel.org>
- <20261116125103.2894162-3-kas@kernel.org>
- <a066d403-1608-4c0b-b06b-0b786e71b12d@arm.com>
+	s=k20260515; t=1795097022;
+	bh=e11EI5HUYH38rhtF9FVzG/dbODjC6Dq9r2AF5SdURro=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=PwJkoISqT6EaC0sZkStTcJo45598OYDzHwp9gfFfqn9uRoAG1Yg4ahZTMuCTvhb7a
+	 14xpOeQZfd6YjLY9BVIczZzlXE9E7iIjJ3NsbVI0JOCkkY2tz/Kr7ecx3vErx5PQ9+
+	 CL+ZHICinTASfBwd1uhi3TphOs+mOPSsdnkPhLkipU55Ki2z3KmRWnxAEFQVYI8LBx
+	 CfYsgHLyAFiKETxHqOQUHqHz5f56AITZz3hiwpoHVUc77y0JFugaO+JAz0TX8HXHzG
+	 zCS2QcYsh0tewRa27ni4OzTZQV8L7u9+mocxYaVVuSb0sKTgVdW7047pTiAAPPHHFK
+	 Y+k9Mo1jgYSMA==
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 0FEA4198004A;
+	Thu, 19 Nov 2026 09:03:40 -0500 (EST)
+Received: from ams-imap-11 ([10.64.2.31])
+  by ams-compute-02.internal (MEProxy); Thu, 19 Nov 2026 09:03:40 -0500
+X-ME-Sender: <xms:ugH_ahf63RW6MbgcteVZgf9zd4Dci0kGEjOq79aATfIYmJ6x9SrE8g>
+    <xme:ugH_aqD59hiZYEATE3c8N1CySI58yXhWSdVg_WffAM-NXwZe9bsogkiYPeShZAfHf
+    sppKaRxDaq8-VvSFC6mkmO518vV1WiFjPFZjz-9saO6gUP7qIHtJc_B>
+X-ME-Proxy-Cause: dmFkZTFZ0/opS/OEdL6TyesgIFYBhyhms6dCId0BZNRlqxIsUc3/R9O1/SEa6wmz3oCDH2
+    WHtrVqtIHQRw8n9z7z+CTC/COuUus2sD5ZoLmedmzD4SAGjrhTCD3lmSf5AG9U63xhcFrS
+    dyyfPn0Cv5J/7DJexKVDN1qPCE34iUtEVxkcORtHRah84RHeVWuWEleKmFwzh3smpaUTGm
+    Li4RfqZVLFlY3rb8OqBLNK8aRzrhSf6AVUR6SYhRMX7Jak0lBTARwL1oRDY4B4/k+9mzHk
+    SSfEuUtdN2sVOw2hbhBcwg8uzkTgrE/d/aFBwqHQ010cHeKSYsMwdrlEt7RleB3jZILjj2
+    CCooShuiwY6mfuCFWy1K/iIgMBnIP3/b0evwKsMbHPIKGPkZUzYGeeYKM/tIIN0ywJ/MuW
+    MumLGaooVbYsQe98lttPjNGhglEGAUbmgKFeFk7/ydi2QdcP9IH5mDbl7/zQUzeasjP5A1
+    6eAn1uyYgMstlzu/QvFgozOuvW/CyDJ2pxNZ1Skwtt3MXGJPCPzXHn7/qH+SJ0JQTzvmFw
+    z0QWHh3TI0Fc74e9F+az/LtEGTJDBYjLsG3IxW/od+hBLmeXlsuy0CpBjC3yOQcjeow216
+    UgJjPbKH5qwrr1SIdMKzzYuGL9x4ZDT4Kx+r97Y3umcvbRG5+HHm+FZKugsg
+X-ME-Proxy: <xmx:vAH_ajJyxbbeTJSNijbLLjqsFJ7DlCLzv6mvdc5i3YogxIlGCnpGeA>
+    <xmx:vAH_agf7r7zZTDaa6Z9CXr9MCCdAlcoAOkQ3PgZ_66ajmTZAXvTZ-A>
+    <xmx:vAH_ai_7X1VcFlxZMQcXPSx-iUM_STg6zaNmhx2ghNFnIzAzPBqIxg>
+    <xmx:vAH_atpLDnal8svyG675XQOCWQmwUeGeeOIiz5uT87rzY6TXGS7Qtw>
+    <xmx:vAH_anCePCP23IvZSwRq8Ot258hoeSODfjmYOChNPQNf7xI9lYddHe2h>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 6D439F8008E; Thu, 19 Nov 2026 09:03:38 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a066d403-1608-4c0b-b06b-0b786e71b12d@arm.com>
-X-Stat-Signature: jmnuuq6e8ccpwnr1p8u5s41b3i7t4oa4
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 8111340017
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Date: Thu, 19 Nov 2026 15:03:17 +0100
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: sashiko-reviews@lists.linux.dev, "Ard Biesheuvel" <ardb+git@google.com>,
+ linux-mm@kvack.org
+Cc: "Suren Baghdasaryan" <surenb@google.com>,
+ "Kent Overstreet" <kent.overstreet@linux.dev>, "Hao Ge" <hao.ge@linux.dev>
+Message-Id: <b7521ecf-d30a-4b47-959e-43257baaf8a9@app.fastmail.com>
+In-Reply-To: <sashiko-outbox-223175@kernel.org>
+References: <20261118132719.632451-2-ardb+git@google.com>
+ <sashiko-outbox-223175@kernel.org>
+Subject: Re: [PATCH] alloc_tag: Use __ prefixed ELF section names
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5BEB640010
+X-Rspam-User:
+X-Stat-Signature: sjen6h9j6xay4a6cae98udt3aj6z9kh8
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795096974-351484
-X-HE-Meta: U2FsdGVkX1/YNGK2ieHPM6gN/V0ix1SMPGR3CHyoCaJ6UCM+aF43nnfIS4Q0HIzwiZehAxrpg3hkZz0HM0PNMGvklqD0xhx5YaHMkX+Bph9+Omsfwm9scCqOo36dsbF6bm4FeZEjGVIKhApMhCxu0ySC27jpgJ5GzRur2W8rAuM/UvOVTkU3K8prP7i0CtwaLTl1AyUaIrf0bcY07iiuFMVSznZy55AZuzplmVn6hJGgr3bNvzYH9g72h8zt0wAmhb5htYWk2Kt8bSRDxxxfD6SJ82GaNMFoENThTbRayCpPdxirKmQ+B+06V3mHmsN+N8hT1xmWFvJybj3Q5BjH/mnLynBSUPMMtF6k9hAJMIJU5t9m9sGaR/PKr0SVWxkCBoGevvDtix476A2KtxjRv8H8PXZtxnLP2dju3fHi3n3mlT3MeuTCSb+ZXJEB0qdYyR9sOkgYnQJ1AVK7qhnLhCgniQrVJf3U8kS4qHJjqfc2rWod0Ob9ZhjY9xwH7ffcYTE5hO8AsibGMI+QIYmVecGOLokuXISN12rpqXm2lLiBKHzyHraqgVKFHOvpTwIQN+YGfLj//6bl0hHK10tAg4c9gVv48kOWWeVjs2BjdecUOo8B8VvljSW+R0NxKyt+3PrtZ3LUlRNE+rbAglZ0JhwxCI9Blc0UI7flMHLTfv1lsu/vngLxil86MZFxQW3edw2H2A3yLcesOb2qvVwoym58Bfnusr4a0Plzzuy8a4gJARaBXa5o+F03HMWhviA4lZxknm5zFk+SrLA3Gx+setgDZqW0EaE7VGNRK+zG+gR5M3hK0r7XwIfz0Emxa0LG+93sLrKjkkBBmc+lJ8orzf1rcW2P+2YMmjB9/0w8nJz3EVhwEqA2OBJdw1tGA4Rg3j5BWoqqBTT1JUuwXYXvBZtDytlPQvimDEc9xXSFwH0OiV6FBorGQJ9t7iSRx090bteY7BQl1eI7jnTQm4B
- Xr/nFJxM
- VzvWKSh9h9mM+oGkeU33r5VohohTvv8J/nWbForO8etiWrdr0pnW5cHz9Tw2zOFg35sEFd/Ib5TqutHsq1CF5xK9sEtlNjEJha6aNf08Hfl6gEVs/BcjO0gKJdPziDW4t9MuVSRgqelMttxdoZMCWhDiIFsB2VofqebrNyNNzze8RdTg3yw8+G6auYZT/SWYD+QVQq7/wvc2/TeAxQZxlcYrNv8CbnuJK/ZYHl2Nrw82bh4/1bBkgK/RgKlz+7FxwcdkPao67p+woj6A+9XAQqszdplfgG5U8JhmVYfMHcQWEO8vdIb3o26rdQA==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795097023-496751
+X-HE-Meta: U2FsdGVkX1/4tjFabxvTcTaIan0Q7Z5qrzuzF5WZxjGTWf6vod2DazwJBIfguR77S1J/hMrji53JzBee/h4uV0EsgZ4zDvkf7ygksVUJzSg3jkc8Kfq17ac95qaUtZRehI8DjEPVb7nyXlveO4TyuqxQr8xIYY5i5+wYnRdy4XliUc79kTI3c84rNSes+srfO3uxdcWAr+CZJ1aaoYeQA1WPr4YstYOceBOBnjU/N0OMX0TxgJe5dlNAZBV0INNl5rrxQq8WZGsrZvebAJX+OyvtNa2fiKOJLSKlBAZZCBv7BlmRH5MSuqKHgmLL+WIoLyWBlFa+dyGA4iN65PPr4nQdmbEop7anx+LOE8SLdcd/M1XkxE1ACglCfIr8iT+i7mAinbh1c07ZSaNZg0IeTTvVsS+HC6/ttJS8xyjBh7GZgMdM/BMJwOEVNYF0GAUGR58ZIuo4jj60FNiC5rCV0RpYjQdWSFOUzZ9JdfbhKM80G/ppTtRQme3f2QrnsK4LR67Hv3u3RhbujW5I7Hm3CODaSvWZO28EFSSY6qqYk0RKFtGU8Pa8PY5lwPr0lbe6RKy0RcqEjOrL5wEU/epRwJWI67sZY3PnHUwGxQmYEky3NjamTWZ/AofiqX66Dx9yn8eHPPibO+2HvMfG3SlXkQDvUV4NDrmoU6fdFX80eKPWrMVwsAIa/FA3yvkURH+KrjyR0ac28WHVInanim/rA7+r+QOJTdQTuefCdKU+HbVJpm9Gdp9YYRaiPUS71G2HU/GzzMy3ReVx16X9e9NveRJ4DMkQ9UrjiysDKe8qso7wJ1np1TttVGUkgIoyo9KQG1MX8dDJQDxDM/0SeQhuNHvTNSSq7F+IX7IMzaVyPlnlnyued6y2JIH1gyp2lV4IJamYa2y5zzCDbyaCh9dsF8YoUMO23H7qol2682vpoHaUtIeOzSnMx7fUjhs31Eg9nZHd/Ns2rzDrw1sl61Z
+ 9bVUd7Jh
+ q7R/HBijEwKzbtWaaewbvoM8byDNl2FMwPPZaWdqRWsfUhoh4LTqsf4YYrvqyUaRsOCktb6rM3KIAr0Eqpv5QeWFrhXKNvysWMzKV86t34NIN57x3nk/vy4BS6wnmoy2oCveKZmWvl2WwLDjsXoSsZQwB8DsXfZTgOLIyATiZATp7hD/0cMVTLG+Rw2OvkrEItwcIawws9Ro3HzEk9xcDktEcyPE0J8DK6eQthUPW5w/9qiIGRepfcFgfMJNFH4tUz7oDMsEyKVELjrDiOMU0+0U2RjTTui0OZBK2oH3VtZUmZM97DN5QCdUszPdRsPYqKAFRdTEUrBtIAxOoTESlEens0DIYcZ4jtKKaGKfMuwFz3F6NwniFbmCCbMzDgJdpVpJF28sFdS6u0F4wNJ1okpo8AyhoIwFXzNLgmDC/CVvblXuJX8kTXYlsoWxd2C8xLrWYaUyXLzDuT2806peV3pVRJ8yo/FLLuFabK8x4WTYIyyFrf38Hu+MdOY/HzWcuCKPLULlWKkC6EsuAyx7pKu4kpdQBYhCRIjA9SFZpe0W8SsQuV0n5PIeoxkIgifHNTEh91XNu+kBfuuPmDExPWF/i5xTecwsADI5O9+J1PmXMB/JJvkF7K7IwDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,27 +123,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 01:40:17PM +0530, Dev Jain wrote:
-> So let us do something like: we have zone_watermark_ok_for_alloc. It will call
-> zone_watermark_ok, which will only handle the watermark computation (so this is a
-> refactor for the code ending at if (!order) line in current zone_watermark_ok).
-> Then it will also scan the freelists for the correct order, correct migratetype etc.
 
-A count-only zone_watermark_ok() does not work for three callers that
-pass a high order: kswapd's pgdat_balanced(), kcompactd's
-__compact_finished() under defrag_mode, and should_reclaim_retry(). They
-ask whether the zone has a free page of that order regardless of
-migratetype. They need the free list scan without the migratetype
-filter, so neither of your two helpers fits them.
 
-So the split is not count vs scan. It is the zone as a whole vs one
-request, as the comment above __zone_watermark_ok() says. The _mt variant
-is the one that takes the request's migratetype. Callers that only want
-the count already pass order 0.
+On Thu, 19 Nov 2026, at 14:27, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issues to consider:
+> - [High] alloc_tag: SECTION_START() and SECTION_STOP() fail to expand
+>   macro argument
+> - [Low] alloc_tag: missing Fixes: trailer for unprefixed alloc_tags
+>   section name
+> --
+>
+> commit 933587991e6a16ab600445b22347397f80335de9
+> Author: Ard Biesheuvel <ardb@kernel.org>
+>
+>> alloc_tag: Use __ prefixed ELF section names
+>>
+>> The compiler will emit static relocations related to a section .foo into
+>> a separate section called .rela.foo, i.e., it just appends the section
+>> name to the string ".rela"
+>>
+>> When section names start with . or __, this results in relocation
+>> section names that are correctly matched by the various pattern rules in
+>> the various linker scripts across the tree.
+>>
+>> Without any such leading delimiter, it may lead to spurious warnings
+>> such as
+>>
+>>   >> ld: warning: orphan section `.relaalloc_tags' from `init/main.o' being placed in section `.rela.dyn'
+>>      ld: warning: dot moved backwards before `.rela.dyn'
+>>      ld: .tmp_vmlinux1: section `.rela.dyn' can't be allocated in segment 1
+>>
+>> Fix this by renaming the section to __alloc_tags. While at it, tweak the
+>> headers so that the definition of the name appears only a single time.
+>>
+>> Cc: Suren Baghdasaryan <surenb@google.com>
+>> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+>> Cc: Hao Ge <hao.ge@linux.dev>
+>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>
+...
+> Does #NAME in SECTION_START() and SECTION_STOP() stringify the macro name
+> "ALLOC_TAG_SECTION_NAME" instead of expanding it to "__alloc_tags"?
+>
+> In alloc_tag_sec_init(), kallsyms_lookup_name() will look up
+> "__start_ALLOC_TAG_SECTION_NAME" and "__stop_ALLOC_TAG_SECTION_NAME"
+> instead of "__start___alloc_tags" and "__stop___alloc_tags", returning 0
+> for both.  When compressed page allocation profiling is enabled
+> (sysctl.vm.mem_profiling=1,compressed), kernel_tags.count remains 0,
+> causing idx_to_ref() and ref_to_idx() to misclassify built-in kernel tags
+> as module tags and dereference an invalid module_tags.first_tag pointer on
+> page allocation or free.
+>
+> Using __stringify(NAME) instead of #NAME would expand the argument first.
+>
 
-I am not particularly tied to the _mt() name, but _for_alloc() is a
-mouthful.
+Ugh the token pasting stuff always confuses me - I'll fold this in for v2.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
 
