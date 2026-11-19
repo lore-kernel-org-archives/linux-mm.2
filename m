@@ -1,186 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561BD606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2D7606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=C85qvXLQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mgEUf9NT
 Received: by kanga.kvack.org (Postfix)
-	id 7198F6B05B1; Thu, 19 Nov 2026 05:18:59 -0500 (EST)
+	id 9A8B86B0606; Thu, 19 Nov 2026 05:35:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F2196B05D5; Thu, 19 Nov 2026 05:18:59 -0500 (EST)
+	id 959FD6B0607; Thu, 19 Nov 2026 05:35:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DF486B0604; Thu, 19 Nov 2026 05:18:59 -0500 (EST)
+	id 86FCD6B0608; Thu, 19 Nov 2026 05:35:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E7696B05B1
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:18:59 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B0206409F5
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:18:58 +0000 (UTC)
-X-FDA: 85451470356.25.2F63B15
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020094.outbound.protection.outlook.com [52.101.69.94])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9B48AC0006
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:18:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=C85qvXLQ;
-	spf=pass (imf28.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.69.94 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795083536;
-	b=gUtXQ9bIVVUOTmyuZUEMSxjbSGDu5tzpLWAIuHDsorlLGZPPmQ9cKM5Z/ohhOUiN28WhOA
-	283/XHucMyHX2EQ7eb8bUcmLxbYTIhinktDsbPmiVQ/R6QYL+QVu9i5MGducd8n8OqLsRs
-	UpeDAAlj/rq4vpaFhq8jTId/8cqyxbA=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=C85qvXLQ;
-	spf=pass (imf28.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.69.94 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795083536;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 663FA6B0606
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:26 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 031341409D4
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:35:25 +0000 (UTC)
+X-FDA: 85451511852.17.6E66131
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 71A93C0003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:35:24 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgEUf9NT;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795084524;
+	b=WdmdXUCJetRsx9zz1fiPlXtilTOF2U80ecf/e2wzPtlwWYHNYBsCqpQn6FO4aaOJwJCG1Z
+	Nv/Bd/rF7oSVO7Ee882njSEQKa66NwIoIKgMvLH8CV7wmvcOvlAtJ9q5kTqhKLzOSM4MEH
+	JBUdzHz3KGEIevOmEYRwvFooxR69jYk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795084524;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tfxTFHEyluesyaBIpsmmWm8rq7qtETtH8efUGbR+L4g=;
-	b=t1xQOjNtKkFXkvdz28kZ8Li2BimwjpO1qI3cZtwr+Aaod0H8RF9gnNZqZBYnSZFhRcFfja
-	BndNDaxPVm7DiMqOWjOoxIzT+LmVhik9soXwy1Gblh7J9emaDR2ML5eTxNmIUeddl+2Xcy
-	41m2J0II0Cf2Fhbrt5RllpBmYjmK/CE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dX7HbMqJBq5/eWQbtiPAHNdfIe9kK758ilDW7ZgFvZnFwakhaQMqoHfinxaCDwc/wvNdP+Gb+NGmHddmbm8fTzEpWkz+E2Tm0+PbLaxP0Eh/Fbeb3n6MRWkJ+ldtZhhLlfBz5drk7OB4mM+6o1AJPJ+inUOqFLBORggXySo8Rbx/zfO4Ic3JB2Te4hR5MtBp/EhSAEqIhvU0xrYf7Ltdm2Kus4mKaU3LFCwFZwBEzlkV5kyA3/xliqhqBq9HpdTnTGH1+U0rbEPtimGggvNhUuSu321j3Jy9PVuE1MPClxGVOFBCn/kqiRp3+bKJHJK3ZHiz5x0jDG1rKgbLD6dH/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tfxTFHEyluesyaBIpsmmWm8rq7qtETtH8efUGbR+L4g=;
- b=xU5CFrAgne68LHzWGgO01/KvGc81+Tj9b1h1cbqgbm7qBEJObJTjlc+OhR65Upav+y8YtUAa07TMhJS2dKsSivaV02GBA5blt6b7G2qcKgUDronmmyqva3rn6jeaWNse210mqXzFfhEGbMlgIn9HzKzHJuQeXhiLLtCdF9fxfSK5J77Cbdhkyxl9anb0kHGqn57pq96iPh6LmUjV/R812QSZ88v7IhFZBE5RKv4VLfkChlenJ3Ih/pWTjvfIjuMNjkk4ONYRQDlda5cwnjzRcPZD9LLisK8HXOKFg6PSWegAkcOlrgE6cAnH59t13MDEvi2WHkTFpSPbDiQ9AaZMDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tfxTFHEyluesyaBIpsmmWm8rq7qtETtH8efUGbR+L4g=;
- b=C85qvXLQ+jSSrCoq1mXdrvp5iBbAUo+DCV3qWMbQfzdoYOXySmLkyWrw1gPSYZznLV3K09MviE1MoQdVuLGDsPab79BKyn/w8nI5CGKsjIVjkeL+vFwffto7JAaBz2ZSXXhFrwgqKdwy4VCeP0pOcz7kxUXM5Q9+boOeB2woHrSU0rg53hpKpZnAyzWDMv2uZFi0UyNTbRA0QN/JmEEisjuZa5V9THvBMO7Bc19M1iFc2qlbRYkVNRYtDU5CzrAPzELvd0GEyEW+JllakE/mCVeKgP+V8ZCfBlGOi0q6HbF8B537uWnIigzFj5YOzf5bCjG22qkSVsF6iJkO4922sw==
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com (2603:10a6:20b:5ff::9)
- by GVXPR08MB10452.eurprd08.prod.outlook.com (2603:10a6:150:149::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Thu, 19 Nov
- 2026 10:18:48 +0000
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8]) by AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8%4]) with mapi id 15.21.0615.015; Thu, 19 Nov 2026
- 10:18:42 +0000
-Message-ID: <d9104dfd-4a07-4fe9-b1ca-5ff6541422f8@virtuozzo.com>
-Date: Thu, 19 Nov 2026 11:18:39 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/4] mm/huge_memory: copy PMDs at fork like the PTE
- path does
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
- <9514b491-ce2b-41e1-b1c7-066855ed6fd7@kernel.org>
-Content-Language: en-US, ru, sr
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <9514b491-ce2b-41e1-b1c7-066855ed6fd7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P192CA0033.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:658::27) To AS2PR08MB9075.eurprd08.prod.outlook.com
- (2603:10a6:20b:5ff::9)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS2PR08MB9075:EE_|GVXPR08MB10452:EE_
-X-MS-Office365-Filtering-Correlation-Id: 733ac57d-b07f-4613-c20d-08df46267cc7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|23010399003|921020|261022105027099003|261026121527099003|261026140227099003|261028144727099003|4143699003|56012099006|10067099003|261009223027099003|261022075727099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	9mJKa8ifQpqcIiiD1qWI3uolMutHJQysRYfQ0A3NtyAYH97/Qv5BdRF6RxD3ZL1jdQHSHDUu7Lb85SAVxl8b0epM3OI5pKCwWrwHfZ0ttWe7SjkyOAL561zvHnuHMj8ZOZ4WHm6C57+DR/V/QoHPk/bpHL6iD4aoKzAZ57IUgED92RHC9ZxR1TbKZ4S6M9HmpqO103/eHscUrV5mla/L/KmVjiDQd70RsTX1nMOIA9CEVWoT6jDJK/CFuADGm0u3iOMRTz+wYuSNTVDbC7jHsbGQa/FKG7ZqNXkGGCDhSNB3lm/MDrLd/Li+SkZ18DMgE7fY+2z+i9cxLwcHNd8x1bDX8Uvdi/fxtc3Nr7a7muIUDUe0IsxLHAoc/DBHtrnnkEQxckBs+yb+6ysm0WxiEBN4a70K9OWRB/1zwXkxNew24svNtpMhAWCiXP5OCfJv0SRRcYWxMgpQoVWNyxnFMoZ5JBpbavgCrjj/oN1lmItLN8BwfBn3l7EoD5X9mkPphsvrQTGBIxZXfzBHBN8Ee+jdd8uYAXhXPF8BRNp2z2EUYxF1B1jEk3rjr6w5bTMq3LAO63n0/6mg6RftQ62F6NBwmJdjRlpNF0oCh3El7srkQSsunQZl7Ko4VY3LhpMSfCsHbmLBhSHOxMxLvMpgAFB29J6FUk0ZBF4bhlbv5tNXbNb1bkwP6INys2RT6acnipybzbZYL54dwylQf/0cCg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9075.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(23010399003)(921020)(261022105027099003)(261026121527099003)(261026140227099003)(261028144727099003)(4143699003)(56012099006)(10067099003)(261009223027099003)(261022075727099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VC9WRG0rQWZDcSsxSk9TMlcrSkJmUUszNkw0ZnN1bmt2ei9ETngrVUdwTXpX?=
- =?utf-8?B?NlpwTmR6TmNucjVMcGFGZlU4eUkrL0pyUE5rTUxXY2RIenhSaGNDR0lBVHl2?=
- =?utf-8?B?YkM1RTg3SjFLLzVNVkx6bWc3N0ZGWk1pT1NMVHhjQkdSVVM3eGdJeExGSW8v?=
- =?utf-8?B?RE1IU3NSeDFsUVprazAyZEh0b29MNVpTeHowQ2h3TlZENWNXcnJNOFJVZ3BJ?=
- =?utf-8?B?R1NzTitFbFFoSWtZcWR6YXlxSm9tZGhMZlpPOHlyb1FaSWxSSlJSbFArMWlN?=
- =?utf-8?B?VmhVN3J6Z0FNV0R4T2Z4UWFzR2JDRlFHdkdPaVd0NVRhNmtEbnV6UnhOT3dE?=
- =?utf-8?B?d1d1M0lZMnlLY1ozQVFJVDdoRFVERmxiQ09mdVNpYUVpUlZyd3duQWo5Qmkv?=
- =?utf-8?B?MG9rektaSnkzMEliK1pVb3BieldHOFlhZ1FsZE9ockJqNHlnZWhkQmQxQ2p5?=
- =?utf-8?B?UEtSSENVeEJCZC9oZ3o1YmZoTmUwREdJRjZHbXkwMlFkQXNNUW5mRlAwNlVx?=
- =?utf-8?B?WGM5UW1Wck4zcGtaQlorS2QxR2E4ZDB4VjAvNHJ3SkE0S0JRM1U4ckRMdFlT?=
- =?utf-8?B?M3lyZThUVFJTSlNGOHVNZmhjL2J0eFFkMEJxZWg5VE4yWHM2ZFRER0ZJOFN3?=
- =?utf-8?B?MVVlWWlVbGszWlRaQ3NDeGtPMlVzcFdOY29SNzlVUWNsdklETTArMGhzOGNq?=
- =?utf-8?B?Ti9JNWNENHMvQ1U5b2M5QkVaejhzYi82Q0lyYkJRenhWWDQrWTYzT3F0SnQr?=
- =?utf-8?B?Z2thaGtvN1VWOTBrMUhDZ1B4TU5EODhVTnEwc2IvRTY2ZTFuc1BBdzh2QUpv?=
- =?utf-8?B?a0c4ZE8yZEQreExmamtGdFduaE9sNm9rQ041cklZSDBKR21UOUZZUUFVY21X?=
- =?utf-8?B?V1N1SXFZNUdCY0JPQnUxUHV2K0ZtUE0wbW1JY055SWJmVTNoTUNIYmlhckVP?=
- =?utf-8?B?R0hNQmtzMUx2cmQrZmtrcTh0aFF3WmJIamwraE9EVVY5L25DV093bC9wb2xt?=
- =?utf-8?B?ay9tbHF2dW40aGNvUElZMW9GZTd6cjNaMmZJdHFtczdXdlovclJqK0EyZjho?=
- =?utf-8?B?ckJoaVFUdmxXOXJHQkpBK0l6UVBrd3ZKc0pvZ3NJK0hheE03eGVPclBST1lF?=
- =?utf-8?B?UHVKc0dmd2RnL3J6QVRPNDZhd1VMbXhJcHB0cExLS2MvMzBnVytuRmk0L1Jq?=
- =?utf-8?B?dlpNR25GeGFRZ3Fwd3RMdlBOazlMbzYrREJIaXh5QlN4R2tsU3psVkpMbE53?=
- =?utf-8?B?S211cFcyUDBuaEsvUjlOT0VRTXpoWVdYK0U0Q0dqbThPcW9lbW1YekVKYms2?=
- =?utf-8?B?VEc3OU5DNGRMYUh4WlJpUjZJbXpLbGNHbzZDTmhUbE4yUHdBemM5M2pqWk5w?=
- =?utf-8?B?c0lkWFBFcGZETWdkK2VOazluWnJTaHYwVW5mUmRwNUZIK1hhQ0VBSVU4V0pO?=
- =?utf-8?B?dEYyNU55cVpBcGNuM1RWNVBpSThjUlkzUTVhVkVGaFpGMnhnNGtmenNnWGJI?=
- =?utf-8?B?OU92Zk9oUnNsaVF2N1hLeGN6VGFoWkdaOEN2azdZSnZnTUFJM0xrdDljUlg5?=
- =?utf-8?B?R2hETDYwVmZ6NG8wdUpBNE40UWRtby9YNm5WcGVpTTkxa0ViNEw4T0txdGtx?=
- =?utf-8?B?UVNUNUJZMmF2MTQyVVVlcU1sb1c2ZGtZbWYzZDZ2RENvYkJDMlowcTdzWkRh?=
- =?utf-8?B?Sm01dS8yaGpZVTlyaTZDcncwL2NvU2dIa2dTV2RQWDdoazF2NEhCdVpaSWox?=
- =?utf-8?B?RUV1dld2M2swdDA0RDZvUHkxYWRHYWlqbTE3RHpBQVpwbjRjdEFxZ3gxVU1M?=
- =?utf-8?B?dHlkTHFaNW8wQzlVYmpDMW9uV1AvRXk0amxtWjBLOXlXTkYrNXlpVFNHQjg0?=
- =?utf-8?B?VVlXM24vWEtGd1JEY1BQZ2dQdEJONWs1ZVhyMzhtZXgvNlNPcTl4Z1R6UmNZ?=
- =?utf-8?B?RlluU0RBQnBCUXpvS2FaMVZ2OEZtc05pbXNXNjVTdFR6Sm1PQzl2b0NmMnhC?=
- =?utf-8?B?ampkQXFBRjM5UnZkQ2ZzY3p1S2ZQVkhqbWgwMFJxQmh1L3cwTWNRV0tyeVJR?=
- =?utf-8?B?TjlOd2g4S0F5cThJVXhWMGc1M1ZwSzU4ckRyOEx3OVV0VVhtQ3BuNTlHanBa?=
- =?utf-8?B?RzA5dnViWFdJV0hhelNxK2twM1phWHBHTXBwZEVJbDhWTjhPWVdsbW9BNmFm?=
- =?utf-8?B?bHY0aldmTVF6endWZGZZek9xZnVwQXIreElJVlB0UzgzMURrSjlUcHJvTGND?=
- =?utf-8?B?NXRjeU53TG9VaVBYa3pPU2FwV0duNGYzTTNkaDVRd1lVVVdKVjdKMnRCM2tD?=
- =?utf-8?B?M0s3UXU4eWF3MW9hdGVNVzd0STAvMXhPSTBNNTRENEJaRHhTQVBlZz09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 733ac57d-b07f-4613-c20d-08df46267cc7
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR08MB9075.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 10:18:42.7673
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nGfyknBtY9SuhJtraBJgGSoLj8NOfuSNJc+ciFnV6l6h7Rr/Rd+yiWbsJkaeLzjonGSEQdMZm/NN18zkTB+odA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR08MB10452
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 9B48AC0006
-X-Stat-Signature: fez8gzgnmdzjo3iwzh8io56gbda9o4js
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795083535-868235
-X-HE-Meta: U2FsdGVkX18HJSI8UXu0xfLmvH/ivCNsYfEzSZc/upWSNWvKehcIhIw9ICKpXQU7bJ7CsIt7MN+dPtorEpv9AQo2VNcg5O6KcGe1RIk0cF00HkQ2u+edWNQXKZKYWn8K+pqGnopA3wdOHtJOY6xO3fODB/DS7Z+jkWOhXZosF4KGx5+rzBDUkFVGx+UciUN7Rt9cc24l4zCfXTedH3vSKBuC5vjqTcAs4Py8+782mjpd6pXUdSS9wTwga3FrQx8HX9P4aHoo1fEGVsDPle5sgya4vKZqMEAqWtgzPzC5wZARLI2DDGHYjRl5lu99wLDGgClKMW0l2EWq3HclvRrzi3v9/Hk5Rch3Tdz4rbfsPAZ2qAOUnAyYx+CbX+to4hxmQVcsPZqyldmdxfUqp/iEaSG2TqWywwWX01znWqlH9sf3aa1ot7CzyE79aeqCguIqWxIE9yCKnLGUVMFC99+mD+CQUP4++WGi8A8uVpyvA6MU07JTUQYECanyIIy6tHyJBdBIF8otzOPEt7CWvQpYaQCsC0kDhmMTnamoVd7fjG7eBbmDS/A/6PN2qCE0Voy0vMI6dCpPIQMZ9s8EGJ5u56AKkq9I3g1p7/g5OqirMHdRSKUjcknJVhfZ1KBD48tM3VqsNRZyEzos4gGsqh5EzDrh8mYfWOZFnrCbJC3AUcd2Vt7e0zGahVRiVOr0e9gP9Q8wEbrAhkG/MUD1JR3aepfRiw32HDV6SeWfB+ugAadnLf22clvx5j/+kGLoBGXv7K3wN4UW04tJfbJc3BTh4n2xnfNHYXWpPRLGbJdi1Yxc6Mps1fBYeSf2KgRB3mQM9D3cHuTWGWBnKaispmnPlyVh6zvz8s94PN99HHJyhY8wRPmSGpyMUsk3HqEJm+3COlSZ4/RhotD/8MZTsNq9GFYd6VO9wKClud1aKwB4MhaaGcFVcbAgVlS3SrQvFPOUINH/tuTDnO1oWPmP/Wa
- 7/1Z7gr8
- 1e1d9PrUmsWjToa8jeVVvcQtHpDpWuKbW6wKUf3qKRrHxj6dHN1bxrT4E+Nf63ykA/y4llz18/tb9KGOZESXqPHIGLpXWr0z9kEmicr6t740ev8Q0W+FIUOr0H9/9w8lCF+Ao4encszpt+wqB2oGiI2KFHXpgsMIxcy/XsbUEY+9XTvA5nS5VV9hEsaivVgzQhIrrnElww8Igne+2o5Zzg21hEAAxtNf4M2BcbfOpsum+bSWPc9nHXSvKhbjtPa2ulkQX95sDMUbdDdnHeyI9T3DdiLPFa0oJjYIgTZO09XJoz1cMiMYWnEfO2Lct9Jbko3TRKPHXCvHRPPi53fOR0RnNOhXUXhjEoFQBeY2+2kjqoGdDCqN0mH3Y9UNsBBMOPsV0iYvw1LfQKqE6IpvADgawUnHo4AzjvMl1czgxJ+CHUwVZSFacO7QIQhXs0NslkhOvNbZbgWpVu8FYLvT5U4fHzpqcpuDfzQWu7NwZdnGjrW5Wyp/yCttgrr/GehA1VQEGB7kS1LJEcWoIpTfmZTos31gl093/HuWPNAkYRGV7pWnS50m9Pu9LS8H1s0mYfC7C/NDcU7i/aK0=
+	bh=JsGJnh1Us1nFR2tI0H992ADBy4V/O/OzAtsn6t0WKfI=;
+	b=HQ3Te6fCRn0es10rpkfucOPjp5QnsYdY1hhA0onZb07NO/EOy93h0BgyR1hMyk0GLiBmh9
+	SG1HxONLmTS8R3xUNHShVi0I9SoLjQjzp1ZnRqNiWDqMXNn8wlMX+FmTIKF/PacNf0KjU8
+	OY3erAnOrhAXcFarB5LlmNv+5fF/OGg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgEUf9NT;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1250262399;
+	Thu, 19 Nov 2026 10:35:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4471F000C4;
+	Thu, 19 Nov 2026 10:35:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795084522;
+	bh=JsGJnh1Us1nFR2tI0H992ADBy4V/O/OzAtsn6t0WKfI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mgEUf9NTEDNqcpkcQdxykTbsz66R8+TlS0h9eX29pv5i80HtUv3mM09IXMHQXiiHW
+	 SZwP+7AuP1LJCa5Ndk8ozkx/2Dnro0kFhdJfw9BZxJ4IQdPbM8MuqOU07y9lXQOMcJ
+	 nQmU44n5aDMW6nNJyIxE8O2aBXJhhUyiDNxRGP0gtp9fUple2SCXltXcZfUdubVyPb
+	 Au3pRJre86FqFpllT2zTPaVMoq/hIbnrhLpcovtZy2268TLN+j3C4gmxfGmHyZrepk
+	 CPwGN+1V+iIFj6KAv5MzsYqQ1tlsXFkgvA1HA+CTv5PNDudoxWMSoL3LZUwu+rKgjq
+	 BgbeLY+DTwvKg==
+Message-ID: <sashiko-outbox-222962@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH mm-unstable v2 1/1] fs/proc/task_mmu: avoid spurious
+ seq_file warning on interrupted VMA lookup
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?QWRyaWFuIEh1YW5nIChMZW5vdm8p?= <adrianhuang0701@gmail.com>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Lorenzo Stoakes" <ljs@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R . Howlett" <liam@infradead.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org, ahuang12@lenovo.com
+In-Reply-To: <20261118103421.776-1-adrianhuang0701@gmail.com>
+References: <20261118103421.776-1-adrianhuang0701@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 19 Nov 2026 10:35:21 +0000
+X-Stat-Signature: apkfnt36zn66toprrz5n8cam9q8qx3oo
+X-Rspamd-Queue-Id: 71A93C0003
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795084524-919856
+X-HE-Meta: U2FsdGVkX1+EfR1se/0rjw6nzDYEI09b7nksMw6HKWxennZLlqntmoDK20jtyo63pGKegWb4AbuTv9AF62S4nnyjjCEAXFhebnbfX3qH2b+9uVtxKLuUyyOijBljg2o3ooU4E/tDEbWcGx4GB4cIIUiYmCofX1NBAzg6Afl7Ueknd+xPygFhghAIgKzFW4fV8+P9ISF4nd84x7/42EmFXWpnYx65+IF/GECnNARCEMvDIHMUSY0FR5qDdtL7vtBqbmVGWiUP4UP8xwyyqzBY7p0VKrvW8D9qEIWibCbavgU+XtmF5xOwK8A7VI1voBbQSAMYD+aXAa5+Vet+KyqQ+fx+05XBGucFezX0+WRghrWstbAJKa9JoQEV6UPWD7QEPyrbe7MEhrgdnM2C3pIjjOI786OHymotIxPodXNF3+kvVbuoB56Y/jb7vTuS5X7X8iZTnZgOs0BAocxMjykMbIxUHJMy+2SgktEWQE57c+O5vd+rhp0heXHwLJ7lTBJp8jQwL+cD5y66ZH9kpqnTYXYn1JwulX4HjDqFyZcfuNlfR3M02W5+JbBseWJjf/CkjORLDHUXwNy1O1Y8tMDJWRxjxVQllH9FCRpdvsRBntxIF8TokYKhDSfelufhKJuKWURVaiCAD6Gp/w64YRM6EuLC/M/yfzH2OfmDg4zvk89f5pQz10paE+MjqMiXpvenji7gBd9cABAUCQjwzR2Ej/Vs53maSnJYxN6WnvDO5rJbGyHA24WR9kW/xQcQ2PNtEETEeCS2fWuawhxWc+K9fpfTHEaYiLnIfWuMlQ8HjpicVMgjRct7JucbvB9ClvagdQe9uifsB9lWINLRT0opYbqUQTVDIsAYBY39n148uH5Zr4oNeON9dNMBvurlEPuKQN/TW/OBdtXKqaWRnBlrjRev56kNvQvnMkvc8Li2Z0urCmmw7prB4tGDx6agn+4YNWoRhv9vguRrorqwDIO
+ sm3UGE8g
+ i3J1YtCZB6mjPkOgeRJfK3u/2+woDQHrwffBCmgtedUM0HqCYX/JDyifFRs3n+DboJ/TAzM+9K3fF4mypfsYPAVZ3egw2kaxU/ZPww64pCTPKUY0i+HgDinuLAmkqlXfrDgck7pkF27LoT3TcCMmcupeQkApH9lcSK0ChO0tQnLzdNIYCaBVzqj7qXI4AIpAyvctLgk8WigrPOMjCYh+ZCViplRN7xJVngbyd0bpkzsqAsF+WXiDfKT5zSf+HNOVI8v0OFB7/+an4SGQPNwdsGIL/MzrpLQlfa6Xg7sOarWX5BxBMnVbS9IyeNC45i6NPPehSmKq66ZaWgI56IBGKG4qfnQZibfKfN79EIh0jMBOl6XeseZiIRj5aTgnIESSHGdICNrgctsxafxRxJ7C2Y8B44v4mAF41p1dIMW5BcD13MwkJCkMb8NHDvvdfk5iH2eMgu2QxaCC1pPTQenZ8K6ru0vEGBsSySe3xsGzHyoVxsPZyIiU0Dgrt8X81tCjLBRF25AaszmQdjNAbGaFtMfBeGpVhPEsOOshjgB7FD48ZyT4mgGjMpTYjYLhufslgbNFpj+g8S398gxTn5kRaZDL1r865RAfeU4OmJnGk3RPyB2nwb/kKKylG1nqmOl4ChLbjh8rHXGRBeP0y337wSCwN/kAMWhK3/24nAGaWbqSamYj9zIhwmR1VIrHXgz1z2dIZ0SbJ6prQ38obuCv/Qh+5hOR8oT0415m6S7cEzG5uiOpVoCbOTJc5S2qPpFCmfqNdLgM/XN0CLzihQt8goq8V88Jvm73b/LcGvT8DkEG2/gXVOg+Azkeh7BidI3rBlsyJH0zr/c9/8onyXITxXsm5kE1DmH80ILoj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,35 +93,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/17/26 22:49, David Hildenbrand (Arm) wrote:
-> On 11/4/26 21:40, Konstantin Khorenko wrote:
->> copy_huge_pmd() decides what to copy at fork by its own rules, apart
->> from copy_present_ptes(): a lockless check for special PMDs, and a skip
->> of every file THP. Following David's review of v3, this series makes it
->> decide the way the PTE path does, under the page table lock, with
->> vm_normal_page_pmd(). That fixes the two bugs v1-v3 were about. The
->> patches:
->>
->> 1. folio_dup_file_rmap_pmd() duplicated a PMD mapping as HPAGE_PMD_NR
->>    PTE mappings. It had no caller until patch 2.
->> 2. File THPs are copied at fork instead of being refaulted by the
->>    child, as their PTEs would be.
->> 3. The special-PMD read moves under the lock. That closes the race with
->>    a driver zap (vfio-pci, panthor) and the missing page table deposit
->>    on ppc64 hash that Sashiko found in v1.
->> 4. A selftest for 1 and 2.
->>
-> 
-> Okay, the refcount overflow patches are now upstream.
-> 
-> Can you rebase against
-> 
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
-> 
-> and resend?
-Sure, will do right now!
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] fs/proc/task_mmu: missing Fixes trailer for commit 5631da56c9a8
+--
 
+commit ea1e2d22fcfe8a8b373cfb53c201e13a9ff8f69b
+Author: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
 
-Cheers, Konstantin
+> fs/proc/task_mmu: avoid spurious seq_file warning on interrupted VMA look=
+up
+>
+> Commit 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under
+> per-vma lock") introduced the possibility of returning -EINTR from
+> proc_get_vma() when a fatal signal interrupts mmap_read_lock_killable().
+>
+> The issue can be reproduced using stress-ng's VMA stressor, which reads
+> /proc/self/maps while concurrently modifying VMAs and periodically
+> terminates child processes with SIGKILL. The reproduced command is:
+>
+>   # stress-ng --vma 0 -t 60
+>
+> When the VMA lookup is interrupted, proc_get_vma() returns an error
+> pointer without advancing the position index. Consequently,
+> seq_read_iter() emits the following rate-limited informational message:
+>
+>   seq_file: buggy .next function m_next did not update position index
+>
+> Save the current position in priv->last_pos before checking the VMA
+> lookup result, allowing it to be reused by both successful and error
+> paths. Advance the position index when returning an error to avoid
+> the spurious warning, while preserving the original error handling.
+>
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+
+[Severity: Low]
+Should this commit include a Fixes tag for the commit it identifies?
+
+  Fixes: 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under per-vma =
+lock")
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118103421.776-=
+1-adrianhuang0701@gmail.com?part=3D1
 
