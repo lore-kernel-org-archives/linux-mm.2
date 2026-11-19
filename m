@@ -1,80 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11315606A32F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AC7606A33B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jp4+SqDL
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BN+3RWfc
 Received: by kanga.kvack.org (Postfix)
-	id DF5166B0669; Thu, 19 Nov 2026 11:48:04 -0500 (EST)
+	id B38E26B06BA; Thu, 19 Nov 2026 11:49:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCC8C6B0675; Thu, 19 Nov 2026 11:48:04 -0500 (EST)
+	id B0FB76B06BD; Thu, 19 Nov 2026 11:49:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D09626B067B; Thu, 19 Nov 2026 11:48:04 -0500 (EST)
+	id A26366B06BE; Thu, 19 Nov 2026 11:49:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B8D56B0669
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:48:04 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 08AAAA8971
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:48:04 +0000 (UTC)
-X-FDA: 85452450888.29.79D9FA8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 697D96B06BA
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:49:32 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1898C0B2C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:49:31 +0000 (UTC)
+X-FDA: 85452454542.21.45D7E79
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3C16F4000B
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:48:02 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jp4+SqDL;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795106882;
-	b=naDNQeuMHKQdJxcv1H2dQfgwTmbdVpy41pbZy+goKEnXL4HHImIqqEJr/SriStFJL7FnCw
-	PSh7mf2D/iHoQWoK9NeIJKw8uWcWWTbqA0HwuBDQCeYNiL9BRezuCVgx833CMfgpQtXVKu
-	x/BVMNfUlNvmZukX3lXP6DkYeP+wbYA=
+	by imf06.hostedemail.com (Postfix) with ESMTP id 01ED218000E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:49:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BN+3RWfc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795106882;
+	s=arc-20220608; t=1795106970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZEcHC6MMC7MCebnxoFXV3ICRjGzCONOlrR9aOhluDQY=;
-	b=LvrwYAmjGYZDgxpR9vJtlMEn1vGMyb+oy22o7C/xNCepBgwVJBGY4paj69QMv6/j8cdRty
-	sd59tD5wwhgjl9zh8mSyCepHX+GtkdygelIunoxnuHKsFUD+PNN6L10wjc5t7fdGayl6ck
-	g9qIHhvDdNM+iINUYuUZsp7EezB47aQ=
+	bh=g2NLCWMzCBs5iISki7pmWBULLDwgxILgVxkU7maNnjk=;
+	b=3vbVMu1aBmWcykoMur5gteRbS4q3L/ocFnVaNEv49CEPE815aIWp/jHeNYG+QRjzT11iwR
+	SLLYtL4oqvkXq+9Sd5DVc/gDn8IEVjWUsgehQk3PwQ+k0xjXA3pX02q0/vVxX0h79hcUUp
+	LPGq6U7TV7IIrLX0YOBkLgULbDo/X9M=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jp4+SqDL;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BN+3RWfc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795106970;
+	b=kFIP99C1tKHD3qs0K5ElRc8JMX5i5jBlq5dDOBCqssLZvopNTWIi/4s85dz1i3tVYUN3kj
+	4pfo0GzV7xxOZfTa8joFHhUY448GVTOM5rs5QK11LMeh4FMqEDFu6jXN+OO5+TAsa3hPXj
+	UMxC7kkr7TMqMwyAYjcjTdHx3kffyQ4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75DEA46391;
-	Thu, 19 Nov 2026 16:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3FE1F000C4;
-	Thu, 19 Nov 2026 16:47:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9547E40291;
+	Thu, 19 Nov 2026 16:49:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E551F000C4;
+	Thu, 19 Nov 2026 16:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795106881;
-	bh=ZEcHC6MMC7MCebnxoFXV3ICRjGzCONOlrR9aOhluDQY=;
+	s=k20260515; t=1795106968;
+	bh=g2NLCWMzCBs5iISki7pmWBULLDwgxILgVxkU7maNnjk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Jp4+SqDL56/zI9zTKkHLhNWhuHMCLWwNwPy6errsexfCx8j1+4Ey4o/67c2t7cLdm
-	 Yi/6pJ8+59d9mEwu/n1L4TUUnbmHNzeN+3occHw3/hqJmqb2vI2EkdOpfob/hIKEsE
-	 bF7VlkuKKUi9jWY40TgoAZv8rO395PH1/F4+hTanzMWXrnpSR9DOfrVMueRoza6CBK
-	 Ewlnv+kQ7IfiFOdmowArQwusZFJvfw/2L9EA6YYOJNH5hdsqtwfoW71nJgmq53LOpe
-	 kCh0KU4nBqjVfNrFzoC7FJEPdW0y7Tta/PWqeamQNdcHowLKhUxuxoKzk+iVSQP1pk
-	 PcaHFm7O27CSg==
-Message-ID: <c1225518-70b9-445e-9b6a-7f0e80cbc62d@kernel.org>
-Date: Thu, 19 Nov 2026 17:47:56 +0100
+	b=BN+3RWfcKIFzUoeKmqEttwtFOgparQ1eTm7XKtYs9babzr++yx++Fr1ZrRXsyMU8N
+	 w/jWMc1zmZ2nECqFd9bOGmta/8PKHTHx8j9WY8WFfq4UmZTxtDDNwE77ymvgQQUuz/
+	 8/3e6YWD8QQrYDXEVUurh10ZYVSK4qK3TlfVZez8ppJSL+Tsi6zgFUZw4xjxjYfI9n
+	 b0X5erlrq83HrCnEitf1nfP0DFb3XhypMIv6uUKXm0LByyyTAo8OwIPGROeP0HQK42
+	 5vCYXSk+9q07ln4NcWBqGvsgqElmiLVNyUmnYVnTceWqrOTlZR3Z50nawAfzlBO+dB
+	 rOJ4VQ/8z6pSA==
+Message-ID: <98be89bc-1394-406b-8723-0032a7b57ad1@kernel.org>
+Date: Thu, 19 Nov 2026 17:49:15 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memfd: drop redundant hugetlb allocation mask
- narrowing
-To: Hongfu Li <hongfu.li@linux.dev>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
+Subject: Re: [PATCH 1/4] mm: flush stale TLB entries before installing a
+ CoW'ed folio
+To: Zi Yan <ziy@nvidia.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ =?UTF-8?Q?Cenk_Y=C4=B1lmaz?= <cenk@deepfinresearch.com>,
+ Zhang Peng <zippermonkey@icloud.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-References: <20261119-for-memfd-v2-1-59f2d8c9752d@kylinos.cn>
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, Mel Gorman <mgorman@suse.de>,
+ Sasha Levin <sasha.levin@oracle.com>, Rik van Riel <riel@redhat.com>,
+ Ingo Molnar <mingo@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Hugh Dickins <hughd@google.com>, Axel Rasmussen <axelrasmussen@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrea Arcangeli <aarcange@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
+ <20261118-file_folio_flush-v1-1-e9e739ed14e0@kernel.org>
+ <22DF2F1E-2692-48AC-AEE5-79B61947D86D@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,21 +141,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261119-for-memfd-v2-1-59f2d8c9752d@kylinos.cn>
+In-Reply-To: <22DF2F1E-2692-48AC-AEE5-79B61947D86D@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 01ED218000E
+X-Rspam-User: 
+X-Stat-Signature: k9m9om8hdjmy7ecj7ubexryh7nyoq5r5
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3C16F4000B
-X-Stat-Signature: nna34nqy4jm5az58bgqwtkbw4a5gxrwb
-X-Rspam-User:
-X-HE-Tag: 1795106882-405798
-X-HE-Meta: U2FsdGVkX18IFmNsS+SxK1plx/GyNfs4N+JWCiwX46hYEe9z6RBCLjEaKZ6hX74qrcpvJrv8GJLq0+xm61jfl4l96fDLmAaFEYV5WO8pOSoyNABCj0ITu/nFigAPNJzz4asRRcc5iOXATr8q7fTQmdHYg+Vt3dj3rY5/S9un6Pvvm+R9PXHlfrEGrW7Zvb8E+lc8e/3pAxpj+uUiFQe0fJVytpxi6p6q66AZUR3FmM3CQYm4efpsr9vaW1kCHhTanRUa/HMsHxrexQyQvvw+JK5q0Nabcu6/5MxL3ivErpR/1YiInkrMlt73KoOpk/HfpdPr6hGANaLnDgeQXxh2vXF3sMyyY56U/OYBaKN+EpWSyWY/IyTJljUEsGJLOlzFr4OVL7HIJafE0BrS3/SsYsQT8T1jXAYBW66MXfuDoKbprcXgqA1GAZch8ChUccZp3Cm0NpynfhN5FaUlSqAUU9EZCy7sKImlouLv94KIf4TXEfG3AB5w1chfEkwarvAOxcj6GcjKkETRqYy/d7JXH4gU02HQqG+mWf1G5Pg2l5UUm+HHUUsj88nwEdGru4YhYtc9gBjkCibNLxg5O9juKP6600iUcGnszPgKP8WpJD9z3gTNnz7Kqqbu+9aFEae0OJMEploBKoFSwyvdvn2z5fTQH3BkPqBTu3t3hJJJp8Zu+ZgmHlJqpH13sp78awOfDjFXFfe40gw3kFLVWITfbl4PqIJkwLiq8WP+eTjeV4XNalXHdODzRXCaqTyAttg+WgbsGgu7uPumqMHkzgvwrSxJzqZ1ONUjzHpEXfjz6+RDsASPVTwcVge2TofcjxfuRjpuLS7E0yJZaFL1O5lczpfSUDytZw5C8Op39tEViTeMoBSdAwee+03y5UGqgY3rjsEO8HSGOW0YuoGRFsnnFfRI+jpkeZkFrHRR7xrKkxmrS5FwH8QXLealPCDAqbxHhtFf8xTVgugAMRh8DYR
- kE4JC9b9
- ZrLMI5HUxJR8OSG7Vii9aIoAguFrplswk4zgYgYSYIaOtZTv2ny2MmaCzrX0Ae2wy6nAWEIkmFHNW9Yy9iTE5FphSqpQ4oZ+FUay1B0ZK4SNG8LWZK3+1EDvomK3eKis2L7LCrnZVz4B8x/kWb0yiURMMrhXVgwgI1WTGAahtxId2hs2gzXvDgMwB6RAxyzSIAjqn9iPUnaaC3fSFcY8Mjq74c7Dk++x61QQ9dXnl2Bd0hLcaWXZpVRRnjZ6Q1LK52hmPOu73yjeJthwWUxF7NuXNaKmY4I4dP37gnm7Nu6ABU5WcMc1D9tY2/22n0GaFe8Nlb2ZvvyG8f+qhLz/bz+meI/k9XpV1P8Ba6wTOzB95tHbcSmH6Npz/T2C0x/FQnB5E4fYwDR4+cUJTygN2vC3jROdaw2UGr/IdNRdi0RKu7MZQLSR/zd2fsA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1795106969-908854
+X-HE-Meta: U2FsdGVkX1+bIoXubkapgOnmqJ23ECzCwpUPmMtRlXMkrld67AsKLV6pjN3fdEhhRvORcATJHH4WDr50U+sFf2dHNiSvr9GbtaQYV76HSVPOTXkqmbvk2PLmXLkinmb/X/79f5lkVLeJW84IGlaVPy0s7nHV3wafv680aVyTx4YK5mkEm/65VvIhHTgct2mcSKKHV8JQBSHo48EWzGQi5mSRHSU8sE+eJOTDRdaKRCMGOhZEonkxy2cqeUlBCYZnE4sN25DrktYYEOu2TLROihp/nbOT3RyHahkwFEo1+9s0g5vt7ypUONOWwXhX6ITFaydMOFxo3O3L2H4AGGFG5dSEAdjhXTZ3tvWakqwzDnAHlflXzf1AjkTyP0Y/IoFn93xwuTdXihI1tRpKgpDcyHPYv1hIEULGMRQAwFLINYJewgp6D9t2lRVqhA8/krUXLDH/qIoNGew7MbUuyNnBGUeLCoNWnXitRarYSTqqe38IPvIHBB8A9IeLXYK+TzII62uheuGnkek5jyHP0ybxdMLIgrY8uNs4iVxGoRa34hSXTs4L7b3i9U2MlKLleV1wGmnd9EEUjOk5ZRohv/NAroWJ7pk8XuYP143KObuPgCKEihQF85s8J8FpAl4Saf4qnAndK4MuzwaWNg5KWUb2VkU5MRnfJHxiNQ2SVJm4EQbTBOITORiwjDnOjIvtHpr6n70bI67/091oT2GHrTMlzbvyqMStHp9PIcIR6YyoGQ/XFVBzCMWk2d1ELm5XNfZgGNF+bI4z0eNcqa6ibnxDlGGCnYpPMhTsCzJgVjgl+kKmXQFYepOTeLTywrRBDTx1Vli/3Gnq42wYdXUl4YkDu0Fw252tDB0Mb9dW0WY3qZhU5QzL1UQQ2jUGIodHxARtrz5pjwtqMd5oQpcYPdZWYSEM1wq/rT3/syH9OYdHxffPkhtB3F2bnVMqNkLp0Qq1KUBLvnfuJSKBVRnOjTD
+ 4uhTB9N/
+ WKwQmweY5WzIj2lee//xVg77Z49EgWN5TZaoDPhoK+CfjVnUkPBnNoPcQkwYQUOw5nw2IpsmOWxy3X1srsn+T1hcp4YTFsr1IzGWaDr3pbPa7YIhC9B58VL9D2tkWfrwsO457LsdYvJeuC6x1aV47/ApU/O3tknyLDY9+uhg7cWBE50ZeovkEDjUMrtoQrrq7THTFB2/pJRv4MhbymG7WjvBNEMgUXTHfavjR6yZeli1GSu8L5yf0W4LPENkZ/yDtYJp+LSsw0vIFzC3kGlmNPhH38XXCZu6PIZpMrplkNdtQJv/HANovELeXgNi9m6U9LYUKFrecWVIuIykZFet1b0BudDb67yUvKLkg3lz92/+jSMhlqPE0z/L30otYtv/7mx68U2SyelVq8zDYydV/Az9wbD9vuoAYRGly6WlC3yYUiuXaONHD6dxj4gKEVkYZKzPE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,42 +165,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 10:49, Hongfu Li wrote:
-> From: Hongfu Li <lihongfu@kylinos.cn>
+On 11/19/26 17:47, Zi Yan wrote:
+> On 18 Nov 2026, at 4:20, David Hildenbrand (Arm) wrote:
 > 
-> memfd_alloc_folio() derives its allocation mask from htlb_alloc_mask()
-> and then clears __GFP_HIGHMEM and __GFP_MOVABLE. This mask handling was
-> introduced by commit 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios()
-> for pinning memfd folios"), when the fallback path in
-> alloc_hugetlb_folio_nodemask() could still call
-> alloc_migrate_hugetlb_folio() and reach the buddy allocator, so the mask
-> decided the zone and migratetype of freshly allocated pages.
+>> Zapping PTEs in zap_pte_range() defers the TLB flush until after dropping
+>> the PTL for clean page-cache folios.
+>>
+>> A concurrent write fault in a MAP_PRIVATE mapping can then CoW the
+>> page-cache folio and install a new anon folio without a prior TLB
+>> flush:
+>>
+>> 	CPU0				CPU1
+>> 	LOAD(ADDR)
+>> 	 -> #PF
+>> 	    installs R/O PTE -> A
+>> 					fuse_open()
+>> 					 -> invalidate_inode_pages2()
+>> 					    -> zap_pte_range()
+>> 					       clears R/O PTE
+>> 					       // delayed flush
+>> 	// Other CPUs (incl CPU0) still cache ADDR -> A
+>> 	STORE(ADDR)
+>> 	 -> #PF
+>> 	    do_cow_fault()
+>> 	    copies A to B, installs R/W PTE -> B
+>> 	    // no TLB flush: PTE was none
+>>
+>> CPUs with stale TLB entries will still read from the old folio while writes
+>> go to the new folio, until the TLB is flushed.
+>>
+>> We really must process pending TLB flushes if we are not faulting the
+>> same folio back in.
+>>
+>> Fix it by flushing the TLB before installing an anon (CoW'ed) folio in
+>> set_pte_range() if a TLB flush is pending. Zapping itself stays as fast
+>> as before.
+>>
+>> Other faults are not affected: unmap_mapping_*() users only remove
+>> folios from the page-cache after their own TLB flush, so until then, a
+>> refault maps the same folio again. The exception is a concurrent
+>> invalidation that removes the already-unmapped folio from the
+>> page-cache before the zapper flushed the TLB; that is an unlikely corner
+>> case that we'll not handle for now.
+>>
+>> Note that we don't care about MADV_DONTNEED followed by a new read
+>> fault, as MADV_DONTNEED only guarantees its semantics once the operation
+>> completed. CoW faults will flush the TLB either way.
+>>
+>> For example, imagine that MADV_DONTNEED zaps a page-cache folio and
+>> doesn't flush the TLB (but still holds a reference). If the page-cache
+>> replaces the folio, a new read fault might map the new folio without
+>> flushing the TLB. That's okay, as MADV_DONTNEED did not complete yet.
+>> Same applies to MADV_DONTNEED of CoW'ed folios when re-faulting the
+>> page-cache folio.
+>>
+>> Memory reclaim, which removes folios from the page-cache before performing
+>> its own batched TLB flush, will be handled separately.
+>>
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 > 
-> Since commit 26a8ea80929c ("mm/hugetlb: fix memfd_pin_folios
-> resv_huge_pages leak"), this call site uses alloc_hugetlb_folio_reserve(),
-> which only dequeues folios from the existing hugetlb pool and never falls
-> back to the buddy allocator. The mask therefore no longer decides where
-> any page comes from.
+> This is really old.
 > 
-> Long-term pinning safety no longer depends on the mask either:
-> memfd_pin_folios() obtains its folios (dequeued from the pool, or freshly
-> allocated) under memalloc_pin_save(), so PF_MEMALLOC_PIN makes
-> dequeue_hugetlb_folio_node_exact() skip any folio that fails
-> folio_is_longterm_pinnable(), and current_gfp_context() already clears
-> __GFP_MOVABLE from any page allocator request made under PF_MEMALLOC_PIN.
+>> Reported-by: Cenk Yılmaz <cenk@deepfinresearch.com>
+>> Debugged-by: Cenk Yılmaz <cenk@deepfinresearch.com>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>>  mm/memory.c | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>>
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index d2f48d78b0d7b..e1d9759e6fde1 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -5888,6 +5888,12 @@ void set_pte_range(struct vm_fault *vmf, struct folio *folio,
+>>  	/* copy-on-write page */
+>>  	if (write && !(vma->vm_flags & VM_SHARED)) {
+>>  		VM_BUG_ON_FOLIO(nr != 1, folio);
+>> +		/*
+>> +		 * Concurrent zapping might have dropped the PTL but not flushed
+>> +		 * the TLB yet. Flush before installing a new folio.
+>> +		 */
+>> +		if (mm_tlb_flush_pending(vma->vm_mm))
+>> +			flush_tlb_page(vma, addr);
 > 
-> Clearing __GFP_HIGHMEM was a lowmem constraint for these folios, which
-> were meant to be accessed by a DMA driver. It is not required any more:
-> the users of memfd_pin_folios() work on pages and scatterlists, which
-> support highmem, as does the shmem path with its default
-> GFP_HIGHUSER_MOVABLE mask.
-> 
-> Drop the narrowing, which has had no effect since 26a8ea80929c.
-> 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> ---
+> This looks like an adhoc fix, but it is minimal for backport.
+> Hopefully we can find a cleaner refactoring later.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+I'm afraid if we don't want to throw away performance there is no way around it.
+
+We have similar handling on the uffd-wp path ...
 
 -- 
 Cheers,
