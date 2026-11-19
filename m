@@ -1,143 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA6F60A260C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497E360A2607
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IxSGvrwy
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QsW9leLb
 Received: by kanga.kvack.org (Postfix)
-	id 1165E6B062C; Thu, 19 Nov 2026 11:20:38 -0500 (EST)
+	id 450726B06B0; Thu, 19 Nov 2026 11:44:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EE056B0630; Thu, 19 Nov 2026 11:20:38 -0500 (EST)
+	id 4284D6B06B1; Thu, 19 Nov 2026 11:44:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0047A6B0687; Thu, 19 Nov 2026 11:20:37 -0500 (EST)
+	id 364346B06B2; Thu, 19 Nov 2026 11:44:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C81646B062C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:20:37 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 345D9120801
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:20:37 +0000 (UTC)
-X-FDA: 85452381714.28.98F14EB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3B56C20013
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:20:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IxSGvrwy;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 08B986B06B0
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:44:09 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5CA93160B71
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:44:09 +0000 (UTC)
+X-FDA: 85452441018.09.4DE0CC1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id AE032100006
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:44:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QsW9leLb;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795105235;
-	b=M3LdCRDHCsbeOfFjt3mXuitu5AHc1XoPwz59oVk+gavyYdsRrBO5014l6llMvaAzeYmW91
-	6snUX4BglchyQMGsy3K+9GZjwWNNV6qkx3ttKLKqERbJYSBygyTGXsv61U6AxQ/YzxHyL+
-	I0wpM73+oONkL4+CXv0sjh/kNve7jO8=
+	t=1795106647;
+	b=KMgM+1Jc+E0fzPOpv1n892NABraRXjkmi337Fiteh/MirHxc4GG3Nmv3DfH5UckzwwA8h0
+	TmaKyEEmsAlaEEKa0WFFEq6HwB3jd2nPdSFy2/liywtYa6D86jHCKbhi9nE/rH1+zSzL/7
+	9rjwmJbjEHvl02J8SXA+kLzeJ8Nwg24=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795105235;
+	s=arc-20220608; t=1795106647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qVb+WF7/EPjMmsPPNzFbJWeuA56VZXy4+6cnfkX/CBs=;
-	b=vBHbxbGlrtFhlOOv9bV1+renQ4+a/waz/gFCehwvjxxZQCGKvU+tAihMKE0vx9vlUdMh3P
-	tUqnmUEohKrZDPk3Dc8Xz+Y0asD6TIFESMf5bDGvrx9OFKi2o4CCSSPbyq1kwByY+ksmCH
-	Jp/12w/VDjkmpWltCrPqXkc2jKZ2QPo=
+	bh=7xWoQbusH/Y8VjnnYyYVr0K3Xy3KNrjFcQdKBH99Yds=;
+	b=7ztCK7EOn4+3zoe69aafWOrejoi2UaksMqD3n7j+2TFvE7aRIFFweMQBuV2yAZjt52s1KE
+	/us+j6Lyuw8zVhCcuI9dUPoxW4tXfv0yn2apiMQTMphu6iTLp8dJbwFAoza2tl2016D1+m
+	J/c8a4lbZOtUIbDsi/0uqS5FHJ1zi68=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IxSGvrwy;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QsW9leLb;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 87E1A40B76;
-	Thu, 19 Nov 2026 16:20:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DA61F000C6;
-	Thu, 19 Nov 2026 16:20:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C1686128E;
+	Thu, 19 Nov 2026 16:44:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF201F000C5;
+	Thu, 19 Nov 2026 16:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795105234;
-	bh=qVb+WF7/EPjMmsPPNzFbJWeuA56VZXy4+6cnfkX/CBs=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=IxSGvrwykG621Wv+Qgpp9el3rxI4uQ3Jx+aDL5gOVPHxtGoGIaQyHkOBX4o9sI24h
-	 sov8N7iLBdgfEQfthr3ksFQZyLoVIhz/gKBY9DYJp80/qcJrrxbDFtOUcG4ZnCxOPQ
-	 aUbzmgq/+o7geCTiSQr6sDpkZ06m2mh72VEucsW1kOc6yBIbn06hDgtFc1owLyT5oj
-	 qW6OvhLEWsgM3TACfbhGdCaj7FlAOqX6Jh9S60cFO82g0e5CfgAOptcPFTQdZ9Dyuf
-	 Sz4l77G8VZnuSRULO7IoL/onCNUa/P5rVd2s2yQdRrcvKRPJI78h4rWfTf8B+CcKJP
-	 kU7NfRbtwt/vQ==
-Message-ID: <55dece20-678c-4726-9abe-cad5fd4dccfc@kernel.org>
-Date: Thu, 19 Nov 2026 17:20:28 +0100
+	s=k20260515; t=1795106646;
+	bh=7xWoQbusH/Y8VjnnYyYVr0K3Xy3KNrjFcQdKBH99Yds=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=QsW9leLbkV8LZAS329LVHxGUpItBJP0N7LvKGT4sjgKn3hsERkmCmqmPw2ygtdiml
+	 Vc4Zh14sCdqnThkaeyA6qe0pTyCvSFYZHewnhMSet6OgR22sXW5ijY97aPVibyrTGH
+	 +I2w4gZvpicpV8n3LOer+JiUaVzXiD+dozmZ82l9rsO9LYyjkDIxAKHOGB8EQBkUqI
+	 vb3rM7mym9bgs8DxkV07ZblLMnflwn99V4cv/BFl+DcKgLD01AyspKKwZP+ceaqHtN
+	 Ubqx8ZlAoZhptgjBc9LFE0zC3liRqK1fUsV0LgzYBGD4qq6PluFntuDfd3r5/5o8/h
+	 eXWTEfFDXLi3A==
+From: David Hildenbrand <david@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
+ K Prateek Nayak <kprateek.nayak@amd.com>, Kees Cook <kees@kernel.org>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Song Liu <songliubraving@fb.com>, 
+ Yonghong Song <yhs@fb.com>, Ingo Molnar <mingo@kernel.org>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ Chris Mason <mason@kernel.org>, Sashiko <sashiko-bot@kernel.org>, 
+ stable@vger.kernel.org
+In-Reply-To: <20261119-mm_failed_fork-v1-1-b3019f43d197@kernel.org>
+References: <20261119-mm_failed_fork-v1-1-b3019f43d197@kernel.org>
+Subject: Re: [PATCH] fork: clear p->mm when copy_process() fails
+Message-Id: <179510663721.2987.3052403624854778254.b4-ty@b4>
+Date: Thu, 19 Nov 2026 17:43:57 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: unshare-check every page of a pte batch
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>
-References: <20261119105701.3f57ac54@fangorn>
- <81418de6-3c5e-4f5c-a447-98f338f5096f@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <81418de6-3c5e-4f5c-a447-98f338f5096f@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3B56C20013
-X-Stat-Signature: sygxsqu8s5b9paorbwz9p17sxous3rdo
+X-Mailer: b4 0.16.0
 X-Rspam-User:
-X-HE-Tag: 1795105235-276354
-X-HE-Meta: U2FsdGVkX1/pP3G51vHtztf9fh1ZbiN6F68BkMUHgb+WYCsqtJPTPn3OckljEb/M+t4ohV6nNLxyhPXSFHDubvseLzFjxvqoeVXXBBxXfUe6KxRw3eVK4u/ZtpyYivDZodxuOL/KNA2NfGUnySzh1qkPHOPBsW+ZCLQd5IY945wJDTT7IJVgoMqq8GPETXN9y2u/s4CjXEWSqL7XeKY+CG4PRVEsujOXdCL87+X1GkfDscKSdmgpM4ajUXzeZoXyjfYBUNpEFV1FjTdjme6dusE3JllKcTU8jfTOO2i2bZtD38eQ+MhwGGDC1Dk1zWb/RgOIJ2iNyE68yobIcrL/pUkjtAVDuNcaT7EDL+uWgVgR78RjenoL7Nnx4kXbaKU1Q0nNhXoS/t4g3pmiJ7Z/1di+0Vn6bGO4CsZMDOJAae3f4oNq3jZTUV2jR3fLT6PQn8Ui5YSQJNylsr6mfcvxlHyDgYcz06hoTqCYE+XeLn3DgT2Uz8OqXFOl97oUrYGMu3RVtRJaxK3miur3XImjmLAmKzmFl71sEDchWMEaHOVrDXTyvODU0SAdRYeuVmlMwYVELMmVu4sfRTbtPw9Cf7NRxLERSMWnFjZ6ieGieGknzLtqsIQGw3pYAIGczxprfcjpWLraOmzfwQ9Cb/I2gNGZ8XsPi+Vu3N1NOmLRjFwIhxf6cT8c1ZulCT6MkHs9a7/ggoW6wJetOXrZb5QBI2YI4OS3NzF4VUatffVbvG/E0qoZ4RiZ3A+8ddCmTmt5uDwW+Xf7UEv9Q2TgHEbsovz2ApYY3XvmsnhxdjK6dKtpkSFmaqYz+b61xUBQV/xhe/Ghk0GbieRJxWPXz1vwv+GIdY2hrWT+e9AiPScGVps+8XUWiS25JMUXNIObFV64x/K6HK+e9bkLAU4Hvq6xeTQdqPlI9smpkl/lOT6O3jnCG7PDZA158qIsauu7WIP4WKTz0YoQt+2mt9Qw4EA
- IljaruNw
- dIqEZ/i/BtPnLsgb0Mjv1dy336HlRRQW2lTjmFk5FRUfS58G2shuGRmWLOy3a2RgpjnDOM7dHAILSanIiJmaXTgpVY3IKQ7MAOpFXESpl1aVd9r//VTmb43QkPegoU3ir4Fen0yGBSMi7mnCeMxhq4qCsrjFGLh9Uh3Kuo9c+7pyMWTXdX+tHoKdywfC34yWTNcmpWA5hom+/D4a6GteVfycTl4zg3PM1qr2PbPKEa9ZMZHNNMIKz08TZi9tDHn+1/+S6wWR5r7R5Kby0sGEwcmiIvd/hpIIAC7LcFW3YJUpElsIokDPFpWwNls8FDJrSzNdmYyXdCoC4HE9JXTwl4sQ+VAKBoSY1Z4kN2vUh1/JcyByfEPhOsKo0j2yvkq8vyWyxjwuClwkgCd4YRs+DZDHO6Vg7yvjJd+/aBOkClkqncKBKoDftVb+xAY7jKmcmqTzOyxPHPOH/xTlQ8xl4ZJRFlg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AE032100006
+X-Stat-Signature: 89jhytec188iegj5jru5gfoend1rubp3
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795106647-636922
+X-HE-Meta: U2FsdGVkX1+xB3bj9BdPVrAJcrxjivTM8lzydN/dnFWKdVKyNMREVGJiMfifeVT18OE7d5FCjKfB5l3WHKnOTGDexzJDPVe3NA+LLvK2M7e7y6Hl2b+eE6AvNoHKegenYBurl2TNB+RJ9CM33ZFpHlU6kFglvpGv6CUh+hHJfmyl8ffaJ1YwTr6HYkHMAnbxZRsmgKNGNkyYSIS+bvk6Yq0H+Ko6CYooZuaKL3eCXTKLcfmSdPyyQQizNN3zXDpQepLkGlD25hIbXeyyQwFqZ2gyHnQhyULo7yr9+7NyEYQYx6MxSlTJzaNr/PPA58OE+knPmq1Q3ze0HEba8E25+vVWbRjJ8H/hrAIx+1E4sxn8VGrS03XvnVWsFev5mqLxB/To6vWfm1GPG+xebry0Ns/JmuzDsq8eQiRp0Z0vMQ06sk3ybtxQFBv6XBc27iiENIYlrhCe4agYIVwNPJ2KtzFfXsC8L2yQPDxdPXQP6EY2vwKblGk7T5uRmqie2GOOJO7YXBiTCPjlkyFZKMwrND5C4FAGR+G6HfHqaRsAVGr9jgSNR86D9u2/8K6ImBoFRx6ULV4c3j5DnEwBX/3GlYI9RmXuF+7WC9XXJyuYHLXwd+vARXJWJiOhrvwrL9YWKvb3om4VqE8w82S1/0GTRkjBd9jyidbGb7xuK776Hg4Bb4pIWidpdWSgx/vEE4fS2leljGFksBv8/DwChB/pIYeGclkreertpwQ+pREHNftCf5hKfjQSc/6lAk9lScNsVIs6gqPBbGaGVU0F590uFCbF4RrVJFKvAr/DCzfmOwkwUH4zBQVCwfLgAf61+d57j2M/CM2qwH06JMQ0jE+zC8i7hxyDZcC/FFRZYfehLscO78O19jUEHkV9lCa73CCMtQS0JShjGNrKjV/jrfHj6+EhndCyBlny26VxhiZZ1EhAhCHYEJcDcEWWP1aqsysBwJiCQXfPLxeMSJ0V0g3
+ /pjVNe01
+ TIA0qVI2KEP1lRqJzPaDEXUT4iFPBTeh6+tXY0F48E58AYefkZPezBoe5BagSWYvzZt46mBbqBjDjw8G2zZBbZwyaqPFfjlhRQ8gaFPwewjKSE/sMoid6eQGLC6U9pVyUC7+eD2FloCVVtRZqUbZdmmXWwTuEUSgsrHdI1s83HgDqFEx7sqPOezya1uzwH0NzlL1xMZaQ9khkF5IKTOYaTH8tSONzdx5Z2FtvqhMfIWeIrwLR7D5c94hrMGy13BgXntfgT6PiY8UFTmxnJ+wjQMeL32J8GOLObrH7tWBf9r6Pry2r0edVvbXRLsSyuLvW2CQy2XA9WZ3bgoK0Sm0GkNM1VYRo4IMlBu6/vYjgmT6GS/xqrcFSZxbRAdIKpEMhRSB95sp0dAd6P/8oB7zfDarAj6h0myiBX+XiUEfeLakRdueLiqtI3G4S6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,62 +111,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 17:16, David Hildenbrand (Arm) wrote:
-> On 11/19/26 16:57, Rik van Riel wrote:
->> A write pin over a PTE batch can hand back pages that a later
->> write fault replaces under the pin holder: the process writes to
->> the copy, the holder keeps the old page:
->>
->>     pin holder                          process (mm owner)
->>     pin all 16 for write
->>       batch passes unchecked
+On Thu, 19 Nov 2026 09:04:58 +0100, David Hildenbrand (Arm) wrote:
+> When copy_process() fails after copy_mm(), the error path drops the mm
+> reference but leaves p->mm set. Perf and BPF can still reach the
+> task, and take a reference on the already freed mm through get_task_mm()
+> or bpf_find_vma(), resulting in a use-after-free:
 > 
-> All PTEs must be writable or all pages must be PageAnonExclusive
+>     copy_process()               PERF_EVENT_IOC_SET_FILTER
+>     ==============               =========================
+>     perf_event_init_task(p)
+>     copy_mm(p)
+>     a later step fails
+>     mmput(p->mm)
+>       /* frees the mm */
+>                                  perf_event_addr_filters_apply()
+>                                    get_task_mm(p)
+>                                      /* use-after-free */
 > 
->>                                         write to a tail page
->>                                           fault copies it elsewhere
-> 
-> Which copies only if !pte_write() && !PageAnonExclusive
-> 
->>     read pinned page -> stale
->>
->> For every FOLL_WRITE call the helper returns the whole run on
->> the head page's credentials, never reaching the per-page loop below.
->> After fork, a FOLL_FORCE write unsharing only the head leaves
->> the tail pages read-only and non-exclusive behind identical
->> PTEs, which batching (PTE bits only, never the exclusivity flag)
->> covers at once.
->>
->> A page pinned for write must be exclusive to the pinning process,
->> and one vetted PTE proves that for one page only. FOLL_GET and
->> single-page FOLL_WRITE keep the shortcut; multi-page callers run
->> the per-page check. Writable batches and GUP-fast are unchanged.
->>
->> Without this fix, the pin holder sees stale page content,
->> with it the pin and program address map the same page.
->>
->> Signed-off-by: Rik van Riel <riel@surriel.com>
->> ---
->> This fix applies on gup-7.5-ptebatch in mm/core.git
-> 
-> I was confused when I read the above.
-> 
-> I fed this to Claude and it told me
-> 
-> 1) The path it describes can't happen.
-> 
-> 2) The patch fixes nothing.
-> 
-> 3) The changelog contradicts itself.
+> [...]
 
-It argued that because "Writable batches and GUP-fast are unchanged.", which
-also caused the biggest confusion on my end.
+Applied, thanks!
 
-So this smells like a bug in your new GUP user instead? Or some incompatibility
-with the helper when used in different context (that would surprise me).
+tree: mm/core.git
+branch: for-next-fixes
+
+Applied patches will appear soon in mm-next, followed by linux-next.
+
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
+
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[1/1] fork: clear p->mm when copy_process() fails
+      https://git.kernel.org/mm/core/c/c9b8c9bd
 
 -- 
 Cheers,
 
 David
+
 
