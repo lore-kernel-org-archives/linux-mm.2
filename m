@@ -1,66 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE0D606B436
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F16606B422
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DXyUIae0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ltpszXxF
 Received: by kanga.kvack.org (Postfix)
-	id CE88E6B069A; Thu, 19 Nov 2026 12:09:48 -0500 (EST)
+	id 571A76B06BD; Thu, 19 Nov 2026 12:11:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC06F6B06C8; Thu, 19 Nov 2026 12:09:48 -0500 (EST)
+	id 521956B06D1; Thu, 19 Nov 2026 12:11:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFD5F6B06C9; Thu, 19 Nov 2026 12:09:48 -0500 (EST)
+	id 4112E6B06D2; Thu, 19 Nov 2026 12:11:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 96ABB6B069A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:09:48 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C805120BAD
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:09:48 +0000 (UTC)
-X-FDA: 85452505656.27.BECD9F4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5809A160019
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:09:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DXyUIae0;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D3406B06BD
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:11:15 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D035140B71
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:11:14 +0000 (UTC)
+X-FDA: 85452509268.30.AA6610C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 250E818000C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:10:56 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795108257;
+	b=mYVf6KGfix1C3KjAeAxuUxa0+P5HyQnQcqcQaaGYO60k7c0c//p0VllC+UINhyDWL70o2p
+	w+o/Em5lm4VODJOvCImGC9l7PEikaElDs8kV1EWQbx9SdM2gpIBjkbyOGejqyKJJYQbWoF
+	NhRB4ceHGShyK1Q5jYvGURChTKNPJx4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795108186;
+	s=arc-20220608; t=1795108257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjTIY2UGx1NhgSjOcEomeCUaUU2lXIF0XQz2S9XVKnQ=;
-	b=WPwjQ+rdYL2rJDgRAMOVsN97dmz77q/xLesrSmMWNn8lxi3L39U2dnI8idhGqi3YFyXwcm
-	2ZV9BE2ezyenjC5X1W5X+8sybthsQnh4D9b3vc5FXTuYjkz1Rj2MuJm3TmFEHQ11IgK8WJ
-	60NRKDjLmEalm+5qYAA0YGU9g18nPa8=
+	bh=NE1INRl0OWxnNGr8U70vlE+S1wMHUVyOCaS5QMEsf7M=;
+	b=0bLZqnMPDMwObSCCVENQMXkOXJXE1T6KlaXAf7QihfWiEPwE+9tsRGTWfiSZ37xeqyxVJB
+	V6ObJiPiFjPUvixJKQYSA5QA0VJl6jeelEVHgZVQy5pAz4Vp3yF9yTujlxAXv37jST1YFW
+	nPHKUf/yuBMxTP5iCT78nwKU0B6n30Y=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DXyUIae0;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ltpszXxF;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795108186;
-	b=OUN9s9PW/N9D2mwR/foBEM+a3/drdJgE/Gfg6mk4P8WNZD9hOFzqOLsd9FHfoT3ZoCjhE9
-	Vd51Sxh5jepKjiPu7v9Hc4B908Qf9U+6zHt9Pkdh/xTZcd4mCGupOUq6uGFBw0dpKV2GXn
-	z+w2PKZtxiBYMQf9XHPQyihst31jEfM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C71F402B2;
-	Thu, 19 Nov 2026 17:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F21E1F000C6;
-	Thu, 19 Nov 2026 17:09:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A5CF263984;
+	Thu, 19 Nov 2026 17:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866931F000C5;
+	Thu, 19 Nov 2026 17:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795108185;
-	bh=kjTIY2UGx1NhgSjOcEomeCUaUU2lXIF0XQz2S9XVKnQ=;
+	s=k20260515; t=1795108256;
+	bh=NE1INRl0OWxnNGr8U70vlE+S1wMHUVyOCaS5QMEsf7M=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=DXyUIae01T8Xa859KkxQde5Jcqqz5g/qInarIp6L4ZYzYFFQ9+0xEtGhX/UWCo1vT
-	 QiBN6T25udIt0yP1xSZ/bE/BuXPLlatRUp2KwVXdVQOENKb1imYQ39kK+K8Dd3lrh4
-	 WhjrANW5+l+vCNu2TDg4DFfQYsP44jVxhn0+9CRbNH6V1nhDpyHNfIMLtq+M/R/Q8o
-	 l/wQaF/vEKaMwVkHFbc47y9VcxiSdVl1jjyLmB4PsNERY9LsxJoDLxjvZfU/63w/s7
-	 DbTH37N0wq2TGfBtkGPmTySsX5Pw0lt4GjJPmiOE6OmAx7Bg6RFoOwcS8aiLZvSUeh
-	 85oIPYAbNhA8A==
+	b=ltpszXxFqV0AAQqTyrnIS0Id3IfThC9AIODIr8UqR376J1BiffWgOtqMu0oXLbqhu
+	 /OjZ+P+fR8DCvcgViGavzX019M1Myv96jTmpVUOHNlTSdYZ2sPSoK7E46MZyY/vQ80
+	 yHEI1wyXTkexOkE++mB7R2HOJNQbIdCF6xaIZfsxwkWDwdY8SxNKZZTx9wyZ6qpVrx
+	 CDfEwcz3yrRVRF+QX5HjKleBXp6DZnOXPebaztPYhsf08IDYeH6hYMUu/rFlRPENiG
+	 59CioBBEOPdfUCy9tGWOCjKdtq0s9Yr8U7fNgzPhoteVDfi7EO9sBg2V8qi8pBmuJn
+	 SG7UNKN8fwkmw==
 From: David Hildenbrand <david@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
@@ -93,30 +89,24 @@ In-Reply-To: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
 References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
 Subject: Re: (subset) [PATCH v2 00/13] mm: batch of (urgentish?) fixes in
  oomk, cachestat, dev-migrate, percpu
-Message-Id: <179510817294.6189.11093382716469445160.b4-ty@b4>
-Date: Thu, 19 Nov 2026 18:09:32 +0100
+Message-Id: <179510824418.6720.13392203778507016783.b4-ty@b4>
+Date: Thu, 19 Nov 2026 18:10:44 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
-X-Rspam-User: 
-X-Stat-Signature: 9ysy14rtp7ooumaci5pr6y7mu4fjd4xe
-X-Rspamd-Queue-Id: 5809A160019
-X-Rspamd-Server: rspam02
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795108186-238436
-X-HE-Meta: U2FsdGVkX1/cDCX79bUvy3E6eJkvKylV6oAgvS6Gm7k9Int27sTPF4XJR2SYte4hcPjSViKh1gx5AwvJpwSPxlNZvCz3hXmo3F5gceaRfo2Go7cs1q7VnTOoVQFS/9z34WgN7nYwpChZbVvKmiAtSKBlzD6tojQqYTIPNSmlBm6iTJNTUGPAsI9YQTU5THkCwaLeLx1hKlh0g7jNseZWTZ38n0D78KjDdkAe5ghTWQ6NZ7PZGKC275l72C+kuu9J57Iebnnr4k7AG5IqBXBmh9inWP6up/kr0V3aAFZvosUW2X0cPjuHAIvAVqQmfoOVCRfJ6McIEWo/wZXnSlOj4pqtIMAiqIquaBRTrc0b47YMeYedjZ/q7dVQ+Z31IujsKhRaR2lu6a5DNV3zzuM1ws2gCFaS021J5nMWEix3znyM5rZru6h7uAmiyijS4qZIlwS9+86wVp0t8kpBMoINmbOQm3Dt4F5PdwDnR6+vGwfR4rIqYUMu/ZiTQKtOHhmeoDZB8Fuv5BULkbNLSllgaonc941btC020bj+3Mv9nJ2rYbMRdgNMIV3cWYWnmzN3DVvKpGYMBo/bdlZAAhxeJNT73d4Zi6uROpk2YcaJG69PBjtoWx1MjCxxEEmavxn0yVwD3XuBWzQUD06MomzYM2GhL/uXGBZCdgWf75SkG/OhEpthmzAqxD9Xn3/8LV8eKzAYMbe6YBZH1gsnS3aw8w0ON9A7yANxKr81HVimaxeML43jkNSgJiXP+sH5/TudVtOiRyaO2Ql6Amr7V+KNr1A56s023Aa5Xx7oaktT9R5/9bYLcPagN+4rCMinIYeVfRBvYC83mPbyXOdvqoT6mXDF4roBFvhksr83E6rcB4JoLB3Oj1FLcuTvXh5tVn3UYdqIM4ea3V9qu2NzHUDMpHYGlQHbWxPG2pYrGxi4afgzcWg3Ql9JNscqEJRlKZvLfSp5YLEO6Tl2dWisgvy
- pBpxQCHa
- GdTzqizHk8X7ftk34uy62KUYDOeouxFHh4FMPlJo7HrGHlMV3VboZxo7m8K7rmo9q+t0jG6PELZkcX3AyUc9p0nsBJOqv8D2ROwl9niFxHpzQoGJlHNrcMUTJDuySrCAyiK8u2pD8tIikqVvOjFcK/9FaDfjQL1J0re9KnjiBr4JT1tsyaOwQqRpTyrnLDXfkxi4oqszkJ4D6JHC2xTB2K/Hl/PP5PdkzDkl4WYi9MD+JLi1bqayYJGa/7L9/G+Hw6nxnJHj78X4zitxFimjRNlM9eXTKI9nxxOQvwz3cyUXDClF9JJR6iGsVk41SmBLOifaQLiWEJ7sdAQY/mZnhy3ZOjzHWFjU2G/PJfnmcwvPUWig=
+X-HE-Tag: 1795108256-779824
+X-HE-Meta: U2FsdGVkX18f3tObySEqWyLo8ALyLJ3Hm2VcwMcY2IW1tC4sb08JYfA2TgHbetmTzxevvFGXyTwtH5B7d2ha2T1a8RFUqlrGm4FpMLRjGc81lf6MJ1GzsP72q1yS1O3rkB2Ee+kvSnBIlkVNi1kmutznlFuuu5tYTO67YaMjQG9iDCgdO9AwYEo0TAlLSLv0eNLf3zdv94t9LWmJA71elP1/ZuN595E7e6ZsbdK/9t9zoIKqCRFI3Oj6JAMSNbfFFCl69r+54pL4zigF+vEBCpye1UJO0vToYVugSyvZ3SNPTED9yadkSvGvZTi7CehzZoQw0+PZ/kj0Jszj03l/OaAoc37bDV6wrDGA9cZXqWiwZYGKcEBrmVFl3T4t62/4FD2UPANb+6M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
@@ -136,7 +126,7 @@ On Fri, 13 Nov 2026 21:45:18 +0000, Lorenzo Stoakes (ARM) wrote:
 Applied, thanks!
 
 tree: mm/core.git
-branch: migrate-7.5.misc
+branch: for-next-fixes
 
 Applied patches will appear soon in mm-next, followed by linux-next.
 
@@ -151,8 +141,18 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[10/13] mm/migrate_device: refuse to migrate shadow stacks
-        https://git.kernel.org/mm/core/c/62fab3eb
+[04/13] mm/migrate_device: allocate THP deferred split heads
+        https://git.kernel.org/mm/core/c/dd3f0a40
+[05/13] mm/migrate_device: don't collect a range twice
+        https://git.kernel.org/mm/core/c/bedd0a3a
+[06/13] mm/migrate_device: don't let go of the fault page
+        https://git.kernel.org/mm/core/c/34f3affb
+[07/13] mm/migrate_device: look up fault folio after a split
+        https://git.kernel.org/mm/core/c/00cd1f21
+[08/13] mm/migrate_device: fix ksmd oops on a migrated KSM page
+        https://git.kernel.org/mm/core/c/e0a839b2
+[09/13] mm/migrate_device: fix use-after-free of the anon rmap
+        https://git.kernel.org/mm/core/c/9663aa0d
 
 -- 
 Cheers,
