@@ -1,121 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6018960A260D
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 20:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852E460A2618
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 20:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZbNYpoOa;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rWB7D58p;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZbNYpoOa;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rWB7D58p
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eUas+9Ii;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9uOMWgZ7;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eUas+9Ii;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9uOMWgZ7
 Received: by kanga.kvack.org (Postfix)
-	id 0EAD96B0604; Thu, 19 Nov 2026 15:11:31 -0500 (EST)
+	id 3D0456B06B4; Thu, 19 Nov 2026 15:11:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09B1F6B06F0; Thu, 19 Nov 2026 15:11:31 -0500 (EST)
+	id 381706B06E0; Thu, 19 Nov 2026 15:11:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA51B6B06F1; Thu, 19 Nov 2026 15:11:30 -0500 (EST)
+	id 294876B06E2; Thu, 19 Nov 2026 15:11:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B06EB6B06EE
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:11:30 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E5F71A0BA5
+	by kanga.kvack.org (Postfix) with ESMTP id EE8766B06B4
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:11:32 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 48B6A40BF3
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:11:32 +0000 (UTC)
+X-FDA: 85452963624.25.7125DE1
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 35F47A0003
 	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:11:30 +0000 (UTC)
-X-FDA: 85452963540.27.578B043
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 315D714000C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:11:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZbNYpoOa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rWB7D58p;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZbNYpoOa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rWB7D58p;
-	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eUas+9Ii;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9uOMWgZ7;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eUas+9Ii;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9uOMWgZ7;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795119088;
-	b=H21KGku2vPcU9lwdzKSfO0zBJHNsnOPEeyoiUyW1Asn4VxLlOy41n7j9zWkRsK4Hk8kllK
-	5RsU0vZXCAFXVkKuJNSqfeM2D1rbjk5upyepSY3QJXBZGp11AmTD6is7iwTuyYbyyIu1yU
-	cDlSGPDOFgOCaQMxo8xXllyM2Zs7ooY=
+	t=1795119090;
+	b=MMvwSInHIm5gNgqsmd8hsN2PeUGWCk5w/ezAguDH7pX/N+regB9RtubnBSFMqFPkgdvVIH
+	a5l7jS7dWigKoanw9SHB/FRD4raaEpxIfLJthLJRIolWzCpgY988K+1881TQVZ+OMMqCAV
+	fpCbIaIk9o5ulFYg6RVNn1jjwLCfm3w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795119088;
+	s=arc-20220608; t=1795119090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=krDZt2lyQMLpvzP9eRLAozoK+Qau2jyjNPNf8Y6N1eY=;
-	b=UmT4fj52q6gR/5ukwxv07oipbHuVR3SD9zD6JzgTyCRlHAAgbsL1SBYi3RILdQAMcWlT8/
-	zYQjAK0RUChdnNhFhmkTchBYuN8aFbyvzG6vku2IaAaPxVPND48e/QMtGIO2+gF9t+nbK4
-	kLWHbpawwgskQ1w7JrIzm6KZI1jzJDA=
+	bh=Uo8Olo98zjikgX57G69RkSYYgroY5lrc04l+gH4JzoI=;
+	b=dBwc7KDV2zzeb1qo51QOENadWa8gPRjUua4Lq8wg+ByMt5OmwVcaJAvk/1uE0jS4XhK3/7
+	/4okeZ3vqZ5n+/RlOAWZo8CBCNIAkO6OP4eGBMUDwRjuIBZx5vWZV6Ne6wb06OpTPUstsI
+	eBp8n39TtDEyMdRTldlcsMe3uCH/chI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZbNYpoOa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rWB7D58p;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZbNYpoOa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rWB7D58p;
-	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eUas+9Ii;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9uOMWgZ7;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eUas+9Ii;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9uOMWgZ7;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0CA2F1FCEB;
-	Thu, 19 Nov 2026 20:11:27 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 157D521DE6;
+	Thu, 19 Nov 2026 20:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795119087; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1795119089; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=krDZt2lyQMLpvzP9eRLAozoK+Qau2jyjNPNf8Y6N1eY=;
-	b=ZbNYpoOaGHeZLHdhDXsl/zYnjZ/AdQMk7i/SPEMY0Q10yolOExVKqmC4xS+vyK8DszjFQD
-	+wfqfFk0zFqQIPP4rrtwR68RSIviHw868FyVT+LRaikKFObVB0EPO0gkgI5wS5BkL9SSee
-	V2Ykgs4Q5J5Ir7RU6b2thZ7aLwdmJqc=
+	bh=Uo8Olo98zjikgX57G69RkSYYgroY5lrc04l+gH4JzoI=;
+	b=eUas+9Ii0hUYbJmdigy5WcIR6MFLbDG4Q9+MkKg469E/fJUfE5s9LcwEWCZ3ugZSzJbQ5E
+	G227ThVtEgjDER5qFmK1F/+icKCjUX8+0fRswIRqHMGNAHJfdWh4NdyBomb3k1h29ogcpA
+	wLvJ+2nCJSl6+n/ZHpjZrYGuTlwOUM4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795119087;
+	s=susede2_ed25519; t=1795119089;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=krDZt2lyQMLpvzP9eRLAozoK+Qau2jyjNPNf8Y6N1eY=;
-	b=rWB7D58pv4B4x4q/+Pniaue/ehUunRQRZIy9bTKP+RjVGS0SZswC5zGUcX2yfKsXJqQKXu
-	HOQf9AyUfnS6R/CA==
+	bh=Uo8Olo98zjikgX57G69RkSYYgroY5lrc04l+gH4JzoI=;
+	b=9uOMWgZ7LG+LRni/R/J6QJ0QU42oZZHseqFgpO9phvi749VDZI6fswGtgIFGlShqu3eqYu
+	vCHCaUFOxZdKZxAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795119087; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1795119089; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=krDZt2lyQMLpvzP9eRLAozoK+Qau2jyjNPNf8Y6N1eY=;
-	b=ZbNYpoOaGHeZLHdhDXsl/zYnjZ/AdQMk7i/SPEMY0Q10yolOExVKqmC4xS+vyK8DszjFQD
-	+wfqfFk0zFqQIPP4rrtwR68RSIviHw868FyVT+LRaikKFObVB0EPO0gkgI5wS5BkL9SSee
-	V2Ykgs4Q5J5Ir7RU6b2thZ7aLwdmJqc=
+	bh=Uo8Olo98zjikgX57G69RkSYYgroY5lrc04l+gH4JzoI=;
+	b=eUas+9Ii0hUYbJmdigy5WcIR6MFLbDG4Q9+MkKg469E/fJUfE5s9LcwEWCZ3ugZSzJbQ5E
+	G227ThVtEgjDER5qFmK1F/+icKCjUX8+0fRswIRqHMGNAHJfdWh4NdyBomb3k1h29ogcpA
+	wLvJ+2nCJSl6+n/ZHpjZrYGuTlwOUM4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795119087;
+	s=susede2_ed25519; t=1795119089;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=krDZt2lyQMLpvzP9eRLAozoK+Qau2jyjNPNf8Y6N1eY=;
-	b=rWB7D58pv4B4x4q/+Pniaue/ehUunRQRZIy9bTKP+RjVGS0SZswC5zGUcX2yfKsXJqQKXu
-	HOQf9AyUfnS6R/CA==
+	bh=Uo8Olo98zjikgX57G69RkSYYgroY5lrc04l+gH4JzoI=;
+	b=9uOMWgZ7LG+LRni/R/J6QJ0QU42oZZHseqFgpO9phvi749VDZI6fswGtgIFGlShqu3eqYu
+	vCHCaUFOxZdKZxAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F09A81334C;
-	Thu, 19 Nov 2026 20:11:24 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B280134F6;
+	Thu, 19 Nov 2026 20:11:26 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id OqV1JuRX/2pPYQAAD6G6ig:T5
-	(envelope-from <pfalcato@suse.de>); Thu, 19 Nov 2026 20:11:24 +0000
+	id OqV1JuRX/2pPYQAAD6G6ig:T6
+	(envelope-from <pfalcato@suse.de>); Thu, 19 Nov 2026 20:11:26 +0000
 From: Pedro Falcato <pfalcato@suse.de>
-Date: Thu, 19 Nov 2026 20:10:47 +0000
-Subject: [PATCH RFC 4/5] mm/vmscan: be more careful when releasing FS
- metadata if buffer_heads_over_limit
+Date: Thu, 19 Nov 2026 20:10:48 +0000
+Subject: [PATCH RFC 5/5] mm/filemap: refuse releasing maybe_dma_pinned
+ folios
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261119-gup-dirty-what-v1-4-236d69f25c24@suse.de>
+Message-Id: <20261119-gup-dirty-what-v1-5-236d69f25c24@suse.de>
 References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
 In-Reply-To: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
 To: David Hildenbrand <david@kernel.org>, 
@@ -140,18 +140,18 @@ Cc: linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
 X-Mailer: b4 0.15.2
 X-Spam-Level: 
 X-Spam-Score: -17.30
-X-Rspamd-Queue-Id: 315D714000C
-X-Stat-Signature: kgqej1rmatudq9j7zkqxkypjnx7ued9e
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 35F47A0003
 X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1795119087-304288
-X-HE-Meta: U2FsdGVkX18gx7c1OZJosf2MNGj5rhSB8YS61kZlanUFXiWSipG6sM/uKhHldSTMtI2AgVOLv7g5IKW9pRgtnhErTjVVV64rbMIHYhPbQ4WCctJZlbVGESbD5YnmkV+jukIAoosmZrOj5+l52fKoQF0zVErnKOrjOw8FijIHnyqE146QwrVHgTgIav5Kfvo8ZP8m5o3FU7bibNboEYPeeu1rpVdNlnhda6JOdpNk5TJs/J9zzjiaIQHjMeFPaSJfBJQQ/BH07ELGcyp9d9T1hcCU7nuAfKjJ8K78i7ynktgogV+JGAmiVdQNOqmo96F85Xxyaf9EArtt0719I2nMcz+evO+iQCJkHv2EGfiWP55k0Ks19hcbSAWC7thLO2oRy/FIHdUvYIluDne9A9SmNjCO0E8e+4OoIn6XtO9vnaPyagXdQ63BirOGISJf5ohQadPlGChKteZZ9orwmTiqZNnr6zPry19NKcvi0Y5Dmz1tqlOlmrp1o6ZASEQhEkOTvC1YoDcNGTyXxaqG1vHKKYFIvk5r2ITyfmo0sBwpNcu+Ep/XHQDQQlNQ31iifUKSb2Bw4Ej6EPuj5ZmxSqWZ72gQiIHlTGOdybTbrH58bN0raYhKtvt3AdUtY/psDrIoZLZtJvA/hPuc6ZFdplCIiso+8LVm4HVeU4bv3ekt9RFOTMDPZ5I6j00G7s/Hh0QOsivUGpuBBfOZrg0+AZnczcfj5K759XXw8ZPaZ0qrUGdb6V2Ic0ZOtpgWOVVRjhlehX8LzaBZU1OQIcn2Lswh30LvlI5/yGWypIn1k367gOujyAuH7bqyNlEDzlM1mklUzqRC8G03uScBgPJZFWIpEXT9Y9c1IEWksTf0UXj7uemZqboIIrbbjEpSDCYSsTING3UN90VhR3102xwWrlvqYfIcPV7+o/+WMA2doYsIR8KkTh0FcOkAG2u029QDS+9WqbUeFTN6Y/7Uvn+rrDJ
- 4fG4HDzu
- tOjad40Ux3YHoV9Qeu6VqtuHZ1+PCRXkcFTorOSBuSGWJHJalj6H+E7caHQfLXT6GnCnTC8KEouzfRPUO27UVuXv70Fr3XoAtIXle5QHHX22XREFFYQWadxFxcAZVHZk486A6x+WTxVdiIa9L8u8su+CF0HSfHeXiu/WvPS90jNOL7gi0CY2sW3JF94m755ewMjSpqKqtBVYGLhKPQhhIsMG2rPXaub04FqqKFAxPmuhk+88kRLStN/SQJBxdbeq4hXuqzGfBkn1jcymrU8ZSk7tqNopnn+NhlT2yBUK1lm7a51NWd2J3qSkhmd/PRp3kY2Y9dskIjTfOoE1cCkMZpwrhHFMpU9ENSWk/fDNExxobQmOePD1REu3rgsDqDBMydAa+4kruqj3yr+m73D2Yta7RYBdHvZ0bvu0ZmBCDQFUauzNh9f5Y2V1dWj4T/rJLLh+LEXFAPdNDMM/wAbYS8z2arogzeBn1PGce/odjRuGkXOQ=
+X-Stat-Signature: 55ttudbjc4xoxhwrnm84rgu5htoyshp9
+X-HE-Tag: 1795119090-248650
+X-HE-Meta: U2FsdGVkX1+J8fIFjGXY6TU+vPoFdYeryhdj0mmBHXhMdkmXQsYugtSZ7p9IAEwMbBaHZRzYEsL0kCUmM7VD92RsMjF09ekZhzcLyIbDXeQ1ARrsRBvnJvzf9si+tih/57ssTly+XcfpAG2eeJKXUIAIobi6BFqQTh7zOegDN7SaDS04Uy52BQIgUApHQJZ9y4S4wqeXnbhF5s7MJoDGR5qOOIKOxiXAL0BPapyfOlBGtjcEi8vJ++RkWd2R5IO5DBFCbRaLc4G0jjl3SxIWHhw5uepqIQTby5zoTJnpRoD0fCu26dXbhrQ/wWeDT94L9JwiKXDZoeFQYYd7mwguhsxVBbm9coh+ChupsUwmNAPgvHW/E2wh7BOzCdxaM1bp8shCl47Ug/32x8qHgtLfaFIvYhVKYPpwD5t44Me7CgCYYO6jUl4iXZkz9ScqVQaJmXO+kkK2ChtUxTPyX1xGjpojTuXkkTyGVuWbqAWpYzWg5qtnsWNwRPljY3uDKQBavJ3OZC6XqgNv4l9tOUgcRNfbx3zHOrw0NcUTBR3FaijjKma1k1WVpphMsy3JTXJDTi9D8ormJLlqvGn5vGcCIt8hgvJce4QwhZFXvjdehRAqHBZ5sXuTyFXCNC/LivpfHjm4TRboYQvrMVtXAKj7Wlphz/ZiqgHdqYPSMvyrbHnnX3Qc+v1wyLo4Jhu258VJo5bIxYHGvooQ9wGvSa6IVF4XrPIuwR0djCQxgDO5Nka3tS9eSHuQIgJ0iMySirSUBF+PVHaiU79MZTMtA16eaUQP1GIY3MUm6hYAhrRM+GfAiArgSrzOKDTHm4f5QSdW0xvlP/MYHUZ8gP2zZbHOa7b2i/iClLHzSPugjAQx9lGckJD6+bdgP9VYiWitcbGFD7vzi2Zf110F6MAwO2s+A0B9QifGvSlN7+52PuMsbL7RNbv4eBldZd+Yt0DynLDNZJ1GOK99vyzfOecYQsz
+ 1l6IdM0j
+ nBjcAxqT2rDwacjBP5exEbKbubhlKz4upvZsgs6+AJwrqlnLWiBCLaIMiJZdhMI+fSPeXbcU5Xho42f0Pz+njAZ57tAMmdI7+v/YvgxHwliy/+NqDxu1AcZKczMqe+SNquXaq5egCzYmgDXpApl1DYGKyDLdNiFsqlA8PzEto/dnV+rsfYGkQbLEtXh0hhmwoLRH/PDTW9T1mjInSX8paZc/peFOqBxz1kHGqFUtIM/jvUZYNW9mxpEJSe0e3fwBz0KcsqsC62K0Fh5/evma8SEtUREip0BvSy+Zy//7Wei9naMmwFNJc2o4WVi+dk2wy+81sxNDjHQwVvx6yQJmST28fRAf2UJMhqw+j2Wyz3pv5WlcfMJCCZjKil/NrpLpBmow3lPEbBxQnd04wfWyQ4RFc+S8SI1WL8KCWWNNwxyppF/lzI76PZKqrkuIoKuH3mTqtN9z/XmF+4PQJhrtJayYGASNfV7jMMgGcOZd+fDa57r8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,36 +160,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Namely, don't call ->release_folio() for mapped or referenced folios.
-Since this is the active list, there's no actual point in doing
-unmapping. In fact, that would be counterproductive for active folios.
+Some callers, like folio_unmap_invalidate(), call filemap_release_folio()
+without any care for folio refcounts. This is on purpose. As
+folio_unmap_invalidate() states, invalidate_inode_pages2() needs stronger
+guarantees, and "can't afford to leave folios behind because
+shrink_folio_list() has a temp ref on them". Ok.
 
-So, gate on !mapped && may_release_folio.
+Use folio_maybe_dma_pinned() universally, in filemap_release_folio(). This
+has a much lower false positive rate, and should be ok enough for most
+serious cases.
 
-Reported-by: David Hildenbrand <david@kernel.org>
+While here, properly assert that no folio passed to release_folio is
+mapped.
+
 Cc: stable@vger.kernel.org
 Fixes: d824ec2a1546 ("mm: do not reclaim private data from pinned page")
 Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 ---
- mm/vmscan.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/filemap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index d80bbb607a15..986742d7fb6a 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2217,7 +2217,10 @@ static void shrink_active_list(unsigned long nr_to_scan,
- 		if (unlikely(buffer_heads_over_limit)) {
- 			if (folio_needs_release(folio) &&
- 			    folio_trylock(folio)) {
--				filemap_release_folio(folio, 0);
-+				if (!folio_mapped(folio) &&
-+				    filemap_may_release_folio(folio, 1)) {
-+					filemap_release_folio(folio, 0);
-+				}
- 				folio_unlock(folio);
- 			}
- 		}
+diff --git a/mm/filemap.c b/mm/filemap.c
+index f9e34144c53c..4fa75663b7f3 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4571,8 +4571,11 @@ bool filemap_release_folio(struct folio *folio, gfp_t gfp)
+ 	struct address_space * const mapping = folio->mapping;
+ 
+ 	BUG_ON(!folio_test_locked(folio));
++	VM_WARN_ON_FOLIO(folio_mapped(folio), folio);
+ 	if (!folio_needs_release(folio))
+ 		return true;
++	if (folio_maybe_dma_pinned(folio))
++		return false;
+ 	if (folio_test_writeback(folio))
+ 		return false;
+ 
 
 -- 
 2.56.1
