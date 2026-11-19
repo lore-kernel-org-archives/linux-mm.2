@@ -1,92 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3195A606AF15
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F049D606C445
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=SckUuL3t
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cvHspsQE
 Received: by kanga.kvack.org (Postfix)
-	id DDB456B05CB; Thu, 19 Nov 2026 03:40:42 -0500 (EST)
+	id 7EAF66B05D2; Thu, 19 Nov 2026 03:41:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8BD06B05CC; Thu, 19 Nov 2026 03:40:42 -0500 (EST)
+	id 7C12E6B05D3; Thu, 19 Nov 2026 03:41:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC8866B05CD; Thu, 19 Nov 2026 03:40:42 -0500 (EST)
+	id 6FEC06B05D4; Thu, 19 Nov 2026 03:41:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE8436B05CB
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:40:42 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38DB4A09D8
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:40:42 +0000 (UTC)
-X-FDA: 85451222724.08.718BBB1
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9A3E7C0003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:40:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=SckUuL3t;
-	spf=pass (imf28.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.139 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 413906B05D2
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:41:27 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B155E4099D
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:41:26 +0000 (UTC)
+X-FDA: 85451224572.05.1594F15
+Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CD5A1100006
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:41:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=cvHspsQE;
+	spf=pass (imf14.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795077684;
+	b=qOYvkgnqD0zDajSFOpCcGzp6Ose4qAdN9qojxNvwq76yDvnqL4NamgQfcrv4LDfQBO8JnP
+	rlmPoWD9o7nsVsbFrmty0SdN+Cn+rc+7pyaRTUMzc+QczlI12/3eTCIsXADbHhs9yS8Bz3
+	yy9IRvq7QLwFajbkO8GCeMLbr5sygoM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795077640;
+	s=arc-20220608; t=1795077684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D16q10jNQz3j41y6OLUFp2rQtz+cs22n6LUDewWC+pU=;
-	b=Sw7oAt1ET4Ucmo73KJhkLzKKJGBBs2ePlO666aoyPmxEX02TaKbnwX6MHMQwqHbOTeCyQ9
-	CZXXt5Vq9V0xiBpcoxna7FYWe893jJda1Hn4CiB8iySj38MaOzXvcJ1eDMU5nUi9sXPzWJ
-	2sFIUa93EiedwP5BETZQCg074F9V4ps=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6nZw4QgVcRxFqgBQwwralrt/ynUXiZOfhv4EehzkIqE=;
+	b=ulfn/jTXWBId6II5aurkJxL8tAwT1EJReXJ0hJyEp5IgZBzYtPMZMSZvPiIM6/ArkhurSg
+	7WtOvwAqYReatjPG5Ks6iEECO0AkeTJ3yOajs8BWi+PUNbxI27QPDnZE+WkXdU9yh59CSk
+	j1dKLVgXTw5m+E+cztch0VXkT3TeS3M=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=SckUuL3t;
-	spf=pass (imf28.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.139 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795077640;
-	b=Xeybl1MXDexTPfQBGTzcozkkFWMFXxLmMe5qsRLYJpTrPbfXjH0sO3Rc1sFXGPD4BN0E4S
-	V1YvwNjXzHZ5vyhnslt2Ks1NwuI7j04NPKjLoqZANEc15yPBv8HUyVhVgfWSyJPb4030gm
-	5ccLDu/kqkQeMLwwdTO4LBLO82Qveo8=
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=cvHspsQE;
+	spf=pass (imf14.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f9.google.com with SMTP id d9443c01a7336-2e97ddaf3c4so4633215ad.1
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:41:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=SckUuL3tKGCRPUlDAH3wEBmIfDOUaValrh2REAngflboGe0eUgxrs0llPFZpwaRSSqrsEhphl0jte
-	 PlhKh/bL5qIhnkZhz3J9s9bAgkycIVqT0FSDfoI8l95XiRb1BMqgQrMNqCYAI/ACWv8jPVjzeUseFq
-	 sNfpl/pVE9UFdRuo=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16afeb600797-f82cc;
-	Thu, 19 Nov 2026 16:40:34 +0800 (CST)
-X-RM-TRANSID:2ee16afeb600797-f82cc
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from [25.255.2.225] (unknown[10.55.1.70])
-	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86afeb600b5e-5f3a7;
-	Thu, 19 Nov 2026 16:40:34 +0800 (CST)
-X-RM-TRANSID:2ee86afeb600b5e-5f3a7
-From: Jiahao Xu <xujiahao@cmss.chinamobile.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
-	Jiahao Xu <xujiahao@cmss.chinamobile.com>
-Subject: Re: [PATCH 1/2] mm/gup: add memfd_pin_folios_supported() helper
-Date: Thu, 19 Nov 2026 16:35:33 +0800
-Message-ID: <20261119163533.523210-1-xujiahao@cmss.chinamobile.com>
-In-Reply-To: <8f2a0f78-6f76-4a5e-a6c9-b36638addc78@kernel.org>
-References: <20261119104417.312237-1-xujiahao@cmss.chinamobile.com> <8f2a0f78-6f76-4a5e-a6c9-b36638addc78@kernel.org> <8f2a0f78-6f76-4a5e-a6c9-b36638addc78@kernel.org>
+        d=gmail.com; s=20260707; t=1795077683; x=1795682483; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=6nZw4QgVcRxFqgBQwwralrt/ynUXiZOfhv4EehzkIqE=;
+        b=cvHspsQERWNDO+25c8G5M4YIYJsK3Bd1uMuTcqjboK0/AoVcA0mltpmaS5/WkEq4u8
+         tXtt0TGy6wukfkT6G95mcxbEqXzOdr81/K4xzpucxo6ZZ/ND4D1/nfewygR8aaJ5ytpz
+         CnsfEfr7FvecI5YUdLYG2Z0KjOWM/zrAUUl2DgSRa+RQqz8ZDTbJ7wO6QRWa43k3kJgG
+         tr7SZdVnNFLTStSaCZ3V7hi3O/Nu6oNkQN7dG4vamhJPyAYmQPqm1NpA6ZCNlj7fwhZE
+         YNNoXP8X4De+5ajDfRbjxVcGoOZJmHX9jEGb7M8rN3Y5S/B/Ju9eooa7qIm/OJty2nAA
+         6vVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795077683; x=1795682483;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=6nZw4QgVcRxFqgBQwwralrt/ynUXiZOfhv4EehzkIqE=;
+        b=J0gAIdRGyz3V7td2Y6SJWtWFNAvULZxHoVSxEDo7LafgINO2LlLt+v3IPNrv9i4jag
+         Lim21BswJ6xThsWm97I7Dc6BUdgkyswn21rDsJ1wgXms4b9r7fPmNlBw7fne6Zc3MpSi
+         CAH8vCNR/rlYox+ABKHqsHmlbmk4k2BFI27DvX11H2JPoe7IlmiVytL5CjGLyd7XrsBv
+         AMkJQCcpR0PyeJaJJ4RgSk0QGWXirkL53220EGhfNHN55tU9BJFBDOBv00KfGTeU1YdU
+         TTasxiTwdEhV4V9aT+dpYWTooIOVmZT2KzcBWeNNCN+xIVOQJTZlaeKBDttxSenENpyP
+         SLlg==
+X-Forwarded-Encrypted: i=1; AL+hErFH4RklFuJOmj44gs21wQUwRIM7jedIgdSPPvYwthitFieLT5hDshAj6Y4nu8ebEoBY0vhohT8gKQ==@kvack.org
+X-Gm-Message-State: APuU4Z8ts+aZJO38f8NHFRLyAsH+TgUkJgrMvf2vutGvMkZ7HtKA+xXF
+	/xlypebwg8qXjG49KCSYikt4R0hDq5/m3jvgwddzddoX+shtJbyBc/FN
+X-Gm-Gg: AZFdTZcgSGGhi7Q22r0HzJrUnuLxX0fMyJNBnLApI62xu/Xeoir411A2cMQ5FuiADqr
+	W95w7Fa6NN3pvrxKmoKMEEgei6OJPH2x8o8Z0CKJqcC+ceXWcfNww7nb5mpJ05vtdxtU9wjaHQ+
+	wDdg13Bzb7CHIXHny4afaMHskqeUSM5FvPpUgnWvP35j/3b+ymsAvfEQGdhGrj5r3LUZke60u3O
+	D04VSo6IkI3f2MRdQ4hdO+/mL5jf8KAXFFM3OvFj7pHQ+tR5uWuGUw7daaM0di2mYC79Q3g4/XY
+	XgrjgO7goiZtS1mzj+Z9MId+Y65pm/f5hQD7jIsLF4UANgnM25gXqEJoTAEiwQG9bD8OYsRaMMC
+	fSaS8Z4Wbto3nxXf+LPucrEyPdJNhoilICcm9ER89zJ1F4WfNT6oGxP7WwSt8rUEJl9bSZUfs5O
+	dxrRH84ZGgcZPlnCkIhJ2Aw8a3gKwX8y/wfqVEwRkCHHITahzjGez2louf+XgK9dBheCisn+Wfg
+	fatFzlxzBiGCbd56143e69jQPOJZw/mAZmvkpnMKPfiV3dAjgBU+R5l6JcNO6gbPe4pO0Kemj6V
+	rtGA/HKuPNaE6GEBVj+3Nqi+dHLqxCNZb9Z5sUrCxcKirVRlLuG7eJWBdtkz87GK2g5/oo+3UXv
+	8yqAi+2VCTWsXnB9Sp7e5ba4Av1oGR+P/h8Jr3dWRm2OXK6F2BRiAwKNwavDJlFA=
+X-Received: by 2002:a17:90b:4a8d:b0:3b3:b417:607e with SMTP id 98e67ed59e1d1-3b3d07a4c86mr5491576a91.44.1795077683292;
+        Thu, 19 Nov 2026 00:41:23 -0800 (PST)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b402aa8555sm933646a91.3.2026.11.19.00.41.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Nov 2026 00:41:23 -0800 (PST)
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Thu, 19 Nov 2026 19:39:24 +1100
+Subject: [PATCH] mm/damon/core: skip apply_probes() when no probes are
+ installed
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: epefu48ztpnu7w4fxmty9qkeys9qia4u
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9A3E7C0003
-X-HE-Tag: 1795077637-27795
-X-HE-Meta: U2FsdGVkX19x0HdZykxYUajMLdsv2KPYUGTHofKXgCAqR02zGBX7JnX+tTUaVMuqxPIxYb/mEDd+5DkZxEVCohldArESKrzxFAiYYNMkST7rLRRVyYJvlp4te25mHlr9UVgF7ULf3kRdjwXt+MqUpW1bUOdOYLN1JADxnDWWYYIm9QIf75VMeA8Mc20spuhp0ZRn2PqszKmO8aCdzlu6h6Ew0cpqJkomxLlEaG1hmyswARthjIVPFphFadlN79t0uAy4kBrnyCE/DIOJFKKV2Kpui2wFnQe9DPZiRSV7UCpXTTwUYDDlpd/qhkNat76x+gzZ0lfbgQGPEq2y+Usa8mxftlVH1zNhIfFdqZhtWRysJABFSXaP+XeebodipsBEHgqiNh1JRPn6EM53n8Meh2rpbvOmb8tkvj7c2VXFlOKMCU/Zn3Z1TFp370U/t+v0dhuG1R3EsXJ3Cn3NuFzWKOyFMHt+5nv33AHCMz7z3xRyv2jGMMMkVWP78NgW2qOHNYLz7bHIrNWJ0j0nK86cGpzjN+4j0mprtBrd3OYCfkmPfUe1eFXbyq9clh/ADEkyMrY/QaIfMrDsDK6TImZrQDQXaYq3EWTKLxHy3eNYM7Yw8r8s/ohqYdY83HDXpeMC0z7KxE6hTG3gxbDUs4lGUZIr22VpDUATSSRkFxEUzK7+Ztg58JvHR7f3kyoif87sSmER0vG+bZBsE38eKtflRXK+GARc7duxUxLMUFx2lqcl0a4lKB+9d3NawExZW8Y6CNJiwwObCqc4UPqX3v/diSWlpJLmFqh1wlhJHTewKoVTRy1yHh+r9o8kC+VCWM2ewhCDGegWNzziT+vAGmZiiEoQNMDCrDdldkmJIrFnVH/cGkmoOWQwascIWM2woXWIQvhexUW8qeUY8SRNu8ZZvBJij4qsXbnNZZMdtQgOgdVZKiv8IE2ZuCTmB8J7Oj3ySmyVRsVl7xWKJ94Ns7S
- oY2wmML6
- rNdtB7mcEqE8SbDqlMX/7qsNCvORbu/Y295gAFeCPAfoFThTlHFiurOm9Yqxkv+CxA61rMAEwMiYCwn3Qykc4gtcGVUju/rZY4dYMh+iKO05/qY/2MYc2dp4Ln7ftZ6v988CNBZJBXXB0PYrE9wfrgs/qumiUeLDMAEovs9zNNbLLz35fKAzUE8BVi8iKM0tfhC/xFSEaz842r1BE39MLdzdhFMw/L7Vvx3d5NSjiVeqBGfjtBE9ucNps309+Vmbwv69eDOzU+ZImBZp0iF2s/HeaHvk/34/Dk2gG3PWLVnq9oFjykd8Br8ZuDgxZfI6138Soosn7jUvC5pdYlMX3cuUv4Gqxu+fZAxXRo+VU21YwYPUeFCtmlw4lwH9wTQdn+ANPmBnFbd0ol20=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261119-damon-skip-empty-probes-20261119-v1-1-ec3e81c1f26b@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw6CMBBFf4XM2kkohoL+imHRxyjVtDQdfIXw7
+ 7aasHN5bm7OWYApOWI4Vgskejh2U8ggdhWYUYULobOZoakbKYQ4oFV+Csg3F5F8nN8Y06SJcTu
+ 0vbSdFF3f7mvImpjo7F7fxGn4Md/1lcxcvOWhFRPqpIIZy/Sv4D0Gem4hWNcPn/85qL4AAAA=
+X-Change-ID: 20261119-damon-skip-empty-probes-20261119-586d76178530
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CD5A1100006
+X-Rspam-User:
+X-Stat-Signature: 13y7y9kdswp7pziczuo8t6k4shpxjouj
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795077684-628699
+X-HE-Meta: U2FsdGVkX19o+oQ2Ym8/WxXUYRhJu6sy136+uDrf2vcqy+LpUnECPXlLnSaPqpd6WScgfm3YrrxbBuVXALX+nZhRtMFZevTFpbkDKzqkQ7gvqOS3/0jaOVwC9L6V373F5AdvfRaXJarszdf1+2wVQW7MVNU7uYIw7mPJAWPqEnjPH3G2Xcne0hjiSXabt1m51DTG8Gn+fo8KsAGeuO9UzEGprDw6SRCLvQPjeTFCHLaGULkjWTB3IBI+qmHWKN6rVmbLBbqI1lsWV3GMo0Xo/TMGH82CcRvZPDk4fbtbsqacVOOiUJe4HW+VhhXdTH8WMxMeyY1CaBYKFW9oymvTT+KKep8UxrNTVmVP2zRdqy2gVmsgXwebLtua9Mwp+3KlHCmwirqDK0Kj4MQMSB+GP0rmpm+K/3QC7svlFJzFb4B8HU527ZwuIS641lP53jYLMGqyg9la8X1kYJGnFFJbE3/Y5md+lUliCnj6qhnWEAYgJPGSO5CDlAsTwjOGPQe1dMvW5E9Ts6r39fpWJ4zCsX6ko0MHkrqlLkxDG1Ls3YiQOE19p7AYfDM4lsGunK4sk5RkBejD3oRNbRJvmewM5EiDxD8IWOq6ONv6gRODBc7nSnnGDkGdBo+4HirYYilLu/e2fRUVqfM4scdvrR9pqMrAqkFs0nZPFnxlLY4k2evB4dUcJbJAv45/6tVuuSVh8wkOoO322DR9azq+5Bmq4bhfQWSrC9Exhlq6fXgbDIAc63OmyfESvTgSB/4wqr3NvIu8CDXo3aXaiJHxrBJQyR9AfoqUJSvqtabYrsdhgbKsJNuLNoVG0wLaDeUa9Vvwxkk4asiHuTExiH70Tz23aKMotGnPtlRHNy/ZNJEavfpo4oIaE26u3VpXma2bS3vTFSoQwSvDl2ySWsau8ljC1QgiHLH4u52JVF5PQ0YKX5v65Sukq3uEwdvnC9XPK0huOc03DQjWYhzjnFSydTu
+ RBPsstle
+ Lg5+jM1Toj7omnFgrCbY9UmhElz7zR+pCKgcVSg625ypLejXdQdu/RHguWI0Ovq2Ev6lZzbwkTNQVhvo0Mo+EUxKIAcfv4OiSiXyUTojZfTfJRuZ2jTOsE/6Zv8VbGVPCQ8rJgocI5Gg0Me9AmzzKEk04vDTSW7g+PmsBxmaeSVI2gMBAdPE4k0qrb1vHbzZtF0YgI9uKKOWVOjE8/THq8yFDCnEp5BSzrX0jkedbwYk1ui3ksHchhvOdLwZ06mR/ZVJkR1YenUHwKWhK15cug1VWNx5xCkQfSd/4Gmhl3ZZM2MhzSlBdDDxMCKtIhfd4LDO7mGeOWfkdxI3iBGmUwMAwfUkfpiPFQNcO/v9ClFNnosrn5ZPPog80d0r93Q7wGvSAhXyeww1s8Pkk5xOG48rs0qemSHbaJuJKA8DRaFGq7ZFXHn3x5+UPEmVKifnopkufBYpvTeVK7xFs6apC7Dm9lTNns32mJSOHbTS+NBn9x7YeRygX5wiGyQQ4X9biwgJjcgtfjs1ss51Aq1BPu7qo+GUj+Q6tSc6d2Zj6zy6QxkEJSsw/uovdUliqFxnplBfoCk3aorMR3rk1OJiguKww42FBH04diz5tv4wyG22CDZnLGYuBWYIUbOdfcTec0MpnQzSov3aCEraRtyvlc7poEADSh0YYgMrSEwEITvbrCZAx3ACDlYk4X7nThZZtHoGxUTmd6aDM3XulMCfN6mKAIHLxskxz4SG/8ur70SfzxdM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,31 +127,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 08:48, David Hildenbrand (Arm) wrote:
-> It's odd that you would be asking an interface specific for "memfd" whether some
-> random file would be supported. It's in the name: memfd.
-[...]
-> file_is_memfd_compatible ?
->
-> Maybe there are better suggestions.
+While measuring vaddr monitoring overhead, I noticed that kdamond calls
+apply_probes() every sampling interval even if no probes are installed.
+The vaddr callback walks the page tables for each region's sample, and
+paddr looks up a folio and takes a reference if it can. There are no
+probe hits to count in either case.
 
-Adopted as file_is_memfd_compatible(), and I have no better suggestion:
-the helper is handed a struct file, so the file should be the subject of
-the question.
+Skip the callback when the probe list is empty. Ordinary access checks
+still run, and installed probes with zero weight are still applied.
 
-You are also right that "compatible" is the accurate word rather than
-"is_memfd": shmem_file() matches every shmem file, not only the unlinked
-ones memfd_create() produces, and file-hugetlb files are not memfds at
-all.  I wrote that distinction into the kdoc so the next reader does not
-have to rediscover it.
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+---
+Tested in x86-64 KVM on 067c5c24cef2. All fvaddr probe checks passed.
+---
+ mm/damon/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Both patches were resent as v2 with that name:
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 986404b547eb..df711b6a8d03 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -4089,7 +4089,7 @@ static int kdamond_fn(void *data)
+ 
+ 		if (!access_check_disabled && ctx->ops.check_accesses)
+ 			max_merge_score = ctx->ops.check_accesses(ctx);
+-		if (ctx->ops.apply_probes) {
++		if (ctx->ops.apply_probes && !list_empty(&ctx->probes)) {
+ 			if (time_after_eq(ctx->passed_sample_intervals,
+ 						next_aggregation_sis) &&
+ 					access_check_disabled)
 
-  <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>  [PATCH v2 1/2] mm/gup: add file_is_memfd_compatible() helper
-  <20261119163531.315791-1-xujiahao@cmss.chinamobile.com>  [PATCH v2 2/2] iommufd: only hold references to files memfd_pin_folios() can pin
+---
+base-commit: 9f004372ebeb18fdeb699f9880a0e472df90135b
+change-id: 20261119-damon-skip-empty-probes-20261119-586d76178530
 
+-- 
 Thanks,
-Jiahao
-
+Aveline Noir
 
 
