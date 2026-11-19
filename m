@@ -1,142 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08610606A333
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 14:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9396606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 14:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BmFqUsS1
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=XcW/FRZD
 Received: by kanga.kvack.org (Postfix)
-	id 25C596B0633; Thu, 19 Nov 2026 09:45:44 -0500 (EST)
+	id 5C89A6B05C1; Thu, 19 Nov 2026 09:54:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E5326B0635; Thu, 19 Nov 2026 09:45:44 -0500 (EST)
+	id 59FA86B0614; Thu, 19 Nov 2026 09:54:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 086EB6B067E; Thu, 19 Nov 2026 09:45:44 -0500 (EST)
+	id 4678D6B0678; Thu, 19 Nov 2026 09:54:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C6C7D6B067C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:45:43 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 54EC1C0AE6
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:45:43 +0000 (UTC)
-X-FDA: 85452142566.24.77623A5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9562B10000A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:45:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BmFqUsS1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EBA66B05C1
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:54:38 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BB64040AE9
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:54:32 +0000 (UTC)
+X-FDA: 85452164784.06.D7EDD41
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BF6E8100008
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:54:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="XcW/FRZD";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795100070;
+	b=HLc7ClleMbMTs6ptlg9jHcQx27WfnWuas0cItGGxk7pM8+akbuvihWfEQO0cMrfHXA+olC
+	EtNk4LTMb2YS4FnEgF5s/Tmb1oL5tLARiu7jaL8aUn0/JOmuAKyagjDK74BsVnHbqUkyaa
+	0neKAnGKvckrl67YBpEdyVj71WTMeJE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795099541;
+	s=arc-20220608; t=1795100070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H8uICizL3IgafjzWKTuprSU0wxvSh9HNohm4+JHjmeg=;
-	b=jgwJkfOgF5RZu+vRvKLgwamoMH98kGwtrmGB23jhYTYLEJKS8ddmbbYWauYD9IoBPO60QJ
-	KCMEQBbjnWRHheA8H4ZTYlUmJ562lFwHnMIwPP9wEzb4fjrfDSu8KcGpZlPXCyxhi7a/ab
-	bjueTZOMc9kzKS0wL/pK0uA1/c54CIY=
+	bh=mF/CN1MwkKAbj0n+aog+XXJlGwsq4jMzPf88n15fnBI=;
+	b=V0+64wA7982YM0lE0fQOWPu5nMrY+Dz4dYL+THQP7/D66Fu5Cc5qIMWas+vr3dLpTNokbF
+	aAtJKwTOeqSq4i3Vsco/DxbokCz7pvEEK6SyFD5FTASeZrztaIA64G3mLMK0dm1zHwW61a
+	+CKEnV+iLZo/OIHiosdq9BXBIsN5828=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BmFqUsS1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795099541;
-	b=ixwh9iECropXlowwsQ23+hg20AP+S9dRAGwfr8spnI211eBleGiJy8aQ1gqFfWoH3Iv0IJ
-	u0dlzptmb/Tek8G+wio42VgXk0LRB2SDzZ5dKIVwtNkLurIAdEjHTaDf0vBZMQTgRKUoHS
-	mj+qWFxj4EyyhCRceMhZye9oBAaB64k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 798F660051;
-	Thu, 19 Nov 2026 14:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A771F000C6;
-	Thu, 19 Nov 2026 14:45:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795099540;
-	bh=H8uICizL3IgafjzWKTuprSU0wxvSh9HNohm4+JHjmeg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BmFqUsS1K85/u592qh1PtGaoBxCTrdXeu/D84dWvDLl0C2mdB/xeE46pJPAjzpCrt
-	 gqbs7MaYOgX9KT5Kk6Qah4Dd950tZgPHpKvfOyHerUAiI2dH9khMsXeviq0MbyQ65m
-	 3897BIe9Sv1KTlAmt7jPbuFfKV9Ybhw6/taafNDmJvm10/Q/51KoWp9nFKrs7XZEbH
-	 hH84pvCmMX1Ig/YyWs7Baj8L0+3f8ScGt3vjsPyk+Uq+Ce4zHNqlQleF1agQt+y1rq
-	 YgPdSeP3QOENgtniLHKqJ4g38sRHkhyEozGrBPnM5iuduaOnk/JRH/l5hyFlXeGbK2
-	 cv+ixvtGHxvFg==
-Message-ID: <f64021c9-21c2-43c9-a847-c44129d8ca75@kernel.org>
-Date: Thu, 19 Nov 2026 15:45:34 +0100
+	imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="XcW/FRZD";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f3c616c84so208770585a.1
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:54:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1795100070; x=1795704870; darn=kvack.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=mF/CN1MwkKAbj0n+aog+XXJlGwsq4jMzPf88n15fnBI=;
+        b=XcW/FRZDHh03FhxBv4hBmvvclFjPQSBQKXX5QYlZyA5tfxvssDgnBp1uhOOt0EnjD1
+         X7PPjnQ7i38vFazZ2iZvWm2IMXq14/J2nv3s7nbxx0YccZALDqtH3jTMLvAK0cGvFqXs
+         SyXscr3SgT8sOZeR9HeZqSwpLZMnZ2En2Dl1tyfIX70qqCP7nB5DPiSSilAJF0WAB6Nl
+         OhdN45grjiTsnPANEB8pNpkLoJ+NGwPx+my4KfCwVnYXBB5oTE+DzxuLvgmzmDLE4Th2
+         9VEkdvQA2AxJJWnNrkHJsQ3Se0X+SnS6mhO2hi21qSRvzeepXLw+6p2mdOBoxfYmPdGI
+         rSvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795100070; x=1795704870;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mF/CN1MwkKAbj0n+aog+XXJlGwsq4jMzPf88n15fnBI=;
+        b=zNH5QtJh4GVNZcWf/BDmpnEPD9t9fwDEwna/ZTEj5KPp7antTNBg07ppyfy/bhk2Up
+         LZcZtPBV5CAZMuBNRHPt6O4r2XIPhsdYzAd/gI8aZZM74+YFXs3Glcpvvuht3oRTxhs5
+         j1jcVQYh+CwIPvsJ+pcCL3lj2oR5ENuw0oXHB540UDTjEluLFPQqs6J9zlgAoXTF5Tff
+         4I9/l1dFo2SLAZAOiL/WyKISkDz/OL3dixZ4acPQT0VpG04+WbGTpum4qnASDyI8YyfM
+         ptXGLdmu4J5p+dld7Rqebj9iwv3Sr1blsTXCu89mmKNqxgwMdXfIiqxtyL3PiYKT41my
+         forQ==
+X-Forwarded-Encrypted: i=1; AL+hErG7W9j4+IUXMMKze97mL270nnhteNEyvCuMCUTc0PDh33TcAz62zJVygnfIwsA0LzBjBOzyD8VhDg==@kvack.org
+X-Gm-Message-State: APuU4Z/K2PMGv2gpjdflccvXAZsboPwVH4/heZldpRHg1Hv3zTlTqPc0
+	eRl8lDiFZ4N4n2xGX+g+RkOREWCpAyEV04efSTBfK79VZFugyxIOg6hJuOa3Hb6GFhQ=
+X-Gm-Gg: AYBFou3Xuo2Vv92ImLh12tiXz3Ti8BA8f0w3PKhLRrhj5udKvKJvH1gZk85Baz688q3
+	QXfLKHkOcZtrSF9fqIIah29eHQw2ERw4cVxexZ38ik+ZiQlWS0qGTIdz2jxtjbFvhEjkgGc0QY6
+	je2Tp7LfsKn9nxiMJebPg3ryOIHMqQb6Il25eSCbFwtdJnGVj4Rdp7J0mnxyDkkPhvCDV7RQPeW
+	4RC5GbGKZ+NlTi1dQdZR7DgBNsfgfMVU4hR2fshr6jOGjvgNAj+WwoK1EP2dnMShE/AVhYf5WeJ
+	BfKO4OuubTdwH/GbdrpvXY6vqQl2VxZ/TM5MhStVH2HEP0GID8knDA8pjydS3lRrCMw2TyXtjIk
+	xFi7m+UHlEI0zE+O0eE4pzxaHACsNPJjppaKqWC/WZUQnBjo2KTMdZnccuS2sDuGSZk7zn5XDl0
+	rrUXR3dsZdsHhd2l7Me/ukTJlsn5XcUNs0eRdSuqfRH/ACysYgMkX3G8BLy7X90QJUm1RHjl81F
+	CRWgXrzQkQvdMDKNxBgoXBV0MF2uinbA2zRP4HXhoHvB+et63gOow+C5F/nWr7LbY3dUxXpG0jQ
+	hVEZ8Y8YPtq+eBhFpHMj+l3wYekBmGLGKzLtUk5DEwONuADndD7GiXbNyW8XzUjH0Wx90bEvFh4
+	M6u0rNXzllfce6+7RC3TZ7HxXOkOWEGc=
+X-Received: by 2002:a05:620a:6e84:20b0:949:a7d0:e6b4 with SMTP id af79cd13be357-949a7d0e7f1mr416234385a.51.1795100068869;
+        Thu, 19 Nov 2026 06:54:28 -0800 (PST)
+Received: from localhost (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949b9a5370dsm10296885a.23.2026.11.19.06.54.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Nov 2026 06:54:28 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next v3 0/7] memcg,slab: kmalloc_nolock() fixes
-Content-Language: en-US
-To: "Harry Yoo (Meta)" <harry@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: kernel-team@meta.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- Sashiko <sashiko-bot@kernel.org>
-References: <20261115-kmalloc-nolock-fixes-v3-0-9034dd4ecaab@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261115-kmalloc-nolock-fixes-v3-0-9034dd4ecaab@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9562B10000A
-X-Stat-Signature: oijkxu7own1th6tj5jb5u4hb87d6rhrc
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795099541-237224
-X-HE-Meta: U2FsdGVkX18KJkWws0tUtrKpd37XgUm1VBPYhyNrVqRg5PL8gY/3AWABilPo1ZICTbWoIgVw0ccMIB2He28F9Z8mtNFghgheeOUzchRVh778qDhoUnfw/Du4hg3YABegrxBu2KCelMiaQ3ujowL6+B3VPOm5sJLbdbysK4RP9fRvuIzD6Ce6u35U7OSHKLI48DzctnKr/QAMlNeqgEZoAstpqsWbx3UdNDhnxcImHj2OrmlPo2gPuuxW0Fk25nssmJLNYp8jEvvKHEWzs1jYWQVO4Mjy6NqbJVpmmEp43Am5r5zamdOjACVZJ3yi8R5KRV2JvRTX7ConaMwNuN8mEtjTbd4T0FrmzWGRPbXdxE7aoKiRcSPshbOE05vz0n1vAqomMWWPLWiFZi3PzRHRlGzy943JeZ+QzYllOlsNXOTJKMyQGiMCCuTR6oa02El+gW8sqzdgMPyTrDV8PzY/zbDJ4wjr7ephpD35Q3FgFHK2Gmxhxa7o8ksPbCKjwjk39HB5Qn3SbieV2MPKcbe9HDuH+rvJjdBe0JkHjQ7o+5PLCJPjjODDq22ex4byZj5oLEMNRnH59dZ+PrF/cBuamHgimR0OczNOuDuoAOf/7DXkAqSNyrr5RQupv86iiLPLrQNEV26AijJTHJ/CJfz+ySNexOkg/q+GrSL/BYx0ITeTM7BSa1x8mpMf1rwe5/x5MTKTICTx2H4BM7AOPSNmy6qBNjIGZcPAyy+NF3K+XqZBwFEdYg/TMvNj6CGqt+oEPHGnNfkJrr/rQ3KWyjVaOpSpEc0qXlCZRMiX6IFg5DzFKo8NF7B1DPztyxQcLi5SnR2oFp9pl7RnBCymVZhVWvtS9QIcRghmNamio6IcTquxDOd1X9sgS3e55WZLZnnBQFdv/tD0NNlT5A12tWf32dvmYuX9qXG9kvxrQssiL+mpkgQZX7Q6l7/nQ7SmEPNwJmwwMqz1sJgd3UC1w/6
- n2bO2b1B
- ZqxcWzBwgnLsy6pYSHb23XlSyp13qtFqMXJRV80w+b4mBPQ98RdwsQeQBkVRGhpEPm8ctzbedsgkLxN24rhQ3ru3jVEtDP802lgMXv2gitUGGzeiXr6cVfEBJpLEpy5TWs6tHlCTpBLK/mBKp3NTSRN3ryTbwxPjy7Q/p+gkqy9PaKL0rjOqwT2FA4hX2jFv55YgIcGu/ViQ6NouSEPAPzWcoAs/V8om1ePqr13pKYiy35UOkH19mX9CTneztHW4+or6gb+dMhMa7o8C60GMRY9ZxFjbvv880zhHGVdC56Krf/5EM0HzRu9MVO3Sij5+pHUNnF542PsiW8RlMvuGYvHFkWiKbZQi7GcUNDwCK6LImcqggm/6bWDqGWENeHkOw3kZ5gVqHoJPDDcc=
+Date: Thu, 19 Nov 2026 09:54:27 -0500
+Message-Id: <DMZ9V6MU9XNZ.3J23SCKTSDHB@soleen.com>
+To: "Chris Down" <chris@chrisdown.name>, "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>, "Pratyush
+ Yadav" <pratyush@kernel.org>
+Cc: "Breno Leitao" <leitao@debian.org>, "Alexander Graf" <graf@amazon.com>,
+ "Baoquan He" <baoquan.he@linux.dev>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Shuah Khan" <skhan@linuxfoundation.org>, <kexec@lists.infradead.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <kernel-team@meta.com>
+Subject: Re: [PATCH 1/9] kho: Reclaim the metadata page left reserved after
+ kexec
+From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
+X-Mailer: aerc 0.22.0-39-g5d7784875be2
+References: <cover.1794383544.git.chris@chrisdown.name>
+ <63ca64c004b296a998a3e531f8c0c4964916b70c.1794383544.git.chris@chrisdown.name>
+In-Reply-To: <63ca64c004b296a998a3e531f8c0c4964916b70c.1794383544.git.chris@chrisdown.name>
+X-Rspam-User:
+X-Rspamd-Server: rspam07
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: BF6E8100008
+X-Stat-Signature: twrf993cmhtrpm6un6x6jnn95fbg9idf
+X-HE-Tag: 1795100070-462521
+X-HE-Meta: U2FsdGVkX19dnHSJWkErnoVPqqqR4s2kiPAASFS2MOlmRCJh8Z70TUdhgqef3J4yv/M+kCMjTNg7qY3i4pn8oe/3UW2ehCk8A/OGDrM58vYOPdTbxYmLmEylndvRWQC548h3ccQzig+HpuolP7NAc2E0a9avtAGOCHGK2Jf3PKxSyikqsfzkgO54j1dBwBqewh2D+hKYlW51qn4i/D8eSkWJjgIOIUImcTkLfr/iOcAflNieSAgAvyP1AAatfR8XAChSgp1OefGD1d5MSN7m8iHsxjRqgjtadebv/S4IPCsiLdmCP7fxGxGCES5FGSFOuufiORpKIPtEc0F604fvFDzKwA/g2FiX1H5M3MQVvNJkrvudW/jxojUxh7rVN0K9s1yOjay2+XK3VMfXpH5X3QEnMWPCzOW0F2AeOWKc+FMgOzWtthnZA6qxZJVbKLimYfo7H1hi8ix1XDaem7V8GrUO7yRsOCsrmC5t6EE+Rpl/9O8USBwffQFdANFaLBO1f8a6D8uxiLP6FMa7WiVk4pL8vS4CP+CDnfkX3HZu4nedP4LhFBA/CROJBsXT4mvuPf0cpRKYG+BxuMNr8T3OAjY3EoxC92T1v4SJP8mv6cz20V3CGcPs++3tU79FGj5bOK8g67+TQubdtb5w3gx/BC77RpTjCBhH0q3Wxbd81ClFvHRSofLzLOHA82zbh6772usswlPNmpOdZLFfqAfdCNYS/zp03+Fv8oocBFgdMWnNEQreky0fZhN1cTTmiy5HNTNOQOhw58oy7FFYwhXozZtVqd6ys3L6hv/R0wb1Sf2t0bu30+Eog/cZ0+Ysi8UfTk9pd47tcMP7AtMrmTl0GoNMmvs46eqFS4EhfGPJYAk6mnhcn4Nny9fK6+Vk8RoOiNqejlUNIEHJuix4ULFHNHR1LINj4Nlstnu+TDAD9GrMPtKYBpHOLcN0cWcrAiH0Q0ssj9a6AK0suh9ceBr
+ aqw2MyFl
+ RsbAEXJZJPL6k0yDsLgRyNZ3y3rhjhc5YqekmnvIH1Kn7yXQ1EB5HKWVt5EJNCli8XGprVmmcHlpy/acYSmo2FIB7MFXNNks9noje0webftq6A47U35RJLBQl4raSpDoZs/Yuc1YrE/1U37Co5GYs01g8D0T0QZhKU751rniSx/gjmFyl2GcZ/4eYRBDQCYgL+jjh8yDyR+Ey9jfC8Clp4/bRIrX6DHoBCk3Lr+IkIphK8Tb5ykaSaUuOvwXALFTYB7XVnjKxhwzXG2Pj31XY7Nq7C5KGYtG3K1S5xEbwNTsGJcWHdNWAHo97XxIzUYBhqdSN60rQBuj0YwuLR1DNpyU7v1gj2bN9NZwwqtD1HkXtmb8ap0zU19v1vob6RUYLa/1uCxK2tl2rT8S6vunpbvydmu7LZCSr0Rrrb7aMy//ff4pWihiYRQsk8wt46VlA8S1aXI6ycfzQ/vvqMnxTuGXEmYoqYBA4rfzW/5MoC6lg55o6wK7W3OBWkanHzD4fCK4t9FqWSnnzaSXFvnLI3a6vsWdXyhqDAaxuKKf4Xms51N/dpCmetBDuwnn3o5eSi0FS2STUYFquqvwyIa7WRAnLMapkZCDebZVR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,109 +134,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/15/26 16:09, Harry Yoo (Meta) wrote:
-> This patchset fixes three kmalloc_nolock() bugs.
-> 
-> 1. obj_cgroup_put() takes spinlocks in the release path when it drops
->    the last reference, but it can be called from any context.
-> 
-> 2. A spinlock may be taken in the following path and may lead
->    to deadlock:
-> 
->    kmalloc_nolock()
->    -> slab_post_alloc_hook()
->    -> memcg_slab_post_alloc_hook()
->    -> memcg_alloc_abort_single().
-> 
-> 3. irq_work_sync() is called without synchronization for rcuwait
->    (on PREEMPT_RT or some architectures), potentially causing a
->    hang.
-> 
-> Bug 1 was reported by lockdep, and bugs 2 [1] and 3 [2] were
-> reported by Sashiko.
-> 
-> This series fixes the bugs by:
-> - 1. Deferring obj_cgroup_release() to an irq work.
-> - 2. Making slab_free_hook() and memcg_alloc_abort_single() respect
->      SLAB_*_NOLOCK
-> - 3. Serializing irq_work_sync() with a mutex
-> 
-> Patch 1, 4, 5 are bugfixes and others are refactoring and cleanup
-> patches.
-> 
-> Changes in v3
-> =============
-> 
-> - Rebased onto the latest slab/for-next.
-> 
-> - New patches and changes to existing patches were written and
->   verified with AI assistance and carefully reviewed by Harry Yoo.
-> 
-> - Patch 1: added Vlastimil's Reviewed-by (thanks!).
-> 
-> - Patch 2 (new): pass free_flags to slab_free_hook() instead of adding
->   a third bool, as suggested by Vlastimil.
-> 
-> - Patch 3 (patch 2 in v2):
->   - Now handles SLAB_FREE_NOLOCK in free_flags, so callers no longer
->     need the allow_spin local variables.
->   - Updated the subject accordingly.
->   - Addressed v2 review comments from Vlastimil (thanks!):
->     - dropped the memcg_alloc_abort_single() functional change from
->       the changelog, as it does not change until patch 4.
-> 
-> - Patch 4 (patch 4 in v2):
->   - Try freeing the object to the percpu sheaves first in both
->     contexts, as suggested by Alexei and Vlastimil. Dropped Vlastimil's
->     Reviewed-by accordingly.
->   - memcg_alloc_abort_single() now takes alloc_flags instead of a bool
->     allow_spin, and converts them with a new to_free_flags() helper.
-> 
-> - Patch 5 (patch 5 in v2): added Vlastimil's Acked-by.
-> 
-> - Patch 6 (new): Make free_to_pcs() call can_free_to_pcs() and take
->   free_flags instead of allow_spin.
-> 
-> - Patch 7 (patch 3 in v2): moved to the end of the series, after the
->   fixes. Reworded the comment.
-> 
-> - Link to v2: https://lore.kernel.org/20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org
-> 
-> [1] https://sashiko.dev/#/patchset/20260610-slab_alloc_flags-v2-0-7190909db118%40kernel.org?part=9
-> [2] https://sashiko.dev/#/patchset/20260615-kfree_rcu_nolock-v3-0-70a54f3775bb%40kernel.org?part=5
-> 
+On Wed Nov 11, 2026 at 2:52 AM EST, Chris Down wrote:
+> After a KHO kexec, the new kernel keeps the page holding the previous
+> kernel's kexec metadata reserved for as long as it runs. It only needs
+> the page once, since kho_in_kexec_metadata() copies the previous release
+> and the kexec count out of it at boot, and nothing reads it again.
+>
+> Free it with kho_restore_free() once copying is complete.
+>
+> Fixes: 76aa46b9e404 ("kho: kexec-metadata: track previous kernel chain")
+> Signed-off-by: Chris Down <chris@chrisdown.name>
 > ---
-> Harry Yoo (Meta) (7):
->       mm/memcontrol: defer obj_cgroup_release() to irq_work
->       mm/slab: pass free_flags to slab_free_hook()
->       mm/slab: handle SLAB_FREE_NOLOCK in slab_free_hook() instead of open coding
->       mm/slab: fix a deadlock in memcg_alloc_abort_single()
->       mm/slab: serialize deferred_work_barrier()
->       mm/slab: refactor free_to_pcs()
->       mm/slab: call debug_locks and KCSAN checks in kfree_nolock()
-> 
->  include/linux/memcontrol.h |   2 +
->  mm/memcontrol.c            |  27 ++++-
->  mm/slab.h                  |  14 ++-
->  mm/slub.c                  | 247 ++++++++++++++++++++++++++-------------------
->  4 files changed, 180 insertions(+), 110 deletions(-)
+>  Documentation/admin-guide/mm/kho.rst |  4 +++-
+>  kernel/liveupdate/kexec_handover.c   | 10 +++++++---
+>  2 files changed, 10 insertions(+), 4 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-g=
+uide/mm/kho.rst
+> index 902d171a780a..f9d2cc5999ee 100644
+> --- a/Documentation/admin-guide/mm/kho.rst
+> +++ b/Documentation/admin-guide/mm/kho.rst
+> @@ -120,4 +120,6 @@ stabilized.
+> =20
+>  ``/sys/kernel/debug/kho/in/sub_fdts/``
+>      Similar to ``kho/out/sub_fdts/``, but contains sub blobs
+> -    of KHO producers passed from the old kernel.
+> +    of KHO producers passed from the old kernel. A blob disappears
+> +    once the kernel has read and freed it, as ``kexec-metadata`` does
+> +    during boot.
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
+_handover.c
+> index eeec298aa9d6..3046b89e5db4 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1808,6 +1808,9 @@ static void __init kho_in_kexec_metadata(void)
+> =20
+>  	pr_info("exec from: %s (count %u)\n",
+>  		kho_in.previous_release, kho_in.kexec_count);
+> +
+> +	kho_debugfs_blob_remove(&kho_in.dbg, metadata);
+> +	kho_restore_free(metadata);
+>  }
+> =20
+>  /*
+> @@ -1885,14 +1888,15 @@ static __init int kho_init(void)
+>  	if (err)
+>  		goto err_free_fdt;
+> =20
+> +	if (fdt)
+> +		kho_in_debugfs_init(&kho_in.dbg, fdt);
+> +
+>  	err =3D kho_kexec_metadata_init(fdt);
+>  	if (err)
+>  		goto err_free_fdt;
+> =20
+> -	if (fdt) {
+> -		kho_in_debugfs_init(&kho_in.dbg, fdt);
+> +	if (fdt)
+>  		return 0;
+> -	}
 
-Merged as slab/for-7.5/kmalloc-nolock
+This re-ordering can be removed, now that we applied:
+https://lore.kernel.org/all/179508700586.361583.12491114908870226409.b4-ty@=
+b4/
 
-Rebased to
-d866d5bafc5e ("Merge tag 'mm-hotfixes-stable-2026-11-17-19-55' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
-to avoid conflicts with mainline
+> =20
+>  	for (int i =3D 0; i < kho_bootmem_cnt; i++) {
+>  		unsigned long base_pfn =3D PHYS_PFN(kho_bootmem[i].addr);
 
-Nit for 6/7 resolved locally
 
-> ---
-> base-commit: a7cdd0af963a420fc0e6f20b7c8bc8d4784098db
-> change-id: 20260624-kmalloc-nolock-fixes-c97675328773
-> 
-> Best regards,
-> --  
-> Cheers,
-> Harry / Hyeonggon
-> 
+
+
+
+--=20
+Pasha
 
 
