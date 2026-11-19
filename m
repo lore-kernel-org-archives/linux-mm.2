@@ -1,114 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF69606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 23:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA492606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 23:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=U+0csrj6
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BoTWH5Fi
 Received: by kanga.kvack.org (Postfix)
-	id B75516B06BC; Thu, 19 Nov 2026 18:40:07 -0500 (EST)
+	id B384A6B06F5; Thu, 19 Nov 2026 18:48:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B263D6B06D4; Thu, 19 Nov 2026 18:40:07 -0500 (EST)
+	id B10546B06F6; Thu, 19 Nov 2026 18:48:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A14C56B0713; Thu, 19 Nov 2026 18:40:07 -0500 (EST)
+	id A4CF86B06F7; Thu, 19 Nov 2026 18:48:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 66C6D6B06BC
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:40:07 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE77A40C86
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:40:06 +0000 (UTC)
-X-FDA: 85453489212.09.0AC0F02
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 23BD2180005
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:40:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=U+0csrj6;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 715586B06F5
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:48:32 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7EA5DA8B2D
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:48:31 +0000 (UTC)
+X-FDA: 85453510422.29.C1894AE
+Received: from mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3B10A160003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:48:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BoTWH5Fi;
+	spf=pass (imf08.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795131605;
-	b=dGVpxcE84zA/VGxMNcMnD4gPtgKILx+gKQtMUbEbcF0uaV+xbpUfnCBn9MQqlTh4dEaNl0
-	l7MBFiJMUe0j7LALwc0a2eWmMMfOxfST7P4XuO6Ll25VXpbRYTE6bgBY/ltz3q7qTF51Fn
-	ZFmuaujilgsrOjGoe4KTxosfAbVZSDY=
+	t=1795132109;
+	b=MemeMGQC3F4uvccEtJvehCWv6whS/bLMQF/4ViPGFhkFW0zhRNxDBrE0c4YaESgg4OhobS
+	UdWn42WK8xjH2Ih9+wGG/EH7u8RVPMLuAc4bZi9Q2Ff6EqKhnldCSpCGZF63kSYslxVF2A
+	LtU/yggn6gvhoS7JfgpAZ/Wvj0tfehY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795131605;
+	s=arc-20220608; t=1795132109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1DASm4ABHvydbCgPqdPTvCuRMoED8Hk0QLqB2S7niGg=;
-	b=dlhTn+YjrJ8fr4HH8h28Hdeth/TXDzCp1JJ0VraOO5yDzyIb6gzu3s9YHlHk8AfYBwYo+8
-	+CwZgk0cjOOmsQn0OMyuJ1jmyEq69yXnJ6J6hODVl1VHDVGShAFbho5kNbdRJp4U9J/bSt
-	Rj1wJnoT3LHWcl7aMnK0wJg9EoDa9Bk=
+	bh=vcj5h00JjVNcq5RcRanYbKv1qUq4spqkJwru3XjEgEA=;
+	b=tWIPJd2NJun527yzhZ4kbqnab7UvYyNFlXQ6icIbM2NgrrkQc8NQ3ZMHFsWXRZs7swA+g4
+	p8GbIkKtAFPyTUjjtUdZE50bgZlB7AIhGgRzjHDv8HkkWLy7IZTy9T6cLUHFlXjoNLeHKQ
+	63SpCbNecqpVM3HAn3M/7G8Y+c9sgU0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=U+0csrj6;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4CCF609D3;
-	Thu, 19 Nov 2026 23:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD221F000C4;
-	Thu, 19 Nov 2026 23:40:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1795131603;
-	bh=1DASm4ABHvydbCgPqdPTvCuRMoED8Hk0QLqB2S7niGg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=U+0csrj65wERCccDzC12LroJ2Kmi9pNSiZ1GLXYN+X4ITS8T6WSI63cqKE+cX4Hmm
-	 L0hxYNeHlbh+eBUYUAc2PsDKL1D14zOI/mu4STeDpxOXDKv6VSo0+AzDC55vy6g569
-	 KmmPM5xLsXz2U+B/JyPbFblGAVZAUVviXOydljfE=
-Date: Thu, 19 Nov 2026 15:40:01 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Muchun Song
- <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Ying Huang
- <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Baoquan He
- <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Vlastimil Babka
- <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Nhat Pham
- <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan
- <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev
- Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins
- <hughd@google.com>, SJ Park <sj@kernel.org>, David Rientjes
- <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, Vernon Yang
- <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, Chen Ridong
- <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, Kairui Song
- <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh
- <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian
- Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>, Kunwu
- Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- damon@lists.linux.dev, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v5 00/17] mm/mglru: frequency guided promotion
- (MGLRU-FG) and flag cleanup
-Message-Id: <20261119154001.9b9f953136935a09e8a50af6@linux-foundation.org>
-In-Reply-To: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
-References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BoTWH5Fi;
+	spf=pass (imf08.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=6LWaP9a799dRmXjPzl0gkWLih06hsrqQYvPtGBFxEsY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795132107; v=1; x=1795736907;
+ b=BoTWH5Fi1IZExkaX1UVG0UE/sKHeD7yr0JBoEA7pSxpIS9I/AG/d2puwMNbDLQzs2vT11U1s
+ vASgSWckzezIb9s1Sd0vB6uxw4uXPLLwr5GKRk1rBj9hLubjulj4/oLYePkSmiMd7yc+crCqZM/
+ 4ZhHgjLXJXGKVDcDNMWg5GdI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id a9882a66356e0e59;
+	Thu, 19 Nov 2026 23:48:27 +0000
+X-Mizu-Trace-ID: a9882a66356e0e59
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <583bde38-c84d-41a3-a65c-d1365ea04f07@linux.dev>
+Date: Fri, 20 Nov 2026 07:47:56 +0800
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 23BD2180005
-X-Stat-Signature: ge4gnj6yo7nejp1okbz1t7m5sdqjswak
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: cui.tao@linux.dev, akpm@linux-foundation.org, dgilbert@interlog.com,
+ mkp@kernel.org, loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
+ vivek.kasireddy@intel.com, mst@redhat.com, jasowangio@gmail.com,
+ eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com,
+ mhiramat@kernel.org, jgg@ziepe.ca, kevin.tian@intel.com, axboe@kernel.dk,
+ linux-mm@kvack.org, James.Bottomley@hansenpartnership.com,
+ sumit.semwal@linaro.org, christian.koenig@amd.com, phasta@kernel.org,
+ joro@8bytes.org, will@kernel.org, linux-scsi@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
+ mathieu.desnoyers@efficios.com, robin.murphy@arm.com, mason@kernel.org,
+ aesteve@redhat.com, tjmercier@google.com, harry@kernel.org, vbabka@suse.cz,
+ cuitao@kylinos.cn
+Subject: Re: [PATCH 4/7] tracing: account ring buffer pages and trace_array
+ metadata to memcg
+To: Steven Rostedt <rostedt@goodmis.org>,
+ Vincent Donnefort <vdonnefort@google.com>
+References: <20261106131829.3228926-1-cui.tao@linux.dev>
+ <20261106131829.3228926-5-cui.tao@linux.dev> <avScKhR22kFOQ1z4@google.com>
+ <20261111181447.3c483a50@fedora>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <20261111181447.3c483a50@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mgxa5y6aicm31brgwgpywhfmp7sfi6ww
 X-Rspam-User:
-X-HE-Tag: 1795131604-954735
-X-HE-Meta: U2FsdGVkX1/6BX3QnKYBQsVdhv9ExUkVH+8zoAIy5Uj30k/WMYIP1d/NqsY96MxZZnXtDpMyKuF4TrbxS1m3tcdqoYHtmuULF0jrvqa5MHUaB0bCbU8mJcy6NtjU6Um+I1Jv9ymTVkIOSLEfHF4JAIzm+C+RYfN+xQgP4XLAl1tlql3VoMcY4nKeyC6XEE2O1bej+BffWkhb4E75R6WLp6L88bgLJxLEP1+rjDvpyn6Fbz4sWHq7zpWWGiUV6gD6jHTDNVIlU/lQxPu8jye0hrxniD75+hXyMB7vyGXNG0nta2MZ1zcQ3xW4O+Fu7INK2S9GOjdK2AvqfwTZi9lyQbz/9Ctmw/dWYcofrR5wFD4d0SpdNyxaHajyqe9NVJji9o/doQwElKZh7OTSpe5tXKM+k3H4XhHiO9PiNElQxGYzEpvew3fuwUNjPCN2aixbulXePgtJDQ8nyVJTGk+uZ9CVq2QUaRah/ip+J0tkzQ9OzCJ8RuKHVXXxnSTHiNMozmi6ZzYzylTeEj0zb9OB7CqLaSORCy1cbCglnikCJMLwTJHbj22fv0ym1fb+hFPrm4LfR152G/67oPrl5FimDvCAZxLAoEEgft6ZS3G/3TJZaipA1guxTjNYGmEWl9ESbe0/cFlCz5luwBzx31iQmesu5LRAkbsOvU3gdGezsRpLqUVwXpoj8dCNN5ePZEFOK1glJ119s27TTlhZ/YuYjcTPjzp3qO/aif7peI4YeocSDDiwWJwoAtBijI2cJGhwhK8sLiuQ9OEnXUhJYTKOiFtxGiftRv8r8wPzCYPAdEbJ8z1XQqvEhzTIxezQURye16xmly5NabR5gan+hRdF0IMtiK2dv1eaIGjzAtyCiAU0AS9f/AEBLS387Tcmhjf7vGE8oo4ar0zLDnngmejEisE04Jte50bFxWo5xL4AgIZc5QSmWJwrAfv4DSpq4CnViJL+l4ZZZ5Q+sFL9L+a
- 8hVQAqw9
- 7zJuLZ72b4Ez+9TW+9wo/7Ag1A+hdFgidoRLLlayGDz3ZkTnRr69nMz0cOZ5LbNSIlFV9zPJ1w1aL419K78rQACOwAzlhwcMqnPdKzD5WcptxZj96p+dE5VK6sRAoE+BW6/cye5o9M8teGEODSvSYsPWgXoj9ql7nBm0H0P9xq/ccONvg9Kr+HF2RVxUynNbNVBHc5MVjzJJeVN/aJMwi3aYQ90V3doRfUw7WT/+I1Qi5dfcXh9KCDdkAHiLUPktpeoLsJf+26Q2CRoSsZDwYERRREPxlXxLpmPuQYvT0Ft71XtdoM5HwxVd4bx63SJ5o+4cQqdgH5wdKnSkh3UMEGjrNNvl3x6sFV4ub3AuUWayKChfRJPVGN3Tov9LOw/noUIaOppYmhXZIC53PYOw5/CEH6gqXj0xgKtRSzNUVgNak/zM8m7NbAz9VHxacvzjCKRppdscpqHh1hleXz9+zJsfr23ZKRahOxZEYlIsXxL99qinBIzXso4XZho7rAJriKm9t6iKxt14usO9Vp1NUXNKu0TIOutEcmtqD6uWQbv9mTiKTeeVhimkAZ5rNjF/itpwT10WM75bVQQr+3vPoogrt34lgbEsKF8iAvofygcaYEB4=
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3B10A160003
+X-HE-Tag: 1795132109-801393
+X-HE-Meta: U2FsdGVkX1+AiSuiSWNwSnPRHw3HFV7mS5PCQwM6o5/3ybmcJmxGgUfyGSzbVqXFmRluP87IpktETSR/0CgasN02m0OeIbFw2fE+jew1MKxOhn1iKmdrO2fXTKeQqYHybvSSB5zx6O/AMK3cCDadWiCPdAiZA3CZcpk1rQcOPRpS4cj+VZKi7taLf0IW4H5D1lnrCglyDcnnIriMtQLc29g26JJHeMNRGjAMGI1qtb9/WL8CwWxAusCHK0ENy+jjmiEk+7EWQur7JkcKpB3dAiX0bjLnmlk1eWR7BfimsOAvSXDVtWFEkoV2wAvVlS+UVIHYPDNh91AGjRSOG1YUJpnrYvHorqZrZA7ZIuAPS/ZGTedUwdPCJum+ebjKv9MHByReXq7gobyO1lcjQG3DjIp8Pjc4igMVTvJPYAdlOof02NN4sQWCSv9Fz/BG2ON23grh/mzW4IXBdZnIpD3iIbzMbjslq0KDPeWUq0PCWXoEfD5vix1s5CfAazr236zuGTcTQWBhfANamyA2ZlbV8yNgUAYKtcpnWpk56Tolwh0xi/OcGq2toUGZiC/56oMxPvr4NvXBnbAv4ApTR9mAxR97yNhfUmK1B9Yo551rQWkP9nArncgatLxsotyvIrz8K3g4Il8FKuvVuXLTBiJ98hv+GHZXKjLcjSR/Bq02zkDj8L5uRqBRgf8sDxawA4oiDei2T9Y0hdfxt95IjRCKmlZU9wcayWjvKmGJO58s+psE3bJIzpqBR1rRkAKxudwKyydQ4eIdlY56Wi1mzb+58Gknj7XfyUUy+Bgo4aePlaYECPik89h6amCVHghNc8ko5ViOcwvj1QGnMVcayV9iymhMfC+ZlAh5yKvXo9cecCMSvQTqfwZrgjhNW8Ng+m/SBfzC927q9SHN7zBGiFNlak3NHlFdQbAjxV8BEPw4kEXm91VdFrI78Gc0udHrrdzKhn4+QwJ9DAXcNVtPU/b
+ MSm21pLa
+ hXdglEBBXctySNScrIFCFSwobVwQvytDt+yatgXoW+qo5AcWDJbdGLWPTYV8ndoNHE0m40gb+UNyitjMFBz298tczkYlQMmXWa/cjELoSEUYBrd6xFz+7q9Kzj3ULa73UkAZne0VyG62oOggbBbJyBRLX2yaEZP8kS+GbLGWYooxBqSYrTh3RS84kBDV2fgsp/yWXF/tWpC2XMBSMpFcl1TFe3fcB3hZdUKHHB4gRxnijP7FrQ+XkwcWo+yHfuyEpVa1kY6M01o+0TQqSCDlfGGMKF1MjvaYWIO2Iufx6jnA4j7Nmo+tFMG9nTwtSqNsaRUIyk1wLExJYlmY4ljURY0/aIrUiGg8kSKyJMgKbkgziVaoqrOoQi7E88AFw5fEnZZPA2+nNf5pP1yI9K8/bRYVpU9sG+hXgB9u62tPX/jb5Au706zjNJaXtcHejEXAUt25aoQek9QIzGvTooyevCKKKUDzWxwFx/saE/3fMWTBuAHxRFqKfyk/uRB1vWnhtvyXmMyLm79J1vqEaiZ8HLKkAiHUIB+9osSlY3pcULbtuMAmlde2xfTr2QrqlYW71F1nboHZIeS3PRcE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,213 +112,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 19 Nov 2026 05:03:32 +0800 Kairui Song <kasong@tencent.com> wrote:
+Hello, Steven, Vincent,
 
-> This series implements MGLRU-FG following the idea proposed at LSF/MM/BPF
-> this year [1], based on current mm-new. Depending on the workload, it
-> improves the performance or reduces IO by roughly 10% to over 50%,
-> fixes multiple long-standing issues with MGLRU metrics, and drops one
-> page flag.
+在 2026/11/12 07:14, Steven Rostedt 写道:
+> On Wed, 11 Nov 2026 16:47:38 +0000
+> Vincent Donnefort <vdonnefort@google.com> wrote:
+> 
+>> On Fri, Nov 06, 2026 at 09:18:26PM +0800, Tao Cui wrote:
+>>> From: Tao Cui <cuitao@kylinos.cn>
+>>>
+>>> Creating an instance immediately allocates two full sets of per-cpu
+>>> ring buffers, array buffer plus snapshot, about 1.375MB per cpu per set
+>>> on the default config, plus the trace_array and its name.  None of it
+>>> is charged: neither trace.c nor ring_buffer.c passes __GFP_ACCOUNT,
+>>> while user_events in the same directory accounts everything it
+>>> allocates.
+> 
+> As the name suggests, "user_events" are for users and are special.
+> 
+>>>
+>>> Instance creation is currently gated by tracefs file permissions
+>>> alone, so a
+>>> rootful container with the host tracefs bound in can create instances
+>>> until the host runs out of memory.
+> 
+> You mean, "works as expected"?
+> 
+>>  Charge the ring buffer pages and
+>>> the trace_array metadata to the creating cgroup.
+>>>
+>>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+>>> ---
+>>>  kernel/trace/ring_buffer.c | 8 +++++++-
+>>>  kernel/trace/trace.c       | 6 +++---
+>>>  2 files changed, 10 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+>>> index 1fd28a72e6ee..676c059c112c 100644
+>>> --- a/kernel/trace/ring_buffer.c
+>>> +++ b/kernel/trace/ring_buffer.c
+>>> @@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
+>>>  	 * gracefully without invoking oom-killer and the system is not
+>>>  	 * destabilized.
+>>>  	 */
+>>> -	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
+>>> +	/*
+>>> +	 * The subbuffers are charged to the memcg of whoever caused the
+>>> +	 * allocation: the creator of a trace instance, or root at boot for
+>>> +	 * the global trace.
+>>> +	 */
+>>> +	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
+>>> +		  __GFP_ACCOUNT;
+>>>  
+>>>  	page = alloc_pages_node(cpu_to_node(cpu), mflags, order);
+>>>  	if (!page)  
+>>
+>> Hum, by default tracefs is root only. 
+>>
+>> And even if made accessible to other users: 
+>>
+>>   1. The life span of a trace instance is not tied to the caller.
+>>   2. The ring buffer is shared by multiple users.
+> 
+> Right. Is there a use case out there that allows non-admin to create an
+> instance? Tracing ring buffers can expose a lot and should not be given
+> to unprivileged users.
+> 
+Not that I can point to.  Instances are admin-only by default, and the permission layer is the right place for that.
 
-This is looking really good - great stuff.
+> What exactly is this trying to achieve?
+>
+The series closes uncharged kernel allocations that scale with user input.  For tracing I misread the tracefs permission check as a gap rather than the intended boundary.  Combined with Vincent's points on lifetime and sharing, I'll drop patch.
+ 
+Thanks,
+Tao
+> -- Steve
+> 
+> 
+>>
+>> Overall I am not convinced charging the creator makes much sense.
+>>
+>> Eventually a few allocations for iterators could be GFP_ACCOUNT.
+>>
+> 
 
-Review is thin, so I'll remain in wait-and-see mode for now.  What do
-people think?
-
-I told LLM to put this series through its paces.  The performance gains
-were confirmed (actually muchly exceeded) and it couldn't find a way to
-break anything.  It found a smallish slowdown in writes to clear_refs,
-which doesn't seem very important?
-
-Feel free to add
-Tested-by: Andrew Morton <akpm@linux-foundation.org>
-  Link: <whatever the URL of this email is>
-
-
-
-wall-of-words for the brave:
-
-
-: I tested v5 of "mm/mglru: frequency guided promotion (MGLRU-FG) and flag
-: cleanup", a 17-patch series, in x86-64 QEMU guests with four CPUs, two
-: NUMA nodes, 8 GiB RAM and matched kernel configurations. The main A/B
-: comparison removed or applied the whole series. KASAN builds checked
-: correctness and injected allocation failures. A 512 MiB ext4 file,
-: four readers and a 192 MiB memory cgroup exercised cold-cache file
-: reclaim. With QEMU host caching disabled for both kernels, the skewed
-: mmap median was 137.5 seconds on A and 5.21 seconds on B; a fresh A
-: repeat took 139.1 seconds. The full series also made repeated
-: clear_refs/smaps scans about 7% slower. Separate builds tested selected
-: patches immediately before and after application.
-: 
-: Series:
-: https://lore.kernel.org/20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com
-: 
-: [1/17] mm/mglru: rename the generation offset in lru_gen_folio_seq() (pass)
-: 
-: The kernel with patch 1 built and booted. It passed 12 charged-cgroup
-: removals and an 8192-page get_user_pages test without a warning. This
-: preparatory rename makes no separate behavior claim.
-: 
-: [2/17] mm/memcontrol: allow update of LRU statistic without holding LRU lock (pass)
-: 
-: Kernels through patches 1 and 2 each passed 12 cycles of charging
-: file pages to a cgroup and removing it while another task read the
-: file. The charge and data were correct, with no warning. This
-: preparatory change permits atomic LRU statistics updates without the
-: LRU lock.
-: 
-: [3/17] mm/mglru: make generation page counters atomic (pass)
-: 
-: Kernels through patches 2 and 3 passed the cgroup-removal and
-: 8192-page get_user_pages tests without a warning. After eight MGLRU
-: aging passes on both NUMA nodes, each still accounted for about
-: 512 MiB of anonymous memory. This is an atomic-counter conversion
-: with no claimed behavior change; the run checked accounting after aging.
-: 
-: [4/17] mm/memcg: add folio-based lruvec live helper (full-series check passed)
-: 
-: A full-series KASAN kernel used a one-shot, task-scoped mdelay(800)
-: in folio_inc_lru_refs(), just after folio_lruvec_live_get(), inside
-: the RCU read-side section. Another task removed the file's charged
-: memory cgroup. rmdir finished before the held reader was released;
-: the read completed without a KASAN report or warning. This B-only
-: test proves the observed removal/read overlap, not execution of an
-: RCU callback or freeing of the memory cgroup during the hold.
-: 
-: [5/17] mm/mglru: skip the flags cmpxchg when nothing changes (speedup unconfirmed)
-: 
-: I compared kernels through patches 4 and 5 with a 2 GiB tmpfs file
-: mapped by 1, 8, 32 and 64 readers. The file pages were verified on
-: the NUMA node being aged. Across alternating A/B/B/A boots and five
-: measured passes per reader count per boot, the 64-reader medians were
-: 841.8 ms on A and 852.0 ms on B. The 32-reader medians were 425.8 and
-: 429.1 ms. This VM did not reproduce the author's speedup; these small
-: differences do not establish a material slowdown.
-: 
-: [6/17] mm/mglru: frequency guided workingset promotion (MGLRU-FG) (series gain)
-: 
-: In a repeat with QEMU cache=none for both root drives, the skewed
-: mmap median was 137.5 seconds on A, 5.21 seconds on B and 139.1
-: seconds on a fresh A repeat. Each round began with zero resident test
-: pages. A had about 53 million file refaults and 820 million guest
-: block-read sectors per round; B had about 0.22 million refaults and
-: 5.6 million sectors. The much larger disk activity on A explains the
-: slowdown in this constrained workload. This compares the full series,
-: not patch 6 alone.
-: 
-: [7/17] mm/mglru: make folio lru referenced times count a generic API (pass)
-: 
-: Kernels through patches 6 and 7 each migrated 128 anonymous pages
-: between guest NUMA nodes with MGLRU enabled, then repeated with MGLRU
-: disabled at runtime. Data remained intact. At the real migration call,
-: a temporary test module set the isolated source folio's encoded
-: reference count to 4; the destination retained 4 on both kernels.
-: The module also copied counts 0 through 7 between off-LRU folios.
-: This patch moves the helper without claiming a behavior change.
-: Disabling MGLRU at runtime did not test a !CONFIG_LRU_GEN build.
-: 
-: [8/17] mm/mglru: move add/del LRU size accounting out of lru_gen_update_size() (pass)
-: 
-: Kernels through patches 7 and 8 passed the cgroup-removal and
-: get_user_pages checks. After aging both NUMA nodes, each still
-: accounted for about 512 MiB of anonymous memory. The patch moves
-: accounting between functions without intending a behavior change;
-: these checks found none.
-: 
-: [9/17] mm/mglru, gup: mark folios referenced via a fast helper (pass)
-: 
-: vmsplice() reached get_user_pages_fast(), returned the expected 4096
-: bytes on both kernels, and showed no material timing difference in
-: the repeated 8192-page check.
-: 
-: [10/17] mm/mglru, smaps: convert to LRU refs based operations for MGLRU (smaps pass; series loss)
-: 
-: After clear_refs and reaccess, smaps reported 0 KiB referenced on A
-: but 2048 KiB on B, as intended. For 400 clear_refs/smaps/reaccess
-: cycles on a 128 MiB base-page mapping, A took 1.87 seconds and B
-: 2.00 seconds across alternating guests. Most of the difference was
-: in clear_refs itself: 0.187 versus 0.300 seconds per 400 calls.
-: This slowdown belongs to the full-series comparison; it has not
-: been assigned to patch 10 alone.
-: 
-: [11/17] mm/damon: convert to LRU refs based operations for MGLRU (pass)
-: 
-: DAMON pageout reclaimed a selected clean 4 KiB file page on both
-: kernels; rereading it returned the expected data. A trace on B reached
-: folio_reset_lru_refs() in kdamond.0. Comparing kernels through patches
-: 10 and 11, an identical temporary source change set the page's MGLRU
-: reference count to 2 just before the changed call. A left it at 2; B
-: cleared it to 0. The ordinary workload reached that call with count 1,
-: so this demonstrates the fix for a forced state, not a user-visible
-: failure produced without the temporary change.
-: 
-: [12/17] mm/khugepaged: convert to LRU refs based operations for MGLRU (pass)
-: 
-: I compared kernels through patches 11 and 12. Identical temporary
-: source changes set isolated folios' MGLRU reference count to 2 at
-: khugepaged's referenced-page decision and cleared other positive
-: indications. A did not collapse the 2 MiB range; B collapsed it and
-: reported 512 referenced pages. The ordinary full-series workload also
-: collapsed a huge mapping, but did not reach this even-reference state
-: unaided.
-: 
-: [13/17] mm/madvise: adapt for LRU refs based operations for MGLRU (pass)
-: 
-: MADV_COLD and MADV_PAGEOUT succeeded and preserved page contents on
-: both kernels. Ten-round MADV_RANDOM mmap medians were 5.35 seconds on
-: A and 5.26 seconds on B, with no slowdown found.
-: 
-: [14/17] mm/huge_memory: mark folio as accessed more accurately on split (pass)
-: 
-: An automatically collapsed 2 MiB anonymous mapping split when the
-: protection of one 4 KiB range changed. A shared-memory huge mapping
-: also split at its PMD. The split count rose and contents stayed intact
-: on both kernels. During the shared-memory split, a trace recorded
-: folio_mark_accessed() on B and no such call on A.
-: 
-: [15/17] mm/mglru: folio LRU refs based active/inactive number accounting (pass)
-: 
-: With swap disabled, I compared kernels through patches 14 and 15.
-: After allocating 512 MiB of untouched anonymous memory, I aged both
-: NUMA nodes eight times. On A, the cgroup's active_anon fell from about
-: 512 MiB to zero at the first pass; on B the memory was inactive from
-: the start. A separate cold mapping gave the same classification
-: change without corrupting data. This reproduces one wrong accounting
-: result on A and its correction on B; the later oscillation described
-: in the changelog was not separately produced.
-: 
-: [16/17] mm/mglru: make folio_inc_lru_refs lruvec lockless (full-series check passed)
-: 
-: The full-series KASAN kernel passed the cgroup-removal overlap above.
-: A second one-shot, task-scoped mdelay(800) in folio_inc_lru_refs()
-: held an old-generation folio's update after sampling max_seq=4 and
-: calculating max_gen. Another task aged the file's charge cgroup on
-: both NUMA nodes, advancing the sampled sequence to 5. The temporary
-: source change set LRU_REF_FORCE after the hold to force promotion;
-: the kernel logged its changed-sequence retry from 4 to 5.
-: Both readers returned the expected data without a KASAN report or
-: warning. These are B-only checks of forced concurrent paths; they
-: do not reproduce a failure on A or measure the lockless operation's
-: cost in isolation.
-: 
-: [17/17] mm/mglru: make folio_test_workingset() work based on folio LRU refs (pass)
-: 
-: A matching test module on kernels through patches 16 and 17 set an
-: off-LRU folio's encoded reference counts to 0 through 7. At counts
-: 4 and 5, PG_workingset was clear on both. The old helper returned
-: false; patch 17 returned true. This reproduces the wrong answer and
-: checks the correction for the encoded counts named in the changelog.
-: 
-: For allocation failures, per-task fail-nth tried positions 1 through
-: 32 during huge-page collapse on each KASAN kernel. Only positions 1
-: through 3 encountered eligible allocations in one attempt. The first
-: two made MADV_COLLAPSE return ENOMEM; the third still allowed collapse.
-: Page contents remained correct. The original full-series guests had
-: no KASAN report, oops or warning. Uniform-random mmap and GUP-fast
-: checks found no repeatable loss in the original runs. Those runs did
-: not set cache=none. The later disk-backed A/B/A repeat did so on every
-: private QEMU root drive; its mmap results replace the earlier mmap
-: timings above. Guest cache residency and block reads were checked.
-: Physical media throughput was not measured.
 
