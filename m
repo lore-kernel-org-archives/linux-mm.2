@@ -1,158 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376D3606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 02:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EEB606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 02:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PTOj49WR
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=exaZl6bG
 Received: by kanga.kvack.org (Postfix)
-	id 266546B05F9; Wed, 18 Nov 2026 21:45:44 -0500 (EST)
+	id 46E5F6B063F; Wed, 18 Nov 2026 21:52:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 217876B0631; Wed, 18 Nov 2026 21:45:44 -0500 (EST)
+	id 3D0756B066A; Wed, 18 Nov 2026 21:52:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1069F6B0633; Wed, 18 Nov 2026 21:45:44 -0500 (EST)
+	id 2BFD66B063F; Wed, 18 Nov 2026 21:52:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D6C0D6B05F9
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:45:43 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1FA8408EF
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:45:41 +0000 (UTC)
-X-FDA: 85450328082.03.A802B83
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9430720007
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:45:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PTOj49WR;
-	spf=pass (imf31.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795056339;
-	b=m2g7M0vUeCSJVO2t1aQWB03p/077R0h0tED8m5PeCpadpByAdLQlAaYNpOPygm5LfEOnnC
-	F7SV7gGqTIK6iHH+b/VyhXKuMEWf8N7pqteHNUX71P4xp1EAxaynwZIIJ/55cb67uyPnzQ
-	qss40bRAL+76I7rYlvNWKHZz1l85v28=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PTOj49WR;
-	spf=pass (imf31.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795056339;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F16176B063D
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:52:09 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 802121C4309
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:52:09 +0000 (UTC)
+X-FDA: 85450344378.16.AD40C56
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A4E5B180004
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:52:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=exaZl6bG;
+	spf=pass (imf24.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.151 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795056727;
+	b=yESoxRE633BqU970Yst6qM/yUc8lk2mrQlCmMihqyn3yLBvenXjZ7+syLluC6Np0J34X9t
+	Owb+YMYSnyn8nhvaYoLysquBMydyJcOtE3hn/ecEMqF4lL2AUZx+/SYgK3usqcX03hEopH
+	iccU3l75OYEtONYgqWHyUNa8fn1tV9A=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795056727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nHE4K0vpamVM1it9uzuLpZzTtHZ4wN8e10RDqi3C1Ys=;
-	b=jDWbZ6UlmRRWFo9MSNgTZ5nNRlHDoOMGlgS55T3++Zhpm7t4u54QLKPQMlfwCSv0ol9S/7
-	X0bE9u2yikoXt1elRtKd/FSSXbb8OmPdKGbtBBXiJemqoGfEqjAz7XVwDdxMNESWV4rXm8
-	McjkazYmhC4IGGfUo6pdjohTLfbdBYw=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-921159376efso18382656d6.2
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:45:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795056339; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oo0MHly7mpJV41skU+NC5KRApkjm+CEGFkHS1EuvnQVel5cmSHO+Ubd1t9oKWAZ2xk
-         bFXBoTyTP09Eu4Pw/P8uqMfb7jNsXN481iwvaxIE6lGkH/aNTro2kKDzzEwUNgAfWxSq
-         T7HFMYy1zJf6Z1MPHmc0XoEB+m2r1538lpuP4X7u/0HOcMG+gnYogkOon8rjh5VjeJZr
-         NSWECHqnCe/C3VOu/XQQeZviDRBIXifim2KCLoJEyN9BGOwjc3zsfltuA1fw62BtJKUk
-         cxOaITtb0Tu3tK3ZSRsTWsnF5AUxxQyk7WPeBZ0RgXKHWFsy48Tfv3gQ1j6V8AxtPgKc
-         GObA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:references:in-reply-to:from
-         :mime-version:dkim-signature;
-        bh=nHE4K0vpamVM1it9uzuLpZzTtHZ4wN8e10RDqi3C1Ys=;
-        fh=rtD2tRXdQQdtUehzi2ZvqM8R6u6m8qOtVzTaudNkImE=;
-        b=ZkkPm8hgWDGXhRQ6lOwhPlUGHVzQfn4sdtL8YSLNQiNAA0xC1RHM01X+Iou3E/aNBB
-         AtpK1tVo83DbYdscnsh9E8MuriWwyLfJn5hCVfKaVVeQCWoJLdVQ4g4jRtvxCYporuuk
-         bCHiSF1ABGb2BZFclpxvfy33fNfixK66KiC5k2O32L/zSL6rjHdkyV6piyJOXdxSMfyu
-         D6fg4hLnHCMGSjqJ7qwx7hg5XVPXoS4Sf4CQSz/2k8Ld8/HSAxTuFRrb0yR14vy8NCn8
-         NXRFfPjkNLZsgXYR+STUjEIMR1ad1omuirsTYGW+OyY5Gt1ZH2Um+gM4ZdmFgKF/PGKr
-         YQEQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0aPRA4hpiTz1kk65aoPPE1Fyhse+uJcCQXxjdxwawZE=;
+	b=NMeWu5eUwqn6wWsJaskv2+DnXvXSWTZMpW6/Q/ezy6KewFYtaUxQC+y8RibfKIjtuTdkhv
+	8m8C8JrOEFc076HDtrYbOVigpYmzVV7q7q9xkaq+TuLyaOg0PbkXZ3EmYv3wZppB+lNLSU
+	JfsaXzhd5P6Dkd9sizVvlG53yF2MEhg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=exaZl6bG;
+	spf=pass (imf24.hostedemail.com: domain of xujiahao@cmss.chinamobile.com designates 111.22.67.151 as permitted sender) smtp.mailfrom=xujiahao@cmss.chinamobile.com;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795056339; x=1795661139; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nHE4K0vpamVM1it9uzuLpZzTtHZ4wN8e10RDqi3C1Ys=;
-        b=PTOj49WRAJrDms367RdG0kQ2TjHjIWOOA7va+R0sgt+YvVo6xmfO6kQKAgIuYOs9Vw
-         RX9CWxhEWCgqeS1lz7KTFai6rCyZzheIEPlE9glEtCR6wFdCsIkBM7k7LCTHNTDWbeuc
-         KTzVEIq8evPwonwD9gLJXq6zeuqEw3O4NB9VDIJ5bQn2eX/UWg+fmeL54p0QZWrvWEPN
-         aHmGRFvHGLQeev6zsUIRWeSUqIwUri1+7xg+6eNLKeXZPCJcfOq6DPRYMJlJI9XyVuYk
-         UzocL2o7zSgK73SABqjnBWrSH1Vimfl/kMHw/Cn5prBZgamp0ZvYUhAFR4DLT/F2o9lf
-         ta3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795056339; x=1795661139;
-        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
-         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nHE4K0vpamVM1it9uzuLpZzTtHZ4wN8e10RDqi3C1Ys=;
-        b=0AsztgNx7z3sQ9/ly6Fr2gQSHZpwSVtFntgCJ4z3I6njKvXWmZ+GEZm7ojSUnkq+Cc
-         t4XIBPo6GzPy43FPf/SG9K+lZob7YY1uLJM8etT5gNS8gBPZI0zTarqGemcmRMjeg3fn
-         WjMi5ckvFI5FZ0XKuLZ6R0BNt5gdhBifFPVAkpnlNNZVXcLP1Z3fYq4ro6wSXC5pINie
-         GDMpIkbNzLm1BCdxc0Sj5ABVMWOWxGghQHBlq9APQPGc26Xb3HlasueCvt/Xf+OgBF/4
-         ofEqqXFFy3pcrwyaHNySZUpfuL7V2Dt4HBrrun2U/K86wh3RsLgZSLz4EKkCTCg9VqnP
-         1xHA==
-X-Gm-Message-State: APuU4Z+6a6FZwtzbVy5aUYHLkRVWcjBP1ceE1TFVIKmcv26gHHCSPZEq
-	kD+NQC3DtXf1o2NjoRtxQt9eVYR1VLhNvzO9liiDCHTiNDVRhwB9DUgkv8FaOnZfv+ADCEkLp40
-	RAM5aNHIeS2onTycVujmxuYdHSTOUKlw=
-X-Gm-Gg: AZFdTZdoxfzvtcOb8bJqnGSF09p64Lk89Ae7YwIQczpBVhTGE0XMaz1hNT0hgWsowFB
-	Z4u9RbqC8e2jZ65P4mQUWEZlAsl+bEAqkNOoA8IV9Hx915n8XbhjmePd1qEBrPgncXp35f28N/k
-	wsK6CvGNYiDUlYQ347T9fPWt10aMrjZQ27/VDztQVTqJssjnuqO9Klzmq6FRFu7Wyxs+JRCBf3Y
-	j4/IjlqYpEydNW2y3awtlxS6QsEOl8m35AEX/C1vck8QYfMsfO8fj909fuZ8hR/IBrH3LLIrF9Z
-	4vaqrpnoKDoBkzzL4EQ/yPrhkHx4e5lMLk0Q68rqMl+nKVbszc679hM0XoeQbXBbbVVjZ6Q6lNT
-	cSul4Y1wdrC+NHAThCz6NugPrpXY6SLZYaHsC
-X-Received: by 2002:a05:6214:4509:b0:91e:93bd:17d4 with SMTP id
- 6a1803df08f44-92114f234d9mr68688036d6.31.1795056338595; Wed, 18 Nov 2026
- 18:45:38 -0800 (PST)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 18 Nov 2026 18:45:38 -0800
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 18 Nov 2026 18:44:56 -0800
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=exaZl6bGXPTmhuXRv0ayXIUs5qcodj7bz/4qOEuJ/vC9nqxUfX2E1Df0kJY05Ed7CIfW5b2w9mQd2
+	 vGheyZW4ToLKwfHjdVhD699P2SBdMVCgqoC6ohb1hWYLUfmm9n8ZyursfHUqSFRsrNFdDxlzsH49N7
+	 k/wp0jR+HoB1iZs0=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66afe64402c0-e556a;
+	Thu, 19 Nov 2026 10:51:45 +0800 (CST)
+X-RM-TRANSID:2ee66afe64402c0-e556a
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [25.255.2.225] (unknown[10.55.1.70])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96afe643e04d-ecf5b;
+	Thu, 19 Nov 2026 10:51:45 +0800 (CST)
+X-RM-TRANSID:2ee96afe643e04d-ecf5b
+From: Jiahao Xu <xujiahao@cmss.chinamobile.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Samiullah Khawaja <skhawaja@google.com>,
+	syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com, Jiahao Xu <xujiahao@cmss.chinamobile.com>
+Subject: [PATCH 1/2] mm/gup: add memfd_pin_folios_supported() helper
+Date: Thu, 19 Nov 2026 10:44:17 +0800
+Message-ID: <20261119104417.312237-1-xujiahao@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Received: from 77377267392	named unknown	by gmailapi.google.com	with HTTPREST;
- Wed, 18 Nov 2026 18:43:28 -0800
-Received: from 77377267392	named unknown	by gmailapi.google.com	with HTTPREST;
- Wed, 18 Nov 2026 18:42:52 -0800
-From: lianux.mm@gmail.com
-In-Reply-To: <20261119-mglru-fg-v5-1-9eee2fe97a2d@tencent.com>
-References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-1-9eee2fe97a2d@tencent.com>
-Date: Wed, 18 Nov 2026 18:45:38 -0800
-X-Gm-Features: Aa3M54oczcrQgnIKIdlWRyAqAv-8pL4r_8Eu0gOG26vA4iWYOD9SKwZ3124B0Ic
-Message-ID: <CAD1ZK4Zo_qQf5aJkVLtoc-LXM9XbyZd2Vy6rFvK_fih-6FE_EA@mail.gmail.com>
-Subject: Re: [PATCH v5 01/17] mm/mglru: rename the generation offset in lru_gen_folio_seq()
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org, 
-	muchun.song@linux.dev, qi.zheng@linux.dev, ying.huang@linux.alibaba.com, 
-	chrisl@kernel.org, baoquan.he@linux.dev, nico.pache@linux.dev, 
-	usama.arif@linux.dev, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, vbabka@kernel.org, surenb@google.com, nphamcs@gmail.com, 
-	youngjun.park@lge.com, ziy@nvidia.com, gourry@gourry.net, willy@infradead.org, 
-	baolin.wang@linux.alibaba.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	lance.yang@linux.dev, hughd@google.com, sj@kernel.org, rientjes@google.com, 
-	yuzhao@google.com, vernon2gm@gmail.com, wangzicheng@honor.com, 
-	chenridong@xiaomi.com, tz2294@columbia.edu, ryncsn@gmail.com, 
-	liuxiang.277@bytedance.com, ehab.ababneh@intel.com, 
-	zhaozhengzhuo@uniontech.com, joannelkoong@gmail.com, kunwu.chan@gmail.com, 
-	hui.zhu@linux.dev, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	damon@lists.linux.dev, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 9430720007
-X-Stat-Signature: zmhe3ssrhagu6zqengucrip3c8f9q33r
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795056339-309625
-X-HE-Meta: U2FsdGVkX18cAcwdM8Cl048l6osG+VyGjOi13WnMSC5JgmmgfQCmanr3gEb+Kl/HwLFh4iwNQ1qSFt0dXA7YD79kV1C3gxeDwLDv5p1DQeS0ojYoqxRuLVF/41LBEV8RE3vsLmI3bz/YFAbm2RNfC15PCaZWiFCOJ6ZWJ5g3ZcY4lsTy0UN4eqi1kdrMHBZKtitHBh271eLo2IcjWuccHkZgQVdddq44YjAyuwfNtJ+MB7FQjfESMezeJx1x4fMZT8oJz7+DUrTAkphn9wivUSaFzUVClYHQOfzLC6gvtY3qw1oFLcecf+t7NFSnxNOpc3wT1qq0Wk+CQ7znWUqeexQECrRMH2R7FUWVtECQMRcCj2ZIaiA9kPFmArOMFJMmiLhzaRNANt59tPwUsBMMucvHhDT9N228nbwGLVh/r8V8ghid56K5V2gSn8PdjO5IBPQpxSfgwm1Wm0WIYRnuCEqkl7a8vM7SfVsUOLJWaLyP3g+3yFXCD69H4MBMUaxcXws92vXWaqK0GMVMTNGgfE8VbKEb+syaJIZXaetYPIcuf5vjsFFqp0sB+uzJRUTVUJ0Bl5SJ5Jjvz05LZIywmXOnvd36Lm4MfFti6S7Qv4qcNxgDnRpdMX+JNOZfPEJEcc3JV9m8oj+G9M1XJAfYet4LXvcXKBuar8xqbqDthzl8axaIg39ViTUWzX7ohFLydfWOA7Yl0UAyAAYngysDEkpJjzwhmWFJvsARY+Cf0e5v8lsLeKjb+DvuqYug9mIwmwgLdkpaz68Qdc4bbTTH/hQ+MrqmX0FlkGwFGd7v4Awgd4mRfzziWEQwQqz6P3IReYODXtjPmqns5g8If6M5p9SjjQEuIRR1GaWzcexxokDFOB6c76NNZKUsIgx+X4LdbZWZnKwFETcAaGOWUkE2UUipar6H2GzLOEDz85uyadNum++80fEXoqvsevVRSnSKbjLlH65Pxw+BFeOA7yd
- HI9YZMWU
- yzDN/P5R02jDgy24vRDXRG91T9RBqzIoiocyRxDxZ9oka0OhPvScbdX3wSqnbW7eGG+VCMI5xTRwyj84Va9DQ1bZohyn/C1g4QxXgD30CZLa9jfL/kQn26+d11bCa/qEnunqRciQOQHD8exwVVi4Bqc5C2hoQrUMiuxvPVlEjlbfMERuGennF68neGScVoauK/ZIjwDuNt5VYIM5+3Q8mYbG143Op/v8DWe1y/x1Ks9YfkoUMb8/zIu7nCw4TGB1lj/3T+NFyuBhU15xhy9geV356N/u5szja/f2v59T611ItCTX58U5ochzCBe0mOgz/g/h4KbG/AuFj9G6rXDLCsJPNz8EuvIQsufNIWWGfmdfTnTaJ1vWvB34299R+mgrchD0maX4Rcw5sZD4CUlxttY+1m870wlr3mn7ObW4qxtgbnvZvr/o0FNCIdIGwxrZkALHjOa37edQbsiB0Q929zb/vGP2eMKawGyQF06X7CZJGFesG6x8Pxh6yYYDnxdIKvOwHeVDf4mlEhW3Y8bOGHJAdlPYeWOHACzbGdsZLP2IH1FzGxM0oZB1RU5kyJTUVhNmc6HwiYm5QW6b5PUawuIzwJbLUSFeUB51nrojw3Bd/TyCH4j8A4sWm6HpGF6tjzRIrFHy4pYWSQBM33wrOLKdEGTkiEafhOnVE
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A4E5B180004
+X-Rspam-User:
+X-Stat-Signature: okoonwwf7bd8q8bdppn6y81i4qucnenf
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795056725-531434
+X-HE-Meta: U2FsdGVkX18HiS8TOFXaBQca7EaBjEjIy5x8INvfxyKUzjDx8qf6r38KwSrepGj6NWWUcsFf+yvzc+vMY+HZlN5pdW2mUF/wqz6qk0LboIsrEcl7UxRkMSOex/AuJx4WS3ZKNrhvMkquhlAzTk/9xg3SGG/OfjX2ypzj7jQlOg0nn4MBT06bw9jUuL/acvG1YoNTSYwFhn9D4cWU562xKJQwaJBNtVkL6HuPonwkPnLG+TetloaCxk2AEYGdvHwbsl7dTnaPFaIp6EMyhbhRqalbPRmFYXPXjUxyk8ymijGvhKVNqwG23e3XPyjJlOwbnH/+RCLtR1BZMB4lTbDLLkjPdF0lAriKzRTdCr1/Se3oRPPfNqVQoJJ1VRf1xn4zjlHWgjdwDGzJl1KAtQE8fyGKyBJcuV6qNv2vM50q2P3d5H2Alk8KqQkqlkl7Zh496UIJb3NBEa1Ct3VNWx+0LaIY1avm1ciD56OfhDJWnN5NfqQ7h7sdrDG1k/JSHb7TBiNqvN3Oq5awQw0xopH6eAhIrSi1ARETiTkd5AW2QYUOw+Lf9WEEBHF1wQdWozwuFyJsXorfrb//ZAcOdF0dWqsiaa0N3GQ5o0+GPaP+38pwxrpo7f296oFZ9nPYAD5+nFnfq+xKsTX+ngsN5xspt3ciXGVa6WIxllQvxEjghSebW9VVkcDinme0Wmed6ouqcQ7ZI7hJg+15KufIfapT0SeIKIZoXFCheLgDee6VjZJayrgk9VKZy0gMYQHSAblnSi5PRr8/eGOluxj4iNK7S5XoyTaO/vbARkvZC1g0omtNrWQ/FhmZSTUMkTVuj/x69gW5ig3gF/QBnY9OH2eK/DUmBIa3hFRpM+TpAHpzTzPvMXdlmdTFCYoN06OPxoYjTkNlCDZu007TCl/MPUALnJ8nx7ZwsshI2pQpHQnsAhoc6htKhVb633a/2cS0y9tvh60KwxPuIIQbfNtr3jz
+ 7nqCZazi
+ u/igBwOjPWhWMCkEEDMIW9lm4Bs/8JFFvMBJAChWF5FNtga4ZNKvRD5PjFogzjKcOItUzOIwluxb+MZ15IskGgcgIXGzGlrKaZDXXUAsTXjJRDXMjnRqehiwgLTBcM/qv5oiyvHjGTcQKWABuOn+4g0FKtMxhIwPKyw5bbKHgIa2L9dGOkHXzw2M4gCoX7/DUzVs5I7C9UYCBBA5wLk3t1Qm/RcypBmksNzatccGyL3oQlT7m26U8E+K5rMVS9mWXHBVG5ii0Ja8IoR7RlH4poi1/QzCZrInMHSatYN01/9ZOwvY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,5 +99,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+memfd_pin_folios() accepts only shmem and file-hugetlb files and enforces
+that inline with shmem_file() and is_file_hugepages().  A caller that has
+to know up front whether a file may be handed to memfd_pin_folios()
+cannot use those predicates: since d3710111839d ("mm/shmem: make
+shmem_file() check the file's inode") shmem_file() is an out-of-line
+function in mm/shmem.c which is not exported, so modules cannot call it,
+and is_file_hugepages() on its own is not the same question.
+
+Provide the check as an exported helper next to memfd_pin_folios() and
+use it inside memfd_pin_folios() itself, so that a single place decides
+which files may be pinned.
+
+Signed-off-by: Jiahao Xu <xujiahao@cmss.chinamobile.com>
+---
+ include/linux/mm.h |  1 +
+ mm/gup.c           | 18 +++++++++++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 040cff643..e401edc93 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3600,6 +3600,7 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
+ 		      struct folio **folios, unsigned int max_folios,
+ 		      pgoff_t *offset);
++bool memfd_pin_folios_supported(struct file *file);
+ int folio_add_pins(struct folio *folio, unsigned int pins);
+ 
+ int get_user_pages_fast(unsigned long start, int nr_pages,
+diff --git a/mm/gup.c b/mm/gup.c
+index 7605da0e0..90ac51207 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -3449,6 +3449,22 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+ }
+ EXPORT_SYMBOL(pin_user_pages_unlocked);
+ 
++/**
++ * memfd_pin_folios_supported() - check if memfd_pin_folios() can pin a file
++ * @file: the file to check
++ *
++ * memfd_pin_folios() only accepts files backed by shmem or by hugetlb, so
++ * callers that have to validate a file before pinning it, or before taking a
++ * reference to it, can use this helper instead of duplicating the check.
++ *
++ * Return: true if @file may be passed to memfd_pin_folios().
++ */
++bool memfd_pin_folios_supported(struct file *file)
++{
++	return shmem_file(file) || is_file_hugepages(file);
++}
++EXPORT_SYMBOL_GPL(memfd_pin_folios_supported);
++
+ /**
+  * memfd_pin_folios() - pin folios associated with a memfd
+  * @memfd:      the memfd whose folios are to be pinned
+@@ -3493,7 +3509,7 @@ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
+ 	if (!memfd)
+ 		return -EINVAL;
+ 
+-	if (!shmem_file(memfd) && !is_file_hugepages(memfd))
++	if (!memfd_pin_folios_supported(memfd))
+ 		return -EINVAL;
+ 
+ 	if (end >= i_size_read(file_inode(memfd)))
+-- 
+2.43.0
+
+
 
