@@ -1,109 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA492606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 23:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C557606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 23:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BoTWH5Fi
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=n19oJKMP
 Received: by kanga.kvack.org (Postfix)
-	id B384A6B06F5; Thu, 19 Nov 2026 18:48:32 -0500 (EST)
+	id 348776B05D7; Thu, 19 Nov 2026 18:48:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B10546B06F6; Thu, 19 Nov 2026 18:48:32 -0500 (EST)
+	id 2F9476B0619; Thu, 19 Nov 2026 18:48:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4CF86B06F7; Thu, 19 Nov 2026 18:48:32 -0500 (EST)
+	id 1E8326B05F7; Thu, 19 Nov 2026 18:48:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 715586B06F5
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:48:32 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7EA5DA8B2D
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:48:31 +0000 (UTC)
-X-FDA: 85453510422.29.C1894AE
-Received: from mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3B10A160003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:48:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BoTWH5Fi;
-	spf=pass (imf08.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id DB4016B06F8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:48:34 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C04D980CFA
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:48:32 +0000 (UTC)
+X-FDA: 85453510464.19.A976B69
+Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 182FB140005
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:48:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=n19oJKMP;
+	spf=pass (imf09.hostedemail.com: domain of 3zYr_agoKCEApknc0xckujiqqing.eqonkpwz-oomxcem.qti@flex--nilayvaish.bounces.google.com designates 74.125.82.69 as permitted sender) smtp.mailfrom=3zYr_agoKCEApknc0xckujiqqing.eqonkpwz-oomxcem.qti@flex--nilayvaish.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795132109;
-	b=MemeMGQC3F4uvccEtJvehCWv6whS/bLMQF/4ViPGFhkFW0zhRNxDBrE0c4YaESgg4OhobS
-	UdWn42WK8xjH2Ih9+wGG/EH7u8RVPMLuAc4bZi9Q2Ff6EqKhnldCSpCGZF63kSYslxVF2A
-	LtU/yggn6gvhoS7JfgpAZ/Wvj0tfehY=
+	t=1795132111;
+	b=PmfJROwRYycu7ZH/VHxextbCRNxaxUn/zkxKDZrnqEcqviRibuJx0C0gNFhaA9yFdZwd76
+	FtAllcDYOYuIrTvw+WPhPfWGnTT7iXKvL8VNvu+fgUJY96+enpOceTru213t1mrQifZrz9
+	JBnvneOOiNpzCvWRcvscDdLsMP0pgT4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795132109;
+	s=arc-20220608; t=1795132111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vcj5h00JjVNcq5RcRanYbKv1qUq4spqkJwru3XjEgEA=;
-	b=tWIPJd2NJun527yzhZ4kbqnab7UvYyNFlXQ6icIbM2NgrrkQc8NQ3ZMHFsWXRZs7swA+g4
-	p8GbIkKtAFPyTUjjtUdZE50bgZlB7AIhGgRzjHDv8HkkWLy7IZTy9T6cLUHFlXjoNLeHKQ
-	63SpCbNecqpVM3HAn3M/7G8Y+c9sgU0=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YUybhKhz7iS/HEeHDZ9aby2NzinwtFQFRqsE5uPznD0=;
+	b=pyPAmjKHpOP6YKpDITjQrHP17tXEP8pSo6nTEmNWd/ykuZRbpCpSK8XHCbeI5F/eGQFtZU
+	MBP/En4SvrSZIUU/nA+jWx+1ZJIG6737qMjeF2WXK98cy/3ZydBB7gseH0MBBtVdlFKpr2
+	nRt+j/ZIW+sEn3P8QffeUB9FbNbX6WQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BoTWH5Fi;
-	spf=pass (imf08.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6LWaP9a799dRmXjPzl0gkWLih06hsrqQYvPtGBFxEsY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795132107; v=1; x=1795736907;
- b=BoTWH5Fi1IZExkaX1UVG0UE/sKHeD7yr0JBoEA7pSxpIS9I/AG/d2puwMNbDLQzs2vT11U1s
- vASgSWckzezIb9s1Sd0vB6uxw4uXPLLwr5GKRk1rBj9hLubjulj4/oLYePkSmiMd7yc+crCqZM/
- 4ZhHgjLXJXGKVDcDNMWg5GdI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a9882a66356e0e59;
-	Thu, 19 Nov 2026 23:48:27 +0000
-X-Mizu-Trace-ID: a9882a66356e0e59
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <583bde38-c84d-41a3-a65c-d1365ea04f07@linux.dev>
-Date: Fri, 20 Nov 2026 07:47:56 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=n19oJKMP;
+	spf=pass (imf09.hostedemail.com: domain of 3zYr_agoKCEApknc0xckujiqqing.eqonkpwz-oomxcem.qti@flex--nilayvaish.bounces.google.com designates 74.125.82.69 as permitted sender) smtp.mailfrom=3zYr_agoKCEApknc0xckujiqqing.eqonkpwz-oomxcem.qti@flex--nilayvaish.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1a5005fd0f8so700764c88.0
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:48:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795132110; x=1795736910; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YUybhKhz7iS/HEeHDZ9aby2NzinwtFQFRqsE5uPznD0=;
+        b=n19oJKMPrkOhrQUw8i/zReWnjqi/2j0wLiWofSzvDDVMqJlr1hoOqxhAR8nop07qcB
+         WATZB35wrY1f0UHpu/nAYrl2Ixj8NUTCi+xm0noOtYQg77BxgotCKXPCpFHE0pBEhwUM
+         lPJUoZzjjgOZBG33dQEG3t/Tp4CjRsEwwpwfHRNQsZL0k0vfvWnfp78KMDOa08dEQyz1
+         YLhp/8IvFJ88BojMAJ+kheOb0wxws/2y18V3XUFkuOhNQ1aZkQs1YYPnHGLsihzVRJgv
+         H94TcWqSNXcb+MPDHUWnXCZR4lA8Z9UpEAjRwjykSKmjU3/C5aBYIUxPjsh2MGJJ6Quy
+         gTgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795132110; x=1795736910;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YUybhKhz7iS/HEeHDZ9aby2NzinwtFQFRqsE5uPznD0=;
+        b=vqm8UuphKqXj23s0dwNnXWcAW6yG9HudNIJF1w1S3eN/AY2usTMZypadDgQGif1K0Y
+         Adetw14FtiKCJcAssoMfEr4IeRaFeOfVB6a0qgBv7NSkksIzypvvCAEl5qiRDBso9S2o
+         3HrlgxRkOizc+sINY7iPZ5G7ijTt66gyoSnHN9lAqibNhaKFb1P1b9Gfe0zv1aqyJvE8
+         NSmPW16RhRHdHzsOHjsbN9qFknPIL8IgnM+iMhgxS73LBcYEFznS6fu1he2j2qXMX2+g
+         w93QIaENZW0FPqxahOlfOMM6GfoE571rq02Dq/d8/DHjOldMKpr5MyWlsjgdI6tZU4nL
+         kvhw==
+X-Forwarded-Encrypted: i=1; AL+hErEjSZC71MUWLFwQcnpsHp6k8eksfj/8zVAgQmUSEGiURRhplx7uwIsRNjayb0h/3qhuDDycsMOoNw==@kvack.org
+X-Gm-Message-State: APuU4Z+B+2TGs/9PBuVRcbcqthOWg/0Fr4r2830nr6L8gfcrahvUuZXy
+	lAAk4d8he4v4XoyVKmdH9hPisKnk5ndAV2dACmECqnaMAvvHymIAyoUJC7F4xKskL4Z0U5PixiS
+	Em6JCVm2bFg3Ze1uGpZV8fQ==
+X-Received: from dlbsj7.prod.google.com ([2002:a05:7022:f907:b0:1ad:2ffe:151b])
+ (user=nilayvaish job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:701b:4354:b0:17a:e684:b497 with SMTP id a92af1059eb24-1b55682369bmr1123328c88.5.1795132109309;
+ Thu, 19 Nov 2026 15:48:29 -0800 (PST)
+Date: Thu, 19 Nov 2026 15:48:04 -0800
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, akpm@linux-foundation.org, dgilbert@interlog.com,
- mkp@kernel.org, loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
- vivek.kasireddy@intel.com, mst@redhat.com, jasowangio@gmail.com,
- eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com,
- mhiramat@kernel.org, jgg@ziepe.ca, kevin.tian@intel.com, axboe@kernel.dk,
- linux-mm@kvack.org, James.Bottomley@hansenpartnership.com,
- sumit.semwal@linaro.org, christian.koenig@amd.com, phasta@kernel.org,
- joro@8bytes.org, will@kernel.org, linux-scsi@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
- mathieu.desnoyers@efficios.com, robin.murphy@arm.com, mason@kernel.org,
- aesteve@redhat.com, tjmercier@google.com, harry@kernel.org, vbabka@suse.cz,
- cuitao@kylinos.cn
-Subject: Re: [PATCH 4/7] tracing: account ring buffer pages and trace_array
- metadata to memcg
-To: Steven Rostedt <rostedt@goodmis.org>,
- Vincent Donnefort <vdonnefort@google.com>
-References: <20261106131829.3228926-1-cui.tao@linux.dev>
- <20261106131829.3228926-5-cui.tao@linux.dev> <avScKhR22kFOQ1z4@google.com>
- <20261111181447.3c483a50@fedora>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20261111181447.3c483a50@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mgxa5y6aicm31brgwgpywhfmp7sfi6ww
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261119234804.1740734-1-nilayvaish@google.com>
+Subject: [PATCH v2] mm/page_owner: fix double decrement of stack count on unpoison
+From: Nilay Vaish <nilayvaish@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Oscar Salvador <osalvador@kernel.org>
+Cc: "Jose A . Perez de Azpillaga" <azpijr@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	Marco Elver <elver@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Nilay Vaish <nilayvaish@google.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Stat-Signature: 1oo5azkk1r61ze5ko8tosxwaxr3rrwzw
+X-Rspamd-Queue-Id: 182FB140005
+X-Rspamd-Server: rspam02
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3B10A160003
-X-HE-Tag: 1795132109-801393
-X-HE-Meta: U2FsdGVkX1+AiSuiSWNwSnPRHw3HFV7mS5PCQwM6o5/3ybmcJmxGgUfyGSzbVqXFmRluP87IpktETSR/0CgasN02m0OeIbFw2fE+jew1MKxOhn1iKmdrO2fXTKeQqYHybvSSB5zx6O/AMK3cCDadWiCPdAiZA3CZcpk1rQcOPRpS4cj+VZKi7taLf0IW4H5D1lnrCglyDcnnIriMtQLc29g26JJHeMNRGjAMGI1qtb9/WL8CwWxAusCHK0ENy+jjmiEk+7EWQur7JkcKpB3dAiX0bjLnmlk1eWR7BfimsOAvSXDVtWFEkoV2wAvVlS+UVIHYPDNh91AGjRSOG1YUJpnrYvHorqZrZA7ZIuAPS/ZGTedUwdPCJum+ebjKv9MHByReXq7gobyO1lcjQG3DjIp8Pjc4igMVTvJPYAdlOof02NN4sQWCSv9Fz/BG2ON23grh/mzW4IXBdZnIpD3iIbzMbjslq0KDPeWUq0PCWXoEfD5vix1s5CfAazr236zuGTcTQWBhfANamyA2ZlbV8yNgUAYKtcpnWpk56Tolwh0xi/OcGq2toUGZiC/56oMxPvr4NvXBnbAv4ApTR9mAxR97yNhfUmK1B9Yo551rQWkP9nArncgatLxsotyvIrz8K3g4Il8FKuvVuXLTBiJ98hv+GHZXKjLcjSR/Bq02zkDj8L5uRqBRgf8sDxawA4oiDei2T9Y0hdfxt95IjRCKmlZU9wcayWjvKmGJO58s+psE3bJIzpqBR1rRkAKxudwKyydQ4eIdlY56Wi1mzb+58Gknj7XfyUUy+Bgo4aePlaYECPik89h6amCVHghNc8ko5ViOcwvj1QGnMVcayV9iymhMfC+ZlAh5yKvXo9cecCMSvQTqfwZrgjhNW8Ng+m/SBfzC927q9SHN7zBGiFNlak3NHlFdQbAjxV8BEPw4kEXm91VdFrI78Gc0udHrrdzKhn4+QwJ9DAXcNVtPU/b
- MSm21pLa
- hXdglEBBXctySNScrIFCFSwobVwQvytDt+yatgXoW+qo5AcWDJbdGLWPTYV8ndoNHE0m40gb+UNyitjMFBz298tczkYlQMmXWa/cjELoSEUYBrd6xFz+7q9Kzj3ULa73UkAZne0VyG62oOggbBbJyBRLX2yaEZP8kS+GbLGWYooxBqSYrTh3RS84kBDV2fgsp/yWXF/tWpC2XMBSMpFcl1TFe3fcB3hZdUKHHB4gRxnijP7FrQ+XkwcWo+yHfuyEpVa1kY6M01o+0TQqSCDlfGGMKF1MjvaYWIO2Iufx6jnA4j7Nmo+tFMG9nTwtSqNsaRUIyk1wLExJYlmY4ljURY0/aIrUiGg8kSKyJMgKbkgziVaoqrOoQi7E88AFw5fEnZZPA2+nNf5pP1yI9K8/bRYVpU9sG+hXgB9u62tPX/jb5Au706zjNJaXtcHejEXAUt25aoQek9QIzGvTooyevCKKKUDzWxwFx/saE/3fMWTBuAHxRFqKfyk/uRB1vWnhtvyXmMyLm79J1vqEaiZ8HLKkAiHUIB+9osSlY3pcULbtuMAmlde2xfTr2QrqlYW71F1nboHZIeS3PRcE=
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795132110-514949
+X-HE-Meta: U2FsdGVkX1+KZiQdNVeNx9W5V5u28kSzdbeJvwl3j25S1ytx6R2JcZXyrVlH22CYl5B+S2Cn8UN+aNAOpM+RmbpwOEEtaJMatGU5imEkFOkjSllF5h/fhIDWjJNjK2+AU7aakB0NNKwbwI1pfiY3hoeBKovmBrt69FL/EmUypfTGG2Of2rH9UJZj6pUbu2umnw8CveRGpFLf/r3znQhmz2iPJh5Zk4+e9NY16kt4V261BqzDNyBG5CLyls7jFy58UxpS2G1d3I+wOccUPqJfN+xIG49PBkCbJq9tvZiRlIh7hxKvyA64NA1WeXAZmzurMMpIKPHXkYBiKB2TYSFDkPSukkNNC3HrH/AYoAiinTXUjEqxgHuhbHk4PeJm0uk455NnXeV2lbELGEiI/akDR/CB7rxnOApb+Jdk2TlwToBnVVmVbxPu4zpuLmDj15IjWIzpwjefrne0KIh1hzYwnSM1yswmmFS9ZXU70ncTy+5xmreC3jifnVxs5Tk/60Llw8mseBUTSC73i0Qj8cIUVnzn6V0GxhadGf8mcWHq5XvNaibDE+IoKklSOVwAvIdf9yJ3G0ljgssaZu3x9kjp8gvtk1U6/vOJkV1kraE+XMhFzFsTJ1265P1X1bZGo0H9bxzH5Q2pzl+Lyy7wz7hdQkcPsscHEeLfUKcNHCgVSVUpyTtB5R+oTt1gUlNGbVdAh4klMdTpwP0y+VNi73BQ+rLcr7ldkDAsPVu9S8epxemCoMZpQbXx6pe8axgSUdDhXVcEJa+12327a/d0xaaY5o7a9jYselb91uf/lZoFKqYdI26R3wWJXJfvDSQGw7g1f3BHcnM4XWBirqwZiAqDZRqFPDYNkePI/efEpK3brQJtwN5kiPJvkdJp2CqAJyQK63bYsZVDKF2VQb9tZaEnfR2i+EWiy23C6ZwD1S1C5irGx3y+roUogDWG8gvg7rnwg1SpBT1EVqcAOxVPtET
+ vf2L9eur
+ Qim9KuD5r0Nz3TUkrRCrCQMKdxbKT8zePj2mtTjvs4uZ98vEubkKrmz9V6fzuI27f9UIOW6qsp9C/NQk8R6xwWdQbA8U3NFYA0LryiAzIaVVVvT/KARCenR22uB3HpqytRl0YCrxZDgZ21CEUg9fEbnAA4mdY+BFs2y3yNadkxja4C3Z29ClQIBlRCdyU2JahUqy2RKELiJLfTYWlsSAZ2eyyXmDP6LEVCXm8y/Vc7NKC/XRwh/2LUFCjxpxLMzbeo0m6su4E0oL11gWqyLPqlnf0ZDjd/08OAuasobpUsMhklO1JcJ1sYyywhytQlqU8pIDse2Y5tMj66d4r3+Z82/Ks238NxQKHWJRmgirvDjSvJbVjRZF3hh/st52B2Oo+hoMgfc/+jFjepZauuf7OraLOtI86qqqsanDixC2327JtgFsdhCrrWdFNPoQBTlE03HAzFGO2kwuG9HoXPRvzElF3+/m2Y262wrxyNRepeioYUzzgS5Kf7uOG9CDPF1HLfDKCllBX9c+pJOajbFNlFjKGaM6F7G2JgwUsWif/MxVM+8d/vPx8hIfhm3xv+p2iAy0LI8ZIlk6/vhlRosYejWHoJ6ivepzybZJjtCHf0amFg8+xXIAz25FHt5rM5QxC7lcr/iji3MqJcKUc6hh+NYrjPJw/s4YOAdm0jt2ybNlnQVWU3zFQtxKb3oLAantHYpnB7LmZWY2Uit5Gx79ummwlitKskc0rbp+Zs+ETo9+MAJj49mUFtPvTsEaMqOdr473jz90dyMMcVyv77cchO0rZ4MBV61AbpQE1zMDBa2QndmtmpPBx/ApHsKlcWZpTDVdgdcK6cPAhMmJJ+qY079Q2N4Gubuy7twOLkD4o1/l+/Z91mgvzCx0tmd1ndZ0Acne+0rEvbw+ktK+eOXG9lVImweIfr0EyTt/wftgVR0vNXSpw+e3jyoIuZlG53RXNh/6HXhU+Dt9PSt0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,88 +115,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello, Steven, Vincent,
+page_owner counts, for each allocation stack, how many pages allocated
+from that stack are still in use. The count is incremented when a page
+is allocated and decremented in __reset_page_owner() when it is freed.
 
-在 2026/11/12 07:14, Steven Rostedt 写道:
-> On Wed, 11 Nov 2026 16:47:38 +0000
-> Vincent Donnefort <vdonnefort@google.com> wrote:
-> 
->> On Fri, Nov 06, 2026 at 09:18:26PM +0800, Tao Cui wrote:
->>> From: Tao Cui <cuitao@kylinos.cn>
->>>
->>> Creating an instance immediately allocates two full sets of per-cpu
->>> ring buffers, array buffer plus snapshot, about 1.375MB per cpu per set
->>> on the default config, plus the trace_array and its name.  None of it
->>> is charged: neither trace.c nor ring_buffer.c passes __GFP_ACCOUNT,
->>> while user_events in the same directory accounts everything it
->>> allocates.
-> 
-> As the name suggests, "user_events" are for users and are special.
-> 
->>>
->>> Instance creation is currently gated by tracefs file permissions
->>> alone, so a
->>> rootful container with the host tracefs bound in can create instances
->>> until the host runs out of memory.
-> 
-> You mean, "works as expected"?
-> 
->>  Charge the ring buffer pages and
->>> the trace_array metadata to the creating cgroup.
->>>
->>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
->>> ---
->>>  kernel/trace/ring_buffer.c | 8 +++++++-
->>>  kernel/trace/trace.c       | 6 +++---
->>>  2 files changed, 10 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
->>> index 1fd28a72e6ee..676c059c112c 100644
->>> --- a/kernel/trace/ring_buffer.c
->>> +++ b/kernel/trace/ring_buffer.c
->>> @@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
->>>  	 * gracefully without invoking oom-killer and the system is not
->>>  	 * destabilized.
->>>  	 */
->>> -	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
->>> +	/*
->>> +	 * The subbuffers are charged to the memcg of whoever caused the
->>> +	 * allocation: the creator of a trace instance, or root at boot for
->>> +	 * the global trace.
->>> +	 */
->>> +	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
->>> +		  __GFP_ACCOUNT;
->>>  
->>>  	page = alloc_pages_node(cpu_to_node(cpu), mflags, order);
->>>  	if (!page)  
->>
->> Hum, by default tracefs is root only. 
->>
->> And even if made accessible to other users: 
->>
->>   1. The life span of a trace instance is not tied to the caller.
->>   2. The ring buffer is shared by multiple users.
-> 
-> Right. Is there a use case out there that allows non-admin to create an
-> instance? Tracing ring buffers can expose a lot and should not be given
-> to unprivileged users.
-> 
-Not that I can point to.  Instances are admin-only by default, and the permission layer is the right place for that.
+A page that is hwpoisoned while in use and later unpoisoned passes
+through free_pages_prepare() twice:
 
-> What exactly is this trying to achieve?
->
-The series closes uncharged kernel allocations that scale with user input.  For tracing I misread the tracefs permission check as a gap rather than the intended boundary.  Combined with Vincent's points on lifetime and sharing, I'll drop patch.
+  1. On poisoning, the last reference is dropped. free_pages_prepare()
+     calls reset_page_owner() but, because the page is PageHWPoison(),
+     keeps it off the free lists.
+
+  2. On unpoisoning, unpoison_memory() drops the poison reference and
+     free_pages_prepare() calls reset_page_owner() again, this time
+     really freeing the page.
+
+__reset_page_owner() decrements the stack count both times, although
+the page was allocated only once. The first call clears
+PAGE_EXT_OWNER_ALLOCATED, but the second call never checks it.
+
+If this drives the count to zero while the stack is still in use,
+stackdepot treats the record as freed and warns on every later
+allocation or free that uses the same stack:
+
+  dec_stack_record_count: refcount went to 0 for 92274844 handle
+  WARNING: lib/stackdepot.c:517 at depot_fetch_stack+0x5c/0x70
+  Call Trace:
+   __set_page_owner+0x110/0x290
+   get_page_from_freelist+0x1225/0x1440
+   __alloc_frozen_pages_noprof+0x1fc/0x1b00
+   __folio_alloc_noprof+0x12/0xa0
+   alloc_migration_target+0x81/0x1e0
+   migrate_pages_batch+0x1f2/0x14c0
+   migrate_pages+0x9c3/0xca0
+   soft_offline_page+0x189/0x570
+
+A single soft offline followed by an unpoison is enough to trigger it,
+because the migration-target stack that the offlined page is accounted
+to usually has very few pages.
+
+Fix it by decrementing the stack count only if PAGE_EXT_OWNER_ALLOCATED
+was still set, i.e. only the first time the page is freed.
+
+To reproduce, boot with page_owner=on and CONFIG_HWPOISON_INJECT, soft
+offline anonymous pages with madvise(MADV_SOFT_OFFLINE), and unpoison
+each old PFN through debugfs hwpoison/unpoison-pfn. Without this patch
+the first cycle prints the message above and 2200 cycles produce 6597
+warnings. With it, the same run is clean and all stack counts return
+to their initial values.
+
+Fixes: 217b2119b9e2 ("mm,page_owner: implement the tracking of the stacks count")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Signed-off-by: Nilay Vaish <nilayvaish@google.com>
+---
+v2:
+- Expand the comment in __reset_page_owner() to explain the allocated
+  check (Oscar)
+- Collect Reviewed-by tags from Jose and Oscar
+
+v1: https://lore.kernel.org/linux-mm/20261118212819.403059-1-nilayvaish@google.com/
+
+ mm/page_owner.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 02bb304b53cf..09a3c2958079 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -320,11 +320,13 @@ void __reset_page_owner(struct page *page, unsigned short order)
+ 	depot_stack_handle_t alloc_handle;
+ 	struct page_owner *page_owner;
+ 	u64 free_ts_nsec = local_clock();
++	bool allocated;
  
-Thanks,
-Tao
-> -- Steve
-> 
-> 
->>
->> Overall I am not convinced charging the creator makes much sense.
->>
->> Eventually a few allocations for iterators could be GFP_ACCOUNT.
->>
-> 
+ 	page_ext = page_ext_get(page);
+ 	if (unlikely(!page_ext))
+ 		return;
+ 
++	allocated = test_bit(PAGE_EXT_OWNER_ALLOCATED, &page_ext->flags);
+ 	page_owner = get_page_owner(page_ext);
+ 	alloc_handle = page_owner->handle;
+ 	page_ext_put(page_ext);
+@@ -339,8 +341,15 @@ void __reset_page_owner(struct page *page, unsigned short order)
+ 	__update_page_owner_free_handle(page, handle, order, current->pid,
+ 					current->tgid, free_ts_nsec);
+ 
+-	if (alloc_handle != early_handle)
++	if (allocated && alloc_handle != early_handle) {
+ 		/*
++		 * Not every page that gets here is still accounted as
++		 * allocated: a hwpoisoned page that is later unpoisoned is
++		 * freed twice, and the first free already cleared
++		 * PAGE_EXT_OWNER_ALLOCATED and dropped the count. Only
++		 * decrement the allocation stack's count if the page was
++		 * still marked as allocated.
++		 *
+ 		 * early_handle is being set as a handle for all those
+ 		 * early allocated pages. See init_pages_in_zone().
+ 		 * Since their refcount is not being incremented because
+@@ -348,6 +357,7 @@ void __reset_page_owner(struct page *page, unsigned short order)
+ 		 * their refcount either.
+ 		 */
+ 		dec_stack_record_count(alloc_handle, 1 << order);
++	}
+ }
+ 
+ noinline void __set_page_owner(struct page *page, unsigned short order,
+-- 
+2.56.1.750.gf70dc682cf-goog
 
 
