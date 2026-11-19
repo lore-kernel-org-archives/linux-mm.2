@@ -1,102 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A4D60A2604
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 04:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1781F606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 04:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ISnp1hYQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k6NE64nM
 Received: by kanga.kvack.org (Postfix)
-	id D55F96B05B5; Wed, 18 Nov 2026 23:38:53 -0500 (EST)
+	id 2B0F96B0678; Wed, 18 Nov 2026 23:43:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2E906B066F; Wed, 18 Nov 2026 23:38:53 -0500 (EST)
+	id 2884E6B0679; Wed, 18 Nov 2026 23:43:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C431F6B05C4; Wed, 18 Nov 2026 23:38:53 -0500 (EST)
+	id 177366B0682; Wed, 18 Nov 2026 23:43:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A15606B0680
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:38:53 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id DB3BF6B0678
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 23:43:24 -0500 (EST)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 340281C4134
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:38:53 +0000 (UTC)
-X-FDA: 85450613346.13.A737A00
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5ECD51A0003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:38:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ISnp1hYQ;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EAC6B160888
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:43:23 +0000 (UTC)
+X-FDA: 85450624686.13.D486E98
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 40C634000B
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:43:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k6NE64nM;
+	spf=pass (imf27.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795063131;
-	b=cdY42AoKHfmCghdV+EDDO+s5jrgedzdwVmKs2G9OG8GRMX99eg9V19OnszIgBZRaojYLQ7
-	hu5OVRBMNp9zmu4+LC9sO6iGqJcndG+vRw+fHbnWQ6wuf7+9Oe0EdDsQasbcSUBstyou2Y
-	1apaJekdKMZOpmIgQIGz5jSG/U59b/8=
+	t=1795063402;
+	b=orEb9X2rmxB48/2RV/mzmFf3OljlZ8fI0+sV1k35ol64dS2M4XEW6N1XXQYJx5rHa/ugk4
+	60pd7wio0Gi9rWi7J2PKdtBni9r7ND62mGO0pAuDTgKlKWx/XGKsWJ2/fIEzAMLpGVwdkY
+	rkH9n6lt3BQpx0ShHbOmWQamEWECgg0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ISnp1hYQ;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k6NE64nM;
+	spf=pass (imf27.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795063131;
+	s=arc-20220608; t=1795063402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=boV9j9CJiFSO2Y60FsNmlMGCziCduZoOfN17A//Gn10=;
-	b=LjzSdDuh/BbkeMH/PNR9cLli/RK52EvjWeCuuJ+R7GCkWxRN9r/1mu/29t+v3OZSR92OWT
-	m3xJXMOTJq8C60QxWmDwih59waw+1eLeA9rzk7/PnJqI4Gw3HhNjXtEzEPI9axtHMHWzvl
-	SUP3PDX/a9m3H9nJYN0beQfHjVbkFkk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 757EA152B;
-	Wed, 18 Nov 2026 20:38:47 -0800 (PST)
-Received: from [10.163.128.149] (unknown [10.163.128.149])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD11B3F882;
-	Wed, 18 Nov 2026 20:38:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795063130; bh=EcZiEGeiH3FHAMhxWmsIUo56I3szGrADgPmAMfAcAeM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ISnp1hYQlv1T88o3LSEUjbvpB2fm0RfDcV/gWnHvHLw1Mnw4y+ybPLlqFExeLkarC
-	 3r2QYiOR/UBto46mbJFkxBKnE1UzeDMJUTXsgSNB363MOyxftBrBVY/7nslJZbaU7c
-	 kbwLjFFbKDVESDn/OfvyHqui9dgqEtdx/E6rzLNQ=
-Message-ID: <ac1d1bfd-5305-4292-8905-edd14ad028fa@arm.com>
-Date: Thu, 19 Nov 2026 10:08:40 +0530
+	bh=3qIBW706vCH+xbsegS9DAcvOmwBcfVL0uF3NP/SPApw=;
+	b=ztRzYhmwRkImfm+P8HUetoV34gHul6r6PacVsci0pNlFdqQAzC64m/nJTfzTGYILowmkFu
+	Gp/MTMv3gBDEYIzZREO372uUvbHOTHH3GbG1KXNqNds8ouu/zMGo24pwQPJVfcGIFLDZLm
+	sL3fXGAp0HWvLgX6wvM1ZzzKX2R/1W0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 31AB648C71;
+	Thu, 19 Nov 2026 04:43:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 575001F000C4;
+	Thu, 19 Nov 2026 04:43:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795063401;
+	bh=3qIBW706vCH+xbsegS9DAcvOmwBcfVL0uF3NP/SPApw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=k6NE64nMYM6EWewxJQjSiwlPPeA8R8tlT/Ho/0tAhHE5x3tX4HqTtsroETKzi6Mcf
+	 4xB2cGtvPKMjVS56eM2ntO449uRBrApgQ0WOsSq32bUbvmF3rtXnY0U+GttJci4ObQ
+	 K74/69fntBF1h25AceI8iRzcm2B8W+SSD6RtTpHyDiT6C0zzT4qNnGB8e1x9HvokRa
+	 3X9e8LhGJkrH5rZB9Tu7yG0sG8Ba1yM9IiOIqh5dwsHMPmZJZtAE/h3mQQD6k9+6iy
+	 HhLtgONuaVfRqSk+OF637ZvAkDdKezkrlBxe4g/bEdPUpudPS/9LWq1LE/gMIHKaKB
+	 0t0dyhgPNKHgw==
+Date: Thu, 19 Nov 2026 06:43:17 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
+Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v3 00/13] Namespace for namespace roots
+Message-ID: <av5-Zc4xhgkPxb7p@kernel.org>
+References: <20261118193539.240065-1-jarkko@kernel.org>
+ <av4CdM-eW73oO4wB@kernel.org>
+ <av4NonrcCxzMoDyz@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v2 5/5] mm: nommu: remove unused heap_stack_gap
-To: Shivank Garg <shivankg@amd.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com>
- <20261117-unused-sym-mm-v2-5-2f845e94dd50@amd.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261117-unused-sym-mm-v2-5-2f845e94dd50@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="/8xEWiKCEXzb99xi"
+Content-Disposition: inline
+In-Reply-To: <av4NonrcCxzMoDyz@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5ECD51A0003
-X-Stat-Signature: gnuheqfs5dhg8ijdwgh3qrf1koygbe1i
+X-Rspamd-Queue-Id: 40C634000B
+X-Stat-Signature: khwmmpfdd141an69x5sy34k1do931nsy
 X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795063131-147190
-X-HE-Meta: U2FsdGVkX19JzuL6M59nSB02g4kZdkjmMveN6+CR0qjplyMBkZqAJdOFPWv0yzGu4VMdEEuaidUqXoqYNXo+p3ZC1KRB6mBoav/4LVB7VWZd5uInE6+Oi7rmRnOj8qoXNHkS+JKh44hTvOJ6GCD4jEWBlrnbsTAa2nqiRXmr8TBtWbsS7s3KoehkxTl/YEhH0kEKwUNlkU7wzucbB1Qair1RUd6r7p1pJVStvtgZv0+N6ppp+WD2BWVORnMY/+XzA/E6CSgZ3tkfpMYowmoKUQNjdZe55LW2Glr4Q/HcdiMWXz2af90mUa4Rhe76exN/lES0euMiRAwdbXY0Qsj5sV0hdawPWxu6yLCEqd51C1Ou5DFX6MI2uUe1xBmGSrm5YEwipcVEyMBiFAjjEySDzJ2V/1FUVSa6mKw3WpmmfI9X/QkJfv7g595Qj/2qPJlFCpn6DIE3zvs7AZWQj6/F3hna3b9dT0vCiTCzi0E2gm/l8s7IxliHwAgHiDKwVc2HioGfjzo+T1WcM9uoNWaW6Ss6fc9NqIVae+s8qtd89d8xCHM+xKzF1WT5F+Cvt4dHeRybfYh2TA0G4AuI/lHbf9kNuLc+R4Ryq+fRMUS2Og/9SxsFBMgPHKF+LGixn95q0VSdTTVVwjWciDhQrZEJCNFWwYz41OohVcNGtsOAQTVaGNjIj3ioMXZuHQQDa+paoZR50dDrsuLb8XCTuTzdFq8GU/OyqGNqCb/uUTXQA7KRq2rIKjkQW+RuMybETWgsm2QwMfCJbs1ZJ1HpsNUeOq7zLjv6DbeAUC1ofMCWnizmO3bGZ1nnKAcoDQhHbZVcBFJaJK18RQ9un69XCl0SXPdFh7mQUd+HsxbbyeoHE3Qa9EAQNYbcwMu6xo1rp2zOZ97u0nk1Ia0+y6U+KzOuy+fd5l1cNZMPZWhtyqjBkwR0ZfJtuMqUfwxqp7y97dTxIlQ5uUtBcewq/p7Q7TF
- 1vRDSpVE
- WP4HQL2ugYWaLrhqJexSMazOK+9X8HjHbj1l/sor6TEX8sawDsuhRBPyOy6ZvHydW3IpPWqhUcEyWaywdTCsQreStTeB8hvYvpbs1B7CNLu33gFX9CaQQD9l6u/Qobpi0u7jXz5pqZm012zk2d6MyqRqcdeVsXe62FJ4OnXq5znVNtjYc0Zt67bNVfmTCwTbIqSkS7MgFFa8gYJ73kC3PLJoQztBpK6oBnNkaaLZMuQOU6PfQIZwzGnaj/vSz/mLqFOKvwoFsq20BvtjiWUNLWjqugqipeJLi+b48AQSqALA36j5L0eH7ntZL9PxG0AL7B2AeWvPH11qSvAJL0ZrlgqYcFpLvBOPsrwmcCWLTdHwqPrgfjoJwNi6l4vuMJCTyPnLchM6OCrFHL5I=
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795063402-372885
+X-HE-Meta: U2FsdGVkX18AjKLW2tcNgNBg1HuVD6b8pLKXzDXMXjwoY5Jm3kuMMLeMfOrXXhVuZNwcahTKK956LuuM9tRDTUGrN70aO8fz6zf1i2OPADJ3/HMXwq0620bzy5uChmML3if9c9bMRJN20LXw6g/aJLD2p6TPVzuRQdqhJd+r8dvdNIz1Jf2qlCSkfBq1aSpJB+CcOkFrHFYcJbkY+OrMGrxmG8JSsLkbhARJPOefqQ4RL59SGPanymRa2O8ol5YAg9PaY1XtuTJXdVXTaQkETR/6AUACyjC3+hACXSOX57p3IsBBFXaFXcXlXScL+SYba/k5XeOgk5IL0f8IOFmJyWZ9WmlZ2iO6yfwFIY+Nt+sBZTJ/krhq/xoJuMaO1nCkkBYxxsrk2pxFtvv84loHxG77PJnYsCS2AY9MfeetqYfRI3o+Kh+0d7bI+z5DxATKVJ84nZEUf18/Hu/nvMfXcG6XHhYT6rrfI7HoDffJsRbf+C12wTyHWgj4NUeThlU9k7WqDARFP8ly8Haq0iGePWB9Hjn9Ge6oGss6LWHwuTolOhzyID3lPT64FpvSJbJdWxZb5Vhx3OE2VA0s9DtglKk5x+CTGVp2OQPzt2oR+Mox0eGg94fTRHNCgMkFX7jgIbY/hmXlqSDHT6yuWMmFFLJZvhCmDXDdqkowC3xde41JxSSvuLarryywQV99n7DsiFbXT5MRVUzHlDZjkW2pHiisIwaCM5uu/0LP1VXiczjF6xNClajvqSj9qzguI/lefbRHIrtgOldTav4U5e+x015K2J4q85MyLP2FDDfe3NfS5qMlVGmh1tVAbKNDwMrp2sNry8w3UDZ7pwPYlRN7EoorGM65ki9rUNQZHx9Z6BU9GdqwjnGE1tXJMTNVCj4ldWtCRWFkbAUEIE8ljZ9jA8oE3UJotTK3SBfS6QF7yIybIUcPYJQk/x8HyJnkc+C2tjtwxRfVJCVQXVm9Vuu
+ 2eRF9e/F
+ lo397Qf1Z8JUJH9f1nKU+8khxdy4e6QX5j1p1EtY/SWEGqHcC/blZvoeENMQUBDIfLlH9htmu6kbiJaPe8YqDOMzWO7k39d1k3bCWNJxbq18P7EIAUal55/gLrKHc0OZUBrV/N9DCR0cRNok5mePq2jrFvSKZO4KFixDJW/RC5a1EhqxJPBDEeP3JXno62+QtPVbF1pKinXo0fiOX/m52Ho9WR4L2Bxi8dYmArEWg/P9DxHhgIDtnK+J5QzzZaHn8N6R5FxDh2RC4Fi7eLoOnmRSf9RbVmP+YrA1zM2hw8nYjO18x1lk1YNMcchEpwZ5Err7XnWAu3k6w/wMfp41p66V7pK93JSrkZVibcJ6HDVsDr3esa05S5yTOsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,33 +133,475 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
+--/8xEWiKCEXzb99xi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 17/11/26 12:46 pm, Shivank Garg wrote:
-> heap_stack_gap has been unused since at least the start of git history,
-> commit 1da177e4c3f4 ("Linux-2.6.12-rc2").
+On Wed, Nov 18, 2026 at 10:42:10PM +0200, Jarkko Sakkinen wrote:
+> > I.e. before PID 1 and /proc/<pid>/ns/* existss, nsfd for namespace other
+> > than root nsfd can be acquired as follows:
+> > 
+> > 	int mnts_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
 > 
-> Link: https://lore.kernel.org/linux-mm/20140430083620.GA4711@dhcp22.suse.cz/
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
->  mm/nommu.c | 1 -
->  1 file changed, 1 deletion(-)
 > 
-> diff --git a/mm/nommu.c b/mm/nommu.c
-> index df99495c8902..a971c12f2732 100644
-> --- a/mm/nommu.c
-> +++ b/mm/nommu.c
-> @@ -43,7 +43,6 @@
->  #include "internal.h"
->  
->  unsigned long highest_memmap_pfn;
-> -int heap_stack_gap = 0;
->  
->  atomic_long_t mmap_pages_allocated;
->  
+> Unprivileged caller becomes the owner of rootns->user_ns. Each mount
+> syscall then just checks CAP_SYS_ADMIN against rootns->user_ns.
 > 
+> The user space wiring goes along the lines of:
+> 
+>         int root_fd = rootns_create(ROOTNS_KILL_ON_CLOSE | ROOTNS_CLOSE_ON_EXEC);
+>         int mntns_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
+> 
+>         int tmpfs_fd = fsopen("tmpfs", 0);
+>         fsconfig(tmpfs_fd, FSCONFIG_SET_ROOTNS, NULL, NULL, root_fd);
+>         fsconfig(tmpfs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+>         int rootfs_fd = fsmount(tmpfs_fd, 0, 0);
+> 
+>         move_mount(rootfs_fd, "", mntns_fd, "/", MOVE_MOUNT_F_EMPTY_PATH | MOVE_MOUNT_T_MNTNS);
+> 
+>         struct clone_args args = {
+>                 .flags  = CLONE_INTO_ROOTNS,
+>                 .rootns = root_fd,
+>         };
+>         pid_t pid = clone3(&args, sizeof(args));
 
+
+[BTW, this patch set is pointed out to David and not fsdevel mailing by a
+ mishap, apologies.]
+
+I reduced syscalls can be further to only a single syscall: rootns()
+
+The complete API after this:
+
+1. rootns(flags)
+2. ioctl(rootfs_fd, ROOTNS_GET_NSFD, ns)
+3. ioctl(rootfs_fd, ROOTNS_WAIT, NULL)
+4. ioctl(rootfs_fd, ROOTNS_KILL, signum)
+
+An updated version of the patch set is available over here:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/?h=rootns
+
+In order to find more evidence that the API is trimmed and code has no
+extra fat, I tried how LSM hooks size-fit.
+
+Attached are the experimental LSM hooks and while possibly not exactly
+right they should not be at least in the ballpar (Paul?).
+
+Not perfect, but very usable, and there's a steady track of convergence
+where resolving a bottleneck leads into a better symmetry and coherency
+overall.
+
+Br, Jarkko
+
+--/8xEWiKCEXzb99xi
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename="0001-security-Add-LSM-hooks-for-rootns.patch"
+
+From a72fe460eab3ac1ef459ab6294515a0d665f94c2 Mon Sep 17 00:00:00 2001
+From: Jarkko Sakkinen <jarkko@kernel.org>
+Date: Thu, 19 Nov 2026 06:20:07 +0200
+Subject: [PATCH] security: Add LSM hooks for rootns
+
+Add lbs_rootns and rootns->security blob management LSM hooks:
+
+1. security_rootns_alloc()
+2. security_rootns_free()
+3. security_rootns_clone(),
+4. security_rootns_kill()
+
+Register the new hooks in bpf_lsm.c's sleepable and untrusted hook sets.
+
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ include/linux/lsm_hook_defs.h |  7 +++
+ include/linux/lsm_hooks.h     |  3 ++
+ include/linux/rootns.h        |  3 ++
+ include/linux/security.h      | 30 ++++++++++++
+ kernel/bpf/bpf_lsm.c          | 10 ++++
+ kernel/rootns.c               | 44 +++++++++++++-----
+ security/lsm_init.c           |  6 +++
+ security/security.c           | 86 +++++++++++++++++++++++++++++++++++
+ 8 files changed, 177 insertions(+), 12 deletions(-)
+
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 87d9d06710cb..2cb90ddedc14 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -480,3 +480,10 @@ LSM_HOOK(int, 0, bdev_alloc_security, struct block_device *bdev)
+ LSM_HOOK(void, LSM_RET_VOID, bdev_free_security, struct block_device *bdev)
+ LSM_HOOK(int, 0, bdev_setintegrity, struct block_device *bdev,
+ 	 enum lsm_integrity_type type, const void *value, size_t size)
++
++#ifdef CONFIG_ROOTNS
++LSM_HOOK(int, 0, rootns_alloc, struct rootns *rootns, unsigned int flags)
++LSM_HOOK(void, LSM_RET_VOID, rootns_free, struct rootns *rootns)
++LSM_HOOK(int, 0, rootns_clone, struct rootns *rootns)
++LSM_HOOK(int, 0, rootns_kill, struct rootns *rootns, int sig)
++#endif /* CONFIG_ROOTNS */
+diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
+index 13621e9e233e..217a59d428b1 100644
+--- a/include/linux/lsm_hooks.h
++++ b/include/linux/lsm_hooks.h
+@@ -121,6 +121,9 @@ struct lsm_blob_sizes {
+ 	unsigned int lbs_bpf_map;
+ 	unsigned int lbs_bpf_prog;
+ 	unsigned int lbs_bpf_token;
++#ifdef CONFIG_ROOTNS
++	unsigned int lbs_rootns;
++#endif
+ };
+ 
+ /*
+diff --git a/include/linux/rootns.h b/include/linux/rootns.h
+index 802fc76bb66e..795a79584231 100644
+--- a/include/linux/rootns.h
++++ b/include/linux/rootns.h
+@@ -31,6 +31,9 @@ enum rootns_state {
+ struct rootns {
+ 	refcount_t		usage;
+ 	int			exit_code;	/* The exit code of 'init' */
++#ifdef CONFIG_SECURITY
++	void			*security;	/* LSM security blob */
++#endif
+ 	struct user_namespace	*user_ns;	/* Owning user namespace */
+ 	struct nsproxy		*ns;		/* This rootns's namespaces */
+ 	struct pid		*init_pid;	/* The 'init' task's TGID (pid ref) */
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 40831fab5470..995292f1c92e 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -84,6 +84,7 @@ struct audit_krule;
+ struct ns_common;
+ struct user_namespace;
+ struct timezone;
++struct rootns;
+ 
+ enum lsm_event {
+ 	LSM_POLICY_CHANGE,
+@@ -2469,4 +2470,33 @@ static inline void security_initramfs_populated(void)
+ }
+ #endif /* CONFIG_SECURITY */
+ 
++#ifdef CONFIG_ROOTNS
++#ifdef CONFIG_SECURITY
++int security_rootns_alloc(struct rootns *rootns, unsigned int flags);
++void security_rootns_free(struct rootns *rootns);
++int security_rootns_clone(struct rootns *rootns);
++int security_rootns_kill(struct rootns *rootns, int sig);
++#else
++static inline int security_rootns_alloc(struct rootns *rootns,
++					unsigned int flags)
++{
++	return 0;
++}
++
++static inline void security_rootns_free(struct rootns *rootns)
++{
++}
++
++static inline int security_rootns_clone(struct rootns *rootns)
++{
++	return 0;
++}
++
++static inline int security_rootns_kill(struct rootns *rootns, int sig)
++{
++	return 0;
++}
++#endif /* CONFIG_SECURITY */
++#endif /* CONFIG_ROOTNS */
++
+ #endif /* ! __LINUX_SECURITY_H */
+diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
+index 468e63dbd922..bbcf1433fdc2 100644
+--- a/kernel/bpf/bpf_lsm.c
++++ b/kernel/bpf/bpf_lsm.c
+@@ -16,6 +16,7 @@
+ #include <linux/btf_ids.h>
+ #include <linux/ima.h>
+ #include <linux/bpf-cgroup.h>
++#include <linux/rootns.h>
+ 
+ /* For every LSM hook that allows attachment of BPF programs, declare a nop
+  * function where a BPF program can be attached. Notably, we qualify each with
+@@ -404,6 +405,11 @@ BTF_ID(func, bpf_lsm_task_setscheduler)
+ BTF_ID(func, bpf_lsm_userns_create)
+ BTF_ID(func, bpf_lsm_bdev_alloc_security)
+ BTF_ID(func, bpf_lsm_bdev_setintegrity)
++#ifdef CONFIG_ROOTNS
++BTF_ID(func, bpf_lsm_rootns_alloc)
++BTF_ID(func, bpf_lsm_rootns_clone)
++BTF_ID(func, bpf_lsm_rootns_kill)
++#endif /* CONFIG_ROOTNS */
+ BTF_SET_END(sleepable_lsm_hooks)
+ 
+ BTF_SET_START(untrusted_lsm_hooks)
+@@ -420,6 +426,10 @@ BTF_ID(func, bpf_lsm_sk_free_security)
+ BTF_ID(func, bpf_lsm_task_free)
+ BTF_ID(func, bpf_lsm_bdev_alloc_security)
+ BTF_ID(func, bpf_lsm_bdev_free_security)
++#ifdef CONFIG_ROOTNS
++BTF_ID(func, bpf_lsm_rootns_alloc)
++BTF_ID(func, bpf_lsm_rootns_free)
++#endif /* CONFIG_ROOTNS */
+ BTF_SET_END(untrusted_lsm_hooks)
+ 
+ bool bpf_lsm_is_sleepable_hook(u32 btf_id)
+diff --git a/kernel/rootns.c b/kernel/rootns.c
+index 8d90f68160ed..202bdf210699 100644
+--- a/kernel/rootns.c
++++ b/kernel/rootns.c
+@@ -51,6 +51,7 @@
+ #include <linux/user_namespace.h>
+ #include <linux/compat.h>
+ #include <linux/idr.h>
++#include <linux/security.h>
+ #include <uapi/linux/rootns.h>
+ 
+ /*
+@@ -62,14 +63,8 @@ struct rootns *get_rootns(struct rootns *c)
+ 	return c;
+ }
+ 
+-/*
+- * Drop a reference on a rootns and clear it if it is no longer in use.
+- */
+-void put_rootns(struct rootns *c)
++static void free_rootns(struct rootns *c)
+ {
+-	if (!c || !refcount_dec_and_test(&c->usage))
+-		return;
+-
+ 	if (c->ns)
+ 		put_nsproxy(c->ns);
+ 	if (c->init_pid)
+@@ -81,6 +76,18 @@ void put_rootns(struct rootns *c)
+ 	kfree(c);
+ }
+ 
++/*
++ * Drop a reference on a rootns and clear it if it is no longer in use.
++ */
++void put_rootns(struct rootns *c)
++{
++	if (!c || !refcount_dec_and_test(&c->usage))
++		return;
++
++	security_rootns_free(c);
++	free_rootns(c);
++}
++
+ /*
+  * Allow the user to poll for the rootns dying.
+  */
+@@ -159,6 +166,7 @@ static int rootns_kill_members(struct rootns *rootns, int sig)
+ 	bool any_perm = false;
+ 	int other_err = 0;
+ 	struct pid *pid;
++	int ret;
+ 	int nr;
+ 
+ 	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
+@@ -166,6 +174,10 @@ static int rootns_kill_members(struct rootns *rootns, int sig)
+ 	if (READ_ONCE(rootns->state) != ROOTNS_RUNNING)
+ 		return -ESRCH;
+ 
++	ret = security_rootns_kill(rootns, sig);
++	if (ret)
++		return ret;
++
+ 	scoped_guard(rcu) {
+ 		read_lock(&tasklist_lock);
+ 		idr_for_each_entry(&pid_ns->idr, pid, nr) {
+@@ -361,31 +373,35 @@ static struct rootns *create_rootns(unsigned int flags)
+ 	user_ns = create_rootns_user_ns();
+ 	if (IS_ERR(user_ns)) {
+ 		ret = PTR_ERR(user_ns);
+-		goto err_put;
++		goto err_free;
+ 	}
+ 	c->user_ns = user_ns;
+ 	ns_ref_active_get(user_ns);
+ 
+ 	if (!ns_capable(user_ns, CAP_SYS_ADMIN)) {
+ 		ret = -EPERM;
+-		goto err_put;
++		goto err_free;
+ 	}
+ 
+ 	ns = create_new_namespaces(clone_flags, current->nsproxy, user_ns,
+ 				   NULL);
+ 	if (IS_ERR(ns)) {
+ 		ret = PTR_ERR(ns);
+-		goto err_put;
++		goto err_free;
+ 	}
+ 
+ 	timens_activate_nsproxy(ns);
+ 	c->ns = ns;
+ 	nsproxy_ns_active_get(ns);
+ 
++	ret = security_rootns_alloc(c, flags);
++	if (ret < 0)
++		goto err_free;
++
+ 	return c;
+ 
+-err_put:
+-	put_rootns(c);
++err_free:
++	free_rootns(c);
+ 	return ERR_PTR(ret);
+ }
+ 
+@@ -478,6 +494,10 @@ int rootns_prepare_fork(struct kernel_clone_args *args)
+ 	if (!pidns_is_ancestor(pid_ns, task_active_pid_ns(current)))
+ 		return -EXDEV;
+ 
++	ret = security_rootns_clone(rootns);
++	if (ret)
++		return ret;
++
+ 	ret = mnt_ns_get_root(rootns->ns->mnt_ns, &root);
+ 	if (ret)
+ 		return ret;
+diff --git a/security/lsm_init.c b/security/lsm_init.c
+index 8d5ecea99c46..56b515b20812 100644
+--- a/security/lsm_init.c
++++ b/security/lsm_init.c
+@@ -316,6 +316,9 @@ static void __init lsm_prepare(struct lsm_info *lsm)
+ 	lsm_blob_size_update(&blobs->lbs_bpf_map, &blob_sizes.lbs_bpf_map);
+ 	lsm_blob_size_update(&blobs->lbs_bpf_prog, &blob_sizes.lbs_bpf_prog);
+ 	lsm_blob_size_update(&blobs->lbs_bpf_token, &blob_sizes.lbs_bpf_token);
++#ifdef CONFIG_ROOTNS
++	lsm_blob_size_update(&blobs->lbs_rootns, &blob_sizes.lbs_rootns);
++#endif
+ }
+ 
+ /**
+@@ -460,6 +463,9 @@ int __init security_init(void)
+ 		lsm_pr("blob(bpf_map) size %d\n", blob_sizes.lbs_bpf_map);
+ 		lsm_pr("blob(bpf_prog) size %d\n", blob_sizes.lbs_bpf_prog);
+ 		lsm_pr("blob(bpf_token) size %d\n", blob_sizes.lbs_bpf_token);
++#ifdef CONFIG_ROOTNS
++		lsm_pr("blob(rootns) size %d\n", blob_sizes.lbs_rootns);
++#endif
+ 	}
+ 
+ 	if (blob_sizes.lbs_file)
+diff --git a/security/security.c b/security/security.c
+index 4727b8347fc4..919d4bb63701 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -30,6 +30,7 @@
+ #include <linux/overflow.h>
+ #include <linux/perf_event.h>
+ #include <linux/fs.h>
++#include <linux/rootns.h>
+ #include <net/flow.h>
+ #include <net/sock.h>
+ 
+@@ -395,6 +396,22 @@ static int lsm_ns_alloc(struct ns_common *ns)
+ 	return lsm_blob_alloc(&ns->ns_security, blob_sizes.lbs_ns, GFP_KERNEL);
+ }
+ 
++#ifdef CONFIG_ROOTNS
++/**
++ * lsm_rootns_alloc - allocate a composite rootns blob
++ * @rootns: the rootns that needs a blob
++ *
++ * Allocate the rootns blob for all the modules
++ *
++ * Return: Returns 0, or -ENOMEM if memory can't be allocated.
++ */
++static int lsm_rootns_alloc(struct rootns *rootns)
++{
++	return lsm_blob_alloc(&rootns->security, blob_sizes.lbs_rootns,
++			      GFP_KERNEL);
++}
++#endif /* CONFIG_ROOTNS */
++
+ /**
+  * lsm_fill_user_ctx - Fill a user space lsm_ctx structure
+  * @uctx: a userspace LSM context to be filled
+@@ -5795,3 +5812,72 @@ void security_initramfs_populated(void)
+ {
+ 	call_void_hook(initramfs_populated);
+ }
++
++#ifdef CONFIG_ROOTNS
++/**
++ * security_rootns_alloc() - Check creation of a new rootns and init LSM blob
++ * @rootns: the new rootns
++ * @flags: creation flags passed to rootns()
++ *
++ * Check whether a new rootns may be created and initialize its LSM security
++ * blob.
++ *
++ * Return: Returns 0 on success, negative error code on failure.
++ */
++int security_rootns_alloc(struct rootns *rootns, unsigned int flags)
++{
++	int rc;
++
++	rc = lsm_rootns_alloc(rootns);
++	if (unlikely(rc))
++		return rc;
++
++	rc = call_int_hook(rootns_alloc, rootns, flags);
++	if (unlikely(rc))
++		security_rootns_free(rootns);
++
++	return rc;
++}
++
++/**
++ * security_rootns_free() - Release LSM security data from a rootns
++ * @rootns: the rootns being freed
++ *
++ * Release security data attached to @rootns before the structure is freed.
++ */
++void security_rootns_free(struct rootns *rootns)
++{
++	call_void_hook(rootns_free, rootns);
++	kfree(rootns->security);
++	rootns->security = NULL;
++}
++
++/**
++ * security_rootns_clone() - Check permission to spawn a task into a rootns
++ * @rootns: the target rootns
++ *
++ * Check permission before spawning a child process into @rootns via
++ * clone3(CLONE_INTO_ROOTNS).
++ *
++ * Return: Returns 0 if permission is granted, negative error code on failure.
++ */
++int security_rootns_clone(struct rootns *rootns)
++{
++	return call_int_hook(rootns_clone, rootns);
++}
++
++/**
++ * security_rootns_kill() - Check permission to signal a rootns
++ * @rootns: the target rootns
++ * @sig: signal number to deliver (or 0 for permission check)
++ *
++ * Check permission before broadcasting @sig to member thread groups in @rootns
++ * via ioctl(ROOTNS_KILL).
++ *
++ * Return: Returns 0 if permission is granted, negative error code on failure.
++ */
++int security_rootns_kill(struct rootns *rootns, int sig)
++{
++	return call_int_hook(rootns_kill, rootns, sig);
++}
++#endif /* CONFIG_ROOTNS */
+-- 
+2.47.3
+
+
+--/8xEWiKCEXzb99xi--
 
