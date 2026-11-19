@@ -1,144 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB3460A2600
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5703B606A33D
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=trPf9+9S
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Kjagh+CI
 Received: by kanga.kvack.org (Postfix)
-	id 4068A6B05D1; Thu, 19 Nov 2026 04:35:13 -0500 (EST)
+	id 78B386B05E5; Thu, 19 Nov 2026 04:36:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DE666B05EF; Thu, 19 Nov 2026 04:35:13 -0500 (EST)
+	id 762B56B05F6; Thu, 19 Nov 2026 04:36:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CD186B05F4; Thu, 19 Nov 2026 04:35:13 -0500 (EST)
+	id 6A0356B05F7; Thu, 19 Nov 2026 04:36:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 05C866B05D1
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:35:12 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6EFB6A0A35
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:35:12 +0000 (UTC)
-X-FDA: 85451360064.14.470EB26
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 46723120003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:35:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=trPf9+9S;
-	spf=pass (imf29.hostedemail.com: domain of miquel.raynal@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=miquel.raynal@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795080910;
-	b=2dDWEhSdJwHMhYO+VTJG2t9eSt8fTMHZc0/Uhbi2ZYInj9MP82ylNAPa8D4gacMqxx9yqw
-	I59JitFC7af3C5OyAQ0WfOqSDt0pPrCugzdkZD27bim/K6NWWOnaa3kr2SmTqtVibDvrmd
-	hY6oFy8UdhY5myG5sIL0T0rGJSb14Oc=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 42E276B05E5
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:36:16 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9D291409BD
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:36:15 +0000 (UTC)
+X-FDA: 85451362710.04.C088C64
+Received: from mta0.migadu.com (out-29.mta0.migadu.com [91.218.175.29])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3074B180007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:36:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kjagh+CI;
+	spf=pass (imf16.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.29 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795080910;
+	s=arc-20220608; t=1795080974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CQyK9hhzQUtdCIaKwh8qFL6kiw3hBK7e02jXrxk3Q5M=;
-	b=IFuNiBAOBPe47Qfur5rzO5OUniDCbOwtbRfWpcMCZoJcUpzOcUDLaCQa3Lr1yZdmOitIS5
-	BWIoh3Y7t3PpLNvHAZW44TwXfUxYHLqCBBYD7aoM0K/jeGCx2ozUYwfCx4wHaSYOlkyvBf
-	KiKlvZ+RqclRnZmpCtAuA2QNeRdjMxw=
+	bh=igdFWy6CMNTS7sv5o5j1ZIrF2rr0ZWKOfYYSmUoY0q4=;
+	b=1JxHakmnCREH0/XGygXDcUwMP7bV4LSNtVwArna4792xek9qexvslmtgETg0x/P1flDnpG
+	sqz2HucViX0vkowNz2dGfYfR1KiuzHSCYiXgfJPob2+pAWQbQ4tWXpI2BIZqYneC+EumV7
+	Via8rQD86L/8MqcIZin+XabVxCQlDIw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=trPf9+9S;
-	spf=pass (imf29.hostedemail.com: domain of miquel.raynal@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=miquel.raynal@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7829C4E415F3;
-	Thu, 19 Nov 2026 09:35:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3D57560271;
-	Thu, 19 Nov 2026 09:35:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 145C311BC315F;
-	Thu, 19 Nov 2026 10:34:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795080902; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=CQyK9hhzQUtdCIaKwh8qFL6kiw3hBK7e02jXrxk3Q5M=;
-	b=trPf9+9SmvXq7f3i06Ocu8PXp2wkKO6ORNKTA4/AjOKcQKVFePqcO/1BhMn+K4JKXgVetW
-	9Yr+85a0u4rw/+pGQPZDRSMsRMDGawEXfnQ9jCtNv2zr3C8ZQd4iUe048cU50ECPRyFurf
-	rsmMLyDo3rueQxG7RuwY+EBebjyTZuhqh1PyoyvCDfGRSYoPSTyfx/hwy85QgTWFsAil0Q
-	X6TU5TJA2EpRSA3/3QyU7eQBfCRlHqNmOlSA+ByZVazhopQuZSLgxPNhpRVe5QgDh43L/T
-	HBMPjxwGs9avJmS68J25IgXRGZqvRkZ+RC3EyDq//xlN7GCwXICCDykv7Bhitw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org,  Jonathan Corbet <corbet@lwn.net>,  Shuah
- Khan <skhan@linuxfoundation.org>,  linux-doc@vger.kernel.org,  David
- Hildenbrand <david@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Jason Gunthorpe <jgg@nvidia.com>,  Leon
- Romanovsky <leonro@nvidia.com>,  linux-mm@kvack.org,  Jaroslav Kysela
- <perex@perex.cz>,  Takashi Iwai <tiwai@suse.com>,
-  linux-sound@vger.kernel.org,  Jens Axboe <axboe@kernel.dk>,
-  linux-block@vger.kernel.org,  Marcel Holtmann <marcel@holtmann.org>,
-  Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-  linux-bluetooth@vger.kernel.org,  Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
-  David Heidelberg <david@ixit.cz>,  oe-linux-nfc@lists.linux.dev,  Chas
- Williams <3chas3@gmail.com>,  "David S. Miller" <davem@davemloft.net>,
-  Eric Dumazet <edumazet@kernel.org>,  Jakub Kicinski <kuba@kernel.org>,
-  Paolo Abeni <pabeni@redhat.com>,  netdev@vger.kernel.org,  Helge Deller
- <deller@gmx.de>,  linux-fbdev@vger.kernel.org,
-  dri-devel@lists.freedesktop.org,  MPT-FusionLinux.pdl@broadcom.com,
-  "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,  "Martin
- K. Petersen" <mkp@kernel.org>,  linux-scsi@vger.kernel.org,  Richard
- Weinberger <richard@nod.at>,  Vignesh Raghavendra <vigneshr@ti.com>,
-  Zhihao Cheng <chengzhihao1@huawei.com>,  linux-mtd@lists.infradead.org,
-  Neill Kapron <nkapron@google.com>,  Andrey Konovalov
- <andreyknvl@gmail.com>,  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-  linux-usb@vger.kernel.org,  Juergen Gross <jgross@suse.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  xen-devel@lists.xenproject.org,
-  Hans de Goede <hansg@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
-  "Michael S. Tsirkin" <mst@redhat.com>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
- <eperezma@redhat.com>,  Sean Christopherson <seanjc@google.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  kvm@vger.kernel.org,
-  virtualization@lists.linux.dev,  Jan Kara <jack@suse.cz>,
-  linux-fsdevel@vger.kernel.org,  "Theodore Ts'o" <tytso@mit.edu>,
-  linux-ext4@vger.kernel.org,  Mike Marshall <hubcap@omnibond.com>,
-  devel@lists.orangefs.org,  Paulo Alcantara <pc@manguebit.org>,  Namjae
- Jeon <linkinjeon@kernel.org>,  linux-cifs@vger.kernel.org,  Jaegeuk Kim
- <jaegeuk@kernel.org>,  Chao Yu <chao@kernel.org>,
-  linux-f2fs-devel@lists.sourceforge.net,  Florian Fainelli
- <florian.fainelli@broadcom.com>,  Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,  Tzung-Bi Shih
- <tzungbi@kernel.org>,  Benson Leung <bleung@chromium.org>,  David Airlie
- <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>,  Alex Deucher
- <alexander.deucher@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
-  amd-gfx@lists.freedesktop.org,  Jani Nikula
- <jani.nikula@linux.intel.com>,  Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
-  Tvrtko Ursulin <tursulin@ursulin.net>,  intel-gfx@lists.freedesktop.org,
-  Matthew Brost <matthew.brost@intel.com>,  Thomas =?utf-8?Q?Hellstr=C3=B6?=
- =?utf-8?Q?m?=
- <thomas.hellstrom@linux.intel.com>,  intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH v2 07/12] docs: ioctl-number: update MTD entries
-In-Reply-To: <20261119053514.255348-8-rdunlap@infradead.org> (Randy Dunlap's
-	message of "Wed, 18 Nov 2026 21:35:08 -0800")
-References: <20261119053514.255348-1-rdunlap@infradead.org>
-	<20261119053514.255348-8-rdunlap@infradead.org>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Thu, 19 Nov 2026 10:34:37 +0100
-Message-ID: <87bj7lf9le.fsf@bootlin.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kjagh+CI;
+	spf=pass (imf16.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.29 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795080974;
+	b=UMMedxuXqbfARVa6ZSTrrlbk+uGX1b2i++872ujUnYVdjUx3KPWmUO/U4L+ivsx2Xb4yGI
+	7SXMwOGGOXFvlQfWZWBpp76a5a0rwuMhE76TCAz5cTkz+73dQy4xOT2L4EdD6aFz9G6dGy
+	GaTZT5osJ+2i0cDnKdqC6KUv8jTpz4M=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=FyyB2+EMJUxYLUau/jQ5mXJ3d+z/p5uRxFEljvc09D0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795080969; v=1; x=1795685769;
+ b=Kjagh+CIAdQ/9Ozz+5xSZ+gQdakx8nHUEPACuc82FbvgqVLjd0XadE+gvS4egwVwjQOxjzYL
+ IuMu4bC/HXZUHYSjK5+E1Zt4VkEE3f8K3seAIEzEswIx1bjPNYfA9ikeIC/i3xgm7RPtECvzOrl
+ zHjbt5ZuiwvRzbirJ+OZ0JNU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 2da72c0dcd2ffa2e;
+	Thu, 19 Nov 2026 09:36:08 +0000
+X-Mizu-Trace-ID: 2da72c0dcd2ffa2e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <0e42e0c4-c1f9-4778-a979-404fbb68130a@linux.dev>
+Date: Thu, 19 Nov 2026 17:35:58 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 46723120003
-X-Rspam-User:
-X-Stat-Signature: wi89nm1q41sopkss3ox5i7krt4wyx4he
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+User-Agent: Betterbird (macOS/Intel)
+Subject: Re: [PATCH] mm: mglru: reset the mm iteration cursor in
+ try_to_inc_max_seq_nowalk()
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Harry Yoo <harry@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>,
+ stable@vger.kernel.org
+References: <20261117113700.453044-1-hui.zhu@linux.dev>
+ <av6lVy5fW47XPxre@fedora>
+Content-Language: en-US
+From: Hui Zhu <hui.zhu@linux.dev>
+In-Reply-To: <av6lVy5fW47XPxre@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: abfxtaixximpgdt373rkc5c7fr3akdr5
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795080910-96071
-X-HE-Meta: U2FsdGVkX18bYlKqLInGEN6fPyvihMXc2ApTjjBFXBKNKGhgdrVB+qFb+8YT3h6P9VmvEmkp/K1wk57A+Hgmdotwgcl1P16jrJiPa6yU45bgS0pavZ/6mxjKmyjoYP2/FlFuMvlg28mlIzZpH5Hbi5vbRnc5eKngdEsFwa6hv2+OqYPL7hZqH0d9XxDHVLHofToP08WY9oYqavd6e/gb2UFnOdQJfwbuYKNlHtfa7JsoWMRv7J77LVNHcCjJVh9vNFquHEwlpgkhbf696aA4P79lHSWYfqFfKrKwsElMGv/dUCnud9kmsofpvHp4gwJHjIXBwsjjYM0ll7R+pJBCUbriFweRdqF0f23hl/P2vv06fP0e+J1cT81xxeN8/Nu9wE2fT5icpDRqc6/B3pIcC6ugDL2D/cARWVO1aO0SyWPZJwd3TxZrB4ZTp03PwpZoUjxpHNe9FN5QRObzhuU6tn5a4dP4I24ZEguWdwPaamWkw6n3eDV7kzwRZDkY8As+rnbHhSCUSiWsAA3hlfbV6qO6VhmM21Gd35y2KLQZFjN/kOUtuFVS+KPKeaXi+79yUmPnrg2rjslxkX86SzGCJ8lWi7uur6spCO/kjtZXwUJIbk9M405XmcPxtpUqzfizDUSBpJhP8sST6olv9AySyb34LbJstUZjQO6xvzLzUVCWlFD91DPonXYrYHHlvFvAsYKUoLSHUL1EuSqds0TUh7CYdxeksjdOooXfx/+e2DAzyq88HWHdP4hYjz2w8WJ0pP4UA3kt26aQkFkImak8vF65hU8xnbpBt+df+n6m78YyhVvR4HdWtFnNLCo1DtR4clvAnZiFNKiMJd+eFIsU8RQuU7dZzV4MMQP3U1kHmBJ1IuuCVOMTEA1J6Di9U0A+nu0MPxC3Of7pnwLDbIJ7GxB1gJIHcLwYp4Z15DFfi2oP9hA1kyM3W5Co9xxzJv6Tii5KT9La1jtCd1rIKOH
- glc9l45D
- Vo7Jm9wGqv+cxpojCJ16Y/ISXkDi2xAPq8OLXzhTzzp+n+jX4KcgVXbFt622nFGvY6gewMMAklSqC7AhpKaQlp7FZrI6hc33WG1gJQWk3FASBeuKl0PbBEUjinaJU98MGQV6+C4QrgewpDE1YX7szBaE5zyI16rVIGuWcvmrbHU4Kal2xgIVa1grJPeEmCzrS7wbQzytmrAyBSECd0thpN5fQOJHTe0Htcrpf2kcK8v9H/JJcpIPEv5gFXD26evbSo03ZBYku0T/o7c4QEW/4ScNfMwGaYnpdCUWDMmEyesJUrFItTZ7uVD/at9CpVh8AJPzUJFlslW1/KH61GRdmpb2O2c4hlNORqeE4ysvwq/KOM5GS89nxCNLbROLvo7iO9ClbWCUuk1ak+/1zJ1Bv/AejFFf9Y6MUZ94RcUOfvRBq6OOKz+GI9DeS9X+TX90nvskv1EVCBgMffvWXd7hL5akd/jdK4X8Z0o1GCTm9tvzwuEHQ4L+Bvnh0XBc6/5NwZgXI87yIp8mwRsALfcHmaTN4BIbOo6eWQb7N6f7fERG70aTji6XxXRD4fQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3074B180007
+X-HE-Tag: 1795080971-681832
+X-HE-Meta: U2FsdGVkX1+PmOF3n66cpNq9iqY2svHfWxwFuqTRMoFt9z46VIOGhuKAlPKoTokyguZ4oIvKAiqDlbNu1rbbqx0Ar2tbBVbj2obaImZQ2FGQ/ylP+ifKK2ZgkgBomOuuWOPNKxPfy5t6o53DviqWN/nbdWE4yHHeZQ0I1122qjHVP5BB/mXDGRKo04P3BaRFJtPAyky52498IK/VU4K2wT/DskL5rQofSoazLXa4uMAfUT1FsjlYFWZOVbc+2s4yvNi++Uk5RxgG3qzySP7irtfAWaXegQTzRm2OBdx1GCHn1rNBB2c6RFD58IsGZMLpBrT2pHe61Lmz7aOECT6+ElLsIahI4e56MvV0A7wkYcQc0q6x0E2tJ4WeYrLfNd7C7yd1HvAOlAbwPubabnJa6CgBgxYKRWCR/2acXo+kr7+6tk+L2DxAWlcEn1A8STw8nubGeHwWZm53NSwxTDhxhxwzhynwKNFza66gMYqElWQ1tTaLsjBE4kRwKl3/2Hd/WwFvHbSNsD0fJlueQ7A+7h7TEuZehXCkijHgUSCwH6Puf7pU6F9jA2Y6SbhLeunC7cVU9TcjefdLpSDW+4G0kdwRVQJFxzwPFWfF4mzUkfTHUmcyND481xERA4MaveXzMEQXx6/h7X/StG1XROO/ZlOmdYcjFlySGxvkQsoAmcCrlHp1/AAtMH2o5ev5xE3ZSJnjkoA/WCIV1NTcMo4KV+OeMd/gzdxQYbZJgnCwTMtwu6aXkLDDXE8NVC/PNHqKfp8VlGFXZdCsWM1ZQ+y8S47UuyFCQgryl2tOKXpAEqeqyM9qHChjaghAnsEHfOrlKp/ORH+dIsFQXXP0GoKShU3ToE7qgM/sSHGL/ATut56qdThsuaSytElFO1bOBlzZ9vIhLoXGKo0PoWZj727neD0QV+hChADFw8oggVYNNyasu8Zxr/b48EzhWtr5AoxoumXWJL6lmshiJlyp082
+ /XsfZpDU
+ CK6rwOrQolOZld7JdEeTmUFG8UgmW0tb541boT0f3m3RkPq2XM92XKx0TcR/CSf5kPdYV04vv9R1f0O7Bdx+Tv9DZsnvkUaN4kwxEmYdCuiod8vuzCHXL24tbu/vIxblI5isW4ngEk1Ek597vqerZhuXbXPqm02KSbtdAHJg1DG2XXr8rQfaXIpTsZlf20xxz2EQO5YgePrbBqKBmyh2W96l+IZVGuf6Zu7ifc63lerJEj5mpl4y7evQOVx9Zi16Zaab1nx/NZOJYhMtFbWus/AiRy8YKoqqXmzdJHVJjkeOCiekkkO0WTn0liIMd/j+ex7x/NFdqp5wz+SqriXXLV/NHGnFNdvU/vjuiGW/7d52Bo9sxd3+HDJb8F8J9ctJmFZMZyeYpAiJxocTmX+wh4zNWno1HRbLQcln1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,23 +104,144 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Randy,
 
-On 18/11/2026 at 21:35:08 -08, Randy Dunlap <rdunlap@infradead.org> wrote:
+2026/11/19 15:29, Baoquan He:
+> On 11/17/26 at 07:37pm, Hui Zhu wrote:
+>> From: Hui Zhu <zhuhui@kylinos.cn>
+>>
+>> iterate_mm_list_nowalk() and try_to_inc_max_seq_nowalk() both advance
+>> mm_state->seq without walking the mm_list, but only the former drops the
+>> cursor. When the latter races with an ongoing page table walk, head is
+>> left pointing into the middle of the fifo.
+>>
+>> The next walker reads that as "this generation already started": it skips
+>> reset_bloom_filter() and resumes after the cursor. Every mm before the
+>> cursor is skipped, and none of them have bits in the filter being read, so
+> Nit:
+> Isn't it that mm after the cursor is skipped, none of them have bits in
+> the filter being read? Because bits in the filter are set in the last
+> generation iteration, mm after cursor didn't iterate, so no bites set
+> for them?
+You are right, thanks for catching it. test_bloom_filter() reads
+filters[walk->seq % 2], and that buffer was filled by the aborted walk of
+the previous generation, which only got as far as the cursor. So the mm
+the resumed walk visits -- the ones after the cursor -- are exactly the
+ones with no bits in it, and they lose their non-leaf walk. The mm before
+the cursor are simply left out of this generation. I will fix the wording
+in v2.
+>> walk_pmd_range() descends into none of their PMDs and harvests no accessed
+>> bits. try_to_shrink_lruvec() ignores the failed try_to_inc_max_seq() and
+>> keeps evicting, so those hot folios become reclaim candidates and refault
+>> in the parent memcg, until head wraps around a generation later.
+>>
+>> Factor the pattern into skip_mm_iteration(), which carries the rationale
+>> that used to sit in a comment in try_to_inc_max_seq_nowalk(), so the two
+>> callers cannot drift apart again. The wrap-around in iterate_mm_list() is
+>> left open-coded on purpose: there head is already back at the fifo, and
+>> tail has to survive for the force_scan test. Dropping the cursor is safe:
+>> get_next_mm() holds an mmgrab() reference, and a concurrent walker bails
+>> out at "walk->seq <= mm_state->seq" before touching head again. The
+>> unwalked part of the fifo restarts from the head next generation, as
+>> iterate_mm_list_nowalk() already does.
+>>
+>> Only reachable from memcg_reparent_objcgs() -> max_lru_gen_memcg(); not a
+>> memory safety issue, since lru_gen_del_mm() repoints head and tail under
+>> mm_list->lock.
+>>
+>> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+>> ---
+>>   mm/vmscan.c | 23 +++++++++++++++--------
+>>   1 file changed, 15 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 6a1af9b92349..0dc4017b87e4 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -3235,6 +3235,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+>>   	do {
+>>   		mm_state->head = mm_state->head->next;
+>>   		if (mm_state->head == &mm_list->fifo) {
+>> +			/* head is back at the fifo; keep tail for force_scan below */
+>>   			WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
+>>   			last = true;
+>>   			break;
+>> @@ -3263,6 +3264,18 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+>>   	return last;
+>>   }
+>>   
+>> +/*
+>> + * Advance mm_state->seq without walking the mm_list. The cursor must be
+>> + * dropped as well: iterate_mm_list() resumes from head, and resets the Bloom
+>> + * filter only when head == &mm_list->fifo.
+>> + */
+> This looks like a good catch, while the function name here is a little bit
+> confusing. From the code block inside, we can't see it's doing iteration,
+> just a pair of pointer resetting and a max_seq advancing. I would rather
+> not wrap up them if no good name is concluded. Personal opinion.
+How about inc_mm_state_seq(), after inc_max_seq(), leaving the "why"
+to the comment:
 
-> Update the list of files where MTD ioctls are defined and update
-> the ranges of function numbers that are used.
+     /*
+      * The cursor must be dropped along with mm_state->seq:
+      * iterate_mm_list() resumes from head, and resets the Bloom filter
+      * only when head == &mm_list->fifo.
+      */
+     static void inc_mm_state_seq(struct lru_gen_mm_state *mm_state)
+
+If that still does not read well to you, I will drop the helper in v2 and
+keep the two lines open-coded.
 >
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Other than the nits,
+>
+> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Thank you!
 
-> [Since having multiple maintainers trying to merge these would
-> cause some conflicts, it would be more manageable for Jon to
-> take all of these through the docs-next tree.]
+Best,
+Hui
 
-Agreed.
-
-Thanks,
-Miqu=C3=A8l
+>
+>> +static void skip_mm_iteration(struct lru_gen_mm_state *mm_state)
+>> +{
+>> +	mm_state->head = NULL;
+>> +	mm_state->tail = NULL;
+>> +	WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
+>> +}
+>> +
+>>   static bool iterate_mm_list_nowalk(struct lruvec *lruvec, unsigned long seq)
+>>   {
+>>   	bool success = false;
+>> @@ -3275,9 +3288,7 @@ static bool iterate_mm_list_nowalk(struct lruvec *lruvec, unsigned long seq)
+>>   	VM_WARN_ON_ONCE(mm_state->seq + 1 < seq);
+>>   
+>>   	if (seq > mm_state->seq) {
+>> -		mm_state->head = NULL;
+>> -		mm_state->tail = NULL;
+>> -		WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
+>> +		skip_mm_iteration(mm_state);
+>>   		success = true;
+>>   	}
+>>   
+>> @@ -4686,15 +4697,11 @@ static void try_to_inc_max_seq_nowalk(struct mem_cgroup *memcg,
+>>   	DEFINE_MAX_SEQ(lruvec);
+>>   	bool success = false;
+>>   
+>> -	/*
+>> -	 * We are not iterating the mm_list here, updating mm_state->seq is just
+>> -	 * to make mm walkers work properly.
+>> -	 */
+>>   	if (mm_state) {
+>>   		spin_lock(&mm_list->lock);
+>>   		VM_WARN_ON_ONCE(mm_state->seq + 1 < max_seq);
+>>   		if (max_seq > mm_state->seq) {
+>> -			WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
+>> +			skip_mm_iteration(mm_state);
+>>   			success = true;
+>>   		}
+>>   		spin_unlock(&mm_list->lock);
+>> -- 
+>> 2.53.0
+>>
 
