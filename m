@@ -1,77 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D252606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5C5606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j1Nz+8cR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AQkCpeqt
 Received: by kanga.kvack.org (Postfix)
-	id 3E5876B05D6; Thu, 19 Nov 2026 03:52:39 -0500 (EST)
+	id 3909A6B05CF; Thu, 19 Nov 2026 03:52:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38F456B05D7; Thu, 19 Nov 2026 03:52:39 -0500 (EST)
+	id 368496B05D7; Thu, 19 Nov 2026 03:52:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A5976B05D8; Thu, 19 Nov 2026 03:52:39 -0500 (EST)
+	id 27DFC6B05D9; Thu, 19 Nov 2026 03:52:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 03E266B05D6
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:52:38 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 860A414098E
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:38 +0000 (UTC)
-X-FDA: 85451252796.11.6811374
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AC536B05CF
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:52:45 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 200541209AE
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:43 +0000 (UTC)
+X-FDA: 85451253006.18.6840DEB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B1DEB180009
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1Nz+8cR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4C50640003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:41 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AQkCpeqt;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795078361;
+	b=ujsfD2UuXA7QgROrNLcXO6USOEa/c576+klwegpk6nr6obHeOMnMElCryDz/vtnfreqwpd
+	g1tIapvF/i+JTNLuj/lVysq3jzgMU/aGAhVAtNR0hy9fYIzGMy8Hsagc279pz/gArf+V4h
+	saF21ln9t8eXXKe+EBJHVawrLLB86Nk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795078356;
+	s=arc-20220608; t=1795078361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=IPndn90TrWiuxkQkUrYep5mzt6mXRFlXBfoASzSRQGU=;
-	b=bq37H4yPLp3Wgotr5p8sgjtTlwosxQ6wFYvoa8qjXWY4o0CfJ/qA6TiXLTzTZAOEXV0qda
-	XFP5wLtKcHEjyATIsAH5MEF7uSghviYK1nSlHKRCYf3G088GMaj2GTdjROaTnylTqY0EXk
-	DvfyRn+ljkeu9B42COYdlUrEDfMYzEY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=slP12k1/UmuSqVqj4kei7CXwqTFf5wNJ5fzGochv76w=;
+	b=BmQ1BdKDJ3bQnZodv9bdwGjejmw3gRhNOlHS9xlAq2k72nDzLpqq63E/4/+fYqmvxx1IEN
+	SeEPCQzlOC1ARe3xMLlWI+QcTDbU/6suFv5NfUi4mcC+y/UIRR2EOHS7Ms6IAJWH2MOkW3
+	6cRyhZu5Ed7mtgeLJ3hWMi++cePtOm4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1Nz+8cR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795078356;
-	b=3uNw4jfJbabBCepld+BvgNJykUNYpFVdO0LMP4kkAUJ6o5yxHgl9CAIhTfMRIAIzDahBDY
-	yUicF9JezEAPLYHUl5vX2AU1TZs6xeM3vigoATk8VzTmXpKIehn0Y9oVsPZnblGj3LWw6t
-	tEnf88kx4qXaxYLnrRni9QhrEu94fII=
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AQkCpeqt;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E1E7247817;
-	Thu, 19 Nov 2026 08:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE001F000C4;
-	Thu, 19 Nov 2026 08:52:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C9C9403CF;
+	Thu, 19 Nov 2026 08:52:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F741F000C5;
+	Thu, 19 Nov 2026 08:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795078355;
-	bh=IPndn90TrWiuxkQkUrYep5mzt6mXRFlXBfoASzSRQGU=;
-	h=From:Subject:Date:To:Cc;
-	b=j1Nz+8cR0jTce7Lp+aDCmO2fQowwUJsL1pf8Qlim9IPCU5cSF9GJDtXCEhrOFoGx2
-	 j1QZyZsXieQmfRHnwmre7bjUH7/mRoJWdXGYPmuzoqjhjHQ8IAw+g+NuVicE2HsgsB
-	 MarSJWRIFV4o2pte5enKAV5QrizPpKEtCcykq1M/0xJzL/o7pa/5q0UfOKHnBEf9hT
-	 aSExsypAUGBR7OTzqNq/MTVjl8laEYCAtfG8gQldsH2vBoHIUgpCUDGqUOHhVJDxXw
-	 XWNtIvzvxLXYauMlcTju6j4Pd4tVD3f1FC6xCWgGn4ExBG+beaCsHId1qfl/r+ADwa
-	 g5MYsDz4abbTA==
+	s=k20260515; t=1795078360;
+	bh=slP12k1/UmuSqVqj4kei7CXwqTFf5wNJ5fzGochv76w=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=AQkCpeqtER/pRkRAMr/L2oDOE2ERxJrbyHH375vGguYu8CugXOzlCmh4jy8w+SA69
+	 nxiVYh0Pd2RZq2Y+8m/6KRT/ZMyIBco0fV5jRyZf+cLbEFn4FSS0+OhJVvXDj1C4OY
+	 J2DYaVfSdMGNxKaxJT3UTd5u0xOkfStA4kBgZflLhKugqXPXlxrMn0EkOaIqvWySo8
+	 yAhl8SVOdu0rGqfS+Gp4BJB2FhDgBt6qBNEfD4kj3ujBCNF/yUlEBKdWvaJpRR2PNS
+	 I8PNugYeamptXxk/vL3L1NFXzT8H8wX1B4iHruU9Aq5ouc7CiYZBqWDFH6YJdQV6+S
+	 LqamHn8KuBjww==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 0/3] alloc_tag: two fixes and one cleanup
-Date: Thu, 19 Nov 2026 09:52:19 +0100
-Message-Id: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
+Date: Thu, 19 Nov 2026 09:52:20 +0100
+Subject: [PATCH 1/3] alloc_tag: handle a NULL tag in
+ alloc_tag_set_inaccurate()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXM0QqCQBAF0F8Z7rMLzoZa+ysRsU2zOiEauxaB+
- O9SPZ6Xs6JoNi0ItCLr24rNEwJxRZAhTr06uyMQfO1bZj65OI6zXJfYu6Y7+DZxEjk2qAjPrMk
- +v+t8+bu8bg+V5Rtg23ZSZGd0bQAAAA==
-X-Change-ID: 20261119-alloc_tag-57326f1fcc85
+Message-Id: <20261119-alloc_tag-v1-1-efcccfd3a9c9@kernel.org>
+References: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
+In-Reply-To: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
 To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
  Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
  Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
@@ -83,26 +83,26 @@ To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
 Cc: linux-mm@kvack.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
  stable@vger.kernel.org, Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=988; i=david@kernel.org;
- h=from:subject:message-id; bh=pTjq0ySpnKkGB96QfwvsYQaekk2YVWDvbC/xe0dtpSY=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+7TjhMY9nipNo7srX+5Ov2c6RiDDZepnxXTnjF+20/
- 272P6KVOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZiIgivD/3LRO8tiHh63iFpa
- efzgHrGD6Qc/KWn6v3vsW1grnVt37hwjQ9euXI8qntVm5sfbdpZvbn+UXH+7InVl2zQHP6fPk6e
- JMQEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2198; i=david@kernel.org;
+ h=from:subject:message-id; bh=pQCOEBuVtuHz63BHCaKRIv21JHUplhwXXCn7IFnZRLo=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+7Th/8FPU1reKDbNDJlruSM7v6VQ4JH3O3P6fc2h1V
+ JKWpsicjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbS9ILhn2JhTcmi67mXXfX2
+ KLxMXHRR1tA3pyzhxfp/RY/7XqzXDWb47709PKBozbaH4v5yUs9epYTKLVT0+LeuJ2vlpkpho61
+ CnAA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: jqgke8to7nu4tfjmigoj17gphcufkgsd
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B1DEB180009
+X-Stat-Signature: fxq8mct71uccdoni4fo99fm3w63rizjq
+X-Rspamd-Queue-Id: 4C50640003
+X-Rspamd-Server: rspam12
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795078356-198287
-X-HE-Meta: U2FsdGVkX1922NW+43lJ/GFc0dh7IMiAmmTECLZ/Ts1O2AMTrNaRh1AeID6InzKdCzjYrokwTXVIPT9Fm5AJwVQI3DjxB+OfmoyC+ajmhDMUi+DwoBpN2sPOsAJ0EWdwCvLLOF+YLEx+SiKHNE2Qj0qwkUo5l7raS66nA54awgBSBHUfObI4bvKZtEOb8qtKDJQx0L30WwzpI71GuNWz/T5eGGeWxUAqL+BEVnw88SQHxB4qOWW4b9DpxxKDh7q/sAN4bfFw5A5YbK9L7s38WBzhZolmPZUyufr1q0LuVgwgKZtZs+rnmfhYHyhK85gaJb3JJGXvfYj2QFj9bghq2C2tKlqdVz4dSFbb/mw7YGoVMX2WHxQg5O5DhakFNFHH6tAWpJmqXPrk6uJ1nqw5lKc1Segb00Al1iOrVlGPZZQiemWJ4NFHq/cI5iVZMnQtE5AGxwqjd4zgG8O1+J//uWc54+/SF+Gam7ceN+xGFhYpcO8iepcqVDzTsCX4k3+TJUMxd7+2UKuJAxGR8sHWAA4y+F8OEzxVK6PRNrl9frdagQoxM5+ROvz4Dh19dQhgA8huUQNPF64Dg2xh/IhiFDu6NoIhnh3pptVPYsjktKu9Wd1SJeN32/yD02/Sz5ndZOiQ84yTwsVYgwr4aFQdPogvIkox1ZPNGDNU+7xXzvr7hns1XeZJrpwkNm2Gb0t9riR054wRAB07wez6E41lFhB99uAwhTbMgcI2FvH7k8Nd2m0bjjf/mwmx5KxydVRhxYlKtApR5PsWSFHSu/P9Tcmg6EXI0scMRu4hMwThyHnufSsmN1srwds8flMSd3fXoSDZ+NM2aR5ILDu29hBqT1sfs6whNxlaSDOItDJvaE7GZtWHNqB9Hof6AyR1miJ6TqDY3dAAWcmjmxfltEdGh77LxbZsj/30hdQu/pBDdZxLSB4MSYW7fvCGRbjNvIR07vmWeffJKgOHC9/tJcv
- L8t3PP9s
- vB+ELKkkX8FIcnGf5UnLNuEwfn6p2kziYCYrXZ3j358IhJ9orqc3sMEyV3i0ib1Oi6KnCFlOwF1SoY/9Ix+6+ePlZYvH8MFggPfIrkJv2aHFCMqeOEd5Wt0GHjcqFPgpdN/HcRfJ44PR/KC8U97BL1b2lXkEg3PLE4fnmxDVdyNB84bk1pqaxsfPfGvFYxnoyiupK7v6yS0QcJAfFXv2t6ak6yC56+1gD+3BRy/pIFn2/BcII2aQJCxt8sewyTVap3b4ReDI31WTx2nqZwRIfg1pAG0KnmhZ6r0VyX/MIRmy+1lgO57o/IbzZ6fiE4wj1kp5g
+X-HE-Tag: 1795078361-211671
+X-HE-Meta: U2FsdGVkX1/KT4fZc5iMLquWrz72qRwXd9HVBE1QsUEve9IR1eLu7gKLdl3EZ6K74c4f2B9BPgkNA+fDrAWK4s4mtN/Yw+ctFY6aULzRgbDUXvnL0lPYsElwQMewrkxUFqs2ICQmQfWPNKvakEmC5dsXj82/Pp7dcmOtoWBkiWrYpXc37Cq77wd0rB+Nu0X4gsdltkW9e8Um7x819qMaMNc5WR+Ih8hCThmBdDbL+p/Kw9OkL0MzNFTfBqVr8oYWCl9fIfKPa7YlWZitIUKh8Tg44DKgZVJNdOcK1DCIvWivltCe+/qfqoItdRENIJXl8m1ZvssF2Opi1uOt7jvC044evA/xuCF2Dzyifj6kw6W2iRc2716hxEmn/7lRFQbLZNjnV1eNWlhLo1Zd6mFDAzvJTO9pJV/IP5PADTLrdLFtha9Vub/uFAO1IEqrQuw3qKb9k8KpAXk+LFWcfmaq/6wpZ12Y7Kn6j+Cu16NVGpCUjPlW/iOB+KEDKru+i9SKcMaQwIQ2Rp1zWlVaREeaIoSjoV54q7T35v8WPVgp6NkcNZ3jHuWvPEWTFIZ0l9qHxxUiJ0/NZHvqpYxN7zpe30IiG+YkNXnPmW3OmU7F1n0RFSHupbeWotug615nVjBdo28aUNOc6+6XYKgbGulCPCuSb4+S6zT/SNyCTYDTj1J975y14GjeFO4FxKsscAuvqmBi8Lxl0tIqdo8Sxyr3tRLyFau2j5w1D7oyo+45FOdwyo2fOOvtNkLJoH8jir5p51fQxKFWIEQNE0stBwTRTo5N6O24EEabTXLcuJKRFmU9siwaNMI8G8A0pM3d0l+s3XnNB6vzymqxoD7OHAZfCJfiJzeKKNmkVONwxMBIq+dDKa/4OfdYmdv//Dt7vgJ1IXiChH5WSHyyr6HEaI1E0MC1eBf9th7wMD9CupWyTgj2QAmLGhxKoLubC1kznFEHP84yxxsSPCcoGDPz5KY
+ SW3OeKu5
+ OjSIE8hdLExzuEUZUq4DQFzGvz7diPdOQ3IObllVWKkyAI3FBeUmiPEzNfJeMfK25NkaFTB0H6ZU0qfgG4L+U/10v7PdPCoOjKZ16rO5eJjB9zzgSwU72bkT8Jov9ts4zG8Ixw7LuJCYtnxzl1/sAqzahD79zzt3AnUtheuVMRkiAxkzDOB17xGhYSHfeN4WVDw0HavfXoSSPfUGQ4vh65qD08s4l/YL5WqSHDt93MAtHyLHKnBgNXLS+Hv3QQ0tqUiB+vcf/UqPDmVdwq0bPHqA6UIr8bbAWQ8d9tP0SqIQa4jt7ShbfqMm6yfN7KMJZWDqTEIDJtNsJ8ggzzwuMNXsbA4k4BVWsVTNNASv/sARa0E3SsdNwp2HD1TFMBgwl3PfxllSFgH3iLhkMQaFzHiGZcuAYYYxIU7Faa+9bNHW6KdDyrHNHOUTuWQyaFxFg8jo2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,36 +111,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+With memory allocation profiling enabled after boot, a slab allocation
+can dereference a NULL pointer if current->alloc_tag is not set and
+allocating the slab object extensions fails:
+__alloc_tagging_slab_alloc_hook() passes current->alloc_tag to
+alloc_tag_set_inaccurate(), which does not handle a NULL tag currently.
 
-two fixes (one for alloc_tag as triggered by slab, one for mempool) and
-one related cleanup to make things consistent.
+One way to trigger it is through rhashtable: rhashtable_init() records
+current->alloc_tag in ht->alloc_tag, which is NULL while profiling is
+disabled. Once profiling gets enabled, alloc_hooks_tag() sets
+current->alloc_tag to that NULL tag when allocating a bucket table.
 
-Quickly reproduced and tested the warnings in a x86-64 VM.
+Fix it by handling NULL tags in alloc_tag_set_inaccurate(), just
+like alloc_tag_add() and alloc_tag_sub() already do, and drop the now
+unnecessary check in __pgalloc_tag_add().
 
-This should go through Andrew's tree. No need to rush, it can wait until
-the next merge window.
+This has low urgency.
 
+Fixes: b9e2f58ffb84 ("alloc_tag: mark inaccurate allocation counters in /proc/allocinfo output")
+Cc: stable@vger.kernel.org
+Reported-by: Chris Mason <mason@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-Chris Mason (1):
-      mempool: fix missing alloc tagging in mempool_resize()
+ include/linux/alloc_tag.h | 3 ++-
+ mm/page_alloc.c           | 3 +--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-David Hildenbrand (Arm) (2):
-      alloc_tag: handle a NULL tag in alloc_tag_set_inaccurate()
-      mempool: account the element array to the caller
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index 7f2d80a597924..0f9909c6701a7 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -227,7 +227,8 @@ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
+ 
+ static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
+ {
+-	tag->ct.flags |= CODETAG_FLAG_INACCURATE;
++	if (tag)
++		tag->ct.flags |= CODETAG_FLAG_INACCURATE;
+ }
+ 
+ static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2fef4092c913c..0b76923145456 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1262,8 +1262,7 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 		 * clear the tag ref later when page_ext is initialized.
+ 		 */
+ 		alloc_tag_add_early_pfn(page_to_pfn(page), alloc_flags);
+-		if (task->alloc_tag)
+-			alloc_tag_set_inaccurate(task->alloc_tag);
++		alloc_tag_set_inaccurate(task->alloc_tag);
+ 	}
+ }
+ 
 
- include/linux/alloc_tag.h |  3 ++-
- include/linux/mempool.h   |  7 +++----
- mm/mempool.c              | 23 ++++++++++++-----------
- mm/page_alloc.c           |  3 +--
- 4 files changed, 18 insertions(+), 18 deletions(-)
----
-base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
-change-id: 20261119-alloc_tag-57326f1fcc85
-
-Best regards,
---  
-David Hildenbrand (Arm) <david@kernel.org>
+-- 
+2.56.1
 
 
