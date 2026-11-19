@@ -1,69 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E72606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4506E606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CTP9jal/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A0t8cgYj
 Received: by kanga.kvack.org (Postfix)
-	id 20CB26B0632; Thu, 19 Nov 2026 14:37:09 -0500 (EST)
+	id D7ECA6B065D; Thu, 19 Nov 2026 14:37:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E4B46B06A4; Thu, 19 Nov 2026 14:37:09 -0500 (EST)
+	id D56606B06A6; Thu, 19 Nov 2026 14:37:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FA0B6B06A5; Thu, 19 Nov 2026 14:37:09 -0500 (EST)
+	id C92F26B06D3; Thu, 19 Nov 2026 14:37:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DC3F96B0632
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:37:08 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6857AC0479
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:08 +0000 (UTC)
-X-FDA: 85452876936.13.37481CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A3A1CA001B
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CTP9jal/";
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8719B6B065D
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:37:15 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 10F31A8919
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:15 +0000 (UTC)
+X-FDA: 85452877230.22.2F2E1CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C957C1C001B
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:36:57 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795117026;
-	b=fl8sXE2ryW2LXTVQ+JxRqZ1DRrE6tz/rfFCIKQvkNOIjysg4s4iyOe/Y0FlE9Ix5jULtwh
-	fLpOKPqDx+xsPqUB3nPbu0VPX8QLPB4kzNSumMvERm4/H5Kmfr5mJG7+9hisdyVmQg1Wbr
-	LvrwcbD8jSXsy3JNWK96wLZSKtA7W+A=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CTP9jal/";
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1795117017;
+	b=ssdzTWTYhp2n85i7LFbqNeM4yZDzjE5VDyOUlIQfbdljCS+HdbAw9/zH3KdifiVnrebvrs
+	0tBMFjk4wLhM9uJXjYw4qUSm4xkV6AuEqxOdXqaHTOtD961DH3jrUKdSgnZ29OjCW6Znsp
+	TqyPy8wcv2t/HwRrRtMYN/Ujb97Kr6E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795117026;
+	s=arc-20220608; t=1795117017;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j3OHGDRLYJbgj/ErJ8HaxI5UhxRADPxZ13wjmhDTfns=;
-	b=fgOMT/VXUr6nVyc5sEWhXnnZ639o7gGdPgWB9CUOUNe2Xr8hpSxlHmmjKNi4vttIOx0HZU
-	qexW/EirfbzpghM3G11I9qnKpwfDrlWOSnOmnJYZL6A3kl7tna1puYpbPcdsxga0kCnMRV
-	hWpCz7QQW2JyU0CWcyvdB37x8R/MQ2w=
+	bh=rPCfyQMBDaj1TbPn1uY7ZKnrTLkWSMQ5rKa7r8FopMc=;
+	b=N3/+OJr5m9vJWcLDLJhrbwLNafv1R9mCf1jE0TGG3Br9AWFx9wfgzJR1fmqFftO6nlqMah
+	xcNDUk0mT75nq4QqPGp3xCoxqvyg4umnlJoAhORui+0qMn7xgugxWDEsLGHBCP5KmXpuBY
+	pBM2f4vWOD5GhY5fd+kBjK1FxCn7xZk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A0t8cgYj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91099467A8;
-	Thu, 19 Nov 2026 19:37:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B811F000C6;
-	Thu, 19 Nov 2026 19:37:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 586F961D4A;
+	Thu, 19 Nov 2026 19:36:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB0C1F000C7;
+	Thu, 19 Nov 2026 19:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795117025;
-	bh=j3OHGDRLYJbgj/ErJ8HaxI5UhxRADPxZ13wjmhDTfns=;
+	s=k20260515; t=1795117017;
+	bh=rPCfyQMBDaj1TbPn1uY7ZKnrTLkWSMQ5rKa7r8FopMc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CTP9jal//bKnwBy4ySVLUylckhZpJ1oQ3RzkBH+MakR00H55hqpxMiM0UMyr2rTjy
-	 TPcuKjGT7gdm0mDNHbhwNfHF5fK6x6y0dizYyHP/0YBUVzz8gnV2m9Kr58qkSN/x5Z
-	 FpZbxkZm/2FivINqu78yjPSJbHekGGqs2zZrVjLrrQoUFOcL0WQJKDFCnk2oB5MDUT
-	 DELNUYxzCICjI+YJf6QDNm/ZouSn/w2qMx9chXaOiNsliTtgPUu63o2atye1YaUtLJ
-	 u7yBUphIJvQ35Mt9hI50jjUWoRFtf7HipHsXUomtppwVTjyTqmURVyTL7pFRQnd3Sr
-	 /fi/TVAO7R6ow==
-Message-ID: <sashiko-outbox-223954@kernel.org>
+	b=A0t8cgYjumMBWfIdIu4VFg/UwUutlWz9at3G2exj66B9crjo8Wfq2gdk+wFGA/mQX
+	 i+B31+b8PpQZ64PmnXlOXLXpYNqXHE55/DvkWgTXbKfiijxzoc6NcplRCbN1NPcF1Q
+	 VJDp8TT82yFYzmKo8GQuFpd3Q7ItLZntarvREBVbROUGAG0Ok6gBnBDpNx/ecnA+33
+	 grSGtxpgn0T3a6lkDXKoOdy4h+756FLjNAtBiPXFRfbj3Z1QfZouLwSikQnEAtjfep
+	 cv+p8DSeZrRvrcksbgjWfefuzhFfTSoBSNea95uwjXhFDqYcyt3jUJUzJBPGyg080w
+	 ROuUll094XRgQ==
+Message-ID: <sashiko-outbox-223949@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 12/13] selftests/rootns: Add root namespace test
- suite
+Subject: Re: [RFC PATCH v3 07/13] fork: Support CLONE_INTO_ROOTNS in
+ clone3()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jarkko Sakkinen" <jarkko@kernel.org>, "David Howells" <dhowells@redhat.com>
 Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
@@ -85,219 +81,274 @@ Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
  Schneider" <vschneid@redhat.com>, "Vincent Guittot" <vincent.guittot@linaro.org>, "Vincenzo
  Frascino" <vincenzo.frascino@arm.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Zygmunt
  Krynicki" <zygmunt.krynicki@canonical.com>
-In-Reply-To: <20261118193539.240065-13-jarkko@kernel.org>
+In-Reply-To: <20261118193539.240065-8-jarkko@kernel.org>
 References: <20261118193539.240065-1-jarkko@kernel.org>
- <20261118193539.240065-13-jarkko@kernel.org>
+ <20261118193539.240065-8-jarkko@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 19:37:03 +0000
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A3A1CA001B
-X-Stat-Signature: fw17bzqkkh1oe3eyhr6de9k9xozqas4t
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1795117026-946106
-X-HE-Meta: U2FsdGVkX1/gY5srxa2V7jozJrwBwzUH/auscYrJlG4suQEWU5t4gEoFZAVsGFwPEF/M2PtaFKmD2Tdoqohua5937GP+7uCRAFFYh4XnF0Lzsbo6bfclIcVLHoN5tuGNtRtBlsX1YAQLBrrfwFZauzeYzuU+Ky7RwUgkSpP5oPL0SPQGa7YOFCUM2IH7A/kRauoEGrGklr33NtzyX9eXTmOro7zSpNB4ECvRlTiTrfoPYGTSY5ZY5/HPJDn8A7hUvTLVIm7AHPlbxlwmpYPH5ayJ100IkXA6mqTor94CzeLeLQskFd7dOk+awnuRVobTLa+kUJnrDXaJKxLnq+G3mf3RzP1+c0AYJo/3SmlWjqSycoZPNZbAsHS7PlGhdoZldwMj1tLNdZqre5KNi8uq8TzxaU8pEIjuJH8Di0ihlZv0Ps9sCVxN4c3p/ByDerIwhthOa72wHNexfS7Wf56B8eKjpEp/7o17hwiV5D99oJNRWJX4tsOsiGONwtOGtBPtHZL9oYmIhTJP8lWK6J3GQZJ3jnnVVJBLyli43vd18oERGePHG1IBt1nFVJDO5aCWXwL2jdx66XpLdMDbV7xifoUpFv3AYjeTn8yFPyeU2juuosgAyAoCKI5JKPiF+OOLkpXsW0xHjqkJx8BCUewZTwg3E7BthA60FprJetmp8s4AtST2fiWMhm5N3rjAq94JnwdzFR6EsYyBqIcT/C4TNDju1mx8/voh7vtBrHGd7w9SmcKuQjFo1dIHiqXcx6PCI1o4d9jahN2ECu64lSBEgJcbRNSTpc1wh8Y6xTdNo5z2RHMDixkZ/SZuBSOMNljfRGP8aQWqeMVDW6LwONa9jQXDtMF2FdokslE5STtXaxhnJ9G/+KYY4wd2V5/+7xo8wVtM36ebj+6c9AjM6FCgyu6FgZWvI1/0NmXBOCXXVDbFngsAxySG9a7nWQAb4GqUnlinaijwUy2SOqRZV7a
- jAaPngdG
- vcS4mJWcGDzlPaQv6VwuCwvVM504MvaieyzqjCQQi1BQa2VQn3OBnRg1qnJi6jwyT9EYHRdQKaGE4cIMSsFDU/6d4LmLrJFO1c/Eaq3mB4hZn0nf6FygfdTSidAsOYapWDYozMl2C9vcY53N0zDObyuTrWCOPLXtrhkoFgN1fkQ2P2mZxJp8l6BrRvuLwrWy++1esbQ/IkhYUa/0e1wqXNh+d+Z30pp/88lJQfo9QS1gLJu9R/AZVJJTJqH8yxYBX42k9gBgNcAF5N6rU7TvoU/e8gNcpO6wRYaZeGlqFyC9KgGJAqDTXZ43jQPznDLvhz0Lqau+4SNZe021Vp4sK6eRDSURYv4K7IKOia6gyOQHs0w4kibtcD3WWHi7AWAg0euT+XdoVNsPRC/VN0plkn5XIorttQPG97j6ZZhFlxy0RL0JcN49JPmCzLXqopMb9HowwehfIg2mVuFiJtYc1KYGSCzZAjrhexD0E3GMT6NIG7sxENLXFF7WTsR4+yzZ6BNRRRHPZniv0pQ7UqAm/rce2ve0oQfFa68iMKp1NR47WDiF+Ue5xKa6k0ZxoyWc0c5msxRifthF9VSH0iRVKlaDE1w==
+Date: Thu, 19 Nov 2026 19:36:54 +0000
+X-HE-Tag: 1795117017-490340
+X-HE-Meta: U2FsdGVkX1+ps31sFtSxxtslUgiv+3T+74qX0FtbalmlArib1lRaKpnJdGa/5Rs6Yc6I1cOTING0L0RHdcYDa5L7+oNcxT3I22wceiMtVzonwDYy8Pas0cbDAmWQakzjX8paGM7DaGuT0PKwhC1D8LBrADmZIUOsKuwDytxZxkwzVz7WScD25FPtO1PxIpf5TKlNH6J6X56dRznoE4pdoY22jreidHqqBORG3a5uhUH2QKqrX93RTV+9wvcADh/dFxZuGpu0q8O8uk7lY7lhpeUj6df/RT0Oas6e3hmbHAismVIVCWfOnSLc5ckzU6ohw9eANTEUGsuWvrhvc2CMyMkm2hjIGzEhXO7F7CCiZSGGCyry5Pa1HYI5cr0PrIyssfqZTknksCvO5PCHa7UZI2/W4P4hXRd/yXYJrNgzCsQ+iN3PaIenOcH02E8TqtK7/cCeh2ug6YE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issues to consider:
-- [Medium] selftests/rootns: shared mount propagation in
-  move_mount_existing_mntns()
-- [Medium] selftests/rootns: missing SKIP() on ENOSYS and silent skips
-  in child helpers
-- [Low] selftests/rootns: stack direction and lifetime hazard in
-  clone_with_flags()
+- [High] cred: missing dumpability reset across userns without CLONE_VM
+  in copy_creds()
+- [Medium] fork: missing CAP_SYS_CHROOT check and umask reset to init_fs
+  in copy_fs()
+- [Medium] nsproxy: shared mm and timens vvar mismatch in
+  copy_namespaces()
+- [Low] rootns: wrong errno on external PID 1 race during bootstrap in
+  copy_process()
 --
 
-commit 101069d69b43912a16a7832bfad97b5398c581ce
+commit 9762bc2570e709528c82312b63771aa4f8d6c6d8
 Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-selftests/rootns: Add root namespace test suite
+fork: Support CLONE_INTO_ROOTNS in clone3()
 
-This commit adds a kselftest harness suite under
-tools/testing/selftests/rootns to verify the root namespace and mount
-namespace configuration uAPI and security invariants.
+This commit adds CLONE_INTO_ROOTNS and struct clone_args.rootns to spawn a
+child process directly into a target root namespace via clone3().
 
-> diff --git a/tools/testing/selftests/rootns/smoke.c b/tools/testing/selft=
-ests/rootns/smoke.c
-> new file mode 100644
-> index 0000000000000..f0e3158ea4bec
-> --- /dev/null
-> +++ b/tools/testing/selftests/rootns/smoke.c
-> @@ -0,0 +1,1934 @@
+> diff --git a/kernel/cred.c b/kernel/cred.c
+> index d01df40a9a386..5bc3d455141b5 100644
+> --- a/kernel/cred.c
+> +++ b/kernel/cred.c
+[ ... ]
+> @@ -287,6 +294,28 @@ int copy_creds(struct task_struct *p, u64 clone_flag=
+s)
+>  	if (!new)
+>  		return -ENOMEM;
+> =20
+> +	if (rootns) {
+> +		const struct cred *old =3D current_cred();
+> +
+> +		if (!ns_capable(rootns->user_ns, CAP_SYS_ADMIN)) {
+> +			ret =3D -EPERM;
+> +			goto error_put;
+> +		}
+> +		if (new->user_ns !=3D rootns->user_ns) {
+> +			ret =3D install_user_ns_cred(new, rootns->user_ns);
+> +			if (ret < 0)
+> +				goto error_put;
+> +		}
+> +		if (!cred_cap_issubset(old, new) ||
+> +		    ((clone_flags & CLONE_VM) && old->user_ns !=3D new->user_ns)) {
+> +			struct task_exec_state *exec_state;
+> +
+> +			exec_state =3D rcu_dereference_protected(p->exec_state, true);
+> +			if (exec_state !=3D &init_task_exec_state)
+> +				WRITE_ONCE(exec_state->dumpable, suid_dumpable);
+> +		}
+> +	}
+
+[Severity: High]
+Should exec_state->dumpable be reset whenever old->user_ns !=3D new->user_n=
+s,
+even when CLONE_VM is not set?
+
+When a dumpable daemon (TASK_DUMPABLE_OWNER) creates a rootns and spawns a
+child into it without CLONE_VM, old->euid owns rootns->user_ns, so
+cred_cap_issubset(old, new) returns true:
+
+kernel/cred.c:cred_cap_issubset() {
+    ...
+	for (;subset_ns !=3D &init_user_ns; subset_ns =3D subset_ns->parent) {
+		if ((set_ns =3D=3D subset_ns->parent)  &&
+		    uid_eq(subset_ns->owner, set->euid))
+			return true;
+	}
+    ...
+}
+
+Because CLONE_VM is clear, p->exec_state->dumpable remains
+TASK_DUMPABLE_OWNER while p->real_cred->user_ns is switched to
+rootns->user_ns.  In __ptrace_may_access(), a process in rootns->user_ns
+with CAP_SYS_PTRACE passes ptrace_has_cap(tcred->user_ns, mode), and
+task_still_dumpable() returns true on TASK_DUMPABLE_OWNER without checking
+ptrace_has_cap(exec_state->user_ns, mode).  Until the child changes UID or
+calls execve(), an unprivileged container root process can attach via
+ptrace or read /proc/<pid>/mem and /proc/<pid>/fd/* while the child still
+holds the parent daemon's forked memory, O_CLOEXEC descriptors, and host
+UID.
+
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 08fc28ad1eedf..f5b98eea9ce92 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+[ ... ]
+> @@ -1649,7 +1672,7 @@ static int copy_fs(u64 clone_flags, struct task_str=
+uct *tsk,
+>  		if (current->nsproxy->mnt_ns !=3D &init_mnt_ns)
+>  			return -EINVAL;
+>  		fs =3D userspace_init_fs;
+> -	} else if (flags & COPY_FS_IDLE) {
+> +	} else if (flags & COPY_FS_IDLE || rootns) {
+>  		fs =3D &init_fs;
+>  	} else {
+>  		fs =3D current->fs;
+> @@ -1671,6 +1694,20 @@ static int copy_fs(u64 clone_flags, struct task_st=
+ruct *tsk,
+>  	tsk->real_fs =3D tsk->fs =3D copy_fs_struct(fs);
+>  	if (!tsk->fs)
+>  		return -ENOMEM;
+> +	if (rootns) {
+> +		struct path root __free(path_put) =3D {};
+> +		int err;
+> +
+> +		err =3D mnt_ns_get_root(rootns->ns->mnt_ns, &root);
+> +		if (err) {
+> +			free_fs_struct(tsk->fs);
+> +			tsk->real_fs =3D NULL;
+> +			tsk->fs =3D NULL;
+> +			return err;
+> +		}
+> +		set_fs_root(tsk->fs, &root);
+> +		set_fs_pwd(tsk->fs, &root);
+> +	}
+>  	return 0;
+>  }
+
+[Severity: Medium]
+Does copying init_fs when rootns is set discard current->fs->umask, and
+should changing tsk->fs->root require CAP_SYS_CHROOT in rootns->user_ns?
+
+Selecting init_fs causes copy_fs_struct() to initialize tsk->fs->umask from
+init_fs.umask (0022) instead of inheriting the parent's umask.  In
+addition, unlike mntns_install() on setns(CLONE_NEWNS), neither
+rootns_prepare_fork() nor copy_creds() checks ns_capable(rootns->user_ns,
+CAP_SYS_CHROOT).  A chrooted process already running in rootns->user_ns
+that has dropped CAP_SYS_CHROOT while retaining CAP_SYS_ADMIN can call
+clone3(CLONE_INTO_ROOTNS) to spawn a child with fs->root reset to the mount
+namespace root and escape its chroot.
 
 [ ... ]
 
-> +static int clone_with_flags(int flags)
+> @@ -2510,6 +2548,12 @@ __latent_entropy struct task_struct *copy_process(
+>  		goto bad_fork_core_free;
+>  	}
+> =20
+> +	if (unlikely(clone_args_rootns_bootstrapping(args) &&
+> +		     !is_child_reaper(pid))) {
+> +		retval =3D -EBUSY;
+> +		goto bad_fork_core_free;
+> +	}
+> +
+>  	/* Let kill terminate clone/fork in the middle */
+>  	if (fatal_signal_pending(current)) {
+>  		retval =3D -EINTR;
+> diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
+> index 8a3c6d4e94e2a..ec8b6fac7fbf1 100644
+> --- a/kernel/nsproxy.c
+> +++ b/kernel/nsproxy.c
+> @@ -166,12 +167,21 @@ struct nsproxy *create_new_namespaces(u64 flags,
+>   * called from clone.  This now handles copy for nsproxy and all
+>   * namespaces therein.
+>   */
+> -int copy_namespaces(u64 flags, struct task_struct *tsk)
+> +int copy_namespaces(u64 flags, struct task_struct *tsk,
+> +		    struct rootns *rootns)
+>  {
+>  	struct nsproxy *old_ns =3D tsk->nsproxy;
+>  	struct user_namespace *user_ns =3D task_cred_xxx(tsk, user_ns);
+>  	struct nsproxy *new_ns;
+> =20
+> +	if (rootns) {
+> +		if (old_ns->time_ns !=3D rootns->ns->time_ns)
+> +			timens_commit_fork(tsk, rootns->ns->time_ns,
+> +					   flags & CLONE_VM);
+> +		get_nsproxy(rootns->ns);
+> +		tsk->nsproxy =3D rootns->ns;
+> +		return 0;
+> +	}
+
+[Severity: Medium]
+Can switching tsk->nsproxy->time_ns under CLONE_VM | CLONE_VFORK install the
+child time namespace's vvar page into the parent's shared mm_struct?
+
+When clone3() is called with CLONE_INTO_ROOTNS | CLONE_VM | CLONE_VFORK and
+rootns has a different time namespace, timens_commit_fork() skips
+vdso_join_timens() because shared_vm is true, while tsk->nsproxy is switched
+immediately to rootns->ns (where time_ns =3D=3D time_ns_for_children).  The
+parent and the vfork child now share current->mm while having different
+nsproxy->time_ns pointers.
+
+If VDSO_TIME_PAGE_OFFSET in the shared mm's [vvar] VMA has not been faulted
+in yet and the child calls a VDSO time function before execve(),
+vvar_fault() calls find_timens_vvar_page(), which sees vma->vm_mm =3D=3D
+current->mm and maps rootns->ns->time_ns->vvar_page into the shared page
+tables.  Because time_ns already equals time_ns_for_children in rootns->ns,
+exec_task_namespaces() on the child's later execve() is a no-op, leaving
+the parent's mm permanently mapped to the child time namespace's vvar page.
+Conversely, if the parent already faulted [vvar] before clone3(), the child
+observes the parent's time namespace through VDSO and rootns->ns->time_ns
+through syscalls until execve().
+
+Also, calling timens_set_vvar_page() in copy_namespaces() before fallible
+steps in copy_process() (such as alloc_pid() and cgroup_can_fork())
+permanently sets rootns->ns->time_ns->frozen_offsets =3D true even when the
+fork fails.
+
+> diff --git a/kernel/rootns.c b/kernel/rootns.c
+> index 32bb8ef5ed584..cfc33c243dba4 100644
+> --- a/kernel/rootns.c
+> +++ b/kernel/rootns.c
+[ ... ]
+> +int rootns_finish_fork(struct kernel_clone_args *args, struct task_struc=
+t *p)
 > +{
-> +	const size_t stack_size =3D 64 * 1024;
-> +	void *stack;
-> +	pid_t pid;
-> +	int status;
+> +	struct file *file __free(fput) =3D args->rootns_file;
+> +	struct rootns *rootns =3D args->rootns;
+> +	struct pid_namespace *pid_ns =3D rootns->ns->pid_ns_for_children;
 > +	int ret;
 > +
-> +	stack =3D malloc(stack_size);
-> +	if (!stack)
-> +		return -ENOMEM;
+> +	args->rootns_file =3D NULL;
+> +	args->rootns =3D NULL;
+> +	if (!IS_ERR(p))
+> +		return 0;
 > +
-> +	pid =3D clone(clone_exit, (char *)stack + stack_size,
-> +		    SIGCHLD | flags, NULL);
-> +	if (pid < 0)
-> +		ret =3D -errno;
-> +	else if (waitpid(pid, &status, 0) < 0)
-> +		ret =3D -errno;
-> +	else if (!WIFEXITED(status) || WEXITSTATUS(status))
-> +		ret =3D -EIO;
-> +	else
-> +		ret =3D 0;
+> +	ret =3D PTR_ERR(p);
+> +	if (args->rootns_bootstrapping) {
+> +		scoped_guard(spinlock, &rootns->lock) {
+> +			if (rootns->state =3D=3D ROOTNS_FORKING)
+> +				WRITE_ONCE(rootns->state, ROOTNS_INIT);
+> +		}
+> +		wake_up_all(&rootns->waitq);
+> +	} else if (ret =3D=3D -ENOMEM &&
+> +		   !(READ_ONCE(pid_ns->pid_allocated) & PIDNS_ADDING)) {
+> +		return -ESRCH;
+> +	}
 > +
-> +	free(stack);
 > +	return ret;
 > +}
 
 [Severity: Low]
-Can passing (char *)stack + stack_size to clone() write past the end of the
-heap buffer on architectures where the stack grows upward, such as PA-RISC?
-Also, if waitpid() fails (for example on EINTR), free(stack) runs while the
-child may still be executing on that stack.  Using sys_clone3() with stack =
-=3D 0
-and stack_size =3D 0 would avoid manual stack allocation and work regardles=
-s of
-stack growth direction.
+Can a bootstrap race with an external fork into pid_ns return -EINVAL or
+-ENOMEM instead of the documented -EBUSY or -ESRCH?
 
-[ ... ]
-
-> +FIXTURE_SETUP(rootns) {
-> +	self->cfd =3D create_test_rootns(false, ROOTNS_KILL_ON_CLOSE |
-> +				       ROOTNS_CLOSE_ON_EXEC);
-> +	if (self->cfd < 0 && geteuid() !=3D 0 &&
-> +	    (errno =3D=3D EPERM || errno =3D=3D EACCES || errno =3D=3D EINVAL ||
-> +	     errno =3D=3D ENOSPC || errno =3D=3D EOVERFLOW))
-> +		SKIP(return, "pre-idmap submount setup requires mapped userns");
-> +	ASSERT_GE(self->cfd, 0);
-> +}
-
-[Severity: Medium]
-Will this fail instead of skipping when CONFIG_ROOTNS is disabled (errno =
-=3D=3D
-ENOSYS) or when geteuid() =3D=3D 0 hits EPERM, EACCES, or ENOSPC?  Because =
-rootns
-is added unconditionally to TARGETS in tools/testing/selftests/Makefile whi=
-le
-CONFIG_ROOTNS defaults to n, running make run_tests on a kernel without
-CONFIG_ROOTNS will fail all tests in this binary instead of skipping them.
-
-The same issue applies to TEST(get_nsfd), while TEST_F(rootns, mount_perms)
-omits -ENOSPC when checking the return value of create_rootns_as_uid().  In
-addition, the forked child helpers in mount_perms, clone_perms, fsconfig, a=
-nd
-unpriv_no_userns call _exit(0) when unprivileged namespace creation fails
-with EPERM, EACCES, EINVAL, or ENOSPC, causing the parent to report a silent
-pass instead of a skip with a reason string (and unpriv_no_userns fails with
-exit status 4 on ENOSYS).
-
-[ ... ]
-
-> +TEST_F(rootns, move_mount_existing_mntns) {
-> +	int ready_pipe[2];
-> +	int hold_pipe[2];
-> +	char path[64];
-> +	int marker_fd;
-> +	int mntns_fd;
-> +	char ch;
-> +	pid_t pid;
-> +	int fsfd;
-> +	int mfd;
-> +
-> +	ASSERT_EQ(pipe2(ready_pipe, O_CLOEXEC), 0);
-> +	ASSERT_EQ(pipe2(hold_pipe, O_CLOEXEC), 0);
-> +
-> +	pid =3D fork();
-> +	ASSERT_GE(pid, 0);
-> +	if (pid =3D=3D 0) {
-> +		struct statfs st;
-> +
-> +		close(self->cfd);
-> +		close(ready_pipe[0]);
-> +		close(hold_pipe[1]);
-> +
-> +		if (unshare(CLONE_NEWNS) < 0)
-> +			_exit(1);
-> +		if (write(ready_pipe[1], "r", 1) !=3D 1)
-> +			_exit(2);
-> +		close(ready_pipe[1]);
-> +
-> +		if (read(hold_pipe[0], &ch, 1) !=3D 1)
-> +			_exit(3);
-> +		close(hold_pipe[0]);
-> +
-> +		if (statfs("/tmp", &st) < 0)
-> +			_exit(4);
-> +		if ((unsigned long)st.f_type !=3D (unsigned long)TMPFS_MAGIC)
-> +			_exit(5);
-> +		if (access("/tmp/hot_mounted", F_OK) < 0)
-> +			_exit(6);
-> +		_exit(0);
-> +	}
-> +	close(ready_pipe[1]);
-> +	close(hold_pipe[0]);
-> +
-> +	ASSERT_EQ(read(ready_pipe[0], &ch, 1), 1);
-> +	close(ready_pipe[0]);
-> +
-> +	snprintf(path, sizeof(path), "/proc/%d/ns/mnt", (int)pid);
-> +	mntns_fd =3D open(path, O_RDONLY | O_CLOEXEC);
-> +	ASSERT_GE(mntns_fd, 0);
-> +
-> +	fsfd =3D sys_fsopen("tmpfs", 0);
-> +	ASSERT_GE(fsfd, 0);
-> +	ASSERT_EQ(sys_fsconfig(fsfd, FSCONFIG_CMD_CREATE, NULL, NULL, 0), 0);
-> +	mfd =3D sys_fsmount(fsfd, 0, 0);
-> +	close(fsfd);
-> +	ASSERT_GE(mfd, 0);
-> +
-> +	marker_fd =3D openat(mfd, "hot_mounted",
-> +			   O_CREAT | O_WRONLY | O_CLOEXEC, 0644);
-> +	ASSERT_GE(marker_fd, 0);
-> +	close(marker_fd);
-> +
-> +	/* Existing mnt_ns already has "/", so "/" must fail with EBUSY. */
-> +	ASSERT_EQ(sys_move_mount(mfd, "", mntns_fd, "/",
-> +				 MOVE_MOUNT_F_EMPTY_PATH |
-> +				 MOVE_MOUNT_T_MNTNS), -1);
-> +	ASSERT_EQ(errno, EBUSY);
-> +
-> +	/* Hot-mounting onto a relative path inside the live mnt_ns succeeds. */
-> +	ASSERT_EQ(sys_move_mount(mfd, "", mntns_fd, "tmp",
-> +				 MOVE_MOUNT_F_EMPTY_PATH |
-> +				 MOVE_MOUNT_T_MNTNS), 0);
-
-[Severity: Medium]
-Does sys_move_mount() here propagate the new tmpfs mount onto /tmp in the
-host mount namespace?
-
-Because the child calls unshare(CLONE_NEWNS) without unsharing a user
-namespace or remounting "/" with MS_REC | MS_PRIVATE, its mounts stay in the
-same shared peer group as the host mount namespace when "/" or "/tmp" is
-mounted MS_SHARED (the default on systemd hosts).  Attaching mfd onto "tmp"
-in mntns_fd then propagates a peer tmpfs mount onto the host's /tmp that
-remains mounted after the child and mntns_fd exit, hiding the host's /tmp
-contents.
+If an external process enters pid_ns and allocates PID 1 in alloc_pid()
+after rootns_prepare_fork() checks READ_ONCE(pid_ns->child_reaper) but
+before setting child_reaper under tasklist_lock, the bootstrapping task's
+alloc_pid() allocates nr =3D=3D 2 while child_reaper is still NULL and fails
+with -EINVAL, never reaching the !is_child_reaper(pid) check in
+copy_process().  Similarly, if that external PID 1 exits and clears
+PIDNS_ADDING before the bootstrapping task finishes copy_process(),
+copy_process() returns -ENOMEM, and rootns_finish_fork() only translates
+-ENOMEM to -ESRCH in the !args->rootns_bootstrapping branch.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118193539.2400=
-65-1-jarkko@kernel.org?part=3D12
+65-1-jarkko@kernel.org?part=3D7
 
