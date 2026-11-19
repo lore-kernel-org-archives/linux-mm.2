@@ -1,195 +1,238 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028B960A2601
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B104C606A334
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=M0wa/rBm
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QbnBCM/9
 Received: by kanga.kvack.org (Postfix)
-	id E27636B0681; Thu, 19 Nov 2026 14:22:29 -0500 (EST)
+	id 7340D6B0692; Thu, 19 Nov 2026 14:32:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD8AA6B0692; Thu, 19 Nov 2026 14:22:29 -0500 (EST)
+	id 6E55F6B0693; Thu, 19 Nov 2026 14:32:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC7676B0693; Thu, 19 Nov 2026 14:22:29 -0500 (EST)
+	id 5FB296B06CF; Thu, 19 Nov 2026 14:32:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A926F6B0681
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:22:29 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4679DA89E6
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:22:29 +0000 (UTC)
-X-FDA: 85452840018.12.FDDF670
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F21981C001A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:22:11 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795116132;
-	b=IEXW3DxCGM+x1dfbYBrHShN24VAdC8AijO3Ls75w4a7iBaH6/XwvOOe+HoCUmfhkRR+qCa
-	FamTtuAtBn8buDxt9WQsGiQAlRIOFVHvnKBMTBBGjU/QbMsZgykvtum5UNTKU3sr0wrg7u
-	mZjlNpsYtS/E7K+qwuZWO8zeRq+XKEw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795116132;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=2ANqiizTAscXP4+/g+gxIaFQ07HRmFDK7ucjfLUofJc=;
-	b=Q7qLrhaJeCSxFjX8/DDu0UTQfT/KVc0qq4vCXZr3C7+hju6NPyVv/exPsT4LMrTfVkLD3j
-	NNyskhn3qZ6mhCpV2FhfPXe1H+xF/4DNQoJEScyf9IrYXnLrdUCvoIOzayZqGDthfMSS4/
-	Y7ZBEdZfvIWpn5qtKQ9EQtYn0uryIWs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="M0wa/rBm";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of 3Ykz_agQKCFc2BC95DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--dmnk.bounces.google.com designates 209.85.128.72 as permitted sender) smtp.mailfrom=3Ykz_agQKCFc2BC95DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--dmnk.bounces.google.com
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1f03f2e8aso370805e9.1
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:22:11 -0800 (PST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 21B6C6B0692
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:32:43 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 729D1C0BE2
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:32:42 +0000 (UTC)
+X-FDA: 85452865764.30.B1CC1E4
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	by imf02.hostedemail.com (Postfix) with ESMTP id F1FDD8001C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:32:24 +0000 (UTC)
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-67db23d8892so235397d50.2
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:32:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795116744; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GOchhbv9UkDx+xd8sNIPBEDxB17fHXVmTTwFAitNMX/nidnQEvdgSdUS42JqV54bdq
+         f18d1fhJACbnpy4vMNqh3O4MSELNwRUtvKPPU4S3EToyUHPSWksQCfCrXqqs4Ptk5suF
+         aAKETw/SwqaRHrimgJPbZqL78Ld7P53JAEBGZXfg25qKca4Jlhk7PVn+CO5yxWGCpYfW
+         Dtbm04QeeFQvlx3ReFGYR4Xtb1jGgl4fSSmh7hBJDhljASN34Y5SnmsLjDSVgoH4TZ06
+         nhgGxqgRBT88uzKJubxcNsvgbTBgwFbNZgpfR7bxJxfknWmV83gdcwTL5A7StMXndB0n
+         rPyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Xv9XMeqz3I69IimX7OB4/p06jGyymD0wx2G8UGKTZfQ=;
+        fh=LG/7MJNfiNPUBqoeT3DUliwA7YhmIvcO1m6VbEczvUg=;
+        b=k1wFRY+fPAB48WZ2n2A4HECH0xFOgMDgIxlpZj9oVIUKS8Fz8kAcCMJStTUEVivftO
+         jD3ZYos8WvUxxBYakPHttogdrlUTAGNbDYshUItWzN8ogxCtVfG8uc+En2vAfDwfLieA
+         cAeGr5PvssaFaiyks/oKeGcVNPvf6hXRnJY3a3/hH+EQo9dArRLyrTX7DOyiuvaEgIaY
+         yye9HblQ2tC4aJycUku/Aa1WQm5+Z1Ym9FK92L9qTRCsWAlwdxWQjc8dGmt/OXc+oGUW
+         E2W0Ddrl9KA7QGelnmttuygIV2MqdRqMcrZk4to1eSTiwyy1WaHgqGSE1IES89ucQufd
+         kOxA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795116130; x=1795720930; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2ANqiizTAscXP4+/g+gxIaFQ07HRmFDK7ucjfLUofJc=;
-        b=M0wa/rBmmTjnGVpY64v5ufBbg4EpUDVJ3HDEc0yn+MR28+PeB/t9JeShHCdvdlB4QZ
-         icDVDUXFcf/P+SxaRLAoShq96ti/7+9hymGBAeYloD6/R33+kpdwWII1m027SA+MhYUV
-         Z4fLcXA/kAY5hvKiJpepv+F1JtU52r0Zu3QMiTcOXsP5GmZwcJX6ECpeEfJ92DGmjRGr
-         6lK7Y/TgFl2odPGnkcX8wG1gHzaDkT1YyUskeLSy0ih5Y4WzhCEdkc+Hw4uq30BOv1Hl
-         w/u4ZXtQhMai/m0tCYuBZ1Vqs7vV3LECUo2C0SgWM4E+ZffkYV1DgQXiLJI6dY90eEU1
-         3tPA==
+        d=gmail.com; s=20260707; t=1795116744; x=1795721544; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Xv9XMeqz3I69IimX7OB4/p06jGyymD0wx2G8UGKTZfQ=;
+        b=QbnBCM/9/KIZygoy22bS+abTnnuANrYuiX+lnR/uYIUcj5N0eOZ3inXEyh9bYwGPec
+         1W4VA0bRxMPRQ25MtoMGZ+SRHELlM7+VojL+AA7rqTb6cMPvJ+tISSntEm8EoZX/jffW
+         gLMUcADOgRX8n3VHTaFs1LUAJo0ORlKuq8CGCsVJgBiECT0VznYYbCwoVkd8Jw37H4B5
+         emcJ5bgvp6U5UQzi6BeygslT6vnOj7QhjZVOUTsX+DcLv2T3mHJIYagubrgGaUkomLKJ
+         pvHa04mlrMXGmXEJXC3kDtqyRRvlqpitcSNYSBi4vRlxOaMWa678TwufblPpRLTV6aEM
+         7Ruw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795116130; x=1795720930;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1795116744; x=1795721544;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2ANqiizTAscXP4+/g+gxIaFQ07HRmFDK7ucjfLUofJc=;
-        b=pA8VsPB0Z3+WoQIs6mbCbMQzOuaU667ogTzJKGQzReYZPCCyXOOr1MJpikdMhfTsVZ
-         HqrT1Mu+q3lCinr1CZrJeyVqvyz1BeVtd8n1ZwFccGlvKBS9UeTFvnHURtnFzT4QE5/D
-         6rSWYv9tmYH/FZGVg69JA+FlZE0rHiOGd2o2MNz+cMi9kVtFLShmAl49lSBGXvkbDee0
-         aPA1vvMlIuNkyWN23tEoXFcJM4iywSqw4q1afaN1OgGJNPn6B1sBwQf80kPR77oqjhGM
-         SVDrnKKZaiC9WRR+yCg33ZI6ikcWBXn6EdewL0TSjjFFM5ucyQwADfedyj5NP/nrqQya
-         A3tw==
-X-Forwarded-Encrypted: i=1; AL+hErH4c3ZjUhBcmGQg7ZiZ38mHCNWgKn2+ImRaSCNDj0F5lX8L3lkDx2Wj0M3JDrgMcvqMj0/VZpshnA==@kvack.org
-X-Gm-Message-State: APuU4Z/efDvx4jjlNLga0MYZ68TaBeG0T0C9uAJKfEIdt/h9SrjCAYcx
-	vDo4th/618ZRzSuuL9SR25ljaI692dHujowQ2KQiAhG3DXcW5OCFOqN6WQ5ZK1hreQlBT+pMJA=
-	=
-X-Received: from wrul11.prod.google.com ([2002:a5d:668b:0:b0:4a3:5c5b:309f])
- (user=dmnk job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:6749:b0:4a2:1867:10e8
- with SMTP id 5b1f17b1804b1-4bb8881a294mr12043615e9.25.1795116130200; Thu, 19
- Nov 2026 11:22:10 -0800 (PST)
-Date: Thu, 19 Nov 2026 20:22:09 +0100
+        bh=Xv9XMeqz3I69IimX7OB4/p06jGyymD0wx2G8UGKTZfQ=;
+        b=uLqrOuWP72Ea6QxbhcEXMgNOOiDRUsdSBqGQjZ4vjwM8pCUb2o4xTIiU7416tAhFLV
+         fIepd9vVJGFWvigCWTeJUF2MjHEIW40i7yKZD5VpmB6/xHeWfqBfnP3G5WD75B691Yxa
+         64OVCIv034b9PtcGU/EbI2UyWu0lbONH+jAjVyu0IJhmf2WdLHEyYZ9nvgfx2TwBhTB9
+         JtwyrpPMA7epVTNWCKAsLb2ZagxoBR1VXYGaxa5PdZWNBdPu+/EnuQusyu002QsU/6aS
+         kXW5xTMSm4E3G+ehQB546JI8veYkRM8wzXeJH6vlOm9IqxzyjJVSSkskLIWzQHP/ayU+
+         Ib5g==
+X-Forwarded-Encrypted: i=1; AL+hErHnZPI04d7fAEgahpFq81F+uozD92WUgqGPPwGsXDly3PAYbgIqfunnBCrQSTSogZebZzzmpJoBPw==@kvack.org
+X-Gm-Message-State: APuU4Z82qyveRzxx3SrOyj873rybg+CReuMnmrb0AnJZ6D8/MOPiNaE1
+	FB3Su7gZKy3x3ivqRbtrcnUZi7q/K/anA7kbGpredIgkrqOc+1rfqtNAzAEUIif27wKnbToYzdA
+	fFRuXCIAOHDXnGto1CRa+K9bVJNkv85Y=
+X-Gm-Gg: AZFdTZcA8Sj58ahD7yl9L9+BHDqdmvKEFo2FvZXZ2NVwetRSrriuItGbDmoIhxuY3N/
+	t/8n8izvINtQzorDQEDoXLCoHbON2EeRFkFOFy0495YhXQWP9oLZZiDLKWjp2Bo2Pusc812lpC4
+	d/uYjiQ1cEW0YPRAOLsuUXrPlzf1Qfweh5hyXxUFY1noDryg1eRtoMOx2ncxpu0A0ZVtITYT6M9
+	oDRgT/XL3buxs4cXjAgxTxPFnB7kbBE6mTQuxh2GnTGjvAuG/Nb0wqta1T4HCF8A+8IGExlLL7+
+	90td5idBFpNtxhx3IJONFm4k1hXCDtWhTCYyDXe1+9ieHeJOf8Vndj4Pk9U4aHZqrSZREXbvNoE
+	g4PUmW+eLPOzGYH7QwzbjG9vK22kU3iAKB+S7j7wj00+SDmuUyIEibUt4mX42d3RYCLfirQ2euf
+	pprOPpMH03pRBdQtQNpE0EbUxE3eI=
+X-Received: by 2002:a05:690e:4894:20b0:67d:b54b:3cb8 with SMTP id
+ 956f58d0204a3-67df43f5c57mr215394d50.34.1795116743905; Thu, 19 Nov 2026
+ 11:32:23 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261119192209.2651562-1-dmnk@google.com>
-Subject: [PATCH] hugetlbfs: respect F_SEAL_GROW and FMODE_WRITE before growing
- i_size in mmap
-From: Dominik Maier <dmnk@google.com>
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, dmnk+artist@google.com, 
-	Dominik Maier <dmnk@google.com>
+MIME-Version: 1.0
+References: <20261119180015.933433-1-thnkslprpt@gmail.com> <av88TW3GQRvXJDwA@gremlin>
+In-Reply-To: <av88TW3GQRvXJDwA@gremlin>
+From: Avi <thnkslprpt@gmail.com>
+Date: Thu, 19 Nov 2026 21:31:46 +0200
+X-Gm-Features: AclHuK8VZBHxgsR35Omg5I3sBSMaRh6fN_PGQ8RGPAjS_X46z1BtoGQn3KkJiHQ
+Message-ID: <CA+jvY9E3XD5mJZ7V-+6HFxEkY1FHNGom42F-nxMZNGtOy9POqA@mail.gmail.com>
+Subject: Re: [PATCH] mm: skip temporary folio allocation for anonymous UFFD
+ missing faults
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: david@kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
+	peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	liam@infradead.org, mhocko@suse.com, surenb@google.com, vbabka@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-HE-Tag: 1795116131-217853
-X-HE-Meta: U2FsdGVkX1+J5idIc/zKqx9GlovUztwSwS+SbBandiwtsXTDeC/7KD3eba5YY4eSiMbh5y24tuZ8kbeCRUwxCsNIsrCqb+bcKll3pgJfxHVnNH2R+55IvE4AXpNbBzFGSLiJ97Cquw1qnRPHBvM4+PhmjC3v36LQNub9Bn/JrcZmoJTLTirMCKQYzHpklNJknW1MLG7K2T/StO/qJXR7AyHtaWxh18fa7N4fs82zvDaP1ixwIxy3iRHVhnwFcv7vTcay6dJJ14rozF8+94CB0nJ1ya1DU7ycLRU1rqZfk4Y9Ou/M5dq4aPazwXtxTR+/DL2J9I9T23Cp7UmtL28vPIhTlzZYQ50GiKQhi0BNjEIsWdXtPjiX+zugOifb8mH2
+Content-Transfer-Encoding: quoted-printable
+X-HE-Tag: 1795116744-604481
+X-HE-Meta: U2FsdGVkX1/M7OsI7uMlEXzYfzeQ6ZR32tot5xpS9U12eTJdkFhqd8Lz1Oksde6dvNDKvFD4BGymm9HT9HjflMVkt92B0KwpFe4oNyfyKtJrp31Dj2uoZjuUUHaK2uGk7JWfCJNjcRWiSqe+rSIe47+D0GvFF9jXB/CKbxxh/dIROULfa/fQzckCVcqujw9E6fZjcShgwtxroa1JhlYZZpJpfNDUl1qaXI7A8w8BgJFuqs4ZUlAZeG+9toqVV0HH9zo1sbM+fdWXIbmA32Do2AG72rGepeV6YGDAMUPFUApyGmO3fzCBxsrEDAxs71IBYprk9KkenTdhbD0AUppzj6Ajf1EiBqJ0gDsxsRSo450NzSxsSkS4wR1CgkrKMrA9trH8tDL4jmZmVr5pqW89ssXncjJ2D65yyq6Rz52D13UhGMy/kUCvXyGGv7Fk8vazL5yT6kmneWI9YuuqpUenG4/nZbDvKpSHyOOlvkwGEaOqbvQUMI6fShjwBlfBrGYh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	FROM_LOCAL_NOVOWEL,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-hugetlbfs_file_mmap() expands inode->i_size whenever VMA_WRITE_BIT is set
-and len > inode->i_size, without checking whether a shared mapping
-violates F_SEAL_GROW or inode_newsize_ok(), or whether a private mapping
-holds write access to the underlying file and has no active write/growth
-seals.
+Hi Lorenzo - I don't think you are in charge of all of Linux and can
+decide who can and cannot submit contributions.
+This is a legitimate improvement in my opinion - if you disagree that's fin=
+e.
+The 'word salad' you describe is my best attempt at describing an
+issue that this patch potentially makes worse, but is nevertheless
+preexisting.
+Regarding cc'ing the right people - you're right, it's very hard to
+always know who to CC and who to not include - it's easy to make
+mistakes with that.
+Good Luck
 
-Because do_mmap() and memfd_check_seals_mmap() allow PROT_WRITE with
-MAP_PRIVATE | MAP_NORESERVE on O_RDONLY descriptors and sealed
-MFD_HUGETLB memfds, an untrusted IPC recipient holding a read-only or
-F_SEAL_GROW-sealed hugetlb descriptor can inflate the shared
-inode->i_size to multi-terabyte values even when vm.nr_hugepages is 0,
-causing trusted peers relying on F_SEAL_GROW to hit SIGBUS past the
-allocated pages. Similarly, MAP_SHARED | PROT_WRITE beyond i_size on an
-F_SEAL_GROW memfd (without F_SEAL_WRITE) bypasses the growth seal.
-
-For MAP_SHARED | PROT_WRITE mappings with len > inode->i_size, reject
-F_SEAL_GROW with -EPERM and enforce inode_newsize_ok() before reserving
-huge pages. For MAP_PRIVATE | PROT_WRITE mappings, keep allowing the
-private VMA itself while only expanding inode->i_size when FMODE_WRITE
-is set, no growth/write seals are active, and inode_newsize_ok()
-succeeds.
-
-This issue was discovered with an AI-assisted code review tool (ARTIST)
-and reproduced in QEMU/KVM on an unmodified v7.4-rc3 kernel without
-kernel modifications or error injection; a standalone reproducer is
-available upon maintainers' request. The fix was verified against the
-reproducer in QEMU/KVM, compile-tested with -Werror, and checked with
-checkpatch.pl --strict.
-
-Fixes: ff62a3421044 ("hugetlb: implement memfd sealing")
-Fixes: 045c7a3f53d9 ("hugetlbfs: fix offset overflow in hugetlbfs mmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dominik Maier <dmnk@google.com>
----
- fs/hugetlbfs/inode.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 02e0a65..de416fc 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -100,10 +100,12 @@ static const struct fs_parameter_spec hugetlb_fs_parameters[] = {
- static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- {
- 	struct inode *inode = file_inode(file);
-+	struct hugetlbfs_inode_info *info = HUGETLBFS_I(inode);
- 	loff_t len, vma_len;
- 	int ret;
- 	struct hstate *h = hstate_file(file);
- 	vma_flags_t vma_flags;
-+	bool grow_inode = false;
- 
- 	/*
- 	 * vma address alignment (but not the pgoff alignment) has
-@@ -139,6 +141,24 @@ static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- 	inode_lock(inode);
- 	file_accessed(file);
- 
-+	if (vma_test(vma, VMA_WRITE_BIT) && inode->i_size < len) {
-+		if (vma_test(vma, VMA_SHARED_BIT)) {
-+			if (info->seals & F_SEAL_GROW) {
-+				ret = -EPERM;
-+				goto out;
-+			}
-+			ret = inode_newsize_ok(inode, len);
-+			if (ret)
-+				goto out;
-+			grow_inode = true;
-+		} else if ((file->f_mode & FMODE_WRITE) &&
-+			   !(info->seals & (F_SEAL_GROW | F_SEAL_WRITE |
-+					    F_SEAL_FUTURE_WRITE)) &&
-+			   !inode_newsize_ok(inode, len)) {
-+			grow_inode = true;
-+		}
-+	}
-+
- 	ret = -ENOMEM;
- 
- 	vma_flags = vma->flags;
-@@ -157,7 +177,7 @@ static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- 		goto out;
- 
- 	ret = 0;
--	if (vma_test(vma, VMA_WRITE_BIT) && inode->i_size < len)
-+	if (grow_inode)
- 		i_size_write(inode, len);
- out:
- 	inode_unlock(inode);
--- 
-2.56.1.750.gf70dc682cf-goog
-
+On Thu, Nov 19, 2026 at 8:22=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
+>
+> +cc missing.
+>
+> Please just stop. You sent 7 series across 6 different subsystems over 11
+> hours. You(r AI) even failed to cc the right people (added).
+>
+> On Thu, Nov 19, 2026 at 08:00:15PM +0200, Avi Weiss wrote:
+> > An anonymous write fault on a VMA registered for missing userfaultfd
+> > faults currently allocates, zeroes and memcg-charges a folio before
+> > checking the PTE and handing the fault to userspace. The folio is then
+> > immediately discarded without ever being mapped.
+> >
+> > Check the PTE and address-space stability under the PTE lock before
+> > allocating a folio when missing faults are registered. Deliver the faul=
+t
+> > to userfaultfd without allocating and discarding a temporary folio.
+> >
+> > In a four-boot native B/P/B/P comparison, the mean UFFD fault median
+> > fell from 13,997.75 ns to 13,093.55 ns (-904.2 ns, -6.46%). A guest
+> > allocation trace saw 256 fewer allocations in the faulting task for
+> > 256 registered missing faults.
+>
+> A .9us delta on a _uffd_ fault (nobody in their right mind puts it on a h=
+ot
+> path) with no standard deviation? Seriously?
+>
+> >
+> > Note: this changes OOM ordering. In a fixed 18 MiB memcg test, the
+> > baseline OOM-killed only the faulting client before delivering a UFFD
+> > event. With this change, the event reached an unprotected shared handle=
+r,
+> > and its UFFDIO_COPY allocation could trigger an additional OOM kill of =
+the
+> > handler. A separate surviving client consequently lost its handler and
+> > failed a page-content check after the UFFD registration was released.
+> > The same handler-death mechanism was reproducible on the unmodified
+> > (mainline) kernel when memory pressure was imposed after event delivery
+> > but before UFFDIO_COPY, although the fixed-limit outcomes differed.
+>
+> This is both unreadable word salad and alludes to you causing possibly
+> breaking changes for a barely-distinguishable-from-noise fault time
+> improvement.
+>
+> >
+> > Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+>
+> Please stop submitting patches, thanks.
+>
+> "You are expected to understand and to be able to defend everything you
+> submit. If you are unable to do so, then do not submit the resulting
+> changes."
+>
+> https://docs.kernel.org/process/generated-content.html
+>
+> > ---
+> >  mm/memory.c | 22 ++++++++++++++++------
+> >  1 file changed, 16 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 0fb676d..63b39fa 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -5547,6 +5547,22 @@ static vm_fault_t do_anonymous_page(struct vm_fa=
+ult *vmf)
+> >       ret =3D vmf_anon_prepare(vmf);
+> >       if (ret)
+> >               return ret;
+> > +
+> > +     if (unlikely(userfaultfd_missing(vma))) {
+> > +             vmf->pte =3D pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+> > +                             vmf->address, &vmf->ptl);
+> > +             if (!vmf->pte)
+> > +                     goto unlock;
+> > +             if (vmf_pte_changed(vmf)) {
+> > +                     update_mmu_tlb(vma, vmf->address, vmf->pte);
+> > +                     goto unlock;
+> > +             }
+> > +             ret =3D check_stable_address_space(vma->vm_mm);
+> > +             if (ret)
+> > +                     goto unlock;
+> > +             pte_unmap_unlock(vmf->pte, vmf->ptl);
+> > +             return handle_userfault(vmf, VM_UFFD_MISSING);
+> > +     }
+> >       /* Returns NULL on OOM or ERR_PTR(-EAGAIN) if we must retry the f=
+ault */
+> >       folio =3D alloc_anon_folio(vmf);
+> >       if (IS_ERR(folio))
+> > @@ -5579,12 +5595,6 @@ static vm_fault_t do_anonymous_page(struct vm_fa=
+ult *vmf)
+> >       if (ret)
+> >               goto release;
+> >
+> > -     /* Deliver the page fault to userland, check inside PT lock */
+> > -     if (userfaultfd_missing(vma)) {
+> > -             pte_unmap_unlock(vmf->pte, vmf->ptl);
+> > -             folio_put(folio);
+> > -             return handle_userfault(vmf, VM_UFFD_MISSING);
+> > -     }
+> >       map_anon_folio_pte_pf(folio, vmf->pte, vma, addr,
+> >                             vmf_orig_pte_uffd_wp(vmf));
+> >  unlock:
+> > --
+> > 2.43.0
+> >
+>
+> --
+> Cheers, Lorenzo
 
