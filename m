@@ -1,101 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C0960A2605
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF523606A32F
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=GK3XiyZ3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BwGgpGq/
 Received: by kanga.kvack.org (Postfix)
-	id 2CB916B05BC; Thu, 19 Nov 2026 04:13:22 -0500 (EST)
+	id AEE1B6B05E8; Thu, 19 Nov 2026 04:19:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27C126B05C9; Thu, 19 Nov 2026 04:13:22 -0500 (EST)
+	id AC51A6B05E9; Thu, 19 Nov 2026 04:19:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B99E6B05E6; Thu, 19 Nov 2026 04:13:22 -0500 (EST)
+	id A019F6B05EA; Thu, 19 Nov 2026 04:19:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F0AC56B05BC
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:13:21 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8176F1209DA
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:13:21 +0000 (UTC)
-X-FDA: 85451305002.01.DF091F3
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 30DA340003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:13:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GK3XiyZ3;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=longwei27@huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C34A6B05E8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:19:58 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 124E3409D1
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:19:58 +0000 (UTC)
+X-FDA: 85451321676.02.F9E81D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6E87B1C0005
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:19:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BwGgpGq/";
+	spf=pass (imf21.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795079599;
+	s=arc-20220608; t=1795079996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5otj8LqXuoFRDCfkaEq/wgjl2OHeIJseXXzietozvC4=;
-	b=1IZ+klWuQ4fUQjk2qxpOwyreKkAsE2LHTmJMOdYFMl2o2ZisBXnoQJuPvvg14v+2H+aITl
-	8vH1vZUN2Age9YgYvwT8eTHnrfWRQztzKl7J2ftPFqOfpsdgFpAOGwIcwBHlrDsbH0chzq
-	C/K/E+xd40UPuEDUl5X4T+JMjO66nQo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GK3XiyZ3;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=longwei27@huawei.com
+	bh=9F+PqeTKayL2InwlVERF9AhfXlGn4mSe033kr4lKz1o=;
+	b=pLOA9TShkbV2lz9s0gaPIuFWNMPFPTC4PIz99a6RoJXqKmfoDAH8NtYX986p69GiZkhA6R
+	EUTltNGuOTeaYoMgq2C0UVRTKqut1DHPwmWUOQlLHlF/GWz0S/jNeOP6X93vmz/HcpMAur
+	hfTt/Eje3C1L605YgcEqyOWlpBTjG7w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795079599;
-	b=N43p/Q3hrbGNP8fdgZPJxzbzvN55WeGUccvYQnwrQJXTOvKL9uC9ukyjZFC46KOiSQTbgs
-	CfSKBLB5QS3I8voxCDeZQZI8+SATyOtHPTzmDvyx+mvkj3y3f3khPOmGiQjj0Yq+VKx5oa
-	KO5BJ9/bsHyTZv3brzOhNj5sL73uwd0=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5otj8LqXuoFRDCfkaEq/wgjl2OHeIJseXXzietozvC4=;
-	b=GK3XiyZ3IW4xxvuorR9RNJih0Lpv7RqAAGTqcDKRnsRseb27i/YtNCZbqZfhHLNqYM+CxPvR/
-	qGEFJzt9DKKgSirKs2IfFS8TygX4xkfzY6xKHTru62jgy0YeGvwtp+eOv1X1uOQ8Qt7fZfm+qYY
-	KmvYI9xY/heD9XRwmsQvveA=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4jVXmf1gGGz1T4Fp;
-	Thu, 19 Nov 2026 17:12:34 +0800 (CST)
-Received: from kwepemo200009.china.huawei.com (unknown [7.202.195.26])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5C6C04057D;
-	Thu, 19 Nov 2026 17:13:15 +0800 (CST)
-Received: from [10.174.185.4] (10.174.185.4) by kwepemo200009.china.huawei.com
- (7.202.195.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 19 Nov
- 2026 17:13:14 +0800
-Message-ID: <4550c77f-aecd-4d6a-963f-fdaa2c243100@huawei.com>
-Date: Thu, 19 Nov 2026 17:11:37 +0800
+	t=1795079996;
+	b=R8AYKzFUIijqnJx8isMzffW3yAvrMWE3lCZLgTxSljzN2jfLOh395VqirwYfO8pkr9cxnl
+	BHcm8jb/vCCzdlE5aMIEcFhuIb1Oe5tdWFIJu0MaFGlN7JfPhvWaFzRzsr3e/4fhkguvka
+	xTYVw1IiaUhnAklRfAwcHTBKS1qRQFw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BwGgpGq/";
+	spf=pass (imf21.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E493561D97;
+	Thu, 19 Nov 2026 09:19:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404C31F000CC;
+	Thu, 19 Nov 2026 09:19:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795079995;
+	bh=9F+PqeTKayL2InwlVERF9AhfXlGn4mSe033kr4lKz1o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BwGgpGq/s8LdaixY6UA2dpl6cyOlv1U26xLUHK3qsAmF6KXzFhdJnAytG8CXWrQBM
+	 XVeINsUMo6TefJjonhgO+dU2JDcGut71ZynTXwmmsacy26fqvKspQwAEe3pW9YxRYb
+	 SRVUpuAwBCNykQtoTyrgySODnUAnTtj+r6Z7KtbXyKiUSyXpa3s+UnhtCFOL6mULIv
+	 zw1B6CY2f91QpZTQOHg4aiwKYj5x1Ad1onk/4u3eM/C9w5Up2vCqXyTIjYc9NeP5b3
+	 YxNFrYfFFPs6Iajczpo3yenRQC+cX3+gHptB5mKZSBkRA8zyHVly+82sPqdzFKldFy
+	 gy+890bIbmpJA==
+Date: Thu, 19 Nov 2026 10:19:43 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mel Gorman <mgorman@suse.de>, Andy Whitcroft <apw@canonical.com>,
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
+	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>,
+	Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+	Chris Mason <mason@kernel.org>, stable@kernel.org,
+	"Gregory Price (Meta)" <gourry@gourry.net>
+Subject: Re: [PATCH v2 11/15] hugetlbfs: do not grow a sealed file in mmap()
+Message-ID: <av6_L080RpmFYham@localhost.localdomain>
+References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
+ <20261116-fixes_hugetlb-v2-11-4dd9e94ea9ac@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] kho: drop the incoming sub-blob debugfs view
-To: Mike Rapoport <rppt@kernel.org>
-CC: <pasha.tatashin@soleen.com>, <pratyush@kernel.org>,
-	<akpm@linux-foundation.org>, <graf@amazon.com>, <leitao@debian.org>,
-	<corbet@lwn.net>, <rdunlap@infradead.org>, <linux-mm@kvack.org>,
-	<kexec@lists.infradead.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <hewenliang4@huawei.com>
-References: <20261117092951.4017931-1-longwei27@huawei.com>
- <20261119063800.698863-1-longwei27@huawei.com>
- <179507678647.425130.13205346175314463200.b4-review@b4>
-From: "longwei (I)" <longwei27@huawei.com>
-In-Reply-To: <179507678647.425130.13205346175314463200.b4-review@b4>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemo200009.china.huawei.com (7.202.195.26)
-X-Rspamd-Queue-Id: 30DA340003
-X-Stat-Signature: f1fhjpepwsxzj4e8qzfaamftjo1r9skc
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116-fixes_hugetlb-v2-11-4dd9e94ea9ac@kernel.org>
+X-Stat-Signature: ppxgriqusucget59k9uy6du4imir9xat
 X-Rspam-User: 
-X-HE-Tag: 1795079599-209473
-X-HE-Meta: U2FsdGVkX18WSGOJG/Mu+Ir6ognNrDAnki5Pfmfh8Jd+Q+x7pOyMDoL/GvoCMAB6AktaMA340akzp+gCXbV3IjwiD+EuZvP24NvRkkQUJRmmcoF7YUZJvCjPLPkIxO/VTeEcKJBWRq3nZruV+h2VSuc884rufpLu6XWokF1bNfqcw3cexlqnqTghJ4/k6qCX9ndBsnEwlevDpD856JmvohdDHGPHL1RTlibsAGFJi4dEnAmvAW5zDqIFt+FMYYRQLyIxTYy7tEktNL9oEjzP/b4RNgOTne8Nitz8K+E/F1sVBmdUMwBMqdRPopPMQ82reSQJ0hkHENzH4OITUrT3g2S5cooHdwtwatEd5FT1mPknks0e6sv+hDwJgM66xouBylUP9EtjqHwvPsnntJfEJnFtJXK1i78fh4EBLnVYl9RBu33GgzEKattiyOS3qZr0KmdmOkDpocjQv5LSHabbPNE1+4PTprcRRzGDaeA9qBch27/mWw70EiqUbSauBBfrxs/aOQv55LULwtegjmUYuxsphSmau8sq1S1eppv2ADMqtsTkZsPSQXtozvTzvCu0IPg6ZRcEFW7tMKUYSaVeUVWV9WFUiY6eiDuRWmTG48PTJ4hym0PcRSJ2T5XEIH7X0JEOWC0SaWkULrM6KYf8fcV43hop7cXrB3a2+wcW0VjHnLmHQKylzCfJOhw/YU6kd2WKLBNRSLrlKgVUhwqG2e9ygtmFpYMbBiPsZWemgYwc8elj0Tw1PZQE0Tnc23a01aObqhKdpUMpH3r+eNebqrbeBbKzb5bXKt3nsdegzJo4HMlZkH9KL92mTRpd2dzI0I4H4v43oOAHpijT3Ri4W0FlLyKBDgZb61LI6ghed/q4SJpp0CAjxmvkND7Zt7QyPo37kd+6fUNscyHuUliJvt4+gs0nwqt3hXAUtearGsBCX/gwe3brkWjoSx+T614kL1IyUGm2lgO8B1kxIM5
- i3A5UBLS
- tH8wM4mkwELebdXcu9yA4p2Hwda6zTZV3dg/W5j7PY7YFKNXnsKCDRyDvtCjQaW3+aOhq81pAwH/U+s/d/loOo09M5YhAxEkrFV4ci6zEZeiNcLygtVV4t4pUrqnHL/i1NNknjkIYNCuJulWpsjnIsjZxe8vYsvhFEzphO0wU+bzd7GR+o6v029ogGwg6pKVR7An8847zgYIzNMR6L29KGiusGxaUcrIeNfmsoZqv/S+wAwDL1Pu8ACjNVluIbR6G7UNVvRcIc0z3fx3IaLoP6LLhyWsdlv4a+hGnkfjjWd4lu50Zhm71xDGIa2ChGx47NL4a
+X-Rspamd-Queue-Id: 6E87B1C0005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795079996-608036
+X-HE-Meta: U2FsdGVkX1+WmQFMbpSFxJgmlUHf9QUTozicY+HP8daJBHCxkk5COgYNzmJsFtZ6j9GZEF0SqadeRVzJjWnmxoa9Qza0FlRedLPlE6LOo+OH1tO8xV4RmZOi5SBg/xOkYPAgT+kZpsdaBhbU1W5j89LpC3vK9/umc6V9SUZvozunG4w5g9DkxNbkLZfMX9CNx8UOqDSNK4QNyg/mG0dInbmQqRAmzcRwZqXZr3Sgrt5P2vkmW/ifFvPW6UQbQVS6+n9zCQpEP42B0fsixpH5oNSevXZYlmq6Y5IngSs+7rzMjprM54o/2BbtFm+2MJ51XJhoa2jQDLwIthTEDd3bIrvw41rdLz7ZlsAS6VhEo3e5UYH74IOraf7aAh6iBNLj8Fkpz/cv7oneNVP/CPIWIDypJquByybqeWNSrBUW4DGHmrCpLcm9/TlkLxTFbSaYGTP1pEhzdKBTKwq61GAMDOMWkU3OcdPYv8fOzU83ah9nZzrcxr9YB5JdcjIRpzk5c5ASykddp4MA+yCdYnPBJYi0k8Pkl4qd+I4c6qHWy9R7CVy9LgWAgO+8Xb2wMqptnPlfwKEFI1JOFCQbq7nDqHFQgrRLNq7IBkliIEexo/pQuXqi37Q3q4T1+Zr4u47RObQQpEUzhV7vTWPrcuP+8IS+6rcokg1Qit3TNo5AH6/jNQGCXzzUg5f6BDNYHbnukwmGvJlHDBVqA+ikDNgWtuhzlixUNVbtvgDEcWAVsrhYKM97fMn8NmNaDpA4w/Pqg/D+yoirvGTsj7rX53b9SbLsKxX1s9rA5ZDA+IJaTSA8FfJ1DFrTs36Zj/06b/e4ooCggURrUn8NTW3ZXIYlTY2CFjCHntcSjvpNMilAQy1C7eD53ifEo6/HeFvY6fJnMKCYGPfKzfWEQUZYRCcz4l06Fk8xMj15Esld9MpTbepiyYH5LRkkpJaBE3UpTlRFE9bEDqMbrhEcLv5h237
+ AyC00edY
+ lpP1HFgdlKuybZ5uC2BT7lQBDVcKf7YmCYSW08EabiVE6tEOeQ5LTomb4paFGsh/am8X6cLQGtBkgg/XCeXZWVLnD1w7ecFGrLDyJD8kvnBVAqy1206i7SojnWYjGrTEV8SxoDNDQgSgCd7jOzoXEsNbtHLTBTwl8utYa5jImj9BCOGk0aQPyaOCfvUqD16Qc2QZ9hWo+9p+S78/LKy8GFYzv6oAmR/pmXmLadQVsMZDq+0SjHU/k11MIlgYPEXOtO/MctnfQvXzqU+csiIOH2VEMP2ZbgUC7eo5MTGY4QLsdXNv8VtXL7xRpGWQZQCKvbB0wbwSGUGhIRWmse8GvIFeRJ4G5tCuE1el3EFOHXAF0cHfFnFzNEI1cHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,53 +123,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mike,
+On Mon, Nov 16, 2026 at 07:29:32PM +0100, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
+> 
+> hugetlbfs_file_mmap() grows a file when a writable mapping extends beyond
+> EOF. We are missing seal checks similar to hugetlbfs_setattr() and
+> hugetlbfs_fallocate(), allowing a user to grow a file that has F_SEAL_GROW
+> set.
+> 
+> To fix it, skip the resize when F_SEAL_GROW is set; mmap() still succeeds
+> without growing the file.
+> 
+> We currently also allow CoW mappings to grow a file. Disallowing this,
+> maybe even only for read-only file descriptors, could break existing
+> userspace, so we have to be more careful. QEMU's file backend is an
+> example user that might rely on such things, and would suddenly start
+> getting SIGBUS when faulting in memory outside EOF.
+> 
+> So be careful and focus on F_SEAL_GROW for now.
+> 
+> Fix generated by an LLM and sent by Chris Mason in private.
+> 
+> Fixes: ff62a3421044 ("hugetlb: implement memfd sealing")
+> Cc: stable@kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: drop comment; simplify+extend description ]
+> Acked-by: Muchun Song <muchun.song@linux.dev>
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Thanks for the detailed explanation! I now understand why c609c144b0e8
-is not the right Fixes target =E2=80=94 the pages weren't freed back then=
-, so
-there was no UAF. The kho_restore_free() path in d376e4b55c9a0 is what
-actually made it reachable.
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-I will send v3 with the following changes:
+> ---
+>  fs/hugetlbfs/inode.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 7f64bdc07aa80..68761e1ed4d2e 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -157,7 +157,8 @@ static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
+>  		goto out;
+>  
+>  	ret = 0;
+> -	if (vma_test(vma, VMA_WRITE_BIT) && inode->i_size < len)
+> +	if (vma_test(vma, VMA_WRITE_BIT) && inode->i_size < len &&
+> +	    !(HUGETLBFS_I(inode)->seals & F_SEAL_GROW))
+>  		i_size_write(inode, len);
+>  out:
+>  	inode_unlock(inode);
+> 
+> -- 
+> 2.56.1
+> 
 
-- Fold patch 2 (documentation removal) into patch 1, so stable
-  backports pick up both code and docs together
-- Update Fixes tag to d376e4b55c9a0 ("liveupdate: centralize state
-  management into struct luo_ser")
-
-Best,
-Long Wei
-
-=E5=9C=A8 2026/11/19 16:26, Mike Rapoport =E5=86=99=E9=81=93:
-> Hi,
->=20
-> Please don't send vN+1 as a reply to vN.
->=20
->> kho/in/sub_fdts exposes the raw contents of the sub-blobs described by=
-
->> the incoming KHO FDT.  KHO does not own those pages: they belong to th=
-e
->> producers' consumers and have independent lifetimes.  LUO, for example=
-,
->> restores and frees its state in early_initcall, before kho_init()
->> (fs_initcall) creates the debugfs view, so the blobs point at pages th=
-at
->> are already back in the buddy allocator.  Reading them triggers a KASA=
-N
->> use-after-free in _copy_to_user().
->>
->> The same information is already available to user space from in/fdt,
->> which KHO does own and which stays reserved.  Drop the directory rathe=
-r
->> than adding another interface to describe it, keeping the -rc fix smal=
-l.
->>
->> Patch 1 removes the interface, patch 2 drops its documentation.
->=20
-> Patch 2 is only four lines of documentation for the interface patch 1
-> removes. It could be folded into patch 1 so that a stable backport
-> removes the documentation together with the code.
->=20
-
+-- 
+Oscar Salvador
+SUSE Labs
 
