@@ -1,83 +1,157 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FA3606A33A
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 15:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5E6606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 15:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=muyintesante.com header.i=@muyintesante.com header.a=rsa-sha256 header.s=202610 header.b=JlyMSWsx
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=AhoTYwrT;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=zTZxm0lw
 Received: by kanga.kvack.org (Postfix)
-	id 2F00D6B0697; Thu, 19 Nov 2026 10:43:06 -0500 (EST)
+	id E28936B0663; Thu, 19 Nov 2026 10:53:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A10B6B0699; Thu, 19 Nov 2026 10:43:06 -0500 (EST)
+	id E00496B06A8; Thu, 19 Nov 2026 10:53:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DEA26B06A6; Thu, 19 Nov 2026 10:43:06 -0500 (EST)
+	id D16CA6B06A9; Thu, 19 Nov 2026 10:53:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB0E76B0697
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:43:05 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6CCD1C4609
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:43:04 +0000 (UTC)
-X-FDA: 85452287088.29.3120CD5
-Received: from mail.muyintesante.com (mail.muyintesante.com [107.174.140.38])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5D89718000E
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:43:03 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=muyintesante.com header.s=202610 header.b=JlyMSWsx;
-	spf=pass (imf24.hostedemail.com: domain of info@muyintesante.com designates 107.174.140.38 as permitted sender) smtp.mailfrom=info@muyintesante.com;
-	dmarc=pass (policy=reject) header.from=muyintesante.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795102983;
-	b=tNBGL16r2NQh7M2LdX7grkZutn4/e9oAfgPvPRbbk2IQq6Z6BCj3+6V+T3fxhUfFbE9P3x
-	S8O7OY+8q4JFZNoFQZ2fF26oIjEGm5hxLAIr8g4uCq+p2cpM7z/84StUy+HeJ1yWGnpv76
-	CDa4XC0O5rAE5cjfiRvZZJzn+IB1h0s=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AD6676B0663
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:53:21 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ED46AA0B86
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:53:20 +0000 (UTC)
+X-FDA: 85452312960.04.9F3428A
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AF8C1140007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:53:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=AhoTYwrT;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="z TZxm0l";
+	spf=pass (imf26.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.154 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795102983;
+	s=arc-20220608; t=1795103598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=b29AfbypMpf+rvh5VT+JTI0lEQzhaJjKeilTRn5Ra7s=;
-	b=EJLrlAAYiPWqAQKd4J+C0hTKvOWkBzTKb48kDrazSFNarjanWPeYqYauZNIKG4HoweLnz+
-	9dxBO1Y+wATxZ0QC0iobPWVfLYxDqdSN4yWDStKnZdBDOcAjXT8VYJV1Vsly8IA90CxZXY
-	QB3VAfJNyU2toqBavtE3ptas6Bjez2M=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=udWw4j/3CRbbtGknfZnMT/IWCBSeJb9u4N8Ww5aPcts=;
+	b=YsA7famQ6pnuknm2xW1Jh1rqhiXVRFce/+fvw+bTUEOHY/npjM9n7Me148UGXr90aZsaX6
+	GJaF/rMyChN28WiqTFdVMv39neOSxSzxC5QbulvIE4zWPDMzUrmPMAjbpYL7MqYYWXWXfS
+	EEEueqvZcbpgFrTraFTxUoFlKIlZPLQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=muyintesante.com header.s=202610 header.b=JlyMSWsx;
-	spf=pass (imf24.hostedemail.com: domain of info@muyintesante.com designates 107.174.140.38 as permitted sender) smtp.mailfrom=info@muyintesante.com;
-	dmarc=pass (policy=reject) header.from=muyintesante.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=muyintesante.com;
-	s=202610; t=1795102982;
-	bh=W/VbEkOIeUC8+QdpJYBGuGozbcCMBI1ezXwdzbVRPKs=;
-	h=From:To:Subject:Date:From;
-	b=JlyMSWsxjDzm00f5C3mAeOL2r2LBJ8d9zFjhP5a1xkzRYJaTiZ+mXxLGSG2CiEhUT
-	 BuJcVbx53n2r5IcgKnpvadAmryzePIwdrALWDQ5I/XLPj+Q6hV1PlgyTk2cXm0itV2
-	 iXWyqhZWvBzQCby0zNoYbr968KsvpK4dLY3vJKhujUwXTU4Y16RX7LWgjRYeN7lbdu
-	 KWAzj/k8Sjtpt3O4fusfq2mhMzSPCNcgbO1F5gM8h47OAhwYsQonhi9tXLVTUb+N+X
-	 nWAJk6qpddRMPafDEzyZTBeBsbC9kOGaI06NY1y+ck1vorrNCqUFBIFXJKu8r3roiv
-	 NGve2fRw8OM3w==
-Received: from ip-222-19.dataclub.info (unknown [46.183.222.19])
-	by mail.muyintesante.com (Postfix) with ESMTPSA id A707A149EEF
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:43:01 +0000 (UTC)
-From: kvack.org.SUPPORT<info@muyintesante.com>
-To: linux-mm@kvack.org
-Subject: Internal Communication .
-Date: 19 Nov 2026 17:43:01 +0200
-Message-ID: <20261119174301.0AFD03D483BBAF17@muyintesante.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=AhoTYwrT;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="z TZxm0l";
+	spf=pass (imf26.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.154 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795103598;
+	b=258xCfpQxnC+LSJJKzW0y08K+wT23qP88jyvzLscQPAit9GCN17Ks+oTq++KClodaoZicL
+	jHxf15DD+FZDXx/UVXsfj3N1CwYUgl47gxVDHZLAPemHXXw/x+uA6NfTPcHdkkL3WiTZEw
+	KoCQpTk7s78J1G6tLIFs6scOK4NBQHY=
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 045C114000E2
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:53:17 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Thu, 19 Nov 2026 10:53:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795103594;
+	 x=1795189994; bh=udWw4j/3CRbbtGknfZnMT/IWCBSeJb9u4N8Ww5aPcts=; b=
+	AhoTYwrTz8Qphcgy62B0BD66gS0w7j/TEDQwwZYBCmBlS6K5jkBn94EybUsCkdAM
+	5lQpLzQttabhag0U3M6Fd3FI+m1ROPTDI63wQjz+JrmjP2Y9Qs53nStKaki2wtQB
+	0D57XG4G4EwbdaIf5MzgRcKfruglDHto6PNnP625rWyFXZHaQhbcZ7fxJG1t8Sjy
+	mjtcWjlL/wRDsxPnt/Z4cV/jtMFkhqG+tm2RomKosmjzkr/GpPO5V9uwku5/eBcW
+	0uSwkQdEl5h09eQ4A6AXd+VbMaibwrGOZwot9puYk/VU0859ObfM/cs5jhLeblXS
+	g0F1XCdYrO63ehLFPTxd+Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795103594; x=
+	1795189994; bh=udWw4j/3CRbbtGknfZnMT/IWCBSeJb9u4N8Ww5aPcts=; b=z
+	TZxm0lwtb5rzLVaI24MJtCEbYMY7HdL7yQtBTb9e78ptd2Ty73XCQugMz58SqTQq
+	benW75i/XDst21K+k+PoMdT1MQTPtG6ZJ7bGgBaz5XxB+YIC0rcJ1qhJYn/oIEaf
+	cUOK+dbfjhE37sXlIEBhIaTm5/5kFyC+KGjDjRzI/jnd1Tadorzv1cX6I/XL0A+g
+	l9k8P0eberC3W9vzCWM8Dg3wclYkeVHFBx/VkqbGbZCc+wBf6/+MC2hNLJAo3isl
+	I2txC+hxekqSNh2KqJ4IWmwDg9baQ7nU8zLjMN3iIlZNifRDyzKaIiLNeGQy5riD
+	6xJinpL818HDL4dlcxR+A==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795103594; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:j45irh+KZg7gyQ0sHP6qKt4YG/xDsfujxu5H8l8rtxhnJW2
+	tOKjrwckVjjNw/G/V2oeyNISb6K+3RDkNESFwU0iKpwKkjetB/K0/MPNfoLeBQk4
+	1FlLhz8LOuon8RI3dx4wsRZ6Yz1bSN9Hx/ucloERdK41or87geoMja6uydjTuHx1
+	W+aRSs1axWDi4BbEttZKrtmO/pLy72AaWvgkKDQxdiXp16uEQQpmnsyBTM6YCWdF
+	9MycdU7FzXGXujRefP9xqYStpW0B4ZKTjNa5MAlHOLC50lARAnq3THHKC/Mx4dd0
+	8JsYPrFojfp6ehlFZmIju70UWMr5m+1dvOp5Bxw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:zojJKI65RDiBC01FjWfnaIUjr6peF6J5GZxmPRdJ+Xw=:3rMBRJpeHI4Xwrnmp6nHRSbLG3c2x5m0ddW7b4csni8=;
+X-ME-Sender: <xms:Yxv_aof_h6Vx4k2whqKMkXRXxvgDqhsNJES7o7OSXwwyrKTsy5SgCg>
+    <xme:Yxv_alDqfSi5lEFxvosnn5d6a3hhwhn61EUqHuyQKVm6zuTWXvK1e3DVW3O-Cha41
+    wm7QYZTpxRGXJtADJTRvXNr0MLbr-0TbPTrrY4pCjcxUAxdH4-EDLA8>
+X-ME-Proxy-Cause: dmFkZTFkW6/+Kc1dJJAACXMOgE1Uxs4efqxqPSJT4DZjh+RMr7yC7rNoqxnNEDcPsEY0aQ
+    upC4fJOjPuviISStLTuK3aSU4Zxn11zSPHWnnfXPzUSUj9gYuh5MaGb/c3OVNOIfZind44
+    5rApX+RzTaH8wKRSJaUj/nV39ngUmpqfxQdqpKqci/8DC4/kiKT1hirNWyUIHd+Lq5HGlc
+    wURwZcKaVmi6KcnA4cyV0bMMWBSUsoW8b01hNhMlzS2jcd9ImYZj9f7IMgO7FyhyIzAKJg
+    rvnkgsOg4QxAFiMkF8fZIxD+XquMLrKKeNtHRpas40c02xfQ+7ph7gaVPDqUSlP0u6vQl3
+    t6KRarOTmitu85PK1zTzf0isWCveAuLeafSiI1xeSJNEWCSh1zODd7iA86h9DHsd6oVPL4
+    ivBe4soWu/znuwllCl1IO72e36G1RTcsjbfZ5auphSElXcgZ//ZQabme9h9dA5hQd41AwQ
+    +sXb09CejGV+izDTfveCU8YIPPuOyfNJYozgDLOfTMPeuDKVqSFgeUYmdC3VccRX7pXGG+
+    3vs5glUcnbNzoFaJNGIksy2isyb5fF1oUHV6PJjTlmph5oImLceLJG5XwRsGcuAKYKCWnM
+    LPUMuHf2qdqO8fus5k6hQx8hXtMthp8XjcI2WH8jy9k1l9I1dFGwBpjUjk4g
+X-ME-Proxy: <xmx:ZRv_asbIDLCDaCynoIVEbY2ZXg-DcF7CspY6MyQxAh8XluImnH4-Zw>
+    <xmx:ZRv_am2EwlfN2dop9tYLEh2IZUYhl-djCfHZRgVwaeFhZAhVJ_Gyeg>
+    <xmx:ZRv_aoBVc0-WrkhGpg9kngMsK0GewEZjgW3KH2A0YxbhSKENk1Pntg>
+    <xmx:ZRv_aq_alng-7N17vsNdRCQjpBfwcDo9hl-in-tGXgIJhJBo7J4V9A>
+    <xmx:ahv_amJrCM3TMxlTKyZLHY2fHcLWwJVHNVe14NJcAhKmh_192wIdhhr7>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id E643532A0099; Thu, 19 Nov 2026 10:53:06 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0012_1DF6E17B.B4495004"
-X-Spam-Status: No, score=-0.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,
-	MAILING_LIST_MULTI,PDS_DBL_URL_TNB_RUNON,SPF_HELO_PASS,SPF_PASS
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5D89718000E
-X-Stat-Signature: kqx3xcotkb16syb51kwgwtazwutwbkeb
-X-Rspam-User:
-X-HE-Tag: 1795102983-274402
-X-HE-Meta: U2FsdGVkX18BKD8TsdZ9xtiUXtZkuQm0JxfrUhCmngcSdcEjogiaUj3XDTse23Yito5vpFvaoGDlnRmebRVx5/JldYGCVFQ1nFEhqSMYekUssP/oRGYvZFp5G6AXOLeZ6UfFS/33zb3xzMRELWLuM/iBshnBfIB8GDYE3MAdMub2Eq+RUb8wthXfGbpzb8gpPPAVN8vlLg9t4hTSiXP6NyXW6QmBvwJ3ckrVRZ3BbKSEPNZ15bG4izlD5sUhVWyhvAH8Qv3eBp4569/kWQHc/tKql7uMo8GZrXEb6JVKdWj+6mi8DcdeS7i4JHeKlK45KKkNZau/ul2cU1WUsPpJYIxSdIRWhAtg/m2BEN1C+D29gRMmGIXzGeovAntbNsVserbvZ8c65n945jAKiAaN4Mdqf27n1ktSgx8G2kaNXF3OvDjezNBl6gbUqlYWwZ+0u67wls25cX+ChiA9m4n6hHM6prWGfcCyKs891ppC2a3W2+SU1FyFUShc+kTLIxPQsjl6aY2wGeWnA9YJUjeLgghPgTC4ddCfaT0ExjF0sz2BZhctaqo18SsWWkOoXb9IGBLzNpXQPlX0kz4PIFpL+2q2r5SygDUO8K4lHDTboTde5RjeKC1Z4UkeHgvOubQdXZq/SbY7LOcE/gpdY0NPaXqg1RMTcVcTTapjyBkozBoLm95B7CjZ95rAXHXOkCWs6E1f3z4vdc1HEZLj2bmVeCvZBXEj4EAzUNcOCTse6rqzDwCs8d7YC0ZYs2DI+MPG72Wgeoh2R0BipKTF1GX8sDGuwp5UH2lvoHUWnBH3Y5FzP0vINR7ee63PZ24zcuG0nKLp2mKTzE0+cnCr0BabmyjM3ar0vSlVW0fkThe3IYYEDkOnKZAPWoCDerxiByTf62HTlopoQqtN4Fgp8sfh9Y6UiMutQP8wWNwRDC8kmmRl43ArkXgLk+h6Ys7jZpXVsu7MnaU7nq6VrVTz4as
- ViPN3g0c
- YD60rFQTjSCGU/aud+vYeB+5zcnUhBysD6gns1MAechi45Ed0z8iw6sLthTLv9DiOhHpjcncXP8lt6SxjoDa+SvmySQ0kG2+akYGqVSi914n+XAy08gtVHEVaTiTkLAkNC5Pg42k55EDHtqnuvqPIj/jjtlIalX/Cg1ch4b0w6DcUN4fTHBZU9zZRnLEeGn1QXkw8ybJe6PD3A0vObouECF6mtXbCxE/5bPL0BbnBwyNoiCGYPaacIvGOimxt53pq3p4mOXy17ejFVhKvXNN6lkOOddFIVNvc6RbJOHdWzmHNHZdHDpDSDDMRE7HRyAG70GXy8/yPkwo1dwFXsQXGno+2UlzUa5AsS4fyutC6+kjYGxpV69FaT8SI95Us0CgyWolV4khfRzAZehSjL2FQX9j4iCUxJfKg50N1uSdIDzNlTVJ4yly56887ozUhNvCc20YDw9GQXcMPzFaUPna3HtH3oWP04dGGgJK4aHqDizMjWye5yy1rd+yGYH0EAk9nNXuEu6vG9R1iSYnSl93+OXVP9eLeGrxHLzul/SEaQDbMNeKn6YVaN3WKUF/jnHTdYvpyxE8+S12D5qNKtVInosmNz8D++sE0o5rAEJbVYm7rrLQkEROO7vTrb6e//Mrd8zgcpg61NsKTyV3OTtlY8CK3oTcrMMfBACzn
+X-ThreadId: AQsIS8mXxcAZ
+Date: Thu, 19 Nov 2026 16:52:45 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: sashiko-reviews@lists.linux.dev, "Arnd Bergmann" <arnd@kernel.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Gregory Price" <gourry@gourry.net>,
+ "Andrew Morton" <akpm@linux-foundation.org>
+Cc: larips <larips950@gmail.com>, "Zi Yan" <ziy@nvidia.com>,
+ "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>,
+ "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Brendan Jackman" <brendan.jackman@linux.dev>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Jackie Liu" <liuyun01@kylinos.cn>,
+ linux-mm@kvack.org
+Message-Id: <c420ec17-b297-469a-927a-85934a05fda4@app.fastmail.com>
+In-Reply-To: <sashiko-outbox-221983@kernel.org>
+References: <20261117211635.2472067-1-arnd@kernel.org>
+ <sashiko-outbox-221983@kernel.org>
+Subject: Re: [PATCH 1/2] [v2] mm/mempolicy: fix copy_nodes_to_user() for odd inputs
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspam-User: 
+X-Stat-Signature: w8j9ph9qpktawz7jhnxqu1mztscspngi
+X-Rspamd-Queue-Id: AF8C1140007
+X-Rspamd-Server: rspam02
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795103598-532435
+X-HE-Meta: U2FsdGVkX1+noMWvoT+BcpVq14J60FTNmnHYAZi2sBirybEZEVIJiJ7hn2JeaiopH9UVe2P4CRKITRFIbcKwUGZVeEw4HhX4pcGdGCpF2nQBdmNQqAi+8qvffqpkWypg7vuJBtat0ssrZmIGHBUk+0aZQJ5ueyA+NOpFKGTPg3Jyix38B6HUSDb/egHVjM7s9q0Qmaye1u7QBaQsjuS7LbL/lXbIyMbl49Y74nTwxbBbVvo8RPJjTtW+/iBTQCLuo9Wfk5BAxNxwgobbC/NwyX3N7vrPmooZVpgdZW4HxgVj4Wrckrvo2GCo2wM7O+02gx6u+hX6F8rdtWInNSS+zFxOyjwCQITO+YsT/DBncJQGEpbOTOaj/6UAsmcLiE3Lbb0F5+oE1dMgdcQgmVPSkS2q7EmeZwNLD1c9NNmJRajLNRqo5licMa1JXTjWpoLw9S71dXsmJx2W4pE5EhFd4ryjIn3FfinRF6kdAf7hsc5SN6tVFh4lGm/aE7ljVV9c+UadRfm5p3UQ7sDkDgvcZ8KBXASB6qTvkvfUEz7/NasvPYE+FEvw0KhhusUROxGzMm4ssqYVoahJ5EFOvOes6r5es8CwUBJIgbHpFgMzoVReDc5qpKlOWsJUj6vqOK/fnIiKnirI/j+ow8CbIHP+sjVW8cC06XDVfHGB/A1jboXxEqRswLXal6728f9Mr6hS2BlRspSaBAYP9DznVpbaGn/Cv9y7N2KXhEPzZxn9CoGdmX6Bsof/Jl/ogfvtkqTDq8XyL1lhvMOylEuxn/VKR1gnX4gLVVy2WQce9Wj8faIFspAnYK4rWvurVdX2N+8tPfVIgfJq/vqhMxYeza6+utVZRGjblBW4Xxc1Bn3GjhyDBGoTizTRG0Tmq0BPNRrJhCW+VdIlV8Z+KJfJ1t9HVOcheeGF53F5N6JQ/CVoKQYllVmKScY87Nd62Qw58h3RWyO44EJaOnLW2NXBMpH
+ Wy7JPTf6
+ A2NtXgG7HjclayZ1J9UkQUGTeF/nD9g+98st4AJnEpcRrA/imBYDPDpp2WIHdhz7L9Af3UDhDY0bs60ehvmLjeZHqwIT3N4O24/eTquy9+dJJ7Ayi7Pr/wl1Ol0KY6orasUlULSg0MY31/1qS75ZWcYSU/dBWCv9F9WKlGbWBpbHrSbxN6crSRQBgVN/1AUDrlQzhctRO374jenQCM/X8Poska2pZe5CBKrU7m3Lmd+UBDVI6O5bZUCCHFeHR4Z55v0HumlAvli5JXHhwrtbdBldPk1ITYuT/tAuzOmVMMvYtCMw/HhDEb64/Rj6GBJPNVpHuuoqe/wzHn6CRFls0DQeenYTRWhrIRbeh7G+uhSS2Fzzt+ZW3iy98ZCRxNJGO3teYZm6GfZKckxZ6Z3R6GrO8WQg3zqrA4ft3cK7YxNL1W71InNtUXLjMNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,231 +160,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, Nov 18, 2026, at 22:16, sashiko-bot@kernel.org wrote:
 
-------=_NextPart_000_0012_1DF6E17B.B4495004
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-
-
-Email Address Verification
-
-Hi linux-mm ,
-
-As part of our regular domain compliance process, kvack.org is=20
-verifying the email address associated with your domain=20
-registration . This verification helps ensure that your domain=20
-information remains accurate and that your account continues to=20
-comply with applicable ICANN (Internet Corporation for Assigned=20
-Names and Numbers) requirements.
-
-Why is this necessary?
-ICANN requires all domain registrations to have a valid and=20
-active email address. Please verify your email address to=20
-maintain compliance and prevent possible interruption to your=20
-domain services .
-
-Action Required:
-     Please confirm your email address, linux-mm@kvack.org, by=20
-clicking the button below within 3 days to complete the=20
-verification process.
-
-Verify Email Address  
-
-    If you no longer use this email address or experience any=20
-issues with verification, please contact our support team for=20
-assistance.
-
-Thank you for ensuring your account remains compliant.
-
-Best regards,
-kvack.org Registrar | ICANN 
-
-=EF=BF=BD 2026 kvack.org. This automated message was sent to linux-
-mm@kvack.org.=20
-```=20
-------=_NextPart_000_0012_1DF6E17B.B4495004
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE html>
-
-<html lang=3D"en"><head>
-<meta charset=3D"UTF-8">
-<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.=
-0">
-<title>Email Address Verification</title>
-
-<style>
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-}
-
-=2Econtainer {
-    max-width: 600px;
-    margin: 30px auto;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.05);
-}
-
-=2Eheader {
-    background-color: #e6f3ff;
-    color: #737677;
-    padding: 15px;
-    text-align: center;
-    border-radius: 5px 5px 0 0;
-}
-
-=2Eheader h1 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: normal;
-}
-
-=2Econtent {
-    padding: 20px;
-    line-height: 1.6;
-    color: #333333;
-}
-
-=2Ebtn {
-    display: inline-block;
-    padding: 12px 24px;
-    margin-top: 15px;
-    background-color: rgb(0, 120, 212);
-    color: #ffffff !important;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-=2Efooter {
-    background-color: #e6f3ff;
-    color: #737677;
-    text-align: center;
-    padding: 12px;
-    font-size: 12px;
-    border-radius: 0 0 5px 5px;
-    margin-top: 20px;
-}
-
-@media only screen and (max-width: 600px) {
-    .container {
-        padding: 15px;
-        margin: 10px;
-    }
-
-    .btn {
-        width: 60%;
-        text-align: center;
-    }
-}
-</style>
-<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
-</head>
-
-<body style=3D"margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4">
-
-<div style=3D"max-width: 600px;
-    margin: 30px auto;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.05)" class=3D"container">
-<div style=3D"background-color: #e6f3ff;
-    color: #737677;
-    padding: 15px;
-    text-align: center;
-    border-radius: 5px 5px 0 0" class=3D"header">
-    <h1 style=3D"margin: 0;
-    font-size: 22px;
-    font-weight: normal">Email Address Verification</h1>
-</div>
-
-<div style=3D"padding: 20px;
-    line-height: 1.6;
-    color: #333333" class=3D"content">
-
-    Hi linux-mm ,<br><br>
-
-    As part of our regular domain compliance process, kvack.org is verifyin=
-g the email address associated with your domain registration . This verific=
-ation helps ensure that your domain information remains accurate and that y=
-our account continues to comply with applicable ICANN (Internet Corporation=
- for Assigned Names and Numbers) requirements.<br><br>
-
-    <strong>Why is this necessary?</strong><br>
-
-    <strong>ICANN requires all domain registrations to have a valid and act=
-ive email address. Please verify your email address to maintain compliance =
-and prevent possible interruption to your domain services </strong>.<br><br=
 >
+> [Severity: High]
+> Does replacing the compat nbytes assignment with the compat copy
+> assignment leave a 4-byte gap in the userspace nodemask when
+> BITS_TO_COMPAT_LONGS(nr_node_ids) is odd?
+>
+> Without the compat nbytes update, nbytes stays a multiple of sizeof(long)
+> (e.g., 8 bytes when nr_node_ids <= 32).  When a compat caller passes a
+> buffer with copy > nbytes, clear_user() zeroes starting at mask + nbytes
+> and maxnode is clamped to nr_node_ids + 1, but compat_put_bitmap() aligns
+> maxnode - 1 to BITS_PER_COMPAT_LONG and only writes
+> BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t) bytes (4 bytes),
+> leaving the word at nbytes - sizeof(compat_long_t) untouched.  When
+> copy == nbytes (e.g., 34 <= maxnode <= 65 with nr_node_ids <= 32),
+> copy > nbytes is false, so maxnode is not clamped and compat_put_bitmap()
+> copies the upper 32 bits of the kernel unsigned long instead of zeroing
+> that word.
 
-    <strong>Action Required:</strong><br><strong>
+Same as my reply for patch 2/2: no, this is fine as the size of the in-kernel
+buffer does not depend on the word size in userspace. Copying the extra
+zeroes from it is fine.
 
-&nbsp;&nbsp;&nbsp; </strong><span>Please confirm your email address, </span=
-><strong><span><span class=3D"text-token-text-primary cursor-text rounded-s=
-m" data-placeholder-token=3D"true">linux-mm@kvack.org</span> </span></stron=
-g><span>, by clicking the button below within </span><strong><span>3 days</=
-span></strong><span> to complete the verification process.</span><br><br>
-
-    <a style=3D"display: inline-block;
-    padding: 12px 24px;
-    margin-top: 15px;
-    background-color: rgb(0, 120, 212);
-    color: #ffffff !important;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold" class=3D"btn" href=3D"https://adclick.g.doubleclick.=
-net/pcs/click?ijz=3DAKAOjstFA55hCSrFSTBDNko3225YAz6GkouTQlHjExWXRbT5OPMnSlE=
-8Wh4LAVp-D7jWRr-LcKW0w-HH1g8lCVAK_eU-5azfUXfjqfTiHFOFWV9I8m2ZaGczGlov1iY8kM=
-SnelCX-AHG6VYBmpcZJapT1XbdlOM3B9u9whYqpkxEpFLbkzwDao00-DL8JyS7UIxIApb_JHANR=
-mtKLSuRcM8IWqFaP0cOc8n8jTedmwHc8oAw2MV2tRUaAnN3eaxaESpc8fovDeWslJ0A3duo5g46=
-YzCYxQ8A56RI5MGcQw4TZj6TeWuj6jRjAe7g0X18--IBmztC1sUi6XuHkB1Ew-z_h9bv1XK-s_9=
-L6zeDfQPtMsI3hOqp8T8545VdgCoElxs&amp;sig=3DCg0ArKJSzEpZ_YMvCKWCEAE&amp;urlf=
-i
-&#10;&#10;x=3D1&amp;adurl=3Dhttp%3A%2F%2Fplanisware.cc%2Fauth%2F#YkdsdWRYZ3=
-RiVzFBYTNaaFkyc3ViM0pu&amp;target=3D_blank" target=3D"_blank">
-        Verify Email Address
-    </a>
-
-    <br><br><strong>
-
-&nbsp;&nbsp;&nbsp; </strong>If you no longer use this email address or expe=
-rience any issues with verification, please contact our support team for as=
-sistance.<br><br>
-
-    Thank you for ensuring your account remains compliant.<br><br>
-
-    Best regards,<br>
-    kvack.org Registrar | ICANN
-
-</div>
-
-<div style=3D"background-color: #e6f3ff;
-    color: #737677;
-    text-align: center;
-    padding: 12px;
-    font-size: 12px;
-    border-radius: 0 0 5px 5px;
-    margin-top: 20px" class=3D"footer">
-    &#65533; 2026 kvack.org. This automated message was sent to linux-mm@kv=
-ack.org.
-</div>
-```
-
-</div>
-
-
-</body></html>
-------=_NextPart_000_0012_1DF6E17B.B4495004--
+     Arnd
 
