@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04746606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AFE60A260E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=owrSWS1F
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XnQRPm/F
 Received: by kanga.kvack.org (Postfix)
-	id 232E26B069E; Thu, 19 Nov 2026 14:36:58 -0500 (EST)
+	id B34E06B06A1; Thu, 19 Nov 2026 14:37:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E3D96B06D0; Thu, 19 Nov 2026 14:36:58 -0500 (EST)
+	id AE46F6B06D1; Thu, 19 Nov 2026 14:37:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F9CE6B06DE; Thu, 19 Nov 2026 14:36:58 -0500 (EST)
+	id 9FA216B06DE; Thu, 19 Nov 2026 14:37:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7546B069E
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:36:57 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 56E081C46A3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:36:57 +0000 (UTC)
-X-FDA: 85452876474.19.4830975
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5896B06A1
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:37:02 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E42AD40BE2
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:01 +0000 (UTC)
+X-FDA: 85452876642.06.0FC26DE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A35A4C001A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:36:55 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=owrSWS1F;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 43C0C180020
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:00 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XnQRPm/F";
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795117020;
+	b=8It7Dyp7K4ZoLdZ5GrOtHG2I63jSzbBEESGX6NIP/5EaIgxNPafv2XuXeNoBIzOfzIzFY0
+	MREt/jsiyvek7o7Nm20N907jgp0FVE2Dwh4WDzHAaB6mLSJUrFwOx7omgdEN7FHC5WlLbr
+	Cn5aps00BvEHNu8aCbybQVWgiJuOpOk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XnQRPm/F";
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795117015;
+	s=arc-20220608; t=1795117020;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VNM+7RVYDMfJcBD0bitBmq9dsNdnP+e2PrcUcBzEF7U=;
-	b=HC1ZVmPbzMI9BZ6LKcXlRu/3XLvFuhsjGjxJTQ0nX4U7SEWp8bXcqaU+oLhjZXs06va5XR
-	7uc6Sum5e57KLfeANlgj6Ivou3jo+787kCHg6h00EbwABKPyXWXfi+hIveGNWlpW3Ki1K5
-	x2KSEJxTUZAH1W48lp+MYglDBU04dMc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=owrSWS1F;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795117015;
-	b=af1Ml4pkh58vd98vPAkj+ZJEeYwUIaza1KabZN7guOsUW3Q+YY0Sy+dSl8Lsm3cWbSjPw2
-	cuAa38eqriPYm5yYcO4oubdEloRzpoQIKzauMGZYSghYDrNY00a0vFJ2IVbzBVcbs9n1Lm
-	/jY0fmxvpyF+dJakD/YCVTzYPq8eHcg=
+	bh=y/YfY+oC3S5zb54LFhSRV/k0YjNqqBJZ3NHGLIHdrTg=;
+	b=IHsJQpq6ijdvGhc/J714n4IlLPJrKSFZAF3ye9tCVkKNxVCJA3iPrXja8MaExL3L0xTA5f
+	Istu8AQ9fJ/QL1YHJbposHjrINfFajXZd01ugyftZPTbRecK4U1wwj/KnUsu+tVVH3fx0c
+	EdyqbeQyTITYhg3zLlErUQmohXFEHJw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2CEA445127;
-	Thu, 19 Nov 2026 19:36:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C261F000C4;
-	Thu, 19 Nov 2026 19:36:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A60046C60;
+	Thu, 19 Nov 2026 19:36:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2F21F000C4;
+	Thu, 19 Nov 2026 19:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795117014;
-	bh=VNM+7RVYDMfJcBD0bitBmq9dsNdnP+e2PrcUcBzEF7U=;
+	s=k20260515; t=1795117019;
+	bh=y/YfY+oC3S5zb54LFhSRV/k0YjNqqBJZ3NHGLIHdrTg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=owrSWS1FsstagbuZ/jERHqlbcvoDtYvMNFddXXZmwRBNjjOa+PdL498x5idmBTC8v
-	 yoA7K0aPH6q4N7ZoWFeOCofHW2RDkCjWEj9aQvv4cFbSz61dqNFGcMQmuKQZu4lBq1
-	 0q+W5smUlWBitu7XmqR45NoSbC/4g9He7o4Y+q13eL6rxc4ZK5jLVdZaVxNw/XKimS
-	 zJiz5y4mpZZ7VZMWU3jyJHn9Hpr3yZTAmwFJ3OP28st9KBK7BDWtOeiGnDeb3S4A34
-	 8Ul6+zRWGmczZ9XE0Cc/WVunzqTccCefb9KxG/Szr7pZcXt7Bos9fO3yPglwtaXesR
-	 BqIO50JkVd+yQ==
-Message-ID: <sashiko-outbox-223947@kernel.org>
+	b=XnQRPm/F8fnWyHXEJtIk/x41MLHaek0uoWoOBQVBzT6XYjx455oOtd96NJYFUrIWY
+	 huLeW7QfxayBwGqbeYDyeF+dbeu6Hi1JIJWxT5SoJ4XkIpvjg49ooy1mkG7xHyjgaC
+	 IjSW3Pmr7mOujPocZiK1a3EqCG+seY8966m6/bFyQvaZpE9YyD6eK5BKpq8pxazxrJ
+	 8pPTtkkHaaf+D67z5Ryvrx3Bhh51LYk9CsC3JVUmamJPqcOnHT+dw4ZxVzozFVAjpQ
+	 4j7z94MFhB2YyRh8kVzwszxM+xDR+Yx2m+aV2rNczlBqYgD/QwyL42dOBVnieK4jPS
+	 8H7FUwATL7KbA==
+Message-ID: <sashiko-outbox-223950@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 05/13] rootns: Add rootns_wait() system call
+Subject: Re: [RFC PATCH v3 08/13] fs: Support FSCONFIG_SET_ROOTNS in
+ fsconfig()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jarkko Sakkinen" <jarkko@kernel.org>, "David Howells" <dhowells@redhat.com>
 Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
@@ -84,24 +85,24 @@ Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
  Schneider" <vschneid@redhat.com>, "Vincent Guittot" <vincent.guittot@linaro.org>, "Vincenzo
  Frascino" <vincenzo.frascino@arm.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Zygmunt
  Krynicki" <zygmunt.krynicki@canonical.com>
-In-Reply-To: <20261118193539.240065-6-jarkko@kernel.org>
+In-Reply-To: <20261118193539.240065-9-jarkko@kernel.org>
 References: <20261118193539.240065-1-jarkko@kernel.org>
- <20261118193539.240065-6-jarkko@kernel.org>
+ <20261118193539.240065-9-jarkko@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 19:36:50 +0000
-X-Stat-Signature: uhfdw77qntgftb66o1u549q4tthtz3um
-X-Rspamd-Queue-Id: A35A4C001A
+Date: Thu, 19 Nov 2026 19:36:57 +0000
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 43C0C180020
+X-Stat-Signature: qaguckmfz1wsdbfbcic4qn6ubnks5g77
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795117015-649862
-X-HE-Meta: U2FsdGVkX1+Ffvl/dG6z/vFv5TqPmUfm3+aakOOsOsYaMmFGgdIDh9IxlFYJItAf+X+rqyih6njN+5TyIyeDZn5UHd+OSoIK2+J97ZLYpU9aIsa6mwwBZ0VXSOYbCDOt4gXNn+H08FYQItQ93Syo2f/VgVNkY8U+gpvtT2dgovi2enrmiD6yTWptF3+K0x2FX8a7IH1PUZFGlvQbJKgn9/qc14XAJI1wqIaeRZyPSyOUqfd/FBgun2FdoLeCMTTCF3PT/PU2G9krJvTJhyWWXHkAHUMPOa80+x9s7AWB2z1t3qVDLTugTQRzo2p1bMIJ33lkYtJktzh4F1font9Gd16O4/rLqbFtN1Ldtb8VwnaDoZaTKiK4ntXwZmhUH4HLpa2IXHgcq+/LFsQtv4JMejnTDCerGcGqABjAl916mcJruqbZ8TLmMw0yVG87c7i3wCq3WEDiG1feY3uMOR/ccehdpF3HhKi8TxVQJdpkJea8RFzlIJSYVkp7h7IJdogIMsVqz6S6CgagIJRiSNajCYwgM6j7msIx371yojHcPUWyj3GAnyMiCu7rERVPipZ2Xoxjyn3rV5F+hJrjI7LeaSmXb+NMe2R9ranpJN+2sUaR284rTDqjQOW8w510eNrrPZ+/P/E17Q6z7xTXAxlQ4SbFpHy0nX6vBM47Xa18Hhq165/kzxWz53tLNXAVRf4QoP+AavtIGxQIomZIQeEii46BI+esqAvWMtlsOZntFTEgQvwrdGfGDuKCzAPp/o5MJV8+Ou+73jyAL81YIsD4CMvRANcef3tQqtF38CMxeF3MoJtWfU+V6Po4Hpk2cVmBg8xCJdyIX9jA1tNuBULMo2q3/0aBL+9Z6BCU2EWT9VU8xWYwO1hD4mRObD7iY6h6/k98qtjVpuWDsN5HDP6PTSoQv9KyhB+Ta7eWH3sb2O5hoeX/DL8a8e5OCQvP2yNBndDhDw0xpZYqff78bhH
- VfD2yQxs
- Blr/v2XKGce10Pzkbl/vEwzBh4SSPXxyToz6Oyotu8ay1pF58Tt7pFcbddQMJl/69H0CwWVfChPtR/PM2xCURMHI8Xjqd0t41BOeY9itD4JfSTtYxrYQThQU+5ohQNk6xEluGAJcuVWPnESbeU2iTQzPfHCnk708VG7/ZTuJhxWKxO/4zTNlP6G9KoqqOFZcgBWQDO/I0acAy9OnUdcf38ypOcTR5rvIOUHbo31a8JV40eHTHE/SGc127iRW91hAO4KjVM/0++jItcU398EW+8Bx2J2D3oY5Ood71g/FVE5NA1/CC0axDl/kqh+txYC+zSG6fGAxoCIhJ5dT0w6e6RUNFiTSnOmNYMlWwl3D//tMNdreELekE4PNuN1t+B88dswYBORO0H+x4cWUc+vRm2DRRtWrd2anG73MnZl9xMArK18HSKrvwsGih88SgZ3ATfC24rRjD3V5VHgKaWua4gNpV/yIHZ3yyZK4MjZ6KcxiPgFefUUtwcxE/b8gQDRRS8KA8rL1PtVpfJsKcBMGYOzJZUuxN/lGySEuArezsGw8sm52qorNx2eTmxCOlfIaMKLaD+YxHF00WYtcUQfHqzb5JDwVdFD05C0V57JRUCSF2qgbBRX8rvOW/YRsqfkCeDjWDxP3qAqcw16g=
+X-HE-Tag: 1795117020-860243
+X-HE-Meta: U2FsdGVkX19a9N3RJZni8c2wps0c/kPXpTLnll4zX+7aBQXDYsLfm/m0RWc3JvWiiUXZusniEeZ7PCRZwK1xobl119bfrd6Uba8anMHSlcHiSIMCww3HxFVVXh/OuXriLM+710X/Wh6P/GVr8zie72OP+5bnnAVPjmcTWoVXrSliEijwKRVc48hyRkROGRBmlxglwzmPGF4kHjcsiYfYyWJ2PjRcr/VSz/UyBKYMOsONjhW4YKTeJZDlVaPCw8T0x2sq5hBE7bzCOubjiuen6Inh4vd1fOd4mxjTAula2iWMGVqX0oKGs9LzP0r6zb1ck26jzxEu19OXo+EXzjZzgiua0QyWdOK7SSrdxfEdsX7ewYx8aldPx8i3/2g8BKSPR9I/o+LEwdkmt6xPuncBW1YArQY82Av8QEjVi0lds8jZj8pBoXlKBU09obSq/dBoLA1+q+6guTQsIaT0vJm58XO3AiysZ6+UAk7KiqOrOw2KHYCq6MjNGH/1FJjDaDg1eYixmm5ozzPqhnJzYll6oVBMgCK5iOyR1uYVNEbx0LkFTEW8Vzb8ewgSSiUxr/jyb3oLL8STeQckSVDtfnL7MqbJpyeIJENcva4HeqEK7cgCNcvdMi3AhGBqcM+Np/BN4loxgeeTkSZUB8vSDQFyk4eMqEPRcBlkASRwb4iMCMyBklSJrQgymdnGCLw0HIefq85ymmRBv8n6hPVCxsBck9Gxen9Dk3fJlt0zPfaNNMMQKru+Mx82s4m0PA4K45ygHEJ/hFuOj8p/lh/KjOZ/URpoZayCZ8ytYFn+IPw1CslTV0Ksz3pv6QGWXLUCBe/5rdda37M7f4I/U364Hh5lWTHlg7pQc9/jMK4QYwLP0pHIkAOeCTyzmDm1Wq4KtSOXWOS08AwZkOPzmkwtWVjBpM/SD5qCn/ElhrBRB5ymz026NS7bu+/z4jNPpRhBlUN2deuzog6+Gyq2Gddcv9k
+ bTZKjtF3
+ 5dVd5ADPWzMIh1w5wUENrL/2GmlkXs75u8UgvpfYIsAI2fvDuQq67Gj4hOLuMNoLuk81sew1Zgp5KHTji8tzlkxDYxJWL8XxB1doKPDqSjVzxvfOmPc7KeoItpGTzP9rkUS+jY9q5WG4hd2E5Zl/5H2v8Pe9M9vyVGHZ/yK1jtyV3ezE0MtWh6zknYeLLikE380UbvuiTU/jj8yV6ntLPwJG0vqF8SWlBKlmch7pRk6rL97EbBXAXxN75rwtr65aAnacHlqRfo64YIy1Dnwbeltbrzcvj+zcNFBk7E6Voz49q4cXwqRsW7FVdU4ark52xNobEKFs9mk1mvElOaxxNVVbR1gmjqKfWP7Lql83JvGkbs8Oiq3lx6cyD7cATaiHzKnD3eDg0m7NV4OcqIEH610MaXbChW4YzMuqrUoZDdZbKM7d2DE9h3q7X5SzMTrgmfJPt09vmd3XdK4aLwny65DpZeSHvNC1l/LDbqclVKVB4cnM1YibDZ2hMdGEbEz83WKv2473Rt7RN8ub2aDfdLzksbmQqRkVhv0nZSSHjVIiSsM2bp+moQ6zRErtQ3qRnHxzFDf0KwKerQD+xmST9KC5L3TjSZOtua2I3wc0m6vsgBrDS9xgd4R6mCgit/8JIfEdEa5BJBv136fw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,90 +112,300 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issues to consider:
-- [Medium] rootns: unreachable init_pid check and missing -ECHILD in
-  rootns_wait_common()
-- [Medium] rootns: non-freezable TASK_KILLABLE sleep in
-  rootns_wait_common()
+- [High] fs: unprivileged devpts mount via fsconfig_set_rootns()
+  bypasses pty_reserve
+- [High] fs: alloc_mnt_ns(fc->user_ns) in fsmount() breaks submount
+  MNT_LOCKED
+- [Medium] fs: missing FS_CONTEXT_FAILED transition on set_rootns()
+  error
+- [Medium] fs: fsconfig_set_rootns() loses cpuset context state on
+  re-init
+- [Medium] fs: may_mount() in fsmount() bypasses fc->user_ns capability
+  check
+- [Low] fs: missing @init kernel-doc entry in alloc_fs_context()
 --
 
-commit 8a805a3f4fb79d05bf397b0ae4fb7738f0017723
+commit fada980b534067d9740aa79ea2751dbe127d6be7
 Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-rootns: Add rootns_wait() system call
+fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
 
-This commit adds the rootns_wait() system call and its compat entry point to
-wait for a root namespace init process to terminate and collect its exit
-status and resource usage.
+This commit adds FSCONFIG_SET_ROOTNS to bind a newly opened fs_context to
+a target rootns before supplying parameters, allowing unprivileged callers
+to open FS_USERNS_MOUNT contexts and configure mounts for a rootns where
+they hold CAP_SYS_ADMIN.
 
-> diff --git a/kernel/rootns.c b/kernel/rootns.c
-> index c420e36af603f..5582ff010ca53 100644
-> --- a/kernel/rootns.c
-> +++ b/kernel/rootns.c
-> @@ -305,3 +305,106 @@ SYSCALL_DEFINE1(rootns_create, unsigned int, flags)
-> =20
->  	return fd;
+> diff --git a/fs/fs_context.c b/fs/fs_context.c
+> index a50584df97bea..542dede2f8643 100644
+> --- a/fs/fs_context.c
+> +++ b/fs/fs_context.c
+> @@ -259,7 +259,8 @@ static struct fs_context *alloc_fs_context(struct fil=
+e_system_type *fs_type,
+>  				      struct dentry *reference,
+>  				      unsigned int sb_flags,
+>  				      unsigned int sb_flags_mask,
+> -				      enum fs_context_purpose purpose)
+> +				      enum fs_context_purpose purpose,
+> +				      bool init)
+>  {
+
+[Severity: Low]
+The kernel-doc comment above alloc_fs_context() is missing an @init entry
+for the new parameter.
+
+[ ... ]
+
+> diff --git a/fs/fsopen.c b/fs/fsopen.c
+> index 70024870fefa2..3e36270baadb3 100644
+> --- a/fs/fsopen.c
+> +++ b/fs/fsopen.c
+> @@ -41,6 +46,76 @@ static inline const char *fetch_message_locked(struct =
+fc_log *log, size_t len,
+>  	return p;
 >  }
-> +
-> +/*
-> + * Wait for rootns init to exit and report results for the caller.
+> =20
+> +/**
+> + * DOC: FSCONFIG_SET_ROOTNS
 > + *
-> + * Returns caller-visible init TGID on success, 0 for WNOHANG when still
-> + * running, and -ECHILD when init pid is not visible in caller pidns.
+> + * ``fsconfig(fsfd, FSCONFIG_SET_ROOTNS, NULL, NULL, rootnsfd)`` binds a=
+ newly
+> + * opened filesystem context to ``rootnsfd`` once before any parameters =
+are
+> + * supplied (subsequent calls fail with ``-EBUSY``).
+> + *
+> + * The caller must hold ``CAP_SYS_ADMIN`` in the target ``rootns`` user
+> + * namespace, allowing unprivileged callers to configure ``FS_USERNS_MOU=
+NT``
+> + * filesystems without entering the user namespace first.
+> + *
+> + * The context is initialized against the ``rootns`` network namespace,
+> + * ``fc->user_ns`` is delegated to the ``rootns`` user namespace for
+> + * ``FS_USERNS_MOUNT`` and ``FS_USERNS_DELEGATABLE`` filesystems when the
+> + * mounter ``fsuid``/``fsgid`` map into it or the caller lacks
+> + * ``CAP_SYS_ADMIN`` in its own user namespace, and ``proc`` and ``mqueu=
+e``
+> + * contexts bind to the target ``rootns`` PID and IPC namespaces.
 > + */
-> +static long rootns_wait_common(int rootnsfd, unsigned int options,
-> +			       int *status, struct rusage *ru)
+> +static int fsconfig_set_rootns(struct fs_context *fc, struct fs_paramete=
+r *param)
 > +{
-> +	CLASS(fd, f)(rootnsfd);
-> +	struct pid_namespace *pid_ns =3D task_active_pid_ns(current);
-> +	struct rootns *rootns;
-> +	long ret;
+> +	struct user_namespace *user_ns;
+> +	struct rootns *c;
+> +	int ret;
 > +
-> +	if (fd_empty(f))
-> +		return -EBADF;
-> +	if (!is_rootns_file(fd_file(f)) || (options & ~WNOHANG))
+> +	if (!is_rootns_file(param->file))
 > +		return -EINVAL;
 > +
-> +	rootns =3D fd_file(f)->private_data;
-> +	if (!(options & WNOHANG)) {
-> +		ret =3D wait_event_killable(rootns->waitq,
-> +					  READ_ONCE(rootns->state) =3D=3D ROOTNS_DEAD);
+> +	c =3D param->file->private_data;
+> +	user_ns =3D c->user_ns;
+> +	if (!ns_capable(user_ns, CAP_SYS_ADMIN))
+> +		return -EPERM;
+> +
+> +	if (fc->need_free && fc->ops && fc->ops->free)
+> +		fc->ops->free(fc);
+> +	fc->need_free =3D false;
+> +	fc->fs_private =3D NULL;
+> +	fc->s_fs_info =3D NULL;
+> +	fc->ops =3D NULL;
+> +	fc->sb_flags =3D 0;
+> +	fc->global =3D false;
+> +	security_free_mnt_opts(&fc->security);
+> +
+> +	put_net(fc->net_ns);
+> +	fc->net_ns =3D get_net(c->ns->net_ns);
+> +	put_user_ns(fc->user_ns);
+> +	if ((fc->fs_type->fs_flags & (FS_USERNS_MOUNT | FS_USERNS_DELEGATABLE))=
+ &&
+> +	    ((kuid_has_mapping(user_ns, fc->cred->fsuid) &&
+> +	      kgid_has_mapping(user_ns, fc->cred->fsgid)) ||
+> +	     !ns_capable(fc->cred->user_ns, CAP_SYS_ADMIN)))
+> +		fc->user_ns =3D get_user_ns(user_ns);
+> +	else
+> +		fc->user_ns =3D get_user_ns(fc->cred->user_ns);
+> +
+> +	ret =3D fc->fs_type->init_fs_context(fc);
 
 [Severity: Medium]
-Should rootns_wait_common() use a freezable and interruptible wait such as
-wait_event_freezable() instead of wait_event_killable()?
+Does re-calling fc->fs_type->init_fs_context(fc) here lose the cpuset
+configuration when fsopen("cpuset", 0) was opened by a caller with
+may_mount() =3D=3D true?
 
-Sleeping in TASK_KILLABLE for the lifetime of a running root namespace
-prevents the PM and cgroup v2 freezers from freezing the waiting task (which
-causes system suspend or hibernation to time out and fail), blocks non-fatal
-signals and job control, and counts every blocked waiter toward the system
-load average.
+During the initial fs_context_for_mount() in fsopen(),
+cpuset_init_fs_context() configures cpuset_fs_context_ops,
+ctx->subsys_mask, and CGRP_ROOT_NOPREFIX, and then replaces fc->fs_type
+with &cgroup_fs_type:
 
-> +		if (ret)
+kernel/cgroup/cgroup.c:cpuset_init_fs_context() {
+    ...
+	get_filesystem(&cgroup_fs_type);
+	put_filesystem(fc->fs_type);
+	fc->fs_type =3D &cgroup_fs_type;
+    ...
+}
+
+When fsconfig_set_rootns() frees the initial context and calls
+fc->fs_type->init_fs_context(fc) again, it invokes
+cgroup_init_fs_context() instead of cpuset_init_fs_context(), leaving
+ctx->subsys_mask as 0 and fc->ops as &cgroup1_fs_context_ops so cpuset
+parameter parsing or superblock creation fails.
+
+> +	if (ret < 0) {
+> +		fc->phase =3D FS_CONTEXT_FAILED;
+> +		return ret;
+> +	}
+> +	fc->need_free =3D true;
+> +
+> +	if (fc->ops->set_rootns) {
+> +		ret =3D fc->ops->set_rootns(fc, c);
+> +		if (ret < 0)
 > +			return ret;
 > +	}
-> +
-> +	scoped_guard(spinlock, &rootns->lock) {
-> +		if (rootns->state !=3D ROOTNS_DEAD)
-> +			return 0;
-> +		if (!rootns->init_pid)
-> +			return -ECHILD;
 
 [Severity: Medium]
-Can the !rootns->init_pid check here ever be reached, and what happens when
-rootns_wait() is called before an init process has been started?
+Should fc->phase be set to FS_CONTEXT_FAILED when fc->ops->set_rootns()
+fails?
 
-The kernel-doc for sys_rootns_wait() states that -ECHILD is returned if init
-was never started.  However, rootns->state only reaches ROOTNS_DEAD in
-exit_rootns() after copy_rootns() has already populated rootns->init_pid.
-When init has not been started (rootns->state =3D=3D ROOTNS_INIT), a call w=
-ith
-WNOHANG hits the rootns->state !=3D ROOTNS_DEAD check first and returns 0,
-while a call without WNOHANG sleeps in wait_event_killable() instead of
-returning -ECHILD.
+By the time set_rootns() runs, the prior filesystem-private state has been
+freed, fc->net_ns and fc->user_ns have been overwritten, and
+init_fs_context() has re-run in the fsconfig() caller's task context.  If
+proc_set_rootns() returns -EINVAL, leaving fc->phase in
+FS_CONTEXT_CREATE_NS (or FS_CONTEXT_AWAITING_NS) with fc->rootns_bound
+still false leaves a partially mutated context usable for subsequent
+parameter parsing, superblock creation, or repeated FSCONFIG_SET_ROOTNS
+calls.
+
+[ ... ]
+
+> @@ -137,17 +214,23 @@ SYSCALL_DEFINE2(fsopen, const char __user *, _fs_na=
+me, unsigned int, flags)
+> =20
+>  	audit_log_fsopen(fs_name);
+> =20
+> -	fs_type =3D get_fs_type(fs_name);
+> +	fs_type =3D priv ? get_fs_type(fs_name) : get_fs_type_noload(fs_name);
+>  	kfree(fs_name);
+>  	if (!fs_type)
+> -		return -ENODEV;
+> +		return priv ? -ENODEV : -EPERM;
+> =20
+> -	fc =3D fs_context_for_mount(fs_type, 0);
+> +	if (!priv && !(fs_type->fs_flags & FS_USERNS_MOUNT)) {
+> +		put_filesystem(fs_type);
+> +		return -EPERM;
+> +	}
+> +
+> +	fc =3D priv ? fs_context_for_mount(fs_type, 0) :
+> +		    fs_context_for_unpriv_mount(fs_type);
+
+[Severity: High]
+Does allowing an unprivileged caller in the initial mount namespace to
+open and configure a devpts context via FSCONFIG_SET_ROOTNS bypass
+pty_reserve?
+
+devpts has FS_USERNS_MOUNT set, and devpts_init_fs_context() grants access
+to the reserved PTY pool solely based on whether current is in the initial
+mount namespace:
+
+fs/devpts/inode.c:devpts_init_fs_context() {
+    ...
+	if (fc->purpose =3D=3D FS_CONTEXT_FOR_MOUNT &&
+	    current->nsproxy->mnt_ns =3D=3D init_task.nsproxy->mnt_ns)
+		fsi->mount_opts.reserve =3D true;
+    ...
+}
+
+Previously, fsopen() required may_mount(), forcing unprivileged callers to
+unshare a mount namespace first.  With this regression, an unprivileged
+user in init_task.nsproxy->mnt_ns can open devpts, bind it to a userns via
+FSCONFIG_SET_ROOTNS (which runs devpts_init_fs_context() while still in
+the initial mount namespace, setting fsi->mount_opts.reserve =3D true), and
+allocate PTYs from the host emergency reserve up to pty_limit.
+
+[ ... ]
+
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> index 781380945d784..a6c0a31e275ae 100644
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
+> @@ -4658,6 +4659,16 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int,=
+ flags,
+>  	if (ret)
+>  		return ret;
+> =20
+> +	if (!(flags & FSMOUNT_NAMESPACE)) {
+> +		if (fc->rootns_bound) {
+> +			if (!ns_capable(fc->user_ns, CAP_SYS_ADMIN) &&
+> +			    !may_mount())
+> +				return -EPERM;
+> +		} else if (!may_mount()) {
+> +			return -EPERM;
+> +		}
+> +	}
+
+[Severity: Medium]
+When fc->rootns_bound is true, can a caller lacking CAP_SYS_ADMIN in
+fc->user_ns bypass the fc->user_ns capability check by satisfying
+may_mount() in its own unprivileged mount namespace (or by passing
+FSMOUNT_NAMESPACE)?
+
+Because alloc_mnt_ns() below unconditionally uses fc->user_ns whenever
+fc->rootns_bound is true, a task that passes this check via may_mount() in
+an unrelated user namespace still allocates the anonymous mount namespace
+in fc->user_ns and charges UCOUNT_MNT_NAMESPACES against fc->user_ns.
+
+> +
+>  	/* There must be a valid superblock or we can't mount it */
+>  	ret =3D -EINVAL;
+>  	if (!fc->root)
+> @@ -4699,7 +4710,8 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, =
+flags,
+>  		return FD_ADD((flags & FSMOUNT_CLOEXEC) ? O_CLOEXEC : 0,
+>  			      open_new_namespace(&new_path, MOUNT_COPY_NEW));
+> =20
+> -	ns =3D alloc_mnt_ns(current->nsproxy->mnt_ns->user_ns, true);
+> +	ns =3D alloc_mnt_ns(fc->rootns_bound ? fc->user_ns :
+> +			  current->nsproxy->mnt_ns->user_ns, true);
+
+[Severity: High]
+Does allocating fsmount()'s anonymous mount namespace in fc->user_ns leave
+host submounts without MNT_LOCKED when an external manager in init_user_ns
+assembles a mount tree for an unprivileged rootns?
+
+When a manager in init_user_ns creates a rootns-bound anonymous root mount
+(so dest_mnt->mnt_ns is anonymous with user_ns =3D=3D fc->user_ns) and atta=
+ches
+a host submount from init_user_ns onto it via move_mount(),
+attach_recursive_mnt() compares child->mnt_parent->mnt_ns->user_ns
+(fc->user_ns) against current->nsproxy->mnt_ns->user_ns (&init_user_ns):
+
+fs/namespace.c:attach_recursive_mnt() {
+    ...
+	if (is_anon_ns(ns))
+		user_ns =3D current->nsproxy->mnt_ns->user_ns;
+	else
+		user_ns =3D ns->user_ns;
+    ...
+		/* Notice when we are propagating across user namespaces */
+		if (child->mnt_parent->mnt_ns->user_ns !=3D user_ns)
+			lock_mnt_tree(child);
+    ...
+}
+
+lock_mnt_tree(child) only sets MNT_LOCKED on descendants p !=3D child,
+leaving child itself unlocked, and commit_tree(child) then moves child into
+the anonymous mount namespace owned by fc->user_ns.  When the assembled
+anonymous tree is later moved into the target mount namespace (also owned
+by fc->user_ns), the user namespaces match, so attach_recursive_mnt() does
+not lock the tree and unprivileged users in the target namespace can
+unmount the host submount to expose the underlying directory.  Conversely,
+attaching a submount that was also created with FSCONFIG_SET_ROOTNS for
+fc->user_ns onto the anonymous root mount sees
+child->mnt_parent->mnt_ns->user_ns !=3D user_ns and spuriously runs
+lock_mnt_tree().
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118193539.2400=
-65-1-jarkko@kernel.org?part=3D5
+65-1-jarkko@kernel.org?part=3D8
 
