@@ -1,97 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA28606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BD8606A330
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tLo+B+xe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PdLqVltT
 Received: by kanga.kvack.org (Postfix)
-	id 5AB116B05F4; Thu, 19 Nov 2026 11:00:39 -0500 (EST)
+	id E8CCB6B06B3; Thu, 19 Nov 2026 11:04:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55C3D6B06A5; Thu, 19 Nov 2026 11:00:39 -0500 (EST)
+	id E3D6E6B06B4; Thu, 19 Nov 2026 11:04:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4719C6B0637; Thu, 19 Nov 2026 11:00:39 -0500 (EST)
+	id D530D6B06B5; Thu, 19 Nov 2026 11:04:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2188C6B06A5
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:00:39 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF262120B6D
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:00:34 +0000 (UTC)
-X-FDA: 85452331188.25.AA11E83
-Received: from mta1.migadu.com (out-69.mta1.migadu.com [95.215.58.69])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8115320004
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:00:32 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tLo+B+xe;
-	spf=pass (imf03.hostedemail.com: domain of bradley.morgan@linux.dev designates 95.215.58.69 as permitted sender) smtp.mailfrom=bradley.morgan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795104033;
-	b=ArTlRDH65oHdOfGxOkjBdN1RzDOO3qmJqk2fKAXiT9Ja9/brR1NXKjBmwWhytaATCwdwbQ
-	LPU7krjd6HKrmBoUrWYjdG+ML2S+3u1lyosLPPEBvtPvQfkO6wE4yJi0c8caKOClTHyzcA
-	UyqoKrH5+bJiotO7PTB6iByPqKj4n+Q=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B48A56B06B3
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:04:50 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45BF7A834A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:04:50 +0000 (UTC)
+X-FDA: 85452341940.22.5BAA033
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 80F9B140009
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:04:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PdLqVltT;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795104033;
+	s=arc-20220608; t=1795104288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=ghdvXRs6WeD3J65MxVpuLnA2rqhyvwGZJnk+T3/dQgs=;
-	b=WFx59ed7+LyxZb2slcOydqanZCC3nC7bvnMQ6w9uosLVTBL2lYx5uHdt0D+lLQx3y1z7S2
-	E/aIyoRB7jNhzHzj+Onl4QiZu5ORMiBeU2XVYGKMLF5iQby/rGq50wQUTiNAawWJtJtX0y
-	aEf9Sy5YNdSS6YA1y34LBfQ0iErmxaM=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yhaisaAAN1Avtw/qa8Xj7ZQOfB9giXxwqMgpPlclG0w=;
+	b=MFYJNSKnImFr3ktOhUTDMHiYWmHOWImg7HKp3eGFK6zsRUpJpVVC0u0RZdoimMW0V2uY8W
+	IqCitg0zuBBMLc6pNwoA8QQjJb13GmoNIsEgH5dG/YYN+hENYkSYzP5VOTiGkafvVJP46K
+	acAAlHHTzlPwYCP0oiRADZbExiqm0MM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tLo+B+xe;
-	spf=pass (imf03.hostedemail.com: domain of bradley.morgan@linux.dev designates 95.215.58.69 as permitted sender) smtp.mailfrom=bradley.morgan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=muSluvC1BBHfMSuECvqWpxXBduhSE0/vxCvegiCzjJc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795104031; v=1; x=1795708831;
- b=tLo+B+xeCoSz52Ak/4uTpwVZqOwrb+rQ/CatO3ImXSVHuqnOp9h9UjWf+ggGqjrj2LOKzRoZ
- P1RQgF817y4R/hgad8n2Lyq0EdBtQQam5gsytoRtxMuZer73TP2gVpucEYc0r/5sxf1sBqMcL/o
- U7U6f20hfFgFf0v/hSZDGfRw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d38b154e6baa8d3a;
-	Thu, 19 Nov 2026 16:00:27 +0000
-X-Mizu-Trace-ID: d38b154e6baa8d3a
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 19 Nov 2026 16:00:23 +0000
-From: Bradley Morgan <bradley.morgan@linux.dev>
-To: david@kernel.org
-CC: akpm@linux-foundation.org, alexander.shishkin@linux.intel.com, ast@kernel.org,
- bpf@vger.kernel.org, bsegall@google.com, dietmar.eggemann@arm.com,
- juri.lelli@redhat.com, kees@kernel.org, kprateek.nayak@amd.com,
- liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, mason@kernel.org, mathieu.poirier@linaro.org,
- mgorman@suse.de, mhocko@suse.com, mingo@kernel.org, mingo@redhat.com,
- peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org,
- sashiko-bot@kernel.org, songliubraving@fb.com, stable@vger.kernel.org,
- surenb@google.com, vbabka@kernel.org, vincent.guittot@linaro.org,
- vschneid@redhat.com, yhs@fb.com
-Subject: Re: [PATCH] fork: clear p->mm when copy_process() fails
-In-Reply-To: <20261119-mm_failed_fork-v1-1-b3019f43d197@kernel.org>
-Message-ID: <7F08BE59-B6F6-4884-AD56-8178335F2C15@linux.dev>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PdLqVltT;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795104288;
+	b=YJuRnTeTysnlGMkBFJGmAYza7++5+coFAwNu0n+fGYMrgwrLkjJ3T3cQBmLFGyL8Fmc4oQ
+	x9EdwweXuI19e1eRI2y+gKwxlSd/VU28hUV1Su3NFyFYSI3nTC9029JN/u1JZh4ZoUjsna
+	Zsii+viiQ1ycw2lyKy1C/MBvZtUgQqc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E6F962C8F;
+	Thu, 19 Nov 2026 16:04:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCA51F000C4;
+	Thu, 19 Nov 2026 16:04:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795104287;
+	bh=yhaisaAAN1Avtw/qa8Xj7ZQOfB9giXxwqMgpPlclG0w=;
+	h=From:Date:Subject:To:Cc;
+	b=PdLqVltToPcnV2Kr96HMTvrYV9O486YB5OgE2IXS7ZoweYhsRhmhnLstNVaEUIi8b
+	 v5TB8wShJq7LkbWiDqzEk2OYi/qQXgE603SFXFE5Y9nf9rvBfVFZpg5uByOUnu3841
+	 ac9E90IUbgE8Q3sRmFdisH+KFtPI9fzPHdHlF8e3XRAjqZ/GxxSVyXdle0dmvV4MNG
+	 vOrTSxKhHkc3or71n+2v5Bm+HlTCjkORqrqwiDCz29A94nf0ySwbPXpIkaRBD9YfRV
+	 jy3dmvHCocKC9BG5Utbh5BzC7xIrmgZo3ojJbKqeTiL8AQI0+sc48HHjaMO27ZDZ4W
+	 97tCgMoPIIPoA==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Thu, 19 Nov 2026 17:04:34 +0100
+Subject: [PATCH] mm/madvise: fix MADV_FREE handling for PMD-mapped THPs
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8115320004
-X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261119-madv_free_thp-v1-1-a312919e1ee5@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXMywqDMBAF0F8Z7tpAM4KP/EopEuNYp+CDREUQ/
+ 13aLs/mnEgSVRIcnYiya9J5giObEcLgp7cY7eAI/ODCWlub0Xd700eRZh0Wkwf2dVWVvmRGRli
+ i9Hr8vufr77S1HwnrN8F13ezBYKxxAAAA
+X-Change-ID: 20261119-madv_free_thp-3c2a9887a722
+To: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jann Horn <jannh@google.com>, Ying Huang <huang.ying.caritas@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Chris Mason <mason@kernel.org>, 
+ Sashiko <sashiko-bot@kernel.org>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7097; i=david@kernel.org;
+ h=from:subject:message-id; bh=KreIxZq3TY8k1cY6VRwhN5I7d4jwyXkzZnKkz4xPVPc=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+y0nkeZ/ZuDW9y/L//eV/z2z31ux+yjI1+sjJky75v
+ x6feroho6OUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJnMlk+B+8f897xtAjM6b9
+ vOxvNs2u8mJf/1fx8qCs9rs/rm+cvG0lw/98y3NaqxZeOyp3c/18zZVpHz7+dOJPbgtglTp6oN/
+ //DF+AA==
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspam-User: 
+X-Stat-Signature: az7da5qzw3fiduhuhaauordyjhrqg86g
+X-Rspamd-Queue-Id: 80F9B140009
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 19sxjugh4mo66u45q91ofnfjdtrucn9j
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1795104032-911100
-X-HE-Meta: U2FsdGVkX18SYxWTViFXIxHqAB7wVEtIzHXzWebAzH7833kPXUVn37gnwt6vdmOEiqoGDS6GyhEYpuWsRmP1BSQZe6e9s4gJHYKtfevKEneaIatr65gRG2hMlPWVmrRd2BAoTbxP0LVheSb/wLjLKU5CKZI5/VG+6IW6K2tL+0D5cAqsc6xKLEbvI1fIHaKs4+rfFOJsJ80DXCGy6gqQIlZv+TNxEqFWJSR41aEJ5/ig76H6aERjyExvuNEAqgG7bWxPROsdXlXrDLQSKzUyILozVTnrdU82afMIvyO1ATiTKadn8gApOCE1ESa1hPmVbS5thjKkn5aA9maw2sFuPUGdcakyjECq+tjcT6t7YRxu2wKnAhpsSUOsC6UnFFba05hRf7bOuj51b8Bsbw5fq/4H0UmdfV8+JIXU6StkO/YKxzGadV7l6cI+D8/W5dizDpcGDWl0OLqT0TP+MGvz4b16XZRYs42jMtD3u2ryTTdxx29Jh1bc04iDRJAHyiXDsaiJR6I8kctDAhnIPqIjVUEUNmjgB+vD0bWBWfL183m5YDhA+hYbj1rDjE0ihqGP/oKloWjK/S6TZuCMrzl0KR/ezRhXzok1zPS8zxk6ACokki0gLDPZemvjgZWiYy4kbmURJDHnFZEwnoSR0/5R6oIal4eUFEpq490VA5MfHTPBpuoY/3HHLM6NZ1BrFUFOPpUpXkZj36pLfSdkP7moihZeY7iwhkOy8U3NAxCrvSKMFPJYJzj2o+vQOVSs2f6DHiurbVyNVWzIWNcDLWNF47FLQKyXAntpVDSRxNH+53dJlFNp1DOxHBfKd38idf9GKNpgsHZdqcVHrzTigD1NTtsk+K2g53KuElQTgsAn2JZopSZXK3KrKm9SGM5fRQzRq4qy+6JOKpkwkLmK8740NAly0UaQdqhAR3N3FEZA2LI7g19lTrpT77pnd7DuKqtJ6xGLIwJaQGpW04aaN6U
- Tx/8s7y2
- 2Vu/a7f9K4mVOFRMihUmEREb9Il9yLWKHrwgf4ZL4Pu1oLZIRrXCYtdpQsc/wOEexJ+OlA/wkn2gpokysxr4Bd1g4a02r7DEl5baCZtbO/0lZIWiKOZ+5sbPy1G+2KD2pvY6HUBUZJchfV3nJwnurbouOeg9JVKS9cIhi7GfuNve2jGuqRQtZeR+F3YeD7083kcfGv1K0g2KjugmT2xtVF8XjJpYlHMQZRK58+8SL8favSjV/BF0ypmqs2MSrXckzQvOE0cfpvb+ttjVyKTd5ljkr3bxM0S32IGvDiRxgJO1DeRU/968Ed60fT8ISWmvS0FS+rHP4l3rOsFW/yfjPUwLhp5TXpwmRDBMXJ/l1p3BQqpii8vvKQPa0+lLET4Ba8SZuPX3cM9uhftmARbYzkV9DBfpLuWHGLXLaDgOc7fcY1J3PPYWI/e9IMVrjw4XAtdXbP7V/nyaPvwYG38282K/v+PggCiYDOQDjhEF7T0qFYrligwu0Tk4SiWKhRypQBXGIGp9fh3xUkOArlngcpSPgBWBCZY+O+WFavJzY2XmJvJ99olEBSE+viJ0BAKNJgLJZSrSNc3u479sS/d+zfX6sbA==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1795104288-94318
+X-HE-Meta: U2FsdGVkX1+y0eWyydmXAJYUWtbx9LmHJWtWx25uo7Hd2NAZ8f898C3D+jicINuR5tMS27I8Eu0RLAIYX8mslUL7BZA61r7nT1ghnKFVWvbH4T0U4DQr+hH6XsS1CspNgLuJLCQiKfWoDTK+5e2OdMAE990qt+9pgJ02yOHs3k0J+w+eaCBHFekViCwq2KzhrJTKO6QfsWsAe28d20I8tGyMh06QMQ4HmP5BHWZZLjWpnf1vTm/wCHO2TNcihi6IaKKdS5TS3oiGaMfZewCZTyM2an+isOQUQbJzX28yZl2wEdOE85jDSq+wP0KQVTeKL0MfYv+R21JFiGNXOL+2uztKKTsSLxb2aKxfQE6HvQj19Mg3uZTQYoRHuhHkjWrM7gNKA6UOUxnDVO3hBUbgOg1ojLY7U8gVg5gEkzq+EmnePqeNFghMGxlVnLYVcER2WP6lWHGkUKHvWYXmvYjsRygbUZIllM5lcSdYHy8+1f07nDkk9xCeokKl8GtC1lezCENg626zSMZqftGCtPz4Bctv+yjq/2JtOMUB1b8mAu5BnyPzvB5G6gRyp/W+P6xSN1n9OHC+Fx2lJs5sqXq4gY7S/GgM2kYcdsjsfbWp7QkK4kUjQXxeK+EhDq+//1uFh/rVpcELhTafzej62G7dzQkWhpxqFyc9FLpv0UNDMDH7ocMHCACnOkv20zo7iwmot+z200O5qGltLr9QHQqPsg2WL+vpIPamPum4oCAckPk9Q4aX8HxzlzxMXH715MlOn3OVZLoHhNpI2ozGxmD2Vs1oEJ/6LOOv+agqf7lxGxgmL2c19bkS3Ee+CSVZLluPt0VFnCbK/uSDFrLnnxuWM4miXSMF+50jLbA8Tz9A1E8ZIFpEg7vc7KEPOiIStL+SU6k7CQXPQ0t1UY5tNmIhFtq+NpH2JUXDwEq9llaLnMbVc0jLs6Ze5SaAuVGAV51qRF3L9TOhQAp6ngY/I3G
+ FT2PqCQt
+ ZZCiCNwv3pZS36RixH5Dh4Df/f5HHWnsP/t1r9/nCztWEEv/9nLaqzGW4aMNe4KZg8hTzYk7nznJec3Hcn97yy3rNKKjtYR8GyoNY0Yf+q+6H79RtzPocV/cU8c5vIhKJVWUPB1NgA9gLCPlypfQkoa4rroUHiEdiIyUn4i8lVmKaSX/eVRE/DR8J4PrSNZivlntF8vM2StvLdxg9RUJtaudAt52/Pax1SzpHGAfjU5m+BzHtn/LmhkjB7KiHukHIhNXoJ7e+VkRYc58ilbD8T979tPlEp8uMQbEhW9GewNSGU1r8hXRMy8gvHmYvE4Pq18hRWlr9K5GvgP7v5P0bxJISdiW1D8StvpbKnKBGP1968fyxOUcDiYdP7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,111 +114,220 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 19 November 2026 08:04:58 GMT, "David Hildenbrand (Arm)"
-<david@kernel.org> wrote:
->From: Chris Mason <mason@kernel.org>
->
->When copy_process() fails after copy_mm(), the error path drops the mm
->reference but leaves p->mm set. Perf and BPF can still reach the
->task, and take a reference on the already freed mm through get_task_mm()
->or bpf_find_vma(), resulting in a use-after-free:
->
->    copy_process()               PERF_EVENT_IOC_SET_FILTER
->    ==============               =========================
->    perf_event_init_task(p)
->    copy_mm(p)
->    a later step fails
->    mmput(p->mm)
->      /* frees the mm */
->                                 perf_event_addr_filters_apply()
->                                   get_task_mm(p)
->                                     /* use-after-free */
->
->Similarly, a BPF program on the task_free LSM hook can call
->bpf_find_vma(p)
->before the task is freed.
->
->Fix it by clearing p->mm under task_lock() before dropping the reference,
->just like exit_mm() does.
->
->Further, if copy_process() fails before copy_mm(), p->mm is still the
->parent's mm pointer copied by dup_task_struct(), without having taken a
->reference. While nobody can access it concurrently, there is the
->chance that it might get accessed later when a BPF program is attached
->to free_task().
->
->With CONFIG_MEMCG the task is freed after an RCU grace period, so the
->parent might already be gone and p->mm in the child points at something
->that was already freed. So let's just clear p->mm before freeing the
->task. No lock is required as there cannot be concurrent access (and we
->might not even have the lock initialized yet).
->
->This has medium urgency.
->
->Fixes: 375637bc5249 ("perf/core: Introduce address range filtering")
->Fixes: 7c7e3d31e785 ("bpf: Introduce helper bpf_find_vma")
->Reported-by: Sashiko <sashiko-bot@kernel.org>
->Closes: https://lore.kernel.org/sashiko-outbox-180866@kernel.org/
->Cc: stable@vger.kernel.org
->Signed-off-by: Chris Mason <mason@kernel.org>
->[ david: simplify description and comments ]
+After MADV_FREE cleared the dirty flag of an anonymous folio, reclaim will
+later free the folio without writing it back if no mappings are dirty.
 
-Reviewed-by: Bradley Morgan <bradley.morgan@linux.dev>
+If our folio is still in the swap cache, the swap entries then point at
+swap slots that were never written, exposing stale content of the swap
+device. Bad.
 
+madvise_free_pte_range() therefore frees the swap slots first, and skips
+the folio if that is impossible. madvise_free_huge_pmd() does not, and a
+PMD-mapped THP can be in the swap cache if try_to_unmap() failed during
+reclaim, for example due to a racing mlock().
 
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
->I can take this through my tree (rather soonish) unless someone else
->wants to pick this up.
->---
-> kernel/fork.c | 15 +++++++++++++--
-> 1 file changed, 13 insertions(+), 2 deletions(-)
->
->diff --git a/kernel/fork.c b/kernel/fork.c
->index 5efceb8d58a78..77d6c8fc38c66 100644
->--- a/kernel/fork.c
->+++ b/kernel/fork.c
->@@ -2628,8 +2628,14 @@ __latent_entropy struct task_struct *copy_process(
-> bad_fork_cleanup_mm:
-> 	sched_cache_fork_cleanup(p);
-> 	if (p->mm) {
->-		mm_clear_owner(p->mm, p);
->-		mmput(p->mm);
->+		struct mm_struct *mm = p->mm;
->+
->+		/* Perf events and BPF programs can still reach p. */
->+		task_lock(p);
->+		p->mm = NULL;
->+		task_unlock(p);
->+		mm_clear_owner(mm, p);
->+		mmput(mm);
-> 	}
-> bad_fork_cleanup_signal:
-> 	if (!(clone_flags & CLONE_THREAD))
->@@ -2663,6 +2669,11 @@ __latent_entropy struct task_struct *copy_process(
-> 	exit_cred_namespaces(p);
-> 	exit_creds(p);
-> bad_fork_free:
->+	/*
->+	 * If set, p->mm points at the parent's mm without a reference. Nobody
->+	 * can access it concurrently anymore, but prevent later access.
->+	 */
->+	p->mm = NULL;
-> 	WRITE_ONCE(p->__state, TASK_DEAD);
-> 	exit_task_stack_account(p);
-> 	put_task_stack(p);
->
->---
->base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
->change-id: 20261119-mm_failed_fork-a46141b503d0
->
->Best regards,
->--  
->David Hildenbrand (Arm) <david@kernel.org>
->
->
->
+Further, madvise_free_huge_pmd() checks whether the THP is mapped by
+other processes before taking the folio lock. Another process that still
+has swap entries for the THP can concurrently map it from the swap cache,
+and we might end up clearing the dirty flag of a shared folio.
 
+Fix it by factoring out the folio handling of madvise_free_pte_range()
+into madvise_free_try_prepare_folio(), and using it for PMD-mapped THPs
+as well. Hopefully this prevents further bugs.
 
---- Thanks!
+For PMD-mapped THPs, this change implies:
+
+1. We free the swap slots of a THP in the swap cache, and skip the THP if
+   that is impossible.
+2. We check the mapcount under the folio lock.
+3. We no longer lock and check THPs that are neither dirty nor in the
+   swap cache, just like for PTE-mapped folios.
+
+For PTE-mapped folios, this means:
+
+4. We check the mapcount once before taking the folio lock, to not lock
+   folios that are mapped by other processes.
+
+Only compile madvise_free_huge_pmd() with CONFIG_ADVISE_SYSCALLS to keep
+!CONFIG_ADVISE_SYSCALLS builds working.
+
+Chris and Sashiko reported the missing swap cache handling for PMD-mapped
+THPs, the other issue was found by code inspection.
+
+This has medium urgency.
+
+Fixes: bd4c82c22c36 ("mm, THP, swap: delay splitting THP after swapped out")
+Cc: stable@vger.kernel.org
+Reported-by: Chris Mason <mason@kernel.org>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/sashiko-outbox-202086@kernel.org/
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+I would queue this fairly soon on mm-core/for-next-fixes
+---
+ mm/huge_memory.c | 19 ++++++-----------
+ mm/internal.h    |  1 +
+ mm/madvise.c     | 65 +++++++++++++++++++++++++++++---------------------------
+ 3 files changed, 41 insertions(+), 44 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 79d400ea9553d..e22daf846dbe3 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2421,6 +2421,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_ADVISE_SYSCALLS
+ /*
+  * Return true if we do MADV_FREE successfully on entire pmd page.
+  * Otherwise, return false.
+@@ -2455,21 +2456,13 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	if (folio_is_zone_device(folio))
+ 		goto out;
+ 
+-	/*
+-	 * If other processes are mapping this folio, we couldn't discard
+-	 * the folio unless they all do MADV_FREE so let's skip the folio.
+-	 */
+-	if (folio_maybe_mapped_shared(folio))
+-		goto out;
+-
+-	if (!folio_trylock(folio))
+-		goto out;
+-
+ 	/*
+ 	 * If user want to discard part-pages of THP, split it so MADV_FREE
+ 	 * will deactivate only them.
+ 	 */
+ 	if (next - addr != HPAGE_PMD_SIZE) {
++		if (folio_maybe_mapped_shared(folio) || !folio_trylock(folio))
++			goto out;
+ 		folio_get(folio);
+ 		spin_unlock(ptl);
+ 		split_folio(folio);
+@@ -2478,9 +2471,8 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		goto out_unlocked;
+ 	}
+ 
+-	if (folio_test_dirty(folio))
+-		folio_clear_dirty(folio);
+-	folio_unlock(folio);
++	if (!madvise_free_try_prepare_folio(folio, 1))
++		goto out;
+ 
+ 	if (pmd_young(orig_pmd) || pmd_dirty(orig_pmd)) {
+ 		pmdp_invalidate(vma, addr, pmd);
+@@ -2498,6 +2490,7 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ out_unlocked:
+ 	return ret;
+ }
++#endif /* CONFIG_ADVISE_SYSCALLS */
+ 
+ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
+ {
+diff --git a/mm/internal.h b/mm/internal.h
+index 85cf7becf8588..96cb55d7816b1 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -61,6 +61,7 @@ void lru_add_drain_cpu(int cpu);
+ void lru_add_drain_cpu_zone(struct zone *zone);
+ void folio_deactivate(struct folio *folio);
+ void folio_mark_lazyfree(struct folio *folio);
++bool madvise_free_try_prepare_folio(struct folio *folio, int nr_mappings);
+ 
+ /* mm/vmscan.c */
+ unsigned long zone_reclaimable_pages(struct zone *zone);
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 0214efd2a014f..ebb4ce7daf6cb 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -661,6 +661,38 @@ static long madvise_pageout(struct madvise_behavior *madv_behavior)
+ 	return 0;
+ }
+ 
++bool madvise_free_try_prepare_folio(struct folio *folio, int nr_mappings)
++{
++	if (!folio_test_swapcache(folio) && !folio_test_dirty(folio))
++		return true;
++
++	if (folio_mapcount(folio) != nr_mappings || !folio_trylock(folio))
++		return false;
++
++	/*
++	 * KSM folios can gain new mappings at any time, so we must
++	 * not clear their dirty flag.
++	 */
++	if (folio_test_ksm(folio))
++		goto unlock;
++
++	/*
++	 * Check under the folio lock that the folio is exclusive: we own all
++	 * mappings, and there are no references from swap entries.
++	 */
++	if (folio_mapcount(folio) != nr_mappings)
++		goto unlock;
++	if (folio_test_swapcache(folio) && !folio_free_swap(folio))
++		goto unlock;
++
++	folio_clear_dirty(folio);
++	folio_unlock(folio);
++	return true;
++unlock:
++	folio_unlock(folio);
++	return false;
++}
++
+ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+ 				unsigned long end, struct mm_walk *walk)
+ 
+@@ -753,37 +785,8 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+ 			}
+ 		}
+ 
+-		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
+-			if (!folio_trylock(folio))
+-				continue;
+-			/*
+-			 * KSM folios can gain new mappings at any time, so we must
+-			 * not clear their dirty flag.
+-			 */
+-			if (folio_test_ksm(folio)) {
+-				folio_unlock(folio);
+-				continue;
+-			}
+-
+-			/*
+-			 * If we have a large folio at this point, we know it is
+-			 * fully mapped so if its mapcount is the same as its
+-			 * number of pages, it must be exclusive.
+-			 */
+-			if (folio_mapcount(folio) != folio_nr_pages(folio)) {
+-				folio_unlock(folio);
+-				continue;
+-			}
+-
+-			if (folio_test_swapcache(folio) &&
+-			    !folio_free_swap(folio)) {
+-				folio_unlock(folio);
+-				continue;
+-			}
+-
+-			folio_clear_dirty(folio);
+-			folio_unlock(folio);
+-		}
++		if (!madvise_free_try_prepare_folio(folio, folio_nr_pages(folio)))
++			continue;
+ 
+ 		if (pte_young(ptent) || pte_dirty(ptent)) {
+ 			clear_young_dirty_ptes(vma, addr, pte, nr, cydp_flags);
+
+---
+base-commit: 5e600d79135124a4eb8e9db30ad524224c267c07
+change-id: 20261119-madv_free_thp-3c2a9887a722
+
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
+
 
