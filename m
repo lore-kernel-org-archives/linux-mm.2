@@ -1,96 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F02606A339
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465D5606A335
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 10:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kh4fzztJ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=B+Mfu50Z
 Received: by kanga.kvack.org (Postfix)
-	id CD8866B05EA; Thu, 19 Nov 2026 05:54:04 -0500 (EST)
+	id 629746B05D8; Thu, 19 Nov 2026 05:57:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C63716B0605; Thu, 19 Nov 2026 05:54:04 -0500 (EST)
+	id 5DACF6B0609; Thu, 19 Nov 2026 05:57:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2ACF6B0607; Thu, 19 Nov 2026 05:54:04 -0500 (EST)
+	id 4EFC26B060A; Thu, 19 Nov 2026 05:57:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CA3F6B05EA
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:54:04 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90BCC160A35
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:54:02 +0000 (UTC)
-X-FDA: 85451558724.11.F95C1CE
-Received: from mta0.migadu.com (out-142.mta0.migadu.com [91.218.175.142])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 58DD1180007
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:54:00 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kh4fzztJ;
-	spf=pass (imf16.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.142 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795085640;
-	b=JgWbC6BQHhxMMcio/HyiIowIjbmYjW+bxgWBMS6Y142uLdvhLYCafSHdSyB//+rToJdI3r
-	3z9blNffKbM5KT8Y4mwz/gsHYWGUwYMsSOqD5nE9jp0AYKWMx+31a9oabxNlvWaXCjFd8Y
-	tTtu9sVJ1PHGVGym+55ke9BbKEiVpDY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kh4fzztJ;
-	spf=pass (imf16.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.142 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 2F43C6B05D8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:57:57 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B618160A42
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:57:56 +0000 (UTC)
+X-FDA: 85451568552.28.CBA2418
+Received: from mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3EC64C0003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 10:57:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B+Mfu50Z;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795085640;
+	s=arc-20220608; t=1795085874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o4DSb8O5B5HDKJHtAiV5LnHaoIIXUo9MJFuaEaQpxIc=;
-	b=KJAPOpBNh7iTJrO3/dtmw4IKVhsgiGzfi1d53K5tUOJ7FOOik4oslT8xOE2LlwO4JtPQUk
-	K5Whapofah3IjEGCKJeibWM7u62wcMmSYrmhjxQgQRRnJOoi4m8p46uxUA/kwIv0K438QG
-	CkRGQrSpzYm89sGBPoHwmVB1UvtDAWg=
+	bh=nkep9V+9M81dGzA4DVoTUAoMFfZAfhwxu8MxQVdO5n4=;
+	b=vaqXMrLui+GPlsDJu01ggxT2weeuG854D78tW1dLsFAj0NDX/4IGW35RjSZ10LkO5QmNoz
+	d1LRTQt33hEBERYwlPwcM5V6/im9fe4a0lfr0mIh5Gb/v8x71Ji1fydoKlC1vsSqcZ4er7
+	9WUAThZ8IVNRweVJ1yQZz+RT0gRxvgU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B+Mfu50Z;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795085874;
+	b=lz66R9cScQLm/tCsDvUtla99/zi+2tFSHbvUgozyNEYUnq39ed8eczy98C2PZedSiy9LNz
+	VI11eKYjn5Lp+XgNMY7hpp86K5lUjJude+jiPDU2kASLUlf7US3zdRPUyGzUJK5QD1k84F
+	Jrwd6em+u5g7oeWJyy3wyvPhHNddenY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=L7sCtNoyyz4AOhvKZSKvMdeJDCNqtf9hXe6yH6IKk3Y=;
+DKIM-Signature: a=rsa-sha256; bh=NEZHan1kWUfbBPUsTRpDo31GyAtxZjws+3uudEspXMo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795085638; v=1; x=1795690438;
- b=kh4fzztJIush2phlTFhuk0xD7JfXKks2nDdAMlXUgmGoTrxzgRwgun7sahZtJFoyH3YZXr03
- TfUQ5/w7zHr99j/y0ISIcypW7Bng2+kJeo/vkZPpNs4wTVXMKwlliIYLsfmvTXl3lh7LHhQlcQW
- a3mxLf8e20A25WfiLxqK/1NY=
+ t=1795085872; v=1; x=1795690672;
+ b=B+Mfu50Z1lUc65cuVrDJPztWYlRgjPCUnEdUzC3yz15EYrgDUMBUzeTHVt3I8xp0ux5LYg8j
+ 2wfeFB+VtW6S4P9mwexfDThe+mHv4LCiOVIOnI6kaTEtgmoydy1TxhdqdrGjspc9wyU0qk5AZTp
+ SRokNbBU7sXYBuL73OOxgbGU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c67fc910d9f71c9e;
-	Thu, 19 Nov 2026 10:53:58 +0000
-X-Mizu-Trace-ID: c67fc910d9f71c9e
+Received: by smtp.migadu.com with ESMTPS id d39bc78d310ad665;
+	Thu, 19 Nov 2026 10:57:52 +0000
+X-Mizu-Trace-ID: d39bc78d310ad665
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <ee77a886-44b8-44b9-b21e-2c03729e9566@linux.dev>
-Date: Thu, 19 Nov 2026 18:53:44 +0800
+Message-ID: <c86a3b79-353d-48b8-ac7d-eb87920feb66@linux.dev>
+Date: Thu, 19 Nov 2026 18:57:40 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] lib/test_hmm: fix alloc tag leak when splitting
- device-private folios
-To: Nilay Vaish <nilayvaish@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Balbir Singh <balbirs@nvidia.com>, David Hildenbrand <david@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261118230044.683221-1-nilayvaish@google.com>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20261118230044.683221-1-nilayvaish@google.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v9 08/16] mm/mglru: lift youngest gen protection for
+ higher priority
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
+ baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev,
+ kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org,
+ lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
+ liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org,
+ mhocko@suse.com, qi.zheng@linux.dev, rppt@kernel.org, ryncsn@gmail.com,
+ shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com,
+ weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
+ zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+References: <20261114200803.23129-1-baohua@kernel.org>
+ <20261114200803.23129-9-baohua@kernel.org>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20261114200803.23129-9-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zr1s9ka8w7j1o7jjmtbbp5uch8zhjri9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 58DD1180007
-X-Stat-Signature: go8q86dgtfcmyhoygut657po49q5g7bn
-X-Rspamd-Server: rspam05
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3EC64C0003
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1795085640-82552
-X-HE-Meta: U2FsdGVkX19J44SPOWYPISdL+zOF/IuVPWeIUEG73HOrkQLfBxIi24scyUgB65PRcW5Fdre6jGQgTJKK1M4HcZi/q7/1ZYlB3i1tB8whsWN2gaE7C4hmqhI8suzAQw1CXzBVQYM+fQ32ZAlfqD5Y65bABLPW/5UmR22dSgefbIyffgGRFhLkgxKXMv6mEnJk6whkSnzfKXkraFAnGvxX4zTrpYYd3ewPqayCufR6nyr2eLMfAbCzvzl23WyKHTHxbrlBrX9At4vwrXvi5Cwhtitq4FdhNYB1OMclTZnAf8O28pvqIwp0rEE8Pu0f6Uq52Ce4cR44kIlvXDnRJEH1ly+6FbdeuGcMOE9p3h5ItjH6RfzknygDeQ2FEDBwMdGgxsjqfFU3MPXSRhz2Kt7o0GBnEyZNGyM8VeYYA/Fk0CvJgX6R0UzzxigNfIvf1iQd4uAcSB0BOAibbMtKgXDRstfirn6LcPnTAIe/uehhdWtHB0hLlJ2DVraW2FFSQcCF0tkKVo0L8pVlDM1Uv8pvL65DVqi9RKCK456xdAIFG+iimFJ+Lfn0iDpQSukSZFMtAUWOdnLg41pXfUDbzMdvkM7b1r1XC0d9EMZNvUqxNUbuAr2lxmizqkC7pWHfQpvZvjztKJuVRmz3XVatJ6ZB0M51puO0f8F1dijbLT+Y8pcWXsCQXNnnwQhG+1JX24CG2qM+nJJVWv9O8Fu1OAdd95vwA5SefLO3a3m6RbOIP3cZHVBOKNwFPx6FFNvKeIho0olj4Z8gi6WPZlsM6x2/38emXetVhoZionB5qrjqmPwXuQ8993UnXsdVTeL1DHtp3jEGGUUl9HmK38ePjlnDV0RiIqWH09UvFRt4rvu0U5dZBrA0GWNoxjJKFRiyDoOHZ8thO+S9iEINCHmW5OTPEkcOzEXapAwaZW8ihfZicU+msQqJIP6+mwxFl81HhcnZUGgUOtA7G7elnyyH5oX
- IGY0Hagr
- lUL2e4o/YlCdWKrxZf/oY15vFcqjC9n0WC2C6dbRIKDA4Dzfiz7cGrTanl1kg+mxCLVs5j+bAtq4Po5DIK1ziy+2VPUWmUiJDdoBNHOG0NdaixF8aGIoTCr54HOsTyMLPKWIc0nMuQkYcE+b+hTOmXmHI5OhAsvSC/GdL2R1mA8/iLh4KwqiNeifRaASzAopSeHK3tCqmnD0Wo6y7UqWnQiwJ0V5cuGG1BHmt2eIei8JT3Ngtxr/4gXW1re3+ME23FGW9qmLBG6zlnbGrQxrxqYKLAJbXUswoeXzGh5DtE5YNO8L+4Kem9l0ctvtH6QmK+pup
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795085874-645472
+X-HE-Meta: U2FsdGVkX19sBXov1JIDZMMdcQNt52cVPTTgeVSmcwYoFAAlEX/XdaelN6jGxeXBtV/bu8pGTlE6C38yZdNb3+Bfyb0T4PNJM4ftC1qe1YZnOmNujGbVd+mUDVEXuyLacEoUaKj0aSv2en9vpBYd5zCBYKS7/MPOQPIEaAgUUGEa/pCMqSYklByY32CHCshjrZwe3MXpuDNZHYOleusiM7ETTqDTXL/hSrRizwkCgDGafzpT/CBclP3Vy5TQwgkIOkxFARnalN2oRDlzziEgekpbACB9kfeiy3l4PfctlI4I1ryB2g4SVO6rh1YIcyKPqrga6I3HnFqw70KlqlTL1fxFDc0QQDQAGENZ7ncTD1uqrvi98RG3rEXRGSV6dcccLR+3QSkgK2YzeUUSjFxECtmFmzwU63OC30XYL/gZRrmIWfigy5lDbE6/DarHxfNi+9kC3VuDsS39/EKiBY9TvVhG5HM9/0oGYOsi1RBfJMqQ9ibtPGQPmlp+Jkz1wuq67YJwWJx4Qq9gFuW1gNV5UfQ8dKkxbj3/7RpQDMQ7W3u3kGh0eHoyAWLOFmSDaib606izgbcqwdfBFbjUBLAvJ/Gr3eV0i7eA536nhGrSxgSSS3+x4yiXC400a8ev1A2lE0i2uJKfp8kN1LhTDqFvqatszYwt+qPs9tP7MrSlDaKwL6q1Hm9qT3N13YnKaY0wDZdkBo9LRzmPo7vCgkAqn84be34lFDcyAXHoW01OUnqyN+W2xJ/ITRlVNOk2ACcAZBgVMoxxhEJb03HxDH6PzTnLW/jv57VKeJyyX/2TsvPhaQRTbmbHk0UOAM6LJsXyhCxep9HTRIy9mvFOZPdiN5xAEkEWZn2/lvUJsovCJeV1ixYkHQ2aIsUTdNzCJSW24edl3bHnxmGXkTiJwsIH1yiXxzIfUgiEo5sv8zcANmkHyX0Tl64XTGfh/hCfPZHKHTWlcW/E+WyqmOtyyNG
+ LrYsv06O
+ fr7wq/d5ys4v/b1CDl5VNfDzUU3qo0lTL+qpRsGIELPNXVzboViFl44YRSW5ubwSahyk8pdoIPs8C3oGvtkjyJ1prQVKxvWPlEmjObxBcArhc53XCg4gAjSQIRcvDvRGmgCwiZiqbIk/LBiR4l2SOeesrRW45vvXUQHZgjVyCxcKUaVu/HU/Rb+A1vYJ3pGQ+X6L7NYUM1tphsmtZaW3rMjqBq9YhyfC8RIcEqGdXD7m7XE1bnq2Rdq5T1D/lYWbofGM0RGNLKc4VX70TBQbJ4UlNP8s3W0nQbogtDKam7/D8DzwphNsJvPeEyBQW8u+8zOFdtlkgLSCLdfc/IuF79yI4I6zn6PAGFLXi3ufc/FupI4jLVQU1/gZQsDf7u3L1o3QpnLjo12Kjo4b0oYoTi+vlpbO7aUV6zNwRh5VBIc8CPr8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,57 +104,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 7:00 AM, Nilay Vaish wrote:
-> For device-private memory, test_hmm backs each fake device folio with
-> real system RAM of the same order, allocated with folio_alloc() in
-> dmirror_devmem_alloc_page().
-> 
-> When the core MM splits a large device-private folio, the driver's
-> ->folio_split() callback, dmirror_devmem_folio_split(), has to split
-> the backing memory as well. It does that by hand: clear_compound_head()
-> on the tail pages, folio_reset_order() on the head page, and
-> folio_set_count() on each of them. dmirror_devmem_free() then frees
-> every backing page as an order-0 page.
-> 
-> This open-coded split does not split the allocator's metadata. The
-> allocation tag and the page_owner record still describe one high-order
-> allocation, and PG_head stays set on the head page. When the pages are
-> freed one by one, the tag is debited for only one page when the head is
-> freed, and the tail pages carry no tag at all. With
-> CONFIG_MEM_ALLOC_PROFILING, running the HMM selftests and unloading the
-> module reports the leak:
-> 
->   lib/test_hmm.c:808 module test_hmm func:dmirror_devmem_alloc_page has 16744448 allocated at module unload
-> 
-> and with CONFIG_MEM_ALLOC_PROFILING_DEBUG freeing a tail page triggers:
-> 
->   alloc_tag was not set
->   WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0
-> 
-> The backing memory is a private buffer of the test driver and nothing
-> requires it to be a folio. Allocate it with alloc_pages() instead and
-> split it right away with split_page(), which splits the allocation tag,
-> page_owner and memcg state and is already exported to modules. It is
-> still allocated as one high-order block rather than as individual
-> order-0 pages because the driver finds the backing page of the Nth page
-> of a device folio by offsetting from the first backing page, so the
-> backing pages have to be physically contiguous. Every backing page is
-> then an independent order-0 page for its whole lifetime, so
-> dmirror_devmem_folio_split() only has to point the new device folio at
-> its backing page, and dmirror_devmem_free() frees the backing pages one
-> at a time.
-> 
-> As the backing pages no longer form a folio, take the order from the
-> device folio rather than from the backing page, and index and copy the
-> backing pages individually instead of using folio_page() and
-> folio_copy().
-> 
-> With this patch the device-private HMM selftests pass and the module
-> unloads without the messages above.
 
-I did a quick test and confirmed that the original splat has
-disappeared :-)
 
-Thanks,
-Zenghui
+On 11/15/2026 4:07 AM, Barry Song (Xiaomi) wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> The forced protection of younger generations contradicts the
+> goal of minimizing the I/O cost of reclaim. Under high memory
+> pressure, MGLRU can repeatedly trigger premature OOMs, while
+> the classic LRU does not.
+> The problem is that aging may fail to keep up with reclaim.
+> When this happens, reclaimers may all abort prematurely
+> because they see only empty generations or just two
+> generations remaining.
+> Proactive aging does not solve this problem either. The
+> number of threads performing proactive aging is limited,
+> while the number of concurrent reclaimers can be much
+> larger. This is a fundamental limitation of MGLRU. One
+> possible solution is to use an aging lock. However, the
+> aging lock introduces significant jitter under heavy memory
+> pressure and has been reported to cause noticeable lags
+> on Android.
+> Furthermore, the generation-based reclaim model can
+> conflict with the goal of swappiness, which is to minimize
+> I/O cost rather than blindly follow folio hotness.
+> The previous commit allowed reclaimers running at
+> non-default priorities to reclaim up to `lrugen->max_seq`,
+> while reclaimers at the default priority could reclaim only
+> up to `lrugen->min_seq`.
+> This patch further refines generation protection based on
+> reclaim priority. At the default priority, reclaimers can
+> reclaim generations down to `lrugen->max_seq - MIN_NR_GENS`.
+> As reclaim priority increases, reclaimers are progressively
+> allowed to reclaim younger generations.
+> With this graduated protection, premature OOMs are no
+> longer observed, while swappiness is also respected.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+> ---
+>   mm/vmscan.c | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 18cf1c084e78..b538abf02578 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4772,12 +4772,14 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   	VM_WARN_ON_ONCE(!list_empty(list));
+>   
+>   	/*
+> -	 * Respect the gen hotness distribution at low priority to avoid
+> -	 * aging and scan cost, but prefer to satisfy the reclaimers request
+> -	 * when under pressure to respect swappiness more and reduce IO cost.
+> +	 * Respect hotness at default priority, and only reach into the
+> +	 * newest generation when under severe pressure, so hot folios are
+> +	 * not evicted as soon as priority is raised.
+>   	 */
+>   	if (sc->priority == DEF_PRIORITY)
+> -		seq = lrugen->min_seq[type];
+> +		seq = lrugen->max_seq - MIN_NR_GENS;
+> +	else if (sc->priority > DEF_PRIORITY / 2)
+> +		seq = lrugen->max_seq - 1;
+>   	else
+>   		seq = lrugen->max_seq;
+>   
+
+Reasonable.
+
+Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+Thanks.
+
+-- 
+Best regards
+Ridong
+
 
