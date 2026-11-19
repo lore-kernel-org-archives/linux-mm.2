@@ -1,99 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05361606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 12:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8808B606A330
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 12:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SCQp41wV
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gi1agw5A
 Received: by kanga.kvack.org (Postfix)
-	id DA8A26B0626; Thu, 19 Nov 2026 07:02:45 -0500 (EST)
+	id EBA8D6B05E6; Thu, 19 Nov 2026 07:02:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D59AA6B0627; Thu, 19 Nov 2026 07:02:45 -0500 (EST)
+	id E6BDF6B05E7; Thu, 19 Nov 2026 07:02:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C484F6B0628; Thu, 19 Nov 2026 07:02:45 -0500 (EST)
+	id D82236B0627; Thu, 19 Nov 2026 07:02:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 936C26B0626
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:02:45 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20611120A79
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:02:45 +0000 (UTC)
-X-FDA: 85451731890.19.45A65A3
+	by kanga.kvack.org (Postfix) with ESMTP id A8E646B05E6
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:02:47 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3AB31120A90
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:02:47 +0000 (UTC)
+X-FDA: 85451731974.10.7468FBA
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id ABFE8180013
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:02:42 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SCQp41wV;
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	by imf24.hostedemail.com (Postfix) with ESMTP id CB69C180012
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:02:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gi1agw5A;
+	spf=pass (imf24.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795089765;
+	b=qtzHVqoLtNHLMvcLTdXuKzpqq/JR7aQyHazZNah6z0Bixq79T+OHc7mxRL0Er6rtSm5RmX
+	tC1j1XuO4ZeBQLKyxo6x9xHtD02qMH1DixGRj0orMrHsIaAxVAj3a26GK7MD1h80+YGhTt
+	PdL/mDVtz/b786TOoBM2uj6ay2CblVs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795089762;
+	s=arc-20220608; t=1795089765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AJpa1vQKPwsA3exeR0zFQL8OS++YNOFFgxas0w1fwx0=;
-	b=mMGNnTtdkUiD9CqepQ441315eIlasajQMahJVDwhKrRUVJ5/pK/As8TkJMmaxn/7leHc00
-	051yBxMvWOwb0jc8KQ2QwQXrEhJZ8LuvhAkDScA+iljfLnq4g+a6TA71IcT07zXjLmcebl
-	5Ja/uzVn2pi0zBTObVpmz5MyZdU6gxM=
+	bh=A4AW+1r5ioYbTqiBhF66CNLfZpJFNCdMJyMeafN4jyY=;
+	b=cdaKfBNmw2ZB/dU+m2pgNia/LPhCl+o2/QC5zrZ3zk/d16X5kc9n93dKWmwLsyPpMEqAB9
+	1VZwOoRfyBCHA7JmzjEc3z82qzF5LRbv5XQlL19stjWa4nxhnMc5TLVA7jWdD/AdKmhsc8
+	bGgW37LY4xSnnkYKdcFfjD2AfvMsalA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SCQp41wV;
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gi1agw5A;
+	spf=pass (imf24.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795089762;
-	b=Fk1yZBWXBiXcI3OXgSABLe7Y/Pse8UWHI0/ndK6oVFfd027wB/Z7eAA55M0AX8jZdhBelo
-	9n47505Zd93lgPzHmlcyd4D/04fI/aQcwTN2Wnl2m3eMT52sX2ZU9GJqiScJXWA5RzFxXI
-	brjm29Lr9xHPolVT9i4mndCID+7cEoQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795089762;
+	s=mimecast20190719; t=1795089764;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AJpa1vQKPwsA3exeR0zFQL8OS++YNOFFgxas0w1fwx0=;
-	b=SCQp41wVTh+Um3yMA8Uy8WUrzAHtoXHPfbiEK0c+blOuNsiF83AaVmYMapInVfeYHEKUsv
-	VzsuyiCpjLCN/rPPRUWqnAwMTSRDpF5y0MNxckOZZ/RUJicnwkahLYXuDu/ORgPmboWgaE
-	GVZzRhkCrAgfJJTr0RTsPvmHRF7rhIk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=A4AW+1r5ioYbTqiBhF66CNLfZpJFNCdMJyMeafN4jyY=;
+	b=gi1agw5ApvlhZONZ3u/TuG1vqa8Gk+HC2sbIAoguZZ6G+FXsbzSFYOqXZZqhWEc/7pAofi
+	LgngcpfpCAMT46GymxiIYEVeA1MOd9N3oP5N6S6DSVblaptEBlt4qlyBPMcSkYtLkKOxKT
+	HLyPwtj2Qy3CNQiPlO5IcnSGngaRin0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212--UdaCcn3OWuBCUI4qya6Ag-1; Thu, 19 Nov 2026 07:02:38 -0500
-X-MC-Unique: -UdaCcn3OWuBCUI4qya6Ag-1
-X-Mimecast-MFC-AGG-ID: -UdaCcn3OWuBCUI4qya6Ag_1795089757
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-49034831bb3so1459463f8f.1
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:02:38 -0800 (PST)
+ us-mta-532-EkOlRSDkPUaT0ki1bBPTUA-1; Thu, 19 Nov 2026 07:02:42 -0500
+X-MC-Unique: EkOlRSDkPUaT0ki1bBPTUA-1
+X-Mimecast-MFC-AGG-ID: EkOlRSDkPUaT0ki1bBPTUA_1795089762
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c50549f6cf1so145272566b.3
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:02:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795089757; x=1795694557;
+        d=1e100.net; s=20260707; t=1795089761; x=1795694561;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AJpa1vQKPwsA3exeR0zFQL8OS++YNOFFgxas0w1fwx0=;
-        b=dYKUQb7Ne/530tb0hijCWM/2eK1RRYnhpktHLVkm4Gtk0lOuOM24UHyXp/8XGKnYm0
-         QHfMoIsJ0GAhvPiEpzmuWgt4OQpQJ2JcQM2qcaApCGnIScRZmw9r6OynfcZkwIidNtxU
-         uUYaO5EYVzLhsjI2jgxI9MKdtIbzhHhNeYnPSRTKqyfJkARW9j+hd+KKLJzplziiNza4
-         7JpZw4gV9or7D5xrRoTtYI/DSSDflSLXkx1XOJcXkwuUCp63gmhQ02jLQcFlgsAVw/3+
-         VcDe89cfvTQnzrwjGfBcmylIVJ7Z5nPt4EYzktR6H7ZyDj2sMJuAfRp5Fji49y8wOwhk
-         ZQWA==
-X-Forwarded-Encrypted: i=1; AL+hErEzepFeLLx4h4TpAZ4uTHAkw2vdHBqldaqmjnTFc/+n54vN1VC3HbRZxY9epa86VqgkWF+Ew0IOAw==@kvack.org
-X-Gm-Message-State: APuU4Z86K7V3AwI/H9VJOFePUSBOzlgahVAbv5pTCzFF96Rgp/9GXTw/
-	0b7Yv70fHffUuQOHEHBzp+UNEdYMCq1UPpEz4Xbx9SwdldXdmyEvouKFPRtmCJQMt90AZbIlC5C
-	mOzQC/8wQ1FLXsPNsBIxUxwMlfJW5ILPOJhwnWdkHrF0dK0Op5hJx
-X-Gm-Gg: AZFdTZdHc0XuOX47lWvedQvVgNkFR+zsCyEDXAUgBJPAsuq+TWBVo8vxAJp8mcIsKyo
-	pXh4cDmuKrMrezkY8bsQJtnw6oMTWQKM5XBZ1DCMipKRznVKHsUnc0sUJDctcYKDVKrMiqf3RwV
-	CpUOXsK5iTVhTF60O0iT1/PZ1Y/CZ/zvi/PSBVpOz6yQbXTIUSGmmBrJDa83YPT+EfS9nUagKAK
-	imqm+Ru4ZPucubxuVLtqcLMj5RmFUfgQrSi2NDMvYvcQYXrBrb2CgTd8mYWslb0T/yHdZoRuBQq
-	lZFooY9FY8dgYrbxu/+HtqZcreUNIna2W041/yjHnRx+h8pGo2qzLryH3hxKXgldS2fn2rli4Dm
-	6wekLKKeRoSn1DpnoqGc7uP8yVfgtjcC8H2Lqz1ehR+Y=
-X-Received: by 2002:a05:6000:2602:b0:48d:f470:6b3e with SMTP id ffacd0b85a97d-4a63ae56784mr10952379f8f.13.1795089756708;
-        Thu, 19 Nov 2026 04:02:36 -0800 (PST)
-X-Received: by 2002:a05:6000:2602:b0:48d:f470:6b3e with SMTP id ffacd0b85a97d-4a63ae56784mr10952307f8f.13.1795089755989;
-        Thu, 19 Nov 2026 04:02:35 -0800 (PST)
+        bh=A4AW+1r5ioYbTqiBhF66CNLfZpJFNCdMJyMeafN4jyY=;
+        b=quwG0TkvcwUip3gApQyjQb/8tqAoCyVs5l+9ryB4q+JHKG9RMiBGkNK+PWf7pyVacl
+         Ugm17iLcwrJ/yofH5HdWJA0kk2xyIgzzPNiIEFbMTb3QtE1PklK2SSAIvvwiekTCPXfB
+         miENp5SNmY6xD8PdIuaUfY+NCTvYe1nJXG6A2dExmTb1jJcKOOomSIl01fV/O2M+5PXm
+         6JXpPIpqO991vECBDEBSh/TmjE2CSa41TUdqj0uJrg4aX+BsqQHaKN7akPprdiG7qQVi
+         TlZjq5aEpS+Q3/X8FsjqA9lnplv11Ku2SBUxW12NcMr85sDlmXxev6yu8bJ2/nVRDqvb
+         rMFg==
+X-Forwarded-Encrypted: i=1; AL+hErFz/shpj5bvgcyub39Jf7jDaOeD2dy18YZ65t0nUcoIde+QHRcyoWNVIKQKGjhov5fwbcdfPG8n2w==@kvack.org
+X-Gm-Message-State: APuU4Z9+81F2Uo38WpgHmIgWPRnEDKsiCCDQW+//wgjAR2eYTvWYC7HX
+	mEvTG0T1VizXPlDP7zKcX5rvxSVQ2k87k1u10CNvkna8CpwV/E/+H+oXOzyUzp5GSrcDpEc9FR6
+	wshTKbnjUjHvQyIBhyeB4ZyoIPyaELWStw7TAtnigMAnufzBdV8kn
+X-Gm-Gg: AYBFou2ZaTl/OUMJ7mQaubaOiNUdEYSSnAKgPcyu95bxd8nfVhoHFhJdMCerI9hjzAJ
+	TsJ6SBLLwwNzTV8fAreNMObCdhRGF3jC+2QLTFSq7QUE8LJzVP7UWkMZ1sZau60n2wI2biJV1BT
+	xLDNnYNYKYx7cj9P3dZeDC3NqBNzqoH5u3OA28Prn3mX8v+ihCpmf7taJnBmHxFoPnrZW4uxFZT
+	bnvZ79+F9KJFNSfY0iiCmkLDUpJKYVOPIED0di6/kB2qaSgxFjhKWWdfBBnr6r/hKaCJR4HR0ds
+	VZNtAsu5fR6byWcCxhV+0qC/FEkMycmIBN+fF1iBrLmaNl4zDpcnGMMcrD2DQy5fHxyJj5VacTp
+	NsAtclJIVK3GGgLkjg3W6V9/tgM2aYC3Kc0D3wT3rYXA=
+X-Received: by 2002:a17:907:6d1f:b0:c46:8b87:c1f4 with SMTP id a640c23a62f3a-c510e2d4ee1mr524866366b.20.1795089761411;
+        Thu, 19 Nov 2026 04:02:41 -0800 (PST)
+X-Received: by 2002:a17:907:6d1f:b0:c46:8b87:c1f4 with SMTP id a640c23a62f3a-c510e2d4ee1mr524859666b.20.1795089760723;
+        Thu, 19 Nov 2026 04:02:40 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc0:1520:4400:d78d:7b2d:2f5d:e08f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a650d2f682sm9896560f8f.6.2026.11.19.04.02.32
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a655f9f4a7sm10439162f8f.34.2026.11.19.04.02.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 04:02:35 -0800 (PST)
-Date: Thu, 19 Nov 2026 07:02:32 -0500
+        Thu, 19 Nov 2026 04:02:39 -0800 (PST)
+Date: Thu, 19 Nov 2026 07:02:36 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -117,8 +117,9 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Brendan Jackman <brendan.jackman@linux.dev>
-Subject: [PATCH v11 1/7] mm: add PG_zeroed page flag and buddy merge tracking
-Message-ID: <a98c8a49744d30a5e603228d9cb17509261add90.1795089715.git.mst@redhat.com>
+Subject: [PATCH v11 2/7] mm: page_reporting: support host-zeroed reported
+ pages
+Message-ID: <2ec112cbdde76a60ab235a0df7734a23387f1c86.1795089715.git.mst@redhat.com>
 References: <cover.1795089715.git.mst@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -126,22 +127,22 @@ In-Reply-To: <cover.1795089715.git.mst@redhat.com>
 X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5zc_yigUmrD_WXOzDIcJXI_1TfwLbr7ykQB9XcFB8MU_1795089757
+X-Mimecast-MFC-PROC-ID: aSZJsowjt80Tbxp0f3VoG8MH_KFgLrNhkBVH_6fYe1k_1795089762
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: ubwytro561z7spbnrsefpiaifptdp4m9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CB69C180012
+X-Rspam-User:
+X-Stat-Signature: hf18b38dha1s5k6qagpoxqwqkqp69wmi
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: ABFE8180013
-X-HE-Tag: 1795089762-493624
-X-HE-Meta: U2FsdGVkX1+c8KoSn/YuqL3Y9KBBOOasDFeF/9mQUsEUnmXLqXofr13VFAL0h3WJmBjYLKIeyxtr0Mu/0Rtuffe+aVPyGzUk218iUYVTRcb4KlpsBx935uKY/RfpNaN/LOeb5nuVy2O6XlpfpAAOmSH4VC3syOQWcBdoSDpus9AsnK6Q86x8/VSWQphQdVunJL/0EPvLDkGnyyDWcaRpca+J+FwWT4Ff+LXXBIq5pyVZhwow/IuXzvZR177h26fYqynnKADutzXnMgLQV7PTMnmnK7HtcCYYoamKbWUh1qGgSAj21WJTo8InGRIqMlbJuXqlFrG+74G66BIPP6hxKhyAZTF/dwWof8LH5imj6ux8EdySkuCzeFDNReEQilMKHKGh2OkizM42ZKhzS7TuwP9h2pxOmbewKniBf9TC2M0+zpvmibsrkpl27c29Ve/JytQjQomLXKLsTRUAQSdfb0G0AqMdRCUVQUrGB/TvRLTRITZq/AwuRvFoNxFsGu+l+PVDAjtKKKjybq8QFI2KMt4qMDGFVTDYVuDPME8uTgLFCmQeR5l8+4aYM2858R6Gfz7uLubt74CoK994q/n5e3D/W4T+T5PAsox1GBJ/7AvUX+RXpimZuBOC0kdVGCn1MpDKkSA6zXT8oJG8+IgUUWqoh5FSocpHwZ8xtRkloQfFTuZnguOuvtTUWPcGH0e8wXD+NJhkzj0VHA1ma/GFF/dWxZpsn5nKq8Zriu6afbublv6+7LXDsutOXgjZMGxEKyXpuR2ZTNM8pBHsfG2QNT98YOkEDPPwGiWpcyH9bWOzMf0yRD9xxGTdx9lqGsO58XS5CAEzzQSiq3MPMApwLzJZQliSPkqvPahAuzHfaQ7sW+yTkhOl5tcCbhXrflr20vWq5w3Xls4Nd91htssJwlx4QxUlVzmnFhKPQWl3e8FqENurLHLXrih26oHK+vhbtkL5xBi0SblWJkqhuIM
- /w3G7SNZ
- Q3qdA0uppc82Wss9tR+MplFq8e6WdS4/jmi5ysruU77Mm8WN5ZnmWSe+6Lv5dFySfEDb+zOVoY4zSOxKX7JP33aDxIq3bfxYxW3QWwZWsjR7+RGMG3pl3ZzlYkHNhJTVIzC0xWV/v/NkNoyFJfb26G0TgeJD3JscOolDEmSb5BCHjt8tETCdYbxTAI/V41xSlFym6xizPHNw8fiEVkY98xCVV6dGsUb8acPwCVyVJrH94kqheDsXkHTvyfF8hoxNzyfyyfVuYH33B8j7mtYrQYhWEuFK+TjjySuXU7nR3Y89ZPEY6VGcrQowxXTrIHBhiTDCRKTGcN0EVO/H1ho4+caqZ/F13bdJJ/SNOh9eNwyz6wkzOdcSO9N7ebGT5d0oD2DDv
+X-HE-Tag: 1795089764-799453
+X-HE-Meta: U2FsdGVkX1++5rf/n9zf6uSFGgVIsheaocYyFW8g4Dpec8FxQpFBrbnVJ2909UQrV4OsJlrYessHOktwVAYjCFFjBdsyZFJvrB/I9wLFfGDpCEszgbl+90FObIwiFK/gN5oztKsk2gg3a42m/PuW6ZTaP84ufxVYG2BPeTBtNEIJQE9zepPgQXgz/ET0PnJ9/+kfhI+OzEjSdHRc7We1Qhfw9U5UDA38oRF9EGToZKAR83mxNv/58RuWSwGBz2Ru5xhv4qhoEottKOXeF9IbTVdm66EJUpaK225MCWeQ6z7+YTTLuNalwTNVmnYDYQrZx71pYhlxZIikXIJmxO9YXb5QPhdkSsX70G919fuGFSL+MN16WATtIXwbkoPlwfo6fLEdN7ftN+8wf21ENckyNG4pYBK+5haJGGulYI8PiTNtIBPM9ESzqSjFQ5LBYCjesaQC3/4q3iTKtf8J5ZU1rLvSzzo/SnAoO7Ars7aqmtO7NMn2Kq+RO6wlB9dZPUfoqrtR4kNMFUl7n9LpYilCYpzKmxQdwKyYR2nYUNIQ6NRetxNva4H6toi8WNFgE168BxkMf7KuvuGqTy680bXo9AO2kMrgyF4arO1WsgR9g8Ylqxms+dzxQsnrDwGPwjZahl2VpdZHUXV8EofSKnWo535bg2S8JGRQ3aFD+YA/Kw59m76XSCDyjtjCTv2sO8okngUKBDvygHVyyk6zHP2rADpjGlc+1acqLIF+/bF5PvK/N9SMRu095jgId43Z+ASmVj5xnP+bv2KIDq+VXs71mTGss2XC7nI3H9w/1MAyIux9B22Kq0ZawPeNCpdzyuLrm5YpjUGuNxCigOswGk2/AACaibPIYz6zsLZWcaFBNvGjFHXaitDYQZTEmTgpg9GB95/xtfzjFAu5XNKRETKhyCRn0agJFZY8eKbvBv7wPqOzUJtTtSYrTzCERV4aAH4jl4HWIhPdNFL+5G6H/0n
+ prfbKfUL
+ CUmBmCFbHOM3JJYlNP2f+PgwZvED5Ph/XdAZ78fDlQmqf77BKLBMDPdk7s5rJIFjvGIayYtZBuO4NXiI9qQ07RUaLmscmIXnSn1Qy1batNLsCcNLQYNVr6teJ6PUW7a6ZciH8i3ZSBuRbEuDX4vfk2YoecmfKeu8JR73bg4ciJSSunMcVyn3iWy3K5FZS8oq2zyMB+kAmGuipFryRSIo5oLsFKM7x/sDvtkTiCFcN+/Q4otlR9QnPIMjjZ2djZsjBLVfpSsYB7eGXSmy4a9aHLiQw6uY7Laj4vvzoWxNfGwJFo+nB6rpF/I9gxwuruA7BbuHT+6iiYyJxyuGhsHxJbbbeGiGPY39tA8IDdrn31rc7c0aEkgzD1lrVxlmtQcM1wLBkVixX27Ji/II+byQU0kc4QOVXqTcDSxxisJZ7jsXT3Aa42lleA02+F5BJ5K3pYL58i5HyFe7/977Ej2Oa3nd+Ky6UQk1hV94gXUTS4DrDUux+cHFBAngN0CDG219iTXLi8eqHNGM7IKvcV2n4ttcRvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,263 +151,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add PG_zeroed (aliased to PG_private_2) to track pages whose contents
-are known to be zero.  Propagate it through buddy merges and splits.
-Upon folio allocation, PG_zeroed is cleared and its value is transferred
-to BIT(2) in lru.next.
+Add a host_zeroes_pages flag to page_reporting_dev_info, allowing
+page reporting devices to declare that their host zeros reported pages
+on reclaim.
 
-This bit, in turn, is tested by the new folio_init_user(). If clear, the
-helper zero-initializes the folio. If set, it skips clearing the
-contents.
+On successful reporting by such a device that guarantees zero contents, set
+PG_zeroed.
 
-Clear the aliased flag on free so filesystem state cannot be mistaken
-for zeroed contents.
+Note, that hosts zero the pages for guests, safely, even on
+architectures with aliasing data caches, and even without knowing the
+guest user virtual addresses.
+
+Specifically, ARM64 data caches behave as PIPT; KVM handles cache maintenance
+around stage-2 mappings and invalidates the whole I-cache when it aliases.
+On aliasing MIPS, host unmapping flushes the whole D-cache, and slow GUP
+flushes the host aliases of replacement backing pages before KVM maps
+them.
+
+Any host that can't handle this, will simply not set the flag in its
+page reporting device.
+
+No driver sets host_zeroes_pages yet.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Assisted-by: LLM
 ---
- include/linux/highmem.h    | 21 +++++++++++++++++++++
- include/linux/mm.h         | 32 +++++++++++++++++++++++++++-----
- include/linux/page-flags.h | 15 ++++++++++++++-
- mm/page_alloc.c            | 38 ++++++++++++++++++++++++++++++++------
- 4 files changed, 94 insertions(+), 12 deletions(-)
+ include/linux/page_reporting.h | 8 ++++++++
+ mm/page_reporting.c            | 3 +++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index d7aac9de1c8a4..70bbe93b8d669 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -303,6 +303,27 @@ static inline void clear_user_highpages(struct page *page, unsigned long vaddr,
- #endif
- }
+diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
+index 272b1274efdc1..49adfc5d45804 100644
+--- a/include/linux/page_reporting.h
++++ b/include/linux/page_reporting.h
+@@ -13,6 +13,14 @@ struct page_reporting_dev_info {
+ 	int (*report)(struct page_reporting_dev_info *prdev,
+ 		      struct scatterlist *sg, unsigned int nents);
  
-+/**
-+ * folio_init_user - Initialize a freshly allocated folio for userspace.
-+ * @folio: The folio freshly allocated from the buddy allocator.
-+ * @addr_hint: The address accessed by the user or the base address.
-+ *
-+ * The caller must not have written to the folio or repurposed folio->lru
-+ * since allocation: the pre-zeroed marker is only valid until then.
-+ * Preserve known-zero contents, but initialize KMSAN metadata that the
-+ * allocator may have poisoned. Otherwise, clear the folio if required.
-+ */
-+static inline void folio_init_user(struct folio *folio, unsigned long addr_hint)
-+{
-+	if (folio_is_zeroed(folio)) {
-+		kmsan_unpoison_memory(folio_address(folio), folio_size(folio));
-+		return;
-+	}
++	/*
++	 * If true, the host zeros reported pages on reclaim.
++	 * This includes any architecture-required cache flushing or
++	 * invalidation, especially on architectures with aliasing data
++	 * caches, so guest accesses observe the zeroed contents.
++	 */
++	bool host_zeroes_pages;
 +
-+	if (user_alloc_needs_zeroing())
-+		folio_zero_user(folio, addr_hint);
-+}
-+
- #ifndef vma_alloc_zeroed_movable_folio
- /**
-  * vma_alloc_zeroed_movable_folio - Allocate a zeroed page for a VMA.
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6af3b7008f1ad..7c9ada8273815 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3325,6 +3325,26 @@ static inline void clear_page_pfmemalloc(struct page *page)
- 	page->lru.next = NULL;
- }
+ 	/* work struct for processing reports */
+ 	struct delayed_work work;
  
-+static inline bool page_is_zeroed(const struct page *page)
-+{
-+	return (uintptr_t)page->lru.next & BIT(2);
-+}
-+
-+static inline bool folio_is_zeroed(const struct folio *folio)
-+{
-+	return (uintptr_t)folio->lru.next & BIT(2);
-+}
-+
-+static inline void set_page_zeroed(struct page *page)
-+{
-+	page->lru.next = (void *)((uintptr_t)page->lru.next | BIT(2));
-+}
-+
-+static inline void clear_page_zeroed(struct page *page)
-+{
-+	page->lru.next = (void *)((uintptr_t)page->lru.next & ~BIT(2));
-+}
-+
- /*
-  * Can be called by the pagefault handler when it gets a VM_FAULT_OOM.
-  */
-@@ -5544,8 +5564,9 @@ enum mf_action_page_type {
- 	MF_MSG_UNKNOWN,
- };
+diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+index de587be178010..841dcd64777d1 100644
+--- a/mm/page_reporting.c
++++ b/mm/page_reporting.c
+@@ -127,6 +127,9 @@ page_reporting_drain(struct page_reporting_dev_info *prdev,
+ 		int mt = get_pageblock_migratetype(page);
+ 		unsigned int order = get_order(sg->length);
  
--#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
- void folio_zero_user(struct folio *folio, unsigned long addr_hint);
-+
-+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
- int copy_user_large_folio(struct folio *dst, struct folio *src,
- 			  unsigned long addr_hint,
- 			  struct vm_area_struct *vma);
-@@ -5693,11 +5714,12 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
- 
- /* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
-  * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
-- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
-- * bits used for the DMA index. page_is_pfmemalloc() is checked in
-- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-+ * the head page of compound page, bit 1 for pfmemalloc page, and bit 2 for
-+ * zeroed page, as well as the bits used for the DMA index.
-+ * page_is_pfmemalloc() is checked in __page_pool_put_page() to avoid
-+ * recycling the pfmemalloc page.
-  */
--#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-+#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x7UL)
- 
- #ifdef CONFIG_PAGE_POOL
- static inline bool page_pool_page_is_pp(const struct page *page)
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index b0ddc652e76cc..39cd5911a2188 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -153,6 +153,9 @@ enum pageflags {
- 	 */
- 	PG_fscache = PG_private_2,	/* page backed by cache */
- 
-+	/* Page contents are known to be zero (host-zeroed or balloon) */
-+	PG_zeroed = PG_private_2,
-+
- 	/* XEN */
- 	/* Pinned in Xen as a read-only pagetable page. */
- 	PG_pinned = PG_owner_priv_1,
-@@ -686,6 +689,16 @@ FOLIO_FLAG_FALSE(idle)
-  */
- __PAGEFLAG(Reported, reported, PF_NO_COMPOUND)
- 
-+/*
-+ * PageZeroed() tracks pages whose contents are known to be zero.
-+ * Set on free-list pages by the balloon driver or page reporting.
-+ * The allocator uses this to skip redundant zeroing.
-+ */
-+__PAGEFLAG(Zeroed, zeroed, PF_HEAD)
-+SETPAGEFLAG(Zeroed, zeroed, PF_NO_COMPOUND)
-+CLEARPAGEFLAG(Zeroed, zeroed, PF_NO_COMPOUND)
-+#define __PG_ZEROED (1UL << PG_zeroed)
-+
- #ifdef CONFIG_MEMORY_HOTPLUG
- PAGEFLAG(VmemmapSelfHosted, vmemmap_self_hosted, PF_ANY)
- #else
-@@ -1189,7 +1202,7 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
-  * alloc-free cycle to prevent from reusing the page.
-  */
- #define PAGE_FLAGS_CHECK_AT_PREP	\
--	((PAGEFLAGS_MASK & ~__PG_HWPOISON) | LRU_GEN_MASK | LRU_REFS_MASK)
-+	((PAGEFLAGS_MASK & ~(__PG_HWPOISON | __PG_ZEROED)) | LRU_GEN_MASK | LRU_REFS_MASK)
- 
- /*
-  * Flags stored in the second page of a compound page.  They may overlap
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 6624293e4d787..927a288eb419b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -986,10 +986,21 @@ static inline void __free_one_page(struct page *page,
- 			change_pageblock_range(buddy, order, migratetype);
- 		}
- 
--		combined_pfn = buddy_pfn & pfn;
--		page = page + (combined_pfn - pfn);
--		pfn = combined_pfn;
--		order++;
-+		{
-+			bool page_zeroed = PageZeroed(page);
-+			bool buddy_zeroed = PageZeroed(buddy);
-+
-+			__ClearPageZeroed(page);
-+			__ClearPageZeroed(buddy);
-+
-+			combined_pfn = buddy_pfn & pfn;
-+			page = page + (combined_pfn - pfn);
-+			pfn = combined_pfn;
-+			order++;
-+
-+			if (page_zeroed && buddy_zeroed)
-+				__SetPageZeroed(page);
-+		}
- 	}
- 
- done_merging:
-@@ -1378,7 +1389,7 @@ static __always_inline bool __free_pages_prepare(struct page *page,
- 					continue;
- 				}
- 			}
--			tail_page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-+			tail_page->flags.f &= ~(PAGE_FLAGS_CHECK_AT_PREP | __PG_ZEROED);
- 		}
- 	}
- 	if (folio_test_anon(folio)) {
-@@ -1397,7 +1408,8 @@ static __always_inline bool __free_pages_prepare(struct page *page,
- 	}
- 
- 	page_cpupid_reset_last(page);
--	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-+	/* Clear the aliased PG_private_2 bit when freeing allocated pages. */
-+	page->flags.f &= ~(PAGE_FLAGS_CHECK_AT_PREP | __PG_ZEROED);
- 	page->private = 0;
- 	reset_page_owner(page, order);
- 	page_table_check_free(page, order);
-@@ -1507,6 +1519,7 @@ static void split_large_buddy(struct zone *zone, struct page *page,
- 			      unsigned long pfn, int order, fpi_t fpi)
- {
- 	unsigned long end = pfn + (1 << order);
-+	bool zeroed = PageZeroed(page);
- 
- 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn, 1 << order));
- 	/* Caller removed page from freelist, buddy info cleared! */
-@@ -1518,6 +1531,8 @@ static void split_large_buddy(struct zone *zone, struct page *page,
- 	do {
- 		int mt = get_pfnblock_migratetype(page, pfn);
- 
-+		if (zeroed)
++		if (reported && prdev->host_zeroes_pages)
 +			__SetPageZeroed(page);
- 		__free_one_page(page, pfn, zone, order, mt, fpi);
- 		pfn += 1 << order;
- 		if (pfn == end)
-@@ -1705,6 +1720,7 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
- {
- 	unsigned int size = 1 << high;
- 	unsigned int nr_added = 0;
-+	bool zeroed = PageZeroed(page);
- 
- 	while (high > low) {
- 		high--;
-@@ -1722,6 +1738,8 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
- 
- 		__add_to_free_list(&page[size], zone, high, migratetype, false);
- 		set_buddy_order(&page[size], high);
-+		if (zeroed)
-+			__SetPageZeroed(&page[size]);
- 		nr_added += size;
- 	}
- 
-@@ -1880,6 +1898,13 @@ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags
- 		set_page_pfmemalloc(page);
- 	else
- 		clear_page_pfmemalloc(page);
 +
-+	if (PageZeroed(page)) {
-+		__ClearPageZeroed(page);
-+		set_page_zeroed(page);
-+	} else {
-+		clear_page_zeroed(page);
-+	}
- }
+ 		__putback_isolated_page(page, order, mt);
  
- /*
-@@ -3144,6 +3169,7 @@ int __isolate_free_page(struct page *page, unsigned int order)
- 	}
- 
- 	del_page_from_free_list(page, zone, order, mt);
-+	__ClearPageZeroed(page);
- 
- 	/*
- 	 * Set the pageblock if the isolated page is at least half of a
+ 		/* If the pages were not reported due to error skip flagging */
 -- 
 MST
 
