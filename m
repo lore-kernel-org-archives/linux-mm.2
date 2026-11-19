@@ -1,109 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E859606A32C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 23:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF69606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 23:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=O073Ola0
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=U+0csrj6
 Received: by kanga.kvack.org (Postfix)
-	id 3C4D36B06E0; Thu, 19 Nov 2026 18:31:29 -0500 (EST)
+	id B75516B06BC; Thu, 19 Nov 2026 18:40:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374BB6B0700; Thu, 19 Nov 2026 18:31:29 -0500 (EST)
+	id B263D6B06D4; Thu, 19 Nov 2026 18:40:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 263FD6B0702; Thu, 19 Nov 2026 18:31:29 -0500 (EST)
+	id A14C56B0713; Thu, 19 Nov 2026 18:40:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E605F6B06E0
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:31:28 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 73339A84BE
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:31:28 +0000 (UTC)
-X-FDA: 85453467456.16.911A927
-Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C403240005
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:31:26 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=O073Ola0;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3zIb_agoKCDcgbeTroTblaZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--nilayvaish.bounces.google.com designates 74.125.82.72 as permitted sender) smtp.mailfrom=3zIb_agoKCDcgbeTroTblaZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--nilayvaish.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 66C6D6B06BC
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:40:07 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE77A40C86
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:40:06 +0000 (UTC)
+X-FDA: 85453489212.09.0AC0F02
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 23BD2180005
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:40:04 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=U+0csrj6;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795131086;
-	b=qOQXsjJkN4w//zyGptRXkryRJ8IKPerC/XAvZ9lRRJn6xtSX90mSk0wfI5p963bFxOVzkE
-	bsZGpv548ORysop8viy7WHVebFKjsH2MWCJJ06aFpu3U6OkVc3LAFVkQ563SUIep9ZjnMW
-	6K0LuHPmnUhveFeO0qFG5TY++JaBz+A=
+	t=1795131605;
+	b=dGVpxcE84zA/VGxMNcMnD4gPtgKILx+gKQtMUbEbcF0uaV+xbpUfnCBn9MQqlTh4dEaNl0
+	l7MBFiJMUe0j7LALwc0a2eWmMMfOxfST7P4XuO6Ll25VXpbRYTE6bgBY/ltz3q7qTF51Fn
+	ZFmuaujilgsrOjGoe4KTxosfAbVZSDY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795131086;
+	s=arc-20220608; t=1795131605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Aem+HyjchlD9dlMnLoX3Rsa3iep8drYmdRID51i88Fc=;
-	b=Iq3bqQTDgECuiAc+FMnQZsewZVpzAOqFQSlI6J5dF/xWcYuj8ex4vLBq/D5yFHRtFqwOQ8
-	Tf8H9htDpoCm+FQiFuBSIo6HmeVkZWk0xbLGoXnU6O/Dn+PnQwi0bKDkqhfg3Wa+xgKBZl
-	BDb3rfVxAOR4IB0oMHtpYYZp//0qoLA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1DASm4ABHvydbCgPqdPTvCuRMoED8Hk0QLqB2S7niGg=;
+	b=dlhTn+YjrJ8fr4HH8h28Hdeth/TXDzCp1JJ0VraOO5yDzyIb6gzu3s9YHlHk8AfYBwYo+8
+	+CwZgk0cjOOmsQn0OMyuJ1jmyEq69yXnJ6J6hODVl1VHDVGShAFbho5kNbdRJp4U9J/bSt
+	Rj1wJnoT3LHWcl7aMnK0wJg9EoDa9Bk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=O073Ola0;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3zIb_agoKCDcgbeTroTblaZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--nilayvaish.bounces.google.com designates 74.125.82.72 as permitted sender) smtp.mailfrom=3zIb_agoKCDcgbeTroTblaZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--nilayvaish.bounces.google.com
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1b3a348a6dbso562289c88.1
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:31:26 -0800 (PST)
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=U+0csrj6;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B4CCF609D3;
+	Thu, 19 Nov 2026 23:40:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD221F000C4;
+	Thu, 19 Nov 2026 23:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795131085; x=1795735885; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Aem+HyjchlD9dlMnLoX3Rsa3iep8drYmdRID51i88Fc=;
-        b=O073Ola0kgxmRXxIEgUK+Cp6sX9XuHBd2QtGkgLKwbE8x2hnUcbkznT9Gw8KqXroKV
-         WQM3pkeWT4e34tT1WDF8f2clzWplg+ClrQo4/MieIiad8Bw00Ga31DMna4Ude3LX/8NM
-         s781qnmTJ304Hsgwjx8oyhXbDZ7rit/AtXsIgx0CaiFgNttKGPARE2GhBor4/zBehm5w
-         UJ13JFsxxdJYDbNwCBfy5fUwf6kJqOqG4PQTwCdl897gD5wIptfYO+0RTaNfyI51vsuR
-         ul0m1xDh8+9QK2alb9XVP4CaZbMXINnTZFpkIFiphA2MUleYCNxMzfZ3mmOePgpMw4qK
-         ipuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795131085; x=1795735885;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Aem+HyjchlD9dlMnLoX3Rsa3iep8drYmdRID51i88Fc=;
-        b=nZ3mlq3iI08NjYcM2jDCy9dq73e+HmtBJFgoCaKc3BFu+OFYui5SmlNTsN7jryL03T
-         e44wu0ia2YtnYThkiMPqiTRQFTL4Zgxb0hcHqfeDVIfQ3sjBjDgWrk8LtwfM461lyLFT
-         qjLkaboZKX7KMs3nDzMlLvuc4Nk6XkFZeaqLmeEGEu/z7m85+HS+XxiDiDK/zuEHRVcX
-         UFIgk4zMWcFhMAboCK1fRJoRDwP07+XP/oZiOQOxKKu1iWC0pkdzVPveUoQ47mkQMKpF
-         jFTWFPMaZD4ZsEPmNRWTj76W1Yc5nzP71fXWpYoqnP2c7mxevMQk/yUYtoYSWkPeEAb0
-         ywTA==
-X-Forwarded-Encrypted: i=1; AL+hErGjJKuC4+JQb4mI4CBA06H/g/qptm8zR2z7Vp5VQh8yPOlQzkPqD/GAfUVmbj3Q13htpMkfJY5JQA==@kvack.org
-X-Gm-Message-State: APuU4Z8GgAkSJ4bD5sOQRiSwpHf+dcH/EdiODbbVSHE2XtChrhxpuBNY
-	nH+ngpQPl8YizjgXTfxs1HAR06q/IqOO2tbEvnaENKnoVIjNC1W1WT+PgCfX1TZuyWUmy7ixzS5
-	p3PE6y31uF4A3I4YbsE/sSw==
-X-Received: from dldyq15-n1.prod.google.com ([2002:a05:701b:454f:10b0:1b5:1d0c:b35a])
- (user=nilayvaish job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:701b:2806:b0:1a4:c892:b130 with SMTP id a92af1059eb24-1b5568bbebcmr918980c88.15.1795131084783;
- Thu, 19 Nov 2026 15:31:24 -0800 (PST)
-Date: Thu, 19 Nov 2026 15:31:19 -0800
+	d=linux-foundation.org; s=korg; t=1795131603;
+	bh=1DASm4ABHvydbCgPqdPTvCuRMoED8Hk0QLqB2S7niGg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=U+0csrj65wERCccDzC12LroJ2Kmi9pNSiZ1GLXYN+X4ITS8T6WSI63cqKE+cX4Hmm
+	 L0hxYNeHlbh+eBUYUAc2PsDKL1D14zOI/mu4STeDpxOXDKv6VSo0+AzDC55vy6g569
+	 KmmPM5xLsXz2U+B/JyPbFblGAVZAUVviXOydljfE=
+Date: Thu, 19 Nov 2026 15:40:01 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Muchun Song
+ <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Baoquan He
+ <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, David
+ Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Nhat Pham
+ <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan
+ <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev
+ Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins
+ <hughd@google.com>, SJ Park <sj@kernel.org>, David Rientjes
+ <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, Vernon Yang
+ <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, Chen Ridong
+ <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, Kairui Song
+ <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh
+ <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, Lian
+ Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>, Kunwu
+ Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ damon@lists.linux.dev, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v5 00/17] mm/mglru: frequency guided promotion
+ (MGLRU-FG) and flag cleanup
+Message-Id: <20261119154001.9b9f953136935a09e8a50af6@linux-foundation.org>
+In-Reply-To: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261119233119.1721789-1-nilayvaish@google.com>
-Subject: [PATCH v2] lib/test_hmm: fix alloc tag leak when splitting
- device-private folios
-From: Nilay Vaish <nilayvaish@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Balbir Singh <balbirs@nvidia.com>, 
-	David Hildenbrand <david@kernel.org>, Zenghui Yu <zenghui.yu@linux.dev>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Alistair Popple <apopple@nvidia.com>, 
-	Zi Yan <ziy@nvidia.com>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Nilay Vaish <nilayvaish@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C403240005
-X-Stat-Signature: eeu3rg4oggudno3wqbxr4ty8kum4fp5r
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 23BD2180005
+X-Stat-Signature: ge4gnj6yo7nejp1okbz1t7m5sdqjswak
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795131086-575329
-X-HE-Meta: U2FsdGVkX1+UKKul/u64ExASd4SMcvA6h2tGnaB9nHQT/u5TXAf9vWIz+OSjm2db5Kh0VkhEZ612fsbKDfVhHvYbQck5LDviQ1v7baDr+IwNXwgXngv1/9s+/8+/F/PeipRmI8JMXxzFwUVbRuB91SyWlFoHP9QGtEecjnGNXtzfwa8wNbRibZi1SiwyrO/U5Od0cyIwq5MUajHshdB8cjkBHU7XKxDtJost9vK55QFOgXpByDDSXj6CTmSMXJj93cU/GhGi/xN+UJWoH3LU3Mr5ja43tQwg5QINH44FqghCBVJIZxBoYyx1i6ZbVBEBAZdqjvIJPV8qf66JL0CcQEw31CbjxDIrim6IaHmTtlDC8Y7t/FaKjYwS9C542RcvoZmsO1WdpsM+qV3+9uCPxRFVAY3NGIeRS/iGKt8bMMAhmc79RPhKTCtAbq5oyFi7uBDbghxcAfrrUCMI04kA2v+k3f72U6mOuXsqd7O1jIer3hedo+itIN7bffH95TuAaPo9joajLWyIwWYtfuc3xnziuaJE47D8mlMb1pjUV+WhgUr/gqLJpFTRII0V3m3KK+Tsp+lo9nwZwYqH5SfBjmrKeXb52t5pvU9Gcr7ijhkStCwpXdWGivY3Z9j2A7SvENhJ0d5WGciU1EdkVEh1GJrLqGYJFPc6SrM+9cgFmQd2mAo1N01+IPrXKP9+xQzVCb18dkm0+FJqhBWDOD8Zf/p064AKiv8uYa2wdg09vShrpAHBBEEa+eHgpzJ29XrRCEYXUad8ezBLMDaM/5JK2ByW7WUz241MShHhltXYHNexOkIyKQDyw5iTCulm7VJnnRsgXxrTVRJryZH12iTeL1/c8p2hQMlMO9U+C5b0O6wShlDu8O29e9HQn+vZjH8KmrnJ4IKLwr6rDSLTj7x9P6hdAQu1PyoJJuzTHSeDCBwmfFhlGBzLSkiHei2Hf/fXUzMf6nDfFpFlNav8R3s
- 8ipMWtn6
- glEP6orIkcX38ujeLOItD5W65o9G9/3M7k8zWbcRdvA90EWx3lFmHUGJ5oqX8qvduBIv9tJMzqmRo/tg/M/7mveiz3rZ163op3OdwjajYu7be65S3+WSHwfE2EhTba396bKfpol7n2FKr8W1UU+hlROZo5JsKBHyX80OOYeKiQm39O8XqXdVgr2hxkyQEkxRVQ9r8VqsDSwMm4Af/iONk5mU9R0Hp/CRQyc4HH6I3SQih564P3KoF4cvpLI3emQdL+ldBmKoE4+xRnhLa484ljLpnqbELZXpFkA7Ta8D1Dg91f6M0rxVN906Vw/nuU1qjRF8inNQM4Bphbfns49/ut3x7Egj4q/b6YkdSgQjKQGGT8mCIgJz2LjJFk+1WLpn9xdtAPcNq/gSdYqYpnLq9Yo4ovlis1d/ZXkhKyVBeergORAUm6En9VuUcwyYXV3KB9cyFc6Bmu3FKScCn66yojtG1t1/Qz3LbHVZ+t4IKq1ZAhYxxtEvpaj0SZUqmE0jn3gmr4E5DxyChqZsIfY6Qxd2Pg1CxpyvA9OPZ922YPAyC284jjVpMZ7rvF6D0bF7+9rzF6zv2vnUoEQ5u9rb7JppnMWLjGSF5Gb1kgSyRWNMDo+wgX6hfutTR7y6DngrkSnPsgjI9+xnpjZXJePsMmd872plg+YU+r0UwvK5HfagF0a0MLSOWOTiBORyvSGjy3+CRpsCN+WDVTpu/pQYp5yAGczUFfH9525YLzm+NwSWs/PmSPdNUhq/Dg4Qeu3ofdMEEvqDJvEZ0GrLqP8a0auyMDaWU9Yr+cHGHHSWIgKMwiZ5GDX1/RNo71Ja8F9ITUpPUn9RT1rkLIuaydTDhZSQZE9EIH6V0nT3E+8gezZifCH0=
+X-HE-Tag: 1795131604-954735
+X-HE-Meta: U2FsdGVkX1/6BX3QnKYBQsVdhv9ExUkVH+8zoAIy5Uj30k/WMYIP1d/NqsY96MxZZnXtDpMyKuF4TrbxS1m3tcdqoYHtmuULF0jrvqa5MHUaB0bCbU8mJcy6NtjU6Um+I1Jv9ymTVkIOSLEfHF4JAIzm+C+RYfN+xQgP4XLAl1tlql3VoMcY4nKeyC6XEE2O1bej+BffWkhb4E75R6WLp6L88bgLJxLEP1+rjDvpyn6Fbz4sWHq7zpWWGiUV6gD6jHTDNVIlU/lQxPu8jye0hrxniD75+hXyMB7vyGXNG0nta2MZ1zcQ3xW4O+Fu7INK2S9GOjdK2AvqfwTZi9lyQbz/9Ctmw/dWYcofrR5wFD4d0SpdNyxaHajyqe9NVJji9o/doQwElKZh7OTSpe5tXKM+k3H4XhHiO9PiNElQxGYzEpvew3fuwUNjPCN2aixbulXePgtJDQ8nyVJTGk+uZ9CVq2QUaRah/ip+J0tkzQ9OzCJ8RuKHVXXxnSTHiNMozmi6ZzYzylTeEj0zb9OB7CqLaSORCy1cbCglnikCJMLwTJHbj22fv0ym1fb+hFPrm4LfR152G/67oPrl5FimDvCAZxLAoEEgft6ZS3G/3TJZaipA1guxTjNYGmEWl9ESbe0/cFlCz5luwBzx31iQmesu5LRAkbsOvU3gdGezsRpLqUVwXpoj8dCNN5ePZEFOK1glJ119s27TTlhZ/YuYjcTPjzp3qO/aif7peI4YeocSDDiwWJwoAtBijI2cJGhwhK8sLiuQ9OEnXUhJYTKOiFtxGiftRv8r8wPzCYPAdEbJ8z1XQqvEhzTIxezQURye16xmly5NabR5gan+hRdF0IMtiK2dv1eaIGjzAtyCiAU0AS9f/AEBLS387Tcmhjf7vGE8oo4ar0zLDnngmejEisE04Jte50bFxWo5xL4AgIZc5QSmWJwrAfv4DSpq4CnViJL+l4ZZZ5Q+sFL9L+a
+ 8hVQAqw9
+ 7zJuLZ72b4Ez+9TW+9wo/7Ag1A+hdFgidoRLLlayGDz3ZkTnRr69nMz0cOZ5LbNSIlFV9zPJ1w1aL419K78rQACOwAzlhwcMqnPdKzD5WcptxZj96p+dE5VK6sRAoE+BW6/cye5o9M8teGEODSvSYsPWgXoj9ql7nBm0H0P9xq/ccONvg9Kr+HF2RVxUynNbNVBHc5MVjzJJeVN/aJMwi3aYQ90V3doRfUw7WT/+I1Qi5dfcXh9KCDdkAHiLUPktpeoLsJf+26Q2CRoSsZDwYERRREPxlXxLpmPuQYvT0Ft71XtdoM5HwxVd4bx63SJ5o+4cQqdgH5wdKnSkh3UMEGjrNNvl3x6sFV4ub3AuUWayKChfRJPVGN3Tov9LOw/noUIaOppYmhXZIC53PYOw5/CEH6gqXj0xgKtRSzNUVgNak/zM8m7NbAz9VHxacvzjCKRppdscpqHh1hleXz9+zJsfr23ZKRahOxZEYlIsXxL99qinBIzXso4XZho7rAJriKm9t6iKxt14usO9Vp1NUXNKu0TIOutEcmtqD6uWQbv9mTiKTeeVhimkAZ5rNjF/itpwT10WM75bVQQr+3vPoogrt34lgbEsKF8iAvofygcaYEB4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,190 +117,213 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-For device-private memory, test_hmm backs each fake device folio with
-real system RAM of the same order, allocated with folio_alloc() in
-dmirror_devmem_alloc_page().
+On Thu, 19 Nov 2026 05:03:32 +0800 Kairui Song <kasong@tencent.com> wrote:
 
-When the core MM splits a large device-private folio, the driver's
-->folio_split() callback, dmirror_devmem_folio_split(), has to split
-the backing memory as well. It does that by hand: clear_compound_head()
-on the tail pages, folio_reset_order() on the head page, and
-folio_set_count() on each of them. dmirror_devmem_free() then frees
-every backing page as an order-0 page.
+> This series implements MGLRU-FG following the idea proposed at LSF/MM/BPF
+> this year [1], based on current mm-new. Depending on the workload, it
+> improves the performance or reduces IO by roughly 10% to over 50%,
+> fixes multiple long-standing issues with MGLRU metrics, and drops one
+> page flag.
 
-This open-coded split does not split the allocator's metadata. The
-allocation tag and the page_owner record still describe one high-order
-allocation, and PG_head stays set on the head page. When the pages are
-freed one by one, the tag is debited for only one page when the head is
-freed, and the tail pages carry no tag at all. With
-CONFIG_MEM_ALLOC_PROFILING, running the HMM selftests and unloading the
-module reports the leak:
+This is looking really good - great stuff.
 
-  lib/test_hmm.c:808 module test_hmm func:dmirror_devmem_alloc_page has 16744448 allocated at module unload
+Review is thin, so I'll remain in wait-and-see mode for now.  What do
+people think?
 
-and with CONFIG_MEM_ALLOC_PROFILING_DEBUG freeing a tail page triggers:
+I told LLM to put this series through its paces.  The performance gains
+were confirmed (actually muchly exceeded) and it couldn't find a way to
+break anything.  It found a smallish slowdown in writes to clear_refs,
+which doesn't seem very important?
 
-  alloc_tag was not set
-  WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0
+Feel free to add
+Tested-by: Andrew Morton <akpm@linux-foundation.org>
+  Link: <whatever the URL of this email is>
 
-The backing memory is a private buffer of the test driver and nothing
-requires it to be a folio. Allocate it with alloc_pages() instead and
-split it right away with split_page(), which splits the allocation tag,
-page_owner and memcg state and is already exported to modules. It is
-still allocated as one high-order block rather than as individual
-order-0 pages because the driver finds the backing page of the Nth page
-of a device folio by offsetting from the first backing page, so the
-backing pages have to be physically contiguous. Every backing page is
-then an independent order-0 page for its whole lifetime, so
-dmirror_devmem_folio_split() only has to point the new device folio at
-its backing page, and dmirror_devmem_free() frees the backing pages one
-at a time.
 
-As the backing pages no longer form a folio, take the order from the
-device folio rather than from the backing page, and index and copy the
-backing pages individually instead of using folio_page() and
-folio_copy().
 
-With this patch the device-private HMM selftests pass and the module
-unloads without the messages above.
+wall-of-words for the brave:
 
-Fixes: 56ef39899643 ("mm/memremap: add driver callback support for folio splitting")
-Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
-Closes: https://lore.kernel.org/linux-mm/be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev/
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Link: https://lore.kernel.org/linux-mm/8ef6e92d-4cb3-444e-857e-fdbf88c035ea@kernel.org/
-Signed-off-by: Nilay Vaish <nilayvaish@google.com>
----
-v2:
-- Use plain struct page arithmetic instead of the
-  pfn_to_page(page_to_pfn()) round trip (Zi Yan)
 
-v1: https://lore.kernel.org/linux-mm/20261118230044.683221-1-nilayvaish@google.com/
-
- lib/test_hmm.c | 40 ++++++++++++++++------------------------
- 1 file changed, 16 insertions(+), 24 deletions(-)
-
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index b409c42bfe6f..15db569eb721 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -201,6 +201,7 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	migrate_device_range(src_pfns, start_pfn, npages);
- 	for (i = 0; i < npages; i++) {
- 		struct page *dpage, *spage;
-+		unsigned int j;
- 
- 		spage = migrate_pfn_to_page(src_pfns[i]);
- 		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
-@@ -227,7 +228,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 			dst_pfns[i] |= MIGRATE_PFN_WRITE;
- 		if (order)
- 			dst_pfns[i] |= MIGRATE_PFN_COMPOUND;
--		folio_copy(page_folio(dpage), page_folio(spage));
-+		for (j = 0; j < (1U << order); j++)
-+			copy_highpage(dpage + j, spage + j);
- 	}
- 	migrate_device_pages(src_pfns, dst_pfns, npages);
- 	migrate_device_finalize(src_pfns, dst_pfns, npages);
-@@ -805,7 +807,7 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
- 	 * data and ignore rpage.
- 	 */
- 	if (dmirror_is_private_zone(mdevice)) {
--		rpage = folio_page(folio_alloc(GFP_HIGHUSER, order), 0);
-+		rpage = alloc_pages(GFP_HIGHUSER, order);
- 		if (!rpage)
- 			return NULL;
- 	}
-@@ -827,6 +829,9 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
- 			goto error;
- 	}
- 
-+	if (rpage && order)
-+		split_page(rpage, order);
-+
- 	zone_device_folio_init(page_folio(dpage),
- 			       page_pgmap(folio_page(page_folio(dpage), 0)),
- 			       order);
-@@ -1029,10 +1034,9 @@ static int dmirror_migrate_finalize_and_map(struct migrate_vma *args,
- 		WARN_ON_ONCE(end_pfn < start_pfn + nr);
- 
- 		rpage = BACKING_PAGE(dpage);
--		VM_WARN_ON(folio_nr_pages(page_folio(rpage)) != nr);
- 
- 		for (i = 0; i < nr; i++) {
--			entry = folio_page(page_folio(rpage), i);
-+			entry = rpage + i;
- 			if (*dst & MIGRATE_PFN_WRITE)
- 				entry = xa_tag_pointer(entry, DPT_XA_TAG_WRITE);
- 			entry = xa_store(&dmirror->pt, pfn + i, entry, GFP_ATOMIC);
-@@ -1130,8 +1134,8 @@ static vm_fault_t dmirror_devmem_fault_alloc_and_copy(struct migrate_vma *args,
- 			goto next;
- 		}
- 
--		spage = BACKING_PAGE(spage);
- 		order = folio_order(page_folio(spage));
-+		spage = BACKING_PAGE(spage);
- 		if (order)
- 			*dst = MIGRATE_PFN_COMPOUND;
- 		if (*src & MIGRATE_PFN_WRITE)
-@@ -1722,14 +1726,12 @@ static void dmirror_devmem_free(struct folio *folio)
- 	struct page *page = &folio->page;
- 	struct page *rpage = BACKING_PAGE(page);
- 	struct dmirror_device *mdevice;
--	struct folio *rfolio = page_folio(rpage);
--	unsigned int order = folio_order(rfolio);
-+	unsigned int order = folio_order(folio);
-+	unsigned int i;
- 
- 	if (rpage != page) {
--		if (order)
--			__free_pages(rpage, order);
--		else
--			__free_page(rpage);
-+		for (i = 0; i < (1U << order); i++)
-+			__free_page(rpage + i);
- 		rpage = NULL;
- 	}
- 
-@@ -1833,34 +1835,24 @@ static void dmirror_devmem_folio_split(struct folio *head, struct folio *tail)
- {
- 	struct page *rpage = BACKING_PAGE(folio_page(head, 0));
- 	struct page *rpage_tail;
--	struct folio *rfolio;
--	unsigned long offset = 0;
-+	unsigned long offset;
- 
- 	if (!rpage) {
- 		tail->page.zone_device_data = NULL;
- 		return;
- 	}
- 
--	rfolio = page_folio(rpage);
--
--	if (tail == NULL) {
--		folio_reset_order(rfolio);
--		rfolio->mapping = NULL;
--		folio_set_count(rfolio, 1);
-+	if (!tail)
- 		return;
--	}
- 
- 	offset = folio_pfn(tail) - folio_pfn(head);
- 
--	rpage_tail = folio_page(rfolio, offset);
-+	rpage_tail = rpage + offset;
- 	tail->page.zone_device_data = rpage_tail;
- 	rpage_tail->zone_device_data = rpage->zone_device_data;
--	clear_compound_head(rpage_tail);
--	rpage_tail->mapping = NULL;
- 
- 	folio_page(tail, 0)->mapping = folio_page(head, 0)->mapping;
- 	tail->pgmap = head->pgmap;
--	folio_set_count(page_folio(rpage_tail), 1);
- }
- 
- static const struct dev_pagemap_ops dmirror_devmem_ops = {
--- 
-2.56.1.750.gf70dc682cf-goog
-
+: I tested v5 of "mm/mglru: frequency guided promotion (MGLRU-FG) and flag
+: cleanup", a 17-patch series, in x86-64 QEMU guests with four CPUs, two
+: NUMA nodes, 8 GiB RAM and matched kernel configurations. The main A/B
+: comparison removed or applied the whole series. KASAN builds checked
+: correctness and injected allocation failures. A 512 MiB ext4 file,
+: four readers and a 192 MiB memory cgroup exercised cold-cache file
+: reclaim. With QEMU host caching disabled for both kernels, the skewed
+: mmap median was 137.5 seconds on A and 5.21 seconds on B; a fresh A
+: repeat took 139.1 seconds. The full series also made repeated
+: clear_refs/smaps scans about 7% slower. Separate builds tested selected
+: patches immediately before and after application.
+: 
+: Series:
+: https://lore.kernel.org/20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com
+: 
+: [1/17] mm/mglru: rename the generation offset in lru_gen_folio_seq() (pass)
+: 
+: The kernel with patch 1 built and booted. It passed 12 charged-cgroup
+: removals and an 8192-page get_user_pages test without a warning. This
+: preparatory rename makes no separate behavior claim.
+: 
+: [2/17] mm/memcontrol: allow update of LRU statistic without holding LRU lock (pass)
+: 
+: Kernels through patches 1 and 2 each passed 12 cycles of charging
+: file pages to a cgroup and removing it while another task read the
+: file. The charge and data were correct, with no warning. This
+: preparatory change permits atomic LRU statistics updates without the
+: LRU lock.
+: 
+: [3/17] mm/mglru: make generation page counters atomic (pass)
+: 
+: Kernels through patches 2 and 3 passed the cgroup-removal and
+: 8192-page get_user_pages tests without a warning. After eight MGLRU
+: aging passes on both NUMA nodes, each still accounted for about
+: 512 MiB of anonymous memory. This is an atomic-counter conversion
+: with no claimed behavior change; the run checked accounting after aging.
+: 
+: [4/17] mm/memcg: add folio-based lruvec live helper (full-series check passed)
+: 
+: A full-series KASAN kernel used a one-shot, task-scoped mdelay(800)
+: in folio_inc_lru_refs(), just after folio_lruvec_live_get(), inside
+: the RCU read-side section. Another task removed the file's charged
+: memory cgroup. rmdir finished before the held reader was released;
+: the read completed without a KASAN report or warning. This B-only
+: test proves the observed removal/read overlap, not execution of an
+: RCU callback or freeing of the memory cgroup during the hold.
+: 
+: [5/17] mm/mglru: skip the flags cmpxchg when nothing changes (speedup unconfirmed)
+: 
+: I compared kernels through patches 4 and 5 with a 2 GiB tmpfs file
+: mapped by 1, 8, 32 and 64 readers. The file pages were verified on
+: the NUMA node being aged. Across alternating A/B/B/A boots and five
+: measured passes per reader count per boot, the 64-reader medians were
+: 841.8 ms on A and 852.0 ms on B. The 32-reader medians were 425.8 and
+: 429.1 ms. This VM did not reproduce the author's speedup; these small
+: differences do not establish a material slowdown.
+: 
+: [6/17] mm/mglru: frequency guided workingset promotion (MGLRU-FG) (series gain)
+: 
+: In a repeat with QEMU cache=none for both root drives, the skewed
+: mmap median was 137.5 seconds on A, 5.21 seconds on B and 139.1
+: seconds on a fresh A repeat. Each round began with zero resident test
+: pages. A had about 53 million file refaults and 820 million guest
+: block-read sectors per round; B had about 0.22 million refaults and
+: 5.6 million sectors. The much larger disk activity on A explains the
+: slowdown in this constrained workload. This compares the full series,
+: not patch 6 alone.
+: 
+: [7/17] mm/mglru: make folio lru referenced times count a generic API (pass)
+: 
+: Kernels through patches 6 and 7 each migrated 128 anonymous pages
+: between guest NUMA nodes with MGLRU enabled, then repeated with MGLRU
+: disabled at runtime. Data remained intact. At the real migration call,
+: a temporary test module set the isolated source folio's encoded
+: reference count to 4; the destination retained 4 on both kernels.
+: The module also copied counts 0 through 7 between off-LRU folios.
+: This patch moves the helper without claiming a behavior change.
+: Disabling MGLRU at runtime did not test a !CONFIG_LRU_GEN build.
+: 
+: [8/17] mm/mglru: move add/del LRU size accounting out of lru_gen_update_size() (pass)
+: 
+: Kernels through patches 7 and 8 passed the cgroup-removal and
+: get_user_pages checks. After aging both NUMA nodes, each still
+: accounted for about 512 MiB of anonymous memory. The patch moves
+: accounting between functions without intending a behavior change;
+: these checks found none.
+: 
+: [9/17] mm/mglru, gup: mark folios referenced via a fast helper (pass)
+: 
+: vmsplice() reached get_user_pages_fast(), returned the expected 4096
+: bytes on both kernels, and showed no material timing difference in
+: the repeated 8192-page check.
+: 
+: [10/17] mm/mglru, smaps: convert to LRU refs based operations for MGLRU (smaps pass; series loss)
+: 
+: After clear_refs and reaccess, smaps reported 0 KiB referenced on A
+: but 2048 KiB on B, as intended. For 400 clear_refs/smaps/reaccess
+: cycles on a 128 MiB base-page mapping, A took 1.87 seconds and B
+: 2.00 seconds across alternating guests. Most of the difference was
+: in clear_refs itself: 0.187 versus 0.300 seconds per 400 calls.
+: This slowdown belongs to the full-series comparison; it has not
+: been assigned to patch 10 alone.
+: 
+: [11/17] mm/damon: convert to LRU refs based operations for MGLRU (pass)
+: 
+: DAMON pageout reclaimed a selected clean 4 KiB file page on both
+: kernels; rereading it returned the expected data. A trace on B reached
+: folio_reset_lru_refs() in kdamond.0. Comparing kernels through patches
+: 10 and 11, an identical temporary source change set the page's MGLRU
+: reference count to 2 just before the changed call. A left it at 2; B
+: cleared it to 0. The ordinary workload reached that call with count 1,
+: so this demonstrates the fix for a forced state, not a user-visible
+: failure produced without the temporary change.
+: 
+: [12/17] mm/khugepaged: convert to LRU refs based operations for MGLRU (pass)
+: 
+: I compared kernels through patches 11 and 12. Identical temporary
+: source changes set isolated folios' MGLRU reference count to 2 at
+: khugepaged's referenced-page decision and cleared other positive
+: indications. A did not collapse the 2 MiB range; B collapsed it and
+: reported 512 referenced pages. The ordinary full-series workload also
+: collapsed a huge mapping, but did not reach this even-reference state
+: unaided.
+: 
+: [13/17] mm/madvise: adapt for LRU refs based operations for MGLRU (pass)
+: 
+: MADV_COLD and MADV_PAGEOUT succeeded and preserved page contents on
+: both kernels. Ten-round MADV_RANDOM mmap medians were 5.35 seconds on
+: A and 5.26 seconds on B, with no slowdown found.
+: 
+: [14/17] mm/huge_memory: mark folio as accessed more accurately on split (pass)
+: 
+: An automatically collapsed 2 MiB anonymous mapping split when the
+: protection of one 4 KiB range changed. A shared-memory huge mapping
+: also split at its PMD. The split count rose and contents stayed intact
+: on both kernels. During the shared-memory split, a trace recorded
+: folio_mark_accessed() on B and no such call on A.
+: 
+: [15/17] mm/mglru: folio LRU refs based active/inactive number accounting (pass)
+: 
+: With swap disabled, I compared kernels through patches 14 and 15.
+: After allocating 512 MiB of untouched anonymous memory, I aged both
+: NUMA nodes eight times. On A, the cgroup's active_anon fell from about
+: 512 MiB to zero at the first pass; on B the memory was inactive from
+: the start. A separate cold mapping gave the same classification
+: change without corrupting data. This reproduces one wrong accounting
+: result on A and its correction on B; the later oscillation described
+: in the changelog was not separately produced.
+: 
+: [16/17] mm/mglru: make folio_inc_lru_refs lruvec lockless (full-series check passed)
+: 
+: The full-series KASAN kernel passed the cgroup-removal overlap above.
+: A second one-shot, task-scoped mdelay(800) in folio_inc_lru_refs()
+: held an old-generation folio's update after sampling max_seq=4 and
+: calculating max_gen. Another task aged the file's charge cgroup on
+: both NUMA nodes, advancing the sampled sequence to 5. The temporary
+: source change set LRU_REF_FORCE after the hold to force promotion;
+: the kernel logged its changed-sequence retry from 4 to 5.
+: Both readers returned the expected data without a KASAN report or
+: warning. These are B-only checks of forced concurrent paths; they
+: do not reproduce a failure on A or measure the lockless operation's
+: cost in isolation.
+: 
+: [17/17] mm/mglru: make folio_test_workingset() work based on folio LRU refs (pass)
+: 
+: A matching test module on kernels through patches 16 and 17 set an
+: off-LRU folio's encoded reference counts to 0 through 7. At counts
+: 4 and 5, PG_workingset was clear on both. The old helper returned
+: false; patch 17 returned true. This reproduces the wrong answer and
+: checks the correction for the encoded counts named in the changelog.
+: 
+: For allocation failures, per-task fail-nth tried positions 1 through
+: 32 during huge-page collapse on each KASAN kernel. Only positions 1
+: through 3 encountered eligible allocations in one attempt. The first
+: two made MADV_COLLAPSE return ENOMEM; the third still allowed collapse.
+: Page contents remained correct. The original full-series guests had
+: no KASAN report, oops or warning. Uniform-random mmap and GUP-fast
+: checks found no repeatable loss in the original runs. Those runs did
+: not set cache=none. The later disk-backed A/B/A repeat did so on every
+: private QEMU root drive; its mmap results replace the earlier mmap
+: timings above. Guest cache residency and block reads were checked.
+: Physical media throughput was not measured.
 
