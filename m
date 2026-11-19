@@ -1,138 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE5E60A2601
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EAE606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ton06EtT
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IeVLrVCS
 Received: by kanga.kvack.org (Postfix)
-	id 84E2C6B06D3; Thu, 19 Nov 2026 14:37:17 -0500 (EST)
+	id 4D8216B066F; Thu, 19 Nov 2026 14:44:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 823716B06E4; Thu, 19 Nov 2026 14:37:17 -0500 (EST)
+	id 489016B06B4; Thu, 19 Nov 2026 14:44:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C6906B06E5; Thu, 19 Nov 2026 14:37:17 -0500 (EST)
+	id 377A36B06BC; Thu, 19 Nov 2026 14:44:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4731C6B06D3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:37:17 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C9C458038C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:16 +0000 (UTC)
-X-FDA: 85452877272.06.FD113EE
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 165B66B066F
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:44:29 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA969A03E3
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:28 +0000 (UTC)
+X-FDA: 85452895416.30.3F1A858
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A8582C0008
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:36:59 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795117019;
-	b=7m8aIG96Z2OcxORxsYQEr3Bw+YKe5fZgByaho08v3oDxhDM8Tpxh93ITMIAkz/0cxRMTKO
-	rhfwui2mE7iEYZPLO5iSNFDiYgRjB/LjuM2zx3+GPh04OtQU4KfI07nnna4zsX9cFK9WVO
-	w40T2mXcdiTkeB/92jFzy1KxvxtlB6c=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795117019;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=O/ZXkIjF5XTu7eQiBKvbnoC4LxM4S1aXcMO1zwi7ppQ=;
-	b=GkAnsG7xQCT1tL+neLIfSOBgor9Ju0BNGsXDO4d9wYQqUShgfp9sSAO73Ew+TJ8+IwXeq1
-	E/f4AhwK77vwdB+LBm5mbxLhTqEu4Uw7qUrrKk1bw7PeHq++f1get3XpqWNO8JHH4ZjTBa
-	nmINejQ8umI7n/BCy7tnM/xl6tATnyw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ton06EtT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3A877180028
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:11 +0000 (UTC)
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01F914477D;
-	Thu, 19 Nov 2026 19:36:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE8B1F000C5;
-	Thu, 19 Nov 2026 19:36:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ABBD34740C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0A51F0092F
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795117018;
-	bh=O/ZXkIjF5XTu7eQiBKvbnoC4LxM4S1aXcMO1zwi7ppQ=;
-	h=From:To:Subject:Date;
-	b=Ton06EtT8gHbK6c/0HqHkaZiOGQATLUK+NZgUH5+xIzr8uD7Kli8XpT71wEPCcjn6
-	 Jn3q7wQvDL3aRFOfKrcN7IgXzBoHoeohqHPJNRfj6cVrHDgGnqOp8STwi6IyLWfOR0
-	 p5v6FyfcicDyJ9jXxtfYiTM9LZNE7GHfYW6A6q9+frbAcsGvQsDDo2C3sqVERPIvnP
-	 7LNANE2iD79QpOyFPSQmg3NokwoPFYdKSSnoZvmEcLqE6O0dGWxPUr57LVrN0v0gVd
-	 11ji14tavjIuovTYcG3CVtGayidMECvSLMpOhGiZBZsUlR8Zo8PyQk4ogkq6T10c5s
-	 Cs1wRyQQtsvkw==
-From: Chris Mason <mason@kernel.org>
-To: hughd@google.com,
-	david@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	qi.zheng@linux.dev,
-	qinyuntan@linux.alibaba.com,
-	shakeel.butt@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/1] mm/shmem: don't use the memcg of an uncharged folio
-Date: Thu, 19 Nov 2026 14:36:56 -0500
-Message-ID: <20261119193656.88678-1-mason@kernel.org>
+	s=k20260515; t=1795117449;
+	bh=sB1Pq7vBNntqu94r/2oUTzxPCprX1DSImM5jhZ6L7Ys=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IeVLrVCSsRPiQX0drUz2UWM7wWQUoOv9UhM9eXUGEnnoMcl+sQW+qiCun3+CTmWkV
+	 mi/z8zorQ0ZxXwChyn2aP6ccRSaXE9uwamxIHeos9YGbYyFT2rbjndXO694GPBly+2
+	 6KuZK6TJIwcGzxnyatmp98KHy8TPz+7rfIzZRNZp0T5Li9IYVmSLsp8gOT9puZ22bv
+	 xvd0gn6xaYu+9VYtSV98kfDQkkgDxi0n63CKvmRsbGvvKr9aiBgR8OVAiNJmkLOF0O
+	 2WDCxDrm02ztgXhsgGUGkmjZPeUM+3m4wl+RxhVKX+MYCKfabM6JTsL9CTVKC4O29a
+	 EBOJBLo2oZtzA==
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-94961bfe1a0so10606985a.3
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:44:09 -0800 (PST)
+X-Gm-Message-State: APuU4Z/cBfstZPnpRCsxv6AdUismxzPRInNS/sEzBWq3vDBi1++jNPSC
+	AbB6t6NVlL3I9BZlXlx4rUvCDAQtKelYuLrKSe2pBasj97vxt0Oodu6MmvGqiHSgP12ISEjRbQA
+	oMQlsf2VuuS3wDa02RRq29z5/x7NM3TU=
+X-Received: by 2002:a05:620a:130d:b0:943:f301:49b9 with SMTP id
+ af79cd13be357-949bab32ac3mr114181385a.53.1795117448550; Thu, 19 Nov 2026
+ 11:44:08 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-HE-Tag: 1795117019-931217
-X-HE-Meta: U2FsdGVkX1/9Bl1ZHUmrDrFrH9r6oyFMT9msay6VZ1AGmeIXEhms20wGRiN8xYSHFzp9YYoTeGsEy9ymWjD9Yq7Xose/txpIBV8MHb0/OCu+ZMY2DWtK1FNA51Kij1aGO2FVy3/GU064DO/I2VhB9U5uCfSXAROnQ3SFKf/PB8mDEF82DeDZYM+drmH6EeIl1WC2zrfiNlTJBvaO6YPgc7/cAeiUcQbnYQOzwi6l1mAhjD5VWVInAq3/kcLB7sNmeZHexmthqgCwJgZQ0PBpFOlpPwSeABG3P0UJQSjvat1Kcl7BBtTYRCBJff0Bf69fRSeAn7ixNT0/ST4jUi+xtWlMc9wi3LJxh837rvczBl4FOp5pJU4u5mvvnk+VQAm4FlWOVuTriZ4NGBRCn3kYUxmIsZFbb7gp
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-2-9eee2fe97a2d@tencent.com>
+In-Reply-To: <20261119-mglru-fg-v5-2-9eee2fe97a2d@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 20 Nov 2026 03:43:57 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z93rWEzqAQ_sWWVKbmQ5M3qjxX4o_qYzeX3xs+=2V8yA@mail.gmail.com>
+X-Gm-Features: AclHuK83S9SvqTl7DWMa7lyKfrDc7jrgO_opWySalBDGVE3ZIlzAIZT17fPF3ZA
+Message-ID: <CAGsJ_4z93rWEzqAQ_sWWVKbmQ5M3qjxX4o_qYzeX3xs+=2V8yA@mail.gmail.com>
+Subject: Re: [PATCH v5 02/17] mm/memcontrol: allow update of LRU statistic
+ without holding LRU lock
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	SJ Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
+	Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>, 
+	Ehab Ababneh <ehab.ababneh@intel.com>, Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>, 
+	Lian Wang <lianux.mm@gmail.com>, Joanne Koong <joannelkoong@gmail.com>, 
+	Kunwu Chan <kunwu.chan@gmail.com>, Hui Zhu <hui.zhu@linux.dev>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-HE-Tag: 1795117451-100693
+X-HE-Meta: U2FsdGVkX19JB7wPQZBGJEYbmsmIBzJW9fPdbdWC4v1eQmXnjw/WUakrfg0U8Gcc74rBqorD+q/oRjI9iHYmrSRNlHgOtakpc13uMmPJhkwdUVOO8RLFimRDbBLBAPH8UCvF7c3z7hZQxTZegCRDd92c1Yxn9TOQS+RmA/si75gK8xiEhlJ4/eXumX2FoIsxI9XyKu5hGxhOeyKH29bqrjPZ1BSEkhEaZwaQWgST3uBRa4jQw8ks7kOU09sCn6s+Y76yu1Uoe5WiaeAsuNmuqaN4IIRZUKuOHRf1wWzknw7HUNAH/koMQr1G71xj+irKFRsapgYFU1Kg7WD/wGcrU1zfxvZ+boWzRROYWoSyBPLwV/w/iOmQQ+i5me+dems3ab5xU1Xu+jt0mk6Gni+yyILaC9mmVQSZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi everyone,
+On Thu, Nov 19, 2026 at 5:03=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> To enable moving file pages in folio_mark_accessed directly and lazily
+> for MGLRU, allow updating the LRU statistic atomically without holding a
+> lock. It may cause temporary counter underflow, which should be fine as
+> the counter is eventually consistent and only serves as an estimate.
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-This is relatively niche, but actually new with 7.4-rc1, and I would expect it
-to trigger under heavy load with huge=always on tmpfs. We'd need to run out of
-room in the tmpfs or reclaim memory while huge folios are migrated.
+LGTM,
 
-Qinyun Tan's pending series fixes the oops:
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-  [PATCH v4 RESEND 2/5] mm: memcontrol: drop kmemcg_id and use
-  mem_cgroup_id() for list_lru indexing
-  https://lore.kernel.org/all/20261105092233.3558950-3-qinyuntan@linux.alibaba.com/
-
-It makes memcg_list_lru_allocated() accept a NULL memcg, but I think we
-can still race and corrupt lists instead:
-
-    shmem_unused_huge_requeue()         __migrate_folio()
-    ===========================         =================
-    folio_memcg_list_lru_alloc()
-      folio_memcg() is NULL
-      no lists are allocated
-                                        mem_cgroup_migrate()
-                                          commit_charge(newfolio)
-    get_obj_cgroup_from_folio()
-      returns the objcg of memcg M
-    list_lru_add(M)
-      if M has no lists, the inode
-      goes on the parent's list
-
-    [ later, M gets lists of its own ]
-
-    list_lru_del(M)
-      locks M's list
-      unlinks from the parent's list
-
-I haven't tried to reproduce on top of the kmemcg_id series, so that's
-all just guessing from the code.
-
-This is on top of v7.4-rc3.
-
-Chris Mason (1):
-  mm/shmem: don't use the memcg of an uncharged folio
-
- mm/shmem.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
-
---
-2.55.0
-
+> ---
+>  include/linux/mm_inline.h | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 
