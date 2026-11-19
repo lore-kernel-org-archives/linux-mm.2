@@ -1,169 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE89606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 02:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE45606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 02:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=IhXC76BP
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vXNZMZ8C
 Received: by kanga.kvack.org (Postfix)
-	id 7E6256B0656; Wed, 18 Nov 2026 21:05:02 -0500 (EST)
+	id 0E9E76B061B; Wed, 18 Nov 2026 21:05:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76FA66B0657; Wed, 18 Nov 2026 21:05:02 -0500 (EST)
+	id 06D996B0665; Wed, 18 Nov 2026 21:05:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 610296B0661; Wed, 18 Nov 2026 21:05:02 -0500 (EST)
+	id E9CDB6B0666; Wed, 18 Nov 2026 21:05:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 249B26B0656
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:05:02 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A207CC090D
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:04:56 +0000 (UTC)
-X-FDA: 85450225392.12.9CCB76D
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BAF8418000C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:04:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=IhXC76BP;
-	spf=pass (imf24.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.216.52 as permitted sender) smtp.mailfrom=jeffxu@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD2EF6B0664
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:05:23 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 521FDA86DA
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:05:23 +0000 (UTC)
+X-FDA: 85450226526.29.98C3FD1
+Received: from mta0.migadu.com (out-237.mta0.migadu.com [91.218.175.237])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E8B781A000A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:05:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vXNZMZ8C;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795053894;
+	s=arc-20220608; t=1795053921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kC+uhz3Afjp9Cqz8zh23wNboDVMQQa75pZ1niNRa9cE=;
-	b=rTIXmaODiAiTy515tRspU6z49z2Tod/hgwkZY44mAfJmGd9kErTVMXjV8wE9zwLOomJlZR
-	n/qsi/GPoZOqcN6hzbkt0O5mSlvunRWGH2JZSpDGxxkcnJXCzQ2wrd516rjgOyQHIoX4pE
-	DIEvdAgEOOBp/ag7B93euEUKlEyhul8=
+	bh=4tgWbt2Z1SnQ+uqrEBj9Epjmo8yeetyzDn0kN1B/Hto=;
+	b=UcpZHmuHypJZGqBZJ8/B8IrlGYnIrdxZpYVRJiV7Vg9RgkAEfEXvglBiLY8ZdOdP/ELpQH
+	tf6IcfBvPI3fivl9iSbqdIZoLNXHcEKnbDEtmyTB9PCLT5zWA2DIj3pGqyB+cj4gDWzLNi
+	HczDlUqOHRWBguSZLJ/fBGeMXajyz4E=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=IhXC76BP;
-	spf=pass (imf24.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.216.52 as permitted sender) smtp.mailfrom=jeffxu@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vXNZMZ8C;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795053894;
-	b=oGAJVAe1GN01E9JUdjidbmSdiGTJN4DSljGcAqGa+2fhruBblOISrhIYbXNF7BAnt8tLsl
-	jRRJ/IJPv4EBudPb4oKoK+4lMXMDNY2wb98F25p3W6JjVnWrWkLdzarEegiF4lX2tDPtV6
-	s18h8802bZs1CHTgwTeyp5jQdFv8lCc=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3b3fff0d993so27989a91.2
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:04:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795053893; x=1795658693; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kC+uhz3Afjp9Cqz8zh23wNboDVMQQa75pZ1niNRa9cE=;
-        b=IhXC76BPQQuG0rrXprO+llDkZAB79MPtTuJ3aZ/08wHQ4iHe+qoxhb0iUuoatLOFfh
-         0OSxy1EthRPGEhvXxnj8H8vwgMNa7VBdC0Vu8hMZ5nVUqJj15XosnTAfILKikEffNd1r
-         S/Bnh2WYwKajoptk/3HJ4VDPJiLpzRBLWLAEw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795053893; x=1795658693;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kC+uhz3Afjp9Cqz8zh23wNboDVMQQa75pZ1niNRa9cE=;
-        b=Rt4ZieSyByINQsH3soIKRkboCCX4n/EZtbFZhXtB99TezwHrhSGJHwzwP0P/DRUQ5T
-         9yXTU4EZb3O8k8lN0WG+tLRRe+/KSfgMraJXTHyxDaGVa8AsCfPitCXn20L5zmnRHDNj
-         Y9MqbL7GJK22ZzSN8bkDZK/DVQXxUqNgtrw7k0OQNWaX/qIWKvfNu+0ahH52H6ItvaNw
-         ldEj7eNVo7ZmT6IgVwpW1moF+TtiEidHQNj3CGcIFd6QP6J8ddetNz7fTXyDejKz3c3U
-         hxVaPShOCmG4qln666Kgcy/rGe4Vo/sdTUIzHBpEZ3FVQtYjmNtbpsuWPxjJVv3YUQ35
-         x/IA==
-X-Forwarded-Encrypted: i=1; AL+hErHr3VJdu25H5IXNBhr82m2RRnXR78/V0zlR0bljsxpuj2kgRtFWKGI2B2xvqpBBOOxcceSHT5hSBg==@kvack.org
-X-Gm-Message-State: APuU4Z87ky8HAYJRNfiSaSxHysIEQzWfrwY6n911e99aCVFqguEpw8/h
-	N+uxKXFgjKxwpG2Mi8fjgHDJJc0PvGKoG+6fCLJL+1m9Pd6cjKUkPZ9XnGI78GLLzw==
-X-Gm-Gg: AZFdTZdG16zY6xBoMOahrW583Li/g7TmQYFaypVC8yInAbwQuJi5oSLcvZbR9eGgoP4
-	ZIR+wFEod9hom658AO2YHYp9+G+YLEbErDFdUPFqhzt08UPtsbmgAvNb8jO0+nC/RqCzrDeoFBp
-	dcOqs6+VkSjaKd7mlMsZo/gVkZ+RaWQVTC7qPYUW3pVoPb9PP7KlpiXDylNoTAJM2lcJzAqq/K1
-	TVvS0ulIyRAgtBDrn+3ZeZEK+PnY62Q3N8GTNar0pX3aRz/BSgydE9P+Wpi9dgVMaQ0PTTitYNy
-	9O9xCyewI2EzG1bNAbcpxKkQFnuRGpqNUWBQ2uBdsWvbDV/4wQUXmE1KRGjc5qGQJV11lOOZB/z
-	tdl/L6lU1itiKzperimNZRMyNfBx5educHm7SdMdcEH2NmP4Kh0jz05/X2/sAQIORn0Yog0RPwe
-	oWZ7L1Jx+POpAFhjvW6m7TXGdJsHS1f03GrCVFqMP1PGXFnIfAZnePgqRFT0h7kuQMj9VG1RzGv
-	Y8aZJi36vt0aS0HEjZqVd+4ceo78KCn08z/rlAziY5q4Yn48EEYzVM0trc4MaqPIldGY6ciXum5
-	SBBcXheIAOvwthkyPlgopa5+R+rmLULPUiybqaQe1P9DqkdU16uDNwW7f+SvZZMLQS+I/g==
-X-Received: by 2002:a17:90b:2805:b0:3b3:c92e:f523 with SMTP id 98e67ed59e1d1-3b3d0764320mr7560562a91.3.1795053893354;
-        Wed, 18 Nov 2026 18:04:53 -0800 (PST)
-Received: from localhost (221.247.125.34.bc.googleusercontent.com. [34.125.247.221])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3b3fe0e5bd4sm772079a91.17.2026.11.18.18.04.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Nov 2026 18:04:52 -0800 (PST)
-From: Jeff Xu <jeffxu@chromium.org>
-To: David Hildenbrand <david@kernel.org>
-Cc: Jeff Xu <jeffxu@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Marco Elver <elver@google.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Ian Rickards <ian.rickards@arm.com>,
-	Jann Horn <jannh@google.com>,
-	Jeff Vander Stoep <jeffv@google.com>,
-	Jeff Xu <jeffxu@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Collingbourne <peter@pcc.me.uk>,
-	=?utf-8?q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Allison Henderson <achender@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-mm@kvack.org,
-	kasan-dev@googlegroups.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	fuse-devel@lists.linux.dev,
-	kexec@lists.infradead.org,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/7] mm: kasan: skip KASAN for GFP_HIGHUSER
-Date: Wed, 18 Nov 2026 18:04:45 -0800
-Message-ID: <20261119020445.1096831-1-jeffxu@chromium.org>
-X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
-In-Reply-To: <332f315d-ea27-488a-9a3c-28cdfdcd5f27@kernel.org>
-References: <20261116230627.3537051-1-jeffxu@chromium.org> <2066d131-f999-4747-beb8-520d5e0ce1db@kernel.org> <CAAFQd5DzTmyeVQxNdhdy8pPi+ts1cCgbztVJiMoNBeJWBzjdQQ@mail.gmail.com> <20261118012858.289236-1-jeffxu@chromium.org> <332f315d-ea27-488a-9a3c-28cdfdcd5f27@kernel.org>
+	t=1795053921;
+	b=PkkZJlushU+MWFgyHxAVMeAB8SO1NiRhK+xEFDufXtcXoKEruKICoSWAiguRsrXHRpxq31
+	Pa3e530AUTUx3+I5ry/uRd6OS1tdp7LwyllvEB90KRALbj6FSI6J199d7xadgP665vY5Bo
+	bloucKP41E7iCDcBbS4O8rAbkUrxEI4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=bDmNCJobEh3kLoFNq205gwpfko5U2ASzt8zgMKTUjKY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795053919; v=1; x=1795658719;
+ b=vXNZMZ8C96ZXrS+cOPJ/LiaKBfRy+NFncMsZeB+TkOvtEhnQcFdqI13phRE9o4MHBHa2BcLk
+ tRqon18yvq718CTWV9C03z116i6ETIDLM7sr9pGy+IAKRs+0hbKmOOk7n6iC+xfE30GZiFC/QXC
+ HYsKqJHUnuiG2wbwAoT6wTL8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 09ad55c582dccd0b;
+	Thu, 19 Nov 2026 02:05:18 +0000
+X-Mizu-Trace-ID: 09ad55c582dccd0b
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ec86fecf-0919-4da7-b675-3a9be49b50f5@linux.dev>
+Date: Thu, 19 Nov 2026 10:05:13 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: carzcmwb5sfshzqg48xzwfoga9hpybeg
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] mm: hugetlb: fix CMA-related issues
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev,
+ akpm@linux-foundation.org, osalvador@suse.de, azpijr@gmail.com,
+ lance.yang@linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
+ <b1c1c835-180a-49e2-86c0-bc3f65981728@kernel.org>
+ <7e733c3b-2aa2-406e-a5ca-cd9a2c872f9f@bytedance.com>
+ <bc6ffcff-3aaa-43da-91b4-82f27513c761@linux.dev>
+ <1e0aa28d-f81b-411f-92a3-6038c3961443@kernel.org>
+ <c3906ff3-c5ee-4672-8bab-2318185268c8@linux.dev>
+ <3e4b8ed8-c435-4fb6-ac74-b3a9eb40504d@kernel.org>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <3e4b8ed8-c435-4fb6-ac74-b3a9eb40504d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E8B781A000A
+X-Stat-Signature: 8uuzkx8tmnfggcf1t9dmpkapx43nxen3
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BAF8418000C
-X-HE-Tag: 1795053894-139326
-X-HE-Meta: U2FsdGVkX1/ut5hu3gpeip1rveb194r/X6I5TmiMxKQowm9ABh9fqHpDerRGNtrCN0XRsxfEPUNjEw4r9EP1i4pSPB/HaEAfwl5G3UcBPKQhDRj5WlY6nrUNt8pEpQJsLs8AirvkiNx1cHeerGryp7O4TshuQbYPHhneWHAFpLVNEp5wsiiDq7uBVlts7O0gZv1aeP5uCWavHcfZiR9Hmk67vwy4qw1EkiC/3fsVXrcrmAgPAafJBH9lLSv+0BOfwUepcBJtu+9X94XQxxSDHCthCeB+YWLLoZtGsvlUdcO02E4LHwYLcMSR9qfO3aPcgiHwTbklsjF3mC3TVcfi2Ue+xiCx3BoRh36+cGzUFVb19Zh1f5xnQOhaFf2gK9Y8n37vAIXHro4rQ9oBCznvUiNxQ0Ehg+wFhso4dJypG+2MZOfYDTWzthOlzIE0s7FLnXf7cCm5rjuXTJAugjVWdghkPu8esZoP49K9HKNSeOs105v0TORdwGENMa+ilm5Wib0+JLml8snooIYntj0vm3NYSvVeBLgplxyjMY1+AbttRnKTikFQl3ciXMVkOOYiZwFHxePiRN3kQvjUmtfyOq7gDoNykdNGsohwQW6f3T5iNk9+gb0/LIXm2kTskUPaGYn+Zf3DlMNHEXd2ELjGhifmr9PHqNO5jLL/0YEXPBe7xdHe8FoC85lPG4i+RRpAQq+Djm+jrLCB3lobFt3YwjcLN1wDB94AJy9zTaXterJIAM/aJgT/RvJBlFAoSle1FFHF/zZLAAlJc6HjnU/QYbGTpD4vOSXgnJzAF07Bb18fwGohsyzbaLHaSutuGXTuYfWUz5E9kRMKt/CdsFSa6Is0MJhfnfIdeEFybJawwNAwW5X2ZTayiaplMWViPsn1AhG4wDfLtvMQ2ihhm6q9p2VYHBYL1MQwIXae/zg+C47Vs3Oo1pSbBuWBuFIEwqXE0T0mJjsFsjzWmf0wGTS
- 78MRtxsD
- rVOsEIVOt/j54s7ZClI3areSvx4rQr3KQM9rAr6fe/EFrtxsrpqimD4fTFdI9Tib0n3EiqD4gsLGcrbbsjZ6TZQHZfqORLS+B/Vmr/Z2dsMmI9eVXaQ857svkOZaC6vrZaPHThXfwKIqQ+jadYfO0SKoyUrm5NyE1r3MpUSun9DWj1WPU/Nocb9Zm/yMhWJL32Sat4BjRSuarufaC3tZ6d3WyILkKqRPLTdqxuw+HJi8kK16Mrgi8b0PqM6nsoBsHqtyyB7m70+F/3TSJe1JiVxqiUFUWtQKSg0s2FZqCvmW2N0XUwN/xTBt/Osy4FS0VvhDF/y/0JYPQbhuZleV+Bpwsd2sWjxY2UVxbcOo9BEz9oLj7K6AzxuWcCKa3P68jhZrJxP1Q6fh2i9skUWxM6IwivhPKe3iObrq6VV2D6KHpuBk=
+X-HE-Tag: 1795053920-683243
+X-HE-Meta: U2FsdGVkX19I/rMeKtRkuYtn5Ln7PxbFfYFEyV089mzootfv2XTP4rtz7WJPzofPF7DNTdcEzZisoFEy6F4Os6fETQRRWQfuTyJ2r8nz+eKjoH0uwqSPvJ14hjtwz59YXBfT/MtctSaxsPMiuz81U/K9IFHDwW/bbq3Nd14fI8sN75Yho9fqCz3pyfGtZhYhLAkGak8wiACfV9wrYGOqMn3SXKQavYyHD+xkvTheax0XciG1UzSqFJauFnsTjy4811osJL+uN0vH1pm31ZuME9Kc0yDMzvKv6vhxdUN1K1zxKwW7x0AGicO/etrUb7YET0FaBTe+qEYdqER30aByFuNb090DBaTytspgmviUy3daxiUNfOOhwz6+43CD1YCJA/JpejmhpQJfsvwhm8aMxH9BSYjdnvL4lwgTfXMOUJWe6KIkz57mhlUbwIcFRWzPRDo4I4UebFP+4LVoZMX12YU4VF6gyfzZqlZeKsM6DEnjotn7sZGGdiy3MaanP8jhs/chvonq3QOhwZR+vGbigICb2PKan65tjvownMIBYmnFmmRDpkRRVBsxTRZWnGgttKsh3W3tHFO2xhOqu1M4Zs+6dW1XR8lIWm4eqQW8HaAM39S1CexAv+dVWvhwzHVQ+bhCvVHqXgDVKJ2v7Ec+XbMf9vPcoqo7DfFT5jTNFL6RSkbsEKtQL52mhF9JnTD6s98O+5xhZOhfunTWu7oe7HHYxjspdm3K+mB59j+02dJ88LNxC7N5zoyLUADcz7ntaVf4LCL8NFtemgfA5C+xJgR71hC4pIroEbc52P+iLFn8IzTPWi6MvM9HcjDL6KThaliRJBbEa7vIehR0E8aYJjvUFewXyWwwZaIVmnr8jFM6Bt0JXWl+Y29Eulr/hewNY9uLRSdbOeDTpLpWcXtpdLzoQHc21ihPtMNJS72WsUQw7gBPhH0vsw0UN7ek8q/GZGl4ko8RAnbwyoeAZJv
+ k3T4zWx4
+ YdTsnLgb0/b8BAmF3fzUIwfyUaznAq72s4EWLA73Hnam6tuAX9vrzB3wDyGN3u327y+TgO1qndn0uCtucyfN6qlPdgbHaY1RBtoiU1GR64UIZIu9yHGiwacPa2cwWC/0ffo2qJ5Fogeem2nz3XAjXhmHbEocvf5k1qotOhn6A8Grc1oyLC9AS57woY3iJrvTCdnqDi0lgNXz2YInIrgR9DCLmCQxxZ5Cv0DIf0vL6pe7dCrlR2ANRuB0Ig7xACST84HiDfmZfUJd5TNhnJ3SB9RrSjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,15 +100,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 10:46 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
-> > 1) Simply keep those 4 cases under GFP_HIGHUSER (drop patches 1-4 and
-> >    7), reducing the series to just the GFP_HIGHUSER change and its KUnit
-> >    test.
->
-> That's what I would look into first.
 
-Thanks David. I'll wait a few days in case there is more feedback, for
-example from the KASAN side, and then send v2 with approach (1).
 
-Jeff
+On 11/18/26 11:24 PM, David Hildenbrand (Arm) wrote:
+> On 11/17/26 07:55, Qi Zheng wrote:
+>> Hi David,
+>>
+>> On 11/16/26 8:07 PM, David Hildenbrand (Arm) wrote:
+>>>
+>>> Hi,
+>>>
+>>> sorry somehow I missed your mail.
+>>>
+>>>
+>>>
+>>> Ugh, what a hacky mess people created.
+>>>
+>>>
+>>> That would be cleanest. Would it break existing setups?
+>>
+>> Yes, this requires an existing user to explicitly configure a 32M memory
+>> pool.
+>>
+>> But in practice there shouldn't be such a user today, otherwise the
+>> misalignment issue would have surfaced long ago, wouldn't it?
+>>
+>>>
+>>>
+>>> Another quick-fix idea could be to always allocate larger folios first.
+>>>
+>>> That way we should avoid any holes, right>
+>>
+>> Ah, this looks feasible. How about the following?
+>>
+>> (If that looks good, this could go as a stable-first fix.)
+>>
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 6fba92b0f6749..32e65ce347c90 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -4556,6 +4556,22 @@ void __init hugetlb_bootmem_set_nodes(void)
+>>    		node_set(nid, hugetlb_bootmem_nodes);
+>>    }
+>>
+>> +/* Return the largest early-CMA hstate below the given order. */
+>> +static struct hstate * __init
+>> +hugetlb_next_early_cma_hstate(unsigned int order)
+>> +{
+>> +	struct hstate *h, *next = NULL;
+>> +
+>> +	for_each_hstate(h) {
+>> +		if (!hugetlb_early_cma(h) || huge_page_order(h) >= order)
+>> +			continue;
+>> +		if (!next || huge_page_order(h) > huge_page_order(next))
+>> +			next = h;
+>> +	}
+>> +
+>> +	return next;
+>> +}
+>> +
+>>    void __init hugetlb_bootmem_alloc(void)
+>>    {
+>>    	struct hstate *h;
+>> @@ -4571,9 +4587,19 @@ void __init hugetlb_bootmem_alloc(void)
+>>    	for_each_hstate(h) {
+>>    		h->next_nid_to_alloc = first_online_node;
+>>
+>> -		if (hstate_is_gigantic(h))
+>> +		if (hstate_is_gigantic(h) && !hugetlb_early_cma(h))
+>>    			hugetlb_hstate_alloc_pages(h);
+>>    	}
+>> +
+>> +	/*
+>> +	 * CMA ranges are aligned to the largest supported size. Allocate larger
+>> +	 * sizes first to keep the early reservation cursor aligned without gaps.
+>> +	 */
+>> +	h = hugetlb_next_early_cma_hstate(UINT_MAX);
+>> +	while (h) {
+>> +		hugetlb_hstate_alloc_pages(h);
+>> +		h = hugetlb_next_early_cma_hstate(huge_page_order(h));
+>> +	}
+>>    }
+>>
+>>    /*
+> 
+> I think this should do. Best to send out a proper patch.
+
+Okay, will post a proper patch.
+
+Thanks,
+Qi
+
+> 
+
 
