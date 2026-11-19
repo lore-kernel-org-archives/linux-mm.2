@@ -1,103 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42222606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 11:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2937B60A260E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 11:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Oy8Bv2ht
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eIo1i7Do
 Received: by kanga.kvack.org (Postfix)
-	id 600DD6B0610; Thu, 19 Nov 2026 06:17:27 -0500 (EST)
+	id 4A4116B05C4; Thu, 19 Nov 2026 06:19:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 589FC6B0611; Thu, 19 Nov 2026 06:17:27 -0500 (EST)
+	id 4820F6B0612; Thu, 19 Nov 2026 06:19:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44F7B6B0612; Thu, 19 Nov 2026 06:17:27 -0500 (EST)
+	id 3B9406B0600; Thu, 19 Nov 2026 06:19:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ECCA6B0610
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:17:27 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C95A1A0A63
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:17:26 +0000 (UTC)
-X-FDA: 85451617692.11.C318FE4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 087BDC0003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:17:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oy8Bv2ht;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1811A6B0612
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:19:15 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ABDB7A0A8E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:19:14 +0000 (UTC)
+X-FDA: 85451622228.09.C484549
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E904340006
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:19:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eIo1i7Do;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795087153;
+	b=GjPBFDJJV76tUy7eZVjuagYZ2hZqY68P8ST2HXc4N6Aez0GzLrgk1aXk1OF+eOsvcY0Q2b
+	J+auEHV5vhJVlbXXUX9GT8iU+ADbvhQDLK+1FYHvPSMeOEy5s2IcbaD7/pWnpCSGki/5Un
+	23damBvsHIw25Blt9pb5+e0D2p7+tQU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795087045;
+	s=arc-20220608; t=1795087153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TG1nYNTcyHyUOWzd5MXIw5ZMjc5V360SZkt3R3ZKcZ0=;
-	b=Tf4M7rKYgHgDlBVga9uesPb/9EUW5cZ1mk/umzKhODhVWd4hpeTiwF4wMON6UozTpyT4FF
-	SX4PO+lpLoAwRzDtQ17EaD/9hPmpr9foRCdmSVvqhXIUejCK3MgPJLFGmXXxHCj+4KgJa8
-	0+Uov1uXilVoj6MS2eSHwT1NEgQIuTg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=QXCxhCIleutXBUxzuaglIQL7kD3eVOH4wn3LnKcIbkw=;
+	b=hlkp5JGzlYFsNk2rdaLohNpyLAkysgjxP+UcNu69NvfnJb3ZL6rYSRRIN1gH2N+fX1v7dC
+	zE9m+JBi0dCpaBbkQVDlSGVhILPx0a4lrMj9QgwcJ0nS4Eq/x/haJ4HiDW4sbpc12IN8OQ
+	ZYmexBzR9iNYUHP2cfSp0g4cT36NHyw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oy8Bv2ht;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795087045;
-	b=N5OYS4unIxHx3p60mK0GGQHjfL126LvScGnuP8hhO3YhoTKxMTrfT2RT6c/ePk+oSzLHAr
-	03UajrwKFQMWLDfyKBdvM3IX0w5jdT6CXCxzFIwJGmBjieFysZxu72ftaOFpJW05PzQVBk
-	1CMNKYQh1ChgWUJiTmTdnnvY7V5vM8M=
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eIo1i7Do;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 98E98633B6;
-	Thu, 19 Nov 2026 11:17:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB501F000C8;
-	Thu, 19 Nov 2026 11:17:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A0F84119E;
+	Thu, 19 Nov 2026 11:19:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016E31F000C4;
+	Thu, 19 Nov 2026 11:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795087044;
-	bh=TG1nYNTcyHyUOWzd5MXIw5ZMjc5V360SZkt3R3ZKcZ0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Oy8Bv2ht8Z31GiXHlzXSp+X8i+LdKi+A80wBsB56MX4yrnfzRl6Vl4L8OlITkHEqp
-	 9t9oEkYzCGYR27uioqP/4jUcusdffaFZdSe5GdlSAMu20ZQTSGlPFEuIiMekhTRHAG
-	 RvTulDh+dz2/k/LpLKHWfPauRY9Q4RyOOLznMU8Ygr/EeOq3zypKD3I1++z+7EIt1r
-	 8lV3s0YAQTwxkPoXgbVq+Pu1QQArC6iKTatyIKgFHYxmINrvnmnL0JfArsuymvAXSS
-	 JiE1rhf0LzNCJ3e5ooQfRy4r5+iiwroEeLT3sSosXplwKH0ByzxGmd2K3p94pmkp3A
-	 ecq21BmBr1mww==
-From: Mike Rapoport <rppt@kernel.org>
-To: pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	akpm@linux-foundation.org,
-	Long Wei <longwei27@huawei.com>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	graf@amazon.com,
-	leitao@debian.org,
-	corbet@lwn.net,
-	rdunlap@infradead.org,
-	linux-mm@kvack.org,
-	kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	hewenliang4@huawei.com
-Subject: Re: [PATCH v3] kho: do not expose incoming sub-blob contents in debugfs
-Date: Thu, 19 Nov 2026 13:17:07 +0200
-Message-ID: <179508700586.361583.12491114908870226409.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261119095937.826980-1-longwei27@huawei.com>
-References: <20261119095937.826980-1-longwei27@huawei.com>
+	s=k20260515; t=1795087152;
+	bh=QXCxhCIleutXBUxzuaglIQL7kD3eVOH4wn3LnKcIbkw=;
+	h=From:Date:Subject:To:Cc;
+	b=eIo1i7Do1xvfth7udZfgi5PNF/F0gXToNXLydb8EZqiuUieD5ZLR78jQgm7G3Vm4R
+	 XGvZ4RWtCNA4BZvFLNo1pDS78EggAbg/tU/pjk9YR1ddX62in5utB1Db/FpuP6jl/f
+	 YYdKCCuSY/jDBSIjNkMmUN/SFvVNTMpSQ43+4FH+w1pvxeCw5FqslTLNbZsfhTOY94
+	 GGirhlNA2wZW5Z/WvZ9P/0Te3s2oyewF8zdI/Tg6xjL5PC9FpLgdESe5ofunXQcGCC
+	 +PFNQmiLVum29mqxFo3+h4yYWkmekn8sdNWKMCIOXkCxd6Bvr148s8f72/xGYhcGXh
+	 bSpYIGFum1Q8g==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Thu, 19 Nov 2026 12:19:06 +0100
+Subject: [PATCH] mm/mm_init: don't subtract managed CMA pages twice
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: d4pyq681y8o35tnukmd3x31kmw96w95r
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 087BDC0003
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261119-cma_managed-v1-1-385751505e24@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXMTQrCMBAG0KsM37oBJ7b+5CoiMk3HOkJjSWwRS
+ u8u1uXbvAVFs2lBoAVZZyv2SgjEFSE+JPXqrEMg+J0/MPPZxUFugyTptXO+qVn0dNyzKCrCmPV
+ un227XP8uU/vU+P4VWNcv2+wFvG8AAAA=
+X-Change-ID: 20261119-cma_managed-2541ae8731ae
+To: Mike Rapoport <rppt@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Oscar Salvador <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Chris Mason <mason@kernel.org>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2012; i=david@kernel.org;
+ h=from:subject:message-id; bh=6Ma9f4cQInBSteSr/WNtmNWvwrG6rrVXvnRyZnjUzyc=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+3dadeEyfO2bbM57gWsfwh75Tjj2WdHWsZN50gD36Q
+ PdXpzeGHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEyk4iTDP8tUq8jtby5VFy+I
+ f3DFvF+UX/LmhQmV0rrFumXblheu6GNkmNk8yeOS4IebLHW5XxTeFidLLH5Uuf9W5z89rSSz15y
+ SfAA=
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Stat-Signature: wrm556999pushynbhk95gbdzk96zoea6
+X-Rspamd-Queue-Id: E904340006
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1795087044-756912
-X-HE-Meta: U2FsdGVkX1/k3KfLRdJBZFj/iOfHwweusskNqO8Z5aCvELiHgf8mbpJ1IAU2MYlGVc1OwGdxI8v068MbpU68Z1RM44XDzVgFeJ0COa6WPZP7aIKJeHSPMRgzLKxj4+DD7dQI3lgliJIAvRoFkLWkvuSxWyHC6F3QZXtrXBawgIVIc0vY4yIKoFJ5rD52i440egEMyn+biCIbKm+KPcO599HQn5Br8occlz1jutKRB0gGBH2l7cBiqnLdEpOp4fer/gIp8jSvV8HvINV3OvNyb145R9E/mIRTMrivsnz21sgYG6DfD29GinhLox5cITfT6+61yh6+mE7huQdzOa/erIUtGspJa5aCGY9KROrlrHPKdrRaUx1w5/9KzUOMqbxh4PQQfN/WY44//vSBFYdmG79Is+fVAbkgP4BbDghIMxIkAcXNxJhaMwyt18XY6geEi4cFCiJ7vIwvJaBQ4LIDw+XtJgyk9mkfChrJglEWde11V4ouQyIIdVikzWg8zb2GEkozfd0ZHdFACYRFJRBLe/Ahql6c4MpegctIbknhArLY8im0B2P3lVdgqVsmksB32OvFK36smvtW3b/uH1SqM3GhgWOEDtkXGPpK4CXJVZRAM/hJQNV4uEFvsmtrpXoyNak0zTca4hI7BODn3EQW5vHouArg+WEWz3UYeorv4FacDFzXSFqnRM5IseGG0AV/ON/I0LDjil9POA9jPOLhCJGgZ4CoSCi0Ys1WyA+utYZx1F1/WFKuvBfD+bavzgFqr4gQAKE4fOWtJQtafGMr/Ylz687cqolVPrbbh+p4ivYg/Xp4iJ3zv9uEX9AaECAvctkV09pfysos8GqoxbEDEAO0frguy9169/P1yurNDijiraOG/oaX4I4fiIuCidXAGl9s+TMqzrWCnYLvDaJua3wpUMc6DNYRjXIdMv93nmCCRzbsyFm0f2VQIE25nQxuR0d20GwxccftYZ+0+iN
- mzi2Plu6
- PKkAg92wuSkUiIHl+vVBSanO3gX0SXeYZ7iN/9ebQnOuRcAMINiM/2JJaL4FM8E+fx00jBo1E+0ikJfA/nburMJiZxkhX97+pnwf1EWGfXZTWzxQkNTxiLBYwarLUBxmtSRO3fbdTGqs9Zh1o9hWtxo/ByFiw6OdID7ld7vtimOstKtTGxFTkCvs8UD++ZRVYkiKpVsleLFRj6nFx5HEkM4MdGndhhg/ycKwcemsFwAOibo6AohYx5t72Xw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795087152-335340
+X-HE-Meta: U2FsdGVkX18rUNLzYoT0EMsOMwKBzlix7QGYSsW2/3qpwCS+z+mzo+YLXt728xN1AYxuCtjyIPxF+7C8dSLg1uRuOKOwpCZo7q18e42/pqfxSpyzTXDr5WmpgjmKkLIqHvEI27Rhc/fBYh0WfsOcgGJcQqPZg2OP78uPY+PTciECna0zQ18r1zB8JEvbMrbg1J40jXWjeGY0xjvMTrFKwsHbv3Gbmku5IlSzpr1iSDudAgd+msCqLHAWn2Gi+HoHtOoMxzMqwjevSFX7XqbrnzHhf7J79wV5EW95mNJjh0qam1Z3ex1Otg1w81Ycl6p5whAJJFg3DaarVqqw98LT8/nBAx1ZWheJ1oyEs1Ce4eKVyacxDNfRpXqcsYj1J8oHGMRCGMETc5R1Q9dz6M11iYnITdAHRatI6QDtroVs7ehXEdDw66Jdr5MrwT2TMiz7RTD3Zt1NXAp/2K1E9+WNkb4c+uNfan8f9/QSZNQ17Bv9z4DLDP01wOAP9LEmeAlxzAPJAU1jPhAPjBPCDX4S8IVtz+/vx/lQfyM8SARccf8Jwh5f+c/1iJTnCr9sPc6SJL4CHGnktae72vHtJ7GtI1vw7mJSSUOzGECmhHPhVnlwLOgDkWdXErCDcuqq0zDwDEygBBmCBDAKEDY1aQyJ0JYnQvGGm5i8J8y0uT4VVyESUXXDpFNqP+s1LhcR9HUW6pIaadVuchmIn7ZPL+Wh/ALWYfnxZCUpLmXzDoizsv5IL6IurdoOx3c/h3kFnOGDs5n2yHRqkfiHNYEeWFvdQI4KfUUvOU1Fa0iuDL78vw3GVkzFyFdasgGXKNn4QewlsPwOj780sHtNBeLQT/0PxvcC3jGhORYxscH3zUmj1gvLys0XkVFq00WjKC17Pc88omJLpdNCXZpfyxlk98j6reDw62bQ/ULbIyPQnGUZC1QKmtNfMockdtVbvPh9wq78Af2FZGA2KHhHAVI0Hze
+ z4YJETU3
+ F0kZtaE7Lzs9ajCnHEUekVI0vqf6/Opa/jgliIY+SdnDfHNKRjQDfFUzdCksfpGgxtWfhrouqmmwEESBFIer62gDhQBbTBR+Sgyk4i89XAt4xnUNyfRqsRZ+IT89dbkKR/P5PBIWBJxI8TCd6IJZMkvTya0QijGzx9OxGfBLeM3PNag+iWIYkA/bcdqqpxtsyizG1NMSQ3U6WYFNmiO0UC8c12ffF3fdAA/BzdM0hcUc+6oTmIb9ECTVhRjryP/SsQbQ43p4cznASzCuIW9AkZ6e3wyKDRMMC6jZzlEMOUsayWsrjXU9W2Q7Vgyo4YR6EzUAmUCWTdCA8IYKEJhrFq1/MOAo5v8NfmzXMQQx7WWK9JCvrDadINH43+LqI7iXxiMz8QFTxEtQTp814SO0JyJ90QfwkLtv6cyoOi626R6x3HLenfBm3zelp3HovbqX5CJUS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,30 +107,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Chris Mason <mason@kernel.org>
 
-On Thu, 19 Nov 2026 17:59:37 +0800, Long Wei wrote:
-> Incoming sub-blob pages are owned by their consumers and have independent
-> lifetimes.  Some consumers, such as LUO, restore and free their state in
-> early_initcall, i.e. before kho_init() (fs_initcall) builds the debugfs
-> view:
-> 
->   early_initcall: luo_early_startup()
->                     -> kho_retrieve_subtree("LUO")
->                     -> kho_restore_free(luo_ser)   /* page is freed */
-> 
-> [...]
+With hugetlb_cma_only, the "reserved" value in the "Memory:" boot message
+can be wrong (small or underflowed).
 
-Applied to liveupdate-7.5 branch of liveupdate/linux.git tree, thanks!
+When mem_init_print_info() calculates the reserved memory, it assumes that
+no CMA pages are managed yet. However, some CMA pages from hugetlb might
+already be managed at that point, so we end up subtracting them twice.
 
-[1/1] kho: do not expose incoming sub-blob contents in debugfs
-      commit: bfc4b321d12e344627c1ee4977d6a0a084746d7e
+Fix it by only subtracting CMA pages that are not managed yet.
 
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
-branch: liveupdate-7.5
+This has very low urgency, as it only affects a boot message.
 
---
-Sincerely yours,
-Mike.
+Fixes: b1b7c045e808 ("mm/hugetlb: initialize gigantic bootmem hugepage struct pages earlier")
+Signed-off-by: Chris Mason <mason@kernel.org>
+[ david: improve description and comment ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+This should go through the memblock tree.
+---
+ mm/mm_init.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 27a50ecd5c20e..26033afa9bc05 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2608,6 +2608,12 @@ static void __init mem_init_print_info(void)
+ {
+ 	unsigned long physpages, codesize, datasize, rosize, bss_size;
+ 	unsigned long init_code_size, init_data_size;
++	unsigned long unmanaged_cma = totalcma_pages;
++	struct zone *zone;
++
++	/* Some CMA pages might already be managed. */
++	for_each_populated_zone(zone)
++		unmanaged_cma -= zone_cma_pages(zone);
+ 
+ 	physpages = get_num_physpages();
+ 	codesize = _etext - _stext;
+@@ -2647,7 +2653,7 @@ static void __init mem_init_print_info(void)
+ 		K(nr_free_pages()), K(physpages),
+ 		codesize / SZ_1K, datasize / SZ_1K, rosize / SZ_1K,
+ 		(init_data_size + init_code_size) / SZ_1K, bss_size / SZ_1K,
+-		K(physpages - totalram_pages() - totalcma_pages),
++		K(physpages - totalram_pages() - unmanaged_cma),
+ 		K(totalcma_pages)
+ #ifdef	CONFIG_HIGHMEM
+ 		, K(totalhigh_pages())
+
+---
+base-commit: d9a27fa1050902a6e38bdb780b0277cbf1dfa5a5
+change-id: 20261119-cma_managed-2541ae8731ae
+
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
 
 
