@@ -1,86 +1,87 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652A6606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01C1606A334
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WMDYvOsN
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mh330Ryd
 Received: by kanga.kvack.org (Postfix)
-	id 4D4CC6B05DF; Thu, 19 Nov 2026 11:52:02 -0500 (EST)
+	id B162F6B05FD; Thu, 19 Nov 2026 11:52:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45E426B05FD; Thu, 19 Nov 2026 11:52:02 -0500 (EST)
+	id A78D56B06AB; Thu, 19 Nov 2026 11:52:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34D736B0691; Thu, 19 Nov 2026 11:52:02 -0500 (EST)
+	id 941036B06B4; Thu, 19 Nov 2026 11:52:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 09E496B05DF
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:52:01 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7C586C0B63
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AF6C6B05FD
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:52:02 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E91C2A06F5
 	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:52:01 +0000 (UTC)
-X-FDA: 85452460842.14.E865190
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 99CCC20007
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:51:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WMDYvOsN;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795107119;
-	b=2jlas/4FeJ+9Eh6qN13BEXn+xi3Hq6j/GhmmS127Y7bc9Svn3mQDMM0iSeOIW1GDEVFqJo
-	WVO1WEHB33TX8IZwC/DlaP/qyPLxwz1bVnvMlAyqF4RxMJ8CokAhFWo6H2lwcYQY1RFF2g
-	xOEkGUU+G2oAYLdv33rZ0Jjl3EQzf98=
+X-FDA: 85452460842.20.6163845
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5DDA91C0003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:51:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Mh330Ryd;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795107119;
+	s=arc-20220608; t=1795107120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B/6DH3FFwvRnKAIbOA9Jvsbx865824E9HffR4ETwzIo=;
-	b=zMj0vMYSNoGysCGEyGPx3TjUdnFT3EaKMGU83Xk4f1nCshQm4NCRcnT1hgqBaI00/3j6gw
-	oCcozEXxwds7kCpuXRYSrds8M9EMyaPQPStAn7MY4dpRuL2G0ryWbJzZ9GLzssqo/SP8F9
-	x8Q9jyJkvY7tzibw+Ba5I2Y388IHHDs=
+	bh=jOmSWaH0NoseM7eEQor0PCauI2FtvndXKKCrHJYdp5Y=;
+	b=r0+F2XWWZcxLjdoCphBPzh4kodJsGxVXfHnshzl+sKhr1BC3ZWalF1UHsV0OGqIVHYcvYJ
+	qqIOmpjP+b+ptX3KJYajGYaQESTfY1p3yufTNh916M92CDgfyJI+fPTomKZh9sN0xryjjb
+	MhmfEyMImJ3NdtyjW1Rzcd1tizjky7c=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WMDYvOsN;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Mh330Ryd;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795107120;
+	b=38G/LzYnWOywEJ5mnFD6fIL23FN5nYXc5D3n/puoz5n6vK7qdWFpuCzuxzY16UiH5E7Q/5
+	cAAHZN3tBOEbEwzAetYolkdNkCh9/xiMjX7epEM8EmLBaXLEejLnmUL4jviEmMBYVeBVVW
+	bL89H94X1CttWGdXCneyzD786w8C3SE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795107119; x=1826643119;
+  t=1795107120; x=1826643120;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=alpKBfZVPL/sOG9hyOB2rfC3cwy67Mmj2pXdbSblBqE=;
-  b=WMDYvOsN6EdZ4grMxPZPhZMgfhYK4xgHj6WfJqqW4lkTdQ9gl4NrnREY
-   QYG2e2OOkp48y/HmXvz0w2DVTHYgqpmBZvXJGYQH7euI1pe7/KCQAMIZo
-   Fdcj8wf9ebHsli9uXgMwe1iwiqCfyzbWhniDc5XosOu7yjqsXDTp3qWhn
-   PMg8D9iMarJdJaP/adJLXwFE9S9b+GAevwPWDY/IuJEyf4+nEvi+tvA/W
-   FV0PKNBuftntEcydKaITIcEO2NS7IvsNJ5+p+8/ia+CD8T7kOF13vVEAf
-   kwm7/MlZsz4vL5x0Q5QFmDx/qO/BS1YDA/qXwUH9C99l7/wmTjydnz0dD
-   w==;
-X-CSE-ConnectionGUID: 4Hb7URJ/R6GeWENycLJa+Q==
-X-CSE-MsgGUID: GqcgdvsMQcmMUFOmVQ5IHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3972915"
+  bh=6Ypv7CUPwYDm+rPJoVRIsIBp43C79oWLpiPYtRb+HX8=;
+  b=Mh330RydlqFFgeJ9bVjZUMaluTMjTciWqkIxnnOnEvsBvv8i344P4Sma
+   z99bsWGHgvU+/gJppGy2cXJTw0oU34IDfI7S2jVPd13VWzAJOGIouZkao
+   JeUiLn8RHfIe5U3FlN3yQp6H7QASTrn2sCmQxWxt4wvMBR28yvXp1KtyK
+   VcrVs9wQSdBB0AWd5WaZSeQq4kc2xJB9nO3lRbr5j5rkP5vsa4XpP+QkD
+   gv/kPykNtuCwq8CTujggh7cua3mK1DLOeBuQuQdD0HFDtOF7DVb7ZOxmN
+   S6cbTDNNWGeE//gS/iQ6u7JXUa2IfvwVaUB7CsNJxen3NbJpLX6yQL8xu
+   Q==;
+X-CSE-ConnectionGUID: 5FGpxySNQdOXQCuY1r4EkQ==
+X-CSE-MsgGUID: hLogkl3SQBuMsGXMaFV8ow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3886053"
 X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="3972915"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 08:51:57 -0800
-X-CSE-ConnectionGUID: ix55b9qhQo6NvrkZ3L/Vxw==
-X-CSE-MsgGUID: cM8nOYnpT0+ilSSf+e7fkw==
+   d="scan'208";a="3886053"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 08:51:58 -0800
+X-CSE-ConnectionGUID: 47DHlI57QH+bfQ+a9JbaIA==
+X-CSE-MsgGUID: /NxNv2KZTm+aJAcr17dwOg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="10361290"
+   d="scan'208";a="10811352"
 Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 19 Nov 2026 08:51:51 -0800
+  by fmviesa009.fm.intel.com with ESMTP; 19 Nov 2026 08:51:52 -0800
 Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1xU5MR-00000001G9u-21E4;
+	id 1xU5MR-00000001G9s-1vGF;
 	Thu, 19 Nov 2026 16:51:47 +0000
-Date: Fri, 20 Nov 2026 00:51:47 +0800
+Date: Fri, 20 Nov 2026 00:51:44 +0800
 From: kernel test robot <lkp@intel.com>
 To: Alex Williamson <alex@shazbot.org>,
 	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: oe-kbuild-all@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Alex Williamson <alex@shazbot.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
@@ -107,25 +108,25 @@ Cc: oe-kbuild-all@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
 	Pnina Feder <pnina.feder@mobileye.com>,
 	Mete Durlu <meted@linux.ibm.com>
 Subject: Re: [PATCH] vfio: Allow untainted use of driver_override
-Message-ID: <202611200009.RQOE0yny-lkp@intel.com>
+Message-ID: <202611200005.ynk0zwGb-lkp@intel.com>
 References: <20261118235645.2907908-2-alex@shazbot.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20261118235645.2907908-2-alex@shazbot.org>
-X-Rspam-User:
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 99CCC20007
-X-Stat-Signature: hpk9ddyeu56j54iccoznw3jsuiq6spfu
+X-Rspamd-Queue-Id: 5DDA91C0003
+X-Rspam-User: 
+X-Stat-Signature: umz1yfwkozsxyyocq11se4sjdu4kqqw5
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795107118-47585
-X-HE-Meta: U2FsdGVkX1+OKH9+LwJESNCHhr5Te61fdVI8PZ4uR+GVmd2qvguwBMFG+GnvnuWt2dj1N5cmGBgvK5vcW6Nmfw4SCh44Zf4RVyXwYcgvWZl26btokHuKxggv0IELBSWVZ5UVzyFeBm7Sjg+Pp1jwnOZOhbYZ2rRv+lKNAw7vJu2gUq8DmJrhyPEMuW0W7twTQc9MrEkvu0AbYg5AO2ur0kCD34AdoG5BzJ7UjzPszdLKikk9nxjxLn9i8Z6EX81bO2Id7GeJLpclRa9+AxkKr+EcmYDCJUrQmW+FuL/JSA0BB04AsLZh+Krd3T8iy45Aow3BwgaZy3J2YdysS8OfHg6psgHmNXLAaXpWqtHIQGC0itxWfFLD2V0KqK4dYAPx7Iz3U8POAMPV/GghcI4YgAb07nhb1m8Xs0O9hkpMMYdXpCs3SsDAbaVkutONqj4gsy4xygUBpSfLGAbf0n4roEaL6M8HPjzmKv6i4R/I6ucl9QjYg7TPO9KY6KsoDf1TuAXlwVUK216YZWrnBTay7kX1edYiZjIof4edsIVf0qx8BcM4aVZNksvv+lCBwy88uos8YAaI4Jeyh8GcfqnTMib3FJ/JgE9X2o/RBJ7k4S8QsNkM8EP6mU3dkSNdOsdG9PRrZtGlYHmK3xccdl9m0giSJaSEUEC1cwHwLOZ26EJUY0vi2TBxRJB6rNM05Q/i6/tseMj2BB77QOtNdR3kRTLwHUQHaZSw0qeOMOM3fuBlVaFKoVHt05l/t5DMx683cd/P3Qg8xHYj+xUzak4iR7/oTwBRfq8QbRpcWvJxycxwOh8aUzk3Q/RPnXim4dlCRrbjDXeKlCyeGj4128OLQREtEGS/3+2rOGRlXTkd7k+tgC/DFewgTxuZVsaRS36pdERmjfq/QDOvcf32DKPMis2XVDlmhQAZ+LXePFWvNkzyuxJRaI2xqPsbqzlygntUWhXx1JhR/VHyWHNnjPL
- T+HnSJXM
- 6TM9LPfUfcHtPbegOCaYzoPNjArmeX3j/6ChM79rhEKtgrqCNTgXCevzkbQUQXr6PQXDkNAOp/CTucEsg6JfvcyY4jI8X5IqMCoAZA2JN7ugCdExgoqeFVNoTKIGTEyVp4/HRUwDVN4SjDfDU2UKIyEBY7e84AIxwz9Hp8VClxtmW/lAYEvZBoz6v2lV3ADVG6WcEagwLf5rdFT52N6NSmUqAGo002mfVLd1NCsdchZxbYwMShlEnKZDW/6WuzYAAWyOHWE3Itkb9qI3rswpCRwnCoT0RozUBURvCDEioTGn64IHW5Hp/dA/RjkC00moMbH5HSuIPlf0TAyOQ5bhZhJpPKYgz/U/Oub25H2mll8X0NqHxRHa9Pm1xjStQrZjBnCsy8MTiIfUqGc57tYebfQxYSfMHh99YWzMtpPcw3IxT0D0k2WiDchVzz2BMBDIFDTZNBEXgSUdFDuOyGCxK6hC6/TfwYgo+XsQGXCASBfhbWE5lNbGFKSQZZz/2rlScRPSOU55MPGhaGROKCszhPfj5Iuh9NNs8ePEG6w/6EF7+1zkGSbKvxRzvq0/Ax9mrtLNRtKq54ZkdTiifC3OeX+q/c7+fP400jwPv5xnXYiecpas=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1795107119-778639
+X-HE-Meta: U2FsdGVkX1+nuh0UxBbf3iqWXl+Nj5o2hMNGj5X8lt+EzTPaV3q+4rnmFgurhblUCSpADABSEYOL/sjWC1ilRB9veHOiyUzUhUhHX9OCe3rKVukwBxOqojzWEUYlVbHnYsbzMoDDNV6tcPaSwRsvehMhzG9sKb8nKu76cpnJVND+SOs1hNcCUYvq8GcTuff7U7QWR/cg2u8r/PEBgVTzuzdtM74ev26Xlsx9tOWpErxwoGFpX/ggU/WB5Xe4Qnyc89s+zQVpO0Kb92Ab0Ow4Mys6B8ytswLzg9iYVSg0E6nLmdl8F4Yk7pH6nByAj95hhqh1UxhZWo6glJX/OSTQG2Y5/B25lGZXa9SsMLipIJ3IjFJYcsDS3YRdJ7eE2nkQIcjCwCH2KF78Y7h+zWrQcceLoEwrPlcfEiF4sH/XFAo3DvkF3Im5M0SvnyMYmoMsvfFoPSvrsoteuMX1Gk0SbXikaPk3R1K1TCLBaheD4J0rgz94OLmUHWsNZ4E3qVo0oS1u7GznYC9yg2CY7Fa8ru+5tNuWJKH1hlTc9Nx2AyC4hBo5S2NcIptRUIGkKaw96GuUUnxgIfLt9cK2KYgVEOgwcUEPMP+yIL234HACwNfPXAa1Q6Y7QN0lFI7To8IO0mu3Lxy7gq++DouMtmZoer3vP+ecaFI+H5yVA7aP8iH8Pyr3HgOXTFDYvlfsh8dNLiArLmu45kxNNvCA5m+u+PLUwOa8dTu57k+UFMZTO8avj3ad0iE+4dVKqOh0nG2h9FjXUctPqBemMMW/kEICVIy+rF7/B0CIYshbKDFcoqj5Sci0oAG7uRzO2WM9kyNFU51SxAsmkN4ppvcKm4wV+DpvA2vgYVWdmxyKJsN0SQvhYxWE9VrjLsmYUMpZRboBqh4mtc3siewTLfWYcRd9VtZNCghN+Wvi8JsbH+4PxEA+T3v/m8aVJXacUajq5Na0ISQCkcOqdCd6iNlC6Bs
+ wXo2ud4F
+ pN87OKlCDz+yYcgr0Ecny4X0hRbYbeYuTvZ4JPs2exdAzqUN1AmKwmXft/f9SLuqfVjw+XHOGeKI4FUd1S36SCMFIBa5M8cVQSav6McbJWVxAgozvX2ASp+6qM8wizBhPZssO4Lhx3hRuedOS2k+gk4mhqG4Li4IbSkFZybLi9G8pPREzd5bECEliKibgEC4fSl6wFtFrHV+5NLB6guLVd0nPaP/prKqoGSuzGXf2meMkal4WMNs2t69242+msMxfN1PzeJRiTuD7AerXxSJXUSNxbqr+Bf0HUfNjAUoOhtN+QhymY/z3wDBfpQayfGa8ZN/bf+B6NWpWucuHSLEa6ebQek3xpm3wPPpcx77l5ZGIDRNVi1gdN7TYcLIlBiG4BWEJw7nqHD2wTSo442ZLU+V8EXMGoJ2IXK0gO2Fd+sGUnnQ34CKxZ8qLZq9XQLciudCla3Pw0RifrJdWRDkZs3l4zwli8NwobWSyz4DlABD8VuCjISaoZWRJjXgPACQpRa15W2QrSkp7PaGPc2fUiV5rcXx1FR2zOuGO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,39 +150,38 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Williamson/vfio-Allo
 base:   https://github.com/awilliam/linux-vfio.git next
 patch link:    https://lore.kernel.org/r/20261118235645.2907908-2-alex%40shazbot.org
 patch subject: [PATCH] vfio: Allow untainted use of driver_override
-config: arm-randconfig-1000-20261119 (https://download.01.org/0day-ci/archive/20261120/202611200009.RQOE0yny-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 15.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261120/202611200009.RQOE0yny-lkp@intel.com/reproduce)
+config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20261120/202611200005.ynk0zwGb-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 3b14d7c370558b46e5f0c6494a05c492e59bf32c)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261120/202611200005.ynk0zwGb-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611200009.RQOE0yny-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611200005.ynk0zwGb-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/vfio/platform/vfio_platform.c:119:18: error: 'struct device_driver' has no member named 'support_driver_override'
-     119 |                 .support_driver_override = true,
-         |                  ^~~~~~~~~~~~~~~~~~~~~~~
->> drivers/vfio/platform/vfio_platform.c:119:44: error: initialization of 'const struct bus_type *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     119 |                 .support_driver_override = true,
-         |                                            ^~~~
-   drivers/vfio/platform/vfio_platform.c:119:44: note: (near initialization for 'vfio_platform_driver.driver.bus')
+>> drivers/vfio/pci/vfio_pci.c:264:9: error: field designator 'support_driver_override' does not refer to any field in type 'struct device_driver'
+     264 |                             .support_driver_override = true },
+         |                             ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
 
 
-vim +119 drivers/vfio/platform/vfio_platform.c
+vim +264 drivers/vfio/pci/vfio_pci.c
 
-   113	
-   114	static struct platform_driver vfio_platform_driver = {
-   115		.probe		= vfio_platform_probe,
-   116		.remove		= vfio_platform_remove,
-   117		.driver	= {
-   118			.name	= "vfio-platform",
- > 119			.support_driver_override = true,
-   120		},
-   121		.driver_managed_dma = true,
-   122	};
-   123	
+   255	
+   256	static struct pci_driver vfio_pci_driver = {
+   257		.name			= "vfio-pci",
+   258		.id_table		= vfio_pci_table,
+   259		.probe			= vfio_pci_probe,
+   260		.remove			= vfio_pci_remove,
+   261		.sriov_configure	= vfio_pci_sriov_configure,
+   262		.err_handler		= &vfio_pci_err_handlers,
+   263		.driver		= { .pm = pm_ptr(&vfio_pci_pm_ops),
+ > 264				    .support_driver_override = true },
+   265		.driver_managed_dma	= true,
+   266	};
+   267	
 
 -- 
 0-DAY CI Kernel Test Service
