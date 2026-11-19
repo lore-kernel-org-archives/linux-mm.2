@@ -1,98 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C85606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 02:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376D3606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 02:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XBBWtXQO
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PTOj49WR
 Received: by kanga.kvack.org (Postfix)
-	id 1C0AB6B05E4; Wed, 18 Nov 2026 21:40:41 -0500 (EST)
+	id 266546B05F9; Wed, 18 Nov 2026 21:45:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1721F6B05E5; Wed, 18 Nov 2026 21:40:41 -0500 (EST)
+	id 217876B0631; Wed, 18 Nov 2026 21:45:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 087526B0636; Wed, 18 Nov 2026 21:40:41 -0500 (EST)
+	id 1069F6B0633; Wed, 18 Nov 2026 21:45:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D171A6B05E4
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:40:40 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2E10C08E8
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:40:12 +0000 (UTC)
-X-FDA: 85450314264.19.459AA2C
-Received: from mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5F3B0C000A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:40:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XBBWtXQO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795056011;
-	b=t5Yx5CNmgL+j21VJVqtSk070mA7rv1VJhvhZ5x7PvtpecijKTCNlzhg0rHbaJjtNjclFMh
-	/7MH6KCE0T7uRUdL1lCSjk83c+hU2lFNxMmWtnDRs1Zko3O/tzqOAwl1vPSIYb6LKRqWet
-	tjOxI15k087SVi9hZGB6Ob+ELRXjyGU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795056011;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D6C0D6B05F9
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 21:45:43 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1FA8408EF
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:45:41 +0000 (UTC)
+X-FDA: 85450328082.03.A802B83
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9430720007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:45:39 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PTOj49WR;
+	spf=pass (imf31.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795056339;
+	b=m2g7M0vUeCSJVO2t1aQWB03p/077R0h0tED8m5PeCpadpByAdLQlAaYNpOPygm5LfEOnnC
+	F7SV7gGqTIK6iHH+b/VyhXKuMEWf8N7pqteHNUX71P4xp1EAxaynwZIIJ/55cb67uyPnzQ
+	qss40bRAL+76I7rYlvNWKHZz1l85v28=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PTOj49WR;
+	spf=pass (imf31.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795056339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4eldt1poESacQhlEKIXWEYqmbMHzZtx9KsZXa9CMQjc=;
-	b=3IKWQk40sXRVVZSJ/NIztfOiwWs02i43t/f+ItHj7RWnCGTLPgZJ0w2xgCdnbfWiLlkjfE
-	Jw+hliwtwbasZWp5VEy/csnU2mxQDx2wdgux/SHnt4Q0lfKWQNVjF67h+WF4xWKNSKt4Dg
-	5JgxM9sSwXaQF2mnClK8qmfkb/kY/Yg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XBBWtXQO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9pcJmRRsUuG+cdTHwFCyDqrJPxLVIT1eO5dRnb4HvdE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795056008; v=1; x=1795660808;
- b=XBBWtXQOQuSLuvwMtqVfj/iMVIf4tc9Tmd1Nrp9xy2tm31viK7vYLgo61MM1cszxcb1Xabmz
- v+7pNENlDdtYE5Ff5VSE1648FefXrY8sXzFXML+A65gh/dHfhW9PdGHS/BbBn7KjDFyNOfY/HKO
- u5MzYs64xnbYxy3a4XrFNiyU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f7668d8552ff7426;
-	Thu, 19 Nov 2026 02:40:07 +0000
-X-Mizu-Trace-ID: f7668d8552ff7426
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <85341270-6c22-4a93-bd07-26ee58b88929@linux.dev>
-Date: Thu, 19 Nov 2026 10:39:54 +0800
+	bh=nHE4K0vpamVM1it9uzuLpZzTtHZ4wN8e10RDqi3C1Ys=;
+	b=jDWbZ6UlmRRWFo9MSNgTZ5nNRlHDoOMGlgS55T3++Zhpm7t4u54QLKPQMlfwCSv0ol9S/7
+	X0bE9u2yikoXt1elRtKd/FSSXbb8OmPdKGbtBBXiJemqoGfEqjAz7XVwDdxMNESWV4rXm8
+	McjkazYmhC4IGGfUo6pdjohTLfbdBYw=
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-921159376efso18382656d6.2
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 18:45:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795056339; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oo0MHly7mpJV41skU+NC5KRApkjm+CEGFkHS1EuvnQVel5cmSHO+Ubd1t9oKWAZ2xk
+         bFXBoTyTP09Eu4Pw/P8uqMfb7jNsXN481iwvaxIE6lGkH/aNTro2kKDzzEwUNgAfWxSq
+         T7HFMYy1zJf6Z1MPHmc0XoEB+m2r1538lpuP4X7u/0HOcMG+gnYogkOon8rjh5VjeJZr
+         NSWECHqnCe/C3VOu/XQQeZviDRBIXifim2KCLoJEyN9BGOwjc3zsfltuA1fw62BtJKUk
+         cxOaITtb0Tu3tK3ZSRsTWsnF5AUxxQyk7WPeBZ0RgXKHWFsy48Tfv3gQ1j6V8AxtPgKc
+         GObA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:references:in-reply-to:from
+         :mime-version:dkim-signature;
+        bh=nHE4K0vpamVM1it9uzuLpZzTtHZ4wN8e10RDqi3C1Ys=;
+        fh=rtD2tRXdQQdtUehzi2ZvqM8R6u6m8qOtVzTaudNkImE=;
+        b=ZkkPm8hgWDGXhRQ6lOwhPlUGHVzQfn4sdtL8YSLNQiNAA0xC1RHM01X+Iou3E/aNBB
+         AtpK1tVo83DbYdscnsh9E8MuriWwyLfJn5hCVfKaVVeQCWoJLdVQ4g4jRtvxCYporuuk
+         bCHiSF1ABGb2BZFclpxvfy33fNfixK66KiC5k2O32L/zSL6rjHdkyV6piyJOXdxSMfyu
+         D6fg4hLnHCMGSjqJ7qwx7hg5XVPXoS4Sf4CQSz/2k8Ld8/HSAxTuFRrb0yR14vy8NCn8
+         NXRFfPjkNLZsgXYR+STUjEIMR1ad1omuirsTYGW+OyY5Gt1ZH2Um+gM4ZdmFgKF/PGKr
+         YQEQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795056339; x=1795661139; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nHE4K0vpamVM1it9uzuLpZzTtHZ4wN8e10RDqi3C1Ys=;
+        b=PTOj49WRAJrDms367RdG0kQ2TjHjIWOOA7va+R0sgt+YvVo6xmfO6kQKAgIuYOs9Vw
+         RX9CWxhEWCgqeS1lz7KTFai6rCyZzheIEPlE9glEtCR6wFdCsIkBM7k7LCTHNTDWbeuc
+         KTzVEIq8evPwonwD9gLJXq6zeuqEw3O4NB9VDIJ5bQn2eX/UWg+fmeL54p0QZWrvWEPN
+         aHmGRFvHGLQeev6zsUIRWeSUqIwUri1+7xg+6eNLKeXZPCJcfOq6DPRYMJlJI9XyVuYk
+         UzocL2o7zSgK73SABqjnBWrSH1Vimfl/kMHw/Cn5prBZgamp0ZvYUhAFR4DLT/F2o9lf
+         ta3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795056339; x=1795661139;
+        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
+         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nHE4K0vpamVM1it9uzuLpZzTtHZ4wN8e10RDqi3C1Ys=;
+        b=0AsztgNx7z3sQ9/ly6Fr2gQSHZpwSVtFntgCJ4z3I6njKvXWmZ+GEZm7ojSUnkq+Cc
+         t4XIBPo6GzPy43FPf/SG9K+lZob7YY1uLJM8etT5gNS8gBPZI0zTarqGemcmRMjeg3fn
+         WjMi5ckvFI5FZ0XKuLZ6R0BNt5gdhBifFPVAkpnlNNZVXcLP1Z3fYq4ro6wSXC5pINie
+         GDMpIkbNzLm1BCdxc0Sj5ABVMWOWxGghQHBlq9APQPGc26Xb3HlasueCvt/Xf+OgBF/4
+         ofEqqXFFy3pcrwyaHNySZUpfuL7V2Dt4HBrrun2U/K86wh3RsLgZSLz4EKkCTCg9VqnP
+         1xHA==
+X-Gm-Message-State: APuU4Z+6a6FZwtzbVy5aUYHLkRVWcjBP1ceE1TFVIKmcv26gHHCSPZEq
+	kD+NQC3DtXf1o2NjoRtxQt9eVYR1VLhNvzO9liiDCHTiNDVRhwB9DUgkv8FaOnZfv+ADCEkLp40
+	RAM5aNHIeS2onTycVujmxuYdHSTOUKlw=
+X-Gm-Gg: AZFdTZdoxfzvtcOb8bJqnGSF09p64Lk89Ae7YwIQczpBVhTGE0XMaz1hNT0hgWsowFB
+	Z4u9RbqC8e2jZ65P4mQUWEZlAsl+bEAqkNOoA8IV9Hx915n8XbhjmePd1qEBrPgncXp35f28N/k
+	wsK6CvGNYiDUlYQ347T9fPWt10aMrjZQ27/VDztQVTqJssjnuqO9Klzmq6FRFu7Wyxs+JRCBf3Y
+	j4/IjlqYpEydNW2y3awtlxS6QsEOl8m35AEX/C1vck8QYfMsfO8fj909fuZ8hR/IBrH3LLIrF9Z
+	4vaqrpnoKDoBkzzL4EQ/yPrhkHx4e5lMLk0Q68rqMl+nKVbszc679hM0XoeQbXBbbVVjZ6Q6lNT
+	cSul4Y1wdrC+NHAThCz6NugPrpXY6SLZYaHsC
+X-Received: by 2002:a05:6214:4509:b0:91e:93bd:17d4 with SMTP id
+ 6a1803df08f44-92114f234d9mr68688036d6.31.1795056338595; Wed, 18 Nov 2026
+ 18:45:38 -0800 (PST)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Wed, 18 Nov 2026 18:45:38 -0800
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Wed, 18 Nov 2026 18:44:56 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: hongfu.li@linux.dev, Hugh Dickins <hughd@google.com>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH 1/2] mm/memfd: drop redundant hugetlb allocation mask
- narrowing
-To: Muchun Song <muchun.song@linux.dev>
-References: <20261117-for-memfd-v1-0-fa68f433171e@kylinos.cn>
- <20261117-for-memfd-v1-1-fa68f433171e@kylinos.cn>
- <87A66860-C0E1-42CF-AFF7-671D19B82E16@linux.dev>
-From: Hongfu Li <hongfu.li@linux.dev>
-In-Reply-To: <87A66860-C0E1-42CF-AFF7-671D19B82E16@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: n1jdxdcd4mpbe4diknfm9katn4dnousj
-X-Rspam-User:
-X-Rspamd-Queue-Id: 5F3B0C000A
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795056010-538126
-X-HE-Meta: U2FsdGVkX18SZmsecuS4jKyb1RS8ci+X2a3JU8vRQZyLWcO8haQhedIEuczlB+/NQ8UeIuooV45SUeJ1kXtd2ivpXazTVKlH31olgPVpKms4iDNMlnHZGz1SG6JiCVEQHmVTny2k61oHLMYC8cdh8uWjWZdYv+f6BMpKE7rhQuOk+5SBpGDvS8i7AzWBQZZagl+xaehCs1kNpDKPV3Z4AmUUMakB+xQqRqH11NoDWwuWmyt6NqTm0qGkXaL9IIE6Mf1VC/XJiPDGYP9T7FatPSaeFLUtg0Ug31y27kcztyA8YZhwNHBKnDy3pa7d3T1a29x/1VgSrV9jnPrUfyWzJ/TJ8lrpQ9oWIfakJqEnZRc+9y6sAmRWYJkxuDbNMDdxB2z9ycikq/i7eYMac5CGsJ4AheNWIyEo4V9ieWzCm6TZ6AWmpIybQx5OMVpGd5tBU8McBDELD4VrbQPtIoiDhHCkaYPC65BwKsu07INHJEbNci6JrlOt9tsUYL/haiWmrRQANzEsratqQ4cW6o3ZpgJcjzpJbCVSft4QHxokMPGgRb8z4WfNAbbd1jnpXs/qiXw7ehnyNjyMYzz9Pc1HVZla0h58T3J60gtera6BNIT/Zc12icHQ7vJ0PMQJPYvgkgrgX3MzFqu7pZ0zI+Xi2WJbDc2PDUQDZaq0X5g9FRYmt45/9bhjLJBYJiITH5ac01fNAgf5cW5CwCRJld/EK7q35Qjox5nqIslZ/fWDiOpa39NF6CVbAlO7HkTVrkTa3FSp21YaS8e6uTmcrilLSLjoucSkGuMgrhWXLcX31PDS+tyXH/Hl8zescHU3PVJXT9IpAGvTBCdWVE5PKWjH6I2heXIW4ti9t3SFdewVRfRnTLDO8lnS7Li/8Gy+SuCSRchfH5Qzp9xFCgQ+6fqoQ5+xnkfldrNsjhZVj5VfLtjttSrolsqeBfmyKYX1Vc5OFuLY4opThxKr9irJvCB
- bz3lattl
- v9XVLrxBR4bMU2mYrGhu5HghsvhbYSUiX0BLOgUN6IFmfoy/CLpFsBOvInz8RC8ho6Z2cSedVYojEWVVFDVf/tPkJdaML5jHdmVpHkUzuudRpLHCij4o6rYEEPGNx7JjiXwwAE0ETInAX9XGEz0TzS8O2rgioJ/ud9al3HZ7Yilorr5z/Cux+6x/sf26EqBviCGCyVfmAOOZ3DwnjWbmkGRCxVqGx6AvuEVG/TdZXMg8SVH6ktH3PNs12rUcfOST2+Y2rGkIgNBW6ezrTCjOxFSUDwstl2pkouLqhYtQDPA7k8yoUYguMtvVnh3xD6QYclMdZcbtupUqFkHDBTEQ8cxm6Vz8DamfrM7zSfiI/EVd9CDv+XnqerBoE2M9RlUG1S5r3Mp0xGtFA+PqOb5sb97QzUKFRyKvXbh1KBYCiC23LnVywyDiJwXVjC6LIhnJ8Dgm/IzE8KN5+51TZbBeuz0wZVjn+qWP/3SXtpS8qDxUsxILZUqi7C04QgJh9JzuOrCDpoVCtE8Z9jJ3Lj5Kl4Fx1zzP50n0BQG4E
+Received: from 77377267392	named unknown	by gmailapi.google.com	with HTTPREST;
+ Wed, 18 Nov 2026 18:43:28 -0800
+Received: from 77377267392	named unknown	by gmailapi.google.com	with HTTPREST;
+ Wed, 18 Nov 2026 18:42:52 -0800
+From: lianux.mm@gmail.com
+In-Reply-To: <20261119-mglru-fg-v5-1-9eee2fe97a2d@tencent.com>
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-1-9eee2fe97a2d@tencent.com>
+Date: Wed, 18 Nov 2026 18:45:38 -0800
+X-Gm-Features: Aa3M54oczcrQgnIKIdlWRyAqAv-8pL4r_8Eu0gOG26vA4iWYOD9SKwZ3124B0Ic
+Message-ID: <CAD1ZK4Zo_qQf5aJkVLtoc-LXM9XbyZd2Vy6rFvK_fih-6FE_EA@mail.gmail.com>
+Subject: Re: [PATCH v5 01/17] mm/mglru: rename the generation offset in lru_gen_folio_seq()
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	muchun.song@linux.dev, qi.zheng@linux.dev, ying.huang@linux.alibaba.com, 
+	chrisl@kernel.org, baoquan.he@linux.dev, nico.pache@linux.dev, 
+	usama.arif@linux.dev, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, vbabka@kernel.org, surenb@google.com, nphamcs@gmail.com, 
+	youngjun.park@lge.com, ziy@nvidia.com, gourry@gourry.net, willy@infradead.org, 
+	baolin.wang@linux.alibaba.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, hughd@google.com, sj@kernel.org, rientjes@google.com, 
+	yuzhao@google.com, vernon2gm@gmail.com, wangzicheng@honor.com, 
+	chenridong@xiaomi.com, tz2294@columbia.edu, ryncsn@gmail.com, 
+	liuxiang.277@bytedance.com, ehab.ababneh@intel.com, 
+	zhaozhengzhuo@uniontech.com, joannelkoong@gmail.com, kunwu.chan@gmail.com, 
+	hui.zhu@linux.dev, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 9430720007
+X-Stat-Signature: zmhe3ssrhagu6zqengucrip3c8f9q33r
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795056339-309625
+X-HE-Meta: U2FsdGVkX18cAcwdM8Cl048l6osG+VyGjOi13WnMSC5JgmmgfQCmanr3gEb+Kl/HwLFh4iwNQ1qSFt0dXA7YD79kV1C3gxeDwLDv5p1DQeS0ojYoqxRuLVF/41LBEV8RE3vsLmI3bz/YFAbm2RNfC15PCaZWiFCOJ6ZWJ5g3ZcY4lsTy0UN4eqi1kdrMHBZKtitHBh271eLo2IcjWuccHkZgQVdddq44YjAyuwfNtJ+MB7FQjfESMezeJx1x4fMZT8oJz7+DUrTAkphn9wivUSaFzUVClYHQOfzLC6gvtY3qw1oFLcecf+t7NFSnxNOpc3wT1qq0Wk+CQ7znWUqeexQECrRMH2R7FUWVtECQMRcCj2ZIaiA9kPFmArOMFJMmiLhzaRNANt59tPwUsBMMucvHhDT9N228nbwGLVh/r8V8ghid56K5V2gSn8PdjO5IBPQpxSfgwm1Wm0WIYRnuCEqkl7a8vM7SfVsUOLJWaLyP3g+3yFXCD69H4MBMUaxcXws92vXWaqK0GMVMTNGgfE8VbKEb+syaJIZXaetYPIcuf5vjsFFqp0sB+uzJRUTVUJ0Bl5SJ5Jjvz05LZIywmXOnvd36Lm4MfFti6S7Qv4qcNxgDnRpdMX+JNOZfPEJEcc3JV9m8oj+G9M1XJAfYet4LXvcXKBuar8xqbqDthzl8axaIg39ViTUWzX7ohFLydfWOA7Yl0UAyAAYngysDEkpJjzwhmWFJvsARY+Cf0e5v8lsLeKjb+DvuqYug9mIwmwgLdkpaz68Qdc4bbTTH/hQ+MrqmX0FlkGwFGd7v4Awgd4mRfzziWEQwQqz6P3IReYODXtjPmqns5g8If6M5p9SjjQEuIRR1GaWzcexxokDFOB6c76NNZKUsIgx+X4LdbZWZnKwFETcAaGOWUkE2UUipar6H2GzLOEDz85uyadNum++80fEXoqvsevVRSnSKbjLlH65Pxw+BFeOA7yd
+ HI9YZMWU
+ yzDN/P5R02jDgy24vRDXRG91T9RBqzIoiocyRxDxZ9oka0OhPvScbdX3wSqnbW7eGG+VCMI5xTRwyj84Va9DQ1bZohyn/C1g4QxXgD30CZLa9jfL/kQn26+d11bCa/qEnunqRciQOQHD8exwVVi4Bqc5C2hoQrUMiuxvPVlEjlbfMERuGennF68neGScVoauK/ZIjwDuNt5VYIM5+3Q8mYbG143Op/v8DWe1y/x1Ks9YfkoUMb8/zIu7nCw4TGB1lj/3T+NFyuBhU15xhy9geV356N/u5szja/f2v59T611ItCTX58U5ochzCBe0mOgz/g/h4KbG/AuFj9G6rXDLCsJPNz8EuvIQsufNIWWGfmdfTnTaJ1vWvB34299R+mgrchD0maX4Rcw5sZD4CUlxttY+1m870wlr3mn7ObW4qxtgbnvZvr/o0FNCIdIGwxrZkALHjOa37edQbsiB0Q929zb/vGP2eMKawGyQF06X7CZJGFesG6x8Pxh6yYYDnxdIKvOwHeVDf4mlEhW3Y8bOGHJAdlPYeWOHACzbGdsZLP2IH1FzGxM0oZB1RU5kyJTUVhNmc6HwiYm5QW6b5PUawuIzwJbLUSFeUB51nrojw3Bd/TyCH4j8A4sWm6HpGF6tjzRIrFHy4pYWSQBM33wrOLKdEGTkiEafhOnVE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,100 +161,5 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-在 11/18/26 19:47, Muchun Song 写道:
->
->> On Nov 17, 2026, at 18:53, Hongfu Li <hongfu.li@linux.dev> wrote:
->>
->> From: Hongfu Li <lihongfu@kylinos.cn>
->>
->> memfd_alloc_folio() derives its allocation mask from htlb_alloc_mask()
->> and then clears __GFP_HIGHMEM and __GFP_MOVABLE. This mask handling was
->> introduced by commit 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios()
->> for pinning memfd folios"), when the fallback path in
->> alloc_hugetlb_folio_nodemask() could still call
->> alloc_migrate_hugetlb_folio() and reach the buddy allocator, so the mask
->> decided the zone and migratetype of freshly allocated pages.
->>
->> Since commit 26a8ea80929c ("mm/hugetlb: fix memfd_pin_folios
->> resv_huge_pages leak"), this call site uses alloc_hugetlb_folio_reserve(),
->> which only dequeues folios from the existing hugetlb pool and never falls
->> back to the buddy allocator. The mask therefore no longer decides where
->> any page comes from.
->>
->> Long-term pinning safety no longer depends on the mask either:
->> memfd_pin_folios() obtains its folios (dequeued from the pool, or freshly
->> allocated) under memalloc_pin_save(), so PF_MEMALLOC_PIN makes
->> dequeue_hugetlb_folio_node_exact() skip any folio that fails
->> folio_is_longterm_pinnable(), and current_gfp_context() already clears
->> __GFP_MOVABLE from any page allocator request made under PF_MEMALLOC_PIN.
->>
->> Drop the narrowing, which has had no effect since 26a8ea80929c.
->>
->> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
->> ---
->> mm/memfd.c | 1 -
->> 1 file changed, 1 deletion(-)
->>
->> diff --git a/mm/memfd.c b/mm/memfd.c
->> index 0e3ff3eebfa8..8905e3e9efc8 100644
->> --- a/mm/memfd.c
->> +++ b/mm/memfd.c
->> @@ -85,7 +85,6 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
->> 	u32 hash;
->>
->> 	gfp_mask = htlb_alloc_mask(h);
->> -	gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
-> You didn't mention why __GFP_HIGHMEM can be removed safely. I have to
-> investigate the reason myself.
->
-> During review, __GFP_HIGHMEM was cleared because "these pages might need
-> to be accessible by some DMA driver, so you have HIGHMEM constraints.",
-> refer to https://lore.kernel.org/all/ZmvNLSUgUgFETR0M@localhost.localdomain/
->
-> I think that restriction is unnecessary now: DMA and existing memfd_pin_folios()
-> users operate on pages or scatterlists and support highmem, while the
-> shmem path already permits highmem folios. The hugetlb path therefore
-> does not need a separate lowmem constraint.
-
-Hi Muchun,
-
-Thanks a lot for the review, and for tracking down the __GFP_HIGHMEM
-history yourself; the explanation is very clear and much appreciated.
-
-I was not fully sure about that part, which is why the commit message did
-not describe it much. I'll add the following to the commit message in v2:
-
-Clearing __GFP_HIGHMEM was a lowmem constraint for these folios, which
-were meant to be accessed by a DMA driver. It is not required any more:
-the users of memfd_pin_folios() work on pages and scatterlists, which
-support highmem, as does the shmem path with its default
-GFP_HIGHUSER_MOVABLE mask.
-
-> Because you have removed the constrains, why you didn't remove the comment
-> along the way?
->
-> 	/*
-> 	 * The folio would most likely be accessed by a DMA driver,
-> 	 * therefore, we have zone memory constraints where we can
-> 	 * alloc from. Also, the folio will be pinned for an indefinite
-> 	 * amount of time, so it is not expected to be migrated away.
-> 	 */
-
-You are right, that comment describes the zone constraints that patch 1
-removes, so it is stale once the constraints are gone. I removed it in
-patch 2, together with the mask computation. Will do that in v2: move the
-removal into patch 1 and drop patch 2.
-
->> 	idx >>= huge_page_order(h);
->>
->> /*
->>
->> -- 
->> 2.54.0
->>
--- 
-Best regards,
-Hongfu
-
+Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 
