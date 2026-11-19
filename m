@@ -1,96 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077D3606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 12:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05361606A326
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 12:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IwTqf+a1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SCQp41wV
 Received: by kanga.kvack.org (Postfix)
-	id 19AE16B05C7; Thu, 19 Nov 2026 07:02:40 -0500 (EST)
+	id DA8A26B0626; Thu, 19 Nov 2026 07:02:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 173666B060B; Thu, 19 Nov 2026 07:02:40 -0500 (EST)
+	id D59AA6B0627; Thu, 19 Nov 2026 07:02:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 061826B0626; Thu, 19 Nov 2026 07:02:39 -0500 (EST)
+	id C484F6B0628; Thu, 19 Nov 2026 07:02:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D32B66B0623
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:02:39 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 710DAA88D0
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:02:39 +0000 (UTC)
-X-FDA: 85451731638.08.75A67E3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 12167A000C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:02:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IwTqf+a1;
-	spf=pass (imf15.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 936C26B0626
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:02:45 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20611120A79
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:02:45 +0000 (UTC)
+X-FDA: 85451731890.19.45A65A3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id ABFE8180013
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:02:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SCQp41wV;
+	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795089757;
-	b=T16jjXhOwOL6CLeBZBwCUa4Kx4TCd4t9xNDXpqFzQNiMDL3NRpvWrG4U0VfFS2FJ+npO7y
-	w0DVyLPWuO56VtZXNYArcosTNUZ3Cu2JaYZLGgjRVvwG+e6pAZRv2FeXmiSxLyVe8WMwSL
-	04F6bx0awdZhew+JSgQpJOekgpe03JU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795089757;
+	s=arc-20220608; t=1795089762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8HieDkcA9JIiulz3WEd2PXLQt0iI0kOA0dL+f71dJzo=;
-	b=kdOg8TMQ2eTusATXU3uw+ofJck1nXU2iybAJRm/7jGfDTPMjKe5ufq7axmZh/hSXRLrzsH
-	/ZDPOt0rkWwwt/AYTDTt2sXsts31V8XWA8UhEi9iK6bDL0ItJ+luDsp6R0KFP6PEp716U0
-	S6jyaeRBpSjI3w+RWmrx04fCbtlcoq0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AJpa1vQKPwsA3exeR0zFQL8OS++YNOFFgxas0w1fwx0=;
+	b=mMGNnTtdkUiD9CqepQ441315eIlasajQMahJVDwhKrRUVJ5/pK/As8TkJMmaxn/7leHc00
+	051yBxMvWOwb0jc8KQ2QwQXrEhJZ8LuvhAkDScA+iljfLnq4g+a6TA71IcT07zXjLmcebl
+	5Ja/uzVn2pi0zBTObVpmz5MyZdU6gxM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IwTqf+a1;
-	spf=pass (imf15.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SCQp41wV;
+	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795089762;
+	b=Fk1yZBWXBiXcI3OXgSABLe7Y/Pse8UWHI0/ndK6oVFfd027wB/Z7eAA55M0AX8jZdhBelo
+	9n47505Zd93lgPzHmlcyd4D/04fI/aQcwTN2Wnl2m3eMT52sX2ZU9GJqiScJXWA5RzFxXI
+	brjm29Lr9xHPolVT9i4mndCID+7cEoQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795089756;
+	s=mimecast20190719; t=1795089762;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=8HieDkcA9JIiulz3WEd2PXLQt0iI0kOA0dL+f71dJzo=;
-	b=IwTqf+a1CPoAY49dSGVLucb4wOQSHRPdgkbZdvB6XF0SyR+Uh5TiV+UqepGSC5+LmC+2Ov
-	dZLEdcPALeCrOpK6MKgPnU3sb8/vmrUoKl6W/ACu56zujwj442BGLu5UTVZ+GV7mnlkzii
-	7NYkKM1fSuNM3vFutIuhYdKwRt23M+Q=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AJpa1vQKPwsA3exeR0zFQL8OS++YNOFFgxas0w1fwx0=;
+	b=SCQp41wVTh+Um3yMA8Uy8WUrzAHtoXHPfbiEK0c+blOuNsiF83AaVmYMapInVfeYHEKUsv
+	VzsuyiCpjLCN/rPPRUWqnAwMTSRDpF5y0MNxckOZZ/RUJicnwkahLYXuDu/ORgPmboWgaE
+	GVZzRhkCrAgfJJTr0RTsPvmHRF7rhIk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-491-22geQRpuNuuuzAmIXVhF8A-1; Thu, 19 Nov 2026 07:02:34 -0500
-X-MC-Unique: 22geQRpuNuuuzAmIXVhF8A-1
-X-Mimecast-MFC-AGG-ID: 22geQRpuNuuuzAmIXVhF8A_1795089753
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4bb68a5e792so5979545e9.0
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:02:33 -0800 (PST)
+ us-mta-212--UdaCcn3OWuBCUI4qya6Ag-1; Thu, 19 Nov 2026 07:02:38 -0500
+X-MC-Unique: -UdaCcn3OWuBCUI4qya6Ag-1
+X-Mimecast-MFC-AGG-ID: -UdaCcn3OWuBCUI4qya6Ag_1795089757
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-49034831bb3so1459463f8f.1
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:02:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795089753; x=1795694553;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8HieDkcA9JIiulz3WEd2PXLQt0iI0kOA0dL+f71dJzo=;
-        b=Rvcg8deyG516OOCr//C4tAgmbYOTA0yQDsz2uvBuEBe/uBoKP7SPDl1BDF+YqcergZ
-         Rusb/E2rF70UYo9WsIs4axi6DYqAxsxljOKuhxev5PG7iUhN2Xj9ZFK5JFPrjUNANRV8
-         d28BBZ7lr5LSJWN/2OvRoHwDNtbhm33e1a7zTXXx0GzXpfHY9T3AI2RM4qsSYcLnxtrx
-         LkLH9xMXZ966JGIaZpRw6jx4GkOwkDOYK56oRHloPQ+2evDVZ3TDwK6mumV2gOpW68Uf
-         OcoAjxiu8CxaqZ0Ie5LMVrYq7gxkpPhzQF4HEa67wwQN0WZIy1Kqb8YrfTuF+5mbmu5K
-         +glA==
-X-Forwarded-Encrypted: i=1; AL+hErHMa3txTuSYfN4R9EWHe1fZ/GwDMv98yCSNgZjVnZcWBkI+8/zga9KYVeVrdA7yyJi4Or0Zx7jfAw==@kvack.org
-X-Gm-Message-State: APuU4Z8Gmr8xVvwbMq0HH+67x4tNk5s3czck49gxUIlaL0CVUddksrWu
-	HOgUTDAvn4qMobengC6EVpTKmSoOwoxFC2zTtzzNYW4eLsFb6fmYb90YzpcVOkE7HMZB+EmL54F
-	tqr/3BTDpmIhW6PqEQlM0I+/kM0/9TD9jWAQEv4qkCD6KZqcRCTJT
-X-Gm-Gg: AYBFou1WxFB8D1z+zk6AzJuOUnXk4MFh8rLLysawLSQmB206vtM0hBf1qRZrHChCEFF
-	QRy0zhaIuapKbJ6bltOUwicBAnvK13iaMWrTFJM+UBalYWvER0+TpJcbKBSEXkOuTW/RzcBHEFy
-	+ysYnzhkgOtKWPZmgD5LA7QEBAyNWMZ7o9PDZlBXLgSWNQYoiSsPYQVfnaNTTA3uUAERy5Fz5hK
-	G2OqlpuO+GtRJRrg7e/HRH1U4mN2OIfmy9z25kyqw3Xzw+mcaO6EhTrxDxwp/HVDc001Uui2Xxg
-	YWRa93cJ+v0xthOWQwr+8rGPMDUV5V+31raTvLUtpCNP8CHwzDT6RfWPOpg7JvQZePk4bBDr57U
-	11uchsv73/jTyW83DAjGXqjMH2wHSLUhLNuq+uuXrvf8=
-X-Received: by 2002:a05:600c:37c4:b0:4a1:88df:8a2a with SMTP id 5b1f17b1804b1-4bb8611ac9bmr19486985e9.13.1795089752541;
-        Thu, 19 Nov 2026 04:02:32 -0800 (PST)
-X-Received: by 2002:a05:600c:37c4:b0:4a1:88df:8a2a with SMTP id 5b1f17b1804b1-4bb8611ac9bmr19486165e9.13.1795089751833;
-        Thu, 19 Nov 2026 04:02:31 -0800 (PST)
+        d=1e100.net; s=20260707; t=1795089757; x=1795694557;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AJpa1vQKPwsA3exeR0zFQL8OS++YNOFFgxas0w1fwx0=;
+        b=dYKUQb7Ne/530tb0hijCWM/2eK1RRYnhpktHLVkm4Gtk0lOuOM24UHyXp/8XGKnYm0
+         QHfMoIsJ0GAhvPiEpzmuWgt4OQpQJ2JcQM2qcaApCGnIScRZmw9r6OynfcZkwIidNtxU
+         uUYaO5EYVzLhsjI2jgxI9MKdtIbzhHhNeYnPSRTKqyfJkARW9j+hd+KKLJzplziiNza4
+         7JpZw4gV9or7D5xrRoTtYI/DSSDflSLXkx1XOJcXkwuUCp63gmhQ02jLQcFlgsAVw/3+
+         VcDe89cfvTQnzrwjGfBcmylIVJ7Z5nPt4EYzktR6H7ZyDj2sMJuAfRp5Fji49y8wOwhk
+         ZQWA==
+X-Forwarded-Encrypted: i=1; AL+hErEzepFeLLx4h4TpAZ4uTHAkw2vdHBqldaqmjnTFc/+n54vN1VC3HbRZxY9epa86VqgkWF+Ew0IOAw==@kvack.org
+X-Gm-Message-State: APuU4Z86K7V3AwI/H9VJOFePUSBOzlgahVAbv5pTCzFF96Rgp/9GXTw/
+	0b7Yv70fHffUuQOHEHBzp+UNEdYMCq1UPpEz4Xbx9SwdldXdmyEvouKFPRtmCJQMt90AZbIlC5C
+	mOzQC/8wQ1FLXsPNsBIxUxwMlfJW5ILPOJhwnWdkHrF0dK0Op5hJx
+X-Gm-Gg: AZFdTZdHc0XuOX47lWvedQvVgNkFR+zsCyEDXAUgBJPAsuq+TWBVo8vxAJp8mcIsKyo
+	pXh4cDmuKrMrezkY8bsQJtnw6oMTWQKM5XBZ1DCMipKRznVKHsUnc0sUJDctcYKDVKrMiqf3RwV
+	CpUOXsK5iTVhTF60O0iT1/PZ1Y/CZ/zvi/PSBVpOz6yQbXTIUSGmmBrJDa83YPT+EfS9nUagKAK
+	imqm+Ru4ZPucubxuVLtqcLMj5RmFUfgQrSi2NDMvYvcQYXrBrb2CgTd8mYWslb0T/yHdZoRuBQq
+	lZFooY9FY8dgYrbxu/+HtqZcreUNIna2W041/yjHnRx+h8pGo2qzLryH3hxKXgldS2fn2rli4Dm
+	6wekLKKeRoSn1DpnoqGc7uP8yVfgtjcC8H2Lqz1ehR+Y=
+X-Received: by 2002:a05:6000:2602:b0:48d:f470:6b3e with SMTP id ffacd0b85a97d-4a63ae56784mr10952379f8f.13.1795089756708;
+        Thu, 19 Nov 2026 04:02:36 -0800 (PST)
+X-Received: by 2002:a05:6000:2602:b0:48d:f470:6b3e with SMTP id ffacd0b85a97d-4a63ae56784mr10952307f8f.13.1795089755989;
+        Thu, 19 Nov 2026 04:02:35 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc0:1520:4400:d78d:7b2d:2f5d:e08f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853a9846sm37547505e9.11.2026.11.19.04.02.28
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a650d2f682sm9896560f8f.6.2026.11.19.04.02.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 04:02:31 -0800 (PST)
-Date: Thu, 19 Nov 2026 07:02:28 -0500
+        Thu, 19 Nov 2026 04:02:35 -0800 (PST)
+Date: Thu, 19 Nov 2026 07:02:32 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -109,31 +112,36 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Magnus Lindholm <linmag7@gmail.com>,
 	Matthew Wilcox <willy@infradead.org>,
 	Miaohe Lin <linmiaohe@huawei.com>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, virtualization@lists.linux.dev
-Subject: [PATCH v11 0/7] mm/virtio: skip redundant zeroing of host-zeroed
- reported pages
-Message-ID: <cover.1795089715.git.mst@redhat.com>
+	linux-mm@kvack.org, virtualization@lists.linux.dev,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>
+Subject: [PATCH v11 1/7] mm: add PG_zeroed page flag and buddy merge tracking
+Message-ID: <a98c8a49744d30a5e603228d9cb17509261add90.1795089715.git.mst@redhat.com>
+References: <cover.1795089715.git.mst@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <cover.1795089715.git.mst@redhat.com>
 X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: B_tShRW9Hc1eDfhql5BkWJRXsOBwM2Ru2w-DEezE2u4_1795089753
+X-Mimecast-MFC-PROC-ID: 5zc_yigUmrD_WXOzDIcJXI_1TfwLbr7ykQB9XcFB8MU_1795089757
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 12167A000C
-X-Rspam-User:
-X-Stat-Signature: yyys8to5dcygrpehasdbjearyhm59myc
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: ubwytro561z7spbnrsefpiaifptdp4m9
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795089756-796058
-X-HE-Meta: U2FsdGVkX18K4+1a7Zjf9u8tHbU9EB87l1j1t3n4tV4n8/MGZhgBA9a6vhHuYtD+XweOwbXzCwMu2yDZ6gb7NYxMezTr6BXkjKDI/jbymv13bIcJrfKanTMWRF/7Ex1OfnmUyVb7JQyPDv1c1JA8VfT9pt3d5yqDSt2mMbZMkzMX/NkrNhbvYUyqAdnH0zMCfUwFQgubbBXiCWG7qn21QMtxgsZcopkGcsCjujP4gOnddKu54axMoOmWuyZaCEF+YSIc6ANH1imbr7+eQNEP2ZNnDlI8HUp0Z72qMq74WjsL2xw0h4/bp2aqZU0YrnkUu22QgPf4PFlN42R7IYN+VG+fnzDHfpGhJbDppfOBVA34yWnH6piYdsJsKRJNNcQ8oE2bNNJY7wuDCs6jernH0bS+Uz2HfFJ+UmSawLPNHWtnxUN9miVXq/n035q9ISsF0qHHsU3JTlTE8Bcmh/b3rhSbdMMNfC/cSneLabu5DUwvmw4IaWT8sZHpL6yb/UnmtVkUP9PvsDFmJXFJbWk1IYdomfcLg6zggMXoTxWwn2UCtFanWlngN6QwdNoJXD3iqAPgTPFA692qsxARi0sjEpvv199o2M/2941uETQobexNNvo7n+msB4NGeLwH4j3sB7RuytVUgF8yGPHt3RrlG0UIsn3smwCtKGUZffCxxrJLm74aFqHgHIXz9ERZ+MYi+ZlqG9V9n3ELfOL/sAQqGhPPn7B5DDsPr3qfq8LHTk7NTaTYpD/oURUR6yTdsIIu34jIbnrFSQnffAK/vBSBmAJO/qLs2F2nvHC8XdmWZDL6gkRIbL2fzNejhGORHjPloQMUULdt/O/3cf3b5ZVBx21QWmyRvu9TvgXbIM08HGAbJL2CJHf3Q3aUWVwLdF3QfjMSIMw12yblVldAG3r8fEAjRBrVOlOveF1BlcMCa7fERk8jlvInhDeyoaS/MvxckJVm+9FCXWsWauGoQEY
- KMmqNT6j
- JPDbowcHpKOlHpEQtqQLItFSTLhA6Q+w5aYsNjmklNWGOQ8SmT012HqAMMjmHPihukC4w5SwnOsqDt7kY5N4iwNN2I+RBRNayQNp04ILGV0/skCd8MkKnLMy8NwfP/M90KZDf37HIhmTVX+tQ9GW/70frBEbGQ4uzDinJzwnH5nHNfRy34pgx4Xq9TQnwPx1V2i2WWHSXkKmbRPOcSLi61XqHJ5898biJBixucXxFT+qkiR9ONgVQR5b6cGrVtqnrWkGflUI9y6brQMktG4uzQft2g+Z4CKzHQNj2y+MuJejWmW8JCZOR1rBlGRJ8TF9gKPazkSXTNzH9DFzg3oDco8Ea/2JFN2CLEwBlZkmDhHIyd5tdq/FiX5mVl/K4XvULFJ7hXQfJmcrSmF+Wzu8OxtOrip+kJWG7pqC6+NZbE5+Ru0YznaxiH6r+CWX8tj26KgI4ubiCU0ggENsCva1YH894jBJ2EmXU/k0hUaxCgYHutnRFJpnKeUFakI1zAzHibXvnK+SV6XCTMSU8LjxQYNSUd4U8EDUnT19v+Lkvk2yVMUlEPzkNFSpk4fFnZqGt7gNSgMZ39Af3A8w=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: ABFE8180013
+X-HE-Tag: 1795089762-493624
+X-HE-Meta: U2FsdGVkX1+c8KoSn/YuqL3Y9KBBOOasDFeF/9mQUsEUnmXLqXofr13VFAL0h3WJmBjYLKIeyxtr0Mu/0Rtuffe+aVPyGzUk218iUYVTRcb4KlpsBx935uKY/RfpNaN/LOeb5nuVy2O6XlpfpAAOmSH4VC3syOQWcBdoSDpus9AsnK6Q86x8/VSWQphQdVunJL/0EPvLDkGnyyDWcaRpca+J+FwWT4Ff+LXXBIq5pyVZhwow/IuXzvZR177h26fYqynnKADutzXnMgLQV7PTMnmnK7HtcCYYoamKbWUh1qGgSAj21WJTo8InGRIqMlbJuXqlFrG+74G66BIPP6hxKhyAZTF/dwWof8LH5imj6ux8EdySkuCzeFDNReEQilMKHKGh2OkizM42ZKhzS7TuwP9h2pxOmbewKniBf9TC2M0+zpvmibsrkpl27c29Ve/JytQjQomLXKLsTRUAQSdfb0G0AqMdRCUVQUrGB/TvRLTRITZq/AwuRvFoNxFsGu+l+PVDAjtKKKjybq8QFI2KMt4qMDGFVTDYVuDPME8uTgLFCmQeR5l8+4aYM2858R6Gfz7uLubt74CoK994q/n5e3D/W4T+T5PAsox1GBJ/7AvUX+RXpimZuBOC0kdVGCn1MpDKkSA6zXT8oJG8+IgUUWqoh5FSocpHwZ8xtRkloQfFTuZnguOuvtTUWPcGH0e8wXD+NJhkzj0VHA1ma/GFF/dWxZpsn5nKq8Zriu6afbublv6+7LXDsutOXgjZMGxEKyXpuR2ZTNM8pBHsfG2QNT98YOkEDPPwGiWpcyH9bWOzMf0yRD9xxGTdx9lqGsO58XS5CAEzzQSiq3MPMApwLzJZQliSPkqvPahAuzHfaQ7sW+yTkhOl5tcCbhXrflr20vWq5w3Xls4Nd91htssJwlx4QxUlVzmnFhKPQWl3e8FqENurLHLXrih26oHK+vhbtkL5xBi0SblWJkqhuIM
+ /w3G7SNZ
+ Q3qdA0uppc82Wss9tR+MplFq8e6WdS4/jmi5ysruU77Mm8WN5ZnmWSe+6Lv5dFySfEDb+zOVoY4zSOxKX7JP33aDxIq3bfxYxW3QWwZWsjR7+RGMG3pl3ZzlYkHNhJTVIzC0xWV/v/NkNoyFJfb26G0TgeJD3JscOolDEmSb5BCHjt8tETCdYbxTAI/V41xSlFym6xizPHNw8fiEVkY98xCVV6dGsUb8acPwCVyVJrH94kqheDsXkHTvyfF8hoxNzyfyyfVuYH33B8j7mtYrQYhWEuFK+TjjySuXU7nR3Y89ZPEY6VGcrQowxXTrIHBhiTDCRKTGcN0EVO/H1ho4+caqZ/F13bdJJ/SNOh9eNwyz6wkzOdcSO9N7ebGT5d0oD2DDv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,69 +150,263 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Many hosts immediately discard each free page guest reports.
-This means that re-zeroing them in the guest after allocation
-is redundant.
+Add PG_zeroed (aliased to PG_private_2) to track pages whose contents
+are known to be zero.  Propagate it through buddy merges and splits.
+Upon folio allocation, PG_zeroed is cleared and its value is transferred
+to BIT(2) in lru.next.
 
-This series lets a page reporting device advertise that its completed
-reports guarantee zero contents. It tracks that state through the buddy
-allocator and uses it to skip clearing freshly allocated user folios.
+This bit, in turn, is tested by the new folio_init_user(). If clear, the
+helper zero-initializes the folio. If set, it skips clearing the
+contents.
 
-The series is based on Linux 7.4-rc3, commit 666539eecdf4d.
+Clear the aliased flag on free so filesystem state cannot be mistaken
+for zeroed contents.
 
-This is the first part of the project. Further hugepage support, along with
-the init_on_free and FPI_ZEROED additions suggested by Matthew Wilcox,
-is left for follow-up work if this series is merged.
-
-Patches 1-2 add PG_zeroed tracking and the page reporting device's zeroing
-guarantee.
-
-Patches 3-5 skip redundant zeroing in the PMD THP, order-0 (including
-x86), and mTHP anonymous allocation paths.
-
-Patch 6 adds VIRTIO_BALLOON_F_DEVICE_INIT_REPORTED to negotiate this
-with host.
-
-Patch 7 adds a flush parameter with an approximate reporting budget for
-deterministic testing.
-
-For a 512 MiB anonymous allocation using MADV_POPULATE_WRITE in a 2 GiB,
-one-vCPU KVM guest, ten samples per mode gave:
-
-  task-clock              feature off          feature on
-  PMD THP                 229.0 +/- 20.0 ms     74.7 +/- 35.8 ms
-  order-0                 336.1 +/-  6.5 ms     99.2 +/- 19.3 ms
-
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Assisted-by: LLM
+---
+ include/linux/highmem.h    | 21 +++++++++++++++++++++
+ include/linux/mm.h         | 32 +++++++++++++++++++++++++++-----
+ include/linux/page-flags.h | 15 ++++++++++++++-
+ mm/page_alloc.c            | 38 ++++++++++++++++++++++++++++++++------
+ 4 files changed, 94 insertions(+), 12 deletions(-)
 
-Changes since v10:
-- Rewritten along the lines suggested by Matthew Wilcox [1].
-
-[1] https://lore.kernel.org/all/aiePVsiV-w-IZ8A4@casper.infradead.org/
-
-Michael S. Tsirkin (7):
-  mm: add PG_zeroed page flag and buddy merge tracking
-  mm: page_reporting: support host-zeroed reported pages
-  mm: skip zeroing in vma_alloc_anon_folio_pmd for pre-zeroed pages
-  mm: skip zeroing of pre-zeroed order-0 user pages
-  mm: skip zeroing in alloc_anon_folio for pre-zeroed pages
-  virtio_balloon: add DEVICE_INIT_REPORTED feature
-  mm: page_reporting: add flush parameter with page budget
-
- drivers/virtio/virtio_balloon.c     | 33 ++++++++++++++++++++--
- include/linux/highmem.h             | 29 +++++++++++++++++--
- include/linux/mm.h                  | 32 +++++++++++++++++----
- include/linux/page-flags.h          | 15 +++++++++-
- include/linux/page_reporting.h      |  8 ++++++
- include/uapi/linux/virtio_balloon.h |  1 +
- mm/huge_memory.c                    | 11 ++------
- mm/memory.c                         | 10 +------
- mm/page_alloc.c                     | 43 ++++++++++++++++++++++++-----
- mm/page_reporting.c                 | 43 +++++++++++++++++++++++++++++
- 10 files changed, 189 insertions(+), 36 deletions(-)
-
-
-base-commit: 666539eecdf4db623f5e3c3e55cf9f2dfad24aa4
+diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+index d7aac9de1c8a4..70bbe93b8d669 100644
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -303,6 +303,27 @@ static inline void clear_user_highpages(struct page *page, unsigned long vaddr,
+ #endif
+ }
+ 
++/**
++ * folio_init_user - Initialize a freshly allocated folio for userspace.
++ * @folio: The folio freshly allocated from the buddy allocator.
++ * @addr_hint: The address accessed by the user or the base address.
++ *
++ * The caller must not have written to the folio or repurposed folio->lru
++ * since allocation: the pre-zeroed marker is only valid until then.
++ * Preserve known-zero contents, but initialize KMSAN metadata that the
++ * allocator may have poisoned. Otherwise, clear the folio if required.
++ */
++static inline void folio_init_user(struct folio *folio, unsigned long addr_hint)
++{
++	if (folio_is_zeroed(folio)) {
++		kmsan_unpoison_memory(folio_address(folio), folio_size(folio));
++		return;
++	}
++
++	if (user_alloc_needs_zeroing())
++		folio_zero_user(folio, addr_hint);
++}
++
+ #ifndef vma_alloc_zeroed_movable_folio
+ /**
+  * vma_alloc_zeroed_movable_folio - Allocate a zeroed page for a VMA.
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6af3b7008f1ad..7c9ada8273815 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3325,6 +3325,26 @@ static inline void clear_page_pfmemalloc(struct page *page)
+ 	page->lru.next = NULL;
+ }
+ 
++static inline bool page_is_zeroed(const struct page *page)
++{
++	return (uintptr_t)page->lru.next & BIT(2);
++}
++
++static inline bool folio_is_zeroed(const struct folio *folio)
++{
++	return (uintptr_t)folio->lru.next & BIT(2);
++}
++
++static inline void set_page_zeroed(struct page *page)
++{
++	page->lru.next = (void *)((uintptr_t)page->lru.next | BIT(2));
++}
++
++static inline void clear_page_zeroed(struct page *page)
++{
++	page->lru.next = (void *)((uintptr_t)page->lru.next & ~BIT(2));
++}
++
+ /*
+  * Can be called by the pagefault handler when it gets a VM_FAULT_OOM.
+  */
+@@ -5544,8 +5564,9 @@ enum mf_action_page_type {
+ 	MF_MSG_UNKNOWN,
+ };
+ 
+-#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
+ void folio_zero_user(struct folio *folio, unsigned long addr_hint);
++
++#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
+ int copy_user_large_folio(struct folio *dst, struct folio *src,
+ 			  unsigned long addr_hint,
+ 			  struct vm_area_struct *vma);
+@@ -5693,11 +5714,12 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+ 
+ /* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
+  * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
+- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
+- * bits used for the DMA index. page_is_pfmemalloc() is checked in
+- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
++ * the head page of compound page, bit 1 for pfmemalloc page, and bit 2 for
++ * zeroed page, as well as the bits used for the DMA index.
++ * page_is_pfmemalloc() is checked in __page_pool_put_page() to avoid
++ * recycling the pfmemalloc page.
+  */
+-#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
++#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x7UL)
+ 
+ #ifdef CONFIG_PAGE_POOL
+ static inline bool page_pool_page_is_pp(const struct page *page)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index b0ddc652e76cc..39cd5911a2188 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -153,6 +153,9 @@ enum pageflags {
+ 	 */
+ 	PG_fscache = PG_private_2,	/* page backed by cache */
+ 
++	/* Page contents are known to be zero (host-zeroed or balloon) */
++	PG_zeroed = PG_private_2,
++
+ 	/* XEN */
+ 	/* Pinned in Xen as a read-only pagetable page. */
+ 	PG_pinned = PG_owner_priv_1,
+@@ -686,6 +689,16 @@ FOLIO_FLAG_FALSE(idle)
+  */
+ __PAGEFLAG(Reported, reported, PF_NO_COMPOUND)
+ 
++/*
++ * PageZeroed() tracks pages whose contents are known to be zero.
++ * Set on free-list pages by the balloon driver or page reporting.
++ * The allocator uses this to skip redundant zeroing.
++ */
++__PAGEFLAG(Zeroed, zeroed, PF_HEAD)
++SETPAGEFLAG(Zeroed, zeroed, PF_NO_COMPOUND)
++CLEARPAGEFLAG(Zeroed, zeroed, PF_NO_COMPOUND)
++#define __PG_ZEROED (1UL << PG_zeroed)
++
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ PAGEFLAG(VmemmapSelfHosted, vmemmap_self_hosted, PF_ANY)
+ #else
+@@ -1189,7 +1202,7 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
+  * alloc-free cycle to prevent from reusing the page.
+  */
+ #define PAGE_FLAGS_CHECK_AT_PREP	\
+-	((PAGEFLAGS_MASK & ~__PG_HWPOISON) | LRU_GEN_MASK | LRU_REFS_MASK)
++	((PAGEFLAGS_MASK & ~(__PG_HWPOISON | __PG_ZEROED)) | LRU_GEN_MASK | LRU_REFS_MASK)
+ 
+ /*
+  * Flags stored in the second page of a compound page.  They may overlap
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 6624293e4d787..927a288eb419b 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -986,10 +986,21 @@ static inline void __free_one_page(struct page *page,
+ 			change_pageblock_range(buddy, order, migratetype);
+ 		}
+ 
+-		combined_pfn = buddy_pfn & pfn;
+-		page = page + (combined_pfn - pfn);
+-		pfn = combined_pfn;
+-		order++;
++		{
++			bool page_zeroed = PageZeroed(page);
++			bool buddy_zeroed = PageZeroed(buddy);
++
++			__ClearPageZeroed(page);
++			__ClearPageZeroed(buddy);
++
++			combined_pfn = buddy_pfn & pfn;
++			page = page + (combined_pfn - pfn);
++			pfn = combined_pfn;
++			order++;
++
++			if (page_zeroed && buddy_zeroed)
++				__SetPageZeroed(page);
++		}
+ 	}
+ 
+ done_merging:
+@@ -1378,7 +1389,7 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+ 					continue;
+ 				}
+ 			}
+-			tail_page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
++			tail_page->flags.f &= ~(PAGE_FLAGS_CHECK_AT_PREP | __PG_ZEROED);
+ 		}
+ 	}
+ 	if (folio_test_anon(folio)) {
+@@ -1397,7 +1408,8 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+ 	}
+ 
+ 	page_cpupid_reset_last(page);
+-	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
++	/* Clear the aliased PG_private_2 bit when freeing allocated pages. */
++	page->flags.f &= ~(PAGE_FLAGS_CHECK_AT_PREP | __PG_ZEROED);
+ 	page->private = 0;
+ 	reset_page_owner(page, order);
+ 	page_table_check_free(page, order);
+@@ -1507,6 +1519,7 @@ static void split_large_buddy(struct zone *zone, struct page *page,
+ 			      unsigned long pfn, int order, fpi_t fpi)
+ {
+ 	unsigned long end = pfn + (1 << order);
++	bool zeroed = PageZeroed(page);
+ 
+ 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn, 1 << order));
+ 	/* Caller removed page from freelist, buddy info cleared! */
+@@ -1518,6 +1531,8 @@ static void split_large_buddy(struct zone *zone, struct page *page,
+ 	do {
+ 		int mt = get_pfnblock_migratetype(page, pfn);
+ 
++		if (zeroed)
++			__SetPageZeroed(page);
+ 		__free_one_page(page, pfn, zone, order, mt, fpi);
+ 		pfn += 1 << order;
+ 		if (pfn == end)
+@@ -1705,6 +1720,7 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+ {
+ 	unsigned int size = 1 << high;
+ 	unsigned int nr_added = 0;
++	bool zeroed = PageZeroed(page);
+ 
+ 	while (high > low) {
+ 		high--;
+@@ -1722,6 +1738,8 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+ 
+ 		__add_to_free_list(&page[size], zone, high, migratetype, false);
+ 		set_buddy_order(&page[size], high);
++		if (zeroed)
++			__SetPageZeroed(&page[size]);
+ 		nr_added += size;
+ 	}
+ 
+@@ -1880,6 +1898,13 @@ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags
+ 		set_page_pfmemalloc(page);
+ 	else
+ 		clear_page_pfmemalloc(page);
++
++	if (PageZeroed(page)) {
++		__ClearPageZeroed(page);
++		set_page_zeroed(page);
++	} else {
++		clear_page_zeroed(page);
++	}
+ }
+ 
+ /*
+@@ -3144,6 +3169,7 @@ int __isolate_free_page(struct page *page, unsigned int order)
+ 	}
+ 
+ 	del_page_from_free_list(page, zone, order, mt);
++	__ClearPageZeroed(page);
+ 
+ 	/*
+ 	 * Set the pageblock if the isolated page is at least half of a
 -- 
 MST
 
