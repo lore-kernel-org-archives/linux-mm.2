@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5C5606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAC9606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 08:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AQkCpeqt
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NkR1Zgr5
 Received: by kanga.kvack.org (Postfix)
-	id 3909A6B05CF; Thu, 19 Nov 2026 03:52:45 -0500 (EST)
+	id 95C826B05D9; Thu, 19 Nov 2026 03:52:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 368496B05D7; Thu, 19 Nov 2026 03:52:45 -0500 (EST)
+	id 936236B05DA; Thu, 19 Nov 2026 03:52:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27DFC6B05D9; Thu, 19 Nov 2026 03:52:45 -0500 (EST)
+	id 870F16B05DB; Thu, 19 Nov 2026 03:52:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AC536B05CF
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:52:45 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 200541209AE
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:43 +0000 (UTC)
-X-FDA: 85451253006.18.6840DEB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4C50640003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:41 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AQkCpeqt;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795078361;
-	b=ujsfD2UuXA7QgROrNLcXO6USOEa/c576+klwegpk6nr6obHeOMnMElCryDz/vtnfreqwpd
-	g1tIapvF/i+JTNLuj/lVysq3jzgMU/aGAhVAtNR0hy9fYIzGMy8Hsagc279pz/gArf+V4h
-	saF21ln9t8eXXKe+EBJHVawrLLB86Nk=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 64BB66B05D9
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:52:48 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05060A09F0
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:47 +0000 (UTC)
+X-FDA: 85451253216.12.C57443E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 50AA4140003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 08:52:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NkR1Zgr5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795078361;
+	s=arc-20220608; t=1795078366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=slP12k1/UmuSqVqj4kei7CXwqTFf5wNJ5fzGochv76w=;
-	b=BmQ1BdKDJ3bQnZodv9bdwGjejmw3gRhNOlHS9xlAq2k72nDzLpqq63E/4/+fYqmvxx1IEN
-	SeEPCQzlOC1ARe3xMLlWI+QcTDbU/6suFv5NfUi4mcC+y/UIRR2EOHS7Ms6IAJWH2MOkW3
-	6cRyhZu5Ed7mtgeLJ3hWMi++cePtOm4=
+	bh=cxs2QZyxzlyoNxD0Z5dwz7vh5ESfvCmKKELYHd8a2JM=;
+	b=ZXUjnTvIt8Gpnu5mkr2yrYGL78Gs1gmAQ1jpp3kSplAmDtfOv8Uy6MSFQE48+58qbKOLpK
+	Nf5BjmaCFiLDq2Yr21q+Xrua9xwnr1bGnwB92/3j383pyEYwHTcniqIaS7AYcnuZq6S48D
+	lhvMP801obA1+TTZoCc3W888isV2RZU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AQkCpeqt;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NkR1Zgr5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795078366;
+	b=mYM0FbOD4qLiwT0AcuJOuwF+qkAiWIiNoAXz1U55w1UzyeflmJiLlYmC83QZT1xaHE2vGK
+	6ITFw4yg8cW5RMDKMqSxk1Pu83LnqFYdMX2SlSKlL4zBltdzWn+PRemVLVvklTilzBzOn+
+	xv3nDN4MMDq6ocQmxNCapIhJPes42rA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9C9C9403CF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 65B226203E;
+	Thu, 19 Nov 2026 08:52:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1293E1F000C4;
 	Thu, 19 Nov 2026 08:52:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F741F000C5;
-	Thu, 19 Nov 2026 08:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795078360;
-	bh=slP12k1/UmuSqVqj4kei7CXwqTFf5wNJ5fzGochv76w=;
+	s=k20260515; t=1795078365;
+	bh=cxs2QZyxzlyoNxD0Z5dwz7vh5ESfvCmKKELYHd8a2JM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=AQkCpeqtER/pRkRAMr/L2oDOE2ERxJrbyHH375vGguYu8CugXOzlCmh4jy8w+SA69
-	 nxiVYh0Pd2RZq2Y+8m/6KRT/ZMyIBco0fV5jRyZf+cLbEFn4FSS0+OhJVvXDj1C4OY
-	 J2DYaVfSdMGNxKaxJT3UTd5u0xOkfStA4kBgZflLhKugqXPXlxrMn0EkOaIqvWySo8
-	 yAhl8SVOdu0rGqfS+Gp4BJB2FhDgBt6qBNEfD4kj3ujBCNF/yUlEBKdWvaJpRR2PNS
-	 I8PNugYeamptXxk/vL3L1NFXzT8H8wX1B4iHruU9Aq5ouc7CiYZBqWDFH6YJdQV6+S
-	 LqamHn8KuBjww==
+	b=NkR1Zgr5CKS/Oj/KkYEh3nN4wVmW6VxPYpRt+PIQc1w5oiokAAnrUfNoX/Ek8Mmc0
+	 ZjlfV2RzBQOVjAKToTfLu6hkzZ18AcADt9TpoSFaCN+3BRKzXIEasKc1AVpPsLahxk
+	 MfxkxEVsjzosbMP2yWgI3gtk2p9IRw/QzSfvmAuT+E5wX9H96FL9bOtfFrUYte0Tac
+	 Gl4eBZ4rRdRJCZ6IqYMppFnthKSCEIapRyXk7fTjhN74Yg25tDfviW7mXwu4KqtR6Q
+	 5xRkxbdqXHISBJdT+P9AVNESfKdhV6B9mC5hZjkFnKn9OJyoFAuobYLVyExygb3BPq
+	 CqzNrsqfFQoQA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 19 Nov 2026 09:52:20 +0100
-Subject: [PATCH 1/3] alloc_tag: handle a NULL tag in
- alloc_tag_set_inaccurate()
+Date: Thu, 19 Nov 2026 09:52:21 +0100
+Subject: [PATCH 2/3] mempool: fix missing alloc tagging in mempool_resize()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261119-alloc_tag-v1-1-efcccfd3a9c9@kernel.org>
+Message-Id: <20261119-alloc_tag-v1-2-efcccfd3a9c9@kernel.org>
 References: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
 In-Reply-To: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
 To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
@@ -81,28 +80,28 @@ To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
  Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
  Roman Gushchin <roman.gushchin@linux.dev>
 Cc: linux-mm@kvack.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
- stable@vger.kernel.org, Chris Mason <mason@kernel.org>
+ Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2198; i=david@kernel.org;
- h=from:subject:message-id; bh=pQCOEBuVtuHz63BHCaKRIv21JHUplhwXXCn7IFnZRLo=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+7Th/8FPU1reKDbNDJlruSM7v6VQ4JH3O3P6fc2h1V
- JKWpsicjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbS9ILhn2JhTcmi67mXXfX2
- KLxMXHRR1tA3pyzhxfp/RY/7XqzXDWb47709PKBozbaH4v5yUs9epYTKLVT0+LeuJ2vlpkpho61
- CnAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2506; i=david@kernel.org;
+ h=from:subject:message-id; bh=LeaZUZfX3+uSqdQ+Wwi7Y32TzshGWroq5Yv+RXN2CcA=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLL+7ThfHWNsbFgoUqifY57/d/a7XuEypxdTdYSfuCvtO
+ 1xiFivQUcrCIMbBICumyBIUfN/g5ct1tdVufMwwc1iZQIYwcHEKwETEXjP800oJU7/9temdAz+7
+ ZbD1h3Dr+XfkOS10XGOCo/mtE5svMPx3U5nLxc1m/sNbKUt66bPA9fOS+g97x3mrWdfWnj0cqsc
+ JAA==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: fxq8mct71uccdoni4fo99fm3w63rizjq
-X-Rspamd-Queue-Id: 4C50640003
-X-Rspamd-Server: rspam12
-X-Rspam-User:
+X-Rspam-User: 
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 50AA4140003
+X-Stat-Signature: a5h4yfdx8fb9cfdh1u1oa4g9qrrme93d
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795078361-211671
-X-HE-Meta: U2FsdGVkX1/KT4fZc5iMLquWrz72qRwXd9HVBE1QsUEve9IR1eLu7gKLdl3EZ6K74c4f2B9BPgkNA+fDrAWK4s4mtN/Yw+ctFY6aULzRgbDUXvnL0lPYsElwQMewrkxUFqs2ICQmQfWPNKvakEmC5dsXj82/Pp7dcmOtoWBkiWrYpXc37Cq77wd0rB+Nu0X4gsdltkW9e8Um7x819qMaMNc5WR+Ih8hCThmBdDbL+p/Kw9OkL0MzNFTfBqVr8oYWCl9fIfKPa7YlWZitIUKh8Tg44DKgZVJNdOcK1DCIvWivltCe+/qfqoItdRENIJXl8m1ZvssF2Opi1uOt7jvC044evA/xuCF2Dzyifj6kw6W2iRc2716hxEmn/7lRFQbLZNjnV1eNWlhLo1Zd6mFDAzvJTO9pJV/IP5PADTLrdLFtha9Vub/uFAO1IEqrQuw3qKb9k8KpAXk+LFWcfmaq/6wpZ12Y7Kn6j+Cu16NVGpCUjPlW/iOB+KEDKru+i9SKcMaQwIQ2Rp1zWlVaREeaIoSjoV54q7T35v8WPVgp6NkcNZ3jHuWvPEWTFIZ0l9qHxxUiJ0/NZHvqpYxN7zpe30IiG+YkNXnPmW3OmU7F1n0RFSHupbeWotug615nVjBdo28aUNOc6+6XYKgbGulCPCuSb4+S6zT/SNyCTYDTj1J975y14GjeFO4FxKsscAuvqmBi8Lxl0tIqdo8Sxyr3tRLyFau2j5w1D7oyo+45FOdwyo2fOOvtNkLJoH8jir5p51fQxKFWIEQNE0stBwTRTo5N6O24EEabTXLcuJKRFmU9siwaNMI8G8A0pM3d0l+s3XnNB6vzymqxoD7OHAZfCJfiJzeKKNmkVONwxMBIq+dDKa/4OfdYmdv//Dt7vgJ1IXiChH5WSHyyr6HEaI1E0MC1eBf9th7wMD9CupWyTgj2QAmLGhxKoLubC1kznFEHP84yxxsSPCcoGDPz5KY
- SW3OeKu5
- OjSIE8hdLExzuEUZUq4DQFzGvz7diPdOQ3IObllVWKkyAI3FBeUmiPEzNfJeMfK25NkaFTB0H6ZU0qfgG4L+U/10v7PdPCoOjKZ16rO5eJjB9zzgSwU72bkT8Jov9ts4zG8Ixw7LuJCYtnxzl1/sAqzahD79zzt3AnUtheuVMRkiAxkzDOB17xGhYSHfeN4WVDw0HavfXoSSPfUGQ4vh65qD08s4l/YL5WqSHDt93MAtHyLHKnBgNXLS+Hv3QQ0tqUiB+vcf/UqPDmVdwq0bPHqA6UIr8bbAWQ8d9tP0SqIQa4jt7ShbfqMm6yfN7KMJZWDqTEIDJtNsJ8ggzzwuMNXsbA4k4BVWsVTNNASv/sARa0E3SsdNwp2HD1TFMBgwl3PfxllSFgH3iLhkMQaFzHiGZcuAYYYxIU7Faa+9bNHW6KdDyrHNHOUTuWQyaFxFg8jo2
+X-HE-Tag: 1795078366-912549
+X-HE-Meta: U2FsdGVkX1/0HocZp5a+FiltjDtyubQNWKhPLHt3PIbakgvSTIKotX0PavsAcJv1ZxBgtrHgGiNJisS/rC8Z5JvbHv/po4zfcppeogQrrIJbD8V3wUxJTlZI/qq7Qfkgvwb2BhXeNqfYMvRtDMhmsVLrFBOO4Eqb8ARaXTrVXKPUJACb8CDHyg/AmpfE3fCMTi4MBupEyYa0KEIufrtiWqnVEdaSMY9C0L+tcq5eSEyNFBEFmmmiF/Zv5ZB9xqF9Fub3+PNhuAVOGlIwgrlyQ3cWiALHZjYdRzAdq7lox17AT4ITf7kjMMyoT6v1gpq+FavIu++vkqaDh4Eav5FfzC59+NzSJyDlu8993mHPooAj69GoOtgNWUh1DOmmvkmtTWdh+uSdbi+UTbdkOVrojg858Dxwi3X+XnXIgQWSYoXQj4tqwlh7fdNQXB/yf4cbajS9DXFeYTvpztGWOsrgdv+mNKp432qJXQbznXwIMEfABv09CuVbQxdB9N8Ei8U2WS/DbOw1gGPz5KTOXyMYnIQYo27zmiTzLQeWsXSZQCSMCpmAJXzK7MoFgTumb1i0ZKXg5z0p18SFbnOm4BqIDii2ZHpQNLQ/xUO6Q2FkbiDcuQv8AyOhpOPhrtj/VFUb7dNtA8pxgAvbyMPhkFntjY+DFotSlngTAfNW2Xh67vfq3DEVAoi6mT025ylQoR2IbKaCLwg9ITjJoHCnYQQ5Z9PfcajgWl4zMyXhVNRcixHEdY5DrgFFkhDoP0TJYlDpmBRLf9SlNJ6xHo4JUVUa2tauacL/2KURNsFs5+n9uP+Ar38VYTN8Gef3ZzmEt2i1pTWSlytqI5PaRc9UKFYai/ydIZLRscooJ8NQnJ1xeJWBS53t/xbc0NBS+vcXiJdXTrQten2uZx5ZMQ6WNdKerLZ2IOb7dlBRx0eOZZgJJXfix79v6+AVadc9ZdstAqu81wKJhUp1w8SZBqev0Re
+ FJfZT3kP
+ woWlVVy9D01CSDpsqqhMMT4GXTPBq20joHNjwylLdhRqZ8mneQ2Mgky1cf/sq/kJSppi3kzl2trd1lxgPMrbLvc4pJ+ZuODmYwgsxUVhFZiVOVdIA00h61dDYncR24TvWF3qVj/poEltU/fYAD4X3N+YvoRGa/mTiS9kw4+LqzJzMxNJqzhNvsE+/3+58qtLhJI/Wu+9T52Wml+itIWIR3m9NGbRMMD2p4+Buj7MqavxJ6woP/ETPMfK7G2HEJ6puJXrzpF+mbL6KblDXZED+OmNPmvbB92iKIV6F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,60 +110,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With memory allocation profiling enabled after boot, a slab allocation
-can dereference a NULL pointer if current->alloc_tag is not set and
-allocating the slab object extensions fails:
-__alloc_tagging_slab_alloc_hook() passes current->alloc_tag to
-alloc_tag_set_inaccurate(), which does not handle a NULL tag currently.
+From: Chris Mason <mason@kernel.org>
 
-One way to trigger it is through rhashtable: rhashtable_init() records
-current->alloc_tag in ht->alloc_tag, which is NULL while profiling is
-disabled. Once profiling gets enabled, alloc_hooks_tag() sets
-current->alloc_tag to that NULL tag when allocating a bucket table.
+With memory allocation profiling enabled, mempool_resize() allocates new
+elements without an allocation tag: mempool_alloc_slab() and friends
+use the _noprof allocators and rely on the caller to have set
+current->alloc_tag.
 
-Fix it by handling NULL tags in alloc_tag_set_inaccurate(), just
-like alloc_tag_add() and alloc_tag_sub() already do, and drop the now
-unnecessary check in __pgalloc_tag_add().
+Unlike mempool_init() or mempool_alloc(), mempool_resize() is not an
+alloc_hooks() wrapper, though.
+
+Therefore, the newly allocated elements are missing from /proc/allocinfo,
+and with CONFIG_MEM_ALLOC_PROFILING_DEBUG=y we can trigger
+"current->alloc_tag not set" and "alloc_tag was not set" warnings.
+
+Fix it by turning mempool_resize() into an alloc_hooks() wrapper, just
+like the other mempool functions that allocate elements.
 
 This has low urgency.
 
-Fixes: b9e2f58ffb84 ("alloc_tag: mark inaccurate allocation counters in /proc/allocinfo output")
-Cc: stable@vger.kernel.org
-Reported-by: Chris Mason <mason@kernel.org>
+Fixes: e26d8769da6d ("mempool: hook up to memory allocation profiling")
+Signed-off-by: Chris Mason <mason@kernel.org>
+[ david: adjust description, remove kmalloc_objs() change ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/alloc_tag.h | 3 ++-
- mm/page_alloc.c           | 3 +--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/linux/mempool.h | 4 +++-
+ mm/mempool.c            | 4 ++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-index 7f2d80a597924..0f9909c6701a7 100644
---- a/include/linux/alloc_tag.h
-+++ b/include/linux/alloc_tag.h
-@@ -227,7 +227,8 @@ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
+diff --git a/include/linux/mempool.h b/include/linux/mempool.h
+index 6da502aef2f71..5444dcb63efa8 100644
+--- a/include/linux/mempool.h
++++ b/include/linux/mempool.h
+@@ -59,7 +59,9 @@ struct mempool *mempool_create_node_noprof(int min_nr,
+ 	mempool_create_node(_min_nr, _alloc_fn, _free_fn, _pool_data,	\
+ 			    GFP_KERNEL, NUMA_NO_NODE)
  
- static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
+-int mempool_resize(struct mempool *pool, int new_min_nr);
++int mempool_resize_noprof(struct mempool *pool, int new_min_nr);
++#define mempool_resize(...)						\
++	alloc_hooks(mempool_resize_noprof(__VA_ARGS__))
+ void mempool_destroy(struct mempool *pool);
+ 
+ void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask) __malloc;
+diff --git a/mm/mempool.c b/mm/mempool.c
+index cb74e718b2c65..5e0ba516efdbf 100644
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -361,7 +361,7 @@ EXPORT_SYMBOL(mempool_create_node_noprof);
+  *
+  * Return: %0 on success, negative error code otherwise.
+  */
+-int mempool_resize(struct mempool *pool, int new_min_nr)
++int mempool_resize_noprof(struct mempool *pool, int new_min_nr)
  {
--	tag->ct.flags |= CODETAG_FLAG_INACCURATE;
-+	if (tag)
-+		tag->ct.flags |= CODETAG_FLAG_INACCURATE;
+ 	void *element;
+ 	void **new_elements;
+@@ -420,7 +420,7 @@ int mempool_resize(struct mempool *pool, int new_min_nr)
+ out:
+ 	return 0;
  }
+-EXPORT_SYMBOL(mempool_resize);
++EXPORT_SYMBOL(mempool_resize_noprof);
  
- static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2fef4092c913c..0b76923145456 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1262,8 +1262,7 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
- 		 * clear the tag ref later when page_ext is initialized.
- 		 */
- 		alloc_tag_add_early_pfn(page_to_pfn(page), alloc_flags);
--		if (task->alloc_tag)
--			alloc_tag_set_inaccurate(task->alloc_tag);
-+		alloc_tag_set_inaccurate(task->alloc_tag);
- 	}
- }
- 
+ static unsigned int mempool_alloc_from_pool(struct mempool *pool, void **elems,
+ 		unsigned int count, unsigned int allocated,
 
 -- 
 2.56.1
