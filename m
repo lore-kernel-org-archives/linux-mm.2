@@ -1,97 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEB3606A330
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E72606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GjEL9/j9
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CTP9jal/
 Received: by kanga.kvack.org (Postfix)
-	id 0D34D6B06DF; Thu, 19 Nov 2026 14:37:05 -0500 (EST)
+	id 20CB26B0632; Thu, 19 Nov 2026 14:37:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ACFA6B06E0; Thu, 19 Nov 2026 14:37:05 -0500 (EST)
+	id 1E4B46B06A4; Thu, 19 Nov 2026 14:37:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2D026B06E2; Thu, 19 Nov 2026 14:37:04 -0500 (EST)
+	id 0FA0B6B06A5; Thu, 19 Nov 2026 14:37:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ADB3E6B06DF
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:37:04 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2FBAC1A0C34
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:04 +0000 (UTC)
-X-FDA: 85452876768.05.7C2A00A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9F382160005
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GjEL9/j9";
-	spf=pass (imf08.hostedemail.com: domain of mason@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mason@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DC3F96B0632
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:37:08 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6857AC0479
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:08 +0000 (UTC)
+X-FDA: 85452876936.13.37481CB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A3A1CA001B
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:37:06 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CTP9jal/";
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795117021;
-	b=MvVbUAdeeO1ySKSXGWzH+C9dXANKB06RiXVIHkXq//gNItSTWJ+BlhBoNgxY6nnw7KHQ2g
-	3vGSb5k4JpU6g1Kza8AHHBPZxqKwACTOhMryaNB8hBPvt6QcHpN3+JXAraLzoq5IQb59tR
-	HP1yQw6phAzP1BW+hAf9B/x8U124YHs=
+	t=1795117026;
+	b=fl8sXE2ryW2LXTVQ+JxRqZ1DRrE6tz/rfFCIKQvkNOIjysg4s4iyOe/Y0FlE9Ix5jULtwh
+	fLpOKPqDx+xsPqUB3nPbu0VPX8QLPB4kzNSumMvERm4/H5Kmfr5mJG7+9hisdyVmQg1Wbr
+	LvrwcbD8jSXsy3JNWK96wLZSKtA7W+A=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GjEL9/j9";
-	spf=pass (imf08.hostedemail.com: domain of mason@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mason@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CTP9jal/";
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795117021;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795117026;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nbSaTv00XrnS3z4ynTuPVvGI4QPJtySnEbRJHnCVwLg=;
-	b=c30UM9CnaxTxVWoXecAHIAGNxghYdlKQVh7ASFCqOdJdO9GdqqHU6kXdo1uB6Ch05z1/zv
-	Fyncxm/8SnfBcxAThh7iB19Vh2T5pqdkBnLl9ENWyX4zd5uMFpE0Oc/xtiDKkx3uWsDvOe
-	wirkSPCN8rEc0qz3TgZylNCrtPY9A1c=
+	bh=j3OHGDRLYJbgj/ErJ8HaxI5UhxRADPxZ13wjmhDTfns=;
+	b=fgOMT/VXUr6nVyc5sEWhXnnZ639o7gGdPgWB9CUOUNe2Xr8hpSxlHmmjKNi4vttIOx0HZU
+	qexW/EirfbzpghM3G11I9qnKpwfDrlWOSnOmnJYZL6A3kl7tna1puYpbPcdsxga0kCnMRV
+	hWpCz7QQW2JyU0CWcyvdB37x8R/MQ2w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5C0086224D;
-	Thu, 19 Nov 2026 19:37:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7701F000C5;
-	Thu, 19 Nov 2026 19:36:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 91099467A8;
+	Thu, 19 Nov 2026 19:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B811F000C6;
+	Thu, 19 Nov 2026 19:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795117020;
-	bh=nbSaTv00XrnS3z4ynTuPVvGI4QPJtySnEbRJHnCVwLg=;
-	h=From:To:Subject:Date:In-Reply-To:References;
-	b=GjEL9/j9g/k9ifKAZo2phRjhiZdSeIum7AHbliPM4QvstJODJ614SblVkVz1CDAQQ
-	 mC60F3WehuYdg9PEm4VBCOns83QhMyw+5s1EO68ffsj9JwjknZ8kNxp7LiNm3Qeq0U
-	 ryCMByRFIolAID10nuVBJJyVUkv+nMW/F1TpQVpsTQuQ2DVrKn3A6s5/me+lTXmJ05
-	 LB2jQsm9epFt3tXqUZRxOeZeDz6bxJbCU3jIixUiujHf9KL9akYsvRLE+5Bgch4wx1
-	 3HrW6+tcJxGKYOjTpf+sWgNLsoELEN7ILuwjmXzfcjF3DeeraQ3haE2tEFZpO+0ZjZ
-	 ccmSiT/beQvww==
-From: Chris Mason <mason@kernel.org>
-To: hughd@google.com,
-	david@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	qi.zheng@linux.dev,
-	qinyuntan@linux.alibaba.com,
-	shakeel.butt@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] mm/shmem: don't use the memcg of an uncharged folio
-Date: Thu, 19 Nov 2026 14:36:57 -0500
-Message-ID: <20261119193656.88678-2-mason@kernel.org>
-In-Reply-To: <20261119193656.88678-1-mason@kernel.org>
-References: <20261119193656.88678-1-mason@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1795117025;
+	bh=j3OHGDRLYJbgj/ErJ8HaxI5UhxRADPxZ13wjmhDTfns=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CTP9jal//bKnwBy4ySVLUylckhZpJ1oQ3RzkBH+MakR00H55hqpxMiM0UMyr2rTjy
+	 TPcuKjGT7gdm0mDNHbhwNfHF5fK6x6y0dizYyHP/0YBUVzz8gnV2m9Kr58qkSN/x5Z
+	 FpZbxkZm/2FivINqu78yjPSJbHekGGqs2zZrVjLrrQoUFOcL0WQJKDFCnk2oB5MDUT
+	 DELNUYxzCICjI+YJf6QDNm/ZouSn/w2qMx9chXaOiNsliTtgPUu63o2atye1YaUtLJ
+	 u7yBUphIJvQ35Mt9hI50jjUWoRFtf7HipHsXUomtppwVTjyTqmURVyTL7pFRQnd3Sr
+	 /fi/TVAO7R6ow==
+Message-ID: <sashiko-outbox-223954@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v3 12/13] selftests/rootns: Add root namespace test
+ suite
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, "David Howells" <dhowells@redhat.com>
+Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Andrew Morton" <akpm@linux-foundation.org>, "Andy
+ Lutomirski" <luto@amacapital.net>, "Anna-Maria Behnsen" <anna-maria@linutronix.de>, "Ben
+ Segall" <bsegall@google.com>, "Christian Brauner" <brauner@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Davidlohr Bueso" <dave@stgolabs.net>, "Dietmar
+ Eggemann" <dietmar.eggemann@arm.com>, "Frederic Weisbecker" <frederic@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Jan Kara" <jack@suse.cz>, "John Johansen" <john.johansen@canonical.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Juri Lelli" <juri.lelli@redhat.com>, "Kees Cook" <kees@kernel.org>, "K
+ Prateek Nayak" <kprateek.nayak@amd.com>, "Liam R. Howlett" <liam@infradead.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Manfred Spraul" <manfred@colorfullife.com>, "Mel
+ Gorman" <mgorman@suse.de>, "Michal Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Neal
+ Gompa" <neal@gompa.dev>, "Paul Moore" <paul@paul-moore.com>, "Pavel
+ Tikhomirov" <ptikhomirov@virtuozzo.com>, "Peter Zijlstra" <peterz@infradead.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Serge Hallyn" <sergeh@kernel.org>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Steven Rostedt" <rostedt@goodmis.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Thomas Gleixner" <tglx@kernel.org>, "Valentin
+ Schneider" <vschneid@redhat.com>, "Vincent Guittot" <vincent.guittot@linaro.org>, "Vincenzo
+ Frascino" <vincenzo.frascino@arm.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Zygmunt
+ Krynicki" <zygmunt.krynicki@canonical.com>
+In-Reply-To: <20261118193539.240065-13-jarkko@kernel.org>
+References: <20261118193539.240065-1-jarkko@kernel.org>
+ <20261118193539.240065-13-jarkko@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 19 Nov 2026 19:37:03 +0000
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9F382160005
-X-Stat-Signature: poxrzi1ar8wqzpfcewo89ebf9bsu8e1n
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: A3A1CA001B
+X-Stat-Signature: fw17bzqkkh1oe3eyhr6de9k9xozqas4t
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1795117021-313767
-X-HE-Meta: U2FsdGVkX1+E8r5XT0/2sFT4uPtqdVTF22vmdfcViNcMD34ycyweBuzYbiEncvIvah26QcN4Yjk93DT7f0f4qtZ3R5lYrAPGD5GlokiY5apsJrT2aZJnpI/hDCAachjtJlaiAvpemL1b0FbXfAJKsERUvWV5LDOWPH9NkG4Km1l2mn18PJy79Cs6a5rHQMUqgyLtM+Psh/4QLcdPrmkqiIg8L7x+q/ZJd7PEf3yuY3LuKEMKioe98XXP3xpHapp/BoLs7RR3h29ms+2KC2wSA2In4IJoNi9N5tMflIlIVaugWWmjjMUXoP1Ln5nushqXb/mljHjfCi/XlVnLLHkf5LiyBSoZ6am7fvjs2koG8dRxHTjsB+e/eErPRZH2nLuNhJeo8e/sGU9Ul1xzOsi5EoC7FF9hAeZFcPmK1ugiWiAOMET07dlhm8jUFvOzLfBH+T7A0Zax02aF0B+XtpG5Vd56K3hii7538mOvmOSQQ2oJRfGphWV0G68tCsyS9mKVV/hd4qMJfhVF/qA1bAOrhrXguhbQ6o0AwMFopgQt3PUGU2TIo6EVjsGXb4mL+Be/PjESwHh9rzVNErE1pa2eHKHeF0HbzQZoSZjBQeRPiBpGNuZ0egEHdgWZXYV0D30EJxrf8l5sDV0nThJNw7+d36FpmGSWirA2CfXVFexqIgcRAJezHpnd9unhnIzxxDqHCsiUpqO9prVZJnYUzuMl8JgUKKShX4uIad8q1Ihadc+Z8bDGpZDLMI3hA2DaFmor/TDhbXza4GWn0DXZ1RdZmhu9bejuyu3o+Dz2/y5NckY9CgfO3K27xEq5yx7OeCItuvv7fRIK7H6god0Sh2bXCesBA1EdohEUH6lIojWKvIgugBbOM4M6rIViiRT4ZjJaW8QLH3fhXtwx8XZHiYjzqzJiyCR4r7kt7Lvy3TheqriT54HH4Gruy2AtbkQ73bsSDUvLud7q/xaxx/MTASd
- bFtVQRZD
- /IOmahxY83rMtvnhUad65pndLkdcq+xYeqG5nz2MmEQ4rVEDmAIN07EdCQ5JR1P+ycRl0v7n9qxDfQdK1M3sDE5WOF5ciq/M14MlzmYe+aGBgtryxvKOGB+sRgxtzpdhYymgkNrPaG11o9lyDaRL8EHKNMoycb1vpAXFjDI3wCV2YhJY8cx50+FLptG+Ty4SUzUzi4iUGuCntyycmKNHBh61TLFXIZkSzvvyPRAQDbHVuFlaW2qXY7eOCs3zK//J50jHi4sXXqwB6I5t0EISVGMlzqg==
+X-HE-Tag: 1795117026-946106
+X-HE-Meta: U2FsdGVkX1/gY5srxa2V7jozJrwBwzUH/auscYrJlG4suQEWU5t4gEoFZAVsGFwPEF/M2PtaFKmD2Tdoqohua5937GP+7uCRAFFYh4XnF0Lzsbo6bfclIcVLHoN5tuGNtRtBlsX1YAQLBrrfwFZauzeYzuU+Ky7RwUgkSpP5oPL0SPQGa7YOFCUM2IH7A/kRauoEGrGklr33NtzyX9eXTmOro7zSpNB4ECvRlTiTrfoPYGTSY5ZY5/HPJDn8A7hUvTLVIm7AHPlbxlwmpYPH5ayJ100IkXA6mqTor94CzeLeLQskFd7dOk+awnuRVobTLa+kUJnrDXaJKxLnq+G3mf3RzP1+c0AYJo/3SmlWjqSycoZPNZbAsHS7PlGhdoZldwMj1tLNdZqre5KNi8uq8TzxaU8pEIjuJH8Di0ihlZv0Ps9sCVxN4c3p/ByDerIwhthOa72wHNexfS7Wf56B8eKjpEp/7o17hwiV5D99oJNRWJX4tsOsiGONwtOGtBPtHZL9oYmIhTJP8lWK6J3GQZJ3jnnVVJBLyli43vd18oERGePHG1IBt1nFVJDO5aCWXwL2jdx66XpLdMDbV7xifoUpFv3AYjeTn8yFPyeU2juuosgAyAoCKI5JKPiF+OOLkpXsW0xHjqkJx8BCUewZTwg3E7BthA60FprJetmp8s4AtST2fiWMhm5N3rjAq94JnwdzFR6EsYyBqIcT/C4TNDju1mx8/voh7vtBrHGd7w9SmcKuQjFo1dIHiqXcx6PCI1o4d9jahN2ECu64lSBEgJcbRNSTpc1wh8Y6xTdNo5z2RHMDixkZ/SZuBSOMNljfRGP8aQWqeMVDW6LwONa9jQXDtMF2FdokslE5STtXaxhnJ9G/+KYY4wd2V5/+7xo8wVtM36ebj+6c9AjM6FCgyu6FgZWvI1/0NmXBOCXXVDbFngsAxySG9a7nWQAb4GqUnlinaijwUy2SOqRZV7a
+ jAaPngdG
+ vcS4mJWcGDzlPaQv6VwuCwvVM504MvaieyzqjCQQi1BQa2VQn3OBnRg1qnJi6jwyT9EYHRdQKaGE4cIMSsFDU/6d4LmLrJFO1c/Eaq3mB4hZn0nf6FygfdTSidAsOYapWDYozMl2C9vcY53N0zDObyuTrWCOPLXtrhkoFgN1fkQ2P2mZxJp8l6BrRvuLwrWy++1esbQ/IkhYUa/0e1wqXNh+d+Z30pp/88lJQfo9QS1gLJu9R/AZVJJTJqH8yxYBX42k9gBgNcAF5N6rU7TvoU/e8gNcpO6wRYaZeGlqFyC9KgGJAqDTXZ43jQPznDLvhz0Lqau+4SNZe021Vp4sK6eRDSURYv4K7IKOia6gyOQHs0w4kibtcD3WWHi7AWAg0euT+XdoVNsPRC/VN0plkn5XIorttQPG97j6ZZhFlxy0RL0JcN49JPmCzLXqopMb9HowwehfIg2mVuFiJtYc1KYGSCzZAjrhexD0E3GMT6NIG7sxENLXFF7WTsR4+yzZ6BNRRRHPZniv0pQ7UqAm/rce2ve0oQfFa68iMKp1NR47WDiF+Ue5xKa6k0ZxoyWc0c5msxRifthF9VSH0iRVKlaDE1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,120 +110,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-The shrinker for unused huge tmpfs folios can dereference a NULL memcg
-if it races with the migration of the folio at the end of a file.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] selftests/rootns: shared mount propagation in
+  move_mount_existing_mntns()
+- [Medium] selftests/rootns: missing SKIP() on ENOSYS and silent skips
+  in child helpers
+- [Low] selftests/rootns: stack direction and lifetime hazard in
+  clone_with_flags()
+--
 
-folio_memcg_list_lru_alloc() assumes that folio_memcg() is never NULL.
-But it is NULL until the folio is charged, and a migration target can be
-in the page cache before charging.
+commit 101069d69b43912a16a7832bfad97b5398c581ce
+Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-shmem_unused_huge_shrink() looks the folio up without the folio lock,
-so we can race with migration:
+selftests/rootns: Add root namespace test suite
 
-    __migrate_folio()               shmem_unused_huge_shrink()
-    =================               ==========================
-    __folio_migrate_mapping()
-      xas_store(newfolio)
-                                    filemap_get_entry()
-                                      returns newfolio
-                                    folio_trylock() fails
-                                    shmem_unused_huge_requeue()
-                                      folio_memcg_list_lru_alloc()
-                                        folio_memcg() is NULL
-                                        memcg->kmemcg_id
-    folio_migrate_flags()
-      mem_cgroup_migrate()
-        commit_charge(newfolio)
+This commit adds a kselftest harness suite under
+tools/testing/selftests/rootns to verify the root namespace and mount
+namespace configuration uAPI and security invariants.
 
-Fix it by keeping the original objcg around while the inode is isolated.
+> diff --git a/tools/testing/selftests/rootns/smoke.c b/tools/testing/selft=
+ests/rootns/smoke.c
+> new file mode 100644
+> index 0000000000000..f0e3158ea4bec
+> --- /dev/null
+> +++ b/tools/testing/selftests/rootns/smoke.c
+> @@ -0,0 +1,1934 @@
 
-Fixes: 743e7d025d2f ("mm: shmem: make unused huge shrinker memcg aware")
-Signed-off-by: Chris Mason <mason@kernel.org>
----
- mm/shmem.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+[ ... ]
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 10cef89b00b0..4465a43d6f74 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -758,6 +758,13 @@ shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
- {
- 	int ret;
- 
-+	/*
-+	 * A migration target is in the page cache before it is charged. Once
-+	 * charged, its objcg can't change while we hold a folio reference.
-+	 */
-+	if (!mem_cgroup_disabled() && !folio_memcg_charged(folio))
-+		return ERR_PTR(-EAGAIN);
-+
- 	ret = folio_memcg_list_lru_alloc(folio, &sbinfo->shrinklist, gfp);
- 	if (ret)
- 		return ERR_PTR(ret);
-@@ -887,12 +894,11 @@ static enum lru_status shmem_unused_huge_isolate(struct list_head *item,
- 		return LRU_REMOVED;
- 	}
- 
-+	/* keep shrinklist_objcg, requeue may need it */
- 	list_lru_isolate(lru, item);
--	objcg = shmem_get_and_clear_objcg(info);
- 	set_shmem_unused_huge_isolated(info);
- 	list_add_tail(&info->shrinklist, &scan->list);
- 	spin_unlock(&info->lock);
--	obj_cgroup_put(objcg);
- 
- 	return LRU_REMOVED;
- }
-@@ -928,32 +934,41 @@ static bool is_shmem_unused_huge_match(struct folio *folio,
- static void shmem_unused_huge_drop(struct inode *inode)
- {
- 	struct shmem_inode_info *info = SHMEM_I(inode);
-+	struct obj_cgroup *objcg;
- 
- 	spin_lock(&info->lock);
- 	list_del_init(&info->shrinklist);
-+	objcg = shmem_get_and_clear_objcg(info);
- 	spin_unlock(&info->lock);
-+
-+	obj_cgroup_put(objcg);
- }
- 
- static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
- {
- 	struct shmem_inode_info *info = SHMEM_I(inode);
- 	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
--	struct obj_cgroup *objcg;
-+	struct obj_cgroup *objcg, *old_objcg;
- 	int nid = folio_nid(folio);
- 
- 	objcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
--	if (IS_ERR(objcg)) {
--		shmem_unused_huge_drop(inode);
--		return;
--	}
- 
- 	spin_lock(&info->lock);
-+	old_objcg = shmem_get_and_clear_objcg(info);
-+	/* The lists for old_objcg exist, the inode was queued under it */
-+	if (IS_ERR(objcg)) {
-+		objcg = old_objcg;
-+		old_objcg = NULL;
-+	}
-+
- 	/* Requeue the inode to shrinklist */
- 	list_del_init(&info->shrinklist);
- 	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid, objcg);
- 	info->shrinklist_objcg = objcg;
- 	info->shrinklist_nid = nid;
- 	spin_unlock(&info->lock);
-+
-+	obj_cgroup_put(old_objcg);
- }
- 
- static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
--- 
-2.55.0
+> +static int clone_with_flags(int flags)
+> +{
+> +	const size_t stack_size =3D 64 * 1024;
+> +	void *stack;
+> +	pid_t pid;
+> +	int status;
+> +	int ret;
+> +
+> +	stack =3D malloc(stack_size);
+> +	if (!stack)
+> +		return -ENOMEM;
+> +
+> +	pid =3D clone(clone_exit, (char *)stack + stack_size,
+> +		    SIGCHLD | flags, NULL);
+> +	if (pid < 0)
+> +		ret =3D -errno;
+> +	else if (waitpid(pid, &status, 0) < 0)
+> +		ret =3D -errno;
+> +	else if (!WIFEXITED(status) || WEXITSTATUS(status))
+> +		ret =3D -EIO;
+> +	else
+> +		ret =3D 0;
+> +
+> +	free(stack);
+> +	return ret;
+> +}
 
+[Severity: Low]
+Can passing (char *)stack + stack_size to clone() write past the end of the
+heap buffer on architectures where the stack grows upward, such as PA-RISC?
+Also, if waitpid() fails (for example on EINTR), free(stack) runs while the
+child may still be executing on that stack.  Using sys_clone3() with stack =
+=3D 0
+and stack_size =3D 0 would avoid manual stack allocation and work regardles=
+s of
+stack growth direction.
+
+[ ... ]
+
+> +FIXTURE_SETUP(rootns) {
+> +	self->cfd =3D create_test_rootns(false, ROOTNS_KILL_ON_CLOSE |
+> +				       ROOTNS_CLOSE_ON_EXEC);
+> +	if (self->cfd < 0 && geteuid() !=3D 0 &&
+> +	    (errno =3D=3D EPERM || errno =3D=3D EACCES || errno =3D=3D EINVAL ||
+> +	     errno =3D=3D ENOSPC || errno =3D=3D EOVERFLOW))
+> +		SKIP(return, "pre-idmap submount setup requires mapped userns");
+> +	ASSERT_GE(self->cfd, 0);
+> +}
+
+[Severity: Medium]
+Will this fail instead of skipping when CONFIG_ROOTNS is disabled (errno =
+=3D=3D
+ENOSYS) or when geteuid() =3D=3D 0 hits EPERM, EACCES, or ENOSPC?  Because =
+rootns
+is added unconditionally to TARGETS in tools/testing/selftests/Makefile whi=
+le
+CONFIG_ROOTNS defaults to n, running make run_tests on a kernel without
+CONFIG_ROOTNS will fail all tests in this binary instead of skipping them.
+
+The same issue applies to TEST(get_nsfd), while TEST_F(rootns, mount_perms)
+omits -ENOSPC when checking the return value of create_rootns_as_uid().  In
+addition, the forked child helpers in mount_perms, clone_perms, fsconfig, a=
+nd
+unpriv_no_userns call _exit(0) when unprivileged namespace creation fails
+with EPERM, EACCES, EINVAL, or ENOSPC, causing the parent to report a silent
+pass instead of a skip with a reason string (and unpriv_no_userns fails with
+exit status 4 on ENOSYS).
+
+[ ... ]
+
+> +TEST_F(rootns, move_mount_existing_mntns) {
+> +	int ready_pipe[2];
+> +	int hold_pipe[2];
+> +	char path[64];
+> +	int marker_fd;
+> +	int mntns_fd;
+> +	char ch;
+> +	pid_t pid;
+> +	int fsfd;
+> +	int mfd;
+> +
+> +	ASSERT_EQ(pipe2(ready_pipe, O_CLOEXEC), 0);
+> +	ASSERT_EQ(pipe2(hold_pipe, O_CLOEXEC), 0);
+> +
+> +	pid =3D fork();
+> +	ASSERT_GE(pid, 0);
+> +	if (pid =3D=3D 0) {
+> +		struct statfs st;
+> +
+> +		close(self->cfd);
+> +		close(ready_pipe[0]);
+> +		close(hold_pipe[1]);
+> +
+> +		if (unshare(CLONE_NEWNS) < 0)
+> +			_exit(1);
+> +		if (write(ready_pipe[1], "r", 1) !=3D 1)
+> +			_exit(2);
+> +		close(ready_pipe[1]);
+> +
+> +		if (read(hold_pipe[0], &ch, 1) !=3D 1)
+> +			_exit(3);
+> +		close(hold_pipe[0]);
+> +
+> +		if (statfs("/tmp", &st) < 0)
+> +			_exit(4);
+> +		if ((unsigned long)st.f_type !=3D (unsigned long)TMPFS_MAGIC)
+> +			_exit(5);
+> +		if (access("/tmp/hot_mounted", F_OK) < 0)
+> +			_exit(6);
+> +		_exit(0);
+> +	}
+> +	close(ready_pipe[1]);
+> +	close(hold_pipe[0]);
+> +
+> +	ASSERT_EQ(read(ready_pipe[0], &ch, 1), 1);
+> +	close(ready_pipe[0]);
+> +
+> +	snprintf(path, sizeof(path), "/proc/%d/ns/mnt", (int)pid);
+> +	mntns_fd =3D open(path, O_RDONLY | O_CLOEXEC);
+> +	ASSERT_GE(mntns_fd, 0);
+> +
+> +	fsfd =3D sys_fsopen("tmpfs", 0);
+> +	ASSERT_GE(fsfd, 0);
+> +	ASSERT_EQ(sys_fsconfig(fsfd, FSCONFIG_CMD_CREATE, NULL, NULL, 0), 0);
+> +	mfd =3D sys_fsmount(fsfd, 0, 0);
+> +	close(fsfd);
+> +	ASSERT_GE(mfd, 0);
+> +
+> +	marker_fd =3D openat(mfd, "hot_mounted",
+> +			   O_CREAT | O_WRONLY | O_CLOEXEC, 0644);
+> +	ASSERT_GE(marker_fd, 0);
+> +	close(marker_fd);
+> +
+> +	/* Existing mnt_ns already has "/", so "/" must fail with EBUSY. */
+> +	ASSERT_EQ(sys_move_mount(mfd, "", mntns_fd, "/",
+> +				 MOVE_MOUNT_F_EMPTY_PATH |
+> +				 MOVE_MOUNT_T_MNTNS), -1);
+> +	ASSERT_EQ(errno, EBUSY);
+> +
+> +	/* Hot-mounting onto a relative path inside the live mnt_ns succeeds. */
+> +	ASSERT_EQ(sys_move_mount(mfd, "", mntns_fd, "tmp",
+> +				 MOVE_MOUNT_F_EMPTY_PATH |
+> +				 MOVE_MOUNT_T_MNTNS), 0);
+
+[Severity: Medium]
+Does sys_move_mount() here propagate the new tmpfs mount onto /tmp in the
+host mount namespace?
+
+Because the child calls unshare(CLONE_NEWNS) without unsharing a user
+namespace or remounting "/" with MS_REC | MS_PRIVATE, its mounts stay in the
+same shared peer group as the host mount namespace when "/" or "/tmp" is
+mounted MS_SHARED (the default on systemd hosts).  Attaching mfd onto "tmp"
+in mntns_fd then propagates a peer tmpfs mount onto the host's /tmp that
+remains mounted after the child and mntns_fd exit, hiding the host's /tmp
+contents.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118193539.2400=
+65-1-jarkko@kernel.org?part=3D12
 
