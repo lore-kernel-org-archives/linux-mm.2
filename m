@@ -1,126 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74527606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 07:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B54A606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 07:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=mSQMNIms
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5iT/6Xv
 Received: by kanga.kvack.org (Postfix)
-	id 7BA756B05B4; Thu, 19 Nov 2026 02:51:27 -0500 (EST)
+	id 885A76B05B9; Thu, 19 Nov 2026 02:57:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7900D6B05B7; Thu, 19 Nov 2026 02:51:27 -0500 (EST)
+	id 836CD6B05BA; Thu, 19 Nov 2026 02:57:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A6146B05B8; Thu, 19 Nov 2026 02:51:27 -0500 (EST)
+	id 74B9B6B05BB; Thu, 19 Nov 2026 02:57:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 343A66B05B4
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:51:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 828B3140962
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:51:26 +0000 (UTC)
-X-FDA: 85451098572.15.CE725BF
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9FE53120003
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:51:22 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=mSQMNIms;
-	spf=pass (imf29.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795074684;
-	b=LlyCmAda0P/MvOR4Ux/LiBAHMmSGalaCWmVmg48el0haIk84CSTgtWbK41sJHBw9xcuhy9
-	77FBLBl//mZYd10EzqG79XmEDMgBBlqcPzRXz1Gmu3/p1qWqfTejxU6NA3o7saBoMgVFpM
-	ZuZMl0QcsMoiQzx30Pn3vabI52VeB6g=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 50C676B05B9
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 02:57:05 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2F4FA09B4
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:57:04 +0000 (UTC)
+X-FDA: 85451112768.26.8585963
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3959A40006
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 07:57:03 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P5iT/6Xv";
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795074684;
+	s=arc-20220608; t=1795075023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Ba+Nnv4ioOHEAc+i4gjL1aVglKq6uZ57iPLZC0JP+/0=;
-	b=rHtVuF/yMe4NBXJPHZr9QPz130Ya8qTpg33OooA1ah5YVY2TpSeWW1RAwAhiudGxQhy193
-	5xH32IEMm+TVl7l/twHaZL5QbzIDNEXF4k2gsfdOwYe+Qe6Yg5reU6SjvNQv3wd+YUmxmo
-	0aBQ2dXG8tjICfHCzFudBCg/FScgb58=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GC19D8QX3e0BMtqC3RPLEBVs8/GW0WZwei27hG/CDHQ=;
+	b=0wCL4wGYVhZrTVBOif+3zBwnCgXp6MP54O8aLErKBQTqnymWMGB+yZPjMuYxWdEFKfDpqy
+	+tFH3XPcVV5EeSxlUy16NNMG1msFnr/hoCBdMaGPUkR16pVP2kivkZ0UixvaKIAUdJaHmy
+	O1JYmcv+6wHUyWOGlPgiuYg98xz9zW0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795075023;
+	b=dWm0zGCc+5L/vAvcZsSaLnqR9rMDR7jH7I8AUCjLCzuIVZ5ornKSDc/+Nhnrw7c1y16jrd
+	eD15JdfYmyJq5Ndtjwt6eaDanZg3HqL0bq4meemUzjeT8sAemvysHTllm7jm9TLK5El1K2
+	9BkSwpI0CjSP3dkNr1xAb13e7tyAEdk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=mSQMNIms;
-	spf=pass (imf29.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1795074578;
-	bh=Ba+Nnv4ioOHEAc+i4gjL1aVglKq6uZ57iPLZC0JP+/0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=mSQMNIms6b2a847Jv0CgJNJV6Yl+BsggwHWjh9g2APDz6npLJmeQTsJjoBAl8zBU9
-	 6xlhSRnv4OXGNVqp4Rjxep8LZXJJtV7C4cr3+MsaSsBBmZVkxxPZ9Ow0BOQKbOlRIJ
-	 /KjHyZtvBlohbGVHlBemOYJe/2lyZpuolJq54c3w=
-X-QQ-mid: esmtpsz20t1795074573t21a8dba9
-X-QQ-Originating-IP: g/JHC0RTM9WfBbnsRPMGVVkJ0qD18o0qUXMwBFz46jY=
-Received: from PECI3347 ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 19 Nov 2026 15:49:25 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6967146943735712994
-EX-QQ-RecipientCnt: 18
-From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-To: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>,
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P5iT/6Xv";
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B2C41625A8;
+	Thu, 19 Nov 2026 07:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186F91F000C5;
+	Thu, 19 Nov 2026 07:56:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795075022;
+	bh=GC19D8QX3e0BMtqC3RPLEBVs8/GW0WZwei27hG/CDHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=P5iT/6Xvlz2DiMKIeDEjwktDfpIisglfro6uw6YzeBybw9KYw0q9HUASRGPCx7e/x
+	 yAE/72ZGCybiFkav/cusuFOSAbJ7+rDCbQtZg0P7x4hURny1d46AM+RLqu9cCBJIri
+	 GuIZCnVr1CeM5iZcae/uj5K9tcRwdYrUt5mUZbl01/DQkzm6WBraMxkJCDSkF/sy8S
+	 YbkjMlaRafiV6MT5KG8usCCfhW5VEPWzGWBU5b6r0JOTPb30TssHhco4Whd8IgMbnS
+	 a834awNrlhg97f5/ZA8Vnw8SQzOsrDxiNLfzfLMpHpsmkxvmsjQb2aH9ZuEoC32Jzh
+	 OJcklxorwNEYA==
+Date: Thu, 19 Nov 2026 09:56:51 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Chris Down <chris@chrisdown.name>,
 	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Ketan <ketan.kishore@oss.qualcomm.com>,
+	Mostafa Saleh <smostafa@google.com>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Randy Dunlap <rdunlap@infradead.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: [PATCH] Docs/mm: fix stale split page table lock references
-Date: Thu, 19 Nov 2026 15:48:53 +0800
-Message-ID: <32FBD023F945BCCE+20261119074854.252609-1-zhaozhengzhuo@uniontech.com>
-X-Mailer: git-send-email 2.50.1
+	Sashiko <sashiko-bot@kernel.org>, kasan-dev@googlegroups.com,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 6/7] mm/page_ext: inline unchecked page extension
+ lookup
+Message-ID: <av6rwy2ysqCVdcC4@kernel.org>
+References: <20261119065812.89959-1-songmuchun@bytedance.com>
+ <20261119065812.89959-7-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: Nm3/xtCLAPd0xZhFJxT4TR8Of5LS6XRU+SWytWF0VPwHy0CRNWSnWjEq
-	HPuOb0jJ1eoBS3FIktmCpB4jDKfHE2srNMVBv15Y4SPnblH+aIraKCSn5VZzTwjgzMT5LJL
-	YNn3D7FzNqb683PGEgbvGX60E3DQKGht7YBYZHob6wMQ6XIEiJ6KdIe8GAaO+j2FaT/tqvv
-	dKvHDZzERZRleXgfS6dsEXMMUsaDW5vSStUkMVepJdPRlgmLAIadon5h3+JDxV1bNf20ZDO
-	Vv9XAsAhoTclQobIhqtTfzd1iNVRqBBp5eiBjrIN9frb36Q9jN2r4FsNHhDJ9NmK0qo7q8/
-	Wo3slUYCmdm+/rJp7spJeh+b6jAfTqbX+igRqepyJzo2C6CbTlXIm15JZiNPS+M+Vq/itlA
-	FTlIeHU04U5MGa3X4qQlU/26dP0lFAgTpb+u4MezS2urW3Jy9Njk5T1lnXeAjhaGkAH0NaI
-	/dSQgXKz8zfatRE/p+NCwOOp1Z8JPChowq7wMwtI18uUF7IbRTzltu+xFEz9NDofiv6ZFVL
-	kjlnlT8UPljb4AkneEbzFxYubOhsvA21jwUPm4prKY7QgQFogLCiPydjnIJXM27OXXXODjD
-	l5WeB1/i29eB5aS2nkkhhfPTfRhi5FGLJ/EaL3EahbDsqSA+q48IFDW6ZmFp6RkUMYQecgZ
-	C0l44RrahBkrx6sCKTm/FWIHboL5Dm+kmr+mN6m6ByX89gXsk41O5/sqE9Cy6rWwFOQJ4+E
-	/m/NtSZ4KsMhZgWbrqzf+mLDWvCG8ySx0280oZHJRi6EudFCa+r5M6B06vnpUvLdGfhIf1t
-	MkZmgh/uDZSIpN6AmpJTnST1CfqHsySP+0Hp9r30GBWsW10YYBN6aPJcBYN/Dx31BGxPhCS
-	NnQf7NJGP5jizgPdMYrnC5/diZXERBj8qa5ETSXMHWAiXtfbVQLvERd/5qZwbf9P1UcOpw7
-	sGYlXJ6p53aWVodL1ROrvtoYDHUV90Xb63GkR7VbdA7O6UypohLTb7ah14DbD/Sk9oEPfQb
-	KbGAPOkPa0ECegsGSeHat3Wn1qy01oz/3UxvbxnuoLWhVkKQ/uiJR6T8w7hMAtBqn1CjqZ0
-	De5PVNbA3THHxIs1MdOzYnRvuyIgiC2ygzG3IiTukM4n+COanQXcKI+ClUR6jRywUn1ZG68
-	1Kef
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9FE53120003
-X-Rspam-User:
-X-Stat-Signature: meqa9nfh5dmind35p6k3pifu8wi5qcwo
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261119065812.89959-7-songmuchun@bytedance.com>
+X-Stat-Signature: jrsnzgyeko6ysxbi411szr5c17n1zkun
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 3959A40006
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795074682-641481
-X-HE-Meta: U2FsdGVkX19g9OMz2thXPSCgVfQ2SfymUXJ4jbdaEBkql1wULniFeTuWLZs66ckJuXTRHDmmKHt1ONxxqpsO9r76QZqdCP6xAo/mO9jWUaMS2s/ZC4SQM76AjLIoC79OxW+U64S1wZJj/GoQ47EVetB9leHK9xwXCnfz9c2En+7E8FJnfMnepHWSEv7WIomH4lJzbVG4XPWTWAKbQo3rKuOEhPg+BrDaKZhZbn1aagVkJzP4bL8Hv4ifRGijUIyBn3pYroLHtHAhODdX0h1NZVmPL4sKFy2AOTzvFgrzbRijSpX940WBGqg+ZcZG2zBEJKwdZost6m0Pz//O++IWr6OzPTIT5U1c0QuGnV8M/VAUhqXKyA70HRqIxiWKJXD2L8vAcrx45S0DOCt/fKKYD2v0LdkLj6s3tQL6jTEuphtAJajFhoi2fJO5jRJMQxEOIPqplf4oucCbo2yw4irTAuJBF7EGmWZTdysQfNAqRZ/RL89ILp4rDCV+Rt5wJM9F6dS1EqwAMOrF6jAwv7exyfTZPh6cwLJck890HIHDdblEBaEQvQYBhuv5Skmpr5w5kJtYKYsWJwR1yJ9tIwLH8Zkf8dT/+UPo8MZXbeHwIht0J6VkePeXALhn9Odt9PhNwRqE2OXl5P0gJJVFm0j697m9CnJz6m/U0+dQxVfgUlgj9ulmieO0PcMDP2mCqFfpWyWSleRIchWv2AFQoloYL5HttqrkDHtRxk8rwAes9cQmFzq1/Htf9fXVjM/cZFtb3KgAF4THvHY5DRX8XeVQjonCNn6xgTRlls8xOguXi7EkKGbHQP2PmApLTp6jDHXd7rS+4O5xgMayvfDRa/dFAuh6XEu34XT74VA6NPhnq8DvyzFFweUXKrSINRNpa13dv9sAhP5F3SugX/zXHjnYr9peQ37tdRUkOvkzI+GCWDLsYYWjDHV3GJDENHi3OGfwdYuXSJx7EYO250gQ23S
- yBRMDUlD
- 5ocEKImzmdEIY/8+TCHNU1+rW+YptNLH5/AN868q/vxS9sSJMKgQGT68vx63Y4/sjGVG8dpmn52oEk7PvJNzcRNPDtKN1NMLdKPa70fQbVul2Ai9xV8MgeztZlhLm+LjiYxcfSCA57XrkhyIwWbDC/cOj0ev4nKzj0qX5aw+slIeC7bS7NB8Ga2ZhHcFkI0BzqBRzMoUR6l3FWyApFlQbrmIyP7IOupsqds8dybo4/r0StU9mGQcfsrbODZfWN6TYKtkugTySVs5S3qHkWLPv4u+JdaL4X2CxUAB7W/QKX/bPLXiTBcNUp3WMMH/+eQLQK91qnXwz82EqKoAg5GB+C4siAGdUCkUrwt39nZkmq8DX8P1krpDwh/YrySdauNp+eQrXDc7dw2ine6npl2nLUEMKFL5VSVzGc5FyxSQ8Xf7hp5NCt9z/ZfGQxTzSwWhpJ7U8V90Vt1PiLBR+GND2KxMjhjjm8yeWeqLMPrBpIflamvzr3ln7XZCKCnsWcplOJbyfjIQ8npD4A5+ZOdCybYXJXsQ1gQEmktJQWot3hKupjFqtf5vjdAk/ChW94h9YkIAxAWhG63VjANOYVF1BgBu6/Kb4XTZHtxxL4TYJD/VHsBI=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1795075023-777044
+X-HE-Meta: U2FsdGVkX19sr3IWPl6Y5fMfMdkgbPFLCBKoCo8ljO1ZkxczMQqwcb/wGnAKNAIn8OahL91oKFHigbN99zPcDGXXJoFlR5xhElI3P00krPR+SqfI9KpDAjNVnQj4shpZ59K/iH7o9qI3NPlu9rZ8jUUNj6uuGvGta8Fiptt/qYmdKbyrZ4c+4Sgt3dTp87N+OmYYpHzup4CTx5ErTKcFPVv3fCEiy0C+mPpAdUBhVidj8zkWoI7HMavmpm43CG03rtF3NgnOq4qOq6PbJ7ed9AzwPmz/gczBVCnyiTlQO+kNWBFqRCEY8fOgUbAPms/ECNHcnie4WNxezMpqnTtklt5NmdYreDyht0+WSNCNdVydsLz0ZyeO1tQeYDIT6Z1J6Vul34B1cOdX5MK9NX7uEUtd1Q1qdkZ3YPU35Lg1AfRz4ntnM2FfsxgCCKxfRNouG0aAmodES03FzRY1RKaNJHssIotmLFvLSHu7GMYoBdJOFYRwJ5woyQLC3HpxlS5DDfx0lCk1O9AC+Lo+4CmIEZr4bqLbMGv4uMM2aslIIxPmn0OY2FPe5mu9jRcnGbR9BvWgCrhtMZTmhFwZgy3u6E7hD2dyaYf4Od7HZ0XcvvP+hVnlA9huaphMtFfTpRhrXuE8MhG02Rx8mZsl2rrARpmQkBAwQedoGZyLsWsSUo36sdo+vX45bVKSnZgpYbHe6JCJksr3azbx6OMeupcBFq3gkBitJThfa1dla0NnT5uK5Cbth19BNCqHZNlEcOIgieBJxDvRJGoj32z4qOPknIG+KTj6Uo8EjskO7G2Fe2VVDzrKg2tiL8fZhXCEkoyXtdPdCzApOVULpRQJobZfz9bFT8B4myLAeKYO3CtkLZaLOK4R9riLQv5apSF9WTuPXiX814osIoCdiJW3bnY1zz+8Fb+hGNxMVfmoh6ww448cH4Y1mEM/Iiw+WBRra/C2y/LUMe36zw6ZiBDaO6i
+ 1Deap4Ah
+ 03cImkAcsFTDqpe+LKWtm/eusPWYVOYieooDO6u1zbl4a2hDV19gjegfMZsqzpUqlwn9qUbxVZ2/W0fZvQRpb6NzucKaA0dnCZr8DVF+VmEL6rndZUa272wdk8RcgM1SOboEX4ZugJLNuf9Ow45HG6alkfNI9ihrInbOC91sop1zPtkSefHjrUcp2+WYnNnOOfTrnCM9NvKxa4iBPVSxp1Zw7rt0gjYIM3EVj0vM/bfnhLcgImhsqzMm2bQQu28U/2ydtd4PnVPiwAypq4NNpl+9YApXbmwKa7iO2RU35QRL48Ctc5Y1d6OsyDx6FSvqMtrmUZo0q+Rn4PuCBmhcIj62VVcp29eUi1kI/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,52 +117,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The USE_SPLIT_PTE_PTLOCKS and USE_SPLIT_PMD_PTLOCKS macros were turned
-into Kconfig options, and CONFIG_SPLIT_PTLOCK_CPUS was replaced, but two
-Documentation/mm files still refer to the old names.
+On Thu, Nov 19, 2026 at 02:58:11PM +0800, Muchun Song wrote:
+> The KMSAN runtime needs an unchecked page extension lookup that can be
+> inlined into its uninstrumented compilation unit while page_ext.c remains
+> instrumented.
+> 
+> Provide an inline lookup for this use case while keeping the existing RCU
+> checks for other callers.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Chris Down <chris@chrisdown.name>
+> Tested-by: Chris Down <chris@chrisdown.name>
 
-Update both references.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Fixes: 394290cba966 ("mm: turn USE_SPLIT_PTE_PTLOCKS / USE_SPLIT_PTE_PTLOCKS into Kconfig options")
-Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
----
- Documentation/mm/process_addrs.rst         | 2 +-
- Documentation/mm/split_page_table_lock.rst | 8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
+> ---
+> v3:
+> - Collect Reviewed-by and Tested-by from Chris Down
+> 
+> v2:
+> - Add a preparatory patch that inlines the unchecked lookup (suggested
+>   by Chris Down)
+> - Use a PFN interface to avoid architecture header-order dependencies
+> ---
+>  include/linux/page_ext.h | 46 ++++++++++++++++++++++++++++++
+>  mm/page_ext.c            | 60 +++-------------------------------------
+>  2 files changed, 50 insertions(+), 56 deletions(-)
 
-diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
-index 04b649818cc1..0b6355e6d1d5 100644
---- a/Documentation/mm/process_addrs.rst
-+++ b/Documentation/mm/process_addrs.rst
-@@ -659,7 +659,7 @@ acquired in :c:func:`!__p4d_alloc`, :c:func:`!__pud_alloc` and
-    references the :c:member:`!mm->page_table_lock`.
- 
- Allocating a PTE will either use the :c:member:`!mm->page_table_lock` or, if
--:c:macro:`!USE_SPLIT_PMD_PTLOCKS` is defined, a lock embedded in the PMD
-+:c:macro:`!CONFIG_SPLIT_PMD_PTLOCKS` is enabled, a lock embedded in the PMD
- physical page metadata in the form of a :c:struct:`!struct ptdesc`, acquired by
- :c:func:`!pmd_ptdesc` called from :c:func:`!pmd_lock` and ultimately
- :c:func:`!__pte_alloc`.
-diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
-index cc3cd46abd1b..ce7908bebce9 100644
---- a/Documentation/mm/split_page_table_lock.rst
-+++ b/Documentation/mm/split_page_table_lock.rst
-@@ -37,9 +37,11 @@ There are helpers to lock/unlock a table and other accessor functions:
-  - pmd_lockptr()
- 	returns pointer to PMD table lock;
- 
--Split page table lock for PTE tables is enabled compile-time if
--CONFIG_SPLIT_PTLOCK_CPUS (usually 4) is less or equal to NR_CPUS.
--If split lock is disabled, all tables are guarded by mm->page_table_lock.
-+Split page table lock for PTE tables is enabled at compile time when
-+CONFIG_SPLIT_PTE_PTLOCKS is enabled.  This option requires CONFIG_MMU and
-+CONFIG_SMP, with CONFIG_NR_CPUS set to at least 4 (see mm/Kconfig for
-+architecture-specific restrictions).  If split lock is disabled, all
-+tables are guarded by mm->page_table_lock.
- 
- Split page table lock for PMD tables is enabled, if it's enabled for PTE
- tables and the architecture supports it (see below).
 -- 
-2.50.1
-
+Sincerely yours,
+Mike.
 
