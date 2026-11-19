@@ -1,238 +1,200 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B104C606A334
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04746606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QbnBCM/9
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=owrSWS1F
 Received: by kanga.kvack.org (Postfix)
-	id 7340D6B0692; Thu, 19 Nov 2026 14:32:43 -0500 (EST)
+	id 232E26B069E; Thu, 19 Nov 2026 14:36:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E55F6B0693; Thu, 19 Nov 2026 14:32:43 -0500 (EST)
+	id 1E3D96B06D0; Thu, 19 Nov 2026 14:36:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FB296B06CF; Thu, 19 Nov 2026 14:32:43 -0500 (EST)
+	id 0F9CE6B06DE; Thu, 19 Nov 2026 14:36:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 21B6C6B0692
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:32:43 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 729D1C0BE2
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:32:42 +0000 (UTC)
-X-FDA: 85452865764.30.B1CC1E4
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F1FDD8001C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:32:24 +0000 (UTC)
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-67db23d8892so235397d50.2
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:32:24 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795116744; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GOchhbv9UkDx+xd8sNIPBEDxB17fHXVmTTwFAitNMX/nidnQEvdgSdUS42JqV54bdq
-         f18d1fhJACbnpy4vMNqh3O4MSELNwRUtvKPPU4S3EToyUHPSWksQCfCrXqqs4Ptk5suF
-         aAKETw/SwqaRHrimgJPbZqL78Ld7P53JAEBGZXfg25qKca4Jlhk7PVn+CO5yxWGCpYfW
-         Dtbm04QeeFQvlx3ReFGYR4Xtb1jGgl4fSSmh7hBJDhljASN34Y5SnmsLjDSVgoH4TZ06
-         nhgGxqgRBT88uzKJubxcNsvgbTBgwFbNZgpfR7bxJxfknWmV83gdcwTL5A7StMXndB0n
-         rPyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Xv9XMeqz3I69IimX7OB4/p06jGyymD0wx2G8UGKTZfQ=;
-        fh=LG/7MJNfiNPUBqoeT3DUliwA7YhmIvcO1m6VbEczvUg=;
-        b=k1wFRY+fPAB48WZ2n2A4HECH0xFOgMDgIxlpZj9oVIUKS8Fz8kAcCMJStTUEVivftO
-         jD3ZYos8WvUxxBYakPHttogdrlUTAGNbDYshUItWzN8ogxCtVfG8uc+En2vAfDwfLieA
-         cAeGr5PvssaFaiyks/oKeGcVNPvf6hXRnJY3a3/hH+EQo9dArRLyrTX7DOyiuvaEgIaY
-         yye9HblQ2tC4aJycUku/Aa1WQm5+Z1Ym9FK92L9qTRCsWAlwdxWQjc8dGmt/OXc+oGUW
-         E2W0Ddrl9KA7QGelnmttuygIV2MqdRqMcrZk4to1eSTiwyy1WaHgqGSE1IES89ucQufd
-         kOxA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795116744; x=1795721544; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Xv9XMeqz3I69IimX7OB4/p06jGyymD0wx2G8UGKTZfQ=;
-        b=QbnBCM/9/KIZygoy22bS+abTnnuANrYuiX+lnR/uYIUcj5N0eOZ3inXEyh9bYwGPec
-         1W4VA0bRxMPRQ25MtoMGZ+SRHELlM7+VojL+AA7rqTb6cMPvJ+tISSntEm8EoZX/jffW
-         gLMUcADOgRX8n3VHTaFs1LUAJo0ORlKuq8CGCsVJgBiECT0VznYYbCwoVkd8Jw37H4B5
-         emcJ5bgvp6U5UQzi6BeygslT6vnOj7QhjZVOUTsX+DcLv2T3mHJIYagubrgGaUkomLKJ
-         pvHa04mlrMXGmXEJXC3kDtqyRRvlqpitcSNYSBi4vRlxOaMWa678TwufblPpRLTV6aEM
-         7Ruw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795116744; x=1795721544;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Xv9XMeqz3I69IimX7OB4/p06jGyymD0wx2G8UGKTZfQ=;
-        b=uLqrOuWP72Ea6QxbhcEXMgNOOiDRUsdSBqGQjZ4vjwM8pCUb2o4xTIiU7416tAhFLV
-         fIepd9vVJGFWvigCWTeJUF2MjHEIW40i7yKZD5VpmB6/xHeWfqBfnP3G5WD75B691Yxa
-         64OVCIv034b9PtcGU/EbI2UyWu0lbONH+jAjVyu0IJhmf2WdLHEyYZ9nvgfx2TwBhTB9
-         JtwyrpPMA7epVTNWCKAsLb2ZagxoBR1VXYGaxa5PdZWNBdPu+/EnuQusyu002QsU/6aS
-         kXW5xTMSm4E3G+ehQB546JI8veYkRM8wzXeJH6vlOm9IqxzyjJVSSkskLIWzQHP/ayU+
-         Ib5g==
-X-Forwarded-Encrypted: i=1; AL+hErHnZPI04d7fAEgahpFq81F+uozD92WUgqGPPwGsXDly3PAYbgIqfunnBCrQSTSogZebZzzmpJoBPw==@kvack.org
-X-Gm-Message-State: APuU4Z82qyveRzxx3SrOyj873rybg+CReuMnmrb0AnJZ6D8/MOPiNaE1
-	FB3Su7gZKy3x3ivqRbtrcnUZi7q/K/anA7kbGpredIgkrqOc+1rfqtNAzAEUIif27wKnbToYzdA
-	fFRuXCIAOHDXnGto1CRa+K9bVJNkv85Y=
-X-Gm-Gg: AZFdTZcA8Sj58ahD7yl9L9+BHDqdmvKEFo2FvZXZ2NVwetRSrriuItGbDmoIhxuY3N/
-	t/8n8izvINtQzorDQEDoXLCoHbON2EeRFkFOFy0495YhXQWP9oLZZiDLKWjp2Bo2Pusc812lpC4
-	d/uYjiQ1cEW0YPRAOLsuUXrPlzf1Qfweh5hyXxUFY1noDryg1eRtoMOx2ncxpu0A0ZVtITYT6M9
-	oDRgT/XL3buxs4cXjAgxTxPFnB7kbBE6mTQuxh2GnTGjvAuG/Nb0wqta1T4HCF8A+8IGExlLL7+
-	90td5idBFpNtxhx3IJONFm4k1hXCDtWhTCYyDXe1+9ieHeJOf8Vndj4Pk9U4aHZqrSZREXbvNoE
-	g4PUmW+eLPOzGYH7QwzbjG9vK22kU3iAKB+S7j7wj00+SDmuUyIEibUt4mX42d3RYCLfirQ2euf
-	pprOPpMH03pRBdQtQNpE0EbUxE3eI=
-X-Received: by 2002:a05:690e:4894:20b0:67d:b54b:3cb8 with SMTP id
- 956f58d0204a3-67df43f5c57mr215394d50.34.1795116743905; Thu, 19 Nov 2026
- 11:32:23 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261119180015.933433-1-thnkslprpt@gmail.com> <av88TW3GQRvXJDwA@gremlin>
-In-Reply-To: <av88TW3GQRvXJDwA@gremlin>
-From: Avi <thnkslprpt@gmail.com>
-Date: Thu, 19 Nov 2026 21:31:46 +0200
-X-Gm-Features: AclHuK8VZBHxgsR35Omg5I3sBSMaRh6fN_PGQ8RGPAjS_X46z1BtoGQn3KkJiHQ
-Message-ID: <CA+jvY9E3XD5mJZ7V-+6HFxEkY1FHNGom42F-nxMZNGtOy9POqA@mail.gmail.com>
-Subject: Re: [PATCH] mm: skip temporary folio allocation for anonymous UFFD
- missing faults
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: david@kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
-	peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	liam@infradead.org, mhocko@suse.com, surenb@google.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DC7546B069E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:36:57 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 56E081C46A3
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:36:57 +0000 (UTC)
+X-FDA: 85452876474.19.4830975
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A35A4C001A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:36:55 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=owrSWS1F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795117015;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VNM+7RVYDMfJcBD0bitBmq9dsNdnP+e2PrcUcBzEF7U=;
+	b=HC1ZVmPbzMI9BZ6LKcXlRu/3XLvFuhsjGjxJTQ0nX4U7SEWp8bXcqaU+oLhjZXs06va5XR
+	7uc6Sum5e57KLfeANlgj6Ivou3jo+787kCHg6h00EbwABKPyXWXfi+hIveGNWlpW3Ki1K5
+	x2KSEJxTUZAH1W48lp+MYglDBU04dMc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=owrSWS1F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795117015;
+	b=af1Ml4pkh58vd98vPAkj+ZJEeYwUIaza1KabZN7guOsUW3Q+YY0Sy+dSl8Lsm3cWbSjPw2
+	cuAa38eqriPYm5yYcO4oubdEloRzpoQIKzauMGZYSghYDrNY00a0vFJ2IVbzBVcbs9n1Lm
+	/jY0fmxvpyF+dJakD/YCVTzYPq8eHcg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2CEA445127;
+	Thu, 19 Nov 2026 19:36:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C261F000C4;
+	Thu, 19 Nov 2026 19:36:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795117014;
+	bh=VNM+7RVYDMfJcBD0bitBmq9dsNdnP+e2PrcUcBzEF7U=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=owrSWS1FsstagbuZ/jERHqlbcvoDtYvMNFddXXZmwRBNjjOa+PdL498x5idmBTC8v
+	 yoA7K0aPH6q4N7ZoWFeOCofHW2RDkCjWEj9aQvv4cFbSz61dqNFGcMQmuKQZu4lBq1
+	 0q+W5smUlWBitu7XmqR45NoSbC/4g9He7o4Y+q13eL6rxc4ZK5jLVdZaVxNw/XKimS
+	 zJiz5y4mpZZ7VZMWU3jyJHn9Hpr3yZTAmwFJ3OP28st9KBK7BDWtOeiGnDeb3S4A34
+	 8Ul6+zRWGmczZ9XE0Cc/WVunzqTccCefb9KxG/Szr7pZcXt7Bos9fO3yPglwtaXesR
+	 BqIO50JkVd+yQ==
+Message-ID: <sashiko-outbox-223947@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v3 05/13] rootns: Add rootns_wait() system call
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, "David Howells" <dhowells@redhat.com>
+Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Andrew Morton" <akpm@linux-foundation.org>, "Andy
+ Lutomirski" <luto@amacapital.net>, "Anna-Maria Behnsen" <anna-maria@linutronix.de>, "Ben
+ Segall" <bsegall@google.com>, "Christian Brauner" <brauner@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Davidlohr Bueso" <dave@stgolabs.net>, "Dietmar
+ Eggemann" <dietmar.eggemann@arm.com>, "Frederic Weisbecker" <frederic@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Jan Kara" <jack@suse.cz>, "John Johansen" <john.johansen@canonical.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Juri Lelli" <juri.lelli@redhat.com>, "Kees Cook" <kees@kernel.org>, "K
+ Prateek Nayak" <kprateek.nayak@amd.com>, "Liam R. Howlett" <liam@infradead.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Manfred Spraul" <manfred@colorfullife.com>, "Mel
+ Gorman" <mgorman@suse.de>, "Michal Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Neal
+ Gompa" <neal@gompa.dev>, "Paul Moore" <paul@paul-moore.com>, "Pavel
+ Tikhomirov" <ptikhomirov@virtuozzo.com>, "Peter Zijlstra" <peterz@infradead.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Serge Hallyn" <sergeh@kernel.org>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Steven Rostedt" <rostedt@goodmis.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Thomas Gleixner" <tglx@kernel.org>, "Valentin
+ Schneider" <vschneid@redhat.com>, "Vincent Guittot" <vincent.guittot@linaro.org>, "Vincenzo
+ Frascino" <vincenzo.frascino@arm.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Zygmunt
+ Krynicki" <zygmunt.krynicki@canonical.com>
+In-Reply-To: <20261118193539.240065-6-jarkko@kernel.org>
+References: <20261118193539.240065-1-jarkko@kernel.org>
+ <20261118193539.240065-6-jarkko@kernel.org>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-HE-Tag: 1795116744-604481
-X-HE-Meta: U2FsdGVkX1/M7OsI7uMlEXzYfzeQ6ZR32tot5xpS9U12eTJdkFhqd8Lz1Oksde6dvNDKvFD4BGymm9HT9HjflMVkt92B0KwpFe4oNyfyKtJrp31Dj2uoZjuUUHaK2uGk7JWfCJNjcRWiSqe+rSIe47+D0GvFF9jXB/CKbxxh/dIROULfa/fQzckCVcqujw9E6fZjcShgwtxroa1JhlYZZpJpfNDUl1qaXI7A8w8BgJFuqs4ZUlAZeG+9toqVV0HH9zo1sbM+fdWXIbmA32Do2AG72rGepeV6YGDAMUPFUApyGmO3fzCBxsrEDAxs71IBYprk9KkenTdhbD0AUppzj6Ajf1EiBqJ0gDsxsRSo450NzSxsSkS4wR1CgkrKMrA9trH8tDL4jmZmVr5pqW89ssXncjJ2D65yyq6Rz52D13UhGMy/kUCvXyGGv7Fk8vazL5yT6kmneWI9YuuqpUenG4/nZbDvKpSHyOOlvkwGEaOqbvQUMI6fShjwBlfBrGYh
+Date: Thu, 19 Nov 2026 19:36:50 +0000
+X-Stat-Signature: uhfdw77qntgftb66o1u549q4tthtz3um
+X-Rspamd-Queue-Id: A35A4C001A
+X-Rspam-User: 
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795117015-649862
+X-HE-Meta: U2FsdGVkX1+Ffvl/dG6z/vFv5TqPmUfm3+aakOOsOsYaMmFGgdIDh9IxlFYJItAf+X+rqyih6njN+5TyIyeDZn5UHd+OSoIK2+J97ZLYpU9aIsa6mwwBZ0VXSOYbCDOt4gXNn+H08FYQItQ93Syo2f/VgVNkY8U+gpvtT2dgovi2enrmiD6yTWptF3+K0x2FX8a7IH1PUZFGlvQbJKgn9/qc14XAJI1wqIaeRZyPSyOUqfd/FBgun2FdoLeCMTTCF3PT/PU2G9krJvTJhyWWXHkAHUMPOa80+x9s7AWB2z1t3qVDLTugTQRzo2p1bMIJ33lkYtJktzh4F1font9Gd16O4/rLqbFtN1Ldtb8VwnaDoZaTKiK4ntXwZmhUH4HLpa2IXHgcq+/LFsQtv4JMejnTDCerGcGqABjAl916mcJruqbZ8TLmMw0yVG87c7i3wCq3WEDiG1feY3uMOR/ccehdpF3HhKi8TxVQJdpkJea8RFzlIJSYVkp7h7IJdogIMsVqz6S6CgagIJRiSNajCYwgM6j7msIx371yojHcPUWyj3GAnyMiCu7rERVPipZ2Xoxjyn3rV5F+hJrjI7LeaSmXb+NMe2R9ranpJN+2sUaR284rTDqjQOW8w510eNrrPZ+/P/E17Q6z7xTXAxlQ4SbFpHy0nX6vBM47Xa18Hhq165/kzxWz53tLNXAVRf4QoP+AavtIGxQIomZIQeEii46BI+esqAvWMtlsOZntFTEgQvwrdGfGDuKCzAPp/o5MJV8+Ou+73jyAL81YIsD4CMvRANcef3tQqtF38CMxeF3MoJtWfU+V6Po4Hpk2cVmBg8xCJdyIX9jA1tNuBULMo2q3/0aBL+9Z6BCU2EWT9VU8xWYwO1hD4mRObD7iY6h6/k98qtjVpuWDsN5HDP6PTSoQv9KyhB+Ta7eWH3sb2O5hoeX/DL8a8e5OCQvP2yNBndDhDw0xpZYqff78bhH
+ VfD2yQxs
+ Blr/v2XKGce10Pzkbl/vEwzBh4SSPXxyToz6Oyotu8ay1pF58Tt7pFcbddQMJl/69H0CwWVfChPtR/PM2xCURMHI8Xjqd0t41BOeY9itD4JfSTtYxrYQThQU+5ohQNk6xEluGAJcuVWPnESbeU2iTQzPfHCnk708VG7/ZTuJhxWKxO/4zTNlP6G9KoqqOFZcgBWQDO/I0acAy9OnUdcf38ypOcTR5rvIOUHbo31a8JV40eHTHE/SGc127iRW91hAO4KjVM/0++jItcU398EW+8Bx2J2D3oY5Ood71g/FVE5NA1/CC0axDl/kqh+txYC+zSG6fGAxoCIhJ5dT0w6e6RUNFiTSnOmNYMlWwl3D//tMNdreELekE4PNuN1t+B88dswYBORO0H+x4cWUc+vRm2DRRtWrd2anG73MnZl9xMArK18HSKrvwsGih88SgZ3ATfC24rRjD3V5VHgKaWua4gNpV/yIHZ3yyZK4MjZ6KcxiPgFefUUtwcxE/b8gQDRRS8KA8rL1PtVpfJsKcBMGYOzJZUuxN/lGySEuArezsGw8sm52qorNx2eTmxCOlfIaMKLaD+YxHF00WYtcUQfHqzb5JDwVdFD05C0V57JRUCSF2qgbBRX8rvOW/YRsqfkCeDjWDxP3qAqcw16g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
-X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	FROM_LOCAL_NOVOWEL,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Hi Lorenzo - I don't think you are in charge of all of Linux and can
-decide who can and cannot submit contributions.
-This is a legitimate improvement in my opinion - if you disagree that's fin=
-e.
-The 'word salad' you describe is my best attempt at describing an
-issue that this patch potentially makes worse, but is nevertheless
-preexisting.
-Regarding cc'ing the right people - you're right, it's very hard to
-always know who to CC and who to not include - it's easy to make
-mistakes with that.
-Good Luck
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] rootns: unreachable init_pid check and missing -ECHILD in
+  rootns_wait_common()
+- [Medium] rootns: non-freezable TASK_KILLABLE sleep in
+  rootns_wait_common()
+--
 
-On Thu, Nov 19, 2026 at 8:22=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
->
-> +cc missing.
->
-> Please just stop. You sent 7 series across 6 different subsystems over 11
-> hours. You(r AI) even failed to cc the right people (added).
->
-> On Thu, Nov 19, 2026 at 08:00:15PM +0200, Avi Weiss wrote:
-> > An anonymous write fault on a VMA registered for missing userfaultfd
-> > faults currently allocates, zeroes and memcg-charges a folio before
-> > checking the PTE and handing the fault to userspace. The folio is then
-> > immediately discarded without ever being mapped.
-> >
-> > Check the PTE and address-space stability under the PTE lock before
-> > allocating a folio when missing faults are registered. Deliver the faul=
-t
-> > to userfaultfd without allocating and discarding a temporary folio.
-> >
-> > In a four-boot native B/P/B/P comparison, the mean UFFD fault median
-> > fell from 13,997.75 ns to 13,093.55 ns (-904.2 ns, -6.46%). A guest
-> > allocation trace saw 256 fewer allocations in the faulting task for
-> > 256 registered missing faults.
->
-> A .9us delta on a _uffd_ fault (nobody in their right mind puts it on a h=
-ot
-> path) with no standard deviation? Seriously?
->
-> >
-> > Note: this changes OOM ordering. In a fixed 18 MiB memcg test, the
-> > baseline OOM-killed only the faulting client before delivering a UFFD
-> > event. With this change, the event reached an unprotected shared handle=
-r,
-> > and its UFFDIO_COPY allocation could trigger an additional OOM kill of =
-the
-> > handler. A separate surviving client consequently lost its handler and
-> > failed a page-content check after the UFFD registration was released.
-> > The same handler-death mechanism was reproducible on the unmodified
-> > (mainline) kernel when memory pressure was imposed after event delivery
-> > but before UFFDIO_COPY, although the fixed-limit outcomes differed.
->
-> This is both unreadable word salad and alludes to you causing possibly
-> breaking changes for a barely-distinguishable-from-noise fault time
-> improvement.
->
-> >
-> > Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
->
-> Please stop submitting patches, thanks.
->
-> "You are expected to understand and to be able to defend everything you
-> submit. If you are unable to do so, then do not submit the resulting
-> changes."
->
-> https://docs.kernel.org/process/generated-content.html
->
-> > ---
-> >  mm/memory.c | 22 ++++++++++++++++------
-> >  1 file changed, 16 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 0fb676d..63b39fa 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -5547,6 +5547,22 @@ static vm_fault_t do_anonymous_page(struct vm_fa=
-ult *vmf)
-> >       ret =3D vmf_anon_prepare(vmf);
-> >       if (ret)
-> >               return ret;
-> > +
-> > +     if (unlikely(userfaultfd_missing(vma))) {
-> > +             vmf->pte =3D pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-> > +                             vmf->address, &vmf->ptl);
-> > +             if (!vmf->pte)
-> > +                     goto unlock;
-> > +             if (vmf_pte_changed(vmf)) {
-> > +                     update_mmu_tlb(vma, vmf->address, vmf->pte);
-> > +                     goto unlock;
-> > +             }
-> > +             ret =3D check_stable_address_space(vma->vm_mm);
-> > +             if (ret)
-> > +                     goto unlock;
-> > +             pte_unmap_unlock(vmf->pte, vmf->ptl);
-> > +             return handle_userfault(vmf, VM_UFFD_MISSING);
-> > +     }
-> >       /* Returns NULL on OOM or ERR_PTR(-EAGAIN) if we must retry the f=
-ault */
-> >       folio =3D alloc_anon_folio(vmf);
-> >       if (IS_ERR(folio))
-> > @@ -5579,12 +5595,6 @@ static vm_fault_t do_anonymous_page(struct vm_fa=
-ult *vmf)
-> >       if (ret)
-> >               goto release;
-> >
-> > -     /* Deliver the page fault to userland, check inside PT lock */
-> > -     if (userfaultfd_missing(vma)) {
-> > -             pte_unmap_unlock(vmf->pte, vmf->ptl);
-> > -             folio_put(folio);
-> > -             return handle_userfault(vmf, VM_UFFD_MISSING);
-> > -     }
-> >       map_anon_folio_pte_pf(folio, vmf->pte, vma, addr,
-> >                             vmf_orig_pte_uffd_wp(vmf));
-> >  unlock:
-> > --
-> > 2.43.0
-> >
->
-> --
-> Cheers, Lorenzo
+commit 8a805a3f4fb79d05bf397b0ae4fb7738f0017723
+Author: Jarkko Sakkinen <jarkko@kernel.org>
+
+rootns: Add rootns_wait() system call
+
+This commit adds the rootns_wait() system call and its compat entry point to
+wait for a root namespace init process to terminate and collect its exit
+status and resource usage.
+
+> diff --git a/kernel/rootns.c b/kernel/rootns.c
+> index c420e36af603f..5582ff010ca53 100644
+> --- a/kernel/rootns.c
+> +++ b/kernel/rootns.c
+> @@ -305,3 +305,106 @@ SYSCALL_DEFINE1(rootns_create, unsigned int, flags)
+> =20
+>  	return fd;
+>  }
+> +
+> +/*
+> + * Wait for rootns init to exit and report results for the caller.
+> + *
+> + * Returns caller-visible init TGID on success, 0 for WNOHANG when still
+> + * running, and -ECHILD when init pid is not visible in caller pidns.
+> + */
+> +static long rootns_wait_common(int rootnsfd, unsigned int options,
+> +			       int *status, struct rusage *ru)
+> +{
+> +	CLASS(fd, f)(rootnsfd);
+> +	struct pid_namespace *pid_ns =3D task_active_pid_ns(current);
+> +	struct rootns *rootns;
+> +	long ret;
+> +
+> +	if (fd_empty(f))
+> +		return -EBADF;
+> +	if (!is_rootns_file(fd_file(f)) || (options & ~WNOHANG))
+> +		return -EINVAL;
+> +
+> +	rootns =3D fd_file(f)->private_data;
+> +	if (!(options & WNOHANG)) {
+> +		ret =3D wait_event_killable(rootns->waitq,
+> +					  READ_ONCE(rootns->state) =3D=3D ROOTNS_DEAD);
+
+[Severity: Medium]
+Should rootns_wait_common() use a freezable and interruptible wait such as
+wait_event_freezable() instead of wait_event_killable()?
+
+Sleeping in TASK_KILLABLE for the lifetime of a running root namespace
+prevents the PM and cgroup v2 freezers from freezing the waiting task (which
+causes system suspend or hibernation to time out and fail), blocks non-fatal
+signals and job control, and counts every blocked waiter toward the system
+load average.
+
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	scoped_guard(spinlock, &rootns->lock) {
+> +		if (rootns->state !=3D ROOTNS_DEAD)
+> +			return 0;
+> +		if (!rootns->init_pid)
+> +			return -ECHILD;
+
+[Severity: Medium]
+Can the !rootns->init_pid check here ever be reached, and what happens when
+rootns_wait() is called before an init process has been started?
+
+The kernel-doc for sys_rootns_wait() states that -ECHILD is returned if init
+was never started.  However, rootns->state only reaches ROOTNS_DEAD in
+exit_rootns() after copy_rootns() has already populated rootns->init_pid.
+When init has not been started (rootns->state =3D=3D ROOTNS_INIT), a call w=
+ith
+WNOHANG hits the rootns->state !=3D ROOTNS_DEAD check first and returns 0,
+while a call without WNOHANG sleeps in wait_event_killable() instead of
+returning -ECHILD.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118193539.2400=
+65-1-jarkko@kernel.org?part=3D5
 
