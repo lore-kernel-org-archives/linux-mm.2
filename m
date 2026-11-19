@@ -1,64 +1,64 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8B9606D916
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 05:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9738B606E322
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 05:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CrVDzmrc
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=yNhn0nNT
 Received: by kanga.kvack.org (Postfix)
-	id 115546B05B7; Thu, 19 Nov 2026 00:35:30 -0500 (EST)
+	id 312756B05B8; Thu, 19 Nov 2026 00:35:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09F0C6B05B8; Thu, 19 Nov 2026 00:35:30 -0500 (EST)
+	id 2C93C6B05B9; Thu, 19 Nov 2026 00:35:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA9DA6B05B9; Thu, 19 Nov 2026 00:35:29 -0500 (EST)
+	id 164116B05BA; Thu, 19 Nov 2026 00:35:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B039D6B05B7
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:35:29 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07A33120957
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:29 +0000 (UTC)
-X-FDA: 85450755978.19.79DAA49
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C87866B05B8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:35:30 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3ECAF8096E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:30 +0000 (UTC)
+X-FDA: 85450756020.29.12A6227
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BEF6E40007
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CrVDzmrc;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 900CD40004
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 05:35:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=yNhn0nNT;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf12.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+	spf=pass (imf07.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795066527;
+	s=arc-20220608; t=1795066528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wxf1C03XM0J3zRYLBJ6bAuRpCxjKZ85wIDqTXFJZY0U=;
-	b=XYzAau3pFcyKcwSZq3Og1SvP1TDS59C8XXc04uqu4/BrVFRbwnv31zWpQME6bJ+ipBzVgU
-	n0QZ3SARnZ6SSixL12CXBlSG8lOypHvse5/TKNfQXY3lGW6Mqu+mvSzUxxTTxyFIMudcr+
-	0vzs+aUrLfyAx8wvBwF5VAqcgiCgk0s=
+	bh=q4RqbTqrf5mX8cN4Vzs7NN9E5++HncNdO08vef8Myn4=;
+	b=1Ni/K3Q3wY1z5+j+MEPa4Es1saxaTq1w02kwXk57pnEl2GHdVu5/epSe75mBRsWgaTveIN
+	fC0ONit2Zqjv/K4K13kwMa0IEKjfsm4hpZYic7+og4BhydES98WT7yxGfVNW9vuZL1WYDY
+	Eurmq5PuJv9tknjL7OfHA+WNlEQabKI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CrVDzmrc;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=yNhn0nNT;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf12.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+	spf=pass (imf07.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795066527;
-	b=KkB+xCVm7ggXyB1Ws/ADHn6I7bQ8KnGMfO1EvdvWYMmYzL8OXFNkD+XW3JSZUV7wfYxVgY
-	DUNe0ML78RZDj+pJH9RZOWrXTIxVlpRGevyQptk/4e4+bNmnoP0lDYqOcTADfvMGxWwyGm
-	YXOsLVheLzawQvRpFVAzRaRjk4yMzAs=
+	t=1795066528;
+	b=JSoMSMZWZY0QxzE7RfY8osSdwbjpr9oVqeeAgShkkUpyZdjF++4qPqFPPKzNVa4RiuY5g3
+	nkknmhn11Pz68FFtAAc2gXeaVJlx5boB6lx1xDAQWR6XSzzH1xpBJEcLDpO2IHXqeBl0Bl
+	NDpQ7c9BenHl4Rxf9UHjiHkSNgSyeN0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=Wxf1C03XM0J3zRYLBJ6bAuRpCxjKZ85wIDqTXFJZY0U=; b=CrVDzmrc3oIthRH1y3T/xDyXPx
-	cVrzHc8Q5zx9vBvBKySfZpSp9nn6Ctv4spyKdLZ2gMql4p4lGywVFn4Wxv0urKoLYE2Us8NFQbg/E
-	SujAsyVlT9ZQaUAWuZ4Y5/PYoP053/q4PLQfGDqnfJt8K/Qo/9TEt1lbXZ4Egas/dHptyNhLgoYTF
-	wuP3r+hQInGzK5spo+RZUspvYd5bw0PEETZbVVIV6tTzJx88fApDgP6f1LXwPqMwhToEckWSwFXKs
-	1BcxQ0o6Vx/Qelp2qicLQ22b1mh0dYnsD+nVH3ZPFTcBV3vA7o28QrM93KssD+4D+Q51xT+SBXnFA
-	FTl/MrJQ==;
+	bh=q4RqbTqrf5mX8cN4Vzs7NN9E5++HncNdO08vef8Myn4=; b=yNhn0nNT2kTjtdSzkIYIw4Y8vY
+	Wu8IMpwciBKK0mPRjwLp0J6lXnYl2QXRdoyGs7gEPlDNW7iR10NcDhumI86BcLgOaUX+PjrRV6xVb
+	8O58AE44qe860hoCGVid1vxjbYwpFG8l3RgpeRSDp5V4FTWtIrn7i+RinM2E7YjnLj4oqL80Wyf0/
+	/sgURq6tm/V4dsX6PlSh5f+qiQ7p9owDapXPkXxMVpSKTRzF2uGto4W4329bl1/byaHPJpz05ixrd
+	rcTtDdUsLaE/rONtAbOdlQSsjIoUrn1vdxur07cp/kvKJ+Wiq6GsRe5yp8eOJPJ3NCMaXF4hxg+uw
+	Z+U7uU6g==;
 Received: from [50.53.43.113] (helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTuns-0000000Aufu-3YX5;
-	Thu, 19 Nov 2026 05:35:24 +0000
+	id 1xTunv-0000000Aufu-0Tiz;
+	Thu, 19 Nov 2026 05:35:27 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
 Cc: Randy Dunlap <rdunlap@infradead.org>,
@@ -143,29 +143,28 @@ Cc: Randy Dunlap <rdunlap@infradead.org>,
 	intel-gfx@lists.freedesktop.org,
 	Matthew Brost <matthew.brost@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH v2 02/12] docs: ioctl-number: update sound entries
-Date: Wed, 18 Nov 2026 21:35:03 -0800
-Message-ID: <20261119053514.255348-3-rdunlap@infradead.org>
+	intel-xe@lists.freedesktop.org
+Subject: [PATCH v2 03/12] docs: ioctl-number: update block entries
+Date: Wed, 18 Nov 2026 21:35:04 -0800
+Message-ID: <20261119053514.255348-4-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261119053514.255348-1-rdunlap@infradead.org>
 References: <20261119053514.255348-1-rdunlap@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ycq5yx9gqfgkkwy47kw9mb9ythazunce
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BEF6E40007
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 900CD40004
+X-Stat-Signature: bebsfd4ukspi3aibn7gdiotypmnfnpit
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795066526-273792
-X-HE-Meta: U2FsdGVkX19X8aDLR9l4SoxMRj+7Zlixm8plvy4Drvpx8YkHW+ZQEWaq7lVTSSh5aN8atolnanW230VvEG2FBFJ8LXfN/TMk2ofRcdSKd23//E0vrW2yujyki8Dr2Mksc5O7YsLwgd1lUNsuNwhlanFTyoLZgJ8wBP/ycnt22kAmp9HHL/NgwLdkXTWx5o7CgaadvGT9sZXB9kJ1gq8u6OPAm/cVh47zoZVOt46MCSpccxRD8IbG+uu7a+zhYpSzxrAop+Fy7+fgJ8Wagyy03nrmFz/uP4PLRl5JrXKQZTosFMa50ikZy1dBAqMIpSr9VLWnGeGelgXi2ti3GGTB8VaSdO99iPGjQjR0fZgR+mqZvevIO8O8jmDipfWZcDguAcM1ikaPQh5h6tBat2r7I+6/aXmoIJy9314YBFJW1rLx7pzVoU3RrkbhC0+yBsJ5GJkcXIzl7Gm+F5ZjHaRRDGVplsUuymGp5qoGf+hVzn6k19sZcnf/iB0Qq10uW/snNrVdEflc+ijNeu4MsiePJhFxqfNvULpFY4UIuLEgZZRtWlfhRpeMEpMN/L1AFGJRl1VYolA14V/D3GZuor7llsWeJNhGH4Tx7kwQAGeb7F7xZhj7avpuy8mpByPCRF8VX5QVZ8vprdO8xcZxMh1KYmTu0UYMbzORW/BNR9fFSXUeU2WaRVltPBqSDewmX3acidP/st++dmLKQJXAvuXLfwdposHOmgceWHh4O7nz3dDk85TxKFzopyQg0UfmSNZDTwk5zi3ihkkRzLPhrVE5IGhTW6niXCjOD2RrVDG/SQoppdjgCPj8K38EzdDn9JFtHzSyLH6PUDZ487qFLXIf672L2ppEG7NyaS0kStdQrltYNTKm40yT+uX1DBho0/Atx6GsuHOyqZdumXzABCTIgDKSDcyNV7XUNfMjFixgba2qKhuoc5Lto77xl8mqUzVRle64REY0MM8nBniFnUs
- fmZ+ZjfP
- sLKd6LPIJyakaH6lIMr2e1jUMnnF8HggS/UEtoWxEAmZW9wRqhaxSsrWv5FaicXBBvADFaNK6ZdTaNqiQ+COx7c0kWckXrl81fVp/QftDITeMr+47MQAqJhLTVFf+6r8tE79LC1H6kEeVmNBOvWLh+0JGdnCAA0JEp+/ebJNwadnPlDCedKtZrjmu3+ui5YixROSEGxdWRYkUaAYEQfU6ftE8RJIhMm2iTVz7ewGRo2XAXYagZrVJh+LtJOBwnyA4x+2RbQOeqt1C2RcAnaFnK7m0s+3zld4NsAaL7rscuU3Ag38eKR/5UV+zgdpSzC1MeIAiA0p3yuLuqKFJiQX6mcWhh78szNMPwHcRD7oO2PqFnitiCFsqn3EJBqTJUNBcUvUQVpGg4cBFM0/hTC+25ZyNkqVotR9kPERw7zUAAeYqVvlRw+GxzwoUMfSCVCUaoCaEW2lEL4HT7UPzoJ6ZI9IrHSxhPZ4O3Qo9Hp0Y+EsnRCSsOI7ICU2mMzxB2gTYYzYjosbMT0ITgNmXCxPNK8aBrrYyzpljgGitK46c0WfdYVhxW1zL3jBtdp4bQexVCGTzRwVDPrD39xtRM6+MhGtcET4BnjzTlpcT
+X-HE-Tag: 1795066528-838925
+X-HE-Meta: U2FsdGVkX1+SuMoR6yxmd4OakeDbq8C0YMEOvJXIU1sX7RTxBj909lRpZpPKabuggkbESValpE2XGSdBjaJk2BUOBks1vrK9gW0c/iaZdOBKKDd4RKip8XW04olHjzPchYA0pciloMiit6mzdMrhRk4lmKxlFfKD+zOVg0OLtFS8Ih9/XUz5xHU9zmyAnqcQn5j0f0nzSHGA2VCkNbMGfaoPMFx7sFfZgdot/s9BFrRA+5UUthnrLoBlpneKIvYMzDPZcnlv/dqrGZ9lDVmiwKHsJNqEeFBRkQPxdBzSEYwh3lnWWXaPFiOK5ei9im6cRfqpldZ2qnCVQcWqTttj51UwOVBOYtd6askr5eMEnjcBDVjYDPmKr7eKAaZuKpDMmzc/9bmy0rJVhgW5lc2i0i6Oap493s0gcpGA2pHXorHk2jVMubrrWTVX2pwxFmhnuiWDZhc4FB8+4M18rHEUpwreL54KfDwsRbR9rpGtQInr7xPxDfbKVn7M2ItXyqi6ePpqAvK4swpRW9FZeLKDbtie0t5WWRSxcqNn8iya/Q4JSZlrnAe6PPeQF5R0W6E0Y61cbREBII/M5a3UfTLznmw3+6jttMTOjiiG+W5q8afMZ6efmkNSyullH2gMjslixOJyNmKuV3TGyl12mKKSzskN1Deq51LpXH83HRtwI10An5xajgBSIZWxcqI8Kr0+ZuH90FwuGw/g0LaOiUNCoY65+b3f4mr/Ja7UQchpW5+L5LVxIP7MauqzeUTb4Alsu4EnHJmx/L5RcQKHHD6Be9d9avR7brFtvNMfQk+NtqbcsFLBABq7Ll3HDZeJ8Nm1BerUYp030wfih78fRQv3TIE//Vy5weGIgfPWk7PEDotY53sL5ZV0boo1dwC8m0x2JE7DghB9UgAW777ZFTDYZkQe7Tf5JLGbAwFJTqQrZXIRwB75peVqUU1s5/IdZrB5FIoZKyiJ7rdKCM1+Llw
+ 7tmeDIui
+ 4HBYu7mwGffW/3Gd7X5shkHgq/SEG40zusZ/M1OsNpG+YI2oHGvK5BFhz71pg4hjxz0RWba1lKYvpHGEDRcFrfXuoyo8Cmy1ME1WW9IMds0s2B6PRnNHqxBqINIpbY+Yx5WU2/8ZTRKkxHVULypmEHu4FomIDvI4EeSAqgKUdwDFcveeP/AfJ7FIe571j59UvNGbI8EreCAOm5a/jDS40GDOyi+UEmeHxynPsP/rGRp7wW1Ki+8r3cW4I5P5npRjMdMWOLcEsSu5GyA3gOkcC/iqIqeNCFneXRs7JgYbkCyc2NN+GjOdJYY58zWUnkumjbE7qlKI649kskviwyejFX7LRJzo9Bxwl4Xcesc4QnE/47y1r0SSoW5AsbyK/xrOygRgdHrGkn4QKAdcdV5eCfs8SO1r4pd4pwrFF+ywTxawyUkYwdziyCz9j5uN4Nr7x1dG9f0GROQ9hnYLHiFv6MrPsr8aPvfTDMbA+xqz0YDofACEyfFXJc0MRRPT+c9LxnYPJbUtvHj7o7k+AnhEo5IR+wUOakmZUrVNC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,14 +173,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Update the list of files where sound ioctls are defined and update
-the ranges of function numbers that are used.
+Update the list of files where block ioctls are defined.
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 ---
-v2: add Rev-by: from Takashi Sakamoto;
-    address several review comments from sashiko
+v2: no change
 
 [Since having multiple maintainers trying to merge these would
 cause some conflicts, it would be more manageable for Jon to
@@ -190,74 +186,30 @@ take all of these through the docs-next tree.]
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: Shuah Khan <skhan@linuxfoundation.org>
 Cc: linux-doc@vger.kernel.org
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org
 
- Documentation/userspace-api/ioctl/ioctl-number.rst |   14 ++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ Documentation/userspace-api/ioctl/ioctl-number.rst |    4 ++++
+ 1 file changed, 4 insertions(+)
 
 --- linux-next-20261116.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
 +++ linux-next-20261116/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -122,11 +122,14 @@ Code  Seq#    Include File
- 'A'   00-0F  linux/agpgart.h,                                          conflict!
-              drivers/char/agp/compat_ioctl.h
- 'A'   00-7F  sound/asound.h                                            conflict!
-+'A'   20-24  sound/pcm.h                                               conflict!
-+'A'   10-53  sound/core/pcm_compat.c                                   conflict!
- 'B'   00-1F  linux/cciss_ioctl.h                                       conflict!
- 'B'   00-0F  include/linux/pmu.h                                       conflict!
- 'B'   C0-FF  advanced bbus                                             <mailto:maassen@uni-freiburg.de>
- 'B'   00-0F  xen/xenbus_dev.h                                          conflict!
- 'C'   all    linux/soundcard.h                                         conflict!
-+'C'   00-68  sound/compress_offload.h                                  conflict!
- 'C'   01-2F  linux/capi.h                                              conflict!
- 'C'   F0-FF  drivers/net/wan/cosa.h                                    conflict!
- 'D'   all    arch/s390/include/asm/dasd.h
-@@ -152,6 +155,7 @@ Code  Seq#    Include File
- 'H'   01     linux/mei.h                                               conflict!
- 'H'   02     linux/mei.h                                               conflict!
- 'H'   03     linux/mei.h                                               conflict!
-+'H'   03     sound/core/hwdep_compat.c                                 conflict!
- 'H'   00-0F  sound/asound.h                                            conflict!
- 'H'   20-40  sound/asound_fm.h                                         conflict!
- 'H'   80-8F  sound/sfnt_info.h                                         conflict!
-@@ -161,6 +165,7 @@ Code  Seq#    Include File
- 'H'   40-4F  sound/hdspm.h                                             conflict!
- 'H'   40-4F  sound/hdsp.h                                              conflict!
- 'H'   90     sound/usb/usx2y/usb_stream.h
-+'H'   FC     sound/pci/asihpi/hpios.h                                  conflict!
- 'H'   00-0F  uapi/misc/habanalabs.h                                    conflict!
- 'H'   A0     uapi/linux/usb/cdc-wdm.h
- 'H'   C0-F0  net/bluetooth/hci.h                                       conflict!
-@@ -168,7 +173,7 @@ Code  Seq#    Include File
- 'H'   C0-DF  net/bluetooth/cmtp/cmtp.h                                 conflict!
- 'H'   C0-DF  net/bluetooth/bnep/bnep.h                                 conflict!
- 'H'   F1     linux/hid-roccat.h                                        <mailto:erazor_de@users.sourceforge.net>
--'H'   F8-FA  sound/firewire.h
-+'H'   F8-FE  sound/firewire.h                                          conflict!
- 'I'   all    linux/isdn.h                                              conflict!
- 'I'   00-0F  drivers/isdn/divert/isdn_divert.h                         conflict!
- 'I'   40-4F  linux/mISDNif.h                                           conflict!
-@@ -204,6 +209,9 @@ Code  Seq#    Include File
- 'S'   80-81  scsi/scsi_ioctl.h                                         conflict!
- 'S'   82-FF  scsi/scsi.h                                               conflict!
- 'S'   00-7F  sound/asequencer.h                                        conflict!
-+'S'   20-52  sound/core/seq/seq_compat.c                               conflict!
-+'S'   60-63  sound/scarlett2.h                                         conflict!
-+'S'   60-67  sound/fcp.h                                               conflict!
- 'T'   all    linux/soundcard.h                                         conflict!
- 'T'   00-AF  sound/asound.h                                            conflict!
- 'T'   all    arch/x86/include/asm/ioctls.h                             conflict!
-@@ -219,8 +227,8 @@ Code  Seq#    Include File
- 'V'   C0     media/si4713.h                                            conflict!
- 'W'   00-1F  linux/watchdog.h                                          conflict!
- 'W'   00-1F  linux/wanrouter.h                                         conflict! (pre 3.9)
--'W'   00-3F  sound/asound.h                                            conflict!
--'W'   40-5F  drivers/pci/switch/switchtec.c
-+'W'   00-41  sound/asound.h                                            conflict!
-+'W'   40-5F  drivers/pci/switch/switchtec.c                            conflict!
- 'W'   60-61  linux/watch_queue.h
- 'X'   all    fs/xfs/xfs_fs.h,                                          conflict!
-              fs/xfs/linux-2.6/xfs_ioctl32.h,
+@@ -78,6 +78,7 @@ Code  Seq#    Include File
+ 0x00  00-1F  linux/fb.h                                                conflict!
+ 0x00  00-1F  linux/wavefront.h                                         conflict!
+ 0x02  all    linux/fd.h
++             drivers/block/floppy.c
+ 0x03  all    linux/hdreg.h
+ 0x04  D2-DC  linux/umsdos_fs.h                                         Dead since 2.6.11, but don't reuse these.
+ 0x06  all    linux/lp.h
+@@ -90,6 +91,9 @@ Code  Seq#    Include File
+              linux/blkpg.h
+              linux/blkzoned.h
+              linux/blk-crypto.h
++             linux/blkdev.h
++             linux/blktrace_api.h
++             block/ioctl.c
+ 0x15  all    linux/fs.h                                                FS_IOC_* ioctls
+ 0x1b  all                                                              InfiniBand Subsystem
+                                                                        <http://infiniband.sourceforge.net/>
 
