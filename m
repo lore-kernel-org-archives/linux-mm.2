@@ -1,128 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3852606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 06:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055A1606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 06:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e7xa1Dpj
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=typf2NDB
 Received: by kanga.kvack.org (Postfix)
-	id D02A86B05B3; Thu, 19 Nov 2026 01:21:34 -0500 (EST)
+	id 1B3086B00EF; Thu, 19 Nov 2026 01:39:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB4106B05B4; Thu, 19 Nov 2026 01:21:34 -0500 (EST)
+	id 13B826B05B0; Thu, 19 Nov 2026 01:39:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7C466B05B5; Thu, 19 Nov 2026 01:21:34 -0500 (EST)
+	id 002CB6B05B1; Thu, 19 Nov 2026 01:39:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B7F06B05B3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 01:21:34 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id CE22A6B00EF
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 01:39:44 -0500 (EST)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0915E140932
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:21:34 +0000 (UTC)
-X-FDA: 85450872108.30.3CBCD78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4C863180002
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:21:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7xa1Dpj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C0ACA8741
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:39:44 +0000 (UTC)
+X-FDA: 85450917888.30.27FB37A
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 391D2180002
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 06:39:40 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=typf2NDB;
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795069292;
-	b=D4pbRRBlO+nj787gY1NkHeHUtQp23Oi2uy0ELTPWmXlTKUiEeoQsGQInOivNvc9RxK0BHX
-	TsrZfEg5t7McvPCTgUmvl857TGAW+gKKvfJumr3Wn5a54MALQY/6wR1eyKhrw3pJt16IBw
-	OM3sItmbqWcbP9IMD9ugrEuDdy1YFjQ=
+	t=1795070381;
+	b=jDkiFLghmTkp1+kBRxpid/8K8tcDuMs84yLEt0WAJCGEH6V6S2m+osYgvvqqePc2hQj2gi
+	BIIqAtQ+qmm7lFdRJAJZX8KfogyA0fkF+W/wlJ82jJLTVwwfGfLW/zTxhtIDxny6c5Vk/K
+	d61kvIuxhuLMF7G55GV6luWWh7WRqj4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=typf2NDB;
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795069292;
+	s=arc-20220608; t=1795070381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=btZ2TprQHQojMwnDwVX6xxEuU+pesarzzPhbHJEdoGg=;
-	b=vSJXRHXBdWysloNhSsWOjEvj7ix7GA9rEwPci/t/ZBpwGzRLGOR4c3ks5kIKuWfgydcnev
-	cFZLe6Fivl1xUxXfXtZCTTFiLVo2XsRf3jsLu+b7Yfwaw0iaaaIWmOj1Y1+ZCWJbfMFHqJ
-	1EhgHNv2MHZaHy8gPbwqfyZiZEc5kak=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7xa1Dpj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 75CB547936;
-	Thu, 19 Nov 2026 06:21:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 99E921F000C4;
-	Thu, 19 Nov 2026 06:21:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795069291;
-	bh=btZ2TprQHQojMwnDwVX6xxEuU+pesarzzPhbHJEdoGg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e7xa1Dpj4IV+gGquktCuwkP8uLbLXtGks3wuXwt/tSMkOsmBjJ/0z/lSi6xpEE1if
-	 M+ClMf07lAH8kSdnFi7nUiv7E1oRGPNtacMDB0C9ZyZ9nVvpOERjMX8QaAKZ7lKRn4
-	 M1z2+y5hTJxFCzzBM0zcOMJWoXKpQIZjVMenn5ZU2BG85Fmxa/pgerSdcdz7kbKLdA
-	 QCVfwXzNN8zWPDBlSNSXrmUbYCk3O1GsxodMLXYujCtnvsjSw4DQj4SWvGVet8sWJk
-	 gjUyqjq21Sc89moWlZp69HUgI6J3icvNRaTO40aErPOsiyV3xe7t6GSDpp7+hZ+Auj
-	 I9xdx3hVfOiUQ==
-Date: Thu, 19 Nov 2026 08:21:27 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Ben Segall <bsegall@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Jan Kara <jack@suse.cz>,
-	John Johansen <john.johansen@canonical.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Mel Gorman <mgorman@suse.de>, Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v3 00/13] Namespace for namespace roots
-Message-ID: <av6VZ5NQG4GwYvPl@kernel.org>
-References: <20261118193539.240065-1-jarkko@kernel.org>
- <av4CdM-eW73oO4wB@kernel.org>
- <av4NonrcCxzMoDyz@kernel.org>
- <av5-Zc4xhgkPxb7p@kernel.org>
+	bh=q7gZgAjC3J0Vq/5Bve85q8SO+8zS+ANsoLKzL7Nl/Ho=;
+	b=6r/C/y1tYVw0AryvF5RwD/vovkAOJY/QWXCYBdRNgie0SAyOY4673QVWysb8cviRmc0bKY
+	tDp6yd83Zfxo+2p0vf9Cc70u7Rpl7Mz3J0f0EAd1aptTWUfFVpKLUy1Wgu2aPbY85Jbhcp
+	e+nIXg9iHPupnJVnQMHDRcoxQzzvsSE=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=q7gZgAjC3J0Vq/5Bve85q8SO+8zS+ANsoLKzL7Nl/Ho=;
+	b=typf2NDBaqz7szJt4untS8E56QxUTy6k4l5lbmw8xo2YzKELIdr6PDQlDtxJ9a01RJS+zlzIR
+	iqkDLpxZpgfaJf6FtI9ORmHgxxkqsL5AIwdqZnliy6tyexxrXVHHXZDAnygzRUzYk5Q/kcexB9j
+	rmoR2w2Lr4aQ78gCUlt39Q0=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4jVTMB4J6Xz1T4Fp;
+	Thu, 19 Nov 2026 14:38:46 +0800 (CST)
+Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8C57B4057D;
+	Thu, 19 Nov 2026 14:39:27 +0800 (CST)
+Received: from [10.173.125.21] (10.173.125.21) by
+ whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 19 Nov 2026 14:39:25 +0800
+Subject: Re: [PATCH v2 1/2] mm/memory-failure: don't unpoison a leaked
+ raw_hwp_unreliable folio
+To: <mt4022@columbia.edu>
+CC: Naoya Horiguchi <nao.horiguchi@gmail.com>, Matthew Wilcox
+	<willy@infradead.org>, Jane Chu <jane.chu@oracle.com>, Zi Yan
+	<ziy@nvidia.com>, Kaitao Cheng <kaitao.cheng@linux.dev>, Mike Rapoport
+	<rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>, Yu Zhao
+	<yuzhao@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<tz2294@columbia.edu>, <stable@vger.kernel.org>, Muchun Song
+	<muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
+ Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+References: <20261103-hugetlb-hwpoison-leak-v2-0-98085750c145@columbia.edu>
+ <20261103-hugetlb-hwpoison-leak-v2-1-98085750c145@columbia.edu>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <11f434ce-58c4-ff16-9c93-946a1e83eb10@huawei.com>
+Date: Thu, 19 Nov 2026 14:39:24 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <av5-Zc4xhgkPxb7p@kernel.org>
-X-Stat-Signature: c1u7y1yfsmdbz4n8ybe8pfkrpxwyuuj8
-X-Rspam-User:
-X-Rspamd-Queue-Id: 4C863180002
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795069292-277784
-X-HE-Meta: U2FsdGVkX19cjw7W/NiPWuX7tJ4xwzznqR2LkO20wJpFzs+3xugcl4MAhU6T4Xbew4R/IFY8xj92y8qMC0eu86WefAjd8q76jcxUUx22k6ffBkL2DFvwsAwttDwgp36yTJvYAue1+/NOX+PcA5ZqPMJgI0Ern9LWVivlQrigFL++/9mGUvnKrGGtqxzxQt2XNd6IubjDlbqizDCwDh5lqh88XOwxDI5u7y94hTwRC/zP2zj+GMtLcd69yZEj9qTvzw1tOed5h0zfChGRxlplmR5D90XknkQQ+1wd9SiuQrnaxtMq1s6B1iubl8/TtlJEm/K9Hvpv2lFJyygw0zjidtcKuuoBXMHiS9LrIXizkgiQL0w2BLgx5MKcqKdT9IfUNjdP1O0CMG1Lt8lbLqhHBp4l5jS1AEZqidK94FXY2jVAqj0E/htBPdwynrhltNqCYxKeRQ6oBCJt4SvKyOobjcp2z/tjoHa/ngNH9Vq6zMn4hwQBSYZ+8FTtkiBBwyjPZqM0bHipVl0QL0RvoBJHyHEePcHPFWy4FXYxJLGxzsLDyvBKo14qGXRebjU7rO04n7zfR92F+18N131ylba3rIrFZ3UQMyGK/fXaUdfypPjCsjYVtAABB/Uwx5OiaSfUvL4E4XDc8YQ5KqZJc1nA1/GuxEQskkEVnDCaVrd+jgBYb25XAbTh3z866e1vCqGZYaxeG3YQ4lq/FhhboCffzUq4YzCg87++h2QwIJb/dDLzGObeYZTb6426eQ+Yr70S/p6+LtHcBfnDEn3N6Ge/89jCajKQLIZFvwI38abFwtpwHAZDlM/MZZHzb9huC9/pnDHQ22ppAKjI85glGP28GioonVx14Qb8T6JyE7uB7egIe43qeZ1cqlb0qkAc5r/Euw0X5mVAw7AeGJltIRO0lDCnjP7ktEXffgTg0Z7nO6QJLzwz/XqumTcbsDNcTrSWIVvyI+s0aiEiri3ShR1
- bwYjFjGV
- 7ZUB3TtJZPxJOVb6jNH3/HhvLKa6MeVoCpl7zWFXW0Sk4XUgqBzgc0WjTuhvCFTrbgVCFwpMeZeJn26Qze5uWvQpFSLcRLdzlCEhNwwNYSbXaQ45ks/RKt0wWTmpbEOgDmIa5z5fo+F5IH+2IRZ0DNQ8+2lh1HSAedaigg19pMy2wpRvqm0YJSwKNilDQh1FxMo+EBdv/+hCVTemy9BUd/iUyGv2S0ZWATxsplN1f3hpU5zutEcHhBIM9+yOwuaOeuQH5Gdipon+qmEv3VQNUk2rE13wclF8thZBRKYYRUx0iX1giIuKCM9vPEVE9QKDyQImKXYbrzxHwQTDbCQYgYW5oH2DQZTqj+fGj9bofolxJhcIHEsYsIy4nW8jBG2M4LxcA/u1gdigyjt4=
+In-Reply-To: <20261103-hugetlb-hwpoison-leak-v2-1-98085750c145@columbia.edu>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ whupemk100004.china.huawei.com (7.152.185.74)
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 391D2180002
+X-Stat-Signature: kg1wt9abf8h6ozsado6f965xrdis5edd
+X-Rspamd-Server: rspam05
+X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795070380-804742
+X-HE-Meta: U2FsdGVkX1/Yla+HxJ8+I8DqDrjqnS0/qHHNnrqXpY9Uymh1zJwznIHuPt32NQYtC58GmgEMUOxU2pPLamb1RVfwKakC3BXSbQzYOVoZ7CC0abw2hx5OMkkLQiwe0+xxulsc5XbqaPErWgUrfIucJmFWllOnYwUa26K/qJAUMf6FDjsKCS/o/zmQOgeQO+ymLdPKDRdMbnE/AxWjc1iWUOfnA/5w8odSOUENSuJ+/cDQXgInkCS3csGTCaD7KIdr+1StkBJwzJkjxPMHP/vvTeICOtrhXRc+vofeqMO2QjYu6VbmPFRcniyXuLFXu1fzFgO/XFLUqQB+b/MKrDa6EpS2p/I6N88hoipTcRw3pfQP026pI1Jigq3YaXUwYRb6TbrYySzRVKEkH9C/qxlJh1EEu0KlfFrPSNZKKzhyNKhjcqLx2VMw/t0StAc16QcvHHaDdj/YBaOYw/qQwFhKO47/hVeOKmC3xGNm5zT2QkzIyyXmueFWJS5d0S5+Wfzi6NstdtWHridTdOiBYDrikTOvlky47IanrHKV1YAP7iiYcS56dXBfj3bguBim1jHOtWhG4IGPozRC/YA9zLt80FfpaIftlYOaJOgoAKB6ITyUoY8g41qgfGBLKBKpJVWanrbR1xZiJeF2hx9d+kuyKB36WHLoZPeo8E2ZqyM1ZfluASH+9D3WIYbros4uc/2oEf8jNAQtK63MS+B4b0cuBBPD7Ul0VXXtZP87wRab6NtZjk+IWVup8qorr/3nfwBR2+cMVmHyWhFpO+VlDZYFFIJlIhrvDFfpchvjSy3BXL8WmDc2fl6rZ+1lmEQU7n2LeldtHS4H0GxlBTwbJqDq/fae7yjuPPb6WlFKHQI5Jusw8OB5vsl7p1saR6utrJESO4WO/2pG5z73IvmLu4YwaFxCi8VIflHgJfe5PN6AJlZzxbvcftnYvUIlLJf+Cub+Q+s0u8IMmlfywQo/UA2
+ MQzKI1Da
+ U11wjOiCT3c5lIiPojnY+wmgAOxVrzmcEBKPYdQQkzA3Olc9L1KbxioP+2IvFEKjGMeiriPJCrphY4SVgnvWoyPrLxUhnaMqx18j9+YA/gAAtOsfGVqYX97mrhXFTf5Li/JDkj5EUw/92yHmeBgOINfmRjci9YrfH+LIoWIO3iDVOk5D3jiZNyWrbIFqLjvy86FEd1l3h5arI/VHw9skcZmaG1wEXB4J+tsg6Dz0pdEG+n/U+aTl0eomRf6q0ljvBrNfuguQEIdux99SQn77MqQLeQdv3iDT4eNtdNKTVcbOanB2/Xl3AsigKfZhvDq9Gnm6Aa8uKHjE4TpdtBwQCF96ej6xUUfnMmT0kmvXzVbgtoAtMUxv87jpH2InFf7PALoX5SzFdo4S9P3CV9rv9QKCj7ZNljwFi1rLFY8BddEds2bn3baXDR+mvB9vGX8UcQuQb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,67 +110,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 06:43:21AM +0200, Jarkko Sakkinen wrote:
-> On Wed, Nov 18, 2026 at 10:42:10PM +0200, Jarkko Sakkinen wrote:
-> > > I.e. before PID 1 and /proc/<pid>/ns/* existss, nsfd for namespace other
-> > > than root nsfd can be acquired as follows:
-> > > 
-> > > 	int mnts_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
-> > 
-> > 
-> > Unprivileged caller becomes the owner of rootns->user_ns. Each mount
-> > syscall then just checks CAP_SYS_ADMIN against rootns->user_ns.
-> > 
-> > The user space wiring goes along the lines of:
-> > 
-> >         int root_fd = rootns_create(ROOTNS_KILL_ON_CLOSE | ROOTNS_CLOSE_ON_EXEC);
-> >         int mntns_fd = ioctl(root_fd, ROOTNS_GET_NSFD, CLONE_NEWNS);
-> > 
-> >         int tmpfs_fd = fsopen("tmpfs", 0);
-> >         fsconfig(tmpfs_fd, FSCONFIG_SET_ROOTNS, NULL, NULL, root_fd);
-> >         fsconfig(tmpfs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
-> >         int rootfs_fd = fsmount(tmpfs_fd, 0, 0);
-> > 
-> >         move_mount(rootfs_fd, "", mntns_fd, "/", MOVE_MOUNT_F_EMPTY_PATH | MOVE_MOUNT_T_MNTNS);
-> > 
-> >         struct clone_args args = {
-> >                 .flags  = CLONE_INTO_ROOTNS,
-> >                 .rootns = root_fd,
-> >         };
-> >         pid_t pid = clone3(&args, sizeof(args));
+On 2026/11/4 5:00, Mani Tofigh via B4 Relay wrote:
+> From: Mani Tofigh <mt4022@columbia.edu>
 > 
+> If memory_failure() can't save the raw error page of a hugetlb folio,
+> it marks the folio raw_hwp_unreliable and unpoison_memory() refuses to
+> unpoison it, since we don't know which subpages are poisoned.  Once the
+> folio is freed, __update_and_free_hugetlb_folio() leaks it on purpose.
+> If its hugetlb flag is cleared by then, e.g., without vmemmap
+> optimization, unpoison_memory() doesn't see a hugetlb folio anymore.
+> It treats the leaked folio as a normal page and clears PG_hwpoison on
+> its head, while the poisoned subpages are still unknown.
 > 
-> [BTW, this patch set is pointed out to David and not fsdevel mailing by a
->  mishap, apologies.]
+> The leaked folio is still a large folio and raw_hwp_unreliable stays set
+> in folio->private.  We now check it on any large folio before taking the
+> page, so unpoison_memory() refuses the folio whether it's still hugetlb
+> or not.  With the fix, it returns -EBUSY for the leaked folio as it did
+> before the folio was freed.
 > 
-> I reduced syscalls can be further to only a single syscall: rootns()
+> Fixes: ac5fcde0a96a ("mm, hwpoison: make unpoison aware of raw error info in hwpoisoned hugepage")
+> Reported-by: Miaohe Lin <linmiaohe@huawei.com>
+> Closes: https://lore.kernel.org/all/ae6058ae-3703-a1d5-d82f-4102b46f227b@huawei.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+> ---
+>  mm/memory-failure.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> The complete API after this:
-> 
-> 1. rootns(flags)
-> 2. ioctl(rootfs_fd, ROOTNS_GET_NSFD, ns)
-> 3. ioctl(rootfs_fd, ROOTNS_WAIT, NULL)
-> 4. ioctl(rootfs_fd, ROOTNS_KILL, signum)
-> 
-> An updated version of the patch set is available over here:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/?h=rootns
-> 
-> In order to find more evidence that the API is trimmed and code has no
-> extra fat, I tried how LSM hooks size-fit.
-> 
-> Attached are the experimental LSM hooks and while possibly not exactly
-> right they should not be at least in the ballpar (Paul?).
-> 
-> Not perfect, but very usable, and there's a steady track of convergence
-> where resolving a bottleneck leads into a better symmetry and coherency
-> overall.
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index b215312f261b..496eacbefdf2 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2809,6 +2809,15 @@ int unpoison_memory(unsigned long pfn)
+>  		goto unlock_mutex;
+>  	}
+>  
+> +	/*
+> +	 * A hugetlb folio without reliable raw error info is leaked once it
+> +	 * is freed, and its hugetlb flag may be cleared by then.  Check the
+> +	 * flag in folio->private, which stays set on the leaked folio.
+> +	 */
+> +	if (folio_test_large(folio) &&
+> +	    folio_test_hugetlb_raw_hwp_unreliable(folio))
 
-Orthogonally, solely fd-local security model (as all is tied to fd) is
-the best thing ever when defining mandatory access control policies  as
-the full flow can be meaningfully described; i.e. roonts(), sendmsg()
-and other calls track the fd's data flow with almost the highest
-achievable granularity.
+It might be better to add a unpoison_pr_info here?
 
-Br, Jarkko
+> +		goto unlock_mutex;
+
+Anyway, this patch LGTM:
+
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+
+Thanks.
+.
 
