@@ -1,194 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936E2606A339
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 16:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16115606A33A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 17:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WQSxuSP/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NtBdCeHy
 Received: by kanga.kvack.org (Postfix)
-	id 72DE16B06B9; Thu, 19 Nov 2026 11:59:07 -0500 (EST)
+	id 201356B0674; Thu, 19 Nov 2026 12:00:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 704F66B06BF; Thu, 19 Nov 2026 11:59:07 -0500 (EST)
+	id 1D8346B06BD; Thu, 19 Nov 2026 12:00:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A6696B06BC; Thu, 19 Nov 2026 11:59:07 -0500 (EST)
+	id 0C7A26B06BE; Thu, 19 Nov 2026 12:00:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CFC26B06B9
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:59:07 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C29AE140B57
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:59:06 +0000 (UTC)
-X-FDA: 85452478692.11.8A01BDD
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012032.outbound.protection.outlook.com [40.93.195.32])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D71552000B
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:59:03 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b="WQSxuSP/";
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795107544;
-	b=KG88P5G4w8pYyXiLKCZ/tQZcPzmqdzkYLx4SEstnbSjXdii1l7HoEHZiYl8iKouk/CXn5I
-	KEzpJLfjz9pWaPGlJUTGCEMVWXMjjb5/Dy7zIDQskIf1S8lhw7THnOh5Pyyr5nWYneIu6V
-	BO9zaS+nHp6CIXWiQQbdDUpay2YhzL4=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795107544;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A78C6B0674
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 12:00:42 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03210160BA0
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:00:41 +0000 (UTC)
+X-FDA: 85452482724.05.4983370
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 282EBC000D
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:00:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NtBdCeHy;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795107640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hvVU4/1Cj/qARxFBg8GZuuICHIET6gFCCtbp8n6oy90=;
-	b=mhoQmoofIfeF2S9LCuOU7HEui4IC4uie1+bq1mP1I8D1cgWcrX5wtJxf0AOqAKnINmsC9N
-	QE7zMdVgybkUO0IB8zGC3yWKYLYZV76l3olPzDpwJRYaD739+e7oXD620f7W06FvOnTw9z
-	fXeFVMfbwwwru85/+PsuVcRg0eJSEL8=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b="WQSxuSP/";
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iSkfqGmLeg/c4e/9eGPTneb+/mdWZwMWDS60tbp3aUtv5+/no1jW0yScrJjk1IEc36tKlDCgOwkkM4aEMT3PVbeZ8PelmQ1PDxWllA0I4JyKq6DVmmTNBY4KGQ5By0D5nuujRU1Z3fupFu9ljPpSx6LA54dL3F+miBHKB23+TSIZaWI8PFzY4BBNPffu1V+eBZSzALS5a/raFsySnWMWzfhUlg+LuI8NgzaiXxHXc8jt3uw0Txt4FqLZ1oP/uWIllz5mxxcEpyX+znurRhV2inYCi+aS6A3oR0NeW4GDVyRvO9rOcfoxwQWk/x3G/Io852SLdy7uCdJieBEqX6OalA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hvVU4/1Cj/qARxFBg8GZuuICHIET6gFCCtbp8n6oy90=;
- b=Z8YgfFCOfzCok8LGZNN+L4rhEG6yitQ0KLzfKKXOmf1hpvrh5XvV+uXmwDEzpYoZ+t1oBZoZXRfmZpPohZa+vZMPGv2KqoW2Xd6+0RcA3wn7Nlj4adms1wY8QqYun4KTmt5oY6vQYTjYo/o2qWj6x13QS42OhiFmkoSnX2bNXNvohOM2G1qGsBkNyEM6ye+7iwCj4h+13WrcOas2wKEpXWjSYYZHcL6syjNUCrv+izlGpAoXuo/6H1vONpEGbJJnOqK0NsxLcOy0Xpwzcr5HJsLrhaAYCniZn9eQ4zbPPLsGyJ/4h2tpsuwO2yp8LFVNjMoxuTllmCx887t9j3DFFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hvVU4/1Cj/qARxFBg8GZuuICHIET6gFCCtbp8n6oy90=;
- b=WQSxuSP/kdOzBb5zRpZDqWwlLG+vmQ626vOdjtTn3WkT/B9DUc1fUZuBxX2N8c2U1z/xGEbslTmKrepX6V5TEOLsVbeRTk2pftlBx2hj+QrBSbt088C48gHed2flDJW8yxAoe1YNapES0w5M3wVxUfPU/9m7gsdCP2mvoIP8fO6kBRkos46rETRdDcTrGcyRcKHKFEji5/h9YyGo7Y2qTWWAyLa6VEP6iE2mRNQPoWB1kP7XRxo+qlemxZPvhQNvZzg/qs/yvzFz90gwXHMUq5RpbiNKH0BIK6wEYc7cNT1YluJRs3bnPp6IsxWdPb7v39ugNeUgyOgLR0F28DvcUg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SAEPR12MB181460.namprd12.prod.outlook.com (2603:10b6:802:200::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Thu, 19 Nov
- 2026 16:59:00 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.009; Thu, 19 Nov 2026
- 16:59:00 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
- David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
- Matthew Wilcox <willy@infradead.org>, Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?utf-8?b?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>, Igor B <igor.b@beldev.am>,
- Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v22 0/6] rust: page: add page kinds
-Date: Thu, 19 Nov 2026 11:58:02 -0500
-X-Mailer: MailMate (3.0r7038)
-Message-ID: <3C3421E5-5B7D-42B8-ABD2-185375693D7A@nvidia.com>
-In-Reply-To: <871p8iue5y.fsf@t14s.mail-host-address-is-not-set>
-References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
- <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
- <871p8iue5y.fsf@t14s.mail-host-address-is-not-set>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-MS-Reactions: disallow
-X-ClientProxiedBy: MN2PR07CA0011.namprd07.prod.outlook.com
- (2603:10b6:208:1a0::21) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=XmF9SeGoyHxhHQftqal/r5GaG7FqVPwJx28e65HqQi0=;
+	b=Uzwtcz+pLCzsP8gr5QC6N1ZplA9ddvTDEfrYcJCqJ0rVYkvasRKiGH60s6DNs88smHCG5m
+	sHSR2mXBFYbfvK+8qRKqRmZoUcTnix0o5rgC9+jLM5K9azsPK9i5iWsJKTKG1ZgVSJGotb
+	+/O1uL3pA1ZL3ZjXbXLW8XSKiRmP+bE=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NtBdCeHy;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795107640;
+	b=KeXpliyiRtVF3gC3UEKI8zE5aYhpHBlXni8/9VtcSCurwDnaRXxcYvcTjjb6r5ZWZdYsz9
+	qMf+biUVR/m6OIi7Ygda9p0KBAN7qudnkzpWCMp0leYmQsEUZeEwiLz7kvoRSm3kdR7kv1
+	dKF5SwqqK7E7zbgQF+Q1oTza0cWJmAM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 93748612B9;
+	Thu, 19 Nov 2026 17:00:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5211F000C5;
+	Thu, 19 Nov 2026 17:00:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795107639;
+	bh=XmF9SeGoyHxhHQftqal/r5GaG7FqVPwJx28e65HqQi0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NtBdCeHyzx+SGf1BBDft/htzb8g1h6CmiV8WRyyJcdsl+sXfiarZ+PEIrhTD/SV5m
+	 Jp/gvajgqqdWz4mHm8Wdv9/g50W8Py72ErrU00sRmgn74zMfBtHw9BoFSEu8ia5vPJ
+	 hmm8ANClCUV/wPSO7Uop/IK1Ky+rJEQZL6yszV6lCBAS58Rp5V0gYieQvGqjJlVxfN
+	 fhGDTLMDuKTtO94gctvhxR9Kdm5YbyRsFERsil0Ft3erUr3fx6lLnD+0pFASth1iAk
+	 wyrcs4pUqy0LGHa/kNwBeLtRvvbo0SWNQ/a91r4dYwWIl9LGsw2FiaYhPDfeLgC4xZ
+	 7LsP0YCj3bWIA==
+Message-ID: <d9253b46-19bf-42b9-a46f-55d3199d67d3@kernel.org>
+Date: Thu, 19 Nov 2026 18:00:32 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SAEPR12MB181460:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9207eead-beb0-422a-6c5b-08df465e5cda
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|10067099003|4143699003|5023799004|11063799006|56012099006|261021121427099003|261026121527099003|261028144727099003|261026140227099003|261022105027099003|261102123227099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	X8WHYaO/EUmcJQ56h3UKmhidkcEMbQZyme3bY0QZyO8VkubxoGNQ0j4Znrz+6KgPp8Zt/Pc+TBqixbN9N2W+byhDET56ekCdp7ujg1KIjp283GeXpnxOl/ZFlnI8CKcc/qQcrEspzrwtWCPfltsZQUqDd3e40hx4iY1jrq/+wCQFW3fvyT228maBw2Xvmkvq2vvDHunfnMui4sAK56VJvjq8Fu7QitdHlZk1Toen+gIJJ9x+tMzvBj0+ORi+G5c8ts6P+cfCm/TwLC0OPb84eOUan9mVQ95A24Ij+tvCXgfia89h417rQaBVLiMriN2Iq5Ijs8oNEyHQhQm2XZT0nXMfr+zU758GkfFwK8WKUKXXu5dtkU3mtebGVBJUiNqz0N6dvaNlGa11bq0QUY7PSs+hmIiw2Pd/17fAsKPn1ePuqsmxO//ncsyR1HT9Z0s+TjySEBuNsbWufrunwtK3pzJUSL33L5P0ajgPXo+eaJV+cxU1zfTynw/HW5byeaQAg67wuj1liC679PJhmjxfxXvc9h+kmDC9XyMQhNyA17kZSvPV9KYI22sH6Gbk08fsknN5dU2gHhcn6La29FmRNcfLTjRaaxMcV8NALK6zxdIuru3ZwLumaStKkMxD2YBYnGQzPjL58pTML8OymGhqScJgEKPtpHvMLpxcQbQPb/c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(10067099003)(4143699003)(5023799004)(11063799006)(56012099006)(261021121427099003)(261026121527099003)(261028144727099003)(261026140227099003)(261022105027099003)(261102123227099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzhqOGhKbEFGY2ZWdGxEdWdWTmIyTVByS0NvUHE1WmhLN1VURDFSeTZ6cXZK?=
- =?utf-8?B?YTF2NWUzNWJSa2ZuRHJUTlY1aExJeHpWdU1RZElUek1KUzZDUTBoRVNLVUlY?=
- =?utf-8?B?MFhNeUJSWDB3eHErMUM4WjNCRm9SRUh3VVNHNTYvckU2emF6KzF6Mm96WllB?=
- =?utf-8?B?aCttWlpMMEgxTis1Rmw0UkZ6bDBtVXNWenAyVzdOS24xdVhNVjdCQStNQlhs?=
- =?utf-8?B?RXVqZHMwcmRoWVJEYkRiOTlPVlg3TlFpUWx5Z2sxZ1Zjb1BONFc1emliT3NN?=
- =?utf-8?B?dGZUcTRmOXBnNXI4MTQ3WEpuWUwrZ1pKS2ZqQThYRkFIVXB1WjhLVUNiaFlm?=
- =?utf-8?B?d0VSNkl3VVZHNmZtcE9VMjhkaHRzeE9XUGFXTnIxT1Q3UDQvaGNuKzIwaWFX?=
- =?utf-8?B?aENsYTcxSDN2SU0wRUNKWWdvSEtBRjB4QkkzaXFpOGUxSDcxWkpPdXozOTRC?=
- =?utf-8?B?WU1mbXJqMXV2VEw5dzNPc2V1OXlxVmdkdTdqclc1ZmNjaDNaUkZDYndWc3l5?=
- =?utf-8?B?aVFRbVpQbHlHc0FCQ29aRUUwekZuc01jVmxsMEtKUlhVQmk3VWhNWU15ZytD?=
- =?utf-8?B?VzByRmRleFd4eFdadm1CeTRLaUtRdFk0NnJWdUVsNitVNmZwK2wxL3hNMmJH?=
- =?utf-8?B?UEswSWEyUXlBL1NxVHJQM3crd0RmbmVWUGgyUFpzZmFRSjZiR3JjWFB1L3BD?=
- =?utf-8?B?cGN5UnNtdzdibzdTRS9wYm01UnV0NzEyWmN2b1QyTFo3ZWdmSFArdDBFS1ho?=
- =?utf-8?B?YmRXZ3NZSTM5ZzNJZDdIVExwT3c2RGFELzVIdkI4RytHMHJnZzBBMVZRZXEr?=
- =?utf-8?B?UlFUSVBsSWZiWnBVOGl2ZHJMQzg3aUlrUzVIY3Z3ZWZwaEh6RUsyRFZCcWIv?=
- =?utf-8?B?TkVaaGxsNXQwenRSNXdsOEducW5qb1ljekxCcE11NmM5MW9nVElMTmxCWXJz?=
- =?utf-8?B?V29SVkllZ1pVcVIxMGJKVGkyWG84MmswTVBzcTVSU0xFa3RDZ0N4VGtaRXdt?=
- =?utf-8?B?YWVEb3l6RXhBYVYrMk81aWgrNzRHSyt0aUNnTlZza3RCMk9POTBFR3BPZXlx?=
- =?utf-8?B?U3JnV3F2VXk0UGt0dUxEZEtucmVXU2I0RWtVTHNaWENHYkdrSUpmZ3RqTlZm?=
- =?utf-8?B?V1JPbXJUSmFMcTMzTTB1VGNESFJ0VEcxTXh5bWk5SkZiMmlhcTVCelVLTGty?=
- =?utf-8?B?S0MwV1RsblF6dTVEZzUwd29BK2tIVmU2QjFHUlp1cGVDYm5MNHFLRTFsdWxx?=
- =?utf-8?B?aS9RTG9QNW51YS9WZnNQdDl1WXFuSk41T21YM05YZ2tjZmRBWE9FT2dja1RQ?=
- =?utf-8?B?TXovbi8zV2pOdmUxUW9QU1U5NGZ1TU5Qdk5TM0JLajQzeUpYL0dyOStLcUhK?=
- =?utf-8?B?dk8rWGhMNFJwcnJUVzYvTmJTZnpHeGdXdDExbVAxR2lwTTQ2bDZGMTFZOURF?=
- =?utf-8?B?VERnUmxEcEtCeEVMcUtHS1lHZXRhSC9WNEZQMFd5RVF0elRpK3UxbUpPR1hG?=
- =?utf-8?B?NG51QjVTNWJTVUJNVWJvM09Sb3JIeW5mSzZrZHY3RE9IMkhnU1I0U1VkZGFF?=
- =?utf-8?B?MGtteTYwVE9qaCtHZWRLemRXYkRna3V0NDBGdk13WDd2QzhLVFlWemk1VXdG?=
- =?utf-8?B?clZLOXRma3ZxQWhnVzVTZG5GejViUDZlTXV4Rk1RdUZLNWFhekIrQjRSWUJJ?=
- =?utf-8?B?WElnR2ZpdDliN3ZSQTRLYTVmUXlvUUxqdEZhTFArbDRyU1NKamQ2dnNIOUow?=
- =?utf-8?B?Q3pNaXpWMmtUdEJtYklGYkk1aTZaTElsYWtVT0ZGdnNwNEV0bm9NcHZnQzZJ?=
- =?utf-8?B?K3phdHE5bm1DVUQ2Tm5LdUFMU3lmQnVxcGgzSC8vaWF2eGVoN0FJaXpTU1dv?=
- =?utf-8?B?MGJOSTlCL2J4ZFhDTmt0bGVtOWx1Ym53YUcvYlNLc29QVGtNWXM1T1R2OXRN?=
- =?utf-8?B?Mmt2Sll2Vzc4Vk0yZHd3dC9BTU02NFZDSmxNdXNBRmliM1lMK1dNWFlDZTVz?=
- =?utf-8?B?RlMySTNnZ1I4U2dnTk85UkZGZi9mMWpkNThkMUpETVdNa2YxNitXdExRNXFh?=
- =?utf-8?B?QmoyYW1lMkdrbFRHeXk5MjMvR2JYaFhBYmtZb3FzZ0tLdXNoZHNtSXpuY1dO?=
- =?utf-8?B?a1dZbStLdzl2TEdlUE96K0dLbHU0azVvdlhUUG9xTEVRQlIyLzQxVTBTc0s5?=
- =?utf-8?B?WFhXZHVPa29qMlRXb21vbU9vZzhaSW1FQmVPRm5lVTVWdk9Eek90Z3NXOHpt?=
- =?utf-8?B?U1dRYk1nbit2OFZaZG9rckdpTHRXeVFwcTdsYm9pOURjSVN0R0NYWWpubmFW?=
- =?utf-8?Q?kbEH4twJTD6KOUtNWH?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9207eead-beb0-422a-6c5b-08df465e5cda
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 16:58:41.2792
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tB5OF5widfB7CmdCiFU77YJR6reU0Em1KstGaBOV/nJIajJa8B2L3qn1feHqO978
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAEPR12MB181460
-X-Rspamd-Queue-Id: D71552000B
-X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/9] mm: distinguish HW PTE pointers from SW PTE value
+ pointers
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Zi Yan <ziy@nvidia.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Samuel Holland <samuel.holland@sifive.com>, Peter Xu <peterx@redhat.com>,
+ linux-mm@kvack.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
+ <avtAQCkvRr1xkxMF@arm.com> <5a6f351e-0a68-4bbf-a9fc-5bb39d8439a4@kernel.org>
+ <2a84fa4f-655d-4c4d-b6ad-b2ee9d37d972@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2a84fa4f-655d-4c4d-b6ad-b2ee9d37d972@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspam-User: 
+X-Stat-Signature: hj9mukpb4u9r3wujw8nrdmt5dzbpki5a
+X-Rspamd-Queue-Id: 282EBC000D
+X-Rspamd-Server: rspam02
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: yg43yhpn43zrwrodkqgwiwo7addyjtx8
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1795107543-23717
-X-HE-Meta: U2FsdGVkX1/0UHGqkBOPD5CgPrLwv+AQIJ0EaAZViHFtwWMWLJLQw8OlhgHYlIUUxcIojcoctaePWgMMyPu9AGxsCSD99TLV1J6lDvTwKUjSOxlAPx0OsCVB6eyCzUfRa2bYsykyWmIS6GToeFwyUUBrDehaJk78825I93/BlO/eDMUWbA2ZNHMz/qBsZEWKB1vqei97sAIk+Q0H0/fFUmLgLBp0jgk2L0SP9b6SeW4o9cN1+dtAW5pYTX80mX2uzMYKduHYBY8H3aBjGtJ9nyV/bAWDI5W75mai3VHmThB1e6SU+wCo4TAQXLbd3+Wsut6OKYlf34lUzc09RaPsSIJUnvwDzl1a20gjgnoHvQc/xGpeXahJyUDlpr9StmRotonnW2LzsuZP5ZHXZe3wXjiXi+8QA0+D2/RdiLggOyCYPrhYIGA/Q0vu3HxlBJOoCEczvn3ctOZflU/HZpzn227r8g/nImJqgqFnxoTM78Gau3jor0AflCpbtda0XHcyQP8Lz51dB81OaWrG5P93IXOXh5ESz38+dsCE8lcxrAhpm0um+4TjUaeOzoq/HTR2jOwDW/OUAhJ4muis+wqaLZDqIwfKKBsR+O8Hj0Rqc+HV/VZL3w8Vln00q8ymZO6cjTKoMKWdyUXpMyKLU63arM+rIAF8FLQCnloajU1o17L1DgVC0GnyZZLAcOddtEA2Kv3Caj56wYAhcb4gW18o+2eYJiUFxFYLQqVGIW/KNDe8aPmJf4Re1zJWor2Ieo1qQPMy5WlQTnuI7aXMr2pAZxjpMOXkWBWlm94FwJh3RQdF2pWkR14Ce2pgM3dIrbHW7RXAS+2mxBWN3NtRiN3ZJUnxYudunyDZmIzFZHM/LcrbYloqgwLJUK1+XvndmMlbyHpOkkuLuXN1sLZ4TYOFpooXjB0Yn1tvtc2NlSnJt+9LjQJI0nOALYxiFfrTl56kyNdVbaS8bBz6ENVobEV
- ZtwoSeaH
- fRMn5HhFi+0AqZJmTtmubtAqmMpYBNvId5tP9+Vt4t9usF0MmtOmyFZTiiJXKGTLoUdz3DGiS4eYksjSVDLvbKlwMNNSmDcs7rFXiVVjOT2VnGlJuJGqBpguz0jtivD+zvLKV9MVI5ILQBvUjzQ/kKrZdxtU7laj+HxXEkGh62zqDfCrNP4Q0jngULgfUwID+d85Jmx18t875sNvINQdpeyBaTmeLdWsbTjzFSoOpxD/dKM1BkP6cHTnb0WrEUWUB6QVxwwJRpLA6JYpsX6o8QxQ7Z5P5d0cVBiXeCz741EHQTgoelGbHQ1oFIkfpTWCqVHpF1UmypJLX76yl3+mhfOMzDavYOmmehW9p+VPtIKjIRYUwa0qG0XUaQQR72VqojnZ+dEJMqVyKywYhw2cMaWR9Y4oYQSbmbPdItmGBerfYKi49GumiFvI+NVlGTdSCwyzrOIl3QkfM5xELtqC65NtoAe5ju72Mmh/sizrtDIklQKZaYQOyL32rYDZoz+dk0B3vkMg23URIfhn77FHO3KCOU6RpcZIbeUZjaSiJF5Kqx3g+IRR4XV0ptIUtwafUAkJojmLpzM+4T4siFyxDW811W9pBps/WTpcmCoL0PrxrXsNx7ipQPKopB9jNKLYeIPuFm9CGqvC1TciEmXcWp40iTGR+1iPiUATlNszzwWHPXZQmObPLFueYUPq77zZ6FUyWTft3CS4XfmPu6oeUlhLd9IpGjgLhwRUQot7aH0umKZl40rnTfDBKqg==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795107639-324948
+X-HE-Meta: U2FsdGVkX1+pfV4dHusWKRMuWh5Tfj8eDxHeoSq/m1BT1om/pRf2T8mvAgOUtEv6zbVkfPde4/rsDVUumULRLhKbMtHFPE1o2sRiVbtIo9IuuwV/TLSW4CVDbj0p0wrtVF5uXI6nmrST2mi8Cu1pLNJheFI45yEbaqHfzAPg9dvkaJY7cZX5L25pqrzoASIeoASsML7r1GoE+c3HjbIBZhbvuXP0V6Em76uNswsR914hkuPmOG386wpPbJPSpOha9Xc9tjXYxjIofc+52WJ93cPwzncGQph95CyX0L5HQUmk1T9+Dt6HXsgA2esLezw43LVJr41U9nUG05snvxctg/JKSgsc4xTHvUYEIdZ8GFgGzkr1Dns5jeTfsr8rsAdvSnbadrH0iDeaAcX/clCBzJ/QgkmbuQ2p7nzjTp7JsUcG4unETdIf0cwplG75BL2MoTbxWLVoIPLR87NMI6qrnspdzDlAVVK/2zpp2CxASLx2ipivsCdIYcKTkipRZNip29d9VKXxWfKRSUqLJHZ1mc4vjnFCVoXEGwmjaLfSeBSiD1hqVW8zR2yq93sDKVTqDuJXFVS4LiJ6Yn1x95m8st5fg/U/89t6EOsK97A9mYvtWeYAKnG+k/SOiE9ylMp+wk0pHcuk5NfvbtwxFU+c1rVRoD8WqDlPyjHTarjjvuwAnOelkUK+/v6ZsZTtSVO1/KU13ZESxK1tM2znMKAgBQtgSgzX1JUVXf9HA0ko9LGVBeMVGPQNOX2aywg7aVXdZUpkLLGE05vysAOTgaMf8KtGj+vFZ0yo8FizxF/EaWugvchIghdAQ8VcBk1FfQM+jiS8wFb9Jca/J4QmKoRvd0Dy8CMemBiCCV5OHz3/P8B9ViHxswijzONWosin1Db8u7QV9XrEjmf8MMMMXUU/M7v9O6ihCUzW5YxnC742gDLZmfXZ5X/i+RlZWSncGjd/VxYIttAVnAaFEXvCvgh
+ rfRwEeo/
+ OF+ImC0sRW3k/WZANotfAwU1O0b5YjhSCv3To0oUU1SZQeSXrcYFPdnT4w/jx8fcG26wL8zbjhG832txStUts19PCO4GC+HDWzdgNse2KlrMlFaAR/hJyU9BIivOej2XTqniStc0nJQ3NtBC4fwxSGVMRkUXmPP+QYW2sthr/rwKXxc0H/ONogv/uurP+/7klC1uPYn+TeXcyQxES4/4NzsCfXz3r6zi2zfdmePqdRmAkEN58IKsEpmEOXI0sLK8ZraMm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -197,115 +150,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 18 Nov 2026, at 14:34, Andreas Hindborg wrote:
-
-> Zi Yan <ziy@nvidia.com> writes:
->
->> On 18 Nov 2026, at 11:18, Andreas Hindborg wrote:
->>
->>> Note: The page patches were part of the `Ownable` series [1] until v21.
->>> This series continues the version numbering of that series, and it depends
->>> on v22 of that series for `Ownable`, `Owned` and the split of `RefCounted`
->>> and `AlwaysRefCounted`.
+On 11/18/26 22:48, Muhammad Usama Anjum wrote:
+> On 16/11/2026 6:18 pm, David Hildenbrand (Arm) wrote:
+>> On 11/16/26 18:41, Catalin Marinas wrote:
+>>> Hi Usama,
 >>>
->>> Not all pages can be treated the same way. A page allocated with
->>> `alloc_pages()` is managed by the page reference count, and kernel C code
->>> routinely takes its own references to such a page. A page owned by the
->>> slab allocator must not have references taken to it, but it can still
->>> show up in places such as a bio vector. A frozen page has a reference
->>> count of zero and is exclusively owned by the party that allocated it.
+>> Hi,
+>>
+>> David here :)
+>>
+>>> (trimmed the Cc list, some lists reject it as too many recipients)
 >>>
->>> A single `Page` type cannot describe all of these. This series makes
->>> `Page` generic over a sealed `PageKind` that describes what is known about
->>> the page:
 >>>
->>>  - `Page<Base>` is the base kind. Nothing is known about the page
->>>    beyond the validity of the `struct page`.
->>>  - `Page<RefCounted>` is the default kind. The page is managed by the
->>>    page reference count, and `Page<RefCounted>` implements
->>>    `AlwaysRefCounted`.
->>>  - `Page<Exclusive>` is a uniquely owned frozen page whose data area
->>>    follows standard Rust aliasing rules, so the data is available as
->>>    `&[u8]` and `&mut [u8]`. It is handled through
->>>    `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
->>>  - `Page<Frozen>` is a frozen page whose allocation is uniquely owned.
->>>    Unlike for `Page<Exclusive>`, nothing is known about who accesses the
->>>    data of the page, so the data is only available through the unsafe
->>>    raw accessors.
+>>> [...]
+>>>
+>>>
+>>> I looked at this (and the arm64 counterpart) and I'm not fully convinced
+>>> it's worth the effort (but I won't oppose it if the mm folk decide to go
+>>> this route).
 >>
->> Why do we need to allocate Page<Frozen> when we can allocate Page<Exclusive>?
->> To me, Page<Frozen> is an observed page state from a non-owner point
->> of view.
->
-> I'm not sure we need it, which is why I added this note:
->
->  This currently has no users, but I add it here for completeness. Let's
->  discuss if we should keep it or not.
->
-> The difference between the `Page<Frozen>` and `Page<Exclusive>` is that
-> `Page<Exclusive>` has stronger invariants. Namely that the (physical)
-> memory region of the page does not incur data races, and that the page
-> not in highmem. From a Rust point of view, this allows us to obtain a
-> reference to the page contents without jumping through any hoops.
-
-But access to memory region of the page is associated with page table
-mapping or IOMMU mapping (for device, and I assume devices are accessing
-data via virtual addresses instead of physical addresses to avoid further
-complication). It seems that you are trying to use page refcount == 0
-to infer that no page table mapping exists for the page. But how about
-kernel direct map? Anyone with struct page can use kmap_local*()
-to get kernel direct map and access the page content. kmap_local*()
-does not reject frozen pages.
-
->
-> I do not have a user for a frozen page without these invariants, but I
-> would assume there are use cases?
-
-For the above reason, everything is Page<Frozen>?
-
->
->> In core-mm, a page is frozen, when its refcount == 0. The code looking
->> at the page knows the page is exclusively owned by others. If the code
->> allocates a frozen page, it will not check its refcount, because
->> the code knows it has the exclusive ownership of the page. To reflect
->> this, the code calling alloc_frozen_pages() should just get
->> Page<Exclusive>
->
-> Is it always the case that users of frozen pages will use them in such a
-> way that they can guarantee no races to the page contents (physical
-> memory)? They cannot be mapped for DMA access or anything like that -
-> that always requires a refcount?
-
-See kmap_local*() case above.
-
->
->> and if the code encounters a Page<Base> and finds it has no refcount,
->> it should convert it to Page<Frozen> or there should be a method
->> that accepts PFN and return Page<Frozen> if the page of the PFN has no
->> refcount, for PFN walkers.
->
-> We can add conversion functions, that makes sense.
->
+>> I think this is the right thing to do to get type safety.
 >>
->> “the data” mentioned in Page<Exclusive> and Page<Frozen> is struct page
->> data or the data in the physical frame pointed by Page<...>? If it
->> is the former, is it better to use metadata?
->
-> I'm referring to the actual physical memory region that the struct page
-> describes.
->
+>>>
+>>> First, I'd like to see all such on-stack p*d pointers addressed as a
+>>> prerequisite (e.g. fix pmd_populate() in __split_huge_zero_page_pmd()).
+>>> If for some reason we deem pmd not fixable, I don't like half (or
+>>> quarter) baked solutions just addressing the pte.
 >>
->> I am new to Rust, so feel free to correct me. Thanks. :)
+>> IIRC doing the full PxD conversion is quite big; doens't make sense to post
+>> these on the list and instead move stepwise.
 >>
->
-> I'm new to mm, I really appreciate your eyes on this.
+>> Agreed that it would be nice to get rid of all stack usage first.
+>>
+>>>
+>>> Second, we could add a run-time page table check, at least for pmd/pte.
+>>> Something like below, gated by CONFIG_PAGE_TABLE_CHECK or
+>>> CONFIG_DEBUG_VM (untested and not entirely sure about using
+>>> PageTable()):
+>>>
+>>> static inline void pgtable_ptr_check(struct mm_struct *mm, const void *p)
+>>> {
+>>> 	if (object_is_on_stack(p)) {
+>>> 		WARN_ON_ONCE(1);
+>>> 		return;
+>>> 	}
+>>> 	if (mm != &init_mm && virt_addr_valid(p))
+>>> 		WARN_ON_ONCE(!PageTable(virt_to_page(p)));
+>>> }
+>>>
+>>> You already have some coccinelle patches to make the conversion. Could
+>>> we turn them into a coccicheck to detect new uses? With LLM reviews like
+>>> Sashiko, we can probably catch new uses violating the requirement (we
+>>> need to document it).
+>>>
+>>> LLMs and coccicheck won't catch all abuses nor does this series prevent
+>>> one from declaring hw_pte_t on the stack.
+>>>
+>>> Once the above are in place, I'd look again at these patches and see
+>>> whether they improve code clarity and are worth the churn.
+>>>
+>>> Maybe an argument in favour of these patchsets is future dynamic support
+>>> for FEAT_D128, we'd need to separate the software representation of a
+>>> pte from the hardware one but we've done this before (arm32 non-LPAE has
+>>> different representations).
+>>
+>> Exactly; we'll need this and go one step further and disallow any ptep++ to
+>> instead route this through helpers.
+> 
+> Agreed, after the current series, we can easily make hw_pte_t opaque like the
+> following (or in even better way if we spend some more time thinking about it):
+> 
 
-Do you mind describing the high level workflow around Page in Rust?
-From my point of view, exclusive page content access is more related
-to page table (including IOMMU page table) than struct page itself.
-struct page ownership is more about the metadata stored in struct
-page for physical memory maintenance.
+Yes, exactly.
 
-Best Regards,
-Yan, Zi
+-- 
+Cheers,
+
+David
 
