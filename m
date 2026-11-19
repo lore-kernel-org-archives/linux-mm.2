@@ -1,120 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8F1606A337
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F353B60A260E
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oCAqElg+
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Ah8BCvTV
 Received: by kanga.kvack.org (Postfix)
-	id A91656B05BE; Thu, 19 Nov 2026 04:11:45 -0500 (EST)
+	id 2CB2B6B05E4; Thu, 19 Nov 2026 04:12:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A68546B05E2; Thu, 19 Nov 2026 04:11:45 -0500 (EST)
+	id 2A1866B05E5; Thu, 19 Nov 2026 04:12:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97E4B6B05E3; Thu, 19 Nov 2026 04:11:45 -0500 (EST)
+	id 1B7BA6B05E6; Thu, 19 Nov 2026 04:12:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C4296B05BE
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:11:45 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0223A0A15
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:11:44 +0000 (UTC)
-X-FDA: 85451300928.19.8A9A985
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2E921A0005
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:11:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oCAqElg+;
-	spf=pass (imf15.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F39076B05E4
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:12:29 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B51B1A09DA
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:12:29 +0000 (UTC)
+X-FDA: 85451302818.03.CDD7CFD
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0FD49180007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:12:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Ah8BCvTV;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795079547;
+	b=uc+RECtKRoyS2Aj2j8D6/hM/ePSrgTOjRxDDybj831oVA7VVXa8sp7T462EbglgiCH6Xfg
+	LOuh+X4iIgwNB7ti4DDbH8D1jm+DQQUNwf1bo9HRUa7mOH47PsjDCkyEJ7aI4PbihahG9K
+	jX5qXDywFFbmtaC/utq+WC2ULnuRRlg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795079503;
+	s=arc-20220608; t=1795079547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ob3yII6XgPfaGzBlNNgVC1u1nxxTdD3c2/x1BrWMGM=;
-	b=unsK/hzANm+00+sBaFLJ9xdVQqz3eWX59aq+B8XDJv8P4nGO81sAUSNX2gmH8WSMFykOes
-	5VQbaC2kGZ86wAKJBPRAbsgY7hLtmhCVkCata/oxYUb8rtuuYkXy77YWpqzJOgp+dOl9uR
-	GEgE+GM/S0dYSfetUgP2M4F2o0hOW6E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795079503;
-	b=35SAq2mPdrqXcQxIM+6eq7y91nAoVu4p+4Sy+CQvCJ0rO1nFWPNphQH7mlp5kPPy2oqq2h
-	Vn0qzWUArw1b0i1lDqFhiytgDg2VwyS2ZlqwpkF0fDISXPzbmHvxDN0MfEQ0hkGEpmGL4a
-	enWoilJB4OqUQy0/NJFiE5wZ/t6FRMY=
+	bh=DQVUIfTjyV/zT6b5LnIlqNRkGkCMXg+vDOe4jFDkTfQ=;
+	b=BueaELKhAAQY+Szqngb/Z4LWdpReAdH68KZw0CdEbQm6LbZNyjsdi10lKSBhuQ2cv8+5i4
+	LerSYusb6bQ3ThNZEsDnVSGUlUuOf05WXEkzLKSk39cFZkfbg+j2t1gDQHZ3u+CVuqcjt7
+	RDhYmPsMktwszK5oqw/Osg5U+vSgOfU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oCAqElg+;
-	spf=pass (imf15.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0DBF8626B3;
-	Thu, 19 Nov 2026 09:11:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28301F000C4;
-	Thu, 19 Nov 2026 09:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795079501;
-	bh=+ob3yII6XgPfaGzBlNNgVC1u1nxxTdD3c2/x1BrWMGM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oCAqElg+jHpUv5NZi3+X5pT71z2hb8IbZEPK5BleYGMiMxx+phX6OjUT/P/4JUK2Q
-	 gHVX8e7WqtiDEHBKb5OeG3+JgdTndcnYo+GJ4u74ENd96k6WZheR7PExY00+0aU+fN
-	 oTV78DY/bCF6fuGrMLPl96Z2obRF3NzoMJzPTDcBtla5/DdGBhEyFt4AGOfdP2jkyn
-	 wgW8UBwgVdqvAGib+vgTEmLFnEg4B6mqeSe1TfYDkZ1XM1hOX+fI3Qjn0gkajd6TLh
-	 U5sKOqVa8tgXrJoD6aa8iOCHtuoYt75M1hI6VQVHKNjM3LzrR800nK0vZnwiwLPZFb
-	 Wfp9a+v0hoLhA==
-Date: Thu, 19 Nov 2026 10:11:30 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mel Gorman <mgorman@suse.de>, Andy Whitcroft <apw@canonical.com>,
-	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
-	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>,
-	Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH v2 09/15] mm/memfd: recheck the page cache before
- allocating a hugetlb folio
-Message-ID: <av69QsxDuugzEJPL@localhost.localdomain>
-References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
- <20261116-fixes_hugetlb-v2-9-4dd9e94ea9ac@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Ah8BCvTV;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=DQVUIfTjyV/zT6b5LnIlqNRkGkCMXg+vDOe4jFDkTfQ=;
+	b=Ah8BCvTVxFkBn+99vLEoi0NpQx2/6dH81cRbEnu/aS90eDjGXolCY/aMRA7VR+/YSiSuJynZM
+	Bhx4RJwa/C6gLhdwmIyLlIM155bn0IiOfduwnJt/t79fd9gSfYiOdtlm8QR9WT2udmKqDMo0pPb
+	NR/F0XhKSxmB53/K1r+9j+Y=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4jVXlG1Wc4znTbG;
+	Thu, 19 Nov 2026 17:11:22 +0800 (CST)
+Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id B73B34057C;
+	Thu, 19 Nov 2026 17:12:14 +0800 (CST)
+Received: from [10.173.125.21] (10.173.125.21) by
+ whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 19 Nov 2026 17:12:13 +0800
+Subject: Re: [PATCH v3 1/3] mm/hugetlb_vmemmap: fix HWPoison state races
+ during optimization
+To: Muchun Song <songmuchun@bytedance.com>
+CC: Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Joao Martins <joao.m.martins@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	Sashiko <sashiko-bot@kernel.org>, Jiaqi Yan <jiaqiyan@google.com>, "Jose A .
+ Perez de Azpillaga" <azpijr@gmail.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Oscar Salvador
+	<osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>
+References: <20261114112523.75208-1-songmuchun@bytedance.com>
+ <20261114112523.75208-2-songmuchun@bytedance.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <4970cb14-6f75-a63c-7f7b-67470a770b22@huawei.com>
+Date: Thu, 19 Nov 2026 17:12:12 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116-fixes_hugetlb-v2-9-4dd9e94ea9ac@kernel.org>
-X-Stat-Signature: 55bjpz74zcshremzpg9n8j7k9g6y5xru
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 2E921A0005
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795079503-890779
-X-HE-Meta: U2FsdGVkX1/kPa/b0t3dPiACoOTvYMUtwgfXlVtlUBkoG3sUg/8tLogIraf6R7aIGSHIUEFVxpZuVnuEOzMnSXCw0iKxv43IUOcb57RotkBOQ7+kfy4u1LUjamRIyFFv0uWLVDFPVGWOGi9W6TFRFHVLikmc2T+HZGV4YnKfsSCkIt7/OQL0peNzZIdB9QkKSq7xOSQNmSg8CjfZUZiDXoIS0vz3gmZ5JNmCAUDNjpZiykh813It2i0Q7Mgzj6E72wXTLCZkrI0XfrsOFqw8K2eMcqBMpKkRI7iolLGu5XTtq1czLj+wV7PyddMlS9bkAn/Kyeq/OE/j//m7uNsOkdl/cjVikWKLs0bPhM7mt+l/biTMwHIuDStfQ7z5bAWk6zT4gNXOV9K+BvFJ4hVBgA41swVYYBOvyBif6x82Tn1oOQXOw7/k1o/s1sx0ZTuEMHWj1jsDdtc5nc+Ld/RtKh6LDHRNekpQ5Kp7D9+4Gjw3q4fnFkvJopm8AeL6bpRipxJVYpoDINKVEdJ/dIBsxaSUyVGVCiAYDvAiZ8HZIz4btwAzmFxoUjgCr5hbjjKvlImx3yCppCaaezNHYNNUzMF51gnmyZgo5y6D29H6YlD0gQhAOwFYN5xxcHzhIfTwajxbf+tbO8XGXWcBLLG9ZQXlZS+r40Z7WSsoWGYg3NTVGYQQdce76ZNehsNIEncgL4gKekWFL46F9rxUUjTOrqmRBBoNEEXHRB1A27zrIQU0qiXxmuKOEhfBL074ol7Sf5Jc1vUouCnNPKUY4j8MwTftg9qf7na/JvrPBZN0Mhkrg5xJBmgvtqKKYksuLw09UBHTwWY0oRPvSF4NSButQWF6hDO5o6zAcpTuHVisEYWcZmC4ZBGgb+/GmNY8PqwD7E8CSam7LMrO/6dPitW1ACRhZvprnYd7IIhN7j+OryOpLRMEIgag+O/gskyyz6F6BMrVdyRgr5Df0BT4qj4
- KSO+zn6d
- 4VvyIImMG8mUUvPnlar4efjft2HyWOATwRs1XwkNKxieYdgTFA2YnC3/qZVkCF11ozpaeSZSPWyaqkD7qRCIM9YmDIbec6rW6GHSjL2Sp5iL7/kaMJs3KCINo3m1SAdl+KuuErwgovcrThn8PpzOlBj6BbEuktOrykmEHi59tinc/2OX/3yuxQyh7O7U6WHl9y9BoWGy5qeLA38B5eHCVW8W3js3ZZMMnqqVuBbJvJjQSVqpuf2yX7evANHtrnzLfvd8bOMqifwj0ry3d41eDn9ZIzoGRYDqMJCJEutdKhGvALFxMBDcsJfrnKLtxxkA2JMhwdLDTkPiobDgncpgQrhgaESAJqNosTxHfKlOolfQqmURPDUToVaYn1w==
+In-Reply-To: <20261114112523.75208-2-songmuchun@bytedance.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ whupemk100004.china.huawei.com (7.152.185.74)
+X-Stat-Signature: d7a8xd7ib3of8udbtyc3oy5psbq5tcfr
+X-Rspam-User:
+X-Rspamd-Queue-Id: 0FD49180007
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795079545-442296
+X-HE-Meta: U2FsdGVkX18kdFHgBfIYSMFu8+RlmctgKRjDMSKn3vKnkJCEJHYtBIUyhWjGGYbfTfLQ5foTwem/DsqOTxHuToUJF3UpelA7LqwdWiG3e9Y+y6JLiwtJ84lKUgaQL7HoDnKO3h2JRMgElmVwfaZtI+6dQWT8G7AbfsveLShtcD2k4eKqX6DvOKCmYga3joskXia1rrE5G1gO9yvIUzmjL0P/abEvx2r6oitxNynmiNWC9ou2qaHsus/auUNp8tsebL8S/eVBGIoTJ8LJiyE6ukGh0MV+UBnumwrFklV8QuMzuQ9xwTYfFc51WBhbfiL7jT8Hrsy5noxDCCMefvXWHASGFccRyJ9VotvQeri31y2UgC49kP4ALCdzg0GU+vkqparB5NxE1EsAZEddjFCnjUI14ycanqbzmm477yyQtYmTgc0Kos335sPZTbscIHB5HGxt7U+23eLt92DIsMyTOopbPUxhrwu0U3M9gkM6ScZeS7M87tylHav5jF4V4lUf4FhMrf7WhQd3+xuZ9ER0dnIiYWkH+ND9uPKl5yyFZDBL6b5FIPlx2ZU5xrX4f5tsm4VtGhE2XJvsBM/5R3XoVE6reOGt4Ftt/Za0HrMrkKmfDClFK+dlqnKafZK4PYoewihcNxky6u2yPspbDES4PgSlRYV/b3TTlt5O5PV085haFCkhBAzqn7GgJ5YLWiI4ZuqSoOMGaV3hOIKyTV0E/YNqRpnPpqjd0uk1tukuZGbGVHveJbtmozehLiE26SFQYRK5LNOhqsAK4yfUDoZzttCUx9xutv6MUIdNfxepe//wq/5kdHqxT1mtENH4c5nIdIrxtbhUJh/TQhcLJm4+JH6mDbbiT8vVNzsT4SX/7HRjdTiG4qeg10eYNluzXYSLfpbQf+3CoogEQ63i6b9Xqj1LO3vT1jXXg6deSEnFCKO4Edd1oTE7Ds7yinmuAciooS+hyJdNMYTMk46YxbO
+ V++FWNYO
+ 29pNnHmhWI6HydBdJ0EabxZsHAda7QUmaAxFTWInIP5cCxdXdX6GnBzsuzlElWTo1LHNShuv+hufCUDG/Oscm1syzZqFmP0PuRJH9P/p7mfCV8FVuIHmTFzWey8JmHPAPQj+sDcgQVc1WVwWKKfMiid85UWnLzm4TrrwcCclvMRieByK5tHpP0BIH3d8I/ks9wpMdPZI56cG+7eu2ggI36XGqB2J29t3pNrmI0a2g3Gd4gkxKiVEIXWjycjNAR74e58A42lbarwVYnj1SYIt+hRPRudBGwDYku4SfB7gW4emQFiYJstzlg7Gfvwk6zYU1GTokAPEf2BdNpK44JNWh9yr8bjP1R1pXFCSGN7qrzRfaZ4xd4zaJ9SxMMfPqOBeiVfZwTdYiNqw7n5x5ksgf0hqLaJyIW7LAaRZGnT/OeCqnLayP4js798bFNWvf1Cmu3g4uSVeS0bpauR1Ss4is6PSJlXqKXqURtK6ectxkF3HjuT9fKivhwIt/JNP9rC1BD735c2vTnsjsxIZZT0MY+GuLB96kALWrmJzArN51kfiX0c9X4lFWfEvA/wLH3yP2abKjCfGPvPDfn7PJ7fb0ATEyJoGrfmL6bRyl/K9QpuGLFwLC17g1mhcj1TlhaBZc11ulCsWMR9Yw6pX38OSMX0AOUOO+QIslbSsk8xitJ7fvl4LAWKg6GzhZ36M5/4zI9RLUHkhyYoVoEjlCCVfCg8kB1bOX+6Sc3hME
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,34 +109,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 07:29:30PM +0100, David Hildenbrand (Arm) wrote:
-> A concurrent fault or PIN request can populate the page cache
-> after memfd_pin_folios() misses it in the page cache but before
-> memfd_alloc_folio() takes the fault mutex. The latter still tries to
-> allocate another folio and can return -ENOMEM even though the requested
-> folio is already cached.
+On 2026/11/14 19:25, Muchun Song wrote:
+> HVO copies the vmemmap head page before remapping it to a newly allocated
+> backing page. Memory failure can update the old head page after the copy
+> but before the remap's TLB invalidation completes:
 > 
-> In particular, hugetlb_reserve_pages() finds the existing reservation-map
-> entry and reserves nothing. If no global reservations remain,
-> alloc_hugetlb_folio_reserve() fails even when the pool has free pages,
-> effectively failing memfd_pin_folios().
+> CPU 0                            CPU 1
+> init_new_hugetlb_folio()
+> __hugetlb_vmemmap_optimize_folio()
+>   vmemmap_optimize_pte()
+>     copy_page(old_head, new_head)
+>                                  try_memory_failure_hugetlb()
+>                                    get_huge_page_for_hwpoison()
+>                                      hugetlb_update_hwpoison(old_head)
+>   set_pte_at(..., new_head)
+>   flush_tlb_all()
+> free_vmemmap_page_list(old_head)
 > 
-> Recheck the page cache before reserving or allocating. If the folio is
-> present, drop the lookup reference and return -EEXIST so
-> memfd_pin_folios() retries its lookup.
+> The raw_hwp_page linked to the old head is then leaked and the folio's
+> HWPoison state is lost when the obsolete backing page is freed, allowing
+> the poisoned huge page to be allocated later.
 > 
-> This is probably not worth backporting to stable.
+> Unpoisoning has a similar race: unpoison_memory() can free the
+> raw_hwp_page and clear PG_hwpoison from the old head after it is copied,
+> leaving the new head with stale HWPoison state and a freed pointer.
 > 
-> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Serialize HVO remapping against HWPoison updates and removal. This
+> ensures that an update is either copied to the new vmemmap head page or
+> applied after HVO installs the new mapping and completes the TLB flush,
+> and prevents unpoisoning from modifying the old head while HVO installs
+> its replacement.
+> 
+> Fixes: 11aad2631bf7 ("mm/hugetlb_vmemmap: remap head page to newly allocated page")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/bug/linux-18e93f17-529b-4d84-ba44-a41829f4be64
+> Reviewed-by: Jiaqi Yan <jiaqiyan@google.com>
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
- 
-
--- 
-Oscar Salvador
-SUSE Labs
+Thanks.
+.
 
