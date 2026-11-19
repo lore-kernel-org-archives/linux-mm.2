@@ -1,109 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BC1606A32F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 03:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B087C606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 03:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Lxmpmq12
+	dkim=pass (2048-bit key) header.d=tychen.cc header.i=@tychen.cc header.a=rsa-sha256 header.s=spacemail header.b=BE0J9RGv
 Received: by kanga.kvack.org (Postfix)
-	id 3B3EF6B062E; Wed, 18 Nov 2026 22:56:11 -0500 (EST)
+	id 9372A6B0672; Wed, 18 Nov 2026 22:58:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 365726B0659; Wed, 18 Nov 2026 22:56:11 -0500 (EST)
+	id 8E9536B0673; Wed, 18 Nov 2026 22:58:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 253D86B065A; Wed, 18 Nov 2026 22:56:11 -0500 (EST)
+	id 7FCA76B0674; Wed, 18 Nov 2026 22:58:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E27F46B062E
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:56:10 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86323408FE
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:56:08 +0000 (UTC)
-X-FDA: 85450505616.01.A342094
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 544681C0002
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:56:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Lxmpmq12;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C2546B0672
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 22:58:27 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 93ADDA8703
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:58:24 +0000 (UTC)
+X-FDA: 85450511328.10.5EDF3B5
+Received: from out-zbxj-a71.jellyfish.systems (out-zbxj-a71.jellyfish.systems [198.54.127.71])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 73A2740003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 03:58:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=BE0J9RGv;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf01.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.71 as permitted sender) smtp.mailfrom=hi@tychen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795060566;
+	s=arc-20220608; t=1795060702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BkbJSF4aY5DwwRvkf74HcCi1x+58qV+mJKy0JwfSO5s=;
-	b=jL8liGhbaaWuRK6IoqvHzQwKcbsV1r3xtlcymOda6FnBl+7JtwFF0KN1EovN8+iUh1HiGZ
-	mOQ8wF6ct0nk0g8P8mt1l9BYxER2OIkiFrAJJvfVrgdo3wl82XLU8GOHhWCpGcUWagsSFV
-	0gqJ96FYmrq+BzlOgOKZ0Npd/boeE80=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795060566;
-	b=OWe+Lpp/1GYnDu3bpyfoduqo1Fg2hLsnYu1Vdt6b23SPeL0330w3TmJpZGH7CSXXDEZflK
-	9kqvO17o98/xKCyBGSiizqz5cw7q/PUAP58tTgKyq59T+xPkvWjp/n+4ocZbhSHDCV8HvU
-	k+kbY8W7tkH7vLmI5f39C3sGtxS/tkk=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3ZgBWWFyiN7Y7ggxmL9phbyLLGbEvqOZM9Wb7bl0Q2Q=;
+	b=boEUrNfGENuQYoXfEc2BatjLXzZerWq1x4XfvSL/JqtP7IPkE/yz+07KNbSgKJzeZrVqF/
+	H1xVNkgiNGXLbqv7sxCPFZhiKuowTFOs3XUgWDNtUzqrEWOF9A7LgQCdOsmRKVwSx9OV2A
+	bzYScmbRvADzIBXJNVGbbx7dYg0aJrk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Lxmpmq12;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2515B1575;
-	Wed, 18 Nov 2026 19:56:02 -0800 (PST)
-Received: from [10.163.128.149] (unknown [10.163.128.149])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CF1013F632;
-	Wed, 18 Nov 2026 19:55:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795060565; bh=WWLj3TJuHvOcKDydq7vUx0XFf4zQYs67gD5nDNDmk5Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Lxmpmq120iVYYZpt/BMW/eZVPiMYER6b0FkFrrXxHMi1YgKpd1d1xf+vlY7aF+pR0
-	 cKuB88IF/zv8zJtYN00aCQcv/3txCn5Wyj8Pwmml1dGuxUrDAT5nKyKDr5TuDudo/o
-	 7nvwwmuEopoV0sXNOCuHnVRmjZkofU1kozzBSzSM=
-Message-ID: <5aa0c814-b3fb-4588-bbf2-fa141235c8bb@arm.com>
-Date: Thu, 19 Nov 2026 09:25:55 +0530
+	imf01.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=BE0J9RGv;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf01.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.71 as permitted sender) smtp.mailfrom=hi@tychen.cc
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795060702;
+	b=h0tMCfKyDSZrmYrgpOA3upHllg7zTfIR8KNajYwV2Do01EDzZfqZ8zkJe8iBfzn45M+wJ3
+	3iMOY1aiXbWBlvw+v6i8dcjIiJSiD/WprBHtWM0sCyi0ZcnwprTqBoH2lzFOYDO1dB4Iw+
+	pOyEsrcTzZJgRfrS/eGxcPBJdgD5dKs=
+Received: from fedora (ec2-52-197-241-54.ap-northeast-1.compute.amazonaws.com [52.197.241.54])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4jVPnz3HtXz6tkK;
+	Thu, 19 Nov 2026 03:58:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
+	s=spacemail; t=1795060697;
+	bh=3ZgBWWFyiN7Y7ggxmL9phbyLLGbEvqOZM9Wb7bl0Q2Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BE0J9RGvC7X0KzuOzUjkcXuSN9kIukq2QpfEtdjBfS0+XzjFGa3r23AGKuJFzDss9
+	 inlPVDaPfxPXDb+hBPQkwMGyEcme0lUSq1/5yTGV/NegE0RM8l0CPUHv/IDLX/mh+f
+	 Fpy7l7Lgx3GWiI5Z3CuP/yIBXfZWyizr84Hy8e0TSa0aaC9fbswFsQ8fu3ipAv2U47
+	 i1N35DQjg9FjCHaQgP0G0dJtAvYpIia340wrdo6zi/McFheZOagkj46mKuRV2Zkk6q
+	 KjErmKQPiisfEuNlCjIFJtyZ6N5JZ3Gu+2eI+tj2LvCs2GHxQedtPh94LhFTqrdeYp
+	 NswBz/z+e2s4w==
+From: Tianyi Chen <hi@tychen.cc>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	hi@tychen.cc
+Subject: mm/filemap: plain buffered read evicts a folio left by RWF_DONTCACHE
+Date: Thu, 19 Nov 2026 12:58:08 +0900
+Message-ID: <20261119035808.431204-1-hi@tychen.cc>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v2 0/5] mm: remove unused functions
-To: "Garg, Shivank" <shivankg@amd.com>, "pfalcato@suse.de"
- <pfalcato@suse.de>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
- "chrisl@kernel.org" <chrisl@kernel.org>,
- "shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>,
- "vbabka@kernel.org" <vbabka@kernel.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "youngjun.park@lge.com" <youngjun.park@lge.com>, "jack@suse.cz"
- <jack@suse.cz>, "minchan@kernel.org" <minchan@kernel.org>,
- "liam@infradead.org" <liam@infradead.org>,
- "baohua@kernel.org" <baohua@kernel.org>,
- "kasong@tencent.com" <kasong@tencent.com>,
- "jannh@google.com" <jannh@google.com>, "ljs@kernel.org" <ljs@kernel.org>,
- "baoquan.he@linux.dev" <baoquan.he@linux.dev>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20261117-unused-sym-mm-v2-0-2f845e94dd50@amd.com>
- <f3219880-c944-473e-82cc-bd6b4196badf@arm.com>
- <27ef4d8f-f4fa-49aa-b166-8335ca6f5898@arm.com>
- <c28c2ab82afa2cb3f331f1f3b3b20159bc7767b1.camel@amd.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <c28c2ab82afa2cb3f331f1f3b3b20159bc7767b1.camel@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ujyx86s8nhcqzcgi1d8k7ane4za5fr5p
+X-Envelope-From: hi@tychen.cc
+X-Stat-Signature: zwbxm8yfmjbn9j8cc9qyw4jpbuge97ym
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 544681C0002
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 73A2740003
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1795060566-637328
-X-HE-Meta: U2FsdGVkX1/XCunhbm2hk4/TtFl0UoCRN56zGI7mTg/hyoxaLZwG+99dfknKXcQtqIwNEieXYIY1sSfwR7eOJ0lzCao0ysDR99tRcTalReTkj+eSrbkmu5lKBNd0M6Mz8R0F12PDsMuNAqJjykDWVMDB/UQRE76L3qJZjZO8bychT1jw1lgGFSjz49mwae3YSOCwfMKDaFJYWVpwU1kcYUclI0wrfbfcJ00Iex8oT3EQIbCAWElKoWzExxqveIQZuPdHtO4YESlRUywZkMMU1ujURmB/OyLzFiwH4zBIwfuT333C6dQrqTN9RE5GA+Aixc3moTl5/Uvg51zdD7UDa9kPsAfAe/MxjTQMCudwv4CLFsoBlPoKDwl12E55Jyj1Jd5tozy3G7lHJodueH2E4/T0hAMSlTdV7JC0VOay8Q+33hX2/XcMY29aQe8LTUdx16Pq1wOIxBLA5m3dGg62IRTBBPRKRmXx2QDYtsUSKDz+9k5Hb1iz0CnvykGvHD6bbaXs4FwBg6FjHP+PYGMLfZUpeDzkCkMut8sLQG0TWHDkr8yEFcyLqBQTE8aRwtAzwyyMJCh3cvUMgCwoTM/7fR+ie32W0UOyWJEWE6U0lvyh3whxnt0TMSaPXIrdqmJpffrolSwWD4RGlU6t+p4fQ7w99XggJxh5e1Jq5LXWjI5mM3NVCbh8h4QA5w/GcI2IsWZ6ZL3OdkBjPz+95ZqJK71Cm1gWi6CZ9oKID7A2Ls4vxmvXDfKZmdZ4lKut1q9v5mtWU+FzJi5+BXXHClIqiG858gpQM/opOVcrH48VHSAIa3kwk+sNffH3xYe2UUGizzBwCywDS50mMJy7dB0e+PCUT7ShiO7t0fCNM6lYdH8coCv18Jb1+F/T7nILyFB4sx3hgNtS/+pG70J9fGH0QwVF4PqLAYJ1IoSCW+saOBsh1pcPHGRWBFaej+AdhDi9SVKKbYbh+gZ/PayBDMF
- Q/uQC9rs
- 9Wgpcxn8IFEXsJ3lo+pOWK0jZQRHY524lgfDNy/yH2SILG5RQWUjCyCL5grB4mDMznspbdYZjmMATMKwygnYVodO8nwee13rYdtodv++Tr20PQzXeSiTWiD6LZrGHKQZKHXl4swGlOOyniKC/Gce6hEwgNc5g5Yy32y1H07RxIu4vKXy+8QrVFxaYSguA963maodObrkBw5M1cXLuGO+Iv38jWiatKEbWvp6HvsFdIZQhJivR3GqZeeebZHprQe+qHEgBqMXe7Jdu2TAXlItJb2M5f9ENtNT7gw4K5pcG75JMtGBn28TfF7nE9ZstL7ZqWL+jBMv6osJSiLN0t4nxNlJMsp+kSU7s1UTbzqpFC+iFu40pztUojgJSF1DtdRP66T2VXCcYepe23Isc8IdG9FwoPCXsXfwPMgY2S5pCaYZZb+Y=
+X-HE-Tag: 1795060701-433225
+X-HE-Meta: U2FsdGVkX1+y0z2ICZIdCUUiZ7DqZUOsMQB55368VGfYZEaBazHMEx0zpr/f0B0YjQglywdmPpHDYmhNNLfVyu2U2mZ1M18QOfsMXxL1NqKA/YBpNoG0UAhYMYjV9qnqBNtKkhUafU4CBXVRqkzC0j/1ErUVhXqM7hktNDXCyB5zLASpN8fer4lkBNsRx+vvvLASJcxOiuY1cT/xbI9xVNSuD3ozd3YsCGW3Cpc8EUKk07LFcwOQ/L0ZOPUupzc/+Iec2ivdEZ61fXMBB8Za3ZUDLC67jIIHD/lg939angI5rAZEOAsJOJ5Zzk4fyrqdKMCmZ9lJ2Mdoer4sXjb/SMcRdOH0pxuxU6irUEV9BwBnaziQXNo94isXSXcyCc4/tsJtiiLo3OL75H8zcS9NGImZgQbaMDnXlh5UGE4zYyEAx0ncOZveDaJhIPFPR0aoi31ePt8is6uRbc/Q7obOHfa1jsMl04/BWtLe8+ZR0VVOGyl/7xfp8r+28XGVnkrsniQGzZaDL1uFE6bqL9ml8z+ABLwHN6zutW52APwfDqhajKE/s9wyKTbRJ78imV+gKVNBGDbkkFsxxa7D8IycSbWGF+0J9/WM6Lllal+5M49lDOwlO/vWpX/my0CsW816SiXX6NxczNmIpbIdYDGjkbyWrpFITZe81ktY9VFjY72Kp/Vl6I46XGEv+TblRTaFf7qsJG9qUG6Qzm2JQuyeYblk1QHj8367zA9h64dK/YA4jHt6pu2pCrguXcA6655Lx7Kvk8VgUmFs+95FODGkMYIWUEkCIw53Fx71t23V0wAEk3CdUxjattsldBaY7EaX2jZEwoMC1z6hjUZM8PaaaefEaw5im8gAYzzpAdQ5xa6P/gj9VUlFds/LwHpFBGf17JUKsYClnkIAJ7XQbKWNL6p/JMNNhgODsgcreU65/JVMtJc8vqhqdKFLxJdcRA3CtgbfE1ApmJFT+d+Rm4J
+ Uy0ct1z+
+ om8uUjXswYBW8yDMEGKkWRh6MTAtKjeGMRj3xslZcBvmQzO4F+9jkEsxQeOZX5EsFAJZ2JAqxOEGu8pqfMYE8vSdxtokccBnsn5L4qkndueCEy3LRQb6EL98Sj8qu9kdl3pXdszbs1yk3cREH29rXDC2h1c0niv6SV0uNWnLMg+Adez2rBmkmdUURyDMb/c+QdW5VY8HhwWdpQ52zsvJ+vNWKrTFpsP7AiUrt3FV3CyNKGs7vD1gj5FcWCOjxAKCaYgas2HCzRRxPEueF1T1vFjGAu5nRrZR8kEqJEbjiWAO0XfJ7M+fW0NKzF5CIymkGvrBfRRQzO0oR373UnPkQ2xRzjXFZJhpU18KldeUbgt3aT8l3yWwcg8B6+PVY8sjbRm8U40VN91Xon/57qthKIRSjQjYA9dzoeRuqrKw0F9cC6/94s00OTBgMg2lKbEO2SCLYxXbp6O8UOFV+tuv1mBmb+K60m8QpHprrVABYnrHojv8PTuIA/aVHx/2QcjyGsKF9P00G878rbOE0+mmVJ3I2IA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,85 +97,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Jens,
 
+On current mainline (4405c18c95d2, after v7.4-rc3), a plain pread() can
+evict the page it just read if another reader brought that page in with
+RWF_DONTCACHE.
 
-On 19/11/26 12:25 am, Garg, Shivank wrote:
-> On Wed, 2026-11-18 at 22:44 +0530, Dev Jain wrote:
->>
->> On 18/11/26 10:35 pm, Dev Jain wrote:
->>>
->>>
->>> On 17/11/26 12:46 pm, Shivank Garg wrote:
->>>> This series removes five functions and one variable in mm that have no
->>>> users left anywhere in the tree. I found them with the kunused scripts
->>>> [1], which I wrote with LLM's help. The v1 cover letter [2] has more
->>>> details on the scripts and how LLM was used.
->>>>
->>>> Changes in v2:
->>>> - Split v1 [2] up by MM tree, as David suggested. These five patches
->>>>   are based on mm-new. 
->>>> - No changes to the patches themselves.
->>>>
->>>> [1] https://github.com/AMDESE/linux-mm/tree/shivank/kunused
->>>> [2] https://lore.kernel.org/r/20261026-unused-sym-v1-0-82ca2dceabe1@amd.com
->>>>
->>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
->>>> ---
->>>
->>> Okay I just recalled that there have been numerous cases where people ran
->>> scripts / compiler with flags etc and sent patches to remove unused functions,
->>> but maintainers rejected them citing they are there for a future use. Here
->>> are some of those instances:
->>>
->>> https://lore.kernel.org/all/20240907021506.4018676-1-Liam.Howlett@oracle.com/
->>> https://lore.kernel.org/linux-mm/20100211052247.GA15392@localhost/
->>>
->>> So I think the commit messages need to do more, they need to prove that the
->>> unused function was a genuine oversight.
->>>
->>
->> One way to do that would be to mention the commit and its date, if its too old,
->> or, if it was part of a patch series but then the author changed their
->> strategy in the later patches making the function redundant, etc etc.
->>
->> In patch 1, you remove mapping_clear_release_always() but d73065e60dcc 's description
->> implies it is going to get used, which is confusing. Maybe we are missing
->> a genuine bug, or the author forgot to drop the stale description across
->> revisions.
->>
-> 
-> Hi Dev,
-> 
-> Thanks for the review. I agree that some unused symbols may be kept
-> intentionally for a planned future user, which I checked for before
-> sending.
-> 
-> For most patches I had included some history, like the commit that
-> removed the last caller or the commit that added them without one. I
-> missed that for mapping_clear_release_always() in this patch and for
-> make_guard_swp_entry() in patch 2, so here is the history for both:
-> 
-> - mapping_clear_release_always() was added in b4fa966f03b7 ("mm, netfs,
->   fscache: stop read optimisation when folio removed from pagecache") and
->   never had a caller. Earlier version of had called it from ->evict_inode()
->   but V4 dropped those calls as unnecessary [1] leaving the helper.
-> 
-> - make_guard_swp_entry() was added in 7c53dfbdb024 ("mm: add PTE_MARKER_GUARD
->   PTE marker"), has never had a caller, and none has been posted in 2 years.
-> 
-> I left some symbols out because a posted series adds callers, for
-> example folio_dup_file_rmap_pmd() and folio_is_pfmemalloc(), or because
-> they are one half of a pair whose other half is still used, like
-> kmsan_poison_memory().
-> 
-> [1] https://lore.kernel.org/all/166924370539.1772793.13730698360771821317.stgit@warthog.procyon.org.uk
+On ext4 I opened a cold file twice. A read the first 64 KiB with
+RWF_DONTCACHE and closed its fd. B then read the next 4 KiB, which
+readahead had brought in for A but A never read. The page was resident
+before B's read and gone afterwards, so B's next read of it went to the
+device again.
 
-Thanks! Sounds good, you can reply to the individual patches with the additions
-so that akpm/David H. can fold that in.
+As a control, A did a plain read and then FADV_DONTNEED on the 64 KiB
+it had read, so both runs had the same mincore() bitmap before B
+started. In that case B's read left the page in the cache.
 
+When B read the 48 prefetched pages sequentially three times, its
+second pass over those 192 KiB issued 432 KiB of device reads (5
+requests), against none in the control. The third pass did no I/O in
+either case. The results were the same in five runs in an x86-64 KVM
+guest. Pages that were cached before the uncached reader started were
+not affected in my tests: with a warm SQLite query running next to an
+RWF_DONTCACHE scan, the query thread did no extra reads.
 
-> 
-> Thanks,
-> Shivank
+On a cached lookup, __filemap_get_folio_mpol() clears dropbehind unless
+FGP_DONTCACHE is set. filemap_get_read_batch() doesn't, and
+filemap_read() still calls filemap_end_dropbehind_read() on the folios
+in the batch. In the v8 FGP_DONTCACHE patch you noted that when there
+are competing uncached and cached users of a folio, "it should not get
+pruned":
 
+  https://lore.kernel.org/all/20241220154831.1086649-13-axboe@kernel.dk/
+
+Should a plain buffered read hit clear dropbehind as well?
+
+A reproducer is below. Run it with python3 in a writable directory on
+ext4 with 4 KiB pages. On this tree it prints after=0 for the
+RWF_DONTCACHE run and after=1 for the plain run.
+
+Thanks,
+Tianyi
+
+Assisted-by: LLM
+
+---8<---
+#!/usr/bin/env python3
+"""Use an empty temporary file per arm on an RWF_DONTCACHE-capable regular filesystem."""
+import ctypes
+import mmap
+import os
+import tempfile
+import time
+
+P = os.sysconf('SC_PAGESIZE')
+assert P == 4096, 'example uses 4 KiB pages'
+count = 1024
+libc = ctypes.CDLL(None, use_errno=True)
+def resident(m):
+    v = (ctypes.c_ubyte * count)()
+    addr = ctypes.addressof(ctypes.c_char.from_buffer(m))
+    if libc.mincore(ctypes.c_void_p(addr), ctypes.c_size_t(len(m)), v):
+        raise OSError(ctypes.get_errno(), 'mincore')
+    return bytes(x & 1 for x in v)
+
+def run(flag):
+    with tempfile.NamedTemporaryFile(dir='.') as f:
+        f.write(b'x' * (P * count)); f.flush(); os.fsync(f.fileno())
+        os.posix_fadvise(f.fileno(), 0, 0, os.POSIX_FADV_DONTNEED)
+        with open(f.name, 'rb', buffering=0) as b, mmap.mmap(
+                b.fileno(), 0, access=mmap.ACCESS_COPY) as m:
+            assert not any(resident(m)), 'fixture not cold'
+            with open(f.name, 'rb', buffering=0) as a:
+                buf = bytearray(16 * P)
+                assert os.preadv(a.fileno(), [buf], 0, flag) == len(buf)
+                if not flag:   # Match residency, without advising the target.
+                    os.posix_fadvise(a.fileno(), 0, len(buf), os.POSIX_FADV_DONTNEED)
+            time.sleep(.05)
+            before = resident(m)
+            target = before.find(b'\1', 16)
+            assert target >= 16, 'no prefetched target outside A read'
+            assert os.pread(b.fileno(), P, target * P) == b'x' * P
+            after = resident(m)
+            print(f'A flags={flag:#x} page={target} before=1 after={after[target]}')
+            return before, target
+
+dc = run(0x80)  # RWF_DONTCACHE
+ordinary = run(0)
+assert dc == ordinary, 'initial page-cache residency or target did not match'
 
