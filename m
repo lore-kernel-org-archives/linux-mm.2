@@ -1,121 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A34606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70C260A261B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 09:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nsjvME0P
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=MjoeKzAj
 Received: by kanga.kvack.org (Postfix)
-	id 9B8C86B05E1; Thu, 19 Nov 2026 04:21:54 -0500 (EST)
+	id B91E06B05EC; Thu, 19 Nov 2026 04:23:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9699B6B05E2; Thu, 19 Nov 2026 04:21:54 -0500 (EST)
+	id B43CB6B05ED; Thu, 19 Nov 2026 04:23:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87FB96B05EA; Thu, 19 Nov 2026 04:21:54 -0500 (EST)
+	id A59E56B05EE; Thu, 19 Nov 2026 04:23:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6871B6B05E1
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:21:54 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3531140867
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:21:53 +0000 (UTC)
-X-FDA: 85451326506.14.093EFC9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 51815180009
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:21:52 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsjvME0P;
-	spf=pass (imf16.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795080112;
-	b=mnGMuklTxDgzzkozG2dhDLc9HLAYZaoWX/0Ota8DBDMUUglrkV/xqsGhrAgm3+905XKdH3
-	Cm4XoeGJgWl4Z1AQdmqpqi39IITW332LcUOtu280fwUDtuX2RS/W6mRMJ8lvhKaOx33s+1
-	ktVzSmiDqD1NaIIppwwyFsEqUQx0IBM=
+	by kanga.kvack.org (Postfix) with ESMTP id 80DDD6B05EC
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 04:23:56 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 113341409B2
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:23:56 +0000 (UTC)
+X-FDA: 85451331672.13.4BAA2D6
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BA34240007
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 09:23:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=MjoeKzAj;
+	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795080112;
+	s=arc-20220608; t=1795080234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Wr5mBmCRIZACCxxVm/06jDLVb0/ss7nm5ggZMozLNA=;
-	b=aX+GUy7tvXDsVLP6161VAJcO6eEJBubid82RYX9KNShpvz37o2AuseF9KS2ILqZ8BC2LaY
-	l+0d6xwGHPFvBNKn9RXgD9nHI69DYWXWVOKle9vFrnHLpCH0EiY1/Ec4Z2Ts3vUesYHr30
-	3pZmYGtQ2ESFIuVB3CmNPmsoQlU18oU=
+	bh=8BbZkq+DmyFDYud+in+NzZnjvISsdRt+bXMusCvgfHk=;
+	b=o4V2bY2AqxZ2flNfN7pNzkolZHfyQgQjQl8R+QY+sg7Z4tqdTNpq3JtkYmWxIH017IamIn
+	XHmyrSSsxjNJTMLXh8KPWgtUTKvUcrr3dFbBS+9ldByrsumetfrsnxx8xnqbv4ZfkEMXDN
+	NTEn2yTxFcEZUHUElmjRp3ItWj+ONYA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsjvME0P;
-	spf=pass (imf16.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7300C4607F;
-	Thu, 19 Nov 2026 09:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CEF1F000C5;
-	Thu, 19 Nov 2026 09:21:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795080111;
-	bh=5Wr5mBmCRIZACCxxVm/06jDLVb0/ss7nm5ggZMozLNA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nsjvME0Pz0scMadhgpwHZPUo0otG94zFoSunBqCc/ZSA51ayJFG8XqUgDzzVs9Kfq
-	 3P+ziEEQQJWx3OysvzemIRFFeoie9jwxaDw22jftfAxZgwFDyhMCvLx5A4P3f8620s
-	 1eWHtIXTDL1mhK8xJXXRt4XlGQI/HnGU3ZC/PIv/tfgU6XMBYyWP+YwFXlhGUaJCg4
-	 ZOdBHhg+WiQFjUzLs9J5RL8/A/ACyTs7vPnDwfbaENEsz0bqTu2Jtq8PFV1wXKxqIC
-	 lEi+uM3OYdUCpyTUH1K3L12s49gJNUVKHPYKHuEktEtvpC35sURPiFFyWMN6vajWEG
-	 E2Ax/gq4PoIng==
-Date: Thu, 19 Nov 2026 10:21:39 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mel Gorman <mgorman@suse.de>, Andy Whitcroft <apw@canonical.com>,
-	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
-	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>,
-	Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-	Chris Mason <mason@kernel.org>, stable@kernel.org,
-	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: Re: [PATCH v2 12/15] mm/hugetlb: keep surplus folios that are
- reserved
-Message-ID: <av6_o6kr6Thpc0ds@localhost.localdomain>
-References: <20261116-fixes_hugetlb-v2-0-4dd9e94ea9ac@kernel.org>
- <20261116-fixes_hugetlb-v2-12-4dd9e94ea9ac@kernel.org>
+	imf17.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=MjoeKzAj;
+	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795080234;
+	b=h53N/sYL++vSOg8ZGmKQ0YVxHyKW39LLBCgognl4xLkV8bpIOO8fQbF3ZKbXOobztv/ChN
+	oo39EqLme9YXBl0p5gfW+QSmHNFNtm5tDuYkQKMxkyR3sCYUSI1LjcQQ3/FqxoXUgAs8Fy
+	QlSFSEHrN6SgeWuWNxx5hBEe/0BPkS0=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8BbZkq+DmyFDYud+in+NzZnjvISsdRt+bXMusCvgfHk=;
+	b=MjoeKzAjt6NTNI1C8Hfiliqm/LHebpFMg2BTpiBkAuHBOlFsqKLJDpaAYAhOv2sEa/6eTnntA
+	opOGiCj4OVATWyDQX8KPLumcQHGY0SdCrGDSzy9I91p9fY70O5JUgs87YGWgas16Gql9Ub8pAgb
+	5E23jIqpglwcGzZ79aTvDbY=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jVY183phdz1cyQ2;
+	Thu, 19 Nov 2026 17:23:24 +0800 (CST)
+Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id 03ABA40586;
+	Thu, 19 Nov 2026 17:23:45 +0800 (CST)
+Received: from [10.173.125.21] (10.173.125.21) by
+ whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 19 Nov 2026 17:23:42 +0800
+Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
+ !copy_mc fallbacks
+To: Yuanhe Shu <xiangzao@linux.alibaba.com>
+CC: "Huang, Ying" <ying.huang@linux.alibaba.com>, Kaitao Cheng
+	<kaitao.cheng@linux.dev>, "Garg, Shivank" <shivankg@amd.com>,
+	<vbabka@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<nao.horiguchi@gmail.com>, <ziy@nvidia.com>, <wangkefeng.wang@huawei.com>,
+	<tujinjiang@huawei.com>, <mgorman@techsingularity.net>,
+	<chengkaitao@kylinos.cn>, <muchun.song@linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
+	<david@kernel.org>
+References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <6536c6f9-4cab-9f64-53fc-897f3bd9c9a8@huawei.com>
+Date: Thu, 19 Nov 2026 17:23:41 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116-fixes_hugetlb-v2-12-4dd9e94ea9ac@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 51815180009
-X-Rspam-User:
-X-Stat-Signature: pwxjwtpp7ua1qux8no684ckoyct4exh4
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795080112-626779
-X-HE-Meta: U2FsdGVkX1+9cZxm4CtyV1fmZKoFq4UPNBQKWk7/2dn0tnvPJxoRn13wBSC7rmRZrhfQNrrFJbjCMPfkYOViYhrjeANlkIRaOEMq4hz3DsJqr/6KO4dJ49JaSfEFOMQr3wh/6QW0wVVgZt2PqWrfI+DhOefYNBd+y8VaXowjuz6CxCT94oy7iiQ5q+67+G/Ci04whF6ylb77hgeLRIM1MoBTRIdRocDCG5UQb/HH+QErYeEmdBrG8wX27MMAC558/L5UfjCedz5pz/vBCMmAwkByicKuPgFP/LtPmpxFsPiUISLWkt9UnRicgrhc8QBQyDdfQhX9fNSAI6zpiydG1uU/D/y9p6iUMF62ktku865u+x2zoe5n4R9iH2gbBYrkDtSRSJTYPWLB1IPdCqDj64xkyDzWToK8tuIvtaHnHw4J/X+iI5EXqpzr1NuICa0AfBDmsF5FCPgDpST4xQhSN8wJPjatPl8tyh9h9gzoN13kNOnnNHxHt7qqhnPR6d9llQxQjRqQc7ZD065nuj1VP3Zfmow1W4e658LybfzZhMhHkgHVVyor695ZRBJTjd1fvVpl4Q8IIxlARaQm5+Y/GHMyHmslBzdO58MZcpObGGme3e9GeyVNgJ8ThfALmUIRLa2MonPO+pGSpJzOwpeOKUVWtHULIwvPoKQlts8KMT0ha2ytbkskVrrw2k0lgO2/vsSmNViSJS6W2+tm3Mf7aiObEl+B1AqYlSky1dNtcNJcBqtZYjbquxsY77qVxf7+J+5SL4k1d82+IKNalJGSdSfXP1TFZd7gj12M+G0QvYTxr3do+7q9B/pfnXvu1kqMgMwLPyxuh1dNBSndd0DNa5aKW1ZSD9dpZ6rQHccF+B+QxADeHUKRQtbOqFTjmEq0rIrGVBnaectkGjziAZnDrpweuOqy3bdSay44CtKoERAqzCutpt4qblvpHHcBsejPAEiKGD6jTQFyvLnfjZp
- WEECH2/K
- 6itDyOXVD7Q7vQsSgo2QdHbl9V9ExG4NstGcPy89waTO9hKYBnTkbAfcAPDU8a/AB5sH3pM8pY/kFLU2UslIlS3EP/M93Hi7JTEm+yRL4+iWmkDvvD4vvLdnLSeIZgbw6iEvVjdS4xzZjYVl6p3beJyyjknogbdekCX6Nsh7mAm30kp4mrcjQK2e56LLznrLDKK9ggPD+AyqfTQsZt/U1TOdegNn4KD8GQs+NRqxl94DHcOGYCmT1LulL571O565Y6gHKv3Y9FY2z/XGPRgRDg8zMIzV0g5iGo1nUXPDgW5V99QjZ+ZCqU89V/S0fqInPd95FVjq5b3Q4V5g+AbXULRMe8wAE6/Pr3ALzY2Uu/M2JTX8fWQMt0ecLnO1WlwCIddQaVPQPg0TwTm+HE+SeAWtEABolG2D31B2rKQ7wlNJt/QYBralTSm3WgNGW1vHaxH5evtEsAsj7uRudczdnsfS+bRsN+0D0ZHuAELNnfnOF5nFOJp5j316fkT4ZNMeyarYebscmtL2Gqfvu8fRObWBVlw==
+In-Reply-To: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ whupemk100004.china.huawei.com (7.152.185.74)
+X-Stat-Signature: rmgwmtxboyct1rqopmn8cdu6kdbuo91e
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BA34240007
+X-HE-Tag: 1795080232-165575
+X-HE-Meta: U2FsdGVkX1/nT0AkOhhMczQ3DW3TzxfaCS1iZLqgzQZjO7xL6lZJG0wVxN3efX6sP519rXjBxsk1+6xDQ6/BVvXkRJvXuq2qujLwxD82kv25ktIX/0pBfPXiTOieMbjjrCuva3D7LbQloRzC5sOhHBvDwIO+QT+dzKUYViZe9CuVOvktCKcs+1ulpxQ7jwZNlj8rIWk9QHJiaRYarKmTWiHa5f1fwV+FwspIRbjXER/xC2Q8qSVH1/kG6Wu/BG0A9T+jWz75JUp3010rr0CY2LyOhv1ljy7vyV1MKHG+bwvUZn5+DxeywwsUrHY+lxYKqTG56fVLoaNk0F/2/WjkjAuOGyvkriMdmrMGNYsJZ+kCwa6yJCIgZU5hd2dVkIHU+q9uSwg4okJB6po4TBCkAhk7gfSmMfd0gomF4ISxdGnmFQ7CdmA4seZjyL42aNTmZWQzdFWQGOXbaZp85LZvUEfv0+mqAX9m/a8pyLP3QrwEjrJVu9xGJeEiSYK23uy6xS33FZ0uFZ9a/M0RjiSujnmK2In9bOCaFTa6kbcRn2FF0wn47SN/qqHlayOcn9lVhlP+ajG3vm2hxUCVtc1YqeRlrh+sB7mPUue2MPRBptZPBMEVJw3xVC2KCTvSUACVWdKnt1Vot/uvhZ0qT1TUb3tS6TkUUzZvHa77+h3SwfqraQ4gS1LKruC1Qle0r9fSBNZRPp3kRVQ6HvCPPlS36i2YO8Jp2uaANWj/L+ftgt/PjaRbzuMTEa+PwGdjs7ccv1R9JstiFLlAo6pqMIu5q7va853A4coRPSK5SYwjuDgsh7d8HhHInDaQPGsFqiq+oWxqGnou5GYij27OL86YV6LbNtFs0jex2QJnmyyUgoyXd9Bf4o0XS11LDcL0rURIxQP9bfYTloRvpmTp2uIJLhgztrltfjfX8vkVPJVRziIZu0krhyVqXzdEkz89hdFpb9Viu9PmOtDsh/1bU9t
+ l5i2OSzI
+ oSXJRrwKTysih7OtYOOZuKY5rOg1PIIMM9b6LK/d13eItx2vDvbmCmyYeX+6BKd/hDViv+q8ck+0xT6JLrd5h2XUSGRcwcwSuz5Xx8oF0ZHLGvS+O9MoOnCYDqtpd+F59Plj3yW7RIGzQ4lPVUwkxryhMWMFUQo5G7ZQaJnqJ5cD2W4xvGTfY7vOWf/N5EpTYZO2kfbM1GBDMih34b50MI0TdsYnjf67deJz7v8o9Qhz7/9JN2rV1HA54HFqzcTJhNaLZNDfoIPMdy8XTbTyF3V1zOIlGEYcpFmyW4BfdGtS8eivtutL7orpenDbB5MZmfrhIIUPu2wyHZKYILa3DQ41+ObK3h/6witLlueUfKOgz6IXUjKMaZH9sjU/WSi/Oksy78wTofFSVOx3oRl+ApLhVxM5VJqXlfXML/f/zISw5PLtQSzgk1zwoEe8ywiKi3n+Oh2fBY7cukgHpENt9mRNQ4oRO5ICwGkWRNqGPPDESsi4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,44 +110,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 16, 2026 at 07:29:33PM +0100, David Hildenbrand (Arm) wrote:
-> From: Chris Mason <mason@kernel.org>
+On 2026/11/10 19:26, Yuanhe Shu wrote:
+> The !copy_mc fallbacks of copy_mc_user_highpage() and
+> copy_mc_highpage() return 0 after a plain copy.  With PG_hwpoison
+> set while the data stays readable, there is no fault to recover
+> from: the copy completes, the destination folio carries no poison
+> marker, and the poison is consumed silently.
 > 
-> free_huge_folio() may restore a reservation, but still returns the folio
-> to the page allocator if its node has surplus huge pages.
+> Check the source page with is_page_hwpoison() in both fallbacks,
+> before the copy, and return PAGE_SIZE, the not-copied-bytes
+> convention of the real copy_mc paths, so the callers take their
+> existing error paths.  On archs with copy_mc this code does not
+> compile.
 > 
-> For example, start with no hugetlb folios and allow one surplus 2 MiB
-> folio:
+> Measured on arm64, where the fallback code compiles: a
+> kernel-space microbenchmark measures 90.00 ns per copy before the
+> patch and 90.71 ns after, 0.8% of the copy itself.
 > 
->   1. Mount hugetlbfs with pagesize=2M,min_size=2M. This allocates and
->      reserves one surplus folio: free=1, reserved=1.
->   2. Create a 2 MiB file and write to a shared mapping of it. The fault
->      consumes the folio and its reservation: free=0, reserved=0.
->   3. Unmap the file and truncate it to zero. The mount's reservation is
->      restored, but the surplus folio is freed: free=0, reserved=1.
-> 
-> Besides losing a hugetlb folio that is required for a reservation, this
-> can also make available_huge_pages() underflow and cause other issues.
-> 
-> Keep the folio in the pool if it is needed to cover reservations,
-> including any reservation we just restored.
-> 
-> Fix generated by an LLM and sent by Chris Mason in private.
-> 
-> Fixes: 07443a85ad90 ("mm, hugetlb: return a reserved page to a reserved pool if failed")
-> Cc: stable@kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: simplify comment and description ]
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Suggested-by: "Huang, Ying" <ying.huang@linux.alibaba.com>
+> Suggested-by: Kaitao Cheng <kaitao.cheng@linux.dev>
+> Assisted-by: LLM
+> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
- 
-
--- 
-Oscar Salvador
-SUSE Labs
+Thanks.
+.
 
