@@ -1,121 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9D660A3803
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 20:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=sDuz0/k8;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ckv9HDGF;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=heYlqDV6;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=TUJeWbF6
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8EF606A33C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 20:11:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88B836B06C8; Thu, 19 Nov 2026 15:11:25 -0500 (EST)
+	id C83A36B06EC; Thu, 19 Nov 2026 15:11:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 862EA6B06E8; Thu, 19 Nov 2026 15:11:25 -0500 (EST)
+	id C0C2E6B06EE; Thu, 19 Nov 2026 15:11:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7522B6B06E9; Thu, 19 Nov 2026 15:11:25 -0500 (EST)
+	id AAD8A6B06ED; Thu, 19 Nov 2026 15:11:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4324B6B06C8
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:11:25 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76010C01CD
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:11:24 +0000 (UTC)
-X-FDA: 85452963288.06.D63541E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 85B6A6B06EA
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 15:11:28 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 04DE7160BF1
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:11:27 +0000 (UTC)
+X-FDA: 85452963456.20.9E49D74
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0F0B010000D
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:11:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="sDuz0/k8";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ckv9HDGF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=heYlqDV6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TUJeWbF6;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795119082;
-	b=2PVqgXm5Yz+u7ojiSqhBX692pktpR5ZAabWjEtLBtVQ4DT+bWIEFGQWTSQ2rFor/TLzzGC
-	32xF7IxlQIPRxuJb6kapdbKLQfB1yM90tQMvklABVVN9+LMEP2E8iVfngxkkQ8RY/6zF+T
-	Q/GxXMMq+Ctb0Z+oO81hGrCL4NUxsQE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="sDuz0/k8";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ckv9HDGF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=heYlqDV6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TUJeWbF6;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by imf05.hostedemail.com (Postfix) with ESMTP id EDD5A100003
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:11:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795119082;
+	s=arc-20220608; t=1795119086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4P5Cb+/gfgFBvqXWLKpYKOVGpUcYfuN40MLcJ/ms72w=;
-	b=fSBzIKdnVNI0qUQXkD/QMCZfYXIWL9a9t/52++0AwFCJJo1p6zRcOMxCXmcFNYpknIja8U
-	nMoPse7qh2L5ESc3MYmKh4iqenUZzHKkVxCwTOli2/DvEqX2TXZogtU4ZbNUHg6r139bfT
-	hGIMr3OzJDg1+U7zSNAPUtPWWVeQo2I=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	 in-reply-to:in-reply-to:references:references;
+	bh=/7+jDmw9PPr5XQtRbOeCRcxjCTyR2570BzVPmXYCK3M=;
+	b=lQ+p25AApi1D41Z0J2fFObGKehJdWBwRMjQyFHsCVFnNN6luPaeP+2FSyvNnnZSdru3Lpv
+	BjbGBfMgDUJHQ4TEhNfzdxcQFf2EtadtpsBCNCXZEdFAdWGgQFK/37xZsBZzBO6RMVkOQo
+	Pq1xIBlD6HNZZzUy3DuvhHohHuFmQdM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795119086;
+	b=7ppjRXFLy7HO35Sq4ZuIym8Fa4gcBOtEye5G7xCmzyyb7PZr6s7XLKonz1AXnAYKDwiPqT
+	DO3S7mQBNODx5xjlQCIluKcOgUex56oxXI79Biku8w6OYVaxBFVKpS+XfY1sEDgycs0FWN
+	JeCNpkFvUq367av72TSfF/OtCWv+OsY=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DC3401FCEB;
-	Thu, 19 Nov 2026 20:11:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795119081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4P5Cb+/gfgFBvqXWLKpYKOVGpUcYfuN40MLcJ/ms72w=;
-	b=sDuz0/k8dN04iladdCn1gPyygaKd0MO/dxStH2IZjsRRA/w5CATIAYcySkadXUYjOwviFc
-	3mzhJ+eboRgKsfOV+T2wIdUAyyAxjY0+rroxNyciIdn1GqgB4MEPCaiNwDYd54NGzF/mi/
-	reG0ytBYtl/iWXFp6zbR2aKSwZx2QxE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795119081;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4P5Cb+/gfgFBvqXWLKpYKOVGpUcYfuN40MLcJ/ms72w=;
-	b=Ckv9HDGF4PAjrItC/XomsJDUu5vT0fLYjHvKcgIG4FffcfRNPkM2697Qc1w+/4uKtApvxx
-	6QttGd9wgRq6geBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795119080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4P5Cb+/gfgFBvqXWLKpYKOVGpUcYfuN40MLcJ/ms72w=;
-	b=heYlqDV66zR3q53/DcGEzUxq5XDHxwEP5Ctk9fMS48ak8rgF38T8TQwbAs20stNJf1wvqa
-	iwPxYnQLqtFeV+PxepBWtsU1mNmLy9l6FhB/53at8XXCOavDNJid1RYQt4EJq4FpvVowUP
-	Hba7vzM5zACDa155GUl79PArhsGC+8I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795119080;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4P5Cb+/gfgFBvqXWLKpYKOVGpUcYfuN40MLcJ/ms72w=;
-	b=TUJeWbF6iWKkwT3EER10NoYiXdDCviji5x375945ma7CsJdZww9XPuSzdiCGiroyr96b87
-	lEDDs8k9n4kb5vAw==
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F2E4B1FCEE;
+	Thu, 19 Nov 2026 20:11:24 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CFA1B134F6;
-	Thu, 19 Nov 2026 20:11:18 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E409A134F6;
+	Thu, 19 Nov 2026 20:11:22 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id OqV1JuRX/2pPYQAAD6G6ig:T2
-	(envelope-from <pfalcato@suse.de>); Thu, 19 Nov 2026 20:11:18 +0000
+	id OqV1JuRX/2pPYQAAD6G6ig:T4
+	(envelope-from <pfalcato@suse.de>); Thu, 19 Nov 2026 20:11:22 +0000
 From: Pedro Falcato <pfalcato@suse.de>
-Date: Thu, 19 Nov 2026 20:10:44 +0000
-Subject: [PATCH RFC 1/5] mm/khugepaged: fix filemap_release_folio()
- interaction with GUP dirty
+Date: Thu, 19 Nov 2026 20:10:46 +0000
+Subject: [PATCH RFC 3/5] mm/vmscan: avoid releasing FS metadata for
+ !FOLL_PIN gup folios
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261119-gup-dirty-what-v1-1-236d69f25c24@suse.de>
+Message-Id: <20261119-gup-dirty-what-v1-3-236d69f25c24@suse.de>
 References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
 In-Reply-To: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
 To: David Hildenbrand <david@kernel.org>, 
@@ -138,20 +91,27 @@ Cc: linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
  Michal Hocko <mhocko@kernel.org>, linux-fsdevel@vger.kernel.org, 
  Pedro Falcato <pfalcato@suse.de>, stable@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Spam-Score: -17.30
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
 X-Spam-Level: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0F0B010000D
-X-Stat-Signature: fykkjtxpkw4ufkr8yp7kro8peh4hgezo
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Stat-Signature: qsfzif84xdrha5ibru5n1eapmt3difh5
 X-Rspam-User: 
-X-HE-Tag: 1795119081-267795
-X-HE-Meta: U2FsdGVkX1/rkdUGZwGeAZU2V4A0HIqqQFJGZpaGmB+OwwansabXoLu2HlORAky8Jz7HaHvOs86AN7KhLiCVI6lyAFND42OL+0UO37msMhoDEQ25CKepzZfF9kZkvQvEUvs+VbNwsF+X83KnL99YcYXJMcLikQr/aUoxcIE5FB1bEhosxOYZkiIwhdgYE+7GquvJdAvE1zWg5DRuvbgpX1ny6rdJTwDdRhYOIzPPldNyaxMzs+JxVS07ZV3KBxJA+qpO7JkrxFZtKOgchvjJ2MA0VRcoXofn53yvw1nU9gRxTIE2CiazJY/thH71eCE+fFkH++t5rESduLmsgtAKWnsjqbMKe+Hh8rHkblVeU/WKZLbi9W4cewC2fBzgHYte7KElcQzNTo7TA7kvLFaWIyfvVMuiEfzIRffnKI23oP/34VyBDzC63KUrRtlSw4KXsnUrzHK2AV4kaWtNL8R8/b977eYy+ESRwv2cfPyk6HrSKhkPVoai5TOIOnd4G5L3NKsrVzLnm6Lcu63sXDI/IyPBGT3SMyNlhtk1YaAizdtEYq+BeE0IoekP1xLEKLSrsKRvleQGvLjQan2j0HOYCqsaXwS0GSfd2DibL5iXPQgcpUigBwvSgkXiWz/NmIDiAb2drs9Fkpetla8ipOU0VEOaN7llbwN3y0+kAPo38keiBzjwGFM2JL0Mg9lo+LrsQSW/BA/MR1ZJD6wli23HZlPEogokZrg59rm+05xNL6e1laAs9xxwOs6i6vdWm3TFaVsGR6KEID5eezgeHicP8ukNBmG1MFZm8riZW7MGrJ2mXUCGztcUTzVaSziFh67S1dQnHfJhgCGnMC4Jtok5r/8aBkQAecsWooD8TPbcWk3PylbEUxAQfXet5r268cKEfOLJhhY9JW9oBEAhyKzOp40oHtEj/v+RK228cxOsT22Fmfq996KQbTfVJWAwafezR/ea6CSNGZ3B9CQpaNE
- KD7inr6t
- QB+sAyPOz4V76uqKIWB/k7BtqZPANJv7pplIzj8EAbz51AVOzWXnlOs1MR4AkVBAenhKMOHscN7+jeHeGY67kO12gPxJtz2M0q6iE4Ci+LPWZIBk64PH3WF3ixe2ZX3VX/vCLLjYGqnoM4jgEnzjtuhVfsi+hNHSUYcD7YDL1fqO7TOKvsu87WezWrXfvu0v5a8/XXOkEmwDiCHaMrH61bIgwR0NQKKvigN+hZW+wk7OXbuxBhl9gLTJNi/KJeB2au8gLjFR3qhJSt4hn4Rkh1dw4FtiRwSg8ii83LaepeeUDEv6mDTH3DE4Bx0UyzKsnhMw+SFQxjComGE9PA+jFAj2uZw==
+X-Rspamd-Queue-Id: EDD5A100003
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795119085-507507
+X-HE-Meta: U2FsdGVkX1+a9GrnhgrjlsIPgrdy0p43E/te9XUMtcJ+56jXzFivRapSdTFZlzvFkXnL1w5tapYYaItXKFk5JHiMdUzh8zfSSK7kL8UDThg9R6U4XUaVp9732YjVyFUF0ToDds7okHc/4/b1OOgNwOQLZrxu+wBCeKz5uigHl2VUKY76eQMEbZw1Jl6kpXkQzsZLOZGz3fVBYRKFS8kB+7FxjdJCrrfrZgcorz5aU3Du9FCDkgo8MgOe5PtBWNVOvtb+WpDGW+lBedv93OXQZo+7id2st6iA8MpRqM3WrWvkXtluN3iG8cUD2jSSKYdhQYV+QSTU7frGSAfo2to5/tiAxG5xW2kEvnXXEQPvu/Xe89WJKxgGPnD5c+FGhOpt4aNuogpjJBgk+KJBKSqthqHpv/61eONDLxXm+eEnVA6zO6fI0gEV4EPuWAaSR2DATZu/z7T3baZnOSmn04aC5uZWzkwMK39QHN0J6rIqjLEC+uo1gyDLc/YdJWBUtreT+9kgm03ID0CmF7bzapx8iJKV/AasifPWzao0g5Ump0k3/EhRBgGVN5tdfFLrU70TxqvG231sQDoRMkds8GkA6jQw4BOup0Slot2XHsdDMBFAADSPLtdP7MN0ynklbhuLKbZ5r4bugeueEUbr1whktA+8AkY7AE4J+gNSAjlifzQRRPo9wRoYx9xuhqL6BF+7JS2Qv8NGUK2TArDLeB9+/k779trg0R4w/FpfcoaO9D7pSRVRp4r5oE8O5n/TeforfbrIOpz6daUk59V2AeJUoLO5z8+pvs5WATj4lCK7+xz9PS8X98RZmb6Szvp759WLwfRYP8/L9fzdP6DOzQTVrIji+veG7TH0zNK7VztsaLEkN3kgCvcj2Zu/gdXizhw1Q+wg03wcnOkkC5ZXRYgZoawJODngqbFpA6r7UdJ8zwYNmIy9EyVeKgBI7KDufoaLIi9ucPiKmHKOxIaU4mI
+ ZRN9a97R
+ g6vzlXBc7VknC2fXhX4BXng2lDxfbEX7ukWyF/adUyxKUxaG2u/oLJb2bpvKfJt0izepaehZS6/WJuFv3F8aRGpQQUC7vmoUqaTSj73hzvtRkugMup3al5CoCUpCGMIHUcev6NKxtqUsnt8UGr3GA1XWQe+8BxYrQZJS2AMP7VVEMZiZaZbdvxwLXFGLwTkA46RrKV24QP+Njoe/4jfppkpOF0ryGoLGR9KjGSUXMDQNX7ZRTWHoyvGPk9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,176 +120,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Whether a folio can be "released" (drop attached buffer_heads, iomap
-state, etc) is a complicated matter.
+The check added in commit d824ec2a1546
+("mm: do not reclaim private data from pinned page")
+is correct. However, it only handles pages pinned for DMA, using
+pin_user_pages(). It completely skips any other get_user_pages() user,
+that does not pass FOLL_PIN.
 
-Namely, the act of calling pin_user_pages()/get_user_pages(FOLL_WRITE)
-and later calling folio_mark_dirty() on these same folios relies on
-on these structures to have been set up by ->page_mkwrite() or
-->write_begin() elsewhere. ->dirty_folio() implementations usually
-cannot set these up themselves, as ->dirty_folio() is not allowed to
-block.
-
-    [get_user_pages(), etc]
-       ->page_mkwrite() called here, or before
-         ->private correctly populated with whatever the filesystem
-           expects.
-         folio is marked as dirty, initially.
-   *write finishes*
-   folio_lock();
-   folio_mark_dirty();
-     ->dirty_folio()
-          dirty_folio expects ->private to be populated by
-          ->page_mkwrite(), ->write_begin().
-   folio_unlock();
-
-So, what happens if filemap_release_folio() is randomly called on
-folios?
-
-              T0                             |       T1
-    [get_user_pages(), etc]
-       ->page_mkwrite() called here
-	 ->private is ok
-         folio is marked as dirty, initially.
-   *write finishes*
-					      |   *some op*
-					      | filemap_release_folio()
-   folio_lock();
-   folio_mark_dirty();
-     ->dirty_folio()
-          dirty_folio expects ->private
-   folio_unlock();
-
-In, e.g. ext4's case, this results in a WARN_ON(!folio_buffers(folio))
-and very likely data loss, as block_dirty_folio() will not find any
-buffers.
-
-Thus, introduce a new helper to help figure out if
-filemap_release_folio() can be called. filemap_may_release_folio()
-mainly takes into account the refcount to help figure out if it's safe
-to release. The NFS ->private refcount funkyness will be handled in a
-separate patch.
-
-As a part of this change, move try_to_unmap() back to before calling
-filemap_may_release_folio(). This is required for mappings which don't
-require write notification, and as such the dirty=1 -> folio dirty=1
-transition is actually meaningful.
+Replace the folio_maybe_dma_pinned() check with
+filemap_may_release_folio().
 
 Reported-by: David Hildenbrand <david@kernel.org>
 Cc: stable@vger.kernel.org
 Fixes: d824ec2a1546 ("mm: do not reclaim private data from pinned page")
 Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 ---
- mm/internal.h   | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- mm/khugepaged.c | 19 +++++++++++++------
- 2 files changed, 61 insertions(+), 6 deletions(-)
+ mm/vmscan.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 85cf7becf858..4c22d27ace96 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -718,6 +718,54 @@ static inline bool folio_needs_release(struct folio *folio)
- 		(mapping && mapping_release_always(mapping));
- }
- 
-+static inline bool filemap_may_release_folio(struct folio *folio, int extra_refs)
-+{
-+	/*
-+	 * Whether we may "release a folio" (drop attached buffers,
-+	 * etc) is a bit more complex than what you could be hoping for.
-+	 * There are two types of dirtying users in the kernel:
-+	 * 1) ones which take the regular page fault/write(2) paths.
-+	 * These regular paths (which fall into ->page_mkwrite or ->write_begin)
-+	 * take enough care to e.g establish buffers and attach them to the folio.
-+	 *
-+	 * 2) ones that don't necessarily do that.
-+	 * Essentially, the act of writing to a pinned/GUP'd page relies on the
-+	 * above (for GUP-like operations, ->page_mkwrite). However, the folio
-+	 * does not stay locked all the time. It is released somewhere in between
-+	 * get_user_pages() and whatever it is you're doing with the page (e.g IO
-+	 * submission). These users rely on the following logic:
-+	 *
-+	 *    [get_user_pages(), etc]
-+	 *       ->page_mkwrite() called here, or before
-+	 *         ->private correctly populated with whatever the filesystem
-+	 *           expects.
-+	 *         folio is marked as dirty, initially.
-+	 *   *write finishes*
-+	 *   folio_lock();
-+	 *   folio_mark_dirty();
-+	 *     ->dirty_folio()
-+	 *          dirty_folio expects ->private to be populated by
-+	 *          ->page_mkwrite(), ->write_begin().
-+	 *   folio_unlock();
-+	 *
-+	 * Thus, it's not possible to call filemap_release_folio() if _anyone_
-+	 * has a reference we don't expect, that can plausibly dirty the folio.
-+	 * Additionally, we can't have mappings for these. These checks are
-+	 * racy, but the folio lock guarantees that whomever is e.g starting IO
-+	 * on these pages will inevitably wait for us to finish.
-+	 */
-+	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-+	if (!folio_needs_release(folio))
-+		return true;
-+
-+	/* There's no way to know whether these are write-mapped, so give up. */
-+	if (folio_mapped(folio))
-+		return false;
-+	if (folio_ref_count(folio) != extra_refs + folio_expected_ref_count(folio))
-+		return false;
-+	return true;
-+}
-+
- extern unsigned long highest_memmap_pfn;
- 
- /*
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 964f78c3856b..1f1b93371a7e 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2396,6 +2396,15 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 			goto out_unlock;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 6a1af9b92349..d80bbb607a15 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1464,16 +1464,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 			}
  		}
  
-+		if (!folio_isolate_lru(folio)) {
-+			result = SCAN_DEL_PAGE_LRU;
-+			goto out_unlock;
-+		}
-+
-+		if (folio_mapped(folio))
-+			try_to_unmap(folio,
-+					TTU_IGNORE_MLOCK | TTU_BATCH_FLUSH);
-+
- 		if (!is_shmem && (folio_test_dirty(folio) ||
- 				  folio_test_writeback(folio))) {
- 			/*
-@@ -2404,11 +2413,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 			 * since first write.
- 			 */
- 			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
-+			folio_putback_lru(folio);
- 			goto out_unlock;
- 		}
- 
--		if (!folio_isolate_lru(folio)) {
--			result = SCAN_DEL_PAGE_LRU;
-+		if (!filemap_may_release_folio(folio, 2)) {
-+			result = SCAN_PAGE_COUNT;
-+			folio_putback_lru(folio);
- 			goto out_unlock;
- 		}
- 
-@@ -2418,10 +2429,6 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 			goto out_unlock;
- 		}
- 
--		if (folio_mapped(folio))
--			try_to_unmap(folio,
--					TTU_IGNORE_MLOCK | TTU_BATCH_FLUSH);
+-		/*
+-		 * Folio is unmapped now so it cannot be newly pinned anymore.
+-		 * No point in trying to reclaim folio if it is pinned.
+-		 * Furthermore we don't want to reclaim underlying fs metadata
+-		 * if the folio is pinned and thus potentially modified by the
+-		 * pinning process as that may upset the filesystem.
+-		 */
+-		if (folio_maybe_dma_pinned(folio))
+-			goto activate_locked;
 -
- 		xas_lock_irq(&xas);
- 
- 		VM_BUG_ON_FOLIO(folio != xa_load(xas.xa, index), folio);
+ 		mapping = folio_mapping(folio);
+ 		if (folio_test_dirty(folio)) {
+ 			if (folio_is_file_lru(folio)) {
+@@ -1566,7 +1556,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		 * the folio on the LRU so it is swappable.
+ 		 */
+ 		if (folio_needs_release(folio)) {
+-			if (!filemap_release_folio(folio, sc->gfp_mask))
++			if (!filemap_may_release_folio(folio, 1) ||
++			    !filemap_release_folio(folio, sc->gfp_mask))
+ 				goto activate_locked;
+ 			if (!mapping && folio_ref_count(folio) == 1) {
+ 				folio_unlock(folio);
 
 -- 
 2.56.1
