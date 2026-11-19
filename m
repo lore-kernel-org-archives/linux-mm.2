@@ -1,143 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6A4606A33A
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DA6606A331
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 19:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oH5kjYX9
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bwcuv0xv
 Received: by kanga.kvack.org (Postfix)
-	id A68626B067E; Thu, 19 Nov 2026 14:55:01 -0500 (EST)
+	id 00A446B06D7; Thu, 19 Nov 2026 14:55:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A19CE6B06DD; Thu, 19 Nov 2026 14:55:01 -0500 (EST)
+	id F23A06B06D8; Thu, 19 Nov 2026 14:55:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9087D6B06E1; Thu, 19 Nov 2026 14:55:01 -0500 (EST)
+	id E60F66B06E9; Thu, 19 Nov 2026 14:55:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FCCC6B067E
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:55:01 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D3B2C1A0C51
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:55:00 +0000 (UTC)
-X-FDA: 85452921960.22.5D41C85
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 92D8B20021
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:54:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=oH5kjYX9;
-	spf=pass (imf13.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C1F156B06D7
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 14:55:22 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39B03A0C1A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:55:22 +0000 (UTC)
+X-FDA: 85452922884.25.9A21528
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3A2EC18000E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:55:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bwcuv0xv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795118098;
+	s=arc-20220608; t=1795118120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qUumBf+yvrMPq1LrevvQ5muT+FYrWL10mpJk4Q9mBhs=;
-	b=tdtYbfzeZWBt+kDHnOjufF1IoKYpLFZXTpel5heMEFxbDa67fpCChNmtsM9WPZ26Bx/ht+
-	H7dMwHeId0X+V3U92UDtz/xI8oifDqWMbu9/pbvGc1hy6RodzQB76gUp4iS/TvoETQQC2t
-	ATnxLWRdcF/7+0Gy2tXBd917NRfBfRg=
+	bh=35s+RMNvlfl/wiJfPyx4Nh4RZH0S+Tc8JWi1QrqJwTA=;
+	b=BvGdH8t//JSnwX2EQMGhKN1+YQ4Nvm17/lEmYTi13pVzLRPI+/hGn16QgIzlZdqPH9Gz68
+	4RbPPqSqlWi6Xbzi862v48zbimcjvlKfDZSqhL9gueXSvxIjo5jS7GKxtVIks23KC36caJ
+	zv9mHU3wuGy1kwGI4VMFBM6zUqdOVf0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=oH5kjYX9;
-	spf=pass (imf13.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bwcuv0xv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795118098;
-	b=gBumZXA/vf53eETVDVlc0+fSxipzTV+/dgHZPUR9+G3JZONkbt0aQzw+A/C6ZZmSgT1ItN
-	p/qqIrPBMojyrAGS+1f15DyaZ7vtK/MXT1W2RJSmj0ehzyg0EayputMPHoSGgfUVQ4EgDG
-	1R6BzUZeJMigVw3l3ey6A+teXBvckpw=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AJJQFod3857977;
-	Thu, 19 Nov 2026 19:54:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=qUumBf+yvrMPq1LrevvQ5muT+FYrWL
-	10mpJk4Q9mBhs=; b=oH5kjYX9JwBL3BFCiA2GQ6Q0kF7PljV4Ig5NqfH9+actUW
-	nVGJwCz2iYbXEvdWmTjDSUuRVVFhrOOgPovyBsJlLF2wVYjkVEMkSM6fvI+PA7Lp
-	w1ga34y1+4Rm+L1fHDHTXecWG+FAXzDq+ZhR1KUIvlP6d1xE49TriutdUf/+tRqq
-	EuAvStznYVOanupDLm7bcAkk3ULo+avEDQFlwY+8zcBueCyPidDdslJkjPL1ptSC
-	8jkIEV+Cf20veeO7n6aAvZTHBqMr9PREmZjNay6trYLcbCKUay/92tIqj5eZ7Tv0
-	epJnjgdOOWTM1LzoEaM8b/uw7uCocYMurpVIWGeg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105w3bfy-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 19 Nov 2026 19:54:55 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AJJ4vhQ1345955;
-	Thu, 19 Nov 2026 19:54:54 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j1hd6xfy0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Nov 2026 19:54:54 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AJJsow518022692
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Nov 2026 19:54:50 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8ACEE20043;
-	Thu, 19 Nov 2026 19:54:50 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1E2EB20040;
-	Thu, 19 Nov 2026 19:54:50 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.80.212])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 19 Nov 2026 19:54:50 +0000 (GMT)
-Date: Thu, 19 Nov 2026 20:54:48 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/14] s390/sclp: replace page allocator calls with
- k[mz]alloc()
-Message-ID: <e7aece4e-7dc5-455b-a631-721ab99e2546-agordeev@linux.ibm.com>
-References: <20261117-s390-sclp-ready-v2-0-e518c99622c6@kernel.org>
+	t=1795118120;
+	b=YElfbk3+FiW3XCl2o0v25tUQooHxPQ8asDRuknJgMQ8FgXRrxt/ClvY4QQejghKGF+ULnU
+	clf4QRBgfQ8fdMtfFu8ZQyQfJyIr1kZEGg8NcWEdwYmSx4kJWMyGpJYB3fPKa3MuJmDx/h
+	Jp9dbOjjKHWEhJfBS2W2SwanHuQh61I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 59E1C4735D
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:55:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D35C1F00926
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:55:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795118119;
+	bh=35s+RMNvlfl/wiJfPyx4Nh4RZH0S+Tc8JWi1QrqJwTA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Bwcuv0xvRWIZi0iYptvepnDwZsox/yEKND3FagGiMz4tuatld5NR4iRI+8W9N2ZUY
+	 C3CkKdCwjqXPHZ3ku7AkcFUb0oiBRttzNvLjp2qVhtvOMgli6e3ByYme5p54WYXg2u
+	 XvkwmKZP0Y/cp/3W4Y0jDKmCcC/Cenq720CsDvD2GGdD8WSvzxSpmOLrQ+nGXOFe8v
+	 T2FELSOM0/n6zKzOqb7myBaSAlf5G6h4HfJL2tZsmEB9kIrOeo42tlycrwEbXvpiZi
+	 Y9n/ZZDk2gDrNrMfoSkARti5z5FAn42P0yAs0ix9tS0AA9nUj3c+fWbfn2BmCvXCKc
+	 y0BgpyRoFo68Q==
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-9211efaca89so2805976d6.3
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 11:55:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFTjIMN6bQmviBzvysOmAmkCLgbcpTuYtd9+i6eMJ4+zL/mMsfoqagf56i9iL6++nP31Q7Soh0LRw==@kvack.org
+X-Gm-Message-State: APuU4Z9zfLLGouC+GKOwuLXB9yx4YKxbiMp41eHrxiFvJJVxAjLtLUZ+
+	04coDqFMAL3/tm1YKF0dkyOefzBjkj+5cD6DQNsPsaYcNm32TvyzfneQCnjVIzG/DwuqBf8Iqrx
+	9FJliSYK3/Ed2girtomDyAdfArw5Cpo8=
+X-Received: by 2002:a05:620a:7113:b0:949:569a:a3fa with SMTP id
+ af79cd13be357-949ba9b82f4mr119511485a.25.1795118118560; Thu, 19 Nov 2026
+ 11:55:18 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117-s390-sclp-ready-v2-0-e518c99622c6@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vArSZlzO0-sG1YYaAhCwBZXx_D79nzTA
-X-Authority-Analysis: v=2.4 cv=Z8x5j3RA c=1 sm=1 tr=0 ts=6aff540f cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=TmjFby08mKWOAxAHkrkA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: vArSZlzO0-sG1YYaAhCwBZXx_D79nzTA
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE5MDA3NyBTYWx0ZWRfX+ubZyRpjqjTH
- Xytrqff2ozuSNCaIc95w3XNzQ9CC2eY0BHIygLD0QeHf+LwN9clBqt7Sllqxsljpx1mEpsrg3a6
- Z1sG4870orpJ7cJc4abB74Byat9rmCg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE5MDA3NyBTYWx0ZWRfX0MpdOWjivhif
- wZns8I+PVrQ5LC9X77eNl+V4C33psnPXCO52ttyXNbzw1OQ1fpY3OILtyBvGpm5PvA7G/3XvlZ+
- QIQZ9aS4Ne+dR+GCD0a/TmQLlhnNlF2Q2AFnhRQFqlLPLaVsH5dH01rfKfEoEhZ63JjIrndzJpH
- ulYGtNY9qanc2Brq08wYa86teWuMNrAAlEzLdP/AqaJNU4OPDl3Kf2zXm7il4R4asuNhjJGoyuE
- eII89dvWMkSr1DEAqeScFsKwYn9+T9wJyPy40ovOKeLkorLHrvFFHhJV7BjOv2bj7iq/Wndbq+K
- tWziYtDz4fGigKdpH2EPszOlUdG8JAiK23zBvFNa/GQWynr+U33iZtEooNTbh9D/yA0N7aOUk6L
- hmueakbV8n68hC3fJeFx/mCPk97Uy6H6dikQTJSQWwsD3/NQbRei2nGBM4zJJulIZ2qhujuV9wz
- 3DGGUtt7XJgCq6BA2ig==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-19_05,2026-11-19_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
- adultscore=0 bulkscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611190077
-X-Stat-Signature: 9yed6me4iciw78gz67kdyyam546pknri
+References: <20261116081403.216452-1-max.kellermann@ionos.com>
+ <20261116081403.216452-2-max.kellermann@ionos.com> <sashiko-outbox-218403@kernel.org>
+In-Reply-To: <sashiko-outbox-218403@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 20 Nov 2026 03:55:04 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xFy98uy8bdM0Oc2jo70+8qRMWZPxVLEH=OrR1PHWvArA@mail.gmail.com>
+X-Gm-Features: AclHuK9Qup0UNXttQIZa-5UUXq9oMnVeJ8Iy2VNwgLrdULffcmF_q6zw6AuOpWA
+Message-ID: <CAGsJ_4xFy98uy8bdM0Oc2jo70+8qRMWZPxVLEH=OrR1PHWvArA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] include/linux/rculist_nulls: add hlist_nulls_add_behind_rcu()
+To: sashiko-reviews@lists.linux.dev
+Cc: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
+	baolin.wang@linux.alibaba.com, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, hannes@cmpxchg.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6isxdr4whuqpe3yds5maxs44zqsuij7o
+X-Rspamd-Queue-Id: 3A2EC18000E
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 92D8B20021
-X-HE-Tag: 1795118098-896320
-X-HE-Meta: U2FsdGVkX1+qpyB6CZ8cJXlTCaXBjvE8M5CKZzBIWUzJSX08lNhZZFIZwpbYqwlrNNaoofiFb8B8G+jDBpsnyLuLwvImRYQSmLYQ+6lBJLSAnqZrsQSZB4Cg2oYD7Wt+MY/Av3QluJXdCb7oMCgxboKtqCCMCS5gjL0BPaJgTayZDPM6PDedBb0je42Y0VY8dO9TwqvWLcZLyYFqTL3X2PEexz+Xpw09/2X41s29uYTL/kvD6c/lgW4FO01+/0vjnLH/o8lJE2iHS8bD2ggioNOBwCYLf01I+b9w5s35UMRcg5fh4xu7Z/ZllH1dusIl0Lu7WNkdmKiUzpjMUccO3PHak1dR5I+K378ctzUBVfeUhrgEblFSF4QsHaFodCC82iksiY+xc651WOVqs4HeOt0iDMqYWs1sOfe7VkCzX7NFXZb8BPHVi0RBimhiYVhSLxpK+ebniDsJVOkMTC4wUwuH81AQ5JXB8qNauDBS+eXW2n5fZGLkitMwg1hYyrWJcRcUcBLc1V9F3xIVt7wlu5zourH+7HKRU0EW2YNYwYPlsxhqewsPwu4wH/m8IPZ3Dpf1DucVwGPOuXHH1Uxohn1CJ4LHUEtasfgorTGBhQe4GdHpmZHC3AvTIiqwwKTrCwyFIUFY6bJeEGy9EBpUes3FbXi4AuAI3pPHhmzFl0ty02BYlxvfzsnLTw6tzhaH5zHOJyHm3g/0TSpKWUicsPwLRhIvB382JhoCcBA1GVc3mcdvgVqXqRz17YdkLi6l/fVxK8OOeEJxmZpwOzYr+H41iLPsfipLknaMQgLQnxDwHtuNeQ0rBo8VznXAFXF1jWgxC3USaGXUCoI9NoCzRgHqwzPZpUqLf95/dcMtBnuEsirPJSLQntVPL4GSUsfTr5Id4gmlGA3SMTiG1JpW0RoXktWVS6Mn6i5+Afo0PKrSEL60F/tjlTF6rAq3ORCbo+WxdaSLLfc2J/xGUpi
- tMQCLVq7
- 5xcxhz6B4+ijNOhlcDfMpFlB0oqWNrwPH4KDUaH4M824w4eYiRi8e5t7wIDnGPF/j0Ah4Tx9uzu807zze7xbQMDngvtpOvUy9kF1gOD2KjFuKQR/V73M3TMsAGUXgmQjNFy/1H95764BgCO0Wj362NUmPiI9uw3ReZmJoED+HCCYLsWLU7DlepdU4osNWxnHmbwSWnJTaMEdoJuwb8zxldj8bcblABAtab9uO0QMwff2E2nMkwZxWtQrsBhgx4UEtypWPBosX/oNdo8g=
+X-HE-Tag: 1795118120-239790
+X-HE-Meta: U2FsdGVkX1+vtcI8phh60uRhnxJCSCiVmskmhk89vDF6iD0EQZGSgGRulTYW6TKgV1onOJqEUIQic3aBvpsFysgkBthF4tictof71ypyeZPwqA2xyk6dvNlkTi7KeGy/8ACadxnkTdvTxqXKpTYicgkk70a0yWDFHLDTK+zqCCqC3evtodFNFTDuUxR9wgQIkkrIh252CfOLa/52KSLtLyfnQCdsOB76Chr5I049cLOcg4EhtSASKPNrDEbOW1jhiBrc/D68hWx0YBf7q9b2uPomuTV5+VlMNM2kDSGCLstpFf5ywVgRshrpI2B1onrRcOiMLPXbupIVuuCQVBpTVOreKJ66RR3BXboRJ+Dff9FIhmegtSgUMnpBdMsFJVR3qttvKVgkWsY4i5UVqjku294/AUB5ttWmDadoMLswKhTLoyw4jiBEAK2UOUXnx+QbjKWeeal8Ggry16xx1jLQWWWBMWkVd28S6mJ9Ofqi2WDnsYdUz0B+UG1k0LnLPB9Lx5aDx47A+Pt3np164kAmxuf0pR3G3P75ZDr1T8qL5jMsZxytDSktt7F5xJ253Hat1ydTfcqF0RTCCpCJUtT/Jnn++nakVMXRwIC33gUNGpJOCvXxlASRs01Aj6uNjSGqWHgHySWfZ+2iHsqCKjbdQ7mgbM+RADyAy6giPbCTCkJKalPJt7v8va77E8Bj7quSBmB5SPwuwd65Z3rIE6bDE2eLh/Vm0lZowiwaiFlrYk0rqMB38JbNqZLSpx7toDmEBw5/57+xuzlbU1S9SVwoeyfCCA7WT10XqVqq3V4FgfDkdIE6V4ontZIiTIN5SFKvXJ6HJEOg1CxhrMsTVwHjB+oi4I3krEYSmzyQZ6Y04fcN1Uvs1+fd8pDf9Yh6K/5SS9sBLcc1jP+AsSnwWFpwEyNAblEE+YAU0U2zTvcc3lqi7WIFJiWpFTDrJtKyX5qKVEuqXReRlseGVsLnOqA
+ 9LY+2uTf
+ 7F9YmyTAIEOQ0jcZ6wRRO9k2chK4pvSRM3MTJIDmPvRl23hz8FUpVM+1CROSvyUl4rmJokdZwzsbSXfh/M9QxcWGv3rLNtVoKRoYmRREHeo4XeWZjlBqr2HJnBR4lzVnrRYcXVmhnu2B35yEPIfR4Jb/8vhsjXMlRmMjYiHg/G+woLcvx66XFoBgEdIPKtn7fV3TZ9RMJvCjXAOJO0FFoKe25qqL7Yrz57qqjg3eOPtpHYsLogT1ooF6s/m78/Y2LtdbVCVvE/mQCd2FwbruMWzypJH7d1YuJurdo/g/IeRBfDj/ih+9DS+7gnHGJq/y96wOPPkL7KkWS+CtBE2VFZBFFZMOSvZFRewipu/GvSFzdJYPPzjU1zRdRBrFpWcJNN22vrYvFIsMvUrKj0I4RHDeWC+vjBUMTAj9M/khaXMtBOM/fuGNSI8gXlH13+kFoGMtzXg9iiWsNdytnRsRkFFgzhZO2s/5A/2dw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,72 +110,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 03:06:52PM +0200, Mike Rapoport (Microsoft) wrote:
-> This the next episode of conversion of page allocator calls to kmalloc
-> family :)
-> 
-> This series covers SCLP buffer allocations.
-> 
-> = tl;dr cover letter copied from the previous posts:
-> 
-> This is a (small) part of larger work of replacing page allocator calls
-> with kmalloc.
-> 
-> My initial intention a few month ago was to remove ugly casts [1], but then
-> willy pointed out that Linus objected to something like this [2] and it
-> looks like more than a decade old technical debt.
-> 
-> Largely, anything that doesn't need struct page (or a memdesc in the
-> future) should just use kmalloc() or kvmalloc() to allocate memory.
-> kmalloc() guarantees alignment, physical contiguity and working
-> virt_to_phys() and beside nicer API that returns void * on alloc and
-> doesn't require to know the allocation size on free, kmalloc() provides
-> better debugging capabilities than page allocator.
-> 
-> Another thing is that touching these allocation sites gives the reviewers
-> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-> another size is appropriate.
-> 
-> For larger allocations that don't need physically contiguous memory
-> kvmalloc() can be a better option that __get_free_pages() because under
-> memory pressure it's is easier to allocate several order-0 pages than a
-> physically contiguous chunk with the same number of pages.
-> 
-> And last, but not least, removing needless calls to page allocator should
-> help with memdesc (aka project folio) conversion. There will be way less
-> places to audit to see if the user was actually using struct page.
-> 
-> The patches are deliberately kept small, so that every conversion can be
-> reviewed, and if needed reverted, on its own.
-> 
-> Also in git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/s390-sclp
-> 
-> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-...
->  drivers/s390/char/sclp.c         |  9 +++++----
->  drivers/s390/char/sclp_ap.c      |  4 ++--
->  drivers/s390/char/sclp_cmd.c     | 13 +++++++------
->  drivers/s390/char/sclp_con.c     |  5 +++--
->  drivers/s390/char/sclp_config.c  |  4 ++--
->  drivers/s390/char/sclp_cpi_sys.c |  4 ++--
->  drivers/s390/char/sclp_ctl.c     |  5 +++--
->  drivers/s390/char/sclp_ftp.c     | 14 ++++++--------
->  drivers/s390/char/sclp_mem.c     | 12 ++++++------
->  drivers/s390/char/sclp_pci.c     |  8 ++++----
->  drivers/s390/char/sclp_sd.c      | 20 ++++++++++----------
->  drivers/s390/char/sclp_sdias.c   |  5 +++--
->  drivers/s390/char/sclp_tty.c     |  5 +++--
->  drivers/s390/char/sclp_vt220.c   |  4 ++--
->  14 files changed, 58 insertions(+), 54 deletions(-)
-> ---
-> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-> change-id: 20260907-s390-sclp-ready-05ebba1ea5e9
-
-Applied, thanks!
-
+On Tue, Nov 17, 2026 at 4:14=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Low] rculist_nulls: commit message mismatches
+>   hlist_nulls_add_behind_last_rcu()
 > --
-> Sincerely yours,
-> Mike.
+>
+> commit 8be860a8b1d9e4863e4165df073c841c355f9d25
+> Author: Max Kellermann <max.kellermann@ionos.com>
+>
+> > include/linux/rculist_nulls: add hlist_nulls_add_behind_rcu()
+> >
+> > Move some code from hlist_nulls_add_tail_rcu() to the new function
+> > hlist_nulls_add_behind_rcu() for callers that already know the last
+> > node of an `hlist_nulls` list, to allow constant-time appends.
+> >
+> > Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+>
+> [Severity: Low]
+> The commit subject and message refer to hlist_nulls_add_behind_rcu(),
+> whereas the helper added by the patch is named
+> hlist_nulls_add_behind_last_rcu().
+
+With the commit message fixed,
+
+Reviewed-by: Barry Song <baohua@kernel.org>
+
+I recall that Paul also gave his Reviewed-by tag earlier. Should we
+pick it up as well?
+
+https://lore.kernel.org/linux-mm/7037ee68-5dcb-46ed-a73f-ed6ea58915f4@paulm=
+ck-laptop/
+
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116081403.21=
+6452-1-max.kellermann@ionos.com?part=3D1
 
