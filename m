@@ -1,138 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BF5606A32F
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 00:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D73E60A2605
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 00:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=Gqy8kzfX
+	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=jveJF1b7
 Received: by kanga.kvack.org (Postfix)
-	id A654F6B0609; Wed, 18 Nov 2026 19:09:26 -0500 (EST)
+	id 84B476B05FA; Wed, 18 Nov 2026 19:13:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A16076B065C; Wed, 18 Nov 2026 19:09:26 -0500 (EST)
+	id 822B26B065E; Wed, 18 Nov 2026 19:13:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92C396B065D; Wed, 18 Nov 2026 19:09:26 -0500 (EST)
+	id 710F86B060F; Wed, 18 Nov 2026 19:13:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FBD56B0609
-	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:09:26 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 16B1EA8540
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:09:26 +0000 (UTC)
-X-FDA: 85449934332.15.EC6E7C7
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E82601C000A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:09:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Gqy8kzfX;
-	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 475716B065E
+	for <linux-mm@kvack.org>; Wed, 18 Nov 2026 19:13:23 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C09EA808BF
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:13:22 +0000 (UTC)
+X-FDA: 85449944244.28.36EEB9B
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C4411C0008
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 00:13:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=jveJF1b7;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf22.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795046964;
-	b=F19Kn31ORUJU+aFsIlckUYUSAhLBTdZ//vsTe6yA0VzdR4vAYCusWHkB4WRSbnCSeL/3Ag
-	/x9ZYTivVElSzHEF+HzCxcDsa1iA+FNlITpUlbhb4Gw5zwjBOmWr+BQbxVJtxEI0vFa9+j
-	52lZON6NJq5cuoAFGVF7Fpy3Og5LbLY=
+	t=1795047201;
+	b=yhuIxYZzXKrXpIUj4wC4l7+5DUJO7bDR0k7edX8gk09HwAYZKbEpMtblDOSXNbFhYJLL7o
+	NUn8sosQHJzncAOoOMhvMQRvb1102qF3AZcSXVYVXsW6o4o9Xxf/0Kzm3AWb7+QG/6/21P
+	zMAJA3KA6O3lTYz5IdAHlXE8z0OyFt8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795046964;
+	s=arc-20220608; t=1795047201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VqcrwoCztAKpY/Tq1T0uZhbHihAEPIjWKmk0N4arOGA=;
-	b=AxFoZuMxao9Mzg/tO06gPCStBcgXqWrbNPXBvofnwnm08A0E6Yly4ZrLKBKvzD2z0JyaLN
-	QzJmYt0wj7QLgafTjaRykl+sXivofrQ7Dyj0VnV4vi+u6rJte8IKk11lVOJLrtmJCXfdG7
-	Vvc+9i0bDhnfzqAwDbpCXSPaSkQiRkM=
+	bh=Z+4T7HksHFh0HyOVyESymA8Z3DhRY0Y5VmPHJCOWPKw=;
+	b=xY7kDvAy2WLa4QjBEvZOugj+74M/kNWyxJrndsVTnbvUEP0vC61b0T/FSeaGAqBop0M9Ed
+	gtgd6B6h1TrTgF+vxAnQYHxRT9WM2Ed5Pl/o3SycRGYyDQfDuvDVNZW30W51UQsID1X9DC
+	bMnAFBWI7OR6IBeHVtuOHeKiqvDVdrI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Gqy8kzfX;
-	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b503e2a87bso12373897b3.3
-        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:09:23 -0800 (PST)
+	imf22.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=jveJF1b7;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf22.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-679aeeddc6bso1483927d50.2
+        for <linux-mm@kvack.org>; Wed, 18 Nov 2026 16:13:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1795046963; x=1795651763; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1795047200; x=1795652000; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=VqcrwoCztAKpY/Tq1T0uZhbHihAEPIjWKmk0N4arOGA=;
-        b=Gqy8kzfXHT6HYodaGQooVg9WPAaN3JLJlsOCOsfpF7xGGRMSPBru7MLUyrMGZisnxJ
-         oZlM8dNaPO0EvcRIQUyzLTigj/5ZalxCpNk+RpauWawPloYf/syFQjDVqk0Qsi/L/YpF
-         tkuVEaBjsztlziPVFeHsADn+VYEIOwKuNMFJ/bstwtLlSX3IpbLoKRqrwFrNMDkBNkYN
-         L61N+Z3DsSEpaM82EK/iHq6bF+5+Kz+lEJQ+3XXa+AZ4Hb+DbpTrXSnyCOJAPZenhGKR
-         6GnVGaNfkWtK3j7dvcGZoTO+UOaUDFDcZGTrZGhuwnyIo5+7IPAKOUGCDazhDnHP13KY
-         QtWA==
+        bh=Z+4T7HksHFh0HyOVyESymA8Z3DhRY0Y5VmPHJCOWPKw=;
+        b=jveJF1b7HYaLHgVNIq29s6mVxxCVXIQfWLiCkuh33P5mfRUPHXTV/i/W+FClw5iPNc
+         sOZO0riLpgTRyUT3vEkE2pu3jn8x7ZqI5Z5mIKHlqchTuXc/MrsZzvq0F78SoO2Tdqbc
+         9S/Iurlj5r26yNGIJNUqxjAgLT47jFB0wWcA5gV9dwPBDjvABFFlvuppgMOkgkIXhMwL
+         11ytRST4qnruODaFxISGjfU2ou1Vu31sJ66F7+0MFUYaAxDAFixZi4iIG/f0ROFwY9Gq
+         GZJFzOSv907ll8kuBS7DUkE7/V9Ebjnu2UnlTBJaag3S+M/DKi9zsf3Js8YtcV5c4WzJ
+         xN5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795046963; x=1795651763;
+        d=1e100.net; s=20260707; t=1795047200; x=1795652000;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VqcrwoCztAKpY/Tq1T0uZhbHihAEPIjWKmk0N4arOGA=;
-        b=Dy+nOgo7i+/GEl5tBtAwOdjQyBdZJ3V1QJbLUZgvULmhNMqqkOHVhNHU/CTKM5cqc4
-         Jyt65mzix8E4HZ4E7MBTvkh8Cb73ZEJE+RFbQH4XCub2WtgmqGAQJodwdYBtL2t8rJQc
-         rux8ndbD+LbSIUXRk+XMFP2k8FWMEKUDEn6+iFPR/+NwGOo8HlWZ6JSPdmiDHasVsb7V
-         rp/NjGgeYnYvJWWfPX/Q3JBCu+tgbAKsFIwaSeLs16JgyEpGt3hTFj9adwJGjdTxicxa
-         AWiXpbcmZGSEEGMPEj3x+w+xgYk+WufFJt8YzwBvQuw9OTA5gTZOdx/byBFjRMNWd8gW
-         l9ng==
-X-Forwarded-Encrypted: i=1; AL+hErHN9vLzkHYVyciqh9K5F3cuKzEyW/smi4EtXotcLTQrUtwV+c4A2aZgaj5qRrjQWNvT649nBVuSXA==@kvack.org
-X-Gm-Message-State: APuU4Z/q7RtvQpihPHu8uLgd4DVqIpZJyJpeh50raWaAUhEG0nx88IgL
-	KIEHP2qB50egbkOXhjdl4arFpyIIHUv+4IqgGhuRNHjfCJpiCyUBLrd7WTCPw5FgcvQ=
-X-Gm-Gg: AZFdTZdqj/atIhJAEr6r+SP+kXQowrUCnPKFlKHsjXu+zTuglTVcLv5czLpo5PoIZc5
-	JzAQTe1o3s6AldPQtFRURmd/3sqAmR8i+L7PSEPT1FXw2ZG3IfANEkSYND2zdmofdA/bytCk4ZL
-	II/Sr8S4jwIbpKJApn4qmEN/CVu2eZHYJARvYgfDlhMbfy4uC6sSHiQ+N+yD6EGHctTTr9pnCFf
-	78smCX07mtXzv3JdYMGVJsGeYl9pyRT3bDfKQGIdBKBMdrj2j/oJAMEvDqwiAac57/sTvOijtW1
-	wmmITdFLkBk1ZKBLqqiVr3bJOYhCnh2jFG5MAvRq8vGYLV/OlBi1rxcceJxQRvLV+BGE4FWxA5B
-	OkNCr4q31GF9rX1H4tE9wWZ6RcHkOCVZOL6Blq9rYImHiB51nAsWMwmcsb11jRxJEd7ClAEyJK1
-	DMXyLFPm0Y1QyXRKEH7qFGgCSMQyRbg8a1YndxVoQ51SP0lbE+oVO473vAhuD/6f9V8vUxlqHI0
-	mDqb8GO8PUTBdjqFfSs1r33ga3/J2r2p4PCqZ0U23/olmzl27J77CACWeLDGoQiOt+v6o9bo0qB
-	u6qV4oN26lycvTr7EBFZI2tRw6sFZHx1kFgvbvvs4ZdQYkafIA==
-X-Received: by 2002:a05:690c:6d83:b0:8b0:df71:44cf with SMTP id 00721157ae682-8b4fed0a8f5mr20096457b3.15.1795046962815;
-        Wed, 18 Nov 2026 16:09:22 -0800 (PST)
+        bh=Z+4T7HksHFh0HyOVyESymA8Z3DhRY0Y5VmPHJCOWPKw=;
+        b=tm82O7q9FJmKzlW1RIOWgu7AUw4xfa3SJgzIs/pTR/JD+Jqkt2mWr25kvQAgHVMjQd
+         LAiHWG0ertpU9qCwNoVvQb0IEqUgpihik04XVcK53Or847qJwk0HRgokhfSSJA7txr0w
+         K6Q173LI4tNHyaMHdziOOec56lPdVwW+IJDVpnIBQCBoKX7/RnOroCvtbWeUb7Nskj/+
+         w/ZtKcPJXC5dHVAGLp9SntpfzMSLJGI1vo7ojHMPYC7UkJpeIf0U0Wq/nDYZphRSOSne
+         rrrsEYeQEK88VBmzF8hd2bF+VJxLBfnbMNQz99Hq6RY79NaHDf6Ptm0DGG/rLb8x2FSX
+         qxVw==
+X-Forwarded-Encrypted: i=1; AL+hErEw9MJNLE/wGQWNu4K5Jip9yIXEKZuepT2iF9G1zSYiXZME1PtMbVIVEVfnm5dsSYddmon7tKvZ1A==@kvack.org
+X-Gm-Message-State: APuU4Z+XNamShFBuv8dOYb0bIei2wrfSmcGRWg/DRGMnV2wb2urlg3at
+	4y+7vUnVwjqY8WnYgSZNMwiPRuU0mt8m3tChGA7N2ds8xcNDrBqtwi2qkYYOgYeiTx8=
+X-Gm-Gg: AZFdTZdDatXNmr1nRPk++zuPerrsKsrw5n9PuIhQggZ8uu64UixxqrMVZ/rfxLdzfyf
+	eaKoQn0iziVIkMWdvDEzJQLYRQ1UMsXaL6TbMsc0lAQsjZ4PC53Fmp4DfxbEKAr4xTOy1q8Jq+x
+	w4QLrjmE0fW2vS94nbLyHnFy13Ur2hUf90DDfkRN1zWw0lleKp2ZePOkr7bz+ATFpsNnINngnFN
+	tSWza5kYf5CM0jYprFUIdEoPGHNibqXtR6Tz45wDnPsKvxfNW7t8SF/ZMnAl64BvE/5XuVDPdH0
+	wL7u5OvF30ppKfdeD/EQajHBaNrG43zfYtuWPH8OV7zGQT5v2CcuEHDQ/nnQaYuSle8zeicE+L8
+	8Aelon4I2TC+H3gi6vKbfr47DE8pv4QHr7tb4jIorxEv15PMOSu1TtM6ubmrlIagCtIG9Ac2od8
+	1bmKxwRTzCkg/PbfN2XKC3B+LqU8lL4qVAHOgxShrfPUdp/XXlUm9fyEOO0rqasYOfyg7HD9G4S
+	JPZIx5atObWV+na9hy3yXEKB1Oco6B6JgoXAbDFoKpQQ2QLXYFYasr4rgXIgIaF9kZrZNU1UnH5
+	vdfQU7egq3viscVjpIC8sb6NZp7d
+X-Received: by 2002:a53:d005:0:b0:67c:6e1b:84d2 with SMTP id 956f58d0204a3-67dd460a10amr1474859d50.101.1795047199791;
+        Wed, 18 Nov 2026 16:13:19 -0800 (PST)
 Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4fe03091esm26030767b3.12.2026.11.18.16.09.21
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67dd5843177sm2483921d50.5.2026.11.18.16.13.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 16:09:21 -0800 (PST)
-Date: Wed, 18 Nov 2026 19:09:20 -0500
+        Wed, 18 Nov 2026 16:13:19 -0800 (PST)
+Date: Wed, 18 Nov 2026 19:13:18 -0500
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Dave Chinner <david@fromorbit.com>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Cenk =?utf-8?Q?Y=C4=B1lmaz?= <cenk@deepfinresearch.com>,
+	Zhang Peng <zippermonkey@icloud.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
 	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>, Mel Gorman <mgorman@suse.de>,
+	Sasha Levin <sasha.levin@oracle.com>,
+	Rik van Riel <riel@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>,
 	Axel Rasmussen <axelrasmussen@google.com>,
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jaewon Kim <jaewon31.kim@samsung.com>,
-	Jaeseon Sim <jason.sim@samsung.com>,
-	Youngchan Kim <ycshark.kim@samsung.com>,
-	Dmitry Skiba <dskiba@google.com>
-Subject: Re: [PATCH] mm: workingset: compare shadow nodes node-wide without
- kmem accounting
-Message-ID: <av4-MCNVImLfcmMO@cmpxchg.org>
-References: <20261106235904.1092712-1-tjmercier@google.com>
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] mm/vmscan: flush deferred writable TLB entries
+ before unlocking the folio
+Message-ID: <av4_Hkq1kNQUyIeI@cmpxchg.org>
+References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
+ <20261118-file_folio_flush-v1-2-e9e739ed14e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261106235904.1092712-1-tjmercier@google.com>
+In-Reply-To: <20261118-file_folio_flush-v1-2-e9e739ed14e0@kernel.org>
 X-Rspam-User:
-X-Stat-Signature: rt4pir33x14jn3baz33mq19w7tmkmaua
-X-Rspamd-Queue-Id: E82601C000A
+X-Rspamd-Server: rspam07
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1795046963-575028
-X-HE-Meta: U2FsdGVkX19BYetOYW4Sdl7/MznQtmWRSM941By+wlQEC+TfmwfyP6xvWb+zoQbEzfVdJEc7z/hH2qTophgI4xnwVqF4ZnW5cdPVoZBr5P7jKgnUTzerqnqf+F4Jnl6YRMxMSrD7nydANvcgmsiLB7SPxUFm9y+hFy1NnGV/tjm2eWFauVz3UJvvTt/Y+vHcuomwJ4SI9altMOEHUSw5fKz0anZPfUIIx3mxdMTxW68Sb9Afb2wqs/EACIKRRj6GBmMMu8ulEa8BNMug8LKim0rX6MqTBEX8j0dnW3ysAm+odO+CRuO3/y3+OgRgxt3g8bs+xMtnrH5VW0ASIe3rI/EQUkHhMTbhTQ8SeuJye+djdC3PpFzBSUY3RSSFuHTZCwTRCYfeoGIX3iuTiipxqsm3WxEQE9FjNY7xg/g+CzVZZFJ90qhFlL2wH6jauxoxkiGjQe7dieol6UwIfVPd8U8BtUIXW6FWC56ObnF+5BTjk+mqcmQpv0Z0Der5p6+uxqEMD9ZqCHQSn/Ss+xPpCrBjMip0I9jJlvUw9y4GEbMx9oAF9uxwUEmKcfX0jMywP0vhKh0d6C9gi0JCgYVRhFj4UkjP5ZzfOAKomfxOPwjTj3qkHt0SeRNbyrT8hOWLS8epv+kbXE1WB87ZpT90GhLaL/FIsoMyqawB/BboP1UzyeHFge3HD5t/MX9RTsAYgoqTp+HDNzSTE9EW6iPQwKbJ9RbH8Glq+WSOuHU1ocQoSY+a6kZGNpdFSwCCabO8OHbQij408SpEaO0FR4OaKlN++MONj9qTmEGGhpDOv5dGw8jkld7qK8zsHTMNCQhkuiIFYnZJ7zu0D+yeBvVbs2taYh8MI2GN3QENe3yecMcNkzZ+5wxpFVRCLY/DAfGtXAwNfq3lSLg8A8kVbxOinzz9iPIxsmN/2TD/y/9hhlrQXLK/l7TQVLoK4qSyytx4N4zRGc8zeXomaa9MCvB
- litdU50a
- Pf5AcfFIZruJecF5wC47NYhCZQP4fNHNRzohFfY4J15qLV2ePFkYs/PWr2TJzISyHUj7cAcvhY691ku6nPl5HQOvFHoJ5xRhu9jEDKERITmsxZEChbsN2+3LEs+xpUaxffgnsHoqhtja8CBtFtOqjnqFzTrbbJJMaWao2M2rFhibUfcqIBMbOzZcxNHSkcMUM7ogdvGhRQ7XqYnRUajYbfAeGfeN7oGqsZvZM8qGlaPpXhbWwjRA6NxxbTZPEwBRL5vbiSYZG9jLWAUUpApsDx2mDQBx1AhmKHFRtqv93oTxSAf/CicySUzbgxg6AtNusVQ0EIXk0EJFS45Z75kVdBPhQ2zh5qN6dvGXP8CdmVsW48xOzV3yNrbsNjrgdXV4Yi+yudnEgYOs90CNBeJr+dTa9rN64OsVfIDul4/pZLAXpH+rGLYTLkqTnqPQcAiJAJZcYGoVYXp95x8IxahJSyNi6aij6ufRFegwZAUqUmeaAhY+kWCepB4/SUEzxNpV+BQCQfFoABwRwycSm47Ekn9BBSHKdiV9DYe1lCT0YbANd/Cua1Cyqs9LRR7EaRPGaiMtEqfDmuLp8By77eiIfrbBRsAQuVawaU+fr2ii3EvNBgfvKgmg3Qppbzw==
+X-Rspamd-Queue-Id: C4411C0008
+X-Stat-Signature: gp3waiexy47i5ds3w9pctcdfx1ypix5p
+X-HE-Tag: 1795047200-892601
+X-HE-Meta: U2FsdGVkX1/UNGJb2YFZ8BPBcxaL0HN2MZiY/kgjc2EOal7oIJ+SzxECAQlizc++ULHoqJwhcn2qLo+SD/q2tmciJt3PG4KgG0VqMUFMPoSNcnLezs2VawFWMTD+RuxrZJqSJ6mnaShJO7KG3f5lTAKvFhdV8IgdWZro3jiCRYa6HJPbpq3isWzcr8WqQ1+CmlBa7G+SbCKDgtf8tnc+cBvP8nxTmHKQxDExqQz7ZjI2XY5qn6bKTHxCpyy5dNZ6ARlqLC+EENYyEtmU30XfGzOF8LRwK5h2DchdE3s+h1e0BIsjVPTJje4X1OqW+/Kfa4fUiF2q3lASEPzOhoD4Jr+8fAjR/M4pMVSoeth+WnPxyUjfDiUeFGovdwvvBkFryu0AW9nHSs8brqxOYnwBlSA4gPvJzSKV0d+wOZT+QbmeKqR4oAoA3wB+ggw37kmPw0b3VmiEom9cYRFCIvj4oO2fiUJORx2c8kd3YUUYF0MbRTuG5c2jszrpR1OqP9/oIf4J/q8lkmAAvQWMxtpCrUUl0s4AQzEplyvV16qySgMOBIwVw3SE8AgNq0EBrYXuNljL48Gfj5ZEGrWpXOx16+sXlkj4KRz1+Gk1ivMQLofAS1UxdkA5YckE+LBnBZXNuisDOF3DFqr2bL4JrERPwtgspbEqV5thPRJvyXBvI47BZMMoVs/xqS2fryirx9V1JZ+tJ6GSzfkVfMOAXtUPaGRFcsalUL2QpEeqWhVoTY29Dj2tE2SlaSRJpA3CIS2uXqBmc0no5HhXRsf78j4pTjQYpyu9TlTC1nNAoE9AxJOsaqDdRZeO7Dpj35oOXBFyp/t+DJvuIjjxp1nmCnHXe2SEv/MQvdGLhbqHfACJLox7bIt3+fSF+V7yANvrtx+tN4gilna7A2ynZMqrIxa/0/9yYDxItBCkjHzDCf8c97WGbQU6WbCJF687z/8U/U8ryuTM0EpoXkVkdtuF0eu
+ eAkgROsa
+ kUaXrvjg/xtU42MtQgQsEHaNPm4KAbx4VjifgS44YsNfhSn5cW5JT/VdboI48RdbQ64e4dQVTyrM4tq7lfRZ1t+h1RaAAH2ekURVGgsAoXrlpBQs8HEfax7lh8uKUoTnk3MVcaRZiIQF9iLKoFvAJw2fIRAnLowuyu4m960Ej0Hg4mRgiPyWYL6+58XgkrIGaqg05L+2OvdUnQQGekOzmEEfLwY3LvjViSNS7RZPZ7H4R9Rx78+mPFGys0jnLXudkAiIKOFnjOfS/d+CMkRPvj+WWz4Sxnx2c9IGiZ8dc2MRwx3d9ncQNNlCCta8gKopzcbB/tB/PMwSy+s5m4jJwKJNKT8wuDuFWbv9BTBMTaMsMG/paBHKlvyaDCj+R1S3Z6y3zQ+QQmUePPk9A7d1Bi3ABDv7oKfyLUEai+CffeUQLRBH2KJF6XOiwzAmxoVV9ZWH2Ll7lxBWMX48ztwSaxoB/E01F4UKXMpUqr6aczw5D+KpLptcjhA/8o5nUp1HXgTfNZ4z1eiHdtTakxmx54Zq0msJspcl+Lma1dNYw3HEqObOFS/xFFsvIv48FYkBQIHIVsMG/NlDY2KPU2M4KujPmHSQ6QJu7isQP8Upo3CmgzKa7OyP5W6PLlwnkm2tOUtmeVLEFxSugL4dTEUUrw7izLyWT1ne5s87a7WbgOavlD/M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,45 +155,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 03:59:04PM -0800, T.J. Mercier wrote:
-> count_shadow_nodes() limits the number of xarray nodes holding shadow
-> entries to 1/8th of the pages that could be using them. For a memcg, it
-> counts the LRU and slab pages local to that memcg.
+On Wed, Nov 18, 2026 at 10:20:37AM +0100, David Hildenbrand (Arm) wrote:
+> try_to_unmap() with TTU_BATCH_FLUSH transfers the PTE dirty bit to the
+> folio and defers the TLB flush.
 > 
-> With kmem accounting disabled (cgroup.memory=nokmem), shadow nodes are
-> not charged to any memcg and __list_lru_init() makes the shadow_nodes
-> list_lru non-memcg-aware, so all shadow nodes of a NUMA node are on a
-> single list. shrinker_alloc() falls back to a non-memcg-aware shadow
-> node shrinker, which shrink_slab() only invokes for the root memcg.
-> count_shadow_nodes() therefore compares every shadow node on the NUMA
-> node against the pages local to the root memcg.
+> Reclaim must flush the TLB before unlocking the folio, otherwise stale
+> writable TLB entries might be left behind temporarily: writeback started
+> by other mechanisms (e.g., fsync) will not find any mappings in
+> folio_mkclean(), so it will neither write-protect nor flush anything.
 > 
-> When most tasks run in child memcgs, the root memcg only holds a small
-> fraction of all pages, so the shadow node limit derived from the root
-> memcg page count is far below the number of shadow nodes on the NUMA
-> node. Since the shrinker has seeks == 0, every root shrink_slab() call
-> trims about half of the "excess" shadow nodes. Most refault information
-> is thrown away, so refaults of recently evicted file folios are not
-> detected. Refaulted folios lose PG_workingset and the workingset_refault
-> and workingset_restore stats drop.
+> A write through a stale TLB entry after the folio was cleaned gets lost
+> once the folio is reclaimed.
 > 
-> In testing on devices with kmem accounting disabled, moving tasks from
-> the root memcg into per-application memcgs dropped workingset_nodes from
-> ~37,000 to ~900 and raised workingset_nodereclaim 4.6x while
-> pgsteal_file rose by ~12%.
+> However, reclaim currently does not flush the TLB if the now-dirty folio
+> does not get written back (e.g., gets activated or kept instead). Fix it
+> by flushing right after try_to_unmap() if the folio is dirty, which makes
+> the existing flush before pageout() unnecessary.
 > 
-> When kmem accounting is disabled, compare the shadow nodes against the
-> whole NUMA node, as is done without memcg. Behavior with kmem
-> accounting enabled is unchanged.
+> For dirty page-cache folios that reclaim activates, we will now flush the
+> TLB immediately after unmapping them instead of batching the flush, which
+> is the right thing to do. Performance-wise, it shouldn't really matter
+> much, because folios with dirty PTEs are usually young and reclaim won't
+> even try to unmap them.
 > 
-> Cc: Jaewon Kim <jaewon31.kim@samsung.com>
-> Tested-by: Jaeseon Sim <jason.sim@samsung.com> # Galaxy A18 LTE
-> Tested-by: Youngchan Kim <ycshark.kim@samsung.com> # Galaxy S27
-> Tested-by: Dmitry Skiba <dskiba@google.com> # Pixel 10
-> Signed-off-by: T.J. Mercier <tjmercier@google.com>
+> Fixes: d950c9477d51 ("mm: defer flush of writable TLB entries")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-
-Looks good to me. Yeah I don't think nokmem is used by too many
-different environments!
 
