@@ -1,106 +1,170 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C53606A32A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 16:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF48606A33E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 16:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H/VuAI5B
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N3c+DUy8
 Received: by kanga.kvack.org (Postfix)
-	id 91B7E6B05B1; Fri, 20 Nov 2026 11:11:13 -0500 (EST)
+	id CEEE56B05B3; Fri, 20 Nov 2026 11:12:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CC006B05B2; Fri, 20 Nov 2026 11:11:13 -0500 (EST)
+	id CC67B6B05B4; Fri, 20 Nov 2026 11:12:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E2606B05B3; Fri, 20 Nov 2026 11:11:13 -0500 (EST)
+	id BB5E56B05B5; Fri, 20 Nov 2026 11:12:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 58E946B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:11:13 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 82FBBC0FC8
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 16:11:12 +0000 (UTC)
-X-FDA: 85455986784.06.14A748B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 901BD6B05B3
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:12:50 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FECF140F5C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 16:12:50 +0000 (UTC)
+X-FDA: 85455990900.22.AAB6711
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C9965C0008
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 16:11:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/VuAI5B";
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4FA9240008
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 16:12:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N3c+DUy8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795191071;
-	b=KPZXi3HpuXHDSGcgXBhDjeF9IJoD2bBVy0+VYUnqNkRKFJW9qaDNmFyZy91M/GN1K3wlnt
-	9J9WioKU52dpB07FBMCj/VGPnax0XimihujxA24dbpWRs5HTCmkDfY9fhtn74spghQct+s
-	dEpuA+pG37nwwlUq2C9y0IrylB/yTn0=
+	t=1795191168;
+	b=Y+xU6gTettVSHt1ScnSpHlHqNCju/6KmkVqSpfiJfd0RKjIXAUEsCeGuN195YI7SWsfYld
+	EAAhtvhzZ9SuK8oRrsnZdaRDAQn3AST0ALq88ORSuO0b/D6hnxKxlf7BrN7iLJM4KWrAvd
+	buV6V5oeFg4k0w7Q33+ehRtg0nOri6c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795191071;
+	s=arc-20220608; t=1795191168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZFb+S8Es0NvUmNBR5T6fgVNGrRH2yKZK48f5XbLVIEc=;
-	b=eu8yG7Z9vg+56Io3tdjJChqKBUEnMMpVwOxU2wVPgiyKLPQtGQIQZYHizPh+X7eGjdmNJj
-	mIMky+jBvnTGIKprHnpsYeM6WDRwInxVEviq0M/QT0U1WN5aFCYnVLhPDUD+C7UsDtibLy
-	Irc/0rcAt8PbiwaR3aQicX0H2IiJVxI=
+	bh=PUJvVwnS6EwZUWjv8S7z217586V6G8XCo6hR7Yn1lq0=;
+	b=QMn5ski2CBuZ4PiYxQ2GirizOdcy+TgMLeidEzF+BgzWhB/SeXl82SBm4Vo08sBoFHy4oB
+	vsA+D1FPwWDYkWBB2a0Sz7JNJ5QB32M43My/keYYaS/W6kfouZ7WcYB1mr8RDjy4gmkCRW
+	y69m0Rx2qiojwOeoBieNhcgu/1vBEd8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/VuAI5B";
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N3c+DUy8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9ACC640C12;
-	Fri, 20 Nov 2026 16:11:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A251F000C6;
-	Fri, 20 Nov 2026 16:11:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8053D4091D;
+	Fri, 20 Nov 2026 16:12:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE61E1F000D2;
+	Fri, 20 Nov 2026 16:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795191069;
-	bh=ZFb+S8Es0NvUmNBR5T6fgVNGrRH2yKZK48f5XbLVIEc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=H/VuAI5BtuQwQd0zk9hcNYwSPn6N63WihBmZ3f6agPjw5j6X4nhjl+xkuBInj2K3G
-	 pOag/mfhsLJCuDBPE43lBZguYkWm5Q0XnOYHt8I9NqdQ+atTKMgFYlb1IaF+jtQGld
-	 3sUfi6lcLYmIyXlLtnVutUfX01YNRwxTD426bjxP/ztOBKmBROpGn/s6ksznIb2w4q
-	 Au1te+hWzLmOyeSjczvD2gxa37Gi2iRY6JeY1uNgS+FOo6aHN7HdwWzWJ76IhqubZC
-	 I7wV52HU+JBPo3Q8L36yOGgOyjynFxkC/8obE8WBrvul2HbGE4EceWsI1QomsynUz+
-	 KVYj1KF0dneuA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
- <rppt@kernel.org>,  robin.murphy@arm.com,  maz@kernel.org,
-  will@kernel.org,  David Matlack <dmatlack@google.com>,  Alexander Graf
- <graf@amazon.com>,  seanjc@google.com,  jgg@nvidia.com,
-  loganodell@google.com,  arnd@arndb.de,  dwmw2@infradead.org,
-  baolu.lu@linux.intel.com,  Bjorn Helgaas <bhelgaas@google.com>,
-  oupton@kernel.org,  alex@shazbot.org,  gle.com@google.com,
-  pbonzini@redhat.com,  Andrew Morton <akpm@linux-foundation.org>,
-  kevin.tian@intel.com,  joro@8bytes.org,  kvmarm@lists.linux.dev,
-  linux-pci@vger.kernel.org,  Pratyush Yadav <pratyush@kernel.org>,
-  kexec@lists.infradead.org,  kvm@vger.kernel.org,  iommu@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org,  skhawaja@google.com,
-  sagis@google.com,  linux-arch@vger.kernel.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 02/19] kho: block: Record the entry size in the block
- header
-In-Reply-To: <20261110050202.529473-3-tarunsahu@google.com> (Tarun Sahu's
-	message of "Tue, 10 Nov 2026 05:01:45 +0000")
-References: <20261110050202.529473-1-tarunsahu@google.com>
-	<20261110050202.529473-3-tarunsahu@google.com>
-Date: Fri, 20 Nov 2026 16:11:01 +0000
-Message-ID: <2vxz8q2n1o16.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1795191167;
+	bh=PUJvVwnS6EwZUWjv8S7z217586V6G8XCo6hR7Yn1lq0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=N3c+DUy89OIYNJgYet53Hm9+y5kiCcBKKZbBXIgkjsYAK5yjkwgXVZbeD48X7nwdA
+	 hDQJUeRAu+B+4t4XjNVIHy/iuVs95mDJS0kZgR5CN8anJoII4Vld5DKJBkh20xXK93
+	 phMXJ1zWA4QMMtyNClcFo6ReKQJKUIuDWmzeDHpe4FkLZl6RX0KgSwPoBD9Rs4mt8O
+	 OPUlVTXN5fUMpAjnq1Cqta7D0BYDXjVgPqmIWOoLM8EEB34x18uD0iqkMNE76ut6Rs
+	 NAls7oApGHHqdH7NKzXh1+ryzpAvZa/XL+0uweigCWoORdnzhsyhen+I7baKCliFQx
+	 kp5lKhfwsx7TQ==
+Message-ID: <8c9bd441-db5e-4857-8e39-79f147422454@kernel.org>
+Date: Fri, 20 Nov 2026 17:12:25 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C9965C0008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 00/25] PISA: Pre-mapped IOVA Superpage Allocator
+ for DMA and CoCo
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Luigi Rizzo <lrizzo@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Jens Axboe <axboe@kernel.dk>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Luigi Rizzo <rizzo.unipi@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Jann Horn <jannh@google.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Simon Horman <horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Dragos Tatulea <dtatulea@nvidia.com>, Naman Gulati <namangulati@google.com>,
+ Pranjal Shrivastava <praan@google.com>, Mostafa Saleh <smostafa@google.com>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
+ iommu@lists.linux.dev, netdev@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, driver-core@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-api@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261109182533.3594984-1-lrizzo@google.com>
+ <20261120010655.467825-1-lrizzo@google.com> <awBYFhnpFGtEXZ6r@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <awBYFhnpFGtEXZ6r@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4FA9240008
+X-Stat-Signature: 7ya8panxdowgtpoi4fggbm3ujyfqncqu
 X-Rspam-User:
-X-Stat-Signature: rkq5qdkthwcwthnbpjmukpdbms7p4pad
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795191070-861952
-X-HE-Meta: U2FsdGVkX18VRVMyEyxsZJgcZ0C4J+QZGhcFhFs9301LIJ0xGtnv73vFH4tY2Gt0y7IL7bZl+SRsm1eLdXxPY1qiqYQlAf9oDetbvxNOTdzAjIw3c7Ro0YxkuW0OC7kD9rLgKTCL9zKGT7HPpe78T5isJngmwjFrqwnOJaJaR3clLHp2UlsChXAvasbuj+RMfSyCPrN09ZLGptykkGvlPrqDAjIfUYJUeaf48qZOIaFMBSW3jmyoKM43UiRex4Ht4Wp5U7LOyYD0SfQdgyWXcGay+qVRxQ2uNB+4Fs7UMYpqd2wBh4B34By3TGcyR1qtqbYR0ahjUukzRsr5hSiPD1P0yRjNChLRRsqSraJk2vP8NJLpvCIahFhFHW/BsiGKH1nPG7+4bHLK7AApcyk6fMJvJYc8GeZspRD0S4tlXCIpR6nAMyPccp4dL2MepMtGsQ0UmlsWT/iflwjyKTJHwqe66r2334jl1gM1AJG6uX3b6DWV2MToKprFEG2UhEOk4PSn6jT9J0NuRuJ8XGn/k/ifr6mPkH0OHOaT7nPVy3sudhGNLHhcEc9PgCSM/9uPB9jhC+kJwDL5yGlKUA+IfA3scoNMxbYyeQedimLBzduGvxbey0b27J6Ewg7v89cpx95L8T+q9qsgPlY4bLhq4N1y8X1dTt9v2PyNRrTUiVQyoxunSf1Rf1sMztUWVcTPmSEtnSp2i89KBsdCqE+uTSBkqP8h4noEH6kbUkiHZ6Iy96OqxjQR2hpS95T3KF4+A+XMipPeOf2rDc+Wy46w43PcN+P3HdSXNrFdG3UvFFCAS45p5O5fE5IJZm66/qDvrQwC+fUnu//EfyJ0IhDNFNytbnNKr7ziQ2QIvN8gHYJIyualpcgzRlvYaaJb9/jbsC3s2Idi9whs/7/cwnpPE9GygajsD+OKyP5CZlsZJI8G6Nbzpo5ZTnN+8IuKpYaxiiBQasejQY6Gvi68a9J
- VZ+cd9PZ
- DPyp3iE51R/tgP18hOZaJI/k1icE2swjzUtSNonjV06C3vQslgrOmNg+Ojx2w6PoYCQpsqTop0lS5Q1ymJTjdlNiQdt3D4FGFF5c37AK0nR6xiuJfoFxez8tBd3ktpF8zCamLDd2UI/K+y8ABdqjhKoVtOjEXaBrVR/gn8jlU2PyuzPaaKuXXFavuAo1Jxao41CY4igAix3XQszImUtRDCPY3tsO3bSpw9tcx8wkXfqsOTufsn6N38phSCssdVxbaCRceleks3gfxUgtZu1M7FmxFUznxindyGl2hF19/ZyV9MF1qZE4sX+PkJYvAy4XU8k8z6r/njTcpa+tlTwBCBwjMnk+08M/MpvL9Hqgcm3Z3YSpeBNKhqIvrYiJcO9cFmSw3G23WiNC/yqWh3BHC7pyuhNsipYDU8QAzIaJ3hPYzPh95ELaJ5TJkZuR9NFTy3G1SNfzjOiq7m4bdgzrRjgKrkv4tn6G9DsxSH4woawXT3ik=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1795191168-320593
+X-HE-Meta: U2FsdGVkX1+gsCqEXJxShEognBdM1tdSRafAn82jIbwlHdLRjTQZCjVPv13Zsgf8IJUnf/VCArJaVfRPZA8QNsVAYoHxCDY/wDheS6iKXHvHCxZ/oQAWe4JKAQ0rTZYhjzPF7LDh5zx9jdQHtGKz5NbwAdarxjX4BZcLtThPkY+qEzNrFHrArm4BoU+gs3jKU7jwvm3CzGVi+sbF+TRrdRW1bNX8gdQndBlGZ8T7wuXjsSlGNEBBj3OLb6G10qNjlfOr6tIRueiQIT/iDQDdp4ygjJYP0IG7oAwuVf2H3iPT1ti47t13F3x+XNq6PZpRZSKPQKr1DphHEw88evGfgrTBvxzH36kXnPLPgsNLTy1+zzNOwU18Ddos7JzgDLS9kyoQxZs2VsjDbmdjBG4Tg4u3GzXkPEBaRuIrcF30NGdf9hQDutDBmqS9Li1Ktu/lbtW4zxutx22qACGJSaZR+x2HI5ZR/HcNOS8zAAayMh4zW5z9uL0MFGHFG8AxW4X6PvXsfyQBJPkdc4tA27XtMndojmQj1jgJSSl0hcncUp66QUtcytXhDqkp1BwifBbVEMZZ100GvFq05RtnJTs7v2m2Vqh7qsvAQtnrWwOKVubS7BffkRmT/lc4A6cz28SmGQN4VhGkS7eS907gnVZkqDAr0X3XtlM19oMhCJmiOGbeVOmL64cnLCdQZQgyxZ/DbVrpvK/7fsnTo/jyROnyizM9lWc4+E/ZVqp2XAAKRPG1b75lkDrsBiK13fl85a6cwrzF+1E3/qiUvu739D1q7OmOd6Y3oMVUF+azqufePVu3wcjxnVlswaIcTMFRTA894yKLjgkRtgCgv/K8lYlD+TzLfK1BvhlEpUjQnh8Jh24VsTyB3+SwEXl0zp8XePlSGQWK/OuCFmcJIgqLGKc48omn8AOxTJeLytGFxCFSfrNvx0IrIJ8P7B9qySm8/fFx22zEVu7O/s4FX/e1hx/
+ LYa+Z8a3
+ fAmS2ZW3GAP8wtzd7PQoGCOq5+MUDv9sGiUbswKlXgGU2929fG+ITfqXXVIpL9gvCuCYjM2OBQDIy2QO+egSX+emnGRPwEZAypZx1kHO09smJAS06Vpbsofl896Xf4V7DNXhdpRDTfGVrfeWsIkeCzOWYSshdLXqx+LrfjUOpuUYMtRNZU5J9Dl82M8vB79FDLxvKuu/ZyNdwqeWSb3VtEu373kXPXcWqnYFXDA6GxdrmXT3idh0KBmkOMvHzFG4bFUvc3R0Hh0livFuBRxBOgKZfiSBbc5HE8/Da8bzIlKe6cQHsf+zWpfslQXxZ02aL3uIERgv6Y+21fjxlHRbIsCcl7xmWEQ7l8/zQosoHzY3ANhD8uLhxIq7sUoMag+dBRuD9DXHuXrZMsOHNIhaVVzlKIEj8dixSJPjXiRU4JMH2SNWMOCy8kmLOtH96GJamEDyWScqdBoOTNx5X80BWCDWk673Egx4+nhRt9wFKnluix5cErhR1qcucAPYdY3bwhKK83p6m15CbZUkBwbHHpSlx7jNHE7Eo1oTBQOnDHzFOrLiq12142sKIqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,89 +173,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10 2026, Tarun Sahu wrote:
+On 11/20/26 15:54, Lorenzo Stoakes (ARM) wrote:
+> TL;DR: NAK. All of it. (And yeah, I'm steeling myself for the inevitable 'oh
+> Lorenzo' :)
 
-> Subsystems using the KHO Serialization Blocks framework currently do
-> not record the serialized entry size in the block header. The entry size
-> is only known to individual callers, which must track and store it in an
-> owning serialized data structure. If a newer source kernel adds fields
-> to an entry, the changed entry size breaks the stride when an older
-> target kernel iterates over blocks.
->
-> Add an entry_size field to struct kho_block_header_ser. On the outgoing
-> side, record bs->entry_size into every block header during allocation.
-> During restoration, derive the entry stride directly from the block
-> header instead of relying on caller-supplied dimensions. The
-> kho_block_set_init() interface remains unchanged. A zero entry size,
-> or one that differs between blocks of a set, is rejected during
-> restoration.
-
-Yeah, I agree with David here. It makes little sense to have callers
-pass in the entry size only to have it ignored (or, only used for
-rejection). It would be much better to use the recorded entry size and
-hand it over to callers.
-
->
-> This change modifies the serialized layout of struct kho_block_header_ser
-> and shifts the offset of serialized entries within preserved blocks.
-> Bump KHO_FDT_COMPATIBLE from kho-v4 to kho-v5 so that pre-v5 and post-v5
-> kernels cleanly reject mismatched handover state during boot. Also
-> update the stale compatible string example in the documentation.
->
-> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> ---
->  include/linux/kho/abi/block.h          | 10 ++++----
->  include/linux/kho/abi/kexec_handover.h |  6 ++---
->  kernel/liveupdate/kho_block.c          | 32 +++++++++++++++++++++++---
->  3 files changed, 38 insertions(+), 10 deletions(-)
->
-> diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
-> index 36bdbaf9b3b8..a40b0906c821 100644
-> --- a/include/linux/kho/abi/block.h
-> +++ b/include/linux/kho/abi/block.h
-> @@ -40,9 +40,10 @@
->  
->  /**
->   * struct kho_block_header_ser - Header for the serialized data block.
-> - * @next:  Physical address of the next struct kho_block_header_ser.
-> - * @count: The number of entries that immediately follow this header in the
-> - *         memory block.
-> + * @next:       Physical address of the next struct kho_block_header_ser.
-> + * @count:      The number of entries that immediately follow this header in the
-> + *              memory block.
-> + * @entry_size: The size in bytes of each serialized entry in the block.
->   *
->   * This structure is located at the beginning of a block of physical memory
->   * preserved across a kexec. It provides the necessary metadata to interpret
-> @@ -51,9 +52,10 @@
->  struct kho_block_header_ser {
->  	u64 next;
->  	u64 count;
-> +	u64 entry_size;
-
-I think this is the wrong place to put this. This header goes before
-each block, so it should only hold metadata _for this block_, not for
-the whole data structure. Because if you do that, you end up having the
-field present in each block, but only the first block is special and the
-value is only valid there. The feature header coming later makes this
-problem worse.
-
-I think we should follow down the lines of kho_vmalloc and have a
-out-of-band structure that describes the whole block set, and then each
-block only holds metadata relevant to it.
-
-So this would look like:
-
-	struct kho_block_ser {
-		DECLARE_KHOSER_PTR(first, struct kho_block_header_ser *);
-		u64 entry_size;
-		/* Other things like flags, size, etc... */
-	};
-
-[...]
+Oh Lorenzo ... you are absolutely right.
 
 -- 
-Regards,
-Pratyush Yadav
+Cheers,
+
+David
 
