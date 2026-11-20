@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B459D606C952
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BE6606B986
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FiNtXZFe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c0FGgiB/
 Received: by kanga.kvack.org (Postfix)
-	id 3E17E6B05ED; Fri, 20 Nov 2026 13:11:05 -0500 (EST)
+	id B0EF46B05EF; Fri, 20 Nov 2026 13:11:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 345976B05EE; Fri, 20 Nov 2026 13:11:05 -0500 (EST)
+	id A98076B05F0; Fri, 20 Nov 2026 13:11:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 197956B05EF; Fri, 20 Nov 2026 13:11:05 -0500 (EST)
+	id 913006B05F1; Fri, 20 Nov 2026 13:11:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D44056B05ED
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:04 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57A93C0143
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:04 +0000 (UTC)
-X-FDA: 85456288848.13.351D127
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2DBF420006
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FiNtXZFe;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 548356B05EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:10 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C544F140129
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:09 +0000 (UTC)
+X-FDA: 85456289058.12.600D1B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A1CB1140002
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c0FGgiB/";
+	spf=pass (imf26.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198262;
-	b=gCCjNnR/j9Xa5GiKeDS7Xl5bPfLPTsnvdwz0aSM48tNIi5x+svlRmryfEFFJ6nCrj1b4j2
-	HU6NArVMuStM+BGP8zZzIKfdMVCCL+MQqTIKtffwT5q3IRmul6Vgf5efOEjqkuz1NPRo+A
-	diAlsX64nXoVxHdNVL/HoVeoLwYqFWU=
+	t=1795198267;
+	b=yQDiI58oNHws9cS+k18kvua08GUxvaARLA9esrwFvamcvYXbA+B+2NhM6yGg2Xy6esaNlU
+	SDW5RAY+orq6A3RtvWDNIJsirNT5oVRQh9runteMSccmt+ipMGZFVX5DpPOSjVTgewOytu
+	efm16wkRhSxxi5v2MUJ7ZF2U6H2vV2k=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198262;
+	s=arc-20220608; t=1795198267;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t9int1jy49B7hwGXzuzABb7Yf3ibBtagCxCa/Nz1EVw=;
-	b=A8ouHtlPwHCyFaTpaHb7YJdCegEKbf+8ssguE5qYz+C9Q6+QAI1FFaAnkeJa2ZSB8+x9Rr
-	Z6pWwqrXcSPAZxENJ3rymE+BXYO0zkGbzLwi5yc7fP2g+0A7Fw8/p6+Pb5PQ49SrhPjesS
-	QaD0KaojunEuRaUFBoaRM2Q2qkInYMM=
+	bh=SDxj2h8LUz/yKelW0hpXFzxdAGDfTr2wWvPbhGHboyw=;
+	b=T3PsnLCVLf53xRfk6xPOriKiPTumdt4ecy1oytmiVOZ85K38Tds7YRJVzG4/mYDlrikzWr
+	nDZQpFqkK/+PJ72kWJS5rHAk0Fa+E2V+lrFRucLz37OWoVI4CSpEyr4g2xc6otb/kD7x1y
+	BYqkziZMNo5KPxq7qavM0LJwVx8DY9o=
 ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FiNtXZFe;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c0FGgiB/";
+	spf=pass (imf26.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 418E746C80;
-	Fri, 20 Nov 2026 18:11:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3EF95633EB;
+	Fri, 20 Nov 2026 18:11:07 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198261;
-	b=2e8VgvWw20oGJbhaFAXSW9AE3LuCDd9mWgBDby6E4rQR6pwNWb3s+fZNEvWs6aTSFzL+
-	 SDpCwQRy43FTSD2lNGg5NSW0EtfOz01/wwfLh7K3ZvWefgtNbE10uncMfJzCO2Wfqj7k5
-	 XNP0qzaX8t+sSh7YSW0O9/rEHqLDArer8xLdpimjmV3P8aWxJQVJZ6RcHp6UWsNRAHaa9
-	 AeQE988IMJ7PrAJnt0eSSESMDqHqVUO2DYIXlOag+/AfVHNyLz16EoeP1hk8lDZwsfz+V
-	 neGU50/BfiT1YCyqPvShVGr992umvT62yhG5AOMrqCsMR7yoHFjl4CW3TX5xIkM/6TA==
+	t=1795198266;
+	b=syUHM/gw4WX9K/HdvrdkKiMNbVoXsE8AjidBbq5sPKHmgT9Z5ldOQN5OL4jCXNU4td7A
+	 S4bIfkraeVl5V6PgR3fQR0wSM9bf0Fd8+tf0jwFW7aSIZkKjvqTgaIfZqjJiqUqHoVLsn
+	 Yq2yBMHhS116uZkXMjSDuGbdQG/3vJQQa2vrWjE9FKav0vvUuR27owTbA4grVKPCLv00a
+	 n9t7xRzB8VrYvGnWp6iox49NHvk2ORyKMVNJBInaUpW9Qw9h8NuA+o0KlWrqPo09RjPLr
+	 rSOonf2SLyANA/3nZ7BCK7vUAoljKERX9qNZNAblfUbfz9vM0ot1FwkNe3iqMUCMy8w==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198261;
+	c=relaxed/relaxed; t=1795198266;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=t9int1jy49B7hwGXzuzABb7Yf3ibBtagCxCa/Nz1EVw=;
-	b=Yn7j1+An7+Au8r0j4D+VqtzCBAGz6XWf7a4vI+M0Ax+ZLoEHgBMnohWhCbPelApUQEEs
-	 H6s/uYvyrgU342ggsdSnvqzlKCFyPLLXJg5VhCDXQccwWMph8X/+QwsiyD44rmpX+vJtx
-	 X1TXY54LC+qzzDWyZfQ64gUtaO3RHESru7PrkPnlzZpOku4E2a3BjDmP5cKcLpw/j3UdT
-	 8scYPY3Zm3w2FsMfSrCouh5k1U+KtAk4eNz0JTCirG9OZRMjomXikzptG5MFQYRcO/BaP
-	 O3y0MvYObM5liyzhGiTTl5DpKldsuXPHjb8YDVlBQQP9fXuUH4N8QkKFmEvtG6M2sGQ==
+	bh=SDxj2h8LUz/yKelW0hpXFzxdAGDfTr2wWvPbhGHboyw=;
+	b=P8+05ni1+P5XWXXUcvC1ApVJBcgCyr2bc1DaxHmObBIWgKwSQCfySyQE5jiWtQocaTHY
+	 Iv/s0XGZHiJoKiPYI0KWiJPk0fQhJinsCzVvNLVkm2++1Hzi5kbSWZXFkJ4KPREjMvb7+
+	 CY4aB1mudEMiekjH2p0KIcFM5McKRBYFNGiKZ7AzznSjGSGJnxK3NrOD3eAomze+Qqt3Z
+	 kCMQD4D1zZmIfF+xnuYLvrQQx1l41v0RxYAlWuzY+pMq+L7SI6+aRMKzU/SBdmGjbVSqw
+	 iFz2QWoqZFV1ExbXmoqrSHBcwfHx5NLUB/sK8k5cDUYbHZd2qSk92NZNutrMMxHun+w==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 0B13E1F00AD4;
-	Fri, 20 Nov 2026 18:10:46 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 369A11F000D1;
+	Fri, 20 Nov 2026 18:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198261;
-	bh=t9int1jy49B7hwGXzuzABb7Yf3ibBtagCxCa/Nz1EVw=;
+	s=k20260515; t=1795198266;
+	bh=SDxj2h8LUz/yKelW0hpXFzxdAGDfTr2wWvPbhGHboyw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=FiNtXZFeLl1TrtsAtUHZi0b4+W2iJ/cCZI1gI7GcYTjZqmyCC+UHmP0xpDfP84IMT
-	 gSGHmFNRGUnHi7+9ZDg7LnuvgLNj+oW60gvkqNJGFdrWUMj7UR5paFT1n0Jl/LvJm4
-	 UQ+3GefGWuyKeeFPod/FkxKNjkkiWl0bAvK0IJYxg46SM+AwLnWoCVxT4QwhBDtLsH
-	 hy11uA4+ke8KwfJnAHfmERpG8aGhC9LymhE7GA9/JP+xVlwXGxPyv6HRQ62QTNwFPp
-	 1YRvg6eiYhj2WYeYIN0BFyq/5FdJzpeSTXpOylQ7ipmacE/Af95PD+QNk6r/7PfwKB
-	 fQ9QIkAWdgxVQ==
+	b=c0FGgiB/SPaUzE5qCN+HLvvIIaUBRZpHwoTSH3IX4F/Z1i2NJ+ao2vrTGfNN4/91j
+	 dYxcyzGRDp3Hq1l40A50pV79R2yz9iygjKT01QtokhVTnJ6k3FUI1/anCNNKzxX8y7
+	 NCsMr8/FVrW4V8PqFyt1RcmUKTvqE5lPI5se94K9PPW5NkAYO2x1pVZUFKqserUKmo
+	 piysnjAaS9+iO553kc6PseyImmdj0alhuD7ScuRfaBxfbUsCAWrVXjynVKfeiVBUEZ
+	 TJ1sou7qEgVx02KzwFdvwfChySWbmbMMNvhRnjQAQ72Y1u9ShuV+b+xm01HQKNICb1
+	 auxGmLnJsZdbw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 78A5D4B975;
+	by lkml.kernel.org (Postfix) with ESMTP id 1E32C4B969;
 	Fri, 20 Nov 2026 18:09:22 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:36 -0500
-Subject: [PATCH 45/60] mm/compaction: restrict compaction to
- N_MEMORY_COMPACTION
+Date: Fri, 20 Nov 2026 13:09:33 -0500
+Subject: [PATCH 42/60] mm: fail private placement on exhaustion instead of
+ OOM killing
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-45-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-42-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=2489;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=3361;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=M6oyV+uEjYSavi/eHygS70B16tEpJIW4P5C3UsQGkVw=;
- b=i/PUXbQkpoN7NVE8RFc+oEQ2kDN3DCJbLPIIOQ1aa2JDj2LavBaQ5jxI9kU+y+KQpdfh6F4lB
- iarRB2RDZBvD/7ptCHks4k7qA+bRL3m/1zijoNFVJyaSj9mQYSEfV+o
+ bh=TbRq76F0ctxLdrc4ZvqTJEioaj0puOvUL1bbmmWV60Y=;
+ b=4TuCqLi3E6og3lhWPEnbx57vqhH0UZ+xHpnIJwJApHy8FsrwbpMCJEhWBmQF1kacYofzGuQUk
+ MJg+9HMhsJnCGqIcMdsQtmg/Q+w3B05gKy4AO+RBfvyb9bK7v/Vtefk
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2DBF420006
+X-Rspam-User:
+X-Rspamd-Queue-Id: A1CB1140002
+X-Stat-Signature: b488ssabmahwwx8dj96iqq1ju1pexqsm
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: jb3zi67h7rxff8thz9gpq6nd7b93f9u3
-X-Rspam-User:
-X-HE-Tag: 1795198262-373227
-X-HE-Meta: U2FsdGVkX1/9o0Gm0GQ7I9b2y/mIJN984w5NI/aAUT0oo7qc5bBkhPtByvpUE7UrrpuuJHOoOu78sh9en9VCxApLdOgQlBdiJrimHPogsLqcR/zxw1jnwfA5uFXkXsvYT/sF57ORFNa8n478raOqVebzqbjjzMMjbr7FTZFTWL6bVLYrrRMunxCLkmsUt1qo0OdtEbQW1gwZJqwwc0TmSYLn5w26a3xj24CvHqhhfwayay2mFs2ZwBPPne/L7D8I8O7iaWxEUcm8OjC4fND1zFzLsGQmNVhoQSCzD1l6BKVs1U466sfgAy7s74nDkkG3EHCan7Ly3goccJ5oucZQGlIhEVot2b45ZSFK0ic8EF/0z8qnNiM54Z9SdAZZ2AdhaVcbkXwmrsQ+R5U0mdLXV67lGOHU50EkyLyGc6kDUvNSHbq1ehaOwj+OGVUpXbVTMWa86ckX6i8500NKOW8lnBypUXnVN3NKJyTjoeuNPfc1bY1/OV23wxyDlbT/h35QAhuEo0QsRwQQUmhLBHu3S6xQKey/iMRqy4vchv2Y1pHT5Km4+Hp+d9C5a0v5qVZC1jjuPk1iXu95VX1QKltCS1mfOZCHqwUHjMHC7PTSHC2/wOk9azlA3fUydV9CGMp8+gEwHQlDMToXo9RDymEhek1KFn3Ah1wsrZvuR+E3gKVNwYlPszdaShbqUHnT+YE8B1cQHBl0aw/UpC5UHEfWR9kZ9d9SFX0b2FEuCPwuRxsm7BRtcruBhHzgydDjypRNZr/wpfy+st50Dco2gkBVBpo8zvHQaYbGIiKNasQgSmjVqcFbE1zk7In8ubBt6NXMVxByUBhd1dgsEzESKnw98BAm6grHfiiBgxIruuKHQEtMCJNTbF++YlDgburvXV+ZhFaRb48jmTfl4oNWqWEMKsV9oGlYYNO/mNKmiV4b69mjyWXTSBgBiS6uO0f5XdbLhjwzMozDd+rB7vdNmsX
- IMqH1QFI
- RHV5Zgm98VsCyaloo6hnbupAvcl/mzxQuy482ionRd61g3WcEHW1SK0SqYPt0Wr5pWKNlSFlNRtKUYh0u5qDz/IhF+snM/GiF5P7zwEVc+YHWSMFZSwcWOwb85vGdzrNKktmHwDqJdvZswkWpM97yDlFp8Wk6zpGxTKoYWp8Dy7Zmm3lFNUib9D2po4rg8clgHAm3t9zIvszEP0Ko9eJp19tMsDIPR/DV53N0vkwkMdhCX+u7pq+i5tEwhxlJBnvnjv50c1gX+Yy8uFK4UF53S2JXCVKUEO+TTXGkYFMm0w4m9EX07TZ5jVtKhKpDFnson2DujKMwKL9ubP3xjLXNOZ8b3hMeFtYqHEcvgpZgmlkblebyudAizpfXG87QkOhqmmvQ3NohIexmWF4M8VfTkK5HvxHHKX4f9Af7BiaaTRHAvLRJP/sga9nh3M0txQNYhRqVsTVGAirMKTwhgwNA6AeuJ10voANzLLubUhfHxOGbc7E8B6jR4IGEk1p+FjNxiyygi5qoB4acnCGkUs4x3+l0Bk1Q9eAXdw/YC3I/tMXHSXZvUyQTZW411vYAC1xH5asGo/oltrbNmH2Ijzt053s1WUvmquHpmJ7cWzpAbLfVhbIPUr9jOTv0xuSo3O44G/6WJdBuU1pKa+O6ajWzZG8IFk9Y7O4zcFyCyYHWETEv+AVsBXlOLweYJUG2VtwOUq/FFon0Z3MTuLoOgnbQ6QIxHUZct0jbA6G+3AtA6wKOfl5dMpKoM82GcMTGKe7wzg0aFsw5Lu83h3r7xyk14z04OY7xjeLKaMrRAyzbp5B1wDZ+Yp/OLh+O8ulUQu0suMYE
+X-HE-Tag: 1795198267-373391
+X-HE-Meta: U2FsdGVkX19JtCTvsfA7pKUPzW6aBic3CqHmohAyaLl2pSCl6i8WWCEI8pdX+u4GIGXdNye8paT3gCIU9EJyUdQT2nSMR+DywV0h9YQp32a7g+SOjCVPOQoEkQ9DcPZIqg4fj2CrAjZxrac6JMmgs84ELzuroFqdOv0nW8ySQ637xgJxm0R8mzGpR2CU9r89B3rAa/KF2o5eMEMQAuEQ1lLTfNkteV58fnE5FMfugLImulm1GkaxdcRM4WIhPXkSUP5Qdl4/T3KfoLmkWP97llDpLKRYsltPBiMCcEmDk+2erbc1FFOFgQSgp9gGirxU1nZreNF4DkRV2FLQ5CtqvB73UoYfIPpKARsQ8mwnKh5aucEKyOljdE6QL1X0FAwqWySkcTu2yIsCUv5RzRu22JV48mS9S/GfQlOulPgnF08pL4AX+N1dDHutRd/mhSeD3B6WxIHGpQXkCbcj2w/a4m5ezf9F72XcAWyyVRPoOqEyVOeEUIDx7dIL3TnP4567LhSEoPJnNSDBl76sMbuLYnHSY7j6SR/K6rE+1uPsXKJ2XDfzgYxnRq26qdP2IfsQylTTG+leuSuq4+t30MinAuL3LpysN9BXIPS238bnxpk2sg9sfVfYYc+jDTY6xRxevnL4Tcicy3j9j2zCM6RmaeLNJhDmO5OCYJFphh0/rE+I9eRE5gon9ohVLPaEUqX/W9YkBLAV0ovoBTY6zA+s+iOoLQvUWZpAsAp4Rxc1c/Z5D3AemgXHGIIMGTqVj4lXsc7VoD4uyX6cfAegkORt9TUv4ghIMT2n6x4tlhcboqyb76Ej7vWulkW+ZWJSRQgBX9l8vlMnySzwbhbTor/7vesXiub3rz9iywZZuDS/OfzVxsFvvA+kmIOcLdkZ2RcgziMMq763lKT+7S2A5YmIJOBv5zZ8yZuXsJNl+u/aFpvlB9mb0aLYCcV/0YultwP4Oy7sPMMcnkUdVc5FFc1
+ KYaHMG4x
+ lpcVcFpC3zyJy7cBsTXV+5KLw38IOoA1MZy+AUK4vFUAVl/6s3c7pwZB5MQLdV504WmxwsvEb912i63gDi1sU4F2nWxh3pjJC0NKp5NYIe3NlHZQm6+texIUpv3DpQwcGrRb9a32Uvb8uMclPSkSKzsrjTKKnr+vs2YIQKyO6Clzfjx+lqNHvRyEKIXn2VG/w4N2UIuLZ1nGXMX+NrcNbaoX+qqQNqBu1t0WcMbBF6Bh7pWGE7W3yZywxlj7xe9JmQO8ESf1U222yNdmonmdYx0Kw2qc70bHPghbFVlqRLdo1Z/92ncPAykUQXcJg0z8tu+sAZi7zITKLHWPbmpGlFlgpKvf+pdTHxjRpqll62M+LZ7i1JSD3zKcO0XvNDzr4Ehg81yKwplMtnPUkGrSRd0l7ghoswzCnLKX41ZaeMnXmIKp3IjhWe4kbX96MsuOqd8kWqshSpm8J3MdqQOBDNvbwCSRu3Vq+C22gmVBu4EIZSDIRGX3KKYFhleWDU6phiWQRI3f+3c0blp8tHDSHyeMlmQ9rpxApeafqC//bBA6Xf6esMM3X7SkWLKlQjXvDv7CyTF1zE5S1hLbSzzY/OwzheTuIlksW3dFBVl3ffVqWkGJEZdXgE5rfQVAZKHRPXch1Xk6x17tmx7xGBK/NYT0czWJakhG0d0TQD3de1f36FiKXXHIgtExaeu4c74vlFxi9YGckpyszjdyDPpuXF/PsNoPM7ujsTH6zRfPdQ87jchza12YJKbtFTJEYvZG4hJrIsPeeC5f4vaY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,76 +189,91 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-Restrict compaction to N_MEMORY_COMPACTION instead of common memory:
-  - compact N_MEMORY_COMPACTION nodes for /proc/sys/vm/compact_memory.
-  - start kcompactd and trigger proactive compaction on those nodes.
+Private memory belongs to a device or specialized service and is a fixed
+pool, like the HugeTLB pool. The OOM killer has no good answer for it:
+the task that faults the last page may not be the one that filled the
+node, a remote accessor or another mapper of a shared object would be
+blamed, and killing a task does not free shared private pages.
 
-Direct compaction is unchanged: an allocation compacts the zones on its
-zonelist, and a private node's zones are only on its private zonelist.
+When reclaim cannot satisfy an allocation from a private zonelist, fail
+it instead of OOMing.
+  - __alloc_pages_may_oom() does not select a victim for a private
+    request, and marks the task.
+  - handle_mm_fault() turns VM_FAULT_OOM from such a failure into
+    VM_FAULT_SIGBUS. GUP and remote access see -EFAULT, and other
+    callers see the allocation failure, e.g. -ENOMEM from write(2).
 
-nodeN/compact fails with -EOPNOTSUPP for private nodes without the
-state.
+A request that became ineligible since the last retry check is not
+exhausted. Report progress so the slowpath retries and relaxes it.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/compaction.c     | 9 +++++----
- mm/memory_hotplug.c | 2 +-
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ include/linux/sched.h |  2 ++
+ mm/memory.c           |  5 +++++
+ mm/page_alloc.c       | 14 ++++++++++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 283d4d4e78c3..6835ddb91f29 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2973,7 +2973,7 @@ static int compact_nodes(void)
- 	/* Flush pending updates to the LRU lists */
- 	lru_add_drain_all();
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index e4f6323d7855..8a2e37475e5d 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1038,6 +1038,8 @@ struct task_struct {
+ 	/* whether the LRU algorithm may apply to this access */
+ 	unsigned			in_lru_fault:1;
+ #endif
++	/* A private memory allocation failed; a fault reports SIGBUS. */
++	unsigned			private_alloc_failed:1;
+ #ifdef CONFIG_COMPAT_BRK
+ 	unsigned			brk_randomized:1;
+ #endif
+diff --git a/mm/memory.c b/mm/memory.c
+index 282266dd5e5d..4a8a08df28ff 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -7003,6 +7003,7 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
+ 	}
  
--	for_each_node_state(nid, N_MEMORY_COMMON) {
-+	for_each_node_state(nid, N_MEMORY_COMPACTION) {
- 		ret = compact_node(NODE_DATA(nid), false);
- 		if (ret)
- 			return ret;
-@@ -2992,7 +2992,7 @@ static int compaction_proactiveness_sysctl_handler(const struct ctl_table *table
- 		return rc;
+ 	is_droppable = !!(vma->vm_flags & VM_DROPPABLE);
++	current->private_alloc_failed = 0;
  
- 	if (write && sysctl_compaction_proactiveness) {
--		for_each_node_state(nid, N_MEMORY_COMMON) {
-+		for_each_node_state(nid, N_MEMORY_COMPACTION) {
- 			pg_data_t *pgdat = NODE_DATA(nid);
+ 	/*
+ 	 * Enable the memcg OOM handling for faults triggered in user
+@@ -7034,6 +7035,10 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
+ 	if (is_droppable && (flags & FAULT_FLAG_USER))
+ 		ret &= ~VM_FAULT_OOM;
  
- 			if (pgdat->proactive_compact_trigger)
-@@ -3038,7 +3038,8 @@ static ssize_t compact_store(struct device *dev,
- 	int nid = dev->id;
++	/* Exhausted private memory fails like an empty HugeTLB pool. */
++	if (unlikely(current->private_alloc_failed) && (ret & VM_FAULT_OOM))
++		ret = (ret & ~VM_FAULT_OOM) | VM_FAULT_SIGBUS;
++
+ 	if (flags & FAULT_FLAG_USER) {
+ 		mem_cgroup_exit_user_fault();
+ 		/*
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 63cc8729c41a..ea48991ef589 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4176,6 +4176,20 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
+ 	 * failures more gracefully we should just bail out here.
+ 	 */
  
- 	if (nid >= 0 && nid < nr_node_ids && node_online(nid)) {
--		if (node_state(nid, N_MEMORY_PRIVATE))
-+		if (node_state(nid, N_MEMORY) &&
-+		    !node_state(nid, N_MEMORY_COMPACTION))
- 			return -EOPNOTSUPP;
- 
- 		/* Flush pending updates to the LRU lists */
-@@ -3369,7 +3370,7 @@ static int __init kcompactd_init(void)
- {
- 	int nid;
- 
--	for_each_node_state(nid, N_MEMORY_COMMON)
-+	for_each_node_state(nid, N_MEMORY_COMPACTION)
- 		kcompactd_run(nid);
- 	register_sysctl_init("vm", vm_compaction);
- 	return 0;
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index d7ce60c6815f..1cb10c88954e 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1232,7 +1232,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
- 
- 	if (node_state(nid, N_MEMORY_COMMON))
- 		kswapd_run(nid);
--	if (node_state(nid, N_MEMORY_COMMON))
-+	if (node_state(nid, N_MEMORY_COMPACTION))
- 		kcompactd_run(nid);
- 
- 	if (node_arg.nid >= 0)
++	/*
++	 * Private memory is a fixed pool, exhausting it fails the allocation
++	 * rather than selecting an OOM victim. Otherwise, if there is some
++	 * indication of progress because of a revoked request, just report
++	 * some progress so the slowpath retries and relaxes it.
++	 */
++	if (ac->alloc_flags & ALLOC_ZONELIST_PRIVATE) {
++		if (!alloc_private_reachable(gfp_mask, ac))
++			*did_some_progress = 1;
++		else
++			current->private_alloc_failed = 1;
++		goto out;
++	}
++
+ 	/* Exhausted what can be done so it's blame time */
+ 	if (out_of_memory(&oc) ||
+ 	    WARN_ON_ONCE_GFP(gfp_mask & __GFP_NOFAIL, gfp_mask)) {
 
 -- 
 2.56.1
