@@ -1,103 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6FF606C6E7
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AECA606B214
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A3Z1csWP
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PoBNG1kP
 Received: by kanga.kvack.org (Postfix)
-	id B37366B05F2; Fri, 20 Nov 2026 13:11:23 -0500 (EST)
+	id 307526B05F3; Fri, 20 Nov 2026 13:11:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE76F6B05F3; Fri, 20 Nov 2026 13:11:23 -0500 (EST)
+	id 2F8526B05F4; Fri, 20 Nov 2026 13:11:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 939746B05F4; Fri, 20 Nov 2026 13:11:23 -0500 (EST)
+	id 0AE326B05F6; Fri, 20 Nov 2026 13:11:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 567256B05F2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:23 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id C2DEC6B05F3
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:24 -0500 (EST)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E3E63A657D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:22 +0000 (UTC)
-X-FDA: 85456289604.06.2615B0A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A557F12000D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A3Z1csWP;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4846C140141
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:24 +0000 (UTC)
+X-FDA: 85456289688.06.17629F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1937C1C0004
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PoBNG1kP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf20.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198280;
-	b=D231DBFaKelBPchtkw8h9ZmzT0SznCbWVT47IFbB/Ok8ApSIv5AUh/XrtgmxP9eDsDEst5
-	Ptj3310FHuemUjn9Wmsgl9UKrmtmGLmVQHJCKz90izXkFFmygNKEpHdDCh1bKxCwQbvZ+Q
-	kHWNZELsevqVf98zoYVZ3VglA/B0P8o=
+	t=1795198282;
+	b=6r6WaBxuukxTQPilN+qw7drs2wx1SYZTv9LhEUYTbaKrSoeJHbG7jgHRECpCtMM/pwOiIk
+	FkV+oHmKznam3MtfHTqiBrw4mv2lJDXuMtZI1QOKo9ltgWbYonzA+Mw9bdVZ/Sse4LMcnq
+	VtHcF9GvEu5F0Kk28Y3WKN3OuRiIyFg=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198280;
+	s=arc-20220608; t=1795198282;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KbXqo0otTzp6KrXr3a6CWvy6rduI8+vwsObH5S7PopY=;
-	b=RupxW32aytEKS+Pxms1YlHCBU40IvhcKCQiH8G5QmBgy0Nf3lGvXGVp8xdFdKbNH4Dao27
-	/ZAQjw8VpZssiB+BAu+Ub/g6Aw26cZdyP5PHDa61wq5n2b+SoHqAPBxYdj83WtSc84+wZZ
-	RmKHRBxenRnM+HLYQq+07lxTqCJK/ZA=
+	bh=L0CW9HC0Rii4FqpwUgbkUxppOTSa7FmDd0CdGR/Zt2w=;
+	b=GKGwL4kIHSel9drGd23AkfuEz0k6Y3ytJLsch1A8UHWVBiPokdc2yFEQvbKCezNzN5M5z2
+	BZXgJ2zKO+h0PbFvzhN/ndDsKR2bNDXrOv4Qo9ELF56wjxyf50P5T4I37w4VCAg0T4K5Hu
+	rd04ZocOVltvBQvsMayAeMv5SCUUCeE=
 ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A3Z1csWP;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PoBNG1kP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf20.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 424E16344B;
-	Fri, 20 Nov 2026 18:11:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6527D4145F;
+	Fri, 20 Nov 2026 18:11:21 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198280;
-	b=I2pcV+l0y9I0PCrpxChpDU+XajTq9RKw/lYBtbfD5+KymHs+lb5FvdztS7yk/c1aiOoT
-	 Lrzgt7uIv6TbvYzxpV081zHwVI+XKjc3fjX0YXFsPHLcIFyily82XijCmlEF15ZMJ8XZV
-	 9Igz0BWu5DYimhyFH1DV4CV+4rWZekbyHtdUjer8TBOV4JuyQeQ131O9CQFRYJ7ETtBq5
-	 E+8VF7nDsyg8IxL+oKXscruMd87ScfeY6uTypKJsNJ3kd7uakTfYHuXJIHYEbUBFDWbxY
-	 /hVYosbJZ1YZLrJS0e6Jevmk94jVPu3T4Q6MNNipmCuQ/snOeNDiOqScw4t8E2FXKAQ==
+	t=1795198281;
+	b=fM5qqvpDyOPBnYN9zK07NoMcMviSGyXzgg3hXNOEt/3vwuQf8fhTc52wHUunp9Zgwgre
+	 8eBEPYsU/hwTa8xL0bebn5lGzc1bik73NjWBlFcRd2SABP71v596o3XOXkeMiVAMOOzdh
+	 gamtaCboOZTa1G6qQU9auFyzh87WsQBP+ta/695et0hqSCqsHXO6uSC5hqbNIsXCK1102
+	 2tpvc9TDQlfRSaOpgXCpo3n2Zgyqjr8c9ewimuuw8NDvA/044joDK5tTM9/t//rfmMF51
+	 OJ9ZR+1TlXYs8DRdPfFBLj93PGPHCs+KAVoCGLQjWi8ZsKAyiaP+VGJLB2GBFey2edA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198280;
+	c=relaxed/relaxed; t=1795198281;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=KbXqo0otTzp6KrXr3a6CWvy6rduI8+vwsObH5S7PopY=;
-	b=kM+IyIOef4yAJn+abFDPJemjfOfdUGhT5hEe53w2g/W2bo5BVrG5t6bzzxuEYJmFMwzS
-	 vieLRC/rgQrR4OGvMr4/xICWNUbMkzqS8WbRxj/ygKHRPK/0/iwvxQ+PE2IEyQTnE3PsY
-	 Zh4TsXWkQbXCmOy6Ahzeia4SHqpyG+dSuMJRQap+2nIH41RHnsyDN9CoIUPllNFzfM1Lq
-	 VfrjPaB0TrYRWp8+kIM7xErGx6GMYw/d568yK90a9GraIVDxExhAOHANG1YK5rYivqRT2
-	 u56af8twwFWvLM4n8NJqE0rPaXrJN2A83vwhGinhDP4ukxtHDz/EeTTzXTu9UZt04XA==
+	bh=L0CW9HC0Rii4FqpwUgbkUxppOTSa7FmDd0CdGR/Zt2w=;
+	b=CJQ4a/Lar4qvGhwTP782IPl8KchVtZtzJnhYujltaW6xVKvVqp9zlBmiNZg/R+cZ3fFX
+	 zl8+VrMBDAFi5FOMJSIEOfK5ZlL5p4+mPjTo2lzN/yphgYoAY0tRr+xThOe/1+CQa6fxH
+	 0LurgfxDpMb1BreQS3I4syswkMJjyC3Fiv5R+OsRFoLQHG4Ag0Ysf7zbnF+5MoCm4HWkN
+	 vH0cyvXQ22SNPn8TiwZAD4Y0B3UULoBm4RdpGi9WwR6tm2GIi1geX1jMEoDyl4F+H63WA
+	 o/l2zZ7TG+Juh5qh6utThBWwbkpJvOLjEf31ca0AJxMdgma6yX1uaSMD3i1ngRCltVQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id DF3131F00AE3;
-	Fri, 20 Nov 2026 18:10:57 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 4E0771F01570;
+	Fri, 20 Nov 2026 18:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198279;
-	bh=KbXqo0otTzp6KrXr3a6CWvy6rduI8+vwsObH5S7PopY=;
+	s=k20260515; t=1795198281;
+	bh=L0CW9HC0Rii4FqpwUgbkUxppOTSa7FmDd0CdGR/Zt2w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=A3Z1csWP936CIOfU3hrgPS1/dDFH74BAkYHQLn96TIFBCx+MIPv3RU3TKNSqXxVW/
-	 lEQNkZbxgNTaXFUAHyANZnbhyFP5VE4qmhRWD9wyn6uS/9SCur0TAS1SKgfWlhQ2tc
-	 7DBZmexhDTkRcdaZWfneXSFOHA8nNQmAAhFpI5RayEMVeg470piLIAX7Bb72G6xz1n
-	 Jnd2gWT/FR5UPHNLL/Nx9UYfMd59e7nh3yqy1c1A8j6PkYP8H5B8BpWzHYkcBhz3ds
-	 Q+ZTFq8d7UxE/9l/7Nb4Zoze5VyGNwQeUvLXZIjGK7YeZ4e4RwhcwcM56su2Jvo41M
-	 iPxco+yXZVbZg==
+	b=PoBNG1kPWYC/6jaia3AMGaFtuwJmHbSMN0Vx/I+it9Xvd8s4Z3jLc2roGG1yqpIkU
+	 COOu4KOJcQ3Z5xENyZhvMMepwmtAnn275JhH/m0lKdU38uJ2fcVuKged0GZotjuRFi
+	 Kyd254bnhqJ9//9LSqbKGpr8O+uVSBibuBIMtjR5cmEw2o7Dzi8P1LXdat+rN0AHI7
+	 9bGRJN6ZC9RgA60FCCHKUNhbHnvWN1xYZCfQUtmUJOBS056qUHejq04bWuO8P6sRxk
+	 eWACyOnfui3l27+I6/ad6/Dxh7Z2RfgEJQTflJQCRLPIR2jnTH/cKvvDAuKIyeMENW
+	 vjivGw6hll7lw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id F107B4B984;
-	Fri, 20 Nov 2026 18:09:22 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 3A6184B98C;
+	Fri, 20 Nov 2026 18:09:23 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:40 -0500
-Subject: [PATCH 49/60] mm/vmscan: reclaim private nodes for memcg
+Date: Fri, 20 Nov 2026 13:09:42 -0500
+Subject: [PATCH 51/60] mm: restrict explicit migration to
+ N_MEMORY_MEMPOLICY
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-49-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-51-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -154,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=4186;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198154; l=3917;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=gf0+A4YMX7aNzEjLzoppxY9C0nz/hDCzkhh7ctvqKwQ=;
- b=PXI/X13XAoa7r+jmzPre0N2z+VrJATpuAV7CpwhBQAVTEngszA2E6bmutkAMGbnv2eUsyGVrn
- +kF2GDAg++lDYHrIPmvec6YTNf5pZ5MjEHc8/slSYzQiq7FbbeI35Jq
+ bh=B6Y6UKzNoFCEvlaigonl7wIhC2pzL3ijUJbtxgXP4vI=;
+ b=Cqgg+950T1Wa/QOdAAoJ89OU4n2XkUCd91Mhb4KvzETYBoxSmxxLKw/cTE1vnANvYIjt0Oank
+ NZIwcdEbRo7DFudh5eeM7NJWPyrWJpnbINaDNlQsQ5xoIUroWylq7iS
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -166,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1mjydbjfhj1xj39bnfpjqhigxke8cpr5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1937C1C0004
 X-Rspam-User:
+X-Stat-Signature: p4xt9hej6f9f74qhkt5xjwz4zg1nroo8
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A557F12000D
-X-HE-Tag: 1795198280-29655
-X-HE-Meta: U2FsdGVkX18529/0B8OhTxqih3k3QWLeizqNmhRJTCu9dkeTrNkODg4kukv71r4eqi/o+yoH8vdsKZO/cJHef1WqoHKImYeoEdml18nzt6Z4lugI+8Nxp58PCcpYXPm3qx6TVpkI0p1TlbQ6iMSMibEvZZ3eViYyNV4zAkb/YnWCNdaOArdFRFAn4wMHy4HubCX+GZrU5fY3Fx489WTWOmK4FIR79hcYRuc422RBOCVXzKI97oks7bfaA/PciPpfup/7cKqNAeuo+XHxMu8li4vxO8zKv3GuE/PG7gEMNdw9EXntVcaaVErfaCSJ3UsjO/aD4bc842pn62H+xQwhdRNhesU7yBRWMnckgroSVr+SLcdPYZvXVnZ634lz1UBm8FZcT/CRM2J6MarAr3hBzMQnIFYRGxf+W7hXirncsTfXfS7QBnWMeHXyUVHzG4fMJRN9EOKqIfCBIHGC0SvyNCNfXGS7ZzyFM7TY5jnFK2NYREZeQCUH2FrMa5lLaqcqP/5bji68m9Nyxl7An9m9jaWkeaxDCfQvzyAsCs3K5NVWUmLDxiXUnXpjwdInuMlYGvN1N1bM3tySvXLyqbWmvYVAOFCJ9O13SGpdl527wAMB2n9P3SGOJL2tczHqCQbmyU8Nw5VqNlldUKVpaaZPLUfozqH+jAfnBlrl6Lepn4oBLJzxvH4uy1ic0Frlr8D6wHbDgQXKODAjPPfndF6jnNU1gqSi3EceNBUydlgdHUathC/UNa+jNHsKQiMdhob12Ny0HHPorkpUVioWOKNa0wglp4QcbKqWFL+ujeX4aGftd1LrZB46ybSr2dK9lUL8+01xwXOV7aq7WkJMilBYUaV/KNi+QhIuXeYKEHrRBm+xzv6gtz5FZQcN0aXHwcfPbiKOJYdOFzn3UAD8SiCzmgpYmMx3Zaqd3ftvWu4X1u9otZvnsk1CW0n8IILbtSMhJ6Q9LoPoPiWyeTIgKEy
- lwsywH4r
- svbuYu9koykro/6UAiYoYL+u/I1mfY4jWMofnZD1ZFke0JJgCW1pHrIh4j6BnHjvuDQxRd6B9P5VFHNu/BWNBsCpXK+ntfsaHYDvaLg9R6mjxkEHCT8d/47FMT1ne2lFO1wlVKvyNDLeS923clJQMvGJoupViVoYe/UKWS2r2Gj9TQKPBt6PfTpDjw6qFjkYJsVG7pxuJHco0N8XgHd4WbQVdJITR25X1ziQiI28PYxc1/FVYqyDDZe1HvNaDE1Z628+MYFvhhzTdtH2E7cuqaM1m4+POWrDBhKqXJH4WBAc36XzgMCJQsynkDD2zG2SMyTYnXt7gvKFElXtoWNVXecFcd0b/AMwqtmRfFlgdXmJDN5xABRqgP6lGlbmTawKAOODrpkOvc2AyjrKW5PRXO3TB7+giZC5l1+fo7sGAvvx4nYqKgH3niOTXGcSTbogHlG4vTCUX1OOJtmRMUfpMjC+2ATF6da/l4ljXzZ9vhWBRzZW55eRh23afFrskjYSxexsyXBpMKmEIejoAauEFhlh9WJyUxjywsLPGeVB3sw0BqUoP4jxtURPH8yCgasNnbxWv8S2fK82Cdic1tbd78Dpy2ts6B2XnLUnU/BGlW9LakdFbFKii4qBPOW79/HeRhgzBDpMiQiqzkLWNk3KjJWzkpT2CSLBIr4ecip9wZIY5779FjABtnuiXyaGFfH1r7KJdtGsiiquR7e9yaF8z8klGWlxGwiQ98swWyNsx73c8+JL2IZTXtYSmNX5OayWTYnxoGjRhM+DAA+A=
+X-HE-Tag: 1795198281-763345
+X-HE-Meta: U2FsdGVkX18mv631DSZMSl7FyP14Cujte1k6oCU5SPvQz2DOszonMS/6qhqHpYrJOihZta15zUdaD47inuaA5F8GtA6wFjwvwMe44bqEQFHLmzi2zztcN2057Qt3AEjD7DKCoiiNUJvJCwV2lBxkNILz8uqKjIgwggQwTJ2iFLv9FHH72dTRXfco0fGKBGoydzpk/aA6NVF+J+k9HUGCgvMz96bBRADw63UXX61PjixsDzLMF0/+mgVSDMLxm8suBKz+SOK/KoTBDfCJKBv/vwwO6q43R7Dublw6hQlx5ANEnvE/bt7ibtmiLbdmbH+Cn0/yqgMgR7CDDDRsBZzhTUnA2Z7FPZ8w84AyTZbULHrc1kEqrJkSy/jw7PQCA/lVb9SxWnCeQy0nqU1x4ya04L7IUBpHU/vITCxnhZdlNoIUusm7KcK4u5lIfU5KHbKSU4CakdR8LbisjPo6pgdtynyIQtDZBSxy94zO6xhfSDkSB7idUtBTzjoGPOBBQz80UETuCY9UfcHhesfR44rhdEd9QGLt+oA+9rUJA673YCfDfRc5JpSfy0qm5zA6zjK/dAGFlfts4MXPklx2kWPj5rk3BQaQzUjTpu7A8gfz0qSXAMagnG5HLZOhlTtzFxMRBlpVg1NfCiNKTzBilBKigWPKUIFxEFP1NvCt0okUmi5dSPZaU75DEzw9q5Oe/7MB3Yi2HbFXNlSrpo2WVPfkIGwjQY0BU8nGh5kEm3xPRW5IcLTW2TwvivDXeFYHD/Yw1T/hJ7AxJZYq1Qfy69hJ3G7WwY4t9tYwvQDZa3hRIefrpIyr1sl/odvk276n31yjen5KlCrNS9YR2TH9UjycdZFDULHyhJZsCvXj2C/cBYhMQWj6KS8VrukEyLvHuyzWyws6tewUarv/zKP9ubDepWuPTZxu3y5B5QXipqByJP8BI71FuVwqbASYs1q/XT+sPXEn8IWNd+lAc58xUp9
+ 2TMxQ8wf
+ bZDi7EZChuzuNlPif1RCFcBz/JNmsjCi8Zz8VS/lqxLroYyFvunbGw3L35+SxQOXlpsP+266keeYgK1cFOiYAhBrUp4PYicrTtA0PaJ5U6eJ8hz2Jo6O7fMYg2ttaPOseEVwXz+WLmTn/1Nr0nLyn1kABmrGcYDUh4H8lX98RMGnFntDH6Tg4uqbVA1nhcTG6xhNINaJrrRy0L/5P2t5GayZo45cVlaDrRC9wZuc8r5SZuyiALLJ7orvl7Mqkm8QSOZV3bR3t6RewyMHDdU6BLcoflMLQ+XSOUvUHFQr/2tiPtI8kKQAawe7EXiDm3ltmY6XvGH02mFUxRimZMBqRqbgiVA/7Dhi6vEwBlGsKLwfh31sHOZMhTI20Xc78beXf1uQHkzmAs7WPoz7JHXZCDCbIDTDaIlMKIqv23SA0GDD1PoAq34P+8dLsb0eQiN/tXalJsEFaIO4GYzHg0sFNipriwqmPbHGDkxVcURU+0iYDYcWxxlPOJBnKCokkJKRJhWSxRxRmy0hbeL+pNamMZj2fa9q6Xy3N5WGIQIiuKycDlqxnNVD+jiPNxf9a5R1xzDJLPyUM2cM3U1FHRO5w/kr2wLopeOPjzWrIGroUSdwkUWmCHuxsFTevszuJkhnH6YJswyvJxXA7kZOmKvRHN57QKNv84ukM7APb0/bzO2Km6aoUK5fi1hNlJIK6zUw3KS2rJ0ZGR3mgTCHxTdq8ixwAQ1Zj/ETphn2e1eTmYbFeHV6uC5iD8Shmn1bBpGf2VZVwkCS83tFmKa5HmcRyDw6FEIMHUk8cgfGRcrregjtKnoEgDMjBHMvxXcH73MB/uTrX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,121 +189,106 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-Memcg reclaim does not serve one allocation, so it should cover every
-node that permits reclaim. It walks the current node's fallback
-zonelist, which holds no private node, so a private node that permits
-reclaim is never scanned for a cgroup over its limit.
+mbind(MPOL_MF_MOVE), migrate_pages() and move_pages() act only on folios
+on common memory. N_MEMORY_MEMPOLICY nodes are the nodes memory policy
+and explicit migration may target, so let explicit migration also act on
+folios already on them.
 
-After the zonelist, visit the nodes that permit reclaim and that the
-zonelist did not cover, and give them the same refault snapshot and
-congestion reset. The zonelist keeps setting the order, which matters
-because memcg reclaim stops once it has freed enough.
+Add folio_allows_mempolicy(), which requires the folio's node to permit
+memory policy, and use it instead.
 
-Direct reclaim for an allocation still walks only that allocation's
-zonelist. A private allocation's zonelist covers its own node, and
-reclaiming private memory cannot satisfy a common allocation.
+Memory on other private nodes is still left alone:
+  - move_pages() refuses to migrate it.
+  - mbind(MPOL_MF_MOVE) and migrate_pages() skip its folios.
 
-Without private nodes the zonelist covers every node that permits
-reclaim, so behavior is unchanged.
+Cpuset migration can now find pages on these nodes. Evacuate them only
+from nodes the cpuset no longer allows. Private nodes are still never
+destinations for this kind of migration.
 
-Another way to do this would be to implement a reclaim zonelist that
-only reclaim uses, but this implementation does not carry the static
-per-node size overhead that adding another zonelist does.
+Migration keeps its best-effort behavior and can affect shared backing
+pages seen by other mappers.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/vmscan.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
+ kernel/cgroup/cpuset.c | 8 +++++++-
+ mm/internal.h          | 7 +++++++
+ mm/mempolicy.c         | 4 ++--
+ mm/migrate.c           | 2 +-
+ 4 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 03d0919d11be..49ec85ed00e0 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -6636,6 +6636,21 @@ static void consider_reclaim_throttle(pg_data_t *pgdat, struct scan_control *sc)
- 		reclaim_throttle(pgdat, VMSCAN_THROTTLE_NOPROGRESS);
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index e20f9ccb8ab7..7d4b922a1914 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2686,8 +2686,14 @@ static void cpuset_migrate_mm_workfn(struct work_struct *work)
+ {
+ 	struct cpuset_migrate_mm_work *mwork =
+ 		container_of(work, struct cpuset_migrate_mm_work, work);
++	nodemask_t retained;
+ 
+-	/* Private nodes are never migration destinations. */
++	/*
++	 * Private nodes are never migration destinations. Evacuate private
++	 * memory only from nodes the cpuset no longer allows.
++	 */
++	nodes_and(retained, mwork->to, node_states[N_MEMORY_PRIVATE]);
++	nodes_andnot(mwork->from, mwork->from, retained);
+ 	nodes_andnot(mwork->to, mwork->to, node_states[N_MEMORY_PRIVATE]);
+ 	/* on a wq worker, no need to worry about %current's mems_allowed */
+ 	do_migrate_pages(mwork->mm, &mwork->from, &mwork->to, MPOL_MF_MOVE_ALL);
+diff --git a/mm/internal.h b/mm/internal.h
+index fa1ae221564e..4bac570bb29f 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -87,6 +87,13 @@ static inline bool folio_allows_reclaim(struct folio *folio)
+ 	       node_state(folio_nid(folio), N_MEMORY_RECLAIM);
  }
  
-+/* Whether shrink_zones() reaches @nid through @zonelist. */
-+static bool zonelist_reaches_node(struct zonelist *zonelist, int nid,
-+				  struct scan_control *sc)
++/* May userspace NUMA operations act on this folio's memory? */
++static inline bool folio_allows_mempolicy(struct folio *folio)
 +{
-+	struct zoneref *z;
-+	struct zone *zone;
-+
-+	for_each_zone_zonelist_nodemask(zone, z, zonelist, sc->reclaim_idx,
-+					sc->nodemask) {
-+		if (zone_to_nid(zone) == nid)
-+			return true;
-+	}
-+	return false;
++	return !folio_is_zone_device(folio) &&
++	       node_state(folio_nid(folio), N_MEMORY_MEMPOLICY);
 +}
 +
- /*
-  * This is the direct reclaim path, for page-allocating processes.  We only
-  * try to reclaim pages from zones which will satisfy the caller's allocation
-@@ -6651,6 +6666,7 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
- 	gfp_t orig_mask;
- 	pg_data_t *last_pgdat = NULL;
- 	pg_data_t *first_pgdat = NULL;
-+	int nid;
- 
- 	/*
- 	 * If the number of buffer_heads in the machine exceeds the maximum
-@@ -6706,6 +6722,14 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
- 		shrink_node(zone->zone_pgdat, sc);
+ /* mm/vmscan.c */
+ unsigned long zone_reclaimable_pages(struct zone *zone);
+ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 2bfe8b2b6287..9d2e56017ebe 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -705,7 +705,7 @@ static void queue_folios_pmd(pmd_t *pmd, unsigned long addr,
+ 		return;
  	}
- 
-+	/* A cgroup's memory may be on nodes that are not on the zonelist. */
-+	if (cgroup_reclaim(sc)) {
-+		for_each_node_state(nid, N_MEMORY_RECLAIM) {
-+			if (!zonelist_reaches_node(zonelist, nid, sc))
-+				shrink_node(NODE_DATA(nid), sc);
-+		}
-+	}
-+
- 	if (first_pgdat)
- 		consider_reclaim_throttle(first_pgdat, sc);
- 
-@@ -6754,6 +6778,7 @@ static unsigned long do_try_to_free_pages(struct zonelist *zonelist,
- 	pg_data_t *last_pgdat;
- 	struct zoneref *z;
- 	struct zone *zone;
-+	int nid;
- retry:
- 	delayacct_freepages_start();
- 
-@@ -6792,6 +6817,21 @@ static unsigned long do_try_to_free_pages(struct zonelist *zonelist,
+ 	folio = vm_normal_folio_pmd(walk->vma, addr, pmdval);
+-	if (!folio || !folio_is_common_memory(folio))
++	if (!folio || !folio_allows_mempolicy(folio))
+ 		return;
+ 	if (!queue_folio_required(folio, qp))
+ 		return;
+@@ -763,7 +763,7 @@ static int queue_folios_pte_range(pmd_t *pmd, unsigned long addr,
+ 			continue;
  		}
- 	}
+ 		folio = vm_normal_folio(vma, addr, ptent);
+-		if (!folio || !folio_is_common_memory(folio))
++		if (!folio || !folio_allows_mempolicy(folio))
+ 			continue;
+ 		if (folio_test_large(folio) && max_nr != 1)
+ 			nr = folio_pte_batch(folio, pte, ptent, max_nr);
+diff --git a/mm/migrate.c b/mm/migrate.c
+index ac583afa1bc5..6791834f14fe 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2287,7 +2287,7 @@ static int __add_folio_for_migration(struct folio *folio, int node,
+ 	if (is_zero_folio(folio) || is_huge_zero_folio(folio))
+ 		return -EFAULT;
  
-+	/*
-+	 * Also cover the nodes shrink_zones() reclaimed beyond the zonelist.
-+	 * Finishing a zonelist node again is harmless.
-+	 */
-+	if (cgroup_reclaim(sc)) {
-+		for_each_node_state(nid, N_MEMORY_RECLAIM) {
-+			struct lruvec *lruvec;
-+
-+			snapshot_refaults(sc->target_mem_cgroup, NODE_DATA(nid));
-+			lruvec = mem_cgroup_lruvec(sc->target_mem_cgroup,
-+						   NODE_DATA(nid));
-+			clear_bit(LRUVEC_CGROUP_CONGESTED, &lruvec->flags);
-+		}
-+	}
-+
- 	delayacct_freepages_end();
+-	if (!folio_is_common_memory(folio))
++	if (!folio_allows_mempolicy(folio))
+ 		return -ENOENT;
  
- 	if (sc->nr_reclaimed)
-@@ -7038,7 +7078,8 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
- 	/*
- 	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
- 	 * equal pressure on all the nodes. This is based on the assumption that
--	 * the reclaim does not bail out early.
-+	 * the reclaim does not bail out early. shrink_zones() also visits the
-+	 * nodes that permit reclaim and are not on the zonelist.
- 	 */
- 	struct zonelist *zonelist = node_zonelist(numa_node_id(), sc.gfp_mask);
- 
+ 	if (folio_nid(folio) == node)
 
 -- 
 2.56.1
