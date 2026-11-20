@@ -1,103 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700DF606A892
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494BC606A89E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ebv9L9Vx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jh5GN+ux
 Received: by kanga.kvack.org (Postfix)
-	id 7D7386B05B0; Fri, 20 Nov 2026 13:09:32 -0500 (EST)
+	id 42DE76B00EF; Fri, 20 Nov 2026 13:09:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7882A6B05B1; Fri, 20 Nov 2026 13:09:32 -0500 (EST)
+	id 3DE5B6B05B0; Fri, 20 Nov 2026 13:09:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 601BC6B05B2; Fri, 20 Nov 2026 13:09:32 -0500 (EST)
+	id 2A67B6B05B1; Fri, 20 Nov 2026 13:09:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 28CB76B05B0
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:09:32 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9644A80139
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:31 +0000 (UTC)
-X-FDA: 85456284942.05.7996F44
+	by kanga.kvack.org (Postfix) with ESMTP id E96686B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:09:29 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC79B8013D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:27 +0000 (UTC)
+X-FDA: 85456284774.06.6D14B99
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 94E6140007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ebv9L9Vx;
+	by imf21.hostedemail.com (Postfix) with ESMTP id DC4EC1C000A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jh5GN+ux;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198169;
-	b=wA9R9eQWSokJuu6JVH6X8KCqebUjyUNBLaPjipFrVcJA4FIdCZUW2mlmmgzBIzM4svS10P
-	+d1kRg6YEp4uxIg0+ZoEI+m8gl1sTp+NlysGiBhklkgCBf/PseSU3Jy2kkPyQVxZtK1/is
-	Fpxzy7XcaH1BlLTE+IQmf7MDyDmNUUo=
+	t=1795198166;
+	b=Zr7+vY0RGLpB1RrALi+AOEfpD2LeAkT6Kbp7ir4zIamRXCLYyy6i82lbDazDOVLGo27XpQ
+	Inse8zZd8ZXj98SjnQqaHy2AmOpIASJlwBQdOLAUMmg+23gYcdCGK/WiCaGndAB2IsdndD
+	2Ein8Gsjf5ioblZLQ0cOACdmY9zvgfo=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198169;
+	s=arc-20220608; t=1795198166;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HDhBzinWWamnegvT9ExdyfioDJiSgPrUC+Mo3CWLBjU=;
-	b=b3iGDv79T7VJ8QszxL5P8k/jwSLRXSdGpJlTQKN72D+VC3XOz0PrySDDoHNlihHTaFzjNJ
-	Cjf/tRdkQY50CD2rHZTj8LiOhBU5Z2qQQiP4DhffoLaJ6hHptuyvZJ8miZnInzM+Z/eceK
-	H38t76GxWs6fSSaIVoBZLdbcY+P6Qns=
+	bh=NTsNDMBuz7zPhiY5EdCthhkTLILbhAv/FdI9gjXNQX4=;
+	b=Q1IwRTVlxtr+B+JhxDxz/jQrgYtAwOrPPqfFYrDL7UK6mumfwz6JCeM/JCeyfr0KTBf34Y
+	2tRYBVcnjBZqZSe7NVKQ35PTZVNS68lXDURPj19Rbwarql5f3wuA3jR3cBe8KHpGi4q76O
+	1fBUehE4/ix1bTgWwrQICehASpKea/M=
 ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ebv9L9Vx;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jh5GN+ux;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3999562CB1;
-	Fri, 20 Nov 2026 18:09:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4082362C8D;
+	Fri, 20 Nov 2026 18:09:25 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198168;
-	b=qYw9+d+WP4pB882BzhzhH7tkSHrxE/g/FYKnRL0KRxdfeJ7n1s963ZEDupIIbB/ZighB
-	 G1bKEifDhJw4QStOOZeCbWvenh3UhRUeBh/6yRwEKQtgAJqHmL7X4LrVQPrOp/wI+3Y1k
-	 rM+lQPFYm2QTQl4XnKJZamVaMydKTDtWzjM4x1aq2KGyum6Pf8ne660MNUnpeVCiM8UJf
-	 x0bi0UQteVcpESaRnnB2oVT32JTyZSum6jbQk1EoOrCP/KvJtb73NfWcC49tdzR4MdE55
-	 03Mhx55IKhveeJasR0s5puUX6NdGiEJFgkR5tUueIBN5B7RKbnYCx/EQUMfVVQuP5Hw==
+	t=1795198164;
+	b=Pb1cNhPrLRK5o3rm/ZIOHDoo7AbwIMdH3Px69nmobYdBmOLFhjxNvYWSJO6OqsgZ2UMC
+	 L2vN/krldQgsaIKf9thVmYjgqX38hHRiDexuiGFZApSrp1Z/+nbBWeqJI/jVxtR6Lf1bp
+	 KwuhPewoCcsDnjztLNhfcUR/3cYUCaxzCbCCGJuCN3SkifftRSOJHoNOp3j6aB3XPlhph
+	 ztyhPFC3s2STk5lzx0qnql1LzMSU9uhA/8p65k10DiTgfL1x+6VVSu0ykM8DG6XMbH7IF
+	 VcLucL3ML2n6yHrnPCrT5V8bySDZ4EbNL6rYTMQNCOB59FIN4jLwadfQjwu7e5AdtyA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198168;
+	c=relaxed/relaxed; t=1795198164;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=HDhBzinWWamnegvT9ExdyfioDJiSgPrUC+Mo3CWLBjU=;
-	b=TbEc5HGDtn9aQNXGdV15u3fW8rIN4FP7vCliG1eEYj0vj8via6d1OsJA0aLVzPq/g9iv
-	 3xf3Hqy/Dn6wM9HcIIFH0F4I2TDKhfEJXpiFt5fAN8h7bBgbj1eTNZXXowYdqwmmnpsYn
-	 gwgfE2tZ1LSYnS/csv2dlQn4CS2stWVWBsoTsV1Ze+jWn2fkSdnNvH0OqLksxFczEMNBE
-	 U/D1/S5k29JGYe5LcU1oetzYgwfL/MB2HzeIKk/e+HWICm02VVsuf5K5aikYwfx3yP/xj
-	 KyCOlKbii6M5JQFu3fgekCkVWA+qQB/HC04HWiRY87r5+413BcD3sYPYD4J1CkHSRgg==
+	bh=NTsNDMBuz7zPhiY5EdCthhkTLILbhAv/FdI9gjXNQX4=;
+	b=s5A/gAWj6Gfnyub9Nt12UKkyEZ5OgFO8amIKw2ImfhQ8yMcLbu924CAQSJdGTVIqXAt0
+	 av0dHAoO1WnusCJm5I6Ar4NwZuUsLfN4qQxyCQ9NckdF5c7LC8UOWCWOyvLK/N39yurZ+
+	 8nKizErlQ7UlAwEOaZE2AU/NT+hocdzL1b4kt4C+/SUrTTLqV8iyo6knCu4LL8O9mROZi
+	 p5gh8HjeK5BF8laHg7hXf3VVHsvcmv+bf3vKnCcKSszCUO5Cds8n4GmJ+Kzs5pwIJHpiJ
+	 zv/ht4nTrBnAWahS5c3XCv6F0ODaIzOP+lY9GXKbPwS5k6byrtHwn9lPy719fRYwe/A==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id BA95C1F000D2;
+	by smtp.kernel.org (Postfix) with ESMTPS id 9D9E01F000D0;
 	Fri, 20 Nov 2026 18:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198168;
-	bh=HDhBzinWWamnegvT9ExdyfioDJiSgPrUC+Mo3CWLBjU=;
+	s=k20260515; t=1795198164;
+	bh=NTsNDMBuz7zPhiY5EdCthhkTLILbhAv/FdI9gjXNQX4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=Ebv9L9VxIv84bkKLPkM1JLcxHOGx6l0OyAwYSUASk5DCda74oqnu9jS9Bf3bW1CZZ
-	 nAaiTAiMshCsNCueW/p/sV6MdWp27bgkaUb7NUirrtD4S1Y/XHAjJ2GjoJ2NK4FVz9
-	 gIn4cw/roDMkYeq1JdIZjf5tRlswclzK1iFNBHzA6DkD14uqLlJ4G3biBKQMhRe2ct
-	 pNI9FZeW0r01Qcu4GDnQBRtrD1ognX36uHsKffiP11qot6Gst3sVEQjjQniROnm+7B
-	 eDjI+5CXdIU2c+uA0wzz8ZfOmwz1nqcudIefIfAPcd+ng516AE1h9lZLMNkDYIw0ay
-	 MXiJSAo6LIGhA==
+	b=jh5GN+uxVR2sfEtkcWK8V6gCtzFbIr7ZSDi3uqDtQjnOc4BRSE4HFb3FjeCsxuXvf
+	 PoP8ypb1dY7FdYXdV0HX/EMeTmBaMRFhm6rf12fzO7CES7UcrJK8K4wkuQJ2WjEtsl
+	 LrBfd8c042HBtziSx00+vWtfPoLFbefSc9O29y2pWHeVX/UUCEe+3iitW6nVkrociv
+	 /rwVW1LF34H0vZZAugKg0GVR58A3FNiwKzC6r7w0wpW/MIM2STEy0hbTky7IoqmgUb
+	 YRdMwXW73pHSmI1RRzb4tKxTvnYiRFG8M1WEmwMS6oIyKjnQw54rfgaMIN8YcFITw0
+	 uQqCsfUHDYf6Q==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 433624B8C5;
+	by lkml.kernel.org (Postfix) with ESMTP id 26D6D4B8C9;
 	Fri, 20 Nov 2026 18:09:17 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:08:53 -0500
-Subject: [PATCH 02/60] mm: publish and clear node memory states via helpers
+Date: Fri, 20 Nov 2026 13:08:52 -0500
+Subject: [PATCH 01/60] nodemask: add node-state iterators
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-2-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-1-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -154,11 +154,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=3460;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=2119;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=bHuUN4m1rYdeHd2n9uTV5bvIEOwz0W65sMVI4gQRCFE=;
- b=5PaC3uuW3KE0lNJmW+SARs1O0zlNg2YD6FwQIBFs9Daq6H1QsV7mc6KO2+wYEThTdvpSt7rTR
- V6KaOerJChvCGaLx48xIa9FWmn4rD0/KaqOmHyfps7bojLi6JOB8mrX
+ bh=G4ssD0bod7vgjZxwR56nCucNo1kgkEnObUnor5Z23Ok=;
+ b=RjAl7uvfEf4NqVkoeEx7BN6LIu7ylgrHkEUd9mkFu97o60NZ4EyCUrePrl7IYTdG0pVE3cvIL
+ Tfn22wnQtSZAtJ0uk4weMboEXWaQLw3lMEAfCsBn1GD/x5mvmm8mTel
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,17 +167,17 @@ X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 94E6140007
-X-Stat-Signature: gjim176fxs9495xjpq7jrkkheq3mzu7o
+X-Rspamd-Queue-Id: DC4EC1C000A
+X-Stat-Signature: 7em58nz57ihmju919wnaxeogix51q9be
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795198169-511808
-X-HE-Meta: U2FsdGVkX1/UnxUyD4QgbbTky9bOAXPZujcpC4HNbpDCMVX4RgTnO30EUhdiGsOiAi3btpPlseaMHDcB0XEVPo8tKn//Fkin9Zkv4e1cJ1KHkOJ+S3m4N8Qtd0u3WtPVNSVp1NevkqxMT68zuK53mU3Pl5YPL3F94CB0N1XJIGisXtZMwect3PSdNO1HjSINtmMPWtgISIDjuPvx1/n9EEKhO2xft6USEjjIWeaATOL95D1mUe6VrMcWHLjVURoKOjv83yZI6VF/YaRbqFpfEnZPAKTvYBZXpQqw7sqmBUXGG7VICQGVB8SrdT+oiuL/Jys5fIHkckzx0cUiymYUmbVuV+yC78H9EE0i8vg8Kzt924/TV9USBjf7QzS9kRCvdetPEhRAKgLp1pUPLusmz07GNemA5x82yxgWq18z266nsRmJ59PCl2FEpl5ZOhPy3e5g/Ma6jDtq4cgkiqAO0DzJSo6a1xTorFiWCLGo79/2cpLhwgxdppvJegD6BsIh3Y/zXqBKRIEUWH/Ndn1fGGb9qTrfZSsWC7Y++GcPOkny7Rwt9uCC/B0GHu+vArn2xPj2Aep+5B3CtXxVb68L0Nl7dGhii1+bHxtXnNrh5csVkPaz78RJLAsvizPpmghuwqNebgEnzDReDYka3+YFEARj0E667c+ZFwznVmAqchk2UFkkbm/0ihcuY4o0AwKI4zHfJH0ppPRlC/nI8QXRBU/OJkmKQIF+xhEmMyjzqethGnuqJftzj1qCGON5gACtJqE8neu3Qh4EeVe7CaVTetcOP58TiR84kZ/tM7FNl5X2pqNJePzkYa3WsT644xwTmybR+7vocqjmbQA7vCG3DUCWAX1KJ6wllMO2xKsQ3jRTp+MN9kLuIigfxU9XOjFjEtvwKIVy1H+sL9jxPR4MXN9hEkbiEde11bygqo0V3OPXb7GDJKQuS81NqgMoyXTZtSCvSqDaLX2YvqwlNz/
- UVnvz+Or
- 0Emjh7yLw5pOUbrPlHKl1F/KLPavWsb19DuEJ+vaXJlyPv3y6Beq+ixKeQmMNoti91z/1DfMJmUKP4I6aaSf0vdTDFvJuirfCKcHSPi5xY2WyW248uMJaRjSoOuz79HqPg9zOsZV2Srsh7XruZ26CBjfbY9x2iUYFk/nWZ5294bq4SdnqZ9Vr5rJC6jUGT2VT00kTsZL/Tw/an+V+K812fU+cmsyj/cvEqDfmf5dTcpQ2YP2olp/y6oQQXjgqe+kP4+dOm63YBIWLXz2Da1lOlC/UzkW0hiZ2yVHRSOxwLAm/wCM82duq9cjnQpJqbQ8/VyMHnsRq461iDnzpesTTU1OeKyCYZdoew9H8iQ2AtWO2aFnvlFUsE+GP/3OVn9fBzJxWPQgB0dLEBdW0p5ogqE25ItlrzOAE0nIiWduhAhYwDZcWOL8V4jY0lXAVtalBXum//9u1avGJhGpqBdhJ9w8mnMsRMVedGEF/RXaowU7Tag/Q3anMnDHG0INz7ZGzmOq/WsZ5dTTA9PtoG74ctYPAr0YDe3ZiNfG7eh4NurQeRSXkFhhr4sndxlrHlefoDCUa4u2Jy2agOlDRKyf5VAFH6jztDs37YaVBTg0nWsXgpn+PL59CXBwEJuUSZ2ApMij5EZJ3+SrMqlWZWQU/CoIvP22q5sTUNunxkqKhcHXglMFceCkp/w5oXGkrPLPlG91zUP0Sd52zDPjoDGuGgAXomEGVaY9+GXvjmj23a1LaQE/ZB+HLyqkYyivCsxKuUmt5/r3+xgpsCNY=
+X-HE-Tag: 1795198165-657678
+X-HE-Meta: U2FsdGVkX1/pHEBiLlQZZgG9xjziyDL9wABoAUQcBRXWdfTFPI7nQFlrfxMMEt7gho+j2YDHU/yie4JfWyzmknhBnh4qA7UkP0bdXbIIff/Qcva3Af7U/XN4I04iHALmnp4hqxgTKOL/uy25CMTx6/Y/e8kBlMGAY1/e/4xh5lo7NzuutNOoGWpoX9ouwIa4/5WTxsHkBGnguwcxDObNMthWl//E0NcdfUHwSe2B7A3zqPOszTrDpF4EMSly28uCnJOKbmcvf95vJBl6KRn0GYABYkEhuwqH0Cws8ahfGlB3CNTs5CRh31/i3eoPOv/n+MatZkI9EFZ58DYmYtP1gCjHy38512Z/sAtAWXwlx+Z6Q0/iPgEJ78P7sIL5qiTQvt5sTsF91Ephe6p5B5dRWN2bqCLlmqg3kbsWKIBQdPLGJdMNk9hb4uo+OZvRIWSsi3D/C7DP8ahMzg40aY3uhfDbkK8FpABYGtVWO0lSLPwWgmr5sBE8lC2FVDbC1jCzY1vCr/pcWbXlHFuRj88Z27VEpR/JkcW1g8c9z7Qd6dyi+CAZT6Oal2WxTCOjyvZKxbBwo64TljVb5BBn/Nw1+KpGsYsplaUZSkRjfRWZYOFq2XIP6HeUiPp8XnvG6Yu1JLfB7P1O4uIrZ9yAIOAoxuJBZ4SV4MibS7rBSjLkjnzgG5vCR1jOHqBvTmNkK99mzeg/UzCorl4fWDDfg5U1PZcLXAuRJaAsJ0Uh0sSsx3x62cSZySLgAQRsJ1NZhMbgvJP+8oSaVU8P27yRu9LbMjJQF6woP3m5uMaSgDvOXT39kV7CckuKXnLFkrXwbwO+HL+DDsCyPLiTd+9k8beaUdSaN25PaAVHRPezi4mA439mKpTqtSRtC0O3gE07z0XEAdlWfg50y9/7i0Nb8u6rB/szxxi7oqatZQv6dJIHQgGjKE1ubXLIcB2bJg96Am+G6ock3LZfRqkixYUlMwg
+ BQtrjNJN
+ TvQAeS3ON+RoSBMx7bvOJH5SxL1X9SMKSTv5PPtA6POTK8Qx/REu+PJM7arUWHiZgIIGpsmW2xRbxirbDJwg+YD1nhDr2VMOpakjm9Ghko0L7DDuFQ2qogm/moJ4bWUKn7IwMuy425Y0CNwTl9cgR84FENEa6JkS7mEhFb/P5Ji2GYv29He/1eEoz7YHHVSA2QBFAu1sByvE6IijkrOftJYfDJScjj9xXqBAAzQAAgXuoVXVUEa6z9Mxae3rsMbBPvivggig0+h4K/a5ahfbg+NKIslvWCSdmRcJImejvz3qhnsODldTLwmSFGZ/3ksft81SYs4rX8iiqHxJjYThyArKdAg5lWrzD35C22vv74vfhymJUUDJqpV+oLBvhQ6aimWiWA9iUagVWmyEW0gXUC+BTgVyyu0EiLDfuc8NnMF7tdJqXcx3p8uyraVDla11z6+EY5OQjHbbe1FY1Cq9B+NWCAeRjuB/k4xBBFuAidVMLjl6VCrMenVt1Rz96LtubLrMkdqA1TGFIpMlpY9NHlVu/bifLFxKXZ1v9yM8etTuGP1Ubmb8yYTgNQY6+M5wneK2xpl3hI9GHuScLwqGnRyM/P++dRCBTIYEW4V/UwRnBpaKaRq46B96Z9dOLZn1Zv9B/BBcVHagKf4lQC+4antutqGgblBHX6P08wBfSKzhgxpyBvKviqMXgN5OtQxmdG02APOq5d+rm/+QUqHD6Vngy5kcELLnjZSh+6iidw8NodOOzcSj7k/Dxxxu4nZFXczCMRll1S2DanQ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,110 +188,60 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-N_MEMORY is set in free_area_init() and online_pages(), and cleared in
-offline_pages().
+Add first_node_state() and next_node_state(), so callers can walk any
+node state the way first_memory_node and next_memory_node walk N_MEMORY.
 
-Centralize those updates in node_set/clear_memory_state(), so states
-that subdivide N_MEMORY can be published together with it.
-
-Behavior is unchanged.
+Add for_each_node_mask_state(), which iterates a nodemask intersected
+with a node state using the bitmap intersection helpers, without a
+temporary nodemask.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/internal.h       |  3 +++
- mm/memory_hotplug.c |  4 ++--
- mm/mm_init.c        |  8 ++++----
- mm/page_alloc.c     | 10 ++++++++++
- 4 files changed, 19 insertions(+), 6 deletions(-)
+ include/linux/nodemask.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index de4593b3e3b6..c102e0f498bf 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -62,6 +62,9 @@ void lru_add_drain_cpu_zone(struct zone *zone);
- void folio_deactivate(struct folio *folio);
- void folio_mark_lazyfree(struct folio *folio);
+diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
+index 607373bd83ee..90bdcffa42ea 100644
+--- a/include/linux/nodemask.h
++++ b/include/linux/nodemask.h
+@@ -411,6 +411,11 @@ enum node_states {
  
-+void node_set_memory_state(int nid);
-+void node_clear_memory_state(int nid);
+ extern nodemask_t node_states[NR_NODE_STATES];
+ 
++/* Iterate the nodes in a mask that also belong to the specified state. */
++#define for_each_node_mask_state(node, mask, state)			\
++	for_each_and_bit(node, nodes_addr(mask),			\
++			 nodes_addr(node_states[state]), MAX_NUMNODES)
 +
- /* mm/vmscan.c */
- unsigned long zone_reclaimable_pages(struct zone *zone);
- unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index e5024f934932..e5cb770e4b09 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1197,7 +1197,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
- 	adjust_present_page_count(pfn_to_page(pfn), group, nr_pages);
- 
- 	if (node_arg.nid >= 0)
--		node_set_state(nid, N_MEMORY);
-+		node_set_memory_state(nid);
- 	/*
- 	 * Check whether we are adding normal memory to the node for the first
- 	 * time.
-@@ -2165,7 +2165,7 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
- 	 * list. Otherwise this node would still appear in the fallback lists.
- 	 */
- 	if (node_arg.nid >= 0)
--		node_clear_state(node, N_MEMORY);
-+		node_clear_memory_state(node);
- 	if (!populated_zone(zone)) {
- 		zone_pcp_reset(zone);
- 		build_all_zonelists(NULL);
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index a9d848c92678..46fe9a274a7a 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1763,11 +1763,13 @@ static void __init free_area_init_node(int nid)
- 	lru_gen_init_pgdat(pgdat);
- }
- 
--/* Any regular or high memory on that node? */
-+/* Publish the memory states of a node that has present pages. */
- static void __init check_for_memory(pg_data_t *pgdat)
+ #if MAX_NUMNODES > 1
+ static __always_inline int node_state(int node, enum node_states state)
  {
- 	enum zone_type zone_type;
+@@ -435,6 +440,12 @@ static __always_inline int num_node_state(enum node_states state)
+ #define for_each_node_state(__node, __state) \
+ 	for_each_node_mask((__node), node_states[__state])
  
-+	node_set_memory_state(pgdat->node_id);
-+
- 	for (zone_type = 0; zone_type <= ZONE_MOVABLE - 1; zone_type++) {
- 		struct zone *zone = &pgdat->node_zones[zone_type];
- 		if (populated_zone(zone)) {
-@@ -1924,10 +1926,8 @@ static void __init free_area_init(void)
- 		 *memory-less node. The pgdat will get fully initialized by
- 		 *hotadd_init_pgdat() when memory is hotplugged into this node.
- 		 */
--		if (pgdat->node_present_pages) {
--			node_set_state(nid, N_MEMORY);
-+		if (pgdat->node_present_pages)
- 			check_for_memory(pgdat);
--		}
- 	}
- 
- 	calc_nr_kernel_pages();
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index aa1ed599c7c6..88d507f93b1a 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -208,6 +208,16 @@ nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
- };
- EXPORT_SYMBOL(node_states);
- 
-+void __meminit node_set_memory_state(int nid)
++#define first_node_state(state)	first_node(node_states[state])
++static __always_inline unsigned int next_node_state(int nid, enum node_states state)
 +{
-+	node_set_state(nid, N_MEMORY);
++	return next_node(nid, node_states[state]);
 +}
 +
-+void __meminit node_clear_memory_state(int nid)
+ #define first_online_node	first_node(node_states[N_ONLINE])
+ #define first_memory_node	first_node(node_states[N_MEMORY])
+ static __always_inline unsigned int next_online_node(int nid)
+@@ -481,6 +492,12 @@ static __always_inline int num_node_state(enum node_states state)
+ #define for_each_node_state(node, __state) \
+ 	for ( (node) = 0; (node) == 0; (node) = 1)
+ 
++#define first_node_state(state)	0
++static __always_inline unsigned int next_node_state(int nid, enum node_states state)
 +{
-+	node_clear_state(nid, N_MEMORY);
++	return MAX_NUMNODES;
 +}
 +
- gfp_t gfp_allowed_mask __read_mostly = GFP_BOOT_MASK;
- 
- #ifdef CONFIG_HUGETLB_PAGE_SIZE_VARIABLE
+ #define first_online_node	0
+ #define first_memory_node	0
+ #define next_online_node(nid)	(MAX_NUMNODES)
 
 -- 
 2.56.1
