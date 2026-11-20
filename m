@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C39B606C9AD
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA222606B22C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gxx+6zL6
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aLc7Jz1v
 Received: by kanga.kvack.org (Postfix)
-	id B0E9B6B05DC; Fri, 20 Nov 2026 13:10:44 -0500 (EST)
+	id 5DEC06B05DD; Fri, 20 Nov 2026 13:10:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABFB36B05DD; Fri, 20 Nov 2026 13:10:44 -0500 (EST)
+	id 58E8F6B05DE; Fri, 20 Nov 2026 13:10:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95FD96B05DE; Fri, 20 Nov 2026 13:10:44 -0500 (EST)
+	id 408726B05DF; Fri, 20 Nov 2026 13:10:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 610A26B05DC
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:44 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE25A16013A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 041B96B05DD
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:45 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8B924140129
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:45 +0000 (UTC)
+X-FDA: 85456288050.08.97E6C66
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6187E40010
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:43 +0000 (UTC)
-X-FDA: 85456287966.12.F465C86
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C3FEF8000D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gxx+6zL6;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aLc7Jz1v;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198241;
-	b=AhLGB1tPE9+bUCDHbMYsmMg0J2vJ0mtyJPOYT3uzLXeAHp8RfJzQsSIxsP4+u6nVwMb/8v
-	Hw+aSVUwGsqmXH9G10TmiUTQAWKRVJ4jUal7cM+0WC1R+qTZD1FDaHEhKEDNyqG7+B2QO8
-	g2VQWQKkuglMXuT53uziv546veX1k68=
+	t=1795198243;
+	b=pfmjVAi6dnfDw3INL1y/Kobub/tlioO04IgG2PzVhTIHjaC1myen5U1ss2lASTNANWOqFX
+	1ZmQ4IBFpyYlaEHk9IheBVy5b/EoCNmp76srWGBVRptQs05VqvUas8KEkxBndyUdoTEgXT
+	JHgIkRGiQZrXeDHc/y91k7nRluuqKY0=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198241;
+	s=arc-20220608; t=1795198243;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3FUmtjIsJ3ZmK7E+kLLMrGlNYlg2V4C2I56CXtFzz5U=;
-	b=pISAkoa0gRvWJTyo/FXbI48c7FIN0Vem7MEpMFe3izAcBK2090fOZBLBAvUxZli4gKy2by
-	KB4MEpPZ9ILRGEa/2Q+NQZGLZMEMNjZ3q7NLpIOTbp/KQVB/0rfD6P1Vr5jpFT2maQAcjk
-	DAl95a83WcjdRz7n1O1eOUo+Hv3XRzA=
+	bh=08jpQl5uuZyQGxrg7doFW/+cSJVy/xq9ASMxnxrK8D4=;
+	b=S806cXjwl9OxPsLQIYobAhVuHmz3OjbAOWh3ZzUi9DIKxbsYNVJFWfzqnhP6J3Xnljj9WB
+	7J0ZalQTsz1jpYigSzPWzF3FqOITjwLNaW381qmsem/uussAT0k9j8BcC2XYTFlE+fDnOU
+	FiOyuDPMJLF4hkoh2bKlS6qlJLAL3cw=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gxx+6zL6;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aLc7Jz1v;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55BC6633FB;
-	Fri, 20 Nov 2026 18:10:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B1B34409D9;
+	Fri, 20 Nov 2026 18:10:42 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198240;
-	b=G4tca0A8FQ2szsjtojlN4RHsNuniMtEVznQsRKGnnnjHl/Ldjin40v0cYQwcTJmopGDI
-	 PRKKSVRDAdZ3HRyjW1wOx1XfNXs4PudHsZMuXtIlp46ewznlJuDugYU1aV45v6ZJEEcJL
-	 pMxJasrFAajW7OLzConhB4zxoP8uJkhy0DG49wm8I6Qgozghpo4RQtAne7K/1BwIZ9nKR
-	 J35vW5yAqRoi2mGHjicvEA+mBpjTdDygfQ8hg3t3IB02KybmxisCSaDOTgY6WTx4tMJY7
-	 sBDiX8S58Pku5/ZS1HpgTV4Hm5WYPEAi1LCKGKOdTFHAxMXyYctFr9R7/kz+w9M8JoQ==
+	t=1795198242;
+	b=hIXIEOm9XnHj0MP0c0IZ53tJ9STzsYZM5kd450mX1FJxR9o6IQOhOMTgNGL4d1H1NJTT
+	 3C0TGA6B65vuCwP9sMRRXB4osiq9ItOoPJEgUQ+/5mj4Qjx0erGNKYxlOKecz9eq66xFL
+	 g2lbb97DRecrE19WzLJVOKmxqZe+9y8yQw0ez2F1eXI/OjjTP3CKE8TXcHDUszrt3t9tu
+	 R7S3dTYPn/8iUNDwfOOm/0cs76e6Ouckm0ejGGd0XhNBXL0OlgJXoWqyEDHJaj3vMTiki
+	 7uCe/3c/1bI1M+b1+OgR72DwZJJj9QilxevNSfEyliSq7xwKJ5GwhU5wHD6ebnGuuuw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198240;
+	c=relaxed/relaxed; t=1795198242;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=3FUmtjIsJ3ZmK7E+kLLMrGlNYlg2V4C2I56CXtFzz5U=;
-	b=KfHXC9uHW5vX4JODjk+nPnI57o+fPcSdr5Vf7waez+Xr9jH6s4BWKX9WKzuKRhS9wfaQ
-	 mQmjSJ8AGYDxA3HFk9ztXROeK4dMl6eqbDseaz93xtr5oaLrC1APQSC8OfBE2IYJjL++T
-	 5XNbDDe5+4C27g4+WujJTpORusE4ESilO5V3K7IwF4evNSu9u7pBV60Ss0veiMm8qiMhd
-	 29CPTRaygFaoZm4azf38GgR05YSG9YUmPJ3sZYFkNqI7+UzHG0W0mZHV/gkOkUTG1Ymc3
-	 4+kKhryWh3017a64nYJ1Roonxn3D5sYS1r0IFMhnqZBpW7i42ac+cgTOEQWF48P41Xg==
+	bh=08jpQl5uuZyQGxrg7doFW/+cSJVy/xq9ASMxnxrK8D4=;
+	b=bJ7N7j77yGTxZtUP29NN3gnS4yrNyfdrIQeuljDYmQfXaegDjMzuYlf30jNzeDnaF48E
+	 dRpAaJzCZS3yZavr5hm1sRkVjoPLfkYitbJOODcF8HGzNmNuVdImxxq1B4+podyOzuBbb
+	 aSUgUD+Vyj4cvAseT06YE1/WWkaBgb/kWd67bqLLOCZuMx9fJzZV5Fse9dwgY9+6L2ZZy
+	 xj9yMFViva5JgDszZ5Ob4Ee1+hfVCMr0gTUPqAgKtgOwuWVkO1HZJAhet+JltHcbM3KZ8
+	 zipOOyqqJ/hr+i236ulqAUtZ+EZoDFYuERS+NajHYV4RPB6jpu8hFAn6WB2p0s8ezSg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 1DFBE1F0156D;
-	Fri, 20 Nov 2026 18:10:28 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 4B9E91F01826;
+	Fri, 20 Nov 2026 18:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198240;
-	bh=3FUmtjIsJ3ZmK7E+kLLMrGlNYlg2V4C2I56CXtFzz5U=;
+	s=k20260515; t=1795198242;
+	bh=08jpQl5uuZyQGxrg7doFW/+cSJVy/xq9ASMxnxrK8D4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=Gxx+6zL6QAze5iH2iZgTwlEtC7RlM45Mi0b3EnueATpnLqp0XIvHKHQOMeW9lRNSY
-	 M8S0OqET9yDrkw9vxtcLnwFIwZpbn62W/e4Tph669XxHKM4s98YkmVOVH0EsLSUv/w
-	 P3tUnXG98i8l8fAm3EPnABiLeqfFt2RolBMw6/fR8qtngnpF0LmVbj8ETkmYY6zKcK
-	 AbYrg9XVGxY0XKzRrbUYFo22Tx8OfWqCSUNvONTo/ooKEfDI/qYB5IV4yQ/rGUqy39
-	 7DetPXTsrpa80pNum4OxW78Kyk+JSrzKM8dLSNAkjmboCBZuXKxjvbXD129z1SMpz7
-	 rupLYVANtiE7A==
+	b=aLc7Jz1vX2Td7GsGNbLreG6oz0GwbuKiqmx6U35zIEmx26OFNyCY1E60Gkes5ZzuC
+	 bZUrL1dJG9NBMBd4UMcDyGjQDD4MWnHDzUdM9WGJ8gG3A0d2rbVflXB6O+SvEa+4Dn
+	 GqzFORUtOq0p+idTzpCaAJCKR/NccxhpOwjw7hCYJ6sr2fSArCY2/qDOgJ+mXhzau/
+	 Lsr0lWbRezz5XQQ6gUljaPXT9i1nTL74EDLVYTg//GBPha5C8AhKjmIjOToWaBUivI
+	 mfHM15CEwrP8CIygAsXd+TXwtU7D1WuoYzjqQJyZXRc2JlqQVL8QD6bizy/L3Xq3o3
+	 jKlHK4EVRpPpA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 791224B955;
+	by lkml.kernel.org (Postfix) with ESMTP id 9880A4B959;
 	Fri, 20 Nov 2026 18:09:21 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:28 -0500
-Subject: [PATCH 37/60] mm/page_alloc: keep private memory out of reclaim
- reserves
+Date: Fri, 20 Nov 2026 13:09:29 -0500
+Subject: [PATCH 38/60] mm/page_alloc: refuse contiguous allocation from
+ private memory
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-37-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-38-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=2669;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=1528;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=NqkTU0G15QptyPCK0Ojs5H9K0W+kcHSZdbygJtTYqZc=;
- b=U+TYg4SE0rKVwmvMy4PubxHF4IY7Amo8OOW2W53v3w1Myl2X+1UCWjZFn9mv5qjoPrZIpJw9A
- 33bh8SQUd1oCsIAGWHNALhdB5JCENBTwjecSgE4RLHDlwbK3KW4BS/N
+ bh=SJvqLJtfHqxTbxOinmUOdOKCVWk7SGtVeDyrji7C2Tw=;
+ b=Irg8N3GrwFg5yXeCFynVswMM6e7cnSR82GrmMFfEKmwMHPcu5/cEKgAKCYKrx+y54cYfXcmSK
+ kzbXph7DqTTAa3NH+5AcJKokpz3sVmwYO3+Bw14lYWZ+1wiDm0fftM2
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C3FEF8000D
+X-Rspam-User:
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6187E40010
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: paof5f18e5wkccu9i6wj4jbptekmthgt
-X-Rspam-User:
-X-HE-Tag: 1795198241-796353
-X-HE-Meta: U2FsdGVkX1+BmeqcRD1BR4/uymap9Iu5UCrHqzXT+bq9zRbhzbfjHjAM4XDLQw2I2qaw1XRt2TTYZssTu0T09scKSCWZUgHnPvVVAWke4frhgd/h36+XUM1TPIC0BPWtCARdt55UKIy5Aud4XUrACQOgL0vXz4kggz0yWBN0uDSHUPiPwUZf7wvYCBMwav9hN74fa7mM0TsLPUXPmkt/YKX+aIPmXsqoxQNAaYBEHnh4uIrwQrX2J/xPuVVBPdXxCXJi7INoDHYLRH0ptYwxu/VHEz0M6waDYsQFKORnIkBSrlC3rTmdeLjZDvVHVXsn1biQBC+xNQ0cSSH4dUiW0unTea2gxqgExVOVPfcHOTh35bFT4/g+XUcGH1ZQ/fZu61bKFV7h8Ivp4CE88wKxQNcb36dTXx1jU9+C9GgILAUIT4A+qeJkoOXGuj2bW+7kKYaKm1jWkMKcM3AOxKwpmemY3dUWtf0mtfjW7YsPTFxNuVIK5UqdglPTYHqYkGC82wXovsvZdm3N18jh3LQEk+xC/AgT2zqjdT+92cSENUikhJc0os4bZueIUHMU9myUIWXgNkPwtAdcH1DN9GD9EFWbZra2eaw1uNSXM6LWlIpSaw66op/nGLcUvPe2AqLPadkutcEIK4Pwfd6dqgLwnbtijLJGNQyro7KNZvhRHB/NyIBwVF3uzph1ciuA1h9jVTGjpYWJjOe/C0Dtelw1L0s0RaPJ1KW8Ja+vokvgpM/rb11iTLENOORBNXuyiYsyjR+bn3EMtK9goa7Y2J9HHXovnEzi3d2lwWk+ts+7/il4bvp2O5KiIP8XeZamgtBfQd4Xf1gTFSMePKldxsLfzwO35EcQuRs+tHrgRRSttJbg2IF7hkRBzqYCfx/6kci/oc/+kKN0JKOAksXkXJcmOrflyfLUu3kHU2D2HdRdzdA0RTwwi12/VF6Wnkw71PWaH76eIqs6RWeWFWL073T
- qpJuOhU5
- kvAcjnMJrmxiZMJXX6oQ+e3rNpzMoBi2FxlPrMR6imYDW9fglpmobI8df+FlJyv0w2D4IqGFg4zNleJCv5bMZ9R+HmCjNnU7gpWpm+YitQsRpQabwkL2JEKQtJ8IWY+xQ4OzZ1yNLuV4aFd+OAJPqOtVU4Nyun52yCZBRUveJs76nlQPsCoZoYoeMcVVRvP+1Y2sRmsMc9dM7/rTIxjNRYfz2/DIX38nV0BuIRL9eunNwovVE2vhBcaC0xFI5Ac5nOtmJfToJ6SDFvUHA6bn7Yyty9IoOyMpyEIqRu1wn6Lh61Mjf15ExLL2cwqHyq5zsPOiKwIr0mpk8+ku3L0Pz7tRbKglQajHn3N5g6EGMe2ratdWyTOevd6MFK05N1yVkcVQlvcxHXbYJmTbiAV+7/jyHjmHxdPgZuEg16HxlEqqKIWCCYsV3dtyeDlj6EUo3F19wkvu4faWzo767EkgOxpgd6QDdrEgHIzWL/4HGaXaqd+dA4XlX3s5wtZj3Ef3oxxi7oYo8g/4l8AO68kU+T/MpP8/olI1JSoHNnpG+i6o3EObZamf2azDYyPKILb3bsZNhmmQhVDhfqmDU9+Qa2eIjS1p0dtG/ef561an5s4rmjXDz2aJQIzR6MjJIXNynquiVMw3MAAM6lBBlmlLGqztGfJoZcwCM536wJF+awEnIBHLGMK2x3kqX7eSylgAd/AplisBj2NwGFc0/ZW47Y5ETouREX2tbTMhOkoOXZeAw9UhA8AbzG2he6YQSCGLD+5sqhxDDv+SnK8Fq+T/O592EA4j4LIEBPaWyxF6WAHbAdcieKvkS4YJeVuEym/wrMTfI
+X-Stat-Signature: zjxgbuz1igkuur7ux8a19r9tzcpcqwoc
+X-HE-Tag: 1795198243-661665
+X-HE-Meta: U2FsdGVkX19eKo+xQ2fa5GttJ8QqmLF4fOb/S7z7V6J/XL9IliivPm5Xu1pB1NxArRjFqFyw5ke2eHXKA0UOqk4Cn/3F+hT/+8pG8YVy6I5zm2R4AOdTm6PMpaPfyGJP5MWznv8WgerWb54CtH+aFJyYeFb9vefDXvqiVyZaiwk8JOoSomP+BUJTEDrfLgFjG8exr/hyFIRkvr0w8LdCb8ZoLj064JIE5ESReyBhsKwO/ugmnWfXuPiDN/NCKyxdzVLeQJZU/8xKyoYw9m2ySPe0zbqtBfMZZXTjYG8O9xbF2jLQXh83YCPuqIzKSccc8zJCeb+xIVQr78o4vXb2oFcrRqyWMXikkxfssjKHE4421KXgs91dIa4WpNsAsZInnOERt2N+TRlVu6RiEg36MF9jTpq/VZmeCMXd9iAhCPj3gQgGNtksoON+Jw8TX/XJRV1biKJmoBUpHJ1vavRCkgbjUWE796lPs7wbiN7Hyih5Ea1LK9aZvuQTQ42/aKXNAwblTJx3aYcimCQ+NVtMkMCH2cMC6DUo1NqMWPggQCRyiIGKfBGSr/oK36UVpv6JnE58N6I0YQb8dX/4+eAU1WZ2upjByxFjUXl3Evi4wWOqYICqY5yRkF1zxdq35xtfiAeB3ohFUwME6E3MWj8x4gI3+B89dHsEZEineHxoLnPYaqkgE/EN9ZIUjYQwOi/CBfl08b8r3VEwxP2qu/+JUb/NoW1b95CEmujcIvjJ1+rT5ZzjkmtXhGJDJngCq31VcLoPnFD4m+Zm9oMwiVbNQR4FgujSOwBlos9QtL4bH2yfDfQQj80mBi5UuII9ybKtteYR0NN1ZptLma/DjlC46GxulJmmi+M6Dwd4/tszacwBPHkuIMoy9Ma0igrFYtAD2VWL+8Zino/BRPpJjDra0Mgc+QzqxelbiGqL4YADH05aatEEpxEewP4Gz66UzKEXqfvMBQ57hWkKR7y4L7u
+ 0uUyAumU
+ pXVkwxdktBbP6SOPwW3yOPV1TDx1aInXyo6nQdxIJT/R/mqHM91Jj9u4t6411Ttm8AG2wkd+FFJEtCLh61wRQRvAt0r8YZG3W2KVmxSqQ8JKnDwoW1Kn+VLAisZ0sXOCtcc5daoOJdjBS+hBo7/FtsScAtpbey+eRhDSYhpRZGwCAiTWoFG9qcZwl7Hw8Ewzif4IQXxURmpzKynahdE6tz90bgjPAR4B5uiJmwdGoaeHi1E/Wck8TtQeBXuy1tiigZrfL8imZwsQ93XIom709i8JiL7q8lmUQE20+lJYGWjg2gXnxkv6kfsiauLUAPzcdsIhYc9umVPo7l0Cw30HyB2325e8v3rqW+yLcj8jalSAvUV9IK2bt0ZZor5/LBTRUYoz6Rz1gU+H5i8pi9jMmcCCL3+fwnY5XlY+z3aWpVYhDpmjXzSn27/9S36ZXoefz4mtsezRBretWS9EiQN/rSs4MjNJ+dknS/+GnzuHiGYxPiWERkCsozzaHcl76wkxW3HVFDj7KzUlEUMsgaUNkW9lMZnn8S+HDC0xYypfzwNgXzfPN53xpb4FpNI2FRlEpIXQdTztybZ9/JzPvbHJBJqgIPXN9R33YUbihKLHMXsOiKc8nbBmX56kJK5tghwje/0Bwfymz3A3EYoMYbHBbNqB/IilNlBcAurOsf5KPQG33svv7Xb/eSYBBPgoEk+YVFL9JmReWoPfYuFHYNaPjgGqg2VaHpvWhLPeqw/AovZZjHT/MluO8YzJXHrWIfwv2z6vDKfpc92zEpqqQgJG2WQ89JYchjl3ywcR2V4oz5fTU8Iw5bm9pgVjsKEf2r2pMKUDY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,80 +189,44 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-Private memory cannot serve general system allocations, so it should not
-contribute to reserves.
+Exact-PFN contiguous allocation bypasses the zonelists and can invoke
+compaction and reclaim.
 
-Exclude private capacity from the lowmem denominator and the global
-reserve total, so the pages_min budget and the system reserve stay on
-common memory. A private node still records its own reserve, which
-its per-node dirty limit subtracts.
+Reject a range on a private node with -EPERM before isolating any pages,
+and document the error.
 
-Zero private zones' watermarks. No kswapd runs for a private node to
-restore them, and the pages below the minimum would be unreachable.
-With no high watermark, a migratetype fallback never boosts them
-either.
+If a user of private ranges shows up, alloc_contig_range() can grow an
+ACR flag or an exported api for private allocations.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/page_alloc.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ mm/page_alloc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0a5176a6e9db..de1a13a91ef4 100644
+index de1a13a91ef4..08e57f809a03 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -6610,6 +6610,8 @@ static void calculate_totalreserve_pages(void)
- 	enum zone_type i, j;
+@@ -7379,7 +7379,8 @@ static void __free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages
+  * free_frozen_pages() also could be used to free compound frozen pages
+  * directly.
+  *
+- * Return: zero on success or negative error code.
++ * Return: zero on success or negative error code
++ *         -EPERM if the range is on a private memory node.
+  */
+ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+ 		acr_flags_t alloc_flags, gfp_t gfp_mask)
+@@ -7410,6 +7411,9 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+ 	if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) && order > MAX_FOLIO_ORDER))
+ 		return -EINVAL;
  
- 	for_each_online_pgdat(pgdat) {
-+		/* Only common memory holds the system reserve. */
-+		bool common = node_state(pgdat->node_id, N_MEMORY_COMMON);
- 
- 		pgdat->totalreserve_pages = 0;
- 
-@@ -6640,7 +6642,8 @@ static void calculate_totalreserve_pages(void)
- 
- 			pgdat->totalreserve_pages += max;
- 
--			reserve_pages += max;
-+			if (common)
-+				reserve_pages += max;
- 		}
- 	}
- 	totalreserve_pages = reserve_pages;
-@@ -6705,9 +6708,13 @@ static void __setup_per_zone_wmarks(void)
- 	struct zone *zone;
- 	unsigned long flags;
- 
--	/* Calculate total number of !ZONE_HIGHMEM and !ZONE_MOVABLE pages */
-+	/*
-+	 * Calculate total number of !ZONE_HIGHMEM and !ZONE_MOVABLE pages.
-+	 * Distribute the global pages_min budget only over common memory.
-+	 */
- 	for_each_zone(zone) {
--		if (!is_highmem(zone) && zone_idx(zone) != ZONE_MOVABLE)
-+		if (!is_highmem(zone) && zone_idx(zone) != ZONE_MOVABLE &&
-+		    !node_state(zone_to_nid(zone), N_MEMORY_PRIVATE))
- 			lowmem_pages += zone_managed_pages(zone);
- 	}
- 
-@@ -6715,6 +6722,16 @@ static void __setup_per_zone_wmarks(void)
- 		u64 tmp;
- 
- 		spin_lock_irqsave(&zone->lock, flags);
-+		/* No kswapd runs for a private node to restore watermarks. */
-+		if (node_state(zone_to_nid(zone), N_MEMORY_PRIVATE)) {
-+			zone->_watermark[WMARK_MIN] = 0;
-+			zone->_watermark[WMARK_LOW] = 0;
-+			zone->_watermark[WMARK_HIGH] = 0;
-+			zone->_watermark[WMARK_PROMO] = 0;
-+			zone->watermark_boost = 0;
-+			spin_unlock_irqrestore(&zone->lock, flags);
-+			continue;
-+		}
- 		tmp = (u64)pages_min * zone_managed_pages(zone);
- 		tmp = div64_ul(tmp, lowmem_pages);
- 		if (is_highmem(zone) || zone_idx(zone) == ZONE_MOVABLE) {
++	if (node_state(zone_to_nid(cc.zone), N_MEMORY_PRIVATE))
++		return -EPERM;
++
+ 	gfp_mask = current_gfp_context(gfp_mask);
+ 	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
+ 		return -EINVAL;
 
 -- 
 2.56.1
