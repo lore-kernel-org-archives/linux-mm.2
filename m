@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C87606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDA8606A331
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Vx1KOFSa
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=bEWjZTa5
 Received: by kanga.kvack.org (Postfix)
-	id 117D26B05B0; Fri, 20 Nov 2026 05:09:17 -0500 (EST)
+	id E5DE66B05B4; Fri, 20 Nov 2026 05:09:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EEBB6B05B2; Fri, 20 Nov 2026 05:09:17 -0500 (EST)
+	id E35626B05B5; Fri, 20 Nov 2026 05:09:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 005716B05B4; Fri, 20 Nov 2026 05:09:16 -0500 (EST)
+	id CD75B6B05B6; Fri, 20 Nov 2026 05:09:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CB6956B05B0
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:09:16 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 663901A0D42
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:09:16 +0000 (UTC)
-X-FDA: 85455074712.30.1701D3C
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2E6441C0007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:09:13 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Vx1KOFSa;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A42C76B05B4
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:09:24 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20909C0E75
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:09:24 +0000 (UTC)
+X-FDA: 85455075048.01.BA6A117
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8088F20008
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:09:20 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=bEWjZTa5;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf20.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	spf=pass (imf03.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795169354;
-	b=IEWrFS3ojWo4/bpI82IyhGY3/b3tj1B5fO79Iqzk36mWXqvP1gvk6biQtc7dioRt3g4Jvs
-	PAzsyJ2xlWeGQhjtkIaSm2EHX3YNCQLoOnPHSXsqv5C6x/wiK4EQVm25JHh8BYl4CFOMe5
-	HtmfgToRoiiMUs6FH7e/HpBKnhCuFSo=
+	t=1795169362;
+	b=Y2JmwWRgOElsF04wi2oU4mqfUPk+9dbxk2fvl1Yi5lrxSRr5I9ajvMQ3wxT2IzPmcXkhG5
+	/9Qv/6TWyWl7oMs7AeZJvyxtanYlaOL5HVxVzPxt9ltz7113221pU9za4BRuJwDh+GKkez
+	mAumJGckv6cCb/Cz+Jttqwwh8Mg8UEE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795169354;
+	s=arc-20220608; t=1795169362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=tP5tP1XsZQUtWMsij03mPLEQkw2o32O/Ohqtn1xKgnQ=;
-	b=JdB38O5nwmGa+d7aH6IoJ8Fa7z4qgGuu9VmQW3aA4HrLbtVTdh2Kd9noYwkeKYlT3PzA8U
-	9AU9Fvd5AARr1Bih/s+z9d8yTN6hnOw+kUsd7PFQSBhZ9uHkjA/6xVZ0/xzubuc5AMFnYQ
-	bL9IB465GYDkoF+WgqBrNm8QwgKBT1c=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TLxSkfYLhAc7bq+V5pE9s9/jugosIWK4kuSFM2AGReM=;
+	b=jy0icJUGyAPatyoRvucpGRJYAqchp4RzFkZh8aCNmdBGIxHkEk/19vfJ70QfPSLfzCAtS+
+	wojbC5Muh00PGDfQ0uhmgo/PGR/ZMnsnnXGEA+DvpM6gnAPl28yEiiMmiePscZcOryTZH1
+	zMXHo8Zx+wIu0gbZFmMbTV73zEyrLcE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Vx1KOFSa;
+	imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=bEWjZTa5;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf20.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3b40470fdd8so366524a91.1
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:09:12 -0800 (PST)
+	spf=pass (imf03.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cddc597d062so425644a12.3
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:09:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1795169352; x=1795774152; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tP5tP1XsZQUtWMsij03mPLEQkw2o32O/Ohqtn1xKgnQ=;
-        b=Vx1KOFSaRJEvcCNuf52fC63l+6GC/JKW75U0xYEPJs62GXP3ui1PlbAe7TlPJOwWfm
-         yY/g1HGvdEQd320acgDC2Ise5iJEYt67i4jrae09RftpmkGz52TPZAvFxRUqNybqnVVD
-         w4oTwrju9B68NzL0jqoftayy0enDTJQGa5dIoaxWNQyPtXuNuRErYKPjvyub1Wg8Oxa6
-         4MF9oxbuQHu3XpwTu2hYNyf5xwCZuHF3URZiXqW2MQDC80w0MHSeh+2gTv3Exmjx/XZz
-         DTmXvgRzLjsawvPq1WoOHGEcr2fefMZK84OO38uSFiYOOYL6D6PUq4awVWoFmh7EcJFp
-         nZQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795169352; x=1795774152;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1795169359; x=1795774159; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tP5tP1XsZQUtWMsij03mPLEQkw2o32O/Ohqtn1xKgnQ=;
-        b=QtavH1V0cfuYvcYvw2MDaprfU3QdNFmzYSPXxxk08uspcTOya4QpkpiT6GDyZiswV/
-         CL+6bIyooGB+mWXdZHgJy7PPeT1JtBZlM9H/DuRzuHOdBFl7tveBdCetXw/d9BCKDZCW
-         qMmPR37G9+61yNvWvoZWHSiE22WFoY9Qc7VZ62SfK0oMvNBBae1g0UEOrErkdwjzmowg
-         P8kAvsWR3CaIYnvimIzQY4h0jpN7wUW/CWwbbCdZjm2yWewL64IynMecbsQJ6if1cUD8
-         B5mNIP2svo24BKT1Le39pAtTZS6UpIXVfZNWerN6kcaj0B82/Wg8h5KCWLrE7SUbe/Df
-         B34Q==
-X-Forwarded-Encrypted: i=1; AL+hErGZtJ//ONgBLurhwHrKpR8bPtveu+G1tjLKFME/qYzVveAhRW+eRR2VcdOkpX0Ph+AeV9MAHWRkVw==@kvack.org
-X-Gm-Message-State: APuU4Z+2i3HyyYUevP/oMdir14gNQsl9YmljLxqL8nCblTd1m4juytLC
-	YF0rHRZZsmGUklFaAUgWQNKfoa4xagsTabfhgISs9epamy3bfUmbs3ZcJEZBNcjvkE1A6on7oV/
-	wtSPm
-X-Gm-Gg: AZFdTZfvm7shYQjJiFW4uD6F/EbLdc3GZbxZwM5zBa+MYs0pK0auoTXfwfbc/BuvR0q
-	nV0MIhs9uOo8cSjVG8V+Gs+uBCkPLWMh6RlyiB0WB0j9Eq535A1D6xW5aTpa+YWFgUdCxCJ13hV
-	UfvQHCqt8usmc4S1YecVQJ6aT49reVl/vyn7U4itV89C7bWS+ST6/R68CyFHBMrz9PIFs/EDY9j
-	m1BYzoS3F2Wswz92EMSEWNuXI5l8L3N+7v5A2sT487cfsdzWSf9FcUt8jT3iAy2vf/nLsqR1a+0
-	P8ZhUhJMtOpE0U50wtMlj/hMCi0AXwS7/EeeXmkkgTFAeXHaQYPbywnUGy8/fJjVXtQW/ucjQO5
-	8PhgVmxCyAxa+oNOvOw1pmZZzzqtdQ2Rlw+nxyQLOczWP0f59zAKWBbzGyK14IMBltaFKrsohlx
-	9gfpnXeI1dlfz0madFoFk3zQqNzFru3ujJGuih2uwLKOZA1nLvmUyixCZZxUmuxCm8yg0ZnEHo+
-	6ki1TXdIuRjdI3i5w5atx8KAse7GfYrBZTCz3N3bDSkl56X9gyPLO9VI1RQ6dS3AHrJdrO0MOoK
-	GOnh5LnBk78lHsW6PD87Xe94qFXUL2AtXCa9jXq8mHk0rB+62fKcscJ9wdLnKpFPQ1Lw0Q==
-X-Received: by 2002:a17:90b:2f8f:b0:3b3:ba43:54c0 with SMTP id 98e67ed59e1d1-3b41c98a338mr2073390a91.15.1795169351488;
-        Fri, 20 Nov 2026 02:09:11 -0800 (PST)
+        bh=TLxSkfYLhAc7bq+V5pE9s9/jugosIWK4kuSFM2AGReM=;
+        b=bEWjZTa50p7hkayPaFLIhxax93GezxepEuexVoWI5W/rYCCKrUw6TwrFj/rGRrxxy5
+         0opNO6a9YXB70dUh23nNgk35oUM4ChEHLuUPuqdLljA9NdG2s4TXespvU+KLnCMf5hDQ
+         0o+f5Y42v/PT0ojOiMl6umO+BiETQRDmBN26nvgbyi6srZfIi71AHow/petpJy1Ixs56
+         ppjeufqlR0c1CuNZnuwhf05s1whZUFbue3jC1CVXlb3uUg/TiofRQ0ypOSKD8/Pm1pJx
+         el05dzJ4mlI5ND/cLzvykiiKxBvnXqTF8TpIu0KcYw6Spdppik88zHyWBO/d7jTDxDQJ
+         8mmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795169359; x=1795774159;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TLxSkfYLhAc7bq+V5pE9s9/jugosIWK4kuSFM2AGReM=;
+        b=1fsvkdrWXBPo5Ei7RkU2gExjzqaG6Y6DFsol+7vo1RO8FMgyqqHGBVVe1yU/mCrTwq
+         p7QYjonXzjG6fJmNeywCq10Ts5lrBlxm2FvrIppADwa3mg7rR7pFpgJWijXUNVSTZqYI
+         hxwk8+Uzp8mgs2Ovw9hABiKFU9Un7tk0yW92gg1Ijz2j2J3C4r7jUxNbPJy37Dw+F2Ly
+         y4evrnIWg9DbrYulijLn1OnWufb6v3cC1CRIoSkE6b7ggzmjSRvyUj3F6Grlfs4grWwx
+         vISNvL6YZK3p6WNj5UF3mUsMsD+DtxJ2AAkMvJLTIrxDz3IywLY9JBWgtxW6LtiDrvOD
+         qH4A==
+X-Forwarded-Encrypted: i=1; AL+hErHyYU1jwI6xexBNh8nGqwT2UV1WbL6NETs2Mn8qA2u6AoQmueW0sQvv3zn5jGc/aqYWl34v8RYmAA==@kvack.org
+X-Gm-Message-State: APuU4Z83eLDUIApFseFFcogbwdGrmSx0iziHY54mVrHEF93vboh5Vana
+	74gtFvBayKNw+MRmPibNMgGmWreq3XsZyVZMiDzNLqQQYdEvKOQY6nvkpkYCLfw4od8=
+X-Gm-Gg: AZFdTZcWk6ZNw77fTNJtiCxR3ABap1sMSoxcGTg98yOuLjIiRsYbFYN/pn+SSQ2JDnL
+	c0HVuUkAzMBWdpch5c1yf3uHnGS38ti+infETVtj8G7lcK9NosJp3WPYOUoZJBjvhFFRkFG83pe
+	FUXMcCziXQT8k+wAELC5W3HjyD8FHTEQj+CLjG8mpSqMt17sW3lMNHjBZrSXdKPa3CNAYNTvNXN
+	15lb5n7K9ehiqd0gPs0MmGIR6tpo8Fv7dTvqOwFHRe5v7UsdWWnwh/U2NST8fAofuFs7cfhNR4O
+	tISLup0sZYAp7x4EJYjR8DlBiBUfn9khaNJ0JP1J+Xe2FNJ6nNsgB3JcKFBAtM6SOZZ9hS855J1
+	yrrHGJNM7E6/7DdPuhbI1s0UZCZn/mwGhSyVMC+LjudhzK1B8beaRi7MkThZpT70VWHDhJxDwBj
+	B6FpIhnXMB9PQsRIMyMN587NaHSkYLOzaL3zZ8naClcwDP4GGqfdoAKq6ZCmesz/b9Q3YZ22346
+	0v+zU0QjBZKa1tpcB+nCZjRAVpxgiFv2CClMscuSIUT53MPqbLVFp99K0c6edMvkTO8EzvVpm7I
+	Ef39glAms4ckbO+tlAnEAvYFJC2KLWItBkqMlFIffD7wstqIpfiSNxxLor7Jvt5HpJzh1Q==
+X-Received: by 2002:a17:90b:278c:b0:3b3:b0e5:57ee with SMTP id 98e67ed59e1d1-3b41c97ac48mr2625681a91.54.1795169359317;
+        Fri, 20 Nov 2026 02:09:19 -0800 (PST)
 Received: from G6L4RL2QG9.bytedance.net ([203.208.167.151])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41adcfe16sm3727321a91.17.2026.11.20.02.09.03
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41adcfe16sm3727321a91.17.2026.11.20.02.09.11
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 20 Nov 2026 02:09:10 -0800 (PST)
+        Fri, 20 Nov 2026 02:09:18 -0800 (PST)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -109,25 +109,27 @@ Cc: "Liam R . Howlett" <liam@infradead.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 00/11] mm: Unify memmap initialization for compound pages
-Date: Fri, 20 Nov 2026 18:08:45 +0800
-Message-ID: <20261120100856.16929-1-songmuchun@bytedance.com>
+Subject: [PATCH v3 01/11] mm/mm_init: verify zones for template-initialized pages
+Date: Fri, 20 Nov 2026 18:08:46 +0800
+Message-ID: <20261120100856.16929-2-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261120100856.16929-1-songmuchun@bytedance.com>
+References: <20261120100856.16929-1-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2E6441C0007
-X-Stat-Signature: 4w919pim37zodiexwpjkmu1qou7w6rxq
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 8088F20008
+X-Stat-Signature: noyoky5spb4ticsac5mopjek945watbi
 X-Rspam-User:
-X-HE-Tag: 1795169353-92982
-X-HE-Meta: U2FsdGVkX1/Z6XzHz0sHOCibvthRZReQYHyY35cZ20i2k/1DmWx9WV0ji4RT2Z2FCQx53sEkig6/Ku7zaOrDsPgf4ltjEEax/3SduUL2jKUe2tlqJUQuRKgc5JkDv2hqyWOqTvKX6uBLAcICaYScS0W+bb6rqr3v+0wzwXWvu+M96d99rxfV9RM8kiA/icJ/SPksVyNZeIWHp2a5C8XbJMYSIqgQm2GGxUh0/hM3PJN4Ou+RZW2wh6C1DCtyUyY44iOIozQuKim5CNL595bc+o0LXC6swFuN0CJZEdxa+yAUkjS96v+GkkfVU1QqOCFW2VENFLFGK1jXf1pnQilGKNgLezn8GTBnF5oRwDOA8awvdkT7IR0RneOLVMWpC5y6skOdzOpXIiPLQQQEOlBWENyi8lDQJCC2vmmV0nS9C6ry0OhqCcJQrbc8vHRMWgr6Ytl6CZ0q1HQCuI1Fg6EepN1mpMNS+tHEMlFOccfDQQ9D0WhqY3sieExe3TI8NcFCScFgbL3SGu/MwOUjMGl3/DI+UdjEVzGFGSRQu9kjA4qZ/aPWsxk00cmgQJAPXwnDY/yIZ8dXgPWjXU4EEXU1HJJE1PdcpyhDUgNDcIDJN/TuBl1BwPlQj/P0EdUKkzmS6CpooRJqnlwsjnE1p8aYNiJKjPjUoDE6gLhrR6CHesk9xM8+lFBdRwnhmqUc+2YrrqH1IE3VnSXSv7jro0J/AeGYBiYoOn5UXcOPw7UwwlO8f9p7HKsTQ0Yb3OeGOtlwheVfp5T1dOZQ2vnx+Ma5NY/Q9gD9ynwdqpXx2rZI231l7W1pGyR+56cmdTOoL7Z2q3DToaTQ+2ai9uPqjUED/S+xd/44i8g9kWYrw6sMAikHYD6Bn0ycd3iG6FQU+PvDhxK+qsbGmx9Qn6ggLOKG8Kinp9g0pgaRjlcF25edqf1LmbkpUg941ZckxHhaC06druniXx4er/tu+Xw3pK8
- dbUe3pC6
- qeHPPQf4+hcH7N1khmKhqx6ggycXuAo1qGNYdGwb2A5EK1WGgLKfHauPtp0DLEhqf8BjGv1wkKQrQYPNKf10eH29Plo1URIvZ1HBwhFy3qMHIysWvM5hHQTB7ceKWiHPhjzX1yuglGy+evFujyFtxAQbOfI/PSoQEGAkI/Q5aR89E23AoF58TO/vXc1HVdo8CS+ylgAnLmIOXQSzDlCRr8S/4zvBzkX2okhjZRsN+v5zMtiO8cwHnvEuJoIGjkXPyu7E0cyRC1GvJkIUgVsc1RpUWSa8VVNW9IPxTS7OJ58T+X/OEzy04EsuoiO9ZTtNSyUkZTEoVvB/zzKg9d3mVMS3Vk9E8tLnzjh5t1StNbEIJHcznF1b5x8OiK0KtfDQpZ/Aya7GXQAog3zxQFGHzOaIPZrSeZot92+KZFsuFoySswG+ws84oNI5Rq8aPo9rxlbNORsMpL1zgU4g/NhOq1AnPCDyf+zsTCZmJxP3vznOh4E4oqD3IEbufZQQBVh8kE1HNfJKPAk+DNy5VGMuu8BcPZRK9TmeXgLLWQB4sKWsvi3xxAhgOhO6k8Q==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1795169360-323010
+X-HE-Meta: U2FsdGVkX1/l06gTKe9Hna5TY3BNWMgQXMXRKneQ17UnW5srYDh5p2ldo7pidHsuJl6DQBjqVum4suSJ7G+v+OcE75H+7qqfki1L4xPTvh9be/XQ4i5KorwBp50J6zlhCFbam8IUR5jiZ8Z2Ye+1WPubfLr859wbFGkb8Qzz9H7+YoxZqyAnylrTxVTWzKrFbNL+gD5KB/50b5CcehjQRxPAax8vdZhiEdf0fB0VllwM4PoL50B1qtbfyD4rha87OL5vCFCCOPDLlDC06rYD62IUZ5xHq4GQRjD9S6HbSfwonkV+e4I9OCc1KiBAYwkd3AuqhGLwSGakhcvtHfodXifJVasGTpz170RfAizcjAjZBvjjnj0rRoRmHb8+tButHYXG3bZBCRZw5u7jcqSw+6mm5VBtsiyAwawqo/AFhOkI2MPxhHHd6Z+NHgfcPWw4eP9uiLf+kwP4mI1HUSpSRzYgWnpaQV4RIF44uMshJkiNIKNoA/GrGR3B3la8Io+SgZ2ELvZbqiXcH3rdpsz7iuHOp0PJSmjibjN/6YP2SHT4FP7cooNPzjUOwtRxdMVxmR9udsq0rMiy0ai/1z4ezUwjkM938eGHimYbiw3X7F5ipWFxTHd1q5BPQHdjSNnc0ndTVpX5fhPt1YgmdaEUCBEzIuX/WRnZ3Jt0GJ90sibrkwAzZnzUt3lNBDNdD4F3FOIRd7OxnTPRifnlgHSMgZQ8aLBHyNOx7fA8GJsOt7blFXzmlG9EYe9zbF603YlWVFGCuzp3TV95j10I9di6l3c6OtVskSOjoBJnaFIHshgxp0yevEXjgl3uxvd6egYVhQwXPxdoykBUBBpBFDcKxnkS5jGGC8K76ftNwbuft2FLvtIaXkuBOL4vqeOurZUgEBJ+lAVVr8fx+vwAeavk5oMfmXSMoS+TVdnpODrflrakke84BW+blU6CRQAtznds3GPzoolLGzFWxxiP40W
+ V3KS3xR4
+ DKaKKK+1JzETBy6yU2h629FcrF1HDcd4UanXMSUnPjAEVJW8LODaBovy9H1vLOFDHHgAI9BAtK2Cjhawdu+PydeD+KlIHYc61Jkcm+d7dIZZDFe1c6tn/yeeSc8Af/mzM3LbXu0JV/+bm4hRU7T9L1AMZ7h5JrRrk9dechMk5n+ToomvCytjJD+kecWhAfzaBDSJryAbJsEy30wJLAt8T+JIhuYB8mcvsDWovlZx7JJWNLLpQ+g5xt1UppjRx1FYGyqw01Ohi+A7xviCdB6itLKNSfM0MUStrzqf+Pjq+HiEwTNF1ohtmn7w8kFFJHNjSkgx/YdNFX3Wh4HG1Bodl1cLiEJe5NIRxi7Nz9+uh7BwQ7XJS/wEjndv8h9z7eWYY1LHSrFasDeG58NTUSWGAFYW1TWF0H+PwDri1KWv8b48B7Bb9ajeRP2H9wBqFB1Y3OQXWFKc8fyMNEItcOuFZ7Qo/B5qoeCm58KTlXHIm4ogS/qJ8FQ0aw5ygIQsr0tTMT7+EZfq4nze2uwXWmPXkaK+O3rdzs7LXaZ0SiUoHZGUySXGbo1B3aKeXEiM/GovAHT4lx2I1p428rdz2KgFHPqdreB56U3k5PH/2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,88 +138,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+Template-based ZONE_DEVICE initialization bypasses
+__init_single_page(), which means copied struct pages do not run the
+vmemmap zone consistency check.
 
-This v3 is based on the mm-new branch at commit 15f114dac9a7.
+Verify each destination after copying the template so the fast path gets
+the same validation as regular page initialization.
 
-This series is split out from the earlier, larger series
-"mm: Generalize HVO for HugeTLB and device DAX" [1]. That series
-generalized vmemmap optimization across HugeTLB and device DAX. One
-remaining piece is the separate compound struct page initialization used
-by boot-time gigantic HugeTLB pages and compound ZONE_DEVICE ranges.
-
-In v3, Li Zhe's template-copy work is integrated directly into the
-generic compound-page initialization changes instead of being stacked as
-two prerequisite patches. The shared memmap_init_compound_page() helper
-now covers both compound ZONE_DEVICE ranges and boot-time gigantic
-HugeTLB folios. ZONE_DEVICE retains memcpy_nontemporal(), while normal
-memory uses memcpy().
-
-The first four patches make the generic memmap initialization code
-suitable for sharing. They add zone-consistency verification, factor the
-PFN-independent page state, simplify ZONE_DEVICE template setup, and
-introduce the common compound-page initialization helper.
-
-The next four patches remove the boot-time HugeTLB HVO special handling,
-initialize all bootmem hugepage struct pages in one place, switch HugeTLB
-to the common helper, and make the now-local page initializer static.
-
-The final three patches centralize early CMA pageblock setup and move
-MIGRATE_MOVABLE pageblock initialization into the shared memmap helpers.
-
-After this series, boot-time HugeTLB and compound ZONE_DEVICE ranges,
-including device DAX, use the same helpers for compound-page and
-pageblock initialization.
-
-[1] https://lore.kernel.org/20260513130542.35604-1-songmuchun@bytedance.com/
-[2] https://lore.kernel.org/20261112112816.55095-1-lizhe.67@bytedance.com/
-
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+---
 v3:
-- Integrate Li Zhe's template-copy work into the common compound-page
-  helper and drop the standalone prerequisite patches (suggested by Mike
-  Rapoport)
-- Apply the helper naming cleanups and remove duplicate ZONE_DEVICE
-  reserved-page initialization (suggested by Mike Rapoport)
-- Update the HugeTLB performance results for the integrated
-  implementation (measured by Li Zhe)
-- Restore managed-page accounting after CMA activation failure
-  (reported by Sashiko)
-- Correct [2] to refer to Li Zhe's v3 (reported by Lance Yang)
+- Retarget zone verification to
+  zone_device_page_init_from_template() after integrating the helper
+  series (suggested by Mike Rapoport)
 - Collect Reviewed-by from Lance Yang
 
-v2: https://lore.kernel.org/20261113033442.62970-1-songmuchun@bytedance.com/
-- Fold in Li Zhe's memmap template helper series, based on its v2 [2].
-- Remove __meminit from memmap_init_page_common().
-- Add a cleanup to make memmap_init_page_from_template() static.
+v2:
+- Apply the zone verification in memmap_init_page_from_template().
 - Collect Reviewed-by from Mike Rapoport.
-- Fix the helper name in the final commit message.
+---
+ mm/mm_init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v1: https://lore.kernel.org/20261109095807.41547-1-songmuchun@bytedance.com/
-
-Muchun Song (11):
-  mm/mm_init: verify zones for template-initialized pages
-  mm/mm_init: factor out common struct page initialization
-  mm/mm_init: simplify zone device page initialization
-  mm/mm_init: factor out compound page initialization
-  mm/hugetlb: drop boot-time HVO handling for gigantic folios
-  mm/hugetlb: initialize all struct pages for bootmem hugepages
-  mm/hugetlb: use common compound page initialization helper
-  mm/mm_init: make __init_single_page() static
-  mm/cma: centralize CMA pageblock initialization
-  mm/cma: localize init_cma_pageblock() to cma.c
-  mm/mm_init: move pageblock migratetype init to memmap helpers
-
- include/linux/mm.h   |   8 --
- mm/cma.c             |  38 +++++--
- mm/hugetlb.c         | 111 ++----------------
- mm/hugetlb_vmemmap.c |  19 +---
- mm/mm_init.c         | 261 +++++++++++++++++--------------------------
- mm/mm_init.h         |  13 +--
- mm/sparse-vmemmap.c  |   7 +-
- 7 files changed, 140 insertions(+), 317 deletions(-)
-
-
-base-commit: 15f114dac9a7bde1796f0e54e22726fd31cfa8a5
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index a9d848c92678..0129152b74d8 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1082,6 +1082,7 @@ static void zone_device_page_init_from_template(struct page *page,
+ 		set_page_address(template, __va(pfn << PAGE_SHIFT));
+ #endif
+ 	memcpy_nontemporal(page, template, sizeof(*page));
++	vmemmap_optimization_verify_zone(page);
+ }
+ 
+ /*
 -- 
 2.54.0
 
