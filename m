@@ -1,169 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB0E606A32A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 15:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB50606A32A
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 15:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XCQUtSSf
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KewQqbwu
 Received: by kanga.kvack.org (Postfix)
-	id 370066B05B3; Fri, 20 Nov 2026 10:24:40 -0500 (EST)
+	id 35B216B00EF; Fri, 20 Nov 2026 10:34:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F9C76B05B4; Fri, 20 Nov 2026 10:24:40 -0500 (EST)
+	id 30BB36B05B0; Fri, 20 Nov 2026 10:34:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19AC96B05B5; Fri, 20 Nov 2026 10:24:40 -0500 (EST)
+	id 248B26B05B1; Fri, 20 Nov 2026 10:34:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E5ABE6B05B3
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:24:39 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C88180FC8
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:24:39 +0000 (UTC)
-X-FDA: 85455869478.05.1793B7C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A6EA64000D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:24:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCQUtSSf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F376E6B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:34:53 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2C1B120BBF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:34:51 +0000 (UTC)
+X-FDA: 85455895182.03.B1ABAD5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 338061C000C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:34:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KewQqbwu;
+	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795188277;
-	b=QEVp71clhYwHzHCmwYnpENXfkt2BNf3EzKznZra7TUr03hXsdA8Pepzc3ct1P7Y7YOqQSd
-	oZBq+tImpX1ovwHa/OEBF06LPsZZZwUx3V8/mM6UvFBX5cy5TmARXo3RgaggpYQ9aji3ue
-	TEEjwCp1MC0nxE6ExrFuypjg8y0gEIE=
+	t=1795188890;
+	b=Ejwrp4jkPmti2baxn6RPiaZxIFPrAq5sskivNtyX5v4+xvrjbg6uMoMeT4jAJcTwYQbfxY
+	nEMycawQlObfXsZ8ImuEe2hcrUNH/ii1w77sjps3EcUuTw6ggXRkP2ytjBUpCuBbfWiYnL
+	nqvSlh+JhWI0isXBrvaT+Kq66f3aUDY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795188277;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1795188890;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zOo2EfGngcl3fu/kIhqZadaO75pP0lk1DR/lRHlyrtU=;
-	b=tC9nl8RqXCGfnItNILpmwb73nvQ3re33hEJ1VuaOkSE9M4Zp1/k6lwgrVtene1Bo7TpBEE
-	e4V3Ic9WGkpQ10wU/ER4SNgY0JG2z+dxwMdNxw4E2uaoSfNXMYl84fentydA46BstRdOXH
-	irVH3Hng8plA8pZbHS0/nEovU3Gmtew=
+	bh=t4lkm1tpa3dv7yUTdwo2D150hj2Tgsxdh/lGY6vYTSA=;
+	b=UeRTx5+rkhPGytBGIPTsYArPEwbxNm+NmIq2X3LpIC0R/GfvBMRQKA1FZYUp8OY/tTcS9m
+	TksGJL5XNOix/5aVzhDuBtd/DbsJV5mX3jBxVpSKEIBjyrViIUwfjyEetSpB3VkRa9+GlW
+	rJAUfaJV6fSMInRMO7uptwmo2D84ffg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCQUtSSf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KewQqbwu;
+	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id C130340852;
-	Fri, 20 Nov 2026 15:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 9CC851F000CA;
-	Fri, 20 Nov 2026 15:24:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 679E1611A5;
+	Fri, 20 Nov 2026 15:34:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8D21F000CA;
+	Fri, 20 Nov 2026 15:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795188275;
-	bh=zOo2EfGngcl3fu/kIhqZadaO75pP0lk1DR/lRHlyrtU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XCQUtSSf00g2G/Jpzjl9LRNQEFXNNRnYGZWzdtuiZBHk7dosmqWBMrC+L7eGsuwT3
-	 6Y8qXJypfh+8W03R5Msm4iQvi0clPna6Y5oqS1fK2fMBPqPJtncagCqPrZrgwYA61c
-	 Ir7DESMb/dns84I6WWtY5IQnf73sTx8SIKL9bvZjYjcc9pfyT2D4A8Rsc/CYWyagj2
-	 DltATLAp/YBb7+MwnvRYS7P7+HT3f1+jlJHOL7W4kb+l4QjcUeVm9fOWhMSveLYD4Q
-	 IO8nsOvMP1W4FNm+RhhQIMrsrDM1nc6imjdTxfwsnAexYb35pl8AoQ1Ir88SqmYiNe
-	 v0OZ/2yfr0Tjg==
-Date: Fri, 20 Nov 2026 17:24:31 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Alexander Mikhalitsyn <alex@amutable.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Andy Lutomirski <luto@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Chris Zankel <chris@zankel.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Hallgrimur H. Gunnarsson" <halg@google.com>,
-	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Jan Kara <jack@suse.cz>,
-	John Johansen <john.johansen@canonical.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Moore <paul@paul-moore.com>, Paul Walmsley <pjw@kernel.org>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Rich Felker <dalias@libc.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v4 03/14] rootns: Track init lifecycle via
- copy_process() and pid_namespace
-Message-ID: <awBmL_4VqwinHuVN@kernel.org>
-References: <20261119224312.1037966-1-jarkko@kernel.org>
- <20261119224312.1037966-4-jarkko@kernel.org>
- <e376c8f0ec5c50b417375197a5589a210f151d9b.camel@amutable.com>
- <awBLafK4jqB8fTF2@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <awBLafK4jqB8fTF2@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A6EA64000D
-X-Stat-Signature: 7t9qk7mj8dqbo5fa13nui3i9wyeha6rh
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+	s=k20260515; t=1795188888;
+	bh=t4lkm1tpa3dv7yUTdwo2D150hj2Tgsxdh/lGY6vYTSA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KewQqbwuxe9G+RnXTmiEY97cm4VC8uBshoE4l2oYFdrX9DUjIXL2wvOQh2rQcoJtV
+	 HCmBKUUUeOEAu2iH0uGxsDHvOhdt+XdadWawVMbe8hwjixgCYe7365eVn3r1WfYBhw
+	 wteoSHHiUmaXkxLsEYVt0OrabzJLDYVwIzW8uXrajle9TG09iQ+NWazglyzqdYAqoy
+	 GtzeGXZL5f8GzMSlD6ubMaz0TnjqcAGTX4+G3lEFJik59ffGf9eJ/dZdlgTW1u2NAD
+	 1H/E/fu+uVHwM60CwGgGd9HPmDYrm4eQNYjsBagwVVdoFsWaaDS3H7o1v5A8znhMN9
+	 YkbBYitX/IF+w==
+Message-ID: <sashiko-outbox-225467@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net 1/3] net: multicast: keep source filter state when a
+ source update fails
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yingjie Wang" <x-professor@outlook.com>
+Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Michal
+ Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Vladimir Davydov" <vdavydov.dev@gmail.com>,
+ =?utf-8?b?bGludXgtbW1Aa3ZhY2sub3Jn?= <linux-mm@kvack.org>, tj@kernel.org, mkoutny@suse.com
+In-Reply-To: <fcc87bc014e01d9571fa33aaabd22180908e55d1.1795102467.git.x-professor@outlook.com>
+References: <cover.1795102467.git.x-professor@outlook.com>
+ <fcc87bc014e01d9571fa33aaabd22180908e55d1.1795102467.git.x-professor@outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 20 Nov 2026 15:34:47 +0000
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 338061C000C
 X-Rspam-User:
-X-HE-Tag: 1795188277-792910
-X-HE-Meta: U2FsdGVkX1+PAQnETJCB8N7m/zZvDcXccG0hYXR3PTViybTqaSUiMiEBz6W61upbFwjiD5zCve2v6/GF58xxkgvhBsmXtam/PE3u+M1EXDOmXXKtyKps/GrgPfD55VmE8Ed6o0nsLAEyaYto/zjka5WVFWLd64R5YSIgimxGFNsiuCrYTCyz19gPG74VvwagKBdWJDiIzy/4BgVCwyBKVQHFqew7J/k/++kyGwuagOauAlKnZ9sgRhHxNZViHPO5Nwv9KBS3asHAZA3FUSzpEHafwje9UNK30WTygc/6ZS7nv+CAjnFe5WjBkDJbycIkBAawCevs+h/DlOzyaAwv50e0uZrsIb2KI0GVeIRx8yX11btc2EgxoLd5bXge05Q2/wQBTbJm1qoGhjjgmHuC253ExMBHCLS+VAIvsLeW0D8X4QOLIY0kW44KTEQtyng9Ym9cVl4nUiiFej1qjKC1Gbx9ygpx/ovGw0tXDDtiYMwnX6y4wUit5oCSniy4kX6mUdkW9LFO+V1ZlsLbFi+EgQ1jUDwo8znr408A6yQBVc+1T9p/tfRYyShL7PqqD3fYzT+fS6by6MBYdva4f+baS6Nj2o6VkboJtlJZJBzzX3JAOTmKU4ZxPZNptHmrnD5pJJGh+fLHfIhDYNhSUHTViihq318hx0v4uizhBKBXgM2S5sfpS0L9Q8ODlBBEHqT9g5fdWkHLRnwXl1F3ze1nmhWoy0n7A0Bt1p0ULTuLXvZLzZZjOZJwGcy/d+P3aeGthzHUL4srHUJLdtcq/jYP5bkd5vQ25iYWQHxJk/wJEMqQyyVJ2eNqzDo10JzkwYPnE9WWjP+/hrbhNTjUIS8DvdHH9wpY0VEPl+a2ZxD73IbPcACOjwOQ0D5FMO07WKfNW96yE0W2fAE+rou87WQJK7T0wb4/p4WhyjL/+58rsYW/SncgOemxHOuLoBv3d4hq3TeXiCENqmIgmnjZARd
- wHY0a2FY
- Gpe+FfrcE5eOELc6pUaAlfkD03feAirlPw08hPJyDtcGDmiJsxoBc+BBm927ECSniJ5zCTDjYYtkqU0yB3abXc82pbHg64I6Leo0DTbFLks4/QBuZkci4RXJdEcXG22Vq2DneEsvpmXTK6bgzWSJj0b5+SLvAEiuZBcweW0uWeEHMKc8OYwJBel+4QMdbUkZiUhRCNOXpYyCRi0o6BFGvHmZ6tWunBysWk7NAYpPhkRUYlqZbAaYdNHFVn3aMXCF3MG19HPo0Ee401q+03cCAKjCsvBuSgc5H6aTTN9UrvAwgurLaBt5tIy9a5soFKbn0yyCk7ZX+IHSqhA9E816y8kkMxpCUOqSIIGglpZTXZ571tiVUuLpIDkLlsAV56bZPAxPfarYoFL2jlI6XEPaTfm2700YuGz2E0Kiua2c/HjKWOoiD4D9Fpit/08e60BCNV/EkVWR166w5Wws8f/NAsfUYXd7sstzg8BccBCunNCtmPLProkUC+clVx6vkq51yqwYaFZ5EPDwVhbL1kZ/vFmI83vZI21QjYjGmSfLHN8UBBa00IyUBRz7IupAH9ieQassIO8n5mFR/kfFUZrUkI1DFLQ==
+X-Stat-Signature: 56xz6k99bhd1dmkwuzma18n41a4r77o1
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795188890-919280
+X-HE-Meta: U2FsdGVkX1+UqMlwd//lynulKqjLT6KJlm/3ByA+Zrm+1//ytcZnOPYizWmHXk5LkzspAJWswd5Fqk/BYHMod9UtPly5/66Ik9oINb8fOMP5M26qltEjZ+9wmy9KKb4VZDf1sP1r3FkphuEhmaXB/sBwuiyQlssKjjw6gz4YKLJRNsEET5Fa7kBBKXJQ/5OihNPufMT/NO6mxYDnT0j/NFEDMJEyZbXgJSTdR9267yTF7Fdrx1WCko5AxIxC/ag1QGt77Bo4mvfMVgeCivmjuxmyJ+WVS27cHI4vLef0ZNbwPsr/Yu2S+pvbLHFouEBWEmEPngngBNup0WGW7ItF3cwUbZXTkns9CIx+/pamRh+s+sw6t1raQUWCOs9BQOZ8/AkswIpO2DijCYnjd5PMEa8+Dj061j+3OdZwRUJ0QBBF8zZ8ur/y0VW/vYZjJ6pdp2tppSp+fp0/IBKqkyRLL0i4srE4uIR5vRdVdS7drUWfJlapWnJb8d/V6x/FayM/kihhwKUSddyF4XdKWdI5W1nshSxVs355Wbs5US3wEvfdIaXL7i6q9zEUshyzX2W5tzXZhNrnDYfBiHw2SXvdVkscrJIlqp+1a0Flw9lDSGS77MW8gOFIgb+OVAvkuuZgvGaUaEL0xoCb55YRv80uZUumbmJ1C883CynppGsyxcfUCxe1TXi0XuUiStLw1QGIE3UouXVkOnerRd9Q9qKvPC5VsFswbIv0U5zo37rFxhc9HQPS+G9SboK9D9vuA/HQcq4VGfYywUBlK2EFbObiXFZDnuXdSw95J/m+djE2AA1ZYDURvXYySRjYRCq7PhRzobaMC5SgiFaZ+3RCJ2tCxkmOiqIIxxKMzfw/3nQHciS53k6W0Ci/e1XFOe8MIzer6OcTZ0Hac8YDrEAp8Sn3bTrZJtbeew/APQjPkjlxZewPsOFgy9xz+wXCgcm+A7yA5rUPYSufI59XSm6bwsO
+ 2GQIiwoj
+ PSUqsUd+LMU3NlqipZc/ATUb6pOCsCdE3MicjTyqfdmkFRVuXpfmuo66+W1+C6XVGgVFZ3nbUG3rjMSer74EBKnVfyaEF51hoNkBBAbBS5GjspmKrsIomyxkRR/uFtkKOk5xzARX4hdBVnE5tgH9fHWjCMMbgD5CW5bGYShtpVM5f2JVr9CWBtZAArB33Hb6IDDuQqvA+z53AoZLkoWXniA2hzu6gJQ7uy7RU2627ckMcxllf/Cnq+tVayIl/px6Mve2bHXOJm2K5+jsVfdNTUGNFWQIITc7K608mnockdWnKQ1lDGIMJmmbY5yOCWgMFXx89LbzlXC7w7N+PnUiPLFJmzz9XdK3hRdb2VpDGhVo7omm4+8akbhKpnKU4CKSXJx2RHUYPSPjVy7N0GK5jREAUOASBPi9JOshjI26bX4BJDJFsYH62a+yIiX8sYFKQKCuOBAQBcfDzqFzykBN0KHZ4R7+Yfi8s5Vpn7nb6fSEa2G0XD7yIMLHbNLcPtLW7zJqNGCBz3fOB7wp+XE3meZaaVGiQ/pD+NH9pF3qZF1CcEdV1zv4j002Sv3xiU2SBgAp2E+IZEcNM9iUf5xneuum2OeDtX0UDN8gFfTmVaI2SBXRkMlKzBcPHNiYxZWEeHhIMcUDGDt7f46DvOS5I/oHps2Q61CFp+OKXL/rGbEFzdfZnEyNv3p6ViVZRZNK6h8mX0M9g8V9FBMNH40uVPYEos12EPqrBfocmkHHqnoS9qKCP8apOA0NS9l005si5P4eTjjj5940oADsNNnZdj2gWS0jA1iseh5QbjtZ7/keQVVc+LT9jLOzImT01Zz3AD+P7a1vB3cdlgBkM+QeiGTXHsW/WV/IPCDoog11nRbQ7ADFYQLPnQ82FXzPaOnl+cy27cXCicCyTpHcQCPYkUUP7sKFl2unZLhRkI7aHJuGvzr2Oc3jWuRIin0e9L4Cls9PWXlKDGmJnq9/VaVaFaBS4fQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,27 +99,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, Nov 20, 2026 at 03:30:21PM +0200, Jarkko Sakkinen wrote:
-> On Fri, Nov 20, 2026 at 02:18:43PM +0100, Alexander Mikhalitsyn wrote:
-> > Dear Jarkko,
-> > 
-> > >  	acct_exit_ns(pid_ns);
-> > > +	exit_rootns(pid_ns, me);
-> > 
-> > We have a very similar mechanism around pidfd's to track exit
-> > information for a task. As far as I can see we already have (struct
-> > rootns *)->init_pid reference, so we can get exit information for free
-> > (look for PIDFD_INFO_EXIT).
-> 
-> Thanks for mentioning. I'll see if I can leverage it.
-> 
-> If something like this is found, it is partly due long history of this
-> code i.e., not planned/opionated choice :-) 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] net: multicast: premature mode switch and stateful rollback
+  in ip_mc_source()
+--
 
-This non-doable or incompatible at least. I'm not sure if that would
-have gain. I think this goes to acceptable redundancy. Or at least,
-currently think this way.
+commit 831050a0d77c35ca56da9b5211137601a0a6a62e
+Author: Yingjie Wang <x-professor@outlook.com>
 
-Br, Jarkko
+net: multicast: keep source filter state when a source update fails
+
+This commit restores the previous socket filter mode, propagates
+interface-level source addition errors before publishing the socket filter,
+and drops newly created group memberships when a multicast source filter
+update fails.
+
+> diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+> index 52cde8782eebd..bfa448028f8a1 100644
+> --- a/net/ipv4/igmp.c
+> +++ b/net/ipv4/igmp.c
+> @@ -2491,9 +2491,10 @@ int ip_mc_source(int add, int omode, struct sock *=
+sk, struct
+>  	struct ip_mc_socklist *pmc;
+>  	struct in_device *in_dev =3D NULL;
+>  	struct inet_sock *inet =3D inet_sk(sk);
+> -	struct ip_sf_socklist *psl;
+> +	struct ip_sf_socklist *newpsl =3D NULL, *psl;
+>  	struct net *net =3D sock_net(sk);
+>  	int leavegroup =3D 0;
+> +	int oldmode =3D -1;
+>  	int i, j, rv;
+> =20
+>  	if (!ipv4_is_multicast(addr))
+> @@ -2530,9 +2531,10 @@ int ip_mc_source(int add, int omode, struct sock *=
+sk, struct
+>  		}
+>  	} else if (pmc->sfmode !=3D omode) {
+>  		/* allow mode switches for empty-set filters */
+> +		oldmode =3D pmc->sfmode;
+>  		ip_mc_add_src(in_dev, &mreqs->imr_multiaddr, omode, 0, NULL, 0);
+> -		ip_mc_del_src(in_dev, &mreqs->imr_multiaddr, pmc->sfmode, 0,
+> -			NULL, 0);
+> +		ip_mc_del_src(in_dev, &mreqs->imr_multiaddr, oldmode, 0,
+> +			      NULL, 0);
+>  		pmc->sfmode =3D omode;
+>  	}
+
+[ ... ]
+
+> @@ -2596,26 +2627,19 @@ int ip_mc_source(int add, int omode, struct sock =
+*sk, struct
+>  		rcu_assign_pointer(pmc->sflist, newpsl);
+>  		if (psl)
+>  			kfree_rcu(psl, rcu);
+> -		psl =3D newpsl;
+> -	}
+> -	rv =3D 1;	/* > 0 for insert logic below if sl_count is 0 */
+> -	for (i =3D 0; i < psl->sl_count; i++) {
+> -		rv =3D memcmp(&psl->sl_addr[i], &mreqs->imr_sourceaddr,
+> -			sizeof(__be32));
+> -		if (rv =3D=3D 0)
+> -			break;
+> +	} else {
+> +		for (j =3D psl->sl_count - 1; j >=3D i; j--)
+> +			psl->sl_addr[j + 1] =3D psl->sl_addr[j];
+> +		psl->sl_addr[i] =3D mreqs->imr_sourceaddr;
+> +		psl->sl_count++;
+>  	}
+> -	if (rv =3D=3D 0)		/* address already there is an error */
+> -		goto done;
+> -	for (j =3D psl->sl_count-1; j >=3D i; j--)
+> -		psl->sl_addr[j+1] =3D psl->sl_addr[j];
+> -	psl->sl_addr[i] =3D mreqs->imr_sourceaddr;
+> -	psl->sl_count++;
+> -	err =3D 0;
+> -	/* update the interface list */
+> -	ip_mc_add_src(in_dev, &mreqs->imr_multiaddr, omode, 1,
+> -		&mreqs->imr_sourceaddr, 1);
+>  done:
+> +	if (err && oldmode >=3D 0) {
+> +		ip_mc_add_src(in_dev, &mreqs->imr_multiaddr, oldmode, 0,
+> +			      NULL, 0);
+> +		ip_mc_del_src(in_dev, &mreqs->imr_multiaddr, omode, 0, NULL, 0);
+> +		pmc->sfmode =3D oldmode;
+> +	}
+
+[Severity: Medium]
+Does switching the empty filter mode up front and rolling it back at done:
+still mutate device-level IGMPv3/MLDv2 report state and transiently drop
+packets?
+
+When IP_DROP_SOURCE_MEMBERSHIP or MCAST_LEAVE_SOURCE_GROUP (!add) is called
+on an empty MCAST_EXCLUDE membership, ip_mc_source() switches the mode to
+MCAST_INCLUDE and immediately fails at "if (!psl) goto done;" with
+-EADDRNOTAVAIL.  If this socket is the only MCAST_EXCLUDE member on the
+interface, the upfront ip_mc_del_src() drops sfcount[MCAST_EXCLUDE] to 0
+and flips the device-level filter to MCAST_INCLUDE, and the rollback
+ip_mc_add_src() at done: flips it back to MCAST_EXCLUDE, zeroing
+psf->sf_crcount on all sources for the group, resetting pmc->crcount and
+in_dev->mr_ifc_count, and scheduling igmp_ifc_event() to send unsolicited
+state-change reports for a failed syscall.
+
+In addition, while pmc->sfmode is set to MCAST_INCLUDE with pmc->sflist =3D=
+=3D
+NULL (including across the sleeping GFP_KERNEL allocation in sock_kmalloc()
+on the add path), lockless RCU readers in ip_mc_sf_allow() see an empty
+MCAST_INCLUDE filter and drop incoming multicast packets for the socket.
+The same issue exists in ip6_mc_source() in net/ipv6/mcast.c.
+
+Could the empty-filter mode switch be deferred until after validation and
+newpsl allocation (where !add with !psl has already been rejected), or
+rolled back if the subsequent source addition fails without modifying the
+mode before the !add and allocation checks?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1795102467.gi=
+t.x-professor@outlook.com?part=3D1
 
