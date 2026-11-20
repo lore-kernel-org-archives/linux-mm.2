@@ -1,83 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11BC606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064B7606A89D
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IN7xfZxY
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CbBMVAR+
 Received: by kanga.kvack.org (Postfix)
-	id C53FC6B05E9; Fri, 20 Nov 2026 03:38:46 -0500 (EST)
+	id 222E06B05EC; Fri, 20 Nov 2026 03:43:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2BBC6B05EB; Fri, 20 Nov 2026 03:38:46 -0500 (EST)
+	id 1D34D6B05ED; Fri, 20 Nov 2026 03:43:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF4FF6B05EC; Fri, 20 Nov 2026 03:38:46 -0500 (EST)
+	id 09C2A6B05EE; Fri, 20 Nov 2026 03:43:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BD416B05E9
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:38:46 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 23A6F160E29
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:38:46 +0000 (UTC)
-X-FDA: 85454846652.02.0013A02
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CAEB26B05EC
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:43:12 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5750DC0DF9
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:43:12 +0000 (UTC)
+X-FDA: 85454857824.20.5A8447B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 44314A0003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:38:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IN7xfZxY;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7670A180003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:43:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CbBMVAR+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795163924;
-	b=ym23VWjwerCAHOihy4sf0mM6yTdNUOihg5e1YF5nl2zuqlz8kSb7E8bRCnYuktv7Eg5MlM
-	1csGU6QMA/uWGE1UFtg1KC5oIuIN/gR+6oWF87jwu0bWFn1mYGmzBTXU4OOGrib9pe4nck
-	z24pf7WKnjOT2u1LxnDS/qX4I5ET8HA=
+	t=1795164190;
+	b=iYXDg7KDPZBJEaX51B8jp3apKEXlsZzXgYrfIkFKEJDG3epcsR7YWrjHf2Aq7rjLZLkaAn
+	Re0O0MehTe1suSiDNy6YvhJr8EHBLKykMHhnQQ7YmRSo9444C3I0c35arVK0pIFPjhJLHO
+	TxH8Di16pyvB7ZxjIEOvV1d3/ZyEkOk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795163924;
+	s=arc-20220608; t=1795164190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/gr63NDQYXLIZ+49BGD0eSjl21BN1D6Jr2bHaDtoZE=;
-	b=Z/p4fRq+LDUUwTa9suG/XCuVzFOgg7eKRM+KDIiGlSlKhKFU/qRWVsnu9tJcJQrZxynz2k
-	jAXVKckvOM5mzCsrdtTQxDlNfDMTHpS0rfohtVK1fYAarJRI5mDzN2r+Ja8iXYeiInVSOo
-	C8VUHKJO0AGcL8e/2W7nbyv6avthDH8=
+	bh=1ZLaZxjfAJipvGsXxKTangk09pxNmG/IyQG7106ki3o=;
+	b=wXKU+Fw6LolCtaKURZDX4HvKjtoJ2SMoAhgqmGoUQWCOzjuq+q6xsSnCWAgqxDWu8qf9a5
+	FbxHAFbrekupy0tUdFZWNtSa43MtbBDcKn0q3Ri+osFWtP2EK0lZjvidelGckHFfcg4M1v
+	4YwBacaRejtZXN8OCJ1o1qyqidwQrPw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IN7xfZxY;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CbBMVAR+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3956345EC8;
-	Fri, 20 Nov 2026 08:38:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF6B1F000C6;
-	Fri, 20 Nov 2026 08:38:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A4E8943F09;
+	Fri, 20 Nov 2026 08:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E891F000C4;
+	Fri, 20 Nov 2026 08:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795163923;
-	bh=h/gr63NDQYXLIZ+49BGD0eSjl21BN1D6Jr2bHaDtoZE=;
+	s=k20260515; t=1795164189;
+	bh=1ZLaZxjfAJipvGsXxKTangk09pxNmG/IyQG7106ki3o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IN7xfZxYM7VZTd63vDaEyaPde1kWVU9sZKvRx6OcYGVAS2uqsLW/DHVo5hiwihqHc
-	 MyCPWPo37Aqbk8VbruxIijn8QZa9N/VsSIbHaSL1vVWDs/Ldhzec6eSilUvOH+hnmq
-	 OD54nyqcUMmvOFcWm+Px42z/wy03wFGwTuC2zcKJyTMGiBluN6ofFfJgh/O/zMxVM6
-	 X0mKexouooArQNuFO3X5DqQu7V4z05HjCU1gccjEmrI1N2IWLmO+zasiv4bBQTpgMG
-	 lK4s/q52tmMA6YbsK+f9wzwZXehUK9zepDkOI0i/Tykx8GxFlmcIy+A7CEZFEl0ukt
-	 GvFl4kGVIXOug==
-Message-ID: <da01ae71-8b99-42b3-9a46-d7e39c1eb981@kernel.org>
-Date: Fri, 20 Nov 2026 09:38:36 +0100
+	b=CbBMVAR+bpFFZvUzkMVw2v6pX60Ocn7g3BOFJJ2aKH9g2jJ4iZfFYjB6LfNdE2lRD
+	 OxgEdx/+vZK8+gplEgngBi2HCeD70yuLQ3jFmCHs5NjYr+7IEz6eWB+0u5sSGpCDql
+	 gSGScQCxJnIj96r9FZEaJi2wlGVkASscTuQqd5V+RoU8+/487JuxoW+yrTiTk1GaDW
+	 klWPGJLzHrMeOWAxNkTEqXXSrJtld/5fLH6oSKE0ZEvhUUMUUL4maRpYYzQByr4AFM
+	 gRZ/3LElO0dc2lJIVNXSOaHkGmaphdsGyM/lJieAmRumN+UKO1YvgsfHQfM6LR/lzK
+	 YWScY6Mz7jj6A==
+Message-ID: <356e610b-420c-4574-9d28-28a14c388938@kernel.org>
+Date: Fri, 20 Nov 2026 09:43:01 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: skip temporary folio allocation for anonymous UFFD
- missing faults
-To: Avi <thnkslprpt@gmail.com>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, akpm@linux-foundation.org,
- rppt@kernel.org, peterx@redhat.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, liam@infradead.org, mhocko@suse.com,
- surenb@google.com, vbabka@kernel.org
-References: <20261119180015.933433-1-thnkslprpt@gmail.com>
- <av88TW3GQRvXJDwA@gremlin>
- <CA+jvY9E3XD5mJZ7V-+6HFxEkY1FHNGom42F-nxMZNGtOy9POqA@mail.gmail.com>
- <8e56f690-7031-4a57-abdd-a02c1c94782a@kernel.org>
- <CA+jvY9HQp6iDPGDTuVqrQNnw0ENDDq46_AwZqzcjXNcyFWqPsA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] mm: add anonymous mTHP folios to the deferred
+ split list
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, baohua@kernel.org,
+ usama.arif@linux.dev, hannes@cmpxchg.org, kas@kernel.org, alex@ghiti.fr,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
+References: <20261103212004.1356327-1-joannelkoong@gmail.com>
+ <20261103212004.1356327-5-joannelkoong@gmail.com>
+ <0d75991d-9381-440c-8d7c-07bca53cc8ff@kernel.org>
+ <CAJnrk1ajoz95T1-vpnqkTLDtoXoY_hKHsxtNJLjtbusB4Gd+XQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +125,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CA+jvY9HQp6iDPGDTuVqrQNnw0ENDDq46_AwZqzcjXNcyFWqPsA@mail.gmail.com>
+In-Reply-To: <CAJnrk1ajoz95T1-vpnqkTLDtoXoY_hKHsxtNJLjtbusB4Gd+XQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 44314A0003
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: tosx38aj8ut8wyxppcdjy95z799apown
+X-Rspamd-Queue-Id: 7670A180003
+X-Stat-Signature: 7k8o4q3wiapyppqxzmkykserkzp71xyg
 X-Rspam-User:
-X-HE-Tag: 1795163924-877501
-X-HE-Meta: U2FsdGVkX1817goGFONoBP+ZkquMMrVJC3YidsVXOjDexgXDPV4KyFbkStCby3l37niJwTp7N9LbjcBnM/1g55RBQlCkel0n4IiWdosnGzzgg61WOTCsC0DA5xe/0CsYM63G2YaHhwQwxpsz2NiBoZLv55ZOBOW9w0U/1WwYtr/PU0MXyYf+hQpKfcOA3vsZ4JuuaHir7QUJwECx+SAfWmbKTvzAOadNiX0/kz4cixTgg3wVJ0Rudinj7Tq5knKQZitArLbYQd2zis2dxjkuHJfPf8qglCxIkrICVsB+3ZRCtO3m3+VJPW4UWxIGLtl+k3AoAfhR8lUyZpXa4YjhgkAX8kdlcwdTqShbPEMKDtpp2YDzxrKu+rrlTTa9SlGNK8qO02AWQeZrh8yCJmOG+NyrUwTbcehqGoUGY5X3eqTw7XCYBSglzsh51xMqeRlyp8snFpYThCq7sniVPkv5C6RFJ8qqw6ANk0mUZdMzYd84+u4M+pwyDuiYI4fzdvS9EX/UdwJ+OBFOD9Zu2QAXNpFddEEbdnGQCZvEmr745L5uDAUzgZ7bXdg3dfu7MunTfWhygL9Aymcjpl0EU8YvJwYQTBP6Wuzs/IjdwZKXX75eEbRTRzZWxjn79XO6bCBV9Y/4PkcPwDo4HGl2HEnMWnI5uKk96/L5TbKKDJ57oKou9OvBLpBTiZl6gaJsl/U/frU4PnATXgn5IWAbGR1iHgFjrCxsl5fHUhZEBLA/rgzpYi+a/ZN4NbNvt5oiL27Tzts47RTg1xw6DCJ91JIclYR4TaQrA6hiqjAXaq0jRIGEtWZGLqoaQf9kROdvFYEIX4RKBV1SYIDEDAJSCgnO5kQI5FP0dHHCisUAvdo0+ZaCFhIU0pSk2hgAI13EPRkgrzqWsEuQd9cOTxxeWbT9uWREigzzFARCezwFh8N6H9v2r5v8YZThylujo8VPoRZHjXhLqTMXOjUtRpeJwfD
- fLnWwLqu
- 8l9PvtMOZAmfkEYMaEOcbwK0BtVcCce97pTRk+XIpFQz/iIuzu4FIwxDcCHeU07pYjV86Ve4NEfjii6m7eBGFHSSTIGaDHOMHE+hzFetoGIu4iISdwXKfdk9EUe+dK1h5FQS/nwvwpWUg/hyexmbUpARLwJdrzeEQuomMYwQs7P6sUOvSGh72wdj95JI0ANmhRbFw2WPe3PjkAewKg2aQ+m9Rov6dW0Q7kLIXrGvayl4glcO503zW+BROR2/Or1V7u18NRjgXvHfkcB7LRNgmfGQM2TGrMvQs0QQH611M8IoaFbiQtE0rpqDqnXZndnhGYZUcwqSVjtrnBB5agLpphsuqo65Jv+0JkROB23avsFR9XKh5ci6u5fWWHH1XjRjLLaRXhXO4TaQeZQ1wPiNt3BFPqQdOu1CuFfiAtiBM6vfGO/YvvEkz3ThGq2Vq4P++VU6o9gUWMQZzR4Q+3IvLung9b6pBGMfvwTvslR79h37FKwM=
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1795164190-142706
+X-HE-Meta: U2FsdGVkX18/opNlL4EnlunsKmejP458GgBL6tnRTznM49N+vx3gy2/XB+Px4iwgiLDiLdRe5lMsCE+aIEzz/OtmVJBoiOfiVSF0V4Ir2+gn715fKRDL76/bsu9QFDM0GlGeiqaHPcSJnOb+xV98skEe+tfVkrzcPGZeu14B6kfIoCIuxGoNkbafhJH+6PCL1Yvmws93giIl4fgGiSs1p/eQgCXhroW0TnX9r7PiwkF8NjRp35YGe5nB/9z1UTokQgNpyTuZMmpfyV3Exsrepu+u5v5qjFumrsV3l7j97n+7aNQ136wbe/eemu92dk05YO/zItLkt4pvPHyehzIUOG4YdpZOjka/XVpuElKM2poh5vX0GnkPLyjbgvST4dt8R37WtzgPKzqIyLkVnma2HRa+7GGFYsyFvdhql4SRP19uIQYInwIKow5Zv0AZGSDueRkr6S1rCQfOCaVZrv8ioaG8etyebVPtP5D/OTcsgW5xgUizDGGNyg3CTa4LyIso/7WGE0HMtQTWsYxnsM+34B0D6/cpd+5FA1lqUFGcHKws7V2EVZu08xk/T/uiB2PZKCLYbVegJr+nCY80gZdkPY0E0lhF7kIZLwvThjwBwS535O0CfYlxNLbULHYiDF4zmV6Lt1fKFuTTFtHsBVyPOc/skla/lxO0jS2lfe/Qt1C4ewPdmfojI7SQbLz2PXA1iJY0Ca6NBVsSO9yOswCErrRScZ+HnPi1oQuRW5gQee7o/CSEXtyqPW9IDd9U7/B1q81OdDXQ+Ay9Oz7PYcVNqCuIzLiJ0AlYyGynOpDngcziZKrMYXoJ+mnLWR3AcUpIqjLQIkLidtW6Pch5trZ8LYUzL+1jsznbUptI/kx658IlSc9SL6R8EuZ92x30xxz365qyjNXlRJxFlH2EyqYbFomZMg/zgqo88zJOBeB0S7bps9QluJgVk/kgLlVteygXW2SRTNFwmzffaLP3yAZ
+ AjoVhor0
+ y4ZUzDMycqFVFa1k5kRa5bUlKG34HUwYRZMZlK1rKFuF60yrIc6xta69EnyfmwVGRW4vxuVfgjh8q+d5Dh47BCms1rLQG5TDJA/1aC6URlulby4rqW9Ktk2CF1bukIMgOPUjCcy68lpY9Ht2q5QHcLBNfPjN0nVbACCBZaaUJuw5Du6eZWuL8bf6mUhje363RYS3guc1eieo/hcPA+uihlhVqUiunoIt7fdz8BafhiyBthjYffXTEDh2bdwLeQWglTFxUGrRNwWtzInMMiVzAQrQp6gAX84eP6t4LTSjrz6glbntLnanI4ipiY/stkjX+y6UjYgMWGp5qFk2aVODt5A1xBjpmZueyuBKCnbliJcEYPEge5pRV6RN///h7zXaVOTG4A+nDwuut6VRf+sviFo8j/WxYgmsDNqGObJDeqc79XGMNwPJ60SWtvLOmtWXgzfjWftRhwCRStlT4kaUkXB/Qkr2IlxEzkSMXTbJ2NngqMW4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,30 +148,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/20/26 05:20, Avi wrote:
-> Hi David - the real motivation is very simple - avoiding the wasted
-> allocation (if possible).
-> That's it.
 
-Just to clarify: we are all right now completely under water with fixes.
+>>>
+>>>       /*
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 0c9ed04528d8..44376321180b 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -5477,6 +5477,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
+>>>       folio_add_lru_vma(folio, vma);
+>>>       set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
+>>>       update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
+>>> +     if (folio_test_large(folio))
+>>> +             deferred_split_folio(folio, false);
+>>
+>> Do we also ahve to take care of mTHP placed by khugepaged?
+>>
+> 
+> From what I see, khugepaged maps collapsed mTHPs through
+> map_anon_folio_pte_nopf() (from collapse_huge_page()), so I think
+> they're already queued.
 
-Optimizations "because we can" are not heplful. They cause more stress on
-maintainers and reviewers without possibly benefiting anybody in practice.
-
-But that's nothing new: we always required a good motivation in order to spend
-our precious time on proposed changes. Because maintainer+reviewer time was
-always a limiting factor.
-
-While your changes might optimize some uffd workloads, they make the kernel code
-more complicated.
-
-"Because we can" is not sufficient motivation to do that.
-
-IOW, if you don't actively run into a problem, there is not actually something
-broken, or you have a real use case that needs solving in core-kernel code,
-changes are high that your submissions will be dismissed.
-
-Because we simply don't have the capacity to engage with that, sorry.
+Ah, yes! :)
 
 -- 
 Cheers,
