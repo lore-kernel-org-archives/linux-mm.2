@@ -1,109 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5AF606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F86606A330
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JllosG2Y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cnhVylqs
 Received: by kanga.kvack.org (Postfix)
-	id 3B7986B00EF; Fri, 20 Nov 2026 08:54:02 -0500 (EST)
+	id BF8866B05B5; Fri, 20 Nov 2026 08:55:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 367EC6B05B0; Fri, 20 Nov 2026 08:54:02 -0500 (EST)
+	id BCF996B05B8; Fri, 20 Nov 2026 08:55:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27DA06B05BD; Fri, 20 Nov 2026 08:54:02 -0500 (EST)
+	id AE5116B05BB; Fri, 20 Nov 2026 08:55:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 071B66B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:54:01 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D2FC120D59
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:54:01 +0000 (UTC)
-X-FDA: 85455641082.13.A5433B4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B7506B05B5
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:55:22 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 236E5A8F4D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:55:22 +0000 (UTC)
+X-FDA: 85455644484.16.3D1673C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DF7C340004
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:53:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JllosG2Y;
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 926AF1C0007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:55:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cnhVylqs;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795182840;
-	b=nODMl7KVEPP2ihxnSCfP5y0Obi6zPm9hA7F+JZvA0vVqCmrMCKalJrTsmLMP2BoAL72Txq
-	uucULYZkU9El+mllTu4bvo4gVayJGZInJ25/ZD5qIpHUf/vy+Ygo/FdMxjXRkJN2UyuHVW
-	lapYtBlsLHtNHISzADCEvM0KfLo0QH0=
+	t=1795182920;
+	b=06i/Y67gP4v5v0qhTr3d/AiMQ/OrMzSdXUwAP7dD6OMp//V23BUm4Azjw/Ik+RNyMBulnh
+	8mOZODK07ZfFa1lNfQBOjK+wCNmVLEMHK+kO3Bokjxr253QYKbb5DjVwvM7z2Cb39/4ECD
+	W1sE+Q2EtJO6vlU15fSS7Pf9xjLbq5w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795182840;
+	s=arc-20220608; t=1795182920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DpFcKmLeWcNlIWO+vriHC7zRosbcBxousCh6WYeygvs=;
-	b=LWnPmqAhjMmmULmRtux2zEjmbgZ/h9ruzAZMiqLFTi7v8nIie6NHbWwL6zzXCH+tHPezvO
-	JXTrPO8uoZ69YhzF/5qnzE7q4gwI+xYIydzYwrT+16l7cluSpjFpMdIjqKdA68uTXmsg9v
-	UUYu2eNNBUIWnklWe6RievRaHpmPHGg=
+	bh=K6Ek4iGcbq3vQ07GRWmSQBnPhMgNe+rY+J8oqtO23vE=;
+	b=d1ZQibbkqPU7xoyHnk7lEL28Ez17W7F8oFqGVPN6hG686AOOEFOrocvCbRazTVQ6mHZKtw
+	FWpHlz/2vhu1hNOfYgmmrCW3wIPbmP+Zr2G1bpogLtaT9hDxTlaa2dUxdsBvx2YU1T+DOD
+	QgstHtLRh5FDPpxJkcb1F1ni0t6b7hw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JllosG2Y;
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cnhVylqs;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A047B61F7B;
-	Fri, 20 Nov 2026 13:53:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BA41F000C0;
-	Fri, 20 Nov 2026 13:53:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 256C361912;
+	Fri, 20 Nov 2026 13:55:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0C91F000CA;
+	Fri, 20 Nov 2026 13:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795182838;
-	bh=DpFcKmLeWcNlIWO+vriHC7zRosbcBxousCh6WYeygvs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JllosG2YopKKAggV+8nxkQItQJgwyK/SH23r7EujPAu9LLeAmE5OsTlP0qwfs1qzs
-	 egAqrAFrmET3vEhD6NZPH2L6aV4tacL188jjX0xkuze0uwvbqPNO7c8M2iAgoYcYeq
-	 H7ZEaOmrlD1opoFLdFwf15pg8kb+10eV8lpeF4uADYK1q19wUkmB5rJV8qiDux/Yn4
-	 hpATfff7Vkp2NHocWtfz7ojkZJZQUjOJAxL6Slx19OLLSKx4ze1EP2GCq5qfyELXpm
-	 I4Wp/Gk8JPX+/i43x3SGowq73hPjNZ8FKxqVB3mHDINzvTM6yLGWHdPtvfDCy1nhcC
-	 vqb5JvCLcxk4Q==
-Date: Fri, 20 Nov 2026 14:53:46 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Jinjie Ruan <ruanjinjie@huawei.com>, 
-	"Andrew G. Morgan" <morgan@kernel.org>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>, Oleg Nesterov <oleg@redhat.com>, 
-	kees@kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com, 
-	paul@paul-moore.com, jmorris@namei.org, shuah@kernel.org, alexjlzheng@tencent.com, 
-	jannh@google.com, jaime.saguillo@gmail.com, elver@google.com, blbllhy@gmail.com, 
-	bvanassche@acm.org, pjw@kernel.org, broonie@kernel.org, debug@rivosinc.com, 
-	tglx@kernel.org, aleksey.oladko@virtuozzo.com, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/3] security: Add PR_CAPBSET_DROP_MASK for
- process-wide bounding-set drops
-Message-ID: <20261120-bankverbindung-bisher-dorfleben-62a38cf1cc74@brauner>
-References: <20260929130200.1638343-1-ruanjinjie@huawei.com>
- <20260929130200.1638343-3-ruanjinjie@huawei.com>
- <atjN3JX7sWx9kpQ5@hallyn.com>
- <CACmP8ULW+COA17s6_UUKhQrJaviWmnUCjfite43Y0FgPN30-AQ@mail.gmail.com>
- <avHfxe++P4WLUQxf@hallyn.com>
- <80ff9aea-3a5c-4c92-b713-99c249564008@huawei.com>
- <CACmP8UK=b4Hkivzf77BJ-S_CR94+AgpNs_EfQ4i=CHL3+=0Y6Q@mail.gmail.com>
- <1772fffa-b938-4fa7-bd47-ff7c03552efa@huawei.com>
+	s=k20260515; t=1795182919;
+	bh=K6Ek4iGcbq3vQ07GRWmSQBnPhMgNe+rY+J8oqtO23vE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=cnhVylqs5ES3JxvaYjPvjapckpsryCakLkf58K6cdu/yj6hEpK55l61/r5leNICKo
+	 27nkXsy8zKUdCQYesScKFBHbzuGcGSMTih+K4Glwu9mkcllzFD6NIpLxeRhwpSbtMC
+	 8Tfec7DkiYTiaSZiSkRmUJmpAOFLegUbO39jNFJfK+g4mT0xpEX0u8r1ziz2VFRy0U
+	 gdAk5alXFHUQX3rzuWjGG9rreAoYk7Is3htWwhisfUatj5QU3Jwe0ghmm8AbUKx+GH
+	 MNOwscOVMcGYsVJ/tbFp27qzAeWLDbB6s2DJ/r6JsLVSupBwX+z3TmQJqYkNS6URJ/
+	 JYvAfbSkIEcpg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org,  linux-doc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-mm@kvack.org,  Alexander Graf <graf@amazon.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
+  Christian Brauner <brauner@kernel.org>,  David Hildenbrand
+ <david@kernel.org>,  Hugh Dickins <hughd@google.com>,  Jonathan Corbet
+ <corbet@lwn.net>,  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo
+ Stoakes <ljs@kernel.org>,  Michal Hocko <mhocko@suse.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  Randy Dunlap <rdunlap@infradead.org>,
+  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
+ <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
+  Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v4 13/19] mm/shmem_luo: Allow preserving tmpfs files
+In-Reply-To: <20261111002358.1842967-14-dmatlack@google.com> (David Matlack's
+	message of "Wed, 11 Nov 2026 00:23:51 +0000")
+References: <20261111002358.1842967-1-dmatlack@google.com>
+	<20261111002358.1842967-14-dmatlack@google.com>
+Date: Fri, 20 Nov 2026 13:55:13 +0000
+Message-ID: <2vxzld6n1ubi.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1772fffa-b938-4fa7-bd47-ff7c03552efa@huawei.com>
+Content-Type: text/plain
 X-Rspam-User:
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DF7C340004
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 926AF1C0007
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: zyyw33fkgznribna7a6wxx6spaa1uirc
-X-HE-Tag: 1795182839-383954
-X-HE-Meta: U2FsdGVkX182LP2Smvoh8E6VOrcC1IIfPiquvkhKfz1S2UAxJXKS57JYyun6paMjw9p6D4ymP5MvhVZbXgLDvYc2ekJgVUKT1J6PSnAgj8UF4oqHEkomDnEyJK1hXz+HLJrwekxB8rv2Y4wc5DoyRGLji1V0dB4OqXXR3HtF/i+93YYMScLC+bhQwcdIx3mPNkvE/TOlmEYDbKTPAIg0LyggdxI1GObBF0Og4Pfls4iCQSzrrBa/tsTyzGSky8EH2AFTJSSlaIHMdasSIqU1bYtUvw8zRI5NAGLJ2ioO7bvBUcN6KZeyxdFA/ODlH4d8YWVPWBjAgN1n43iAkdM7ZRbNK9hmFgr78CClaS+/v7ryL7tq7t3d4mBbJvJdRaEmOdEcre7AFBNh/vOMfah6oZLTN76DrqwqvlzKqWhfVDNCOginNQDShEfEqGKMiVMgGHWNCMOYHbgqOAt0FZv4h1pdpJ+17iaWDNDMdvb7GP+KTyrwyi3R1vav8YP1TihMngwA0D57XiX3fCgm7/6Ob3hw5KCKLXuK3dncxlYcXF+T+JBpwYwpaDxNvqKtCwJ5e5yPzse0g2dF+/ofYRZ0JyfWvpmwIBCGH/tXLBmxfy5t34rbdSybSPdU9qITeVttKmbpL+eI/4tOrS5kZtPTijCePCloApb3WsGX+06XnBYrOYaAfka64F4FkcyuS2AalASMZD6ih9s48OELK6Q6u0O0RspYFEwdPvLSR4kiYQJehofIlhQZse3YxLMViGsdBP3iz6R4yk41koHInLAKqI645MLWPdnKbKZq6nSrgsuUP1n370n4bLAX3FBW3xiO7yomhC41kMh6r6ftGW0TjT7XZFJXImBEsIGADRlJJ9zfp8drftmxr59tLkbr6CAfUakA+jpSVNt9qPUeqhc2SwrydLTsU9R7a87emHih8Dfq5FYJey7UcATzPBUsz1yJUK4u8CHbDW12ljNs4+A
- JrjPLxJN
- wrf76iDD4mV4v5J+g9tqITKWfLCc/VT3dv2AvshVWBOq1BSDS9ngj9E2y+C+E9LdX1abrj2Qnt2AlnRmoxA6xd3Kxaww63+tX+JeuAgWRGNvwMrwzjFF6L3SvtjuIZTe5YO2O/tphHXhgijh6+8rYRgC9Ok1vjKWJigaUsFtzFPAoZtRRGGyyKXVXt6Rt3vL+cR0jpFktTW9ifDVY3he2EkRhbKdSJyGvM5VsluJPpHd5tBiHJtWu2ay9YbIMyRRr0+v0FS+OvBUKw3kQWvZQgQ8ogehkfXRNyRsNndbbqlnO+QLamcnqLtL3sCyU4dYFoO2P7WpNCrozMZqOfJD91ncYPEbbdQEFT8ZaSubx1cMIxLSs6WBoT+6iHwfubbxR2N+rAqN1t0x/RPh8f0j8d4xXBxmIgrU7NVHHwcnzInjIYsTMEGwHcEgvvk3lDlsyaAeRx+apUtbqh4C8kVmlb9IZpuTWsEB9YYBNG+rshHdtBu4rYVPALK5PY8AhG49m7IVyuIFdyBRp8li4ZgXWOU6pB+64MbmzriwmzZo/58CTX5nOCNUHUFXH0YRjgOjp+/xGEVvIVW9OrG23cWHhuLQ1KkYZSWcY79aNLH5emRQHVpMoPaiKhbzrFjhxakcr3kTyGrutZZ7nsUvtepf141jKkw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 7s3irzhrwty4w7caihr1e3jmahynuy6h
+X-HE-Tag: 1795182920-66017
+X-HE-Meta: U2FsdGVkX1/RgqCjWoFRIDZNhsw20GKFKK8y3/Vek/aT/h/MyLLkZG57oErshiWABsBAOCbavZt7HfnbKUMKyeqAWsmko5fYSNyIj7vL2n/WPiHct29G5pt8Uin+ubZQaQN+eJ3QRV3bgbihx3ZrwB591ayZ1UFDJ/dbsLb/CfoFgBTe3PTaeOlC6KyxFc9TulNtW64UFSeSEtVO68sjpw6JfjcDOBrZQKNsn4YUMj36gkUu7Vadd9PH5blvbg+yMOjf4m9zn4uBb/3AAORUuF2ZBtyoNfSzU7y6osDB+72XAPmdw56ZqrPYhnX397xl8MZLc8U2HKiW9xMfygKePVtxh7oafWS+nJ06EMUQl3plFobdo823bhFDWnrK/GsbOZBiJKtm49nMQhPXc4Da06MQH2YvcMA01eeHPn5KqQNKaTQFD+69tFtHFuEPf2aItSrSEh0pSXB/X1wmmfozWp0A6ZQPu5WGhAS04dnOmc6YnDRyia4QWHdwDKlF6nqakH25imjeNdkgjKJJ0ba/SuJMGAoAhWMrI2tof/tE1dXNzkpeqMNHiWFIvP4TVHk8yLtM5MrjYyDHf/i6zmf/TChUW1K0qyJZDWnMkb3ye8lkOlKXGttJfAy4t1TPuJTKZr8v2FblB4W1swFu5cDWZbjgPUqbMlXnW54xdsOPXb7tLMG/E6bZOUblfQlNebf8O1XVxuQEK8K4iN+Sgmpxi+J7qflPasKIFKPM0T4W9lmI5X/MLxjbsz0dX+4T1SyO0I3Z88hBde3azk6RG91Pz2WaTtxCs6E7QaPc6dLoi73KNxTsVXUNZS0q54txFK/JpsEkE9kPDWBQ57elkSBBVtn5YEuFV75OUmROkTZQODr09ju1K/MRSnrWQE8KtnpBNaA85ztXqRf5E9xLBUUEBcMEjI4FiDBJObYfLwgXOrLiXcNz05X+VnXccPsnm0st8L2CbxUUEs1MtLUzHyW
+ MC0/0yFT
+ hLWIbVedalatkC/9zX6EyKj4Bpso9dA9qx2ksc13vgIqdC2bVNiWKRt0josMBLKpd99CWUqcUBLh5MW7GwCBOg0aYr7qF2g8Mw5XcgJWIL3NA8RfiD0nTFn19Zw0hwopNr743RKr0GiCZPgtAq6rTtybFdwDeyloOD4/6gdO06GewyticcksDKZS4icZeXdBqe9TmQLynqeR0O/7hVA6I4deBW/QeWEV34L95/NkoI8CJhu+0wtZENFKXDxrowtyx8CPoyD1BTxb9W3xL+bLDvn6Ftsz9p74dGiXYTvcXc/LXvjJ6eRG5ag/fvlG41OZfi+xWA1qEW5Xk1FC5UYvkAO0jZjUruqgNFG4mcggwBVW3MM/7kml5LRNb/Kz7x3bf7Qt/HsBs+H2gQt+QBa80ZH2QeJwuFJo7SRVi2xxr39TVRGmaEP52sJseIgWl+XSimZpfsq6EqS8zkiAKDRYt4xX0tDlYwTESMpbX3KGQi886fCqQqHe3gfA1WIFeXjdoLoyQ1lSCDKQj5I0dArH0vAo9G6WCHkm6+QIAnyxcSs4L+vXDOdNwuzg7lfK49PJYCY/nKsggh0UgVwx1vWbhxDnthQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,23 +106,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 11:15:17AM +0800, Jinjie Ruan wrote:
-> Do I need to resubmit RFC v3 based on your suggestion and address the
-> sashiko review issues besides sighand?
-> 
-> Or wait for the results of new discussions?
+On Wed, Nov 11 2026, David Matlack wrote:
 
-The signal_struct part has to go. I think this is also what Serge's
-question was getting it. And imho it's the real problem in this series.
+> Allow preserving files on tmpfs mounts by dropping the link count check
+> from shmem_luo_can_preserve(). The check was meant to limit preservation
+> to memfds, which never have links. It isn't needed anymore, since tmpfs
+> files are now retrieved into a file on a tmpfs mount.
+>
+> Userspace can keep using a linked file by its path until the Live
+> Update. The path of the file isn't preserved. Userspace creates the file
+> to retrieve it into, and can then link that file at the path it wants.
+>
+> Preserving a linked file affects everyone who opens it by its path,
+> since its size is frozen while it is preserved. The permission check
+> added by "mm/shmem_luo: Require permission to preserve a file" covers
+> that: Callers need permission to write to the file, or must own it if
+> its size can't change anyway.
+>
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-The caps a task has are described by its struct cred and the whole
-kernel relies on a cred being a complete, immutable snapshot of that.
-With a pending drop in signal_struct that isn't true anymore.
-Anything that stashes creds and uses them later, override_creds(),
-io_uring personalities, file->f_cred, LSM hooks, sees a bounding set
-the task doesn't actually have.
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-And every place that looks at the bounding set has to remember to fold
-in the signal_struct mask. Any place that forgets is a bypass. That's an
-entirely new bug class. So not going to happen, sorry.
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
