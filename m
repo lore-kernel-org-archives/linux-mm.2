@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E544D606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C9760A262A
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M7xirJuz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ij+IgiF7
 Received: by kanga.kvack.org (Postfix)
-	id 055A26B05B4; Fri, 20 Nov 2026 08:11:21 -0500 (EST)
+	id 8B9E26B05B6; Fri, 20 Nov 2026 08:11:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006B16B05B5; Fri, 20 Nov 2026 08:11:20 -0500 (EST)
+	id 86A826B05B7; Fri, 20 Nov 2026 08:11:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5F356B05B6; Fri, 20 Nov 2026 08:11:20 -0500 (EST)
+	id 7A7FF6B05B8; Fri, 20 Nov 2026 08:11:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BEAF46B05B4
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:11:20 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4D9E7160F3D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:20 +0000 (UTC)
-X-FDA: 85455533520.12.1DC3E0F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 52BDB6B05B6
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:11:27 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2247120EBB
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:26 +0000 (UTC)
+X-FDA: 85455533772.15.8BDE054
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7D134100007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M7xirJuz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 10D0812000B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ij+IgiF7;
+	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795180278;
-	b=8Wwawjgt6CRbLmHk9G5YKheejju/Emz7RTkIiA0aOpqz4d4C0Q0LQmBk36IVING4cKFuAq
-	W/+rHj4P35o1gT/sFHaTwaWqJuVEF+pY6Wf8GqxMI9llqvq5zgWxESNNhF8ftesnnGNhEY
-	Q23UlXHMWDCBXtu/e6oDhMbS4TfHJkU=
+	t=1795180285;
+	b=YdA8NUXoIdQjQcSe1z54PU2O1TzYT09jrMQgay2d7n+EWx9TzbsEkV2QyI5iuwhCNDBcCp
+	MSDJsTdTmdidcK2Y/7JqtqBrcmw+6oQ6h/edMakfKl3rAGk6GXaPYIggh2kcKEj1zdojaF
+	rXebhZk9iPaF3Xuq0sCZESpx8K/cxIU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795180278;
+	s=arc-20220608; t=1795180285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=160vS2fUgreh2TfeX5DPq7qpDcpzIYMArC2L5k9SgNM=;
-	b=gXDgjA0bH8WjyQbsgdp/ishf3Nxc+ua8mN2SS3qS4a2Wzc8jKmWg2FLj1WAyO1xpW/C4wu
-	x3RUhFQde8boNoxwgKb9MwoBnzvOyIqq8uzaLIeFuK7+467x572eIx3FHjGK01JsEKPn3j
-	sW71jXuoEA45eLWXjH1VeaBFugU9TWo=
+	bh=A/+gZzyL81rIhTfQl485EM05rto2HhCWsUis8cJpLtM=;
+	b=k2jK0+CQvFsRpFckR556ciyN8K+zt5VuNqCUnh4v7ks/ICDqUg3klu4Up2RiwSPWa8Ms6e
+	Sek0wzoXB8MEpw1k/ryKBZ69bdgGNHbd3Vsxq1yYdxEmALw1V3heP+kcXzEgTKL9KFMEKy
+	rt2y0tEdIKcu5vZHueOzTV6dpkvYrVE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M7xirJuz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ij+IgiF7;
+	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D52DF436E1;
-	Fri, 20 Nov 2026 13:11:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870821F000D1;
-	Fri, 20 Nov 2026 13:11:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 52E8B46A42;
+	Fri, 20 Nov 2026 13:11:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C841F01566;
+	Fri, 20 Nov 2026 13:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795180277;
-	bh=160vS2fUgreh2TfeX5DPq7qpDcpzIYMArC2L5k9SgNM=;
+	s=k20260515; t=1795180284;
+	bh=A/+gZzyL81rIhTfQl485EM05rto2HhCWsUis8cJpLtM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=M7xirJuzZ5oA1ievdq2Z5HJpO6zfZY8Vw1LWWiCMZdvJk/yYJe2E2wKKVkEcq81lk
-	 DuBKaDKs21me7ZGk7j8C3eg5ljwN6ZOd0D+8uwY3w8ydLP0VpV2YLX1tOQlczuTdzb
-	 jKb+LcI/ahZRDzBRBh+zGEK3TxK3SImtVsiU91gekIHoWWSpew/rwPhhwKahaz6CBE
-	 v9wFrdYVDjhtX+woHg+UPtEC2T18Ww1kwjH+pnqrnTMhODEdWtdV7sz0zYznBZ99qw
-	 YXv/efGovJMjhpYknIeuFdbyl1rE09jfcK1lm68QB9nVHR2cCf+IJaj3Y6Ud8h1AJE
-	 OQxra4ITNG/0g==
+	b=Ij+IgiF7PHYNpwNc92yJuJt87XUOL/CmbXVr5DjpF9qJfdOVNVAlXaBuIWkpx3sPX
+	 PHaUng495YTQN+wIQceCjtMVbfAUougzkdJRflY41SyKb4jdZQlwU0Yt3+D8j0gWiz
+	 +c/zpihzO+pwvgK9nWb9Qi+07x5lfGke2DpOjSVIED5jqp9MsVkgcQQ0n3HR2ZkyMB
+	 hu55iMX3BHiJw/Se/bg8pO96BnQixbBqiTgZDjFwBOGaCBExO4t/hQb4WVBCuA80ai
+	 +ewmynKEeussF/o/Wbyy0zvaIaieFopK3HoEwkEXGHzdO9hSP3ArHVLwfsWRW3gFGP
+	 YrLYfNL9dX11Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Nov 2026 14:10:21 +0100
-Subject: [PATCH v6 10/12] xarray, radix-tree: enable sheaf support for
- kmem_cache
+Date: Fri, 20 Nov 2026 14:10:14 +0100
+Subject: [PATCH v6 03/12] xarray: move xas_result() and xa_zero_to_null()
+ to the header
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-xarray-entry-send-v6-10-1f69d7385f70@kernel.org>
+Message-Id: <20261120-xarray-entry-send-v6-3-1f69d7385f70@kernel.org>
 References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
 In-Reply-To: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
 To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -90,34 +90,34 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1241; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=P1Sxf06ssHf1MjkVVG32ZjziE2PXVu4nAet8QXuksZM=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrAEbMHxjoltvdoQ0tnj6l/F1QLYjH67WwokRyZ
- IPDAfggC2aJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawBGzAAKCRD6UCkIqsW9
- 0E8XD/9pK5/gJYEgpSSdAhk3TcyQDq0CZSln331F2mWlr10c7EDtGcbOulbVg/kz2SfZvICcVgI
- MHr8SAG80LFTcTObqyfDSBTIgObduDMWcjvY21tTHQ7/bX5yuDgC3WaM5Azgv/1Ed9LYe0O4ENl
- GcNvLaalgFYpOVTbSvSW2kkaN8KdG7OYlNKVNZDRgXCMOqHk4ClSGLTEHflEsWI+gNwEjmUvc+1
- mS3KdZ9DmYoyX+341dMNha8x467GMeCne5W0RpoccYNwFdKz6efyAMFz/afNEqrKp8TidJeHCs9
- EVV8298HN+uhQkygODyeybv2J9HQK4XnY76FT4hNNOuMzFW0VPRme4uhFadlur/JJy67eeU552u
- FkoJNgiYsYogxMVIKA8V1tKxc1STFGR12biLiwAPSwBje4XjowtDL3Lbe6SEVQFWzBATQkquxvp
- 2gbRoi8uEzErLbsW7Zi2NJoHUFgY6dVQ978GdKcZwhgynsHP9nqJ6A0ILiNARmm5JfQEkMJb7P1
- QKAeTQFTSLQFqD+kCsrO42jvkL9fqFlBEWBs/cYS5KZtBzMiG9kAVs16EqdMU7PufpP8o2RHC7A
- 7njqjDReZdsSjqnogRpCbfar51tJc2bhyE9AtoDUyP1z30RESpXUAMEu4fhdRdhnuVpGT80J8Ch
- 0MiOVM5xFufz+KA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2723; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=ca+4WUJBKKfPYSZI2hkWUZre4cjwUXs8x7GoxKkJ+V0=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrAEbFnFw9rCz1Jelb3iakHInaQsNRR8kKr+7GN
+ w8gpl0GTkCJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawBGxQAKCRD6UCkIqsW9
+ 0J3CEACzMsK+m4Dg1xcrEbxsQuJ6A2tsRgSLRenMoZVnVmZCFXa91CIJAJjAHGYufxyjSiRNGaf
+ CMTMgh3au4y1+w0CNdn7IQsHpCZnesqFIGkSx30ONJgijxCvMn29faGLvUvIcsGLlbLq/0INZgj
+ GGjeMJlMIMklMIPq6OSmyg8/ghAc8X2AksxqSolcQJJVS2n7/MhoxbNnHvP9utkfuf63XwmkbU+
+ 6PchkUVhgUleFswDlr6LxZcKHpRXeWa6eNiG5e1ve6RG9hiLg6LgKJ47eBXMi+pApUP7Oko5g06
+ NopeANniQ9yf5eyTCQsOK7omt59/0XEINdHIBxhQyn0RMLIxCwB/7HhePp9ygHM2i4R+hdFV+Cu
+ qDIfInt3M5EO5hutxnt7ZRtCiFVMyz1ZX9RZh3HZ7mbjcWccuWSk1oNIYa1W03MQvlNZp46M0Ps
+ xvXcqFMThGzNONErsCDC234+Rc8VIPFNKU0xw0oLg/1YP2zEvf1Y8HP6mvnv1ize2Gezc01Hgl9
+ +xy9vogiSrovDdiJ+YM1xCuTgOq8UmsM/SReX1qSWhU9ouI8kzkBB203ikD60m1tyHBnAtKyDbl
+ xNn1PlYt2XXB0LWYvXCJuOmVSx6qN6qoPhY0Z4u75vKT2Sq4FqTKx64bVxPBG7oeaAOvpoz8Ulj
+ IGBeCmbtnUUpmhw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: 7D134100007
-X-Stat-Signature: 6aachh1ax4b5a6kcpkorh9c6bkhdrrc5
 X-Rspam-User:
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 10D0812000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1795180278-461132
-X-HE-Meta: U2FsdGVkX1/N6RhfOkPqU5+3APvrg1abwqOoepAzgLS1uUCiq2yingKlmEB7ezcyNdd135UUF3lssN3nHjg/AmUNi59u8Xu3IlnAiqu3NQcM+Uxbjisd8P2Xh9jEeENhaDi7H8fvhI6KizT+CkulzbYAfcriKEPKyzeq9m5aNF8XJ13tVvuSj8sn6F+w1LaGUjVZCWVqh8FLgPafACDr2tUQMcYPeXSNDN3FDcUbx+1iX6mqQMB+9YUKw48wFOWFoqkmdCQLkY7TX3bkLthBgJHHlSfCiInHqyRNNKcaDMCptfafbFUuh/PwYK+HoN4Hm7yL2gky+tV+Dllv/ROKIH9rlEgenFT3TjffZ4+76YevSpu9Ebu1xra4UIwIi4asfLIoNHcVoL4oQuG3y08CUpbUKuqGyAvM2DHhyRMvfGRda1yZa06xph92ruz8nQZEhx5Nu9Ekkug/dln3RQFHBAmbzJVsHfKKJvIHXUwKdkMz4QDS1NcdhQg7HgzP3g6MVYAVs/lh+6D72lkck1nSJZzTtIIgjYMwGrP7BaPq4iwTZSrLYwEmlHdE8ye9ew6F3xPnG6Pq4wC2tM3wS2ZqDwr6rooJX5z0iDrPQ12ATbFfBed8rtFijA+Kt4BAx4Ws96KJz5qAKTpg62nd9aXxI8WLo0GyjUIkqmXSWUiDMBHzoTdmWfexI3lNbCnuNCpz1NDPTFd7KDHQGP509d+Eedrb5nwAxZBOu5v8wL/Uba6CLcpufqaU7vt4YRN48KCiCNyhiWflm0TUxNg9Uw05/9dVQSd7gJ8sIilW3tq581XuRCq+f0GqwEqITP9Jl7HyV32eCWYilG+VNv6gLqRrv2ZkJbGWlA6i+IGjFBJC50o640h27Dkh7LT+h1Q/7Uvc75dRpnVxDUm+igjV97G2C2la9boqjmP+QBjEdtRxMQc7hF1dVbR0i7Dd6mTyyCmaHXGbt1y9f0efcTuxwd1
- Rl5y/GUx
- x2pGqp68aIMJd72G6VImvSPXqDNCQR4xRME6bxCBMpExo38dGSyxuRBh+Cppq+L1Qk10ON3+CtLzwvTjUwkmgfREqzIF0orSIM/B1TfmmiDfJE8rka459FfVHJzN9STTZ0PuEQnk6ubfCkfprrnZHj3f7yVi+WW6ucLsN9wlJBAaB88ZjLZhemqYeCjLzvj8aqyPWTgVFZjOfwUpBKwlISoZWYD29aY2Z5nCeldiN4Egg6UgwBi2pNfnKhs3dRTO5KSlhdkSQFiplftDZzX3FL1s4ozFcjOIw93aHVStbijrb5zcg/aSJGTolz89dBePPUKAatxgnjjtxPEkqs30962ZMbN8oQg92iWxlqlS0IVG0EGhm+jgkmU2d9DxW6TOu8YIorGu52N8RDiorZ59ZSO53lB+7lUg1J3rgg2I2lqkDEuhGCNSpXzjGspJZC13SINArmIgHbaoUCvwVKEam/JtNPHpDoa06/VhyHbZmCXJ7TH5ai/pwQKK2tzHsoEq6om4/Q4fJ5MhdV46MI9JC7B+Cp1kxnp0w2QInpdB5AkhTPqk3NP3qzEZTto4I92euwp8aNUAE7pDH2L8=
+X-Stat-Signature: zjf4fjcfwq86jw67pn3qyspo4q3amhug
+X-HE-Tag: 1795180284-943900
+X-HE-Meta: U2FsdGVkX1+D7T95jgFwMIzoVdPqOzqb2a6SBL8LbT5+4JD0GbOkOJjwxqT1HPvWMn5o7RGlfZciwZAr98gd+M2VZpeWwUknNcR2tQaQWXXu0x14MJtPXcwHy3g/cmprKkF53R9Q+fUCp5SZqKMr/lwtEIkfscAUlfHmJ3nxddDQH3J0P6V1N3xki62GApi/h40BQap+2AFj/7xVdUwZIpQ6VIpmdh+oMYzVS2Td7M+kgwpXS9zfVI1LDrceg8/GKKmoy99LcWqkbuPM3VO18a7c+urT0fqLvBjZ/l/07G0pB//g3MXt3hV1Quhm6AGcw0UWEYXPLdFBnpr8Vh9gWHxbj3/EZ3VS7amF0BAK8W0RsmgwfJ5SseLtl7EkPuzE6zVkmcVIUr+QDXBSFmCdtRAcfyBKCLLcv4ZFrNfdDJcMLSEKU+fT2A3R4gaXDwhPc8p9Ynm9Cvk2N6FDIr3mgNNeGFVHWPvYTB7dE9RpUxZvtOTv3t/j4XsIg5u9sMD+jsWa/VrWW+VMhQA1ap0PtIOxtTCIoSHewKPsGO8jCJxl8GGeo6NwoIRwQ1tVnhMthWK9YwtE+8rfJYWbYA1Q3N+itIMM4NFcuvMLUQPzaNy5yN57MpsaoJS+EzSkiXUSizbPCTXnE+hhnAa5wgJPkh5ppNVtxHSFMagSLhIiu5aI0SOo+KdjeN1zv6M0ZmXXazxRFSRI4ucO3BEtVFFLAkaO6b/BDDJiZP5niS+SWEMEo/dUFs592FuUeqWOxQckJvClNqTC3YxQDmKAdZQJBxbmU0uHH+KPJ2cJqIrgaqgaVry6jqMuR3v92XEqCV/ncfdduYVe659hUYy0wrx2jNcsRScDzlvWTNRmHzByxuwiOmTS+5Dqai4WGUnXP9/k6UOF0LFO/hCI+RY0teAkIGzx2Jev9cZwND0czgBkaVcRmSDSD7+GwmNKMD4fXe3YV4IViSHPv178PjJXVcs
+ PB0SsBT6
+ uR7eoZoDLv/LamULH/ETZDEqmt0+g2OCx5SOX0tI+BTPZK7KCWXmST/pG27NAIrv1G7Cd28CxwfBUcIjg+L77iW+xE6oONLRjboC9GJF5xYZk+UkHtFwVLNYLLHGt5KbWsugFoMsNxpqAtgteAdmKY6MzoHotnaqf3kVuhUPPWwfU8Po/M6eZQ2kqk5+4FdpSt0M1QMAlMEu1hLj4bOcSViK7eFsVas+oEW+5IyDkYg9VyHbadrM/QA6FaxtUzjx2r9hHP7XKEloUGWH7wJEdt5T+nEXK7E6ic1RF0QDVGdRG+UUIqetLw4F3QM2H2V8trcaNv6FVi6NpAa/pF1ky96s+SmRClfi79XdfYbE/fibnKCVRcsl2J57RD9TAuS/Wkfgc+syqGQ/VVAc0pOETacex7yp1wb9whXjxlTt+6hTqKn8bRAp3RqwyrRKcSxeZBkFCF7CTEYPaLocxh0ejmI4HFDGBG73aXgYGVOHKiYzIuckMh47JylB52wQQLwOpehGNWZofJiIfDJg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,40 +126,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The rust null block driver plans to rely on preloading xarray nodes from
-the radix_tree_node_cachep kmem_cache.
+The functions xas_result() and xa_zero_to_null() are static in
+lib/xarray.c. Upcoming Rust XArray changes need to call them from
+Rust helper functions. Move them to include/linux/xarray.h as static
+inline functions, following the approach of commit 79ada2ae6615
+("xarray: extract helper from __xa_{insert,cmpxchg}").
 
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+No functional change.
+
+Suggested-by: Tamir Duberstein <tamird@kernel.org>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- lib/radix-tree.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ include/linux/xarray.h | 26 ++++++++++++++++++++++++++
+ lib/xarray.c           | 12 ------------
+ 2 files changed, 26 insertions(+), 12 deletions(-)
 
-diff --git a/lib/radix-tree.c b/lib/radix-tree.c
-index 976b9bd02a1b..1cf0012b15ad 100644
---- a/lib/radix-tree.c
-+++ b/lib/radix-tree.c
-@@ -1598,10 +1598,16 @@ void __init radix_tree_init(void)
- 	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
- 	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
- 	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
--	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
--			sizeof(struct radix_tree_node), 0,
--			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
--			radix_tree_node_ctor);
+diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+index be850174e802..db2520864aaa 100644
+--- a/include/linux/xarray.h
++++ b/include/linux/xarray.h
+@@ -191,6 +191,17 @@ static inline bool xa_is_zero(const void *entry)
+ 	return unlikely(entry == XA_ZERO_ENTRY);
+ }
+ 
++/**
++ * xa_zero_to_null() - Convert an internal zero entry into a NULL pointer.
++ * @entry: XArray entry.
++ *
++ * Return: %NULL if @entry is a zero entry, @entry otherwise.
++ */
++static inline void *xa_zero_to_null(void *entry)
++{
++	return xa_is_zero(entry) ? NULL : entry;
++}
 +
-+	struct kmem_cache_args args = {
-+		.ctor = radix_tree_node_ctor,
-+		.sheaf_capacity = 64,
-+	};
+ /**
+  * xa_is_err() - Report whether an XArray operation returned an error
+  * @entry: Result from calling an XArray function
+@@ -1437,6 +1448,21 @@ static inline int xas_error(const struct xa_state *xas)
+ 	return xa_err(xas->xa_node);
+ }
+ 
++/**
++ * xas_result() - Extract the result of an XArray operation.
++ * @xas: XArray operation state.
++ * @curr: Entry returned by the operation.
++ *
++ * Return: @curr if the operation succeeded, the error encoded in @xas
++ * otherwise.
++ */
++static inline void *xas_result(struct xa_state *xas, void *curr)
++{
++	if (xas_error(xas))
++		curr = xas->xa_node;
++	return curr;
++}
 +
-+	radix_tree_node_cachep = kmem_cache_create(
-+		"radix_tree_node", sizeof(struct radix_tree_node), &args,
-+		SLAB_PANIC | SLAB_RECLAIM_ACCOUNT);
-+
- 	ret = cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, "lib/radix:dead",
- 					NULL, radix_tree_cpu_dead);
- 	WARN_ON(ret < 0);
+ /**
+  * xas_set_err() - Note an error in the xa_state.
+  * @xas: XArray operation state.
+diff --git a/lib/xarray.c b/lib/xarray.c
+index bfe7bef80f34..49fbec5f6c38 100644
+--- a/lib/xarray.c
++++ b/lib/xarray.c
+@@ -437,11 +437,6 @@ static unsigned long max_index(void *entry)
+ 	return (XA_CHUNK_SIZE << xa_to_node(entry)->shift) - 1;
+ }
+ 
+-static inline void *xa_zero_to_null(void *entry)
+-{
+-	return xa_is_zero(entry) ? NULL : entry;
+-}
+-
+ static void xas_shrink(struct xa_state *xas)
+ {
+ 	struct xarray *xa = xas->xa;
+@@ -1627,13 +1622,6 @@ void *xa_load(struct xarray *xa, unsigned long index)
+ }
+ EXPORT_SYMBOL(xa_load);
+ 
+-static void *xas_result(struct xa_state *xas, void *curr)
+-{
+-	if (xas_error(xas))
+-		curr = xas->xa_node;
+-	return curr;
+-}
+-
+ /**
+  * __xa_erase() - Erase this entry from the XArray while locked.
+  * @xa: XArray.
 
 -- 
 2.54.0
