@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9882C606A68A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 22:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60A8606A33E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 22:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qup3hZLM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TzyVXU3J
 Received: by kanga.kvack.org (Postfix)
-	id 744046B00EF; Fri, 20 Nov 2026 17:44:41 -0500 (EST)
+	id BB01C6B05B1; Fri, 20 Nov 2026 17:44:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CE536B05B0; Fri, 20 Nov 2026 17:44:41 -0500 (EST)
+	id B3A806B05B2; Fri, 20 Nov 2026 17:44:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 595CD6B05B1; Fri, 20 Nov 2026 17:44:41 -0500 (EST)
+	id A02C36B05B3; Fri, 20 Nov 2026 17:44:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 27F1D6B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:44:41 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A28C1801FC
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:44:40 +0000 (UTC)
-X-FDA: 85456978320.16.625F8F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E4E88A000A
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:44:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qup3hZLM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CFFB6B05B1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:44:47 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0A2EA0209
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:44:46 +0000 (UTC)
+X-FDA: 85456978572.13.41B60A9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1F1C0C0006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:44:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TzyVXU3J;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795214679;
-	b=f+fDwsoXBaMN0WqmMT/UsfWI1cLSOOOP7FDzTJeKehL0iAmN2JtIZXJ2Ky2m/v8/tQQ8+d
-	wGXbm2zagQ1lT0c1vs21m0mzhBSIMYOmJavAEbsuek7S77QG+JAAeZzO/zzBGCpPfvGJae
-	P6Z+38T+U/KB91Si6QLL/9nIh1X5CUM=
+	t=1795214685;
+	b=YJ/ZVxn8j7p7dFD2lpwMLGG4PDzACQYTPkySuTaqaI7gb2nXBKW/lthPtf4CUQ74y0evL0
+	66NzN4v66txec0CAiqFX8U4SBcG0ZutQZPxxHAiSMt8NFarbXS4oYwlYSTh3LoMZ2x5ayN
+	WMtgNSVawKm2myah+y4QlD92MN1g+zY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795214679;
+	s=arc-20220608; t=1795214685;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pSzNYLdaadW2jyufCcL13Oj3VYC0HwF6Ept2g9RqzPg=;
-	b=r/dalfAdpOrlf96/FnWf5BPHaNgblCqQs5F4AtiWlnDSDOrCF+AkTNHpGhXfk9vm7M6/B8
-	D/x1VXCCK5PP9F0AUX+z+kyOeD7zCSkQKx8f66oqG5i5fy/2cQUivjiPLohMJKzc2E/6pW
-	SUDJxBNdDQFRntExdAkiGT7/mBBYoPs=
+	bh=GDJBVsAd6JtWMDQ/ABjrxTbwcVxlwsrHr9o1YDsX7iE=;
+	b=GvuJkNMSYc/9G9khWAZ+iQqGxVAkmqVWlX8KLB09OGuAeRS8n0RMq90AcC+FVnSzgoMv+T
+	qpEEyDtT9L6LhcKZwk/0gYcPnbG93mGjOqCqLEKI86L5Gfn71R+pEsHNn/cOJYIEfUbkd7
+	UZ7cQJgMgjsCc2zokQWPgNvIln6OsT8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qup3hZLM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TzyVXU3J;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B6B1D43B7E;
-	Fri, 20 Nov 2026 22:44:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C860C1F000C6;
-	Fri, 20 Nov 2026 22:44:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B6A4F60A51;
+	Fri, 20 Nov 2026 22:44:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0081F000C4;
+	Fri, 20 Nov 2026 22:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795214677;
-	bh=pSzNYLdaadW2jyufCcL13Oj3VYC0HwF6Ept2g9RqzPg=;
+	s=k20260515; t=1795214682;
+	bh=GDJBVsAd6JtWMDQ/ABjrxTbwcVxlwsrHr9o1YDsX7iE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Qup3hZLMjJGy5Lby+02cC0Ks/w7DT7TF3QjQNKtLYIrpYBfrZFUyGinpDBZuHfkAi
-	 goJrpXp+gmkyCkj2JGhkb1jpnlX++Ja7j/A0y3YyPT1+NmGWQHVbUctnH/DTeGipYr
-	 cGfwI4AoENAdwdU0aF5VIdJLrOXZ8+3U76DRE12JxoCHMAbfJD27kbX9glPmUmwoVv
-	 x4pgmw3sdleN3TVxBg/sktHSOTGoErQgtvQ/2hZ+V6tNnxeys73mlAdroPHMmL/o2s
-	 CKQbuo4r4FV4JwF2Idjbka4Xb0uMahKxADIfW4RwvlkUYkwS2MkHZ17TDxpTswtEwA
-	 +ubPXlAFfK0LQ==
-Message-ID: <sashiko-outbox-226297@kernel.org>
+	b=TzyVXU3JZKz+G6iv26QMl86cOJH4T6cdW67UKDT+sTicT4bpZ6PRxigNNzsBN9Weg
+	 dX1wwwNonGIGAN79xQ294YlLIuJT5rNbXi0+x5jRleU4eSxz+RXrhhpS/n4gs/jMaj
+	 +E3rHJRAZQb4eS8x/aTfUrPfVUTT4z5RjsRJR+Ocjb8IfGW/gWqmliKG1zXAPCgUiP
+	 cgnsUESY+O2XpbIVy7OubMMFC+xjfg6+8+zrG/HWj0uuUkfN03o05o6qTNtxXEw8m6
+	 Mt2SaFlA+pIK9rxe3QoyDzdB16Mk/5+nIee49ePPRYUKoepHhzTZ14y968juTU3las
+	 bI1nF98MdMgbg==
+Message-ID: <sashiko-outbox-226299@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v4 05/14] rootns: Add ROOTNS_WAIT ioctl
+Subject: Re: [RFC PATCH v4 07/14] fork: Support CLONE_INTO_ROOTNS in
+ clone3()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jarkko Sakkinen" <jarkko@kernel.org>
 Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Albert Ou" <aou@eecs.berkeley.edu>, "Alexander
@@ -106,25 +107,25 @@ Cc: linux-mm@kvack.org, linux-security-module@vger.kernel.org, "Albert Ou" <aou@
  Frascino" <vincenzo.frascino@arm.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Will
  Deacon" <will@kernel.org>, "Yoshinori Sato" <ysato@users.sourceforge.jp>, "Zygmunt
  Krynicki" <zygmunt.krynicki@canonical.com>
-In-Reply-To: <20261119224312.1037966-6-jarkko@kernel.org>
+In-Reply-To: <20261119224312.1037966-8-jarkko@kernel.org>
 References: <20261119224312.1037966-1-jarkko@kernel.org>
- <20261119224312.1037966-6-jarkko@kernel.org>
+ <20261119224312.1037966-8-jarkko@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 20 Nov 2026 22:44:33 +0000
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E4E88A000A
-X-Rspam-User:
-X-Stat-Signature: 4mnfkpdoy3oxgb7qwep95n9w68hkuqec
+Date: Fri, 20 Nov 2026 22:44:37 +0000
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795214678-67669
-X-HE-Meta: U2FsdGVkX1/Kz2l3mx8jd9SAhCzgTzvGljhf57NB88L1VcagXLOAufaP4f/cSypUTEFuG+ECxkpowJ1T3tdZNUyfpp/mQgC4ZzL+sl/uxOAwOz6ZGz1FGPqNRi7DpyS0/m8DZ6/ouQF/mocm5XCRqBSe1bRnH6j66aJgmmh9IUhT1FAKknpQ822AdCA/6tuOe/QwwkIDH+6mWOpkuqnSREFndq86nwRBA3rYb8dlhGkp1a7TDNKxyWPMnOnuIu0hX5zfkz75o35mFS5I4KbM+pZUI23f2cF+N3dtIw8N+N062Ol2BK2El3ct99HiehQY6glhy9QnW3HgSQa/Wx/bydvtoncd18TGIDOqHDYdRsPt1FxRcYiEFpzqQSfU/fE7jiiuzjuIeyGkiO6OUMy+eDHW1u6h6EoW7GYHUUu+0Wr0yhn2A1Xbxhrbu7f3tOPa2qPcaFec2k7YLbcyUusin+bpfvUUSAxVjEWgcH+C2EuYgLyXANOXHjcQIGWeHoefgymH2n9gzehjB1+qx5LZU+KuF4xAWH6l+TKmHJvIh3f7kvt9CmOdxoy/gVHSLFkUQZOKZg5MSNo88v1cASbcog4rsdwUK50yK6Sc7uvT9yMJmCWpQspOVrBctJLK97XSz1ZfeS6BQdiFIDSHrCmY+GxhKsufEIAkPUmNGt1HgukXrfQEpnT9r8eD6SZdmpEH1h9zPxIcFqUhcxIPQA/A+mdx8pgQHjoG0z3H2ElWylWOlAScUzmOJqTo2mmWI1qjluDPDGDgAReiNmja0DO6POorBx1jqqoc3e+DI8nwJ++uG9DXou11SnO4EOCW+3OrL0Ayx4mTrpDAeA5eSOlkqeNSw4mysHAOAl+tu2G2LVMI4SGhQghn2HupuiuaV0paYJiqvd143YfwC4ifBvwj9nuDKQUAgMl/jG3OPRntUN4mkCxU2FP/zlvKo0ZhqgMPMhVVPFOLkg+zjY4h+vp
- m1EzYjXw
- wB6RNTSbuj4krUfN3SSZnDga44+3D4BQV1jwxASmF+Vq4nSGDVrchu9r6Ixn1Y9ZnMM53ejdBP1UrdB0kPWSzLixumDCvTd3H7tIros1wPkeKDGXmrAORUgMleJc61HD+tOat5rNNDkbC5q3is3W9yKW+6negVdYGOTGsxqEwYKfNKhMPuxF85vcmcFSS2+YsesILOZ2Txam/9K9WK6KQcf4Emj5hVzNoPdAelotVGKimix3OseWrfTk5zkZwXxXAoemyAtSQ2MWf3cShOu1Ik6/1jRKN4/66QygpFKB39NXiV78G+g/qo0dtjz8u2XKpsjbNQbUPAdziMinjkUTHQRXhldlaTvMxh1H1iVdJ/1phSYATpitxIjCV+U4bvPG/I9h1b/k4E8gDHDbmE7HKsw/aJaoIxdzzZEk2mbHi+/MUPeXuevS7jfhmY1vMmtAmQVwAfA6VsqOyZZeBSnhrK42yBYlRZDGuXO4gyVlDASSKAnKnRayvwEIXW3AzeiJcucOSH8zNQn8hvKZMsE/BF3d+uW4Wfwsrisbz7yFemymkbHmc5PvzK94YY85A6EiNQ7BvTSt/t2ulm+HX1I7BlUt3dJenpfNT3NEGya96Kfxm3pRt8Oi2Dggnba8sWeFNUi9u1OTjd4sEHrCffems19sh78BEvnBotm1HFCTJlJqBJ8zOkYDwfp4Uj95fBvfm8i3it92M7J73zXgJHrpAAd89cNyF+2mLQY2pIOsm1rBkE8D8XnAEZz3sbf15LTlBRVRyu4KEoubzPhb20VD120HYpl6Zh2dU4HIj3FIitQtQ8mRiNVebZ/es6Bn/QY536k1Nf8ZomKcfkMvLlbmhDBMGFEZbXBklelxPPAUbwaTlZirvNWBOEwZBdEsp81QDzDaXAyM6jNNfzIjC7Dgj/eEWZ0vec07JVF3r8WMQ8ht/MmyBVSct1e0YbRLQFaUMXl+FOwMt1xkWRe8qaNlsk5J4AbGN
- oOM7TLqD
+X-Rspamd-Queue-Id: 1F1C0C0006
+X-Stat-Signature: xinj8bwui61saktcoh143qypn3xiqoh3
+X-Rspam-User:
+X-HE-Tag: 1795214684-50464
+X-HE-Meta: U2FsdGVkX19AwcOY4IXd8hjU5L/JB3QagEEEFk7x5llIq8cttaj3kYUKze+5BN3TZUio8QD4ZzQywQDSIAgBbakOWzDX/KHIrzv1IxV5jvIeE02690VmsTd5C3/B6iTmyQifuD/lAkRm7mQ9DujO9MzMi6Ykv7NMEoZSur/3IQPJNSivZOZuZxwgsoY4rkjcc8bcgyjKmOCBEi3LO4byTiDVcB6pxqAJNxoLuCo/sBZj991ayboA5uBIUaklArGc5PpPOu1zx3dccPXceHhfoyYCC3KmbO93XJJrWmWoD+XO1yHYzdzpicu6F0z/oQk7Gv5ie1qQSEoyh5Ba3LS4flDSoml8WVHOkzCTy+E1XJY3/pqzL43puVLB44Pz4jL25llNrM+tmkMl9T3YJajxiyM6Ddt6qRaFH7kbx/ip1zLEK4vMss8bgFnOxEUeYFKcREa9z3Jb8exQDVoQVcmGFXs33aeyA5HiGyMPb7kqNGGTx6mzlkNk63wDgnAqP73PV1XiynIr6C02FeWD4XWgwqf5MhsyAYILtcOHF85J08RX99D4NR3W2flnyVtKTRWvYWNPWkVKpmzuBb6yzh9djmKfkGzomYoOYymsYWM89+NfewO8nLdWwOhTJ82ux/m1XbkuSwifxM5tp0CQWuA7zIVIRnjzOCfrXCm9UrgwgW2oRh00JRfwjoVVtWdWXB1BODGal5tI0IXxGITDVlcx7ejttOp2enZ92qBIM+VZIR3EWesTQGiY0eWab5BIs5vBalFaOJtnQ2TAoXxCGv8YDrDXikZi/q31makdHAEbZ3zDa+IbBkZuCAm55nlR83ZjG+W22QTt3tUtMkU1u73nTYszM8Q7yslekJ/I2IOf3v741JgouxYHkOeSar37UrBnO531gMsI4xzvk+BnKvFcPnlcpd1lIhQsvujw+Htvp3n6ZTa1ke/lijidW3xhya34ugPcM1D9H3OcKQkTDcj
+ rtfU/sfV
+ UINQGMabDVSWPOG7c6RPqZFEpYmdOrn9UNGp1v7RvXZ7moC2r3vDgv/RlvLd6qYgeexTFetZM6A8LKSFxt5nfnQ/smhxCKbvwcwp5c0nXyX032uUW4JAAV/RfmOXx7wFyVe7brUi8k/pjZvHAkTwFepOHbLBrbU9nBaUDopvQORHX51D6dKNpvb6ZYPfxEr1Ty03tzUACK/bLeXEHp0A9IfOzsoAHvUIXEfeBsw7bNkSpuOisuKy8XhUN3vVL54E2uxBSDIPPzqxguyhZ6ZvCKPBpAVYzWAnTKrgMf01e4dcGwlCsspXLCvqH/mEPvBOMSnByAi63haxIwMZOY/NEhHedI1IbwyRNAlQK5BNdfQXiU17kYe0Q2LcpzKT8P8Hurm/Dvp81WNhY4L8log2o9b4cakw+LUCWwZ3c8MYgI1GmWjyRhXFWb7zYWeM/6kveavQ2hQfSoPtSmMEj/Ll9zKmK1aGuTnhcnbtqenU535MDoZltN3aHSJEGCuegGrW9sWq/4jhOFBi9UtdmfLRBsmvpIV+Yu3yEo6Fv69j0X3WyHO/wio0FgeAChmIGxDH2LM1sn7lJYkbs0c2wFmzdULFeZ5yUN9yYbug9ceVW9EE/X5wTRM85utozU5o/c4M4cdFZL6aivxVA0oKaOygGykx6XTSf7IlYEj+xX+ydYWs5I21O1HJNEPxC7YD1BXgPC/TReBzcHpF3404kQJO7bbReDkDW+HOWTuhMivutnXA8HWn8OhOdz6w32xeeIuLecZB8vYYl9PkJ28tXBOX2co76u/7Zh2M8LH0TROpkZZjNn95WqYYli4tRcOX+ijY/1DF0Afuep3Hwh8oHZJ/Tk3XXmjGryYD6JZ4OrPYQkFpOlhrQZPCZyX0lO9zY/aKqhpoINHkgFXgi3Rt75AiheSdQXQV3OibVNddc1ah7yaspwzVSEn4zgfDUEYbzB6KYS8E202OBGApX9u/0d1VVr9rbZ5t8
+ NXnOsgxk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,74 +135,117 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] rootns: delayed PID namespace visibility check in
-  rootns_wait()
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] rootns: rootns_finish_fork() rewrites copy_process() -EINVAL
+  to -EBUSY
+- [Low] rootns: unreachable PIDNS_ADDING check in rootns_prepare_fork()
 --
 
-commit 68c6e4532ee164e48940d00824536de847b1c5d0
+commit 1820863b7d5dcd4fd4778d2d64f24adcb966cc47
 Author: Jarkko Sakkinen <jarkko@kernel.org>
 
-rootns: Add ROOTNS_WAIT ioctl
+fork: Support CLONE_INTO_ROOTNS in clone3()
 
-This commit adds the ROOTNS_WAIT ioctl to wait for a root namespace's init
-thread group to exit and retrieve its wait status and TGID.
+This commit adds CLONE_INTO_ROOTNS and struct clone_args.rootns to spawn a
+child process directly into a target root namespace via clone3().
 
 > diff --git a/kernel/rootns.c b/kernel/rootns.c
-> index d9ef68d603a24..5f03b6ba4a543 100644
+> index ce012a07e9828..865689eed69cb 100644
 > --- a/kernel/rootns.c
 > +++ b/kernel/rootns.c
-> @@ -115,6 +115,45 @@ static long rootns_get_nsfd(struct rootns *rootns, u=
-nsigned long nstype)
->  	return nsproxy_open_namespace(rootns->ns, rootns->user_ns, nstype);
+> @@ -423,3 +424,138 @@ SYSCALL_DEFINE1(rootns, unsigned int, flags)
+>  	return fd;
 >  }
-> =20
-> +static long rootns_wait(struct rootns *rootns, void __user *uarg)
+
+[ ... ]
+
+> +int rootns_prepare_fork(struct kernel_clone_args *args)
 > +{
-> +	struct pid_namespace *pid_ns =3D task_active_pid_ns(current);
-> +	struct rootns_wait_args args;
-> +	long ret;
+
+[ ... ]
+
+> +	for (;;) {
+> +		bool wait =3D false;
 > +
-> +	if (!uarg)
-> +		return -EINVAL;
-> +	if (copy_from_user(&args, uarg, sizeof(args)))
-> +		return -EFAULT;
-> +	if (args.flags & ~WNOHANG)
-> +		return -EINVAL;
-> +	if (READ_ONCE(rootns->state) =3D=3D ROOTNS_INIT)
-> +		return -ECHILD;
+> +		scoped_guard(spinlock, &rootns->lock) {
+> +			switch (rootns->state) {
+> +			case ROOTNS_INIT:
+> +				if (READ_ONCE(pid_ns->child_reaper))
+> +					return -EBUSY;
+> +				if (!(READ_ONCE(pid_ns->pid_allocated) & PIDNS_ADDING))
+> +					return -ESRCH;
+
+[Severity: Low]
+Can the PIDNS_ADDING check under ROOTNS_INIT ever be reached?
+
+PIDNS_ADDING is only cleared by disable_pid_allocation() in
+zap_pid_ns_processes() when the PID namespace's init process exits, and
+pid_ns->child_reaper is never reset to NULL afterwards.  Because
+pid_ns->child_reaper is non-NULL whenever PIDNS_ADDING is cleared, testing
+child_reaper first always returns -EBUSY here instead of -ESRCH.
+
+> +				WRITE_ONCE(rootns->state, ROOTNS_FORKING);
+> +				bootstrapping =3D true;
+> +				break;
+
+[ ... ]
+
+> +int rootns_finish_fork(struct kernel_clone_args *args, struct task_struc=
+t *p)
+> +{
+> +	struct file *file __free(fput) =3D args->rootns_file;
+> +	struct rootns *rootns =3D args->rootns;
+> +	struct pid_namespace *pid_ns =3D rootns->ns->pid_ns_for_children;
+> +	int ret;
 > +
-> +	if (!(args.flags & WNOHANG)) {
-> +		ret =3D wait_event_freezable(rootns->waitq,
-> +					   READ_ONCE(rootns->state) =3D=3D ROOTNS_DEAD ||
-> +					   READ_ONCE(rootns->state) =3D=3D ROOTNS_INIT);
-> +		if (ret)
-> +			return ret;
+> +	args->rootns_file =3D NULL;
+> +	args->rootns =3D NULL;
+> +	if (!IS_ERR(p)) {
+> +		if (current->nsproxy->time_ns !=3D rootns->ns->time_ns)
+> +			timens_commit(p, rootns->ns->time_ns);
+> +		return 0;
 > +	}
 > +
-> +	scoped_guard(spinlock, &rootns->lock) {
-> +		if (rootns->state =3D=3D ROOTNS_INIT)
-> +			return -ECHILD;
-> +		if (rootns->state !=3D ROOTNS_DEAD)
-> +			return 0;
-> +		ret =3D pid_nr_ns(rootns->init_pid, pid_ns);
-> +		if (ret <=3D 0)
-> +			return -ECHILD;
+> +	ret =3D PTR_ERR(p);
+> +	if (args->rootns_bootstrapping) {
+> +		scoped_guard(spinlock, &rootns->lock) {
+> +			if (rootns->state =3D=3D ROOTNS_FORKING)
+> +				WRITE_ONCE(rootns->state, ROOTNS_INIT);
+> +		}
+> +		wake_up_all(&rootns->waitq);
+> +		if (ret =3D=3D -EINVAL && !args->set_tid_size)
+> +			ret =3D -EBUSY;
+> +	}
 
 [Severity: Medium]
-Should rootns_wait() check whether the rootns PID namespace is visible in
-pid_ns before waiting or returning 0 for WNOHANG?
+Does this rewrite argument validation failures in copy_process() from
+-EINVAL to -EBUSY during bootstrap?
 
-Because pid_nr_ns() is only checked after rootns->state reaches
-ROOTNS_DEAD, a caller in a non-ancestor PID namespace gets 0 instead of
--ECHILD when calling ROOTNS_WAIT with WNOHANG on a running rootns, and a
-blocking call sleeps in wait_event_freezable() until init exits before
-failing with -ECHILD.  Checking
-pidns_is_ancestor(rootns->ns->pid_ns_for_children, pid_ns) upfront (as in
-rootns_get_nsfd()) would reject invisible targets immediately.
+rootns_prepare_fork() runs before copy_process(), where companion flags
+allowed by CLONE_INTO_ROOTNS_FLAGS (such as CLONE_PIDFD_AUTOKILL without
+CLONE_PIDFD, or CLONE_AUTOREAP with a non-zero exit_signal) and
+copy_thread() are validated:
+
+kernel/fork.c:copy_process() {
+    ...
+	if (clone_flags & CLONE_AUTOREAP) {
+		if (clone_flags & CLONE_THREAD)
+			return ERR_PTR(-EINVAL);
+		if (clone_flags & CLONE_PARENT)
+			return ERR_PTR(-EINVAL);
+		if (args->exit_signal)
+			return ERR_PTR(-EINVAL);
+	}
+    ...
+}
+
+When the initial bootstrap clone3(CLONE_INTO_ROOTNS) call with
+set_tid_size =3D=3D 0 fails one of those checks with -EINVAL,
+rootns_finish_fork() treats it as an alloc_pid() collision and returns
+-EBUSY to userspace instead of -EINVAL.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261119224312.1037=
-966-1-jarkko@kernel.org?part=3D5
+966-1-jarkko@kernel.org?part=3D7
 
