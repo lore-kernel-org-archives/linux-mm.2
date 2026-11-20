@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2E8606A335
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E544D606A326
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ptq7qIFf
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M7xirJuz
 Received: by kanga.kvack.org (Postfix)
-	id 33B7C6B05B2; Fri, 20 Nov 2026 08:11:15 -0500 (EST)
+	id 055A26B05B4; Fri, 20 Nov 2026 08:11:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 313036B05B3; Fri, 20 Nov 2026 08:11:15 -0500 (EST)
+	id 006B16B05B5; Fri, 20 Nov 2026 08:11:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 229576B05B4; Fri, 20 Nov 2026 08:11:15 -0500 (EST)
+	id E5F356B05B6; Fri, 20 Nov 2026 08:11:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 032B56B05B2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:11:14 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B2651A0EF9
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:14 +0000 (UTC)
-X-FDA: 85455533268.26.DCDC376
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BEAF46B05B4
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:11:20 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4D9E7160F3D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:20 +0000 (UTC)
+X-FDA: 85455533520.12.1DC3E0F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B2E101A0006
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ptq7qIFf;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7D134100007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M7xirJuz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795180272;
-	b=JdLVSreVKXzX6pjQ6te8M4tSs7Ur6oDupqu0G5WpwjpjX1GQga3sea3tfRNWHhLm8bFpib
-	DAn99EOoUHQqezVCLOxFrrNHOJAjLckATgDbMPrnMn81piCdORRDntfC0e5SR4IdHfWtJG
-	y5LQ9u03alFi5YGWj124uvnyJkJJTWE=
+	t=1795180278;
+	b=8Wwawjgt6CRbLmHk9G5YKheejju/Emz7RTkIiA0aOpqz4d4C0Q0LQmBk36IVING4cKFuAq
+	W/+rHj4P35o1gT/sFHaTwaWqJuVEF+pY6Wf8GqxMI9llqvq5zgWxESNNhF8ftesnnGNhEY
+	Q23UlXHMWDCBXtu/e6oDhMbS4TfHJkU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795180272;
+	s=arc-20220608; t=1795180278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+b67SetJCKoOq6HPFCZ+dRd+4Za+7CxQKhQ+b7IQ2N0=;
-	b=ETPKULhfV7/vrg93RJVP+K68FHNc0Ajz9t+Cnm1J3xpKpM3AHOJjMeCtUkxw23b6UpCaXM
-	GFX+ScXVP0ooSqybxLRx1V+6m3P3M/HHwvTfV644CdE06si5M1R703Lk/RNLuOBI3cajuO
-	/UU60qlkK+nyDwPmuUC+TQI3RqwlCEE=
+	bh=160vS2fUgreh2TfeX5DPq7qpDcpzIYMArC2L5k9SgNM=;
+	b=gXDgjA0bH8WjyQbsgdp/ishf3Nxc+ua8mN2SS3qS4a2Wzc8jKmWg2FLj1WAyO1xpW/C4wu
+	x3RUhFQde8boNoxwgKb9MwoBnzvOyIqq8uzaLIeFuK7+467x572eIx3FHjGK01JsEKPn3j
+	sW71jXuoEA45eLWXjH1VeaBFugU9TWo=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ptq7qIFf;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M7xirJuz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A1B34111D;
+	by sea.source.kernel.org (Postfix) with ESMTP id D52DF436E1;
+	Fri, 20 Nov 2026 13:11:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870821F000D1;
 	Fri, 20 Nov 2026 13:11:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917C81F000C4;
-	Fri, 20 Nov 2026 13:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795180271;
-	bh=+b67SetJCKoOq6HPFCZ+dRd+4Za+7CxQKhQ+b7IQ2N0=;
+	s=k20260515; t=1795180277;
+	bh=160vS2fUgreh2TfeX5DPq7qpDcpzIYMArC2L5k9SgNM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Ptq7qIFfkPNpvJnfaRDnA31wzDuqbrOyjKa4gqxJ6yun667Wz6V1LOWxLS6OK+aTK
-	 1lRUqGEc4VESVDH4xxG1ha7mYOWqkE+7prrDjeqwAhcX6Y9k2hvzWZyTRYalJkrvA2
-	 JEqso7JGyI4YUrlTAKy51sxyKPO4sfOQEcdcsx6BKf4gleyWxGn5ECtrdj4ltasYp9
-	 fMSB7dRNQR2eWzYUI1HsIRhpP/Df7H362e3WLXVEfHW05/9qrakPwg2QGWaVBtRg4l
-	 onVgjENPbCjlEblE/QyDuOIQHiONgLBN8XQ+zG0HnKebF3dFas3YozBZoesr1L2Re8
-	 WLZEGCokRrBnA==
+	b=M7xirJuzZ5oA1ievdq2Z5HJpO6zfZY8Vw1LWWiCMZdvJk/yYJe2E2wKKVkEcq81lk
+	 DuBKaDKs21me7ZGk7j8C3eg5ljwN6ZOd0D+8uwY3w8ydLP0VpV2YLX1tOQlczuTdzb
+	 jKb+LcI/ahZRDzBRBh+zGEK3TxK3SImtVsiU91gekIHoWWSpew/rwPhhwKahaz6CBE
+	 v9wFrdYVDjhtX+woHg+UPtEC2T18Ww1kwjH+pnqrnTMhODEdWtdV7sz0zYznBZ99qw
+	 YXv/efGovJMjhpYknIeuFdbyl1rE09jfcK1lm68QB9nVHR2cCf+IJaj3Y6Ud8h1AJE
+	 OQxra4ITNG/0g==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Nov 2026 14:10:16 +0100
-Subject: [PATCH v6 05/12] rust: xarray: simplify `Guard::load`
+Date: Fri, 20 Nov 2026 14:10:21 +0100
+Subject: [PATCH v6 10/12] xarray, radix-tree: enable sheaf support for
+ kmem_cache
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-xarray-entry-send-v6-5-1f69d7385f70@kernel.org>
+Message-Id: <20261120-xarray-entry-send-v6-10-1f69d7385f70@kernel.org>
 References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
 In-Reply-To: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
 To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -89,34 +90,34 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2477; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=d0rtVC+HSo0Vi0sBV4kpNh2AbvNEJkRxW50q4wxsVeM=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrAEbHCtNGa0jo0ST/zXruZoCrOK+bQmB9UVylF
- 6aY7C26+9+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawBGxwAKCRD6UCkIqsW9
- 0CklEACZohQhZKz38cjO5nz9zaGBObG7WbQQ4qIvSQjQyjN1Ei+ETjw6A8K7qLJd7CTExFg4MyQ
- 4rfsUVoPKMb5t4xCvsiNRIcZdF6XckWaXrtJRM/lloUb77YA0yDCEbY1aIIbiWigFU4slxRhXsL
- 68mrqFLzNcXmdKvomI5clsH6PjeMcaNbHK39U7fAI4wud/dtTVQzfX329JLp3MXszdgvQXGYZUe
- b/pi26d6Js4eiYDtxmouaTlilEyLdMS/1ZxnLmx0f3f8RL5yR2SFsctWepac5YdJPgwO48tLzzy
- KKMMTExDh1svWdwZxgfLmfZXGapBJO/Cl2banPV0z8fxgEyBOvwRmvqoYGcMFaF4H8F9wLF3OR5
- MM9gf1Oy0FIziPSzFZwnBlpRf1hSQ6T7j9EXbmzMPXXOolC1j9M+hGC+Re6/nytEWYRzMraMn8w
- ZeKdGHH0kvA/3W6Nr9YY+wrOv00ob+fdi6usnhrv0OvhjWc4S+nXCihkOHLySLQgQ7ksEJ9almI
- oBLUGoUyB7X4OIf8JX2VAsQOrr6Ow1d13JeX30CSopTxUgG7L+x27uQDx+1UaLQpLVqd7xS7+ZY
- Pt92mpNItTt43cJaJgsafVreTZfqjCWn0xBCV7bKa4ZpHOWdMVqNrSCb+LvSjL2V7DqTnYLI2Am
- VC+IqB36m0N9OcQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1241; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=P1Sxf06ssHf1MjkVVG32ZjziE2PXVu4nAet8QXuksZM=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrAEbMHxjoltvdoQ0tnj6l/F1QLYjH67WwokRyZ
+ IPDAfggC2aJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawBGzAAKCRD6UCkIqsW9
+ 0E8XD/9pK5/gJYEgpSSdAhk3TcyQDq0CZSln331F2mWlr10c7EDtGcbOulbVg/kz2SfZvICcVgI
+ MHr8SAG80LFTcTObqyfDSBTIgObduDMWcjvY21tTHQ7/bX5yuDgC3WaM5Azgv/1Ed9LYe0O4ENl
+ GcNvLaalgFYpOVTbSvSW2kkaN8KdG7OYlNKVNZDRgXCMOqHk4ClSGLTEHflEsWI+gNwEjmUvc+1
+ mS3KdZ9DmYoyX+341dMNha8x467GMeCne5W0RpoccYNwFdKz6efyAMFz/afNEqrKp8TidJeHCs9
+ EVV8298HN+uhQkygODyeybv2J9HQK4XnY76FT4hNNOuMzFW0VPRme4uhFadlur/JJy67eeU552u
+ FkoJNgiYsYogxMVIKA8V1tKxc1STFGR12biLiwAPSwBje4XjowtDL3Lbe6SEVQFWzBATQkquxvp
+ 2gbRoi8uEzErLbsW7Zi2NJoHUFgY6dVQ978GdKcZwhgynsHP9nqJ6A0ILiNARmm5JfQEkMJb7P1
+ QKAeTQFTSLQFqD+kCsrO42jvkL9fqFlBEWBs/cYS5KZtBzMiG9kAVs16EqdMU7PufpP8o2RHC7A
+ 7njqjDReZdsSjqnogRpCbfar51tJc2bhyE9AtoDUyP1z30RESpXUAMEu4fhdRdhnuVpGT80J8Ch
+ 0MiOVM5xFufz+KA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Queue-Id: 7D134100007
+X-Stat-Signature: 6aachh1ax4b5a6kcpkorh9c6bkhdrrc5
 X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: bfauugkdrwj5o46j5sxstypos6w6qos9
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B2E101A0006
-X-HE-Tag: 1795180272-286011
-X-HE-Meta: U2FsdGVkX1+QSbgfy6rZu8Mi7TqGyA7za8dxfE9YM5ldO9IguZbRbDGh0Ol92WmD2Se0FQowtUnLE+/q67ie7tgJfcbCJ/FJjhSfNaMUOE7bKwp6Apu3GqbT3vPWsHzmfE1sIs0+M1Cl/JD/KvRzuVLGzD9kiBws+QQfJILUxd9rZf91Pw72xHwEruw2dxjFh4ms/6+kDrqlAff6FiM4Vo/gKiADfn2BSRrhGMk2ThoVoTAtZqRN6gUlC//fKpaCvkDzNk8MHwYAsQ+MeIsiv4uAkIxVG7nY+eCkYY7X1bVpYwMDqgtuM4dhJxpDS18cKUW1RnLdhM3JFQ81vjlIn1TP/eGAfRpEodzYhNyKC6nG12p3sThY24H96mCN7Hi4FXy5dug1yNM6kGKSkZ2aXvTToxo2LVaKldBMrZCa3U88gR2wTkxZ1reg9dSxU4Bo/KcA90581Drd6WPLtjlagaNg/cJvxvKyOxxe6SEV6DrZ5gMEMglXkn8SgZITnKS26WR1lzto4dlisDw9HRLHfdDI7gvqrI+54/9kdG20IPtyJtL8d0/x0R7xVNA7fBXyTHPjT6mXJ1v7puqA888NtVpJAE0zhaQslC7/8fwXIPbvrymTuoDYKb+dz9LYzI7GUgbi39UWOs8/1tRHWl0cXZ18B31Bailk29cC6xieIRujqZUapt+FT0WlBBNF/PWytgaL788cz3T/8aSpkx92XeEfXHU9+V14OtLPB4krps8qorr4hNikcACSnww/B6I5armoZh9gnJ7f0hXU0d9oY2RQ3ATjDExih75C5n+px6Njknm7nLzi2fRNOvuXZHNTXkRwC8JnFuflFAhHPLn0yYOq4jiHrQI0lMYvHE0qePvwB/3jxPItk9yG1iGKQAPYM1ls0z0Ul0Rzu8pGBurC5gdj2DnNxVgZak8M+yT7MR0oKlZ5uYJAxKM9a/RTQuyNqepj0xI6cTyuV1ohyRl
- XucNAgU+
- /rhwUnNjlxsD6B/L854d92v5kblhB3RKg8fkccuWowGuetYs6paSgbTgprxs8JSrFpwy0z3XWfDJsU4cbVHiPBuIcxepMJ4JzECQbRITuBskqVqEvJbNsG2Jh1kUajqgg78HF4YoMtTfZHTFfDDIDfpsrA0ErtyuMUlRcM/gaRxfOHNrOQXvFSoIXxnKvQ51nLr/FSX6+MCyPQ2X3lrvAV1V5spmhkzb7J6T6FG7oagjwpgHyM6xXZEZUMGWf2DIZPAICjWBARlr8VvvavuFAXVbPe24OW7wWuVu24x4vIVs6TPJpt0XMTImYZ/EFr73nJ/XBNp2bO5mPH7xSFP8AB/1a/ibL0q5FbTyN3gn08w5jGwmaC6l+VR3wdcIEAO2gOjPnveNEkPwclxz6241H+k3pWvI3X3xehTRsNNsL95I2fhyC5p3G/yMlwV7iKAcsidv2y83UGJ617tXm5MBRcTivFcJofkvXSjfa7XmPXMy37sKVLyJhxmhU/8PFhM9T5vwL1s94aGZChMXCKzapzLpkCQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1795180278-461132
+X-HE-Meta: U2FsdGVkX1/N6RhfOkPqU5+3APvrg1abwqOoepAzgLS1uUCiq2yingKlmEB7ezcyNdd135UUF3lssN3nHjg/AmUNi59u8Xu3IlnAiqu3NQcM+Uxbjisd8P2Xh9jEeENhaDi7H8fvhI6KizT+CkulzbYAfcriKEPKyzeq9m5aNF8XJ13tVvuSj8sn6F+w1LaGUjVZCWVqh8FLgPafACDr2tUQMcYPeXSNDN3FDcUbx+1iX6mqQMB+9YUKw48wFOWFoqkmdCQLkY7TX3bkLthBgJHHlSfCiInHqyRNNKcaDMCptfafbFUuh/PwYK+HoN4Hm7yL2gky+tV+Dllv/ROKIH9rlEgenFT3TjffZ4+76YevSpu9Ebu1xra4UIwIi4asfLIoNHcVoL4oQuG3y08CUpbUKuqGyAvM2DHhyRMvfGRda1yZa06xph92ruz8nQZEhx5Nu9Ekkug/dln3RQFHBAmbzJVsHfKKJvIHXUwKdkMz4QDS1NcdhQg7HgzP3g6MVYAVs/lh+6D72lkck1nSJZzTtIIgjYMwGrP7BaPq4iwTZSrLYwEmlHdE8ye9ew6F3xPnG6Pq4wC2tM3wS2ZqDwr6rooJX5z0iDrPQ12ATbFfBed8rtFijA+Kt4BAx4Ws96KJz5qAKTpg62nd9aXxI8WLo0GyjUIkqmXSWUiDMBHzoTdmWfexI3lNbCnuNCpz1NDPTFd7KDHQGP509d+Eedrb5nwAxZBOu5v8wL/Uba6CLcpufqaU7vt4YRN48KCiCNyhiWflm0TUxNg9Uw05/9dVQSd7gJ8sIilW3tq581XuRCq+f0GqwEqITP9Jl7HyV32eCWYilG+VNv6gLqRrv2ZkJbGWlA6i+IGjFBJC50o640h27Dkh7LT+h1Q/7Uvc75dRpnVxDUm+igjV97G2C2la9boqjmP+QBjEdtRxMQc7hF1dVbR0i7Dd6mTyyCmaHXGbt1y9f0efcTuxwd1
+ Rl5y/GUx
+ x2pGqp68aIMJd72G6VImvSPXqDNCQR4xRME6bxCBMpExo38dGSyxuRBh+Cppq+L1Qk10ON3+CtLzwvTjUwkmgfREqzIF0orSIM/B1TfmmiDfJE8rka459FfVHJzN9STTZ0PuEQnk6ubfCkfprrnZHj3f7yVi+WW6ucLsN9wlJBAaB88ZjLZhemqYeCjLzvj8aqyPWTgVFZjOfwUpBKwlISoZWYD29aY2Z5nCeldiN4Egg6UgwBi2pNfnKhs3dRTO5KSlhdkSQFiplftDZzX3FL1s4ozFcjOIw93aHVStbijrb5zcg/aSJGTolz89dBePPUKAatxgnjjtxPEkqs30962ZMbN8oQg92iWxlqlS0IVG0EGhm+jgkmU2d9DxW6TOu8YIorGu52N8RDiorZ59ZSO53lB+7lUg1J3rgg2I2lqkDEuhGCNSpXzjGspJZC13SINArmIgHbaoUCvwVKEam/JtNPHpDoa06/VhyHbZmCXJ7TH5ai/pwQKK2tzHsoEq6om4/Q4fJ5MhdV46MI9JC7B+Cp1kxnp0w2QInpdB5AkhTPqk3NP3qzEZTto4I92euwp8aNUAE7pDH2L8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,67 +126,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Simplify the implementation by removing the closure-based API from
-`Guard::load` in favor of returning `Option<NonNull<c_void>>` directly.
+The rust null block driver plans to rely on preloading xarray nodes from
+the radix_tree_node_cachep kmem_cache.
 
-The closure-based API existed to avoid passing around untyped
-pointers. The following patches add find and entry operations that
-need to store the returned pointer in entry objects and pass it
-between internal functions, where the closure style does not scale.
-Change `load` to return the pointer directly, establishing the style
-used for the rest of the series. Pointers are still only converted to
-references at the public API boundary.
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/xarray.rs | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ lib/radix-tree.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 183808971683..94386678ef81 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -214,28 +214,25 @@ fn from(value: StoreError<T>) -> Self {
- }
- 
- impl<'a, T: ForeignOwnable> Guard<'a, T> {
--    fn load<F, U>(&self, index: usize, f: F) -> Option<U>
--    where
--        F: FnOnce(NonNull<c_void>) -> U,
--    {
--        let mut state = XArrayState::new(self, index);
--        Some(f(state.load()?))
-+    #[inline]
-+    fn load(&self, index: usize) -> Option<NonNull<c_void>> {
-+        XArrayState::new(self, index).load()
-     }
- 
-     /// Provides a reference to the element at the given index.
-+    #[inline]
-     pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
--        self.load(index, |ptr| {
--            // SAFETY: `ptr` came from `T::into_foreign`.
--            unsafe { T::borrow(ptr.as_ptr()) }
--        })
-+        let ptr = self.load(index)?;
-+        // SAFETY: `ptr` came from `T::into_foreign`.
-+        Some(unsafe { T::borrow(ptr.as_ptr()) })
-     }
- 
-     /// Provides a mutable reference to the element at the given index.
-+    #[inline]
-     pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
--        self.load(index, |ptr| {
--            // SAFETY: `ptr` came from `T::into_foreign`.
--            unsafe { T::borrow_mut(ptr.as_ptr()) }
--        })
-+        let ptr = self.load(index)?;
-+        // SAFETY: `ptr` came from `T::into_foreign`.
-+        Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
-     }
- 
-     /// Removes and returns the element at the given index.
+diff --git a/lib/radix-tree.c b/lib/radix-tree.c
+index 976b9bd02a1b..1cf0012b15ad 100644
+--- a/lib/radix-tree.c
++++ b/lib/radix-tree.c
+@@ -1598,10 +1598,16 @@ void __init radix_tree_init(void)
+ 	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
+ 	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
+ 	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
+-	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
+-			sizeof(struct radix_tree_node), 0,
+-			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
+-			radix_tree_node_ctor);
++
++	struct kmem_cache_args args = {
++		.ctor = radix_tree_node_ctor,
++		.sheaf_capacity = 64,
++	};
++
++	radix_tree_node_cachep = kmem_cache_create(
++		"radix_tree_node", sizeof(struct radix_tree_node), &args,
++		SLAB_PANIC | SLAB_RECLAIM_ACCOUNT);
++
+ 	ret = cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, "lib/radix:dead",
+ 					NULL, radix_tree_cpu_dead);
+ 	WARN_ON(ret < 0);
 
 -- 
 2.54.0
