@@ -1,142 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0237460A2607
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CB0606A339
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tychen.cc header.i=@tychen.cc header.a=rsa-sha256 header.s=spacemail header.b=YFbaSadU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UVzFkiUi
 Received: by kanga.kvack.org (Postfix)
-	id 27D286B05C2; Fri, 20 Nov 2026 05:33:31 -0500 (EST)
+	id 4F1066B05C9; Fri, 20 Nov 2026 05:34:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255AB6B05C7; Fri, 20 Nov 2026 05:33:31 -0500 (EST)
+	id 4C8EA6B05CA; Fri, 20 Nov 2026 05:34:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16B1D6B05C8; Fri, 20 Nov 2026 05:33:31 -0500 (EST)
+	id 405A26B05CB; Fri, 20 Nov 2026 05:34:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E13086B05C2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:33:30 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE88CA0EA2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:33:28 +0000 (UTC)
-X-FDA: 85455135696.15.2EBAF45
-Received: from out-utut-a206.jellyfish.systems (out-utut-a206.jellyfish.systems [198.177.127.206])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 87C2F140002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:33:26 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=YFbaSadU;
-	dmarc=pass (policy=none) header.from=tychen.cc;
-	spf=pass (imf23.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.206 as permitted sender) smtp.mailfrom=hi@tychen.cc
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C5B96B05C9
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:34:52 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B4EC080EC2
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:34:51 +0000 (UTC)
+X-FDA: 85455139182.26.96ACC46
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 02CB040006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:34:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UVzFkiUi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795170807;
-	b=DX1JQN8PBTykvH/7vEpzu8ZWvUTR4sHbMDMOW+Fx7/hT36sK0UndT+DnrKczL2h0R8dQe+
-	tf8p9IO+CrukY7mwi8pfLHFSPU+HhdHpKdQKk6upXzYk8s479WHmp9okt5a8oEs8y0MT0H
-	83pAagXEV4a33uiebxvR8deV5GGdS+k=
+	t=1795170890;
+	b=JNjvbINkyHr5B4LV62wvPLt3A0JVG7iJwD/fshTEHf4nVBYAUfKOtxLvPyKazi8gzwXoeE
+	ZJpyXq6ZMBzGQGZsZrBbuDCoNRj1r3JHGQ4sYG1UMVXyn9ySPEcsjseusMw15Y0+NSy5ca
+	SNy17OH7XhIbEOW5IYK9w4F6++gKa1c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795170807;
+	s=arc-20220608; t=1795170890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KCPw+q5p4Yyf7FYw3qSmU12ZFK/LfmJwMcs22RlGgSU=;
-	b=4Avaxu/gklI4IK6jdPGLW9CIwxhpXxl0Kskg6mn4784MTIgTyH9dCmgFP4k2cAnmCfJSYJ
-	L0VeeKhn9bh84gPiB+bfSqPwKzS4g2xUnl+l23lbyt6P5lQHlO53hoHwbxHK6jpx4zVijX
-	6C2nmTYQc0nYnc7b95GjUdp6nonyfms=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wQqfgunTLnRwvEQh/g3zIyzHHyLtB+m2tV6o9f2aJHQ=;
+	b=dZecTGnXaft3tg6DW3B1SdEUq5zLgv1G52lhweob9OLkzQ+9ydoA8c6xg3SKhjLSdAsnMh
+	HR7TPaXzfADyoImshlyEcJ+AMgh/XLllpJlaYN9A2MblbYY5jkN0LKnMv0iaShQ5kUXpj4
+	M4294NKqybuT2jvM9V58Kw/Xdgam0Bw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=YFbaSadU;
-	dmarc=pass (policy=none) header.from=tychen.cc;
-	spf=pass (imf23.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.206 as permitted sender) smtp.mailfrom=hi@tychen.cc
-Received: from fedora (unknown [151.145.76.168])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4jWBVx0MHhz6tkK;
-	Fri, 20 Nov 2026 10:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1795170791;
-	bh=KCPw+q5p4Yyf7FYw3qSmU12ZFK/LfmJwMcs22RlGgSU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFbaSadUIfqinCT95kZ4vNNrDGlY8vKSJxbuwUfzAAoiputof8HA2RVaXoC24tEdu
-	 L6VK9zfchBxb9JVZCwD9ZjBuiQMO/6jcAeMMhB8eSCDsJp8PGQZJ664Ab9uctX62X0
-	 PerJeDVirnbZBZqeso2rTWsFBfn7KlHST3oqX5thjoS0ZHNW07mF830vgIEN/qnFBb
-	 yWj2Jv66UGZOpHZZgbKZ7KrdBX5Hs46yB3xrguNhRa37nP9hCOj8PyZoZZTCru8zhH
-	 zUO0wgqxBsGQZVmWwuhFp8NexiSObO2miUzVbBYkPDiUP8YacQfdfIo+WYQ8Fmkhtn
-	 rznaeIGJo1lSw==
-From: Tianyi Chen <hi@tychen.cc>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Chris Li <chrisl@kernel.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Nico Pache <nico.pache@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Hugh Dickins <hughd@google.com>,
-	SJ Park <sj@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Vernon Yang <vernon2gm@gmail.com>,
-	Zicheng Wang <wangzicheng@honor.com>,
-	Chen Ridong <chenridong@xiaomi.com>,
-	Tal Zussman <tz2294@columbia.edu>,
-	Xiang Liu <liuxiang.277@bytedance.com>,
-	Ehab Ababneh <ehab.ababneh@intel.com>,
-	Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>,
-	Lian Wang <lianux.mm@gmail.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	Hui Zhu <hui.zhu@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	Maxim Muzafarov <maxmuzaf@gmail.com>,
-	hi@tychen.cc
-Subject: Re: [PATCH v5 00/17] mm/mglru: frequency guided promotion (MGLRU-FG)
-Date: Fri, 20 Nov 2026 19:32:50 +0900
-Message-ID: <20261120103250.1241429-1-hi@tychen.cc>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <CAMgjq7Dnjsq4vid7H4usOB4f5AS8XzhG75mvf4-Y=an95gBERw@mail.gmail.com>
-References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119112357.275352-1-hi@tychen.cc> <CAMgjq7Dnjsq4vid7H4usOB4f5AS8XzhG75mvf4-Y=an95gBERw@mail.gmail.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UVzFkiUi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3356343879;
+	Fri, 20 Nov 2026 10:34:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DAF1F000C0;
+	Fri, 20 Nov 2026 10:34:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795170889;
+	bh=wQqfgunTLnRwvEQh/g3zIyzHHyLtB+m2tV6o9f2aJHQ=;
+	h=From:Subject:Date:To:Cc;
+	b=UVzFkiUiMwNUbS/HWiQlCYAU6Kqri6wlrHFzHqicCWVoNn4OeFiMXdh2lSdq3M9Dr
+	 37Qoq+GgPti6suume4wRMhjy0rZ3b4tnuw8XXxovm+Q+vPB0kdW3XNC2jpkSN9V/UX
+	 3J85NLshKtgQLLH+eFsHJV4F9yQvNgHKLti05K3RmzTbUsEwasTSukpmTlJFxd3HhU
+	 fpeAyRcUolnaVn3/OtaovAZeWaf1hm3Pf0vRfUaubH8QmO7OcEmu+8IpQ3MW9K+uLA
+	 T/Yf6qIBXYDhcfOwx/pmRDbBy/00JAehm8V6GDNEolexVF8jvSK+7eMw1E3NqiTU5A
+	 CUCz/llR9Lx4Q==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 0/2] mm: two NR_BALLOON_PAGES accounting fixes
+Date: Fri, 20 Nov 2026 11:34:41 +0100
+Message-Id: <20261120-b4-balloon_nr_pages-v1-0-d8944b587819@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Envelope-From: hi@tychen.cc
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yXMQQrCMBAF0KsMs26gSSViriJSkvqtIyUpmSqF0
+ rsXdfk2b2NFFSgH2rjiIyolcyDbEA/PmEcYuXMgdq3z1rrWpJNJcZpKyX2u/RxHqDkDF5+6hM6
+ DG+K54iHrb73e/tZ3emFYvhXv+wHMEPScdwAAAA==
+X-Change-ID: 20261120-b4-balloon_nr_pages-7ee96b3be36e
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Nico Pache <nico.pache@linux.dev>, 
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-mm@kvack.org, virtualization@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
+ stable@vger.kernel.org, Shao Mingyin <shao.mingyin@zte.com.cn>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=688; i=david@kernel.org;
+ h=from:subject:message-id; bh=u8RpUaqYDleLKlHxY5TTxwcSUWPuzOrFCFR8UGPSP4I=;
+ b=kA0DAAgWx+nLGEVVu3kByyZiAGsAIkOi1KpWa7nTJYIQCaa+Cb0UW7jbV02GcVHHHGiKZwQwe
+ oh1BAAWCAAdFiEEUlPfMOnprn17Rg4Dx+nLGEVVu3kFAmsAIkMACgkQx+nLGEVVu3nEEAEAt5h8
+ G5dAvgmD7YbKaOmb6YJNykDvpfMLWWyg0r8D6ZAA/i9ruCfdvmaJuFw7O7MLlkLsBMm9G49oxuc
+ QvUnxsywA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User:
-X-Rspamd-Queue-Id: 87C2F140002
-X-Stat-Signature: 76c13oczm3z8snajj4gt8ekq8333h6rw
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 02CB040006
+X-Stat-Signature: gkyuqozd1mtc5b458er3quitugnekqpi
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1795170806-828213
-X-HE-Meta: U2FsdGVkX18AMY2vpEkCK2Re0oXGjCqLapi6hnT1n9jLUvZIOjHoIWkwF3C0i3sTpxzDAbz31EwOIK9eozK485i4+7HkufUggcSrz5ZqAAzoJsCJMM8vPfeWnbjNVUTbjY3gigbdWSRf8+qGrZqcZiLse0ra2q9M8yFebW3aOp47YobB6cNfWsBgsaAKCjMKCBgIlqUtBWI3POc8K2lFeFM8JYke2CGLk+0Bw+oHZvEgQzunnJVukPoA4UNRu4deLEVR6Uo6SGIBIDV3aQ6lkawp/OeFSemZUI+7JrCkxPNvGlNyFxQ3TdOMs9MrNKR4GVBtUWDuYRcOx23EGKu7h8wPFHzlnwRTRf0X14D3tennoyJhrtVEAh79NIZVG0vLi2AsKm/eMtFyPgC83/y7AAm/ZOOwNfqfe00GD7HcO6cwGzz4F2VVaumi48QrUeHaJ91n5Gm6H2ZY1PtvQwLgZ3fEcEj20yZ205dMSvo0JmeowSCMGur0W8q2Ooy68LLsalbUyOvQMU+x/dAYVnnH/OCAY0T1LwjCmN8B51vowYy72JTbiIO1k6Oq2W76mS70Gzim+jYxZbOHlnuTgCTOmHO3qHiN4jKD4bEPOXXZ8zc0MrCU+lcLoF3VhIwXBthySyW1hAhepOHTUqGbEpPjvoTBQCLpDLWYRFTCLYjXbkvl6MZsg5QoThG9I1X6wO/7f48Gy3RWa/eAHLKAcv6qrSyas0Wxayak51j6jjxYqlmkHFZVMEr34sxMJxekPOA6iSMeF64TqReq6RqFaATU4tZ/R3XWt90OGOkZAGt5AlsaQ1TP25IpPnbzl/vOI4I6pp+a/i/5LLjugdbi7/AhAgnzQDFYh3FknRr1/w5a0es9jT//V+vwaq6QD7K4jNTlMZatsYW/f6XOIxzEk+nnGS051F2HFL9UH7WN6+IGtbAlsf2SxiF2S/1D8KIRkpZXavXFHLudiKkxckm5ZzD
- NfYi1m3i
- RIgxziTUquWsDQ0F7xIylztJ/IpZ4V4/3ilQfSEINss/n2Sy0aZCuf2sN0Cizd6lgLoutySVQ+Lho5eGSGvqS+1oiVNOcpVqIV62KVrLntkby7dYY6pigFn+Qf7O91mTr3H3S2KP6ScGUwZuQqhFB5n2tXYtcaUi43a+irRsGv7qqOPWfE/8EHkZ1Cdm7S+RZe4DChUoK8YrUV3UoNPy0b79JbhNARTNfugEfHxHY9eXB0VtduZp0VOppv7xin1HpJUNUpwgRXFTtmOClP7DCz+ExKBoGe2Li2TQbbiSl6ouu9RNYGGel5rs8zDcI8oz6F3i0V4l8JiaHuPRW2g0MShhM6s2nWfOSMy/hOnZaVHKxHYlinWNZEtrz23oZr0WE2MOxRYYoHfm97W6t6wkeaxDHRKhAnVAYn7mUNujbBuH8gLSIS41EI+3G4lwodteyExOkCb1gx8UgdP1J6wkaWEIzRD9Ca8eu5fxIEE8PpISbMXO5T9EsB4YwdHjgsShwQDyNdMl/QWhXU2jcP1mQg6oiYJHdGA3DDcyA5LYoLMjzsQLfIi0I87OQrdDabMor8Hcsd90aQljGZAQ=
+X-HE-Tag: 1795170889-94221
+X-HE-Meta: U2FsdGVkX19J3I8tIiYXlUzZfa88wbOhk+DRbZRjFq/CQFziSyk3nZoGDEJanLuXUWY7PduQDObPCP9C2TULFmXfpjQ/npHFfvaq4xk9AZimr8+5t4VRZpG3RfUzkzaoAAeab/OP3Aj9XwqqDT67YoPX7jzK4ualVu1JrSleoYfMXAcPzGK+9mmG2YEKHTf+2P4XB9cmP8pqQSaE37QBLzuetwsWqR2yhzrv0579L9d5CCcqGxSO+jPAfhtbq1TV59jvIpJ5KOUeWqUGpJ7AL7svmP6GmSzit8zpgoAMycuBhOp9O5uq9UqcvzcU63RBxWrqKud7EQlfa3ULamPDiu8pcUmTZs59wWcs8nTSDm+IAeDGT9VNDeS73ZQSa8GkA7JNseRAs+645qbBAiIJ+hQfzb1Vp/5n0JjOiK4SrzUtV+K4n89GEG0qmEexnDUjrnoGLRbiOZA4D6Y+3aQ2nc8mxTz5ihadPirbVQoS+GDlZLOO5UtZFo7UZmdbF+hCUrzIvl/iF1gaNfuKbwTDu//0pyoHa62r4v76Vx2elJgJbmmHP/ZVksdyCMslCcSqSdTtuK6bioCPt6PUK2ENnYUvRviL60FcN3mvqCbJFL4nG6rpFZGlZTg5+HgPp47H5olfLSo7u2mX/ION+0CFwmkmpg/LTc9wLxTWIb5ghwGASP9daPTR2Gj73ETcmhRdq6qwSTa49qQdmUvO75QdWHye53m/PTRTt9dgKhBeGeLVSnqbhQVAGGunykHsOrO4zJVp4h2mZxIelFfZO8YVGYvH6JtXYwAjWJ6kPDs4wbttUXcoOz9s1gsH9mS+rPWaaCkSL2ZRtyc4faEL+mKVazowqRRcSFU9bb4da2PZAwUp3g9ektuRrRv6FbJb3SnNp7tiqsAjhswdxXSn6fL1g9u2KVXgCiFSKMkXIl1ELQ7njLTeCLjNkZK9HpGsWQZ5cfpnDDJjWO+ifBMJE8T
+ upizUsHx
+ 6J4+qzDsmTFwrpQEe/jzo/XYCMS0D+fJ06Lqbths8qYj41WrexWJWNTp6vy5GWm0ejqkhWmCL3dIuD/VnSBNmCXpwvS7BYX28pEdspeImSuv0EnUXFywHlw6qnslhoyoXF1IRk7WHg7vZFWvzkRIZSCE+M3CuUh2sCqC4WP9Q54zwa1NsFDSAvvtXt/jfMEWYxWehWEGLtEfT41jHaG6oXfZU5H95z414BlsncmeL31gOS0W4EfZ6pJh66xG1Pm4Ja1oinHHR76GT9evOi4ltNLanOoSiHhbSf5TbYbYgz6cq2N7A75nMy64/mYFl3u+dh3504vhbVzqp+9T6WlUuhJ8hZN0E55HnLnsZcMplIYZt7Rlw9/yi97Bu7IAT8LzxEKAE1FmBnk9z7Qr/QfTB2NjNYxZnZyCszb+GM7Zk1EUuVfblnfanQpw7p+8hPE8eTbpD3EJG5WG7ZipwJHdKGInvAgMyv+RIj9mfGF5vO4S6Fg0dot8QA4ISf4ebSbNpyln78ifcHXTo1bVv0btFkOM8tLGRpKcskXzg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,20 +111,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 01:33:32AM +0800, Kairui Song wrote:
-> Thanks! That's good news.
-[...]
-> FG still doesn't track MADV_RANDOM accesses though, and still no
-> proactive workingset shift protection. Refault distance will cover the
-> rest including Maxim's case IIUC, as demonstrated before, it's better
-> to do that later as it fits much better with FG merged first.
+Hi,
 
-Thanks. Feel free to add, for the whole series as tested above
-(the OpenSearch k-NN test, on 25fee5b1762b):
+two simple fixes for NR_BALLOON_PAGES accounting. I can take both
+through the mm-core tree.
 
-Tested-by: Tianyi Chen <hi@tychen.cc>
+I tested patch #1 briefly in a QEMU VM with two numa nodes.
 
-I'll rerun it on the refault distance series once it's posted.
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+David Hildenbrand (Arm) (2):
+      mm/balloon: fix NR_BALLOON_PAGES accounting during page migration
+      vmw_balloon: account 2 MiB pages in NR_BALLOON_PAGES
 
-Tianyi
+ drivers/misc/vmw_balloon.c | 4 ++++
+ mm/balloon.c               | 5 +++++
+ 2 files changed, 9 insertions(+)
+---
+base-commit: f7d95bf74091373fad7273db4557df9b5a902335
+change-id: 20261120-b4-balloon_nr_pages-7ee96b3be36e
+
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
+
 
