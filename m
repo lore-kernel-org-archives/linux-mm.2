@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E850B607BB25
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E661B60A5BE2
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZEflbQUl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kcjmya8f
 Received: by kanga.kvack.org (Postfix)
-	id 5909C6B05DF; Fri, 20 Nov 2026 13:10:48 -0500 (EST)
+	id 282946B05E1; Fri, 20 Nov 2026 13:10:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F0176B05E0; Fri, 20 Nov 2026 13:10:48 -0500 (EST)
+	id 233576B05E4; Fri, 20 Nov 2026 13:10:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F79A6B05E1; Fri, 20 Nov 2026 13:10:48 -0500 (EST)
+	id 0D4D66B05E3; Fri, 20 Nov 2026 13:10:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 013A76B05DF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:47 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 925D9140134
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:47 +0000 (UTC)
-X-FDA: 85456288134.25.67F73FC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C96C66B05E0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:49 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76500A0149
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:49 +0000 (UTC)
+X-FDA: 85456288218.27.21C47A1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 681CA140004
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:45 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZEflbQUl;
-	spf=pass (imf26.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 72D8A1C0004
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kcjmya8f;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf21.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198245;
-	b=QPmkp9ukaZ819C2CYBvjeatH2WvnYgcZOZBd311/x3EhnVaGS6HdAQSn3uOyTXoqJlDgEZ
-	ozVN+3bcSoccRLJGu6vSwFQlUEdmriw/8XUnfhqefnqzQOrrFaeX35EdgGqhz5Td40OATf
-	CtrZmy/ODKUrMidXLGxcR2OPjP6Gnr0=
+	t=1795198247;
+	b=NJPOQjmLQMfWQCi8QxkvSEsqO+3Ms+ToW7ffskWsnHZcHC6udK3Qs7OOfVnRNOLM9wSfGG
+	pH4a2olZFkkp5JoMEmj1vyN2nQ2WF7kvctqdKzBuStXFfYXfLx4c64jwTbwbDlmXBQMtVW
+	xOk7AyNp24Ekk3lmJVl1uwnBKa+kIa4=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198245;
+	s=arc-20220608; t=1795198247;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hiSbpQWW/gUTlgsWMM+m+hivzUTcJ7Oj0fNSfIqp+1A=;
-	b=uRwVtIvnHqjSyPhjQd72oB8D/dG1UoktLKpmH8Wc4KXdmQ6H3nCxH+7O7RdWu8rDDFN4iC
-	/8fnU5IbotElBt+/dkVOZGKdAcX35xoxHONJuivLVCGDaLbVdAQ+F8JQUzA/bMTbJcArds
-	gpCCql5Pwk2Dnhd/L3a5ufyMk29JHXE=
+	bh=//A0ClXqbe5TAeGYqOmmHsYsvO6bLrdcF/vlfAMBu7E=;
+	b=3oWAVY/qqyoyRyB0LkEHBaSfC0VF+FS8eAOUm41dyWJ0qTTwWgODR4gy/R3puUpQis8w4C
+	/kq+XdE+hciaFbjeumy9DRbI4BOrEWqN9MXT85gyLZ5sg/bIwrWwFoVYasNL8cH3/AR0Td
+	rz3ToZ9mrcmzr0zOV7DFlHDIHCTZuf4=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZEflbQUl;
-	spf=pass (imf26.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kcjmya8f;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf21.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0BA9E6342F;
-	Fri, 20 Nov 2026 18:10:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 13443633FD;
+	Fri, 20 Nov 2026 18:10:47 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198244;
-	b=gYysDezzJw76vR/bwbKRptT9Io/ajuvAMe/G4ZCtKWzLz0XUbZiFEAEhVT7vxZ/rl7Fe
-	 f/ppREJCfumUE0qRntjk+QsK46nVMDKtn22h2DUqi/hV0HTEJEd4cXI1JPZWEe11EO40z
-	 8/goPosNmqQFB2FptNFzN1KpVYb6bbv1W+1eVIUiJdk68sHMHqHhdTS7M+mIYlfZe07Dz
-	 Isajjki21UkM8FoPTdeghojSqsZS5uvsS6DHeZ0m+BNRbmJPWLGONjPKbSLgSTcIODsF5
-	 oXPzCohdhxqnBlz4LCOIDoKMPosOMLBMbYinxE0mL30JwtLPzp0uTyHso8qBCZcw/Qw==
+	t=1795198246;
+	b=AYAfWzVRnVyft1Llxuu7+vX5JG87uwXAuKdFx9684H4nvtIQjtqFcKZVEDaMmjrNO0HS
+	 ToglfgIvkvRxVSEb/ERwu61GD+Qf2vgvphnhzVoM/FIZmUhlK8TRogP5mj492xcg9OkdI
+	 YElzAEKMCp31/C/59Usw736fz8NuGH88BObRjpVJp8ZlO6N7+VQiSo9thU9SPEWOCXpHX
+	 nTGCRfYKWveFsMldsTgOI9SaMo3JrMq+qKzwF52hrGJN3qPzLb+M0EXjcborgaAXV5uAE
+	 vmRoijh/TsMbvp7gPxinuNWwKrCWAlR5QcqxoDPT/cjQjb5XLt3K247UB9BHZWC1QxA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198244;
+	c=relaxed/relaxed; t=1795198246;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=hiSbpQWW/gUTlgsWMM+m+hivzUTcJ7Oj0fNSfIqp+1A=;
-	b=mjK/Jg3FAOSLM+E75IViwd39ZM0eCgRwGxhElRQZbDn1hCMNbKcJ3Qm6SzSy4j23YA35
-	 FW57864n747DM5CSQke16av4LmPMgDBh5pCoZ1cQoIVtQ8gnEQa4urkGi9P3o0J6ntNEW
-	 WasLWapQYgw5IBfq9Cb0DwqQ+Rrk/koYoItP1wcPDIjhANHY2oCwqkBBtp8Futrk9gUvg
-	 2V2fMajmkvW9DqsgXm1vJ5b65zzk5mDwujY3H3U5ftg8/DAbgIxxSA27x6Q/vmE8lMa9Y
-	 VmV6n2ca/rG/AEC1a6A5Un0UU+YGi7S8nzRp0/znO3xFVDjRlHMmZkWedSUOYuN504A==
+	bh=//A0ClXqbe5TAeGYqOmmHsYsvO6bLrdcF/vlfAMBu7E=;
+	b=pDZyD+B+lqGp6w8HVb5CwKAmCcuVT+KjPMTbrKv01aNgUIZDNGyI0yJFxUpN4T4SWOf7
+	 mob7LOBGqHkGwDIbw1gpiYRaHH1h18xkDuA3v3D5juND0WNtCjKXQYaVa32e7/f2UQKV7
+	 nt5sRztwb9uEXonc/0H714nK1LKIbAmKx6uLO/Cl6kBWdolIBYG/AFkL0JJJCiYewn2tF
+	 voD+rH46w2QVRO3Mo2qkY39R45gbyFwJ9uZz9zeCskmeYRMirZ3ybGkCztWym5bXIzBT7
+	 AN6NPqkXvXMawZjhC4MRRcdtjKoR3aDKlgc/HG02fJqvc+Mdgi5vmkFYDouWfxp6zcA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 67D161F000CA;
+	by smtp.kernel.org (Postfix) with ESMTPS id D91D41F008B2;
 	Fri, 20 Nov 2026 18:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198244;
-	bh=hiSbpQWW/gUTlgsWMM+m+hivzUTcJ7Oj0fNSfIqp+1A=;
+	s=k20260515; t=1795198246;
+	bh=//A0ClXqbe5TAeGYqOmmHsYsvO6bLrdcF/vlfAMBu7E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=ZEflbQUlyFpFIlCDPqFqhM07hGBZO5dg2l1RMICjg6Ah0yTkHjK+MRKn+Zq8D3Q2E
-	 xUSmNIUa7LJXfvMGry35zUnt3ibC6ZTS9x5QP/ZlqlXSgnPiTWUzotlCFS21tRza9g
-	 Q4fZIobD01j+ifX0AUmgv6UC6zDmjreY3WUcvFLoBv05tCnSjC8zkyOyKcrSIf67FP
-	 ZtIuh+0D9v2hO8UuQ0bgtI8X+fWH46p3q4Lh+vg8c6jNCr4Cn3ldLyW8/6moFdvZLp
-	 WmuR85bP5+8z38/GnQy8DuPEq2NyrkwVtxaois3eUCCsH+Z3FuQJdhNxZObEIR4AZ4
-	 U7yEbVj91MtTA==
+	b=Kcjmya8ft/Tzs0zjz+Q+G+4wsrS4Hff2prpBKG0Mj1mgG6VlsC68m6y1Tvr69KTDM
+	 UyExVguGweo0KoikHtgVCBraNrth+cDgTWR9LA44UJkyJ9/Q+Yg8whuuJSmzKSNaRv
+	 W98hcFXWtrhM4qEs9pcendEIrQwt7ArB2BHZ2gA/xQTtlmfZJIQUW/576ZjPBoxNUr
+	 gj9gZ+bs5ozCDtwmkoB6XQ2xuy8sFiUIUEw4FeW5b76INjjY48Wf7cyb9KZ3uD3iQf
+	 QzhuBcwlx8AgDGhZkoatUsf6IPsSxlWSyMX9SrBvm5HjmdpnYNxtzwq4h5WIQ0CCl9
+	 3xTuU1SLUuq4w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 02F0C4B945;
+	by lkml.kernel.org (Postfix) with ESMTP id 1FEDB4B949;
 	Fri, 20 Nov 2026 18:09:21 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:24 -0500
-Subject: [PATCH 33/60] cgroup/cpuset: ignore private nodes when matching
- OOM victims
+Date: Fri, 20 Nov 2026 13:09:25 -0500
+Subject: [PATCH 34/60] mm/mempolicy: don't rebind policies onto private
+ nodes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-33-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-34-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=1825;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=3916;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=tfQy6A54qGIg5N0QwMR0J5wQcHlPo4StvKwwDY0AXzQ=;
- b=TOQv91CCE4kl6kuILhP9vhwwGPNmP5h8d1k9lUI5PYoPQsNY3N5JtGHROUurmkLEfZ7JXBtci
- YRpEP+Zs0diDRgCXyfgSRDIhjJbJuiQm1kaI1p1h+gZS7NfXp8/pkI9
+ bh=O4sFHAoLYcMEsR+pbprmEIIYrOpT4VdUvGorp6JE4oo=;
+ b=++1ya54kNulohMUVhkDNAIgSodP5iBDwFFCmWjVnOGU1NsRveo/lx1Jce0OpvaUnLUmZ7pT/r
+ w52A5nrqjOZA3Cb2wKDaNK6almrCmCp5wMfSWBDh7BzHHpTEwgkoGoQ
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
+X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 681CA140004
-X-Stat-Signature: 8gox4uu5684sy7o9boze6dswhiu6anxe
-X-Rspam-User:
-X-HE-Tag: 1795198245-254496
-X-HE-Meta: U2FsdGVkX1/r8rpM+2JhqMClm50ty87y3wIsdECv8dLOT6loX0+sKR3obCmwAsYKGkEGB8pfvhEroPJjt2GGVS+3XySYCC9B/Vje7Hy8gNErmFNmaWjtQurxt9eRAfQAkt3IZoYhyEY9Ypj7HL5Wkj5tA7pPD6fN4fLh2e5gjPKzIMSSdtDC2+OTUgXUxk/wmtO2niC77GR9xC5hchXHfXIMY3eGolTNy9Yo++hg5k7FHPejoQcy0PMp2If8dnf/jIPHXhknoj1DVpQV9l10dnEh9/Nn0ZoyGCPmcbidbYxvGoWgiKQ0x5LI0fUnDOHKBfdvJnpVkIHWSOq3RrDU8w55h2UDp9cArkGNSnffJ5R0HpEar69yCCTilGFcJq9XGyH/LlELFFU4HV3eYen0gXHqD4Gz8uRw2WXiqRBKshlZAUkqIDytgOpSEhXG4n47bhtSSmdSm4R4T8aDCwwHSZGn6eul2N7cl8HZcpWKYfsda9ivpHHBWxHjT8CKuDr8DT4NiqVUg1UvMiqNWLr4hJPJhGlKCbdFvcx1lzXHGNNjcUxYnFN5FPnN9jWWoiVrHHY/cPnemP5oTO8Fdqcnj6QfnoROCVsTY6nMYg1DPHV1A4OOnhFiX1miSvLntkkYTGusdI+7UQAESOyoJZWEUfi/k4akWqXAy0xCyfHAQo65EEaemcu+ueMBNQUh0QjHwFmmU0Hockhi6Pv/c2nL5SkKPCBUw6Xs9J55c/Q1g6xDE/DO6gIqyazyO4J6PsDME/AIn0I0oZkj9UIBUaAek20cNPCsZTYykftU8sKI6of7Q4kOfAQi+ktNLQcI802fqeycAtLp7pLoooBHm5NYBT1ioZOTzqpIBCWPWfL9eGZkCNPzz1KwZiE9kXa2qTWs4DU7VmUuGRCkoWI8AFbEIfDqR77x+ZlTVwE5SK5PGbKAn4kAiiIEF7gyWphCG6nLQ2cWO0P32rQ9BZVJwJt
- 8LZc0/Od
- 5XAlfh3Cnv9WNqjqAvjrYFOzShx6dOgzIvUfY9VGh95eXS7K0V1G8t5ACNXPsg1vcEdXM8evCG8P9iqHKbC6fgvhN6vg9nmsTMPXOWoiV35yKyX5rPpCNGrHqw+W8yasKpHZCfEkYCK5MSe6qfCP03eO0hXvunrXlODEHRN0nytO9W/0rdl/PGUBa4ekAndqkjCG3E08enH0Db6/z3PESUz7SpR+zXUnSAIf8t2yB69eyJ6ZwRhb8UHbBHf7+f+PVZeQ5GnRv3usk73Q5OQ2KxZ4N1DK9EpLdFWjxwOy2S5P5QdXnNya1FIeetAPVKv7uxhbJdAOIja11jBUtz7QNGDkYb1+2hcwVBn2UPqLoEOXualGhMmg9rhQVzJkfGGSBA1CkttOSiVWNf6ZfpSB04miQwgdjjpjlsHwdURjN1Vtk6txUMw3NjxZdidNH9aJ/gvCJaYv3K/9FKiEGZXf/8llr5wUGVbK55+dEbMMnxCTV256vI1fDJNPsPBoPLFtpHt0eABnI0wW4hxSnFxJRUhLOICdfQ07W+FgPJE3qypHm9WGgSnBVocvh+LBPkc3XPz/hZBTScF34RIm+MTJQiA6PC3OV2P2tCsiEI6gLv+ePo0HqBTF992oy3uoTPPEP1lkzxyzn+/+S+ZRhQVgqM6Gdroj7tC5am0N5oDA1u4O9zz5gxcQo8tNfXXsF5csZ88BFXas7l1KsZqLZNfm9ZCIN9auRXsvLzLp3JumT78RO0PSMBXSgaNZrSpJ8JYWzKNWNNga+ro1pt3I=
+X-Rspamd-Queue-Id: 72D8A1C0004
+X-Stat-Signature: g6i6b1hhirhnxary7oi8n58ukjtz5zr7
+X-HE-Tag: 1795198247-806822
+X-HE-Meta: U2FsdGVkX18Dqe5c5lOViB6B8W4VAmfnEBSdHD02+8Yy8D+6GODmRLhm4QgwNqDe4PqPbaiVI382XJpwcLQmp+zFLpPVTOdir8ubB7vRyXy2DntmwyD8s5vzXBzdR8+iL7KXw344Myp6kUi0JJi0GtOHwZwqHsNPREJHqK++5PsE9/W9E+YN2MXRPrwMUCKjz1MCvnt4meZI6PpTBZ/B7mmVy0rrbu5X97e2EqHY3YIJA/XBI6rwFl/KpIaaytUIFk3qs2ydo9lGV7nwyzuVuq9awfE16/tshc8xIzC0gLIwFNPrdMpuU8EhNkIcDM0/3PfufeD4gdnVi14fOhfAs8pzGfspbH4c1W7hxrie6CIoOSrstHZBV5e41/QTzEsWrVhRTgGhj7C4WcpAYzWLf7RxSJiSQvaUScYz5EGhk/yZt5yt7hLWkfH3HyEYfc8Cv0L3d7l1aKPw/8VFiXN1h/koLZU/UVuQt74B67pFTYwql1q9MhwnG+ZfscNADVZcCfULreBDL+ByrMHH8uIpGXKUmjW5+X67xzCzrUbnXiSXgMvy+HSU8nrBwLo7V0irq56m1ZJqPXkFPPk/DfJKJ9brIZh62rqpAR9hc+FfahQFuxG70pc6/UNmi2q9RrLNlrZifcGDXkEIBv/COQzmcXup1kvK7nZ1vu/0AYiqbA4dO6y8J3BxUI5/RNOdXL/ewqP88zXZERp0FW8Tb3/NL76mCL2e0rKqT+D3q36t5hUpDD7ytyio6ygSfy123kq9ch2p0ZegQEAC6uyACnvgq7O5hyrEpv63kBi7kI4xw4CPd5zOvaAxqBMLC2KshAsfbXBMWMgmCtZ2JyjCjl99GRdMaylZ76dojZK0aRn9CdOjBfHGgPfe9lbTfm4nCIOdo5b7X87LDibdHJojbSxwWQ0qCB5QJ8+k7G7vZRMAYZ/KA80045t4qWSlMpY0+vhtGJOpcU0FKk/440QeO4o
+ NbLEY9Rj
+ rvkIRLJ4hSIzFuEbYVHRR+4Yjr9kxxe8DtPodDgFZ3x/0/xg6xq3tvDziLF9487jrbRQvogBnSTciOgetkbTTcLuryDPJ8kdyNi7Tg7Bp8uuWFBUULFS8UcUic65wo8OU/llza+iW+XJ+K5jV6eV0N+cGUymh7Vpa8ucAdfIg4VbBeiVro5jFAtjalImfIZKlKZwU3zKDSRkVTxoSh+SICaNLp+PjasrPtEGzdpZ/pEXleGHb+rNIl/AVROwdM73Kv6y8tdVHBbedhwvijR/nQGH48uWzUmS/n3aryZVnUwg1CRlx7qTr1WCFsxc3/qGdbPnwMWudVPoSPhIp8p2DLSup2cT75G0hx3tFEX3uRoGhjWEyUVTY1cPnkxGu8H6nQUe4gH7do8PhHs6JrPOzZum63bvBTXKE/oTkq+MxxyGNn3+ZrHbPZMjjgVEbg8Pys3pH7gcIE1YzwZ70eRS72Ycae+r5PXeCJZcjeuaGpFKiYPvycf8wAzy4OXUPyVA3+/M19jxMEhosDOGNjY2vS7tmtOSQ+7dFnUjZiCtTT+XE1sjXHgoBZCkt02ngnNKhGD4lBqAlCTt8kYEJpr9LeGHTNSL+EiokQeVoqyjev8P3UGZ21WLdAAmgR29a1Mi1v+tQlMugpnsOYZ1sshcn5Qh7g7c+w3UkPJEnYT7FBD6jtKSuSwX8wEmGtDcALN8ieW8bl2M71DgJdZSjKbQumKVDEtS8ca9kx1m1RIVeSSACVzZuyzeWtQ23BU7IqczOlVnCwZSTSEl1Eqg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,52 +189,118 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-The OOM killer only considers a task an eligible victim if its
-mems_allowed intersects the allocating task's mems_allowed. The
-assumption is that a shared node means shared ordinary memory.
+A cpuset can allow private nodes, and rebinding a policy to a new cpuset
+mask can move its nodes onto them:
+  - a static policy reapplies the raw user mask.
+  - relative and remapped policies follow node positions in the cpuset
+    mask.
 
-Private nodes break that assumption. If two cpusets partition common
-memory but both allow a private node, an OOM in one could kill tasks in
-the other and free nothing the allocating task can use.
+Ordinary policies cannot use private nodes.
 
-Initially, private memory allocations will never invoke the OOM killer,
-so only common memory pressure reaches this check.
+Rebind policies over the cpuset's nodes other than private ones, and
+record the remap base the same way, so adding or removing a private node
+moves no policy.
 
-Leave private nodes out of the intersection.
+Cpusets keep common memory in every effective mask, so a mask with no
+node left is a bug. Warn, and keep the whole mask rather than leave the
+policy empty.
+
+On systems without a private node, rebinding is unchanged.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- kernel/cgroup/cpuset.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ mm/mempolicy.c | 42 ++++++++++++++++++++++++++++++------------
+ 1 file changed, 30 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 8401b69ee3da..e20f9ccb8ab7 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -4628,15 +4628,19 @@ int cpuset_mem_spread_node(void)
-  * @tsk2: pointer to task_struct of some other task.
-  *
-  * Description: Return true if @tsk1's mems_allowed intersects the
-- * mems_allowed of @tsk2.  Used by the OOM killer to determine if
-- * one of the task's memory usage might impact the memory available
-- * to the other.
-+ * mems_allowed of @tsk2 outside private memory nodes.  Used by the OOM
-+ * killer to determine if one of the task's memory usage might impact the
-+ * memory available to the other.
-  **/
- 
- int cpuset_mems_allowed_intersects(const struct task_struct *tsk1,
- 				   const struct task_struct *tsk2)
- {
--	return nodes_intersects(tsk1->mems_allowed, tsk2->mems_allowed);
-+	nodemask_t shared;
-+
-+	nodes_and(shared, tsk1->mems_allowed, tsk2->mems_allowed);
-+	nodes_andnot(shared, shared, node_states[N_MEMORY_PRIVATE]);
-+	return !nodes_empty(shared);
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index e208018499d6..81ccc481cea1 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -418,6 +418,18 @@ static int mpol_new_preferred(struct mempolicy *pol, const nodemask_t *nodes)
+ 	return 0;
  }
  
- /**
++/*
++ * Policies are rebound over the cpuset's nodes other than private ones. A node
++ * removed since the remap base was recorded keeps its position.
++ */
++static void mpol_rebindable_mems(nodemask_t *dst, const nodemask_t *nodes)
++{
++	nodes_andnot(*dst, *nodes, node_states[N_MEMORY_PRIVATE]);
++	/* Cpusets keep common memory in every effective mask. */
++	if (WARN_ON_ONCE(nodes_empty(*dst)))
++		*dst = *nodes;
++}
++
+ /*
+  * mpol_set_nodemask is called after mpol_new() to set up the nodemask, if
+  * any, for the new policy.  mpol_new() has already validated the nodes
+@@ -453,7 +465,8 @@ static int mpol_set_nodemask(struct mempolicy *pol,
+ 	if (mpol_store_user_nodemask(pol))
+ 		pol->w.user_nodemask = *nodes;
+ 	else
+-		pol->w.cpuset_mems_allowed = cpuset_current_mems_allowed;
++		mpol_rebindable_mems(&pol->w.cpuset_mems_allowed,
++				     &cpuset_current_mems_allowed);
+ 
+ 	ret = mpol_ops[pol->mode].create(pol, &nsc->mask2);
+ 	return ret;
+@@ -528,20 +541,22 @@ static void mpol_rebind_default(struct mempolicy *pol, const nodemask_t *nodes)
+ 
+ static void mpol_rebind_nodemask(struct mempolicy *pol, const nodemask_t *nodes)
+ {
+-	nodemask_t tmp;
++	nodemask_t tmp, allowed;
++
++	mpol_rebindable_mems(&allowed, nodes);
+ 
+-	if (pol->flags & MPOL_F_STATIC_NODES)
+-		nodes_and(tmp, pol->w.user_nodemask, *nodes);
+-	else if (pol->flags & MPOL_F_RELATIVE_NODES)
+-		mpol_relative_nodemask(&tmp, &pol->w.user_nodemask, nodes);
+-	else {
++	if (pol->flags & MPOL_F_STATIC_NODES) {
++		nodes_and(tmp, pol->w.user_nodemask, allowed);
++	} else if (pol->flags & MPOL_F_RELATIVE_NODES) {
++		mpol_relative_nodemask(&tmp, &pol->w.user_nodemask, &allowed);
++	} else {
+ 		nodes_remap(tmp, pol->nodes, pol->w.cpuset_mems_allowed,
+-								*nodes);
+-		pol->w.cpuset_mems_allowed = *nodes;
++			    allowed);
++		pol->w.cpuset_mems_allowed = allowed;
+ 	}
+ 
+ 	if (nodes_empty(tmp))
+-		tmp = *nodes;
++		tmp = allowed;
+ 
+ 	pol->nodes = tmp;
+ }
+@@ -549,7 +564,7 @@ static void mpol_rebind_nodemask(struct mempolicy *pol, const nodemask_t *nodes)
+ static void mpol_rebind_preferred(struct mempolicy *pol,
+ 						const nodemask_t *nodes)
+ {
+-	pol->w.cpuset_mems_allowed = *nodes;
++	mpol_rebindable_mems(&pol->w.cpuset_mems_allowed, nodes);
+ }
+ 
+ /*
+@@ -561,10 +576,13 @@ static void mpol_rebind_preferred(struct mempolicy *pol,
+  */
+ static void mpol_rebind_policy(struct mempolicy *pol, const nodemask_t *newmask)
+ {
++	nodemask_t mems;
++
+ 	if (!pol || pol->mode == MPOL_LOCAL)
+ 		return;
++	mpol_rebindable_mems(&mems, newmask);
+ 	if (!mpol_store_user_nodemask(pol) &&
+-	    nodes_equal(pol->w.cpuset_mems_allowed, *newmask))
++	    nodes_equal(pol->w.cpuset_mems_allowed, mems))
+ 		return;
+ 
+ 	mpol_ops[pol->mode].rebind(pol, newmask);
 
 -- 
 2.56.1
