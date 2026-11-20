@@ -1,105 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0E3606A32A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33BC606A326
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 14:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gt+MBOJ9
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BbGfJzNx
 Received: by kanga.kvack.org (Postfix)
-	id 2741F6B00EF; Fri, 20 Nov 2026 09:29:29 -0500 (EST)
+	id B08A86B05B0; Fri, 20 Nov 2026 09:34:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 225366B05B1; Fri, 20 Nov 2026 09:29:29 -0500 (EST)
+	id AB97D6B05B3; Fri, 20 Nov 2026 09:34:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13C4C6B05B3; Fri, 20 Nov 2026 09:29:29 -0500 (EST)
+	id 9A9066B05B4; Fri, 20 Nov 2026 09:34:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E59646B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 09:29:28 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6DB04C0F6D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:29:28 +0000 (UTC)
-X-FDA: 85455730416.29.2452408
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C313B4000C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:29:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gt+MBOJ9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB9A6B05B0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 09:34:12 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E05FA40F39
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:34:11 +0000 (UTC)
+X-FDA: 85455742302.08.5CC21DA
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1478616000A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:34:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=BbGfJzNx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of arpe1618@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=arpe1618@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795184966;
-	b=fshvm8K52j02HGw+Wtpzi85D7W+Mv2js7RufP/M7/T2rMwD5obEpoIB74/JzVfAynrkzMD
-	1s9eyE9Diz1/dVpWmYOUAMA1raeT9WSsoOglBTaPwog30enf/EZiCy02dijOA8I1a5iDl8
-	W2OiThwrHVG6Zk9fZbZsSvgdGjRhgok=
+	t=1795185250;
+	b=HBsW3AMW6y9f+C3MTsHhRwrOizQwrsuGm+wZzFugdSorHi9TKkJJDnXrXftFKWUqoWaMJA
+	Cm3dorAtwEDA/d4rivnkpwl2CVvu/aXQJxVfY0nrsuCd0zyaz7R4Wpmin/AWur5ngM8H4N
+	m+ROEKYn2SJQRA7PCITA83fznG+Mc9M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795184966;
+	s=arc-20220608; t=1795185250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rhOyoytlnDVzUE3pO2YswTduW+qVAkiRX4Xy+qDagYo=;
-	b=3jkNNeR4Z8h5eeCEFrdG3Qr6SD71K8Bm02eFg6BR5DeL0dhSZEuMeUbq3+AqnaOOO1PUHP
-	MaXqPIGWln5rToezXod4M6pSaP0YVQ50l7AnDi3fVQTSWpkJ4EZAXQ2cfwxR2gp0632GYq
-	cfpASQ1XiH0naHBBNkrg+JWilSDuJog=
+	bh=8zhTAZY7oSFShyaCtYnSLEI3yUB00f/zfvDFBFlOS0o=;
+	b=4PRH+zjxGwpHj4vUVO3/NkBBNXQZlQUufB+TGelwC7ZC3EVof2EQNd1MLN5wY5PsFSSfpl
+	6XaKRIOg1UXaxSr2yMtsdIUaXNIsMooqry3weknYD4yztizo1wkIHuPn19bKqQmNf8OagR
+	SHalFBuBH2NpsWm5aYd2mwG6lElCUVU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gt+MBOJ9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 429386159A;
-	Fri, 20 Nov 2026 14:29:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EB61F000C0;
-	Fri, 20 Nov 2026 14:29:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795184965;
-	bh=rhOyoytlnDVzUE3pO2YswTduW+qVAkiRX4Xy+qDagYo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Gt+MBOJ99ecdCoik/DrDTQPtJz5L/ZTUyz/EegTnM9kepvs1tpxlCXOv1QgdhAHCu
-	 Rmea41jfXufLIE9H7uiBcy5CTMLzjfkcfLsQwgixDcr/U+q3RoZbmZZMqNU1OAuVv/
-	 aJL0k0omtXBWH1QfEfPodlrJd6YnP4ktpCjHBX2T/Fj/2sJEv9VCS9VsIA1i/Liuxu
-	 mjSFcrKqc8hvKpD9cZWD9ytUtBRRiNqbPEoe3oRte2J3A84utdWKl3hIvZBKhIlmeu
-	 KXKHkErlt1fr1FyS1G4E4e0/dmYnunLescQcyb+4VQwLXaMDFM8m3apbWo/ePA8e0j
-	 9v3XLNMi3UdSw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org,  linux-doc@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org,  Alexander Graf <graf@amazon.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
-  Christian Brauner <brauner@kernel.org>,  David Hildenbrand
- <david@kernel.org>,  Hugh Dickins <hughd@google.com>,  Jonathan Corbet
- <corbet@lwn.net>,  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo
- Stoakes <ljs@kernel.org>,  Michal Hocko <mhocko@suse.com>,  Mike Rapoport
- <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
- Yadav <pratyush@kernel.org>,  Randy Dunlap <rdunlap@infradead.org>,
-  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
- <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
-  Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v4 14/19] selftests/liveupdate: Test which tmpfs files
- can be preserved
-In-Reply-To: <20261111002358.1842967-15-dmatlack@google.com> (David Matlack's
-	message of "Wed, 11 Nov 2026 00:23:52 +0000")
-References: <20261111002358.1842967-1-dmatlack@google.com>
-	<20261111002358.1842967-15-dmatlack@google.com>
-Date: Fri, 20 Nov 2026 14:29:19 +0000
-Message-ID: <2vxzh5hb1sqo.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=BbGfJzNx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of arpe1618@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=arpe1618@gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ea19c28a50so144295ad.0
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:34:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795185249; x=1795790049; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8zhTAZY7oSFShyaCtYnSLEI3yUB00f/zfvDFBFlOS0o=;
+        b=BbGfJzNxlaTF10/IheuHQMCqa0xoZYdIxy9KLic3Tcbhve3J8MyI3ErNuc296IUwGQ
+         y4s4qK/hW4A99yn1ekJOxpCeR8XZZoKekFexj6IFyv225Y5lCRQ8tOL6e2QrP1aMEo4O
+         VfO/PhKUNmP8BiBwlgYe+6pgf1PHGqE+qolWOzALJW+BObV/ZqOb6NJrJf0ou49fa2Xk
+         kdTCWs4XXVz9GaV6j+Rn/Xza++RvRi9pOMMpdJGbt88FlSwyzYR8ovhscEy1c6YMP1en
+         F5tVHGJx84qXTRHZ0wSs0Fx+SM9fQ5SbmkMvyza0TAfd8aKpDmOYqxTub7z4TCxA+tnJ
+         aQeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795185249; x=1795790049;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8zhTAZY7oSFShyaCtYnSLEI3yUB00f/zfvDFBFlOS0o=;
+        b=jPuQOQ2jSoQUjKG1KYCaYSWmGn8mdScDrPVxvAIseuqkA++z0ZDzPrmqUjAJnD1nSp
+         yA12w7ECQ+SO05Tbd1oF6eZPM8fV1Y6egq7i4chudFc1w0EOmEGuI0uHApAPoJJm1Apk
+         DVlZLYml4BYhIXKKHX+0yEILf/ncJSCDV6MFIeGA5hhhiGnjqZFJFGlOlMtifOiJNiws
+         X7tI2BOOovRC1QdwC65FwnGKveyE6qelcP3LgayZq4JCNTdXckyE4dAR1iGGFQX1pRKo
+         kt0rjl8lqBkuaLod8wcc0IdIk8m+cfY/+7/fUJpqo5licTMdibFr3HSmEXbXCIlkNY2M
+         bNgQ==
+X-Forwarded-Encrypted: i=1; AL+hErEEoS85Sfag15p0bXgXtP5xlbNuDSZll2T0BfGcoF4IvDDe2LFi/HPi7Y129qL2MM9/hEOqX2xsJQ==@kvack.org
+X-Gm-Message-State: APuU4Z/B7hGsapgodZcguGTOnkEdv5JdIAIs1vav23fwz1q0veQB7ZUY
+	bY/vJ+kO8VkY9p3ICJrn5lufqo+uzWMdr8jJofSTFFFZGX37WJEbasYX
+X-Gm-Gg: AZFdTZdD18WWtitZGZubjFejNi+5EakyZoT3E9zZJsI47zpeTStuda3rbqenyAYrvkl
+	ik9907kDYMVVrd8D+vAIcEWeqseB6Tzw7O0XRkkk6bDAICwQJVlu22dCkmesl3jpsFezt4rByh2
+	eOJ2+Z2Eq9gofz95nvSQt5qMlDEebH4luhqkxJzKUNUYcicdTDRzVVfQ0ublkFOTkbCpdMz5j2U
+	97vAg+TlVO/UfR+XS9G3Cd0UQk5vKGMN3uSKdPLHHC8dVaGoC+dQ4UpdhJTEq8Ex/PMGG2K0zhW
+	IhiIxb7UfXykAYjo5Sc53tS3DjwOtn+S2EgFy6djkT8n27/unbLMY529qULhHgmjGJXntNzFDXM
+	sd4w2h8kgssOdzRLQIF6nPx0D/dHGymnrlsG83uQzUF+31G2TEBV1ncsIBQLGS9bFh8neH085Bm
+	7YnJBDA7kcU70CorvxZXFiOXitZa4Rz508KNi3VcZm3JkhhoSvXmNLyRstZGXMA3Di6i9WkEVRE
+	W3xSo+O8JQeYiMuL4aZx3X14L4mwi+H9JVyUUBhHKJonVYM4myvFDmHAH5DgLLaj0KOQrDckEbL
+	kDl0bQTJN5IBg0R1bZDc7vOBPxPBEeMqLoqhvZEwSYIWtsIhxH8sJfhSP9CytRUco/nnMzHVVMf
+	DPkic0IqWaxxjd9Ny9D3Mb3cygQ==
+X-Received: by 2002:a17:902:eccf:b0:2e9:9263:a58 with SMTP id d9443c01a7336-2f03f0c2295mr57011025ad.1.1795185248619;
+        Fri, 20 Nov 2026 06:34:08 -0800 (PST)
+Received: from DESKTOP-CJ1L666.localdomain ([211.198.99.62])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0c1f42sm15137815ad.25.2026.11.20.06.34.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2026 06:34:08 -0800 (PST)
+From: Jiwoo Kim <arpe1618@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	Jann Horn <jannh@google.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Chen Linxuan <me@black-desk.cn>,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/3] pidfd: use one helper for pid namespace visibility checks
+Date: Fri, 20 Nov 2026 23:33:49 +0900
+Message-ID: <20261120143349.979-1-arpe1618@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
+References: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspam-User:
-X-Rspamd-Queue-Id: C313B4000C
-X-Stat-Signature: bpjw5ofxibide3xk61373f6pmnusof1a
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1478616000A
+X-Stat-Signature: 8shn3jh8p5ib7kdwyf9fr8uzqidpws8j
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1795184966-180742
-X-HE-Meta: U2FsdGVkX1/rVqcW0kIV8hAGF34UFWmgDslLbn3k2gat4XZ/XcSvjQPRtvsda2E762nFRSH30CXbiw2Fd/svZ6o+2RE+v6H9DmbdP/rPH6JKZF9pYcEjLkEdfxPkpZbBbXbYLut8KkC8igAO9T5tIEq3XfRHuTMfRzuhApKVRImDCNCBML1Sg+5ITFcDiGWj/lVrtFD19osyxj9UgtjOdafryurNnHpLph41QpmrFxBxkT6N7oemcvz76n+uuGtrPk4EhhKavDJYVwUF8pFNefEHj22U0AMlA0Ca9k1Zof6J5qNs2uc/exA7R4B6t7YhLTooC6u3c+eA079WrmZj0AdwyLSSl6spJzyJh4ILEpavBMuKEgY2DaL/zrdQ5Zi4UAEzLA9WLmLFAINSAYupkM5cGpkq3bc/M5qkEFTHFqJylMTqL63EOr8in6IAuvgXsp/zuTlZ7wLhGyMaL+p5E/VLozbKxHl58kUIQny/VHqlpPG1lPZl5EGnjwLhK6N3270/ICDXHsww4wjfFK4tA5tJiOF53SuF8rqzL5Lphyvek1MUWKc2MoyJeBEkoazmAOxNfBpOVjdn9DzbXBB7y2wgtOfv4wnB+cU4r2eP+ClcTP+7WpkZdIi5IaQSm30BqB3bGgMwFa+wIWsXxHDdXrc3dCEeIqid1pAuTNHY7X09z73EplxsIvQAShW1kciOM5EmpCg0L7DxnRhTBoQgzrcJAl32KVA8GF2f6pDAHooB6rL7kv7HlIBwpzBYI/AxYFNNHCgLET3ECuBFJVqGW/JS0SY0jWH8eC8dH1vUnTH0dd4kSG3b2EgEPJQDBtVlVOFgHk1mDtjWY7xoX6A+ssEbr2Zz//08uaiiqLV6gZUNhCAgV7xneSxm8TJhxixgz5rSwvH0cE2fM4QLj3gEkxZ06jekMbWC+7zgAv+7eU3U7nnPYAI2YGdT702w6FfL8x0N0BdcDzKE0342vg+
- tOpoVXFZ
- waosL49n6vqqyDnkbJMErflXRb4rIu3Zfm4SUgeE/q8M6jvthtby5ItMnK4ooKlzfl1XnPpgXgi67WDZ1xuCyaGX/E5HbVW5DdJOemyslKOCbZMpnp4b9Iu7SlNrJXYf0FQMmwIyJuTYHmASzKK0CjYqE6MNbJFrk5WU9fRqHv0aZgXRgzSLGDoBsBkvT93roVZEci/CPdmWyNIMYAqHqCUwrP3ITvQR+Gesh11mSJHEthFx6tof0tgBEUGOuzM4RM6LXXwsZ0AZpHhR8hAPZnMPxmAJkxLhIUcf+eNEpenMGF7ayDNzEymZcdr/LBc1Mdo5dkiliVoZswKNfatXS9BGp9SA8x6qPo3gc8OxclJGtaqt5YcrcYC+3uKqmOLerV4HGq0hNEbXldxv35U/PERT2AE3KNdi8rot+pvu20ITSGnirNyTN+a+RTzvn7+M3zeyHl5/pZFV42LcfEi2aKP6xug==
+X-Rspam-User:
+X-HE-Tag: 1795185249-237985
+X-HE-Meta: U2FsdGVkX1+SbWzxSBz6G77aOHVAge2YVz5WMbeGLC0fJ7XiMufH+dU/lny0OcoRJMw8WHwT0dXyE5p1CT5d77P8Wkk0Y8h1TKH1qlw0jLifdZEGfFMoqFU0FW2KPubTDZR3EfQ39/dEkxMUdJdbTucb+8MQpzBfaC0pLp54RFs+RVfdLm6ov8AKThJqxg9ePqtL5k2OBvv82YGLbyljaeru18Z3n6rd6Xg0mePgI2xQVR88PsUkUQoNq8WgCk0zCW/W4c6WmLGBYYFPXv37MYlSlYkasK4WJ54DHCv0VdC20tBNyXWMePFcCWJ+DLsXhNwB+sJbkHfs2VgLz5sDV6AgZj+IL0Km099CmZaU4k+vhuqOhjlwjkzFg3fdI12yK0K/lsfPTl9oGOHVja3bCJ0mFYHkix1vVpuvkuG+moumwgwtTmlY1YFG5jUber/e+tR3BW8Ch8HaUGv596Iitipcyg1v47U2csHU2PL/BaJ4Nv/g/aYR7w73Dl5VBW9eVZxfTPY+65n5FezQPJDFuPvqNQNZeGUh0r77CrwMe/EqfLoDldzOUBWq6nvSDoaYzKTrecAbHd8bDxHZ/imdV5Tgvu1U0KH0DBgLq0wk7W5sLxL4yIXUFoUXD+t6/bl7nS7GZY8Lpu8cEbezEoHg2cbpHFbEyjHp20mjCfqj+O6Kn4fEGYPso0JV9W/YPdYjbxnlaWGBNNrGZO9f0eZFjnZ/btTee9MSRCQndplbZA4VDv1eYPnH4mXdD/wrpiBOHa26RI6yOUxL2eBQ2GajbNah8qUD2qFkZsXcZ3amGL2RGanaUu0EFuU5hFVK4wNJBqHysUjVvWGZeZy0SaTWPkimje+hSGgk/znmz9EfZt6oYEiCZH4t/36F1ckyBy5anCBPpYMpq0wVkTvYnoaeZYU72HkNS3+Zmij1rzIk1ufob5pL8VRI46dus2/BrCib7p4hv7HMky/4ME7Ii4r
+ RjNuLQbN
+ XUuWqPPW7vwh/9mTiVbowC4uob9tURgTpL4RGMzevhO5aHSDbNyAvK+eZ7NJIBi+uih/nf0iJ64+dOIbknxfgmR98njo7AaSdWmx8Vi5zUB9SGGm8a23Zi22MFxdYY/Vlpr2wjgCAUBAWaV1PutSGKhtVI1kTgjdr/UY3gD89Ow2Fvkn1G04f4xNZab7vo2sGsBR3+sw4i8e8FC/TgbmD57sCVKM4T3PBo+kWZY3n7VOaO08svMsoXLCteZLLepDERj8QF3T7ctwMKGgim6QaPd2BUo5lM42z/geGnQvE0cIOPAFi3UArP1WYbZOQ/sVhh78lqVEKYXuGXb6Gflv1OsA2iEiKU02vsjorl+KGyJAcBVH9UH9zEzVbMzibpvj8CO50wdgo084urJa/9Z08m6uMbz34gfW1yumMkZF/1TVGRL/rwUZdtvfM9OiLYXJXsnXCASBAdEKUvCv6IyDJQfcrLgwkHHoyvhSn9bnVDksYUqn3czGfgdq59ZLvT2899vMw6cvvo+bQhq1PlWhNr+OJ5UDWPwZk34QNWjZ6o8Uw2jalAT38St9ivmFmvQjPH3t9Rb9V9h7RSHznH1wwHnQ9bP4sQPec8JSTEvcPrHm0bnfAdSRN62V0FtKnZv7NzrNH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,86 +129,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11 2026, David Matlack wrote:
+On Fri, Nov 20, 2026 at 02:42:08PM +0100, Christian Brauner wrote:
+> The pidfd api checks in a bunch of places whether the target of a pidfd
+> is visible in the caller's pid namespace. pidfs has
+> pid_in_current_pidns() for PIDFD_GET_INFO and the namespace and task
+> path ioctls. The pidfs file handle lookup open-codes pid_vnr() and
+> pidfd_getfd() does the same since Jiwoo's fix [1]. pidfd_send_signal()
+> walks the pid namespace hierarchy in its own access_pidfd_pidns().
+> Yuck, unify it.
 
-> Add tests to liveupdate.c for the checks done when preserving a tmpfs
-> file: A file can be preserved through a read-only fd, but not a
-> write-only fd. Preserving it requires permission to write to it, except
-> for the owner of an immutable file or of a file on a read-only
-> superblock. Append-only files can't be preserved, and files can be
-> preserved through a read-only mount. Also check that the size of a
-> preserved file is frozen until the file is unpreserved.
->
-> These checks don't need a kexec, so they run as part of the regular
-> liveupdate selftest.
->
-> Enable CONFIG_TMPFS_XATTR for FS_IOC_SETFLAGS. The test cases that use
-> it are skipped without it.
->
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  tools/testing/selftests/liveupdate/config     |   1 +
->  .../testing/selftests/liveupdate/liveupdate.c | 303 ++++++++++++++++++
->  2 files changed, 304 insertions(+)
->
-[...]
-> +/*
-> + * Test Case: Frozen Size of a Preserved File
-> + *
-> + * While a file is preserved, its size can't change and no holes can be punched
-> + * into it. Writes within the file still work. Closing the session unpreserves
-> + * the file, after which its size can change again.
-> + */
-> +TEST_F(preserve_tmpfs, frozen_size)
+Thanks for picking up the fix and for the follow-up.
 
-Nit: This test isn't really for "frozen size", it makes sure a preserved
-file behaves as we expect it to. So perhaps call it "preserved_ops" and
-update the comment?
+I went through the three patches. The equivalence argument in 2/3
+holds: alloc_pid() fills pid->numbers[i].ns with the ancestor at level
+i, so the ->parent walk in access_pidfd_pidns() can only meet the
+caller's namespace at pid->numbers[active->level].
 
-> +{
-> +	long page_size = getpagesize();
-> +	struct stat st;
-> +	char c;
-> +	int fd;
-> +
-> +	fd = create_file("file", 0644);
-> +	ASSERT_GE(fd, 0);
-> +	ASSERT_EQ(ftruncate(fd, 2 * page_size), 0);
-> +	ASSERT_EQ(luo_session_preserve_fd(self->session_fd, fd, 1), 0);
-> +
-> +	EXPECT_EQ(ftruncate(fd, page_size), -1);
-> +	EXPECT_EQ(errno, EPERM);
-> +	EXPECT_EQ(ftruncate(fd, 4 * page_size), -1);
-> +	EXPECT_EQ(errno, EPERM);
-> +	EXPECT_EQ(fallocate(fd, 0, 0, 4 * page_size), -1);
-> +	EXPECT_EQ(errno, EPERM);
-> +	EXPECT_EQ(fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0,
-> +			    page_size), -1);
-> +	EXPECT_EQ(errno, EPERM);
-> +	EXPECT_EQ(pwrite(fd, "x", 1, 2 * page_size), -1);
-> +	EXPECT_EQ(errno, EPERM);
+One nit on the 3/3 changelog: process_madvise() on another process
+also needs CAP_SYS_NICE and only accepts the non-destructive hints, so
+there the cross-namespace case already needs a privileged caller.
+process_mrelease() is the one without a permission check.
 
-Nit: Is there any point in matching the exact error code? Wouldn't
-checking for a failed syscall be enough?
+I also ran the series in a QEMU guest, on a v7.4-rc3 based tree with
+the fix applied, as uid 1000 without capabilities:
 
-> +
-> +	/* The size didn't change, but writes within the file work. */
-> +	ASSERT_EQ(fstat(fd, &st), 0);
-> +	EXPECT_EQ(st.st_size, 2 * page_size);
-> +	EXPECT_EQ(pwrite(fd, "x", 1, page_size), 1);
-> +	EXPECT_EQ(pread(fd, &c, 1, page_size), 1);
-> +	EXPECT_EQ(c, 'x');
-> +
-> +	ASSERT_EQ(close(self->session_fd), 0);
-> +	self->session_fd = -1;
-> +	EXPECT_EQ(ftruncate(fd, page_size), 0);
-> +
-> +	close(fd);
-> +}
-> +
->  TEST_HARNESS_MAIN
+- caller in a child pid namespace, same user namespace, pidfd for a
+  task outside of it: process_madvise(MADV_COLD) and process_mrelease()
+  now fail with -EREMOTE (before: -EPERM and -EINVAL),
+  pidfd_send_signal() still fails with -EINVAL and pidfd_getfd() with
+  -EREMOTE;
+- caller in the target's pid namespace: all four return what they
+  returned before.
 
--- 
-Regards,
-Pratyush Yadav
+The review and the test were done with the help of an AI coding
+assistant.
+
+For the series:
+
+Reviewed-by: Jiwoo Kim <arpe1618@gmail.com>
+Tested-by: Jiwoo Kim <arpe1618@gmail.com>
 
