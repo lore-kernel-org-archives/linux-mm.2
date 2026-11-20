@@ -1,104 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06FF606B9A6
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B97160A3828
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RlKF2zAV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VtLT1Vjl
 Received: by kanga.kvack.org (Postfix)
-	id C92CA6B05BC; Fri, 20 Nov 2026 13:09:58 -0500 (EST)
+	id ABEC66B05C0; Fri, 20 Nov 2026 13:10:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF5CB6B05BD; Fri, 20 Nov 2026 13:09:58 -0500 (EST)
+	id A48846B05C1; Fri, 20 Nov 2026 13:10:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A238F6B05BE; Fri, 20 Nov 2026 13:09:58 -0500 (EST)
+	id 8E9956B05C2; Fri, 20 Nov 2026 13:10:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 637066B05BC
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:09:58 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F03EF1A012E
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:57 +0000 (UTC)
-X-FDA: 85456286034.22.A074E6B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FFD96B05C0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:04 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE77E12013B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:03 +0000 (UTC)
+X-FDA: 85456286286.27.575CE08
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C7D254000A
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RlKF2zAV;
+	by imf05.hostedemail.com (Postfix) with ESMTP id BB886100003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtLT1Vjl;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	spf=pass (imf05.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198195;
-	b=pqrhggu4xxPWGbte2AlheJkb8R41y5NwUiHjk2aufyS6wzOJZWzN+X9pONN0x92UTepxr+
-	dvWgry9RYR/3JlKShufEiOsHU9CxUYldKdaSkhQNv1cINHNu6VJWdUPRk8XdKRwOajMdEH
-	ChSpQqRx45pYpP3fA/iXP3S9B14+REs=
+	t=1795198201;
+	b=ElU7lxMPFZSa+XjAoVWvLupnx+uQzBvUfVrJUzM77QqGlzoPlc5chIjadATN3fekgmi1GH
+	PK71vJF2H+R1FLeqle58Tsw5/O0O40c62MZjLwEWss+yY59dFaABJ8pHKbn6nOKTJpdVDH
+	nhxRXXCBSZrxS5q6+JsvO5c0xrvOzas=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198195;
+	s=arc-20220608; t=1795198201;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Im7ezlywxNUuwRgGis5+rWWOQyX3m2uPTqHdnIjcZAs=;
-	b=WvdgHKEGvFdSr2hXQq3pcg80IpUe7KQGgY5yHZXGIgwkZkT0Xp1S5vE45sEX9g8hyVw+bw
-	bJPqpT1oq50bgYrwv8kLcb24fvRqb/T6LR1qCflzCDokz9oJ3B7e2Er0PZ5bEZoOW+0oJP
-	7jRjpEJcbOKNji3m3wKv+zCJOs+aP2U=
+	bh=viHCEx84Kk76c0umGmj4eFC340kJyEsd5v6cdjPlHcY=;
+	b=6/AU5j7sssjM7y5EUgEp/jZ+jdPgqaW5XUcl/FkmMZKkUQVGGJ2ffhJ4q17grXsF6DvMjE
+	XEgs/5HPf4wz+ejjtnbTKG/cyiuf3az2JcNj3u8JaejHCYajB8ZIeDaRzeVYJ4yeXKUGtA
+	3HeBhFkDFc2NCVZVaqcrt47fpLgHCRE=
 ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RlKF2zAV;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtLT1Vjl;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	spf=pass (imf05.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 60D26633E8;
-	Fri, 20 Nov 2026 18:09:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 584D1633A1;
+	Fri, 20 Nov 2026 18:10:01 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198195;
-	b=ZnTn4olhIMfTKOch1I7uT+MyQKIEpff9KQuVe4jZ7sMhQ240FJBMmBl/XNqWCsbE2OTy
-	 e/6sjvviMy/Hk4xI1q+AsBvs2fysXDAkbvrh9AeTOrSpEpH3sXMhLWpljg5Hmrr6DCkSK
-	 ebUAa0Wvgcw3iheHezOJbZSKKFNLNNEDg/IfTO642QkW0le98pxlU3n1CVPggfJkVJNEY
-	 TyH+SZq0q3oKD+Ve4TpWQFn6z6usIMvexXVWn32hspKuzdQEAoMiWY5Qrez/oxAjTOIGP
-	 GSNpWADrTnTaRJcwauZWkmxop7k6/RF+QzQybgr8pM6Daq1Eepdsecp/chz/nl2VzFA==
+	t=1795198201;
+	b=pbBsCyTuXe3uGA4DfyytHejl1rPZg2LP7B3EjlFpUT7Tj37JXqUfZo8eUb7Cvwm4xPUl
+	 8VgllOC2PGIOFJ3HJ9vkMeEwiixcxDwW0CoGRe9LAwYSBoH4s9Ayu3E/sbRLcArxIsieK
+	 fFIH7AsiRCfY7TavYKrbzfZc0IO6QhQS4cnvPWMQ7D1mn9zRSetQki9XN4co0Nvv7IOa0
+	 QdtOkHZ2cl6C5oaege3uvLAnNYKeopUmBubd/zHpQb13d6NUNxtAvFKcDLUiWVSj+Tk+l
+	 ozMktJgL1MvZVoxSiiRrQpLF5S+rifKHVKu2wluTEadfe3LvjDS8gsKBzEHl71P9Ugg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198195;
+	c=relaxed/relaxed; t=1795198201;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Im7ezlywxNUuwRgGis5+rWWOQyX3m2uPTqHdnIjcZAs=;
-	b=005bSvWt/CHrVc4o5R6UPnCD1Z9eZD9MRCCsgQb5Dw5eBcuHL278Os2UYZb2D3DU5q8R
-	 IfB9jdeVi2gSoFsUpzpZdG7n+KhGMgQ98n4LG3KsXEKsJEYnGf7mug+OT5d5+vuP8qRdd
-	 qgArhGv7rJrIR8eSAhI24yVQ3zg+P6DVdD23Y9jxJfIZ0JfaP1geOGMBP5kuWMz9F7+W0
-	 qYuO/sjleVhFXKYBU3vpjuWUtIphCFEKYbWrL0sr4Vx1ahCFPQhDR/awttXd1VkoktVeZ
-	 dpFhVmpw6EGgCtCfZRZep3WCHrwtxh7ny+sWx4Gb9R7VjXXDwgi8gD64jVvFdIjNSoA==
+	bh=viHCEx84Kk76c0umGmj4eFC340kJyEsd5v6cdjPlHcY=;
+	b=C7jUbMYKBF2IyihPO+sr96NRGAwCmBIT8umG97U92DC+Ok5dYuQpKfw76kLOQ8E5UPvo
+	 slsGsTDpC57YpeK3Jccf1dymMyHYCFPZ1njxbfJGus20u6wUq+tT7Keq38c5tOdLE2KhH
+	 0bZkMZ4enjVvy2+cZ5h8qXuTS7zWkQuGO0C0tZxQ5GRpazZNEsODN83liAcO03gPh0IF2
+	 pe9R3PX6A7251U0QwaFmOfkDNrs3xYj6dGSblmUFHZnxRfSm3ve33tRrhYfefXVcSCbll
+	 rbbhb1awKN4FFPQksIFdWFqBDJr7RYZHWlFIICRxoRj+U98ejHIeTm6HEKRZdg5p0Jw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id BD15D1F01805;
-	Fri, 20 Nov 2026 18:09:45 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 20F871F01565;
+	Fri, 20 Nov 2026 18:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198195;
-	bh=Im7ezlywxNUuwRgGis5+rWWOQyX3m2uPTqHdnIjcZAs=;
+	s=k20260515; t=1795198201;
+	bh=viHCEx84Kk76c0umGmj4eFC340kJyEsd5v6cdjPlHcY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=RlKF2zAVcq3I3QMrgNGuWt0XJVf+p0cRcd+r42sCLDv25kIQRGh7bYxe4rJCWuMjG
-	 NBRiz/XDA0mZcB1eQBgDhWybdN0jp1HWQ2KdvI+R2jzsnWPEO4mYJufxyZ+JOcakmP
-	 8whOo+b71zbxSYVRAguQz4qdrg4JJn1jI/6vYcbGxw+ZygP4RUpWGj7HM1QbvU/Xgi
-	 18YJSAOf9NPTcXAiyI8r9Jccey5joOqFitVORARfaciTGRqEZtuK4KhD+AnsaTvZn1
-	 H9Js+YwehcWuGc7sMMKFUdYLAKhin7EVD2nlG7PWwx8ISU+2XBmkGqwK8rzICJjzSW
-	 JTeLIo482oWTg==
+	b=VtLT1Vjl/ZJhW5bu0P7GA1WqpSuPQF4AOmYWCeaIu/gh0gPmu2F4hGBMAPGv+hhfR
+	 yBY4LOPWwvA2gtK28DY0usxuMH8BxokZCU+GGsHLjY2fiBMTkJhR5+qAxMvr6Jar4o
+	 klRm9iK5tdVMNIvpWRTMzN9DI5E4kcBYgipJfhDsjmFZ+LOTprdviW+6I6Pv1geKeJ
+	 iXn3B/jfMB5DF0ePSA0T3N+/gNq7jFRF0WCWqSeqo6qXnKmT4S+iAbbx2eHUIsvsO+
+	 3+tLjgr8rvt5hcQHrkPpqOUXL6BnS/j4R8gEaA7GQ9SVqiiBwVhJU+qAc6pRVMUApQ
+	 RnPiy3dyAhkIw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id DDC054B901;
-	Fri, 20 Nov 2026 18:09:18 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 08EB64B905;
+	Fri, 20 Nov 2026 18:09:19 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:07 -0500
-Subject: [PATCH 16/60] mm/oom_kill: compare OOM constraints against common
- memory
+Date: Fri, 20 Nov 2026 13:09:08 -0500
+Subject: [PATCH 17/60] PM: hibernate: size the image from common memory
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-16-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-17-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +154,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=1433;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=2366;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=CGbgCesiUK7FaS3uE7XEsjS4RivbEoofszYkkl9tolQ=;
- b=Rl5iRdBywuqFmQMQRF7nrZzOaOma19N8ic11E9/UVk+2PB3MAEYUmgBsm8qCfHUD/luGjWSnn
- 1y963MhGKdIDVXBwN1DmjehCfEvUCZJcZl0Bhfm95sNHcGlPv8/lJgd
+ bh=A3l/6pPMz9YPRB99YIwhmspv/HD0g4ri54lK4DwOHLU=;
+ b=mI+JjYrIOIQon3oEqa2KKxHS1h91tm2h8L4t/n3aWLMMUysU1+sJoKRNNeogaWqhf2eGMWvyF
+ WkAqiNUeQllD2ej1Rpnh67Y1ngxyx7Mj3iNBos7ryRyQn7xec/6u1L2
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +166,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C7D254000A
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BB886100003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 5in3rfi55198q7ia7uei1mzxhm1tgzfj
-X-HE-Tag: 1795198195-663036
-X-HE-Meta: U2FsdGVkX1/N+GgnEpPhAUCJwkFtKWQXUT3IgN7i35BZz4BlN3HUoer46X/kmt9ggnQcEcYYd9enwIRnlk9ACjUOLn8fqupcbAfwamjJ5v3wadtv3B+h3qOLr0UvP9fePdHLCxmKcTqG3WC0HWX9W6fTznuLhDgx6SHOY44DbrB5ovpSQm1PjP9y5fy7aE/ETKaqtyljtqlxQAGvcFTHrtvmsuAuTU2Qu7n5EHf+LYHCHLvARtBenVW2++Zd2HNabSAVPmwD949xYNr3d3Os4ksJILSrF/LV9F/NMR5pWgJq54CmxxAs6VkKoCb+UGs9g7TW+WSxusb6ne+D7S0eStxgcgp6/uyUOW1E/KAWOaxddjS1TIZUbe217CJlQ3sbP2tCULE/kRAEKSQVuFD3eE/8AitpSkHrUcE71akk685eFFcYEymbArBjkt95V+ABlmKK7brXySAaUtTCxqn1Lal6pASOqXhYm5mOkBKm7N/iBu5porBFuGnBlS15pYXgzrJ+qQ/6+OsHPhpAKHHlZDPuyTDmNaiOdTBMBB/snGOMyQjRzaP6JKkQVCoVl3XhqnPkBNVk0Oq97gy24hwbO99VgNnDzkCqC7ks/fFOgiHwAJO9Ism7Y5tUn7sekez97fPHya3tsPm7GA4ykKLaPEXnHKPclw2G4TEeGmaj/WdsSDS5T8etP2gSghcSI3D/cBHB/9rve15IUw45QAl8iF4CAwj3nw1FC6Dqq1QeciLLab7QZzBA3ipXhCQNvLL4GqPA3BCKBtZOnUTtjy/CQDjAzzGrR3UVEO+Ar+cWEvCaf+Knydh7JbbnijrplfCN22cARf9OWlPzcQTphU0KImqbpgaLHMkoU0JdS8UxS/6/RpLbqR+gMHhPWplvtlKBef+1wdEE46bMMhORBud7cwyov4mZyWFGGSIMrZt25x+t0/wvFA0yaV5ek8N2/eMdkxpMpOjzsAPUC70/mW7
- 7KCjdGgc
- 4wq5hH0BAcn2xCNZO/RU1uJJ+QAQsySaCG0+ZvFNbik/JjndSmI/ZCYMSzzUciMWuYHwnbNNZ0+zsjypeX/ZfrFtiBJRBjuCVIsQ0BW6UuFvYZQTN5+f3XVGKJCCvccDJfPUvG1WPDUkA90BS8sxvI5HvDfqx2R/qm0I58BqlN9TRzCb8su0QQzI8MwQGeqDo7AM43yxK9L++bRrReIRtqoedage5IUDrypS027OvhI5pTKiW43mtdu7FeJY61TAGpOQZ7ZrLKNcBckitI4KWLh83Auq7Yt+Iaq3Q2EY66tfbEM3RPmcrUqkLczs3/xhWtcJ1JfKhFyRBWfhTIFYwMGy6v+nV9xRnMua2wVmWl76daOeNKO91sXGGMbooJmfZ3SKRBAE/NnjKigU3Zi8kNzVHvPcExzQMtJLrwszq108Ea1BD9+HXmgomQEzgpCuupf4NTle0Po9kbqRzkHvh2AEY57USJSMfke7DZH9u0zfL74FK0Dr6JBxFFCDGpRfzoiEBQ32QM4zAl1cv99wkEl/7lhpYZDnHftEXV7gwFsvfc4tm+ma9FX1jVPp02MAc0krsKRtxXaQoiaTB+Ko89QW1jTIE75lnxeNzK3HRcuC+YPKtXMigSBbyfeL+qSbVTWB+YXefYc3sP4fnzLtz5Gh4hFm2s0BSDa10Pb3mhRORjQhdfIBxN2xupIP2eJrqLLvJ2uLRy/GiJfd4n5OpPcB1M1vcZfrlua15ww+/G9q2zngdjXX/UETDjtk1VPpobINDq/gjIR2s7TImJ49eLJeYTYO1A8b3Une83yzogfhmdFlij68CTUSDgw==
+X-Stat-Signature: q11yn4pn3csdyk811i3qy6h3uf6daza5
+X-Rspam-User:
+X-HE-Tag: 1795198201-447531
+X-HE-Meta: U2FsdGVkX18KsBsdfO+syyylsC+kupb+p8fXHnFt/+CSpFP7cuQUTX4e0d/zM0nmwqrWVAd/da6NEX0pGAoLv4TFGhbv/xe9EOB6yOb/Wn3bY9LIEVYn++TrU4dKbOZGuf5oxqh4zfeDe8sbf8kgCog0v9Ejz3hI4XRoRkch2GEW4few/Wda967v/26mu+R1yRpuMOUu2t1g4hCDGzsKngBvZysWeAxFPLpu5ZQcaE/TVcEpWHVeMZfXP3fsVxAGi0XyVX7t7Sdt45iqSkc97V4bepw9RXB/OXaydY76CMt+/CGWD8VdkxydkzstCv/npygKj8VbLC11X6SvxmthnfSx5JhlNvJX7p+0TNk3SlMc/5bMUysCtpOAubgQyQNEMTu3Jv0fG0+KAXYhMdMQ1nolUZdi/sfJsCMaZCLLHzeZwubkUBS8Ay+MxwieYjflBoi8Xm0ctlwCt7+y6i5zsRyzov2f1VfjAPMoqL9OWRtJYW3LPYKdV0Fz+KBK6uL4lNDCpnwapAIQB3hr/gmXfcNgUhCifl1zwlaHkxCOb6dyYtjKeI4noZQFOqHBYIhhdi76cHR+fVJN7Ogd2aVOvbfQspiZRvqLhM3Gfxtl0exymcLU7039uaLq4H3qbUzT+WdHP3Qhp9b8k0H5J6XjYZ3sxpKolzAmarH6+/m8EXIcHk/1tXiyfNw4jAi72klZBjAR9+VcfsAMP0aQQ7wusHK9ImCFeVp0W1g2Ng0jhiLQDBn6vPCQuWQWjTB65iRoyLJwjZRt5GvT8caHkT5CbJJ2pe561CfWOp1kuQBw5vaYmca+rrJhK0SqsCVPzGNrtRKPlty/DejHVGo67c9LBVQLjakv0K64Z3VpJynvQfh0Rpyz/5f3FEIXYdoyR0NWS5ttVFG0q7y6Vd7UYbYA9yjPvNrXrePlfFg6YEKAxdzyB1fuYiPN8xm4wJ7+xhgZlvMYFnG3DKZ06D4Pmed
+ pZIXd8NI
+ i/At5fuDAQJ0dlbb9EnUzBXtUNesdXlYm4vusehbS6WPjUa4FbZzDOqyxKGZknZ/jYQpaBBnSBuKMqti9U7x+Tus/vBX8EBWVIKnZY1TmyVkf8cZZNKonaTdEOY58y+1lE2Tqy5841dcjGfXvBURQurCJ3r3bH6JZfJFlls9ezww2Gq0bR+AF1V/hTKWOm7/OPyyRVM4NFTud8iwPPYExAd8M7BFoaXrIYLFdj3ni9dlWsy3MiumkYZgIuNseqJtXJYEkhLnpXRIrWHIEOO/t+Cgd03DFe7koSkdSF+ZEPFP+JnzOKO997eJuz2wZpSiHhH9Y3jO7FOwqpAy3+3bLVk4ZJ/TKXDFjjadVnPMHyL8skSCUSGQbOnK5gxbXQtbJ9Ro5I4hE1S2HHueW9EW/38IEW7Qo6EseVToIhEa/W3lmu3a+aYB9vUwfP1ibf3DXBfc34L0r3uPzaK28kqdJZCV6crGcWDW8MGu2kDbYyKkycth8ZjmddLSJw0GsNInO7YrQCQedKXo2dfRYS0eBGdIc7XdoSF+l+2aluNStJKexDZW+gcY7mKfKtQe1ByUoeGdQEcCu7Du8A4weVwCfDd4+DiWE2sFukYbMpexJoXuDtsCe24bugcGHRQrfM9KeuUUPa0Gupax8+QtVVKjWh89Wzl3xXHTso3Kb+LrOwUd2EE+QyW9vNdPht5PQtXjjjbZM/x15dLZ14gasGW9+dfG7cCGfFMC1Ra2S2LdwPejlzFnTLyiCIdfmGldltXPqFNfV/c4oDp/LHMk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,42 +188,72 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-Ordinary allocations reach only common-memory zonelists. Compare policy
-and cpuset constraints against N_MEMORY_COMMON, so nodes outside it
-neither make an otherwise global policy appear constrained nor inflate
-the constrained capacity.
+hibernate_preallocate_memory(), enough_free_mem() and
+count_free_highmem_pages() count the free pages of every populated zone
+as room for the hibernation image, but the pages used to store the image
+can only come from common memory.
+
+Count free pages only in zones on N_MEMORY_COMMON nodes.
+
+The image metadata estimate is a separate sum.  The bitmaps track the
+page frames, and every zone's frames are tracked (regardless of node),
+so that sum still needs to be calculated for all populated zones.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/oom_kill.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/power/snapshot.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 5d48bd862c27..1ec22bdad1fd 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -274,9 +274,9 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
- 	 * get_page_from_freelist().
- 	 */
- 	if (oc->nodemask &&
--	    !nodes_subset(node_states[N_MEMORY], *oc->nodemask)) {
-+	    !nodes_subset(node_states[N_MEMORY_COMMON], *oc->nodemask)) {
- 		oc->totalpages = total_swap_pages;
--		for_each_node_mask(nid, *oc->nodemask)
-+		for_each_node_mask_state(nid, *oc->nodemask, N_MEMORY_COMMON)
- 			oc->totalpages += node_present_pages(nid);
- 		return CONSTRAINT_MEMORY_POLICY;
- 	}
-@@ -289,7 +289,8 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index d5dba0e50b2e..912804bee361 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -1291,16 +1291,19 @@ static void mark_free_pages(struct zone *zone)
+ /**
+  * count_free_highmem_pages - Compute the total number of free highmem pages.
+  *
+- * The returned number is system-wide.
++ * Only common memory counts, since image pages come from common memory.
+  */
+ static unsigned int count_free_highmem_pages(void)
+ {
+ 	struct zone *zone;
+ 	unsigned int cnt = 0;
  
- 	if (cpuset_limited) {
- 		oc->totalpages = total_swap_pages;
--		for_each_node_mask(nid, cpuset_current_mems_allowed)
-+		for_each_node_mask_state(nid, cpuset_current_mems_allowed,
-+					 N_MEMORY_COMMON)
- 			oc->totalpages += node_present_pages(nid);
- 		return CONSTRAINT_CPUSET;
- 	}
+-	for_each_populated_zone(zone)
++	for_each_populated_zone(zone) {
++		if (!node_state(zone_to_nid(zone), N_MEMORY_COMMON))
++			continue;
+ 		if (is_highmem(zone))
+ 			cnt += zone_page_state(zone, NR_FREE_PAGES);
++	}
+ 
+ 	return cnt;
+ }
+@@ -1868,6 +1871,9 @@ int hibernate_preallocate_memory(void)
+ 	size = 0;
+ 	for_each_populated_zone(zone) {
+ 		size += snapshot_additional_pages(zone);
++		/* Image pages come from ordinary allocations. */
++		if (!node_state(zone_to_nid(zone), N_MEMORY_COMMON))
++			continue;
+ 		if (is_highmem(zone))
+ 			highmem += zone_page_state(zone, NR_FREE_PAGES);
+ 		else
+@@ -2011,9 +2017,12 @@ static int enough_free_mem(unsigned int nr_pages, unsigned int nr_highmem)
+ 	struct zone *zone;
+ 	unsigned int free = alloc_normal;
+ 
+-	for_each_populated_zone(zone)
++	for_each_populated_zone(zone) {
++		if (!node_state(zone_to_nid(zone), N_MEMORY_COMMON))
++			continue;
+ 		if (!is_highmem(zone))
+ 			free += zone_page_state(zone, NR_FREE_PAGES);
++	}
+ 
+ 	nr_pages += count_pages_for_highmem(nr_highmem);
+ 	pr_debug("Normal pages needed: %u + %u, available pages: %u\n",
 
 -- 
 2.56.1
