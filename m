@@ -1,36 +1,36 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1412606BDDF
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16410607A0E3
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o2VqE9HQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PVd73Ics
 Received: by kanga.kvack.org (Postfix)
-	id 05FFD6B05D5; Fri, 20 Nov 2026 13:10:32 -0500 (EST)
+	id B35CC6B05D6; Fri, 20 Nov 2026 13:10:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 010436B05D6; Fri, 20 Nov 2026 13:10:31 -0500 (EST)
+	id AE64A6B05D7; Fri, 20 Nov 2026 13:10:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF2B36B05D7; Fri, 20 Nov 2026 13:10:31 -0500 (EST)
+	id 95F906B05D8; Fri, 20 Nov 2026 13:10:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A54F46B05D5
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:31 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38B38160139
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 65C3A6B05D6
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:32 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D544F120122
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:31 +0000 (UTC)
-X-FDA: 85456287462.01.C72F7EE
+X-FDA: 85456287462.20.D63FE41
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1DD85180006
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2VqE9HQ;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9A8B2C000B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVd73Ics;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf24.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1795198229;
-	b=pdz5COG04tz3Hf9iGxyK6je2ih7Y0EoOscBCFzPLDCFWt9FKUkIKez3XDMAOOg8M1LDOX8
-	2kkXrGL10EgyfikTSycBqir7i1Vpr6jFQube30I3TyO+L+1HxiX76wvmyL66N7zqHecWSR
-	nt9nKVsNJO8/HgZ+2+3p4vmiQecHD1w=
+	b=ctUril1FPHoQOJOdBZOkebOIcm5nT0hhXXh7ENXbMdbSLReZUmQ1F/6IMI/8nFkH5MX+wE
+	hWF0YAORqzBKTVMjveFpgiTWmUclxnhXWe2+HbTLLdO4JqoWBCphyUSa/q6hSo/s54GoC9
+	TKsikLA2H6xnBWm0erlpuooUG06hrUE=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795198229;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -38,66 +38,67 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MYei4KuJf+QfbxwWuL97G2Caql6yWhkkwRbrkOuMiXs=;
-	b=pOagBoLRUGc98EL/DV42QCiEJ1XxchvNYC4rXavTrjbY1tbAvgp77MQol/bBcFwuVfiN/9
-	tZbHPOrAJamhhnp6oIJd5bsir7EdDaQKvhUQYj4ZQAOJlFsQZD/xysacviTccs2iEBgid0
-	1hpwzeDlYDKUg6X84rg5VZC8IQ1emZ0=
+	bh=GLAmj9OwANHiFsbGoQBG/l0HxQVZ0G6TA0SumkQC8Ek=;
+	b=K6mWj8/4or9ZrRYDRumqQM1G2UCeymSQKHWktmLWDtt2SZol6Am/xC5AwjFOyLQMrpbRML
+	IJqQoO7m6g0FhU6dkNsRLWK0pyGYPYkqY4U9elCTjbl8CBDcorrZ0MXonP3jyQo6R2OWdr
+	x4V72YixyetodPXbxion38eBo60weS4=
 ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2VqE9HQ;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVd73Ics;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf24.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C0C3414F7;
+	by sea.source.kernel.org (Postfix) with ESMTP id D354A40EF9;
 	Fri, 20 Nov 2026 18:10:28 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795198228;
-	b=vEStu+6XPuVUSEgha/bPJPPhZaQjviuKs96+dCX/6okpXf4EtLZJiM1vslyGHue223Ws
-	 PpZIicYNPAF+9WRDrIpHQBVvzT2pm0TvasQVVU8FU00ETWReqUZcxmTmseqGx78axnNU4
-	 qUNrX+73aqzv7ULR0XwRAWYYOpSwpvCaYeVDa/Bk/bAonzlF2STVDEydTjdaLHFdl7SRC
-	 lQe+6TtYtCVoGDSzf3AXO38oUKxEuUvDykMRusTlrfVs2nH0MKv5BdoXv9DjjoLlpV018
-	 eXQXn6VIlcVnpVGDxm1+7TO80HCwsU+8CITb3+PnzFgG/SsaJZlpGK2WJK3Dq/us2Dw==
+	b=VLVX11e1841MmZlYnTKLAt/Bqii3gkqQ3xwcEezv4+p/uvrCC+IPMD4C0Z5lcWA/KwZh
+	 10h3ZumZ025a0SERb5XOAFrp4+laWc8GDynEY9ZqLa4DEQaWIr+fFXJu8EkmxeusL+Gf0
+	 kue0f4Wg7aaDdvf5+7+Opvj0A+HJ1XkvM1bXd7Q071linYsCsLA2GgVcos8Vk1nMchaAA
+	 tP4mLCedo1VI+5zjW7tydWQPJZ2FFCW/QG6m+ZRFlMsHOFEsgIgjIJQ1S4aJZmlchifb2
+	 86FfhMpSZ9Os2rkfh+KkSOh2LOsn3Pk+70TEYkMOmWmJK+zM0ruCBXXitYy3wgycDrQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795198228;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=MYei4KuJf+QfbxwWuL97G2Caql6yWhkkwRbrkOuMiXs=;
-	b=tlPRcLEkNO/vMCwHkaRkZJxWo/JMXbocux82NJN9dzkghGe1POzsjAKEkB/jTnCTbdw1
-	 A5/cgh6v0wRJzLLCZQ6dONpO/2E9VPSkE1fZdTS80vU7IoMt6kKQ/KWqbucv65/Kp1lv0
-	 2tU8YVTgG4sd1/iSN+U5sHPTJWR+xtZmWQDZMCH0umUQcPTGR22gXiKuKB9t0muGF+3vz
-	 NEoasY+EHcCIKTZDIF0XsyEbcKgCRit/xfgU0dtOKLi+c5LLZRU6haV8rkX3rCFRcv3yP
-	 ipDCVpqcoq0P6ngaxMeLziGpja0Bv7LLg1Ug03zfdZuZWjMd8jyvbmYGB2Y4+p5Uh8g==
+	bh=GLAmj9OwANHiFsbGoQBG/l0HxQVZ0G6TA0SumkQC8Ek=;
+	b=OKK1k97GtF6xD9yLiFkTOQm5Jsa0rplHg/D371vC4ERQb5U0pR+ZeSYSvxGKBNaWGXdF
+	 pO/UXKqVgVUo1D/CN6Ec3RfKVBr9/85pzr6noPPykAXFN09QzYgWTD5PPq9007fnKbICa
+	 jixdnCo2E0nXMOv/7Kx/BJc4Yg5+TLYguQpLo3I6S42eouRFnbMDAvzprI/ZWMhZVQBU3
+	 hPFjEANG2sLuZVwGkNb5dilZCDJrTslRKoUuzLqEVUwPONLcxHlsQO4DymZkID6/30YLM
+	 N1UR+Z12z+QmbCGofYpfe5mfm4rxzFu3XDtU+DdsCbIqy/N916WHu51pUFXD33MuIXw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id BE0CF1F01809;
-	Fri, 20 Nov 2026 18:10:02 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 4F7B31F01568;
+	Fri, 20 Nov 2026 18:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795198228;
-	bh=MYei4KuJf+QfbxwWuL97G2Caql6yWhkkwRbrkOuMiXs=;
+	bh=GLAmj9OwANHiFsbGoQBG/l0HxQVZ0G6TA0SumkQC8Ek=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=o2VqE9HQTCwoFkUgN8u5WYrKRmAIVMTjRgZZUpSnTAXPHHgK84iZNDAnBbOBL8Cyi
-	 c701hXCiecVCF08Th5I5KwGplHOXxf6IIJnDERrTiGj1qezLMuLE58vNjtr9Jpc9Xq
-	 0P3dVFj2AAJGSv4mopGj44HT09TjJkIsXW6C98+vmF4wELWyGzZhelgJ36iLSPx16/
-	 l7nYcpNnynBtqr+h/EpQ0iLZ7DjIPsp9YEkLYH5P4UxfQ2t6Fvy73F6awuWo13LHnR
-	 edXZbKnO2MgYqgIWPkeD4RzpukPaMTd3eh7epFm6hoZaSZrdGDi0VYid3KktHzNCiQ
-	 UG+/n9ilDPm/g==
+	b=PVd73IcsHXgaXuTXA53q7iRvEMOTH15cvdyVHFMSl9QZgU0Lh/r+nI6W2p4EPDyH6
+	 dIyQZAKl7ZoYAVT08DZE2pUuaQ7S+ov7od7oJhmc4DL7qLSNPeFI5kjhw4M6F+5sPL
+	 7nC+1BM0MZJgV11QSCSmApqfzj6yvdWU0wH7zhoFJUQrB8rFg4x0uVXLWviuUNp3hp
+	 WI0XJH7JMaHJQUwous2ZtiCpbL80YvvOX8x11t0BOuqvTgWt1tVTzp3Ladxko8K36z
+	 Bd+k/dmSSAwm0fBrl8Znv1bB10CvoUZJ0T8J9uOgTYS4PkCuHgcsuOAGLv1OA5ZRpu
+	 VQgFeJCzcbStA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 82FDE4B915;
-	Fri, 20 Nov 2026 18:09:19 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 7E4EF4B935;
+	Fri, 20 Nov 2026 18:09:20 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:12 -0500
-Subject: [PATCH 21/60] mm/khugepaged: restrict collapse to common memory
+Date: Fri, 20 Nov 2026 13:09:20 -0500
+Subject: [PATCH 29/60] mm: keep private memory out of the system memory
+ totals
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-21-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-29-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -154,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=2345;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=7541;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=ZHvwrgi2a6sCoho/O0VKGbyW17jDoPTBbXNa5AUwPa0=;
- b=TQS2bHGS+OuUEC48m/xNSWijxkvjbzhLZJ7z4ADh21pF7ZIpFCDog9ykVjustle3i7kJOVUnm
- Ml0Xe8rxuVDB0u52WP6/DVBClG54gRk4+r9fp5F4BpeiiOAJlZfj2pv
+ bh=8jD4gdJ7f9IthJ+W65OhuvHMjSc7pf2CPG7wZM7sxhA=;
+ b=WALF1SEszBgHGduONGSRsLszrM9vdU14F2BXkDNGsxMux4GtiPUn1jCBsOIJG94Sncocj518V
+ +J8LFEBQrN1AkkVDHSuBdmtjq0kHaikaGd0FRxFUM7hg22oUR9ppnh1
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -166,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9A8B2C000B
 X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Stat-Signature: szmawsxaogubqo8adrpoiqw15xp7ykny
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1DD85180006
-X-Stat-Signature: i57fhy4qrskqrekg9on4mbbjqo4w8u5n
-X-HE-Tag: 1795198228-209145
-X-HE-Meta: U2FsdGVkX1+s3zSZl5+cPXGDQjW359V3XF8mtsVwUGK6WEFzX7cdAMclkBUrAwUNEydPi8d73eVTiTUOdnVEOnpH34Nil/Q17F7SF992EdwSmxLR2lygw6yNBQaCXIHdBNqof/TdooU9r/HVwmis/G3yopwbOf9i5eiHWBNKHrA8y9GBNvdOG4M2XNXRNHQRwvIVSLg1zrwYAyWpheXNDc/fur3UQ3glWVQaTtlUXx78oktm7fNFkjgxcp2kIuL6eCDewoLPLN75KiBeUeEaITeJtwO5bKIuf+LnqlOiI4Ip6X3l3kQy6+Hdy4lejF3HxxmGxzn0c8DDSI8rc7IanjNLvzsDWfmDk6x7npVx7+n/otmGfBbU0KtgGHi42nYzkCyw5Bwbg+aqPXRArbuQ74koOM9hYE0PyAT7bredoBL8jTj9UHCksRqYggvmQw3zR8dG7ur6ddVU3o6v7eCsmQNq88BbxXk4fo9A+/joGd5ecpIgHChzrB4FTLn5NvezLeeAu/xLBGWhXy6qCv2kaejTwC+4S3X826f4lqjHFTXmGvQfhvz5iulnQipiU+evfMSx++cEBGL+pbVTgoF4t6ZSoPwe/vzvptCZjhUwnsOWXr+ZxlRor0KBYAgXBQxPDmgoD18KPTkU6WngxoRqlufclom30JZdjKaCxbMRHBK/tqg62App244flV8bk1qN3pPIeskG2jcuXGeveuM0lPkk/3IhuNMSjcWTnIiRTR79nsqFrECT6df/b1uOZ5sGLhOZq9zwC4AVCWSWOJvlIZY3zkf24u8zze4+f1CUuTBp47wK989foZbD1jjFXHDjgnoohYlkGXf9qJb25hQ6r6TawEMzlsLisXdXtp/di1Ef6XRavZQwofDDK2XxB1GZ9N5rnvUIK4eLbKkypmBRjN/0z3fthTsvKtLmUMmVS3gME50Qo0zhJOEmqbFuT9duNTl0bfj5fYPJEXN5f+6
- P+yHpR0F
- X8bLeqZN9sz50DuMH4aWs1pHJ7fev/PabuHaCLElVS6i1j+fhGaCGTnQcwhzUYQ9BQtojZEYDXxYSFA49OB7K+J6YzAaeH3pN/rwLuA7zne6YiD2kYeLg0wGnXraZsnFmZ2XrpKndCWsQ3JnP0IBYri7R6/zALjyy1VrSzcPwiqmx4e8JJnxxlLLKKsNU7eUj7hRT9NP3Afpk4kAU/tFLMG0h3sx4UO+6gYnD8OUKOp0JkPLLVjsuuWG7sBtwLkpoGdVCYOnAwJZ9/PqlS2mAgR8mzreIGbHAt7CdgGZkr8TJPCwdloaPxhp+sSKK0CNo9qlsSoXWnxgxHbS4El0mh/3buw0ave3/cHw16p8jlX8RBR97YGOmUcyj1oOEbWWT6WA9mww+MlzNUTLzDmpv5uw35OH7BFx6FNmN8rZMxlAN5NtCL4kzXfpKK/Ite3xgQntlIa3OFa9VHoZBfQD7wjlUDA0WYHqmDEik5wZeNRLKxB4AylRSwlaazA5CHRN6fw9Syy/Wmq8KkHgbA4A2QgBwnUrED4lI0ZiYo8060IISmI1eiVxvkB9TFGMd6aUARg/ro03iY/w67mJfMm7GWbHX5ZxJjPncoLSAbWDUp1exj/TCfM0MejYFiSeeCm6urbe3jytXEUdg/+XN4mdjbU1oQByVXtQGKjVJZm9A1kKi4hhnpwPCqQuVbvdZ9751Jo4XlXnfN3NndXimohjCYNHC2itth+d7O1m1sqaTKnL8V142iNkSXsD9rmC11xdTmRuYo2rXKaxI8YY=
+X-HE-Tag: 1795198229-638258
+X-HE-Meta: U2FsdGVkX1+gfZJcutnWDzSFOnd9labQVNG5VV55WUbhvaOFIc1iKggYm6AOD5JUNECinvVNZFFehiszkB+dzxa+E8uGbqVJvSQf/Z4TIc1euYQKCOfmmM7adrHmGj6vH8OhJLKora5/iimPv8Q1bwL08vegV6f3fBVFyDW+rzG/7qMbSDVgJ+W1mhjL3estJ961n85Y3BM4lIrweUOIqrn/IEAu1p8RHY2BaBhfIa/Ik4Ni1tecZC9FRoSaX3amRHybitwSqTilm94pdnqxLxF6j5Cq+biXl5oVLzdc6XspbU/5wpHIFDSDeTqQSABW56djS/M/pmXirEiiU84X4th1/ZtWRXg433XWWFvUNgD4WLJx8NMmkKUh46Se6pkbfXsNqHRakt36EMRtAtP3WuaUIWrPacCum4Jc+MMkSsCpqaXtdHD21JhpnDBQT7xlqVQskx8l59sz3HUBIT5na+8OsQ12DFHtOwco3mr4ZObvxtACa3JjEM856a60sHxfoS5JebjwLr5galVEx7QU3M1nGpzNnzMc8WBUsHyVmDXxkcAwVfjh5ypYnQ8PcSb1t01E5JQH31CvFnVwXqzcOptG0yNyDv39QzNV8jEph/ct7b4bx+Evsr+3lUT6jmy6EGS7//TBHiwYBxy2gxLa/d4r+SPWgTz2cj3msaT5sSurolODhvktoG/sDdh/WiOGf0TOkjp5NuGl14+rDhZrfPjLM/kWKikIy4wWOi14r8o/a4XggpwbCVTdl+JLldoLfxJyr3adFi9riQxks/SsS/7dqrOQe+eCUSG4aTY+F+XIQvdH43V4KKj6IZUZ12X6iL9P7LoGQv8Zu/I8ntqYIz//ottlo/50PomUt0F0thguX4G1H8Z7wB/dCHc8liwNZ8zgGIcWi7oraU7vLDErpux6uXZ5GzmzV7IdV48RmR7mevQ70cwZSYG7t12jSkSFbGVa6Ze0XmrF2ESGsBc
+ Ih8dwIi6
+ 50HeZoLBCg4Jg8ED1Gf8abAgAIqYvUlZv6FFIsu3sQGVTobhttMMyIzRrSlJX7+q0EMi/q8T/6HmjmoJtsTMhidA3NUHfQNbjpndKk31FuEyaN5ZB+Hcp/hJ58bmJcyTZa1wKjghh8f0rv+7VRQT4+LU56Qrzs1PF1luGsO7y0CQ8VaMcjxbJQEbU1G+Rrb3vzbnnzDooxdloYQxIM98FpQ0Ibrre/8TiynZqXWX9wTL0390sZlFsGWdk8woXhiYUo0gjt5bkNyvVxAVkGBJA7keh1KV43BwZbZAT2gI2WbR8VmirHaq+dfBeReWDQHOX/HOZRcSxQJ6mMwH8n0JaxLDhKH2lYLdy5vsTo1rVuP/R13nFq023LESTJ30uqFOUyCepLS0jSfD8P2cpo3kpC4eKFP4ONYx2RCOLMGYRt67zsiBP3T5EwR9rZniWZvADdoB7UyShmSFXJmauaguTHMgqZfT0xezoNRCXT9KvqNeOipouMRXUPc5U+tVulN2VG/TfPZrPVwQFWKTaFNwGWPOXpQd76O2k1kR3fxLdfgt0rjjvtn2IbfTd21iuV16njQspdpzT5XUKqj8JEul8q58n/tZkn0XaEPq/wOQ/7b9YYbJYIU/wyG1dAFGNoiDdnwZahcK0BepWNvOHjgjSKDNKCf93E2v/lQaGFza8Urha9PHFBEr1rjSsGmTfT9tcHDhpvamdw1bMosw2DbguB5+IRsQxrwbRZqo+UAGWlKytSKTHBjwzxf/KnF6XgDN943qE2xEVRpDrFgw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,73 +189,235 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-Collapse is an opportunistic MM service and should operate only on
-common memory. The anonymous scan and isolation paths already filter
-zone device for the same reason.
+totalram_pages() (MemTotal) counts every managed page, and MemFree
+counts every free page, including private memory.
 
-Replace the zone_device check with page_is_common_memory().
+Many limits and defaults are sized from totalram_pages():
+  - the overcommit limit
+  - OOM capacity
+  - tmpfs
+  - zswap defaults
+  - others
 
-collapse_scan_file() gains a folio_is_common_memory() check. Page-cache
-folios are never ZONE_DEVICE, so there it only filters memory outside
-N_MEMORY_COMMON.
+Private memory is not usable by ordinary allocations, so it should
+not inflate these counts.
 
-collapse_file() rechecks once each folio is locked, since a folio can be
-added or migrated after collapse_scan_file() looked at it.
+Count only general purpose memory in totalram_pages() and
+nr_free_pages(). For now general purpose memory is common memory.
+
+The two must agree because some callers (files_maxfiles_init()) use
+their difference as used memory. A node's features cannot change while
+it has memory, so counting each node by its features keeps the total
+exact.
+
+Several readers use NR_FREE_PAGES directly with the intent of getting
+the general purpose memory count:
+ - overcommit reserve defaults
+ - DAMON's free-memory metrics
+ - dirty limits
+ - MemAvailable
+
+Switch them to nr_free_pages() as well.
+
+The vmstat counters and per-node meminfo still count private memory.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/khugepaged.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ include/linux/swap.h |  4 ++--
+ mm/damon/core.c      |  5 +++--
+ mm/internal.h        |  7 +++++++
+ mm/mmap.c            |  6 +++---
+ mm/nommu.c           |  4 ++--
+ mm/page-writeback.c  |  2 +-
+ mm/page_alloc.c      |  3 ++-
+ mm/show_mem.c        | 20 ++++++++++++++++++--
+ 8 files changed, 38 insertions(+), 13 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index a930d99f89da..b1c6bb95a936 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -628,7 +628,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 			goto out;
- 		}
- 		page = vm_normal_page(vma, addr, pteval);
--		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-+		if (unlikely(!page) || unlikely(!page_is_common_memory(page))) {
- 			result = SCAN_PAGE_NULL;
- 			goto out;
- 		}
-@@ -1673,7 +1673,7 @@ static enum scan_result collapse_scan_anon(struct vm_area_struct *vma,
- 		}
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 4f686709d71f..fe7eb13385a0 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -308,8 +308,8 @@ static inline swp_entry_t folio_page_swap_entry(const struct folio *folio,
+ /* linux/mm/page_alloc.c */
+ extern unsigned long totalreserve_pages;
  
- 		page = vm_normal_page(vma, addr, pteval);
--		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-+		if (unlikely(!page) || unlikely(!page_is_common_memory(page))) {
- 			result = SCAN_PAGE_NULL;
- 			goto out_unmap;
- 		}
-@@ -2397,6 +2397,12 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 			goto out_unlock;
- 		}
+-/* Definition of global_zone_page_state not available yet */
+-#define nr_free_pages() global_zone_page_state(NR_FREE_PAGES)
++/* linux/mm/show_mem.c */
++unsigned long nr_free_pages(void);
  
-+		/* A folio may have been added or migrated since the scan. */
-+		if (unlikely(!folio_is_common_memory(folio))) {
-+			result = SCAN_PAGE_NULL;
-+			goto out_unlock;
-+		}
+ /* linux/mm/folio.c */
+ void folio_add_lru(struct folio *folio);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 986404b547eb..3eec5a17b5e4 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -10,6 +10,7 @@
+ #include <linux/kthread.h>
+ #include <linux/memcontrol.h>
+ #include <linux/mm.h>
++#include <linux/swap.h>
+ #include <linux/pid.h>
+ #include <linux/psi.h>
+ #include <linux/sched.h>
+@@ -3229,7 +3230,7 @@ static unsigned int damos_hugepage_mem_bp(void)
+ 	unsigned long thp, total_pages, free_pages;
+ 
+ 	total_pages = totalram_pages();
+-	free_pages = global_zone_page_state(NR_FREE_PAGES);
++	free_pages = nr_free_pages();
+ 
+ 	if (total_pages <= free_pages)
+ 		return 10000;
+@@ -3867,7 +3868,7 @@ static int damos_get_wmark_metric_value(enum damos_wmark_metric metric,
+ {
+ 	switch (metric) {
+ 	case DAMOS_WMARK_FREE_MEM_RATE:
+-		*metric_value = global_zone_page_state(NR_FREE_PAGES) * 1000 /
++		*metric_value = nr_free_pages() * 1000 /
+ 		       totalram_pages();
+ 		return 0;
+ 	default:
+diff --git a/mm/internal.h b/mm/internal.h
+index e89dd1153662..9c162ded5305 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -779,6 +779,13 @@ void set_recommended_min_free_kbytes(void);
+ 
+ extern char * const zone_names[MAX_NR_ZONES];
+ 
++/* true if the node is capable of servicing general system allocations */
++static inline bool node_memory_is_general_purpose(int nid)
++{
++	return READ_ONCE(NODE_DATA(nid)->memory_features) &
++	       NODE_MEMORY_FEAT_COMMON;
++}
 +
- 		if (!is_shmem && (folio_test_dirty(folio) ||
- 				  folio_test_writeback(folio))) {
- 			/*
-@@ -2737,6 +2743,13 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
- 			continue;
- 		}
+ extern int min_free_kbytes;
+ extern int defrag_mode;
  
-+		if (unlikely(!folio_is_common_memory(folio))) {
-+			result = SCAN_PAGE_NULL;
-+			failed_pfn = folio_pfn(folio);
-+			folio_put(folio);
-+			break;
-+		}
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 7618e72766a5..091d67f82221 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1567,7 +1567,7 @@ static int init_user_reserve(void)
+ {
+ 	unsigned long free_kbytes;
+ 
+-	free_kbytes = K(global_zone_page_state(NR_FREE_PAGES));
++	free_kbytes = K(nr_free_pages());
+ 
+ 	sysctl_user_reserve_kbytes = min(free_kbytes / 32, SZ_128K);
+ 	return 0;
+@@ -1588,7 +1588,7 @@ static int init_admin_reserve(void)
+ {
+ 	unsigned long free_kbytes;
+ 
+-	free_kbytes = K(global_zone_page_state(NR_FREE_PAGES));
++	free_kbytes = K(nr_free_pages());
+ 
+ 	sysctl_admin_reserve_kbytes = min(free_kbytes / 32, SZ_8K);
+ 	return 0;
+@@ -1632,7 +1632,7 @@ static int reserve_mem_notifier(struct notifier_block *nb,
+ 
+ 		break;
+ 	case MEM_OFFLINE:
+-		free_kbytes = K(global_zone_page_state(NR_FREE_PAGES));
++		free_kbytes = K(nr_free_pages());
+ 
+ 		if (sysctl_user_reserve_kbytes > free_kbytes) {
+ 			init_user_reserve();
+diff --git a/mm/nommu.c b/mm/nommu.c
+index df99495c8902..a6f70c5d9ec8 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1858,7 +1858,7 @@ static int __meminit init_user_reserve(void)
+ {
+ 	unsigned long free_kbytes;
+ 
+-	free_kbytes = K(global_zone_page_state(NR_FREE_PAGES));
++	free_kbytes = K(nr_free_pages());
+ 
+ 	sysctl_user_reserve_kbytes = min(free_kbytes / 32, 1UL << 17);
+ 	return 0;
+@@ -1879,7 +1879,7 @@ static int __meminit init_admin_reserve(void)
+ {
+ 	unsigned long free_kbytes;
+ 
+-	free_kbytes = K(global_zone_page_state(NR_FREE_PAGES));
++	free_kbytes = K(nr_free_pages());
+ 
+ 	sysctl_admin_reserve_kbytes = min(free_kbytes / 32, 1UL << 13);
+ 	return 0;
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 5939f781fc54..00293a64fcea 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -317,7 +317,7 @@ static unsigned long global_dirtyable_memory(void)
+ {
+ 	unsigned long x;
+ 
+-	x = global_zone_page_state(NR_FREE_PAGES);
++	x = nr_free_pages();
+ 	/*
+ 	 * Pages reserved for the kernel should not be considered
+ 	 * dirtyable, to prevent a situation where reclaim has to
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 3a7c12fec906..0a5176a6e9db 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6513,7 +6513,8 @@ static void setup_per_zone_lowmem_reserve(void);
+ void adjust_managed_page_count(struct page *page, long count)
+ {
+ 	atomic_long_add(count, &page_zone(page)->managed_pages);
+-	totalram_pages_add(count);
++	if (node_memory_is_general_purpose(page_to_nid(page)))
++		totalram_pages_add(count);
+ 	setup_per_zone_lowmem_reserve();
+ }
+ EXPORT_SYMBOL(adjust_managed_page_count);
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index b938cbcd774a..b90fb5a0016b 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -45,7 +45,7 @@ long si_mem_available(void)
+ 	 * Estimate the amount of memory available for userspace allocations,
+ 	 * without causing swapping or OOM.
+ 	 */
+-	available = global_zone_page_state(NR_FREE_PAGES) - totalreserve_pages;
++	available = nr_free_pages() - totalreserve_pages;
+ 
+ 	/*
+ 	 * Not all the page cache can be freed, otherwise the system will
+@@ -73,11 +73,27 @@ long si_mem_available(void)
+ }
+ EXPORT_SYMBOL_GPL(si_mem_available);
+ 
++/* Free pages of general-purpose memory, the memory totalram_pages() counts. */
++unsigned long nr_free_pages(void)
++{
++	unsigned long nr = global_zone_page_state(NR_FREE_PAGES);
++	int nid;
 +
- 		if (is_pmd_order(folio_order(folio))) {
- 			result = SCAN_PTE_MAPPED_HUGEPAGE;
- 			failed_pfn = folio_pfn(folio);
++	if (!IS_ENABLED(CONFIG_NUMA))
++		return nr;
++
++	for_each_node_state(nid, N_MEMORY_PRIVATE) {
++		if (!node_memory_is_general_purpose(nid))
++			nr -= min(nr, sum_zone_node_page_state(nid, NR_FREE_PAGES));
++	}
++	return nr;
++}
++
+ void si_meminfo(struct sysinfo *val)
+ {
+ 	val->totalram = totalram_pages();
+ 	val->sharedram = global_node_page_state(NR_SHMEM);
+-	val->freeram = global_zone_page_state(NR_FREE_PAGES);
++	val->freeram = nr_free_pages();
+ 	val->bufferram = nr_blockdev_pages();
+ 	val->totalhigh = totalhigh_pages();
+ 	val->freehigh = nr_free_highpages();
 
 -- 
 2.56.1
