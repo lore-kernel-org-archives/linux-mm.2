@@ -1,109 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6B9606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Nov 2026 23:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619F5606A32A
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q70IX0lu
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LJ36q2oa
 Received: by kanga.kvack.org (Postfix)
-	id 920676B064D; Thu, 19 Nov 2026 18:54:20 -0500 (EST)
+	id 567D06B062D; Thu, 19 Nov 2026 19:06:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D11F6B06AE; Thu, 19 Nov 2026 18:54:20 -0500 (EST)
+	id 53F7A6B070A; Thu, 19 Nov 2026 19:06:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79A526B06F0; Thu, 19 Nov 2026 18:54:20 -0500 (EST)
+	id 42D836B06C1; Thu, 19 Nov 2026 19:06:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FE476B064D
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:54:20 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E2757A878C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:54:19 +0000 (UTC)
-X-FDA: 85453525038.07.D13EAA2
-Received: from mta0.migadu.com (out-217.mta0.migadu.com [91.218.175.217])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 009034000E
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:54:15 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q70IX0lu;
-	spf=pass (imf27.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 151DF6B070A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:06:47 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E15571C47F6
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:06:45 +0000 (UTC)
+X-FDA: 85453556370.01.DD4EFF8
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E6B2540007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:06:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=LJ36q2oa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795132458;
-	b=6cS8KUnfCbf2O13pI/JUA/UxhXST9OfW3yasvH9T+GGblgUHdbbhTlOQxq+IBlNiK0vkmN
-	bkZc6u1rwO6gjyKGJDSux06t1yiwLMzWB173PH3t1a9gCnL56TIhVhSJ97Fxpd5YBJ2PmU
-	InlTDYjt0kN19AFz4g+lKqytdmibdxU=
+	t=1795133204;
+	b=GdL0dtdoUeS4qPZLUxn+c0x679XsKs2+MN+nNC1u9Ghy6XraPMnLgEFndqEqeEJbpKHhV7
+	GfLDfyVPPixDDDTmowsxJYFUmBhVokbhkr0r6alI5//92i+d5kgrAonLbec9kvO5v6c3Ax
+	k2jDUU533NnHqFYGSQEFK/ceREhIsYY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795132458;
+	s=arc-20220608; t=1795133204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o8Jkl3D6PyKBQ9flRwdsQA2PhUfjW1xzSb0OsieXFqU=;
-	b=Q23wX4vktyewZDUSVNaNZ5eEORFvOu9QkJD/cjEcbz46YRfUOYCDSPc0GIY50euBlYt+s8
-	IYUK0VmHSjE0s9fehQh67GHUogzPJ898lrRYym1Gwwqhq7LFnKPsI+qahjx9fstXZPJDIh
-	GBVj6uiLBebzXmO/jG7o0U8LRxmagDg=
+	bh=8PsDwtqZ7ZOXHEr9V4C4myUyqMWkC/3w4Fd9za5pDc8=;
+	b=y7tKp2A0Ay/wbS4yXyD/f/tmN6eXX8dndxpaSvfjCOCqYi8j4wNcKzBXaA65cDbK+lVVmG
+	Gxw7k5hUUGqnkPlk0b3UuCCV0NnaeOjNwTnN2nsXeiXmjWL7wPq7mNkUtWUC5++vup7NPz
+	gjZ+qJRB31k0/vjZ832xutnwOfc6m6s=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q70IX0lu;
-	spf=pass (imf27.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=SVZrlJks8sXPVt3xrpYdTAoVZmdk9CSrl7P148bcFmU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795132454; v=1; x=1795737254;
- b=q70IX0luUcbU6FCiJYBpmUfdNrXaCDzDyverVa5nohERhVo++3RcTQWOyKaGqDjVgz3oc5Fx
- VBY96WxGxsdaNk3gHTfIfp6AF/YK/SO2tPRF0sI/OQFkm0I4B33qwJ5F3URCKw0ij+tnYR3yJa0
- Gw0mzX4e9eiXeXHZeFdigyFI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id eca0a2cac3c52e86;
-	Thu, 19 Nov 2026 23:54:14 +0000
-X-Mizu-Trace-ID: eca0a2cac3c52e86
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <1ea66d73-4d40-4d95-855f-4235cbd1d809@linux.dev>
-Date: Fri, 20 Nov 2026 07:53:53 +0800
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=LJ36q2oa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cde0daf3a2aso150235a12.3
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:06:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795133202; x=1795738002; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8PsDwtqZ7ZOXHEr9V4C4myUyqMWkC/3w4Fd9za5pDc8=;
+        b=LJ36q2oaKa/oW2STc7jrxgWCzMtsr6Xm5ZqQBtY3Zv4OGCuNX1emu+nk5QqfbbPIwY
+         2m6+VtKUomBR6Ty784rSlZcv2GWeT1zhgS1W4jhWzABgLQ+0Co4oLSY6sqqOFhYjwUl4
+         lReLbwO1NZSQP/rWW1Bqfko0tjMfl64dflGxLypFz5sOYmEzyirKJZi1cmEjkAFjnzUy
+         lVpOwqKn3MXN2KoBXLx6zLPKEoUaot3xab+Xo3slL856slCQPNBkXX0x2fGcpm9i3539
+         ZTJuc3W2cbbqaEwcXYPV14iG5LAqzn+75SAk3iZoH3CfyHjuXQ7v4esaj2jh4NVzyAR6
+         kYdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795133202; x=1795738002;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8PsDwtqZ7ZOXHEr9V4C4myUyqMWkC/3w4Fd9za5pDc8=;
+        b=YQh8nu1syEnAwDVFWbG3lBUCLatx463jos3fxM+ARM94SI7RMuxc/BsVQNbbd/vNam
+         l67sYx3JWQyzZktQmzKWv0lbuXV699YXvwwjFoJfFgLtXhF/F2UU+02R31nUKmySunyf
+         ZT37nFdIhsB8+ZIjmgvDJdpJqsYahPfXnOpgZbaSrp/TCrd7q2vSZXVACceGLqWSyiIq
+         costBhPMxMIWqm2wjc/ubZmsZa40RfGR9RV/f4guo7tjha2zohGIX+zzsU+LzZaRQkL/
+         T8fCfwrMKBLLQp8en2e43X9hH2rO06rlLYn1zYjkFcKEcIQWBOVz47+AhhUmHnEUFz/m
+         7fXA==
+X-Forwarded-Encrypted: i=1; AL+hErGlMFai9eeTPHPZIik5fKAukKjv/VKZVB9f5Lp+ZhZOzBGoWV+5c21h9a79tkDNR9dXdu4WRLPJMA==@kvack.org
+X-Gm-Message-State: APuU4Z9P0WDZB3YkBBiH5fhgDA/86ML7W8UF4QgtLKU1j9GhsUfauVNL
+	GgpML4BB0lF3SbQ10qvb6/NtrE0ORqxeeSZy62ZmJJ9dk51oO4/2rtkNa6uJ6VSTcg==
+X-Gm-Gg: AZFdTZcUdsbmlkrAt8ZQCwQG6gSi0bedb763VliWt/WrH3mXeCa/l6jpPnz0yLp5usI
+	QFIlxmlVCYHJyZYhEMtgSUqVGCpqA/kk5POwVoo679yv3DtzjUT6zbqQJqcBT1n7/f8DoOAAIhc
+	PssD9bJ9nH/viOisRKYlKJvAsvq302Z5DiPxGibDJkGs2KZGep3gMjehGKT9Zcav7YW72k/FNEN
+	OlwFjTEDLgOLkmXX+QJjz3TlR1GJMkMyaeC6HdqnmFwcZB6O0Srm1z1gqPFSkjkLHhcYcvtzSJV
+	njWWQob3lnT5jeavHVr57WS3eX19HmEIHCA9ZdPNZS0TKOuvuZXiQ3/VkX+DUUp4M8pV3AMu0gV
+	h2TUD2wvMWvAFbx+KwiXYPaQOTiFZAfPGXRaS5Yh3rK4FAW4Wk31qYe1cxfm1Rup7WDzsKIDVod
+	RDEmUj3NcxWfc2QqfaZIHkR7mzG/DNBKkqZrNYhsCS9iwm0+sjaLbKP/E2ja279c3kMvFrK4BgE
+	+4Rx6GarcB2U6tJWlJEG+rRCeQczwetl1zi4bspEV1t7u4keVt3y90Q26ATTk70ecMgOPYEB+Z1
+	JeC/h/3flZUEAPePksmY02lK4R8yhTgtlJF7u6kG+qG656YNzIJsQ82oG1graHFR
+X-Received: by 2002:a17:90b:442c:b0:3b3:ab74:cc9b with SMTP id 98e67ed59e1d1-3b41c554624mr967136a91.0.1795133201767;
+        Thu, 19 Nov 2026 16:06:41 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ff5d3easm328044a91.1.2026.11.19.16.06.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Nov 2026 16:06:40 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, akpm@linux-foundation.org, dgilbert@interlog.com,
- mkp@kernel.org, loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
- vivek.kasireddy@intel.com, jasowangio@gmail.com, eperezma@redhat.com,
- stefanha@redhat.com, sgarzare@redhat.com, rostedt@goodmis.org,
- vdonnefort@google.com, mhiramat@kernel.org, jgg@ziepe.ca,
- kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org,
- James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org,
- christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org,
- will@kernel.org, linux-scsi@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
- mathieu.desnoyers@efficios.com, robin.murphy@arm.com, mason@kernel.org,
- aesteve@redhat.com, tjmercier@google.com, harry@kernel.org, vbabka@suse.cz,
- cuitao@kylinos.cn
-Subject: Re: [PATCH 3/7] vhost: account the per-device kernel allocations to
- memcg
-To: "Michael S. Tsirkin" <mst@redhat.com>
-References: <20261106131829.3228926-1-cui.tao@linux.dev>
- <20261106131829.3228926-4-cui.tao@linux.dev>
- <20261119101239-mutt-send-email-mst@kernel.org>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20261119101239-mutt-send-email-mst@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 009034000E
+Date: Thu, 19 Nov 2026 16:06:38 -0800
+Message-Id: <DMZLLYOVIGOU.1RXWYJN6UQTM@google.com>
+From: "David Matlack" <dmatlack@google.com>
+To: "Vipin Sharma" <vipinsh@google.com>, "David Matlack"
+ <dmatlack@google.com>
+Cc: <kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
+ <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
+ <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
+ <graf@amazon.com>, <jacob.pan@linux.microsoft.com>, <jgg@nvidia.com>,
+ <jgg@ziepe.ca>, <jrhilke@google.com>, <julianr@linux.ibm.com>,
+ <kees@kernel.org>, <kevin.tian@intel.com>, <leon@kernel.org>,
+ <leonro@nvidia.com>, <lukas@wunner.de>, <mattev@meta.com>,
+ <michal.winiarski@intel.com>, <parav@nvidia.com>,
+ <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
+ <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
+ <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
+ <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
+ <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
+ <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files
+ across Live Update
+X-Mailer: aerc 0.21.0
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-8-vipinsh@google.com> <auzftbPFO_6XBYVw@google.com>
+ <20261117220059.GA2250529.vipinsh@google.com>
+In-Reply-To: <20261117220059.GA2250529.vipinsh@google.com>
+X-Rspamd-Queue-Id: E6B2540007
+X-Stat-Signature: 5hpqu4go6h1re6d98tdzpx3qm48raajo
 X-Rspam-User:
-X-Stat-Signature: 7gfbsmmxcq49ycyo1mzsh6swcz5rdxw4
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795132455-92781
-X-HE-Meta: U2FsdGVkX1+cqdFTexU+r0aiM5wC8SYbKjWu5C2h2k8SWWQbjDbtIbXb4SRwfspiIlSsF9aDD0M2xn/ViG2UyFML9rR1fsGv5VIS8eo7IT1Woohmo0Eu/jKFgxDvlsYhCqjtPfb0ymSfr5mIy6FoIcwki0WUuQ3ZPM3WKrvZI4ZbboCJRzjylcWWpf0Z9E/6DcdikWAzqFBRo7VdI2yr1PKsEbTk8NU2mQfkGUzRDjWfBwe31uhaf1HmmQtgLn308mVXCv9rvew7gj1myGGKOWeeWnq0DDrLG2IjpwsYrpZL7nJRTy1xQGUuDts8sE/SK8AnlupA2M+Sf3l1Kv4cDD5t67B2HUMsFkr5W8wDft7rFuVfDxhcczi3fvu+VWtC2Kr65hDHAQxhhiQYFCkrMy2nvSufZi3jrpFPzfZNeL8ZB3Lmb1dV3GWxU2arj5KuMhE1n/s/krhKhaVkDfAmqHpFAhX/motmnrdKq/b0S6P0y3rzX2Z65CTnqOCBMmXCZZwxa8fSL1UC4670ab9DBD92k6Y4e9N9De5idwf0LU+YtvHtYphr2iMXU+bdxjYd5zZY/Ym8FB7PKGDJeprrZUHaT5Lh/oD+yAfRO3bugiO7a9Hg8ahKcqsFmNhe6Ja1e6RHVIjjt8bbVkKcw9EOBxh2vsWA1inYKxz+lqhc1BTlxkwWxroo2HHuQK3iJQ5NFt2/1GJlIW3iGbvVQkYNeSXeBls/9T6txIwKr8tDbDA7O45SDNY+wGVT347hSU7cRqYTefpfBB73xxGnYnVg6/GLPnHnGOWTZLG3QigF3qb/KaBZlgZKQ3+sXSmfIklyyMsS5cqySX64m6KBTSRzKdqqffqb5Fap/u67RSELR1xd6EwY/XakDtQUr9PVOrd/1IZYlk5eyX/QwI0NIQOzZzpXed2jSgzJ0c6/nkPCCMLyWZZTdrWOADNJ8W+uipiKqCc407HqJaWsICsuOU3
- g/n4U6rv
- iHQQURn7vY6hrAAn7RGPyUB0gF35KgJH3YJccB28a36uzdnoPkg+wo4iJJ2g7WfYrBv06I+jnMQqTLW6s3LMNRCcABUU6VWJesq94VdLvcJxK7rVRFTiHhnc5CF0hHg5bwI0wbgnSZdQ7l6crW1xED1OrXo01VvMSHBmZBTXnJMubLel2QeRjaA/nQNVCFKsaMf8vb61mN6gXs2dbCgGTYy27w0b5ktB+4Lo2jbEvKx88WQLn7Lpo/09FALtlUhfb1kxkbC53dRjbTpAxY7d9QlFKRDNb2siViueqaz52k6kKfvGMLVWhdBOlF/Vk2s8wLmc6cRrf98LUqp9qDwWEaHKRoFfak8Roat2qFBYsJUXGn2egSylpnqwfjGForldYH+3RwMSQeZeHKQB00dq0iC1fLWw43oF0TYLwWWz+QCklOvrUg3zLWbbz2UvlNZk+QqkFj9q1ioQ2FyEsg1QLn4+LqiIyVdoCqHWVHg5Qoi+Nm94C562L+x1Zkpn/s1Yh+2Iy4mRkxCQywxYEttS/FJCyAvzFLD1OJw/9
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1795133203-854220
+X-HE-Meta: U2FsdGVkX18WOLDqGaJnoXdd6hLAW8q16/6HW5dIGmsqu7SBZ7UPos/tNv/JeaixBl5J20pwd54J5R4pcunM+l6AmXKEmKQZLiRfj7Y80gN6GN5CXH8IstQ0ZQkXyE48yBDQTbMCuxrDlwd84dnuuyIglC9+RWYil+PPgAjBJfTU6b5kM0QXzxMTkI9vVn/tELbcc+D6TN54SCnwAGlBKzp9nfRF52/JrErsKpYaBhOubpC4O6ZgbQsxUY7amHGr7XKIhFdiR3YxiGLbEFxlDqnwAiURwrYa8Yd6hALUCHXVVZctzd9Sh1E7ZVgCa3tGN7UDCM/guS9kj5MNclpfbc8VeevMLqUL7ZCbS+/NVii8axwcTkpdxo24Wt0yuY8bKREzXvvl/e8PAPYDbxl1vqH59Q5kvJOgDdmf7nF23/kKW6PHfYHYOdyECKtVkyPLuUoNf3wAWaPE/C9+0vFSq/eXGzeUkZ38cCQHnLpmnZrPvzfqMBwGFETQ7kSSC9j7UBJtsDcoW+Ujl3QCLfbJZkSLhG1jUKiJfcd/0dv+6JsdwmL+93TkhEm8qSNIBvbb6FqK/FGuPP0fG/XjT+WVlgV2DYQKv2AbePv3X+HweWKFyupqbOkm+Gun3mWQLmxRMWJ9NQeSckxeKwU1Z6fdKY3jZgoXXAOgssiZ2WodvJVytTO/IjUuhrzditPSEelZXfI/lIajqaKV2CABD39sI18AAkH4vQ/rDUiBgodVlxNcKiXgAmLW9IDbiNW4diayTVT7CcmRuAn9Cqz+ESLaKrBdQ3wlqTgTF5fm2h12c/HIRQg+uBMqWrbBjEaC4Sz+aE8Y4+aD+IamV1yZlHkXSYo2T3nU4dXFN1YyktmiiVaG6GUO+ouqugts9Z0rJ1lmUt4eYjrQIUX96fNAh1noP60FPzdduLNkPtnkMZakN/3DEoXIV4sEg06ZaFMWJ1cddBRrF+HprCAM/PfhV1E
+ yu8eL3Sb
+ hxZBSgsv7GmmdgQl+2OwX6ObPF7TOm/cl1H5TQhQh+XyKiZq/iUp1fe45SkDm4R21vpdIbJEBunwzvEURDKKycUCU+CSagEpatZsuzEzQekd/tGhpW0LTIK38OlU3YoIp2ZAbFP6IygrkVAbp0ic1IWbd4xSTvRYYM4VmyBaLmK3llt0ETfph0XcrqUnk6xs611tXppoQ7SeArH3xD6iScs+hP2ixRCv2k5nMf4zPfkjXkvIDuAYDcJAvw0uCAGChLj9iShfPGR+1oWbbdln4kJ7y7cEm6NeHBNf7mTMnx4KF3ISDKDSPakgFz6BImeJAIlvJn6I6QZv3Fh3PjjqRxipzFqrCU17JtvzsCPj6jVhSPWgFk329xuYvtGraE2ewL0pHhJOX17ezir76HxuyDM/l1R22pzqS8D5bh8/bhYcXgopf2NO4UuOMUCsDBmlbXElazNMPjcwpsU1C7hR/hSenBjUcdcSPWZHcDOhLDqus6RXgdEFGDizxAOx7FvviomNkQl+nJOZQ0L8s5n8XcmkyGQDoPdl6er+yGHtFpZe5XNEEBRs+dkvM+hsEXM/UWwxPFN8vjVYrxrt61oZRCrznMw8yILbG93mP73BLFhtdkX9RMy/SoZ2iTA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,159 +144,124 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello, Michael,
+On Tue Nov 17, 2026 at 10:44 PM PST, Vipin Sharma wrote:
+>> pci_config_map doesn't need to be preserved. PATCH 14 already rebuilds
+>> it with vfio_config_init() in the next kernel and only uses the
+>> preserved copy to check that the two are identical.
+>>=20
+>> I assume the intent is to detect changes to vfio-pci's config emulation
+>> between the two kernels, but the map isn't a good proxy for that. It
+>> changes for differences that don't matter (e.g. hiding a capability or
+>> learning the length of a new extended capability), which would fail
+>> take-over and lose the Live Update on exactly the kernel upgrades Live
+>> Update is meant for. And it doesn't change for differences that do
+>> matter, like which bits are virtualized or writable within a capability.
+>
+> I think it does matter because reads and writes of unitialized
+> capabilities in VFIO PCI config space goes to hardware directly. So, in
+> the new kernel if pci_config_map changes it from PCI_CAP_ID_INVALID to
+> others then those reads/writes can go to vconfig which will contain
+> stale unitialized data from the old kernel's heap.
+>
+> This also changes behavior under a running user. Writes that reached
+> hardware before Live Update can be silently dropped or redirected to
+> vconfig. See the comment above struct perm_bits unassigned_perms{}
+> in vfio_pci_config.c
 
-在 2026/11/19 23:12, Michael S. Tsirkin 写道:
-> On Fri, Nov 06, 2026 at 09:18:25PM +0800, Tao Cui wrote:
->> From: Tao Cui <cuitao@kylinos.cn>
->>
->> Everything except the worker struct is allocated with plain GFP_KERNEL:
->> the per-vq iovec and log arrays at VHOST_SET_OWNER, the memory table at
->> VHOST_SET_MEM_TABLE whose size follows the user supplied region count,
->> the pending message nodes, and the vhost_net/vhost_vsock device structs
->> with their fallback to vmalloc.  The worker has been accounted since the
->> vhost_task conversion.
->>
->> A container that can open /dev/vhost-net or /dev/vhost-vsock, which
->> device plugins hand out with passthrough, holds roughly 150KB of
->> resident kernel memory per device after SET_OWNER.  Charge the rest the
->> same way the worker already is.
->>
->> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> 
-> 
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> 
-> should each patch be merged individually?
-> 
-Yes, I think merging them individually is the cleaner path here: the series spans six subsystems, and each maintainer taking their own piece keeps things simple. Jason has already taken patch 5 into iommufd.  Please feel free to take patch 3 through your tree.
+That's true. Unassigned bytes passed through and vconfig is never
+initialized for them, so hiding or exposing a capability does matter.
+For example, 6467d0740a2b ("vfio/pci: Add DVSEC PCI Extended Config
+Capability to user visible list") changed DVSEC from hidden (all bytes
+raw) to exposed with a virtualized header. Across that boundary, v6
+would have served DVSEC from uninitialized bytes in vconfig.
 
-Thanks,
-Tao
-> 
->> ---
->>  drivers/vhost/net.c   | 14 ++++++++------
->>  drivers/vhost/vhost.c | 16 ++++++++++------
->>  drivers/vhost/vsock.c |  5 +++--
->>  3 files changed, 21 insertions(+), 14 deletions(-)
->>
->> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
->> index 4570a4ffbab2..bab6597c696d 100644
->> --- a/drivers/vhost/net.c
->> +++ b/drivers/vhost/net.c
->> @@ -249,7 +249,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
->>  	/* No zero copy backend? Nothing to count. */
->>  	if (!zcopy)
->>  		return NULL;
->> -	ubufs = kmalloc_obj(*ubufs);
->> +	ubufs = kmalloc_obj(*ubufs, GFP_KERNEL_ACCOUNT);
->>  	if (!ubufs)
->>  		return ERR_PTR(-ENOMEM);
->>  	atomic_set(&ubufs->refcount, 1);
->> @@ -302,7 +302,8 @@ static int vhost_net_set_ubuf_info(struct vhost_net *n)
->>  		if (!zcopy)
->>  			continue;
->>  		n->vqs[i].ubuf_info =
->> -			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV);
->> +			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV,
->> +				     GFP_KERNEL_ACCOUNT);
->>  		if  (!n->vqs[i].ubuf_info)
->>  			goto err;
->>  	}
->> @@ -1344,17 +1345,18 @@ static int vhost_net_open(struct inode *inode, struct file *f)
->>  	struct xdp_buff *xdp;
->>  	int i;
->>  
->> -	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
->> +	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
->> +			 __GFP_ACCOUNT);
->>  	if (!n)
->>  		return -ENOMEM;
->> -	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX);
->> +	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX, GFP_KERNEL_ACCOUNT);
->>  	if (!vqs) {
->>  		kvfree(n);
->>  		return -ENOMEM;
->>  	}
->>  
->>  	queue = kmalloc_array(VHOST_NET_BATCH, sizeof(void *),
->> -			      GFP_KERNEL);
->> +			      GFP_KERNEL_ACCOUNT);
->>  	if (!queue) {
->>  		kfree(vqs);
->>  		kvfree(n);
->> @@ -1362,7 +1364,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
->>  	}
->>  	n->vqs[VHOST_NET_VQ_RX].rxq.queue = queue;
->>  
->> -	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH);
->> +	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH, GFP_KERNEL_ACCOUNT);
->>  	if (!xdp) {
->>  		kfree(vqs);
->>  		kvfree(n);
->> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->> index ea127af58ada..d1274106ad5d 100644
->> --- a/drivers/vhost/vhost.c
->> +++ b/drivers/vhost/vhost.c
->> @@ -526,11 +526,14 @@ static long vhost_dev_alloc_iovecs(struct vhost_dev *dev)
->>  
->>  	for (i = 0; i < dev->nvqs; ++i) {
->>  		vq = dev->vqs[i];
->> -		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV);
->> -		vq->log = kmalloc_objs(*vq->log, dev->iov_limit);
->> -		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit);
->> +		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV,
->> +					    GFP_KERNEL_ACCOUNT);
->> +		vq->log = kmalloc_objs(*vq->log, dev->iov_limit,
->> +				       GFP_KERNEL_ACCOUNT);
->> +		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit,
->> +					 GFP_KERNEL_ACCOUNT);
->>  		vq->nheads = kmalloc_array(dev->iov_limit, sizeof(*vq->nheads),
->> -					   GFP_KERNEL);
->> +					   GFP_KERNEL_ACCOUNT);
->>  		if (!vq->indirect || !vq->log || !vq->heads || !vq->nheads)
->>  			goto err_nomem;
->>  	}
->> @@ -2053,7 +2056,8 @@ static long vhost_set_memory(struct vhost_dev *d, struct vhost_memory __user *m)
->>  		return -E2BIG;
->>  	if (max_iotlb_entries <= 0)
->>  		return -EINVAL;
->> -	newmem = kvzalloc_flex(*newmem, regions, mem.nregions);
->> +	newmem = kvzalloc_flex(*newmem, regions, mem.nregions,
->> +			       GFP_KERNEL_ACCOUNT);
->>  	if (!newmem)
->>  		return -ENOMEM;
->>  
->> @@ -3405,7 +3409,7 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
->>  struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
->>  {
->>  	/* Make sure all padding within the structure is initialized. */
->> -	struct vhost_msg_node *node = kzalloc_obj(*node);
->> +	struct vhost_msg_node *node = kzalloc_obj(*node, GFP_KERNEL_ACCOUNT);
->>  	if (!node)
->>  		return NULL;
->>  
->> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->> index 0cb87971d749..600daeb05e7b 100644
->> --- a/drivers/vhost/vsock.c
->> +++ b/drivers/vhost/vsock.c
->> @@ -721,11 +721,12 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
->>  	/* This struct is large and allocation could fail, fall back to vmalloc
->>  	 * if there is no other way.
->>  	 */
->> -	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
->> +	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
->> +			     __GFP_ACCOUNT);
->>  	if (!vsock)
->>  		return -ENOMEM;
->>  
->> -	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs));
->> +	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs), GFP_KERNEL_ACCOUNT);
->>  	if (!vqs) {
->>  		ret = -ENOMEM;
->>  		goto out;
->> -- 
->> 2.43.0
-> 
+> How would a userspace opt-in? New kernel can change a capability visiblit=
+y
+> or virt and write permission of the bits inside a capability. Kernel
+> cannot know if userspace used the capability or not. Creating a VFIO
+> device in the new kernel by default results in a opt-in and currently
+> there is no way for userspace to opt-out unless we add a new
+> functionality where userspace can disable/enable features something
+> similar to KVM capabilities.
+>
+> For now, I think we don't need to worry about it. As this version will
+> be a base and if any serialized data with flags set received in this
+> kernel will lead to erroring out restore.
 
+We don't need an opt-in mechanism in this series. Detecting mismatches
+is enough to make Live Update safe in both directions: if the next
+kernel would emulate the device in an incompatible way, retrieve should
+fail.
+
+But an opt-in is needed to make rollback possible once vfio-pci starts
+changing its emulation. I imagine something like a VFIO_DEVICE_FEATURE
+that userspace can use to enable new emulation behavior right after
+opening the device, with the enabled bits recorded in a field appended
+to struct vfio_pci_core_device_ser behind a required flag. Devices that
+don't opt in keep the baseline emulation and stay compatible with older
+kernels. But that can come in a follow-on series.
+
+> In the next version, I will not preserve pci_config_map. Hopefully,
+> anyone changing VFIO code doesn't forget to update flags if they change
+> capability or permission bits (I will write comments at appropriate
+> places.)
+>
+> If we want to be very careful, we can do two things in this series:
+>
+> 1. Create a per bit valid mask for the vconfig and compare this between
+>    new and old kernel during restore. In the new kernel, VFIO then takes
+>    each bit from the preserved copy only where the mask says it was
+>    valid, and keeps its own freshly initialized value elsewhere.
+> 2. Create a hash or store virt and writable bits in config space.
+>    Compare it with the new kernel.
+>
+> Both of the above combined will safeguard against forgotten flag update
+> in the code.
+>
+> We don't have to do it but it safeguards against mistakes. Let me know
+> what you prefer.
+
+I think we should do both in this series, as two per-bit masks over
+config space, preserved in place of pci_config_map:
+
+ - virt[]: the bits whose value vfio-pci keeps in vconfig and returns
+   instead of the device's value. This says which bits of the preserved
+   vconfig are valid.
+
+ - write[]: the bits whose writes take effect. For bits in virt they
+   update vconfig, and for other bits they are forwarded to the device
+   (possibly after validation). Writes to other bits are ignored.
+
+The masks should describe what vfio-pci actually does rather than copy
+perm->virt and perm->write.
+
+vfio-pci can keep changing its implementation in ways that don't break
+Live Update, e.g. start intercepting writes to a register to sanity
+check them before forwarding them to the device.
+
+Something like:
+
+  struct vfio_pci_core_device_ser {
+          ...
+          u8 virt[PCI_CFG_SPACE_EXP_SIZE];
+          u8 write[PCI_CFG_SPACE_EXP_SIZE];
+          u8 vconfig[PCI_CFG_SPACE_EXP_SIZE];
+  } __packed;
+
+
+[ Note: I'd probably store virt[], write[], and vconfig[] on their
+  own folios to avoid multi-order folio allocations, but I am embedding
+  them here for simplicity. ]
+
+The outgoing kernel computes virt[] and write[] through a helper in
+vfio_pci_config.c and saves vconfig[] during freeze().
+
+The incoming kernel computes its own virt[] and write[] masks and
+requires both to match exactly with what's in vfio_pci_core_device_ser,
+otherwise it fails the retrieve. On take-over it uses the preserved
+value for bits in virt and its own freshly initialized value for the
+rest, like your option 1.
+
+I'd store the full masks rather than a hash, so that a mismatch can be
+pinpointed.
 
