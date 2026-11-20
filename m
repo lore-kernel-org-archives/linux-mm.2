@@ -1,96 +1,163 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC836606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 05:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAF8606A32A
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 05:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XWLNBU2n
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SAKS3ST4
 Received: by kanga.kvack.org (Postfix)
-	id 957CA6B00EF; Fri, 20 Nov 2026 00:45:56 -0500 (EST)
+	id AF4C26B00EF; Fri, 20 Nov 2026 00:58:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92EE46B05B0; Fri, 20 Nov 2026 00:45:56 -0500 (EST)
+	id AA5FD6B05B0; Fri, 20 Nov 2026 00:58:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86C5B6B05B3; Fri, 20 Nov 2026 00:45:56 -0500 (EST)
+	id 94BF26B05B1; Fri, 20 Nov 2026 00:58:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 54A616B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:45:56 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C39C216054F
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:45:55 +0000 (UTC)
-X-FDA: 85454411070.28.9656720
-Received: from mta1.migadu.com (out-246.mta1.migadu.com [95.215.58.246])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AAC2B80004
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:45:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XWLNBU2n;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 6A3356B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:58:13 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5AD4160D6B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:58:12 +0000 (UTC)
+X-FDA: 85454442024.21.9C84BF3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1627AC0005
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:58:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAKS3ST4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795153554;
-	b=LLQC2Ikj27RVur4f+oq/lX2q37B/gFYHLu/SlkBSILTxo+WKOZN4DVbKGRtevytL94x1JB
-	+36+feFStKFz2WgwDQN6rrELUCGqlnr8mGzN8fSZgZ0Xh5X2Prvh8+qQ2+ZRJwB3D9chkp
-	XkEQR/4+pJhDjCfMwCK8jNaFT2QH9fo=
+	t=1795154291;
+	b=sSVZukjLXeTMDMnYRGtaS3eNss7TIlT84za3ESFcbSp21k1WwPcEIGF28fKOvkxWTScEs5
+	H3u9UMo5azLWsoourXj1xiBlCgvq2A4XPomGw+7e2Utw8rSyIYmcrqC74gOmRBoOknuC88
+	2E1Yc9n/uqHbfCA6kjaW6r7j7DX3d5U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795153554;
+	s=arc-20220608; t=1795154291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vQWVv+Wg/WG0fo9yZQewcLpDeRqvrAZXwdWLu1wXdIc=;
-	b=5j04VsPQnRRUbWxSenzgUAgcBRN0sPMac8Yv0+1w54FFy7DCiX7sgIpEVndV2Jrhct2zwB
-	Bg5SFrcJyYGDRDkctFKoX4WuhDyZjC6CfynmaWQ0sSmrHDqQ+AHOCH4GXAapVbrj24nal6
-	Fxz7IV+MPDQ7PO78sv9nUuL9iiHMjTw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3J4zWN2xZSuepJxvtOxZd6Cv2PFcMo5B56sR2qMDpP8=;
+	b=OOReZmShwR8C/acUtVLiWP//pp7f0ZgWZ3ymgdJIz2PjOUDAK0mvjOEyGA9ujeO8yDLEVs
+	W8eaxPxi5siatX1ULKEIWltGGibmHleLifvutgwmNOA4XKZYABEDf+2L34Cb86/7L5D5gm
+	0LOrZLHuidOrJVvRH/BRV5Fg1qy+3fw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XWLNBU2n;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=eSR3rU1fyPP9d9Xw/Xci8K+WmM5Afd8iPXlwguo1i4Q=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795153551; v=1; x=1795758351;
- b=XWLNBU2n70Cr55/Q/A9rMIW0gC5+4McEXcH2rA1M97NSar8Mxsdg+sMsH4XNE6/W+K0GXqPO
- 1oGPkp3KUS+TrOJJ9zoCR9dQPOjJVBQCWPOKgN4jDThjUI8MPYHlkYAfVRYdAvSEeYc/eI+3XvL
- PyZSka26LAzW5BA22sBIRXXU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 42a3411e7df6d71e;
-	Fri, 20 Nov 2026 05:45:51 +0000
-X-Mizu-Trace-ID: 42a3411e7df6d71e
-X-Migadu-Flow: FLOW_OUT
-From: Tao Cui <cui.tao@linux.dev>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	cuitao@kylinos.cn,
-	cui.tao@linux.dev
-Subject: [PATCH v2] vhost: account the per-device kernel allocations to memcg
-Date: Fri, 20 Nov 2026 13:45:17 +0800
-Message-ID: <20261120054517.526275-1-cui.tao@linux.dev>
-X-Mailer: git-send-email 2.53.0
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAKS3ST4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 4C5816211F;
+	Fri, 20 Nov 2026 05:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 535581F000EB;
+	Fri, 20 Nov 2026 05:58:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795154290;
+	bh=3J4zWN2xZSuepJxvtOxZd6Cv2PFcMo5B56sR2qMDpP8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SAKS3ST4i7tiUXuSP7l7klGig8K851mCaNcA83yfT7HS5evQwuV9pHxHXPYNRVoBN
+	 OECH81IdbXkatDGtQDTEbZ0S0zjQEdVbnmzdw9mOYz1Xg30Zaplgj5W19nP62y6YlV
+	 Tri0TfVHScfjfdkqkwMEqDkkVdZoLgLFmUKDwq/GJAQHq+lyIRFPSxG1deSxZD/b8w
+	 aozC4d3ZTBXnBMBMor/w9ZkVSDiVqdnfcfimj2dN+sC1cm0iMw+VPyVRobRXELJYS6
+	 2S8q7BhHWzui3oDk1v9py06mOrro/JTr5AlYK88Mj3Em8Yv5p5dWVOcoaGbo7wvjA3
+	 aTGgS+xSE9t4w==
+Date: Fri, 20 Nov 2026 07:58:06 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Chris Zankel <chris@zankel.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Hallgrimur H. Gunnarsson" <halg@google.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Moore <paul@paul-moore.com>, Paul Walmsley <pjw@kernel.org>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Rich Felker <dalias@libc.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v4 00/14] Namespace for namespace roots
+Message-ID: <av_hbgzwo-1FcAPZ@kernel.org>
+References: <20261119224312.1037966-1-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261119224312.1037966-1-jarkko@kernel.org>
+X-Rspamd-Server: rspam05
 X-Rspam-User:
-X-Stat-Signature: 57efdfyfiygm163y8m8ehogqoiq3w479
-X-Rspamd-Queue-Id: AAC2B80004
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795153553-649571
-X-HE-Meta: U2FsdGVkX1+/6YP5BfVqBpVAyaNYkM9wF8E8QxwwHi7RYjY2eD6n3zmthyC8ipHGYhnReGIz1/o77c2tCnGISoWYuwWNqe+u0AZXlSZtZ5GQRurp6/BPNin1DAh8oOzrM08/sspp+yGRFKV6STp2jaGZVTWyO8MiUxNzuo77mjjcFm8RjaDjd8tQIPXBEx3+tGPwdF98ZSbzzJbD3kFLPnnWw6dJjYHQnKAmJjh8uGImKx/B8poUK9VUhoEB2DrZoRs948ZQwm+HJ6pfNyv+TDiVRJU8uUjxPyWksRCeqecSaeLd8vBWFSVL+YY6NcGF9HqDfAIWLEGFNkxcmwUK1AL1min3Z3PlPTq2waGzAmUNuoI8QbO7Axy+hTTn/2KOvwekdewcma6hn8o51kbOaAbuH/DPgRM3CQI2McjvlN8N5n7AuTPxBCNnmE2N00udY2VOg+q2svZQdc9LHJy6VSnY5SEgfsd3o+08WL6MIuVNYqlQ/fsP5/A0KkrK/glXRgJjeoZfhweTp5GmZVztdeTwCTCcPkV++qxSySrK/sjMiYUNR79g5RoEJ0g2R8iicY9PxEfXIq5nX//a7s4zUCB2CBhthv7PeTdqsWwrQRzw7WVFqFDcVzE6+DHcSZodaj8wFzZEGOsCdx6pFJjnKjQAc/nBttWYv0udEykXV7/ku5oGBQygkFr7EWAV7a/hBp8FV75hY3EfM6QeVaGzPFLQbqZ1JWaUTnfDI2dz46cftUhOIWpKuU/WGRaXDhHBF5BweE4A+ChPOebepFhPibCNFENzKa8kUkMvYmvE666u9+yPJaN9mKUKYxWnRh1hHgwmzaMoBOVSOSPJ9EvdWKyFUBx+0mm+o2ayjVecTH31aXZE7a3EYrKofmhXb6Px31/JlNeL6qk1YuXXOeImzPZ7Ep7HvFd8fqCkYDE4SSjeo8679Ixjx3UT0WsQMFaBCgkXn3zdp9SOMILuybt
- PvWOqMS0
- mWH5aHY61LXaVs3w7nxgYNH13tzS362hpgqbdkz1oOxPLN8V9L9HZmLaYiBAkFSpbVG/+OIreDw9BA2FUmix4dFWRzMLwRtDfkfNUAJFux1kJVaP7eWp3rdJhWgsC2WgaywvBWZrOs/f2Z7yw7Kn9oiOI5qx1FLHbL/j0zP3Xmmn2/Mh8m0U8fwoj74lV1TxhMVIMX/mqMD4hMw17m55zSgKDPWpx03lxIcHwlXQRxeuo+tImZbjYRZ9SjFVEv9wXorkHUpTAjDoo/jJx4ZfsGfi/c9epccNd1MXGiTDJ7f+N0SYCnh7T/xxOwpnLjU3+GPCP7zgS0FozBlLNUUv1kvIwWinT2ZALUnOoiuKRA7gWfZZqmQ5jDSoqzJMtYBGhl8bp1u8J2XaK1Qrt5yTFFbIZ6s3pbLZkDLY99vty0UV2Gz8xQK9sQ1eMucmipBgi85uGCQsPpyAsy1uNxb35t1XfYP17xw1m2kscOPUwNaD+bbE=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 1627AC0005
+X-Stat-Signature: kr5i1184f8rq4e6kbczqitoboe76qyqp
+X-HE-Tag: 1795154290-867666
+X-HE-Meta: U2FsdGVkX18uE3btYd0+z99sCSJTWLX7iVWrpjxJ9jWMh+ttxfFo6ZZyhsekX6swaWV5Fvq0lEmdjUbAuAnbkaTVt3o24GbBvo71bsIVmdthmpSWTEC0CZUzBvd7DlirWpTujDBFv+iUh/PlfFqKXrsAaOnbHDMimSQnfZ6n8x2uSn36tRGDNlDcjgYj0NCeTs2rC412kW27mZBbG5flOjxxFOjBV+NoDp4e8rdn7u+AQTfkvAer4QXpAm7P7SWqkWEIK8BPMpLmVIRC5VMR7lmYdZAtMuV+5NWdhWFpWTOSE59/bjVAw04rFlOKhoAPdJPv6S06+LudPVygEKl6LjSYfxpcznmyYHvDrKigUqmCsDbR0jFd/W5D2TF19Uofak/Wuti3P5DejITYfybfpK0rvb8OrQrOpP5dcftk0KfMof/uHqkQZBuqcs8nI5sdWHUGdqfWBzlSloy/cHK/end7G8uwSJwBl2Q/rnwzfRLb5mgbyA668i+JTCM3LDLDREMwfzQ5I+moH4nGTU9a2AABbqMIC5ZLNNE/o8i+uKWQKmxaeDc8HWXZ5AAMttLhCLMxzgGOyBhKMrHWS8r3UAeQ3KHtMStQPPeUnXrJoIwfnHa8W716KdTnubZAMeqLhbudXWGRyRJVfsABKirGa9D0KbcLgC9cP4+XQ1H5n1Wfh7ULPc+0UrajoQHalg9L3gLYfaJ9e8hjQOc1983C752Ky/wQUZAYH+j9atYX8c0GyaC3tTfnT6/4V/S3xOlg7tSfNkUesOWfHXFd5ZRxQtFgRsMWKZ9aNEb8xBHOIZUD8pArhtVjfDyyl0OUTClIu745wEcAYDo8Xxx8PRMQ15m7r20WgH/8Vogk6a+NBhM8j8DBIS1PbzCJa3JQ94vqLbYaIAeqWlIvYdU/3zy9I2+z3KypZc5a1/uCgLblLEtoPiKHfVx8BojlbbgUj3jp+DpmE18CtGyzyruN4zi
+ 7ulLZ+4Q
+ WqamiPR1Cg5ffjAagJhJ9VdvEouVbSQT/fanD/flEZrdrOmVgYjes+D+K0GetgPql+dQ+sPTR5nqZEKQEcOr6P94s6JnXl9eBG3ORF/A7AgnAtq/2cZYxHRt0+Nr10HKyjg0JNbV/FSqD8YLIuekqyPwrQnZ+Tgcv8Kcwt5HYg7bcAXPduUAXxKEO3LaKx94iqXaQgYB85BWctW6VQHtmfV/P+4lJus1M2Vvau/Os4wvLZQqJO5otNy1CTVvSCM2qy8yx9ulq/M4wIYUSNZoGOTVR1hefINzQKm8lWgQ3fkzJmf9nhh7L70+4j6GYqPBPfK1AFNrWIxbj6ZUvSz0GQbjoHEBuywvaVFaCTiLdAFifwNbNlaE0lhEZOGhVaJITkTzNpCA0HMJfR8kq9F027TLYS/dYgrkGm3R9447JVHfzdQFIuFkBrPquix7Jvveq/V5MXlD2nUJOALl8IBKcQA+WiZAdceCcWcRJfPQu572F4dw3zf9Its1O1tmZR2+yX4Ggb1sdNAm8EKY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,150 +166,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Tao Cui <cuitao@kylinos.cn>
+On Fri, Nov 20, 2026 at 12:42:58AM +0200, Jarkko Sakkinen wrote:
+>   nsproxy: Pass nsproxy to create_new_namespaces()
+>   rootns: Add core infrastructure for root namespaces
+>   rootns: Track init lifecycle via copy_process() and pid_namespace
+>   rootns: Add rootns() system call
+>   rootns: Add ROOTNS_WAIT ioctl
+>   rootns: Add ROOTNS_KILL ioctl
+>   fork: Support CLONE_INTO_ROOTNS in clone3()
+>   fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
+>   fs: Support MOVE_MOUNT_T_MNTNS in move_mount()
+>   security: Add rootns LSM hooks
+>   arch: Wire up rootns() system call
+>   docs: Document root namespace uAPI
+>   selftests/rootns: Add root namespace test suite
+>   MAINTAINERS: Add entry for ROOT NAMESPACE
 
-Everything except the worker struct is allocated with plain GFP_KERNEL:
-the per-vq iovec and log arrays at VHOST_SET_OWNER, the memory table at
-VHOST_SET_MEM_TABLE whose size follows the user supplied region count,
-the pending message nodes, and the vhost_net/vhost_vsock device structs
-with their fallback to vmalloc.  The worker has been accounted since the
-vhost_task conversion.
+Since David's picking up patches, and starting to drill them, I've not
+paid apparently enough attention to patch division. Just noticed when
+I had hard time finding mqueue and procfs changes.
 
-A container that can open /dev/vhost-net or /dev/vhost-vsock, which
-device plugins hand out with passthrough, holds roughly 150KB of
-resident kernel memory per device after SET_OWNER.  Charge the rest the
-same way the worker already is.
+I've now re-sliced these into a bit more sane pieces:
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
----
-Changes in v2:
-- rebased on next-20261118, where the vq->nheads allocation now uses
-  kmalloc_objs(); the flag addition follows the new form.  No
-  functional change.  Carries Michael's Acked-by from v1.
-Link to v1: https://lore.kernel.org/r/20261106131829.3228926-4-cui.tao@linux.dev
+$ git log --oneline master..
+d8e24a6bc14e (HEAD -> rootns, origin/rootns) MAINTAINERS: Add entry for ROOT NAMESPACE
+f2569e56a267 selftests/rootns: Add root namespace test suite
+bea05e758f8e docs: Document root namespace uAPI
+dd05a49aff77 arch: Wire up rootns() system call
+2dee7a5fddec bpf: Register rootns LSM hooks
+73c51e02b830 security: Add rootns LSM hooks
+3cfd6576a037 mount: Support MOVE_MOUNT_T_MNTNS in move_mount()
+9ed7387038ea ipc/mqueue: Implement ->set_rootns() fs_context operation
+624f0ed9c1c7 proc: Implement ->set_rootns() fs_context operation
+1085e6ae2eb3 fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
+d2898dbdc39b fork: Support CLONE_INTO_ROOTNS in clone3()
+42dbccb5890e rootns: Add ROOTNS_KILL ioctl
+14cbda3e5bca rootns: Add ROOTNS_WAIT ioctl
+b2cc82539b75 rootns: Add rootns() system call
+d29215aa7f0f rootns: Track init lifecycle via copy_process() and pid_namespace
+0f9ce7febb49 rootns: Add core infrastructure for root namespaces
+7a0e8f969fc7 mount: Enforce mount_too_revealing() for foreign mntns
+8c61aee3afbf mount: Add mnt_ns_get_root()
+07d239d0287c userns: Factor out install_user_ns_cred()
+bf74588e706d nsfs: Add nsproxy_open_namespace()
+645d31a1c516 nsproxy: Pass nsproxy to create_new_namespaces()
 
- drivers/vhost/net.c   | 14 ++++++++------
- drivers/vhost/vhost.c | 17 +++++++++++------
- drivers/vhost/vsock.c |  5 +++--
- 3 files changed, 22 insertions(+), 14 deletions(-)
+I would also divide "arch: Wire up rootns() system call" into multiple
+patches, if this was not an RFC.
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 435d8ed3851f..390858056d20 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -249,7 +249,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
- 	/* No zero copy backend? Nothing to count. */
- 	if (!zcopy)
- 		return NULL;
--	ubufs = kmalloc_obj(*ubufs);
-+	ubufs = kmalloc_obj(*ubufs, GFP_KERNEL_ACCOUNT);
- 	if (!ubufs)
- 		return ERR_PTR(-ENOMEM);
- 	atomic_set(&ubufs->refcount, 1);
-@@ -302,7 +302,8 @@ static int vhost_net_set_ubuf_info(struct vhost_net *n)
- 		if (!zcopy)
- 			continue;
- 		n->vqs[i].ubuf_info =
--			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV);
-+			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV,
-+				     GFP_KERNEL_ACCOUNT);
- 		if  (!n->vqs[i].ubuf_info)
- 			goto err;
- 	}
-@@ -1340,17 +1341,18 @@ static int vhost_net_open(struct inode *inode, struct file *f)
- 	struct xdp_buff *xdp;
- 	int i;
- 
--	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
-+	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
-+			 __GFP_ACCOUNT);
- 	if (!n)
- 		return -ENOMEM;
--	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX);
-+	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX, GFP_KERNEL_ACCOUNT);
- 	if (!vqs) {
- 		kvfree(n);
- 		return -ENOMEM;
- 	}
- 
- 	queue = kmalloc_array(VHOST_NET_BATCH, sizeof(void *),
--			      GFP_KERNEL);
-+			      GFP_KERNEL_ACCOUNT);
- 	if (!queue) {
- 		kfree(vqs);
- 		kvfree(n);
-@@ -1358,7 +1360,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
- 	}
- 	n->vqs[VHOST_NET_VQ_RX].rxq.queue = queue;
- 
--	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH);
-+	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH, GFP_KERNEL_ACCOUNT);
- 	if (!xdp) {
- 		kfree(vqs);
- 		kvfree(n);
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index dc973287567c..e8f9dce52aa7 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -526,10 +526,14 @@ static long vhost_dev_alloc_iovecs(struct vhost_dev *dev)
- 
- 	for (i = 0; i < dev->nvqs; ++i) {
- 		vq = dev->vqs[i];
--		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV);
--		vq->log = kmalloc_objs(*vq->log, dev->iov_limit);
--		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit);
--		vq->nheads = kmalloc_objs(*vq->nheads, dev->iov_limit);
-+		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV,
-+					    GFP_KERNEL_ACCOUNT);
-+		vq->log = kmalloc_objs(*vq->log, dev->iov_limit,
-+				       GFP_KERNEL_ACCOUNT);
-+		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit,
-+					 GFP_KERNEL_ACCOUNT);
-+		vq->nheads = kmalloc_objs(*vq->nheads, dev->iov_limit,
-+					  GFP_KERNEL_ACCOUNT);
- 		if (!vq->indirect || !vq->log || !vq->heads || !vq->nheads)
- 			goto err_nomem;
- 	}
-@@ -2052,7 +2056,8 @@ static long vhost_set_memory(struct vhost_dev *d, struct vhost_memory __user *m)
- 		return -E2BIG;
- 	if (max_iotlb_entries <= 0)
- 		return -EINVAL;
--	newmem = kvzalloc_flex(*newmem, regions, mem.nregions);
-+	newmem = kvzalloc_flex(*newmem, regions, mem.nregions,
-+			       GFP_KERNEL_ACCOUNT);
- 	if (!newmem)
- 		return -ENOMEM;
- 
-@@ -3407,7 +3412,7 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
- struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
- {
- 	/* Make sure all padding within the structure is initialized. */
--	struct vhost_msg_node *node = kzalloc_obj(*node);
-+	struct vhost_msg_node *node = kzalloc_obj(*node, GFP_KERNEL_ACCOUNT);
- 	if (!node)
- 		return NULL;
- 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 88a310390eb0..2fa205967f8a 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -719,11 +719,12 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
- 	/* This struct is large and allocation could fail, fall back to vmalloc
- 	 * if there is no other way.
- 	 */
--	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
-+	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
-+			     __GFP_ACCOUNT);
- 	if (!vsock)
- 		return -ENOMEM;
- 
--	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs));
-+	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs), GFP_KERNEL_ACCOUNT);
- 	if (!vqs) {
- 		ret = -ENOMEM;
- 		goto out;
--- 
-2.53.0
-
+Br, Jarkko
 
