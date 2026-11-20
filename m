@@ -1,104 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4C060A2601
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1558E606A332
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aE7K5lkT
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IT3qkdyO
 Received: by kanga.kvack.org (Postfix)
-	id 01E526B05B5; Fri, 20 Nov 2026 08:42:34 -0500 (EST)
+	id 32C0A6B05B6; Fri, 20 Nov 2026 08:42:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F38E56B05B6; Fri, 20 Nov 2026 08:42:33 -0500 (EST)
+	id 2B50E6B05B9; Fri, 20 Nov 2026 08:42:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E75366B05B7; Fri, 20 Nov 2026 08:42:33 -0500 (EST)
+	id 17A026B05B6; Fri, 20 Nov 2026 08:42:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6A9A6B05B5
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:42:33 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CF743160988
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:42:32 +0000 (UTC)
-X-FDA: 85455612144.14.8D6ED79
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 04D64160005
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:42:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aE7K5lkT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DA11B6B05B6
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:42:36 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5CA1F80F78
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:42:36 +0000 (UTC)
+X-FDA: 85455612312.12.9CFAF0D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 78D4A40007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:42:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IT3qkdyO;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795182151;
-	b=4MG1fh7uHYbihGp8kGjgaYsRJWewPCxqDBXPR6x4Ug/nFYJKwxD8b1+tcLJJDSy0ra2RBh
-	8hOgDY3Ur7i35vEOx+9ttOCosuxBqukhskITCQA3EvPd9xGYg2u59vke3RdILwj2ZtIHwg
-	eo7R4gskoYguLdImLvTDTC2CrEAfCE8=
+	t=1795182154;
+	b=sYst8aOOWKkX4fbDaZa19tBn6UXXjls1EwP5a3e1Bb58/YzFgoptMuOmT9q0fFUaDXeYAj
+	ZqFewgqVCUez1w/Zfd4MZo9It+MxPsmozYi13aNVoYPnq8v9iLdRhd2D/4FqDace8MTiG3
+	i+NVj0RsS12808pQlNbqusGCu+f963Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795182151;
+	s=arc-20220608; t=1795182154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=PxknjzXyKlIZbBI8K2Iy/IF94QOe7DF6NOjeL9QzLkc=;
-	b=ex1Nl/8AMIPfIhsJkTWGUueWSyT46Qb/TEUHJhBexJpookyt6dwtMAogkaJfeXSd+efqcW
-	pFZoYD8TOjZ+4X6nCJ6GGarsTBMViy4eSJiuQIHyTIjLBNlWsAKysrwsw5XrBrJ2V+Ei/+
-	i0HOun8KPyk+SS8KZQm8N/Nlr9jalJc=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EyU8IUWPHTCgRPl42Jjqqg6MmBy+29h9LlcoVLoowqM=;
+	b=s7nie06TdfdbS0q+4dttZRkAE8WUfGG1kVnRX/81dqmjAAwVzEveqeuafLyMsqaUJjtYrQ
+	j4h5b9h758ypP5iG5x1rQ6OhzRXm6XmSv14SqnInEu5z8uKBXWcWDiYSr91P3oqsDK2/ua
+	ljAbD+itZ7QEK7vhJ/GOk5pRkEFEgoA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aE7K5lkT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IT3qkdyO;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 42F2260F89;
+	by sea.source.kernel.org (Postfix) with ESMTP id F395341408;
+	Fri, 20 Nov 2026 13:42:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2761F000C0;
 	Fri, 20 Nov 2026 13:42:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6545C1F000C0;
-	Fri, 20 Nov 2026 13:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795182149;
-	bh=PxknjzXyKlIZbBI8K2Iy/IF94QOe7DF6NOjeL9QzLkc=;
-	h=From:Subject:Date:To:Cc;
-	b=aE7K5lkTR4egrzTaxc5ukEBMPXht8pKpIjSsNFY4eWV3ZaAzQHqS9nFg5eau1aT4S
-	 HTF5bcFYvtEhabzME3ixN1AUu3F3rJR6cFOsM6qIONmCH2z43SZB9/iWVFu6Yc1uNL
-	 9ucX6qweiQzi2NyXbEir3ti801+p/gnpyS7ekr/AtCKD25FStr0KjeHMfCM5imLwM4
-	 cuYPXlSGvSMUPu/e+Te1QwMZirfJbPQqmEQlYcVD5Sgsy6F4MYLpoAF5AQzET8EFTl
-	 SmeVLdGPa5o0sImRMPoEUygkADzh0Es3ZPWlMRegTSBhhH39/LtsvxUqhoEb3Nqi/v
-	 TMJRSzvjdrfMQ==
+	s=k20260515; t=1795182152;
+	bh=EyU8IUWPHTCgRPl42Jjqqg6MmBy+29h9LlcoVLoowqM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=IT3qkdyOjenbnZjjh6oTAOqIA0GVob6KTnVxDfvTbarYDp5UUhOuUkmXra19JQJ/P
+	 /kv85iUdEbJN4QiYgxz+cP9ydLdt23e5X3+rNAllzBmzFd9ZEqjyP6KIy1XUnSmPqq
+	 QFGpIH4tRJREJDwwUBtmgetjZCr8TQ6S7uEdAcCMgjx2Rz/L7m6VldAlhj6T61dgQ2
+	 v685od1YzezKiNzg0IQTScBdchZw3su/+VD0+dNqPFLDJ7ZyKDYjYa9Gc1Q97WQrNK
+	 7kQD/X3soXV84TyuWiMslwM7pXwWg4uxcDl0xQaKXsPrwr1BhWa9ZobjQD1mKDfBC3
+	 wmQNka1HpTShg==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 0/3] pidfd: use one helper for pid namespace visibility
- checks
-Date: Fri, 20 Nov 2026 14:42:08 +0100
-Message-Id: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
+Date: Fri, 20 Nov 2026 14:42:09 +0100
+Subject: [PATCH 1/3] pid: move pid_in_current_pidns() into kernel/pid.c
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMUQrCMBBEr1L22y1NjLZ4FRFpko1dlbRktQqld
- zepPwNvmHkLCCUmgVO1QKKZhceYQe0qcEMfb4TsM4Nu9FEp3eBnTA+c2AdfMsq1fOyTUHXOGBX
- 0vu0M5PuUKPB3U58vf5a3vZN7FV9Z2F4IbeqjG0o1B8G2PtSbHNb1B17xI1icAAAA
-X-Change-ID: 20261120-work-pidfd-pidns_visible-18c441f23784
+Message-Id: <20261120-work-pidfd-pidns_visible-v1-1-0e82d08469ae@kernel.org>
+References: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
+In-Reply-To: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
 To: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>
 Cc: Oleg Nesterov <oleg@redhat.com>, 
  Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
  Jiwoo Kim <arpe1618@gmail.com>, Chen Linxuan <me@black-desk.cn>, 
  linux-mm@kvack.org, "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-04696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1564; i=brauner@kernel.org;
- h=from:subject:message-id; bh=avi2yEAxjJ5v1EMR55Cx9mpcbWIvVTDxij2cio+1u1k=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQz+Nm8vD1f553U9adnDUXYOatWae9mYMvcm2DvrZl56
- Pr+iz+tOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZScYzhf3DB3/Ljf700GXu3
- MMQ9sZDQ9Zt05Jro/bD2iVIZRjd+aTL8j3vAEsQ72+rF2S1qBYYND2V/xLYyFzpekd8zgaU+erU
- 4IwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3561; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=AAqjJa+Lt7I0UGE2nk14kuF0ZHp1hs12+suAI1lRIK0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQz+Nle/FntmX/n5pnm3ezOWaevloRbv7bXdGL0EBcJX
+ NP3ZDlXRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQUxBkZVn0uPeyvJ3VXgf3H
+ m/MxlQ3FinL7389fU+K3/Hroj39TzzH8FQw49fP3S7fLO/8m/wlJjnq2QETAwIL59klX7pfvhXr
+ 3sQMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User:
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 78D4A40007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 9ouxgrehbtqw9pme449nq73wfenuo6c7
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 04D64160005
-X-HE-Tag: 1795182150-920889
-X-HE-Meta: U2FsdGVkX186NaIVxpFQ108VlaP2obx2XLO3NS0XrKGNZ4le9M85wiWE3FJIr5pr6kQPemTs3LRwYO/HbySYxM4cN6V8S3TwoEHlXfSI8DMj86/kHi4l18tlS6Tja+XwzA5130RnjNEKp/oys3ih4s33X/NLKvPAaiGKsGBOJngpZ0TKtTtJF/8Zyhz/3gh7Pb8f0W2Ih+MqIv7f7PKqC/WAXnlW60cXlqAyhz+/PtCEhm+z41+vfcvLHctc0p7FP/UbNidFBJiw8ZCxU3bvt3cF5M9CP7BumhBfU6pS/x1rOYcBFSeyFcBc0q4xA0trXm31qk1i8hgs9LhgyXH6RrH3lCosZtpNrstN4XySxmvXoXxqZ3b3e8q6gb/zmGsM0tYIqg9RRszOkQVHDooKH7Re9EnH2BcaHlIbwlKthphk5yPiBAt3wpWyt7nVMYh+K6yR0jTrKIxy3Q347pRF+NTH4xmbR5dPKWNo4UhBMrZ0NoUVVDNzKRoKuZ5a1HAbvTpA7BbMhidr/sxWuseTxtkm2Zo6ySPnKJOAo4VpJz7q1cPI11sjEmfMBf82SKtW8fnP/Jc7KM3Rc6f2rjDLnjkvQ78a4ATXDZC/hdeGWn7PZojEjRpHKRwy3lpx2U949C1UUG3AgSNIC3IIiiAVC79eYLY4Yf9E6xbgVAcNLHSD6f3TUo/wqYz+Fm61UC/x/RHPhlSaUnukMOgIFfLzW+4wGEQMOk+AtYaZPSemXLhRir4+ZTaJT7bIvoX/wnvInJeNdsakUANOXAtgZfzjLN/QZu+YpN9cR4+STs7xXVap8mNqqgFJakG5WHYsk/6GqQ/Mobl9oqVppprAL4kC4JtCziSh4VamFzVg27mP2IX49tNxRSquYJp+Ek3OVsNK5HPVYIWpYgIfkSYMPUIeuvueW1VmEr5u4UIgVo4qPUS6l11gii5hsq/hEt0d9be+H1nNLQOOYLGnYb6oZcP
- svcFjvBy
- jStjeyf8jk0JB1hZy16TNL+cJVB5Fy6hlr4L8pjaMwvzRw/Q6YIxMUC2wby2PFdxJU14M1qJClHQj96yiwkbd0TRb/NohW3xYQdTc0tWCgOySRuUcboZkLqUknvtvchZPYRUWZbCmHLnCN3Gw/POxepyhtZs2GH5m/tevbr/k0OY9BzOzwAvtD3T6pw1eakv07vZmELI8y+4GWaD/UTQ50Oc5PGdX/J0yMfQ7/EBv5z6c3A8qDWFE4b7hmUQV1tUx3pB/2QTM3mPqlRIGEREnLN3WUb7KvnptAthTIrarPgbvqd5b1RZL+oY1UUIvVpQfeaBwavFClgwl5OFV4culNE91fV/l2F4UDTssrDQqo9YbRf+6KCa8DeNaHVUhVm9ld7nlScqxlpHzV+5qjRZeRSk7Gz7kQYnO4Gtzb4TdkrmMM1viXC9yNjwpMLv5+n1/6wKBKWqNhFu9yRDGXzvod+2EFwn3+9LebSEiF/au6zV1p6OWmiCHDHVka88h8yz2ZktSFKgfwpV4+FwPZIArFBWRd8f2LlkrhxTQR34PH0mM1jkBrGaIuoqNN/97VwsT89Dd
+X-Stat-Signature: cjjgbjzwmuunf4gncf7jts8sx1w8hs41
+X-HE-Tag: 1795182154-405278
+X-HE-Meta: U2FsdGVkX19QXGTz6dFPinSQtSWUZmXK+NXbm322FwDysoVws+IMGquNq9EUARGRdg6bizJcwbpk0mg2eEx3YHuzxaGxkqj5T6oh8rQ4y9ZTcAdqbtGI/qaqLELipFcJfBHjtmqNSlvspV1H+hLIkusNSZk/vPyn3ioS3yN8AOyfoQI5s5mQRP2ra2Xi0+povt+ayA9S9SrmzlvkwWsj6BcLaRqpCaWnhaDYgTkQRtcVouSvX4Z5zxlpGAc0aEJFmkaNrlEMW3X4qfBlgTpboB1B4vZrbImtzJ4M5EmHkxl7yMxlG7g4w3SRwUI2xWZsd15GRfcSL3RaVf3t2qe0FQ5nukEcipfYbUFdhSSUjxxfNQRct4dZQfzL8dS34p8pm0N8QztsAg3KNidTzEJbB03EnAbgFpRCmYkuDRmysPrKZTkRf6mpMQ8pfPFtzjtKl/2MH9wwhEJBjxlg8Gv2cp5tP2S67OpRlVQJuTD1CFG8uZkjU0JpozEVoehCa1mmt+0hWppWhyWv3p0FMZ14wiB8I7SEVlyibhSj079k8ezKPQG7j2lXotrp4/CtkTFk2Ve+P/GTfSZ7fSfiVddiS20QG83e1WQAmTe+saU7KvHySAdcegHsnUhzr/uwhSw0+s4Kq6ZTAniIs6E3Dkx/JB3yjxruzjGzTqDA3JWn26SNDeCMWTXocKSej4Ln1enltHWiQC2X8KsNX2Ncx9JhhMoOL1CIfFDYcR2lp2HIbWwMAYnbTOqH/UwAUf07s5wrAaDh3hMeFSdX5K3GC9kDZG8FK+VFYMmP86jHxz/qt6jrimBBxeNw04SBOF1Y42bsEfDU1t//hdKCpSO0dcZMChRA/qytD9UNNHRSIHh219ExTAeli49At+p/o+x6kwjenBijgu8jZ+LMuMZEFGAn0Qe719FFuxlUKvLtpPvrNXcecuepAKwbtg+R6TBkT079Oa5d0qnWyvIj/U8vIeO
+ XkctKkxJ
+ /U/wHk0m4MPs66qlswBaowM0C8xS2lLkLqDJwmIMrhL4+PddOxwSo1VqS6C74Ysm6ReId50q+t3xwZTk24HtqoC8zZ/qo2y8g2shj5eNr7y9UuBOw/N4eZzUH3VKJZQq5+gm1nMM+vF6e/WB1vkGkuZqT4ddcPic1ZexHrun3jMQVjDXiogOVKavYBEEvjsCjqLqABaOkVTGReUPq217vBIB0Zez1kcBWXV4LeNVI5ZkCNyj/U6TnLaMbCM4Tt0yuQo59OaUVNBATnPmx62Qt6GmmLqxXlLFAjo81WX5KW6WnRb+CycdV4ZJAFd8dYwx+tzY1SmMAbEHUq+icjigizxIFagk6KgwNylq6XXQuthqcQc6mJ0C2MKGXDlXitYlbMcmirEA/5NWfCwUDD4xM2Wl2ttzkumZjUrOMNwavGBxaHbwOU5z1O/X2ZgG1g82YDcpXL5Ka/ywoiVJE55Kj1G7ahhK8nbBSV1WizFRtHCrBbasLBoUAVYEJ7oAiIXxyvSSsWTj7/ZPPWyY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,37 +105,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The pidfd api checks in a bunch of places whether the target of a pidfd
-is visible in the caller's pid namespace. pidfs has
-pid_in_current_pidns() for PIDFD_GET_INFO and the namespace and task
-path ioctls. The pidfs file handle lookup open-codes pid_vnr() and
-pidfd_getfd() does the same since Jiwoo's fix [1]. pidfd_send_signal()
-walks the pid namespace hierarchy in its own access_pidfd_pidns().
-Yuck, unify it.
+The pidfd api checks in various places whether the target is visible in
+the caller's active pid namespace. pidfs has pid_in_current_pidns() for
+PIDFD_GET_INFO and the ioctls that hand out namespaces and task paths,
+the pidfs file handle lookup uses pid_vnr() directly, pidfd_getfd()
+uses pid_vnr() as well, and pidfd_send_signal() walks the pid namespace
+hierarchy in access_pidfd_pidns(). That's all the same check.
 
-The rule is the one we settled on a while ago [2]: anything that hands
-out resources of the target requires the target to be visible in the
-caller's pid namespace. That doesn't turn pid namespaces into a security
-boundary. It just means a pidfd doesn't get you more than you could get
-by naming the process yourself.
+Move pid_in_current_pidns() into kernel/pid.c so it can be used outside
+of pidfs and convert the pidfs file handle lookup to it while at it.
 
-[1]: https://patch.msgid.link/20261117152332.1221-1-arpe1618@gmail.com
-[2]: https://lore.kernel.org/all/20260925-gewischt-auftrag-tierzucht-c153cb3f9f74@brauner
+pid_vnr() returns pid->numbers[ns->level].nr if ns->level <= pid->level
+and pid->numbers[ns->level].ns == ns, and 0 otherwise. That's exactly
+the condition pid_in_current_pidns() checks. Pid numbers handed out by
+alloc_pid() are always >= 1 and only pids allocated by alloc_pid() end
+up in the pidfs inode hashtable. So pid_vnr(pid) == 0 is the same as
+!pid_in_current_pidns(pid) in the file handle lookup.
+
+No functional changes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Christian Brauner (3):
-      pid: move pid_in_current_pidns() into kernel/pid.c
-      pidfd: convert remaining visibility checks to pid_in_current_pidns()
-      pidfd: restrict pidfd_get_task() to the caller's pid namespace
-
  fs/pidfs.c          | 12 +-----------
  include/linux/pid.h |  1 +
- kernel/pid.c        | 31 +++++++++++++++++++++++++++++--
- kernel/signal.c     | 23 +----------------------
- 4 files changed, 32 insertions(+), 35 deletions(-)
----
-base-commit: 0a5864ad213c9fb2cf627a2dcd6f448a1fb7e065
-change-id: 20261120-work-pidfd-pidns_visible-18c441f23784
+ kernel/pid.c        | 21 +++++++++++++++++++++
+ 3 files changed, 23 insertions(+), 11 deletions(-)
+
+diff --git a/fs/pidfs.c b/fs/pidfs.c
+index a2a0691cf1310..85b160923177c 100644
+--- a/fs/pidfs.c
++++ b/fs/pidfs.c
+@@ -327,16 +327,6 @@ static __poll_t pidfd_poll(struct file *file, struct poll_table_struct *pts)
+ 	return poll_flags;
+ }
+ 
+-static inline bool pid_in_current_pidns(const struct pid *pid)
+-{
+-	const struct pid_namespace *ns = task_active_pid_ns(current);
+-
+-	if (ns->level <= pid->level)
+-		return pid->numbers[ns->level].ns == ns;
+-
+-	return false;
+-}
+-
+ static __u32 pidfs_coredump_mask(enum task_dumpable dumpable)
+ {
+ 	switch (dumpable) {
+@@ -1028,7 +1018,7 @@ static struct pid *pidfs_ino_get_pid(u64 ino)
+ 	if (test_bit(PIDFS_ATTR_BIT_EXIT, &attr->attr_mask))
+ 		return NULL;
+ 	/* Within our pid namespace hierarchy? */
+-	if (pid_vnr(pid) == 0)
++	if (!pid_in_current_pidns(pid))
+ 		return NULL;
+ 	return get_pid(pid);
+ }
+diff --git a/include/linux/pid.h b/include/linux/pid.h
+index 185bf0cde2d14..1b463921d2ed0 100644
+--- a/include/linux/pid.h
++++ b/include/linux/pid.h
+@@ -239,6 +239,7 @@ static inline pid_t pid_nr(struct pid *pid)
+ 
+ pid_t pid_nr_ns(struct pid *pid, struct pid_namespace *ns);
+ pid_t pid_vnr(struct pid *pid);
++bool pid_in_current_pidns(const struct pid *pid);
+ 
+ /*
+  * Needs tasklist_lock if type > PIDTYPE_TGID. A lockless reader can:
+diff --git a/kernel/pid.c b/kernel/pid.c
+index 4f9a29eb29de7..aa3ed6b5d4a9d 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -559,6 +559,27 @@ pid_t pid_vnr(struct pid *pid)
+ }
+ EXPORT_SYMBOL_GPL(pid_vnr);
+ 
++/**
++ * pid_in_current_pidns - check whether a pid is visible to the caller
++ * @pid: the pid to check
++ *
++ * A pid is visible to the caller if it has a number in the caller's active
++ * pid namespace, i.e., if it was allocated in the caller's active pid
++ * namespace or in one of its descendants.
++ *
++ * Return: true if @pid is visible in the caller's active pid namespace,
++ *         false otherwise.
++ */
++bool pid_in_current_pidns(const struct pid *pid)
++{
++	const struct pid_namespace *ns = task_active_pid_ns(current);
++
++	if (ns->level <= pid->level)
++		return pid->numbers[ns->level].ns == ns;
++
++	return false;
++}
++
+ pid_t __task_pid_nr_ns(struct task_struct *task, enum pid_type type,
+ 			struct pid_namespace *ns)
+ {
+
+-- 
+2.53.0
 
 
