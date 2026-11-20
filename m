@@ -1,92 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840D760A2601
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D78F606A325
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=deLSRCTp
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=lrd65nOG;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Q8uM6mhI
 Received: by kanga.kvack.org (Postfix)
-	id 932CE6B05B1; Fri, 20 Nov 2026 05:11:46 -0500 (EST)
+	id 656B06B00EF; Fri, 20 Nov 2026 05:17:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E30A6B05B3; Fri, 20 Nov 2026 05:11:46 -0500 (EST)
+	id 606B66B05C9; Fri, 20 Nov 2026 05:17:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81FA36B05C9; Fri, 20 Nov 2026 05:11:46 -0500 (EST)
+	id 4F69E6B05CA; Fri, 20 Nov 2026 05:17:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ED0B6B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:11:46 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB0ED80E9E
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:11:45 +0000 (UTC)
-X-FDA: 85455080970.21.AA83921
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5565C40003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:11:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=deLSRCTp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CE2D6B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:17:07 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B1F761A0E9C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:17:06 +0000 (UTC)
+X-FDA: 85455094452.08.4B76094
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 67562C0008
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:17:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=lrd65nOG;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Q 8uM6mh";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf22.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.147 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795169504;
-	b=r5iKqv9L27mTxDRE+8qpx9nH9YVRLjyMA8C2nlnje/v+QdgkhaervSM4ULfq2ZTf8joxAd
-	jknVw+JGt8CrsfrW6CPLKdVXMcPq5+6eVHxGmPmo861qlxu+RQyUry4UsqkACZLuqHayS7
-	8NXbmqBIFEoh/NPRVChoRHMhm1aBXiw=
+	t=1795169824;
+	b=iamAE4VRdd+fsGMvpotb1UKPqhImTPSAuHnYXZi8TpF4OlmS8q51VoEiHKgAiTRHUX71V6
+	wWpNCKtoDyqvnm4GkQLHdbQh4S1M9eIknSg2kQqlovF4IEKYUrXzXty721pQnY4HvWB1zs
+	9LY69HBL8zQeflE5LYwLdnjUNziufn0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795169504;
+	s=arc-20220608; t=1795169824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gX3mLQC7ilPSH2BMyBrpIhR73ceBwKOo+TT9X1EOLu0=;
-	b=pffIjy5Dd2EJBWseIaBBtHMI7fra3XVrlXAXmSeCzu4oCVV+c0eJZJx8pEjPJHYqGEkFqg
-	8ZLUpvBCF18wxEv7C8zoLtQg4+6drc0GxRRi9X3wQXjXfbQmc/M2IokNOy5GMEfOWU6NrX
-	JAulkbijSFczkrLbHm8/mJzdp01paGQ=
+	bh=BuXhlSKg00a4CpooMZ1asDKzuO5wnOZJBMwl0XnHxMM=;
+	b=MaEyrN1esIh9TUaJcLdqCDglu4c8YkPb1C3QvmaUNN4Y/ns05HXvMbQQ/OsV3g/Fbde+0F
+	BLY/hZcZklXeyKTeTNXsucm2GQwP7pvKJfCzM7ITbj6euKNi90raxmYA+gkSI5Xc047rkL
+	3ynUix7vMuX8PwkMhFx/aJLoBx36Ud0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=deLSRCTp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 876DD4139D;
-	Fri, 20 Nov 2026 10:11:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C0A1F000D3;
-	Fri, 20 Nov 2026 10:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795169503;
-	bh=gX3mLQC7ilPSH2BMyBrpIhR73ceBwKOo+TT9X1EOLu0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=deLSRCTpxYpJPHrUizPrOQ+4IE+x9rzCbJRhp3B8Kt8ujsumOiNYgcZyxdvNIx+0F
-	 HpylfNoVYtk9ARdYA5wbHh10CsL3cY2vae0vrCqyiubGAGt1hM5sGrxtsVP9lGD9HU
-	 aZwM0uftYP/bOowFAqrd2knay7BeU9KOqbZh+vHxB3DcmOaTSi+2PPDsjhFjunh9+X
-	 tgZrw2oquUcGbuAIj1PyZCTVJAldKJvMMmgfU+hunDGHHzNOO4pETlNbYqS/b9oLz+
-	 hL0RDo24CHmarvGqyzZIxkt4K3MBk51cFW2yrYb5aTKg4OV4CcRoxmVR6aVcf0Nvox
-	 ZawXSxqa7GA/A==
-Date: Fri, 20 Nov 2026 10:11:39 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Ding Feng <dingf3ng@gmail.com>
-Cc: Ma Wupeng <mawupeng1@huawei.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 4/4] mm/msync: return ENOMEM if len overflows for msync
-Message-ID: <awAZLIPNrcHeNr6a@lucifer>
-References: <20230321074035.1526157-5-mawupeng1@huawei.com>
- <20261120051413.46167-1-dingf3ng@gmail.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=lrd65nOG;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Q 8uM6mh";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf22.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.147 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.stl.internal (Postfix) with ESMTP id 7155F1D00399
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:17:03 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Fri, 20 Nov 2026 05:17:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795169817;
+	 x=1795256217; bh=BuXhlSKg00a4CpooMZ1asDKzuO5wnOZJBMwl0XnHxMM=; b=
+	lrd65nOGQ9AxiKwcDko0U7X04VpVb1LuKQt1QNWwZt0YHrnppMe8HKr/arGQ5Eok
+	GJaoAyJSZjbckbedw7e1Oqclc2g1DtLaTVDhZGlfXkqste6iWwZ6jjl0M+qwOzhX
+	jGnRgCvEoMzqHu75ZG8aGjG2xm44k3ht2Ct/sxNZ33pxo0nPgPSa+ijt6OPaBafx
+	NqxpaxgqqZkUCXtLV63vB5CY5Te6TlDhOVAbI+rleV0aWuvVzMwcx/Veo6nQNQCs
+	AqGnlQeOcNNSTlMBl61Wc8t8vJojatC1pSaCnSYJpBxIgXYx89D7QileDGMTyz08
+	5IaSgJMhIzg2lqw9BD2t2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795169817; x=
+	1795256217; bh=BuXhlSKg00a4CpooMZ1asDKzuO5wnOZJBMwl0XnHxMM=; b=Q
+	8uM6mhIZ+PPM0igHpEfaxmK2pe/kQKgPu4mzjzvu15JZhYLNgPEH7gSBXoS0naLN
+	oQaMGx1HlklWuW+jNZAisHdjSQPeXnXA9qc8GNSvyqSOSYqAEnr+MTErHWkDYWa8
+	A7KrK1MybzJNtP5/1eeSu7smqdqBNE4daJLL1/1wsJBuLSzzJTXXViBZlMfitj5x
+	hE6596YuPnlR/D6pi8sQhAUXwov4eYP06gAXWiuVaCgC0KHLUHecu8QBytE1BymL
+	rkCcZNb9QRAQ7AFbkOvXisI3uBFNuHFoKMIW/d7IRcBfXCpnhVI6Gy0UuOzhWSMl
+	xxujL+gZNs3dVABK/KXjg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795169817; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:HYI7azewRJxcKItuYkWpocONyGDvp0IpHDUB64zTgnOnsC3
+	a4jwG99ivBxZ8QcZn3Kyrrn/9ASNoCeNdfPUv3zC5HBsNY3PSrN8ia8J2nmRrfQq
+	0s2KgAMUyhMsMnytWsxZ2t/Pd+kYDT1FAsLBYnldJSOaZHE4lL77uEyqWLTf2Squ
+	527WZNEVfNgtSrMCzzJx+IUHQ25cvZhMW21HrDpLa1qhIB8IhlJm6TvYqWyed4Mw
+	Y3U3xRZtDoLZ1siJGYWNdq6UIxkgeeM83VVjHQ6yN7+yhNFr8tPE5+YnnKsGoknc
+	QLbtGiQ4exAoBnOnvWRLRCbvRer+IkLRJ/Q+TYQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:zuSsEhmCwr6Wvsb9X06BQFozbRPwmHJVyho9pvXTxSo=:mGu+cZMGELOH0bYyds92Q644h116pbc8B12xMlx7qxQ=;
+X-ME-Sender: <xms:ER4Aa7lO5umD3sr-TKj5kNGsKI8wBBtS2M0-dcWs6QtR_INEScQoog>
+    <xme:ER4Aa5qO5F1L2_61uu_MvkmwxazML4N7Mc_FqW7UZMVVmx1YZDxLOyY8OYVxafOMj
+    iVb3ctbJB9I15cT59eZjmavKzKCG0gdU7o4-3haWT49Va9jnMKoAL8EdA>
+X-ME-Proxy-Cause: dmFkZTFsqBHJi/SORwcvKmFMVQF2oUrONn+po8KdzOVlSsbWms9cCSDOyBdd56+KzfUPQU
+    2X42s5779mPNAiTMVFZUPGbqhM7epcvvR2MPGjDQwB7R37oOEK6tyVEgkAL7/q+/ahPVap
+    NeH2VcC5R7jB0RTnG1Mf2Dp3losR7T5ymz+62cELWGnddyd/9TmS2hLGCCPFOT5LJFqs3N
+    XaIpXbn0r3peZdWBHWif89mdsRbh6/6AtlmeDrI+6RoG8+ZTrrW7a7OeLDd4lvsOR9buT0
+    D74Tom2Bnx4DC4bbrg8uwpPgVgjhsMivxjn6icPGINxpGvShklwxxvQK4VaHQFSiEraZMC
+    xETAMYCZkJJQQ2961g2sx20Cgo3KT/REaHIBg93dlyvDPTYn4ur1skahcTcN0G+xo4lB5h
+    ajQycmI5rJa1jJ67KtVQhTtLu/PyG7KYa5VQdg61bRYFylTI15GsoRWoLB/X0XWajtTaPT
+    GZVkANeDrHXq5VC3N1G3W/KVvRZbcd0BX6oPQAVzlRC4virYfMcesT7+o5KWxVJiBRM9r2
+    D49vQbnnm5iL8fO+nwGExVlvRBgp7+XCG7+/D73eB/IzBx5Iw9MehaCYHZyj9FGkVt1139
+    Jbt7Gy7yFQiC6enD7KLL3y7PkgQIKWNIgd5bFoqlpGFqchPZqz9/JPpVpb6Q
+X-ME-Proxy: <xmx:FB4Aa_gaDQRwBXTEb7PnmRSAAfHySWI73uaIt3LlMbF_hgd0Sz5JYg>
+    <xmx:FB4Aa7dv1ofwPwh4m8S7HRxw00z-m5ye4xEC11hBQoYFuIX1wKaqIA>
+    <xmx:FB4AawIAi8H2OVdVYypI9jeNC4RSz49wPwT2tyNluL4HA1rxUHiLZQ>
+    <xmx:FB4AawlAszsQNztJyLAKB2253IZThabYUEdU2GIy-SBhBfVSHiV_uQ>
+    <xmx:GR4Aa_RsJ4-fSKP1fJY0RpYuvoQ3kE2ZxFN9vRS21E7SA4LIFs585KKW>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 600B132A009C; Fri, 20 Nov 2026 05:16:49 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261120051413.46167-1-dingf3ng@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5565C40003
-X-Stat-Signature: rakiuhwews59m1y59kdu7phw3psrqbbq
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+X-ThreadId: AQsIS8mXxcAZ
+Date: Fri, 20 Nov 2026 11:16:09 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ sashiko-reviews@lists.linux.dev, "Arnd Bergmann" <arnd@kernel.org>,
+ "Gregory Price" <gourry@gourry.net>,
+ "Andrew Morton" <akpm@linux-foundation.org>
+Cc: larips <larips950@gmail.com>, "Zi Yan" <ziy@nvidia.com>,
+ "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>,
+ "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Brendan Jackman" <brendan.jackman@linux.dev>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Jackie Liu" <liuyun01@kylinos.cn>,
+ linux-mm@kvack.org
+Message-Id: <45a71e8e-0c8c-4b5e-96c9-be6f2ad0e364@app.fastmail.com>
+In-Reply-To: <3b00e53f-b4eb-41d4-b3e6-791660da3342@kernel.org>
+References: <20261117211635.2472067-1-arnd@kernel.org>
+ <sashiko-outbox-221983@kernel.org>
+ <c420ec17-b297-469a-927a-85934a05fda4@app.fastmail.com>
+ <3b00e53f-b4eb-41d4-b3e6-791660da3342@kernel.org>
+Subject: Re: [PATCH 1/2] [v2] mm/mempolicy: fix copy_nodes_to_user() for odd inputs
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 67562C0008
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: hw6krangtg63tdc64jq4bye47jd74wd3
 X-Rspam-User:
-X-HE-Tag: 1795169504-41282
-X-HE-Meta: U2FsdGVkX1+0PlFJpNcxKlIldIvnTgeSTC4WV5Rw3Ub74j6VjhChZLqa858ZGE7CLBVoL5Q8ywrjIVbXbj8XBdNKgD7OiScU0Cfjsip2w4Hc+J6Yiv3jxY6Gyl1yFigxG2f7wz3RkfcDVShUDLfg5akbigaAMQkS2YRNqmuKGhLLSpmV8ALadkTyAV5DfQLeRxlEyJFUv2isn+2ztnnRI/h/UDKny2iXgFjNL5SiIEWSSkyi2awxv9gfWPTRB8BOmAlvRiglvy3YYxoI+QOaz1rB6f2ZSSw1FeyVMSjRgBTQ+wHLEqJH0NnLWFHi29GVRQW8+g+M4Oxa9EFTpx35h3TUwUt5JungQtLHB7BlCMmP2SWXrboZWBpX5Nu6fp9foWWnbEiIpL1o22rJyfLlInwUoZjYsQWqp4oj6DzOsHkZ6Fe6vKJhXR6/NjKQpMlx1skHv+xa3BzecaJfgsNYQywdbkUryBrX9IFlsRjPeZi7hnWaVnOz/bKRHgzEsvndB0YbKRm/RFzD1heCV5frOfY/nx4MTLmJkbAlKeMGWLNdy7BrsGROsmYi/ZFWYfq4Lp8GqGEqbDHqKeKX87I/7gOwbP55GXPLGEtcOor+jttUPSzemKbvN2P/QNzU1EBY5cYNTXL/4jM/gTU0yTeg+2Sl2C0Eze5YTXNdNEuKU9yCdsEHi8kCEAGuZ4bALIfHzTFcW+sVPyuT1CG/U31TCGfk3rM2cM395MEzFDq6X8CkaXqh1lQZEHTVPiYCKSbRctKoAfMBszVJHwBHnFIzHck37h7QisbV2l/YPbJw3icFbUEblFukc8bsDiNOI2MJh+DPU99y9E4/Z2viSa6c6pRMJooHJgC6i6x9iZdYZX3Zt6IxY1Sp4dB6Zg6ZFzzMPhmsbp1xVFMI1h1us2fgk22ZCqy16H8mWPsB7YPttnA/FzKv6RMaKB1uQGuNy7DwPvX5xhv3wWtC7I0chb7
- OSrVO0Di
- shd53UHvrc4S85sEwG6NjRoVwDTeUokRMoCgRFYZntb48JxLXoy75THuiY1Sg/UuGkQep9cYSBh94N0TfaJObtFycUBVBRgvvECNTiup23vFk5SnpR/rl5pryx4ZG5KUGSXJ7OMaSqU6HD+pogzfBa5+lNdPIo4sAMK4ZN76DMJD8pt5YGT7i2y+m4Lba6uyT9mXwa6pXuck7zOW6GcyhnRsIBfz0HiYTlWBVNjbWRSiedUM6ylTWT4PkC2FWx51F/UMclw18c5VEPELWteZ6XhxeBXVITlAejdIWZZhywKKwAazCcP7kcPDLuTs7zREEgWfr+/1fpyiiLdGbPnwKWoLr+966fNWdBwZ4Bf/ByhTt7U0/9VXI2EGlkqsjeqy63og0//cMTuEWA+8WgLiZsddZeJ2YlPUbb/G4625pFxjVqlWOpcDae1j+Vi6f/1bET7JcHdH3ozaKvt8U2IWdTm4coh1QgK07WFmphQp8MbxFH7u3KxaADd0bdw==
+X-HE-Tag: 1795169824-765494
+X-HE-Meta: U2FsdGVkX1+nEM9o3mNTNVHjnnXcVfBqPzkEmjzeuAu+h0ucqd5TvlCVDEUQAHD2+6V6A0vPme8+XZg00s3q7fUQo7NbsWbLyToJp6lanppyHcZO+ydntVEw45Kv5nqExnnokWayRPiJoc12V8c4IH9u4NnlnhF43j6lDymbrh1CzsH7blJefkKgwz5xMcnFw4zulULL1ejCUctxi+xlLlm/rQqUg+PIVHxRmTj1IyCKNsFFGeQP+Y16AtqtaPzzgYQxYSNmnq6bUnA2ahHipRIWL489/Lx6wxO/wub+AQRGr3JsViKGpn+CwOXpWxb4nFknzUL5GdjsJE1P/vhsLKJHLPbceVhPtzWB0f8tGL90oasQc2prEyKpaHa5uskEBpwtnFkdMn3cS0uUHbbzzrpVqbKkgPjmA3ZpF/VkM/AVvGMDetuoTQ+3om8aflLRhdanRvpiTXnrDGTEM8oZtTQtrX0igw7ifx1x6CjutPIgGx29n16PYEnRZXlLnHbR2hWw9ryJJCCAoBwKeVGGOVMN2jOXPNTG+ZhZmsFBVzxP3hLf9gutH69u7pLC+/5uGNIeDdvFOgWLGGpwJHmh4C0IVfVLezKzftvORCwFS4H+UJKH1KpZKQz+iwnJbGwsSg2ycmfsICEl04+IJvQhgjSsH8msVL+YHg6mHOW6SG/Qx4qG5NJPJqoTjPfphOfmMI2eOeMXK+N91pq5+ukDcqy16BoR2x61PWSo9OAybpILSGkcMwoCF9YbYfiTQ/F+h5qYLalwnfaMGsWYON6s1hHqIQqLR8io5163KTlYXtAXLWAmKKuZHYOPh1Hh+pw4rpIM0u6X5fA7T66og2WQf9PUserMFzWmcNlloZkhLreahMfkVKlnivI2SsxkzdoqTQBEHbz2QMsKaYkywjpa36Pr6O6JlHc+h6DDrPHyItu8Ry0OUEGO1QJ2dPz2X4Q99fS5gzmTu8953idbW9t
+ dbHBltSU
+ iENxFi7SmP+12iqEE/46NB//4FV1yFfcp2y49WgW4ntNGhprk9eJRRmTv1WshEFAe5d63tPTXJjFIW2XFPuDM/4+fRSCyyZG/WYIvS1Yk0CwQKm3oUk0z6Ug41frWKO9SGjRAxzrrZt7lszAbzRJGvUaPTaW1QC/3EmtbxLcFL6r297ZPmk+AuriJY19tn47S0vahAEy676rfvWxLX++zlXLIkEVdE9JfSJTwT8fwdkLFapUCm7gpRhqh7mCIjfpe5XgNtLMIzEeBX2hjSHzJYjEJRy/7DHbGpKyjo7D9542zjZDd/5zyu09y9v5Jy+/BZWSc0ICALWdEjhw4+7x1zkxAIJH86qt8v+fEv7GWBPO1of6iyOyilqMdE0pETH1a/RkC5fufV4nEjEGXuirt0pRaG5uWv3hGGLhttdlBAKWiWkqOTFLxbirMtmyvG0Wohp6MM38UVN7McTIMVgYh/MJbKvW3bXixAyhLQ/DDGOcd1jhajP2I1uL7u/yX8uLyQx0Q/yIXIA64+kWgVn3C2BlzKnBhJJP/95ubu9l00X8phOPJQZR6dt82mxk0P2spmQbahbWn9pt9xtep0T85V6C8qA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,36 +162,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 01:14:13PM +0800, Ding Feng wrote:
-> Hi,
+On Fri, Nov 20, 2026, at 10:55, David Hildenbrand (Arm) wrote:
+> On 11/19/26 16:52, Arnd Bergmann wrote:
+>> On Wed, Nov 18, 2026, at 22:16, sashiko-bot@kernel.org wrote:
+>> 
+>>>
+>>> [Severity: High]
+>>> Does replacing the compat nbytes assignment with the compat copy
+>>> assignment leave a 4-byte gap in the userspace nodemask when
+>>> BITS_TO_COMPAT_LONGS(nr_node_ids) is odd?
+>>>
+>>> Without the compat nbytes update, nbytes stays a multiple of sizeof(long)
+>>> (e.g., 8 bytes when nr_node_ids <= 32).  When a compat caller passes a
+>>> buffer with copy > nbytes, clear_user() zeroes starting at mask + nbytes
+>>> and maxnode is clamped to nr_node_ids + 1, but compat_put_bitmap() aligns
+>>> maxnode - 1 to BITS_PER_COMPAT_LONG and only writes
+>>> BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t) bytes (4 bytes),
+>>> leaving the word at nbytes - sizeof(compat_long_t) untouched.  When
+>>> copy == nbytes (e.g., 34 <= maxnode <= 65 with nr_node_ids <= 32),
+>>> copy > nbytes is false, so maxnode is not clamped and compat_put_bitmap()
+>>> copies the upper 32 bits of the kernel unsigned long instead of zeroing
+>>> that word.
+>> 
+>> Same as my reply for patch 2/2: no, this is fine as the size of the in-kernel
+>> buffer does not depend on the word size in userspace. Copying the extra
+>> zeroes from it is fine.
 >
-> This patch seems to have stalled with the mlock discussion on v4, but
-> the msync part does not depend on it: a range whose page-aligned length
-> wraps to 0 always covers unmapped addresses, so msync(2)'s "ENOMEM The
-> indicated memory (or part of it) was not mapped" applies.
->
-> It is still reproducible on v7.4-rc3 (65e4fd942), and the patch applies
-> cleanly there. On a one-page anonymous mapping p (arm64, QEMU):
->
->   call                              unpatched   patched
->   msync(p, SIZE_MAX - 4094, MS_SYNC)   0           ENOMEM
->   msync(p, 1UL << 40, MS_SYNC)         ENOMEM      ENOMEM
->   msync(p, 4096, MS_SYNC)              0           0
->   msync(p, 0, MS_SYNC)                 0           0
->
-> Tested-by: Ding Feng <dingf3ng@gmail.com>
->
-> Andrew, could this one go in on its own?
+> I'm not convinced, especially given Gregory's test case. It's all a
+> confusing mess.
 
-This is from 3.5 years ago, so please no :)
+Right, I see now where I went wrong: 'maxnode' is adjusted down to
+the nr_node_ids, not the number of bits in the bitmap. So my patch
+was wrong, and Gregory's was correct.
 
-This doesn't really matter all the much and is a nice to have I suppose, so
-let me send a patch for it to make life easier.
+> I do wonder whether this whole function should be thinking in terms of 
+> bits to make
+> it easier to follow. A bit more churn, but at least I can understand 
+> what is happening there:
 
->
-> Thanks,
-> Ding Feng
+I like this version as well.
 
---
-Cheers, Lorenzo
+   Arnd
 
