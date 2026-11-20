@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BE6606B986
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E3E606B9B9
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c0FGgiB/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l2IjaHxA
 Received: by kanga.kvack.org (Postfix)
-	id B0EF46B05EF; Fri, 20 Nov 2026 13:11:10 -0500 (EST)
+	id 40AA86B05F0; Fri, 20 Nov 2026 13:11:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A98076B05F0; Fri, 20 Nov 2026 13:11:10 -0500 (EST)
+	id 3944D6B05F1; Fri, 20 Nov 2026 13:11:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 913006B05F1; Fri, 20 Nov 2026 13:11:10 -0500 (EST)
+	id 235456B05F2; Fri, 20 Nov 2026 13:11:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 548356B05EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:10 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C544F140129
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:09 +0000 (UTC)
-X-FDA: 85456289058.12.600D1B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A1CB1140002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c0FGgiB/";
-	spf=pass (imf26.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EDB2A6B05F0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:20 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D137A0132
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:20 +0000 (UTC)
+X-FDA: 85456289520.03.3CFB383
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6C52BC000F
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l2IjaHxA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198267;
-	b=yQDiI58oNHws9cS+k18kvua08GUxvaARLA9esrwFvamcvYXbA+B+2NhM6yGg2Xy6esaNlU
-	SDW5RAY+orq6A3RtvWDNIJsirNT5oVRQh9runteMSccmt+ipMGZFVX5DpPOSjVTgewOytu
-	efm16wkRhSxxi5v2MUJ7ZF2U6H2vV2k=
+	t=1795198278;
+	b=Vqs0B8q6lvZld2ELubHxSGy8WlQGYI/LFO2DKapAyQeIzNdwUzFFkMJDXI5rrxYb0vxm+4
+	7f5JQ0pdz0ExxcA7H+oqpB8+JCpEG+w2xYHrHF/NbGHjnJBqJNN8OTVshCeoPompcODHHT
+	O6w1oiZ8BRyVwa4uNVn5TP3qvBHCdoE=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198267;
+	s=arc-20220608; t=1795198278;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SDxj2h8LUz/yKelW0hpXFzxdAGDfTr2wWvPbhGHboyw=;
-	b=T3PsnLCVLf53xRfk6xPOriKiPTumdt4ecy1oytmiVOZ85K38Tds7YRJVzG4/mYDlrikzWr
-	nDZQpFqkK/+PJ72kWJS5rHAk0Fa+E2V+lrFRucLz37OWoVI4CSpEyr4g2xc6otb/kD7x1y
-	BYqkziZMNo5KPxq7qavM0LJwVx8DY9o=
+	bh=6ZIvh780Er1fFAiiG/5dzmAinodD1fFI24Yf0GcsOag=;
+	b=c4on6j9fKqajiCwrVvE7mzhOX37w/rzXty9MVpBin4GfZt5KrhlKykM7hyWZOBpzPbiaGe
+	4eCjcUYCQsFKAqVX5ofkcOWdOtIRsL7ZboNL4I6GBt0C5d6uY84ISMLa6Syb5XKSiDJaf1
+	+ase/TQf2WzqnHkqrH3gDfQ/VImLm84=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c0FGgiB/";
-	spf=pass (imf26.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l2IjaHxA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3EF95633EB;
-	Fri, 20 Nov 2026 18:11:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B83C24589B;
+	Fri, 20 Nov 2026 18:11:17 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198266;
-	b=syUHM/gw4WX9K/HdvrdkKiMNbVoXsE8AjidBbq5sPKHmgT9Z5ldOQN5OL4jCXNU4td7A
-	 S4bIfkraeVl5V6PgR3fQR0wSM9bf0Fd8+tf0jwFW7aSIZkKjvqTgaIfZqjJiqUqHoVLsn
-	 Yq2yBMHhS116uZkXMjSDuGbdQG/3vJQQa2vrWjE9FKav0vvUuR27owTbA4grVKPCLv00a
-	 n9t7xRzB8VrYvGnWp6iox49NHvk2ORyKMVNJBInaUpW9Qw9h8NuA+o0KlWrqPo09RjPLr
-	 rSOonf2SLyANA/3nZ7BCK7vUAoljKERX9qNZNAblfUbfz9vM0ot1FwkNe3iqMUCMy8w==
+	t=1795198277;
+	b=ufmuwlpr1O0DkhnmAe2r6Uyu6mTUetM0RD4UbU8uGAm557cZWI8I60qFiFFPBQqZLe/R
+	 jqD6kqW8Gdas/c+bDd0dMooPdDKOjZR5QYsjy7sHnMIsvM3MbgKkpJ9lk7TkGJSEYtEjy
+	 2MzQCdt34uZB2ko9zVA/pL7X2kTkpWvlfK252rmNRnanOqV5Daw8s6WXu7IF4p5GWhAIq
+	 ak4/YDYNnbRPkNkX+Lw3kcGO1/4L5Kci0znFMhVkdpWaIL0xzjbn9BTHFzO4Vxl3scgcF
+	 HsMR8dwmYGVGSwEMu83WlkD4HqKm1W+WhW6PxAHo80wV4ysFgiqvaHDL3IJgWN58WQA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198266;
+	c=relaxed/relaxed; t=1795198277;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=SDxj2h8LUz/yKelW0hpXFzxdAGDfTr2wWvPbhGHboyw=;
-	b=P8+05ni1+P5XWXXUcvC1ApVJBcgCyr2bc1DaxHmObBIWgKwSQCfySyQE5jiWtQocaTHY
-	 Iv/s0XGZHiJoKiPYI0KWiJPk0fQhJinsCzVvNLVkm2++1Hzi5kbSWZXFkJ4KPREjMvb7+
-	 CY4aB1mudEMiekjH2p0KIcFM5McKRBYFNGiKZ7AzznSjGSGJnxK3NrOD3eAomze+Qqt3Z
-	 kCMQD4D1zZmIfF+xnuYLvrQQx1l41v0RxYAlWuzY+pMq+L7SI6+aRMKzU/SBdmGjbVSqw
-	 iFz2QWoqZFV1ExbXmoqrSHBcwfHx5NLUB/sK8k5cDUYbHZd2qSk92NZNutrMMxHun+w==
+	bh=6ZIvh780Er1fFAiiG/5dzmAinodD1fFI24Yf0GcsOag=;
+	b=C4RJJCycqwPxVJF2fFLnrpvyc+oDmfosEQG7tlE85NWL6Vb7c2ZIvGrjm+9XUkCnGjrd
+	 fERn45wH2ikuXo9z4P0VYaaqxF2raoh4LN9Tsy5xFrZCdfUeBsY3vdEd0Ka3VdDDOg51B
+	 rJ3QLnPp8sK4P8Od1knSBnoEGZ34Q8RYlsJqIuA1kR7KZTEGpIb6+qLnNsc/CQ3QyQuSj
+	 vftg2JgznPYos5HfnEGFP0sCBHm0I0UNZIymq8dkiYK3FiyIw8yR1gJIfelb5LxNHQYE6
+	 Yf3TwbcWLTTGvLMIaPWADz6ddlwobqfu1DJUyDyPJCv6MUmrdRHkKphv4bc+7ABXqSg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 369A11F000D1;
-	Fri, 20 Nov 2026 18:10:39 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 4F6B41F00ACF;
+	Fri, 20 Nov 2026 18:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198266;
-	bh=SDxj2h8LUz/yKelW0hpXFzxdAGDfTr2wWvPbhGHboyw=;
+	s=k20260515; t=1795198277;
+	bh=6ZIvh780Er1fFAiiG/5dzmAinodD1fFI24Yf0GcsOag=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=c0FGgiB/SPaUzE5qCN+HLvvIIaUBRZpHwoTSH3IX4F/Z1i2NJ+ao2vrTGfNN4/91j
-	 dYxcyzGRDp3Hq1l40A50pV79R2yz9iygjKT01QtokhVTnJ6k3FUI1/anCNNKzxX8y7
-	 NCsMr8/FVrW4V8PqFyt1RcmUKTvqE5lPI5se94K9PPW5NkAYO2x1pVZUFKqserUKmo
-	 piysnjAaS9+iO553kc6PseyImmdj0alhuD7ScuRfaBxfbUsCAWrVXjynVKfeiVBUEZ
-	 TJ1sou7qEgVx02KzwFdvwfChySWbmbMMNvhRnjQAQ72Y1u9ShuV+b+xm01HQKNICb1
-	 auxGmLnJsZdbw==
+	b=l2IjaHxADxgRTSqpJuThjy3mx9jyEq6gZT5ykcniVqjA3/29ygGaoqZQeq2T054dN
+	 dMJYAw/CIvA2PcMc2hiwmbz6PX5kIGMdoFJEZZCXqmHvauHJDCBw1Q1/89FQ9Ca9hB
+	 kE+IrSN/FHdGdi4HYo6mWnnvVK4ZSSA0cc3EBCRiaVpFDdtqCwwMHPEvWYyUFMJxS9
+	 DOsrJ2ZfqOejDkeEbASM6DixT98jr3IY6C2PuCfptwaD/WqScNZVLcuhIxtRPnbibz
+	 JkK3cQlcDSxp5V+NVztDOCNcXCDtSOx2qhB6cPsd0WeR8OLDiGplV4yPXWobO58PHW
+	 oAYn7crYsEL6w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 1E32C4B969;
+	by lkml.kernel.org (Postfix) with ESMTP id D38034B981;
 	Fri, 20 Nov 2026 18:09:22 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:33 -0500
-Subject: [PATCH 42/60] mm: fail private placement on exhaustion instead of
- OOM killing
+Date: Fri, 20 Nov 2026 13:09:39 -0500
+Subject: [PATCH 48/60] mm/madvise: restrict reclaim advice to
+ reclaim-capable memory
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-42-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-48-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=3361;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=2519;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=TbRq76F0ctxLdrc4ZvqTJEioaj0puOvUL1bbmmWV60Y=;
- b=4TuCqLi3E6og3lhWPEnbx57vqhH0UZ+xHpnIJwJApHy8FsrwbpMCJEhWBmQF1kacYofzGuQUk
- MJg+9HMhsJnCGqIcMdsQtmg/Q+w3B05gKy4AO+RBfvyb9bK7v/Vtefk
+ bh=/7n8Y7BJF+n1w6zg34qEl4WSAk5zs5lFqc/saob4yDc=;
+ b=x5v1UZjZD7NavKPzy3gZFJ4vk2PBUASf1WJMKcO8I8rh0UDg9n2rwb6VVYJJEjpdeaXC+C4/N
+ 8FX/kkSJcmcBGbIA1sklk5dsK0Xt7WZPXHmG0HW7LdpXEcbdkmZLRkY
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspam-User:
-X-Rspamd-Queue-Id: A1CB1140002
-X-Stat-Signature: b488ssabmahwwx8dj96iqq1ju1pexqsm
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6C52BC000F
+X-Stat-Signature: hg6y6hdpr1r8fmu791tzbehdjt6j34ef
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795198267-373391
-X-HE-Meta: U2FsdGVkX19JtCTvsfA7pKUPzW6aBic3CqHmohAyaLl2pSCl6i8WWCEI8pdX+u4GIGXdNye8paT3gCIU9EJyUdQT2nSMR+DywV0h9YQp32a7g+SOjCVPOQoEkQ9DcPZIqg4fj2CrAjZxrac6JMmgs84ELzuroFqdOv0nW8ySQ637xgJxm0R8mzGpR2CU9r89B3rAa/KF2o5eMEMQAuEQ1lLTfNkteV58fnE5FMfugLImulm1GkaxdcRM4WIhPXkSUP5Qdl4/T3KfoLmkWP97llDpLKRYsltPBiMCcEmDk+2erbc1FFOFgQSgp9gGirxU1nZreNF4DkRV2FLQ5CtqvB73UoYfIPpKARsQ8mwnKh5aucEKyOljdE6QL1X0FAwqWySkcTu2yIsCUv5RzRu22JV48mS9S/GfQlOulPgnF08pL4AX+N1dDHutRd/mhSeD3B6WxIHGpQXkCbcj2w/a4m5ezf9F72XcAWyyVRPoOqEyVOeEUIDx7dIL3TnP4567LhSEoPJnNSDBl76sMbuLYnHSY7j6SR/K6rE+1uPsXKJ2XDfzgYxnRq26qdP2IfsQylTTG+leuSuq4+t30MinAuL3LpysN9BXIPS238bnxpk2sg9sfVfYYc+jDTY6xRxevnL4Tcicy3j9j2zCM6RmaeLNJhDmO5OCYJFphh0/rE+I9eRE5gon9ohVLPaEUqX/W9YkBLAV0ovoBTY6zA+s+iOoLQvUWZpAsAp4Rxc1c/Z5D3AemgXHGIIMGTqVj4lXsc7VoD4uyX6cfAegkORt9TUv4ghIMT2n6x4tlhcboqyb76Ej7vWulkW+ZWJSRQgBX9l8vlMnySzwbhbTor/7vesXiub3rz9iywZZuDS/OfzVxsFvvA+kmIOcLdkZ2RcgziMMq763lKT+7S2A5YmIJOBv5zZ8yZuXsJNl+u/aFpvlB9mb0aLYCcV/0YultwP4Oy7sPMMcnkUdVc5FFc1
- KYaHMG4x
- lpcVcFpC3zyJy7cBsTXV+5KLw38IOoA1MZy+AUK4vFUAVl/6s3c7pwZB5MQLdV504WmxwsvEb912i63gDi1sU4F2nWxh3pjJC0NKp5NYIe3NlHZQm6+texIUpv3DpQwcGrRb9a32Uvb8uMclPSkSKzsrjTKKnr+vs2YIQKyO6Clzfjx+lqNHvRyEKIXn2VG/w4N2UIuLZ1nGXMX+NrcNbaoX+qqQNqBu1t0WcMbBF6Bh7pWGE7W3yZywxlj7xe9JmQO8ESf1U222yNdmonmdYx0Kw2qc70bHPghbFVlqRLdo1Z/92ncPAykUQXcJg0z8tu+sAZi7zITKLHWPbmpGlFlgpKvf+pdTHxjRpqll62M+LZ7i1JSD3zKcO0XvNDzr4Ehg81yKwplMtnPUkGrSRd0l7ghoswzCnLKX41ZaeMnXmIKp3IjhWe4kbX96MsuOqd8kWqshSpm8J3MdqQOBDNvbwCSRu3Vq+C22gmVBu4EIZSDIRGX3KKYFhleWDU6phiWQRI3f+3c0blp8tHDSHyeMlmQ9rpxApeafqC//bBA6Xf6esMM3X7SkWLKlQjXvDv7CyTF1zE5S1hLbSzzY/OwzheTuIlksW3dFBVl3ffVqWkGJEZdXgE5rfQVAZKHRPXch1Xk6x17tmx7xGBK/NYT0czWJakhG0d0TQD3de1f36FiKXXHIgtExaeu4c74vlFxi9YGckpyszjdyDPpuXF/PsNoPM7ujsTH6zRfPdQ87jchza12YJKbtFTJEYvZG4hJrIsPeeC5f4vaY=
+X-Rspam-User:
+X-HE-Tag: 1795198278-24300
+X-HE-Meta: U2FsdGVkX1/kF4uviX6VoCQPkNuCdx14H4PZZOjZB0gUXrN0zVK3JLNZLVrbVohS4esK0KlUNyly6M8bZrofWpRMkw+DeP2XeKziIC+HkvWfYg8jAZCJUG0czMAX0apDq6nLX0nowbfXFtsz+rznd6T3GSyD+XGw1zHbWBYvPtYqWvrAAjxNXTW23etnvwn5wki1iABT7P+tGU4D5dI8I9ScR68ex8mfBuj2SgP9h3raEz9m5Ut+k9j9+bMkbYPfHr0OdHtwoyDEiKiPIfZYhPGmlAJcyW+d7EqMc73N+V89kKUrSGUpBnZeDJtu+FF/5iygFSRFhDZJCsJ7bBCagAZcO3SvyqNGh7ECh6SZrKb+h+hr7tNaYub4NC0sX3C6J+4bpfPr2/k948dxXznKJz5sKNZ3pZ4jzXiYd8y6BnpucSzBviWKDiZL1JVei45TZ8QsGbkHBhDOj7hPB5B4WH4bw03eHZtG8lx80FpQGgljEgO813s8Td/sVHIW4/tJOXSadducnAf7a/yoO8K+tkWCrqGAQB029VArRpRiF2VCYHWsCc9GuYrJwHuDSo1gAgSpJdNNdM3rTes40SrngBStZ7sheY3MH62Vyilnwzou9osX9VMMPs1vjRxgjGuj8vZTCNOl7SrrBIazxBdjCZ5xfB/6Zvn69JruE8TgBL8g/p2jOjFZ6T0HpqMH9fEduUORonHf+QELZsKYpESWp77fJo2S3bbs9daumon/BlncG91I/dj3Is8/FL8UzaVmX5lqYoHh7VdUvlPI2kg7S4wgwcZI6k6SvDT4FIBxkBA4RjV0XY5HECCw7AgjIfcH73BbbjwG9sgbRLWx/zeRjajjmkg7J27qxgC277Ku8FvEji6Y3eckVSpZ3cA3BePFPmtkIRmJfoCgXnL9YFcWkpq9VOqNhFbygfWUKt8C39Q1a9VaL3leYzjyMppEt/LCYAn6pFrgZIYDM0kvbGT
+ Ta7eYqKz
+ wVyjzWoUlEAZKIIX/VeBcOotzVoNo0Kej4CDukdjXXhIbF0jfhCdWWc7obcKo1YX39ZhvyKLx9GpE2PcK3C6gPsikOIJ1MwHWZmfTc9E8vMSBkV7Dfd0EIAgbS0jo7UTrlZqqntpVVxS493KhSLNtwfDvyDYy5ZDdPfvhvIubeTMuOs/3oOTTjPUFQQH0n45Md9wiLKJmCTkM/ctAJHjsL6TiTLFhp2f6V588ya+kgi9ObfjE96riHi2Hxs8oyDBRRNLoPD5UrsaZXOp/NKLhAhwdc0q+03NIEdkqW1YvOQy29tqA70QKi2rpBfe53/Bj31AoOFvWyiuCRbl+OrURttww/oN60AeYyNz/LI87No8GkPXLTdrjOXCLc3m6w3nY5TmyXcWiUpRuzV927Z4w2jyRGZVBZT/JFpvvIMKuyQ48T1YwhGLS10nv8K2RtCptytqLqyiRBzxHtXaXED5V34btY3bleyz/PhrjhRBmizqfequ1d265CBCOo3JPxs01G6NGoqmsvuVWDAIO/4pDfjCXlrmh9qydL01XsH7dL+3lRzM69JUl2+CBwINccg3mVDWZjA+uwXcYxf2R9K/5AK+tL38ssGdUjOzwOnHLPFxqzJXdx46/8LDLNrGFj0tHP2QsU23s9HeEQdqvp2SHvuhLn5F09KiNEdCoTIwLihWYEA8Ben2SdYKGOLXl24MPQ6qPwtQH1yJZ4zOB8sj3R0KCoYh1STs4O6fa3k9fNNWZ0KaC5khNVtMs0Z6c2D4NN3ERCcyRf3KXMWA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,91 +189,85 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-Private memory belongs to a device or specialized service and is a fixed
-pool, like the HugeTLB pool. The OOM killer has no good answer for it:
-the task that faults the last page may not be the one that filled the
-node, a remote accessor or another mapper of a shared object would be
-blamed, and killing a task does not free shared private pages.
+MADV_COLD, MADV_PAGEOUT and MADV_FREE reclaim or age folios directly,
+bypassing the node filter reclaim uses, so they act only on common
+memory.
 
-When reclaim cannot satisfy an allocation from a private zonelist, fail
-it instead of OOMing.
-  - __alloc_pages_may_oom() does not select a victim for a private
-    request, and marks the task.
-  - handle_mm_fault() turns VM_FAULT_OOM from such a failure into
-    VM_FAULT_SIGBUS. GUP and remote access see -EFAULT, and other
-    callers see the allocation failure, e.g. -ENOMEM from write(2).
+Add folio_allows_reclaim(), which requires the folio's node to permit
+reclaim, and use it instead for those advices, including their
+huge-page paths.
 
-A request that became ineligible since the last retry check is not
-exhausted. Report progress so the slowpath retries and relaxes it.
+No behavior change to common nodes.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- include/linux/sched.h |  2 ++
- mm/memory.c           |  5 +++++
- mm/page_alloc.c       | 14 ++++++++++++++
- 3 files changed, 21 insertions(+)
+ mm/huge_memory.c | 2 +-
+ mm/internal.h    | 7 +++++++
+ mm/madvise.c     | 6 +++---
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index e4f6323d7855..8a2e37475e5d 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1038,6 +1038,8 @@ struct task_struct {
- 	/* whether the LRU algorithm may apply to this access */
- 	unsigned			in_lru_fault:1;
- #endif
-+	/* A private memory allocation failed; a fault reports SIGBUS. */
-+	unsigned			private_alloc_failed:1;
- #ifdef CONFIG_COMPAT_BRK
- 	unsigned			brk_randomized:1;
- #endif
-diff --git a/mm/memory.c b/mm/memory.c
-index 282266dd5e5d..4a8a08df28ff 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -7003,6 +7003,7 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
- 	}
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index cae28513b121..00c72b91ed30 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2452,7 +2452,7 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
  
- 	is_droppable = !!(vma->vm_flags & VM_DROPPABLE);
-+	current->private_alloc_failed = 0;
+ 	folio = pmd_folio(orig_pmd);
+ 
+-	if (!folio_is_common_memory(folio))
++	if (!folio_allows_reclaim(folio))
+ 		goto out;
  
  	/*
- 	 * Enable the memcg OOM handling for faults triggered in user
-@@ -7034,6 +7035,10 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
- 	if (is_droppable && (flags & FAULT_FLAG_USER))
- 		ret &= ~VM_FAULT_OOM;
+diff --git a/mm/internal.h b/mm/internal.h
+index 9c162ded5305..fa1ae221564e 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -80,6 +80,13 @@ static inline bool page_is_common_memory(struct page *page)
+ 	return folio_is_common_memory(page_folio(page));
+ }
  
-+	/* Exhausted private memory fails like an empty HugeTLB pool. */
-+	if (unlikely(current->private_alloc_failed) && (ret & VM_FAULT_OOM))
-+		ret = (ret & ~VM_FAULT_OOM) | VM_FAULT_SIGBUS;
++/* May reclaim act on this folio's memory? */
++static inline bool folio_allows_reclaim(struct folio *folio)
++{
++	return !folio_is_zone_device(folio) &&
++	       node_state(folio_nid(folio), N_MEMORY_RECLAIM);
++}
 +
- 	if (flags & FAULT_FLAG_USER) {
- 		mem_cgroup_exit_user_fault();
+ /* mm/vmscan.c */
+ unsigned long zone_reclaimable_pages(struct zone *zone);
+ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 0f1648526f15..a5fa3b948a20 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -404,7 +404,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 		if (!folio)
+ 			goto huge_unlock;
+ 
+-		if (!folio_is_common_memory(folio))
++		if (!folio_allows_reclaim(folio))
+ 			goto huge_unlock;
+ 
+ 		/* Do not interfere with other mappings of this folio */
+@@ -485,7 +485,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 			continue;
+ 
+ 		folio = vm_normal_folio(vma, addr, ptent);
+-		if (!folio || !folio_is_common_memory(folio))
++		if (!folio || !folio_allows_reclaim(folio))
+ 			continue;
+ 
  		/*
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 63cc8729c41a..ea48991ef589 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4176,6 +4176,20 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
- 	 * failures more gracefully we should just bail out here.
- 	 */
+@@ -715,7 +715,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+ 		}
  
-+	/*
-+	 * Private memory is a fixed pool, exhausting it fails the allocation
-+	 * rather than selecting an OOM victim. Otherwise, if there is some
-+	 * indication of progress because of a revoked request, just report
-+	 * some progress so the slowpath retries and relaxes it.
-+	 */
-+	if (ac->alloc_flags & ALLOC_ZONELIST_PRIVATE) {
-+		if (!alloc_private_reachable(gfp_mask, ac))
-+			*did_some_progress = 1;
-+		else
-+			current->private_alloc_failed = 1;
-+		goto out;
-+	}
-+
- 	/* Exhausted what can be done so it's blame time */
- 	if (out_of_memory(&oc) ||
- 	    WARN_ON_ONCE_GFP(gfp_mask & __GFP_NOFAIL, gfp_mask)) {
+ 		folio = vm_normal_folio(vma, addr, ptent);
+-		if (!folio || !folio_is_common_memory(folio))
++		if (!folio || !folio_allows_reclaim(folio))
+ 			continue;
+ 
+ 		/*
 
 -- 
 2.56.1
