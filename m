@@ -1,187 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5C2606A339
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB396606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 01:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=LsnZPUHa
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=a7zS/728
 Received: by kanga.kvack.org (Postfix)
-	id 323DF6B06CA; Thu, 19 Nov 2026 19:55:48 -0500 (EST)
+	id B928F6B0684; Thu, 19 Nov 2026 20:01:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 286206B06EA; Thu, 19 Nov 2026 19:55:48 -0500 (EST)
+	id B69B46B0706; Thu, 19 Nov 2026 20:01:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 127CC6B0723; Thu, 19 Nov 2026 19:55:48 -0500 (EST)
+	id A312C6B0684; Thu, 19 Nov 2026 20:01:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8B2E6B06CA
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:55:47 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A3B46B0706
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:01:26 -0500 (EST)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 15E5080D26
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:55:47 +0000 (UTC)
-X-FDA: 85453679934.01.7E137BB
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011025.outbound.protection.outlook.com [40.93.194.25])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1C3341C0002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:55:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=LsnZPUHa;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf21.hostedemail.com: domain of jhubbard@nvidia.com designates 40.93.194.25 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795136144;
-	b=vgWtYjNhMjzblqjCqsYcnBgT9y6q8vkz8mBsiKvJjMb1mzm2JzuQssQ0upjUvlccqzDbYl
-	28wUlJ6yYtgi/HZ5TnJlePGupmF+pCR7awf7T1HCpjelMNJFtiw/qpx4biz9/lfQVYSv5u
-	/QaqoLdfXr6Vx8BOOwJOwOIq9j/9ZXg=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795136144;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D3652C0CA7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 01:01:25 +0000 (UTC)
+X-FDA: 85453694130.01.B7FF991
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DE05920003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 01:01:23 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="a7zS/728";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795136484;
+	b=uq6A2sIf4e+ISjTxb4jTLhquFhFhUi+7u/naH8eaPmrETWYe11jabEEpnNZM510sdUpFoE
+	1hjsq3jc5YdHDQDTAH09NOsW8zyaH8u3WMHrm+QSgek/bHW6odVXUtmEqxvLcnaIX7gdJL
+	MS2c1a/GMeOT2MvD0LPY40q1+IsqpfQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795136484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TNeToXTSWuC2G6wbkcxOdRUaeXtvpYO5/35YT38Wyrg=;
-	b=XcI2vcCZ6OlHyJw19pKJkA3gm3+lB1Il7Hax+w1nfBhG4iG3KDQKN9hXzjsy8hI/vKvb8b
-	fhqLuZX5z3nsdzQdVH4hIgYAFkzuSvoGE7dlCpf9+RyW/oXv+bcw0RRRHGkwIrRZgOtvys
-	ufsB2PN3n0ZcJXDN7ro22GdLBpUTsE8=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=nvidia.com header.s=selector2 header.b=LsnZPUHa;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf21.hostedemail.com: domain of jhubbard@nvidia.com designates 40.93.194.25 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qrjryl5KStWLRWLPJ9/oViIldA6lVO9AYNmAYErXxNxrIQiTMJy17Hj2Xun6BWxcFhPj6VV+TNK06WtFlSyqYWoY2YFFzt89pcX0KntrQFcrySen8XJid0dMTz2IbAH1p7VjIwQQr+pnUL5D7iGinTu12ye59ZpHUjBsdmI9wxB1CDPVvIQx1sWDBazK7l3wQokBPU4nwCUOq9GCxJ4Uf1W0uZUZZl9OQdxYraQnvKjV+qTKz3okcQXq91IqXrQ0nywGcbWGbcg0M36I3Gz7FFvnOSkGd3FPEpBi9h/LivCln52aK2VFK91GQKDHd1PBqX/oUS2EzFdp0eRliHS4jA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TNeToXTSWuC2G6wbkcxOdRUaeXtvpYO5/35YT38Wyrg=;
- b=wbtcfYB6EVgbO9fSEfFDu+DhdIXuIAoZ2pbAFA5wkxKzHIYTN76T258bjS0b2uzHahDNap0yAEq6YXFewlk3nUUvN6GfPhDVVSX4eStA2XWJSXTeJATUrIfwCEVK5Wf3YLvtFbBbFIOtFPl6LNy0ntyvP5+AcuAe01xARJ+nuaR2GeZTylmoQYajQotyDwxjUAS5axg2IHBNM5RFUWKByFrmRO3M6MNmbh5pIfzN91GIjcPI5kbnDMXTa91ah24VwkFHY+A+HXrYs/iJXGQyeYfMaIlGH5ElFINiu3UZ2NBtXZVtM6qMqHgxZUjoXsbEf/FG38UhCenOl9WYzn8VYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TNeToXTSWuC2G6wbkcxOdRUaeXtvpYO5/35YT38Wyrg=;
- b=LsnZPUHaUs3KobCL3GO5Q1ps44jvF1vk3tqgMu7BQDCI3tyePhQz+CBFqc0ILbIhm3C4riyqgbiXld/p/5Pg1KfU3zOkDmBFP6M8JbzZqUTZkYKiTq0Dy6Sr+fm68hf5rpAgWwkEmfWnLrnfkMCG48FhavZO3YZmJpmeCFuoctFqlkX1W24UrFQ1ESIKlsKb9Rg76LmpQO3D9gG6jAOjn2C6SR1LD75QZW6/O5MFaUjb+LvSUQ75JLCImb+RLdAiXY1rWmz16x8aFEI9kdwlm6vrbAiFzwjDu0H3Kqg1rKFYPb7a9XpIgmOn1jFw8gyIAVRAzY6VIfiS6y8PFlc6Tg==
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7)
- by CH9PR12MB384484.namprd12.prod.outlook.com (2603:10b6:610:310::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Fri, 20 Nov
- 2026 00:55:33 +0000
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6]) by SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6%6]) with mapi id 15.21.0615.013; Fri, 20 Nov 2026
- 00:55:33 +0000
-Message-ID: <4f096d70-6f94-4148-8f47-242b8551e5f9@nvidia.com>
-Date: Thu, 19 Nov 2026 16:55:30 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
-To: Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR04CA0021.namprd04.prod.outlook.com
- (2603:10b6:a03:217::26) To SA1PR12MB5614.namprd12.prod.outlook.com
- (2603:10b6:806:228::7)
+	bh=tQwX2YSXjHFZhdcGcul9Os/DsNb3L2Z/dlwRM94y3qk=;
+	b=bAOkAiJiF6v4EdLj4Y1VDgvA2AEUQDjOm4bEDih6xYVhqqmrjEydXUPqwAdUxepgHnMu52
+	gN2/Jha2hOUtv+GQ7kU35MKbACa4lc55nAO4EbLuE3JHg5vVIxWvwvColB41av4URy8hPW
+	eZp2Jq+ZrRawBRd0TbRTxvtqzRrlWek=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="a7zS/728";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3b0bbdeae06so247133a91.1
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:01:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795136482; x=1795741282; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=tQwX2YSXjHFZhdcGcul9Os/DsNb3L2Z/dlwRM94y3qk=;
+        b=a7zS/728NdIyL1ou5wA1RMVB7ht7Fc2xtwU0HZBf2J/sRIdj0mmOOmHbpN1QHQ/xKv
+         PK4g4PBDmxItgfEEFEvYf/mVRR0rjtV6K3UfW+PgxUdzHnO+6vSG2xI8jA6+c5AxwZme
+         7F1x2T0rQZeRo3dxGuctvZU6E0IxXbCwUPGdrnV/CFRKck/kn6T/W8JVvF6wEFxN9Y23
+         UbW3Aw555q6Dneszk33slwm2ZWHVvR1nE6wJi3oFPN4lupl74FFrzkIME/WTI2U7/cd4
+         cSvqQ4HKzsf2XFkYs6KHzA8LN5Son200C4BNgtDFi5X9Iv+uHVGiEp/lTOGx9oA+XGrR
+         8NsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795136482; x=1795741282;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tQwX2YSXjHFZhdcGcul9Os/DsNb3L2Z/dlwRM94y3qk=;
+        b=Wl+Z1irTtD+UIHU8uTg190iiCE1AXq4krviXDTSAtxHUNekl7gnRCbrls3npJD6+Mz
+         hgNVPPxOtkBue/QSE6lm2Nk96imBM6plezsNEl+Zr+IeLkaJLWdLBgez0G4Kza8vcAvt
+         aTpAl3AjdtsYw+k3qi6DDqRmJP8JqFgdk49IXuzGG7EbpBbLOLYaEMrfWJXFp8XUbkqi
+         mA0hTKVjwUVKvSoH0G3U3XOtMDMcBgFA7FHYKRjbIqECq23Tu4bPN0TK4RL6TTKXG4vW
+         3Yhr1KL3N3wMBFmsxwzeZdVgnAeoqj+yfMhVjaI/6RBssaUbz/QvZ5pC2vIFtCAqkz6e
+         dltw==
+X-Forwarded-Encrypted: i=1; AL+hErHTQr22cIqTkr81ISaf1ZMSYN+cHNunixwtlaNHPehU2Z0YW34uMz8Ak/15vIMPvWKwU5gG8sGDog==@kvack.org
+X-Gm-Message-State: APuU4Z9eiuRJ4rKyYYSYo+c7UILxo1EMgLWx9X/t5tPNnMkPxVU/xGrf
+	06CogZ2l4PTYCpI4Dg1/ih1iU7JkqAi1CUtnYrjNsPGlVo1CVUMDspZEFZ7BLasL1lZgKc4luRV
+	qpCeUbcVR
+X-Gm-Gg: AZFdTZcs6kd8dH1E/Pfbz4hOj3ufjxVEEN3aKlWkoHqf/pU/g04UKwixMlaNVVA8qjD
+	PIJlHPbtlEAdpBDui2T1DkE37iCSIMI3pZ1V3Y/3POltDul10CxUyX5lo1nrmJwKRfTpyW7eS8V
+	j6GV4sSA1jboy0NYt0L6zhs8VAwk/c1tANxNqWoUf25Wg2v/CVCiv0/gNHDMhLnu88XMSr3jBBO
+	XUxZZpO4aHQ2/N2ERyZ7NB0WIPQ0qg91GVFfx3NkBzt5Y2gibBRyYJYYCpdye1Uez2MsWw3y11R
+	vaVKdwBqh2PmI48cXwzpYLaOZnrrrj5qPjNsjXZTEiWLjUAVCR2qbC3KUJjPhnNDvPQrWSKytUe
+	Y9U5GSDv7jGApR8UrWVzTDtj49mJQNnHmZ/Mzt7CNRZhKsoqAYlmdOi2uqMYCE7cG7wqJTrbOvO
+	KYyjUUNfpieSYSLAD3lZ2HmbyzqF1zzUl/WN5xTemHT1zhnyNNte91FVDg1iIpo+ElJtK0C3LhU
+	9VS41EvVsHQjdcI4COpfBJIVJMfKuvx00Sf2iGfg2r/SE1AxJKBLx1ZNNWlMvnmsuwQzHEY2srU
+	xg8htUAah3cbuBtzR2kbS+pdXEXSqk0NUa0Iwd0QoKUfMdVhTHpIy7snUQBUNMoe
+X-Received: by 2002:a17:90b:4b87:b0:3b4:a63:d55c with SMTP id 98e67ed59e1d1-3b41c93b17cmr965473a91.30.1795136481385;
+        Thu, 19 Nov 2026 17:01:21 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d639fdsm4865271a91.10.2026.11.19.17.01.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Nov 2026 17:01:20 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB5614:EE_|CH9PR12MB384484:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe8841e3-2829-4207-5f38-08df46a0fae2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|10067099003|261022075727099003|261026121527099003|261026140227099003|56012099006|11063799006|261022105027099003|261009223027099003|261021123027099003|261021121427099003|261022113327099003|261102123227099003|261028144727099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	CPbWQasccBrchxMYh1cf/xMSAk4D3F7pzwVa/gaU7aHNbFlZhT5bf290jQTHdXfl5J35BIhvLMN7GaIRfKRfrS380htSwctScYhR1JidHTnO0c8jQfE6O1eJFIps5lcZ7nhEZzneHtykwRd/gjTbG5XyNcjbDobjKrrxdnN5a9AedEExitEdV0i+mpCmtE1fZ7I2NReb0JciazV/SLfhQcy78y3EW3+37SMMZOJC9gZA/8mr6qz+jocB7PSP9Dp6SIzYfG1q5qr/skeDy8DQzQpuIxy7NRx6Ni1EoFNu2ou4fUyb71lVRMWAMFQOH2QpXgkTmCNpapnQK9S2fuxNWDn62Ylg6UQBOKxfPQdvKHDyc4DENDORnROGGdKUYMNF4U8lmQ20wqUbZfZKVDaYnAfW+W57o5JNOuZfCLrKXLFqJxRe9azqeZtC9R5gMGy1NawKBd2tJYHxMn1FfneDE9wJnSu7D4QynY7GdmlGM+Plkw3bV2VkRJnAplYjuhmkeUQximXFSGcTe1qYbf/vMz+BGBgGkitceLtYDD8dtgFZ7JYGD07XjVleznrSiZllYdW3h24CWwf05ccamghNwtzupkPNrNygr0o92u7hMlW0Z+KffwJhOlbhHW6m0JPcuTjnyXKuJC3OY81ndCCavEvr1FVl9dbGoW+MHukNkpM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB5614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(10067099003)(261022075727099003)(261026121527099003)(261026140227099003)(56012099006)(11063799006)(261022105027099003)(261009223027099003)(261021123027099003)(261021121427099003)(261022113327099003)(261102123227099003)(261028144727099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b3ZKakFvTjE1MVhKQ3c1SlUvNzc3SXlJRXNjVTZ2Q3A3R25tdzVkMjJEN3BV?=
- =?utf-8?B?ZkZwVG92S0x6VEx2aG8xaVBoRjFqSFNReEhESmk4bkl6OWJEejJqcDZ3SWFn?=
- =?utf-8?B?Y2NFZDlyUDZhR1hlS2RWRmlqMDVtM0ZiUFpDZXFQNUR6Q0hlUTR1UFRYK0dj?=
- =?utf-8?B?WGI1Ylc5Wkw5MzlleGhpWUJ2MVV2NWlEZ2FhSEJyMEh0WC9odlhBdVpEZmxY?=
- =?utf-8?B?UnVaZE01NUhxVUd2SHZDMTVTMDJmTGRGQlVMTUs4THlqRjQrL21DWVlETnV5?=
- =?utf-8?B?eHZ5SmVtcVBDcTF2L1MzbURPczJWVTVYWFRUNEM3Y3dRSE5Bb1dEdU9CSE41?=
- =?utf-8?B?ekFwdk1zNURlL08rOFgwUkU4dEQ1bUYyRGhpRnJESktjSlVINTRsTG8wWHl2?=
- =?utf-8?B?NFB5RDVCU1FlZkFsQjROSXVMTFRvcnluaTQ0K3VhTUFyZnZiZXNNeFl2dTJs?=
- =?utf-8?B?ZTRUVmVIbmFSUGJ6V0MvZzU1N3k3V3htZi92SUM2emIvMnlDcnE5T3NmbFh0?=
- =?utf-8?B?RkxxVnFPWXJZVE1zMjdzMTUrK1dXOTlJWEVYNUNNais4b0VIT2FndmtPNmhw?=
- =?utf-8?B?b2t4MnNsT0EvUGJpOENpM0RyR2VQUy91bHlMcThYcVN1YnpHWXdKUXBxRjBq?=
- =?utf-8?B?L21tWjI2VG8zbHhZTGpJTnhQSnBqMWdRZ2lPcUZXODQ2NjV1eXNVWlpEMlc5?=
- =?utf-8?B?d2hiRXhFVlM4SHZFRDVsazVzUTlQU2hFbWN4TXpzZnA5aThFaEI2ek9UVGZU?=
- =?utf-8?B?T1hsbStrWlVNR3Q5aGZsZlJodENwdDAzZjVlZ1JaKzFkNEdxRDhtL3l3S2tp?=
- =?utf-8?B?cnVjQitDUnZHWmFLYVE3d1dxbGNNelkvRUY2UmNqVzRyRG5rNGYvTi9FYmdm?=
- =?utf-8?B?M1NTV2ZDNmV1Zlp0VkM4ajJDWkpNdWV5SE9INkI1Z1N2aGQ0aFZjSDdqeTlz?=
- =?utf-8?B?WFFzZnpwc1p2VTE0Q1JGL2dockhRQ3B2dGpWQnhaamlWS09FVDF6b3l1K1lm?=
- =?utf-8?B?amY3R2lnYWJNeEk5eXQxcnJJYmVWUWhTaEc1TUxMSmI0LzJYdkloSG9lZVJF?=
- =?utf-8?B?U3JiOVBBMDNSNDVJLzYvLzY3L0tnUG5Xcm01THFtSjZJRzhHdEZhVEovQ3hV?=
- =?utf-8?B?T3doeVE5cVNpWkRBOHhIUFlEOWs3cmhYRU1CYWNjdnEyUHB5OXd1MVdpOW51?=
- =?utf-8?B?Mjl6eVBBdkMvMVl4L3RXcEtObS8veUt5UGwycG1rWkIrWmNqWnhmSkhRUXVa?=
- =?utf-8?B?blJ0Ui9JNzVhcXhkeml5c01tNjBsRHozVkJPakFDNWdaZFJ3Mmtkd1FUMjN0?=
- =?utf-8?B?T1lNQ1RjbzVBU241dlJoR0QydS9QYU1JMzJnUndvSWpRL1VsVXc2cHBDc0th?=
- =?utf-8?B?RHFkbVluVjJFNXVlMTZPVU1haWhuYWNTQm5CakJGdmcwaWFRcFVCQVlkS2p3?=
- =?utf-8?B?SnZBQ1RCV2F4cTVXSkFJekxBc0xxNlBUM2ovNDhUdlZGT3dIeXZ2TU1ySmtR?=
- =?utf-8?B?Tldkazd5NDVvVkR3QmhqUGZ4Z2xPaFE0QzFTczNZZTZ5Y00rL3kwZVpOdmQ0?=
- =?utf-8?B?cXU2aVh6SHk5R041eFNKbnJld081eUhOUlpmcUo2WlE0ZitBUGxoZzc0NnZH?=
- =?utf-8?B?ZHBOQjVvT3lHVjFadk1GQ3pTeWIzckMxR0hseVRibDJHTWVwMmRkeXNWTlhS?=
- =?utf-8?B?TzQva3dHZllhcjBDUlBLTldudnhKSGlzdTluVXVKRDVTTkVJT3Fxbm5mWEVt?=
- =?utf-8?B?NjVYa0QrcVBNMjUzWHd6UnpnSC93aDUxWWI4T2ZSYis2bVhWanlwakROdXpK?=
- =?utf-8?B?VjE1ak1YWEtmYTdNZnJNb0tMamRaRW5xV0hxWHF4cmRwM2hRVExpalJzaXp4?=
- =?utf-8?B?S2ZQYWkxcHFQdWpZTG9jSTZ6azhyT0UyREc4VGYzVDJHcWRORVQ0NVI0N3pw?=
- =?utf-8?B?d3h5bDNTT0JiaGp3QWJ1QzJDcFBQcTFzK0V1SmZURnhMSC9BdkU4aDRERHIz?=
- =?utf-8?B?R0dhMjZESVRNQXU2dGNZTEN6Y1M1U1pRcjRHRlZQK0JMRVZqb3c1MlVQZDdN?=
- =?utf-8?B?dktGMk56MXNDL2lnaUdOV2dRTlUyNnlKOWV2MzBldHRIYlJMQkx4TDlLbnRo?=
- =?utf-8?B?cWs2R05NOWU4ay9hUE9yYjY4eDBXVjB6UjF1RFlXWGdvb28zMmNWb1JZYWdw?=
- =?utf-8?B?c3h5Z2xrZWlUczJXTkJ3M1lPKzgxdERsNU5jMXFmOFlNZkROUW41YnNxZG1E?=
- =?utf-8?B?ejhOYjFhUVYxTVZzczhVZktlVGpRdHpZUlIrRzQyeXpvKzN3T2F6Qk91SWN4?=
- =?utf-8?B?QmxuMlcwb01ac01rS09VQVM3NnV4S1dURDRPd3hRWHdybmJUTlUxZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe8841e3-2829-4207-5f38-08df46a0fae2
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB5614.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 00:55:33.0533
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y8lCQtVuHezOjOfaGxGFi46rKEKdWvCZPJwCkq2Mm7FQe8NWrC4Z1baCp9fLpfM8fEbxfvKjhFUJrQ3LbG1iNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH9PR12MB384484
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 17:01:19 -0800
+Message-Id: <DMZMRTXS7OSC.M79XF39ZVEWE@google.com>
+Cc: <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
+ <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
+ <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
+ <dmatlack@google.com>, <graf@amazon.com>, <jacob.pan@linux.microsoft.com>,
+ <jgg@nvidia.com>, <jgg@ziepe.ca>, <jrhilke@google.com>,
+ <julianr@linux.ibm.com>, <kees@kernel.org>, <kevin.tian@intel.com>,
+ <leon@kernel.org>, <leonro@nvidia.com>, <lukas@wunner.de>,
+ <mattev@meta.com>, <michal.winiarski@intel.com>, <parav@nvidia.com>,
+ <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
+ <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
+ <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
+ <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
+ <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
+ <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 11/27] vfio/pci: Retrieve preserved device files
+ after Live Update
+From: "David Matlack" <dmatlack@google.com>
+To: "Vipin Sharma" <vipinsh@google.com>, <kexec@lists.infradead.org>,
+ <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-12-vipinsh@google.com>
+In-Reply-To: <20261102153656.1431701-12-vipinsh@google.com>
+X-Rspamd-Queue-Id: DE05920003
+X-Stat-Signature: mz1suse4zohofqjsrmgwcxfw6ifsbffk
 X-Rspam-User:
-X-Stat-Signature: 3d86aa4fps6rnqic7gs41d46du1rfjrq
-X-Rspamd-Queue-Id: 1C3341C0002
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795136143-503025
-X-HE-Meta: U2FsdGVkX1/j0Az5LkrqiLE/7RO0bYrAjHMOAO87u9AgIkFEpjlSZU6gxu2atXEw5wtno8wCHFXut7X32qmU+RTC5m0grqI1FGm5CE110m3cvt6ZT8P0czpgGkv6uvB6Sd1o1EgGwFFeRBHpss9GxTN+xNij4bTRhiz6dI8e+FAb0dKjKJfoTLABSkD648pGUO2ezX3ptvQp+bTk+4Glep8Qa3iTz6ZZG63Bi/OQl+pgGr0S1PafZVKdS/gjXNZ1lWJuc+7/W/ucxUKmKwAI5tME1G2UMLGoJpefgGKHwaMUqlTtZns3D5lGT87gN5BjGf8OuowSSDq7hwu5L2cLp5R14kJ1IWSmaK1nkmM1oGCdp0RsT37Vwvu65HWjaXmeEPIr0TaWeQuRVqiupfoyPsQYhSeJ2exJEy0+QBPsQblnyqovlfAVni+ATL3j5/Wka/AksR9XGAnuGIkELVhIbEUDQp4ZEUj9kNYm4lkAHndafv4eSQyS3eA240Aiw0XXn+7nLou/U/Pgw1vko+zl3cPzZjhV/cSv5yjM/ueA0Qtnzdfce6MrQ/55s9ScVyKDvNVqdGvUAdpdE8mcamqd+elM+FS4Yx0IYMJH1nIzT6k8fdcykfR/cTAnIUn/Y+ZpnKLTXuFssSjBARXp0kYn1r2MvW8hBI0ylsKp+xmGQQml28ifPpqvGXo6jL9fvmY8INBflEGiYskmF/nqy/u8QxTEW5+Oa0p+X/heJgyBZUw9jvw9R891x6XxSLG+Te93zmOZgL9VAsKHmCqDKhlEehRusAKqb+ooPuOJGkDZxWk3qTdMNJGCR7P69aRc4KywrRWTsi6WSoRIdZsqXLhU9ivtQCO2ElGHKjYluSl8doytrywAYeQrKerOT38rTDmIqWcOWxUKLPSsSiAEhqj0RNOoknOPjLkYKrc/Blr7mGkC17vYPfLzstcrm090TH8oM/hvnhyMlwlWXekTmyR
- 5zRvlG4i
- UlRQmdILSnJ7lQ/UoqGBkZhqpN6x0hB9gvBP/vdn2jlDqcOEckbTfe8K1Th4YOR20idypp/Un7ZEBd7n2ilDzS7nNarnQQ3LiOPXj0ERzQCOZPB7SkuIgVWEjNAZ1MhqmDYQ2ljecTSDyn6t/GTXcb+e7IErKJCigvQat/ytMFSZ2gjgJO4NqIzJdSWxPvgiPMiZTwQ+N/4K/HUKIrS2bVVx8ZOMG5uaixV4TiJYlmAFPR/kEpBNSJPBJuYvx94VVtPQr8CjHv5Db5Vqre2biFFJ5Spx4jjhFhnxBouP5Q0+Lgni2IsHu3gQDFz0HhZ5LmzI4ZVUrmj2dnIJj2H6vRyvH5uZUBGiajQ/Bu/aLUbsxtX/oCezjxKPabx518IwaJ7P6V6Y9cBVXKNRY6vxlcBXboQutig7RchLXpEfli7nfU/PUg8Ci1VptgteuG2yyhOK3ATtBZUhJAxzbB+pZ28QfVngZlk93QLL4fndn7mvCS2sGBvpeUWBRJzfdIseGilvMux9kF7XM0CC6lO9QR9tdX7d2S6hgb5UgQPahymZ1tzs/zz1XArPl6zOkh9ua16maEKtKNyHmR4HCHFVDah97Xo7XokzAMHZmrVgVD+fHYteqZN1KMUmgYP4dgEaUKW+FO1jIO/J22RkJKlvp9GFZSq7ZDiiTDBEfM7maYNjnJSKt63nxowJ55P1n2txkTeOHiCP8/SOVOv+uN3Sjt1XqSa8DumIFraTqMrQvfFImocJoVvTmPRSErxljFASqRbFvdSdFIsnErtsGlw5PH2Snuj59WpCHgBN4OH/j8h7vkgdzSXrAsxJNi3ZrOPOm53fh
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1795136483-507763
+X-HE-Meta: U2FsdGVkX1/rfcn1zYjXr8KkUQtgZp/kzpfcNJ9uTKN17aJe6vVOBfCELEkTPU6pA97FS6b+KkBQyQ45sziwyb70kQTSXm3tYWhmbeIxsWV9tJoVANOevl1M+rx7L5asQpkXvQgSyDY2GBxAN2c2HWiGZThGu+02r+obx6ZSYohzNj8B6UDHDLa4WJIaE2vaa3gnATmQVycs7wPX38WLor+BBfQV4JEU0Qq96xu+KJBl+LstZIvm6emmTA+xgcnxMA+WxkdnAXawlmF5vxkufuZvgJXzR+1Iq1VDhm49XXZ95KzMANUKRabdz+mDF1W9ILbbKYFhYSUbDyHEml6WrdQrS18kQUWiRMXFaZzvY+Rug1oTzS7xmSN7r1xvVF7U9mGjp9GZ8m3gnkM8D9lYhngiiT6gRGLK9VJXYZiy13IXrbY5U4cHVH9WPkX+7qPrBotbFaZfs9PPJkk/62j0NWy21eh/rA2eOw4XW2YUWJ6H1jmUSUKHQCVfIriDRiQmA4QLsxeuVGoZIKFxZ66sXm3p58wPWZLnhf+8TwbP3NShEEVYREBbeH8lb3u3ZnxxtK4HWA+MXLyKBk6aJLHvjc5fiBt3gqt2fqk5yru9YhpYRCgNfsRv0kd2WkFtVqVSLMHI8ZMPWSYObs4X+l8oaecjHrdwSOl3/2l1kHiftpHfQ4KTiWYyeDT4Sk/HzYKI3HzsriPqyZDdupBD9oAV5ON2kBwVpQYxpjlH+vB9pg/LKIT2prEsrwAc6hZtit7JMRrHlzBL6UOFA7bBnm2h8JZ3UVWGm2SehZZv9XT93rhNAnb8fkq7oBRwNJbgBqReQ5sKmPBNWelOW3u2/bRIdhayxyNR6XCUEa83ZWAN8SBRrP2798fkzf7AEe/CGtBJMc8RuzkfpHPGWMULqps1zQYjTtuyRAl0GMkLFM+wXBApcM7tDmZ+/Kpgg5ZEFQeRz5Vl1h+7FZmDqKtub0/
+ oXkf7pFC
+ VmBPwk6YxE7zmx+6iWyXrWLWMFttHXJuVN+MKlJZty91ZiC/9RqjUub7MyILnGISVjdxSVuNPuHebLiE7IAr1Pg59wdNzYUfxUvTq6N6nEFuiruGkfLH4vGZZ6c9t9sdw3xVMruCDniDc7DOFPpggau51LDYQkfIDTnoij4xzJ8c/ruN9egX4snKDorjfian0Gg6QMqRcfCKPlgwpEi5xoRXzXLduTNBte94+XJ8tRDeWCRp/X28UdnaJnUOVQwQ+M40zEXr41F0bRK1mhCLaB2dtt705hNaqO4W1m3WAMhZiXh25OD91YFcFuD4WP7w0KrBZI5dWY+OnsuJOs1W0a1gpwTUmTKpsVz5OH7zbchynVKUhLlakSqWV0q2J2H649IwvqC4VPMsGCyaADetTFFy7gXO4B4uKPa+3ux4xFCfLURZhFLJEWJATOskTM/Mzh4mgrcDRA0XuzHkd845tIMS79ynGqB3ziTszFXoMSFFwYLxJSQ6cRcAGIDMIVOtyT3eViRUSNxSGdemHI1+43xdenCZwjUajZL+IYtJUL8bohGiydiyCTpdpdPLvvQEhqz3/yfq7D8LoAg6ap5ervgoYgy1vcN9dKOIMde0i/n3mhLRnBWvJloU9RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -190,119 +143,177 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 12:10 PM, Pedro Falcato wrote:
-> Sooo.... It turns out GUP dirty and ->release_folio() interact really
-> weirdly. This was initially reported by some AI agent, and David let me
-> know.
-> 
-> The basic issue is:
+On Mon Nov 2, 2026 at 7:36 AM PST, Vipin Sharma wrote:
+> Enable userspace to retrieve preserved VFIO device files after a Live
+> Update by implementing the retrieve() and finish() file handler
+> callbacks.
+>
+> During retrieve():
+>  * Validate the handed-over struct vfio_pci_core_device_ser header,
+>    sizes, and flags.
+> [...]
 
-The basic issue is covered in a series of LWN articles that span 5 or
-6 years:
+Please make the commit messages in this series easier to read. They are
+mostly long bulleted lists of everything the code does, which is hard to
+follow and largely repeats the diff. A commit message should explain, in
+prose, what problem the patch solves and why it solves it this way, and
+only call out details that a reviewer can't easily get from the code.
+This applies to most of the patches in the series (e.g. PATCH 07 and
+PATCH 13 too).
 
-    https://lwn.net/Kernel/Index/#Memory_management-get_user_pages
+> Do not implement can_finish(): closing a retrieved LUO session invokes
+> finish, and refusing can_finish() would leak the session and leave
+> unclaimed devices running. Instead, finish() always completes:
+>  * If the retrieved device was claimed by opening it via
+>    VFIO_DEVICE_BIND_IOMMUFD (which consumes vdev->liveupdate_incoming;
+>    subsequent patches replace the open-time reset with non-reset
+>    take-over, reject opening incoming devices other than via retrieve(),
+>    and protect incoming kept-running devices across runtime PM, dev_set
+>    resets, and non-noiommu boots), finish() simply completes its PCI
+>    Live Update participation.
+>  * If the device was not claimed (never retrieved, retrieve() failed, or
+>    retrieved but never bound via VFIO_DEVICE_BIND_IOMMUFD),
+>    vfio_pci_core_liveupdate_reset() logs one pci_warn() naming the
+>    device, clears PCI_COMMAND_MASTER, resets the function, and restores
+>    the inherited pci_saved_state just as closing the device would. If
+>    the device has a function reset but is not reset, e.g. because
+>    pci_dev_trylock() contends with a concurrent driver unbind, latch
+>    vdev->liveupdate_reset_pending so vfio_pci_core_unregister_device()
+>    completes the function reset and state restoration via
+>    vfio_pci_core_liveupdate_reset_locked() under the device lock held by
+>    device_release_driver(). Opening the device after finish() resets it
+>    like any open, so it drops the latch.
+>  * If the device was not retrieved, look it up under pci_dev_lock(),
+>    which waits for a vfio-pci probe in progress. If it is bound to
+>    vfio-pci, finish it as above. If it has no driver, clear bus
+>    mastering and reset it. Otherwise leave it to the bound driver.
+>  * Call pci_liveupdate_finish() and kho_restore_free() on every path.
 
-Probably good to read and absorb that. There's a lot.
+This is a lot of complexity for one commit, and it's hard to review. I'd
+like to start with the simplest approach and build from there: implement
+can_finish() and have it return false until the device is fully
+retrieved, i.e. retrieved and taken over by VFIO_DEVICE_BIND_IOMMUFD.
+Then finish() only needs to free the incoming state and call
+pci_liveupdate_finish().
 
-The problem remains not fully solved. pin_user_pages() is a building
-block, but we need to fully coordinate with filesystems in order to
-finish. It's good that you are looking at this.
+That gets rid of vfio_pci_core_liveupdate_reset(),
+vfio_pci_core_liveupdate_reset_locked(),
+vfio_pci_liveupdate_finish_lookup() and its bridge and device locking,
+liveupdate_reset_pending, and most of the finish documentation. If you
+want to handle the other scenarios (devices that are never retrieved or
+never bound, devices bound to other drivers, unbind racing with finish),
+please add them in separate commits on top, each with its own
+justification.
 
->  - ->dirty_folio() relies on buffers/IFS/etc being attached to the
->    folios. It _cannot_ attach them itself, as dirty_folio() cannot
->    block.
->  - certain MM paths (reclaim, khugepaged, folio split, etc) are very
->    trigger-happy when it comes to asking filesystems to release them. In
->    most cases, barring any dirty folios, buffers, it will just drop
->    them.
->  - there is no problem in usual IO submission, but issues start to pop
->    up with GUP, where the code flow (roughly) becomes:
->         [get_user_pages(), etc]
->            ->page_mkwrite() called here, or before
->              ->private correctly populated with whatever the filesystem
->                expects.
->              folio is marked as dirty, initially.
->        *write finishes*
->        folio_lock();
->        folio_mark_dirty();
->          ->dirty_folio()
->               dirty_folio expects ->private to be populated by
->               ->page_mkwrite(), ->write_begin().
->        folio_unlock();
-> 
-> What happens if any filemap_release_folio() runs (and succeeds) between
-> the initial dirtying (plus eventually writeback) and the write to the
-> folio completes? Welp, it's unpredictable. ext4 for example will
-> WARN_ONCE, and likely drop data (see ext4_dirty_folio()).
-> 
-> So, what can we do about it? It's complicated, hence why this is an RFC.
-> For the possible solutions:
->  - ->dirty_folio() attaching this FS information itself is not really
->    possible in many cases. ->dirty_folio() can't block, nor is it even
->    guaranteed to hold the folio lock while being called.
->  - Can pincount help? Kind of. Things like folio_maybe_dma_pinned() are
->    rough, and don't deal with the usage of get_user_pages(FOLL_WRITE).
->    pincount itself isn't available in the common order-0 case, and not
->    available on order-1 as well on 32-bit, but who cares about that^W^W^W^W^W
->  - Could get_user_pages() ban FOLL_WRITE? Mayhaps. I would not be
->    opposed to that, but that's probably a larger change than ideal for stable,
->    and I'm not familiar enough with GUP requirements to decide to go that way.
->    This would require migrating all FOLL_WRITE users to
->    pin_user_pages().
->  - Can the whole system be reworked? Probably, but not for stable.
-> 
-> This patch series is really rough but kind-of works. Instead of using
-> folio_maybe_dma_pinned(), which only interacts with pin_user_pages(), I
+As for closing the session leaking it and leaving unclaimed devices
+running: that only happens if userspace closes the session without
+taking over all of its devices, and leaving the device running with its
+memory still preserved is safe. Resetting the device in that case is
+something that can be added later.
 
-pin_user_pages() was specifically introduced for this exact class of
-problem. get_user_pages() is now meant for other, much more limited cases.
-I've attempted to document that, here:
+It also has a nice side effect: LUO calls can_finish() on every file in
+a session before finishing any of them, so a memfd in the same session
+that the device DMAs into can't be finished before the device has been
+taken over.
 
-    https://docs.kernel.org/core-api/pin_user_pages.html
+> +static int
+> +vfio_pci_liveupdate_attach_incoming(struct vfio_pci_core_device *vdev,
+> +				    struct vfio_pci_liveupdate_incoming *in)
+> +{
+> +	guard(mutex)(&vdev->vdev.dev_set->lock);
+> +
+> +	if (vdev->liveupdate_incoming || vdev->liveupdate_claimed ||
+> +	    !pci_liveupdate_is_incoming(vdev->pdev))
+> +		return -EBUSY;
+> +
+> +	vdev->liveupdate_incoming =3D in;
+> +	return 0;
+> +}
 
-> introduce a new helper that helps places deal with the folio refcount
-> directly. In that case, we can also deal with GUP. On the other end,
-> moar problems:
->  - NFS private data itself takes refs on folios. Now private data (that
->    we could perhaps release if only we tried) is keeping us from
->    releasing that same data. What?
->  - ext4 data=journal has some funky usage of buffer_heads. Data journalled
->    filesystems will not, in any way, dirty BHs. Instead it will,
->    *only if it was DMA pinned*, set the checked flag. ext4 skips
->    dropping those buffers if the checked flag is set.
->  - ext4 move_extents seems to have suspicious usage of
->    filemap_release_folio() as well.
-> 
-> Many of these have suspicious Fixes: (which are definitely wrong). I
-> targeted these patches to complement Jan's original fix. Anything before
-> that (or which is missing that patch) is hopelessly broken anyway.
-> Proper Fixes: can be added, but many of them go back quite far.
-> 
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> ---
-> Pedro Falcato (5):
->       mm/khugepaged: fix filemap_release_folio() interaction with GUP dirty
->       mm/huge_memory: fix filemap_release_folio() interaction with GUP dirty
->       mm/vmscan: avoid releasing FS metadata for !FOLL_PIN gup folios
->       mm/vmscan: be more careful when releasing FS metadata if buffer_heads_over_limit
->       mm/filemap: refuse releasing maybe_dma_pinned folios
-> 
->  mm/filemap.c     |  3 +++
->  mm/huge_memory.c | 22 +++++++++++-----------
->  mm/internal.h    | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
->  mm/khugepaged.c  | 19 +++++++++++++------
->  mm/vmscan.c      | 18 ++++++------------
->  5 files changed, 81 insertions(+), 29 deletions(-)
-> ---
-> base-commit: 9663aa0da7070d958e333477ce0720512e9fa016
-> change-id: 20261116-gup-dirty-what-b73da748f5d1
+The pci_liveupdate_is_incoming() check here is redundant with the one in
+vfio_pci_liveupdate_retrieve(). Nothing can clear it in between, since
+only finish() should do that (see below) and LUO holds the session mutex
+across both retrieve and finish.
 
-A git alias to wrap "git format-patch" with a sed(1) invocation is a great way
-to avoid accidentally "leaking" gerrit change-id's into a posting, fwiw.
+The liveupdate_claimed check is redundant too: LUO only lets a token be
+retrieved successfully once, PATCH 12 prevents opening an incoming
+device any other way, and the liveupdate_incoming check already prevents
+attaching twice.
 
+> +	if (!pci_liveupdate_is_incoming(pdev) ||
+> +	    ser->cfg_size !=3D pdev->cfg_size) {
+> +		ret =3D -EINVAL;
+> +		goto out_put_dev;
+> +	}
 
-thanks,
--- 
-John Hubbard
+If the device isn't incoming here, that's a kernel bug. The previous
+kernel only preserves the file after pci_liveupdate_preserve()
+succeeds, the PCI core marks the device incoming when it's enumerated,
+and only VFIO's finish() should clear it. So this should be a
+WARN_ON_ONCE().
 
+> +	if (pci_liveupdate_is_incoming(pdev))
+> +		pci_liveupdate_finish(pdev);
+> +}
+
+Likewise, the device must still be incoming here, so
+pci_liveupdate_finish() can be called unconditionally.
+
+> +static inline void
+> +vfio_pci_liveupdate_unregister_dev(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct pci_dev *pdev =3D vdev->pdev;
+> +
+> +	scoped_guard(mutex, &vdev->vdev.dev_set->lock) {
+> +		/*
+> +		 * Complete a reset that finish() could not do, see
+> +		 * vfio_pci_liveupdate_finish_vdev().
+> +		 */
+> +		if (vdev->liveupdate_reset_pending) {
+> +			vfio_pci_core_liveupdate_reset_locked(vdev);
+> +			vdev->liveupdate_reset_pending =3D false;
+> +		}
+> +		vfio_pci_liveupdate_free_incoming(vdev);
+> +	}
+> +
+> +	if (pci_liveupdate_is_incoming(pdev))
+> +		pci_liveupdate_finish(pdev);
+> +}
+
+VFIO should only call pci_liveupdate_finish() from its finish()
+callback (see the kernel-doc of pci_liveupdate_finish()).
+
+If vfio-pci is unbound from an incoming device before finish(), it
+should just leave the device and its Live Update state alone. That's
+fine: if vfio-pci is bound to the device again, the device is still
+incoming and can still be retrieved. And once the device has been
+retrieved, LUO holds a reference to the device file until finish(), so
+vfio_unregister_group_dev() already blocks unbinding it like it does for
+any other open device file.
+
+If userspace binds a different driver to the device instead, that's
+userspace's problem. The PCI core documentation already says it is the
+user's responsibility to ensure that incoming preserved devices are
+bound to the correct driver.
+
+So I don't think the unbind path needs any Live Update handling at all.
+
+>  #ifdef CONFIG_VFIO_PCI_LIVEUPDATE
+>  	bool			liveupdate_frozen;
+>  	bool			liveupdate_intx_disabled;
+> +	bool			liveupdate_claimed;
+> +	bool			liveupdate_reset_pending;
+> +	struct vfio_pci_liveupdate_incoming *liveupdate_incoming;
+>  #endif
+
+With the simpler finish(), I don't think liveupdate_claimed or
+liveupdate_reset_pending are needed.
+
+PATCH 13 later inverts liveupdate_claimed into liveupdate_kept_running
+and uses it to block dev_set resets while a preserved device is still
+running. That can use pci_liveupdate_is_incoming() instead. It blocks
+resets until finish() rather than until take-over, but since finish()
+now requires take-over, userspace controls that window. If some flag is
+still needed later, please introduce it once with its final name and
+meaning instead of adding it here and inverting it in PATCH 13.
 
