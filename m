@@ -1,97 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C8E606A6C4
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 20:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F05606A6E1
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 20:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=qNJ4/SuV
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=U2Q004YD
 Received: by kanga.kvack.org (Postfix)
-	id 137EC6B05B1; Fri, 20 Nov 2026 15:04:01 -0500 (EST)
+	id D45FC6B05B5; Fri, 20 Nov 2026 15:04:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E89E6B05B2; Fri, 20 Nov 2026 15:04:01 -0500 (EST)
+	id CF6766B05B6; Fri, 20 Nov 2026 15:04:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F192B6B05B5; Fri, 20 Nov 2026 15:04:00 -0500 (EST)
+	id BE5B96B05B7; Fri, 20 Nov 2026 15:04:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE9546B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:04:00 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E305401BD
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:04:00 +0000 (UTC)
-X-FDA: 85456573440.09.DBBA260
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4182E40006
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:03:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="qNJ4/SuV";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8061B6B05B5
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:04:22 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E8E78A7487
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:04:21 +0000 (UTC)
+X-FDA: 85456574322.04.332F7D7
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1977820010
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:04:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=U2Q004YD;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=skhawaja@google.com
+	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skhawaja@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795205038;
-	b=key1Zd0X2wMfyu50IJleaPXMwg+O47nGs5iF13QN5NuQJezmdaw/gFs54sryjRx1wDzvR6
-	Dm/TkX1T4CFtguB4Y1JFOQv0W0IHkLdTWuS0vK/S5gOUelCpfe9lSaT5Ea95k/o3a3hxsO
-	RuDHYUJEPbWiewTY7cMOmnSyYpi+gb4=
+	t=1795205060;
+	b=XM+UEyXWLWY64LNC+24h0gTYBI9q0Ig6ANIP9vT+2i4CGpHnw1pfMVWDdv0I73dJyK7SkG
+	dGlvrpf5iwW/aFqZSpNu//0ZsBU/XBz0Psq00WgYCt503KT3gWGTXEm2KLsbl+jrGpKcf5
+	qcTaAiR70BepBCG3Fj1nEODGgaZTDsk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795205038;
+	s=arc-20220608; t=1795205060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sJNN+wbVdYmGniuurEFfsOta20znKmxlY/TD8nCl7To=;
-	b=U1/rGsK5FFXnvx4+Im9mteoo/EZanigRkqViceaOAKDO/IZNs6cz4vJWvlQn5r7Fw87efZ
-	irZ0NZZNNi6sWW4EXskGwFfrfxo6k+w849MACFT/w+eg4vze1leKR1InwlPA65+tJuMIB5
-	MPPz3wiaDPrSu8/nHVOl4CVfMB5dh7s=
+	bh=sbS+kHys+ZROW4VWeSHfOuIQU9MpFrnjpn+wgap+dRo=;
+	b=N4r3cmWjZBl2xOfcnqgdXcCljRVYXOW6IoN9KPctZ7v/eNNHSpf9hH1EY89As/y+faDKAq
+	AmJJo/3SQ0DcGjoemosvJ50HbWjazJZTeIQMjQT3eukpixRFSPxHSfQetjKMb5cLPhDPNz
+	vBK45yWY3gE26NHoK4CRvxTrxR5DTes=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="qNJ4/SuV";
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=U2Q004YD;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=skhawaja@google.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2f048bc09d7so15415ad.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:03:58 -0800 (PST)
+	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skhawaja@google.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ee254f6eefso14995ad.0
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:04:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795205037; x=1795809837; darn=kvack.org;
+        d=google.com; s=20260707; t=1795205059; x=1795809859; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=sJNN+wbVdYmGniuurEFfsOta20znKmxlY/TD8nCl7To=;
-        b=qNJ4/SuVUPft1zzq0AhHN6ZCd6/+lKpwqktCtzPnL00HyDg3r53iL/BLxtRApQ/009
-         50vPHEc8ECjFFAErBWMw4WNjh6T5ztAUnd7VmSsFQdnW1m5jYEko+wIUba673HauUhbP
-         9VdH7+GziKO0qjNotN8CF1kiHuOt9KR0r4nDMZ2t7WpjAtMkrPqe4wPrDx6IcPiGyo69
-         vgtEwmM74LgThIFnxfbanlZtp/6PzR5HFSIQjml7Zl/K5ewZBir9bh1FZE9UTwS/JPSU
-         tp3IdtPzne9VY4r5R770rLwr7N8CIzHQ+WfS/B3k0a4XmxblDfSSeVS8dpWpDkByTo6u
-         7G0g==
+        bh=sbS+kHys+ZROW4VWeSHfOuIQU9MpFrnjpn+wgap+dRo=;
+        b=U2Q004YDTStDSN0M8hOW9dYhhfJ7SK9VAIC0lYbYqNttvODg31niXEum3S06FV1ekZ
+         WKnphCYODQKvmuBfpI0Wvdt/L2in/fH0IhDJe6UVZXVtY27GA32ZVAVlipPkK5ohGVun
+         A0OZldRVBvn2Xjp5WDs/b9474aIxqvDJdOjgL9ab1kSS1q4hhFyccn10rcpZMspf1rog
+         XNF4W+GIX6MgCRSbaWnAWkp9eDobtMg6YSFiTqIuX/mRj+ztyCT1yr7uqd4fj6qLb6Yu
+         pnWuFtp1IwpAIN6qYyYuK2e3abeS6sJRmmNLvhuJE8BUGobGmktTts7cvbirDShi9IWJ
+         x/zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795205037; x=1795809837;
+        d=1e100.net; s=20260707; t=1795205059; x=1795809859;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sJNN+wbVdYmGniuurEFfsOta20znKmxlY/TD8nCl7To=;
-        b=DQOxSNMhJt0NNZek/KJWf03Tn1XoFf2Z4DZ8L58L4QFcgCK1yMX82dNVk0hfTNwTcu
-         SiSuV6Xrq/rtNzw4og4HtAMcDpzu49uXuZplId4R6FNNhlYnCh0kJiJfMLIiKWo8S5Rp
-         CGYRfpGvwuIf4pIrseFsgmVdmJaWQaR2NeNXbArHvkOgZcnqYH7IKW6N2B1g2Ul/Lfj5
-         HaH3bmgmLEnQh8H9eXm/ZYfjCAo5rljHRSGGq1mFFM42K7hBVxTQeSB46tI308EKyEWG
-         FBExUnIFvxVJmSOV70YmawW4rgLiTCKUOEfoHRl5VabuoRBjiA1TrDYG/C1TFNQJCzGb
-         XxEw==
-X-Forwarded-Encrypted: i=1; AL+hErFnGmOboZsFMeeA03+WlqxzaoFrzc9k4Ff24hGdrFYDzz4ZAsfEn5RshsHaf+dWd9qDEU9jM6qLzQ==@kvack.org
-X-Gm-Message-State: APuU4Z/omTdxotGfmppsICJSaa4qxnX3B42sxp/J0MNJoE6PX1x9Uu/s
-	+Y+/lSdz4A3nD7oGhO5NzryLcMEA3DCYiwsl46X5+OgphUog0TZOBtZAHEEzIMIVLA==
-X-Gm-Gg: AZFdTZfVUuDQoV+/zl/KeIhipdnvLX26TkRoPnX/HQVv1Myg4g79jrkvK/oVpfHl957
-	eRWt6nUNqDYNtiZq6JCZSBoN54GEspq/VTvyLmNPZFGzhBEcTi3/beItGndhPV4RGDQdnKeRrCd
-	9GPfTQIRIlB7SjWQHnz0MYi/WhTF6EbXl+yRbbJXmeVlWAwLmxyQue/oUwoXLnTzzBOA4oe+tTY
-	ssPc3mrWQMjU2rqjw/OkHoHt0VNDLbfyAJicLESWYftcqtjJfaCRYyBTSoQ/iABmJnCxcna3i5R
-	JPcrYfhRPFJtY9UfSWGA8khh0cC+CsWgu7yfxKXP+Fsl00Ao7xUTUBMhOoT/Cq+LDWBZ85w8Lbr
-	I6/u3x1S6pj6Y89Ga1q/aqJhQILRyXPFbY/fM3paxc8+UPSF/ewN7A/Xabn33Cf49QoTf5WLS6P
-	Mj7L2C3f1FYwCW4Vvb5wnUeV0QW+bU3XL+VS2CSNah+6arsDggTVAgPGI60ntKDyx3JiYfHfZe5
-	/Wqv3jPYDBn7agDCFof3TzmCvA8q/2RTN4v4HjmPtD/+aFe7KHEYEoFE+4cgRhJqanC90/4YNrT
-	SLIkzBW0MEsvd6hJgQ8YXj/vDqqep0quF8D7QUZeaPzCNbWkdwRvvii1/dnV1RDMSWCL2pRsNJp
-	CUIENi9aT22zGq1g7uS8bEg==
-X-Received: by 2002:a17:902:f70e:b0:2eb:19f0:6e2a with SMTP id d9443c01a7336-2f06242bd5dmr601345ad.8.1795205036492;
-        Fri, 20 Nov 2026 12:03:56 -0800 (PST)
+        bh=sbS+kHys+ZROW4VWeSHfOuIQU9MpFrnjpn+wgap+dRo=;
+        b=IM+1/8jy3G2y3wLm4b0KrnDbr5c60qDMJWRaloyLVBhXGnmkrZf/q+U1417dMrEcDd
+         5oBRtebfyRZV6g5FaQ0hDYh/Y9qrUpK9Y+IwnuWCBg5sHRUJLgMTUqOG5ULsh75fL6n9
+         HVBFiF+fJyYHCEE1wF6JHBYwz53Pz1KpEWOXL4MHfHO7kFDWNhWNTNqU+Wvem2QGM+Fv
+         Y1neWu7lylJyXGPQBFLV+wd00KloxxN/LNGjHjL4M3pVlizW4CMGbneTMubgKr7aq7a/
+         CjV8g71f13DwoNs3NvY70AkPwFtIEi0+ud3AmXKQvWzEwJrztpXAyojN443yestOfDKI
+         I7lw==
+X-Forwarded-Encrypted: i=1; AL+hErFdLu6GtunfGRlCM5mJSRChI8z6QJZOL2aj9X4TMdao6acV86+M97l552o06WbG9881FzyLBz4w3Q==@kvack.org
+X-Gm-Message-State: APuU4Z8bKK9h49pqCb+GaDpvPveCIBfuQi1/uBI4xBq3HDFWOcWGT6WW
+	iLTBfaLrHBY48yi6+4/18mQvjbeJr62rb4banL+C2QViGGDrXrZbnADXM65wp38rzg==
+X-Gm-Gg: AZFdTZdQu4YrGPYB2r+feHD9s0HZY2gshyBhneJBMduGThL29iN7oK/kuFEJRaBDHZ9
+	C3yMPzcusU52wUKhB2iVbd8CVnaeOiy57I4WX/KEthkeSlxq4HRiY9AErSkqwBlCLKRIcWO2i+t
+	5EJDv4CWWs+clOoni8AuNMYxabotCLl1135Fg4vsXJlwEFuLENPKXqu9+SMOgCPZc8ld4FSKghK
+	PeK9OOAHOBHmEhaNS4eNwQmOp8ozSlm9phSxkdVEm8y9DY+Sc/UXu/RXuoFGMX7GUB6g9H4a2iy
+	hmXi1FBAVm2KRB1XUHb39VcQXLN79r5WLmHSkhloanKoxm3aOPJI9/zMfD/sicKNTUN7b06Xx1L
+	cuexpR3yv2aztDRnCAg1nUyWZs5KdER7L3kDOU9SvbZUI1iEwvbX2kpPRknc3RNuu+i0s86dqNj
+	sqNhVV7bqVqNcvary1n+e/H21LrclHULXX227QIZhMdcWu/rEsPOm69tLcGNJWDIQzxbrhCEWlk
+	J+JS6fa8N262UzZ4pubm6SncXfmca46/drCqeWg3/GmRHA5dg6ro8LzdA6ceaAanbXcya6od2Xg
+	cRhmoZ45pr+rB/5VyRveq64TKX2JQ8FBBV9AscLd2nrmHKNrr4/gwIXDz+T6ObTJxtL7yCejDEY
+	KlinV9eYjollQ14yiWPHUAg==
+X-Received: by 2002:a17:903:1a2f:b0:2df:42af:2f9f with SMTP id d9443c01a7336-2f06244fc41mr646965ad.1.1795205058450;
+        Fri, 20 Nov 2026 12:04:18 -0800 (PST)
 Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d63728sm9122188a91.8.2026.11.20.12.03.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03ee84294sm18409345ad.9.2026.11.20.12.04.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 12:03:54 -0800 (PST)
-Date: Fri, 20 Nov 2026 20:03:51 +0000
+        Fri, 20 Nov 2026 12:04:17 -0800 (PST)
+Date: Fri, 20 Nov 2026 20:04:14 +0000
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Jiahao Xu <xujiahao@cmss.chinamobile.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -101,27 +101,30 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
 	Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2 1/2] mm/gup: add file_is_memfd_compatible() helper
-Message-ID: <awCnnKfv64IyriEW@google.com>
+Subject: Re: [PATCH v2 2/2] iommufd: only hold references to files
+ memfd_pin_folios() can pin
+Message-ID: <awCntbf8pgcBZcg2@google.com>
 References: <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
+ <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
+ <20261119163531.315791-1-xujiahao@cmss.chinamobile.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
-X-Stat-Signature: in3prwmhw6pphr87n1s9bbbxq3tupq76
+In-Reply-To: <20261119163531.315791-1-xujiahao@cmss.chinamobile.com>
 X-Rspam-User:
-X-Rspamd-Queue-Id: 4182E40006
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1977820010
 X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795205038-709891
-X-HE-Meta: U2FsdGVkX18UYx1fTh6IJFzBeFe5qPf+O4gZbCZ+1i+tKwHIq9vWpFTsifzq8rQMuazaQLP2DnoThLQmYr6Y0/q0QtUT2PbI41H9ncvHB0EuMO0jkQDagvxiAqEDwsvBEP+3U0QgEFkYOggjgPy9T+xJtBJMjVBXTKEQmKM+m2oj77LiDIkAAA5LpeSxpbMqGB3N5XrQJSr3k5Kh+xQ/jASsf3dvD6E2Wu+M0iPT786KSe7+1Cls7kSdTmLx9qsHhPO1TzncB80jlI4wkBKjwMG8soBpb3ldaRldDGmtgKo1dKXMmAuq0AzP6Zj6nRf7EDQ9CM+ICHYA9NleBZU1hydomRNAmtcD7gcLX5kLydp3Czu6pmZOPYG+iH2AZXuH2FJ0+TH4SGGv0WFCn0WMsDTrviRXVSygQcE5E+6x4jAaoGmEwymMoojKOEi3dPUAnajjbYgJuVAgibj3d2/yq6SSqo1ZcuB12n11cr+zO3Ahog6PTjaGUN8j9mudLfJnk3KxaX9ADJUXC2EUn1C6YQ35k3PvbfylinXSUkxnqH5vsJ3hhIhwFUBdeAS3oXRdANNYP6CKD910F61EOtZgkm5UzbUBBbBpkJkXJ3DLd74H9tCQ46/AVda4IQP17PJCC2AueIElqQLFxfaOpb347zMr4UpETT3S4bJZk3nJxz1KRaTulklTe7I810UE9nduUiWEQwMAOdYLcHyjD8qhl9jZSvWOvg3F4BHgXayyR0CloSIq8dW+tf41WcdRLFrd/6KVLXp4m2TvjQviBG7HroPeOcoGSkCAW8B7YMh/Wu4BiVuAd3fC6b8W+5LXT/KQpLBnJhd8bGc9f+hR7MSp5DEK4ZduSyDKcSabiNZG0l6yu/Cipf02IdWPrTpjvJHV/UbnOU9Ks8/YdF3TTkWI34KEh1dqcGnsaZEgJ8sMJHi4F6U7nCIv2LrQg02Kvu8SEeS58I0GwzF+0RB21PI
- AqjvjeDF
- cwM+LkW39LsMdlW2wrrSniCR3fHPLHi7f28Cf82pwIpQnmDOvd5HTeDCU4XrYDiQvgVHFGcRZMbp/cvhr1U/kPW2vOPFMXlWH4X1TfDB5CxWho5vxSAvwZKKx1XqlPI1jkh2KfXHqsziiN2LcLnUNzv8O8U8STzGBXiGeG8TxZyGYH8b+FtgXiwo3KTg8Bvpx+RD6vngUOHEoznNkJJxtuJQ3yxeJvpXH6UnA41Ql9s1Lfxe8+Rkniw3ZWDD1ghkUXuNHrIkYQj5IAY9WwAR796wJA/hpOHSbLzmai1vbPRjphTjnPjwK0TAQ6iU4V9bra/ehTwwGuZAuPKx/+VK9fhJzS22fS0fARWfcp+eD6GpIZn7MRlosklgMsbaUPwFIwYg48+dn4biL29xrWFer5gpTgyVY3AIRPMrcyIvwU/P59gJI0bR2M8rZJlDwLl9FyPf28UXyGPoQzFhGpK0EZRTLEsN/+DsyjfYpTJIeZbzQzMrGhrIsFJJb+y/CqtzPu8xGU8/GYQF4l5XsjzzIJw3bqmp1b/oiPbxVyIIDfNFc/WjLksISqrq75IJqmF50fpxROz9UhuANmjKYN6BTL+TXer71n7m4jn+b+aWbHzvWMtWGftBGf9HDrNALIRvyCjWM3JdTRGo0WZshDuL1cUn5xFNzqSndDhbsA1Qwv57mzRLZcfY9Xkn93mg74MsUG4/GulLmQNVlPMjeQsQaP2fILhkyRvkAmR2qOTfNll8vHRiFxriOcFtBBYKnAxfMreX9WvywlC1Q4osz/9GU81PVooFKm7RZfWrJXnuMaekUbzM=
+X-Stat-Signature: qxfinjmtymj9h9ks7jxoakf4y78phcns
+X-HE-Tag: 1795205059-653949
+X-HE-Meta: U2FsdGVkX1+Y6n+S6ri0A7inxeqXaC8wFiKbil0L3YosuAbkDYlzNrruOICw97fj62LXSs5NMajZlXfTqVEa21vRH0H0z0IlIKNzFX5aOe1eztAHGIYkdKj/VsDf8ANGFS0MMjMGFMDXQ8hFHpzykpMG+EPWjCmaVxHPM/Q6GVvN5ZibA89hTz/LioOjhYA81eT4IBZkuBahi3OC+OR0IGGcLC/p1Rs1q2020/RZ/nJgdXP7g+FI+sRkJ2+vch9ETjnuIu81jM1OrXDZhMNF1NorHhA9Ypvh422/XDsukVOWOuwL4833FyrmXKdA5ovRK/fxOMcO5nVXFVjm73Oyi1z1JuwmwRQhKgzkVynVaXrlRjGfELoDMBB5nTYOU8CdjmwouJ8N97SMmlKAYcLELC5R9GdbVX5z/Lef99w7W94fIsDZK2Vb/EiUc1K4IEQV+3tPUyoM7zfuVOvlzr0pdrI7hZwjAR30s4KTULr0/SdhXjZirwFhP4X/Ze1ZGr0XMnjNv6jmblAVZEypkJiOLLdM3oxGDRbHzh7Jv71fpaxHKAlZxf5Ge3huBGDQi9JzPcsh5su0TJNDFcOaGUvS/6pRtxkIpiK6ZPnxvPvd/r78ABdyTaBX3TTeeBlT9hvdnZhwpdnDE/AD40UuRsPc9RYwYfxqG4tySdyqW7b9YOztk+9jkRHAqYROqFelxYSfi7mJSbYY+WiallCNwXYIaezdp2eF+//lErA/bqwJ1rmvf+NQh/tiBPxatNXgqCiRQlSJjs57JSW3/fhYW/fRgIiA78o5hekvcM6m4VI/Nm4pEOdrcJag6IuRAh9lt3/oaUmDytszcYK9VPxWmm0ZpSyfJIdyzbrbr+2R80HzzxCf3MiCyrQFPhuFxn3U6whyGSOyluaYBIFdfv1CZYc4zIsXL7mPBOJfMonfWR3ZGrRk8CTJDU/8dp+8UUDZw/9owDTHlHPuOhP9Tt+mQLU
+ JdC6A+8w
+ jc3fnNTs7aM2pbw+pekYdMhr15leh/rG5jat8vbvVHfeJ/SvKX17ddl4JN8lm9Ti1CIoicgk0oTCrrNQadi6cb5PmFBsbnCYOGU0T9PKf8+70SssF3pB6Qn7ub0PEAS8m2Q72szjT7CZQTWFVeauQZD/YZX+lS282ZzUJBYcP6EQVV1akk0NIoGL8gNttGabAA7lrVpsXnTA+p5v0V8FA8N8piAhcF9RsLAavl/dnU+uTWt4oSlIuHW0/yb9yguE/Y86NdvKek2v+L1rU55WngMdoyU4TqNCpqBbFZ+BXSOr1T1s+EanwoT1tcDXI0XhU1rSzpml+Z3y67LBWuPNUc8VCn0HwzeaEDWTN42JMRvU5gOgo5C+im9X4gXlJu9cu5dH4ne3EOIWXqDyibcMCowHYqWy/3ojPp038LyNDfj8xW1g7Ad3H0/YUrHEtXHYKKkXHrKQ96qsWdPtJb7KW/g4EIS/Jg/rXj51VRvFV7vrbd4h6htON3lkYZnsegfMmm1jL1sBQiGHaxIouMmIVCte69GugvQrJVjJB1qd/Mj4qwWd2tNPoDItAwAlFsZWhFjLSnSnxrsG2RKigmD+IK8LVsUSJ4g0stN4gh9TbVzKAQMdn1uti18ie/2kU7SHYC4GWB67qIJy0nW0wv89Ne6Rt/RYmAcrySuf0WEeCZglksFTZggr2V9BhKqnf+0f0rmO7ZuQM7vkNeCFh3NxvhkXCpH0kwm8/z5yd/UjK2wg1A0AeHIZgOBtYwLVilamyTEGlRKcou/PNKzY3ByLUo5AynRg8sxyPDtJfhc3Bn2WbbR7DSxuyH8Hm311LgSKQFHfpSzWEKQ7FaJXjjdotBTiQ3PfpnWE3Dyyxi1kg9v8sF2qrzQSLxpnti3bWNV/viKl6l6moBatFuV4mzNyG3VtkaeIVudqlM4Y3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,86 +134,74 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On Thu, Nov 19, 2026 at 04:35:31PM +0800, Jiahao Xu wrote:
->memfd_pin_folios() accepts only shmem and file-hugetlb files and enforces
->that inline with shmem_file() and is_file_hugepages().  A caller that has
->to know up front whether a file may be handed to memfd_pin_folios()
->cannot use those predicates: since d3710111839d ("mm/shmem: make
->shmem_file() check the file's inode") shmem_file() is an out-of-line
->function in mm/shmem.c which is not exported, so modules cannot call it,
->and is_file_hugepages() on its own is not the same question.
+>iopt_map_file_pages() stores a reference to the file passed to
+>IOMMU_IOAS_MAP_FILE in the iopt_pages of the new mapping:
 >
->Provide the check as an exported helper next to memfd_pin_folios() and
->use it inside memfd_pin_folios() itself, so that a single place decides
->which files may be pinned.
+>	iopt_map_file_pages()
+>	  iopt_alloc_file_pages()
+>	    pages->file = get_file(file)
 >
+>iopt_release_pages() drops that reference only when the iopt_pages is
+>destroyed, which for a file mapping happens while the iommufd file is
+>being torn down.  Nothing restricts which file can be passed, so
+>userspace can map the iommufd file itself, or a vfio device fd bound to
+>the same iommufd, both of which own an iommufd_ctx reference.  The
+>reference graph then contains a cycle and the file, the iopt_pages, the
+>IOAS and the iommufd_ctx are all leaked; kmemleak reports it as
+>"memory leak in path_openat" with the holder taken through
+>iopt_map_file_pages().
+>
+>Reverse the test instead of trying to enumerate the files that own an
+>iommufd_ctx: accept only the files that memfd_pin_folios() is able to
+>pin, which is exactly the set of files the mapping can be built from.
+>file_is_memfd_compatible() reports that set, so the same test can run
+>here before the reference is handed to iopt_pages.  dma-bufs are
+>unaffected: they are taken by the dma_buf_get() branch above and never
+>reach the file branch, and iopt_pages holds the dma_buf there, not a
+>struct file.
+>
+>Fixes: f4986a72d6e4 ("iommufd: Add IOMMU_IOAS_MAP_FILE")
+>Reported-by: syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com
+>Closes: https://syzkaller.appspot.com/bug?extid=7666ed2c3d42196bf7e3
 >Signed-off-by: Jiahao Xu <xujiahao@cmss.chinamobile.com>
 >---
 >v2:
-> - Rename memfd_pin_folios_supported() to file_is_memfd_compatible(),
->   suggested by David Hildenbrand: the predicate asks about the file, not
->   about the memfd interface.
->v1: https://lore.kernel.org/all/20261119104417.312237-1-xujiahao@cmss.chinamobile.com/
+> - Call an exported mm helper instead of shmem_file(): shmem_file()
+>   became an out-of-line function in mm/shmem.c that is not exported, so
+>   calling it from iommufd.ko failed at modpost with "symbol 'shmem_file'
+>   undefined!".  Reported by Jason Gunthorpe.
+> - Use file_is_memfd_compatible(), renamed from
+>   memfd_pin_folios_supported() as suggested by David Hildenbrand.
+>v1: https://lore.kernel.org/all/20261119104417.459962-1-xujiahao@cmss.chinamobile.com/
 >---
-> include/linux/mm.h |  1 +
-> mm/gup.c           | 23 ++++++++++++++++++++++-
-> 2 files changed, 23 insertions(+), 1 deletion(-)
+> drivers/iommu/iommufd/io_pagetable.c | 12 ++++++++++++
+> 1 file changed, 12 insertions(+)
 >
->diff --git a/include/linux/mm.h b/include/linux/mm.h
->index 040cff643..dffcc0b5a 100644
->--- a/include/linux/mm.h
->+++ b/include/linux/mm.h
->@@ -3600,6 +3600,7 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
-> long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
-> 		      struct folio **folios, unsigned int max_folios,
-> 		      pgoff_t *offset);
->+bool file_is_memfd_compatible(struct file *file);
-> int folio_add_pins(struct folio *folio, unsigned int pins);
+>diff --git a/drivers/iommu/iommufd/io_pagetable.c b/drivers/iommu/iommufd/io_pagetable.c
+>index 5ac736cf5..c9aad275f 100644
+>--- a/drivers/iommu/iommufd/io_pagetable.c
+>+++ b/drivers/iommu/iommufd/io_pagetable.c
+>@@ -515,6 +515,18 @@ int iopt_map_file_pages(struct iommufd_ctx *ictx, struct io_pagetable *iopt,
+> 		if (!file)
+> 			return -EBADF;
 >
-> int get_user_pages_fast(unsigned long start, int nr_pages,
->diff --git a/mm/gup.c b/mm/gup.c
->index 7605da0e0..da8a2c29b 100644
->--- a/mm/gup.c
->+++ b/mm/gup.c
->@@ -3449,6 +3449,27 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
-> }
-> EXPORT_SYMBOL(pin_user_pages_unlocked);
->
->+/**
->+ * file_is_memfd_compatible() - check if a file may be used with
->+ *				memfd_pin_folios()
->+ * @file: the file to check
->+ *
->+ * memfd_pin_folios() only accepts files backed by shmem or by hugetlb.
->+ * This is wider than "is a memfd": every shmem file matches, not only the
->+ * unlinked ones memfd_create() produces, and file-hugetlb files are not
->+ * memfds at all.
->+ *
->+ * Callers that have to validate a file before pinning it, or before taking
->+ * a reference to it, can use this helper instead of duplicating the check.
->+ *
->+ * Return: true if @file may be passed to memfd_pin_folios().
->+ */
->+bool file_is_memfd_compatible(struct file *file)
->+{
->+	return shmem_file(file) || is_file_hugepages(file);
->+}
->+EXPORT_SYMBOL_GPL(file_is_memfd_compatible);
+>+		/*
+>+		 * iopt_pages keeps a reference to the file until the mapping is
+>+		 * destroyed, so only accept the files memfd_pin_folios() is able
+>+		 * to pin.  Any other fd, in particular one that itself owns an
+>+		 * iommufd_ctx (iommufd, vfio, ...), would put the file into a
+>+		 * reference cycle with this iommufd and never be released.
+>+		 */
+>+		if (!file_is_memfd_compatible(file)) {
+>+			fput(file);
+>+			return -EINVAL;
+>+		}
 >+
-> /**
->  * memfd_pin_folios() - pin folios associated with a memfd
->  * @memfd:      the memfd whose folios are to be pinned
->@@ -3493,7 +3514,7 @@ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
-> 	if (!memfd)
-> 		return -EINVAL;
->
->-	if (!shmem_file(memfd) && !is_file_hugepages(memfd))
->+	if (!file_is_memfd_compatible(memfd))
-> 		return -EINVAL;
->
-> 	if (end >= i_size_read(file_inode(memfd)))
+> 		pages = iopt_alloc_file_pages(file, start_byte, start, length,
+> 					      iommu_prot & IOMMU_WRITE);
+> 		fput(file);
 >-- 
 >2.43.0
->
 >
 >
 
