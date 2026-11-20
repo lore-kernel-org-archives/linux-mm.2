@@ -1,124 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521D160A261B
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67E3606A332
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MpiwPJcG
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KQQ3P0yK
 Received: by kanga.kvack.org (Postfix)
-	id 598E86B06BF; Thu, 19 Nov 2026 19:13:09 -0500 (EST)
+	id D67AC6B0601; Thu, 19 Nov 2026 19:16:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 523DB6B06D0; Thu, 19 Nov 2026 19:13:09 -0500 (EST)
+	id D17C66B06B6; Thu, 19 Nov 2026 19:16:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EBCF6B06F7; Thu, 19 Nov 2026 19:13:09 -0500 (EST)
+	id C08136B06B8; Thu, 19 Nov 2026 19:16:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 118036B06BF
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:13:09 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 88E2D40C64
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:13:08 +0000 (UTC)
-X-FDA: 85453572456.13.9CDBB14
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf18.hostedemail.com (Postfix) with ESMTP id ADFEB1C0003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:13:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=MpiwPJcG;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of evanfengff@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=evanfengff@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B04D6B0601
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:16:22 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 020FA160C4D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:16:21 +0000 (UTC)
+X-FDA: 85453580604.17.F133FEB
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1488D1C0007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:16:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=KQQ3P0yK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795133586;
-	b=fAZDSuqzcEvT2dEf8uNF13hgwIrWY2Ahr0Z63XbBehO9gvH6SVvjjG9c9GMQKgeCl1m73j
-	0Th/kh/MfVetNhwTqoBUxo/4SjpAOdtRjQagAI1VqZg3Qpf/6BjX5X5ZLTSF0mwqOizqCO
-	b9eNQiyrvNeovHdR5CFD3bp2tzYwTIM=
+	t=1795133780;
+	b=Jqz7yJC9pPdTWMOwVyOWT+BwYwXPCnH2kVOwfV8wHKAW8pOY0SXk0ZagKZQpCZv8ZAtu2r
+	2f/i922LRMufcsM4UclQ9/5w/JGal8qdxdiPxYCUJLLZSd28y7/rzocuBQjzYMtUO2dx+S
+	UGhfns6SmThrunX0DkmSSLiUm+Y08Tw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795133586;
+	s=arc-20220608; t=1795133780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9SB4EObKSw+tB9P4IbZtGcg+6FkG4Gy4Q2cjVejRkPE=;
-	b=YofJSvQJBbLt4TZCpi1GeEA5e3rYF/3ayIK+HWhJYg91LNa3akJ4EcR4/3ezBO4IG9+PXS
-	Hb1ZZv6B54NUhcmOu/p9AhOXtujLw0xtKCCE41YYSn0F8SkFKYoAyXQgiS44qRzWWEvIAG
-	KqTgjWclKQCKMYhNUBABStvNBIQJ7qQ=
+	bh=hAC07b8lFLojHV0Uml6G9ei5fnLsVAdumfXqcmefGN4=;
+	b=ZZVpSEqDjnGSx39f01+3mF6K82n4b3UKg/bRUtzYN1Jk+UPUy+IcPpmWDXrXSrza0Owjax
+	hfZjE0Z1EYDrsuYR3s+FwBJbRfqbgJpypgdLRRL+MogTohrI7vjf53cBXBsO2fa4dItsHP
+	4qQqnLP1isn+Cu6PVHUFak3U7iLYNL8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=MpiwPJcG;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of evanfengff@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=evanfengff@gmail.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-94960131b30so41294385a.0
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:13:06 -0800 (PST)
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=KQQ3P0yK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e98798cbddso1369745ad.0
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:16:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795133586; x=1795738386; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9SB4EObKSw+tB9P4IbZtGcg+6FkG4Gy4Q2cjVejRkPE=;
-        b=MpiwPJcGq9fvCpMFcSxFbv0jszfluR4G0bGUJEjsJhqgiuC4cX1hP6OgkVMUSAJevC
-         IOj5htLM96klcYbic1rOsfz2FAZxabho1Zp4K3KIvEh3KaP960haaZaTZo2Bk31Sj+dB
-         QUewOdzdw/hVImMFdrRAmiT0r7ZQtBU5EhgzsN0DqUTvBFHBQkPW+EBCPQsiJVi1WoF5
-         k3og0Mr6kd+HQZjf7lCoV92i1jGBSJH1XH44c1RHJ9P3u76wE6LbhSTkCjli4qenW28s
-         e0XudydRpZlszo0YTMFaZ1mjjdRszaNQez4P7RllgjaVvChAqd0g5VK7UWuh9Uzij1fz
-         Ytpw==
+        d=google.com; s=20260707; t=1795133779; x=1795738579; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hAC07b8lFLojHV0Uml6G9ei5fnLsVAdumfXqcmefGN4=;
+        b=KQQ3P0yKTYm8IycDA+GW23lF/C88cS+gsV2AFbtLT+KpngGIQ3mzKOQ8w8YbbDJl+F
+         WOvF74Ft5diM/IsyYS8Jpeza8Mif2FBNnFIyOHpCP1llqvxbbKjJkHDmkQv/pH+uwxsr
+         h+mQVYYy3iQ+47tGfs1JwyHgdBoBTY3vCnoIasLgZMKTbPOgCuye726KRcyLVNlI4IDt
+         EjBUbPDtFQtOBubKprKzCgD/JtOyYY8cQVQw4FNhXIFLUkrbLq4faQlB+RrB5ww4qI+o
+         lUCyOOCxec2GP/0vTkjksVLzWmthcoYvQ/npOBwsLLDTU34+yhx+Y37Vd6HsF1jq2xGQ
+         ky3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795133586; x=1795738386;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9SB4EObKSw+tB9P4IbZtGcg+6FkG4Gy4Q2cjVejRkPE=;
-        b=eWIij58xnqVx4ByJfiSvunFHIo3m8xv6ufIAtcq7qWJycMhBACRKbmyUpJi0697sHZ
-         FNRNo1SqKxCsCNeN6XNy9q1rcF9+CMAXyL4JoaZu4/GvuoBhuEkLwJ748VLBeITQDYns
-         hO7rWJoj+ajxRbwo5rwVABVqSZRQ76FphGCvfm359r5YI6KOUafhHiRqvbOniARLA7IP
-         HB/g5vmqDV8aNBMGHpjqcC/kih3hoZl/upZ82yKp/ZLbsLIw7ZXUf3jCQrnAK9ArA7Pb
-         LrfKv8KQexqIhsc/+RJd8beAC7vws9hTjbiUznlEsTY1ifQfv3hiKZs5KHwEg1A5pNvI
-         1iRA==
-X-Forwarded-Encrypted: i=1; AL+hErGUVJlxpD8NvLYWNY3rxGXsnVYkgHXBEd3LZTjHUVXA+zf7nauTqOE+USos3uEGbFF83x/AfMAPpg==@kvack.org
-X-Gm-Message-State: APuU4Z/+Rit40TSG+NdkQ2w234SMBZRStjx7/J5wV23v06aGZCbasD0H
-	JJZmFFpDKPHwLS4+L+9SFYk5NlNkkO82c0IcfBTXRro2ZAmayeThJ7H6VCWkDOY0
-X-Gm-Gg: AZFdTZcOslQZ41Si6hYPNOeQHTwMcYT2TXDQhCF3ln3U8ZOfNjlV62B4HlzTs7HA3Uy
-	0v/rcQEI89HUdeORZ7by2tOuDxGRhIDe0DcVLbQPmQR/FGZzSAYTPXwIJtpI++O87xajnZdcKUR
-	5sz/FGcaSmchrfsvX5ySKgFPGOHnJfF45/1rTs5pNo4oZ+vPYXJ4idaH3FcQcMBMfUoMowMZw4U
-	ThX8UyIMsBKZlsjCHOXUpwh4LXlzJgc0RFdhbYgcxK6sEq9osU58yRj0H6PUs6WtmwQSuxzGKmC
-	PhooCXCaOhpXmlUzqOyoUYLVLaU1PUReVjC90R3NrCk0i8vRYGzyQHduw5b6v/2hapy+VLFjnBL
-	NK07Cl/PHVTkFXnoT+c4blvw/yJuf22AxH+ZQVxjHhyfyYyYsWUL3cpjmF77m3PPXETcehjZ+Jw
-	8hQrL6KuRLttQzydS6qgKcGcvGEL0Ke/nnx7Fvj9OioU5Aa7OyajOFpjCbTShbMcWPAH8nRkLOc
-	tecHSbVZaPehvo9d7Y49UxJoPLwD0dIFkeFsQGamAnxPOJRwazz0dOHM2CF8rjF6UFCNp/tQKyJ
-	ZulW6Kav4IG61dXPd1AhDCUIUM4bWapmdJt4IfkX0hqFsn6hg3TmEtOz8ymNnBFHclv+7NGRhxo
-	Bkgsd7adCcjT3qR/0BB4HXR1t7Az81Xz0DdraQcmrlLtqxMI9JUKdz3q6hBs=
-X-Received: by 2002:a05:6214:3a84:b0:921:3171:b604 with SMTP id 6a1803df08f44-92134b48c88mr23359986d6.54.1795133585733;
-        Thu, 19 Nov 2026 16:13:05 -0800 (PST)
-Received: from FKXX2DL94F.bytedance.net ([72.29.204.230])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9213515f467sm8311096d6.41.2026.11.19.16.13.04
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 19 Nov 2026 16:13:05 -0800 (PST)
-From: Yifan Feng <evanfengff@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/core: fix damos_walk() hang with zero watermarks interval
-Date: Thu, 19 Nov 2026 16:13:00 -0800
-Message-Id: <20261120001300.11809-1-evanfengff@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20261119014247.119946-1-sj@kernel.org>
-References: <20261119014247.119946-1-sj@kernel.org>
+        d=1e100.net; s=20260707; t=1795133779; x=1795738579;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hAC07b8lFLojHV0Uml6G9ei5fnLsVAdumfXqcmefGN4=;
+        b=lWRQ2xtEQeJw/RrGN5y5sfSomgVI6DzuAyzLa9oXSYgTBq5xD1fS/B6A5E1o4hpSMM
+         BlFrP95DaVzRFeaVkWFP8sMDisacVziP7MZX0d4L51t9jvzKIJA5MUl2zuzpSY/Sm8Qp
+         LezZZdIaYrvH0fSMn0wMd+tcumX//jkvm91Cdz7hZxnAuxyukWgnLhlrvWMRBJIYL0bT
+         TQUI99m5Fim550fLVg1IcF21Gg64DD/y7lbKsbP8g79JHAHbHtKMXeBo8I5cZ2p6S1Eh
+         TayrZyZniZHRUTFOzcojaWmJTlU7fI7OT1wo3S3BKgM1dlfGylrKMyLZiPlord4IcYut
+         FGag==
+X-Forwarded-Encrypted: i=1; AL+hErE3KXCk8qcfkYtOw1hZ41IgPnI7bPKrYcjDKzQoz2bULMdqClWTxKyq3K+Tegf+gB5BudPwFvIJMA==@kvack.org
+X-Gm-Message-State: APuU4Z/YeZmro64tlBNiuWtkEn4Rq0G5zoLyCKVD4bCypqSRXJ6nBN1J
+	iIp3Aqw91sMV6Bn15+1bsywzVWvg8hnVmQ/ieUimWY5/MmKS0GG4Q1bBHAazZ888tw==
+X-Gm-Gg: AZFdTZc/vwF9vP438IimUUBOKJI7dJp6WsGW8BVUlvbU+kwk2kR4HvtK5CPKzf+ZUjI
+	Jmx8IFzU2DvAxcdvi//2wJCmwebdowlWDlrpDXk8ierJ+nNuwAU1QdOaUGKSXDKa5UY7REvDOvv
+	GqAa6+eGJ2b+odWR20jcDfbWe2bCX0adjdwKe26sCp4rmp7DsNRHoqdPFkASkVBsi9LTKihll7W
+	1Tv5tpialL8ZVzSGJ6XOT8o4bwSxHpuqbto9+AYadVpTTgKIUtK+7eJTJreKRkAT3j/zxay7Mx3
+	4GGC7iIcJZHx7N1bQgT2u7jvnhnH6+w89AdME3rumULWryBNJCwr+lxjpwAEUlvDvgNascru/Me
+	h6teziKlOJ2yWapN0EYLnPUdQNBEZHIUZRzgZI7Gj0Lu+WWHBIN53JvFk5zDKJee93yuZKZiGtQ
+	UcCQ3Rc34/1g6E8wzPL7aUm8zCC/b1xgBdDCkY9wEYzh7dVE7k9HfeQrBYAqIQ4ugaSQHewfu9H
+	thvIBeFwQ9X/EN58qBL4o5m7lldCjXVDHtLkW1TFh1BmNpah6raOEUK5CMVpfZu9cVpbbXxjUV4
+	11/sAgevVhrPBZEfLajHVlFK2Oq7K8VIQETzhINIAzs6NME2p2u5W2aNzeTv4YEt
+X-Received: by 2002:a17:903:2b0f:b0:2e2:dfb8:818a with SMTP id d9443c01a7336-2f03f20f8c5mr14954585ad.62.1795133778058;
+        Thu, 19 Nov 2026 16:16:18 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0c6e50sm6072095ad.13.2026.11.19.16.16.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Nov 2026 16:16:17 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 16:16:16 -0800
+Message-Id: <DMZLTC9U6DBX.3FR19X5M2IT3W@google.com>
+Cc: <kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
+ <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
+ <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
+ <graf@amazon.com>, <jacob.pan@linux.microsoft.com>, <jgg@nvidia.com>,
+ <jgg@ziepe.ca>, <jrhilke@google.com>, <julianr@linux.ibm.com>,
+ <kees@kernel.org>, <kevin.tian@intel.com>, <leon@kernel.org>,
+ <leonro@nvidia.com>, <lukas@wunner.de>, <mattev@meta.com>,
+ <michal.winiarski@intel.com>, <parav@nvidia.com>,
+ <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
+ <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
+ <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
+ <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
+ <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
+ <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 11/27] vfio/pci: Retrieve preserved device files
+ after Live Update
+From: "David Matlack" <dmatlack@google.com>
+To: "Vipin Sharma" <vipinsh@google.com>, "David Matlack"
+ <dmatlack@google.com>
+X-Mailer: aerc 0.21.0
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-12-vipinsh@google.com>
+ <DMOAT4VV939P.2DI8CEOMMSKMY@google.com>
+ <20261118065653.GE2250529.vipinsh@google.com>
+In-Reply-To: <20261118065653.GE2250529.vipinsh@google.com>
 X-Rspam-User:
-X-Rspamd-Queue-Id: ADFEB1C0003
-X-Stat-Signature: auy131394u86ypbnpqnntcnqqh5rbn5f
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1795133586-32919
-X-HE-Meta: U2FsdGVkX19CQDL7+o5EO/OlLGMcpkwWwbi3G6kBIOdZYc+DVjlG9G5l6cZE4Q0nX6TZjDnU5+WmBD5/EAieouDh+GUetI7PUR1oPY5v2IBrulnQ2gHi8ATKl4If2iGic7XYu3gyM0Sv9b9YE1ZfVn6/SKgckgsPBpqnytegQ/95CtBxMB+JNYQwSNT7WmjdYvuDOGT2a3W85qnOCVdoDBAzKN8Zkaq5ERntyefvPXZ+gscPzHQVsUyDJuCtxnUCgV0T/YIWqaL0PPaoIzI/0RbU6ICai7WAM3Yk31qxLNU7hJVHnyruaJGUqal9DDak6VmE8lZ5jLpvJBSMxh+tXcCV/iqst+lK+lphz10M1mDkwyEz5ihSDkL/i6WvASrqWxbCr2AfRywAVGWgc0eMcOoHza/nV0pTuzWFiEPwYzlxB9CnPkKreP6mG7cs6N+2ZrGKoK7i+uOJZCsw2Lcj0YmkkUjOOZkRkHDgUa5rJqXBcC9S9T6lldCdxBZHO1T32KU+r0p6qQr1qjLu3wlAwLT7y4Y4aiDjZB5qfEpZgCjC0H+xYH52owx8UsvZGnRMiDa2btGK3DjopxQuh7V78r95YW3WJOQ0FVWGxLNRK5e7ul/2ozNzOU8V/lASgF2UE1N0bEQcZPirHZ3wCi+rczZ6Cjv7fFRoH8izImGYpp56T6zM20GnWIyJ3yi0Zwh+3a8EfwQXgkR4wpPLUJJzSEevatpjAFcTlb/hBGXbWvDMMankBhNuylq8gZPTsSxvMotfnxjLBjuV2NeFK2i68wgNfanyojLB2nrmKv7dw2+fCbciS3OLBVc6AK6ivNFGTBh9dhzCnfb0gmLqpeYMgnVIBRDvtS6abElgL3W9xEuP17ToiMMn8gXdjnVwYu7jGIL0lODdOzOJw5LIf+oR4rdeOtoRaLjTAMJbb8wGGvfHCyB/j7uFjgTa8hwHcYg6gAf6wYwkJvyOK1TtXge
- M3gzAATp
- t+Ani43mU/emCCCfTj0+PUYuNl/h21MHXaKVEFUkK0AbG6PbkcLsX5V8lNvgaDisqKRUVLhCN1FphSLPEnTneeg5yQaimZ//9CeF5JiALOZVaeFe/2Qo3ImnAONypAjDy0DxhJylItoDbw6DHWfEiArvX22/rI0MawE1huNj37L1jER8LNncAWROu9f9KIlxxNaogsaFEbXYOISIo+pP9uv91Xa+SMj0Go/jY/FXSctZmT/wWbyt6sVv/58MSpYRNhyOL8vImFNukjjRIXUTAHzugMRTrcnHsY81KOT5P5lRO805+0NvvLtmyUWU77EZ2acTFY1aTGYVqNQRPtZCod5rJ5vdD8vHh3CTaJ/K8kDUg87T0lYgeIfkIkZ8FRIH69hBeFvS8KJty9mSPKSak58eSKq9pGCdrV+/5z26lepofKq0tVmP+sWlFXTQL6L8UCeoxCMP/bpNw6T8z6lrl5FA4hrYjDDuaGAywJy++QXjeiiIqVtuMY295fuJDMd1LFQmp4Oo30jljBfC6jYmwGf3AMppnxGDt/0ML6UNJzgBp1lRm4Nbh8om50YyvsNjffUAH0GlwQpLNDiEjr/iwiVeDK56TubsM0lT5bNAWJyJ+l0iXO7i2qytzlCffzV34B2xQi/+GZ9pycxUIL5Fu/XdcW7AHxaZM3cVPr0l2I/l0M/Y=
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: 6et3zd68ce65wchsttdqnahcrc3a7cze
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1488D1C0007
+X-HE-Tag: 1795133779-629327
+X-HE-Meta: U2FsdGVkX19ENLVmG1jOJNuu8wjMAtFtSsU4Q8aj67tLb+MGZOku1ORhdoWY/d3aamSNIBBEOXcV7uZbCP4dfK7VbAEXMdk7iSf8MapPryOAHfWcNvXVnOGzYyPEMoDEnf18+coicRxeNrfGSYcSwwl1lSNXEx21edyPkrIbBznG7ys/hqzontyKlapLq0OkBEdpG4uF9G3MaTa2nJbQBoFHgk88QFjxMVDIgysrC7dv0E8prWJM3NqmIf0t8fql83SQ8/4MmmSawRFPXwvH88wcWLqO0WMUduvy3TlH95Ji2X6JzB+q6WKMpjJPkOrm4evfqqwzJN0uNX2tGr9UDwKzVkF4uArojIu1YhjXbKfh8sKKwSgtU0FI9mMYLQ+OW0yofmPwoD9Q76SszDrwx/KrJJD4qScL2RBeXC0aSX0/1ZHvn5TeTHlHaamT+oqWihKg0rqp9CiZLXElJYmnobbCpDQiCXMuE4k0EkNt8qlSrjXfg6hPacIEZmLuFN1RWsXe33n1DtObzxGCIcngSgruUSMKJOrK2CLbOL6morx1jky5Mia//nTmVHypA+OBgSbWf6Q/Pe3cx0sarqZeBiVTKVLCANJCISYexIj8wtkZD+ViJBfPoWxiveVxt5ComqKMqLOMfFPw26htD0kQvUFuJ1/p5sPNs3uahjPw6tGymyEqiavKzW9MvVMPupywHRolaWQ/ohEY+s3uzetxLRTQTUUVUl3aVDJzeUoXnvoOGxqVzEsgiF1s/XX334eCFw6gXO75M8pABptGx+X/NwbVkGNCc9pSR4kbC9Fh4r4uWeIRNB1FJVV/wITO+Gd/gEPEk7OthM6OgI0sk49c6BzNE3YWwkh1J3OTuX3retde+tOqME0FEh8HCEMAaZ/LiMSvEE+zNVF9jjEaNliJYS8x+8Sj3rzz5HCLkWdrMxVN60wBSrYfNxFIQaL1YaGLDrQXyxXJcZH5eB5S2n2
+ 3X1yWA+p
+ MQ5125bNAHdyRs8E+uc5FMgrfQYbah8R9mlAyqSuVoceLuYHkrTZcuBow0lNB7xnQUVEc4Dkiift4YEHskRRyth01ePDRqCGzhUiUnfZZC2+TL/3Eev0aZ9cWLkItKy2V1OHM7VtoDqsnddLJ6FLundf/WA7ZCUeZ8gMvW/L9dQROk+S6nHUcbCNNITGqjwfZbh8dbeDivBRZg+CgtCi3BykOx2FmPNiMHzkkKG+q97Rd14Daa5QFO4PKLvm8kfCcdHcK/5Z7qhQxRnQhvHF/LWMwAhpHROt1buJ2bkoQ0WCiHVpUqCBqUjZq0djfr8kSM4j8xXeqPO0OS54na6lQn50RZF+QeNQCWeGGCJZns8dmYkxzgr3li4R9aCA7Eg+ofTt+gvimul9SVQTryZBRA2YMHOqLJwZ+JJvJ5bShFh1HHIHHQ28OBCJJ2dvMEOVQPu5PYb2hbSLnwwkQlpKqv9I1kgqNc/WlxNOzpgdiVKxRCFReaCOBCJnpX8WbhXlqsSvZQ7KmCKHmCjgRsw9FCoo+0yDh81kVp7BBFxTF5SgP9ARH5QGYdMWHA2N2LDGAaXXD7Wh//kpAMfZWxagD11EgZXUI9ZjwWcV2ATNkqDwNvuyc35u35TIsbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,62 +145,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 18 Nov 2026 17:42:46 -0800 SJ Park <sj@kernel.org> wrote:
+On Tue Nov 17, 2026 at 11:51 PM PST, Vipin Sharma wrote:
+> On Fri, Nov 06, 2026 at 05:19:28PM +0000, David Matlack wrote:
+>> On Mon Nov 2, 2026 at 3:36 PM UTC, Vipin Sharma wrote:
+>> >  * Open and return an anonymous VFIO cdev file via
+>> >    vfio_device_liveupdate_cdev_open().
+>>=20
+>> Here's an idea for how the device file could be created on retrieve,
+>> which I'd like to hear your thoughts on.
+>>=20
+>> The patches from Pasha at [1] lets userspace pass a
+>> file-handler-specific argument to LIVEUPDATE_SESSION_RETRIEVE_FD. In the
+>> next version of the tmpfs series, I'm planning to use that to have
+>> userspace create the file and pass it in the argument, and the kernel
+>> then restores the preserved file into it.
+>>=20
+>> I wonder if VFIO should work the same way, e.g.:
+>>=20
+>>   struct liveupdate_vfio_retrieve_arg {
+>>           __u32 size;
+>>           __s32 fd;
+>>   };
+>>=20
+>> Userspace would open /dev/vfio/devices/noiommu-vfioX itself and pass
+>> the fd. retrieve() would check that it's an unbound vfio-pci cdev file
+>> for the preserved device (domain/BDF, noiommu, incoming, cfg_size),
+>> attach the incoming state to that file, and LUO would track that file
+>> as the retrieved file. VFIO_DEVICE_BIND_IOMMUFD would then take over the
+>> device as it does now. Since VFIO preservation is new, the argument
+>> could simply be required.
+>>
+>> What do you think?
+>
+> Overall, I agree with the strategy. I think VFIO cdev retrieval should
+> happen as the flow you mentioned above. I want to hightlight two things:
+>
+> 1. This will lead to lot of code changes happening in vfio core. This
+>    means VFIO PCI live update code change will spill in vfio core.
+>    Should I create a config VFIO_LIVEUPDATE for VFIO core code. It will
+>    not be visible menuconfig option but selected when
+>    VFIO_PCI_LIVEUPDATE is enabled.
+> 2. List of other inflight series that this series will depend on is
+>    increasing. It will be 3 (reset function, pci saved state, and
+>    restore into fd).
+>
+> For '2', should I send v7 without changes you are recommending in this
+> patch and future version of this series can transition to the approach
+> you are suggesting after LUO changes are landed. VFIO liveupdate series
+> will go through more iterations, so we will have opportunity to make the
+> change. WDYT?
 
-[...]
-> But, this could make has_schemes_to_apply has false positive.  How about
-> calling damos_Walk_cancel() when has_schemes_to_apply is false, like below?
-
-Thanks for the review.  You are right about the false positive.
-
-I tried your change.  It fixes the hang, but has_schemes_to_apply is also
-false whenever no scheme has reached its next_apply_sis yet, so it cancels
-the walks of activated schemes too.  In my test (one stat scheme, default
-intervals) 18 of 20 update_schemes_tried_regions writes got -ECANCELED,
-and two selftests fail: sysfs_update_schemes_tried_regions_wss_estimation.py
-and sysfs_update_schemes_tried_regions_hang.py.
-
-What do you think about cancelling only when no scheme is activated?
-
-'''
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3492,9 +3492,13 @@ static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
- 	struct damon_target *t;
- 	struct damos *s;
- 	bool has_schemes_to_apply = false;
-+	bool has_activated_schemes = false;
- 	unsigned long max_region_sz;
- 
- 	damon_for_each_scheme(s, c) {
-+		if (s->wmarks.activated)
-+			has_activated_schemes = true;
-+
- 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
- 			continue;
- 
-@@ -3506,8 +3510,12 @@ static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
- 		damos_adjust_quota(c, s);
- 	}
- 
--	if (!has_schemes_to_apply)
-+	if (!has_schemes_to_apply) {
-+		/* The walk cannot be completed while no scheme is activated */
-+		if (!has_activated_schemes)
-+			damos_walk_cancel(c);
- 		return;
-+	}
- 
- 	max_region_sz = damon_region_sz_limit(c);
- 	mutex_lock(&c->walk_control_lock);
-'''
-
-With this the hang is gone, 20 of 20 writes succeed while the scheme is
-activated, and kunit and selftests results are the same as on the base
-kernel.
-
-I will send v2 with this if you are ok with it.
-
-Thanks,
-Yifan
+Sounds good. I am not 100% convinced yet we should switch to a
+retrieve-into approach. But let's keep discussing it VFIO and IOMMUFD.
 
