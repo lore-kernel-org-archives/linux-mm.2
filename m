@@ -1,82 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5178606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 09:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B15606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 09:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XtH8hZT2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hGojT1pX
 Received: by kanga.kvack.org (Postfix)
-	id ED9B46B05B3; Fri, 20 Nov 2026 04:31:23 -0500 (EST)
+	id 2F4A56B05B7; Fri, 20 Nov 2026 04:32:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB0FE6B05B4; Fri, 20 Nov 2026 04:31:23 -0500 (EST)
+	id 2CCA36B05B8; Fri, 20 Nov 2026 04:32:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC6B86B05B7; Fri, 20 Nov 2026 04:31:23 -0500 (EST)
+	id 1E25E6B05B9; Fri, 20 Nov 2026 04:32:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BCB3D6B05B3
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:31:23 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5B0FE140DDA
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 09:31:23 +0000 (UTC)
-X-FDA: 85454979246.03.A155D90
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 690461C0009
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 09:31:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtH8hZT2;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E939E6B05B7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:32:14 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4AEF9A0E57
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 09:32:13 +0000 (UTC)
+X-FDA: 85454981346.28.20A6E80
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 865DB18000E
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 09:32:11 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hGojT1pX;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795167081;
-	b=Ba2A0BywuI+wD4hs0mrqKar8bN+0VXSIeeS38+S3bTOnWtxbm2OLkPJSQJkD8/Qc94gRr8
-	g+1u9qRjSqtxWj3SdJc4esNBSxvAenMcVAmF9lvQHlan0IN1LQr3yhOFH1Kr0AnwXWivee
-	dk89wDk4yG7EmMz5HVqEOgepLE0ZoTo=
+	t=1795167131;
+	b=dUMT8sXwamYgxaT38f12X4VNS/mZyd4qGtsIA5zZ88KScChDQYsWRTKPufzALuXeVzjzwY
+	CyviMMf8YYpOcp59KMREJgplHHAX2dBr9BoO9NkxM3aXgvprboI8q9tIwUE5PShtX5b7sE
+	mMzTI/Q8f9NVsHBY4lKZQE+QdJ2NbLY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795167081;
+	s=arc-20220608; t=1795167131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bm+fmzDzNdr8isbrhqngN9fgikR0ji/6yEcUPTWrUSc=;
-	b=uBavyseRmTOurgm8+XOGHDFPTwSLb21oGb0Qx1YmYTqsMmh0RH8/v02fTpgKcphP4+Pa7w
-	0ulGfJLzWZG2wOkOf1AmtiaXR/WmwaP2KPktI4TvytHr6/B5/9vfUpm2pb4Y9mKgEcz/BG
-	z1vkFJSsxIkFFPX/sc1kVhYJQRxjvYE=
+	bh=MSB4v976klsbBf90H4eh8WMDP091ijp/LUuy+yy+YWo=;
+	b=lHC8sshPiO9G7zwXcoOMmMKc95wFvlHzweC/Az69e4cGjNdY4bO/oUVbFSRvT0ZuL0QHZU
+	EroBCZavgtJpjlvsNUrzMwd4KwuqW475VDxVN4YgswJrBhdnXZ0611Z8Im3NgeqU7YaXhg
+	atOPovhvFvZMlqgNilRajoi27PqLLL8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtH8hZT2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hGojT1pX;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 993AC45991;
-	Fri, 20 Nov 2026 09:31:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F321F000D1;
-	Fri, 20 Nov 2026 09:31:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 11AA9624DC;
+	Fri, 20 Nov 2026 09:32:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB451F000C4;
+	Fri, 20 Nov 2026 09:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795167080;
-	bh=bm+fmzDzNdr8isbrhqngN9fgikR0ji/6yEcUPTWrUSc=;
+	s=k20260515; t=1795167130;
+	bh=MSB4v976klsbBf90H4eh8WMDP091ijp/LUuy+yy+YWo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XtH8hZT2dYdT1KrzhYRGEG27GZWawzgVEOX4sOsBPjKdHSse/oexrzM03xNGccN8R
-	 yxAx6TgkI+sQVCfY0IteUpk6AQQNN6gRXtKHQq14yybiTfaDiPQ6YrEQNeybodZeNt
-	 3nb7DgrTTWFcNv1WcgRJRZml0I3mBe+4Knd2tvnOfzbVPD0BERuikdvJYwly5P5t/s
-	 pHKiNztflFXUPJGhFwSt/OFTQyIPubVHN1eFCDhmXjKCVC7XHuISf/FKSHdC/CjcTe
-	 /N/oAkOIE8BIhKvKglJmrVc3G++sbwlEMiBFmhMsB53wm0Ma8u7o5vnwbIm5q2uZ+Z
-	 gOxst6tEQ8gkA==
-Message-ID: <3f23e91b-7616-418f-8f31-c7af667156ee@kernel.org>
-Date: Fri, 20 Nov 2026 10:31:13 +0100
+	b=hGojT1pXLm0ARgaNzFbFL04UU8kien9rUf3A2JXL5vIP/AZMP4XCa6PqZHVOTkzl3
+	 Kbo2++p0L5+OG6Eu1wwXm4m+du4rVCua+tRUOr92Qm+61aw/WeZ5G+r62F1UbaLBCM
+	 WWM+7kt1N5lVCRMPtHaWDULUSA1Cu2RsSqFOKdoNDFfajKT8gFUJg/3GIXokJhqIk7
+	 0eSDk5PphEeCCSsW+lFAT4d3putSLevVPyNAa1cW62Xhx/eHgKw+vn7qygQdZuS7GK
+	 HP0L4Q7nWAEpbQo3KM/vV8DOdLn7qD2gK49wT2zk47eAtaHcSUG5x9Ee/eEjoOFXM1
+	 WmPf3pA/ty+rA==
+Message-ID: <857f5928-5aad-4e15-ad45-f8701e064c49@kernel.org>
+Date: Fri, 20 Nov 2026 10:32:05 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/gup: add file_is_memfd_compatible() helper
-To: Jiahao Xu <xujiahao@cmss.chinamobile.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- Samiullah Khawaja <skhawaja@google.com>,
- syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com
-References: <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
+Subject: Re: [PATCH] mm/secretmem: Keep locked memory accounting until inode
+ eviction
+To: Mike Rapoport <rppt@kernel.org>
+Cc: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Lorenzo Stoakes (Arm)" <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261030152407.113568-1-pocj8ur4in@gmail.com>
+ <45ce0b42-d45a-44e3-b300-607989e618c5@kernel.org>
+ <av6m4wU7iDOGviIa@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,11 +122,11 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
+In-Reply-To: <av6m4wU7iDOGviIa@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 690461C0009
-X-Stat-Signature: 4o8jzbifpxp6h8iy9c3n9qi8q5sib5tz
+X-Rspamd-Queue-Id: 865DB18000E
+X-Stat-Signature: k8f6aqsdsyw3jac7se4qcmuw41ni9tsd
 X-Rspam-User:
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -135,10 +134,10 @@ X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1795167081-442889
-X-HE-Meta: U2FsdGVkX18hDRxM9/iRXs5bg1xBCC34UJ5Mke+Zob50TDq8TRopa9jmNcZtHnJCH7wqKJyaJhvSzH1dW8f14wx1zUf0dLizF5pKofytmPkmEiJhehytjjrJXQPPlEXzB6fxoTDskZqu3Nwu6CXSdUcp26EHS722G6I3IxXVUgcaB9rMg+Mm0s8lCbGDJ8TJ76A3bHRp2Aqq8G3NmUpieNEdTmm50hyi5Cu8vilY2F/taM5dSEWH4Zg8rj1CZ6QBLLzO38BB3YDBhMIhVUTdA2k0L7VkX6oKvZb02j5Ep2I1vnPVGLNuHUp3J/sK6Fj/ne7ZGI6QT+nX0Ba+pfYAOfzHHmgj+6qOmYEudpCGuaJvyAYO8IkAp0ruVpDoZ4x2wXy8EnpXCHY0ZRT6kf4iuSUiPxHWRVjKBZ5ZJTBcVZY2XzXsUuY94LQGyRo4Pq5cTwq7U9Gxp4nMId+qBubA6SRztYbD3y6x2DuN0ouQ6XL/f0Gd5usXD4wLDeqebl8Lv8UT98C/6mLkyPdyf8SP4h0Gxyj4qkj4RsvFJvfntoj3J38kOGnilw0TYnlwUSCkDQxH5VSK6XIsDFUY/Je6fdAT148ZB5L6sF+HbErkJiIkVZZ7SlTuUn0kFfkrf0DsB9GXh6Yu8PBmsLJeeb7ODHx6ox+0Jz+SK6+1H1qctT1qPP9msZlkDLCEQeS/zV3jtvUVaxVi3j+U9S1qyErlhYXahoDBBnWQsU2eF4O9mxVkuw6Dk28ruM5Q3dw7HIWjOES6HuoLKjnm+Pw7olghMtf/Vt/q/Z474VfLRvNQ+KGnNPrlGsZ1I3FpPSsopQR8lpaTce97LAMkduxM8xrGdiNaxM+rnA9JyQlcR/6wALuMxD4IKNs/Zub2iJbdizu+uss3eWzYpMw4csN/c8ohUG1cJfWJZ39T+RITW8Ml/F2mjIokenDlLsqYMOweb4szifr5Tr2YetN7pPGT8zR
- tjta2cEN
- 6/XA114XsS+HBY0tDHn9WV5kRRIeiQYlwseAz6RfASAo1+cgFBGBkJQl9A59o/2+vHOddtfcNvj9WVtrsOm4qFrIrI3bjlF8FHOnLN2nmbunOH3AMeZwgwfBS6qt0V76zE00F0KL0MzuRrruOhcofTTFyS/4B2jaIxUqngOMdG+py7feMktIrIxHKfiVE0UM8ePZjXbFiDUDlxMuZMs52KEoIhH+FB/xAA7fa0w3x+FEdlk2cKcRknPndMAQAFjMAwtfBWNb6217J7OcRP1b5seNSbjI7U/4HaAksZgWeP7/sna2+p08wrLUB9FbIprdVxXaFs5lnbtS22mSYyCWiezwkDUWefeAN6mNvkXhdMSdEqj2p4QwWnHkxKanL8S4M5snDLEOLlOuyQgGNbMR1RERE8wfJP1+ryMwgJsMQ1th0q/ewva4qcQz4LmdCU/D3BxoVOiP14PYA6EXC6xTvgtcHSJhmpRRpyYshJgejOchqxdozRyIKdSPgN/AESKR/R99wImM70Df4RodXx184BSWid0gQsxo+od7ljRzZgOvUaZanhrrTBU7X0u/4OjOQb+78yFjuKw/g9a53m36vWts+mlJO16ZRG0rF0C7JAkxPNj2jb+D8rJtyeDcBNPk7717QkGiuQKQ4qHBq8kjm2wbSzqObwf04AhH3bTnuyLOz691ElIRRgytGyIEmEUFELR5L/CRosJtUFlM=
+X-HE-Tag: 1795167131-792100
+X-HE-Meta: U2FsdGVkX18hNyjoxDRK/zSxnzDgZR18KXuwNiUcjSfdwlozWsxgXyIHR6ZOQL07PaW2Wf+VjvtbDXzs/iy7oKGjYg2AvTJ4NsQ0NFNVsi/PNcwQ5Vegs6n+3IEf84wD+Vbii1ggk2IvHt/tSdxzMvvK3cQVzjqyyYczjRS7C+IuxxMVNPQHkGDhJ7kdD3eDQs6tX06xocfcIHrnjkS9W9Q54nvJiYkNnNcrleLhILF7EcODh+JlyYeUX1oEsL5a0R0HuI6A1xPIeg0jphDzhoH4GXhUf7hsQDOCn33svM1EkeYadVVnHlizTEVrttSWl/pPiQCZwEcbrJVop0h+mh4vuihEDJ2VOSnrCMjwSbZyQxI+Y/cQs+dma44iEAXdM2ObrTGzVvv2OE0uYvIzUI+ciTnv8dVkOGS167SFV6pMPqERg8uuMCPZnvG4CQ4QhEVYEZyEgB6LdXy2AG3TAklylSQxGKnaplnuuwQRCsEIQLq2zxmpZqqGHC229FMafhc10gI9JpZ0PBj8pClMj9nHagMrsirlfEyfp1i0+RDiOiT/2h6GMRS3EiFhd8jtwgW5RFo1taSjbN/+aRq1xd53U3QKVc/NHsSVQ3cMplTUwmEwOxI0KIkqV/TebvqzrjFK+sb0toEKRjMEgMZFs7kIZS69WTa6GAqnIDNLqaPREtq/cxGyfpNGOPrWyGrbyoPs0uVSBzk8VSS5tZW0X/+OJgSnaapsT/kE4tJ/T6GmAG3NQPz0dAPY/cA8gF2tE8FMpoJYSXMZ8pe8jJPTqIjlYUGy8m36t1cS2V1rLTcn1JEDQHIU4tN9uTkUH0GHL60mMyiOdP6QSKkicVZdPuAIYi1T54ZirrxrfQD0/yxIWpxFHTEiyAR8x7VQuB6h14454hFw557NdF5jZP0AEdUj9+IBEhAqdF1kq4xE5gCWHLdhMVpLZfOX9A/6WQPdxVdiKgYgDI9UwuRMGsW
+ 5JI2VSww
+ dZVCwqoUF7whXpbAiWEoPZm+pcUecboFH+0PspjN9F/kEwblTg5WW4t4Wxq3US/6Z0GFiVaT+/LcXd7HAHXn7rsYYJHLimIJDMCJCgYthPK0Y3S5rBEpdPZAR3t9AFL3rGeXkSeb475+rSYLeCRliwOoSM3OVFdxUZfOL80mXItgJ5xwxuj0XjfcuSqycldcKOIR0hsiSqcV0xSbCWgikjiQAG9/d0hZ7eoiDBJQBwj8RdSX6M4Iri2I/+XwqI2e24bSirZusaxSp+bZ+ddBJT3MheGFhVI3bx9JWu4Lvs06NXaxm3r+PYUwDAaKT8/UyCcEq4t1bhpEwmkINyrUrRUvmQyAtQ2DzQJE5/LTFTXabr7EIHXsfmuBJaxwUzAXIYyj2Hx8vuPfOd//dLXy3KsVALAKdAlKNWYsQNkvF3+BlOsJfcimfiimJ4Elh/Dp+hlucuevmK4yBCfN1Dk5sogSpsR72o9iT+2CwER6+Jm+E3TFiB3akdfiGVRE9rMx6WQQT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,75 +146,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 09:35, Jiahao Xu wrote:
-> memfd_pin_folios() accepts only shmem and file-hugetlb files and enforces
-> that inline with shmem_file() and is_file_hugepages().  A caller that has
-> to know up front whether a file may be handed to memfd_pin_folios()
-> cannot use those predicates: since d3710111839d ("mm/shmem: make
-> shmem_file() check the file's inode") shmem_file() is an out-of-line
-> function in mm/shmem.c which is not exported, so modules cannot call it,
-> and is_file_hugepages() on its own is not the same question.
+On 11/19/26 08:36, Mike Rapoport wrote:
+> On Wed, Nov 18, 2026 at 11:59:57PM +0100, David Hildenbrand (Arm) wrote:
+>> On 10/30/26 16:24, Baek Kyu, Kim wrote:
+>>> A secretmem inode can outlive its original file. An O_PATH descriptor
+>>> opened through /proc/self/fd keeps the inode and its unevictable folios
+>>> alive after the mapping and original descriptor are closed. The file
+>>> release path nevertheless drops the locked-memory charge, allowing the
+>>> same user to reuse RLIMIT_MEMLOCK while those folios remain allocated.
+>>>
+>>> Move private-state and locked-memory accounting cleanup to inode eviction,
+>>> after truncating the page cache. Keep secretmem_users active over the same
+>>> lifetime so that the hibernation guard covers retained secret pages. Let
+>>> iput() handle file-creation failures and tolerate an inode with no private
+>>> state.
 > 
-> Provide the check as an exported helper next to memfd_pin_folios() and
-> use it inside memfd_pin_folios() itself, so that a single place decides
-> which files may be pinned.
+> I don't like the last part, see below.
 > 
-> Signed-off-by: Jiahao Xu <xujiahao@cmss.chinamobile.com>
-> ---
-> v2:
->  - Rename memfd_pin_folios_supported() to file_is_memfd_compatible(),
->    suggested by David Hildenbrand: the predicate asks about the file, not
->    about the memfd interface.
-> v1: https://lore.kernel.org/all/20261119104417.312237-1-xujiahao@cmss.chinamobile.com/
-> ---
->  include/linux/mm.h |  1 +
->  mm/gup.c           | 23 ++++++++++++++++++++++-
->  2 files changed, 23 insertions(+), 1 deletion(-)
+>>> Fixes: 97d34aa65c29 ("mm/secretmem: properly account locked pages")
+>>> Signed-off-by: Baek Kyu, Kim <pocj8ur4in@gmail.com>
+>>
+>> Lorenzo, Mike, this problem seems real to me. Can you take a look?
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 040cff643..dffcc0b5a 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3600,6 +3600,7 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
->  long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
->  		      struct folio **folios, unsigned int max_folios,
->  		      pgoff_t *offset);
-> +bool file_is_memfd_compatible(struct file *file);
->  int folio_add_pins(struct folio *folio, unsigned int pins);
+> Yep, it's real and the fix is correct.
 >  
->  int get_user_pages_fast(unsigned long start, int nr_pages,
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 7605da0e0..da8a2c29b 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -3449,6 +3449,27 @@ long pin_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
->  }
->  EXPORT_SYMBOL(pin_user_pages_unlocked);
->  
-> +/**
-> + * file_is_memfd_compatible() - check if a file may be used with
-> + *				memfd_pin_folios()
-> + * @file: the file to check
-> + *
-> + * memfd_pin_folios() only accepts files backed by shmem or by hugetlb.
-> + * This is wider than "is a memfd": every shmem file matches, not only the
-> + * unlinked ones memfd_create() produces, and file-hugetlb files are not
-> + * memfds at all.
-> + *
-> + * Callers that have to validate a file before pinning it, or before taking
-> + * a reference to it, can use this helper instead of duplicating the check.
-> + *
-> + * Return: true if @file may be passed to memfd_pin_folios().
-> + */
-> +bool file_is_memfd_compatible(struct file *file)
-> +{
-> +	return shmem_file(file) || is_file_hugepages(file);
-> +}
-> +EXPORT_SYMBOL_GPL(file_is_memfd_compatible);
+>>> ---
+>>> On an arm64 QEMU guest with an 8 KiB RLIMIT_MEMLOCK, an O_PATH reference
+>>> retained two secretmem pages. The baseline dropped the charge to zero and
+>>> allowed a further one-page fault; the patch kept both pages charged and
+>>> rejected that fault until the last path reference closed. The Image
+>>> was built with KASAN and lockdep. Hibernation, other architectures,
+>>> and long-running concurrency were not tested.
+>>>
+>>>  mm/secretmem.c | 31 ++++++++++++++++++-------------
+>>>  1 file changed, 18 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/mm/secretmem.c b/mm/secretmem.c
+>>> index 384f5cfc457f..fa8be360bd2a 100644
+>>> --- a/mm/secretmem.c
+>>> +++ b/mm/secretmem.c
+>>> @@ -185,18 +185,14 @@ static void secretmem_destroy_inode_priv(struct inode *inode)
+>>>  {
+>>>  	struct secretmem_inode_state *state = inode->i_private;
+>>>  
+>>> +	if (!state)
+>>> +		return;
+>>> +
+> 
+> Its really not obvious how we can get here with state == NULL. 
+> 
+> And since it is needed only for error path in secretmem_file_create(), I
+> suggest rearranging the initialization so that we never get here with NULL
+> state. 
+> Allocate the state before creating the inode and adjust error handling in
+> secretmem_file_create() so that we always get to iput with valid i_private.
 
-Work for me, but maybe others have better naming suggestions.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Ack, Kim, can you resend (putting me on CC ?)
 
 -- 
 Cheers,
