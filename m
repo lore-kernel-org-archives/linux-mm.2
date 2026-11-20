@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D30606B204
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBB6606B47C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dV7IXwJN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BcVhy8EK
 Received: by kanga.kvack.org (Postfix)
-	id 0113E6B05CE; Fri, 20 Nov 2026 13:10:28 -0500 (EST)
+	id 67A5F6B05D2; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDE466B05CF; Fri, 20 Nov 2026 13:10:27 -0500 (EST)
+	id 5DCC86B05D1; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7D666B05D1; Fri, 20 Nov 2026 13:10:27 -0500 (EST)
+	id 4A42B6B05D2; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AE1386B05CE
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 42AE7A6D5F
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:27 +0000 (UTC)
-X-FDA: 85456287294.15.655A3DA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 208D6C000B
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dV7IXwJN;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 16E376B05CF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB89A120148
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:28 +0000 (UTC)
+X-FDA: 85456287336.04.CA44BEC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 95A2A4000B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcVhy8EK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf28.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198225;
-	b=l9cEagelb8A8SXNWmvJe13k00ouMvKUrFqWnldY5N6LEPe9Sstch2js/7tPK479tzDBRcG
-	YC/kX+fi28vEo3iDLbVMalLIXx4a5irR+dTJqYFgJ4f1v2RQ9ztY/YuYPHtFhZ9u7O5SC2
-	gRc2lzLB2KjiawM33l1m2nxKIwdMALc=
+	t=1795198226;
+	b=yAtqA4h8DVtI9HJx/MsTgyWWHcIGtoUcECGbUaue638Vn+CT+HsPcdkpQ0q9JiK0RQ++YY
+	gd9+MFp8Xka4xrhK5MooKZ+v+bw49ItVeX2NY+jWnOblGRosE3+UwHBb7exp595XbcmCBH
+	2d+Fr6cktn1SxPqtff8CRf2crmUEuPw=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198225;
+	s=arc-20220608; t=1795198226;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gyynVGeIcWRdH7dEMKcuI5jkcGEqh5D8H+zcb4PS70c=;
-	b=CuBrG6zup2G8kTYVZ1uNr5Nupl5NPWeelp3C4RqWgztvQuhCaFan63XLGC3+kSbpbsBQuM
-	PqmnRoQnyguOABNKbh3x5SL2BROG0TM8r+7hk1kHUNtpXwX+Vv/TQ9buZNCuv1hzXd2gV3
-	mql7tbU6fW5uqo1is6Yy78dPboHRxLM=
+	bh=avxZ8VwluYTpGbEPJyzSvO3syrnk95XEoYzgDY1xt9U=;
+	b=eyShXFWQyCje2rSSVfXoWtNnfjt9Dw6lLJit9XjsQJGawPokUpXiklx+yqqvbB7UPgE7ot
+	0xQqykERoTlN7R8Nx94ro1XhbN9oX879wvIufmkghbTBi4lcq4fBN/kUffjZsTGyMmecSf
+	KF9pcENXXvZgBfkDEaL2dBwHq06+qew=
 ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dV7IXwJN;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcVhy8EK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf28.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7066F46863;
-	Fri, 20 Nov 2026 18:10:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 381CE633A1;
+	Fri, 20 Nov 2026 18:10:26 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198224;
-	b=ZfRjKQrudjXuF4aZaMHEWmaUHNQKM7mbCRsoOWpJ5/XEdzS8bvwNu4gn1VUDRkXZmeHH
-	 soqHkflvZFaMyEMZi+5Zdslp8D7W32zQiYX+zvui2Dw3KcP08smpwLseGfkzKiQBb6LzG
-	 c9fdrUqRXrewMXEi3b2SVa6RJJKmkVyLnUenJgOd5TGUUlcGpvpUIADTlZCJ9lESmQwu3
-	 iaeXgFecToPPb+TU45zcwAONVQwLTsiQ1ocHJdZYvW3PXjC75EqtXaKITWoLrvE3BdlH+
-	 Odv/tYz6yZBSKI9j6a6WGXX0ufQoJsEVCg3USiy4czqS1C0FEN5GxBTPYv2Aqe/glnA==
+	t=1795198225;
+	b=NSZYpb1YTDRk4TlwxOAIIEpa1AZu3Zre+cAHyorJ7onvfy78SpT3lQm7v54TYl0YrBB1
+	 +kr2uH0V93fv3zXfapQJRhrvvvsaGMw5VWXHoQfJf3N0vCtJfDmpuqn0lb1CDa5Ly07fV
+	 rLLvgwZcoc9Dgmhje1VmuSvRROSysuT5corfERQDwl5sE0nHKN/MJ9mKt+gsgicpgNbqX
+	 8s8tpSi/lOYDdvgXbdT20lQms58vZXhNhSuAD9dhfPNzyssrKNzvByewV6qDBDhWoX5C7
+	 3jgbmlsSCi+V8gqMucGei0NgbyE4ufH029IRcNxpK2pOyDutIGfYv3tYrK1ZAz3uE1g==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198224;
+	c=relaxed/relaxed; t=1795198225;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=gyynVGeIcWRdH7dEMKcuI5jkcGEqh5D8H+zcb4PS70c=;
-	b=VW9CmGuvZCtBcONt3ScWAN5yZcZE+Sp+YnkVXQcKpf2EEYoScxXduoYvi4SESrGe6LTj
-	 TEyvKuUbOkNvvqFjhbH0RfdU3vGD0Tu7Kg4+0L+0vWYuJFSX5y5xHzQsc9YIFFKdQYd3e
-	 bYrggB5KSjt6VZgWOZDJ3oyKKhOx9Vh4PZIT+g05rqBjgQf+aCFTnq6dOY4nB6iu9GqmX
-	 mfHvj6W3N65QdGHBozGrXz9+RBYiynu6ArqAzDldddwLOab3kbOayHyrBuXeS2sun9b8Y
-	 mbmBEpCTm5q13uxk63tJmHBUEQcV4fW5PRfgz/BIu/LtTLWYzJy56Pl8o9KD/bW7Jhg==
+	bh=avxZ8VwluYTpGbEPJyzSvO3syrnk95XEoYzgDY1xt9U=;
+	b=NbKfMkj4C/tF3Btu2OmEO384nAuepCR2JFKZhjrkP/JmvF4oOkBdtj0qPc3f4AMooSLP
+	 6g3ybzOQ0hyK9rQavQApS6UiCZ1659ygr2oe3HsO+XL+TaEgFQMkW0vnS7mTx5D5ZHMRS
+	 ZtHKg8NUNNRakXMnE7LPvnK1WdfqerGLciIvjhIMoKNmnjJyfv2Zwc3g0K7FkxWjKYqr7
+	 q8yUcf7bBFIARBdHR6mDJO08oezcXkmO399VTkNBtMQTqRn8IIGHcQ6h0D24SS9iXIltR
+	 CrZReX+Kiq3cSSpLFfW2x5bFFcz/HFTISgbpN4gfyZi3JdtuLFPwOFtOLJDQlCWyfeg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 5DE211F00A19;
-	Fri, 20 Nov 2026 18:10:03 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 279C81F031C5;
+	Fri, 20 Nov 2026 18:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198224;
-	bh=gyynVGeIcWRdH7dEMKcuI5jkcGEqh5D8H+zcb4PS70c=;
+	s=k20260515; t=1795198225;
+	bh=avxZ8VwluYTpGbEPJyzSvO3syrnk95XEoYzgDY1xt9U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=dV7IXwJNUwTR0s8eJ11bb2ES/z2zxGbQ5P/Fi0fBII99EEv+GAfGkqCfdz8gRN6JQ
-	 uOojGiK53Mzbxdp6lSw2bUiSO846QTd/Kn9TYQA6VY4dBdneV3JUoBgi0AFO8ZUCkQ
-	 8WsXdolMO1oi2K4HTbrQ7RtJNWxW/zLO18/dsgNnj24perzYqz4gyIK6uxfg+qNMSx
-	 rwlLc8Q+GDpP/2RPnpta1rNvFWErAMojBKNJS845eQ1dptpdv9mGoLAyXUBwwmkKZr
-	 xv2n2VjRToVo84DPE8gsYjCWkoxX6zoalaVkW3gxD4LGCkpAAvYef4L9wKhLU5FfGK
-	 pupFd8qDWZiuA==
+	b=BcVhy8EKJOmctMF2slCvHxHvTU+mNAmeSRQ7THbXclTyV1ge9gN9OkNzpwA7WgEyH
+	 r+pL3h/s4qccrczzCADK0cWBDFOT90DJXd4eWPBWqRm6jNSNT798ygycHxin9Jqc9r
+	 y6JnYgoePYyjNJXiHDNrYvx6EyM1sn6iLMueq3OShftpxlR5fR4cFzkHYQ5s0hV7ka
+	 MTOuoPsjURYGS/itnC4oGubfYihzGTiQFSoFHgMlGdhRmE2G6Dit3ru36Paric+CBp
+	 dd5618KnXG1amIj+y9PmcaztoOwnQdATvaOv3alPo+dAe5KZZ6h4H0h8o1hc3+bHry
+	 z4fZ4U82RWIgg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id A11FE4B919;
+	by lkml.kernel.org (Postfix) with ESMTP id 26CD74B909;
 	Fri, 20 Nov 2026 18:09:19 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:13 -0500
-Subject: [PATCH 22/60] mm/mempolicy: don't NUMA-hint folios outside common
- memory
+Date: Fri, 20 Nov 2026 13:09:09 -0500
+Subject: [PATCH 18/60] mm/khugepaged: base the recommended min_free_kbytes
+ on common memory
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-22-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-18-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=1010;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=820;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=Rhr+Cx2NDBYMgcDa4ebUGsHqlXBNnSG2bWe3JHhepuQ=;
- b=ztKZ8u2V96CzaJYP7HKnggJC7tb4ZoFzeBT1/Q9GgCywxA/2Apy1CnRFyXdEQXCHyVKOHaZex
- T6+2pAVT40UB5Xf3cmWhN94+0VSejEoU51w1IEohEcPTRwSaWPP7iUa
+ bh=JCSrPzqa2r6D3icJs5AIufuY11hG988pPEZwgCCKHVU=;
+ b=f3X9GhfZRr3Y70akJ+5LQMJEYnQw87oEwJYni6EhKNTNghWitJzBda24ENsNg3gaswvLxfzcA
+ QCSxARUrbOQAlPm+bIz7doFjfAUsXQ0DXnPHQw+oYeT5ibepz98hWgq
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 95A2A4000B
 X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Stat-Signature: uc57s93y5x9rckgoaof5nwzeqz6tpq7a
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 208D6C000B
-X-Stat-Signature: 7j55icfgtjaymx33is3idng57iakemiz
-X-HE-Tag: 1795198224-277391
-X-HE-Meta: U2FsdGVkX1+dOK9uuaA522XA7GT70as5M618AKO55WiJeACLFIbRHndWu954MX4V27Ke8AC7ROBKlfbPBph8gfXaliMhVVSM1+iJG/IYyO7xAJKSUJECe+TbE13twJVisSydp0lo/WvHPLb+mNcUH4v4M1sPzlWb1MkB1yFIq8kwqvhcoyM7hUs/P0wzfieQWjaTtNvMXXaeFWN7mOjeoq4PVf18/3fahxja8zA6TZG19sfr/V53J1fXQsa6I2CdkcLynw1+ZBHxEs+xKx17dgb0x3+JkiL+Git1cv6yW/Q0AWWtrsqHZT6WoiTrtAHisYZmauwPMXuTsFVUKRpr8CqZeCqPjJsKGb3zqYQuIfWgJJY5j6Z3FCxPzxt5OmnHhNKhrqU4Jh1kLA4hsNWU0gQOnf1Qtw6lCnMV0ekFlkhx0XYmcbAg1GWcRId+87lPgyS0s3CN12/QMmGqLLg6NflItMrxGCOL4T8WuCAp4UnLgXJ+HMGzp0fYNA7Lc6KKieeHXbL7PD/xDx6yC5MlqFkROPEY+He3uSjj2IYh4tQcrUx9fMRPMl9u3NfeAv7P8K7nzfayxbzeDr+G88whk6Ub1qunp+gmz8c4Gk3Brl3YM5Pj3WDcxW8h0FBBusN8gpITSCJCPD4TcR7tshhEYbWYYjUGbHXnbwYirQd1Cm9CEwrca5qyUC8bjxa5loV/pxWZPyTH8f/DawcCrlV+159Z2lBcQ11M0PJWHG2hx7iyFjJ6ClwUhByAzcAN8pNqvO39OBvnIaA7ylTmGwrq4zpEL5AcEi02KRgb2xMiMEw9I0uGoiZaFVTG45m4B98GCaITMfviUkD6mWm/f61gH1el4VhapOjGN5vpRgBdtrkMzNqqyqLNRrhlI20h+IpRggCwnGvikdcdS4h3J5/+xGcRD68jbYaMjG5bQOZUpTC/yLN8fDqyrSL7KOz9402Q6PAEsm9KMSXmnhuGp36
- 4wQ5wWj2
- o6+wPy3/7rZ0QgXCInDC9+wVeLmA/+wtAqut2tJGHnLbnkxv8rnbdl3I4wZIbdT3+jwxK202KcgelxFCSkSTBaRck7eOfNeR7oX3ABwuKEhdsZ9FllzldIHeFTkdTF6SmORGUzqLuILaAlP+2rDibUxLgfFItO6X6VtbnOExgU204mhlEJ08S2iznFpX+rJ1HfRk3tza2sddcFROXT6T7/LRFKVU1WBjuwBQqVbd75B3WW5lWu2TWvQaHflYcCXLQLTwTNJvo9pYOPTA1VebId6gaC+KchwUvGw042b/+69FO+qAvgjy88TpkVkY7yo2o+sUxUxZtJTi+KlEbCSbSFQ3fYx+LZVxCsyzde27+tD0L/j7U8eO36AncdS7Dqv+N509Y8w8p1sabdNK2puzizr0BN2lPcomjMgRs4f428BzSSmfCfaqRpcrLaGVVOgVpMnGuZcArFcVE70ZKpGC+i0DJzvg0UKTI9FQRkyDiw4ftotqt2pZr1f6anhLUMUIWbAmDmYWseUP3Z0y1sANZoV/ya7bWvYlxIfZDrQvHqpxPvfwA38IgjzE8VheDyZBv87LY080fWpEKkWbTx8pABs0NXTx0KUAjTb3t6mFDQsrL3531+ELK3vS1q2xqX0gElHw8lHrHVhNgpQR23N/wUv6tDBbNYvir9CdUfGGtVTqFSxly0Llqar9slW6ulZd12njApzRQCmOHW8+tPkFoE6FEFolQrCResjpMDBmaYzpvfhijkox9YB42cZG+e3GTlJr452Lj7/Sih70=
+X-HE-Tag: 1795198226-369638
+X-HE-Meta: U2FsdGVkX1+hQvnni8m7zcThzmDXt/ckFbE/x3AF+JghUXT1OmEok/GmY6CrDA3DYeCsxZFlMHMMTz0jJLBiioEeYks0cgepCsPZtYjELRrEH2NwwWnGnum4R8XQ5XzleZdacYsxNad3exLxJOynxZs3esvmttFe1ak/8Ya1vr+IIvBYQILwPUNS0ldb+dqB0XX2xlxPESG+/SEfwN5NAuUoduqV95ikwD1tB9V3ML8crIGw0GAF4jn/uAnhjLazsQdMkvUOcjrjJQqK9+uiq8KeEwyVjl1a4TuCSPjFjHNHfEiv6f3N5PdsMfhsYVBF4eLRH9O6IG+J8L1UJ5LCUIaqGWxZzQEaNk5bINUWOVg2vCQEC93hTy8WaMJ0htYRvNbxLRD3tnK0CmVc50y2d1flnJiCIkxLAovUlFvbNMx0ieAJ9Zk8y66hDnBr3iwyF5FdLdJtroruvqql/8OPeGG8w4CPB5N3+ZWMQ+T64m7XmyBNfCv+N/bPuaSvSril3uwvpkTpIM1sUbn6u8FzMqD/7Jkw17wqwK8MHR8uGUapmeCiYFImeg/23VN58E5Maem9jUGcouh3OVETXVF8LkQxjFqlMiyAv42Ee3qTLX/lFHeUh0UIeylLjfq+ArukK7ksXwhdqszF6j8OjfpiiPbcQWNcRrh+jf0e38pUM4a5w8e6mMiPEfAFEqTgvpiv5Hni/WD2kXM6XLnzVGn5mgs2nnbskxLY53MeA6Nr3TXHj2EnXTf09rpyFmcpVB5uQ3jbyi17hi8Ip7vMH2B5Lqp2JkHLjpUz2H98HXuRdOtAaVS1YOFkRVRc3JRyPpbcHa18vjH0P0mbeTC677WmpC2fWLn/2XEjLAz5dJzc4ah5oj/qfnvy4Zs+/blNowYFxHExba1N0E42qc+hlM+Qm1nLVXfZkLxDnbUieajOHmzuS0mCbhFVg9ZSEWhnsNg4C4+IkbRnxpPW1JimA1u
+ +i5QstXM
+ e34Iim3QzHvzv6RcNCwBzbr19U/Kd0x0ncTM7EiLCreqaZ21X0XVpwVyMMvZHn3zlkMyImkLS0nCxj8Iz5fVm1lCgPSrQ3thp6iTp0I6h44HRP8TOAPIlAOVkj3Qt3ytnYbjvIcHfsAuvwXrEAIQewdyfMs+c4ogC+gPZm2q0WDt3c39rEDUu221Gc/vwxdCeQFNBJYKsIxfWVC7RwDzhKV6gVSFd6joexXDj90IuhTQ8Ou+/53Uzk9HdU19TPR/n4jFxZjHCUxUoUEL/e4Ta0qGSRdwvcOhUFH/Y66Hqr5yXkAyY2j62LbEAjHBs31cYX0KL2if3K3w4qvypgzSA8KFK6Ny/StaNfwWf/89LQXV9o2Am/aRrs3QPgjhxPvV0t6qbhU3Qt/eEAQUiL2yHf6Aqxz7xKnFVpqw6DLuelofc4kmWsNhRXtS0dE68nSXAxerIcfSDT42hHOZxdfbYOrdqrz+KDZxWCNIr3d+XSa04QKzosC3U2OVb/z/l3ku/PJMzjkmXF9dfjf+mDxK0+h3D/D9f/t+OqCpIRG1HByjxQyE2Nz1G7Ivcq7kRAQ6YbQldvlvYy5HcT/LlIxgIEdpCG+G+2f/XHHz4osapOU+7C3yUuwNgomew6FZvRIixY0Q3g8H6A2kVaTvFQ3VK+YRkRZcnaBOLSg2ytxL5jb4lwbvGCit8fLPcPdLzvKWMgLJq2sRn+n3C1/QFEwX1qUhmCK610PSfhjeuS1T/hhi45oP7tnNJZOTj6qp5N83Y2b30geKxoviIXxTxR54Cw6n+hnemTzrCGjx9EgwVCOhM7oK8Nh8MXDgJmHMK6w2gtNza300Gh/2Lh+0X6ujZ1V9geQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,34 +189,30 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-The NUMA balancing scanner installs PROT_NONE only on folios that
-balancing may migrate.
-
-folio_can_map_prot_numa() already skips ZONE_DEVICE folios. Skip folios
-outside the common memory pool (N_MEMORY_COMMON) as well. Do not inject
-hint faults on those folios or migrate them.
-
-Convert the zone_device check to a common memory check (which includes
-the zone device check explicitly).
+set_recommended_min_free_kbytes() reserves two pageblocks per populated
+zone to help THP allocations avoid fragmentation. The reserve serves
+ordinary allocations, which use only common memory, so count only the
+zones on N_MEMORY_COMMON nodes.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/mempolicy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/khugepaged.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 806577e1d48b..07d577aca78c 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -863,7 +863,7 @@ bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
- {
- 	int nid;
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 2dc4245814df..a930d99f89da 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -3151,6 +3151,9 @@ void set_recommended_min_free_kbytes(void)
+ 	}
  
--	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
-+	if (!folio || !folio_is_common_memory(folio) || folio_test_ksm(folio))
- 		return false;
- 
- 	/* Also skip shared copy-on-write folios */
+ 	for_each_populated_zone(zone) {
++		if (!node_state(zone_to_nid(zone), N_MEMORY_COMMON))
++			continue;
++
+ 		/*
+ 		 * We don't need to worry about fragmentation of
+ 		 * ZONE_MOVABLE since it only has movable pages.
 
 -- 
 2.56.1
