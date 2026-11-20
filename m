@@ -1,145 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2223160A2607
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 23:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574F1606A6AB
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 23:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Qh78vZCr
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SJ5wPa5v
 Received: by kanga.kvack.org (Postfix)
-	id 212F16B05B1; Fri, 20 Nov 2026 18:25:52 -0500 (EST)
+	id 77BE76B05B0; Fri, 20 Nov 2026 18:36:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19CFF6B05B2; Fri, 20 Nov 2026 18:25:52 -0500 (EST)
+	id 72CA06B05B2; Fri, 20 Nov 2026 18:36:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0160E6B05B3; Fri, 20 Nov 2026 18:25:51 -0500 (EST)
+	id 61C096B05B3; Fri, 20 Nov 2026 18:36:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C25BD6B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:25:51 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38962A024D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:25:51 +0000 (UTC)
-X-FDA: 85457082102.08.1AF12E0
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 46456A0005
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:25:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Qh78vZCr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795217149;
-	b=iEaYDokBnH+FLVA5ychTD0ZF/KYvXiUxMh0iYFPVZrthEQ08E3Kv01BCTWuJGgRPDiplJY
-	bWD21tq8u9t7UX/rlorli9LEAis+KLoxq5hVt6Aq1ytdvn5MF3deSLcw0+lYyW+6jI95a6
-	15G5C+4/oDtTe6zFdZxei4PNwVTL8qM=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795217149;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 392C96B05B0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:36:08 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBBEEC025A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:36:07 +0000 (UTC)
+X-FDA: 85457107974.04.4246A99
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C42D7140005
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:36:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=SJ5wPa5v;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795217765;
+	b=0+iUmOEJl9lAxf5TqKwjtWlQD3rFiAByqnPxvqD+5EMZku0IthUUhsaD8ob0m8cdd4Viuy
+	K41A4JfBru66Fb8uvriwgQsTaGU5F+NXBLnqVml2SWYjqknLu3wimi6M6z/uffVgSGe6Jp
+	0YPJRtEaKKIsKtM9rWY8ESw1bp0m+fc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795217765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uhqyN4jXJHLUBn1qwHjxlBTy4/pOd3Ul8pRQ56L+gFg=;
-	b=QOaG7uia8OKbalyYEW2zqty1ewgXpf3QF+/GbCM475lcNHBIZ/g9Og9rkBxueKL9yYD1ks
-	anpK5pPMkqgk5SpvwLehHNFUAek9X37t5m/xpULIpuNQMJoeKYV4Pk/KFF0YwkKfc5ObZy
-	GeFbCLfkRucwiVmv7bqtK3MzwVC5lOM=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Qh78vZCr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a14so15786235e9.1
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:25:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795217148; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jKuV3fADcqai+wOlsZtuZHNFS1lZpienGwLQ4/idIlleBFSEegb7JcrS2AWc5sn2tG
-         FDbvSlD5BKbAXNMmy9QlqjW3O5vahA8pdiOyIlQzDzUOStkl2z5kTKa6Yh7ri9JYkqsK
-         Lb4PSjz6ceaeQTUq5mxi5WAwKAUrcazn3OpSg+5z6qZron21ngOk1NqWkwXTL4Boy8rk
-         IFAwXJ+M/jQgkoy0GONzZ1jrFefumQhWn1cE+M6xDSfQjoU3sk0R66Z9xoMQEDyljMKB
-         cnVkOrHHdSQIoi2vN8nKd90okLG0mMoIgHu+929RHzLtfhezeF0WmWX25biucGai/Uqy
-         QIyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uhqyN4jXJHLUBn1qwHjxlBTy4/pOd3Ul8pRQ56L+gFg=;
-        fh=CvMM8bCAicuo9oaACOYCr4KU6foAmbL6RvmJkIeZX8Q=;
-        b=E67W5oArr4dzu2jrzyi1poIwIthj9YlqvwHade657ZL8rbB4HpZShkhhvLSD0BMy+a
-         MBKo4zuCiRUukYHqQrLhFyUyyGA0sACou096cdEgP+vszoJnhIUZiCYvvRx1nQyF4L4g
-         rPux3MaviFLivrgLPcnNpZmTUZcfH/qAVuxiP+5jqnCUfDqtnC1n3HDRWSbQq/Nb7SaU
-         +/T5lRSmVOlHaTrrZHqJE+9LKar6lzqsGhckcmIwU0tv4qb/KqWMr/Z2V8iDpva0eF7z
-         GgnettWLpddLzxauRcbghTMnqbId9W00ImC5xhuMeR6wqE3UFV7LCn9xEb8JNh46aqVU
-         20PQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=6fq/GPepzkTLXxM8Wn2MMXhIXKeiLSAPdWNcRYRGgzY=;
+	b=AMHs+nXdD+ojV/vrpWaCLs+dbKJQrIbDExJlZv4tVatQ6rGWIfINb6lr8IgCRcD4BKfsYD
+	zRtTOtYvEhURSg3Qa38CUN4+9a/VbA5K1MzbAEL3mpBJEI9dHog7s1XLbQ27aStKZiY8wc
+	rmSRPvam5bfP7x+SP8Xouv4+n9RLH98=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=SJ5wPa5v;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2f0634667aaso967765ad.0
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:36:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795217148; x=1795821948; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uhqyN4jXJHLUBn1qwHjxlBTy4/pOd3Ul8pRQ56L+gFg=;
-        b=Qh78vZCr+UxzioSxsrJgpdpVHhFhFTd7dNTDNSYDasUF8SqqRxp+uLUGgpPVGkvsla
-         hMoiVo1rZxlCIOuM0avupYEv+/Trs2bnfIPSNSe7ZTMXxgI/ne94Q3p3Xruvt1SFr3mG
-         x1+/JKIgZ1oSVF+EZMvg0TwjOEliq6eOKdOKhfYcjYYHHfDzdOQqycGx1GS4ESmwsJP6
-         zOjWJr1lIx0DkenHKWS8MG0RY2WGNKqPB/whCRQdWYpAUKeEa5Aoib+hkzaNUHb5R3yi
-         Xjnm8Ea8+QRPX57vEtxdkybIcHQAIxHrMWKlNAXm2nxKySB0EEhPboMmgJrQMQBj/zbp
-         Xlfg==
+        d=google.com; s=20260707; t=1795217764; x=1795822564; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=6fq/GPepzkTLXxM8Wn2MMXhIXKeiLSAPdWNcRYRGgzY=;
+        b=SJ5wPa5vTrBbjnfIUge32Y57orOH9QfHPJSbSqjjxNgqFty2aXVp2mq47yRZ8v4v6T
+         3PYomytVm/dHjG5CvpJHoUSK6THNDr+Cd3zzVKTgOQB+z2EMEWXgbd4NhU9eez1SyUY4
+         oaGRvkG9g2riYeymbC3cUpMF7i7hhd5GkkzjJh1luBKW05IcAfoyf18kZnPJjjCqXaz+
+         2q+9hAyd/O4vp6vVqH5EyrhwSpeqeOzqAT+GPNP2VmSSv068vODOATKRNnBrc05Za28Y
+         eE6Jfw3Pr43lsjD7hoGRssOE5Kf5zK+qaFDTj1Lb4NRxTllAp4LR8ICeGTWIQP9CHpdq
+         xPtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795217148; x=1795821948;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795217764; x=1795822564;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uhqyN4jXJHLUBn1qwHjxlBTy4/pOd3Ul8pRQ56L+gFg=;
-        b=VCkUQ6Egp4soTHcAs9yUatXQ6eajYxtmwhOVwd84pu0HffBAu5O45eaqqrIXhkk2oi
-         GasnXrjjIACplJUnIvjS5UNGlwTC8PTgplfkc3UIg7f5xOYme4+IypKxbmgUlKXXObqI
-         bdcK38mxYIif7cbYOSqhM3v4RBkHr9lii13ssoDNhWNfFYDznS0fiOBlgL6zz3TWnv1u
-         t18atDR6Ex1G8DyuGNK7/u7NuGyo0sLV+1Wx7al6f2Mli0gADIFaV3m17nGtJDXGq3ro
-         bOV9+SdjD6FIVE1UnxDkKauiwnLFrij1icncBqv8hnIEEqie+/mAV0Ce/QypPJrGcmhN
-         Z/og==
-X-Forwarded-Encrypted: i=1; AL+hErF3OKqCGvFKF8TCVbj8Y2RNVT+CVm6+jFmkyDh1+6UT4riuX3IWHDYtHD99Qpf2mTL8NsTGrlPOZA==@kvack.org
-X-Gm-Message-State: APuU4Z/CjeI1Lw6/Tht1EyR7nTi8fXmF6BRNaavsa9XPEcTipBZARRVH
-	q1x1yuD59VqQACVCpqGhclJAqsth5lqtl4BjdbxArzPS2NC3T9O11LIDq3UqUVngatnILlsmHRU
-	SP0g+G8Qj0q2p3JHDeDOVD6H394wAy+c=
-X-Gm-Gg: AYBFou0OptT52hZBKJYVb4RzpUM2MnsLh3YkpZAEmxeo7A53kX1a4xfF4eRpHhtBP0g
-	/PuLm2AY7aASdYCVBToUmNFg2f3kk5mffTyEovSmYU1dEQA+KrBzSIXLgMAR+AUzDsr+42FIsPA
-	nKlmoAP0HO5cjJY6NVWZtR/I6nmhQH/+40ziC/FFRUNjU9C0q83VF3LewQsOkFIN2rOH9lx9m7y
-	tJNPwhZFqC2H2o/sUt+eKbLbEVTIMRsXwrxkr6e4a0TRBOZToiZuS7jJPPrb6lX1DqlpTNe7lqX
-	KlkVTdW+xU0XHn1W4M5b/NWY0A/PxQMck2i8+I6hWVch+hhbyg6vweqtTrDzWQ1eNZdXiU+fqDG
-	EdPlPGlsLN73qzOizMnGNtADkCTCJbXBWx8xcTpyjNiVn9e0I5oNkPNL3MboGi3GOMhOW3MxCkK
-	fuNoYeG9Cl8ia9rgqoalSI3x3d3IvZeqV0I6kDciWbIEYrdSc562qlhYk=
-X-Received: by 2002:a05:600c:4e0e:b0:4a1:da58:1ee with SMTP id
- 5b1f17b1804b1-4bb88938dc9mr114117765e9.31.1795217147625; Fri, 20 Nov 2026
- 15:25:47 -0800 (PST)
+        bh=6fq/GPepzkTLXxM8Wn2MMXhIXKeiLSAPdWNcRYRGgzY=;
+        b=JVuvgxGmQV2b78qs9GvKXQUY0PxYS0fU5OjWl1n16ggRAn33RsT6LV3uPmiklmmnoU
+         mJw2lpUxhRK49r7Qn3lur3hd+FOD0XBgqV/x5j3M7hSH89Vcugp7gEbxgEydQ22Xxdj/
+         joYpHRm34DMb0RfVhvKqpJMYWfLDw+xrdthTNtShTeDNAgTe8S+zq95xSJk70veoH9jC
+         A2Mh7x0LAiyPKLm+FcjrQ9g0IstvXM6XBvBGMy07bTkRxyPppeJO/f9dG0dZdEnCCJ/B
+         69TUE1SkeiPeEbr1eEo+eHEERZsajdjzZXKlsgdX1IrBJJE1tLODunx1vCytn0KhpeUa
+         6JUQ==
+X-Forwarded-Encrypted: i=1; AL+hErFKxuwa7TMWNrO8joYCTUBHg5A/YSUfpaa0hzcKNDDhy1PEoaVoEd5CtbGfAJUidAPmKnKdIgFJig==@kvack.org
+X-Gm-Message-State: APuU4Z8+71cbKCqESzDtnGrtHTXpO883c3JOr9iy+3fy7W8xMkwk7VxI
+	LKPaxw+64KRp7AUQOvSVZdgMmmmIVDMNVlhWheSq0HsbFY/W/r4CokdkC5Icq7EbsQ==
+X-Gm-Gg: AZFdTZeJV5cWhJfzEn3AMclBvkO3kfl7PvXJP4DZ2hl/gERXNzSK59iYJmHfU9oXDQN
+	dyxBxu/bZsV2bC+PoZdDJ6yNJvX8GnX0gf6jqptjih8IWkzck2v0MRaEjAS5DrHS4Ybf0Q3d8rz
+	h5EghxG+5CJgZoeotdWmJ6N1wdkqmX4HzkVygIxWkcZYlGFer58DIOjtfBtTQQBppfp/w4nQQYt
+	rd4qpPeQxdQrcsdQemVMvT0iD3CKvy7JfMFsltoFFNGmitCHNOdu1B8Uqm+q/WCkZ2VkE9NcH8u
+	Z2bNu3khPmxDiRV1s1BjvZVE5ekg+YqUN/tToWqnBVnkz8NyCMvtnWaq7ZRbhGE6yfozxZvNpsL
+	n/c7XgFC/r9LbhgcfS4fv73l50gqcGCktHjBmPjbprEyK+mtdr9/PF5x8vbDeHIESN0A8Tu9ZUP
+	o50dOQM7P1WvumiyBT22ecDEVuHjlbM4WAGKW1YUq9rXX9Onez1Si/ACmJVxwLUnDhp6ns4vWFD
+	u9sH4/8QECEcsi3AzjZHa/IFz70Axq+tz0iuxQAZtfsrNDHOBVLYLtcJDO3fgV1d3B+tJQ67X71
+	kD1gJTbrYU7s2w+d99+2jFfzBJwUpEHm7gqHMt7TkvEeKmMoLoedza0pF9U4OEJJ
+X-Received: by 2002:a17:90b:3c11:b0:3a7:9ec3:ea0e with SMTP id 98e67ed59e1d1-3b41c908114mr2771810a91.22.1795217763469;
+        Fri, 20 Nov 2026 15:36:03 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41aab4729sm5906545a91.0.2026.11.20.15.35.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Nov 2026 15:36:00 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com> <20261120041906.5785-7-kanchanapsridhar2026@gmail.com>
-In-Reply-To: <20261120041906.5785-7-kanchanapsridhar2026@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 20 Nov 2026 15:25:36 -0800
-X-Gm-Features: Aa3M54ocqa_Rt1iaIcH01mzW7rcL-Me_kjHYSn1LGUejy8g6N8y75Tuvtfmivv8
-Message-ID: <CAKEwX=Pr6t8w676ztfrONaKrRKoy6NS1priTb2c2XUikNhYU7A@mail.gmail.com>
-Subject: Re: [PATCH v4 6/8] mm: zswap: Store large folios in batches.
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 46456A0005
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 20 Nov 2026 15:35:58 -0800
+Message-Id: <DN0FL1752MH5.1FSZE620OJBM0@google.com>
+From: "David Matlack" <dmatlack@google.com>
+To: "David Matlack" <dmatlack@google.com>, <kexec@lists.infradead.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-pci@vger.kernel.org>
+Cc: "Adithya Jayachandran" <ajayachandra@nvidia.com>, "Alexander Graf"
+ <graf@amazon.com>, "Alex Williamson" <alex@shazbot.org>, "Alex Williamson"
+ <alex.williamson@nvidia.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Chris
+ Down" <chris@chrisdown.name>, "Chris Li" <chrisl@kernel.org>, "David
+ Rientjes" <rientjes@google.com>, "Jacob Pan"
+ <jacob.pan@linux.microsoft.com>, "Jason Gunthorpe" <jgg@nvidia.com>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Josh Hilke" <jrhilke@google.com>,
+ "Leon Romanovsky" <leonro@nvidia.com>, "Lukas Wunner" <lukas@wunner.de>,
+ "Mike Rapoport" <rppt@kernel.org>, "Parav Pandit" <parav@nvidia.com>,
+ "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pranjal Shrivastava"
+ <praan@google.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Randy Dunlap"
+ <rdunlap@infradead.org>, "Saeed Mahameed" <saeedm@nvidia.com>, "Samiullah
+ Khawaja" <skhawaja@google.com>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Vipin Sharma" <vipinsh@google.com>, "William Tu" <witu@nvidia.com>, "Yi
+ Liu" <yi.l.liu@intel.com>
+Subject: Re: [PATCH v11 00/13] PCI: liveupdate: PCI core support for Live
+ Update
+X-Mailer: aerc 0.21.0
+References: <20261118223704.3286085-1-dmatlack@google.com>
+In-Reply-To: <20261118223704.3286085-1-dmatlack@google.com>
+X-Stat-Signature: ujh7m4yp9hu11cya3f3ssnh9k5rt7x1g
+X-Rspamd-Queue-Id: C42D7140005
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam02
 X-Rspam-User:
-X-Stat-Signature: moa6396dmiby8zpjbek7f94sfhyw7izu
-X-HE-Tag: 1795217149-505557
-X-HE-Meta: U2FsdGVkX18Lzc3O1EkJoCtPJWW8ytlO/PilAPv/pgBtTPgFF2Zq8FucCVrRJYFoiYdh1H+pV2TkVxOr31NVrA5toEXnjHpcsSPFdU0JMT55aFQUryKpTVDdJYaldm/xMhyyfBtnQVKZ1UcdWZAHcj08fSxD1BJQlpqsuoOFp1OY+54GxpLn2H0l9KKoH0W/rnH+lIMlDgyMy1zGkNekpvUWMQeGE6yDmg7N0njPrJZtgo0Mi6McNZb6geiNCv4xGDUn35HSar1S+XjkXrhpN14Tjcw7Mwe82RBEer09aSOVBrHbDFBBH8ymCOBMFMtVSnTAQ9ImooZVBjVvGHzPfteJ2Jh0BzZecHEPE0MiSEqX0WU+t6rmz7eDHlgNNbdXQhYigDHWbLsSk/VmubVHyu2TXG9EtTtNqKVj/APcOgxm+chui8rt6RHm/zrNyZ0N2rxpgn/McCGEltxL7XScjskEh/ODFC46rn6QHv3ffJxKVIuBdkFT+usKBPnFelAaoeel+4Lajjui6R9mugiSDItxp50GCLaJol42Ol2mVp1gTk76MYhpqnyr1FQ6f+4UB/h9H+q2MTqhqZ4bhwxVhb0hgPMMSBJr59SW9F5j8UI1AtgiNpN6V1zxhSyLmMP9JXoG+OFIzGJjiFptZ7XHdBIuOJ6tmCGVvhXkRRuSEtUrcku3iw3KpeGwPERsFZ269gAk4mUdg2Ircvt4sL+PLSr2Tpoqm3/bPmLcconmT4aQWkQKujrg00nc4v+zou5iuFM7BN4m4mS9CNobcPlvzhQ5Qo6mRrjPPCWJ92TEQx/HLZfTvZjyTSUE8mi1dHRSI0iucff1LQAIDg7FvraOsfcHSoabdhZjd4UTKoaJcDDJ4jpjUL24PZUWvVY8rNXqLCfUD0T56aATii3+uRH2bWDpV6a4XHtNvySvH4hDcuIf0AIRc+Caia8V0CmLfv+lX7kJRrNiTjl9Y8lQGHP
- +Ed9g9W5
- CXqh3NSzy7ugDKgbx1Vmir9zFsD5HDhQYn6TAI3spl2nhN5G2iXObF9Mffg4OX7U0mXBLaMlkJhtXj+WUo7bK0h28Vg5guM63+WqXGOg7pGgFj2R0X1t+OfeEFmC7UrJMlvIfGDvgJFvaTi5aBPIBRfhKeaX3KYkdkA6ZL9zfjxjPeK4He3rxreO1SIFPAA2HV9VJ9+nk+iJ4EqfsY0PGqUBzA91H0IMOzrFMw0Vz0WABw8qWWhVuIlNor0t9dSpceJrYZUAeGGUo/emUJZaMcJNHX35GwbsU/ckqzwMKd3cjX6dpHZnDULu6X6L9sN+A3uMnT/rVBuXyBSw/1qfiZCenavZTmxN1cimac2rEm/wXLhLxmhC0pWuckxCN+DAHuyfhefQCTuuWW17kNUWaoFITYaHcOArhBoe/EuQmQm69lmq89k/dCNlkX+wHHu1uuWRgdWZFQcijEZC2BtiDh3CR6rXKJdWyR7qfdDpUBFpfYdcpoQkanD55R61z3m1t1HxVZkfW5bPq6oTLAs3JPkLQXiovMSat5ifjxp3Q9Urns+/VDqEXnPKVo4EA0d7Bn6m2gsHZ0asdUjrnu8eRxMU7m2a2SJjf0+0CUlK7gtZ80o9W8zq4opvK9WNEHTW/M/XuGb/wGURvs876O63Fpo1HgHrTK1wEfdfsyZC4/3CjZ2U=
+X-HE-Tag: 1795217765-829051
+X-HE-Meta: U2FsdGVkX18+AoOmOy9zKHwPZuSwMZ+XAH9ekrv1+6GcFA9zJ2eIzLLURYAYbwGM4kV9cwyp1sgOgzqM73+Gz+55qtvK+EobLfFlU25EXFSTCgTaIwRysQicv9sHRKL2RMTp3L1AWO7yzT/hYHr0MHES0Fmsrsx2lSkgim5CATA7oJByY08iZtONTZQwYP0WrUiDBM56LApfMW2NYK/CVvOCssORmPAeJaukEa6+uRzNdFvp+do2dKWdNRpH4HA2YdoUSU6jNAy5a8ZvfNa8LyMCzHcnZyjlOXuiCXIkouPP2Z8OPKA7Z/f3wr+4OlUeR2P9jTujLqgHjMkuNj5MMKUGByG5jNCAatRW9DiAGdnUWc9GS4iUK39VHkuoLygES00mvgjziDz6j5D7liA44nymX4WMh/0UICsA4zNMHLUKCbqyVdgjn0p1Brt4SNDNMg34xsI0TEBTUMztysiVz/w+qkPzoMW/vTV2Dq368Y/1O4NN2CfAsUHp6QZU4/kBGJigITLCiNIeLGMRMVWnWH2dykVfoy4vpspWIebSPKdL7xN9HljympJ0R9WuhSCd0jyTJ+DSpkQ1x7V05PlUovwyffqwIYsBGSGR3vpOMPk0UlFYIbM8TQoFIZ1SAW/4sYg779bcGXshUXJhY0fwxLUz6g81KeRR8qxGOFQ3eHpVQsS9/uWRWDZ4l1BCpOn4jfn5VAgNaeYa6WwFWJU4doLRt3NBJpZoiiqDsGn7yX8jQFpkMjtWsi0G73gaEoKefOIlvuMJ5xDImhqkD5rIB+ry5Gy0BkyC9PjtStK5NZzFa4MDlftCbzEYfyG/RqGFJ5/Od3xvl68JqqWtu4sk0OPX/rH3N9K+0Qh0jMwaVDJyhsGaet7YFUKK4Xx3NyrQ7vvXm2tVuj+5si50P9al6e0fIRmM58wWG5Y7LS4iqL7XEtt+NOOkj17Wp1pWujdJtsAK6Rx6qX8KA8cqEFX
+ JKgQWENl
+ 9Hp9pL6NgWvd8rIgedAyuA1kOf9L/waOgnVXxwy0JKrIqD/ZZExuB0HOUT6a8fYaznIPTuX+lm5666nNNGAwM8FJnGsDJMhL7yN3R0JvE9UMB12y1okbQh9gLmoaxZn838vrewZNjbrzFf2xw91FoClKlzXGWzETcdagl9PXpdJreeomiAO/8OBIgyt6EYjsZ0Tue9fuD78JPZYyNIxrFGi3UdUVLiakgpurdWYsz0h5dvWCJIdPuiQwQY4f4j/RfxLdlQYb/YCURpNpvqUWq4q/WL8NYrROvZcVn2uXSQujY8u77v/Lbxy5N9KUYxR0B9/HwPYH/QwM49tqmiYoIPHQ9k59WJPxVPS3TMRVGuyZ/1+kewtdubTnA10Pp/IV7h89/7PklilXYG4pSjMWaseNl4Y4YtNEcEhlJ3r55kWvxQcTCMhTRVZcKvSX/4HYrHpZSXM6ZGdlbhUirNHv6KoRDSQJsnX9zirWVt5LD+3i+IdFWHkiBsrGAZUEJtECVS66m6KEUsmcDlpBogg/R+1IimEH+4LhFrukjr98dyn0jzXpOFgxxbs5kztfmeDI62IIIQUUKX9S1zoNDJVZWGA2v/7NxUsUWOzi9u9nmSBCU044OXZVAsuhn1sLVR6U3fG4ggMqHVSu2phpfFErKSfHLjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,175 +142,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 8:19=E2=80=AFPM Kanchana P. Sridhar
-<kanchanapsridhar2026@gmail.com> wrote:
+On Wed Nov 18, 2026 at 2:36 PM PST, David Matlack wrote:
+> Merge Plan
+> ----------
 >
-> Use batching when storing large folios in zswap. A new constant,
-> ZSWAP_MAX_BATCH_SIZE is defined as 4U to support processing batches of
-> up to 4 pages at a time while storing large folios. This commit
-> modifies the "store single page" approach to "store a batch of pages".
+> This series is intended to go through liveupdate.git, the tree listed in
+> the new PCI LIVE UPDATE MAINTAINERS entry.
 >
-> As part of CPU onlining per-CPU acomp_ctx setup, ZSWAP_MAX_BATCH_SIZE
-> compression buffers are allocated to eventually be able to compress and
-> store ZSWAP_MAX_BATCH_SIZE pages. This happens in subsequent commits.
->
-> For existing software compressors, the extra overhead is the
-> the extra 'buffers' pointer, 3 additional elements in 'buffers' and 3
-> additional 4K space per 'buffers[i]': in all ~12 KB per-CPU on
-> x86_64. Only the first buffer is currently used.
->
-> zswap_store_page() is replaced with zswap_store_pages(), which processes
-> a batch of pages and allows for batching optimizations. For now, only
-> optimize allocating entries by using batch allocations from the slab
-> cache.
->
-> Avoid repeatedly calling mem_cgroup_zswap_writeback_enabled() for every
-> page and only call it once for the folio, since the entire folio is
-> charged to a single memcg. Similarly, obtain the nid once to use during
-> each batch store of a folio. To facilitate this, a "struct
-> zswap_store_context" is introduced to keep function parameter lists
-> concise.
->
-> Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-> Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
-> ---
->  mm/zswap.c | 307 +++++++++++++++++++++++++++++++++++++----------------
->  1 file changed, 217 insertions(+), 90 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 78d9694f75b5..df59ab0c1029 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -85,6 +85,9 @@ static bool zswap_pool_reached_full;
->
->  #define ZSWAP_PARAM_UNSET ""
->
-> +/* Limit the batch size to limit per-CPU memory usage for dst buffers. *=
-/
-> +#define ZSWAP_MAX_BATCH_SIZE 4U
-> +
->  static int zswap_setup(void);
->
->  /* Enable/disable zswap */
-> @@ -144,10 +147,12 @@ struct zswap_acomp_req {
->         struct mutex mutex;
->  };
->
-> -/* The compression mutex also protects the output buffer. */
-> +/*
-> + * The compression mutex also protects the output buffer(s).
-> + */
->  struct zswap_comp_ctx {
->         struct zswap_acomp_req areq;
-> -       u8 *buffer;
-> +       u8 **buffers;
->  };
->
->  /* Separate requests, so that decompression does not wait for compressio=
-n. */
-> @@ -162,6 +167,7 @@ struct crypto_acomp_ctx {
->   * The only case where lru_lock is not acquired while holding tree.lock =
-is
->   * when a zswap_entry is taken off the lru for writeback, in that case i=
-t
->   * needs to be verified that it's still valid in the tree.
-> + *
->   */
->  struct zswap_pool {
->         struct zs_pool *zs_pool;
-> @@ -226,6 +232,15 @@ struct zswap_entry {
->         struct list_head lru;
->  };
->
-> +struct zswap_store_context {
-> +       struct folio *folio;
-> +       long folio_start;
-> +       bool wb_enabled;
-> +       int nid;
-> +       u8 nr_pages;
-> +       struct zswap_entry *entries[ZSWAP_MAX_BATCH_SIZE];
-> +};
-> +
->  /*
->   * No RCU section is needed around the returned pointer: a stored entry =
-pins
->   * its pool via percpu_ref (taken in zswap_store_page()), so the id cann=
-ot be
-> @@ -284,6 +299,8 @@ static void __zswap_pool_empty(struct percpu_ref *ref=
-);
->
->  static void acomp_ctx_free(struct crypto_acomp_ctx *acomp_ctx)
->  {
-> +       u8 i;
-> +
->         if (!acomp_ctx)
->                 return;
->
-> @@ -302,8 +319,12 @@ static void acomp_ctx_free(struct crypto_acomp_ctx *=
-acomp_ctx)
->
->         acomp_ctx->acomp =3D NULL;
->
-> -       kfree(acomp_ctx->comp.buffer);
-> -       acomp_ctx->comp.buffer =3D NULL;
-> +       if (acomp_ctx->comp.buffers) {
-> +               for (i =3D 0; i < ZSWAP_MAX_BATCH_SIZE; ++i)
-> +                       kfree(acomp_ctx->comp.buffers[i]);
-> +               kfree(acomp_ctx->comp.buffers);
-> +       }
-> +       acomp_ctx->comp.buffers =3D NULL;
->  }
->
->  static struct zswap_pool *zswap_pool_create(char *compressor)
-> @@ -388,6 +409,7 @@ static struct zswap_pool *zswap_pool_create(char *com=
-pressor)
->  cpuhp_add_fail:
->         for_each_possible_cpu(cpu)
->                 acomp_ctx_free(per_cpu_ptr(pool->acomp_ctx, cpu));
-> +
->  error:
->         if (pool->acomp_ctx)
->                 free_percpu(pool->acomp_ctx);
-> @@ -778,6 +800,44 @@ static void zswap_entry_cache_free(struct zswap_entr=
-y *entry)
->         kmem_cache_free(zswap_entry_cache, entry);
->  }
->
-> +static inline void zswap_entries_cache_free_batch(
-> +       struct zswap_entry **entries,
-> +       u8 nr_entries)
-> +{
-> +       /*
-> +        * It is okay to use this to free entries allocated separately
-> +        * by zswap_entry_cache_alloc().
-> +        */
-> +       kmem_cache_free_bulk(zswap_entry_cache, nr_entries, (void **)entr=
-ies);
-> +}
-> +
-> +static bool zswap_entries_cache_alloc_batch(
-> +       struct zswap_store_context *zc,
-> +       gfp_t gfp)
-> +{
-> +       u8 i;
-> +
-> +       bool ret =3D kmem_cache_alloc_bulk(zswap_entry_cache, gfp,
-> +                                        zc->nr_pages, (void **)zc->entri=
-es);
-> +
-> +       if (likely(ret)) {
-> +               for (i =3D 0; i < zc->nr_pages; ++i)
-> +                       zs_handle_init(&zc->entries[i]->handle);
-> +       } else {
-> +               for (i =3D 0; i < zc->nr_pages; ++i) {
-> +                       zc->entries[i] =3D zswap_entry_cache_alloc(GFP_KE=
-RNEL);
+> v10 and a follow-up patch were applied to the lu-pci-preservation branch
+> of liveupdate.git. This version is meant to replace them, and applies on
+> v7.4-rc1, the base of that branch.
 
-Oh and why are we using GFP_KERNEL in the fallback path, but passing a
-gfp to kmem_cache_alloc_bulk above?
+Patches 08 and 09 have Reviewed-by tags from Alex now. I have a v12
+prepped with some small fixes from Sashiko and a comment cleanup from
+Pranjal.
 
-(and it seems like the only caller of
-zswap_entries_cache_alloc_batch() passed GFP_KERNEL for gfp anyway?).
+Mike do you want me to send a v12 with these changes or send separate
+fixes for you to apply on top?
 
-Let's just drop gfp and use GFP_KERNEL if that's the intention?
+Here is the diff from v11 to v12:
+
+diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+index 493576119a76..76e939ea52eb 100644
+--- a/drivers/pci/liveupdate.c
++++ b/drivers/pci/liveupdate.c
+@@ -127,7 +127,7 @@
+  *    Control Services (ACS).
+  *
+  * In addition, a device cannot be preserved or unpreserved once the PCI c=
+ore
+- * has started shutting it down (pci_device_shutdown()).
++ * has started shutting it down for kexec (pci_device_shutdown()).
+  *
+  * Driver Binding
+  * =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+@@ -409,7 +409,8 @@ static void pci_flb_finish(struct liveupdate_flb_op_arg=
+s *args)
+ {
+        struct pci_flb_incoming *incoming =3D args->obj;
+
+-       pr_debug("Finished struct pci_ser (0x%llx)\n", args->data);
++       pr_debug("Finished struct pci_ser (0x%llx)\n",
++                (u64)virt_to_phys(incoming->ser));
+        pci_check_all_devices_released(incoming->ser, &incoming->block_set)=
+;
+
+        xa_destroy(&incoming->xa);
+@@ -937,9 +938,14 @@ int pci_liveupdate_adopt_ari(struct pci_dev *dev)
+
+        /*
+         * Unlike ACS, only adopt ARI while the bridge is incoming-preserve=
+d.
+-        * Once all devices below the bridge have finished, recomputing ARI
+-        * Forwarding Enable yields the same result for the same device, an=
+d
+-        * must be allowed to change if a different device is hot-plugged.
++        * Once all devices below the bridge have finished, pci_configure_a=
+ri()
++        * configures ARI Forwarding Enable as usual the next time a device=
+ is
++        * added below the bridge, e.g. if a different device is hot-plugge=
+d.
++        *
++        * The exception is pci=3Dnoari, where pci_configure_ari() does not=
+ touch
++        * the bridge, so the adopted ARI Forwarding Enable persists after =
+the
++        * preserved devices finish, even if a device without ARI is later
++        * hot-plugged below the bridge.
+         */
+        if (!dev->liveupdate.incoming)
+                return -EINVAL;
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 08b768b9e905..2748ca22e9cf 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -560,7 +560,8 @@ static void pci_device_shutdown(struct device *dev)
+        struct pci_dev *pci_dev =3D to_pci_dev(dev);
+        struct pci_driver *drv =3D pci_dev->driver;
+
+-       pci_liveupdate_freeze(pci_dev);
++       if (kexec_in_progress)
++               pci_liveupdate_freeze(pci_dev);
+        pm_runtime_resume(dev);
+
+        if (drv && drv->shutdown)
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index b5b578355a1b..f3d58b5e7a5d 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1073,10 +1073,14 @@ static void pci_allocate_acs_save_buffer(struct pci=
+_dev *dev)
+        /*
+         * Devices that rely on device-specific quirks to enable an ACS
+         * equivalent keep that configuration outside of the ACS Control
+-        * register, so they are configured from scratch on restore. The
+-        * exception is devices preserved across a Live Update, which alway=
+s
+-        * adopt the ACS controls established by the previous kernel and ne=
+ed
+-        * the buffer to keep them across resets.
++        * register, so they are configured from scratch on restore.
++        *
++        * The exception is devices preserved across a Live Update. The
++        * previous kernel refuses to preserve devices that need such a qui=
+rk,
++        * so a quirk can only match here if the previous kernel did not ap=
+ply
++        * it (e.g. the quirk is new in this kernel). The previous kernel t=
+hen
++        * programmed the standard ACS Control register, so save it to keep
++        * the adopted controls across resets.
+         */
+        if (pci_need_dev_specific_enable_acs(dev) &&
+            !pci_liveupdate_was_incoming(dev))
+
 
