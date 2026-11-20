@@ -1,94 +1,168 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CD6606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4374A606A33E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=daY6EDy4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LxHJ1pgZ
 Received: by kanga.kvack.org (Postfix)
-	id 2B5B86B00EF; Fri, 20 Nov 2026 08:22:30 -0500 (EST)
+	id 535AC6B05B1; Fri, 20 Nov 2026 08:30:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 266B26B05B0; Fri, 20 Nov 2026 08:22:30 -0500 (EST)
+	id 4E6B16B05B2; Fri, 20 Nov 2026 08:30:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17D576B05B8; Fri, 20 Nov 2026 08:22:30 -0500 (EST)
+	id 387406B05B3; Fri, 20 Nov 2026 08:30:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EA1B96B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:22:29 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72A7EC0F2C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:22:29 +0000 (UTC)
-X-FDA: 85455561618.06.DE36A05
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 10B0C6B05B1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:30:25 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 86750120DE4
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:30:24 +0000 (UTC)
+X-FDA: 85455581568.12.B1F72EC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D432D40010
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:22:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=daY6EDy4;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id D4FF51C0007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:30:22 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LxHJ1pgZ;
+	spf=pass (imf21.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795180948;
-	b=KJ7EPjDKhgNbVfuZAOGFS/xzymUi07d0qmz5vRo4ZwJvmTYfSQpjVdc9pL9Wy5AUnQoFzF
-	sOR0nRDk9yKQZ1xdJoD0beQg8iB5Zr1Jgchyj9jjzKOinRQSCezdAuCIU9a8AKEBmPsXqO
-	3RXztTWnEQUBpNZjb8pe4CF3JcWi0lU=
+	t=1795181423;
+	b=Zxj0lHdDDZRwYEQVfw8cru5L5J1dublGKxY5cMDXL0AjjkShwbXvlfPIPKSiRVyy5qeQ2F
+	okKdQvwDxHQy1WmPuBL10lKqhyXooE496q9BaVT8Z7ie0deYlPx3jsjSkPWK+PvhBKQwTB
+	or1f4yl8XQHao/GqVyS0MLhyMDXmmLY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795180948;
+	s=arc-20220608; t=1795181423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CYKzK+afm1UAXOdWN88x2NYVRVihApLSg0ZCPnBXpAE=;
-	b=DbN+ks7IkJ5EY7pxb2979RGqjYvSIMaSgqA1oiGRXHkw/6IcWy+8qnEZ/Ps8IF77PQb+sa
-	S1QlD4B6Sh7Qwb+pGEDWKJVurxUHgIx7iE9BZyAUpL7W++EdusExAbemeStU477La9Sgab
-	JG0LSxfMl8fdv+fD4PmAYThAHpFmVU8=
+	bh=r0yepTevnFJpzt2r2drCfhbGwH1m5XYOTRjJ/I5L2oA=;
+	b=u/6KenOTDW2iWKYb+YN/rdj/cH5Ln4vAfbeI2HsmOxybSLn32WzrbqRo7Mr/i5UCM6E/A8
+	XtUm860kqkcMQHM8J46KHxP0IdZ4sPIRhyeO11xXF2TkL/RACxoiBqAZh0BKGzjN/IU5/Z
+	QknaXIKVr0HbEPb71V1UZTYrhNHhPQ0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=daY6EDy4;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LxHJ1pgZ;
+	spf=pass (imf21.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6973361284;
-	Fri, 20 Nov 2026 13:22:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417B01F000CA;
-	Fri, 20 Nov 2026 13:22:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id CE71161DEF;
+	Fri, 20 Nov 2026 13:30:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5BFB11F000D2;
+	Fri, 20 Nov 2026 13:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795180946;
-	bh=CYKzK+afm1UAXOdWN88x2NYVRVihApLSg0ZCPnBXpAE=;
+	s=k20260515; t=1795181421;
+	bh=r0yepTevnFJpzt2r2drCfhbGwH1m5XYOTRjJ/I5L2oA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=daY6EDy4/MYgaj691rc13nwsS7BVt58ckPRvsKOl2i2Hnu4t/DTGBXgBKLWv75LqQ
-	 LyocvI3dr8BHsyaTYk6KWZ+lo8NPMzYhMO4mK05rpvqFVb4ZMKY+Yv+imvPzytoM0p
-	 mJ3OD0foxm16lLw/nD3rzKJr58Gc27/GczEOn2lEEdMQAFagiy38PrrIRl0M0tg7MN
-	 w/UcBT8RLduLhw9YlLeSyxtcYKLXnxIwGf2Yff9jH+iQ6mbq1d5YJxhKbbXDdOJQCB
-	 LqLGvy+B/ya4W91XSznxOTE8c3OZX6TDJD1v01gXWyjzrsGITdeX8h9VoN7bY1RDqk
-	 D51Qrr7L8WkIA==
-Date: Fri, 20 Nov 2026 13:22:21 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nico Pache <nico.pache@linux.dev>, Jerrin Shaji George <jerrin.shaji-george@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] vmw_balloon: account 2 MiB pages in NR_BALLOON_PAGES
-Message-ID: <awBJbbFwE7hlEs03@gremlin>
-References: <20261120-b4-balloon_nr_pages-v1-0-d8944b587819@kernel.org>
- <20261120-b4-balloon_nr_pages-v1-2-d8944b587819@kernel.org>
+	b=LxHJ1pgZMRnjgm2kTX3LFJJa+QJ+pe4P0CEN40l/PzhoI4P8panaY+0Q3U0aDuZqY
+	 d6XFuKi4YyOzKCDyY6Fpy81BvYcjjeknCdisgEAM6IWExeb3iW1nhJEJD4KaBAW+bD
+	 r5iJicgG91dzqk9nzBZ8D2/JbAlMgawKAhCSuL3ug4K1sos2GJ4t7TiWGQh22c59DM
+	 wVnhMwGWXmBTp2MeJ5zHRxb9ZPYDyJPmjlhQXY3V7wh+jRIoGhfeMZWEgSkpntxOIX
+	 O5p3EmJ9RssCoXPKlmpEXhy+NrYqURd5KZrMIRYhlRKm4oS7b0Ay023KIpW8vNYQ1h
+	 LgzIrz39Ee1bw==
+Date: Fri, 20 Nov 2026 15:30:17 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Alexander Mikhalitsyn <alex@amutable.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Chris Zankel <chris@zankel.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Hallgrimur H. Gunnarsson" <halg@google.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Moore <paul@paul-moore.com>, Paul Walmsley <pjw@kernel.org>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Rich Felker <dalias@libc.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v4 03/14] rootns: Track init lifecycle via
+ copy_process() and pid_namespace
+Message-ID: <awBLafK4jqB8fTF2@kernel.org>
+References: <20261119224312.1037966-1-jarkko@kernel.org>
+ <20261119224312.1037966-4-jarkko@kernel.org>
+ <e376c8f0ec5c50b417375197a5589a210f151d9b.camel@amutable.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20261120-b4-balloon_nr_pages-v1-2-d8944b587819@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e376c8f0ec5c50b417375197a5589a210f151d9b.camel@amutable.com>
+X-Stat-Signature: 731hq99k7if4ay38mrnjr9eggkrb7tk3
 X-Rspam-User:
-X-Stat-Signature: byniahxx9sk7peixn8h5i8z8j93ym3sy
-X-Rspamd-Queue-Id: D432D40010
-X-Rspamd-Server: rspam02
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795180947-86832
-X-HE-Meta: U2FsdGVkX18EImCmTRY6FuXvvkQMHwrkJNtH6KMZkegiFWpzUleku9qfFQAXloj0N2fCM7Fy3J5tn7+vLTGgpewbLovKBd1QzPWOhgH/oONyJaOoz8SRUxOmi9Ee9WrjaQc7yIlrzbsrTLWDcAUMyk5gKm6pk2Z1jXLO2XiBsvOBL9UJ45JNkTvQsGJy0w8kwRzUeq9ODPNZr+k7A3m4C98jkv0X+OZPgiTX1PMkOLFg3h2i7aHx8nJBhcN0l88NyO876tZHZ4VTnCtmTAoYCqCy+Vuu8xwUSrFrcqfROPbSqWbcS18CMtvHjxXk3ummJ9Ey4IVDzMHpwNGgFE+axhECKyOOZPYRf1uA6Mb8qIW3ClU/Am4orbDkvWJR/7t4pp5ednGOdR0BwOZmeVZeZfbRfCL2K++Od25RKh4Tl0ix/MRlLfmyAbAmhcyHpoklDt5tcmfZGb6H0xRnjWqN+XD2k4OZxXZWv965dWm5hy6Bbl4rooSbwON0VIgbSVzQpsetPNTLmhEg9mpHkDvIJX8ps8phbocBFoRu/B5DRU6LVM7rj/eZgIwO8JwUH6fzfrmB+SBWiF6lNRnMVg681esfWg1V3hW+V+wHfqxsHuS1oZ5Lxa69lPJUMkKbcKSOL2CTBK9hNAEgCZ7j/atakqNWy1po4G/Ogo/u3rYLKrb174C38bSngTLMD0eOGgcNkdRwxcGTW15yXG8mvCj1mO7nn7wcCyyFPWpQW0+yiCPReb0vh2yOEgVpgKgAzwOlzQa2J/fD8Q1x7LirPmJmCudkLu8ULfaU30/NRzLsyo61626EHY0r7kHs5TLh+4ab8SlSCYyaJ2ils3wm/h9rnTboboI7zgaJI8vYn8r46lDPsZ/33v5zd0u73Ov1aVYImsDYYHlUMRrDWq8IZc4s+JI1STvjjej5FH7RafZMyBiEsitzdNlTZr28NKp1m44Ym1EcxEunAglreAwKuEz
- gP+BUXpA
- eaWNNc5mMHDLTMRTlp31nUakkJ6lvaVtOzN5TrdfdHDUzwOjIuPMHOeReCed5t9ggkl8UbD3wjjkT3k+0wc9woqZyrubKudSlDj5crI831OAHPYAJdqdN+2TKwvES4EQuow/7vrFG7sIHdXh6wRE1r6/XuzgGn1V5FaTCXVlj3Gw7caDwYgysWwCE/5kGtuQJti1bKxX4ei+4WQJCSInKMbBhJtiX23M3AsKZdIMNwpNs/S7pUYdFj+kfZJ28fPFPFkBhicQHbBX3qpgd8MKA4VuA4yvJUCyFaqixA3vyRLYEcWtXBzd2o24qcK4rEMAkewv1vbGlwLxp9DJZGllDbJUPgWrV+XxeoiMn2yQVi/iPLpgzFRcCUOuG/y7NUDHyrOTx8TtpKNfBzevMH6kBaL8mZMiVf0Q03bRthuldpVSGRpLN5Gzmw/imeh5mHOl2ONnFrIsK21/UGCciVOBJ2JHVfe7qpVU364TT1pPm7No8g8rICceJu2Ct47lyKj1LSdEGiJwr/lJGQi8bDMg8wzVo0+DM1z0cKDyse89qfchUSbg=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D4FF51C0007
+X-HE-Tag: 1795181422-99794
+X-HE-Meta: U2FsdGVkX18bniBEHFZhPfo/rOYShDXrGXKECguhXPakr0Y+FinWJ7vsBwPUndmQgDqGv7fYeZJi8HSFhhMoVOWfB0NMuRst6jys9AVLpKp5qgZcM4tiQOAwLhixhvQK2nBH9AAjXjj9CRiqONeEIpJ+Q/nX2LNIHz6FEaiNpCezUO76h9SIiXSKOz+gd1dsZ1VNItMVhEasrP3bAceYdl9cAc/LERT6r5S7FEsbVWnjaT7PNqkruYcwK+Fh4XowInrifI3ZQrifmDa1wCUh7q0VdDYACdKQdtzFq+6OYnMjjeNL+44FZ9ceGOcE/U3tvsVUYFrcg/8u3xnJpraUmZExfCRj5nHhUkNzfnKMiH2jM8R+hifKoWUIc2AH5Jh+Ki/ExgTv7dmEyoLMEQokHSf5PX7wMBPLWZZeMShgb6+PZKOKNt+jsUYRJ2qCsgadIDKV0mi326Wp/BV+Ci++bEv8dllxOYbn3G//WmpYVN4d2edd4lz1boZpDbLbr7cXwIUBrnDAE06wza21cR1I05uRD6yxE5QN16r89bMEJUxCC/DajvSFnRrNxHVs5XOKXcKJTpng9h1pmuJ9m8kXnbb3LSG2Y1hAkv0qxtNjQaghOPkW9+FRD28roSpoM1bcGosPuTtwpz58wz+sClcvpBLD/VwpbODgFJpEzq1ktCwpF6r5lG7DaWOTvsHLNCJh8hRVSiy4eKuVMWODlRBjOyMHe959Cky7vo30TrJMgdSpmVrTxKo4QTki5nm+k1OOuD8yLWUrvySKzv4zUbk0oEqQEC9+nn0LnYQp79p18D9+R+DXN7hXDhODsD4M2gDZZJcjmL1saUT1Cs2kFFg9MmwciYzKycrogvxIGclKzy1sllXaOg8yhszLQ6U9AiH2aoCOPK0wT0PIF0mANX8o4pr0rXIpq37DmkFMW7hddNZGSw6lVAWOYjLOKFv3YCt7Q8GmjBpHaoSMYw1CPd3
+ ff170J7U
+ PxkbuoiZEPkzug/xfzHxqeiuAXP93TA/me9TlARfRF3TzuxR732oiktKnJLvdLK9Xbkj2uY1zxoBKroXd/1soGfXSWGcracVdeu+n72Id3I22JyLU5gy6mqPa+oLWQ8Qzs1NzGHtuS//ek+rr6OOOkC5PANUySKvMsx82vXsCoV09VjUXE7jxzSgzw8XQg+nu1jBkzX3YhB68mOnFTbajeyLMGXTmYUHBg9rPzWYaTS5yJ428pLuR+JoT+8Z0OYm/IfsUt68bz6Wbo4TFk5cX+/GejvGZdmDSBHJa1eQ/nHs/XX8Kmi2HvK8IBxc97nLcTZaH24eWee+xBpYtH3v1Uy6+MDN6ISczf2aaDT0k3Lw2QKh86dXTFjFPa0PXANu4dRe1yZ7PCpdQK56lpO6ozBDRVFOOrgcBIAVfwLlzXrd6VmzsKC6DfBpLPbTbawXVcdFNaVj/WSi0nmjSLKowEW8HsEvjBJ48Ct6yS+BY0/Z8vh4SSy0cYUJHbxkOajBTH+MpQ90tJmRrD+joBVc5cjv55MsDhLcc3TQWE/bT9nErrt34lJWtYakSGKLF0JFmx76NpqQ7XbAi48E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,56 +171,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 11:34:43AM +0100, David Hildenbrand (Arm) wrote:
-> vmw_balloon keeps 2 MiB balloon-inflated pages on its own list, not
-> using balloon core that takes otherwise care of updating NR_BALLOON_PAGES
-> for base pages.
->
-> So far we didn't account 2 MiB pages under the "Balloon" counters, so
-> /proc/meminfo etc. would not reflect them.
->
-> Fix it by updating NR_BALLOON_PAGES when enqueuing and dequeuing for
-> these pages manually.
->
-> This has low urgency.
->
-> Fixes: 4d689474e1b2 ("balloon_compaction: update the NR_BALLOON_PAGES state")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Fri, Nov 20, 2026 at 02:18:43PM +0100, Alexander Mikhalitsyn wrote:
+> Dear Jarkko,
+> 
+> >  	acct_exit_ns(pid_ns);
+> > +	exit_rootns(pid_ns, me);
+> 
+> We have a very similar mechanism around pidfd's to track exit
+> information for a task. As far as I can see we already have (struct
+> rootns *)->init_pid reference, so we can get exit information for free
+> (look for PIDFD_INFO_EXIT).
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Thanks for mentioning. I'll see if I can leverage it.
 
-> ---
->  drivers/misc/vmw_balloon.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-> index 3edb934dd7fd5..47dbcb3be6ed6 100644
-> --- a/drivers/misc/vmw_balloon.c
-> +++ b/drivers/misc/vmw_balloon.c
-> @@ -1005,6 +1005,8 @@ static void vmballoon_enqueue_page_list(struct vmballoon *b,
->
->  		list_for_each_entry(page, pages, lru) {
->  			vmballoon_mark_page_offline(page, VMW_BALLOON_2M_PAGE);
-> +			mod_node_page_state(page_pgdat(page), NR_BALLOON_PAGES,
-> +					    1 << VMW_BALLOON_2M_ORDER);
->  		}
->
->  		list_splice_init(pages, &b->huge_pages);
-> @@ -1049,6 +1051,8 @@ static void vmballoon_dequeue_page_list(struct vmballoon *b,
->  	spin_lock(&b->huge_pages_lock);
->  	list_for_each_entry_safe(page, tmp, &b->huge_pages, lru) {
->  		vmballoon_mark_page_online(page, VMW_BALLOON_2M_PAGE);
-> +		mod_node_page_state(page_pgdat(page), NR_BALLOON_PAGES,
-> +				    -(1 << VMW_BALLOON_2M_ORDER));
->
->  		list_move(&page->lru, pages);
->  		if (++i == n_req_pages)
->
-> --
-> 2.56.1
->
+If something like this is found, it is partly due long history of this
+code i.e., not planned/opionated choice :-) 
 
---
-Cheers, Lorenzo
+> 
+> Kind regards,
+> Alex
+
+Br, Jarkko
 
