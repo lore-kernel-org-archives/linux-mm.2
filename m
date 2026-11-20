@@ -1,94 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041A7606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 07:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A1A606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 07:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=d4aFD2UJ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QMGPSX+H
 Received: by kanga.kvack.org (Postfix)
-	id 0C63B6B05BD; Fri, 20 Nov 2026 02:04:52 -0500 (EST)
+	id DF1A56B05BF; Fri, 20 Nov 2026 02:10:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 077996B05BE; Fri, 20 Nov 2026 02:04:52 -0500 (EST)
+	id DA1FF6B05C0; Fri, 20 Nov 2026 02:10:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED00F6B05BF; Fri, 20 Nov 2026 02:04:51 -0500 (EST)
+	id C91556B05C1; Fri, 20 Nov 2026 02:10:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CD8436B05BD
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:04:51 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23825C0D26
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:04:49 +0000 (UTC)
-X-FDA: 85454609898.29.4048EA0
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 72128A0003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:04:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=d4aFD2UJ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A73FC6B05BF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:10:51 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3DACD160DA7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:10:51 +0000 (UTC)
+X-FDA: 85454625102.20.98C64C2
+Received: from mta0.migadu.com (out-53.mta0.migadu.com [91.218.175.53])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2538120002
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:10:48 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QMGPSX+H;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.53 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795158286;
-	b=hlVxy71NoFBaOAC0u/oxMXnfeYSx6npBK2ANGmbghWg/ihmT5nBX+cDsSWBjmJ7+QroVHG
-	eqzhTP/gGuTPMLqGEQFLfb7wrp8b9OdxAEab5vxbmjksRgc8hoq4C5CYwxu150Ms8h6yfu
-	tt7kAl8xki+Erit0agVyySrVGUN63aQ=
+	t=1795158649;
+	b=mc2kykP0dW7vi3sCF9l4CXjEXyOpRr1QIEaGBPhIRBJJJ8gm1P+do94ijSrw/7191StN6F
+	Uu3eEf/YTo/mDJ66y31yxnk7FrUvfLOHNWwYYjtR4VsMqAQo5Rxu/6R+rg5kCiGSWd2tfP
+	m79XOIA2ooxphWq7UtrMPuEW806ZKVg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795158286;
+	s=arc-20220608; t=1795158649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3OAgcRg9EnbY/PPSzXn+hugpxwFSYehyNculrW0hUPM=;
-	b=vdc4CZqiPAW/EYSAeDNuC8WPdTD5nZvbsFzGU71xBi3qDCTODHUivs6i2ZVuk1eezilD7Y
-	e0HRorhdpLoESn8le1cnU9MmypJv2haJ6EivJjFtOXKIvfxv4VMynjD+Q9d5DxBTcvftbs
-	Oys9rmVSe/0WsKieE0kC6pgE5X8gNHs=
+	bh=rrVjR0ldF5os90khgV8tI+gBuMvnvIaz6fwAZEMSvyY=;
+	b=vZ98sADpt65lE7z/hbqTLw9QvVg5fXCBt0Frn+lXZQ/SbcYA/J7tzmasApJT/6fibIyiBU
+	e4SEC3FcYgMnIieZ9OtXnmZIM1Bm4JvVLqTD0wc/Vgp/0bdZN+e0iUegYJ0R2uzYKw18DY
+	unuEIzCblq2qrSUCydsdzZqD8ajtN9c=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=d4aFD2UJ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1795158282; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=3OAgcRg9EnbY/PPSzXn+hugpxwFSYehyNculrW0hUPM=;
-	b=d4aFD2UJIIb4eH1FRHl/28m2Ij9G+lXS//SYj4IpcacVMUunlALlrcH8OOh4RDlrJ41p0LIw+q3Pow3sRpOd9LxavhWLzBGqsd00DqjcUGzIyaQcZugmP6cUmqtP1H3igi1L29bBaaFnm2wVRJ5sKbERfZZvp5ZoKurmiKHYxY4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0XF5YGBo_1795158278;
-Received: from 30.178.66.186(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XF5YGBo_1795158278 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 20 Nov 2026 15:04:40 +0800
-Message-ID: <565e4075-2788-4310-8309-7739b9ee94ed@linux.alibaba.com>
-Date: Fri, 20 Nov 2026 15:04:37 +0800
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QMGPSX+H;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.53 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=iXadPTuzEyYGK17GU1F26gUUhQt7mhcJQzKvAe1cH3A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795158647; v=1; x=1795763447;
+ b=QMGPSX+HicDdod/qSRxo4k02P1uQff7lv/obQSFKKcivGcs8NZiHqFJJdR4DT/77ERiNZHOO
+ miGrQ6btjiKZeWbdUxbHD/tnVlEruLqsh1PkutDa6rZu3fPykELid5nXKmXHIhR38CGa5/LqV9U
+ DyQcmRqdZLXabyl17V4NaiwU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8e21a47625769387;
+	Fri, 20 Nov 2026 07:10:44 +0000
+X-Mizu-Trace-ID: 8e21a47625769387
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <73a452ad-4346-4f77-a2f6-4c801562c050@linux.dev>
+Date: Fri, 20 Nov 2026 15:10:36 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 RESEND 0/5] mm: restore per-memcg reclaim for NONSLAB
- shrinkers under nokmem
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, mkoutny@suse.com,
- david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- usama.arif@linux.dev, david@fromorbit.com, qi.zheng@linux.dev,
- yosry@kernel.org, nphamcs@gmail.com, chengming.zhou@linux.dev,
- xlpang@linux.alibaba.com, ryncsn@gmail.com, gourry@gourry.net,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261105092233.3558950-1-qinyuntan@linux.alibaba.com>
- <20261109215053.85df5685da951ab47ef858f1@linux-foundation.org>
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
-In-Reply-To: <20261109215053.85df5685da951ab47ef858f1@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 1/1] mm/shmem: don't use the memcg of an uncharged folio
+To: Chris Mason <mason@kernel.org>, hughd@google.com, david@kernel.org,
+ baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
+ qinyuntan@linux.alibaba.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261119193656.88678-1-mason@kernel.org>
+ <20261119193656.88678-2-mason@kernel.org>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20261119193656.88678-2-mason@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: kujg8bnf8djosg91rzfuqjbeustxdp1w
+X-Stat-Signature: xwqp5gyni73njgrf8rc3jaimp8oi34np
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 72128A0003
-X-HE-Tag: 1795158285-996268
-X-HE-Meta: U2FsdGVkX18sJpJ49G3stB17EZta1iNij8/7ypKvMZHkhpR4ZCRilondqRBdQlWbjeSor70AbGY15h/+XeHNFP8eFvDb8c1ddkxedzbU6MOalDLSzZfJgBoeajLFoJtNSQ0Au5+QAD/mR4Vedjz8bCSW9kGKWP/dhESb4uQviwdEftaxRoZ6ZVd01pxjvJVDiBtBHj7LsHeuzD7iqCh7AeMH7Ymj8FYUqKkfqDjW9h0aTlrLtoisxf8aOMIt1mCSjM0WlNYRTwQIvM871qjv9OyGqhfsLWCdxLZhsiBeNLWljZAr9i9TJ3e9Uy/vQPWXeMflrcAB1TjCMWFGB7UhRzR1UJng5LSkNX+iN8aJnx1jQhp+Xd4vHt6H31Rsw5wibqhNqQBVUSK2IU3UWLtCoKM8pVkr8w2WwQXLE60o0znz15Cn/BfLsPk5Q3rEtFLCFFB7VwoHGq5B6ABdjm9w2dFuY0IG4Rt7erk0hpUWLf0xgZ7rcgTWigNn3UEMgazun4NI1m93z7omIGhxq5Agj4zy2wCLfLcYjicjPxPT7TVJMOydIvGWbQw0K8SpoeYJKDUeAiu1JrW7BPmTc1pvvw45zPhDzMTTriGYXFfF2dN62ehWP6xT0BqT8WjI4Cj4MT4lCpKjk9Xo9bs4/3aFAbAFnhJVQKwbbRh632luVwE0sPlR9Zv9BC4y/U75nNOF6/+kMnOCwR970DkKOKGZ/JErY+CxJ5KMLZLsE41hju680Ipugsja+naSt3HSxAODuso5vjvAEFy7xzSTTF+OuvT6egFUCjUqFSSJUd6fgH7dCXN9F69E3mmo2nE21Wq7lwwlwqu28zDZE8rtFuffzlWDF46XAKor/zzdlwJDTVxODKaFbxYr3Sl/CHHVu6IT/XCN/iw3HhpDlpOEwY9bbE85HAw32UF8ot0XFWWDxLamFLWaTy30ZGzwJcQlONIbm7Lgsk0vdHQ0PhEJsiU
- d/McXV/x
- Pt6hih9KbAYk1QwcwWrjiPIbQcG0DNY7iX11txJQIKKn7kfQS7Rb3g8xu2u/bUkhhtZ8TO7DfzTjTtSjyxKRhjwx1mOn/R6730RrXqRCM3RoJ3mw/pEqzBA5s/GH9hQIEVJdghufz4ykVgHQUR9DxakYZcBZONhuEEQsI2J8/N4nhKXBzf3cZzcD+ySfuvPAV41U9wK626c0buWadSk4dOevc3COlJSowe+iUuhJaJzDXTRH0u7WJNph2/h7FV87hhy4sAltT4FkIKUC3f/d3N3K3OHnpf0TGlzsjE4YA/s5VONTUvpltdopcHqDVpm4ZsVp955aEsVgkgUfBKpkZVXxsi7LJbxQrSRR/xwUPRThk8fgvq88YGLuAm3yAfSFfZu68npc7u5xTD1Z2F83FA4dvqoDAW9wNx7zbBqN5V6aSJTot4d6cJ2LPR0bVORDWMs/noZ7TcsJqOZbZAh8HMpx4/T/Barnv2GDaBDWQoh5pLW91VMPgiDgymHtT/HD+IzXVxAStL4iHzKLbRkb4UHCJJg==
+X-Rspamd-Queue-Id: 2538120002
+X-HE-Tag: 1795158648-393486
+X-HE-Meta: U2FsdGVkX19OImnaOFWyFh6AmCWuwvubeiBOMXlWU9z+WFh8PtjfnriN1paHgZWb+PTgztt91kJYGHloClDygHXDaR5ZEYTKT1kLjNL/VaNtx3dGaHovlW1fNBWqbtSDcY5TcPVbwhmR/x3bcHPVO7WMb6d4kBihXJsuG7LNMvSSQWvsFtkGvwn6yh8qu7ZPrWtnhGsDrdq0RGQ7a/jhJYgjlfrTnDpgrV+YS3l8sm0WuGsNGdtLxVNAnE57Xwiky39vZYznrdOiiXYYusi2/IPNWKFJm0f1mWo7NaDDPB+eYK0XnqYI70ZI5MMClcb2inXeVkLt0GS+oARr4voB2tp7Ci7ao6vq7e99yBXBqWjDFG3CcaPy4HChKeODZ6o8r3YQSKXsR8+ppzbTwRUNlItuU0CtBGjEmUxZLhsothSKRnP7tSvblfkZxl//jE08sGoiurYPF/Fe4Ajqa07aKqG5X/VyQsBb6a3N608Ouqig8SLkQxYDOLKbyarpucFgD/l3KRkEBqrmsnuqMylo8Gw8IvjFr+YvT9daEeF2VfKgx0luT50CW0ZIQZphiWIk4wHkjs+XAi4UJ8M7gQWg2KOB991DBKGmYgUFXD2JDe7/TMI+1KO5t7JKLa1XCWDAtzsiEb4IQALkxZsKiLN6BMkVUaNtEzuRV2bhb6JE8pec+1u7ZRuEFcaCb1BXMaTp439tTRmaL7rQf66UBoCukHPUn180eI8itNYkv1GnxyojksJ925wVnpdGrNIFgvlk6P/DATPRzAbzuQJs7E8AZppfdz6P4nu055LFzfxafB+IHEwdi1ouPk8DfzbBVG0HBqWcxV9Tw9cATAK8p06y3ZAtiNm1CF/OIWeMa1UUbahDW5GozAy/KZwiNSebCW3Ov6J95PBrR9CswzVwVui4JvFZk2O/Dv6RidLdGkTjWmKY96sJk43ZHUKsvvCg7lFuNNMdGKUknsern65VihQ
+ kI1xNdjo
+ nkcXPXQLAHuozpqDs4biATj+GuLChtgcnoO1Lt+N2TbKfooc4riMuE4m7WKzXfGqBRM4GKExlJ0kSaMttafZCzOwPi+0ZVaDjao6rFJk45+8UzyIriXPC0AtNoAoN8hqIUC1o3+qSi8S1RxFiElHulZHiYI2bL8lukeghd/8GaAy2ifgv+pkX/Prn8SjARcJwGNvvxMcwiLmQbRQTl6Chn9d3MAZSrvGevadavh33ToCQjA1l/LJ4bPfZCIw7PmKdygEsi9MWnKYmKLPSodqFTAb4h9tasQ1FIa+rbA3AMy5xsKcfvzxB+slSEaAgqFa7CqPUI4cqLlMxq0nk4dHrU3Takfk75NsPaAWuD/Eebi/cTniMxa5MQb5/4rRgOImbkdy4rBGBjbCB2JYfnhwZ/SBsgmC080pbkrzDrmPzQ+XV8egWLCWxI36vFF5MyQAqz4jD4PGZLP3NZm9qTrtVhmDaTULnMFUqRHJ7f37REOj5XJjcBhMp9A8riFf4IPnuW611
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,66 +97,170 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-On 11/10/26 1:50 PM, Andrew Morton wrote:
-> On Thu,  5 Nov 2026 17:22:28 +0800 Qinyun Tan <qinyuntan@linux.alibaba.com> wrote:
+
+On 11/20/26 3:36 AM, Chris Mason wrote:
+> The shrinker for unused huge tmpfs folios can dereference a NULL memcg
+> if it races with the migration of the folio at the end of a file.
 > 
->> With cgroup.memory=nokmem, the THP deferred split shrinker and the
->> zswap shrinker are degraded in two ways.
->>
->> First, both shrinkers are missing the SHRINKER_NONSLAB flag, so
->> shrinker_memcg_alloc() demotes them to non-memcg-aware shrinkers:
->> limit-induced reclaim of a cgroup neither splits its partially
->> unmapped THPs nor writes back its zswapped pages.  v1 of this series
->> [1] restored the flag to fix that.
->>
->> However, as Sashiko's review of v1 pointed out [2], the flag alone
->> is not enough.  __list_lru_init() also collapses every list_lru into
->> per-node lists under nokmem, so even with the flag restored, the
->> objects of all cgroups share one list per node: the per-memcg
->> shrinker bit is only set for whichever memcg happens to repopulate
->> the empty list, so pressure in other cgroups may not even trigger
->> the scan, and when it does, the scan walks everyone's objects.
+> folio_memcg_list_lru_alloc() assumes that folio_memcg() is never NULL.
+> But it is NULL until the folio is charged, and a migration target can be
+> in the page cache before charging.
 > 
-> Thanks.  Sashiko still has significant-sounding things to say:
+> shmem_unused_huge_shrink() looks the folio up without the folio lock,
+> so we can race with migration:
 > 
-> 	https://sashiko.dev/#/patchset/20261105092233.3558950-1-qinyuntan@linux.alibaba.com
+>      __migrate_folio()               shmem_unused_huge_shrink()
+>      =================               ==========================
+>      __folio_migrate_mapping()
+>        xas_store(newfolio)
+>                                      filemap_get_entry()
+>                                        returns newfolio
+>                                      folio_trylock() fails
+>                                      shmem_unused_huge_requeue()
+>                                        folio_memcg_list_lru_alloc()
+>                                          folio_memcg() is NULL
+>                                          memcg->kmemcg_id
+>      folio_migrate_flags()
+>        mem_cgroup_migrate()
+>          commit_charge(newfolio)
+
+Thanks for catching this!
+
+Some nits below.
+
 > 
-> It also says "failed" for reasons I don't understand and it doesn't
-> seem to have emailed anyone.  Please check it out?
+> Fix it by keeping the original objcg around while the inode is isolated.
+> 
+> Fixes: 743e7d025d2f ("mm: shmem: make unused huge shrinker memcg aware")
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> ---
+>   mm/shmem.c | 29 ++++++++++++++++++++++-------
+>   1 file changed, 22 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 10cef89b00b0..4465a43d6f74 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -758,6 +758,13 @@ shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
+>   {
+>   	int ret;
+>   
+> +	/*
+> +	 * A migration target is in the page cache before it is charged. Once
+> +	 * charged, its objcg can't change while we hold a folio reference.
+> +	 */
+> +	if (!mem_cgroup_disabled() && !folio_memcg_charged(folio))
+> +		return ERR_PTR(-EAGAIN);
+> +
+>   	ret = folio_memcg_list_lru_alloc(folio, &sbinfo->shrinklist, gfp);
+>   	if (ret)
+>   		return ERR_PTR(ret);
+> @@ -887,12 +894,11 @@ static enum lru_status shmem_unused_huge_isolate(struct list_head *item,
+>   		return LRU_REMOVED;
+>   	}
+>   
+> +	/* keep shrinklist_objcg, requeue may need it */
+>   	list_lru_isolate(lru, item);
+> -	objcg = shmem_get_and_clear_objcg(info);
+>   	set_shmem_unused_huge_isolated(info);
+>   	list_add_tail(&info->shrinklist, &scan->list);
+>   	spin_unlock(&info->lock);
+> -	obj_cgroup_put(objcg);
+>   
+>   	return LRU_REMOVED;
+>   }
+> @@ -928,32 +934,41 @@ static bool is_shmem_unused_huge_match(struct folio *folio,
+>   static void shmem_unused_huge_drop(struct inode *inode)
+>   {
+>   	struct shmem_inode_info *info = SHMEM_I(inode);
+> +	struct obj_cgroup *objcg;
+>   
+>   	spin_lock(&info->lock);
+>   	list_del_init(&info->shrinklist);
+> +	objcg = shmem_get_and_clear_objcg(info);
+>   	spin_unlock(&info->lock);
+> +
+> +	obj_cgroup_put(objcg);
+>   }
+>   
+>   static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
+>   {
+>   	struct shmem_inode_info *info = SHMEM_I(inode);
+>   	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
+> -	struct obj_cgroup *objcg;
+> +	struct obj_cgroup *objcg, *old_objcg;
+>   	int nid = folio_nid(folio);
+>   
+>   	objcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
+> -	if (IS_ERR(objcg)) {
+> -		shmem_unused_huge_drop(inode);
+> -		return;
+> -	}
 
+Maybe it's better to just return early in the failure path.
 
-Hi Andrew,
+How about this:
 
-Sorry it's taken me this long to get back to you. I've had a very busy
-couple of weeks.
++static void shmem_unused_huge_requeue_locked(struct shmem_inode_info *info,
++		struct shmem_sb_info *sbinfo, int nid)
++{
++	lockdep_assert_held(&info->lock);
++
++	list_del_init(&info->shrinklist);
++	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid,
++				  info->shrinklist_objcg);
++	info->shrinklist_nid = nid;
+  }
 
-Thanks for pointing me to the report. I looked into the two issues
-Sashiko flagged in patch 2/5.
+  static void shmem_unused_huge_requeue(struct inode *inode, struct 
+folio *folio)
+@@ -943,17 +975,18 @@ static void shmem_unused_huge_requeue(struct inode 
+*inode, struct folio *folio)
 
-Sashiko pointed out that mem_cgroup_id() identifies the cgroup
-directory. We reproduced the ID collision on v4: after disabling and
-re-enabling the memory controller on the same cgroup, the old and new
-memcgs had the same mem_cgroup_id(). Once the new memcg has its own
-LRU list, a lookup for the old memcg can therefore find the new list.
+  	objcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
+  	if (IS_ERR(objcg)) {
+-		shmem_unused_huge_drop(inode);
++		spin_lock(&info->lock);
++		shmem_unused_huge_requeue_locked(info, sbinfo, nid);
++		spin_unlock(&info->lock);
+  		return;
+  	}
 
-I think memcg->css.id would be a better fit for the list_lru index.
-Each per-memcg list belongs to a particular memory CSS, and its ID can
-only be reused after the last reference to that CSS is dropped and an
-RCU grace period has elapsed. That keeps the indices distinct for as
-long as the old CSS can still be accessed.
+  	spin_lock(&info->lock);
+-	/* Requeue the inode to shrinklist */
+-	list_del_init(&info->shrinklist);
+-	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid, objcg);
+-	info->shrinklist_objcg = objcg;
+-	info->shrinklist_nid = nid;
++	swap(info->shrinklist_objcg, objcg);
++	shmem_unused_huge_requeue_locked(info, sbinfo, nid);
+  	spin_unlock(&info->lock);
++
++	obj_cgroup_put(objcg);
+  }
 
-The second finding is the same race that Shakeel's patch [1] addresses.
-It predates this series: a folio can move to the root memcg between
-the two lookups in folio_memcg_list_lru_alloc(). Shakeel's patch
-rechecks whether allocation is needed after taking the memcg reference.
-That also prevents the unnecessary allocation at index 0 that Sashiko
-flagged in v4.
+Thanks,
+Qi
 
-Does using the CSS ID for the list_lru index sound reasonable? I'd be
-happy to incorporate any suggestions and send a v5.
+>   
+>   	spin_lock(&info->lock);
+> +	old_objcg = shmem_get_and_clear_objcg(info);
+> +	/* The lists for old_objcg exist, the inode was queued under it */
+> +	if (IS_ERR(objcg)) {
+> +		objcg = old_objcg;
+> +		old_objcg = NULL;
+> +	}
+> +
+>   	/* Requeue the inode to shrinklist */
+>   	list_del_init(&info->shrinklist);
+>   	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid, objcg);
+>   	info->shrinklist_objcg = objcg;
+>   	info->shrinklist_nid = nid;
+>   	spin_unlock(&info->lock);
+> +
+> +	obj_cgroup_put(old_objcg);
+>   }
+>   
+>   static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
 
-Best regards,
-Qinyun Tan
-
-[1] https://lore.kernel.org/linux-mm/20261112061231.2469026-1-shakeel.butt@linux.dev/
 
