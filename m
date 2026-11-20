@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D74860A3808
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D73606A334
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lyy+di5v
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DT1RSs4I
 Received: by kanga.kvack.org (Postfix)
-	id 5602B6B05BC; Fri, 20 Nov 2026 08:11:55 -0500 (EST)
+	id 846906B05BE; Fri, 20 Nov 2026 08:12:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5378E6B05BD; Fri, 20 Nov 2026 08:11:55 -0500 (EST)
+	id 81D366B05BF; Fri, 20 Nov 2026 08:12:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44D556B05BE; Fri, 20 Nov 2026 08:11:55 -0500 (EST)
+	id 75BA56B05C0; Fri, 20 Nov 2026 08:12:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2318F6B05BC
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:11:55 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E45E1A0E44
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:54 +0000 (UTC)
-X-FDA: 85455534948.07.DB1477B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B761214000C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lyy+di5v;
-	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 4CAEC6B05BE
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:12:01 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8EADF40EFC
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:12:00 +0000 (UTC)
+X-FDA: 85455535200.02.BCA0D3D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C60AF140011
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DT1RSs4I;
+	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795180312;
-	b=opUEtO1MV9Mv1PitqzfeA34ooLd/MzcGpokv0bwCbbMTc/pFLIE+T3E8VuVjw90iWjK0al
-	uVLXikUJ1xY2dyFplG5Y9mHv5dg8+NLR4XWKhVqfIY1QXpf5oFZ5m3XzK1zNiItXmSVn4E
-	5vQsaHE2MwFcErZkN1Iq/BeqUVPWYpc=
+	t=1795180318;
+	b=L05duwIXEb4PXNCoSGZjD+bPqrgFP0F5FoHrHgmSh9L72nDPcaaGVi2kECZUceT/47qgMd
+	5wjVuGJc8FF9bMrtf4kDmjUQwmDldjt5XGKEgrjK71OZ8AEYUfF6LH9tNkNsvw/KOKCPur
+	qJ30zraCwHle800ZwMyWkL1plJUoDug=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795180312;
+	s=arc-20220608; t=1795180318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gqLfJsppzt0bobg6k5RSzGuyBhJDJxtFjMmDgLlOsEI=;
-	b=N+6RkDzBAKk9mSSyY3QlcNxcwgNWJgz9dQFnUBdE6L17r7vdso1FbRBIBAwDCnkAwPQTZV
-	JDyNbiZCwuoQgM7zapr/ND4j94UtxtU80sVjfL3edOc7gFwEAsFN2OyDyxeWKtMtoa+74v
-	YZWGbMf+0e79kXaIoFBdGWiu/Pbg1Ts=
+	bh=XlmLL61qNv0OJxe6/2KedGlG+39G1uTBbnNGEpqe9oE=;
+	b=b5XsFzGmpu8rB1jjLQfzxpgpXxIh/1e/uNJqstVndZjt+THeW6FE4qfAjypEOst1Dy6fZK
+	LH5eh2jAyZy8uB1qXepFtHGP6Wxa+GgX2ed5BTMaMEzww+Bougfs5aVhnES1ZNSQfK+pxg
+	nopgHAsMrZef1ea4cxd+9cmuzdDqd48=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lyy+di5v;
-	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DT1RSs4I;
+	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1ADCB410EE;
+	by tor.source.kernel.org (Postfix) with ESMTP id 6783862C05;
+	Fri, 20 Nov 2026 13:11:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A591F000D2;
 	Fri, 20 Nov 2026 13:11:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4206A1F01569;
-	Fri, 20 Nov 2026 13:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795180311;
-	bh=gqLfJsppzt0bobg6k5RSzGuyBhJDJxtFjMmDgLlOsEI=;
+	s=k20260515; t=1795180318;
+	bh=XlmLL61qNv0OJxe6/2KedGlG+39G1uTBbnNGEpqe9oE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lyy+di5vtOR4obXghB110cGopjnUbxlBWNX0db+usG4+43Nnm6/AntuujrvZb1PU7
-	 csvsuwR6rB1XFCwRAA1KJwEvtcAo4HKEXyS8kYeRmc+SGdHST5oBrMi7OhZJz4UXs7
-	 9JLhBh4Eokris3PlyVn5ylrm4+1UoVLe0ymzEYhszY6w1kLmx35Uw5MFI8jqU1Ma24
-	 G7i4MFr9lO/EfLva+3pJyVNJzTvDmWd5mQ6Ryf5WIPNBo1OVlu4+6H60VVk6jhXaDP
-	 LOYqn4nEYpl61LpLYXiuA4F9TR/P8zwXOe/3+c/650C1JFEHqx99RR93bbli6Uy8m7
-	 JZhx6bl8AG3fQ==
+	b=DT1RSs4IIaivB2KicItxBnhRebQ3ZiWJgyvghHNy20HUDHVVZpBuhqiiL0oCocS/c
+	 NILNDPi3NbQi7fb8XFz3G1/0HVnQRVSs7AeuYQpxWMxz28lHFkeiSrZ3CJbpplzxjS
+	 Wf11Z4r0o7s03SS0gGHtbiZAlb8BMetWSdbSZmKMZl0aZvmCzLRJiOCGUb8OYMlUOe
+	 3gYRPFb25irwhQP79fYtw0XgYnUwg1N7dWlFSqTZH5WX3rZRaLPMR/vMrwNnxHNF6+
+	 gihvG03mX+X2/JdXkS9UO6iT4VeXjA/OQ2N1S1J+cgBbNu2O0zMD+yQ3RZLorHyFZ0
+	 lzglXsBSis/PA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Nov 2026 14:10:17 +0100
-Subject: [PATCH v6 06/12] rust: xarray: add `find_next` and `find_next_mut`
+Date: Fri, 20 Nov 2026 14:10:15 +0100
+Subject: [PATCH v6 04/12] rust: xarray: add `XArrayState`
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-xarray-entry-send-v6-6-1f69d7385f70@kernel.org>
+Message-Id: <20261120-xarray-entry-send-v6-4-1f69d7385f70@kernel.org>
 References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
 In-Reply-To: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
 To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -89,34 +89,35 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5968; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=jINgMPg5g4/dlMBkBia86AcDidALlNNcvPEg68+PUEY=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrAEbIreNmBUJDVCCTeQ2qKfoguy2Vd5fGVmND7
- KeQW99mI9+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawBGyAAKCRD6UCkIqsW9
- 0GphD/9wAEux9+T6rbwFt41YJn+QmcqhYxU+IWcqcmMpat5/xm3Ss9HxTEv4jxWSVP1Bs2Bs6BD
- hS0lPQ3lIBy3MSKHacKEKXr2OGN1BIXqPbS2zovlkYZgqoAQ5+wELbjsObGGQPGBxK6FYGGdyYU
- RLflm0W+tCeRjroKOqIdXAJyI6CMCOMLiIn0qPP2BUlvKQLPxUWr1tk/yWc7OUKXlp30XgKN4w8
- jvEY4pb7aXlOw+oMEDmG8RPSiPfnM4+zuqc7KNRK2rP2sv5dZV941FdxhaavxfounsbIWBmmrk1
- NvSTNO+EwCl3SliLw3NS5stMNrcgN9ln8NZdn9L7Ta8ejwscsnqBpSwzBc9IUnJxncYlf8Oj4Jv
- occWNsqWXMcP9wfXwKGP3yw/JFE3lf7sAKDZrndkc2NMNfKBxxowMg+70hZ2SS1MG/96Dy8oV7f
- AUP9K+/JNBiknVEeAiNhmFDPMBy8prckR9zvX65VRTzrrms4M+hUHDFGQ8aWY5ogYioQSoSOjpH
- HTrRS5+tX2eyed+jNumfGuhu82dD5LlzzQgk2GggikA4j0lbsP7Tn+1xMhJYv0VoMhjh+dOji38
- NTLtRhWvrGm+6NN5xu05Y4TiDJLGK3gogv+AO+wTfxZZ5Wz+btYf0uWGwl10R8s3+kfLaGrbtmf
- YHxM8/rxewp64/g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6530; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=LmjFE/5c1aDLEafxOg2FuEeZAj/8eatZT5GZBC4r4iw=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrAEbGcl2AWVbKxDl+OBbYLszNt5tGmg33naAWK
+ 8kKJ8tL8p+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawBGxgAKCRD6UCkIqsW9
+ 0CavEACMKNGo5a968KztezeCuxFNxQVhD5ghum/M6uKI373upKYf5LFwVk7OrlAFioJoTj1TBs0
+ Up9QsCxbsI+FyhXBID/Smx1kBv3+0uqqNgsouExKPr4ePI9qYYtM7j++hkzSFQCEV1DpcGein70
+ W7WJrE1Sn5Spm89HVu2Idnn5hHQIhsydFZ+1FwzN1oO7QSFuUipiLTevVkX2ee9pe5yaBND0GgW
+ F6y1vNI16lOtn5JbHWAGFsxYyEGBFZr1taxrJy+5rufMiUQi9ghF8j5T0CCFTsA6rlcz8l2zQo3
+ 4w07Q1UBgNGCFqDYkEKFLnRjfof+JoM4Wz4INmefG12kaCqofyuNfG4/7wnNOwqc+fPu4kh/Crt
+ b4cjSB2gQuf2YE0NhlqmveQAQJJ7tUpWQz1Q7XbdcDmkkt53TzTk8yDXIXld1xx1C3hDnaV2bzQ
+ CDGAtQWILDylYCKukXFxvbk2srA+If6zK+KDpGUNWzgSciIfMA1FE7Ag8GR95c/iGd4pj02V6fG
+ VXH1qHTbZl/0gAHwd1m9RpJ8Y2v/0DHiDMhHJRHKtPcFVpDM7J/bGrCmRmR6ywLyuReQk4REGJN
+ bntU042a9URuYnRrQE7ChmR4e3uuigUWkZ0cnHbDsTTF1TtuUv7wKccVS9V6umgqfzwHAv2WqyF
+ epS7JIwIpNGEWmw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B761214000C
 X-Rspam-User:
-X-Stat-Signature: 7y4i3ehpjftjaq88kyeydz5s71wy1a4u
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C60AF140011
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795180312-183634
-X-HE-Meta: U2FsdGVkX1+UpIVo7SP0AEqgLIfxmEsT/Ow9s5onRBNSWK1HBc580ysffFkSo2H+LX13SKjyhVFk+n4TciwngzjoLVtGqq8eSTMkvG6d7ayVfY1VSHwuWQlQLiscfkV8JpBZ/rOijrpYUPN9TKdEfCxtY/3QLw816S9QOIA9wgDCfW61QWBFs0ogd67zY6NeE1a34V+cmv6s1ZT0/9scHv5grDwbHqNarFSHousQOXItjuOfyyYDDxfqM/EyFyN8cljXlECGoiciFLE6rm70b7SFsXaZHJmr+A+91og5S4YU7hHa55P8Hg3/RDSu/AbdVAOXR/s8oy1j8JL5SSmz6r+bknLj+mRBniWvLfenPOQ/+47+TRWYw4B8Noy0QnDoSiAfQENx5yt8SxET2W/pK+KzchIwz2i6UXhNBSowtz4PfrSvxe6PHYUuuKH5zDYkEosIgHdPl50SXC5ZAwG9kz0I3Fxu80EHaB8af6259lziP6qtVgTAjZ9nrZOCUuZ5WVKK2lnbBXNVTirrmZlIcj9d9ONHV+QENdST5wh1GcAYFdPpetmEF9tyyfHSUG49KvwKprZEe1I0jjR6JUZvE28QG4Npyundsij0TCuUHrKwWMwOHNG4kgmD3uLerqZjkG8O8cyZv6+xTp0h8LtbkkS76Bp2oi2VDgU8TTGP1JAnAurSVd3+JZl5wMxeN1tSYrj8O0PzkSFy39TmQzcJVLMynsvU7H8sbxxQPeRngDG3NrFl0FZ7SW51mrR/qSRbH4jSbV5qXDXcq8XAriATk9iXA97lR2gv2+HgkBwhNSvR1suVZjCWdmuvIb0TTZpDdjoYmJxBP//UxlkzK1uumQYct3SV7Yqxoo5dl2iUXDC2cvHDDOSvAwzkQf2SlD91rkPoa6f8HuJlWM9rFz5uyNBJ1C9wmbOlvY9IY9C3oHk6Vf5k0ACnyyrFhA8DYqNddx7EciwBSukWgE8mc/v
- pg231VWR
- 114VZdDWqLhtxOrIV41tOhX24YMr/VN6ajkYR/EQBBfi0ddk+IEIc75NJEx/Ol2FDc7r5wgCMwSb9NoN4XFQXB/5DPV4lwTIcw5bem161pClSSnvSsys5JEcOm0LZ8xbfbHu+sCkMbMWLVo5VXvzdBYtFidiXGfuLxxgD6JHQAaSsrOsqM1MRI0C5/qEsqd/TdZSnfWNbazpjDT7kRzHEMLRTGlPowc1BIOwFN1raBIfR0VECA0nyIimsFwQxWRd2bdyR2LhKRw8jtoKRQc1qUxYDvIL9LEkIgFZqZC7VqbeSPiyREO2pC7azo8b3FzysDD0uyKq5WJhqcriSeBxl3pslXLiJjuo08qQ03dPtUY+ZqtPYcgZeMTgrxFJVw590+9ibKnmlzAJHmU+ukOK12jSmgi3HoZeefdMkNTWDcdiDdBrxZmsGq8KQ0xsonHOrGcC3IOKlgymQPulOxsmU7JaBr80YvpHUWVmsgtoUqdG/7YVInoIhT4CbGBj6MctZhOlQh9sHlO2ma38=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: wh4hheqxr41nzhdku3jknmwcwjga4doq
+X-HE-Tag: 1795180318-670605
+X-HE-Meta: U2FsdGVkX1+U8bCDjKPX5T6UuW0xObS1jqk+roYuglnGTe5tgcj3WlGl/0t9z3esB/daOKWdnnMObNRhJ6Za+ttgqcbrm/s74iV5AxvZ9JdJqKiI7LLDUN/SOhCMtSLCfmVjychwNBsshzva0TFR85VhcpDQ4ttfDurdEuS4S2I42dyVyiAl7qAE0QVmqbH2Qg/QUB4Jum4ye0ifXswYt7SMSN0/bUQC0zS0GW86FcZ80drqLOYA1MpZjjdWJNoW+IFUlTjLGQv2CRXca4uR0boLIROp7RjOdsYsX5jDwEOvzD92ec3aaNaZHHo6JvImG1qTo7UjDj21zwUHYmqO+PhKxOq//qbrJ2Ujg84maZg7CPEMumrYQ76VeY+3QYh3wLHenTOhGwjXo003StJTUJBfE935Z3U7zmKB/IpYThkupnMc5o3qJJKGfFNO1yaQvp/AJZMW9PLktPC/a9IOACaN0DOVWhKdPqBjnOHhLIeokjf4913jGlnkoIIhGs9vtRBahXsXeBp+zRdq3y9eAXsI4LBgnqePrXGLSCEz6vi4Bi7kvseMOUDxqomyeETi+qKblQiPjJo9MmfPpjhH6a8GPT4H7SiLHbDGwucxVcGgQNrVci52icqI44kYMpTXMO+7uIxuXQ3x7xfBCDIC1+bVw3uNZfaSqXTlk1/4v+l5GnogCa3odAQSn4J/3QHyCX7aC/+dgfV/37MwI/ZRwfplIrJGFtEI7cmVAcbC+C98XWnPwSVzx5PQYmfS79X6OlcvHMfLxCKSeJK0vG3xtE3a72g5wd+Y64H2viGvFqVzTmN375CObip6HLdWh+gxlUDE6UeyUm/2r9nVgeWNlvI6lbHO906Ep2ZVvkAYXJJfznfDP692PmpzWnJpPIvnXEMcamplUNpJK7v4vn6Ux5zFekiuxlDO34JbNFHk56VHax8/+UZvzCQCpmQI2jKyWAznEl7AZAHyrA/h6NA
+ Jki2luZ8
+ lX9XKCL1YtFD66ZvzMb4FUJJVkL4iwsWkBV3ywNYt6r5oX4OVVQxikdoNkN3hDykI7T9Sgww1LQ9wRO0KN5QXabU14u72N/Jj+RLPiakcwnvRjcPeDPgSEu8JsK+/JHxVI7cJZJVs2NsnFAjGvqdh98nz2WYj0ZGBBODIVm1sxQbi/GuYUlDWWoc4qVbWzY8NS9azwecCTCbI4BTjshM7t9TGN1HaT3WwWQtluzzG/LT/0nk9vY53oHVJ73ykHSQ59wlHAZAwhIBk4xtWW9t2amffI6V1XiP4D/SOPhAgUrGKMQ55+W7CRtnjojLjUhCOxjRXrM8qrxkpCCmzi/atRKZA66tve1N0wwf4v/qNfEyqLKbWb8LkpmJMUZftbOlAN9fx4NVA/r7RNJD28dophDDhHbpAdViyXFJ8NT07hxC0ZhdNwI10SIktwx6jMYnDI2VUScU/bc2PMEXarxVhomLZweyhkZd+ElGkA7/nmb6WpeTVOXuDiOohBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,147 +126,170 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add methods to find the next element in an XArray starting from a
-given index. The methods return a tuple containing the index where the
-element was found and a reference to the element.
+Add `XArrayState` as internal state for XArray iteration and entry
+operations. This struct wraps the C `xa_state` structure and holds a
+reference to a `Guard` to ensure exclusive access to the XArray for the
+lifetime of the state object. `XArrayState` is generic over the guard
+borrow through a `Deref` bound, so it can hold either a shared or a
+mutable reference to the guard.
 
-The implementation uses the XArray state API via `xas_find` to avoid taking
-the rcu lock as an exclusive lock is already held by `Guard`.
+Use the new state in `Guard::load` by replacing the call to `xa_load`
+with `xas_load`. The `xa_load` function takes the RCU lock internally,
+which we do not need, since the `Guard` already holds an exclusive lock
+on the `XArray`. The `xas_load` function operates on `xa_state` and
+assumes the required locks are already held.
+
+Unlike `xa_load`, `xas_load` does not filter out internal entries.
+Arrays created with `AllocKind::Alloc1` store `XA_ZERO_ENTRY` at index
+0 when they are expanded from empty, so convert zero entries to `NULL`
+like the C normal API does, exposing the `xa_zero_to_null` helper for
+this purpose.
+
+The `XAS_RESTART` constant is also exposed through the bindings helper
+to properly initialize the `xa_node` field.
+
+The `guard` field of `XArrayState` is not read until a later patch
+adds `into_guard`, so it is annotated with `#[expect(dead_code)]`
+until then.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/xarray.rs | 104 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 104 insertions(+)
+ rust/bindings/bindings_helper.h |  7 ++++
+ rust/helpers/xarray.c           |  5 +++
+ rust/kernel/xarray.rs           | 75 ++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 82 insertions(+), 5 deletions(-)
 
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 3791af0aadc7..517c5872ad25 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -130,6 +130,13 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
+ 
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
++/*
++ * `XAS_RESTART` is `((struct xa_node *)3UL)` -- a sentinel pointer value, not
++ * an address. Cast to `size_t` so bindgen emits a plain `usize` constant; for
++ * pointer-typed macro values bindgen otherwise generates a `pub static mut`,
++ * see https://github.com/rust-lang/rust-bindgen/issues/3347.
++ */
++const size_t RUST_CONST_HELPER_XAS_RESTART = (size_t)XAS_RESTART;
+ 
+ const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
+ const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
+diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
+index 08979b304341..79799c55c3d7 100644
+--- a/rust/helpers/xarray.c
++++ b/rust/helpers/xarray.c
+@@ -26,3 +26,8 @@ __rust_helper void rust_helper_xa_unlock(struct xarray *xa)
+ {
+ 	return xa_unlock(xa);
+ }
++
++__rust_helper void *rust_helper_xa_zero_to_null(void *entry)
++{
++	return xa_zero_to_null(entry);
++}
 diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 94386678ef81..07ec08223fbd 100644
+index 19581b9dfe9e..183808971683 100644
 --- a/rust/kernel/xarray.rs
 +++ b/rust/kernel/xarray.rs
-@@ -220,6 +220,22 @@ fn load(&self, index: usize) -> Option<NonNull<c_void>> {
+@@ -8,7 +8,10 @@
+     iter,
+     marker::PhantomData,
+     pin::Pin,
+-    ptr::NonNull, //
++    ptr::{
++        null_mut,
++        NonNull, //
++    },
+ };
+ use kernel::{
+     alloc,
+@@ -215,10 +218,8 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+     where
+         F: FnOnce(NonNull<c_void>) -> U,
+     {
+-        // SAFETY: `self.xa.xa` is always valid by the type invariant.
+-        let ptr = unsafe { bindings::xa_load(self.xa.xa.get(), index) };
+-        let ptr = NonNull::new(ptr.cast())?;
+-        Some(f(ptr))
++        let mut state = XArrayState::new(self, index);
++        Some(f(state.load()?))
      }
  
      /// Provides a reference to the element at the given index.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
-+    /// let xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc1), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// // Expanding an empty `Alloc1` array stores an internal zero entry at
-+    /// // index 0. It must not be visible through the API.
-+    /// guard.store(5, KBox::new(0xcafeu32, GFP_ATOMIC)?, GFP_ATOMIC)?;
-+    /// assert_eq!(guard.get(0), None);
-+    /// assert_eq!(guard.find_next(0).map(|(i, v)| (i, *v)), Some((5, 0xcafe)));
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-     #[inline]
-     pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
-         let ptr = self.load(index)?;
-@@ -235,6 +251,70 @@ pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
-         Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
+@@ -301,6 +302,70 @@ pub fn store(
      }
- 
-+    #[inline]
-+    fn load_next(&self, index: usize) -> Option<(usize, NonNull<c_void>)> {
-+        XArrayState::new(self, index).load_next(usize::MAX)
-+    }
-+
-+    /// Finds the next element starting from the given index.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(10, KBox::new(10u32, GFP_ATOMIC)?, GFP_ATOMIC)?;
-+    /// guard.store(20, KBox::new(20u32, GFP_ATOMIC)?, GFP_ATOMIC)?;
-+    ///
-+    /// if let Some((found_index, value)) = guard.find_next(11) {
-+    ///     assert_eq!(found_index, 20);
-+    ///     assert_eq!(*value, 20);
-+    /// }
-+    ///
-+    /// if let Some((found_index, value)) = guard.find_next(5) {
-+    ///     assert_eq!(found_index, 10);
-+    ///     assert_eq!(*value, 10);
-+    /// }
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    #[inline]
-+    pub fn find_next(&self, index: usize) -> Option<(usize, T::Borrowed<'_>)> {
-+        self.load_next(index)
-+            // SAFETY: `ptr` came from `T::into_foreign`.
-+            .map(|(index, ptr)| (index, unsafe { T::borrow(ptr.as_ptr()) }))
-+    }
-+
-+    /// Finds the next element starting from the given index, returning a mutable reference.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(10, KBox::new(10u32, GFP_ATOMIC)?, GFP_ATOMIC)?;
-+    /// guard.store(20, KBox::new(20u32, GFP_ATOMIC)?, GFP_ATOMIC)?;
-+    ///
-+    /// if let Some((found_index, mut_value)) = guard.find_next_mut(5) {
-+    ///     assert_eq!(found_index, 10);
-+    ///     *mut_value = 0x99;
-+    /// }
-+    ///
-+    /// assert_eq!(guard.get(10).copied(), Some(0x99));
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    #[inline]
-+    pub fn find_next_mut(&mut self, index: usize) -> Option<(usize, T::BorrowedMut<'_>)> {
-+        self.load_next(index)
-+            // SAFETY: `ptr` came from `T::into_foreign`.
-+            .map(move |(index, ptr)| (index, unsafe { T::borrow_mut(ptr.as_ptr()) }))
-+    }
-+
-     /// Removes and returns the element at the given index.
-     pub fn remove(&mut self, index: usize) -> Option<T> {
-         // SAFETY:
-@@ -361,6 +441,30 @@ fn load(&mut self) -> Option<NonNull<c_void>> {
-         // SAFETY: `xa_zero_to_null` only inspects the value of `ptr`.
-         NonNull::new(unsafe { bindings::xa_zero_to_null(ptr) }.cast())
-     }
-+
-+    fn load_next(&mut self, max: usize) -> Option<(usize, NonNull<c_void>)> {
-+        loop {
-+            // SAFETY: `self.state` is a valid `xa_state` by the type invariant. By the same
-+            // invariant, `self.state.xa` aliases the xarray reachable through `self.guard`,
-+            // whose lock we hold.
-+            let ptr = unsafe { bindings::xas_find(&raw mut self.state, max) };
-+            if ptr.is_null() {
-+                break None;
-+            }
-+
-+            // Unlike the normal API, `xas_find` does not filter out internal entries. Arrays
-+            // created with [`AllocKind::Alloc1`] store `XA_ZERO_ENTRY` at index 0 when they
-+            // are expanded from empty. Skip zero entries and continue the search, like the
-+            // `xas_retry` loop in `xa_find` does. Retry entries cannot be observed here
-+            // because they require concurrent modification of the array, and we hold the
-+            // lock.
-+            //
-+            // SAFETY: `xa_zero_to_null` only inspects the value of `ptr`.
-+            if let Some(ptr) = NonNull::new(unsafe { bindings::xa_zero_to_null(ptr) }) {
-+                break Some((self.state.xa_index, ptr));
-+            }
-+        }
-+    }
  }
  
++/// Internal state for XArray iteration and entry operations.
++///
++/// `R` is the borrow held on the guard: either `&Guard` for read-only callers
++/// or `&mut Guard` for entry-style APIs that need to surrender the borrow back
++/// via [`XArrayState::into_guard`].
++///
++/// # Invariants
++///
++/// - `state` is always a valid `bindings::xa_state`.
++/// - `state.xa` aliases the xarray reachable through `guard`.
++pub(crate) struct XArrayState<R> {
++    // The borrow is held to guarantee exclusive access to the array. It is
++    // not read until a later patch adds `into_guard`, so silence the dead
++    // code warning until then.
++    #[expect(dead_code)]
++    guard: R,
++    state: bindings::xa_state,
++}
++
++impl<'a, R, T> XArrayState<R>
++where
++    T: ForeignOwnable + 'a,
++    R: core::ops::Deref<Target = Guard<'a, T>>,
++{
++    #[inline]
++    fn new(guard: R, index: usize) -> Self {
++        let xa_ptr = guard.xa.xa.get();
++        // INVARIANT: `state` is initialized to a valid `xa_state` whose `xa` field aliases the
++        // xarray reachable through `guard`.
++        Self {
++            guard,
++            state: bindings::xa_state {
++                xa: xa_ptr,
++                xa_index: index,
++                xa_shift: 0,
++                xa_sibs: 0,
++                xa_offset: 0,
++                xa_pad: 0,
++                xa_node: bindings::XAS_RESTART as *mut bindings::xa_node,
++                xa_alloc: null_mut(),
++                xa_update: None,
++                xa_lru: null_mut(),
++            },
++        }
++    }
++
++    #[inline]
++    fn load(&mut self) -> Option<NonNull<c_void>> {
++        // SAFETY: `self.state` is a valid `xa_state` by the type invariant. By the same
++        // invariant, `self.state.xa` aliases the xarray reachable through `self.guard`, whose
++        // lock we hold.
++        let ptr = unsafe { bindings::xas_load(&raw mut self.state) };
++
++        // Unlike the normal API, `xas_load` does not filter out internal entries. Arrays
++        // created with [`AllocKind::Alloc1`] store `XA_ZERO_ENTRY` at index 0 when they are
++        // expanded from empty, so convert zero entries to `NULL` like `xa_load` does. Retry
++        // entries cannot be observed here because they require concurrent modification of the
++        // array, and we hold the lock.
++        //
++        // SAFETY: `xa_zero_to_null` only inspects the value of `ptr`.
++        NonNull::new(unsafe { bindings::xa_zero_to_null(ptr) }.cast())
++    }
++}
++
  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
+ unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
+ 
 
 -- 
 2.54.0
