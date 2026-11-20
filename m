@@ -1,124 +1,173 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C03A606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FFA606A33B
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=guqi0fXa
+	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=dhsqP3S+
 Received: by kanga.kvack.org (Postfix)
-	id 9FF5D6B05B1; Fri, 20 Nov 2026 08:17:42 -0500 (EST)
+	id E20D26B05C6; Fri, 20 Nov 2026 08:18:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AFE16B05C5; Fri, 20 Nov 2026 08:17:42 -0500 (EST)
+	id DD0D06B05C7; Fri, 20 Nov 2026 08:18:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C52B6B05C6; Fri, 20 Nov 2026 08:17:42 -0500 (EST)
+	id C99356B05C8; Fri, 20 Nov 2026 08:18:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C0B06B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:17:42 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCA091C4A79
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:17:41 +0000 (UTC)
-X-FDA: 85455549522.16.806812D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C025320009
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:17:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=guqi0fXa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D8E96B05C6
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:18:52 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 35DA980F9B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:18:52 +0000 (UTC)
+X-FDA: 85455552504.01.AAC82C2
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3753F14000C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:18:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=dhsqP3S+;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of alex@amutable.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=alex@amutable.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795180659;
-	b=qUSHBncGr/V4GmBY1G5yJnhkDqlnYeZcbOsO5le8pV4343RMAyRespmDkcVASdBzlqbmEE
-	hQNassdrPKO+p2uxmz4Jpi1yr/z6LjG5PjRqBV6E8EtdfzNogsYWkOxGuCEnV4YcVMH4Ku
-	vtWEkrMdb7T6KZMtxFSsToROk+zR4cU=
+	t=1795180730;
+	b=gVpTc/kxXAxRXTsmsyQ6ilumsq1nbShrpefJtVXu05fxjo0tXwW73nKFTOkYofiKGJykH3
+	YJIpqnB3qzJR4z3Go+kFQjpg5rN4eKTcD4CslVcEE/Yf/k4Y+BbuY1sg/q83o53S5PKLOv
+	/WPvXuqhJZcbpZN9fUYF9KO6/OOJGi0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795180659;
+	s=arc-20220608; t=1795180730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1r2RPLiYFSIogaEoUkz4XwYUZKQoUko/pKRdi08cxM0=;
-	b=0h+KJursR3azhEr2kIL4AcAzWFLVSFOWcGG6nDtao0bYJ1l6Hh9kU5nDLxzSpoCmbjqjl0
-	64Z7TpTBQbOtAD9ESiN3ii+LpfW6igr3leesAnMY3oKMG2X5ncJb5+VyZjueGrdh2dgQne
-	H58tiGRJfF5DQqVDgtS37ynCuu9tAR4=
+	bh=YAQTVNIYZ/0Tbx2obltQhn42YTPBHmmwY733kBIibzM=;
+	b=QYY2dcnQ07FGRtxGw11npDdxTNUMuFej/Z+ixEiVMu1MOWVIP//Cea+pFw6ap9DlKEScy4
+	fOODRDCbaW/3xHLJ+RuTE/Y9qdz5lEXD6KPXKm5IHNWW2vlv6HU7wUVz+WgcChUjlI0Xbx
+	RGWivchwfKrhAgXtjfqpYpnoOmqOvIY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=guqi0fXa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E860E4580B;
-	Fri, 20 Nov 2026 13:17:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FE91F0089F;
-	Fri, 20 Nov 2026 13:17:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795180658;
-	bh=1r2RPLiYFSIogaEoUkz4XwYUZKQoUko/pKRdi08cxM0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=guqi0fXauTN8zbzqLH/hjYfH1/O3Rf83KBV8HsteSyuP0tvTivrY6Uw9WiOSq52qH
-	 Irqj1q2baX+DzLVjmMu2xGBU5e/vFEOsiRYGYHNwWxMxBEmHan47+hcbKX9cTrlAfF
-	 DU0aP4zbQZa06SDs+gdSgQtg8HW7FTVhinp2G4yiPiD4LLEyEaCMRICzI5KOght7w0
-	 a5Aj3JII6KfxuN8sKNu6BIVGltWGdNmYZXzWM9r8z/WEcdAfRSD72DNhO9r7uvWI6I
-	 MHLgIUSeGtmiESn1onURbDVtiAJ1UfgLb8sbWqGe85OR1k8BhMTMl6u6J8WL/MLcVL
-	 rkkuPTPcCb4Sw==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id E3EF41980047;
-	Fri, 20 Nov 2026 08:17:33 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 20 Nov 2026 08:17:36 -0500
-X-ME-Sender: <xms:bUgAa0Ss467GVnDhyoa5GLJvJ3Qkb6jHpBysa7UtJwMHKBxrb5rknQ>
-    <xme:bUgAa_Jn5SAa9Gm26aQ6PCluN4Igj4Xbu-1eShGyKxR4qD4s9mbJsthGMUuBhDiiJ
-    DvPsGIIO4AzG_TK8e7R8mLHjv9E9hWIE1EgDfNtY4sRYb_WfmuVqNFO>
-X-ME-Received: <xmr:bUgAa92iCqHJb79UKYNhTmSvtYLPj7oT62s31rdeiXpMYGt1_RtpnZNe0lI>
-X-ME-Proxy-Cause: dmFkZTEMslbIUNDm8LIh02IXJPPGaz8x9nStkoY2McUqfXdvc0zDAMNuwAdNk567GWqWFb
-    Ue01QIrqSlGhLD7aTRxcawP+AUSNewklEcq6PMC9JP8w32Vkz0EAbVZ2QFm6NbbycGqrOT
-    4Vb8re4U7agTXekt+mqlS2xCpK9NpzTwr+ErpQ3XVKIL+uqfYPpDVYCLRwfuz8aG4ZROa7
-    Xd1wxnnT9IcNmrmTW/L61gTt77vLm2hbvmmHDGa2LHM3iddXj9bf/9phFNGmR4hUZZM7Uc
-    ZJ9oEFeNgt22uQRjW3Wdih7LGzmvCPCrT/2DICvgDeLsnE5QRBd6+NlZnMM7O7XfT7q9Do
-    MkQJtlimT0MHz0XKCwD/pqeSVQTF9nQB6fmaRrIBniyooZx48Wp+fOdjkpjjfy1M74AB0h
-    vS3M9aDC5BqCGS+vBnYumDdMEN6m0xvfiEIP84KP4vUCXEzzfRXpY0HUEEr7Ux+TLE0CvM
-    8mfzIpvGacxcLQSZU2/0i1GMY7jfN3hn3SzrJ9D9XCXiD5LzrcLQeHCkaf88rKLabxTIfx
-    MK6n/B4O2fmC0h6UK+8FsX8/QUZPhtXvSb6VY/dDu82xZH1mgNTNYlAD8mYnORC1N2N/Kt
-    9BSKREudmnRmc0072qjsdqwInnjVlm+WtP0N1OdHG4S5m3ZYPrjrL8R/k2Sw
-X-ME-Proxy: <xmx:bUgAa7toYIuLcOc32pRwV-nsWDZX_L4XKKyWqDVC59SHUuoImBWT_A>
-    <xmx:bUgAa5HlJOmSY7P5WSFjnY6uqz8LobY_WUwzQM8wba5A2rgz9WGBCA>
-    <xmx:bUgAa1Jqwm68KOU2wpFhGSlDAH1XL0GVrygZ1G3sIJWJupOyMB2yEw>
-    <xmx:bUgAa0GHctFKPFG36KsYueFTUiK1wxmIM_ROA7NlIGuYWQMr6gettQ>
-    <xmx:bUgAax7INTnv3udfOUXtVTWi3rt4nW4moV6FhuG_CrgEs7tK_rv3kZad>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Nov 2026 08:17:32 -0500 (EST)
-Date: Fri, 20 Nov 2026 13:17:31 +0000
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Andi Shyti <andi.shyti@kernel.org>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Andi Shyti <andi.shyti@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] drm/i915/gem: Skip writeback of shmem folios with extra
- references
-Message-ID: <awBIB3vjr_o-gfCn@shutemov.name>
-References: <20261119134243.3745282-1-kas@kernel.org>
- <av8n42vx3Q7zvQK8@zenone.zhora.eu>
+	imf26.hostedemail.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=dhsqP3S+;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of alex@amutable.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=alex@amutable.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c513a854320so160219666b.0
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:18:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1795180728; x=1795785528; darn=kvack.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=YAQTVNIYZ/0Tbx2obltQhn42YTPBHmmwY733kBIibzM=;
+        b=dhsqP3S+rpglvDaJOdEAjO1QE49cYVjdRvV+X+vaNkywSQOUZ9qNCPXtAu0/kEUcjW
+         RPluhIB5KV0pQNSFP6VC5rVZKMwugfmwIYrw3M71wj+kV35HYEuk6u0hU6qlY1VYZY/P
+         1WZs2NfZZZaVVy896RqRcIkq/VmwdcYeJ3lxRLmj9tFF19w10y2rKtat27fkbFfDxs0f
+         Rnv59xEPAZi1thK8feEvpd9pRB1ePvvGWtgLQbOEFMihOpkbcamDOsTNBtasQshmezdp
+         SMGzs08+LX+MC2AMlAYtQdcMgC2eMa8m4UMJsjxoWDdaYuDVVXt9LR/NoGFP2VPuynIC
+         /Wrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795180728; x=1795785528;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YAQTVNIYZ/0Tbx2obltQhn42YTPBHmmwY733kBIibzM=;
+        b=jDzx4uGEsQh7W4GejAWs2AP4H9O6ICuWYaD3FQgxlXStedUN3Fa9GO+Phb4ZiRzR+n
+         sQypmzf9K9T+udBgNg+DHNYw6OE3E+AEJMIoylWOuKAqMwyQXmf6XjrxvSToCE6Y3OM5
+         4Pv+4o/uhAKdc7jcj5T9GVG7D9udqOgEHksqYPiu4Q2Vd6zHHJg9lT0YLPXW+S5UxNqY
+         sdIH2Gh2vzD2F75+8RNvcq5PvLMojSMStipIkvzGA/K7qTf9XiM78plAORfcXAGO1CK5
+         j6folLUwETpY2UPcUI8HU7KFGoqQQ5GcFFTgkqYKZe2gUPS6hrGDu6zypjh47UTChlV1
+         CQ1w==
+X-Forwarded-Encrypted: i=1; AL+hErH5uGivn35jOwH7TCwfUo0N6DvEOJlnrCxxnhyJSgK+29AQxwTlRIHcaI3aK1B1L/mleZV2jPGFyg==@kvack.org
+X-Gm-Message-State: APuU4Z/Soj5f1Tq1yLUpoxn8maAGtI1o+zpcqfbgboQWH+EPUCpBYpwO
+	Gmi+mSFjn8dJgpoufxZP+wjAk1dO28JQEApkiGHEroxTvUqW5GkePYzArn7+u76inV9u
+X-Gm-Gg: AYBFou1TexOULH/3H8sGOTTA5DwvfyEnJ0GGBeVi0O8a5N3pdRM5LcL2qxtLkDQWY/S
+	pp2VIEjfYlEUY1t4q5HVwT/dLtoNPhs5V7pdLm4M5gkzBWr6MUalfFZpXTh+1HupTE8AdoedMEL
+	oSaPuXrUbYyD4lcf6+7lB/fC4Ql4mP+JVXvtwYJY2Ovby7U6Q03Bizjsrqa/ghhTdAT6kIqvBCU
+	CBEZkywesjyex4lT5PdePPD2t9/XYfCohaF6pShrGhbrdLYYeDwoqWFWWelrfMPXdngkrz++Uqc
+	9X2lkF5dL7a4XEiGkWz1HkwyehWon6uSgcI3ZkB5WPx0ru/KUzMZtBix8zpaevHmz/m61AYFCk+
+	SLJlbDH4NKbsWoAlx21+P3r1+o8fqgomCSi+hEI4dlq9rEIyYAd/7xNlRU8dSV0cTc9GawFuT6Y
+	hO/ydW9TbIklG05FVxLl+pgoUQADwXnBY9VBSIo1gK3Lbei35OG62agqD710UZPVlO7NypD7Wus
+	nkoTajo52z85dkg9xOTJ7dPpl3crEH8gKJjBYDfroIXs5petCm4rkq9OBUV+3nmaVaKI6FFuiHB
+	gaVHVhwg6vRGATrBaksbDK9EqTiWMxfl/2oTpfvOgR540CIbr3952rS3wWLjeplNQQ==
+X-Received: by 2002:a17:907:a890:b0:c41:55b4:d88b with SMTP id a640c23a62f3a-c513ab14402mr338807466b.43.1795180728386;
+        Fri, 20 Nov 2026 05:18:48 -0800 (PST)
+Received: from [10.0.0.233] (tmo-084-188.customers.d1-online.com. [80.187.84.188])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513acfe3b0sm93731066b.8.2026.11.20.05.18.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2026 05:18:47 -0800 (PST)
+Message-ID: <e376c8f0ec5c50b417375197a5589a210f151d9b.camel@amutable.com>
+Subject: Re: [RFC PATCH v4 03/14] rootns: Track init lifecycle via
+ copy_process() and pid_namespace
+From: Alexander Mikhalitsyn <alex@amutable.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>,  Andreas
+ Larsson <andreas@gaisler.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski	 <luto@amacapital.net>, Andy Lutomirski <luto@kernel.org>,
+ Anna-Maria Behnsen	 <anna-maria@linutronix.de>, Arnd Bergmann
+ <arnd@arndb.de>, Ben Segall	 <bsegall@google.com>, Borislav Petkov
+ <bp@alien8.de>, Casey Schaufler	 <casey@schaufler-ca.com>, Catalin Marinas
+ <catalin.marinas@arm.com>,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Christian Brauner <brauner@kernel.org>,
+ "Christophe Leroy (CS GROUP)"	 <chleroy@kernel.org>, Chris Zankel
+ <chris@zankel.net>, Dave Hansen	 <dave.hansen@linux.intel.com>, David
+ Hildenbrand <david@kernel.org>, David Howells <dhowells@redhat.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, "David S. Miller"	
+ <davem@davemloft.net>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Frederic Weisbecker <frederic@kernel.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, "Hallgrimur H. Gunnarsson"	 <halg@google.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Helge Deller	 <deller@gmx.de>, "H.
+ Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,  "James E.J.
+ Bottomley" <James.Bottomley@HansenPartnership.com>, Jan Kara
+ <jack@suse.cz>, John Johansen	 <john.johansen@canonical.com>, John Paul
+ Adrian Glaubitz	 <glaubitz@physik.fu-berlin.de>, Jonathan Corbet
+ <corbet@lwn.net>, Josef Bacik	 <josef@toxicpanda.com>, Juri Lelli
+ <juri.lelli@redhat.com>, Kees Cook	 <kees@kernel.org>, K Prateek Nayak
+ <kprateek.nayak@amd.com>, "Liam R. Howlett"	 <liam@infradead.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Madhavan Srinivasan	 <maddy@linux.ibm.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Manfred Spraul	
+ <manfred@colorfullife.com>, Mark Rutland <mark.rutland@arm.com>, Matt
+ Turner	 <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, Mel Gorman
+	 <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko	
+ <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>, Mike Rapoport	
+ <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>, Nicholas Piggin	
+ <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Moore	
+ <paul@paul-moore.com>, Paul Walmsley <pjw@kernel.org>, Pavel Tikhomirov	
+ <ptikhomirov@virtuozzo.com>, Peter Zijlstra <peterz@infradead.org>, Randy
+ Dunlap <rdunlap@infradead.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Rich Felker	 <dalias@libc.org>, "Ritesh
+ Harjani (IBM)" <ritesh.list@gmail.com>, Russell King	
+ <linux@armlinux.org.uk>, Serge Hallyn <sergeh@kernel.org>, Shrikanth Hegde	
+ <sshegde@linux.ibm.com>, Shuah Khan <skhan@linuxfoundation.org>, Steven
+ Rostedt	 <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
+ Sven Schnelle	 <svens@linux.ibm.com>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>,  Thomas Gleixner	 <tglx@kernel.org>, Valentin
+ Schneider <vschneid@redhat.com>, Vasily Gorbik	 <gor@linux.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Vincenzo Frascino
+ <vincenzo.frascino@arm.com>, Vlastimil Babka <vbabka@kernel.org>, Will
+ Deacon	 <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Date: Fri, 20 Nov 2026 14:18:43 +0100
+In-Reply-To: <20261119224312.1037966-4-jarkko@kernel.org>
+References: <20261119224312.1037966-1-jarkko@kernel.org>
+	 <20261119224312.1037966-4-jarkko@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <av8n42vx3Q7zvQK8@zenone.zhora.eu>
 X-Rspam-User:
-X-Stat-Signature: aye388g1xbri7unpcn1qgo9szhychnzx
-X-Rspamd-Queue-Id: C025320009
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795180659-12376
-X-HE-Meta: U2FsdGVkX18wUHPb/MFYOCrFuMEgSAbYLTr0BcPL6ua7s4CDMMWd9zwAOaKDhWFUvV7mSp431D6/p1YRmDlhlRTp2OERaCjf87JLeQa9VyQDtUMCxykM+qMjBoLV0Cy+dj4j70lvWR9ET1aT9mfubAxopT/cLjY2nJ7jYu1F1shl9pJN4vSVk9HiHnFnr1qXrND2VLD6Vofp/bYJBra6dC5MAoHsrXS86UcoN+blbWIWgMdwJLCU+5dGlnLmSjF+bp2VjHDYTYtC5E3oJhWP1ZakkxmMzAzPYDKkz4BjEU2pfaG9nGJJI2ecAoWSKdagld9pr5GohcQHj2duxI6dsPJZtjdI1DrugoiabRO9DlVpWT/pQdiP8x9uZOi20Tn9xztalMWRGf8j1IXbpWxBNZOAx0ga2qWACWepuqbXTpgWS3KpNzSJYwE0wFN6PY5uYd99cZOLJsovVO8TqxN4Y1nSjSTMwLxsXENK6ot69IVGDtbsmqt3C6DtdWN6NfFKclMukGMxqPuSPmg0+PH3s9Nm/wmjUreFUFJvjoJ39y9JazkRgSd7scRu8iw/vfHkxjivuxyepyXwPiwvVzSMvV4fCZQmYfBe1b7NQ4x7xvwnAUJVvm2qzf7vkT1mdiSCEkJfPu9XHNd1d+PU9Zlc6ycnPM+b/kAbjuC7Nv3n9nfV2YrsDHitmVlmddFWufGyifwcy1U6tJkz7XyFrNlm7RFovDiVc5HCH2UrN9sxBDGB3OWWBV6PCgJgDqSnwc+vT5dJ1EqsIKCKO947NdS+SxhOW3znckoTrA92591dUfbbAE7Tpgkwrcj5TQcpraWLr3vMVPp0wxkyxzTno7M8X2rxFIoaTMfxbtCAyeK+R1ZYjXQjCmrCBB0bKOAVEv4HpgHmve6ZaDDDvHA42Kh/PYHslj2zfmTZF5TS/DhrAGbkVUDfbYB6o3W43bt+wBuYO6qj+3xupien9hBFZZA
- m88QG1TJ
- SKK718YZ9JNoTnpwog9GgzsQ7svE4DLaGHTzudFBEYakY18HhGVyiF+FdFgsSOO/JGz6yjinIVwdndocP+w5VT6hMlBZx84P+4qEmbipcZGjAmeZ9UsYkfeAmcQnv2yWWANHSK8uv7oshIF67kAIJ/oGftd5pefSa0pqvdxun/HW+kEaaRjgrQoEtPurHnRo1akuNj9/jt2ixzCQeJpGq5qti4q8WPbJU8lpn3uCkMnqU85Mmqdgh0v/GjBELZYmA3vq8JaU00Q0/CHQooIJkEgW4hX9WA0tUzFlNoB3xMeShEgtpaFobcgAfr8EScgE6/yb6utM2hkYePMl7UoaU/7RAp4rtXBtVv43DJUcgWqUfe0e4bGZrLMdDJvvJ4QgO8TtsN9dTsVcVT46JLc/gn284OzZHnIaiEYdQZeKnAosTjmRw9PBr5WVulAc1Q6hqcNcqn7wtjl/PlykZ8nDED1C2WL2lZr4D0TcEABFRqFgSAOQ=
+X-Stat-Signature: kqcbrx6dr7ondwea5pk74irhhzihbouc
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3753F14000C
+X-HE-Tag: 1795180730-738647
+X-HE-Meta: U2FsdGVkX19Dx2c8Bx2yapns044QMKIos3rDJ7TfHv0DUvzu4nBD8iGlYIXVZ3PJubLZPZPXApB45OAaRRhbI3K5HwiMP65lWkWx2HEo/K1UXvA5Gf8EugqQuXkvFlYyYFAsLVpRZ61P8tVxBPOKY+WsPVZInKdNsqJtWQBC9atrFSNlEbhuhDGwCTZ+joYmgYriOiDSDzmTOZ8+dgb/Y36RvZoBJcYj6hj/+jGSmnRG4kWVbNxnrL60Cx0OPvgbvmbACyZQvz8kmj5V3gXDC+jWE8stUcdKxDooLITPsrEp+9WF32xUTyoe5A6ji+TUyUSZibjwd1tx/HpN5Jumfbp5WzxSciwa0m1JUHjkyPAbB5N0I9cxjCUJYpESRPe2Ogu1ggi+QUX8Grt1OIhdruEFbTB2UQLMtpX/UY3siOQAK6lV2sQSXHS+cY/WTP1PSvB1yYpKtNqWgBLkFIk34cjQlKVwA2GOagjoGXoMMve2B8JqRCvoLK4+AWdnuke6bGAroFS7NQIQDGUVhyfIwgVyv35vop1wmiJcOIurUfopD/a9tJYhLrju730dgZW2l97zmrHWigq1MXSd56Y7ZOL9TCv/DvWue25Au+ccSIIiKkb8x+w6nW/zZezGY6DeMcJSeDg/e5gJeodd0UvINz+9lMDwZ8RFa9DVMNtgHguu/b+HtHeb/M015EBSrpCBhnElIct4xkPn69wcbesk17Ho/sx8htQ1xJtxA+a+RQtImt3z47/VGfV996Upu54YVqT7kGL8PLJfv+HUTZwl9cIaWKviFcoHH9qm3n2bSlt3nEG8cyWNiX+fO23dE+/fCBpAxaFbNhY3GcGQbxJgoUtCf7CmM09UtxaJzUp+ApiI0utuGcqcdGXq4XyhoN2XGbgg78TgDVlI/ZhLfbfBIgDWZ6yRUma5wuj3BlTHXS+ZOtE3ReWPGPxzfTWRd9ZqGsWy5GH48lPMo52dqeQ
+ I4u3jLz0
+ WUn2geeADX0kb4idICTBB38rrTer0Qx9gL8Dcj8joUTFXVwdX1gc51lvOexc59aBMFmU+B/V80cy7Lx//S9bR0n4XfsklO0ubP4llY955EoxDK2bnF3MYwbJ4ukmJAXAO74SO0mtl2PS3tA3p4QqRaM8hiFY8U1GTtC8Hh+zWM0e33ZdjALWIVvFkvSdupRH5ZPUQUGzA50aDfqxC7DrhjS8QUDSAn++w3XPyWZoJgchEgZmX6iPoWQTDRY1lXU/aAspuP2+dwpEJBTHiBLsQq65PBMuSnEvSl8+xkn8mfjRCCBTlZiVoUvIj4Tq7i5Oy4cLn6Pp+HRcRmUFxeyTyZh0rOM8Vt8Dqq7MX6ewHFrvpdqrmClOZkA5staGCDmBbumP1s9q7lJ1AB2yExWKyyrpM8G0keGb/7dxh82hg94wBpsnxQS7AHx4tnwvjdGBI7cYsJasKnLTf42eFfjg8sYI3YOazt7drhGISVwtjL9b9fS4ehonn5jEKMJaDkiYPgfmLKfHL3RP6j+wjc5T5rOa4Z8tiygQ/xK/XsTYWcco7wGfHBw0rB8IZPEuIpp1X6JdgPOGvXEvnJR1nYq93VV7sRquCg/Tz6Vwd1fyAF3Xw6TILsfiJIEb8g6k1g5LoExG42/mZdnPy9FHb8ezKvs0lz+4ShV534Vrm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,40 +176,206 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 06:43:08PM +0100, Andi Shyti wrote:
-> > diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> > index bf9e7480f0f5..748772c358ac 100644
-> > --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> > +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> > @@ -316,9 +316,15 @@ void __shmem_writeback(size_t size, struct address_space *mapping)
-> >  	 * leaving only CPU mmapings around) and add those folios to the LRU
-> >  	 * instead of invoking writeback so they are aged and paged out
-> >  	 * as normal.
-> > +	 *
-> > +	 * The same goes for a folio with references beyond the page cache
-> > +	 * and writeback_iter(). A folio that was just unmapped can still be
-> > +	 * written through a stale TLB entry until the unmapping side flushes
-> > +	 * the TLB and drops its reference. pageout() checks the same.
-> >  	 */
-> >  	while ((folio = writeback_iter(mapping, &wbc, folio, &error))) {
-> > -		if (folio_mapped(folio))
-> > +		if (folio_mapped(folio) ||
-> > +		    folio_ref_count(folio) != 1 + folio_nr_pages(folio))
-> 
-> I don't think we need this fix in the current tree. The i915
-> writeback iterator already skips the shmem folio in the case you
-> describe, so the new refcount check doesn't change the outcome.
+On Fri, 2026-11-20 at 00:43 +0200, Jarkko Sakkinen wrote:
+> A root namespace needs to record its init thread group's PID when
+> bootstrapped and capture its exit status once all processes in the
+> root
+> namespace have terminated, without serializing normal fork() and
+> exit()
+> paths inside the container.
+>=20
+> Commit the bootstrap child reaper, bind pid_ns->rootns, and wake
+> waiters
+> in copy_rootns() after attach_pid(PIDTYPE_PID), and invoke
+> exit_rootns()
+> from zap_pid_ns_processes() after the root namespace's PID namespace
+> has
+> killed and reaped all member tasks.
+>=20
+> Co-developed-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> ---
+> =C2=A0include/linux/pid_namespace.h |=C2=A0 4 ++++
+> =C2=A0include/linux/rootns.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+15 ++++++++++++++
+> =C2=A0kernel/fork.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 +++
+> =C2=A0kernel/pid_namespace.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+=C2=A0 2 ++
+> =C2=A0kernel/rootns.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 38
+> +++++++++++++++++++++++++++++++++++
+> =C2=A05 files changed, 62 insertions(+)
+>=20
+> diff --git a/include/linux/pid_namespace.h
+> b/include/linux/pid_namespace.h
+> index b20baaa7e62b..6fd959f4d0d4 100644
+> --- a/include/linux/pid_namespace.h
+> +++ b/include/linux/pid_namespace.h
+> @@ -15,6 +15,7 @@
+> =C2=A0#define MAX_PID_NS_LEVEL 32
+> =C2=A0
+> =C2=A0struct fs_pin;
+> +struct rootns;
+> =C2=A0
+> =C2=A0#if defined(CONFIG_SYSCTL) && defined(CONFIG_MEMFD_CREATE)
+> =C2=A0/* modes for vm.memfd_noexec sysctl */
+> @@ -45,6 +46,9 @@ struct pid_namespace {
+> =C2=A0	struct user_namespace *user_ns;
+> =C2=A0	struct ucounts *ucounts;
+> =C2=A0	int reboot;	/* group exit code if this pidns was
+> rebooted */
+> +#ifdef CONFIG_ROOTNS
+> +	struct rootns *rootns;
+> +#endif
+> =C2=A0	struct ns_common ns;
+> =C2=A0	struct work_struct	work;
+> =C2=A0} __randomize_layout;
+> diff --git a/include/linux/rootns.h b/include/linux/rootns.h
+> index 3f59415efadb..0557ce75195d 100644
+> --- a/include/linux/rootns.h
+> +++ b/include/linux/rootns.h
+> @@ -13,6 +13,8 @@
+> =C2=A0struct file;
+> =C2=A0struct nsproxy;
+> =C2=A0struct pid;
+> +struct pid_namespace;
+> +struct task_struct;
+> =C2=A0struct user_namespace;
+> =C2=A0
+> =C2=A0enum rootns_state {
+> @@ -41,6 +43,9 @@ struct rootns {
+> =C2=A0struct rootns *get_rootns(struct rootns *c);
+> =C2=A0void put_rootns(struct rootns *c);
+> =C2=A0bool is_rootns_file(struct file *file);
+> +void copy_rootns(struct task_struct *tsk, struct pid *pid,
+> +		 struct rootns *rootns);
+> +void exit_rootns(struct pid_namespace *pid_ns, struct task_struct
+> *tsk);
+> =C2=A0#else
+> =C2=A0static inline struct rootns *get_rootns(struct rootns *c)
+> =C2=A0{
+> @@ -55,6 +60,16 @@ static inline bool is_rootns_file(struct file
+> *file)
+> =C2=A0{
+> =C2=A0	return false;
+> =C2=A0}
+> +
+> +static inline void copy_rootns(struct task_struct *tsk, struct pid
+> *pid,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct rootns *rootns)
+> +{
+> +}
+> +
+> +static inline void exit_rootns(struct pid_namespace *pid_ns,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct task_struct *tsk)
+> +{
+> +}
+> =C2=A0#endif /* CONFIG_ROOTNS */
+> =C2=A0
+> =C2=A0#endif /* _LINUX_ROOTNS_H */
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 5efceb8d58a7..08fc28ad1eed 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -83,6 +83,7 @@
+> =C2=A0#include <linux/fs_struct.h>
+> =C2=A0#include <linux/magic.h>
+> =C2=A0#include <linux/perf_event.h>
+> +#include <linux/rootns.h>
+> =C2=A0#include <linux/posix-timers.h>
+> =C2=A0#include <linux/user-return-notifier.h>
+> =C2=A0#include <linux/oom.h>
+> @@ -2576,6 +2577,8 @@ __latent_entropy struct task_struct
+> *copy_process(
+> =C2=A0					=C2=A0 &p->signal->thread_head);
+> =C2=A0		}
+> =C2=A0		attach_pid(p, PIDTYPE_PID);
+> +		if (thread_group_leader(p))
+> +			copy_rootns(p, pid, NULL);
+> =C2=A0		nr_threads++;
+> =C2=A0	}
+> =C2=A0	total_forks++;
+> diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
+> index 127a5fd23e70..081c27aa85bd 100644
+> --- a/kernel/pid_namespace.c
+> +++ b/kernel/pid_namespace.c
+> @@ -24,6 +24,7 @@
+> =C2=A0#include <linux/sched/signal.h>
+> =C2=A0#include <linux/idr.h>
+> =C2=A0#include <linux/nstree.h>
+> +#include <linux/rootns.h>
+> =C2=A0#include <uapi/linux/wait.h>
+> =C2=A0#include "pid_sysctl.h"
+> =C2=A0
+> @@ -280,6 +281,7 @@ void zap_pid_ns_processes(struct pid_namespace
+> *pid_ns)
+> =C2=A0		current->signal->group_exit_code =3D pid_ns->reboot;
+> =C2=A0
 
-Oh. It took me a while to see why.
+Dear Jarkko,
 
-__shmem_writeback() asks writeback_iter() for PAGECACHE_TAG_DIRTY
-folios, and shmem never sets that tag, its ->dirty_folio is
-noop_dirty_folio(). So the loop body never runs for any folio, and
-hasn't since 776a853a43c9 ("i915: Use writeback_iter()").
+> =C2=A0	acct_exit_ns(pid_ns);
+> +	exit_rootns(pid_ns, me);
 
-That makes me question the whole writeback thing. What's going on
-there, and what's the plan?
+We have a very similar mechanism around pidfd's to track exit
+information for a task. As far as I can see we already have (struct
+rootns *)->init_pid reference, so we can get exit information for free
+(look for PIDFD_INFO_EXIT).
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Kind regards,
+Alex
+
+> =C2=A0	return;
+> =C2=A0}
+> =C2=A0
+> diff --git a/kernel/rootns.c b/kernel/rootns.c
+> index 3bbf7677080e..bde7cf4baebe 100644
+> --- a/kernel/rootns.c
+> +++ b/kernel/rootns.c
+> @@ -183,3 +183,41 @@ bool is_rootns_file(struct file *file)
+> =C2=A0{
+> =C2=A0	return file->f_op =3D=3D &rootns_fops;
+> =C2=A0}
+> +
+> +void copy_rootns(struct task_struct *tsk, struct pid *pid, struct
+> rootns *c)
+> +{
+> +	if (likely(!c || !is_child_reaper(pid)))
+> +		return;
+> +
+> +	scoped_guard(spinlock, &c->lock) {
+> +		if (c->state !=3D ROOTNS_FORKING)
+> +			return;
+> +		ns_of_pid(pid)->rootns =3D get_rootns(c);
+> +		WRITE_ONCE(c->init_pid, get_pid(pid));
+> +		WRITE_ONCE(c->state, ROOTNS_RUNNING);
+> +	}
+> +	wake_up_all(&c->waitq);
+> +}
+> +
+> +void exit_rootns(struct pid_namespace *pid_ns, struct task_struct
+> *tsk)
+> +{
+> +	struct rootns *c =3D pid_ns->rootns;
+> +	struct task_struct *leader;
+> +	int status;
+> +
+> +	if (!c)
+> +		return;
+> +
+> +	leader =3D tsk->group_leader;
+> +	status =3D (tsk->signal->flags & SIGNAL_GROUP_EXIT) ?
+> +		 tsk->signal->group_exit_code : leader->exit_code;
+> +
+> +	scoped_guard(spinlock, &c->lock) {
+> +		c->exit_code =3D status;
+> +		WRITE_ONCE(c->state, ROOTNS_DEAD);
+> +	}
+> +
+> +	pid_ns->rootns =3D NULL;
+> +	wake_up_poll(&c->waitq, EPOLLHUP);
+> +	put_rootns(c);
+> +}
 
