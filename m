@@ -1,145 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55946606A335
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 04:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45DD606A326
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 04:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IxQoOkAp
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CO8z6D2+
 Received: by kanga.kvack.org (Postfix)
-	id 6466E6B0741; Thu, 19 Nov 2026 23:21:30 -0500 (EST)
+	id CAEEE6B05ED; Thu, 19 Nov 2026 23:21:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61DC36B075E; Thu, 19 Nov 2026 23:21:30 -0500 (EST)
+	id C87456B0716; Thu, 19 Nov 2026 23:21:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50C1D6B075F; Thu, 19 Nov 2026 23:21:30 -0500 (EST)
+	id B9D236B0642; Thu, 19 Nov 2026 23:21:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 354606B0741
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:21:30 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3A16A0D41
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:21:29 +0000 (UTC)
-X-FDA: 85454198298.23.7E992D1
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CDC6040003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:21:27 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=IxQoOkAp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf07.hostedemail.com: domain of sendavianemail@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=sendavianemail@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795148487;
-	b=Ksq/0AxCKGvz1hfj/8q7ONEHLdBTJ6XaUsJI2JWIbLYNXqOleAdp1l05TBiZvAtc0DpaBW
-	mU8Y6NL697rLwrZeDxOlYEJx6aXxDfby5qmJSOwZnHFtrY7qYU3W6jW2W08SRsE8HWLpOv
-	Q95Y2Zvf80lQ1E2lO60IlsHzcfzWdHY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795148487;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 995F16B075E
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:21:38 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3878B40CEE
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:21:38 +0000 (UTC)
+X-FDA: 85454198676.16.18453B1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 532D71C0004
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:21:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CO8z6D2+;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795148496;
+	b=BQ5lKDsGcgcEJcZgXbHdgKVNT0e9OBhPHb/Dm4nWEn7BCmvOthKGOjrXDkd4E9NpnbqgFk
+	mCJ6m8iLVFxSxfZ6UozP8ANd5e6QAw/h5SVOD/ZcNuNU9V8STtR7UpqY1+pBfuFAGlPdmJ
+	7ro/D24+Ikqwh+8Plxj7ijOLW4gA1/A=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795148496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MZofWyob445pWeNhb7OktaRwpuZ/DPW8FberUsxg9WQ=;
-	b=J8PTKKJ8hnCIW7hERGX6ZANbU0/SqUSidji5bCAfEFyw1iOtWH050ksrASeh5wi8fOMg0i
-	dWa6Uad/I+eIn+qjYbq1zMVrVUyAh08x1OQZLq4DexcGrtav/dZJLA4xo6qNf462/r7/iM
-	UYaztX/gysKegX53UHZjKJQl5+9rhfE=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=IxQoOkAp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf07.hostedemail.com: domain of sendavianemail@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=sendavianemail@gmail.com
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-67be4f2f4d4so642358d50.2
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:21:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795148487; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mcfSKZming+FbQuIP5QAXUzfpa8lWmkKiTiK2BXjJIKUvHCx6e/ekW6pLNprIVjfFl
-         LzlkgWzY/7ATCEcM/20QamCwIjnNZMhAhSW6sXARrzgD97SGRoGri5LOtQTZTFziLVfj
-         vf+XUYUpbfXLZPuwZN4oswiJI2QM9DWuf2zS5VLP8eeHBfMY5PxB/dlb2xfIuOKwsxxr
-         Vzeiwf2PsYjpWgqcc0MyY0urSOjroG6/aTv6DGGeh5Bo5ieFViT5nBJQO+zNJEvD5H3P
-         5F66WsZ/WJ0Y6nSHlsrOWnWmuAuVgwh3KaUBgiQnz+3wQKpqd3yNJosqmEHgezo9zDi7
-         yBGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MZofWyob445pWeNhb7OktaRwpuZ/DPW8FberUsxg9WQ=;
-        fh=3cQAK9CeWMgDgNkfKNdw/jeKHtaR4Nkt+vlYogRaBO4=;
-        b=qUzOhB0JmCnJOhcktdOnlT17VpmZvFKOCTVe0a3sFhB06ZkarZPC7YuxGY7FxLwNcb
-         X8TIjMBThrgJLow4m6BtSKcQ+7lddMcdtAWrLW1O0Xpko5ey1sqiCs5FNkivbAUOfbss
-         ZJeE+N4YtIlsXZXxxPuIcIVFM/bZ6/A5Vamxdq9a8equr0Eti7OJViQHC8pymvYLp9zF
-         YiN5hty98vSY/HI2w2hmsQO747qu6oZm3vPLrzJPKp3j4kyfIK9CrdhVA3Ui+YDTSZ7u
-         DxEgc6no6O36uCHBN4KNuk9UHSQ3HC4buXnepxPZvxGXDxfk7dtHEjQge6f+rX/8ZkIs
-         cKTQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795148487; x=1795753287; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MZofWyob445pWeNhb7OktaRwpuZ/DPW8FberUsxg9WQ=;
-        b=IxQoOkAph/C2bppjxIagnZH9Zf+ykQbiU8SFG3DHZ12zacPoKijP95+A95slTbT16q
-         riVtPSUx+J162NwXuhY5HHXGalFQZRwlkPeR6kj8GffVv+KFCG6QoAI7/PakCpQlyyXW
-         NBEdLtx4sQI2R/7B1uz4tSpWHkyaxJFJRiK9DokGiVs8RAOOnF79rOnDzMXU9bB4aP1m
-         S4LN3SkZUaCCUw4UkPvOQdztywPU0YKF6HnaAV2IoiUFOKvWJJX5rig8G7lZGEE0zeZY
-         d9jfjfAMXE0v+g+wZQQk5pV3rR4lIqSGabfVm98fnY4jwB6D12h2oJY4Y6WR2h7UaxLH
-         8pPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795148487; x=1795753287;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MZofWyob445pWeNhb7OktaRwpuZ/DPW8FberUsxg9WQ=;
-        b=PFDH5P6STSvchNqIPuZZBPzVXMCRjy/GqoQFScDsROQayhZemEZoRfivrWWMwOmZFu
-         2s4WJtZWF1pw9cynTw7NnunfcydrCUomz3+htvcG3Fa3s7f1lKjV07pWmxXD5UOimRP6
-         g46KdImJuV+mQZ4IY/xBpQ4RJZwoTBPcAtPeuhcu88jEkSZcWges9oRL/vpcMBJc26C7
-         85n/DkcARz4hlUJBV8v2gLa6klhEiy2gyad0qDXEccU3xn0qUNU/tdCONXkhbSqwF3oD
-         Y9oDd2u1ThdVqn5AkNcht53i56TixZ/gKR3CY1OUGRea11+ZImpoC4/ehL3iH+e15Atq
-         f1uw==
-X-Forwarded-Encrypted: i=1; AL+hErFMEgA/gT1wUmdTx9HTsLLDZWp/2PNlaaLLYEYftb5MgRHtA0HyINmmoX1kMuC6EN2+3g33wxPlCA==@kvack.org
-X-Gm-Message-State: APuU4Z9ojPVKa2z6aJNxbwIfOqs+h+Y8PRcz4DKU+eUKU+wFT/uikRKY
-	RnPS7oHvyRvKTWo6W3chi2jNHQEaN8R7Bz7bocPbxq+WT85FCuKhWNDyGGrx0wE3gpwqi8fLkHf
-	Bym5QB9hlytQjcDPrmQr3dhG0MCUzIio=
-X-Gm-Gg: AZFdTZc46Y+LPtkzCW6gyCck7FkXxjvwluT/WEW9Z5JaXvq4/v0N1oR6oP2Jw9ZIllv
-	tHugsU0JOhLrCHWvBJtjnh6eFlen/iAii88lAKp+l3BAnYfFhncTSr7ug4wd0Ryx4v+mkfugWO5
-	7zKlK61ao00jjy4T/+xrhJX+HKV1fAB8Ff+LR7Z1nI68orzZKeMt+H3zrMe9UsDHmk5d9uTrOSs
-	OCcJCRxqlCzPPsJ8BL4XWKwiGMg3ejAcatvUp3UVd+OPLdShDeu0FH2SIqWoNmm4f+OGC8PYzh1
-	9hYHjV0QOCvAjTTFTcxyn74uNM6c3c3rO6hRC1nyZnwDzi2L3vdwdxjTLX07/LUKclAJYyWHsdB
-	v8T6PuTU4nocHJZqLi30RZXy8G4gbQrYnz7rdUSHY7YTYR/uyoIxrXnL4Rv3sQ8C6T0YwPC6XBc
-	S5Sia5VH8pgtPeQ015l/5XEdG+
-X-Received: by 2002:a05:690c:3603:b0:8b4:d8c6:4d9a with SMTP id
- 00721157ae682-8b52049684amr7423927b3.48.1795148487000; Thu, 19 Nov 2026
- 20:21:27 -0800 (PST)
+	bh=aCF/9QsXGxPiuVfa9izWAY1bS5suwF+J5Gv8PYcgibE=;
+	b=We51rjlyaXm3vkLpIFUIr8ro70elbJXUIag5YNZRpJOf+7+N72qck/Ycx1Gczi8Z+7z64Z
+	idkq4VKGAaSaLvYYE/fYqQvlhjK5C+egvdtHyNUg6z2LOlqoY0diUJydKr31C/sbEUxwNj
+	60ivSpC5oVZJS6jEziuuHFW8RdkzgZ8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CO8z6D2+;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795148496; x=1826684496;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hYIJ0a2DlFsoUIkgJ8frMlcR8Pb107JbX1ud/3a5NwA=;
+  b=CO8z6D2+Ptjpb1CvLzJBV7FXYpC/7tNAnVAkV3sz7P805xDMnPrJElkE
+   xG2QEj9LpK3IwSJhGXRdMhLXgMTY5nVn0DCgJtG7vuiuxLpefUtV4OMza
+   dssPWhY3LfF9QUasrBtn5QnZBJqnxwZh7ufEkHGpv3pA1al70o0xuENv1
+   2MwYSTcKsTNfX5BYbtoo0BJCnRtQFpe95c2fvCuoAAtHBPSFeXmsFaF8O
+   FD+o3fe9Mkg8DppsRmvd+Enz0o468BEXI+GkGT+qxGSVajuBVukLPi9cd
+   ljRZi0fidmkF1vqE81Jx+lPTtJExaQ6CFnZf3yIquQNCJDQtLIe5CdDBf
+   A==;
+X-CSE-ConnectionGUID: uwvyxdNgRlWOHkdQQlzTbw==
+X-CSE-MsgGUID: sWYCT7pVS/y+MIHphT8efQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3941990"
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="3941990"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 20:21:34 -0800
+X-CSE-ConnectionGUID: QSyDhMpXTSyTx5+CPSQzGg==
+X-CSE-MsgGUID: VvpOMlxNQyuEqgIo9lpwfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="10692032"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 19 Nov 2026 20:21:27 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xUG7n-00000001H3D-1HgV;
+	Fri, 20 Nov 2026 04:21:23 +0000
+Date: Fri, 20 Nov 2026 12:20:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alex Williamson <alex@shazbot.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Alex Williamson <alex@shazbot.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	David Lechner <dlechner@baylibre.com>, Armin Wolf <W_Armin@gmx.de>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Marco Elver <elver@google.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Bradley Morgan <brads@mainlining.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Pnina Feder <pnina.feder@mobileye.com>,
+	Mete Durlu <meted@linux.ibm.com>
+Subject: Re: [PATCH] PCI: Allow untainted driver_override for PCI stub drivers
+Message-ID: <202611201122.JwnDSHON-lkp@intel.com>
+References: <20261118235645.2907908-1-alex@shazbot.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261119180015.933433-1-thnkslprpt@gmail.com> <av88TW3GQRvXJDwA@gremlin>
- <CA+jvY9E3XD5mJZ7V-+6HFxEkY1FHNGom42F-nxMZNGtOy9POqA@mail.gmail.com> <8e56f690-7031-4a57-abdd-a02c1c94782a@kernel.org>
-In-Reply-To: <8e56f690-7031-4a57-abdd-a02c1c94782a@kernel.org>
-From: Avi <thnkslprpt@gmail.com>
-Date: Fri, 20 Nov 2026 06:20:49 +0200
-X-Gm-Features: AclHuK_Fg9tRjIVo2CnJsvvToGmImP00awTc_YDWrnuAnE7j5TJSQHgt_xSP3vg
-Message-ID: <CA+jvY9HQp6iDPGDTuVqrQNnw0ENDDq46_AwZqzcjXNcyFWqPsA@mail.gmail.com>
-Subject: Re: [PATCH] mm: skip temporary folio allocation for anonymous UFFD
- missing faults
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, akpm@linux-foundation.org, rppt@kernel.org, 
-	peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	liam@infradead.org, mhocko@suse.com, surenb@google.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261118235645.2907908-1-alex@shazbot.org>
 X-Rspam-User:
-X-Spam-Status: No, score=-1.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	FROM_LOCAL_NOVOWEL,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: CDC6040003
-X-Stat-Signature: x9n6ou3hztmjikzxbaokt719sywrzr77
-X-HE-Tag: 1795148487-969441
-X-HE-Meta: U2FsdGVkX19oBrXf4I+r7brHCSX2QHZt0cQRX54RhugwVCfWSblTDhll0nMPWvGfI1csPHJRE7jz+MxqiGHIkV8zIvltDOaKlqEI6PT0d7dB0pNdFDDHD7OL7rSA1aqBAoORxwSQAa4PjyK0ZWZKV19i5oCphfmBXVWEFQ5WYdUPXUT4r1sm4tOpVs/4VtluMkKhC3YaJaci71uWDvFVICwAmTvPQ6sUt+xatfDdyTxDzvTOzfvhZ9msXPv8vS47tQQhpDZ+d33sVSDIfZK2yGu+5u43UINWXogRrG3Mbu8NkFLxVAAgsoWOu/szr0q782NKN719UdSbdKURrgXipcoeBanfKH2Ltzwj/eXncfpLY1B79Xnc812AL8u5wKYj6VMMjCHzJ0rMvlo7VCNUrfVAMRtgZ0j68VaTknIDodSCUxQHpBJzVTRxqGXGVpi4wj6uJJ0/eORJSIkGnpyWL/nlet9h45DSm3/XkXJLg9oR6U/7E6rdp5ZdMzZNopReKtiYDjhyyAPGg6pF3XhiaXsiQx52fzVUstvNkLjVgJ6rWpOHjn0s0FeKExXg5Z+1WUEaSOvKVLkUPspU6qtwg2IghiXccBYSWk59ajQ+SyDLh5XhC85oBviM/Ew5oeGvp1jCaiJQgag+TckJQ5x9h8vA/srNwItgQrxdvKU1gVNndVkTIvbz71GOiDf6Mf8ZChrjYQaI97ZC4OJaijTtjsBeOzhlZwAD8Cb/XUTV66Y0pNuckEQ87e4mGmLcr+KGiaie7G86JTlqwEtkKqiBD+9njEGJQsHuzRHgTrM11EdJiclnAdtREJuTAc8+Zn5iYSgM7exceFspcGTB3RkTKR7dtADgT+R40/P3YxhN5c4+td2/KRkiNyX3pNf0Tim5pZBiGVIRua90elidHHMNJXxOYb1J2y71mb8ouKIY5UPoU/W3T4Ycqij5OaayK63oDCF5ZkY+1SNz0OJHeK+
- lodRiZRe
- EDKvjAFHz375wcoW12AMeyh95wf5dnXbibVJmIek1M0PhD+J3ZLXU39CI7v9Vn2yM/EVv6W01fwWfbeFnN4dQlArLWOVEjgoz2bOrUHjMj1gXWY2dJqcVDuwHPGJV0mzFoul7QEXhpl0vU1S8SgNAhB1NpT+UIMoj9ScaxQ2QXxrxKIBL+rPboSnhf5X+Y57tdgx9yk4eCgDKtME4SKwBgwNkHoMGxevhMUlx9D2AdRHLpeaPQr4NUHOOzb+d/vkfuvVY+PykSvN0VodZRbZj1jMDeF01YJssLiqhW9ZzKmQs5oQdI96jOaP1fro1ZN2gkcrtcWFEbSWd0YcJH5jS/SHVXjt8ImIWeLbU4sRQ84KD9URHXPPQSi9SUWY1xAJwyv4uN1ZZ2w9tHQFfs8OvvlDAm4xlqo1J+Yzh0AO8/7ZziRkyIxY/qqoUCDzB+Ruim38NbacLoTLqnzYnuh1qSjE6T8n82LInMsN/7rBLy+5zePq4/ZTNtPDxaLL3Pd+SsoG68DcQvikgmi4/9eDvAVifl864ZuqXJNgJqfKQp2OLxE3QInLc9enrDAVLfuzRTO16MBqxWnx+VCa16+Ei3wnsyUyTMCr/musxTpFWlydvLJSFpJAjUv678tPn1JMYh3kglKW6nM2NVgOtCQIUcLxTum5wdQPq7KjtdzPdvlDT+gn0IJPksGO5sglqj7gqWXwQoZHHB1UxPX2HkFtAJJj7NCvMeBTggnpAcpcLDcTMQo/3v9VHGupn+12xetLBQZEDv5jpG5qiHdxm8DwqyODb52DZ5/OYt+bA6r6OgjN/98hAqu5hOb43JXMQRW8ZlkA2
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 532D71C0004
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 8gog3y1gc85fszo4p6zict1h6eyyd89f
+X-HE-Tag: 1795148495-270576
+X-HE-Meta: U2FsdGVkX1/ejIHnRjdQgJo9hhUTNMhjiNp+mL3ogZ6s0cj6CwP1E4IhnDrpr9hFXbL0fvXaCUS6fYJTjoQll4fKLZg39hvbWu01tmJPcpMGqNmMNWyun6zclhzVkDnla7r578q3KkXIvs8/Ip3RspxcKmEPFVRFIgUebIohp8+Dphz5Ti1C/430WEFUnP3kprW5lNES5AErLsvZVQMNxktrxrBY70l6rcyNS10rE18kZ6P2+ZwtUSU+8xs+rzbEPlPukQdnJzpg4vBqfbzCSJRexwWnlRY02KzLQRQovZhuYvlLvpSlLe+FrFEwanIMB3aKwMz4FW20ixP9/TPgc7uZhKdnioQpiEEb+9NnzKAf+eYJHHdSLkTpmLoplxFePgR8hhJS/qB3jckEVaO5lB5HQR1r7oYaku5EY19pFzTGdxIFYdeXoh4V2wLbV6bjSx3srfiAKZOx/MOcZASJvfPXuEwSYXfyQLmv61vD5FPUTeRjin3mL+TCTXveXRD8/6hYOhr+QxNzRmrXwNuqO9ol/aIIIekz4H1gRZ880lmkOYQwXqK4vBLTti3ZwKq65VF/RShsZmtGDOzAIhbQBP+k9ZZcqpNUn++JhnVD/CkdgJaCs4hS1KqAEeDPRR3ggKdp2+hXC5roWqRvHPA8KOd0ZM8d7YLPsWFZX4abrITB7Ge+OSKTzKBESgR2n5Yt6PpCAzn1hZRyLZKwz46EZuHL+GuB1y42z/HOzFBplonFSdNu0I5Fng7C8m7ESp07ZRSY4g7+hZ1GixSDMCxxaug48aIy+lPoXfwKqupt+Y5O4zIU6gXgGqkYckHmCtM9QoK09bhWl1SwGkvbMK/RYD4VD7wBQFRoCvUr8YYyjkqzxVcs1FEfiVLNaX8w5odo6+syR02Vpq3yaJSS0t47w1LyBn69jGOqjTqvtvdE5JgHHip6Or0XLqJwLVRpSo8QpBHH0ps9xyjofLCWJWI
+ J6bOACOp
+ rWE3wCGHBXXmgdP9y+AO0bB3NGJxVqZ5XW24SSJghZoED+owjU/8UXM0j8OAMh1IpIekGdCQSkxsqHmM932OTktKAt6jE+vgaa2E/ikjxIUCJRkOzN8RAyoLWrK0qCmb2NYyQH67tOf/u/UTjlzUQ+VK4xhMycUmF/Rb3cJzNGDPWoIRrBPBLxU5PmTfhrt0rbxlZoaJMXo74vUXndOvLswEuVu7OtDQHtTC4CUKrE0LT6XMvH38DhuslBxZCX2hoKn2yBjfXRYyqwRzy6kvOaAba6uyZfkY8gINp6xrFzA5VstAR+y3DvNmhIoM6y1T5N8IpIuVdwKSQ9PimDJTRqCTPMqDdPsCafE40RkyPDNKa7u3aqT9wuxA1O1i3QQDeBuIe21g+tpLxiY0V4o9no0ZkCSPKTylvRYVGt3jZuv8V4zHiyiuk8FcQWU4LE5ltuh3fOQr7xnC6hPMfXQ2sFae6D9OYy+Uvm+jWP+i8oijB/8RQpzysqPwNfaC+8unLZdx7sO7C/1zdkHwTstxfxAdVVnvvEF3aFFtYQRBEGgjvcOGI+pIYl4YYEA6dGtGWjHOtmybfLBmZM/6rEKNVZs/XVsMjZu6N9fXZqg97K5ApyLNoWsn9WKEnwIHv7kKDrxl1hp6hyP/2yTB+dUO7ipjneH2asvJEOrW1OdBBlhjbrQsAC+uVZqSs8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,25 +135,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi David - the real motivation is very simple - avoiding the wasted
-allocation (if possible).
-That's it.
+Hi Alex,
 
-On Fri, Nov 20, 2026 at 12:35=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 11/19/26 20:31, Avi wrote:
-> > Hi Lorenzo - I don't think you are in charge of all of Linux and can
-> > decide who can and cannot submit contributions.
-> > This is a legitimate improvement in my opinion - if you disagree that's=
- fine.
->
-> May I ask which workloads you are running (for customers? etc) where you =
-would
-> care about this improvements? IOW, the real motivation.
->
-> --
-> Cheers,
->
-> David
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on pci/next]
+[also build test ERROR on pci/for-linus linus/master v7.4-rc3 next-20261116]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Williamson/PCI-Allow-untainted-driver_override-for-PCI-stub-drivers/20261118-165643
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20261118235645.2907908-1-alex%40shazbot.org
+patch subject: [PATCH] PCI: Allow untainted driver_override for PCI stub drivers
+config: i386-buildonly-randconfig-1003-20261120 (https://download.01.org/0day-ci/archive/20261120/202611201122.JwnDSHON-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261120/202611201122.JwnDSHON-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611201122.JwnDSHON-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/pci/pci-pf-stub.c:39:10: error: field designator 'support_driver_override' does not refer to any field in type 'struct device_driver'
+      39 |         .driver.support_driver_override = true,
+         |         ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
+
+
+vim +39 drivers/pci/pci-pf-stub.c
+
+    33	
+    34	static struct pci_driver pf_stub_driver = {
+    35		.name			= "pci-pf-stub",
+    36		.id_table		= pci_pf_stub_whitelist,
+    37		.probe			= pci_pf_stub_probe,
+    38		.sriov_configure	= pci_sriov_configure_simple,
+  > 39		.driver.support_driver_override = true,
+    40	};
+    41	module_pci_driver(pf_stub_driver);
+    42	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
