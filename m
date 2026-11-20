@@ -1,110 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E228606A33F
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 06:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D4E606A33D
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 06:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dQ0Aj2Gp
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=hPOqM6zX
 Received: by kanga.kvack.org (Postfix)
-	id 267DE6B05B0; Fri, 20 Nov 2026 01:17:59 -0500 (EST)
+	id A86106B00EF; Fri, 20 Nov 2026 01:21:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23FB16B05B1; Fri, 20 Nov 2026 01:17:59 -0500 (EST)
+	id A36516B05B2; Fri, 20 Nov 2026 01:21:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156BD6B05B2; Fri, 20 Nov 2026 01:17:59 -0500 (EST)
+	id 94D046B05B3; Fri, 20 Nov 2026 01:21:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E1BC46B05B0
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 01:17:58 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B8B8120D4C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:17:57 +0000 (UTC)
-X-FDA: 85454491794.06.F3EAB73
-Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9650740007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:17:55 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=dQ0Aj2Gp;
-	spf=pass (imf12.hostedemail.com: domain of 3Eeb_agsKCDwiYjcqfqglefemmejc.amkjglsv-kkitYai.mpe@flex--kaleshsingh.bounces.google.com designates 74.125.82.70 as permitted sender) smtp.mailfrom=3Eeb_agsKCDwiYjcqfqglefemmejc.amkjglsv-kkitYai.mpe@flex--kaleshsingh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 744796B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 01:21:52 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E48EB160D7C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:21:51 +0000 (UTC)
+X-FDA: 85454501622.20.A991CBE
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by imf27.hostedemail.com (Postfix) with ESMTP id F19744000A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:21:46 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=hPOqM6zX;
+	spf=pass (imf27.hostedemail.com: domain of zhujun2@cmss.chinamobile.com designates 111.22.67.139 as permitted sender) smtp.mailfrom=zhujun2@cmss.chinamobile.com;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795155475;
-	b=s8P9W0j4FQ3YHjDSfpQKdXp+i+rfzUMJGEsahxc6WDaVNZnOv1QCOfmq9Rdw+bUmjQ+mfy
-	x0Z0a+Wy5SkN2PZyVhN9vATtg+bZHMa/ZTQBwSrd9MO5dE7GaYg7mgnzueuxC/pvu6Rw7o
-	r10BnODRhPUkMFlzScUeBsoM17r4M2M=
+	t=1795155710;
+	b=Tu8qv96UDbwn7E5MeNTKueNX2ZJyEifgU0cg5JbD/iSdppF0jImSJ313QxkEdeVkGcDpJh
+	6Juvp0tK9FuCFcPBGJ6DjYptfyy30UuI8R9bwfRZDrjzkTWfCDMxBHASqAPbXKNo7Nck2+
+	uBGUrg9SmyQJcD335dmeCo/0xWoM+UQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795155475;
+	s=arc-20220608; t=1795155710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zGvI4qlnDuwkxAknmqETH4wyE0qutMq1KNHulBr9l7A=;
-	b=U8Hj7TGumMnl8pi17PCIi5YGN7HqsVanyG5wUORa9C6EcY5B1urnvbvO6Xm/ZGveYTCHev
-	z2SgVgbNe5b+eYQMIAUPWWrohJtC4ga5XsPPwV1hGxV3oqJkBDUvC/bU/1F+6ESJaazAUL
-	nKehlaZAFseX3tKsPSJS/mVDvLlA+dA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=yOQQwiLmhHuqYCmPwMZzQ5zVewZ5N/g4NEG1AkPQvjg=;
+	b=j7Zvi3DbYDIjgggWSuI07QbkRretbvD2CPdKEhfcrUCv+FBVOWhsJGexMoilTF5HDGCYY7
+	SAK8QuFblniog/GJP6EtP0iLJF6MfOgcE9krR9tZt/p8EEuYH1xj4ZblhzFgiGVADuMx+T
+	nXm5wVY62EIdoE4LVUV95CGIqvTyHmw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=dQ0Aj2Gp;
-	spf=pass (imf12.hostedemail.com: domain of 3Eeb_agsKCDwiYjcqfqglefemmejc.amkjglsv-kkitYai.mpe@flex--kaleshsingh.bounces.google.com designates 74.125.82.70 as permitted sender) smtp.mailfrom=3Eeb_agsKCDwiYjcqfqglefemmejc.amkjglsv-kkitYai.mpe@flex--kaleshsingh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-139b62317d0so1576967c88.0
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:17:55 -0800 (PST)
+	imf27.hostedemail.com;
+	dkim=permerror ("l=0 does not cover the body") header.d=cmss.chinamobile.com header.s=default header.b=hPOqM6zX;
+	spf=pass (imf27.hostedemail.com: domain of zhujun2@cmss.chinamobile.com designates 111.22.67.139 as permitted sender) smtp.mailfrom=zhujun2@cmss.chinamobile.com;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795155474; x=1795760274; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zGvI4qlnDuwkxAknmqETH4wyE0qutMq1KNHulBr9l7A=;
-        b=dQ0Aj2GpMO9mIhaQnZU0L1twEqWmJAivAofMoqUaHtg2ukOpQPJytXNZGOY25H0GJ1
-         nBjDKPGMDMTNPU993ksXgC2L+bVeHgsrTTb34sjmIaAkcCdJUMv8MvDcY1xzUiNuRc4+
-         AUwIDt8DIVw0ciJZM7S7wIOalbayu/kHQQ5pafaXb6kPAU7+3w/D65YyiuuxRsJst4AD
-         XXknF0j+OqwMy/dMCaKbI+2/HBZ0ukH2veEEerpFrXOAsnyKqIF1UIqQTS/vpXw1mPD0
-         r2jDJ5yT0B0XNoIHhx9iKFQ7seOxuvopHFHWmGryIF6n1L/5Flp2gD2S1Ccw/fNn9/Ce
-         YPDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795155474; x=1795760274;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zGvI4qlnDuwkxAknmqETH4wyE0qutMq1KNHulBr9l7A=;
-        b=B5UIzrVHttigE0Vmebh8z1gSQrTlizcaRYfnGzHnnFTLtyewT30l7IQzHNK2ap3GtM
-         K6eJ22x4tzF1B0XbOzDrO9oxQIUlPgIMvfdilLtmUJh1A/2ER8Ug4LI8RufCXFaHu8vn
-         J5s/oN4p6tBzKAYqCSLPpHgr33cLpiVz+CcUCiWZFhQsyM9KrZo9T+OMypPmac+18yxe
-         HXdyf2pssTrmW44JBp5P5sZ/mtW+E1aDZfq/iO6WoHRvuXVnNQ8QZhNY0ra44BGOiMQE
-         8/r8sfP3jRCL3FHm1JWJejahXz5PR1aVW1kHWhZeQ+ciDOcZBOLeD+RU6F0kd5aAh58r
-         Mhew==
-X-Forwarded-Encrypted: i=1; AL+hErFSNVu5kEs3l+CJcQxRArNouArYX1fXS/eDEnvt/8yKtaZYaV+xu3gEIM5eAwr3jYR8uZOAF44ROA==@kvack.org
-X-Gm-Message-State: APuU4Z/vOxxyW41pxhNQSHRy6jDEGjA/wd5mMo/LqWsRUzGxGzVzQbYK
-	FsL2cDZaHd3QocSEIenguThdDFb1ZDerpNdhEs2/KXnz2mkv3P3Ic4jxU9IePHD1ijphA+1X5nx
-	kGhulHRn6Gd/MRVbQnFvyd9vu4A==
-X-Received: from dlbtu1.prod.google.com ([2002:a05:7022:3c01:b0:197:f679:f62d])
- (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:7f0f:b0:165:aced:1fde with SMTP id a92af1059eb24-1b5566857c5mr1977449c88.0.1795155473610;
- Thu, 19 Nov 2026 22:17:53 -0800 (PST)
-Date: Fri, 20 Nov 2026 06:17:49 +0000
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=hPOqM6zXQ9EAsmeKSbO60Un5COTd+YvFnmBOjCaRjBCFRJzfm0P9VTXSdHAOl+8AHH6KXGW8lJMdf
+	 6YdFb6OsPFvcD++SEFbUlFkl5L/BnAz5OTUBjWDL/V7OWqVjVqT0+caa/hVq76LgEzy5ItoTDDivfK
+	 lq9eGOIx4VhrjsS8=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16affe6f40c2-00c96;
+	Fri, 20 Nov 2026 14:21:41 +0800 (CST)
+X-RM-TRANSID:2ee16affe6f40c2-00c96
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from devin-VMware-Virtual-Platform.localdomain (unknown[10.55.1.71])
+	by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee46affe6f4b11-18915;
+	Fri, 20 Nov 2026 14:21:41 +0800 (CST)
+X-RM-TRANSID:2ee46affe6f4b11-18915
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+To: vbabka@kernel.org
+Cc: hannes@cmpxchg.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	ziy@nvidia.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	iamjoonsoo.kim@lge.com,
+	linux-mm@kvack.org,
+	Zhu Jun <zhujun2@cmss.chinamobile.com>
+Subject: [PATCH] tools/mm: Preserve the final page owner record at EOF
+Date: Fri, 20 Nov 2026 14:21:40 +0800
+Message-ID: <20261120062140.98503-1-zhujun2@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.51.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261120061750.2973004-1-kaleshsingh@google.com>
-Subject: [PATCH] mm: swap: make swap_header badpages a flexible array
-From: kaleshsingh@google.com
-To: akpm@linux-foundation.org
-Cc: kernel-team@android.com, android-mm@google.com, 
-	Kalesh Singh <kaleshsingh@google.com>, Kees Cook <kees@kernel.org>, stable@vger.kernel.org, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: cf5d5p465xrr5sjywkrnr5axifw531k5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: y6d5k8zakjxzgdqisyhzaonwehcn7fm1
 X-Rspam-User:
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9650740007
-X-HE-Tag: 1795155475-650784
-X-HE-Meta: U2FsdGVkX1/OUMuxG9LJDgJyU+Itc9P48379qHQRlHu2spbtwY2y3uGSLnnN7SXdeoEeHIoE2mhsJeeoHO6ncOOgNlA8UoAQs6DVXRywUPzg/Nx0joc668PwTJbTzm+vAvpq4IyAJg/KD6ggGsrVC810j1+KLIlFHUXjGlaUePI3YrpgEeHNS/1W6QQGg85Rn4ybbUiJ4pLAqBN9XnHxyke+5gAm/NZcCZarHGcLEFIsdJ/YNncF6Dqn6W20spaKsJ+CSQSavFzoyvTeN6XQ26wFJU3K9HtZNvlFHy+bNCH8VkR8UW77SR7kOgrtKEqXndVnxgGp5RUQvDC1NCyUlV4gsNHU0jX+jxk4Kr1HHvUDwH+bM9AYzvmZmzEPc58WCwKJjKVksQIUduZZu7hFVi9rTEAtBRvIcZDS2vIw5VEaeHUKizQIUYLH6PkstmFHEDbqZMpWFmrFV0upeP0Ox0Iq/KYr0HpkeCZSfb2SNhslDFXYpH9q79SZ+S1rzZKkY3Xke1c+Br4emMlfGOXJCEgK0wQN6qpRknLu4QepkNqzBiGKIJLpK9hFGvlwBzjdpZPUzddt1SLpmXAmocoIZnMoY75UWg8yYqnPtQAOlAhIW+PjDwj8zrQpVozpCkG5gmvd4ivL6thOMu13fss2v0oavqHM2N/x8wppwk4YvPq+0ljD22/Brd4iqGUsIcMWfS7TUvmvRt0ZSqySGq7BvFDFOv5M1SjZKyrqc8UzdJPVxcoF8bOiefHFX3NWBolTTxmtf+2l7pfLK21MQmeNvbdzH1Phnhu4cjpHQpCSCj9qC80DrCobFr43XTqFuq4BSX+2VUXfbJewOiCav/n5Ap3axxcGJ6wP1eyZMTV7fUZeB+uaiuPWoapCpdn2EwG4KTnM1NxdypBeZ5PpvACaTLKHJEys5v1zUVtMlpQgA7K72tzH/Vxb06elisGevw1IOiCQ4VI1t+Ffm2gOruS
- rewbD3rS
- PplZWLhoMKQAWx/h/oBrdSv00Tnd7I8u7YS47rsJ5XkPbqME+A/WZIHvz0i1jh9HzbgoIrjCeL+NaGv9qyALIVckmgRpgKMcbOotj0tw7BFW6llaFIsIbulpMOZ0RuSx1dwrP9yZQE/bophAsCo7UPDQbTMXBZ7HErDhPuYQFeo9DSy+G+ghyx8KUPgqbxaC7mCDXbNvM+zXFMKA2SdbdupCD/69G2q7Jf4K7fE2x8NQ7w1JQfMmXcPB6E5m39JGl3BTW7IKqgk+zwSH17qxgE+D5w4iOgkBU+8owv9d2gmesMycwrZLghKTeyRjdVsACjGpTUfnTqmxm8FDsUONSZC6/ik7SWB9wv3KMfnmh0buWdZlIJ6yVFQ9kOyRQyBjKyq43yHaKJYr60KwmR0TTEKaT+65uT0xf/wjY1y/+lp1MuSg1lGNvHbRlKnBN+U9+0hcsspj32zWXj7e1iTbj/t7REyT0I96FXaOyHm84ydDqx6S+Kgn48BOspx8nLw2SCJGtEUX2cDeDb1hNKRFremSRj0n76wJt36I5qYiyQSv/84trQtANFKrYHso1mB5xOfpvVy05+WdN/U0gsnDZ7obVuLWt9ZA6XGtPTWecq2xZTNB96tdWWhrexn43OHZjsB54XUX+tMufWfKmDJ4wsw8am5brA9qPIeugS7pM/7Jdjgg/RhXi7Q61+Qz82Cu7WR0E3klemOhE6eymRozV843CqdA8hicsGAgn3xQ8OCrWtcc8OPYF7U27tZTFdj91D3fDTVnFRwJcbS8WxOKCpT5HvJe/BvnSP8mFdbWXua96sqYk/rXQ7LOUJjoiMlPaYwDTSbMYe1SJ9bTg+hRkm9KDAzKI5T8frE3jwYCXp+5Os2ImukUIdtjSMDV7xfXVcWueEsLghF2iB9wHszZMjfKkXJ9jbM6hWGmp5IX0++LT9xo=
+X-Rspamd-Queue-Id: F19744000A
+X-HE-Tag: 1795155706-614587
+X-HE-Meta: U2FsdGVkX18qSh6MEf+KK4PXQ4nl3wcFV7CBHheRCej7/gJCYBJgiYFFnp9ioY/eT/dR4I3T5E6IFPzYw4o1w4+SqKhhhv41NOTaNTMdpkvvB4ZCfZ1w1ydTYARlwjARtz8A8djE1IXQkwPSMQYwGLeKVLTlAq7zcZDQlSEA7BcgS86VOx3i7ENMQoVGGLlJwCXwcy9G8fLG/j9wtByaMkzww6yHh6bvgni8z+7XC/Oplymz8wl6ykZYicopyXnjeABkm33ek9Fgg31plmebm1VhqOb4TLZv0HGMW7EML8LLebNz7YPAP0WJHLjhHn8uqP/q0vtEdbYyq6sxtjbqNkxwFG6eyRAXtMsJlI00p4HdnC8jAGGkyLCUNHJRkSjW/Zr/Ig0w9oekskbU/REyrcLADL10esWit/rEQ9Gq0cHELoPd/mVh8uV7xyH6LYSKB9UibnPxe6F9eS9GX2nnkBAaRdEkYnQTw9SDyypPqRULD+jT6xZGVCpzCuoTZYB22hInx6T3H001jh8LcCDMlAstYer2F5JzvclzcDFo4ZNExs4NSV8IaeeNqnhDMueNHABwrOY1H3Ubpzx1HP6F4LSnf10koRSzyRzY9X6xFkzKdNc7dKeTZ4pu52afC/QfdrApXzyBbz1QSy/LnGJr06McxDqzRQjdmUvju1o0dk3bPM8tYbK5pHwm7wmZ6W1LJZWBY72CMkNe4k3IqSehX0pblL0CZt6tCwExFHKDpc7jUeU+Q0wIoFWNbuJXwjt39gqO7ZTaNRLVt0tDco6L+FnCJdbDwLZq51g4ViokmFDRSTD8iusQHaa+XMvjYNgXqkuUCp4fb1E8bl3t1bs5tBWhB8r0y+J2uSv0JuKVzErdbCXAyxlys+L/oUz44bjRsnIXdMe72EKomMpgZGMKZtsjZiCVziJFBu19TXHzyD2Xwa2oueVbeh9fag4v4EGyUkVW8p94/OPn5PHKPGE
+ SzminDoI
+ OmoS15WGwysFjJPlP12qqRjita81jAxBIERNqjqZlkdOJn/PaEkHpGHwVm0VfTATmn7rS9tXHhbYFr9x8FbMQmnKu65uVvnSafaYqpFSQGKtJ+leybdOM3hhh2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,48 +106,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Kalesh Singh <kaleshsingh@google.com>
+read_block() only returns a record when it encounters an empty line.
+If the input ends directly after a complete record, the function returns
+-1 and main() silently drops that record.
 
-The swap header declares its list of bad pages as a one-element array,
-even though the list can fill the rest of the header page. Since the
-kernel is built with -fstrict-flex-arrays=3, the compiler takes that
-size literally, so with UBSAN bounds checking, swapon() of a swap area
-with two or more bad pages reports an out-of-bounds access:
+Return the accumulated record at EOF when it contains data. Keep the
+existing failure result when the buffer fills before reaching EOF.
 
-  UBSAN: array-index-out-of-bounds in mm/swapfile.c:3674:26
-  index 1 is out of range for type '__u32[1]' (aka 'unsigned int[1]')
-
-Kernels that trap on UBSAN reports and panic on oops, such as Android
-GKI kernels, crash instead.
-
-Declare the list as a flexible array. The layout of the swap header
-does not change.
-
-Fixes: df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3")
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org # 6.6.y, 6.12.y, 6.18.y
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Fixes: 48c96a368579 ("mm/page_owner: keep track of page owners")
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
 ---
- include/linux/swap.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/mm/page_owner_sort.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 4f686709d71f..a3a98dc474c3 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -129,7 +129,7 @@ union swap_header {
- 		unsigned char	sws_uuid[16];
- 		unsigned char	sws_volume[16];
- 		__u32		padding[117];
--		__u32		badpages[1];
-+		__u32		badpages[];
- 	} info;
- };
+diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+index 6c2ac5d9dc4b..48c403d3de4f 100644
+--- a/tools/mm/page_owner_sort.c
++++ b/tools/mm/page_owner_sort.c
+@@ -134,6 +134,9 @@ int read_block(char *buf, char *ext_buf, int buf_size, FILE *fin)
+ 		curr += strlen(curr);
+ 	}
+ 
++	if (feof(fin) && curr != buf)
++		return curr - buf;
++
+ 	return -1; /* EOF or no space left in buf. */
+ }
  
 
-base-commit: 65e4fd942f72a9dba0e4e257290c4fa1aa756854
--- 
-2.56.1.750.gf70dc682cf-goog
 
 
