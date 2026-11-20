@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D02606C95B
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046DF606C95B
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T5dkJTut
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E2QcXPpG
 Received: by kanga.kvack.org (Postfix)
-	id 0884F6B05F9; Fri, 20 Nov 2026 13:11:29 -0500 (EST)
+	id 5B8CE6B05FA; Fri, 20 Nov 2026 13:11:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 039166B05FA; Fri, 20 Nov 2026 13:11:28 -0500 (EST)
+	id 543AE6B05FB; Fri, 20 Nov 2026 13:11:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1C706B05FB; Fri, 20 Nov 2026 13:11:28 -0500 (EST)
+	id 394D46B05FC; Fri, 20 Nov 2026 13:11:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B572B6B05F9
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:28 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3974D1A0126
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:28 +0000 (UTC)
-X-FDA: 85456289856.16.8C00F72
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 246BB20005
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T5dkJTut;
+	by kanga.kvack.org (Postfix) with ESMTP id E7CF06B05FA
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:29 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 818C41A0111
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:29 +0000 (UTC)
+X-FDA: 85456289898.30.EC8416C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6B76140004
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2QcXPpG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198286;
-	b=E5LXypdVNGgRcMzOiO4CGCsZ9riawE2tId0OHTjnkw3QHzpWl5Xnee1GpBDTLSZ11vcr1q
-	MtBAl4hKR7TltwXZPmHR/nEqvWsPjK4w0nkm/E9L+fkumM9ileg9bT6eMfn1wsmmo6WHNr
-	ZhH1oxB8NLubTEvOZlaPswvLIsKE/Is=
+	t=1795198287;
+	b=N8Oh1CeQ8lYaS/kEaf0B8fDLB50e2HKh1CwWRwMdGpWa7FTLy2NShYhrMD5GZN7p1IG7vv
+	3MwHCH+6WIfw4aSvMygsZDKUPukQVjMKmuTcs9uw+wD/ykakaUDzpJfhmhyWNaIPmpv7w2
+	TJhL3X+iWTbYWvi4DMgMtOB8RXFqJUQ=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198286;
+	s=arc-20220608; t=1795198287;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NfK181OzgqPxTC5JM5ioAgY5RzIkO1nLp/unSAccMvc=;
-	b=E8b0XNvzK4ywo/JCsZnsthHNmEzvd96xUOzyZ/4wcswWWT39enQsJComzffi4Gvq/lSiGr
-	M1v44gRhsY43gvtHGPwtHVLiL4gGWPjxtSnpQSHuFi2wlyBMGvGwY77ezGRGZAkQ5v8Ect
-	Bwhsm/tTUegFShPkYICJHOOVS4CMNic=
+	bh=RpcXK0l33o1Rh3w5xtzko7j4qpbLiqFRKXf73CE8MdQ=;
+	b=O1mkYBlMt7tnPxvz60oaDn3xAp+mUq1xNOUrOnYpn6AsxsYNC6a5HdLTSTaSrhJgjmcf9G
+	/UZm4tdlzbjMZApRFbCCIfzww3DmMAj1sT7nqnvuu0ZLp042nzAB/DU6ehGL+HAHtQcQwk
+	dSx8Z16RFxYziZZPFtYG8ZD6eICcU9E=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T5dkJTut;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2QcXPpG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 699B145049;
-	Fri, 20 Nov 2026 18:11:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EEBAB63460;
+	Fri, 20 Nov 2026 18:11:26 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198285;
-	b=p1GmRizE15Ahhu8e2hapvrsaMY45ejuyaEWr2QoqMQZdHPVyILsaARX9TlhD3uIWO5da
-	 Nmp87p/EFlJEMwHz3g6lNvTO7sCQ4x3nOVsgXu7TawI647FqdA4TpqfEXkN0zFL+vKJKp
-	 1mdhXTeosc9lus3IYQF7Ig+U/TbILg/dHoS2xJewVg4rSZgsN1MkkSI/A2EaGWpoz23js
-	 pSxChh3dTJqyCGZIzw/0qLAOzz1F1rzmf5bqx0Wpa610wVuXnmCNBLSmsMQxOmSrWpAr9
-	 k/55OilasThy7QzL3nX9B/Wo4B3tJSpMff8bHJmyhfXBqHZlOxvsEGHAaRhlY++QYlg==
+	t=1795198286;
+	b=P9XnSplFvSKFO92DKdhQYJZe5s7Bjbil+Ij2Wi9ZIP+GXi8bk53LKk3K+Aim0kMETcJK
+	 JDL32et2iR9cY0SerlJeuU41+0Xz06iPy6Ghbq4u83HTnBQhxYINHEOgtGT3RFwKlBL/X
+	 XkAFFANSOmoGpRBvp8WRHRllyGTGADxbmo1nQKtXl5I4JuOa9RkR9PKmr82wqzzEfjRo5
+	 I0C5tET4Q5xqeVr2tOIceadeXTIWX37KVEHLKTtrO12eX37YiZZGnFG4AGfrH5hizvSTK
+	 ThFPMnOGNcDygcdfA/u/dzqSeQZNAWpXAZgKjLv/IB66wrxSRatYt7S3eIrcbrRiMFw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198285;
+	c=relaxed/relaxed; t=1795198286;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=NfK181OzgqPxTC5JM5ioAgY5RzIkO1nLp/unSAccMvc=;
-	b=rLVuo1YDu+kpIyxbRlHOTatrGKhan1ZotOvSkl0cU+/rMu4i5PfwrAJ4QarZi8NMMrLx
-	 bROHY5K3Sygyo23wIHDsOrN7rhbtUjW6MaYeGkvMN9QFZGf9XHWdo9rN3heXZRt9S3E47
-	 5eYyhrnsdoS3DMvGPEdQ8FbtHEsT0Als0EZCDhaZjco4IRJR/v7Sk9gU7Ldyge6Q+Hmrj
-	 1hScvujhVXYjsqTjgbI98njBeIRpETNghGSKy9RdWg094gOfHuLGYlYXDz6M77I18WGJI
-	 hwphbRyMDIPWSLUfq6cG08BsPDxJkTlyRhS8p2rPmE/kHAplE9WwbKXUB0B1xabiPXg==
+	bh=RpcXK0l33o1Rh3w5xtzko7j4qpbLiqFRKXf73CE8MdQ=;
+	b=j9w7CswICorP29Bm5Qt7Wq0dgxeFRSN0ilbLqb7vD6a+3Bm67650+iyP7I3+2XZIDAyd
+	 Ju6It9kyLPa9gcMPpniyjbMfQqKqsGeaI5wQbKDtkWAJItJjYjPa9iEZwJve4mCUOQ/h9
+	 bmCoptb17STYBO9pX08QvfPfTqNpjv67BFrVb2A04jWWOE6+QTeFur0tRZdEkX4TfZald
+	 wbVBVKqM6w6PWCmJwP2hIqwD8X3+o8mrGyjZkT9IVkfjjDEiwM1vJ6HqpHKInb8ZCAqJ7
+	 wM/I0c/FNyi0Kxpn0O/aBmv38o6sPZFXA1PmV6dnrLi2uPpjUZ4hEut7rBafnzRYZuw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 4E3C51F01811;
-	Fri, 20 Nov 2026 18:11:01 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 9D9AF1F000D0;
+	Fri, 20 Nov 2026 18:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198285;
-	bh=NfK181OzgqPxTC5JM5ioAgY5RzIkO1nLp/unSAccMvc=;
+	s=k20260515; t=1795198286;
+	bh=RpcXK0l33o1Rh3w5xtzko7j4qpbLiqFRKXf73CE8MdQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=T5dkJTutSHxPb+3/qtTqlNluFBQB1wO8AI5UTEt5/KGehsfYZV3oRVAPBd8psi1xp
-	 HR18+N4rsQDYt7gwNfF4pMuWAlKh+wgQikyiUF8wB+vfm/Y4qOh9NfBha0VI0uxVt2
-	 8H+FcVuQuHxGCRrHBiH2v3RH7S5iW9ZxllFmOfBeip+kEVAcuyhRxbYxyzltoTS36Y
-	 URpOIOTNKgRUc4RBDynvE9sXERZqmAyWMM98LMl1lNYjxCQ2TPA1UQp846OPWaRmJ9
-	 MHXAv3sJwGoYPPR9NV2Ibt0tpnOsRexDAWy+IqaDcB6dqL4LsbEDDHRSOs5lcc9FY/
-	 kTa+U/U5yRCPw==
+	b=E2QcXPpGIGqPqolFYSV0aN9QgsD8HuUeXzzlDUHNpJ6t0yY2npz1V+Qc5AjDr7u4d
+	 yIc8gXiRb+P9mM6OR7jB5ima6BDX5SdtSBJFGYLA5NEaOeIUek9O4Hv4YfGOfH3gd4
+	 vVABxIWNP+fxwF040fo7F/atbU3iwCfu/bDAB5qbccPyU5O9ImTgrwuvpr6A9sWrLA
+	 4vTveI8QhA5UOHYVikYhzbvIVb6OmvHc5xIfGL9O1e0cIx/luHb3RoCnOxkCr3gosZ
+	 FCL3UrLfd06//8wJsUmBOwE8ee/YeoDlO2ecy7mcvaQsZhgHaqwMNvv2yBfxljqBle
+	 s2bQu/9T8k7YA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 98BB24B998;
-	Fri, 20 Nov 2026 18:09:23 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id B479C4B97D;
+	Fri, 20 Nov 2026 18:09:22 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:45 -0500
-Subject: [PATCH 54/60] mm/migrate: route explicit NUMA migration to private
- nodes
+Date: Fri, 20 Nov 2026 13:09:38 -0500
+Subject: [PATCH 47/60] mm/vmscan: restrict reclaim to N_MEMORY_RECLAIM
+ instead of N_MEMORY_COMMON
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-54-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-47-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198154; l=4872;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=6325;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=LdBmn7sW2WZfOe8jPXvczezaQql167iyE39pQOO8QgY=;
- b=sTml8+HqIUvMTacUxZiUfSUZimAOAY9MiHZ9lsqd24xS7lWLntm08ZOzq3xfS7DqVpEkNzuQu
- aE+pXSWkZHlDCm/IGuzhatOFii5433SjI7oHHeyyJr2YhuHNaROFriH
+ bh=c7DgarKbPTh+6IzFAHFl6eKVTW2BJrYv3RKLDMceLJE=;
+ b=pJ9yiRLLHXGH+ah/OM4I5sNBVlA9ZiE7FmUiyed58jvCYoAInkb3gL9qE4qbzozo6/HQ/UBhm
+ +p2J5pp71F8BQDYiKB23kBhQW4ibDlwjd0+2F6Ea2rd3w38dcgQckEc
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 246BB20005
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6B76140004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: pm36oyaznysata4wn1zs56natxf7e99x
-X-HE-Tag: 1795198285-918851
-X-HE-Meta: U2FsdGVkX1866BvlH4MYm+WMDS/w/Bh0a2T9KG/qs8HdA6+3AEU+3sBSnqPxOWDwsa2aWuAe7cAz2CiWsYjSfN2nWmtPEShLNCP35LSVmcXaq07imcAczC6zB7SdFXR7Mu6LilOxrC0+GGJtVJejprefZGCAt0hHgpQTGmG3nizJbyzGkuH1f1j3Chc6BWa7uK+3t7pp8X0ZzBv4KBCdhd1LWVa6r22bIWXryYyYTQ9gfCVg8OQWVR0T7+Tfp5JUuWjgCi8Eq1bsj9pV+J+tfwjvS4+oN34+T6pVJ6DvkbXZCsuKqVZomJWDVrUDKGjPcuDg6i+Xj34TkE4YPntXqw3bprPAE2ER8SZaGsO87VNtjQ4RYGDeg3EfapYBXB7JM2JWJbSIA/YBHWt9IIR++pt+4A/VRn4X0mcuZBafePTuoK0SLcbPaTeb0ZMfgr3mREdyuiIAcnEWU13aM9Ee77wQlygh3jtbcqxtWXU6lPtI2h6XjKR/W5HCS3HiKySN+d8MCx8KzHgbi2UsVOd0gg12EDEf92m7qqDszsgtQ9H0wSsigJu/pRg6uHXG7LDj3xnPs5u8Aut7KqRjcg/2nEeeuNkHS6gMngl3pugMF+owI85A3iEsK9jBN4XxPHhw/Z6OiJz/6XJS62/xDu9vxVkrXa4/Bxa/wyl/VyqqW3pwOKDali26DihGLy3dbUfVLO7Hl0lEYFpa0u/+CC5sWC1GkVXHTsaxtlvqcYM31O5kOdzSQ/XcQr28rASQuDmB2pMcvqWraZIRgzPt9p6Q7H6X1IBNpyy9jC79VxbGyM8gE4ZisGpm6vO/1fNlcfqCvrJmPJTT3aaJXsX60Op4Q77Y/Q9UG2SNA2SHYLt++E4gcv6f12wTk4rO84WoeHjO95rGyQr5SO8QXNhOUUioeMZQXaIDfH8HH+pSM4krkM74waNlxljRKjhp07t7KWrDVmToL/56kkQs3gzEUQo
- 69s07FZo
- 7qqTpOUP3oLmBO9sml6OlEOye+ewZhGPoanzhvWhJZ/c+1h/jEp7hwWQwpT08OHQDXdEjbcyVHY+DImJ9MEu7Oi/Q70Rj0jvo1Fyuv803/lRXICZTtYckGAAhZKKky70L6odKn/HMsK7CBbRpmQ7SSIadTv9pBUP1TlFcqILrI9ygO+nSiG5qt2WTemZkvVEqj5OjHGPNKGmbdHER7pWftV6N28OIYsLPkUubhAQpBtOnUeUsPAK6hWWpWg0zCk02Zp+OmLehrQcj4NaR6/DAHZBARZ8Fnw8npsyDUAe1gfT4FNNxLXmJ3bg/9LsO8jI0rAvv8b7ZxTG/ROQQbqR1Te5AKzj126UPeWLHRctM6hlrLm3ZiQfxxT++nek5Kqin/ihUwGNW1Z8hDWVEwTeh9+IVvfW02DdBNpHs5ntfPqAC0Q9AtH7ROUWy3xydG4WczH3gGJWDpklKL+PXCf1bQq+SM/HbkJy088ctpT02LY1N6xzyqr+h+2jo7QD6OYLZLm7bB+InfB+Zfdg/52BaKU0oH5nfQDaYyb1LZdVozheGiUDYhCNCm8r/JdkgORF4lZCE1mmStELaWVcWNjAQA8WYJ08bVJ6FX6DZDu+qY4fYBRDtYiJqe4ScbNNj4iXkY+3QzOjW6DJKKZyVEY23fm3zDk0x/TA04rkinzf05vW8sbV6Pxsdx/tW1TAXruZi8hYEnq9LV2NutDZobe4kMwk5nlvA/GHDHn9llg5TlhBjMrSc75dUnClJMoaYkj31hg6VPFqeOdn2u04=
+X-Rspam-User:
+X-Stat-Signature: gqsa1g8gxfbmqz3yd5ekhmzqo4t978wt
+X-HE-Tag: 1795198287-847009
+X-HE-Meta: U2FsdGVkX193V/ArX7HFhZrUI6iiZFiM4lsTx1jcaNqjVj2UNWPln2mCZpUaysA6uoPsRXGzKMKp7H5hH7U3KxqN0w74UU6dzTwVw0HT1gDBQcV4v2+Ast2ptTioIlIUzbLW8Uca4UQ0R0RFwP32xsD6FwLu4DKMjbItqM3uiZEP1Htsb0LNGazlXUo4zKZG7o/+jCY51nFx5M6PsnDvxryQhvds74Gmgmrci2tLJb/9dSmrRlJVdJCi5DM7ahgNGDiEAJNlyc92JyvgT/J2PhsVEQFw5pDogiPe6szbkgqhwxEXCe7ot1R4uRnrovYJfDsliAImTfSrHwnGCjriMMGTbGzbRzgrtRU+nGy31V80Gdec2JehDJJkw3kKULZ7Ad0lGZ9XVcCtZ9aynwFFi/znJ03kEnwqhbAjNhmRBb+TbhTvlZXC5j7fU+MHXGCDI0bMmiHZmMPpmXTrzPPCzJFy6mmIVT2rfD7MCGv6CmsFsmfAA/LXdcLDx2vISoJ9KPHr9vqI/e+nYpTKe5ttEnglgYmeKmwGylw2i5cdqJ5g2gJnwHkGO0F9R15SHIW523dEVxiFHctjeb2gtQlMliTokMowmN5SIJT9C8YsoFXIFDj5VBbJsu7f7aZI8VHwjYLJmVmiNwtmEgfYpRwt1hPRcp7OgKrc9Kb8xhury3a/WBMCSN8oW2vBluGgVKdewi2EFn7FOk2P3Fkh5VLB9L4J5lh7WhctstjlVezZYllT8twKOBmbmiboBYrQVkY4xvZTv/KgscpZwcqlqEq/GMdHKJes1SsagYv7xpbSY2ApSjvFXd9bC09xpI0YNGyiGst2QFXyzffTK3dfgvjLHLH+IOLSxqvV86q/KrirsRmzXZjcHsnS1ZzcrA6RqPs0GNVfj1tTpm+riKXimU1LZ3a99mlNUiGvgvuVX63K9+PekCqZ9lZOdzRQaJPJf6WE7vDkVlrHfgTJLDubnnT
+ /sn4cl87
+ 8v3PGkJtbMvylFQ0VZHdviPO+fz2j3vsa+GQllxucCm+aZl0ZFy4s0hlkGAcxxujHYG+IluFhrjFtsuTe21pCmH3rDCejDX8KeFkJgLHuEf7scfwIHHnUzPssnNuR7cspDaUrwSOQHuiWlztRmqtZDsU2g2Nb9oc0F7L39inQITaglf/zp+LeNtF4LWaiJLMw7WnJHmXbiPLo6IFtkBL1mU611chiqAYnrzVs/fqdwppZ/pOWmJQVZOpWLDLkMZIjXSH9hs28E/1iMZeLd11tfSOAPf7XgVG9N61J5CyCus7pkhCt8fhQt8q9One8mXiX82oXJ0PZKTTK+TYlZJeZi72SE2hguO83xpUnZBgP46HWFI370Gorc3iHoHbFLazw1783FhB02lHmdLk7OInxdFBYxqfkTDfQ9nidxYmlTiEGZyIW+nLXimHUM1s53pBWkbAbLpQ5nc2VKtzma6zmbHrPJ9ymV4b+rvQn6HH72I6f81cZyXVG6bujuJR9siIgqC5A9ZBNCtrg+vm367S7wf9dFkg79IcaDJkUuUa6T69uwwwwF7NpkEu6rPMktO1HzXzMqoPZsBGbMk/d6ZKLxh+Bf1oamaMDdD58WmI2YX3lqWFOvVI0tdJolPwACgHVRgMJKj8g4bL3YDUmeybCi+TdIZJw/jR93X6M3E1zZsnxUxl7IhoPQwlJHUfLf/xoTA5tQJbdfGemEFcY1yggM22dIDJ6tMXjC/BOsHAkg2w6h8ln0wVSuC7/GxxxpcUmWnTCP5/2wgiq+P3LhFWVj7AQquPZMuZUoufP+trRfAaonWN/TrHEpKqYCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,141 +189,174 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-move_pages(2) and migrate_pages(2) allocate the destination folio by
-node id with __GFP_THISNODE. A private node is not on its own
-__GFP_THISNODE (ZONELIST_NOFALLBACK) zonelist, so the allocation never
-lands on it.
+kswapd and the reclaim interfaces currently serve only common memory. A
+private node that opts into reclaim should get them too.
 
-When the destination is a private node in N_MEMORY_MEMPOLICY, select the
-node's private zonelist and a single-node mask in the syscall path, and
-pass them to alloc_migration_target() via migration_target_control.
+Restrict reclaim to N_MEMORY_RECLAIM:
+  - start kswapd only on N_MEMORY_RECLAIM nodes.
+  - walk N_MEMORY_RECLAIM nodes in MGLRU's debugfs interface.
+  - reject nodeN/reclaim for nodes without N_MEMORY_RECLAIM.
 
-move_pages(2) now accepts such a destination rather than only common
-memory, and still refuses other private nodes with -ENODEV, so
-do_move_pages_to_node() only needs to check N_MEMORY_PRIVATE.
-migrate_pages(2) keeps such nodes in its destination mask, and drops
-other private nodes as it drops nodes outside the caller's cpuset.
+Direct reclaim is unchanged: an allocation reclaims the zones on its
+zonelist, and a private node's zones are only on its private zonelist.
 
-The other users of alloc_migration_target() are unchanged.
+Private nodes that permit reclaim get watermarks again (the capped
+minimum that highmem and movable zones get) and are boosted, since
+their kswapd restores both.
 
-HugeTLB folios still cannot move to a private node, since private nodes
-hold no HugeTLB pages.
+Private nodes without the state keep zero watermarks.
+
+The hopeless-kswapd recovery on page free exists because allocations
+that fall back to another node skip the direct reclaim that would clear
+the state. Only common memory offers that fallback, so apply the
+recovery only to common nodes now that private nodes run kswapd.
+
+Leave private zones out of si_mem_available()'s low watermark sum,
+which bounds the common page cache and slab that must stay.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/internal.h  |  1 +
- mm/mempolicy.c | 19 +++++++++++++++----
- mm/migrate.c   | 13 ++++++++++++-
- 3 files changed, 28 insertions(+), 5 deletions(-)
+ mm/memory_hotplug.c |  2 +-
+ mm/page_alloc.c     | 11 +++++++----
+ mm/show_mem.c       |  7 +++++--
+ mm/vmscan.c         | 14 +++++++-------
+ 4 files changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index c83c100a5253..646efc2eacd1 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1309,6 +1309,7 @@ struct migration_target_control {
- 	int nid;		/* preferred node id */
- 	nodemask_t *nmask;
- 	gfp_t gfp_mask;
-+	unsigned int alloc_flags;	/* ALLOC_ZONELIST_PRIVATE or 0 */
- 	enum migrate_reason reason;
- };
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 1cb10c88954e..8146f77919d5 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1230,7 +1230,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+ 	/* reinitialise watermarks and update pcp limits */
+ 	init_per_zone_wmark_min();
  
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index cb5419cb7ee8..a7cbb05ac86c 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1340,7 +1340,7 @@ static bool migrate_folio_add(struct folio *folio, struct list_head *foliolist,
- static long migrate_to_node(struct mm_struct *mm, int source, int dest,
- 			    int flags)
- {
--	nodemask_t nmask;
-+	nodemask_t nmask, dest_mask;
- 	struct vm_area_struct *vma;
- 	LIST_HEAD(pagelist);
- 	long nr_failed;
-@@ -1351,6 +1351,14 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
- 		.reason = MR_SYSCALL,
- 	};
+-	if (node_state(nid, N_MEMORY_COMMON))
++	if (node_state(nid, N_MEMORY_RECLAIM))
+ 		kswapd_run(nid);
+ 	if (node_state(nid, N_MEMORY_COMPACTION))
+ 		kcompactd_run(nid);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 864da908a59b..cc70e1b45322 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2972,6 +2972,7 @@ static bool free_frozen_page_commit(struct zone *zone,
+ 		 * kswapd work again by resetting kswapd_failures.
+ 		 */
+ 		if (kswapd_test_hopeless(pgdat) &&
++		    node_state(pgdat->node_id, N_MEMORY_COMMON) &&
+ 		    num_node_state(N_MEMORY_COMMON) > 1)
+ 			kswapd_clear_hopeless(pgdat, KSWAPD_CLEAR_HOPELESS_PCP);
+ 	}
+@@ -6814,8 +6815,8 @@ static void __setup_per_zone_wmarks(void)
+ 		u64 tmp;
  
-+	/* Private placement is reachable only through the private zonelist. */
-+	if (node_state(dest, N_MEMORY_MEMPOLICY) &&
-+	    node_state(dest, N_MEMORY_PRIVATE)) {
-+		init_nodemask_of_node(&dest_mask, dest);
-+		mtc.nmask = &dest_mask;
-+		mtc.alloc_flags = ALLOC_ZONELIST_PRIVATE;
+ 		spin_lock_irqsave(&zone->lock, flags);
+-		/* No kswapd runs for a private node to restore watermarks. */
+-		if (node_state(zone_to_nid(zone), N_MEMORY_PRIVATE)) {
++		/* Nodes that reclaim does not serve carry no watermarks. */
++		if (!node_state(zone_to_nid(zone), N_MEMORY_RECLAIM)) {
+ 			zone->_watermark[WMARK_MIN] = 0;
+ 			zone->_watermark[WMARK_LOW] = 0;
+ 			zone->_watermark[WMARK_HIGH] = 0;
+@@ -6826,11 +6827,13 @@ static void __setup_per_zone_wmarks(void)
+ 		}
+ 		tmp = (u64)pages_min * zone_managed_pages(zone);
+ 		tmp = div64_ul(tmp, lowmem_pages);
+-		if (is_highmem(zone) || zone_idx(zone) == ZONE_MOVABLE) {
++		if (is_highmem(zone) || zone_idx(zone) == ZONE_MOVABLE ||
++		    node_state(zone_to_nid(zone), N_MEMORY_PRIVATE)) {
+ 			/*
+ 			 * __GFP_HIGH and PF_MEMALLOC allocations usually don't
+ 			 * need highmem and movable zones pages, so cap pages_min
+-			 * to a small  value here.
++			 * to a small  value here. Private memory holds no system
++			 * reserve, only this small minimum.
+ 			 *
+ 			 * The WMARK_HIGH-WMARK_LOW and (WMARK_LOW-WMARK_MIN)
+ 			 * deltas control async page reclaim, and so should
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index b90fb5a0016b..24dd33ba783b 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -38,8 +38,11 @@ long si_mem_available(void)
+ 	unsigned long reclaimable;
+ 	struct zone *zone;
+ 
+-	for_each_zone(zone)
+-		wmark_low += low_wmark_pages(zone);
++	/* Only common zones bound the page cache and slab that must stay. */
++	for_each_zone(zone) {
++		if (!node_state(zone_to_nid(zone), N_MEMORY_PRIVATE))
++			wmark_low += low_wmark_pages(zone);
 +	}
-+
- 	nodes_clear(nmask);
- 	node_set(source, nmask);
  
-@@ -1951,7 +1959,7 @@ static int kernel_migrate_pages(pid_t pid, unsigned long maxnode,
- 	struct mm_struct *mm = NULL;
- 	struct task_struct *task;
- 	nodemask_t task_nodes;
--	int err;
-+	int err, nid;
- 	nodemask_t *old;
- 	nodemask_t *new;
- 	NODEMASK_SCRATCH(scratch);
-@@ -2001,8 +2009,11 @@ static int kernel_migrate_pages(pid_t pid, unsigned long maxnode,
+ 	/*
+ 	 * Estimate the amount of memory available for userspace allocations,
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 3e934135e805..03d0919d11be 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5729,7 +5729,7 @@ static void *lru_gen_seq_start(struct seq_file *m, loff_t *pos)
+ 	do {
+ 		int nid;
+ 
+-		for_each_node_state(nid, N_MEMORY_COMMON) {
++		for_each_node_state(nid, N_MEMORY_RECLAIM) {
+ 			if (!nr_to_skip--)
+ 				return mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+ 		}
+@@ -5754,13 +5754,13 @@ static void *lru_gen_seq_next(struct seq_file *m, void *v, loff_t *pos)
+ 
+ 	++*pos;
+ 
+-	nid = next_node_state(nid, N_MEMORY_COMMON);
++	nid = next_node_state(nid, N_MEMORY_RECLAIM);
+ 	if (nid == MAX_NUMNODES) {
+ 		memcg = mem_cgroup_iter(NULL, memcg, NULL);
+ 		if (!memcg)
+ 			return NULL;
+ 
+-		nid = first_node_state(N_MEMORY_COMMON);
++		nid = first_node_state(N_MEMORY_RECLAIM);
  	}
  
- 	task_nodes = cpuset_mems_allowed(current);
--	/* Private memory is not a migration destination. */
--	nodes_andnot(task_nodes, task_nodes, node_states[N_MEMORY_PRIVATE]);
-+	/* Private nodes are destinations only if they permit userspace placement. */
-+	for_each_node_state(nid, N_MEMORY_PRIVATE) {
-+		if (!node_state(nid, N_MEMORY_MEMPOLICY))
-+			node_clear(nid, task_nodes);
-+	}
- 	if (!nodes_and(*new, *new, task_nodes))
- 		goto out_put;
+ 	return mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+@@ -5832,7 +5832,7 @@ static int lru_gen_seq_show(struct seq_file *m, void *v)
+ 	DEFINE_MAX_SEQ(lruvec);
+ 	DEFINE_MIN_SEQ(lruvec);
  
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 6791834f14fe..eda961d43df0 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2250,6 +2250,9 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
- 	if (is_highmem_idx(zidx) || zidx == ZONE_MOVABLE)
- 		gfp_mask |= __GFP_HIGHMEM;
+-	if (nid == first_node_state(N_MEMORY_COMMON)) {
++	if (nid == first_node_state(N_MEMORY_RECLAIM)) {
+ 		const char *path = memcg ? m->private : "";
  
-+	if (mtc->alloc_flags)
-+		return __folio_alloc_flags(gfp_mask, order, nid, mtc->nmask,
-+					   mtc->alloc_flags);
- 	return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
- }
+ #ifdef CONFIG_MEMCG
+@@ -5935,7 +5935,7 @@ static int run_cmd(char cmd, u64 memcg_id, int nid, unsigned long seq,
+ 	int err = -EINVAL;
+ 	struct mem_cgroup *memcg = NULL;
  
-@@ -2267,6 +2270,7 @@ static int store_status(int __user *status, int start, int value, int nr)
+-	if (nid < 0 || nid >= MAX_NUMNODES || !node_state(nid, N_MEMORY_COMMON))
++	if (nid < 0 || nid >= MAX_NUMNODES || !node_state(nid, N_MEMORY_RECLAIM))
+ 		return -EINVAL;
  
- static int do_move_pages_to_node(struct list_head *pagelist, int node)
+ 	if (!mem_cgroup_disabled()) {
+@@ -7907,7 +7907,7 @@ static int __init kswapd_init(void)
  {
-+	nodemask_t nmask;
- 	int err;
- 	struct migration_target_control mtc = {
- 		.nid = node,
-@@ -2274,6 +2278,13 @@ static int do_move_pages_to_node(struct list_head *pagelist, int node)
- 		.reason = MR_SYSCALL,
- 	};
+ 	int nid;
  
-+	/* A private node is reachable only through its private zonelist. */
-+	if (node_state(node, N_MEMORY_PRIVATE)) {
-+		init_nodemask_of_node(&nmask, node);
-+		mtc.nmask = &nmask;
-+		mtc.alloc_flags = ALLOC_ZONELIST_PRIVATE;
-+	}
-+
- 	err = migrate_pages(pagelist, alloc_migration_target, NULL,
- 		(unsigned long)&mtc, MIGRATE_SYNC, MR_SYSCALL, NULL);
- 	if (err)
-@@ -2411,7 +2422,7 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
- 		err = -ENODEV;
- 		if (node < 0 || node >= MAX_NUMNODES)
- 			goto out_flush;
--		if (!node_state(node, N_MEMORY_COMMON))
-+		if (!node_state(node, N_MEMORY_MEMPOLICY))
- 			goto out_flush;
+-	for_each_node_state(nid, N_MEMORY_COMMON)
++	for_each_node_state(nid, N_MEMORY_RECLAIM)
+  		kswapd_run(nid);
+ 	register_sysctl_init("vm", vmscan_sysctl_table);
+ 	return 0;
+@@ -8268,7 +8268,7 @@ static ssize_t reclaim_store(struct device *dev,
+ {
+ 	int ret, nid = dev->id;
  
- 		err = -EACCES;
+-	if (node_state(nid, N_MEMORY_PRIVATE))
++	if (node_state(nid, N_MEMORY) && !node_state(nid, N_MEMORY_RECLAIM))
+ 		return -EOPNOTSUPP;
+ 
+ 	ret = user_proactive_reclaim((char *)buf, NULL, NODE_DATA(nid));
 
 -- 
 2.56.1
