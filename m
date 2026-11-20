@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731D4606A332
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A28E60A2608
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bV3LASHj
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZCiF8uvk
 Received: by kanga.kvack.org (Postfix)
-	id 904816B05BB; Fri, 20 Nov 2026 05:28:22 -0500 (EST)
+	id 692B66B05BD; Fri, 20 Nov 2026 05:28:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B4D86B05BC; Fri, 20 Nov 2026 05:28:22 -0500 (EST)
+	id 61D496B05BE; Fri, 20 Nov 2026 05:28:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A3706B05BD; Fri, 20 Nov 2026 05:28:22 -0500 (EST)
+	id 50BDF6B05BF; Fri, 20 Nov 2026 05:28:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 498826B05BB
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:28:22 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D078E160EA1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:28:21 +0000 (UTC)
-X-FDA: 85455122802.06.CD9BC46
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1A2E340008
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:28:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bV3LASHj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 275B06B05BD
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:28:29 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1994A8E73
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:28:28 +0000 (UTC)
+X-FDA: 85455123096.05.414C46B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E61F8C0004
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:28:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZCiF8uvk;
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795170500;
-	b=5/eXoxv9hqkwD4LeBSlJITtX76jYafG9waZpCECQohYoeMY3ZptPOz/ti1a5qFiqyEHwZ5
-	3fn8klMU3YwHfvqPrHloMgqVKJdDlaRQsd5prdBX1kifrz1nJ647ReCCX3ByymnQuSUim/
-	iuIl3ISK9x+ISUObgp35svLPvYNCJ2k=
+	t=1795170507;
+	b=7z/aNihSvImpDUV62FHe5CaqfC0QVG1MIO9z/149V7tK/e23055uXsCLE2FiaZ+XDD0Lg1
+	qoCaTiuYxAlszs8d3evcpAc1QvTVO3EkuHBDfX/CgqgPOuF5GRBflHkSen0S3Nl1RZNecV
+	IKSnQTH5QblJx9JCIjwKbFG8rvTpdgQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795170500;
+	s=arc-20220608; t=1795170507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cHveAKTEDN4NYdhUSH387fDwb3sUmTakUTnrExxlxOU=;
-	b=0kx1xVJRwzikruEZpjpdz0Flwh+AWDBCUa7fYT1SvOclPcNfGG33U0UaAZGUHWpH8v7etX
-	K4oInOQuhArma5YXk1hHzoI2ZkCl7OOslK74iomsdMGPnm0MkipwWfEPu7o4laQLm3EUCp
-	2nYDQJGheY0lDoGDqouB9IAeBWu3eao=
+	bh=RalyYAx1YoLGhOyFcSAsDfzWBv5wWU7LgQTBoopH1Hk=;
+	b=8anayi56eKaV8ONtprVwCBfE2e1Zr/VR3JELyHdUD0PS57riYiVhPwOEF8ASIiPug1FnjJ
+	zDS4LLnm4lsqeyPaUI7EuO74npmm1WVqMQ6ncnxqfmutMZHaI6iOj96ipksgt7EFzxmGuT
+	fwizzMegndMGZWAYjQGkSsSXAFL52iw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bV3LASHj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZCiF8uvk;
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A3A47622CB;
-	Fri, 20 Nov 2026 10:28:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A934F1F000C0;
-	Fri, 20 Nov 2026 10:28:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 446AE4596C;
+	Fri, 20 Nov 2026 10:28:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F3E1F000D0;
+	Fri, 20 Nov 2026 10:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795170499;
-	bh=cHveAKTEDN4NYdhUSH387fDwb3sUmTakUTnrExxlxOU=;
+	s=k20260515; t=1795170506;
+	bh=RalyYAx1YoLGhOyFcSAsDfzWBv5wWU7LgQTBoopH1Hk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=bV3LASHj59/nbCQaNlM2I/rYH3SC3+IM9mHeTzxpbKK6ugAXrOSSKYaMhl302lMzr
-	 pgEQ6hWmn3H8ASXBM1f63fSRTnHr0He5lkk8/de+opK3Z1ChTI9g1WrnLrKH4hz1JD
-	 o0CrqBdUPZUA3nR366hVL4d+i5gM/nlIOLlh1F+EPPBaUC3nudPhT6r9T3NZNMK+CN
-	 C30I8XbhipA3esRH/s/zFAfqSOrxkG/RamrWT/ue0g2gIYU3KgvhQN+NIu244kePPF
-	 n5YXwJhrs5ez/w9sYXmChEfii0HPFe0ZNnep39xvcSRBwK9CDtfPof3KXSB28LPPjd
-	 X4gDCMbBOXZgw==
+	b=ZCiF8uvkEpbeBiRyHV2KFlEqafiiK0+tSoH5CoXzKJThLyUyExw1sPqpqRsn0fUJ2
+	 ZO6OihOZdi9SiP6y/Qq9qR58N8IiIxUeP4J7+D1Y8VeKUSn9H36w8d2ZNdDN9OOyd3
+	 IYv74U0WDj5CFcoK1AVUSIbFlPe9zKDLdwGyic6YaWATRyaMUh+IvHjaeq8O8PxbIJ
+	 M/W0MD4f0pagD+EzBTINYZdc17V4pdfnVZN6H74ce53tWK7nf+5g/LF+D7sfcHYN6R
+	 veQud0PDLL8aVMfKsAwGbbL0PQ6tpFojw+eJre36w3OlfSipUQ6txofCfF8ddcNrcn
+	 AVK9DEltY15Kg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Nov 2026 11:27:01 +0100
-Subject: [PATCH 02/11] rust: sync: atomic: add memset
+Date: Fri, 20 Nov 2026 11:27:10 +0100
+Subject: [PATCH 11/11] rust: page: remove `Page::copy_from_user_slice_raw`
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-page-shared-v1-2-66f8c4c62822@kernel.org>
+Message-Id: <20261120-page-shared-v1-11-66f8c4c62822@kernel.org>
 References: <20261120-page-shared-v1-0-66f8c4c62822@kernel.org>
 In-Reply-To: <20261120-page-shared-v1-0-66f8c4c62822@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -91,34 +91,34 @@ Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2104; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=yMzl9aHIm/fpa0K63eozFcBZNRxJnn4Ax+IoHBwntAo=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrACCDCWnbNdCWH2u+lRuEr6lnssP2hxSh+2uYU
- QQ/LE9Jmy+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawAggwAKCRD6UCkIqsW9
- 0JCLD/wOhxCyQLejQqbVhExA4vV2s6iiCH7eR0E8w91k8BeojNAz/PCrUJLLs/9gArQG4rLH+cJ
- tRAJz+eVW126g7aLZB4wGqB4T2q85V9agT0VVCt2X2cPWDLuzX/zfOnLE090Sfz4ICcgOJKbmOg
- lLbx2hzWsGrG227sNHvTuK/Ks9JAxtMfApGARqwcNsaiIeoRKAACvP1KK36ZsqyJrpUq83Ndsmc
- jKwrmh3tyLX/cVERQar3WWfaiangmyixb5LJjv2bTdIpUzYag1W8nVKpcZyDy6EmaLp+l4NZHic
- PLR1WF3OqvUAaNGizlEFvub8vtfk29cGjG7+Ukp0abmtCSsB9OsKWKl7w3vMcOKxoIQTxw20APx
- O/QrjxHzmppaBCIZZgfQgjVeasBAKzWVOOHAEYjVS2MOZVdmHZhmcgsxahztJ47AdGabgFaNGXL
- jXkBeuRO1PLah8tbGtrPZ+YHiy2BedYUeKT17iB2vYFB5CM1l36k4NQDuP724VzsHdxKFs5CupH
- HvZxjsltABJPEgfx8oio1vUGIaPM/tT3tA+TAV1OXaD389CAT1N9rMapKdWzDUGeRP1oAJFMFHi
- oLj+bG+EOzHwP1YAHkCyCtS4fp14OqWi39B+vP+Z8NlU4/Xm/RPFs5hVm6MH5BkmyrAXwMCtbBJ
- 5l8h1mvSnX30zxQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2405; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=yf+ZJdytQ7fsndkVjpDDExnANbyp+/XNQ8K9iMvdiqQ=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrACCLDBjp7ML3zquQ7ptfmv1+wLTplqh09kKwn
+ 9JIxhZHs5GJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawAgiwAKCRD6UCkIqsW9
+ 0AArD/9tCVQl3icfEOakZUAmYhm7LMSpEDiv3LcukfJAC6uAJNaAZ91Sp0XC5z0z6soVB9n1hhy
+ 5Uf+HSMYOazlWZ4fJa6AGyxAlGixQI8hhJEdGqMLFccKNEPkw/tj6R1VXAY+oz/FlgTa7l71Bpn
+ fUhmrFjLo/ZW61KXhRkHytyk0hcP6JpZx7ceB3xCb6RRm/SkuFius+oJ7IOwliAK7dyUvBjzo8B
+ H2DJeLEvGJgvac7oinMwYxNVMRZvb2rlaOvWta15GP0p6NP9/yIqrfHckZfgZKCIa5LrasZZ0Ub
+ 2n/xlam4VZsqx8LGZuA8er0Ytw9YYY8veKum+KM1beGMX1s/fSpekecxpzTRWUBSjeGie7rpiQV
+ qq7fh2AMCbDA1sWyMSgo5L64Zvw3dfG9oMtOhu9eTHlACv6TWxOsIKjsTDVy5lxiQCQk4+Y/eHF
+ dqV10WPKl4c6x0Kc4QOdEJANlbCtQvOyWO9QkORaPnv+UmYbdosM8NlgFVCSNL4b+1gn5u1L5f5
+ Hn88Nf5wRcF1Ud98/vbl3zQy0+cIWr09CHSyeAYamPukKc7Jfx05XrBFkmA8aCwu/C/Z0JKDRxg
+ nkQ+w+Z4AT7W/P33F0X4mqTTlwsZ5MmMx0eTyo7oInERapbp40yIT6xd/o9Zgorwr3JdxM+3t53
+ /IntH97mo7vrfcA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E61F8C0004
 X-Rspam-User:
+X-Stat-Signature: rmqw98at7oaqogxo85zo4qdat1z7yo8q
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ie7tj7661u1pmx8i3ssy4ytmfjjp61af
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1A2E340008
-X-HE-Tag: 1795170499-241771
-X-HE-Meta: U2FsdGVkX18C8yt/rV5A4FPiv8G7IuNJU1JzK1n6VxUkzryIWTDRLPBUlFHUh+GLqBHL6gk5dXfXne+4UtS/CMdsRJWEh8mpxGnyhLiojsVn4gl3P8xHxofyn+mKpCVlbRTEKevKQE9OIoMI97IC6v3cpLYiz8I/K/fvt0Q8MxYtZJKwRDcCEjO0WJ2R7u6jmsRTJgMQBq9+AUN5dX1dlYk4eCMvPr1CJadZdyF/UNxSHGtjR8boFyzE2JXYZKDTuKwqkW/HDu3OSRDSL+RYwYT6EcNykt/j7TQNTy6117+qL2HfENwe64/BVj6kbpFEsj+XDgwlJtA6ocAd/inthpQ+n1c3uLNVPYf4g1mxNCZ1WOrYQ5QA6eTEF0UmiqkxJVy3Br+3ggkyGz+QiQ8HW7Qi1o/UkQW4rDL+1aryTD/PD8n8fbv+IAWpxyt9gnp/tp4iNZvWH1wdzP14sH7AA49w0x8h76FDNHrsaiCV5caPRQKyyB2hzc2hIx7pDh904fh7CuTkIoSZ5HN9vKgvU99NuCqNUXaEviLhmfPB9y4/a7f8nDWYFhEfDE+co5uGQhtXBonUxbLaI+M1F8QilZ5O/TVKbr3ZkIIxDuyh8/mgbE8t/wvbeLnrRBHFtkMCVHKNHkfZ87eytGqRKc0bQm4ZgWaDxvRsf0sko7JZ5nyTAimM1eKwxESoryyp0VZRnc7QHPwbmdtw/9ZQLVFjEql/Vf7LuWhU26KTwiKLM55JtDA4mdsXln4A8zUnLyoCmVu8/9sesNKyMSIKbHDI2wRyxpqc4BbmBotB0pK+1ekLqH554vGUsQ1I+hRI80lnBZJbwW9QlEyMrNgWPxVtoqCUQMTiEGLW/TxUNvj5dDZ91gV56Aig/wIPeTzoK0c7fg6dFLahQm7Ty7sJJxC8ZRX3Ef9JT6Tlzuo0n++pODGY2mlWI+M6mbQLBiUKOSy8cCaz8Ud+FgMFq8f/9Vv
- AYNu+1lc
- 2LQh9HmdqY6oIsSbXAuD+k4MMAoCihYhF9aavdYO02Z4M6zIl71yZT7cNMzxJtYDheRszHihO7is5ODrG6t5BNKSyTnejuCcmz7pmI/l89Hm6i46K3XDej83OmEcxgDeSbeODnJyAol9nYuHBQD2HTv3chffdpyf3WgPGB/8hFXPGXWY5WHcedJEs3D9pSurwxLp0eKffVfOJHyPjERTIEGHXrqBRVGRvpaO3Po6wy4tH4BnXtpTRIcHam+yYaErjgNP66UlGjgcb8qBv0G8z0FyLjX621CZlDa11A3W6JkDpNkA0auL+JVgbtN7voLU62RTP17t3tauVkNDE8D/fHF5JqxtIjWl3xW+KeZEpPaAktD2T4Pf5Z5OM0uN4jTZxQVRXVjowvJF5+kKSZBwBzyvq6nujIP0p1Omc8SPVTViy7E4w2o3FbbiS+S1ZA5sbcgCZHmSrqS/M3g6XO6giWuqUYA==
+X-HE-Tag: 1795170506-89084
+X-HE-Meta: U2FsdGVkX19xzyNXodtCQczn4NDAUGB29ihsmgru+OWA+OTEoXFgDKq7PoLr2We+5rkNrZPfofIebU+M0gWP4jy4CEhbgPhyUVFtO9NjveCrK9KjIGURZx47a3A8NwKsR67BfjEhwkE89c+xbiYxYEhbwNl/JMMLIIlwdphWzl44WB8cd1dI1aq12JfUf3T+B/oj7hNLm6q9oZbJvzfaa/BDYy8/hAHSgB95gwHqPGKhJ31QtUNMypgzCbgTgx8lJfmDotpUxpgznglof/rqJu2ii/Sa0OYL3XgwFz/2KVOJBnk9+rM4J3bNayAka/SmG3W2SWFoHys6ozm7oP/hp/Vdg9tVA5DstWdkCFXo+GzceU3z/oJB6fXG7g7dddzfqxu9rt/tjtP7o2sOyVPsOdlAvs90eIbQpzGTUjDHGkY5O410E+FdAbjbrP3/8V0NH0xoUwBRmT0R8BrRogzzPREUsKWPWrmBgHlJ9bAAmp5AUPuquTG/vxv5lj/YTzK9CaQ4y6Nwuik0P62DcP1+XG8ieE51OnnQDXEhZHpQ/tm69z5hH2u1PMnyCvYLkVFvHox4E+hDL5nOJlYMlN2eer0U+S7EEoNfu15lykdPTbSwPSTtLepf307f8ii/fTBeMwNaxeq0kycqk/UQ2dXhqIQ4y8WjiLPMc+rDBAdPi5s1AHuGW/R+r9I0Nfo4nVpSsqCzlnYlgUlljb3WMOwOM6tRpjjn9rkwKPhHs16s7tzMfew/DmX3fGcsGSxDCSoNX/LwNTchFuuJ7aOvwadCvOUnhUVsLASkwcBb9gFkZnIxY/jVIGLFE6R0OgXrtRHJnhKw9glM3L+9jgn/8Uw8797E5WzsoXQk+jMZBQobwze5aeNwsRTEgBMR+hboOGkzVzfnOfgcVNVj6jJ/WyLXxKKUWRTZCzHI/fEDadHz16lHIVESwXYlYKjQ6gxslfTrC67KFMPaH/OnoXYjrvb
+ T2dV6UTd
+ hqEEWNRLq52Dhuv2F9LMwFzlAusrmTUJIsuXJC4DHLP30ZPO46BMY89e30uJRlCaaB/Q0+92gIoDqDcfakK3FXoguJOsMSclvpgr4K5Glx+lQtPDdZ7l3ah8p0zPljDgADDMZ6B0K1jeUUJBKcqEchbMaEXcOuTKH2rsyhVQ9kk6sskkp+H0lTY3rxC4mH+cmBqxXX4HyKXT2Xc6uTVAPzV6CpqQCh0E4Jaks7fBE3edBWxXWVPB81y0dQMnsBeHVt4/apH4KJg7mlqHXrWjU7/s8D4EDhvMms2IsAZf19QA/dI545DVOXj75GYgfXb/vprvpm0g6iuqO7unj1thbKigm4OcySh0ZOf5YKbFvRt37iMxjcWzfk/wgIH60kgrRfT5ef2VeIrJaS0Ynm0gXg4rjM3RMx69A/EbszuzTYzhqT+8P70qpDxdbxglv3s6TiYGkpGRJX+iPv24tD0FesEUeoUROFQGRroOi6VI8jsZ0l15qBCC0QLLYRivHygA4cihgBLtQnQUkyVU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,52 +127,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add `atomic::memset()`, the byte-wise atomic counterpart of
-`core::ptr::write_bytes()`. Just as `atomic::memcpy()` is implemented in
-terms of the C `memcpy()` function, `atomic::memset()` is implemented in
-terms of the C `memset()` function.
-
-This is used to zero the data of a page that is subject to concurrent
-accesses.
+The last user of `Page::copy_from_user_slice_raw()` now copies from user
+space through a `SysMemLocal` view, see `UserSliceReader::read_sysmem()`.
+Remove the unused method.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/sync/atomic.rs | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ rust/kernel/page.rs | 32 +-------------------------------
+ 1 file changed, 1 insertion(+), 31 deletions(-)
 
-diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index d25627fa6557..ca4ea8cadae1 100644
---- a/rust/kernel/sync/atomic.rs
-+++ b/rust/kernel/sync/atomic.rs
-@@ -884,3 +884,28 @@ pub unsafe fn memcpy(src: *const u8, dst: *mut u8, len: usize) {
-         )
-     };
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 7fa037f5938b..adb131fb94dc 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -32,8 +32,7 @@
+         Opaque,
+         Ownable,
+         Owned, //
+-    },
+-    uaccess::UserSliceReader, //
++    }, //
+ };
+ use core::{
+     marker::PhantomData,
+@@ -631,35 +630,6 @@ pub unsafe fn fill_zero_raw(&self, offset: usize, len: usize) -> Result {
+         // written are initialized. `fill` only uses the view on the current task.
+         unsafe { self.with_page_as_sysmem(offset, len, fill) }
+     }
+-
+-    /// Copies data from userspace into this page.
+-    ///
+-    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+-    /// outside of the page, then this call returns [`EINVAL`].
+-    ///
+-    /// Like the other `UserSliceReader` methods, data races are allowed on the userspace address.
+-    /// However, they are not allowed on the page you are copying into.
+-    ///
+-    /// # Safety
+-    ///
+-    /// * Callers must ensure that this call does not race with a read or write to the same page
+-    ///   that overlaps with this write.
+-    /// * Callers must ensure that no reference to the data of the page that overlaps with this
+-    ///   write exists during this call. Such references can be obtained from a
+-    ///   [`Page<Exclusive>`], see [`Page::as_slice`].
+-    pub unsafe fn copy_from_user_slice_raw(
+-        &self,
+-        reader: &mut UserSliceReader,
+-        offset: usize,
+-        len: usize,
+-    ) -> Result {
+-        self.with_pointer_into_page(offset, len, move |dst| {
+-            // SAFETY: If `with_pointer_into_page` calls into this closure, then it has performed a
+-            // bounds check and guarantees that `dst` is valid for `len` bytes. The caller
+-            // guarantees that there are no races, so `dst` is valid for atomic writes.
+-            unsafe { reader.read_raw(dst, len) }
+-        })
+-    }
  }
-+
-+/// Set `len` bytes at `dst` to `value` using byte-wise atomic operations.
-+///
-+/// This is the concurrent-safe counterpart of `core::ptr::write_bytes()`. Because of the atomicity
-+/// at byte level, when racing with another concurrent atomic access, or with an external access
-+/// (from DMA or userspace), the behavior of this function is defined: the memory is written at (at
-+/// least) byte granularity.
-+///
-+/// Implementation note: this is currently implemented by the kernel's `memset()`, which is
-+/// implemented in a way such that byte-wise atomic memory store instructions are used.
-+///
-+/// # Safety
-+///
-+/// Callers must ensure that `dst` is valid for atomic writes for `len` bytes for the duration of
-+/// the call.
-+#[inline]
-+pub unsafe fn memset(dst: *mut u8, value: u8, len: usize) {
-+    // SAFETY: By the safety requirements of this function, the following operation will not:
-+    //  - Trap.
-+    //  - Invalidate any reference invariants.
-+    //  - Race with any operation by the Rust AM, as `bindings::memset` is a byte-wise atomic
-+    //    operation and all operations by the Rust AM to the involved memory area use byte-wise
-+    //    atomic semantics.
-+    unsafe { bindings::memset(dst.cast::<kernel::ffi::c_void>(), value.into(), len) };
-+}
+ 
+ impl Page<Shared> {
 
 -- 
 2.54.0
