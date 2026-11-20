@@ -1,132 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F5B606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11BC606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LobbUhHv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IN7xfZxY
 Received: by kanga.kvack.org (Postfix)
-	id 461816B05E7; Fri, 20 Nov 2026 03:37:22 -0500 (EST)
+	id C53FC6B05E9; Fri, 20 Nov 2026 03:38:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43A026B05E9; Fri, 20 Nov 2026 03:37:22 -0500 (EST)
+	id C2BBC6B05EB; Fri, 20 Nov 2026 03:38:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3501F6B05EA; Fri, 20 Nov 2026 03:37:22 -0500 (EST)
+	id AF4FF6B05EC; Fri, 20 Nov 2026 03:38:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1031B6B05E7
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:37:22 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94D53A8C46
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:37:21 +0000 (UTC)
-X-FDA: 85454843082.21.DB605C1
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CB29E20002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:37:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=LobbUhHv;
-	spf=pass (imf03.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BD416B05E9
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:38:46 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 23A6F160E29
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:38:46 +0000 (UTC)
+X-FDA: 85454846652.02.0013A02
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 44314A0003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:38:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IN7xfZxY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795163839;
-	b=rPMN0o0j+GhXDSzSCooiCIH5gWntPwkT6dHhhbpARMgXy49tBVLZcCK1Mq5331lSDHtazf
-	sa4LeJqPLoUOo589OGsEi/mSKypfJ2Qj80kNsDy8EXmF43M6QiendCf0pEWX/0dq6LzEhQ
-	yZSEQ3KCH2+sqxzUxg5SBr/Q3+/Vqf4=
+	t=1795163924;
+	b=ym23VWjwerCAHOihy4sf0mM6yTdNUOihg5e1YF5nl2zuqlz8kSb7E8bRCnYuktv7Eg5MlM
+	1csGU6QMA/uWGE1UFtg1KC5oIuIN/gR+6oWF87jwu0bWFn1mYGmzBTXU4OOGrib9pe4nck
+	z24pf7WKnjOT2u1LxnDS/qX4I5ET8HA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795163839;
+	s=arc-20220608; t=1795163924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g/fHu7Nley/JjRttReoBdOyGfNrnA+dp2NZ1oWj3jhM=;
-	b=n/TlpYaNRuOy0UvNNdPd0hWIpopXl0VLrsmV0fghZLG4NpJS6gZpgCrpgYm7yMriPsJtaA
-	i0Eu5/viQXp2LSTbxIvrLo6UlayHcuu8zHMDJb4v3ZT9gOJ1kjp2pYj/FwVc8/5JBEcb7o
-	RbT4kn0E4mA/tLQFHO6soAFMWmSifGQ=
+	bh=h/gr63NDQYXLIZ+49BGD0eSjl21BN1D6Jr2bHaDtoZE=;
+	b=Z/p4fRq+LDUUwTa9suG/XCuVzFOgg7eKRM+KDIiGlSlKhKFU/qRWVsnu9tJcJQrZxynz2k
+	jAXVKckvOM5mzCsrdtTQxDlNfDMTHpS0rfohtVK1fYAarJRI5mDzN2r+Ja8iXYeiInVSOo
+	C8VUHKJO0AGcL8e/2W7nbyv6avthDH8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=LobbUhHv;
-	spf=pass (imf03.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2f037bc348dso5519685ad.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:37:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795163838; x=1795768638; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=g/fHu7Nley/JjRttReoBdOyGfNrnA+dp2NZ1oWj3jhM=;
-        b=LobbUhHvSSLTB5g8704BbjlGDmyJFyPFp1zS5AW1S8g7A/YsiLiAiZfzrkAhkamJeF
-         T62iofzXP4lWSzoyga2rKmQeXx87Lu0hMbT7pY4hqbVtlOe1nBA70zoILlHuaVhD06XD
-         hTCJ9FX+M+DkFAehO/BrqIrKJLOGeV0wvouWYP6x05FL5t33ZBeTyfz7lOd05NrwdEkK
-         FSFoX6E/Fr1T2qxUwwCo+ZGZm0nHTknLRD5gH6tG6WzbVLsxC/BTFIy3Aew1JeXGDpdE
-         czU3/fCwaGyaGnryxXjNFdjFl0OqxgEdHabhzXhpEa0Wgv1pOqfBDQjl4lzbYQ37uEVK
-         1Ksw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795163838; x=1795768638;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=g/fHu7Nley/JjRttReoBdOyGfNrnA+dp2NZ1oWj3jhM=;
-        b=Q/KNP08z5INbhOEOFoRlghuCmnFmMjxbxzhVMsX+P9C+wOm5jBiu07pr0kpHqHdCXV
-         YLuBefd/H+plPvPjnhzAPZyJLRO26S/y4fUnrYy8L5sDc6KqAQk7pfEYruILLhY6Pk5m
-         g4PB1fN6sAB/gXl5oaOCcQR1zyafZfw4Q2xsYlpSxbO2hhyP6VE3LBw6XqEbFnQtNXGM
-         qVyvC3C+YE5lNPh2h5tnJrSkwQDeq6wgHSj9iBY9SPbB9OtRBmLa8tsRYNBjvzi4KtTv
-         lgzGpriaBZt9+nYdf2SWqfCWnH0x1IQRv5FVBfTvWYqsS4QqaCGDCIRhYnC+OjV5FsO+
-         XnqA==
-X-Forwarded-Encrypted: i=1; AL+hErFLUbaousfjKJZLCNEYmBpOjzk43SY8ppKyF90Ol2x+OVeT5AMftSS4FmLbL4ukKh8hzFynMTACrA==@kvack.org
-X-Gm-Message-State: APuU4Z/tZeZQo7FRDrqEx1vV78nvDWFkpLJcM7N4mhDVeeR0kbWASZ/+
-	1Bcs3GbJhY7gCqpWMxKbzW/ASAxdHMooBZAPXmfEYtMbbNYqncm8w1aj
-X-Gm-Gg: AZFdTZfd3LonD8DEbC8ZM5Q2Vaeq5kNNYBLp+8eVjH6Yiy3D9kYbzQQBjpGC17rPOm/
-	uaCfp0hDcWf3FetUaGifFNJxu4PmmzeVPpkEFCjX5WDFQy5n11jXMqEOU0K8lz54vU0RqqaFwBY
-	HNDMCJQl2+Mdgs9PFmJDPdRCoo2qR5zdNg/mhJOg2CjrrroO/X2/TzYw+I+XDpFBV9BXUo1S/8r
-	XcOMGESV/IMFpsKuNVg5oNJp51rGlzCeaUEc0TwRh2MhodMUMArm/AbJrCsAPvKV69d7qqzJe00
-	5va78JGwjEpMgvp89LMBnCY5Kz8/BmfxPI1S9kzFJfqDMvK7TyNdIE0DLEjKbPn3y92Ba8qLjJE
-	dOvTeelJq0HwFX3D9CHW2QMxRAltkh+6SlGIYNlyqtw+zQ6DnfoPjTtSb+UKQZlOlKrD7n0UuEa
-	KeFRFWak8SWQ6PK8HBHfNTR08iacAtN/XnzMKwxvdcNgqT2oWLDyk4VTlmbN2hj+GbQuRc0NHrG
-	FjaWP8uwXtH3JNTo2Zm63iJ9VMxUxrp6mtfKo2d9md2ReX0DkhVQZq+8CIUOVg5JQub6BV4qocs
-	d7KjAeNS328B1JwT/JGBaz8+iRbWcgJRqRel2Ah2x4kQBg==
-X-Received: by 2002:a17:90b:3891:b0:3b4:127a:2bc2 with SMTP id 98e67ed59e1d1-3b41c8d9bfamr2140676a91.14.1795163838461;
-        Fri, 20 Nov 2026 00:37:18 -0800 (PST)
-Received: from osman.mioffice.cn ([43.224.245.178])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad0b52dsm3590057a91.5.2026.11.20.00.37.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 00:37:18 -0800 (PST)
-From: Zhan Xusheng <zhanxusheng1024@gmail.com>
-To: vbabka@kernel.org,
-	harry@kernel.org
-Cc: urezki@gmail.com,
-	paulmck@kernel.org,
-	qiang.zhang@linux.dev,
-	akpm@linux-foundation.org,
-	hao.li@linux.dev,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	rcu@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zhanxusheng@xiaomi.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] mm/slab: don't queue the page cache work under krcp->lock
-Date: Fri, 20 Nov 2026 16:37:07 +0800
-Message-ID: <20261120083707.296481-2-zhanxusheng1024@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261120083707.296481-1-zhanxusheng1024@gmail.com>
-References: <20261120083707.296481-1-zhanxusheng1024@gmail.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IN7xfZxY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3956345EC8;
+	Fri, 20 Nov 2026 08:38:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF6B1F000C6;
+	Fri, 20 Nov 2026 08:38:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795163923;
+	bh=h/gr63NDQYXLIZ+49BGD0eSjl21BN1D6Jr2bHaDtoZE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=IN7xfZxYM7VZTd63vDaEyaPde1kWVU9sZKvRx6OcYGVAS2uqsLW/DHVo5hiwihqHc
+	 MyCPWPo37Aqbk8VbruxIijn8QZa9N/VsSIbHaSL1vVWDs/Ldhzec6eSilUvOH+hnmq
+	 OD54nyqcUMmvOFcWm+Px42z/wy03wFGwTuC2zcKJyTMGiBluN6ofFfJgh/O/zMxVM6
+	 X0mKexouooArQNuFO3X5DqQu7V4z05HjCU1gccjEmrI1N2IWLmO+zasiv4bBQTpgMG
+	 lK4s/q52tmMA6YbsK+f9wzwZXehUK9zepDkOI0i/Tykx8GxFlmcIy+A7CEZFEl0ukt
+	 GvFl4kGVIXOug==
+Message-ID: <da01ae71-8b99-42b3-9a46-d7e39c1eb981@kernel.org>
+Date: Fri, 20 Nov 2026 09:38:36 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: skip temporary folio allocation for anonymous UFFD
+ missing faults
+To: Avi <thnkslprpt@gmail.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, akpm@linux-foundation.org,
+ rppt@kernel.org, peterx@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, liam@infradead.org, mhocko@suse.com,
+ surenb@google.com, vbabka@kernel.org
+References: <20261119180015.933433-1-thnkslprpt@gmail.com>
+ <av88TW3GQRvXJDwA@gremlin>
+ <CA+jvY9E3XD5mJZ7V-+6HFxEkY1FHNGom42F-nxMZNGtOy9POqA@mail.gmail.com>
+ <8e56f690-7031-4a57-abdd-a02c1c94782a@kernel.org>
+ <CA+jvY9HQp6iDPGDTuVqrQNnw0ENDDq46_AwZqzcjXNcyFWqPsA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CA+jvY9HQp6iDPGDTuVqrQNnw0ENDDq46_AwZqzcjXNcyFWqPsA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 44314A0003
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: tosx38aj8ut8wyxppcdjy95z799apown
 X-Rspam-User:
-X-Stat-Signature: e3j6zxgfzis96g6os5kiogspn95shnpz
-X-Rspamd-Queue-Id: CB29E20002
-X-Rspamd-Server: rspam02
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795163839-824295
-X-HE-Meta: U2FsdGVkX1/LDWiz7bksfk+YA5q7HyXPUslAnKP4nM1eRJb9nidgW6GUI8RHk5DeZ47kJOQYFKnAQQrjBMd3eTnEWdh5SU/xC8/Ko4ZhN0bS5L9u6pzkV03NkIXJjPJE2CWpm8xdb/gSOmhIInf/lnpSoHt3n2OrqDNHhqCqNaLu3bUS1dlTmhPe+Q2nkNS0KuBdFgEKObLxHCf8aBattnFH/Z7iyAI/b6wGLAjpLzit9I1Lvh4sq4zHZdCs7kQlj9t/JwfhUqL5vTP0ESRaitC0URjQt0v63weGirKHsZabkrUTFixPXoKRlGxez5kvJvLvK4i5N6FNWqEl8M1W58CFO5D6FSoVXgLE1XFzQfVrdVRbJGjodvJ+xHoW30XYxpFkRtPNc/s93wiVCzhiKsEDS91beyU8oTr7eTX3YkMD4W0LT/bLyLRyQb2ULQIMEQiYAXCpLhxkaGmWKAvm2RYa8CEJ6C/MLpGxDuD257ro6ZfNfi2OUpdWVqWD/yk7bHsXpFnrxtYlsq5vKd/LTMNboCXh024kBvs9cO+rvduMxweDfBz1/nl2oGORjNt9TS6UM7/p2yt469+iSKoXIRmFvGyVuKCVk6McXH8y2i8nxl/eXCF3GGB7U6UQs6VRmcVa25ZomUXJpPWVnWwYr2HZtSkdjLog0urIe2XkA3bu5ti8rzv08Zx6LxzCPMMaPY5Rfy3q4DmhW9/qlxoaQ6vZ6Bgs5R+wlkqSODofVqvTwIOEljiR26jI4wzgZCy4NH0EQ3mlPVB/ZeUW+bd4NrUljcBZ2eyeOUpLRGXrOCMg3SYEYTdOCtW1HEOLJqn9b7uT4FEnHFwSdBMke5cnrQy0+B159/UHUiHWk8jAK9a5mR6Js/KlwQ+SnBrvF/ukGPhF2KWavCGwWcPCV2FsNF+G2pe9irJUpGIFvB2UJA0RHGnZu2F33HX0mJipHRp8SpDB5BrTVRC3dz1OPwt
- 6F0whtQ1
- VySXLa+cjHDk4g+Q9F+0BdvRw16js8MwpuJ0XSe8cHO3JV284yn+e7BNtdNKHDysLlbE4EP1/Upud1UN+bMChvz4/9zBCKFRvgVDmVIoX3mIuU5aQ8yQO3KgMdvAXHa1WOREhpeWRGxnLzBUrPlCIfsX7qja/vhaMD1YfsyRmc8goTiljsvXXZ5dPnq7Yj4FoNjJiRN2LbzGIilCBrJpTudiHym0xTcJani/e262OA4exuUkKZ3YjOHohr2RfNKABuEtUsizo4bK9ZG9MiYhIdhFKsa9QCzlonab05/WZFfcj15jPR5bKZmiJcJ+N31mk5ENoo5YCkIHqliZ3tD46r76S5WtHu5CGcCyPKPzon4scnB+lHe7koJ96bjAL0pDC2VKuW0tdO/bf9wo1+T0m63tbCob/zTNmkPU3XCSD9WOw9onGN6kq2IM1CJv2dEDoEx1LsQVchmhAHhjYV70ZMMM3XIvh7hdo2Xd/XixQWz2lg0yeLXP56mfyBFFMatfhIxABABqpL8W40etKkSr844SU5lGjv73CSqJ+/B+RoAQ4mEQ4BGXv6Vfni7djeH9Y9BV4WADq/W+nmeqMdTYGb8Ao/bwUraxpFFJTEJkqinYx/orGh7wLen68YYH1CPfixBp07Iob/bWRYzh3uyw99arlvz6p42QtjejcQL+CgFWKyKvrStcjwgqaWQ==
+X-HE-Tag: 1795163924-877501
+X-HE-Meta: U2FsdGVkX1817goGFONoBP+ZkquMMrVJC3YidsVXOjDexgXDPV4KyFbkStCby3l37niJwTp7N9LbjcBnM/1g55RBQlCkel0n4IiWdosnGzzgg61WOTCsC0DA5xe/0CsYM63G2YaHhwQwxpsz2NiBoZLv55ZOBOW9w0U/1WwYtr/PU0MXyYf+hQpKfcOA3vsZ4JuuaHir7QUJwECx+SAfWmbKTvzAOadNiX0/kz4cixTgg3wVJ0Rudinj7Tq5knKQZitArLbYQd2zis2dxjkuHJfPf8qglCxIkrICVsB+3ZRCtO3m3+VJPW4UWxIGLtl+k3AoAfhR8lUyZpXa4YjhgkAX8kdlcwdTqShbPEMKDtpp2YDzxrKu+rrlTTa9SlGNK8qO02AWQeZrh8yCJmOG+NyrUwTbcehqGoUGY5X3eqTw7XCYBSglzsh51xMqeRlyp8snFpYThCq7sniVPkv5C6RFJ8qqw6ANk0mUZdMzYd84+u4M+pwyDuiYI4fzdvS9EX/UdwJ+OBFOD9Zu2QAXNpFddEEbdnGQCZvEmr745L5uDAUzgZ7bXdg3dfu7MunTfWhygL9Aymcjpl0EU8YvJwYQTBP6Wuzs/IjdwZKXX75eEbRTRzZWxjn79XO6bCBV9Y/4PkcPwDo4HGl2HEnMWnI5uKk96/L5TbKKDJ57oKou9OvBLpBTiZl6gaJsl/U/frU4PnATXgn5IWAbGR1iHgFjrCxsl5fHUhZEBLA/rgzpYi+a/ZN4NbNvt5oiL27Tzts47RTg1xw6DCJ91JIclYR4TaQrA6hiqjAXaq0jRIGEtWZGLqoaQf9kROdvFYEIX4RKBV1SYIDEDAJSCgnO5kQI5FP0dHHCisUAvdo0+ZaCFhIU0pSk2hgAI13EPRkgrzqWsEuQd9cOTxxeWbT9uWREigzzFARCezwFh8N6H9v2r5v8YZThylujo8VPoRZHjXhLqTMXOjUtRpeJwfD
+ fLnWwLqu
+ 8l9PvtMOZAmfkEYMaEOcbwK0BtVcCce97pTRk+XIpFQz/iIuzu4FIwxDcCHeU07pYjV86Ve4NEfjii6m7eBGFHSSTIGaDHOMHE+hzFetoGIu4iISdwXKfdk9EUe+dK1h5FQS/nwvwpWUg/hyexmbUpARLwJdrzeEQuomMYwQs7P6sUOvSGh72wdj95JI0ANmhRbFw2WPe3PjkAewKg2aQ+m9Rov6dW0Q7kLIXrGvayl4glcO503zW+BROR2/Or1V7u18NRjgXvHfkcB7LRNgmfGQM2TGrMvQs0QQH611M8IoaFbiQtE0rpqDqnXZndnhGYZUcwqSVjtrnBB5agLpphsuqo65Jv+0JkROB23avsFR9XKh5ci6u5fWWHH1XjRjLLaRXhXO4TaQeZQ1wPiNt3BFPqQdOu1CuFfiAtiBM6vfGO/YvvEkz3ThGq2Vq4P++VU6o9gUWMQZzR4Q+3IvLung9b6pBGMfvwTvslR79h37FKwM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,93 +147,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
+On 11/20/26 05:20, Avi wrote:
+> Hi David - the real motivation is very simple - avoiding the wasted
+> allocation (if possible).
+> That's it.
 
-Commit 56292e8609e3 ("rcu/tree: Defer kvfree_rcu() allocation to a
-clean context") deferred page allocations to a workqueue. To avoid
-deadlocks with the scheduler, it used hrtimer to queue the work instead
-of queueing it directly.
+Just to clarify: we are all right now completely under water with fixes.
 
-Commit d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory
-pressure") later added a backoff mechanism under memory pressure, but
-did not consider that queue_delayed_work() with delay = 0 immediately
-queues the work and introduced the deadlock commit 56292e8609e3 tried to
-avoid.
+Optimizations "because we can" are not heplful. They cause more stress on
+maintainers and reviewers without possibly benefiting anybody in practice.
 
-run_page_cache_worker() runs under krcp->lock, from kvfree_call_rcu()
-callers that may hold more, such as set_cpus_allowed_force() under
-pi_lock, so it kicks the refill work from an hrtimer. Under memory
-pressure it instead queues the work with a delay of
-rcutree.rcu_delay_page_cache_fill_msec, which may be 0, and a zero delay
-queues it at once, taking pool->lock under krcp->lock.
+But that's nothing new: we always required a good motivation in order to spend
+our precious time on proposed changes. Because maintainer+reviewer time was
+always a limiting factor.
 
-With the delay set to 0, calling kvfree_rcu() on vmalloc memory under
-pi_lock after a drop_caches makes lockdep report:
+While your changes might optimize some uffd workloads, they make the kernel code
+more complicated.
 
-  Chain exists of:
-    &pool->lock --> &p->pi_lock --> krc.lock
+"Because we can" is not sufficient motivation to do that.
 
-A zero delay also defeats the backoff, which is there to defer the
-refill under memory pressure.  Clamp the delay to [1:100000] ms, so that
-queue_delayed_work() always arms a timer, and update the documented
-range.
+IOW, if you don't actively run into a problem, there is not actually something
+broken, or you have a real use case that needs solving in core-kernel code,
+changes are high that your submissions will be dismissed.
 
-Fixes: d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory pressure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
----
-v2: clamp the delay to [1:100000] ms instead of using the hrtimer for a
-zero delay (Uladzislau).  The changelog is Harry's version from
-slab/for-next-fixes, with the last paragraph rewritten.  The
-Reviewed-by tags of Vlastimil and Hao on v1 are not carried over, as
-the code changed.
+Because we simply don't have the capacity to engage with that, sorry.
 
-Tested in a VM on v7.4-rc1 with lockdep: with
-rcutree.rcu_delay_page_cache_fill_msec=0, patch 1 alone reports the
-circular dependency above; with this patch the boot log says "Adjusting
-rcutree.rcu_delay_page_cache_fill_msec to 1 ms." and lockdep stays
-quiet.
-
-v1: https://lore.kernel.org/all/20261028134647.3176080-1-zhanxusheng1024@gmail.com/
-
- Documentation/admin-guide/kernel-parameters.txt | 2 +-
- mm/slab_common.c                                | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 0b3c140babd9..0d1d76a6af70 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5763,7 +5763,7 @@ Kernel parameters
- 	rcutree.rcu_delay_page_cache_fill_msec= [KNL]
- 			Set the page-cache refill delay (in milliseconds)
- 			in response to low-memory conditions.  The range
--			of permitted values is in the range 0:100000.
-+			of permitted values is in the range 1:100000.
- 
- 	rcutree.rcu_divisor= [KNL]
- 			Set the shift-right count to use to compute
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 41dea01a8c1f..6fb453118641 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -2262,12 +2262,12 @@ void __init kvfree_rcu_init(void)
- 			WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
- 	WARN_ON(!rcu_reclaim_wq);
- 
--	/* Clamp it to [0:100] seconds interval. */
--	if (rcu_delay_page_cache_fill_msec < 0 ||
-+	/* Clamp it to [1:100000] milliseconds interval. */
-+	if (rcu_delay_page_cache_fill_msec < 1 ||
- 		rcu_delay_page_cache_fill_msec > 100 * MSEC_PER_SEC) {
- 
- 		rcu_delay_page_cache_fill_msec =
--			clamp(rcu_delay_page_cache_fill_msec, 0,
-+			clamp(rcu_delay_page_cache_fill_msec, 1,
- 				(int) (100 * MSEC_PER_SEC));
- 
- 		pr_info("Adjusting rcutree.rcu_delay_page_cache_fill_msec to %d ms.\n",
 -- 
-2.43.0
+Cheers,
 
+David
 
