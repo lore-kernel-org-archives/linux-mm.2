@@ -1,93 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A1A606A333
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 07:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28E060A260D
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 07:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QMGPSX+H
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IFTqiyv0
 Received: by kanga.kvack.org (Postfix)
-	id DF1A56B05BF; Fri, 20 Nov 2026 02:10:51 -0500 (EST)
+	id B9A116B05C1; Fri, 20 Nov 2026 02:42:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA1FF6B05C0; Fri, 20 Nov 2026 02:10:51 -0500 (EST)
+	id B4A846B05C2; Fri, 20 Nov 2026 02:42:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C91556B05C1; Fri, 20 Nov 2026 02:10:51 -0500 (EST)
+	id A5FE66B05C3; Fri, 20 Nov 2026 02:42:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A73FC6B05BF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:10:51 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3DACD160DA7
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:10:51 +0000 (UTC)
-X-FDA: 85454625102.20.98C64C2
-Received: from mta0.migadu.com (out-53.mta0.migadu.com [91.218.175.53])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2538120002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:10:48 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QMGPSX+H;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.53 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A9336B05C1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:42:47 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E781F140D3A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:42:46 +0000 (UTC)
+X-FDA: 85454705532.17.66633D0
+Received: from mta1.migadu.com (out-134.mta1.migadu.com [95.215.58.134])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0437618000A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:42:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IFTqiyv0;
+	spf=pass (imf24.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.134 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795158649;
-	b=mc2kykP0dW7vi3sCF9l4CXjEXyOpRr1QIEaGBPhIRBJJJ8gm1P+do94ijSrw/7191StN6F
-	Uu3eEf/YTo/mDJ66y31yxnk7FrUvfLOHNWwYYjtR4VsMqAQo5Rxu/6R+rg5kCiGSWd2tfP
-	m79XOIA2ooxphWq7UtrMPuEW806ZKVg=
+	t=1795160565;
+	b=Kor7tEOdzcWdb8eOpHSe+P4HiE91MHjNaNaftKY+GQYLMrWnjY6mHU7meULeMWR3b2x5L9
+	MxmLIo4PK2f/qRZYNX0H0Tbz9Gz+THx9UCr8369RGyS6mSSakKo1G3zBkT8/REexiAyymL
+	TZd4Fp8PD+1Vn8n7tbEqE64zNRekpsI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795158649;
+	s=arc-20220608; t=1795160565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rrVjR0ldF5os90khgV8tI+gBuMvnvIaz6fwAZEMSvyY=;
-	b=vZ98sADpt65lE7z/hbqTLw9QvVg5fXCBt0Frn+lXZQ/SbcYA/J7tzmasApJT/6fibIyiBU
-	e4SEC3FcYgMnIieZ9OtXnmZIM1Bm4JvVLqTD0wc/Vgp/0bdZN+e0iUegYJ0R2uzYKw18DY
-	unuEIzCblq2qrSUCydsdzZqD8ajtN9c=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fHTdpM8nxSvx3evoOQbtGvFbq+YzrWfScABJx2vwaCs=;
+	b=v+JwOFdIrsmJ93L17fWFzpsSnAU3jRhdG4zPxl4nwZkioJFzZf51FteJJyVVkUrjnSMHir
+	Fldf6ir8Q+HQ5dS8xoRbVo2V+8e0sG4PEBkGWypPdv+1XcMfzDJv1TteYU/pc+iiI5BgpT
+	xy5lW2HBzDpOTeJITQUUiiY1CGjl9sg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QMGPSX+H;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.53 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IFTqiyv0;
+	spf=pass (imf24.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.134 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=iXadPTuzEyYGK17GU1F26gUUhQt7mhcJQzKvAe1cH3A=;
+DKIM-Signature: a=rsa-sha256; bh=Rf68KggUysX1MYPELIpPD1pBE4j+ZU9neLaxwKPeBJ4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795158647; v=1; x=1795763447;
- b=QMGPSX+HicDdod/qSRxo4k02P1uQff7lv/obQSFKKcivGcs8NZiHqFJJdR4DT/77ERiNZHOO
- miGrQ6btjiKZeWbdUxbHD/tnVlEruLqsh1PkutDa6rZu3fPykELid5nXKmXHIhR38CGa5/LqV9U
- DyQcmRqdZLXabyl17V4NaiwU=
+ t=1795160563; v=1; x=1795765363;
+ b=IFTqiyv0d1cpPHITuUombiXXqWGl7hr//7jd2CjBovzzMo11dyBnQzvFK7MgO5qpf9Toeb9G
+ wOKN5J+0TMl4pxM6zqR4RaNWMTyf0HpLadpSsixbitZKecsLz2oNQr1sFTSo7EofyxKDv1cG/mb
+ afX83lNtBRtyQE/1Cq/9onHY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8e21a47625769387;
-	Fri, 20 Nov 2026 07:10:44 +0000
-X-Mizu-Trace-ID: 8e21a47625769387
+Received: by mta10.migadu.com with ESMTPS id cc1442cd9fd56b76;
+	Fri, 20 Nov 2026 07:42:43 +0000
+X-Mizu-Trace-ID: cc1442cd9fd56b76
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <73a452ad-4346-4f77-a2f6-4c801562c050@linux.dev>
-Date: Fri, 20 Nov 2026 15:10:36 +0800
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	chengming.zhou@linux.dev,
+	donettom@linux.ibm.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	xu.xin@linux.dev
+Subject: [PATCH v2 0/3] mm/ksm: fix ksm_zero_pages accounting on fork
+Date: Fri, 20 Nov 2026 15:42:30 +0800
+Message-Id: <20261120074230.40269-1-xu.xin@linux.dev>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/shmem: don't use the memcg of an uncharged folio
-To: Chris Mason <mason@kernel.org>, hughd@google.com, david@kernel.org,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- qinyuntan@linux.alibaba.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261119193656.88678-1-mason@kernel.org>
- <20261119193656.88678-2-mason@kernel.org>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261119193656.88678-2-mason@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0437618000A
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: xwqp5gyni73njgrf8rc3jaimp8oi34np
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2538120002
-X-HE-Tag: 1795158648-393486
-X-HE-Meta: U2FsdGVkX19OImnaOFWyFh6AmCWuwvubeiBOMXlWU9z+WFh8PtjfnriN1paHgZWb+PTgztt91kJYGHloClDygHXDaR5ZEYTKT1kLjNL/VaNtx3dGaHovlW1fNBWqbtSDcY5TcPVbwhmR/x3bcHPVO7WMb6d4kBihXJsuG7LNMvSSQWvsFtkGvwn6yh8qu7ZPrWtnhGsDrdq0RGQ7a/jhJYgjlfrTnDpgrV+YS3l8sm0WuGsNGdtLxVNAnE57Xwiky39vZYznrdOiiXYYusi2/IPNWKFJm0f1mWo7NaDDPB+eYK0XnqYI70ZI5MMClcb2inXeVkLt0GS+oARr4voB2tp7Ci7ao6vq7e99yBXBqWjDFG3CcaPy4HChKeODZ6o8r3YQSKXsR8+ppzbTwRUNlItuU0CtBGjEmUxZLhsothSKRnP7tSvblfkZxl//jE08sGoiurYPF/Fe4Ajqa07aKqG5X/VyQsBb6a3N608Ouqig8SLkQxYDOLKbyarpucFgD/l3KRkEBqrmsnuqMylo8Gw8IvjFr+YvT9daEeF2VfKgx0luT50CW0ZIQZphiWIk4wHkjs+XAi4UJ8M7gQWg2KOB991DBKGmYgUFXD2JDe7/TMI+1KO5t7JKLa1XCWDAtzsiEb4IQALkxZsKiLN6BMkVUaNtEzuRV2bhb6JE8pec+1u7ZRuEFcaCb1BXMaTp439tTRmaL7rQf66UBoCukHPUn180eI8itNYkv1GnxyojksJ925wVnpdGrNIFgvlk6P/DATPRzAbzuQJs7E8AZppfdz6P4nu055LFzfxafB+IHEwdi1ouPk8DfzbBVG0HBqWcxV9Tw9cATAK8p06y3ZAtiNm1CF/OIWeMa1UUbahDW5GozAy/KZwiNSebCW3Ov6J95PBrR9CswzVwVui4JvFZk2O/Dv6RidLdGkTjWmKY96sJk43ZHUKsvvCg7lFuNNMdGKUknsern65VihQ
- kI1xNdjo
- nkcXPXQLAHuozpqDs4biATj+GuLChtgcnoO1Lt+N2TbKfooc4riMuE4m7WKzXfGqBRM4GKExlJ0kSaMttafZCzOwPi+0ZVaDjao6rFJk45+8UzyIriXPC0AtNoAoN8hqIUC1o3+qSi8S1RxFiElHulZHiYI2bL8lukeghd/8GaAy2ifgv+pkX/Prn8SjARcJwGNvvxMcwiLmQbRQTl6Chn9d3MAZSrvGevadavh33ToCQjA1l/LJ4bPfZCIw7PmKdygEsi9MWnKYmKLPSodqFTAb4h9tasQ1FIa+rbA3AMy5xsKcfvzxB+slSEaAgqFa7CqPUI4cqLlMxq0nk4dHrU3Takfk75NsPaAWuD/Eebi/cTniMxa5MQb5/4rRgOImbkdy4rBGBjbCB2JYfnhwZ/SBsgmC080pbkrzDrmPzQ+XV8egWLCWxI36vFF5MyQAqz4jD4PGZLP3NZm9qTrtVhmDaTULnMFUqRHJ7f37REOj5XJjcBhMp9A8riFf4IPnuW611
+X-Stat-Signature: boszfraknyejjmkf1sgdu915k98aq9fr
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795160564-694742
+X-HE-Meta: U2FsdGVkX18eZqj+vv/sntRbmFlE5BGS5B2H57G1z7t5RSiOCY/v5sB81rLrhnBz5hW9s92T4N/Y8zRItPk4ROD9C+t4g13RpibMGK6r3b1yJhUyDbkcwScosi3gJrHPPDPWu7HnR66DAh9LPThqremwKAROVLF/SrUsT+KXozj7zud1LtipCDqcmzQYwLfaslWSCad0Fn9obXL74wAwgiO1GagY/JJg0oJcgLoESmnupkLwqpdPrf/gkLNZr+pJrcG2c00JOFmUAqtaK+g8ByG/ETTVubo9H/lI8AnNRYaV5syYwC29oR9ZZMq2r99BB/U6B2klSri/Pc6jFHgrfhef5IN0nfxEVbQyjhm/7Sav7Z0VbLlSkW9wrwyTvQivoWqJjw4MDByL4kCemb7f+dGBuWLHhBm6HHi6cyM/jfmyQYb2i3Ef3N9nges2Kj56R3mgvB5ePeHc6z9b8t/P3gyz9UsffyYb8mMxHfTJPIPyqSke7IhBq1ru+4H5efix8cKFR6R/m8yHPq50n81rSNkDqFbK3WF7eOuVDKKGtfRV9l6DIKKB1kI8HOe9JyJ6rS77sbUCQ+ajCWJ2o7fTPkF7OOKdjG3po/46cbhqgqsBuqA0Bh6bzmPoESzwnvsnOhSWqFDZvHg3Bobnvl3joBQROz5WRcSXjSmtMrnSgnyt38fW7qstA0d7inlpK9I6Kt2a+uD0ZDnLsS+7rO96971Gi2awEI+VtnW041q9/AmSg7mwAifmy7J1Sj8A81Z27UcSNukutaTU2+Hpeni+wBz41bGhsMNpV3lCDWJ6IZxYst9TQgh4gPrtZgMnYqMAl/+ykK37eFQKYe1JKj9HiUIqaypazYsUwLBQaFGZUkcE9Rs/i+yopm8FoXP0EQ569VK2pz1Er0e2ti8RH8ZS6Ijt4BpVT86nTGtx3OiYjxupKsfYZzH4dVuffjwHUwqiGK+Gg33nnuF0fjKw6aJ
+ idhKmE1r
+ UFCEsYKTHXLiagWTjNspbuC5Z6j8SSubHA6uPNChsXZPybJcDQ1Gk3F3YkG0t94pP9z71hi0S0OFq4wOJWer31DZmP45fVTef1iesy+bBfkKDS+hugb9QbiXFGUYUcevL4HLDqwPzrkpmY5eiGUoDYH3JR2pCW1XR4jPozGV1bMsZR+Ixyx1EIGtEIyM0/cSbYTZJd0IOZ6zf9exnu7FWQCssVrQlHlv7JePleMXF3mYQMtiRmAcUNUGz4mY+17C3V6h5ARdAmSXqNk1uP11I8/bUOwbfoRaRIcrWC1h1FmTvxqdt5PnZew6djeP3nBKNysbGHyRDQeMC4+Mo6dHzl2+8tzde4R+CsFaqxomeW5Z28Yqd+UItjAQNI2cq45xVX2y5lBNIyo9Nqr+tCXB6iT4/QB5s0ncErn8gAe3FIZKQC3jSV1ndLpcAllrEaJyrfDQk6EN03Kznz0YENA2pQp0B09EFf13QVCS6kCCuZ+XhZRY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,171 +94,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Currently, fork() wrongly inherits the parent's ksm_zero_pages counter
+and keeps the KSM dirty-bit marker on zero-page PTEs, inflating both the
+child's per-mm counter and the global ksm_zero_pages counter.
 
+Patch 1 fixes this by resetting the child's mm->ksm_zero_pages to 0 in
+ksm_fork() and clearing the KSM zero-page marker when copying present
+PTEs, and documents the behavior.
 
-On 11/20/26 3:36 AM, Chris Mason wrote:
-> The shrinker for unused huge tmpfs folios can dereference a NULL memcg
-> if it races with the migration of the folio at the end of a file.
-> 
-> folio_memcg_list_lru_alloc() assumes that folio_memcg() is never NULL.
-> But it is NULL until the folio is charged, and a migration target can be
-> in the page cache before charging.
-> 
-> shmem_unused_huge_shrink() looks the folio up without the folio lock,
-> so we can race with migration:
-> 
->      __migrate_folio()               shmem_unused_huge_shrink()
->      =================               ==========================
->      __folio_migrate_mapping()
->        xas_store(newfolio)
->                                      filemap_get_entry()
->                                        returns newfolio
->                                      folio_trylock() fails
->                                      shmem_unused_huge_requeue()
->                                        folio_memcg_list_lru_alloc()
->                                          folio_memcg() is NULL
->                                          memcg->kmemcg_id
->      folio_migrate_flags()
->        mem_cgroup_migrate()
->          commit_charge(newfolio)
+Patch 2 fixes a false-positive bug in the existing KSM fork selftest by
+removing a redundant init_global_file_handles() call in the child.
 
-Thanks for catching this!
+Patch 3 extends the selftest to verify that ksm_zero_pages is not
+inherited across fork().
 
-Some nits below.
+---
+Changes in v2:
+- Encapsulate zero-page PTE marker clearing into a dedicated
+  might_clear_ksm_zero_pte() helper and simplify the code comment. (David)
 
-> 
-> Fix it by keeping the original objcg around while the inode is isolated.
-> 
-> Fixes: 743e7d025d2f ("mm: shmem: make unused huge shrinker memcg aware")
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> ---
->   mm/shmem.c | 29 ++++++++++++++++++++++-------
->   1 file changed, 22 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 10cef89b00b0..4465a43d6f74 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -758,6 +758,13 @@ shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
->   {
->   	int ret;
->   
-> +	/*
-> +	 * A migration target is in the page cache before it is charged. Once
-> +	 * charged, its objcg can't change while we hold a folio reference.
-> +	 */
-> +	if (!mem_cgroup_disabled() && !folio_memcg_charged(folio))
-> +		return ERR_PTR(-EAGAIN);
-> +
->   	ret = folio_memcg_list_lru_alloc(folio, &sbinfo->shrinklist, gfp);
->   	if (ret)
->   		return ERR_PTR(ret);
-> @@ -887,12 +894,11 @@ static enum lru_status shmem_unused_huge_isolate(struct list_head *item,
->   		return LRU_REMOVED;
->   	}
->   
-> +	/* keep shrinklist_objcg, requeue may need it */
->   	list_lru_isolate(lru, item);
-> -	objcg = shmem_get_and_clear_objcg(info);
->   	set_shmem_unused_huge_isolated(info);
->   	list_add_tail(&info->shrinklist, &scan->list);
->   	spin_unlock(&info->lock);
-> -	obj_cgroup_put(objcg);
->   
->   	return LRU_REMOVED;
->   }
-> @@ -928,32 +934,41 @@ static bool is_shmem_unused_huge_match(struct folio *folio,
->   static void shmem_unused_huge_drop(struct inode *inode)
->   {
->   	struct shmem_inode_info *info = SHMEM_I(inode);
-> +	struct obj_cgroup *objcg;
->   
->   	spin_lock(&info->lock);
->   	list_del_init(&info->shrinklist);
-> +	objcg = shmem_get_and_clear_objcg(info);
->   	spin_unlock(&info->lock);
-> +
-> +	obj_cgroup_put(objcg);
->   }
->   
->   static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
->   {
->   	struct shmem_inode_info *info = SHMEM_I(inode);
->   	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
-> -	struct obj_cgroup *objcg;
-> +	struct obj_cgroup *objcg, *old_objcg;
->   	int nid = folio_nid(folio);
->   
->   	objcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
-> -	if (IS_ERR(objcg)) {
-> -		shmem_unused_huge_drop(inode);
-> -		return;
-> -	}
+- Fix compilation error by adding stub implementation of
+  might_clear_ksm_zero_pte() for !CONFIG_KSM. (kernel test robot)
 
-Maybe it's better to just return early in the failure path.
+- Document the fork() interaction and MADV_UNMERGEABLE behavior for
+  ksm_zero_pages in Documentation/admin-guide/mm/ksm.rst. (David)
 
-How about this:
+- Fix a false-positive bug in the KSM fork selftest (patch 2/3) and
+  extend it to verify ksm_zero_pages is not inherited on fork (patch 3/3).
 
-+static void shmem_unused_huge_requeue_locked(struct shmem_inode_info *info,
-+		struct shmem_sb_info *sbinfo, int nid)
-+{
-+	lockdep_assert_held(&info->lock);
-+
-+	list_del_init(&info->shrinklist);
-+	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid,
-+				  info->shrinklist_objcg);
-+	info->shrinklist_nid = nid;
-  }
+Xu Xin (vivo) (3):
+  mm/ksm: do not inherit ksm_zero_pages counter or PTE markers on fork
+  selftests/mm: fix false-positive KSM fork test by dropping
+    init_global_file_handles()
+  selftests/mm: verify ksm_zero_pages is not inherited on fork
 
-  static void shmem_unused_huge_requeue(struct inode *inode, struct 
-folio *folio)
-@@ -943,17 +975,18 @@ static void shmem_unused_huge_requeue(struct inode 
-*inode, struct folio *folio)
+ Documentation/admin-guide/mm/ksm.rst          |  7 +++-
+ include/linux/ksm.h                           | 18 ++++++++--
+ mm/memory.c                                   |  2 ++
+ .../selftests/mm/ksm_functional_tests.c       | 35 ++++++++++++++-----
+ 4 files changed, 49 insertions(+), 13 deletions(-)
 
-  	objcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
-  	if (IS_ERR(objcg)) {
--		shmem_unused_huge_drop(inode);
-+		spin_lock(&info->lock);
-+		shmem_unused_huge_requeue_locked(info, sbinfo, nid);
-+		spin_unlock(&info->lock);
-  		return;
-  	}
-
-  	spin_lock(&info->lock);
--	/* Requeue the inode to shrinklist */
--	list_del_init(&info->shrinklist);
--	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid, objcg);
--	info->shrinklist_objcg = objcg;
--	info->shrinklist_nid = nid;
-+	swap(info->shrinklist_objcg, objcg);
-+	shmem_unused_huge_requeue_locked(info, sbinfo, nid);
-  	spin_unlock(&info->lock);
-+
-+	obj_cgroup_put(objcg);
-  }
-
-Thanks,
-Qi
-
->   
->   	spin_lock(&info->lock);
-> +	old_objcg = shmem_get_and_clear_objcg(info);
-> +	/* The lists for old_objcg exist, the inode was queued under it */
-> +	if (IS_ERR(objcg)) {
-> +		objcg = old_objcg;
-> +		old_objcg = NULL;
-> +	}
-> +
->   	/* Requeue the inode to shrinklist */
->   	list_del_init(&info->shrinklist);
->   	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid, objcg);
->   	info->shrinklist_objcg = objcg;
->   	info->shrinklist_nid = nid;
->   	spin_unlock(&info->lock);
-> +
-> +	obj_cgroup_put(old_objcg);
->   }
->   
->   static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+-- 
+2.34.1
 
 
