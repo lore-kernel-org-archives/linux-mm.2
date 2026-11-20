@@ -1,138 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C03606A325
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 02:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01868606A325
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 02:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lsEJJf8g
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NQV8AZyh
 Received: by kanga.kvack.org (Postfix)
-	id 988586B06C7; Thu, 19 Nov 2026 21:17:38 -0500 (EST)
+	id D777B6B06A6; Thu, 19 Nov 2026 21:32:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9392D6B06CC; Thu, 19 Nov 2026 21:17:38 -0500 (EST)
+	id D28276B06C0; Thu, 19 Nov 2026 21:32:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 827E06B06FC; Thu, 19 Nov 2026 21:17:38 -0500 (EST)
+	id C17206B0708; Thu, 19 Nov 2026 21:32:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 55CFE6B06C7
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 21:17:38 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6941160C34
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:17:37 +0000 (UTC)
-X-FDA: 85453886154.12.EE7BC90
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0D1E6C0003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:17:35 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=lsEJJf8g;
-	spf=pass (imf22.hostedemail.com: domain of yusq77@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=yusq77@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9235A6B06A6
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 21:32:55 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C7D61A0D0D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:32:55 +0000 (UTC)
+X-FDA: 85453924710.27.69B42B3
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 37BE84000F
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:32:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NQV8AZyh;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795141056;
-	b=lR3ZEUkQutKKxo5/5H6Avj75LwfM8sT5beYVJ3ZTmgXyQAa7Ot1Okjmmq6OLPyWd1vFKQe
-	H76Yxnf59RMO8QQWAzmZrKRewMXGnjrZN3ZF4wBn17sGogSDqCmb1sEW4nYwqq58jaqEIT
-	sJz0PYFDmGB8efqLkam5j3ExvMI1bIM=
+	t=1795141973;
+	b=BumDBXWmyxa+VwxGti2v+uQxtviXMcnBdGwzh0CDbbEyIs7wVZxROZ9RxljLIFgamai9Vr
+	7yIGVZN9OSyFBs7HSDY0Zao3lubWJuAb/08OAWamsDjFysiYIxjW0/3uCxRSnc/aNyoYlY
+	Af6NdLtiSFHFhkfMQ+x0iT8Q8TADP7U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795141056;
+	s=arc-20220608; t=1795141973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Qrne1U4Gq2URgk+EKe+uNj5xFft/8oosPyNbOoW67yY=;
-	b=wn5UbwkQ8pgind60XiUDzSNJtswAOsvbSTGXdl6DmmN+xziche1A1+Ui1twm1ZEj90sfy9
-	fMiAqAs+kdVg0pA7JV3IcPLEPQqYghgMOM0w+8cY2pTmeaXwws4lF4flzHK/6qsqnzD+eL
-	5qBh7/9CLwgvRY2ItwygDj0UprG9JZY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T4wXbm+O9fevfK2Qx5G101XrVBE78mAE7FgUuBIBaz4=;
+	b=DZtLp7VKKO22iqRyXwgyHT9XkPfcr8rP9THuvkUU1HUV2/5p6NedAOkDssbYk303Xzy9L9
+	dVaXqRcOm9kxBkT081K4CGMYBqgo1nTcUI/IeNTNuTijZ6T8ZPp1PTmgHAZyIXSF05xz4O
+	iK/e6UmyhzvEK0tvtVwXQXFtmFz05dk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=lsEJJf8g;
-	spf=pass (imf22.hostedemail.com: domain of yusq77@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=yusq77@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3b41e5a1719so117867a91.3
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 18:17:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795141055; x=1795745855; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Qrne1U4Gq2URgk+EKe+uNj5xFft/8oosPyNbOoW67yY=;
-        b=lsEJJf8gvHkoYMJIIjvKcr+PmTB9ul3eOxPpD085n6u+Edz9QFQlUmkyawmTA5GxNC
-         8W9W1caipqfrt86RQz2Yk4+nOVkqY7PT9GQm81xOuh+8rPgvXfO1gwyzxFm2wvozjp6y
-         TlH2hazyZDmLY3aTnhXghCiTkM/1/jmr9jHjnI30VdVDJF76/gaxK/oJ3woK/6elW56K
-         IcXUuU7wH8W/UQRSMKRBhOTnCnv4lIaUkSj75qiBocaxvRt3PH1j5npXkBMHKlEjr0aM
-         Lih5sjFP6ym+GfDbXnEyInK1fFKinpc2bah3LpCZP4Qyr79IO+bJfFnDcAI6ZSgWtk57
-         Gb+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795141055; x=1795745855;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Qrne1U4Gq2URgk+EKe+uNj5xFft/8oosPyNbOoW67yY=;
-        b=rnl+ambCYnQomwZ+y0fE+/9PO2Ncxyltp7/1gzbKes4pvefDmvJ2SuPHBsEZKrjRC1
-         4jQBqW9b3h0zgmUa/uo13AZc5DWxsjhiDnkvjRl2aWn2XhXSUTHQTXxKTlQ4gGn9OmTU
-         BMEV0Sdc8z0pS820JIFyii3YpDpnwwpfB76bAx1S3yMKcSeyuDxdlZu2n4nNT6t7wxOI
-         r7A+izpYy3YaxLZTw0ElG22o90zRmCp1aIu7LfoZ+Zjo4VejBnvrFlv/D5Xc0N7vh1AD
-         g+FsRE/UisqUpC+/w+DzFJbys55ccRyYM8GWVgEhRMDaiA/b8ER7aHAse8VRCaKKRNl2
-         Qbng==
-X-Forwarded-Encrypted: i=1; AL+hErFfn3U0/L15hHnGfKx0wQehWPQW+x3Vxkx35ZoLIDepSQ/mZheXhV2MQ5gpFUR6fThfAyqbvCMAHw==@kvack.org
-X-Gm-Message-State: APuU4Z+hddXcbIqh3K+CCWdCtAQS99luCa4d4Cbs0AmFz0YKhfruOAfy
-	BvYjTTatxnQEWpL/iKAZv4LxynoGIDxs7er71EDEJ2o/2GxiSiy8sm4v
-X-Gm-Gg: AZFdTZcED/b/4+tqhgnf5Gz4uzl9RnTvdNQgGer/9rPV6UCxK+u3NbGi1/w36u/4Kig
-	QWIuGQUcokimilsQ2HfwCb/SqPP8x6U5uzr0Q6zZwbq2GboBkor4y/GWSXQfTVNFEpUIGV8yMYU
-	+p0WFJJZNOPqjLEC+mx5qcEyuwYjPSZNVgC7M06K8qYT17LWsN/Pbp6HufhvuZRGScFgTWUZ1By
-	TR2OLK1GcBk/J4zA7ThI80WvvG6+uP9hN5IXFIxMWKphwYtPUY9RJXQBQZPrzXhQEz91Gz4i+zm
-	hdPBOgYjDD5hb9+87MHErJLbGM+vgzHI3Fu00WEmhk9WImOWtCiMM46jJWexmUPpv16Yrtjem/X
-	Am6YWFvPYlkwwJOx3hZ50CrtzdGOi9kWaG00MtvNluql7u1S/2wt6cEFkAzVeajUHuAt6evUUg3
-	zJgU1fTMdrIrkBw1jFyS8IcKAOia0BLd54kIB5tdXvasSs/WA5gkLhkLkNrvqPWpCdfQKCNQDeY
-	PeTZ5/Z2y5T8m12CdFYJb9bnIuU3Agh55Tj/W/SjJ/amf3YMtZQEgE+TWpJveMuVxRYjJdkiQZ6
-	C2aFuvCjt1YjjaChydNZkopYhD8jexQWs3b3JXDIZWHBTAXm4sHiEFKMvEA=
-X-Received: by 2002:a17:90b:2c84:b0:3a5:c08:4c41 with SMTP id 98e67ed59e1d1-3b41c98a138mr1104076a91.50.1795141054397;
-        Thu, 19 Nov 2026 18:17:34 -0800 (PST)
-Received: from ysq-QiTianM428-A376 ([111.201.209.250])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41cfbaf2bsm708563a91.2.2026.11.19.18.16.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 18:17:33 -0800 (PST)
-From: Franklin-Qi <yusq77@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Harry Yoo <harry@kernel.org>,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>,
-	Vitaly Wool <vitaly.wool@konsulko.se>,
-	stable@vger.kernel.org,
-	Franklin-Qi <yusq77@gmail.com>
-Subject: [PATCH] rust: alloc: reject offline NUMA nodes in allocator
-Date: Fri, 20 Nov 2026 10:16:29 +0800
-Message-ID: <20261120021633.12274-1-yusq77@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NQV8AZyh;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795141973; x=1826677973;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=elISg0j4CbGtr/3NgbR8Wu6oUDLUFQ25svm7SwkGMDY=;
+  b=NQV8AZyhGofVHng8lSi3IhYIxos+6Y+b0gqW4MW53cKEGbTg/hffkSWA
+   uGvGiStMNzPRRz2X7bKbYKBxp92LNVknMGw+61+rFlcvI/Qs0gB6QZk4O
+   aeWjJiHF7SZHV3e1m2Lh/Mzn8h/w0xlggPyLu0gHsHw6LjoM3OD+G7a/3
+   qvn9AGtslViF2O7NmFWGb4sZk7J/veRDgbeNW2BPdCehKlLt0NljFXeub
+   RB2nrrCTsOjXCxDbvSg5aBq02K41EyoxWNar1d61oCb3w5TltmD3kVKXB
+   n6vrY1Sr+6oDePYkuEBZXO142pTy4LHtUrs0gPFPzHE97eIofAMbHskoG
+   w==;
+X-CSE-ConnectionGUID: 0gWBWl5pSfGAVXL6k/8fiw==
+X-CSE-MsgGUID: 7KXty699SpyyCeXRMHv2qg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3906653"
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="3906653"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 18:32:51 -0800
+X-CSE-ConnectionGUID: GSdlH1DaSK22flRLpa/N+g==
+X-CSE-MsgGUID: c3Yw6mbvRpyxP3Y5GxfaUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="10577917"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 19 Nov 2026 18:32:44 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xUEQa-00000001GzH-0B6X;
+	Fri, 20 Nov 2026 02:32:40 +0000
+Date: Fri, 20 Nov 2026 10:32:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alex Williamson <alex@shazbot.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: oe-kbuild-all@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	David Lechner <dlechner@baylibre.com>, Armin Wolf <W_Armin@gmx.de>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Marco Elver <elver@google.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Bradley Morgan <brads@mainlining.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Pnina Feder <pnina.feder@mobileye.com>,
+	Mete Durlu <meted@linux.ibm.com>
+Subject: Re: [PATCH] PCI: Allow untainted driver_override for PCI stub drivers
+Message-ID: <202611201053.O40xQFuN-lkp@intel.com>
+References: <20261118235645.2907908-1-alex@shazbot.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261118235645.2907908-1-alex@shazbot.org>
+X-Rspamd-Queue-Id: 37BE84000F
+X-Stat-Signature: 7qaz4njeeq8e9u6kwsg5prrc4ku8qyjw
 X-Rspam-User:
-X-Stat-Signature: i6ydt1t5358gxs48zyhn6itb7zqfk7tu
-X-Rspamd-Queue-Id: 0D1E6C0003
-X-Rspamd-Server: rspam02
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795141055-879849
-X-HE-Meta: U2FsdGVkX19C/rp+KTGDfba7UInrsWicLVg8q+q6dmvysQnuUFGI9g5PDxGnxMu7WvA0VI+24Nvgyc19mwJIZYR5kfKOg1X689/c/IXjhfe0ZvEncnIhX3UNE9x31ONh8IywceCfKakep8kdBXzndyv+pBZt6F2R+o5T957EYf86nclo6zrn/lVCEzbkzCm+DSoLsUYMT2iOdHFKvZNSWNYe3U+rpy5yKjM8N+A901nSrkOPS3qHWcOQqjI3av3oTtabI5y9DF+oWB9ceAIXeYqVKZKaSbb+HR6fe4EipvHsXstwfiGu/o62BLcUG6FxcHqx3FH2KeHNnfIR0DiDuW77EQahH+QWCle6fcU7LcWsB4M1wNvQTzKTk7/oOXi/TI/0TJbt7D22YNsByBq701Eteap9Z+ehs9E0tqcFa7MG6nooMHzFGiQ3uaRqVKocnzSJaWPFhn4isClLZfh5FKrYuIw8JdE4d7KvKljoRussMkXnteqIxHgOw7EqWaVFT+jvvp+y8W0kWg+EO/GSf9SdsFrASQiG7d0EfWhBKPSW8vEyi28wVig68Tt7xEGyrncvNTMv/9ZxY2N2BPdvImfuNXRhYSCRlxkeHxNiCZEXeAu85XRTth471Oq+JQ61kmns/e3hXzg0dvp9qb64pFcLjmJgUqka5Uoq72TryVWTHTAh24y60jBFvCzXANSThJTatrujGPb5CExwDooIUzI71hzjWrNS6JACwABzBEdwJqssxIGY5niEE+ehA/MKZ47I+2e/cNYEY62caPVqXOumsoTp2mMGjb0BS8zV508cJNwKtVFGOZNBL+nNtRPiHJhfY6XfuGT9Cemj73eON++iLoGVdXPHsrIdq8bVW9krmoCs3u5AAb7pemrfEcNN4k0c0V6ufknOScH06pl2XSEG9xbrf+2PkFYmuWl6oAzNbIluThmlzdrhRsBB7v6LODMWkOKQal/JHkr2UbY
- sdarMt5V
- W9ouTOJLTF7Xk5lFjUm7MWiL4UFnT/8UFyiOD1nAotWbrINvYuqBOjgTJcZAgqpn50egV1ot5PJr1E7dEoIpc8wbUNK8wuIZ6X9+GUV/OHY8p+QvqJy+e7XOCHhFmYDpFADW3hATqek4vo8xiJVW5rLAUDk4YlRRDt2vFuYv3ehgUKQbM0E1Nqe7HriKWDWOFd99Ks57I9nmrlsQG44KTbiJvy/1ARiQnQ6C+h9h0ir+fKu0JsBM3K6p9D2j2+/hdpgjqqOPfgqnrtzx3XKhtJmU3UIzBNDvgOY0TpA1ux6NVkJgynqMegUL3Fj3fKikEXIbklqaMZhqtdiGDlSq7ZNppuHrAqpj57Z6nu5MmQJFdQqz6lt41bmfou3uCetGPAeMuVecV3Yv27wYU59GxPXmkXpxkbmhMNCJG2NBtfr6n7FFxaQ8+jFvvmYNm1nIoeVZ7TrCUd2rg0lYb6SvuMl/IVUV6v3GX1ZiTr0RnS6dAx3pkzfdshxZxpgl5ITbxnnAIX5kYvy/kNvCMNOHImDegr7TbpLP0+WGM5K9SS7rT3JnRPqSRnU9BfWLr17dOroIDJNuZ1TBCO0MuiXRm/uDk9rBQSeYDBhw+nDMLr/1xV9rW96PL3KDtQKnhUKoWueDT8afyiTio+XvdqL9bGEuL1A2R1z/MCEapqc4QWOY/azc=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1795141971-100076
+X-HE-Meta: U2FsdGVkX1+CIdiHNaM/0UwRJxIdtAs2Og40lmQao5z+Jv+rL/Tkyp3tf6qesYbtlXgdePRP9K6r7Vn4uPuWGI22CwDtLDjylHQJzQbH/qbsTS099CevpTKD4cRdNbqSJFsVc5LhKzBtaFgz5StAFq3MXiSi0CrkYB9CLESSpJJfJA3TW98sllteyVYLXmUczFQp0PbTnELMaRyQ9vsB9q+J3hWRCJCFQb9kociEZPJsteN1g+Xl8iJViRuDpnu+WiEdzFCeWh2Dki7j1L5PQxUoWdZr3Dhhjmzxk/X39yNayOVyrLlc9A3q7fyJ2qOqtoLcLN2tn3g8UIU3q+za9IUPe9BdBOKfaCetO0fZHHGFilIeLeGIbouiT8r4OObneNReL1EYQD7OYHoJJlAcfTVBEssWvCCT97q2JzIIzUmm4s/e41H0hd4FGoix/2HPXIHVSmWeCufxXWMiJlCRjpute9i7O6Mc1/SvPg9lT2Ufy4PbcGVh4jQIOng2zMxB/rl93J8qqs6/I8YjaMZB7TpTv4HjILSCaw2L2pg7eHuvrYJg68HnYK1e3oFhns8mbZJofB+EIld0e6XojneDxdjKVyRW/DEMRBeLkqYGgwgbSsfNcEI21ob6dK5k9FpVW8/F4YUDX2ZB6Z8RF2CNvltJX/Xd0xCemXcHMPQvMmKfZZpLSgny1jKXFk4m2+SCKa2Udq1D0UYd4q7eph7EzgEKDZb+PU8jZR4a+RwJoJnsj4LiCq3VeItrvNPtYdjH7xB/ZVXBu1gdogbcSOxKTHwWj3nsw51etqrazDDgJ+NF1mbLBxlQFvkfebynzZMS9nP9TwWKeXzXwD2er+fsZ/RhHas7Ny3DD2zz0VuOrNlv1iQVpVe4wfUqTIhUCPjh2DOM0LTg/DLMEb7C/H174CkwhBY5U1tE0VN6UKZPmTu9+xFFhLsMIXNb9xqPwD6aqE+tlp8/vzj2v6G+3gg
+ uWJMOLuU
+ 8yXBmrkjcRVfd3k0eFqoEHuIvQGmf3CDKADbuNJkKK3UaEI2PvFRQTFp+q+ytxBsbyQVf1jlZTSejkr0r/oTZ66lBpipXjwiW+EvclsWTe3HqIHu9IbHEfBf5ezlwAQOApR+FuSHae+5oTW3B1mdcI5NvAHO+/HT2APYf8HczGRFjJUuB0lh4QUHV7ja0QDZvA3cImLCbuzuvVafFU1/ngDzhIsmwooCWE+lwiFmuugt0MkMWrxjw+3l19OV8PxRt3/V+5JOr7Yc83cQqM2JQNs6III3xoaMN5FsVhkk9un/BEBs5p1EEOkvnvnRzLjoeRXDt03TNwSVkRb7JyQ4bQ+Xovc2/iLLJkGc3Df/RIglnzSPqX7YnF5J88ibAa+pYddnfIJK2S9AL5NLadbXODlRzIHiBgm+NNAHRPYte7kDYevlh4ylxB6bBg+v8ClsshPN2jjiSGbrtysNKjItHgxYomSNrRcUh0G9wCCnal/on1LXUbrhuBI6BjuMsUKBKtYLiClcY/ky8WagzLnbz03ylNlNJHlJWLyg6wJ03VT8h8PZIJBeyU/zCGEnHsSFypOi7LjjCDMqIOcwfzmaAEdwlp5dgtSvZIZ9/1luy7GvXlSSIjqCTgEs0uySonZObCr+01G56g/FszavN5w/JTklexRNMsbyVfkMc+aOf8oq3k5U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,89 +134,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-NumaNode::new() only checks that the id is in [0, MAX_NUMNODES). Safe
-Allocator APIs can still forward an offline node into
-k[v]realloc_node_align(), which may dereference NODE_DATA(nid) == NULL
-and panic (GPF).
+Hi Alex,
 
-Reject offline nodes at the shared ReallocFunc boundary for nonzero
-allocations. Leave NUMA_NO_NODE and zero-sized free/realloc paths
-unchanged. A residual hotplug TOCTOU remains if a node goes offline
-after the check; this matches practical C usage for rejecting
-statically missing nodes from safe Rust.
+kernel test robot noticed the following build warnings:
 
-Fixes: 7760b6421b6c ("rust: add support for NUMA ids in allocations")
-Cc: stable@vger.kernel.org
-Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1263
+[auto build test WARNING on pci/next]
+[also build test WARNING on pci/for-linus linus/master v7.4-rc3 next-20261116]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Signed-off-by: Franklin-Qi <yusq77@gmail.com>
----
- rust/helpers/mm.c              |  6 ++++++
- rust/kernel/alloc/allocator.rs | 18 ++++++++++++++++++
- 2 files changed, 24 insertions(+)
+url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Williamson/PCI-Allow-untainted-driver_override-for-PCI-stub-drivers/20261118-165643
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20261118235645.2907908-1-alex%40shazbot.org
+patch subject: [PATCH] PCI: Allow untainted driver_override for PCI stub drivers
+config: s390-randconfig-1000-20261120 (https://download.01.org/0day-ci/archive/20261120/202611201053.O40xQFuN-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261120/202611201053.O40xQFuN-lkp@intel.com/reproduce)
 
-diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
-index b5540997b..b61e54e16 100644
---- a/rust/helpers/mm.c
-+++ b/rust/helpers/mm.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/mm.h>
-+#include <linux/nodemask.h>
- #include <linux/sched/mm.h>
- 
- __rust_helper void rust_helper_mmgrab(struct mm_struct *mm)
-@@ -38,6 +39,11 @@ __rust_helper void rust_helper_mmap_read_unlock(struct mm_struct *mm)
- 	mmap_read_unlock(mm);
- }
- 
-+__rust_helper bool rust_helper_node_online(int nid)
-+{
-+	return node_online(nid);
-+}
-+
- __rust_helper struct vm_area_struct *
- rust_helper_vma_lookup(struct mm_struct *mm, unsigned long addr)
- {
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index cd4203f27..15e17f598 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -101,6 +101,23 @@ unsafe fn call(
-         nid: NumaNode,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-         let size = layout.size();
-+
-+        // `NumaNode::new` validates the ID range, not whether the node is online.
-+        // The C allocation paths require an online node for nonzero allocations.
-+        // Keep `NUMA_NO_NODE` and zero-sized deallocations unchanged.
-+        //
-+        // Residual TOCTOU remains if a node goes offline after this check and
-+        // before the allocator runs; that matches practical C usage for rejecting
-+        // statically missing/offline nodes from safe Rust.
-+        if size != 0 && nid != NumaNode::NO_NODE {
-+            // SAFETY: The helper only reads the kernel's online-node mask. `nid`
-+            // is either `NUMA_NO_NODE` (excluded above) or a value in
-+            // `[0, MAX_NUMNODES)` from `NumaNode::new`.
-+            if !unsafe { bindings::node_online(nid.0) } {
-+                return Err(AllocError);
-+            }
-+        }
-+
-         let ptr = match ptr {
-             Some(ptr) => {
-                 if old_layout.size() == 0 {
-@@ -116,6 +133,7 @@ unsafe fn call(
-         // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc` and thus only requires that
-         //   `ptr` is NULL or valid.
-         // - `ptr` is either NULL or valid by the safety requirements of this function.
-+        // - For nonzero allocations with a specific node, `nid` was checked online above.
-         //
-         // GUARANTEE:
-         // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc`.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611201053.O40xQFuN-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/pci/pci-pf-stub.c:39:17: error: 'struct device_driver' has no member named 'support_driver_override'
+      39 |         .driver.support_driver_override = true,
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/pci/pci-pf-stub.c:39:43: warning: initialization of 'const char *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+      39 |         .driver.support_driver_override = true,
+         |                                           ^~~~
+   drivers/pci/pci-pf-stub.c:39:43: note: (near initialization for 'pf_stub_driver.driver.name')
+
+
+vim +39 drivers/pci/pci-pf-stub.c
+
+    33	
+    34	static struct pci_driver pf_stub_driver = {
+    35		.name			= "pci-pf-stub",
+    36		.id_table		= pci_pf_stub_whitelist,
+    37		.probe			= pci_pf_stub_probe,
+    38		.sriov_configure	= pci_sriov_configure_simple,
+  > 39		.driver.support_driver_override = true,
+    40	};
+    41	module_pci_driver(pf_stub_driver);
+    42	
+
 -- 
-2.55.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
