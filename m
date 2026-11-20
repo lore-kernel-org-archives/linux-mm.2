@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C82A606A331
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB5E60A2605
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W3RPzRlF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NGbWhYsJ
 Received: by kanga.kvack.org (Postfix)
-	id 692276B05B3; Fri, 20 Nov 2026 05:27:55 -0500 (EST)
+	id 7070B6B05B4; Fri, 20 Nov 2026 05:28:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6421D6B05B4; Fri, 20 Nov 2026 05:27:55 -0500 (EST)
+	id 6B7C96B05B5; Fri, 20 Nov 2026 05:28:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50ABF6B05B5; Fri, 20 Nov 2026 05:27:55 -0500 (EST)
+	id 559996B05B6; Fri, 20 Nov 2026 05:28:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 205FC6B05B3
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:27:55 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1CF0C0E57
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:27:54 +0000 (UTC)
-X-FDA: 85455121668.20.022E29E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CBB36B05B4
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:28:02 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A153BA0E9E
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:28:01 +0000 (UTC)
+X-FDA: 85455121962.06.F5C2B28
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E8145C0004
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:27:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W3RPzRlF;
-	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id E47511C0004
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:27:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGbWhYsJ;
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795170473;
-	b=YoroCZfpOwTvrJkgDFItYTyrhX3n/hAHycKPctCTq9ras7xGlK0wqJIsJ+SfvABlnTSlEH
-	9ZlCTwNmtxoczXcT3Dj3dYn9tZmim3weKme47sekHqD/4XTBTifhkzMtZBPj29peh8ETKI
-	DBPEuUhNKYVwrvtw42rY545pbzQnjQY=
+	t=1795170480;
+	b=OimzA/+Zx+e+TTbjIFlCWkTWfRxm9TnyHC80Cqz2fx4x23Nn3+IzREsqrq6cUWNCz/imUR
+	260jmmEyHljno3HggTBmbyPupw42OwifIk0P5+9vZHb6DTLi3wZqOaFDHMumm6dPFKdlYr
+	h39HUL9fQYLDGzNuWEO0JGhbMW1fC+Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795170473;
+	s=arc-20220608; t=1795170480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RzWDhrGM5NrB5lDNzvg/wfHe5aGooBflQp0rDAqcEk8=;
-	b=3HuWPp3GR7NHX804ON1MzjKL+objTkFP3/+DoqTQAF96Q/5WS2BeNB76LvCD8SXwwyDads
-	sdwDSbFCerqHZMN8KxU2bIJubsfLef5M2gzxQjJJostZc6WfVibJ0y/Az35qITYLArgpub
-	S25C9iZyCRRT8H5Q/pH4PmgWmWKPMEU=
+	bh=BJJGZ2hR7KrC6FO1SD1oNY+HbmJucVU7dix749FAVQw=;
+	b=TbI04t1iRhV6nE7LmRnY48ADtDfo2UZJ/YIVdYHkSTKS+YzRXFjdLOM8lGgq5W7W5Ejfyh
+	CfCMT13JDN4AU87gmUaJboQZqXJDB1ShcEnwGiTS+HmzLk/XnvJ9MQQzZVETqIMO5oRMei
+	2nUQmEVaw0ldMS6HiaMMoillrDPiPFc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W3RPzRlF;
-	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGbWhYsJ;
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A839625EC;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8F51561B65;
+	Fri, 20 Nov 2026 10:27:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A571F000C6;
 	Fri, 20 Nov 2026 10:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA741F000C4;
-	Fri, 20 Nov 2026 10:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795170471;
-	bh=RzWDhrGM5NrB5lDNzvg/wfHe5aGooBflQp0rDAqcEk8=;
+	s=k20260515; t=1795170478;
+	bh=BJJGZ2hR7KrC6FO1SD1oNY+HbmJucVU7dix749FAVQw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=W3RPzRlFPXO6zlJeH5iLzcSETs4PmRI5EX9huQyA4P89AbuI7VmsEYla8hMcMkgW6
-	 aRy4Jt5UMqTulGWzcTL2Z+LvppZkkLxmeCl/mldMyZaMCWOBbc3lD/yu9pZ60WIuJt
-	 J93fRsEHL/fgBF4yVM3Wn6bDVvAtThfKZ+qafusqDdcJdxcekC1ezbX1Kvl0JOzspm
-	 obFmeYDj3oepDzWRrqJOCQRp2kKAF/VWQkRVilRJLNvICald/AorqK5zX9zalbcfGj
-	 N18c6JM7jhWdcnbVigWwgcpeAS9OjoAPxFrihojE43oPDtrfBppi8F3I2R8tffPo38
-	 p/vtlXhAOYEtw==
+	b=NGbWhYsJrys+xYxSXvAyaDvOTFqbMpAWP+I+omasdxQ13kQRFhtxlBqM3H5vqF1aQ
+	 28MpaiKZFLNZZCOutfV/1/P34TdO94NRk7XJHz0suq5i6mePQFwnZsi+0IkmQ/RI7W
+	 TqOpftIOsuKtNM6hxLhWxIlofQnx7GNksuP76dFZSZ7bPiPJfd5K0Gbp2I/Nmg/lt0
+	 rgEwqHlWOWnw14Loo+8rU7rQ73Nv4grYHTaEXaY4zVYPI04rdpBDXykMHz8JPFynSr
+	 HYhQVoUrDiLF0jr3tWcXvpHRMBnyG3Sf5zBrFpEynDwh57R42umdP4KdcFGXfo8Oqv
+	 DmokSAqpk/GQA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Nov 2026 11:27:07 +0100
-Subject: [PATCH 08/11] rust: io: add `SysMemLocal`
+Date: Fri, 20 Nov 2026 11:27:09 +0100
+Subject: [PATCH 10/11] rust_binder: access page data through `SysMemLocal`
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-page-shared-v1-8-66f8c4c62822@kernel.org>
+Message-Id: <20261120-page-shared-v1-10-66f8c4c62822@kernel.org>
 References: <20261120-page-shared-v1-0-66f8c4c62822@kernel.org>
 In-Reply-To: <20261120-page-shared-v1-0-66f8c4c62822@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -91,35 +91,34 @@ Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10259;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=Hy/JlmHOtXCp0mfYwa6Fngk34dvnrvGrw3dkESIeGcM=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrACCI+CBxmntfaiYVXg6tR3+BZ1SUbNmb0+0VG
- bXpxEzPJdSJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawAgiAAKCRD6UCkIqsW9
- 0Lr4D/wNe4RU+MOkb+ftCSPKwlQBchBO/QYx/V3eSPzRHomw9HEHAql9/OTATAfdYZ6ZRul6IX6
- SFshT08dhnrMf4JOpOhPO3njCd2z9UQ+QaJfXSISA/nZkDW/xwenjhuXyBQaK3lTccknihcIGf0
- 2rZoDtJGeGylX5A/XdCKfqFiGy8tFFl2LjG03ik8c3zp2P6MQbuJiRuD7Q20wHH62Zv5uyCI8D+
- 3is8n1DDKYDJek98Z3+tK7x3kz7bFTn30XEltWAwkHZc5d2dyLwH40xvHcmhqgHwHmQ/KKaecoT
- scn3EbiyHYkuWNFGlk/O/wBU9NajokanuY6GKMe3Cep6GXaF8Zacr+fYeEkBB77CGOItKKYmgC5
- cfAjAAZKdNr93MVmAOCforoW2tTI/dnIE2htzOsZf1c9qaJQmu0AaiC6Py5D/DwmHaDfKhOqNZL
- RQofTyZAhuKtgz4kaA/h100SnfrtLYbfp1Yzvd3ZyBpGcBJQJc6fwodY0CcIUsWZ347cc7pgFNY
- BGjI6ZI8WmChkpI99P9jm7EyjyQsDGOSeqJGaolLgI7U7uQwcQbqm45Dfs2U175lj8krgmBoZMX
- G5/ulkIPyH3EHADDmfEbACvqAOZawTvdNJ5uIzdIJWy8YZyE/AUbpgqxynn3Ej6PigoqXGfcVXI
- otksdxnH3y+aWHA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3090; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=qHAg/nVGaoHxsvrd6qBHGWy3BAkPVAIkJJLohHw0Kts=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrACCKShU+ukfTHKYqoYkqcKlnnZ2g88oZQPIL3
+ XyA7duY9eOJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawAgigAKCRD6UCkIqsW9
+ 0F4dEACOLzzfXceL7SEsh0TjwL2M7VwnvYPswzzZCiLzMfOHwSSdC1xnyUxYjDpJW0fdNnbJ/LS
+ MreZUWOtychDXEmg3fK++XrCq6KAMuIVsk0a2OYibqKPr5Beqv0P2XNotiDNLHc1MBPSAYVtFZT
+ slOkdIOzk4GjNEC3AyEVXOAfpLOvXb2J+agcCgNp4ENB2SIbO45ovvmkVRHCnbIVr6LO9jVIJUo
+ mI1CPFQGqzq0WmgP2jn2JsmgKPKJFFSXobQzgu/d1Cf1O7wo3uPJqeLVfJvpWKC7zFgRpEW1fqi
+ MgZ41VsmJ2CbqH39zvrB/Da9QApGneMLz27PrBz86QZp/Z6SMUfCvWFYOjygqRKpNayX+Wvo1rk
+ Utq9k55Jmv9MmV5b7dxSSi8//8N7qKDo9rZoOVDhGSzliht17thJbQbpm45X/IeUhgPzeAcePJO
+ pFKlOVG6ziFkYLJH/ch3weiN6O98LgPFJ3ZSai6sXWxOrhfZvCW/otLgVcjGQWqH1U644iuw4Of
+ H7q5tgDCkIWJwCbuPb/J6CdOn1CATUP00pP9BF/VQb52Uf6D4uS0eCxoj2WKHXDNIaC5FULDlxM
+ VNkE+ogcZzKa9TQdU03cW+4Q3mz7bSk4EyhxTw+MI2qAoJoVNVuCiGnNIlw9XYv6z/2esH9rRx4
+ cbPHn6elffFlkqw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 X-Rspam-User:
-X-Stat-Signature: 84ho557kzshy33jwxctgsxqjfd4r74wq
-X-Rspamd-Queue-Id: E8145C0004
+X-Stat-Signature: k9yenx5rzsdjcff8gdiugg7y5kyxt4zc
+X-Rspamd-Queue-Id: E47511C0004
 X-Rspamd-Server: rspam02
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795170472-442076
-X-HE-Meta: U2FsdGVkX19lFx9FJ/pMV+1d5Kexkcg1UeO4zw+sJL6m8rDJIHplenemRH1EfRCje8YAEy5IuVS6pJ3WsYqfdjgc9O62sE0Kt5ab9vSgon5M6CA6RE9yDKoUu0bFc4E4GusekJH+hm4uM7FYovuny1DmdYIeYi91L0WvSRIPp0cIQmgsmHvga08+C1f0h59BRajU5LFN2MqIVVxsTGScG8Twp6A+xhQ/m1dL1xDFczlsxwsBX+WoBXTNxh7PpAilsl92Z6/3GOpaCTfxp/H8bSXF6f4OWKveJgIaxENBr6kXKSbOTPWMoXb7rC6pt3kWUmwxUlsACiDaO/Kct3BBNLPi6LH8T5HihI/rq1nY3kZsiHwhTR9fx3EGrrpBTSED1ssrdKCeh1Ly/+rZa9oBS06XQQuePNdCHGRkQiOTi6k67JaXVOrQf4KYwUSLvRNqwwm1bc0DqBoqofdOvIVkdRG4oaKCm7hwuuw6X9dSlmFuTMPR6gOIjrHtsyEsxaH8MKv1GAyM2pdFTcPA9SOW5gtRVyLjB0e7oekb4nvHIKXY0m+bZO1vrScU5ZYgBbkhTXbHMIOxn2v4lK9mQFDPme8omRznqvRiheUn7tUUj0A+3X0IswwMBhYKq1svQhPcKiXBB41Hb4AO0ixkMDn0Q81DtDyF/IE2HQ3v8P7kef5h33h/8zm8Didw0MYkVwI0r9K76xP+17LZaJpPUsBtxjxYf3mfFNzD8CjtDtE89ZpFyKIamuEaFueWy34V7HeZCv+6eSXOAmR6ydVK6qefPiZII7eWcgIGWTCrxWsAfnlVRzdu4g41z61V20HE0tQBGAWEoDa6P6DKJEEDDGPNGCAvi4OfsJdSiKA2itbT8dEHODR2o53kLptMqzfnwduSqQtPKfT+irNGwmwhB50uvfG/5vhhaImbOEs82XCAomgTMabj7mxRdO0kyXSo72sm0bEXF0xIKNxNJmBAnkJ
- 9YKhLvOu
- j4mJpICFdokYxyno4c58vWvC+kJk0VQIgML6wamxCHlWHATIew02rl/fr/+F458SdsZDz40f9011nHuo/9AY+TFybkFtdHWfkCVbHrOS63sHLK/sxoLL3VUwoSIVwIjpTjZsrObwWEMgpwExCcHcSNFjezr+Wy9jwunTOF8hnth74zE+VJMMJS7cwI0OvWY7JB7DsANgqufPyfyG3Zr7PC2f7JQnm85bzhTqYaflOQer8n6cQ2q3YVdfiBQ5TGCssgDplqP72Om9ZbqFuzW9JvG3AeGVcedjBzjnicAMY6iH2sU71+TSTUuo9ZlOpfQlTxer/WLmRRupzz3c/OqHK8Y7xP+z3LRtm4itSaOB2D/YFc6iQc69+T7XSW+V3ab+yKjct9GSvq8PSa0msEnPwGNcD94GLzaPMGFCxdkbX6HM2YJWJHWIf9LCpPkcyotoATSQEO3kAXujisqhr4di8bjci9g==
+X-HE-Tag: 1795170479-623532
+X-HE-Meta: U2FsdGVkX19et0NBJyW2KkiBH6wh9hobIc1nd/KNv5yv6o/SgOVlmY1sPW0125DDO1Y3K/TEci5NImaW2ycQymgwOG0G0Hq1I3yAp9wSzV8PW7U//+7e5pGncJl/tEhJ1onpfZt8CO+A5ahm4EYQFpPyKVb2d+TD8HeK10J9Iu5IOxfnJk5qg+Zz7H5bYBa29fqOcaO3uOaP6VVfj+PcwL6W6Nqzs1afJjU8/GBBchNaLLylqgCZLCdPXgL90jeFCoVabBr6+3FUSSXyrLvi9xFmrpq5+LmffOZ+DyMvRkEIqubd/3niTeieC+dB/UuYBdRtnEZUCiTl2XjtjUcC7Qgcc8Qe7nmCBkb7bCWOQnFkYzHbk2JCNYXhEbXDAiZgwyArLWMBK5OKv/0FcbRTws0zZiHNEjaCfkOlJNzLnU6+/pM1FV2znWg7ubZawM214/Vw8/o/0yUO67DObODape5YtRQeritLkRtMV5tiP79vmsGNpKrxphGhcBko8GOivM7XqpPtcr1sPjrFlIRk8ol75czQsACvmriAqFQhuzafeda9QHW6ZW06QBlFf4OE1DvSu99K70AB2/qhKv8SjZ0sGPTrIVXbiYsgrYTcefkD1bQDq4owUc+45Ng9xINBOLixW5r3/fBp3DUsM+hHB69O7C+liOp+HRQToZE7Hktsk5NxdlrJ4rwr26GiUfFhO3w+rOBir8hHxM8peN16XccrQde5u4IPH0Krc7k7oMnsYJQICn3vBkoE2TfifUmpblQFwcciGvB3WQmK9kFr76V1czsUNVO4ONfbyqJDg9I2f1W0WNrz/amadTci3BaMf9HjoHQj2w2w2XSgLFi8d4xg3iR8FZ3n5VYtiuFwl7FMDSoeVid1o6mEKh5kY5rqpfvlS73bGGnG5IkaSLh43UJBihgsBJ+tuh6fgck4QxxglDvyMwNhUZo/3LSG103GcXeUb+qnE+nOYgIzVkQ
+ xVU0NYwn
+ 7BsmLw1LcBVcqCWzLhdmztp6RSlg0DAa6v+M4EyRvcsI2XSpB9SzhIAhYpTwK/PjiBpS4qOki0TZ5D6QWDD5Tqg4t+Cu9y1xY/ZEdL9fVfpc3OshE3UE6lZnN0BvqhsGd6FF95YZo4qi02Cj8m3u1eCKWRklPvbnVxv4BHCyMMH3c1SPG5N1YhPcO4megOrFQICKg8ckBGHLngzPUI3TO9UK4IRcAcHQij/ty13Z52yhZ1VcqAASDjoRqP3aM+B7Ak2CFKyJv76wyNNohQqXvsAOts7j2elQNFHzsEr3wFzyG0799sILN9ufZo8HWZkFjnJx5t97dcC2BtzzTad9hVo671lvDau8q7NLvDmYkoE7Ui+JDw6FVd6ug5chjbuvR+UkUob3xnNxPddqNvaHdqT5csTAwtRaM89rzd8BBdHhc9ZPJYQzLmCB1Cr0Jt55vzk0G2t1btqPKL5l7da4DdmYOrDbNL3N9bAlhnrVbmB6/a3zkGvXdgDyn8ovGqFTV+wSbZHM6GQzCIWo7uMMb1iQyS/bNbwPS75XxckGw7vUKrQI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,265 +127,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A `SysMem` view is `Send` and `Sync`. Thus, it cannot safely represent
-memory that is only accessible to the current task, such as a page that is
-mapped with a mapping that is local to the current task.
+The pages of a binder page range are `Page<RefCounted>` pages, which
+dereference to `Page<Shared>`. Thus, their data can be accessed through
+the safe `Page::with_page_as_sysmem_local()`.
 
-Make `SysMem` and `SysMemBackend` generic over a new marker trait
-`SysMemScope`, with the scopes `AnyTask` and `CurrentTask`. `AnyTask` is
-the default, so existing users are not affected. Only a `SysMem` of the
-scope `AnyTask` is `Send` and `Sync`. All other functionality is shared
-between the scopes.
+Use the view in `ShrinkablePageRange::copy_from_user_slice()` and
+`ShrinkablePageRange::fill_zero()`. This removes the reliance on the
+safety requirements of `Page::copy_from_user_slice_raw()` and
+`Page::fill_zero_raw()` in these functions.
 
-Add the alias `SysMemLocal` for a `SysMem` of the scope `CurrentTask`,
-together with the constructor `SysMemLocal::new_local()` and a conversion
-from a `SysMem` of the default scope.
-
-Make `SysMem::fill_zero()` and `UserSliceReader::read_sysmem()` available
-for a byte view of any scope.
+`ShrinkablePageRange::read()` and `ShrinkablePageRange::write()` copy to
+and from raw pointers, so they keep using the raw accessors.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/io.rs      | 142 ++++++++++++++++++++++++++++++++++++++++++-------
- rust/kernel/uaccess.rs |   4 +-
- 2 files changed, 125 insertions(+), 21 deletions(-)
+ drivers/android/binder/page_range.rs | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 33cb5a9fb3a8..1496735c08a2 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -1436,11 +1436,41 @@ pub fn relaxed(self) -> RelaxedMmio<'a, T> {
- #[cfg(CONFIG_64BIT)]
- impl_mmio_io_capable!(RelaxedMmioBackend, u64, readq_relaxed, writeq_relaxed);
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index bddc4538745e..2d360c32202e 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -538,14 +538,12 @@ pub(crate) unsafe fn copy_from_user_slice(
+         offset: usize,
+         size: usize,
+     ) -> Result {
+-        // SAFETY: `self.iterate` has the same safety requirements as `copy_from_user_slice`. The
+-        // pages of this range are `Page<RefCounted>` pages, and this driver never creates a
+-        // reference to their data, so no reference to the data that is written exists.
+-        unsafe {
+-            self.iterate(offset, size, |page, offset, to_copy| {
+-                page.copy_from_user_slice_raw(reader, offset, to_copy)
+-            })
+-        }
++        let copy = |page: &Page, offset: usize, to_copy: usize| {
++            page.with_page_as_sysmem_local(offset, to_copy, |view| reader.read_sysmem(view))
++        };
++
++        // SAFETY: `self.iterate` has the same safety requirements as `copy_from_user_slice`.
++        unsafe { self.iterate(offset, size, copy) }
+     }
  
-+mod private {
-+    pub trait Sealed {}
-+}
+     /// Copy from this page range into kernel space.
+@@ -605,14 +603,15 @@ pub(crate) unsafe fn write<T: ?Sized>(&self, offset: usize, obj: &T) -> Result {
+     ///
+     /// All pages touched by this operation must be in use for the duration of this call.
+     pub(crate) unsafe fn fill_zero(&self, offset: usize, size: usize) -> Result {
+-        // SAFETY: `self.iterate` has the same safety requirements as `fill_zero`. The pages of
+-        // this range are `Page<RefCounted>` pages, and this driver never creates a reference to
+-        // their data, so no reference to the data that is written exists.
+-        unsafe {
+-            self.iterate(offset, size, |page, offset, len| {
+-                page.fill_zero_raw(offset, len)
++        let fill = |page: &Page, offset: usize, len: usize| {
++            page.with_page_as_sysmem_local(offset, len, |view| {
++                view.fill_zero();
++                Ok(())
+             })
+-        }
++        };
 +
-+/// Marker trait for the scopes of a [`SysMem`].
-+///
-+/// The scope of a [`SysMem`] describes which tasks the view can be used on. See [`AnyTask`] and
-+/// [`CurrentTask`].
-+pub trait SysMemScope: private::Sealed {}
-+
-+/// The default [`SysMemScope`]: the view can be used on any task.
-+///
-+/// A [`SysMem`] of this scope is [`Send`] and [`Sync`] when its target is [`Sync`].
-+pub enum AnyTask {}
-+
-+impl private::Sealed for AnyTask {}
-+impl SysMemScope for AnyTask {}
-+
-+/// A [`SysMemScope`] for a view that can only be used on the task that created it.
-+///
-+/// This is the scope of a view whose memory is only accessible to the current task, such as a
-+/// view that is backed by a mapping that is local to the current task. A [`SysMem`] of this scope,
-+/// that is, a [`SysMemLocal`], is neither [`Send`] nor [`Sync`].
-+pub enum CurrentTask {}
-+
-+impl private::Sealed for CurrentTask {}
-+impl SysMemScope for CurrentTask {}
-+
- /// I/O Backend for system memory.
--pub struct SysMemBackend;
-+///
-+/// The backend is generic over the [`SysMemScope`] of its views.
-+pub struct SysMemBackend<S: SysMemScope = AnyTask>(PhantomData<S>);
- 
--impl IoBackend for SysMemBackend {
--    type View<'a, T: ?Sized + KnownSize> = SysMem<'a, T>;
-+impl<S: SysMemScope> IoBackend for SysMemBackend<S> {
-+    type View<'a, T: ?Sized + KnownSize> = SysMem<'a, T, S>;
- 
-     #[inline]
-     fn as_ptr<'a, T: ?Sized + KnownSize>(view: Self::View<'a, T>) -> *mut T {
-@@ -1466,9 +1496,9 @@ unsafe fn project_view<'a, T: ?Sized + KnownSize, U: ?Sized + KnownSize>(
- /// `write_volatile`.
- macro_rules! impl_sysmem_io_capable {
-     ($ty:ty) => {
--        impl IoCapable<$ty> for SysMemBackend {
-+        impl<S: SysMemScope> IoCapable<$ty> for SysMemBackend<S> {
-             #[inline]
--            fn io_read(view: SysMem<'_, $ty>) -> $ty {
-+            fn io_read(view: SysMem<'_, $ty, S>) -> $ty {
-                 // SAFETY:
-                 // - Per type invariant, `ptr` is valid and aligned.
-                 // - Using read_volatile() here so that race with hardware is well-defined.
-@@ -1480,7 +1510,7 @@ fn io_read(view: SysMem<'_, $ty>) -> $ty {
-             }
- 
-             #[inline]
--            fn io_write(view: SysMem<'_, $ty>, value: $ty) {
-+            fn io_write(view: SysMem<'_, $ty, S>, value: $ty) {
-                 // SAFETY:
-                 // - Per type invariant, `ptr` is valid and aligned.
-                 // - Using write_volatile() here so that race with hardware is well-defined.
-@@ -1499,7 +1529,7 @@ fn io_write(view: SysMem<'_, $ty>, value: $ty) {
- #[cfg(CONFIG_64BIT)]
- impl_sysmem_io_capable!(u64);
- 
--impl IoCopyable for SysMemBackend {
-+impl<S: SysMemScope> IoCopyable for SysMemBackend<S> {
-     #[inline]
-     unsafe fn copy_from_io(view: Self::View<'_, [u8]>, buffer: *mut u8) {
-         // SAFETY:
-@@ -1562,31 +1592,103 @@ fn copy_write<T: IntoBytes>(view: Self::View<'_, T>, value: T) {
- /// Accesses performed by hardware or by user space are not plain accesses in this sense. Racing
- /// with them is well-defined, but the data observed may be arbitrary.
- ///
-+/// A `SysMem` is generic over a [`SysMemScope`], which describes the tasks that the view can be
-+/// used on. A view of the default scope [`AnyTask`] can be sent to and shared with other tasks. A
-+/// view of the scope [`CurrentTask`], a [`SysMemLocal`], cannot leave the task that created it.
-+/// Apart from that, the two are identical.
-+///
- /// # Invariants
- ///
- /// - `self.ptr.addr() .. self.ptr.addr() + KnownSize::size(self.ptr)` is valid and aligned kernel
--///   accessible memory region for the lifetime `'a`.
-+///   accessible memory region for the lifetime `'a`. For a view of the scope [`CurrentTask`],
-+///   this holds on the task that created the view.
- /// - No plain access to that memory region races with an access performed through this view.
--pub struct SysMem<'a, T: ?Sized> {
-+pub struct SysMem<'a, T: ?Sized, S: SysMemScope = AnyTask> {
-     ptr: *mut T,
--    phantom: PhantomData<&'a ()>,
-+    phantom: PhantomData<(&'a (), S)>,
- }
- 
--impl<T: ?Sized> Copy for SysMem<'_, T> {}
--impl<T: ?Sized> Clone for SysMem<'_, T> {
-+/// A view of a system memory region that can only be used on the task that created it.
-+///
-+/// This is a [`SysMem`] that is neither [`Send`] nor [`Sync`]. It is used for memory that is only
-+/// accessible to the current task, such as a page that is mapped with a mapping that is local to
-+/// the current task.
-+///
-+/// A [`SysMem`] of the default scope converts to a `SysMemLocal` with [`From`].
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::io::{
-+///     Io,
-+///     SysMem,
-+///     SysMemLocal, //
-+/// };
-+///
-+/// let mut data = [0u8; 4];
-+///
-+/// // SAFETY: `data` is valid for the lifetime of `mem`, and it is not accessed in any other way
-+/// // while `mem` is alive.
-+/// let mem = unsafe { SysMem::new(&raw mut data as *mut [u8]) };
-+/// let local = SysMemLocal::from(mem);
-+///
-+/// local.copy_from_slice(&[1, 2, 3, 4]);
-+/// local.fill_zero();
-+///
-+/// let mut buf = [0xffu8; 4];
-+/// local.copy_to_slice(&mut buf);
-+/// assert_eq!(buf, [0u8; 4]);
-+/// ```
-+pub type SysMemLocal<'a, T> = SysMem<'a, T, CurrentTask>;
-+
-+impl<T: ?Sized, S: SysMemScope> Copy for SysMem<'_, T, S> {}
-+impl<T: ?Sized, S: SysMemScope> Clone for SysMem<'_, T, S> {
-     #[inline]
-     fn clone(&self) -> Self {
-         *self
++        // SAFETY: `self.iterate` has the same safety requirements as `fill_zero`.
++        unsafe { self.iterate(offset, size, fill) }
      }
  }
  
--// SAFETY: `SysMem<'_, T>` is conceptually `&T`.
--unsafe impl<T: ?Sized + Sync> Send for SysMem<'_, T> {}
-+// SAFETY: `SysMem<'_, T>` is conceptually `&T`. A view of the scope `AnyTask` can be used on any
-+// task.
-+unsafe impl<T: ?Sized + Sync> Send for SysMem<'_, T, AnyTask> {}
- 
--// SAFETY: `SysMem<'_, T>` is conceptually `&T`.
--unsafe impl<T: ?Sized + Sync> Sync for SysMem<'_, T> {}
-+// SAFETY: `SysMem<'_, T>` is conceptually `&T`. A view of the scope `AnyTask` can be used on any
-+// task.
-+unsafe impl<T: ?Sized + Sync> Sync for SysMem<'_, T, AnyTask> {}
- 
--impl SysMem<'_, [u8]> {
-+impl<'a, T: ?Sized> From<SysMem<'a, T>> for SysMemLocal<'a, T> {
-+    #[inline]
-+    fn from(value: SysMem<'a, T>) -> Self {
-+        // INVARIANT: By the type invariant of `value`, the memory region is valid on all tasks,
-+        // and no plain access races with an access through a view of it.
-+        Self {
-+            ptr: value.ptr,
-+            phantom: PhantomData,
-+        }
-+    }
-+}
-+
-+impl<'a, T: ?Sized> SysMemLocal<'a, T> {
-+    /// Create a `SysMemLocal` from a raw pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// - `ptr.addr() .. ptr.addr() + KnownSize::size(ptr)` must be valid and aligned kernel
-+    ///   accessible memory region on the current task for the lifetime `'a`.
-+    /// - No plain access (see [`SysMem`]) to that memory region may race with an access performed
-+    ///   through the returned view.
-+    #[inline]
-+    pub unsafe fn new_local(ptr: *mut T) -> Self {
-+        // INVARIANT: Per safety requirement.
-+        Self {
-+            ptr,
-+            phantom: PhantomData,
-+        }
-+    }
-+}
-+
-+impl<S: SysMemScope> SysMem<'_, [u8], S> {
-     /// Writes zeroes to all bytes of the view using byte-wise atomic operations.
-     #[inline]
-     pub fn fill_zero(self) {
-@@ -1614,7 +1716,9 @@ pub unsafe fn new(ptr: *mut T) -> Self {
-             phantom: PhantomData,
-         }
-     }
-+}
- 
-+impl<T: ?Sized, S: SysMemScope> SysMem<'_, T, S> {
-     /// Obtain the raw pointer to the memory.
-     #[inline]
-     pub fn as_ptr(self) -> *mut T {
-@@ -1622,8 +1726,8 @@ pub fn as_ptr(self) -> *mut T {
-     }
- }
- 
--impl<'a, T: ?Sized + KnownSize> IoBase<'a> for SysMem<'a, T> {
--    type Backend = SysMemBackend;
-+impl<'a, T: ?Sized + KnownSize, S: SysMemScope> IoBase<'a> for SysMem<'a, T, S> {
-+    type Backend = SysMemBackend<S>;
-     type Target = T;
- 
-     #[inline]
-diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-index 313479d80834..6956a7cc519a 100644
---- a/rust/kernel/uaccess.rs
-+++ b/rust/kernel/uaccess.rs
-@@ -11,7 +11,7 @@
-     error::Result,
-     ffi::{c_char, c_void},
-     fs::file,
--    io::SysMem,
-+    io::{SysMem, SysMemScope},
-     prelude::*,
-     ptr::KnownSize,
-     transmute::{AsBytes, FromBytes},
-@@ -315,7 +315,7 @@ pub unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Result {
-     ///     reader.read_sysmem(mem)
-     /// }
-     /// ```
--    pub fn read_sysmem(&mut self, out: SysMem<'_, [u8]>) -> Result {
-+    pub fn read_sysmem<S: SysMemScope>(&mut self, out: SysMem<'_, [u8], S>) -> Result {
-         let out = out.as_ptr();
- 
-         // SAFETY: By the type invariant of `SysMem`, the memory of `out` is valid for writing
 
 -- 
 2.54.0
