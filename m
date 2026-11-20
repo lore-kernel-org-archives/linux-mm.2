@@ -1,93 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EE0606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 07:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB841606A326
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 07:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FbR+xUWp
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ek4Q8C0V
 Received: by kanga.kvack.org (Postfix)
-	id 3B0126B05C7; Fri, 20 Nov 2026 02:45:23 -0500 (EST)
+	id 75EA26B05C8; Fri, 20 Nov 2026 02:47:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 360666B05C8; Fri, 20 Nov 2026 02:45:23 -0500 (EST)
+	id 735EB6B05CA; Fri, 20 Nov 2026 02:47:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 277F36B05C9; Fri, 20 Nov 2026 02:45:23 -0500 (EST)
+	id 6754C6B05CB; Fri, 20 Nov 2026 02:47:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 054556B05C7
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:45:22 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 61678120D88
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:45:21 +0000 (UTC)
-X-FDA: 85454712042.01.A1A2918
-Received: from mta0.migadu.com (out-236.mta0.migadu.com [91.218.175.236])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F125EC0005
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:45:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FbR+xUWp;
-	spf=pass (imf28.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.236 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4670B6B05C8
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:47:48 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F9711A0DA8
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:47:47 +0000 (UTC)
+X-FDA: 85454718174.29.69485C4
+Received: from mta1.migadu.com (out-35.mta1.migadu.com [95.215.58.35])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 670FC40004
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:47:45 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ek4Q8C0V;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.35 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795160718;
-	b=WsHj2CQECzM4PJTValSpu83lCPu0fELeFubp12NkJ95hVKDnvbgYto0axQTzn92BdD7nO7
-	YkSjZRiPggFQhoHmFhsScSh+9oD/yy6eRUlKc6By4s/6KTEzFWLBAaTTjGQQIn7kDA9ESB
-	F/XJlWhokmR7X+nA3gS3RSOr+WGn26c=
+	t=1795160865;
+	b=5JhgnHNUOJcKsjuP98bA1nqNO5iCoGaXMJPc4Vc6sh4iUeHJQG5PoIJa0VasrO1iDgyFNE
+	foHoZejRe3zoOIMiTqDYrvCMYfK+BaHzfAw25wY6BK7vNId2v205HI3zNiWWU3TwXibu8j
+	EFzre/5ckZjOeOUczUPLyp/Z1T8jaVo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795160718;
+	s=arc-20220608; t=1795160865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ep0ATggb/Y672w60Sb1w5LxlTuBduvlPJl1IN+HAHFs=;
-	b=O1wnnZmsuuObxxg5QJODNBEJ/SPENoD+VCnJX5EXHX99npZS4aOTUMe+Kg3Qz/krj+OpaB
-	/bOls+ECNwlXBR/Zn3LiRTuJMxa2R+aeZJj7ntgoCpsmcxVACNPv8YwAxgpebDdQ6HxgJ5
-	MZ9xw2G0HQ4QBumGMjj2pO+DS37KV8w=
+	 in-reply-to:references:dkim-signature;
+	bh=/y1qXQ06BKv4Qawqii9E8uutLP6R4HWSV0iDf6FGFuI=;
+	b=5J/rqaSJiFBiK0yDLKuMuenzgUMlN7dpbU/dbtX5jLcF/Bewn2bU6UWqs7JYmz98BZBlbs
+	DiaGW9FZecaLCWlXy6Kjc1tgxYmklkPoPrQeYpikJP8j3iCj3LOrriEGAqc15pQSV6Lg2N
+	udLI7gBIrofxfft19sCLIokaoS+ntRY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FbR+xUWp;
-	spf=pass (imf28.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.236 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ek4Q8C0V;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.35 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=JHnjnpTpVniuo9xfwgm87vmWr52+uUxiRXAA2RmX6ds=;
+DKIM-Signature: a=rsa-sha256; bh=6vVXslyHXg7KTNISx0U4V6507R5r4hQfQTf1zEh+K4c=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795160713; v=1; x=1795765513;
- b=FbR+xUWpleG4L8SrinPmARyiWjNxfbRyL8Z0xOHi4DBGipC6EW1iXFawve4t3L83p2jHbMsz
- eZC/RwIZeyMpT26SU7r2wv/NQIveguxV29rPmxBgdsCi1TJN4V2CN1c13hGLt6u8DUh+KfGR9Fj
- cwOoBiVEN1hVuw3SdvwhtFME=
+ t=1795160864; v=1; x=1795765664;
+ b=Ek4Q8C0VwK7Wzmjg8QZgr4LA67nhKYQi0tIMWKDSuozuQ2nhjWYld1275sfpe203q6gf0rM7
+ vgnM+kTkFU/tIvY4epWnL3OfSmmi9hgjeNYlKtTV9nPCbIrQNRRQhS1iULFRqI99IP6DcO83V5w
+ XajCBgblgpEY96r8/LVX1mcs=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 158cbfe756fc8433;
-	Fri, 20 Nov 2026 07:45:12 +0000
-X-Mizu-Trace-ID: 158cbfe756fc8433
+Received: by smtp.migadu.com with ESMTPS id 1cb2d6027f8dda27;
+	Fri, 20 Nov 2026 07:47:43 +0000
+X-Mizu-Trace-ID: 1cb2d6027f8dda27
 X-Migadu-Flow: FLOW_OUT
-From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-To: xu.xin@linux.dev
-Cc: akpm@linux-foundation.org,
-	chengming.zhou@linux.dev,
+From: Qi Zheng <qi.zheng@linux.dev>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
 	david@kernel.org,
-	donettom@linux.ibm.com,
+	akpm@linux-foundation.org,
+	fvdl@google.com
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] selftests/mm: verify ksm_zero_pages is not inherited on fork
-Date: Fri, 20 Nov 2026 15:44:59 +0800
-Message-Id: <20261120074459.41517-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261120074230.40269-1-xu.xin@linux.dev>
-References: <20261120074230.40269-1-xu.xin@linux.dev>
+Subject: [PATCH] mm: hugetlb: allocate larger early CMA pages first
+Date: Fri, 20 Nov 2026 15:47:01 +0800
+Message-ID: <20261120074701.48298-1-qi.zheng@linux.dev>
+X-Mailer: git-send-email 2.48.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F125EC0005
+X-Rspamd-Queue-Id: 670FC40004
 X-Rspam-User:
-X-Stat-Signature: errhcmin1fujkwkho9tyypez5z1d8jo9
+X-Stat-Signature: o9y9dq5ydg5f1nto6jijdkjw7w8iffgi
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795160717-39502
-X-HE-Meta: U2FsdGVkX18dWindxEXiRiZuv23rKoQZ5uX4BlMBvN+qgDyjOSxlRaZ3ybCKHwHyIuvb+dj1F3+kOk1hdns0nRbZjZHRClN8zyUAwhg+o/Ag6FJjWeMYk6JhgoTbdebxwlFdsCvti9uD05S9CzF0VKhDOVlCgiLGXOYAuQIwvRybw2Ie5NsTVicWa6kzOv3KhdnjOgWQc5VhxGulZXKp395dfmLb2WR0CKFQxy++SuTvL2ZP6F7E586ifBWS4HH1xtmQIVQiC5F9uEeqDJjIeD4OoY4Oo3NC2Gb4a0/pgqy9Nvw1jFtfy2G3Ye1v9Vi5obNwwJdu9+Z9MnWgwJzhQyr3d9ge2ii9RIleu8i6s0nBXLcVz4iMUXffSOEbspOGlB9oKHRkuH+jN1RYdAq22V1QEtNc0zlqYbFoZwf4qMOhv5Quvsgv6Fi7azigxWg7d1Urjzn4sEa5BmEf9ceqrwTju4KayKosf/pb6qJD3Y2KSanYaA/du/ZBHOv7pB5FZMu4DZhaP1wP5tC2921UQRraUwEK1llnOPqyYYFjUqbXx97X67PSAHnTtNpSByz4zzhr16m4ysdLtTIJSIGlwalMoqU3E6g34OsDQqmLengdWWqMm0091cnUDIEbY+p2/g8d/V8hmK8Udy7EUHNClx6hf82ZgzvcbX61wBRTFb5cfDDwIfzAv9hzlcfXXiYlk0nHTjjCG7auO5On254KOtGuD3R7nCmOwoQZYg0jzADD7lNEMDfcGtE21+hy2q5SFCx6VggN9fwtBWuDpNGwXt8Af9DomTClzZMGcD8F7fa3rlBWwLkiHedv/q2C/A/njleS/eNlzLMumVB6Y5IB72dzElaf0u9/Ti+Hp1XupvQd+9eshJn8gd8MoKecWzlV9+1EeLJVWP1iiac37UwfaHNA/YpEXyWCTU3ODSCExdTvW13lbblb5gprksVgTXMmvZp5w/EFjKyeLbEfkLj
- nVp2y9Ay
- 4GasueB32d3ioSFPSBztcgkDM7H2/s4t9iL6UQyc3feBetx7ImJReXz2joFRJ30S7svksXY8y08Sv0l0EoMEYh4rtLSVpXQp+wQWmkP4m1q9U/Alkqmw1pkNzCoL+Uarrg2Di888+jgbqgO6aQHtQFSuAX2nZVmBbcYoO1mptsGWojpZA/PwJ6EO8lg8SfwWbgMEOJUFtINXzQt1vs+EWPeDOvIzD+7hrL5nInxC3rse63W6qkyg7xEZFIvEpXM46eztYeVysyxj5QGrgMJLX7uHljYpbPxdgecGYztmyflgoQuRshA6ghD3Cj03ctPYP+zUg7QCDhXyKk0pB9hrfIQW1B7r7KHi2RgbWPr5sjrEfKEO+YNnxYDRBJM1nIW34ZPJsxx9DNAVstGRoajhl85ZwQ+bytNHnx4CwQWNyMEISmtYyN5pbLh1jJvZo/yzNZijp2aUKfjpopjuqamQA6VCUGIiZQo7lioUuh3wUT39yFNiUDvBScPt1m5JekwzdEVDN
+X-HE-Tag: 1795160865-820038
+X-HE-Meta: U2FsdGVkX1+EDISy+4r2jHG+AuldGxnYjQRMLXteHMMcffqP4e4JPVRWDvlklZrzhjZJs/ZSdaLybQiGlBWSflyaMBcaevqCY+xL2tcX3muxOoC6bSDTqtHtf6OLnF1Z8tNy6Vl5yFLimen884u7nhffrs86czcvQGKSmpCMtXTdBLkfs91gDwDwZMbbl3dcTUd3SdVRUxaEb25Z9DlSVJGygpU9hnFyZRnQHoAa0fBwX7fBT07MVeS5BH2VeK8zvtUpeAh04RX4th2/aVfvktaOck7Sct2CbtlgkAC1fvpMghK4VH7LQb5hfVxfaBsZVRxvOsgaZHlLUjaXGuZF7FRe+NPI2Eq4QnZWTsu6oG/6NjRwAVA3Nq1OXA1N8oI34BkcmAA+2NMN2tcQh8y+66Fif4y66PFkOlzMCWpNUEPSuX07raWETkpBQhXyuv4uRH6SIOGCMoEdN77enXJPvNxsEPQtK8Ns5rgn41IjMba31UMWhNoohj1BLHJb+zY02uXxrmstwo8o4OqGtHfv06XLzieY8cGp5zajrHVZN+1DTNJezb9jQaCouPB+mwqA+sgCvsB1W5M2JXknpkK6aRiM0RrgD5T27wZwiAfFs9dMGMNKYF65SHuzSkNNSt9qbDDEFbAGBMh0GC92QugL4lw0//k4OVCnyOgdU8Xqj0VUD9bcDa52w6siJMNhLgmnr5pQ/rbZEI/tRqiji1MebgKDJT02ff4s5xYi9nusFJOKXUT7QyFgRx/BBANkXm7TEEBVbJAc6mXNosUXw/Dw1aMk9VwKgCah24UrFG71gEnVwJtclEoSB6eNC1hiKfziiHLh1wH2p2Q5FgQNHebwZ0Wvl3eSyei3lEJhUyRzy1nrpp93sBeIyFKaWKCAJQ/1CyRLRBMZaAoVpKrOFX0fbVcqJQkGowM2hgOgfsiNtAA02ysWxStOszSJS+tois7r0sKRGdBHNV8rMfVBhmm
+ Y0EJxaEa
+ 650Zduq4DFTcR/ByBDtn4RL6OrnKqJqSUDfBPRoIhFhEg3YzYLK8ly4iQEHKaNTEojS+LvL6lcZZ8K6OsOmjP0mJZXY30Z96Z4uHMgjqj2xyozwdPF5SCMjV+CA7GnDRbVPXLoh6Uwhgw2YrGSlG8MwXPYcbYeKxkmx7tiwQoNgQVkXkjEWrEKEhvTSUNUUPVEKLPNObfK6c4gIyVBIHS5fmqfvoVwffUpcgSCcvJ5TFUkklO0JL044PRS6q+7ssluoHWOvg17tGfGOJkOE/bKB+X0Ttfyj2WAT5O3H936emhAaugVOVrYVUbJvqoYT82LXozr1MWV84ec4lRh6EsN6FjWWBIhvUSmvHVrPwS+cO07axGwHgmzb3RCvQesrduPqBlgOqQh98jA0/806Hpu33JSwpkI3egQG56PTh2CkWxs7T3Q4xbWX7BvYAbpjsqLvTLDMHj2CikpPJQHhbtH04hv+EhixE4Bxb2Um4Dt1tyGEs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,94 +95,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Extend test_fork_ksm_merging_page_count() to enable use_zero_pages and
-merge zero pages alongside non-zero pages before fork(), verifying that
-neither ksm_merging_pages nor ksm_zero_pages is inherited by the child.
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
+With hugetlb_cma_only=1, early HugeTLB CMA allocations follow hstate
+registration order, which can depend on the order of hugepagesz= and
+default_hugepagesz= parameters. cma_reserve_early() advances early_pfn by
+the requested size without aligning the start of each allocation.
+
+On arm64 with 4 KiB base pages, 32 MiB and 1 GiB pages share a CMA pool
+aligned to 1 GiB. In a 2 GiB CMA range starting at 4 GiB, allocating a
+32 MiB page followed by a 1 GiB page places the latter at 4 GiB + 32 MiB,
+violating its required 1 GiB physical alignment.
+
+Simply rounding early_pfn up before the 1 GiB allocation would leave a
+992 MiB gap and advance the cursor to 6 GiB. cma_activate_area() marks the
+entire prefix below early_pfn as allocated and only frees pageblocks after
+it. The gap would remain reserved with its bitmap bits set, and releasing
+the two HugeTLB folios would not reclaim it, permanently losing 992 MiB
+of usable CMA capacity. An alignment-only fix would therefore also need
+to track and reclaim such gaps.
+
+The same alignment issue can affect non-LPAR PowerPC64 hash MMU systems
+supporting 16 MiB and 16 GiB pages, with 64 KiB base pages and
+CONFIG_ARCH_FORCE_MAX_ORDER=7. The 16 MiB size then has order 8 and is
+also gigantic, sharing the 16 GiB-aligned CMA pool.
+
+Allocate early CMA hstates in descending order. Each range starts aligned
+to the largest supported size, so this preserves alignment for subsequent
+smaller allocations without creating gaps.
+
+Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA areas")
+Cc: stable@vger.kernel.org
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- .../selftests/mm/ksm_functional_tests.c       | 33 ++++++++++++++-----
- 1 file changed, 25 insertions(+), 8 deletions(-)
+ mm/hugetlb.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-index c20982b0aff0..321f8abc85f9 100644
---- a/tools/testing/selftests/mm/ksm_functional_tests.c
-+++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -655,40 +655,57 @@ static void test_prot_none(void)
- 	munmap(map, size);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4a448c5909d36..d69a9532ad5ef 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4600,6 +4600,22 @@ void __init hugetlb_bootmem_set_nodes(void)
+ 		node_set(nid, hugetlb_bootmem_nodes);
  }
  
--static void test_fork_ksm_merging_page_count(void)
-+static void test_fork_ksm_statistic_count(void)
++/* Return the largest early-CMA hstate below the given order. */
++static struct hstate *__init hugetlb_next_early_cma_hstate(unsigned int order)
++{
++	struct hstate *h, *next = NULL;
++
++	for_each_hstate(h) {
++		if (!hugetlb_early_cma(h) || huge_page_order(h) >= order)
++			continue;
++
++		if (!next || huge_page_order(h) > huge_page_order(next))
++			next = h;
++	}
++
++	return next;
++}
++
+ void __init hugetlb_bootmem_alloc(void)
  {
- 	const unsigned int size = 2 * MiB;
- 	char *map;
-+	char *zero_map;
- 	pid_t child_pid;
- 	int status;
+ 	struct hstate *h;
+@@ -4615,9 +4631,19 @@ void __init hugetlb_bootmem_alloc(void)
+ 	for_each_hstate(h) {
+ 		h->next_nid_to_alloc = first_online_node;
  
- 	ksft_print_msg("[RUN] %s\n", __func__);
- 
-+	if (ksm_use_zero_pages() < 0) {
-+		ksft_test_result_skip("write \"/sys/kernel/mm/ksm/use_zero_pages\" failed\n");
-+		return;
+-		if (hstate_is_gigantic(h))
++		if (hstate_is_gigantic(h) && !hugetlb_early_cma(h))
+ 			hugetlb_hstate_alloc_pages(h);
+ 	}
++
++	/*
++	 * CMA ranges are aligned to the largest supported size. Allocate larger
++	 * sizes first to keep the early reservation cursor aligned without gaps.
++	 */
++	h = hugetlb_next_early_cma_hstate(MAX_FOLIO_ORDER + 1);
++	while (h) {
++		hugetlb_hstate_alloc_pages(h);
++		h = hugetlb_next_early_cma_hstate(huge_page_order(h));
 +	}
-+
- 	map = mmap_and_merge_range(0xcf, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
- 	if (map == MAP_FAILED)
- 		return;
+ }
  
-+	zero_map = mmap_and_merge_range(0x00, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
-+	if (zero_map == MAP_FAILED)
-+		goto unmap;
-+
-+	if (!ksm_get_self_merging_pages() || !ksm_get_self_zero_pages()) {
-+		ksft_test_result_fail("KSM failed to merge pages before fork\n");
-+		goto unmap_zero;
-+	}
-+
- 	child_pid = fork();
- 	if (!child_pid) {
--		exit(ksm_get_self_merging_pages());
-+		exit(!!(ksm_get_self_merging_pages() + ksm_get_self_zero_pages()));
- 	} else if (child_pid < 0) {
- 		ksft_test_result_fail("fork() failed\n");
--		goto unmap;
-+		goto unmap_zero;
- 	}
- 
- 	if (waitpid(child_pid, &status, 0) < 0) {
- 		ksft_test_result_fail("waitpid() failed\n");
--		goto unmap;
-+		goto unmap_zero;
- 	}
- 
- 	status = WEXITSTATUS(status);
- 	if (status) {
--		ksft_test_result_fail("ksm_merging_page in child: %d\n", status);
--		goto unmap;
-+		ksft_test_result_fail("ksm_merging_pages or ksm_zero_pages is non-zero in child\n");
-+		goto unmap_zero;
- 	}
- 
--	ksft_test_result_pass("ksm_merging_pages is not inherited after fork\n");
-+	ksft_test_result_pass("ksm_merging_pages and ksm_zero_pages are reset after fork\n");
- 
-+unmap_zero:
-+	munmap(zero_map, size);
- unmap:
- 	ksm_stop();
- 	munmap(map, size);
-@@ -837,7 +854,7 @@ int main(int argc, char **argv)
- 	test_prctl_fork();
- 	test_prctl_fork_exec();
- 	test_prctl_unmerge();
--	test_fork_ksm_merging_page_count();
-+	test_fork_ksm_statistic_count();
- 	test_merge_aged_pairs();
- 
- 	err = ksft_get_fail_cnt();
+ /*
 -- 
-2.34.1
+2.54.0
 
 
