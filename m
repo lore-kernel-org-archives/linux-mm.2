@@ -1,107 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF81606A333
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 03:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E1B606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 03:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=bJdtSXo2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Mn9NIxSc
 Received: by kanga.kvack.org (Postfix)
-	id 04C1A6B06F3; Thu, 19 Nov 2026 22:28:02 -0500 (EST)
+	id 30C8D6B063D; Thu, 19 Nov 2026 22:30:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F17E96B06F4; Thu, 19 Nov 2026 22:28:01 -0500 (EST)
+	id 2BD476B06F2; Thu, 19 Nov 2026 22:30:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E03A66B0707; Thu, 19 Nov 2026 22:28:01 -0500 (EST)
+	id 1AC776B0673; Thu, 19 Nov 2026 22:30:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B717E6B06F3
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:28:01 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DDC9F6B0745
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:30:03 -0500 (EST)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1EDB6407ED
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:28:01 +0000 (UTC)
-X-FDA: 85454063562.20.F5F5F60
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B80C41C0007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:27:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=bJdtSXo2;
-	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F08BA8C4A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:30:03 +0000 (UTC)
+X-FDA: 85454068686.20.0B19B38
+Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A8876180002
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:30:01 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Mn9NIxSc;
+	spf=pass (imf16.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795145279;
-	b=Tu9Wj7/7mH2cOU1YHE+GBvmANDL/mkabP843E+y5fxCCcjq0Q13LJBM2mcU8trLeqHd4K/
-	abxDId/PJUDZnTbp+0+6hp7zfqrRcBk+C1Z48d9LuPseFYCvBZo4qks3t8p88cPeG9fFTM
-	4kCnObqIWeGm1U0myK8NaeFFmJDm1NY=
+	t=1795145401;
+	b=BOk0p2WIBlQZQY7ma7bpeOKZrB55Z5dSjOEsPXSR4v08TYp32tQJ1MDWIoc/sSEpPhX2gT
+	cY+VKI9ZZlQMa/s3XS8eHLYkSUfgSHb6AzP1/L4j/eIR72OfGTzd9cDoPIf2/PPeuKXdLe
+	ROcq2Aw9i8OO/Dn09DJZ9b8P341vblk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795145279;
+	s=arc-20220608; t=1795145401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Dg095nuQm08w1mrGur5FXxR8nXjuDgQq1Pk8wkGwVI=;
-	b=J+BXRpHuuvm4hEKKiluK1wg4A8mnrenmsY30+M3v2VktFuty4jtGWZPg2ph/ViGeViibWU
-	CeMjJn7BXEtgHMirLMWi4Icojhi8TxQms3tGSdARu7pignVoc/NI3LmAhHXgtJvPKioFgO
-	wFXm3UHNnEeEXUUtVx4hVyyR2hsv/4k=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2vWivvs8YtRgI+rlfkcyXQ95IULAvX+plc/aI2l6Quo=;
+	b=W0uPxt9YYLYaqoxOe3wS3EYNE/9unKKZUbDOZcil3TTkhhfWAvA6BPk6ctrtoJpijfMitd
+	CDxAtef9Gsg7JOj/+zcJ+jDEQ5w6pbG48NaFx3LqQhFyA3wMtJxFOFiWg+lICWclPfbVOR
+	RxtVKajMqzKrLkyFl5VFHPbevR/Jk7c=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=bJdtSXo2;
-	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=+Dg095nuQm08w1mrGur5FXxR8nXjuDgQq1Pk8wkGwVI=;
-	b=bJdtSXo2zsPNNAWZHoqmIPvvPsucTx4ac5NrM9rYFhJ0E8wOXluASdeBe9kfYY0AIPpR/asys
-	c6ETQCvnJrDpYQn0VZoOBlmVN4JhsRkQKTs9M+QbLBhTOJfxKheQYpVyRjNfMRpDncLXZzA5RzZ
-	a0FAogV0ZKyp4dOS0sOJPMo=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jW13S68TDz12LHl;
-	Fri, 20 Nov 2026 11:27:00 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 143EA40683;
-	Fri, 20 Nov 2026 11:27:52 +0800 (CST)
-Received: from [10.173.125.21] (10.173.125.21) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 20 Nov 2026 11:27:50 +0800
-Subject: Re: [PATCH] mm/memory: don't map hardware-poisoned pages in
- finish_fault()
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>,
-	<stable@vger.kernel.org>, David Hildenbrand <david@kernel.org>, Usama Arif
-	<usama.arif@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan
-	<ziy@nvidia.com>
-References: <20261119134236.3745231-1-kas@kernel.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <a5c04d15-adc7-b7c2-fb1f-a68b0483fef7@huawei.com>
-Date: Fri, 20 Nov 2026 11:27:49 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Mn9NIxSc;
+	spf=pass (imf16.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a6ce64b95so121160eec.1
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:30:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795145400; x=1795750200; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2vWivvs8YtRgI+rlfkcyXQ95IULAvX+plc/aI2l6Quo=;
+        b=Mn9NIxSc6uQjwSdqHfGGnKpzhzXdTP1g6uSYSxabvfQ6o/MyyCpTj/zFRMMD3jV8SE
+         C3cbNdwut+A792m1EpzrQpPMcTHv1TlQon+rf7KMLcoWmCgYgrAPervvvXO8f2zyZbmM
+         N9gBOCr9pQvpndR6rXjrBcVxBSPqID+BL/pMPu3I2bXAiCw9/pvr6+fY9J+y1l5n2t3W
+         mN4x3l0l431MXoWSkuoQO4UYYj8EEbG3uwRrUV9pLNlIvmN80+gLJBRa88yVAZ4dA5uV
+         yf1dgwrar2SayYBH/Bvv4Kt9GeFK5yHWOLN41dfihqPt3VAQPLA4GWrWlei0RjXHYZa9
+         hnNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795145400; x=1795750200;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2vWivvs8YtRgI+rlfkcyXQ95IULAvX+plc/aI2l6Quo=;
+        b=G0F/U0Upkf/rGfCzQIgEsmj+GM5D7Vd0tsKiLhCKfWzKAbKwSwzHUFGdFEC/IuZZy7
+         fryhywGjAfNQZIfJ3B2WCXNJ3hfDCL03Fe2RvnkKfWiTcSxGiV6TRaCBd0EEa1wn0TcL
+         Q1Ow1mUne40PUS0x8b3ML0zm4gw6g2ud/DmNaG5XL9e5VfJwdBjE7zvixAgRpoPZJN5+
+         b+zC7ppIoNqWpffviYpApbt9DDuUV4aL903p/AKO4v0ppUsrWp2SQrCNQkagOo7Cdk5w
+         OgfHs637qUAJsUwm7hGk2p8xJr1IHdntUs/CsalRIg3BGpQ0N1W0u/b0P+I/0Vi43613
+         /W0g==
+X-Forwarded-Encrypted: i=1; AL+hErHAu0SfBFuGT9xrG3Nr33f3Lmu6avBSbKa28j7ZvkcEtsVCk4Qf2e8YBjokM3dVNlSX2Tu9OzkyAQ==@kvack.org
+X-Gm-Message-State: APuU4Z8iJJyz9n7YWD7SmMLV+1Kyae/7+AkuiSJ5P38L32JkMUeNkcfV
+	/GLzFa0YW8DVlDTUYyy1W+GOLNzjdMJZxtRCEC190M7fCRJ661nPhI7qJWGsSvazzcmd89pC
+X-Gm-Gg: AYBFou2ygKOpPssC1Jx8gov2x3+ExpJrgwX4dSX2m+15owYb51aMNZHoz8lC8g2ntxX
+	XK/1TPpXzujReCCXUDUDdC5frUP8l1k8Edfz9YLNY4j7AvuIi4IBlM5imCCcuaAYYm/2MRQHGzt
+	eo5ntqLBxr3mNWKT8Xse3t3MPBhFHgg+AxTIr1Ta79IcXmQ4FjMsyaqml8KuSBQRHYY8HA9jiDm
+	ejawXLSxG7oGgFzpzZIMbgnJwtoUFdxl7hUMiZnWgFRzgC3pu8ZAk/YWU1zLqfHwsZs+pWc1NkP
+	RnkxtlqWw0eats7wjo/Q34fF+ry+GPs/xpSuvSkgY5bi03niWHUsrHcG4+jPljKYwWltyyC9OYZ
+	R8JJB25CImtmNb414mbGTKKXNWG3L1iIsLSMVzg5os+Kx74pCc56IX8qUZ6hGEmvaBd2LJRyZCy
+	sAmZtmhvSwBr5sulg84pC1VHl/GPP/zv7h2zrbNtJVWLrByNIs/XWscRApni6YqsXm4v4x6kpyw
+	e61rv/pTboTzF17ZY1HpyemOgdJfBbLz3n3g0N+V7KeY8MrfrUryacEQ/M2SNdv1YQPGAR9DcxL
+	ZHQ2zJ1danGfisKYANK+jNBBqwmWDtFqAlUTmAbNPQ==
+X-Received: by 2002:a05:7022:b90a:b0:199:4f68:7710 with SMTP id a92af1059eb24-1b5567b347cmr1783883c88.2.1795145400269;
+        Thu, 19 Nov 2026 19:30:00 -0800 (PST)
+Received: from intel.company.local ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567e644dsm4362507c88.5.2026.11.19.19.29.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Nov 2026 19:29:59 -0800 (PST)
+From: Wandun Chen <chenwandun1@gmail.com>
+To: david@kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com
+Subject: [PATCH 0/3] mm/migrate: batch PTE restoration for large folios
+Date: Fri, 20 Nov 2026 11:29:46 +0800
+Message-ID: <20261120032949.2036731-1-chenwandun1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261119134236.3745231-1-kas@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B80C41C0007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Stat-Signature: wgki7abhqk663yms5uy5dhix35mn14n8
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+X-Stat-Signature: 6nuhkxdw8p1m9rdxsash8o189h6hcn7e
+X-Rspamd-Queue-Id: A8876180002
+X-Rspamd-Server: rspam02
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795145276-444645
-X-HE-Meta: U2FsdGVkX19WNvVHiBmZK637K8IxLigWrX9UVtk4+uZOv6/mpsVjgti4jDVe6xjhvArwx1SeIIj9Ee0ceyfh4rZy5VyCZ5XcMB+8am/qyZncDp8RHJcrgv/dtSg739FR45mut0qx0dnXp7nni/EokfLkK6scY27AYVsZ+DxhZq5BTc9miYnRLZ64NkPStpjxMQ3MnBohbuVHuYHv+a7yFReq9cGIoazRf3tXILczUTsd4JtR478+WFr4pmqdDBmPChkzjXXuWnVpbvr++a0pjcigGgVx9GhaUxxgMQEH5RXYXcyuIpSFLHjUVCXn0CYVZDkdqcuvIRlGQ7Kf/+cqI9BvnOPY5uJ8HnvO+/ZDS9r4Hrj3rGpgGSXEMJi9t2NmKUwDrlPgrPggQ6E3wJpCpmkUNksowCtb5GpvrQvFhbOy6Pv5rsM6yRFN66U2JEhaXpPFsSFVV8X3OkNth6YP0m/+bg7sXPFRqjKFlqX/LlT3k+jolOK5ui6knqq7AnHew+49n7Khr8h7ySYQSeM9dxbBDwLH6JAxs4m0cdF9NoXa5P5zh2IuL7wnVErBl+ugh5t0LrMXxDLiV5ykiDyVKqUnLtgBQiKeGN2TVKEgyhGdY/Gl+nmsKK0U7WTdCraSBq1WqiKDQhRIHId/ES30z6euwtULyEyGCD3Kvgx7W65iAOobfAtRpQsJ8dZVo4aTTOndbfGsQf+LgsyLk7RCI3O62sCnpHFmdU6IO0YgjkxocuayGfZ3V4sHMbdPOyuEyozl/JGvVMzQamZcSxXtW6esrRbSsuYzBtGy+4ddTFdZp5zpFHUikowrxf61EXAOHzYhjpql9XKUGpvXmRQaXptApMzzNxumApVkfOFOMMT/J/YssForzfZXWfD8e6OEPrNqbD/bZqtAohcdhBIwrydtD4N1U+YuO0gpx4/WmffLeFHyeVgrBnkCofA+Yai1ffwwXSqRUVYEIeLi/ib
- J9NNMYnA
- Tq3w4dQbOnnJv8964Pn5PJYwcWt8ydQMOpJcetk1GLnhIt/xu9MAWfIZ3MY0/pHXTnwKzCaYlcPrXt+o+qgYe9wdZRGot5wQFh1sbZvnwxYbrig29NoVMMiXVQJI7108n/GVjmj5mn04CdOIO26mM1lcGS+Ex5ccJCHhZA3oA/actRUOe0JUYxIFrnEkmbS3bllrx1g1Y1Rw9FZcCsquPH03LvbryOgJhxC4k2qqLh1Va/m0s60OotJyyJNxuCsXrD6w2hRcybXARrzm73z/QgiVILXjF8VT+9r4oDLc3nPfQAdsaEQ0IFTLrHuHGJgjJVwoT+qjMtL1EvVGOFh/fCnUr63yrR/63taSH4jWBXpbVcX3HJsG37C8u88/OsQ6umYBFA/rhpLqZUFd2PYORheDSWoH5P6xJpLTVb4QUQrT0h7TjBfYolIVOjUN0Cg95YpodZUzz862isk52VBHxvNwt1eqE1lfLIRDij6f54djaDcDlmiwg60xWn7h5KlnQJj1aa/jSnmDi0zpdJ6m+ApfZGKBKbZmRLpGNlSHaOSE1qBzDPzgsabgY7yEacZUla+3sYkgl3Ff+IJoiwyzv4YOoJiKRyd6f8uAg
+X-HE-Tag: 1795145401-812562
+X-HE-Meta: U2FsdGVkX18dus5FFQAeR4a+gkYlLaAxL5zElnemtQr78RFXDn3Wu0PzXF4JftldWaPO+7YurgPj/F8mA3Zx61F4Pihw3CTRrSNWa4KQaQyPFQsfF34nNKrSNiIGGdRuRezIwAksrbefrcGn/RVvsYdzXWneb73LKjQd02DbbEALhYbc9ZcQudK090sO75SWSpAp/toelV27qWXelvQ+hdjb/4s8MGg13pDwcYcp+4rXQs2ZnZBMwprCKAtz6ZZZGTV19i8PugXA2qbvJuKzgFm7AoVYZcZ0SmhyiuL0ZtjOEsB0It20ZBRoBlh5T2MHhtjAexWnYuadUmHElXNv13+snbtepZ0tJbAZif8opPE7b161AjcoPWmUrXfOSqb6M0k08PFi1fk8TFsNdMs0he6QXAWq7pBc9l/HLU96cgQom0b/ruhi1JksBm2YD3UA4icIekOl0b1mE0fzkbg4PZ1iNzSHu+slmEgHe0weBvYltEfhrJmfrZ0GMbG0Sx3IwQAl9l6rZWpW8RIQnc9LByU2CUoRXbNKsDsCp3EyuK0JztT9mYkEVhAiB68lVKNKvIUWOn8UsC10ZnaSBh9MroZFr4B5u9BdkcT2wEFeUgiigaJGIQ1q0EhypZ/4fxhKi9lkJSo0y7ttDXhcS3YUl347jJxE+V8LlyQMq6+Q1FfKX1PztGj06UHHxLeKJKnb8tFXOB4jRmCBwdvfuADBTM2PU4FG8wKmkfPKN/4guFBV9/EcsCsTcn5cNMzLw8Kt8J0CUkeVvml+9RnetRs+eXC/g8vbwjZIAdMPApTIgcbTmoGtpYZib83yOBSZCA1WVKd5bqlLl6tkXgmDdUdK8v+YhAVaifbHATI+us5VPlUo2mBjjbTN2h8nv/mwwjKmMKE+F2O3/hqpSqH1SENnslwei7tQF+34IOdPaZdPTbjTR9jpYlTkIkmo90T2tpRU8tlwTkhhWZ5fRgpmjmQ
+ /tmsETSt
+ TckjQGMOriAXqZTtSssQyEmxqSb88URYZDG/qYwdZgRWxMfv24psKoe40XE97S7tsKT+2JxfCZ5u3uf/Q1fXFFLIC77YxVLRKvvhnvATM/XAKrdJamDeCtmoPsMhmoRhFO8Q0jmLtIsvDbz/oVCnn2t2tZmDqkPVpVQ0NcdRa1pn51vSs6hy2fcfcA/0B736d9FRT4caZnZHtk0TrSzMgj1OmUi2iGPoZh/PQzEx5l0yV48mqcvLOzAQ3gJAcmAj3RStIrPvzBwyJoinOH3YFxNRcp7ZBzayTZFXQQUYacpbaNjHaIwnJFE9N3lSo4yJK8sESX89ePBnQ2K+4aSpU1EU2jvfCuY3WEJ9Fqx4PZZ/JNEypZZ0/gCOFR0bewT4hBrSDlFEjzB9dklWyCVHdm0lQAyn8EiznY8F7s7f/fxpOc77+ZFwdnY/dMw6v3bFNYhqmAWnWVvRSIYsu1U2cvUH2PeJwaR9q/CEcOJBBzDTR4q2InFZMiIsPvikZFJ+NI1HotiDHFfnHLuhV44awtKQlQUUKVOWNU6ZcIrXWuXOutw1D8Y/VY7P2PlvQIT5qPtXZ6br4QX881eUrcHdOH803hlF+G2oY52ph2cWL3FwYZ0eAAYdxhHmcRb9StJ3XAL1PV84vqFravPmDvUNbLcmspjXly0V0UoeVH4dAijljBtlt+2g2IsgIAp2ScvJ+wyPsx/L8Ui2Bz0tmDGg+nGppH5ZvAIaXJGOd/OC8Xc/OJ0+D/OhWN6yg7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,33 +134,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026/11/19 21:42, Kiryl Shutsemau (Meta) wrote:
-> When memory_failure() cannot split a large file folio, the folio stays in
-> the page cache with the poisoned page in it. do_set_pmd() refuses to map
-> such a folio with a PMD, so that the poisoned page gets its own fault and
-> SIGBUS. finish_fault() then falls back to PTEs, but maps the whole folio:
-> 
->     do_shared_fault()
->       __do_fault()
->         PageHWPoison(vmf->page)
->           // the faulting page only
->       finish_fault()
->         do_set_pmd()
->           // backs off on has_hwpoisoned
->         set_pte_range(vmf, folio, &folio->page, folio_nr_pages(folio), ...)
->           // maps the poisoned page as well
-> 
-> A process that touches the poisoned page takes a machine check instead
-> of SIGBUS from the fault.
-> 
-> Map a folio with a poisoned page one page at a time. The poisoned page
-> then takes its own fault, which __do_fault() turns into SIGBUS.
-> 
-> Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support large folio")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+From: Wandun Chen <chenwandun@lixiang.com>
 
-LGTM. Thanks.
+remove_migration_pte() restores PTE-mapped large folios one PTE at a
+time, constructing each new PTE and updating the folio references and
+rmap separately.
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Following David Hildenbrand's suggestion [1], this series batches
+adjacent migration entries with consecutive PFNs and matching type
+and flags. When a batch restores the whole folio in an mlocked VMA,
+the rmap helpers automatically mark the folio as mlocked. It also
+extends pte-batching to device-private folios.
+
+The series applies on top of the mlock tracking fix for PTE-mapped
+large-folio migration [2].
+
+[1] https://lore.kernel.org/lkml/5f9c449e-43b3-4732-9c14-8199418cace0@kernel.org/
+[2] https://lore.kernel.org/lkml/20261113083927.2727599-1-chenwandun1@gmail.com/
+
+Wandun Chen (3):
+  mm: factor out common softleaf offset PTE batch scanning
+  mm/migrate: batch PTE restoration in remove_migration_pte()
+  mm/migrate: batch PTE restoration for device-private folios
+
+ mm/internal.h | 28 ++++++++++++++++++++--------
+ mm/migrate.c  | 51 +++++++++++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 65 insertions(+), 14 deletions(-)
+
+-- 
+2.43.0
+
 
