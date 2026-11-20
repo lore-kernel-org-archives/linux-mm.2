@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145C9606BDEF
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0CC607CE5D
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bUuhlsV8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RN2ax1Dx
 Received: by kanga.kvack.org (Postfix)
-	id 4091C6B05D7; Fri, 20 Nov 2026 13:10:34 -0500 (EST)
+	id DA7176B05DB; Fri, 20 Nov 2026 13:10:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 393F16B05D8; Fri, 20 Nov 2026 13:10:34 -0500 (EST)
+	id CE1A96B05DC; Fri, 20 Nov 2026 13:10:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25A356B05D9; Fri, 20 Nov 2026 13:10:34 -0500 (EST)
+	id A98A96B05DD; Fri, 20 Nov 2026 13:10:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E6D1F6B05D7
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:33 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80FB540169
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:33 +0000 (UTC)
-X-FDA: 85456287546.07.8029154
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 709A26B05DB
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:40 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0664E160134
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:40 +0000 (UTC)
+X-FDA: 85456287840.01.E6FD16D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 668A81C000C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:31 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bUuhlsV8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id D8F7C16000E
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RN2ax1Dx;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf18.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198231;
-	b=I2JrrXdctHAfqJegXEafan/PUS8ckagKZ+sjnT5b4jjtse5YoUc1ZITEDIFR0Hj/5h3b3z
-	ZOLI40Dp4XFm9hHB53qvT8JyE7Iv6e7k0FFvSFOJadZk0mOKI4wgqezaNRX7JT9ya3LY1e
-	/gu+m6hLwi+XEkibYN7+kzDnOD9RscI=
+	t=1795198238;
+	b=5OA7bK6rmgO1AvLsVFkuz4ZL6qDsM2RexF2e5SWFJ9vP6oiU182QddERn8Wks2EtaiPUuO
+	9c+CZKsLOMZZJtyRIMauzBLP7DLgubuffJHi7TN2rrEdH1N+0z0GpyAI6B6Gvt64swr773
+	qy8AbKO88+67ryu7BOUyDQWscpEc5Zo=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198231;
+	s=arc-20220608; t=1795198238;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DdtYjjt4icTMCNkBVK8ZqJ6Cita/durqIaktzLd3ASQ=;
-	b=ZQ1kYbPa/3KZLO6CTuBEPmbU9RxDW7GbLg5AxkZd8O4H+XLe4fEZT0SXMkcWtcJVQWJ7VQ
-	oNz1alCdEo/Z8fs6Ew/u/PjRa7JS1ata4+qNJfP4gBhQpCMRkhoBK03rOzd5DfnfWsP4Br
-	Xa0ydB92p04Z1SuHbi0I5F28bpMsqy4=
+	bh=r0JQqq0QcNOC5zLbyFWvr2UyNsYB0EDGYPVXscJvS70=;
+	b=YCTPYtj7ACUxj9EtSK5ZXvUCbbLhupdcr/WYtujm6rJMTjRjm+WnfnXFOuy5SIsSLjFT6x
+	EBbzZ/NfUTSwKi8jCOZm56YdiWlxz/864xTWSEpzgfrUZZC3edIVBK47z+p3OJdE3hZ+GJ
+	ihBlH2Cy9vWLBK5doaT9kHgUYBmrg3s=
 ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bUuhlsV8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RN2ax1Dx;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf18.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 32CEB45DAC;
-	Fri, 20 Nov 2026 18:10:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 51E0446CE0;
+	Fri, 20 Nov 2026 18:10:37 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198230;
-	b=vsh74B9CYtl1lfxC5lWL19FG7KQOT18H53MAQ0rhDpZynfUgpjRZiFwZdt8zDm9BbMlD
-	 5GparFwhDTIYdeQ0cLO20qlP3FNaUBYtSQN2c+E/EISxCaZG4zCWqPWmG9mRkdVPz9A5b
-	 DLGxdPztg+rzzSJ5Tc/8QcLR8NlLxq5DmlNflgLjUq2uZ7sgle7E8c76WEHpwwuTL4GBw
-	 xrANdE5Y+sAASUf33X8LYXttbVVmO6Qfirx1vnpCQo4I+5Kp9lImoEBrKORHslQPSrEdY
-	 8uyzmNNo/ITw4MGIC8aEqZGbKsxzvUI+7G5m74tthlcjuAnhjTIEit9+kjM4tZMSW2A==
+	t=1795198237;
+	b=mDGva4mSuVgtvxlAvTWPMyfXTqmnyRj4Ht3cM0hoLzrEdHNa8+ZX7kTdyWdJXTmv92rx
+	 XPoVtuw2VHBtUuVmuizRwD+DiH8GH+CuhIVmx+X2bsoaDM+8r4AnCBHpXT7oiqFfBEOyQ
+	 H0qqGdfyzjLgikYDbOPg/u9nmxItEnEdmh1mZqZ+F0t0c8XXnBfTBGloOIbqObEQYInF2
+	 ZqiWaim8MbY+ktszFiYRN/ZzFXMMaHA+PcVhKCtt/xauVL7boCCi/BN4o/6VZ2ppEhp4+
+	 mqk7NLYidkUwnMCbMOeuEJ5CdNjEgy8lP65KBuHaUE2PuPP4POSCCzC8Lf4RXxiWgyw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198230;
+	c=relaxed/relaxed; t=1795198237;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=DdtYjjt4icTMCNkBVK8ZqJ6Cita/durqIaktzLd3ASQ=;
-	b=jVR4CmColImiRvrQV5L/m3Y6L47QUULT9DFUzTjytpJNVTrYlvpfqV5ZXVyoh1LfW63e
-	 PHhxC5yc/12/DZWkECxgu5OaNdKpkz4JMMKMTwpxuSNU6S2i6HzIV67nqtE3Yl0v98MPZ
-	 nAbMFPLwZxiCrfsqZFw7HNt2G7CiJVwHCtNR0jv4vcnYlU1nonXwnaxlBpzwRpBInSn+4
-	 BcGOml5qgVkODJwOOHGutYWGJSXoerl3Z97Xywqd0qKRHVoNfuLp1bbVQD1s9HB0QQJxN
-	 j0Ghp4dcS11+1uO4OEyuekkJQJBv8qxPtAseiLIyL6lQBtJcSFIxkdUvgYNHGSILo2g==
+	bh=r0JQqq0QcNOC5zLbyFWvr2UyNsYB0EDGYPVXscJvS70=;
+	b=2oIj9p7gAr6h5yhcOdOnPIfl8w/VNACvYJCfy/JS2g9C2f3dbfUPWw+sdO6VTOwAeY6p
+	 DZRhQCBf3w8xJPRpebcXD4tdMAgSmugCmRtZDMH9fJU/j+SDmLo+E98xYBBf+ehjkXcVF
+	 /PXleDahGWr8xDQLUeOAQZbtf6he9OQTQv8TU/KG00o4p0zm/qV9Guag01e9zc46lj811
+	 ZDRX36XAyn4XtvJ0GFjZ9/xE8r+0a7A1JLtEbu/tG+kpXeHw3MlS25LyNkRGlOsA2gYjE
+	 YRBiMFneSMqewi6id8at7g9FqJ8ctxph9gZaBhIHenj5T6N9uoYgI73DgdCNfSS5/eg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 85D971F000F0;
-	Fri, 20 Nov 2026 18:10:19 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 5E5B61F01824;
+	Fri, 20 Nov 2026 18:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198230;
-	bh=DdtYjjt4icTMCNkBVK8ZqJ6Cita/durqIaktzLd3ASQ=;
+	s=k20260515; t=1795198237;
+	bh=r0JQqq0QcNOC5zLbyFWvr2UyNsYB0EDGYPVXscJvS70=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=bUuhlsV8PTfX/PnRHaRgakk5uth+Fi6G5SKUVpd6h/FAc45oS3vC1ByuTd+bWU/eb
-	 Dpr2pBcrvnMkmdGqnvleYzcCdZXyMJbTKchKw25p4MA2WZlM251X1FncEO1ya4ssqo
-	 l/f7LfJqzojRCvw2Vi0+bVXba3ytji3Oym4JeT6N6X0wZC2rZaz4PAd9fbrZDfdfbN
-	 ySWBzRBwR79snU7OhUz23Bu3/HTmOCPzOHDL/var0uGvQpK/DxUzkGP68xahsh9IJr
-	 brX57kvd2u5JzOdxADgOGaYOLjjjw26PCHSMIJBiyYll1X2sILw2TWP/Ean05AZY/6
-	 +SJWttkYwUeqA==
+	b=RN2ax1Dx/4YSP7p7jVGSMpn9MJBf5CY3/hUf7sct4xnSXuj3+yBXeu84WBIh9o00g
+	 rNepF8xd6E/7biEbPdqHfci4qvbZyhkpdFfISrC9ZuUUkOAD2TqLKzwiv6B+NpF6U/
+	 cPv1MvUXWoVIH5st9KUB4FAgURZrxtEmjRlH44r8yjT48ezfLfac2KD2U28CqBh0gx
+	 XyKzjbumWlEI3jDntWvlxKplZW5H91UYSfYOBRVzDwgUbYUoX1SXDR2L5WzVQsED6P
+	 Y17LEAI4BiRVnVXMr73VrSpWyX9qFBAZyK3iClN60Avm1jT4mKoy2lY3cg0XiP7UbW
+	 8wmjZDpPLeiuQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 9B3534B939;
-	Fri, 20 Nov 2026 18:09:20 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 5B9844B951;
+	Fri, 20 Nov 2026 18:09:21 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:21 -0500
-Subject: [PATCH 30/60] mm/memory_hotplug: keep private memory out of the
- auto-movable ratio
+Date: Fri, 20 Nov 2026 13:09:27 -0500
+Subject: [PATCH 36/60] mm: refuse explicit reclaim and compaction of
+ private nodes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-30-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-36-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=1663;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=1212;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=HgTV8d94LjdwsJMGwb3+Vry/TTvf1tnHS+uF7N7JLj4=;
- b=1P55MY17I+a8cu0KecQdsP4lOTbFUbQWC6JVR7uUJH6xpwOzawPJ9vMaF4+CKy+NuwVaaINT8
- wCDorNsASZVCR3jg5Bhndx5xpS/opyzqs664oVh52KWLV73mn24pwg2
+ bh=eVaoyJoyzU9zyOtulCuIbI+hG2+czzxVMTo5PX+qnoE=;
+ b=67qX9eYJBrvlvPcdtzToXyRPuTdmsGPvAub9aazmEHJk4ZHCWWJWu7Tqa8XRPOPW+PAeiRoBS
+ +WMnYQ09bUHA4ZgWD9y4UJK3j2zi7pY+0jx9YkmAbm61ZjkvAHWzQu6
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D8F7C16000E
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 668A81C000C
-X-Stat-Signature: pz9pa64jhrhoq9zzhgcctio6ar66kqsd
-X-HE-Tag: 1795198231-721856
-X-HE-Meta: U2FsdGVkX18LTJebPUFNGWshKxQY7EE4qS0Ym1KYO5EWWwvYogeh33dcPDb8z8z39rTUiVPjRipvPy/PQFLduwtd0EPR2xQb5IdVScJ+53ta0fK9FyZ03UKHj+W+9ct+s+LL+3pSLpOlXQaoaF9h/LDzk+LyhW/M5tMVdZfHHMThgVTA9ltxuhr1pfk3dxyInOxhHAzw7+gKyUeG1rnvUGKZqaymMJnDIofsDRTXvFhVVtqlfSrgPg8dujDLGiFBSTMDHCvDbKusRDYzGkA/hiNEROIRIRcPNqquop972HnMb1kL9nSBH5X4E14MbED5YymhrY4zYuZLKbD/P018qZPSW8G12r7Y9HbjpNIQLzF/sj61oUAtSMiLTZ7r4kxvasa3SftiPdlw51UuZ295lkuGW5pnWRyDSpc9a1uM//baAvlb81pb5Mo8T8gO6prY3NxqrgCUhkLza2lKZXjGXdOfPIupvKAP5NG2dJ3sj94S8E0hLDt6/gtgD+yXj4bERDpIHICHNYt0LMMnOlhopJCsuGNLWQjoj88HGlD6y5gGfvuPJ/n4Vwq7yOMHfYtKug8bawqqmXK1XX+KlV0fGtIqQBCnCUy3ZDVgUlEoMUNXTwd7+N0kiYjIGk/i1/5Cn4kOJCOVs0y81LhJAJK0yIsoYCiu4hZ8p8DxSga2v2BuhnxsBv9OwmQ9+7zRSLAP/ugjCRnbw4uQBJUTQnbNxiZB+WjeaDSSU4dXTHIs0FFKNqkHi08j0ov/QKCJe05NgfwDCKyhAjIJpsBfxZ78W13z21LJMrUM/4Za7ki9tW/ycv/ZyrPMGPoBIHZ2ip+pw3CQfSeUzG/XY+zJoHxLftDfSOYrRcY7YYFb4n5kfWb5+ThlRkPI1pN1RUt5bLAscoY2NqFN4Bxx+xh/cmPKQPKvv4jQChfoa8ovMY9Vh9i7h7AOdVUIK64IjH7nxH9U3j5ofI2jKS2d5lP6/wT
- meCRfigX
- nmavjUnpccACW6vabmZe87nT6BPY/vRyYNmRaT6yVjzYmG03u4vM0SUbtd7R33MuyUDq/t1vf1gmGA1YBb3FKGN/jcR3E1qs59WJ85qJQm41P59ZmJqkmiq9kqMvuFrOms52ZE7hNJWnIullAEmHg7i1Iq/UqnZozfBBvUwhcIBvvM027Zo2pYPcS9whSixmxAqa33IItneV7Lg64sbh0R4/6WSsw6yw5FSEMxeNHXWdnndXgS+z5GgowJxFT2U1u+1qiIwQsLCmjO8VxNCJ5+DqEyNU+ww6e5PoayTnKI7AEWxX5F8mTCPHGK6LClfPYvW5lN1wnnu6eiVDb6MYeqX7qhWNp4XzgllwSbChim81ulVE/M7ROkcE2rEB1Q2gFu/aepTo+81UpWOI/rLgLEZBEfFwFwnahx86rwQzKQ4hWJn4KhCLoFiIR5/jdwH58Z2QcKbUBkg0Q7otjOVA/HVaWrV2rgwxFdEZ2wju2TZdRmRrj+F09cZW55w2+PaXniWu4G+48gdhVP33FZyliKw6cfjzizNLkYC/F2vCZ0GQcIl3tw1LkJrvDmhUaOcYAir/T+Yyw6cv3tjumkSumMQ1yP4Zem1308ti5QmgkpvL8pQluQ/hLjmIYfLxWBDeA/zQZ/Zkic6sVS3YbVugMIklmwvlC44EurwtQJLzxjz/I1fobaqFxrKwkkIomtHW0grAubCchRD10sCUNTRXN14Ozl6Fc7UMR114JJo+ZCr/dh9XvPqU4/GADKhw10WDiLD5tf43SMKjN9gKgVyHhkAIuJao3AlLRMfjxPffhI348DltQcv8PZ/9rvxlT5xl55kzK
+X-Stat-Signature: 71hk7remkzhfrwiqpnpyj998r1wt66ms
+X-Rspam-User:
+X-HE-Tag: 1795198237-257729
+X-HE-Meta: U2FsdGVkX19WEl11FUb/dd4a+4DgCdtXaoF3Z/vPmdtYL0xqfrwVCiKsT1/hG5fYzLkukKigmik0Yq5jo6FT0N1YOB8kvPlMyrcl1vEbbbfTswb8qLlUrR4vjxGfjqQw4TF6Y+EiBwGsDWTWiFCxY/g+sbh76wLB08BgqtELpotZcTOjn8dyZFzXcoe2o3oRZc48WGC1WO53RJjO58OnIau2r+ufixfTDuJJyo0vRNoGYUpbKaIKUg0ZBsge0RoKNVMs4UaUMos4RjzgM1XSNGlt7AzdRQCsvziXmr1omTsSc3+z6ym0JUJkrftn8+0QY9G6TQrukaLjyoWXgnkj5TDlPzVzTSfuXVMYFGbk2yi9rfUCMZjl6YOjZvqXyWF8FQLntd7OsyBNbiUybjxdTxvrVYUbDKuaKbgRGkNOTsy6C4M2DO0XWUiaSNNosWcquLJtQr+fn8NqTTMggIuQxPVO2OpvATue8OvXC85tMwGa06K1Arr+tBJoaqsnCoJyknmLLx/s4Ku4Eu0XBuD5Y5xmn/VVUBoPwa8wXKPXu0ekNcfnIM5PjT57Y76jmju2oASHeEIYNYOWO5O65sGx6TTCx+nW6k/R2XYHD09vbwcULrTOvDvmKrkd8AvaHxhQ77lHQE/cF6UR/7i9LUrm9Z2/M1BsiySTeSG5TLpBeeclvfGYlZXrmol7SteufUWw/VTHForLlVEqWfg6JeAkciAGvApxi6n8ix7BILNZv7J+Iqm2EfM8HERGBmCGgiov72/EBCgpAAPSJvQU/jNssHB6PdtREQRE/6u3NVNqt0J42QR/vrjXdKBdXZMxmg325eQSfQfc6wB2y0SeKgjoPPAFzG4f+9/DG3lLTt0lLwAjm382GPEemGF+9Gu2MzEtry1ubDtE2kLYpm6se7M7B0gi+I8Pouhl0toFgYbQQyCuxBLmj94MSiUyl2+oKS1xrqPSPxP1LFGfb+gvpVU
+ SCeGZeK1
+ gF9YRmTWlQykVXbshrJMkcViimYDbglenFFJOwQ0k04pkRmle7rSza9VNfxJqzPk7MR39bb+JAT1JwJp2qhW+CPfqO40CtukdYxEdLL7BfPIB1vb1MySOiG3LLbC+OqQKK+ML1DoVtidmjB7trpjPf3G8Hk7nLWDkj2QYPapHnK256Oh+c2UhVS1zwnjP/Z64iJ4NxQAOKLAdjOy2dOCsCzwo704b/UGaPonKkNKoiElKH+E+Amoc4r+GquefFxMHp3uFZmNdm5srAwf9+UpqdajXKlkAa+KiqixwA+N5pnMVNZJwdMOLt19T97fgjT5EMc5ga1iGjHI20q7/ZzN54lKoyn7oSXVJbc7VNNo2edxrkU0D+ZyLfulwuyEKVA7J1hDuAsWG5X24PHFq8FIOvLmO64iu7AIIZEHRFrD7uE2A56SLgUriT/DDAw9Hxj2pHIzyyLvsjeZdk0X0xoNqgq4eg5Uy+f0EuXaXmFqCTft5wuj0Gk+NwzUjr3NTr9kjt4n339uNMFWuwMDGgxC95Zb/d4oPQXHy+nlxVr4wiX0FgiIkmPdMSxggg5TLOYVQUv4O1SDHUrPx/02+oQp2L6bUjDnJD1Jok0TUH6UuAihNhsyBoRIAYE/HGg08+ca61EXWH3ZMOdtGkWIQ/8zF0boB0pOEJXFKpzNnoQuE/IugJbIhZ8mszLbOXGr9zhqOIvopSiaBIBjfAS5953dIUvs+yW4VaZY5N57kc0qynn4DNktOE1tDJ2YkGIlj+3KUEF4grAfrf0vEuC4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,48 +189,46 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-The auto-movable online policy keeps ZONE_MOVABLE within
-auto_movable_ratio of the early kernel memory, since kernel memory
-holds the metadata movable memory needs. It counts all populated zones.
+kswapd and kcompactd do not run on private nodes, but nodeN/reclaim and
+nodeN/compact name a node directly. Reject them for a private node with
+-EOPNOTSUPP.
 
-Private memory in ZONE_NORMAL is counted as kernel memory, but no
-kernel allocation can use it. The policy can then online more
-ZONE_MOVABLE than kernel memory can support.
-
-Leave zones and dynamic memory groups on private nodes out of the
-statistics the ratio is computed from, as ZONE_DEVICE memory already is.
+Memoryless nodes keep accepting the requests.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/memory_hotplug.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/compaction.c | 3 +++
+ mm/vmscan.c     | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index b4d94021d46e..d7ce60c6815f 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -782,6 +782,10 @@ struct auto_movable_stats {
- static void auto_movable_stats_account_zone(struct auto_movable_stats *stats,
- 					    struct zone *zone)
- {
-+	/* Private memory is outside the movable:kernel balance. */
-+	if (node_state(zone_to_nid(zone), N_MEMORY_PRIVATE))
-+		return;
-+
- 	if (zone_idx(zone) == ZONE_MOVABLE) {
- 		stats->movable_pages += zone->present_pages;
- 	} else {
-@@ -808,6 +812,10 @@ static int auto_movable_stats_account_group(struct memory_group *group,
- 	struct auto_movable_group_stats *stats = arg;
- 	long pages;
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 879f372a891e..283d4d4e78c3 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -3038,6 +3038,9 @@ static ssize_t compact_store(struct device *dev,
+ 	int nid = dev->id;
  
-+	/* private memory is outside the movable:kernel balance. */
-+	if (node_state(group->nid, N_MEMORY_PRIVATE))
-+		return 0;
+ 	if (nid >= 0 && nid < nr_node_ids && node_online(nid)) {
++		if (node_state(nid, N_MEMORY_PRIVATE))
++			return -EOPNOTSUPP;
 +
- 	/*
- 	 * We don't support modifying the config while the auto-movable online
- 	 * policy is already enabled. Just avoid the division by zero below.
+ 		/* Flush pending updates to the LRU lists */
+ 		lru_add_drain_all();
+ 
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 5b53e0391d80..3e934135e805 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -8268,6 +8268,9 @@ static ssize_t reclaim_store(struct device *dev,
+ {
+ 	int ret, nid = dev->id;
+ 
++	if (node_state(nid, N_MEMORY_PRIVATE))
++		return -EOPNOTSUPP;
++
+ 	ret = user_proactive_reclaim((char *)buf, NULL, NODE_DATA(nid));
+ 	return ret ? ret : count;
+ }
 
 -- 
 2.56.1
