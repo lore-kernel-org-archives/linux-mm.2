@@ -1,36 +1,36 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E3B606C945
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8975E606C95C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SjDENAeR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c/FOeaVe
 Received: by kanga.kvack.org (Postfix)
-	id 4CCEB6B05E6; Fri, 20 Nov 2026 13:11:01 -0500 (EST)
+	id B0F136B05E7; Fri, 20 Nov 2026 13:11:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47DFC6B05E7; Fri, 20 Nov 2026 13:11:01 -0500 (EST)
+	id ABEE06B05E8; Fri, 20 Nov 2026 13:11:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 282AD6B05E8; Fri, 20 Nov 2026 13:11:01 -0500 (EST)
+	id 939A86B05E9; Fri, 20 Nov 2026 13:11:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E30906B05E6
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:00 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5BCF7C013F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 60EDD6B05E7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:01 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8C73A0157
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:00 +0000 (UTC)
-X-FDA: 85456288680.23.83CDA4D
+X-FDA: 85456288680.18.3274F43
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3A02714000D
+	by imf07.hostedemail.com (Postfix) with ESMTP id B505140003
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjDENAeR;
-	spf=pass (imf09.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c/FOeaVe";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf07.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1795198258;
-	b=Nasp+nwxtSBetQe4OQlYazMn6ZN6K4kpqFKpob5sVNmnOl7vkaBehee/m5CXH/cRnEZiEK
-	MzQiPLOKwNdvVVYWWC+vduOrH7O5DVHS61UNyvntWrdGZ61fKLHF1deI/SzR+uZfT1qI6E
-	jwexP4BO7xszufQ5IGJlmK8In7jFdVg=
+	b=wwgxXjMBGdDFZV7QLuEZ9KwGMft1yCiSZuxgChlC3AHdq7ob4GVidXO/V4cTMYzx3etm4E
+	lsPErs4DmA2rn0bRsaqFtWC8bAWxepH2O+sdKW2EpNznMiupnYoLbpD/wmpdD9GL+tMgyC
+	Po2TOBAyQKYett/M6Q+NJ0dzgUnc2xA=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795198258;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -38,67 +38,66 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JTyqGpLSDZFs+2eYm4pd4otew24ISSwcxMOMw8Mtcoc=;
-	b=zOjVvR5m0boIvrdh3K5DegxRT59T0EPmart/xS2U81OcS4mhTR8Kw7dPX4E+RhJPlVxEoa
-	WBf2aoGJaUczTgmtGBDdLLDSF5R9MwFOxyewdN/DGxHnuWdU78DXvYEZci1aUi84MyCBks
-	iI38VCuBXRftlt9EohvBj6ahiwd/ccs=
+	bh=X7OURSsmBiNAAKz0czFdC+E/6wbPVxqwq73TmOo8fvs=;
+	b=miu4JL9ZIBARGKG1gnWbHhLk/hkCorvI0gmcOz6/t4gl0nvZU+DJRqBzi36OtYioDiRK4U
+	mTSFlOj53bSGYi7ZLb7dAyFdpGoSgekt68ztTh2nVWh4eB8bTBaBF8rA2dU03+WSlp+EN8
+	CbIcAvv2V3qsS6PJterBSVqvwd/V9AE=
 ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjDENAeR;
-	spf=pass (imf09.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c/FOeaVe";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf07.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 83FD745049;
-	Fri, 20 Nov 2026 18:10:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0DE88404DC;
+	Fri, 20 Nov 2026 18:10:58 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795198257;
-	b=KjT2aUW45N1jJZpuLI01McAAOGWnweXdIKt3HltI4tYe3Vm9ZF4MU5ZDWC+yah8i0fyp
-	 VlT6b2d4kuvhMADsKTWO1RCfbS1SiYiRIDcL/EtIqfKuRCeVlXOUQORbYjdf8EkbzybhI
-	 qkA4P9ORwok3j3ffY1LkTq5MUiCjtWcXRnO87oiNmfeo8lVpoCD6vzBrmlYEcHJnIAtLR
-	 Em6AuZat9nNPig3/BsTdQApxZCThX72KqRw/i1lwJl4Lo1w12G/de6XXkCJ+2BCuPScR5
-	 VCepvf5tiK6LP321i6Gr2luPvPZeebq9ZAGTWaYPwi6cpzEs2JGkkBDyLoqg/E+xdfQ==
+	b=Fk41YanxFD9ltdT6Si0/y78LUoZ11jWS98CcYQANmmkl95tlMSBJHdmu8qcJlTgiiy58
+	 avDihpNwByq5C6XhhXdsGiRBCTnuiAEsTq1nXwoIhhI3NRDfnTTVt4wGvKt5mAzlHix87
+	 PVlW0rFbTgdsNKJ2QwzhIs4FFHmTW42wcDdNpABgdn4ndLpXD8BAJabvbLkyqIVd2filD
+	 /89HgzUal7x0AGO0a1ivwpkqOW9vNkPmwY4KT+G54b0HFpotnR0zz2iS/G5hpwJvjuaWI
+	 dK/fPjv1LI9Twt68o3Z5kexZus3FC8MzZRQqX6csEyuNhiHmtWrpygwC4lV9WL1Cxuw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795198257;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=JTyqGpLSDZFs+2eYm4pd4otew24ISSwcxMOMw8Mtcoc=;
-	b=k5Skpv6Xowdu6Rdr01FFM7WXAvAU8EqWthNHA7YEuaH7tb5+W60hyAgRj5ewOIiefU3M
-	 drO7e5k8pcZ2ytcnViLQpgNBBS5OL/negZUCFbvBwiD7K6rKK18BsZ9HkbVhBpCNZUH+P
-	 2Ev8DgeO0iD4iNsPBmwhKVYeGEphKn4tfHvbfok+QbIKblZuj2eoctN2u+X3JV9uurpQn
-	 hs0z+KM+BcFDw7RpyTCcIt4C0LGy6sOkfO/y1DnwvqSA5vrBdzQlev653QY77YGpxLZ/7
-	 MXRebHH77fFT3Kv7ZQsYXt00rGLjcKfeEkwg8igBZ+m6kJ0dvCcVioXTF0ah4DWqKuw==
+	bh=X7OURSsmBiNAAKz0czFdC+E/6wbPVxqwq73TmOo8fvs=;
+	b=iiWQHyPD3RuzXibebHdJeLNz8Q6HhN5aKekt77bFc4hBUZPa/iUEDDkmWoI0vea80pKg
+	 +yyAfdna6GsESGpvnKflVr3pXTvFdl4utJiGOqtkWjle7FD97ISZIvpzC69g5LjzgFF8g
+	 1hjxEvIK5KXeH8/2MNKIG+frwK/In60rCFBdwsWpUP6T0c8NaPf2pxOpgRX08EK/vWqJ6
+	 2ShtCibyxIRQ40i/mjWj/YmKs9d6P88GF6x3B5kNBXZPPO+W0AJ/Tu1qwz8PtN55HJe1q
+	 WEtMxfKUA3+U0QfqGwEVe0jA7tbZ1EjTTweJwoKIj5bZvcKVUoqU8BtpftPvF94U+eQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B74821F000F0;
-	Fri, 20 Nov 2026 18:10:41 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 2B1581F01809;
+	Fri, 20 Nov 2026 18:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795198257;
-	bh=JTyqGpLSDZFs+2eYm4pd4otew24ISSwcxMOMw8Mtcoc=;
+	bh=X7OURSsmBiNAAKz0czFdC+E/6wbPVxqwq73TmOo8fvs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=SjDENAeRIiZPgoh7IHWDhqPv7/r/x0TEMhyRLTYqY1AVZfOsQNfW76UvxkjYE2zve
-	 zVmZ8IKqeLcIDWbII85MFELoRsQreb7Nhp4UPkpJWIQB2IMfMGrLQwAG9dW6pVwiFD
-	 2GxFVAGRB//DZ3mu4TkouUXEedQX3N1TU/ok2voNFweJ2pJ8u6FhQ6fnht/ilUjSqz
-	 CwcFztlM1rY9fbKTktnqzY2bW2JX9xk5dNWMRuVxKQO/XYfdzWaJy3hsR6kqWVX6pR
-	 UKHHqpn4B+VP9hyVsvnysJgzGTdt3UOBDG9BROPOrEfyTXJEyjitFLQZESYemBBdIy
-	 QqtWb2mxM4ImA==
+	b=c/FOeaVeLJZWtA+5a6dBdMMaXisyLI8AF9+8kZZ6tjHUZGumDTs1o1Woz8PGJOBtd
+	 JEAAR7MJUM5B2L5h7X8kzlgW6F4yMjqynFM3LZ1ykoNRlcvc+rR8qj9iaDbbVYlOZi
+	 4A/C+5LjZ0a8/2jHyVPrTvnGlED9rqtbDz4GSehdrQyj8a5v64ETsgnFHtbGXcrK1Q
+	 cXU6zqm6yiHxEND9rxfttDSUV99fJhgStD0VZZB5Nj5riRIHNRKVxUWdAQBRJ4jCam
+	 pJRNlCv40utWZYqR2L2j1VSF1eKIMuVP2Ribn4KE+uJ1L8zJ4d4D+MHhLLY7QQXIKM
+	 gL+Bv030ncwKQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3E68C4B96D;
+	by lkml.kernel.org (Postfix) with ESMTP id 5D47E4B971;
 	Fri, 20 Nov 2026 18:09:22 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:34 -0500
-Subject: [PATCH 43/60] mm/page_alloc: fall back when a bind policy's nodes
- become private
+Date: Fri, 20 Nov 2026 13:09:35 -0500
+Subject: [PATCH 44/60] mm: add N_MEMORY_COMPACTION node state
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-43-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-44-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +154,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=3943;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=5165;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=MvCOuLTJrjpaTAmpn2Zbq/KX8f7RvrtAs1ipWbBROxM=;
- b=DVYzRbCZncJFfd8wmeRLbtBkyfuqBe2ViahLjuovjyvk17+NJApfRjBY2nJ50Ht7MFj0Mt9Nc
- RvcANV2Hfw5CWYGgF52KPf58f0DIBcx5qSTyz3t9oWeSeLKVo/t70CN
+ bh=g7ydIdopU0v+cqoPiLJmqWYEIQ70E6DWexCPxxD4cU0=;
+ b=Ddw1phUFx8GRbqgTFY+sDiYn8K+6nhCoWRNObiJW/+7XlTHPwI01iZM9GC51adS8pYYGCvW+Y
+ J4qL4HCpvf6CbWfMf+rMSh6u7SUxavjyPEy7loBIXocrA9zjhLa1w2G
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +166,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
+X-Rspam-User:
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B505140003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 3A02714000D
-X-Stat-Signature: nqq8xmrd5i5qbeay677k8xb51c83xjck
-X-Rspam-User:
-X-HE-Tag: 1795198258-60487
-X-HE-Meta: U2FsdGVkX1+TTFCYxEkvy1k9t4weiGib9mD5PDQHxEbVvXwlQMbq7anjjVR9+WwUULnfX/eEaJfsYpnBsTKOdDNIjkl7PKMhX/LT1rR3l57JhId1bpMSi9mUu7oUSdjaf5hln5SycM0sMIAYJCgRjvaewJfqqHtYVU+smMgvEXd/Pv7wpOFub53z1XzbvZMl4o4QToI4Ehk86fyg7aapZWIWwlgvDSCxmqovHMuvQbGlLGXHdg292q6rXgcMIlUZr+uPVJn2lsJ97XUusqjkx/miDJ/RjNjnQUY7csGMz+I4ddgLJcJ3ssDAiZjuANHsUXwbjSUJKxvLKP6pAio9eukeQg2fp2KH3JBRgiWGrjIOTEC58P8wxhpPdgTmmQFX9SDZE/q1xscJ9r0wm3zJ6CUWGZVnGHZtnDE54JVT9rHmr7v9ti1mmNe9Juese+fUoz5Rk+wGtIE3JX1vDCCMuHRmZuVCShysu8K3FxHV1fGHmTFOo2OROF05SUOlxCb0fQtLwzYnKB1NSn93LH2grCtfbLiVGgei+XjiNvoSxhP8ouLqXrnH3Ci7SVIx2TtqQqh7eerSwonTowmtBhZ12y8NLZlNluPcKFwDIGByokBVUn4LxgqIq7EWGxwIwAgxgg6uwKUpraqiC5k1cC3Mr54F3ajhbJrNTJkRzo9RJ6ekJjRvkVNZ4GIYOBagxx9yD32Lv9vrgrZASFsySK7qqE/Q0xIXS5ro41uxKTUG1EVaYXTjKptzrthVoJxduwlJ4INp1BAbht46BOBCYdndKPxAk3F53esAykSXM1tze6TFjDG1SOhDwKD7ajyH8AUuhQH5VF0IXMt+0zE3feMmHEoQ8b7sU4yqidNs4YANLZzDVHFwByoK3xY2JAl4xXwOc9/nkPBHsWmebrM90AE9xH8IFXDxui4Yjo2MVp1etPTeSdQmqopqgIal1Tv2Cn7KivuGz+RW19/HpUr2BLb
- ZOsdqXHl
- c9hJUEm/YFmjZqD/4I+TA/2WxI6ptUH83krixrSpfguerDHp1dWE3zb1xtI/zPwoiirotj7ZlrHnqZeITTTrJNyGqaThNYii6s8U56E4HfJmZ2SkrsLtwpF4GuilAgIP2ytqs+cnY1xWSMVyZ3tdcNOT1/kisupPrGwn7XIr9MBaG66eDgPiYxLWIEd6H4L9gUenCQFnwEu7LwJKAkNEjbHS2wyacyJKWJQB1lmoKV151GyHsZbhlk34Wm18oRbPNZ4wbVbJX4wsPV+HMNtPEPVJkrScaty/AiMpdHqFBS0ovyY5EO/necFLAYq3E3HRs4LKn+BWSsF5SxvzKgO/GoK4G27XCjP0RY8PS7fK2NFC2qoLz0y3AO8SspIKRhgX+6zrwcmEcvvF5A5W50JrJgpwOiTMTsUJ2Aesz3CuxnSCUbVMTxut2UW1Du4PxHY6LYb/Gc8uj60h3w4boipRJWTB9JkXh1M0FeWgv4m5dPe3FKm4sNmbfUO/Tm3dQvYYUZwhElDa0LSaLMFWeK69AnxKwd3kGX+jzwBlJY4LNGZl3NB1H3O3piuuEjjxpwwUHOVGBDkndbEF5eyb2kb91o+oprLIPwH9kmRFQ3im8b50zd7HgJ59LlAC0/6PxEGOFC3xDaDBT+1PhQSrCcT6fx9Hf8V1zvOpFMjDRL1kI09dwyYeE8ppOTSnN/8xIvP8rtby0imX5DfATThWPT0GZAR0OfzDI9/+Mr/KMYmMU3Jkc0AKkbUILNSrRXqkhHxCXCzyWv9ui5o7cdtNuzcFqxziRBg02F+PtYs49cChW5pYBpr36POk3ApgWSsS/DACFazXY
+X-Stat-Signature: p3jefyp97cpsoatkj3mch9mpihmr5gbj
+X-HE-Tag: 1795198258-64781
+X-HE-Meta: U2FsdGVkX19w39FkGDvtFfbBxRnpsU2quUu+TD66pBn8P0Xwiv0/lSYmW+zg3ugV5MKZmWgBnm3Rapu+kQfnh/WCOtzNx6hjAVEBD3Uy1XWmojZnwVb4NB6n2Zvi76Z4/c7dcbf1G8Ok6ac0naHJJDmvCRWD7Q8JN1UiM10KoNraHrUCITga15NmpCvriHOXPEbqusAoQbJA9pdlv9lIqb+jnp9wOeOyi9nGF8XVNwCRamYkhi3rfA4Dy6xud3XVh8yjxjUh4D/BI/kTAEwEm+HiqbMZwoQlxFE32F0c9DpITN5ZaRkY4bI63aeilXVjGPl44Ls12ZpaUBjkE9M6M9dImtHltmqdIATOjtBWlIBHShAag7g0r/OaV3e6i5BTjdfhJK/UNfAQE5R/s6cL2X836c6QBmyf1GDMyOdDlrmmBRCfMmRITgagSPTHhZzY7vsY1BumOS7jUvLBMkrJK6DPyPrtMXEf9oXdvVfZ3hIwRFpXgQr6VASierrGQvc2CQJO2jZR4ludtlnS8ZmgxoZWrwVeJkAViefIh5S7wOSiVytRDB03F2vdbMf/TFN9ElnfxSdPIbskQG9QTpHx7P529lvnx0EJH3LfxlAFYC0RnlCBUpKR4jehp//nvRCE1LMP/P3Sbsj80TmXi3WgYUzkaLVRmp/9pkmj5utJZPbA8Jib1OhBmCRh5uKr7du3veu3gwWKQrz5/G+sZ6+CB5e8UcWHKvQcdR657DFbAPlAkefosD5T95kh0YeDft5vRFFIQuEnFPPFw3DjcJ/LeG+o3Dl0qTCY7So3/cAULTwD5te7CagjPncvUUTd/02F/8bneWakoztIYO/vpETynLfXQ7Zl6TiQXpy03DvlT7WJbTutKI+3sJ7tHeEBhTrpYnvPwbcrTwjMU5nvNCiTJIE6wXs1G8EdCojZxEggqikZQK/IzJh2aXC6TXJtd6IfDeU0xW5/6AtFHsOZI92
+ NlYDE+bx
+ SjBSNefxzmA4tZMOFCPbLmFj6vKO10IwZ421xe2Ek36G47e9IQqEg0l2s8AeKr5z4LMzyZ5U80ZJXJsajIIFMJpyfDq2YsHfrlrZowL2XEj8PXYtYj2kIwA8gTu7S30HyUZX1R3TRyRqkNkO4Dk4rtOHzMmK7pDjSSwudwMcedBPRHwNbOkkO5zga2fRowthcEmmxbgFOXbYJJ9nje9zvarNvy/iUFTKz2dciDs0Gj73gQvLwEo9iGAdZ9+q1O7ajvdrNT3rj85CFvtP+dj/YEwR3jqfb2L2fqvVOkuKbcLUXqQllKS1DjEH67ldJk7BG+AeBtK8XdBVfndqVS7WTOjFhZzrFKxbgaukYRSBfCnKaPYRdHn5j80F8xsX8XfUSUwGoPaKNbUpnEFX+Ir7QYpzeRstkRoo1AwIbo6vetmpiN6jNG7DRQdIZk46OguNqxay2vBgOQhKyDhoDhucxmY5fFIye0lDNeZICiP+4hIKQpDKgdiFeb+VQlt6TJOILJKyNnxrFMxHNTeh267f4jFbpmd5LSs/8nZFNehp0X9cok0PuYWTESLwH/Tmiv0e7yLXhppok3zYh1CejxSGQsHoL8vy0YiWHx90O63Fk8s2uP1lK6adfCX67U8vz6SYaTeiS8QK61059CgDYF5DBG56f7pnKFnoP4jAO8KQ5kYKKTBthcnTkE5OHmxThn78sTXL3wrjMEN1y6+/O5HhEDOh3vQ0f073wgo84yxozY30VmQbttEzOA6oxIVka43amr1KnNXHtfnooA3U9h6/3pEbia8/ledpt3kOaXuyZFukqXIHjLElaHkZU0E4lX1D1R18C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,96 +188,135 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-Memory hotplug can make a node private after a bind policy naming it
-was created. A static bind policy, a shared memory policy, or any bind
-policy without cpusets is not rebound when the node's memory is
-removed, so it still names the node when the node returns as private
-memory.
+Add N_MEMORY_COMPACTION for the nodes compaction may operate on, and
+NODE_MEMORY_FEAT_COMPACTION for memory providers to select it.
 
-The common zonelists hold no private node, so a policy naming only such
-nodes leaves the allocation no zone to use. The nodemask still
-intersects the cpuset, so check_retry_cpuset() keeps it, and a fault
-through the policy is retried forever.
+Common memory carries every feature, so a mask with
+NODE_MEMORY_FEAT_COMMON must now include compaction.
 
-Let relax_private_alloc() treat a nodemask that names a private node
-like a private request: once no node in the zonelist is in the nodemask
-and allowed by the cpuset, drop the nodemask and allocate from common
-memory. Only a request on the private zonelist keeps __GFP_THISNODE
-strict.
+The state is internal and has no sysfs file. Internal states follow
+N_GENERIC_INITIATOR, so check sysfs coverage only for the states up to
+it.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/page_alloc.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ Documentation/mm/physical_memory.rst |  7 +++++++
+ drivers/base/node.c                  |  5 +++--
+ include/linux/nodemask.h             | 20 ++++++++++++++++----
+ mm/page_alloc.c                      |  4 ++++
+ 4 files changed, 30 insertions(+), 6 deletions(-)
 
+diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+index ddba7c890418..5d0a69f6c23c 100644
+--- a/Documentation/mm/physical_memory.rst
++++ b/Documentation/mm/physical_memory.rst
+@@ -182,6 +182,12 @@ nodes with particular properties as defined by ``enum node_states``:
+ ``N_GENERIC_INITIATOR``
+   The node has one or more Generic Initiators
+ 
++The following states are internal and not exported through sysfs:
++
++``N_MEMORY_COMPACTION``
++  The kernel compacts the node on its own initiative (kcompactd, proactive
++  and explicit compaction).
++
+ For each node that has a property described above, the bit corresponding to the
+ node ID in the ``node_states[<property>]`` bitmask is set.
+ 
+@@ -194,6 +200,7 @@ For example, for node 2 with normal memory and CPUs, bit 2 will be set in ::
+   node_states[N_MEMORY]
+   node_states[N_MEMORY_COMMON]
+   node_states[N_CPU]
++  node_states[N_MEMORY_COMPACTION]
+ 
+ For various operations possible with nodemasks please refer to
+ ``include/linux/nodemask.h``.
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 56a1741a6a45..19f93cda90be 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -1000,8 +1000,9 @@ void __init node_dev_init(void)
+ {
+ 	int ret, i;
+ 
+- 	BUILD_BUG_ON(ARRAY_SIZE(node_state_attr) != NR_NODE_STATES);
+- 	BUILD_BUG_ON(ARRAY_SIZE(node_state_attrs)-1 != NR_NODE_STATES);
++	/* Node states after N_GENERIC_INITIATOR have no sysfs file. */
++	BUILD_BUG_ON(ARRAY_SIZE(node_state_attr) != N_GENERIC_INITIATOR + 1);
++	BUILD_BUG_ON(ARRAY_SIZE(node_state_attrs)-1 != N_GENERIC_INITIATOR + 1);
+ 
+ 	ret = subsys_system_register(&node_subsys, cpu_root_attr_groups);
+ 	if (ret)
+diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
+index 02908ef23a62..2757acffff2b 100644
+--- a/include/linux/nodemask.h
++++ b/include/linux/nodemask.h
+@@ -411,6 +411,8 @@ enum node_states {
+ 	N_MEMORY_PRIVATE,	/* memory outside the common pool */
+ 	N_CPU,		/* The node has one or more cpus */
+ 	N_GENERIC_INITIATOR,	/* The node has one or more Generic Initiators */
++	/* Internal states, not exported through sysfs */
++	N_MEMORY_COMPACTION,	/* mm compaction may operate on the node */
+ 	NR_NODE_STATES
+ };
+ 
+@@ -542,16 +544,26 @@ static __always_inline int node_random(const nodemask_t *maskp)
+ #define for_each_online_node(node) for_each_node_state(node, N_ONLINE)
+ #define for_each_node_with_cpus(node)	for_each_node_state(node, N_CPU)
+ 
+-/* Private nodes omit NODE_MEMORY_FEAT_COMMON. */
++/*
++ * Private nodes omit NODE_MEMORY_FEAT_COMMON. Their providers opt into
++ * individual MM services with the remaining bits.
++ */
+ #define NODE_MEMORY_FEAT_COMMON		BIT(0) /* add to fallback zonelist */
+-#define NODE_MEMORY_FEAT_ALL		NODE_MEMORY_FEAT_COMMON
++#define NODE_MEMORY_FEAT_COMPACTION	BIT(1) /* mm compaction */
++#define NODE_MEMORY_FEAT_ALL		(NODE_MEMORY_FEAT_COMMON | \
++					 NODE_MEMORY_FEAT_COMPACTION)
+ 
+-/* Private memory needs NUMA: node 0 holds all memory without it. */
++/*
++ * Common memory carries every feature. Private memory needs NUMA: node 0
++ * holds all memory without it.
++ */
+ static inline bool node_memory_features_valid(unsigned long features)
+ {
+ 	if (features & ~NODE_MEMORY_FEAT_ALL)
+ 		return false;
+-	return IS_ENABLED(CONFIG_NUMA) || (features & NODE_MEMORY_FEAT_COMMON);
++	if (features & NODE_MEMORY_FEAT_COMMON)
++		return features == NODE_MEMORY_FEAT_ALL;
++	return IS_ENABLED(CONFIG_NUMA);
+ }
+ 
+ /*
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ea48991ef589..b7339bc634d5 100644
+index b7339bc634d5..335ce73e645e 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -4078,16 +4078,20 @@ __alloc_pages_cpuset_fallback(gfp_t gfp_mask, unsigned int order,
- 	return page;
+@@ -204,6 +204,7 @@ nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
+ #endif
+ 	[N_MEMORY] = { { [0] = 1UL } },
+ 	[N_MEMORY_COMMON] = { { [0] = 1UL } },
++	[N_MEMORY_COMPACTION] = { { [0] = 1UL } },
+ 	[N_CPU] = { { [0] = 1UL } },
+ #endif	/* NUMA */
+ };
+@@ -218,10 +219,13 @@ void __meminit node_set_memory_state(int nid, unsigned long features)
+ 		node_set_state(nid, N_MEMORY_COMMON);
+ 	else
+ 		node_set_state(nid, N_MEMORY_PRIVATE);
++	if (features & NODE_MEMORY_FEAT_COMPACTION)
++		node_set_state(nid, N_MEMORY_COMPACTION);
  }
  
--/* A request on the private zonelist. */
-+/* A private request, or a nodemask that names a private node. */
- static bool alloc_is_private(const struct alloc_context *ac)
+ void __meminit node_clear_memory_state(int nid)
  {
--	return ac->alloc_flags & ALLOC_ZONELIST_PRIVATE;
-+	if (ac->alloc_flags & ALLOC_ZONELIST_PRIVATE)
-+		return true;
-+	return ac->nodemask &&
-+	       nodes_intersects(*ac->nodemask, node_states[N_MEMORY_PRIVATE]);
- }
- 
- /*
-- * Whether a private request can still allocate: some node in its zonelist is
-- * in its nodemask and allowed by the cpuset. Any zone type counts, so neither a
-- * GFP zone restriction nor an exhausted node makes the request unsatisfiable.
-+ * Whether a request that names private memory can still allocate: some node in
-+ * its zonelist is in its nodemask and allowed by the cpuset. Any zone type
-+ * counts, so neither a GFP zone restriction nor an exhausted node makes the
-+ * request unsatisfiable.
-  */
- static bool alloc_private_reachable(gfp_t gfp, const struct alloc_context *ac)
- {
-@@ -4095,7 +4099,7 @@ static bool alloc_private_reachable(gfp_t gfp, const struct alloc_context *ac)
- 	struct zone *zone;
- 
- 	/* A strict local private request keeps its allocation domain. */
--	if (gfp & __GFP_THISNODE)
-+	if ((gfp & __GFP_THISNODE) && (ac->alloc_flags & ALLOC_ZONELIST_PRIVATE))
- 		return true;
- 
- 	for_each_zone_zonelist_nodemask(zone, z, ac->zonelist, MAX_NR_ZONES - 1,
-@@ -4819,10 +4823,11 @@ check_retry_cpuset(int cpuset_mems_cookie, struct alloc_context *ac)
- }
- 
- /*
-- * Relax a private request that can no longer allocate, because the cpuset
-- * revoked its node or memory hotplug removed it. Drop the nodemask and allocate
-- * from the common zonelist of the preferred node. Called after
-- * check_retry_cpuset() and check_retry_zonelist() found no concurrent update.
-+ * Relax a request that names private memory but can no longer allocate,
-+ * because the cpuset revoked its node or memory hotplug removed it or made it
-+ * private. Drop the nodemask and allocate from the common zonelist of the
-+ * preferred node. Called after check_retry_cpuset() and check_retry_zonelist()
-+ * found no concurrent update.
-  */
- static bool relax_private_alloc(gfp_t gfp, struct alloc_context *ac)
- {
-@@ -4830,8 +4835,10 @@ static bool relax_private_alloc(gfp_t gfp, struct alloc_context *ac)
- 		return false;
- 
- 	ac->nodemask = NULL;
--	ac->alloc_flags &= ~ALLOC_ZONELIST_PRIVATE;
--	ac->zonelist = node_zonelist(ac->preferred_nid, gfp);
-+	if (ac->alloc_flags & ALLOC_ZONELIST_PRIVATE) {
-+		ac->alloc_flags &= ~ALLOC_ZONELIST_PRIVATE;
-+		ac->zonelist = node_zonelist(ac->preferred_nid, gfp);
-+	}
- 	return true;
- }
- 
++	node_clear_state(nid, N_MEMORY_COMPACTION);
+ 	node_clear_state(nid, N_MEMORY_PRIVATE);
+ 	node_clear_state(nid, N_MEMORY_COMMON);
+ 	node_clear_state(nid, N_MEMORY);
 
 -- 
 2.56.1
