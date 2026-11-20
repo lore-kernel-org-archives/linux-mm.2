@@ -1,105 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65D5606A330
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 11:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32490606A33E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 11:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jb/YGBIt
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=pKp1mOHB
 Received: by kanga.kvack.org (Postfix)
-	id D86626B00EF; Fri, 20 Nov 2026 06:00:09 -0500 (EST)
+	id 41B426B00EF; Fri, 20 Nov 2026 06:06:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36DB6B05B0; Fri, 20 Nov 2026 06:00:09 -0500 (EST)
+	id 3CC356B05B0; Fri, 20 Nov 2026 06:06:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4C436B05B1; Fri, 20 Nov 2026 06:00:09 -0500 (EST)
+	id 2E1EE6B05B1; Fri, 20 Nov 2026 06:06:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A0E336B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:00:09 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8BF6A0EBC
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:00:07 +0000 (UTC)
-X-FDA: 85455202854.28.681EF03
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DCA26C000E
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:00:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Jb/YGBIt";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D5896B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:06:00 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 963F21C480F
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:05:59 +0000 (UTC)
+X-FDA: 85455217638.20.D693AFD
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 83B0D80005
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:05:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=pKp1mOHB;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf30.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795172406;
-	b=NjO7YmRMTxp30gh/yotKEbPGIFl+WFDBl+btHmgPwwd9f4EMNLmbARAJdzt828ZylPth+k
-	IXiFushGRuQREcllKbhaS0WbBJAPV2dMM+jSWTOIXySF1TMLYk8W2wPLkjB8H4gpGSwOnO
-	7HqwZ017cZ8+Rqfxy5qEmJ6LAVyDcsY=
+	t=1795172755;
+	b=l+eUGBhGw328BB6QG3khtGaSWZM98ZYBGMzZxN1vCq4iuUjw2f0tNr8llH9pkWFDTQ+GZ8
+	TxJ6d+BUep7ROOxxtr1iUHgxU2sUY8KcYUKfJY615mni25tTybv47t6utWWzMylqJpmLz/
+	wsxUr+Jc3Dd+lfrS+X/KcD5GbDGtkRg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795172406;
+	s=arc-20220608; t=1795172755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ucmucpZhZx5mCbukB70RKbF2KoPnEE83By/sGDZ9Vsc=;
-	b=Mb52+bjBT/Atw1SovfNP+xFQEpGccs4ss6/72Lzg1YMPZOiYfxQKoMEw1dueNvYCyHuta1
-	q0BHo9nQzYclC041XCZFlAJcBTkZaCFVpqdxQQJD2G43k86rucnvR/LYARDBFY+4T50A3q
-	Wcna81YpzjRIvvz4iJsmB4dCro8xpeI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TtFuIhwgLpPs0ea7HaHQTWE6q+4yCc9ueOWd48K9Uz4=;
+	b=cFnuy5wiubBmgh5iR9kiG8BqlSKedNX/XQt+bFZ+X81XB5WIlzxOZ/yv5n+UsROEQR4p5a
+	o1Ac1y6O+A2XEB4JFo0XbrJVWdN4sfI1kawYWRMGpw65w9G8tJfB7v2yeH3KQEUs3CKrjU
+	B/9iYLdYItzTWeeGVUaNo3l7izpTtNs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Jb/YGBIt";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13E9C444AF;
-	Fri, 20 Nov 2026 11:00:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37381F000CA;
-	Fri, 20 Nov 2026 11:00:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795172404;
-	bh=ucmucpZhZx5mCbukB70RKbF2KoPnEE83By/sGDZ9Vsc=;
-	h=From:Date:Subject:To:Cc;
-	b=Jb/YGBItPaegqxy+e5CuVkAyDvm3pipH241J9nVLKYmP/XcSGrseC+lMdz3MuqgTI
-	 MxAxVwrbi2ChLeeL6kSTXdFvW8QndjN9/d0zE4uKaWUsuqDD5t6yOIXfc7NQd+Jf3M
-	 vCLm/y0GzG5f63vAJWiuTf84isOh8UceKV6Jvck3m1X7y5t3a454KA64+ZpqXzD5ny
-	 Pb6JC4P9FqbErzt6vIz4sb7HL9zOQGmlB9r5wgooeZnyPzaSgW0cp0WRCiNWgScGbG
-	 RL2v8bEuXMdTtURoqZIdyNZydlbkGoeadqbN7MHhQ3Kex/8I01kJNJdUCB603dNms6
-	 WmEeX2fZAqLLA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 20 Nov 2026 10:59:56 +0000
-Subject: [PATCH] mm/msync: return -ENOMEM if page-aligned length overflows
+	imf30.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=pKp1mOHB;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf30.hostedemail.com: domain of wangxuewen_ky@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=wangxuewen_ky@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Tt
+	FuIhwgLpPs0ea7HaHQTWE6q+4yCc9ueOWd48K9Uz4=; b=pKp1mOHBD9Pcw/cvWa
+	I+cUQs+xX07LPn1aI3fJG1xin8ZmjwGXQeQnyE3tV6RD+6eHEeKekKGjmHPi1k+v
+	CG2G5J7Mw9N5AIKvjqD90psoVafdcUlyr/28Wqdi0ReRDxMHQA553j3d6RQ7cC5X
+	hhiWg3aev0oahXkIosGxa4bf4=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3z1yGKQBrer4iJg--.45709S2;
+	Fri, 20 Nov 2026 19:05:43 +0800 (CST)
+From: Xuewen Wang <wangxuewen_ky@163.com>
+To: akpm@linux-foundation.org,
+	david@fromorbit.com,
+	qi.zheng@linux.dev,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Xuewen Wang <wangxuewen@kylinos.cn>
+Subject: [PATCH] mm: shrinker: stop counting when the seq buffer overflows
+Date: Fri, 20 Nov 2026 19:05:38 +0800
+Message-Id: <20261120110538.3256962-1-wangxuewen_ky@163.com>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-msync-enomem-fix-v1-1-80282c8c5beb@kernel.org>
-X-B4-Tracking: v=1; b=H4sIACsoAGsC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDQyMD3dziyrxk3dS8/NzUXN20zApdS9M0C2ODVGMD05QUJaC2gqJUoDD
- YyOhYCL+4NCkrNbkEZI5SbS0AJ0o9uHQAAAA=
-X-Change-ID: 20261120-msync-enomem-fix-95f830e305dd
-To: "Liam R. Howlett" <liam@infradead.org>, 
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Wupeng Ma <mawupeng1@huawei.com>, 
- Ding Feng <dingf3ng@gmail.com>, ljs@kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1643; i=ljs@kernel.org;
- h=from:subject:message-id; bh=G1I4F/4QvlDVu084r5Zhy5KWsBknEl4bznf2Xzz0LRo=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZNIzWiwmtNEvg2PE9ed15idccj5XDVY8+mPhjf35Oy
- vI/Au8DO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRe98ZGR503eds9hSe8/7S
- FAVuoZjI76Hixzb7XRecZdW6ZYtgXjIjw7H8npU3FJNNJrPPFA78v6qosqDswwGvH+tLI333RiZ
- /ZAcA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3z1yGKQBrer4iJg--.45709S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CFWrCFWxZFyUKF48Cr1DAwb_yoW8ZFWUpF
+	s5K3yUta1DZw1xZrsaya18XFy3Aa4FyrW5WFnYqrW3Jr4rXr1Sq34rG3WYgF48C3s5G34j
+	qr1Y9FyUGF1kZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jJTmfUUUUU=
+X-CM-SenderInfo: pzdqw5pxhzv0xbn1qiywtou0bp/xtbC8AdGL2sAKYd0GwAA30
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 5uz3s9k5mtq13bcd1qkbi91awd448rod
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DCA26C000E
-X-HE-Tag: 1795172405-460748
-X-HE-Meta: U2FsdGVkX1+PIYc3gz9pmTmCvezYYZ5NDfqQ6ghs0CXFCymZLlbbUArqOPRebqOlFcW3y9x6ga+OrgHwSFoHcQWBz9ao4RH6zNqdbjffHh2j4dB0zKW1382dADAf9AJV6OJZ2HNvBbZQO2AUsQGcBTm8fqCCx/rzBDdZpvXFf8aI1Fk6RStQnYAH2pnxUQfO/qeZBJ3WIwzKO06woMB/gEDfpH2EaF7Fu1z7HDElhvHBAVQ9yqaFVE7e1ihHaMrRiL2VRDfhI7xq+cOEQedW+GHk3k8th+ovCnXukDl6e84UjVub1Qwu9eRGbwfhWWjYbaZyWzeCRFujMTghGn8+VOfpD5xefl6Ig0M9goMGdXs5NCO7sLklT5bdnp5YYimVG7g5tXsvt50IcoVJZj8AaYUXEOOKrMqvDDr8VoskOOzPqI7Xt2bhjxJcOPV0jMZH9LevsTpGkVkZjoSRZwMRwu74EcnSwElmQz3B7BvHMBQXJi4AEErT9Rywyyvy2Obsdis12qFL1dIqdznyeQ4av2Z14toi1+lILyK7wcw7L/byRC9hFWDn/1d8N7E5WC9P5fc7HYUE3hBROzUPnPa3MuYkHi92gqw85dxVICM/AyvcjUBAP6R2wjXUnqcpiVOFQiSSy47r1q2iYHVEsOCNjD1Ig0jJYJtpKaiDwLFaqv9GA/fkeQzzJM+5ipMCKBgoRWcj2dpUV/yZHxbXfEw1CgD3gvZYD1IbuV/c+XgCKXePVEiZVGphX1Goaazl2cheVV6TdDeWZw9cZ3qljlmaYVvpNWB2d+8+2qCEm17fDFGE4Uf8zIt7lwmP6xqnRRmSaAp2TwfKLHsBrWjBo8w/FzXxbim1oNXczDUOl59h8nnEa3Vopd0XWoeUwS0pEAmyPkxEDgGQNjz5mA2tJvxkXwvr7pl7o1HBPafqUF1bhvLuuBFbvP87lNdWccfK1vFnIc2xbDGTUnkENpNphf4
- 7nNMALxJ
- 5+47W8towrTYwSsq4KqPTyMYTpBREx0sFgUVb9bnpYhcU2kpDjgVec8J+QbvFlsRIBJOPriqC5mRxJssZPdqI6C21imT9dB2P6dy6r8J9qgTQk2KIS6x/a9sL41m++a+aJjuX2vQtYyUbKkEIlgn0SJwSf2k5ZXm0fmmlqYeKt5gXuS24Bfvw26kqvC4rdOw2CpL1KdU0SnsCDF/vv9LUoxD4kstdrLyVb7x9SJ7zcH8PDEaDB7MGesR7SbaLa0UyjHVUr7ki5A2gHQRqQQSMtW0B0sQJwVRhmbCQ+F6P2d/4/I5rGQgbJK3ZVj+Z0P7BQvZOoy0c0wNUsUinA0DAMEyeLreyNwSr/JBX+7Wk752sfPaO3EF4WGHmSqn3t39SxQtJo30hJrF/KgK1XMw9mqVJNhlNwTHyGzTMK/hF+90vb5BpMnQkNr+g3cKyj6EzcUFbIeFcu96uo5Vo9PZZrRtD1q9bbbO0IMm2480p/eEB8ls7RXsJHRRy/MswXu9UAbcoEVCvr8pf3ik=
+X-Stat-Signature: y6gq87b4ttnf1p9n9bw7x1cxey7goz53
+X-Rspamd-Queue-Id: 83B0D80005
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795172752-895843
+X-HE-Meta: U2FsdGVkX19qJPpK5MKW8ro+we0gC4bG9rDcDakPYdheqvg4HEr7DYuYjAZ6lsBNZnkeRxSIUOI1rHeBuLRnSbiu6u5pgDM+Y0fgZXICQEZ4sKgp/V9f/SBqCQhsfHqKjduYqSxlTmA1ZadopTtPE0GXC3MWCECaskxE5Jvq2DsBoLp+kVoSw0bbcE0VcN9diymprQACdDadcgILrc3LNbIoMNkcm0S0ONUkYY5VpGAXS5BBdsXlc891lXPb9RmxMExqecxouWMbSAER1i0bSCTo4sl+kd7bUlh1DRog1IEhnBOmwpSH4FGx4NNzFB7QoLJG8IOUevMo6mC4isbeJnlYuGeldswdhhFFP5tqMSqJtxJzApCALadKqOq2/DnmNca+vOWPVG/WTu75ZO4dkSwRpYDCMeKp+wNIqRcipP7z8UFepskEQZlaj6ajFcXTwxaWkLim9wjvbAw9QkPI9rj4hJhOdiDFF6rRaQIVbTW8US86VgTPkgUcwpow9lwHuTFJL9tF6PA5O5dVZ9Ir70GRMT7AlBLyHEQZPBFApgIbSa63Ni8TjIOiMqDRmHDkJzzNPeHlDt5WqSqxgepeItubbyDV2yO2B78n7wBVHLnjKwSskSToz04b0lUazV+jKlcMZWwAitqSV5+JPzMMn6YyVC3z1+inEEKvJloUZAi7IJ6oXvJdKr6VbnU6UP5QPF6ZK0Yx36jRumG9Dp0Qh0plU90GOMMZnCpEnka0ScpAINUMleyd5RrR0VDCkfF+KyFFKbQQi1PHBj9pZojLmbA2Q4DfBihKaK0PI+7jcNMAzgRTvSx8jMRcpMzYEBBEI9qdqyOI2//dqTyRyO464f4UdSczcozzS9pVl6swlSu8CzDpfSrBuWn9IJaFjHwGtMICc+/ujJwhTiwSe+IP1BOVxOAtkeHMNiIUt0aYV+uYzoya+4CyDZr6DnX9SA+g3jHVWQdJvlKx4yhGklx
+ cg04LJ7e
+ LeMdkt1KDzpd/alwMPGEGL6bzsqFlsHU+5/SkNlW/jDQzORJW82nSmhuJ95A656XPlfoMezrwCnxzXbtTRJ/zlT8dmi9rW/P5YrSvbCrPb1JEmKrzKHRbNDEG5hZHHJNlIAuGhf9cWDuLN8cLSbcTmhUWB5at/dET+N9UcH+OTaCsqriwkJmBCQTek94SRJtjMxZEXzTedutbqg+IhOskX+p3e55JKBWIvEbPyabMchp0LQ73w+GCMKOTqu9n8WGXxIbl4EsMDWxJJJo5a9YJdKAOF6EDlzeg1Cv2J1LhMUHt2MC8IV6g277m2bRIiCCMQKKwEMMs8Jt5+oDiXoWmoywY+nrNIVI414v1IkRiSjemEd9wKvPHOtY9b8ElkN/qjCXJ+sAjy4ifuPi2ABx5qNn6iqjEb+g7u8OPyoo99eQJ8Nt8xG78Kn51TrT7Cx3Ys64EMPPx/PkZHg4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,54 +97,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Currently the msync() system call will simply return 0 if you provide a
-length parameter which, when page-aligned (rounding up) overflows (i.e.
-SIZE_MAX - n, where n is in the range [0, PAGE_SIZE - 1).)
+From: Xuewen Wang <wangxuewen@kylinos.cn>
 
-This requires broken input, and nobody has complained about this, but for
-correctness this should really return -ENOMEM, so do so.
+The shrinker debugfs count file uses single_open(), so all memcg rows
+belong to one seq_file record. When the buffer overflows, seq_file grows
+it and retries the entire record. Queries for subsequent memcgs in
+an overflowing pass cannot contribute to the final output.
 
-Also, since error is assigned within the following loop, remove the
-unnecessary assignments prior to it.
+Stop the traversal once seq_has_overflowed() is true, using the existing
+mem_cgroup_iter_break() path to release the current memcg reference.
+Leave the overflow state intact and return zero so seq_file can retry.
 
-Link: https://lore.kernel.org/linux-mm/20230321074035.1526157-5-mawupeng1@huawei.com/
-Reported-by: Ding Feng <dingf3ng@gmail.com>
-Closes: https://lore.kernel.org/linux-mm/20261120051413.46167-1-dingf3ng@gmail.com/
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
 ---
- mm/msync.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+In a single-node KVM guest with 1024 cgroups each caching 16 ordinary
+files on ext4, the 8865-byte output required three show attempts. Count
+callbacks fell from 3075 to 2472 (19.6%). With probes disabled, six fresh
+guests per variant each performed 101 full reads. The median of guest
+medians fell from 128.2 us to 112.2 us (12.4%, about 16 us per read).
+Small and sparse outputs had unchanged callback counts. Complete output,
+small reads and seek-to-zero rereads matched; concurrent memcg deletion
+and signal interruption checks also passed.
 
-diff --git a/mm/msync.c b/mm/msync.c
-index 90b491a27a14..ced41d3c2903 100644
---- a/mm/msync.c
-+++ b/mm/msync.c
-@@ -46,14 +46,12 @@ SYSCALL_DEFINE3(msync, unsigned long, start, size_t, len, int, flags)
- 		goto out;
- 	if ((flags & MS_ASYNC) && (flags & MS_SYNC))
- 		goto out;
--	error = -ENOMEM;
-+	if (!len)
-+		return 0;
- 	len = (len + ~PAGE_MASK) & PAGE_MASK;
- 	end = start + len;
--	if (end < start)
--		goto out;
--	error = 0;
--	if (end == start)
--		goto out;
-+	if (end <= start)
-+		return -ENOMEM;
- 	/*
- 	 * If the interval [start,end) covers some unmapped address ranges,
- 	 * just ignore them, but return -ENOMEM at the end. Besides, if the
+The successful pass still traverses the full list. Early exit skips
+count queries for subsequent memcgs in overflowing passes.
 
----
-base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
-change-id: 20261120-msync-enomem-fix-95f830e305dd
+When overflow coincides with a pending signal, the original code can
+return -EINTR in the current pass. With early exit, seq_file attempts to
+grow the buffer first. The retry can return -EINTR, or buffer allocation
+can fail first with -ENOMEM.
 
-Cheers,
+ mm/shrinker_debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/shrinker_debug.c b/mm/shrinker_debug.c
+index cafb566301326..3022d103b0b1e 100644
+--- a/mm/shrinker_debug.c
++++ b/mm/shrinker_debug.c
+@@ -74,7 +74,7 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
+ 			seq_putc(m, '\n');
+ 		}
+ 
+-		if (!memcg_aware) {
++		if (!memcg_aware || seq_has_overflowed(m)) {
+ 			mem_cgroup_iter_break(NULL, memcg);
+ 			break;
+ 		}
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.53.0
 
 
