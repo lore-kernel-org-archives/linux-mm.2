@@ -1,106 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD93A606A325
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 03:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF0B606A335
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 03:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=jxzmHuI6
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uSG068Hf
 Received: by kanga.kvack.org (Postfix)
-	id 8F9626B06D9; Thu, 19 Nov 2026 22:46:17 -0500 (EST)
+	id DC6FA6B0611; Thu, 19 Nov 2026 22:58:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8834C6B06DC; Thu, 19 Nov 2026 22:46:17 -0500 (EST)
+	id D77A06B0690; Thu, 19 Nov 2026 22:58:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74AA36B06E1; Thu, 19 Nov 2026 22:46:17 -0500 (EST)
+	id CB4556B06F6; Thu, 19 Nov 2026 22:58:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4439E6B06D9
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:46:17 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3A92A0D36
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:46:16 +0000 (UTC)
-X-FDA: 85454109552.28.8AD8927
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E3229180003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:46:12 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=jxzmHuI6;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 890DB6B0611
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:58:47 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EC3AC160CC2
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:58:46 +0000 (UTC)
+X-FDA: 85454141052.07.8EA8704
+Received: from mta1.migadu.com (out-21.mta1.migadu.com [95.215.58.21])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B7FDC40006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:58:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uSG068Hf;
+	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.21 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795146375;
-	b=YlQ7yF22lAIQs4nHJ0nka8wK8JQ+OiHGtxuGA4LFrR7rd2SJyHLGcQAbkKn+XQXyOgt7dK
-	7c2smY1TvGe7WhmeDtrUmG/Nchq9O0JUuIcIQ0enqVZNTK039H829BxwmE8q9s/+Dd3QXr
-	uDF7habJF65EWTBiZvaZq1TWMGLw6VQ=
+	t=1795147125;
+	b=CfnpbZ0TLTIMEtS/CImOmE9dpmAp9uZS830xdbPAfT4xOqeOPIP06TPXAMHpKUw7/7aCtu
+	rVq3eZZ9zhb/tq5SeNOGesR63Z75RLDPQzXmBf1uP4X0gBwHihVzqwj28x3U6MuskjKbLt
+	Hp0swJ+n7uXl0TPOA3lXyCW6FIVGO1o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795146375;
+	s=arc-20220608; t=1795147125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ov5PXrThZFLHfyzJInb6D7h8b2OrOQGcnTyb4KYS+vA=;
-	b=n0vjjHB5p8XKQOmLu9vYBCIcJs3o4n7waVQmmHEcvwVAljQCZOrXvtrvkFAksAyiLuvWMy
-	aCfqQA8aPqXGXIgEfosZTcTGdPJ18jh+dqnN4lUbRq/lEcTf4yLI/L3VsDekU1ZKX/QO7J
-	UVtGP/L7AmNLvOh57i7DO1ZEFSYSfV8=
+	bh=Jio4uIgMuytPJfF6ZS+JERlUcbyxNSqS9P089/L27R8=;
+	b=EuEk0jvwsPIEh6hJgIyyRPFL39VFKzFO9CTds9DQouSq9vv2NemAENLvh07sLFr48iP2UT
+	3serTxW/5B+gibH/OELX7563QQIXgojEhZhjsBR8/o6orswZkG4/p1FrWXyxZm3wzGlzIF
+	jU4A2ZT+AnU0kwWx5LyYhFdkU1/g3LM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=jxzmHuI6;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Ov5PXrThZFLHfyzJInb6D7h8b2OrOQGcnTyb4KYS+vA=;
-	b=jxzmHuI6+S2AM4qB3E6tP2vW2EUIm1a9lvlv02TDGcNki//Y61eFm1ApxoIQgdj3/h5NwLoHa
-	a3ofvYZNVW3pp5D041bES22Fz+KwZQhv0ZzdinV5+BrMqyfZ0UyikSZIFcJbGC16ojEpb5VuKCs
-	la9j/D50g/n+bztD1j+E+is=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4jW1TF0f7VzRj3B;
-	Fri, 20 Nov 2026 11:45:53 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id A9A4B40683;
-	Fri, 20 Nov 2026 11:46:08 +0800 (CST)
-Received: from [10.173.125.21] (10.173.125.21) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 20 Nov 2026 11:46:06 +0800
-Subject: Re: [PATCH v2] mm/page_owner: fix double decrement of stack count on
- unpoison
-To: Nilay Vaish <nilayvaish@google.com>
-CC: "Jose A . Perez de Azpillaga" <azpijr@gmail.com>, Johannes Weiner
-	<hannes@cmpxchg.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan
-	<ziy@nvidia.com>, Marco Elver <elver@google.com>, Andrey Konovalov
-	<andreyknvl@gmail.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Oscar Salvador <osalvador@kernel.org>
-References: <20261119234804.1740734-1-nilayvaish@google.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <539112f2-06a8-7c3a-cf95-0d6d63a7a5a5@huawei.com>
-Date: Fri, 20 Nov 2026 11:46:05 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uSG068Hf;
+	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.21 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=b/fSIQZFwrE5Uc+itxH+nb/MB52XKcBc4lrlcDVReLU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795147122; v=1; x=1795751922;
+ b=uSG068Hf46SIfg12eSeow/vnbnqaZU4RXw+tmuMDgMK4ENbgGvJyWW1thOKSYQSPMQf/IFMx
+ ysOzGUdmpXFiN8bnHeHVKyVXPRtgDogoHsmiV8C8oqXwbX6t4myVs3ee7gkDhTgKn7cDR/0xocw
+ JFPZk9hLuvD2Fz80USfba6m8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7afe05bb3670798f;
+	Fri, 20 Nov 2026 03:58:42 +0000
+X-Mizu-Trace-ID: 7afe05bb3670798f
+X-Migadu-Flow: FLOW_OUT
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261119234804.1740734-1-nilayvaish@google.com>
+Date: Fri, 20 Nov 2026 03:58:42 +0000
 Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E3229180003
+Content-Transfer-Encoding: quoted-printable
+From: "Kunwu Chan" <kunwu.chan@linux.dev>
+Message-ID: <fbde457e42a2776addb2f44e1f2f95f8df5b2c54@linux.dev>
+TLS-Required: No
+Subject: Re: [RFC PATCH v4 03/18] mm/swap: cleanup and document swap device
+ availability flag usage
+To: "Lian Wang" <lianux.mm@gmail.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Chris Li" <chrisl@kernel.org>, "Nhat Pham"
+ <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, "Barry Song"
+ <baohua@kernel.org>, "Youngjun Park" <youngjun.park@lge.com>, "Kemeng
+ Shi" <shikemeng@huaweicloud.com>, "Kairui Song" <kasong@tencent.com>,
+ "Jihan LIN" <linjh22s@gmail.com>, "Kees Cook" <kees@kernel.org>, "Gustavo
+ A. R. Silva" <gustavoars@kernel.org>, "Thomas Gleixner"
+ <tglx@kernel.org>, linux-hardening@vger.kernel.org
+In-Reply-To: <517ab62dc9842b89c39f04f70d96bcc6717a884c.1794666741.git.lianux.mm@gmail.com>
+References: <cover.1794666741.git.lianux.mm@gmail.com>
+ <517ab62dc9842b89c39f04f70d96bcc6717a884c.1794666741.git.lianux.mm@gmail.com>
 X-Rspam-User:
-X-Stat-Signature: shone6edxfjnff3w3x8gb4sq4cnu78dw
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Stat-Signature: q3y4w761su5wfj96fpwby16o71a1t3cb
+X-Rspamd-Queue-Id: B7FDC40006
+X-Rspamd-Server: rspam02
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795146372-875121
-X-HE-Meta: U2FsdGVkX1+O4mabxymVNnIYolJBSoF4sMQeCowp6lNbqfvTWg7pNL48mmBlo7zBxrBTXDf6HBZ2KOPhFbzYpnSOS41RMqbcbYc5k2FYBFLrJuAYFVjXmRrhpfHED3TwKt9uyC6SGHy4st2kP0HISyk0AT5lapdVfMI3w5pDB0QfpdgIxWALcpLcuNNg04c9O+rchsVsYbFiCCxMmPl22x30AZOOaqKm/3/eWzfDvgyEOjmm9OGqu/YYy7J8gVLnVhiluqF3DJg6qVETDtQujLEs+t4TUpW5Br2LvsgTXU8XSwHjX/bSODTfBJp6r20vAv2f+9QLErxx/CEV6TWldYqnI1JRPHZBwgnqauTp6FBYdiEH4jUpwN5ZhxVK0oOKXnW9himwEv/ccZ2hQhvLpn+gepPn2F24nZq5pOqHeAIxdZWvgRQnjGLWAy50yi+MRRt2Z7XL9K+pNhlfYGkbKQZT3vSyFW4cpX/PSIPpTgVbGjxkr/Vg2/evKguth4GG/PFKuhw3cJ6IvZC1SQEk34UaQTeHvSwO3EVWyeJ56LDw73shd85IjaPdZ5hv7PLzemqsTsHr3ov1kwtV3nxi94+EwNSoi+pwlVhol9jUGiRBDbe3rN4dULoIuwUF4FWiVoYuUWAvGNeWkGRtm8VLymVyVnFyj8yxZaqTF2pQgCpnzKwkPA+luHE/w61qGzCnXWS19yAq9qmudEb5VcFweetcZO5xuQbvvMuYQF6GT5oiBuQcxkLUwJrxG9u7KMbvfyopvpvRNqe4elJw2hzGANghjSqHsqLrNHSpWZOfgVd/5z4e5houKm2Bb44jkCmTy+nfdMHfEiimoKWOoOMmfS6TYqHjL/9gpQbSpn+4jdudbZr7SIqHDBPyaqNdD+VMyTAIkJrwUXFOVyUaOFz0usoXPc35+4hq9I5oRjBN3GqpHmbLcMK4bkCyt7V1BichuSUPeBgXG0/ohT8nt5G
- TtuH3qnY
- HBC/CDn1kZ6v6EIAllc907qQ7kvjGRSBgTOTiGrTRcOZvSzo3uB9KRIec5iQYVYdiUyBidXhpHar971D4YxDaU7GC7Ph3WbljAzdOH8ebsN9CB1GFnTye/jrz/yTALtQlJAwpUZuKWTeWYMUswvr6ZwqNNR0IDJ9XR//0wrt530ameKzoCqv3OU1WggZlg6Enkd/KjlioytuhUJ669KzBd4viX1Z4TCRRibKKojs5bKdHZm+UhR0/wFhYZzC+iAuZC/7EXH8peoPpmOhgAWLFFMeSX7IhOcA2jaFqUuM6PioJegrQNcULtmGffa9Zx5rKL9ZP4b8ZUo4UYQuJputApTvvyFFC3kUIVusph/8nyL/lqRJrUtYLqRumYKU/28Jk2gcOSh7N/aTSt3GBqZ6LXt30lHHps7XxIZKrG0v/9wbKiu1xJQkpsEySzV7mF/yGkighEJQ9w+547VT3uZ8Js3+MaGGvu8yr4Ggd2arRyMulHLV4JhO2inyar3B/l0HC6ODpcDNVhIaJHvXMFF186uCU0UFDqmZMYDsLEgzSTikLOX4HPvbtSP1kFYyK35NeQly7bXz6PC9woJw/jiNa5+rD3io7m2cmhuwJjBj4DIaNciPXChl5JyAew5IsfQoJhsWjxv9X6f1DTZQ=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795147124-957505
+X-HE-Meta: U2FsdGVkX18isecBI09ZXBcsP3pBiDMze1A1T/N3spIvSP20AHPs9bel2JJ/AMuhCtMUUwhdyK4Al7af6YYvoTg29GGaGnUKnUSs/qAzTLTKINN+nE6e/0tggJ/xAOndRtZtkyeSh7v5E+ObBdiqACCwHGoW8NjjNg6ukApvMjbSRT/83xKq4xrJ7XmX3nwdarNLhowdF0ctJMfxkMGr+yd35bpkun4UKQxxQEoH2bXrbRZaEScjxhAFazEQ3Ku/RZewWb1J1NZhQCX6WD+xlmJ7fFnfbZXFZNC9LOMM1RlSGNZDBc6fxzaKhSf/ukis2OIb0w9zf0CYCNTzQndOlMZQHj6IV+LCPh0FejQFp+j7nhnVXUcJDv/TBa5BHkuaFH0qZ+SLcQYtxHd9xfZP7otrdYZl+CZxkjk7HLpepwwEuFKla8iQVw+wzrQtyK2HPi/7nSWhnpKP1UeclbAgO60JBjXexMUWCag7dud3BHh+wzTibXxpO7f5iIqKqu4jnVqFASJYZ+wcyLEv5HquE2ne6dgxF5bjomyZsUIrkO0S+OGEBnld3v48GdcYpu4ifWvgMDgOU4fGPWNvZxJPLJuuv5qCXg41p+fZQUoRTB2dJuxakK1tMjeLRhBU1l7me6CCfugjg4gSOiu40fACTlniXxhlnvobcpSyqSYfbIo6YJ6sp5tfCmMwvoOXnh8cYukt8t+uLIHk8mwVUUevHPpaQySs2OlqmUOR/e/OyE7etU+aLJZ9CwW93pfQvYJHmc/stBFvje9f/Qrp9UPfbq8k7NGJOWelwqS+kmb4g/Pc1IYmCDP25GvmB0cGXqyaAGyVa2hSysaTfbtmm3nd29iiEMDIgkA7/0tMYERUdAhlr1LsT7vZER/UELO1G0fIJ3vL9Noo1bBqaGw3CB6kcP9NvjuMFD5Q5hfkvxZz8eXtquXMcxbZsN2F/ZUmkg+OSt1vFDao9948+9HGEo9
+ LmQyBP9I
+ zRBcCsBkfczGV0bE8Hp1nGAE7egRC3IiM8ZFXjcukkJPPzldOrC2CG5tDeFyQw51FSL1WxA3OWQd4eYmlg3P0C2V5vFNx07yDOZoDBudiEEVraVZXFi5mJ5q5lW0dIo7qRIGRAC/fpmnOyh+lZT5EvcshP4SJBmcRWjijGNHSlU3ZW/doN08RHaG3wRVn3rX4Ge0e3rvuHspyYMiOjUw7ldsLG5fK5CIiFmZ1ul3+WZxZqZu5x5B0uhVSbXO2hAfKUcsQj2T1VFpjMIEbDEUUyQumMPmOXVIN+du5biMb2a0BsDpZi7IbfDs3jsn3Nn8PxMqZ6rWGDdJ+5zGSFdqInGlGf74EP+yyF7z+ECy5ccYE2Kpq8ICAdfOTLVUpHbaqbIzyberhtVhag0naIPFD44ycFNeJv+UZzdl+NP1GeuwcleqKPHd/6UPz5q5uGNpuZHMkkAnRCOH7/hQkKBjkcqBlCWZc7COQU4d/LEscLRWE1Tq0QpDC5UE/RH/zWqpRFaEybus/r/9ZmRwOINLCNfYpyhG1tPZZ+VGHj0fCpWXdE0rhZgzGHoXurhOd7xanqGxy4djVmIGZSbMXrpBbI88OKoAur72k1MAW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,69 +101,161 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026/11/20 7:48, Nilay Vaish wrote:
-> page_owner counts, for each allocation stack, how many pages allocated
-> from that stack are still in use. The count is incremented when a page
-> is allocated and decremented in __reset_page_owner() when it is freed.
-> 
-> A page that is hwpoisoned while in use and later unpoisoned passes
-> through free_pages_prepare() twice:
-> 
->   1. On poisoning, the last reference is dropped. free_pages_prepare()
->      calls reset_page_owner() but, because the page is PageHWPoison(),
->      keeps it off the free lists.
-> 
->   2. On unpoisoning, unpoison_memory() drops the poison reference and
->      free_pages_prepare() calls reset_page_owner() again, this time
->      really freeing the page.
-> 
-> __reset_page_owner() decrements the stack count both times, although
-> the page was allocated only once. The first call clears
-> PAGE_EXT_OWNER_ALLOCATED, but the second call never checks it.
-> 
-> If this drives the count to zero while the stack is still in use,
-> stackdepot treats the record as freed and warns on every later
-> allocation or free that uses the same stack:
-> 
->   dec_stack_record_count: refcount went to 0 for 92274844 handle
->   WARNING: lib/stackdepot.c:517 at depot_fetch_stack+0x5c/0x70
->   Call Trace:
->    __set_page_owner+0x110/0x290
->    get_page_from_freelist+0x1225/0x1440
->    __alloc_frozen_pages_noprof+0x1fc/0x1b00
->    __folio_alloc_noprof+0x12/0xa0
->    alloc_migration_target+0x81/0x1e0
->    migrate_pages_batch+0x1f2/0x14c0
->    migrate_pages+0x9c3/0xca0
->    soft_offline_page+0x189/0x570
-> 
-> A single soft offline followed by an unpoison is enough to trigger it,
-> because the migration-target stack that the offlined page is accounted
-> to usually has very few pages.
-> 
-> Fix it by decrementing the stack count only if PAGE_EXT_OWNER_ALLOCATED
-> was still set, i.e. only the first time the page is freed.
-> 
-> To reproduce, boot with page_owner=on and CONFIG_HWPOISON_INJECT, soft
-> offline anonymous pages with madvise(MADV_SOFT_OFFLINE), and unpoison
-> each old PFN through debugfs hwpoison/unpoison-pfn. Without this patch
-
-Oh wow, this issue should be very easy to reproduce, and it has been around for
-quite some time. When I tested earlier, CONFIG_PAGE_OWNER was enabled, but I didn't
-add page_owner=on to the boot parameters. :(
-
-> the first cycle prints the message above and 2200 cycles produce 6597
-> warnings. With it, the same run is clean and all stack counts return
-> to their initial values.
-> 
-> Fixes: 217b2119b9e2 ("mm,page_owner: implement the tracking of the stacks count")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-> Signed-off-by: Nilay Vaish <nilayvaish@google.com>
-
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-
-Thanks.
+>=20
+>=20From: Kairui Song <kasong@tencent.com>
+>=20
+>=20Rework swap device flag and metadata handling to make the writable
+> publication and disable boundaries explicit.
+>=20
+>=20Introduce swap_device_enable() and swap_device_disable(). Move
+> SWP_WRITEOK updates into these boundaries. Clear the writable flag,
+> set the off-list state and remove the available entry in one
+> swap_avail_lock critical section, before releasing swap_lock.
+>=20
+>=20Preserve the existing swap_lock critical section across mapping looku=
+p,
+> hibernation checks and the disable transition. Drain cluster allocators
+> after dropping swap_lock, retaining the device-identity protection
+> without holding swap_lock over all cluster locks.
+>=20
+>=20Document the flag lifetime and locking rules.
+>=20
+>=20Signed-off-by: Kairui Song <kasong@tencent.com>
+> Co-developed-by: Lian Wang <lianux.mm@gmail.com>
+> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
+> ---
+>  include/linux/swap.h | 29 ++++--
+>  mm/swapfile.c | 205 ++++++++++++++++++++-----------------------
+>  2 files changed, 118 insertions(+), 116 deletions(-)
+>=20
+>=20diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 4f686709d71f..0fa77f5679a2 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -188,6 +188,24 @@ struct swap_extent {
+>  ((offsetof(union swap_header, magic.magic) - \
+>  offsetof(union swap_header, info.badpages)) / sizeof(int))
+>=20=20
+>=20+/*
+> + * Swap device flags, except the ones documented below, all are immuta=
+ble
+> + * after exposed by swap_device_enable, and until the device is freed =
+again
+> + * (SWP_USED unset), except that teardown clears SWP_ACTIVATED after d=
+raining
+> + * allocators and live references. The other exceptions:
+> + * - SWP_USED: Protected by swap_lock. Indicates the device is inuse. =
+Once
+> + * set, won't be cleared unless all reference to this device is freed =
+and
+> + * swapoff finished.
+> + * - SWP_WRITEOK: Protected by swap_lock, si->lock and swap_avail_lock=
 .
+> + * Clearing this flag is followed by waiting for all current cluster l=
+ock
+> + * users to exit, so
+> + * checking this flag while holding any of these locks ensures the dev=
+ice
+> + * is safe to use at the moment. Note: clearing this flag doesn't affe=
+ct
+> + * pending IO or async requests, it only prevents further entry alloca=
+tion
+> + * or new async request (e.g. discard) from initiating.
+> + * - SWP_HIBERNATION: Protected by swap_lock. Indicates if the device
+> + * is pinned for hibernation.
+> + */
+>  enum {
+>  SWP_USED =3D (1 << 0), /* is slot in swap_info[] used? */
+>  SWP_WRITEOK =3D (1 << 1), /* ok to write to this swap? */
+> @@ -256,14 +274,9 @@ struct swap_info_struct {
+>  struct file *swap_file; /* seldom referenced */
+>  struct completion comp; /* seldom referenced */
+>  spinlock_t lock; /*
+> - * protect map scan related fields like
+> - * inuse_pages and all cluster lists.
+> - * Other fields are only changed
+> - * at swapon/swapoff, so are protected
+> - * by swap_lock. changing flags need
+> - * hold this lock and swap_lock. If
+> - * both locks need hold, hold swap_lock
+> - * first.
+> + * Protect cluster lists. Other fields
+> + * are only changed at swapon/swapoff,
+> + * so are protected by swap_lock.
+>  */
+>  struct work_struct discard_work; /* discard worker */
+>  struct work_struct reclaim_work; /* reclaim worker */
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index c69a924acb74..6485c8020d3a 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1268,28 +1268,23 @@ static void del_from_avail_list(struct swap_inf=
+o_struct *si, bool swapoff)
+>=20=20
+>=20 spin_lock(&swap_avail_lock);
+>=20=20
+>=20- if (swapoff) {
+> - /*
+> - * Forcefully remove it. Clear the SWP_WRITEOK flags for
+> - * swapoff here so it's synchronized by both si->lock and
+> - * swap_avail_lock, to ensure the result can be seen by
+> - * add_to_avail_list.
+> - */
+> - lockdep_assert_held(&si->lock);
+> - si->flags &=3D ~SWP_WRITEOK;
+> - atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
+> - } else {
+> - /*
+> - * If not called by swapoff, take it off-list only if it's
+> - * full and SWAP_USAGE_OFFLIST_BIT is not set (strictly
+> - * si->inuse_pages =3D=3D pages), any concurrent slot freeing,
+> - * or device already removed from plist by someone else
+> - * will make this return false.
+> - */
+> + /*
+> + * Force remove it only for swapoff. Else, take it off-list only if
+> + * it's full and SWAP_USAGE_OFFLIST_BIT is not set (strictly
+> + * si->inuse_pages =3D=3D pages), so concurrent slot freeing, or
+> + * concurrent list removal will make the cmpxchg fail and skip
+> + * the removal.
+> + */
+> + if (!swapoff) {
+>  pages =3D si->pages;
+>  if (!atomic_long_try_cmpxchg(&si->inuse_pages, &pages,
+>  pages | SWAP_USAGE_OFFLIST_BIT))
+>  goto skip;
+> + } else {
+> + lockdep_assert_held(&swap_lock);
+> + lockdep_assert_held(&si->lock);
+> + si->flags &=3D ~SWP_WRITEOK;
+> + atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
+>  }
+>=20=20
+>=20 plist_del(&si->avail_list, &swap_avail_head);
+> @@ -1299,21 +1294,21 @@ static void del_from_avail_list(struct swap_inf=
+o_struct *si, bool swapoff)
+>  }
+>=20=20
+>=20 /* SWAP_USAGE_OFFLIST_BIT can only be cleared by this helper. */
+> -static void add_to_avail_list(struct swap_info_struct *si, bool swapon=
+)
+> +static void add_to_avail_list(struct swap_info_struct *si)
+>  {
+>  long val;
+>  unsigned long pages;
+>=20=20
+>=20 spin_lock(&swap_avail_lock);
+>=20=20
+>=20- /* Corresponding to SWP_WRITEOK clearing in del_from_avail_list */
+> - if (swapon) {
+> - lockdep_assert_held(&si->lock);
+> - si->flags |=3D SWP_WRITEOK;
+> - } else {
+> - if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
+
+Can we keep READ_ONCE(si->flags) here? pin_hibernation_swap_type()
+updates SWP_HIBERNATION in the same word without taking swap_avail_lock.
+
+Thanks,
+Kunwu
 
