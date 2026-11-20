@@ -1,134 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84AF606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 03:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD93A606A325
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 03:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=d9bqzlgy
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=jxzmHuI6
 Received: by kanga.kvack.org (Postfix)
-	id A878E6B06AF; Thu, 19 Nov 2026 22:30:25 -0500 (EST)
+	id 8F9626B06D9; Thu, 19 Nov 2026 22:46:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A60466B0714; Thu, 19 Nov 2026 22:30:25 -0500 (EST)
+	id 8834C6B06DC; Thu, 19 Nov 2026 22:46:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94E426B073F; Thu, 19 Nov 2026 22:30:25 -0500 (EST)
+	id 74AA36B06E1; Thu, 19 Nov 2026 22:46:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C9496B06AF
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:30:25 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 18C78A09AD
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:30:24 +0000 (UTC)
-X-FDA: 85454069568.09.00D9393
-Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 39A3718000A
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:30:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=d9bqzlgy;
-	spf=pass (imf16.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.229.5 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4439E6B06D9
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:46:17 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3A92A0D36
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:46:16 +0000 (UTC)
+X-FDA: 85454109552.28.8AD8927
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E3229180003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:46:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=jxzmHuI6;
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795145422;
-	b=kF9KxKKpr9Np8NLMYqxADzKDYmZDNF/p7NohgXtU/mDHpdzsRNUKaUpkVB4IjpMJUfrCZ6
-	pJAF0Ocr1uj4daBRJ0xa9lIOLUAlSsdhgNW5UQ24YRbc4SXpqfpcVAiM333Ec0k+HX/78j
-	kQR0nb8LITZrYeDcg6EbGXPQMYj5Vjo=
+	t=1795146375;
+	b=YlQ7yF22lAIQs4nHJ0nka8wK8JQ+OiHGtxuGA4LFrR7rd2SJyHLGcQAbkKn+XQXyOgt7dK
+	7c2smY1TvGe7WhmeDtrUmG/Nchq9O0JUuIcIQ0enqVZNTK039H829BxwmE8q9s/+Dd3QXr
+	uDF7habJF65EWTBiZvaZq1TWMGLw6VQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795145422;
+	s=arc-20220608; t=1795146375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G4CRmLsM2FeO2FoUhWeUWlm1ZB2WhalSLCCny6IP3jc=;
-	b=ZTCa31A0MD/kOCGx6pRwaLdD43ZlFldzTcW3/Rp8g3Kz1stsCOJ6fWFXHItfe7jC1x/kZW
-	iZkN2skPUB1COM7YhX7CSwo142tdeEH9ODcovDeJHHGeWdD/r2QNoztrXi2OYxNG8l826W
-	JSrNuFy0vuBDMw9Ehd99M6K9dsXgzCw=
+	bh=Ov5PXrThZFLHfyzJInb6D7h8b2OrOQGcnTyb4KYS+vA=;
+	b=n0vjjHB5p8XKQOmLu9vYBCIcJs3o4n7waVQmmHEcvwVAljQCZOrXvtrvkFAksAyiLuvWMy
+	aCfqQA8aPqXGXIgEfosZTcTGdPJ18jh+dqnN4lUbRq/lEcTf4yLI/L3VsDekU1ZKX/QO7J
+	UVtGP/L7AmNLvOh57i7DO1ZEFSYSfV8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=d9bqzlgy;
-	spf=pass (imf16.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.229.5 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-36f936424f2so85734eec.1
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:30:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795145421; x=1795750221; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G4CRmLsM2FeO2FoUhWeUWlm1ZB2WhalSLCCny6IP3jc=;
-        b=d9bqzlgyEYQbf3DhCFxVaihSRzQpWomnDMVqjYPTXSd5gZlcAf43i0lrO7O/uzj3NC
-         JXN33NthE3PsT+3yfXBDS4yAX68FY4LCRPnqjC0YHdhHUMi5jEXooGQEXB80FJrHQlSp
-         Y/qxRXbUlo1FwrW1WLfvVCFqEdBsJjgLMQhhhiLBmygQq/StbphnRlJglrYAiD+/GcPe
-         ApOJFOKC4G8w54L6npm94wc3op9do0q3hQ8MNpzH6HfP+4hpcGQYSxslXx2NTpwk/Za6
-         LuUN0QbiewdHPPTJ1TF9DwjQ4Pk/bFLGUo8UGxaY40GIItQMCvl5E7Ta7qdwfAQIXB9T
-         2OZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795145421; x=1795750221;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=G4CRmLsM2FeO2FoUhWeUWlm1ZB2WhalSLCCny6IP3jc=;
-        b=eaowLqmkSdAdmg/uCF6RZQsY0nAnU0tViUIqTtlK4wLlsvXhl9rbJ8h+BFVegDnXpr
-         tnMQjvgANTmmAtzgn0Yjt4OCwKzo77sI+60C+8M2n1FnhnKIT4ZDsk/JplE8IxBGge6u
-         i9bFQ8P5AlzhKt9U69uUsWsk9CowtNpOX0yKwiMdGhXXh8WvfTYeQm5IH5zqSMiSLFbR
-         90pGwaZh1Fvavv1en2kI6UfNzr97KjtwQvEpWwgRiLg6Jx+LL8ZDyktGPFiQuGr37AQQ
-         6R59dFQYo1kDhbvmMc+qcKaO5WmQxi3UaQtdA5AkkgMuGdY2sBjNz3wP5eBcmiDV9q3t
-         CSHg==
-X-Forwarded-Encrypted: i=1; AL+hErFPCc2rC0/JWFhMhT1W5X3q/d1kG6Ell+eFXb28Wxuu8wOrWeFsmnvW8egtVkxEQ2Amoeqw6ZWjWw==@kvack.org
-X-Gm-Message-State: APuU4Z/D4JaKOpv75NuGajFT83EsN/MxYd1+3E2f6Sg+qs2WVB51caV1
-	AIll4jep+91MNubqJdFrkeDfzef12jkQ6mWg5rv29XHQboWbNRYdBOn+
-X-Gm-Gg: AYBFou0ZeJp5efHsmU1eqJEVqX0OpMqc8cl+6WJFZSfeP8jHJTVrSzde7vaiHxE11zt
-	Z+BArlNaceOoWu9hUgJ8wJSXHwWJ+3F1QtIeHc3+LMIluKvTa5Td8+3NJJhiBMkEa/lq73s91Ba
-	GtLN5vvr1TsPaj3M93eu9B61X77/i8/+KmjxQbnHOWsfe89bc/by4zkGtCahNtVHypBux0AKWY1
-	3N0wGN8oAPTcZQKGYTRHKYv2xRCJ8A2825jy7QahSHyUI3h5dhyWLIRQp6Z0dTUdQm+3TpFc8Ib
-	d4vA+/7Wt7V0JA4HZmG1lpDVFpgG9+owZT6LBsUolvo7NoQzmIOs2a6ZuHY9a6t1WVKc7HoCz50
-	/etSqN5TjEI9FCG+t8d4X5Tc88fiBpL+fOflfBEDaMwoLWL7tJWzmjtD4gF/X7fg5k3Wxz1dbtH
-	LCRc8UQbD+2BsvwWgBvnrCn7lBFSIRgdJgOsFfJQ8nbL/whigZOZUGi94hk/cfmXwtKrU88ktHQ
-	XRoCPUfQUZ5Lu1mXBRQtgezF8tLz43k5l8OMKubPrA16X+KXBi3Lu5kfFUAK7TZLcyQF/qSHOKU
-	s5HANPTSeGwMfriXWqOVZ1XATOevio59sjrScVr8Rg==
-X-Received: by 2002:a05:7022:1187:b0:1b5:31e4:9970 with SMTP id a92af1059eb24-1b55689ee2dmr1602946c88.8.1795145421007;
-        Thu, 19 Nov 2026 19:30:21 -0800 (PST)
-Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567e644dsm4362507c88.5.2026.11.19.19.30.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 19:30:20 -0800 (PST)
-From: Wandun Chen <chenwandun1@gmail.com>
-To: david@kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com
-Subject: [PATCH 3/3] mm/migrate: batch PTE restoration for device-private folios
-Date: Fri, 20 Nov 2026 11:29:49 +0800
-Message-ID: <20261120032949.2036731-4-chenwandun1@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261120032949.2036731-1-chenwandun1@gmail.com>
-References: <20261120032949.2036731-1-chenwandun1@gmail.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=jxzmHuI6;
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Ov5PXrThZFLHfyzJInb6D7h8b2OrOQGcnTyb4KYS+vA=;
+	b=jxzmHuI6+S2AM4qB3E6tP2vW2EUIm1a9lvlv02TDGcNki//Y61eFm1ApxoIQgdj3/h5NwLoHa
+	a3ofvYZNVW3pp5D041bES22Fz+KwZQhv0ZzdinV5+BrMqyfZ0UyikSZIFcJbGC16ojEpb5VuKCs
+	la9j/D50g/n+bztD1j+E+is=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4jW1TF0f7VzRj3B;
+	Fri, 20 Nov 2026 11:45:53 +0800 (CST)
+Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id A9A4B40683;
+	Fri, 20 Nov 2026 11:46:08 +0800 (CST)
+Received: from [10.173.125.21] (10.173.125.21) by
+ whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 20 Nov 2026 11:46:06 +0800
+Subject: Re: [PATCH v2] mm/page_owner: fix double decrement of stack count on
+ unpoison
+To: Nilay Vaish <nilayvaish@google.com>
+CC: "Jose A . Perez de Azpillaga" <azpijr@gmail.com>, Johannes Weiner
+	<hannes@cmpxchg.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan
+	<ziy@nvidia.com>, Marco Elver <elver@google.com>, Andrey Konovalov
+	<andreyknvl@gmail.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Oscar Salvador <osalvador@kernel.org>
+References: <20261119234804.1740734-1-nilayvaish@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <539112f2-06a8-7c3a-cf95-0d6d63a7a5a5@huawei.com>
+Date: Fri, 20 Nov 2026 11:46:05 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: w8mcqp751kmpzxm7fmp7ai3zaj15jib1
+In-Reply-To: <20261119234804.1740734-1-nilayvaish@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ whupemk100004.china.huawei.com (7.152.185.74)
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E3229180003
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 39A3718000A
-X-HE-Tag: 1795145422-356857
-X-HE-Meta: U2FsdGVkX1+D45FgYBk+uev0ZiVZzKz+G+VdQ6Ni69UEChYvOJ7a5mS728zDWNeQ0kR9grhPkk1rLNAS5WgjzLIpB6DtdMOptOjIxSINmTTk3U8X0UEO2TdfgoRhC4vezsohfTnZ3igrWz7G6IFNR5y0sxBCkPfmPAqrEHGpDIIDW+cDSytY6Mi3fPkXHEhlz35YYXf+SMAUytWdcxKSrGxdobLnbGMw9jegkGvzZCoq9M5zkV98L/TxAAUkytCJLt0rOl2akeKIcoQOKuYVbGVD95tugaTJPGtwiwiZRDVhYHVzDPFm/JMF6+ueCOhBRMjIeZfNb2PegcaBKDcSv+uI2Na7PyDXryh+K+sKPBpS4/HgKa54mK0Pb83Wm9zYqvz8YbKuO5TkBYYQwwLqr9QHM1gMaKNubx/W3BHXkbmzhljF+WTTON8cex4390aul8zrDrGZofu04Ra7e/DfI22Js7k4yWg/Z5BXu7WifiHhDUAHbx9BWAuDlqbaurei1Mfg64TVFu7sqjmqjp8js2HCj1+2XaR/DhHhIWXdOxOWDps21PEb0nrWV6HEQe4HgHxO804ESkFGpwjbueAj1zRnGsaXYcSoBQvy3bGM3FWQqTfl06NMI1tDklJIydVfy7k5GavHi3C2MFc7g/g27EgwwHPxT0XzW/Rxn+PRWWa7ZB0As8aK5PMtTIiHJrd9nEjsKwvogiZfL4DBXtmXHytRnHRoeE8/iYkgyzPy8AQ+lAQikYJq441uv56M0nSZEXRoz8sPUnCHoZIYqW8jzzq+lWY+N3Iy21f3cT7mKpfzpSdr5IKhLJqnHjW7Nzk9wN+rODnfgyRArzwmpTiBtIeFtcZZYOlNIdvbdtsYb59dRx0JJH/zV4P1m9ERNM0J/iLOY8U01BmKG2XIBfMBPnu9+1r+MVYEXk5uL5TijQTArTL9OWbMZVAI0zVehHrSBZyRNp7B+idOgJ+7vDZ
- BXecV64P
- LQA4+WcnJnnBpCutIMCoGzzm5J6BGNs6OmWsVZXrvMM1ufQIEtpyHw7+1n+J2J8ct4sQ3x3rc29Zko3BLeQ3cXVQYz7jcYtODxW7KZL9EgW2ZyRX7w+nghwdMQ5se1/9rifak5DGHAcQLyItNaYd6y2Wj7YAAwnOnPtOkboaLqBf/y67S21PDKUnnLUtju/wa4mdUbSgQjUrvbHycjS/tsOnkgZWBEoqb3QQjrgm3ToWP6pOUJvmY9ZLDbBpDU++03/uFM5ZZLz61quQ8PrjoBU1a+q54C9q/tJ/NRxJsiBiagy5wjin1edODPdtSgNy95NwLFlWjnLsHcRpcVygsRsDoqg1RcR8aaUZAPrRRYXNE7yCDY/4VdV6K42h0qPFPMmHHjuK8c0KmvKnBlHq8BBEOI2vSEK5Fatg+6S5Mc1KBXjrFoNxZ9RYbwRaTwSJw8WtU4iPYAjziMAUzphUoAbU6eEL8l3K4V6CdvBIqKQSx78J779oHIoKUxia67SXndcjEAM5j3gyfVaMnLRXStJASV5g6Ginswi2wf+cmBHWNddDSZ34qVIT4S2VLJ+++9rS7CkoC1h8maumuotuBMx8DggQXlfVaKe+XgAZvDjkQJ1O6IRO8lgOdv9mcWQVUtQFuQDLb9w9Mt+U3iIU08s1GEr3Y57HHPkOMdFg6N66lTzYuI4HbEfWxXwSCO1TNyi8rGJs/Yc9PT5fHwMzzEXdW2vcO2v3ni/cwzzSypVwvcZY=
+X-Stat-Signature: shone6edxfjnff3w3x8gb4sq4cnu78dw
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795146372-875121
+X-HE-Meta: U2FsdGVkX1+O4mabxymVNnIYolJBSoF4sMQeCowp6lNbqfvTWg7pNL48mmBlo7zBxrBTXDf6HBZ2KOPhFbzYpnSOS41RMqbcbYc5k2FYBFLrJuAYFVjXmRrhpfHED3TwKt9uyC6SGHy4st2kP0HISyk0AT5lapdVfMI3w5pDB0QfpdgIxWALcpLcuNNg04c9O+rchsVsYbFiCCxMmPl22x30AZOOaqKm/3/eWzfDvgyEOjmm9OGqu/YYy7J8gVLnVhiluqF3DJg6qVETDtQujLEs+t4TUpW5Br2LvsgTXU8XSwHjX/bSODTfBJp6r20vAv2f+9QLErxx/CEV6TWldYqnI1JRPHZBwgnqauTp6FBYdiEH4jUpwN5ZhxVK0oOKXnW9himwEv/ccZ2hQhvLpn+gepPn2F24nZq5pOqHeAIxdZWvgRQnjGLWAy50yi+MRRt2Z7XL9K+pNhlfYGkbKQZT3vSyFW4cpX/PSIPpTgVbGjxkr/Vg2/evKguth4GG/PFKuhw3cJ6IvZC1SQEk34UaQTeHvSwO3EVWyeJ56LDw73shd85IjaPdZ5hv7PLzemqsTsHr3ov1kwtV3nxi94+EwNSoi+pwlVhol9jUGiRBDbe3rN4dULoIuwUF4FWiVoYuUWAvGNeWkGRtm8VLymVyVnFyj8yxZaqTF2pQgCpnzKwkPA+luHE/w61qGzCnXWS19yAq9qmudEb5VcFweetcZO5xuQbvvMuYQF6GT5oiBuQcxkLUwJrxG9u7KMbvfyopvpvRNqe4elJw2hzGANghjSqHsqLrNHSpWZOfgVd/5z4e5houKm2Bb44jkCmTy+nfdMHfEiimoKWOoOMmfS6TYqHjL/9gpQbSpn+4jdudbZr7SIqHDBPyaqNdD+VMyTAIkJrwUXFOVyUaOFz0usoXPc35+4hq9I5oRjBN3GqpHmbLcMK4bkCyt7V1BichuSUPeBgXG0/ohT8nt5G
+ TtuH3qnY
+ HBC/CDn1kZ6v6EIAllc907qQ7kvjGRSBgTOTiGrTRcOZvSzo3uB9KRIec5iQYVYdiUyBidXhpHar971D4YxDaU7GC7Ph3WbljAzdOH8ebsN9CB1GFnTye/jrz/yTALtQlJAwpUZuKWTeWYMUswvr6ZwqNNR0IDJ9XR//0wrt530ameKzoCqv3OU1WggZlg6Enkd/KjlioytuhUJ669KzBd4viX1Z4TCRRibKKojs5bKdHZm+UhR0/wFhYZzC+iAuZC/7EXH8peoPpmOhgAWLFFMeSX7IhOcA2jaFqUuM6PioJegrQNcULtmGffa9Zx5rKL9ZP4b8ZUo4UYQuJputApTvvyFFC3kUIVusph/8nyL/lqRJrUtYLqRumYKU/28Jk2gcOSh7N/aTSt3GBqZ6LXt30lHHps7XxIZKrG0v/9wbKiu1xJQkpsEySzV7mF/yGkighEJQ9w+547VT3uZ8Js3+MaGGvu8yr4Ggd2arRyMulHLV4JhO2inyar3B/l0HC6ODpcDNVhIaJHvXMFF186uCU0UFDqmZMYDsLEgzSTikLOX4HPvbtSP1kFYyK35NeQly7bXz6PC9woJw/jiNa5+rD3io7m2cmhuwJjBj4DIaNciPXChl5JyAew5IsfQoJhsWjxv9X6f1DTZQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,70 +109,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Wandun Chen <chenwandun@lixiang.com>
+On 2026/11/20 7:48, Nilay Vaish wrote:
+> page_owner counts, for each allocation stack, how many pages allocated
+> from that stack are still in use. The count is incremented when a page
+> is allocated and decremented in __reset_page_owner() when it is freed.
+> 
+> A page that is hwpoisoned while in use and later unpoisoned passes
+> through free_pages_prepare() twice:
+> 
+>   1. On poisoning, the last reference is dropped. free_pages_prepare()
+>      calls reset_page_owner() but, because the page is PageHWPoison(),
+>      keeps it off the free lists.
+> 
+>   2. On unpoisoning, unpoison_memory() drops the poison reference and
+>      free_pages_prepare() calls reset_page_owner() again, this time
+>      really freeing the page.
+> 
+> __reset_page_owner() decrements the stack count both times, although
+> the page was allocated only once. The first call clears
+> PAGE_EXT_OWNER_ALLOCATED, but the second call never checks it.
+> 
+> If this drives the count to zero while the stack is still in use,
+> stackdepot treats the record as freed and warns on every later
+> allocation or free that uses the same stack:
+> 
+>   dec_stack_record_count: refcount went to 0 for 92274844 handle
+>   WARNING: lib/stackdepot.c:517 at depot_fetch_stack+0x5c/0x70
+>   Call Trace:
+>    __set_page_owner+0x110/0x290
+>    get_page_from_freelist+0x1225/0x1440
+>    __alloc_frozen_pages_noprof+0x1fc/0x1b00
+>    __folio_alloc_noprof+0x12/0xa0
+>    alloc_migration_target+0x81/0x1e0
+>    migrate_pages_batch+0x1f2/0x14c0
+>    migrate_pages+0x9c3/0xca0
+>    soft_offline_page+0x189/0x570
+> 
+> A single soft offline followed by an unpoison is enough to trigger it,
+> because the migration-target stack that the offlined page is accounted
+> to usually has very few pages.
+> 
+> Fix it by decrementing the stack count only if PAGE_EXT_OWNER_ALLOCATED
+> was still set, i.e. only the first time the page is freed.
+> 
+> To reproduce, boot with page_owner=on and CONFIG_HWPOISON_INJECT, soft
+> offline anonymous pages with madvise(MADV_SOFT_OFFLINE), and unpoison
+> each old PFN through debugfs hwpoison/unpoison-pfn. Without this patch
 
-Device-private PTEs encode PFN as softleaf offset. set_ptes() does not
-handle this encoding when constructing subsequent PTEs, such as on
-arm64 with a 16KB page granule, leaving device-private destinations
-folio unbatched.
+Oh wow, this issue should be very easy to reproduce, and it has been around for
+quite some time. When I tested earlier, CONFIG_PAGE_OWNER was enabled, but I didn't
+add page_owner=on to the boot parameters. :(
 
-Add set_device_private_ptes() to construct subsequent entries with
-pte_next_swp_offset(). This enables remove_migration_pte() to batch
-PTE restoration for device-private folios.
+> the first cycle prints the message above and 2200 cycles produce 6597
+> warnings. With it, the same run is clean and all stack counts return
+> to their initial values.
+> 
+> Fixes: 217b2119b9e2 ("mm,page_owner: implement the tracking of the stacks count")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+> Signed-off-by: Nilay Vaish <nilayvaish@google.com>
 
-Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
----
- mm/migrate.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index e000ef77ea87..3d3d91fd61c7 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -345,6 +345,19 @@ struct rmap_walk_arg {
- 	bool map_unused_to_zeropage;
- };
- 
-+static void set_device_private_ptes(struct mm_struct *mm, unsigned long addr,
-+				    pte_t *ptep, pte_t pte, unsigned int nr)
-+{
-+	for (;;) {
-+		set_pte_at(mm, addr, ptep, pte);
-+		if (--nr == 0)
-+			break;
-+		addr += PAGE_SIZE;
-+		ptep++;
-+		pte = pte_next_swp_offset(pte);
-+	}
-+}
-+
- /*
-  * Restore a potential migration pte to a working pte entry
-  */
-@@ -442,8 +455,7 @@ static bool remove_migration_pte(struct folio *folio,
- 		} else
- #endif
- 		{
--			if (folio_test_large(rmap_walk_arg->folio) &&
--			    !is_device_private_page(new)) {
-+			if (folio_test_large(rmap_walk_arg->folio)) {
- 				unsigned long end_addr = pmd_addr_end(pvmw.address, vma->vm_end);
- 				unsigned long max_nr = (end_addr - pvmw.address) >> PAGE_SHIFT;
- 
-@@ -463,7 +475,11 @@ static bool remove_migration_pte(struct folio *folio,
- 							 pvmw.address, rmap_flags);
- 			else
- 				folio_add_file_rmap_ptes(folio, new, nr, vma);
--			set_ptes(vma->vm_mm, pvmw.address, pvmw.pte, pte, nr);
-+			if (unlikely(is_device_private_page(new)))
-+				set_device_private_ptes(vma->vm_mm, pvmw.address,
-+							pvmw.pte, pte, nr);
-+			else
-+				set_ptes(vma->vm_mm, pvmw.address, pvmw.pte, pte, nr);
- 
- 			ptes += nr;
- 		}
--- 
-2.43.0
-
+Thanks.
+.
 
