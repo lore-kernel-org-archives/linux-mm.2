@@ -1,66 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0132C606A6E2
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 19:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C0260A2634
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 19:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A/LHCGfe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tv5T4EdS
 Received: by kanga.kvack.org (Postfix)
-	id 873076B05B0; Fri, 20 Nov 2026 14:51:05 -0500 (EST)
+	id C1E936B00EF; Fri, 20 Nov 2026 14:51:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FCCC6B05B1; Fri, 20 Nov 2026 14:51:05 -0500 (EST)
+	id BCF196B05B0; Fri, 20 Nov 2026 14:51:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64FA06B05B2; Fri, 20 Nov 2026 14:51:05 -0500 (EST)
+	id ABD776B05B1; Fri, 20 Nov 2026 14:51:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E6826B05B0
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:51:05 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B14D61C22CD
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:51:04 +0000 (UTC)
-X-FDA: 85456540848.10.F8EC507
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 91A946B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:51:03 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C6B840159
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:51:03 +0000 (UTC)
+X-FDA: 85456540806.21.E15FB9F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0136440006
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:51:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/LHCGfe";
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7259CC0009
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:51:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tv5T4EdS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795204263;
-	b=wn7aLrPjm+GDQPPmK0Y++4q94hqCBAUWQwe8JtFkqC32CN76fkgN476fB1T6zhDheyBqSG
-	0jYNflufarOOKenpPb7pQw4+KAH0lpNcsNIsXewINXZ2Yvikw3W4DilegQFx8JTf3R4avT
-	3nqrUDbkBduGUhYlIDc0yiN159vatEk=
+	t=1795204261;
+	b=T+75J1ZlrZLowUjrK0kIYDcwGcN6sH8OLlfG9Iq1zvJzleagqgGTYet53aeGNHwqv2Te+f
+	0yNGQ42/qYufsIvaMwq7n29XMx+JBfyyb6s6TtvneivYKfhwIbB2BmmmNBs9YkZVXsFUlV
+	7Wxc9QfM79AuORYUv9UQf5nqbq8XOgo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795204263;
+	s=arc-20220608; t=1795204261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MTAY5ibAV1uBF9jduuJT+bDCTIoeL+5xkNZ5oxnneLw=;
-	b=Z7Ei/Dr705Xww41tion/LlTjNa4tmcPf6QMyNlNYRCgv291tcnHYxUYDCUMKDMLu2lt/pe
-	rtM+Jk35CxnqLDVaTvli9sHkv8PEha/mvWAbAS9Y5rZ2/dRh56pIjn4+RVas/mQvHHyTTo
-	eHvZY21AYFaK4PnaCo+HiNWn5eHeW4g=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qvtZxwS6aBvafq8naMZLaT6JY43Ysb0JUYqUGkLxZes=;
+	b=sGOngbe06GpNbX9ey7Sp9yFBgLoYYsF1B1fMnCOzX5CBbMVtwamRLNyERVXVm04EHTcT5T
+	0Yis5d5KHJLOfK2aZfP4W43MyvPweRHFYn2OqqvKIl5wvIIqq6OKvl+49V6/0iRCh+itdd
+	1s10MlwmqdcrV8i9CG/W05EhNQ4n770=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/LHCGfe";
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tv5T4EdS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4F1C6465BB;
-	Fri, 20 Nov 2026 19:51:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041FF1F000C6;
+	by sea.source.kernel.org (Postfix) with ESMTP id 533FA4642F;
 	Fri, 20 Nov 2026 19:51:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D897A1F000C6;
+	Fri, 20 Nov 2026 19:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795204262;
-	bh=MTAY5ibAV1uBF9jduuJT+bDCTIoeL+5xkNZ5oxnneLw=;
-	h=From:To:Subject:Date:In-Reply-To:References;
-	b=A/LHCGfe7mu4454iMs5fhNiINy54iJwrmXZT5ZmbHZaxSE3qSYofocnuDwsb3nVZP
-	 rkrTqjJ/FmgPJB0r+5bSjYluJfO0FJiZYA7LMmg+d6Oap+l/40yOLjj2b4MUmDjrTB
-	 NtG/8sIT0VGNBPFd5qtgmzVlnwHDbEMK8LZZEnMH+C+nsXmDc+cHhAGw5K6W4M5XMc
-	 F53IjUa+fdgCez2RmrnoqkxwoZd2umDt/RrZyV+2MyPkrOxEed8lbHVET2wgZZ9jrB
-	 tlN/4sFAlc7HO7IU/5nIVvTazall6xcsZQD0yQfgKWrsRU4Ujknp1yN9VynbdIW0hS
-	 Ni9ATcTdbhHVw==
+	s=k20260515; t=1795204260;
+	bh=qvtZxwS6aBvafq8naMZLaT6JY43Ysb0JUYqUGkLxZes=;
+	h=From:To:Subject:Date;
+	b=Tv5T4EdS8xlnjAqJgA+EoHWrBpxllAI25gggFzEvImjd95LdGAimVeUv94M+YAodg
+	 Mn3kirTrVTk8M2LHAmlW3baCLW1zTRHgDFcvwGivleEykgLrmJgnwm7hvzoISwPUHi
+	 f87bTP9tpgE++wnAUkgZ1hsADpVHGqLkzGmuu5LYmrRluoW1AwEnIn5Dv/eQg3jysf
+	 bYJc2n1jMO6ilgvSLB1gmO+P3jQA60onJDruxwVp1dbrMwePuja7pxUgfZ5zIvMrog
+	 E2WTK7vuot7W+bLhVHkXJ7OyTQ5Yt5Ido9MN+Aeez2xA/nq/sPNErrh/DiZDchVk9a
+	 Gc2ANcwhiE8DQ==
 From: Chris Mason <mason@kernel.org>
 To: hughd@google.com,
 	david@kernel.org,
@@ -72,27 +71,25 @@ To: hughd@google.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	mason@kernel.org
-Subject: [PATCH v2 1/1] mm/shmem: don't use the memcg of an uncharged folio
-Date: Fri, 20 Nov 2026 14:50:58 -0500
-Message-ID: <20261120195057.50031-2-mason@kernel.org>
-In-Reply-To: <20261120195057.50031-1-mason@kernel.org>
-References: <20261120195057.50031-1-mason@kernel.org>
+Subject: [PATCH v2 0/1] mm/shmem: don't use the memcg of an uncharged folio
+Date: Fri, 20 Nov 2026 14:50:57 -0500
+Message-ID: <20261120195057.50031-1-mason@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xfqz9bwuhr9cirspjr5hin1cjg3i3y4m
 X-Rspam-User:
-X-Rspamd-Queue-Id: 0136440006
-X-Rspamd-Server: rspam10
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7259CC0009
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795204262-999671
-X-HE-Meta: U2FsdGVkX1/IOEsaewDxZxkTWBQvFInfFH9Bcg/0KVro0WgkC5zbMVP+IxZejoamVEtSN/QyaBB6f9ECoOFvnRPrHEnl83ZmU2gKbEa4RsV8ASyPbmpO7aHmLGUrVxSaa1eLnwDYxYxQPaKEZoAYkm+vAJMON12eN+O9NafU/kCE7ck3/rNrW0Nt/J26E1uNuO9zTHT5d7QnmEOjGvtgPq6fZNBeClCMZLZJgmtbQ4f4IAdMPaTDCx4OIrvXVKWFYGXZ5NASmbpUHoH6MwXvV/gVfd9FVnLFBfuIiXY78q4EjR0wo/Wsbelqfbsba/4G8/8TSuqZvGJ8lSFGeBvTDR+21x0LJCjK7tU594zj7EaEWcf6l2hY/maPpGGrtsOrg9DOC5HKVU54y8fK/9pRruvFNs3xzUig8orEOHEP2ZCdjSq+ZiC0pj9IT+VQy8b4EYZxWeXCbb+JXReNu2BRZcvb0Hh/KSq3LgC3S1AhUVwM5Nx5J4EWPabmmfm7Y6KB6VszE+nhXCTLUqC0ogDvQ13I2OMsf8B2aO3E+3L82hwNCP1Ds219piLCZZZEM2Fxb+a1B8FFGL6qVmEKfc2x8BXb3m3NAwpHdZhhiJMqmjbtoda9nwz79yxRilwLlIr5qu9cSpmCIGtyigK1yoCv5PyiA0lOXfwNRZHsUOJK1VLWcW4iZX4JxHIbQmEXFdgl7FyY20TVvf7eEPU586EBZkIiT2NC01kIjyU822NQ279SjcwUg7ScB210osbgOX5ebzzvoEt45mZ1OMhT9Iuzy7fk7LoxNaB+xoiQFfIXPjMPGqCrhkXiMAv6UJLZxifYFJad6ARJrtusmhRnlwYCYoAvcG/xIiKGYVsvqRia+RkxwirkmlQzhKglfUqa484wGBb6xWuafzSn1tglEs/fiyKiSU3BruwEvHGF50Tk8EdjApOxT+RvZZ9mmASDavux/ozVJc546bsoZDZVZLJ
- SqhiiQYX
- GQb8NkZK7v/OlnoVbYE/TZYFJoEnMajW7onD3h5yZSf4V3qQy+w6iixutRG3v4A4fGQBZFeyyH6E8UapHbo5QY8oPdKbXYASRMuHfizuOcuoS+HJvM+6Z+WBRXmwVo7btFYLcIPm5qEOsphVMssoIz/2qg3RxiQzfOGZOYFktiiBoWKG/6cIDpXMt0o1mKQtKNChqSPw4zE/Knn8jbHsEz/KuS8MYM0LSeOtLVIfMHZ7y0UcHSFIJQFP5EvFfBeFLDdIC1BZfcM+o3AOFYiVExZO3bNiCmjubgXisC4oEy4akFwnr2GXkaR5T9dK0yQiYECwZD+XmFi/0R2gEXVgrlQ02GkDodnUzPJuM+lgUSTP1Y01UiFCGDl9JfVrFQgTknpEpKOkf+0HiqKMrUuQKKQpW9x71ViJwuDz2qpqoO9zSNENz3yFQhRRElitypc0fEAOaO3YI7JC1sEl+gVCSBkQh/A9hnIna/LN2dDc9RoPxFcvhPuYOg7+YajxUlzelbGz3
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: 9cb1s4k1tah6fud1men66u3nihwryzkj
+X-HE-Tag: 1795204261-730792
+X-HE-Meta: U2FsdGVkX18vvvsuQC8n/YiKwOpWuoVxtnRuKxa29lsVL4J5z/8qYjdkpK+PReksls3jhM6ym+OWFi1xbn36ww9BB/PChkORwE7I8kSp2U82sQQwi6p1hrqMmRfBPRur9S2+w4fOiU1Wx3oZ+fvanw5J0xWmD9m/eEYmrvtm28ZmaIxhhMAbUCchUzcpPKPu36rstt+qKu9+5sI7wEyhTN1XRqhwJ+Bm9+Uuv0ZDVtmSOJcQZXFGTUwnfGsZfNx7ytKFKzEhM5NjTyVv/AtFRZBYLlzhqRppRGFHsD0o1pEZuqE50hzSAbivUj7ny+CTjlLfNnaZvwMJou+wGLOQBTstQ2FxEwPEQZfkWAn92X5PY6UzytpQ4iUcZdvuvVyvSsNSRfEAFGCITGMEMglUUU2sFzXkIfrJFIkdnlwlkwZcfgozTVISwONYT4ad3Yh4bh5+Ky2EeWvHoIUeK2jdoYWrP7iMACGKtTFRzHvI0J3ZDe//eyA0xsF7WMy03WYnJ8V1yiKW0nHwcBf7/xsDLlYQKGB90mXK0g1rTCeOc05MkoB1uaGRwrrNyX7C/1Uh+nFExC8VAjBKfk4oZxsesR8q38VybgGTvY5eMwRrcq8cOYWwjymrpgVuV1Lhe1zJr5Gl759SdTcLTEyCamcC0pHMMYnvAg/eEZdDbUKoKGdsG0IxyFBgAJPbzgXF4HT1+qCfeJEBerFjGdcaPm0Uy192W588Esup8tZeLTtZW0m9BO3WkVyFvhzgKoSnab5J1Mq0M0PYwkCum1ro4QOuQ1Ctj8hOBMEVqqwQziHQkKQQ5s8Qiu99CYouElx/9ld3vABRLqRTP3iWpszYGSIehZbgzJrDVQosAMds4wxjNvCkgbrZkTGf0aY+B3Q16dgXYMvSNmFCgcS1+bpiIvrKwgeVGYFdzi+HSRvoZRNeI/juJDuwwt1nxMV8EsIS67/sCutqp0KstGpMMg7Mfcy
+ I4LOY5ZH
+ BxzVfvyLz9d6ece/W+U0RIm/9WKuGGbxfSWe3zLwkNWVU52GLpoSAvSbM/0WE4Vhg9geb5uZsg1Iokd07zn6sOhWSPThoFBwLL9kunoHsrWmk32iq1YVeRro9mAk2M16HTxcwFzWtXeg1/Qz1MPIQBFFTaovXnGcjIuU09Mk9iQGlASaWoPNupy3cHJk1dOkuk3LYO0oFyvccxL1lgJuFDtPXlhylTCO5vwb5zyLPlPJC233Z83Ywp1DHa1D0rrX2KFpSHGz7sKzvR/KLboLz8MESj8iwpoagQ6tFK9xKu8Hq5W7wRwC+xuJm1tG1NcyIJFdy9wNBZ0GEhOJKYWXklRWXeLvFqsBGt/gW1inD4dLUYcN1BtILT9/RXs3OS2Kofudonv2rYA9KYqKjRGY9Ca4OlgndcWlP5Nh0GtzGlfEKXNbJ2KY6OoRuqlDigLJ25SJo1/dUX2DnR8AdP2ay89XkiIQEZLEyrDYmACyjPx3yhEjW6wuNilRu7GNhIJixhGvyc90JnwPetE4oviws1X2Eiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,129 +98,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The shrinker for unused huge tmpfs folios can dereference a NULL memcg
-if it races with the migration of the folio at the end of a file.
+Hi everyone,
 
-folio_memcg_list_lru_alloc() assumes that folio_memcg() is never NULL.
-But it is NULL until the folio is charged, and a migration target can be
-in the page cache before charging.
+This is relatively niche, but actually new with 7.4-rc1, and I would
+expect it to trigger under heavy load with huge=always on tmpfs. We'd
+need to run out of room in the tmpfs or reclaim memory while huge folios
+are migrated.
 
-shmem_unused_huge_shrink() looks the folio up without the folio lock,
-so we can race with migration:
+Qinyun Tan's pending series fixes the oops:
 
-    __migrate_folio()               shmem_unused_huge_shrink()
-    =================               ==========================
-    __folio_migrate_mapping()
-      xas_store(newfolio)
-                                    filemap_get_entry()
-                                      returns newfolio
-                                    folio_trylock() fails
-                                    shmem_unused_huge_requeue()
-                                      folio_memcg_list_lru_alloc()
-                                        folio_memcg() is NULL
-                                        memcg->kmemcg_id
-    folio_migrate_flags()
-      mem_cgroup_migrate()
-        commit_charge(newfolio)
+  [PATCH v4 RESEND 2/5] mm: memcontrol: drop kmemcg_id and use
+  mem_cgroup_id() for list_lru indexing
+  https://lore.kernel.org/all/20261105092233.3558950-3-qinyuntan@linux.alibaba.com/
 
-Fix it by keeping the original objcg around while the inode is isolated.
+It makes memcg_list_lru_allocated() accept a NULL memcg, but I think we
+can still race and corrupt lists instead:
 
-Fixes: 743e7d025d2f ("mm: shmem: make unused huge shrinker memcg aware")
-Suggested-by: Qi Zheng <qi.zheng@linux.dev>
-Signed-off-by: Chris Mason <mason@kernel.org>
----
+    shmem_unused_huge_requeue()         __migrate_folio()
+    ===========================         =================
+    folio_memcg_list_lru_alloc()
+      folio_memcg() is NULL
+      no lists are allocated
+                                        mem_cgroup_migrate()
+                                          commit_charge(newfolio)
+    get_obj_cgroup_from_folio()
+      returns the objcg of memcg M
+    list_lru_add(M)
+      if M has no lists, the inode
+      goes on the parent's list
 
-Notes:
-    v1->v2: adopt Qi Zheng's suggestion to return early in the
-    failure path
+    [ later, M gets lists of its own ]
+
+    list_lru_del(M)
+      locks M's list
+      unlinks from the parent's list
+
+I haven't tried to reproduce on top of the kmemcg_id series, so that's
+all just guessing from the code.
+
+v1->v2: adopt Qi Zheng's suggestion to return early in the failure path
+
+v1: https://lore.kernel.org/all/20261119193656.88678-1-mason@kernel.org/
+
+This is on top of v7.4-rc3.
+
+Chris Mason (1):
+  mm/shmem: don't use the memcg of an uncharged folio
 
  mm/shmem.c | 39 +++++++++++++++++++++++++++++++--------
  1 file changed, 31 insertions(+), 8 deletions(-)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 10cef89b00b08..901cfd15bdbd0 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -758,6 +758,13 @@ shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
- {
- 	int ret;
- 
-+	/*
-+	 * A migration target is in the page cache before it is charged. Once
-+	 * charged, its objcg can't change while we hold a folio reference.
-+	 */
-+	if (!mem_cgroup_disabled() && !folio_memcg_charged(folio))
-+		return ERR_PTR(-EAGAIN);
-+
- 	ret = folio_memcg_list_lru_alloc(folio, &sbinfo->shrinklist, gfp);
- 	if (ret)
- 		return ERR_PTR(ret);
-@@ -887,12 +894,11 @@ static enum lru_status shmem_unused_huge_isolate(struct list_head *item,
- 		return LRU_REMOVED;
- 	}
- 
-+	/* keep shrinklist_objcg, requeue may need it */
- 	list_lru_isolate(lru, item);
--	objcg = shmem_get_and_clear_objcg(info);
- 	set_shmem_unused_huge_isolated(info);
- 	list_add_tail(&info->shrinklist, &scan->list);
- 	spin_unlock(&info->lock);
--	obj_cgroup_put(objcg);
- 
- 	return LRU_REMOVED;
- }
-@@ -928,10 +934,26 @@ static bool is_shmem_unused_huge_match(struct folio *folio,
- static void shmem_unused_huge_drop(struct inode *inode)
- {
- 	struct shmem_inode_info *info = SHMEM_I(inode);
-+	struct obj_cgroup *objcg;
- 
- 	spin_lock(&info->lock);
- 	list_del_init(&info->shrinklist);
-+	objcg = shmem_get_and_clear_objcg(info);
- 	spin_unlock(&info->lock);
-+
-+	obj_cgroup_put(objcg);
-+}
-+
-+static void shmem_unused_huge_requeue_locked(struct shmem_inode_info *info,
-+					     struct shmem_sb_info *sbinfo,
-+					     int nid)
-+{
-+	lockdep_assert_held(&info->lock);
-+
-+	list_del_init(&info->shrinklist);
-+	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid,
-+				  info->shrinklist_objcg);
-+	info->shrinklist_nid = nid;
- }
- 
- static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
-@@ -943,17 +965,18 @@ static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
- 
- 	objcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
- 	if (IS_ERR(objcg)) {
--		shmem_unused_huge_drop(inode);
-+		spin_lock(&info->lock);
-+		shmem_unused_huge_requeue_locked(info, sbinfo, nid);
-+		spin_unlock(&info->lock);
- 		return;
- 	}
- 
- 	spin_lock(&info->lock);
--	/* Requeue the inode to shrinklist */
--	list_del_init(&info->shrinklist);
--	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid, objcg);
--	info->shrinklist_objcg = objcg;
--	info->shrinklist_nid = nid;
-+	swap(info->shrinklist_objcg, objcg);
-+	shmem_unused_huge_requeue_locked(info, sbinfo, nid);
- 	spin_unlock(&info->lock);
-+
-+	obj_cgroup_put(objcg);
- }
- 
- static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
 -- 
 2.55.0
 
