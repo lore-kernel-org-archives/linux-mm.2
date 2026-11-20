@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D73606A334
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73666606A33F
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DT1RSs4I
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FYU7uep7
 Received: by kanga.kvack.org (Postfix)
-	id 846906B05BE; Fri, 20 Nov 2026 08:12:01 -0500 (EST)
+	id 9F3DF6B05C0; Fri, 20 Nov 2026 08:12:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81D366B05BF; Fri, 20 Nov 2026 08:12:01 -0500 (EST)
+	id 9CB826B05C1; Fri, 20 Nov 2026 08:12:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75BA56B05C0; Fri, 20 Nov 2026 08:12:01 -0500 (EST)
+	id 905D06B05C2; Fri, 20 Nov 2026 08:12:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CAEC6B05BE
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:12:01 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8EADF40EFC
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:12:00 +0000 (UTC)
-X-FDA: 85455535200.02.BCA0D3D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DE8B6B05C0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:12:08 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8C5C120EBB
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:12:07 +0000 (UTC)
+X-FDA: 85455535494.22.1B75223
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C60AF140011
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DT1RSs4I;
-	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0EA184000F
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:12:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FYU7uep7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795180318;
-	b=L05duwIXEb4PXNCoSGZjD+bPqrgFP0F5FoHrHgmSh9L72nDPcaaGVi2kECZUceT/47qgMd
-	5wjVuGJc8FF9bMrtf4kDmjUQwmDldjt5XGKEgrjK71OZ8AEYUfF6LH9tNkNsvw/KOKCPur
-	qJ30zraCwHle800ZwMyWkL1plJUoDug=
+	t=1795180326;
+	b=ZoV/dbVne3guqKK7ypErNiqtmC1HgLhQPhmc2Qz+qBWpvU3i+liVxjaFbATpo86KefxBcS
+	vIr38MUYqw5EeNjvdRvQVpfmzu6w2ybGrxfsYXilil3kFeX00BcX1dSOlHBaGj3h5HyCmT
+	HDo/akH6siIo8w3G5GHN6DZkxX4QK3g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795180318;
+	s=arc-20220608; t=1795180326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XlmLL61qNv0OJxe6/2KedGlG+39G1uTBbnNGEpqe9oE=;
-	b=b5XsFzGmpu8rB1jjLQfzxpgpXxIh/1e/uNJqstVndZjt+THeW6FE4qfAjypEOst1Dy6fZK
-	LH5eh2jAyZy8uB1qXepFtHGP6Wxa+GgX2ed5BTMaMEzww+Bougfs5aVhnES1ZNSQfK+pxg
-	nopgHAsMrZef1ea4cxd+9cmuzdDqd48=
+	bh=+hP09lZtE6eQ8TbOuLXpxKM/7C1qHWXDDDUTO6VJ3ZM=;
+	b=mdwEIf4oLlY8Db5/cz+c/j7dPAm6lMWYQrJllSxPAjpQE3TgOLr66plI/+8wNp8ah1Wd9l
+	uv1c+J8L4lkAf+iq6bv+X8QATiNyrLcANcy9XhHePlGas1ZZsm4vNlayg+0Ay/v7ulAl1p
+	68If5Yxw0lo8DCRHH2dSPwOsogpWU3I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DT1RSs4I;
-	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FYU7uep7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6783862C05;
+	by tor.source.kernel.org (Postfix) with ESMTP id 89343629E5;
+	Fri, 20 Nov 2026 13:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AA91F00A3E;
 	Fri, 20 Nov 2026 13:11:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A591F000D2;
-	Fri, 20 Nov 2026 13:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795180318;
-	bh=XlmLL61qNv0OJxe6/2KedGlG+39G1uTBbnNGEpqe9oE=;
+	s=k20260515; t=1795180325;
+	bh=+hP09lZtE6eQ8TbOuLXpxKM/7C1qHWXDDDUTO6VJ3ZM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DT1RSs4IIaivB2KicItxBnhRebQ3ZiWJgyvghHNy20HUDHVVZpBuhqiiL0oCocS/c
-	 NILNDPi3NbQi7fb8XFz3G1/0HVnQRVSs7AeuYQpxWMxz28lHFkeiSrZ3CJbpplzxjS
-	 Wf11Z4r0o7s03SS0gGHtbiZAlb8BMetWSdbSZmKMZl0aZvmCzLRJiOCGUb8OYMlUOe
-	 3gYRPFb25irwhQP79fYtw0XgYnUwg1N7dWlFSqTZH5WX3rZRaLPMR/vMrwNnxHNF6+
-	 gihvG03mX+X2/JdXkS9UO6iT4VeXjA/OQ2N1S1J+cgBbNu2O0zMD+yQ3RZLorHyFZ0
-	 lzglXsBSis/PA==
+	b=FYU7uep7KTrRdPpP4dAAYQbhPmxrxVcP63ZFjmE7U5GmbWKSjDhQhbPYuaoqGsro7
+	 yBEbbhT2ZDFJh7aX1CTohFdxhVbi86QU330Ej7w2l3DMz9Ywl9viuehGnGshAkjod3
+	 WQOiUTIILk7KNCrT56pF5jkXWd0Fog40XVf8HbDwwzZjQB/yrLNBNLo6zrf707E+AF
+	 9OqgF7t3JCOwPlKlKs5tguq8ckY8Tws0L9Zvuh/8t0J5jsvRLANbRCOXm8WC6hhJ04
+	 F30izqoSX0bbp3g0dIgfoUFMKqZrbGSjBP3pAWK5BEQ149Xp/6RrxEfmXLuLC/5wIr
+	 HYTwsImapaCBQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Nov 2026 14:10:15 +0100
-Subject: [PATCH v6 04/12] rust: xarray: add `XArrayState`
+Date: Fri, 20 Nov 2026 14:10:12 +0100
+Subject: [PATCH v6 01/12] rust: xarray: minor formatting fixes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-xarray-entry-send-v6-4-1f69d7385f70@kernel.org>
+Message-Id: <20261120-xarray-entry-send-v6-1-1f69d7385f70@kernel.org>
 References: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
 In-Reply-To: <20261120-xarray-entry-send-v6-0-1f69d7385f70@kernel.org>
 To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -87,37 +87,40 @@ To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>
 Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+ Daniel Gomez <da.gomez@samsung.com>, 
+ "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6530; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=LmjFE/5c1aDLEafxOg2FuEeZAj/8eatZT5GZBC4r4iw=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrAEbGcl2AWVbKxDl+OBbYLszNt5tGmg33naAWK
- 8kKJ8tL8p+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawBGxgAKCRD6UCkIqsW9
- 0CavEACMKNGo5a968KztezeCuxFNxQVhD5ghum/M6uKI373upKYf5LFwVk7OrlAFioJoTj1TBs0
- Up9QsCxbsI+FyhXBID/Smx1kBv3+0uqqNgsouExKPr4ePI9qYYtM7j++hkzSFQCEV1DpcGein70
- W7WJrE1Sn5Spm89HVu2Idnn5hHQIhsydFZ+1FwzN1oO7QSFuUipiLTevVkX2ee9pe5yaBND0GgW
- F6y1vNI16lOtn5JbHWAGFsxYyEGBFZr1taxrJy+5rufMiUQi9ghF8j5T0CCFTsA6rlcz8l2zQo3
- 4w07Q1UBgNGCFqDYkEKFLnRjfof+JoM4Wz4INmefG12kaCqofyuNfG4/7wnNOwqc+fPu4kh/Crt
- b4cjSB2gQuf2YE0NhlqmveQAQJJ7tUpWQz1Q7XbdcDmkkt53TzTk8yDXIXld1xx1C3hDnaV2bzQ
- CDGAtQWILDylYCKukXFxvbk2srA+If6zK+KDpGUNWzgSciIfMA1FE7Ag8GR95c/iGd4pj02V6fG
- VXH1qHTbZl/0gAHwd1m9RpJ8Y2v/0DHiDMhHJRHKtPcFVpDM7J/bGrCmRmR6ywLyuReQk4REGJN
- bntU042a9URuYnRrQE7ChmR4e3uuigUWkZ0cnHbDsTTF1TtuUv7wKccVS9V6umgqfzwHAv2WqyF
- epS7JIwIpNGEWmw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2376; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=vu1pWIgWMPl43F9OTIFN+xRMKvVrKE4I7rGleY0rCyk=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrAEbDluzOEiiN89ogWhX6YJrkQn7fHtPhXw8n3
+ yNSGBu/+9KJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawBGwwAKCRD6UCkIqsW9
+ 0HadEACW15CWVaNz/Lm2ABKKs5xRUk28QKyZlwDp/bl68R/VMljAMo7h3/6/RCpNiCnROhjcS09
+ eBTT1gz4+z9d7BEBZaciekVY/QmN4SJXcTgsL6yBQ+BaRo8iSh3boG21d55kG6iu/mryuKXGKM+
+ LZGiXVt3NNdUV1ssqOkMde25ozGoHiFkW6Kc2k8WCPPmllBlVR7qCTDY7LHVZGf23RZAFcpeaxX
+ p5yCuZWW0gqk6W3jdbBSXLq90liGhfbn4CDLD19jnMhGtt6m56N/u0WVCvAo0vPwhjso8fp+uzr
+ PK/5hdVpe701sAOPrzfx1dQsljK22hqfJ3/UN9gQb5PRKL3PaYVqZhEKb9FB+h1+Prfau5BiZ/E
+ Otl/pd7RNyEgsw6jwCcZai1xk9zjAU3kXACqxre3z6D5W9zVa1ruIsBXOlOsE9s4sQPl9gvT149
+ phoRiz/NEwwe9we0XA2owHRfYByJZeqOy2Ob4DYhZiqIE2eAOIHY4BAFHtE42qGbiboszDEgcwd
+ QHfif6NVapxysKPm3RwFEa8gvomBkjw5oRjX9wMtmtRtEcfqeIxyBemRbUcdLt6IMdfn91oo0v9
+ xD9i+eiZ5HlYXq+KhzjncTW+wMyWGYyFRQsvF8rGhigKjd5t/HCRqMgXGBvZ/ZGHMgXWBP99xn/
+ x3MESYqU7mAj94g==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspam-User:
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C60AF140011
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0EA184000F
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: wh4hheqxr41nzhdku3jknmwcwjga4doq
-X-HE-Tag: 1795180318-670605
-X-HE-Meta: U2FsdGVkX1+U8bCDjKPX5T6UuW0xObS1jqk+roYuglnGTe5tgcj3WlGl/0t9z3esB/daOKWdnnMObNRhJ6Za+ttgqcbrm/s74iV5AxvZ9JdJqKiI7LLDUN/SOhCMtSLCfmVjychwNBsshzva0TFR85VhcpDQ4ttfDurdEuS4S2I42dyVyiAl7qAE0QVmqbH2Qg/QUB4Jum4ye0ifXswYt7SMSN0/bUQC0zS0GW86FcZ80drqLOYA1MpZjjdWJNoW+IFUlTjLGQv2CRXca4uR0boLIROp7RjOdsYsX5jDwEOvzD92ec3aaNaZHHo6JvImG1qTo7UjDj21zwUHYmqO+PhKxOq//qbrJ2Ujg84maZg7CPEMumrYQ76VeY+3QYh3wLHenTOhGwjXo003StJTUJBfE935Z3U7zmKB/IpYThkupnMc5o3qJJKGfFNO1yaQvp/AJZMW9PLktPC/a9IOACaN0DOVWhKdPqBjnOHhLIeokjf4913jGlnkoIIhGs9vtRBahXsXeBp+zRdq3y9eAXsI4LBgnqePrXGLSCEz6vi4Bi7kvseMOUDxqomyeETi+qKblQiPjJo9MmfPpjhH6a8GPT4H7SiLHbDGwucxVcGgQNrVci52icqI44kYMpTXMO+7uIxuXQ3x7xfBCDIC1+bVw3uNZfaSqXTlk1/4v+l5GnogCa3odAQSn4J/3QHyCX7aC/+dgfV/37MwI/ZRwfplIrJGFtEI7cmVAcbC+C98XWnPwSVzx5PQYmfS79X6OlcvHMfLxCKSeJK0vG3xtE3a72g5wd+Y64H2viGvFqVzTmN375CObip6HLdWh+gxlUDE6UeyUm/2r9nVgeWNlvI6lbHO906Ep2ZVvkAYXJJfznfDP692PmpzWnJpPIvnXEMcamplUNpJK7v4vn6Ux5zFekiuxlDO34JbNFHk56VHax8/+UZvzCQCpmQI2jKyWAznEl7AZAHyrA/h6NA
- Jki2luZ8
- lX9XKCL1YtFD66ZvzMb4FUJJVkL4iwsWkBV3ywNYt6r5oX4OVVQxikdoNkN3hDykI7T9Sgww1LQ9wRO0KN5QXabU14u72N/Jj+RLPiakcwnvRjcPeDPgSEu8JsK+/JHxVI7cJZJVs2NsnFAjGvqdh98nz2WYj0ZGBBODIVm1sxQbi/GuYUlDWWoc4qVbWzY8NS9azwecCTCbI4BTjshM7t9TGN1HaT3WwWQtluzzG/LT/0nk9vY53oHVJ73ykHSQ59wlHAZAwhIBk4xtWW9t2amffI6V1XiP4D/SOPhAgUrGKMQ55+W7CRtnjojLjUhCOxjRXrM8qrxkpCCmzi/atRKZA66tve1N0wwf4v/qNfEyqLKbWb8LkpmJMUZftbOlAN9fx4NVA/r7RNJD28dophDDhHbpAdViyXFJ8NT07hxC0ZhdNwI10SIktwx6jMYnDI2VUScU/bc2PMEXarxVhomLZweyhkZd+ElGkA7/nmb6WpeTVOXuDiOohBQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 4hzutbw8fygwdkhwqnseuws93s3mgch3
+X-Rspam-User:
+X-HE-Tag: 1795180325-450400
+X-HE-Meta: U2FsdGVkX1/esB5j1dvHmH/TECUzJmnbWgymWPo53YUDOMFRURjtnf8+rVyAGdFdorthbM+AY3PGndv3Q8P40t9hRF1AcNkdS7i4ao7QzU2NRUdSf7wc9sX+w8T5esUhT9oOw2bIxBcJ1i6vlghlUT8Zk592TjA5pKf0IoQGrKQ/0zQMofBuUMyz1OfRPw0qVYImgNOUPkKLvpLYfBwX+HrmIbidrnaFaQ/S8NkZ/iSwzu/zZ5/Y0PjdCf9N6ORDXrGOfTGf9CnIWwAzWyd2b9t2FYuQMCpNdcj5YHeZGuKXj4oOPnyotG9jkMLGjFWBly5K6vgenecQPKlSojkT4HGQh06KNTM1/0PYMNJd4kjoyAAvxekHUDN3VHiC5X0CTBwl5bqPo8Uhg01jA/2f1pvSZIrGiXEcChZDKHkVEqfDgHJdmFbmrKJ6Rs3esCfJIAeKnOxBTiBMEZidZaRi76rse7dZvZKpY/gf1cXDWKm57p6dibrhBt57FiH5K8KsEcKdUFhG9CeZ+3aB/4EvFrFyge9lUcnNso3D83Qqu/i+Y+u7CjCqcSsaWmE42ZbGcqZuejm1Py57+CB8Hud0NAwClB6e/odXNWEtPKfF63floE4SUYkcnVMiuVUoUvdE7Ecp74nKWTXR0feV0Gi+GfB6aFsc+chrF6O6QaSc59hrMw7gIpRRMgWgVU5rlA5cNLkF4UgWQYZdXDQr5yS6Vd6RW0GpczA3FdKkf9Dfy01HPrGzMjsUaM8pY0swvZZpVI7fhza5TBlpiYp/L9RtPx8YA1vSkYTkLbBiqhD7LENYbodYcOHHbkoddiufIB64Tv3GImRAoG3g0ZrzAntO4JoEzSnjME/o9q3tkdA5jc+XVxSua7h74bdVzVZMM4zAM5AMaYhy1NOZOhgJS41HGyrSv/mBb0Fz1EeTQvTIE0sYNWOm34chbArN2f5ooTScNCQuuc9LilZDZYmHG69
+ BUToGOZw
+ oC9k6jW9p2p5lGC/SxCSTeNLNwm+gnvjBx5pU10Ofq2O60yVDbtM+FykFmJ5Fir0NTkQH5cuBsAnixL7FMrAzbQs6Y23mkT7KjNEvK1uy4pwqTg7WjiDE9sF9D+CB1JHTSqMgZxIAjuEUQwCh4vtdNwiA2FIUAfGihRTQqEiuoQQmeJObMOCQTl+w0h7LKLNazO/IdSCNrgWSUe1wYRfmjmhoytbdx0SKtyQaz0fZsw/YAQm/xjgsin8TyK0RoUVoOwHez1fYiAvnmJ8Fwi/OUW0q2E5pXaHF1yWQVewSiM2dIRdF6a6mYpUvXqM4CTdw0Bb5EKwFIDI4VeX3HOSjxVlUw+ATNoX4LTxrxPS4K3rqUF+OmZPlXFYa4ZpIVyWTWko6I3S5LrXXUp4/o7KPqYCOrw6IRStgiSG/3pJ4EPDXXLHwuCw6gPaRR/Dr5l8sZbwZ3oMxOKZThVhjWpaB9rYNu+Q2VWKVSuwbr7vh2yKNZSTjc/zE6fzxhZJJIgqmHcqvgcTnLFwZ8CNIfqq5zZ4tzpA7MqSYMEMZy0T/JGruovAqMCGDJCD5P1MdpPJT1WSuMEd7250AoyjUn0I+vy66fio+hKIr1SveemrR5YI4Pisy1mI6FaxzBpf6k2SIyXxbpqQP70s3rbSgPIH5t+zT7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,170 +129,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add `XArrayState` as internal state for XArray iteration and entry
-operations. This struct wraps the C `xa_state` structure and holds a
-reference to a `Guard` to ensure exclusive access to the XArray for the
-lifetime of the state object. `XArrayState` is generic over the guard
-borrow through a `Deref` bound, so it can hold either a shared or a
-mutable reference to the guard.
+Fix formatting in xarray module to comply with kernel coding
+guidelines:
 
-Use the new state in `Guard::load` by replacing the call to `xa_load`
-with `xas_load`. The `xa_load` function takes the RCU lock internally,
-which we do not need, since the `Guard` already holds an exclusive lock
-on the `XArray`. The `xas_load` function operates on `xa_state` and
-assumes the required locks are already held.
+- Update use clauses to use vertical layout with each import on its
+  own line.
+- Add trailing empty comments to preserve formatting and prevent
+  rustfmt from collapsing imports.
+- Refer to the kernel crate as `kernel` rather than `crate` in use
+  clauses.
+- Break long assert_eq! statement in documentation across multiple
+  lines for better readability.
 
-Unlike `xa_load`, `xas_load` does not filter out internal entries.
-Arrays created with `AllocKind::Alloc1` store `XA_ZERO_ENTRY` at index
-0 when they are expanded from empty, so convert zero entries to `NULL`
-like the C normal API does, exposing the `xa_zero_to_null` helper for
-this purpose.
-
-The `XAS_RESTART` constant is also exposed through the bindings helper
-to properly initialize the `xa_node` field.
-
-The `guard` field of `XArrayState` is not read until a later patch
-adds `into_guard`, so it is annotated with `#[expect(dead_code)]`
-until then.
-
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Acked-by: Tamir Duberstein <tamird@gmail.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/bindings/bindings_helper.h |  7 ++++
- rust/helpers/xarray.c           |  5 +++
- rust/kernel/xarray.rs           | 75 ++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 82 insertions(+), 5 deletions(-)
+ rust/kernel/xarray.rs | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3791af0aadc7..517c5872ad25 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -130,6 +130,13 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
- 
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
-+/*
-+ * `XAS_RESTART` is `((struct xa_node *)3UL)` -- a sentinel pointer value, not
-+ * an address. Cast to `size_t` so bindgen emits a plain `usize` constant; for
-+ * pointer-typed macro values bindgen otherwise generates a `pub static mut`,
-+ * see https://github.com/rust-lang/rust-bindgen/issues/3347.
-+ */
-+const size_t RUST_CONST_HELPER_XAS_RESTART = (size_t)XAS_RESTART;
- 
- const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
- const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
-diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
-index 08979b304341..79799c55c3d7 100644
---- a/rust/helpers/xarray.c
-+++ b/rust/helpers/xarray.c
-@@ -26,3 +26,8 @@ __rust_helper void rust_helper_xa_unlock(struct xarray *xa)
- {
- 	return xa_unlock(xa);
- }
-+
-+__rust_helper void *rust_helper_xa_zero_to_null(void *entry)
-+{
-+	return xa_zero_to_null(entry);
-+}
 diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 19581b9dfe9e..183808971683 100644
+index 987c9c0c2198..4f4b6bf5750d 100644
 --- a/rust/kernel/xarray.rs
 +++ b/rust/kernel/xarray.rs
-@@ -8,7 +8,10 @@
-     iter,
-     marker::PhantomData,
-     pin::Pin,
--    ptr::NonNull, //
-+    ptr::{
-+        null_mut,
-+        NonNull, //
-+    },
- };
- use kernel::{
+@@ -4,11 +4,20 @@
+ //!
+ //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
+ 
+-use crate::{
++use core::{
++    iter,
++    marker::PhantomData,
++    pin::Pin,
++    ptr::NonNull, //
++};
++use kernel::{
      alloc,
-@@ -215,10 +218,8 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
-     where
-         F: FnOnce(NonNull<c_void>) -> U,
-     {
--        // SAFETY: `self.xa.xa` is always valid by the type invariant.
--        let ptr = unsafe { bindings::xa_load(self.xa.xa.get(), index) };
--        let ptr = NonNull::new(ptr.cast())?;
--        Some(f(ptr))
-+        let mut state = XArrayState::new(self, index);
-+        Some(f(state.load()?))
-     }
+     bindings,
+     build_assert::build_assert,
+-    error::{Error, Result},
++    error::{
++        Error,
++        Result, //
++    },
+     ffi::c_void,
+     types::{
+         ForeignOwnable,
+@@ -16,8 +25,12 @@
+         Opaque, //
+     }, //
+ };
+-use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
+-use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
++use pin_init::{
++    pin_data,
++    pin_init,
++    pinned_drop,
++    PinInit, //
++};
  
-     /// Provides a reference to the element at the given index.
-@@ -301,6 +302,70 @@ pub fn store(
-     }
- }
- 
-+/// Internal state for XArray iteration and entry operations.
-+///
-+/// `R` is the borrow held on the guard: either `&Guard` for read-only callers
-+/// or `&mut Guard` for entry-style APIs that need to surrender the borrow back
-+/// via [`XArrayState::into_guard`].
-+///
-+/// # Invariants
-+///
-+/// - `state` is always a valid `bindings::xa_state`.
-+/// - `state.xa` aliases the xarray reachable through `guard`.
-+pub(crate) struct XArrayState<R> {
-+    // The borrow is held to guarantee exclusive access to the array. It is
-+    // not read until a later patch adds `into_guard`, so silence the dead
-+    // code warning until then.
-+    #[expect(dead_code)]
-+    guard: R,
-+    state: bindings::xa_state,
-+}
-+
-+impl<'a, R, T> XArrayState<R>
-+where
-+    T: ForeignOwnable + 'a,
-+    R: core::ops::Deref<Target = Guard<'a, T>>,
-+{
-+    #[inline]
-+    fn new(guard: R, index: usize) -> Self {
-+        let xa_ptr = guard.xa.xa.get();
-+        // INVARIANT: `state` is initialized to a valid `xa_state` whose `xa` field aliases the
-+        // xarray reachable through `guard`.
-+        Self {
-+            guard,
-+            state: bindings::xa_state {
-+                xa: xa_ptr,
-+                xa_index: index,
-+                xa_shift: 0,
-+                xa_sibs: 0,
-+                xa_offset: 0,
-+                xa_pad: 0,
-+                xa_node: bindings::XAS_RESTART as *mut bindings::xa_node,
-+                xa_alloc: null_mut(),
-+                xa_update: None,
-+                xa_lru: null_mut(),
-+            },
-+        }
-+    }
-+
-+    #[inline]
-+    fn load(&mut self) -> Option<NonNull<c_void>> {
-+        // SAFETY: `self.state` is a valid `xa_state` by the type invariant. By the same
-+        // invariant, `self.state.xa` aliases the xarray reachable through `self.guard`, whose
-+        // lock we hold.
-+        let ptr = unsafe { bindings::xas_load(&raw mut self.state) };
-+
-+        // Unlike the normal API, `xas_load` does not filter out internal entries. Arrays
-+        // created with [`AllocKind::Alloc1`] store `XA_ZERO_ENTRY` at index 0 when they are
-+        // expanded from empty, so convert zero entries to `NULL` like `xa_load` does. Retry
-+        // entries cannot be observed here because they require concurrent modification of the
-+        // array, and we hold the lock.
-+        //
-+        // SAFETY: `xa_zero_to_null` only inspects the value of `ptr`.
-+        NonNull::new(unsafe { bindings::xa_zero_to_null(ptr) }.cast())
-+    }
-+}
-+
- // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
- unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
- 
+ /// An array which efficiently maps sparse integer indices to owned objects.
+ ///
+@@ -50,7 +63,10 @@
+ /// *guard.get_mut(0).unwrap() = 0xffff;
+ /// assert_eq!(guard.get(0).copied(), Some(0xffff));
+ ///
+-/// assert_eq!(guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(), Some(0xffff));
++/// assert_eq!(
++///     guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(),
++///     Some(0xffff)
++/// );
+ /// assert_eq!(guard.get(0).copied(), Some(0xbeef));
+ ///
+ /// guard.remove(0);
 
 -- 
 2.54.0
