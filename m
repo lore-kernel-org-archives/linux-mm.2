@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B60606B210
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAD9606C6D8
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YDOml3pb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rc2fPlPM
 Received: by kanga.kvack.org (Postfix)
-	id 8E9A96B05BB; Fri, 20 Nov 2026 13:09:53 -0500 (EST)
+	id E8FBC6B05BE; Fri, 20 Nov 2026 13:10:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89A726B05BC; Fri, 20 Nov 2026 13:09:53 -0500 (EST)
+	id E3FD16B05BF; Fri, 20 Nov 2026 13:10:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ED9C6B05BD; Fri, 20 Nov 2026 13:09:53 -0500 (EST)
+	id C92976B05C0; Fri, 20 Nov 2026 13:10:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 208A06B05BB
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:09:53 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 90C8A40160
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:52 +0000 (UTC)
-X-FDA: 85456285824.24.5D42E70
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 993856B05BE
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:03 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1CDB08013D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:03 +0000 (UTC)
+X-FDA: 85456286286.25.7A8D949
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 64B5B120006
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YDOml3pb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id F4079C000C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:00 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rc2fPlPM;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf29.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198190;
-	b=hV3IEvDYvfioELfK4X9j3oOkXZhYAISooHWHnS88Tib20FFNE7P+OIeIEf6mVQ8XSMseeB
-	pTePk6pY2lv7bpd1wPURuKYn+fomQrF8A5sN7i4RNnNQ2keno16ypNHdp4GanFt0FITRSF
-	ugjJ/nw0hw4hU8ZNkGI/0mLpPtDLcdg=
+	t=1795198201;
+	b=PmQ38w4YVodSZ2r+s1REjifGD2n1h6bZ5Tr2FX4KuPc/nqpCqs6AGQCGP+gNRbfKFfJPhX
+	QTX06ZJaGbSXPwyNfdwGAi2JbsQMGKwFLn8Pt/Qh/0plH3z6X4PWUYUNVpLZ8Lqzsxmiw9
+	tf7kSB71djTxaaLss/gfA8hoT3h6pfo=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198190;
+	s=arc-20220608; t=1795198201;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=09bgEhSy3QiJXmk+xsvyg2Evx8mn/TJLK5Z3TiEB/ao=;
-	b=kWxn9xdsbHwvG55298gaO5MwnfjNuvoXnzB0BaAcITr6T/6LCWEy716JgNv7wOfeBtjmS6
-	2kJBJRNYuvylSSRs80iWR2acoN+zN6XwPcdcCqStk86shSGh7GlTWQ9EBPzLG3r0mC+PF+
-	i29+/wP1QL+2r+OJn8GzAYFgNprH6D0=
+	bh=gr73u4IkiOa9BCictU2VtS3g9h9o19ZGrPCxtMBrlkU=;
+	b=o6EgHOxZThNynXERjTdUoNkB7pqU0G7dfvruiOwC47x9hTYPzX4TfVaZ+dmZ0g1dMXc7HZ
+	1YeLLnb2pRAxjWBQwm2433ZJpGKtW9aq4pGBrCX9M7vL/e2oC/ZQmg+Jpf+/5jzH/XBT3O
+	hMFmnoz2tNMYXZhUjDsRDaYRiMOHo/Q=
 ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YDOml3pb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rc2fPlPM;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf29.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B4DB545F4C;
-	Fri, 20 Nov 2026 18:09:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4197145F1C;
+	Fri, 20 Nov 2026 18:10:00 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198189;
-	b=UkRMPduBB8l2tdSINEidXhVrg2kngFUVjKHghZ2vFTaPhiO3A891yCtHyQ/eJ6CFZ6I5
-	 eVJ1QqwiqqEiYJm7jXi3xJsA3ULNEnASoo06Rngh1KQ+umqU3YNkmy1CQavw+VHNucSIy
-	 StLX8thLaVIEyA05VjDla2rLs32cW3BBfDpjrNJ2Qnph1M++V7vHYWPMSyaWr0g/NsQyj
-	 zoLu3eWSpfuNa/AQfkXc2z8z2lPnHHy24Yg4miUYTov4pV07ZZsbYle4feEGYu7e6Deuj
-	 1Ta7v5lt4e2lzxvNC0TTAj2jmPml4xZ0HWQOvmG32HQ8famKGVRhxM0NMwD7GQfUnTA==
+	t=1795198200;
+	b=Ciz8Mg1PFyhLuZiJ8lBOiv8i0U8rEkGF8UplOYuVgappsi9R7/I4KK0vhw6r7KUHPQGu
+	 lLpRozkGsEn6YKVAzjmCdwS60BEI5b5xCOIgqZhObBg7Qr4SCWDvQkjnd58lPE2IqYBYj
+	 UXHJuttqx24FXNrz6aW3wimZ+MDW6ey9iFD6+qQjxwAjR1NjM2weXvy0B7u8AfreKvAEU
+	 y2lIQH9UEqVGQkXz6ThboTflv4pqEC4GvMeQxmpz4Jn731FgEZpHsuCajfkYp2wKDJVIG
+	 kDKucyoiDJ8MtlDbwPauw/fGvquXuOFYIwB5Bc2s/z8AEdsnHeUlHXM2T3k6GQtFgbA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198189;
+	c=relaxed/relaxed; t=1795198200;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=09bgEhSy3QiJXmk+xsvyg2Evx8mn/TJLK5Z3TiEB/ao=;
-	b=1T8IxDtgrQ+fB3AruIiQ3GiahRU4mqELd/FfbrVcjJI0leSz7SL/3O3vvFxtWTQJRXc1
-	 7VwqXUcxHLP7axzztVrhHYKZ18gLUeeNWas1EJ+i91D6SoG2A8VH3NDtyod4jWyqoUUzk
-	 C9PHtovtYlVwC9TEiIx8Hn9ZQaLkGj/j7Cn9l6qnaZQJqyYSKIQN31IXXJNB7usTrO/hH
-	 j7QgwExFXA1J8fDeqTyrLWXx7VgxkQaCUg6+1PzQWiNa+eczBuFKW1lqt2RhZs5TDnUSK
-	 /vXD+jy1xNVlU6WoJJS9xnNDZdNJuGaX26YNdsZMZ6JGxC4Na2Z7Q8GJNpxJ9rg/7cA==
+	bh=gr73u4IkiOa9BCictU2VtS3g9h9o19ZGrPCxtMBrlkU=;
+	b=GyRyO729HLndq0Sp3OdpQdYyJaBeTlU4GUtdac2dZ+p0b0T+WjPWPXznVBkxiWMSqMGz
+	 iSXeSfjuD2mTyyVfR0hyOHm7WYIC+ZE7ZfsrsoX30Y+lwJncy3LMsuyYPnTdKtRKI44rh
+	 OiKlNqO+SpGg21dr/pYQsHbEf/CuHgCYoNbewr136mhugEqyE7D7/3I72yEpaxVhueYkg
+	 d4zA71oB6lNpLEoRaiRXLQGSsQYaLs98N7HG1xHs1689xs9oh7B3Nse94uZrVHfx/aFBd
+	 OXdGA1CQUWcidCdNlkW96850k0yqHZS38TLa7w5mcmoueY2Wms0MKWaQyoVIJQDrkOg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 351421F000D1;
+	by smtp.kernel.org (Postfix) with ESMTPS id 8C95C1F000EC;
 	Fri, 20 Nov 2026 18:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198189;
-	bh=09bgEhSy3QiJXmk+xsvyg2Evx8mn/TJLK5Z3TiEB/ao=;
+	s=k20260515; t=1795198200;
+	bh=gr73u4IkiOa9BCictU2VtS3g9h9o19ZGrPCxtMBrlkU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=YDOml3pbppDdUknQMjpkjRzEWY3YGTDBeSOYum5MncfFCeUhAFtv3Vd8ceEGr/KLv
-	 d2yjfNTA+c2ZtPKi+AIAyJdEtts/gHfW9LcwEgugZaB9S7ET3pghgmS9SR2cK4Osdr
-	 2LfVOuFRw6MthblcmWHDm+pAe8c2DkynJVfYs+GqQ+Rh5RL28hqHBPB1k0zjN2huKh
-	 QMCzcL+dk3KuurqdlE0xQ37Pn6/t0EfZ5hSqAFa7Gv1T80UeWt7Z6jte07mN1Q2GkN
-	 TQTNfgr0oPdMaX7r1vyDcayn7ZuMnSMq48v4hmYQvnKsC4fDLBtOM9qyva2z+DFTh0
-	 FFNtUSAe7+wfg==
+	b=Rc2fPlPMLJGFC+PBLd1vrsie9/Cam+bY0i7Fw6T22fDZSQin4ZNpeGjZwiLYtRCAY
+	 LVYXVPlAl1yck2iKmMg3api1WimxSYUA+XvMURQ6UG3W6OfsmWToKOkZ7xpmh9rt6Q
+	 YTfbqGTrXP4EBmqW7C8Wo23yXl4lxzJE4YZgZ/7WKVJaUu2ojY9RE0IZqOy8R9nVDt
+	 pmkq+onhlxtdfsnrfFtLBYgytRPXjORlgqQyQmd2m6gBmxCN/3enpEzc/sjMDNCRoF
+	 nPgObodq5uizZ57K8Fqrv46XZw8MxjohwV9xFMbZGTyFNXFGghFBvlhQXKXBsdB/K7
+	 59eY2D9YYVOCw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id EDA364B8E1;
-	Fri, 20 Nov 2026 18:09:17 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 175F44B8E5;
+	Fri, 20 Nov 2026 18:09:18 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:08:59 -0500
-Subject: [PATCH 08/60] mm/migrate: reject move_pages() destinations outside
+Date: Fri, 20 Nov 2026 13:09:00 -0500
+Subject: [PATCH 09/60] mm/damon: reject migration destinations outside
  common memory
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-8-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-9-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=835;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=912;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=pP22b8YF19lh+xtqINC6tvfU3jfkWVAhKO3xXxkME4Q=;
- b=zIyXXPWBVmQkXDlYvC5h4ZDvLmW7Fv9UoBLS9vJ/Pz9f2a+rQQr2z64NdVHxlPNBrL4P3HD5y
- CL9ctZIadC8AcBeiIq1b1GZsIOfZ0Hg0mQWqGbUkGaNZffKMPxNdRDC
+ bh=PHs1dwZV5jWDY/oD9jV+dBublSOMfq9XyD2sA1X67ls=;
+ b=EHjtqMd7/8EaTbdZ+vJ1PCa8apdnUFyPwhm5wisIAr5smnjEwxj+N6vWTCoyNXJw98hRk2en0
+ +blI33RHe8NCH5zVJHV0l2+J4bHQKjBy4yR6u86Gh0NgqVYPfJ4g5b/
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1qhayupbmspajixa9wwx67iquyqqxu8q
-X-Rspamd-Queue-Id: 64B5B120006
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F4079C000C
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam02
+X-Stat-Signature: d8zsbs7rshwqordmujj5chtsu7n8prg4
 X-Rspam-User:
-X-HE-Tag: 1795198190-739949
-X-HE-Meta: U2FsdGVkX1/9gv5V4JfLNimt2Z8w/zMVPvacdeI8srq+htBJctYkbV+VRvzRAjIfESFyPqQ+3phg023GqPCAyVC1ukxcBWfcflM1i0cEsZcOR50nTtf8/ciTrJeG2KLNBBTvte2GB2mfLfuork0HR53fvwQg+daF04L9Xx6KAR1LX7GSsNLco8hwT0DzhKnG4QCtHC6MSBjFaHLQKpW27Wg+WF4CNlXt3KasSg+JQWPpQYBmy64OGvrDdXwYeIO8dvcgkumM4lt+9FmVD29Jx8gQpev98hY1uNRUo0k2lrLuCCkdfi0pzxVzcM8JwXKmdBpUpltiy9RZUTmb76fORoM1BpzLRIpOl1hry9jl8jidKg2QLb1FAw/m/0RhIjXmg8VR+qT7i4bOecR3JbaxprPzlH9FACtF5DWLr3xZdTKdSIaqcS5uDkK+Owsrm9LFrqjeHUD+4ed1DYVKaPbKIMr8tR0/uzoXuThtUmeWw3+wdjBpN5XvU2bYTAeEXe9N3WR4UqrS3UQRjc65BpzmVQcTJkBU7nSQRnQn2JP24I4hpHJfD2ENDSqSVq8o8WvKt9FzMvBBsgV1EPNh5VJrpCvHx2tBjB2JSTdbp3I5ETiv/mlVYe4czjRCAbOLB2yiKeREU/IlMUhb3bgSWioSX0N/y17w5kWxAaFmJDqnHJXvsEH11rebF2Giih4W6ff31Sjlgl9vpTfnuMs0kmJFwgxx8bXyKoCrHzZ3PdOg8JWoQZZ0vQhFAW8vpyWXPTDNoXPr3Q1eKzJ6CQhm0l7sYypUEYz+qhHgN0rgcc1EgR3+Gbey8nQOGWa5GWDrn4GKo08dVGIINTbU14VZohzWfNB00YH3TTyJ17J7rlEv3dY1g90a8PYVJm1Ntn27IGlr9VphCd4FoJpDsl3hVRNV21WdyPpDwhJC14guQEQzPkyKOk3s9ZiGKGqEzKSBe34jNWC46MTus+5lYB9Snl/
- r5uxz7zy
- EC6ZyExPr4cx0fcogmT4DSxJVRMpKNqlNiJwelok1ZfPXNAWtsy1UZyOahd5rAHZDZrD6mZ8dloVOK9E6mp8tgNC3MIjvlq1f5ey8mTgpR4cubFpMi0C5IPz3v+NsnrhL7BkdKyEhg5LUPSwI0p8JqGqu+LaY0jF5p6fk/gJRySsKw6IxLC2aoURmj2EsQzR6UTVIqsMguH218O3Y+9jqzJQVgyQsCwsIKXKUivdd9RKv+Ul+pcC8t0h+vUZ8xksOhBzeilPR2QkuusjWETb8MeEEyG/o/+1BJ/6fPP15ebvWoKz/9jsgNURyncKhgfQfGledqN07qZzJdt+EIaXlxP3KcTTGrjVLFRK70Y/GN0wNxxpFoU09o5dF4ZG2YH7HQjY3qbia2Tx/u3muUc/USgNRn4WVTrBkwg/ESiaqIoq4ZM7J6chnWawUGicNxWuXysvSdL7lO63AZxl42CXWMotMcZ8oJG9O+BwPfLkvthTxUU3STrsgwAgw+ubLN9AOzdJOxmc34ezab/lr+9KDRa3dY3ufEGIVc0m/YI6R5N0NlNY2KRuqo2h3pWZ+yu9C4l+oF/RQo+hE3o0Kz3H4FMuvtfsLWVqSQqLRI5tpxZjYZFPbCPzVfakCQNYCcNdEfnIhpKz/CdR8/M410mQnzN87C+gDtGnwTfEIWn7yBZTz4TYLjdIvhyYDnPL4en5JFrLbBNNeVRxD7sd8NOCR5nA7jOGXJllRy+zH5GXWCIOAJwOSFaqSrU4Kvc0vtuiReL357vWb6X7RJq16RX75LBwPoZRX3d9u1uLRuyUwiGGq+Xp2ExmKWTrOirI/i0tvJMDQ
+X-HE-Tag: 1795198200-924555
+X-HE-Meta: U2FsdGVkX18IFstm4NDGwfPmApm7+R1rp/Wn8fYIlF4sYvbI5zliQh+h8gt4FA1LC1IZy/hbQmGm3O/Vd7kzprX/Zw2XzHmc9OQTWNHAosKek2/i++jHUkvSI36Zy+ZXwLCu20Hu+3Vu8YEVVZKSycH8sGoeoMn/Ky77D+oQsF9qWVC0prtxou7lvzXjbbH97prjg0vG1RBTm4V85/OFbBmb/FHZBGt09mknLiupsmPLrHjPGHxbcI6c15lwrh1MLOTFMohERlWtu6e9jZzwe5bkKJLEOWIvJHSFQVwrAD0muUSAVOd2AVWKNBiRmxAsuT1ZJB3iC5JU4SF5rYpX5RTlQX7w9aAh04KRBzAlVotSNaiyLmM2TCfuhGqu4Pibx7vKqtyvoIyriT9XzNnBNaEGiTnSBBxxW4m9vkCMq97T1YgxFQeK5F9acyvsr2F5oNkcw6IT3J25ho/R1XV6sVw7YAaues+fe3/6xyxgiNOC6HWottQPgqP8TUdGmVuu3mJuR3ZTzOsC4Pz4SYJCxrKdyMZktbQrjEcreWGvy7bzlIiFuzVk+isFYEd5zt9KgAVluOREIVbuqzWuQAtCJ30gXqGBvf4wHgumidDB4RNkB0NEYQ+LG+Qw0H7Tqr3BuXimb8ZSjpAMlDmWBgGErTUIpysYeSy/J/STjHzqDoadG7ag5IztmTOlkLCclmPlgVSyBoOuS0OUQHCu0rVLQPyrlslq8zyTdX3ZJoBAc6qp5+V3VlRQEg/Ys5TvlXbZgvrCDzNVCxZfHgPSMr1tcVkI3REO3HTy5pxFxJYrEBewmlBIhxdLbcappJTgQEWjgY+wYbCU7ic+plzbSjcjFP8E7B6f+r9UhDy355FvENnD5iqR7yn7XXvOmKvuia8YPtc/ZHpKQ00vvgzpGX3yOQvaUJ9iWKLyUoYAjs6YByNESgyhX0hT/z3Rkl6hLo3748bTqh1i6x16Wf9/9bk
+ T4f3qqQH
+ Ekx3qdSEI6YqZwKaS91koIx/D76tZdz9t7iVWWEB1KpOZXdPAzoz4UzpYR5hlKxTsNkGq/XAJhp8uxBh6kACRftv6vjFlgSrP4Jhjju1C0hkBCFAZznIdx9Y9HGOApeVMpQUDA6wS0viG01p+rDl37aU9+Rjsyxs1LWkq9Atnq6Ml5EjrlJr/pjUINxHbc77sSMhijSRFSgk6r2smP04lHbS0D2JRhL4EyNRL8kQj4aweoonzoGxeTyJq7efKk6EAQvfG3O2enL/txP+jQ8IPtvuoRQqFmTvOEepm6mqrHB+ZodTbgbRXHxXNJohJ/G+Q6g2P1TTExGdew414vTYoNS7lwPIv4RtWb3ugExeqb9M+UhBhKEIod2Z6IBMwzdmDR8+rR6MMyHRcpKRoqEcS4Nj1rY2EnEUYsPZB8OqigNedbzMQfjLHuIk5gkeNQhiR99p1DpSIzAuKNTOfdL7YM4jdfVvPl/L0HJBtGA8dGua2PrzF3JXqltKCGreLLlhM0OlQ2XtBmCDWHefl+xkK+7qMRua4KGM7MiR9f5SQ68yk9MZhBOys3ReLxoGlfS7cgBRlMtDxFfdPBkSSSGRlznbaSYRS8fHUZ7kA9d3ABvqNyuNSDaTsm2j9BeSPL8HMqbFDBJwq35eDhcZ8Hcbw5aNuDuOmXy4q2BxjLjOxeOrT7j99bVF0OG/3i7Fxdj69WfBZGZeEm3Su/HF+CPj92iwSoK/XJHhxmKo5/3XjXvF/D9x485Z0hJbyp3TbDznk2t3EWieTe3VT5v8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,30 +189,30 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-move_pages(2) places user memory on a node the caller picks. As with
-memory policies, the destination should be general purpose memory.
+DAMOS migration actions move folios to a node the user picks. As with
+move_pages(2), the destination should be general purpose memory.
 
-Reject a destination outside N_MEMORY_COMMON with -ENODEV, exactly
-the same as a node without memory is rejected today.
+Reject a destination outside N_MEMORY_COMMON, exactly the same as a
+node without memory is rejected today.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/migrate.c | 2 +-
+ mm/damon/ops-common.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 65869b8acec5..208788b130fa 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2411,7 +2411,7 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
- 		err = -ENODEV;
- 		if (node < 0 || node >= MAX_NUMNODES)
- 			goto out_flush;
--		if (!node_state(node, N_MEMORY))
-+		if (!node_state(node, N_MEMORY_COMMON))
- 			goto out_flush;
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 2216a0023154..15cabc79613b 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -498,7 +498,7 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+ 		return nr_migrated;
  
- 		err = -EACCES;
+ 	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
+-			!node_state(target_nid, N_MEMORY)) {
++			!node_state(target_nid, N_MEMORY_COMMON)) {
+ 		damon_putback_folio_list(folio_list);
+ 		return nr_migrated;
+ 	}
 
 -- 
 2.56.1
