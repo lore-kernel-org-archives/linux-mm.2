@@ -1,98 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69317606A336
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 17:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E7E606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 17:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X6IHrBc4
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=YmdsWDPS
 Received: by kanga.kvack.org (Postfix)
-	id 742676B00EF; Fri, 20 Nov 2026 12:33:37 -0500 (EST)
+	id 9BE9C6B05B1; Fri, 20 Nov 2026 12:39:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F2FA6B05B0; Fri, 20 Nov 2026 12:33:37 -0500 (EST)
+	id 96FF76B05B2; Fri, 20 Nov 2026 12:39:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630296B05B1; Fri, 20 Nov 2026 12:33:37 -0500 (EST)
+	id 861276B05B3; Fri, 20 Nov 2026 12:39:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 418786B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:33:37 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB8F514012B
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:33:36 +0000 (UTC)
-X-FDA: 85456194432.05.A10789F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 35FB380002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:33:35 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X6IHrBc4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E01E6B05B1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:39:23 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB2F6C0135
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:39:22 +0000 (UTC)
+X-FDA: 85456208964.27.0F9B150
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5670040004
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:39:20 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=YmdsWDPS;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf04.hostedemail.com: domain of BATV+de1156368b985c5aa289+8489+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+de1156368b985c5aa289+8489+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795196015;
-	b=C0GPCCECnyuliPMvOT5h6YXfRzpgzkqscrtRvLvC9AzA7S+Cc990/ld7mdk4mAmRz2cJIt
-	o1kf+6OLJGlwjrtfyNYqTUaqkpfpW5+nNV5CqpUBVxRq0M7hKd0W9J1Pk4fARR9wvQdX48
-	RuBbRByojJ0Oiy7kukGs3zou/ty+7HY=
+	t=1795196361;
+	b=eMYCWKQg7DCYa7hyOTBDmho6p5mLj/xozPbTWinmgWMYULHYYtl/a4cx4Z+Cr3xTm2sI43
+	7w6IX6srEebn1kVE67r8Se+9h8vAU2RYvCES6qiDf9wJU53ebce5A7z8f6rKJ0SWgOdzgM
+	Wb2ZO6nt4963wUAFVxs7dfJMuG7RgXk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795196015;
+	s=arc-20220608; t=1795196361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Arq4ZupDcmhiLMBgMCtvkojQM2xEuqkXJFom5GjrF7k=;
-	b=esCw5VRiMN8PhFsx61dIn1BTNt5+MoFx4ufnAzFe7n20u+/fPZVYCPGT7py3MZJGgN+v09
-	RJoWv/Y2OqiHrVMT6E46nwaLRUySL3QBmSPJicxJ9DwIRiLDvaYtIfWFN3vxeAQ1rVv7Z4
-	xnXOzrWZ3b9uNhuEyC70XX1CrQn+HlA=
+	bh=zFeXigSPHuPYCYu3NW90s99hrfhUDEc9Wq95RVe4MLc=;
+	b=FfkyaQMjfRKYIF0a85hJ7UzWkezLxw0uYPkWq+xAuJQ4l6zNuOeO6wjB3+bAYKyR4jMx5/
+	gql1LzOOnxiOUclxZgkbiC9LfRPzpYUd2xk0vU7ow6qIzwk8iDaaOp26R7HyEp/VFYHI1J
+	UtOPxNNkHswnxfIYdvKzS1HlXoXZQ1M=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X6IHrBc4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BBB39601E1;
-	Fri, 20 Nov 2026 17:33:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1541F000CA;
-	Fri, 20 Nov 2026 17:33:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795196013;
-	bh=Arq4ZupDcmhiLMBgMCtvkojQM2xEuqkXJFom5GjrF7k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X6IHrBc4sPEWvfGtTrmXHiTVGJ8pC6ELePyhHwK2UqV7GGN32ejxyrelfCct720gJ
-	 H6UiJgwngKpOcZ+h1OayvsXTWmwqGoLNj9VvXh0knCCMxbJoW6azz/VWUKaCPUXZqE
-	 kcAOcw20iuqvVY0FvoswQPFDRBo7w6V9yaQo0OFvU2aPdWnZT0MhPe2hX/KNBE4ffG
-	 pCismMxf43LQSGcnY/znHctajMbuUeMnT0EfKPCUAES0nZTKvAXjiG1DT5oD0li1oH
-	 rJyCt/SvaBxu8V3cJlLTnMvMGYXMAwS/6fThFdkWX3H5ptbwNy3HtaNEvPRcxiVqOv
-	 vFvJ7XylkykLw==
-Date: Fri, 20 Nov 2026 17:33:28 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Christoph Hellwig <hch@infradead.org>, 
-	Yuan-Hao Hsu <aa9736195201@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v5 5/8] mm/gup: break out gup_lookup_pte() helper
-Message-ID: <awCD56Ncl5_Tjrl6@gremlin>
-References: <20261116210127.3837898-1-riel@surriel.com>
- <20261116210127.3837898-6-riel@surriel.com>
- <avxXgTBaJkPN6XOh@gremlin>
- <89e41824f1371b5880029f264e19b5d0589ae22c.camel@surriel.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=YmdsWDPS;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf04.hostedemail.com: domain of BATV+de1156368b985c5aa289+8489+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+de1156368b985c5aa289+8489+infradead.org+hch@bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zFeXigSPHuPYCYu3NW90s99hrfhUDEc9Wq95RVe4MLc=; b=YmdsWDPSbQ/nrh388OQixpRbGu
+	8q6rxrtdzP3EhpW9ey0Ljheu+QAVgtPc4qMRqrETgZ+gn6sP7cq20mYXwOqzFFoU3CfjfoMBvbQTP
+	GnPbrxLY6QmwDoE3AFmkRQnF/Ml8gq3EaAU3K5Z2NxWfun3Ka8+MbPTjVB4hFGIBhflewJ8IMdGex
+	V1AxHXeR4nwtsc1PqzSEfUHoNwotp2T121ayw/7rexRDi/j8FWVVbq2tDx28i3yeyJP6biY9IYGfF
+	TofvKsC7OoBvMm8OZ23BEVfzWPwYBYLNnHfjf9FwrWMPx7yH8JgGmgROWTMphL8QD3kzZgaA1kcR0
+	jbfodbhw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xUSZi-0000000FjqO-3Oxe;
+	Fri, 20 Nov 2026 17:39:06 +0000
+Date: Fri, 20 Nov 2026 09:39:02 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>, Lorenzo Stoakes <ljs@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, linux-ext4@vger.kernel.org,
+	linux-nfs@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 0/5] mm: GUP dirty + ->release_folio() fixes
+Message-ID: <awCFtlgTeUFaqBS-@infradead.org>
+References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <89e41824f1371b5880029f264e19b5d0589ae22c.camel@surriel.com>
+In-Reply-To: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam05
 X-Rspam-User:
-X-Stat-Signature: tf5tna3m4tj4o998x5d4m8yjxkqftkdz
-X-Rspamd-Queue-Id: 35FB380002
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1795196015-224117
-X-HE-Meta: U2FsdGVkX1+Iwj1f2ORZ78jY30/8dT7P9HNUkbuuFXfbNYUIPMgIfMPQ/vKZkC5nn+WC64GVnH/6erwQNEDKjGx4T/4fYkmJP0YRW2aMeFhJ0eVJpwPLnFdAbps/P/QS5Kum0FBJqlSExuLiUXqS/HKv7bayWj4k1GCaOPH8SKsBTnOoWfqqK/ZggQPzNf0PGwLugUXChFij1poXrRdQJE3WYCLrz1tQ31dPejnbiprh4pU0YPRFQUuVwgsYpCv/aI+g4jc73yuC8v7uX0ai7h/aADQ36UCOEBEuAJUSWHQHRIM0bmdE1dJqB77pC45lX3MQYLGPw6AgoyeHa1tIjB6mrR3sZW7VjaNnG603e6krlowqcdaY6aH50j5fub3bMjceMNAe/d5Z2wdUvfpaD/rqoTWjyZmyxEK6hvAAucYSESCUUoekDJqz6DlXp76ijrcFw9PZEcUR6zQ7crcMhSMaBqtq4FN8R1TL8WjsLqKT2AP4ZSojWJujkP4HXnEx6EoarWeXlDZIqBok1cYcMgL9pOBbZGs3VoV2HEheaOZDZ69gVLObsLME8mePS0HlU9lC5fW0qhQm3NxCL4x/eonPwlcTAKTX9LASKm/oudNSC7NJPDQ1YqUp8/ZewsyCJQDewQRfL2owcvjpiHd8BqQ6aOIQMMkm8ZN8fzrwxYHf517FbYAREzZjRKQMUHdebgZd2l7oM3XG/5pCPwAW0o3EXP/hU0e8akO9k2pXtxbe2qvYaDd71MYXFL8wtOJWvq3xZnCYoYWOPiEM8Hr+o5dH9s2dEhtSW9eAzV2hkvF+IChQFjBp+b+ZS0LhMdLUq7PMwQCGmXGJcQybazVfdW2q+l8t2IJpquNpeL0LweVH0U3FOKi2vi/Nx2paCB3Mmcn8N1o5Mm5BoC3OPLTCUX+5VCIDCwYNKRWt7vItHlnQeVeWKPi/7pWroJPVIjCfsETVqDPEe0aoowEiB/a
- ZbxrEpgM
- 0FB/3RH3A/UKiXM4eJnR9pYVwZIDTzfosA34JRaKTUsw2eYYHgVCL6qNABtBOkUzRUZqfkX+6/h7TN9bj9FzbyQ+LvnXL2diAtJeptd8pmlOdqhDynRSnPFsUoaZlzkJLm+QNf3Uo1A9F/2Jq0OEKz+f/QrxAy//idNsRSpTDwxFiI5AaUmDu8RzVUT8oertx7M2/MdAfHfWW4DVFY7emPELcs9HQ0132XCIPB5kOds08ueW9tiWoFMXIqkk+DaeBfUnvOa/qoss6dTx3rUB1H3+L8N8q8kApvYkuWK8m/V+hdgzDufPMogLrTZjVlh42aSlYkzZ6rQ5NfMv8SWIZk4AMmFYtlQqMoirlFPKM1unz0V8F4ovdnHoBvGerh6c5/wFEjtyEx8JtnH2Y4742gj1QNqjYWV45/nPQFBpTq4wSBVkQ2tbi0lAZsfgV54lsGcPhrPytgt93Lbg/N5Tl5dNG5lbZmhn17OcEnVk+OkSNZjVboaR9kVIjCRBg6A3hws/I/YlOsZQT3LyeqG9atwcPkofViGiStC+FxMqQuCEPaho=
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 5670040004
+X-Stat-Signature: 7mjji7yrry5j4rzseayc7xeazc4g3b65
+X-HE-Tag: 1795196360-450612
+X-HE-Meta: U2FsdGVkX1+VgYAegvUjPUm9l8iZh5h3E6NbZgkWJl+m9nkAT+FIhTcfQCvV/YWMkeo5NV6De0qb3pKaJs9XjtQN3hLv4mNzWwpf5ULiEutKLgKcGAyFo0tulQkUaylwsGEI7Za4LvddsQg2bqFJFZybTp9C0Nva/0BUzSzYLBeCUV3I1FWUsI4YXZfCBioJt/QAXeE8OwA0e4vY93PWEAf1b0jxWu5OG+dtLIn1H5xrGLQYijejF/ewFqJZbCc9RJwsPSfim966MfM2AOxx8/sCd16LLUh01VBwOUcJS5GYR49if7VfFcUrtLtkhUYoTK/b/sKoXDBTbS5MDL7TeWwYQnDY1kPTAQQnEkjsoSMlysbXg8ecghGw/BFFtjBnNg/qoBw+I/fPsLVpaNmXzKQZ7II3zplxps1gwHSfFuyqeROfyOWDS5rjsl8kdQwpO7jXYA3QIwlwhYBgVyuiXpCAEWRYAjhtlFRp9+Wg0RP2Kxcwsk4o9o3UbMN2EkSG1cR5oyLsQKgS7dSIGMwtlrjqzBb5LYSXrkoMiM3Ov+QvYuYoL11xLpu/yaNOrRYVkCUH3FW0MV7WMuOzC1Oy3ObB93CimpCIGEVdOu3B3hrw9Vm3cWlp14a6cbRQnDqSPqSptqK98glyEbvQ8AyOLmpYGw2VDPkpnSlhiwWZGiFjIi9+et5HY7e69Af0Zv2Reiyvj6WEHdf+AzUJp4hIpVQYMh8jEo1qa5YgYss3R7pnO/eHFeB7u23Yfe4q6C32twhV05tEt41DPk8sXHFNELAgl69/6l5HlBX47U9T8dZp1w+Nb1dyJYGFi5Olt0l7rF38SurA2rZAxh5ZhtxzgakED29BV49exh5trbcuPU3S79r6ryjHXbkNiCNWCurIhDhrnaThu5RpCRS6lA3ZvCmt1VheB3gWO4mA63uoB5CAnDs3rm935Oo0uf28bNdLtKHQC0ipd6PofEg73Zm
+ 0WjKNKw1
+ W1OjZeS6iQN0FOMdCD86jV/3+n4T9a8aB9kkZYpItPjkkxMw6QDkq2biQDnvvNVaqUsicQXls+Bl2Fcshy7XPzudtOs51M+venTeRuf3jVh7fE0jZ8h29q3pOKHavJj5BAIcofaewm36sZGk1vmo5/YU2ukpAw7NbMPRa7VkmxDP6te1yObNM0OuNIikV4reRWSi3wmh1PiNkuHoKe6c8jWfNoS3Ax9/rOUF3ODWPMCBVK3gYVvAZyIKbQOqvBuUbgglOxrvSpWQwo+GyT2h375ju+cVl50vfj02/PtxkdSJqvadMGUutMPqGO+Ret5A+HanAAoYdXVbODpdwj48/Cgzb+kGme5VF0CNaEFo3xJUpFBmbEBcvDMWGnKcAuXh1ud/E6asyUu0/54fnAjl4+zfxoOQ/KfNnEh6Zy4nnAIYmNjQtUG78dRCn9fPIx0ijq6Q7tMKyJiZaf9mBmHW9IMoGgU+W8G8j/M6gFiA9Uq/6bnQwRRru07BfJEG1obivPA88l5ohKNjzmfoWgOwxonPyBPVTSOHVCBgSzDTExXaC5MRHyka29jEuls5wVDzPZ1JTliWjh0QpWmhLwIXjQgNhyyTfBuLrefhJUwSvl12/0mvXhFjXU8HKNXhqEveDdkcn4YMZqyPFbuASfgRK2Ut55t2HQRnagHaHpJ9G0ike7DUarOqXlNBRiZ5jVi9YuJII+WeyqmvNndSwn+KhP3YftYVHhDnPWqXoKPpHiOuaevS2uWywgPX+uA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,49 +112,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 10:04:04PM -0500, Rik van Riel wrote:
-> On Tue, 2026-11-17 at 13:48 +0000, Lorenzo Stoakes (ARM) wrote:
-> >
-> > > +		need_no_page_table = true;
-> >
-> > This is set true but not used anywhere? This is dead code no? Am I
-> > missing
-> > something?
-> >
-> > Patches should be incremental but adding completely useless locals
-> > incrementally
-> > seems silly?
-> >
-> > > +	}
-> > > +
-> > >  	pte_unmap_unlock(ptep, ptl);
-> > >  	return ret;
-> >
-> > I'm guessing you forgot to include the code that works with
-> > need_no_page_table here?
->
-> That code is in patch 7. The check isn't needed
-> yet in patch 5, and it got shuffled wrong during
-> some refactoring.
->
-> In v6 the need_no_page_table thing will be in
-> patch 7.
+On Thu, Nov 19, 2026 at 08:10:43PM +0000, Pedro Falcato wrote:
+>  - there is no problem in usual IO submission, but issues start to pop
+>    up with GUP, where the code flow (roughly) becomes:
+>         [get_user_pages(), etc]
+>            ->page_mkwrite() called here, or before
+>              ->private correctly populated with whatever the filesystem
+>                expects.
+>              folio is marked as dirty, initially.
+>        *write finishes*
+>        folio_lock();
+>        folio_mark_dirty();
+>          ->dirty_folio()
+>               dirty_folio expects ->private to be populated by
+>               ->page_mkwrite(), ->write_begin().
+>        folio_unlock();
 
-Right, I think I need to see it in context to judge really :) but obviously we
-can't be introducing completely dead code like that, even incrementally.
+Writes through GUP are known broken in this an in other ways.  The
+fix is not to create band aids, but to phase out the remaining
+writers through GUP.  Which is really long overdue, and I'm starting
+to get really pissed at the maintainers not fixing that after years
+of knowing the bugs and having the infrastructure to fix it.
 
->
-> >
-> > 'need_no_page_table' isn't a great name either. Maybe is_none or
-> > something?
-> >
-> Maybe pte_is_none?
-
-OK, let's see how that looks in context.
-
-Since you've not replied to the rest of the reviews I will assume implicit 'ack,
-will do's or what not on those? ;)
-
---
-Cheers, Lorenzo
 
