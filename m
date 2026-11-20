@@ -1,107 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF48606A88A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A17C606A895
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UvLnj8dx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XUuf6v6R
 Received: by kanga.kvack.org (Postfix)
-	id B0C066B05B2; Fri, 20 Nov 2026 13:09:34 -0500 (EST)
+	id B5ADA6B05B6; Fri, 20 Nov 2026 13:09:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4A036B05B3; Fri, 20 Nov 2026 13:09:34 -0500 (EST)
+	id B11736B05B8; Fri, 20 Nov 2026 13:09:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899E56B05B4; Fri, 20 Nov 2026 13:09:34 -0500 (EST)
+	id 935BD6B05B8; Fri, 20 Nov 2026 13:09:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 49CA46B05B2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:09:34 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6390C0139
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:33 +0000 (UTC)
-X-FDA: 85456285026.06.603F764
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9043F1C0004
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:31 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UvLnj8dx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C8FD6B05B6
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:09:44 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B200816010F
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:43 +0000 (UTC)
+X-FDA: 85456285446.29.920F812
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 88B2740003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:09:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUuf6v6R;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf21.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198171;
-	b=bFBTaoRG0e/tqALu8JhhBWl4W/qlSZ8hpM3Q5Vl+zX1SvSMl+g+g4qC5nAAMhFTfn2hmcw
-	iN7xzQCDYw+VbsOdGSsHIeUM7kwgla14dJdym/q3Xh90VFOHiDKE9sjwUxVvb3KEMn9Q4E
-	tvrSk1Q443CnIwfbqHtUfon6LyHMvlY=
+	t=1795198181;
+	b=R+kxOJHrSGWX9Sj4+WegZW0MwdcB/uoGeOTX9qYR9olJR1fNTRT7XCzin4+tcLcJ5VKBsV
+	WCo+Yf1eNSmov6Z1pwvZ4sws3Fh32KyPNKikxBX8wjrmVi5PjDySZXSekYnXvbFWTIz2Nk
+	ilGrJCDrcW8guC4z37vyZ5qr9xPCTck=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198171;
+	s=arc-20220608; t=1795198181;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gbSwCIivj68dbUMRNQL8lg/alysbe3NiLGAi5108xQ4=;
-	b=d4HOcX5wYvWHTZ1Z+dtsrI7TkK5qIQ+jpKJnNcZyaFFG5/pjYhvXZOKtcYqxo0v96ifCRh
-	y+i2Uos6nDTCt3iu9lm4GzH+f50tUxNaXfm6kEOarxtc7tFMGfCwmKZ1Muk0waGBEoYTBh
-	GlVv470Bt8gBGELdJL4XjMER/Zp4Ej4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mk7QPfVqMmmgAD3R4zQbgdyE1K197Nq20BW8Qt7Ivvg=;
+	b=6o3Dsf4Guh54CAxxTJizPArs8lGWUN+6Cslnj3AjhavCzkRLBLW5NxRdU+2wkXSvPwo7Q1
+	ejMrZXkqdg4nHdb/Mxy9F+B2LJNyTp/vBFBNCo7vmSvQr6yPrs/lG9u+dHCPehwX7SxXo/
+	fXkD0igY4hv9rtefiXkDFZe5Di7rmJQ=
 ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UvLnj8dx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUuf6v6R;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf21.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1AE9B633B2;
-	Fri, 20 Nov 2026 18:09:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E574346119;
+	Fri, 20 Nov 2026 18:09:39 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198170;
-	b=iDFP4mgP47pbq3yS9mEipbC9bhErYZFXkBySj7Wmgw8Yi+5IkVLUkQ4urwt4ZKze0TSX
-	 sG2Zfk3ROS5fdTD8GD1nrmUjGF8Yw316sySJb4d2YU+SmVQ8g1tZhZiZlyCfaRCK53WCH
-	 TcUBXbnufMUUsDQFmex9MN50Ysf4XEuD0C2EJkP9sMj7+CywHrAvgX9+HyVnxcYqF1xNM
-	 DqYJvyY/olhTMAeQF5Tdn3ivBNwDp2oE/f3IrCEPloDafeSEyIuzrWwBc9ODyyZDWwldG
-	 NpFgST08s+KJdYgmKyGHZqP7eoK3b47Nm77LJd2Sn8JXeIkl2/BqCrbgGTf/mSoPI7Q==
+	t=1795198179;
+	b=cLjR9FCv+pssdHEqlYT4qstPff0yFcwDG+RQ1KsGb+6f4/I+P8LL/4KFRA32JreZEjBB
+	 gi6klBwUBJ6xwim4E1VdBHozVTb+5YAw93h+x0dYNj8f0th+N1F81lNsARPVH+AF7ngjX
+	 KCGefT/y/kgxSBsw6g31WH0SAGxQXzRfa7XwEtIlhIS42qlSdIva5ObVCpnBEmJWQVVyt
+	 cHdWblUeGc5+u64SRn6uTbETDXchpz6egRBqEs4zVXwDDFl7z1fIT6+VktxNW3KSk3lEH
+	 d0cETtg3hwvaUCGj0fqm7flQPTYPDQykJkaBAFvsD5tKg1sstP4WtSkbzo6MfgHLJOA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198170;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=gbSwCIivj68dbUMRNQL8lg/alysbe3NiLGAi5108xQ4=;
-	b=xpN19HknLEp89Mw80oRQ6l/LI3Afa75g/9Rg+G09/XIjBiS6ZXWemNSuyWYKiQvOYvUB
-	 Z7o5wpqKXgpCbvhMVLADetwrHPgl5rF3eIV59IcXLBEwxpeSwdTKe3Awx0EWL5F9tRS91
-	 zfTwP2V8KAISuB/lxC28yNwt9MkH8p11CzN1PikGDrnOV0dSCUjbeXHUXUGP2csyQbLIX
-	 Sh+ayEbHp2u0e4Fa+baOFH2PHz1MlbdVNFlTDOUrMA3RFW6EbRHokqwQsooahIkCIEX9V
-	 ncUvZAPV19frVBgiMRzGITciT+UcO5rEAxEMxfuSWcYGCGuuCKrsWvbvJeHK9yq0Mlw==
+	c=relaxed/relaxed; t=1795198179;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=mk7QPfVqMmmgAD3R4zQbgdyE1K197Nq20BW8Qt7Ivvg=;
+	b=KtS0VS4ERObgphmeHO3P1SDMoBmK6Nz3z5ep4g6HcPJLIl5U8WDgCGibJ5IrKkXX+ohg
+	 gqbpu1my73hCJAsRjHEFHTDkPb+8F0FlrLfC7NeVaLrr/d2jYRO/jqMJY/zcSn/SeoQ5E
+	 0aYLrVZOnpBYRYBLL9Ky8lYad+ZZG54gbBOU3BU5rz3nAkqSHXAWO4Ftp8KIQwSh9Yio8
+	 HikZ9biwl3e4/ZPJcp16hGlAy+byLwTI9H8MKc5d04JJdEiOpCB2crV3VRWYEB0EOl3dP
+	 77Fs5D+5WQzrF3Aicf8bynO5hrTbS33+gMZI4T4Zzs4pUjCJ8BlRB3QUEWl+AxrRm9g==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 8858B1F000CF;
-	Fri, 20 Nov 2026 18:09:17 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id B06B01F000ED;
+	Fri, 20 Nov 2026 18:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198170;
-	bh=gbSwCIivj68dbUMRNQL8lg/alysbe3NiLGAi5108xQ4=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=UvLnj8dxEakZNvVoDgHo9atbS0+f4GrA9l/pRPawA1bFro6y9a42irj4lswzrz14K
-	 sORKlIURcBLCCzRai0BLpYG7+ZtSp/De3g63SfbBunFAZCSN36oRehQXy85bXSAKI0
-	 eXWERr/m4VUj6Ggnf4Vo7DtJRR3/OHH6wsOH0LVAeiL3Oqu1fP2vX7a4nE0eumeEph
-	 ULpyYpBwTQKf+huDS+SeLHnjaK4tcrjr9QGffewLOBwmXi2pkbzG38m5z9wyinF1qS
-	 KoHDvmEOYOWrQolI+z9/VJpxM699cDMuknH+BIDvBEAigZIoQx1g8XuHyr5GgT7HcR
-	 /5uqrNu2OGVlg==
+	s=k20260515; t=1795198179;
+	bh=mk7QPfVqMmmgAD3R4zQbgdyE1K197Nq20BW8Qt7Ivvg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=XUuf6v6RKAYyywHFhXhXEBkKQEWS+sE0WgXripvyWzwe5W+MURXtRMNDnNCqBW+Wc
+	 0f8fWW3gxUBqhwl94DSGWbKvGXLrQ9hnFzv6ez3PkUbVi2kuVXAYmJxLaV9uBPeeAH
+	 FTNbQ9ME8Az+mpOmkHg50g4Agzt/sggMV6LplPkNpeFgoO7QFTtjg0aRtKlPBRYPXb
+	 woYp1/KJY33QTIGIp7NCVmYeP21x/qZMQkrK+huueJXthUbjEm1foMJVsMOWuie23C
+	 7k9vEocxb0s6DSaY71fH5GOYz/NygkwZzuMRIxhM+7jZRlKHHpxOcWj7SVSCrvu36f
+	 hrN+h0tFXPP9g==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id F3FD14B8B5;
-	Fri, 20 Nov 2026 18:09:16 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 9A5DF4B8D5;
+	Fri, 20 Nov 2026 18:09:17 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Subject: [PATCH 00/60] Private NUMA nodes
-Date: Fri, 20 Nov 2026 13:08:51 -0500
-Message-Id: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
+Date: Fri, 20 Nov 2026 13:08:56 -0500
+Subject: [PATCH 05/60] mm/mempolicy: keep interleave and tmpfs mount
+ policies on common memory
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avIrBNUbKCuEiGRU81GRUOC8O5Jy
- 7f4/4VCmanALF7IVLlwDB16ELBfWzhJsu8GowxqbZRMmet2kwvRU3EVJVqv7DghaYPQs5Tp4Od
- fLmtrH49vuY9iAAAA
-X-Change-ID: 20261120-private_nodes_v6-64d04596e126
+Message-Id: <20261120-private_nodes_v6-v1-5-74f5f9a115c2@gourry.net>
+References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
+In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
  Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
  David Hildenbrand <david@kernel.org>, 
@@ -156,30 +155,30 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=20500;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=4176;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=koro8IuxaQEZON0/edllVSo/B/v7PH8KlvEm2ShLdhs=;
- b=+yl6KxST6T3oBaKZoR63Cbav3cTZm3C6NgFTmmjOTlP1AYWELQZscAdeCzO+QOxqe2ynzx+ag
- AbFnVbyx6RCBjEP5xnJSLRISNJbILn7/jfAa6OxlhOWY4IBXbDvaFoT
+ bh=9bmcZ7R/82zTxF1Qtk/yGZ6mpKBsveqW+bL1srzM0FI=;
+ b=rzt6Q/QHsAoNZY/tZYjwurSoHivRuidMYKiNejInoFdn5cQoQErCHIyU+a6IoDegA4QyBS/88
+ XEWmHXW061WASp1v7pEQJTOmJKF7N9mx07G1qUrotuxRGHzVHQJXqtS
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
  auth_id=1586
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bpfgy8ixbzea5z9bn6gnxe7pjjckdqad
 X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9043F1C0004
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: xcjsqncikq14supo1m6htkgxtrjtpsnh
-X-HE-Tag: 1795198171-214218
-X-HE-Meta: U2FsdGVkX19ihBgEi9PxwuinRCu3rDRBFKyOkVTKpcdK6WaoJn3x01yS7sl4CW2hy4eO6aOywpxzUnyG5xCCaLpTi9MIAI8oQSmGK/6rXwIFzWjaKIj0FFLozJW3Gq5KXStAw1I9ehNy7BSC1xLs/1sSg2p47wP0ii4Y6bYA6FZVN2MSMU/jlxzlMx6nwQPHUXnhnpW/+rl92G8srBlpnhAeBuk6HDxjctGl0dax5/cA0X5+OibANST0B4aT5iE8lMioj4F4YFywnKF7xIIUNY3jjOwtjrUUFSY6NVVbokAfx4FvOc+Kmwlompdf0sILtn2NQtUVJWlT+rAgPQfmNnbC7KbotwbQ9itq46dh0uilr1xYIHm/zQxFgnaj3hmhNzmSWTn8wjkoin68ub9veu9Nw2zS3ojEKwn36uhT1wIciieqKqT+80V33pX1Vs9EQhxpL2ALtNUdReFiS7WG7yWFyOZ34eor7AS0gkrJVvFAYefGX+pu1MZ6PETbn1XXRiawd1jUP/nJAPCbuHkYb7pBP9qV0d5+tWVIDNrzSZc6MUsVo+jxYIMBNxY82A5G9SRDG5YtuNc0Lj3GO9BssGbNAVH8QQ5QEdWPfvYn7UHEfcPgxLUj7zdL2iGIfD0B2BabaoQ/Y8Sspv9wANI6TlqmaGV7ZyXAPLWToJZOvxVzyNuvICr/Jiz8lKkRrfy0kGl3jbIXO6C1TcSOcMs2TBiP7mh5alS2gryaejj7AFaBsVnWO2M3eJZiKF3dYV7o0hyZC0p0rLMYIghNKuxJ0YJtgyAZhMTRmiRkyllrDN1nIMY+nsps8vMkUwL/UFMjfsvr7zd/Kp509eHjC12/4EpEvYWXompegdXlY7PNAnLP9MIfR0XiTMpxw09AJLmMCAF9vVseBmykJT/FUI3edZZfsBMufoznGKUqEoMafy7qsNIH78R+i/whE2I5NPH6gNOgSUDqpXX/K/Tku4O
- 1xm57CrP
- inOveA3NZamxQ6m8Px1x2QtklteqnXESWmnzcnb/WWTU7Fpot7DyK+jLef0BEiYwnkqv7Z2dHei7Q1gWEoyEvi8pyOlyuksTt2pYPc3ihqQRw9xV6t2v5z4Odc+VgQf+hkAkKJBU1Ak5OZln5gjHEwz/fiC/uyWUyG5gNZq+CYwCRyu6rPeiodmN56iSt4gdwyfgg+fbWJktYuG2F5H5XMsccOEpy94InAI3lb+6DDTDcQ4Fx2ofFxFEDfwJvo2T1oTEvHnapUSr62qLhOep5DFUw9C1kfwKevEjeawqIa+v5zfbtJA0ki6ODwKW0lJr4x66XRL3m3R6KnE+aJ9uQX+VU7o3D6622WotpWEzDA+ydZv/tJRpmYDWw4XVnv4vTH+zkHtLxqnjAi/X4KoWQCtViekTbevdQh7QcV7IpFoVFSNMlwNzWUjxXpJ8xRbe1IIOCL+60fpnE3mEOAg2oisETITB7xVX41HFpN1mTVvw9U3T8nlfQR2jYCPpOXbL/h4K5U5rroPLe5dYx/FPKkYlGex3SuhJWZ6hQ4oE3LYwznbA6YE+otIobqk45/joS0HgMktcvMuZCKmxdnuv7gI8y6iKxEPXrt80NeRZwfnAX/Rvqumz8J4KKaTSICd3KjdJOASYwGFfAaGJ/QzxGYJWHqIJfIUN1O0bVVQCUxuVZN05HOUYzb/xzFieQDfSQlXwedve5n17VOnZ2KfL4flt+CngyN8ZshcYML7recEeoJlQGHv7sdzcLAmbMgy8MqPyQpCmIpCwfjqJVLhm+hpuZAXglUD29dpzuNqnBNaijNiJNWdRBiTe9DvOiWz3Fty3cAndiPqRL8wVqtoTdZhj7+g==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 88B2740003
+X-HE-Tag: 1795198181-516779
+X-HE-Meta: U2FsdGVkX19eTKvkqAf8o/NFSliNkdVf2JoyUDoGBANC/XVpq6FA+wDIO8G8Cefwl7rkwok00QLB/D6Suo7jK7fqcZjEB4JmHNxKtSdnxVRZKHXKHZeR0sKPhxXUb5PaWr3mRuEHl1otr4Gxb9LhpSfjNMsAB7YIGbVlsP7miGKqGtv0acMFnosh2xRVZGpIk6d7eS3q7MqQwttPDNTREtjyThi7WwjecFiCWrH1fvytTqU2/wrGp8CoBgqEKKXFTiQDCm/6yw/6h09CWpZBq8cv0ShdTikjZFrmdyaS1jDBj1BYHC6GrqjNfX6ZQK5bZlTVk8DEPacwcBBuO+cZhvQjRhiRABkKmfSEVJbwSobNUNiXN9GMGGXN2gIfeM4KDKeQUJL9t5kY5cEFVbpcyjowcE5DSi7ncp2jIz3N7GPZ4RmSnAS1OAfRUMeqmA/jhZ2fAWzJbxOJAQn68DiXnpwmZaWyl+WdTKHdTZvlUkMquYKESzFjNG90kHqZ9VKbxKPhPCnq3gvl+cVcuSx7YWQEdBgW75f4cknzIELEJw1vU5/jzIGeRQhRF6KROn50fBPTlC/3DL5i408nxIpV7DwBCw8RFEeziv8fcqR7Xuyj+TCIAzaGAXu/OZmzGPKZMty36eAmfF77BWIzLhp9ah0JRjG7G4kb+b3cAnbpmeB1oRVd8zIeR0k31EI67afhwIx/lBysHWLMhe2ltbWBM5+rgdP3y0lp2oHuMvds8tkOBtxrpAAW5jq9T8Sm2SRon6FFkzt7Mr8XqrtlKWaanVhU8/RcbmUposKnEPdAyuR9P5Zxt66Fx3pBa38eXWpJcVxrxIY6BReXBZhVvNGfpUkcFew60gx16A/UDPTUa7enZQgiEVu7kdeKbBlKBJW5QsZwAXsT68fb8PAkpUNHZOskHJzumsrBZzkEsrQIbE9M409wibSCoaz9U1Y5GvQUJjQKvaEsPvdqhpD1yND
+ 7ViDz0Wu
+ LbG1KK1hmkJgeEhHLNmwD3aFgow5iA38oAVTWyPwQLcz+K5l33Fygn9mqmEDcA3sECBvLtAkS/tjg4yb622l/nl8Z0gJX8qGgRW2E5qQsc5bu3LMcHQS+dqhYEx+RSN1IRrWz1/cN64HXPmk8huKE6Avxnjt6YB2zoAA7XDHYw9bf3Vbobb5eyH7C6bO6jFcFxPa16WEBd49N4WGQEbTChjxBMzr0yX4Y+cGM5AlDyFNauvF76vMHAlciryl8VpZZ0q75LVEABqZpF+v0owR+v+uK+Ujy3nDllJnuD2opZ1v4P58hdC5faZon4x1IRkWvBfXmwqPFwr5ov4CMZW3lHhRGbl3Vu4dRC6fyh8nJEDSR6iz6G3Z6Rt8hZfcTy/P8wNX6NLFbHjJ24aLnFBYYqvqckjdjI6HPdSBLKeHbtzpaLqAnvvnT05InYVDBFgaNW/2tWwvEeytYcfeJBXRB1df0ssfyPzt+8n1VpIIHIwYoz4WzK6WUJy2mIEEoPDFjUYhKueLk1rBRtQSTIxy1H3NJz+2ltKoLroNMFJoOINm6epYLGYFHxRQT6/H5WK5s3zk7ro+7cbep0ix82CfHQYRSQp3t4JlhdQhAoXf0t5jSHyz8bxU5+Hb92jDP/soMTVdI2WwcTjF9G0dhXxFyR1/nZhniX5G+aJt+tjoxHMsdcz7hwC0Axe6HXRiQoaEeLCtUrMW3rDivCO0WseRJSnCi8XHenQhVvo9EcBjANRZORp5c4++INaQFBXI3tVaXXjWtPjKLnZtCuNM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,422 +187,123 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This is v6 of the Private NUMA node series. The series falls into four
-parts, each building on the one before:
+From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-   1-18  mm: introduce N_MEMORY_COMMON
-  19-26  restrict folio-walking MM services to common memory
-  27-44  N_MEMORY_PRIVATE, kept out of cpusets, mempolicy, accounting
-         and the page allocator's ordinary paths
-  45-61  private node features, memory hotplug of private memory,
-         dax/kmem private mode, selftests and documentation
+Use N_MEMORY_COMMON for boot mempolicy calculations and their per-node
+sysfs entries (weighted interleave weights).
 
-Patches 1-26 change no behavior on any system and can be reviewed and
-merged on their own. Without private nodes, every path in patches 27-61
-behaves as before.
+Restrict the node set mpol_set_nodemask() applies to set_mempolicy()
+and mbind() masks to N_MEMORY_COMMON nodes.
 
-The full stack is also available at:
-https://github.com/gourryinverse/linux/tree/scratch/gourry/managed_nodes/private_nodes_v6
+A tmpfs mpol= nodelist must name only N_MEMORY_COMMON nodes, and an
+interleave policy without a nodelist defaults to them.
 
-Motivation
-==========
-
-Some memory should be visible as a NUMA node without becoming part of
-the general allocation pool: HBM, coherent GPU or accelerator memory,
-or device memory a driver hands out itself.
-
-Today such memory is either ordinary System RAM, where any allocation
-can fall back onto it and every MM service manages it, or ZONE_DEVICE,
-where the buddy allocator and the MM services are not available at all.
-
-Private nodes sit in between. Their memory is managed by the buddy
-allocator, but ordinary allocations never land on it, and generic MM
-services leave it alone unless the node opts back in.
-
-Model
-=====
-
-  N_MEMORY = N_MEMORY_COMMON + N_MEMORY_PRIVATE
-
-  - N_MEMORY keeps meaning "this node has memory".
-  - N_MEMORY_COMMON means ordinary allocations and kernel services
-    may use it.
-  - Allocation isolation comes from the zonelists: a private node is
-    on no fallback zonelist and has an empty __GFP_THISNODE zonelist.
-    It is reached only through its own private zonelist.
-  - Services that walk existing folios check folio_is_common_memory()
-    where they already skip ZONE_DEVICE.
-  - A private node can opt into compaction, reclaim and userspace
-    placement through per-node features. The services are written in
-    terms of their own node state (N_MEMORY_RECLAIM, ...), so services
-    don't need to be "aware" of anything but themselves.
-
-The node state use / filtering model goes as such:
-  1) If you're walking the normal zonelists, you're already filtered
-  2) If you're walking nodelists to touch memory, filter on
-     N_MEMORY_COMMON by default (replacing N_MEMORY).
-  3) If you're walking structures to operate on folios / pages,
-     check folio_is_common_memory() (replacing zone_device checks)
-  4) If the service allows private memory interactions, use the
-     N_MEMORY_<FEATURE> bit corresponding to the service.
-
-     e.g.: reclaim checks N_MEMORY_FEATURE when walking N_MEMORY
-     or when walking the private memory zonelist.
-
-N_MEMORY_COMMON (patches 1-18)
-==============================
-
-N_MEMORY has two meanings today:
-  1) this node has memory
-  2) ordinary allocations and MM services can use this node's memory
-
-The two are the same today. They stop being the same once a NUMA node
-with memory isn't part of the general allocation pool.
-
-N_MEMORY_COMMON takes the second meaning, and the N_MEMORY users that
-mean it are converted. N_MEMORY continues reporting memory topology.
-
-The rule for choosing between them:
-
-  N_MEMORY         the node has memory: topology, per-node metadata and
-                   statistics, cpuset.mems.
-  N_MEMORY_COMMON  ordinary allocations or a kernel service may use the
-                   node's memory: zonelists, allocation and migration
-                   targets, per-node service threads, and sizing or
-                   accounting meant for ordinary allocations.
-
-Code that walks the existing zonelist needs no check. The zonelists
-are built from N_MEMORY_COMMON, so they already hold only memory the
-allocation may use.
-
-Unless a system actually has a private node, N_MEMORY and
-N_MEMORY_COMMON are the same set, so behavior should be unchanged.
-
-  1-3   node-state helpers, N_MEMORY_COMMON itself, and the
-        `has_common_memory` sysfs ABI.
-  4     zonelists: the fallback lists hold common nodes, and a node's
-        __GFP_THISNODE list is built only for a common node
-  5-11  allocation and migration targets
-  12-13 kswapd and kcompactd
-  14-18 sizing and accounting meant for ordinary allocations
-
-has_common_memory lists the same nodes as has_memory until memory
-outside N_MEMORY_COMMON exists. It is added now so that userspace, such
-as libnuma, can start choosing allocation targets from it, and so that
-the meaning is fixed before anything makes the two lists differ.
-
-Folio-walking MM services (patches 19-26)
-=========================================
-
-Patches 1-18 decide where memory comes from: zonelists, allocation
-targets and per-node services follow N_MEMORY_COMMON. Some MM services
-instead reach folios that already exist, wherever they are: through
-page tables (KSM, khugepaged, NUMA hinting, madvise, mbind() and
-migrate_pages(), move_pages()) or through physical addresses (DAMON).
-
-These services skip ZONE_DEVICE folios with folio_is_zone_device() and
-page_is_zone_device().
-
-Patch 19 generalizes those checks into folio_is_common_memory() and
-page_is_common_memory(), which reject ZONE_DEVICE folios and folios
-on a node outside N_MEMORY_COMMON.
-
-The rule: a service that walks folios checks folio_is_common_memory()
-where it would otherwise check folio_is_zone_device().
-
-Rather than add new hooks to page-table and pfn walkers, this reuses the
-places that already opt ZONE_DEVICE memory out.
-
-  19    folio_is_common_memory() and page_is_common_memory()
-  20-26 ZONE_DEVICE checks in folio-walking services become
-        page/folio_is_common_memory(). One component per patch.
-
-N_MEMORY_PRIVATE (patches 27-44)
-================================
-
-Patches 27-44 add the memory that makes N_MEMORY and N_MEMORY_COMMON
-differ. A private node has online System RAM that ordinary allocations
-do not use and MM services leave alone, so neither an allocation that
-names no node nor a node-local kernel allocation can land on it.
-
-Most of these patches add the explicit opt-outs that the N_MEMORY ->
-N_MEMORY_COMMON conversion did not cover, largely concentrated in
-cpuset, mempolicy and migration.
-
-In the page allocator, each node gets a private zonelist holding its
-own zones only if it is private. MM code reaches private memory only
-through that zonelist (ALLOC_ZONELIST_PRIVATE plus a nodemask).
-
-A private request whose node becomes ineligible relaxes onto common
-memory, and exhausting private memory fails the allocation (SIGBUS on
-fault) instead of invoking the OOM killer (this can change in the
-future with additional work).
-
-Nothing in patches 27-44 creates private memory. Memory hotplug of
-private memory, with dax/kmem as its first user, comes in patches
-56-57, after the feature bits that let a private node opt into
-reclaim, compaction and userspace placement.
-
-  27-28 N_MEMORY_PRIVATE, exported as has_private_memory.
-        A per-node feature mask on the pgdat.
-  29-30 accounting: MemTotal/MemFree/other limits ignore private mem.
-        the auto-movable online policy ignores private memory
-  31-35 cpusets and mempolicy: private nodes are inherited only on
-        request, never rebound onto, never spread over, and never
-        migrate_pages() destinations
-  36    explicit reclaim and compaction requests refuse private nodes
-  37-44 page allocator:
-        37-38 the reserves and watermarks, and contiguous allocation,
-              skip/refuse private memory
-        39-40 the private zonelist and its selection by MM callers
-        41    a private request whose node becomes ineligible relaxes
-              onto common memory to ensure forward progress
-        42    exhausting private memory fails with SIGBUS, like an
-              exhausted HugeTLB pool
-        43    an alloc_flags-aware folio allocator (Brendan Jackman)
-        44    a bind policy whose nodes became private falls back to
-              common memory
-
-Private node features and providers (patches 45-61)
-===================================================
-
-Patches 1-44 keep every generic MM service off private memory.
-
-Some private memory wants a few of them back: HBM or coherent GPU
-memory that userspace manages with mbind() and migrate_pages() needs
-reclaim and compaction, while staying out of incidental allocation
-(no fallback onto it, only explicit placement).
-
-Patches 45-55 add three opt-in feature bits and corresponding node
-states:
-
-  N_MEMORY_COMPACTION   kcompactd, proactive and explicit compaction
-  N_MEMORY_RECLAIM      kswapd, memcg and explicit reclaim
-  N_MEMORY_MEMPOLICY    mbind() and explicit migration may target it
-
-The states cover what the kernel does on its own initiative. Direct
-reclaim and compaction serve an allocation within its own zonelist, so
-an allocation from a private node may reclaim and compact it either way.
-
-RECLAIM requires COMPACTION, and MEMPOLICY requires both. Userspace
-control (mbind, migration) generates fragmentation, and as a result
-private allocations would fail unpredictably without reclaim/compaction.
-
-Relcaim and compaction are required by mempolicy because otherwise
-order-N allocations cause unpredictable out of memory conditions due
-to fragmentation.
-
-Demotion and NUMA balancing support are deferred to a later series
-but can be trivially support to allow demotions from HBM to DRAM
-as a way of cheap tiering.
-
-Every common node carries all three, so the existing N_MEMORY_COMMON
-users that mean "reclaim" or "compaction" move to the new states.
-
-Service support:
-
-  45-46 N_MEMORY_COMPACTION, and compaction switched to it
-  47-48 N_MEMORY_RECLAIM, and reclaim switched to it
-  49    madvise reclaim advice only for reclaim-capable memory
-  50    memcg reclaim also visits private nodes that permit reclaim
-  51    N_MEMORY_MEMPOLICY
-  52    explicit migration acts on N_MEMORY_MEMPOLICY memory
-  53    N_MEMORY_MEMPOLICY memory counts as general-purpose.
-        MemAvailable (free and file pages) and dirty limits count
-	only common memory.
-  54    MPOL_F_PRIVATE_NODES: mbind() flag that binds a mapping to
-        one private node.
-  55    migrate_pages() support for N_MEMORY_MEMPOLICY nodes
-
-Creating a private node
-
-  56    memory hotplug of private memory, with a feature mask
-  57    dax/kmem private mode
-
-Testing and Documentation:
-
-  58-60 selftests: private kmem devices and services, memory policy
-        bindings, migration and exhaustion, and cpuset interaction
-  61    Documentation/mm/numa_private_nodes.rst
-
-MPOL_F_PRIVATE_NODES is new uapi. Without it, private nodes in an
-mbind() mask are ignored, similar to nodes outside the cpuset.
-
-libnuma and numactl need a matching change to reach private nodes.
-
-There is no sysfs list of the nodes that accept private bindings.
-userspace can probe with MPOL_F_PRIVATE_NODES.  Otherwise - we can
-discuss how service support should be discoverable to userspace.
-
-Memory hotplug is the only source of private memory right now.
-
-All System RAM on a node shares one configuration: hotplug with a
-different one fails with -EBUSY.
-
-Costs and known limits
-======================
-
-  - ZONELIST_PRIVATE is a third zonelist per pgdat; with NODES_SHIFT=10
-    that is about 80KB per possible node, though a private zonelist
-    holds at most one node's zones.
-
-    local-only zonelists can be space-optimized if this matters.
-
-  - Free page reporting reports free private pages like any others.
-
-  - Tasks are OOM-scored by all of their resident memory,
-    private pages included.
-
-Changes since v5 ("Private Memory NUMA Nodes")
-==============================================
-
-  - Reordered so the N_MEMORY audit (patches 1-26) comes first and can
-    be reviewed (and merged) on its own if desired.
-  - Capabilities became memory features with node states, so a service
-    can be written in terms of itself: reclaim walks N_MEMORY_RECLAIM,
-    compaction N_MEMORY_COMPACTION.
-  - The capability set is pared down to COMPACTION, RECLAIM and
-    MEMPOLICY for the first run.  DEMOTION, NUMA_BALANCING, and
-    compressed RAM support are deferred.
-  - The private zonelist is now local-only. A fallback variant can be
-    added if a use case needs one.
-  - cpuset and OOM semantics are worked out:
-      - cpuset.mems governs private nodes
-      - private-only request inherits the parent's common nodes.
-  - Private bindings are an explicit uapi flag, MPOL_F_PRIVATE_NODES,
-    rather than inferred from the nodemask.
-  - Exhausting private placement fails the fault with SIGBUS, as an
-    exhausted HugeTLB pool does, instead of invoking the OOM killer.
-    OOM support can be added later, but this keeps initial support
-    reasonable simple.
+Later when an N_MEMORY node is omitted from the N_MEMORY_COMMON set,
+they will be stripped from mempolicy nodemasks as they're not eligible
+(similar to memoryless nodes today).
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
-Gregory Price (Meta) (60):
-      nodemask: add node-state iterators
-      mm: publish and clear node memory states via helpers
-      mm: introduce the common-memory node state
-      mm/page_alloc: build zonelists from common memory
-      mm/mempolicy: keep interleave and tmpfs mount policies on common memory
-      mm/memory_hotplug: migrate offlined pages to common memory
-      mm/memory-tiers: restrict demotion topology to common memory
-      mm/migrate: reject move_pages() destinations outside common memory
-      mm/damon: reject migration destinations outside common memory
-      sched/numa: restrict NUMA migration targets to common memory
-      fork: check cached stack locality only on common memory nodes
-      mm/vmscan: restrict reclaim to common memory
-      mm/compaction: restrict compaction to common memory
-      mm: base hash distribution on common memory nodes
-      mm/page_alloc: count common memory nodes for kswapd recovery
-      mm/oom_kill: compare OOM constraints against common memory
-      PM: hibernate: size the image from common memory
-      mm/khugepaged: base the recommended min_free_kbytes on common memory
-      mm: add folio_is_common_memory() and page_is_common_memory()
-      mm/ksm: restrict merging to common memory
-      mm/khugepaged: restrict collapse to common memory
-      mm/mempolicy: don't NUMA-hint folios outside common memory
-      mm/damon: restrict DAMON-native folio operations to common memory
-      mm/madvise: restrict reclaim advice to common memory
-      mm/mempolicy: queue only common memory for mbind() and migrate_pages()
-      mm/migrate: leave pages outside common memory in move_pages()
-      mm: add the private-memory node state
-      mm: select memory features per node
-      mm: keep private memory out of the system memory totals
-      mm/memory_hotplug: keep private memory out of the auto-movable ratio
-      cgroup/cpuset: inherit common memory when a nodemask is private only
-      cgroup/cpuset: keep spread page cache off private nodes
-      cgroup/cpuset: ignore private nodes when matching OOM victims
-      mm/mempolicy: don't rebind policies onto private nodes
-      mm/mempolicy: keep private nodes out of migrate_pages() destinations
-      mm: refuse explicit reclaim and compaction of private nodes
-      mm/page_alloc: keep private memory out of reclaim reserves
-      mm/page_alloc: refuse contiguous allocation from private memory
-      mm/page_alloc: add a private-node zonelist
-      mm/page_alloc: let MM callers select the local private zonelist
-      mm/page_alloc: relax a private request whose node becomes ineligible
-      mm: fail private placement on exhaustion instead of OOM killing
-      mm/page_alloc: fall back when a bind policy's nodes become private
-      mm: add N_MEMORY_COMPACTION node state
-      mm/compaction: restrict compaction to N_MEMORY_COMPACTION
-      mm: add N_MEMORY_RECLAIM node state
-      mm/vmscan: restrict reclaim to N_MEMORY_RECLAIM instead of N_MEMORY_COMMON
-      mm/madvise: restrict reclaim advice to reclaim-capable memory
-      mm/vmscan: reclaim private nodes for memcg
-      mm: add N_MEMORY_MEMPOLICY node state
-      mm: restrict explicit migration to N_MEMORY_MEMPOLICY
-      mm: count memory with userspace placement as general purpose
-      mm/mempolicy: add MPOL_F_PRIVATE_NODES for private node bindings
-      mm/migrate: route explicit NUMA migration to private nodes
-      mm/memory_hotplug: online and offline private memory nodes
-      dax/kmem: add a private memory mode
-      selftests/dax: test private kmem devices and services
-      selftests/dax: test memory policy on private nodes
-      selftests/dax: test cpuset interaction with private nodes
-      Documentation/mm: describe private memory nodes
+ mm/mempolicy.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
- Documentation/ABI/stable/sysfs-devices-node        |  27 +
- Documentation/ABI/testing/sysfs-bus-dax            |  19 +
- Documentation/admin-guide/cgroup-v1/cpusets.rst    |   7 +
- Documentation/admin-guide/cgroup-v2.rst            |  13 +-
- .../admin-guide/mm/numa_memory_policy.rst          |  22 +
- Documentation/mm/index.rst                         |   1 +
- Documentation/mm/numa_private_nodes.rst            | 223 ++++++++
- Documentation/mm/physical_memory.rst               |  25 +-
- drivers/base/node.c                                |   9 +-
- drivers/dax/kmem.c                                 |  55 +-
- include/linux/memory_hotplug.h                     |   2 +-
- include/linux/mmzone.h                             |   6 +-
- include/linux/nodemask.h                           |  74 ++-
- include/linux/sched.h                              |   2 +
- include/linux/swap.h                               |   4 +-
- include/uapi/linux/mempolicy.h                     |   4 +-
- kernel/cgroup/cpuset.c                             |  85 ++-
- kernel/fork.c                                      |   2 +-
- kernel/power/snapshot.c                            |  15 +-
- kernel/sched/fair.c                                |   2 +-
- mm/compaction.c                                    |  10 +-
- mm/damon/core.c                                    |   5 +-
- mm/damon/ops-common.c                              |   7 +-
- mm/damon/vaddr.c                                   |   2 +-
- mm/huge_memory.c                                   |   2 +-
- mm/internal.h                                      |  71 +++
- mm/khugepaged.c                                    |  20 +-
- mm/ksm.c                                           |   8 +-
- mm/madvise.c                                       |   6 +-
- mm/memory-tiers.c                                  |  23 +-
- mm/memory.c                                        |   5 +
- mm/memory_hotplug.c                                | 120 ++--
- mm/mempolicy.c                                     | 165 ++++--
- mm/migrate.c                                       |  15 +-
- mm/mm_init.c                                       |  20 +-
- mm/mmap.c                                          |   6 +-
- mm/nommu.c                                         |   4 +-
- mm/oom_kill.c                                      |   7 +-
- mm/page-writeback.c                                |   7 +-
- mm/page_alloc.c                                    | 199 ++++++-
- mm/page_alloc.h                                    |  22 +-
- mm/show_mem.c                                      |  49 +-
- mm/vmscan.c                                        |  58 +-
- tools/testing/selftests/dax/.gitignore             |   3 +
- tools/testing/selftests/dax/Makefile               |  10 +
- tools/testing/selftests/dax/config                 |   6 +
- tools/testing/selftests/dax/kmem_private.sh        |  94 ++++
- tools/testing/selftests/dax/kmem_private_cpuset.sh |  70 +++
- tools/testing/selftests/dax/kmem_private_policy.sh |  58 ++
- .../selftests/dax/kmem_private_policy_tool.c       | 620 +++++++++++++++++++++
- tools/testing/selftests/dax/kmem_private_rebind.sh | 301 ++++++++++
- .../selftests/dax/kmem_private_rebind_tool.c       | 495 ++++++++++++++++
- .../testing/selftests/dax/kmem_private_services.sh |  97 ++++
- tools/testing/selftests/dax/private_node_common.sh | 268 +++++++++
- tools/testing/selftests/dax/settings               |   2 +-
- 55 files changed, 3249 insertions(+), 203 deletions(-)
----
-base-commit: 15f114dac9a7bde1796f0e54e22726fd31cfa8a5
-change-id: 20261120-private_nodes_v6-64d04596e126
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 6f800fb961ae..806577e1d48b 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -213,10 +213,10 @@ static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
+ 	int nid;
+ 
+ 	/*
+-	 * N_MEMORY can change while wi_state_lock is held. Remember the
+-	 * nodes contributing to sum_bw so all passes use the same set.
++	 * N_MEMORY_COMMON can change while wi_state_lock is held. Remember
++	 * the nodes contributing to sum_bw so all passes use the same set.
+ 	 */
+-	for_each_node_state(nid, N_MEMORY) {
++	for_each_node_state(nid, N_MEMORY_COMMON) {
+ 		node_set(nid, nodes);
+ 		sum_bw += bw[nid];
+ 	}
+@@ -439,9 +439,9 @@ static int mpol_set_nodemask(struct mempolicy *pol,
+ 	if (!pol || pol->mode == MPOL_LOCAL)
+ 		return 0;
+ 
+-	/* Check N_MEMORY */
++	/* Check N_MEMORY_COMMON */
+ 	nodes_and(nsc->mask1,
+-		  cpuset_current_mems_allowed, node_states[N_MEMORY]);
++		  cpuset_current_mems_allowed, node_states[N_MEMORY_COMMON]);
+ 
+ 	VM_BUG_ON(!nodes);
+ 
+@@ -2104,7 +2104,7 @@ bool apply_policy_zone(struct mempolicy *policy, enum zone_type zone)
+ 	 * if policy->nodes has movable memory only,
+ 	 * we apply policy when gfp_zone(gfp) = ZONE_MOVABLE only.
+ 	 *
+-	 * policy->nodes is intersect with node_states[N_MEMORY].
++	 * policy->nodes is intersect with node_states[N_MEMORY_COMMON].
+ 	 * so if the following test fails, it implies
+ 	 * policy->nodes has movable memory only.
+ 	 */
+@@ -3398,11 +3398,11 @@ void __init numa_policy_init(void)
+ 
+ 	/*
+ 	 * Set interleaving policy for system init. Interleaving is only
+-	 * enabled across suitably sized nodes (default is >= 16MB), or
+-	 * fall back to the largest node if they're all smaller.
++	 * enabled across suitably sized common memory nodes (default is
++	 * >= 16MB), or fall back to the largest node if they're all smaller.
+ 	 */
+ 	nodes_clear(interleave_nodes);
+-	for_each_node_state(nid, N_MEMORY) {
++	for_each_node_state(nid, N_MEMORY_COMMON) {
+ 		unsigned long total_pages = node_present_pages(nid);
+ 
+ 		/* Preserve the largest node */
+@@ -3474,7 +3474,7 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+ 		*nodelist++ = '\0';
+ 		if (nodelist_parse(nodelist, nodes))
+ 			goto out;
+-		if (!nodes_subset(nodes, node_states[N_MEMORY]))
++		if (!nodes_subset(nodes, node_states[N_MEMORY_COMMON]))
+ 			goto out;
+ 	} else
+ 		nodes_clear(nodes);
+@@ -3506,7 +3506,7 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+ 		 * Default to online nodes with memory if no nodelist
+ 		 */
+ 		if (!nodelist)
+-			nodes = node_states[N_MEMORY];
++			nodes = node_states[N_MEMORY_COMMON];
+ 		break;
+ 	case MPOL_LOCAL:
+ 		/*
+@@ -3901,6 +3901,9 @@ static int wi_node_notifier(struct notifier_block *nb,
+ 
+ 	switch (action) {
+ 	case NODE_ADDED_FIRST_MEMORY:
++		/* Weighted interleave spans only common memory. */
++		if (!node_state(nid, N_MEMORY_COMMON))
++			break;
+ 		err = sysfs_wi_node_add(nid);
+ 		if (err)
+ 			pr_err("failed to add sysfs for node%d during hotplug: %d\n",
+@@ -3932,10 +3935,7 @@ static int __init add_weighted_interleave_group(struct kobject *mempolicy_kobj)
+ 	if (err)
+ 		goto err_put_kobj;
+ 
+-	for_each_online_node(nid) {
+-		if (!node_state(nid, N_MEMORY))
+-			continue;
+-
++	for_each_node_state(nid, N_MEMORY_COMMON) {
+ 		err = sysfs_wi_node_add(nid);
+ 		if (err) {
+ 			pr_err("failed to add sysfs for node%d during init: %d\n",
 
-Best regards,
 -- 
-~Gregory
+2.56.1
 
 
 
