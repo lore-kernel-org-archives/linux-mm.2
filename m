@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBB6606B47C
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A19E6075245
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BcVhy8EK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ntZvMKrT
 Received: by kanga.kvack.org (Postfix)
-	id 67A5F6B05D2; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
+	id 197776B05D1; Fri, 20 Nov 2026 13:10:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DCC86B05D1; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
+	id 121CF6B05D3; Fri, 20 Nov 2026 13:10:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A42B6B05D2; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
+	id F039A6B05D4; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 16E376B05CF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CE5B66B05D1
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:29 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB89A120148
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:28 +0000 (UTC)
-X-FDA: 85456287336.04.CA44BEC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 95A2A4000B
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcVhy8EK;
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6348316013C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:29 +0000 (UTC)
+X-FDA: 85456287378.25.63F0FBA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 359B6160002
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ntZvMKrT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf27.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198226;
-	b=yAtqA4h8DVtI9HJx/MsTgyWWHcIGtoUcECGbUaue638Vn+CT+HsPcdkpQ0q9JiK0RQ++YY
-	gd9+MFp8Xka4xrhK5MooKZ+v+bw49ItVeX2NY+jWnOblGRosE3+UwHBb7exp595XbcmCBH
-	2d+Fr6cktn1SxPqtff8CRf2crmUEuPw=
+	t=1795198227;
+	b=8A+h9ajE4p6m0t87vobHd1yzOjw+8HPidnmdNcjkCc9i0A9ZqXsA0bklxAB1n1sLk+rJE4
+	sbb9z6M5j627apCbC191vP0F7Dn2iRNahrAqCqLEztxCdEoF7wrlfkd59Aj+uUyrAsYYat
+	uiI04bsWMs37k4eNWxhKSX0p2zgDreA=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198226;
+	s=arc-20220608; t=1795198227;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=avxZ8VwluYTpGbEPJyzSvO3syrnk95XEoYzgDY1xt9U=;
-	b=eyShXFWQyCje2rSSVfXoWtNnfjt9Dw6lLJit9XjsQJGawPokUpXiklx+yqqvbB7UPgE7ot
-	0xQqykERoTlN7R8Nx94ro1XhbN9oX879wvIufmkghbTBi4lcq4fBN/kUffjZsTGyMmecSf
-	KF9pcENXXvZgBfkDEaL2dBwHq06+qew=
+	bh=S63qEZh37FcqDEnZtOKDS8dEDMlYAdmMAyDqP/DP/54=;
+	b=SpGNs2MQBJlEgxyHqXeq88X+5UL5Q+zGPTNkIOVIo7fFSPqToXTR2yYRDKmagKK4uufUAk
+	Mw3pExB3b2nl+6ghvNZ94tFEZOs1JYCFarwQyDQBrs9puhIvT8taP1q/gbCQMHca5xq5eT
+	DVM4vLg3Dmad777Al5naZ6ovn5f114k=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcVhy8EK;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ntZvMKrT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf27.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 381CE633A1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CB5146BCE;
 	Fri, 20 Nov 2026 18:10:26 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198225;
-	b=NSZYpb1YTDRk4TlwxOAIIEpa1AZu3Zre+cAHyorJ7onvfy78SpT3lQm7v54TYl0YrBB1
-	 +kr2uH0V93fv3zXfapQJRhrvvvsaGMw5VWXHoQfJf3N0vCtJfDmpuqn0lb1CDa5Ly07fV
-	 rLLvgwZcoc9Dgmhje1VmuSvRROSysuT5corfERQDwl5sE0nHKN/MJ9mKt+gsgicpgNbqX
-	 8s8tpSi/lOYDdvgXbdT20lQms58vZXhNhSuAD9dhfPNzyssrKNzvByewV6qDBDhWoX5C7
-	 3jgbmlsSCi+V8gqMucGei0NgbyE4ufH029IRcNxpK2pOyDutIGfYv3tYrK1ZAz3uE1g==
+	t=1795198226;
+	b=F0RSukeG23xlkWqgblvlYPORnzkdhm9q6tlodchkKDzPUKHOQRHp+bTdv3NX99yZq3PN
+	 kLMUsJboWMrWt1wakG6hLV7k3CeAW/KQEi28T4Muka04l/0DG2V/jUebRnSCJiBBZSA3e
+	 qTxLjs6/AAqX68NhFaAhGHgLoMYmwvUap9MQmnZoVv4P6FnvNF8/5ASHgU1PZd6fDAYQp
+	 DMNKgt1898fodC8stPkNYdWLnUBZ2qXP4TjjErnaHRgRRmSrRGgoo0A352BCs1wMp4NTO
+	 iunelUgeCHx3poOPx//wPKv3qH9bvyMue9dcjTAMoHkXVGOyMdNocM7DxF/ttp/Umeg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198225;
+	c=relaxed/relaxed; t=1795198226;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=avxZ8VwluYTpGbEPJyzSvO3syrnk95XEoYzgDY1xt9U=;
-	b=NbKfMkj4C/tF3Btu2OmEO384nAuepCR2JFKZhjrkP/JmvF4oOkBdtj0qPc3f4AMooSLP
-	 6g3ybzOQ0hyK9rQavQApS6UiCZ1659ygr2oe3HsO+XL+TaEgFQMkW0vnS7mTx5D5ZHMRS
-	 ZtHKg8NUNNRakXMnE7LPvnK1WdfqerGLciIvjhIMoKNmnjJyfv2Zwc3g0K7FkxWjKYqr7
-	 q8yUcf7bBFIARBdHR6mDJO08oezcXkmO399VTkNBtMQTqRn8IIGHcQ6h0D24SS9iXIltR
-	 CrZReX+Kiq3cSSpLFfW2x5bFFcz/HFTISgbpN4gfyZi3JdtuLFPwOFtOLJDQlCWyfeg==
+	bh=S63qEZh37FcqDEnZtOKDS8dEDMlYAdmMAyDqP/DP/54=;
+	b=ZZaBIAn0dsBdqTb9B9A1Aj07Qcm+dTefzNGie5nK3Dj2HfIhLePVTs+ku3KmqpkUYJtW
+	 lQoSJthK9JKoCSWujKe+kriULtaJtmQeoQOPxHn+aDyuWjTEMnttacwzv2mehFkSGmyB+
+	 OMjxQD6H8ewK4B/GIVHVj9dKlspW14ia2VXAY8X+v9ueazAR0Yrf+79LHEaHx7RoNGscR
+	 YA5oZ+MDlllY899uyEsFpDWQUPxaO/8+ipDn1+pFlhPeFFh58uIAWZk+VNfUIhgB1O9jr
+	 p8FLFuIaA3+PNTIe6VdyXSfGeqhzgOL9JKmLpPOBBni8+LhzF3i2J8FaL28oPftuTww==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 279C81F031C5;
-	Fri, 20 Nov 2026 18:09:51 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 17FF01F0156A;
+	Fri, 20 Nov 2026 18:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198225;
-	bh=avxZ8VwluYTpGbEPJyzSvO3syrnk95XEoYzgDY1xt9U=;
+	s=k20260515; t=1795198226;
+	bh=S63qEZh37FcqDEnZtOKDS8dEDMlYAdmMAyDqP/DP/54=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=BcVhy8EKJOmctMF2slCvHxHvTU+mNAmeSRQ7THbXclTyV1ge9gN9OkNzpwA7WgEyH
-	 r+pL3h/s4qccrczzCADK0cWBDFOT90DJXd4eWPBWqRm6jNSNT798ygycHxin9Jqc9r
-	 y6JnYgoePYyjNJXiHDNrYvx6EyM1sn6iLMueq3OShftpxlR5fR4cFzkHYQ5s0hV7ka
-	 MTOuoPsjURYGS/itnC4oGubfYihzGTiQFSoFHgMlGdhRmE2G6Dit3ru36Paric+CBp
-	 dd5618KnXG1amIj+y9PmcaztoOwnQdATvaOv3alPo+dAe5KZZ6h4H0h8o1hc3+bHry
-	 z4fZ4U82RWIgg==
+	b=ntZvMKrTq1oMrnZQN932/NmXsQ4FrS2OAHZB8uqJiHBIZLQSbD1JvC/LkeoKvKCeX
+	 GiMWNgfXWb7lXOkAC+swDXaymUecKg2FtB++NJsDqYxTYew0Baal5iFPMzGSr0mbt1
+	 rTcjQAgMbPebs17y8DLLAfz4pWL5a11cdG6PMlIFlEojHxVmexrsBEeKfBT3rtd8Tl
+	 pH1a2bt5ZuPQFKEE0UHe0g8kA3UrPar0lw7fScfhOxIQnyn3blGuKB2aP19xVRkqgX
+	 ZKMbmEvC6hHdTksGx+Rm+KvaGZPAnsvUMvgJdnjo8cFkz8JcvS5g8AW9sTI+JcTxvL
+	 1+Td1JLZdhb1A==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 26CD74B909;
-	Fri, 20 Nov 2026 18:09:19 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 28C3B4B929;
+	Fri, 20 Nov 2026 18:09:20 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:09 -0500
-Subject: [PATCH 18/60] mm/khugepaged: base the recommended min_free_kbytes
- on common memory
+Date: Fri, 20 Nov 2026 13:09:17 -0500
+Subject: [PATCH 26/60] mm/migrate: leave pages outside common memory in
+ move_pages()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-18-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-26-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +155,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198152; l=820;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=857;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=JCSrPzqa2r6D3icJs5AIufuY11hG988pPEZwgCCKHVU=;
- b=f3X9GhfZRr3Y70akJ+5LQMJEYnQw87oEwJYni6EhKNTNghWitJzBda24ENsNg3gaswvLxfzcA
- QCSxARUrbOQAlPm+bIz7doFjfAUsXQ0DXnPHQw+oYeT5ibepz98hWgq
+ bh=AKM465apFVaa3BIvx9XBEK691w0dLD6ac7SFTDNSyZQ=;
+ b=zKNmtwP0ZJy98reK9MCbqubRCfEXRiY4oIhpY5EIBd6qtzzkCGaM6TwqOsdAK0YxCEyfiIv7s
+ pNtU/wZ9nLKDgoZ6+gYrdIUpvysLRVgvfMsEzFM7klZsQ3JuUN5Arbk
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +167,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 95A2A4000B
 X-Rspam-User:
-X-Stat-Signature: uc57s93y5x9rckgoaof5nwzeqz6tpq7a
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 359B6160002
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795198226-369638
-X-HE-Meta: U2FsdGVkX1+hQvnni8m7zcThzmDXt/ckFbE/x3AF+JghUXT1OmEok/GmY6CrDA3DYeCsxZFlMHMMTz0jJLBiioEeYks0cgepCsPZtYjELRrEH2NwwWnGnum4R8XQ5XzleZdacYsxNad3exLxJOynxZs3esvmttFe1ak/8Ya1vr+IIvBYQILwPUNS0ldb+dqB0XX2xlxPESG+/SEfwN5NAuUoduqV95ikwD1tB9V3ML8crIGw0GAF4jn/uAnhjLazsQdMkvUOcjrjJQqK9+uiq8KeEwyVjl1a4TuCSPjFjHNHfEiv6f3N5PdsMfhsYVBF4eLRH9O6IG+J8L1UJ5LCUIaqGWxZzQEaNk5bINUWOVg2vCQEC93hTy8WaMJ0htYRvNbxLRD3tnK0CmVc50y2d1flnJiCIkxLAovUlFvbNMx0ieAJ9Zk8y66hDnBr3iwyF5FdLdJtroruvqql/8OPeGG8w4CPB5N3+ZWMQ+T64m7XmyBNfCv+N/bPuaSvSril3uwvpkTpIM1sUbn6u8FzMqD/7Jkw17wqwK8MHR8uGUapmeCiYFImeg/23VN58E5Maem9jUGcouh3OVETXVF8LkQxjFqlMiyAv42Ee3qTLX/lFHeUh0UIeylLjfq+ArukK7ksXwhdqszF6j8OjfpiiPbcQWNcRrh+jf0e38pUM4a5w8e6mMiPEfAFEqTgvpiv5Hni/WD2kXM6XLnzVGn5mgs2nnbskxLY53MeA6Nr3TXHj2EnXTf09rpyFmcpVB5uQ3jbyi17hi8Ip7vMH2B5Lqp2JkHLjpUz2H98HXuRdOtAaVS1YOFkRVRc3JRyPpbcHa18vjH0P0mbeTC677WmpC2fWLn/2XEjLAz5dJzc4ah5oj/qfnvy4Zs+/blNowYFxHExba1N0E42qc+hlM+Qm1nLVXfZkLxDnbUieajOHmzuS0mCbhFVg9ZSEWhnsNg4C4+IkbRnxpPW1JimA1u
- +i5QstXM
- e34Iim3QzHvzv6RcNCwBzbr19U/Kd0x0ncTM7EiLCreqaZ21X0XVpwVyMMvZHn3zlkMyImkLS0nCxj8Iz5fVm1lCgPSrQ3thp6iTp0I6h44HRP8TOAPIlAOVkj3Qt3ytnYbjvIcHfsAuvwXrEAIQewdyfMs+c4ogC+gPZm2q0WDt3c39rEDUu221Gc/vwxdCeQFNBJYKsIxfWVC7RwDzhKV6gVSFd6joexXDj90IuhTQ8Ou+/53Uzk9HdU19TPR/n4jFxZjHCUxUoUEL/e4Ta0qGSRdwvcOhUFH/Y66Hqr5yXkAyY2j62LbEAjHBs31cYX0KL2if3K3w4qvypgzSA8KFK6Ny/StaNfwWf/89LQXV9o2Am/aRrs3QPgjhxPvV0t6qbhU3Qt/eEAQUiL2yHf6Aqxz7xKnFVpqw6DLuelofc4kmWsNhRXtS0dE68nSXAxerIcfSDT42hHOZxdfbYOrdqrz+KDZxWCNIr3d+XSa04QKzosC3U2OVb/z/l3ku/PJMzjkmXF9dfjf+mDxK0+h3D/D9f/t+OqCpIRG1HByjxQyE2Nz1G7Ivcq7kRAQ6YbQldvlvYy5HcT/LlIxgIEdpCG+G+2f/XHHz4osapOU+7C3yUuwNgomew6FZvRIixY0Q3g8H6A2kVaTvFQ3VK+YRkRZcnaBOLSg2ytxL5jb4lwbvGCit8fLPcPdLzvKWMgLJq2sRn+n3C1/QFEwX1qUhmCK610PSfhjeuS1T/hhi45oP7tnNJZOTj6qp5N83Y2b30geKxoviIXxTxR54Cw6n+hnemTzrCGjx9EgwVCOhM7oK8Nh8MXDgJmHMK6w2gtNza300Gh/2Lh+0X6ujZ1V9geQ==
+X-Stat-Signature: foykr5wjwxmazrw6i1qinrnm3xpjt4mj
+X-HE-Tag: 1795198227-14935
+X-HE-Meta: U2FsdGVkX1/sMxeaMX34HyHzV8OZb89O5wur7kazkzIQuuNv8qpxUBh6WsXEFh/ah3IQzxM5h1kdGcVxIYiEWNj8pdIJ4gFbjAo6HKP01AwqeVh2enMUafM3lG8rbhz1IG/RfROWO8O2u63goEunIB+DDtShPt/Fv5DPqZcgP7UoA+e0eFPkh6U5tLqedJeL2rj/PmAmiiKBpTfwKFZ0PUR3SKXfTQfxlBV1bUYwn3CP4lZzTbzbCQmy2I71BPdxx37CELNS0uvkMnQ15JX8eo40iii/SUUmYTN6I3Mg5VhmZjdh9PNBA6LL1KFVrixed7pt2H3JOUjBdSHexQiQHI69NEr6C7U1XwxyEaRMmOSy7k2LeRIPgU6/NdjNdBkINOebLcstGynBO1ANwY1wFiMuzcypsyswHkyLijXrT4WxsXNJuVhk+S64IxTHBAbNxG8sJlY1HIcyHqjjEw6LRsl4Y+9SE35ycXUigTTJ6acjHgJLz7tidfO0+w9f3233OIBOWEBPwMciiLo+ZXhYC/60MUh6YvMS6kgfHnKtDjNt1KjZCrV6ROUW0+2LNN9sJUc6+Kl0tTWUakCHdsQ5PNnBUQkeXizhMC0RfAqRWvZcC3hgbKq3meAVEfmUJ8QTFm2hC1Jm1W7FarpW57imL/O4M+iQtx0Sklu78KT0eshLHdEf3gM4GrLAZz8d+THi+Chiem7j94DZ9VsYhZ78CFbhxOnZYu3eGooNF1BzyQyJEj6vCiwI84Z7oofto7giUIiaH/t2S/kyypFe5WxmpGIzvqf+kPbxB9ScWjxL8twIsXF6uPMH1C++7SCG7A+FplXj6l1wwuPFeR+eFt0SnzZiQKRjfmLTeQrWsxCds6peojZq8Qk3QKVHE0mTZMPe1Nxh2qFYRqUwJxu8aPA7Eeb1MdaGgdf1E0by+1I5oooi8i28Laktr1RLHe1dR6hpNGWP94yzNU/BbTeZARf
+ 5Me79yKN
+ S9TJP1hXpg9LPLbT1dgkw2cE/bjcCzmscPYM+io6kcH2Cc7ya7HXbBYognhxNV/o6CPO3juhMBETcy6mUtbMKgnXEH/d4Ez1I503Ug1KBHNkqvtBVOw1IjKOFaBUCZ6K/LwYglBtOvsgeeWNe4fKpDNUb1/l4WQcJhWDiu75UqvT/V4TdXs/TwHWAhtLik4xwST7kZWkhnwp5LVk2/cLwtI0G+XRN5sdoBrewD0E5exgQFLjzO3FNucVSK0Zq7jPyK1SLfnPNdOyc57TEf/VGWi7DYAKmVUpBfYo77GmfBioze+Uee9RCyNkilX8v52elmw1v5yeHWamUvuqvohk2pCyof+EdJATYJOIdjvxXmF2mk3kyeKtW0p2eIir1XELriBjr9BIURKzydhN1WIQ3ylQeITh5v4Q2Pb8slMORAp/7ZjLq5JWBLlV/bbPNfTXYjaLY8V+v4C687kLpdLBm8IR7Ukf1sdq39FwSBsMAM9nazYH1rCrsxoMrMb2PP6/zbfXxZiUUCKeZIhPpZKjwkHEfKaecTMErigCbomKB2pTd3ObP4jv6Oj9CQt6tatMIur1L4dh0Skkmw3wA+A2Y2PL7WxZwIwCoUUQsyyfwHgcNg/3LjSwr6zTYioNK99XMsBk06HOw23XeKhEfHPfAIcBRkT87Uhvb+9DZzZzrVPQTqecJ+Tu19QdHqLiNW6JFFjvRNnFf5uEqzBvSWMqj2IUpSkdNH1zwFwOuwfeZNlcADOgEWoX+ZvD21q2YU8Cc05PhBnqUYPoazyXXL2uqKNh/BYLHq4dfTswAlCA9OBsr8wT+m5sMYKhfSynLjX0/fJXK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,30 +189,31 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-set_recommended_min_free_kbytes() reserves two pageblocks per populated
-zone to help THP allocations avoid fragmentation. The reserve serves
-ordinary allocations, which use only common memory, so count only the
-zones on N_MEMORY_COMMON nodes.
+move_pages(2) moves the pages a caller names, and reports the node of
+each page in status queries.
+
+Leave pages outside common memory where they are: refuse to move them,
+similar to ZONE_DEVICE pages. Status queries move nothing, so they
+still report the node of each page.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/khugepaged.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 2dc4245814df..a930d99f89da 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -3151,6 +3151,9 @@ void set_recommended_min_free_kbytes(void)
- 	}
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 208788b130fa..ac583afa1bc5 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2287,7 +2287,7 @@ static int __add_folio_for_migration(struct folio *folio, int node,
+ 	if (is_zero_folio(folio) || is_huge_zero_folio(folio))
+ 		return -EFAULT;
  
- 	for_each_populated_zone(zone) {
-+		if (!node_state(zone_to_nid(zone), N_MEMORY_COMMON))
-+			continue;
-+
- 		/*
- 		 * We don't need to worry about fragmentation of
- 		 * ZONE_MOVABLE since it only has movable pages.
+-	if (folio_is_zone_device(folio))
++	if (!folio_is_common_memory(folio))
+ 		return -ENOENT;
+ 
+ 	if (folio_nid(folio) == node)
 
 -- 
 2.56.1
