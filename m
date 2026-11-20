@@ -1,143 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F2F606A6EE
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 19:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0132C606A6E2
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 19:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kbHx8ZKV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A/LHCGfe
 Received: by kanga.kvack.org (Postfix)
-	id 0F81A6B05B1; Fri, 20 Nov 2026 14:29:50 -0500 (EST)
+	id 873076B05B0; Fri, 20 Nov 2026 14:51:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A9746B05BB; Fri, 20 Nov 2026 14:29:50 -0500 (EST)
+	id 7FCCC6B05B1; Fri, 20 Nov 2026 14:51:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDAFB6B05BC; Fri, 20 Nov 2026 14:29:49 -0500 (EST)
+	id 64FA06B05B2; Fri, 20 Nov 2026 14:51:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C15E86B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:29:49 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 549641A01A2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:29:49 +0000 (UTC)
-X-FDA: 85456487298.07.9A458B0
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 77FB540004
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:29:47 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=kbHx8ZKV;
-	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E6826B05B0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:51:05 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B14D61C22CD
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:51:04 +0000 (UTC)
+X-FDA: 85456540848.10.F8EC507
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0136440006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:51:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/LHCGfe";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795202987;
-	b=olzrcjxccR1sG8EA3L8fgoXJp9FrFAXeaEAjfVYfgZxvIL+dFQQjfujXlaZkzTnez2DkYj
-	f2fZEXPpI29ae0CVyTD0Mdz0PtISw9lwYZxWClviZUCuiZh5inz3AFHEqzGaJkOheHMhwV
-	1hdqZAxCuaAlziid0tYTRiOKky5W8Yg=
+	t=1795204263;
+	b=wn7aLrPjm+GDQPPmK0Y++4q94hqCBAUWQwe8JtFkqC32CN76fkgN476fB1T6zhDheyBqSG
+	0jYNflufarOOKenpPb7pQw4+KAH0lpNcsNIsXewINXZ2Yvikw3W4DilegQFx8JTf3R4avT
+	3nqrUDbkBduGUhYlIDc0yiN159vatEk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795202987;
+	s=arc-20220608; t=1795204263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ka3sdI51heiAiEj1XMuq2JlrX86IIDTRxLvf6oCKKN8=;
-	b=dJnoz4SmwlppuoRIkj6YmLCzSb+Xe0LNJiMhp2WjojrLAxzFDAI1R94fJDTfelQYVFKTkt
-	RKEMocKNocv1FWEJi9V+tJDaHt4nGKBYt/Ulj6QWtu+r9Uob76r4BbsJbMfYtsYuQUnX9j
-	XvZMYmm2KfpvRAbwvcJXaP3u2YnHJic=
+	bh=MTAY5ibAV1uBF9jduuJT+bDCTIoeL+5xkNZ5oxnneLw=;
+	b=Z7Ei/Dr705Xww41tion/LlTjNa4tmcPf6QMyNlNYRCgv291tcnHYxUYDCUMKDMLu2lt/pe
+	rtM+Jk35CxnqLDVaTvli9sHkv8PEha/mvWAbAS9Y5rZ2/dRh56pIjn4+RVas/mQvHHyTTo
+	eHvZY21AYFaK4PnaCo+HiNWn5eHeW4g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=kbHx8ZKV;
-	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2f037bc348dso11589055ad.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:29:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795202986; x=1795807786; darn=kvack.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ka3sdI51heiAiEj1XMuq2JlrX86IIDTRxLvf6oCKKN8=;
-        b=kbHx8ZKV/AQIH9m/gVhXg+onh6rJce341VPFUuN5qKv7z2VM9h4WjZYhvy1KhWEk7n
-         7Lw8e955ntbwxKKieC57dKExWSUeRidS6RMdrcx2r1r5RaYY7YNLC1R+IfYW8EOt42pz
-         B27xRQNaxSEHK7Em5sa8BP0PGd41WB0UMXHuw0jOCo8Jdus8mO59KYxHXH/Vg4TJEXzg
-         rGRtKy7SqrpEkUzRYvdlzeuyKVvKFjJQBkM3Q+9sqzKEzfHR8HZ6OngA1TFLjEIiqEjA
-         ThBxgUM7BnLKfN8jbyUqSdRSuCwhfvLnFeL5sUPE285KbPqXXIPdNL600v5MzqQsdgx3
-         xysw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795202986; x=1795807786;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ka3sdI51heiAiEj1XMuq2JlrX86IIDTRxLvf6oCKKN8=;
-        b=gq7kLsXOzDdqesni1IOj/llzpkVKHUN4LFb2KhIvnY/5zQzDAxF4/j5UFD183bEZmA
-         j0zyJFrJbFHgQk6Gg1lRvoFHBSPYkA/wyGj6MwTc8UifGwezW40I+Ha7S+qw6AkJRE+L
-         GGuFLcOgYnx00j7dFfltrJyIb3SO4yO9MKse8QqxXX33mHMRI8rsLHl8mhX9G9Tw2GpT
-         geqcHXuzZNCOdb6XOzHMCaq/LS0SbuaRMnJvvF6vrzijf0+dZCQ8e79X+SLV/SWuICW1
-         8moqVnwhUw7JLD8ZPdYf0XLVEHnxlEqFr3myj9HQ5dSxH+zcTrvHtjc0PZLNLzl/Ssv8
-         T7QA==
-X-Forwarded-Encrypted: i=1; AL+hErHgr08seosTjJeGGhdKALJr3FTN9q8hMRSfwpYXwbVlR0luuo5exDjC6HhR7HbS8r/MlmfwW8RRyg==@kvack.org
-X-Gm-Message-State: APuU4Z8RV9MWu2x5UfEh/YhLipK+BLpqmMyiaqMeRFhi9eqlPPG08tVe
-	5lfgSPUeYR3SLsFTWWwmGLv9SF8jVVAQlz2CEfWAlQgQWL2+Xj/ZlGzPM4+ZLxCjEA==
-X-Gm-Gg: AZFdTZc3wBSw8X0FF/ufLZTXkwmX6VPrF4ZdLvybhBtu8LEHa3uI397qKYY6cjqY0BB
-	CToVSsvlmL1zXyqflTeJl7mXr9KILLGPNpziHmcsS5+PFGWgFesfcD3UOGYz78CtvhUgPlEwubX
-	oHnbTC3pHpOAs84z3rhmsZJ2/4O9+x6bDL+5lAx1teSEDNbMLIwoxHktqf0zoCIxgwPA79PFOCM
-	QG183EtSCMeCzAQyF0I6i2p7eDG1rCL7z9KFcXVqANbf074pe+N1QbYVGRQ0VzoO/0NWwGWKWZv
-	JgAtioOjg43hVdUkvU3g3pgNg8V65awW05ecmTU2UE+xCiKXXdaALbqUb4nP6BKIV3gMTVaASCO
-	vLFvg9htGQ5NXgJC8QRByMnW5Lmj0MOLY3DXtVtqvEhpUgTFO/amd0KMq9JHKIathukvUAfbi3a
-	Y4nlRsUIm6gZ+rlRMRMw6M/dwEwB98WhxdNksUTgC8opjXhdDRkOc8H+nwEH2rZ57sk7AVPNBVT
-	0WkGT+iqNAad7yBBVTGgfzXHPJh0vit+OBggLdzoJ9ysjUOBVgNsus2dy6Vu0FrMyvhKTQly5DX
-	gWasPERvOXKga/fege/JJ4nXproqd/s1GGAkgz0i0N1SjgCrYY3Nq/f6s/YXgVhM
-X-Received: by 2002:a17:902:ef49:b0:2ea:192a:13b8 with SMTP id d9443c01a7336-2f03f1cfb70mr39502795ad.20.1795202985149;
-        Fri, 20 Nov 2026 11:29:45 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0c2ad2sm18293005ad.16.2026.11.20.11.29.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Nov 2026 11:29:43 -0800 (PST)
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/LHCGfe";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F1C6465BB;
+	Fri, 20 Nov 2026 19:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041FF1F000C6;
+	Fri, 20 Nov 2026 19:51:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795204262;
+	bh=MTAY5ibAV1uBF9jduuJT+bDCTIoeL+5xkNZ5oxnneLw=;
+	h=From:To:Subject:Date:In-Reply-To:References;
+	b=A/LHCGfe7mu4454iMs5fhNiINy54iJwrmXZT5ZmbHZaxSE3qSYofocnuDwsb3nVZP
+	 rkrTqjJ/FmgPJB0r+5bSjYluJfO0FJiZYA7LMmg+d6Oap+l/40yOLjj2b4MUmDjrTB
+	 NtG/8sIT0VGNBPFd5qtgmzVlnwHDbEMK8LZZEnMH+C+nsXmDc+cHhAGw5K6W4M5XMc
+	 F53IjUa+fdgCez2RmrnoqkxwoZd2umDt/RrZyV+2MyPkrOxEed8lbHVET2wgZZ9jrB
+	 tlN/4sFAlc7HO7IU/5nIVvTazall6xcsZQD0yQfgKWrsRU4Ujknp1yN9VynbdIW0hS
+	 Ni9ATcTdbhHVw==
+From: Chris Mason <mason@kernel.org>
+To: hughd@google.com,
+	david@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	qi.zheng@linux.dev,
+	qinyuntan@linux.alibaba.com,
+	shakeel.butt@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	mason@kernel.org
+Subject: [PATCH v2 1/1] mm/shmem: don't use the memcg of an uncharged folio
+Date: Fri, 20 Nov 2026 14:50:58 -0500
+Message-ID: <20261120195057.50031-2-mason@kernel.org>
+In-Reply-To: <20261120195057.50031-1-mason@kernel.org>
+References: <20261120195057.50031-1-mason@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Nov 2026 11:29:42 -0800
-Message-Id: <DN0ACH1KR5BS.A33KFC1ZMPTZ@google.com>
-To: "Pranjal Shrivastava" <praan@google.com>, "David Matlack"
- <dmatlack@google.com>
-Cc: <kexec@lists.infradead.org>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-pci@vger.kernel.org>, "Adithya Jayachandran"
- <ajayachandra@nvidia.com>, "Alexander Graf" <graf@amazon.com>, "Alex
- Williamson" <alex@shazbot.org>, "Alex Williamson"
- <alex.williamson@nvidia.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Chris
- Down" <chris@chrisdown.name>, "Chris Li" <chrisl@kernel.org>, "David
- Rientjes" <rientjes@google.com>, "Jacob Pan"
- <jacob.pan@linux.microsoft.com>, "Jason Gunthorpe" <jgg@nvidia.com>,
- "Jonathan Corbet" <corbet@lwn.net>, "Josh Hilke" <jrhilke@google.com>,
- "Leon Romanovsky" <leonro@nvidia.com>, "Lukas Wunner" <lukas@wunner.de>,
- "Mike Rapoport" <rppt@kernel.org>, "Parav Pandit" <parav@nvidia.com>,
- "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pratyush Yadav"
- <pratyush@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Saeed
- Mahameed" <saeedm@nvidia.com>, "Samiullah Khawaja" <skhawaja@google.com>,
- "Shuah Khan" <skhan@linuxfoundation.org>, "Vipin Sharma"
- <vipinsh@google.com>, "William Tu" <witu@nvidia.com>, "Yi Liu"
- <yi.l.liu@intel.com>
-Subject: Re: [PATCH v11 09/13] PCI: liveupdate: Adopt ACS controls in
- incoming preserved devices
-From: "David Matlack" <dmatlack@google.com>
-X-Mailer: aerc 0.21.0
-References: <20261118223704.3286085-1-dmatlack@google.com>
- <20261118223704.3286085-10-dmatlack@google.com>
- <awBkg0ODE436CZy0@google.com>
-In-Reply-To: <awBkg0ODE436CZy0@google.com>
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xfqz9bwuhr9cirspjr5hin1cjg3i3y4m
+X-Rspam-User:
+X-Rspamd-Queue-Id: 0136440006
+X-Rspamd-Server: rspam10
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 77FB540004
-X-Stat-Signature: 8grkbw3xm7z3ose7j4k9y6aer1worx3c
-X-Rspam-User:
-X-HE-Tag: 1795202987-26276
-X-HE-Meta: U2FsdGVkX19o/Gj3V2skMkrmtKHf3RbgSRYEQ/gdNh+y/V6yt7Ok14cK/+0ww+lcS4bgJ80nukrweGHCkgGMyFo0XPG3w24p4OsivhYKeJf8IqCwKedapRozda6d81C/N8vjIEGL6vIeVlmogNxGyeF7LKLMapWgbM5pyBE4sgsOhzNPK0a10VO5sU0Aa8H/R0+fJz1cMSTIGBtlGVpeeTDzq5k/ytjNCn9c+THTTHieiR0QXYs8lfyjxJ9MpZGo6qxutmLurC4S78UiC+AD+ISMPLhy1posjwWV8I50MRg0EZ/yuMEbb/xGXS6I9VJ83A/f7bcEv+21YDbwh9UBPkcNbFGJ/RbagnAJdfbQ5lM/iFfuwKB1yzMcwSPlsC5aLOpHF8GTUbAP0Ob+y9PylYylM2ol8s5BefiOKTYRk/HDbM1gCd6HG936QOuP2fgkYLHreTzfjnhcTCOw7gbELW3hGzsteSjV1/luze73LjGaqr/OW2fF919dn7nAvnUrQl5hYhmsBDnypz4fhkdwxdYcJKAh6OR+uV+ItxDIsms2mQKTSWd1j6+T1O0unej6GLYQZCgYXJeDQDKaw6E/yBdyoOJUdaeE1k4TB7hSX9oMSIpEnjm95MYX87JG06aB8Jmsr/n8JT5nsqX4YZc9xR5mpfkKfM275Pc1wW59VEuNIhWmXA6XOwHUayXVsOuLpXK1O20EKXzmmx0zElTfzaPh1Vg3iB43BcVK+BELxYLycjoOEP/LeXP7BDFbyx2dTC1upX9hiOGTaUrYZbOX2De9xN6uGBfCzSE7nX6QrhMUhJq51A7OfJ5lUNBaKlmPE1WLloq2uTC5Dp57MJxm5dfWJc2b1Kv9ioKuypdg8WCeMFWfRyr3LK7ueEJ3Omn4YAYjKVZNbZ1BRwGCZFPLuGiaQ+gq4q0pZiG2u/Nd1zoTbxJKlsQSHw8cxDpEznVFACcroxjF1NTOKtrb3CK
- 72n9BOrW
- YeO08CC9fXaVlEg2b1e1zIDxyXVojg8Hl7Byac2Kl9ibYVPyWUOiZVIznNVeNGeDudrQ1fGsip0tmFzC3M/vWSqd/c/iWrajbWou5e1sw28Dm9WIg9HGTVXinhQKvvzWfpSHcdcRFKAaOqcPFCKMLUCniLHpqxdGU1ZYYN+uomtyeOZh8CceCzT2v3LDjSU0iitKEl6WmAWuLb6BzWlZqtjnSLBcVUMJ9irVIegEpGy2SEAa4EupBSjwN3ayJeyc3H4n6kmz5c0b8zds9/wpZt3uHE5+66zO7sjveBDsi9R4P0wm+5/JQxn55UBI3YL7WkG3Zh0rhO5/CeN/tPvxgRGon2pUupX7coBg4+pLCGSIgAWZ6EGJiDmFBVpBRU5k+2yGbS1728ZadgzIsfnS16gIjzyeKvAmkVBWm0i4qC443IILM87sXzzOBMUUNYhr2akq4TjheWU6Sb1QEW4JEnDQjjW9sZuEHCYX6ipdkthCcBAic7lOcoudWOeNM5y7wbRNsDTPGuqOVcPU0WIz8f65QWXphGTqT91HGlh7gcKxyg0yEpWp74F6oew9hl8Ir+4fBVxF0e7uUa63fQ4pNBbmZG2hdFAVwt001+h2dGV4/okx+JLxUOwMlmwRQ1Uc3cXUPCksTK4ZorII=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795204262-999671
+X-HE-Meta: U2FsdGVkX1/IOEsaewDxZxkTWBQvFInfFH9Bcg/0KVro0WgkC5zbMVP+IxZejoamVEtSN/QyaBB6f9ECoOFvnRPrHEnl83ZmU2gKbEa4RsV8ASyPbmpO7aHmLGUrVxSaa1eLnwDYxYxQPaKEZoAYkm+vAJMON12eN+O9NafU/kCE7ck3/rNrW0Nt/J26E1uNuO9zTHT5d7QnmEOjGvtgPq6fZNBeClCMZLZJgmtbQ4f4IAdMPaTDCx4OIrvXVKWFYGXZ5NASmbpUHoH6MwXvV/gVfd9FVnLFBfuIiXY78q4EjR0wo/Wsbelqfbsba/4G8/8TSuqZvGJ8lSFGeBvTDR+21x0LJCjK7tU594zj7EaEWcf6l2hY/maPpGGrtsOrg9DOC5HKVU54y8fK/9pRruvFNs3xzUig8orEOHEP2ZCdjSq+ZiC0pj9IT+VQy8b4EYZxWeXCbb+JXReNu2BRZcvb0Hh/KSq3LgC3S1AhUVwM5Nx5J4EWPabmmfm7Y6KB6VszE+nhXCTLUqC0ogDvQ13I2OMsf8B2aO3E+3L82hwNCP1Ds219piLCZZZEM2Fxb+a1B8FFGL6qVmEKfc2x8BXb3m3NAwpHdZhhiJMqmjbtoda9nwz79yxRilwLlIr5qu9cSpmCIGtyigK1yoCv5PyiA0lOXfwNRZHsUOJK1VLWcW4iZX4JxHIbQmEXFdgl7FyY20TVvf7eEPU586EBZkIiT2NC01kIjyU822NQ279SjcwUg7ScB210osbgOX5ebzzvoEt45mZ1OMhT9Iuzy7fk7LoxNaB+xoiQFfIXPjMPGqCrhkXiMAv6UJLZxifYFJad6ARJrtusmhRnlwYCYoAvcG/xIiKGYVsvqRia+RkxwirkmlQzhKglfUqa484wGBb6xWuafzSn1tglEs/fiyKiSU3BruwEvHGF50Tk8EdjApOxT+RvZZ9mmASDavux/ozVJc546bsoZDZVZLJ
+ SqhiiQYX
+ GQb8NkZK7v/OlnoVbYE/TZYFJoEnMajW7onD3h5yZSf4V3qQy+w6iixutRG3v4A4fGQBZFeyyH6E8UapHbo5QY8oPdKbXYASRMuHfizuOcuoS+HJvM+6Z+WBRXmwVo7btFYLcIPm5qEOsphVMssoIz/2qg3RxiQzfOGZOYFktiiBoWKG/6cIDpXMt0o1mKQtKNChqSPw4zE/Knn8jbHsEz/KuS8MYM0LSeOtLVIfMHZ7y0UcHSFIJQFP5EvFfBeFLDdIC1BZfcM+o3AOFYiVExZO3bNiCmjubgXisC4oEy4akFwnr2GXkaR5T9dK0yQiYECwZD+XmFi/0R2gEXVgrlQ02GkDodnUzPJuM+lgUSTP1Y01UiFCGDl9JfVrFQgTknpEpKOkf+0HiqKMrUuQKKQpW9x71ViJwuDz2qpqoO9zSNENz3yFQhRRElitypc0fEAOaO3YI7JC1sEl+gVCSBkQh/A9hnIna/LN2dDc9RoPxFcvhPuYOg7+YajxUlzelbGz3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,126 +101,130 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri Nov 20, 2026 at 7:17 AM PST, Pranjal Shrivastava wrote:
-> On Wed, Nov 18, 2026 at 10:37:00PM +0000, David Matlack wrote:
->> Adopt Access Control Services (ACS) controls on all incoming preserved
->> devices (endpoints and upstream bridges) during a Live Update.
->>=20
->> Adopting ACS controls avoids changing routing rules while memory
->> transactions are in flight from preserved devices. It also keeps IOMMU
->> groups from changing during or after Live Update.
->>=20
->> The adopted controls are recorded by the pci_save_state() call in
->> pci_bus_add_device(), which runs before drivers bind, so they are
->> reapplied by pci_restore_state() if the device is reset. Allocate the
->> ACS save buffer for incoming preserved devices even if they match a
->> device-specific ACS quirk, since their adopted controls live in the ACS
->> capability, and panic if it could not be allocated.
->>=20
->> To simplify ACS adoption, reject preserving any devices that require
->> quirks to enable ACS as those quirks would also have to take Live Update
->> into account. If such a quirk matches an incoming preserved device
->> anyway, e.g. because it was added in the new kernel, log a warning and
->> adopt the device's ACS controls regardless, rather than reprogram a
->> device in the path of a preserved device's memory transactions.
->>=20
->> Signed-off-by: David Matlack <dmatlack@google.com>
->> ---
->>  drivers/pci/liveupdate.c | 75 ++++++++++++++++++++++++++++++++++++++++
->>  drivers/pci/liveupdate.h | 16 +++++++++
->>  drivers/pci/pci.c        | 13 +++++--
->>  3 files changed, 102 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
->> index 00d6fa5236e9..b99a88c2c199 100644
->> --- a/drivers/pci/liveupdate.c
->> +++ b/drivers/pci/liveupdate.c
->> @@ -123,6 +123,9 @@
->>   *
->>   *  * The device cannot be a Virtual Function (VF).
->>   *
->> + *  * The device cannot require device-specific quirks to enable Access
->> + *    Control Services (ACS).
->> + *=20
->
-> [...]
->
->> +#include "liveupdate.h"
->>  #include "pci.h"
->> =20
->>  DEFINE_MUTEX(pci_slot_mutex);
->> @@ -1071,9 +1073,13 @@ static void pci_allocate_acs_save_buffer(struct p=
-ci_dev *dev)
->>  	/*
->>  	 * Devices that rely on device-specific quirks to enable an ACS
->>  	 * equivalent keep that configuration outside of the ACS Control
->> -	 * register, so they are configured from scratch on restore.
->> +	 * register, so they are configured from scratch on restore. The
->> +	 * exception is devices preserved across a Live Update, which always
->> +	 * adopt the ACS controls established by the previous kernel and need
->> +	 * the buffer to keep them across resets.
->>  	 */
->> -	if (pci_need_dev_specific_enable_acs(dev))
->> +	if (pci_need_dev_specific_enable_acs(dev) &&
->> +	    !pci_liveupdate_was_incoming(dev))
->>  		return;
->> =20
->
-> The ACS save buffer is forced for incoming devices that match an
-> enable_acs quirk, but neither existing quirk keeps its controls where
-> the generic code saves them (Intel PCH Root Ports have no ACS cap,=20
-> SPT/UPT has the Control register at +8, not +6). Is the intent that=20
-> such devices just lose their adopted controls if they ever lose config
-> state later? (e.g. a Root Port D3 cycle after pci_liveupdate_finish())
-> If so, maybe worth calling it out in a comment?
+The shrinker for unused huge tmpfs folios can dereference a NULL memcg
+if it races with the migration of the folio at the end of a file.
 
-The previous kernel refuses to preserve any device that requires a
-device-specific quirk to enable ACS, and every kernel that supports
-preserving PCI devices already has the PCH and SPT/UPT quirks. So
-neither of those quirks can match a device that was preserved by the
-previous kernel.
+folio_memcg_list_lru_alloc() assumes that folio_memcg() is never NULL.
+But it is NULL until the folio is charged, and a migration target can be
+in the page cache before charging.
 
-A quirk can only match an incoming preserved device if it is new in the
-current kernel (or the previous kernel was built without
-CONFIG_PCI_QUIRKS). In that case the previous kernel did not apply the
-quirk and programmed the device's standard ACS Control register, which
-is what the save buffer captures. So the device just continues with its
-non-quirked ACS configuration from the previous kernel.
+shmem_unused_huge_shrink() looks the folio up without the folio lock,
+so we can race with migration:
 
-I will expand the comment and the changelog in v12 to make that clearer:
+    __migrate_folio()               shmem_unused_huge_shrink()
+    =================               ==========================
+    __folio_migrate_mapping()
+      xas_store(newfolio)
+                                    filemap_get_entry()
+                                      returns newfolio
+                                    folio_trylock() fails
+                                    shmem_unused_huge_requeue()
+                                      folio_memcg_list_lru_alloc()
+                                        folio_memcg() is NULL
+                                        memcg->kmemcg_id
+    folio_migrate_flags()
+      mem_cgroup_migrate()
+        commit_charge(newfolio)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b5b578355a1b..f3d58b5e7a5d 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1073,10 +1073,14 @@ static void pci_allocate_acs_save_buffer(struct pci=
-_dev *dev)
- 	/*
- 	 * Devices that rely on device-specific quirks to enable an ACS
- 	 * equivalent keep that configuration outside of the ACS Control
--	 * register, so they are configured from scratch on restore. The
--	 * exception is devices preserved across a Live Update, which always
--	 * adopt the ACS controls established by the previous kernel and need
--	 * the buffer to keep them across resets.
-+	 * register, so they are configured from scratch on restore.
-+	 *
-+	 * The exception is devices preserved across a Live Update. The
-+	 * previous kernel refuses to preserve devices that need such a quirk,
-+	 * so a quirk can only match here if the previous kernel did not apply
-+	 * it (e.g. the quirk is new in this kernel). The previous kernel then
-+	 * programmed the standard ACS Control register, so save it to keep
-+	 * the adopted controls across resets.
- 	 */
- 	if (pci_need_dev_specific_enable_acs(dev) &&
- 	    !pci_liveupdate_was_incoming(dev))
+Fix it by keeping the original objcg around while the inode is isolated.
 
->
-> Apart from that:
->
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
->
-> Thanks,
-> Praan
+Fixes: 743e7d025d2f ("mm: shmem: make unused huge shrinker memcg aware")
+Suggested-by: Qi Zheng <qi.zheng@linux.dev>
+Signed-off-by: Chris Mason <mason@kernel.org>
+---
 
-Thanks for the review!
+Notes:
+    v1->v2: adopt Qi Zheng's suggestion to return early in the
+    failure path
+
+ mm/shmem.c | 39 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 31 insertions(+), 8 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 10cef89b00b08..901cfd15bdbd0 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -758,6 +758,13 @@ shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
+ {
+ 	int ret;
+ 
++	/*
++	 * A migration target is in the page cache before it is charged. Once
++	 * charged, its objcg can't change while we hold a folio reference.
++	 */
++	if (!mem_cgroup_disabled() && !folio_memcg_charged(folio))
++		return ERR_PTR(-EAGAIN);
++
+ 	ret = folio_memcg_list_lru_alloc(folio, &sbinfo->shrinklist, gfp);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+@@ -887,12 +894,11 @@ static enum lru_status shmem_unused_huge_isolate(struct list_head *item,
+ 		return LRU_REMOVED;
+ 	}
+ 
++	/* keep shrinklist_objcg, requeue may need it */
+ 	list_lru_isolate(lru, item);
+-	objcg = shmem_get_and_clear_objcg(info);
+ 	set_shmem_unused_huge_isolated(info);
+ 	list_add_tail(&info->shrinklist, &scan->list);
+ 	spin_unlock(&info->lock);
+-	obj_cgroup_put(objcg);
+ 
+ 	return LRU_REMOVED;
+ }
+@@ -928,10 +934,26 @@ static bool is_shmem_unused_huge_match(struct folio *folio,
+ static void shmem_unused_huge_drop(struct inode *inode)
+ {
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
++	struct obj_cgroup *objcg;
+ 
+ 	spin_lock(&info->lock);
+ 	list_del_init(&info->shrinklist);
++	objcg = shmem_get_and_clear_objcg(info);
+ 	spin_unlock(&info->lock);
++
++	obj_cgroup_put(objcg);
++}
++
++static void shmem_unused_huge_requeue_locked(struct shmem_inode_info *info,
++					     struct shmem_sb_info *sbinfo,
++					     int nid)
++{
++	lockdep_assert_held(&info->lock);
++
++	list_del_init(&info->shrinklist);
++	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid,
++				  info->shrinklist_objcg);
++	info->shrinklist_nid = nid;
+ }
+ 
+ static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
+@@ -943,17 +965,18 @@ static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
+ 
+ 	objcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
+ 	if (IS_ERR(objcg)) {
+-		shmem_unused_huge_drop(inode);
++		spin_lock(&info->lock);
++		shmem_unused_huge_requeue_locked(info, sbinfo, nid);
++		spin_unlock(&info->lock);
+ 		return;
+ 	}
+ 
+ 	spin_lock(&info->lock);
+-	/* Requeue the inode to shrinklist */
+-	list_del_init(&info->shrinklist);
+-	shmem_unused_huge_lru_add(sbinfo, &info->shrinklist, nid, objcg);
+-	info->shrinklist_objcg = objcg;
+-	info->shrinklist_nid = nid;
++	swap(info->shrinklist_objcg, objcg);
++	shmem_unused_huge_requeue_locked(info, sbinfo, nid);
+ 	spin_unlock(&info->lock);
++
++	obj_cgroup_put(objcg);
+ }
+ 
+ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+-- 
+2.55.0
+
 
