@@ -1,150 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854D2606A68D
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 22:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD9A606A698
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 22:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QEpFoq4q
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Bvb3741+
 Received: by kanga.kvack.org (Postfix)
-	id 350D46B00EF; Fri, 20 Nov 2026 17:24:49 -0500 (EST)
+	id 8B1A36B05B1; Fri, 20 Nov 2026 17:30:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB016B05B0; Fri, 20 Nov 2026 17:24:49 -0500 (EST)
+	id 8625A6B05B2; Fri, 20 Nov 2026 17:30:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17DD36B05B1; Fri, 20 Nov 2026 17:24:49 -0500 (EST)
+	id 750CC6B05B3; Fri, 20 Nov 2026 17:30:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D64B96B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:24:48 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3ED8A1401EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:24:48 +0000 (UTC)
-X-FDA: 85456928256.10.D362FE8
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3BB3D1C000D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:24:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=QEpFoq4q;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C0496B05B1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:30:15 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 563C9C0200
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:30:14 +0000 (UTC)
+X-FDA: 85456941948.06.C1731D2
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4812840003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:30:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Bvb3741+;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795213486;
-	b=qql5lShzMiKmJXgqpa/cmm3ss1tRsHvSVWyUIXCjxeIdEnwQ+R9UYmkzGQkYKjbQ3X+mkx
-	GflULcSdz1aDJ4+a+/0FFebrPO7phs0aWtO9e9HidouTp9WgKL5cTwzvH9uKi4fejaRN6h
-	fcuP9/jB/yhvIfo9+RC1R0ZPGUzZEng=
+	t=1795213812;
+	b=U6yZI5GPL27E/NVhnzxxK9UT2AqC1s+gvvQB5DGci4sfvRRucgId9K+EbwAq+LnqxuVWSv
+	AHlUO7kge+2hmhMDsegE3DuykFvTKmFCuoShqu+NwYqg5SRBbXwWHIuz0fMQe4SDEOjudN
+	BmFU6zeWO1urq24FrnQ0zQlbyYqPA2E=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795213486;
+	s=arc-20220608; t=1795213812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1NRDdhSVMLSlkGl3vLfd9oDNXjJR/tyu9kac4iL4k3Y=;
-	b=omGYGDP6ltjt3DM3pgYzFmGTUtxTw8i371ed5ESNHbicsxPFLxluSKmURveSw5whyx4WcN
-	VBnAYu67mHrQkbVAJRKLevRXM4s6ctJlymsuIKS7vjA3AbPJoPRdeZljmQ/OnHKYv9uKms
-	HbhHRLbhuknx174fmHAWIhkgdQaViGg=
+	bh=oSCVbmqxiQi2DoLmGcMaMHvDma566TKArudq046yQIs=;
+	b=DpTuPShhsImQ36symulK7JuUwuCZNvJqK3Ar0nu/5IyBjeH6dNfxJ0sD/WLNsK5OW1CP6D
+	w5yrA70kXf2HsEPHX32HBvapadzw4qXd0tMLlLHSnQdWw9vygejWm0IAMUZVQ8tmsf2A0k
+	wyDH4xNKvSV6EBEfd1Gc3BNIPB9dUi0=
 ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=QEpFoq4q;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Bvb3741+;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-55c7445cf85so33041cf.1
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:24:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795213485; cv=none;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-55be673e029so34241cf.1
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:30:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795213811; cv=none;
         d=google.com; s=arc-20260327;
-        b=atX+AwPBfP7k3etW0mE7L5+w2FabDxe5Xgsro/xgl29IgZPBfZ9md04AqPb4Pqep2n
-         zOenA5boozhSsLZfsgFJVamDcZzKvI6tWRVhMED9QRfn7t789BTzIDPJzbmitOk8pgsy
-         oZN41j7hnPmGEFVEYW1ZpsMNLWrv+hCMIBYw45n7rt/+ctUoAAxGs3evZWCMlc0XgvlZ
-         Fr83t3w3XKuba4ug1fBZvt5vDcMs/YOPCk9GHSdrztDnJjITzjyHiC1PfZEwRtq9pBbT
-         7z8gdvJbGCVKE+rw+SWOorkUWpA2ZYdyDZBf6pwtf6J03pCtT7MV8YBeGEL3B6AZXHJV
-         Wisg==
+        b=czLRtSFT1bCZ0yqqhrkbcrAvb1C06U8TySQ6GkHDQlUFBIftQEWwW+6gIKfjGO545z
+         hPNO7QxseKH/OsmZNI/22f86L1dG6sQH+LdT+MPUKRCiGrKvd+s4Urcg60bqvZD08yxZ
+         eCypoubUDKCY9U0r87s9tgBo1dk0kmxxcDBY7dYwqqQ++FlIZbA0yvoxHioV3qBmzMMh
+         x4TcuZs5Aw0LjUJ9FPVstNfchjbXzvVZnpO3FIlhcKZNQxHjbXFZYPdioYiIZilKn+Db
+         1xAFjrPNN9uyTH6dDePYtrjcyaOdIqF++pUrAPQSvVNBF+d9O+zhUKfExZ6xadCQVIa6
+         NudQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=1NRDdhSVMLSlkGl3vLfd9oDNXjJR/tyu9kac4iL4k3Y=;
-        fh=9P/cghuck3FYFU9dbVdVIPZEn5Ak2diHuY65Bg7a0Zc=;
-        b=nhnFmvLcO1LBfhNF5ZyrWasz6eM5eLhlSbI+UjzO3X7kU1zOqnzUbg1O5FHR3zkrP2
-         j6b9QLHrm8Wg4uCwQZE7CSPdcw0ZogPbQ+cKicA4AOOzIi/Gwwqb85Locb2a88AsBJwr
-         tCuVL7ltui8lX1r2rqU++Xfxnov9esPdegz6divKSDtZoKbB36F3hWLkoj0UjVUP8viT
-         XNuzkv1ycyGDL1Zil+ED+vdJ700RNzKNiBzxqx12kKvZ5d9q9jnulV4BN8HeB9H0j3h1
-         5LmhzuQYoIM0PUYYGC6NHcmu+WNRISJdGeZ5O2wrFo6eV+JOuN5kKcfvJQhPRkIAxdi+
-         beTA==;
+        bh=oSCVbmqxiQi2DoLmGcMaMHvDma566TKArudq046yQIs=;
+        fh=g8JFw7vDtwVVTMeINsQrU4q92rvD0HLOILG7LitkSpE=;
+        b=hxCEfDeaG0ONnX1D0rMxSr+SXW3Wmrpn8i+P6J+IqJE4yq3HLyPkepLtXkk8Ow5wzs
+         wMygvkpLcBuGVOJLM3KI+UaSZ5FxTYIcsCjvE6BJ31ka3EM/W22atX4HvfPTQ/sz3yeZ
+         TSqdgDGfy1Us/QiRT4qjkP2Ro3PH956EPRxdxhgRqkIu6EZYpy6zyc+e/UoDV/YbK9J6
+         kL0NFLKTLyNfWX70C32LCT3WkVPqERs+85t56FK1vd3+q/6jsiZLsdJyxlOypuTRFqSz
+         8p98IdPA+720CvpmBwwbdENrnCyV3IiNdBGxn/bYhUDJJpnSB4GX72KGPgj6pPCEJEm6
+         y7TQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795213485; x=1795818285; darn=kvack.org;
+        d=google.com; s=20260707; t=1795213811; x=1795818611; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=1NRDdhSVMLSlkGl3vLfd9oDNXjJR/tyu9kac4iL4k3Y=;
-        b=QEpFoq4qDfmGRcKrILJgl+XDXRlx1AFYtmvp32Umjd0xTX6uAx9pybSWWeUsNmFd9H
-         29/SvPSPf7NhhjznsZr2fb0HwOwtUapl2kgoYE53MP0VfpAWOTwnlYT3eCJcTNCPwprk
-         8XxXb0z0SUEGpr+F15chAPFr9EaPdZgr1HB9426KXxWJCA7yJNi5jzbl3QRnE3ikTqUe
-         aDQttCFuG8tJJSw0BO/aCXNdESDbOHMhQwtGZcajqnmbqCYJpw0YwbnjUIxNXSQl5wSe
-         nrD5/MCP1ScDGvtCAOqMBVlj+gvDRjtR87GEt5OJpN/ewQewChRA8k6/UVB5erOukodN
-         aqQQ==
+        bh=oSCVbmqxiQi2DoLmGcMaMHvDma566TKArudq046yQIs=;
+        b=Bvb3741+aXfvGi3Ja5w9GbHtcd/6+pO6rkC1ryG3KINLOMduR1VxpGT2YDBUBRbMb1
+         gpoLP+vTK6v1UM5IFDis03ctwYcQ3rgNiZz91YI7g3kGF/tUQytGgTvpqxPkKCKBybAq
+         beQ+EFA+L5UFvz5e+7GzuMMCrSJZTLJE7mqYxlwHGrPwzji9yGFSQYMb7ZMrHsJ6nJhI
+         r4zdtuN0evWhMUm/Xw8lCkEP85BN3RL5SdvcuHEJJXpQpYmr42jVofeqRnFBHkgJOxg8
+         sFwP7R9omfFA//z1YcZV05Hm5nH6+m6YbX7BcSyydNm7GKXkVVtMfp6cXJ6XWwDm8MJr
+         fgwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795213485; x=1795818285;
+        d=1e100.net; s=20260707; t=1795213811; x=1795818611;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1NRDdhSVMLSlkGl3vLfd9oDNXjJR/tyu9kac4iL4k3Y=;
-        b=fQ0kitIML840CopM/sBb3FnLhVFa2Kn0LAHruQnOE1qjZQJdsRhFP0linHhPQpQ68K
-         xtZx3rF0JXryXraMsJz+oN3Mb49faNHIl+3eRWW3d95wOKm0cf7uygU4KAD4EDkrM65+
-         IjaOQTQ+BmrYek5C7LuLHZNip4e3Mq+mzrXwo8g9rmpdsKEmyvVkKC8ZtNzwpsNLnsTa
-         J0vjRhDMuudoeJglGCq714uDwkp1Y+brMcSs5Y9KQ00LBBMC1LWFTZoLnb9/KX/oVPuD
-         RHv0cSa1C8a4MXP4luMAd2wCqmgqtZV3214PXI3iEcaFRk1YEab02gnX2U/j4SahNPvI
-         dGpQ==
-X-Forwarded-Encrypted: i=1; AL+hErHEiyQy0yR89btPkdqsj7R3JMU6VIiUH5+4fNtAuxW7ZKoqoYcJYFeEf4+VbmtQUe407Z2JmpgjXg==@kvack.org
-X-Gm-Message-State: APuU4Z9yE9P1KjB5+ddBDX3f9OhXIlucklrLSrIqofErJxMdRNOnsKGo
-	twr2pLD2aQcUdBItEmGQibJ5SOjEyr5tuMfNgQrAYvCn/q1lMXbGddz1p5mUxkNS0opOa0JVCe3
-	QC8DL3itvUBfcUrFaO80RnUUpWTWONCJxmyHFP5jt
-X-Gm-Gg: AYBFou21uoPXXxaq8Xyz5eW/t9Pl6hZXjr1ibVLWKHyHtFtbLppHQk04tND4foOvUW8
-	FVr9zvxgALGh1pk+24K3/jhtXiyXa6zVknenmlpZZvcK8SN7JPc253lDEnC5O6qROkGBlBw7mJy
-	89rsM1ZVNZwRA0bgwgWtNQSPOSoPhCh4CkpUw0PzF6vW35btwzhXxe0u9l6kLtnKHdDrAv1+02/
-	uzEDn1M9nmwBaA9hK1I9bOUwjMOj5gt7l3FUuD6ggtytRosToMIg0FXmrwKH5Lx2+f9fzZcJMy8
-	0MHSk6U80ZuvxBasteAI4mGucxg7r24BIu7qyBOaSijfQqB7QACb1p6UJ2BksNpabZLXhhftD07
-	CcxgSuwXa6XEoZDS2XzTD5IVFHPPTiSxvceK8yKbvWv0lUP9lV0rE+/FyKhkQ7Ti8W3uy1O1enZ
-	HhxtqBtXYJ0+KsQgmdOSvGMAG7aIsKoJQA17arwLzmQebG5w==
-X-Received: by 2002:a05:622a:2303:b0:535:84ef:2e26 with SMTP id
- d75a77b69052e-55d88ff9f2dmr1848781cf.7.1795213484666; Fri, 20 Nov 2026
- 14:24:44 -0800 (PST)
+        bh=oSCVbmqxiQi2DoLmGcMaMHvDma566TKArudq046yQIs=;
+        b=NSiERFLdX+oAvFJSo/YcT5ptNrSpGiLpcPnUChznr9metwQtSI81PjJzqTrutw2xA6
+         ruIk42M8WUbAkdfe0n/JrQLTfy424JwmC9e3KCLnlmy9Sj9JOeYKwCzuwW91H06uTMoa
+         xFahdMMfz3DW3GgsFJZsRCaKwW/mgwrN2SuzOmgG4bnCpucHPUbO3hWmRxmotHJgfhTn
+         ZOFriXzbrVmaziyIseKZGZfCTooUN2yknApAYZ8cFKIVtL3qqvu3UhCQEp13j3lJoHg8
+         RQ9kZnIVOWW7y3aiWy0546JokaPuom5+d0URbyuBH/iiiDRLZgzjEjuJcmqlNwLeDU1b
+         tCUg==
+X-Forwarded-Encrypted: i=1; AL+hErGZNycUEAaVjlDGvaJ+e/l3dln3Kde9oobXuZywtqPnaMGTnN/AgQXNsWNpaBdFgE5UA8wWRVf23A==@kvack.org
+X-Gm-Message-State: APuU4Z9KXudZb0EiXFLdimL9rT4DkHO7+Kio/8eqZ6Oh5N6Uh3OqxYO4
+	a8e6lvZrgT497vMSWj86QO9g2mhB2hFL4YfY7KlHsPe/68OJvqBVo3yD1812krw3wrX8RX8wfhl
+	cdg4RZYZKM5yDReo8V40FL9e3S2Yq6lFGXYElezkQ
+X-Gm-Gg: AYBFou2EmSoZTU29eXrrQidPvXo9lSf51jDqAP+CEyYweAFazMV7kYlew56ISAqQcLB
+	Y0cosi997V4NVDlc60hz0658GBYn3JXpvBf4pjkUX1UM9blQwcZixqRytVuQjS4z1NUaMvz70y/
+	dVZyOYVZBcU88ivOV9TTj99YzuAFA73xoQ4d/SdFBMyieKKoTK2h+f+o8XHs27rzguXfMNi3BR0
+	Wx5qrd34ZGry2/U7c6xX2IqFtgaOBhYVhmEWl2Pp6zoAD0eG+DPeR41JjOnZXCElTeBMU+fJO5b
+	TsbhXkMJgDg9amvp03uFTSO5flKY73uAk4XCWYWEZgYP6ncveXOVdFt34TPh9ezLDa47WzWxt/Y
+	6CCNdkV7OzfAMd86/IQlY0dR7LtSZqE0i15uZLU1Uqviq7nZrqPBG9RZSL573qqDD7gZ7EuxeUd
+	iv4jYpW+oVnxOkzS2fqAfNwcmq
+X-Received: by 2002:a05:622a:2b44:b0:536:934f:7da2 with SMTP id
+ d75a77b69052e-55d88013e93mr5507861cf.2.1795213810431; Fri, 20 Nov 2026
+ 14:30:10 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261116071325.263682-1-hao.ge@linux.dev> <20261116071325.263682-6-hao.ge@linux.dev>
- <av39BuCsq-dRFiMM@milan>
-In-Reply-To: <av39BuCsq-dRFiMM@milan>
+References: <20261116071325.263682-1-hao.ge@linux.dev> <20261116071325.263682-7-hao.ge@linux.dev>
+In-Reply-To: <20261116071325.263682-7-hao.ge@linux.dev>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 20 Nov 2026 22:24:33 +0000
-X-Gm-Features: Aa3M54rJ7M1MnGNtQP9_VRtJkxxQVQjNLEl48ynPtV8As3xDhStKJU8NtpTSd_E
-Message-ID: <CAJuCfpGoH+M6Ni6b13LOLkcCsGJdGofUwNaLaED-s2q+bRtefw@mail.gmail.com>
-Subject: Re: [PATCH v5 05/11] mm/vmalloc: only flush the cache after the vmap succeeded
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Hao Ge <hao.ge@linux.dev>, Dev Jain <dev.jain@arm.com>, 
+Date: Fri, 20 Nov 2026 22:29:59 +0000
+X-Gm-Features: Aa3M54pjipOW7ZzgZHb-E-Af8isX9CFT5XpnqdBhptBuFS7GWS9SCDR86t6dxYw
+Message-ID: <CAJuCfpEZ15zhoBsHuO1CD2JpYOQ5SrjOaZ_RkR=y8Gne557qMQ@mail.gmail.com>
+Subject: Re: [PATCH v5 06/11] mm/vmalloc: undo what vmap_page_range() mapped
+ on failure
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
 	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
 	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
 	Shrikanth Hegde <sshegde@linux.ibm.com>, Alexander Potapenko <glider@google.com>, 
 	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>, 
 	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	Sashiko <sashiko-bot@kernel.org>
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 77rm4j7oy8du5aucjew6dj9rk4ygn48r
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4812840003
 X-Rspam-User:
-X-Rspamd-Queue-Id: 3BB3D1C000D
-X-Rspamd-Server: rspam10
+X-Stat-Signature: t7hccspotdsxa7j1uk7s44yjr7wj688i
 X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795213486-276708
-X-HE-Meta: U2FsdGVkX1+nPBsyIbzBhxfBeSvNQm/Yl2aUeCorpoMTGdWLF5JqAnxi4T+qlFcd+McGiNp3gRlBewZ6t30TP1Rp+Lm652MpGsCIUyXe7HrBaRwdU8RiCqog8dhm10OvRswTggCNG+7939f3k0mB64u1lpX84F8sw8WuIL+LAi8B10xUmg7xqCfS0wkOzjDkIigblJSroWCANY9Qh2w41CaGSXTElujn5GiOVmH1eOEqajI5XRycDEw7SmVHfBTXIYrOB/c6/Rm7QamWNvSc9ws2bFhW8cQXMyeSmIKFeAqf9AvySDtVPXOYCkIiBpNTea9aVN3/QO8RsFe2cg8rkcOTd2qOgvh6J1Qci7dP0tgmEIvMXHy5cJqPam1OWIuj7Ofjl/6aItKq1uaqsRcfkL9hWNjUC0c00n0mV3BENQq/l0mSXfB+JWlGwEWCgClxarElfjW5E/PqjRRU3Yd8KgYsEdEFr7Ma/jo5xQ4vCs5eiq0xo6P8vbpMkhVzQQhga4RgKAb7UcASL4vhNBk6oWkJ4c0ElWyE406Bb94cdLm6kkWZlp8mQ/r59OAFxLqx9qYJ4Ek+FXrV3g03B4tSywJRek0hfUr9UafnTZ0XtS2Np5zWzto3+HEpELbYQoLjFkUVxPwVnhfX/k+W9sA95eSfaydEZUjrEzXeCpqfNqfO3yusPSER2T2GiaoYOouKtWKlepy4VeNhlvv1jz+8+bgweq8I6QIRhLcTyaqZ8Im9gnEQAFTyZvz2N8GVBBAzgpwl3HvLXifkiZVY9LLn4bacHE1sy0n2XO1CLJAh0E+4l33eHrWDMjYs1o4xHB/xi7Rw2eoUUTI4nDFKzZRhE0qi4LMn8WBp8+Vhe4HDU9EoLYissyGiCqo79VsTrdPAmd2WtviCW49jFvxgZour/oALxTPEcBRUkY+9t7UPbUlEVCMqd08Zzm0MWuMLgv1tmDXg5QVp6YNJc57uCOL
- wF95P1Lb
- 7KylF5lef9fBiK1Ip/P3xCLhqmlosYeYzsVFsmmqIx1Ynr1qVlDRGeaXViRAOb29dTkcUtnwi0kn+sHUVk1nQFzvRc8bMDkpH5tDJhXf8AAoAFj2Yy29D8zf8oSlrgg8++1RSNVIBHjg9Dy8Dv1bS8m83qcOPhh3w5+ualShVD3RfiPE8OhpNGdo5ME2+ExHnpsY7JEnKZE7tyy/rZEbOE+g8XgtBp19Ydbmp2NlMLTfEKjDYmEvbnWENbu47fcWCp3V/rOB+wZGoqXjbrAGBGZ+nU4ACZ44Vx0hvonKhSwMyA0nHyuwseO0st2RNYNv3JPdVVDAySpCvvqpB3NlV/b60tqrbNchxAc4XlD6TIscvK1m3SRKHKf0mKUSRbdS1LBUI/TDifDLjrDXbWmIguVRy0BEMyKKTGhMclY/ehA1ra8G1J0cVmB3L72VddloJcCEsHPPTmoOjcHH01K2TYcXo0oYPurycss0GMiEj0BGx9VQ8WxdQOXHiIOG8w2TM1VUyReszVIQPQP8vkCOiCivg2Zz0jzQPPVEZJV2v8IeimUJ+FmiDGBUEDAY7pQ09/ZidtXqHYx7cT5w=
+X-HE-Tag: 1795213812-62643
+X-HE-Meta: U2FsdGVkX1+W7CTFI/0W43inNZMbJWaWs4DExSwDFyTyrlhBzE09skdOZOU2n7FbXrtP92JXsp3aoKDV8KwECjPr+2E/b0y0mvupFH+iXEw5Tgd0Q1OITAhNnWupPc2pV7iSfRu9T9vgLKw06GyCfpqwuyIYaViyIaETJxmyY9DREiA+WrzdL4Mj9oSTywoA0sKn2eYWBilGVDr87+eMcaM7204QfP5MnM7nWo/M689yG06YJzmoGSlU7Fufsebxsd4hu/X/UOsu2QwVo+GyfyRxteeklg8JdLgertv9+xhCRmpY8YI6xmAUPPIKBaD5HLnthXOWhrf41oYMuwXtL7PPv6TDF9RBWbJxw59m8laAf5WJI4yCfEEuqZItw+1R6OCWeYnx5aHAZY8JbfamO0puMdViUA9vYkaup2BOOFLUfROeCkPK2fq6v6QYbrDQqc+nbKakzpnR62ExFlHpC4NIUUVyOKt9g6ai5+bv4EpWdkMjobRsMGAgxflaHm+WraWxd7xB1ecfST9vlHXc6IJtWzHOSz2mX6mjZZ8Wy86grBS7+spIfG4MemQKisWYpTfd/ZSdWdP0F+lwuSZrRqborfoXur4qTLE15TsIgsEppJLoqZLMoSGTYbXTX9VVNOE90PryhV9d3ESnBQWxTUt5cWTzvdvtYPG2/gaX/auxplyqHh6rm/G861dZ6dXZEpbG1AMQg2ZKe0R3WseY5CprsB2qmnWJHo03ADhwavl9dUG6HgZ1AtZk8bnqmEqXdJN+9TTmG4FkmdDy6xY+xrsXSHYh73a5egPNbr1Y45CAXMQDcK8L5Ljilp/NX+rbe5vMw7Kguvqy3a0JEv6N4RFj449tmNjoqzF0mA2C9NS/SkhJX4gBNVyqu4Shiw4pNH9Ca8MvCCmH+7jgSmew2LoaGi8mKSmFvTgKK0VE1TKLWjfcJPqK9/m54N2yegMnsOxGXSgbw2VbFiS8Ddw
+ TH2UG9xV
+ GQ8LZYBBT/TXPKQVCu/Syn7SaJdNG3FSo5EbROSaKAIRXeQXnchJCvqvXP1eXSqcIO07Dkq0y+y+GE64AhVGnWPvl0FtUKcA1t1Uy01ovLRherxpByCi9jY+W/Kdk9UMTBIzYzteeP+p1l3rGfEZAVJSOt+bEUgLbXCqPPjldmWqbyIJiHtR/y8rWSgUWxQfu+fQ323VI4jlx0prujaITGqagOB/C6kc+6rBvoY3OpTKuESzj+oldqKfbhCnAb3nmMtfAPSdk5yZVprE7brLIuah70EirdS7vFQS4sdfQoDUr11CyVYjNYT1LDOVBWBPtC32VU71vXVt9hBjFNDwViqQ0Eu9kamQTErT4QDj6+uJssID/U/XLXiXpx7q4GfaPde1HbcSGzV8R4WVE/1vjqpQJQGvFQBrAZCv1fmP21f0s67mwc1W1f4q7sXKnG0D7OPqU9ihiscKI3mq+3VjEFsngXaqfwUmzvWBQe4Vnbm1e1M7tLa4HtUz56FmrmBmKAC0rsfMdhbtAQVJTTtjDi0UP1gf/+HYragDPuvajEB3agWoprK82rkHYm8TeQ7g5lAcNpA5QBJYd8V4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,56 +152,226 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 7:31=E2=80=AFPM Uladzislau Rezki <urezki@gmail.com>=
- wrote:
+On Mon, Nov 16, 2026 at 7:14=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
 >
-> On Mon, Nov 16, 2026 at 03:13:19PM +0800, Hao Ge wrote:
-> > vmap_page_range(), __vmap_pages_range() and vmap_pages_range_batched()
-> > call flush_cache_vmap() before they even look at the error code. A
-> > failed mapping is never used, so the flush is pointless at best.
-> >
-> > According to the Sashiko review it is worse than pointless on UML:
-> > flush_cache_vmap() there is flush_tlb_kernel_range(), which syncs the
-> > PTEs into the host OS. Flushing a half-installed mapping therefore
-> > leaves host mappings behind for a range that was just freed again.
-> >
-> > Only flush when the mapping, and for vmap_page_range() also the KMSAN
-> > metadata, is fully set up.
-> >
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Closes: https://lore.kernel.org/all/sashiko-outbox-178439@kernel.org/
-> > Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> > ---
-> >  mm/vmalloc.c | 11 ++++++++---
-> >  1 file changed, 8 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index e2b63cb1592b..d99d7710e1ba 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -371,10 +371,12 @@ int vmap_page_range(unsigned long addr, unsigned =
-long end,
-> >
-> >       err =3D vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
-> >                                ioremap_max_page_shift);
-> > -     flush_cache_vmap(addr, end);
-> >       if (!err)
-> >               err =3D kmsan_ioremap_page_range(addr, end, phys_addr, pr=
+> ioremap and arch setup code map their ranges with vmap_page_range().
+> When the walk fails half way, or the KMSAN metadata fails after the
+> walk, the ptes installed so far stay behind. The caller frees the
+> vm_area on the error path, so the next mapping that lands on the same
+> range trips the BUG() in vmap_pte_range().
+>
+> vmap_range_noflush() now takes a mapped_end argument that the walk
+> levels advance as they install, and vmap_pte_range() BUG()s before
+> it installs over a pte that is already set. The ptes below mapped_end
+> are therefore all ours, while a pte above it can only have been put
+> there by somebody else, for example when the caller's range overlaps
+> an existing mapping. On a walk failure the undo is limited to
+> [addr, mapped_end), going further would clear ptes that are not
+> ours. If the walk completed and only the KMSAN metadata failed, the
+> whole range was installed by this call and all of it is undone.
+>
+> All callers are sleepable, the teardown passes can_resched =3D true.
+>
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> ---
+>  mm/vmalloc.c | 52 +++++++++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 39 insertions(+), 13 deletions(-)
+>
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index d99d7710e1ba..5c1eacc2a0ac 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -117,7 +117,8 @@ static __always_inline unsigned long vmap_set_ptes(pt=
+e_t *ptep,
+>
+>  static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long =
+end,
+>                         phys_addr_t phys_addr, pgprot_t prot,
+> -                       unsigned int max_page_shift, pgtbl_mod_mask *mask=
+)
+> +                       unsigned int max_page_shift, pgtbl_mod_mask *mask=
+,
+> +                       unsigned long *mapped_end)
+>  {
+>         pte_t *pte;
+>         u64 pfn;
+> @@ -143,6 +144,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long a=
+ddr, unsigned long end,
+>
+>                 size =3D vmap_set_ptes(pte, addr, end, pfn, prot, max_pag=
+e_shift);
+>                 nr_pages =3D PFN_DOWN(size);
+> +               *mapped_end =3D addr + size;
+>         } while (pte +=3D nr_pages, pfn +=3D nr_pages, addr +=3D size, ad=
+dr !=3D end);
+>
+>         lazy_mmu_mode_disable();
+> @@ -188,7 +190,8 @@ static int vmap_try_huge_pmd(pmd_t *pmd, unsigned lon=
+g addr, unsigned long end,
+>
+>  static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long =
+end,
+>                         phys_addr_t phys_addr, pgprot_t prot,
+> -                       unsigned int max_page_shift, pgtbl_mod_mask *mask=
+)
+> +                       unsigned int max_page_shift, pgtbl_mod_mask *mask=
+,
+> +                       unsigned long *mapped_end)
+>  {
+>         pmd_t *pmd;
+>         unsigned long next;
+> @@ -203,10 +206,12 @@ static int vmap_pmd_range(pud_t *pud, unsigned long=
+ addr, unsigned long end,
+>                 if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
+>                                         max_page_shift)) {
+>                         *mask |=3D PGTBL_PMD_MODIFIED;
+> +                       *mapped_end =3D next;
+>                         continue;
+>                 }
+>
+> -               err =3D vmap_pte_range(pmd, addr, next, phys_addr, prot, =
+max_page_shift, mask);
+> +               err =3D vmap_pte_range(pmd, addr, next, phys_addr, prot,
+> +                                    max_page_shift, mask, mapped_end);
+>                 if (err)
+>                         break;
+>         } while (pmd++, phys_addr +=3D (next - addr), addr =3D next, addr=
+ !=3D end);
+> @@ -245,7 +250,8 @@ static int vmap_try_huge_pud(pud_t *pud, unsigned lon=
+g addr, unsigned long end,
+>
+>  static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long =
+end,
+>                         phys_addr_t phys_addr, pgprot_t prot,
+> -                       unsigned int max_page_shift, pgtbl_mod_mask *mask=
+)
+> +                       unsigned int max_page_shift, pgtbl_mod_mask *mask=
+,
+> +                       unsigned long *mapped_end)
+>  {
+>         pud_t *pud;
+>         unsigned long next;
+> @@ -260,10 +266,12 @@ static int vmap_pud_range(p4d_t *p4d, unsigned long=
+ addr, unsigned long end,
+>                 if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot,
+>                                         max_page_shift)) {
+>                         *mask |=3D PGTBL_PUD_MODIFIED;
+> +                       *mapped_end =3D next;
+>                         continue;
+>                 }
+>
+> -               err =3D vmap_pmd_range(pud, addr, next, phys_addr, prot, =
+max_page_shift, mask);
+> +               err =3D vmap_pmd_range(pud, addr, next, phys_addr, prot,
+> +                                    max_page_shift, mask, mapped_end);
+>                 if (err)
+>                         break;
+>         } while (pud++, phys_addr +=3D (next - addr), addr =3D next, addr=
+ !=3D end);
+> @@ -302,7 +310,8 @@ static int vmap_try_huge_p4d(p4d_t *p4d, unsigned lon=
+g addr, unsigned long end,
+>
+>  static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long =
+end,
+>                         phys_addr_t phys_addr, pgprot_t prot,
+> -                       unsigned int max_page_shift, pgtbl_mod_mask *mask=
+)
+> +                       unsigned int max_page_shift, pgtbl_mod_mask *mask=
+,
+> +                       unsigned long *mapped_end)
+>  {
+>         p4d_t *p4d;
+>         unsigned long next;
+> @@ -317,10 +326,12 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long=
+ addr, unsigned long end,
+>                 if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot,
+>                                         max_page_shift)) {
+>                         *mask |=3D PGTBL_P4D_MODIFIED;
+> +                       *mapped_end =3D next;
+>                         continue;
+>                 }
+>
+> -               err =3D vmap_pud_range(p4d, addr, next, phys_addr, prot, =
+max_page_shift, mask);
+> +               err =3D vmap_pud_range(p4d, addr, next, phys_addr, prot,
+> +                                    max_page_shift, mask, mapped_end);
+>                 if (err)
+>                         break;
+>         } while (p4d++, phys_addr +=3D (next - addr), addr =3D next, addr=
+ !=3D end);
+> @@ -329,7 +340,7 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long a=
+ddr, unsigned long end,
+>
+>  static int vmap_range_noflush(unsigned long addr, unsigned long end,
+>                         phys_addr_t phys_addr, pgprot_t prot,
+> -                       unsigned int max_page_shift)
+> +                       unsigned int max_page_shift, unsigned long *mappe=
+d_end)
+>  {
+>         pgd_t *pgd;
+>         unsigned long start;
+> @@ -346,11 +357,12 @@ static int vmap_range_noflush(unsigned long addr, u=
+nsigned long end,
+>         BUG_ON(addr >=3D end);
+>
+>         start =3D addr;
+> +       *mapped_end =3D addr;
+>         pgd =3D pgd_offset_k(addr);
+>         do {
+>                 next =3D pgd_addr_end(addr, end);
+>                 err =3D vmap_p4d_range(pgd, addr, next, phys_addr, prot,
+> -                                       max_page_shift, &mask);
+> +                                       max_page_shift, &mask, mapped_end=
+);
+>                 if (err)
+>                         break;
+>         } while (pgd++, phys_addr +=3D (next - addr), addr =3D next, addr=
+ !=3D end);
+> @@ -364,18 +376,32 @@ static int vmap_range_noflush(unsigned long addr, u=
+nsigned long end,
+>  int vmap_page_range(unsigned long addr, unsigned long end,
+>                     phys_addr_t phys_addr, pgprot_t prot)
+>  {
+> +       unsigned long mapped_end =3D addr;
+>         int err;
+>
+>         if (WARN_ON_ONCE(!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(end)))
+>                 return -EINVAL;
+>
+>         err =3D vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
+> -                                ioremap_max_page_shift);
+> -       if (!err)
+> +                                ioremap_max_page_shift, &mapped_end);
+> +       if (err) {
+> +               /* Undo the part the walk installed before it failed. */
+> +               if (mapped_end > addr)
+> +                       __vunmap_range_noflush(addr, mapped_end, true);
+> +       } else {
+>                 err =3D kmsan_ioremap_page_range(addr, end, phys_addr, pr=
 ot,
-> >                                              ioremap_max_page_shift);
-> > +     if (!err)
-> > +             flush_cache_vmap(addr, end);
-> > +
-> >       return err;
-> >  }
-> >
-> This is incomplete. Maybe merge with 6.
+>                                                ioremap_max_page_shift);
+> -       if (!err)
+> -               flush_cache_vmap(addr, end);
+> +               if (err) {
+> +                       /*
+> +                        * Only the KMSAN metadata failed, the walk mappe=
+d
+> +                        * the whole range. Undo it all. The callers are
+> +                        * ioremap and arch setup code, always sleepable.
+> +                        */
+> +                       __vunmap_range_noflush(addr, end, true);
+> +               } else {
+> +                       flush_cache_vmap(addr, end);
 
-Yeah, by itself this would still keep failed partial mappings, so it
-doesn't really fix much, right? Merging with 6 makes more sense to me
-too.
+This again skips TLB flushing after __vunmap_range_noflush(). I'm not
+sure that's ok even if there was no explicit access.
 
+> +               }
+> +       }
 >
+>         return err;
+>  }
 > --
-> Uladzislau Rezki
+> 2.25.1
+>
 
