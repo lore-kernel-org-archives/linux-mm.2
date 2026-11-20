@@ -1,147 +1,175 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8AF60A2614
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D55606A33A
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XMcsybOM
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=cmpEWRFh
 Received: by kanga.kvack.org (Postfix)
-	id 5B5BB6B061B; Thu, 19 Nov 2026 19:07:23 -0500 (EST)
+	id BD6956B05C2; Thu, 19 Nov 2026 19:10:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 566126B06A6; Thu, 19 Nov 2026 19:07:23 -0500 (EST)
+	id B86FE6B0627; Thu, 19 Nov 2026 19:10:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47D1A6B06D6; Thu, 19 Nov 2026 19:07:23 -0500 (EST)
+	id A4F0A6B070C; Thu, 19 Nov 2026 19:10:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 146356B061B
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:07:23 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71E89A898A
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:07:22 +0000 (UTC)
-X-FDA: 85453557924.16.D0C6EBD
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6FBD41A000E
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:07:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=XMcsybOM;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E5C76B05C2
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:10:52 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8B82160CED
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:10:51 +0000 (UTC)
+X-FDA: 85453566702.01.F3CF563
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011008.outbound.protection.outlook.com [40.107.208.8])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 09445180006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:10:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=cmpEWRFh;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of alwilliamson@nvidia.com designates 40.107.208.8 as permitted sender) smtp.mailfrom=alwilliamson@nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795133240;
-	b=jdewtikaXkHad/m5AbASgem5/cI0H5dWTa2ztvMsEa1nxb6i6Cn16+X+qG9wlN6shRwWN4
-	pyGR9/PdGvs6ayOSvuuP72KfmDRV5iHngKXqKRn6RNUdSr7XxWHSiqvuLjCVY0SI0FnxAP
-	UkoH8/zuIsIwCxwxjAV/xbVGRW9F2vk=
+	t=1795133448;
+	b=TGkUDZzYFdACfKL6x1vt69CMkgpohz8NmZLuSUKwIX260mq/HdkxrwKD0W4GyZor59GZ76
+	T7UTijWr2k8mFdHBp4Cm21tN3GLMq3p44DNsBLbICX9VUvtFBmKc6LCp38JFEEFuBL8hlb
+	3G1Li2IsBoIqQ3ALhRg1Bg61C2pOVks=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795133240;
+	s=arc-20220608; t=1795133448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I4jT0D0imwxlE7FU4a7DD/JUhscf9TEVsEoiJwVSFSk=;
-	b=HDDtAfezcaYchlZhH3IG6tehR3FL0HXIe8l0QtUhDcS3LZd0+lA/w2YKvmnsVNuRFaP0mi
-	6wZeRTSwR21Z8jijI2bA6CZB5chsL4nVVP8VM6mxBCONg9IuCZ6wirrvmKLQOPdMKuCbn0
-	D57cOKwbYtZYNVeQcQ2uPfwSYPYej2A=
+	bh=jaKcoVOIlrU450/oZNaFSQVblgQGB2IoQu9v8QphIiw=;
+	b=53EZk405YnvuLXI+oNwS1udPGJjePphZSfZyk3LqwxnFtPqx6VoeG6W/I08Zkfzmsq++UM
+	uGcacgm8ngyGngeeYPZNj4GE5UxTO82X7H2ZYu+O4JyL63tLzAm+NZp3TYWH3a8Dug9QoN
+	I5hOvxa80TgSye38r50aeRjlWSeJtvo=
 ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=XMcsybOM;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4bb606491faso1428135e9.3
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:07:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795133239; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rmZUNwuJ9y7+r5wvg+H/W5XlRUFqeafWNKfPEI+j3Z9covrBJ093B9vuWOyIU7Ibwv
-         oMQTKn4DS8khD7/s7XvwAhqXOtOVmwzGS4CW1K+bPryvknXarL11P8Yf2x5ajHUkMmTZ
-         7MIhHe2d6R0IudCYkcC10XTF36eJ5eJQVPAWwVL9ipNqIIqq2+rw8xkbeEKghJVQhJLV
-         v5KXSPY3akbdjRxHdQeOQA14nW+QleNOsoiID+vjYURA9JCuuSDMOVH9cMTRlDNjmzZk
-         iOnykmDFcKwTKs4ZZzgKA/u25llJrKlgowPl3IslshLJhaf0vjcth2rP84kpHEY3tSGW
-         4Kfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=I4jT0D0imwxlE7FU4a7DD/JUhscf9TEVsEoiJwVSFSk=;
-        fh=I/icalU+oTHLpCajtxTxQwAs39C9GK9x+6oBcq7ma5g=;
-        b=Kpvgb8m5dql2sRT4toewFj2VOjvWkUAI3MJW3bMNp4NhchCEyhNpB09l7nA11/LIyR
-         hNs5bJxhmVvPGt/Zsvrs4X3IiNX/W1pL1SAzo0+5U1KUFoBD65UHUUZnTU/tKNtPRvYc
-         mdB9vtX4824b9peg17OdxGB27LzuKYmzckDmf5E5SAap9Ggo2F3QjoLk3cZT+Aw7NsnW
-         O73O239813dVlaSDf37bB5yHEaGAk+sOyTkqeVAmUnSkEmO6r3K93KSk8Sc8OglY4k+G
-         DWWrClEc+yuQ13rcl6Fqc3HoNIZ7Y628B8f10CCozD08qcyn2NIssbAyijG0dExkNKtO
-         OLWQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795133239; x=1795738039; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I4jT0D0imwxlE7FU4a7DD/JUhscf9TEVsEoiJwVSFSk=;
-        b=XMcsybOMEb9epqrEhLk4oB62LKaJpPaOuLOgRoEeTW7mr8echFdE5lzFQsGG0mrYH0
-         7rYxIwBFc9C+tWCtkG7pGh3uNAxtgAJCmEW8r6cmUzUCLrpCDDFOd2HvQGUgvJ75Tua0
-         iDECVlBN/Yh0+akPGDSa4hW8peQvAqGD53CNZom2aHLRfsheqELm+vKMjq0MA7A828+9
-         POc6/IuzWO4pyEL15+GZNqwdbyDQeOvDl/ZlRNLVz+uif7DjjDvSCsxYiBsTWUy9eyYs
-         sxOwF9G0KwqeJZb66u29j/cBAKxZm8kmXbdQ2zP2U3+4rhu2v+ZXjAku/I420Fx8wKFT
-         gyuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795133239; x=1795738039;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I4jT0D0imwxlE7FU4a7DD/JUhscf9TEVsEoiJwVSFSk=;
-        b=A1tOVnu3NE18OKfaB0Y100r8vsaQIQjVpOtvCB+cH4S7rt//I9DzIbjlSmgvCVpu78
-         EFCicyN9bQDdXzdOL5EMBw1W67FCj33s3AxqhNDouZ0GUmvxYeEoRZlOUF6uM+VqqoVP
-         F3TaflMQE+FM0WZiHV02OP1AnXkH/8ghnbhjZ6q6hz5UveAERohTX62fTRnK03jTOhAF
-         i870VQ30+ceuL6oCnqsqYbkAZJiocdA/C1u/4cudrqM0Y06Pb3ZEKEz+xKGcgU7XGlqR
-         r+Dt2Scsf47l9cCWXVlH0PTyh2D7/0SOpJc4tmKU413HRMVoJQKj3BoK4u8ke64/Db0I
-         gZBA==
-X-Forwarded-Encrypted: i=1; AL+hErFmbnSCAj8WeDDUavo3DFkpZCuzkd043PPzDFnu2e3Ky9AAucashNIvH76ib3YP/Ui+EWAst67tQQ==@kvack.org
-X-Gm-Message-State: APuU4Z8oeEFbk1he+19hjyJNKOaGjnpAifqxs+WscxrQyHyCgGRDxDNa
-	vCtUgTs0tNg0mbsexz4eqSvWg2d0OHgnfU05VVf2TNZ1FLw1D9wdR3hlrJdYpkN0GgGnulZzs58
-	AOKuDDu/xGEID04DdfJVK5cTLHXwvhhc=
-X-Gm-Gg: AYBFou3kr3qJL3p1WMclPpjzpaKX2hvLhJpPxoe+Cr1Zpc3PBBnY6PtdLClhPZGWNxc
-	iSZk5gqAg29d9SRursrXpVSCaNX/0WQ8XKFqAHIzRs+nNn5atVMu82Nj3BLA7JQeJ6iIlLqS8iS
-	OLcT1spCb5//3yj0khIn3Wk7tRSPOIhm1zqfhYqyHuA1iv+33yfntx5BW4ZE6X1zYuyqZqpoLOZ
-	bg7q4yz7Y3dxhz13F36UIN6a3gTqDBqkRltEXalRe9YOvGfQ/1Kku0wMzCELwVexKl/A60Hoc7a
-	UWdFUt0GMXQL8a0PMYIMgyhcAPSQVWkhdgIGASma+wFh1IEFHA5gxod6Pzq5Kw580FAeFe5n3K+
-	76OqvaKtcgDXTDswzFmL4DncvONzBi2l+9G2FYcBJFobFW6G7jvO6YJ6hR6W/Gb8FycxoOa2lZQ
-	Vp7u4z2QDcFbW8qfM++N/MuYWjQHq2vDLnE9DtWeOG
-X-Received: by 2002:a05:600c:a085:b0:4a5:26b8:4507 with SMTP id
- 5b1f17b1804b1-4bb8881e6c6mr26133235e9.21.1795133238907; Thu, 19 Nov 2026
- 16:07:18 -0800 (PST)
+	imf24.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=cmpEWRFh;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of alwilliamson@nvidia.com designates 40.107.208.8 as permitted sender) smtp.mailfrom=alwilliamson@nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jDgc82BdHoCaOrXE+83aYaIv7kiSeIRlaTHbvkrLyk/JCx0w8KogZ4qlY2ekyjWN/9RCddm9zTUsDAb/s8wmzPMVvDDlcHq5wjSIekvCgjGX/4+M75tTvvOHsC0q8hYJkOiximQ/sYa6MQ6k4iPppaQTWbbGcBFdtiAet/Itw5B4Q3M/8E5usEjw6rm9Z5SQXHF8zCKKQDFSNx6XVKQY46SVTVB1Gncscq+wkWfdacRdpxnPmb94gSUA+uB68G5Zq2aqwukP3dW+4ECT7dlN/0JmG9s93QyHY8EtwM6+mxkA4tkHCynBJ26D42TFL1uA2FfNEMR6HMxFMoBFnR7Pbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jaKcoVOIlrU450/oZNaFSQVblgQGB2IoQu9v8QphIiw=;
+ b=kV48Of1V12h0pDLlrQh829Jyq9sKzJGE3iMRN+fEjOEhiAGoKdiCJEtdqAMWP1l6QnqDoLSdb/aEteHO7jDUKpls7fcisB/ZRNSTGcNr/13Zg1O5FtiUJW/bSNP058qFTjVDARpFYwcmSOl1rd/xou3kxCMozkF6ijUE/hRSBg5ys1songorIrR2wfMSf50M3ZwpAFnVsLv28gV6cMrrum+4Mb8fno6X/a7dn2hd9tgyWgX40OkOQ9mxrl7RhYQvoNubueyiWdIsjt55NrLcuVc1SZg999WlJvqKMkQ84kVtB8lfPGsplPP4TkqCigLzhz+cSxat2dx0AHe978fVkg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jaKcoVOIlrU450/oZNaFSQVblgQGB2IoQu9v8QphIiw=;
+ b=cmpEWRFh769DAxR3HF/1vqkJNThaNuo9fw6xatvqnGjg41kR69WN0Qg3cnxxAh6Oj9pBIDk/mfgYCxyq/WV/KIAgNb7wFUxSJFZchU3uBl17qmPVnXBh7O+B+I0QLOas+vOs/78hEkRL213pXsMb3RpxpcDUT1j0jFQej2K96vRPjHATZQAEMQKH1gCYv2jEC8TmGFRSq9esmPsE9FKhipMhwhT1qddGuXi+lZ/4FTCvIE5MesbTr/fjNSDLwJ9KyXebtjvjOxXTSWr8A9Q7IcN8b3LSmlN76ucA4GybEhxFII3Xb2p9lx7D70cdiYsAFa63JrPh+EotyjiqfHJP7A==
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
+ by BY5PR12MB4097.namprd12.prod.outlook.com (2603:10b6:a03:213::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Fri, 20 Nov
+ 2026 00:10:43 +0000
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15%5]) with mapi id 15.21.0639.011; Fri, 20 Nov 2026
+ 00:10:43 +0000
+Date: Thu, 19 Nov 2026 16:10:34 -0800
+From: Alex Williamson <alex.williamson@nvidia.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Williamson
+ <alex.williamson@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, Chris
+ Down <chris@chrisdown.name>, Chris Li <chrisl@kernel.org>, David Rientjes
+ <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, Jason
+ Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke
+ <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner
+ <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit
+ <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal
+ Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, Randy
+ Dunlap <rdunlap@infradead.org>, Saeed Mahameed <saeedm@nvidia.com>,
+ Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, William Tu
+ <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v11 09/13] PCI: liveupdate: Adopt ACS controls in
+ incoming preserved devices
+Message-ID: <20261119161034.4e23c1c6@nvidia.com>
+In-Reply-To: <20261118223704.3286085-10-dmatlack@google.com>
+References: <20261118223704.3286085-1-dmatlack@google.com>
+	<20261118223704.3286085-10-dmatlack@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR05CA0106.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::21) To LV3PR12MB9411.namprd12.prod.outlook.com
+ (2603:10b6:408:215::20)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261103212004.1356327-1-joannelkoong@gmail.com>
- <20261103212004.1356327-5-joannelkoong@gmail.com> <0d75991d-9381-440c-8d7c-07bca53cc8ff@kernel.org>
-In-Reply-To: <0d75991d-9381-440c-8d7c-07bca53cc8ff@kernel.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 19 Nov 2026 16:07:07 -0800
-X-Gm-Features: Aa3M54rC957n0ZdX59-8hwuBw55FCUz1-VDc-hFiinsPD7Sw5HR5CDw34MBqhUs
-Message-ID: <CAJnrk1ajoz95T1-vpnqkTLDtoXoY_hKHsxtNJLjtbusB4Gd+XQ@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] mm: add anonymous mTHP folios to the deferred
- split list
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, baohua@kernel.org, 
-	usama.arif@linux.dev, hannes@cmpxchg.org, kas@kernel.org, alex@ghiti.fr, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6FBD41A000E
-X-Stat-Signature: 7j7ukdyih3oo5suc1af3iifcz3y5pd4q
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|BY5PR12MB4097:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22eb5e39-0abe-47f8-d9e0-08df469ab767
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|7416014|6133799003|22082099003|18002099003|261009220027099003|261009223327099003|261009221227099003|261009223027099003|3023799007|261009221727099003|56012099006|4143699003|11063799006|261022075727099003|261021121427099003|261102123227099003|10067099003|261022105027099003|261026121527099003|261021135927099003|261026140227099003|261102130727099003|261028144727099003|261021123027099003;
+X-Microsoft-Antispam-Message-Info:
+	dfAfAbgPKSMOzBmqhhqeVEUKjG0m3mtfmwYun5Qm+gIT3tKti7e6W8eyknpn4cJEKyWDiXdDYDkMtGhw+LRLSHbWQBAAwogKL5NWWK7AyqD9aYqSMWi1Sx0vrFCzTiJiQ73rWcxVTRhljxZmRcbERXu8jN91/ewZcc5rnN2lbHyQqjSLAFP42AsJPxbyib0Gr7Sbdnr4gFFw3xVFV7gNjnzPtZ/cCc1Jm4l9yz1JjruonFx5zQ47qz0bFR6vG7FUE33+v3q8zN5yZ9Po+GzmQMmBxdQGe6isem4RNrKxGPRgIIrFuUTgwY6k6Lt6Pz87OZHKZxnhBLfoJPwiJYFhTqjlkxcBpzOSL/YXlmMGalqYMk/msuo/aXlm90yDs/PdE16WjWDC+asAcUQOsWgMcVGGwN6KjqBX0YiDVkokIwv49RjEqDOtFX5oWFYF9xuZEMhNev+XjuLewGBESqKIGbtABNCLAlSjdJ9N6TU3IfayTFSgcoqOnoGbbF+v/+H8QJ1SjyCZZ7ERJ+8uQf3qa0UnsEDqAeEwxbY0XoDnqRYnUbieK9CBqQbn0Ww0ZgosUyG2TMqQEhi5JfE55RrXXUkzOjDISkU2Sq4xVb+TimRMIPWjMzv7tNAdWe7xtnBM1dtPnaJ78O6cIx8rVgyvweRRM/geeILldUYBIr0euyk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(7416014)(6133799003)(22082099003)(18002099003)(261009220027099003)(261009223327099003)(261009221227099003)(261009223027099003)(3023799007)(261009221727099003)(56012099006)(4143699003)(11063799006)(261022075727099003)(261021121427099003)(261102123227099003)(10067099003)(261022105027099003)(261026121527099003)(261021135927099003)(261026140227099003)(261102130727099003)(261028144727099003)(261021123027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HiyI/1GS2brxWcarnd4vYhMC5QOBBlS1BmTqugNfkfD6b4FouFWZ6pSKiSZZ?=
+ =?us-ascii?Q?kz57MlfIkbcWVuQtwcP/gbZMEDbJJbeP+3AbN21WgUEYwelukXEghWU7nPq4?=
+ =?us-ascii?Q?F4eegeQt9owcF8I3j0gI65ZTchURstodcTX145nN1Jt0eVrXo4XQK3R5aDmL?=
+ =?us-ascii?Q?Klpi9jhkrBvXKLjYbcAGV32h3o21qyPURziHbcvK2SnfsigyiHl5oV0hbIbd?=
+ =?us-ascii?Q?u7d7rRX23RrXjAi2tFWlj1PA1mS+R5iO9h6DgGrkDAnpiQa4mkHXOxZoRHPo?=
+ =?us-ascii?Q?EFEQyuTr+WRW2wj9ponchkTEzFFjZ0+Fg456d6/LKvSg+FUyYkMhuQI0U5PC?=
+ =?us-ascii?Q?6umCvz/1NIqwVrVqiq47C/nmtYKXklKVtjIWRR5+Mx9SxqM1R9R85El0K6le?=
+ =?us-ascii?Q?VNjwfmMX7kZ1kNfmwl7y2Jxbr3G14dxRJRXyddMvIyQjO6zQ9VXTVptlB4kg?=
+ =?us-ascii?Q?uiDN62EXoexYzx6tytYWo/5dtmEn2wdQ9xKq4ZHu69RVDnUpK3CsALgQGmfP?=
+ =?us-ascii?Q?JRpeqsq5wmwhTHCb5ozIDK1JENgexm/Oft0HdczFep0kZ078tk5nI+VLjkcf?=
+ =?us-ascii?Q?ABqZQuwcQFf0hBbMGjfcO6KkTJpLGTOzA60gjdPS5ANWdTDsyW7R6NGHTAUf?=
+ =?us-ascii?Q?BLn8n7pVKIt8INKSlh+M/WdRPBIzv4k1dsCjbYpWgoGWswpB3x9fyHdPLNuS?=
+ =?us-ascii?Q?FvEr2A3jNtvu5DnOCKSRRddI8Q3Be3EN/LHesUrfijB6iR/JQkWyCX5bE+U9?=
+ =?us-ascii?Q?KrY5gJAabMmwXtYzZqeUL8iJDGMuCC4Md9g/eskBSDpFq0qZ/KF31omuzTL8?=
+ =?us-ascii?Q?SPzhImNd8WXWql+5EIoVPDfK0hRO6LT/k60qgJvrfWk+y+tTxWMsttvRDbLy?=
+ =?us-ascii?Q?LRFP2xynZprf4mQv4f7+wcuqENjqHP7md2tZBmPCBk8RIDDmYhHCO4H7gpjg?=
+ =?us-ascii?Q?GRJ6nYzGQOWjhFnTQ2XHxP3TBTwvzv9WejJ2j8a0CNIoSNO45/Bh7q5NNBM9?=
+ =?us-ascii?Q?Q72Yfo1ZZs1oNTMa9QBjFAY6NoTmxiuZ6xwepfpJkKW3RUyfEIr4KjGldsll?=
+ =?us-ascii?Q?TeOZJ4i1QGk56R3FEAo8ksQxuBSJNlugTj7jlbuOFl+PKUVKKs/E7oh7hKBo?=
+ =?us-ascii?Q?K79klgMOWGQiAi6/SWLIpxd04bkEnhRephpyuvDXlgY9gUU/aPwUMVtetGpE?=
+ =?us-ascii?Q?vPXWh9jDOX/VoMRxeG3rCJdsnGPzEMnBTKHpT8dNs63t+HNnoQqWt91eJUs1?=
+ =?us-ascii?Q?y1anELvcyvArYZnKW/6Hq6yo1ZgrIL0YLBxe0MshHz2FIBpGGwglIj6x+dFw?=
+ =?us-ascii?Q?w3zt8HQfstYzamPyGBArC6001PTn0o1Zw58RU+8jKep4YMdBPeF3lXqZJF9o?=
+ =?us-ascii?Q?aYOS6WJ6gNhE2T4A6ZyTgORjaJO2JNdrkD/xNht2hZWHWPkZx14adklWKTPg?=
+ =?us-ascii?Q?P/DaJh6ZILEfrgiXU6VQeFGX4HDh7VjFaHDmxvoq6FojvRm9GCaCCxeLLC1l?=
+ =?us-ascii?Q?s5mhZmTnRm4MUVnAiAXjNYXn/7iTvcRG2Ms1BhRMGXLd83U2wj6pSXxRTLoS?=
+ =?us-ascii?Q?QI9I2JEKZmmMO2TX627FuC67+VctOLOj0Dl/ZKBlYw1+y8B4LnspXgMvwE5Y?=
+ =?us-ascii?Q?1iqijsGZoNSLNxRr0qkmByvPk1WS5fZO7b1un9Yx/jrjTw85YsQwkoCx00vp?=
+ =?us-ascii?Q?GpGL9DPVcZOrYX5kOZdwDIWdP2Mwv+BuDzAO10w72GuAWEIB+AtRQ/Ma1svi?=
+ =?us-ascii?Q?4swGlA5bsQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22eb5e39-0abe-47f8-d9e0-08df469ab767
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 00:10:42.9487
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GQkmudEqfYdc7zqdXXdsMUSGjzp2bQVVXgnpjb7z+esnm1LH+TvxoqMx+rmP2sg5yK9Yg+7A6CkNe0Kg1nIyWg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4097
+X-Rspamd-Server: rspam05
 X-Rspam-User:
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1795133240-992696
-X-HE-Meta: U2FsdGVkX19E8QvIp7zazxzQcmAzEWwx8UOC7sFsQgAxYASVyr3e1Di4kwNCFeJMTvsLzFJ3njmpqCSAMkcUGtTNkm6W94XSPaOPyuXAvncBPUr4y4/f6LQQgzHlR9oXJxkTD7CvvtkfizU+kxsfNCJj/+baL/KdHQmHyNlNQlrOcq5ktbOPKa1dvQQuhYfxLacDZYwtPPv0pT2N7n9Lsjeu53771jiPb72sdDxg+pzb25ENgqp2L9gMG6w9G5TK7PTbQZFigLW7YJiIffRjOfnScHDS+grvWgJhlbvG3b/CIiOPC1l/uUzx/4DsrhhalJjxAG2fIdZ56ymG9Hq1DmTRa014H1FGgX/swbyzYuXwllliDT8ei+JSob5FZFQ+cbYtnNLFty1mtuNEnBTdwxtcpec0CtOU/k9kDjS/KGNXjaQtNu/xoMyeudF646CWhJPCa4Jshc5Ca5VmwOWrrUnbB//ejFGKXaZWyfwRKRN80/0KAKr9TZLgNLY0QdRaEW1KMArnEpIYhQNVf/tq6hwCyXX3QBJcyHohy0XcaQG+lHBlHxUdSZDkjIzUPGlDZwFN/pYIfy8oQVjk3+REpYHAd0vyi775Kp1NpxGMZXOAszTmcjhcGf2lpcxlVdCSLhqS5DysQLjCeNPebFRIiowYVw+Kw3wOzlKnVelZingu6aumHgKwo0RAPvjcLXwWxQZKSrg89X+FBmD5yQPerHs9SOiLz3/le6brhJWRP39jTIa8aNcvr8j/+r6xqhFgnQ+cOpgy35QLGGj4ED+0a/qYASHVON9bFriftrjkuDDCYNMxLMtjPqjruX+1ILGPaYSXF5OysddzGLZAFwxG+0hmy9s56jpCuEvjnS8GJyEVl53TcSR2ck3Eh4OdI3jFdONxkbE+hp/6pbkOG2g2PmGEThq3dfh/7hLuiBVEcSnCnnvDS4TcB4zVKQSKWNHVDZeYu8/3vCSpUccedbZ
- 0xOjkicH
- 1RIb8JMvgVDdME6WvyZ9As5hRIqIaGQ76A4hqyDUnNbsFPZzBcsm2TRx/OWE9h/LdxB5DB6V07DGwBNF78H5XW36TNGEysSz58++VEMqIXSCYtZDpoxvlPyzRkB7XC5+3ncuuPJYXlP9+dV8cGHl8HXRo+G/HNnL0wQr74fgXrWMhZ1dCObTcY+QLdSOJgd3DRy6FDq7sSVScxlvOq03mVhDy5wg8jIGzc/7Ig3xixotIW6TZdX5FvLpcUnE75TSQK4wyMIEMnyecv1eQEE67xkAydS6cLwdSuBUXF9FHjUNkpOloYx9iRXLxUDqZQOYfe/Yhg0dV4bIQVXlrKhTFHvenL1n1Ca/sHA4hBW2YxvMyauxBn+algtrPQTYNRoDZ0hqZ5B/SA52vBhA6q9aJoPxILTaxdNLh51YvthdaMg2m6O23ljs1S2FfOYc1Vy6CAiV0F/udiWYrAZ+Cj8zinx0dPuuNHcMHqd3liAZtLN6NYDPAKU/O1SZf94HWpU3nYy/7a4n9I3/r0UxuHvifSPm2YndGQjk5BYI4F62UaeOVVayOyFAmyVPRHBeCs8lqVjfES+5VKbktbS5dqx9aHYk3aj1+uXGYLQOiC950UpN/z3UXsAKzN4/HkeB5qbn6KTkgTH7o6GxD70M=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 09445180006
+X-Stat-Signature: aeis16qbxm9qbhbseqc7u3rfuhi45rrf
+X-HE-Tag: 1795133447-91766
+X-HE-Meta: U2FsdGVkX19c/03hnJaLkhCLgSH6ET1XS53UUNnENWE1/FCXV+6cnJDQKunYnBjd/Ow0ozvDL5loJMZPUnKdVwCivYByjZa6Z+spAFMqCFBxIVcXzx23MjRT1TFjEo3LkGZoNietX3hDLj5saVnoRJzxPYwdw6bL+oHieyrbp3dTyagdVm0bsp0GQZWWN2sqS02KeQAP68xxbTQDyV8Oa0R5HxQ7iUq5atUg3ByWLCYm1/mG25exvCoxI75LyWr5KrhKCv0S+mh1eBkuylS6NOeO4mZ3IrCAzD3YfpYKjkISCik18mEqX9fOkkK0cvCoXGAu9JedE3WfhpYjN1MpEjijxAMlecsyg0QMDVEUFQ1hP5gE1i4oA7fdtmROpj1aHHeHkTLNJk7CuqxInf9eVqm0ayC00fmAtf0bLmsYAS/qZK3VFDUkfUSrgUvgVtsAznZBUsJ5caIAxfzm1QdmdJikkHV3ilSjrsWF4tJXHuysqtiAXbkJZESebuaKxo2/YZhkhcLKjVh8k1cpOIq8AZf1F+FxJHk0iBYIQm3t94zVOqLj0Q3XqCTGRFXPfrUwAHmNtmUafUVdRaziGMmYaFnMgvnGliJ2Wc2OoSpRGSkrNJDdRaof/f8oLNvAVd52RJ4EemkU0Mp5g4R8hZHqHDAdGO7wfKHC9tuLGKaiMMKbiCqltfHpRTmUDK8TVyggEmzGCFb3aAq6lKsVsZWOExJNbYxreMOZ2LgnQ9r+nrTQwVeZjch4l1zIHdiyLnfrEqhpYtcvzNKI25mwjDe5jSY3kmgzIZnUqqtZJ7t+guPZJ+8qBvJ2Mt2hOzDwqbEMThFw2S+VDj2hrhHBawhsXw579lVpfFhDeLIDKAsAmpCTO7Bv2RsMJ8Pa2TpsdQ/dLuPwb8Djt3ZweenmF8iNNeCfFOom9c6xsVcUlouiWn/fSKv8JRoWbwz80wyuQVav3X6jOiooxN1GsROlm9m
+ Tyz2z1Eh
+ oWiLc1YGFSPM7M+wOHV+hC4alnhzMKlKf5WOmZ/MLVrMfeVO2PBsDpU03QQGOwBLozQHHBOW/Zm/bW6Re48ccTevBPT0uIfoQ17qM5dvGw3KVZg2YT8uZPTpgjXcQjjUqdrWdsHsl6N5CARXMXHayApK5CFMePpOF5kcmlrgD89BP2LciiXYEeyX9CzLGhJwwkq5YJsgk7MZlVabvGwiy/LauoS/d/+LIGvra+0Gz6WoXnDsXnHO7PxFGt+vaPu9PVX343K7oXS6I+6aq3jgvwyBn5B5Nv8rM4dtoUbKUTLCLsRgLD6ErRHp4zWGKAlBhpl4XKblYHu7+OkNI7PwXWCSJuzdspQzSI9+bFQgddKHHdQwtRT9nYzjz+cP1jRQLnqq9n2IKGQJKZAtBdrSkA2BIgqFb/nRVrvEeshOu1h5+AOXEBFjT8WA4RpAm4XBSTepjc3QQuFBD9XiqVF2FiYct9RU4asF8+Usjy6Lo4Ba2iomfiop6toHEt2g/x87X43go+A2JF+HB2a51av9vZ1d/WxuZ1GQVD1hDlT/JWqX9HM3/s6H/7yySUg0aUKY5eP8QUzvm3B1GiKpdJJ8MFJCdbeiyoLEnlpUu9rekMrtBNjfRBbBVw1/hyyTe05xywJKaXuxLI59a2Q+fj9U5o6fTvWd7FCAeZ6EX1jc0u5gDaWqjLApIuUGK0oAtz5zHje7atedIv5w5jL0HauXg7XYjuCXQ+wWER1QprK4CIe3QRpHv0tl7/99q6ERFCCjJ0E4I3rM4AvYV5Hksh78dGZwlNZEpMzxe6YVF2FbzU9nRP2WFR0eSVMsD5/4sMQJUPhtYExZ06swzQgX2NATd5KUCqq5R3vO4iKyzD/mSjrxqaYvMPbh39W1GSlspA21kmiyrzZH5ATdiprA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,97 +178,226 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 17, 2026 at 2:21=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 8f90fb609e57..cda3c886ec53 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -4575,6 +4575,13 @@ static bool thp_underused_never(unsigned long ma=
-x_ptes_none)
-> >       return max_ptes_none =3D=3D HPAGE_PMD_NR - 1;
-> >  }
-> >
-> > +/*
-> > + * Smallest mTHP folio that is queued for underused splitting. Kept
-> > + * conservative, as small folios are unlikely to free enough memory to=
- be
-> > + * worth queueing and scanning.
-> > + */
-> > +#define THP_UNDERUSED_MIN_SIZE       SZ_2M
->
-> Working on orders would be nice.
->
-> I think you can use something like
->
->         order_base_2(SZ_2M >> PAGE_SHIFT)
->
-> for that.
->
-> And then you can just do something like
->
->         max(order_base_2(SZ_2M >> PAGE_SHIFT), HPAGE_PMD_ORDER)
->
-> And place the comment next to this definition.
->
+On Wed, 18 Nov 2026 22:37:00 +0000
+David Matlack <dmatlack@google.com> wrote:
 
-Will do.
+> Adopt Access Control Services (ACS) controls on all incoming preserved
+> devices (endpoints and upstream bridges) during a Live Update.
+> 
+> Adopting ACS controls avoids changing routing rules while memory
+> transactions are in flight from preserved devices. It also keeps IOMMU
+> groups from changing during or after Live Update.
+> 
+> The adopted controls are recorded by the pci_save_state() call in
+> pci_bus_add_device(), which runs before drivers bind, so they are
+> reapplied by pci_restore_state() if the device is reset. Allocate the
+> ACS save buffer for incoming preserved devices even if they match a
+> device-specific ACS quirk, since their adopted controls live in the ACS
+> capability, and panic if it could not be allocated.
+> 
+> To simplify ACS adoption, reject preserving any devices that require
+> quirks to enable ACS as those quirks would also have to take Live Update
+> into account. If such a quirk matches an incoming preserved device
+> anyway, e.g. because it was added in the new kernel, log a warning and
+> adopt the device's ACS controls regardless, rather than reprogram a
+> device in the path of a preserved device's memory transactions.
+> 
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  drivers/pci/liveupdate.c | 75 ++++++++++++++++++++++++++++++++++++++++
+>  drivers/pci/liveupdate.h | 16 +++++++++
+>  drivers/pci/pci.c        | 13 +++++--
+>  3 files changed, 102 insertions(+), 2 deletions(-)
 
-> > +
-> >  /* partially_mapped=3Dfalse won't clear PG_partially_mapped folio flag=
- */
-> >  void deferred_split_folio(struct folio *folio, bool partially_mapped)
-> >  {
-> > @@ -4600,6 +4607,13 @@ void deferred_split_folio(struct folio *folio, b=
-ool partially_mapped)
-> >                */
-> >               if (thp_underused_never(khugepaged_max_ptes_none))
-> >                       return;
-> > +             /*
-> > +              * Keep queueing PMD-sized folios as before, even where t=
-he PMD
-> > +              * size is below the minimum (eg 1M on s390).
-> > +              */
-> > +             if (folio_size(folio) < THP_UNDERUSED_MIN_SIZE &&
-> > +                 !is_pmd_order(folio_order(folio)))
-> > +                     return;
-> >       }
->
-> Shame that we already did a function call just to figure that out. Should=
-n't we
-> just replace the folio_test_large() thingy below by helper that embeds th=
-is
-> directly, with a focus on underused shrinking?
+Reviewed-by: Alex Williamson <alex.williamson@nvidia.com>
 
-I will make this change.
+> 
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index 00d6fa5236e9..b99a88c2c199 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -123,6 +123,9 @@
+>   *
+>   *  * The device cannot be a Virtual Function (VF).
+>   *
+> + *  * The device cannot require device-specific quirks to enable Access
+> + *    Control Services (ACS).
+> + *
+>   * Driver Binding
+>   * ==============
+>   *
+> @@ -174,6 +177,17 @@
+>   * bus, since the bus numbers of the failed bridge can no longer be read from
+>   * hardware and handing them to another bridge would let an unrelated device
+>   * inherit the BDF of a preserved device.
+> + *
+> + * Handling Preserved Devices
+> + * ==========================
+> + *
+> + * The PCI core handles preserved devices differently in the following ways:
+> + *
+> + *  * The PCI core adopts all ACS controls enabled on incoming preserved devices
+> + *    rather than assigning new ones, so TLP routing and IOMMU groups stay the
+> + *    same after Live Update. Note that a device will use its adopted ACS
+> + *    controls for the lifetime of its struct pci_dev (i.e. even after
+> + *    pci_liveupdate_finish()).
+>   */
+>  
+>  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
+> @@ -189,6 +203,7 @@
+>  #include <linux/slab.h>
+>  
+>  #include "liveupdate.h"
+> +#include "pci.h"
+>  
+>  /**
+>   * struct pci_liveupdate_global - Global state for PCI Live Update support
+> @@ -540,6 +555,15 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
+>  		return -EINVAL;
+>  	}
+>  
+> +	/*
+> +	 * Do not preserve devices that rely on device-specific ACS equivalents
+> +	 * since that would complicate keeping ACS constant across Live Update.
+> +	 */
+> +	if (pci_need_dev_specific_enable_acs(dev)) {
+> +		pci_warn(dev, "Refusing to preserve device that relies on ACS quirks\n");
+> +		return -EINVAL;
+> +	}
+> +
+>  	if (dev_ser) {
+>  		/*
+>  		 * Endpoint devices can only be preserved once. Bridges are
+> @@ -816,6 +840,57 @@ void pci_liveupdate_finish(struct pci_dev *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(pci_liveupdate_finish);
+>  
+> +/**
+> + * pci_liveupdate_adopt_acs() - Adopt ACS controls
+> + * @dev: The PCI device to adopt ACS controls for
+> + *
+> + * For devices preserved across a Live Update, leave the ACS controls
+> + * established by the previous kernel alone instead of programming new ones.
+> + * The adopted controls are recorded by the pci_save_state() call in
+> + * pci_bus_add_device(), so they are reapplied by pci_restore_state() if the
+> + * device is subsequently reset.
+> + *
+> + * Panics if the device has an ACS capability but no ACS save buffer, since the
+> + * adopted controls would be lost on the first reset.
+> + *
+> + * Return: 0 if the ACS controls were adopted, or -EINVAL if the device was not
+> + * preserved.
+> + */
+> +int pci_liveupdate_adopt_acs(struct pci_dev *dev)
+> +{
+> +	/*
+> +	 * Check if the device was preserved over a previous Live Update (even
+> +	 * if it has already gone through pci_liveupdate_finish()). This ensures
+> +	 * that the device continues to use the ACS controls established by the
+> +	 * previous kernel.
+> +	 */
+> +	if (!dev->liveupdate.was_incoming)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * The previous kernel does not preserve devices that require
+> +	 * device-specific quirks to enable ACS, so the controls being adopted
+> +	 * live entirely in the ACS capability. If such a quirk matches anyway
+> +	 * (e.g. it was added in the current kernel), ignore it rather than
+> +	 * reprogram a device in the path of a preserved device's memory
+> +	 * transactions.
+> +	 */
+> +	if (pci_need_dev_specific_enable_acs(dev))
+> +		pci_warn(dev, "Ignoring device-specific ACS quirk, adopting ACS controls from previous kernel\n");
+> +
+> +	/*
+> +	 * The adopted controls must be captured in the ACS save buffer so that
+> +	 * they are reapplied if the device is later reset. Without it, e.g.
+> +	 * because it could not be allocated, the first reset would silently
+> +	 * drop them.
+> +	 */
+> +	if (dev->acs_cap && !pci_find_saved_ext_cap(dev, PCI_EXT_CAP_ID_ACS))
+> +		panic("%s: No ACS save buffer for preserved device\n",
+> +		      pci_name(dev));
+> +
+> +	return 0;
+> +}
+> +
+>  /**
+>   * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
+>   * @dev: The PCI device to check
+> diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
+> index e5d2a19d2ca2..c643f2664296 100644
+> --- a/drivers/pci/liveupdate.h
+> +++ b/drivers/pci/liveupdate.h
+> @@ -15,6 +15,12 @@ void pci_liveupdate_setup_device(struct pci_dev *dev);
+>  void pci_liveupdate_cleanup_device(struct pci_dev *dev);
+>  bool pci_liveupdate_preserve_bus_numbers(void);
+>  bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus, struct pci_dev *dev);
+> +int pci_liveupdate_adopt_acs(struct pci_dev *dev);
+> +
+> +static inline bool pci_liveupdate_was_incoming(struct pci_dev *dev)
+> +{
+> +	return dev->liveupdate.was_incoming;
+> +}
+>  #else
+>  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
+>  {
+> @@ -34,6 +40,16 @@ static inline bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus,
+>  {
+>  	return false;
+>  }
+> +
+> +static inline int pci_liveupdate_adopt_acs(struct pci_dev *dev)
+> +{
+> +	return -EINVAL;
+> +}
+> +
+> +static inline bool pci_liveupdate_was_incoming(struct pci_dev *dev)
+> +{
+> +	return false;
+> +}
+>  #endif
+>  
+>  #endif /* DRIVERS_PCI_LIVEUPDATE_H */
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index fc4307a2327d..ebc565b4780a 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -35,6 +35,8 @@
+>  #include <linux/aer.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/suspend.h>
+> +
+> +#include "liveupdate.h"
+>  #include "pci.h"
+>  
+>  DEFINE_MUTEX(pci_slot_mutex);
+> @@ -1071,9 +1073,13 @@ static void pci_allocate_acs_save_buffer(struct pci_dev *dev)
+>  	/*
+>  	 * Devices that rely on device-specific quirks to enable an ACS
+>  	 * equivalent keep that configuration outside of the ACS Control
+> -	 * register, so they are configured from scratch on restore.
+> +	 * register, so they are configured from scratch on restore. The
+> +	 * exception is devices preserved across a Live Update, which always
+> +	 * adopt the ACS controls established by the previous kernel and need
+> +	 * the buffer to keep them across resets.
+>  	 */
+> -	if (pci_need_dev_specific_enable_acs(dev))
+> +	if (pci_need_dev_specific_enable_acs(dev) &&
+> +	    !pci_liveupdate_was_incoming(dev))
+>  		return;
+>  
+>  	/* dev->acs_cap is not set yet, pci_acs_init() runs later */
+> @@ -1170,6 +1176,9 @@ void pci_enable_acs(struct pci_dev *dev)
+>  	bool enable_acs = false;
+>  	int pos;
+>  
+> +	if (!pci_liveupdate_adopt_acs(dev))
+> +		return;
+> +
+>  	/* If an iommu is present we start with kernel default caps */
+>  	if (pci_acs_enable) {
+>  		if (pci_dev_specific_enable_acs(dev))
 
->
-> >
-> >       /*
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 0c9ed04528d8..44376321180b 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -5477,6 +5477,8 @@ void map_anon_folio_pte_nopf(struct folio *folio,=
- pte_t *pte,
-> >       folio_add_lru_vma(folio, vma);
-> >       set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
-> >       update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
-> > +     if (folio_test_large(folio))
-> > +             deferred_split_folio(folio, false);
->
-> Do we also ahve to take care of mTHP placed by khugepaged?
->
-
-From what I see, khugepaged maps collapsed mTHPs through
-map_anon_folio_pte_nopf() (from collapse_huge_page()), so I think
-they're already queued.
-
-Thanks for reviewing this series. I'm out of the office for the next 3
-weeks but when I come back, I'll submit v5 addressing your comments on
-this patch and patch 1/4.
-
-Thanks,
-Joanne
 
