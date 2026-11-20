@@ -1,156 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C09B606B059
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 17:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEDE60A260D
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 17:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ckKFX1wL
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=ZQa6Iju4
 Received: by kanga.kvack.org (Postfix)
-	id 4E2A96B00EF; Fri, 20 Nov 2026 12:42:36 -0500 (EST)
+	id E8A716B05B1; Fri, 20 Nov 2026 12:48:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BAD16B05B0; Fri, 20 Nov 2026 12:42:36 -0500 (EST)
+	id E142B6B05B4; Fri, 20 Nov 2026 12:48:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D1236B05B4; Fri, 20 Nov 2026 12:42:36 -0500 (EST)
+	id CDC866B05B5; Fri, 20 Nov 2026 12:48:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 03CF86B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:42:35 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 78BD140129
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:42:35 +0000 (UTC)
-X-FDA: 85456217070.30.0F9319E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9E6B920003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:42:33 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ckKFX1wL;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 967C86B05B1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:48:08 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 189E6A64C7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:48:08 +0000 (UTC)
+X-FDA: 85456231056.06.A24C38B
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EBAA71C0007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:48:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=ZQa6Iju4;
+	spf=pass (imf20.hostedemail.com: domain of "prvs=777ef8cfd=gyokhan@amazon.de" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=777ef8cfd=gyokhan@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795196553;
-	b=L5ttYjfvdmeBfiTBj7WaGH+CGhmVFQzUbZNi19LVArhfjc40GOXyUIbyaqzXYp4nCqUJuY
-	hNi5dzDsu4PKKZtYA8bSZaCAPX0oOwJp/hWDEr/0HLrCmXgszjGak0O0wbPcKed7kiAUkX
-	DRtVaqlmoFXcBl9bOEkPRxX9tBA9gA0=
+	t=1795196886;
+	b=UecrvA9P6f1STKRQEoZVEHIBAUo/r/1gDrB+oHWSNdflkRFWCGOPCjqTu7tFUOY4y8bW3+
+	4l2cQy9KpWk7b40CE3ssBhT5ZOMMJ8EFXcS6jdqqTemAFPRisZGEHr6P1SBUfNV08CF1Wx
+	ZdMgHQ43Ju/rd7X79/qEWqhbdoywL10=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795196553;
+	s=arc-20220608; t=1795196886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bhnyfvy2KqZXAS36AJ1i0JMsTJ0vNWzr4CDn3GrGcfY=;
-	b=COK/Jc5SdUO3jHX7BlAcouqNjrFKG8leygpj3hGm4f0DvqpkYJe7gYk1qPseQzmPfMOjcG
-	heBq4qojBvxQtdrM/PejKb9fZ7zLkdAezSccXvLAUeltSgLkUKzSMc0fZcpCuhZVjf3tOF
-	+zZl0uy66NutnmS/NIi2yO7H41yuwdo=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BRbB4TeEbeDPYP10r5R78d5DnXhIf+696YAbQVI6b1I=;
+	b=33JiJqXU+OBwz0kzTPZuNZy2dWX5tBoJ6U+pEBmVPhjg2nshJkU1tVdHXGgKwtOJyVsJAI
+	NOpv8dkwlvG/sY6STyOxkzj7AZD/XDjGiH2mTkdDGPuCl1h6Zrppv2EJ89UzSxqJT9Ymlh
+	tL4hP+TWTPcQxFFrnx8+4n1wE99pjNI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ckKFX1wL;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C555C464A4;
-	Fri, 20 Nov 2026 17:42:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862021F01566;
-	Fri, 20 Nov 2026 17:42:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795196552;
-	bh=Bhnyfvy2KqZXAS36AJ1i0JMsTJ0vNWzr4CDn3GrGcfY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ckKFX1wLJ/UaG1cRBOg1e67ciDfy+pFb7AtJUVNzWr1+51uahBffgq/LgVw00c4A2
-	 8EzmdA+Hokb4hBwVcSRdV2LdcaLG/WO5voEGoP7DGBhNbFzH05cjnl74TrOx9eTgwq
-	 39VyLXP1H9zVPgcNJJKoI4fH6B5D3MEG8TmVOzI5NXx55ookscVwHlrD+SixrBBxzq
-	 3aDUKLw8M1ojXekVybzS6pTCIJpWzc/T6UB41b+dtiFzijQp2uteKAi3neGvaiN+p/
-	 ixJU90LraJv7+XIxpul8suA4khR+gmdgyjEJjkaRWeotqxPQZhzw7rZ1KaIswGndPW
-	 Pkax1PhSuRFLw==
-Message-ID: <525fce64-8260-447a-8362-503655d09c91@kernel.org>
-Date: Fri, 20 Nov 2026 18:42:23 +0100
+	imf20.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=ZQa6Iju4;
+	spf=pass (imf20.hostedemail.com: domain of "prvs=777ef8cfd=gyokhan@amazon.de" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=777ef8cfd=gyokhan@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1795196886; x=1826732886;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BRbB4TeEbeDPYP10r5R78d5DnXhIf+696YAbQVI6b1I=;
+  b=ZQa6Iju4Bn5d9UBitjDHnbGqASvIucGy9JvsCD7A4zsRZaTxQoASYBrY
+   BzqXZTw7RZhj36EBz/L/pVUCmyQ2S4N0Y+vt1UnQ0ak+iklQj8K0t857u
+   EIZe/N8P814tkX9Nu1tRsl6rVoV7C/KM9KerRNPxERYgKvY1vsRqqvHIG
+   UAZTJw4PH1LBFqZAvbRgcmp6VIzw2g0cGgSaHyMBbSbK3CSm9FPb7MY0n
+   2U6urITQ10OKIpbX920C7kCSGMcUJRBup0cL1nGN3r3uK04sQtRq5tWY+
+   5tHvRBLr3vU0V77kJ3dm7mSWrj/v4pnW4Y4f3cLXGUp+swZzXye+leGg8
+   A==;
+X-CSE-ConnectionGUID: Q3ofdov8TCKC2HnaxqewtQ==
+X-CSE-MsgGUID: 5Jiw2TxURRiOZZBwsk6NYg==
+X-IronPort-AV: E=Sophos;i="6.27,223,1787011200"; 
+   d="scan'208";a="34540198"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2026 17:48:00 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:28745]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.13.177:2525] with esmtp (Farcaster)
+ id 767f9935-a099-439d-9b67-2386925f1139; Fri, 20 Nov 2026 17:48:00 +0000 (UTC)
+X-Farcaster-Flow-ID: 767f9935-a099-439d-9b67-2386925f1139
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.57;
+ Fri, 20 Nov 2026 17:47:59 +0000
+Received: from dev-dsk-gyokhan-1a-87ab81cc.eu-west-1.amazon.com
+ (10.253.85.128) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.57; Fri, 20 Nov 2026
+ 17:47:58 +0000
+From: Gyokhan Kochmarla <gyokhan@amazon.de>
+To: <stable@vger.kernel.org>
+CC: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>,
+	<linux-mm@kvack.org>
+Subject: [PATCH 7.3.y 0/2] mm/execmem: keep the ROX cache huge-page only
+Date: Fri, 20 Nov 2026 17:47:43 +0000
+Message-ID: <20261120174745.3785179-1-gyokhan@amazon.de>
+X-Mailer: git-send-email 2.50.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm/vmscan: flush deferred writable TLB entries before
- unlocking the folio
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- =?UTF-8?Q?Cenk_Y=C4=B1lmaz?= <cenk@deepfinresearch.com>,
- Zhang Peng <zippermonkey@icloud.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, Mel Gorman <mgorman@suse.de>,
- Sasha Levin <sasha.levin@oracle.com>, Rik van Riel <riel@redhat.com>,
- Ingo Molnar <mingo@kernel.org>, Peter Xu <peterx@redhat.com>,
- Hugh Dickins <hughd@google.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrea Arcangeli <aarcange@redhat.com>, Thomas Gleixner <tglx@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
- <20261118-file_folio_flush-v1-2-e9e739ed14e0@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261118-file_folio_flush-v1-2-e9e739ed14e0@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9E6B920003
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspam-User:
-X-Stat-Signature: 8cchdhqtb4sb898k735xw6z3eb1j4393
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EBAA71C0007
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795196553-889631
-X-HE-Meta: U2FsdGVkX19HN4ML0/BlRbc9Exm1OktZnYsxyry95a5nLCENvHQl/C88umPVt3uMCJIb44Z5GkiCfgf28N+Z0Uqk1LKp+TieQ6J+wM0I3JhH3IhseFP3Gqv8Tj/ijTMYMSU0M40K1qvAjHym9YkTXyC1ypQcDEvmNqLdSt7YpSMHfoC/5C9jZmBIA/dMf+Kp8OWTxpnGUd/TS7sV4+BO6pGFziFEol48yqSra+0QWs/Pfvd4g8flbRtDfI/J14EIE+w8yUxFyCRSz+/Qi26A6lIkrz5NqCwPOIbtt6e52DTWTLEe4v8YSAEeqGH+AXrqVNywi1qXEN4svYpdD4LP5cjwZ8q1w16F4dABPXjry0mbpiJ79ze63O2IJtN43gxjG6xh0tpcT1aiJaJ8iBGlvUbNBinOkw4pi7uDDKOs9XmrqB0Y67fI5w120AfB4nGQoYgBYS11rKvj3M1wCYaLOSnwmeYz4K6vjk78I1FKBB0Zlcy60g7jCQeHc1dGrbnX7Xpa8bkah0Xt5OJZPSMvUSARp6cmNsfwXw7JpAfdid5UUpBRn6FXpGQ8IJnL22bubcpTJ5safJvXvXVoltNj8e65L8tXG33r7ohzAoOqJ6agsZKR7DKfX6/V9+nVfo8AiLOMIc+U5hz5D82EGsXga78cTaQO7b18aEchwTc3G3QOIJFnwjN8EZayjfBOTCPTR2ts7qTH4HRWr3Y5DK1jATho4gjHptrXgfp+hsH50FNPcgkqNOhM2CcV+KDUE4o3cWNxrGMh40WIFkhYai9VbaHhRmBz2Hbo8GNzx3ZhKzDVUoFgWxhFeDXe4iAb2NizOWTTRAjwoOMEKgGgjGLSY66sLGS99qhgmd9O2XTViQu4oiBLEm4g3qanNGg8Qe/p4bxmSbKUJMed0B5HRQqtvZtOgi1RQG6aOty8krVXwuVCCCc+clZ0I5GhFWNIaa4ypAM5rlB9uUPKQPbjwk5
- /M5aJU2G
- DwfUO1LTFX3FhYP0Ta7QITSdbyjDjtUdAZx5HjxpqFEJ5ooKbBb5L+ISJ9eqs0n2iDCJcRL0rYMjh8fDNag9SAxLiutzvUoLAslrnbi8utot2SEht0oKXCJl3V+3a54NZhMak0dE6MFvHvmsMbI/Kh1pnAVwpa3gaZlxBgDIe0Ey6TqtmsactEU4amM4wqYa8OYcTikFtAxbs1/NlgGP7CP1t2EzZ6Ym43T7sv3xbO/O9WmzkpxX/f0WDchmorGNZdoKlqylNSc3uP+unXSDE/7xcD3y/F+VaNO7t3KCMnNczcNgMXKEIpL21w+MGgqeUr9sI0aQzDtV3J8RpZqwv3kBXNqdD6mn+rGIXdv2toxnh/5l8lrmz+LSUN1m5x/XkR5IKz/ryiWc/8gop2iq5g6aHIc9Pb2Cz3mZqTUGGtCSb6Qa8CAAgYbL9LYO3AL/EpKs/mhqvnvLkBCjd3n3rXMaovBrhuFJWa+qo3bHs78Itxt8HpbfP6FMpf/f2iQ9dp+nxtvc5Hcr0P5nJdHwI3LSLEVY5Mi6i7JLqqTgy5sYoZfWk5npuLahEk1RmL3emMKYoyzqBgCN/YN0=
+X-Stat-Signature: 4ycnnd3fdyt96x3ezdf8d3nn7ro4fbtm
+X-HE-Tag: 1795196883-939785
+X-HE-Meta: U2FsdGVkX1/5pRi/Ka/24HTPVTQ5qVa7IEkhWFAYAskWL6QODbPK9lX1dBKZ7u7rok29uanLpwUi1rGnDFoRCZWA2HebX3dxKlF5jcae1lKqBqrkZKAyVE5WDMKryB4HFPOvB4dBrMoQ6tyWyBkOIGfMozBsTDw41SxWANvy6+Av+BC/k/ZiZrMsPXeJZtQJ/6JibX5SACQ2zy3oD6M/XWMbwk7QFVh1ACj2Hxx/vTQvWT2tSkLc5duAZeBHoDop7GUgBizo13r7nbR3a96btokg5dRyqpfzQFpP+N3SjgBP/q5O5EDOYo2X8EjY9Om5qvJVryPgEopWIFruVHUgMRu6ikDb5J1iVZk4t9cxkIZAB0NLV05eiD4EJwNQVSMTd21ERCjbeLq6EW+CXQLrnpJ9/K7oioZrH6CIetCLlC700OaF0YnVVmtmmYPNYDfr85yq5SGe0cF/LuN6QkQqakE3BteAum2F95b0DBWp9ZFfl2UnukzbPrXVwKv12FV1yNTajTh7UEgsAtsSYOFxYAD4mpzWttftIIlm5z6Hme5EuLXFbWykky7BDD0P94uz00t3EKspZf3AwfzajJAF3zgtInGTIQ9a5jtIAhudpwu3+vmaxfElXvgxMIYRaN0Vj2Ah6LBWKfv/CdCpA2pmUP1VGhQ1/JTZIl8f9vO73dPy3g8AZ7U+G3avw0PknIAm51rmEZXvWG681QQ9ZZKRBvsTwzOlppbtVkpxM4pYWd/hAr0mZ72JhmHK+I21i9oCWCXSqS4C6Hn/MVWk9YLA9ZYSHAogJANk/LluCIhQwGtzX05oRtbcZZcxAa8tedlgX6gaR/Dd1TSxXijUS/F5VgLCd6DE0dAJzvxxBAH5y5kajdkNX7Pp4pa0w+UXMM4IUGA190pVoOq6UoUOAK0HsOJ4CE7VFezPw9HeAW0HvYmM7VrzWWWaUwvvvnZSYLRoIHo08q0EJMTfj1OAPwZ
+ 3iHPkjHC
+ OMAQSIiowAlZXyBB1dSY4dgl21It4yOmPtGwtugPU9C+AUv0j7vX6vok8sEa+ORxhsWH2OSy9ubrLZ2Jf8ailUmjMwJsf6GKxG7bWsb8PdIq111FRfFZ2kF3FfTucyDwg2V3C4LKmBQyBX1q7F7HC282w9hMHolylEwOTSq48mwsW/SOL2OWGmUg1nRwM7otad95yuIodRb41K+ZlZWgo9HQnfpt17PCKuu+QGnxjNndKCwDbzyN1mWhONh8/JaqIftj6LYkFJyj5sxvTADLzQaV0100svQyhZdowUBmH6e4UdeYXmOFWUhh2lNXqjdhK34F4MQTJQbjmzSm+l9PHUZVeMX9Ivh/p1RqsbOw0rPT77Hgmj69Oxk/VFcfU3XJbPJgu51fJwiAeL5TERGGBIZo0iOfdHKXmy4xJooTwHsAfJ7bVUiDQfmh1zDiX5tvGRkGLdKU2ETMGMdTWK/vkqZ6wR/9jATS41vQTDXDsInTJlw+oX02t9nDkE7jqs3r9OU2Qf2bbXgNY9LogbLNWuXzsIL41MJpOUIQxzqkf/UyywFlwtlGflt5Ps7KLSn+PnL+Y1IgFhwL/PQgDVH3Bt15PaeRAbSajBmmsQCxUFQfpoKVg4fUta198YZNHePXq+4zbvyCyMDegIAPyP0pqmfUeg6JCiKxWyV6GrRKytGGPQqMn/8VGDc8QWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,69 +113,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18/26 10:20, David Hildenbrand (Arm) wrote:
-> try_to_unmap() with TTU_BATCH_FLUSH transfers the PTE dirty bit to the
-> folio and defers the TLB flush.
-> 
-> Reclaim must flush the TLB before unlocking the folio, otherwise stale
-> writable TLB entries might be left behind temporarily: writeback started
-> by other mechanisms (e.g., fsync) will not find any mappings in
-> folio_mkclean(), so it will neither write-protect nor flush anything.
-> 
-> A write through a stale TLB entry after the folio was cleaned gets lost
-> once the folio is reclaimed.
-> 
-> However, reclaim currently does not flush the TLB if the now-dirty folio
-> does not get written back (e.g., gets activated or kept instead). Fix it
-> by flushing right after try_to_unmap() if the folio is dirty, which makes
-> the existing flush before pageout() unnecessary.
-> 
-> For dirty page-cache folios that reclaim activates, we will now flush the
-> TLB immediately after unmapping them instead of batching the flush, which
-> is the right thing to do. Performance-wise, it shouldn't really matter
-> much, because folios with dirty PTEs are usually young and reclaim won't
-> even try to unmap them.
-> 
-> Fixes: d950c9477d51 ("mm: defer flush of writable TLB entries")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi,
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Please consider these two mainline commits for 7.3.y:
 
-> ---
->  mm/vmscan.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 5495d9be90e88..af7831643ecf5 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1455,6 +1455,12 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  				flags |= TTU_SYNC;
->  
->  			try_to_unmap(folio, flags);
-> +			/*
-> +			 * Flush deferred writable TLB entries before we could
-> +			 * drop the folio lock and others could start writeback.
-> +			 */
-> +			if (folio_test_dirty(folio))
-> +				try_to_unmap_flush_dirty();
->  			if (folio_mapped(folio)) {
->  				stat->nr_unmap_fail += nr_pages;
->  				if (!was_swapbacked &&
-> @@ -1496,12 +1502,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  			if (!sc->may_writepage)
->  				goto keep_locked;
->  
-> -			/*
-> -			 * Folio is dirty. Flush the TLB if a writable entry
-> -			 * potentially exists to avoid CPU writes after I/O
-> -			 * starts and then write it out here.
-> -			 */
-> -			try_to_unmap_flush_dirty();
->  			switch (pageout(&ctx, mapping, folio, folio_list)) {
->  			case PAGE_KEEP:
->  				goto keep_locked;
-> 
+  d80773cedde2 ("mm/execmem: handle potential allocation errors in the maple tree")
+  569db54d8b7a ("mm/execmem: make sure ROX cache always contains multiples of PMD_SIZE")
+
+They complete the series whose first patch, 52d95a55a011 ("mm/execmem:
+free ROX cache chunks only when they span an entire vm area"), is
+already in 7.3.4 as 8c60564f03e0. The same two commits are posted
+separately for 6.18.y, and this version keeps 7.3.y covered for that
+request.
+
+On x86 systems with 384 CPUs, udev coldplug runs several hundred
+concurrent init_module() calls for the same modules (kvm, kvm_intel,
+irqbypass, x86_pkg_temp_thermal). On a ROX cache miss,
+execmem_cache_populate_alloc() reserves a 2 MiB area before it takes
+the cache mutex, so these reservations briefly exhaust the module
+address range. Each failed attempt prints "execmem: unable to allocate
+memory", although the exact-size retry succeeds and every module loads.
+The exact-size areas then stay in the cache and are never freed.
+
+With 569db54d8b7a, the cache refill only accepts a huge-page backed,
+PMD-sized area and fails quietly otherwise. The allocation then falls
+back to an exact-size ROX area outside the cache. d80773cedde2 is a
+prerequisite.
+
+7.3.y does not have 4c4b2ed5b783 ("mm/execmem: use
+VM_FLUSH_RESET_PERMS for ROX cache allocations"), so both patches keep
+the existing execmem_set_direct_map_valid() handling for cache chunks.
+The uncached fallback is freed with plain vfree(), so it uses
+VM_FLUSH_RESET_PERMS like the non-ROX path. Each patch documents the
+change in a [ 7.3: ] note. Mike, if you would rather have 4c4b2ed5b783
+backported as well, I can send that version instead.
+
+569db54d8b7a is above the usual 100-line limit. A large part of it
+moves the ROX setup into a helper that the cache refill and the
+fallback share.
+
+Both patches apply cleanly to v7.3.5, and mm/execmem.o and
+mm/vmalloc.o build with W=1 on x86_64. The code changes are the same
+as in the 6.18.y version, which was tested on c8i.metal-96xl: 20 and
+29 warnings without the patches, none with them, and no failed module
+loads in either case. I have not run the 7.3.y version on hardware.
+
+Gyokhan
+
+Mike Rapoport (Microsoft) (2):
+  mm/execmem: handle potential allocation errors in the maple tree
+  mm/execmem: make sure ROX cache always contains multiples of PMD_SIZE
+
+ include/linux/vmalloc.h |   1 +
+ mm/execmem.c            | 109 +++++++++++++++++++++++++---------------
+ mm/vmalloc.c            |  15 +++++-
+ 3 files changed, 84 insertions(+), 41 deletions(-)
+
+
+base-commit: 988117cc1bb17338c586a4e21ade88b5397eac33
+-- 
+2.50.1
 
 
