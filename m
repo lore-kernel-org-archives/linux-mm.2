@@ -1,91 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9513860A261E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4C060A2601
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 13:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=UOqy7u37
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aE7K5lkT
 Received: by kanga.kvack.org (Postfix)
-	id A2D0D6B05B0; Fri, 20 Nov 2026 08:41:16 -0500 (EST)
+	id 01E526B05B5; Fri, 20 Nov 2026 08:42:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DDF46B05B3; Fri, 20 Nov 2026 08:41:16 -0500 (EST)
+	id F38E56B05B6; Fri, 20 Nov 2026 08:42:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F4656B05B4; Fri, 20 Nov 2026 08:41:16 -0500 (EST)
+	id E75366B05B7; Fri, 20 Nov 2026 08:42:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C43F6B05B0
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:41:16 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4C50340F05
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:41:15 +0000 (UTC)
-X-FDA: 85455608910.21.CEFCDBB
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1EAA616000D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:41:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C6A9A6B05B5
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:42:33 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CF743160988
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:42:32 +0000 (UTC)
+X-FDA: 85455612144.14.8D6ED79
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 04D64160005
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:42:30 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=UOqy7u37;
-	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aE7K5lkT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795182073;
-	b=Fdwk6ynfMno3bMrcbbOzsgw0ToxaR+uFMb43snSopXN3C6vKh1b0CLID0uQ62dfjKO7Rnt
-	k6IbHBOvxDnKaDmhqfb9J681H9jfvyfHozsM+HPgqYnhIOOVpl7Ro/GgTrJMBoNs0rEodq
-	+VqvLNJnN0Nb4T931kXD6HnxZ/fba5I=
+	t=1795182151;
+	b=4MG1fh7uHYbihGp8kGjgaYsRJWewPCxqDBXPR6x4Ug/nFYJKwxD8b1+tcLJJDSy0ra2RBh
+	8hOgDY3Ur7i35vEOx+9ttOCosuxBqukhskITCQA3EvPd9xGYg2u59vke3RdILwj2ZtIHwg
+	eo7R4gskoYguLdImLvTDTC2CrEAfCE8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795182073;
+	s=arc-20220608; t=1795182151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FwxNyVQvyR6u1ITlGByMJm+FIMkbiLq8smwLlAPk+KY=;
-	b=wL/4qDK1eWlVOQNlvrkvdo+inn5OUBwjv6+xLvPZGo1h9R5MZtdTOUyw1+Dax/bG/J75bz
-	veuB80ZTbl4uZa+vWgHpNfeaRqSln5KYGeLAnEewQi4EXC8klmWpsNBTLMCqLZC84XIUaZ
-	HGPJA5oIiBnSwB8hwDbOmz8zW7ctsKE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=PxknjzXyKlIZbBI8K2Iy/IF94QOe7DF6NOjeL9QzLkc=;
+	b=ex1Nl/8AMIPfIhsJkTWGUueWSyT46Qb/TEUHJhBexJpookyt6dwtMAogkaJfeXSd+efqcW
+	pFZoYD8TOjZ+4X6nCJ6GGarsTBMViy4eSJiuQIHyTIjLBNlWsAKysrwsw5XrBrJ2V+Ei/+
+	i0HOun8KPyk+SS8KZQm8N/Nlr9jalJc=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=UOqy7u37;
-	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=FwxNyVQvyR6u1ITlGByMJm+FIMkbiLq8smwLlAPk+KY=; b=UOqy7u37mhnP61kkn7RZKKf6H9
-	ZaRrcOD2JPqTkLdVXkZFf7j4ccv0mAxGi6d4e2WZFmka0wbHvdEKRRkB35KpnDNy4RcWF5720e+sy
-	6QjfODHYDOwWiXb5CgpNQW1shlCFB71Kw8AVusaWKoUw1w1k4UVKwYuWmoVP2AL4Cb4pHMKrYpLYA
-	es9IbEn1MJdQ4UkrL+xJgrF9FR/qlmTXq82cGmIkR1JOOiZyNE+Kdx4aauaHlWFzcp9eoGq9RXFOr
-	mht4nuZCmfhBYCmGxJLYGNCLJZbGt1eYE0NApUE3fgoX9sHgUA67S/rDvOzaxbQYNBKZUZdVjAAe4
-	mChXJ0dg==;
-Received: from willy by casper.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xUOrV-00000005Gv3-3N0b;
-	Fri, 20 Nov 2026 13:41:09 +0000
-Date: Fri, 20 Nov 2026 13:41:09 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Xavier Xia <xavier.qyxia@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, shakeel.butt@linux.dev,
-	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev,
-	jack@suse.cz, david@kernel.org, brauner@kernel.org,
-	linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: batch per-task lruvec stat updates on the writeback
- path
-Message-ID: <awBN9VvV6yM6Cjut@casper.infradead.org>
-References: <20261120095559.429515-1-xavier.qyxia@gmail.com>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aE7K5lkT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 42F2260F89;
+	Fri, 20 Nov 2026 13:42:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6545C1F000C0;
+	Fri, 20 Nov 2026 13:42:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795182149;
+	bh=PxknjzXyKlIZbBI8K2Iy/IF94QOe7DF6NOjeL9QzLkc=;
+	h=From:Subject:Date:To:Cc;
+	b=aE7K5lkTR4egrzTaxc5ukEBMPXht8pKpIjSsNFY4eWV3ZaAzQHqS9nFg5eau1aT4S
+	 HTF5bcFYvtEhabzME3ixN1AUu3F3rJR6cFOsM6qIONmCH2z43SZB9/iWVFu6Yc1uNL
+	 9ucX6qweiQzi2NyXbEir3ti801+p/gnpyS7ekr/AtCKD25FStr0KjeHMfCM5imLwM4
+	 cuYPXlSGvSMUPu/e+Te1QwMZirfJbPQqmEQlYcVD5Sgsy6F4MYLpoAF5AQzET8EFTl
+	 SmeVLdGPa5o0sImRMPoEUygkADzh0Es3ZPWlMRegTSBhhH39/LtsvxUqhoEb3Nqi/v
+	 TMJRSzvjdrfMQ==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 0/3] pidfd: use one helper for pid namespace visibility
+ checks
+Date: Fri, 20 Nov 2026 14:42:08 +0100
+Message-Id: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261120095559.429515-1-xavier.qyxia@gmail.com>
-X-Stat-Signature: rapb6nk9ajb8rb6wr775axk8hwwcwo4m
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMUQrCMBBEr1L22y1NjLZ4FRFpko1dlbRktQqld
+ zepPwNvmHkLCCUmgVO1QKKZhceYQe0qcEMfb4TsM4Nu9FEp3eBnTA+c2AdfMsq1fOyTUHXOGBX
+ 0vu0M5PuUKPB3U58vf5a3vZN7FV9Z2F4IbeqjG0o1B8G2PtSbHNb1B17xI1icAAAA
+X-Change-ID: 20261120-work-pidfd-pidns_visible-18c441f23784
+To: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>
+Cc: Oleg Nesterov <oleg@redhat.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ Jiwoo Kim <arpe1618@gmail.com>, Chen Linxuan <me@black-desk.cn>, 
+ linux-mm@kvack.org, "Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Mailer: b4 0.17-dev-04696
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1564; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=avi2yEAxjJ5v1EMR55Cx9mpcbWIvVTDxij2cio+1u1k=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQz+Nm8vD1f553U9adnDUXYOatWae9mYMvcm2DvrZl56
+ Pr+iz+tOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZScYzhf3DB3/Ljf700GXu3
+ MMQ9sZDQ9Zt05Jro/bD2iVIZRjd+aTL8j3vAEsQ72+rF2S1qBYYND2V/xLYyFzpekd8zgaU+erU
+ 4IwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User:
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1EAA616000D
-X-HE-Tag: 1795182072-865512
-X-HE-Meta: U2FsdGVkX1/A5HhRF3r6pf2dezz/LivOzDM0HtGmC2YQNuOjlB0sbBJ4zogtdmxYIa2+v4dAUQ24v9zmFjzhPx3+/mt4nEJ8jcp9D2BuuSODdGsYmX8iXdQ2BbMfzxnCCC2QPRAHbJ1R+4xlEGvMfZGZpBENGGBC3BM29UzRnGNYO+MWEX5p/1jPoeadfO3b0dIOp+IEEBsUKkCb0Cxu1fniDgNOuBjpDWh15R29O99kAN/drCi+yWdklEbnUeKfaYH5htPhOOqoIvh0IH7RLWIGHhpHppyB9RfotGvpCOUoB2l9odpIQW7769GShF9orvFJjf9WjlXFgSIcwsQVWbD/sU4z6eyb46pUGfsfwJO+zFVZ4UAJ83dBUJkmRMyr7LPoSXFf0YAxrw2ffG/Y4+WU2SI6XlU99+T2xQackiX9XBMpgtDx22JayQvywB5IIVlyahCbd4rtFbgHGK6xcXJh4t1Oe8ymAoaDS/FJDe27veHyTCLuhtUVgbyIOqh77WtFipZwAzIyzaTdPJxEJqXeJ8qH7QqjJiL0kA53mrgSteNAoqdIdL7ivPywXvML4fViTgjfZNuFv6gdN9wZG98iew+LkFF315TTQ5Std6fHarMkHr5w2RHeThCdxd7BXpp2dR5mj/AgFOaORZXtmdXCVoXN3ACkyADOBPqFQ6Kmpg+5JBlAb/Ly0IHAaWh3/vdnRjgXN+O+g7rVxCCgrwPyLYZlJvKL6e7wxHXBdtpuFdCuEfxYOj7OsByt8ZmnU//4gl42TNjIUxGF60e1+MrbtiZpSKM2GNMDWuBjVl5V1w1sAlDWkWGKJfBWd37/4PqIuboLTnj9komfhQszRhh8w9FHgqPh4CLh1jBpn8Yhtvz6ozfrMbGZo6PBSJxwEWLuX4umgKkQNOAbPdcVDi3SblvUGQIPWCaaM0AeOk+fIft1/X4lEjK4ZryGfgL/1IdYnxfO0NcxT8x8BvT
- LnLQAP3E
- qN6BTO6KSpUHAU5152gVJ0RGv7x/KOUSsQnqOUyAL7DG/08NtfPlgqoDdPGoTJwaonUILvcP/VBRrndM7bmEVVbQ2el4zjSUAS+i9BARKjSM5O/QswhX9MZMJ45v+AGnoBF+7l2omWrs/vUIFCkdhVfmwFShlErs8Yt4QIYkZgyPGC4eTqerZ8o25tBVdxpnfO6keDNTOUbDz+Vah51gi0fLWp7pcLgp0z1jENSJtDIt8TLgB8fZOnoDYqK0iVYd2vmLt8ZL0X+Yd997ake4gYvu7DljX1L2+KCY0ilvPPWkgZc5tnhAaZ9Bp6bWca5BDET6mHsCcBdH1Jhlt6R8Twg+HxByNIPajN/MMvuW1eo3HlzKC34TQqPcLVa/PqmHQzVAHe0x4/amP/d3MA2eLMH/l+Y9hbGi5VEWbPzjQ9TopXQwQ35/iwYnbg9dvvhIEJsbcuKh6/5wt1ci6xBkaWaPQpg==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 9ouxgrehbtqw9pme449nq73wfenuo6c7
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 04D64160005
+X-HE-Tag: 1795182150-920889
+X-HE-Meta: U2FsdGVkX186NaIVxpFQ108VlaP2obx2XLO3NS0XrKGNZ4le9M85wiWE3FJIr5pr6kQPemTs3LRwYO/HbySYxM4cN6V8S3TwoEHlXfSI8DMj86/kHi4l18tlS6Tja+XwzA5130RnjNEKp/oys3ih4s33X/NLKvPAaiGKsGBOJngpZ0TKtTtJF/8Zyhz/3gh7Pb8f0W2Ih+MqIv7f7PKqC/WAXnlW60cXlqAyhz+/PtCEhm+z41+vfcvLHctc0p7FP/UbNidFBJiw8ZCxU3bvt3cF5M9CP7BumhBfU6pS/x1rOYcBFSeyFcBc0q4xA0trXm31qk1i8hgs9LhgyXH6RrH3lCosZtpNrstN4XySxmvXoXxqZ3b3e8q6gb/zmGsM0tYIqg9RRszOkQVHDooKH7Re9EnH2BcaHlIbwlKthphk5yPiBAt3wpWyt7nVMYh+K6yR0jTrKIxy3Q347pRF+NTH4xmbR5dPKWNo4UhBMrZ0NoUVVDNzKRoKuZ5a1HAbvTpA7BbMhidr/sxWuseTxtkm2Zo6ySPnKJOAo4VpJz7q1cPI11sjEmfMBf82SKtW8fnP/Jc7KM3Rc6f2rjDLnjkvQ78a4ATXDZC/hdeGWn7PZojEjRpHKRwy3lpx2U949C1UUG3AgSNIC3IIiiAVC79eYLY4Yf9E6xbgVAcNLHSD6f3TUo/wqYz+Fm61UC/x/RHPhlSaUnukMOgIFfLzW+4wGEQMOk+AtYaZPSemXLhRir4+ZTaJT7bIvoX/wnvInJeNdsakUANOXAtgZfzjLN/QZu+YpN9cR4+STs7xXVap8mNqqgFJakG5WHYsk/6GqQ/Mobl9oqVppprAL4kC4JtCziSh4VamFzVg27mP2IX49tNxRSquYJp+Ek3OVsNK5HPVYIWpYgIfkSYMPUIeuvueW1VmEr5u4UIgVo4qPUS6l11gii5hsq/hEt0d9be+H1nNLQOOYLGnYb6oZcP
+ svcFjvBy
+ jStjeyf8jk0JB1hZy16TNL+cJVB5Fy6hlr4L8pjaMwvzRw/Q6YIxMUC2wby2PFdxJU14M1qJClHQj96yiwkbd0TRb/NohW3xYQdTc0tWCgOySRuUcboZkLqUknvtvchZPYRUWZbCmHLnCN3Gw/POxepyhtZs2GH5m/tevbr/k0OY9BzOzwAvtD3T6pw1eakv07vZmELI8y+4GWaD/UTQ50Oc5PGdX/J0yMfQ7/EBv5z6c3A8qDWFE4b7hmUQV1tUx3pB/2QTM3mPqlRIGEREnLN3WUb7KvnptAthTIrarPgbvqd5b1RZL+oY1UUIvVpQfeaBwavFClgwl5OFV4culNE91fV/l2F4UDTssrDQqo9YbRf+6KCa8DeNaHVUhVm9ld7nlScqxlpHzV+5qjRZeRSk7Gz7kQYnO4Gtzb4TdkrmMM1viXC9yNjwpMLv5+n1/6wKBKWqNhFu9yRDGXzvod+2EFwn3+9LebSEiF/au6zV1p6OWmiCHDHVka88h8yz2ZktSFKgfwpV4+FwPZIArFBWRd8f2LlkrhxTQR34PH0mM1jkBrGaIuoqNN/97VwsT89Dd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,20 +107,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 05:55:58PM +0800, Xavier Xia wrote:
-> The writeback path updates two lruvec stats per folio through the memcg
-> rstat machinery: NR_FILE_DIRTY when a folio is dirtied and again when
-> writeback clears it, and NR_WRITEBACK when writeback starts on it.
-> Consecutive folios almost always share a lruvec, so the same counters
-> are updated over and over.  On a 4k buffered write + fsync workload
-> __mod_memcg_lruvec_state() is about 8% of the profile.
+The pidfd api checks in a bunch of places whether the target of a pidfd
+is visible in the caller's pid namespace. pidfs has
+pid_in_current_pidns() for PIDFD_GET_INFO and the namespace and task
+path ioctls. The pidfs file handle lookup open-codes pid_vnr() and
+pidfd_getfd() does the same since Jiwoo's fix [1]. pidfd_send_signal()
+walks the pid namespace hierarchy in its own access_pidfd_pidns().
+Yuck, unify it.
 
-Is this a realistic benchmark?  Does it represent some real life workload,
-or did you just choose it because it shows the best benefit of this patch?
-This is a fairly significant chunk of extra code, and it'd be nice to
-know that it benefits a real-world use-case before applying it.
+The rule is the one we settled on a while ago [2]: anything that hands
+out resources of the target requires the target to be visible in the
+caller's pid namespace. That doesn't turn pid namespaces into a security
+boundary. It just means a pidfd doesn't get you more than you could get
+by naming the process yourself.
 
-If the real world usecase is more "there's some pretty high overhead
-when flushing accumulated megabytes of dirtied page cache", then there
-are simpler solutions that don't involve messing with task_struct.
+[1]: https://patch.msgid.link/20261117152332.1221-1-arpe1618@gmail.com
+[2]: https://lore.kernel.org/all/20260925-gewischt-auftrag-tierzucht-c153cb3f9f74@brauner
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (3):
+      pid: move pid_in_current_pidns() into kernel/pid.c
+      pidfd: convert remaining visibility checks to pid_in_current_pidns()
+      pidfd: restrict pidfd_get_task() to the caller's pid namespace
+
+ fs/pidfs.c          | 12 +-----------
+ include/linux/pid.h |  1 +
+ kernel/pid.c        | 31 +++++++++++++++++++++++++++++--
+ kernel/signal.c     | 23 +----------------------
+ 4 files changed, 32 insertions(+), 35 deletions(-)
+---
+base-commit: 0a5864ad213c9fb2cf627a2dcd6f448a1fb7e065
+change-id: 20261120-work-pidfd-pidns_visible-18c441f23784
+
 
