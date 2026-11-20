@@ -1,94 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EC6606A51E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 06:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C96E606A514
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 06:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b8oA2H1w
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HglOJQvF
 Received: by kanga.kvack.org (Postfix)
-	id E63D86B05B7; Fri, 20 Nov 2026 01:07:52 -0500 (EST)
+	id 11D5E6B05B3; Fri, 20 Nov 2026 01:07:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEC746B05B5; Fri, 20 Nov 2026 01:07:52 -0500 (EST)
+	id 0A9FE6B05B6; Fri, 20 Nov 2026 01:07:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D02606B05B6; Fri, 20 Nov 2026 01:07:52 -0500 (EST)
+	id E614E6B05B3; Fri, 20 Nov 2026 01:07:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A4AAA6B05B3
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BFF236B05B4
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 01:07:52 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D3A7C0D24
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 287E11C4880
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:07:52 +0000 (UTC)
-X-FDA: 85454466384.03.5EFF20C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 931F1140005
+X-FDA: 85454466384.05.A397AD8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7FECAC0003
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:07:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b8oA2H1w;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HglOJQvF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795154870;
-	b=2mvgqceFjLyXIAd6cmqYGDGqfqeLxnf2tvGYI/YQ/cFpPkuc/+0MXho9sUneOGcCYFUxZE
-	09LNmqrz40kwS5SywK2ioNFLc4LzRHROBgkTrZ5xN/NRNzCgSKd2a/SyFzNPFZ2QhHynVw
-	Z74iIjyZtwbZ0YtMd0uPEFf59kKAZZs=
+	b=qXvpmGPefCHdf8udGYhKY2ftzHUYWR10pswJxuRtK445UT6dMoQ0F5cOmeyfQLfSHoTom2
+	bZFzy6Si0u9pSZlcw/s4khkMYod31qGQebrfir2nmjQxMVtMLzgmVlFO2AkpmybPzEZClj
+	HM5LY7K62SaU9UGqs6y3+nXe47LdtvM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795154870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+Q/Sp05AiIZSb9V9uY0yDUF0lL9up7p30RJjOrcfbo4=;
-	b=LF4YCH5z2wtHHTre0wmmKG2LwCkellZEJY1RwXWZO+9BwwSZiaHX0/1MM3lkf1sJ2cj5jv
-	8O6XIPC4EmXY8cq7xTS3wwZVbkaqtjfKExZ/ZjD9XrXP2Fq3gq5Mabp1idAyC3xEYBqSiW
-	2njx0MxG3Se5IBlep3qOc/dxzgFRF9c=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qcJiPZgN8pOzganoOrgFc2rVZ3r5oqkHfeWdy+wn69g=;
+	b=L5uYVAnHmMepK1SMSmrLpjtrFQWiI9UZL7smnxJS2/ZKAm8QiThS3y2rX1oQzIjHA8rEUL
+	gOU31Qra4LLcSYNKv6rbLjdNz69Ko/EZd8a8o8QSa/rpbDgeniYZ7ihCzXBpAwrvrSuqZO
+	A4g3AenZ8MErl3qA0ZxVR4Xg1xOWSjU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b8oA2H1w;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HglOJQvF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 608BF43CF4;
+	by tor.source.kernel.org (Postfix) with ESMTP id 24A4F61948;
+	Fri, 20 Nov 2026 06:07:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41211F000CF;
 	Fri, 20 Nov 2026 06:07:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0695B1F000CA;
-	Fri, 20 Nov 2026 06:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795154869;
-	bh=+Q/Sp05AiIZSb9V9uY0yDUF0lL9up7p30RJjOrcfbo4=;
-	h=From:To:Cc:Subject:Date;
-	b=b8oA2H1wrVN/rA89/9EkhaZutna86qhgM8ktwmiydVOErWOPhIzvUq0FOeqU8NyGN
-	 7S+SO2AgIcpZViYJt2TqP7PFgcrIJkJ3RwTblyuAMo5DIcY8oFc/VzmIQZPh5dbubg
-	 o9eogkNzHTAw3mvZXnJ051K38Udfq3sIUAucbpP17Rz6ULuOj45DbWnK1tqh8QZ5rd
-	 rYmooDiXghFeZQW/vls97sdGymLHw9J9OLMoDLokgoLAfjlehkdHcw+JK9n9qyc9zF
-	 RFmt6A/soWKxM6h36q7plHKfI/TVK3XuHmI8zn0mDcPLvaSUwMQxAF9ic8cn4uEY6p
-	 32q0NV5gCBHsA==
+	bh=qcJiPZgN8pOzganoOrgFc2rVZ3r5oqkHfeWdy+wn69g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HglOJQvF8hFc3qx1LYrKqBI4k40AOZzxok/k0qZ8fU+ee+4sa4lnrKmoGZeUgY+PD
+	 ZCQc6Ii4Ng9cB2tRTPsRUYVyJL7Ar+7dAgquxnkW5MOv4LnRCEkc2E7LrBKJEyKOQ5
+	 ApdPktoFcOFvyzhgCAo2TiMmJ3k3L1pusU25R5jrvuCFb2wqwsibtM38yjGDwAbnm+
+	 Hn8eP92dZ5AcRKe7IbPtfZ/rKPcqlm4draL4B6F/ToKepI7p/hHVcjYj4o2A8yRpK1
+	 Vn426Yx2YruMERQxKrLBLmfV6X2t0ZdIj2Xz5kUPrH5Tg/SH9tF5fUPN3xcbFRIaOV
+	 Grq6eB8NTTVOg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 0/4] mm/damon/reclaim: enable auto-tuning features by default
-Date: Thu, 19 Nov 2026 22:07:34 -0800
-Message-ID: <20261120060741.92121-1-sj@kernel.org>
+Subject: [RFC PATCH 2/4] mm/damon/reclaim: set memory PSI 0.05% as default quota goal
+Date: Thu, 19 Nov 2026 22:07:36 -0800
+Message-ID: <20261120060741.92121-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261120060741.92121-1-sj@kernel.org>
+References: <20261120060741.92121-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 7FECAC0003
+X-Stat-Signature: n35m3sikrkuhc9iq4c4brmrae3htcwb9
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: obr8ct13xwq8c7dc7s1qcbaj1p8d718f
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 931F1140005
-X-HE-Tag: 1795154870-285019
-X-HE-Meta: U2FsdGVkX186OPN3Z788KpMqEp8KADNhmNI1WEC8Qaer9qwP/DVjLbWC7bXwC0hGmzLUNaTpGMQXHBq4dS6fVSYOBNnG/Tia4LVDQowbMrmcJb4nW9Lbc8dBDKaJc7H52YoWTozP5yMz8V2UOvCcj+fUbBE38SDENTojUme9VY3bpSqrsh8bmfAJZUhpsr4c40vZkFMC3fYKbKuamgErcGy25wCAdG9hBPMwBwHem39PE3XYdpk/96VMG/sKvccCL11cGeAC+rP8yMBWuNOfg6/vXGbtd+5eyhKYrgFn/k7JXv0g5Rt8ACB0SlBVhyX/Tn028FSKhfxyhTdUAwYAwEi3j3MU8Sdcvm9TZ8GATHipUc871IDDQhtSZMil3zilfu//CKx60Jb2yNo8lyGdlmZSKBd2Ds4/v0vZz4XgQ/ummdsnsaOww0OKpshb7bVMMszjpDL8eDai2eZQgYcAbxQdu8VTm063OAo12q45MULl8ynkha3dAeMNNsIn7stltlVosv12cIsGA3uxQ+SMOVR6g+NvuazmKByl007bxmOp4wtymDMoLWHR3ILMcDb823t4fZ7umvIZmQQcN7ReGAD32V02mUYGew5ue3yI8mfzbWfyZ0fYjycTeiDAvGUQlr8C9Tp7Sd1+pMh6uzmZ3Jvz6CzooBs14SlA/9Iy+3Edt0DHs33o+7q7XeKN5pFLWF/EPG7dhyA0jC1u0D1+awnAm/ZJmz3p342d8jzeoj6l+hQ5yyXz2uJ4cZaFmJhuW9mm2Gs2fEmaN5EmBS/sYggrYWXkYwoMZXEVQ24QoLQrDDvOMLtgIPY6lij4/a0FFWGc/p0K0+QH4RE9e2Kl7nkC4f4Ec7LnJU4U9cmBZ81dtpIFJaxXhWuksWrpEzdGpalSX3RzJbg7E6u1HMfslh5f3440c3+PWPe3k34ZP7I7SGdnrFRiFg2xfFXsjTCJP6UidkglIB3sHkBH96U
- YIxJkWAY
- bCFI0A82FB/K6AOKSs2hYe7+D6tx+e+i6Iav7dMNyDBIee0R1uOx8gmcCiq/5laWCIqvx/JJBw7Y9uNo3KwrMrtG7HizufC2R8SCAGe60BaGw7W9qcY9AoyHe8dlbAY4XNovgILKXFnA0c5cEevyKhpkMldOwMIKcVwrd6TYxCmFnITsSpJ+9qc2ZN5ThUnI0oHv+Svh7jSZHX3AupssZgNj8tQPEIEDjGKIrjQ5jdh9H9YtQVs7zNkI3x3vkge5o/SCZiLKuv87m2RXIlkASO+hZUPZmMEuRJlR1eg+QL5933rMIj73xAbvmhKBc/5MAukzFjo43wU5H7xED4DlfMftBt9mfKwbZvqR6O1eqJ/dILp+oyVkEyCMcImIdna6KKRcNQvcZnRY/+MCrenOCjBzBJzJ3wXFmzvUK6dPGX0PhHpi5oJc8DSOOxQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1795154870-976225
+X-HE-Meta: U2FsdGVkX1+u6+OuPWWcOMWpANUcQDoR0/i4DdbzoUmfip6CPKV4PUVxJi3YEMCG9NR9LAjC/ZuvDBEiMod0H3FD8hu9WbUk+W1Akr4wCzM4f2K5mmVw81GPlvXuNWtll4AXbu47SQqxeA8TPNoSG0U6MZ/vCMhdbtY56s5lH66xu3h/OIvoR15r41bdiVSQ9Murdvrx5F4y2tAEO4KIv05t/uKKmIzIyhX73PQX5hvsWOCMnVdhoqnmSL0kWkSf/O8zkLEtGgvPbMude2kf0prSIQwELQMk/M8kmgRLmrlgKepXodx43DDToVfLqdJdUjvSsfX3Agfsdo53D74p4X2FPLhnJ3a1DQZHZxhhJ+TF43TD3+U7wuGSafoWR6qCRihnBKaFGWokMKYyhj9Uoc9wk42KUtoaS+Kjkn8stRR5g3+yYSepmtAMEXGL3m+HnHA6w4f/YYZ+qE5XCoz1PKXJ+/SGYjg0u4Z6Y4hDLo7ob0kP4cdFwLavuJgiomvFZm0N3nq+Z7y5JvOYw0Tzrtu6KjiE4e37Kp1vyDkKJ8ES4aXDD+mmPeugjP64gt1Ypl/SlsBxkiDQYunE+Kph1YwW1onWihSt5uWED6wt3iKRTygYZzWWRo+dEM3gS8FvXe5FfniHToADGihYBsP1wKXVh3MfktrfjFW8H4PZGY5hZIV1yYaQZUkKyzsEsIXK6QwiYjrM/sr5xmieNqe/YwZbKeulFAm5nGjH7+sjy3qHwFRFfZ6C2WsvKxbuYGjPuTgJHN40PIRyEDUMzj2S3Nu0d6QDIVspyJXTCNni9vFsoTajJlf/4zEfxf4Rtati1gOpK8PARhsyUmCw3C/49fNGUI+Jd/kjbtXynIDgc57RZpXU92BHH5CFhOaR26v34maA+zlVrNXYf7mgDqOoo4NFmUb0gI38NLfg6ybseF4NHGowFSoL7z6Ee0VXlwQiUAj4P+42Lh6CJgrAq6C
+ suivZL2a
+ 4Jo0SEAECa0u9f8fUrvOCTzS1cGr9NAxDVGx+yfuQQ2cMrzRkBqF32gtJHeOF2Y3hGlW43PpNv+3hFODk9o/FLpA9UEkcK6gTnM5vGJ5BzyTGUKSh6edNXCbYNQaGy0BcBZASwxim0CbBFfMvYmedrous9fmZAlTwLes31WVgoJ3TFC3+A/dvh/M33C9+clihdCKHunYJxt1SeXXAdqrUAIS0FoY5RY6k/Q9D2YsB5Kj1VtEP8NQ2QW5f2VIvmYYLIICuO2zf1m83Va6PgmdnbSgjq9AhYT9v8wBGoqDaNYhtFZ8mYzPL5qQapXaokWVQspkZz4Ssy7w3m1mW35IxuRbrQ7J5hH5kIlS4XR5ChpH8Q1CpX8kgmIlIhfHQh0J2Zb07+yWiOxo8pEggZxPAPw4GrW4LtXipEV2UYq2DSc/icK8yMcmFYDD8zjdGZy3KkLcZVUw+79566dU6QgbaLXh2HJPikK/hO8Qx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,52 +95,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The initial version of DAMON_RECLAIM was supposed to be used after
-manual tuning of its parameters.  Among the parameters, the monitoring
-intervals (sample_interval and aggr_interval) and the coldness threshold
-(min_age) are particularly important to be optimally tuned.  The optimum
-values for the parameters tend to be highly dependent on the workload
-and the system.  Hence no small amount of tuning efforts are required to
-each DAMON_RECLAIM use case.
+DAMON_RECLAIM provides a PSI-driven quota auto-tuning feature.  Because
+of the DAMOS quota internal access pattern based region prioritization,
+it means the coldness threshold (min_age) is also auto-tuned.  It is
+tuned off by default, though.  The feature is expected to be only better
+to be enabled.  Enable it by default.  Set 0.5 milliseconds per second
+(0.5%) as the default auto-tuning target memory pressure ratio.
 
-To reduce the tuning efforts, we recently introduced two auto-tuning
-features.  Intervals auto-tuning (autotune_monitoring_intervals)
-automatically tunes monitoring intervals to provide practical and
-efficient monitoring results.  PSI-driven quota auto-tuning
-(quota_autotune_feedback) automatically tunes the coldness threshold.
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/reclaim.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Because the auto-tuning features were introduced after the initial
-version, the features are disabled by default.  That is to keep the
-default behaviors unchanged.  However, enabling the auto-tuning features
-is only expected to provide more benefit to the users.  Disabling those
-by default only makes the adoption of the features slow.  Also, it is
-difficult to imagine real users who use DAMON_RECLAIM with its default
-parameter values.
-
-Enable the auto-tuning features by default.  For PSI-driven coldness
-threshold auto-tuning, set 0.05% memory pressure ratio as the target.
-Free memory ratio based reclaim watermarks were introduced as a safe
-guard for unoptimized coldness threshold.  Because it is now reasonably
-auto-tuned, disable the watermark feature by default.
-
-Enable the monitoring intervals auto-tuning and PSI-driven coldness
-threshold auto-tuning via patches 1 and 2, respectively.  Disable the
-free memory ratio based watermarks via patch 3.  Finally update the user
-document to reflect the changed default values, via patch 4.
-
-SJ Park (4):
-  mm/damon/reclaim: enable monitoring intervals auto-tune by default
-  mm/damon/reclaim: set memory PSI 0.05% as default quota goal
-  mm/damon/reclaim: disable watermarks by default
-  Docs/admin-guide/mm/damon/reclaim: update for changed default
-    parameters
-
- Documentation/admin-guide/mm/damon/reclaim.rst |  7 ++++---
- mm/damon/reclaim.c                             | 15 ++++++++-------
- 2 files changed, 12 insertions(+), 10 deletions(-)
-
-
-base-commit: 0ec5c1c237bdf91ae93b3efe32767aad9a670f8a
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 2241b3e9145ef..d297b1596704b 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -69,9 +69,9 @@ DEFINE_DAMON_MODULES_DAMOS_QUOTAS(damon_reclaim_quota);
+  * compared to this value to see if the aim is satisfied.  Value zero means
+  * disabling this auto-tuning feature.
+  *
+- * Disabled by default.
++ * 500 microseconds (0.05% of default quota reset interval) by default.
+  */
+-static unsigned long quota_mem_pressure_us __read_mostly;
++static unsigned long quota_mem_pressure_us __read_mostly = 500;
+ module_param(quota_mem_pressure_us, ulong, 0600);
+ 
+ /*
 -- 
 2.47.3
 
