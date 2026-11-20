@@ -1,104 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFBD606B9B9
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D150606C96F
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AYDepuBI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mNnqvyQ2
 Received: by kanga.kvack.org (Postfix)
-	id D325A6B05FB; Fri, 20 Nov 2026 13:11:30 -0500 (EST)
+	id 6CB776B05FD; Fri, 20 Nov 2026 13:11:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBDE36B05FC; Fri, 20 Nov 2026 13:11:30 -0500 (EST)
+	id 653B66B05FE; Fri, 20 Nov 2026 13:11:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5C326B05FD; Fri, 20 Nov 2026 13:11:30 -0500 (EST)
+	id 4A7526B05FF; Fri, 20 Nov 2026 13:11:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6366F6B05FC
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:30 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D05AD40140
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:29 +0000 (UTC)
-X-FDA: 85456289898.05.0090344
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B68CA8000C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYDepuBI;
-	spf=pass (imf30.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E8D3B6B05FD
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:11:41 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AFA916012F
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:41 +0000 (UTC)
+X-FDA: 85456290402.28.48E5CEE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3B56F1C0006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:11:39 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mNnqvyQ2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795198287;
-	b=6LUZYQYKKSv3wlsaW9bJ+S9K4nZCE2pEpGQ+CIZpqxfA2szRvUZEep2t+zK60uI4ZXodmp
-	dOkZsvlUewOy3rsUFqC0RVjzu1uJrL8FDAMmR2KVcUin98s6nVfZT3Dw/OryWksLbasWUD
-	Bnjkz6zd4qcXQgW8XQkShkdZWDd1zIc=
+	t=1795198299;
+	b=vQlPFa+W3PIxeX96rAknV30dwD7rbU/yNDW6Aj1xzYcruuD7tB4cvdf5DvVpYi/aCddce7
+	LILeITkm4nEw+Jja2RMx0KRw0bmu9EZSd55WNMQK+c0sxY5DoeEQsctZXBKPs6EBIPrY6t
+	QszEpmHHb3aNnnHX23mHH2pMaVjFmOQ=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795198287;
+	s=arc-20220608; t=1795198299;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FeMVQLv7GLlhS6IUX7kRUUhFVa1pXNLb+geY1fYUbs4=;
-	b=D/s7UtxlfzsM+DbdME6YgYSKnPjC8zFNtpUQ8bjiuh2Bc24UQkLZcWUTXVrZKUyO8M8QXT
-	kjs0yoqia4YII/XROZdnBG6yVK2tS3lmDhhkWKW7B6DkYqJMTBEnyX/b4H0t6CeDFfelMS
-	Pz+woWmefG7p1TSNG5h7t8Eh0uhzfxU=
+	bh=ucJJo35EhYc8uBblcAl6XMSIzkyavztIGCd0YleD0jU=;
+	b=XjiAuo7ZCMzsmI41+7BMzsAtz09Vq2IyQqqY4abnqd8ylRle6IgYJpAJM/o6IDBykuQ0Ny
+	AWT3XMDbhLEU5woeCg2raKwES8sAFuTMBmVudHZOVNPiRVrpEPoNemgvTCu6rEldIqp89X
+	UcdzCyIcwAy2gcJNrvlnM5E2umEuo4I=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYDepuBI;
-	spf=pass (imf30.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mNnqvyQ2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3FE1A63496;
-	Fri, 20 Nov 2026 18:11:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8C21743F78;
+	Fri, 20 Nov 2026 18:11:38 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795198286;
-	b=QiY6q3DZML2mGCy6vjhBvjNMdHDQRvVlPBi563FEOlsmsRrf3bfV0zyMk/RCXj7Kt8WS
-	 tMlwiXlXjOtN34agcv7ceWbNc56LoKA7LDxaXbMhiAHNJmty2n8+hplDDTbArtPD0k3mk
-	 4TronGz8qDdiPXqPGWayfHcbG6PiPxZBlpTmVcShLSkvsmUU+dciXSMML5p55UWYqAcis
-	 XhM3wb3B3A94CEsvl0+6k8oci+gwBJlrmeWajCX/6weupb7WmBVaxqFlt6ePwsKKLgmRs
-	 0aMWP0XqTA7ahgHF0WWXpWMbtafdBqgqFWk+sJ3pn8dIKuVYM9P2lTR5fMjs+W1mOcw==
+	t=1795198298;
+	b=HlWepT8N/RcO2s/f52O1bBRbe0iOHUMPaPhR87xFs9tXetsWsOyy0xjWxpodNqsUUhUi
+	 hL/BYTSSDXGYthe5iyihrD00g7DeHSknGuL5gtJYVkw8g0RsuP/fBdFmIlQJSxTS36niK
+	 jFN8iwpToh3ykHu3hMKlhLz4QcbjFH18N5x1pgNmqXPJq6aSMQ/S0bFGWhPyIs9Merwnj
+	 xvcjY332d7H+BMAmXUsalrPv1KARYJGy9wbdD+M9CHhIKX6HHpw0fmcovuqRRAYpHupeO
+	 ly+B18ry6T6nhOesYjS/feLBdyiJBwVKHYjtl2NQTrj1Eoy5jyV6iz+9e94fr750xMQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795198286;
+	c=relaxed/relaxed; t=1795198298;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=FeMVQLv7GLlhS6IUX7kRUUhFVa1pXNLb+geY1fYUbs4=;
-	b=FRC0mQpJpHDhDC8TvYHMbKy0iCjxWrhYDoqiUHQUJDxhsVNyi5t0/01uBeKpqgvz3C6s
-	 AIuT/4BnY+SRlgxFBN3uZh5l5Ov58wUEUDLRPqudv9LTz3bZ7sSkVWPsAEIKPRnV29Gjk
-	 3gqTAUq2fsSWczLEiQTinh9XCnQivWH9ARwHWU5AKPxx6zkJBLQ1Tm/AnyFVfEnVuzxTT
-	 DmKLOPgsSWBClInyDzk/76Je2sTAEXm4T8abkxT0sYKShbxhHjtQlPWD2igTY/xEu9AwN
-	 Xo7zb33GyuLOFJTMDXIAM7JHdgJLE/LljjvvjebuVDIeUBF2AUYyXIoRN4GWNemecAA==
+	bh=ucJJo35EhYc8uBblcAl6XMSIzkyavztIGCd0YleD0jU=;
+	b=qwok757q/8PPHCg1OCK4PIvyTBUXJFw/zbbxwpt80Sd5HHp1kfGPy4GH8KJeqkMZ9Vz8
+	 rEyd3Tf/jLapKhFXxJZMCn7jmRMVPM2IULIputNpijTXiJxgvNpjSmSKnmQ2kFBZOgdNt
+	 6xzPoS6HB5j+mlzpVuDhBauXjnQxAhEEv7w/2ZqatQlckTz40zPxTmDhDwNiE17WjPVBn
+	 ijG+s/VKyGyM3CMd1xqNVvTPGy9CUCq8bdtNX2v+thMksqvM8P+s8yxAqfVgsv1n1Ivu8
+	 Sb6iFLVDNIvVRkV0KH7AyM38e/GPo+3ptajIxr2YPfo1L9FaiSCwkGwHMB97z+M7Qow==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 3F9C61F000F4;
-	Fri, 20 Nov 2026 18:11:02 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id D2F231F0157F;
+	Fri, 20 Nov 2026 18:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795198286;
-	bh=FeMVQLv7GLlhS6IUX7kRUUhFVa1pXNLb+geY1fYUbs4=;
+	s=k20260515; t=1795198298;
+	bh=ucJJo35EhYc8uBblcAl6XMSIzkyavztIGCd0YleD0jU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=AYDepuBIJQc9oFfAnEENBLj3OIfBMGcU7YubEbIE5I4fY9gJQgLUNdpoaBZhp74Yd
-	 xQAHP6KsZh9peWqr/XXyhaE4Qp6JJNUej06k4VJCJxK72sTJkZGMojm+DxFy1/mn1Y
-	 9WQUksA/ccfLjYFlBJzmzPXlgkXpVJlINcH+6GwTblNsNQQuscJiXmVvqyBHkNogYB
-	 yvEUjlPD5mcXlWJ5rXopugG7M4MjRrB8T3WzP4ykVv8av7qZ+JEidyaY+koLjteZYU
-	 K4lbl9MkVw6uwGReaVBzQQXGA8XTITPMuiQJjsyrHddyedTrUSME6VcRUf/FJPB0UA
-	 ryK8eQPgCS6Cg==
+	b=mNnqvyQ2S/y5CQ3mA5UeNg8lnQsxvgEbK0ggeNADbf2ogUHqJSfhZ3ENv/Vg2GWC1
+	 Wb7mlVDUg4pb40GH/JQifTMpHDe76E6vaoT3/lMl4/KNJsfSm/JF+vTSfrFFLSn7yd
+	 AJ0eGUuryC6mV4lNFEupta1pomX90P7oS1wEoPqVP6D9ZObc9sZk5qcn0IGCvqH8tL
+	 I5/RpB3ClDRRGgk8r6EK8V6lw8/Fv2girBsKMVnOj4yXl2gu0kY92UPW0d7GOFtOA8
+	 U8k9bctBc1HARihAhDOScJXhd0vCwRnCWri9+aKuSwlkMUDGPkyp4Uqbd0rinLZ1Dy
+	 e5NY8tLWjxr9w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id B5C804B99C;
+	by lkml.kernel.org (Postfix) with ESMTP id D3BA84B9A0;
 	Fri, 20 Nov 2026 18:09:23 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:46 -0500
-Subject: [PATCH 55/60] mm/memory_hotplug: online and offline private memory
- nodes
+Date: Fri, 20 Nov 2026 13:09:47 -0500
+Subject: [PATCH 56/60] dax/kmem: add a private memory mode
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-55-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-56-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -155,11 +154,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198154; l=9476;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198154; l=5242;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=b3jGnnyWNDUyPQKsXIBVFwBX7ofSFROdnSCpZbbkWAM=;
- b=dURyeucqjPXkJcCpnAWMuH39xYYU9Sy7XUOxE2r8Wwzbf7ANdiCKotrRObSTQ40QuJ0Zf1HzK
- SNlKPBgabacDKodij1dmaphP8727fp4GMxD4DcXEnSyqnVu+FgJGUPW
+ bh=zrM1qpXNDU0W3OEbrrofBX3aJ+CtXsUD9H1wIf9M9+I=;
+ b=R6sNzzY6t+TWBdJe7KJBQcoH3BsMwxDWl4rWxlfetNYs3LP+oZXkDWdpnsHICyDBXQ4HWIrdL
+ DUshXIHhLEGAEndhFx3dYv0seeaJh6E4Ar1fYAuHjKqy+U87r8NL2cs
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -167,18 +166,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zqfnaoac64t4w9kbbxsoudmctn3rrpw7
 X-Rspam-User:
-X-Rspamd-Queue-Id: B68CA8000C
-X-Stat-Signature: fxecyuegi1mzpih4wpenrscr18zj9784
-X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3B56F1C0006
+X-Rspamd-Server: rspam10
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795198287-826983
-X-HE-Meta: U2FsdGVkX1/z41EdSYzD8Zxsj7zcPhS/PQvGYSrJijGjiPqHMRmJZZ7JUGOtKAvy4pVlm4xBTEJLxC0RzEgXE3auJM5FYNGt8ms9yUOfU4uCJyQS3sFunMVmxNy4XJAWQHfOsEYdCf2vshoGJY5vR3k3rXfndULYB2cNi41V+k8k9uO+xIwh/4Bpz3PWogVSulzZY+LHbjv/2i07jGhyZ2u/E3OMAHFQyUzCGmetnK93kdRh7LdZelDNRrMiE5VdUesyiTeRZCto1MYaEtLGZbyC3eqLWQyoQKn5Hb8ScPqEmx9sA4+k2RS+kLVdxaW5RTKZxWBcd/QbZqfARUg43FfH+Wj4Xv6fh7HTOTXGsMc8Me31DDaWCnmJPp5fHDJh8/59jp+rlxWH70mc0bCS6LrnNkyr6jxkKWfuDK6Dho+I00nEu3NkpqgHsI5Tt/FFntnxY/N5Rmw/PJlVXrziXSUzvQ8/SoSj0l2tLN0UeZTHNPJ6wwbmMqAnYfCjsne7w8JRkX65ASoEFrMD2qeBF3vcrb2GcTreW+0qV/YHWKfkFpAmGOHAtWCKZMsdBDjCQxnivFP4D3XFEVxJ0iFVij7V8umFcc39ZgtehTr3YDqKdFGhCmTxL1p5Ll1RZsVSjzjq+25RLX+x0Qs/dYih+6UGAULFmNxdvMjpykdcHXmjtUbRhv1cuhjCoExnXXpLklQQ7ZM3llKU7yCazSkS051Ydqewcyrh5Z5XFE7N0gA45fZwXEaTSJHpbFj+x4d4GbEJty5f902HL+PQ336b08QYWTXWJLXt2MPnqzZX9+x1Tv6XkU5rigkRPipYNDGVUViLwFH2LMZz8hROB7oG/9+AcWikE/0ang2kJS9VwJDNkZQzv7kfufa3uS6AiLXQAH+L/vvS9juPMB7kY11/N1n2orgpitsfJcC3U/e6zqiUP55fzAaB9sZ+6Ltpb9gjcvH72MW47G+7p7R49Yg
- wRUx/2fV
- dHbYvfIIfcemWUxNmlN/T657ONWeu+aUf1M5/Nsa2qpQahUTK93JocIf5UbaAo+xWjEG3r6fQvc8l1lWPBe/dhd6DoO4SIeohlVDma/ej1YjsthqeDKWXngvitEl0oxWn38T5YvtIghem+mELj5XeUStsXAK1NIc71kmt6eolzlHCBjs9FCciWbxdIAmXs9LnnSkQolII1tcM4OkIuPUYWUldgFQ0r7FXzD6bFqnHJhvdAhnL9IL2Z7qqZuUdJR/1wBVFRhkNEVh/1X+J3/rklaAH+aNZfvO8JdMAKYqul9zOQEScy6Fj8whPa2TWcHZzsootiUoqMIY0bR2h22kFme/bGcYYpAYP9Wol5GwywWcfC6S3ZCHUv/C5v4s9yKP8vbKPnBRYRqlK3ZHjoKmYXdrNnu3Q6bu1fzYa6Atk9MJNGgwsjHgdkWeIbf+JFpPlU6mym46JzSWJlBQbNsGBk29cb3iAH1ukq00szlRA4NEJen6uYQaZhtv3Hr8G/p/14vn9CkIq2ne6yRe3Ya3jl73NbvasKsPqEXLZkwKTrejOb8ophxy7rqiZe2yyLUDyagJqn9OQWW71+q6aGkA6RAXx1B3GrJ5tQrQ4nyKacTOqW2poQd4x6HR0wChKoulHYBkiUPlD9R2uEvJjJGVIqnUHbKSGchcQH4QlYkpLEn9mnYig9zhNibE0YakCbMVHc9tT84v6Z832AdpbglC8Q5mIj3l5Y6Zee01ZkYNzElDpQYZye3WlHExGbWhXltgcempFZ31E5jnkSJiTCZsBMdk4RZEsQEQxbFrPUUxN4wlpUKscya9AKvsn/w==
+X-HE-Tag: 1795198299-734444
+X-HE-Meta: U2FsdGVkX19pOKitm+NiF/VRgCbHB01lh9XrF13nv4WMLMU7lQ/MJ+Q8MRogbPP+uzMtTVyLxZAc9AwfRzmT07bHdFAWQuL4DBWORZzfoyO0QTJ4bteSFIVra+YpXmShcOaYi/7Z7ZLoeNaYtMQ9asnMuCYJFRcTF0hVZ5TNH24NWO3i7/3Q9da7IGoSs0P3EoCoDc7gXW1eQyw8RqUzUALLt+7kwp+tqsY6oKdJIWdLQAXWaMiZ8ykUJ9d2g7nVlUB4oAowHKHZDdHSIbh/XCO+j8PGmKDD2GtVCjuvzEQf2m1gVe/dFsN6OGa/NH9QqzDamqnd5I3yz0W30DryhDtuTSLPjQRuk85rc72kQofYQ+5yVsU6c96uc1l6reakZylbW9d8Zw3NHoYLinv4Zg+apzZJDVAKXIua999bj9OGCUhq7cz6InB4nQFP0tNUD4GM/ksuDaLORH3E5A7LJPhPXjQJaC1CBku0jtNWvsQ88uFSQ95fT4r+DGpI4snG1jTasln6JFSTanxi4Ryf81jq+P4Mw1x5n2iP3dlVHvAww2m4UnBS6tfnq+gWgvdUDcxWPgzqqbUOEPigxEVP1k0ukIgsyDCZZUdi5DrtHyL1JlYvMQlLM/yWRY5fibMDXUQW5+qUpYzfI2dtmlt1c5/EjhwKVcQMEtmk+KPhWe7WaZj2Ul1P+xVI4sK0e5mh0GOmOruOhyaYFWtcHPm/jJWbOPYOpQ2YMeq8JJT54aLQTxujtJLsjcLjk5sef0ReA/KRsDi1ZiBtxVWARZjflId0PFOvU/iCmRxAtqmavi1YgUcGTQEbJrYOjjoVdQPH3W6cono7ZHRrl6TbexE5zTOhROc+kWqrRQ/gDVbN8dHsfTE8abMBnYrg/d83UouGZzHqos5Qxz1oX68fc3kzX/uO2q4lPoIPDH629K9HcCYQSh7oPI5f0fsovjJ0GUCNyZxv/b5FfIrpvY3f3jV
+ 1SN4XaXD
+ Q7oOI8pEzzlC8G0iJnc6DKJNnkcppdflr0aaf30dUp/HcAdlTlH3TMoNXxiO9D0Q8PtrBJc9kRLZBjTHClq73j+S4tzBxZGRx8Usp6620c9cpfbBb+mrZ9L7btaYCJPmBz8Gj2d5Bj26fh8g+Capg+G+9YOaSJqBiFiRl6EaYF/4+PenpR8cZMkq3LZThMJhDamU+dgo9b3jiK0wcUYdMVmKa1m/3HCrpkosekorkNZmUCojuEn6GWtLM4tppRa6pmyyg/9r0tJPg3XH2DreIsxGunFmOBkyiTNJWh1OBieVw3jZi7dcCi6sQsesNzmpjJahU9k9DUJafnweW3MLz4+0xc9pBsbkxZgSqFXSGirwaOtcJCUsMgpad0h5qGUrqt/iAAVPHZskH5YWcYlniwhM021fKdNTJ/p0FR9SJlYX4hb5ccJFZDDxrBhmDF6x2yetBoECmV1S2ELd0ZMi60OL4X9WtwlHxy0ynqNRKQmUFeoMLI6ONLap6KGlOD+dStdlzKYJoyYj0IZEPvPJoIr6dpN1dV13h4aeOcvEpsZ30BYmMNXlPzXJKcodkbWzXzi45E9cc1NlHmtpusZ8quRMplwqV8KNFbX6oF6TROtQ6JmafdOI/wrk//zYqeEcXukEuSQRRgaMR3eb4KXbp0v8SWIWDnNPidsoOjpqUr+Plnp74gVYpyLbS5TAbzVjGblj4xfcQV9e0ZP5WPTlR28KXYD46XvIe5oRNmuZztLyaOPGH8mgXy1o2Yacl5cHrPSkFzR+ZF8bMPRE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,267 +188,157 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-Allow a driver to hotplug memory onto a private node at runtime.
+Add a `private` boolean sysfs attribute, defaulting to false and
+changeable only while memory is unplugged.
 
-Pass a feature mask through driver-managed hotplug, and reject masks
-that node_memory_features_valid() refuses.
+When true, dax/kmem onlines the node as private memory with
+NODE_MEMORY_FEAT_MEMPOLICY, NODE_MEMORY_FEAT_RECLAIM and
+NODE_MEMORY_FEAT_COMPACTION.
 
-Memory joins a node only with the same mask. The node's features hold
-while any System RAM block remains (including offline blocks), and are
-reset after the last one is removed, even when ZONE_DEVICE memory keeps
-the node alive.
+Userspace targets private capacity via single-node MPOL_F_PRIVATE_NODES
+bindings on anonymous and shmem-backed mappings. Reclaim and compaction
+manage the memory, and the system does not otherwise use it.
 
-dax/kmem and the other hotplug callers pass NODE_MEMORY_FEAT_ALL, which
-registers the node as N_MEMORY_COMMON.
+The attribute is hidden without CONFIG_NUMA or CONFIG_MEMORY_HOTREMOVE,
+since selecting private mode requires unplugging the memory first, and
+the default behavior of dax/kmem probe creates the memory blocks (an
+unfortunately backward compatibility wart).
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- drivers/dax/kmem.c             |  2 +-
- include/linux/memory_hotplug.h |  2 +-
- mm/internal.h                  |  9 ++++
- mm/memory_hotplug.c            | 94 +++++++++++++++++++++++++++++++-----------
- 4 files changed, 80 insertions(+), 27 deletions(-)
+ Documentation/ABI/testing/sysfs-bus-dax | 19 ++++++++++++
+ drivers/dax/kmem.c                      | 55 +++++++++++++++++++++++++++++++--
+ 2 files changed, 72 insertions(+), 2 deletions(-)
 
+diff --git a/Documentation/ABI/testing/sysfs-bus-dax b/Documentation/ABI/testing/sysfs-bus-dax
+index 60703fffa99e..d024cf8e5ae0 100644
+--- a/Documentation/ABI/testing/sysfs-bus-dax
++++ b/Documentation/ABI/testing/sysfs-bus-dax
+@@ -175,3 +175,22 @@ Description:
+ 		A device can only be onlined from the "unplugged" state, so a
+ 		device must be returned to "unplugged" before it can be onlined
+ 		into a different state.
++
++What:		/sys/bus/dax/devices/daxX.Y/private
++Date:		October, 2026
++Contact:	nvdimm@lists.linux.dev
++Description:
++		(RW) Select private memory when a device is bound to kmem.
++		Accepts boolean values and defaults to 0. The value can only
++		change while state is "unplugged", before memory blocks exist.
++		The attribute is hidden without CONFIG_NUMA or
++		CONFIG_MEMORY_HOTREMOVE.
++
++		With private=1, the next online enables userspace NUMA
++		placement, together with the reclaim and compaction it
++		requires. The memory is excluded from ordinary allocations
++		and from other memory management services.
++
++		Userspace can bind anonymous and shmem-backed mappings to it
++		with a single-node mbind() policy using
++		(MPOL_BIND | MPOL_F_PRIVATE_NODES).
 diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index a48d699cf344..5ec653bc88f0 100644
+index 5ec653bc88f0..2954f22ececf 100644
 --- a/drivers/dax/kmem.c
 +++ b/drivers/dax/kmem.c
-@@ -126,7 +126,7 @@ static int dax_kmem_do_hotplug(struct dev_dax *dev_dax,
+@@ -46,6 +46,7 @@ struct dax_kmem_data {
+ 	const char *res_name;
+ 	int mgid;
+ 	int state;
++	bool private;
+ 	struct mutex lock; /* protects hotplug state transitions */
+ 	struct resource *res[];
+ };
+@@ -89,9 +90,15 @@ static int dax_kmem_do_hotplug(struct dev_dax *dev_dax,
+ 			       int online_type)
+ {
+ 	struct device *dev = &dev_dax->dev;
++	unsigned long features;
+ 	int i, rc, added = 0;
+ 	mhp_t mhp_flags;
+ 
++	features = data->private ? NODE_MEMORY_FEAT_MEMPOLICY |
++				   NODE_MEMORY_FEAT_RECLAIM |
++				   NODE_MEMORY_FEAT_COMPACTION :
++				   NODE_MEMORY_FEAT_ALL;
++
+ 	if (dax_kmem_state_is_online(data->state))
+ 		return -EINVAL;
+ 
+@@ -126,7 +133,7 @@ static int dax_kmem_do_hotplug(struct dev_dax *dev_dax,
  		 */
  		rc = __add_memory_driver_managed(data->mgid, range.start,
  				range_len(&range), kmem_name, mhp_flags,
--				online_type);
-+				online_type, NODE_MEMORY_FEAT_ALL);
+-				online_type, NODE_MEMORY_FEAT_ALL);
++				online_type, features);
  
  		if (rc) {
  			dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index ec71debc0673..ae6046510958 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -304,7 +304,7 @@ extern int add_memory_resource(int nid, struct resource *resource,
- 			       mhp_t mhp_flags);
- int __add_memory_driver_managed(int nid, u64 start, u64 size,
- 				const char *resource_name, mhp_t mhp_flags,
--				enum mmop online_type);
-+				enum mmop online_type, unsigned long features);
- extern int add_memory_driver_managed(int nid, u64 start, u64 size,
- 				     const char *resource_name,
- 				     mhp_t mhp_flags);
-diff --git a/mm/internal.h b/mm/internal.h
-index 646efc2eacd1..0eefa0df1350 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -65,6 +65,15 @@ void folio_mark_lazyfree(struct folio *folio);
- void node_set_memory_state(int nid, unsigned long features);
- void node_clear_memory_state(int nid);
- 
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+bool can_claim_node_memory(int nid, unsigned long features);
-+#else
-+static inline bool can_claim_node_memory(int nid, unsigned long features)
-+{
-+	return false;
-+}
-+#endif
-+
- /*
-  * Common memory is available to generic MM services. ZONE_DEVICE folios do
-  * not qualify even when their NUMA node is common.
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 8146f77919d5..37e64c146b46 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1494,6 +1494,43 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
- 	return ret;
+@@ -380,6 +387,33 @@ static ssize_t state_store(struct device *dev, struct device_attribute *attr,
+ 	return len;
  }
  
-+static int check_no_memblock_for_node_cb(struct memory_block *mem, void *arg)
++static ssize_t private_show(struct device *dev,
++			    struct device_attribute *attr, char *buf)
 +{
-+	int nid = *(int *)arg;
++	struct dax_kmem_data *data = dev_get_drvdata(dev);
 +
-+	/*
-+	 * If a memory block belongs to multiple nodes, the stored nid is not
-+	 * reliable. However, such blocks are always online (e.g., cannot get
-+	 * offlined) and, therefore, are still spanned by the node.
-+	 */
-+	return mem->nid == nid ? -EEXIST : 0;
++	guard(mutex)(&data->lock);
++	return sysfs_emit(buf, "%d\n", data->private);
 +}
 +
-+/* Caller must hold the memory hotplug lock for these checks. */
-+static bool node_has_memory_blocks(int nid)
++static ssize_t private_store(struct device *dev, struct device_attribute *attr,
++			     const char *buf, size_t len)
 +{
-+	return for_each_memory_block(&nid, check_no_memblock_for_node_cb);
++	struct dax_kmem_data *data = dev_get_drvdata(dev);
++	bool private;
++	int rc;
++
++	rc = kstrtobool(buf, &private);
++	if (rc)
++		return rc;
++
++	guard(mutex)(&data->lock);
++	if (data->private != private && data->state != DAX_KMEM_UNPLUGGED)
++		return -EBUSY;
++	data->private = private;
++	return len;
 +}
 +
-+static bool node_has_system_ram(int nid)
+ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+ {
+ 	struct device *dev = &dev_dax->dev;
+@@ -560,12 +594,29 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
+ #endif /* CONFIG_MEMORY_HOTREMOVE */
+ 
+ static DEVICE_ATTR_RW(state);
++static DEVICE_ATTR_RW(private);
+ 
+ static struct attribute *dev_dax_kmem_attrs[] = {
+ 	&dev_attr_state.attr,
++	&dev_attr_private.attr,
+ 	NULL,
+ };
+-ATTRIBUTE_GROUPS(dev_dax_kmem);
++
++static umode_t dev_dax_kmem_visible(struct kobject *kobj,
++				    struct attribute *attr, int n)
 +{
-+	/* Mixed-node memory blocks are always online and covered by N_MEMORY. */
-+	return node_state(nid, N_MEMORY) || node_has_memory_blocks(nid);
++	/* Selecting private memory needs an unplug, which needs hot-remove. */
++	if (attr == &dev_attr_private.attr &&
++	    (!IS_ENABLED(CONFIG_NUMA) || !IS_ENABLED(CONFIG_MEMORY_HOTREMOVE)))
++		return 0;
++	return attr->mode;
 +}
 +
-+/*
-+ * Whether memory with @features may join @nid. Offline System RAM blocks keep
-+ * the node's features until the last block is removed.
-+ */
-+bool can_claim_node_memory(int nid, unsigned long features)
-+{
-+	pg_data_t *pgdat = NODE_DATA(nid);
-+
-+	if (pgdat->memory_features == features)
-+		return true;
-+	return !node_has_system_ram(nid);
-+}
-+
- /*
-  * NOTE: The caller must call lock_device_hotplug() to serialize hotplug
-  * and online/offline operations (triggered e.g. by sysfs).
-@@ -1501,11 +1538,12 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
-  * we are OK calling __meminit stuff here - we have CONFIG_MEMORY_HOTPLUG
-  */
- static int __add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags,
--				 enum mmop online_type)
-+				 enum mmop online_type, unsigned long features)
- {
- 	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
- 	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
- 	struct memory_group *group = NULL;
-+	unsigned long old_features;
- 	u64 start, size;
- 	bool new_node = false;
- 	int ret;
-@@ -1528,6 +1566,8 @@ static int __add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags,
- 		WARN(1, "node %d was absent from the node_possible_map\n", nid);
- 		return -EINVAL;
- 	}
-+	if (!node_memory_features_valid(features))
-+		return -EINVAL;
++static const struct attribute_group dev_dax_kmem_group = {
++	.attrs = dev_dax_kmem_attrs,
++	.is_visible = dev_dax_kmem_visible,
++};
++__ATTRIBUTE_GROUPS(dev_dax_kmem);
  
- 	mem_hotplug_begin();
- 
-@@ -1552,6 +1592,14 @@ static int __add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags,
- 		new_node = true;
- 	}
- 
-+	old_features = NODE_DATA(nid)->memory_features;
-+	if (!can_claim_node_memory(nid, features)) {
-+		ret = -EBUSY;
-+		goto error;
-+	}
-+	/* Set the node's features before onlining its memory. */
-+	WRITE_ONCE(NODE_DATA(nid)->memory_features, features);
-+
- 	/*
- 	 * Self hosted memmap array
- 	 */
-@@ -1597,6 +1645,8 @@ static int __add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags,
- 
- 	return ret;
- error:
-+	/* Restore the previous features while holding the lock. */
-+	WRITE_ONCE(NODE_DATA(nid)->memory_features, old_features);
- 	if (new_node) {
- 		node_set_offline(nid);
- 		unregister_node(nid);
-@@ -1612,7 +1662,8 @@ static int __add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags,
- int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- {
- 	return __add_memory_resource(nid, res, mhp_flags,
--				     mhp_get_default_online_type());
-+				     mhp_get_default_online_type(),
-+				     NODE_MEMORY_FEAT_ALL);
- }
- 
- /* requires device_hotplug_lock, see __add_memory_resource() */
-@@ -1651,6 +1702,9 @@ EXPORT_SYMBOL_GPL(add_memory);
-  * @resource_name: Resource name in format "System RAM ($DRIVER)"
-  * @mhp_flags: Memory hotplug flags
-  * @online_type: Auto-Online behavior (offline, online, kernel, movable)
-+ * @features: NODE_MEMORY_FEAT_* services the memory opts into;
-+ *            %NODE_MEMORY_FEAT_ALL adds it as ordinary common system RAM,
-+ *            and a mask without %NODE_MEMORY_FEAT_COMMON as private memory.
-  *
-  * Add special, driver-managed memory to the system as system RAM. Such
-  * memory is not exposed via the raw firmware-provided memmap as system
-@@ -1677,7 +1731,7 @@ EXPORT_SYMBOL_GPL(add_memory);
-  */
- int __add_memory_driver_managed(int nid, u64 start, u64 size,
- 		const char *resource_name, mhp_t mhp_flags,
--		enum mmop online_type)
-+		enum mmop online_type, unsigned long features)
- {
- 	struct resource *res;
- 	int rc;
-@@ -1698,7 +1752,7 @@ int __add_memory_driver_managed(int nid, u64 start, u64 size,
- 		goto out_unlock;
- 	}
- 
--	rc = __add_memory_resource(nid, res, mhp_flags, online_type);
-+	rc = __add_memory_resource(nid, res, mhp_flags, online_type, features);
- 	if (rc < 0)
- 		release_memory_resource(res);
- 
-@@ -1727,8 +1781,8 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
- 			      const char *resource_name, mhp_t mhp_flags)
- {
- 	return __add_memory_driver_managed(nid, start, size, resource_name,
--			mhp_flags,
--			mhp_get_default_online_type());
-+			mhp_flags, mhp_get_default_online_type(),
-+			NODE_MEMORY_FEAT_ALL);
- }
- EXPORT_SYMBOL_GPL(add_memory_driver_managed);
- 
-@@ -1789,18 +1843,6 @@ bool mhp_range_allowed(u64 start, u64 size, bool need_mapping)
- 
- #ifdef CONFIG_MEMORY_HOTREMOVE
- 
--static int check_no_memblock_for_node_cb(struct memory_block *mem, void *arg)
--{
--	int nid = *(int *)arg;
--
--	/*
--	 * If a memory block belongs to multiple nodes, the stored nid is not
--	 * reliable. However, such blocks are always online (e.g., cannot get
--	 * offlined) and, therefore, are still spanned by the node.
--	 */
--	return mem->nid == nid ? -EEXIST : 0;
--}
--
- /* Caller must hold the memory hotplug lock for this check. */
- static bool node_is_memoryless(int nid)
- {
-@@ -1811,12 +1853,9 @@ static bool node_is_memoryless(int nid)
- 	 */
- 	if (node_spanned_pages(nid))
- 		return false;
--	/*
--	 * Offline memory blocks may not be spanned by the node yet, but they
--	 * link to it in sysfs and can be onlined later, so the node is not
--	 * memoryless while any remain.
--	 */
--	return !for_each_memory_block(&nid, check_no_memblock_for_node_cb);
-+
-+	/* Offline memory blocks keep the node alive so they can be onlined. */
-+	return !node_has_memory_blocks(nid);
- }
- 
- /*
-@@ -2347,8 +2386,13 @@ static int try_remove_memory(u64 start, u64 size)
- 
- 	release_mem_region_adjustable(start, size);
- 
--	if (nid != NUMA_NO_NODE)
-+	if (nid != NUMA_NO_NODE) {
-+		/* No System RAM left: reset the node's features. */
-+		if (!node_has_system_ram(nid))
-+			WRITE_ONCE(NODE_DATA(nid)->memory_features,
-+				   NODE_MEMORY_FEAT_ALL);
- 		try_offline_node(nid);
-+	}
- 
- 	mem_hotplug_done();
- 	return 0;
+ static struct dax_device_driver device_dax_kmem_driver = {
+ 	.probe = dev_dax_kmem_probe,
 
 -- 
 2.56.1
