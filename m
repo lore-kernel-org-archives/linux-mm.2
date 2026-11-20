@@ -1,136 +1,164 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35427606A335
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950CF606A33A
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=lTbZNw0Y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLToh1Ti
 Received: by kanga.kvack.org (Postfix)
-	id 5124D6B05C6; Fri, 20 Nov 2026 05:10:47 -0500 (EST)
+	id C17966B05C7; Fri, 20 Nov 2026 05:10:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E9A66B05C7; Fri, 20 Nov 2026 05:10:47 -0500 (EST)
+	id B9FFC6B05C8; Fri, 20 Nov 2026 05:10:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 400336B05C8; Fri, 20 Nov 2026 05:10:47 -0500 (EST)
+	id A67FD6B05C9; Fri, 20 Nov 2026 05:10:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 16BF96B05C6
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:10:47 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AAE3C1C49B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:10:41 +0000 (UTC)
-X-FDA: 85455078282.19.B9F229D
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EA9ADC0008
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:10:39 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=lTbZNw0Y;
-	spf=pass (imf22.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 736B56B05C7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:10:52 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2B2140E4C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:10:51 +0000 (UTC)
+X-FDA: 85455078702.18.0B5BC83
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3D1FB1C0003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:10:49 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VLToh1Ti;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795169440;
-	b=IcIsPxeHhnzL199MkQ9InvE4KvSQvwFpANj9bPXwOcQWXsqBlDkCohASTEUSvfM8lk1dzP
-	IWtms4OkfjrAquCDf+USc5PW1hdx1ReuGLCPDD1nTCejo8c5dYvUDHLPZhJe12WGt7U1+R
-	IEPUErzdsxUCYTkt8Rft2yZxZ8oWSPc=
+	t=1795169449;
+	b=0AFV/mAMl6NutKbEAJW8mo9wHPGyfIraxO+sSYQem2P8g8gCCTOOeor+RB0DLDtMnd03I0
+	ULAXGmuQa7bn/Urq5l+dXo13fOG8SheS+1QDCFwIKkJsXaZ5nT2xSXgsnBSk4gS6ltCjAZ
+	cMCnHoiDjtOXmqR0tr3KQxqoMDzODQ8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795169440;
+	s=arc-20220608; t=1795169449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WMd2ZKHygottbgUutQoHwDYpPTm4RywCiNppj+OXuXU=;
-	b=2d3rK4NYjGzYrvBox6zZxbWeLk0wASkliOlejvCp2MpRQivywPehRklJKcsA8vKDnvTDhi
-	b4OLV/W1LMDjPi9qEGvvrrtq5LhFt/Xe65cieF+U+2jxeqdD1v1Lx23Vq7xF8VZDD5JEdX
-	FnyBMGR4xuJ5J9A5NAQ7gjpVSgOYL5o=
+	bh=1Kw4d8+8FfNGzuUvFVQgRzSXtdZBgru3fPHEEea4jN0=;
+	b=A8jZSDPa1Em+ubolBHbBvaOkd1ljcdybSTCeK/mDEYs4CIXaeyA/uSh/6EIgPCwJeQXJWg
+	r/fBmbSb3SCQWeIpkSWCk73iVvFAdtIj1EAnDxfFcfoAnggSV6mWh3ANUYI6uYbcetfnGH
+	fvpTuT+lQ4NlhCtPT4GduT2koAQL2qk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=lTbZNw0Y;
-	spf=pass (imf22.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3b41188c8b9so596311a91.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 02:10:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1795169439; x=1795774239; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WMd2ZKHygottbgUutQoHwDYpPTm4RywCiNppj+OXuXU=;
-        b=lTbZNw0YTSfNa+y/Du4TEXiHno0TzkTEdz2q1US8C44pvfR3JtjZv3Jcz+QRhDFAdM
-         J3z9irtjr2/0n+m45QKMrjJVv1W09r/n88MkK5Qaa+jhoS9OldqfgNCGv4xGs1/NwJgp
-         sU51uICsOAjhsgmAYPRCCLdNtfkdaGtYWcZ9xHaco00atVws9s41AwpkbYQNwXriOEE8
-         rgw62wERc9EiThzIc7bO2IKycf5DMX2jMA1aW6pPdJkaX5Ez5RVLTlhIQGKw6VVb8aeW
-         +4BA/dUsCQFFQbzx2VH6N0Y/LuuscaFDqHPW7i1TK6AhT28zsM6RmTD0H0wLhlnG7K0S
-         o+nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795169439; x=1795774239;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WMd2ZKHygottbgUutQoHwDYpPTm4RywCiNppj+OXuXU=;
-        b=vpsO28xyBrEfT5nTi9Sj93NwTGFkvOiJ+cofeiLMtuAESKqHM2oKLtzOO2rs46xC7U
-         X2d3BszkEUDFY2Kmtfyr/LmO5KmAkviY0HCQA2BE2b5VZWmcbYVrBcQ3nqnS09CVi64S
-         KDHAjAcZq3UCMr/ebRhiBuBO3wlc4030hq42EZtoALjS5fUlO7v1AaH9DYFZrtTomCHl
-         452c7n7zy0BynPwOQP+rs5xzpidKDMN1FFqCnbLEEfuGvoDG6+E0wC9RPClo80aqliHe
-         +QtzAKdCyRmAgLTekoIBQLsFbM/Tqnvj+jnIJwLcUPj9sOxeUXYHbl38PZOz/GY3cgsz
-         ie7w==
-X-Forwarded-Encrypted: i=1; AL+hErHFa6gyeed1P2fvBt5z2cAHiFAIUlHJIhDLlJFF29HRctMat6RZrTbt/IoZmJV5Eou5wZGIJIE0CA==@kvack.org
-X-Gm-Message-State: APuU4Z+jtlbUh2UaaWMmiNa5oVaHLWWfeinIcQ0y84xTlUJmde3virW5
-	NeXqWsNJO4WVdrwvHFniF0iRsd6UapFwlR0bpxf9vJEjvDpmbQ/jy8ky8jG6Vd0AmnY=
-X-Gm-Gg: AZFdTZfkookomieCSbGSv6KbcjM3H8yvcYq7IRRPpePt3p3uozU290YWg2MVAN59ANt
-	7rHZvkyLPIGp7DeipKPHwYR82FIAh3vM7E32cj2+CuFq+T9XDNAtg+/A1FjUFn6Qhqlrzw5bQ9L
-	/DrsKBpioiwIEbw1e20ooKO90oijkeBVgTWVtE8kJiXmBZ+g2jTQd+NqVtCW1+Oxsz4txwwiaX/
-	6LX7F+m0EDycnd0nQI+EW8FfdevqTxgO3c739RnZGOhjg5IztO51ukJKhhjw0XhliGpCxZp0u+A
-	cMKH+FxvQaafvuX6nzwAhaqAqdhcfVeSQxDgFWXUxN+MtI4UbWeSP78i4YsoisBH56HZrx/DvWp
-	28FnBl454tHW8lhyRikni9SJE4jrSMMdzoY2pO41CSwwjvAl3p6/cUIa49NPQ4/+CCzuFEimaHQ
-	e0uPZ0A7Auo2aq4QR7AbSDVAEf4ADG6rFPfNn8umJYSiXXd1rFNsDAg3IjzCIpQmSnePuGegdPZ
-	HLsbZzVlaDVsCq0+yadveGZvod4nEJwNLk9JLTgIukkJ5PhXLT7XZ3YoghK+tcoc+3N+ZZ2XMy6
-	W4LhVNmYLSmOPYhaSW2a9k3FKtKIAc7mCeJLRxwQqfjcrz+AvnwMImcD6t3qF4cAwOLWIgyQWQm
-	yZHa8wuvl2soDiWM=
-X-Received: by 2002:a17:90b:1dcd:b0:3a6:e901:e79b with SMTP id 98e67ed59e1d1-3b41c8d9bdfmr2328610a91.15.1795169438641;
-        Fri, 20 Nov 2026 02:10:38 -0800 (PST)
-Received: from G6L4RL2QG9.bytedance.net ([203.208.167.151])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41adcfe16sm3727321a91.17.2026.11.20.02.10.31
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 20 Nov 2026 02:10:38 -0800 (PST)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VLToh1Ti;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 55A9D611C2;
+	Fri, 20 Nov 2026 10:10:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 4C75D1F000C4;
+	Fri, 20 Nov 2026 10:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795169448;
+	bh=1Kw4d8+8FfNGzuUvFVQgRzSXtdZBgru3fPHEEea4jN0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VLToh1Tir6uts0SeGlRBl//X3cQJoCaOibbyKUftV/xZRya+3eHAXARr/zlGfQJG1
+	 96+YnolWtf79XnmuP/cEtT2oo4SB6P1X8t4EEPYW/euBeUEbDAFZcbJIh1TqNDq/E7
+	 XcD/RZlWcRQ+s8UD4RoJRfLJuNJ2LNXNXRKDUGekphW3p0+myAouyeQaDDnSaVACkf
+	 GG6y3TV9D/MpwaM84YeVA1DLAF6Epea0TMvALLytGBEWt86XWG9tzdo7walppFaVvg
+	 iKO0zvpb2DjakRigJ9ylC4EshMVPUB2SSGdHaXfJUVSXeS1Q2CADCy2eAy5FZVtLCk
+	 swVQMahF+CrKg==
+Date: Fri, 20 Nov 2026 12:10:44 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Chris Zankel <chris@zankel.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: "Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	Andrew Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Hallgrimur H. Gunnarsson" <halg@google.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Moore <paul@paul-moore.com>, Paul Walmsley <pjw@kernel.org>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Rich Felker <dalias@libc.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 11/11] mm/mm_init: move pageblock migratetype init to memmap helpers
-Date: Fri, 20 Nov 2026 18:08:56 +0800
-Message-ID: <20261120100856.16929-12-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261120100856.16929-1-songmuchun@bytedance.com>
-References: <20261120100856.16929-1-songmuchun@bytedance.com>
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v4 00/14] Namespace for namespace roots
+Message-ID: <awAcpPQtM4hYHP-D@kernel.org>
+References: <20261119224312.1037966-1-jarkko@kernel.org>
+ <av_hbgzwo-1FcAPZ@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: e3cpjgyar3e9fsrmca9j9qqhqh971o7o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <av_hbgzwo-1FcAPZ@kernel.org>
 X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EA9ADC0008
-X-HE-Tag: 1795169439-291343
-X-HE-Meta: U2FsdGVkX1/LkUj6z0uRsB5JIRpQkWSN0+GfxzUBl/C9P77DKt+mvQ5boatgOeQ8qvJCmqSJRRCsrNVQBmEhegSdh+WrPRqA8yGXTxwOsx0/tSG7Scmo0gdvbMsJogDcK3CnWXykOYQv4rl2jkgBH+qlQ2O6wR8ImBc+qEo6EWiYoprzHDqn/tImgn8DTXVg7gdtcascAi3p6IOSRNPt9V2YywK8yKc87qiiOzlm/T+gGGRvKQdRaSlYJ3CVmVbBjp4/LP1JO/g3YbQv2yYgmk4BcEw+98MlkRpsEfUpCBI+/AtpCbIUQ2eYBibodYLwRTdVKJkbh6KjBOKB8NukKgsHfeb2RvlGNAVuaFsMNmpt8KLwrOWkT7zm4KOHnMJWuzHMxajEEiN2qBZ3P2uS6KUdeD5dOt9+2aw/pDQ7qoCr6+yBvpKO5yyIoZJAsIagNEQ8ZsnhN6KevH6OchhoIXL1F6q9PdKL1Sb4q8wZpuP6XXYecTmLGs7EsXlXwSSiPgYe6mRvR92mvSbVNxbe7wLG8y35oQfAJQ7ux83HXVvUbgHEH3ZmGv9rLJhxYIsQ4TaGwilfJOblflw8v66rMLCnuEAtEB2jqe40ArnPwyA9cLVuhAaya9ynIzChTJtS+drmNHc97cBbVSgRaQFcbK2auWYibCQVNBs8KHpDxyJXR9HP+ZAK1nf/DkcZ/Hi6fN2oX3weY+ObgpB1SYYPpRb6n8sZtQVH4leUFGoVK4AqDkJEtlBLynVwvR7ADTeM7rEgasKacy9QfeeXkY3F93j7JgKTwjoJ85UJVypievwLN991IOVnk+kv295iCyNNxdJULvWxNL+DX3xJPfXPd70IcRq3V/v46vV3Xqp/GUcrPI1f1XY+9PqEgpSv+fwtQrK5nErgvAkm2ixw+SqUlJCrWfXpdDXYzBaa7PGRyfM/eqET2q4TofGdCJh5iLw9HgGmlNrUuHKf1l0Yig1
- jgC5m5rn
- ovx6822woy5Xr4CuvgMBlCsSZeZf989rzv1WE3LAGiCS+6vVVz9gR979IRmfi859HU2UpWedxGJfgPzLy1Uj9dFftUK+re45V78CzeuoiWWsXPvnnAPhHExXo9S/1c/qpMT0ir53eqbcQvqmhp2uTkaqQK4uL07RsgRR8vzkB/kbtWJ+u/RHkIi0dIs7sWgJs2R7LAkU8YstWnPMrMBYjSP0+HBAcDHsxUTd3B1WY8N04DcbShtCyZ8RfCNPAW6/pxdZQ6A+lFCH3GLTgEuYLqyPpqNX/bvqMYuIqcTC7xcHlyhV89S7ATKmT37y1D+XvYq/3l5jlaXOiTvqnpaFuF+3BiR60wkdED/3EtMwsoDNnHk2vjWGEImneT7rZHexDt8pJNzQa0SkzBElMF91bSG+r2APGY0Pi6l49ydJcgXGBzDZeqWVNqVaBr0VIQNK8x8cWeqYukZMb6nnwHErfgTQPqyHyPa0d7yknUSPFDzIhp72/N8fW2mVNX4k0vfisZ7L14A2l+UCLa67e9uWQ7nSG2wmmeLC114nXDEUZodz0PLKewgxkcDkHAMBkSKCoIMPboSun0p0qmxE=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 5jwog37agbyktthn7r8za9e7d44mu9q8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3D1FB1C0003
+X-HE-Tag: 1795169449-576482
+X-HE-Meta: U2FsdGVkX1/KXDyeDWCIBTjiwaeFvI6wXRMWoi/snV/ul8KYMttHUX6KmP56O5aMbdh+XTb4FFgfAfEh02uhNQDVYspu53NMrLwTXXZ6iw151m7oLHPsaLI7ewvu8feSmr9ss3w9cwYYKa167nHt7WIa/JHbV2lJwuUH5dYPlniDIgku3o5np8KOxP/Rl+5a5D1RH7KezANZM1oYVxdWuFk+ZkGhXHzQTL6G5kWBL0LpAZHHBt5UvdiHxesy1H+EUPm6dmXPfS1mwRQz4cnSi25Asgv2ASuVRkRInG6WxUSNFvnQseQ2Pq9ddQV0Gef218Tbvyn/IX/Q6SJUvzd/nyNPKnbC9YHgoK7iBxYFBgClnUvb4stPIw/YcXrE9eAw9d2gedfUJ3WTLuST6N90HxfhnPo/tCvNdsc1zsoZm25yfLPsXaJUuRWcFTluGUx3McvBglbXUzn6rKSpNBnWjmm2zwyYzRr1IKhvnL6C07h4NKczBqRazkdNjrwTJwtLtrm3d/0kOBsLWRQkl0TQ3rMHd71naXBVo3gWkyvn3gRlmpkT2O/JRFuooQLXfGltW5HIcpTFimtOO1QCxKh2Jex9O1sDuiQ35iiifunzZ/PNNOkxgAUUxid3TXDgeTxz9/YK/u5fV1mQ5K+BdJx09W6eumA5L+45DjC/2Oi7slpn0SLmjajCaXVdDwUwhzCs12gdVaFL5EyNi+99qlEL6Ebv0qYKwJmuq5gEZm1DmOMOXXFysWgp+YUyiS06EIaPMEvpCKjtjRngXT43FLPlV64TW9V8JR1TWXvV+JXwDwiJK/iRMU/mcc8cqMNrq5NOMcgSL5pYGhTAvjO4OaQmxiFDGYjxA1iFwT03dQOiub2tLqdFpKfIybH0lIsmTSC6ALMLf/owUx7qFdf7558OEw2rqGXRYdyPseccZt0wcBV2G+f8jij4cg/e7o2cnnR7IqxCaQdhA/Vl+SpzP4a
+ fqc3eOLa
+ bFr6z6gBjsItLEjuSFwNVwD5FiTtpcY7zouPEgXxVXCNdje8jYyr2zYHp/01jmy+A8fMtb9UuWQZroAUg5cEDEzHKQuoK4P7dEZSUiYeQd/IfyFfDtR7W7AW3uEmtHA3lIgro+C2L9JlLhdz8lJlWwXsamJ1Ik/kmTZEtNXv9Ky1w0I8/h3cE/cuH6IDP6wyTFMa70WcnKe0Hj4/C/7qhYzE6f+T57YAK/Bh8S+0hiFbvoqhgFfnzCP5GDNh90OTdpnJOjE3st9zXlmxDxvAkcObCBDlx0Nt82+wI7MYeIXU71lRG2zWoID1y4vEiYtjzHcQpZfWKbrB3uIZN2NuHxt5JmyJmD0gn0FMmhpylgHbpPOprYUe0GrcmIWtbY6llhoyHHSZvvoqO3PMOrt3XgCMqu4NpXlEvwyY1a5RlaqZzPkO7oM+dBypMF85dc+hyYjbjA5PE7KqxF7jKS0Cxn968ZpvPWsXdDkZbbf7GgLLElo/BjoUH/XKPOl99KdNCI1jQg0xyJ5ZIkwc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,110 +167,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-ZONE_DEVICE memmap initialization already initializes pageblock
-migratetype after all struct pages have been initialized, while hugetlb
-bootmem folios have their own duplicate bootmem-specific initialization.
+On Fri, Nov 20, 2026 at 07:58:10AM +0200, Jarkko Sakkinen wrote:
+> I've now re-sliced these into a bit more sane pieces:
+> 
+> $ git log --oneline master..
+> d8e24a6bc14e (HEAD -> rootns, origin/rootns) MAINTAINERS: Add entry for ROOT NAMESPACE
+> f2569e56a267 selftests/rootns: Add root namespace test suite
+> bea05e758f8e docs: Document root namespace uAPI
+> dd05a49aff77 arch: Wire up rootns() system call
+> 2dee7a5fddec bpf: Register rootns LSM hooks
+> 73c51e02b830 security: Add rootns LSM hooks
+> 3cfd6576a037 mount: Support MOVE_MOUNT_T_MNTNS in move_mount()
+> 9ed7387038ea ipc/mqueue: Implement ->set_rootns() fs_context operation
+> 624f0ed9c1c7 proc: Implement ->set_rootns() fs_context operation
+> 1085e6ae2eb3 fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
+> d2898dbdc39b fork: Support CLONE_INTO_ROOTNS in clone3()
+> 42dbccb5890e rootns: Add ROOTNS_KILL ioctl
+> 14cbda3e5bca rootns: Add ROOTNS_WAIT ioctl
+> b2cc82539b75 rootns: Add rootns() system call
+> d29215aa7f0f rootns: Track init lifecycle via copy_process() and pid_namespace
+> 0f9ce7febb49 rootns: Add core infrastructure for root namespaces
+> 7a0e8f969fc7 mount: Enforce mount_too_revealing() for foreign mntns
+> 8c61aee3afbf mount: Add mnt_ns_get_root()
+> 07d239d0287c userns: Factor out install_user_ns_cred()
+> bf74588e706d nsfs: Add nsproxy_open_namespace()
+> 645d31a1c516 nsproxy: Pass nsproxy to create_new_namespaces()
 
-Move the MIGRATE_MOVABLE pageblock initialization into the frozen memmap
-initialization helpers instead, so the ZONE_DEVICE and hugetlb bootmem
-paths can share the same initialization.
+A "small" fact correction: rootns itself is not actually a namespace. It
+was at some point during the course of doing something over alonger time
+span :-)
 
-The old hugetlb_bootmem_init_migratetype() skipped CMA folios via
-folio_test_hugetlb_cma(), but the shared helper always initializes
-pageblocks as MIGRATE_MOVABLE. This is safe because cma_activate_area()
-later overrides the migratetype for CMA pageblocks.
+I'll adjust the language and documentation.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
-v2:
-- Fix the helper name in the commit message (reported by Sashiko).
----
- mm/hugetlb.c | 25 -------------------------
- mm/mm_init.c | 11 ++++++-----
- 2 files changed, 6 insertions(+), 30 deletions(-)
+It's like SGX enclave i.e., an isolated and opaque object with *nothing*
+at Epoch. Similarly as enclaves there's a build phase for building the
+memory environment, and a live phase that follows.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 7de65b540438..72839e98f998 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3319,30 +3319,6 @@ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	return true;
- }
- 
--/*
-- * memblock-allocated pageblocks might not have the migrate type set
-- * if marked with the 'noinit' flag. Set it to the default (MIGRATE_MOVABLE)
-- * here, or MIGRATE_CMA if this was a page allocated through an early CMA
-- * reservation.
-- *
-- * In case of vmemmap optimized folios, the tail vmemmap pages are mapped
-- * read-only, but that's ok - for sparse vmemmap this does not write to
-- * the page structure.
-- */
--static void __init hugetlb_bootmem_init_migratetype(struct folio *folio,
--							  struct hstate *h)
--{
--	unsigned long nr_pages = pages_per_huge_page(h), i;
--
--	WARN_ON_ONCE(!pageblock_aligned(folio_pfn(folio)));
--
--	for (i = 0; i < nr_pages; i += pageblock_nr_pages) {
--		if (!folio_test_hugetlb_cma(folio))
--			init_pageblock_migratetype(folio_page(folio, i),
--					  MIGRATE_MOVABLE, false);
--	}
--}
--
- static void __init prep_and_add_bootmem_folios(struct hstate *h,
- 					struct list_head *folio_list)
- {
-@@ -3350,7 +3326,6 @@ static void __init prep_and_add_bootmem_folios(struct hstate *h,
- 	struct folio *folio, *tmp_f;
- 
- 	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
--		hugetlb_bootmem_init_migratetype(folio, h);
- 		/* Subdivide locks to achieve better parallel performance */
- 		spin_lock_irqsave(&hugetlb_lock, flags);
- 		account_new_hugetlb_folio(h, folio);
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index e0686b87fdb1..a340ba7f0a74 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -757,6 +757,9 @@ void __meminit memmap_init_compound_page(struct page *head, unsigned long pfn,
- 	for (unsigned long i = 1; i < nr_pages; i++)
- 		memmap_init_page_from_template(head + i, pfn + i, zone, &template);
- 	prep_compound_head(head, order);
-+
-+	pageblock_migratetype_init_range(pfn, 1UL << order, MIGRATE_MOVABLE,
-+					 /* isolate */ false, /* atomic */ false);
- }
- 
- struct zone __meminit *pfn_to_zone(unsigned long pfn, int nid)
-@@ -1110,6 +1113,9 @@ static void memmap_init_zone_device_pages(unsigned long start, unsigned long end
- 		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
- 			cond_resched();
- 	}
-+
-+	pageblock_migratetype_init_range(start, end - start, MIGRATE_MOVABLE,
-+					 /* isolate */ false, /* atomic */ false);
- }
- 
- void __ref memmap_init_zone_device(struct zone *zone,
-@@ -1147,13 +1153,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 
- 		memmap_init_compound_page(head, pfn, zone, pgmap->vmemmap_shift);
- 		memmap_init_zone_device_folio(page_folio(head), pgmap);
--		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
--			cond_resched();
- 	}
- out:
--	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE,
--					 /* isolate */ false, /* atomic */ false);
--
- 	pr_debug("%s initialised %lu pages in %ums\n", __func__,
- 		nr_pages, jiffies_to_msecs(jiffies - start));
- }
--- 
-2.54.0
+Those are the glasses that I've looked at the topic all the time; not
+so much with namespace glasses, as it's not my main beef and actually
+doing this has very little to do with namespaces and so much more on how
+you manage and control the threads and memory.
 
+This is more like cross-cutting feature with no obvious subsystem
+ownership more than anything else.
+
+Br, Jarkko
 
