@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2FE606A325
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 01:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0493A606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 01:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=E+YTzlHq
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=g2Dmu+wq
 Received: by kanga.kvack.org (Postfix)
-	id 0ED536B060E; Thu, 19 Nov 2026 20:07:24 -0500 (EST)
+	id 0ECDD6B06B8; Thu, 19 Nov 2026 20:07:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A3EA6B0678; Thu, 19 Nov 2026 20:07:24 -0500 (EST)
+	id 0281D6B071A; Thu, 19 Nov 2026 20:07:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA83A6B06B8; Thu, 19 Nov 2026 20:07:23 -0500 (EST)
+	id E80C86B072E; Thu, 19 Nov 2026 20:07:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5226B060E
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:07:23 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0EC2CC0CB3
+	by kanga.kvack.org (Postfix) with ESMTP id 8967E6B06B8
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 20:07:24 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0791C0CB8
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 01:07:23 +0000 (UTC)
-X-FDA: 85453709166.15.CFFF719
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 410AF8000D
+X-FDA: 85453709166.18.603A9C7
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0F11D40003
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 01:07:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=E+YTzlHq;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=g2Dmu+wq;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3R53_agYKCN4LRIZZOGOOGLE.COMLINUX-MMKVACK.ORG@flex--lrizzo.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3R53_agYKCN4LRIZZOGOOGLE.COMLINUX-MMKVACK.ORG@flex--lrizzo.bounces.google.com
+	spf=pass (imf04.hostedemail.com: domain of 3SJ3_agYKCN8MSJaaPHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--lrizzo.bounces.google.com designates 209.85.208.70 as permitted sender) smtp.mailfrom=3SJ3_agYKCN8MSJaaPHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--lrizzo.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795136841;
-	b=IEyAcBE6ZujxNiuVNCTw3D7C53ceEGk8HMS9mhBoYfwPqPo7mlkvksVz8ouuJZ7iTSZ5n0
-	VFN1ZnMurEZMWuDPxWH3yW/MpcA4vFMnTFv4c623IAu30BJ7plxr2vAlKeNrjW2YTVaskz
-	kJk2Z8RI9aIwvg9EINeq7XkdzdD3EOw=
+	t=1795136842;
+	b=wL5ubp4LMZG5WDeHeak2JZiZzRkwW7rH1MWiz7ZSdi4/ZdGvz5x0Sz0Hv+2sH0ykd92uI0
+	iWDmrvBhUBrf0OrVfvzCRCE7CsH5REcg0qwVT2IUu77G0XDCP7SP/L0sjxj9LZ37n7Wptw
+	v3PSQ+Nj16sYwCW4UvQvcAXqljgnKF0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795136841;
+	s=arc-20220608; t=1795136842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0NShhv1zd0ubxSJzYJCtkDC/E3Z/rFUVqETx4t7zzV8=;
-	b=VoH47uT/zFLVly/bWogsWPTDAAaHTixx/TeEZUdcKu15rNhq2h9xE9NyrFZ4iHhLoYnz7q
-	Sj28U2+kA1xOr0PCbVbrLo0DZkh1KAvIYsOHeLjEIiXfOCHQSptbRNTJsypMwMeVHsNfWz
-	oICQKmGoEFu9azvCsIpgz56QNqg36M8=
+	bh=5SEs/blsCReRT4hCMThOeNKTJAt5emco8Ap+aYEQIPY=;
+	b=dNkvYjLQ+8fpWz8kc0I/13Doae08FfFePLqZEr/YZKWCBPAdO55qgu0J6Rcu3XMip7xvrG
+	JolkcwPSG7tEk4tUPdqE/peU91W6LQYoQTuD7v6zjQCmEt1U2iizQLCbEVWPA8DewBBQZ2
+	mYVnWxIQky+aGJqOWYt1Mbj1vN4voTQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=E+YTzlHq;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=g2Dmu+wq;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3R53_agYKCN4LRIZZOGOOGLE.COMLINUX-MMKVACK.ORG@flex--lrizzo.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3R53_agYKCN4LRIZZOGOOGLE.COMLINUX-MMKVACK.ORG@flex--lrizzo.bounces.google.com
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6b88815d748so342010a12.2
+	spf=pass (imf04.hostedemail.com: domain of 3SJ3_agYKCN8MSJaaPHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--lrizzo.bounces.google.com designates 209.85.208.70 as permitted sender) smtp.mailfrom=3SJ3_agYKCN8MSJaaPHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--lrizzo.bounces.google.com
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6b706aec674so339804a12.2
         for <linux-mm@kvack.org>; Thu, 19 Nov 2026 17:07:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795136840; x=1795741640; darn=kvack.org;
+        d=google.com; s=20260707; t=1795136841; x=1795741641; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0NShhv1zd0ubxSJzYJCtkDC/E3Z/rFUVqETx4t7zzV8=;
-        b=E+YTzlHqAffDZ4Efxoa4oBVvFAXh3BN6UqHTdIwwuotXy+3jKe9PC6kGwXbM3nbkNk
-         3/jkmLOZQWJcm0D8ekr/5iLPWnlnn2vJgW+Z3ZD5oI/1rHlv6ZqsPbg0t8eJJhCve+iw
-         lUF6YYgLWISURojig0AVO57x/cBn5IAGmQ4h8jT8RdJCv2naKIz3LWz2fpdQHmwmV2xe
-         sL6rPU4G6U6Eyl71qgj/+0iaxOhxDUgu1nlduSENTnWAucmwufZs8w5X+aX4KYHXTwvS
-         CHcIpoun2fwb0CLKck05vjX8vDMSRLgzGAkKnf6oZquzIXRYgAPXU0vTjGba+PHokC1A
-         EN2w==
+        bh=5SEs/blsCReRT4hCMThOeNKTJAt5emco8Ap+aYEQIPY=;
+        b=g2Dmu+wqEdPNemGNjsjGD7cHUGJ3JEAiuDVC4mHLmiW3rLFGU1sEZYWj2qUVUhk2bk
+         N4+HCuu/4reP1UHz4mdh3IXZmoXXc7J0i6b080bz3acQkxxgqpZexb8j+7RT/2rlQxYQ
+         e6QRqztWHljS2W6EgR/V4+EjsZNsxiOOU+LOOw00fq4Z0sIf1SNmun1BmK/iz2p1IaNO
+         DQaDKXDp1Uc2N83Me4YWuLuSEBsX8oMqyvQrb4OWMp3nx0DIC7Nk+vBoE8K9oDk4Sggf
+         pNm4nezd91/+BnpVkDyqXDZYOM2uaj5Devm8/N9IXILFZGqZZJgI9bevMVw/gDi7VitE
+         aTjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795136840; x=1795741640;
+        d=1e100.net; s=20260707; t=1795136841; x=1795741641;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0NShhv1zd0ubxSJzYJCtkDC/E3Z/rFUVqETx4t7zzV8=;
-        b=puaUj1KnN34WM98bN5UdJgFXrAjZ8wHZzSbRQ4dKsBsnj9jYNguTmUqK4Lkeujm5k4
-         0dnNrFhbDRAdlOZlJE5GLaXJwnGpZ+1hi0GdXrrtRCI1gXnRDahPHTQrdWkytf1ql4E6
-         Yfi0N0c/9hHMRRol65WVKi8Zw1tzWop7ESulCLsZHIVx/z1THfEj9QOOq09+wwy1Tkuc
-         HxZOxsg242k+2PwlV/K5pwjHvhUj0mqRbFJdB15tWPSJ/05dvwIiY7zQayefr0ybeJY3
-         e+ZW3ILrkQY2hSLDDa2iTikh2Wme6WhfeTcK5/fM1/J8nnY5yG10p4QgW/kcte7erOz7
-         93MQ==
-X-Forwarded-Encrypted: i=1; AL+hErGNyV8dVWgLzsf0ItVN9isNRnS97FDnn23VxCAGsPD+L+tkSR3T+fKYHbnf+ms42ELua+Yd/tXrAw==@kvack.org
-X-Gm-Message-State: APuU4Z/+/iR7Zn72vuOnLuCiL4JdOjfz+MCIdVKy6kRhnlmWPlSDWRRn
-	TY0GInhoosXgBV8FPSAYoAaLG1mF64HIRLTu3fKQc+JutqFYdDbpVtsZrKEosnteVXSNy7EWIsL
-	nVJAkLg==
-X-Received: from edl2-n1.prod.google.com ([2002:a05:6402:4242:10b0:6b5:6602:7fc9])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:448e:b0:6b7:d9df:bb1
- with SMTP id 4fb4d7f45d1cf-6ba37e7ffdfmr805771a12.22.1795136839247; Thu, 19
- Nov 2026 17:07:19 -0800 (PST)
-Date: Fri, 20 Nov 2026 01:06:47 +0000
+        bh=5SEs/blsCReRT4hCMThOeNKTJAt5emco8Ap+aYEQIPY=;
+        b=O8WUTtbipu/NV0f6/UlD9cmoR6JmAS4SbvWoIx4QY1rHHkDJ9A67ibtfhUQizBHkjD
+         0vmoKdJ4lAXlwYVVdwQeRkKWIkWUoRiothOQDIlinenCfBQ0sUxWW/lFuBUS2veZMzOr
+         ekm/V3/rco9pIydZNERpnJFsbEltcAvfXjOTAzAysIPN/R9Wy7YBdfSmmXYHJoXDSBw7
+         tNIX28rBVNxEkH3Ie6fXlRHaN6pSNafJw/bxmavWaR4uwkbPDh+WvtZ0PAYXgfMggzPM
+         4Vg++h/SZ9JRc0/UEJXKNx8Rj8MZw5+zH8u0+/Tbxaa9fvYmlVfHd+olvP404EQB2ytO
+         Wk1Q==
+X-Forwarded-Encrypted: i=1; AL+hErG0g++T3buLeFkB5WLOFpgNNqOrGw6FL1jrPpT36xbW04Bg274f4ZufB5UUcmyEV5XGC640j+iPBg==@kvack.org
+X-Gm-Message-State: APuU4Z8RI3vkGftOGPmTKHRMUzNysUnNrdIEuIfDvF1cEvyD/WVg//Cx
+	rS/Jrje8h5BIWpaVGXAbsElSRy7eZBJb63Gpc0CHc47CUzzGOidm4n8QD6/HZ/Rb2fAgiu6UFs1
+	YUHMbPA==
+X-Received: from edcnu5-n1.prod.google.com ([2002:a05:6402:c505:10b0:6ba:2090:b8e7])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:a210:20b0:6b8:81fb:aebc
+ with SMTP id 4fb4d7f45d1cf-6ba37e7e94fmr649614a12.19.1795136840334; Thu, 19
+ Nov 2026 17:07:20 -0800 (PST)
+Date: Fri, 20 Nov 2026 01:06:48 +0000
 In-Reply-To: <20261120010655.467825-1-lrizzo@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261109182533.3594984-1-lrizzo@google.com> <20261120010655.467825-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261120010655.467825-18-lrizzo@google.com>
-Subject: [RFC PATCH v3 17/25] net: Allocate small skb heads from PISA
+Message-ID: <20261120010655.467825-19-lrizzo@google.com>
+Subject: [RFC PATCH v3 18/25] net: Migrate user pages into PISA for MSG_ZEROCOPY
 From: Luigi Rizzo <lrizzo@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
@@ -115,19 +115,19 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, M
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 0F11D40003
+X-Stat-Signature: iy6zb9j5px9d7ih4mjo1wiizju7ytokj
 X-Rspam-User:
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: p8n8m9gg77j95jbm44pfuhwgp4kbdeip
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 410AF8000D
-X-HE-Tag: 1795136841-11483
-X-HE-Meta: U2FsdGVkX1+BfGxaCGkt9aEpQzBgKyGjP0l+E7T27dHKlm7lXY3miEkEA7JmOvyEtZQUyiSOCnyKjdzVD8boINlYOYNBJHidBBMZMm2llEXILcuhJrWumk0bZ3nMDt4kXaTaQgxme2c2NBsMvqmy1EsT4yrdVKYEfoSkAxH/PykWjTdzipGQhRYJx0OBf8e9tvUmu4esj4N+hqVmOrqYVtB5mGMzlHKmhTiE2q2wS0B6mk2jFbFylS0HsWCGJrMv136Vrapn7U6ZA9XvRJ3fgcUXjDn+OdQ8V/OediXnMnlaHH44LJuOwSqdhU5/ILrNxrPIcq0tmkEKsk8Yhhwm4ciC4dm1KOVDvNsODILFneAmNFmFgCYVah0gQpy5X172ah9xoOFImmCdZtSOGFy6MhhV7G+WKYKeKe9Gag6zkGCYLvoo42mutFTtRDsMR8uMdD6KjdAapLrIQvC7dPYT5m9QfyVqLZJuFGR90EPkvtCbJcpPwUYPdKpHnWH13vag3NXv9/ojuEgum6YklCeoqgQUq7hGSpg0+wb4SaTTn2z4LYOzBPH9WEjZlJdafF/phfb/z5kc5RV8Abo2bWlFXHzPgzb54v5xq6P5HX9aj+KWXypr9pBSI7Vt5dIzZ0OgWS0gxLuWELjjpWSs2CBNNffRVKytiOTA9Dh4KF+SMuL5hzBa61zIh93nXIoqxPxNVf83OvLCiU1r3ehLrauq8Q66tXIww1BGIzJeoS2hZ+1Ok68BL3STO8DuEKNAtHg3BvWR93yoZ1TiUe4j+wNIl7e92cBeyUATPujORXtx0wBa59BkODeZoKW9FBewRQ7gIa0z5mkNwKAyyaDXJoP6ZZbiNvMjg7Kw1O9AElh74bSulNC0ivYe3mrqG8XKllp5eEjTpSx5vjNqbCaGY09u1jemuvIt32SuikJwczaayvOXl2y09DqzSJPRejn4oRaUewainTPr454+/Ni7li7
- LF96oB4L
- NeqJhe8MLzJof9Bzp9Us7/1J4bE0pL8nr+C04e0vKOnnMKMkY0+OLKjjV3oCVIAX3aNL5eoBSkHvYeM/YIQpa0EvNX0g3G9OAo6AZCD7Jh4QdD78WHpVFGXwzMg7eyyG5KaHXRiKJOOfa1Bcdu84HUxca7MN0cY1ZUyRRHFnkbt4b3JGzv8NQ8RHQlU3jOkL3UmUZ7LWg8++4gx8To4o7scJXfoCBkp0ZhnhMyltQfNxsapCKUkfHMz3tadUc0/CoK5iS4FoM0bi1WkllrVP2epgT59ppviJPMdtThoX04rlLZl5PeYCKOdTPKX0Etekd581/Z2AFMOjlsO0MBnBiGXsQp855ArY2u9w2jaJaWFxQivYdOQ+zt7sEPB3DoX4oQlrsgQHLMfssws6eGj7Loepdu58qEuvsErrw2KfWmlPDRSlL2KQ25/fm4wuSXTxUTUz3E5Xqw/g+HsGX7rA+pjWjYw6eBbsMgPoNTuu61sHs//dZ0Kb6IidXbYZaVm2cotR1ZO8DKuciQp0cvntPPJaIAFtdJd+QCeHEaRAc9ujKURcbp939v3BkPkpAtAdZDV8aCXz3Ffx7jcsrCwBEHwaXpxMaQhCduC3Z03eVxGW66TtWljR7VxJKBUrfwe4rXv2Dx57gPztI+5wTW2WQYoQxwEhCZb8Ic7JVy+1Gl/G4Xpni99eNJWcaRlN3Y9hf54BB9B82gaPzeSMyUrr7uEb2XqeMYw87GoveVKiJ8Yf839n0cqkGZLtGtgrqhFHa6xPNsUp/ynVkFIJCj6roN8jjIuwghNYcQeOK3U4MsYv8l7HSz6/UlfGLNVyq90f+6PH7wEtOk0Gc+vUYiCu9Yi7PF4zzs+wLP3st8qdgw9ieg15cRgUtY08OaHqwSZZofx9+12uZfB1m7QY=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1795136841-427428
+X-HE-Meta: U2FsdGVkX19lXrxiymsinuU5iv/IJ1jOlpI7nFtS9a9PGrWtVt0RAC/xV8ZMqU/gshtVVWKb8h4NQKwKYm8f610UUcr/+a+Nk25dHux1K6wqX2seO69nir3PCG80DnYmrSs4bd1FzGKBxZT5s13rGscORDW/H0ZqCEdQGtZg4v+dbDJ0NdLSRC+d7UIIA18U+FA+x7I1TD/lYjhIyy8bdEmAOHOsuGbhRvm3WR/Sqpb8JkLJDzsB8lNR0s9LhPqr6wrx7T6KUc+hUdcRFMu5SyzVUXzy3aa0HPn5XHbphOsgze7tCiPuyl5flX9viBjWnvDXyzrmuX7OBw+EfvPfkIOKm86q2U2r8/ykXNSaGZ1uuaByOoxHUajFbTg2dI+FR9LW2GmaQZaICPPhT19t383FyrytM4MuT4D1dUimsfIKF53iw/qWVYVG+505Ebnkl5tzhT6mXlECH02qDolxWZDEqtD/KWGMCkgmANpL3RjFyKqnu1N0o2F/ug0RPrDSWYCfpXWGfjckwQZyskXp3jVrjDC2Tul86JPlefC3c6+hyWPFltyI6IrBdQQJVst1HsxYiSGwmcqXPuNHEhw033+snFkTGl3XDc71LhO1RYvs5a2QasyOoBCfSwUTSwxYFVDPnqobXhjhluqFw7aYjnATktlIssMxPOx0srU/pn/HCqpcz0OAubu17uxw6Tmm3RuM8L8YMyRuD3jdIB6T8pAeWXlXXMRNSpN/41KsAM7f7a2c8Kgsddy4pG5J0YjGtpPvyLeflayYcMEVrBCrjPPJUOBKazneOpeXTMVPbd2Dl/kq1Ll9WzjjLqV2h+iHAuUJEpxZeFu4oCq8LfNirbQbnp2Khou006uM2sLokWmDhkg3e/g6zTXvMMS1ODhW2ErywVnmDjPJHt6DxhmiN5fFninQYT//bx352tAZpv+4DMMoUHkflU21d/2CGKvmHB8r8ngn2ruJn61LXH8
+ iCBnPXDL
+ 5gXrgzLtTM1X5mjtKg/lqyqGvjpkeJf0A3ni2r9/NMn2tKjHjYAa+vhhlZsrkcXyIeIRY+/L8DXB9Uz0RgVu2BimYLf2B6Qd65W7vCFYZRXB3VtprdMPWcq/SxhR9GLemUdb4lGHuMLajz+FtDNoQchUakH9/Dezx+ryMyZ30MdXURPPvMICGEPh/6yKk3DUzHKsAS0PMzJ5mQSzxHuNfeFvIHyEFLjdfxoDVXishoq5EUyfAEKyMiV9SU4ZfPznHOL7gkorCAsTqkqaeE+ZagGC2jgkde6n8HGNHc9x7KTOPcsiyqVrSAmkqxY8rpc37Ne7Wj4Tk0cT13trQspw0Dx4J9H84p97ysQutHW4JuChv1k0WxG6yCjYfVlLtHh6ecTIncuU7oXprgdYDMGlg7+Y8ixydqCgXG92stgrfQvJrCZoK7tm8VtifasbIVzW18RwkwCID3zcdz8XW391RsoL2WlhZe4pyG5eJd7DFu4+0t69Sn5nCYLwNJbcgUrxDhDItfSIbFSki93FaxNZE9+FK7bsq6/AqFYQvtnk7TGMS9Fa2vlVXNEsPdAMpjwJR8p7E7OIrfD+/SzR6rDrhBk+/3qnbDmjnWccgnkHpCpSNF6jYZR7gGj8v3g1B+v+Sv6EhOudGKHbiOUr35RYMC0Cpi/oQh+s7UxB0Y6aDcQxPGYfNYW2w/zdb+lDG1NSZTfyv9kySVktXcc1h23ag1XSlxH3Zir+iNzWpiQ82eGg3QKxdPCa2SZwIwGtZb2U4oKf00QZCIzvuhMqf2UHm3mV/WHxIis8SoUT76JwVOfEKnlfuFjy8TXp3kY3aSstPT8but8Q3iZT3j8AMJVT7zD42uDy0DAqDOD/ln5Mnz3ED8gudNMmSWwuRLpKog/5nC1HkkpOCpMKZgic=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,657 +136,388 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The linear part of most transmitted skbs is a small head from the
-skbuff_small_head cache. To avoid per-packet IOMMU map/unmap operations
-or bounce-buffer copies for headers, allow backing small TX skb heads
-with PISA memory.
-
-When per-device pisa_tx_skb_heads is enabled, create a parallel
-skbuff_small_head_pisa slab cache backed by zeroed, read-only PISA
-folios (SLAB_CACHE_PISA_RO). Eligible TX paths passing __GFP_PISA
-allocate small heads from this cache and fall back to skbuff_small_head
-on failure.
+Perform best-effort migration of user pages into PISA memory on
+MSG_ZEROCOPY sends in zerocopy_fill_skb_from_iter() when the egress
+device has the per-device attribute pisa_tx_zerocopy enabled. For TCP
+over a device that also has pisa_tx_bufs enabled, pages that cannot be
+migrated fall back to the regular copy path into PISA TX page_frags
+without reporting SO_EE_CODE_ZEROCOPY_COPIED.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- drivers/base/core.c    |  3 +-
- include/linux/device.h |  6 +++
- include/net/pisa.h     | 64 +++++++++++++++++++++++++++++
- mm/pisa-kunit.c        |  5 ++-
- net/core/pisa-net.c    | 93 +++++++++++++++++++++++++++++++++++++-----
- net/core/skbuff.c      | 30 +++++++++++---
- net/core/sock.c        | 21 ++++++++--
- net/ipv4/ip_output.c   |  8 ++--
- net/ipv4/raw.c         |  6 +--
- net/ipv4/tcp.c         |  2 +-
- net/ipv4/tcp_output.c  | 14 ++++---
- net/ipv6/ip6_output.c  |  8 ++--
- net/ipv6/raw.c         |  6 +--
- 13 files changed, 224 insertions(+), 42 deletions(-)
+ include/linux/pisa.h |  3 ++
+ include/net/pisa.h   | 32 +++++++++++++--
+ mm/pisa-user.c       |  8 ++++
+ net/core/datagram.c  | 17 ++++++--
+ net/core/pisa-net.c  | 95 ++++++++++++++++++++++++++++++++++++++++++--
+ net/core/skbuff.c    |  3 +-
+ net/ipv4/tcp.c       | 12 +++++-
+ 7 files changed, 158 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 5f1291e644c5e..92eec7d3d4cf1 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2951,7 +2951,7 @@ static DEVICE_ATTR_RW(name)
- PISA_BOOL_ATTR(pisa_coherent);
- PISA_BOOL_ATTR(pisa_rx_bufs);
- PISA_SET_ATTR(pisa_tx_bufs, net_pisa_tx_bufs_set);
--PISA_BOOL_ATTR(pisa_tx_skb_heads);
-+PISA_SET_ATTR(pisa_tx_skb_heads, net_pisa_tx_skb_heads_set);
- PISA_BOOL_ATTR(pisa_tx_zerocopy);
+diff --git a/include/linux/pisa.h b/include/linux/pisa.h
+index 84692852299f1..11e3ea9eb263d 100644
+--- a/include/linux/pisa.h
++++ b/include/linux/pisa.h
+@@ -95,6 +95,7 @@ bool __pisa_page_can_recycle(const struct page *page);
+ bool pisa_upgrade_user_pages(struct iov_iter *iter, struct page **pages,
+ 			     size_t size, size_t offset,
+ 			     enum dma_data_direction dir, bool pinned);
++bool pisa_page_tx_ok(const struct page *page);
  
- static struct attribute *dev_attr_pisa[] = {
-@@ -3114,6 +3114,7 @@ static void device_remove_attrs(struct device *dev)
- 	if (IS_ENABLED(CONFIG_PISA) && dev->dma_mask) {
- 		device_remove_group(dev, &dev_attr_pisa_group);
- 		net_pisa_tx_bufs_set(dev, false);
-+		net_pisa_tx_skb_heads_set(dev, false);
- 	}
- 
- 	if (dev->physical_location) {
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 0d867d8255ba5..6776048d05ca8 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -819,6 +819,7 @@ struct device {
- 
- #if defined(CONFIG_NET) && defined(CONFIG_PISA)
- int net_pisa_tx_bufs_set(struct device *dev, bool val);
-+int net_pisa_tx_skb_heads_set(struct device *dev, bool val);
- #else
- /* Without CONFIG_NET the flag still gates block-device writes (see pisa_bdev_enabled()). */
- static inline int net_pisa_tx_bufs_set(struct device *dev, bool val)
-@@ -826,6 +827,11 @@ static inline int net_pisa_tx_bufs_set(struct device *dev, bool val)
- 	WRITE_ONCE(dev->pisa_tx_bufs, val);
- 	return 0;
+ static inline bool pisa_enabled(void)
+ {
+@@ -264,6 +265,8 @@ static inline bool pisa_upgrade_user_pages(struct iov_iter *iter,
+ 	return false;
  }
-+
-+static inline int net_pisa_tx_skb_heads_set(struct device *dev, bool val)
-+{
-+	return -EOPNOTSUPP;
-+}
- #endif
  
- #define __create_dev_flag_accessors(accessor_name, flag_name) \
++static inline bool pisa_page_tx_ok(const struct page *page) { return false; }
++
+ #endif /* CONFIG_PISA */
+ 
+ #if defined(CONFIG_PISA) && defined(CONFIG_IOMMU_DMA)
 diff --git a/include/net/pisa.h b/include/net/pisa.h
-index 8e23d8b01e73d..7fe2e7d5aa97e 100644
+index 7fe2e7d5aa97e..c95e4ab1f344f 100644
 --- a/include/net/pisa.h
 +++ b/include/net/pisa.h
-@@ -7,6 +7,11 @@
- #include <linux/tcp.h>
- #include <net/sock.h>
+@@ -13,9 +13,9 @@ struct sk_buff *__sock_alloc_send_pskb(struct sock *sk, unsigned long header_len
+ 				       gfp_t gfp);
  
-+struct sk_buff *__sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
-+				       unsigned long data_len, int noblock,
-+				       int *errcode, int max_page_order,
-+				       gfp_t gfp);
-+
  /*
-  * struct net_device caches the PISA enable flags for tx_bufs and tx_heads used
-  * by the leaf device, refreshed every 256 jiffies. The helpers below decide
-@@ -16,6 +21,7 @@
+- * struct net_device caches the PISA enable flags for tx_bufs and tx_heads used
+- * by the leaf device, refreshed every 256 jiffies. The helpers below decide
+- * whether to use PISA memory for a given dst, sk, skb.
++ * struct net_device caches the PISA enable flags for tx_bufs, tx_heads and
++ * tx_zerocopy used by the leaf device, refreshed every 256 jiffies. The helpers
++ * below decide whether to use PISA memory for a given dst, sk, skb.
+  */
+ #ifdef CONFIG_PISA
  
- enum pisa_tx_flags {
+@@ -23,6 +23,7 @@ enum pisa_tx_flags {
  	PISA_TX_FLAG_BUFS	= BIT(0),
-+	PISA_TX_FLAG_HEADS	= BIT(1),
+ 	PISA_TX_FLAG_HEADS	= BIT(1),
  	PISA_TX_XFRM_OK		= BIT(2),
++	PISA_TX_FLAG_ZC		= BIT(3),
  	PISA_TX_TSTAMP_MASK	= ~0xffU,
  };
-@@ -23,10 +29,13 @@ enum pisa_tx_flags {
- /*
-  * Static keys guarding networking hooks:
-  * - @net_pisa_tx_bufs_key: enabled while any device has pisa_tx_bufs set.
-+ * - @net_pisa_tx_skb_heads_key: enabled while any device has pisa_tx_skb_heads set.
-  */
- DECLARE_STATIC_KEY_FALSE(net_pisa_tx_bufs_key);
-+DECLARE_STATIC_KEY_FALSE(net_pisa_tx_skb_heads_key);
+ 
+@@ -36,6 +37,10 @@ DECLARE_STATIC_KEY_FALSE(net_pisa_tx_skb_heads_key);
  
  u32 pisa_tx_flags_refresh(struct net_device *dev, u32 now);
-+void *__pisa_skb_head_alloc_node(gfp_t flags, int node);
+ void *__pisa_skb_head_alloc_node(gfp_t flags, int node);
++bool __pisa_zc_iter_stop(struct sk_buff *skb, struct iov_iter *from,
++			 size_t *length, const struct sock *sk,
++			 struct page **pages, int max_pages,
++			 unsigned int orig_len, size_t *start, ssize_t *copied);
  
  /*
   * May TX data routed through @dst use PISA pages? Those pages stay readable by
-@@ -59,6 +68,48 @@ static inline gfp_t __pisa_tx_gfp(const struct dst_entry *dst,
-  * ============================================================================
-  */
- 
-+/* Hook for kmalloc_reserve() small skb head allocation (@net_pisa_tx_skb_heads_key). */
-+static inline void *pisa_skb_head_alloc_node(gfp_t flags, int node)
-+{
-+	return static_branch_unlikely(&net_pisa_tx_skb_heads_key) ?
-+	       __pisa_skb_head_alloc_node(flags, node) : NULL;
-+}
-+
-+/* Hook for route-based skb head allocation (@net_pisa_tx_skb_heads_key). */
-+static inline gfp_t pisa_tx_head_gfp(const struct dst_entry *dst)
-+{
-+	return static_branch_unlikely(&net_pisa_tx_skb_heads_key) ?
-+	       __pisa_tx_gfp(dst, PISA_TX_FLAG_HEADS) : 0;
-+}
-+
-+/* Hook for socket-based TCP skb head allocation (@net_pisa_tx_skb_heads_key). */
-+static inline gfp_t pisa_tx_head_sk_gfp(const struct sock *sk)
-+{
-+	if (!static_branch_unlikely(&net_pisa_tx_skb_heads_key) || !sk)
-+		return 0;
-+	guard(rcu)();
-+	return __pisa_tx_gfp(rcu_dereference(sk->sk_dst_cache), PISA_TX_FLAG_HEADS);
-+}
-+
-+/* Hook for skb_copy*() / pskb_expand_head() (@net_pisa_tx_skb_heads_key). */
-+static inline gfp_t skb_head_pisa_gfp(const struct sk_buff *skb)
-+{
-+	if (static_branch_unlikely(&net_pisa_tx_skb_heads_key) &&
-+	    !skb->head_frag && pisa_virt_to_page(skb->head))
-+		return __GFP_PISA;
-+	return 0;
-+}
-+
-+/* Hook for UDP/raw sock_alloc_send_skb() with @dst (@net_pisa_tx_skb_heads_key). */
-+static inline struct sk_buff *sock_alloc_send_skb_dst(struct sock *sk,
-+						      unsigned long size,
-+						      int noblock, int *errcode,
-+						      const struct dst_entry *dst)
-+{
-+	return __sock_alloc_send_pskb(sk, size, 0, noblock, errcode, 0,
-+				      pisa_tx_head_gfp(dst));
-+}
-+
- /* Hook for route-based TX payload fragment selection (@net_pisa_tx_bufs_key). */
- static inline bool use_pisa_tx_bufs(const struct dst_entry *dst)
- {
-@@ -95,6 +146,19 @@ static inline struct page_frag *sk_page_frag_dst(struct sock *sk,
- 
- #else /* !CONFIG_PISA */
- 
-+static inline void *pisa_skb_head_alloc_node(gfp_t flags, int node) { return NULL; }
-+static inline gfp_t pisa_tx_head_gfp(const struct dst_entry *dst) { return 0; }
-+static inline gfp_t pisa_tx_head_sk_gfp(const struct sock *sk) { return 0; }
-+static inline gfp_t skb_head_pisa_gfp(const struct sk_buff *skb) { return 0; }
-+
-+static inline struct sk_buff *sock_alloc_send_skb_dst(struct sock *sk,
-+						      unsigned long size,
-+						      int noblock, int *errcode,
-+						      const struct dst_entry *dst)
-+{
-+	return __sock_alloc_send_pskb(sk, size, 0, noblock, errcode, 0, 0);
-+}
-+
- static inline bool use_pisa_tx_bufs(const struct dst_entry *dst) { return false; }
- static inline gfp_t pisa_tx_bufs_gfp(const struct sk_buff *skb) { return 0; }
- static inline bool is_pisa_pfrag(const struct page_frag *pfrag) { return false; }
-diff --git a/mm/pisa-kunit.c b/mm/pisa-kunit.c
-index ec7af4313915a..0dbc3ecf44465 100644
---- a/mm/pisa-kunit.c
-+++ b/mm/pisa-kunit.c
-@@ -579,9 +579,10 @@ static void test_dev_pisa_attrs(struct kunit *test)
- 	kunit_check_pisa_attr(test, dev, "pisa_coherent", &dev->pisa_coherent);
- 	kunit_check_pisa_attr(test, dev, "pisa_rx_bufs", &dev->pisa_rx_bufs);
- 	kunit_check_pisa_attr(test, dev, "pisa_tx_zerocopy", &dev->pisa_tx_zerocopy);
--	if (IS_ENABLED(CONFIG_NET))
-+	if (IS_ENABLED(CONFIG_NET)) {
- 		kunit_check_pisa_attr(test, dev, "pisa_tx_bufs", &dev->pisa_tx_bufs);
--	kunit_check_pisa_attr(test, dev, "pisa_tx_skb_heads", &dev->pisa_tx_skb_heads);
-+		kunit_check_pisa_attr(test, dev, "pisa_tx_skb_heads", &dev->pisa_tx_skb_heads);
-+	}
- 	device_unregister(dev);
+@@ -144,6 +149,18 @@ static inline struct page_frag *sk_page_frag_dst(struct sock *sk,
+ 	       sk->sk_use_task_frag ? task_page_frag(dst) : sk_page_frag(sk);
  }
  
++/* Hook for __zerocopy_fill_skb_from_iter() MSG_ZEROCOPY upgrade (@pisa_user_key). */
++static inline bool pisa_zc_iter_stop(struct sk_buff *skb, struct iov_iter *from,
++				     size_t *length, const struct sock *sk,
++				     struct page **pages, int max_pages,
++				     unsigned int orig_len, size_t *start,
++				     ssize_t *copied)
++{
++	return pisa_user_enabled() &&
++	       __pisa_zc_iter_stop(skb, from, length, sk, pages, max_pages,
++				   orig_len, start, copied);
++}
++
+ #else /* !CONFIG_PISA */
+ 
+ static inline void *pisa_skb_head_alloc_node(gfp_t flags, int node) { return NULL; }
+@@ -174,5 +191,14 @@ static inline struct page_frag *sk_page_frag_dst(struct sock *sk,
+ 	return sk_page_frag(sk);
+ }
+ 
++static inline bool pisa_zc_iter_stop(struct sk_buff *skb, struct iov_iter *from,
++				     size_t *length, const struct sock *sk,
++				     struct page **pages, int max_pages,
++				     unsigned int orig_len, size_t *start,
++				     ssize_t *copied)
++{
++	return false;
++}
++
+ #endif /* CONFIG_PISA */
+ #endif /* _NET_PISA_H */
+diff --git a/mm/pisa-user.c b/mm/pisa-user.c
+index 5fb1ec7c45204..e4a4e1a606b24 100644
+--- a/mm/pisa-user.c
++++ b/mm/pisa-user.c
+@@ -439,6 +439,14 @@ bool pisa_upgrade_user_pages(struct iov_iter *iter, struct page **pages,
+ 	return true;
+ }
+ 
++/* Is @page, referenced by the caller, PISA memory that devices can read (usable for TX)? */
++bool pisa_page_tx_ok(const struct page *page)
++{
++	unsigned long pfn = page_to_pfn(page);
++
++	return is_pisa_pfn(pfn) && (READ_ONCE(pisa_meta_of_pfn(pfn)->prot) & IOMMU_READ);
++}
++
+ /* Migrate the single-page segments already added to @bio; the caller then extracts them again. */
+ bool __pisa_bio_migrate_pages(struct bio *bio, struct iov_iter *iter,
+ 			      enum dma_data_direction dir)
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index ecc30a6f83023..c589a543c3166 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -62,6 +62,7 @@
+ #include <net/tcp_states.h>
+ #include <trace/events/skb.h>
+ #include <net/busy_poll.h>
++#include <net/pisa.h>
+ 
+ #include "devmem.h"
+ 
+@@ -632,10 +633,11 @@ int skb_copy_datagram_from_iter_full(struct sk_buff *skb, int offset,
+ }
+ EXPORT_SYMBOL(skb_copy_datagram_from_iter_full);
+ 
+-int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+-				struct iov_iter *from, size_t length)
++static int __zerocopy_fill_skb_from_iter(struct sk_buff *skb, struct iov_iter *from,
++					 size_t length, const struct sock *sk)
+ {
+ 	int frag = skb_shinfo(skb)->nr_frags;
++	unsigned int orig_len = skb->len;
+ 
+ 	if (!skb_frags_readable(skb))
+ 		return -EFAULT;
+@@ -654,6 +656,9 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+ 					    MAX_SKB_FRAGS - frag, &start);
+ 		if (copied < 0)
+ 			return -EFAULT;
++		if (pisa_zc_iter_stop(skb, from, &length, sk, pages,
++				      MAX_SKB_FRAGS - frag, orig_len, &start, &copied))
++			return copied;
+ 
+ 		length -= copied;
+ 
+@@ -703,6 +708,12 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+ 	return 0;
+ }
+ 
++int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
++				struct iov_iter *from, size_t length)
++{
++	return __zerocopy_fill_skb_from_iter(skb, from, length, NULL);
++}
++
+ static int
+ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+ 			      int length,
+@@ -760,7 +771,7 @@ int __zerocopy_sg_from_iter(struct msghdr *msg, struct sock *sk,
+ 	else if (binding)
+ 		ret = zerocopy_fill_skb_from_devmem(skb, from, length, binding);
+ 	else
+-		ret = zerocopy_fill_skb_from_iter(skb, from, length);
++		ret = __zerocopy_fill_skb_from_iter(skb, from, length, sk);
+ 
+ 	truesize = skb->truesize - orig_size;
+ 	if (sk && sk->sk_type == SOCK_STREAM) {
 diff --git a/net/core/pisa-net.c b/net/core/pisa-net.c
-index 6d4909c82070c..d0a2c94419187 100644
+index d0a2c94419187..6422c472029a1 100644
 --- a/net/core/pisa-net.c
 +++ b/net/core/pisa-net.c
-@@ -10,6 +10,9 @@
- #include <linux/mutex.h>
- #include <linux/netdevice.h>
+@@ -12,6 +12,8 @@
  #include <linux/pisa.h>
-+#include <linux/skbuff.h>
-+#include <linux/slab.h>
-+#include <net/hotdata.h>
+ #include <linux/skbuff.h>
+ #include <linux/slab.h>
++#include <linux/mm.h>
++#include <linux/uio.h>
+ #include <net/hotdata.h>
  #include <net/pisa.h>
  
- /* Enabled while at least one device has pisa_tx_bufs set. */
-@@ -32,15 +35,79 @@ int net_pisa_tx_bufs_set(struct device *dev, bool val)
+@@ -98,9 +100,10 @@ void *__pisa_skb_head_alloc_node(gfp_t flags, int node)
  }
  
  /*
-- * The sysfs attribute pisa_tx_bufs lives on the device that does DMA: the
-- * closest ancestor of a leaf net_device that has a dma_mask (dev->dev.parent,
-- * or further up behind bus glue such as virtio). A socket route (dst->dev) may
-- * instead point to an upper virtual net_device (bond, VLAN, ipvlan, etc.),
-- * whose leaves are its lower devices. Walking lower devices via
-- * netdev_walk_all_lower_dev_rcu() on every TX allocation would be too
-- * expensive, so dev->pisa_tx_flags_tstamp caches the walk result on the net_device
-- * and refreshes it at most once every 256 jiffies:
-+ * Enabled while at least one device has pisa_tx_skb_heads set; small TX skb
-+ * heads (__GFP_PISA) are allocated from skbuff_small_head_pisa.
-+ */
-+DEFINE_STATIC_KEY_FALSE(net_pisa_tx_skb_heads_key);
-+EXPORT_SYMBOL(net_pisa_tx_skb_heads_key);
-+
-+static struct kmem_cache *pisa_skb_small_head_cache __read_mostly;
-+
-+/* Lazily initialize skbuff_small_head_pisa on first enable. */
-+static int pisa_skb_head_init(void)
-+{
-+	unsigned int size = kmem_cache_size(net_hotdata.skb_small_head_cache);
-+	struct kmem_cache_args args = {
-+		/* As skbuff_small_head, see skb_init(). */
-+		.useroffset	= 0,
-+		.usersize	= SKB_WITH_OVERHEAD(size),
-+		.sheaf_capacity	= 32,
-+	};
-+	static DEFINE_MUTEX(mutex);
-+	struct kmem_cache *s;
-+
-+	guard(mutex)(&mutex);
-+	if (pisa_skb_small_head_cache)
-+		return 0;
-+
-+	/* No slab is allocated before the cache is published below. */
-+	s = kmem_cache_create("skbuff_small_head_pisa", size, &args,
-+			      SLAB_HWCACHE_ALIGN | SLAB_NO_MERGE | SLAB_CACHE_PISA_RO);
-+	if (!s)
-+		return -ENOMEM;
-+	WRITE_ONCE(pisa_skb_small_head_cache, s);
-+	return 0;
-+}
-+
-+int net_pisa_tx_skb_heads_set(struct device *dev, bool val)
-+{
-+	static DEFINE_MUTEX(lock);
-+
-+	if (val) {
-+		int ret = pisa_skb_head_init();
-+
-+		if (ret)
-+			return ret;
-+	}
-+
-+	guard(mutex)(&lock);
-+	if (dev->pisa_tx_skb_heads != val) {
-+		WRITE_ONCE(dev->pisa_tx_skb_heads, val);
-+		if (val)
-+			static_branch_inc(&net_pisa_tx_skb_heads_key);
-+		else
-+			static_branch_dec(&net_pisa_tx_skb_heads_key);
-+	}
-+	return 0;
-+}
-+
-+void *__pisa_skb_head_alloc_node(gfp_t flags, int node)
-+{
-+	return kmem_cache_alloc_node(pisa_skb_small_head_cache,
-+				     flags | __GFP_NOMEMALLOC | __GFP_NOWARN, node);
-+}
-+
-+/*
-+ * The sysfs attributes pisa_tx_bufs and pisa_tx_skb_heads live on the
-+ * device that does DMA: the closest ancestor of a leaf net_device that has a
-+ * dma_mask (dev->dev.parent, or further up behind bus glue such as virtio).
-+ * A socket route (dst->dev) may instead point to an upper virtual net_device
-+ * (bond, VLAN, ipvlan, etc.), whose leaves are its lower devices.
-+ * Walking lower devices via netdev_walk_all_lower_dev_rcu() on every TX
-+ * allocation would be too expensive, so dev->pisa_tx_flags_tstamp caches the walk
-+ * result on the net_device and refreshes it at most once every 256 jiffies:
+- * The sysfs attributes pisa_tx_bufs and pisa_tx_skb_heads live on the
+- * device that does DMA: the closest ancestor of a leaf net_device that has a
+- * dma_mask (dev->dev.parent, or further up behind bus glue such as virtio).
++ * The sysfs attributes pisa_tx_bufs, pisa_tx_skb_heads and pisa_tx_zerocopy
++ * live on the device that does DMA: the closest ancestor of a leaf net_device
++ * that has a dma_mask (dev->dev.parent, or further up behind bus glue such as
++ * virtio).
+  * A socket route (dst->dev) may instead point to an upper virtual net_device
+  * (bond, VLAN, ipvlan, etc.), whose leaves are its lower devices.
+  * Walking lower devices via netdev_walk_all_lower_dev_rcu() on every TX
+@@ -108,6 +111,7 @@ void *__pisa_skb_head_alloc_node(gfp_t flags, int node)
+  * result on the net_device and refreshes it at most once every 256 jiffies:
   *   bit 0 (PISA_TX_FLAG_BUFS):       pisa_tx_bufs enabled on lower device(s)
-+ *   bit 1 (PISA_TX_FLAG_HEADS):      pisa_tx_skb_heads enabled on lower device(s)
+  *   bit 1 (PISA_TX_FLAG_HEADS):      pisa_tx_skb_heads enabled on lower device(s)
++ *   bit 3 (PISA_TX_FLAG_ZC):         pisa_tx_zerocopy enabled on lower device(s)
   *   bits 31..8 (PISA_TX_TSTAMP_MASK):  upper 24 bits of (u32)jiffies
   */
  static u32 pisa_tx_flags(const struct net_device *dev)
-@@ -50,8 +117,12 @@ static u32 pisa_tx_flags(const struct net_device *dev)
- 
- 	while (parent && !parent->dma_mask)
- 		parent = parent->parent;
--	if (parent && READ_ONCE(parent->pisa_tx_bufs))
--		flags |= PISA_TX_FLAG_BUFS;
-+	if (parent) {
-+		if (READ_ONCE(parent->pisa_tx_bufs))
-+			flags |= PISA_TX_FLAG_BUFS;
-+		if (READ_ONCE(parent->pisa_tx_skb_heads))
-+			flags |= PISA_TX_FLAG_HEADS;
-+	}
+@@ -122,6 +126,8 @@ static u32 pisa_tx_flags(const struct net_device *dev)
+ 			flags |= PISA_TX_FLAG_BUFS;
+ 		if (READ_ONCE(parent->pisa_tx_skb_heads))
+ 			flags |= PISA_TX_FLAG_HEADS;
++		if (READ_ONCE(parent->pisa_tx_zerocopy))
++			flags |= PISA_TX_FLAG_ZC;
+ 	}
  	return flags;
  }
- 
-@@ -89,7 +160,7 @@ u32 pisa_tx_flags_refresh(struct net_device *dev, u32 now)
+@@ -160,7 +166,8 @@ u32 pisa_tx_flags_refresh(struct net_device *dev, u32 now)
  		now |= pisa_tx_flags(dev);
  	} else {
  		struct netdev_nested_priv priv = {
--			.data = (void *)(uintptr_t)PISA_TX_FLAG_BUFS,
-+			.data = (void *)(uintptr_t)(PISA_TX_FLAG_BUFS | PISA_TX_FLAG_HEADS),
+-			.data = (void *)(uintptr_t)(PISA_TX_FLAG_BUFS | PISA_TX_FLAG_HEADS),
++			.data = (void *)(uintptr_t)(PISA_TX_FLAG_BUFS | PISA_TX_FLAG_HEADS |
++						    PISA_TX_FLAG_ZC),
  		};
  
  		rcu_read_lock();
+@@ -173,3 +180,83 @@ u32 pisa_tx_flags_refresh(struct net_device *dev, u32 now)
+ 	return now;
+ }
+ EXPORT_SYMBOL(pisa_tx_flags_refresh);
++
++/*
++ * Upgrade user @pages to PISA memory and, for TCP over a pisa_tx_bufs device,
++ * trim non-PISA trailing pages from the batch.
++ *
++ * MSG_ZEROCOPY sends of @sk may migrate user pages into PISA memory when the
++ * egress device has pisa_tx_zerocopy set. *@tx_bufs tells whether it also has
++ * pisa_tx_bufs set, i.e. whether a copy would land in PISA memory.
++ */
++static bool pisa_zc_enabled(const struct sock *sk, bool *tx_bufs)
++{
++	const struct dst_entry *dst;
++
++	if (!sk || !sk->sk_use_task_frag)
++		return false;
++	guard(rcu)();
++	dst = rcu_dereference(sk->sk_dst_cache);
++	if (!__pisa_tx_gfp(dst, PISA_TX_FLAG_ZC))
++		return false;
++	*tx_bufs = use_pisa_tx_bufs(dst);
++	return true;
++}
++
++bool __pisa_zc_iter_stop(struct sk_buff *skb, struct iov_iter *from,
++			 size_t *length, const struct sock *sk,
++			 struct page **pages, int max_pages,
++			 unsigned int orig_len, size_t *start, ssize_t *copied)
++{
++	unsigned int i, nr;
++	bool tx_bufs;
++	ssize_t keep;
++
++	if (!user_backed_iter(from) || !pisa_zc_enabled(sk, &tx_bufs))
++		return false;
++
++	/* Move user pages into PISA memory, then look them up again. */
++	if (pisa_upgrade_user_pages(from, pages, *copied, *start,
++				    DMA_TO_DEVICE, false)) {
++		*copied = iov_iter_get_pages2(from, pages, *length, max_pages, start);
++		if (*copied <= 0) {
++			if (*copied < 0)
++				*copied = -EFAULT;
++			return true;
++		}
++	}
++
++	/*
++	 * Only TCP plain MSG_ZEROCOPY ubufs can fall back to copy, and the copy
++	 * only helps if it goes into PISA memory.
++	 */
++	if (!tx_bufs || skb->sk ||
++	    (skb_zcopy(skb) && skb_zcopy(skb)->ops != &msg_zerocopy_ubuf_ops))
++		return false;
++
++	/*
++	 * Trim @from to the leading pages that are in PISA memory devices can
++	 * read (an RX-only page would not be mapped for TX): drop the
++	 * references to the others, give their bytes back to @from, and cap
++	 * *@length so that the caller ends after attaching what is left.
++	 */
++	nr = DIV_ROUND_UP(*start + *copied, PAGE_SIZE);
++	for (i = 0; i < nr && pisa_page_tx_ok(pages[i]); i++)
++		;
++	if (i == nr)
++		return false;
++
++	keep = i ? i * PAGE_SIZE - *start : 0;
++	while (nr > i)
++		put_page(pages[--nr]);
++	iov_iter_revert(from, *copied - keep);
++	*length = keep;
++	if (keep) {
++		*copied = keep;
++		return false;
++	}
++
++	/* -EXDEV tells tcp_sendmsg_locked() to copy this chunk instead of zerocopy. */
++	*copied = (skb->len != orig_len) ? 0 : -EXDEV;
++	return true;
++}
 diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 1ac1e327ac4c6..4f487e0450d4b 100644
+index 4f487e0450d4b..be6b6f42ee77e 100644
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -70,6 +70,7 @@
- #include <net/protocol.h>
- #include <net/dst.h>
- #include <net/sock.h>
-+#include <net/pisa.h>
- #include <net/checksum.h>
- #include <net/gro.h>
- #include <net/gso.h>
-@@ -93,6 +94,7 @@
- #include <linux/user_namespace.h>
- #include <linux/indirect_call_wrapper.h>
- #include <linux/textsearch.h>
-+#include <linux/pisa.h>
+@@ -1942,7 +1942,8 @@ int skb_zerocopy_iter_stream(struct sock *sk, struct sk_buff *skb,
  
- #include "dev.h"
- #include "devmem.h"
-@@ -607,16 +609,23 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
- 			     struct sk_buff *skb)
- {
-+	bool pisa = flags & __GFP_PISA;
- 	size_t obj_size;
- 	void *obj;
+ 	err = __zerocopy_sg_from_iter(msg, sk, skb, &msg->msg_iter, len,
+ 				      binding);
+-	if (err == -EFAULT || (err == -EMSGSIZE && skb->len == orig_len)) {
++	if (err == -EFAULT ||
++	    ((err == -EMSGSIZE || err == -EXDEV) && skb->len == orig_len)) {
+ 		u32 delta_truesize = skb->truesize - orig_truesize;
+ 		struct sock *save_sk = skb->sk;
  
-+	flags &= ~__GFP_PISA_RW;
- 	obj_size = SKB_HEAD_ALIGN(*size);
- 	if (obj_size <= SKB_SMALL_HEAD_CACHE_SIZE &&
- 	    !(flags & KMALLOC_NOT_NORMAL_BITS)) {
-+		*size = SKB_SMALL_HEAD_CACHE_SIZE;
-+		if (unlikely(pisa)) {
-+			obj = pisa_skb_head_alloc_node(flags, node);
-+			if (likely(obj))
-+				goto out;
-+		}
- 		obj = kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
- 				flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
- 				node);
--		*size = SKB_SMALL_HEAD_CACHE_SIZE;
- 		if (likely(obj))
- 			goto out;
- 		/* Try again but now we are using pfmemalloc reserves */
-@@ -2194,6 +2203,7 @@ struct sk_buff *skb_copy(const struct sk_buff *skb, gfp_t gfp_mask)
- 
- 	headerlen = skb_headroom(skb);
- 	size = skb_end_offset(skb) + skb->data_len;
-+	gfp_mask |= skb_head_pisa_gfp(skb);
- 	n = __alloc_skb(size, gfp_mask,
- 			skb_alloc_rx_flag(skb), NUMA_NO_NODE);
- 	if (!n)
-@@ -2238,7 +2248,10 @@ struct sk_buff *__pskb_copy_fclone(struct sk_buff *skb, int headroom,
- {
- 	unsigned int size = skb_headlen(skb) + headroom;
- 	int flags = skb_alloc_rx_flag(skb) | (fclone ? SKB_ALLOC_FCLONE : 0);
--	struct sk_buff *n = __alloc_skb(size, gfp_mask, flags, NUMA_NO_NODE);
-+	struct sk_buff *n;
-+
-+	/* For the head only: @gfp_mask is also used to orphan frags below. */
-+	n = __alloc_skb(size, gfp_mask | skb_head_pisa_gfp(skb), flags, NUMA_NO_NODE);
- 
- 	if (!n)
- 		goto out;
-@@ -2327,7 +2340,8 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
-+	/* For the head only: @gfp_mask is also used to orphan frags below. */
-+	data = kmalloc_reserve(&size, gfp_mask | skb_head_pisa_gfp(skb), NUMA_NO_NODE, NULL);
- 	if (!data)
- 		goto nodata;
- 	size = SKB_WITH_OVERHEAD(size);
-@@ -2535,6 +2549,7 @@ struct sk_buff *skb_copy_expand(const struct sk_buff *skb,
- 		return NULL;
- 
- 	oldheadroom = skb_headroom(skb);
-+	gfp_mask |= skb_head_pisa_gfp(skb);
- 	n = __alloc_skb(newheadroom + skb->len + newtailroom,
- 			gfp_mask, skb_alloc_rx_flag(skb),
- 			NUMA_NO_NODE);
-@@ -5037,7 +5052,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 				hsize = len;
- 
- 			nskb = __alloc_skb(hsize + doffset + headroom,
--					   GFP_ATOMIC, skb_alloc_rx_flag(head_skb),
-+					   GFP_ATOMIC | skb_head_pisa_gfp(head_skb),
-+					   skb_alloc_rx_flag(head_skb),
- 					   NUMA_NO_NODE);
- 
- 			if (unlikely(!nskb))
-@@ -7012,7 +7028,8 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
-+	/* For the head only: @gfp_mask is also used to orphan frags below. */
-+	data = kmalloc_reserve(&size, gfp_mask | skb_head_pisa_gfp(skb), NUMA_NO_NODE, NULL);
- 	if (!data)
- 		return -ENOMEM;
- 	size = SKB_WITH_OVERHEAD(size);
-@@ -7134,7 +7151,8 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
-+	/* For the head only: @gfp_mask is also used to orphan frags below. */
-+	data = kmalloc_reserve(&size, gfp_mask | skb_head_pisa_gfp(skb), NUMA_NO_NODE, NULL);
- 	if (!data)
- 		return -ENOMEM;
- 	size = SKB_WITH_OVERHEAD(size);
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 56dea49baaec2..0599c7d1aa6d0 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3062,9 +3062,10 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
-  *	Generic send/receive buffer handlers
-  */
- 
--struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
--				     unsigned long data_len, int noblock,
--				     int *errcode, int max_page_order)
-+struct sk_buff *__sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
-+				       unsigned long data_len, int noblock,
-+				       int *errcode, int max_page_order,
-+				       gfp_t gfp)
- {
- 	struct sk_buff *skb;
- 	long timeo;
-@@ -3093,7 +3094,8 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
- 		timeo = sock_wait_for_wmem(sk, timeo);
- 	}
- 	skb = alloc_skb_with_frags(header_len, data_len, max_page_order,
--				   errcode, sk->sk_allocation);
-+				   errcode,
-+				   sk->sk_allocation | gfp);
- 	if (skb)
- 		skb_set_owner_w(skb, sk);
- 	return skb;
-@@ -3104,6 +3106,17 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
- 	*errcode = err;
- 	return NULL;
- }
-+EXPORT_SYMBOL(__sock_alloc_send_pskb);
-+
-+struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
-+				     unsigned long data_len, int noblock,
-+				     int *errcode, int max_page_order)
-+{
-+	/* Callers with data_len != 0 (unix, packet, tun/tap) have no sk_dst_cache, so gfp is 0. */
-+	return __sock_alloc_send_pskb(sk, header_len, data_len, noblock,
-+				      errcode, max_page_order,
-+				      pisa_tx_head_sk_gfp(sk));
-+}
- EXPORT_SYMBOL(sock_alloc_send_pskb);
- 
- int __sock_cmsg_send(struct sock *sk, struct cmsghdr *cmsg,
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 50b8c92c3cd5e..f710cf959124f 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -1135,14 +1135,16 @@ static int __ip_append_data(struct sock *sk,
- 			alloclen += alloc_extra;
- 
- 			if (transhdrlen) {
--				skb = sock_alloc_send_skb(sk, alloclen,
--						(flags & MSG_DONTWAIT), &err);
-+				skb = sock_alloc_send_skb_dst(sk, alloclen,
-+							      flags & MSG_DONTWAIT,
-+							      &err, &rt->dst);
- 			} else {
- 				skb = NULL;
- 				if (refcount_read(&sk->sk_wmem_alloc) + wmem_alloc_delta <=
- 				    2 * sk->sk_sndbuf)
- 					skb = alloc_skb(alloclen,
--							sk->sk_allocation);
-+							sk->sk_allocation |
-+							pisa_tx_head_gfp(&rt->dst));
- 				if (unlikely(!skb))
- 					err = -ENOBUFS;
- 			}
-diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
-index f33a9dfc53099..87622fc1e2849 100644
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -60,6 +60,7 @@
- #include <linux/ip.h>
- #include <linux/net.h>
- #include <net/ip.h>
-+#include <net/pisa.h>
- #include <net/icmp.h>
- #include <net/udp.h>
- #include <net/raw.h>
-@@ -358,9 +359,8 @@ static int raw_send_hdrinc(struct sock *sk, struct flowi4 *fl4,
- 
- 	hlen = LL_RESERVED_SPACE(rt->dst.dev);
- 	tlen = rt->dst.dev->needed_tailroom;
--	skb = sock_alloc_send_skb(sk,
--				  length + hlen + tlen + 15,
--				  flags & MSG_DONTWAIT, &err);
-+	skb = sock_alloc_send_skb_dst(sk, length + hlen + tlen + 15,
-+				      flags & MSG_DONTWAIT, &err, &rt->dst);
- 	if (!skb)
- 		goto error;
- 	skb_reserve(skb, hlen);
 diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 3c3edc48705d7..83f8ed2aa9a7e 100644
+index 83f8ed2aa9a7e..411714edb90bd 100644
 --- a/net/ipv4/tcp.c
 +++ b/net/ipv4/tcp.c
-@@ -932,7 +932,7 @@ struct sk_buff *tcp_stream_alloc_skb(struct sock *sk, gfp_t gfp,
- {
- 	struct sk_buff *skb;
+@@ -1132,6 +1132,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 	int process_backlog = 0;
+ 	int sockc_err = 0;
+ 	int zc = 0;
++	bool must_copy = false;	/* copy the next chunk of a MSG_ZEROCOPY send */
+ 	long timeo;
  
--	skb = alloc_skb_fclone(MAX_TCP_HEADER, gfp);
-+	skb = alloc_skb_fclone(MAX_TCP_HEADER, gfp | pisa_tx_head_sk_gfp(sk));
- 	if (likely(skb)) {
- 		bool mem_scheduled;
+ 	flags = msg->msg_flags;
+@@ -1293,7 +1294,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 		if (copy > msg_data_left(msg))
+ 			copy = msg_data_left(msg);
  
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index cf3ddc055d48d..24629788295b6 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -43,6 +43,7 @@
- #include <net/smc.h>
- #include <net/proto_memory.h>
- #include <net/psp.h>
-+#include <net/pisa.h>
- 
- #include <linux/compiler.h>
- #include <linux/gfp.h>
-@@ -3893,7 +3894,8 @@ void tcp_send_fin(struct sock *sk)
- 	} else {
- 		skb = alloc_skb_fclone(MAX_TCP_HEADER,
- 				       sk_gfp_mask(sk, GFP_ATOMIC |
--						       __GFP_NOWARN));
-+						       __GFP_NOWARN) |
-+				       pisa_tx_head_sk_gfp(sk));
- 		if (unlikely(!skb))
- 			return;
- 
-@@ -3921,7 +3923,7 @@ void tcp_send_active_reset(struct sock *sk, enum sk_rst_reason reason)
- 	TCP_INC_STATS(sock_net(sk), TCP_MIB_OUTRSTS);
- 
- 	/* NOTE: No TCP options attached and we never retransmit this. */
--	skb = alloc_skb(MAX_TCP_HEADER, priority);
-+	skb = alloc_skb(MAX_TCP_HEADER, priority | pisa_tx_head_sk_gfp(sk));
- 	if (!skb) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPABORTFAILED);
- 		return;
-@@ -4011,7 +4013,7 @@ struct sk_buff *tcp_make_synack(const struct sock *sk, struct dst_entry *dst,
- 	int mss;
- 	u64 now;
- 
--	skb = alloc_skb(MAX_TCP_HEADER, GFP_ATOMIC);
-+	skb = alloc_skb(MAX_TCP_HEADER, GFP_ATOMIC | pisa_tx_head_gfp(dst));
- 	if (unlikely(!skb)) {
- 		dst_release(dst);
- 		return NULL;
-@@ -4548,7 +4550,8 @@ void __tcp_send_ack(struct sock *sk, u32 rcv_nxt, u16 flags)
- 	 * sock.
- 	 */
- 	buff = alloc_skb(MAX_TCP_HEADER,
--			 sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN));
-+			 sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN) |
-+			 pisa_tx_head_sk_gfp(sk));
- 	if (unlikely(!buff)) {
- 		struct inet_connection_sock *icsk = inet_csk(sk);
- 		unsigned long delay;
-@@ -4601,7 +4604,8 @@ static int tcp_xmit_probe_skb(struct sock *sk, int urgent, int mib)
- 
- 	/* We don't queue it, tcp_transmit_skb() sets ownership. */
- 	skb = alloc_skb(MAX_TCP_HEADER,
--			sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN));
-+			sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN) |
-+			pisa_tx_head_sk_gfp(sk));
- 	if (!skb)
- 		return -1;
- 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 8f6f0bed15499..9a853655f8558 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1699,14 +1699,16 @@ static int __ip6_append_data(struct sock *sk,
- 				goto error;
+-		if (zc == 0) {
++		if (zc == 0 || unlikely(must_copy)) {
+ 			bool merge = true;
+ 			int i = skb_shinfo(skb)->nr_frags;
+ 			struct page_frag *pfrag = sk_page_frag_dst(sk, __sk_dst_get(sk));
+@@ -1338,6 +1339,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 				page_ref_inc(pfrag->page);
  			}
- 			if (transhdrlen) {
--				skb = sock_alloc_send_skb(sk, alloclen,
--						(flags & MSG_DONTWAIT), &err);
-+				skb = sock_alloc_send_skb_dst(sk, alloclen,
-+							      flags & MSG_DONTWAIT,
-+							      &err, &rt->dst);
- 			} else {
- 				skb = NULL;
- 				if (refcount_read(&sk->sk_wmem_alloc) + wmem_alloc_delta <=
- 				    2 * sk->sk_sndbuf)
- 					skb = alloc_skb(alloclen,
--							sk->sk_allocation);
-+							sk->sk_allocation |
-+							pisa_tx_head_gfp(&rt->dst));
- 				if (unlikely(!skb))
- 					err = -ENOBUFS;
+ 			pfrag->offset += copy;
++			must_copy = false;
+ 		} else if (zc == MSG_ZEROCOPY)  {
+ 			/* First append to a fragless skb builds initial
+ 			 * pure zerocopy skb
+@@ -1357,6 +1359,14 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 				tcp_mark_push(tp, skb);
+ 				goto new_segment;
  			}
-diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-index 00d832c7cdae9..aa10e74d0db3f 100644
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -33,6 +33,7 @@
- 
- #include <net/net_namespace.h>
- #include <net/ip.h>
-+#include <net/pisa.h>
- #include <net/sock.h>
- #include <net/snmp.h>
- 
-@@ -614,9 +615,8 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
- 	if (flags&MSG_PROBE)
- 		goto out;
- 
--	skb = sock_alloc_send_skb(sk,
--				  length + hlen + tlen + 15,
--				  flags & MSG_DONTWAIT, &err);
-+	skb = sock_alloc_send_skb_dst(sk, length + hlen + tlen + 15,
-+				      flags & MSG_DONTWAIT, &err, &rt->dst);
- 	if (!skb)
- 		goto error;
- 	skb_reserve(skb, hlen);
++			/*
++			 * The next user page is not in PISA memory: copy this
++			 * chunk, without reporting SO_EE_CODE_ZEROCOPY_COPIED.
++			 */
++			if (unlikely(err == -EXDEV)) {
++				must_copy = true;
++				continue;
++			}
+ 			if (err < 0)
+ 				goto do_error;
+ 			copy = err;
 -- 
 2.56.1.809.ga0b61035b5-goog
 
