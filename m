@@ -1,140 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7798F606A332
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E8C606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pEuUYkOi
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yvPwhGJk
 Received: by kanga.kvack.org (Postfix)
-	id 753E66B06B1; Thu, 19 Nov 2026 19:19:40 -0500 (EST)
+	id 88F8B6B05E2; Thu, 19 Nov 2026 19:21:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72A856B06B2; Thu, 19 Nov 2026 19:19:40 -0500 (EST)
+	id 8669A6B0605; Thu, 19 Nov 2026 19:21:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 619D26B0713; Thu, 19 Nov 2026 19:19:40 -0500 (EST)
+	id 77D2E6B0635; Thu, 19 Nov 2026 19:21:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 31B3F6B06B1
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:19:40 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B497B140BE9
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:19:39 +0000 (UTC)
-X-FDA: 85453588878.02.59D7C07
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D0A3540011
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:19:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=pEuUYkOi;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795133977;
-	b=q9+0uXtdpuBXoNlrAHmzgfXLtBhTBfMjxknJiO6IgLoBaQCfJi9kBMqv+Dj5OTT+zVSL7C
-	oiBUa0czc7mPmSNvwuOeKn4LNjaocTvW5pqQ5sSLdyQ7vYXJTR6dwt1AzEvz/Y8SqB7M83
-	Xwf8BnrUanR/qln+lkIa1mVXeQC/Jxg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795133977;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 462FA6B05E2
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:21:38 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1463408CB
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:21:37 +0000 (UTC)
+X-FDA: 85453593834.10.0BDD901
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BAB15C000A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:21:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=yvPwhGJk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795134095;
+	b=JUWncBys9XGOYv6oF8rH0IbXtw+wI7Cqp1GjndJs43xvB8e0TKpZ7MlkPvjMKi6TVU43aG
+	ky3yyPU+8oMhZO/qx62/ol/wl/3/E/ZWVmKNNVHMzfgzpQvvoaBYLEVqH0K+uOy7U4j1fN
+	+zVbeX/SeSmNdOODaJPM1k1q8Uoxlww=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795134095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n7l+AyO/cRMVQJwJa64VigJKwgCGiEZe5FhWi4AHvFM=;
-	b=D8aKAXgBCciIme/Za0dnTDFYMPVXvIVHKnFPmihZmt31P/IhlOeiHM5p4pOimRD/f4fF+i
-	VqXWTL4vdGD0gyK/Zd7Cfw21p3q5H/byB4eoWGhZlR3HnjkmrMij5jELrZ4jj6igZZGrsN
-	IAE0Kx1VPqQDwe+0a/ELuiL3B7SIcQU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=pEuUYkOi;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=dmatlack@google.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2f0213202fdso1609195ad.3
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:19:37 -0800 (PST)
+	bh=0CZfHhfHfESc4YrPufMYXO8QeXfOTlDtABpZbDYX5SI=;
+	b=j8ZkQDeo6D1aWazkhfkIrSXLZ5JJtGDHchEgG6HnKkeKQC7eWUlyJ3Ke03qF/kspYDZ335
+	0TDDuw7VwMsneMuaDES7ORHZ2SdyQSjYGPzRLDXwxNJ6pUgpg/A02OofcnQkOGTdMUYKEB
+	QmH0zXhf+RMsD6ypfYOsTmr5BLhZHQU=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=yvPwhGJk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb6886d30aso2553675e9.3
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:21:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795134094; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iTo2tkwGmcA06+6XCKfFCBi7c+0L0rBERjaePxIeaNDjEPk7KdLANYM30EGpKp+510
+         LVS2EFmzUrfYIrWOOqfY9jGy0U/WaaRITKnLFq4Qteyx9UDcgBhUFfyqQOkJr8B5D0DE
+         1hYpWfoaUglbcEdKJKcSA9+qOnYHYHV26RjLJ4WQpV4c1XmoHsKgmfi8/LVQ+TTsdnAn
+         c6SpjBaFMQybOnzc4/FLlnauMsincg/zLN4gJRHA3M+Zjkbp8heM+owqf06zEiShbc/Y
+         CJXOkXNGq6py0sqqEzhm/dDBD/hHXRJnkkPvSiDXUIUXjsQ+UTG1snNFh2qo6Df3gQ+i
+         Xy4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0CZfHhfHfESc4YrPufMYXO8QeXfOTlDtABpZbDYX5SI=;
+        fh=39UXCLgR0fVvU6WUJKwhy8HUNF3wC2RwkxhBqn+gC58=;
+        b=BoITSZX+PCS0MdpAHlQddzN2RtBxRPMjKlBnxiAXMrFI/a5eQYFfdR7gH5Pz/+Cc8g
+         n7mt7XfkOzHYVuiDTEqoGZ7F8uEBZs45Ll58uiRTRH4ig8E71LXuI2g9fkZaUPPL9tu2
+         PZYbAPXaV+Hyiskz0yZNNwVobRW4MHS2Xuv6Tv3BG3/0fxjZuCLbsQX+Q9K9TxvvU/Qf
+         4x1jZyZKqEdBvDicyrDC0OvgVygJbbkE437JZLnGo2uZFf0OA5L/lTFHGt0cTc4lev2E
+         AxqrLF8dTjfcBr/UyG1HUaIaVrxROrKAoCsMuMbu6rTZ2Iqrih9GNg3HQu2w3aVz+5jc
+         YCQg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795133977; x=1795738777; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=n7l+AyO/cRMVQJwJa64VigJKwgCGiEZe5FhWi4AHvFM=;
-        b=pEuUYkOilBWxVzxagIUNyAjp6CvxSw6l5hf2v9qUIHW9/LAVtMpa5W3zd050uqYEKv
-         fjbONHtl0nyHqorDLTAsMOTs2W6wpPUz/f68+g4aoW3sUVH1mBvCnMzND9aZBEwZLN5b
-         zNE9O19bblKRDRNGdoN92ceHSGJSvXynsZaGuwSPRkZAw9ee15Uc9Xsa/X19qu33JcXr
-         GiykSMLAU2R0/S7BkNoZsNzUzFHeW7BNU0cIEuJyKeAyGegHvu0rrD3ya/8KBTWKNGWq
-         NLC0jpDE38FQVAnreVvW3hovaS02UbyeizuUx1wO0Ur7bEc9UCF0kgdjqf81LPqNZoua
-         AFFA==
+        d=gmail.com; s=20260707; t=1795134094; x=1795738894; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0CZfHhfHfESc4YrPufMYXO8QeXfOTlDtABpZbDYX5SI=;
+        b=yvPwhGJkErAU9e48fAzTaGTCr4X/rhOZwaDoiQH9XzUhbFe7Bi6DLFKoiUgOa2vvxg
+         BzLRF8vpRj/sNcEgPK9PtqkvuK72A5e78brdMac/m6H9Wg8LH6sBiXXxGxWG1wJZxKiy
+         N0LKOw39Dlmw2HrxyWpJWgQc0zrh6nMviMmIGkcEJK3ZQlKtWZWUqMuZiqeJKrncsywS
+         yK1gXG1ETRHO+cp3PoVrM7UBCXVYOMlTmwyktxQSI+vVoSY9LfBE9kT7HCJUp+l87R9f
+         t3azY4g0+8JOVt9p8wVHjdor5gXH+n68rD8P3UP3cY4g9QYiHivn8g+wpePiIwSRNiHN
+         Ze3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795133977; x=1795738777;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795134094; x=1795738894;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=n7l+AyO/cRMVQJwJa64VigJKwgCGiEZe5FhWi4AHvFM=;
-        b=aS0g93Y94aP8SiLWfWDkhxgygqUFaH+7wFe+ykRBaXtUdXcgS9yJTrLX+xa3hrnLaW
-         N7Jy3oDYLoZ+99m9OOErrxb6o0t8+8CVToSLWjVaPJCMKY/NAWF9cQ9O4cLvFE7OjEeH
-         iC+pQIEmAxe1I9u+BObWuQnGPdM1/R2gXi3vwFCuSqdPvh6lRjPESblqqTTsarfxnsGo
-         RSKcNsz7yVhZtj3wR1yQKtNVlNCTQDhud8+k3D56eyxGglPr0uukLmCcQwplOG8TGBGA
-         0SUDm7LdoXAkQdCftHt5rXm8tzmj+CoFcYBULqAv1ZGTvpb3Bd9C9aQf79q9iA5MOvha
-         rNzQ==
-X-Forwarded-Encrypted: i=1; AL+hErERRoq4GQoXLGzih8PLX6q7qoaa0cbAtT4OdUNwa08vuecbG6/GmOy9vu6v5BHB6bdgIq34XJv0yw==@kvack.org
-X-Gm-Message-State: APuU4Z/t3Os0vOMZmd6P+P6T5tqNOiulkVAYkI/S6OXknZ6fAHpa2fhV
-	eK6dLpWL3/ZQXc/DYPE8az5KOkuU2cgS/h4q/EaPh+faVk4vXp3khI8Zdh+WN5MF2g==
-X-Gm-Gg: AZFdTZf+x874phkyuk/Tpb2jGjebPUE6ergqdM42Eol8TSLFip0L1jfTzmfP2h0tmH4
-	rRNj5KGgmjAtfQzbmAgnYjJu0qNB1ZhgGin7zzdaMzgYLKmwCAf3kmcvUVuAt2T0g1x27BzTGBY
-	gjFJcqiJoBSp5xIvDY3Jg850KclQMtcA8DPbJ6Zdhe6EzoRvvypN784I3jC5my8PMhCVBmxmnGn
-	NVzr/GTZ0nMsOcRsGE5n2oc5xyqWLzW09VFV2sKntAfa4LOrnf4mgJ1Pl+QrFQdDaMpNOMo/DC5
-	GeNDRsYId2jX1HEJQ/+J70xNtGH8701FlfsFwDaE6fqVOs7ij1GKc7Ihch9AAJoNQmmwSP7BnHh
-	3S6OjY0qq9CnFnxqmsNAOigFbLLjz4IAjQH0jnjjwDTQRc0Z3wNW9PqrrNU7Uqocv8/6r9yFV2x
-	7X99oiT0qdLZuC9FHt8f0UBpPWdajIvRMf9q5kWnmgQzESw+x1tWBjznKvmqSOM7kfQgfwUPBKZ
-	Bxus3OupsvPKffyu4eEr2lYKqty0Y54OpQhn6opG/+w6zVMQnejfVKtJoEE2VgnTd38AXITbKbq
-	oXl1IWEgWd4xHaJJQM8lS9L71zMmgJzpS8pIqhih2oVPSxqyMa0sOaXHSCPg70B0
-X-Received: by 2002:a17:902:e542:b0:2e9:6b5b:3db6 with SMTP id d9443c01a7336-2f03f1a4967mr13941365ad.30.1795133975980;
-        Thu, 19 Nov 2026 16:19:35 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0ddf40sm5969655ad.37.2026.11.19.16.19.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Nov 2026 16:19:35 -0800 (PST)
+        bh=0CZfHhfHfESc4YrPufMYXO8QeXfOTlDtABpZbDYX5SI=;
+        b=rYwFJ7HwTQLyFMEPC6utR5lMfy6Ijz/QDRCt+PB/wzl/4spgon+gDsPUNDx2nSvBwy
+         DU7ws6qB+T0AHwGJFC4k5oelKmFmr1lES//AzLQ3l3ce/XO0PtY4dQZ0mjt7oCjMIzCt
+         klphHjp75bZcZwotCxJKMLSR8g5pk4ysJ1Ye32rphXo8ddbckYLxi9bq+H5x6fFWjdjK
+         acRGItNVLAUiYNjeBI+6yrg6a90/dKslUu+owpqxbads689RdDayKd6KGdWNlad99ael
+         4w/C6pzFpUuF3h9NU5kcnWA6ZBqadhvTTEar2QqSPE9/gilaMqvOpOUGQ/nc5Zv2rVc1
+         6s9Q==
+X-Forwarded-Encrypted: i=1; AL+hErHx+EL38WcmyK8BMACTEHiVxPaXsbeqEEHPrS1ygFloUdJyPFEnpFkASvr7Nxjytzal588YJma/aA==@kvack.org
+X-Gm-Message-State: APuU4Z+bg1jbxxO22AKHe1Qo/UTLwbEUSryJSVQeZE9PM5x/5+V2GpNn
+	kHNvb8KiYYcce4qxU0V37TBrV7bW1I7H1OgOBrrrFTaJI1zbJgNaNvYCKlJbOKcFaTCOiTNQ7X3
+	Sx3jKJPchmN4oFveBKhiUW73NzV0VDds=
+X-Gm-Gg: AYBFou3vpBT4++dRQbq/girCw2iZXt4JFGhPyxv/NXcJXo2+FmAVoTdNElB0V3+KQpk
+	ZpdnjjNZbfQYmxpmfBCB3kifjmS05DskcH6OIyQpCPKUKvtX+ZMTyo9tsa54HFRPUmqhwfj5Yle
+	a+Um4UHMgPEf+WuLZqW6mfMAb3Xl1uFA+B7BiJOvLrL0mDPHPJGAqIW84+4EqLopUvjj+jEc54L
+	V7HFOdP1rotSLBI1w6Zoc9KLtneDy5Qr6I502VTsotEb873Ehk/VQBoo2AirOlSkRLHD7Davl7F
+	yQz+L7+7RevAY9XFqJ5eKtUE8Udj6y42VEBaKTVhNue05Fk/jxMDZJ6DiuUBICmVgQ43Ma2gQL8
+	a1Ip4F1D+QCU19S4rJSxfGwe6ynP1JXC0FE7HaNg8ISOswjDYU3FYIRKSdtpBGyhu1yCu51nmn5
+	m1RjZaxjA1hARNr4MB3a10/ICm9HYDF6XaMh6+XjvF
+X-Received: by 2002:a05:600c:4f84:b0:4bb:8701:a2df with SMTP id
+ 5b1f17b1804b1-4bb88809950mr27334705e9.17.1795134094416; Thu, 19 Nov 2026
+ 16:21:34 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261114002822.1043378-1-joannelkoong@gmail.com>
+ <20261114002822.1043378-3-joannelkoong@gmail.com> <avvhFAxBcPk5Q6pW@chrisdown.name>
+In-Reply-To: <avvhFAxBcPk5Q6pW@chrisdown.name>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 19 Nov 2026 16:21:22 -0800
+X-Gm-Features: Aa3M54ocPog8ZiHHSRBMvtbJbL2fyYxbh9unTOuH5y8YoEH3_wTAT4fdm-kxXRI
+Message-ID: <CAJnrk1b8cCOVe+4KL1LTUqw3vPE1EiFcELwurzgGPtfkvc8UoQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] mm: memcg: read root lruvec stats from the node counters
+To: Chris Down <chris@chrisdown.name>
+Cc: akpm@linux-foundation.org, david@kernel.org, yosry@kernel.org, 
+	mkoutny@suse.com, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, ljs@kernel.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, damon@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 16:19:34 -0800
-Message-Id: <DMZLVV5YW6GW.1HMW8L8NIQ1XR@google.com>
-Cc: <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
- <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
- <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
- <dmatlack@google.com>, <graf@amazon.com>, <jacob.pan@linux.microsoft.com>,
- <jgg@nvidia.com>, <jgg@ziepe.ca>, <jrhilke@google.com>,
- <julianr@linux.ibm.com>, <kees@kernel.org>, <kevin.tian@intel.com>,
- <leon@kernel.org>, <leonro@nvidia.com>, <lukas@wunner.de>,
- <mattev@meta.com>, <michal.winiarski@intel.com>, <parav@nvidia.com>,
- <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
- <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
- <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
- <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
- <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
- <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 12/27] vfio: Enforce preserved devices are retrieved
- via LIVEUPDATE_SESSION_RETRIEVE_FD
-From: "David Matlack" <dmatlack@google.com>
-To: "Vipin Sharma" <vipinsh@google.com>, <kexec@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-13-vipinsh@google.com>
-In-Reply-To: <20261102153656.1431701-13-vipinsh@google.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BAB15C000A
+X-Stat-Signature: y8wzosbdb3bxacfe63ia39abskrw87s7
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Rspamd-Queue-Id: D0A3540011
-X-Stat-Signature: 73hrdg33o8canw44hu7oqn6iyx6ni8ne
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1795133977-184177
-X-HE-Meta: U2FsdGVkX1+XyYqEM6SRC2D41RsNHKus57F8XRqKtfKtwvXVf8wIzsOzv/+D8x2ztVRAoO699tC+qcwIsxm9K7QcbZ5E2ivTg3WS5ZJb6oTPbGtZiPQ7RF/qYk4VPVu6HF7EC0alCCyiGfMWgun6FwLvJ5skVC4pNPnmCM3luoYmOWnuWAmM5u/5IMwIRDXS48zUu8nhi7dliUIxgJjVsum+Bq5kt5RB+UWq6nWtCLWy3Cu4tZPmOXYRMBgNzz9Zj6IR2HAgLi/U9QhOEaug+emxlEGGs1TcG8gcdv+4ytXKBuuHw1e1khHDrcXePr/MivqHXKWKgTPILz8TgGGuqb1CD9BK2jtkIDQjGCyASQf/g9z8m+czxat2p59IoR29x3AafIutq/cq8EREEcuJEw/eJruGUA8OPASPrXGYtrviNjCObq/hQFqPT6qhPZtPOFwjLFTEQd3kKNGLhmPkPd0ng2wK9DO7kEGjhdDbRyq2M20xd65gXJWpUha7pDq2Xkhiycj56W5Qd44Ct2avjYM6LByhYP3yMpR4tHYOkoPyim51P4dMWroQN0R6b0b5W0BN9+tB/8mb6Cjp1xlderrz+49GfeSvzytTkHYoT7iIGVeR6A8jBbxjveG2KBsPtYQcT8AMjCbK8C79Byj3jF6BxE3LyvvfUEbZ1dsuKIGyBqLXs5zq7q9PcBRtdfSIMaMcAdd7S9Au0VvxopcN4VkunPvTNzaS2CHchyGwR1JuDlfgY5cPMKmKTqlsTZSMWlFFPhs5a9jgT8QHNlXnW82XLx/OYT0A8HNJroyaW/rewRHnd9D/8KlbwtKXGFD3QTte2EB5zUA8fViyT5DGyTi0osoXBbFRU1nxeNHYa8RwLuAh6oUrWsUGtQ6NLRJ08kaSf/9pPCPKd+IlXLT6hqBCorGyW4maUQcyMQuMbNTbvQlqRu62smtgRDr7Am/huF8A264+cRNfwKPiTRy
- sPmpaH/K
- dWZXbQOVQTtwSrbfppvoDbZEXZpkPy7G1loIJL+qtCaUxk9e9GRtRVlwsIIPJPyktCDyhqBPoc1yA9zk5wCygiWoDV1f4BT+t/KHBNefe6NQ+ngCSJjd/dwvWSOMowEbmJjqCRzRKR+/pnppCPWy/bHa3fZhJHykXCw/w735xuxCrfNDALWHGALk1AwQ22mPPoOAOg7ta7EmHV8ceR7iWl2Ovoz8ajIznkXzVzCG8UbsV82+thfyhgUT1YwohwTpqhGeoYD8RpRF4Sbvd9Nk5VBBUTYU/kNbqGokcV2UktnyAzKwaRiu0ZB7r0vIGWR133lmOh7YLL+lzSlqrDKZb3RlJ1GJsews2xCs8oiZOgqSDb+6IxuEjiAeBdfij/kPX/0UPYL6aZT9kNUToVrZCpMWJUzZ6kdrod0RD/J8ctgMG+cDtYdtANwk4Q1aTGOk/1SXbl0aAzY8T2Mzq0JEepPHzdRxyEfwXjXIuv4UfXUXuY9RG0nGaaPBpXbOLSj92YfvPC/qFXqHhwN4ZeO/Ab7MP+JWBi9IzO0f807teYNFj86oZfK9pQ4bzH0B5AsTBPWif5GjE9Y/f4jCgVX3qK9+C6MSHBPD43EOD+RVDq+akqZlgXUaCUq1QrrpB9FZqPi/t09DBOQJgb2Q02A8LVv4rW/Zw+SPLYAxYSZQ+rVXLMKo=
+X-HE-Tag: 1795134095-585434
+X-HE-Meta: U2FsdGVkX1/LoAdpmNAd+5Czq1ciqUHv4wi/+rw0svMmjJWk3uFqXpWZxkFdX+Ze5KFkgXxR+GrddrdNm2O4VttTYpB0bABXFOwWrgpVfMNJ9u0VIjf2iYc+z3kNg5k56yaRkHawUF9Av2NvDN3+Y/9I9FQW7pQek5QAb/g4eB8so/BXmmSXHG6XX+3+/4XmNd2JSE1MB2kIFGyP5zHPSlEOX99kH8CsW152Re3zb6dIQU2JvhZkRYCslof94K5RH/THIgCfZLoSUNUdVfjjsmj9iawU07eOzzfdRx4BUzK5oykaMC9KZ//wQi7PGMyjx3vo2bG0a+FxqDXRZmWVxMKmALJbN8wNHB/WYm35j8YEMhdo51rimZgwf+MRLTJvohWcx3KzRELQXiz33WXL6EAgQR8vZrQWTyFTJu9rbwjvyy+iZjDOdmCXJ/PCVn0N/nj0VuPVJ3BJ3fQc5P6uZU0omKcbEO8NKx3WA17Zxj1KO4c40cYuxSyFubLZnE9bk3tOJWBECRwWewGS5my+A4oIldvLV9OtR+sMfp5VAb1B7XZ4eEgXRArA7FhG2v3U+dtVXXBnnY+66zA43zX5lZMnCKGYzpBgkkPLuz4JhYBSqN8vkxJxSXey4FHdzfrfAeHjjKMqpBUcrgyLwC4HC5EmB/YltlVZ3sSEhFwVM1ggwEcudmG83y0NaQPZYdSY0WAX+PtLG28+6lvJ49e2Qj0UTPN6FZ4v1urCKz7/rrOxJIHwUC70kXm+tOo8760f96CddBBcVWmvCWx9uH1b3NWYe9FBcFOVO3KXPS3xzgD+i1maTVvGoH5iTIYH+5fonLvsFUuzRP0KskjltR5U/cRO4SpoqVtbOQwB0AwxHZkK7okWVkwqWJtog7Wnqrk7hnix2r4nDQZjQVEjb7fi0OFxCl9r/3dBOYuq2FOfsg7z713UEmn0cul8aeyOD31y5PzKvlYSQk+oCHhmakP
+ E0GGBoVL
+ D0P4s7U2W5YRbeeiBe/83W+we8Ne5oqVI2BU9YGttq3tMK16QmJtRHoBn4ePgM/Pi6dosGldIgP5wjC70qbITjNkOTCKYJed6k+IlJmQMBpdcaEoQ21FL2plzfoh0h5Zp+bWikkOX0HG6dAF2cq0pgS7Hy1lflM9F5LQUoFhxF1MdDy+13LqQxieJSHWLQyhJtKgTK6oD92Bc5ONsoeLRYY62ScXAxdLroKaf7uvRPSTQ9Dunh0QHt/1jBR9or2mE2sWMq7rgdw+fcdebEYUgbiEQ9gnhxOYogNrb8rUI+WlSlsZKrfD7ZT0kJrU+eJAvvqWu9T/IfS7bjBz/IrhIeWTr/ariqYPSyhzqI2NApQ7cw8Pt/ZhlQGfHuVzKzSdWETeW/0YKXzWdSmr0P0OD82G2PmbNKWE/QKlJsRGbL5F3l5ZRPUj3BPem9jizGkkEuzZcv8ArAdsz1NwA4wp72ZNKJEIBV+/eG5zJo3XYX7aP+FBIIIYfu0OEIldcCxXCXlITfkQKZb6d2AZu+4yCy2T7+ZB+Xosnl4IIk8K4Co/zUH9sBYYUgGwc3NRZp7GzgoJkkqjYQTar2mkV1g86BXEZfXPvHNvednnqwnNWPmD76O4Cfa1LkQ28zA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,45 +148,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon Nov 2, 2026 at 7:36 AM PST, Vipin Sharma wrote:
-> diff --git a/drivers/vfio/vfio.h b/drivers/vfio/vfio.h
-> index 12557d45dfee..e6ca4c3fda06 100644
-> --- a/drivers/vfio/vfio.h
-> +++ b/drivers/vfio/vfio.h
-> @@ -11,6 +11,7 @@
->  #include <linux/cdev.h>
->  #include <linux/module.h>
->  #include <linux/vfio.h>
-> +#include <linux/pci.h>
-> =20
->  struct iommufd_ctx;
->  struct iommu_group;
-> @@ -446,4 +447,21 @@ static inline void vfio_device_debugfs_init(struct v=
-fio_device *vdev) { }
->  static inline void vfio_device_debugfs_exit(struct vfio_device *vdev) { =
-}
->  #endif /* CONFIG_VFIO_DEBUGFS */
-> =20
-> +#ifdef CONFIG_VFIO_PCI_LIVEUPDATE
-> +static inline bool vfio_liveupdate_incoming_is_preserved(struct vfio_dev=
-ice *device)
-> +{
-> +	struct device *d =3D device->dev;
-> +
-> +	if (dev_is_pci(d))
-> +		return pci_liveupdate_is_incoming(to_pci_dev(d));
-> +
-> +	return false;
-> +}
-> +#else
-> +static inline bool vfio_liveupdate_incoming_is_preserved(struct vfio_dev=
-ice *device)
-> +{
-> +	return false;
-> +}
-> +#endif /* CONFIG_VFIO_PCI_LIVEUPDATE */
+On Mon, Nov 16, 2026 at 9:07=E2=80=AFPM Chris Down <chris@chrisdown.name> w=
+rote:
+>
 
-No need for the ifdef here and 2 definitions here. If
-CONFIG_PCI_LIVEUPDATE is not enabled then the compiler should be able to
-optimize vfio_liveupdate_incoming_is_preserved() to false.
+Hi Chris,
+
+Thanks for reviewing and testing this series!
+
+> Hi Joanne,
+>
+> Joanne Koong writes:
+> >The exceptions are the kernel memory stats (slab, kernel stack, page
+> >tables, secondary page tables and vmalloc), hugetlb, and
+> >WORKINGSET_NODERECLAIM, which counts reclaimed xarray nodes (slab
+> >objects). Their node counters also count memory that isn't charged to a
+> >memcg, which falls into two categories:
+>
+> This still describes the v2 denylist. With the allowlist, the root memcg
+> also keeps reading rstat for NR_ANON_MAPPED, NR_FILE_MAPPED, NR_SHMEM et
+> al, and some of those differ for reasons outside the two categories here,
+> like swapcache being counted differently in the node counter, for
+> example. Could the changelog say what is on the list instead? So that
+> would be the stats that only change through mod_lruvec_state(), with
+> everything else still reading rstat.
+
+Will do!
+
+>
+> >+      case PGROTATE_ANON:
+> >+      case PGROTATE_FILE:
+> >+      case PGREFILL:
+> >+              return true;
+>
+> NR_VMSCAN_WRITE isn't on the list, but prepare_scan_control() adds it to
+> WORKINGSET_RESTORE_ANON, so once the root flush in reclaim goes away,
+> root reclaim would mix a live node counter with a stale rstat value.
+> Unless I'm mistaken it should go here as well.
+
+I think your analysis is right. I'll add NR_VMSCAN_WRITE to the allow
+list as well.
+
+Sashiko pointed out that NR_SWAPCACHE and the other charged-folio
+stats between WORKINGSET_RESTORE_FILE and
+PGPROMOTE_SUCCESS in memcg_node_stat_items[] also should be added as
+well. I need to look into this more.
+
+I'm out on PTO for three weeks but when I come back, I'll update this
+series and submit v4.
+
+Thanks,
+Joanne
 
