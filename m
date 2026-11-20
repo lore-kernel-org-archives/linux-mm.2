@@ -1,141 +1,164 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D20606A325
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889AE606A325
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hs2SXW9V
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MT90aUeJ
 Received: by kanga.kvack.org (Postfix)
-	id 898E56B00EF; Fri, 20 Nov 2026 05:33:15 -0500 (EST)
+	id B57736B05B9; Fri, 20 Nov 2026 05:33:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86FB76B05B8; Fri, 20 Nov 2026 05:33:15 -0500 (EST)
+	id B2EFE6B05C2; Fri, 20 Nov 2026 05:33:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 785EC6B05B9; Fri, 20 Nov 2026 05:33:15 -0500 (EST)
+	id A1DA86B05C7; Fri, 20 Nov 2026 05:33:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 50A1B6B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:33:15 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C4A3A80EE9
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:33:14 +0000 (UTC)
-X-FDA: 85455135108.14.77C4FAA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 15EF31A0003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:33:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hs2SXW9V;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EA486B05B9
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:33:28 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B63E120E68
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:33:28 +0000 (UTC)
+X-FDA: 85455135696.26.78B88F3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4F8D81C0003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:33:26 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MT90aUeJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795170793;
-	b=lIhTNIbyWfm94Aeh7LpoSXl94eiSU++DqZjeQ+BDlFGbQDOR/Xvts4bApUi0XCm+IhQb6p
-	O1iltRBRAncSC9ZoIUelG35ZloZNWrlBUpEMHzX7QbVMDcyIOAO5buZzOvKLJ+r+ErTKRc
-	VPr+W2d4NmDP1v0gi5m0mKwnKHIzXNA=
+	t=1795170806;
+	b=LM/5wpSuVDZevZn18h8pvM02/W+n5GWjXJIw/58Z6BmCl1X4osWW1xzyR6geR4Aoqtr9gB
+	XETTA5TqC3AFCmYFmiZfGJ/UP6LmkOWbK3ATtf/Gg8KjkeggPhoR3/KHUuTYjqRNmW2QoE
+	gcT824p5ywuE66F9M9hSMaD3lI6sD1c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795170793;
+	s=arc-20220608; t=1795170806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j8WTG0DzS1hPuRXBgn6FCxY0K+Jl6xxWQ77sF6Yqsjw=;
-	b=ny3cR1a1XTfIIxHkJr46jkgzPK2pBiVUtZM9RnYw+Griqm2HijchLAr6lP95Jn7KCT+SR2
-	DdabEIzrm+9jThomUgfH5sj64+VX/SQ5cSmbN8umd29jOPWytbx/SCvSdS/u8smKLsDw6B
-	SS/r6ZLhqEQ6RhSWvDVMBuCwnU1J6ug=
+	bh=t9oeuZg5SOFELh61DhL9TrcyeFMUL5FVI7HyV9D7ONM=;
+	b=Fv+hZTd3qhp8kL8UwK3EeYCv+Mbib0hQTqQ+rST2qfGsEIkIzNQLeHDtW1G+eVus4jBKsH
+	I7UORytSV+wW0EGanUr3NG3DSRG2KjiSAsWeHiTBB3QJ4gU11ud2slAlCDvEQvBx/77W+t
+	61reFeYzBPXJ2UwZYzn2IW1Hln1kwmA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hs2SXW9V;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MT90aUeJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9B8D561147;
-	Fri, 20 Nov 2026 10:33:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E202D1F000C0;
-	Fri, 20 Nov 2026 10:33:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 359CB45F29;
+	Fri, 20 Nov 2026 10:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 180BE1F000C4;
+	Fri, 20 Nov 2026 10:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795170791;
-	bh=j8WTG0DzS1hPuRXBgn6FCxY0K+Jl6xxWQ77sF6Yqsjw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hs2SXW9VNA9jRs6jViEkz1v+oyKqHMNia2qjPasfAlLAyjaHV/S4J4ZZe49Kx4+a+
-	 58ry23EIAvQJzBlaV0saAV2mWatcNcL1WZRXxGq8K6CvfMKf1dW1DQNS1Q71Ryx3s2
-	 K1bPlHDScNcLC3SPiBme8UW8lXqxKdtPHSh1lvVyhN+2RJWwzZTWi6LtuYrkJzroXz
-	 PJfXAqGImdjymdl95TKiIFGIJzOoi5Z8pP4INhHq+sm0v1+hfa9Nv+KTINrJkb15IH
-	 5rsm4zdGEm+0JokSjMQ/Xie9yWgMzKtYbQccQ0tJRrGZ4kyFvcAkpczMmj0s+oOMCp
-	 chMTeTZxyan/A==
-Message-ID: <0d55ddb1-0cc7-4d87-9d29-9165d35102a7@kernel.org>
-Date: Fri, 20 Nov 2026 11:33:07 +0100
+	s=k20260515; t=1795170804;
+	bh=t9oeuZg5SOFELh61DhL9TrcyeFMUL5FVI7HyV9D7ONM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MT90aUeJnbBLoxSnli8tTtBlsoFe45xxYq7FCMaOJfqXCyODpNpspWc3hSd8SkzQT
+	 m9HM/m7tfYasOLIuMLno+XIBkfnsJritn1I35Hs+G85PGyOWo2aqbx01Nb546s3l7J
+	 BWGnwVJYoBUhcgV1FsrIjpajqeru0eyjz/AssVQJQzDpJuh5zNs0pxZtz1D7YPzYAN
+	 ZzYDSSj8TvhhBVhbzNJkR/DPNP3NVKgSci50dNMucuDoqkdGwZpbuLzlHRwDlI3yq2
+	 oowRyN8OH4AiBudC5DwdHeH70QNVCNAH2foLQpSDv5FnrOZ2vP8EWoxiV4qmR5D1+m
+	 a8ZBginKlEPFg==
+Date: Fri, 20 Nov 2026 12:33:21 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Chris Zankel <chris@zankel.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Hallgrimur H. Gunnarsson" <halg@google.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Moore <paul@paul-moore.com>, Paul Walmsley <pjw@kernel.org>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Rich Felker <dalias@libc.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v4 07/14] fork: Support CLONE_INTO_ROOTNS in clone3()
+Message-ID: <awAh8chFM-9WtNKP@kernel.org>
+References: <20261119224312.1037966-1-jarkko@kernel.org>
+ <20261119224312.1037966-8-jarkko@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] mempool: account the element array to the caller
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Usama Arif <usamaarif642@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org
-References: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
- <20261119-alloc_tag-v1-3-efcccfd3a9c9@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261119-alloc_tag-v1-3-efcccfd3a9c9@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspam-User:
-X-Stat-Signature: esbq7bboajhwxk975iyzuzor8x6qcqhx
-X-Rspamd-Queue-Id: 15EF31A0003
-X-Rspamd-Server: rspam02
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261119224312.1037966-8-jarkko@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4F8D81C0003
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795170792-650595
-X-HE-Meta: U2FsdGVkX1/SdVtg9libD8glqPaDdU6j3YN79G+CF/l/Pxm3VOU1tgsfdKLWp4tih7U9H+n4Yrt+RDZ6MT5+5Zrm3xUHcsmNgfnWie7dWewLllgKyfcf37asyJGrBe66s1ErqPJ6o6W6ZyCnuN77myVBIwzqD20VJtekWF1aV9ZslQ5mSKjt/8QaknB7GDviJsztaFW6eWgQUxYKTAD7lL3V8XhH/tAa+tpFZa3YfAEZ/p4EAh9q70SaizYgSHq8tsl1SWj+SymCbVpUS51xEnHDt3biXZpo8B9k9NOYZQ5Ou+A7uNHL64ilIF9FMCZa435noYwrvcs/gBbYByJAQ43u+/rjy9lEhmKUtsUJ/uI0UjOfhyS2njnszQWRO42P9mkfQtYPArISuf7dij9fYh+bOHSUq0iQ3BzolFEa9Xn2rVVZmbb75AOkCOnLOhYAAdVFZoghCu7Mif1HbNM9XsdY//+ZFttJfbu5l0tt183ihxbU7NyzZgaKrkDu31TrKt+1JA/7C2GRQn+vdVKv5iLTEIeZC0/BMH60f1rDSMO5L4wPVZ8hbp0A5AJstptEn6NfUqqndU/8EUCUDZKPpdNBpDpHlot6INA/H9TzHc7f1ynBbjroyTsTsz9A3Svw6/xy95ZAW5M5ZXpe/xr2IGGk6VsT9kupC28YFdEhBoFxWbPrDaNbUtx4JfOTWSgUHzV0H6zm4mH/CA5IDYZeauEnrYZwh6Ksi1u/cJ8TIIiJUNepC+Lrk5JGyhT+C3mV6VQw9z7hC3lDDqI373Yxy0sqxJlT3RUrA+zOfpgvz5DCAFwOURY2lvOpBkwSl5Ut7dEMs0SLOXElvU7DWV4si7xxhU3DQrBODNsgkz06REYwymcFcPLobxFf1y5EStyPHy8WWFE9n3rJ2Ga/naQZyWttfwMeQ4osxKGpWJNRKrhqTn5MxzXwL8W6Vo8dsBOfCCqrU/0i6WgRVUUekKJ
- UWxXQJLi
- Uoesqo9MJpjVVX6T013fHUO2nDn6HFCqaBeIXyaTEjz6bZ7XJjzvbL1LiFsUxv2vM6aeEK0KByfwdYTJPGfqxZP5NJd1HgeKNzD5grZnvtsfqMIgHeJMAatsHtlnJsxJJ2L9lGwkZRN9v8stLWWXDcv5hBOlmR0BQqtBBoc4FjJFBM3zC6Nc/vmT0VfvS6PwvSGtmLX2i0p1swxBU8jvAPi4a5z3RvtDFxOGlTugzoRdkIbuhJFiFF1+JeInSLZcaPKTf8WbHMJJ3TSNzgINWzNCQ14jNT4tAIgyNZ2gVd0BW/xSzfJicFgsH24CLRpnrQC474qQWvx6ui7ejkVJ2v91eOqLFQGELYKdhhzaw5+ut4Qg+MZ9K47cFNjZck6BMGq2fVrfBr04dKRtwPQYTYxrRLYJGoxOPyDZpIEggK7JTBDuJY8Ri2/V0nxa/GHOlpcqzcnsIYC6x9XfKnRXP8Sk4YYRoteW9TidLLr1BY78NqiTjPIguNuYDPJaY+7ChULPgclLTyK31LkIcPRHV/LfzY2gDDzjLptX6
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: m16rss68q3ubhuazzaszhgtff919cgtb
+X-Rspam-User:
+X-HE-Tag: 1795170806-77905
+X-HE-Meta: U2FsdGVkX1+QiLd/4nqf4DHRwW4C6g6XuPRHv7Tl6Uqt3Eyytcn9vR4fY10PosGKvEYXSA0EIGcPLy+Gn6K6Hy3q+60wYuiQnw0gp6i99EhNFwum4B8jAEemg2oTfDED1CeW3JDzWYuJqAPS1JHTZ0EW5lC53o+S9AQUIGfWMsyyc9cLZlRFxFbUbwEOjdNnMeflgKqkmkS+nlz4Vz2qlQK8vGg5HRIrtko1tyo81owNpVB7Ez2G1Dy5c+ApE0aNzbUVNT8TLr6FB+PcTM2Cf+ZjLNDGDRPrtObWVt4V51F7JTDXie7giYeIRspee/gWkaXyq/FMpG9xKt5ESYFxIo05UfoOQhCWvVrIbytU5J5Eb6py0NzJ2TWUhRPUdjaxsNeHvHv/EGEgiE7up98dRjs+EPW42mRGCRKZtH7hhJD9YI64+wcaIs9h32M8NM72d/7yaVUTC6mvadgyRRhINAex2RZE/DE7GEaDfVxtqBMG8m5CXpiKJzTbWyRoGYxRP3sg28rZ1ZTnX+/ldtF56Ln2MwzXLaOuh4FGdLeeijjaOS997Cx62hbgFShPgNOC3dYiIZvFcUislSLM+3N8fbpG5q87YUh0GlYvV4EG/cZCKVSmhduYYf06j7MiTDggCDaYeq/micw6zgcYgfDRDYoq9f+iydsAVyzFGnagXADDUkM+qNG2EZxvBPT7j5yT+XruPR/SRtCj4vSXgIE7/23dM2ijtrJCzHG4aj6R8BvYEH36ucf05avh4MnE67fHssfy+f/Ias5j9skjIzn8BzUOpfxeCWcsn+CZgakemTfOgrvDzEiLo4ueGgaMc02qR/q2RGaNxAecJpm9LtiWbOp3mf9jBgJDaF+K9XZos1+8/Ed9lkBa3dCNAAAnKAYzQyupZlBTfhIIB5v6V3WWMxPQ3/UbyzKNVg4Epbiy/0trWN6Pgm0bZWbVYInVTO3lKq3xuE4MIqsBmJH6F4k
+ nBL+r1Ca
+ 43fP53QQ4txgypJ6uISsw4sQN7makihexYQJ9PGIOJX9DOdGB3QZN0x1fUJc0YomhxLJegCf9uiURuhT6YnzUWT2l4HTfZabGv4M+/6r7DTJkPhkQQiUVIwrfKv5MG6ZCaEn1G9XWPgwBHwiexHS8eDBdtytRQV/vC5jt6gO9kgPFNbE/b27QydbgcHpGvbIMVqtDdHACD+rzL6b89yGWSv4bGRk5Gnd6euJUVuV8bIy+7Ap2qeu6GW4sh5ibDqiHR/SYljfTd4QxH4ckeL5/xCw6zaZbmmGXNr4+rG348BSeLeYv75xWTE0PVpiDK66iBqhM7/z7QTlWqvV3QaAlwMPcbplMHXxkF7i1yOD/qyhSNss7+xaVVCxQO5+f4X0X8NHw/zZ3b3k99rm+4HtuLi8FdBDEN5osbnIGZP2b8txSDxhQmgLb7gj+GNO96kJR4VLfBwquY+Hig3kwHi8OY8QaZUddpK6RijJJAwLpOOz/c27/hSAnKxAw4wmXsi2ix/rR1KYhhTmuSgSbXWW8DW34nP728Hiw07xGrm4f8vNRdTcij2ANLNq76gUeUqka0XM0ZsXF5MdNICw8DF3cY84TUKspGP2WgP0Adlwp9Vgxu3E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,111 +167,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 09:52, David Hildenbrand (Arm) wrote:
-> mempool_create_node() accounts the struct mempool and all elements to
-> the caller, but the array of element pointers allocated by
-> mempool_init_node() and mempool_resize() ends up being accounted to
-> mm/mempool.c in /proc/allocinfo.
+On Fri, Nov 20, 2026 at 12:43:05AM +0200, Jarkko Sakkinen wrote:
+> Multithreaded userspace daemons cannot call setns(CLONE_NEWUSER) or
+> safely mutate process-wide filesystem state in place before spawning a
+> child into a target namespace set.
 > 
-> Let's consistently account all mempool allocations to the caller, like
-> ptr_ring_init() and ptr_ring_resize() do, by using the _noprof variants.
+> Add CLONE_INTO_ROOTNS and struct clone_args.rootns (CLONE_ARGS_SIZE_VER3)
+> to spawn a child process directly into a rootns whose root mount has
+> been installed. Transition the rootns from ROOTNS_INIT through
+> ROOTNS_FORKING to ROOTNS_RUNNING for the first process so it becomes
+> PID 1, serialize concurrent entrants on waitq until bootstrap resolves,
+> and admit subsequent callers into the running PID namespace until
+> teardown begins.
 > 
-> mempool_init_node() is only called from mempool_init_noprof() and
-> mempool_create_node_noprof(), which already set the allocation tag.
+> Derive child credentials from current, require CAP_SYS_ADMIN and
+> CAP_SYS_CHROOT in the target user namespace and an ancestor active PID
+> namespace, preserve caller umask, reset dumpability across user namespace
+> transitions, commit time namespace vvar mappings after copy_process()
+> succeeds, and look up the live mount namespace root. Restrict companion
+> flags to CLONE_VFORK, CLONE_PIDFD, CLONE_PIDFD_AUTOKILL, CLONE_AUTOREAP,
+> CLONE_CLEAR_SIGHAND, CLONE_INTO_CGROUP, and CLONE_NNP.
 > 
-> While at it, make mempool_init_node() static and rename it to
-> mempool_init_node_noprof(): it is not used outside of mm/mempool.c, and
-> calling it without an allocation tag would be wrong.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Co-developed-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-LGTM, but if this is due to an AI report, they should teach it better about
-what's urgent, to the point of not reporting such things at all :)
+Being fd-bound object the gist is that the first clone3() binds
+cgroups, which could e.g., different process than who build the
+container.
 
-> ---
->  include/linux/mempool.h |  3 ---
->  mm/mempool.c            | 19 ++++++++++---------
->  2 files changed, 10 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-> index 5444dcb63efa8..7f8e257017c01 100644
-> --- a/include/linux/mempool.h
-> +++ b/include/linux/mempool.h
-> @@ -38,9 +38,6 @@ static inline bool mempool_is_saturated(struct mempool *pool)
->  }
->  
->  void mempool_exit(struct mempool *pool);
-> -int mempool_init_node(struct mempool *pool, int min_nr,
-> -		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
-> -		void *pool_data, gfp_t gfp_mask, int node_id);
->  int mempool_init_noprof(struct mempool *pool, int min_nr,
->  		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
->  		void *pool_data);
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index 5e0ba516efdbf..30cbe44d464b3 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -243,7 +243,7 @@ void mempool_destroy(struct mempool *pool)
->  }
->  EXPORT_SYMBOL(mempool_destroy);
->  
-> -int mempool_init_node(struct mempool *pool, int min_nr,
-> +static int mempool_init_node_noprof(struct mempool *pool, int min_nr,
->  		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
->  		void *pool_data, gfp_t gfp_mask, int node_id)
->  {
-> @@ -257,8 +257,9 @@ int mempool_init_node(struct mempool *pool, int min_nr,
->  	 * max() used here to ensure storage for at least 1 element to support
->  	 * zero minimum pool
->  	 */
-> -	pool->elements = kmalloc_array_node(max(1, min_nr), sizeof(void *),
-> -					    gfp_mask, node_id);
-> +	pool->elements = kmalloc_array_node_noprof(max(1, min_nr),
-> +						   sizeof(void *), gfp_mask,
-> +						   node_id);
->  	if (!pool->elements)
->  		return -ENOMEM;
->  
-> @@ -279,7 +280,6 @@ int mempool_init_node(struct mempool *pool, int min_nr,
->  
->  	return 0;
->  }
-> -EXPORT_SYMBOL(mempool_init_node);
->  
->  /**
->   * mempool_init - initialize a memory pool
-> @@ -299,8 +299,8 @@ int mempool_init_noprof(struct mempool *pool, int min_nr,
->  		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
->  		void *pool_data)
->  {
-> -	return mempool_init_node(pool, min_nr, alloc_fn, free_fn,
-> -				 pool_data, GFP_KERNEL, NUMA_NO_NODE);
-> +	return mempool_init_node_noprof(pool, min_nr, alloc_fn, free_fn,
-> +					pool_data, GFP_KERNEL, NUMA_NO_NODE);
->  
->  }
->  EXPORT_SYMBOL(mempool_init_noprof);
-> @@ -333,8 +333,8 @@ struct mempool *mempool_create_node_noprof(int min_nr,
->  	if (!pool)
->  		return NULL;
->  
-> -	if (mempool_init_node(pool, min_nr, alloc_fn, free_fn, pool_data,
-> -			      gfp_mask, node_id)) {
-> +	if (mempool_init_node_noprof(pool, min_nr, alloc_fn, free_fn,
-> +				     pool_data, gfp_mask, node_id)) {
->  		kfree(pool);
->  		return NULL;
->  	}
-> @@ -384,7 +384,8 @@ int mempool_resize_noprof(struct mempool *pool, int new_min_nr)
->  	spin_unlock_irqrestore(&pool->lock, flags);
->  
->  	/* Grow the pool */
-> -	new_elements = kmalloc_objs(*new_elements, new_min_nr);
-> +	new_elements = kmalloc_array_noprof(new_min_nr, sizeof(*new_elements),
-> +					    GFP_KERNEL);
->  	if (!new_elements)
->  		return -ENOMEM;
->  
-> 
+CLONE_INTO_CGROUPS is of course available as an optional flag when
+using CLONE_INTO_ROOTNS.
 
+Br, Jarkko
 
