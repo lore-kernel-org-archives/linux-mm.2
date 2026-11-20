@@ -1,123 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D8D606A325
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3649D606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BdK3arbk
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zECH4JIA
 Received: by kanga.kvack.org (Postfix)
-	id B2F8A6B05DD; Fri, 20 Nov 2026 03:28:43 -0500 (EST)
+	id 3DD3D6B05DF; Fri, 20 Nov 2026 03:29:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B06F76B05DF; Fri, 20 Nov 2026 03:28:43 -0500 (EST)
+	id 3B51E6B05E1; Fri, 20 Nov 2026 03:29:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F5E56B05E0; Fri, 20 Nov 2026 03:28:43 -0500 (EST)
+	id 2CB5B6B05E2; Fri, 20 Nov 2026 03:29:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 71CC66B05DD
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:28:43 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 29AC21C4914
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:21:46 +0000 (UTC)
-X-FDA: 85454803812.03.A500F12
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E74386B05DF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:29:26 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6CA7CC0C4D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:22:04 +0000 (UTC)
+X-FDA: 85454804568.20.D083B7E
 Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4F9A640003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:21:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=BdK3arbk;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 87F5E20002
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:22:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zECH4JIA;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+	spf=pass (imf03.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795162904;
-	b=ZY7GME5kvX95BlGFG+35mtNtXJCFw6kdnmFQatisu97wA/ZnuZpclkOIghbY1HKXuSDG/f
-	4kcdkBvZoDttRMtj34HRExaN6ZA6mjs+WOOFlTHKW+YipQjZxl4hnoMkkLv8CwX9q03y4u
-	UTxh/ZycGJKur44UjEbiXsqa93AkRMk=
+	t=1795162922;
+	b=Me5BT/5bLH7SiXLmvBgFVp4qRKjrb6f1WsIxfYSt48khBlUZNWjdY5qaOhsdm0wxIt4md2
+	u6zJe5XQzGSpZGVC6kweov74gDBvJ3e/qE6QkFV/547n9k4oOG4pp1SsvN9JkX5LiN/dAF
+	mIlTh/rzOtZK1zceOzNB9zBoR3YkCnU=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795162904;
+	s=arc-20220608; t=1795162922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8xqDAnMgRLbQDaXY5Ss9Yx0LPWinqLCRy8RnRx2MnMk=;
-	b=KPdXK2Zx94HkQG5TvdM5xUYCho5jzIHGzXH9/KLuQarsmXgIQGB8fAWFgGELC61fxW8Awg
-	3qIHMjNSDEmqJzhrqwOsl7R3cUUPmJukxjVsqtYhD3XiTXl/AYUDJwoqcBiGKYoBVspYBF
-	mYl/Xc3g4R+UCL29d9JqSyYnRfm8de8=
+	bh=6qaWnWddVt0MJiy+92iRgvW/WkoPo1PC7CtoH61AXG0=;
+	b=yAvjtPwpjGDb/Hsouc+r6YWbzrzef8uE9jpjJo04YVyHUcX97hA1G1mu5WEoNZVP4bOY0K
+	Nh0uFkgHlHEuYyNp/64ELAF9kz9akxPrI51i7LDkZF+InrfeY4mT4OxCfkFE1qbeMgsN/R
+	70NG/zQJSTl2YMWP7EGNOvHnq9Pr0qI=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=BdK3arbk;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zECH4JIA;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b8815693e2so734127a12.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:21:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795162903; cv=none;
+	spf=pass (imf03.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b887ca9f5cso892200a12.0
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:22:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795162921; cv=none;
         d=google.com; s=arc-20260327;
-        b=DUOC5WHpjgmOzFFZSMr8uZAxyFYI2PrrkE10qygRYI11C84bB6+3f++fBjWM/PTgU3
-         0zVHTTYpzLBM3GCfN1UvWV9tHLOKuJ0eBX1oNRnpTpj/sVAoaVNfa/zerhi3VpCzE6vA
-         h1HDSbRuYHPQnq8GeDVn8BuYd2PPaIvQbEjkI9exFrcAbMFA1buHWJ80yAiN3Ui3c2Gc
-         cviEnLYm20wVAphUUnjdVN1O070nscxFZx+hM8l0TFO/gT/TQnq5V0+4sr+2JJQ1q6nq
-         rj5Ciodi1YozZGlf8n21kxRVs69kspOs2sKs/6Kx9ARWBU31fnwmQAykRLvM3/g5F/ob
-         IYyg==
+        b=dmFCEv7l0RGMFgmZaOVHr8gVxVn1ZHkMse3Ijcxf4NQNrwkp8rbsqC/r4dCcc9aIfR
+         X7zBxcvYf8hJra3oyqEZh+fNxMmWXAbL7sROlA6a7Ie6MwXOkmxeHDwk1mNY/T1FxFhq
+         TMD0kpmJdTC74PLbcv3NbExsG3mDN9Q/CqLA4w3XGJYSw+/ZSnN1vEn+vx9ChSiuJVKM
+         fpNzEXVKzet7sEcxz4NevzV9KBFtqcPhHz1g3Rrhb7Bul+s8N3xtpJqC8LgNJ3bHjwYL
+         GKWDo4iHjgp9pq6ohPD04NUGADITptC+Abrk6692LwR8oOvsW9afJBljTXrixaguiMNu
+         ka5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8xqDAnMgRLbQDaXY5Ss9Yx0LPWinqLCRy8RnRx2MnMk=;
+        bh=6qaWnWddVt0MJiy+92iRgvW/WkoPo1PC7CtoH61AXG0=;
         fh=01xpVHe4kda/rS6+PGv7HHxY0OOMMTM3Wu/tKcvhHys=;
-        b=XQ2LqnFt1ovkXz7ys9SvfyUoLPHWhdaOOfGfLl/y+njUk+6EeHTzBRyydJEDCSvsG9
-         0TRzVv3G2Mc7Glw6ha+1G0ms7l97AT/CXncWe3ac1Gmg/8N4OLJKSdk696s2XPlEb4h0
-         1qU+YfXxwwhFQDr+XRR04hLUqZQ0eVil+Uorl6eBBC3U+Tf10tNi9z4q6m/RU1F6boPw
-         Js3rGJsgOjKaVBbc7Xn3UoeWT9OxjedOP+y0oZdYnp1i2qYwrT2SlYczTNGegQClfvDP
-         hINWN6V/w+VACeyrVZ1eCC675zBzZIBlVI+9XArDDw+fUJjdYItMbIWH1uRf7LDkElki
-         SJ4A==;
+        b=N218zts/Q/eid4LEXK+F7zzh1Uy48GD7U/Rc0w8wtTnPQpLHn0qbOOTFlxCvzTRuIA
+         bTV4pW/NIzM6asanDZsVy8XWf67B5rqJDuB/KSoCRadRGiF+gWnCRxW37P6r+8VlDRV8
+         o1V8OXwEqgRyQMYm2DJkb9pyqIEeoTCYl38YQ+GQHNldhMiJ84pVeDf1MyS59TYDBcpm
+         VHH8GbqW0bRQpKaFmjs9N/nqft+rrpBuMnvv7LEMdgCOg4743DruHi2WAqVb2EfoAAIf
+         rV3AqWbLzG/soKMXwdy+JehoPKnUvnExK86Dg8ruKSLf8ptJE+vMmd0fMMBbl+0G6ERL
+         ouMw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795162903; x=1795767703; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795162921; x=1795767721; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8xqDAnMgRLbQDaXY5Ss9Yx0LPWinqLCRy8RnRx2MnMk=;
-        b=BdK3arbkzDHIUgAdmvKmIk1QYcxRSdMRUurqVMaUGbha4AYCqdX5En8s4z2WWWvwgH
-         HHVxT/WJqMUSvxe5aZKHxliwt+7K6VYvRz2yzK/iknwEcC44E71J85dPTMOojnIMDBjS
-         HFCzEp10jp0byTDORZJP4OtEu1TfigEa6bC6kzjbPlz+FCEZJgbp86fiNvjnDzF4vcF8
-         wH2MrPdWg+Ti26qPuSpt0Am228fvNtO7uRE2rdijeKvR8M6DD99ISPvxy2XWhMrHRbq/
-         eAOBJF8ZWfFyNGL274ilxji/+8L3vHfYLhq6g5go7PFxtFfgS0xMepTOb7DTWt3iV5Kz
-         rR+Q==
+        bh=6qaWnWddVt0MJiy+92iRgvW/WkoPo1PC7CtoH61AXG0=;
+        b=zECH4JIAMnFvAfwkSOLUxzAY2YdJGzpVKjZtAwX8kduKv6QBFCNSatpDh7jgMBPhEc
+         D61EWFFIdIiwDjmMjm/A1k7OCIE3DYQTib5oG6lPBM8f8e0iqxUNjlvV0rrOOmg/TGgH
+         AzcOu4xnDUEsyXsBPMaA5hmMe+knwNHWnatGHcekN8RzNx5rTE8WVlw0qQlNOvKTsYO0
+         X8/EuRdavWvJOOttgyclu4eG5dCFdMyQxEC/ByeHezeT+26mzreTrjRTSIvgXHewOXOj
+         gQXN5x1wcr46UhUxerb7NCgHAC168Ut34zMELWkC/2TosSlBAnTAj7bO7mpevJOrMTIQ
+         YTOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795162903; x=1795767703;
+        d=1e100.net; s=20260707; t=1795162921; x=1795767721;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8xqDAnMgRLbQDaXY5Ss9Yx0LPWinqLCRy8RnRx2MnMk=;
-        b=DNQKwwJp8mPNtbcjSHt08rDyT247lOwa+C483UQJ5AMtqX91zKqwP2iTN1fBD650Ds
-         R9Xla3L8ShCvsQKaymFD/P37TU0TGuTMtWMOEWuO01n7pXWfby8zRoamPC+gFhhgiaFG
-         7JFGSZ199dynmOIkqa9K+HpTTsTK3c+K+rIP3pncLfcsBJzkqqXsXldsuvzKrDi0qu8D
-         RUx1XokaQ9sYkW2EvjqLrPzTCVf/QKzp2CAdkWRa4jwiabeoK4MeVkPEGuFAsLJ5PmIK
-         7SpEKnva9QnNENu0PsTKXCJ/nTit65kqUjaI0Xp5zg+Qmb9gIMA8d+aAC069tcI/iUmU
-         zsbA==
-X-Gm-Message-State: APuU4Z8bEeqNgbmV/oGn1/AL4w5cSj3tTFsBT1qX1fO1kAVMf2Dgb0DP
-	k6imFSWAQWZXDs/vugGgh03VKvqVGPdBUTrExgETNUyrBt4xXYtRURZ9Tb3EE2TI1lXbrQUFkVV
-	6b44rPxrgZWpCNrb4eq5RL1z02oLenZg=
-X-Gm-Gg: AZFdTZfbsiIt+Q/s9y9w9OOL24ptcXjeVpBdTIXjTBYFjqEljj3/VvsDIzYWKv3NKVV
-	tk8XzvuPDPcA7Hx3+T8PEuny+0TXabpcwvefH7P929LAzOQXVdvw3FqA9S6bKCI4x8QeaASgT1V
-	vYHk2TsNsesMruiswww34o0DI/o+HsQHTT9EOHP/UUj1+mi8JqsuiLEV8CdxE+DMqUiflXLmZTn
-	pt/LQbdFx5CSTlP0fjjewS6dnSjfGDTSRf3S5YWnFjpPgj6/5IesLq2d/jkmdSpV5xZYDGh5XkE
-	IbHpW0oYxC1QFPsmufgJ09rOnJXampOOmtMZYzRFLIqGTunNT8qp+kyH1qD1vN7EuRBK/JfCN/Y
-	N3XtforoFXenDA/CHIMMGttxXf7o57CehvNWoVN1Fu8vRze0BrkTdalMyQNoSRHM=
-X-Received: by 2002:aa7:c0d0:0:b0:6ba:144f:ae43 with SMTP id
- 4fb4d7f45d1cf-6ba37c7b138mr1084173a12.6.1795162902503; Fri, 20 Nov 2026
- 00:21:42 -0800 (PST)
+        bh=6qaWnWddVt0MJiy+92iRgvW/WkoPo1PC7CtoH61AXG0=;
+        b=mTernmv6+OgAlMJB2/emOXgBrjNiAIIx0rUy4+Yadru3EhNViQbowOf9SUFltoqKTz
+         TyHF2+trJH29I3oWatyQtI0QJb+gUxAVINZ/jL825V8OqF1TNPa1Knn81p8NVkeE1YO3
+         IJjjx1TAV3TvJ0oeSc1UJR92j9Oyo0Sh4bcoc2qX+IinbkbjdBvr8HpVDRVNQj6xszO6
+         IlMurMc1NBwTlUeAl6oBjXrgY4E89TtEpbz00zjJggFLGYoaz+dQXZ7dsXD5EPKVxR8h
+         Tvrr4HS42ZFx7gXmwTjBpm3oDvZ1KBCvuG7gUsExUgHYSWlPp4DjIY2GGIW3S2kKIkTV
+         gs3w==
+X-Gm-Message-State: APuU4Z+vzm1ebRlZu9y4a+WrCNTzcbBIggvPsu1HpGiMz/A+end+l2hS
+	pLzMLrbYKdeLHZj+8k5PRYpk7QvL8li42UB+qe2fj7ulhTwyueEOMybG/+Rp+BCF1xglblWxTrQ
+	8Vj1kjUs2UI1n6vP/5kh2jmPAyT5etdU=
+X-Gm-Gg: AZFdTZdHlxRsWGfkKrbdl6jUdxGcvxZEd+Xu1VVp1yIy8UwBF8rffDMM9mQ9lNDexIj
+	+QbdZdYy1J/Wx+MUkRD1XoeFffFiDnyfAOis1efSR6L90Me1NrEA/tZ8YqryKCBHjCuSDNqumCo
+	8eoGf8SOywTRh8DyVSCmETvhoecsD8hQd3e1tX4klCbqw4OFd1eZ1YopdepEov8B//zobwew/Wb
+	Y/dtdKJm/mNtDvIzp8T4Bkwus2zU5w5v/pdevWFrGCEqGfdWHrtsTn9IvS1hNWPAx5f0xhPQ06u
+	RRK6pAUKFFOXtUxhUF9im1tL+VRRM7LGnitzRTvfFbORuNfypUeumlYfWocy+qp4GMyDGzWhTPM
+	Tvykejg17TPGNf/DmzKn0wgIbuPTgbvH2c5JigBXlA+QXRE29M1AnBWlGFMkSsBc=
+X-Received: by 2002:a05:6402:2105:b0:6ba:3738:aa76 with SMTP id
+ 4fb4d7f45d1cf-6ba37ec713emr1520051a12.28.1795162920798; Fri, 20 Nov 2026
+ 00:22:00 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-11-9eee2fe97a2d@tencent.com>
-In-Reply-To: <20261119-mglru-fg-v5-11-9eee2fe97a2d@tencent.com>
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-12-9eee2fe97a2d@tencent.com>
+In-Reply-To: <20261119-mglru-fg-v5-12-9eee2fe97a2d@tencent.com>
 From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Fri, 20 Nov 2026 16:21:30 +0800
-X-Gm-Features: Aa3M54qin3mQjFf5kqOfy-EjZ2kR5w_yWqv5wLaUrnSsLRk4SMbzaUhZRRw7xMY
-Message-ID: <CAN_Opa-DxzvggsGKMXJWd2vSKjbztttBHx3uSzJawbiiEOa2bw@mail.gmail.com>
-Subject: Re: [PATCH v5 11/17] mm/damon: convert to LRU refs based operations
- for MGLRU
+Date: Fri, 20 Nov 2026 16:21:48 +0800
+X-Gm-Features: Aa3M54oR841ct7toroFKb5-FMop-YAlKT3qgtmdkpn6S2_l60VC8mi_ZrcEbsCc
+Message-ID: <CAN_Opa8SFEzeu93GpJY7OkOUP5AeB3P9_8MGuhi6JJnBQsA4Vw@mail.gmail.com>
+Subject: Re: [PATCH v5 12/17] mm/khugepaged: convert to LRU refs based
+ operations for MGLRU
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
@@ -144,19 +144,19 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
 X-Rspam-User:
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Rspamd-Queue-Id: 87F5E20002
+X-Stat-Signature: 3n79xobdoy1cf6s5k98c8usqczfouxg1
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 4F9A640003
-X-Stat-Signature: k7adi4kczzh4ko49ke7td3qqce6mmuth
-X-HE-Tag: 1795162904-737082
-X-HE-Meta: U2FsdGVkX184E9sXv5w0HIUgN/acS6A1noXhM8PgUp9Jmrf3Q5zACzGAtstftl/Fa9ntn0Ix2svMJXys+bsObA8QdfvW9KlxKOHjdZSq42NiLk/pTS8SyHG6zrn+WAT2dyAKwDuoqGej7dQsWrR/mNXC+bff5blo4tMMBV9J5vkpWpBcqi2XYNGt2U1FQgjxI3VtPtfCYe+NljDcZyUC2fqoEYo4awOvCtchDeaGQJqjjvwRtBcF83FuvFSwOwCMZYJ/6GZ5jjHUiiACoFcG1LA0/rgqRFIPVEQx58F7KGWA0dcCStre64cx1JBy26kxZo5CO6kozmqTtEJVZ2Cm4mAII99YbfIXM844hdmdJP4IcApzNuCDRrBTn2Xd0RwXHbIxcPliuoxG/tTpLyO8NlHQ52vsxN5XMQSFAHXJtXpSeCST5+b4HBbp6yHqP8Hs5FxjCYg3aFyAslPZFvb/O/e9tDmFPQKlSYvF3p3OVGZonK4bv/J5JrvAFzl6JkcJiaR8ZxndcvDduDZFtlEalNQjtF8edDovc/Sdls6BKfft77EeocPlij5a4+JgJAekWvDWC1O7lGmtjMfiXWKfXfshzes+lBBhrSFklJLT/v9XHuAsu2z3iw9NKYmzy2LTR4r99GJiLf7W6uyuBVscyRLrS18XSySr1EdrAuSj9P0H6EnDeReMAdkN/h59ULGdXAI4NiJhT0g7SIb/YS7Ue1hWaAwnUU7l+oUx4xZEEJswbrDGyM47Vc/qhmFO9G7lyXBv18Bq+bO1u+2WdmV0+vLvukHFT6LYQIfyYMGq4GrDm5JNu8rbkapJyVpwcraMLArb8QGCZCbTeV2fHDJuI0D0u758CC41/tSlOPpAI8My2kM8Fwx5odXQ0YSJFm4CMRLJkEQ2ukATbC59a7NLZVgbGHUT0IsOGx0lLuLqMVF3u4dF1KhuFmFE1Hcg398J8v8Y5ajYiHj9KMwg5dM
- NW6yeE6u
- z15TLYpmCpeMKyQBTIgerKkAeqT5CQd54PoHjHhRRJ2Vq5stKOQrWvkLJ+WAqAL6mvUWPpGNA03hzwu1g263EjSMdSDmYbFwfbmg72Wmo1ZZG+hcl2GGbfuRxinDCucmSyE57sZKeZFmyW56TntujKchg7Sc+LkXHR5ECpoUgAeQusgZnE62exulP5ISt9nCBetUfbOQX6C86Y8vLwuf1jCt1vfg6MhQlkkw3IPC4pQT/BmHT86w7s4GrWXHtiQCLzJY9rUpLuSirIYRIRw8z2KePny9hN2z1tOWFW2kV7ED/6jkwzZmIQlmC+iz/IzerSdQawk7LHJrLflQOiZu0/u8irfmahdiRVuZaSFII4Ajr3ymXRs27HWJhWsZtMBkiQAahZ8Ppidm3NXVOpNEiIC1fMNx8DWxX9HDIDzbiTzTVw07q6WrVq5XFphCKT/J3wjy2uDpzQsjGqvkFYyw8+LmH446R/uNplImje07Im2eQHV7rDToNqsowGCSNF4AvKzH+vR+kGqMtFLKc/zXFf85iZk+Gy/xMP6Yc9A2WbvS3UbrK+t726f70yZf1+bxKu5QDFSzb3S/hkBgRF0mo0UVwHBz09iFxWkplsmDIBlUpiMfxf314Ch4q5XYmavhbubOACIHbfGesDK2gfKmErYEkvWUDbVz7Y+awNV2A1tuJ9qkoDTLh4KcpvVWuMo151Qi+sX8VwltD65DWR+2E92dMfmiIjYUOeucN/YCa7McgrBygXsTpQuoO+xNXEkE7zSvI+O1PMytEABhLzsXDbalTYRA3fM68cW7KF7ncrVvvcpe+tUelw0kKT0vgPzZLF378
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1795162922-370820
+X-HE-Meta: U2FsdGVkX1+LFYEvymZyAgByaRvOmffrXRL8lymnanjxHqAgIJzDqIgTTeCVzrHw9b/wMW6leUuEiyAmi21e5iIADDpvd+sN60v8Gvxd5IBriYwOQjPS+OLWo2QkbyFDuyDkpCa66v1nqKfXqYRZd22u5X3xF0SFMtUMFiBtI3J1V94757LhZbFc9xIE5ez8WufbWSgdyI+A4JtLtx8pHiaMPrfZz8mwPgS9ND8yPOUXQ2HQt83dBKl84UrIu+iw1XloIotNf7+mlz+lzH+AjKdY2ur01Dz/AIPNm192TWBOj0AibrlQhBBq/ISMwRTImymQtHTDuC1/iomE7BSsa8Hy70RdWcxtkbteqsz8Oye0XcAUstWnYDIaQXNLwpO3cHZFxB0N3Nn4do83hvQbILjYCf/E02bfLlb8ol9f8AHW0ifKs92fEFzhQU36NQaT9dAo/9f3HoGr7y8UaJ56fFGcD4jL3r8QH+sLwe0x8bto39IEn8Kxmq65wJejDeyuAxp5VyfsfG6aN+RJo6rJjTtUii+s3pxT21AwBjA32Ci+Ce8vp8Sq8a4LtUkRnfqDsVKw48oUWoABiGQb7ARTDqj9UVpLNCYLuP5EsziOcnjeTEy3H2zJIQddZ5sVJBAY73wmVCiD99jgzr2e8Z/kKtYbFF1twMzTGV/F9E3VrJrl99k8Dcle8D3T1ogWd5r9USgDZRe3pDv4kLigaeETmqZb+Y+zEv3BnMrYLjSjW8PTB0mmky0Ti7URsJl9AtvtU460o6A52bXbu3zJoX+UcG/OStMyUu0yTpEjYmDcl9Y3/nqdojqz9cCtTBWrzz17SLMSIpQVoYN//ae/OsR0fj+Hm0qe7H7I6jVV8AA1RE4H2rlo29ogAg3TJtRhQ7als+aUwOBmyirADZiqtc2ZwamNnbShUtc+Fau4Yl1OP8LO43o0K1/tDdGvHdlBR+uroWJnI+sgBQOnVyQpYiw
+ qqW04tmx
+ Db9OB8r2WshVzuSbWeKZ8OTFtRaniBGaQ1NlaeLYy6sHzRfhj/lzAxgU12bD2CqBnG7OuKphxIDXKxUa4v1GIRHQ92ndp2FLMl271WTWEzwzpkBvKkABTH3oDpdtknCnf4Q4mdCXDDt8EgDOvoCr2J8BRIMcIDhtve/BqQz+l3JEyr4JB8RG87+VG7VbyDAbIglqPliX/ZK93sSFMtrzGqfkPDiG3GlB1KuhDrrI2tDLWnAnl8BLRUQMw3yQzJdvyhHFMrDFksh/zndDzAkCAhWZlZmR43W7yMeKx6oD2YDWKPlrwrjmC/bqVKVJZnEFfZ2cOlcgOhOZKQVxaQWxUm6ogBhI1S0dcBWWXMXDIl2w2dRM1kXs7N3z495x6AkSNLCL3YqDe/vEf7huV3DMEHBxodbUODv9CeQ1NowvBfM+ddWRFXUZqt5j7t8v1P2laKIKhXPUlIGNzn7twsDA+cWzLTc49j20gMcMyXZMPn+9/Do5jDG9Zp4NwOa8DQmMTBexM5TyAzho4CH8q9mnPO06fMnNpzeC9Jnpmz6tLtU5WyS5YmkDZL6BCE7BdJshsKgxbzDgAEZnakeohA8QBo2kdJhF0liymuD4x1vTi+qpTRkyqjF+fJuE+r0n4Eps2GZgdS6Bber+H2sWHcAV+A+un4rwrm3Fbu/byVky21Au9VI02r5VsjKhkoaVufAKRtwbdhmawcpr36cegjSpyqAEft32fKwbYhVOGqagD8FpzdKwMcuiH8HISyKAit/kBvYE+3F/KrwZ4j+OUm/HAAWNbxFTofzitn1Hton4nbg+YDJOVsKa0/fG2+2oQgKjC8FhG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,39 +165,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 19, 2026 at 5:04=E2=80=AFAM Kairui Song via B4 Relay
+On Thu, Nov 19, 2026 at 5:03=E2=80=AFAM Kairui Song via B4 Relay
 <devnull+kasong.tencent.com@kernel.org> wrote:
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> damon_pa_pageout() cleared PG_referenced directly, which under MGLRU
-> corrupts the folio's refs count. That flag is now
-> bit 0 of the count (LRU_REFS_FLAGS).
+> For MGLRU, PG_referenced is only the lowest bit of the folio LRU refs
+> count, so folios with nonzero even refs no longer have the bit set.
+> folio_pte_referenced() testing the raw bit misses hot folios at
+> refs 2, 4 or 6, under-counting the referenced folios of a candidate range
+> and aborting otherwise good collapses with SCAN_LACK_REFERENCED_PAGE.
 >
-> Reset the count instead under MGLRU.
+> Test the refs count directly when MGLRU is enabled, mirroring the
+> smaps conversion.  The classical LRU keeps the plain bit test.
 >
 > Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  mm/damon/paddr.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  mm/khugepaged.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> index e89cb14ee17b..411e1d557ba3 100644
-> --- a/mm/damon/paddr.c
-> +++ b/mm/damon/paddr.c
-> @@ -279,7 +279,8 @@ static unsigned long damon_pa_pageout(struct damon_re=
-gion *r,
->                 else
->                         *sz_filter_passed +=3D folio_size(folio) / addr_u=
-nit;
->
-> -               folio_clear_referenced(folio);
-> +               /* The region is cold, better drop the hotness info. */
-> +               folio_clear_lru_refs(folio);
->                 folio_test_clear_young(folio);
->                 if (!folio_isolate_lru(folio))
->                         goto put_folio;
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 4bbe319ef86f..68f7a30e36be 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -579,7 +579,9 @@ static bool folio_pte_referenced(struct folio *folio,
+>                 struct vm_area_struct *vma, unsigned long addr, pte_t pte=
+val)
+>  {
+>         /* The folio was referenced previously ... */
+> -       if (folio_test_young(folio) || folio_test_referenced(folio))
+> +       if (folio_test_young(folio))
+> +               return true;
+> +       if (folio_check_lru_refs(folio))
+>                 return true;
+>         /* ... or the PTE mapping was recently used */
+>         return pte_young(pteval) || mmu_notifier_test_young(vma->vm_mm, a=
+ddr);
 >
 > --
 > 2.56.1
