@@ -1,132 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45DD606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 04:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD1560A2600
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 04:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CO8z6D2+
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fCYWv8Zc
 Received: by kanga.kvack.org (Postfix)
-	id CAEEE6B05ED; Thu, 19 Nov 2026 23:21:38 -0500 (EST)
+	id 3BEB46B070C; Thu, 19 Nov 2026 23:30:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87456B0716; Thu, 19 Nov 2026 23:21:38 -0500 (EST)
+	id 36F026B0740; Thu, 19 Nov 2026 23:30:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9D236B0642; Thu, 19 Nov 2026 23:21:38 -0500 (EST)
+	id 283DF6B075D; Thu, 19 Nov 2026 23:30:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 995F16B075E
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:21:38 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3878B40CEE
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:21:38 +0000 (UTC)
-X-FDA: 85454198676.16.18453B1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 532D71C0004
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:21:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CO8z6D2+;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DCBFA6B070C
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:30:21 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 526991C4820
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:30:21 +0000 (UTC)
+X-FDA: 85454220642.24.A07D9C4
+Received: from mta1.migadu.com (out-252.mta1.migadu.com [95.215.58.252])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 24F4580008
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:30:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fCYWv8Zc;
+	spf=pass (imf30.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795148496;
-	b=BQ5lKDsGcgcEJcZgXbHdgKVNT0e9OBhPHb/Dm4nWEn7BCmvOthKGOjrXDkd4E9NpnbqgFk
-	mCJ6m8iLVFxSxfZ6UozP8ANd5e6QAw/h5SVOD/ZcNuNU9V8STtR7UpqY1+pBfuFAGlPdmJ
-	7ro/D24+Ikqwh+8Plxj7ijOLW4gA1/A=
+	t=1795149019;
+	b=hZJW5UhTFmccIxFqruZXRde/XuuKQVD0h0xYWBOwadTf0mwu2IYTU7DS8BG6rmIxYwWhWr
+	byJ1fkoANTZzaRN/1mJBrHqWjn6nJ2YCpiSc+Zgu0vltGHJ6f0SsCsQvK0dr30T0UWwGg2
+	ZO+y9N4Ab6OHiIJoFq7JsJp5fRpeSjc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795148496;
+	s=arc-20220608; t=1795149019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aCF/9QsXGxPiuVfa9izWAY1bS5suwF+J5Gv8PYcgibE=;
-	b=We51rjlyaXm3vkLpIFUIr8ro70elbJXUIag5YNZRpJOf+7+N72qck/Ycx1Gczi8Z+7z64Z
-	idkq4VKGAaSaLvYYE/fYqQvlhjK5C+egvdtHyNUg6z2LOlqoY0diUJydKr31C/sbEUxwNj
-	60ivSpC5oVZJS6jEziuuHFW8RdkzgZ8=
+	bh=roL0FQDRW/fqTvKyUOnLi52ZhKE+0i4/LlevVoVyflc=;
+	b=xadV8aH+vucK3DVom2wKSwh1BQLIo+TWgSdmCyyy4BpU5PzqbzuJ8rrSBemQtGkm9DKAzI
+	aKbtk9SMfWBLV4uVjlOF+Ivd5AuHRMKbBfFYEuh33OsWjvkdlzAiXNaAf20G+Oo3RS/3yt
+	G5REHBGY8NQ0VmxSmILn5KQtRtBd0Uc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CO8z6D2+;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795148496; x=1826684496;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hYIJ0a2DlFsoUIkgJ8frMlcR8Pb107JbX1ud/3a5NwA=;
-  b=CO8z6D2+Ptjpb1CvLzJBV7FXYpC/7tNAnVAkV3sz7P805xDMnPrJElkE
-   xG2QEj9LpK3IwSJhGXRdMhLXgMTY5nVn0DCgJtG7vuiuxLpefUtV4OMza
-   dssPWhY3LfF9QUasrBtn5QnZBJqnxwZh7ufEkHGpv3pA1al70o0xuENv1
-   2MwYSTcKsTNfX5BYbtoo0BJCnRtQFpe95c2fvCuoAAtHBPSFeXmsFaF8O
-   FD+o3fe9Mkg8DppsRmvd+Enz0o468BEXI+GkGT+qxGSVajuBVukLPi9cd
-   ljRZi0fidmkF1vqE81Jx+lPTtJExaQ6CFnZf3yIquQNCJDQtLIe5CdDBf
-   A==;
-X-CSE-ConnectionGUID: uwvyxdNgRlWOHkdQQlzTbw==
-X-CSE-MsgGUID: sWYCT7pVS/y+MIHphT8efQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3941990"
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="3941990"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 20:21:34 -0800
-X-CSE-ConnectionGUID: QSyDhMpXTSyTx5+CPSQzGg==
-X-CSE-MsgGUID: VvpOMlxNQyuEqgIo9lpwfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="10692032"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 19 Nov 2026 20:21:27 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xUG7n-00000001H3D-1HgV;
-	Fri, 20 Nov 2026 04:21:23 +0000
-Date: Fri, 20 Nov 2026 12:20:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alex Williamson <alex@shazbot.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Alex Williamson <alex@shazbot.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	David Lechner <dlechner@baylibre.com>, Armin Wolf <W_Armin@gmx.de>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Marco Elver <elver@google.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Bradley Morgan <brads@mainlining.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Pnina Feder <pnina.feder@mobileye.com>,
-	Mete Durlu <meted@linux.ibm.com>
-Subject: Re: [PATCH] PCI: Allow untainted driver_override for PCI stub drivers
-Message-ID: <202611201122.JwnDSHON-lkp@intel.com>
-References: <20261118235645.2907908-1-alex@shazbot.org>
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fCYWv8Zc;
+	spf=pass (imf30.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=YW3SrjZDBSs+f8ut+cA/sj4nFs4B9HPB8O+mdX/NYzA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795149017; v=1; x=1795753817;
+ b=fCYWv8Zc5HAcmbnJoo9+/FUO1cYouGdwqqa9D7Td6F4gQLCuDYssjXco7Tlh9YiFafKsZ3Wq
+ dQpSKrUwoPfJH4E5YM9TwBlwXIPy7Fzx1xGTeiyPQNRksKbkzUzLyiBiIcKcynK5Eo3u5NBaG7b
+ d20c2nMlylTyk1HQYtibuGE0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id def76d0e62afee0d;
+	Fri, 20 Nov 2026 04:30:17 +0000
+X-Mizu-Trace-ID: def76d0e62afee0d
+X-Migadu-Flow: FLOW_OUT
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261118235645.2907908-1-alex@shazbot.org>
+Date: Fri, 20 Nov 2026 04:30:16 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Kunwu Chan" <kunwu.chan@linux.dev>
+Message-ID: <f9cbc65ebeda9ebbc71c0488bb7df016f5c34961@linux.dev>
+TLS-Required: No
+Subject: Re: [RFC PATCH v4 06/18] mm/swap: serialize swap publication before
+ removing swapon mutex
+To: "Lian Wang" <lianux.mm@gmail.com>, linux-mm@kvack.org,
+ kunwu.chan@gmail.com
+Cc: linux-kernel@vger.kernel.org, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Chris Li" <chrisl@kernel.org>, "Nhat Pham"
+ <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, "Barry Song"
+ <baohua@kernel.org>, "Youngjun Park" <youngjun.park@lge.com>, "Kemeng
+ Shi" <shikemeng@huaweicloud.com>, "Kairui Song" <kasong@tencent.com>,
+ "Jihan LIN" <linjh22s@gmail.com>, "Kees Cook" <kees@kernel.org>, "Gustavo
+ A. R. Silva" <gustavoars@kernel.org>, "Thomas Gleixner"
+ <tglx@kernel.org>, linux-hardening@vger.kernel.org
+In-Reply-To: <ed10255256780c856689549e65654f8b01d40c2e.1794666741.git.lianux.mm@gmail.com>
+References: <cover.1794666741.git.lianux.mm@gmail.com>
+ <ed10255256780c856689549e65654f8b01d40c2e.1794666741.git.lianux.mm@gmail.com>
+X-Stat-Signature: oegchhuwwoww96tx36wmorqdej1azjf7
 X-Rspam-User:
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 532D71C0004
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 8gog3y1gc85fszo4p6zict1h6eyyd89f
-X-HE-Tag: 1795148495-270576
-X-HE-Meta: U2FsdGVkX1/ejIHnRjdQgJo9hhUTNMhjiNp+mL3ogZ6s0cj6CwP1E4IhnDrpr9hFXbL0fvXaCUS6fYJTjoQll4fKLZg39hvbWu01tmJPcpMGqNmMNWyun6zclhzVkDnla7r578q3KkXIvs8/Ip3RspxcKmEPFVRFIgUebIohp8+Dphz5Ti1C/430WEFUnP3kprW5lNES5AErLsvZVQMNxktrxrBY70l6rcyNS10rE18kZ6P2+ZwtUSU+8xs+rzbEPlPukQdnJzpg4vBqfbzCSJRexwWnlRY02KzLQRQovZhuYvlLvpSlLe+FrFEwanIMB3aKwMz4FW20ixP9/TPgc7uZhKdnioQpiEEb+9NnzKAf+eYJHHdSLkTpmLoplxFePgR8hhJS/qB3jckEVaO5lB5HQR1r7oYaku5EY19pFzTGdxIFYdeXoh4V2wLbV6bjSx3srfiAKZOx/MOcZASJvfPXuEwSYXfyQLmv61vD5FPUTeRjin3mL+TCTXveXRD8/6hYOhr+QxNzRmrXwNuqO9ol/aIIIekz4H1gRZ880lmkOYQwXqK4vBLTti3ZwKq65VF/RShsZmtGDOzAIhbQBP+k9ZZcqpNUn++JhnVD/CkdgJaCs4hS1KqAEeDPRR3ggKdp2+hXC5roWqRvHPA8KOd0ZM8d7YLPsWFZX4abrITB7Ge+OSKTzKBESgR2n5Yt6PpCAzn1hZRyLZKwz46EZuHL+GuB1y42z/HOzFBplonFSdNu0I5Fng7C8m7ESp07ZRSY4g7+hZ1GixSDMCxxaug48aIy+lPoXfwKqupt+Y5O4zIU6gXgGqkYckHmCtM9QoK09bhWl1SwGkvbMK/RYD4VD7wBQFRoCvUr8YYyjkqzxVcs1FEfiVLNaX8w5odo6+syR02Vpq3yaJSS0t47w1LyBn69jGOqjTqvtvdE5JgHHip6Or0XLqJwLVRpSo8QpBHH0ps9xyjofLCWJWI
- J6bOACOp
- rWE3wCGHBXXmgdP9y+AO0bB3NGJxVqZ5XW24SSJghZoED+owjU/8UXM0j8OAMh1IpIekGdCQSkxsqHmM932OTktKAt6jE+vgaa2E/ikjxIUCJRkOzN8RAyoLWrK0qCmb2NYyQH67tOf/u/UTjlzUQ+VK4xhMycUmF/Rb3cJzNGDPWoIRrBPBLxU5PmTfhrt0rbxlZoaJMXo74vUXndOvLswEuVu7OtDQHtTC4CUKrE0LT6XMvH38DhuslBxZCX2hoKn2yBjfXRYyqwRzy6kvOaAba6uyZfkY8gINp6xrFzA5VstAR+y3DvNmhIoM6y1T5N8IpIuVdwKSQ9PimDJTRqCTPMqDdPsCafE40RkyPDNKa7u3aqT9wuxA1O1i3QQDeBuIe21g+tpLxiY0V4o9no0ZkCSPKTylvRYVGt3jZuv8V4zHiyiuk8FcQWU4LE5ltuh3fOQr7xnC6hPMfXQ2sFae6D9OYy+Uvm+jWP+i8oijB/8RQpzysqPwNfaC+8unLZdx7sO7C/1zdkHwTstxfxAdVVnvvEF3aFFtYQRBEGgjvcOGI+pIYl4YYEA6dGtGWjHOtmybfLBmZM/6rEKNVZs/XVsMjZu6N9fXZqg97K5ApyLNoWsn9WKEnwIHv7kKDrxl1hp6hyP/2yTB+dUO7ipjneH2asvJEOrW1OdBBlhjbrQsAC+uVZqSs8Q==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 24F4580008
+X-HE-Tag: 1795149018-898904
+X-HE-Meta: U2FsdGVkX18z7bdAvpTj2sr2L6NuVCdqWquGZzj4T8QqhvJk4SGoU/SoUpm0Vd4j2nHHkiSD9rcHuyGJr7kqdV3Ls8zLFNukUP8LU9+wI+5Gv70ssI1WEIEiD2GKLhI0ffkxydpIaIvWWTFHC6bNdoo8yViiBcxqJKkVoQz0n/xLAoKHjGkauWeG/Pu3fR7PB5RiCv7GVCjuPvNIoaeWUe5THWow9lDJIyf31rqM2xiNgApJv7TJ6WLFLKXjdMhLJvyJgdLW6kaetbxW9i9oiI3wCrLr1RpGJMFq95CKwJWdxgxbMwJ5D0AetE2UnYjUyXcWdBLXToBlk7x6gTyJaEnvyFaZwVqtww84ZfrwljjiWdsmzCDS79GlKEqIc3VTrf+Ma+eW0DMYlFeCtUIMfzB46H6QQim+Q7YXkXo2R7satgq6DcIIkZuEhnwZvooBxdxWmgEL4C5VuTp9DcWezziTtjToeR6Cl7vPqgUJ4bXPQhRG9vhFnKB4fUZ987LuBwwUI+/UThsoizX7/SDy7N4L1Cm1PqpQIL0DCYzGhPYYVv96R+z52bb6ebga0ibvtg0a01WjDK0TlovNi7BqHiR7Xpn1WnQjG+GQp5OzEMhWxGfHV/Ecw+1bxGC8Ox+WHl3qrwMQrEhXeBEkYGNaKGFS5rJ2i6tx3rz7l4hg+JRJUmj40xUjGJyDh0SBKtjpesP6qKn10XICP9e2FdJcXTcH8RcQ13M8UWG0Sr/xK7Q/W7mCaFnmXnSeIpNzAtNM/Qh+cYJmpgk1Fv3XFa+d775m0UxUOG1ZVOt60krp2vfbfD/uJp/p1e7WWfmbJSPHsTHo3ZZ99kFPVrAvrrbF3a7zsixPWMhpRdOPJY6vM6hy7IDUkbiT4kSebJHCjPf2gjFoDCsPGeNu1B+MfOkJdHCoobTVxQQ/sMAMiwgWDPkhZnvfcqLkc1WvMexUcdaKlj63B8sE/HcpVcOgTEO
+ Plma0gfz
+ +Wz9Kc+dMKUHqfsou/vcKzfUiz+4zaFktdcDv7xCWKQdHHxWW5dCY7IrpvOvEUFa1ZlPF3wvB/D9pF9Lv0WJlXJZVsvmU1OlfbSbJma9xJGNixlSHoPMIMpNsVMolNKzQTeEC07jbLVN+2B4ClLqPuIsFDa0T2sJ0QD8AJRZLeqqVDEW7FwWQPhdxqegbhNaXunE5A6E7cxEKOKGOjqAlC07apvRazbBEIUWhU+za1zlYnnMCWONHG6IHgLEUIoZBzqHI6v+MB4csaGewUuFTCpRpVrhPM+bqW6yByEmTSIzdGTaWK73X7zVZJpGtejub1aVR1Ssos2LWtY+nXQH23j/A6r3KDRL1WR4vpMU9Pcs0nTkyrxO5p/XdJr/sZugUygUfWyQEwGRLJIXWGIfP3HbXON7Feu5KQyKpdAeYXEKdyY/WoYKfqILIZ7kEubYW0UGoUjabfFfNNb0m0MdloNoWSFJbVEVNjYlb7ZCEnYMhftOWZwzuJEDQ2hV2mSKpKeD655iMFbdEPBVMC/LQV4i4Qp06TJ64JnPK95UZjPOh7qkCSHiqzUqM5O3LB5drfbMpzuNXELrcvEK5kdXfpoUhMQmhoSZLgMpE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,51 +102,192 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Alex,
+>=20
+>=20From: Kairui Song <kasong@tencent.com>
+>=20
+>=20Move publication of swap_file, resurrection of the device reference a=
+nd
+> the writable transition into one swapon_rwsem writer section. Split out
+> a writer-held enable helper so initial publication can share this
+> section, while failed swapoff can use the locking wrapper.
+>=20
+>=20With file publication and teardown serialized by the writer, remove
+> swapon_mutex and use a topology reader across /proc/swaps iteration.
+> Keep the SWP_USED filter when advancing the swap_info array.
+>=20
+>=20The publication boundary excludes proc readers from partially publish=
+ed
+> state and gives the lockless live-reference users initialized device
+> metadata before the device becomes an allocation candidate.
+>=20
+>=20Signed-off-by: Kairui Song <kasong@tencent.com>
+> Co-developed-by: Lian Wang <lianux.mm@gmail.com>
+> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
+> ---
+>  mm/swapfile.c | 39 +++++++++++++++++++--------------------
+>  1 file changed, 19 insertions(+), 20 deletions(-)
+>=20
+>=20diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index ae8421e18448..277a5c749987 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -139,9 +139,6 @@ static inline struct swap_info_struct *__swap_iter(=
+int *i, unsigned long flag)
+>=20=20
+>=20 static struct kmem_cache *swap_table_cachep;
+>=20=20
+>=20-/* Protects si->swap_file for /proc/swaps usage */
+> -static DEFINE_MUTEX(swapon_mutex);
+> -
+>  static DECLARE_WAIT_QUEUE_HEAD(proc_poll_wait);
+>  /* Activity counter to indicate that a swapon or swapoff has occurred =
+*/
+>  static atomic_t proc_poll_event =3D ATOMIC_INIT(0);
+> @@ -3161,9 +3158,9 @@ static int setup_swap_extents(struct swap_info_st=
+ruct *sis,
+>  * Mark a fully initialized swap device writable and expose it to the
+>  * allocator. The caller must have resurrected its percpu ref first.
+>  */
+> -static void swap_device_enable(struct swap_info_struct *si)
+> +static void __swap_device_enable(struct swap_info_struct *si)
+>  {
+> - percpu_down_write(&swapon_rwsem);
+> + lockdep_assert_held_write(&swapon_rwsem);
+>  spin_lock(&si->lock);
+>  spin_lock(&swap_avail_lock);
+>  si->flags |=3D SWP_WRITEOK;
+> @@ -3173,11 +3170,16 @@ static void swap_device_enable(struct swap_info=
+_struct *si)
+>  atomic_long_add(si->pages, &nr_swap_pages);
+>  total_swap_pages +=3D si->pages;
+>  plist_add(&si->list, &swap_active_head);
+> - percpu_up_write(&swapon_rwsem);
+> -
+>  add_to_avail_list(si);
+>  }
+>=20=20
+>=20+static void swap_device_enable(struct swap_info_struct *si)
+> +{
+> + percpu_down_write(&swapon_rwsem);
+> + __swap_device_enable(si);
+> + percpu_up_write(&swapon_rwsem);
+> +}
+> +
+>  static int swap_device_disable(struct address_space *mapping,
+>  struct swap_info_struct **swap_info)
+>  {
+> @@ -3340,7 +3342,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, spe=
+cialfile)
+>  if (!(p->flags & SWP_SOLIDSTATE))
+>  atomic_dec(&nr_rotate_swap);
+>=20=20
+>=20- mutex_lock(&swapon_mutex);
+>  percpu_down_write(&swapon_rwsem);
+>  spin_lock(&p->lock);
+>  drain_mmlist();
+> @@ -3355,7 +3356,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, spe=
+cialfile)
+>  percpu_up_write(&swapon_rwsem);
+>  arch_swap_invalidate_area(p->type);
+>  zswap_swapoff(p->type);
+> - mutex_unlock(&swapon_mutex);
+>  kfree(p->global_cluster);
+>  p->global_cluster =3D NULL;
+>  free_swap_cluster_info(cluster_info, maxpages);
+> @@ -3401,20 +3401,18 @@ static __poll_t swaps_poll(struct file *file, p=
+oll_table *wait)
+>  return EPOLLIN | EPOLLRDNORM;
+>  }
+>=20=20
+>=20-/* iterator */
+>  static void *swap_start(struct seq_file *swap, loff_t *pos)
+>  {
+>  struct swap_info_struct *si;
+> - int type;
+>  loff_t l =3D *pos;
+>=20=20
+>=20- mutex_lock(&swapon_mutex);
+> + percpu_down_read(&swapon_rwsem);
+>=20=20
+>=20 if (!l)
+>  return SEQ_START_TOKEN;
+>=20=20
+>=20- for (type =3D 0; (si =3D swap_type_to_info(type)); type++) {
+> - if (!(si->swap_file))
+> + for_each_swap(si) {
+> + if (!si->swap_file)
+>  continue;
+>  if (!--l)
+>  return si;
+> @@ -3435,7 +3433,7 @@ static void *swap_next(struct seq_file *swap, voi=
+d *v, loff_t *pos)
+>=20=20
+>=20 ++(*pos);
+>  for (; (si =3D swap_type_to_info(type)); type++) {
+> - if (!(si->swap_file))
+> + if (!(si->flags & SWP_USED) || !(si->swap_file))
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on pci/next]
-[also build test ERROR on pci/for-linus linus/master v7.4-rc3 next-20261116]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Williamson/PCI-Allow-untainted-driver_override-for-PCI-stub-drivers/20261118-165643
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20261118235645.2907908-1-alex%40shazbot.org
-patch subject: [PATCH] PCI: Allow untainted driver_override for PCI stub drivers
-config: i386-buildonly-randconfig-1003-20261120 (https://download.01.org/0day-ci/archive/20261120/202611201122.JwnDSHON-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261120/202611201122.JwnDSHON-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611201122.JwnDSHON-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/pci/pci-pf-stub.c:39:10: error: field designator 'support_driver_override' does not refer to any field in type 'struct device_driver'
-      39 |         .driver.support_driver_override = true,
-         |         ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
 
 
-vim +39 drivers/pci/pci-pf-stub.c
+Could we keep checking just si->swap_file here and in swap_start()?
+swapon() can set SWP_SOLIDSTATE before taking swapon_rwsem to
+publish the file.
 
-    33	
-    34	static struct pci_driver pf_stub_driver = {
-    35		.name			= "pci-pf-stub",
-    36		.id_table		= pci_pf_stub_whitelist,
-    37		.probe			= pci_pf_stub_probe,
-    38		.sriov_configure	= pci_sriov_configure_simple,
-  > 39		.driver.support_driver_override = true,
-    40	};
-    41	module_pci_driver(pf_stub_driver);
-    42	
+Thanks,
+Kunwu
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>  continue;
+>  return si;
+>  }
+> @@ -3445,7 +3443,7 @@ static void *swap_next(struct seq_file *swap, voi=
+d *v, loff_t *pos)
+>=20=20
+>=20 static void swap_stop(struct seq_file *swap, void *v)
+>  {
+> - mutex_unlock(&swapon_mutex);
+> + percpu_up_read(&swapon_rwsem);
+>  }
+>=20=20
+>=20 static int swap_show(struct seq_file *swap, void *v)
+> @@ -3958,7 +3956,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, spec=
+ialfile, int, swap_flags)
+>  goto free_swap_zswap;
+>  }
+>=20=20
+>=20- mutex_lock(&swapon_mutex);
+>  prio =3D DEF_SWAP_PRIO;
+>  if (swap_flags & SWAP_FLAG_PREFER)
+>  prio =3D swap_flags & SWAP_FLAG_PRIO_MASK;
+> @@ -3970,11 +3967,14 @@ SYSCALL_DEFINE2(swapon, const char __user *, sp=
+ecialfile, int, swap_flags)
+>  si->prio =3D prio;
+>  si->list.prio =3D -si->prio;
+>  si->avail_list.prio =3D -si->prio;
+> + /* Publish the file, live reference and writable state together. */
+> + percpu_down_write(&swapon_rwsem);
+>  si->swap_file =3D swap_file;
+>=20=20
+>=20- /* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap devi=
+ce */
+> + /* Make the reference live before exposing the writable device. */
+>  percpu_ref_resurrect(&si->users);
+> - swap_device_enable(si);
+> + __swap_device_enable(si);
+> + percpu_up_write(&swapon_rwsem);
+>=20=20
+>=20 pr_info("Adding %uk swap on %s. Priority:%d extents:%d across:%lluk =
+%s%s%s%s\n",
+>  K(si->pages), name->name, si->prio, nr_extents,
+> @@ -3984,7 +3984,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, spec=
+ialfile, int, swap_flags)
+>  (si->flags & SWP_AREA_DISCARD) ? "s" : "",
+>  (si->flags & SWP_PAGE_DISCARD) ? "c" : "");
+>=20=20
+>=20- mutex_unlock(&swapon_mutex);
+>  atomic_inc(&proc_poll_event);
+>  wake_up_interruptible(&proc_poll_wait);
+>
+
+
+Using the same rwsem for publication and /proc/swaps looks good.
 
