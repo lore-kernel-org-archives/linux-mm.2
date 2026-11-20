@@ -1,130 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA09A606A33A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 16:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BBD606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 16:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wz5aLeHU
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=da3wZGNA
 Received: by kanga.kvack.org (Postfix)
-	id F21506B05B2; Fri, 20 Nov 2026 11:21:15 -0500 (EST)
+	id AB7656B05B5; Fri, 20 Nov 2026 11:22:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED2026B05B8; Fri, 20 Nov 2026 11:21:15 -0500 (EST)
+	id A67C86B05B9; Fri, 20 Nov 2026 11:22:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0F776B05B9; Fri, 20 Nov 2026 11:21:15 -0500 (EST)
+	id 9A5386B05BA; Fri, 20 Nov 2026 11:22:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFF7D6B05B2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:21:15 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E5BB40F8B
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 16:21:15 +0000 (UTC)
-X-FDA: 85456012110.19.EC95DD5
-Received: from mail-pi2-f9.google.com (mail-pi2-f9.google.com [74.125.227.201])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6C36A1C0009
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 16:21:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Wz5aLeHU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of sdf.kernel@gmail.com designates 74.125.227.201 as permitted sender) smtp.mailfrom=sdf.kernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 749CD6B05B5
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:22:37 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F405981030
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 16:22:36 +0000 (UTC)
+X-FDA: 85456015512.18.A365AD3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B88CD80006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 16:22:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=da3wZGNA;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795191673;
-	b=CnzxjZe4dxbjlLQoQcxRLGetgPOAuPiHKKC8AYiduF3GJov02ZB2sWm2oxKAihewaKMBzo
-	jVjN+hARC8P4YCir5msdN3XQskaM/HPdotoiZv5AV6x6OcGl+rc67DQ3r+NptgfrvgP9I+
-	f16ePrPwH5PD/D1s4PjcvHnq47wqdxw=
+	t=1795191755;
+	b=wJlixIwb8/Yj0SRx4O+RlkGVMt/wAhT61FCdHYg0HJvU/tfH882Rx/ytjvFO3wrD1vOGug
+	Z5Q+Ha+vxM7Faq4t/nJnYE3TKul/TgglyEp2GPz/KAUNqO0/d3PP408y5cGbOaWL0zrzj9
+	FVt95Djdz2s3PuRjXA5h4yWgr/oC+Kc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795191673;
+	s=arc-20220608; t=1795191755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DlHp18CPjbRy2dBjwYmV0o13g/8Est+vNGExs52wGVI=;
-	b=QO+uJ4bL6KygJkkZjYq5qUhauXLW4kQcFicZWgl/1SBPfuj7BYSc9MjbsUyharLyHBS19z
-	fI+ViVWL4+t8LegPodV2J36EeFpZIA/yBjRXwjn+zHmf9QQHIu2pGkhwoUOHREU5JfCMUR
-	zhV19Q+a6qfSN0EgYzrLbdZ3HZQ16T4=
+	bh=vFrxkYlbffnn1oFL/jywinkH4FaLHpHlb6I6Aq54CHs=;
+	b=oNhG6K7ng3wRI6X8LCuZuI00hAGGA2R5oiwAXYdUOPtklkSxeOmGx+emzqatKClATe9Vyg
+	jSJTul+4KvbGgMHda2imX8t6s8POq7lZROTnt3pxDFkV6V3DIHNF1p3D5B2pyZouOJHXwL
+	EBeyj4xf37P0yqZEgdIgt7or/MK4Y/I=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Wz5aLeHU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of sdf.kernel@gmail.com designates 74.125.227.201 as permitted sender) smtp.mailfrom=sdf.kernel@gmail.com
-Received: by mail-pi2-f9.google.com with SMTP id 41be03b00d2f7-cdd9779aac8so181910a12.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:21:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795191672; x=1795796472; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DlHp18CPjbRy2dBjwYmV0o13g/8Est+vNGExs52wGVI=;
-        b=Wz5aLeHUo4+ALVoQQsOjsGWOlYvYylq8vke0C8IsGSD+QY2SBVCIKV6h42WxKMAwHI
-         ZQ91FtASyorhj9NIMug52RPibvMluLevBpNV8r6mkjrnvRAKsYNwNSZgxPgbg173Dtuo
-         PZ34uq0xJDTiWCwnV59sLuPFWDGj1FMiScCQMv65xeNlgzbc2hbIbXNKFepm3R6r7SUs
-         OFPY9eSJGMLO+l1A6mE5cx5cXziitlay3ZUgCAzRBoHs/inH8phJI8LES4RDYZE8LQCP
-         tadnIgMRWbdRQn5qH7T7qkUbxHk/Q6n80Lmuq5xy0JCz40crs4NxltDCzGAvGAehftmz
-         pdow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795191672; x=1795796472;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DlHp18CPjbRy2dBjwYmV0o13g/8Est+vNGExs52wGVI=;
-        b=qHdmw/1IT4f8omnaYs/qp+rv1otXzA0vD0nIy+aCKKAX+4CpC/3tJj/9AvatuO3H6V
-         kzX7kwLGgHBj1DqW1d6TVQcMlnjaBZQujDA9Lb+OY1sSrnMLtasIod5kdD0hp9Q6VLwv
-         Td+u8YkwBZb2NGn2yr6eHpJNHf18wwuJPhEHyXCMXIpPuniFHTKCHOM17KjZWS7Qj0lS
-         Fahmu0jLNBSUhT4sJ5KFpUJFAJOtclH7FT2snU4FACpJlHpUNCEOiFu23EEug+EOteG8
-         8I3UhZ3WttoAqDApZt9oNrC2Z2VnnJRqly32ZoS4vCAUdbNqS0iXRlgJDI8V0WMnuaDr
-         onwg==
-X-Forwarded-Encrypted: i=1; AL+hErH5ERdw/SEPgKszXuIrW/Cqed5AwTNCqSW1Ymv1bBDUThZczCZtqxTrIsOgXSrxUnyVfQedML+Akg==@kvack.org
-X-Gm-Message-State: APuU4Z92bkB2aX93QaBV6w3YN4v7sCShry+FrmTDj11YSGdnbk/CN/Z0
-	saAAl92ZtilffrKHKDT097AVpB2oOcKNzC0LTqgwF8sPFs6O/KMqueLQ
-X-Gm-Gg: AZFdTZchb+SARbpIuWUGtseAopQdkrAIbqCdpZAvQ57z3fBScDQLQtvQhw34dAJ9oi/
-	5QX1XyGT/pjFol6c+TGwjVjo+u6hBFFkUN2Wn1oi7Ub76+xOalS28Cqlb6M8GCfWD2nz+kaBPSE
-	SL7nkWDz7RZLmkuRWvBKeGdsKkUuSuX4i4oehi1in6mFt3Jp/1kYB7jPdXSJO5I9Ejq4g99Wazl
-	GKFHISvykBNUpJkR9hS10Jqi9j3AmI6mFjbixFr+Ce/z1ncvzkXjpuqxFTD8ltPSLAbQ9o1Rvgv
-	pRFprNdZb8DwS72g7xetW7rlpZ4qltnnkAnzsJiCp9p3B/GuLC6LNBuGo14lGKV9oez1AyvG91B
-	Uvqq+Feid9euTL2XYMJtlWUatN5q3d1CUbuT/sbrKZOmThjyoZ8w6kRK4zQiB2Ko4P2+15c20ec
-	9BDv8ko/d3IQ63V+Nhf445SgRM9Knf/IXnDEVcxKpgA7lL0E+XJ3Nbev3hZeveMIC9hRONx53iL
-	mBsEAxNgQ7McbB37w+Vf94rAmKDdFZhamKG4YGJL5TqFDpyFfRBwQyG4taACLt0B18JCY1LsADm
-	Iri34j0WEwqOcR4hHyyoROA=
-X-Received: by 2002:a05:6a00:1c97:b0:8b5:7fc8:866f with SMTP id d2e1a72fcca58-8c87d32b004mr3231608b3a.44.1795191671804;
-        Fri, 20 Nov 2026 08:21:11 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:60::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c872e45e32sm1696071b3a.24.2026.11.20.08.21.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 08:21:11 -0800 (PST)
-Date: Fri, 20 Nov 2026 08:21:05 -0800
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kiryl Shutsemau <kas@kernel.org>, 
-	Song Liu <songliubraving@fb.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Rik van Riel <riel@surriel.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/4] net: skbuff: limit folio refcount when copying
- skb frag references
-Message-ID: <awBy7PoxdEMEGWyW@devvm16445.scu0.facebook.com>
-References: <20261118-skb_refcount_overflow-v1-0-5551b4954c3f@kernel.org>
- <20261118-skb_refcount_overflow-v1-1-5551b4954c3f@kernel.org>
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=da3wZGNA;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795191754;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vFrxkYlbffnn1oFL/jywinkH4FaLHpHlb6I6Aq54CHs=;
+	b=da3wZGNAcn3txpQN/oJHuuAcXyCFKfES68ntbYX9QpopVIY7bpDqgJsb/JliP7t7JROyAl
+	oi/YpyXtbS2JV2KRQU18+2XzjJXqumLs9KfDsF4AWKMbtk5n6Whxwl5iLCcbAox2TSN9NU
+	bGIm5HG74oJe81UWBOtA7FE7khih298=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-407-wX-z_3wnP92GD2JkyzEneQ-1; Fri,
+ 20 Nov 2026 16:22:28 +0000
+X-MC-Unique: wX-z_3wnP92GD2JkyzEneQ-1
+X-Mimecast-MFC-AGG-ID: wX-z_3wnP92GD2JkyzEneQ_1795191746
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B49221955F08;
+	Fri, 20 Nov 2026 16:22:25 +0000 (UTC)
+Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 1960B1956049;
+	Fri, 20 Nov 2026 16:22:22 +0000 (UTC)
+Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
+	oleg@redhat.com; Fri, 20 Nov 2026 17:22:25 +0100 (CET)
+Date: Fri, 20 Nov 2026 17:22:21 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Jiwoo Kim <arpe1618@gmail.com>, Chen Linxuan <me@black-desk.cn>,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/3] pidfd: use one helper for pid namespace visibility
+ checks
+Message-ID: <awBzvXKHePLzjABf@redhat.com>
+References: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: aN1qMa4X18Y5jOiFJ8Q6EJ3UjptsKbR3456906p_PCo_1795191746
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261118-skb_refcount_overflow-v1-1-5551b4954c3f@kernel.org>
+X-Rspamd-Queue-Id: B88CD80006
+X-Stat-Signature: x7ox6criqzh9ueyuumy6qmy4mbzfato6
 X-Rspam-User:
-X-Rspamd-Queue-Id: 6C36A1C0009
-X-Stat-Signature: 6znnn7nsuwwwri8td8poqw96nibw67jf
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1795191673-370337
-X-HE-Meta: U2FsdGVkX18UVPWz5tFdNKKajzRY95GAlJG+y89fpR6yWQ7TM3nJFkEmQ7XAhuhTJWszFfV+ZU7cr5VHpEn6eWlNWiXqQQg8PUrys3GqkmvtzXv8sxlPBHmlRtOdCLh/y1FIEbasQbX8jqhH9R+kX3Raudj/zghLbUafHL3n69z68gSpwOYSBLGOKIu1UaxNl3M1FZaE26bbAOYI3gGFhj/d+TrsJwDFo+1X+TRh5T+ykbiN4yShihsBlDhILIF1/kA9JIx8CgaaIe/Ld1ildyMq3GAO8ipYaxzTA003XBZh1ZcvNPqJKG3cb83+NcfoH8tDx6cjtnDS15Fip0yRj5imZzL3ncaDeV+q2sYeSjAiDI9kMI3rEoXp/bYcIEDEGNpNhRBaXieMrGnSJLaZYnMirbN9O9jkGIk/Ov/PXk/iYRlt3YtuVGtWFKogwmJeHbt6a2L3B42ca+ijLavXlbLLE/7tcuWUBMQR9RqT/f31GItVWQ+RDvrvV81Qh+bUV9iJkIbWIjm2hNt9SdL1WyeySOPLaibX+z0hSgpRFa7VZHxROfZtbgX4eb9Vrd0turxK+5iq81gfIGFkjbodiEdvr8MJYXi4mBoXJ+B70qJcizVIvOoT1nX1zJ8pSEHN2ud2Nb6sZh804ES9/g5ERdLO9/QT6r34WvOfirk15QvSmbfNO4TUfUKAqpLiVfz/Xig9yOpa9AytrWwmrXEn+daZ4oE3Kh69dicIgQh5P90Yeu6u7x6ApzdOQTC/NCVFcz8iU4GSO+/pPdEKgNcm6tH07LjIzXO1ai1JCIoyTw69HKHJcZDpd6cNL8iUXB6sp9uXN6HDZpqKdlbi6ac+BYX/ArJeUMTzjkkJC8UpKBIf94hysfSlBz1BurVwKqsuZZy8bofJmx9SP7Hy58WltJxDe0fXbmZHNssH2U07l4jgdMulGX587QLJg8+1g+Vzy49/2J5e0X/JJzmUQM+
- p6O4BSjH
- dOhepo8TnmPlgVGIbJsDhj/QEASJbKgwntM0Lk061Plq6LBU9kJSjYLaOCNLFvZncKBKXY0Ih5RvrVmRhVI6YDGn3eYmxGI8hDz2ERjQnkwo5s/OSnK1Sj1eviRRcd0nl3kFWeUY1ULMP7q6ktmuOAVGXKuOcE7fbpByYhVTcFmZ+XOX9TCt7riRmc8qKC7B6mpugXvwyiHxADBFotSCv4r0ixsFhTL+VdpJWKl4CMpZLXKB0H/iRT0zT4L88KoxoQWTvDDinYEE99Plk8K3O7Wt8wN2WovEaz5NsJYSxjqjpht4+WPoC0xXmbgFYDOzmMdjWBzIxh7DpuFNz/wFGzJNmcUFdzhLGhXsHW4ARZuMOuUM2xkYVgE/3OqszB+kbOx0SVbb0fshwH5f9YFLYqr+wQRf8rusZSLXoq2n9OHsd56MLHMBGjvuOHTzNftcRgdFe5DTuoGLcQmr3PbuA38nL8Q68N7RQIKsgBlShsfluD0BWVTa8eZSutPfcxvpl+YZKa6aMeMqBhXlEnX7dQE//589BNDhcfwVrBTe3hkEbEHymgkour0Z5LDRYgkMxAia27QHjsd/28Cfr7ju2q+F2T37KbII4JoKob114P9TurORkEYpt23McL+ZUEBRyE+ubyY33gA5l0TDAhk6tkqLpp4XgAP+GJdOYdPSc0HaDc48RoGHu83iIuC3SshERqiA2E9k3iKk3LBUNKwb8BYNw9w03vDQ1NQ3OzQ0brFwxB8CIZTYPHo5e2Vf7ixSuRb2R/wiGnb1nPmQpfQQ+jnUwJ9GZ1dhh2uOCxQ9+JFZR+R4=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1795191754-385193
+X-HE-Meta: U2FsdGVkX1/5bl+3Ni/c+XhsWgnixcDYCByEbvdLlmQPIAcsyPkRRErW6SAR0j6lh13afbMs90tXn9EWo1ByEZ1my4yL1meYRdIM7v0jrhMim8Klh4lliBzQDUHL/g1NRqXzvciKSCyy1lMjQG31bpmvsAueTe70ZGh7s3KZYn/GqeVnGE2dQE35N56yIF0Ah51hUezEC9VVsQilp4yHftbRB1aA/TbqvAhYtawzrrVT0S2Dsq9aaf/UfuZ8eTKijR7GFi3ZiGoXlTUYhv1HXxhvArB1SP2/033ZNht6i4AXIueL65UqgpBixLuBNNo29gb/Kdhdi4agFKlF2L2JKC5WfkWkVrYfiDlF5eYpj0oCdiHx0C5zg5p86uBKCUs65SNIlIhlc9J4ptWuGAK0DSu1y+t7SMRrYInLIeHrK6BHR8PvdKu0AAZE7oRMeIz2APCni5v/VrGkqpfmT+RflaaH44ydKWrOSJOLK3jL9Q9fSkyaQFGjcpDsjELPDTOTDGk1qWhqsUjyUTYwL+o3/gDYUrO7UsH3elw694/yTFZHIaR59rJsHj69Iq5j23nAyLQ7yq2vR4mAgJDzeBwKVVP9GDaKRXLKYoUjtl2SuAILqnPaffEdFzp5CZ97eJWLDh4eHtU2udn/vfTvQSwUFWYDnrMKkZ6KAVt71u+twDZxvZATulKABiIjHc/hIZcIKjwoyl+SwyKwcE8rfQxQ3HNJkdefPl/u29RJ+nNzzohtMKX9URUhL+JEtlCnljM6fwD3ZjHiL0m3+9PqadbIdJpb5Lt9oMaEVF7CdnAzFsPaBA0J1pWEgngTJ4DKgLLc4+tnUUsthnyYAr5VLuR0OM6UzeDRMxoa6/UWlWzh+JacH3WWYppbb885/OQXf8K1tLcqV58rIIFYiO+DaNAljThaJUhIEHaJRYDWVtecxPI19N5Mm9D6LR0XftyP24Qq4M2ulTTxg8SFK1TSmTe
+ yhNWWHuk
+ J/nOU58Ll8RsvfCbKJlB24o4PBj3PqEz2nBG28/+TcIFFFNKCbLf3HINONMAU/aEaF9VzZf2MKpAtnroE8SXEA0coCrvLKw9wnSMRnfafCQd5IMYjM0f7U9cfAsbL9amnPdCRTrGoRcbpYDbxhGfapZH4YmU6DGp17Wg4MC5hNkKbXsSNqcb71CM0F3uKW/pKW388faPuaO4tW56j2QHDqP2SifSS/im68ucyup1KRL/SOMBJxFtvUs+VcQBpP7Rk15P4hiBPFEUyTWslbA74jqATBUk7rYk19VIXIwnrvj6QwoXZjlbxA6jI9YAPsi32Pz62QA1us6LPUBcumD/qCEBj4A2+8oLFzFvDzE6kefwpwTS8z1EZWQo8G+U9b6QEDPrY2qjK9DER5m2pTqAZa6M8maOmmuQ7IWW7V+kausGWV4Gjh1Qvcd0rAsUQBaAYiMePBsj4dxcZWjBszflQYblrSPSnDTmtiUZYlLormou28mDbX24vEa6xqfv5Yro7UGY06eHPA75D2SlD2IVdLn7Tysatv1fKBLFunFwsRGbkJSrEAkreqqozEGNXOeQVP+hMZn+sLZvEQk/RIgxcf/9nhRZxozuQFqJe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,73 +111,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/18, David Hildenbrand (Arm) wrote:
-> Various networking features copy frag references of an skb, for example
-> when unsharing a cloned skb (AF_PACKET trimming a clone), when copying an
-> skb (nft dup) or when building NFQUEUE messages. This is an effective
-> way for multiplying folio references held by an skb, allowing for
-> exceeding folio refcount limits.
-> 
-> This is not specific to large pagecache folios, but with them it is a
-> lot easier to reach the refcount limit, as page table mappings can cheaply
-> create many references.
-> 
-> Let's introduce skb_frag_try_ref() and skb_frags_try_ref(), which use
-> try_get_page(), and use them in pskb_expand_head(), __pskb_copy_fclone(),
-> skb_zerocopy() and pskb_carve_inside_*(). All of these can already fail,
-> and their callers handle that.
-> 
-> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-> Cc: stable@vger.kernel.org
-> Acked-by: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  include/linux/skbuff_ref.h | 53 ++++++++++++++++++++++++++++++++++++++++++++++
->  net/core/skbuff.c          | 35 +++++++++++++++++++-----------
->  2 files changed, 76 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/linux/skbuff_ref.h b/include/linux/skbuff_ref.h
-> index b6f6da556ee90..560ddc863bbec 100644
-> --- a/include/linux/skbuff_ref.h
-> +++ b/include/linux/skbuff_ref.h
-> @@ -44,6 +44,33 @@ static __always_inline void skb_frag_ref(struct sk_buff *skb, int f)
->  		       skb->pp_recycle);
->  }
->  
-> +/**
-> + * skb_frag_try_ref - try to acquire a reference on a paged fragment of an skb
-> + * @skb: the buffer
-> + * @f: the fragment offset
-> + *
-> + * Like skb_frag_ref(), but acquires non-page_pool page references using
-> + * try_get_page(), refusing additional references to a page whose refcount is
-> + * at its limit.
-> + *
-> + * Return: True if a reference was acquired, otherwise false.
-> + */
-> +static __always_inline __must_check bool skb_frag_try_ref(struct sk_buff *skb,
-> +							  int f)
-> +{
-> +	netmem_ref netmem = skb_frag_netmem(&skb_shinfo(skb)->frags[f]);
-> +
-> +#ifdef CONFIG_PAGE_POOL
-> +	if (skb->pp_recycle && napi_pp_get_page(netmem))
-> +		return true;
-> +#endif
-> +	if (netmem_is_net_iov(netmem)) {
-> +		net_iov_inc_ref(netmem_to_net_iov(netmem));
-> +		return true;
-> +	}
-> +	return try_get_page(netmem_to_page(netmem));
-> +}
+On 11/20, Christian Brauner wrote:
+>
+> Christian Brauner (3):
+>       pid: move pid_in_current_pidns() into kernel/pid.c
+>       pidfd: convert remaining visibility checks to pid_in_current_pidns()
+>       pidfd: restrict pidfd_get_task() to the caller's pid namespace
+>
+>  fs/pidfs.c          | 12 +-----------
+>  include/linux/pid.h |  1 +
+>  kernel/pid.c        | 31 +++++++++++++++++++++++++++++--
+>  kernel/signal.c     | 23 +----------------------
+>  4 files changed, 32 insertions(+), 35 deletions(-)
 
-I don't see you removing original skb_frag_ref implementations after
-the conversion, any specific reason? Do we still have any skb_frag_ref
-callers left? Maybe at least you can make skb_frag_ref do 'return
-(void)skb_frag_try_ref' to avoid duplicate code?
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 
-(optional) Also, an easier way to migrate might be to make the existing
-skb_frag_ref return bool, convert everything, and then add __must_check.
 
