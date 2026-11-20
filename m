@@ -1,74 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBBF606A334
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C04606A326
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hli0wnnO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T1yvVJtM
 Received: by kanga.kvack.org (Postfix)
-	id DDCC76B05B1; Fri, 20 Nov 2026 05:03:04 -0500 (EST)
+	id 841CB6B00EF; Fri, 20 Nov 2026 05:08:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB48D6B05B3; Fri, 20 Nov 2026 05:03:04 -0500 (EST)
+	id 818F86B05B0; Fri, 20 Nov 2026 05:08:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC9A36B05BA; Fri, 20 Nov 2026 05:03:04 -0500 (EST)
+	id 72EE16B05B2; Fri, 20 Nov 2026 05:08:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A80C96B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:03:04 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4809D40E23
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:03:04 +0000 (UTC)
-X-FDA: 85455059088.30.C4BF424
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C0356B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:08:20 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E09E80EDA
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:08:19 +0000 (UTC)
+X-FDA: 85455072318.21.DF030EB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 79EFD100007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:03:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hli0wnnO;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id AACDE1C0002
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:08:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1yvVJtM;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795168982;
-	b=BgV9x/N1ORs3rO7ZAWIjAGZL9OHEGTrX0vBNV1fORvanruit/N5cBVNrfSJOcVlwrH46Wr
-	OF2ouFtTXNbVyyi10MGwB+2h5sXfvX+pLpRDkZaQfoKrlSl/hmAvz+BO49ofj5iGKoTOJp
-	5h40AVXQoiA+GIQS3LQ3fpGRFHEK2uc=
+	t=1795169297;
+	b=FbCOX/qYpAlexZNIqOiaHDJ92jCpoBY/G74nXG0edmH8AkBjOmr9oSFnE2P7wQN6ho0cwX
+	61QCBVFwEoVA5LuckZWw2iYQpIZqgBubve00DPgdDEjijRJHD9Gg6duV8lXxJde0F7CI1p
+	WSOtpagIOs/Erx0TpdK4RSwzIuLi73Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795168982;
+	s=arc-20220608; t=1795169297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7OG9wGQR7f5mu6l6IUhEOyBk2qztlmEiKeUKVEyFJTw=;
-	b=aIL1fWEBNIoMkPmpuQ5gGWSxt6TvPdFbNKHuLyDhpr0QQyZNXEnQNmgd2q50k3KF2PMP+c
-	vomAZAiB9rCUi+VhHuoeM2OdMaQDMbtb2W0NoghYogPyxi07w8vwSIJJ7QqsrU6T/u1XkU
-	bg/H0MoBmK5VbiEstpCbt94WjoWPslM=
+	bh=904Id2mFYY8G9tfMtZ8uCIKo9vL7+Pz8s2yY+3bhtdI=;
+	b=1Pi2R8xFLpm3XQsDi2dM91G4+3bWI6mRuDVUwUuetpyjm6mhhVrItvqNqAwf7N0M+pSO+X
+	UJnoviwJhPZeu8fAyM/AzPcVvMHVTEn/ujY0a4bUlshnxWvZlH/5le++NUzYtLJ0ri4YY4
+	v5kXnpNEjU3421JNZwVn0ngTyjzrBcU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hli0wnnO;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1yvVJtM;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D7DE41771;
-	Fri, 20 Nov 2026 10:03:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F0C1F000C4;
-	Fri, 20 Nov 2026 10:02:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EF2974189E;
+	Fri, 20 Nov 2026 10:08:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0A11F000C6;
+	Fri, 20 Nov 2026 10:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795168981;
-	bh=7OG9wGQR7f5mu6l6IUhEOyBk2qztlmEiKeUKVEyFJTw=;
+	s=k20260515; t=1795169296;
+	bh=904Id2mFYY8G9tfMtZ8uCIKo9vL7+Pz8s2yY+3bhtdI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hli0wnnO5C3F5wE9WS1Ftt+8YiM6qWoePpnIzfTVOOdud2PNs7bpGRoou/Ui8PU34
-	 Qn0V0QoYt02PHZe36dt0A+POB1Q2X8cwngfXcI+VOAnMh9MFa0oYQklzr/JkgFN2fU
-	 KER8TJ7cMndYmhVHN5UvQyumiDp+fdBxfgOdEFIw3ZVluPPIcLfPdpSJ3nS5MwMAsT
-	 MzMqcSJEbe9mvgrM8XB1pgh0y3VbWnsPLjYsRv/pmA7gO+C58/i2LbQPNW/u+kYrO/
-	 PACSYIYBnVct7bKtXG41Qd5J3dQ5nABVPGErUJXdxG+BOREEZsGOv70Eo33MYqrsS9
-	 zGDdlB0D8f2MQ==
-Message-ID: <1f12c78f-782d-4d03-ac3b-7321520f02ed@kernel.org>
-Date: Fri, 20 Nov 2026 11:02:56 +0100
+	b=T1yvVJtMPpbvYWV33sppvQMr94v8/qcuMN+AaUhBPBAQdoa7J+muPM0seCCXEmvoP
+	 wSBCS13M3ATDQgkLCIHvsvLzz8A6eCkVahFyUw+8ALZL9E3BUfvpqwSIZx4QtiXmjK
+	 TzT1w68BzZ+9zo+KmQDtt3Hc/fsqxNq/pHK7WLwqQLxeGgOo8HEDCAMBdGoT8kqu+J
+	 IXGEKtSNgNaJ3vafSxbmuJqmjG4UbQKRj0G6TLyLA+pfXzx0se0u0QKWQ/6O7Z6uMj
+	 PbHSahC6JIRW1NP7qYysFYw9xmd2qXqiEJtNToff05buVoYIOCmkTOVQAJCvMStwjA
+	 hEirQ323kLz5w==
+Message-ID: <a0a5c3e0-ef9f-49ab-9f2a-d1a2e1e1934f@kernel.org>
+Date: Fri, 20 Nov 2026 11:08:09 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/3] alloc_tag: two fixes and one cleanup
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
  Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
@@ -79,62 +78,68 @@ To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>
 Cc: linux-mm@kvack.org, stable@vger.kernel.org, Chris Mason <mason@kernel.org>
 References: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
+ <1f12c78f-782d-4d03-ac3b-7321520f02ed@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <1f12c78f-782d-4d03-ac3b-7321520f02ed@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 79EFD100007
 X-Rspam-User:
-X-Stat-Signature: 1zb85bhwx9i73gbdawyttzwn6rikgtbs
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: ujj986ojneu6n9wz15q1rkde1n57i8zx
+X-Rspamd-Queue-Id: AACDE1C0002
+X-Rspamd-Server: rspam02
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1795168982-478306
-X-HE-Meta: U2FsdGVkX1+1JE/fto4eYQwC4maAB7/bwhrutyn1I+gJNAHMN1tYDEaCIVdKYwvie5rhj69DFzVH8h/ONJYa17aKmo12xCX6Cv7Oww4FgdGExoQQJ4GkMdqcmxUcqINFHdJGgrt/NImfU6MFMyx0ZqVCyhTnxmx6vjFSGFjL2CijmoytnJJscH2N8kaz8Cv7K6A369HNvHExqUK0wqRQIutQD6eqNsScNZKDVJJqr6Mf87Jwr5TT3iIrKt15kLNvp4JBWv1X0hrTxDRm1zNCnuM6vnP6v8A4925yrnb1/QrnyIrdOxrBF3PnQKzivN08FrjKu2/M+63jvr/oKkiUItNR9vnVEqrNQYmIUxiGKF+GxeB2ngoNg40f+EOFYojqwb/lVQLhK8FolmMJHy5NzxA1x0rcsO1C7dFF80JKioympvFWUJUfeQ74jmT4HtGu7vd/llq0WD52X6/IfljShmnIfSxNrZPVgugUuPKlbq+YT/DHOqu+sTU9Um+16CmzQ/J+OsMAuprQJodX5ALNFMNvCcsbn4dzL/2Di5/Z0Y3bZ7HazOcJAYWmH97XRaRBMrb3C2pmOJbvqTj7OxeWRXgiv5yTuejj40JvtRfqJQmVXEDLjKMLYA678Vr5Q1kbCs0lY3AHWlkO2GgsqK/bz4ntggMylfuOL6inSv+g/JDIq3QGYTGI2rYomceIEeQVBehbeH0MrCCk+qoARZqTv9X4mfL9U7YUJ0oPFPgRNu/7K5mPXw3Vx8qhGI/C3icoD4FTOevNR8wk2xvBL5WoDHpxF2WL56bczq84fsnwQ+qn0q6JJlMRa4ObMS5NIjprImXxgwv0c8BHmAEdUUhB9nzav/79TSxFy+qbufyo7TyidtS4+d3CLeUNhvDbvG9emtzsLShuBD2y6tkaN3Fj/x4XTHvPg1LCF895qyyTOp8iWALZpxgbDXY5F6z86Ehh7xbkIsczM1mAIZ/TMIt
- nViCO0J1
- JnouhP/ntzU+WVZTrfFw1/zk+FVIVp9pNeTiBZ7yLLvitqyn7t8+AZZSB7j8EsRZrak/qPen4kA2SMZj2MSzrurzxRV5LMebqLMCsnqZUukn1bEhylKoeG+moRFqiTsKKLr/qZeduKOs5A1bEU/MiuQArjSnQGJvQKnvIjiJHB0xh5SyV6R97QlxluVRf8lkrUrIHNqK8Bl+3iB+Dw8nyksSDfa93mJvqUUKcBp2xtxOEJGUjRZxMmDOHr9ymCyGkYvZckDmkdGsjI2TZA1DnVTL95bmpWogVELNptM1HoHZSRau24g1k1XN2Xt2aVTCbsUtQkQ5wSPIKTPWY/t4nkVUzE6cQJKZOT3LE4gaESB+sBtCNSqMEt5GdnhejDg5kEApyZ2NT4f4rnOnkxx8q8l8xvP5zdM1WWnETj4Wyh+wVhn0ItivQDJKYZviEK3D3HqVs84+fB/elyU7lYa86EvdwZ5tyqok+V6ODG7i6vw4yewdOcLlGdCiAYrX+edX6Ow4Xurb8IzHopoDaCjbsyMNZAdMlsw6juvspokQGPpMkD24lfAHz4q2iAA==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795169297-564152
+X-HE-Meta: U2FsdGVkX1+LNWETaKymmOwWvv2/RmCUHM3ZDks83sSBGKjQGibnb4QTYLvdhDAlDrizU+lHVCXWp7f3YERsj9+rdyU/UYpDH03ddqlf8CRE9VWVzlghMvx2NQnPd82aiv8lhDgfJ+Ymefl3GzqbV6EN7HS3hpfLxIeSky/pIrpNyTK6yORyrwgrr9usXz89OKnjUkYvxArRag3z5c9UCYffv7hL2ySeQHcEPdj9RTR51sPFoIG3sIZ52xPImoYWcCe8I0o7QlPEfDpLvm0d1T/tzY20t8hfMETkypkerA4SYnsnSvVnoHgn1PCmRY077Md4tEyf42dovc9pFKTOI3pw2z7dIRi59QO1Qi2pVCnpTXNC6ijMFJQhfgEDJIfeHZtpsjQtAqi3uKt34wAqcbGmhrXfYXtqfbFHaq2hmInr3f01r1RUaaE91ip67bscw/CrwMlqqAiynv4PSmkf9qTyttEIc6v7dm8LVpq5d582avLBLaLDqrNOxivbsARbTq/uPk3kWnRodx9PfxTB60hjb7FCcnPw0njD0mJ4QIouUJgbJnptuQd4fBKNYTpMt8uDeEsgn87sJ9HG1UZ4rK84tDZcTS6O5fUnRPNVi4ybMQYAeo2PADRDjihVC56thGQ8SDUQSyBl5GMCCJMbZ1t2I+wPBjOCeVeFepmMiO4euKJ2u9kAAVxAo8rxXaRRStTJKDkMN9MKJQydGPItSjKRPqPQsGLw6cLrG8H5in2dW5l54ZnDri3Jvz+J1gStpATK9ZnAAK9d1c4sk3M0Ulf2/SUPSavvekIDhfH3AhQbpUgnlqqaLJ+td8bi3TKWf//uirCSiWQa3ZK3PowSCsUv9sLsC3WYlukqeBMpuaPqwZ+kDqxJlYrn+AUEPKDelenzHwbvTX7sAKkrzL9YXQTIP1Pq5Si6FONEZtUG5Ule83rcIv5WjCyLLILHG7zNckKHkBLJ334bO0ey5Mx
+ UTzCBkWY
+ xebn+lQqq0lnZmGJwNgXDX5PlLLC1aDRtdHKeMB9PDgH/NlSs9coE0Co2/qwHHWvSTa7g3LvDh4PE7TYAh03A5ZKwhNm+bUKsCseBZdZx/B6AJ3CtPl7iodZI3S95dWcnPwXvV0VY5zkbHre9Odf3SKaY8UzKxncqIJ/DokuRTODsJwk2eH5Q8Od1Dx2le9n6GRB9rAWAWFAYQ11u5mR2R9pTB34HmBdjbnBAcs4zPeDwZ8b4o27X76DRMhqMyNRphyeuh88wp2HvX5W+vj71n68UuROtNjCNk0rsNmhJb4jQkwLHrXYC4RWc8coiRwUdvMy6jAglmSw6pRaL2AlYBz89QQW1NfANlLjSgb4NYeO6FguzTAtpDXaYEP3yub/kRaneubAbTEGR6WHjIjmAmyCMAwvJSSsTXeAgEIsZ4Cv1NvZ3rsmhg0wCTYoV7e+375czpf7mSHsy4MGWv4qoZNEI78d4YOe8SfPYMvwbGwGHKyk6Z0FHnYsb6YbmoW8wGbeWQeUlItWoc3YzTNb0WBZ00wP6duG9+IFN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,42 +148,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/19/26 09:52, David Hildenbrand (Arm) wrote:
-> Hi,
+On 11/20/26 11:02, Vlastimil Babka (SUSE) wrote:
+> On 11/19/26 09:52, David Hildenbrand (Arm) wrote:
+>> Hi,
+>>
+>> two fixes (one for alloc_tag as triggered by slab, one for mempool) and
+>> one related cleanup to make things consistent.
+>>
+>> Quickly reproduced and tested the warnings in a x86-64 VM.
+>>
+>> This should go through Andrew's tree. No need to rush, it can wait until
+>> the next merge window.
 > 
-> two fixes (one for alloc_tag as triggered by slab, one for mempool) and
-> one related cleanup to make things consistent.
-> 
-> Quickly reproduced and tested the warnings in a x86-64 VM.
-> 
-> This should go through Andrew's tree. No need to rush, it can wait until
-> the next merge window.
+> mempool is part of slab section and the first fix while in page_alloc.c is
+> also for slab, so we'll take it :)
 
-mempool is part of slab section and the first fix while in page_alloc.c is
-also for slab, so we'll take it :)
+Thanks! :)
 
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-> Chris Mason (1):
->       mempool: fix missing alloc tagging in mempool_resize()
-> 
-> David Hildenbrand (Arm) (2):
->       alloc_tag: handle a NULL tag in alloc_tag_set_inaccurate()
->       mempool: account the element array to the caller
-> 
->  include/linux/alloc_tag.h |  3 ++-
->  include/linux/mempool.h   |  7 +++----
->  mm/mempool.c              | 23 ++++++++++++-----------
->  mm/page_alloc.c           |  3 +--
->  4 files changed, 18 insertions(+), 18 deletions(-)
-> ---
-> base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
-> change-id: 20261119-alloc_tag-57326f1fcc85
-> 
-> Best regards,
-> --  
-> David Hildenbrand (Arm) <david@kernel.org>
-> 
+-- 
+Cheers,
 
+David
 
