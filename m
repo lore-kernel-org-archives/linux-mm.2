@@ -1,141 +1,166 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619F5606A32A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BCD60A2605
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LJ36q2oa
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=neKemMt7
 Received: by kanga.kvack.org (Postfix)
-	id 567D06B062D; Thu, 19 Nov 2026 19:06:47 -0500 (EST)
+	id 58E176B06D5; Thu, 19 Nov 2026 19:07:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53F7A6B070A; Thu, 19 Nov 2026 19:06:47 -0500 (EST)
+	id 53EED6B0715; Thu, 19 Nov 2026 19:07:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42D836B06C1; Thu, 19 Nov 2026 19:06:47 -0500 (EST)
+	id 42EDE6B0716; Thu, 19 Nov 2026 19:07:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 151DF6B070A
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:06:47 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E15571C47F6
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:06:45 +0000 (UTC)
-X-FDA: 85453556370.01.DD4EFF8
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E6B2540007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:06:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LJ36q2oa;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795133204;
-	b=GdL0dtdoUeS4qPZLUxn+c0x679XsKs2+MN+nNC1u9Ghy6XraPMnLgEFndqEqeEJbpKHhV7
-	GfLDfyVPPixDDDTmowsxJYFUmBhVokbhkr0r6alI5//92i+d5kgrAonLbec9kvO5v6c3Ax
-	k2jDUU533NnHqFYGSQEFK/ceREhIsYY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795133204;
+	by kanga.kvack.org (Postfix) with ESMTP id 123146B06D5
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:07:20 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 81932160CDC
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:07:19 +0000 (UTC)
+X-FDA: 85453557798.04.EEA7675
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013070.outbound.protection.outlook.com [40.93.196.70])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7339D1C0002
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:07:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=neKemMt7;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795133236;
+	b=P6LFtojyfsNVPa5es5kOT5ig1J9K5R6dxnAWXFLHFVkxy1eHczJlvKTRk9Zf75hpDxtGJ1
+	TYtWe5refY1nZSWsTq4u0nDym7BXZKUW/+OWaWv7om1e/LIJBcXnwjTo/3RwvjOn1htDeV
+	cWoJxYHeNnCCgzAJgUsL5a9q9kV/S68=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795133236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8PsDwtqZ7ZOXHEr9V4C4myUyqMWkC/3w4Fd9za5pDc8=;
-	b=y7tKp2A0Ay/wbS4yXyD/f/tmN6eXX8dndxpaSvfjCOCqYi8j4wNcKzBXaA65cDbK+lVVmG
-	Gxw7k5hUUGqnkPlk0b3UuCCV0NnaeOjNwTnN2nsXeiXmjWL7wPq7mNkUtWUC5++vup7NPz
-	gjZ+qJRB31k0/vjZ832xutnwOfc6m6s=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LJ36q2oa;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=dmatlack@google.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cde0daf3a2aso150235a12.3
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:06:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795133202; x=1795738002; darn=kvack.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=8PsDwtqZ7ZOXHEr9V4C4myUyqMWkC/3w4Fd9za5pDc8=;
-        b=LJ36q2oaKa/oW2STc7jrxgWCzMtsr6Xm5ZqQBtY3Zv4OGCuNX1emu+nk5QqfbbPIwY
-         2m6+VtKUomBR6Ty784rSlZcv2GWeT1zhgS1W4jhWzABgLQ+0Co4oLSY6sqqOFhYjwUl4
-         lReLbwO1NZSQP/rWW1Bqfko0tjMfl64dflGxLypFz5sOYmEzyirKJZi1cmEjkAFjnzUy
-         lVpOwqKn3MXN2KoBXLx6zLPKEoUaot3xab+Xo3slL856slCQPNBkXX0x2fGcpm9i3539
-         ZTJuc3W2cbbqaEwcXYPV14iG5LAqzn+75SAk3iZoH3CfyHjuXQ7v4esaj2jh4NVzyAR6
-         kYdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795133202; x=1795738002;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8PsDwtqZ7ZOXHEr9V4C4myUyqMWkC/3w4Fd9za5pDc8=;
-        b=YQh8nu1syEnAwDVFWbG3lBUCLatx463jos3fxM+ARM94SI7RMuxc/BsVQNbbd/vNam
-         l67sYx3JWQyzZktQmzKWv0lbuXV699YXvwwjFoJfFgLtXhF/F2UU+02R31nUKmySunyf
-         ZT37nFdIhsB8+ZIjmgvDJdpJqsYahPfXnOpgZbaSrp/TCrd7q2vSZXVACceGLqWSyiIq
-         costBhPMxMIWqm2wjc/ubZmsZa40RfGR9RV/f4guo7tjha2zohGIX+zzsU+LzZaRQkL/
-         T8fCfwrMKBLLQp8en2e43X9hH2rO06rlLYn1zYjkFcKEcIQWBOVz47+AhhUmHnEUFz/m
-         7fXA==
-X-Forwarded-Encrypted: i=1; AL+hErGlMFai9eeTPHPZIik5fKAukKjv/VKZVB9f5Lp+ZhZOzBGoWV+5c21h9a79tkDNR9dXdu4WRLPJMA==@kvack.org
-X-Gm-Message-State: APuU4Z9P0WDZB3YkBBiH5fhgDA/86ML7W8UF4QgtLKU1j9GhsUfauVNL
-	GgpML4BB0lF3SbQ10qvb6/NtrE0ORqxeeSZy62ZmJJ9dk51oO4/2rtkNa6uJ6VSTcg==
-X-Gm-Gg: AZFdTZcUdsbmlkrAt8ZQCwQG6gSi0bedb763VliWt/WrH3mXeCa/l6jpPnz0yLp5usI
-	QFIlxmlVCYHJyZYhEMtgSUqVGCpqA/kk5POwVoo679yv3DtzjUT6zbqQJqcBT1n7/f8DoOAAIhc
-	PssD9bJ9nH/viOisRKYlKJvAsvq302Z5DiPxGibDJkGs2KZGep3gMjehGKT9Zcav7YW72k/FNEN
-	OlwFjTEDLgOLkmXX+QJjz3TlR1GJMkMyaeC6HdqnmFwcZB6O0Srm1z1gqPFSkjkLHhcYcvtzSJV
-	njWWQob3lnT5jeavHVr57WS3eX19HmEIHCA9ZdPNZS0TKOuvuZXiQ3/VkX+DUUp4M8pV3AMu0gV
-	h2TUD2wvMWvAFbx+KwiXYPaQOTiFZAfPGXRaS5Yh3rK4FAW4Wk31qYe1cxfm1Rup7WDzsKIDVod
-	RDEmUj3NcxWfc2QqfaZIHkR7mzG/DNBKkqZrNYhsCS9iwm0+sjaLbKP/E2ja279c3kMvFrK4BgE
-	+4Rx6GarcB2U6tJWlJEG+rRCeQczwetl1zi4bspEV1t7u4keVt3y90Q26ATTk70ecMgOPYEB+Z1
-	JeC/h/3flZUEAPePksmY02lK4R8yhTgtlJF7u6kG+qG656YNzIJsQ82oG1graHFR
-X-Received: by 2002:a17:90b:442c:b0:3b3:ab74:cc9b with SMTP id 98e67ed59e1d1-3b41c554624mr967136a91.0.1795133201767;
-        Thu, 19 Nov 2026 16:06:41 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ff5d3easm328044a91.1.2026.11.19.16.06.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Nov 2026 16:06:40 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
+	bh=PTrogx8b0HXDtc/pJASUwz9HN2QUuwrhEYRQpwhH2EE=;
+	b=Ad2fqWHRupmW3PxM89aHAXwZUe3mT0N7hLvMfM9Kk+SPtdCh7IhfhGjvfvRMr9fSGAKyuM
+	4RqsX+9kwqIdMn7i9FOgLsjjLsQME2EjreiFcJy+42kVYgJIVSbjRLSlwEH/kRRogcfGK0
+	U3BV9HBYRE9hB1wC0MeC/eEPkCYlYU4=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=nvidia.com header.s=selector2 header.b=neKemMt7;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bYR3gSMTgH5wz7SwP6VLbwu5rcPz66cdbGtvDa9s+yuNf6JRNpGt151m86dzbF9xaKOswsNkM41t2kVLUGVP111W+PfEAcfSIAffGe5QaIz00zOMWaegTAf5pQIemqzkzPaQlF/TrFEQAhDGlQb9Mn+TERdgs4855p5Y3C6KYU46fAMI3PyeaJfpZ5zYtDVRRtpa5T9qhDh0VHtYgC+8AueA73fxQE1amy8xHFjksORAv1OIgm86oSkxYbxA/r8hqxIhYeaKkhtXaZow6LqGSXB6kr/P3SGujAQ2fYZWZ4WmWvWskJyLkyjUmiasAsPc1kZrqGYjCVIeaO8kxqW4Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PTrogx8b0HXDtc/pJASUwz9HN2QUuwrhEYRQpwhH2EE=;
+ b=gdHThVInlbudjC7LuRUDE/MC3txE0gTWxxC8GFa+FTtOx1ek8DB/zGZQEeEave7avtIMcoSJv+4R5C7JJOCarPDs0PNZjKe5/ug8qjW95lh0rWssUtcjeGueH7IjLIJ80kHR5lA720cyCwXL6c2TyZL/ku76bi6Fb3xlnkH7LwRlop+8J2PdD6qM4Xv//358ZtVNxLA7mh5z08tMitKRRoANOec9fgc7VnMfF/qCcWwnqmc7K9MpKK79j4pR5iq9JZtWWjREfriI7GnzrsCT0Mj427RIH/RQN1Wbqa2OzqbWkdor+mSOv+UPT6AtvxkDODcfmmcOdT6rt5wWsJMiYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PTrogx8b0HXDtc/pJASUwz9HN2QUuwrhEYRQpwhH2EE=;
+ b=neKemMt7s//9ikV1y3MI5LHOq3JKA+7dDc2vbjOxDFzo1SqAh8Wngvo1Sqo3YaLAYsDuxcIxcU9IimE56CpSlyeGpMnKyGik6D7S6Vg+g9itOT7jo23+SAgkpWo14p6DxtztFDBb2LaqqQOV5ON3X9pD/qc1Yiu5KEisnr61BYvHesjNgGkm5AihSQReE9w6hyUx+DIsvZq7QJO8DUhSuf6LSRmwtYhW/Bal1OhzBc66SBed4ZOhciT7CjV2bJ2s3ICX3pskQBwIy9SDeajXma82szBoWTATMFr9mSljF0YnqGPYJgJvuTRygRWPdMnXcO02w9ZYM8MK0ws3SfzvQA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SJ5PPFD5E8DE351.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a4) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Fri, 20 Nov
+ 2026 00:07:11 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0639.010; Fri, 20 Nov 2026
+ 00:07:10 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Nilay Vaish <nilayvaish@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Balbir Singh <balbirs@nvidia.com>, David Hildenbrand <david@kernel.org>,
+ Zenghui Yu <zenghui.yu@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Alistair Popple <apopple@nvidia.com>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] lib/test_hmm: fix alloc tag leak when splitting
+ device-private folios
+Date: Thu, 19 Nov 2026 19:07:08 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <18A2667E-073E-404E-89FE-7C8DD5E1B3E6@nvidia.com>
+In-Reply-To: <20261119233119.1721789-1-nilayvaish@google.com>
+References: <20261119233119.1721789-1-nilayvaish@google.com>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 16:06:38 -0800
-Message-Id: <DMZLLYOVIGOU.1RXWYJN6UQTM@google.com>
-From: "David Matlack" <dmatlack@google.com>
-To: "Vipin Sharma" <vipinsh@google.com>, "David Matlack"
- <dmatlack@google.com>
-Cc: <kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
- <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
- <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
- <graf@amazon.com>, <jacob.pan@linux.microsoft.com>, <jgg@nvidia.com>,
- <jgg@ziepe.ca>, <jrhilke@google.com>, <julianr@linux.ibm.com>,
- <kees@kernel.org>, <kevin.tian@intel.com>, <leon@kernel.org>,
- <leonro@nvidia.com>, <lukas@wunner.de>, <mattev@meta.com>,
- <michal.winiarski@intel.com>, <parav@nvidia.com>,
- <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
- <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
- <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
- <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
- <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
- <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files
- across Live Update
-X-Mailer: aerc 0.21.0
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-8-vipinsh@google.com> <auzftbPFO_6XBYVw@google.com>
- <20261117220059.GA2250529.vipinsh@google.com>
-In-Reply-To: <20261117220059.GA2250529.vipinsh@google.com>
-X-Rspamd-Queue-Id: E6B2540007
-X-Stat-Signature: 5hpqu4go6h1re6d98tdzpx3qm48raajo
+X-MS-Reactions: disallow
+X-ClientProxiedBy: IA1P220CA0021.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:464::14) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SJ5PPFD5E8DE351:EE_
+X-MS-Office365-Filtering-Correlation-Id: a75774d2-71b5-4f49-ad77-08df469a38f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|22082099003|18002099003|6133799003|261009223027099003|56012099006|261102130727099003|11063799006|261022075727099003|261028144727099003|261021121427099003|261022105027099003|261102123227099003|261026121527099003|261021123027099003|261026140227099003|10067099003|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	74m6o+44DO7ZtJr4HS6ITw3PaBGzc76enUw9Ip+N+Jj6o4Q1qnw/Ga30m0JJmcTGawWk21CU8a4O4tvHbwB4JbWvV+sc0W3GmKBsDrlm2j8Y9wWQhkWSm8FjrOVr7oqd81jHxfjUwppdrvSOispsZORaI6N917B2ny+UZGGIb2nV4fC3vwqMYPgUk3qmBNHAF+pbZHW2GRiILMEWEhidCAg6zac2NyLjDT7z86/FhxuDSbKgoRfBft3i84MGHE0FQywRkuypJWCsWv2u2FALf2e1pZ9ok8ea2IeiyoSnFXdi/+xpVa8sX9LqRPLBZe8f46UuW11s9O2bJIhr1vSS/EFQ+ks/Lu5srY/vxXjb4U/VuL+DtMaSNv+D2OWFa3QynWKiSK0Wcv935YVeYZ3UVMvgVdHslhUe9lQ4fxxgS3niavUsqxeW91VzM4b9VFc23/MVoXaHh4AGKZMxsanjMKq/ir6VSuz9WzA93tRvuNh085dPxlEmmV2unglbkCRMlqoL/41CnFHLpqSLczUARc2mSWkP4VkUJtISPTSRtrpYaS7SRIleWvZMkFsGYRAVoKQX1HimctZYdEf26P4NXyq4mdom3jFnyM4KZLfSrZw2GTsDZZ80EIUKBlrQDBaLf1gDZv3yhqtHPkPCGpp8oj8Fey+CkDt8DBF1VLVqBRY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(22082099003)(18002099003)(6133799003)(261009223027099003)(56012099006)(261102130727099003)(11063799006)(261022075727099003)(261028144727099003)(261021121427099003)(261022105027099003)(261102123227099003)(261026121527099003)(261021123027099003)(261026140227099003)(10067099003)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?YgBdPD3t09MHnx3ekFVzWMYRIuknkw8aBc9MFcB9f5P9JS5kbQ4T7YB9jIxh?=
+ =?us-ascii?Q?dNohq4PKz5lijC0IzGP9cxk1ML9S0z13qWqxrRbnTFgMcstdd+nZqcdrpxFm?=
+ =?us-ascii?Q?rnUSsvWWo/xIQAoWKq4glRKEYNH1R7YWS0cEigD7qYyzRGoHIMdu5RoYd4Sj?=
+ =?us-ascii?Q?33d5sBDGIhy8ubjukeqPaIzvGOJVqmojm0kP9voI4tTnGLqn515TW/kjCe27?=
+ =?us-ascii?Q?WeBejcqLpeiRUIbzrifzV0TYd1L0cefq3wx+sgBfT8eEQdtjCwybXYjyLYSP?=
+ =?us-ascii?Q?lkXXO5nIvsYavHBzralk2IujA02MpfXipc8UWJNcC6a2Ch4eyv7q2W8/zSra?=
+ =?us-ascii?Q?bc8vd2VNe5DgBNSJXTmZAzSoNao61q3l3/+hw49ZqTHImzv/256EioA5L4s4?=
+ =?us-ascii?Q?C/3D1XnpNur9ZXICItJKiuOAr2OeoMTsFwmsbp5wt/IwCwZ3a6oTAd8Ll9CY?=
+ =?us-ascii?Q?c7dTT3Lf1+gM/cmTU8RL4kEZs5EQfGPwbgIhY78hI/dQRg/Q2lUhifUmA0lW?=
+ =?us-ascii?Q?sIWOpnp6YKp6+rrc3BD+7y4yt/SfCnJ8bqpcsELTLi9j3yUk01IbKNLdKilM?=
+ =?us-ascii?Q?/LyREFk2Kr3Phbst4X4GYys/45eIo5BaVRln7H+oG5Rop1B70ad+WWDa8Iv8?=
+ =?us-ascii?Q?JpBUsNMFVPncr0tq7ThmLDaNrXVu6mn00q2aZTLLyEOEk07PyXZR/sx8WoJ8?=
+ =?us-ascii?Q?OM8fkyNTiBrdYyBPypenhJopOmpB9U4zv06JRK4t35U7lkEVrDmaGsCVlf2L?=
+ =?us-ascii?Q?qT4tfoIDPol2MKLTkRY7rZTuYJOlk+QF5b9CxJ9OzjJo/csNRQAcq0q1ioRo?=
+ =?us-ascii?Q?jKz4u/8gF5wrpCQO8cS7xJU1oMpOda8+S5m0q4xq/xRLMEHyL266E7yVOb2t?=
+ =?us-ascii?Q?+YKhZ4NpENQUxA4Zpf9tDFuuvdvVrTYW94/2uvQRPpj6Y0NEecJNxE6GEl00?=
+ =?us-ascii?Q?rPpbvpQ4+jpeVq/XgvyG+d3l+Yy+JNBFRDyDpb85kEOaR4KLanqVw8lKbcF1?=
+ =?us-ascii?Q?kSqKNfzUzqNjeK+vNTYAt40LYs89iqNJvvSMwTCrb+XBk7TjhRKy+GN9zNuS?=
+ =?us-ascii?Q?YSags4GZVh3QMkDOl2gYE+VrcSezTP63SUWQeLXVjuvUlivUp580EPoLWfVA?=
+ =?us-ascii?Q?MAKBklv5WKVtKhczYSn1ZlcUwQ+XRic4bK442MA8ql0SPCD12uWTC3SzrOBb?=
+ =?us-ascii?Q?76VjyfLqBOb4bmY/FB2CIty9JgFMTr6ss6YfIObl5IaxvathEhVpiHhadFbQ?=
+ =?us-ascii?Q?uQscSeWGXqC8wusRAFLk63GUMaWIAq+dUQqpa4Y35D5qHmY1NDHiFdC5tZSp?=
+ =?us-ascii?Q?jmzkJR/jH0AnOMfqfkxuTRO5BBaSeukQm88f/vreiFYAzd4SxXYDC8ufj02D?=
+ =?us-ascii?Q?Jh78OASvRnibgcVlVBA4ReP1ubjU17D3qchK7Svrefb4UuLIkUi07nSM7dak?=
+ =?us-ascii?Q?Vd6tWw0DuGsM+f3qfSWtomd7BV4g4CXeMqOqmvTi//17Jklhsnj6WoYTMms3?=
+ =?us-ascii?Q?KnCgJotvsHLyxGaRmhT7XVXUEvRUC2SdbPFy9JFbWkQlfl6TfHIhH5HwhsXY?=
+ =?us-ascii?Q?1h7fUb/3YUcxjGcmnwUJD/NfAE1cVEjynU6kY+RDkb4NdkrXGEV8glNipDNd?=
+ =?us-ascii?Q?kmxduNimUJ14nVnTn8e/JWVIslpRFgxWdGb7ABSIqoxQTOR+qseGgC0VHoTh?=
+ =?us-ascii?Q?dUhVvRYyRLCR66NuLi0v2qkhPtju//mFiXv6eBGOMqCCSXQQQaRq4shmok5Z?=
+ =?us-ascii?Q?nNx1QjvuhA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a75774d2-71b5-4f49-ad77-08df469a38f1
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 00:07:10.6615
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qBUZbvLLkR92NGKE5p4Hbo9vSP7tfdj3KaNm76g35jGJZivMAMG3a3qUKNSRSSiS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFD5E8DE351
 X-Rspam-User:
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Stat-Signature: nzmbrr447hw7bs6gj4r5xecf5q7pzdqa
+X-Rspamd-Queue-Id: 7339D1C0002
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1795133203-854220
-X-HE-Meta: U2FsdGVkX18WOLDqGaJnoXdd6hLAW8q16/6HW5dIGmsqu7SBZ7UPos/tNv/JeaixBl5J20pwd54J5R4pcunM+l6AmXKEmKQZLiRfj7Y80gN6GN5CXH8IstQ0ZQkXyE48yBDQTbMCuxrDlwd84dnuuyIglC9+RWYil+PPgAjBJfTU6b5kM0QXzxMTkI9vVn/tELbcc+D6TN54SCnwAGlBKzp9nfRF52/JrErsKpYaBhOubpC4O6ZgbQsxUY7amHGr7XKIhFdiR3YxiGLbEFxlDqnwAiURwrYa8Yd6hALUCHXVVZctzd9Sh1E7ZVgCa3tGN7UDCM/guS9kj5MNclpfbc8VeevMLqUL7ZCbS+/NVii8axwcTkpdxo24Wt0yuY8bKREzXvvl/e8PAPYDbxl1vqH59Q5kvJOgDdmf7nF23/kKW6PHfYHYOdyECKtVkyPLuUoNf3wAWaPE/C9+0vFSq/eXGzeUkZ38cCQHnLpmnZrPvzfqMBwGFETQ7kSSC9j7UBJtsDcoW+Ujl3QCLfbJZkSLhG1jUKiJfcd/0dv+6JsdwmL+93TkhEm8qSNIBvbb6FqK/FGuPP0fG/XjT+WVlgV2DYQKv2AbePv3X+HweWKFyupqbOkm+Gun3mWQLmxRMWJ9NQeSckxeKwU1Z6fdKY3jZgoXXAOgssiZ2WodvJVytTO/IjUuhrzditPSEelZXfI/lIajqaKV2CABD39sI18AAkH4vQ/rDUiBgodVlxNcKiXgAmLW9IDbiNW4diayTVT7CcmRuAn9Cqz+ESLaKrBdQ3wlqTgTF5fm2h12c/HIRQg+uBMqWrbBjEaC4Sz+aE8Y4+aD+IamV1yZlHkXSYo2T3nU4dXFN1YyktmiiVaG6GUO+ouqugts9Z0rJ1lmUt4eYjrQIUX96fNAh1noP60FPzdduLNkPtnkMZakN/3DEoXIV4sEg06ZaFMWJ1cddBRrF+HprCAM/PfhV1E
- yu8eL3Sb
- hxZBSgsv7GmmdgQl+2OwX6ObPF7TOm/cl1H5TQhQh+XyKiZq/iUp1fe45SkDm4R21vpdIbJEBunwzvEURDKKycUCU+CSagEpatZsuzEzQekd/tGhpW0LTIK38OlU3YoIp2ZAbFP6IygrkVAbp0ic1IWbd4xSTvRYYM4VmyBaLmK3llt0ETfph0XcrqUnk6xs611tXppoQ7SeArH3xD6iScs+hP2ixRCv2k5nMf4zPfkjXkvIDuAYDcJAvw0uCAGChLj9iShfPGR+1oWbbdln4kJ7y7cEm6NeHBNf7mTMnx4KF3ISDKDSPakgFz6BImeJAIlvJn6I6QZv3Fh3PjjqRxipzFqrCU17JtvzsCPj6jVhSPWgFk329xuYvtGraE2ewL0pHhJOX17ezir76HxuyDM/l1R22pzqS8D5bh8/bhYcXgopf2NO4UuOMUCsDBmlbXElazNMPjcwpsU1C7hR/hSenBjUcdcSPWZHcDOhLDqus6RXgdEFGDizxAOx7FvviomNkQl+nJOZQ0L8s5n8XcmkyGQDoPdl6er+yGHtFpZe5XNEEBRs+dkvM+hsEXM/UWwxPFN8vjVYrxrt61oZRCrznMw8yILbG93mP73BLFhtdkX9RMy/SoZ2iTA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795133236-518294
+X-HE-Meta: U2FsdGVkX1/0k1CjcWPlVUs09vGjzHDLOzdp0pgu8J4FA/dO8+RgIpifF6MTzQ5Y9jbIJ/+RnZoqUkTptd79IpvD1IR4hgdRknyWiI3T+QFB5qvXnvziUpKktA0yiIiAYvwciGq0Mz4f4AxmQdOKVUFJ6CvJZIJj55+B6LXgMLdjKwnRJUFTLD+81RV2+rcx9/Zmkily4AEKpVLWVHOgLGvU4K3JNsApEqxD8yi9IdLJfI6b2HueiVc2uaBw+U33+hsXuiC8btbRrG9UbFX32bH+C8/D2YHdDlIAlpRMvEzQDDRNlKHZShC4HLf6D10ovXXvUQTckLFKtk2r0yuaUKsQznC1kvpG7BpVEaPb3kC/+U1MOQhDh54oskw5PFlBfcoLNU2E0YdrEd96yyqied4z7P4A71bI/V+6m1+YC6ZaSbEoFI6hNp9W3rB/fipd3yxrABmBQgSw09FcS91X+WDO7psZG+53SJ2FLwJsmzQbZda0yc1Ngi9QjkRBs4v344jLT8KhpBkBTlDkicXB0zBJCwPVknD+A8a0urEjs8EVdrXrKvDpxTTurOdP3N3eN6QMc/xmFZy0aCdmKa1Vn7A12tlDF2TGS6tq1V1URZBqUd5zZ60ZXFpe3Ah2rVpe3OwyeswLMEFakdDqeh00Al1mU0v8yO6GagMoteDjXvfOKRONqcT/J7T42D8OpXaWZuDxqj1zQPT2mUV0+JvzcxSw67WgidpAUsdx0CqLjXQknkApyeFCbNE5h06V3xsgFaxuVCnXi0dtF4HzyLQrvy6SjuAtP9ID+8ufkRmQCXh3yChdKCIJHn57gZxnuSKtp7iSB23cv8ldlRhALuFmchUvuhcdMcMqHWK1F4gQsFJblWIhVlJUZVlIAPKqDC67b7lFVw6tZru4/EfW0qVxX5REnoTEPZBGU3c2ua9mtuArPXGlTn3GthnjwHuuN8pxSCWyUXzyHDApaozVT8z
+ DHWfLoFe
+ XFJc9p5eiUI/HeseZFPG7ABf1wMIX3OWWZnHIT2cxiowQD4SKkfQUc5oZu8f0WW/HO4/wIavwOI4ohfzWW//jXEhORj1GKvuVWKTJ8MUESLz7B0VriJ8Td0BEDQMm+XsopI3chE4Cwp2y4TQFdRK5nos7g42DB5A+dbR8oZwFjtC/brvyPiIXLK9EVNerPWrE3ZQ0oQ2Mv8fT8CV2w/mhyFur9gLTQJvc1d+ynpsHyf1v4pzL7NNi3e9a69P8/eiARqQpEEa4CcW0QmMoWiC1+zw671JHI9UgDRArylHrl0lqePPLHvTXG9yvwWHCYDvwQnezclUz0qpE6R5eBQD+t0WIp8QGg5pLlKEsm8OTFvrOm3lkzIVZVjMMy1khsLi13C5InAPr8432T6I+vsvld++jqznHJvLJLl938nX0kXFfT2Zzi7P4inK6cuRvLVTa1jovyS2lwsGTx2eXJc7lBeC/hhqjiOW/WloBGT5SNcRmEabRE1SBqia3M7wja/wfoCdP1F9JxgWDqjr7Jbl7kjliHZuyfeOWw2l8vgVNP1fFbDjUjksKtYPZXErtGMbpk/coMkACfg7B2AqZZtRVC0mZMrEVd59rmc4z5KN4qaLm4iaA71iMlT484zhS/p5aTWWCRYu9pv02Obvg0OVFAS0PVPeIDsuSdDrApKe3oHElJDxbQCEFPxOvQuektd6HIXIYM8lEVj379a9asqpHlq0y/VUKCPUuo5ak
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,124 +169,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue Nov 17, 2026 at 10:44 PM PST, Vipin Sharma wrote:
->> pci_config_map doesn't need to be preserved. PATCH 14 already rebuilds
->> it with vfio_config_init() in the next kernel and only uses the
->> preserved copy to check that the two are identical.
->>=20
->> I assume the intent is to detect changes to vfio-pci's config emulation
->> between the two kernels, but the map isn't a good proxy for that. It
->> changes for differences that don't matter (e.g. hiding a capability or
->> learning the length of a new extended capability), which would fail
->> take-over and lose the Live Update on exactly the kernel upgrades Live
->> Update is meant for. And it doesn't change for differences that do
->> matter, like which bits are virtualized or writable within a capability.
+On 19 Nov 2026, at 18:31, Nilay Vaish wrote:
+
+> For device-private memory, test_hmm backs each fake device folio with
+> real system RAM of the same order, allocated with folio_alloc() in
+> dmirror_devmem_alloc_page().
 >
-> I think it does matter because reads and writes of unitialized
-> capabilities in VFIO PCI config space goes to hardware directly. So, in
-> the new kernel if pci_config_map changes it from PCI_CAP_ID_INVALID to
-> others then those reads/writes can go to vconfig which will contain
-> stale unitialized data from the old kernel's heap.
+> When the core MM splits a large device-private folio, the driver's
+> ->folio_split() callback, dmirror_devmem_folio_split(), has to split
+> the backing memory as well. It does that by hand: clear_compound_head()=
+
+> on the tail pages, folio_reset_order() on the head page, and
+> folio_set_count() on each of them. dmirror_devmem_free() then frees
+> every backing page as an order-0 page.
 >
-> This also changes behavior under a running user. Writes that reached
-> hardware before Live Update can be silently dropped or redirected to
-> vconfig. See the comment above struct perm_bits unassigned_perms{}
-> in vfio_pci_config.c
+> This open-coded split does not split the allocator's metadata. The
+> allocation tag and the page_owner record still describe one high-order
+> allocation, and PG_head stays set on the head page. When the pages are
+> freed one by one, the tag is debited for only one page when the head is=
 
-That's true. Unassigned bytes passed through and vconfig is never
-initialized for them, so hiding or exposing a capability does matter.
-For example, 6467d0740a2b ("vfio/pci: Add DVSEC PCI Extended Config
-Capability to user visible list") changed DVSEC from hidden (all bytes
-raw) to exposed with a virtualized header. Across that boundary, v6
-would have served DVSEC from uninitialized bytes in vconfig.
+> freed, and the tail pages carry no tag at all. With
+> CONFIG_MEM_ALLOC_PROFILING, running the HMM selftests and unloading the=
 
-> How would a userspace opt-in? New kernel can change a capability visiblit=
-y
-> or virt and write permission of the bits inside a capability. Kernel
-> cannot know if userspace used the capability or not. Creating a VFIO
-> device in the new kernel by default results in a opt-in and currently
-> there is no way for userspace to opt-out unless we add a new
-> functionality where userspace can disable/enable features something
-> similar to KVM capabilities.
+> module reports the leak:
 >
-> For now, I think we don't need to worry about it. As this version will
-> be a base and if any serialized data with flags set received in this
-> kernel will lead to erroring out restore.
-
-We don't need an opt-in mechanism in this series. Detecting mismatches
-is enough to make Live Update safe in both directions: if the next
-kernel would emulate the device in an incompatible way, retrieve should
-fail.
-
-But an opt-in is needed to make rollback possible once vfio-pci starts
-changing its emulation. I imagine something like a VFIO_DEVICE_FEATURE
-that userspace can use to enable new emulation behavior right after
-opening the device, with the enabled bits recorded in a field appended
-to struct vfio_pci_core_device_ser behind a required flag. Devices that
-don't opt in keep the baseline emulation and stay compatible with older
-kernels. But that can come in a follow-on series.
-
-> In the next version, I will not preserve pci_config_map. Hopefully,
-> anyone changing VFIO code doesn't forget to update flags if they change
-> capability or permission bits (I will write comments at appropriate
-> places.)
+>   lib/test_hmm.c:808 module test_hmm func:dmirror_devmem_alloc_page has=
+ 16744448 allocated at module unload
 >
-> If we want to be very careful, we can do two things in this series:
+> and with CONFIG_MEM_ALLOC_PROFILING_DEBUG freeing a tail page triggers:=
+
 >
-> 1. Create a per bit valid mask for the vconfig and compare this between
->    new and old kernel during restore. In the new kernel, VFIO then takes
->    each bit from the preserved copy only where the mask says it was
->    valid, and keeps its own freshly initialized value elsewhere.
-> 2. Create a hash or store virt and writable bits in config space.
->    Compare it with the new kernel.
+>   alloc_tag was not set
+>   WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0=
+
 >
-> Both of the above combined will safeguard against forgotten flag update
-> in the code.
+> The backing memory is a private buffer of the test driver and nothing
+> requires it to be a folio. Allocate it with alloc_pages() instead and
+> split it right away with split_page(), which splits the allocation tag,=
+
+> page_owner and memcg state and is already exported to modules. It is
+> still allocated as one high-order block rather than as individual
+> order-0 pages because the driver finds the backing page of the Nth page=
+
+> of a device folio by offsetting from the first backing page, so the
+> backing pages have to be physically contiguous. Every backing page is
+> then an independent order-0 page for its whole lifetime, so
+> dmirror_devmem_folio_split() only has to point the new device folio at
+> its backing page, and dmirror_devmem_free() frees the backing pages one=
+
+> at a time.
 >
-> We don't have to do it but it safeguards against mistakes. Let me know
-> what you prefer.
+> As the backing pages no longer form a folio, take the order from the
+> device folio rather than from the backing page, and index and copy the
+> backing pages individually instead of using folio_page() and
+> folio_copy().
+>
+> With this patch the device-private HMM selftests pass and the module
+> unloads without the messages above.
+>
+> Fixes: 56ef39899643 ("mm/memremap: add driver callback support for foli=
+o splitting")
+> Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+> Closes: https://lore.kernel.org/linux-mm/be9a8bae-9223-4966-bba9-2cbe39=
+c8f4de@linux.dev/
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Link: https://lore.kernel.org/linux-mm/8ef6e92d-4cb3-444e-857e-fdbf88c0=
+35ea@kernel.org/
+> Signed-off-by: Nilay Vaish <nilayvaish@google.com>
+> ---
+> v2:
+> - Use plain struct page arithmetic instead of the
+>   pfn_to_page(page_to_pfn()) round trip (Zi Yan)
+>
+> v1: https://lore.kernel.org/linux-mm/20261118230044.683221-1-nilayvaish=
+@google.com/
+>
+>  lib/test_hmm.c | 40 ++++++++++++++++------------------------
+>  1 file changed, 16 insertions(+), 24 deletions(-)
+>
+LGTM. Thanks.
 
-I think we should do both in this series, as two per-bit masks over
-config space, preserved in place of pci_config_map:
+Acked-by: Zi Yan <ziy@nvidia.com>
 
- - virt[]: the bits whose value vfio-pci keeps in vconfig and returns
-   instead of the device's value. This says which bits of the preserved
-   vconfig are valid.
-
- - write[]: the bits whose writes take effect. For bits in virt they
-   update vconfig, and for other bits they are forwarded to the device
-   (possibly after validation). Writes to other bits are ignored.
-
-The masks should describe what vfio-pci actually does rather than copy
-perm->virt and perm->write.
-
-vfio-pci can keep changing its implementation in ways that don't break
-Live Update, e.g. start intercepting writes to a register to sanity
-check them before forwarding them to the device.
-
-Something like:
-
-  struct vfio_pci_core_device_ser {
-          ...
-          u8 virt[PCI_CFG_SPACE_EXP_SIZE];
-          u8 write[PCI_CFG_SPACE_EXP_SIZE];
-          u8 vconfig[PCI_CFG_SPACE_EXP_SIZE];
-  } __packed;
-
-
-[ Note: I'd probably store virt[], write[], and vconfig[] on their
-  own folios to avoid multi-order folio allocations, but I am embedding
-  them here for simplicity. ]
-
-The outgoing kernel computes virt[] and write[] through a helper in
-vfio_pci_config.c and saves vconfig[] during freeze().
-
-The incoming kernel computes its own virt[] and write[] masks and
-requires both to match exactly with what's in vfio_pci_core_device_ser,
-otherwise it fails the retrieve. On take-over it uses the preserved
-value for bits in virt and its own freshly initialized value for the
-rest, like your option 1.
-
-I'd store the full masks rather than a hash, so that a mismatch can be
-pinpointed.
+Best Regards,
+Yan, Zi
 
