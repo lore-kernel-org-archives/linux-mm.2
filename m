@@ -1,145 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E8C606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A9A606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 00:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yvPwhGJk
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TVe8L4A6
 Received: by kanga.kvack.org (Postfix)
-	id 88F8B6B05E2; Thu, 19 Nov 2026 19:21:38 -0500 (EST)
+	id A4E2C6B070A; Thu, 19 Nov 2026 19:31:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8669A6B0605; Thu, 19 Nov 2026 19:21:38 -0500 (EST)
+	id 9FEBE6B070C; Thu, 19 Nov 2026 19:31:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77D2E6B0635; Thu, 19 Nov 2026 19:21:38 -0500 (EST)
+	id 9156C6B071F; Thu, 19 Nov 2026 19:31:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 462FA6B05E2
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:21:38 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1463408CB
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:21:37 +0000 (UTC)
-X-FDA: 85453593834.10.0BDD901
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BAB15C000A
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:21:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=yvPwhGJk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795134095;
-	b=JUWncBys9XGOYv6oF8rH0IbXtw+wI7Cqp1GjndJs43xvB8e0TKpZ7MlkPvjMKi6TVU43aG
-	ky3yyPU+8oMhZO/qx62/ol/wl/3/E/ZWVmKNNVHMzfgzpQvvoaBYLEVqH0K+uOy7U4j1fN
-	+zVbeX/SeSmNdOODaJPM1k1q8Uoxlww=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795134095;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 757F66B070A
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:31:40 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0E5AD80D24
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:31:40 +0000 (UTC)
+X-FDA: 85453619160.09.198F9D5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7231F100007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:31:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TVe8L4A6;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795134698;
+	b=TGlXC6AvbB11jG/0aT2APlG1hHsYDGu2tJkozzplIpCX1F3BGUeLmIYxahz7LYDXbWhCJC
+	X/R5NN07xQEAQ0dYLufQDhy3EJwDCRyJebLkUHFfBBfw2jKKe5AxE8V9xTvY9kb/Sfhg/G
+	ymIWZsd+kDoulkffqBVybXgeejePd0s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795134698;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0CZfHhfHfESc4YrPufMYXO8QeXfOTlDtABpZbDYX5SI=;
-	b=j8ZkQDeo6D1aWazkhfkIrSXLZ5JJtGDHchEgG6HnKkeKQC7eWUlyJ3Ke03qF/kspYDZ335
-	0TDDuw7VwMsneMuaDES7ORHZ2SdyQSjYGPzRLDXwxNJ6pUgpg/A02OofcnQkOGTdMUYKEB
-	QmH0zXhf+RMsD6ypfYOsTmr5BLhZHQU=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=yvPwhGJk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb6886d30aso2553675e9.3
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 16:21:35 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795134094; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iTo2tkwGmcA06+6XCKfFCBi7c+0L0rBERjaePxIeaNDjEPk7KdLANYM30EGpKp+510
-         LVS2EFmzUrfYIrWOOqfY9jGy0U/WaaRITKnLFq4Qteyx9UDcgBhUFfyqQOkJr8B5D0DE
-         1hYpWfoaUglbcEdKJKcSA9+qOnYHYHV26RjLJ4WQpV4c1XmoHsKgmfi8/LVQ+TTsdnAn
-         c6SpjBaFMQybOnzc4/FLlnauMsincg/zLN4gJRHA3M+Zjkbp8heM+owqf06zEiShbc/Y
-         CJXOkXNGq6py0sqqEzhm/dDBD/hHXRJnkkPvSiDXUIUXjsQ+UTG1snNFh2qo6Df3gQ+i
-         Xy4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0CZfHhfHfESc4YrPufMYXO8QeXfOTlDtABpZbDYX5SI=;
-        fh=39UXCLgR0fVvU6WUJKwhy8HUNF3wC2RwkxhBqn+gC58=;
-        b=BoITSZX+PCS0MdpAHlQddzN2RtBxRPMjKlBnxiAXMrFI/a5eQYFfdR7gH5Pz/+Cc8g
-         n7mt7XfkOzHYVuiDTEqoGZ7F8uEBZs45Ll58uiRTRH4ig8E71LXuI2g9fkZaUPPL9tu2
-         PZYbAPXaV+Hyiskz0yZNNwVobRW4MHS2Xuv6Tv3BG3/0fxjZuCLbsQX+Q9K9TxvvU/Qf
-         4x1jZyZKqEdBvDicyrDC0OvgVygJbbkE437JZLnGo2uZFf0OA5L/lTFHGt0cTc4lev2E
-         AxqrLF8dTjfcBr/UyG1HUaIaVrxROrKAoCsMuMbu6rTZ2Iqrih9GNg3HQu2w3aVz+5jc
-         YCQg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795134094; x=1795738894; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0CZfHhfHfESc4YrPufMYXO8QeXfOTlDtABpZbDYX5SI=;
-        b=yvPwhGJkErAU9e48fAzTaGTCr4X/rhOZwaDoiQH9XzUhbFe7Bi6DLFKoiUgOa2vvxg
-         BzLRF8vpRj/sNcEgPK9PtqkvuK72A5e78brdMac/m6H9Wg8LH6sBiXXxGxWG1wJZxKiy
-         N0LKOw39Dlmw2HrxyWpJWgQc0zrh6nMviMmIGkcEJK3ZQlKtWZWUqMuZiqeJKrncsywS
-         yK1gXG1ETRHO+cp3PoVrM7UBCXVYOMlTmwyktxQSI+vVoSY9LfBE9kT7HCJUp+l87R9f
-         t3azY4g0+8JOVt9p8wVHjdor5gXH+n68rD8P3UP3cY4g9QYiHivn8g+wpePiIwSRNiHN
-         Ze3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795134094; x=1795738894;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0CZfHhfHfESc4YrPufMYXO8QeXfOTlDtABpZbDYX5SI=;
-        b=rYwFJ7HwTQLyFMEPC6utR5lMfy6Ijz/QDRCt+PB/wzl/4spgon+gDsPUNDx2nSvBwy
-         DU7ws6qB+T0AHwGJFC4k5oelKmFmr1lES//AzLQ3l3ce/XO0PtY4dQZ0mjt7oCjMIzCt
-         klphHjp75bZcZwotCxJKMLSR8g5pk4ysJ1Ye32rphXo8ddbckYLxi9bq+H5x6fFWjdjK
-         acRGItNVLAUiYNjeBI+6yrg6a90/dKslUu+owpqxbads689RdDayKd6KGdWNlad99ael
-         4w/C6pzFpUuF3h9NU5kcnWA6ZBqadhvTTEar2QqSPE9/gilaMqvOpOUGQ/nc5Zv2rVc1
-         6s9Q==
-X-Forwarded-Encrypted: i=1; AL+hErHx+EL38WcmyK8BMACTEHiVxPaXsbeqEEHPrS1ygFloUdJyPFEnpFkASvr7Nxjytzal588YJma/aA==@kvack.org
-X-Gm-Message-State: APuU4Z+bg1jbxxO22AKHe1Qo/UTLwbEUSryJSVQeZE9PM5x/5+V2GpNn
-	kHNvb8KiYYcce4qxU0V37TBrV7bW1I7H1OgOBrrrFTaJI1zbJgNaNvYCKlJbOKcFaTCOiTNQ7X3
-	Sx3jKJPchmN4oFveBKhiUW73NzV0VDds=
-X-Gm-Gg: AYBFou3vpBT4++dRQbq/girCw2iZXt4JFGhPyxv/NXcJXo2+FmAVoTdNElB0V3+KQpk
-	ZpdnjjNZbfQYmxpmfBCB3kifjmS05DskcH6OIyQpCPKUKvtX+ZMTyo9tsa54HFRPUmqhwfj5Yle
-	a+Um4UHMgPEf+WuLZqW6mfMAb3Xl1uFA+B7BiJOvLrL0mDPHPJGAqIW84+4EqLopUvjj+jEc54L
-	V7HFOdP1rotSLBI1w6Zoc9KLtneDy5Qr6I502VTsotEb873Ehk/VQBoo2AirOlSkRLHD7Davl7F
-	yQz+L7+7RevAY9XFqJ5eKtUE8Udj6y42VEBaKTVhNue05Fk/jxMDZJ6DiuUBICmVgQ43Ma2gQL8
-	a1Ip4F1D+QCU19S4rJSxfGwe6ynP1JXC0FE7HaNg8ISOswjDYU3FYIRKSdtpBGyhu1yCu51nmn5
-	m1RjZaxjA1hARNr4MB3a10/ICm9HYDF6XaMh6+XjvF
-X-Received: by 2002:a05:600c:4f84:b0:4bb:8701:a2df with SMTP id
- 5b1f17b1804b1-4bb88809950mr27334705e9.17.1795134094416; Thu, 19 Nov 2026
- 16:21:34 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261114002822.1043378-1-joannelkoong@gmail.com>
- <20261114002822.1043378-3-joannelkoong@gmail.com> <avvhFAxBcPk5Q6pW@chrisdown.name>
-In-Reply-To: <avvhFAxBcPk5Q6pW@chrisdown.name>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 19 Nov 2026 16:21:22 -0800
-X-Gm-Features: Aa3M54ocPog8ZiHHSRBMvtbJbL2fyYxbh9unTOuH5y8YoEH3_wTAT4fdm-kxXRI
-Message-ID: <CAJnrk1b8cCOVe+4KL1LTUqw3vPE1EiFcELwurzgGPtfkvc8UoQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] mm: memcg: read root lruvec stats from the node counters
-To: Chris Down <chris@chrisdown.name>
-Cc: akpm@linux-foundation.org, david@kernel.org, yosry@kernel.org, 
-	mkoutny@suse.com, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, ljs@kernel.org, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+	bh=FSLKH/ZOja5ZsyP9KHbldn9we9OtgyfCNQ24loR9CoQ=;
+	b=n8Ehg2HDr73n/aIUkyStSrysip04DyKzOqBUhdzVfrOejw38tQrcGce9u3Lg3wKU8IDv9q
+	HsJ7DOuldOTKsPWdMLAqw6h98Zf6sJCurptSCeWjZAUUrfN6G0EOrf1GdaX0A1sLs64h4f
+	XFYfr0Mqshfu2S4scuABzAFpoQhR1YY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TVe8L4A6;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CF28E6193A;
+	Fri, 20 Nov 2026 00:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDAC1F000C4;
+	Fri, 20 Nov 2026 00:31:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795134697;
+	bh=FSLKH/ZOja5ZsyP9KHbldn9we9OtgyfCNQ24loR9CoQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=TVe8L4A6oRe2k4jkjEWYow3Jfj4qr6RGzbiDtpkgbmV9hrm9gkcbKcVmiO/oLgkqg
+	 EGYbtUfeMii9ggOYIFakAwnomI21GJDZyRkkStZAfOxC249yZuMCmaq8pofFYaw7A6
+	 kwKycNmrcuI0pnINtk3RLS2TfJO3MmRKjGJ/6rM/dPFEaGS/6UMsWphiELZ0sOz5/f
+	 IgV19Yf+TBl0X5B/hJTNisnVPkffkXv6Qa9SDWpTaMTSKRlk1INxulDsHlAswulp1c
+	 RIBNG8BaFpBzFwdgQPvKFK1jpow4hq4BqRdi5y51gSzJGxQ4Kppp/XPKpKC/I5Go8K
+	 eHgyFOxmHnf0A==
+Message-ID: <sashiko-outbox-224267@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/damon/core: fix damos_walk() hang with zero
+ watermarks interval
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yifan Feng" <evanfengff@gmail.com>, "SJ Park" <sj@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261120001300.11809-1-evanfengff@gmail.com>
+References: <20261119014247.119946-1-sj@kernel.org>
+ <20261120001300.11809-1-evanfengff@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BAB15C000A
-X-Stat-Signature: y8wzosbdb3bxacfe63ia39abskrw87s7
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Date: Fri, 20 Nov 2026 00:31:36 +0000
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7231F100007
 X-Rspam-User:
-X-HE-Tag: 1795134095-585434
-X-HE-Meta: U2FsdGVkX1/LoAdpmNAd+5Czq1ciqUHv4wi/+rw0svMmjJWk3uFqXpWZxkFdX+Ze5KFkgXxR+GrddrdNm2O4VttTYpB0bABXFOwWrgpVfMNJ9u0VIjf2iYc+z3kNg5k56yaRkHawUF9Av2NvDN3+Y/9I9FQW7pQek5QAb/g4eB8so/BXmmSXHG6XX+3+/4XmNd2JSE1MB2kIFGyP5zHPSlEOX99kH8CsW152Re3zb6dIQU2JvhZkRYCslof94K5RH/THIgCfZLoSUNUdVfjjsmj9iawU07eOzzfdRx4BUzK5oykaMC9KZ//wQi7PGMyjx3vo2bG0a+FxqDXRZmWVxMKmALJbN8wNHB/WYm35j8YEMhdo51rimZgwf+MRLTJvohWcx3KzRELQXiz33WXL6EAgQR8vZrQWTyFTJu9rbwjvyy+iZjDOdmCXJ/PCVn0N/nj0VuPVJ3BJ3fQc5P6uZU0omKcbEO8NKx3WA17Zxj1KO4c40cYuxSyFubLZnE9bk3tOJWBECRwWewGS5my+A4oIldvLV9OtR+sMfp5VAb1B7XZ4eEgXRArA7FhG2v3U+dtVXXBnnY+66zA43zX5lZMnCKGYzpBgkkPLuz4JhYBSqN8vkxJxSXey4FHdzfrfAeHjjKMqpBUcrgyLwC4HC5EmB/YltlVZ3sSEhFwVM1ggwEcudmG83y0NaQPZYdSY0WAX+PtLG28+6lvJ49e2Qj0UTPN6FZ4v1urCKz7/rrOxJIHwUC70kXm+tOo8760f96CddBBcVWmvCWx9uH1b3NWYe9FBcFOVO3KXPS3xzgD+i1maTVvGoH5iTIYH+5fonLvsFUuzRP0KskjltR5U/cRO4SpoqVtbOQwB0AwxHZkK7okWVkwqWJtog7Wnqrk7hnix2r4nDQZjQVEjb7fi0OFxCl9r/3dBOYuq2FOfsg7z713UEmn0cul8aeyOD31y5PzKvlYSQk+oCHhmakP
- E0GGBoVL
- D0P4s7U2W5YRbeeiBe/83W+we8Ne5oqVI2BU9YGttq3tMK16QmJtRHoBn4ePgM/Pi6dosGldIgP5wjC70qbITjNkOTCKYJed6k+IlJmQMBpdcaEoQ21FL2plzfoh0h5Zp+bWikkOX0HG6dAF2cq0pgS7Hy1lflM9F5LQUoFhxF1MdDy+13LqQxieJSHWLQyhJtKgTK6oD92Bc5ONsoeLRYY62ScXAxdLroKaf7uvRPSTQ9Dunh0QHt/1jBR9or2mE2sWMq7rgdw+fcdebEYUgbiEQ9gnhxOYogNrb8rUI+WlSlsZKrfD7ZT0kJrU+eJAvvqWu9T/IfS7bjBz/IrhIeWTr/ariqYPSyhzqI2NApQ7cw8Pt/ZhlQGfHuVzKzSdWETeW/0YKXzWdSmr0P0OD82G2PmbNKWE/QKlJsRGbL5F3l5ZRPUj3BPem9jizGkkEuzZcv8ArAdsz1NwA4wp72ZNKJEIBV+/eG5zJo3XYX7aP+FBIIIYfu0OEIldcCxXCXlITfkQKZb6d2AZu+4yCy2T7+ZB+Xosnl4IIk8K4Co/zUH9sBYYUgGwc3NRZp7GzgoJkkqjYQTar2mkV1g86BXEZfXPvHNvednnqwnNWPmD76O4Cfa1LkQ28zA==
+X-Stat-Signature: xd8rgqnjoj4s4wa4c8w8jrhpons38zxy
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795134698-592884
+X-HE-Meta: U2FsdGVkX1+e5KmqRRwDu7kaPyr/yEzJvNol+r+0XPhxhDkkPsyZWiXyrThx/LIV0QLypFa3yoga5YQ+1OD+g4UeLkPSSi6gqY/v9sftDGKTWRzotXYxPwupoTh8o1B5z2DWda2blV4+Jh5kLyYuVuR4cQr5xANm1MU40pCETOai+ie8komTN2kDFf/3E2nNpngMqEGYcFYbfFBXDhdbsqwv5c67KVwNvSbu7Lv5KSLjX2xe7twU5JhyiccSEM3xYWWqcWJq5vW0JGriMcqArIfHIbd4A0sZodX00BcH3zi10KlFN2Qd2TUR54dYhJMzAfAD7cJAJEbpBX8la9hyfh+AxMiGtzRc2vxx3InPY3fqdLmmAxoVYJzDV/EUG9I0j6roYuIIUiYDqpUWpkUifxBHMq/OUOnhjuZCU9S9ozre1VsoYG3rLY6R48nOHnglJ1Y4ec+pmBitqKLzJjjjycUlCA8HrGFZrJ5a/S2kTwoNY95GjtFmWJHNw5V+btAmOcbAEysgYczos8NSXWr5K/GsDQBHyJJMC2j1RrGUV72X+VxSrNuYU8qFu9L7iWz7iw/qGlctbeM22ea9pmze5byg5xKG0Y6JoPjLSGTcS8G4T7IEQkG0nYgBWlTiE2BGi+luRhhQ6WyZ0wc6G3HQBB/LGVJKyWI7XfFU8ul3h0ARANydhEQvC70QjmEst5k3MKTAjUwlGaqfyB7ow9JkzImfy5aDYPZKp93dnkK0cjilA5hSxZsvOkdzHn2rFLuOQau5rB1WeQOjiLAOiTP1KK4ApLJUUzyXcMmEtqOnGn5E8j7ciRtGKQvnNtCFLaDbhDpKJnc6TXx+x9vLLtMN/RUZkKe0SLW8B0wA1nN7tj/ziqir6OudGyNxK7ujkjR5ZTVyJySczvmc6IeK2L/+teznIaKoASmad0SEbZdI/ANXOYN60JWW8/hCUy90vnUanQXT1F8pG3J3ZAJ6Wqp
+ HC7a/WaY
+ gl3c0WcC+jX7FF4WNxMJDxTBX7XhqEq3rIvHez4F0iWZ20NMTkHc7CUBnlIb99Ce0rq/P0F0pZ/sMU12O/VIGQE8RaJC67Ml2lMLaL1MmaEHjxBZ9YB5m0hEJ6dVUYGXgD337+r94rVm7/MJ61nHQDJ5wiK41uJlg2x67dHAgU2PAB/Lui7ut64UkSyTST024o6PlJvGvxMb5T2wEakSw0jJRXa90Aw7wYaZDokh4exxCFNtMczqQsL7tVAeCoPxEy9+Ao60ONHqSZt2oZ9v/t0VQCgGh1A2NyBOE/NyBF1LEv7obOluToMih7LwLD6GFxGLGsehqXlRSMF21djhrQMZHSmz1CjkXLGJeulCqgkvS8Qw36CNRdTeesM0beSZ/jCBT1DGYKcfMntXs+BGAqAfvQrWevD2mjJuYSqdLmLUFUaoRCajsNQQ3ujDBRUcGYsGGAT3l8pLJ0PQaYirDPNvw7bIfKjjUcdbG1jvESAr01jAtVoJrhVTyj87Bl4gI898VJIW3tgQS56OXB6mJNzBwkawJCIu7fZF6W3ZZzaLvErLeT3ZmdV4N+Bj1MFKR782UB6KsjRBS2TpQJgHrWdw7T/eE2DTl4F42Z96t9DxsVDaiHtGhw718txKlVj4K1TBhkbG/yU+mF5yGMtH4XZcKKCOESqTv/pP/zxQ2+3cFk+WDjqGfIk7PQBB8m986YvJd0qn8spWRauU0nmf3iUASDEh/EScgl7LlEdu8FKE4I6qSzZtXUKFvZ8Hjh0yRh6XVCMsCwAmEaSNbgtOMWuXWI+Ip+6649xss58shFS4D6hdwgQIOLtcVq14vTprKBj+f7xngFTwl9O1MtCoMfweJQuBupRqciYUpWo/GloetJt4qjeMmZDf3aia6uPXcV/i8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,56 +92,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Mon, Nov 16, 2026 at 9:07=E2=80=AFPM Chris Down <chris@chrisdown.name> w=
-rote:
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [High] mm/damon: missing Signed-off-by trailer in commit message
+- [Low] mm/damon: commit message body is an unedited mailing-list reply
+- [Low] mm/damon: missing Fixes trailer for damos_walk() commit
+  bf0eaba0ff9c
+--
+
+commit 47dbaffa25c5043afa14731164c912784e9890e4
+Author: Yifan Feng <evanfengff@gmail.com>
+
+> mm/damon/core: fix damos_walk() hang with zero watermarks interval
 >
-
-Hi Chris,
-
-Thanks for reviewing and testing this series!
-
-> Hi Joanne,
+> On Wed, 18 Nov 2026 17:42:46 -0800 SJ Park <sj@kernel.org> wrote:
 >
-> Joanne Koong writes:
-> >The exceptions are the kernel memory stats (slab, kernel stack, page
-> >tables, secondary page tables and vmalloc), hugetlb, and
-> >WORKINGSET_NODERECLAIM, which counts reclaimed xarray nodes (slab
-> >objects). Their node counters also count memory that isn't charged to a
-> >memcg, which falls into two categories:
+> [...]
+> > But, this could make has_schemes_to_apply has false positive.  How about
+> > calling damos_Walk_cancel() when has_schemes_to_apply is false, like be=
+low?
 >
-> This still describes the v2 denylist. With the allowlist, the root memcg
-> also keeps reading rstat for NR_ANON_MAPPED, NR_FILE_MAPPED, NR_SHMEM et
-> al, and some of those differ for reasons outside the two categories here,
-> like swapcache being counted differently in the node counter, for
-> example. Could the changelog say what is on the list instead? So that
-> would be the stats that only change through mod_lruvec_state(), with
-> everything else still reading rstat.
-
-Will do!
-
+> Thanks for the review.  You are right about the false positive.
 >
-> >+      case PGROTATE_ANON:
-> >+      case PGROTATE_FILE:
-> >+      case PGREFILL:
-> >+              return true;
+> I tried your change.  It fixes the hang, but has_schemes_to_apply is also
+> false whenever no scheme has reached its next_apply_sis yet, so it cancels
+> the walks of activated schemes too.  In my test (one stat scheme, default
+> intervals) 18 of 20 update_schemes_tried_regions writes got -ECANCELED,
+> and two selftests fail: sysfs_update_schemes_tried_regions_wss_estimation=
+.py
+> and sysfs_update_schemes_tried_regions_hang.py.
 >
-> NR_VMSCAN_WRITE isn't on the list, but prepare_scan_control() adds it to
-> WORKINGSET_RESTORE_ANON, so once the root flush in reclaim goes away,
-> root reclaim would mix a live node counter with a stale rstat value.
-> Unless I'm mistaken it should go here as well.
+> What do you think about cancelling only when no scheme is activated?
+>
+> '''
 
-I think your analysis is right. I'll add NR_VMSCAN_WRITE to the allow
-list as well.
+[Severity: High]
+The commit message is missing a Signed-off-by: trailer, which is required by
+Documentation/process/submitting-patches.rst to certify the Developer's
+Certificate of Origin.
 
-Sashiko pointed out that NR_SWAPCACHE and the other charged-folio
-stats between WORKINGSET_RESTORE_FILE and
-PGPROMOTE_SUCCESS in memcg_node_stat_items[] also should be added as
-well. I need to look into this more.
+[Severity: Low]
+This isn't a code bug, but the commit description is an unedited mailing-li=
+st
+reply ending with trailing single quotes rather than a standalone changelog
+explaining why damos_walk() hangs with a zero watermarks interval and how
+tracking activated schemes in kdamond_apply_schemes() resolves it.
 
-I'm out on PTO for three weeks but when I come back, I'll update this
-series and submit v4.
+[Severity: Low]
+This fixes the damos_walk() hang when all schemes are deactivated with a ze=
+ro
+watermarks interval.  Should the commit message include:
 
-Thanks,
-Joanne
+  Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120001300.1180=
+9-1-evanfengff@gmail.com?part=3D1
 
