@@ -1,130 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F05606A6E1
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 20:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BED606A6F8
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 20:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=U2Q004YD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aT5+jo3k
 Received: by kanga.kvack.org (Postfix)
-	id D45FC6B05B5; Fri, 20 Nov 2026 15:04:22 -0500 (EST)
+	id C41DD6B00EF; Fri, 20 Nov 2026 15:11:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF6766B05B6; Fri, 20 Nov 2026 15:04:22 -0500 (EST)
+	id BF8896B05B0; Fri, 20 Nov 2026 15:11:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE5B96B05B7; Fri, 20 Nov 2026 15:04:22 -0500 (EST)
+	id AE1566B05B3; Fri, 20 Nov 2026 15:11:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8061B6B05B5
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:04:22 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E8E78A7487
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:04:21 +0000 (UTC)
-X-FDA: 85456574322.04.332F7D7
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1977820010
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:04:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=U2Q004YD;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skhawaja@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 91B9C6B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:11:49 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1DED71C23C1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:11:49 +0000 (UTC)
+X-FDA: 85456593138.16.88126F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 79078140006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:11:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aT5+jo3k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795205060;
-	b=XM+UEyXWLWY64LNC+24h0gTYBI9q0Ig6ANIP9vT+2i4CGpHnw1pfMVWDdv0I73dJyK7SkG
-	dGlvrpf5iwW/aFqZSpNu//0ZsBU/XBz0Psq00WgYCt503KT3gWGTXEm2KLsbl+jrGpKcf5
-	qcTaAiR70BepBCG3Fj1nEODGgaZTDsk=
+	t=1795205507;
+	b=4VstwsVNkNwxHtoylBHC79Jmg9o2H00VYHu4mCIA5mg3/c9TQh/M7DVAU4GtFxTanuaaI9
+	Eq7XVRlNlauDzom/f8XdJFtQ5gT8C0KBD4OiGDw3YsVgzfuFUr55gT4qKDti/4iw/UGrJd
+	IEaxqzscgnlONbXRXwBYJIRmyOdAF7Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795205060;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1795205507;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sbS+kHys+ZROW4VWeSHfOuIQU9MpFrnjpn+wgap+dRo=;
-	b=N4r3cmWjZBl2xOfcnqgdXcCljRVYXOW6IoN9KPctZ7v/eNNHSpf9hH1EY89As/y+faDKAq
-	AmJJo/3SQ0DcGjoemosvJ50HbWjazJZTeIQMjQT3eukpixRFSPxHSfQetjKMb5cLPhDPNz
-	vBK45yWY3gE26NHoK4CRvxTrxR5DTes=
+	bh=tSD+v5qtJvl1jtYKfGZE0/A9pPZfPt3HE1Ga1u1oj98=;
+	b=ZzVt+/NgZ2bFaE4dbm/79UAuQokKgTwleIAAee4bU3YjnNjdK/V1hxrkOiYGFf9L0f+fsC
+	akzDCNQjAVJDLZRCWPrvnyCuoeCOF1xMd7i250VGmuRHNAApVUzVq6mo048BUgs8ogeFtq
+	dqduNFbmgc4kZb76mW8g62JPF3PYQp0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=U2Q004YD;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skhawaja@google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ee254f6eefso14995ad.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:04:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795205059; x=1795809859; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sbS+kHys+ZROW4VWeSHfOuIQU9MpFrnjpn+wgap+dRo=;
-        b=U2Q004YDTStDSN0M8hOW9dYhhfJ7SK9VAIC0lYbYqNttvODg31niXEum3S06FV1ekZ
-         WKnphCYODQKvmuBfpI0Wvdt/L2in/fH0IhDJe6UVZXVtY27GA32ZVAVlipPkK5ohGVun
-         A0OZldRVBvn2Xjp5WDs/b9474aIxqvDJdOjgL9ab1kSS1q4hhFyccn10rcpZMspf1rog
-         XNF4W+GIX6MgCRSbaWnAWkp9eDobtMg6YSFiTqIuX/mRj+ztyCT1yr7uqd4fj6qLb6Yu
-         pnWuFtp1IwpAIN6qYyYuK2e3abeS6sJRmmNLvhuJE8BUGobGmktTts7cvbirDShi9IWJ
-         x/zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795205059; x=1795809859;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sbS+kHys+ZROW4VWeSHfOuIQU9MpFrnjpn+wgap+dRo=;
-        b=IM+1/8jy3G2y3wLm4b0KrnDbr5c60qDMJWRaloyLVBhXGnmkrZf/q+U1417dMrEcDd
-         5oBRtebfyRZV6g5FaQ0hDYh/Y9qrUpK9Y+IwnuWCBg5sHRUJLgMTUqOG5ULsh75fL6n9
-         HVBFiF+fJyYHCEE1wF6JHBYwz53Pz1KpEWOXL4MHfHO7kFDWNhWNTNqU+Wvem2QGM+Fv
-         Y1neWu7lylJyXGPQBFLV+wd00KloxxN/LNGjHjL4M3pVlizW4CMGbneTMubgKr7aq7a/
-         CjV8g71f13DwoNs3NvY70AkPwFtIEi0+ud3AmXKQvWzEwJrztpXAyojN443yestOfDKI
-         I7lw==
-X-Forwarded-Encrypted: i=1; AL+hErFdLu6GtunfGRlCM5mJSRChI8z6QJZOL2aj9X4TMdao6acV86+M97l552o06WbG9881FzyLBz4w3Q==@kvack.org
-X-Gm-Message-State: APuU4Z8bKK9h49pqCb+GaDpvPveCIBfuQi1/uBI4xBq3HDFWOcWGT6WW
-	iLTBfaLrHBY48yi6+4/18mQvjbeJr62rb4banL+C2QViGGDrXrZbnADXM65wp38rzg==
-X-Gm-Gg: AZFdTZdQu4YrGPYB2r+feHD9s0HZY2gshyBhneJBMduGThL29iN7oK/kuFEJRaBDHZ9
-	C3yMPzcusU52wUKhB2iVbd8CVnaeOiy57I4WX/KEthkeSlxq4HRiY9AErSkqwBlCLKRIcWO2i+t
-	5EJDv4CWWs+clOoni8AuNMYxabotCLl1135Fg4vsXJlwEFuLENPKXqu9+SMOgCPZc8ld4FSKghK
-	PeK9OOAHOBHmEhaNS4eNwQmOp8ozSlm9phSxkdVEm8y9DY+Sc/UXu/RXuoFGMX7GUB6g9H4a2iy
-	hmXi1FBAVm2KRB1XUHb39VcQXLN79r5WLmHSkhloanKoxm3aOPJI9/zMfD/sicKNTUN7b06Xx1L
-	cuexpR3yv2aztDRnCAg1nUyWZs5KdER7L3kDOU9SvbZUI1iEwvbX2kpPRknc3RNuu+i0s86dqNj
-	sqNhVV7bqVqNcvary1n+e/H21LrclHULXX227QIZhMdcWu/rEsPOm69tLcGNJWDIQzxbrhCEWlk
-	J+JS6fa8N262UzZ4pubm6SncXfmca46/drCqeWg3/GmRHA5dg6ro8LzdA6ceaAanbXcya6od2Xg
-	cRhmoZ45pr+rB/5VyRveq64TKX2JQ8FBBV9AscLd2nrmHKNrr4/gwIXDz+T6ObTJxtL7yCejDEY
-	KlinV9eYjollQ14yiWPHUAg==
-X-Received: by 2002:a17:903:1a2f:b0:2df:42af:2f9f with SMTP id d9443c01a7336-2f06244fc41mr646965ad.1.1795205058450;
-        Fri, 20 Nov 2026 12:04:18 -0800 (PST)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03ee84294sm18409345ad.9.2026.11.20.12.04.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 12:04:17 -0800 (PST)
-Date: Fri, 20 Nov 2026 20:04:14 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Jiahao Xu <xujiahao@cmss.chinamobile.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, Kevin Tian <kevin.tian@intel.com>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2 2/2] iommufd: only hold references to files
- memfd_pin_folios() can pin
-Message-ID: <awCntbf8pgcBZcg2@google.com>
-References: <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
- <20261119163531.788514-1-xujiahao@cmss.chinamobile.com>
- <20261119163531.315791-1-xujiahao@cmss.chinamobile.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261119163531.315791-1-xujiahao@cmss.chinamobile.com>
-X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1977820010
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aT5+jo3k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9EC3E625F9;
+	Fri, 20 Nov 2026 20:11:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF821F000C4;
+	Fri, 20 Nov 2026 20:11:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795205506;
+	bh=tSD+v5qtJvl1jtYKfGZE0/A9pPZfPt3HE1Ga1u1oj98=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=aT5+jo3kkI/RnoMADuI6SYbdGmzwNLFFbSLKmWFftUdoN+VegCdD2tmlE2F3Zny+d
+	 5hocedOUvNOKVr84WbY04nTy0DgkUCbUzOFNjxbqzXF6MUTiRWf58oGrpx5i2y3PYm
+	 yJPJEnEvSTvqca3fpxhygR7O533gYuCMldpUmM7QxgNzhyBbOSSEonq7S9g8JcD3Eu
+	 aRYY2/Y+3jzeBrB9tLemZo24n8TtfxT1PKqvS4MXZjOfolw8kC8FVUG2g2gFTpNkmr
+	 NtjbnVGYD3QbNJZeZB0BLHSj8RRSarE0gZZVlZLYQH+mr3JB4uOhydoTyOm5kpLmF+
+	 MxspkXwFUHRKQ==
+Message-ID: <sashiko-outbox-226008@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC 2/5] mm/huge_memory: fix filemap_release_folio()
+ interaction with GUP dirty
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Pedro Falcato" <pfalcato@suse.de>, "David Hildenbrand" <david@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Zi Yan" <ziy@nvidia.com>,
+ =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Jan
+ Kara" <jack@suse.cz>, "Lorenzo Stoakes" <ljs@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Peter
+ Xu" <peterx@redhat.com>, "Johannes Weiner" <hannes@cmpxchg.org>
+Cc: linux-ext4@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Baolin
+ Wang" <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
+ Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
+ Shutsemau" <kas@kernel.org>, linux-mm@kvack.org, "Kairui Song" <kasong@tencent.com>, "Qi
+ Zheng" <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Axel
+ Rasmussen" <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei
+ Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Michal
+ Hocko" <mhocko@kernel.org>, tytso@mit.edu, "Chuck Lever" <cel@kernel.org>, "Jeff
+ Layton" <jlayton@kernel.org>, "Anna Schumaker" <anna@kernel.org>
+In-Reply-To: <20261119-gup-dirty-what-v1-2-236d69f25c24@suse.de>
+References: <20261119-gup-dirty-what-v1-0-236d69f25c24@suse.de>
+ <20261119-gup-dirty-what-v1-2-236d69f25c24@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 20 Nov 2026 20:11:43 +0000
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 79078140006
+X-Stat-Signature: 1y4upcsah7n91groyqsahuxifce4prnu
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: qxfinjmtymj9h9ks7jxoakf4y78phcns
-X-HE-Tag: 1795205059-653949
-X-HE-Meta: U2FsdGVkX1+Y6n+S6ri0A7inxeqXaC8wFiKbil0L3YosuAbkDYlzNrruOICw97fj62LXSs5NMajZlXfTqVEa21vRH0H0z0IlIKNzFX5aOe1eztAHGIYkdKj/VsDf8ANGFS0MMjMGFMDXQ8hFHpzykpMG+EPWjCmaVxHPM/Q6GVvN5ZibA89hTz/LioOjhYA81eT4IBZkuBahi3OC+OR0IGGcLC/p1Rs1q2020/RZ/nJgdXP7g+FI+sRkJ2+vch9ETjnuIu81jM1OrXDZhMNF1NorHhA9Ypvh422/XDsukVOWOuwL4833FyrmXKdA5ovRK/fxOMcO5nVXFVjm73Oyi1z1JuwmwRQhKgzkVynVaXrlRjGfELoDMBB5nTYOU8CdjmwouJ8N97SMmlKAYcLELC5R9GdbVX5z/Lef99w7W94fIsDZK2Vb/EiUc1K4IEQV+3tPUyoM7zfuVOvlzr0pdrI7hZwjAR30s4KTULr0/SdhXjZirwFhP4X/Ze1ZGr0XMnjNv6jmblAVZEypkJiOLLdM3oxGDRbHzh7Jv71fpaxHKAlZxf5Ge3huBGDQi9JzPcsh5su0TJNDFcOaGUvS/6pRtxkIpiK6ZPnxvPvd/r78ABdyTaBX3TTeeBlT9hvdnZhwpdnDE/AD40UuRsPc9RYwYfxqG4tySdyqW7b9YOztk+9jkRHAqYROqFelxYSfi7mJSbYY+WiallCNwXYIaezdp2eF+//lErA/bqwJ1rmvf+NQh/tiBPxatNXgqCiRQlSJjs57JSW3/fhYW/fRgIiA78o5hekvcM6m4VI/Nm4pEOdrcJag6IuRAh9lt3/oaUmDytszcYK9VPxWmm0ZpSyfJIdyzbrbr+2R80HzzxCf3MiCyrQFPhuFxn3U6whyGSOyluaYBIFdfv1CZYc4zIsXL7mPBOJfMonfWR3ZGrRk8CTJDU/8dp+8UUDZw/9owDTHlHPuOhP9Tt+mQLU
- JdC6A+8w
- jc3fnNTs7aM2pbw+pekYdMhr15leh/rG5jat8vbvVHfeJ/SvKX17ddl4JN8lm9Ti1CIoicgk0oTCrrNQadi6cb5PmFBsbnCYOGU0T9PKf8+70SssF3pB6Qn7ub0PEAS8m2Q72szjT7CZQTWFVeauQZD/YZX+lS282ZzUJBYcP6EQVV1akk0NIoGL8gNttGabAA7lrVpsXnTA+p5v0V8FA8N8piAhcF9RsLAavl/dnU+uTWt4oSlIuHW0/yb9yguE/Y86NdvKek2v+L1rU55WngMdoyU4TqNCpqBbFZ+BXSOr1T1s+EanwoT1tcDXI0XhU1rSzpml+Z3y67LBWuPNUc8VCn0HwzeaEDWTN42JMRvU5gOgo5C+im9X4gXlJu9cu5dH4ne3EOIWXqDyibcMCowHYqWy/3ojPp038LyNDfj8xW1g7Ad3H0/YUrHEtXHYKKkXHrKQ96qsWdPtJb7KW/g4EIS/Jg/rXj51VRvFV7vrbd4h6htON3lkYZnsegfMmm1jL1sBQiGHaxIouMmIVCte69GugvQrJVjJB1qd/Mj4qwWd2tNPoDItAwAlFsZWhFjLSnSnxrsG2RKigmD+IK8LVsUSJ4g0stN4gh9TbVzKAQMdn1uti18ie/2kU7SHYC4GWB67qIJy0nW0wv89Ne6Rt/RYmAcrySuf0WEeCZglksFTZggr2V9BhKqnf+0f0rmO7ZuQM7vkNeCFh3NxvhkXCpH0kwm8/z5yd/UjK2wg1A0AeHIZgOBtYwLVilamyTEGlRKcou/PNKzY3ByLUo5AynRg8sxyPDtJfhc3Bn2WbbR7DSxuyH8Hm311LgSKQFHfpSzWEKQ7FaJXjjdotBTiQ3PfpnWE3Dyyxi1kg9v8sF2qrzQSLxpnti3bWNV/viKl6l6moBatFuV4mzNyG3VtkaeIVudqlM4Y3
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795205507-319128
+X-HE-Meta: U2FsdGVkX1+pujsPG+mqUHXRV38A9zvSmlCp/TnR4efSB3DGMSg6DBhzSBx3dcXcyyRcr9TGK1v3qDVn8hvz1eDIagXJXX1f/+vrdnjQWCe43mhAuLGgfwMwz8fLWLg87MtySLU0xks0/yjS2BTdjPjJVVxtcF0peF4QJYehzqol5ySUEPQ55Sq/jfwvuugxywumVlNvLfCfqWvea2DH1O94jlsr2F3SNO9Ad3deeLxSZJ4+S1974jzPf2BUjglxXQZvkXotOKjyzyJ0CpJ8M3LoXEOoBT7PYMwjb/Zv5kYU8dsM/9B8T6WHOgqWeLcpS0rgM4TgFTOM5i3lZQd8LDiLjvEj0U45PcaqtT9FwShrjLificxDrkjdrKJdeoxA4SY0fSR9vlxLjeSMn1JaAdeUGgRfONWO7oh/Chhe+us5K4PcJCwr2i/+KnjtwsJ6t3LTXARrqwiUo4E/XDuUdxQYcUsY0/xJBP0hXWeTQkawktzr97VQX14eIpdfBUVdgBnnZIKGnpq/3zDnvRElqL6AgMRaBm2UafcaHAI9AfxRBcDmKBdutaFuf+GtOXysZpTzgSthdJWKH+oSvfRbLjiB3NllCGH7uCnxYFxb+tLFl7KxsDCZDP6EzyOAx3FGSD+5HF+0p/GMy8SJ2iyMAvUg6IEwxk2ILH/NRVPrvZmqvispqnXqU7bTXHWsaS6rIkYSaUNgFY0i71GB+2R4lEqqxxllqWzwIWJs5FQpA9pYJokFpAuN4r1sCSmOz0C6M2oIBSr1jgErLt5NocpJe8mV5qx0H1N6tCyIZ4Ckb1fqYDWFYPqYnqR6UgdVRdhgu8gOrkhIW5XJKJFlz2PolZMimljl+q3b6txSINGMLyIwLOvop8jOncEYzzo0W7zY8HZ/prm01q4xSAHWJjOeiesXfBunv0xSZ15IWEzpKuAAMUNcg+v5NHYdvK0w7wveotPdLspt+MwSXPewNIa
+ Kp7Y+bXV
+ W8+J17cH/k1Asu+PUBrZW/juusSpKQ5LOL/AkxGPeHSMNbkKfIEyIxXCmCGXVRHIpSjQGsHd/FJFuIw/PI0jmP7+oE9tzf1C+aY7gKdZlgxb8+7o4223INKNjiSPhNDMu0dNFeb6NFXMRDtjXT038O6vLEG4Ug/e/yyPTluhZqZoUoKx2CrafmA6k2SRE61jJe0nzyMi4Fw2poFtP8wlnZy3YtUMu2s84v1nYoNYahdtFm2ha9VZzMRt4LX3oaGZiK4N6tANJoCW7T4rL+WcWn9iNJT27U2/sG5UW8nN+Wy7g7athiLVC8zR/eAPHUCxsP3zJtP1GLA9NlFK0X0/iu1gsu81hHKq6dJxMjDSDScF6MkJaYMeP0G2UdYbQUO+j/2imGpEA2XOLo3E2cl1lQDt928uPnjoFNeuKr9qvmxxX1C9lsBaIos1+1zAikwKw8xNoFDAguGRn+E4cPOxkds0kgzpVUiCUXdZeZizwKOhkzLRTHXgRoeF/5ibbZ9otEaERP05FWrJUOw7SnFjeXEtSZgdjEiNsMaizEYm22JHD91gawdkh1QT2Na0ETYW8tl5KySaDXjHkE6Z+40A/ho+ylSJrLrWvtRnvQfszIMO++bYVs/vNI/M0DUv+jV2DwdLUnVSe/ChLrz0Bj5R7Zs91/0lJGWWbsoL4KeyQ7oh9t+nMj5CifbPMGjJb7/147sx0c4co6iQcmpJWBUS0A2SWDHF5eMfhBEbSEzIS0fQHk/rGsKTNlpCwrRzCrCHOFH6JdTbu6QeGIIuB/dIVzfPi5WrJxCtDYZu+AwpHwB85gipNL7g2aTyAR0vUFc/fz/3euwArchu6+PjVSEqne8cmIe1KN8AaFq3+RHxUY/CXo9Nr9deBnviBQQYA2LL7Xh7ohszwGz5/L3sP6/Htb1x+Jw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,78 +107,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Thu, Nov 19, 2026 at 04:35:31PM +0800, Jiahao Xu wrote:
->iopt_map_file_pages() stores a reference to the file passed to
->IOMMU_IOAS_MAP_FILE in the iopt_pages of the new mapping:
->
->	iopt_map_file_pages()
->	  iopt_alloc_file_pages()
->	    pages->file = get_file(file)
->
->iopt_release_pages() drops that reference only when the iopt_pages is
->destroyed, which for a file mapping happens while the iommufd file is
->being torn down.  Nothing restricts which file can be passed, so
->userspace can map the iommufd file itself, or a vfio device fd bound to
->the same iommufd, both of which own an iommufd_ctx reference.  The
->reference graph then contains a cycle and the file, the iopt_pages, the
->IOAS and the iommufd_ctx are all leaked; kmemleak reports it as
->"memory leak in path_openat" with the holder taken through
->iopt_map_file_pages().
->
->Reverse the test instead of trying to enumerate the files that own an
->iommufd_ctx: accept only the files that memfd_pin_folios() is able to
->pin, which is exactly the set of files the mapping can be built from.
->file_is_memfd_compatible() reports that set, so the same test can run
->here before the reference is handed to iopt_pages.  dma-bufs are
->unaffected: they are taken by the dma_buf_get() branch above and never
->reach the file branch, and iopt_pages holds the dma_buf there, not a
->struct file.
->
->Fixes: f4986a72d6e4 ("iommufd: Add IOMMU_IOAS_MAP_FILE")
->Reported-by: syzbot+7666ed2c3d42196bf7e3@syzkaller.appspotmail.com
->Closes: https://syzkaller.appspot.com/bug?extid=7666ed2c3d42196bf7e3
->Signed-off-by: Jiahao Xu <xujiahao@cmss.chinamobile.com>
->---
->v2:
-> - Call an exported mm helper instead of shmem_file(): shmem_file()
->   became an out-of-line function in mm/shmem.c that is not exported, so
->   calling it from iommufd.ko failed at modpost with "symbol 'shmem_file'
->   undefined!".  Reported by Jason Gunthorpe.
-> - Use file_is_memfd_compatible(), renamed from
->   memfd_pin_folios_supported() as suggested by David Hildenbrand.
->v1: https://lore.kernel.org/all/20261119104417.459962-1-xujiahao@cmss.chinamobile.com/
->---
-> drivers/iommu/iommufd/io_pagetable.c | 12 ++++++++++++
-> 1 file changed, 12 insertions(+)
->
->diff --git a/drivers/iommu/iommufd/io_pagetable.c b/drivers/iommu/iommufd/io_pagetable.c
->index 5ac736cf5..c9aad275f 100644
->--- a/drivers/iommu/iommufd/io_pagetable.c
->+++ b/drivers/iommu/iommufd/io_pagetable.c
->@@ -515,6 +515,18 @@ int iopt_map_file_pages(struct iommufd_ctx *ictx, struct io_pagetable *iopt,
-> 		if (!file)
-> 			return -EBADF;
->
->+		/*
->+		 * iopt_pages keeps a reference to the file until the mapping is
->+		 * destroyed, so only accept the files memfd_pin_folios() is able
->+		 * to pin.  Any other fd, in particular one that itself owns an
->+		 * iommufd_ctx (iommufd, vfio, ...), would put the file into a
->+		 * reference cycle with this iommufd and never be released.
->+		 */
->+		if (!file_is_memfd_compatible(file)) {
->+			fput(file);
->+			return -EINVAL;
->+		}
->+
-> 		pages = iopt_alloc_file_pages(file, start_byte, start, length,
-> 					      iommu_prot & IOMMU_WRITE);
-> 		fput(file);
->-- 
->2.43.0
->
->
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] mm/huge_memory: Fixes trailer cites d824ec2a1546 instead of
+  6a3edd293956
+--
 
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+commit 30321b8e2452fd3a099b0078bb5c7a8478e790ce
+Author: Pedro Falcato <pfalcato@suse.de>
+
+> mm/huge_memory: fix filemap_release_folio() interaction with GUP dirty
+>
+> filemap_release_folio() can only be called safely on:
+>  - folios that are unmapped and
+>  - folios are not dirty and
+>  - folios that don't have elevated refcounts
+>
+> Anything else can plausibly be pinned for DMA/writing, which interacts
+> very poorly with ->release_folio().
+>
+> Fix it by adding a filemap_may_release_folio() check, plus move unmap_fol=
+io()
+> outside the i_mmap_read_lock(). unmap_folio() does not need the
+> i_mmap_read_lock, since the folio is locked anyway.
+>
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Cc: stable@vger.kernel.org
+> Fixes: d824ec2a1546 ("mm: do not reclaim private data from pinned page")
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+
+[Severity: Low]
+d824ec2a1546 ("mm: do not reclaim private data from pinned page") only
+modified shrink_folio_list() in mm/vmscan.c, whereas the
+filemap_release_folio() call in the THP split path was added by
+6a3edd293956 ("mm: release private data before split THP").  Should the
+Fixes tag be:
+
+  Fixes: 6a3edd293956 ("mm: release private data before split THP")
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261119-gup-dirty-=
+what-v1-0-236d69f25c24@suse.de?part=3D2
 
