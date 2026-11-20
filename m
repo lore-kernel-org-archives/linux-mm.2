@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA62B606A32A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 03:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3E3606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 03:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OrAptI3I
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DUEHaSsV
 Received: by kanga.kvack.org (Postfix)
-	id F41BA6B0746; Thu, 19 Nov 2026 22:30:10 -0500 (EST)
+	id 186AA6B0701; Thu, 19 Nov 2026 22:30:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF3946B0747; Thu, 19 Nov 2026 22:30:10 -0500 (EST)
+	id 15B876B0609; Thu, 19 Nov 2026 22:30:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E08FA6B0748; Thu, 19 Nov 2026 22:30:10 -0500 (EST)
+	id 04CE66B0609; Thu, 19 Nov 2026 22:30:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B29256B0746
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:30:10 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E19E80C61
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:30:10 +0000 (UTC)
-X-FDA: 85454068980.24.73D824C
-Received: from mail-dy2-f6.google.com (mail-dy2-f6.google.com [74.125.229.6])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5A0891A0008
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:30:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=OrAptI3I;
-	spf=pass (imf19.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.229.6 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ABEB26B0747
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 22:30:17 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 03FC91A0D26
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:30:16 +0000 (UTC)
+X-FDA: 85454069274.19.A1F856F
+Received: from mail-dy2-f9.google.com (mail-dy2-f9.google.com [74.125.229.9])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 279A640003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:30:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=DUEHaSsV;
+	spf=pass (imf17.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.229.9 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795145408;
-	b=6CqlXSlOXxeYOtwFbJCNvTHW2pAPYL/nP1mM4VMMMuDYfqhqSjjZWZ/iZ9sC7vwL605R1p
-	a6kbAGafybL7bPKKVTFRn06SBnFwK4YJe6KoGHb29x9AQiJj1Ujsu6Lik9ZHOKpLqW3jrz
-	S4ttNgsYdR1me70BnkJO/R6x1ud0eao=
+	t=1795145415;
+	b=JBchcKjjP037q1872c5O/LN8Xtnfm5A/8wckEC11RiPnJkvQK/Ebeqw2d735KPt25V0d1n
+	CycU3g8SX7aVolSpzSI2IXJdAUhbTuYxoHDyQ2ZceRdnmPMTkrvdd0isaw2XVLgeOhiyny
+	kOW61xL+TWw+xhzGkdmO+IULIzwZCok=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795145408;
+	s=arc-20220608; t=1795145415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KTndnfxJwqix05BvAkS77J9qZoQYoGc9j/m7r9xKGZc=;
-	b=KaLLSNFVz/PMBcyB9dHKHyPg6sz+oIFibD+7WI6+QGRkE/gEkelN6Ilexxn9/p6AMikzxy
-	4Joc+JqK+F/2ZXMfAbDclp5dUkk4hrDm7T8h7upKyHeU6PNZ4O5ZDDi4/INMtSjIRa1k80
-	QhwHyssPLWAnz1Ce+L173VLcZqX9YRQ=
+	bh=5KQryppcZTCndUvPMmTnDA5Zo+dmCbnx/qPrbhLEgfM=;
+	b=ao+quqwfVGP89TFDkWfTzKKWomcmyTWkxbQwmpVtR6XD4Cg02yDQuK7yHklGur0EF9zXWq
+	67kQj7q1TbJROD1HWZ7YS63xkWQp7+hG7+Nm6uAtfzsd+Q7V8BNS4ItGenjnlkyczuV1WB
+	o2xt+wNiKGbpM1xSevqqHi4Ers6Yxsk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=OrAptI3I;
-	spf=pass (imf19.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.229.6 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=DUEHaSsV;
+	spf=pass (imf17.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.229.9 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy2-f6.google.com with SMTP id 5a478bee46e88-35adc681e1aso477094eec.0
-        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:30:08 -0800 (PST)
+Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-377157fde7bso114275eec.0
+        for <linux-mm@kvack.org>; Thu, 19 Nov 2026 19:30:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795145407; x=1795750207; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795145414; x=1795750214; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KTndnfxJwqix05BvAkS77J9qZoQYoGc9j/m7r9xKGZc=;
-        b=OrAptI3IHZH8O36QRHOGM8qbejn4gpa67Qj0vvDcuI9fw+22rZQdjeqBfMdF/3Yi1/
-         OQxWGv4+6m/uOnmZYlD3vCw+c5j2GOqgMrZhNB8z3bdZon9sMKuzHIJJDBVCFi+1f+7H
-         sjJaXe9HEK4XPC9je+YeNUvng8YTQPq4P6KyNp0fQyRU7hsIINZ8uzZHsiUOmhzB2CYy
-         D4BT9bgepKu336r7iPe6vxt46J/OlBjYrPaRl9KNURGmPAVUODOmxrGpHkNOrEoJ55It
-         euHIwG84IFkuCXp4gwCoYDJuYIF0JVtaj4hLcMOf2AWWTbCTg2xeScOfeD8CVQKorsaV
-         yiRQ==
+        bh=5KQryppcZTCndUvPMmTnDA5Zo+dmCbnx/qPrbhLEgfM=;
+        b=DUEHaSsVcgjcKrr/UQVQcpIUZg2qGQTR1emHm4nXviz21p7rcdJf1oNtbsArowe6NX
+         eQBei1W09/V56W9fAbaJAsslP/KDhp55HLVe/j2GEUOrke00Xl333ZE/Vdtmh19T/6nt
+         oheep30SmgjXpMJ/vrxgx+CBBQZz8Ve4hzFXcEynSrI9LFnAjhSsZdWKnn06bGBDHKvc
+         NASRTwAcUIfeQsWfQ95x1HFtbPDayl5m28YWPOJfM3bH685LZ7JAqvDrtstV2NQLflrV
+         sk+ZJzwMiDZLlHM/T/tkR7zp2zK1zL5miJ7itbqvZw9N3pKSr/rpRdOEqyEK3k43k0mT
+         gZQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795145407; x=1795750207;
+        d=1e100.net; s=20260707; t=1795145414; x=1795750214;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KTndnfxJwqix05BvAkS77J9qZoQYoGc9j/m7r9xKGZc=;
-        b=GmuKgcVLMgQbp/6sQeWksgujd78Npg+QwC8hVdnR6t5Qf3zKBqMiOuqPEHm6IiS5hm
-         vDs9xjIXAa1B6i+lnac/WBSsZhxx2IArbUa9lFoEvv7rZtURiUhDrXmkHYMg+UNl88aP
-         W5n1tFyTXB07CsRxQegdYsv3lBBfUR2iodBFISUfvx2On+kQ9PyDeBMyPuocJPruFLsu
-         BmTCNprcY87EnsCd+frBch4+bpALx4Bdyv+5V0HK8+ibX504n6Q1Rlc2x8HO8S5TiiOU
-         24UvpAybQZaL9Dwof3ASZMOZVz8u+25pdFeCngjpMuufUgYRABjpzAzm8jLpxLXGo4cK
-         naWg==
-X-Forwarded-Encrypted: i=1; AL+hErGOvkhxd/TKGZwbk2TEAQ9Oj5gt0pwxzLe1Jk0W74+0poawiiXReHtUuSKFtKUSOGH1N/Jpify3LA==@kvack.org
-X-Gm-Message-State: APuU4Z8Wcjtf2Uxx+ki4AU5UlrnYs9ZjjD19svxeBQ5MKpoP6bNhe+Cq
-	SZyKnxYBtXaVznhzisgZ1OBiJVNk7C1aVfsj/POctFy4n18spqAV4pzo
-X-Gm-Gg: AYBFou3bEPbnXovMOUT+UCHVi9neiN9UzDd7ihxxSpBS7iDZA2KbFdWDGMPhzS32V4+
-	tpfOtHretWGSZaIPCy+dgGulNSqBdJq+FPjgALscldB10856K2ldejqtU51Ji8gDd6aC5IPjjeU
-	a39f7znsSlzuLeTK6Jl/TnspxTU3LMMf1QZxIiqod8jGOh2Gq5jS7NtSfukkV+U7VFRXcX7GiLb
-	zIS5iGK5gDSGYLGH8y9vgm7gMN7CInk1ZHCdowlxOb9myx23KljJpXKzq22+GLmw9FNSCM2JNNT
-	rURFhhnswa3QnoPlHxifLcv29kkkaJ3fCH0N81cmL3mOm/XSUcsumqh7UrkeheUNWQNwnryxHdK
-	BJAoVFek+BOSzlbNFxMC25mS9suV6qhrBZ2/XWKWR5gm1XQ61796TWlZJxNtzSyQCn+MCvEHevx
-	w/uymZgqyYq3L39h0/y9eNOw2DDzy5cmzXMcVmTnHeHmSR1uBiwgKaDOv9lRXRKUvhq4OEboq6S
-	yJPSbWPeM4yXUT3wAEXo0QtlS+xHjERXUkhYE63EN99TZwSyakNTGgsiSjBiUn1WHHEvI0V/qAj
-	nferhSsecIudwRYwNDixU5UxEOThxQQfAM17iM8YeA==
-X-Received: by 2002:a05:7022:2207:b0:166:b307:5855 with SMTP id a92af1059eb24-1b556688160mr2437834c88.0.1795145406990;
-        Thu, 19 Nov 2026 19:30:06 -0800 (PST)
+        bh=5KQryppcZTCndUvPMmTnDA5Zo+dmCbnx/qPrbhLEgfM=;
+        b=qSEiecu43W0Pf75OaKbtjiqKOMM9FlCQN2e17tC8Z5OVP2GAhjJ1Ici1iOGwDad2uW
+         ZEqy8n3yxCLQlN30+WKG/lOkFbSxjQxNA3db0P8wWpSE9tBCtb/J6SWE0aMye0ZMjuE7
+         GeZVPCxfk3VldHFSsk91fSf3Nv3LuhL3ia8K4YvbtSfod95KSQ1dN2MU/8PnNfuSy56z
+         F5ikG8U2Te3lJho2qO4K6KkVdXYFsrmZBprItWJexRd7cemqHlEKgQqYFpriywHQU31i
+         PGxOebX7VvBH9haE2K0c+Nelyp065Bb/hPKhqihrS78AkYNzeP5PmNyw0liDW0Dar12q
+         gQEg==
+X-Forwarded-Encrypted: i=1; AL+hErGGmgN0RmUkixL6lSKQCJSKYNzNKyTwA0sGkXd83wSIWxfVuveyt1U+8O98LZ1tUYctY2RDHWAofQ==@kvack.org
+X-Gm-Message-State: APuU4Z/WnUL0+vi4B1wCgRGPDi5m9N1qu9qjGeT/0ua+Ep7ZzNDlaX1g
+	Boltm9+TkWZO3PhwfixKVQtAVmpVsh2fzlrfRk+Ll5Y0nXVBd55fWUO8
+X-Gm-Gg: AYBFou2XE+j7REE4gK2UCF3tfbc2QAJZT7fffG6YTdnV8lsS0HGrRUlstZO1+9nmQ9n
+	VKZ7TL6VBAGXKyauvyzXlE36Y9+7CaDkWcXEgHcZB8D5CWXo56XWWnLxaddYB4wOMYg9xkC0Kcf
+	rAX4kQm3+ETNqUX3VHO1LywZgxkFNPygXdzmeEiRyR+r0NlJNpnPm3pCr+JnQw76AB0n6orAad2
+	o7kTvo0Ru8jE56cWMtRoxKVlvYDvpTvePMggIk1wnC08cgygGNu4z8GNlje0UVhQ25M9L9vhj4V
+	QS0FJzjIODHeAQvRvNdJRxo/0tgugkKI1CPY/WrHNZJAgNHkEJbu7pJkCeY5ES8j71BPk65BD07
+	HNm2udQxm7jBN+knGEAll4rqm3yxPF+v/Ce6yRRwNM/da1mSNfjsz/jwcZ9UcSDfUszoCHj5bUQ
+	g7Uihz4P3FsOMcoJ5U8uRiTF7WD0LuYwvmlrEA3hfmpXWF05D22yuyXJnmMGhO/c8pcrRRMvPz2
+	vohJDBdhWJhUwi5kJPstPcVnHVjVNld5j3QTs3cmkBHKmXE7E/r1QiC/93cP5ukbz5DhQrblaz4
+	1aOBBanxRtcQ/KSKt0WBL3CW+o9dfWZ5fE/ggv0ltR9vKrTXfKvA8eFbDx528CY=
+X-Received: by 2002:a05:7023:a5b:20b0:191:a5b2:ef4a with SMTP id a92af1059eb24-1b5568b9f5dmr1447318c88.28.1795145413793;
+        Thu, 19 Nov 2026 19:30:13 -0800 (PST)
 Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567e644dsm4362507c88.5.2026.11.19.19.30.00
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5567e644dsm4362507c88.5.2026.11.19.19.30.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 19:30:06 -0800 (PST)
+        Thu, 19 Nov 2026 19:30:13 -0800 (PST)
 From: Wandun Chen <chenwandun1@gmail.com>
 To: david@kernel.org,
 	akpm@linux-foundation.org,
@@ -107,28 +107,28 @@ Cc: ljs@kernel.org,
 	gourry@gourry.net,
 	ying.huang@linux.alibaba.com,
 	apopple@nvidia.com
-Subject: [PATCH 1/3] mm: factor out common softleaf offset PTE batch scanning
-Date: Fri, 20 Nov 2026 11:29:47 +0800
-Message-ID: <20261120032949.2036731-2-chenwandun1@gmail.com>
+Subject: [PATCH 2/3] mm/migrate: batch PTE restoration in remove_migration_pte()
+Date: Fri, 20 Nov 2026 11:29:48 +0800
+Message-ID: <20261120032949.2036731-3-chenwandun1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261120032949.2036731-1-chenwandun1@gmail.com>
 References: <20261120032949.2036731-1-chenwandun1@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: q3btcxmdzmz881rno3hhud4ub3171bpx
 X-Rspam-User:
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 279A640003
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5A0891A0008
-X-HE-Tag: 1795145408-223128
-X-HE-Meta: U2FsdGVkX1+clprfZKGOMpxZFM6SA7NzfSRocdqwtsgaHAPAwQO6cQ0twUaL2EjSKb/qrdDo+j83OM3fO+dMqpyW3ou1wpFtqryFnUdWxQfzi2gcqB7GhCNExJJkUrIdfc0T/OMLrxWfKqPJN1AzY4P28doB9IYCsaLHL16QEGGoFp//3IYKgr0vuMA6OOgZPewUIRdq+/MfCmKczDov/r8Lvv7EA6IwlGzM42Ji5zONfC60fHU/rfeyt/nP0Pu9rbM4bu02D6qMLqU0CyYb6aj1qRBToNwfkhFOskhD3CIxT4g3hOxWf0UisLVAkBpw4XTp2RpmKBI4hax/NMg9AIwcOtHbrVWnNEVhXJdzNs8NuMuMRqrHPS4qLq8/FrZ8lIK3I8mPZ8zJMPyZemeQ5549ho6Odkk2SCbew5bIkiEi2tGJ5meRauxrdiLib6XOSeniqLHEr1XvUVkczrCCVSRIakSTYibBIzTPsrmZFnJnww+VupPJCUkIDl7+YvpD7+7SqcoX93ve8DJBGIb2Jua7X5lIjSmmnJsSzHFHiM4ZRMEMP1+SNJi2zSfsbM9dAaNRh1dpHvMpoV/9sG6mySfpFWtkRbkfcDyWskM/p1Tn/pjC147ShxDKNcmNVSN/Ki/w4UkK6j3k9gnP4PqRcRXpESjUTek8RN/huTRIeFHIm1KiC32RJBW/o8lJlgJVlEGA5uYiugN1dMulaRpQ51Y9LnZgePX29hKUa/RETT6ymsWe/Tu9JoGCVp6nXkaskPxG4albk4Q2LkMuugL8H5fb8kQwxZnnxdlxUSewms6SBsDSguMpV1/hkK5c5edAEZhmYJ1fYQj2ixIATpxGbkjYVPwr8zJNPp4aUaFPOq5ADzpQIah0So/HlGID5XcJWdgXZkdgvsibRHPEtW5vN+CJeoLeT8EYW3tOldLOXaSOdXiEwS90V69UE6Fp5+F2zgeGicAcql0JEZVCNIx
- qN80T9dd
- jhDA+RUpgucZMNOOvCkZIfTxoja9KDEVg8WmeKYtr3ncrYk3XDA9S12oAgPub5ijBZuqGwvtplRVLHROEC1MH7tYeq010oLYlmcAoxOEn4S2fBXtg7LF3Ji9H0dUnkVloHtIY0KrbftCve3Cpv6oyrIq1cq+qm48SGLfEuDX+o2ef6THbUrLtjK8FKMCV2GNnV0Vlkxy+rT8StEsTg6Q29O6UkKZENsBDROh6bqIe+vXContmK8lbxNT6MLVzEwCn4aD87txU0IRyu9NdCzQ0McyKUwOQnFo3T1mZ+8Lh/ji5jn9bbylFBoNRIT9WlFfPGYA6APdROmNZLO0ZQYFdFWX4mkImRtDZVbgZYldTzke3/A7YN+xiF6mlsX0cxe4slWyd5aD6CmowjleiHt9mdXAtZOi3JR0VSMbFsuSu+7K+H6ylMUYLVDs+I6dm940wduXMmfd3PuNa6NjZY5KCKkcfz8MdRb6Tcw5UqTZc3O0zpXqgwFW7ohwzT2HaSL21jC4+jroYVzMdLYtJCq1wsWnUTAq4SjlxkdVNkHCL1fyLCWEvCkbgvhOuuPG3cKi2VKfo45S4oR5YLYa3yfGa8NaBUozmy3FRx59OxlVESUwhHdmaQMwfqfOVngc5mGH/lieg0h8dGzbiRjdY9ZZbkYIaLUc91dxp7NGBmZO7JnSCCQTIGL3snoFo/ZDS/XlNKQMj8YO8eVJjV47+6V4U7cs9q3psLYAl36DT8a73ZHp6nGU=
+X-Stat-Signature: mwsamtfr5e7g563oe6sjjyeji5sikwqn
+X-HE-Tag: 1795145414-30239
+X-HE-Meta: U2FsdGVkX19eYD7aAxMTWDaITQvB+W6SmU8Fg9Kt2rO8tlE+O11Lu0V3sg0FUXUq9DQcx++RhnTnRKgddDI9DNmAlutQEB3njIzAYTbEtARkcFKamdQo9i3PvBIuScQs+HB10GEe6IiWg4zEjfH9aN5lLR58xrwkbow8J6NTtPaPW0v8ftylqtAczwMrvaFBrSGh3eTFMqAWK8s0G0X5t7xzQ83Mhfqp1ZIyJxyEifD3Ii2ABOOZcqS8R6Mz5hprHTgIbaE8NnHbR8oNY+FkmUoVvpUEDcUbwWP2TNKCfDzzsoNJfcwJmfBpcEQv7y7DVasCbs5llMGVFudUaFyBoguMUHKea11YsqIxVr8lwL+q4Pp/5DlGiFy4lJ8bI2HrwicrmgoVE2WYVQRYaHqSOIEMYH9TrRAuyZ8JWqwa6wS2/yQSruqmIr32QL+idK90s//4y1iosymdZ+ThId9O1g7+nXWH0ZNxIx2BA9Du4Aaroo3cqVIex/Xr9mt/YoWAQ/lDWvwbTugYNZFX522zBljIbS0VSSUuQy6exjGonY7CTkjTPYa1w60QI+M/XYev9WrWakM2SUVUebe7ujcZdXKmfoR5X3Oocei+a/yS1NdEeYCjhNYtXFe32DOs3yWvHbrkEax8tJDHKC4cYNe5DEh2gpgzHflJJYbcRjhHamHBfqJdPYS9W8pvWbgvJIB2xjfvBNFcmw1NfPXzHpe3nsoLTd7q9x3AUjbwo21BLcc7torB892PfaafINvlpePWEQRV7vEBfW9e86sOxiX0eamrcujPGnqp/UVGC0KwyCI8Kel/ZikM/Xqm/d1C+OVQVrbOr+To89kbwCckt08b26qvTMJ340WwRWTy9nzkrKsJiAzTmtSGltpWApano/rL+RemH+E7rFrLu4etwXhQb3yP1XL0qI9yahPbWwWFk47Sg5AP3/QIKN9Jmz+I25j/g7Q+5tIEy3QhNZ4wU7R
+ EEg5moyA
+ GFq8eTL+O904jV76VmOyxOCFvlIIl4denUxr/JIcOSOPS8p+m0uYfzecXeJSDm568TvSVAwKjzxqXVNegikUq6T94n3ueyj1aVJbvBeJq4xOJnAiZjljh6ppSaCsLRD73fApdBqPnTFovd+kcrNdovjSAWBeLNxw1z5ISPqlmASSKZAD8AYweV1rM0yr2Jmo7dFECrsJzVS1DviT0WW8HAhDSbos4G/GjWMKzCLH2X7njLsGqy57ftKnlyd9LgbZcsfnfRKj7vgRg3YqyGAQIjSMD3o2Wh7b0Pz8IqftpSGeKsa7TcqAu5HLLVpwLlIMuMVU1Zhp6weSQxEfzU2aImDgNmhQAgfThx6efJSsxRjMfDMVjff1IZ1G+TUuGHhxCi1e+NcTSQD2oNomQNWaqiXJEmxJbHOoacAv9EoySZRc+lWS0XU9HE3MWsNombXxnvsg5dCwlYAazqpGP906AkLmaOop3qq4ctTwz94pdn/O6/xR55SvfVDxKxIXazUO58Y0Mu1MWMPKjktlZUNDo5UkmxSSFF1jgJevoB407EnxcqqX3Yvr4ah8StPbmk8V6VIb93z6ulhGl/ArPUILCyZckP9u/1zKmc6BbP69unahzRYaB32aR7ZV5ZwyQz8UIchzrjQUu17WC7dN8yaZako1KaMPCzuUN9UKvLLDUVGsJui3UcycD+7XAgpCo9wJJGcz0/CkloiC2xghoIjgQsPXIG6wenXfzFQn1f64Jf3fZU4US3f4qfQG6uHyXBm0UE5fupguCURm0fipKeFcntHK8VSQbTHpqwwUTQXBjmaSaqVreHUkW1z2VDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,72 +139,114 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Wandun Chen <chenwandun@lixiang.com>
 
-Extract the consecutive-offset scan from swap_pte_batch() into
-__softleaf_pte_batch() to prepare for migration PTE batching in a
-subsequent patch.
+remove_migration_pte() restores PTE-mapped large folios one PTE at a
+time, constructing each new PTE and updating the folio references and
+rmap separately.
 
-No functional change.
+Add migration_pte_batch() to find adjacent migration entries with
+consecutive PFNs and matching type and flags.
 
+When a batch covers the whole folio, the rmap helpers already call
+mlock_vma_folio(). Skip the explicit call to avoid double mlock
+accounting.
+
+Device-private PTEs encode PFNs as swap offsets. set_ptes() does not
+handle this encoding when constructing subsequent PTEs, such as on
+arm64 with a 16KB page granule, leaving device-private destinations
+unbatched. The next patch enables batching for these entries by
+advancing their softleaf offsets.
+
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Link: https://lore.kernel.org/lkml/5f9c449e-43b3-4732-9c14-8199418cace0@kernel.org/
 Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
 ---
- mm/internal.h | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ mm/internal.h |  6 ++++++
+ mm/migrate.c  | 35 +++++++++++++++++++++++++++++------
+ 2 files changed, 35 insertions(+), 6 deletions(-)
 
 diff --git a/mm/internal.h b/mm/internal.h
-index 3a1643afedc0..9f78c12882cb 100644
+index 9f78c12882cb..e6ecf307d532 100644
 --- a/mm/internal.h
 +++ b/mm/internal.h
-@@ -512,29 +512,26 @@ static inline pte_t pte_next_swp_offset(pte_t pte)
+@@ -552,6 +552,12 @@ static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
+ 	return __softleaf_pte_batch(start_ptep, max_nr, pte);
  }
  
- /**
-- * swap_pte_batch - detect a PTE batch for a set of contiguous swap entries
-+ * __softleaf_pte_batch - detect a PTE batch for contiguous softleaf entries
-  * @start_ptep: Page table pointer for the first entry.
-  * @max_nr: The maximum number of table entries to consider.
-  * @pte: Page table entry for the first entry.
-  *
-- * Detect a batch of contiguous swap entries: consecutive (non-present) PTEs
-- * containing swap entries all with consecutive offsets and targeting the same
-- * swap type, all with matching swp pte bits.
-+ * Detect a batch of contiguous swap or migration entries: consecutive
-+ * (non-present) PTEs with consecutive offsets/PFNs and the same entry type,
-+ * all with matching swp pte bits.
-  *
-  * max_nr must be at least one and must be limited by the caller so scanning
-  * cannot exceed a single page table.
-  *
-  * Return: the number of table entries in the batch.
-  */
--static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
-+static inline int __softleaf_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
- {
- 	pte_t expected_pte = pte_next_swp_offset(pte);
- 	const pte_t *end_ptep = start_ptep + max_nr;
- 	pte_t *ptep = start_ptep + 1;
- 
--	VM_WARN_ON(max_nr < 1);
--	VM_WARN_ON(!softleaf_is_swap(softleaf_from_pte(pte)));
--
- 	while (ptep < end_ptep) {
- 		pte = ptep_get(ptep);
- 
-@@ -546,6 +543,15 @@ static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
- 
- 	return ptep - start_ptep;
- }
-+
-+static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
++static inline int migration_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
 +{
-+	VM_WARN_ON(max_nr < 1);
-+	VM_WARN_ON(!softleaf_is_swap(softleaf_from_pte(pte)));
++	VM_WARN_ON(!softleaf_is_migration(softleaf_from_pte(pte)));
 +
 +	return __softleaf_pte_batch(start_ptep, max_nr, pte);
 +}
-+
  #endif /* CONFIG_MMU */
  
  void __acct_reclaim_writeback(pg_data_t *pgdat, struct folio *folio,
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 3c39d309e6bd..e000ef77ea87 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -358,6 +358,7 @@ static bool remove_migration_pte(struct folio *folio,
+ 	while (page_vma_mapped_walk(&pvmw)) {
+ 		rmap_t rmap_flags = RMAP_NONE;
+ 		unsigned long idx = 0;
++		int nr = 1;
+ 		softleaf_t entry;
+ 		struct page *new;
+ 		pte_t old_pte;
+@@ -441,17 +442,34 @@ static bool remove_migration_pte(struct folio *folio,
+ 		} else
+ #endif
+ 		{
++			if (folio_test_large(rmap_walk_arg->folio) &&
++			    !is_device_private_page(new)) {
++				unsigned long end_addr = pmd_addr_end(pvmw.address, vma->vm_end);
++				unsigned long max_nr = (end_addr - pvmw.address) >> PAGE_SHIFT;
++
++				max_nr = min_t(unsigned long, max_nr,
++					       PTRS_PER_PTE - pte_index(pvmw.address));
++
++				max_nr = min_t(unsigned long, max_nr,
++					       folio_nr_pages(rmap_walk_arg->folio) - idx);
++
++				nr = migration_pte_batch(pvmw.pte, max_nr, old_pte);
++			}
++			if (nr > 1)
++				folio_ref_add(folio, nr - 1);
++
+ 			if (folio_test_anon(folio))
+-				folio_add_anon_rmap_pte(folio, new, vma,
+-							pvmw.address, rmap_flags);
++				folio_add_anon_rmap_ptes(folio, new, nr, vma,
++							 pvmw.address, rmap_flags);
+ 			else
+-				folio_add_file_rmap_pte(folio, new, vma);
+-			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
++				folio_add_file_rmap_ptes(folio, new, nr, vma);
++			set_ptes(vma->vm_mm, pvmw.address, pvmw.pte, pte, nr);
+ 
+-			ptes++;
++			ptes += nr;
+ 		}
+ 		if (READ_ONCE(vma->vm_flags) & VM_LOCKED) {
+ 			if (folio_test_large(folio) &&
++			    nr < folio_nr_pages(folio) &&
+ 			    ptes == folio_nr_pages(folio) &&
+ 			    !(pvmw.flags & PVMW_PGTABLE_CROSSED))
+ 				mlock_vma_folio(folio, vma);
+@@ -462,7 +480,12 @@ static bool remove_migration_pte(struct folio *folio,
+ 					   compound_order(new));
+ 
+ 		/* No need to invalidate - it was non-present before */
+-		update_mmu_cache(vma, pvmw.address, pvmw.pte);
++		update_mmu_cache_range(NULL, vma, pvmw.address, pvmw.pte, nr);
++
++		if (nr == folio_nr_pages(folio)) {
++			page_vma_mapped_walk_done(&pvmw);
++			break;
++		}
+ 	}
+ 
+ 	return true;
 -- 
 2.43.0
 
