@@ -1,123 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B45606A333
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB76606A325
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vXDAfp9l
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dZ/ANrUU
 Received: by kanga.kvack.org (Postfix)
-	id 4D42E6B05E2; Fri, 20 Nov 2026 03:36:05 -0500 (EST)
+	id B15F16B05E3; Fri, 20 Nov 2026 03:36:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4ABFD6B05E3; Fri, 20 Nov 2026 03:36:05 -0500 (EST)
+	id AEE616B05E5; Fri, 20 Nov 2026 03:36:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39C536B05E4; Fri, 20 Nov 2026 03:36:05 -0500 (EST)
+	id A04696B05E6; Fri, 20 Nov 2026 03:36:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BEFD6B05E2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:36:05 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E58C40D7E
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:36:02 +0000 (UTC)
-X-FDA: 85454839764.24.6BD3160
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8C7B9160003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:36:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=vXDAfp9l;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 72A406B05E3
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:36:29 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A6AC1C487F
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:36:28 +0000 (UTC)
+X-FDA: 85454840856.08.30BED46
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 72328180002
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:36:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="dZ/ANrUU";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+	spf=pass (imf06.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795163760;
-	b=wB0goUo5Lp/+u1j3WOpGb6CZZ7IZslZ69JW+vLhHJxcTs0gyfmIQmz1bJ5kUc2GuZkdj/6
-	CT1sVUQ3P+GLDlJLsjVFcWShsJJXlchIXrU3X4WEyOXwyL2DD5EMB4TVxoLyIICT5QRRwu
-	tgA0423DfXW/cH2NgPB61EcHEROjCRA=
+	t=1795163786;
+	b=O0Ugd1tjmSdRBnHhA2Pv0ymxfhgYyfd1LpkKCzqxGq7qfJykPQrZeO25phSBnWDT9W93kd
+	hCD373KSh/tbodX+YQjqh5529ENaOgP2NDr5J/Suc6Mh56YmWxkxNnlWsi04fx7w/GAMRV
+	vvj5Hwe/+ZdCojo+5FCsn/+5L9gpikw=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795163760;
+	s=arc-20220608; t=1795163786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DSuUtXGnjpMqHENNRIfD4nz00o+v1iSCypFww/wg4kA=;
-	b=pdaaRkysfwzWhF51IalmwBd5YTQSyLy64RG5QVTs0r5x4NmpnWKCbSER0YkeTBBW5UIyYA
-	5+HHmJ3388t9K8EIx7bZd++4u8448a3iipicdqxxExQ0GFErS0898+zAdVfnJRGc7Lz1Pk
-	GVZYKJcOUEiHZH1mP7zWd2P2eyJ6dYY=
+	bh=3PBPgn34gFSzs0WFCPqDxaDrqwWGqL5ASuJDkNQ3rM0=;
+	b=tiLHscTrgFhPRbaf9UES+BQj8rJR0vrptRggRJnjUdu5TQerZLka6bbuCdZPNTbpgvOarn
+	d/2ir8rrgVKlq1EQKGU4kvDr57qwU/CdL2moCCkqQpyvwg8vw7f8vEpGoB1r1ua90gsLg3
+	aCEJnNEQQJo4McysqzQwikp6QCHG0EE=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=vXDAfp9l;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="dZ/ANrUU";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b408f2d936so922886a12.1
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:36:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795163759; cv=none;
+	spf=pass (imf06.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6a642495d81so1038181a12.2
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:36:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795163785; cv=none;
         d=google.com; s=arc-20260327;
-        b=Q2ZjC03n7x8N8IMr8BqXjyCOaSA/jphjhV7GA+aSdTmNE6tPsgFsfP2dvv0UsE0WFn
-         8Mm/7Tzv9Grl16322LGqISfDRmJeQz9mm25DtWlFATobOeBkDD/MV2VezpZ8gQs7cqM8
-         6KLwHK5X8vkgtB77vBOyibbp5/pK0WOWQQtrYbG825OVUhvpxiqMxbktvxylx3Vs5jUY
-         hEvYXmoCYDY52j6DVAtdo8Pl6MAxta9xbjfD8ujqra23vMZGUzd7Hcg5OuNINHQjzLR2
-         GxwNiliOFkHKAWyzc2JysytRNqpZBrrFkvr5NpTpYXdhzrxySKXwucCalfJ3CaeuDSeW
-         E+Pg==
+        b=A0qpob6KPnY17/pEdXLjlwPlMtKcUzgm1Bu2XuRT/mxLkDLGY//SW41H2Q7dpaSBT6
+         /4v9uwVn7J0mbswywgReIJ85799Pp6lvdtSDUy+h+8iiZH500LfDQ4Iu+jTu/4E6zEGj
+         SeHIUQa0xOIaOjEOc0cNpSCAFT9atVEtFvx+XAM+SLSTMmZ8AvbeJ+FC1x7Hs08jQ7+x
+         r4jFLt9fxcUGAgrHLIOt55pLAciF6hn+oO82A7200tE99iCQ4s5E6clP4iIrhqWQ6cmt
+         d/C5aMvK5oa8sTUT53I+zU12B9hXMEp49hfLTZxjepva72IlHKmtD5wzpHTN2nnfhIHs
+         Q7fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=DSuUtXGnjpMqHENNRIfD4nz00o+v1iSCypFww/wg4kA=;
+        bh=3PBPgn34gFSzs0WFCPqDxaDrqwWGqL5ASuJDkNQ3rM0=;
         fh=01xpVHe4kda/rS6+PGv7HHxY0OOMMTM3Wu/tKcvhHys=;
-        b=hK0kDlgmqYU9yH7CubLNCBjfvS+Ao202bFqmWj0Ad5NN0GnggUW3jT/usah0nA1Xd1
-         sHhHTF79NoiEx6NaCNzA+N0odSMNyg0FRjPX2Z7VKb0gF2+rSSeqRGyt07+S0zwDHXz+
-         KHLD4o4oFlEQjfWPMDbdEYhddWVQk/7GtLcZVBBm22ZnBmaMYWsho6NWAv0lTJ9KqiGu
-         ecODOYB4K6rh7fVE5YVEZg0CiAl2ftqwbwgCCD4+/KlmiDZxJfNdmFsyg5REt1yGmm9L
-         G1+n1MoqH6R7oiLBgWHughD3eWAk3iAVxiQ0XjVDlWv5EXGnrZbYrnqakefQp5tE+w9V
-         zjPg==;
+        b=lv4RSUz4p0akpmzPOE1RKUtL9jnNQ9sn4HAP42/OTPEx837dOL923/ySpyH+CL2ZUY
+         IbZnCkyTb1FHG8l9OhZYbgPszlRiqY8QYh4bkxfcCJmLblds/QuOPnV78av5tOPoiR8n
+         J7mPECiREBBvlaPLasIEKLLKUixihGnOR1xdVdASr+tMfZBcM7gQGamEcRpudA1bHZTx
+         iPVLLLRHUkLhPACDuDCGkJjx+ZHdslbgpUiDlkfUN9may5npVm54AT+4+b6iL79o4Vi4
+         Pyf42w4Qh33O6rESV/4FUTv8/tcjZRD57ANAB8PePxrrZWoRj1cKJmNy8xlB6BP3IRT5
+         KKoA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795163759; x=1795768559; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795163785; x=1795768585; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=DSuUtXGnjpMqHENNRIfD4nz00o+v1iSCypFww/wg4kA=;
-        b=vXDAfp9lErpKSp88ZGaVcOTFrU/hyCSerNnqrCYWbhdY16B5e6wIE+8XDyQu3Wrxzq
-         mbn9v6zjDqmXMsn5EvWlFDyYFuhDMNzUWlYXPpENkdPqZGfMKkh43T4fzSgz7fheO/yc
-         3RoKtEyyzrv08CKS1prUFSkIk4/E3Mm8PZi/OxXep0jtc1Btp3/ZiI5znKeFV1H6i68W
-         mF+Q5169A0RAUISxaUHQbJp3xMTlTuHutxA62BSmsQhfsGghQfxMTHSAMshpeEAcsf+Z
-         ba71MzpH1b0KjNtcBSiB1HEGaqt1oLGWycY8KB3nLu95kBmLWOXxaoFAD6zeG8z6rcuh
-         ng3Q==
+        bh=3PBPgn34gFSzs0WFCPqDxaDrqwWGqL5ASuJDkNQ3rM0=;
+        b=dZ/ANrUUCrgBB0cJTeGmZQHRxMHUw68ok4v3QgzkdmjnAxm86RDN50Y+v3CjNaH46U
+         7gd0bMU56rbPTdJiC7/mPO5t8jG9tVcprKZ+0bhK4rHd3U2Q9VbsYTy9UadDUN7VfdVZ
+         Puj8WCWXUB5GeFWqQep+tNesQyfuYl2r5Kv9qJyv+QiJifUtlmLcYS1i9JIWwZSqQ4Lj
+         MQnWBPefMFoB3xdvXTtKct6BjA0Jm7bX2ZnB/gsfKVfL6owEQauqpoFpFZUXQI7L4BNQ
+         hrn8sRAqG6t8fezLloy4z+A6IH5iBfcb6pMSkGa3uo36qqzmqewxoc+fs14BXWwZm5x4
+         zEYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795163759; x=1795768559;
+        d=1e100.net; s=20260707; t=1795163785; x=1795768585;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DSuUtXGnjpMqHENNRIfD4nz00o+v1iSCypFww/wg4kA=;
-        b=Xsfr8n/nXavCEzdV61FnRWA/NoKMalsKe6L7FqybChW8y4iWhZYqGQKcpBiAcg1WkG
-         g9aX/UoxaLQ0hgLDUARAjASvVXA63CvWeuRrUMaxjV8Q/FboMT8OEiD5QCL671CWfK1k
-         0bwP4Nxnjn4bU6xb8ZvXeQqtKQ2XZQfGy0fI9vAR5ofRJY7yTZSut9kSuMbBnlE0UMIR
-         3Rq1cbzbZDhl11zJpSZIHPb/+gUSCF6J7jPTVUfT1yO+16O3wKysuGAwLgsz0m4Y1nxR
-         qouRabW4nJSc2w/+LRhRQqpT6HnKKyipZsvMrJa7k/8DwuaXy1e/QUvroqFwVlSqhaKE
-         4kKQ==
-X-Gm-Message-State: APuU4Z/bbIvLkLswmjCa+fO8mw7ndN63JN5BHJ1M/2i6LsHepST7F1Ev
-	esumxUMnPfVs+2y/bqAO6yT/Qk/tTqXQ7AGZaI/UQnBkxNd6N8z4dg2ssPtNSavGqh63SalJniv
-	tKHnqFu7ce7XGBiIve0dzoXdC5hwq9Mk=
-X-Gm-Gg: AZFdTZfLCCNVjtJZaXBDtPp9VI+HKKucZOnDAOdEOxBQU2seaU32bh/cJbUt1lMPZEq
-	ya1VhJJR9ZZZC9y4KEW2fYJA/jXl2rJ4rM6rSOCvSxUKTxu6Aqrso02u2grsgdVY9MIaf+7oWhF
-	vEuAWC0u+oZgsuSGgJwNJu8/pg51+e4awVjI7QbsrmHh7MkpOUXBIQyeNakmbEikemZHvhhrUUO
-	FOzGt14zfI+5Rg3Qv9pfC8PEz81pKCAxUgHFh+XVHrAMZibPMB7FIzTneQ6MN58fNCtO3m37yv2
-	ApiEjkJs3fczA/COZ+ZDgEPP8b8+HnjHKN8ij7qjPj7265a9xRNBjH6hRlxsZK0yRK7icltg8Jy
-	ATgaDDzKYaROXnrrqm4+d4tOStFZ88QDdCfOXIJ5ZL4if79qYo6gPAM5VIORZ1sNCxg==
-X-Received: by 2002:a05:6402:454d:b0:6b6:fec8:d0a8 with SMTP id
- 4fb4d7f45d1cf-6ba37ece7b4mr1180315a12.43.1795163758738; Fri, 20 Nov 2026
- 00:35:58 -0800 (PST)
+        bh=3PBPgn34gFSzs0WFCPqDxaDrqwWGqL5ASuJDkNQ3rM0=;
+        b=Z9Z0hki7mvZJ5WXky0jYW7T2/aHU/UFwTjIiG2tCxrKS3SR8knOJxZtMXHi+gtrw6b
+         HWb1k+q0qANkWG2RkA7tGb3fDODXsWaCb4+bBe6WiRGKXEcoSbcTYI9/E8hcAO6HpoTy
+         PVNro/nNOskyel6keGnH6NvE1vzb+l79Cjg4SGMKpM5RB/0bdpfem8C32wgF8FpbvBpR
+         nv0TwGQDO4id9tp9lnxglFeIKhlPL0fpv8vdjI1wmiNus1NfcECwdbRy8BLu1huVR2z4
+         gxIeFBITLDIdVl8lGXYtkdsWsd2ArWVKCJnsKVAs1XH4PzOq5KAD1MB2vZYNs6uwNyL9
+         AzhQ==
+X-Gm-Message-State: APuU4Z8/7IiZ6aHoTdij7+wfGKpjBNaZ8jOEPT4qyKXMp9wOf5edHbkD
+	UZA0fIDRHL2lpEWoBMvHG3mso6KeIKns1tgBQCan+cMChuPGA86pZ9Uk9mhwdHfVtAE/TiDHdtb
+	yezNEoTx6FnbWMWXA7m+v8pPep2bRIpM=
+X-Gm-Gg: AZFdTZd9M4pMgD0+kR98QhM/s87bOo4kWKGXe4VYoNZi+LywutUF858z7v3s7UBJO3b
+	1kRXACm6pslpLzackE8REGW7ms5dGbLaC/sSdBUVwyCNk6elt9eS9wPaKkPe6xUmSWjCkbgF5LO
+	WAk4LWJcclUQV0Ju8VUARxDD2Rh7rjAb142E573BQg14SqC7y9TpmWUSSazLnb9tGfiGJHrEIMR
+	KAx5iU8lH5S0gyK38UovIvnUj4Kqn1bvAqvS1A8WmqnqsOhGFGhxdGw+Jxda2btNE0lJrNylBjJ
+	4zlPKV9IzQUvOXPsyUHoh0BwIy1tZTngB/XMe2XhvdUx6Jpi8djTR5wqld386K918vj9tbIX/yt
+	YA1izmmTbX8hGvAdqZtP0hdfcEZl9cs7TtIssoACTgQhiGJzKVlT+RgUAAulHNgbp+g==
+X-Received: by 2002:a05:6402:1512:b0:6ba:12e2:46f2 with SMTP id
+ 4fb4d7f45d1cf-6ba37d18d2emr1237841a12.8.1795163784752; Fri, 20 Nov 2026
+ 00:36:24 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-13-9eee2fe97a2d@tencent.com>
-In-Reply-To: <20261119-mglru-fg-v5-13-9eee2fe97a2d@tencent.com>
+References: <20261119-mglru-fg-v5-0-9eee2fe97a2d@tencent.com> <20261119-mglru-fg-v5-14-9eee2fe97a2d@tencent.com>
+In-Reply-To: <20261119-mglru-fg-v5-14-9eee2fe97a2d@tencent.com>
 From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Fri, 20 Nov 2026 16:35:45 +0800
-X-Gm-Features: AclHuK-_GFG5PkAWFBgYarA_ZH8s5VuYTvaSRhCd3qxcRhatbnu155-OV8JZlEE
-Message-ID: <CAN_Opa9WKYNXyuJDixgbCzW-yWYXuoBTujSA_SWeQLzQzp_26w@mail.gmail.com>
-Subject: Re: [PATCH v5 13/17] mm/madvise: adapt for LRU refs based operations
- for MGLRU
+Date: Fri, 20 Nov 2026 16:36:11 +0800
+X-Gm-Features: AclHuK9a_uzFGbOjQzRBvuGpHT7FEd2GEgizUKayktzr9rLjRf8PKuN-UHaqZ64
+Message-ID: <CAN_Opa9qsHLGSPUjUJB5rCfD8T_zE8R1YpipcmYCqv3tGYuO1Q@mail.gmail.com>
+Subject: Re: [PATCH v5 14/17] mm/huge_memory: mark folio as accessed more
+ accurately on split
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
@@ -151,12 +151,12 @@ X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 8C7B9160003
-X-Stat-Signature: sdykf9wkwpmd9j44rm6ueetbxcs7rerf
-X-HE-Tag: 1795163760-531441
-X-HE-Meta: U2FsdGVkX18YxFtvZ6/KZ0UPVzqNDiIxEx9Vu4cWiCgdVekcLkt1AosbXnw/f8VdUcB8rHO8/TYqaFrkHSaE0Gxft5SpzlbY+N6WQq/YB0UeGrlFb7YUWgxPZFQ+tcOgp7ggN2hj2jvveLOTBuRjcVXHiXUgtarFieXFmVOIwOWS6DrdgDlZlUjUdhk8kXRRNxAg4U9Jgeh+f7i1YXfdAwd+c+H6T4KfM3pWFGZPuGxGYqWkCi1W2LoiRKSHFA+ph02E/LeH1623AlU74Bh//pvnr/BFbMJQgWsA4ZMcCFiC2ivfCFEU379OhZudE9cxomviEWiLQq5wWK+f3zSz2dxjjLf+Vj70gloa0W3K4eYPS4PKCBRjKkUZJfI/CJIiDYeWIB4pa/vj8hZ9dMmyMOzrNmhD7l4xiGq+Oaui+BHhWhL8in9GgFW+ZcDByTW7MNcTQ6MRztSa9JgS5EU2jmdqii6XBRr5yY+m0erqbLSjA6jX7iOEO5Gpslop6lw6qem/la/IdgBW9etUtMexIKLItiYe2n/84+29iIKlRRgNeMPOG10mtQT7CVPbZ0iL5UQXODBWQjZD8DLEQYDHlLIgngYJbO3vqfxv13YcAb9ipwvDyxICP8n+yD0s8J+m/RJAQNAxdTX64LyFt15SbqOqetBD0mLujn06+ijUxltjGi0/drEs8KRQrFvborFovKbi1vdkqjL80e89yYekUOxRz/z0iU9Zeylbegcj2FD9e6eicxknUeddZzI0VhqMPvUh7kHmLvTdJ5ZURZjpFo7xMsGIUR3Xf5zK+oigPym1dLv+cf7SDtlqIuS+0RAcfegp4zjEyt/CTbzG079AKTLXzmSGgG7P4szJCKGxxctKepdWUBbbcpnL3fHO3+CdpYmr6Seu/7UVlgWGLNJzU+evYXkuDQ5qPzWmQS3tTpeMqP9jZy8gTN5JpmKJ2efClohn/W/J8mpDbUSpQVQ
- BoAkTlBd
- aOwFmIiKdfL59efSvoly0zUMuSj35FI9VIcIY3X9Vw99oTqdxiLEvLMe5qTrNEHqS1UeI+BG7ICJyqCdpC80lnPKjWe0xB+B0PO+zK8Lpyj72SCjENvh2HHp/SYI7B4R3bymY1qqY8Km70zzdBxFFIf/1fBgk3gShKQWqClGcCt1HU6P/XDcoQCPmJd4hoD50UfIk6fDvQI6NjqyopwjZ9v1F8ABaLneO9Ap30I5GOd1/agp9QegHpJ/Ay0ICL/9WFo2Qz3szfIYe7yoPMIteG/srNXVU+AU1ykTEJFqTSE8Ws8jGkesHouzLw9bOmBfQUlPotazpZ6gznX4iZ9SSvXbZbx+UOmHCpfJE7RTnxhhhbUL2FNFbxdwJTjXSx2IY7MMl5j178cOtRew0gwKlrwm5at+Ti0mf7eE6dt2++QK6BFyQwtInKkMITFM8YDLtENp5GWFBsUYC7JHLmGNps3Ji1Yfz1PbahDP9+H/l+OCeQ9+s55EWVp0H1djlbxTgqQf6PEOrVNj3j/Uz6MHZlwjDTO0301LqL0qV/GrvD+92Vaf9b1sRyH8aiDuOU9y8fA4FYYlLunryNEl14kJSP+ktVv5/5D6OodrzHlJp7x5UDNbkut1zB3fo3J9c/TxGJakICtY+cyiRTpyiUQBKOyEP7oU4/dOcggP2QPESS/BWjTwaszKO+KepDRFjOx6xrEnRuX5XkaOz2PNOp7aveaovwrsEW8RXWp+FDX3KlG3RFPU2bLbrqgNnB2xAbPtIqAjn4X4MVxoTdy0=
+X-Rspamd-Queue-Id: 72328180002
+X-Stat-Signature: fkufztpwqafr1j6mz11zfm4bf4d9m619
+X-HE-Tag: 1795163786-686757
+X-HE-Meta: U2FsdGVkX19rxHcLB71rRQLFQCyoelGHeiwu6/+9V6HIUgkkTmo+74A52o1dHI/N4quVcQIAAiA7tuBTkSmquC+ocTbbaHtyb/VoTy8wGDW0JDcp3m7ut3GFW0BZoQwUufO3jXNjnODqteqEh7D6m/3AxdBKJe6TfK/AKMRorHvPP8PJfJWfsfCC2JbpspavlJLTYY46yve1zHm0Pb7ymGI4m5elXW4yNt/+qGfiEygimLtyAibcxT6FJ74lMe+VPn8HVeR22UIqKn34FNU4q39d+EzgJ41wXVUtxG/Kl3JgoFnfuDp4P80qBGEyL5kxoBQfafDJ6Epq4kwnIT8DcF+XeIc+Dhy2PfIYMEQgcwbohumJq1IyyyCgRzSyR7onjpc66S0kidRXksYdg6b9dLI0dedpT8twR0rI5vyx34s+eg3rJbz2ywGNq5aQrfzYWfodGKiVa/bJgUjsPk1MyuXL+UmbR8Fczk2DR4NV8yxGRdY+mdABs/U8HuLGTYyzSiTr/WcgN0pAz2MGT85Zvjp8XoSiwoj0lF82TQNQBj9NdvarkXOe8Wz3BSrDzcyfI0Nu2m9ifdHZOWmkqzXzBNFlipJNxPX1WzdOV8OLTazjhzEOEyGGDTLUbc7c6yyMPrgpSXLGGPUqIATHFn4YVmk3Gtfb64Oqt7Eq1YqCCInXYn1UxZ1xn3jQ0oHvzNTnMDzc4Y5s9pq/voN99bcUdiCgTyciKaL0QAWrWDpl8nq6HoImNx0Bkf3Qf8RZJM9dvERI7Ww2GAoYWsy3cZ9D9OuJnK5MpRe0F5WfZ7XuCnxsay/SfapIYFpP+x0bTsATQdBq207vOaLqB8LufS+TBQK6xybH7CyLcYPOkpFeadwcv4rXNke/6kiqIQK13GaodsR/rTzw8pU5QXSuJHg1O9fSus7BsVKK+MPzwNyJrxBtOGfNFXwy+1WRc9eFZwXl6BM2/L+zI51i/cVjibh
+ bZtmtYe0
+ dnF0X813222DSvvQqZ6TrLBm20FchoPNMce9HzOzN2l7vgvP1d9zXCNP0t0qd73s2JbNs4OYkq4Plx2euzALavGvFbeTu+ghilDDEH/q5B0R1NP4GAE9XvWrsHF9Xfopd0U+Yyv4Ldy3EyEQZHp08L9ppefM0RRTEhb6guRssnwIesJEKd9irc6gvtvOqrJxiwkoiPjrJk76V+5qDsl/FvC71XdfBQZQlNnyynUdUk00CQCwyzpY0kxjk/0fvzRf5yPJE/oHM7quIuiGujmt/vgxVnjf2kHb0D/bozPSP1beWsGa6omyjMRcK8z/IRpdATEATmc5RZToAJRu20vtQUqbtb+ZsOyK+mTlaTUxzvxmiyHcmrIlReJsZvbJjrEEIej8rHZ9pl4CyAd4mYCCKVkkgUliLsjXqMTpSg/wOwpaz+vSGrCYgNc0Np4BtlOrGlEZddPJ+Fa0YWtOwErjDgxdjrT0qSffuk/qPiXJs7WtXZkYznE7dw0hkr3ayc4Z3/NlM2NOYXpkv1MeO4GrMtunP7GcTrs+aObYR4ICvqy+eH+jbetM4RtU5ftHaciOTzmW5cd4udrH3IZN+TxMvvYkgwkM8lcWy1+9JVy6YXvr+FB4U5cdwYGtVtyGsGM10rCC2KptuFcEkCBY1/CUbwdOMv545jTtkMIiVQ2L6nP9pRrcpYz/pZTMWk1u33hv0Fdfi9mD3lmEo6qDLFYOk6VGIF4DJd26Z+SRnKUZg1KDJP6WJSy4YQCJPRW/XuBFGmrkPVT6y97wuDtWN5hKKgrFbFQngnQWAI8N/UkBVh599TpQWz3mHdFGqwDGu7lomkWvt7BoMbp4M0d4IlTnU7v0EIDRSodGXBvb+eEuf2qZHfxI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,130 +170,57 @@ On Thu, Nov 19, 2026 at 5:03=E2=80=AFAM Kairui Song via B4 Relay
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> For the active/inactive LRU, madvise clears PG_referenced so that one mor=
-e
-> access is not enough to reactivate a folio, and keeps PG_workingset on a
-> folio demoted out of the active list so its refault is still accounted as
-> a workingset refault (PSI).
+> The behavior of updating the folio's access info isn't consistent for
+> huge mapping splitting or ordinary unmapping. The page table's young
+> flag has to be translated into folio's access info.
 >
-> MGLRU keeps that history in the folio's refs count instead, which now
-> lives in PG_referenced, PG_workingset and LRU_REFS_MASK, so writing to
-> those bits directly corrupts the count. The two hints want different
-> things:
+> Right now it only checks and sets the folio's referenced flag, which isn'=
+t
+> enough since folio flag updates on access have their own rules. Ordinary
+> unmapping (zapping) calls folio_mark_accessed(), and it also checks
+> if the VMA has recency to avoid false updates.
 >
-> - MADV_COLD resets the count in folio_deactivate(), which also requests
->   deactivation.
-> - MADV_PAGEOUT clears non-workingset refs and caps the rest at
->   LRU_REFS_WORKINGSET after isolation, before handing the folio to
->   reclaim_pages(). The hint marks the folio as cold, so the
->   eviction shadow records the capped count and does not inflate the
->   eviction/refault counters of the hot tiers that drive aging, while
->   folios at or above the workingset threshold keep their PSI
->   classification.
+> So first just use the right helper here to be more consistent. Keep
+> accounting the young PTE as a cache access, sticking to the current
+> behavior.
 >
-> PG_young is cleared for both LRUs as before, so the referenced walk does
-> not count stale history as a recent access.
->
+> Tested-by: Zhao Zhenzhuo <zhaozhengzhuo@uniontech.com>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  mm/madvise.c | 54 ++++++++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 40 insertions(+), 14 deletions(-)
+>  mm/huge_memory.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 2d54cb9863ea..7486c492f437 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -360,6 +360,42 @@ static inline int madvise_folio_pte_batch(unsigned l=
-ong addr, unsigned long end,
->                                      FPB_MERGE_YOUNG_DIRTY);
->  }
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 0d589be136d2..1a415a6704be 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3104,8 +3104,8 @@ static void __split_huge_pud_locked(struct vm_area_=
+struct *vma, pud_t *pud,
 >
-> +static void madvise_cold_prep_folio(struct folio *folio)
-> +{
-> +       /*
-> +        * VM couldn't reclaim the folio unless we clear PG_young.
-> +        * As a side effect, idle-page tracking loses recent referenced h=
-istory.
-> +        */
-> +       folio_test_clear_young(folio);
-> +
-> +       /*
-> +        * For the active/inactive LRU, a folio demoted out of the active
-> +        * list should have PG_workingset so its refault is still account=
-ed
-> +        * as a workingset refault, and the referenced bit always needs t=
-o
-> +        * be cleared even for inactive folios. For MGLRU, MADV_COLD clea=
-rs
-> +        * refs in folio_deactivate(); MADV_PAGEOUT handles refs after is=
-olation.
-> +        */
-> +       if (!lru_gen_enabled()) {
-> +               folio_clear_referenced(folio);
-> +               if (folio_test_active(folio))
-> +                       folio_set_workingset(folio);
-> +       }
-> +}
-> +
-> +static void madvise_pageout_prep_folio(struct folio *folio)
-> +{
-> +       unsigned int refs =3D folio_lru_refs(folio);
-> +
-> +       /*
-> +        * For MGLRU, clear refs below LRU_REFS_WORKINGSET and cap
-> +        * the rest at it: MADV suggests the folio is cold, so the evicti=
-on shadow
-> +        * should not record its hotness in the high tier counters, but
-> +        * the workingset classification is preserved for PSI.
-> +        */
-> +       if (lru_gen_enabled())
-> +               folio_set_lru_refs(folio, refs >=3D LRU_REFS_WORKINGSET ?=
- LRU_REFS_WORKINGSET : 0);
-> +}
-> +
->  static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
->                                 unsigned long addr, unsigned long end,
->                                 struct mm_walk *walk)
-> @@ -434,12 +470,10 @@ static int madvise_cold_or_pageout_pte_range(pmd_t =
-*pmd,
->                         tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
->                 }
->
-> -               folio_clear_referenced(folio);
-> -               folio_test_clear_young(folio);
-> -               if (folio_test_active(folio))
-> -                       folio_set_workingset(folio);
-> +               madvise_cold_prep_folio(folio);
->                 if (pageout) {
->                         if (folio_isolate_lru(folio)) {
-> +                               madvise_pageout_prep_folio(folio);
->                                 if (folio_test_unevictable(folio))
->                                         folio_putback_lru(folio);
->                                 else
-> @@ -544,18 +578,10 @@ static int madvise_cold_or_pageout_pte_range(pmd_t =
-*pmd,
->                         tlb_remove_tlb_entries(tlb, pte, nr, addr);
->                 }
->
-> -               /*
-> -                * We are deactivating a folio for accelerating reclaimin=
-g.
-> -                * VM couldn't reclaim the folio unless we clear PG_young=
-.
-> -                * As a side effect, it makes confuse idle-page tracking
-> -                * because they will miss recent referenced history.
-> -                */
-> -               folio_clear_referenced(folio);
-> -               folio_test_clear_young(folio);
-> -               if (folio_test_active(folio))
-> -                       folio_set_workingset(folio);
-> +               madvise_cold_prep_folio(folio);
->                 if (pageout) {
->                         if (folio_isolate_lru(folio)) {
-> +                               madvise_pageout_prep_folio(folio);
->                                 if (folio_test_unevictable(folio))
->                                         folio_putback_lru(folio);
->                                 else
+>         if (!folio_test_dirty(folio) && pud_dirty(old_pud))
+>                 folio_mark_dirty(folio);
+> -       if (!folio_test_referenced(folio) && pud_young(old_pud))
+> -               folio_set_referenced(folio);
+> +       if (pud_young(old_pud) && vma_has_recency(vma))
+> +               folio_mark_accessed(folio);
+>         folio_remove_rmap_pud(folio, page, vma);
+>         add_mm_counter(vma->vm_mm, mm_counter_file(folio),
+>                 -HPAGE_PUD_NR);
+> @@ -3227,8 +3227,8 @@ static void __split_huge_pmd_locked(struct vm_area_=
+struct *vma, pmd_t *pmd,
+>                         folio =3D page_folio(page);
+>                         if (!folio_test_dirty(folio) && pmd_dirty(old_pmd=
+))
+>                                 folio_mark_dirty(folio);
+> -                       if (!folio_test_referenced(folio) && pmd_young(ol=
+d_pmd))
+> -                               folio_set_referenced(folio);
+> +                       if (pmd_young(old_pmd) && vma_has_recency(vma))
+> +                               folio_mark_accessed(folio);
+>                         folio_remove_rmap_pmd(folio, page, vma);
+>                         add_mm_counter(mm, mm_counter_file(folio), -HPAGE=
+_PMD_NR);
+>                         folio_put(folio);
 >
 > --
 > 2.56.1
