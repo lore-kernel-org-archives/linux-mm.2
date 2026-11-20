@@ -1,95 +1,169 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5326D606A330
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 15:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB0E606A32A
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 15:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hQnJPqvn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XCQUtSSf
 Received: by kanga.kvack.org (Postfix)
-	id 6C9136B00EF; Fri, 20 Nov 2026 10:22:49 -0500 (EST)
+	id 370066B05B3; Fri, 20 Nov 2026 10:24:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 652D86B05B1; Fri, 20 Nov 2026 10:22:49 -0500 (EST)
+	id 2F9C76B05B4; Fri, 20 Nov 2026 10:24:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51A4E6B05B3; Fri, 20 Nov 2026 10:22:49 -0500 (EST)
+	id 19AC96B05B5; Fri, 20 Nov 2026 10:24:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 228766B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:22:49 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D350140F11
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:22:48 +0000 (UTC)
-X-FDA: 85455864816.23.F0B995F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 03F10A000A
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:22:46 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hQnJPqvn;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E5ABE6B05B3
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:24:39 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C88180FC8
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:24:39 +0000 (UTC)
+X-FDA: 85455869478.05.1793B7C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A6EA64000D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:24:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCQUtSSf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795188167;
-	b=RIzqw7scR7tDnLJCthU9r6T6VrWA8U5QX03TUQplff01NjqWaexx0r6iTm3Zh/lkLMtKUT
-	KpMyISoU+EcFDRIWzUSneT/yQS8wEUZ8emcVG9SHys7SU0Ty0nXbIpV8AvYaefNDpcYR93
-	7oFHzrIPnPQW9oX7z68BI8oEzjoy6iY=
+	t=1795188277;
+	b=QEVp71clhYwHzHCmwYnpENXfkt2BNf3EzKznZra7TUr03hXsdA8Pepzc3ct1P7Y7YOqQSd
+	oZBq+tImpX1ovwHa/OEBF06LPsZZZwUx3V8/mM6UvFBX5cy5TmARXo3RgaggpYQ9aji3ue
+	TEEjwCp1MC0nxE6ExrFuypjg8y0gEIE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795188167;
+	s=arc-20220608; t=1795188277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QqS+qF73GHZJLanntYt4ZL3GQPK5ntqIkF074E0sSaY=;
-	b=sFDgNPL3zcnSz5Nt/8Wh5//UwXSh6u5lpvEE6Wkpt5WpjyhWclVmmJDUw5Q1UEAmEKlEu9
-	odnZONxw6zhGjeyMdJwPtkNk6D+Oh86ZoeY0tFwHQOPNHbfdfhQ7HcsecTudKOciwFfg//
-	ZmMJvdLrvR7yczLdD36gu3WXG1kDGJ0=
+	bh=zOo2EfGngcl3fu/kIhqZadaO75pP0lk1DR/lRHlyrtU=;
+	b=tC9nl8RqXCGfnItNILpmwb73nvQ3re33hEJ1VuaOkSE9M4Zp1/k6lwgrVtene1Bo7TpBEE
+	e4V3Ic9WGkpQ10wU/ER4SNgY0JG2z+dxwMdNxw4E2uaoSfNXMYl84fentydA46BstRdOXH
+	irVH3Hng8plA8pZbHS0/nEovU3Gmtew=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hQnJPqvn;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCQUtSSf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3314B614A5;
-	Fri, 20 Nov 2026 15:22:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E821F000C0;
-	Fri, 20 Nov 2026 15:22:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id C130340852;
+	Fri, 20 Nov 2026 15:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 9CC851F000CA;
+	Fri, 20 Nov 2026 15:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795188165;
-	bh=QqS+qF73GHZJLanntYt4ZL3GQPK5ntqIkF074E0sSaY=;
+	s=k20260515; t=1795188275;
+	bh=zOo2EfGngcl3fu/kIhqZadaO75pP0lk1DR/lRHlyrtU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hQnJPqvnbFD2+tssbhPSfU9zKKdvccfJjl3gMjqqY8y9TylHWQvBmcTr97isBZWkN
-	 o94x1OUsgPKGsC9gQ0xjyhnl+Z4p7/D6bXqeatVMD2y0bF1ONXdsIh7/ATaboGlHeO
-	 b9B91VqeHFICoNB/4bkABWQROT+KQVz+b3elB8+0NYEPB4uTFeD7rjIMxDzd6LvmDa
-	 nXB5ma87Z7/e0g3b8+/PI/g7g0MMgukv+Z5LJXtRD/MCV+cV9IA4RnLv7h01QbMBDf
-	 Yt9poiMxcXAJhDTswDdg+GmSnhXJ0WeKpMeng1lgq7OldvEHE+VuGR2wgcMe9hbwcI
-	 UuVz1P3QLNujw==
-Date: Fri, 20 Nov 2026 15:22:40 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Wandun Chen <chenwandun1@gmail.com>
-Cc: david@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
-	joshua.hahnjy@gmail.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com
-Subject: Re: [PATCH 2/3] mm/migrate: batch PTE restoration in
- remove_migration_pte()
-Message-ID: <awBjoC-YFf6KPYT1@gremlin>
-References: <20261120032949.2036731-1-chenwandun1@gmail.com>
- <20261120032949.2036731-3-chenwandun1@gmail.com>
+	b=XCQUtSSf00g2G/Jpzjl9LRNQEFXNNRnYGZWzdtuiZBHk7dosmqWBMrC+L7eGsuwT3
+	 6Y8qXJypfh+8W03R5Msm4iQvi0clPna6Y5oqS1fK2fMBPqPJtncagCqPrZrgwYA61c
+	 Ir7DESMb/dns84I6WWtY5IQnf73sTx8SIKL9bvZjYjcc9pfyT2D4A8Rsc/CYWyagj2
+	 DltATLAp/YBb7+MwnvRYS7P7+HT3f1+jlJHOL7W4kb+l4QjcUeVm9fOWhMSveLYD4Q
+	 IO8nsOvMP1W4FNm+RhhQIMrsrDM1nc6imjdTxfwsnAexYb35pl8AoQ1Ir88SqmYiNe
+	 v0OZ/2yfr0Tjg==
+Date: Fri, 20 Nov 2026 17:24:31 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Alexander Mikhalitsyn <alex@amutable.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Chris Zankel <chris@zankel.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Hallgrimur H. Gunnarsson" <halg@google.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Manfred Spraul <manfred@colorfullife.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Moore <paul@paul-moore.com>, Paul Walmsley <pjw@kernel.org>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Rich Felker <dalias@libc.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Subject: Re: [RFC PATCH v4 03/14] rootns: Track init lifecycle via
+ copy_process() and pid_namespace
+Message-ID: <awBmL_4VqwinHuVN@kernel.org>
+References: <20261119224312.1037966-1-jarkko@kernel.org>
+ <20261119224312.1037966-4-jarkko@kernel.org>
+ <e376c8f0ec5c50b417375197a5589a210f151d9b.camel@amutable.com>
+ <awBLafK4jqB8fTF2@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20261120032949.2036731-3-chenwandun1@gmail.com>
-X-Stat-Signature: s8t7jsomx7siyxoaw6bjw9g8j8mhoxd4
-X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <awBLafK4jqB8fTF2@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A6EA64000D
+X-Stat-Signature: 7t9qk7mj8dqbo5fa13nui3i9wyeha6rh
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 03F10A000A
-X-HE-Tag: 1795188166-129990
-X-HE-Meta: U2FsdGVkX1+kOR1talV/jIEqT7MH2tCmKD3fzXtil58go4i453Lcx2Q/3ujNwh8ReT43Q5QKcqlFX+QPdrZait9ymrv5uqzZEorzcGJrPg6EIfeAzzPzCp52Of5K/g1k/s8wwNjYsFkX6nG5EFkIrMANBAMupeXNyqgnwx05OCaxFJftdH4jd4JcxEJsRwGTKGUQHVsLbYV6s0hWEffafWpGAW7lLYsihhwYHXiB28HDkK4vZk7PhmsJL6ChvZVEjKFZpaou1/sdEJLh0lukE7EMwrc1x5D2GeucVpypXtSe7E44H5Hu1jygHo+MioeoY5nGZXqb7U0YoziMYswSnDVg6M7epTkHESeQQl+88CLe2qP0PP/9PkGaT5w65OVNlxDpktQE7u7T2mdQTKcQGdXmAiSRXoL5cWpEoFSmV2YncC8aJAbeDy2qgk7nEt/PQ2qwDR8low7/u2k1TvHGvMQ1uVzqA/F73vD7yMkz4Qi1ZVfXco8KuVcqNZN+NqbCTKFjCxkyw9Ck76mHRc/MUlpRKUcuPgn8m3pL8C1L7/e9eH5SWGBBbqGLWmsABzcFOFS/sy7u46H/SyKvaebqke/aOY85l2o6lLI81MWussAmOWAFZx9G2X5YEg/5Jwd3WWYVgSS/fKH91PqoIwwcJg9bIZXoCMdrMPb+Qf4zjxdS2MIHQV6k7FV3hQVYiEKAfiH8Q43auv7TnYqEUQHvcme4rEpQBCbRWjen8RVwbhz8rCYrLzVi62EgXDXDO7vb8OktWs2VLVxpPLFZCt5owDI+z08KF2IohQvHtWbAPxNfZyVycnKy3FDUpT6UDstnIxN5z/gHZDm0OELXZ1HyKEJGdacrrKwuzwVfXydKPrVYBBeR3fMK+l0XyhV/zsOfyyqHyY9xr55RXaWZJtKOuoEdXj9FDD4MNIiePHm5ufRovFsD7vpxNexXwhJO5ODwMWEDTfzHaK1bnVRGKJR
- 8Ud/iOHw
- Qkwi+0EAWemldM6nJ2xBszUfuSfev0fU+i7W0Hb7WvoDG1sqWYyQ4efdXI51r0WoMXFcC8AYlo0lNwlr09ujLhwK2JVOfDfAehmjaGln2UuKzIjmrXPAhWcjWhURlHLwXEqkmQ5podvVLKrv9cDe1sMvVd3+L7rCA7ne6u0H8Fz7kgnil9TXugNQ9xyC6hfsCFu1R2TA3uUtDlesvVims6CELy4t2KKpma11kocJ6O6wKYqBxjyY3Yc12o+1wgg6j7JCC1nBHSMprGGBBM57wT8RFlFB79d6IsvPWjuMD3p+lsvejvccLk4lbHmJ3xQu1dadZEjmXiiM/Uehj1y+BMm+dA7VFgs4peQmWBZbMPhWY8NN1eOwUO/bXVu3SlstNvJMlGCUzIXu1EN2K/5XDam78cE6HkF5aiIcpANwK5WjUOjqTBIqOZ4yY7nrzl0Ki+ZbKRSxHgllue5NBeDypXHYsygK8FW5xbtzbFNCgpLYqqh4jzB1NhbO+K9MoEcnqqbX74rTGciUzQ7SFw18a5z0Dy2WQzoQb1N9gy2ttqIk1XdPsZUYc1TWlINPx9Lv19ikQBLdQiiJg19CtwOiS3glhWpAdTzax7PqoykL7sDIKfuxryC8aZ7LE5Uhn5WnQt2gHxUBhDf7CsITYImiXZv1C+GQwrWI+IbDNtM1w5LqHwlOxa3qTNpnn1g==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795188277-792910
+X-HE-Meta: U2FsdGVkX1+PAQnETJCB8N7m/zZvDcXccG0hYXR3PTViybTqaSUiMiEBz6W61upbFwjiD5zCve2v6/GF58xxkgvhBsmXtam/PE3u+M1EXDOmXXKtyKps/GrgPfD55VmE8Ed6o0nsLAEyaYto/zjka5WVFWLd64R5YSIgimxGFNsiuCrYTCyz19gPG74VvwagKBdWJDiIzy/4BgVCwyBKVQHFqew7J/k/++kyGwuagOauAlKnZ9sgRhHxNZViHPO5Nwv9KBS3asHAZA3FUSzpEHafwje9UNK30WTygc/6ZS7nv+CAjnFe5WjBkDJbycIkBAawCevs+h/DlOzyaAwv50e0uZrsIb2KI0GVeIRx8yX11btc2EgxoLd5bXge05Q2/wQBTbJm1qoGhjjgmHuC253ExMBHCLS+VAIvsLeW0D8X4QOLIY0kW44KTEQtyng9Ym9cVl4nUiiFej1qjKC1Gbx9ygpx/ovGw0tXDDtiYMwnX6y4wUit5oCSniy4kX6mUdkW9LFO+V1ZlsLbFi+EgQ1jUDwo8znr408A6yQBVc+1T9p/tfRYyShL7PqqD3fYzT+fS6by6MBYdva4f+baS6Nj2o6VkboJtlJZJBzzX3JAOTmKU4ZxPZNptHmrnD5pJJGh+fLHfIhDYNhSUHTViihq318hx0v4uizhBKBXgM2S5sfpS0L9Q8ODlBBEHqT9g5fdWkHLRnwXl1F3ze1nmhWoy0n7A0Bt1p0ULTuLXvZLzZZjOZJwGcy/d+P3aeGthzHUL4srHUJLdtcq/jYP5bkd5vQ25iYWQHxJk/wJEMqQyyVJ2eNqzDo10JzkwYPnE9WWjP+/hrbhNTjUIS8DvdHH9wpY0VEPl+a2ZxD73IbPcACOjwOQ0D5FMO07WKfNW96yE0W2fAE+rou87WQJK7T0wb4/p4WhyjL/+58rsYW/SncgOemxHOuLoBv3d4hq3TeXiCENqmIgmnjZARd
+ wHY0a2FY
+ Gpe+FfrcE5eOELc6pUaAlfkD03feAirlPw08hPJyDtcGDmiJsxoBc+BBm927ECSniJ5zCTDjYYtkqU0yB3abXc82pbHg64I6Leo0DTbFLks4/QBuZkci4RXJdEcXG22Vq2DneEsvpmXTK6bgzWSJj0b5+SLvAEiuZBcweW0uWeEHMKc8OYwJBel+4QMdbUkZiUhRCNOXpYyCRi0o6BFGvHmZ6tWunBysWk7NAYpPhkRUYlqZbAaYdNHFVn3aMXCF3MG19HPo0Ee401q+03cCAKjCsvBuSgc5H6aTTN9UrvAwgurLaBt5tIy9a5soFKbn0yyCk7ZX+IHSqhA9E816y8kkMxpCUOqSIIGglpZTXZ571tiVUuLpIDkLlsAV56bZPAxPfarYoFL2jlI6XEPaTfm2700YuGz2E0Kiua2c/HjKWOoiD4D9Fpit/08e60BCNV/EkVWR166w5Wws8f/NAsfUYXd7sstzg8BccBCunNCtmPLProkUC+clVx6vkq51yqwYaFZ5EPDwVhbL1kZ/vFmI83vZI21QjYjGmSfLHN8UBBa00IyUBRz7IupAH9ieQassIO8n5mFR/kfFUZrUkI1DFLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,131 +172,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 11:29:48AM +0800, Wandun Chen wrote:
-> From: Wandun Chen <chenwandun@lixiang.com>
->
-> remove_migration_pte() restores PTE-mapped large folios one PTE at a
-> time, constructing each new PTE and updating the folio references and
-> rmap separately.
->
-> Add migration_pte_batch() to find adjacent migration entries with
-> consecutive PFNs and matching type and flags.
->
-> When a batch covers the whole folio, the rmap helpers already call
-> mlock_vma_folio(). Skip the explicit call to avoid double mlock
-> accounting.
->
-> Device-private PTEs encode PFNs as swap offsets. set_ptes() does not
-> handle this encoding when constructing subsequent PTEs, such as on
-> arm64 with a 16KB page granule, leaving device-private destinations
-> unbatched. The next patch enables batching for these entries by
-> advancing their softleaf offsets.
->
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Link: https://lore.kernel.org/lkml/5f9c449e-43b3-4732-9c14-8199418cace0@kernel.org/
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> ---
->  mm/internal.h |  6 ++++++
->  mm/migrate.c  | 35 +++++++++++++++++++++++++++++------
->  2 files changed, 35 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 9f78c12882cb..e6ecf307d532 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -552,6 +552,12 @@ static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
->  	return __softleaf_pte_batch(start_ptep, max_nr, pte);
->  }
->
-> +static inline int migration_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
-> +{
-> +	VM_WARN_ON(!softleaf_is_migration(softleaf_from_pte(pte)));
-> +
-> +	return __softleaf_pte_batch(start_ptep, max_nr, pte);
-> +}
->  #endif /* CONFIG_MMU */
->
->  void __acct_reclaim_writeback(pg_data_t *pgdat, struct folio *folio,
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 3c39d309e6bd..e000ef77ea87 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -358,6 +358,7 @@ static bool remove_migration_pte(struct folio *folio,
->  	while (page_vma_mapped_walk(&pvmw)) {
->  		rmap_t rmap_flags = RMAP_NONE;
->  		unsigned long idx = 0;
-> +		int nr = 1;
->  		softleaf_t entry;
->  		struct page *new;
->  		pte_t old_pte;
-> @@ -441,17 +442,34 @@ static bool remove_migration_pte(struct folio *folio,
->  		} else
->  #endif
->  		{
-> +			if (folio_test_large(rmap_walk_arg->folio) &&
-> +			    !is_device_private_page(new)) {
-> +				unsigned long end_addr = pmd_addr_end(pvmw.address, vma->vm_end);
-> +				unsigned long max_nr = (end_addr - pvmw.address) >> PAGE_SHIFT;
+On Fri, Nov 20, 2026 at 03:30:21PM +0200, Jarkko Sakkinen wrote:
+> On Fri, Nov 20, 2026 at 02:18:43PM +0100, Alexander Mikhalitsyn wrote:
+> > Dear Jarkko,
+> > 
+> > >  	acct_exit_ns(pid_ns);
+> > > +	exit_rootns(pid_ns, me);
+> > 
+> > We have a very similar mechanism around pidfd's to track exit
+> > information for a task. As far as I can see we already have (struct
+> > rootns *)->init_pid reference, so we can get exit information for free
+> > (look for PIDFD_INFO_EXIT).
+> 
+> Thanks for mentioning. I'll see if I can leverage it.
+> 
+> If something like this is found, it is partly due long history of this
+> code i.e., not planned/opionated choice :-) 
 
-const please
+This non-doable or incompatible at least. I'm not sure if that would
+have gain. I think this goes to acceptable redundancy. Or at least,
+currently think this way.
 
-> +
-> +				max_nr = min_t(unsigned long, max_nr,
-> +					       PTRS_PER_PTE - pte_index(pvmw.address));
-> +
-> +				max_nr = min_t(unsigned long, max_nr,
-> +					       folio_nr_pages(rmap_walk_arg->folio) - idx);
-> +
-> +				nr = migration_pte_batch(pvmw.pte, max_nr, old_pte);
-> +			}
-> +			if (nr > 1)
-> +				folio_ref_add(folio, nr - 1);
-> +
-
-Please let's not insert a bunch more open-coded bits in an already way-too-big
-function :)
-
-If you need to add functionality to a function like this, please take the time
-to pay down technical debt and refactor it first.
-
->  			if (folio_test_anon(folio))
-> -				folio_add_anon_rmap_pte(folio, new, vma,
-> -							pvmw.address, rmap_flags);
-> +				folio_add_anon_rmap_ptes(folio, new, nr, vma,
-> +							 pvmw.address, rmap_flags);
->  			else
-> -				folio_add_file_rmap_pte(folio, new, vma);
-> -			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
-> +				folio_add_file_rmap_ptes(folio, new, nr, vma);
-> +			set_ptes(vma->vm_mm, pvmw.address, pvmw.pte, pte, nr);
->
-> -			ptes++;
-> +			ptes += nr;
->  		}
->  		if (READ_ONCE(vma->vm_flags) & VM_LOCKED) {
->  			if (folio_test_large(folio) &&
-> +			    nr < folio_nr_pages(folio) &&
->  			    ptes == folio_nr_pages(folio) &&
->  			    !(pvmw.flags & PVMW_PGTABLE_CROSSED))
->  				mlock_vma_folio(folio, vma);
-> @@ -462,7 +480,12 @@ static bool remove_migration_pte(struct folio *folio,
->  					   compound_order(new));
->
->  		/* No need to invalidate - it was non-present before */
-> -		update_mmu_cache(vma, pvmw.address, pvmw.pte);
-> +		update_mmu_cache_range(NULL, vma, pvmw.address, pvmw.pte, nr);
-> +
-> +		if (nr == folio_nr_pages(folio)) {
-> +			page_vma_mapped_walk_done(&pvmw);
-> +			break;
-> +		}
->  	}
->
->  	return true;
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
+Br, Jarkko
 
