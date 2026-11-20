@@ -1,105 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E636606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 11:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFB460A2611
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 11:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LNVf3e2f
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bUfRfa6V
 Received: by kanga.kvack.org (Postfix)
-	id 8F0D46B00EF; Fri, 20 Nov 2026 06:36:11 -0500 (EST)
+	id BC8D26B00EF; Fri, 20 Nov 2026 06:49:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89F226B05B0; Fri, 20 Nov 2026 06:36:11 -0500 (EST)
+	id B2B8A6B05B0; Fri, 20 Nov 2026 06:49:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B5E36B05B1; Fri, 20 Nov 2026 06:36:11 -0500 (EST)
+	id 9F6596B05B1; Fri, 20 Nov 2026 06:49:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AF156B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:36:11 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CEDFEA8C5F
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:36:10 +0000 (UTC)
-X-FDA: 85455293700.12.C57E9CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2F6EBA000B
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:36:09 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 7CECA6B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:49:19 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1566DA8EDB
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:49:19 +0000 (UTC)
+X-FDA: 85455326838.10.D4F049D
+Received: from mta1.migadu.com (out-74.mta1.migadu.com [95.215.58.74])
+	by imf15.hostedemail.com (Postfix) with ESMTP id EE15FA000B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:49:16 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LNVf3e2f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bUfRfa6V;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.74 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795174569;
-	b=OvXNxER/x0VDk4XKz+0D3upp9mFWbY5Q0YnySE9nd2BRNFFXlwb32Ps0sVmHKlEY1fA1Jc
-	5j6RS61J4FPIlw7/KZiL9KnY0NBsy9oE/K2gEb3JMVyvlzKTnUvT8h3LqEl5F7/oPrX+z5
-	vjCdF7ouW6wkNp5z5RVvLACTmbPuP6s=
+	t=1795175357;
+	b=cBz7cG6SZnEcyabv7XPxJfdRW2MVrhfht0gN4CuJuVj9CLtmUckGpYQ7NYcOA1C3JX4mks
+	fYq5hlP7EsZ7VqVWE3fjvPUoh3WOl/R9CJa4VE/z03L19p9LBQbhcA77MwjzwxAiu+ByCI
+	0YHvoScD1JuT3IfF+ODh/PI27fTysv0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795174569;
+	s=arc-20220608; t=1795175357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NIe3hOKLCnHqFNzGUF054ejmgeEIVGuZTJTbO+auWw8=;
-	b=sWDjeHl/x44jS0uWvSii3xhzK5wo6TccEkybg/E5ihoHzSwR+K9qAPjGEFB2W2FkzFWeFd
-	q45pJP1q5dtcNqnOGuWVBbB157Ry7uMclWzPoih4ir290faiLjkysphPRziJTyQvqHE1AY
-	8AggwF8MZvArvVHIjI/V0kGYrHtAc+s=
+	bh=Nez0UXFsumo3+L/J9xcaupNVhnyClOnzleCniiAWq/4=;
+	b=nsjJIi1dPOwBuyS4sMwHVD7NZNafULbNmm/iKEh6EbvsgL4a+zwpElbe+jehAIZ+UpoEC0
+	mvDOqtP8aILL+HREUxFSVlndj+AnsBjMg5p/SOk13ea8romklyfo9l4MEeYqWVgdIU+gdR
+	LFfoMals3JCo9NCyFBMVP6UFEq4bZps=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LNVf3e2f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6D0EC6265B;
-	Fri, 20 Nov 2026 11:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C0E1F000D1;
-	Fri, 20 Nov 2026 11:36:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795174568;
-	bh=NIe3hOKLCnHqFNzGUF054ejmgeEIVGuZTJTbO+auWw8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=LNVf3e2fuB6sV6i+MOVpjyM8ou9ybEJWd/y2YnESvyNqyqZDV/JUVifcofk3GSUh9
-	 wdDRIJZgSFB03R34CTubN4uNtnYupEInqCHzDpZSNOvG391LTBj34OpEYqI8reWNJF
-	 fxGiQTz24XlLet/fihwDGBNU9jRmT5QHyqZ4XW2KeqI+1m7PNKK022IPB1zUXwsRuf
-	 o9/IvtHEr8a8yFSdiQOcoB9AEKq4dXLYytA8O11f5kEhZrEBfMs8qPfnTvKsOsJEaZ
-	 wzbWR5kBFfbuI/qOpigQGtu4DM8/GbQsjMEEquZ3MudbSYuenkNEPnv/ezcqMiAkS4
-	 oGlsk2V2hEp5A==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: David Matlack <dmatlack@google.com>,  kexec@lists.infradead.org,
-  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,  Alexander Graf
- <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Baolin
- Wang <baolin.wang@linux.alibaba.com>,  David Hildenbrand
- <david@kernel.org>,  Hugh Dickins <hughd@google.com>,  Jonathan Corbet
- <corbet@lwn.net>,  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo
- Stoakes <ljs@kernel.org>,  Michal Hocko <mhocko@suse.com>,  Mike Rapoport
- <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
- Yadav <pratyush@kernel.org>,  Randy Dunlap <rdunlap@infradead.org>,
-  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
- <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
-  Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v4 08/19] liveupdate: Let file handlers retrieve into an
- existing file
-In-Reply-To: <20261120-gedulden-rausgeflogen-spruch-cea76174d5e2@brauner>
-	(Christian Brauner's message of "Fri, 20 Nov 2026 10:23:28 +0100")
-References: <20261111002358.1842967-1-dmatlack@google.com>
-	<20261111002358.1842967-9-dmatlack@google.com>
-	<20261120-gedulden-rausgeflogen-spruch-cea76174d5e2@brauner>
-Date: Fri, 20 Nov 2026 11:36:01 +0000
-Message-ID: <2vxz7bi73fby.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bUfRfa6V;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.74 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=leJ4NXueywkyUGIe5I/Fu1YvErAj1SAfTfxmCLv2MaM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795175355; v=1; x=1795780155;
+ b=bUfRfa6V5yk2xNssa8St7J6F26hiMa7tDe56hOz7a0v/EFYznmNwCULoBz1n/X+BnLIpJf0V
+ 5T42Ez6EGt552ur9FDYr5taxUJMZ4TW4HdDWmij95lsgloqhz74crf7ztygbzI8IWbAnWTFYRSg
+ 4TPG49wup3meQ+BKKAx9Y8XM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7924206fe925bfd8;
+	Fri, 20 Nov 2026 11:49:15 +0000
+X-Mizu-Trace-ID: 7924206fe925bfd8
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH] mm: shrinker: stop counting when the seq buffer overflows
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261120110538.3256962-1-wangxuewen_ky@163.com>
+Date: Fri, 20 Nov 2026 19:48:54 +0800
+Cc: Muchun Song <muchun.song@linux.dev>,
+ akpm@linux-foundation.org,
+ david@fromorbit.com,
+ qi.zheng@linux.dev,
+ roman.gushchin@linux.dev,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Xuewen Wang <wangxuewen@kylinos.cn>
+Content-Transfer-Encoding: 7bit
+Message-Id: <04D634C5-9E6D-4AB4-8863-63CAFFC60D8E@linux.dev>
+References: <20261120110538.3256962-1-wangxuewen_ky@163.com>
+To: Xuewen Wang <wangxuewen_ky@163.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2F6EBA000B
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: nwxkbx6pjwfkxdwjept9d9xhwqaxndpk
+X-Rspamd-Queue-Id: EE15FA000B
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3uodou5tqosifq3pfenhprtzdw96ew8k
 X-Rspam-User:
-X-HE-Tag: 1795174569-827946
-X-HE-Meta: U2FsdGVkX1+s/vr90gqC7ZCbODyAtqhpDkCGu2rfJw6bf5MMAUYXXRyI+ZJLDEDrOQmyMeT79gQx8vXvU8o1jIyGm5EbyzX0ttiVCAnVTUMojT/Ac7g9ssjLtJevK2GzRmwYMH8jm1swDP5w0i6u9jn7kK0ccNGBjZ/JMoDyycM1Jmf3mIcE72XJq07x6uAxVbKLUnlmmfxGPAZOgSB+tdfM8yXJaIGIflgoFmngrKjxqZtZFFPZ1tJQ+v8yVgS0sDFsX9QMcjWnfiwuWFEIvErgGXGGbiE7uGEFfyz572pQhlFUA2mdmRiBmvCDohnNi/frilAHcrC2ag8UktVXUinOxSUfqB+P/GRhKgXUbULTQ50xV+JskjQyQN7J0gjpA+asFqyUwoG1c2jWJPOHXWxJxacZpimKq1SEb0Lzbyf0zX3hUdMD/D6BLguuiYl7d/DKYfzRhle6OF9piNBZn6leONqXoSZyRWPoc9aosqfWGOMRujsGQz8WfUzdy2uE9GTPOp7W657GiIeBza+LYV1v65lkt87t9xFukp3W3XcAqYsG42NfECHkBx1uYSzdRLwJV9TBgCUEuz9ZDew2zpGiye/1bFXJqTlrYEF9Ew0dbkohEtNXzjUQuD6dCf0tbSkgfg5bwKnhjlmYQMpplI1Y+VvIbh2eUYVGS6clNSZVRol4ZJgAyx1HL+mg+W3Sgpn5yXPjdZccl5jKOEKqQaeQJw0dlhN4dB3v1CS/9I9/59wWuttTd+ObYiEUIfF7OCLLmB4umwD6l6y0GQ0TUvqSiKyhEcYo1tRDyXo6ViIY8m7xntHKBO4HC5zZoRjQDZ3crxY/J5B2G31VsNz7AXvLe16uF6UZcOQaqKJO9hNzs1S24G3bdfcfYM/EMbUF2r/SfySG3+3OuZq07KKGQ9ywoexplDmyD70pZyn7aDU7TsXIMVbRIuUEf2aYk4mjb8MNNGfhMQct9aIS1Fx
- VdqFiC+Q
- 9zLsBw1XXGkIpirk7L16esXeK/sW3HW99l8y3EItr0DDqV2h5NyVlej4zJKJ1KTfn8VmWefIMZhHltg2vCTn7+j40GwsipselAcbFaJX2f7jAJXpy54KkLqMs2xJcVlPKlzcb8B8qcPRUKffmOJEQYup3IUEGHbeZYKFTYxlYJ5h8+3rJcnu74q/pO+K29YoPBnu59W/MPMgEIPBHBE91r2iwHpseWqKwvILN4ZVl2G0GXLVhduX/KsJg4Q+Sysa+JVlY9ZE2QJcSd8ni/wDA0OiFnsQrunMZmID7AsCo9x3uDw7PZtkibEZQUJjz4alttmIFEhiyKYXKLBw/7c17VMzm+b9sSn9X3BL5rJ34w53GK5utDXc0HNzNRe0XwTV/osxUrX0raiFfN3MHyZfUP5K6gjzOVdYPxpgJEPB2+yLxSv4+Bog28wZLwQ==
+X-HE-Tag: 1795175356-583462
+X-HE-Meta: U2FsdGVkX1+pnPJGU0JE0dt+nJSzmKdiRZXnDTeCOYySvTIUAjgDmmfiLMyxNFzpx9SJEoHfyGAbXbAfQhp9fSfk2o7hiBbvn883ZV2b0FvhpOEeTyL+7JSlul+rg7Eh/9gTHrX8QuvZGzBHkhZWuRj3+9yuVf+4RW1hFpEa4MZIfWvi/K21+Z2Kc1KBg+0Y9IREIy1pcVSpik5DoH2Np61n8UUH5Zm+iXMTDQ9cBKwiMfy0rDM3asIrq0YjebdBAcxuNzTLaTG2pqNPDQ81sMnMz8NCd3VOXkE2GgyfNqk+iDtmzUh4mqSI9aoWUYpOVDGDjKBJHrNPwiMmXShYjPkxgCP+6pz54JWgh42+DQ6vA+0JNccAzfKNA9gfoOBNqItl2Zi4/zZr/J7SHDxWEGbYnMNeh5oLS2W24FtG0Y4aGtrUXFF+v+T6k5HgVwtBJMa+ZQteOLsJN7IkZA+mFYVe/6NSn4YfEvXPc2pB2UGzBX/6TpRRQ9+403vIRInt03mmCdTBtNdkztpAJORhM+ocUgso8Qaqg0EymVjjMoOXXpCerjQAbGrDQbUFBCTek7UhyNujubt9VdWec6w/rIS0JNS5rxx/tsTFydBgynCLL6XjyPW5JTgVQD3QoEcAvOejLBFXmycyOeA56Pw4aBlcu7xIjYSmnxKbfvrGfAUw2bi1jBKuVlTmBs4/1ye+g39T/3t6pIPc7DU7IDuve90nmxYUAvthrDqHTC7KHPqvNHWSnf9iNssVB6MzGYRzLkRpf4vHayYq+deWLp7zGf/AykpdKSK+64pezPKPEESgvdaglIw1LfulDNR7zz9JajnkyPAwJsDawRbXRSX/jl042hEV5s4wEXi6As+yvVcGK9YfQucCQ62FhOkgkWcz6L2qPY9k/MlZ6ilDfCIU8j5R/mvboPHHidn+2ncLc/kKj5VJUCViHndrgC+/akzNFYxSaL5t7nlfbI9V85F
+ lJXXTDsz
+ agb5UfhcWLfPGCpyDzAa3BpV0cf6eu+PO9sc11BetYRLDWbfnBOZsiMsRp32wD1+lWNYoIO2kNVm0lOWhr0Etl5b7ji5frffpQMBrgb+ntcKlLpSWNjiOfjG6GFOrnMxSgeM5atMmeQ3wKQkN5KLu0jExP6CduWoQYQtspfQ5bIYF7IY8JguvM4tJWQqyksThwWIEulU5tT0AaIZBFS/2fa7Eq0aLaAHgt8SYEK8BoHgztOrLTfoOkHGLsPXPmZspFAqa3Jh/cfb+JenRE1Bu/4gxGLoPuZk5bHRxlTr8fH4+iXtyC5IJmbWbrxJQtu2GkgjPhy30CS69SFN71OcQfLo/j43KIZBsljX4dGflniZqijp6a/Cyi5ggmnqrM2XHiU5imcc6TJwPYyGBkfQc2TehCTsHNa4DS1kaBc1NC+vg3WjrEy3/5OK/gLUWsI74F/7POUF6xB4GAmwhmczI82TXm3FNyb595SU3e1vL25u45Mcuj8X8jih6oFrfRTSo4dal5CdoSbViw4By+6pG2NGndg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,50 +100,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20 2026, Christian Brauner wrote:
 
-> On Wed, Nov 11, 2026 at 12:23:46AM +0000, David Matlack wrote:
->> A file that is restored into an existing file is already open in the
->> caller, so installing a new file descriptor for it would just leave
->> userspace with two file descriptors for the same open file. Retrieving
->> the token again later still returns a new file descriptor, like for any
->> other file that was already retrieved.
->
-> Thanks, this looks way better.
->
-> One thing: Please just install a new fd like for every other retrieve.
-> I think it's pretty meaningless to return the fd number the userspace
-> just passed to the ioctl.
->
-> The fd number is also not useful as it's not tied to anything. The shmem
-> handler looks the fd up once and LUO keeps a reference to the struct
-> file:
->
-> 	CLASS(fd, target)(arg->fd);
-> 	[...]
-> 	args->file = get_file(file);
-> 	args->fd = arg->fd;
->
-> Which means, another thread can close() that fd or dup2() something else
-> over it before the ioctl returns and the fd you hand back refers to a
-> different file fucking over the caller (shared fdtable etc pp).
->
-> That also gets rid of @fd in struct liveupdate_file_op_args and the
-> special case in luo_session_retrieve_fd(). And a retrieve into an
-> existing file then behaves exactly like retrieving the token again.
 
-I suggested this approach because I found it odd to return a FD that
-userspace already asked us to retrieve into. Any sane userspace would
-just end up closing one of the two. I didn't think of this race though.
-I reckon we could return -1 in the FD that LUO returns, and let
-userspace use the FD it already has to work around this. If userspace
-wants to close the FD in the meantime, that's their problem. They don't
-get the file they asked for.
+> On Nov 20, 2026, at 19:05, Xuewen Wang <wangxuewen_ky@163.com> wrote:
+> 
+> From: Xuewen Wang <wangxuewen@kylinos.cn>
+> 
+> The shrinker debugfs count file uses single_open(), so all memcg rows
+> belong to one seq_file record. When the buffer overflows, seq_file grows
+> it and retries the entire record. Queries for subsequent memcgs in
+> an overflowing pass cannot contribute to the final output.
+> 
+> Stop the traversal once seq_has_overflowed() is true, using the existing
+> mem_cgroup_iter_break() path to release the current memcg reference.
+> Leave the overflow state intact and return zero so seq_file can retry.
+> 
+> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
 
-While I like this more, it's not a super strong preference. So if you
-still insist on having a new FD, that's fine too I suppose.
+Acked-by: Muchun Song (ByteDance) <muchun.song@linux.dev>
 
--- 
-Regards,
-Pratyush Yadav
+
 
