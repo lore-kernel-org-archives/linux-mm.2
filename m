@@ -1,100 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D36606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46310606A335
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TRdRpYf/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZTuu+/kE
 Received: by kanga.kvack.org (Postfix)
-	id 3C6A46B05FB; Fri, 20 Nov 2026 03:58:52 -0500 (EST)
+	id 6FD596B05FD; Fri, 20 Nov 2026 03:59:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39D866B05FD; Fri, 20 Nov 2026 03:58:52 -0500 (EST)
+	id 6D42C6B05FF; Fri, 20 Nov 2026 03:59:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B4116B05FE; Fri, 20 Nov 2026 03:58:52 -0500 (EST)
+	id 611686B0600; Fri, 20 Nov 2026 03:59:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EE6746B05FB
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:58:51 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 773D81A0E01
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:58:51 +0000 (UTC)
-X-FDA: 85454897262.14.A7A0B1C
-Received: from mta0.migadu.com (out-96.mta0.migadu.com [91.218.175.96])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 80E6F180002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:58:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="TRdRpYf/";
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.96 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 435746B05FD
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:59:50 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D18A440DD7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:59:49 +0000 (UTC)
+X-FDA: 85454899698.16.62779E6
+Received: from mta0.migadu.com (out-118.mta0.migadu.com [91.218.175.118])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 79C3920008
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:59:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ZTuu+/kE";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.118 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795165129;
-	b=tIOWmiulr1nXu/4KnB6GDgF/vI3ynataNyzaZt22KU6k3nBJ//ZRcJ+NKzpxA9aekyMJ5Z
-	JDvAHcX3mlTAlo3W+0+QCoCGho+Nq8m82blvvqxfCpxTrd9anC1f6ju1i8Y0iZgUL/iDa4
-	g0k+VJPgRO+la6rVi5QkP9WG5OkownU=
+	t=1795165188;
+	b=kiyGu2SzOV515r/KRCzlHB6m8D2W8TIr5PatkuxjTuHG7w3TUugMdMYRaVbQHvwAHk0VHJ
+	CYnwoC8H5yQBVrNuvIj5aX47zZRafosGf80cE7ncUj25PMIkx48HDjK91XOaVqGB3/Vfnb
+	99npmziRj5iBiQtaATGZvRSbVNNI7NU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795165129;
+	s=arc-20220608; t=1795165188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z/f13GSRKpL9hcVOayTduLhuGXEEXbt5XkW1uxkUYiQ=;
-	b=OGyLTWos0ymsVMGZV6/2ERWyj+z4kVnRhGNnACb/zkv4+Nr+41j6azj2d6JAiXdOOMwgEe
-	/ZUkiFd1RoAbhI3eOGZ8DFjXr0zpV5D9qIWyULSYCxmRnYND2bNbstemfUSnHiE1AUSgiM
-	JlpOTZCGc071BwDU2I5dyhpRC4MO6LQ=
+	bh=Yc9PKLM1TRlGBdAGztoHr3hWSYWm+6yS6vAIXll0IPg=;
+	b=KEhApOzhHxtZ77ykGs7KTlUMt+5cA31VjjFd1rEkDlc/zw4c8Y9CJ50PQUOS4ZAZO/mx9u
+	xa8MR5SAOcNRJCqdCTg5UwE6o2jhrU3i/UFuuWEpZLSgzkKtgweA1JCVktBJl4eeYIDBtB
+	qGfJEGTSBikeWrGGDTZwYAeokGkW3k4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="TRdRpYf/";
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.96 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ZTuu+/kE";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.118 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=UWxGv/aFEYMm3r+U1AHD3V/0QKj1BAFW/1FdGOR3Yn4=;
+DKIM-Signature: a=rsa-sha256; bh=j5sy5dx6lTWHNP91V+IG2oaea8AWB1IF7PeLayynPtU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795165128; v=1; x=1795769928;
- b=TRdRpYf/sHpzGsWeAAqFbYA2kPJvRmpmLb+nLdz0wh/p31Io8iOhjg1+6wkEG84vLPYh/XnB
- COnbBTCNJ/Z8dfnEIuj7rxupU7pWtu1JD0w2geaLKUQabK2zX8+R/L4Fz3gGGdcsecWqpT72tmf
- Y2cJLTvCqxpTDnCPh99a700Q=
+ t=1795165186; v=1; x=1795769986;
+ b=ZTuu+/kErGbrYo2EAUfdxPsJCulCf/mPmE+cx+8a/P4Szyb57xHYVvLt47wm0vx3T4zDn6sx
+ 8FYBuQIOQv4YIq1Uy8gwodwX4PMKEtuks16140GAL9kQ5PUPmIU6yxlaAmXtHUyq9jkd/a/cKGR
+ 970u3E1iYGzwaNsILxITdGjY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 08c761eb0ce07d35;
-	Fri, 20 Nov 2026 08:58:48 +0000
-X-Mizu-Trace-ID: 08c761eb0ce07d35
+Received: by smtp.migadu.com with ESMTPS id ff20ff19d5265770;
+	Fri, 20 Nov 2026 08:59:46 +0000
+X-Mizu-Trace-ID: ff20ff19d5265770
 X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 4/4] mm/mglru: count PUD subtrees skipped by the PUD-level filter
-Date: Fri, 20 Nov 2026 16:58:06 +0800
-Message-ID: <20261120085806.781225-5-baoquan.he@linux.dev>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261120085806.781225-1-baoquan.he@linux.dev>
-References: <20261120085806.781225-1-baoquan.he@linux.dev>
+Message-ID: <18eed3f7-1403-4738-b8f8-f11551e1cd7c@linux.dev>
+Date: Fri, 20 Nov 2026 16:59:41 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: hugetlb: allocate larger early CMA pages first
+To: "David Hildenbrand (Arm)" <david@kernel.org>, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org, fvdl@google.com,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261120074701.48298-1-qi.zheng@linux.dev>
+ <8a43c25e-0828-492b-90cf-beeb72ecdbb3@kernel.org>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <8a43c25e-0828-492b-90cf-beeb72ecdbb3@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gcjsgw39nagt99hh6i7j4a9mn5yyfq9e
-X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 79C3920008
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 80E6F180002
-X-HE-Tag: 1795165129-530752
-X-HE-Meta: U2FsdGVkX18B34M1Nxco8TxPOCQjWrxyGiHqOkVkaiSskhehNK/OyH+x6ZLtf4i5H9oopVT3gb9tTKZsB/ovaKF6TBklindrj+RQAc90sk/nfzjI3ZxUDKUCqQykNzzyk6NlHXPEufrqVIa2u7FLH98X2U2Fx3OHupo+5vKIMRBTpDRlQjxvHP+4SJQCil3Ao1WC0E3D5VCPT6ONNbwBgIHQK2QH+lI7RbRDfgJ+sGiFf3KQI86CfUzo09jdeCq50t63i83oeIWNuWHhseAwWi31uhTUMuR1FpLQff+zxiimFMTyiI+w8hL5/Ua3IFfLAZDDR0WFtAwp8pIXiy4nNGPYMhWUtgn6+R1tv/wifYYaoAmYTFPWxDwgz9GRv+hmSsFyya5UfOnIJFsw1z/r7miNAtWuAFgrILY7gUbqwKlFF0tKDCACuvOo0U/q4snNu3tQjEgw8vL5gQ8gSpEt3g7mFJW7P0hzuKmLwB48/7SzhR+OCH9btROcEs/B05auYBqR7ovQB0HoEcV96exu2Hq7bkgMTVbyVOdRLjqxveddNezxun/PTWb70u8Fb0Od66/JQk5wEUy83fnpWgOJdIfY1Ogq/scROdBkM3OpKLmvG6LcRbDqt/q/UrBnMrpF+Q7NPm3EwG/XxHxd3iIpRaHi4TILigmJ/rWKBR7adwGTGae5btWqdgSN9DRr4hZe+7k2ZDqg6WtKIX++6Ad09svE7l6jZsFHqHAB+1OVijLB1RhBcH/CBxr+MnDrHupsGQN8uk/AdzrKpCeyUeryn/fbxLvAZDZqN0eGkRrXjw+TOLPvzhhFhBqsOr/4wdkwUu90yPec/HZjdBXfL/cCfMyhPMv2zXw9RkMDMomCHq3mYfqT1I4ql9eHx1QvymDKaKUwmlIdqKgT1iMvjHQDedXeN6X/nrwsNJPEQJsn9dQclk0/kg/qe3m0TNdSUZPHaeeympopKacCQCIRzmO
- yU/PJyGq
- 1mqKJEl5+tJtAD1SBb8Q94djtJRHUk0oKg90ISei5+cvRBO3dwoFG+w36sGvitcqw3N7Zyb1/7dTJm8wwnVTiG3n/1NZS9kFey8bIJkXpHTn3j6cAMoywvnh81d1p2JpPxeKYY6GlxjrF9EGhmRH1JaPY5DqWhW1+H8wrmkEh6wm7h55f1WoUbhxKqsBsaGhlk0sxmNO5MxeFrQPtBUlZmQt4rAVZ2/DST64XzWZVYQIxAU28tlReztvesjO7Bc2DjDLhtyjuUnYbheHVRXcYUtOLs7NhOOpRB8jYHZv/U8BZfXtVXGBp1HVxe01HTSYuLk1/OTVXsOSI7jKD6Mzqe/+GUEsicoGu/CV6gPIYv0JiKkNP/hQcMczro9c0VBptuLFKGuVXy168Ma9j6mKHIpExInmi1KDyylX80iPhLKIwB1Fc0KmtYXuEWokgfqsWLuEb
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: mqhno4p8en5ci4pidu9f6pn3b6tzx5k5
+X-Rspam-User:
+X-HE-Tag: 1795165187-462359
+X-HE-Meta: U2FsdGVkX1+feV6wRsEMfelOE2HPfFt4bFOSS9jy4vomxBtXP2jPi+sY5A8ewaST1Be1jFTjWaZ7nbFnucjATdv9LBV8BYPSdO31uj8savl0enB+b0FKnmLe6iWGjTFNwlx2+e03ACHaj2eBtSWxWemRzuZ25H83X37di9NakcNwpusquDB/ueB+dboY17xhkzR/2jFkpir97kvRN8wWFc+rJjaxpO4BJfMb/F489BBHxlwRgHJlY/kLOQnRst896RkkoW96JmFU8carxd9Gxq/pGpdZ18Zs2jjI1zVTj0N1x62umQ/md9/y8uKWzpk2aKasLhD2sGi9SA92N+bStN9P85I1wznuuSvv1A7+JwMqBT3Abmf84mrQ/jMhFZDEeBUD9IIzkTZ8e3tUc6GEyYgcZtgjT68JHLw753LL+pxDOHGhwrQEIqL78aq24Q9mRdWHbT8Uy3LXaoLwncYVWt7EkHDElWrpA1y76z2oUEqqRfj3+z97CyhwaeTkY3Uff+Gbed3G9ucbhkC5uejgURXYueric6HfbFosB+CupAREyhg52E6TIa6uJ/99xT8b52ewtWMHB6EwMoB3V3u+/v4WejIu4iLT0cHccVSm4U/0iwaHcPq6nVQuydOXmiQlsRBzOmFadNzeKwKyK60ilIAWhmmP8SoXE59JkTQWndBuasO+oJDWQfoQr913gct7NZ2ru1saQi66HT/ipZa6kVe+rhKWcGCsgRypjdOHFzLXXvU8ugJtoSPDcnmb190zoCWggVxWWLj68CFS/At1MuthpzDMiz8ElxAFwkfRX+/r106fF6qLFWo19NZLXFXgo9+1kr7OXut9BC+aucCkxelW4G8EtyRfzKHdnI8cHETtvKkLRcThun7i1Gx/z/guz6Z3rPvU947qXrFryg0yw+EiBBCBpUenLhgkmwYCUjSPd0CwoDqZIZr7YblASvVaaRoemIpsfzQNCKWtocQ
+ xyMZdcDp
+ j7D13Rb0YaM1AIJJpGKTN8MV+ejD5f2vVwHZGRghi2YNjN8nUZjsKffYow0qdzJmUu8xSw8+YB5AH+VqbdthxxoEk0gVljhB29HJFZ03FeoxsQKBWt1jp2BUP2KhIJel5X5yAgO4f/QE1xDnyN18I98sny5m/mBmhu3sZKzR8OjvzIyxN1gDm3BvQ1K+GS1nzQf/HdSa8uW5hH5207ErIrhaUDdEEcGoRoGTrEVnRhRA9ofOkM4Vm7X+Gind0A2616ZaucEX068zUo7okJAA56WlL2lcXXglpc+MFhkbubC4xsIa7FfXeFsRrHuA0ln6e+9QsWeh7t/+F2YwFfyXpVGjzGK/sGSbcOp5ZtKRdF5GMfJDuQiHMEZ89v1rOuvXRXB+oW/pdY2hLvSISo13DrL1nupQzLJcBbKE4ZKerBnkb/sDnO1mdrDfGWPz+3PCIcaJ2cMN/RxcduAwKtE45545EjqNf2rlan8wHWwwMbYWE7cYXWwbzVp5lxo2jb9kI3BZvjVR1ZVEGsXoot0b2/F8RZN/Q/YuStPLYr8L0l05kJI8Ilt/QlMvs5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,117 +96,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Baoquan He <hebaoquan@kylinos.cn>
 
-Add MM_PUD_EMPTY_SKIPPED, incremented in walk_pud_range() whenever a PUD
-subtree is skipped by the filter. Like other counters accumulated
-per walk, shown in debugfs lru_gen output (the "S" column of TYFALWEES)
-and via the mm_vmscan_lru_gen_walk tracepoint, so the avoided cost
-by the filter can be measured directly.
 
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
----
- include/linux/mmzone.h |  1 +
- mm/trace_vmscan.h      | 10 ++++++----
- mm/vmscan.c            | 13 ++++++++-----
- 3 files changed, 15 insertions(+), 9 deletions(-)
+On 11/20/26 4:55 PM, David Hildenbrand (Arm) wrote:
+> On 11/20/26 08:47, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> With hugetlb_cma_only=1, early HugeTLB CMA allocations follow hstate
+>> registration order, which can depend on the order of hugepagesz= and
+>> default_hugepagesz= parameters. cma_reserve_early() advances early_pfn by
+>> the requested size without aligning the start of each allocation.
+>>
+>> On arm64 with 4 KiB base pages, 32 MiB and 1 GiB pages share a CMA pool
+>> aligned to 1 GiB. In a 2 GiB CMA range starting at 4 GiB, allocating a
+>> 32 MiB page followed by a 1 GiB page places the latter at 4 GiB + 32 MiB,
+>> violating its required 1 GiB physical alignment.
+>>
+>> Simply rounding early_pfn up before the 1 GiB allocation would leave a
+>> 992 MiB gap and advance the cursor to 6 GiB. cma_activate_area() marks the
+>> entire prefix below early_pfn as allocated and only frees pageblocks after
+>> it. The gap would remain reserved with its bitmap bits set, and releasing
+>> the two HugeTLB folios would not reclaim it, permanently losing 992 MiB
+>> of usable CMA capacity. An alignment-only fix would therefore also need
+>> to track and reclaim such gaps.
+>>
+>> The same alignment issue can affect non-LPAR PowerPC64 hash MMU systems
+>> supporting 16 MiB and 16 GiB pages, with 64 KiB base pages and
+>> CONFIG_ARCH_FORCE_MAX_ORDER=7. The 16 MiB size then has order 8 and is
+>> also gigantic, sharing the 16 GiB-aligned CMA pool.
+>>
+>> Allocate early CMA hstates in descending order. Each range starts aligned
+>> to the largest supported size, so this preserves alignment for subsequent
+>> smaller allocations without creating gaps.
+>>
+>> Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA areas")
+>> Cc: stable@vger.kernel.org
+>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   mm/hugetlb.c | 28 +++++++++++++++++++++++++++-
+>>   1 file changed, 27 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 4a448c5909d36..d69a9532ad5ef 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -4600,6 +4600,22 @@ void __init hugetlb_bootmem_set_nodes(void)
+>>   		node_set(nid, hugetlb_bootmem_nodes);
+>>   }
+>>   
+>> +/* Return the largest early-CMA hstate below the given order. */
+>> +static struct hstate *__init hugetlb_next_early_cma_hstate(unsigned int order)
+>> +{
+>> +	struct hstate *h, *next = NULL;
+>> +
+>> +	for_each_hstate(h) {
+>> +		if (!hugetlb_early_cma(h) || huge_page_order(h) >= order)
+>> +			continue;
+>> +
+>> +		if (!next || huge_page_order(h) > huge_page_order(next))
+>> +			next = h;
+>> +	}
+>> +
+>> +	return next;
+>> +}
+>> +
+>>   void __init hugetlb_bootmem_alloc(void)
+>>   {
+>>   	struct hstate *h;
+>> @@ -4615,9 +4631,19 @@ void __init hugetlb_bootmem_alloc(void)
+>>   	for_each_hstate(h) {
+>>   		h->next_nid_to_alloc = first_online_node;
+>>   
+>> -		if (hstate_is_gigantic(h))
+>> +		if (hstate_is_gigantic(h) && !hugetlb_early_cma(h))
+>>   			hugetlb_hstate_alloc_pages(h);
+>>   	}
+>> +
+>> +	/*
+>> +	 * CMA ranges are aligned to the largest supported size. Allocate larger
+>> +	 * sizes first to keep the early reservation cursor aligned without gaps.
+>> +	 */
+>> +	h = hugetlb_next_early_cma_hstate(MAX_FOLIO_ORDER + 1);
+>> +	while (h) {
+>> +		hugetlb_hstate_alloc_pages(h);
+>> +		h = hugetlb_next_early_cma_hstate(huge_page_order(h));
+> 
+> Was thinking that this could be written in a neater way, but it really can't.
+> Best we could do is issue a single hugetlb_next_early_cma_hstate().
+> 
+> order = MAX_ORDER - 1;
+> while (h = hugetlb_next_early_cma_hstate(order)) {
+> 	hugetlb_hstate_alloc_pages(h);
+> 	order = huge_page_order(h);
+> }
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 59963fbee255..1b5aef2cbd22 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -583,6 +583,7 @@ enum {
- 	MM_WALK_TOTAL,		/* page-table walks completed */
- 	MM_WALK_EMPTY,		/* walks that found nothing young for this lruvec */
- 	MM_LEAF_EMPTY_WALKS,	/* leaf entries scanned during empty walks */
-+	MM_PUD_EMPTY_SKIPPED,	/* PUD subtrees skipped by the PUD-level filter */
- 	NR_MM_STATS
- };
- 
-diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-index 9366416faf5a..a56c7e5f2fd1 100644
---- a/mm/trace_vmscan.h
-+++ b/mm/trace_vmscan.h
-@@ -511,9 +511,9 @@ TRACE_EVENT(mm_mglru_aging,
- TRACE_EVENT(mm_vmscan_lru_gen_walk,
- 
- 	TP_PROTO(int nid, unsigned long seq, int leaf_total,
--		 int leaf_associated, bool empty),
-+		 int leaf_associated, bool empty, int pud_skipped),
- 
--	TP_ARGS(nid, seq, leaf_total, leaf_associated, empty),
-+	TP_ARGS(nid, seq, leaf_total, leaf_associated, empty, pud_skipped),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -521,6 +521,7 @@ TRACE_EVENT(mm_vmscan_lru_gen_walk,
- 		__field(int, leaf_total)
- 		__field(int, leaf_associated)
- 		__field(bool, empty)
-+		__field(int, pud_skipped)
- 	),
- 
- 	TP_fast_assign(
-@@ -529,11 +530,12 @@ TRACE_EVENT(mm_vmscan_lru_gen_walk,
- 		__entry->leaf_total = leaf_total;
- 		__entry->leaf_associated = leaf_associated;
- 		__entry->empty = empty;
-+		__entry->pud_skipped = pud_skipped;
- 	),
- 
--	TP_printk("nid=%d seq=%lu leaf_total=%d leaf_associated=%d empty=%d",
-+	TP_printk("nid=%d seq=%lu leaf_total=%d leaf_associated=%d empty=%d pud_skipped=%d",
- 		__entry->nid, __entry->seq, __entry->leaf_total,
--		__entry->leaf_associated, __entry->empty)
-+		__entry->leaf_associated, __entry->empty, __entry->pud_skipped)
- );
- 
- #endif /* CONFIG_LRU_GEN */
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 2cd3f28f7428..e3616f400014 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3841,8 +3841,10 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 
- 		/* Skip a subtree that had nothing young for this lruvec last gen */
- 		if (!walk->force_scan &&
--		    !test_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq, pud_key))
-+		    !test_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq, pud_key)) {
-+			walk->mm_stats[MM_PUD_EMPTY_SKIPPED]++;
- 			continue;
-+		}
- 
- 		if (walk_pmd_range(pud + i, addr, next, args))
- 			update_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq + 1,
-@@ -4223,7 +4225,8 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
- 			trace_mm_vmscan_lru_gen_walk(
- 					lruvec_pgdat(lruvec)->node_id, walk->seq,
- 					walk->mm_stats[MM_LEAF_TOTAL],
--					walk->mm_stats[MM_LEAF_ASSOCIATED], empty);
-+					walk->mm_stats[MM_LEAF_ASSOCIATED], empty,
-+					walk->mm_stats[MM_PUD_EMPTY_SKIPPED]);
- 		}
- 	} while (mm);
- done:
-@@ -5905,14 +5908,14 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
- 
- 	seq_puts(m, "                      ");
- 	for (i = 0; i < NR_MM_STATS; i++) {
--		const char *s = "xxxxxxxx";
-+		const char *s = "xxxxxxxxx";
- 		unsigned long n = 0;
- 
- 		if (seq == max_seq && NR_HIST_GENS == 1) {
--			s = "TYFALWEE";
-+			s = "TYFALWEES";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		} else if (seq != max_seq && NR_HIST_GENS > 1) {
--			s = "tyfalwee";
-+			s = "tyfalwees";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		}
- 
--- 
-2.52.0
+Yeah, that is indeed simpler — will rework it and send v2.
+
+> 
+> Thanks!
+> 
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Thanks!
+
+> 
 
 
