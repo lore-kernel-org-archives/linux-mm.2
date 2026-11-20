@@ -1,36 +1,36 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BBF6076C62
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6D3606B98C
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EZ+BJsQO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NMSu1vPg
 Received: by kanga.kvack.org (Postfix)
-	id D7F9D6B05D3; Fri, 20 Nov 2026 13:10:30 -0500 (EST)
+	id 716076B05D4; Fri, 20 Nov 2026 13:10:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2F2E6B05D4; Fri, 20 Nov 2026 13:10:30 -0500 (EST)
+	id 6C74C6B05D5; Fri, 20 Nov 2026 13:10:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCFB76B05D5; Fri, 20 Nov 2026 13:10:30 -0500 (EST)
+	id 58F726B05D6; Fri, 20 Nov 2026 13:10:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E7E36B05D3
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:30 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C431A014B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CA536B05D4
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:10:31 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD6A616013C
 	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:30 +0000 (UTC)
-X-FDA: 85456287420.23.6B8F7A6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id F15E21C0002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:27 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZ+BJsQO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+X-FDA: 85456287420.29.6663F2E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9211240006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:10:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NMSu1vPg;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf18.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1795198228;
-	b=jq0M3DEsS7d1qaNJKEsHA2hqBX7qMKVft1v3k2LWIIknONctmx1HsK0J1Pfk/S7eM2owq/
-	E5qCByDaXyclCIuqnWNPtBgvFtr2vRiFst+EvfwB+ZkvqL28s4H/UGxuBAqR4zJzl8/X+W
-	knCReV8uwxQC1RBRt7TQyGYSkltbvZ4=
+	b=kL7OAvilT7re846H+z39aErvNl+cw8FihS1SskLIi5uaAZV3A5XMggAKLYSOHqi81jZu8J
+	Yl11tS4XAm2bF/yB5h4mXgClw1drxitVt8j+wbOHOUpgxED2/RrBsZ/jRG9jXkB+lqqjqR
+	5NkPKoV+c0YMHF5AIK058zE5SLJW3rU=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795198228;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -38,66 +38,66 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6oqtpwJ0c+t+dUEI4XWL1X7l7l029xmqIZkf4A3gkKY=;
-	b=nB7TII9MzgsfSMjkH3ZuBjYcZTUOjCXp1EXpmF3/kogbUXsILSivkj/4nh54bQQ+LIH3dQ
-	V4dVp5febQ7Be+sUgdh5aL/vJgN1k6Qtz3zgMqSMOaHEVDQE03AfyMhf+qp+nRzoGGUuuX
-	KnFkCf2bZH6Z7S5+5DS0n9+Rlj8bIc8=
+	bh=h5CrkAO7T3P4r+Yv8Uixoo1Sg+wKyzQuc9jCr1lsfYI=;
+	b=Qnxk2FvArgmgE2XnSWnpaVA6RywBPba1W19zgcdjC8Ynw1nR1pVsngBquVJIsLfKso9guq
+	SrqBVqnIxqGPo+etSXfsbqbKQjxXuffe/r7Cb7voA5BCiM8DESi9Q7zlIMOuOzgVEeGRMD
+	lo0yhYWCe68V0rfruWSNuYF7IRG+mqU=
 ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZ+BJsQO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NMSu1vPg;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf18.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of devnull+gourry.gourry.net@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+gourry.gourry.net@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4379B44D17;
-	Fri, 20 Nov 2026 18:10:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3DC45633FE;
+	Fri, 20 Nov 2026 18:10:28 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795198227;
-	b=TjqmID7E4iOKwAhSKxv/6OLZS5NVKVTLojCnxN+O8B4QzETPI03/3pcfbou7PMwP4ZOF
-	 ursLh4R9xLszP+TsSEXDVeznDM+8ZpoQ0UVYNIomtKw4Nyj8IO8wDgQ7gdzXkoBv9fGv+
-	 l5/B5vI9IbfgBL6XqcDBfcX9u7TmOPGuK6Kjtda8hno8KnuaYqyb5CKkfve1sAvpFHdwE
-	 PbqsE0dy+oPZ/PNxO5z/Uuv5eJUQ8DTL/EFBlBTgtK+Unbhc7oRrqsYo2f0Xbn3Ze2LpE
-	 mSb0QsqxVqn6UsNVg4/cV7OXO5fWyt7RJngVX+KT0XprOa6FgpL5oJ0L8eH00lbhRYA==
+	b=A+lgT5k2ySTSQta83y2telt6WLHJPTpHlVa8MFz2zHOwkPE2YYcJPueXqna7uL6SoPyO
+	 wd6FWtztrKPtnIfqnG3zM0w4gkqwJXe4Pe9uVloUBJvtP8OOv3FARWDrj6T0I8JKo6QZT
+	 lM/YQ2b8YMvMZnrXCmqSbrEMPMK/3u4b9cUWYyJgR6JnugctLYEoRA2fE3Gg6gM/Mrj/E
+	 Uc2z4S8QHvw8rN7aEd8h8tpE8IX5vfAjWObOiWHQhcJBjie4DyRc7m0AjzsJZ+cj32uyd
+	 A40NJ2M5Q7kDTR3WheeXYJ4HVMjwE2ZqsE42rSRt0+LDnMTbm4ni0aEzb0Sp8IfqXYg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795198227;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=6oqtpwJ0c+t+dUEI4XWL1X7l7l029xmqIZkf4A3gkKY=;
-	b=IsCke32otQVPrYLrX3wiDCZXsCs5U11MVYsk4RJ+lCD55XsTk3aXRdXoBvQtiKISyipA
-	 6lDh+sNuSwqs3uuPFXSzlzaY/gg3BtWow+ncIVwR1ya2Wsn/ie/5bOiLOeWyNkeQ532Mn
-	 UsRNQirEOSpB6tbU9Pim0lJwyi982oziWKfBafa6ca/di+rtA0OraXUn3xjWp9ayK78iy
-	 chCAEtf6mMwqcqYnWJNKTppVCt5oa0J5l3euhwOuKKJAaQ+VP+SwswpF5kdBDAwTTPzCO
-	 JQBZ0THqp+Urt8ipb01IASaFpbA5JsyNXuvGEqSlB3Oh3ag3QCy1ED+ZThf+qRHhg/A==
+	bh=h5CrkAO7T3P4r+Yv8Uixoo1Sg+wKyzQuc9jCr1lsfYI=;
+	b=MoTYbCSE24J2eUwIjFP0lRnOJdE4zWb0zRiNzydPQIYrtjDqPRsiVg4xf/4Fi6G9REXG
+	 kmL6/6C1T4/YgE6Jz9WM4qgk5ZJzcKuTP+NNAFgjLyvs3Yt9Xje/1zumU1HYsMwbp9ofR
+	 LIU0Wwi/fiGVa2k3OVJZ0r1Im2GyPm+Mcblf127nVWdMtpz2AQcHf+WIoif4nMoojLqZC
+	 sL1Gig8j9sF1q/Mr3pUY6/QitJ/S4nauo8Yrk31oATlbWtDikWwVwSlrwH7nyktoUFUV8
+	 h9qFY9w+MIbskiZnZvt7fKcZjy9c/0haHUiVEdvRZYotyY/rQA/PR9bdsK7ed5q2tzw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 4F2701F0156B;
-	Fri, 20 Nov 2026 18:10:08 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id CAD401F000D0;
+	Fri, 20 Nov 2026 18:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795198227;
-	bh=6oqtpwJ0c+t+dUEI4XWL1X7l7l029xmqIZkf4A3gkKY=;
+	bh=h5CrkAO7T3P4r+Yv8Uixoo1Sg+wKyzQuc9jCr1lsfYI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=EZ+BJsQOJ0p7U6Rk24X4g6PSNads//EDAyMPSdo+YdmyY5nIaJ3b1CyzHotUeAvWG
-	 RLBryL0KbQ0ekPHEIM3kEPGM9j0BYGhYQDdzcztU+rz4BBSlPoIb7hXqyp64Udpb+k
-	 L7l1+17WvIkQ2HXaPTnj7Y8gbaip3y6bVtW3Ke09EkxLT38+HbIOGY3OOtn2bAPGEz
-	 H+jZmAqnhYYGwEoLOG2A8msZZE7hn9DX28d+VKvGsbphFQKNPinkeHL79toR/ZNaZ4
-	 Bf58Ufin0FgWkQMysTEXABk/HyDy+DbOHMafSMD8WO6sDkJYQ7VNqHlQzhZV8zQ5i1
-	 pDmk/o20eBbJA==
+	b=NMSu1vPgyulr7JEU4QAo/EeQbZOGIf1/aWFuGu6E2WLef7L/mo5PrtAr/A+H89f93
+	 BOcGgKIdaY+XLFwmQ3Vp+0BcpbJNP4nqbIrICtseprM6dl/MBOMLQ+P0J0hoNpaODG
+	 9w909FzueH16cwv0Jts4DXBYUU7vWKjRh9NGaCUSv6K5VrxuZlp5ynIcXl/QfcCJS/
+	 JA3WabXuSKMuUeIUqXO1YSbdaD0B16iwzSmnPWGL9JrOmYV3AywU/5V8kz2po7CZpQ
+	 ZWu/B/ivxAHcDIF2AHfobE7234Y4Y/+uYYtD2J4tdftYkFuggytUzO2TFOW4h1/q0A
+	 3MKDc/alBl/yg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 44F6B4B92D;
+	by lkml.kernel.org (Postfix) with ESMTP id 6165E4B931;
 	Fri, 20 Nov 2026 18:09:20 +0000 (UTC)
 From: Gregory Price via B4 Relay <devnull+gourry.gourry.net@kernel.org>
-Date: Fri, 20 Nov 2026 13:09:18 -0500
-Subject: [PATCH 27/60] mm: add the private-memory node state
+Date: Fri, 20 Nov 2026 13:09:19 -0500
+Subject: [PATCH 28/60] mm: select memory features per node
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-private_nodes_v6-v1-27-74f5f9a115c2@gourry.net>
+Message-Id: <20261120-private_nodes_v6-v1-28-74f5f9a115c2@gourry.net>
 References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 In-Reply-To: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
 To: Yury Norov <yury.norov@gmail.com>, 
@@ -154,11 +154,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, nvdimm@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, "Gregory Price (Meta)" <gourry@gourry.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=5643;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795198153; l=5275;
  i=gourry@gourry.net; s=20261120; h=from:subject:message-id;
- bh=zId/m3UcEeKPlrHjDuBTph6SlMWMgHfNTv0FPlTy5jk=;
- b=UQPuu0+30xBC00mgn1hSzuDWDMkKDN3WxupMdh1ZgoT3kBVxhLL5UdV2Q7T1tbGBb8aBZhTom
- a2I0WisarbDDWUsD2+k6+bL9x+5sPTZQCfJRGG2SOn1nC/Y+GahAoYl
+ bh=9jUUwkC009YYM3M0mBtUlaNrodM1BEI0oddfspLz38Q=;
+ b=5b31/KbUha2vmTFlmfGTvBU6RaiMU83nXseyWRCHS71c1Cr/i7oXIqQHzSTf3Q6kBHMj+p+V+
+ CK3q0HN/ldxA/gpmxCF2drBz2uSDsxWLaQZ+5aY3hV5E9HSjJvI/Gfl
 X-Developer-Key: i=gourry@gourry.net; a=ed25519;
  pk=BZWDlx4htkR5KcvGjGtSDfx1tM0E5dlyBR43FEhjWVc=
 X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
@@ -166,18 +166,18 @@ X-Endpoint-Received: by B4 Relay for gourry@gourry.net/20261120 with
 X-Original-From: "Gregory Price (Meta)" <gourry@gourry.net>
 Reply-To: gourry@gourry.net
 Content-Transfer-Encoding: 7bit
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9211240006
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: F15E21C0002
-X-Stat-Signature: aqmjdi17hjopttj77ffg1db3ifk3owt1
-X-HE-Tag: 1795198227-11925
-X-HE-Meta: U2FsdGVkX1/+W8lqzIhUsxHatg8X+m0RcS98TopvqVZOQjKyCtMLbOmOfO5rIrYlIxkVobW2uJQy2hLMgvNXwPq2AH4Qs9IgwIvJ6iVX6lCuUufiSsJvzORDgSeWm4VWn1sab2l/zHo2Hp3jJULX6MtP3ezbhrspa7AI9aAsY+Avbh5slhYuZOcer0OmnHpizggzty+jZK1vcs+GVnDXjzAjHK+X73SgNZlwsNn6rX9rOaW1MNMNi69yTFWme9+hOCF51ZtHw8NJQuIXW6RNeJRO/p8Tws0hOdZPKS24nhd3BCuG7Uz2u+TY5G4MPMen/E0i9kOkW7laKL8j0CzVDs93m39caUAz5SLy9Li3mHvlx+SEocACFak/HH4IbooRJRiuFr1OVhtAouO59/RoKFMQznS5/RS8tvFz3iUMMGz9UbdfxkbDUD3rI6515JY1lhYPKG8weQMKweqK2TnzoW7PkUkNYO9G/z6aIMZAzHFpv1A4NVC+0B8h1XlVwEuFsxFA3vG++crP0W0S9UdHdKUlRfVM6m3xR/9atppZXN+0ILAAdVGHt7SjZAliFDRqfIi9E0dStS8oiXcwZtxgmJgmQJO4e/tvCntC/PXgUIAZVvNggC3BTazHu81vC7CXZhOVeek8EcMPfh5G+t3d3hTdfjw+AZ5VpVcVZ4O+mr3DE3n0JJb7w87zztmjepzQ1akgwIcRVbqpYb7perH2fMBkKZ/+37JeRFzjwnjaBzXVudAXiCxUnQiV3u5soJSePeh6x1U6Szfw00UPrmvOtSZfXMO6wtuQwejtk4bCex/umIysbiNEgzgqjRB9iIdolouoSo/zIugAF/tAJ6LFl1dmWL+tM1ttpo9QFovPmg8URx7tQSDOxDCfJnzC1eHPDRZJtFsFf5A9Y6taqHKCtVzGeMciVGbwsOUzmrUQzc2e4UP7ldBzYoqLulxPxR5E+FB6RTk5sh35r+uhd2i
- shPU73HJ
- wfhYmic43EI1w8erzdn3guZuhEh7AAJKRjzLUIcmBZeabj0XSzXxZyTEpSbGfflQ6ZMVGm1FbUPAuItUGo427tlIhFPfMeDOzDm4RMiZlFVK5gqPc5wdmB6NK/O4v1rSokc9YK3Ng8bmrBne5qS9WqgF0a2Qafs+4fSpMDmA+dTDe2k8mbxxOFcwEGNVi7SagdLCn4zkvAFskpHBn+3XmoayHGBtkopeyoLcajTr8h88gN0TiegN/dQ0FA7s6aRRFziwbkp8PDB7+Xr/Psp9ZcOIRvWf5mqiO55G40hpieo5eKp8yJNfacgpYTlIYL6jjMBOaUNqidFrfLzsdmQ31jmJbM87ePgDToWIxPUzLrDrrqcyEJzD+zRXoAivO03QCk9pPc6srq6zC4NGQdIipw9o9GjmEUjfiq9t3g5k101cz8ktsw9Inv9LwLh/P8qdMhSLtFjF376x3yTttvrsR+A3PhjPxvLDRplT+UK1eCOSvrlPLVl8xLoOf/ThBYGeygRSRrdF6avZw0ftBNIgnG4Zk1WryQL26Pk/Knw/PALOk1j7nvqcS9o/QHRTXAUlpiiw+MzvEzkgPLh3FoXsCQ/aUkjj9pKS7WG5NpIuVjFmtEyZAvmcNHS9ZukjHJE2/Yyr/ETPE+eEz3/ngJTek5L6krLYaCANOf7vloBnFvFaEPNnmcMh+xOOvolkqq1GV8Qou4/guuoSw8a4elgDzcn/pYia9rXlBZ1sTmam1lI3ohgyAXmFXqoSvG3TqDa4Yzj5VaDlOa/ary/kD41VonxyaD9iUGpNwHn1PNqiEfrNkqTAqscXi2k9DLpVgtgYMkymsL7kNBJlAJSk=
+X-Stat-Signature: imwgh5nrjorwzeihknpa1fiojjfwhqqq
+X-Rspam-User:
+X-HE-Tag: 1795198228-58514
+X-HE-Meta: U2FsdGVkX19Gx83ehWeThSzFn7v3e+4GJIee4BsZpEQ2/adEOTnu+25ZU7iwQxtxunz8F8XP7lrD+aHYXfzIBFGbxDHNS1Ze4yAH7uVvcUZonucowxk53F72DvOB9W0MsJnvIwXbiWC/x/bipzchdYvBO/4F5PsTQG+rjhL1eRlHtmO4MuZhcRRHV6JSaKOMfO3eMJsrghdyxuHj25mwgc3JDZxs9r0+IwmdUgZJeG47Y1vf9/aDiNHDpY7SzfjgZP2y/Prsj3GRq+5vfho637fHmPY374j1+dWnWQZlIUaEy5Nl3VsOZQIoR0CQ2f7zVvj3wQAj2VYQir2w2uI8Y9nbRO/nCFR/ydkzUIIA1BzdBng1fPPpldQtv1xAPMNRlQ5jq+7syXdUUJlNzU7iwrxKjxCPz8JvTRgyGrsEjGEHus1Rt/bQ5wjp7aoMHK86gx/zbwCQ9R+0suzLA9QFzmUsM4hXDULpbi0je0SCbrindU+SahQD8/y2O5UHfnnaBppeEfr7e5rMQdwFuDzMUiBud0xe3NT4lLDcfitOIqJ4KvWyXG1JKvtSoGknbmeJ2N9ODPwwp6qUUINwd/J2XeONGU0NAqvnVqSacmG8x1mc5j+qkN2w21nKwVuZg0JH5FnMEWWGoE0i5hOuveoNe9Gu9xEgkNT2yPvuAXwvxh8cFNiTAxflO9U41kYnrKc4l4YzTW0pDTya2Kp6QcMnmejvIYapZZbg7oqnf8XYgBC2WDqh4iZvlLfVALeZ+prWC0jp8LGWNUz1OIaxOQ3CLkoXOYWMRmtbV2pN100zt5JNhuLCN7oBGKKR64wUxadJqn0cYjrDIznGMpAndpu4aDD9qj8akxt2q88p6L/M7Wvv7kH1J9mhn/9SADWCjg0ayTCGzI2UwksanuZlNRxOQPscnVCZcnkd1BF64DD8E2oZ+SoUhgbiwgUx4o8HD9/aY1U3Qds34aGi7EzwMJ3
+ U/PUerpG
+ wluZDut4ietirW8gNiI6Ia4tc7SfeivtqxB3J0t6ukR07b3cwdX2K7Ysxzm9bZSMorYzxlAphpDbo62U9YtX44appHu1mlK4eHo1J9fOH5Qm3mKiSO9hswutR2hPD6efrw17Ke2x/tDOevmTtKDsRX/ICMTH5qNVku64ofaC/2hZRbfq24QrV1a1bOwIoeV/lc+ilAoYlAyaPOQy58jcQb7ScMZ8Yg2u3CQ0FXlENm8kmzXerN1RK0JmWcTr4xNvy6iiiwCHMsuRWNXVmd7O2USwm/eiBnaNrhP8DpG8/QR9J0qyf9ooUazVeQEQnpt3cyb0FtrBHRnXh2UXWsG6LQQzgFXa6ZcLUG06u7ww+HX9KzfJaw0sUq9SsbP87osxJRulQ00n92TUATJPwI52iNZ3Cg+8IgOQ2W+BxZMluAK8sheTyD/qnG4odWVnteoVrv5k+kA3Ahw9El1L4lpSKdKOFQ3/3U1TRIYVf3TLQj1eNpEGbo4qjGt+c+mjv9CRobgI9n2twi/5ZGOQPi4ferteY3VKyruZrNzSYS6atfyQbCpG4H71DqXF3/2kihx6acFWx6zuPXTl9hLnzFS22hEnORCy8HuZdGt97UrFjcpv3qXmb/iVEdPWTLVDfGKWDj7O6H8rXhYfNJqyYHmoh1XXvP0OY7VOVKsqz7S/VnrmhND2vv4pd+MJFl/Xs/vc0BaKvWCiPej2/7ESaqoOOv8uzEXZrwWT4wgd4n6tod7+x7S2RZhWUKf69Yv0Gj5W9xoX7yUz892iTDEkAiH2SiKGeZvvt1P/EognG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,142 +188,145 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 
-N_MEMORY_COMMON describes memory that ordinary allocations and MM
-services may use. Some memory is online but is not part of that pool.
+Whether a node's memory is common or private is a property of the
+memory, so record it per node.
 
-Add N_MEMORY_PRIVATE for nodes with such memory.
+Add a per-node memory feature mask (pgdat->memory_features) with a
+single bit for common memory. Node states are published from the node's
+features at boot and when memory is onlined. A node without the common
+bit joins N_MEMORY_PRIVATE.
 
-N_MEMORY_COMMON and N_MEMORY_PRIVATE partition N_MEMORY, so a caller can
-drop private nodes from a mask without also dropping memoryless nodes.
+Ordinary System RAM carries every feature. Without NUMA, node 0 holds
+all memory, so a mask without common memory is invalid.
 
-Expose the state via `has_private_memory`.
+Every node keeps the default mask, so all memory remains common.
 
-Without CONFIG_NUMA, node 0 holds all memory and none of it is private.
-We have to adjust the node_state check to return false for this node,
-previously when CONFIG_NUMA was disabled it would always return true.
-
+Suggested-by: Dan J Williams <djbw@kernel.org>
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- Documentation/ABI/stable/sysfs-devices-node | 10 ++++++++++
- Documentation/mm/physical_memory.rst        |  3 +++
- drivers/base/node.c                         |  2 ++
- include/linux/nodemask.h                    | 12 ++++++++----
- mm/page_alloc.c                             |  1 +
- 5 files changed, 24 insertions(+), 4 deletions(-)
+ include/linux/mmzone.h   |  1 +
+ include/linux/nodemask.h | 12 ++++++++++++
+ mm/internal.h            |  2 +-
+ mm/memory_hotplug.c      |  2 +-
+ mm/mm_init.c             |  7 ++++++-
+ mm/page_alloc.c          |  9 +++++++--
+ 6 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
-index 0a2cf3088233..70ab780c6ddf 100644
---- a/Documentation/ABI/stable/sysfs-devices-node
-+++ b/Documentation/ABI/stable/sysfs-devices-node
-@@ -46,6 +46,16 @@ Description:
- 		requesting the node explicitly, and that kernel memory
- 		management services manage.
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 6a2ad0cff795..d6c1a43c0bc8 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1612,6 +1612,7 @@ typedef struct pglist_data {
+ #ifdef CONFIG_MEMORY_FAILURE
+ 	struct memory_failure_stats mf_stats;
+ #endif
++	unsigned long memory_features;	/* NODE_MEMORY_FEAT_* mask */
+ } pg_data_t;
  
-+What:		/sys/devices/system/node/has_private_memory
-+Date:		November 2026
-+Contact:	Linux Memory Management list <linux-mm@kvack.org>
-+Description:
-+		Nodelist of the memory nodes absent from has_common_memory.
-+		Together the two lists partition has_memory.
-+
-+		Ordinary allocations do not use memory on a node listed here.
-+		See Documentation/mm/numa_private_nodes.rst.
-+
- What:		/sys/devices/system/node/nodeX
- Date:		October 2002
- Contact:	Linux Memory Management list <linux-mm@kvack.org>
-diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
-index 86a7d6080535..ddba7c890418 100644
---- a/Documentation/mm/physical_memory.rst
-+++ b/Documentation/mm/physical_memory.rst
-@@ -174,6 +174,9 @@ nodes with particular properties as defined by ``enum node_states``:
- ``N_MEMORY_COMMON``
-   Ordinary allocations and memory management services may use the node's
-   memory.
-+``N_MEMORY_PRIVATE``
-+  The node has memory but is not on the fallback zonelists. Together with
-+  ``N_MEMORY_COMMON`` it partitions ``N_MEMORY``.
- ``N_CPU``
-   The node has one or more CPUs
- ``N_GENERIC_INITIATOR``
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index cc6696d1390f..56a1741a6a45 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -966,6 +966,7 @@ static struct node_attr node_state_attr[] = {
- #endif
- 	[N_MEMORY] = _NODE_ATTR(has_memory, N_MEMORY),
- 	[N_MEMORY_COMMON] = _NODE_ATTR(has_common_memory, N_MEMORY_COMMON),
-+	[N_MEMORY_PRIVATE] = _NODE_ATTR(has_private_memory, N_MEMORY_PRIVATE),
- 	[N_CPU] = _NODE_ATTR(has_cpu, N_CPU),
- 	[N_GENERIC_INITIATOR] = _NODE_ATTR(has_generic_initiator,
- 					   N_GENERIC_INITIATOR),
-@@ -980,6 +981,7 @@ static struct attribute *node_state_attrs[] = {
- #endif
- 	&node_state_attr[N_MEMORY].attr.attr,
- 	&node_state_attr[N_MEMORY_COMMON].attr.attr,
-+	&node_state_attr[N_MEMORY_PRIVATE].attr.attr,
- 	&node_state_attr[N_CPU].attr.attr,
- 	&node_state_attr[N_GENERIC_INITIATOR].attr.attr,
- 	NULL
+ #define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
 diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-index c3b984105bd1..5a9722d57701 100644
+index 5a9722d57701..02908ef23a62 100644
 --- a/include/linux/nodemask.h
 +++ b/include/linux/nodemask.h
-@@ -403,9 +403,12 @@ enum node_states {
- 	 * to manage per-node meta-data and topology decisions.
- 	 * N_MEMORY_COMMON indicates whether the node can satisfy arbitrary
- 	 * allocations and whether a service should manage that node's folios.
-+	 * N_MEMORY_PRIVATE holds the other memory nodes: together the two
-+	 * partition N_MEMORY.
- 	 */
- 	N_MEMORY,		/* the node has memory */
- 	N_MEMORY_COMMON,	/* common pool (fallback zonelist) */
-+	N_MEMORY_PRIVATE,	/* memory outside the common pool */
- 	N_CPU,		/* The node has one or more cpus */
- 	N_GENERIC_INITIATOR,	/* The node has one or more Generic Initiators */
- 	NR_NODE_STATES
-@@ -478,9 +481,10 @@ static __always_inline void node_set_offline(int nid)
+@@ -542,6 +542,18 @@ static __always_inline int node_random(const nodemask_t *maskp)
+ #define for_each_online_node(node) for_each_node_state(node, N_ONLINE)
+ #define for_each_node_with_cpus(node)	for_each_node_state(node, N_CPU)
  
- #else
++/* Private nodes omit NODE_MEMORY_FEAT_COMMON. */
++#define NODE_MEMORY_FEAT_COMMON		BIT(0) /* add to fallback zonelist */
++#define NODE_MEMORY_FEAT_ALL		NODE_MEMORY_FEAT_COMMON
++
++/* Private memory needs NUMA: node 0 holds all memory without it. */
++static inline bool node_memory_features_valid(unsigned long features)
++{
++	if (features & ~NODE_MEMORY_FEAT_ALL)
++		return false;
++	return IS_ENABLED(CONFIG_NUMA) || (features & NODE_MEMORY_FEAT_COMMON);
++}
++
+ /*
+  * For nodemask scratch area.
+  * NODEMASK_ALLOC(type, name) allocates an object with a specified type and
+diff --git a/mm/internal.h b/mm/internal.h
+index cd0562f0b68f..e89dd1153662 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -62,7 +62,7 @@ void lru_add_drain_cpu_zone(struct zone *zone);
+ void folio_deactivate(struct folio *folio);
+ void folio_mark_lazyfree(struct folio *folio);
  
-+/* Node 0 holds all memory, and none of it is private. */
- static __always_inline int node_state(int node, enum node_states state)
+-void node_set_memory_state(int nid);
++void node_set_memory_state(int nid, unsigned long features);
+ void node_clear_memory_state(int nid);
+ 
+ /*
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 6b6873cfbc5a..b4d94021d46e 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1197,7 +1197,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+ 	adjust_present_page_count(pfn_to_page(pfn), group, nr_pages);
+ 
+ 	if (node_arg.nid >= 0)
+-		node_set_memory_state(nid);
++		node_set_memory_state(nid, NODE_DATA(nid)->memory_features);
+ 	/*
+ 	 * Check whether we are adding normal memory to the node for the first
+ 	 * time.
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index f21b3dbcc92a..99a45fd04ac5 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1585,6 +1585,9 @@ int __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+ 	pgdat->node_start_pfn = 0;
+ 	pgdat->node_present_pages = 0;
+ 
++	/* memory is common unless marked private */
++	pgdat->memory_features = NODE_MEMORY_FEAT_ALL;
++
+ 	/*
+ 	 * Hot-unplug can leave per-cpu vmstat deltas unfolded (folders skip
+ 	 * offline nodes) - reconcile this at online. Foreign access to counters
+@@ -1743,6 +1746,8 @@ static void __init free_area_init_node(int nid)
+ 
+ 	pgdat->node_id = nid;
+ 	pgdat->node_start_pfn = start_pfn;
++	/* memory is common unless marked private */
++	pgdat->memory_features = NODE_MEMORY_FEAT_ALL;
+ 
+ 	if (start_pfn != end_pfn) {
+ 		pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
+@@ -1768,7 +1773,7 @@ static void __init check_for_memory(pg_data_t *pgdat)
  {
--	return node == 0;
-+	return node == 0 && state != N_MEMORY_PRIVATE;
- }
+ 	enum zone_type zone_type;
  
- static __always_inline void node_set_state(int node, enum node_states state)
-@@ -493,13 +497,13 @@ static __always_inline void node_clear_state(int node, enum node_states state)
+-	node_set_memory_state(pgdat->node_id);
++	node_set_memory_state(pgdat->node_id, pgdat->memory_features);
  
- static __always_inline int num_node_state(enum node_states state)
- {
--	return 1;
-+	return state != N_MEMORY_PRIVATE;
- }
- 
- #define for_each_node_state(node, __state) \
--	for ( (node) = 0; (node) == 0; (node) = 1)
-+	for ((node) = 0; (node) == 0 && (__state) != N_MEMORY_PRIVATE; (node) = 1)
- 
--#define first_node_state(state)	0
-+#define first_node_state(state)	((state) == N_MEMORY_PRIVATE ? MAX_NUMNODES : 0)
- static __always_inline unsigned int next_node_state(int nid, enum node_states state)
- {
- 	return MAX_NUMNODES;
+ 	for (zone_type = 0; zone_type <= ZONE_MOVABLE - 1; zone_type++) {
+ 		struct zone *zone = &pgdat->node_zones[zone_type];
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 1ec7d8000792..50336eb58edf 100644
+index 50336eb58edf..3a7c12fec906 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -217,6 +217,7 @@ void __meminit node_set_memory_state(int nid)
+@@ -209,10 +209,15 @@ nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
+ };
+ EXPORT_SYMBOL(node_states);
+ 
+-void __meminit node_set_memory_state(int nid)
++void __meminit node_set_memory_state(int nid, unsigned long features)
+ {
++	WARN_ON_ONCE(!node_memory_features_valid(features));
++
+ 	node_set_state(nid, N_MEMORY);
+-	node_set_state(nid, N_MEMORY_COMMON);
++	if (features & NODE_MEMORY_FEAT_COMMON)
++		node_set_state(nid, N_MEMORY_COMMON);
++	else
++		node_set_state(nid, N_MEMORY_PRIVATE);
+ }
  
  void __meminit node_clear_memory_state(int nid)
- {
-+	node_clear_state(nid, N_MEMORY_PRIVATE);
- 	node_clear_state(nid, N_MEMORY_COMMON);
- 	node_clear_state(nid, N_MEMORY);
- }
 
 -- 
 2.56.1
