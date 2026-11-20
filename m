@@ -1,63 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAA9606A32A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF9F606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CYfOO2Sr
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ta+s3Er+
 Received: by kanga.kvack.org (Postfix)
-	id 720E96B05F5; Fri, 20 Nov 2026 03:58:22 -0500 (EST)
+	id 8CF216B05F7; Fri, 20 Nov 2026 03:58:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D1076B05F7; Fri, 20 Nov 2026 03:58:22 -0500 (EST)
+	id 87FCA6B05F9; Fri, 20 Nov 2026 03:58:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60E126B05F8; Fri, 20 Nov 2026 03:58:22 -0500 (EST)
+	id 7BCD76B05FA; Fri, 20 Nov 2026 03:58:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4009F6B05F5
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:58:22 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3A67120E03
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:58:21 +0000 (UTC)
-X-FDA: 85454896002.29.910CEDB
-Received: from mta0.migadu.com (out-76.mta0.migadu.com [91.218.175.76])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BBA0E180003
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:58:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CYfOO2Sr;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.76 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C83E6B05F7
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:58:41 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 43B12160E4C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:58:40 +0000 (UTC)
+X-FDA: 85454896800.03.D97D04F
+Received: from mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3DB9120007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:58:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ta+s3Er+;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795165100;
-	b=dlIjlzgdMvregue61+snCw+1TrXD7tlZakDKr5bwAFd+MYDZ8BXRPaMlk9X/6b+QUy0SLS
-	ea9iXgXys7vdjBv86vodTZ3Ily7owWpZskaSkcqvunjnn890JSuDxVCva/D8C+TUvMBG5w
-	mxxvOyIzxaM4zxwIeoYYRqE9HsKpzC4=
+	t=1795165118;
+	b=ND0lG+OmziwL+T+iPsc67TpUlowzmstYncQ1XXej8xjsUFOQcvuDf1nqRSNwjgaqklSXpn
+	+gcMA2FVdPabTPLvnq80MgBB/ZFPuRWj3Nq2S/oULzcW8Fmdnz5BoeWSW1Q2Ut6DSAx8B8
+	4N+IsrI/CAD3aTXkPYh2pJ5iIM+FRnQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795165100;
+	s=arc-20220608; t=1795165118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bax/U5tAK6MFKND51+7KIgCTcGG9l8X/xODSNXhEboQ=;
-	b=gvhENmd8P7dBpWJVYa9ZJjRBBdEgeroIUZlGRzzZlektss3ssKXiKgqA9Hm/t11gYmX+jr
-	a4O331lP8dFFObKAppx5HwkqVicE52QvcRmnf2gE8aPH2gX7RP58IHiGCctv0NzwJh7Sso
-	uGCA8JcZdYiIL/E8lae2JkK+EEIBNxk=
+	bh=OuPSD3GupdY1UOkHbFpE0jggKIddGTwVd8Fo4O7dK18=;
+	b=t9stmItoA/suwCk+eKG5W/NBDqHs4a1wlcrImghbaQwF0riFwfAZZsmo+y6HMMESTqd/ne
+	sp+YmITQZJngVZc+/SDXM2yUfObHVvKm+5JAqioKtdZ35u6luUNLOLdvtbX/P7sYa6VGsn
+	6v+L421zsazmZCTHo1DVeO7L0wn9qcI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CYfOO2Sr;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.76 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ta+s3Er+;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=AYAH/TqlMiT9ARWUhQ4PinqFKp/jB3HVJClWXBTv9DQ=;
+DKIM-Signature: a=rsa-sha256; bh=ONc9EIP+v45mGhMaHos2kwDmsXcns+OpSu8Mmth1xjo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795165098; v=1; x=1795769898;
- b=CYfOO2Sros2ZqLvdm1HbJ2Zme4gktlJwYdcKf3rllEfwQHF/OZbzNkuuCLuiC7paEY9xSbpP
- rYaa7h/dTAQhMk/Y6fhuob6mH9BVMg1yRla42DqWAQyq736FjE1fRLguqwGhc3YcZDzo+ABtAG4
- yacnqpOGgnm6c8/f0s1cD0OA=
+ t=1795165116; v=1; x=1795769916;
+ b=ta+s3Er+Sqq1/qaLPZJA0IpQvjkKYo7WcGgvHXzV24ZGZDxlW4Y/Vn7Jt8NDGrAqx67BLHdm
+ T8biI2cVJaXfbu9u46BMFyWcDJr96wmUON5C8rFlaaEYOqSTMYTexDUzqmXdz5oqTGzmrPJ/EpY
+ MDLjjvkAfS3Rtd2ycIzC0VC0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 5770758a43854674;
-	Fri, 20 Nov 2026 08:58:18 +0000
-X-Mizu-Trace-ID: 5770758a43854674
+Received: by mta11.migadu.com with ESMTPS id 3471ce2128c189fa;
+	Fri, 20 Nov 2026 08:58:36 +0000
+X-Mizu-Trace-ID: 3471ce2128c189fa
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
@@ -73,9 +73,9 @@ Cc: akpm@linux-foundation.org,
 	baoquan.he@linux.dev,
 	baolin.wang@linux.alibaba.com,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
-Date: Fri, 20 Nov 2026 16:58:03 +0800
-Message-ID: <20261120085806.781225-2-baoquan.he@linux.dev>
+Subject: [PATCH 2/4] mm/mglru: add PUD-level Bloom filter state and generic helpers
+Date: Fri, 20 Nov 2026 16:58:04 +0800
+Message-ID: <20261120085806.781225-3-baoquan.he@linux.dev>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261120085806.781225-1-baoquan.he@linux.dev>
 References: <20261120085806.781225-1-baoquan.he@linux.dev>
@@ -83,18 +83,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: k5bkbrucjeotyb65wro8pdm1d615nqkp
 X-Rspam-User:
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BBA0E180003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: bd5mwtmsygayyqno6rhcompd7uc8xcm3
-X-HE-Tag: 1795165099-473463
-X-HE-Meta: U2FsdGVkX18Ca8xApPLzOtiod7L+q0AAo48wB+p40d8J3qmJyWwoJiyna1Mn/YtLxkA4wucIb5eQrtmrwjsaAH8o3zAXXfpUGB7A7zqjWe9jiIXdWVhKFZSYN05ESgzpeNrbxIpO9vLVOBRKanyhtiOjD8nUACbqzwskICwVSJXDSUO5/SPn6w/K/R32xzopJ1UCnxkNwAr2n5y7BbY30KJgJJWRHNkVKxOQjn5xwgzcOv5QR7GTz5+BRIX0PCMCSGspmruBZMj7egwopnENbhIUA/crPnxdFdEcSA0kcK9OCZEDxt2c1PHwky1/A44+zDc6sbKkRpRorTqbITlSzQ+/n/TSUxYByPgifQbal5RGQBJPWeWpOe0CPrYrj1Sm1dRmV/S5LMWTA0wHj8Hn/FCVPl4lVjGohIUPUkQUsh6b1gJD/5X25VJlyfhCbKla+jiMcvj9FOb6vjPydHmDb7R4q8JI9hX/zC1a82jzi6332hbJKtRHptvEMDCunZ+0OHQ/NNhZ+8dMM15qa4EqiSocjF0hX8u3TsCKmVM9Y3VNIKmPZwnX8ltFcDlTdGdhimXdF4yGK8gphfsI0yQhIwYn0t51p/M5STdCFQw/+WfJcNiZzoGFTj2CPm7iC7KBQTrx1cgil9eA2zuyUtKZJbx0wChmnSlbNmyRa/2FDILxoSzolkOhaIvV2iGRfRVf+f64vwmV5uaTRykqJeTHdiZHZHdJEZhVk3XxCxkSLYuXGUekRhuiN7PQpBVbTnwD1w3lSSh2l68lIJvIuUQhC2q9WsyeBrzaPJ+Lo9qBQKMe+gnIpC9EuHc2auaELMcgHL9nQSOkL40r9PXvV7vTVt+MDbiU8jre1vyzRHDmxcQvZlv4g4K5pXE9otSIKDpu7Hi4j3ajjyvs+i6QAxqjNBqZC/IuSHXmWEOWPdgTdZ6yRh9Uo+l6jDZTyTXzLq8CMFl5WQHY39xgb2tdINj
- tlvMxw0e
- +4g4fqMK1NFIGc4Y6Pv/AbD7uaTMqUwabFgsEX/ikriwSRQNEQYzd9OLGu3UG2grNLbMuwU6SbZgH7GXsBFfjyS8k1Sfn54NKJubfCNCRDziqob5zov7pzDf6WGCLFLH5OX0M2fb9cKMLyzwiYpLmxd8PtOU9Q2eqee+Dz+TBExiHxs+NjvvxfwXmxDgFFeOU6/T05TLZY1xpgPKhRNYcdnV4fj//n5GGHGy3FB6Ar8tROQ1m2oitz4G21zjmKAVspGcOVrZAS5EwP3QPmbka4p2qCJbVD2b/fYXAPb7c1VlBicUPGx5bCdLs1G5218Gjei9gbKRibhWQMRHAsvi/uibnp+WUW5RrQ8bDhu3PwE7QxZpfSVI+vH0Vn2H+vc0rj5DLjeobGdfdwxJMbfpM+YdIB0t4Je5QpaPmLk20/gKvPK9Z+3L2sneeDvdk0HchclHd8NbvhqoOjf773W+e+YmK9si7n9UMyRKtZluhnjR/GhtSeTYmYPU6b3HbQgH/hpMv
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3DB9120007
+X-HE-Tag: 1795165118-147605
+X-HE-Meta: U2FsdGVkX1/dVShQsfczW2GCWVr1WJQ93FrjBpZw3i9ya97xVI4PtWpsqVV5HWg54+UKE6Qwpe8yP5LvjIr7++2g9D2ZkmuIVqRt5bNhmQq8eKRngN2f+hCfAeKIm8rZ7+c/R8MWOg6ik1aP1ZjPKHvy1/8pslaQoDmvKZE06BtT317IdoAktd0KgtZPPXoPQxlI0iVNVQoOQwulzOu8I3m67lMhRQ2swmGKA3bSQqKiumUxv2+HgC9dwFCFYevVPeFE4UjhOfPfO28uLFusYw5BK4Ijc6MHDy1kRdQCTIoH4MwZGohYJi+xM1zzolL5RBOTB2CqZhOCZdXyHHbwFh0yz1jgquQNtz7kSr3b6as/zJYy6KGxQAHpWfK+8M75okcfdqnwV6U+TdPPIrOroWuuYGBExdeRi0og1/y/dy14y1qu6hJMkm2NtYf6m1WI15eqO8Dt4BWiZuGJwMpgI7IhGvCObpsOJKkhcjdMI8NrcI+6cE6bQrw0GNPzy62000SByI/zIQivM8dnOT2758B3PxLbwCqWa1hbAFkdCdYA9nV+NmmHBu7zPLyP0BcgXtgW18SSF+2nllUhus45I0SOxv/wLxjZMFugPK+t1PuLrrWTVcM1H4VIBCIeHedZKvbYFSCZ0s429UcjPdbmI5f0eMoCqdrqlGpUTttDSWQa5ShiiDG7QivAZ8QFFJJTLHDjW0/7whvmGc6xjQv5e8XGvpEF4V9YDSaSp1DYlAfgwH8GI6QTkG7BaP5MPwDgtSyXlYOURJO1G3NV28/+oANx8QmzwxM7eAWeAW7lUeiPkRJM2WRfCYo5FdGEoYFWVKuK1rJGwTqWrIHqJqLYHWlF124GBzNuztN4WRw1uja7aa76aeY1teQg5xQBYFZte5QXcsMHQtP8BXo51yarpgQZmFgtg43gn8NWs0fswX8a7PdTHOrWJLoJ+iZh/r38eb4tDl23BKQCrXDAxTS
+ vW97m7TJ
+ sqOCSLT0R2dH2WZwP+dUX6PecZG8eaog79TT8YFH4VUZEWXO6AVpDFBRPNogEHTZaOCBzF+cMgCtgwMUosTcHGgCrx3qv3iYWNglvlNkuJIhosggi7utncdpcRb1Kmhhoz/ty3vhN+P/TF9b5pqzntuwHLXOcXfp3nQl+fAD2UOUQL3jKTSR4UZXjjpulc0oeRZYZ3E9r1X1deCxZvJMkzAtDoeIpPAzyuYNb/+tihCbL/Kav5VMOFuesF0JiPko/XxJKYICIfj5tejJTij07aUQB6qaJ3JVbrYRTiplRbATWArXRCGsIG+bKDnCgeewqh+VWKHR7vopGWJWriQfxpdOzftRwAP/clvbo603OBGFhFL3MqhyqQrVF7AUtShXQ+KuO+sH7Ier/DMWKtPoNVL9swv5OIfJXlyoO0nCnkFCYH6TjEEteQ+kCZu2ywyzE5pTeOvq4LdOLROduxlxQVHiG2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,162 +105,185 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Baoquan He <hebaoquan@kylinos.cn>
 
-Add per-walk counters to measure empty aging walks which traverse
-an mm's page tables but find no folio for the current lruvec (node+memcg).
-These are common on multi-NUMA node systems because lru_gen_use_mm() marks
-an mm for all nodes at every context switch.
+Generalize the Bloom filter state and helpers so that another filter
+level can reuse the same hash, double-buffering and reset logic.
 
-New counters (accumulated in mm_state->stats[]):
+Replace the PMD-level filter array with a two-dimensional filters array
+indexed by level, and add BLOOM_FILTER_PUD and BLOOM_FILTER_PMD. The
+PUD-level filters operate at PUD granularity and generalize the
+suppression one level up: when all PMDs under a PUD fail the PMD-level
+filter, the whole PMD iteration can be skipped. Cross-node empty walks
+are the most visible case: a foreign mm's PUDs have no young entries for
+this lruvec, so the entire PMD iteration is pure waste.
 
-  MM_LEAF_ASSOCIATED   - leaf entries whose folio is in this lruvec
-  MM_WALK_TOTAL        - page-table walks completed
-  MM_WALK_EMPTY        - walks that found no folio in this lruvec
-  MM_LEAF_EMPTY_WALKS  - leaf entries scanned during empty walks
+test_bloom_filter(), update_bloom_filter() and reset_bloom_filter() take
+the level now and use mm_state->filters[level][gen] directly.
 
-A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, and the
-debugfs lru_gen output ("TYFALWEE") exposes the new counters.
+No behavior change yet. No PUD-level bitmap is allocated in this patch;
+the next patch fills and uses them for the first time.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Kairui Song <kasong@tencent.com>
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/mmzone.h |  4 ++++
- mm/trace_vmscan.h      | 28 ++++++++++++++++++++++++++++
- mm/vmscan.c            | 34 ++++++++++++++++++++++++++++++----
- 3 files changed, 62 insertions(+), 4 deletions(-)
+ include/linux/mmzone.h | 10 ++++++++--
+ mm/vmscan.c            | 39 ++++++++++++++++++++++-----------------
+ 2 files changed, 30 insertions(+), 19 deletions(-)
 
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 6a2ad0cff795..902f4877fd0c 100644
+index 902f4877fd0c..a3a13a77ca8e 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -579,6 +579,10 @@ enum {
- 	MM_LEAF_YOUNG,		/* young leaf entries */
- 	MM_NONLEAF_FOUND,	/* non-leaf entries found in Bloom filters */
- 	MM_NONLEAF_ADDED,	/* non-leaf entries added to Bloom filters */
-+	MM_LEAF_ASSOCIATED,	/* young leaf entries whose folio is in this lruvec */
-+	MM_WALK_TOTAL,		/* page-table walks completed */
-+	MM_WALK_EMPTY,		/* walks that found nothing young for this lruvec */
-+	MM_LEAF_EMPTY_WALKS,	/* leaf entries scanned during empty walks */
- 	NR_MM_STATS
+@@ -589,6 +589,12 @@ enum {
+ /* double-buffering Bloom filters */
+ #define NR_BLOOM_FILTERS	2
+ 
++enum bloom_filter_level {
++	BLOOM_FILTER_PUD,
++	BLOOM_FILTER_PMD,
++	BLOOM_FILTER_LEVELS,
++};
++
+ struct lru_gen_mm_state {
+ 	/* synced with max_seq after each iteration */
+ 	unsigned long seq;
+@@ -596,8 +602,8 @@ struct lru_gen_mm_state {
+ 	struct list_head *head;
+ 	/* where the last iteration ended before */
+ 	struct list_head *tail;
+-	/* Bloom filters flip after each iteration */
+-	unsigned long *filters[NR_BLOOM_FILTERS];
++	/* Bloom filters flip after each iteration, indexed by level */
++	unsigned long *filters[BLOOM_FILTER_LEVELS][NR_BLOOM_FILTERS];
+ 	/* the mm stats for debugging */
+ 	unsigned long stats[NR_HIST_GENS][NR_MM_STATS];
  };
- 
-diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-index 9dafdb5bd3ce..9366416faf5a 100644
---- a/mm/trace_vmscan.h
-+++ b/mm/trace_vmscan.h
-@@ -508,6 +508,34 @@ TRACE_EVENT(mm_mglru_aging,
- 		__print_array(__entry->nr_anon, MAX_NR_GENS, sizeof(unsigned long)),
- 		__print_array(__entry->nr_file, MAX_NR_GENS, sizeof(unsigned long)))
- );
-+TRACE_EVENT(mm_vmscan_lru_gen_walk,
-+
-+	TP_PROTO(int nid, unsigned long seq, int leaf_total,
-+		 int leaf_associated, bool empty),
-+
-+	TP_ARGS(nid, seq, leaf_total, leaf_associated, empty),
-+
-+	TP_STRUCT__entry(
-+		__field(int, nid)
-+		__field(unsigned long, seq)
-+		__field(int, leaf_total)
-+		__field(int, leaf_associated)
-+		__field(bool, empty)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->nid = nid;
-+		__entry->seq = seq;
-+		__entry->leaf_total = leaf_total;
-+		__entry->leaf_associated = leaf_associated;
-+		__entry->empty = empty;
-+	),
-+
-+	TP_printk("nid=%d seq=%lu leaf_total=%d leaf_associated=%d empty=%d",
-+		__entry->nid, __entry->seq, __entry->leaf_total,
-+		__entry->leaf_associated, __entry->empty)
-+);
-+
- #endif /* CONFIG_LRU_GEN */
- 
- TRACE_EVENT(mm_vmscan_write_folio,
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bc7579d47f9b..36e0946bf2cc 100644
+index 36e0946bf2cc..a4c64a190391 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -3584,6 +3584,8 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 		if (!folio)
+@@ -2819,14 +2819,14 @@ static void get_item_key(void *item, int *key)
+ 	key[1] = hash >> BLOOM_FILTER_SHIFT;
+ }
+ 
+-static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
+-			      void *item)
++static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
++			      unsigned long seq, void *item)
+ {
+ 	int key[2];
+ 	unsigned long *filter;
+ 	int gen = filter_gen_from_seq(seq);
+ 
+-	filter = READ_ONCE(mm_state->filters[gen]);
++	filter = READ_ONCE(mm_state->filters[level][gen]);
+ 	if (!filter)
+ 		return true;
+ 
+@@ -2835,14 +2835,14 @@ static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long s
+ 	return test_bit(key[0], filter) && test_bit(key[1], filter);
+ }
+ 
+-static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
+-				void *item)
++static void update_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
++				unsigned long seq, void *item)
+ {
+ 	int key[2];
+ 	unsigned long *filter;
+ 	int gen = filter_gen_from_seq(seq);
+ 
+-	filter = READ_ONCE(mm_state->filters[gen]);
++	filter = READ_ONCE(mm_state->filters[level][gen]);
+ 	if (!filter)
+ 		return;
+ 
+@@ -2854,12 +2854,13 @@ static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
+ 		set_bit(key[1], filter);
+ }
+ 
+-static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
++static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
++			       unsigned long seq)
+ {
+ 	unsigned long *filter;
+ 	int gen = filter_gen_from_seq(seq);
+ 
+-	filter = mm_state->filters[gen];
++	filter = mm_state->filters[level][gen];
+ 	if (filter) {
+ 		bitmap_clear(filter, 0, BIT(BLOOM_FILTER_SHIFT));
+ 		return;
+@@ -2867,7 +2868,7 @@ static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
+ 
+ 	filter = bitmap_zalloc(BIT(BLOOM_FILTER_SHIFT),
+ 			       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
+-	WRITE_ONCE(mm_state->filters[gen], filter);
++	WRITE_ONCE(mm_state->filters[level][gen], filter);
+ }
+ 
+ /******************************************************************************
+@@ -3110,7 +3111,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+ 	spin_unlock(&mm_list->lock);
+ 
+ 	if (mm && first)
+-		reset_bloom_filter(mm_state, walk->seq + 1);
++		reset_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1);
+ 
+ 	if (*iter)
+ 		mmdrop(*iter);
+@@ -3766,7 +3767,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
+ 		}
+ 
+-		if (!walk->force_scan && !test_bloom_filter(mm_state, walk->seq, pmd + i))
++		if (!walk->force_scan &&
++		    !test_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq, pmd + i))
  			continue;
  
-+		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
-+
- 		if (folio_test_large(folio)) {
- 			const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+ 		walk->mm_stats[MM_NONLEAF_FOUND]++;
+@@ -3777,7 +3779,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 		walk->mm_stats[MM_NONLEAF_ADDED]++;
  
-@@ -3591,6 +3593,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 						   max_nr, FPB_MERGE_YOUNG_DIRTY);
- 			total += nr - 1;
- 			walk->mm_stats[MM_LEAF_TOTAL] += nr - 1;
-+			walk->mm_stats[MM_LEAF_ASSOCIATED] += nr - 1;
- 		}
+ 		/* carry over to the next generation */
+-		update_bloom_filter(mm_state, walk->seq + 1, pmd + i);
++		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i);
+ 	}
  
- 		if (!test_and_clear_young_ptes_notify(args->vma, addr, cur_pte, nr))
-@@ -3682,6 +3685,8 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 		if (!folio)
- 			goto next;
+ 	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
+@@ -4436,8 +4438,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
  
-+		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
-+
- 		if (!pmdp_test_and_clear_young_notify(vma, addr, pmd + i))
- 			goto next;
+ 	/* feedback from rmap walkers to page table walkers */
+ 	if (mm_state && suitable_to_scan(i, young))
+-		update_bloom_filter(mm_state, READ_ONCE(lruvec->lrugen.max_seq),
+-				    pvmw->pmd);
++		update_bloom_filter(mm_state, BLOOM_FILTER_PMD,
++				    READ_ONCE(lruvec->lrugen.max_seq), pvmw->pmd);
  
-@@ -4158,8 +4163,29 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
+ 	mem_cgroup_put(memcg);
  
- 	do {
- 		success = iterate_mm_list(walk, &mm);
--		if (mm)
-+		if (mm) {
-+			bool empty = false;
-+
- 			walk_mm(mm, walk);
-+			/*
-+			 * A walk that traversed page tables but found nothing
-+			 * young for this lruvec (node+memcg) is pure waste:
-+			 * the PUD-level filter will skip it next generation.
-+			 */
-+			if (walk->mm_stats[MM_LEAF_TOTAL]) {
-+				walk->mm_stats[MM_WALK_TOTAL]++;
-+				if (walk->mm_stats[MM_LEAF_ASSOCIATED] == 0) {
-+					walk->mm_stats[MM_WALK_EMPTY]++;
-+					walk->mm_stats[MM_LEAF_EMPTY_WALKS] +=
-+						walk->mm_stats[MM_LEAF_TOTAL];
-+					empty = true;
-+				}
+@@ -6153,6 +6155,7 @@ void lru_gen_init_memcg(struct mem_cgroup *memcg)
+ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
+ {
+ 	int i;
++	int level;
+ 	int nid;
+ 	struct lru_gen_mm_list *mm_list = get_mm_list(memcg);
+ 
+@@ -6170,9 +6173,11 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
+ 		if (!mm_state)
+ 			continue;
+ 
+-		for (i = 0; i < NR_BLOOM_FILTERS; i++) {
+-			bitmap_free(mm_state->filters[i]);
+-			mm_state->filters[i] = NULL;
++		for (level = 0; level < BLOOM_FILTER_LEVELS; level++) {
++			for (i = 0; i < NR_BLOOM_FILTERS; i++) {
++				bitmap_free(mm_state->filters[level][i]);
++				mm_state->filters[level][i] = NULL;
 +			}
-+			trace_mm_vmscan_lru_gen_walk(
-+					lruvec_pgdat(lruvec)->node_id, walk->seq,
-+					walk->mm_stats[MM_LEAF_TOTAL],
-+					walk->mm_stats[MM_LEAF_ASSOCIATED], empty);
-+		}
- 	} while (mm);
- done:
- 	if (success) {
-@@ -5804,14 +5830,14 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
- 
- 	seq_puts(m, "                      ");
- 	for (i = 0; i < NR_MM_STATS; i++) {
--		const char *s = "xxxx";
-+		const char *s = "xxxxxxxx";
- 		unsigned long n = 0;
- 
- 		if (seq == max_seq && NR_HIST_GENS == 1) {
--			s = "TYFA";
-+			s = "TYFALWEE";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		} else if (seq != max_seq && NR_HIST_GENS > 1) {
--			s = "tyfa";
-+			s = "tyfalwee";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
  		}
- 
+ 	}
+ }
 -- 
 2.52.0
 
