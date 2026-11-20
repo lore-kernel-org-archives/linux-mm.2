@@ -1,126 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB5D60A2611
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C929606A33F
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JbiqBCMR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGNmkv8B
 Received: by kanga.kvack.org (Postfix)
-	id 8BC4E6B05C2; Fri, 20 Nov 2026 13:46:42 -0500 (EST)
+	id 634F06B05B0; Fri, 20 Nov 2026 13:52:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8943A6B05C8; Fri, 20 Nov 2026 13:46:42 -0500 (EST)
+	id 5E1636B05B1; Fri, 20 Nov 2026 13:52:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AAC66B05C9; Fri, 20 Nov 2026 13:46:42 -0500 (EST)
+	id 4D0996B05B3; Fri, 20 Nov 2026 13:52:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 516D36B05C2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:46:42 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF5511C206C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:46:41 +0000 (UTC)
-X-FDA: 85456378602.24.D74C035
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B2B86B05B0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:52:58 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8B749A015A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:52:57 +0000 (UTC)
+X-FDA: 85456394394.21.3AD0598
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4100E1A0005
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:46:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbiqBCMR;
+	by imf28.hostedemail.com (Postfix) with ESMTP id E69B1C000A
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:52:55 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGNmkv8B;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795200400;
-	b=p1SlR+0VSyQzg7JeovTdH5wtTl75IvuDxGkQPQVp0uu8E7c22gUxoGIXbjy+y9ajv9VKWr
-	vuBgR5gsNX3iNkN+osF1nRV+Mh17San86YW39/uPSdMeP8wSlN/+RfKYpfUvNqDHjaBJT4
-	a1vikdKNsZQKh+hZNJ5xQn2CObvBE+w=
+	t=1795200776;
+	b=uHe3CAevNBTSum8VvBAKH90Iy8W9aIgBI/b68lXxP+RRy+DM84ljsxS+4fzp+ghjnAT6Dp
+	RlnM6+FqQ5jsv0q1rFE6GVxSGMbXTaeMGVc6qJlrC2eSQg41bNusFXLtsW7CEkdlzzgbDV
+	KZrQvobIVEuIpqATP8l9b99+6Kz71zA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795200400;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3ab/tweOrN+MvabFdrOgEaN20+lKttHF+RU7XMxTAZU=;
-	b=eS6Zvi1oSmAFx/T4y2cBuSReDQbUp+YOLg9fGrtgpiHSzbgqkWTG4ABOd+xAyT5XFOM9J/
-	nQdzjyhTxCgUTc3b4GxenTeO6P1DgiATV2yUwGAdFWxnyjW8Y+r3p3i4SxhQPsns11w9+s
-	J86hEM8HLkDdJDaQK1j7jN3DZu8UIyg=
+	s=arc-20220608; t=1795200776;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vFu71F4VU/EdQcXZhad8GczLSYIVyzi2P+9OjoRpNEo=;
+	b=2zXcK7G4/2mkn50l5U5fZgP881B28QmjHJghRtwvqFePMbyPXBfoNQ8xvFasqqIh3/JDBA
+	f4BSi7qFuNeTthaCzXR/aeCQSMWEctv4GjLv70txi+h1NuwInUVKKLUuTBOEJUPQYTHtJs
+	ZSqWB5hwEht/W40Kf1qkY5id9nBUCc0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbiqBCMR;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGNmkv8B;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 601AD40343;
-	Fri, 20 Nov 2026 18:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381CA1F000D0;
-	Fri, 20 Nov 2026 18:46:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E0DC44284;
+	Fri, 20 Nov 2026 18:52:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C761F000C0;
+	Fri, 20 Nov 2026 18:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795200398;
-	bh=3ab/tweOrN+MvabFdrOgEaN20+lKttHF+RU7XMxTAZU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JbiqBCMRN70hevS/OOua0fjhZnHdw/pmd7L8Q6ILBCKtNg5dlCJx1IVH+9Xa/33OI
-	 4wYMjBzTxWLRN1SsHDQc/cl/OrAslNyOkXXKgRJep4btSzt9WhLpXnvteASXHMyRRH
-	 9Aw3PcAcYf78PtDKGVIcfoCbb92Q48CIjnVMfgLFCq+uhW8bnQN/g9jo3yA8WfoinN
-	 N6zDarwrL+oB4GTCngFvsxH5C8zv6EXBiELD8Tm2zewp1JXVubelyh4QFkJXxrQINn
-	 l+h6q27iUnnM3XgOb4EqaZjq5CdyPVv8PKC0Yp04zoQYj05q4HDhflrr5MsWlR3sEl
-	 FlqkzUokUwrCg==
-Message-ID: <sashiko-outbox-225872@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 40/60] mm/page_alloc: let MM callers select the local
- private zonelist
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?R3JlZ29yeSBQcmljZSAoTWV0YSk=?= <gourry@gourry.net>, "Yury
- Norov" <yury.norov@gmail.com>, "Rasmus Villemoes" <linux@rasmusvillemoes.dk>, "David
- Hildenbrand" <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Michal
- Hocko" <mhocko@suse.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Oscar
- Salvador" <osalvador@suse.de>, "Johannes Weiner" <hannes@cmpxchg.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Zi
- Yan" <ziy@nvidia.com>, "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael
- J. Wysocki" <rafael@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Johan
- Hovold" <johan@kernel.org>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie
- Kim" <rakie.kim@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Matthew
- Brost" <matthew.brost@intel.com>, "Byungchul Park" <byungchul@sk.com>, "Alistair
- Popple" <apopple@nvidia.com>, "SJ Park" <sj@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Peter
- Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent
- Guittot" <vincent.guittot@linaro.org>, "Dietmar Eggemann" <dietmar.eggemann@arm.com>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Ben Segall" <bsegall@google.com>, "Mel
- Gorman" <mgorman@suse.de>, "Valentin Schneider" <vschneid@redhat.com>, "K
- Prateek Nayak" <kprateek.nayak@amd.com>, "Kees Cook" <kees@kernel.org>, "Kairui
- Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen" <axelrasmussen@google.com>, "Yuanchu
- Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Michal Hocko" <mhocko@kernel.org>, "David
- Rientjes" <rientjes@google.com>, "Pavel Machek" <pavel@kernel.org>, "Len
- Brown" <lenb@kernel.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
- Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Xu Xin" <xu.xin@linux.dev>, "Chengming
- Zhou" <chengming.zhou@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Pedro
- Falcato" <pfalcato@suse.de>, "Jann Horn" <jannh@google.com>, "Chris Li" <chrisl@kernel.org>, "Kemeng
- Shi" <shikemeng@huaweicloud.com>, "Nhat Pham" <nphamcs@gmail.com>, "Youngjun
- Park" <youngjun.park@lge.com>, =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNs?=
- =?utf-8?b?ZSk=?= <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Waiman
- Long" <longman@redhat.com>, "Ridong Chen" <ridong.chen@linux.dev>, "Tejun
- Heo" <tj@kernel.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Dan
- Williams" <djbw@kernel.org>, "Vishal Verma" <vishal.l.verma@intel.com>, "Dave
- Jiang" <dave.jiang@intel.com>, "Alison Schofield" <alison.schofield@intel.com>, "Shuah
- Khan" <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, damon@lists.linux.dev, nvdimm@lists.linux.dev
-In-Reply-To: <20261120-private_nodes_v6-v1-40-74f5f9a115c2@gourry.net>
-References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
- <20261120-private_nodes_v6-v1-40-74f5f9a115c2@gourry.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 20 Nov 2026 18:46:33 +0000
-X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4100E1A0005
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1795200774;
+	bh=vFu71F4VU/EdQcXZhad8GczLSYIVyzi2P+9OjoRpNEo=;
+	h=From:To:Cc:Subject:Date;
+	b=iGNmkv8ByFAtY7Lm/PR+Fg4PUMeb2KRjz4XSN/5mJuVUXppzYRSjYAKIzjQl4jm1V
+	 +ugc2KySZr5runzMywFHgV2FKrFo2rd6RUCGXuxAP7DzUFFUyUl/NMnrbBSRaffJZD
+	 cE9B9XLUH12iMVnVosV1hIuGgZFmL5inkuIUKSup6Zxujcdi1vRRDnM21mW21sunnO
+	 qoYeiOmE/wFf7Y16T4swiyol6EmXZHCBn5jlBcsOozuetRyN6nmhXaBkLkpqjGDLa3
+	 D3aW86B34td0Kz2CtXE41VH349f0EGhcZ+LJxRysbYTvQ2wTCKFPM+f9HXhioNoMnr
+	 HZRUKc3GdYugQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: David Hildenbrand <david@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Cc: larips <larips950@gmail.com>,
+	stable@vger.kernel.org,
+	Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	linux-mm@kvack.org
+Subject: [PATCH 1/2] [v3] mm/mempolicy: fix copy_nodes_to_user() for odd inputs
+Date: Fri, 20 Nov 2026 19:52:12 +0100
+Message-ID: <20261120185248.823415-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.53.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E69B1C000A
+X-Stat-Signature: ruyz9q8fpcq4icmpp57omrywmwg46bsf
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 5cnhbi6hfnf4599dtj6hfmq8bc9954pe
-X-HE-Tag: 1795200400-256944
-X-HE-Meta: U2FsdGVkX1/rYUa5VIH589uznlXyPZk77snpqBi8Na3VvW4d+pFc5aL7QprpxoQsbgZhDrnlKJhfUyQCCOwGXWTu3klBZNvOy7my1smku298dhWWtx9JUg6Ar8N5EaKM1NNtqhTo3vr0ON7uvEvJdpHVCByoLPpKzbe3LWpCxJY2pv5a2PbaysMdqBKHQO6OV2a8EdohXCHMF422d/15hsny//2gZ76rETQKR+n8GAQyQIwddEWZ481bpaxzkfz0tZ3dcERwjw672nwt1DxsCVye4LCAXHf2lPL5bd4QjQvVqtSMc8WubczBDwSBpUQULOOp6+24ny2iFl6y/5c3c1NPDV3WkXn6Ni4YvhSn/gvkQTNp2jx0AjBxCkdCOlfvX4r3RtF538BUdX5soDd7939NKfI2O7FLX0EVp4Jpn5b5jPmll/AjrRptx2R7QVqF3jFqmZTRnLrH7fg4FFuUt6OD89Upn+83/OZpTKzS3x4mRfXOf+FAZiqtHmd4xnd3f6l2qAbzhgXfhjiz39JxTLUQ5/drsz1dFYPxKMvpWT5dTG93BNTUOzRXw8dGKC7i1kRPB6f+nfal12gdYM+J5DJsfjobNSDaLlFsfnV5VfGqxDlPzjYcgSYOmdtiBi4UmVqtQjAYy9u028G0QC4yAXnRRA3BWOjZ+/Weslwb740LUBqNqXRtQwIBMLC9yotGimzUgRdeUhkP6Gu2SAxFBJdN4/RH6EKkXaUax1sI4tyV3KcaFT1euJs3Q4rh3syWr9lecEO4nsTrAwMwPXaLhnWhk6TWpDp6poIckO6jrMwAbHrH+wbtHc6oZFWHKdzfvxVteX5ujXqkLu9iLlyeXABdRqJtSg697nIsaLUwXlgHzq0dXhPFKHeWwfp6t9elAnB1JpjcTCiEd3MRRRIxREW7Y36sIIQ5i4cUs06DaNNn52d3bG0pX4UzQo4sImjMV5B03GEfLkhiDUeH+DR
- qPbeiSpB
- i3mcpKb3T6H3PASgaoVcUsffM8l1eO4oA3dHqnTBpLfKXUH1E28HPJ0HAbWZlsd8SD7pvta6fijjhlPByjhiao0LnqFOx67+JFqrA9VLFZiQd5w1tfKsH2R0HdWncbvBbbdfxygc6Gf5S+8qvHRzyjWOuOkanORgvBVMVc7C2yuBKshGCPEsS1ruGIbpz84bQ2ZKQYO1czStk+EgBXo/UBIZCrjR++7A0gBZIBB76ApKNvkdR+V2kdb49avuzhNS+IlsfQTDFbc61G91ydtTfmSWECFHu2tmmSUA5NTwcvgL7wzGfVw1Ld5kLt7iKXqkI1uuBkz+HfnEl/W1N6CqIw8puMH+Ue1ru98g3oVHw4v+iTSiq88o4ne/aKpjc/K7oQWG9vWEJi685+6DHkoytNZqyQYsaJwWfxVYakzxtngYEoDcadt6HDzpSRnQS2dmiEzveP9yiUU5oU/EYZFEp5c/D/iX34RRwTbGmDk/+jxPjTqDi5oUrP+QAf+izWlW+NBAP3vPOBXXPDC7kHLxf4Yb8dOAkM/LPFNrR0axjn5/gpvg9Pcu9WEp7XfjKALlWfLOBr4q/+NBuicpUCPb152FZjNvtKfvIViiBHRvZYmstzqzHrtpG9DTwebE9l9ayiq27O9LfvoJwZb/4QInn4D/WL9arA300UwdJftXWQYvloxymfMGbQhiTQkCEMgpJfQOuVmKgLk7zwYTktxYH1ILgqjFGPtLyWluLGDiyfZPBFZaWG5rTt38DxqNqIxFENHwGDeVY+DHLtChBvJUaVERgCmbJIhfIXDxiGgI0jQqJg/dX5BG1VgYOPQGefLbtKygZuoKADOIBA2vtM5govELJTMpiALBXVqdwrlByGooy7Aj6LaVouCqTEHxqttkd//1utzHC9Am/xD2Z5mq0ccosCRxs6LRrBudnsa9jxX9D7R8FCLm9gCLk1SOQqDLKwDckUts4E3MzybEeFdnN8Q9Guw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-HE-Tag: 1795200775-867449
+X-HE-Meta: U2FsdGVkX1/RnqZcamOnqX4xdykRuEtNZgfaaH/6u77nm+qScjek8Y+0RvZrrYDqMZNVELRQRrjzS97OmExGh/ly9r6T4Pl4qDBTkCa1q3a4h0PPVXKCYgj95f3ov52TSn6qLoyCz/GJE2HDASwAJRFJKPrywBch3Ph4DbOIZBdOtyYSs9kFmT8D5SXaypXjapvpwrGorSAy8RWVyIdBrPVZog9hcJCSJIS+Ahu2AQYVnmrdkkUxH+lnb7C3E/njcP0RboRL2smHjGwKoIflLnsxcaph+IW5412c3jy+1LrS0+T2Q/rjQNyEXcNy1tSejz3n2ZyA5cA93qA2L2pQkjW3WORpsu9ga5frKxUMSPphtzeMrWTY5p9A52ZRuu+vP0fYSXbLb/7zLfhKJt62MMHuq9UJuFFRk2Q0zQxdojXUyIG/yG/0tZwIWwyCfRGLMfWFkYxMcABAk+xvNN6NJWwdaG0hZcGp+BAH+S9Tpo3ojQXQ6v4XiJvfQKpkO9GJrNg8RawUVt+Iejh1Pt9FZAJNngASOuhHYIbRa/ECO9b+5dlplrbxXJ4iAYNE+oaDKijywEucWu6JMCQ/hVRFu0/E0N2PAgtLyHa52w9gKGF/f8cdI+1GiJS+71GXfPCMrNOiix4qiCpAQJ4JQexOntFLw5q1YX0lMfThUQMjjnhs/3Dh1RvdKBeeMyL+9UVekSYaW6cAaG+mGfCdvMsAWU9kJZhC449pUR6Z+J88IYS4smc9128Mz2x8PHbkD0K5cjmluUSZDlmr934BAkUOa9RfIcP0Mgss7XBJ2oUiWfgz2hZGdydFZ/fafDCe2KIi7DL294dUrh5QKZat7+WYjPngSH3lZeuMFQvEgTfFWL+fm9a1oWCs3rXSyCaMVCQrSgvxDAgJQcwvS/2GcpQTDSkjDCRqwLPazbHT6YXza4KL6MivMCUeYaOEEdk8S0WZxmx+QaPqXlc+iw42AOA
+ e1zeA5gR
+ 4hignJgG3jEempGrQ8qQCbIeQpeku2ceF0K1tZuqpW0qw1gnJqLA1BqpMmg7KI3cHNYeVVoknhYlJOEHWKoiIvpmelwmIavcDbQCYNyL+wsqDKvrZRQa3eY2LD5+loyzWj37RL93F23NY5b1u9Fb8hB9gJ4i3rL5P2p929bxhRnIEw7BSZil3ly9PvuVaqp7Nrfrf+VxPSfqz/PJdXG5g5jnl29BwlYmZcXTvpCStYZvWhSadAJFwSekqq4Xdfj7BjY6wYhyTwCs2cWhOkX9HJ/6zGScORQtLx5nFSTZjwwj8SW/ZZdDbDVNwEAFEQQzk2n4r8kT/kdFIi5HzhET5vrFfJrr4vtbL6lhcOCSoRCn3ScxMsmpZ3yL+boa+IZS79gZcr6Y+E5xAoQnlybE8Go+qKjc4iIY8wEz/ze5kLE/3NEjWb83C0w1q5Kpzfg11sGiQLZ5+MzXKbszYqga3TFa9fJgAr7oRv6C9P42Q9miXW7Rx3MFeBM1Jq6kIoCAXT0g+LYAO8vMxT7e2GTk1ZHKh33lVUnI/SfJTAi2DPXkUqiJlnOwFi4l/FbreryBizaGAZ5tCGTUghKa0bVBI2xiItlr05P+FUzXXK7cshWks1Msv/n5cm+cP7kgRkCCFIdXT5HuqvXLpqZAB9Ax4bfPgLUTFV1AwkzPj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,101 +100,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm/page_alloc: skipped reserve retry in
-  __alloc_pages_slowpath()
---
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit c7c69e6797446cf3c44127e33fd21dc6c24deefe
-Author: Gregory Price (Meta) <gourry@gourry.net>
+copy_nodes_to_user() is broken for compat userspace in three
+distinct ways:
 
-mm/page_alloc: let MM callers select the local private zonelist
+ - Passing a power-of-two size plus 1 as most normal userspace
+   does can end up calling compat_put_bitmap() with the wrong
+   size, copying an extra 32-bit word from the stack into
+   userspace and overflowing both arrays as compat_put_bitmap()
+   expects the actual number of bits, not the number plus 1.
 
-This commit adds ALLOC_ZONELIST_PRIVATE to allow internal MM callers to
-select the local private zonelist independently of __GFP_THISNODE, while
-retaining the nodemask and cpuset filtering during reserve allocations.
+ - Asking for an odd number of 32-bit words rounds up the
+   userspace buffer size full 64-bit words, leading to
+   an out-of-bounds access in userspace.
 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 0bd21916cea1b..a219057931c3d 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4926,16 +4926,24 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned i=
-nt order,
->  		goto got_pg;
-> =20
->  	reserve_flags =3D __gfp_pfmemalloc_flags(gfp_mask);
-> -	if (reserve_flags)
-> +	if (reserve_flags) {
-> +		unsigned int keep =3D ALLOC_KSWAPD;
-> +
-> +		/* The cpuset still grants a private request's node. */
-> +		if (ac->alloc_flags & ALLOC_ZONELIST_PRIVATE)
-> +			keep |=3D ALLOC_CPUSET;
->  		alloc_flags =3D alloc_flags_cma(gfp_mask) | reserve_flags |
-> -				ac->alloc_flags | (alloc_flags & ALLOC_KSWAPD);
-> +				ac->alloc_flags | (alloc_flags & keep);
-> +	}
-> =20
->  	/*
->  	 * Reset the nodemask and zonelist iterators if memory policies can be
->  	 * ignored. These allocations are high priority and system rather than
-> -	 * user oriented.
-> +	 * user oriented. A private request keeps its node: private memory has
-> +	 * no reserves to grant.
->  	 */
-> -	if (!(alloc_flags & ALLOC_CPUSET) || reserve_flags) {
-> +	if ((!(alloc_flags & ALLOC_CPUSET) || reserve_flags) &&
-> +	    !(ac->alloc_flags & ALLOC_ZONELIST_PRIVATE)) {
->  		ac->nodemask =3D NULL;
->  		ac->preferred_zoneref =3D first_zones_zonelist(ac->zonelist,
->  					ac->highest_zoneidx, ac->nodemask);
+Fix the calculation of 'copy' to be based on the userspace
+word size and use this to for calculating the final number
+of bits to copy as well.
 
-[Severity: Medium]
-Does gating this entire block on !(ac->alloc_flags & ALLOC_ZONELIST_PRIVATE)
-skip the can_retry_reserves retry after reserve_flags updates alloc_flags?
+Reported-by: larips <larips950@gmail.com>
+Reported-by: Gregory Price (Meta) <gourry@gourry.net>
+Fixes: e130242dc351 ("mm: simplify compat numa syscalls")
+Link: https://lore.kernel.org/all/20261117101910.1820066-1-gourry@gourry.net/
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+v3: don't introduce a bug that skip setting a 32-bit word to zero
+    where needed.
+v2: as Lorenzo pointed out, the off-by-one mistake is part of the ABI
+    and cannot change, we just have to use it consistently.
+---
+ mm/mempolicy.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-When reserve_flags is non-zero (for example, when current has PF_MEMALLOC
-set or is an OOM victim), the preceding block updates alloc_flags with
-reserve_flags and clears ALLOC_NOFRAGMENT.  Skipping the block below also
-skips the can_retry_reserves goto retry, so PF_MEMALLOC and
-!can_direct_reclaim callers jump straight to nopage without ever calling
-get_page_from_freelist() with the updated alloc_flags (and
-!can_direct_reclaim callers also miss the defrag_mode ALLOC_NOFRAGMENT
-retry because ALLOC_NOFRAGMENT was already cleared):
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 62d4c9e57035..afe614efb77c 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1772,12 +1772,14 @@ static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
+ static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
+ 			      nodemask_t *nodes)
+ {
+-	unsigned long copy = ALIGN(maxnode-1, 64) / 8;
++	unsigned long copy = ALIGN(maxnode-1, BITS_PER_LONG) / 8;
+ 	unsigned int nbytes = BITS_TO_LONGS(nr_node_ids) * sizeof(long);
+ 	bool compat = in_compat_syscall();
+ 
+-	if (compat)
++	if (compat) {
++		copy = ALIGN(maxnode-1, BITS_PER_COMPAT_LONG) / 8;
+ 		nbytes = BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t);
++	}
+ 
+ 	if (copy > nbytes) {
+ 		if (copy > PAGE_SIZE)
+@@ -1785,12 +1787,11 @@ static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
+ 		if (clear_user((char __user *)mask + nbytes, copy - nbytes))
+ 			return -EFAULT;
+ 		copy = nbytes;
+-		maxnode = nr_node_ids;
+ 	}
+ 
+ 	if (compat)
+ 		return compat_put_bitmap((compat_ulong_t __user *)mask,
+-					 nodes_addr(*nodes), maxnode);
++					 nodes_addr(*nodes), copy * 8);
+ 
+ 	return copy_to_user(mask, nodes_addr(*nodes), copy) ? -EFAULT : 0;
+ }
+-- 
+2.53.0
 
-mm/page_alloc.c:__alloc_pages_slowpath() {
-	...
-		if (can_retry_reserves) {
-			can_retry_reserves =3D false;
-			goto retry;
-		}
-	}
-
-	/* Caller is not willing to reclaim, we can't balance anything */
-	if (!can_direct_reclaim) {
-		if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
-		    !(gfp_mask & __GFP_NORETRY) &&
-		    (gfp_mask & __GFP_KSWAPD_RECLAIM)) {
-			alloc_flags &=3D ~ALLOC_NOFRAGMENT;
-			goto retry;
-		}
-		goto nopage;
-	}
-
-	/* Avoid recursion of direct reclaim */
-	if (current->flags & PF_MEMALLOC)
-		goto nopage;
-	...
-}
-
-Only the ac->nodemask and ac->preferred_zoneref reset should be skipped for
-ALLOC_ZONELIST_PRIVATE when reserve_flags adjusted alloc_flags, while still
-performing the can_retry_reserves retry.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120-private_no=
-des_v6-v1-0-74f5f9a115c2@gourry.net?part=3D40
 
