@@ -1,73 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E129606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 04:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62624606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 04:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=m/FcdppI
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YxJ2kPsO
 Received: by kanga.kvack.org (Postfix)
-	id 57AAB6B0752; Thu, 19 Nov 2026 23:37:20 -0500 (EST)
+	id 4DFC16B0738; Thu, 19 Nov 2026 23:38:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 558536B0768; Thu, 19 Nov 2026 23:37:20 -0500 (EST)
+	id 4B7596B0748; Thu, 19 Nov 2026 23:38:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 468EC6B0769; Thu, 19 Nov 2026 23:37:20 -0500 (EST)
+	id 3F5286B0754; Thu, 19 Nov 2026 23:38:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E6C16B0752
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:37:20 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B192B40CED
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:37:19 +0000 (UTC)
-X-FDA: 85454238198.16.C201A7B
-Received: from mta0.migadu.com (out-227.mta0.migadu.com [91.218.175.227])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BADB680002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:37:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="m/FcdppI";
-	spf=pass (imf02.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.227 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 197E86B0738
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:38:04 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8A5E5120D1B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:38:03 +0000 (UTC)
+X-FDA: 85454240046.08.082F5C8
+Received: from mta1.migadu.com (out-78.mta1.migadu.com [95.215.58.78])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7557D14000B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:38:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YxJ2kPsO;
+	spf=pass (imf09.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.78 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795149438;
-	b=OJYv+zeEgmdrQHb0HKl7iLfAxoiJF9w3Zz9A+AVMVCng+IlOllCksld2ACyYRecuJtGREE
-	achWKj0GGx+UeZ5l72ZKIh3bgY1N6H/g2Z6h5B6O8cfDyPEyYVhkLnADV2N59OUgfMFkD7
-	dj5nh8Zuu3L3s4HKwlPhIRfDwp3iK4c=
+	t=1795149481;
+	b=6qiMEpnbgrA0q9SfoxCu5/H4e4iFK1m7mtFg21RMAwsgGi9paM6VniJ5pO198KNl5bc9Gj
+	SCzNy34rDpYH/jQ5ic/mi4VUIz8tU+Mh8LfnAo/dHCKTWxBv0+BWk1cpgrT+IL9kTsaaV5
+	ZylqyWiWM9gBnnMaSounF2SU4Chbjzc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795149438;
+	s=arc-20220608; t=1795149481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wC9eJUz4DKLJpJ6vBDEqFE43JAvCeQg51GGXML5L67M=;
-	b=0aB/I07G/nXW9BhUu5mAAJ76iKeKb/IIiVgvl12WczJqve55DAifEPnDo4MC/aPA9ylm1n
-	vuQquxo1427/v4l/FeWOQaWIuyAw/D7yOzC7I/9D6z8cqUzbUx1qHFUfUK6hO4IXQQJ2kx
-	OcLnf0qboRacpXcnMebO0MC11+6SRAI=
+	bh=d7/buK6g7QI/wSja3F3yrr5kbRI73yc4vQHvL0Z70sU=;
+	b=YSSzrsPXFp43eZpu73QokoXsxd0eHRXFnf/yEk76Ln2jWkt57zApU7Ho9/lz8PypGoGv4o
+	Hz9KqZ1+dz6sfPAiM9IKYbvHHMQUz7spdz89+Of5cX82CJqRFksk9Ry3PDDoijCkCw7HS5
+	vkfxY2yKWUCZMavz/D7OqPIgzH/52t8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="m/FcdppI";
-	spf=pass (imf02.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.227 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YxJ2kPsO;
+	spf=pass (imf09.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.78 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=zcFjEBIqj6cBYiwCe459AugAgTcvIrqKO3mRoQbcdtQ=;
+DKIM-Signature: a=rsa-sha256; bh=/aPF9fCXwB7LIyQFCDkDmSR064YxzP6iZGZjFNQ3pnE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795149436; v=1; x=1795754236;
- b=m/FcdppIgHJYfuLm3Jz15SS48v1ECsydPsIwzykwvxsv7uWMy2hNOLPu29xj4bQ7ffnTZgw4
- UBEFF6PBVpWC50sOXx3+vAEXgueh73gIGzUqHz6KmFuqFB/R6826ht7kMXpbyK0v/h4WgY3rGV+
- YvflVYmruXWy+w3ZAXB+u2co=
+ t=1795149480; v=1; x=1795754280;
+ b=YxJ2kPsOCbJtqYLGpQI2iHwQKKldu1MSbbpwAO8eeoJ+GwlQaM3iPDOYmy/O5ORtO/OfEGI7
+ 7byZgsGuI0OMZRDNP7MTqqZNOexvpOlstETOiwc+2XbAouuUgCTw63r6QOSdGJG9eqsL4f7Sj1B
+ d2etvYhU3+gLdkOSuS3zGrcc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id eddd8fd8e6334fde;
-	Fri, 20 Nov 2026 04:37:16 +0000
-X-Mizu-Trace-ID: eddd8fd8e6334fde
+Received: by smtp.migadu.com with ESMTPS id 4d7de7b7add841ce;
+	Fri, 20 Nov 2026 04:37:59 +0000
+X-Mizu-Trace-ID: 4d7de7b7add841ce
 X-Migadu-Flow: FLOW_OUT
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 20 Nov 2026 04:37:15 +0000
+Date: Fri, 20 Nov 2026 04:37:59 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 From: "Kunwu Chan" <kunwu.chan@linux.dev>
-Message-ID: <c766c294502b5df1cf14e5941f79080a61f17bcf@linux.dev>
+Message-ID: <cf699b4c6b1ef0e34316d9b67a19082ee996aba7@linux.dev>
 TLS-Required: No
-Subject: Re: [RFC PATCH v4 13/18] mm/swap: drop swap active plist
+Subject: Re: [RFC PATCH v4 15/18] mm/swap: reuse per-CPU queue readers across
+ priority changes
 To: "Lian Wang" <lianux.mm@gmail.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, "Andrew Morton"
  <akpm@linux-foundation.org>, "Chris Li" <chrisl@kernel.org>, "Nhat Pham"
@@ -77,21 +78,21 @@ Cc: linux-kernel@vger.kernel.org, "Andrew Morton"
  "Jihan LIN" <linjh22s@gmail.com>, "Kees Cook" <kees@kernel.org>, "Gustavo
  A. R. Silva" <gustavoars@kernel.org>, "Thomas Gleixner"
  <tglx@kernel.org>, linux-hardening@vger.kernel.org
-In-Reply-To: <9ccd81f6f036eb1c3e50d396b44b5e43cff77d2a.1794666741.git.lianux.mm@gmail.com>
+In-Reply-To: <c7ee52cc6aa423b40c67d4c24dcb9d30b7e07824.1794666741.git.lianux.mm@gmail.com>
 References: <cover.1794666741.git.lianux.mm@gmail.com>
- <9ccd81f6f036eb1c3e50d396b44b5e43cff77d2a.1794666741.git.lianux.mm@gmail.com>
+ <c7ee52cc6aa423b40c67d4c24dcb9d30b7e07824.1794666741.git.lianux.mm@gmail.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7557D14000B
 X-Rspam-User:
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BADB680002
+X-Stat-Signature: 5sr15kw146buf6dpfysuyz64jset8z37
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 66gxar1mpsjsxymw5c9g5wc6n33du4bq
-X-HE-Tag: 1795149437-512475
-X-HE-Meta: U2FsdGVkX18TXNNk/OvNlO3UCrXtZ1wyB6Z6ApdeDA8pADIkpTmJfiX2qHaiMr+0ffWHNKSsqGVyO2ie1VjM6vFUu1SsBbEj6RjYr3QvkVKDcfB/XAYhRgMVhhZlhnlS79ur5TInenkKXh0LM/f1MUjFpGuR+wmx6j88U12i/D+bNXSb2FvDo3N2XDKCWxdqwrktUXq/r7hh7F+V7q2ECt32qGtNOE9J/jJAKdCL1Q1b8gIlYxwXP1uV+9EBJGWtuxT1TRGXT0hDUejsl2yje+PDLr9v5ek3+Fi7uY5qJmb9rHTAyYZDPdu0EwHXBGMzFdUcS6/EvuR13sSwymOf5EVlyl7W8LTqjGdI/ARo+ZuZVo13R9gt3WtAr0s8m0IkkL4AxzcH4HUP6BrYyHvrIZW0fRZFm9qJMwYbkILLD64aMh92pZLTeXjhX9dsSthq+aY6M8aObUmeVbDie47Nhc2z38vbn77x+tctcTiasmhjlEO3MS9ndaVvVR0blJu4L+t/HHVObtvTuXAo1TOiVP1FqvzXONFE4ydrmRKszeiSLZ/bwRZnIFZLbVXr8cG0mcKTao6ADYRq7De3E8URCCJLmb2MngqBj+kZiquRiTz+XgYia+IKiOfFaHAS/r64NMulzGTmpZpqHvNktbxm0Kl6XXiYNC7a79jamKJRHIjkA/Z4O7veH9nlPgHAUNCWQiXbxo2v0BaDrCbarmp8qLsuBd/kN5E5vOJDCDzQW2XmHiJKcuhtRF7hnZyuVgpKa6ajIQFg5YnlWnd5Ua/SayhetYelRCjv6t0JJsNA8Xzf1Z1qwOQbxNYr5dYyYMJTWH0uZxQb2VIsvoKdXD/oJIfZW/gN8C0+X8qIYfziUVp0OwBlP4cup3T7IvuQSGbQQRCK0614YkVHCnh9ZSBpopWBlTr4vQwvtbJ/9lifSwLPoPt7m2W6R5PAM1uTU5WS4+L/PqEey8KPRDGlUv+
- HcdWSTOq
- bK+Lv2YjWmlO84Bv0hls9JslatF7c0VIk4wn6XUZ2sKHVzMN/BDkeUUR/dsfWw49lgDxKETh7VhI6WNUzypdQ5+3Y8325IgO2jBWgAGL8qffX+fNBd2EXIOt8pKx6sYzKUeBcna7nFANTj3BtIObrGuRcW6AO0mmbooYQ0ppRu/nhIpi/S+N5ShAuXxumUlqtvUn3Z41z1iwWCh/DpaDnqjDrJpK57L2O90xZeaPrru0mL1PlP6z13xh6DwJ3Sa8Q33FWk2knWomQHBw9tH+7hUR2fueU67d7D1hZVO7hnXOQFs+idfZt8EqcpZiCFkO103OxGw9y8PAAzlfk2G17RZcZ7SvlGl61Xz1f5HiMf+AxSSbHrpcfJ84E8rsx6r+5GNJV5TkgYmalFtitsfCWXjyP8YJzTeTxaWaByUkSqEVRPfc9Rt0itUmUJrB8uNw+Rlb8a+dAEfY6iGPQx1p4jD0joz9G2gXucZtBJ2/nV94VcBS88yIOFCudyTQ20+P5EUq9kvknQXp1pg1/f2eA0/i5i1StQLF8HnR2PB25MgYNZE5HLk5af20h3W1PJF5Gf4cEON4LpqKu6khfhcRzImdqMH39Hft0ac98JFTRF1Alxw8=
+X-HE-Tag: 1795149481-656194
+X-HE-Meta: U2FsdGVkX1/d8F8x8Ze50/Z/9f9v80x1MpbofWfOqBYdClDZt63rMItYqnX1tX2qXShhvTmG/aYXZ/6xXwaWngcsQ8Wq3lwGAZPErR/VQECiLCMhuOJPX+x60uDbTx8j3M0V+LClASVzXxuQTcndRsoYAS1b9FmTboL/orV3Af+wqYWmRSYh2wYajbBNRLLx+1Iad09zyr5jQfNZhkRYFb8ixohvCWu5WE0LUMaql/rEjtTGsPHjBba+E5PFcDb0uoiZqVTElcCAf1KQollnVLWk/SmYltl1+q39w4hjqpiO9NF3JiZfeA5EMOBnAWpyfGV/IIAnMlaHCbgLAn4h5+WjKzeiQ5S7JLWm+EQJAS2/iOjC+TPz6hrrN0jy50nMYZ6UA+WScYaW35mg3zoD7/RVUM9laCFoLY48cbDBwFiiubGBcPgpUxTKwjUxXk6XtWt5ocfJ6lrYLNIcIijE1rjvrVNBcwak9g2Dl8v9pFBfHjS0VxyQDsZMLra68pJRDu0JuraL9GnlAqsBADwSqecU53du//h/LicVFuXSym0MtoJCdb6WzJq9AO7oXhz7tL/FVD4I+cJFSav/01KGZmetgPZxpV85Ku1J2GzjT0HPIDIgtiZE/aswoUiqufmth6igvba2DASmuw+w1XxK/lh0n92edQ3NXsYauwUmr9rBo9WD7eWs6HYtcSHGa0f2nmHk6j83HCUB4nSD2X5AzMw6t9x4SnAjOPAKjQE26roVBJqFPKvVlF4TYcyapakb89jKMJCvAGKUMw3iO6w+s+gUebHgFSXCo9Pk8DObR6AisAlywuNUDrXvCwlk7AHTEykbiEFW9tVa5IfHdIvSBTC6ow/S62x8VkYB6PYZk/2/na9ASFY7UQkpPaVSj1muOID+VgCS6jPLzdEchJ8/vScsUW+l46WLR408+xfQysFvl7vvf7HS2Whio6xF9Brdxbb/9B1uM0dQxBCZNyI
+ x2M8cvcu
+ dTaadzVIG1GUbUIVAL+4c/i3ivV/M87daBZ7eMaK3vnAy5hiRqqPmSTHgoW+R6jKa8WTxioTOIhaYXC9stAsS76X/OcdVyMjmPoZFMuduve3w85O1FIfVutBOQ8Mqoh7zb57ZF4Rv5J9ZBWRD4loC5IoLQR6vq4jpDCIpwdv//IG2h1MgN6bD7rXtjddSMy6mrfmI2yX1BFdj8Iw7rKgsGf1jQ33eTJpto+VHZCKHiDjXVQY168TYO93iTdyBy8EL5d72A24DejKgd4eBd4IHfQTdhO4mhTrxt2tlu3LfoMXlMNZ/8zka8f0/SkyNyiZ1KMc1MiXYpqEFRopvniIiWypqdgbRsJ/VFBqV05tBkU6AG9cAQigWQHXQm9OUVCWPd06OGEwgjeZ0xjsOtFaVYH3Qzlb2SUhi3hoSR+tj3s1bV7CxCKQrP/JQ15vSoJa7Dngm2feSZJl8AD9aXisZOMdMaQ+RrlkQThKNzo99RoRxId/vIH4843KzD+VmDJeRrXXEAezuv5Wg9DpO1FM4/c8b+cUbRDM864za7SyDC4AUInfvpbV8OUCKJYK6LO7qNXvmdkyC627kjkM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,181 +106,125 @@ Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 Thanks,
 Kunwu
 
+
 >=20
->=20From: Kairui Song <kasong@tencent.com>
+>=20Inserting a new priority allocates a replacement per-CPU reader array
+> even when earlier ring removal left enough storage. An unnecessary
+> allocation can add swapon work or fail despite sufficient capacity.
 >=20
->=20Remove swap_active_head and the associated plist_node. Device identit=
-y
-> lookups can use the writable swap_info iterator without ordering.
+>=20Track the installed reader capacity and retain its high-water mark
+> until the queue becomes empty. Reuse existing storage when the new ring
+> fits, initializing every valid ring index for the new topology. Prepare
+> larger storage outside the writer only when growth is required and
+> recheck capacity under the writer before publishing.
 >=20
->=20Keep priority ordering for the block-cgroup swap throttle target by
-> walking the priority queue under the topology reader. Choose the first
-> unmasked, writable, non-offlist device with a backing block device.
-> Check OFFLIST as well as the pointer tag because full transitions can
-> temporarily leave an unmasked entry, and keep the explicit WRITEOK
-> check. The disable transition already publishes its mask before
-> releasing the topology writer.
+>=20Preserve the existing prepare/install ownership and failure rollback
+> protocol. Device removal continues to avoid per-CPU shrinking allocatio=
+n
+> under the writer.
 >=20
->=20This read-only lookup does not consume per-CPU allocation quotas or
-> change retry cursors. It avoids making the throttle disk depend on
-> swapon's swap-type assignment order when devices have different
-> priorities.
->=20
->=20Signed-off-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
+>=20Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 > ---
->  include/linux/swap.h | 1 -
->  mm/swapfile.c | 60 +++++++++++++++++++++++---------------------
->  2 files changed, 32 insertions(+), 29 deletions(-)
+>  mm/swapfile.c | 28 ++++++++++++++++++----------
+>  1 file changed, 18 insertions(+), 10 deletions(-)
 >=20
->=20diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index d31f3f023d36..ce8a800751ca 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -263,7 +263,6 @@ struct swap_info_struct {
->  struct percpu_ref users; /* indicate and keep swap device valid. */
->  unsigned long flags; /* SWP_USED etc: see above */
->  signed short prio; /* swap priority of this type */
-> - struct plist_node list; /* entry in swap_active_head */
->  signed char type; /* strange name for an index */
->  unsigned int max; /* size of this swap device */
->  struct swap_cluster_info *cluster_info; /* array, one entry per cluste=
-r */
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 6b2dbaf33cb6..bd098114ee4b 100644
+>=20diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index bd098114ee4b..5e5c1aef010f 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
-> @@ -42,7 +42,6 @@
->  #include <linux/completion.h>
->  #include <linux/suspend.h>
->  #include <linux/zswap.h>
-> -#include <linux/plist.h>
+> @@ -202,6 +202,8 @@ struct swap_queue_cursor {
+>  };
 >=20=20
->=20 #include <asm/tlbflush.h>
->  #include <linux/leafops.h>
-> @@ -91,12 +90,6 @@ bool swap_migration_ad_supported;
->  static const char Bad_file[] =3D "Bad swap file entry ";
->  static const char Bad_offset[] =3D "Bad swap offset entry ";
+>=20 static __percpu struct swap_queue_reader *swap_queue_readers;
+> +/* Keep the high-water capacity until the last priority ring is remove=
+d. */
+> +static unsigned int swap_queue_readers_capacity;
 >=20=20
->=20-/*
-> - * all active swap_info_structs
-> - * protected with swapon_rwsem, and ordered by priority.
-> - */
-> -static PLIST_HEAD(swap_active_head);
-> -
->  static inline struct swap_info_struct *__swap_iter(int *i, unsigned lo=
-ng flag)
+>=20 static inline bool swap_device_masked(struct swap_info_struct *si)
 >  {
->  lockdep_assert_held(&swapon_rwsem);
-> @@ -3535,7 +3528,6 @@ static void __swap_device_enable(struct swap_info=
-_struct *si)
->  spin_unlock(&si->lock);
->  atomic_long_add(si->pages, &nr_swap_pages);
->  total_swap_pages +=3D si->pages;
-> - plist_add(&si->list, &swap_active_head);
->  add_to_avail_list(si);
+> @@ -241,7 +243,7 @@ static bool swap_queue_needs_readers(int prio)
+>  return false;
 >  }
 >=20=20
->=20@@ -3555,9 +3547,8 @@ static int swap_device_disable(struct address_s=
-pace *mapping,
->  int err =3D -EINVAL;
->=20=20
->=20 percpu_down_write(&swapon_rwsem);
-> - plist_for_each_entry(si, &swap_active_head, list) {
-> - if ((si->flags & SWP_WRITEOK) &&
-> - si->swap_file->f_mapping =3D=3D mapping) {
-> + for_each_avail_swap(si) {
-> + if (si->swap_file->f_mapping =3D=3D mapping) {
->  err =3D 0;
->  break;
+>=20- return true;
+> + return swap_queue_len >=3D swap_queue_readers_capacity;
 >  }
-> @@ -3583,8 +3574,6 @@ static int swap_device_disable(struct address_spa=
-ce *mapping,
->  spin_lock(&si->lock);
->  del_from_avail_list(si, true);
->  spin_unlock(&si->lock);
-> -
-> - plist_del(&si->list, &swap_active_head);
->  total_swap_pages -=3D si->pages;
->  atomic_long_sub(si->pages, &nr_swap_pages);
->=20=20
->=20@@ -3913,7 +3902,6 @@ static struct swap_info_struct *alloc_swap_info=
-(void)
->  */
->  }
->  p->swap_extent_root =3D RB_ROOT;
-> - plist_node_init(&p->list, 0);
->  p->flags =3D SWP_USED;
->  percpu_up_write(&swapon_rwsem);
->  if (defer) {
-> @@ -4323,12 +4311,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, spe=
-cialfile, int, swap_flags)
->  if (swap_flags & SWAP_FLAG_PREFER)
->  prio =3D swap_flags & SWAP_FLAG_PRIO_MASK;
->=20=20
->=20- /*
-> - * The plist prio is negated because plist ordering is
-> - * low-to-high, while swap ordering is high-to-low
-> - */
->  si->prio =3D prio;
-> - si->list.prio =3D -si->prio;
 >=20=20
 >=20 /*
->  * Publish swap_file before making the percpu ref live, then add the de=
-vice
-> @@ -4454,7 +4437,33 @@ int swap_dup_entry_direct(swp_entry_t entry)
->  #if defined(CONFIG_MEMCG) && defined(CONFIG_BLK_CGROUP)
->  static bool __has_usable_swap(void)
->  {
-> - return !plist_head_empty(&swap_active_head);
-> + return READ_ONCE(total_swap_pages) > 0;
-> +}
-> +
-> +static struct swap_info_struct *swap_queue_first_usable_bdev(void)
-> +{
-> + struct swap_prio_ring *ring;
-> + struct swap_info_struct *si;
-> + unsigned int ring_idx, dev_idx;
-> +
-> + lockdep_assert_held(&swapon_rwsem);
-> + for (ring_idx =3D 0; ring_idx < swap_queue_len; ring_idx++) {
-> + ring =3D swap_queue[ring_idx];
-> + for (dev_idx =3D 0; dev_idx < ring->size; dev_idx++) {
-> + si =3D READ_ONCE(ring->dev[dev_idx]);
-> + if (swap_device_masked(si))
-> + continue;
-> + si =3D swap_device_unmask_ptr(si);
-> + if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
-> + continue;
-> + if (atomic_long_read(&si->inuse_pages) &
-> + SWAP_USAGE_OFFLIST_BIT)
-> + continue;
-> + if (si->bdev)
-> + return si;
-> + }
-> + }
-> + return NULL;
+> @@ -289,13 +291,15 @@ static void swap_queue_reset_readers(void)
+>  }
 >  }
 >=20=20
->=20 void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
-> @@ -4478,14 +4487,9 @@ void __folio_throttle_swaprate(struct folio *fol=
-io, gfp_t gfp)
+>=20-static void swap_queue_install_readers(struct swap_queue_reader __pe=
+rcpu *readers)
+> +static void swap_queue_install_readers(struct swap_queue_reader __perc=
+pu *readers,
+> + unsigned int capacity)
+>  {
+>  int cpu;
+>=20=20
+>=20 lockdep_assert_held_write(&swapon_rwsem);
+>  free_percpu(swap_queue_readers);
+>  swap_queue_readers =3D readers;
+> + swap_queue_readers_capacity =3D capacity;
+>  if (!readers)
 >  return;
 >=20=20
->=20 percpu_down_read(&swapon_rwsem);
-> - plist_for_each_entry(si, &swap_active_head, list) {
-> - if ((si->flags & SWP_WRITEOK) &&
-> - !(atomic_long_read(&si->inuse_pages) &
-> - SWAP_USAGE_OFFLIST_BIT) && si->bdev) {
-> - blkcg_schedule_throttle(si->bdev->bd_disk, true);
-> - break;
-> - }
-> - }
-> + si =3D swap_queue_first_usable_bdev();
-> + if (si)
-> + blkcg_schedule_throttle(si->bdev->bd_disk, true);
->  percpu_up_read(&swapon_rwsem);
+>=20@@ -432,7 +436,8 @@ static int swap_queue_add(struct swap_info_struct=
+ *si,
 >  }
->  #endif
+>=20=20
+>=20 /* No ring at this priority: insert a new one at pos. */
+> - if (!*readers || nr_readers <=3D swap_queue_len)
+> + if (swap_queue_len >=3D swap_queue_readers_capacity &&
+> + (!*readers || nr_readers <=3D swap_queue_len))
+>  goto failed;
+>  new_queue =3D kmalloc_array(swap_queue_len + 1, sizeof(*swap_queue), g=
+fp);
+>  if (!new_queue)
+> @@ -460,8 +465,12 @@ static int swap_queue_add(struct swap_info_struct =
+*si,
+>  memalloc_noreclaim_restore(noreclaim_flag);
+>  kfree(old_queue);
+>=20=20
+>=20- swap_queue_install_readers(*readers);
+> - *readers =3D NULL;
+> + if (swap_queue_len > swap_queue_readers_capacity) {
+> + swap_queue_install_readers(*readers, nr_readers);
+> + *readers =3D NULL;
+> + } else {
+> + swap_queue_reset_readers();
+> + }
+>  return 0;
+>=20=20
+>=20 add_to_ring:
+> @@ -504,10 +513,9 @@ static void swap_queue_del(struct swap_info_struct=
+ *si)
+>  }
+>=20=20
+>=20 /*
+> - * Shrinking the small topology arrays is optional. Keep reader storag=
+e
+> - * until a new priority is inserted or the queue is empty: per-CPU
+> - * allocation must not run under this writer's noreclaim scope, which
+> - * can grant backing pages reserve access.
+> + * Shrinking the small topology arrays is optional. Keep reader capaci=
+ty
+> + * until the queue is empty: per-CPU allocation must not run under thi=
+s
+> + * writer's noreclaim scope, which can grant backing pages reserve acc=
+ess.
+>  */
+>  gfp =3D GFP_NOIO | __GFP_HIGH | __GFP_NOMEMALLOC;
+>  noreclaim_flag =3D memalloc_noreclaim_save();
+> @@ -550,7 +558,7 @@ static void swap_queue_del(struct swap_info_struct =
+*si)
+>  swap_queue =3D NULL;
+>  }
+>  if (!swap_queue_len)
+> - swap_queue_install_readers(NULL);
+> + swap_queue_install_readers(NULL, 0);
+>  }
+>  spin_unlock(&swap_queue_update_lock);
 >
 
