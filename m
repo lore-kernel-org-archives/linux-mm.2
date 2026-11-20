@@ -1,126 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33BC606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 14:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B34E606A336
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 14:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BbGfJzNx
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZcYg/dHJ
 Received: by kanga.kvack.org (Postfix)
-	id B08A86B05B0; Fri, 20 Nov 2026 09:34:12 -0500 (EST)
+	id 4A1696B05B4; Fri, 20 Nov 2026 09:34:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB97D6B05B3; Fri, 20 Nov 2026 09:34:12 -0500 (EST)
+	id 478916B05B5; Fri, 20 Nov 2026 09:34:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A9066B05B4; Fri, 20 Nov 2026 09:34:12 -0500 (EST)
+	id 3B5F46B05B6; Fri, 20 Nov 2026 09:34:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DB9A6B05B0
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 09:34:12 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E05FA40F39
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:34:11 +0000 (UTC)
-X-FDA: 85455742302.08.5CC21DA
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1478616000A
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:34:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=BbGfJzNx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of arpe1618@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=arpe1618@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 10D6E6B05B4
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 09:34:39 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D3F3140EF9
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:34:38 +0000 (UTC)
+X-FDA: 85455743436.21.FDC37EC
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C4098100009
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:34:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="ZcYg/dHJ";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3e1oAawYKCJACyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3e1oAawYKCJACyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795185250;
-	b=HBsW3AMW6y9f+C3MTsHhRwrOizQwrsuGm+wZzFugdSorHi9TKkJJDnXrXftFKWUqoWaMJA
-	Cm3dorAtwEDA/d4rivnkpwl2CVvu/aXQJxVfY0nrsuCd0zyaz7R4Wpmin/AWur5ngM8H4N
-	m+ROEKYn2SJQRA7PCITA83fznG+Mc9M=
+	t=1795185276;
+	b=uGgJXGiJJRkUAla3XuSbx2i2H7SQXpE1xStM2ZQ+4mJRV5PbUVWMweNAF4u6xO69X9wqHg
+	AMEWsvhz9woa/jrOVCcwRun91J9bFrVnkNRv4FE+a0UzocBECa535tL8p8qju759OZoUDX
+	o1tdjdKA+7gLlRiE+FI+dqFgAbjCH3Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795185250;
+	s=arc-20220608; t=1795185276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8zhTAZY7oSFShyaCtYnSLEI3yUB00f/zfvDFBFlOS0o=;
-	b=4PRH+zjxGwpHj4vUVO3/NkBBNXQZlQUufB+TGelwC7ZC3EVof2EQNd1MLN5wY5PsFSSfpl
-	6XaKRIOg1UXaxSr2yMtsdIUaXNIsMooqry3weknYD4yztizo1wkIHuPn19bKqQmNf8OagR
-	SHalFBuBH2NpsWm5aYd2mwG6lElCUVU=
+	bh=TexTSYlANwi+Z3VNOr7rkhMmBTNnuXd95ijh1g8jBbs=;
+	b=j6RENg7zgNDUVok9IhxtFeA7VnFp9rc3zVMRe7okhQeOJBIGS1apc2getTU0lDFX0tdZ4i
+	obIww+1eyOP2SkQ8Ztx1hnGdK/FKjKZWBD+z6NWRuH7zT+a5SJQxyktBdWuwWGuTMIkO2d
+	R5/t8pvEV8k/WvdhR47oF0OidinrcIk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=BbGfJzNx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of arpe1618@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=arpe1618@gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ea19c28a50so144295ad.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:34:09 -0800 (PST)
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="ZcYg/dHJ";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3e1oAawYKCJACyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3e1oAawYKCJACyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3b3fa6c8d4bso2304023a91.0
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:34:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795185249; x=1795790049; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8zhTAZY7oSFShyaCtYnSLEI3yUB00f/zfvDFBFlOS0o=;
-        b=BbGfJzNxlaTF10/IheuHQMCqa0xoZYdIxy9KLic3Tcbhve3J8MyI3ErNuc296IUwGQ
-         y4s4qK/hW4A99yn1ekJOxpCeR8XZZoKekFexj6IFyv225Y5lCRQ8tOL6e2QrP1aMEo4O
-         VfO/PhKUNmP8BiBwlgYe+6pgf1PHGqE+qolWOzALJW+BObV/ZqOb6NJrJf0ou49fa2Xk
-         kdTCWs4XXVz9GaV6j+Rn/Xza++RvRi9pOMMpdJGbt88FlSwyzYR8ovhscEy1c6YMP1en
-         F5tVHGJx84qXTRHZ0wSs0Fx+SM9fQ5SbmkMvyza0TAfd8aKpDmOYqxTub7z4TCxA+tnJ
-         aQeg==
+        d=google.com; s=20260707; t=1795185275; x=1795790075; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TexTSYlANwi+Z3VNOr7rkhMmBTNnuXd95ijh1g8jBbs=;
+        b=ZcYg/dHJYbKgPHiZQSD4hzOq3tmIdiN5jtnJX9H20QI1VsO9kU2Hp6HcrI4shSzALk
+         llBFfAXT1hBmRSI7LwNUpik7b94BGqrcw/j5l4pZB11OU5UXQeZtaEKjlW8x6IksPYR+
+         CMduH2q4Qn5SEFXu+zQyzBdMld5Vfb6xKeQjk5W5NLNTkNAkuuNSPBQbdEYaf7HptZI4
+         kVw3OrI/wZY21a4WqreuzW3YIcmO4uGTKDpwNu92nHv+ZAKRhUOeHhWYP8H5hVgpdqI2
+         baGg+uWeh1XM89vUYdkGAxgah5Ab+QaEPUHhPU7fuXdXzAAtPOGuDc8MkB3V0iJHeLr9
+         FwCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795185249; x=1795790049;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8zhTAZY7oSFShyaCtYnSLEI3yUB00f/zfvDFBFlOS0o=;
-        b=jPuQOQ2jSoQUjKG1KYCaYSWmGn8mdScDrPVxvAIseuqkA++z0ZDzPrmqUjAJnD1nSp
-         yA12w7ECQ+SO05Tbd1oF6eZPM8fV1Y6egq7i4chudFc1w0EOmEGuI0uHApAPoJJm1Apk
-         DVlZLYml4BYhIXKKHX+0yEILf/ncJSCDV6MFIeGA5hhhiGnjqZFJFGlOlMtifOiJNiws
-         X7tI2BOOovRC1QdwC65FwnGKveyE6qelcP3LgayZq4JCNTdXckyE4dAR1iGGFQX1pRKo
-         kt0rjl8lqBkuaLod8wcc0IdIk8m+cfY/+7/fUJpqo5licTMdibFr3HSmEXbXCIlkNY2M
-         bNgQ==
-X-Forwarded-Encrypted: i=1; AL+hErEEoS85Sfag15p0bXgXtP5xlbNuDSZll2T0BfGcoF4IvDDe2LFi/HPi7Y129qL2MM9/hEOqX2xsJQ==@kvack.org
-X-Gm-Message-State: APuU4Z/B7hGsapgodZcguGTOnkEdv5JdIAIs1vav23fwz1q0veQB7ZUY
-	bY/vJ+kO8VkY9p3ICJrn5lufqo+uzWMdr8jJofSTFFFZGX37WJEbasYX
-X-Gm-Gg: AZFdTZdD18WWtitZGZubjFejNi+5EakyZoT3E9zZJsI47zpeTStuda3rbqenyAYrvkl
-	ik9907kDYMVVrd8D+vAIcEWeqseB6Tzw7O0XRkkk6bDAICwQJVlu22dCkmesl3jpsFezt4rByh2
-	eOJ2+Z2Eq9gofz95nvSQt5qMlDEebH4luhqkxJzKUNUYcicdTDRzVVfQ0ublkFOTkbCpdMz5j2U
-	97vAg+TlVO/UfR+XS9G3Cd0UQk5vKGMN3uSKdPLHHC8dVaGoC+dQ4UpdhJTEq8Ex/PMGG2K0zhW
-	IhiIxb7UfXykAYjo5Sc53tS3DjwOtn+S2EgFy6djkT8n27/unbLMY529qULhHgmjGJXntNzFDXM
-	sd4w2h8kgssOdzRLQIF6nPx0D/dHGymnrlsG83uQzUF+31G2TEBV1ncsIBQLGS9bFh8neH085Bm
-	7YnJBDA7kcU70CorvxZXFiOXitZa4Rz508KNi3VcZm3JkhhoSvXmNLyRstZGXMA3Di6i9WkEVRE
-	W3xSo+O8JQeYiMuL4aZx3X14L4mwi+H9JVyUUBhHKJonVYM4myvFDmHAH5DgLLaj0KOQrDckEbL
-	kDl0bQTJN5IBg0R1bZDc7vOBPxPBEeMqLoqhvZEwSYIWtsIhxH8sJfhSP9CytRUco/nnMzHVVMf
-	DPkic0IqWaxxjd9Ny9D3Mb3cygQ==
-X-Received: by 2002:a17:902:eccf:b0:2e9:9263:a58 with SMTP id d9443c01a7336-2f03f0c2295mr57011025ad.1.1795185248619;
-        Fri, 20 Nov 2026 06:34:08 -0800 (PST)
-Received: from DESKTOP-CJ1L666.localdomain ([211.198.99.62])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0c1f42sm15137815ad.25.2026.11.20.06.34.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 06:34:08 -0800 (PST)
-From: Jiwoo Kim <arpe1618@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org,
-	Jann Horn <jannh@google.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Chen Linxuan <me@black-desk.cn>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/3] pidfd: use one helper for pid namespace visibility checks
-Date: Fri, 20 Nov 2026 23:33:49 +0900
-Message-ID: <20261120143349.979-1-arpe1618@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
-References: <20261120-work-pidfd-pidns_visible-v1-0-0e82d08469ae@kernel.org>
+        d=1e100.net; s=20260707; t=1795185275; x=1795790075;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TexTSYlANwi+Z3VNOr7rkhMmBTNnuXd95ijh1g8jBbs=;
+        b=grAtwyzGXDLlObjeTjRgJXTCauSWHSs49U3m1g7V+X3VfAx0xbxZ90s7tQBpOz4H9D
+         eorVSx3pvaRK1mCSH/R7FwUM6psHR5WW1A0a+sGn8PrAatem41AlqaRD6CWM7ye714dH
+         ZcEjQOHH3v56EPBdwZA6ag+5vPaJKazrvUymHqC9CXlaprwg6lvOCCJBh8/pu2w5Qaw0
+         9mNCDvU9FYlZU9mUbAax2maST9Lo3PTxkvBzm8JpgOD9JyBJr/A9DQpWJof8US3HARgm
+         qLegvP2M6fjs2hWExYWjoXnSCKORY3a0RLFF6NmDZqBvLnDT3NRY/j18liGBnOFtczqO
+         cT7g==
+X-Forwarded-Encrypted: i=1; AL+hErEKt5xKdLpqGJMh2arSF5GrHkBUhnOOTXi+Knk+BsAg5f9ftHiN/fOD7yUmKu1luLgDoDj96FeE7w==@kvack.org
+X-Gm-Message-State: APuU4Z9OSBY2SL2IilzlHFLbmyZCtvxq54M9v2neqplKlM3SkVZniGmZ
+	anbuCwhVHChBt8LTGZqU480eqy2gFpDW5CSilfxme/3JVIn1murxMqQJyFWlPmD1p+IH/wBVmzM
+	KInlW0A==
+X-Received: from pgjk27-n2.prod.google.com ([2002:a05:6a02:81db:20b0:cdd:b3ae:c565])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d87:b0:3b4:68e:1b77
+ with SMTP id 98e67ed59e1d1-3b40a5dda03mr3693597a91.20.1795185275224; Fri, 20
+ Nov 2026 06:34:35 -0800 (PST)
+Date: Fri, 20 Nov 2026 06:34:34 -0800
+In-Reply-To: <20261120-provokant-zyklisch-schutt-55d8eddf2ce4@brauner>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1478616000A
-X-Stat-Signature: 8shn3jh8p5ib7kdwyf9fr8uzqidpws8j
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
+Mime-Version: 1.0
+References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-3-8484dde66a7e@google.com> <20261120-provokant-zyklisch-schutt-55d8eddf2ce4@brauner>
+Message-ID: <awBaeiUw0i-uEQzM@seanjc-mac.roam.internal>
+Subject: Re: [PATCH RFC v3 03/88] mm: shmem: Implement guest_memfd provider
+ operations for tmpfs
+From: Sean Christopherson <seanjc@google.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: ackerleytng@google.com, Alexey Kardashevskiy <aik@amd.com>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Fred Griffoul <fgriffo@amazon.co.uk>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jianxiong Gao <jxgao@google.com>, 
+	John Starks <John.Starks@microsoft.com>, Michael Roth <michael.roth@amd.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Tarun Sahu <tarunsahu@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+	Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User:
-X-HE-Tag: 1795185249-237985
-X-HE-Meta: U2FsdGVkX1+SbWzxSBz6G77aOHVAge2YVz5WMbeGLC0fJ7XiMufH+dU/lny0OcoRJMw8WHwT0dXyE5p1CT5d77P8Wkk0Y8h1TKH1qlw0jLifdZEGfFMoqFU0FW2KPubTDZR3EfQ39/dEkxMUdJdbTucb+8MQpzBfaC0pLp54RFs+RVfdLm6ov8AKThJqxg9ePqtL5k2OBvv82YGLbyljaeru18Z3n6rd6Xg0mePgI2xQVR88PsUkUQoNq8WgCk0zCW/W4c6WmLGBYYFPXv37MYlSlYkasK4WJ54DHCv0VdC20tBNyXWMePFcCWJ+DLsXhNwB+sJbkHfs2VgLz5sDV6AgZj+IL0Km099CmZaU4k+vhuqOhjlwjkzFg3fdI12yK0K/lsfPTl9oGOHVja3bCJ0mFYHkix1vVpuvkuG+moumwgwtTmlY1YFG5jUber/e+tR3BW8Ch8HaUGv596Iitipcyg1v47U2csHU2PL/BaJ4Nv/g/aYR7w73Dl5VBW9eVZxfTPY+65n5FezQPJDFuPvqNQNZeGUh0r77CrwMe/EqfLoDldzOUBWq6nvSDoaYzKTrecAbHd8bDxHZ/imdV5Tgvu1U0KH0DBgLq0wk7W5sLxL4yIXUFoUXD+t6/bl7nS7GZY8Lpu8cEbezEoHg2cbpHFbEyjHp20mjCfqj+O6Kn4fEGYPso0JV9W/YPdYjbxnlaWGBNNrGZO9f0eZFjnZ/btTee9MSRCQndplbZA4VDv1eYPnH4mXdD/wrpiBOHa26RI6yOUxL2eBQ2GajbNah8qUD2qFkZsXcZ3amGL2RGanaUu0EFuU5hFVK4wNJBqHysUjVvWGZeZy0SaTWPkimje+hSGgk/znmz9EfZt6oYEiCZH4t/36F1ckyBy5anCBPpYMpq0wVkTvYnoaeZYU72HkNS3+Zmij1rzIk1ufob5pL8VRI46dus2/BrCib7p4hv7HMky/4ME7Ii4r
- RjNuLQbN
- XUuWqPPW7vwh/9mTiVbowC4uob9tURgTpL4RGMzevhO5aHSDbNyAvK+eZ7NJIBi+uih/nf0iJ64+dOIbknxfgmR98njo7AaSdWmx8Vi5zUB9SGGm8a23Zi22MFxdYY/Vlpr2wjgCAUBAWaV1PutSGKhtVI1kTgjdr/UY3gD89Ow2Fvkn1G04f4xNZab7vo2sGsBR3+sw4i8e8FC/TgbmD57sCVKM4T3PBo+kWZY3n7VOaO08svMsoXLCteZLLepDERj8QF3T7ctwMKGgim6QaPd2BUo5lM42z/geGnQvE0cIOPAFi3UArP1WYbZOQ/sVhh78lqVEKYXuGXb6Gflv1OsA2iEiKU02vsjorl+KGyJAcBVH9UH9zEzVbMzibpvj8CO50wdgo084urJa/9Z08m6uMbz34gfW1yumMkZF/1TVGRL/rwUZdtvfM9OiLYXJXsnXCASBAdEKUvCv6IyDJQfcrLgwkHHoyvhSn9bnVDksYUqn3czGfgdq59ZLvT2899vMw6cvvo+bQhq1PlWhNr+OJ5UDWPwZk34QNWjZ6o8Uw2jalAT38St9ivmFmvQjPH3t9Rb9V9h7RSHznH1wwHnQ9bP4sQPec8JSTEvcPrHm0bnfAdSRN62V0FtKnZv7NzrNH
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: z7ei1xhajyocs87741wgw5dba3fz9g64
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C4098100009
+X-HE-Tag: 1795185276-614496
+X-HE-Meta: U2FsdGVkX1+nUcd7wmu2XnQV/Q80gaO8L57ad5Jcx7SKsZL2Sb/8CDUJGM23FzWHX526vrpoNM9aDMpn9eNLrRnMXq2AzshAJJPsC31HcE6HyZ+HNqRsVDl1y86nOl9/LX5SRQZlZT6p07C+XqglKIU85j//nEKOpr9C7zQ0VZ+EZieHc0xuBDy8asl6/BnUveD080D+Wm4fXVL6yX+xcQpdzF50GsK960ZuFPz3IGb+UpcvBjIuYH2bsyxr33M6zYDyYSI8kNshCuUypWj0XVNldJ4wj63AUQjQ9AqUw+9Ebo/wLLsTtb3KbwfduAD9J8F33McL+fZaMw7WgyTrr7ppKamaUENlAUTBCbjLez6/FDoFmpaxmqwkxu3qThJCWjTwj2M/PX84MaM3aQTPZhDt6LySngYAc6//A/KMgYLpW2O1EQMPcjvCUMi39k1egOn+Afn4NGUoc61Syxo1P+LEweTT/mC9gCHLLza3XbtVKpXxhOiagtaWME5/HBcUoDtVt/ur4metfYBd69ZQcPngsgA3LIvkkxbr5yFaMpIrufT+rOV3h9Cuke6xy0rK4bZDhq5TU2/hOf363iwvEdQxNspPHRChOOjKXs4w/4sHAvnaNI+0tbq8JsqXpKqrsmc7jOcVUNB4bgwkAhvE8XncxT6F+5ztDCJeZvOM6zs8pqdDs96iCUby18WBe/Z/fU9GGGOG7Gm/WRNh8sH/0vlUh9lfhYwOGmVmEBq5xs1QEjvcCQHypHg25gixwTLqVh5cFqFCsMUrO/8Cyj7gtpDByDE8oi1y7U5kOj99v9J+zOJ8W5NHbsgoOp1XJlK9exedt7sT7nv+TmjZsI+W56PPc6YbQ8tGavmEc0VvYGek1O7Yvte2KgIIinSJjqK+1JXfzEakBy2usLB3R/1okGwK1RwocBFh/AQ6NBcgAuH/j2RfITeFmJUVH9G9GcwSkqrmVgrtnm2WGchWvQA
+ xm295y3R
+ CvDXUWznQjnJHHxFduDI0QUkFqLQP069tO9ODeTUGbmKSR0mNQJwFfYrgc6pwcrVyN/0GYG2+bYNaqX4rjF8O62j4t/w9Cz0mkC9AUv75u/6E/sqyIljUtm4ax26QkBRLK4HZb/BcrtfFeDfO/ulwIZ6IL4W+ePyM2KA9w9aEp6gCDiF6cirgGXpbsxfLURwmhnNp7+V+b5zqG6HLWPuKdK18H/ShukJYH4mPVGYFOyhsd58uef9e94PkrGMSx+KBZMIDNT+PoBjdhao+hjyF8KSZ4T45B8GHdNid8sGD9mRiA8Tfz0bcXQWpkCfecEx5bc4W+Xy4TWNWRhBUC0uQlm7wID+MY995y45AofeT8I3h5I1FlHskMcfOAUETyVCl41cSOen/9IAQwhRhjs/OKSnqRk1bHn+/Wg6iLqYdFrKbSNAVdsencrfnjCDfp9VlNqKEZ+Q3LqC3EPmd6ED8axhXwkePfrGX9bUIs8UrPRrC9fA3RPIpdyJVI3WUY48YV5YnHJAk3Oi8Fl3dPOMjTcDkuM0puY8CnwRDlll2EtcnYLogKovl/bIzFlv31XWbNu8g2wRmC1s8QWk1tNP/yQLVNOmuzP904e5zngd2Kho0f3hJPPTcwX1A5dk/tewK+wb6iHdRc7jX0ktZHuQxHLgUfq2TlsZTEdmY+pxFsi6LktaOULbkElg5O5LEhdrz112ms2HPaMyz3VdPeydTZtTu3PFjvk7di8hHINBqHzEBjP3XY8MqazBp8bwzlAFYSfLvGK1S6dimGosaJQsVdoZ9vQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,43 +122,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 02:42:08PM +0100, Christian Brauner wrote:
-> The pidfd api checks in a bunch of places whether the target of a pidfd
-> is visible in the caller's pid namespace. pidfs has
-> pid_in_current_pidns() for PIDFD_GET_INFO and the namespace and task
-> path ioctls. The pidfs file handle lookup open-codes pid_vnr() and
-> pidfd_getfd() does the same since Jiwoo's fix [1]. pidfd_send_signal()
-> walks the pid namespace hierarchy in its own access_pidfd_pidns().
-> Yuck, unify it.
+On Fri, Nov 20, 2026, Christian Brauner wrote:
+> On Fri, Nov 06, 2026 at 04:36:37PM -0800, Ackerley Tng via B4 Relay wrote:
+> > I put guest_memfd_provider_operations as a pointer in struct
+> > file_operations. Being in file_operations generalizes well to other kinds
+> > of providers, like devices, which don't have their own super_operations.
+> 
+> > @@ -1960,6 +1961,9 @@ struct file_operations {
+> >  	int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_batch *,
+> >  				unsigned int poll_flags);
+> >  	int (*mmap_prepare)(struct vm_area_desc *);
+> > +#ifdef CONFIG_KVM_GUEST_MEMFD
+> > +	const struct guest_memfd_provider_operations *gmem_provider_ops;
+> > +#endif
+> >  } __randomize_layout;
+> 
+> Sorry, no! struct file_operations is not the place to hang KVM specific
+> callbacks off of. We didn't let KHO/LUO hang an ops table off of struct
+> file either and nobody else is getting one in file_operations.
+> 
+> LUO registers handlers that recognize their files by f_op instead,
+> memfd_luo just uses shmem_file(). And KVM already does the same for
+> VFIO: kvm_vfio_file_is_valid() -> vfio_file_is_valid(). Do the same for
+> providers and leave struct file_operations alone.
 
-Thanks for picking up the fix and for the follow-up.
+Eww.  I really, really want to avoid having to update KVM just to recognize a
+new provider, and I shudder to think of the potential module dependency hell we
+could end up in.
 
-I went through the three patches. The equivalence argument in 2/3
-holds: alloc_pid() fills pid->numbers[i].ns with the ancestor at level
-i, so the ->parent walk in access_pidfd_pidns() can only meet the
-caller's namespace at pid->numbers[active->level].
+That said, I 100% agree that having something explicitly KVM specific in
+file_operations is a non-starter.  Would you be open to a more generic interface
+for connecting providers and consumers, e.g. something like this?
 
-One nit on the 3/3 changelog: process_madvise() on another process
-also needs CAP_SYS_NICE and only accepts the non-destructive hints, so
-there the cross-namespace case already needs a privileged caller.
-process_mrelease() is the one without a permission check.
-
-I also ran the series in a QEMU guest, on a v7.4-rc3 based tree with
-the fix applied, as uid 1000 without capabilities:
-
-- caller in a child pid namespace, same user namespace, pidfd for a
-  task outside of it: process_madvise(MADV_COLD) and process_mrelease()
-  now fail with -EREMOTE (before: -EPERM and -EINVAL),
-  pidfd_send_signal() still fails with -EINVAL and pidfd_getfd() with
-  -EREMOTE;
-- caller in the target's pid namespace: all four return what they
-  returned before.
-
-The review and the test were done with the help of an AI coding
-assistant.
-
-For the series:
-
-Reviewed-by: Jiwoo Kim <arpe1618@gmail.com>
-Tested-by: Jiwoo Kim <arpe1618@gmail.com>
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 99caef43ff3c..96e4c2547d5e 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1934,6 +1934,7 @@ struct file_operations {
+ 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
+ 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
+ 	int (*mmap) (struct file *, struct vm_area_struct *);
++	int (*connect) (struct file *, struct memory_consumer *);
+ 	int (*open) (struct inode *, struct file *);
+ 	int (*flush) (struct file *, fl_owner_t id);
+ 	int (*release) (struct inode *, struct file *);
 
