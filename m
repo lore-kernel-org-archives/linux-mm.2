@@ -1,140 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786EE606A6CE
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 19:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C04606A6D5
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 19:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gMoUSUY2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H2F8H0nv
 Received: by kanga.kvack.org (Postfix)
-	id 70AA06B05B7; Fri, 20 Nov 2026 14:25:08 -0500 (EST)
+	id 2A46D6B05B9; Fri, 20 Nov 2026 14:28:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E1BE6B05B8; Fri, 20 Nov 2026 14:25:08 -0500 (EST)
+	id 254E46B05BA; Fri, 20 Nov 2026 14:28:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0926B05B9; Fri, 20 Nov 2026 14:25:08 -0500 (EST)
+	id 143726B05BB; Fri, 20 Nov 2026 14:28:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 33DA66B05B7
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:25:08 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BB302A6BC4
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:25:07 +0000 (UTC)
-X-FDA: 85456475454.26.F642973
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C497DC000A
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:25:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=gMoUSUY2;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795202705;
-	b=2BaWm31GqHOUt6780VyqqIr1X74qwvb9tPeNgMrvqGPeenri/+RsEbw/GIfL3wDcUxxu5n
-	0Ur89zoGKwmKoeXez0WXwfUg/dQx2L+cdHvTXY+j7PA2WUXlI3s5TZulCoCdk1g+v1YuvL
-	jQPq1Z3srZ7fcHnpTOWco8sJgsGM7j4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795202705;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D31036B05B9
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:28:16 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED146160125
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:28:15 +0000 (UTC)
+X-FDA: 85456483350.16.1754AC3
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EF34C100006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 19:28:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=H2F8H0nv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1795202894;
+	b=zfeV+l5YIXnn+46Ue9IJibfzdEEwQGOUWT3Y4QQd3RkCfntZQk1DI5EmGWYP6vSH5MO2k3
+	Gep56tIQIjEGHdD2Ml4Tv7jfGb4KBlwCpnBjzqCdbzQ185dDxfuJmALuN0kOcsCo2/QT+g
+	faPhxpapWJ5y5pw4OTmam6iNMCViUCM=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795202894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/RuK77T8Pc2yA26RkCicA7q1V6UBHbE6inBIYLOkP8Y=;
-	b=af865VRwSF1xuBEXdBqH/ppcRI41l2kI34ievFfdyiGUazuT5BoNefkTBqyToZWYSi7vzJ
-	P2t8JHkZN6ht0i0rVUtqI85khf5JI4yVcJ6upEq/Y2FKbvXgzd3sqfMJV02XNElgoSHdH+
-	N9JWfpu6JCxKa7LfrTsIg4Kt7nXUsZA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=gMoUSUY2;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=dmatlack@google.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8b612fd74e1so552711b3a.0
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:25:05 -0800 (PST)
+	bh=gTSQmZl/zKK0zXMmK+A31LEN+NDNPEQL27tBFK3Clmw=;
+	b=kKTxT6UXML0fOxwdbhEwrUbZw9iP16hlSyIjMxDtquZ3bJdogmnxUSuQ2vUxwHVBsWiMqk
+	1otB+kKEuLlL1OOT0jrzfGwF/Li3+kXJzl00EycJTBkTX/hMiu5ZX+n7DuS7zNvlOV6Fc1
+	Werq4FjQb339moRDTflvqve3j4aEHzU=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=H2F8H0nv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5c15956ce07so2212796e87.0
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 11:28:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795202892; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cBx9b0I9hlU2B98HDo9MvQ0aripci7U0+WeGzAnDlxua2vJa1z0Pvc9z0vRsf1vYFA
+         ogvcX3ZAwH8bm/5MQlOwoI4Pt57N1579fsOsnf2eo/273JJYVNkH/xAsb0j9vXGYuPcy
+         odTZ9Dt5UoD+P1RdgiujEk84AAxGngan5xb02vmuhJx/TXWQd5M+4KpxnuJB/1J4wI/k
+         S6jnXslg//VZjo7LHxjJrlFds8s54QPOvtVZKoIwrSV6S9npK/35DwAOKHRQHwb3C5j2
+         JqFyLBxWoYFusdmhr//n4ofJcRPgesU7PGOdCiJxylmBkCJgxm4I/3wKSy93UP8XCyNe
+         JK6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gTSQmZl/zKK0zXMmK+A31LEN+NDNPEQL27tBFK3Clmw=;
+        fh=0pDDiTncAD5G+KcAgLKHYg/+SxP2URoYUsg1RgIFUMM=;
+        b=rmufgUgG0vvqGPk0g8C+MFhMZC2KwCSPM3jY6jn0ZTEn72OZ3LJ4/PYz0qeL8oExgY
+         9VI7BBra1kVVeF6f1TGElkct4Eu/m98vN3vB6cIuw89z/L8LNTQ33aTtK1JZ1mtxqcNa
+         HhY8HLBx9zlkwweGF7yx6x5gBxoG/z0r/YSYgcXTZH89bPK5yuZL1U/0gfEuWosjQhPZ
+         YNIlvNF/3vbKzrBNq14Ah3PTo/wMJzNjUFgM7D986p/rOWHtMmCx1X0ISpPhJWBgcll9
+         wOTNqaRyQbn22vO5eCD1MCLE69rEdMnW3kdKlPvvnIfj56D6Lt1K8i7JRgBXA/pMEqk3
+         OlxQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795202704; x=1795807504; darn=kvack.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/RuK77T8Pc2yA26RkCicA7q1V6UBHbE6inBIYLOkP8Y=;
-        b=gMoUSUY2pUhyAKBCUrWHLjNAMJGRTrjWG3C12Mw9u0cCNrSwToo+MxPrqhIffr3ss3
-         4eXHECWYxXsxrIIe/7pde+g/OCmYR4hD+HiV0pK+u8/ljEfKoTKEEds9Frmq5H8LcV+x
-         cJoKC4gVM0fcFLbJqelnazLqyZn69aGOSDU3uFaaNHIF53tdSPX2XxCVV9kRKtSQRcpV
-         7zBmhPAzy3KVLW600OqBcc71PUyq+b/SHvoXkOT9rwlRIvoE8HYtQFkUncC6Q1XNuIMO
-         m6vZYyTfOi2V1lJmoCDJ06zcUmSpdLkhviSP0DF+Eyc3M9NFPKCHpj65nLLrdGqU14hI
-         H60w==
+        d=gmail.com; s=20260707; t=1795202892; x=1795807692; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gTSQmZl/zKK0zXMmK+A31LEN+NDNPEQL27tBFK3Clmw=;
+        b=H2F8H0nvqasU6mb1sD61O5QRMZjfoB/cuWZVNxi0L3QlsLOHFoE40uxmUkPE29NQcJ
+         KVM/zhqXp2z0clZ0UhFuruaHrJlovDxBsrZIjdevCKkhkvgl37Gjm462FP/lih9j0/c5
+         MCYv6SXadsLamMKFypwO1AADzFMfoZ2Sd1Ydig9RTjnDxPQGT2h0rknIFCw2e09aq4ZA
+         HZyGcmv4MM9TflDv9NxgSR3ICKGOUQsieN8IJ/G3Dqk5LaI+tZh/VEKl4qOc8xxkc68q
+         abI9L52iqZKq7teOgf1D7gzne7TIkl0gv+aqi3caNeKejwCj50ux8e1sql4OTEFtrQ25
+         fqVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795202704; x=1795807504;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795202892; x=1795807692;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/RuK77T8Pc2yA26RkCicA7q1V6UBHbE6inBIYLOkP8Y=;
-        b=exOQjzOAcGmuZutTBfCtw4Vdy5HEJl4bZ8MiqwQs9b8hApyTat2FpXszPkmmqbNVyP
-         MYa8N0LOw9JlDy5O3Inx9FiNRPXsYmf7f0w2C9p5PNNsfolTnICcGLycuCCeS+f98nkI
-         2hTKv3mpw6g+NKRqs1mP+R405jF1JhYuQcz1BQ9yZg+IFAs6oow5Y/k7PcqGA4FXKtvj
-         MI2q4YxnPdpCKF6iODIsbnVEsjqM+0sO8XT/4mmvLmgqR65OhvoOnFW/8BHlxQAViN/X
-         dX02Ij5yQJarFRYa/2r43eruXPXMbKVX/avCX30Bu9PA8KRU2Rz2UPDUo6ZyW5zm7Pan
-         ZpBA==
-X-Forwarded-Encrypted: i=1; AL+hErFQSaRtt2vj2bAzxDpQs3sZO2qv8TsI0yEtO85A5Z8CakLDcYR/Nr6MAT0NF2lVjezZPuAaY7xTew==@kvack.org
-X-Gm-Message-State: APuU4Z+9y0vhnopci0RADsuWQqQLE3cihon3N6cefT3+2pIE/SwjLAHN
-	OeX5MtZkJ7NnzXBtJ6b0/iRVdGHrRnuuygtRAse/5LSS1AcoLxfJ2sUVJUnzARgIrQ==
-X-Gm-Gg: AZFdTZdLIBYEacrR7VQOIx65nQWCznguz6oxXoaB61QVveBGsD6j0uGei2up/hEufVL
-	O9kzzbHxrXsBAC53oiIbRgv9WmWG8B4MQyKKV363V/H3iFXJao0DP6Ba1dDXU2Y/FSe1PLe3a2y
-	Wiz8TVLL+1wG5fLmRi7oKwCJzRiLevDNkeFZw02yn21D0FqQE3W4IC07FlWGsFVEAcgh+J0zte2
-	wqsM3CdT7c6sEA2XSuL6uOWFBsVVIn9VRMEKgbRlXksED9FqT3STCCG85IRSOhHIxQGUaMM9Jk2
-	8rImwD/p3ei4TONcY3bH71OfjC8bMTlXziW4q52jvPkn8YM+sasDBJwAZLZTo6faXUGWdFfAHM+
-	wg3toWeWj9ZFe1l+RFCBzem7JENByRuRXejuuta2qThqy1nABuMKnO1bOWjUPBvGruvZs2t8UzF
-	h2mucagwA3tqobV+xFZ9YFztrDggoWflI/IMkCJKAXETmZ/I06nCO9BRqSsdr/BJOS+JB4Ns5mG
-	i+NLCtP12Sg1PibdcHu7KGlyHnBd5WG7v4lrjCcbg6YLQwPBKpcTNT2ujbcC7IBDf45xtRehErk
-	Bc51N9t7kVPxnTwtFtXufu/FyQqyZ5B2lkOIj/bRlYQQLMsaN0jBRP8n6XJ8mhrLvA==
-X-Received: by 2002:a05:6a00:f8e:b0:89f:d620:232 with SMTP id d2e1a72fcca58-8c87c864543mr3577508b3a.35.1795202703993;
-        Fri, 20 Nov 2026 11:25:03 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87343f83dsm1923249b3a.39.2026.11.20.11.25.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Nov 2026 11:25:02 -0800 (PST)
+        bh=gTSQmZl/zKK0zXMmK+A31LEN+NDNPEQL27tBFK3Clmw=;
+        b=i0LafQN2BRAb4kVDYPTDE4ONK3aZu4jRv5w4z1912C9vaEE0PLgcgpopnYVaCH+RKf
+         x5Ewezz7x5TpKsjJhd2wkQxkJ7uL6To1ZJMAqKf6rP0WpWKBW7JyAoP8DvcdcKHTM23o
+         s4SXqQWt9FwWeHmwml1gr0w6MyC8WAsxEH27K/JwflglOrcEnRw8g3uqhhMN4UGtP9RX
+         I7TvzBe5fBMDEwbI5q9v6jQOO0/RCVOi1nUTsgryfXfkpYiVYwo5OS16SoXetFd2YccQ
+         e27zo0lIsjOwDqW0O9A1MhTRuOUnJoog9EYDh0hVSLp1oyXlwLa9N/kxpk/uX4L56rFr
+         pk3g==
+X-Forwarded-Encrypted: i=1; AL+hErG58XMXRr2fZMKck9eYfhSPk9TjpvSTDzCf79X9BefYLAzEv77rICKKANplyyRl26koQHTGGI4BVg==@kvack.org
+X-Gm-Message-State: APuU4Z9+PX+3PLmva73AU07C7xVCpe+Nj7uKpIuG71qmVlkyGHX4QXJ6
+	H+RQT1+BAH266bbNdKUIyq4RI4SJ3NejIJKoHM0AnX07liwtZhJx6qLIOWwGORnh7p2zxG+t0AG
+	yLubK0gdHHeKHQ+uK7iMdGE8cMt0xrco=
+X-Gm-Gg: AZFdTZdKNoD6cILaSOI+yUYkJvCX9HmkGiDWgWDlqtLp096d9JzHX6Rpny7BCJzoJQT
+	K//isW0Z5Y5FjUuBG6+S1RZUE4jTFSCbKwm6h9+isTusKZG7T0ZXkfi56MUYxiVDOclmZf8GJ8Q
+	RZmNiivzb1kgMCVrrXldZm7Ut5BrMHVnUHXp/WacIA52tHvl0YDSCzebHhY9EN1zAS+gRwxLGG8
+	y00bKcVsXapzvAkM92Rnmi7kcUrL5HbZtLCe7SrlDS4hm8+IffljmdMG2QqGZdn7hpVu533d9x1
+	ZEB35MFTQptliXBgrV09SFXQrLkkgS15Xyx+GvCSixv9QRsngJKcaYvPW7opDI5NEMX5U+ahKSy
+	VGXITpwu2s9toj57a65zZiRs9cF4OjUR0vOqF
+X-Received: by 2002:a05:6512:32c8:b0:5c1:46f8:913c with SMTP id
+ 2adb3069b0e04-5c1b7c00f96mr1590361e87.20.1795202892209; Fri, 20 Nov 2026
+ 11:28:12 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com>
+ <20261106072412.7909-9-kanchanapsridhar2026@gmail.com> <sashiko-outbox-202714@kernel.org>
+ <CACpmpofRbbRuRQfx0wd_xnitwz-TfWZ4_XfgR-y0HYPsN3ZFpA@mail.gmail.com>
+In-Reply-To: <CACpmpofRbbRuRQfx0wd_xnitwz-TfWZ4_XfgR-y0HYPsN3ZFpA@mail.gmail.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Fri, 20 Nov 2026 11:27:59 -0800
+X-Gm-Features: Aa3M54qHyMHAs4REx3hc_QYhZyScUZM2KH4BsGOU3VT9vIU15C1WE7ikT83enGg
+Message-ID: <CACpmpof-tnHWn=mqGEm=xAGi039Ewh8Zv5=n+5QOrvLjefv3TA@mail.gmail.com>
+Subject: Re: [PATCH v3 8/8] mm: zswap: Batched zswap_compress() for storing
+ large folios in batches.
+To: sashiko-reviews@lists.linux.dev
+Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	herbert@gondor.apana.org.au, davem@davemloft.net, 
+	linux-crypto@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Nov 2026 11:25:01 -0800
-Message-Id: <DN0A8VWPLTYF.3Q0MIEDWLJYN4@google.com>
-Subject: Re: [PATCH v11 10/13] PCI: liveupdate: Adopt ARI Forwarding Enable
- on preserved bridges
-From: "David Matlack" <dmatlack@google.com>
-To: <sashiko-reviews@lists.linux.dev>, "David Matlack"
- <dmatlack@google.com>, <kexec@lists.infradead.org>, <linux-mm@kvack.org>,
- <linux-pci@vger.kernel.org>
-Cc: "Adithya Jayachandran" <ajayachandra@nvidia.com>, "Alexander Graf"
- <graf@amazon.com>, "Alex Williamson" <alex@shazbot.org>, "Alex Williamson"
- <alex.williamson@nvidia.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Chris
- Down" <chris@chrisdown.name>, "Chris Li" <chrisl@kernel.org>, "David
- Rientjes" <rientjes@google.com>, "Jacob Pan"
- <jacob.pan@linux.microsoft.com>, "Jason Gunthorpe" <jgg@nvidia.com>,
- "Jonathan Corbet" <corbet@lwn.net>, "Josh Hilke" <jrhilke@google.com>,
- "Leon Romanovsky" <leonro@nvidia.com>, "Lukas Wunner" <lukas@wunner.de>,
- "Mike Rapoport" <rppt@kernel.org>, "Parav Pandit" <parav@nvidia.com>,
- "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pranjal Shrivastava"
- <praan@google.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Randy Dunlap"
- <rdunlap@infradead.org>, "Saeed Mahameed" <saeedm@nvidia.com>, "Samiullah
- Khawaja" <skhawaja@google.com>, "Shuah Khan" <skhan@linuxfoundation.org>,
- "Vipin Sharma" <vipinsh@google.com>, "William Tu" <witu@nvidia.com>, "Yi
- Liu" <yi.l.liu@intel.com>
-X-Mailer: aerc 0.21.0
-References: <20261118223704.3286085-1-dmatlack@google.com>
- <20261118223704.3286085-11-dmatlack@google.com>
- <sashiko-outbox-224145@kernel.org>
-In-Reply-To: <sashiko-outbox-224145@kernel.org>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C497DC000A
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: EF34C100006
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Stat-Signature: megt6mqa9pdeomncbiybtfjpsyuyimmt
-X-HE-Tag: 1795202705-565842
-X-HE-Meta: U2FsdGVkX1+sNLZjTPEWKRsJ5ZhZLsKRCe+r2gddnb/hVNS3ctgxd9DY1Cd9vMNPLYPzLLQvYhew5LLAHQaQZwB9AzjFFkkymTJwLXZ9B8WwrZWakQ6x/OjjL3DMGglPHHMMdiOVyHJyIbkrawpivtEX94Kwj2W7TtejE7AI3qjStVfoLhILIT3b+3VdxITwPyBaCB7wYlbSdUZmWBWcNBy73XdvY1e0nd5fzoinetvfjlV3/J8LxqXH4Yr2SDHxhMrkx9069otzGIJ/TfGZY0JguUUU3frO+qspNkYvbnE14stYhS5fvVJV0hf4E36O7ZFVctoqG3Z4A+2I7fwWlI3I/54rvXxOK7oB+6XtpLcibv1w/gq03FSqa4iG9kFJNtvJgr7v3mVE0KK0v0sLLsJ9O6C7vvnxkNwm2sud8BxkKK3k52RevTSvK24R/imxh6EmXQzSv7zmHpP2Hfx1hg5/TRod+w8o1KCgF7wRPGQOfYIJm02Xqz6d7D5DAg7LAgKZcTDzYTfexY/i57VcRqc1VUnq3MJci2cxfuNtXQVe7/2yPC/JnfB1VAdeYeQpaeIWPFKZhzk46KXItgOegPVeKdLxjyCRge60ypDxtUnEtbSGwPyCnXNbz6lLg8bk1nETQxHZZNNi3IZdSdJsjJlqks4rW1Ynvq2nz1/B2uH+VUOVjACaG0MAHoEE2Grlvlegdz39tZPzk+X6v47AqGmpqpeo3+8FjrwVFlc0AyCL6aPAqVYtp/5eRIV0IrBIupqvcF11rjcEbjnq0Uqz7LIwO6XM/g8WMnIvdjtZQAPkrQs9nuwZ7GFFsO6Fvx8WnDmd4Ljrz1cAxvFbbYgdP0ryCOMEviuKVRZ+Txgj/96L2FP2sgJkQ365I7mH5RgxGwWE6N15cCrUBUc/Bb4kSx7IDlZ2ch1dAlYPqPLj7M5PmmDz/KJP87wxrVUGnLSahimMZ+dqySVuzSO42TI
- Lbi6Oq/e
- knmzZuGCO3Qfx10nM2+9VKFynzsyADlnwmmVjWkTKxYE393MOTxL1IWgq+CrJXCB/w2dY9GQVz3p8SbcE0YCzDheVBFW865C/xE6J0JWhZfYeup2pWzDY5QkplSq0gtAK3I6AxtsrWNVxEdH4yK8IyGAreoB0qd5hnXrtueSa3iIrXyB0AXjHHKoEgBdBx3JIcwFGAb+Om+FjeJOzK3EcUr/YukRNu3SFUQ1S+CmqLlAEaSnu8FZOmj30ahNV+8R+llba0xgNZuqmyJvdj8vGCttdtKaav/vIZLyzZXqFELjdQAXfCUTsIDr7JuG/rcsKSDxBQuJKD7pE0aiBSviUGJtGt1VizAqcmoq2cUC7l1blIajBZGNTBcB7Ue4HwJ7YLqidgGvABn57B8Z/KLe+D+as2pZfLULdndDekbUqnjVFho6N1F00UeTFZG6pfpLOlJDFqhZ/qvwMT1ZyOGwT8IcoGlrLC7QC6rwTswOVvRwYkZxkkFVrJySPQxpTS2c8wlckrG436G27UvL3DTzkGi/V7djDLR7E1MqTQByQDpmnNZTF7jbqNhvJ613IonCtQ8ILJ55rbQNv3Wq4muG8kMsFdosYrADBaF5hw5L/MEXRkvg=
+X-Stat-Signature: xmqs41hfotzzmfen3e1c1jmrwbeq4c4w
+X-HE-Tag: 1795202893-106462
+X-HE-Meta: U2FsdGVkX18Fnf90abUap8lnR57owE4jc0B9r6tU4gXw9f9ozxlJ8JyXUx/DJbmFayewNKf6lnAKCzXDzM4Rdn33prEzrUzdjciIqBQRhMw9RqCcH5rM39mql9TD3cNyolNOszuQO7ROoGt6+AR4T7CyLfMjDDsVBlHLb2TPyQI09OqnnqwSyXrn0aNJAyzKek6IH1jBajZZ4L4o96xVzArfZ4lFJn1oKADfkLtDrHfG6TTMm0B19FaBfCPLOXUo3XCSp/rxikSZGTC3s7l4HMr+RIwJe3v467nzLKLzuy/Df90rZ8Xo5HOciuYBrRtOcKbd7PIzrlDp8wwc11nVW2KGGNaEiRjwt451pPmezgmpbWxE4BMekWVyMIj+fTEdt+3K0PW6Rb0gijcFAM/CDKnYZwRcQ+tN9bD9iYW1zVjXz/k6VsDTFbo8F9zhIDOfOhU/twqqEQEN8pPtGyhGVZl5VddJEbHv8LyaKMQ6YFbi7ULSW423StLErRatmnWYU2xIAdimvAtpQDQnwQcY/nbwKYrE0IC9xjdONa5o+PzDQv5eYDI3NIRIfctPPKmdDTwfOV1YtiZcR2qp6FFnF7ZDATFJQoyaQU3iZLokt4WEgkpte5EsBch4ijQ3YkuigK80TBLviZejsi0zjKpc3Lof+9WJg7144ZUjHCq7Ez/iW0A0zMYai2NZ+tLLbaWsJ37fnbBT3U6m+JMfI9UMnK5uSP6lQtObCcAAp0Z7wE1LxwyVPI/E1CAY0lpsXu2Cdke2EJ5y6+tqep+EkBqHEHatJagsEvA+bSZNugQFXw03lFOmYnenE/V5q/g/YaavO9clqzMigtctKWHLUuL4/aNtJphX7KiTzgz67ilQ4DJxwse3H+Dxg/x82Mfx730xDA4LmHldwJlibeTvYsERpKDWIk9f88CvZUZE3cKDiSEeAsDcZ8eh+7r9Muh20gdVyqv7HAY7TOK4wP0AmwK
+ dcmOPu0j
+ QEQwPujgZAXP+8zAXiLIpOvVVWHnquvYN1Gr11ocooTbzLqKP0rW226J7j4SQA9KiJr8DRVnBkGkGQTPPB0n/31+bRO73wh4UhmGCwvIgsYK7SOPdIKHf42iR3HtJkQOdfdmcei0g5Z7yWtZd8bNv8V2P2uW+RYxNIbkOitXQtsheyEl6n/kJLec6jIOqyXehZ7jqUL5q9Rdl3q4GF04e1j4QOIIp/uhPe2s3f61VDkyS9agNXQLXUjLb++Rcoc1Ky+vNQERwBt1NcG3HRIlU9F5vSSbs0VUkbvARkoHI7mP4E5NLAmNE2wpbWq7YSROeLGVn8GmPXYvJnegxIee6siPXRVxyHx3Iuc+VOcHUtbwykpojBUdSkRzqZX1FWp2wxMX+f4bvGhFEz3aWwgyqFSEa9THxuNNZUKz7TL1v8KWdg3uHW5ZHK7pb+9zvdQhZtwXbQZOxYRd39qEsMJ0q6MX0Qfw0SG+wJ+3WLjvrNv3Qhl+r9esgxFcLseE/UaA/dR72/0oMJLe4adg9GMOQesPnyAp4QVkgj9lsHsnnyiw4ZG91S58WlDF++mnf0iylgoTVGGuQxfd59/dy6CKpyLQl4GKIGW9hUzCaSEgs/H3HHGTLNwwVwDhdkEAu8RAzF6jkSiSUVms84k40cPk2v4qjnLNqdmfWdgJcWNIRGAntNW4NrP98sajNtex87jESucr9YUidUlXZu3XzvKJEYbbdRaA+GZhf8Da7FdeQgCXiQI8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,105 +150,306 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu Nov 19, 2026 at 2:38 PM PST, sashiko-bot wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] PCI: liveupdate: stale ARI state in pci_configure_ari() with
->   pci=3Dnoari
-> --
+On Fri, Nov 20, 2026 at 11:24=E2=80=AFAM Kanchana P. Sridhar
+<kanchanapsridhar2026@gmail.com> wrote:
 >
-> commit ee2b5e1cebde3231a1c9acaaf68c272dbf3c6e8e
-> Author: David Matlack <dmatlack@google.com>
+> On Fri, Nov 6, 2026 at 11:25=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+> >
+> > Thank you for your contribution! Sashiko AI review found 3 potential
+> > issues to consider:
+> > - [High] mm: zswap: corrupted and unterminated dst scatterlist in
+> >   zswap_compress()
+> > - [Medium] mm: zswap: unclamped nr_batch_pages on remainder batch in
+> >   zswap_compress()
+> > - [Medium] mm: zswap: unsigned sg->length check mishandles negative
+> >   errors in zswap_compress()
+> > --
+> >
+> > commit 212f5740068394b4c82b7b1e5452b1ac6625322f
+> > Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+> >
+> > mm: zswap: Batched zswap_compress() for storing large folios in batches=
+.
+> >
+> > This commit replaces per-page zswap_compress() calls with a batched
+> > implementation that compresses up to ZSWAP_MAX_BATCH_SIZE pages using a
+> > per-CPU scatterlist table and updates the batch entries in
+> > zswap_update_entries().
+> >
+> > > diff --git a/mm/zswap.c b/mm/zswap.c
+> > > index 5ef1ae67e67a9..45fd8dfaf916d 100644
+> > > --- a/mm/zswap.c
+> > > +++ b/mm/zswap.c
+> >
+> > [ ... ]
+> >
+> > > @@ -898,6 +914,7 @@ static int zswap_cpu_comp_prepare(unsigned int cp=
+u, struct hlist_node *node)
+> >
+> > [ ... ]
+> >
+> > > +     acomp_ctx->comp.sg_table =3D kmalloc(sizeof(*acomp_ctx->comp.sg=
+_table),
+> > > +                                        GFP_KERNEL);
+> > > +     if (!acomp_ctx->comp.sg_table) {
+> > > +             ret =3D -ENOMEM;
+> > > +             goto req_fail;
+> > > +     }
+> > > +
+> > > +     if (sg_alloc_table(acomp_ctx->comp.sg_table, ZSWAP_MAX_BATCH_SI=
+ZE,
+> > > +                        GFP_KERNEL)) {
+> > > +             ret =3D -ENOMEM;
+> > > +             goto req_fail;
+> > > +     }
+> > > +
+> > > +     /*
+> > > +      * Statically map the per-CPU destination buffers to the per-CP=
+U
+> > > +      * SG lists; crucial for performance.
+> > > +      */
+> > > +     for_each_sg(acomp_ctx->comp.sg_table->sgl, sg, ZSWAP_MAX_BATCH_=
+SIZE, i)
+> > > +             sg_set_buf(sg, acomp_ctx->comp.buffers[i], PAGE_SIZE);
+> >
+> > [ ... ]
+> >
+> > > +static bool zswap_compress(struct zswap_store_context *zc)
+> > > +{
+> > > +     u8 batch_start, comp_batch_iter;
+> > > +     struct scatterlist *sg, *dst_sg;
+> > > +     int err;
+> > >
+> > >       /*
+> > > -      * it maybe looks a little bit silly that we send an asynchrono=
+us request,
+> > > -      * then wait for its completion synchronously. This makes the p=
+rocess look
+> > > -      * synchronous in fact.
+> > > -      * Theoretically, acomp supports users send multiple acomp requ=
+ests in one
+> > > -      * acomp instance, then get those requests done simultaneously.=
+ but in this
+> > > -      * case, zswap actually does store and load page by page, there=
+ is no
+> > > -      * existing method to send the second page before the first pag=
+e is done
+> > > -      * in one thread doing zswap.
+> > > -      * but in different threads running on different cpu, we have d=
+ifferent
+> > > -      * acomp instance, and compression and decompression use separa=
+te
+> > > -      * requests, so multiple threads can do (de)compression in para=
+llel.
+> > > +      * @nr_batch_pages is constrained by the per-CPU comp_ctx's com=
+pressor
+> > > +      * batch size and the @zc->nr_pages in this store batch. @slen =
+indicates
+> > > +      * the total source length bytes for @nr_batch_pages.
+> > >        */
+> > > +     zc->nr_batch_pages =3D min(zc->comp_ctx->compr_batch_size, zc->=
+nr_pages);
+> > > +     zc->slen =3D zc->nr_batch_pages * PAGE_SIZE;
+> > >
+> > >       /*
+> > > +      * Compress the @nr_pages in @folio starting at index @folio_st=
+art
+> > > +      * in batches of @nr_batch_pages.
+> > >        */
+> > > +     for (batch_start =3D 0; batch_start < zc->nr_pages;
+> > > +          batch_start +=3D zc->nr_batch_pages) {
+> >
+> > [Severity: Medium]
+> > Can zc->nr_batch_pages exceed the remaining pages in the store batch on=
+ the
+> > final loop iteration?
+> >
+> > zc->nr_batch_pages and zc->slen are computed once before the loop inste=
+ad
+> > of being clamped to zc->nr_pages - batch_start on each iteration.  If a
+> > compressor has a compr_batch_size that does not evenly divide zc->nr_pa=
+ges
+> > (for example, compr_batch_size =3D=3D 3 with zc->nr_pages =3D=3D 4), th=
+e final
+> > iteration reads past the end of the folio batch and walks past the SG_E=
+ND
+> > terminator of zc->comp_ctx->sg_table->sgl in for_each_sg(), causing a N=
+ULL
+> > pointer dereference when sg_next() returns NULL.
 >
-> PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
->
-> This commit adopts the ARI Forwarding Enable bit from hardware on
-> incoming-preserved bridges during a Live Update, even when pci=3Dnoari is
-> passed on the kernel command line.
->
->> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
->> index ebc565b4780a1..b5b578355a1b6 100644
->> --- a/drivers/pci/pci.c
->> +++ b/drivers/pci/pci.c
->> @@ -3748,7 +3748,7 @@ void pci_configure_ari(struct pci_dev *dev)
->>  	u32 cap;
->>  	struct pci_dev *bridge;
->> =20
->> -	if (pcie_ari_disabled || !pci_is_pcie(dev) || dev->devfn)
->> +	if (!pci_is_pcie(dev) || dev->devfn)
->>  		return;
->> =20
->>  	bridge =3D dev->bus->self;
->> @@ -3759,6 +3759,12 @@ void pci_configure_ari(struct pci_dev *dev)
->>  	if (!(cap & PCI_EXP_DEVCAP2_ARI))
->>  		return;
->> =20
->> +	if (!pci_liveupdate_adopt_ari(bridge))
->> +		return;
->> +
->> +	if (pcie_ari_disabled)
->> +		return;
->> +
->>  	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ARI)) {
->>  		pcie_capability_set_word(bridge, PCI_EXP_DEVCTL2,
->>  					 PCI_EXP_DEVCTL2_ARI);
->
-> [Severity: Medium]
-> Does returning early on pcie_ari_disabled leave PCI_EXP_DEVCTL2_ARI and
-> bridge->ari_enabled set to 1 if a new device is hot-plugged after the
-> preserved devices below the bridge have finished Live Update?
->
-> When booting with pci=3Dnoari, pci_liveupdate_adopt_ari() sets
-> bridge->ari_enabled =3D 1 while bridge->liveupdate.incoming is set.  Once
-> the preserved devices finish Live Update and bridge->liveupdate.incoming
-> is cleared, hot-plugging or rescanning a non-ARI multi-function device
-> below the bridge causes pci_liveupdate_adopt_ari() to return -EINVAL and
-> pci_configure_ari() to return at pcie_ari_disabled without reaching the
-> else branch that clears PCI_EXP_DEVCTL2_ARI and bridge->ari_enabled.
-> Because bridge->ari_enabled stays 1, next_fn() calls next_ari_fn(), which
-> returns -ENODEV and skips enumerating functions 1..7 on the new device.
->
-> Checking !pcie_ari_disabled alongside pci_find_ext_capability(dev,
-> PCI_EXT_CAP_ID_ARI) instead of returning early would allow the else branc=
-h
-> to clear PCI_EXP_DEVCTL2_ARI and bridge->ari_enabled.
+> Thanks for catching this. I have resolved this and will include it
+> when I submit the next revision.
 
-Yes, but only in a very narrow case: the next kernel is booted with
-pci=3Dnoari, the previous kernel enabled ARI Forwarding on a bridge above
-a preserved device, the preserved devices below that bridge finish, and
-then a _different_ multi-function device without ARI is hot-plugged below
-the same bridge. The only impact is that functions 1-7 of the
-hot-plugged device are not enumerated. There is no corruption or crash.
+This has been resolved in v4 submitted yesterday.
 
-I don't think this is worth changing more PCI core code in
-pci_configure_ari() for in this series. It can be addressed in a future
-patch if someone really wants to do that.
-
-The comment in pci_liveupdate_adopt_ari() can be improved though, since
-it claims ARI Forwarding Enable is always recomputed after the preserved
-devices finish. I will update it in v12 to document the pci=3Dnoari
-behavior:
-
-diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index 493576119a76..7582b87df3ad 100644
---- a/drivers/pci/liveupdate.c
-+++ b/drivers/pci/liveupdate.c
-@@ -937,9 +937,14 @@ int pci_liveupdate_adopt_ari(struct pci_dev *dev)
-=20
- 	/*
- 	 * Unlike ACS, only adopt ARI while the bridge is incoming-preserved.
--	 * Once all devices below the bridge have finished, recomputing ARI
--	 * Forwarding Enable yields the same result for the same device, and
--	 * must be allowed to change if a different device is hot-plugged.
-+	 * Once all devices below the bridge have finished, pci_configure_ari()
-+	 * configures ARI Forwarding Enable as usual the next time a device is
-+	 * added below the bridge, e.g. if a different device is hot-plugged.
-+	 *
-+	 * The exception is pci=3Dnoari, where pci_configure_ari() does not touch
-+	 * the bridge, so the adopted ARI Forwarding Enable persists after the
-+	 * preserved devices finish, even if a device without ARI is later
-+	 * hot-plugged below the bridge.
- 	 */
- 	if (!dev->liveupdate.incoming)
- 		return -EINVAL;
+>
+> >
+> > > +             /*
+> > > +              * Send @nr_batch_pages to crypto_acomp for compression=
+:
+> > > +              *
+> > > +              * These pages are in @folio's range of indices in the =
+interval
+> > > +              *     [@folio_start + @batch_start,
+> > > +              *      @folio_start + @batch_start + @nr_batch_pages).
+> > > +              *
+> > > +              * The source folio pages in the batch are directly sub=
+mitted to
+> > > +              * crypto_acomp via acomp_request_set_src_folio().
+> > > +              */
+> > > +             acomp_request_set_src_folio(zc->comp_ctx->areq.req, zc-=
+>folio,
+> > > +                             (zc->folio_start + batch_start) * PAGE_=
+SIZE,
+> > > +                             zc->slen);
+> > > +
+> > > +             dst_sg =3D zc->comp_ctx->sg_table->sgl + batch_start;
+> > > +             dst_sg->length =3D zc->slen;
+> > > +
+> > > +             /*
+> > > +              * The per-CPU @zc->comp_ctx->sg_table scatterlists are=
+ statically
+> > > +              * mapped to the per-CPU dst @buffers at pool creation =
+time.
+> > > +              * There are ZSWAP_MAX_BATCH_SIZE per-CPU SG lists and =
+dst
+> > > +              * buffers allocated for all compressors.
+> > > +              */
+> > > +             acomp_request_set_dst_sg(zc->comp_ctx->areq.req,
+> > > +                                      dst_sg, zc->slen);
+> >
+> > [Severity: High]
+> > Does setting dst_sg->length =3D zc->slen corrupt the per-CPU scatterlis=
+t table
+> > in zc->comp_ctx->sg_table?
+> >
+> > In zswap_cpu_comp_prepare(), each entry in sg_table->sgl is mapped to a
+> > separate PAGE_SIZE buffer and only sgl[ZSWAP_MAX_BATCH_SIZE - 1] has SG=
+_END
+> > set.  During compression, each entry's sg->length is overwritten with t=
+he
+> > compressed size or a negative error code.
+> >
+> > When zc->nr_batch_pages > 1, setting dst_sg->length =3D zc->slen tells =
+the
+> > compressor that dst_sg[0]'s single PAGE_SIZE buffer is nr_batch_pages *
+> > PAGE_SIZE bytes long, while dst_sg[1 .. nr_batch_pages - 1].length are =
+never
+> > reset to PAGE_SIZE and retain stale lengths or negative error codes fro=
+m the
+> > previous batch.  If crypto_acomp_compress() fails while zc->wb_enabled =
+is
+> > true without updating every entry's sg->length, any entry still holding=
+ a
+> > stale length in (0, PAGE_SIZE) bypasses the sg->length >=3D PAGE_SIZE c=
+heck
+> > and causes zswap_update_entries() to store stale data from the previous
+> > folio.
+> >
+> > In addition, because SG_END is only set on sgl[3], passing dst_sg =3D s=
+gl +
+> > batch_start leaves 4 - batch_start entries linked in req->dst.  Hardwar=
+e
+> > acomp drivers that check sg_nents(req->dst) or DMA-map every entry in t=
+he
+> > scatterlist walk past the current batch into trailing entries whose
+> > sg->length may still hold PAGE_SIZE or (unsigned int)-ENOSPC (0xffffffe=
+4)
+> > from an earlier failed compression.
+>
+> Sashiko raised this in v2 code review. Please see my follow up comments i=
+n:
+>
+> https://lore.kernel.org/all/CACpmpofOE797D7f4YGZEJ2jtHn08d9Jo8Ya3cdV8h9UL=
+5hUd9A@mail.gmail.com/
+>
+> and let me know if this explains things better. Thanks.
+>
+> >
+> > > +
+> > > +             err =3D crypto_wait_req(crypto_acomp_compress(zc->comp_=
+ctx->areq.req),
+> > > +                                   &zc->comp_ctx->areq.wait);
+> > > +
+> > > +             /*
+> > > +              * If a page cannot be compressed into a size smaller t=
+han
+> > > +              * PAGE_SIZE, save the content as is without a compress=
+ion, to
+> > > +              * keep the LRU order of writebacks.  If writeback is d=
+isabled,
+> > > +              * reject the page since it only adds metadata overhead=
+.
+> > > +              * swap_writeout() will put the page back to the active=
+ LRU list
+> > > +              * in the case.
+> > > +              */
+> > > +             if (err && !zc->wb_enabled)
+> > > +                     goto compress_error;
+> > >
+> > > +             /*
+> > > +              * For each output SG list in @acomp_ctx->req->sg_table=
+->sgl,
+> > > +              * the @sg->length should be set to either the page's c=
+ompressed
+> > > +              * length (success), or it's negative value compression=
+ error.
+> > > +              */
+> > > +             for_each_sg(dst_sg, sg, zc->nr_batch_pages, comp_batch_=
+iter) {
+> > > +
+> > > +                     if (sg->length <=3D 0 || sg->length >=3D PAGE_S=
+IZE) {
+> > > +                             if (!zc->wb_enabled) {
+> > > +                                     if (sg->length =3D=3D PAGE_SIZE=
+)
+> > > +                                             sg->length =3D -ENOSPC;
+> > > +                                     else if (WARN_ON_ONCE(!sg->leng=
+th || sg->length > PAGE_SIZE))
+> > > +                                             sg->length =3D -EINVAL;
+> > > +                                     goto compress_error;
+> > > +                             }
+> > > +
+> > > +                             sg->length =3D PAGE_SIZE;
+> > > +                     }
+> > > +             }
+> > >       }
+> > >
+> > > +     return zswap_update_entries(zc);
+> > >
+> > > +compress_error:
+> > > +     for_each_sg(dst_sg, sg, zc->nr_batch_pages, comp_batch_iter) {
+> > > +             if ((int)sg->length < 0) {
+> > > +                     if ((int)sg->length =3D=3D -ENOSPC)
+> > > +                             zswap_reject_compress_poor++;
+> > > +                     else
+> > > +                             zswap_reject_compress_fail++;
+> > > +             }
+> > > +     }
+> > > +
+> > > +     return false;
+> > >  }
+> >
+> > [Severity: Medium]
+> > Does checking sg->length without casting to int mishandle negative
+> > compression error codes when !zc->wb_enabled?
+> >
+> > scatterlist.length is an unsigned int, so a negative error code stored =
+in
+> > sg->length (such as -ENOSPC) is never <=3D 0 and instead triggers
+> > WARN_ON_ONCE(!sg->length || sg->length > PAGE_SIZE) and overwrites
+> > sg->length with -EINVAL before compress_error: checks for -ENOSPC.
+> > Conversely, if crypto_acomp_compress() returns an error before setting
+> > negative values in sg->length, jumping directly to compress_error: find=
+s no
+> > entries with (int)sg->length < 0 and increments neither rejection count=
+er.
+>
+> Thanks. I have resolved this.
+>
+>
+> >
+> > --
+> > Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106072412.=
+7909-1-kanchanapsridhar2026@gmail.com?part=3D8
 
