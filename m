@@ -1,100 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A25606A326
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 12:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728AB606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 12:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JAIbLE0S
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eQC0Wr3l
 Received: by kanga.kvack.org (Postfix)
-	id EA4766B05B8; Fri, 20 Nov 2026 07:03:37 -0500 (EST)
+	id 5A5CF6B05BA; Fri, 20 Nov 2026 07:03:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E55826B05B9; Fri, 20 Nov 2026 07:03:37 -0500 (EST)
+	id 57C706B05BB; Fri, 20 Nov 2026 07:03:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6B3A6B05BA; Fri, 20 Nov 2026 07:03:37 -0500 (EST)
+	id 4B99B6B05BC; Fri, 20 Nov 2026 07:03:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B1D036B05B8
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:03:37 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A3881120EB2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:03:35 +0000 (UTC)
-X-FDA: 85455362790.02.8D79FB8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 08356180007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:03:33 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JAIbLE0S;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2037C6B05BA
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 07:03:56 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A72B2A0670
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:03:55 +0000 (UTC)
+X-FDA: 85455363630.16.8ABB6BD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EB879C0008
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:03:53 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eQC0Wr3l;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795176214;
-	b=6peDb9ryUjvg44g/1Uw5OYHSvF3/5p51oQEh1pD9nZb3OmjEsm67+Aevit5fxA3n9gH0fa
-	lv402lXDfLlq9gU6DnEljN7Bep1u9H2kGZp1JqOCe49iFci8ql0cJ4aog8WkYzCc5BggiO
-	rKsmJPdd2xqCWVSAvKYKVHw39n5ViJE=
+	t=1795176234;
+	b=QQ6ZGZvCArHdTl+8rgHDpuBFk11j790jScelKOHb0ZZlNMnPySqk8n6Ao0+8J8mBr2BfLc
+	jKnDoET9t0PJCz3QY2xeBhCrMdfU5Zpzc3kV2tPT0LW+WZfcyutBRqELVWnhmGWRPjvK2q
+	v4jJLhZJDxPQKYz9r2iLhL+Jn+iF+MQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795176214;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1795176234;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HsgHV0quLYYKk4mxB/bu1tZX7bUFJNZxSMDfjRQjlJA=;
-	b=HDMgmnr4sr63oo11j4na7M6z8dEIJZYG7OV3Z+GPCIJnPELkge0Xlbh1KISWpCZ/tz9l+H
-	krnDHnxLFDpl+Otzk0imw9FH4Gqe15dMDUZirGUUv7eVg8W4XREeuI5eGEBesyQycLwCBw
-	sUiOSQQHxopxzzeFSoq13YaAdpL6snc=
+	bh=SqWIR9Se+KYSxOeedAPrX5X3Izc466RyyVllm8girYs=;
+	b=pBYAKKjWXrh2OC962YhxSyHM4wDNIOAuDAAsm17497fRhJdp15JU/XKqD8UPJDCmH7Fwb5
+	lb0Q+zpahYzPFkoTQtKDX6dNR9aokw3KNUgzg+oFfvE0Naz0GerqqVnJehnHaMvaAQ+xMF
+	erFvkD6xXRuSE2gS9NBPIEA3fp6OmjU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JAIbLE0S;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eQC0Wr3l;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A0ECE6267A;
-	Fri, 20 Nov 2026 12:03:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304451F000D0;
-	Fri, 20 Nov 2026 12:03:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3610D45052;
+	Fri, 20 Nov 2026 12:03:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9F91F000CA;
+	Fri, 20 Nov 2026 12:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795176213;
-	bh=HsgHV0quLYYKk4mxB/bu1tZX7bUFJNZxSMDfjRQjlJA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JAIbLE0SH66We0axqp5/5KdlL4zj67ge49JQ2cCV9dAz/iTIwzwB1SRZPYmdXduU3
-	 EwcST2h/+/KodO8RL8AG0apwubEEUVrFqF8j0kW//ZNishM9rVOOFt82L307NJL8pO
-	 DbYjVJ1nseWtSoajx3IAJAeNE87VcC/z36Ujzx0HRFpQg1AOzB1wX91VprScfL3KZo
-	 q10aRKZDEY6WcjRaayp0kLp+lOTUsEum1g1C6jfZvMrUe0ICOz8u1on8flgB+nKpZ/
-	 N4eygASNQ2HAXbIdEnRREuF/O2UWfIGrkWPY6oL3vMdCM7mW83e0COyYtE1JCuK6Ol
-	 1zf9qnS+uszaQ==
-Message-ID: <sashiko-outbox-225116@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 7/7] mm: page_reporting: add flush parameter with
- page budget
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Brendan Jackman" <jackmanb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Suren Baghdasaryan" <surenb@google.com>, "Jason
- Wang" <jasowang@redhat.com>, "Andrea Arcangeli" <aarcange@redhat.com>, "Dev
- Jain" <dev.jain@arm.com>, "Geert Uytterhoeven" <geert@linux-m68k.org>, "Greg
- Ungerer" <gerg@linux-m68k.org>, "Gregory Price" <gourry@gourry.net>,
- =?utf-8?b?SHVhbmcsIFlpbmc=?= <ying.huang@linux.alibaba.com>, "Lance Yang" <lance.yang@linux.dev>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Magnus Lindholm" <linmag7@gmail.com>, "Matthew
- Wilcox" <willy@infradead.org>, "Miaohe Lin" <linmiaohe@huawei.com>, "Zi Yan" <ziy@nvidia.com>, linux-mm@kvack.org, virtualization@lists.linux.dev, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Eugenio
- Perez" <eperezma@redhat.com>
-In-Reply-To: <2d518dd7b8f7be147b9a957ad94f6c6641e4b5ef.1795089715.git.mst@redhat.com>
-References: <cover.1795089715.git.mst@redhat.com>
- <2d518dd7b8f7be147b9a957ad94f6c6641e4b5ef.1795089715.git.mst@redhat.com>
+	s=k20260515; t=1795176232;
+	bh=SqWIR9Se+KYSxOeedAPrX5X3Izc466RyyVllm8girYs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=eQC0Wr3lgUzzTkfZ+g++WQ6i9+JSsJkWmnj3lI8kE0w++Fj0Aif+hZDqhIL9sLyIx
+	 a8Di/kqKCukJGTJC1zXepv5Sdr2LCP9iPBbdWF+A8jhGBp1iOQaNYJN7adT34Y3W9S
+	 Pb+nv+aR2c9r1M0sYYw7/cHzuoRB8xHITNvgoDwEKeBy2Gh1Ujc9EBblYVSC3NiU26
+	 a4amGvRPy1ozUlU0xEE6aDwbhw359/SVKYSi0RWbGncSHF6ILeSO+SgPi2eCETCBk6
+	 z9bgDTJwIM9aRQu/yAj/ctpZU9mN6fxaqnl7WJSRpJYz286xTIXsEojssbBso6V1c4
+	 oiEmhIyhrZC5A==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, David
+ Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Mike
+ Rapoport <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie
+ Kim <rakie.kim@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Matthew Wilcox <willy@infradead.org>,
+ Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5u?=
+ =?utf-8?B?ZXbDpWc=?=
+ <arve@android.com>, Todd Kjos <tkjos@android.com>, Christian Brauner
+ <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Igor B
+ <igor.b@beldev.am>, Vitaly Wool <vitaly.wool@konsulko.se>,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v22 0/6] rust: page: add page kinds
+In-Reply-To: <3C3421E5-5B7D-42B8-ABD2-185375693D7A@nvidia.com>
+References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+ <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
+ <871p8iue5y.fsf@t14s.mail-host-address-is-not-set>
+ <3C3421E5-5B7D-42B8-ABD2-185375693D7A@nvidia.com>
+Date: Fri, 20 Nov 2026 13:03:30 +0100
+Message-ID: <87se0vu2ul.fsf@t14s.mail-host-address-is-not-set>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 20 Nov 2026 12:03:31 +0000
-X-Rspamd-Queue-Id: 08356180007
-X-Stat-Signature: rndd718x6yke7kgo1ncimrgnkammo4kr
+X-Rspamd-Queue-Id: EB879C0008
+X-Stat-Signature: 3cibp8z51iugf6kctiwfpbz9q5osi5rw
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1795176213-741118
-X-HE-Meta: U2FsdGVkX1+53xgMnOrKCcxmVfVJ2GsG/KPELQO/qd4/ObuU4nJmXGVHBwLPcT6ETLXBVHDK6QNubiGX7HYpIwBFCMaYdBpET8s2fFkUdUstGqsGVxEX3GuJ0OjIHg+g0mI1PXQAmVJIrf+0+UbAlDn22k16xxrfA9SXfj+kFJGAJs69NUv+1SIYoG+E6xz1d2E1eshXmsaD0V2vp1cpLPh9hF368vH3J0ff01gGNoLJIVPy1br5EpRhSzFx5iYBnD3+7gm5A/RUamdJjpuefrC3SxkdVReXQ/7BODzKavTSXRYbRM6JufeMGmIrnEKzEekz3fw8NIaPlhho+fO5Bnm9E0U8dI8fsGtIPVPK/y/CM4CYmn+EjeQzFiyaK+q50fzorWfCOkeEXiUw1qLyGng40AkTK748uTKwxO592VHE3+ilQXcQaXZ/dnoqA6SRHlFGbnXDvD90vu5OI0Ee9UAEtctFCz2ekdxV/fU4S22nwZ83BM90GcokgLc6wRWBqzv6YBh1uBpjihchAV77CxAcoOU7m5b1wj5h0WIDfgkynC5Po7Wx8nCOBWriKrEafvwyZcxrGz+juCo7unBePvh6T34FIUQWc+2fscVugII9N2vUu5C3me+BS09vsAZQQfI77iRsKt9Cp7zoCrFRy0p+rKW+gC7puA84jO7uJP1RpbZERWvUOa7rRTCnU50/y6s4dJAkIRrHcUlqyWpRvXJp+FxbSHQkJmG6AoUMgn/D0yvRjSiv2M7afqOi1qRnnbsc0j7Gy/2af6NWjqKlk4YVYyLCvZk1BsIg+9FdIvVNu104wSxJSTtDRWTn+nfZtprlcz5LoDSjaHY8JUBxY6Sc+UTFEubKCql0RTlAXucBuh8VDIpnqITSVKS3KPLBmHYB4zkcR3gg4i1WAl8JYTwAQlXZCNmHGlrVNxZ6TcLydAbR0cY1NiuDWhBeI5dLZcBpTuqx4FghgqqPeTz
- AFz9tZmh
- siKtZ3J+nom5229v7qqpBc6YKIXU90nibMSUOeUEFOSTEbsB2LvrxRIqPnxyAM/gZ1j92OplU8jKE9EIcssUfQBa5urEdrbLl82zPHXI5NEQKqUOFX28CXs21wZMK9jw0EgGzSJkVlwJvzBSLCZPYawFmpSEOOmzWv2LJ5GnCBYdbv3eOahYYLBFoUXzynKblzVxYNorxvWDAE4g1UyI2lmjPeqget/86klWYbvqRoBJxjIO/EJOEz2QSFsPbO2K98MXJcIaTCWnZMOtphLtd9z5TEdqHVe/12kIrnTkSwItRTtPzsDOqPLkQbkdrJaxDeLAv9TwiP+tFz/q8ykOx8eSws7Q7OT+XBG0GMhTLszy9YpajhMjOIeoEU7xsn0YJ0/o40S5NNvYvdCRKA0TLH593x/Y+qqFQ3xV/L3t7mGzG5vIgWhlQTAcEXxiaQ13EZ4ICQCvUr7VwJBO7O7Iop+XUFsC8cAv6LEFuqvrxhwpr41EoCfPiG7tQJuTwKKDs1OzFdl3DaHMOaLQwxyLCTb9jjKAtKHOmzO7SRvT2nagQ086J6wz224IdUiBXRfzRyFISxafOS+mDPCByC6QPGqtES0uHSt8e0BjVzprY54WjBMUIfqAlOQ6nxXpyI6M1fo232dgdpUkI9Ej0qQWTrLMzWMphxABbgLKo7JHKWzWJseu6voBxu5bNxT7xJ7Atf1JlsC2GswoJOizErjWD75eWmqY0BN59G1mEsxVIKN7s8BovQxkOhzx5Pp+e6akSFdFL/3W+VkewnMQI00dRHQlsaB07EDshWuhxRmlQluy+7qROzncNH4/nQPBsLNcoztfGVt2+8qHPEUcHXYWCQPD3hY14ENPFAgiVc3l51a73Dgeq3WekyJtsNyrw5wvq4FbhcnDtNFU8EyS3Jj8pk9CfpA==
+X-HE-Tag: 1795176233-435036
+X-HE-Meta: U2FsdGVkX1+RI6mbuMnSS1OIsNhvUWdbVf0NwFAAgenBJmG8w/muR9xZ6DW57hs4AV0AzYUXQtCQ4Iu/5olROmIHrrB7ZN7ImNUEU9muLW4IFdv1BgTsvYPx18gPW+0X9lX8Conb/Ju71/VT77qHk4PaVF44cXJW2e5ErKk+YOsaOmrEOucO8zulZ//McharYQsHtMfFeIsUC1EPvH0DgHKF9dE2aKrD/3dF9wyPl4Eo4mOIVbPmmV71LgmP2al5YFlDVVywxnfXvWpbJCcHxKUGgIjGhU6VgueiWD56iDJqIqvmd4Vk2AxRTV5ANB22GztzTnGFubFcRmiHT+PT+Q/oO60wpdinP6UE8ESdaDTFFiIi7ms0oHbleKJPwZ0+xF0D4TYfmrr4pa3Az1Q5Iqvsi01zbJ/xhUPXoemPUVGTIJbHWbDYCe8BJE3mhz/lsYbmPL8o2TtEm55jahZm9iDH13/hqCN2TfZ9Sf6gRXHn6lHgGTD1lTgexb3ADcgKhSwtznaoS18e4w1AtwO7A/A63HnTOwpHVNOD9fgNR9aIBjJ803+iZT9hJwcdOjy8PrAKmHPEMP4KbNmM3+mUMEI74Pxo7n9VnGlqQWK4ebQECVLsaGPHytGsbms6kD4hYk8u+FwMDL/brn4yxe1NQxszpfVkCyfu1dG4hiB4aWcvvisy9JyskL7RUCPco5fd86gHUbVf1vZv+hDqbYlJX72WUpuV8rJg/M30gcasvS7fPzltuXwHNNuxHUheLGF/XU7ZPo1VmbGPAZ+6eC4Foeat6dkRbJ1U4rNJNrUIPtXj3JLQv368/u9FEpels2wTH3utUiCpK/RnQHnBAtxRB77kj9MsR09U2Qyxy4NnqDH3pDvziHwI+28/4vvs9p7ZBgKCclbXk6s9qMUP7mEXzEdTWjdbjjzBBFeWxSMDwG0plswLZLaNbbGsgBdP3DjSivHH4SsO8VKTJchaH7I
+ RMA5rAbA
+ HceF7T77UoC0TdTHiERxb1GGpxSHqJmyVlb1S38r6rq2f1oUtSe+rUKtn5XhLM7ehQe52NknUAqba2Pf5k4vgycM1arATAr9X0eui5fhOPJEcyUou6sh0dn12xlkPgItEJyXsoNSfbPonkUNWOURrFjCCYoLHuuc7akZ7SB6Fc49Ve1UPsTEY5u0VhKMuaMGxetKQoDsMYuqHeufOnZ3WNjJXgpD80nJ4tQKwVVfMdgCoADRY6ipUTaig5HDVbdhnKbfnxA3Aim/3gyMFwndFNa926hyUvvdhsBGZJeF3BbQhEZTG3xRK45MOK1UQ4ZLwZgKFckmsWtxg382/F2cQKOnJWV8NF5PmwgURwjeWtGiH1UmLeLv+73hjrAzZcx63y68ggCxvBsmG30CxCmocEtA2z/qkEW97Iwc6RkCZ8u2vUd24GjaMULAGFSz/bY/R724BYzC6v95MMoKWoeIsKxeCe1HF427A4oxPT07+aJFbKqi9lcUedVeX2nTPTdXjQzSp1qR1QNYuW2sb+SXf4tlYZeOYnC7aPSpJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,115 +118,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [Medium] mm: page_reporting: redundant work flush in
-  page_reporting_flush_set()
-- [Medium] mm: page_reporting: hardcoded capacity in
-  page_reporting_flush_set()
-- [Low] mm: page_reporting: unused variable and get op for write-only
-  flush param
---
+Zi Yan <ziy@nvidia.com> writes:
 
-commit 18e2a422153fdecadcaa01e59911f68043266f81
-Author: Michael S. Tsirkin <mst@redhat.com>
+> On 18 Nov 2026, at 14:34, Andreas Hindborg wrote:
+>
+>> Zi Yan <ziy@nvidia.com> writes:
+>>
+>>> On 18 Nov 2026, at 11:18, Andreas Hindborg wrote:
+>>>
+>>>> Note: The page patches were part of the `Ownable` series [1] until v21.
+>>>> This series continues the version numbering of that series, and it dep=
+ends
+>>>> on v22 of that series for `Ownable`, `Owned` and the split of `RefCoun=
+ted`
+>>>> and `AlwaysRefCounted`.
+>>>>
+>>>> Not all pages can be treated the same way. A page allocated with
+>>>> `alloc_pages()` is managed by the page reference count, and kernel C c=
+ode
+>>>> routinely takes its own references to such a page. A page owned by the
+>>>> slab allocator must not have references taken to it, but it can still
+>>>> show up in places such as a bio vector. A frozen page has a reference
+>>>> count of zero and is exclusively owned by the party that allocated it.
+>>>>
+>>>> A single `Page` type cannot describe all of these. This series makes
+>>>> `Page` generic over a sealed `PageKind` that describes what is known a=
+bout
+>>>> the page:
+>>>>
+>>>>  - `Page<Base>` is the base kind. Nothing is known about the page
+>>>>    beyond the validity of the `struct page`.
+>>>>  - `Page<RefCounted>` is the default kind. The page is managed by the
+>>>>    page reference count, and `Page<RefCounted>` implements
+>>>>    `AlwaysRefCounted`.
+>>>>  - `Page<Exclusive>` is a uniquely owned frozen page whose data area
+>>>>    follows standard Rust aliasing rules, so the data is available as
+>>>>    `&[u8]` and `&mut [u8]`. It is handled through
+>>>>    `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
+>>>>  - `Page<Frozen>` is a frozen page whose allocation is uniquely owned.
+>>>>    Unlike for `Page<Exclusive>`, nothing is known about who accesses t=
+he
+>>>>    data of the page, so the data is only available through the unsafe
+>>>>    raw accessors.
+>>>
+>>> Why do we need to allocate Page<Frozen> when we can allocate Page<Exclu=
+sive>?
+>>> To me, Page<Frozen> is an observed page state from a non-owner point
+>>> of view.
+>>
+>> I'm not sure we need it, which is why I added this note:
+>>
+>>  This currently has no users, but I add it here for completeness. Let's
+>>  discuss if we should keep it or not.
+>>
+>> The difference between the `Page<Frozen>` and `Page<Exclusive>` is that
+>> `Page<Exclusive>` has stronger invariants. Namely that the (physical)
+>> memory region of the page does not incur data races, and that the page
+>> not in highmem. From a Rust point of view, this allows us to obtain a
+>> reference to the page contents without jumping through any hoops.
+>
+> But access to memory region of the page is associated with page table
+> mapping or IOMMU mapping (for device, and I assume devices are accessing
+> data via virtual addresses instead of physical addresses to avoid further
+> complication). It seems that you are trying to use page refcount =3D=3D 0
+> to infer that no page table mapping exists for the page. But how about
+> kernel direct map?
 
-mm: page_reporting: add flush parameter with page budget
+`Page<Exclusive>` has the invariant that it must not be in highmem, and
+as such is always accessible in the kernel virtual address space. As far
+as I understand, this means we do not need `kmap_local` before accessing
+the contents.
 
-This commit adds a write-only "flush" module parameter to trigger
-immediate page reporting up to an approximate page budget.
+> Anyone with struct page can use kmap_local*()
+> to get kernel direct map and access the page content. kmap_local*()
+> does not reject frozen pages.
 
-> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-> index 841dcd64777d1..74c03844fc3e9 100644
-> --- a/mm/page_reporting.c
-> +++ b/mm/page_reporting.c
-> @@ -360,6 +360,46 @@ static void page_reporting_process(struct work_struc=
-t *work)
->  static DEFINE_MUTEX(page_reporting_mutex);
->  DEFINE_STATIC_KEY_FALSE(page_reporting_enabled);
-> =20
-> +static int page_reporting_flush_set(const char *val,
-> +				    const struct kernel_param *kp)
-> +{
-> +	struct page_reporting_dev_info *prdev;
-> +	unsigned int budget;
-> +	int err;
-> +
-> +	err =3D kstrtouint(val, 0, &budget);
-> +	if (err)
-> +		return err;
-> +	if (!budget)
-> +		return 0;
-> +
-> +	mutex_lock(&page_reporting_mutex);
-> +	prdev =3D rcu_dereference_protected(pr_dev_info,
-> +				lockdep_is_held(&page_reporting_mutex));
-> +	if (prdev) {
-> +		while (budget) {
-> +			budget -=3D min(budget, PAGE_REPORTING_CAPACITY);
+`Page<Exclusive>` is a unique handle. Nobody can get a hold of the
+underlying `struct page` to perform mapping operations on the page.
 
-[Severity: Medium]
-Should this decrement budget by prdev->capacity instead of
-PAGE_REPORTING_CAPACITY?  A driver can register with a smaller
-prdev->capacity than PAGE_REPORTING_CAPACITY, which is what
-page_reporting_process() uses to size each batch, so using
-PAGE_REPORTING_CAPACITY exhausts the requested budget too early.
+>
+>>
+>> I do not have a user for a frozen page without these invariants, but I
+>> would assume there are use cases?
+>
+> For the above reason, everything is Page<Frozen>?
 
-> +			flush_delayed_work(&prdev->work);
-> +			__page_reporting_request(prdev);
-> +			flush_delayed_work(&prdev->work);
-> +			if (atomic_read(&prdev->state) =3D=3D PAGE_REPORTING_IDLE)
-> +				break;
+Pages that are part of user space process vmas are not frozen? We see
+these in system calls for IO.
 
-[Severity: Medium]
-Does calling flush_delayed_work(&prdev->work) both before and after
-__page_reporting_request(prdev) inside the loop run two reporting passes
-per iteration and an extra pass after all pages are reported?
+>
+>>
+>>> In core-mm, a page is frozen, when its refcount =3D=3D 0. The code look=
+ing
+>>> at the page knows the page is exclusively owned by others. If the code
+>>> allocates a frozen page, it will not check its refcount, because
+>>> the code knows it has the exclusive ownership of the page. To reflect
+>>> this, the code calling alloc_frozen_pages() should just get
+>>> Page<Exclusive>
+>>
+>> Is it always the case that users of frozen pages will use them in such a
+>> way that they can guarantee no races to the page contents (physical
+>> memory)? They cannot be mapped for DMA access or anything like that -
+>> that always requires a refcount?
+>
+> See kmap_local*() case above.
 
-When page_reporting_process() finishes a pass with more pages left to
-report, it already re-schedules prdev->work before returning:
+Right. Both `Page<Frozen>` and `Page<Exclusive>` are guaranteed to be
+the only reference the underlying `struct page`, and so nobody can do
+mapping operations from under us. The difference of the two is that
+`Page<Exclusive>` provides guarantees about placement out of highmem and
+no races on the page contents.
 
-mm/page_reporting.c:page_reporting_process() {
-    ...
-	state =3D atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
-	if (state =3D=3D PAGE_REPORTING_REQUESTED)
-		page_reporting_schedule_work(prdev);
-}
+>
+>>
+>>> and if the code encounters a Page<Base> and finds it has no refcount,
+>>> it should convert it to Page<Frozen> or there should be a method
+>>> that accepts PFN and return Page<Frozen> if the page of the PFN has no
+>>> refcount, for PFN walkers.
+>>
+>> We can add conversion functions, that makes sense.
+>>
+>>>
+>>> =E2=80=9Cthe data=E2=80=9D mentioned in Page<Exclusive> and Page<Frozen=
+> is struct page
+>>> data or the data in the physical frame pointed by Page<...>? If it
+>>> is the former, is it better to use metadata?
+>>
+>> I'm referring to the actual physical memory region that the struct page
+>> describes.
+>>
+>>>
+>>> I am new to Rust, so feel free to correct me. Thanks. :)
+>>>
+>>
+>> I'm new to mm, I really appreciate your eyes on this.
+>
+> Do you mind describing the high level workflow around Page in Rust?
+> From my point of view, exclusive page content access is more related
+> to page table (including IOMMU page table) than struct page itself.
+> struct page ownership is more about the metadata stored in struct
+> page for physical memory maintenance.
 
-Whenever prdev->work is already queued (including every iteration after
-the first), the first flush_delayed_work() runs a full reporting pass.  If
-that pass finishes all remaining pages and sets prdev->state to
-PAGE_REPORTING_IDLE, __page_reporting_request() immediately transitions
-prdev->state back to PAGE_REPORTING_REQUESTED and queues another pass that
-the second flush_delayed_work() executes across all zones.  If unreported
-pages remain after the first flush, page_reporting_process() has already
-queued prdev->work again, so the second flush_delayed_work() runs a second
-full pass in the same iteration while only decrementing budget once.
+Just as in C code, there are many workflows around `Page`. Three main
+ones I have seen in Rust code are:
 
-> +			if (signal_pending(current))
-> +				break;
-> +		}
-> +	}
-> +	mutex_unlock(&page_reporting_mutex);
-> +	return 0;
-> +}
-> +
-> +static const struct kernel_param_ops flush_ops =3D {
-> +	.set =3D page_reporting_flush_set,
-> +	.get =3D param_get_uint,
-> +};
-> +static unsigned int page_reporting_flush;
-> +module_param_cb(flush, &flush_ops, &page_reporting_flush, 0200);
+- Pages that are part of io buffers during a syscall. The pages are
+  mapped in at least one user space process and the kernel may want to
+  read or write from/to them. These would be `Page<RefCounted>`.
 
-[Severity: Low]
-Since flush is a write-only parameter and page_reporting_flush_set() never
-touches page_reporting_flush, should flush_ops.get and
-page_reporting_flush be dropped (passing NULL to module_param_cb()) so
-param_attr_show() returns -EPERM if the sysfs mode is changed?
+- Pages that hit the block device driver API via the block layer. These
+  can be anything, so we model them as `Page<Base>`.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1795089715.gi=
-t.mst@redhat.com?part=3D7
+- Pages used for backing storage like in the null block driver. These
+  are modeled as `Page<Exclusive>`.
+
+I think for the first one, binder is inserting and removing pages from
+vmas to do it's IPC thing.
+
+If someone were to write an allocator of some kind, they would probably
+reach for the `Page<Frozen>`, as they would like to have ownership of
+the metadata, but not the contents.
+
+Best regards,
+Andreas Hindborg
+
 
