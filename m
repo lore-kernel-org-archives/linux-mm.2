@@ -1,101 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA70E606A33E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C3C606A325
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 08:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UI7RZ7UG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AidKf5Oi
 Received: by kanga.kvack.org (Postfix)
-	id CBACB6B05EF; Fri, 20 Nov 2026 03:52:15 -0500 (EST)
+	id AA1696B05F1; Fri, 20 Nov 2026 03:57:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6BE96B05F1; Fri, 20 Nov 2026 03:52:15 -0500 (EST)
+	id A52706B05F3; Fri, 20 Nov 2026 03:57:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B811A6B05F2; Fri, 20 Nov 2026 03:52:15 -0500 (EST)
+	id 967B16B05F4; Fri, 20 Nov 2026 03:57:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9666A6B05EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:52:15 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 263F0A8DC5
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:52:15 +0000 (UTC)
-X-FDA: 85454880630.19.79A6245
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7793D40004
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:52:13 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UI7RZ7UG;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 719CD6B05F1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 03:57:37 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 11ED940D5C
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:57:37 +0000 (UTC)
+X-FDA: 85454894154.15.AD0CB87
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 56CEF40006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 08:57:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AidKf5Oi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795164733;
-	b=600P+yHGTXllV91eKF+Y+cjJ0zGC5G6MEUcu0TT3eDgsGIGvQmyWDvxFFavKX5cgwwdkUn
-	LjIundtV6lMsQJuYat5YQVR4Itpe3sGx14mPlK/8qcQVmE9fkfHKwt+z+ZClul5cZm5YwM
-	1erjDtXG3VlnUle1ZNHk/96mh2G7Mp4=
+	t=1795165055;
+	b=BBRBE06atD95eMwtqJdd0sDXV/WJoFRI1o+1vWrWO+h3L+bDMVgj6+Crs9NC8ytxrRH9Qu
+	PpS3p+M1p30ynRcmcWuaxY6qKiS52K6BaTwyY5E6UtGEO8bcUzgdcOwwEJXk0SCxBeaXj/
+	ghv7q+CseWia+zfwm9YjCYHi7QDww2g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795164733;
+	s=arc-20220608; t=1795165055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A9BupMtjidZ6QpobbhfwIfHs0MvSJr7PSNCGLjThNjE=;
-	b=16z4cbJ3yJ8+tNaDQvKL+JE6eWqhXR9+ndZ445BO+7geT9EIedIn4zu26c/j6WH0mS+mzF
-	G/92FLPyuDHBvezu7njC1aAWU1iitVllQMXVI0VBJaVF3+obMgYAnzN/F3vI8I4CmjUQJE
-	yVyDZVJjbfpntYSuBoy+3oTGqbiDXpw=
+	bh=xymtrGcTx2O+sumJ1mfHsHPYfbzzq3PCVcjjBtb8a1w=;
+	b=wmgdaS85HPctus2ksjUdThGeWaN8h1TB98rPiOipIzSeM3Cw78L2UX4IurZAnsNeXsAB58
+	w4ogwVAXvbfZFtPcHGNsUqjmQZjXkY5qjDdrmhBx2O04wxc1Ft1mF59iKv8ge4Xrf58Rdz
+	4GKNgjso3rWtIaPwYH4PtpUEYIubCH0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UI7RZ7UG;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AidKf5Oi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3F15467A3;
-	Fri, 20 Nov 2026 08:52:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC441F000CA;
-	Fri, 20 Nov 2026 08:52:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C63660D10;
+	Fri, 20 Nov 2026 08:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D311F000CA;
+	Fri, 20 Nov 2026 08:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795164732;
-	bh=A9BupMtjidZ6QpobbhfwIfHs0MvSJr7PSNCGLjThNjE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UI7RZ7UG4ulO+8lDySyolGDohe7qVwBRm7JU4jcE1PzwxsuPIW4enjpXJ9hsRxlwA
-	 GRfeYk3l8bnxjuvd8SRFpRzbhXWUeuu4O9DMa+/XYZxEMrPWt8vHZLCFJMRuXj71Av
-	 0DnRmE153jsvcLlDVr7/T9O3PK+k5DFgFchuwKhFw7RDyTmZBvCymZcSWx9hzZxpew
-	 dO/8tAnz/RUNZPCobsNfix4h9APM0Si1UkEBYDXvKJy+BOlncANRePBbTWC596NoYV
-	 tpFuegArNVwixEy/6ldDxBRwXWh8fJpOM0sUyZGI+uB97L5vP/WhjK2YYHWvdy1RXI
-	 /8BjfbVmtIAQQ==
-Date: Fri, 20 Nov 2026 09:52:04 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: ackerleytng@google.com, Alexey Kardashevskiy <aik@amd.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Fred Griffoul <fgriffo@amazon.co.uk>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jianxiong Gao <jxgao@google.com>, 
-	John Starks <John.Starks@microsoft.com>, Michael Roth <michael.roth@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Tarun Sahu <tarunsahu@google.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH RFC v3 03/88] mm: shmem: Implement guest_memfd provider
- operations for tmpfs
-Message-ID: <20261120-provokant-zyklisch-schutt-55d8eddf2ce4@brauner>
-References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-3-8484dde66a7e@google.com>
+	s=k20260515; t=1795165054;
+	bh=xymtrGcTx2O+sumJ1mfHsHPYfbzzq3PCVcjjBtb8a1w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AidKf5Oio20NMvG5F0VbG/mFQgb29hTdOmocLK9PTyntDsWlNaCbyKTp604nL8oPS
+	 +f1BKqLFqQIzr+KlfkcJMH/UOA4nSZ1L5lVECQZ+meak99aYNSvtWrA0DwQVE6VNHz
+	 S2k7Ay6gLPTvL4hszopo728gUmtj8xIO+fZ0TlYPoDSDj1cslEPBo6cls+Q6f9oy61
+	 N993uEI6e0K1graLrmV3eTLH77dO59whIPGOglD51aqyzwc5n/eGnYdfm8Nvf+5Jv1
+	 rl8lb33mw4EOhYhO9U9UMTPZcglXOaeJBSaEkbnCnRTqHqObXvCr2uoS4cIS2iW3O6
+	 seZIStiqkY9bA==
+Message-ID: <4ed0eeda-22bd-4489-ad18-d522b36d22be@kernel.org>
+Date: Fri, 20 Nov 2026 09:57:28 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261106-gmem-alternative-providers-v3-3-8484dde66a7e@google.com>
-X-Rspamd-Queue-Id: 7793D40004
-X-Stat-Signature: jqdp8hk89rpkjudbkquxi7tw86t434dz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] mm: alloc__by: create a function for allocate pages in
+ small microsseconds in boards no-MMU
+To: dev12124 <joaoanandalima@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: vbabka@suse.cz, hch@lst.de
+References: <1ee9b247-6758-c146-2d03-0acea98db33f@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1ee9b247-6758-c146-2d03-0acea98db33f@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: x7zynip8rjfyp9csjkeigyfpe1qr83nr
+X-Rspamd-Queue-Id: 56CEF40006
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1795164733-61557
-X-HE-Meta: U2FsdGVkX18iOwG9atEpkDjKa+NWejlKui+dmxFi9y+Dlp09ldovth9lJ0igXR00OLas721XtoGy2FkOjtn7jer2SA0xjrDHUknXvmRFSZR4cybLU9vlSzcSUDWGG6PDw/spUx8P9ziNYTrkCaILghsxz4WC69z35Yw7wb7csvbCh2+ULtxiMH4xCVbmnINdwiz+l+iJZmmey9jzF5D/6pzpOjx9v2zDzJ0ceJv6oohY25Z+OQKGUeZ4adD4sstlcprqNWCqr1C07WIjqEuLnQ8340m6L5VCNXpDQMC1A49N5q6s+GkwUe4P9efAr/AX/MM2yuj+DgC1ur+useQJ4K2/cOFnbXan/K4/SgMHOwegAsZgDXUEkvm75ZV2qKlSGmaZRmWWHTvApA1GjlwT9ao94oKTwxwpsCWvB1mNHkIAvFfP0owRSZl8B3rQmr8zYCUoIiePzhHcyPg81hqRTNIvOffs5J6pd9+RGp4Cetcxl/Jcd2lZvzPALrhkGwWglACKh+/IVKG5rxKt/F69uWk/USiRzhovKAMZS1k6iLDYaA3tx9Ih6gkgQpLM7l3tXalG8uMjkrBzLSLA3uZEogLNO1eJ/fWFJWJagJ8oz3YjqyEH/0owRBGiWS2tdxcfNfWB+VFjL9tZ4ixKoGUsweGj1VeT8nFcPekRs6lhOj2jElksaL163TjuYT662cVgXdQIAknFpVjR5Q9xGCGoy/uA6bFNWiDF+E9oW0HDdQAWEWo2BVOultM46VtIjtPdwphiu8JbzSn/DKZTtgBAHnkUJPnkBT8q1/hwYMvH7sGQlRglHXCrrTiGdZ3fj27bNvtT6nAR+NE7A6g8wh5JE6RRlZ4kfd/DOP/laub/WF/eWqkCDLfOdEVQYVdDimb4UcCS/HfoTGL8GOikyw42Nr9TlZdsBUEJ/arL3T3dAcF/b+wJBaZOy10+JBpaI6Hd2QkChLL15Pw9ySj3u2M
- I6YD8pXf
- kBjuzBp8JEH9CvytQ7QVfDfTrpoQmwN0VBb+OlQKX2Km6HeYTfE4BjJdVJhu8oervORobj/+earUpKvVu7Ut9xotawTeAZ9j+8w+1cdN3ZvdRzMZfBgNcibIohdQtjXcnUERZvFaPuHM01Yhp7C61p3hU1Fu3I79bW7dok3OZlhIuVxt6mTtVATetHSETPT9PPnAoYaW7MssclKaTLRclOcfGEVwjQVIXIBmABIa8opt0VrKYkvFZxDEv7SPu4aAxeElOG/v53OD3bCPGjFHBl5/48RFpXVaqB/nz4jMW7FRtJctedJgxzMJjazOjH+57P2B5STKZUjkygzs3JzYYDk6xrQkjGgc0cd2ZeRFpZ7bYtxNe5pSM+Tiouz/z4bPcke38XxCJdJdpNPvg6d4bHQJnhdhuL4UAwFPVtPzcbrgAySpKJyTyLGUwyWjFspT4+J3x88+zlWO/Hyw0WVODlWBkL73OsY4a9X4sheBNyka5Al1jBD8iTSVF0OI35XVHn582SVINeZMwvq3btaPv6fgeWltoiur9aP1YpMRXcYBjXzxBh2EofjjEMtTe2muS8f7kIyctDvjwruE=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1795165055-514737
+X-HE-Meta: U2FsdGVkX1/WZ362jH1ebDqnCoBtC5a09PKwBQghsQm6Tyfl3snDjdCduVEdB/J3AHnlYADQnPjZFGfHWMRx5Ci8xo7LRGH6h8PxI4lpMpE3AJ3MAXvG1e456nSsl/VYUrDURGCvz5PzFXTQfhmYYwBgZiiPOqw2xsLgnXBXACFNqV+/oZK/IMBBItCqj6u/BZdFtIAKJYxqyPK2xIFMPFCI+2z1w88VnjYbCYnCJfXqO1TiSF1Kc9w13LlRcSK59w5lvbvM6MI1/C7aTgS+0mpCjFPXuR5Pr3xl63Q8YgJ++9daYP0f2xvweqpcsuKqjOnd+dyP/pyOLVLKLIDayiOws96e/w4LPKDsS+wJED82Mkwy272MdKaSTEexEIso3ibY2DcpXyRZXKPsZItbQKPxe5LC0NUPzSv40aY4LeK4d/uwJUtDaco6S0zb32b/OhJC0kt4sLAR+X0dXnra1svYC9krDgZlNJAZ+uC6+xRrqA2IB9hNqHpusD1pyvcdEKTwluDlhwtrAsmcXVX1Bsy35FWex9YQu0VHdESERlp7bXNaGnQFifFzvYBk8AWtlcr0kycFFNhIvTWn1c6ptiQU+3L+sS6Gw54QSsd4elg0jBj8QBW1bXqetZj+cSO+Fp73mtiKjYdEzXroHWZVKYkGUQESnZViSCtdfjo1TeTvkYa7ZM/gcWNCiMF1G7rF3gkHP9mRP/sDmiUS0qZu9nbpyknFnNPsp3/asK4jJq/JZ9EuHUO3PH9X9Io9uHvJTAY5KUH1IzAO7rmYVnWHmIoDewN6DQUwr0W1XkwPoz+t3b4muEgr97H7Mtg0T4wmRVJKK7jCjqhGQkZPdZaIwKjYlusc8T1YDvkUm2CbkvrVBE6DVDHTUy48pPIoAQDpXVKsc7o8tJhiBcP58VMVERdmk+tIeHWehaljipeuj4h490sBTCyhItS4gmS7ZsJFNuL+MI0vOyfuKl19BdB
+ CbF1h5E0
+ jDEmjQgjrmGP6OqGSeV56A0NkdaIsj7wj5UIm6aqXhr9D/ijbNhcj8sqWZg2m+Sw/vnC3hK0xzheAFtlh45iV0jC6vhjXBNRGtQ1MQ4/vVYfyuB6+XlNLbG9Coibd+kOBgEGgNN5eZzWsBFCcB/cJFm3jkHdYLlGbMJST7F4fGfHpzyBN9LKJHTKZC5SgMWgnuCD+2V249WXWbjHbLcyuOdI2zo1oSk3oHXG5YBesOrJgX2LhnQQ709JWz6FPA5toMib/z7S/qR5gVKvd/vAVwj22jDkbknlflQSmIk/9hIqUNO9kOJSFexwe+qaXFJcOAF/h/IOm+W6YjiBW0ldl+qNxxprBm/F7r2NFfuYGHOA0Am1K0w5OP6JyJxXcBOnjTWFB/U2Hg2FIr1WibwLJ9/SituISEm7W3kRE+/3H6hIXDxkTJUCsEM5gVai9KwwNr1ZzLETA2j3MvJnub1UqMS/SlZEqbhaXpACXPTLGtxxheo8++iRoLq+o2VeV5o8zybWOA61+LFy+OLgzAXRqfEJlSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,48 +141,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 04:36:37PM -0800, Ackerley Tng via B4 Relay wrote:
-> I put guest_memfd_provider_operations as a pointer in struct
-> file_operations. Being in file_operations generalizes well to other kinds
-> of providers, like devices, which don't have their own super_operations.
+On 11/20/26 07:08, dev12124 wrote:
+> 
+> Hi memory subsystem,
+> 
+> Actually, boards no-MMU do not have an integrated MMU to translate 
+> physical to virtual addresses or support hardware paging and; for this, a 
+> few points:
+> 
+> I. Requirement for Contiguous Memory
+> Without an MMU, the kernel cannot combine scattered physical blocks to 
+> simulate a continuous space, making the search for and allocation of 
+> larger blocks very slow due to fragmentation.
+> 
+> II. Demand Paging
+> The system cannot defer physical allocation via page faults; instead, it 
+> must reserve entire blocks in advance.
+> 
+> III. Use of simplified allocators
+> such as SLUB_TINY or linear free-list scans (instead of the standard 
+> SLUB); it saves space by 
+> scanning simple lists of blocks, but it performs very slowly during 
+> allocation.
+> 
+> IV. Proposed approach
+> The function alloc_by(size, address_initial, flag) haves:
+> * pre-reserved pool per size order;
+> * cache fast-path no global lock;
+> * bitmap O(1) of free contiguous blocks.
+> This bitmap, more specifically the blocks, have the pre-reserved pool (per 
+> size order)and the pool have word 2:
+> * Word 1: The initial address (starts in cache fast-path)
+> * Word 2: The final address.
+> For example, a Program allocates 277 bytes, the alloc_by() enter and 
+> verify the bitmap -> viewing the request is 277 bytes, the aproximated 
+> size is 512 bytes and alloc_by alloc 512 bytes.
 
-> @@ -1960,6 +1961,9 @@ struct file_operations {
->  	int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_batch *,
->  				unsigned int poll_flags);
->  	int (*mmap_prepare)(struct vm_area_desc *);
-> +#ifdef CONFIG_KVM_GUEST_MEMFD
-> +	const struct guest_memfd_provider_operations *gmem_provider_ops;
-> +#endif
->  } __randomize_layout;
+Hi,
 
-Sorry, no! struct file_operations is not the place to hang KVM specific
-callbacks off of. We didn't let KHO/LUO hang an ops table off of struct
-file either and nobody else is getting one in file_operations.
+I think we are much rather looking into removing NOMMU then optimizing it :)
 
-LUO registers handlers that recognize their files by f_op instead,
-memfd_luo just uses shmem_file(). And KVM already does the same for
-VFIO: kvm_vfio_file_is_valid() -> vfio_file_is_valid(). Do the same for
-providers and leave struct file_operations alone.
+-- 
+Cheers,
 
-> Setting it in shmem_dir_operations allows directory file descriptors
-> opened on a tmpfs mount to provide memory to guest_memfd.
-
-That is weird. A directory fd is not an allocator handle. The folios
-aren't backed by any inode in that tmpfs instance but they're charged
-against its max_blocks. Which means statfs() shows space as used that no
-file in the filesystem accounts for and that you can't get back by
-removing files.
-
-And also with CONFIG_KVM_GUEST_MEMFD every tmpfs directory on the system
-gets its own file_operations just for this?
-
-> +#ifdef CONFIG_KVM_GUEST_MEMFD
-> +		inode->i_fop = &shmem_dir_operations;
-> +#else
->  		inode->i_fop = &simple_offset_dir_operations;
-> +#endif
-
-Afaict what you actually want from tmpfs is a mempolicyj a size limit
-and noswap? guest_memfd already has a mempolicy. Teach guest_memfd the
-rest instead of turning tmpfs mounts into a memory pool?
+David
 
