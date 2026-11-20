@@ -1,135 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9164660A261A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B943A60A2604
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 18:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kccoFDHm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UagskxeQ
 Received: by kanga.kvack.org (Postfix)
-	id EA2496B05BB; Fri, 20 Nov 2026 13:39:47 -0500 (EST)
+	id C33716B05C0; Fri, 20 Nov 2026 13:40:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E52B26B05BC; Fri, 20 Nov 2026 13:39:47 -0500 (EST)
+	id C0BC96B05C1; Fri, 20 Nov 2026 13:40:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D42026B05BD; Fri, 20 Nov 2026 13:39:47 -0500 (EST)
+	id B220B6B05C2; Fri, 20 Nov 2026 13:40:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A26A86B05BB
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:39:47 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 24B7412015F
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:39:47 +0000 (UTC)
-X-FDA: 85456361214.06.8E3B6A3
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0069A160011
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:39:44 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kccoFDHm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of reinette.chatre@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=reinette.chatre@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 89A376B05C0
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 13:40:57 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 15439120140
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:40:57 +0000 (UTC)
+X-FDA: 85456364154.15.B5BBDBE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5C368C000B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:40:55 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UagskxeQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795199985;
-	b=yV0QzzoX6m+Ahnz1qLjRuh9DmCctbmjk9tsOZOtmAtZwHWqZbTi4EEcKL9wgqTvnMkZzac
-	XuGtCrFtEl/CHGx8pAJeunpjHbxtNsCdpMCqWbTDFyZBHkzmaSJwFCDJVc7aEsrJslnla4
-	pzeac5ISENgOVdPAh27PQTd8gHbpktw=
+	t=1795200055;
+	b=2U0fWvIhvJnYCL3VGwZ+j/sUeV1K8toJ7cDrCO7ydDFH+2A/glCpgftqWm3WOSiJNwnB4W
+	2qhtFQ9s3oJEiDhzFwhRF6IZ9VISJaiHUnU6BhPXiyA4khLgE2qqDVod4BXvD6D4NqW73W
+	gDSfLhxw5Ij8Ho33nqCx1GxAp5kQ9t8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795199985;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1795200055;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vS3paOgEZLv1A1g8OmyxuKuZIhXIN3I0FA00VP71j9E=;
-	b=HV7usdvezFg2jiUt37EDn7RIpwhbJl4WaXAbG7RwkT9R14HXSTGdR6ir7ln1rrSAILNBLP
-	AKRYosyNpZYVlIRq0F78i4jJYUEDsyHYQMXGfmnIqN4O7PPyKifVznQytRuaVaXBqN8dAY
-	fIGm8Ykabbj9lisYEsQ4YsKBEL6QBSA=
+	bh=3XL1JA9m8Hu+O/7B6EfoJt3MTN9vlsJ9TNi8mUkP8DI=;
+	b=eCDzZNpRW7b1t15a4X6vl+pvKcji6LckF452hyRq0ROnLzLu6J2QyQDa+HBE0EyMu9ILz/
+	eLMoq27CCSX4nh+jG8geg3XW2OjX5jfPwLNwyG3bpmcmB1oQ41BCLOAuzP04U6+N3N8toO
+	BnWR0xjf6JenTGZT1795L40CErNmn7w=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kccoFDHm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of reinette.chatre@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=reinette.chatre@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795199985; x=1826735985;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=artrgIEQtld+2V6JfYqBRD0b9Ldu3nOeD2Sv3wtSRlc=;
-  b=kccoFDHmQ+FSOWGIBMAWq4y8rzeeUXyqj65F+3R3j46FHleKXdHegFfH
-   Tz9Owkx9+WKALDYucANC/jGWkvAeqNglmK3Bn+klE74sZvswL8iZF7PJ4
-   fYhHcEASbUmMQPU2qgzXFMz01ofVAgDS4uuEwuvhiQqooyxJjitb+bTij
-   d4yEvOYN1GIa2AR86B828zVKeP3NorWxS31ieMUUP2GZsaMIZJBmzJJEJ
-   yOaEAcp6k5iMG1FLFPRzJgDiX1sIxYexoylh2enbjsTbwJMjf/Yr/2H5I
-   ZAupEXOiTL/PBNOXlpEMdb2UAbCLlCNdFMyY2OO5KXrN4+CMv7sUduIb1
-   Q==;
-X-CSE-ConnectionGUID: bSy5s4k3TNSt1wbiV4+SBg==
-X-CSE-MsgGUID: UzVfyKDHRUWoxg9zfGo+XQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="3931869"
-X-IronPort-AV: E=Sophos;i="6.27,223,1787036400"; 
-   d="scan'208";a="3931869"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2026 10:39:41 -0800
-X-CSE-ConnectionGUID: 1AYaa7RqTi6A0NpsPcW6MA==
-X-CSE-MsgGUID: vgafOxPTSLq/IEr0tRm6dA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,223,1787036400"; 
-   d="scan'208";a="12590722"
-Received: from rchatre-desk1.jf.intel.com ([10.165.154.99])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2026 10:39:41 -0800
-From: Reinette Chatre <reinette.chatre@intel.com>
-To: kees@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	kprateek.nayak@amd.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	bp@alien8.de,
-	tglx@linutronix.de,
-	dave.hansen@linux.intel.com,
-	tony.luck@intel.com,
-	ben.horgan@arm.com,
-	Dave.Martin@arm.com,
-	james.morse@arm.com,
-	babu.moger@amd.com,
-	fustini@kernel.org,
-	jedrzej.wasiukiewicz@intel.com
-Cc: fenghuay@nvidia.com,
-	peternewman@google.com,
-	yu.c.chen@intel.com,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	reinette.chatre@intel.com
-Subject: [RFC PATCH 3/3] NOT_FOR_INCLUSION: selftests/resctrl: Tasks keep using removed RMID after fork() reproducer
-Date: Fri, 20 Nov 2026 10:39:32 -0800
-Message-ID: <2f95c069a2646af7d5745b14d2c53d0d9d450bc7.1795197419.git.reinette.chatre@intel.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <cover.1795197419.git.reinette.chatre@intel.com>
-References: <cover.1795197419.git.reinette.chatre@intel.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0069A160011
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UagskxeQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A855408E5;
+	Fri, 20 Nov 2026 18:40:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79FE1F000C4;
+	Fri, 20 Nov 2026 18:40:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795200053;
+	bh=3XL1JA9m8Hu+O/7B6EfoJt3MTN9vlsJ9TNi8mUkP8DI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UagskxeQrAJFSkaJ34IdfK5BI5lCFTuVFuWtcygLyt4K0evkfCBDNV9OR605MztGX
+	 kIQmI9xb3AaxApN7AUgfjiNaymYiThPCjp/GWPESowczZy0PESOMb5o0eksEmbAcvC
+	 pfODz/H191ekbd+7zd+sBl7CdqYcuH6USIw5XnFyx6tiu5n4Qoj/jGWYr2Y4xmXfGQ
+	 T3IfCadJSvirwNZq3p8RnT+gXxnmkFtePmmTkKQEAaHhYxuh+nl9IycoRR/MDeONGk
+	 9CCj4aBlrQzbAuqzbGG5xEsIC4OEx9nrQNEbbH0kgkts7xQsk4EwPROAnvilCCgeeN
+	 gLTsVFMlaIcxg==
+Message-ID: <sashiko-outbox-225859@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 42/60] mm: fail private placement on exhaustion instead
+ of OOM killing
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?R3JlZ29yeSBQcmljZSAoTWV0YSk=?= <gourry@gourry.net>, "Yury
+ Norov" <yury.norov@gmail.com>, "Rasmus Villemoes" <linux@rasmusvillemoes.dk>, "David
+ Hildenbrand" <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Michal
+ Hocko" <mhocko@suse.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Oscar
+ Salvador" <osalvador@suse.de>, "Johannes Weiner" <hannes@cmpxchg.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Zi
+ Yan" <ziy@nvidia.com>, "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Johan
+ Hovold" <johan@kernel.org>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie
+ Kim" <rakie.kim@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Matthew
+ Brost" <matthew.brost@intel.com>, "Byungchul Park" <byungchul@sk.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "SJ Park" <sj@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent
+ Guittot" <vincent.guittot@linaro.org>, "Dietmar Eggemann" <dietmar.eggemann@arm.com>, "Steven
+ Rostedt" <rostedt@goodmis.org>, "Ben Segall" <bsegall@google.com>, "Mel
+ Gorman" <mgorman@suse.de>, "Valentin Schneider" <vschneid@redhat.com>, "K
+ Prateek Nayak" <kprateek.nayak@amd.com>, "Kees Cook" <kees@kernel.org>, "Kairui
+ Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen" <axelrasmussen@google.com>, "Yuanchu
+ Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Baolin
+ Wang" <baolin.wang@linux.alibaba.com>, "Michal Hocko" <mhocko@kernel.org>, "David
+ Rientjes" <rientjes@google.com>, "Pavel Machek" <pavel@kernel.org>, "Len
+ Brown" <lenb@kernel.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Xu Xin" <xu.xin@linux.dev>, "Chengming
+ Zhou" <chengming.zhou@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Pedro
+ Falcato" <pfalcato@suse.de>, "Jann Horn" <jannh@google.com>, "Chris Li" <chrisl@kernel.org>, "Kemeng
+ Shi" <shikemeng@huaweicloud.com>, "Nhat Pham" <nphamcs@gmail.com>, "Youngjun
+ Park" <youngjun.park@lge.com>, =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNs?=
+ =?utf-8?b?ZSk=?= <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Waiman
+ Long" <longman@redhat.com>, "Ridong Chen" <ridong.chen@linux.dev>, "Tejun
+ Heo" <tj@kernel.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Dan
+ Williams" <djbw@kernel.org>, "Vishal Verma" <vishal.l.verma@intel.com>, "Dave
+ Jiang" <dave.jiang@intel.com>, "Alison Schofield" <alison.schofield@intel.com>, "Shuah
+ Khan" <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, damon@lists.linux.dev, nvdimm@lists.linux.dev
+In-Reply-To: <20261120-private_nodes_v6-v1-42-74f5f9a115c2@gourry.net>
+References: <20261120-private_nodes_v6-v1-0-74f5f9a115c2@gourry.net>
+ <20261120-private_nodes_v6-v1-42-74f5f9a115c2@gourry.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 20 Nov 2026 18:40:49 +0000
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5C368C000B
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: eiesf8c793r1m1p4smj7ha1tsgssbzrn
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795199984-54009
-X-HE-Meta: U2FsdGVkX1/Rm6MLWJauHYsXEzDxsRV1lGphm/QfrtXHsO2femXGvP6DcaLZi/KQGqcmhyBMk60GS8OGRmBQ7lt24il/MQ0o5hZGSCWlX6AW459R51JZU1aZ5e6/Rmd6La9DcGi+IlZzmac3w7JbGpCQ9xyzt26MPRLf+ErQXXOUPMzxj6vKpG0QyxxFWob1st/QBTdbluc8ZfLvk+uKEQFu+OZpZs6UUxxrr4MsJfQO6QTuR2IfvsVKFECvYMsVSEfbn3mzXjtJMu8xXQlzsCvcY/fO0jxdQgchkTXjqvSUrr9TXhRYRsesFtj717m6MioFCcGbKzBD4grHsx0y4LnTribX/xR/2tB6popTZcVglFU+kot2dlUnRmJmaua/XK9hF/dIJi9ahuYEwYBgGADjUvsVd0bwbg0VYBua7J/LNgZ7Mobyuf3zJsCYNExxG4kShVHEOxn5tAq8xat9AXpJ67FKcqjhEB8QV08KgUjOwmE3sFt2JU42gXc12QTUsnXOZ4deAvdlOVDv4+Shu1Hy1ggbbqOn/7qYqfNuZmlZULME1rT5gEmDQQBaUCqkG/iXFJVMZsTx6kKOEBhAJSfMqSphF8r4k+b3nS/PtbhP/dgCeLEcZFRzOjVcw9OOCw+SOMBbbB2U0KwqxHDCFe8c+HyKGLYMPBZA0y3HIURYNW/nyZJDcff26ImrckvClHWWLEl647YROl328QJW6McCdPHyfUlQv1DaXj5m2M2vkqlZAVSSVNVZ08tkeIyoWqRQT69m5OFpAALm1I0vhdnk0aWDLOuEZBWN71mIIXhSweZNiSwtt/vwsvM65nRxAyjhaB80eKJTkkcbyvTfTdnmHbExo91yytiCLqizQeF7dI4O1rR8Zmd7c/FwzFV2omo8GvLj9SldZ3kZWm709JfClFJkPzMuNb7omRJNtSUlBoDrayLenQzuvuFKQM/GmL/oCIWV1+w5sbIyYn9
- vCLvmhuK
- uUs3UZ9aV5L5EucfE8K/JmRxr5ckzoQhP0nf4UsD25qiDa+8pegOB7d2W5kLmQBBvvo/D2jbGfAgqToBNQcI0MTEjIUkUvUijIh/a46+p+y9ehcOmF1gTvJ+ONN+zHbz8InyooSYHyLQN4ltqoW5wSfpQOpRJhbnbXaO2fDaZ2uNgjV/tnQuoFxK9YU8A55IzSwcEfuSkiGcs7H3Jp5g4gsM1WJNw5VlWzEA/UmbmRU9B4PG3+9otEttp4HuLuHYqr34R4r3AZ53/aKYugt3Zm8GFw0hbyhwTsamsjYZM/Cz0dccK8kUw0vJheYLrhcEQEViqnNQBZwa+i1l4R2ta/eTSliGFsbRSbVSnbQAEpoBmlsQgXq7Z5I7FJ9DM3rB6fotDhjCVHgTTau/ZnpQSydmmwH5ajDTcrFWbVTd5rDXTdL9D49QBD7Uj4xqovYoGXOBc
+X-Stat-Signature: 9fqb1t9hkwecadw87trouazqf1g5bya5
+X-HE-Tag: 1795200055-660101
+X-HE-Meta: U2FsdGVkX1/Taf/lnl5lgnV7JHamLKN/RLe+k+LATsppDTYLxANwISAdHTKL0cqVE2AbFkREy3Ny9mEAbAqGfu9SGhWQBx1wi75OCKkd0eqIc2wPdu01o3bbu6pkPr84PXwaObs6CiKelHdV+ccavMTF5R8JlKMR6DrLk4MZ6hv/Rj+RQw2pSpZ04NOtWA+K739NvbO9Lj19JVjtzx3AgM3hJQhcrXcIJ7rhwJFs9a3FRjKu1ZGcc0daJYwR0nd5GbUWUB0rvOdq2ScfyLIhAi7kd5K/2dq8QrqKwDpcvp32iIPAMoNj8CHWxvxcO2dkN3s/IwupF1jPoYDBQC8Ds0ARbzz9cH9y+mMSk+IAiyDyMHmnJb+gEZAWcFd7SNyUnkJ7WtvbfP6+xQmAHtGPGbHPa7+CFWpudx2ZKX113wz/UcWQZigz2425KNCefeSsvmzgQWIfF1fL9bowsEqcnFeVf0eVeTSi25+JZC9IIxU/ybZa4qHXM5OzYW/+Nm8II0KvXCxU+/GNo4l183gbHSJkNvfB1v58x1LA6M0srMZ717c1i0B+1iSjGARPQiuNefJ7RrA7In9okcSrZC5ut+vAdS4DR5HorjJVKLLtMtTe/HU4O20xIiOZ0Qm0GRet35F7bqAogEvIDGN7Hp7ojMOflhjlOpyGJEpw8zK23qL6n8JWy1VlMsx3rjK7vUKII6mbzF4sJlr3J1TzX71N/nh6h0PZuyQH3xOhDFiFnms3Z1sexZ+GrptpxbzQ6PPciJkvn200+uomb5gwMRthY0prNRHbU+0eMHd4O14NVPL+dWCHIHG45vVTVlD7kztTNK8kIqdaGmAIlTT7s5tj84WPtf+SSCo3C9OGzXNf4QXoxsT94N4VEJ9pCaxW4i7Q4+H1gEar9l0rIDGg/czRrOg07XsJIMuidyRFXEBajX1fXhT3Q7fHFYntVYrRu6y1TevpoD9JZZCflLcZlVN
+ xQLkhif0
+ 3UDo2DwdGSGbTAheefjwukPHNKYBsrZaSmAYQGKFnNL1quNLzukwhJ0BoFuri6wZ+AQfdNnKZSVWlpiDFCtMW0zy7wig9DBF+wTttoN/kBBY2n0IrBkvglpLCue4PVQi3J314rb6gqLbLngfvkzmrLvNP78kS9DWl1ozNo6pZBeFtXXAbXLIu5gKPncaA5ppr6pwpGmatK1mvmZ75bMB4V33/sdGPN59/B33KyqPlS1YydFfIC3MbGy5Bzk9Ibnq6JgosDiviFmmfLA1rytILXbETQ2YwaS40i6DKNfFmJr4C/6G9foJji38HdgbfFhGdzsWoLngTks2Dl4JmHqL/2tBg/HLuiWpzBhLwLuRGHacYSsHvkxOasL2yonJWXj8dGg5+oIANA+6mZbEZ2mEGas7SEp6rWukzycAzguP6coaclrdE0trDR+QHkzvggQdYxPsAPkMrbin+YRFHr70OX8byOtjjHXoUvSAQ6jd5oc3XLAWSw/WgEIILficM4QoGYynBUt3pxyHd6TR+hjEiRb8WG+7v7M6JhmiziffD5i3lCYkGioc8wx0SH6Ixr6rU8cfKDC/vUKlObs8xJu2TAE6d8NIHDoE2nCi2JiDN/kKKDe/wbfMCjowTWMHa7pk2SAx/SXdbzGS6BcUOq9ezVzEuz9/fBMRYoXYe4mKg73H/k8MC5kiyId8l93AxoeEofRnqNaWcnBJj6YOF8B0+Nj7uzGDDzWVOWVvgXH4Z9A1UIcWBMJMPAFHcNzqlpMPUbSFjYPaMTTRrCROJU2HwpRH05wnBfeabg/6XRJeLXBbHTwW42IF/VUJ+r55A6IK6HnxUV6UGtlGQ5HLV0DCWO8vlNL/iYxhCoOedtXAm/FPZXkICuAVbYsbqSJzRBluDZvl8tVqVJM2nZ99Bgb+xA8GHIlKU1r5AyYoUjaKBHupTxTk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,169 +128,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: Jedrzej Wasiukiewicz <jedrzej.wasiukiewicz@intel.com>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [High] mm: stale current->private_alloc_failed turns non-private OOM
+  into SIGBUS
+- [High] mm: private alloc failures bypassing __alloc_pages_may_oom()
+  leak VM_FAULT_OOM
+- [High] mm: VM_FAULT_SIGBUS on private alloc failure breaks
+  FAULT_FLAG_UNSHARE callers
+--
 
-Introduce stray_tasks_repro.sh that demonstrates how a task forked while
-its monitor group is being removed may continue to use the removed RMID.
+commit 7e8b136eb40856d46304f949553ac1db87e76cc8
+Author: Gregory Price (Meta) <gourry@gourry.net>
 
-What this script does:
-  1. Starts 8 processes inside a new monitor group "m" that fork sleeping
-     children as fast as they can.
-  2. Removes "m" while they are forking.
-  3. Creates new monitor groups until no RMID is free, so the RMID freed in
-     step 2 gets a new owner. Nothing is ever moved into these groups.
-  4. Reports every task found in them. Each one carries the removed group's
-     RMID and is a stray. The expected result is none.
+mm: fail private placement on exhaustion instead of OOM killing
 
-To avoid the freed RMID landing in limbo, the script requires that LLC
-occupancy monitoring is disabled (on x86, boot with "rdt=!cmt").
+This commit skips the OOM killer when an allocation from a private
+zonelist fails, marking the task with current->private_alloc_failed so
+handle_mm_fault() converts VM_FAULT_OOM into VM_FAULT_SIGBUS.
 
-Example of issue encountered:
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 282266dd5e5df..4a8a08df28ff9 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -7003,6 +7003,7 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *v=
+ma, unsigned long address,
+>  	}
+> =20
+>  	is_droppable =3D !!(vma->vm_flags & VM_DROPPABLE);
+> +	current->private_alloc_failed =3D 0;
+> =20
+>  	/*
+>  	 * Enable the memcg OOM handling for faults triggered in user
+> @@ -7034,6 +7035,10 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *=
+vma, unsigned long address,
+>  	if (is_droppable && (flags & FAULT_FLAG_USER))
+>  		ret &=3D ~VM_FAULT_OOM;
+> =20
+> +	/* Exhausted private memory fails like an empty HugeTLB pool. */
+> +	if (unlikely(current->private_alloc_failed) && (ret & VM_FAULT_OOM))
+> +		ret =3D (ret & ~VM_FAULT_OOM) | VM_FAULT_SIGBUS;
 
-  monitor groups created: 566, stopped on: No space left on device
-  tasks in new monitor groups (expect none): 1
-  /sys/fs/resctrl/c/mon_groups/n565/tasks
-  RESULT: 1 stray task(s) kept the removed group's RMID
+[Severity: High]
+Does converting VM_FAULT_OOM to VM_FAULT_SIGBUS unconditionally break
+FAULT_FLAG_UNSHARE callers?
 
-See script header for more detail.
+Callers passing FAULT_FLAG_UNSHARE | FAULT_FLAG_REMOTE expect allocation
+failures in wp_page_copy() to return VM_FAULT_OOM and treat
+VM_FAULT_SIGBUS as concurrent truncation having unmapped the page:
 
-Signed-off-by: Jedrzej Wasiukiewicz <jedrzej.wasiukiewicz@intel.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
----
- .../selftests/resctrl/stray_tasks_repro.sh    | 122 ++++++++++++++++++
- 1 file changed, 122 insertions(+)
- create mode 100755 tools/testing/selftests/resctrl/stray_tasks_repro.sh
+arch/s390/mm/gmap_helpers.c:gmap_helper_unshare_zeropages() {
+	...
+		fault =3D handle_mm_fault(vma, addr,
+					FAULT_FLAG_UNSHARE | FAULT_FLAG_REMOTE,
+					NULL);
+		if (fault & VM_FAULT_OOM)
+			return -ENOMEM;
+		/*
+		 * Even if handle_mm_fault() returns VM_FAULT_SIGBUS, we did not
+		 * fail to break COW and must retry, because we experienced
+		 * concurrent truncation and the page mapping was modified.
+		 */
+		goto retry;
+}
 
-diff --git a/tools/testing/selftests/resctrl/stray_tasks_repro.sh b/tools/testing/selftests/resctrl/stray_tasks_repro.sh
-new file mode 100755
-index 000000000000..42f65d7d7bb4
---- /dev/null
-+++ b/tools/testing/selftests/resctrl/stray_tasks_repro.sh
-@@ -0,0 +1,122 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# resctrl: a task forked while its monitor group is being removed keeps the
-+# removed group's RMID.
-+#
-+# rdt_move_group_tasks() moves a removed group's tasks to the parent group
-+# under read_lock(&tasklist_lock). That lock only delays a new child from
-+# joining the task list. The child copies its parent's closid/rmid earlier,
-+# in dup_task_struct(), without the lock. A child whose fork() is in flight
-+# when the walk starts therefore joins the list afterwards with the removed
-+# group's RMID, and is never moved.
-+#
-+# What this script does:
-+#   1. Starts 8 processes inside a new monitor group "m" that fork sleeping
-+#      children as fast as they can.
-+#   2. Removes "m" while they are forking.
-+#   3. Creates new monitor groups until no RMID is free, so the RMID freed in
-+#      step 2 gets a new owner. Nothing is ever moved into these groups.
-+#   4. Reports every task found in them. Each one carries the removed group's
-+#      RMID and is a stray. The expected result is none.
-+#
-+# Requirements: bash, root, resctrl mounted with monitoring, and the L3
-+# occupancy event (llc_occupancy) off. Memory bandwidth events (mbm_*) are
-+# enough.
-+#   mount -t resctrl resctrl /sys/fs/resctrl
-+# With llc_occupancy a freed RMID waits in "limbo" until the cache lines tagged
-+# with it are gone, so it may not be reused and the race cannot be seen. Without
-+# that event a freed RMID is reusable at once. To turn the event off, boot with
-+# the kernel parameter rdt=!cmt. The script refuses to run when llc_occupancy is
-+# listed in info/L3_MON/mon_features.
-+#
-+# Output (example of a hit):
-+#   monitor groups created: 566, stopped on: No space left on device
-+#   tasks in new monitor groups (expect none): 1
-+#   /sys/fs/resctrl/c/mon_groups/n565/tasks
-+#   RESULT: 1 stray task(s) kept the removed group's RMID
-+#
-+# The race is probabilistic: run it several times. "no stray this run" is not
-+# a pass. If the run stops on anything but "No space left on device", the
-+# freed RMID was never reused, so strays cannot be seen. The script then
-+# reports RESULT: INCONCLUSIVE and the run counts as no data.
-+#
-+# Side effects: creates and removes the control group "c" and its monitor
-+# groups (it refuses to run if "c" exists) and starts thousands of short-lived
-+# sleeping processes. Other resctrl groups are not touched, but while the RMID
-+# pool is full anyone else creating a monitor group gets ENOSPC.
-+
-+R=/sys/fs/resctrl
-+C=$R/c                      # control group used for the test
-+M=$C/mon_groups/m           # monitor group that gets removed
-+MF=$R/info/L3_MON/mon_features
-+
-+[ "$(id -u)" = 0 ] || { echo "run as root"; exit 1; }
-+[ -f $MF ] || { echo "resctrl with monitoring is not mounted at $R"; exit 1; }
-+if grep -q llc_occupancy $MF; then
-+	echo "llc_occupancy is enabled: freed RMIDs can sit in limbo."
-+	echo "Boot with the kernel parameter rdt=!cmt."
-+	exit 1
-+fi
-+[ ! -e $C ] || { echo "$C already exists, remove it first"; exit 1; }
-+
-+FORKERS=()                  # PIDs of the forker processes
-+KIDS=""                     # PIDs of their children
-+
-+# Runs on every exit, including Ctrl-C: stop all test processes and remove the
-+# test groups.
-+cleanup() {
-+	trap - EXIT INT TERM
-+	[ -n "$KIDS" ] || [ ${#FORKERS[@]} -eq 0 ] ||
-+		KIDS=$(pgrep -P "$(IFS=,; echo "${FORKERS[*]}")")
-+	[ ${#FORKERS[@]} -eq 0 ] || kill "${FORKERS[@]}" 2>/dev/null
-+	[ -z "$KIDS" ] || kill $KIDS 2>/dev/null
-+	sleep 1
-+	rmdir $C/mon_groups/* 2>/dev/null
-+	rmdir $C 2>/dev/null
-+}
-+trap cleanup EXIT
-+trap 'exit 130' INT TERM
-+
-+mkdir $C $M || { echo "cannot create $C and $M"; exit 1; }
-+
-+# 8 forkers. Each joins c, then m, and then forks in a loop: a sleeping child
-+# that lives 20 s, plus a very short one that keeps the fork rate high.
-+for i in 1 2 3 4 5 6 7 8; do
-+	( echo $BASHPID > $C/tasks; echo $BASHPID > $M/tasks
-+	  while :; do sleep 20 & sleep 0.0003; done ) &
-+	FORKERS+=($!)
-+done
-+sleep 0.3                   # let them start forking
-+
-+# The race window is while this walks the task list.
-+rmdir $M
-+
-+# Remember the children for cleanup, then stop the forkers. The children stay.
-+KIDS=$(pgrep -P "$(IFS=,; echo "${FORKERS[*]}")")
-+kill "${FORKERS[@]}" 2>/dev/null
-+sleep 2                     # let forks that are still in flight finish
-+
-+# Take every free RMID. Stop on the first error, normally ENOSPC (pool full).
-+n=0
-+while err=$(mkdir $C/mon_groups/n$n 2>&1); do n=$((n+1)); done
-+echo "monitor groups created: $n, stopped on: ${err##*: }"
-+
-+# Nothing was ever put into n*, so any task listed here is a stray.
-+strays=$(cat $C/mon_groups/n*/tasks 2>/dev/null | wc -l)
-+echo "tasks in new monitor groups (expect none): $strays"
-+if [ "$strays" -gt 0 ]; then
-+	grep -l . $C/mon_groups/n*/tasks        # which group holds them
-+	echo "RESULT: $strays stray task(s) kept the removed group's RMID"
-+	exit 0
-+fi
-+
-+case $err in
-+*"No space left"*)
-+	echo "RESULT: no stray this run, run again"
-+	exit 0 ;;
-+esac
-+
-+# Not ENOSPC: the pool was never full, so the freed RMID was not reused and a
-+# stray cannot be seen in this run.
-+echo "RESULT: INCONCLUSIVE, the freed RMID was never reused (${err##*: })"
--- 
-2.56.0
+Because the private allocation failure leaves the shared zeropage mapped
+at addr, gmap_helper_unshare_zeropages() finds the same zeropage on every
+walk and loops forever.  In break_ksm(), VM_FAULT_SIGBUS terminates the
+loop and returns 0 instead of -ENOMEM, allowing __ksm_del_vma(),
+ksm_madvise(), and unmerge_and_remove_all_rmap_items() to clear
+VM_MERGEABLE or tear down KSM rmap items while KSM pages are still mapped.
 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 63cc8729c41ad..ea48991ef5898 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4176,6 +4176,20 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int=
+ order,
+>  	 * failures more gracefully we should just bail out here.
+>  	 */
+> =20
+> +	/*
+> +	 * Private memory is a fixed pool, exhausting it fails the allocation
+> +	 * rather than selecting an OOM victim. Otherwise, if there is some
+> +	 * indication of progress because of a revoked request, just report
+> +	 * some progress so the slowpath retries and relaxes it.
+> +	 */
+> +	if (ac->alloc_flags & ALLOC_ZONELIST_PRIVATE) {
+> +		if (!alloc_private_reachable(gfp_mask, ac))
+> +			*did_some_progress =3D 1;
+> +		else
+> +			current->private_alloc_failed =3D 1;
+> +		goto out;
+> +	}
+
+[Severity: High]
+Can current->private_alloc_failed stay set after a recoverable private
+allocation failure and turn a later non-private VM_FAULT_OOM in the same
+fault into VM_FAULT_SIGBUS?
+
+handle_mm_fault() clears current->private_alloc_failed only at entry.  In
+alloc_anon_folio(), trying an mTHP order in 1..PAGE_ALLOC_COSTLY_ORDER
+with GFP_TRANSHUGE (when VM_HUGEPAGE is set) on a fragmented private node
+reaches __alloc_pages_may_oom() and sets current->private_alloc_failed =3D 1
+before falling back to order-0 folio_prealloc(), which succeeds.
+Speculative swapin readahead in swap_vma_readahead() and slowpath restarts
+via relax_private_alloc() at nopage: also leave
+current->private_alloc_failed set after the fault continues.
+
+If a later step in the same fault (such as mem_cgroup_charge() on the
+order-0 folio or a common-memory allocation after relaxation) returns
+VM_FAULT_OOM, handle_mm_fault() consumes the stale flag, reports
+VM_FAULT_SIGBUS instead of OOM, and calls mem_cgroup_oom_synchronize(false)
+to cancel memcg OOM handling.
+
+[Severity: High]
+What happens when a private allocation in a page fault fails without
+reaching this ALLOC_ZONELIST_PRIVATE check?
+
+Private nodes are commonly onlined only in ZONE_MOVABLE.  When a fault
+cannot use ZONE_MOVABLE (for example, during FOLL_LONGTERM GUP where
+PF_MEMALLOC_PIN causes current_gfp_context() to strip __GFP_MOVABLE),
+first_zones_zonelist() in __alloc_pages_slowpath() finds no usable zone in
+ZONELIST_PRIVATE and jumps directly to nopage:.  At nopage:,
+relax_private_alloc() sees alloc_private_reachable() =3D=3D true (since it
+scans up to MAX_NR_ZONES - 1) and does not relax the allocation, so
+__alloc_pages_slowpath() returns NULL with current->private_alloc_failed
+still 0.  The early goto out branches earlier in __alloc_pages_may_oom()
+(such as PF_DUMPCORE, order > PAGE_ALLOC_COSTLY_ORDER,
+__GFP_RETRY_MAYFAIL | __GFP_THISNODE, or highest_zoneidx < ZONE_NORMAL)
+also bypass this block.
+
+When that happens, handle_mm_fault() returns raw VM_FAULT_OOM without
+having invoked out_of_memory(): GUP receives -ENOMEM instead of -EFAULT,
+and a user page fault enters pagefault_out_of_memory() and retries the
+faulting instruction in an infinite fault loop.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120-private_no=
+des_v6-v1-0-74f5f9a115c2@gourry.net?part=3D42
 
