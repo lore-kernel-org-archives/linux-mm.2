@@ -1,124 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A471F606A338
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 23:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2223160A2607
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 23:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=raP1nMkN
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Qh78vZCr
 Received: by kanga.kvack.org (Postfix)
-	id C62276B00EF; Fri, 20 Nov 2026 18:16:48 -0500 (EST)
+	id 212F16B05B1; Fri, 20 Nov 2026 18:25:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C39A26B05B0; Fri, 20 Nov 2026 18:16:48 -0500 (EST)
+	id 19CFF6B05B2; Fri, 20 Nov 2026 18:25:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2B676B05B1; Fri, 20 Nov 2026 18:16:48 -0500 (EST)
+	id 0160E6B05B3; Fri, 20 Nov 2026 18:25:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8952A6B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:16:48 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E0561A022E
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:16:48 +0000 (UTC)
-X-FDA: 85457059296.07.4944942
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1B9F518000C
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:16:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=raP1nMkN;
-	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C25BD6B05B1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 18:25:51 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38962A024D
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:25:51 +0000 (UTC)
+X-FDA: 85457082102.08.1AF12E0
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 46456A0005
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:25:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Qh78vZCr;
 	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795216606;
-	b=E4Inefx1yjwvPgP/l8Wk5zdYZl/vCoraOPslW3yUOBCKBLRK+F1afjEsZmqiNy1nXlXUgh
-	NBsxlk9iqYkB1aaM0Y1L4ySp1LWWKPOvYaXFh0OMDIyb7TPGZ8X6oxiYYqWYvWTQh7LLOo
-	Q7M5Nd9UffXfw3R69p9Q744vCHlq/D0=
+	t=1795217149;
+	b=iEaYDokBnH+FLVA5ychTD0ZF/KYvXiUxMh0iYFPVZrthEQ08E3Kv01BCTWuJGgRPDiplJY
+	bWD21tq8u9t7UX/rlorli9LEAis+KLoxq5hVt6Aq1ytdvn5MF3deSLcw0+lYyW+6jI95a6
+	15G5C+4/oDtTe6zFdZxei4PNwVTL8qM=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795216606;
+	s=arc-20220608; t=1795217149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=903vcvaogj9vIydiu/9sjTQzb/qPcKkDK3/+mqHxV6A=;
-	b=KGLBtzoq9vGOM5wmgnLgJetLHDrwaqK7sssocyXz1MzV7y7TeHRfWf+42vwBXUYEGiT98p
-	mUxaq3tTlzW+gRmm0KXawffrlqPRCk6klUXqimH2eUNfmw4DgnOa633U+lDUw1OkwvY4IK
-	d+qhIFBf1Du8DlLTWeg5FGtkiH8tNQM=
+	bh=uhqyN4jXJHLUBn1qwHjxlBTy4/pOd3Ul8pRQ56L+gFg=;
+	b=QOaG7uia8OKbalyYEW2zqty1ewgXpf3QF+/GbCM475lcNHBIZ/g9Og9rkBxueKL9yYD1ks
+	anpK5pPMkqgk5SpvwLehHNFUAek9X37t5m/xpULIpuNQMJoeKYV4Pk/KFF0YwkKfc5ObZy
+	GeFbCLfkRucwiVmv7bqtK3MzwVC5lOM=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=raP1nMkN;
-	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Qh78vZCr;
 	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb6ba3b244so13212235e9.3
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:16:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795216605; cv=none;
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a14so15786235e9.1
+        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 15:25:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795217148; cv=none;
         d=google.com; s=arc-20260327;
-        b=DjuBEE/S1EW/qjCUmDTY1vV3GMnuI0RlP5lenvfSH1N8oK5N/DJR/VSSoRVP2q0UFz
-         wm2Y9Q00z/Fv5Oh0dBJHPaRaYWWkl1MG/sxF21UvG6I4wmnxiWMieRkZvO9IqEOHcexe
-         3LHAl/3tG98EuywRMNBxXnJzY8OWhDmz3BV61LhqDA6S63ua3dU/GeQ9DkxsrZUxcUwE
-         t4jdpCQ+TFFm1MclELyZvdwM1EPEMBhCv006Movy53+nzayhk0vpb59Pb4qtBNp5ZK8b
-         hJP2qEVafdMSUTlcGpYHorC7cAgT1hgP05m1ZWeD/oyb1B+++8NsD/rr5JcGHwbQkvN4
-         Crrg==
+        b=jKuV3fADcqai+wOlsZtuZHNFS1lZpienGwLQ4/idIlleBFSEegb7JcrS2AWc5sn2tG
+         FDbvSlD5BKbAXNMmy9QlqjW3O5vahA8pdiOyIlQzDzUOStkl2z5kTKa6Yh7ri9JYkqsK
+         Lb4PSjz6ceaeQTUq5mxi5WAwKAUrcazn3OpSg+5z6qZron21ngOk1NqWkwXTL4Boy8rk
+         IFAwXJ+M/jQgkoy0GONzZ1jrFefumQhWn1cE+M6xDSfQjoU3sk0R66Z9xoMQEDyljMKB
+         cnVkOrHHdSQIoi2vN8nKd90okLG0mMoIgHu+929RHzLtfhezeF0WmWX25biucGai/Uqy
+         QIyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=903vcvaogj9vIydiu/9sjTQzb/qPcKkDK3/+mqHxV6A=;
-        fh=4m4FLtzntvowZK56Ra+ACQSOr2bbMANxB5fmcuBLQp0=;
-        b=g7z7xinP1vfk2O2N7uIsKj7LFX4BWWo+PMQGr/fatmrrcaCFkWvMfc1AQgLchvyxI1
-         u8r57XdBGLQDI3JwYYCwGTp6BHD87xwd3sO3haGUiTM9jNADR1Qx8/aIw9Fd1fLUAfk7
-         WgfeTaU7HqBa2ao/qEhMwxuko2rtmhc52Ky7eMEOtBgjseCPGp1qpU2DVHDD+kgfQfiP
-         qA+OjtK+CLtuke/9EgtLUuvviRIqgbJyx+jwojZ9X5HDWNawfo4Z7y9/zTiK/4yGWgah
-         PRlsvfhHszY6JaaqEW1z3JR3O7mchAt3ReBS2ol1X3Qxo3ydifo3RsR4ZPxt3zzsY5KT
-         Wq1Q==;
+        bh=uhqyN4jXJHLUBn1qwHjxlBTy4/pOd3Ul8pRQ56L+gFg=;
+        fh=CvMM8bCAicuo9oaACOYCr4KU6foAmbL6RvmJkIeZX8Q=;
+        b=E67W5oArr4dzu2jrzyi1poIwIthj9YlqvwHade657ZL8rbB4HpZShkhhvLSD0BMy+a
+         MBKo4zuCiRUukYHqQrLhFyUyyGA0sACou096cdEgP+vszoJnhIUZiCYvvRx1nQyF4L4g
+         rPux3MaviFLivrgLPcnNpZmTUZcfH/qAVuxiP+5jqnCUfDqtnC1n3HDRWSbQq/Nb7SaU
+         +/T5lRSmVOlHaTrrZHqJE+9LKar6lzqsGhckcmIwU0tv4qb/KqWMr/Z2V8iDpva0eF7z
+         GgnettWLpddLzxauRcbghTMnqbId9W00ImC5xhuMeR6wqE3UFV7LCn9xEb8JNh46aqVU
+         20PQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795216605; x=1795821405; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1795217148; x=1795821948; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=903vcvaogj9vIydiu/9sjTQzb/qPcKkDK3/+mqHxV6A=;
-        b=raP1nMkNO5kLZEYGPnDINREwX0jOGBFGVTyWtB6F/8W34SIE3E36VjVdPKkeyFKDRV
-         +ZbuqJPKg3nN2VjK2JjFQYwpnUn/J04mPid2+0Dc9s+DmkN1GLFdlXrha9Dylwd7EaXi
-         RLnG1SKp62dUyF1VcQT7QPEFeJdewxUpwlcFfLj7Sd+ueso0IJ0rBPzX+a8wuvNdG7ow
-         m7L5//d2yKIF+OjGgrW+/O/imdYX8vNBezZIvFbGyaFYJq+4biKeYCc8MjfeMxvUrlOb
-         QY6cynWIZW6OaPD0gilZm2aGy+8hzqzYyl+KfkJocNS8AIGFNknoNXY1YcHbRKMu76dY
-         nyyg==
+        bh=uhqyN4jXJHLUBn1qwHjxlBTy4/pOd3Ul8pRQ56L+gFg=;
+        b=Qh78vZCr+UxzioSxsrJgpdpVHhFhFTd7dNTDNSYDasUF8SqqRxp+uLUGgpPVGkvsla
+         hMoiVo1rZxlCIOuM0avupYEv+/Trs2bnfIPSNSe7ZTMXxgI/ne94Q3p3Xruvt1SFr3mG
+         x1+/JKIgZ1oSVF+EZMvg0TwjOEliq6eOKdOKhfYcjYYHHfDzdOQqycGx1GS4ESmwsJP6
+         zOjWJr1lIx0DkenHKWS8MG0RY2WGNKqPB/whCRQdWYpAUKeEa5Aoib+hkzaNUHb5R3yi
+         Xjnm8Ea8+QRPX57vEtxdkybIcHQAIxHrMWKlNAXm2nxKySB0EEhPboMmgJrQMQBj/zbp
+         Xlfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795216605; x=1795821405;
+        d=1e100.net; s=20260707; t=1795217148; x=1795821948;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=903vcvaogj9vIydiu/9sjTQzb/qPcKkDK3/+mqHxV6A=;
-        b=wP77+EgJW72zdwXEYSi9F2KNs409N8ykB82uGp6Tbt0IQtaFVAXQV57/jTYFFtdcx/
-         Y5VQKn0DbKmb0muDUHp6Vk2tnac6/SL/hdPvK8UsBqJFRyJ3BNCOuUc+qR9AqtnAIVBb
-         VOmsPrwVoLvqjWzT1zzFR9CpzXM2EkNTVk0oGC9/e4U/7Hn3uutoKaf0JffWGDSLk1SZ
-         uMh5Hj43eWu9Aq5oyAmWYyPALOVSVahGqz0HF8ORJ2n4B+2Fx6M0X71A6tOXuq5xBsh0
-         jExECrmIT/A1Uv6dRjDgexTX6yxpufqbn15Y4h8PF/6jG2dyGrhJ7KbjyQbSofL1UFO+
-         hI3g==
-X-Forwarded-Encrypted: i=1; AL+hErHZ2Nk8PGWZIvQ48RfUiWROHvQvLOPGTcQHEsFwdY36zDTUmtkRaITXUQe6TaIEZCgMeblAbDvc+w==@kvack.org
-X-Gm-Message-State: APuU4Z9+yH1Sz0c8+wKkGVuoazLASJXWHwKpD8n3x4HHfPjaj65G8bDy
-	WG6NhiKUpajaj7m0yEd4PLcMsAY7/u0ZbXza7tCABayZXSHLSt3+thxmFt7APv3qN6I42xBtWRr
-	EaEGQvnBi1uI7l2kF3z5ENWhM/TrQxII=
-X-Gm-Gg: AYBFou2cFxkb9fjv+Azc+R+l+ncYu0dqIOtviqb7V3QKctR4Lsj298T83VS0/oQmOIc
-	/ahrUbsTM5hbITIrsqtXMxWSrkyx/MkP9tnbhc5Cp4iG6216D9MNrlhx5dx4G5uZv5tv2hjnx9r
-	xsqd7EvkfPV7fudrjBzgd4cRd82h5HW729UBvft6nOOJQS7c7d18cQWJo1Kurt7uCkHKGe45nUN
-	uD2Ozod4kxD3gZjTo67UcDGyAp7ZWZdR25iSZW5VTyp73YkXGzJfcjEp+jguClrD6b1PIV9tiu2
-	aiUNYJ+c+2ZZ/kVEtUn0+uM0TBValot0fgdBpjZVT4m27NoybWgBGI+bfZ84xpuNowyERzXttjG
-	4bGW4v2On0isPAHOK6xl4sqyzUZTsd8fYjwV0gwPoZAoNorgKLl26/yz5fymXUUSzOgnvzg8/qk
-	fnpP0qGeDnAujrucZi9Dw5wfOeSc7rG5bhxjbG9zpI8CfohelGr/kSOoA=
-X-Received: by 2002:a05:600c:4f0d:b0:4bb:5c97:f4b1 with SMTP id
- 5b1f17b1804b1-4bb8881941bmr114007855e9.24.1795216604602; Fri, 20 Nov 2026
- 15:16:44 -0800 (PST)
+        bh=uhqyN4jXJHLUBn1qwHjxlBTy4/pOd3Ul8pRQ56L+gFg=;
+        b=VCkUQ6Egp4soTHcAs9yUatXQ6eajYxtmwhOVwd84pu0HffBAu5O45eaqqrIXhkk2oi
+         GasnXrjjIACplJUnIvjS5UNGlwTC8PTgplfkc3UIg7f5xOYme4+IypKxbmgUlKXXObqI
+         bdcK38mxYIif7cbYOSqhM3v4RBkHr9lii13ssoDNhWNfFYDznS0fiOBlgL6zz3TWnv1u
+         t18atDR6Ex1G8DyuGNK7/u7NuGyo0sLV+1Wx7al6f2Mli0gADIFaV3m17nGtJDXGq3ro
+         bOV9+SdjD6FIVE1UnxDkKauiwnLFrij1icncBqv8hnIEEqie+/mAV0Ce/QypPJrGcmhN
+         Z/og==
+X-Forwarded-Encrypted: i=1; AL+hErF3OKqCGvFKF8TCVbj8Y2RNVT+CVm6+jFmkyDh1+6UT4riuX3IWHDYtHD99Qpf2mTL8NsTGrlPOZA==@kvack.org
+X-Gm-Message-State: APuU4Z/CjeI1Lw6/Tht1EyR7nTi8fXmF6BRNaavsa9XPEcTipBZARRVH
+	q1x1yuD59VqQACVCpqGhclJAqsth5lqtl4BjdbxArzPS2NC3T9O11LIDq3UqUVngatnILlsmHRU
+	SP0g+G8Qj0q2p3JHDeDOVD6H394wAy+c=
+X-Gm-Gg: AYBFou0OptT52hZBKJYVb4RzpUM2MnsLh3YkpZAEmxeo7A53kX1a4xfF4eRpHhtBP0g
+	/PuLm2AY7aASdYCVBToUmNFg2f3kk5mffTyEovSmYU1dEQA+KrBzSIXLgMAR+AUzDsr+42FIsPA
+	nKlmoAP0HO5cjJY6NVWZtR/I6nmhQH/+40ziC/FFRUNjU9C0q83VF3LewQsOkFIN2rOH9lx9m7y
+	tJNPwhZFqC2H2o/sUt+eKbLbEVTIMRsXwrxkr6e4a0TRBOZToiZuS7jJPPrb6lX1DqlpTNe7lqX
+	KlkVTdW+xU0XHn1W4M5b/NWY0A/PxQMck2i8+I6hWVch+hhbyg6vweqtTrDzWQ1eNZdXiU+fqDG
+	EdPlPGlsLN73qzOizMnGNtADkCTCJbXBWx8xcTpyjNiVn9e0I5oNkPNL3MboGi3GOMhOW3MxCkK
+	fuNoYeG9Cl8ia9rgqoalSI3x3d3IvZeqV0I6kDciWbIEYrdSc562qlhYk=
+X-Received: by 2002:a05:600c:4e0e:b0:4a1:da58:1ee with SMTP id
+ 5b1f17b1804b1-4bb88938dc9mr114117765e9.31.1795217147625; Fri, 20 Nov 2026
+ 15:25:47 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
-In-Reply-To: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
+References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com> <20261120041906.5785-7-kanchanapsridhar2026@gmail.com>
+In-Reply-To: <20261120041906.5785-7-kanchanapsridhar2026@gmail.com>
 From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 20 Nov 2026 15:16:32 -0800
-X-Gm-Features: Aa3M54qb-VRfw4aqDAJTkRsfWHOO2NSgtOCHUwUBMLX8ioDWk9vsNXzApVwB4Q0
-Message-ID: <CAKEwX=MLrDn55wmVKKba5=PcU+qFpkEbMmN2SjGTfTBiFKX8cw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/8] Batched zswap_store() framework with compression batching
+Date: Fri, 20 Nov 2026 15:25:36 -0800
+X-Gm-Features: Aa3M54ocqa_Rt1iaIcH01mzW7rcL-Me_kjHYSn1LGUejy8g6N8y75Tuvtfmivv8
+Message-ID: <CAKEwX=Pr6t8w676ztfrONaKrRKoy6NS1priTb2c2XUikNhYU7A@mail.gmail.com>
+Subject: Re: [PATCH v4 6/8] mm: zswap: Store large folios in batches.
 To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
 Cc: hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, 
 	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
@@ -127,18 +127,19 @@ Cc: hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev,
 	senozhatsky@chromium.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 46456A0005
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1B9F518000C
-X-Stat-Signature: fa6fox8yawpgudubwaagihejreknnnmf
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-HE-Tag: 1795216605-340393
-X-HE-Meta: U2FsdGVkX1/OrWLjxMSDqo16Sxd2zP7zcLrzjMgsH8vT0FahMuEUYtYn1s/5e1XcGR5u0VENDJkc//xEY4IFv//0BrAjVMLas/d/EWB4aFEv216vPpMsqDbWoQNFVf7cQKG7FvlspHnPC/flCRDNTC1aMUATPPR4mB7hHgIBBEB5XhgaITMLO9DMFrFlWEgI/3j2K+aF2QF/fr//mMLxl/+Yrink9idcXhQtBlVgD4o24/5uzwY47InK+EP11N0qyEGgy8LLN/kAEkc7GsHAydRY4FcWRy92QcrRbNniOXq/psOuNlSV6hpzRmyVssF8zZ8J2XC8cMQwr4vdmTiX9v/Sverjb2K++q4DMeBgmudZCg/RQd0+pi9KT2BsQQ+kohjmzplFMWITzrUjNetfqHt4m7jrI2IoYFFKm+ZWuJEONdW+lYq2Z9Ic8THDpJZ5mumABZGUPEpZ6yvE8zho74WolCcn2/29DdjUDMVg7jeiK0yPAMYDtQc0zjzoT+U9uOKXbYxGlkgHXAQxqnm0fyTsGayC7nYok8lf2UCUZmMbHr3i6zH0DJn7ln4NbGnZ485Hy+j+RQBL7NAkGhiUHYBsTMkeDJdwkGEsv1LnJJzRtQsYliXoWKIjVaPqPfAlzYvr0pWNvE4xcwCDquV17Ky3hq6uGpV/Ga1znlsiQtRynCOCFXoXeGZ/TTjW0wuaE8YNv6h2+lYDzTTb4PF+qksfiK8A3KxXRimpwfDFq9lDBqdYZEXoT5eW2R60deaQclcTN1/Jo15egefHVNZycVdX42R5jLP9MdTrh8sldAfMkcTjEgJYxV9s+84oYRy+DAfFMjerFFvGiHBXgGuFZQcU+bfKDA+e0Z5P0ZPLYHeyCiFFy5LDtE2wZ/LethPcP7Cw0vHgNLkugeCcjC/nnYWchP4OVr7EbvY2w82oYwfQEog8rtv4dATlxDE+vHOXXvrq4MFJZOJ1X19K/dy
- 792CjsPN
- 7HZ7K1tgh+Jn1/3Asw7Q7zYUy6x7SAMJqWXdPx24Ufvxlpv/p04ZaTkMJtBFd7EcsMdPPEWEQhIiDrr7bXqpLezwwqQBUHWOEkrPis8DneoYPgqZjRVhHf3rTALuQ3bEKEOLLPBJgW8v8EC3znOTLHqCYIKgzOAX72IvJxau29btWBy9fbt2z5SliOV50TSTfglzV6B3yukJLwu8JfBxHeVG+q6660e9iQ83k16Gu3rIBur/nioW9nI9HSIscHNm8MIbgL8HP0/F+jLZWA7TgD0ynnDOV/S2DZQ8SlOIpTn9l/haAUWXmj+sFV4HoTJNy9oont90mhb9RMAeXuzo/Kje00ATgeyCM0SnarMlz4GS2D7yrh8O1Tnff+jvcMHpWJHqQmtl3o3AIRFTr3sXKbaLZXbqYfDIW6toY2YRLv0esZxeTAPVf02PcewuUIj5fpzxkcvHIvhAplHx6cJTaTrTSSRWhh/O56rO5vCKjsWHhgv/0Iv7aLVdfI71X321iJm9eUZTuQHKzPqJ+3Q831EBPFxlBM7Cyea880ahJj9PJVSpsNNJ9+XSk/wdhPfsIs1B49BL8xIavDLwFkXM+ufAcj2/ijAaz11Qleum/pTbGYh/LFOv+Fv5MdqK0ph5ZM9ljDWaBvuUrfCsTLUoNtzBOEPR+5h0y+mf+P3/+8ScU/KdDnc7ww5s51ThyA1fx8LTGL93+p7UIzogAVTIQ01r5iQ==
+X-Stat-Signature: moa6396dmiby8zpjbek7f94sfhyw7izu
+X-HE-Tag: 1795217149-505557
+X-HE-Meta: U2FsdGVkX18Lzc3O1EkJoCtPJWW8ytlO/PilAPv/pgBtTPgFF2Zq8FucCVrRJYFoiYdh1H+pV2TkVxOr31NVrA5toEXnjHpcsSPFdU0JMT55aFQUryKpTVDdJYaldm/xMhyyfBtnQVKZ1UcdWZAHcj08fSxD1BJQlpqsuoOFp1OY+54GxpLn2H0l9KKoH0W/rnH+lIMlDgyMy1zGkNekpvUWMQeGE6yDmg7N0njPrJZtgo0Mi6McNZb6geiNCv4xGDUn35HSar1S+XjkXrhpN14Tjcw7Mwe82RBEer09aSOVBrHbDFBBH8ymCOBMFMtVSnTAQ9ImooZVBjVvGHzPfteJ2Jh0BzZecHEPE0MiSEqX0WU+t6rmz7eDHlgNNbdXQhYigDHWbLsSk/VmubVHyu2TXG9EtTtNqKVj/APcOgxm+chui8rt6RHm/zrNyZ0N2rxpgn/McCGEltxL7XScjskEh/ODFC46rn6QHv3ffJxKVIuBdkFT+usKBPnFelAaoeel+4Lajjui6R9mugiSDItxp50GCLaJol42Ol2mVp1gTk76MYhpqnyr1FQ6f+4UB/h9H+q2MTqhqZ4bhwxVhb0hgPMMSBJr59SW9F5j8UI1AtgiNpN6V1zxhSyLmMP9JXoG+OFIzGJjiFptZ7XHdBIuOJ6tmCGVvhXkRRuSEtUrcku3iw3KpeGwPERsFZ269gAk4mUdg2Ircvt4sL+PLSr2Tpoqm3/bPmLcconmT4aQWkQKujrg00nc4v+zou5iuFM7BN4m4mS9CNobcPlvzhQ5Qo6mRrjPPCWJ92TEQx/HLZfTvZjyTSUE8mi1dHRSI0iucff1LQAIDg7FvraOsfcHSoabdhZjd4UTKoaJcDDJ4jpjUL24PZUWvVY8rNXqLCfUD0T56aATii3+uRH2bWDpV6a4XHtNvySvH4hDcuIf0AIRc+Caia8V0CmLfv+lX7kJRrNiTjl9Y8lQGHP
+ +Ed9g9W5
+ CXqh3NSzy7ugDKgbx1Vmir9zFsD5HDhQYn6TAI3spl2nhN5G2iXObF9Mffg4OX7U0mXBLaMlkJhtXj+WUo7bK0h28Vg5guM63+WqXGOg7pGgFj2R0X1t+OfeEFmC7UrJMlvIfGDvgJFvaTi5aBPIBRfhKeaX3KYkdkA6ZL9zfjxjPeK4He3rxreO1SIFPAA2HV9VJ9+nk+iJ4EqfsY0PGqUBzA91H0IMOzrFMw0Vz0WABw8qWWhVuIlNor0t9dSpceJrYZUAeGGUo/emUJZaMcJNHX35GwbsU/ckqzwMKd3cjX6dpHZnDULu6X6L9sN+A3uMnT/rVBuXyBSw/1qfiZCenavZTmxN1cimac2rEm/wXLhLxmhC0pWuckxCN+DAHuyfhefQCTuuWW17kNUWaoFITYaHcOArhBoe/EuQmQm69lmq89k/dCNlkX+wHHu1uuWRgdWZFQcijEZC2BtiDh3CR6rXKJdWyR7qfdDpUBFpfYdcpoQkanD55R61z3m1t1HxVZkfW5bPq6oTLAs3JPkLQXiovMSat5ifjxp3Q9Urns+/VDqEXnPKVo4EA0d7Bn6m2gsHZ0asdUjrnu8eRxMU7m2a2SJjf0+0CUlK7gtZ80o9W8zq4opvK9WNEHTW/M/XuGb/wGURvs876O63Fpo1HgHrTK1wEfdfsyZC4/3CjZ2U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,165 +151,172 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On Thu, Nov 19, 2026 at 8:19=E2=80=AFPM Kanchana P. Sridhar
 <kanchanapsridhar2026@gmail.com> wrote:
 >
+> Use batching when storing large folios in zswap. A new constant,
+> ZSWAP_MAX_BATCH_SIZE is defined as 4U to support processing batches of
+> up to 4 pages at a time while storing large folios. This commit
+> modifies the "store single page" approach to "store a batch of pages".
 >
-> v4: Batched zswap_store() framework with compression batching
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> As part of CPU onlining per-CPU acomp_ctx setup, ZSWAP_MAX_BATCH_SIZE
+> compression buffers are allocated to eventually be able to compress and
+> store ZSWAP_MAX_BATCH_SIZE pages. This happens in subsequent commits.
 >
-> This series is a spin-off of "v14: zswap compression batching with optimi=
-zed
-> iaa_crypto driver" [1], and focuses on the generic crypto_acomp and zswap
-> compression batching enablers. Resuming work on this series following a g=
-ap
-> since v14 (January 2026). Please note that my email address and affiliati=
-on have
-> changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@gmail.c=
-om. I
-> have retained the original Intel sign-offs on prior patches for historica=
-l
-> attribution while signing off v4 of this series with my current address.
+> For existing software compressors, the extra overhead is the
+> the extra 'buffers' pointer, 3 additional elements in 'buffers' and 3
+> additional 4K space per 'buffers[i]': in all ~12 KB per-CPU on
+> x86_64. Only the first buffer is currently used.
 >
-> The main focus of v4 was to establish a performance measurement methodolo=
-gy to
-> quantify the benefits to high level metrics by using zswap compression
-> batching. This was done using an Intel Sapphire Rapids bare-metal instanc=
-e with
-> 48 physical cores and by running "usemem30", i.e., 30 concurrent usemem
-> processes, each of which allocates 10G, in a 150G memory.high contrained =
-cgroup,
-> for 10 iterations. The environment was set up to minimize performance jit=
-ter so
-> we can understand the system-level/workload-level advantages of zswap
-> compression batching when running workloads at scale.
+> zswap_store_page() is replaced with zswap_store_pages(), which processes
+> a batch of pages and allows for batching optimizations. For now, only
+> optimize allocating entries by using batch allocations from the slab
+> cache.
 >
-> To summarize the main contribution of this patch series: Batching is intr=
-oduced
-> in zswap_store() of large folios: we carve out a large folio into batches=
- of
-> ZSWAP_MAX_BATCH_SIZE (4 pages) for software compressors, and store each
-> batch. Moving the fundamental operations that need to be happen to store =
-a page
-> to now work at the granularity of a batch offers opportunities to optimiz=
-e them
-> from these perspectives:
+> Avoid repeatedly calling mem_cgroup_zswap_writeback_enabled() for every
+> page and only call it once for the folio, since the entire folio is
+> charged to a single memcg. Similarly, obtain the nid once to use during
+> each batch store of a folio. To facilitate this, a "struct
+> zswap_store_context" is introduced to keep function parameter lists
+> concise.
 >
-> 1) Utilize existing kernel API that minimize obtaining locks for bulk
->    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
+> Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+> Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+> ---
+>  mm/zswap.c | 307 +++++++++++++++++++++++++++++++++++++----------------
+>  1 file changed, 217 insertions(+), 90 deletions(-)
 >
-> 2) We keep the working set for each of the core store functionalities
->    (alloc/initialize zswap entries, compress pages, store pages in zsmall=
-oc,
->    pool/objcg reference increments, objcg charging) to be focused on a
->    batch, thereby minimizing cache evictions and benefiting from cache
->    locality.
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 78d9694f75b5..df59ab0c1029 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -85,6 +85,9 @@ static bool zswap_pool_reached_full;
 >
-> 3) Along the lines of (1), the main zswap_compress() batching routine obt=
-ains
->    the comp_ctx mutex lock once per batch, and releases it after it has
->    processed all pages in that batch.
+>  #define ZSWAP_PARAM_UNSET ""
 >
-> 4) Any zswap store functionality that works on a batch can potentially be
->    optimized via bulk-processing/parallelized as a next step, to further =
-improve
->    performance.
+> +/* Limit the batch size to limit per-CPU memory usage for dst buffers. *=
+/
+> +#define ZSWAP_MAX_BATCH_SIZE 4U
+> +
+>  static int zswap_setup(void);
 >
-> Performance testing: usemem30 with 100% over-commit:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> Validation was done with mm-unstable as of 11-17-2026 (Baseline: commit
-> 866f761fd414) and with this patch series.
+>  /* Enable/disable zswap */
+> @@ -144,10 +147,12 @@ struct zswap_acomp_req {
+>         struct mutex mutex;
+>  };
 >
-> v4 was validated on an Intel Xeon Sapphire Rapids bare-metal instance wit=
-h
-> 48 cores.
+> -/* The compression mutex also protects the output buffer. */
+> +/*
+> + * The compression mutex also protects the output buffer(s).
+> + */
+>  struct zswap_comp_ctx {
+>         struct zswap_acomp_req areq;
+> -       u8 *buffer;
+> +       u8 **buffers;
+>  };
 >
->  Bare-metal instance specs:
->  --------------------------
->  - 48 physical cores
->  - 190G RAM
->  - 200G SWAP disk partition
+>  /* Separate requests, so that decompression does not wait for compressio=
+n. */
+> @@ -162,6 +167,7 @@ struct crypto_acomp_ctx {
+>   * The only case where lru_lock is not acquired while holding tree.lock =
+is
+>   * when a zswap_entry is taken off the lru for writeback, in that case i=
+t
+>   * needs to be verified that it's still valid in the tree.
+> + *
+>   */
+>  struct zswap_pool {
+>         struct zs_pool *zs_pool;
+> @@ -226,6 +232,15 @@ struct zswap_entry {
+>         struct list_head lru;
+>  };
 >
->  Workload: 30 concurrent usemem processes, each allocates 10G:
->  -------------------------------------------------------------
->  The vm-scalability "usemem" test (unmodified version) was run in a
->  cgroup with memory.high fixed at 150G. There is no swap limit set for th=
-e
->  cgroup.
+> +struct zswap_store_context {
+> +       struct folio *folio;
+> +       long folio_start;
+> +       bool wb_enabled;
+> +       int nid;
+> +       u8 nr_pages;
+> +       struct zswap_entry *entries[ZSWAP_MAX_BATCH_SIZE];
+> +};
+> +
+>  /*
+>   * No RCU section is needed around the returned pointer: a stored entry =
+pins
+>   * its pool via percpu_ref (taken in zswap_store_page()), so the id cann=
+ot be
+> @@ -284,6 +299,8 @@ static void __zswap_pool_empty(struct percpu_ref *ref=
+);
 >
->  To quantify the performance benefit of zswap compress batching at scale,
->  30 usemem processes were run ("usemem30"), each allocating and writing 1=
-0G of
->  memory, and sleeping for 10 sec before exiting.
+>  static void acomp_ctx_free(struct crypto_acomp_ctx *acomp_ctx)
+>  {
+> +       u8 i;
+> +
+>         if (!acomp_ctx)
+>                 return;
 >
->   usemem -w -O -b 5 -s 10 -n 30 10g
->   echo 0 > /sys/module/zswap/parameters/shrinker_enabled
+> @@ -302,8 +319,12 @@ static void acomp_ctx_free(struct crypto_acomp_ctx *=
+acomp_ctx)
 >
->  Performance validation methodology:
->  -----------------------------------
->  These settings were used to minimize variation:
+>         acomp_ctx->acomp =3D NULL;
 >
->  - All cores were fixed to run at 2.4GHz with "performance" scaling gover=
-nor.
->  - Turbo boost was disabled.
->  - CPU power-saving C-states restricted with:
+> -       kfree(acomp_ctx->comp.buffer);
+> -       acomp_ctx->comp.buffer =3D NULL;
+> +       if (acomp_ctx->comp.buffers) {
+> +               for (i =3D 0; i < ZSWAP_MAX_BATCH_SIZE; ++i)
+> +                       kfree(acomp_ctx->comp.buffers[i]);
+> +               kfree(acomp_ctx->comp.buffers);
+> +       }
+> +       acomp_ctx->comp.buffers =3D NULL;
+>  }
 >
->      GRUB_CMDLINE_LINUX_DEFAULT=3D"intel_idle.max_cstate=3D1 processor.ma=
-x_cstate=3D1"
+>  static struct zswap_pool *zswap_pool_create(char *compressor)
+> @@ -388,6 +409,7 @@ static struct zswap_pool *zswap_pool_create(char *com=
+pressor)
+>  cpuhp_add_fail:
+>         for_each_possible_cpu(cpu)
+>                 acomp_ctx_free(per_cpu_ptr(pool->acomp_ctx, cpu));
+> +
+>  error:
+>         if (pool->acomp_ctx)
+>                 free_percpu(pool->acomp_ctx);
+> @@ -778,6 +800,44 @@ static void zswap_entry_cache_free(struct zswap_entr=
+y *entry)
+>         kmem_cache_free(zswap_entry_cache, entry);
+>  }
 >
->  The usemem30 experiments were run with the baseline mm-unstable as of
->  11-17-2026 (commit 866f761fd414) and with this patch-series.
->
->  After booting into each kernel:
->
->   1) Constrain the cgroup's memory.high to 150G.
->
->   2) Run 2 warm-up iterations of usemem30. Don't use this data for benchm=
-arking
->      since sys time typically skews higher for initial runs.
->
->   3) Next, run 10 benchmarking iterations of usemem30:
->      - Log these high-level metrics: Sys time and individual usemem throu=
-ghput.
->
->   4) Sys time and Throughput metrics were gathered for three mTHP setting=
-s:
->
->      - 2048kB
->      - 1024kB
->      - 64kB
->
->   5) Benchmark summary data includes Sys time and Throughput components f=
-rom the
->      10 iterations of usemem30:
->
->      - Total Samples
->      - Mean Value
->      - Std Deviation
->      - CoV (Variance): Coefficient of variation (relative standard deviat=
-ion)
->        measures spread relative to the mean rather than statistical varia=
-nce.
->
->  An LLM was used to help generate the benchmarking and data processing sc=
-ripts.
->
-> usemem30 Benchmarking Summary:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
->
->  ---------------------------------------------------
->     Improvement with v4 zswap compress batching
->  ---------------------------------------------------
->   mTHP enabled:       2048kB     1024kB       64kB
->  ---------------------------------------------------
->       Sys time:      -13.87%     -2.64%     -1.72%
->     Throughput:       +3.85%     +0.42%     +1.31%
->  ---------------------------------------------------
+> +static inline void zswap_entries_cache_free_batch(
+> +       struct zswap_entry **entries,
+> +       u8 nr_entries)
+> +{
+> +       /*
+> +        * It is okay to use this to free entries allocated separately
+> +        * by zswap_entry_cache_alloc().
+> +        */
+> +       kmem_cache_free_bulk(zswap_entry_cache, nr_entries, (void **)entr=
+ies);
+> +}
+> +
+> +static bool zswap_entries_cache_alloc_batch(
+> +       struct zswap_store_context *zc,
+> +       gfp_t gfp)
+> +{
+> +       u8 i;
+> +
+> +       bool ret =3D kmem_cache_alloc_bulk(zswap_entry_cache, gfp,
+> +                                        zc->nr_pages, (void **)zc->entri=
+es);
+> +
+> +       if (likely(ret)) {
+> +               for (i =3D 0; i < zc->nr_pages; ++i)
+> +                       zs_handle_init(&zc->entries[i]->handle);
+> +       } else {
+> +               for (i =3D 0; i < zc->nr_pages; ++i) {
+> +                       zc->entries[i] =3D zswap_entry_cache_alloc(GFP_KE=
+RNEL);
 
-Have you tried perf-ing the store path to see what was the overhead
-source (before and after this optimization)? I'm curious.
+Oh and why are we using GFP_KERNEL in the fallback path, but passing a
+gfp to kmem_cache_alloc_bulk above?
 
-Mostly LGTM - still taking a look...
+(and it seems like the only caller of
+zswap_entries_cache_alloc_batch() passed GFP_KERNEL for gfp anyway?).
+
+Let's just drop gfp and use GFP_KERNEL if that's the intention?
 
