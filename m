@@ -1,125 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0D260A260F
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D20606A325
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 10:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HkamTiQD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hs2SXW9V
 Received: by kanga.kvack.org (Postfix)
-	id 7094D6B05C5; Fri, 20 Nov 2026 05:28:57 -0500 (EST)
+	id 898E56B00EF; Fri, 20 Nov 2026 05:33:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6934D6B05C6; Fri, 20 Nov 2026 05:28:57 -0500 (EST)
+	id 86FB76B05B8; Fri, 20 Nov 2026 05:33:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55B226B05C7; Fri, 20 Nov 2026 05:28:57 -0500 (EST)
+	id 785EC6B05B9; Fri, 20 Nov 2026 05:33:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2881D6B05C5
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:28:57 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6BACB120DB0
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:28:56 +0000 (UTC)
-X-FDA: 85455124272.18.DB80C91
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8830640006
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:28:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HkamTiQD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 50A1B6B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:33:15 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C4A3A80EE9
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:33:14 +0000 (UTC)
+X-FDA: 85455135108.14.77C4FAA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 15EF31A0003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 10:33:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hs2SXW9V;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795170534;
-	b=ZaTSW8SflpuISeoVa/DRjT31wXsPfqMybkhnX9dpk9M+ArHHiU2AylUIbDVtR+9RY3mVf9
-	Iliv4ZfTTKn+jyrTTzFwvA6pWNQ7fQOMrupdnRuPTsWwLHWoczdE6nhF4vS3GZimmgMDEo
-	gdxJcEvl01eC3L/pK5OeIFL0bIN3La8=
+	t=1795170793;
+	b=lIhTNIbyWfm94Aeh7LpoSXl94eiSU++DqZjeQ+BDlFGbQDOR/Xvts4bApUi0XCm+IhQb6p
+	O1iltRBRAncSC9ZoIUelG35ZloZNWrlBUpEMHzX7QbVMDcyIOAO5buZzOvKLJ+r+ErTKRc
+	VPr+W2d4NmDP1v0gi5m0mKwnKHIzXNA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795170534;
+	s=arc-20220608; t=1795170793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j/szci0MGX9JxJDp7fsrmoE1Wtd7fkA0Bt+dBF1YzqY=;
-	b=Eof0yz2mNx/uTKTl1qxu0JQs9q/0Evku0bkxOA8GlDgo1nReFA8Vqz0W3tPVnaKmON5lmW
-	wHzVwwcxP6dZVojAAF4JtTZPkwkvbNYTnj+VkfY+ujH1rUsUU9emsP8Uv3/EAQOZo4kIhe
-	2A7mqmocpOTwmZnHFzqhxAFTCE3NUv8=
+	bh=j8WTG0DzS1hPuRXBgn6FCxY0K+Jl6xxWQ77sF6Yqsjw=;
+	b=ny3cR1a1XTfIIxHkJr46jkgzPK2pBiVUtZM9RnYw+Griqm2HijchLAr6lP95Jn7KCT+SR2
+	DdabEIzrm+9jThomUgfH5sj64+VX/SQ5cSmbN8umd29jOPWytbx/SCvSdS/u8smKLsDw6B
+	SS/r6ZLhqEQ6RhSWvDVMBuCwnU1J6ug=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HkamTiQD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hs2SXW9V;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D6E6342DA9;
-	Fri, 20 Nov 2026 10:28:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093B71F000F2;
-	Fri, 20 Nov 2026 10:28:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B8D561147;
+	Fri, 20 Nov 2026 10:33:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E202D1F000C0;
+	Fri, 20 Nov 2026 10:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795170533;
-	bh=j/szci0MGX9JxJDp7fsrmoE1Wtd7fkA0Bt+dBF1YzqY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HkamTiQDnW0r0OVWszd8gG7YutWttg7et++C/Shtqvc6hwN8edzlV4JV/2e48Zb7w
-	 WScbCPd1xmT9lH6zAFlrgoEWd6AYHzLnUlzT2quPEHKPwaHiKymjDzu6gW1Ep6gOvO
-	 qmc6pc1KKfq14g6wN+shhcEiLMsgukiCE3dCN1mK5FJB6PeFeR3fW4EZKjdKuhxdUh
-	 5zPtFUg5p+i53pz9EqDOxtVcdcFyZqLq2uPsvrOOOXxTrdd7dkmJa0Q04fo7UriJFN
-	 zyXXuJDXJrhlS2ZzE6izpmHdvn7xAzIA2bJUXu2/H/5q6R/cC5TvMqKlNP65rcH92G
-	 O0PgnzHhn7e6Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Nov 2026 11:27:06 +0100
-Subject: [PATCH 07/11] rust: page: add `Shared` page kind
+	s=k20260515; t=1795170791;
+	bh=j8WTG0DzS1hPuRXBgn6FCxY0K+Jl6xxWQ77sF6Yqsjw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hs2SXW9VNA9jRs6jViEkz1v+oyKqHMNia2qjPasfAlLAyjaHV/S4J4ZZe49Kx4+a+
+	 58ry23EIAvQJzBlaV0saAV2mWatcNcL1WZRXxGq8K6CvfMKf1dW1DQNS1Q71Ryx3s2
+	 K1bPlHDScNcLC3SPiBme8UW8lXqxKdtPHSh1lvVyhN+2RJWwzZTWi6LtuYrkJzroXz
+	 PJfXAqGImdjymdl95TKiIFGIJzOoi5Z8pP4INhHq+sm0v1+hfa9Nv+KTINrJkb15IH
+	 5rsm4zdGEm+0JokSjMQ/Xie9yWgMzKtYbQccQ0tJRrGZ4kyFvcAkpczMmj0s+oOMCp
+	 chMTeTZxyan/A==
+Message-ID: <0d55ddb1-0cc7-4d87-9d29-9165d35102a7@kernel.org>
+Date: Fri, 20 Nov 2026 11:33:07 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] mempool: account the element array to the caller
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Usama Arif <usamaarif642@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-mm@kvack.org
+References: <20261119-alloc_tag-v1-0-efcccfd3a9c9@kernel.org>
+ <20261119-alloc_tag-v1-3-efcccfd3a9c9@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261119-alloc_tag-v1-3-efcccfd3a9c9@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-page-shared-v1-7-66f8c4c62822@kernel.org>
-References: <20261120-page-shared-v1-0-66f8c4c62822@kernel.org>
-In-Reply-To: <20261120-page-shared-v1-0-66f8c4c62822@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Mark Rutland <mark.rutland@arm.com>, Lyude Paul <lyude@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15462;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=5jlwB/z7RgJAQSAn2c0WNg81s6RfGzaMZlrq1wgzY7w=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrACCHrdBD1Vmr1KW+YNvndSYcvPP780PjhbXGT
- Y1YydvQPcqJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawAghwAKCRD6UCkIqsW9
- 0F7tEACBAig1D0HOYOgRzFJPq6cglZMGGk9IgSkD2+pcbUStfw9OMvQ1/ppeAVh+/JbXD8/f2lw
- drEgng/rAT24jr1KBdwmxqxzb8qZK71Vr0tSJNTlAPWstDmKRwIw/gz1UsAwXc5VR7JE5EeR3R1
- kB3zd/6JWIlS77QsmKJRoZq8Lkoj93+NGritC5Q8TbXHlTReIjGC2QL0w0YtPygpVyC5q2+FAsc
- lkdq3JdU5NvFtBAO7BA6d1dcYnqbb69HiM3YTZL3BLc2+dylq3OX/LqmW/gfGvvm2CgGgFo3DLy
- owjBgK0vJEX7tX3cm9fpX/87qSebKgdp/JG6/+c0eHXTTpbCqBurCYcE0Xy6T7AVbzZ7UOPgLas
- IfmMgdGS4ymISKjVTGMUTgRwF5mom4syPkeNaZcuy0rx3kNJ88gvvZdf4ELixMamYad8JttVZ9O
- aVVHBSZFjhLgrrCJjM0qYQyhh3Y/91mjdafXoOn/AZJW45QTwcEc6EzgL5J9ESWhOM91YtW1ntn
- Z9aao0LV7anAnl5Ohh6e9Kpwpe2yCVm/z80Bi+++DsNxG7OiTmqCdw+H5jiwhaeOhc9Hc9xICZH
- XxrV1iLGdDzlZhMqpplN3AUOE4jPTlLXcrTdjPqhpvjrLypa5Gg8Tuxphey8aWE0+mPDmzXVMO4
- bPZXJiE339/X1/w==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8830640006
-X-Stat-Signature: 5zesf1bk67nxgi47gxee8m1ksm7k6ezp
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspam-User:
+X-Stat-Signature: esbq7bboajhwxk975iyzuzor8x6qcqhx
+X-Rspamd-Queue-Id: 15EF31A0003
+X-Rspamd-Server: rspam02
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795170534-269359
-X-HE-Meta: U2FsdGVkX18jgH7ClUz42vvVbz1rAabtMcPaLijqjFN77ehrmR29PkO1NMUt0TN2ls7y0wWfomLRNhcMGDvY5ggheGBGNumfxTZmFc2JWx3wSMn2WzzH6MZnc44TLGl49yjfQpqF+6IXds2ttk4OCwbip5+Pn4jRoydJDSEdZufPMrVcNKj8wZRyw43kR8rzNlfz++/SNld+xqR0DoQpPJ0le7JPa27YR7RcpGikgHwQOMKzfaaGpBcqpb2Cw/1ZlksvCuRE5wQHaVEYhXxZJ/OVBbIy75kwkvvLbuFdYs3PlNb4yWv1ItiBlHIGF3kKGhB1v1FCAMBH92XldywS/0ZfiSnaiHERbZ1MUmwUcNDhxjlX+KLgt/3PhS6ttswAs9e7+81YzV6Nrc2ZmBwsW0GBPabkDth4qYwtJBYF2izT1qU/Co+iEUNNMHXkY9hPTv7eRZsb5smTMtGluhbX6F9uedwXBNYO0t/cxr9LTUpu5QJna83rjw81mNeeTwbI/2iUi4mx+rlivVIO4Y5MDicsWYlPQ1OxilolCMMWFoBZnE5xf7NgDxdOqot9J64ud0PLUUjUqy/Bb/8AGroh3O0Kremc3RwLvH7ZvyY+mAfl1KPZNXVIvusxIQL5ptvH8BmPsIJLOHluADb0xTfwGdbM2UuFaBnv2gwhihwoI4mXnDKbu6ztR/2l2c3Io/YacYGjo2JLK+ATpiRT1Eon6SreFNlUE9x3rxCSkm9u6a1GTzFj5HaoHRYXY/iRvn3rXQWALDIEjKUlgKP+K/OCgUyT4QIs8BSDK3zmMgXpgJEUdGVQl4IGDVO7Pra/orXdKuS4aswypyW8Ed7n27ymQLOUG5PcSpOf09FxwOi0NsZzc9lNuWgklO4hct4in2syc1ACMuZ5EP5Hdbd/0/xVKOcTxWTH4f8gPN48ATaUNIDTGK2ickijZugBWQWxdqfgKKynn6j1tVYJylx+Cfe
- OJKZFDhu
- d90UEJxxv5VeOoGOtwwR5OgPh9cRPWqqqP79vw39OhX3UspW+mrf0NkfdRs3lYJLCb1tZC7h1zD3PfNb9KFg6O1Y+OgnQsmJBadJuPQpD0IlscSQJz4wPEwE+DzKVVpn93qgiyo4bs1NaLdFB/tDk6em+Gt+lz9TQL8PktTlkh8rgSQC4LMuPdDpeEmtUA53t7RWc0LPuukGpCPRyy7WS5NZyiypkUFPGDDAfJ3oLA8Q0KDup0T5PicrYrLxAMHnVIlI82sAbH7tYojcRkRuoCv61eQ69L4udLaiCwgOEvnVfX2zIW80KcsICzviJzG5d2pxrNYzkpcniC7PYF903hCzbAdtTKtAL11hDBuU6/Kw5Emy6j9OUSUTb3KUS2X9t615HYg5pD6LBqzdiQp5PJ/KAXCoT013D45slUFjNDAjkT4IaDKEbh7wihh5ybZcFXpSzd7lsBQdWjLG+kl5BODX08suDLKb0zRJ1aa09zjQMwZDQgPoTFQc6Hcdl7r2p7P/tG+1VLe0t7E1W05oZeBPRrg==
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1795170792-650595
+X-HE-Meta: U2FsdGVkX1/SdVtg9libD8glqPaDdU6j3YN79G+CF/l/Pxm3VOU1tgsfdKLWp4tih7U9H+n4Yrt+RDZ6MT5+5Zrm3xUHcsmNgfnWie7dWewLllgKyfcf37asyJGrBe66s1ErqPJ6o6W6ZyCnuN77myVBIwzqD20VJtekWF1aV9ZslQ5mSKjt/8QaknB7GDviJsztaFW6eWgQUxYKTAD7lL3V8XhH/tAa+tpFZa3YfAEZ/p4EAh9q70SaizYgSHq8tsl1SWj+SymCbVpUS51xEnHDt3biXZpo8B9k9NOYZQ5Ou+A7uNHL64ilIF9FMCZa435noYwrvcs/gBbYByJAQ43u+/rjy9lEhmKUtsUJ/uI0UjOfhyS2njnszQWRO42P9mkfQtYPArISuf7dij9fYh+bOHSUq0iQ3BzolFEa9Xn2rVVZmbb75AOkCOnLOhYAAdVFZoghCu7Mif1HbNM9XsdY//+ZFttJfbu5l0tt183ihxbU7NyzZgaKrkDu31TrKt+1JA/7C2GRQn+vdVKv5iLTEIeZC0/BMH60f1rDSMO5L4wPVZ8hbp0A5AJstptEn6NfUqqndU/8EUCUDZKPpdNBpDpHlot6INA/H9TzHc7f1ynBbjroyTsTsz9A3Svw6/xy95ZAW5M5ZXpe/xr2IGGk6VsT9kupC28YFdEhBoFxWbPrDaNbUtx4JfOTWSgUHzV0H6zm4mH/CA5IDYZeauEnrYZwh6Ksi1u/cJ8TIIiJUNepC+Lrk5JGyhT+C3mV6VQw9z7hC3lDDqI373Yxy0sqxJlT3RUrA+zOfpgvz5DCAFwOURY2lvOpBkwSl5Ut7dEMs0SLOXElvU7DWV4si7xxhU3DQrBODNsgkz06REYwymcFcPLobxFf1y5EStyPHy8WWFE9n3rJ2Ga/naQZyWttfwMeQ4osxKGpWJNRKrhqTn5MxzXwL8W6Vo8dsBOfCCqrU/0i6WgRVUUekKJ
+ UWxXQJLi
+ Uoesqo9MJpjVVX6T013fHUO2nDn6HFCqaBeIXyaTEjz6bZ7XJjzvbL1LiFsUxv2vM6aeEK0KByfwdYTJPGfqxZP5NJd1HgeKNzD5grZnvtsfqMIgHeJMAatsHtlnJsxJJ2L9lGwkZRN9v8stLWWXDcv5hBOlmR0BQqtBBoc4FjJFBM3zC6Nc/vmT0VfvS6PwvSGtmLX2i0p1swxBU8jvAPi4a5z3RvtDFxOGlTugzoRdkIbuhJFiFF1+JeInSLZcaPKTf8WbHMJJ3TSNzgINWzNCQ14jNT4tAIgyNZ2gVd0BW/xSzfJicFgsH24CLRpnrQC474qQWvx6ui7ejkVJ2v91eOqLFQGELYKdhhzaw5+ut4Qg+MZ9K47cFNjZck6BMGq2fVrfBr04dKRtwPQYTYxrRLYJGoxOPyDZpIEggK7JTBDuJY8Ri2/V0nxa/GHOlpcqzcnsIYC6x9XfKnRXP8Sk4YYRoteW9TidLLr1BY78NqiTjPIguNuYDPJaY+7ChULPgclLTyK31LkIcPRHV/LfzY2gDDzjLptX6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,310 +144,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A `Page<Exclusive>` hands out Rust references to the data of the page, and
-it dereferences to a `Page<Base>`. Thus, no safe method on `Page<Base>`
-can access the data of a page, since the access could alias a slice
-obtained from a `Page<Exclusive>`.
+On 11/19/26 09:52, David Hildenbrand (Arm) wrote:
+> mempool_create_node() accounts the struct mempool and all elements to
+> the caller, but the array of element pointers allocated by
+> mempool_init_node() and mempool_resize() ends up being accounted to
+> mm/mempool.c in /proc/allocinfo.
+> 
+> Let's consistently account all mempool allocations to the caller, like
+> ptr_ring_init() and ptr_ring_resize() do, by using the _noprof variants.
+> 
+> mempool_init_node() is only called from mempool_init_noprof() and
+> mempool_create_node_noprof(), which already set the allocation tag.
+> 
+> While at it, make mempool_init_node() static and rename it to
+> mempool_init_node_noprof(): it is not used outside of mm/mempool.c, and
+> calling it without an allocation tag would be wrong.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Add a page kind `Shared` for a page whose data is initialized and is not
-referenced by Rust references. This allows safe accessors that use
-byte-wise atomic operations to be added for this kind.
+LGTM, but if this is due to an AI report, they should teach it better about
+what's urgent, to the point of not reporting such things at all :)
 
-Let `Page<RefCounted>` and `Page<Frozen>` dereference to `Page<Shared>`,
-and let `Page<Shared>` dereference to `Page<Base>`. `Page<Exclusive>` keeps
-dereferencing to `Page<Base>`, so it does not reach the methods of
-`Page<Shared>`.
-
-Force `__GFP_ZERO` in `Page::alloc_page()` and `Page::alloc_frozen()`, so
-that the data of the allocated pages is initialized.
-
-Require the source bytes of `Page::write_raw()` and `Page::write_sysmem()`
-to be initialized for all pages that are referenced as another kind than
-`Base`.
-
-Add a TODO in binder, which writes objects that are not bounded by
-`IntoBytes` to its pages.
-
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- drivers/android/binder/page_range.rs |   6 +-
- rust/kernel/page.rs                  | 109 ++++++++++++++++++++++++-----------
- 2 files changed, 78 insertions(+), 37 deletions(-)
-
-diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-index db0853751993..bddc4538745e 100644
---- a/drivers/android/binder/page_range.rs
-+++ b/drivers/android/binder/page_range.rs
-@@ -588,8 +588,10 @@ pub(crate) unsafe fn write<T: ?Sized>(&self, offset: usize, obj: &T) -> Result {
-                 let obj_ptr = ptr::from_ref(obj).cast::<u8>().add(obj_offset);
-                 // SAFETY: We have a reference to the object, so the pointer is valid. The pages
-                 // of this range are `Page<RefCounted>` pages, and this driver never creates a
--                // reference to their data, so no reference to the data that is written exists. As
--                // the page is not a `Page<Exclusive>`, the object does not have to be initialized.
-+                // reference to their data, so no reference to the data that is written exists.
-+                // TODO: `write_raw()` requires the bytes of the object to be initialized, as the
-+                // data of a `Page<RefCounted>` is initialized. `T` is not bounded by `IntoBytes`,
-+                // so this is not ensured for a `T` with padding.
-                 page.write_raw(obj_ptr, offset, to_copy)?;
-                 obj_offset += to_copy;
-                 Ok(())
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index 643af7cfbef4..85c710fa3dfd 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -104,11 +104,13 @@ pub trait Sealed {}
- /// Marker trait for the kinds of a [`Page`].
- ///
- /// A page kind describes what is known about a `struct page`, and thereby what a [`Page`] of that
--/// kind can be used for. See [`Base`], [`RefCounted`], [`Frozen`] and [`Exclusive`].
-+/// kind can be used for. See [`Base`], [`Shared`], [`RefCounted`], [`Frozen`] and [`Exclusive`].
- ///
- /// A [`Page`] of any other kind dereferences to a [`Page`] of the base kind [`Base`]. The
- /// purpose of the dereference is coercion: a reference to a page of any kind can be passed to code
--/// that takes a `&Page<Base>`.
-+/// that takes a `&Page<Base>`. A [`Page<RefCounted>`] and a [`Page<Frozen>`] dereference to a
-+/// [`Page<Shared>`], which in turn dereferences to a [`Page<Base>`]. A [`Page<Exclusive>`]
-+/// dereferences directly to a [`Page<Base>`], as Rust references to its data can exist.
- pub trait PageKind: private::Sealed {}
- 
- /// The base [`PageKind`]: a valid page with no further guarantees.
-@@ -126,6 +128,29 @@ pub trait PageKind: private::Sealed {}
- impl private::Sealed for Base {}
- impl PageKind for Base {}
- 
-+/// A [`PageKind`] for a page whose data is not subject to the Rust aliasing rules.
-+///
-+/// The data of a [`Page<Shared>`] can be accessed concurrently by other parties, such as user
-+/// space, devices or other kernel code. Thus, no Rust reference to the data of the page exists.
-+///
-+/// A [`Page<RefCounted>`] and a [`Page<Frozen>`] dereference to a [`Page<Shared>`]. A page that
-+/// is managed by other means can be referenced as a [`Page<Shared>`] with [`Page::from_raw`].
-+///
-+/// # Invariants
-+///
-+/// For a [`Page<Shared>`]:
-+///
-+/// - No Rust reference to the data of the page exists, except for the duration of an unsafe
-+///   operation whose caller rules out all other accesses to that data. In particular, the page is
-+///   not a [`Page<Exclusive>`].
-+/// - The data of the page is initialized.
-+/// - No plain access to the data of the page races with another access to that data. A plain
-+///   access is a non-atomic, non-volatile access performed by kernel code.
-+pub struct Shared;
-+
-+impl private::Sealed for Shared {}
-+impl PageKind for Shared {}
-+
- /// The default [`PageKind`]: a page that is managed by the page reference count.
- ///
- /// A [`Page<RefCounted>`] is accessed through a shared reference or through an owning
-@@ -138,6 +163,7 @@ impl PageKind for Base {}
- /// - The allocation of the page is managed by the page reference count, and the reference count is
- ///   non-zero.
- /// - It is permitted to take additional references to the page with `get_page()`.
-+/// - The invariants of [`Shared`] hold for the page.
- pub struct RefCounted;
- 
- impl private::Sealed for RefCounted {}
-@@ -148,13 +174,14 @@ impl PageKind for RefCounted {}
- /// A `Page` is generic over a [`PageKind`], which describes what is known about the page:
- ///
- /// - `Page<Base>` is a page for which nothing is known beyond its validity.
-+/// - `Page<Shared>` is a page whose data is initialized and not referenced by Rust references.
- /// - `Page<RefCounted>`, or just `Page`, is a page that is managed by the page reference count.
- /// - `Page<Frozen>` is a uniquely owned page that references cannot be taken to.
- /// - `Page<Exclusive>` is a uniquely owned page whose data follows standard Rust aliasing rules.
- ///
- /// Operations that are valid for any page are available for all page kinds. All other page kinds
- /// dereference to [`Page<Base>`], so that a reference to a page of any kind coerces to a
--/// `&Page<Base>`.
-+/// `&Page<Base>`. See [`PageKind`] for details.
- ///
- /// # Invariants
- ///
-@@ -174,7 +201,7 @@ unsafe impl<Kind: PageKind> Send for Page<Kind> {}
- // them concurrently is safe.
- unsafe impl<Kind: PageKind> Sync for Page<Kind> {}
- 
--impl Deref for Page<RefCounted> {
-+impl Deref for Page<Shared> {
-     type Target = Page<Base>;
- 
-     #[inline]
-@@ -186,12 +213,24 @@ fn deref(&self) -> &Self::Target {
-     }
- }
- 
-+impl Deref for Page<RefCounted> {
-+    type Target = Page<Shared>;
-+
-+    #[inline]
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: `Page` is transparent over `struct page` for all page kinds, so the pointer cast
-+        // is valid. By the type invariant of `Page<RefCounted>`, the invariants of `Shared` hold
-+        // for `self`.
-+        unsafe { &*ptr::from_ref(self).cast() }
-+    }
-+}
-+
- impl Page<RefCounted> {
-     /// Allocates a new page.
-     ///
--    /// # Examples
-+    /// The page is always zeroed. That is, `__GFP_ZERO` is added to `flags`.
-     ///
--    /// Allocate memory for a page.
-+    /// # Examples
-     ///
-     /// ```
-     /// use kernel::page::Page;
-@@ -199,21 +238,17 @@ impl Page<RefCounted> {
-     /// let page = Page::alloc_page(GFP_KERNEL)?;
-     /// # Ok::<(), kernel::alloc::AllocError>(())
-     /// ```
--    ///
--    /// Allocate memory for a page and zero its contents.
--    ///
--    /// ```
--    /// use kernel::page::Page;
--    ///
--    /// let page = Page::alloc_page(GFP_KERNEL | __GFP_ZERO)?;
--    /// # Ok::<(), kernel::alloc::AllocError>(())
--    /// ```
-     #[inline]
-     pub fn alloc_page(flags: Flags) -> Result<ARef<Self>, AllocError> {
-+        let flags = flags | __GFP_ZERO;
-+
-         // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
-         // is always safe to call this method.
-         let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
-         let page = NonNull::new(page).ok_or(AllocError)?;
-+        // INVARIANT: The page was just allocated with `alloc_pages()`, so it is managed by the
-+        // page reference count. We allocated with `__GFP_ZERO`, so the data of the page is
-+        // initialized. The page is newly allocated, so nothing references or accesses its data.
-         // SAFETY: We just successfully allocated a page, so we own the reference count returned
-         // by `alloc_pages`, and we transfer that reference to the new `ARef<Page>`. Since `Page`
-         // is transparent, we can cast the pointer directly.
-@@ -246,8 +281,10 @@ pub fn nid(&self) -> i32 {
-     ///   the [`PageKind`] types.
-     ///
-     /// Note that the invariants of [`RefCounted`] do not hold for all pages. For instance, pages
--    /// owned by the slab allocator are not managed by the page reference count. Use [`Base`] for
--    /// pages where nothing is known beyond their validity.
-+    /// owned by the slab allocator are not managed by the page reference count. Likewise, the
-+    /// invariants of [`Shared`] do not hold for a page whose data is referenced by Rust
-+    /// references, or whose data is not initialized. Use [`Base`] for pages where nothing is
-+    /// known beyond their validity.
-     #[inline]
-     pub unsafe fn from_raw<'a>(ptr: *const bindings::page) -> &'a Self {
-         // INVARIANT: By the function safety requirements, `ptr` refers to a valid `struct page`
-@@ -352,8 +389,8 @@ fn with_pointer_into_page<T>(
-     ///   the mapped range exists during this call. If `f` writes through the view, no reference to
-     ///   that data may exist during this call. Such references can be obtained from a
-     ///   [`Page<Exclusive>`], see [`Page::as_slice`].
--    /// * If the page is a [`Page<Exclusive>`], `f` must only write initialized bytes through the
--    ///   view.
-+    /// * If the page is referenced as a [`Page`] of another kind than [`Base`], `f` must only
-+    ///   write initialized bytes through the view.
-     /// * Callers must ensure that the view is only used on the current task, as this method may
-     ///   use a local mapping.
-     unsafe fn with_page_as_sysmem<T>(
-@@ -477,8 +514,9 @@ pub unsafe fn read_sysmem(&self, dst: SysMem<'_, [u8]>, offset: usize) -> Result
-     /// * Callers must ensure that no reference to the data of the page that overlaps with this
-     ///   write exists during this call. Such references can be obtained from a
-     ///   [`Page<Exclusive>`], see [`Page::as_slice`].
--    /// * If the page is a [`Page<Exclusive>`], callers must ensure that the `len` bytes at `src`
--    ///   are initialized.
-+    /// * If the page is referenced as a [`Page`] of another kind than [`Base`], callers must
-+    ///   ensure that the `len` bytes at `src` are initialized, as the invariants of those page
-+    ///   kinds require the data of the page to be initialized.
-     pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Result {
-         let copy = |dst: SysMem<'_, [u8]>| {
-             // SAFETY: By the safety requirements of this function, `src` is valid for reading
-@@ -513,7 +551,8 @@ pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Res
-     /// - No reference to the data of the page that overlaps with this write exists during this
-     ///   call. Such references can be obtained from a [`Page<Exclusive>`], see
-     ///   [`Page::as_slice`].
--    /// - If the page is a [`Page<Exclusive>`], the bytes of `src` are initialized.
-+    /// - If the page is referenced as a [`Page`] of another kind than [`Base`], the bytes of `src`
-+    ///   are initialized.
-     /// - The memory region of `src` does not overlap with the memory of the page.
-     ///
-     /// # Examples
-@@ -650,7 +689,8 @@ unsafe impl AlwaysRefCounted for Page {}
- ///
- /// Unlike for a [`Page<Exclusive>`], nothing is known about who accesses the data of a
- /// [`Page<Frozen>`]. For instance, the owner can share the data of the page with a device. Thus,
--/// the data is accessed through the unsafe raw accessors of [`Page`] only.
-+/// no Rust reference to the data of the page exists, and a [`Page<Frozen>`] dereferences to a
-+/// [`Page<Shared>`].
- ///
- /// # Invariants
- ///
-@@ -660,18 +700,19 @@ unsafe impl AlwaysRefCounted for Page {}
- ///   reference count is zero for as long as the [`Page<Frozen>`] exists.
- /// - The page is owned by a unique [`Owned<Page<Frozen>>`]. No references to the page exist
- ///   together with the [`Owned<Page<Frozen>>`], other than the ones borrowed from it.
-+/// - The invariants of [`Shared`] hold for the page.
- pub struct Frozen;
- 
- impl private::Sealed for Frozen {}
- impl PageKind for Frozen {}
- 
- impl Deref for Page<Frozen> {
--    type Target = Page<Base>;
-+    type Target = Page<Shared>;
- 
-     #[inline]
-     fn deref(&self) -> &Self::Target {
-         // SAFETY: `Page` is transparent over `struct page` for all page kinds, so the pointer cast
--        // is valid. `Base` has no invariants in addition to the ones of `Page`, which hold for
-+        // is valid. By the type invariant of `Page<Frozen>`, the invariants of `Shared` hold for
-         // `self`.
-         unsafe { &*ptr::from_ref(self).cast() }
-     }
-@@ -680,30 +721,28 @@ fn deref(&self) -> &Self::Target {
- impl Page<Frozen> {
-     /// Allocates a new frozen page.
-     ///
-+    /// The page is always zeroed. That is, `__GFP_ZERO` is added to `flags`.
-+    ///
-     /// # Examples
-     ///
-     /// ```
--    /// use kernel::page::{
--    ///     Page,
--    ///     PAGE_SIZE, //
--    /// };
-+    /// use kernel::page::Page;
-     ///
-     /// let page = Page::alloc_frozen(GFP_KERNEL)?;
--    ///
--    /// // SAFETY: The page was just allocated and is not shared, so there are no concurrent reads
--    /// // or writes to the page, and no reference to the data of the page exists.
--    /// unsafe { page.fill_zero_raw(0, PAGE_SIZE)? };
--    /// # Ok::<(), Error>(())
-+    /// # Ok::<(), kernel::alloc::AllocError>(())
-     /// ```
-     #[inline]
-     pub fn alloc_frozen(flags: Flags) -> Result<Owned<Self>, AllocError> {
-+        let flags = flags | __GFP_ZERO;
-+
-         // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
-         // is always safe to call this method.
-         let page = unsafe { bindings::alloc_frozen_pages(flags.as_raw(), 0) };
-         let page = NonNull::new(page).ok_or(AllocError)?;
- 
-         // INVARIANT: The page was just allocated with `alloc_frozen_pages()`, so it is frozen and
--        // we own it.
-+        // we own it. We allocated with `__GFP_ZERO`, so the data of the page is initialized. The
-+        // page is newly allocated, so nothing references or accesses its data.
-         // SAFETY:
-         // - We just successfully allocated the page, so `page` points to a valid `struct page`.
-         //   Since `Page` is transparent over `struct page`, we can cast the pointer directly.
-
--- 
-2.54.0
-
+> ---
+>  include/linux/mempool.h |  3 ---
+>  mm/mempool.c            | 19 ++++++++++---------
+>  2 files changed, 10 insertions(+), 12 deletions(-)
+> 
+> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
+> index 5444dcb63efa8..7f8e257017c01 100644
+> --- a/include/linux/mempool.h
+> +++ b/include/linux/mempool.h
+> @@ -38,9 +38,6 @@ static inline bool mempool_is_saturated(struct mempool *pool)
+>  }
+>  
+>  void mempool_exit(struct mempool *pool);
+> -int mempool_init_node(struct mempool *pool, int min_nr,
+> -		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+> -		void *pool_data, gfp_t gfp_mask, int node_id);
+>  int mempool_init_noprof(struct mempool *pool, int min_nr,
+>  		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+>  		void *pool_data);
+> diff --git a/mm/mempool.c b/mm/mempool.c
+> index 5e0ba516efdbf..30cbe44d464b3 100644
+> --- a/mm/mempool.c
+> +++ b/mm/mempool.c
+> @@ -243,7 +243,7 @@ void mempool_destroy(struct mempool *pool)
+>  }
+>  EXPORT_SYMBOL(mempool_destroy);
+>  
+> -int mempool_init_node(struct mempool *pool, int min_nr,
+> +static int mempool_init_node_noprof(struct mempool *pool, int min_nr,
+>  		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+>  		void *pool_data, gfp_t gfp_mask, int node_id)
+>  {
+> @@ -257,8 +257,9 @@ int mempool_init_node(struct mempool *pool, int min_nr,
+>  	 * max() used here to ensure storage for at least 1 element to support
+>  	 * zero minimum pool
+>  	 */
+> -	pool->elements = kmalloc_array_node(max(1, min_nr), sizeof(void *),
+> -					    gfp_mask, node_id);
+> +	pool->elements = kmalloc_array_node_noprof(max(1, min_nr),
+> +						   sizeof(void *), gfp_mask,
+> +						   node_id);
+>  	if (!pool->elements)
+>  		return -ENOMEM;
+>  
+> @@ -279,7 +280,6 @@ int mempool_init_node(struct mempool *pool, int min_nr,
+>  
+>  	return 0;
+>  }
+> -EXPORT_SYMBOL(mempool_init_node);
+>  
+>  /**
+>   * mempool_init - initialize a memory pool
+> @@ -299,8 +299,8 @@ int mempool_init_noprof(struct mempool *pool, int min_nr,
+>  		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+>  		void *pool_data)
+>  {
+> -	return mempool_init_node(pool, min_nr, alloc_fn, free_fn,
+> -				 pool_data, GFP_KERNEL, NUMA_NO_NODE);
+> +	return mempool_init_node_noprof(pool, min_nr, alloc_fn, free_fn,
+> +					pool_data, GFP_KERNEL, NUMA_NO_NODE);
+>  
+>  }
+>  EXPORT_SYMBOL(mempool_init_noprof);
+> @@ -333,8 +333,8 @@ struct mempool *mempool_create_node_noprof(int min_nr,
+>  	if (!pool)
+>  		return NULL;
+>  
+> -	if (mempool_init_node(pool, min_nr, alloc_fn, free_fn, pool_data,
+> -			      gfp_mask, node_id)) {
+> +	if (mempool_init_node_noprof(pool, min_nr, alloc_fn, free_fn,
+> +				     pool_data, gfp_mask, node_id)) {
+>  		kfree(pool);
+>  		return NULL;
+>  	}
+> @@ -384,7 +384,8 @@ int mempool_resize_noprof(struct mempool *pool, int new_min_nr)
+>  	spin_unlock_irqrestore(&pool->lock, flags);
+>  
+>  	/* Grow the pool */
+> -	new_elements = kmalloc_objs(*new_elements, new_min_nr);
+> +	new_elements = kmalloc_array_noprof(new_min_nr, sizeof(*new_elements),
+> +					    GFP_KERNEL);
+>  	if (!new_elements)
+>  		return -ENOMEM;
+>  
+> 
 
 
