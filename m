@@ -1,144 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EB4606A6BA
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 22:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A13606A6A3
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 22:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wsv7cSPQ
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cvq+iK6Q
 Received: by kanga.kvack.org (Postfix)
-	id C77126B05BA; Fri, 20 Nov 2026 17:46:23 -0500 (EST)
+	id E9CAB6B05BB; Fri, 20 Nov 2026 17:48:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C00A96B05BB; Fri, 20 Nov 2026 17:46:23 -0500 (EST)
+	id E4D566B05BC; Fri, 20 Nov 2026 17:48:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF0A66B05BC; Fri, 20 Nov 2026 17:46:23 -0500 (EST)
+	id D3D0B6B05BD; Fri, 20 Nov 2026 17:48:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 768E26B05BA
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:46:23 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC8EC14020F
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:46:22 +0000 (UTC)
-X-FDA: 85456982604.15.31784C0
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1039A80008
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:46:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Wsv7cSPQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1795214781;
-	b=C+l7oEjBi10lpFctWHb/Gat8xCma7nqOVORdETAkkTPKX8yksFxs+z3PwvHQ7AkEIcpACt
-	Yz4P5OB3JErmwDkrFNwfiJdsjy68yD1tkbpa9LvJKBvyxW14kmI0FOTbvU1GIo4wcrfmST
-	k3+rdaHC2ud2LC61MoyZ8wrKAMNAgbI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795214781;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD3086B05BB
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:48:04 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 369961A0206
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:48:03 +0000 (UTC)
+X-FDA: 85456986846.10.EB08AB0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8E6541C0006
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 22:48:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cvq+iK6Q;
+	spf=pass (imf21.hostedemail.com: domain of dave.hansen@linux.intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=dave.hansen@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1795214881;
+	b=RlCdv/oO0rzSdmFdbNFW3pbF2IhJGJH3X7OyOicDxhAPE3DF3/ieHlNMkdbn1xpmk6xPFe
+	RemIFf0ZcFzzljExN0j751iEkQeg2P7uUl+yvR1gpUa8lFxkgr00g/kdk64Gfg9rrnLTPu
+	FavHp60mSVN2kBhn6BfxpaqX5eBY3GE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1795214881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1eGqv/h9Aum9cuRfzP0GxawnzKTcJHSd17/iuLvj8io=;
-	b=t9OJpR3pG7Loub+Um8TruXAh++ZdTaaDLfGPrr8nLZ9eDr2PFIFGloeU17eNqOR/cKhmwp
-	8/Q1oddk/5g8/J/wYRv3mwV4GlHtwmTeD9mdf/CKqJcRTR+lR/0UYxOUoexG2VqdWeFtbh
-	/9IuVIsGQh/cR/kX697tBRtHRGd3VQY=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Wsv7cSPQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4a32576da88so844132f8f.3
-        for <linux-mm@kvack.org>; Fri, 20 Nov 2026 14:46:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795214779; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PmQIN3pUjHfNOJ5gdUNjKlsGx2oiRaHRaZJ4FcXXEGDMCjnzQLuKMERM2KMM4Ty7LF
-         JCC0Ig87AV6Cx1tsNXkfPPXWg7LkTUCvQr3ECSpBb04uDvQse+1B6rh/75eNSAaGfsG4
-         rgj+RDm1eNq6JCcQw4OJkNpc6uKhT1R8RanPXX2Jq6QbiW0hrKo2Dzn0IdHJLY/l/ZE4
-         XEpbzvVYfVKseHHgORJlslGPZNY9myEOahCuxm/pvQ+uT5Tz0S10XDXeld9i5WsOtYZH
-         aE81z6OcZam6DtMrHCOniuA7KXUqH/u8IPV5RdJ46+5A6h1fLAv8MlQz38XOdqEEVTGk
-         0Fkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1eGqv/h9Aum9cuRfzP0GxawnzKTcJHSd17/iuLvj8io=;
-        fh=PIjbIOXsUAVW5h7L9xOW3gXRchq07d0daymV5z5yICY=;
-        b=Et7hoXAbNht5aztC8g3/++2S879dUVt6/NiIwmZJjs+XNjKVC/5sXDU4s0/GVbkYle
-         UBXrnhdvFLs9Zr0FJmpxBslFTGAjfjrd9ykdBChrACIFiW+Bzj0a6Ypel6/YerVai3TK
-         JM1apHu7Ph2GXq3jylb89IBCC2LvJsHhdDTDYlwF9k5kC7j/m3hk5JQZkvEj28jhc8xP
-         K4VqtQ9bVjoMIu/woYDUbiSI3k9uHownxKGb3O4BvnVM8U05VvxPaO2Av3lH/u5WE2h2
-         q0PXZ0OTPRCwTZaH/Ceb/MTP5wUu8ztWP1J/RwOZAG/oGFeoKoYV9IBzm6zWfPoD7+Xy
-         BeLg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795214779; x=1795819579; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1eGqv/h9Aum9cuRfzP0GxawnzKTcJHSd17/iuLvj8io=;
-        b=Wsv7cSPQLt8Hz/k4bS5/Z1oNwDmXQpHMWuNgrKSlOEtKXoe8P0dBHdXylxKpBpwp84
-         hgLpqaRoFdt8PNdl2ZbbJ10LH7ZxhzqKtEcQl3fNZZ8FTcQDjn3dh4yIbVW/273riUzG
-         QzD0o5j1PUrAHmP3DNNHtqV0suMqd2qv7l6oM9bOpxz13ah202Y9EgkYJJ37xvW9iGKm
-         Sgp6CDr7Ot0pSF+/JGGVud8mhtkq3HTTGlIi7E74BL17UO0i+fY6LMGxcm6U+qDDEkmk
-         GlEGuYONbHubu8Vd4C18cxa32ZETomxEB+a++1bmx7SRyAcJUgSc2yFicde/iUzgfKAr
-         06JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795214779; x=1795819579;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1eGqv/h9Aum9cuRfzP0GxawnzKTcJHSd17/iuLvj8io=;
-        b=watSI4Z6+JrwUhuTGLwSTmLUfZy5WJjjp2pgqbDMjhR4vkQYG09LueXuUzgOUSi8/z
-         bQdvh0cUvV9Lul0+6QDz98UeYa0DOFaWSyCH5iYJBJlMEKGIF9UF0lLQu74hzpZ+dkwq
-         cFbD60yTtRJUVoOqe6P/R2ppHvbNeb+42C+zRp9XDqVenjlHvJXb8NY4rsZa4KCsYJyo
-         5f29GDU4iWVQo3dsJ1/0nCdVvzl6u4W2YTGRSknjB1MFpOtwYR7SVPJhS8RECsLzKp0q
-         pOQS6WgwDyfHTa7R8P71AYjwjKbHyGT+YZaFcB07kSJdar6UY6Ra4pAY9KVv1Mrv3LOa
-         MgXw==
-X-Forwarded-Encrypted: i=1; AL+hErHytZSjIwhjXjp+VloYht538lqFx5o40OnqS+/D8D27Hj1sv/3W1GKmTjuygEUMYYo98E6HIXNICg==@kvack.org
-X-Gm-Message-State: APuU4Z8QUPhfegqaOuQsBvXgBcfXpdNYmqYfdil5oOZon0mNrm8b3onL
-	Ts4xAXh6rR363ej3zdTjdZKogY5WHP/2Jb7eFjhE2z875ztpj7PaC36bDwJaaz/XKu0LwAF1Eh1
-	3EUhRl8Dc1s10yg8O0MsMtCnvkPobsu4=
-X-Gm-Gg: AZFdTZeoaUEDWiui7GEOValK96QdNMpnmUndFXfFDWPUkB9i/Im5uddEx7BQyKxAtle
-	Dcp+eVlFrRW6/t3JiId6fForULhMnIANYgDHrm/7DD+VG3qgjEtAMxYMHkIPZOb93ZfAg6LetBz
-	Ys/x2H5fC0IUuDjwGd6LjEFXOGSrHaKnXUEdfzeSFlFFkwfAQ5bH8JPolL0HOw4RjSlg28ti5gb
-	93lqpgYDwQWOR1PEhSX69YpbtOlMsb5sAJtf54kybj2IAn5IJxhFd7qbHC3kKe+98ohNCNjgrPK
-	e7qpc2wEeAvoxqtE7shEKLi4dd5bSUSP1SOZmCaC1MRw9zGx1gY5AmY/fmQ0SLUURE/p1YtTVJU
-	aJeyabG9e7iaQeCMCvnhq+Z228csdolmfxIxuMszVo2AWmLVtr6sGRnm0OQxHoJS6N0p+oYd+M0
-	LsRz38MfecNDPTrQ13wrN2bjV/Q4A1IAdVzCQHkgzYsW9djam26sM2rlI=
-X-Received: by 2002:a05:6000:4813:b0:490:2033:1477 with SMTP id
- ffacd0b85a97d-4abb917a9eemr8798576f8f.56.1795214779042; Fri, 20 Nov 2026
- 14:46:19 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com> <20261120041906.5785-6-kanchanapsridhar2026@gmail.com>
-In-Reply-To: <20261120041906.5785-6-kanchanapsridhar2026@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 20 Nov 2026 14:46:06 -0800
-X-Gm-Features: Aa3M54o22x-4wryDrkjAa-WgAkVk_I6WmUJ-pJSJHTNjra4aQw1mQAmQSzWMpFQ
-Message-ID: <CAKEwX=P7To+AV9X3cXLCcuw5yoigdB8w5Ns9c9mDxJf+u5k8xA@mail.gmail.com>
-Subject: Re: [PATCH v4 5/8] mm: zswap: Store the folio's node id in the zswap_entry.
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=2/DnoLd1laDsESHwuJ8oDndRsaqFJiYak80FH3k99hI=;
+	b=3mjZlaE8oAwO3ENDvV3GSf7PzeVoxfSAIJIh/DWYfDh0iF6CaWgBOU3be7d2zXRC/+yeC0
+	B5VHn0NZ3YeR5l/jLhFkFvUEpXC+XvU39CMdCI45Fy21YHY9WOKtwWF7jLDOtPlbiFg8o7
+	JKkMa/6C5mUN4nH4yH3/jg231dBFOe4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cvq+iK6Q;
+	spf=pass (imf21.hostedemail.com: domain of dave.hansen@linux.intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=dave.hansen@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795214881; x=1826750881;
+  h=subject:to:cc:from:date:message-id;
+  bh=9bVzioXZw7USSiIfTjHk3w5r1BhOeDv0Es4/WoxyQTk=;
+  b=cvq+iK6QWi/nUY/pc5SHOEZV+UUa7A9o1F/bM8zij0E/X4iD0QxC3PzD
+   v+SycA8SKfndMMZf/ZnnIIuzFYCKHFh3nd+c8VnQ4Vgytmhcmc8sLEs1G
+   SDA1VbzT+zbUfdSsSq0npGUyTKZ0qZDcx7sGRbP1oUQ9SSjJ2jpjQKw+o
+   jcGi1yxSWlyhOAPHo0U17cQ9W1SVfUbq/ZvpZlUx6PuBtZPU3yZAxCbhT
+   PjbZfzBlRYl+Yy8+fBPVvpwstYjwHpdH6YG4lJZrMH8zeFLj2pkwTGn1c
+   pZ0nFX11GWyE/uWa7sCKGyGYNh0gLkalTa4pLLWBBwA0bbuhB/LafJim6
+   A==;
+X-CSE-ConnectionGUID: KNBhRdQHSky03/s/rwhdIg==
+X-CSE-MsgGUID: 6dRdEgDATU6i7sN1wz1Ojg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="4093872"
+X-IronPort-AV: E=Sophos;i="6.27,223,1787036400"; 
+   d="scan'208";a="4093872"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2026 14:48:00 -0800
+X-CSE-ConnectionGUID: 53pvTRDATiCws4Dlp6vfiQ==
+X-CSE-MsgGUID: 6iMRYmjJQhGysHkWXSsGxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,223,1787036400"; 
+   d="scan'208";a="11152071"
+Received: from davehans-spike.ostc.intel.com (HELO localhost.localdomain) ([10.165.164.11])
+  by fmviesa009.fm.intel.com with ESMTP; 20 Nov 2026 14:47:59 -0800
+Subject: [PATCH] smp: Add memory barrier before many-CPU IPIs
+To: linux-kernel@vger.kernel.org
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, David Hildenbrand <david@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Liam R. Howlett" <liam@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, linux-arch@vger.kernel.org, linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Rik van Riel <riel@surriel.com>, Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, x86@kernel.org
+From: Dave Hansen <dave.hansen@linux.intel.com>
+Date: Fri, 20 Nov 2026 14:47:58 -0800
+Message-Id: <20261120224758.04F70CD8@davehans-spike.ostc.intel.com>
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1039A80008
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 3jwfbu6oh9576sm6h18whecoiptersbr
-X-HE-Tag: 1795214780-7625
-X-HE-Meta: U2FsdGVkX1+0feo6QSJPFYaXATDE0L8dwXryRF9upDrl6vyHt2dM+i80TWyoNacDFfM3nF+Vhz20uMXybfDa8Xk+LZLmZBXyQlOc8oMnsjmQNwEMk3gmONMDqfcAwM4xjrbZAD+x+t29yzy0oGRyjzuK6vjfJJWvxcI3mz+/gzWhE04lYLKfdUPY52BHS7jYKWkOcT2UX6yO/r2LIvEDkgyH/Z0yGcBzU3+B2wgF/pDEhgPZqXrddXJjNVWdO+PdsJ+We6T4c2oGop8TNV0DvKlLOvetXrapf799XdW802TJmt4ohCPrhaUTfUx220/4H+Q0/XMOicGm6AWReWACKATq+VAtNUgpVFQVL3ubxoudqD54amP9cnkv9Ax3PYzEwpY6DWdqoRmPjXty8dZuaavrRiaJQrjdyzi5AqXSmkAvHGz3s9Jhgwdsmu8wR65KAiDbrwgPNsDhx1KeZGIkk5G+ea0E5ivgDtIbx2dLxKQOXjueSrWEhxZHxy9EEYHgcGlpqGsxW22mI4bdod9c5/LwIp58ndXg49XURAm2EdTTju0VB02xOKy347EA68YcUSScw1NQv7bVDEN315D7VsU0GJfxLa+LpTNjcNpQJwtfpyLYtwt7B+o5nSP+LiTkx+WfI8NWgsw1uYyYfZI/qC1BAHfbjbm2C/wnfbi3sNtgaMRUrRUxGMUDIgAhlF51donijqNd6wSY/xnVD5jBJOPQ2n84m7TQtVKbxa0b3pjYKGugWddlh1nBZIrFbbJQdGUVjVNH1Upi5ZCxnDzF1ghoL2stzoxRWPTCfIKXd4u+lMoMsba7L6diAnkQssrbx62p7OvaNtmLXPGF9kwk7Oo10uPXW8wdSCoduX0fX2TJJUNB4F4/RFlmkOJ57eGUbh3CGP2SosC0fxvqKpkn5T9KxcTa/4qion9Wmyhu6bH1WCzTQTp3CyFe/a9J9t6kuI0X9extFo+U8YenyC4
- hwJ9OpjX
- 8wQu1UiYE411fvDerA/WtXMyU+/jR2KJo6Usr8ksF6etwexeww0mb5rf5/hAnG5MWJje9b/rj11ATO4tIxnc1ZkAiQFw9NW3FAivwoDirYWn+K0G188Y5iLNJz8VFc4I688eUzCpjljktbIyYYHoKEZ4dcVLpjaiJWA/wdRQFZ9jxcOcHF3kvyMYxjqtsaEhnicjIUtGr70HOyH252W1nXnO46OfzIUIyfSRtxBfMv2So7o7NZDpaTHwPgmeu8F7FtJUVC7G6P6tuAxA+Ma1YoMcQVx+iF3xs8jR/y/0rX3tSjGuKx1jBinRaMDah0PBMJ+46rUUWXlWF8yU1J6Xrnk170Ap5dcLuyUu0QL9zsw7FfXaQXqJv6KalPTNzHfWMC/r6QPO9Q2mbv05xGtGMfY81n5BQJu6mjblQR67NVeJr7mJ7QNeXf7pLKWLU3s80d0e2+XL8yQddnc6Hm7QgD3dAOlw/pi9xURPeJ29fJ3I914uTx7RNjdHB+825KxRhpXeUpLfSTk3RRaBzh0h3z5WUbbohorzvpPdfh8mU/Gc+1fWZufa/+00KOpSB1Bvvmj3yW77cbvDJiWUJ6sW+VI/HAyuSRdJ3CeXostDXVS6Y4aQFLey3ZO9XZZYbW3ERWofRJlBuoXkd7RPLyCsv8YejrxleNxNH9m2iAr5RRCwo3l17lEtxUPakbzR/3RsWuv2fMuILE/SPDFvjWHructFdkQ==
+X-Rspamd-Queue-Id: 8E6541C0006
+X-Stat-Signature: u4wmdads97fttue43n6qjcz67kda61po
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1795214880-844144
+X-HE-Meta: U2FsdGVkX19Pt++kqrmF0mIMCuPQmV1ecD7Y3O2TkNCXdWfZIsr1JhBAbfSWyuovrxwfnihQXlVDksrH60NcRwCZAZpOqGnzmeBHKQyNMrvCTtuE/v/tdibEhh7Apbw0OeXwX04hbDXCNSxkThm37b4sW2SlYrpzOJs6LSVDvmm20Uoa4Z1HT8p+s23J6cZTBQjY2cq0IPd8Xj9oYmWbTCyAdTjuO3AmqzgCcw4fIdxKhWWHRHW+da1ksG9Pf6DETjBbs7SxjCODkTTp2I2vjwxCIdwGA9hrljr4wzEo/prYW3nt/3pXJNzFNTUJp2yEv6guoOlk8tQRzTRO0Mp3ddK5AbHFcGXKTW7An3+3BTM/Gj4pwofPjhXQPCIvRLnZod1V46uQWQ2SjY/iz9S44MQl5nZVKzuV9U5flgyK7n43oaT0V8MEZcOM/YbwIYroJQ99gvzTXEkbt/e4bVS20H476HsgruSLTJBvzPUsvjH2je/OQY8J+lDd4puAgq49YA7htYmTYb/+WYN62CqfGuI8fSxHIle5ct43akq19p81vSyqVOPLBN+KOItXXF31l2ybAhFIDk/hm9OpHDHIor3o1fcgNi8jYKaYmfFQk1jjfkiV3Xjr74dZopfi7A+9mVUpI/kiPPj2nC+g954P4AFroXpzdGMf/P6wN8ydeyklIcUgdzYYkkJhx1GQri0bNqUnzuxwf6FrEMuzj0zwTr8vQMDDFFb1paBGugLg/ztNMBPYf/pOrc3g8sAX1c1reiLp7Ka8LLVYxoyL+CPzQgXrRxxnMsG94R8BoyVeQHXSO/j67KIgXeGwSVHocKrHUS4/oEPvQ6hxRQNBZk+KIUEVttWT+lBMrhHEMswF3QICSF3IHKqqy4yCSPXnqvYurfGmUvx2chAnfqlka3bOdQRj+pzEee4dmFQq5GLu/xnBDMnQsg7bUnh2IPC8DJ5NRqfcqJp0rjVFVK+V1d7
+ ItJxcXQk
+ ZvwaAX4SGbHEi7TbHH9nYVDfy2TlH4BYnQgk/cu5f0rCqYI95FZyaiTVVykBwDKmjyDKb92Keg33htdJj4MbD6rmT9OJuwcJwQvT9bg/wV7oRN99V0mkML/BTdexpXJIdrpCXOE3so5a9Aw2qjVB9yMPV3mnAqcyLHclTjQ/ERAFIdJdPm/VABYM3Pz7JXlsqGgEfyA4eOWs54kyEb0zZXuqelCs9dPrrTJdTP/yq6zgqvHL1Ey3jZJsdTHsTbOVAglanRP4qsJtL8XkndGPfHknxxEKn6mNDnFw2bFQe8HHemEd3/ges4IyJJDjaOKxhOWSeJQcMtXN5mhlqF3zCT4o14xbIUTGHzVdlUwYCdy1MflYSH4/v4iw77JJKw8U+feQXBRV9DLywGSsdMb8DLhzv19LIV+NL7w54O88gqXSrWdXovWh3n+FdtYjbmehB5QOFVd6SLdX2EK6Q8ZeTgkS63UlNCcAyqBOPL5nDwDdZNBT12f5C92xFL5mk7WD63EiwVbF1DRiEdmZBoG1eOva4ISIK/OnWSSJyW8ctFrtYNCJcdUnS1phGspOh8o7ywF2iPkpzd1pnzNZFts13JZxXKlP7tu2qz7FKvktJL8U7n1r16cun0vrDWXTLs5XkGvQYje7gdP/wY14YDWYnmzxJJYY687BvNs/cNBxCerxe4aj0Sqp03iP/aL0CPX/UezJNRPpF/OCVfEf4s8NatCqfmiN3MlwhcQGBduLSRlVz1aTE/35LvhtEGS/UIVQ0BmWlCRxvS6yWnlq3EHC+eAIPWbE2YJQmSflCoLyPp6FBo/UCjP0prCuhtrKxBZduO8/ZKE9+JFHRL2jXHITBj/Z6xyAMuvXTzAe3dJ2zp5ov2iQwDzC3Z5eRmqY284KR3GgH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,53 +95,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Thu, Nov 19, 2026 at 8:19=E2=80=AFPM Kanchana P. Sridhar
-<kanchanapsridhar2026@gmail.com> wrote:
->
-> When storing a folio in zswap, save the folio's node id in the zswap
-> entry instead of relying on the zswap_entry being allocated on the same
-> node. This enables optimizations such as batch allocation of zswap
-> entries for large folios using kmem_cache_alloc_bulk() that does not
-> support specifying a node id.
->
-> Accordingly, replace the SLUB allocation in zswap_entry_cache_alloc() to
-> be node-agnostic.
->
-> The size of the zswap_entry remains unchanged as 'referenced' is lumped
-> in with the 'length' (as it doesn't need a full unsigned int anyway).
-> A build time assertion checks for the zswap_entry's 'length' bitfield
-> being large enough to represent PAGE_SIZE, which can be 256KB on some
-> architectures.
->
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-> Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
 
-LGTM for the most part:
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+This innocent-looking snippet:
 
-> ---
-> + * nid - NUMA node id of the page for which this is the zswap entry.
+	mm->foo = bar;
+	on_each_cpu_mask(mm_cpumask(mm), ipi_func, ...);
 
-Maybe "NUMA node id of the original page of this zswap entry"?
+is potentially buggy because the variable update is not ordered with
+respect to the mm_cpumask() read. There were at least two examples of
+this pattern on x86 that we think were real bugs. See commit
+0dc2a4dac3d0 ("x86/mm: Ensure write visibility during LDT
+installation") for one of them.
 
->   * handle - zsmalloc allocation handle that stores the compressed page d=
-ata
->   * objcg - the obj_cgroup that the compressed memory is charged to
->   * lru - handle to the pool's lru used to evict pages.
->   */
->  struct zswap_entry {
->         swp_entry_t swpentry;
-> -       unsigned int length;
-> -       bool referenced;
-> -       u8 pool_idx;
-> +       struct {
-> +               unsigned int length:ZSWAP_MAX_COMPR_LENGTH_SHIFT;
+Add a barrier to the core IPI code to make this pattern more foolproof.
 
-I could have sworn we agreed to just inline this macro.
+Other arch maintainers: You might want to take a look over your IPIs
+and see if this pattern is biting you anywhere. Also, for those of
+you that *do* have correct barriers in place for this pattern, they
+may become redundant if this gets applied.
 
-(btw how many bits do we still have here? )
+This specific idea came from Linus (and his LLM), with some tweaking
+on top from me. I'm planning to send it up in the next merge window
+via an x86 tree, barring any objections or performance issues that
+surface. Please speak up if this causes you any heartburn.
+
+Longer discussion follows.
+
+== Background ==
+
+There's a basic pattern in the kernel where some in-memory structure
+is changed and then remote CPUs are notified via an IPI about the
+change. TLB flushes are the canonical example but there are plenty
+of others.
+
+The IPI is generally sent to the CPUs using an mm found via
+mm_cpumask(). CPUs set themselves in that mask when they context
+switch to an mm.
+
+So, there are two sides to this pattern. Both write some data and the
+other side consumes it. Bugs happen if, for instance, the IPI-sending
+CPU uses a stale mm_cpumask(). Or, if the IPI-receiving CPU happened
+to read the data before setting its bit in mm_cpumask().
+
+== Problem ==
+
+There was a recent x86 bug where mm_cpumask() was read before the
+newly-written data was visible to remote CPUs. This was the reverse of
+program order, but allowed without a memory barrier.
+
+But this case is not special. There are other examples on x86,
+including one in the LAM code which is probably a real but largely
+inconsequential bug today. There are a few other x86 cases which use
+atomics (and have their own memory barriers), but they are probably
+correct by accident more than design.
+
+== Solution ==
+
+Add a full smp_mb() in the core IPI code and documentation of the new
+rules. Place the smp_mb() just before the cpumask is acted on.  This
+will ensure that any data written before the IPI is visible to remote
+CPUs.
+
+This makes the smp_call_function() code a wee bit more expensive, but
+substantially harder to get wrong.
+
+Combined with the barriers in mm switching, this ensures that remote
+CPUs either get the IPI or can see the write from the IPI sender.
+
+Place the barrier so it covers every entry point that takes a cpumask:
+on_each_cpu_mask(), on_each_cpu_cond_mask() and
+smp_call_function_many(). Callers that sample mm_cpumask() themselves
+to pick targets must still order the update against their own mask
+read.
+
+Remove the now-redundant smp_mb() in x86's install_ldt().
+
+== Impact ==
+
+Many IPI users already have working barriers in place. The new barrier
+may make some of those redundant.
+
+== Alternatives ==
+
+My first thought was to add a barrier in mm_cpumask() itself. But it
+only computes a pointer to the cpumask. A barrier there would be odd
+because there is no actual data consumed.
+
+Andy Lutomirski suggested adding a barrier to on_each_cpu_mm(). That
+would work for the x86 cases, but might leave issues in code that does
+not deal with mm's.
+
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org
+Cc: linux-arch@vger.kernel.org
+---
+
+ b/arch/x86/kernel/ldt.c    |   12 ++++--------
+ b/arch/x86/mm/tlb.c        |    5 +++++
+ b/include/linux/mm_types.h |   14 +++++++++++++-
+ b/include/linux/smp.h      |    4 ++++
+ b/kernel/smp.c             |   17 +++++++++++++++++
+ 5 files changed, 43 insertions(+), 9 deletions(-)
+
+diff -puN arch/x86/kernel/ldt.c~ipi-mb2-generic arch/x86/kernel/ldt.c
+--- a/arch/x86/kernel/ldt.c~ipi-mb2-generic	2026-11-20 11:28:32.775743722 -0800
++++ b/arch/x86/kernel/ldt.c	2026-11-20 12:04:14.780113172 -0800
+@@ -422,16 +422,12 @@ static void install_ldt(struct mm_struct
+ {
+ 	mutex_lock(&mm->context.lock);
+ 
+-	/*
+-	 * Ensure that new mm user CPUs either see the new LDT value
+-	 * or get an IPI. Make the store visible before reading
+-	 * mm_cpumask(). New mm users make their mm_cpumask() writes
+-	 * visible before reading mm->context.ldt.
+-	 */
+ 	WRITE_ONCE(mm->context.ldt, ldt);
+-	smp_mb();
+ 
+-	/* Activate the LDT for all CPUs using currents mm. */
++	/*
++	 * Activate the LDT for all mm-user CPUs. New mm users either
++	 * see the new LDT or get the IPI, see mm_cpumask().
++	 */
+ 	on_each_cpu_mask(mm_cpumask(mm), flush_ldt, mm, true);
+ 
+ 	mutex_unlock(&mm->context.lock);
+diff -puN arch/x86/mm/tlb.c~ipi-mb2-generic arch/x86/mm/tlb.c
+--- a/arch/x86/mm/tlb.c~ipi-mb2-generic	2026-11-20 11:28:32.777743889 -0800
++++ b/arch/x86/mm/tlb.c	2026-11-20 11:54:03.546906165 -0800
+@@ -937,6 +937,11 @@ void switch_mm_irqs_off(struct mm_struct
+ 		 *
+ 		 * This way switch_mm() must see the new tlb_gen or
+ 		 * flush_tlb_mm_range() must see the new loaded_mm, or both.
++		 *
++		 * This also protects other per-mm state read below, like the
++		 * LDT. Changes to that state are followed by an IPI to the
++		 * CPUs in mm_cpumask(). Setting the bit first means this CPU
++		 * either reads the new value or gets the IPI.
+ 		 */
+ 		if (next != &init_mm && !cpumask_test_cpu(cpu, mm_cpumask(next)))
+ 			cpumask_set_cpu(cpu, mm_cpumask(next));
+diff -puN include/linux/mm_types.h~ipi-mb2-generic include/linux/mm_types.h
+--- a/include/linux/mm_types.h~ipi-mb2-generic	2026-11-20 11:28:32.779744056 -0800
++++ b/include/linux/mm_types.h	2026-11-20 11:28:32.785744556 -0800
+@@ -1514,7 +1514,19 @@ static inline void mm_init_cpumask(struc
+ 	cpumask_clear((struct cpumask *)cpu_bitmap);
+ }
+ 
+-/* Future-safe accessor for struct mm_struct's cpu_vm_mask. */
++/*
++ * mm_cpumask() - CPUs that may hold state derived from @mm (TLB entries,
++ * cached per-mm context). Code that updates per-mm state and then notifies
++ * the CPUs in the mask relies on:
++ *
++ *  - A CPU sets its bit, then a full barrier, then reads that state or
++ *    loads @mm's page tables.
++ *  - The updater has a full barrier between the update and reading the
++ *    mask. on_each_cpu_mask() and smp_call_function_many() provide it;
++ *    open-coded mask tests (e.g. "only this CPU?") must do it themselves.
++ *  - An architecture that clears bits must revalidate that state when the
++ *    CPU sets its bit again.
++ */
+ static inline cpumask_t *mm_cpumask(struct mm_struct *mm)
+ {
+ 	return (struct cpumask *)&mm->flexible_array;
+diff -puN kernel/smp.c~ipi-mb2-generic kernel/smp.c
+--- a/kernel/smp.c~ipi-mb2-generic	2026-11-20 11:28:32.780744139 -0800
++++ b/kernel/smp.c	2026-11-20 11:48:27.863451170 -0800
+@@ -950,6 +950,15 @@ static void smp_call_function_many_cond(
+ 	 */
+ 	WARN_ON_ONCE(!in_task());
+ 
++	/*
++	 * Callers update some state and then IPI the CPUs in @mask to act on
++	 * it. A CPU that sets its bit in @mask and then reads that state
++	 * must either see the update or get the IPI, so order the caller's
++	 * prior updates before reading @mask. Pairs with a full barrier
++	 * between setting the bit and reading the state, e.g. in switch_mm().
++	 */
++	smp_mb();
++
+ 	/* Check if we need remote execution, i.e., any CPU excluding this one. */
+ 	if (cpumask_any_and_but(mask, cpu_online_mask, this_cpu) < nr_cpu_ids) {
+ 		cpumask_and(cpumask, mask, cpu_online_mask);
+@@ -1043,6 +1052,10 @@ static void smp_call_function_many_cond(
+  *
+  * @func is not called on the local CPU even if @mask contains it.  Consider
+  * using on_each_cpu_cond_mask() instead if this is not desirable.
++ *
++ * Stores made by the caller before this call are ordered before the
++ * read of @mask, so a CPU that sets its bit in @mask and then reads
++ * that data will either see the stores or receive the IPI.
+  */
+ void smp_call_function_many(const struct cpumask *mask,
+ 			    smp_call_func_t func, void *info, bool wait)
+@@ -1181,6 +1194,10 @@ void __init smp_init(void)
+  * to be seen or sent an IPI. If @wait is true, the final wait for remote
+  * completion happens after that preemption-disabled section.
+  *
++ * Stores made by the caller before this call are ordered before the
++ * read of @mask, so a CPU that sets its bit in @mask and then reads
++ * that data will either see the stores or receive the IPI.
++ *
+  * You must not call this function with disabled interrupts or
+  * from a hardware interrupt handler or from a bottom half handler.
+  */
+diff -puN include/linux/smp.h~ipi-mb2-generic include/linux/smp.h
+--- a/include/linux/smp.h~ipi-mb2-generic	2026-11-20 11:48:08.343859262 -0800
++++ b/include/linux/smp.h	2026-11-20 11:48:27.863451170 -0800
+@@ -82,6 +82,10 @@ static inline void on_each_cpu(smp_call_
+  *
+  * If @wait is true, then returns once @func has returned.
+  *
++ * Stores made by the caller before this call are ordered before the
++ * read of @mask, so a CPU that sets its bit in @mask and then reads
++ * that data will either see the stores or receive the IPI.
++ *
+  * You must not call this function with disabled interrupts or from a
+  * hardware interrupt handler or from a bottom half handler.  The
+  * exception is that it may be used during early boot while
+_
 
