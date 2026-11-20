@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2F8606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 04:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB01606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 04:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Fi00uIZV
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vc7k1Xmg
 Received: by kanga.kvack.org (Postfix)
-	id E7DFE6B073C; Thu, 19 Nov 2026 23:38:25 -0500 (EST)
+	id 3A8806B0704; Thu, 19 Nov 2026 23:38:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E54B96B0754; Thu, 19 Nov 2026 23:38:25 -0500 (EST)
+	id 3800E6B0713; Thu, 19 Nov 2026 23:38:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D92596B0756; Thu, 19 Nov 2026 23:38:25 -0500 (EST)
+	id 295796B0715; Thu, 19 Nov 2026 23:38:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A21716B073C
-	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:38:25 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21331A8C0D
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:38:25 +0000 (UTC)
-X-FDA: 85454240970.07.1BDDAF4
-Received: from mta0.migadu.com (out-249.mta0.migadu.com [91.218.175.249])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2D24F1C0007
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:38:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Fi00uIZV;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 064B26B0704
+	for <linux-mm@kvack.org>; Thu, 19 Nov 2026 23:38:34 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 907D7A0D48
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:38:34 +0000 (UTC)
+X-FDA: 85454241348.09.F41FF84
+Received: from mta0.migadu.com (out-2.mta0.migadu.com [91.218.175.2])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8C719A000B
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 04:38:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vc7k1Xmg;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev
+	spf=pass (imf15.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.2 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795149502;
-	b=b+Bh9UAjZBefJWxGpCKhUUnJ6Ks8MngohxZaNLug8e0o+KIWLahNni92qWBD9PQgyCu/Jb
-	Wc/oC+ff51GzzeoCupGR23zkhq4FEfAWDACblRJswkJAUZa0dTSx08kv4jIhgcNhEbZTPx
-	/cC04oNlOk83LmOt/6YYWljkwOYkhpA=
+	t=1795149512;
+	b=TyYiyncR8TiC3sM0MSAIsluKprazX8zRyxhCEi5McnbEuxr5O0k1WQpNSHS7kaC5VIq5Q4
+	UkeZ9DxU/S4jIVvBeCIzbJxETk5jGTAHH/RKuEqCtOwC5u2EwxktDafLDBQAzHDGygR7s0
+	FDO7/yAWl32CIPizBWl4qPWFybRbQzI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795149502;
+	s=arc-20220608; t=1795149512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=irA75ClnVJ+YMTbg6ex+HmOU4aK2Uha/DYvHWc5mkEk=;
-	b=Hbr7rEK90EX762UbOjGPg/PNJush1mX/kHrwSPvBci/zfBCi1bMLGaWfr7BdNLC3YfLLyJ
-	RG1SixIC4UINJrn5gbW6OEul6QJo0Wu1ZiCQeYD/j20g6ZMXSHwlKbVojqbPW4/EhgDppf
-	1uzZ+IlPbcj86737urCzR3e3+vobVrc=
+	bh=Hl0NS9xIz/VEzasBJ1gUTAY2JjbXt21ub1Y2yiyz37I=;
+	b=WwMo2AEQNmUOa8L9jeNZEJ/qDW2PkUhV5wMnXpIAJuvRjayZvz5uSUAMfl/RWdYofLVeq1
+	3ZXDjKSibCHojSJKJXJS4VM6UEMg+q6kpBpwrUUuzi0Hovpni91HP9dvR2Q1DG19B+0HKL
+	SlA/a41T0Bp6ZdpTNlQdEBvITOHfOT0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Fi00uIZV;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vc7k1Xmg;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev
+	spf=pass (imf15.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.2 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+0Kljhew2K71A2N5GrXQl5JxNv8YQpGFqu7PaOwFBDI=;
+DKIM-Signature: a=rsa-sha256; bh=/6TrAmMwTcVMqm7Op4XEd5vSUCQWQ6dLWxvUtJgJkIo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795149497; v=1; x=1795754297;
- b=Fi00uIZVuJdM7sXviSJNMPxkGTlDZpY8T24aCugw33eW1a7maI0G1h9vx5OTkN0rwYfAgKNi
- HFJCsM0Hi9AFUBncvG1f6CaMC61itRi118OnK5TIRVjATX45mqW6L5KFRdjATSseuSUrnHrMLOk
- TOjzoEnoVEVaYtaYEzzMu/zk=
+ t=1795149511; v=1; x=1795754311;
+ b=vc7k1XmgK4o4VOUQnhmsBSo7q22dZWqU8NygkRNxAKHkM056bunPPoveIbh+nsrbbHlpyv3o
+ ylwuK7De2dyEUWq5GuBCWjlHd2a38n3DzBHU3PQ8P7gUO36hwex1ouPwulyFRHmkn8k+GkllScT
+ gZO5AWvYUpTqiHrAnsYSm3XE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f87a44be2ecf5d50;
-	Fri, 20 Nov 2026 04:38:17 +0000
-X-Mizu-Trace-ID: f87a44be2ecf5d50
+Received: by smtp.migadu.com with ESMTPS id 816ab858cdbf625b;
+	Fri, 20 Nov 2026 04:38:31 +0000
+X-Mizu-Trace-ID: 816ab858cdbf625b
 X-Migadu-Flow: FLOW_OUT
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 20 Nov 2026 04:38:17 +0000
+Date: Fri, 20 Nov 2026 04:38:30 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 From: "Kunwu Chan" <kunwu.chan@linux.dev>
-Message-ID: <1391b9e3f25f7f95aedd2b884a998a0d48b324ca@linux.dev>
+Message-ID: <727a9b752cf9ad3658ae8a29a3302f40660c988a@linux.dev>
 TLS-Required: No
-Subject: Re: [RFC PATCH v4 16/18] mm/swap: advance the global queue cursor
- directly between priority rings
+Subject: Re: [RFC PATCH v4 17/18] mm/swap: skip reader rotation for
+ single-device priority rings
 To: "Lian Wang" <lianux.mm@gmail.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, "Andrew Morton"
  <akpm@linux-foundation.org>, "Chris Li" <chrisl@kernel.org>, "Nhat Pham"
@@ -78,21 +78,21 @@ Cc: linux-kernel@vger.kernel.org, "Andrew Morton"
  "Jihan LIN" <linjh22s@gmail.com>, "Kees Cook" <kees@kernel.org>, "Gustavo
  A. R. Silva" <gustavoars@kernel.org>, "Thomas Gleixner"
  <tglx@kernel.org>, linux-hardening@vger.kernel.org
-In-Reply-To: <e72074ac198130494037e80655685cf25ff4bb5b.1794666741.git.lianux.mm@gmail.com>
+In-Reply-To: <799821479a3c820a041d0765fbb70a75598e641f.1794666741.git.lianux.mm@gmail.com>
 References: <cover.1794666741.git.lianux.mm@gmail.com>
- <e72074ac198130494037e80655685cf25ff4bb5b.1794666741.git.lianux.mm@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2D24F1C0007
-X-Stat-Signature: mwhd55wiz79cuhh6tab4hd8yejw44nze
+ <799821479a3c820a041d0765fbb70a75598e641f.1794666741.git.lianux.mm@gmail.com>
+X-Rspam-User:
+X-Stat-Signature: yw81wmmzne1h986ugxfz3zyeehz1433i
+X-Rspamd-Queue-Id: 8C719A000B
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795149501-81044
-X-HE-Meta: U2FsdGVkX1/dMiO2ljEDLCJXvlEFeUosKWFbv8Mhta0/qMIhcGkqGqUEW0hQ1YqwdZyS4wDJw+pKxJ6D2nRnw3W2uvIofjkGfgUSXOnJUkjzBePB4wdKMyWpM9PRNgaV0LWvqhnPvaFIkt4ulVNL4hUkIwfm34EXQF4ABapMq24hG2MpyTq2Nlip05hPKHU3oB7mB++35jXiQ2pgsv/1ParfMBuhBFjm87F0KXD8sa7Lg81TqFctvGwxG0oIcVx0iz+J8yr426NUkywBUAeNwbm1e9MX6J2fBzNS+Q30xCSUQ24eREXvyxc8hheyGeKuWdrwOIEjui/2ZIFY9t3DlQ4iqFW8GorAHE5vohY+fyHJGSrr08lcQo0lzrlJcaov41OuX1KsRP9NbIfN8hdfTfARyeCyMgWJDksdc6LuMUb4+iT3OwaIjwFSaRPCT1N2jhpFg0G2QN0s7JVRiJfpeClGvegzlzCKH3Zdx87aXNagenAXRSdj6VIg8EX9aQpWGKDMIVFdRUQgJ5d6nXO+Ib63Br0cFNN/NV6Ee3UCzRwlHWSWcA53iThFiBXKBAEkAiJNJJx/q3vyA4tPj9HMJIHO0xCaTL4BslHm+DsBRhb0UaTGOTIZjq8o4Ui8jZK8v3YmjKxe59go5sl6JKqSHWBpcd8kVLht6vUwchhTsBxAU2RlKkLB1STTxJdSizP/Uv+gjVRzUvjpuXGqe/EwLWyhk6Db5f9yPi/64YaXjgnYnt9CXVSz98UbKdI75PpC3O1lnfuFvj/gj/TPj/rYk9BWdn7wi5YlcSX/QKsZzeFy44HOtqkDLm7cMBpkFoDY3CDh6RmYbbOWTAHYpfY2e2o7+JkMmbUd+hGRhVzc5XQUrl5NIeVb32Tu8BHn+1ywhftwzw8zpr8IQks16jgkeDgDTAg2jxgom9KS3pzXBI8AjtVtmOqJnqUT3GSEw0PLh8G1Cd1eAViymmvk+NM
- QkEEj6yr
- dNRNwZN7vFmsjCnYo08x7WP7N1Fh2boCm5ZJD1qBykAe1vCuGqbmJEP2Hcil5yGM9aQ7BpUDYLA1cg67vAb1EQtz+Wi0icOCp9A2bUJYp/a+dsSENE46X3iVZsPhA5bQdZTQjt0rgBWNQGkXOeGJGfSlnUXLzCjdTSaLcaLJoryj48TxzSbSyyiYpPUwmhDlOOfO5MYfj+sRKXNtR/BbTcSlA5vD+vaqB/ro2w2BOkhnv3ARIn3jGY/PckoKRF3djBseMV2m5NjLWLVBCyL20ZdEMN9lOVTQSNV0ZF1SJ9YdLvyCWatPnK4a3eMIAc4efQJ7h0ijHP+2ODf343c/Yank0RWdwj/1GXq47dTSxWMqLcGjLV173nngG7cd8MnqA89z4Q+5ODuy+2v663teL6f7A0+fjPUh8y0aONRY3sLD36roZKVDhJrIwS8UHe6AQmNwmOZ+RE9wTud3tFkSaR9YBdU6vDAPBECrMHgFNyR1ofnUI26iocTKGfxOLFABoJLntQX/l5xLCWWEnJWwD1KekNO8sc+Vo43tpNsCCnhnW5mBxMUUGxpHM10Cdl7RNy3iMhj+CojJSaSA=
+X-HE-Tag: 1795149512-333329
+X-HE-Meta: U2FsdGVkX19MwXDjtX5yOocGusl3BR2YWEbNbSQL/n6YWddflpSuvjAwfVOaP8HoXjXlMjNAwH2sNgFJRsD/DnvBNthMSDlaW9wUpbZffcPoV3gt0P4evK87o7Zeec/UTQxy8i6Qq5icmKV6QdLKroPLTRTHC5g44hlgiuKPvbGp4mJLx38Pkix9ZKM628SBLq805613E1OvKiDO7GF49oHw+IRR8lC4nTVmxbOmNQN9/1dTZMwQHebjT8QFSoxbVZGucZ/eBygBVqjcW5KAmsG2sOPrb/sjAL6ZO2DhDy4rRfKElJd6UsGw4GVI5tOFjk36tsoQX2of3lZ5KL5G/2Yk2l+MXRdV4wxYhBg+p0erdDhDDJW0PSi67t5HzOM+yi8zJV3ygsm0ogfUpiG6yW2VTkRoY/WL1hC9iHRRJJN0LyOHKc3GMIIf53PUOKK7ZcPZ9y0ZIZ/zywcU/LqklOSAUG9/VrP8pZUwZHRApkQa3Skw6fz9XZWY2zTO69xrznCV+v9B2tK3M9VIaWeHcz2VAG9F0vI/0pc/5NZsZ44m+vyh/jsEWFXwe/ibtucLlQxjYsWWox/kuqwtrgFiOaYQH+xDJDViQrxpXqOFFsyBYHjOG+PiWPE7LRUkt8vAG2gTjIV3LE0805nKUBR4jE1glofZ1ysTzPKVQ71iwRArVyNYF9rsRYZyu9Uv1ylDLbU+PWPR9SjeD15TyQsuWuFLgRZukY6OZc468oa59KX23uS8Ta5eGFZFMi3B3Bnwa3e2Z1RQKdAwAuOQkUGleFAkh6oWghH42eNfbxPDcmpGUppW0Zg8PXh4OmqCW8S4hlgshRWfGC+TENrZBbofYpmEb2SMqcxDh08Q8iadHmrti9iHP/Iu37QOICtEtkF+OQNZlzqBSdohiIBG7DIm6bu/gldEkTyF/1g7RHTspAPLe50L/wniXF/UMny1u9hQ6CTPo1hIsJL0d4bulGH
+ abJG/8ez
+ MLmztGJTo6Yy6X57k1wLrv8pk4iuvGpiXLzBO+4GtCwJuHMTiG6ccspOTq2uAbPKfSsvN59o2/8Gp6vLhgXPAimWxi/C8cDnisBog7tGeFi7bM5tNzENroxIK7um8xmZ0uMWxPtxBBWlVCZTtBkgHXdYIOhD+6yHgHuEKlpgH7MJ4V9LCoHbu4ZLvgA7SLmTJPY8XHlAChMOYnO2Rggol4oOtoViJeo2fc7KfS5t3FcVSb9UV1a5tLBe4pHPiwDmNcQ7/o2EEM+3dpbW84HFdNVNOrVBvn0GodM6punyiS629tpTe0TdJXOnTeRKre35wLsnwG+E+99uYC4GlwR2Kow9v/lg5umq7w/VqggGE4LVUJ49Nu9Bc2PLJNzpCpEHqWCgk9kmdf2YBORKWDqgD3sMrJ7DYMJTqv2+TKmoG+9AbT4XOuLzKowsxMb7jgL1IHtkHa6SSzh/AQBOkL1dNloMxf4aHnYj423/a/DA353LGsxxQbQa3rc7kVEHEFGpCYNmmTVgpZfq1J8viabJjrWJgQzwTMIz6eSSurHRWghs+rIJmr3Rmotpl/9SVKMeIL8iO5yVmsZivPqA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,152 +107,53 @@ Thanks,
 Kunwu
 
 >=20
->=20The allocation walk previously passed a total retry index to the sele=
-ctor.
-> Each retry translated it back to a priority ring by scanning from the
-> beginning of swap_queue. Keep the ring index and the number of attempte=
-d
-> peers in the task-local cursor instead.
+>=20A priority ring with one device cannot benefit from rotating its star=
+ting
+> offset or maintaining a quota. Read its only entry directly while the
+> caller continues to hold the topology read lock and migration protectio=
+n.
 >=20
->=20Snapshot the starting device only on the first visit to each ring and
-> advance each peer exactly once, including masked entries. Preserve the
-> large-folio same-ring boundary and the stale reader-offset correction.
-> The selector's complete walk is linear in the devices and priority grou=
-ps;
-> device cluster scanning and availability updates have their own costs.
+>=20Consume the cursor attempt and check the full/disabled pointer tag th=
+rough
+> the common path. A masked singleton therefore terminates or falls throu=
+gh
+> with the same bounded behavior as a multi-device ring. Keep the existin=
+g
+> large-folio same-priority failure boundary.
 >=20
->=20Keep the topology read lock and CPU migration protection across the w=
-alk.
-> The global selector uses only existing priorities and adds no per-memcg
-> device-selection state or ABI. Existing swap charging and limits remain
-> in folio_alloc_swap(), whose failure path classifies allocation errors.
->=20
->=20The walk no longer returns an ignored internal error to that caller.
+>=20This removes reader-local state updates for the common single-device =
+case
+> without bypassing device lifetime or availability checks.
 >=20
 >=20Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 > ---
->  mm/swapfile.c | 51 ++++++++++++++++++++++++---------------------------
->  1 file changed, 24 insertions(+), 27 deletions(-)
+>  mm/swapfile.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >=20
 >=20diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 5e5c1aef010f..616339c5ae5b 100644
+> index 616339c5ae5b..0c192844b121 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
-> @@ -195,10 +195,10 @@ struct swap_queue_reader {
->  };
+> @@ -334,6 +334,11 @@ swap_queue_get_device(long nr_alloc, struct swap_q=
+ueue_cursor *cursor)
 >=20=20
->=20 struct swap_queue_cursor {
-> - bool valid;
->  bool ring_only;
->  unsigned int ring_idx;
->  unsigned int offset;
-> + unsigned int nr_iter;
->  };
->=20=20
->=20 static __percpu struct swap_queue_reader *swap_queue_readers;
-> @@ -308,28 +308,32 @@ static void swap_queue_install_readers(struct swa=
-p_queue_reader __percpu *reader
->  swap_queue_reset_readers();
->  }
->=20=20
->=20-static struct swap_info_struct *swap_queue_get_device(long nr_alloc,=
- int nr_iter,
-> - struct swap_queue_cursor *cursor)
-> +static struct swap_info_struct *
-> +swap_queue_get_device(long nr_alloc, struct swap_queue_cursor *cursor)
->  {
->  bool rotate =3D false;
->  struct swap_info_struct *si;
->  struct swap_ring_iterator *ri;
->  struct swap_prio_ring *ring;
-> - unsigned int dev_idx, queue_idx;
-> + unsigned int dev_idx, queue_idx, nr_iter;
->=20=20
->=20- if (!swap_queue_len)
-> + queue_idx =3D cursor->ring_idx;
-> + if (queue_idx >=3D swap_queue_len)
->  return ERR_PTR(-ENOENT);
->=20=20
->=20- queue_idx =3D 0;
-> - while (nr_iter >=3D swap_queue[queue_idx]->size) {
-> - nr_iter -=3D swap_queue[queue_idx]->size;
-> - if (++queue_idx >=3D swap_queue_len)
-> - return ERR_PTR(cursor->ring_only ? -E2BIG : -ENOENT);
-> - }
-> - if (cursor->ring_only && cursor->ring_idx !=3D queue_idx)
-> - return ERR_PTR(-E2BIG);
-> -
->  ring =3D swap_queue[queue_idx];
-> + if (cursor->nr_iter >=3D ring->size) {
-> + if (cursor->ring_only)
-> + return ERR_PTR(-E2BIG);
-> + queue_idx =3D ++cursor->ring_idx;
-> + if (queue_idx >=3D swap_queue_len)
-> + return ERR_PTR(-ENOENT);
-> + cursor->nr_iter =3D 0;
-> + ring =3D swap_queue[queue_idx];
+>=20 /* Consume masked peers too, so every walk remains bounded. */
+>  nr_iter =3D cursor->nr_iter++;
+> + if (ring->size =3D=3D 1) {
+> + si =3D READ_ONCE(ring->dev[0]);
+> + goto check_device;
 > + }
 > +
-> + /* Consume masked peers too, so every walk remains bounded. */
-> + nr_iter =3D cursor->nr_iter++;
 >  local_lock(&swap_queue_readers->lock);
 >  ri =3D this_cpu_ptr(&swap_queue_readers->ri[queue_idx]);
 >  /*
-> @@ -337,9 +341,7 @@ static struct swap_info_struct *swap_queue_get_devi=
-ce(long nr_alloc, int nr_iter
->  * iterator can move between retries, but the cursor must visit every
->  * device in the ring exactly once before falling through.
->  */
-> - if (!cursor->valid || cursor->ring_idx !=3D queue_idx) {
-> - cursor->valid =3D true;
-> - cursor->ring_idx =3D queue_idx;
-> + if (!nr_iter) {
->  if (ri->rr_counter < nr_alloc)
->  rotate =3D true;
->  else if (ri->offset >=3D ring->size)
-> @@ -1847,29 +1849,25 @@ static bool get_swap_device_info(struct swap_in=
-fo_struct *si)
->  return true;
->  }
+> @@ -363,6 +368,7 @@ swap_queue_get_device(long nr_alloc, struct swap_qu=
+eue_cursor *cursor)
+>  si =3D READ_ONCE(ring->dev[dev_idx]);
+>  local_unlock(&swap_queue_readers->lock);
 >=20=20
->=20-static int swap_alloc_entry(struct folio *folio)
-> +static void swap_alloc_entry(struct folio *folio)
->  {
->  struct swap_queue_cursor cursor =3D {};
->  long nr_pages =3D folio_nr_pages(folio);
->  struct swap_info_struct *si;
-> - int nr_iter, ret;
->=20=20
->=20 percpu_down_read(&swapon_rwsem);
->  migrate_disable();
-> - for (nr_iter =3D 0;; nr_iter++) {
-> - si =3D swap_queue_get_device(nr_pages, nr_iter, &cursor);
-> + for (;;) {
-> + si =3D swap_queue_get_device(nr_pages, &cursor);
->  if (IS_ERR(si)) {
-> - ret =3D PTR_ERR(si);
-> - if (ret =3D=3D -EBUSY)
-> + if (PTR_ERR(si) =3D=3D -EBUSY)
->  continue;
->  break;
->  }
->  cluster_alloc_swap_entry(si, folio);
->=20=20
->=20- if (folio_test_swapcache(folio)) {
-> - ret =3D 0;
-> + if (folio_test_swapcache(folio))
->  break;
-> - }
->=20=20
->=20 /*
->  * For large allocations, try every device at the same priority,
-> @@ -1884,7 +1882,6 @@ static int swap_alloc_entry(struct folio *folio)
->=20=20
->=20 migrate_enable();
->  percpu_up_read(&swapon_rwsem);
-> - return ret;
->  }
->=20=20
->=20 /*
+>=20+check_device:
+>  if (swap_device_masked(si))
+>  return ERR_PTR(-EBUSY);
 >
 
