@@ -1,163 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAF8606A32A
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 05:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC3B606A510
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 06:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SAKS3ST4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YN29lo+k
 Received: by kanga.kvack.org (Postfix)
-	id AF4C26B00EF; Fri, 20 Nov 2026 00:58:13 -0500 (EST)
+	id 7CCB26B05B1; Fri, 20 Nov 2026 01:04:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA5FD6B05B0; Fri, 20 Nov 2026 00:58:13 -0500 (EST)
+	id 77D586B05B2; Fri, 20 Nov 2026 01:04:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94BF26B05B1; Fri, 20 Nov 2026 00:58:13 -0500 (EST)
+	id 693746B05B3; Fri, 20 Nov 2026 01:04:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A3356B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 00:58:13 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5AD4160D6B
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:58:12 +0000 (UTC)
-X-FDA: 85454442024.21.9C84BF3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1627AC0005
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 05:58:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAKS3ST4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AEC96B05B1
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 01:04:33 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2CFFFA0D5E
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:04:32 +0000 (UTC)
+X-FDA: 85454457984.01.A0F77B8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9C452140007
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 06:04:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YN29lo+k;
+	spf=pass (imf09.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795154291;
-	b=sSVZukjLXeTMDMnYRGtaS3eNss7TIlT84za3ESFcbSp21k1WwPcEIGF28fKOvkxWTScEs5
-	H3u9UMo5azLWsoourXj1xiBlCgvq2A4XPomGw+7e2Utw8rSyIYmcrqC74gOmRBoOknuC88
-	2E1Yc9n/uqHbfCA6kjaW6r7j7DX3d5U=
+	t=1795154670;
+	b=C/UqU9hQPioCQ66Bej9lPz6QETsRc/06nb3Z5cgpcGvbxN1Ye9Lx3BXTag8qdocQYEznHZ
+	i9ZRZbJ9qyL3MJfgV0UxQ8XHvpB8EuMykyrazgeglPSgNphGdEUZEvylGnbInSHJ8xbK9P
+	+BauLCDyLyrjJkNgsRbSRmuAulYTNQE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795154291;
+	s=arc-20220608; t=1795154670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3J4zWN2xZSuepJxvtOxZd6Cv2PFcMo5B56sR2qMDpP8=;
-	b=OOReZmShwR8C/acUtVLiWP//pp7f0ZgWZ3ymgdJIz2PjOUDAK0mvjOEyGA9ujeO8yDLEVs
-	W8eaxPxi5siatX1ULKEIWltGGibmHleLifvutgwmNOA4XKZYABEDf+2L34Cb86/7L5D5gm
-	0LOrZLHuidOrJVvRH/BRV5Fg1qy+3fw=
+	bh=iNo8yliNdouUktBX46FmLDoA4S8B6QiUkCM4qwHf0Vk=;
+	b=acKqk0IdF6V287xV8BnYwnFfGYfBkoj/ALX+toZlS0oZVDfI6iQMOj4tfHLLy+Y4uM/MAM
+	FS1MwBX3gi6BZwiuBVCwMbjK60jEAKqFvzZMg62rbgmy7INUxKM5qrY5CKhAv7F2aZyPoe
+	NN9LGyX8IuHj3CUp2BsvvUUVogF6bZk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAKS3ST4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YN29lo+k;
+	spf=pass (imf09.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 4C5816211F;
-	Fri, 20 Nov 2026 05:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 535581F000EB;
-	Fri, 20 Nov 2026 05:58:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C3DD40770;
+	Fri, 20 Nov 2026 06:04:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D471F000CA;
+	Fri, 20 Nov 2026 06:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795154290;
-	bh=3J4zWN2xZSuepJxvtOxZd6Cv2PFcMo5B56sR2qMDpP8=;
+	s=k20260515; t=1795154669;
+	bh=iNo8yliNdouUktBX46FmLDoA4S8B6QiUkCM4qwHf0Vk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SAKS3ST4i7tiUXuSP7l7klGig8K851mCaNcA83yfT7HS5evQwuV9pHxHXPYNRVoBN
-	 OECH81IdbXkatDGtQDTEbZ0S0zjQEdVbnmzdw9mOYz1Xg30Zaplgj5W19nP62y6YlV
-	 Tri0TfVHScfjfdkqkwMEqDkkVdZoLgLFmUKDwq/GJAQHq+lyIRFPSxG1deSxZD/b8w
-	 aozC4d3ZTBXnBMBMor/w9ZkVSDiVqdnfcfimj2dN+sC1cm0iMw+VPyVRobRXELJYS6
-	 2S8q7BhHWzui3oDk1v9py06mOrro/JTr5AlYK88Mj3Em8Yv5p5dWVOcoaGbo7wvjA3
-	 aTGgS+xSE9t4w==
-Date: Fri, 20 Nov 2026 07:58:06 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Andy Lutomirski <luto@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Chris Zankel <chris@zankel.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Hallgrimur H. Gunnarsson" <halg@google.com>,
-	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Jan Kara <jack@suse.cz>,
-	John Johansen <john.johansen@canonical.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Juri Lelli <juri.lelli@redhat.com>, Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
+	b=YN29lo+kKvCpoPcXXBE51pZ9MlGx2ZtxPeJM06PUnMQAI8HJaZzBCnhs1XDRrHg9+
+	 ufcJhGmSiExYJqKlDrC6ulxKS2Pa0b0ytUlbjrtFzj/kD4NPD+E/Li9qN0UY3w1K8t
+	 nHz3NmYRZeqg1LSzYRqnT2zlo6b0C70PGUtgdth4dK6iRYbmhuhmxF0SuxGLr2H+v+
+	 ordNpuCkrhex/7u9TtQZXHdeopEndlAbDO5clsBP8XDREHcj7rTibmIRid61FkMg/R
+	 cO5zPr04/STnhssCv6obIWuetp4cavUttZx5SKxSkB/5JdvIA8t2fz0nhlP7iefaZ3
+	 VjTDdJLk1xvxg==
+Date: Fri, 20 Nov 2026 07:04:22 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Mike Rapoport <rppt@kernel.org>, Neal Gompa <neal@gompa.dev>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Moore <paul@paul-moore.com>, Paul Walmsley <pjw@kernel.org>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Rich Felker <dalias@libc.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v4 00/14] Namespace for namespace roots
-Message-ID: <av_hbgzwo-1FcAPZ@kernel.org>
-References: <20261119224312.1037966-1-jarkko@kernel.org>
+	Michal Hocko <mhocko@suse.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memory: don't map hardware-poisoned pages in
+ finish_fault()
+Message-ID: <av_i5hZYLZAbkPgZ@localhost.localdomain>
+References: <20261119134236.3745231-1-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261119224312.1037966-1-jarkko@kernel.org>
-X-Rspamd-Server: rspam05
+In-Reply-To: <20261119134236.3745231-1-kas@kernel.org>
+X-Stat-Signature: bwhjsgn7genzr1scpemoym4tfaj16niw
 X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1627AC0005
-X-Stat-Signature: kr5i1184f8rq4e6kbczqitoboe76qyqp
-X-HE-Tag: 1795154290-867666
-X-HE-Meta: U2FsdGVkX18uE3btYd0+z99sCSJTWLX7iVWrpjxJ9jWMh+ttxfFo6ZZyhsekX6swaWV5Fvq0lEmdjUbAuAnbkaTVt3o24GbBvo71bsIVmdthmpSWTEC0CZUzBvd7DlirWpTujDBFv+iUh/PlfFqKXrsAaOnbHDMimSQnfZ6n8x2uSn36tRGDNlDcjgYj0NCeTs2rC412kW27mZBbG5flOjxxFOjBV+NoDp4e8rdn7u+AQTfkvAer4QXpAm7P7SWqkWEIK8BPMpLmVIRC5VMR7lmYdZAtMuV+5NWdhWFpWTOSE59/bjVAw04rFlOKhoAPdJPv6S06+LudPVygEKl6LjSYfxpcznmyYHvDrKigUqmCsDbR0jFd/W5D2TF19Uofak/Wuti3P5DejITYfybfpK0rvb8OrQrOpP5dcftk0KfMof/uHqkQZBuqcs8nI5sdWHUGdqfWBzlSloy/cHK/end7G8uwSJwBl2Q/rnwzfRLb5mgbyA668i+JTCM3LDLDREMwfzQ5I+moH4nGTU9a2AABbqMIC5ZLNNE/o8i+uKWQKmxaeDc8HWXZ5AAMttLhCLMxzgGOyBhKMrHWS8r3UAeQ3KHtMStQPPeUnXrJoIwfnHa8W716KdTnubZAMeqLhbudXWGRyRJVfsABKirGa9D0KbcLgC9cP4+XQ1H5n1Wfh7ULPc+0UrajoQHalg9L3gLYfaJ9e8hjQOc1983C752Ky/wQUZAYH+j9atYX8c0GyaC3tTfnT6/4V/S3xOlg7tSfNkUesOWfHXFd5ZRxQtFgRsMWKZ9aNEb8xBHOIZUD8pArhtVjfDyyl0OUTClIu745wEcAYDo8Xxx8PRMQ15m7r20WgH/8Vogk6a+NBhM8j8DBIS1PbzCJa3JQ94vqLbYaIAeqWlIvYdU/3zy9I2+z3KypZc5a1/uCgLblLEtoPiKHfVx8BojlbbgUj3jp+DpmE18CtGyzyruN4zi
- 7ulLZ+4Q
- WqamiPR1Cg5ffjAagJhJ9VdvEouVbSQT/fanD/flEZrdrOmVgYjes+D+K0GetgPql+dQ+sPTR5nqZEKQEcOr6P94s6JnXl9eBG3ORF/A7AgnAtq/2cZYxHRt0+Nr10HKyjg0JNbV/FSqD8YLIuekqyPwrQnZ+Tgcv8Kcwt5HYg7bcAXPduUAXxKEO3LaKx94iqXaQgYB85BWctW6VQHtmfV/P+4lJus1M2Vvau/Os4wvLZQqJO5otNy1CTVvSCM2qy8yx9ulq/M4wIYUSNZoGOTVR1hefINzQKm8lWgQ3fkzJmf9nhh7L70+4j6GYqPBPfK1AFNrWIxbj6ZUvSz0GQbjoHEBuywvaVFaCTiLdAFifwNbNlaE0lhEZOGhVaJITkTzNpCA0HMJfR8kq9F027TLYS/dYgrkGm3R9447JVHfzdQFIuFkBrPquix7Jvveq/V5MXlD2nUJOALl8IBKcQA+WiZAdceCcWcRJfPQu572F4dw3zf9Its1O1tmZR2+yX4Ggb1sdNAm8EKY=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9C452140007
+X-HE-Tag: 1795154670-468980
+X-HE-Meta: U2FsdGVkX18Pl0CgvzIYIWEnOMOXM2KyEZ48DFqprlUj76l9qZvH7Kzm7pC08/fV7xZcQQim6rVjURubrFLayWtZ81CMsFyuW85WxnVhf6NVrXKMzxuPOZcBTs8KQjz/DlugE46qP6rpQcOAPzmAg0yfm/2ls7pAA6MZBXfgZHClssbznJ9SwAM8iJVjwLSeGTAR0WA7q+V7TggGRlz3HlriPNejpqK/7TVbY3LRt981Gx2ygzDJ0iaorZPMsQoAynkoeeOSc1LMbvliq1NkSBo0856op3vPGiMrR/TJMa171fOZljUTC/LmCCCjQ6g+6FOvc/3QJL1fQC5ldgb+EQhylicqk3tSMOmJn9T3+9LSdyJ8YtEWQOpj7qBLEUTXePLu6DqkkyXzmde4R361HX3W1QNSA2NjcX6HCM0s0fjfTMcqSZlHl8L08GQUKsvqrL4fRB0TQxmRSclz6pqrPXW5NzV38DH3Anelmki7aLzGjvCFEhusSACWglEZHCwkiEeKhbJp4mGGDTI908DD4yv3cLO66HCsF2ZfbwXtC4GRYXdjHwh+ndWHkERbb/sx/BDPcwz7cvu1jVyrvzydNXME1DDMS6cNJH62eDYnuqd3IGp6gi/Qc8LiaQmVWs1lkPeuH3obGxCG3jyc1lzYZH/yUTY+IBrVjIJP0NLm7LWGJY3QgiSAIZBVuhbzpiWXHiDj4nBXNkvbloPumMW4e7Kh3mDAM4w9JGRq4nN2EuqKi/jhQjAXzojDmllw5zl1LgzRRzc/2fX4aZ/+wLj31+oUzvtKF8IvrrQUbslzY1VPz4/7Kt4OrSBZuxTsOiudC704gR4OPM41B5J5YYv6ecZOXL+sPJhJNH4uJ5sQrIYGnhTsMevFHTz2+Olm0/m7T7FZscuZ+9T5f+l6ygLoVpi1+1502sUUKiXXI9O1S7ny4CMNW7F3YPPD5bFLv6nE0SbdxLvPJwbqjWncx5c
+ mEM5S0dt
+ sNQATg+YcK3NwKcqSEAB3CLN0vpigVpj08xcE67E9tkzqNXrpUJFGdM23CiRFgY5as8/kE8lluqgrNBU4DuUzrscmyunLXdine6jGokrzGkrFMWdGwb3EFV2MgXqhQu7DmCis0lXGN3ExHA4mAyWQPB+EXYfB3pvrn3KvJV6LO+aJQs4aiYZZXRZZpTL4EnbUlVQvwBTJbZj7Fh91ixo09Vh6SM1pKotQxZDSWSLiUmnXahEcyc+A4OpckNvgSCVmWbO+LeVgLrE4r7yBo+PMs3zZDgOwL+7GvQ8MOt/WuD+QUAkgjJURHHsfqr0hptae3xmolUI95UrW8HFHHq9dmFfvbs9oFq9yibOcz3L5+1846zbHlBib5dudx1bMXJRZ4ttvvOt1aWC6/QB+AddSZM5QeG543zPS/UEnGoJs6VCR3eoYgrHkWS7lpNcLmdAA31yMnFISDP5ysGqQTmt4fFzxhjESny9u9w4yst685zS9C922SvRe1p9W+0ESLUa1xducVKdePk1DrV6CDEIhcWFqsuRz2LJAdQjhkb1SJqz7nPl/jzletN4/hTdODzwFoUZ9j+FmnWYjQDrZzjVI5SvH4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,53 +106,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 20, 2026 at 12:42:58AM +0200, Jarkko Sakkinen wrote:
->   nsproxy: Pass nsproxy to create_new_namespaces()
->   rootns: Add core infrastructure for root namespaces
->   rootns: Track init lifecycle via copy_process() and pid_namespace
->   rootns: Add rootns() system call
->   rootns: Add ROOTNS_WAIT ioctl
->   rootns: Add ROOTNS_KILL ioctl
->   fork: Support CLONE_INTO_ROOTNS in clone3()
->   fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
->   fs: Support MOVE_MOUNT_T_MNTNS in move_mount()
->   security: Add rootns LSM hooks
->   arch: Wire up rootns() system call
->   docs: Document root namespace uAPI
->   selftests/rootns: Add root namespace test suite
->   MAINTAINERS: Add entry for ROOT NAMESPACE
+On Thu, Nov 19, 2026 at 01:42:31PM +0000, Kiryl Shutsemau (Meta) wrote:
+> When memory_failure() cannot split a large file folio, the folio stays in
+> the page cache with the poisoned page in it. do_set_pmd() refuses to map
+> such a folio with a PMD, so that the poisoned page gets its own fault and
+> SIGBUS. finish_fault() then falls back to PTEs, but maps the whole folio:
+> 
+>     do_shared_fault()
+>       __do_fault()
+>         PageHWPoison(vmf->page)
+>           // the faulting page only
+>       finish_fault()
+>         do_set_pmd()
+>           // backs off on has_hwpoisoned
+>         set_pte_range(vmf, folio, &folio->page, folio_nr_pages(folio), ...)
+>           // maps the poisoned page as well
+> 
+> A process that touches the poisoned page takes a machine check instead
+> of SIGBUS from the fault.
+> 
+> Map a folio with a poisoned page one page at a time. The poisoned page
+> then takes its own fault, which __do_fault() turns into SIGBUS.
+> 
+> Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support large folio")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Since David's picking up patches, and starting to drill them, I've not
-paid apparently enough attention to patch division. Just noticed when
-I had hard time finding mqueue and procfs changes.
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-I've now re-sliced these into a bit more sane pieces:
+ 
 
-$ git log --oneline master..
-d8e24a6bc14e (HEAD -> rootns, origin/rootns) MAINTAINERS: Add entry for ROOT NAMESPACE
-f2569e56a267 selftests/rootns: Add root namespace test suite
-bea05e758f8e docs: Document root namespace uAPI
-dd05a49aff77 arch: Wire up rootns() system call
-2dee7a5fddec bpf: Register rootns LSM hooks
-73c51e02b830 security: Add rootns LSM hooks
-3cfd6576a037 mount: Support MOVE_MOUNT_T_MNTNS in move_mount()
-9ed7387038ea ipc/mqueue: Implement ->set_rootns() fs_context operation
-624f0ed9c1c7 proc: Implement ->set_rootns() fs_context operation
-1085e6ae2eb3 fs: Support FSCONFIG_SET_ROOTNS in fsconfig()
-d2898dbdc39b fork: Support CLONE_INTO_ROOTNS in clone3()
-42dbccb5890e rootns: Add ROOTNS_KILL ioctl
-14cbda3e5bca rootns: Add ROOTNS_WAIT ioctl
-b2cc82539b75 rootns: Add rootns() system call
-d29215aa7f0f rootns: Track init lifecycle via copy_process() and pid_namespace
-0f9ce7febb49 rootns: Add core infrastructure for root namespaces
-7a0e8f969fc7 mount: Enforce mount_too_revealing() for foreign mntns
-8c61aee3afbf mount: Add mnt_ns_get_root()
-07d239d0287c userns: Factor out install_user_ns_cred()
-bf74588e706d nsfs: Add nsproxy_open_namespace()
-645d31a1c516 nsproxy: Pass nsproxy to create_new_namespaces()
-
-I would also divide "arch: Wire up rootns() system call" into multiple
-patches, if this was not an RFC.
-
-Br, Jarkko
+-- 
+Oscar Salvador
+SUSE Labs
 
