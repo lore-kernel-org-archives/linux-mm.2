@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D47606A333
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 17:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C09B606B059
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Nov 2026 17:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gZN90VSi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ckKFX1wL
 Received: by kanga.kvack.org (Postfix)
-	id 0E5A96B05B2; Fri, 20 Nov 2026 12:40:07 -0500 (EST)
+	id 4E2A96B00EF; Fri, 20 Nov 2026 12:42:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BEA86B05B3; Fri, 20 Nov 2026 12:40:07 -0500 (EST)
+	id 4BAD16B05B0; Fri, 20 Nov 2026 12:42:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F163C6B05B4; Fri, 20 Nov 2026 12:40:06 -0500 (EST)
+	id 3D1236B05B4; Fri, 20 Nov 2026 12:42:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BCFE66B05B2
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:40:06 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34DD8A0115
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:40:06 +0000 (UTC)
-X-FDA: 85456210812.08.ADEA1B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 732B51C0002
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:40:04 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZN90VSi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 03CF86B00EF
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 12:42:35 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 78BD140129
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:42:35 +0000 (UTC)
+X-FDA: 85456217070.30.0F9319E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9E6B920003
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 17:42:33 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ckKFX1wL;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795196404;
-	b=xbVKzfVxQKk55CIDuK/dwpT8X3oi78k8sJraaRhALdHxJrUJfEmArNnr0xKkvF2AVEwEz5
-	ywAZy5TJ+HZfdjfR0K4AtUTlzSkBHkN2z7bLCrWqlmcswN8bQO4KRMC9Kcvcyl2B/arKJd
-	mChePDizfbO0GVlgdB9E6U6q+VZLV0w=
+	t=1795196553;
+	b=L5ttYjfvdmeBfiTBj7WaGH+CGhmVFQzUbZNi19LVArhfjc40GOXyUIbyaqzXYp4nCqUJuY
+	hNi5dzDsu4PKKZtYA8bSZaCAPX0oOwJp/hWDEr/0HLrCmXgszjGak0O0wbPcKed7kiAUkX
+	DRtVaqlmoFXcBl9bOEkPRxX9tBA9gA0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795196404;
+	s=arc-20220608; t=1795196553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xJGu1xFkAMb9C3q3yJAs9zMroHTPcUqb/Ezg7HM871w=;
-	b=SSSVRtIFngR7irqiRT3Wf2nFiFyHEf64hr+0Y9judQ8CNs2OoOeo3N6ldE7iP3RE9/7ozr
-	v0nl5s5v17nZJ6oAPdxX8vaxQIJV5a+gg1It0zFYWlz+/bn1FbZRJrXne2xroWql50IHPk
-	4OzcSv7Y6auhZhAGzKt0vX/nZFnu0Fw=
+	bh=Bhnyfvy2KqZXAS36AJ1i0JMsTJ0vNWzr4CDn3GrGcfY=;
+	b=COK/Jc5SdUO3jHX7BlAcouqNjrFKG8leygpj3hGm4f0DvqpkYJe7gYk1qPseQzmPfMOjcG
+	heBq4qojBvxQtdrM/PejKb9fZ7zLkdAezSccXvLAUeltSgLkUKzSMc0fZcpCuhZVjf3tOF
+	+zZl0uy66NutnmS/NIi2yO7H41yuwdo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZN90VSi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ckKFX1wL;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F245061260;
-	Fri, 20 Nov 2026 17:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14531F000C0;
-	Fri, 20 Nov 2026 17:39:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C555C464A4;
+	Fri, 20 Nov 2026 17:42:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862021F01566;
+	Fri, 20 Nov 2026 17:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795196403;
-	bh=xJGu1xFkAMb9C3q3yJAs9zMroHTPcUqb/Ezg7HM871w=;
+	s=k20260515; t=1795196552;
+	bh=Bhnyfvy2KqZXAS36AJ1i0JMsTJ0vNWzr4CDn3GrGcfY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gZN90VSiuDuI5QRn3XAgpiV6CaGn0DYsGHMNO4NUtRFJ8ek4jw+EyCbEGPqiDxyyB
-	 Ap5i587VTg9CMfrXje5fcdwCf7r60ChdZVB23AaJ2yyFnhamoWPp/2RG/gDDZXJ7TB
-	 ft+YKQhZgqPefw0msVYEczY30YPfTZ/gpaH8QPrf/bgOEMnfKiBODI9gjjrV7Yv8bu
-	 qniaKPF2+HeuFy/EiK6kLCnTALKaDAXU3O+wP3NnppgUq1fOA6EJ5a1m0WUgGdGVtY
-	 LppWlkieuK489WQF95wAiZyjoJbn1EixdjJv5aINttGigP795LUH02clMDsWa3ClGh
-	 GQA88QJd1sdMg==
-Message-ID: <bc398517-e435-4e38-a871-dce2d0a9ac44@kernel.org>
-Date: Fri, 20 Nov 2026 18:39:52 +0100
+	b=ckKFX1wLJ/UaG1cRBOg1e67ciDfy+pFb7AtJUVNzWr1+51uahBffgq/LgVw00c4A2
+	 8EzmdA+Hokb4hBwVcSRdV2LdcaLG/WO5voEGoP7DGBhNbFzH05cjnl74TrOx9eTgwq
+	 39VyLXP1H9zVPgcNJJKoI4fH6B5D3MEG8TmVOzI5NXx55ookscVwHlrD+SixrBBxzq
+	 3aDUKLw8M1ojXekVybzS6pTCIJpWzc/T6UB41b+dtiFzijQp2uteKAi3neGvaiN+p/
+	 ixJU90LraJv7+XIxpul8suA4khR+gmdgyjEJjkaRWeotqxPQZhzw7rZ1KaIswGndPW
+	 Pkax1PhSuRFLw==
+Message-ID: <525fce64-8260-447a-8362-503655d09c91@kernel.org>
+Date: Fri, 20 Nov 2026 18:42:23 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm: flush stale TLB entries before installing a
- CoW'ed folio
+Subject: Re: [PATCH 2/4] mm/vmscan: flush deferred writable TLB entries before
+ unlocking the folio
 Content-Language: en-US
 To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
@@ -94,7 +94,7 @@ To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Andrea Arcangeli <aarcange@redhat.com>, Thomas Gleixner <tglx@kernel.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20261118-file_folio_flush-v1-0-e9e739ed14e0@kernel.org>
- <20261118-file_folio_flush-v1-1-e9e739ed14e0@kernel.org>
+ <20261118-file_folio_flush-v1-2-e9e739ed14e0@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -135,22 +135,22 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261118-file_folio_flush-v1-1-e9e739ed14e0@kernel.org>
+In-Reply-To: <20261118-file_folio_flush-v1-2-e9e739ed14e0@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9E6B920003
 X-Rspam-User:
-X-Stat-Signature: o3t4jz9ppjeccx3y3eucojanxc1f77u4
-X-Rspamd-Queue-Id: 732B51C0002
-X-Rspamd-Server: rspam12
+X-Stat-Signature: 8cchdhqtb4sb898k735xw6z3eb1j4393
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1795196404-765538
-X-HE-Meta: U2FsdGVkX18OTzkf6ZxPyRexYo2ftDsyV71mM9AlZDFNPsGd1BL4e1sV6eSg7xoOsMay9uj+rk/yt4m/LuziE7438gy06TVT7fE8CODoxWxniLa9JhRLNr20zkkYq5r+A6EMDJqGZD7tGn0xd6Akh5/1gZVmRk5339u0MOPO0aYVqIBPqmw6lpOlh5IjE6+dL8ngny9m/DaHlBOh5k5+c8Sz7MZ2FngFc8QjuSkCZNvzi4ZKdUOO4Uw/mwBAi1dn5rYxj8jHxdwR1d8rgTWm24awoi4b9RnSnl3U+mqmJAZux9Fw7RN8JHx1BF7vvLtT9f2eaNgO5/tgFWtiPOTyxFmevMiRSimlDLJJ+ITo2fZXJI8rvDof9GhxIiN7Qc9IJKZ8r8v0wstWIRoiPNUcXu0pAgY1V9vMcmeawfOMJHhw50Mf7sMSclYRImca/zcYg2fUPNuVlfb3Z+dfZP+8APY8ym91b1M7jV1mBcEY7F1nOdh9ApTG7qqloVa2ZwX4+zTgShmA861YuluEbVf7GFvKtsIHkecAv4gtNdJqINbBNzoS6JTKpzFt6eYgcCTLH5fZZoFPQIyihZVTF7dxn9hANHe8AU4pCBPb3Xm2y+/ILRHBM9Soytj9adELnqluxwFljoBs16lA82QJnRMsYbjJacSaDUOAOYpcfp6oTACwhqfWTzJy560TeFqLbyo9j4Wqo0H55P4EXOWpnhObKXn9VwtCdG5yMKmr1gmpKUpDUc7gi0ehKF9/RjyHKJlMbkYVSFeArjzKhwX8hds1II+LwalKcXrLjwOgLDU80tD8YbsoK+WUgxulUEz9FdJPJI90VLWZ7HHttBbWxFGXNq9XznNxEEpjF4VggfadbCIyb7o6BeInPKCKj7yBiFklQlyiZh3qBp6Qh7JDPymQif1pnZg4m/gFo18O6OSw/gbMcTPcbXVdxga68/VF2/+hApXV/4MujztG+6JcgfK
- SoGX+x/z
- bcD0T4R0J+igQ1uzoY/PRUkmxaUBrHiwlNRGZe5e8HTpgfkZKxYyLOC2Po5Q5j3pMKdg3t3TfOy8GNpNYd9tcLLXp1Z1PyQaO+fl2mjXvRwg9GfON5CM90E/qC/2l+REBnjo0Nc3COWosXb7gSi8uytRJbEJoaCqYqdyJ4hauVv6a581k2HRyZbW2NWhNduzerB5EsdTmk35mx+wJMvVAi2qmU9h4NqqABNqbaOBAAPcOWPbM6jG2YWK0R9aYOVXUZigRj8za2UchvMhnewA6PKL6cpXDULe3e0GPcDtyz5ak2n2oVRArmExXALivesauNd+xGksovx1LjBV/y3jLvW78cCooKEJHqvn3O7UMO/qAx7v94x49zRuXo4nu6E2yTPA+K7DaeiW1T+S6fKVqmPTKSWnpreYX9tIaEmSL2VSXjdJFKdmZZd4KyE8Z8IskqKoCMpeh4TlwzqYRL+l/7ML1BNuT/UVMU0t3yutNssotuhNv7t3EhyJ95rH0Zd8mdDdbYoxC/fpQp5Y2sJdvR7HYufLs7mx6Fp8a9Ad5qn921BeiroGKimrb80RATY8AGK13TNmaUtyaASNwx0m2fHdD26gQjWvxMqVQ04ykX/VHzFaM+pVLHRDJuQwYXF8X6UZvfExqCOgqEM6HXNCw+/Z/03mHN8B7hQEd
+X-HE-Tag: 1795196553-889631
+X-HE-Meta: U2FsdGVkX19HN4ML0/BlRbc9Exm1OktZnYsxyry95a5nLCENvHQl/C88umPVt3uMCJIb44Z5GkiCfgf28N+Z0Uqk1LKp+TieQ6J+wM0I3JhH3IhseFP3Gqv8Tj/ijTMYMSU0M40K1qvAjHym9YkTXyC1ypQcDEvmNqLdSt7YpSMHfoC/5C9jZmBIA/dMf+Kp8OWTxpnGUd/TS7sV4+BO6pGFziFEol48yqSra+0QWs/Pfvd4g8flbRtDfI/J14EIE+w8yUxFyCRSz+/Qi26A6lIkrz5NqCwPOIbtt6e52DTWTLEe4v8YSAEeqGH+AXrqVNywi1qXEN4svYpdD4LP5cjwZ8q1w16F4dABPXjry0mbpiJ79ze63O2IJtN43gxjG6xh0tpcT1aiJaJ8iBGlvUbNBinOkw4pi7uDDKOs9XmrqB0Y67fI5w120AfB4nGQoYgBYS11rKvj3M1wCYaLOSnwmeYz4K6vjk78I1FKBB0Zlcy60g7jCQeHc1dGrbnX7Xpa8bkah0Xt5OJZPSMvUSARp6cmNsfwXw7JpAfdid5UUpBRn6FXpGQ8IJnL22bubcpTJ5safJvXvXVoltNj8e65L8tXG33r7ohzAoOqJ6agsZKR7DKfX6/V9+nVfo8AiLOMIc+U5hz5D82EGsXga78cTaQO7b18aEchwTc3G3QOIJFnwjN8EZayjfBOTCPTR2ts7qTH4HRWr3Y5DK1jATho4gjHptrXgfp+hsH50FNPcgkqNOhM2CcV+KDUE4o3cWNxrGMh40WIFkhYai9VbaHhRmBz2Hbo8GNzx3ZhKzDVUoFgWxhFeDXe4iAb2NizOWTTRAjwoOMEKgGgjGLSY66sLGS99qhgmd9O2XTViQu4oiBLEm4g3qanNGg8Qe/p4bxmSbKUJMed0B5HRQqtvZtOgi1RQG6aOty8krVXwuVCCCc+clZ0I5GhFWNIaa4ypAM5rlB9uUPKQPbjwk5
+ /M5aJU2G
+ DwfUO1LTFX3FhYP0Ta7QITSdbyjDjtUdAZx5HjxpqFEJ5ooKbBb5L+ISJ9eqs0n2iDCJcRL0rYMjh8fDNag9SAxLiutzvUoLAslrnbi8utot2SEht0oKXCJl3V+3a54NZhMak0dE6MFvHvmsMbI/Kh1pnAVwpa3gaZlxBgDIe0Ey6TqtmsactEU4amM4wqYa8OYcTikFtAxbs1/NlgGP7CP1t2EzZ6Ym43T7sv3xbO/O9WmzkpxX/f0WDchmorGNZdoKlqylNSc3uP+unXSDE/7xcD3y/F+VaNO7t3KCMnNczcNgMXKEIpL21w+MGgqeUr9sI0aQzDtV3J8RpZqwv3kBXNqdD6mn+rGIXdv2toxnh/5l8lrmz+LSUN1m5x/XkR5IKz/ryiWc/8gop2iq5g6aHIc9Pb2Cz3mZqTUGGtCSb6Qa8CAAgYbL9LYO3AL/EpKs/mhqvnvLkBCjd3n3rXMaovBrhuFJWa+qo3bHs78Itxt8HpbfP6FMpf/f2iQ9dp+nxtvc5Hcr0P5nJdHwI3LSLEVY5Mi6i7JLqqTgy5sYoZfWk5npuLahEk1RmL3emMKYoyzqBgCN/YN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,89 +160,68 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/18/26 10:20, David Hildenbrand (Arm) wrote:
-> Zapping PTEs in zap_pte_range() defers the TLB flush until after dropping
-> the PTL for clean page-cache folios.
+> try_to_unmap() with TTU_BATCH_FLUSH transfers the PTE dirty bit to the
+> folio and defers the TLB flush.
 > 
-> A concurrent write fault in a MAP_PRIVATE mapping can then CoW the
-> page-cache folio and install a new anon folio without a prior TLB
-> flush:
+> Reclaim must flush the TLB before unlocking the folio, otherwise stale
+> writable TLB entries might be left behind temporarily: writeback started
+> by other mechanisms (e.g., fsync) will not find any mappings in
+> folio_mkclean(), so it will neither write-protect nor flush anything.
 > 
-> 	CPU0				CPU1
-> 	LOAD(ADDR)
-> 	 -> #PF
-> 	    installs R/O PTE -> A
-> 					fuse_open()
-> 					 -> invalidate_inode_pages2()
-> 					    -> zap_pte_range()
-> 					       clears R/O PTE
-> 					       // delayed flush
-> 	// Other CPUs (incl CPU0) still cache ADDR -> A
-> 	STORE(ADDR)
-> 	 -> #PF
-> 	    do_cow_fault()
-> 	    copies A to B, installs R/W PTE -> B
-> 	    // no TLB flush: PTE was none
+> A write through a stale TLB entry after the folio was cleaned gets lost
+> once the folio is reclaimed.
 > 
-> CPUs with stale TLB entries will still read from the old folio while writes
-> go to the new folio, until the TLB is flushed.
+> However, reclaim currently does not flush the TLB if the now-dirty folio
+> does not get written back (e.g., gets activated or kept instead). Fix it
+> by flushing right after try_to_unmap() if the folio is dirty, which makes
+> the existing flush before pageout() unnecessary.
 > 
-> We really must process pending TLB flushes if we are not faulting the
-> same folio back in.
+> For dirty page-cache folios that reclaim activates, we will now flush the
+> TLB immediately after unmapping them instead of batching the flush, which
+> is the right thing to do. Performance-wise, it shouldn't really matter
+> much, because folios with dirty PTEs are usually young and reclaim won't
+> even try to unmap them.
 > 
-> Fix it by flushing the TLB before installing an anon (CoW'ed) folio in
-> set_pte_range() if a TLB flush is pending. Zapping itself stays as fast
-> as before.
-> 
-> Other faults are not affected: unmap_mapping_*() users only remove
-> folios from the page-cache after their own TLB flush, so until then, a
-> refault maps the same folio again. The exception is a concurrent
-> invalidation that removes the already-unmapped folio from the
-> page-cache before the zapper flushed the TLB; that is an unlikely corner
-> case that we'll not handle for now.
-> 
-> Note that we don't care about MADV_DONTNEED followed by a new read
-> fault, as MADV_DONTNEED only guarantees its semantics once the operation
-> completed. CoW faults will flush the TLB either way.
-> 
-> For example, imagine that MADV_DONTNEED zaps a page-cache folio and
-> doesn't flush the TLB (but still holds a reference). If the page-cache
-> replaces the folio, a new read fault might map the new folio without
-> flushing the TLB. That's okay, as MADV_DONTNEED did not complete yet.
-> Same applies to MADV_DONTNEED of CoW'ed folios when re-faulting the
-> page-cache folio.
-> 
-> Memory reclaim, which removes folios from the page-cache before performing
-> its own batched TLB flush, will be handled separately.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: Cenk Yılmaz <cenk@deepfinresearch.com>
-> Debugged-by: Cenk Yılmaz <cenk@deepfinresearch.com>
+> Fixes: d950c9477d51 ("mm: defer flush of writable TLB entries")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 > ---
->  mm/memory.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  mm/vmscan.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index d2f48d78b0d7b..e1d9759e6fde1 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5888,6 +5888,12 @@ void set_pte_range(struct vm_fault *vmf, struct folio *folio,
->  	/* copy-on-write page */
->  	if (write && !(vma->vm_flags & VM_SHARED)) {
->  		VM_BUG_ON_FOLIO(nr != 1, folio);
-> +		/*
-> +		 * Concurrent zapping might have dropped the PTL but not flushed
-> +		 * the TLB yet. Flush before installing a new folio.
-> +		 */
-> +		if (mm_tlb_flush_pending(vma->vm_mm))
-> +			flush_tlb_page(vma, addr);
->  		folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
->  		folio_add_lru_vma(folio, vma);
->  	} else {
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 5495d9be90e88..af7831643ecf5 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1455,6 +1455,12 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  				flags |= TTU_SYNC;
+>  
+>  			try_to_unmap(folio, flags);
+> +			/*
+> +			 * Flush deferred writable TLB entries before we could
+> +			 * drop the folio lock and others could start writeback.
+> +			 */
+> +			if (folio_test_dirty(folio))
+> +				try_to_unmap_flush_dirty();
+>  			if (folio_mapped(folio)) {
+>  				stat->nr_unmap_fail += nr_pages;
+>  				if (!was_swapbacked &&
+> @@ -1496,12 +1502,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  			if (!sc->may_writepage)
+>  				goto keep_locked;
+>  
+> -			/*
+> -			 * Folio is dirty. Flush the TLB if a writable entry
+> -			 * potentially exists to avoid CPU writes after I/O
+> -			 * starts and then write it out here.
+> -			 */
+> -			try_to_unmap_flush_dirty();
+>  			switch (pageout(&ctx, mapping, folio, folio_list)) {
+>  			case PAGE_KEEP:
+>  				goto keep_locked;
 > 
 
 
