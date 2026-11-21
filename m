@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC06606A6B4
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD76606A330
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 01:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XOvFYE+T
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rwhelwo5
 Received: by kanga.kvack.org (Postfix)
-	id 14B5B6B05C7; Fri, 20 Nov 2026 20:09:54 -0500 (EST)
+	id 876EC6B05C5; Fri, 20 Nov 2026 20:09:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FCA86B05C9; Fri, 20 Nov 2026 20:09:54 -0500 (EST)
+	id 829596B05C6; Fri, 20 Nov 2026 20:09:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 011856B05C8; Fri, 20 Nov 2026 20:09:53 -0500 (EST)
+	id 717506B05C7; Fri, 20 Nov 2026 20:09:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C822F6B05C6
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:53 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B19A1C2154
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:53 +0000 (UTC)
-X-FDA: 85457344266.05.7541648
+	by kanga.kvack.org (Postfix) with ESMTP id 441A46B05C5
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 20:09:50 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D20F916028E
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:49 +0000 (UTC)
+X-FDA: 85457344098.08.A2ABDE3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B65A0C0003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:51 +0000 (UTC)
+	by imf22.hostedemail.com (Postfix) with ESMTP id 44756C0008
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 01:09:48 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XOvFYE+T;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rwhelwo5;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795223391;
-	b=p/p5YI1MI4RO0ymzXmAr+ChaHkmMEMWHzzirXqfuejMtWdyQ/ekl2U1plgdHfIoSiYN02F
-	AhFrjq38an3nxThBT2qILt8lQtsBqv/fRUlgEtVIiMun5xyKv5+iIsHGrivu3oE0NnKm41
-	o7r6eQsnWQB07Xhz/eZXrkvfwUlsiZo=
+	t=1795223388;
+	b=iUrAkSBXWD1gUpPUPhb8j+v3Tn9kOVoDfmCNhryfTTl9ZV5sgvU+5eaBueiK7mPRFq2t5H
+	4BEGsYgA2XLlG8p9gTZH0xNv92NkcCGa2rXT7+GvuRJ6Y4yjsHpnDuKSKIvhKKTYsapCqK
+	V/ALahTBfxal/MMEDD9DqdQLXoexdYM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795223391;
+	s=arc-20220608; t=1795223388;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/38Y+FPoqQ3SbAvRSfYDCuRB1k1ZW6XJrfVH+lgoa8I=;
-	b=ErovCgN+JS8/G5cBWW5GWLm62+c6KOZSZEVExzD/o1Xy71gVTIRcRnOLpuGg+8HRxThPI1
-	wW4ZhW3faVhilVReRc782yh0T5ms5BdoAQcmPGx8xDrykj9/yC0V4Nq4aNS9jqLsuZco/S
-	0OpVVG8vWx58i/lXVtHyUzbQl4/ulEM=
+	bh=A4xbXvQjiv28jWvXO4Vg6i7eBVdh6dE6iUcXF/hgg90=;
+	b=nEUj7X5lJc/h5IrOwElACjTBEfCB2PZwFCUsK7agU/u+U9iENO2SpOFB9EdtVvJZJHgnjP
+	NnG2TeTtDXl21Do+d/EFRm87cmw0XvDPpMDh0hepFjlgYwBqwrPDyyr841bffjgrR+s6Iq
+	zEmMAwboNRPEcl2XzL7DBKsNzuSj6Gg=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XOvFYE+T;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rwhelwo5;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BC75618F0;
-	Sat, 21 Nov 2026 01:09:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AEF01F000C0;
-	Sat, 21 Nov 2026 01:09:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D3ED462058;
+	Sat, 21 Nov 2026 01:09:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B29D1F000C0;
+	Sat, 21 Nov 2026 01:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795223390;
-	bh=/38Y+FPoqQ3SbAvRSfYDCuRB1k1ZW6XJrfVH+lgoa8I=;
+	s=k20260515; t=1795223387;
+	bh=A4xbXvQjiv28jWvXO4Vg6i7eBVdh6dE6iUcXF/hgg90=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XOvFYE+TKF4ncba6LRm+ewmC0sPpea/5RsJ2T2vvSoB/IaVP0kN7zf6LAeH5q82Fh
-	 cl88WcTzvE8oGjD+oMsfX+x4NOcyLo66extSXvnu2xZ3Cs+DcWjascLrtVNsUOuZ/p
-	 vQ0WZEfhQe1hSzahS8hxvbbltEqHAgwNStG7IuynRAI2lujjUiP8Lrnfl5gvO4M1cv
-	 BSL28+suu6+G0QEew+XEtArRpryVAD1/g+LCBNunl4NnARQGWAZJkZcCiyN1Tur6Tp
-	 c0C8/zg+Yn8Ldi8FzKt9oFmpZZDbPjoM646gEbqgXsRGJot/Lm/BYK7iK3ocsrhlAe
-	 oAlhqZxG0RpJA==
-Message-ID: <sashiko-outbox-226484@kernel.org>
+	b=Rwhelwo5NE5JSL8OldNqHpOoZTqMv6XYyp7p8yfoeNLt55sREZNjPLf/bymELZHTd
+	 P0GYokdChuItC2WkVEMZ+jvrSaU8o7oRATUDgDJNusW6V3P7lS0OZFpDsCNw+dzSEg
+	 eCVghnS3Pzwi79Di35dTN3IPT/UqlBiXn1EHwSLZzH4E18s+oDgxP2tDy/SO2SzqAk
+	 8UfG76bSbU5ZMC9d8HnTTTQ8ItcP/FyRvuFZvdY/W/nW9xfYdQqv/FXShcNc4kE6I3
+	 I8D00x7WNEPOJh+cApbECjc2Iuh3V9WRXYl9vdvud1RLK7TJyqdHhs2DPg6Yo9T99J
+	 o++j+63fuS/nw==
+Message-ID: <sashiko-outbox-226483@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 20/25] arm64/mm, mm: Support decrypted PISA pages
- in Realms
+Subject: Re: [RFC PATCH v3 19/25] mm, iommu/dma: Support decrypted PISA
+ pages
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luigi Rizzo" <lrizzo@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
  Hildenbrand" <david@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Vlastimil
@@ -88,25 +88,25 @@ Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
  Hellwig" <hch@lst.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Dragos Tatulea" <dtatulea@nvidia.com>, "Naman
  Gulati" <namangulati@google.com>, "Pranjal Shrivastava" <praan@google.com>, "Mostafa
  Saleh" <smostafa@google.com>, "Randy Dunlap" <rdunlap@infradead.org>, linux-mm@kvack.org
-In-Reply-To: <20261120010655.467825-21-lrizzo@google.com>
+In-Reply-To: <20261120010655.467825-20-lrizzo@google.com>
 References: <20261109182533.3594984-1-lrizzo@google.com>
  <20261120010655.467825-1-lrizzo@google.com>
- <20261120010655.467825-21-lrizzo@google.com>
+ <20261120010655.467825-20-lrizzo@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 01:09:48 +0000
+Date: Sat, 21 Nov 2026 01:09:44 +0000
 X-Rspam-User:
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B65A0C0003
+X-Rspamd-Queue-Id: 44756C0008
+X-Stat-Signature: xbhc5w7p1ff819c1pkp4w75u4z3dq3zf
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: buy6pozu4p6ucq9bh1tzh5gikho933z7
-X-HE-Tag: 1795223391-712528
-X-HE-Meta: U2FsdGVkX18aoHl1Gk3Z6Bf6+FWqaV5WRdQwpTs1+H249Q774MRVqG9d9bnrNhNe7G7z/hB5u6TGR3xK46OitijfDS7jyeAYY7V7gXB2sh/T0HEXnTf1FZ7wA32kU54/3mHMBiQeLAXMtz21ychJ8WfIE+BZAqX12MHwNs+dbgFuVYQJnJhHKIapdX8785ZHh71ojWY18Du1MBfK+tQGMeoYNIlibk5dS6j5NCX8yBveWqZiaImzALIvucnYCJgKJpPCrgCAMyd1infjmj/zPliYli45vrM2UR3B8oMrolx+0rbWkmySK0x4gazARLuNrvXDZXzCQoHLvWQB7BK77CiCAk0HkxffXY5nKT4R4hBTYTjXeFlBVNR4cJDE2ToO/6QHdBrKy/SUml35UH4vZs4PHd3DwgEuiwvZ9Pxp0aylEgum3J6rGKWZzUGEONq4pAN1naOHv+tp09mBbM5vKZj3mSVvxBeQhXUXpYn7e6R4BmNPu2UeHLsilsQsRxCgnElsdAo8DsjoJtWKjjeCrzZVbfvzfqpStZYOP83NlNQtnL+eyUuikDaWgqNgRS3/9sFG1nvc62eO2sMAfltt7DZGtzLvpJlqUTOH/LyxhXeIBGDJ2QyfOvJAwV0QWhCLQzkmegwI53qeq3mfIfaYWIEfzg/fA9/xk6DT9R4VIByN6yP+1Zo3wdOM0vQiBpioi5V+l967gmv4ndA5dgn+PTEgOUrMjAO1s4lSUhL2tJrxDnsiP7x8CjY7/FTsb2R/gCXDhNwDlmwoawS9eMyl5WMw5mwDrsdVnIdIufswVOwkXMW1LSGdNu0f+QtXVnmVuMUnZDtOQsx8unCgyOk61f/NgqUloluJ0k4LRxeFSjKaL47106Xb73tgU550mh9TdAof1lZwZjtRYSdUQ2/nXmyDekymdTFoENcu5gZwjjK+Z0Ej24nbSHKz+YpXEidCmHxaqErAFTUslTBJwRi
- cfYqL6f6
- XTnoUB0LLIATjY+DbKk/gWiszibCDGljmfU6h8W2JJtk60oRkKJxs/MaB3X4bNbu9LzcKwocy0BcvOaSWi4VxLIewSP/RDV21JhQWnzh/rY8MAGJBYw1YQ0FwV9RWXiTe/LkHkerM3QvMfa5KTPp/Jb8EY/AmxLkj6GaX8REjWusM/dbE0gbra6k4baS0iUI6oGrCcoFxZvP4PXwSPg/ojZsVuSTveo+q5dtLVwxUCxE2M7xB+frGF/2kb6sEMDNRW3U4ssjVIq9umoj1j2Q0P2FsrJQ2WFTih/OZ3OsIDWKAM4a5TFsKCdbEK/pmo5lDO54mYtY1OV3Cz1cLi9nWNCEpq3TvN+NamrU4Zh98Zg8CWUJUZHlOM9BhurIexchr9B/Zm2MzT6MI6Z4zbSi9/1lIZPwmHC++RhCKrFLXL7cJr7PIwGx/yLqijqr+F0uEhuyZixFt2OZjI5OpYttQxLF+zQoU+Z88nUWJuZFN/ya66F5IpCGV1qin1+NQfKiybZvybwhjN1IB+4g/n8X+oPYmmwbpphIxCyjQbORILo+kVMj6xOiBRw9qx4+sLjUFDgpe+Gqa1o9xyG6qZ8B1frahzCNN66bZNbBPQj7cxGx5OKrOeckB8V8PGEAO6iTOlzZRvVYqZ9Hex5q0qp3YuGBogqISQ3/az/12IVLf6sYaVheI67hAA1yjqFsapkJgvyBtk/oyeTiiaZ1TULOunx+kKxJSIsmMtgMlAyu9WlPiOSsrInmN/I6i5PZO9bMvbNTSxp+MhpPA0UgcMosfJTdQpBAz70wG6C35NU4gWvmFNo2EiVY5V5GXXRKkb8LHX3LLcuTx5p+/rJHVu/Ps0i1zN199jFA3pVQRva5sJim2khnhKphfsMObK9KBrbJfoXcx
+X-HE-Tag: 1795223388-248746
+X-HE-Meta: U2FsdGVkX1/QeqsDFfBNzOah/zpnLqylk7xuyNoeJgLRFxsuop1P7BQO4D3ClAz4KF6dLYqYmlLdOusauiAdtvb02eO8Y5cP95q9UeQJJQXofnhwH7NNj1/jVl3hZ5TBVsOnn0zCcdGXyl6XHEFrtmTQaE/2IWYl7kOzIdC/4GwoYAakcOrq2zJBpqmH830mStxVnLRdyF62bFzDEJaL99vCQfyjUR38VD7e8hNfyQ62RfUbtAMyFdXu1XqY4P1ChPRQp6/s8Rsq5QahBpH1dSeGRV8DJXW4OlG7hrUJpS90iwxF624hTaLlPbjMyZ0qnAkc3TlK7+tNjarO4kTvUTOJHf6k8pcqjY/WQ42CIiDMtpYUMQc8YfdBFTI6j/yjmTccz7ScMrzxJJM/Ljs7YEnio0tAUrTsibCpxEWyHyZMLbFPgim2EOB+lyXBdPTNiQluSefaKkH/aB1Rm+qNsKDlCBMHvK7l9V9/HZe2Zba8kF3cB+EYLqPwvXiUgvtv3o8yZOVqAmgilxW3Sg9GxuQa0IzahanenzOnf1jb0bnUEmFxfWHQ2VgCDrNGUIVZbyc/Y8QKkY6TBCrJNCQI5EJnFBHO2w/Z+wdhRifPXaKNPeEDEy3+4wQXpKjr/WhdQ0nb9fYHumiDDNqkEIY+FLFOf3tlpkSar9ig+ZTZKSgrT6Ob36JIhofEWu+5vwS3a+kBDB89Wit4ZNR16kUYWGwwp4blQyFcDVBuzn42A42euTqQrBL6DAA7Fpf1LUx4bqbmxvA3b3hqjWkG6MF/lqVlXccDzhjaWEU547fks7LceJ427F3XxqaT/tbe2udr4P8Br19nidO+4q2qj5nnweTmxZA+Nc+5JG5bXh+k9E15g33Qr/z+ZK2GBFxBlsuFhJEzEKqshYALpH3rZ1iB27BMxOWhP55nfwuIkHLGihIxnJEPecGS+M89DLb+FvXCa2RqHqxfQCouUMV203O
+ wI2aMOGj
+ xxr2wvwSCo5v307lP6SPlH/UmSJRiJo47efAyQQvPPdWfCirm0e0oDIpakQYtgpOYUj++ukHTa+bWFz4+Xj8MG5GCwUeDIrcMxg0j0tyDESNYTjcofgpcN0EWnIX4t1V6dnvv0sVialtVQuwA4GKikE4v2tshl6OQIlFHUabANQcSm//JpQv4kcNIesglEMdZe9g5cAPWbOgNZAH/wSWNRi292o1F2rRk23zeQB3aQbuCqE5LcUIjCUjcPc9F6NIX+9mDhAjuNSc//eGEm7/YaXKVvAFJCaCq3FIAOLGBI6s8VZd/2juUgDP9qmFh9T2RVjUHiYqaEQiF4RrZ5uii7Oz1H8M1eBEGpCJy6AoQDeIUs5ZAuHlm2NoS1K42GVEPhv7TuPIIZv+SzCDPvVAVcrel57KtKVX6ZahflCkH9PzEIfT5CNfoakBSx7SaNBUMnswdmGmqG54Ycg888u8Tyx6OrBeGli62Dd7b8mRBwvyRocrbPL5QoIGFYlXvQMuQ89L2KU6eumUfmbDtCr3w1xHz6se/z46AEJGnhvXor1bmjBGHd+OAxY+6rv//NFGVFH+f2xaR/gx6qpzMHwwtbyNZhMr1ta4QJexW/SExnXMCFzxnEG+CprHf75DGLcb2+OHd7kAE4l6mInwKBTt0TnSW2EWekgPYb6SkYpudLUxLiJNq9ASqwLiYDKF8NfTac7gnMG/Rdh9c6sLV6LeZ+Ii11hr+yck1G52bpdGFyKNqrf+JQJ62r9lpMbckqf9LCleAAdRnU/YalH3jHMYWdgfmCDMG5rOuzhqphbLdNv0S+FnJHtyTPuTIhll8dcX8Sg8l83lZiP8uWmc0c4ozf/nwEcaDuhy9dU7XZ/d5Uhtq5pjiTBSiM8nhKuBXWv+EjgyB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,65 +118,69 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] mm/pisa: redundant arm64 CC_ATTR_MEM_ENCRYPT check in
-  pisa_coco_guest()
+- [Medium] iommu/dma: iommu_dma_alloc() rejects CoCo allocations before
+  PISA hook
 --
 
-commit 4bc8313e88b22932cffa12afb0c2ba3b273c8641
+commit 9188f1b04aac4884c0b7b2222a205db844b8ac89
 Author: Luigi Rizzo <lrizzo@google.com>
 
-arm64/mm, mm: Support decrypted PISA pages in Realms
+mm, iommu/dma: Support decrypted PISA pages
 
-This commit enables decrypted PISA pages in arm64 Realms and strips
-PROT_NS_SHARED in __pte_to_phys() when translating PTEs for decrypted
-PISA pages.
+This commit adds support for decrypting and re-encrypting 2MB PISA pages in
+Confidential Computing (CoCo) guests so that DMA mappings can bypass
+swiotlb bouncing and user mappings use decrypted PTE protections.
 
-> diff --git a/mm/pisa-node.c b/mm/pisa-node.c
-> index 12fbb617c342b..aa4f8759ae5e8 100644
-> --- a/mm/pisa-node.c
-> +++ b/mm/pisa-node.c
-> @@ -36,11 +36,16 @@ unsigned int pisa_reservoir_max __read_mostly =3D 16;
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 45e9432d2a020..5e4d9803645b4 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+
+[ ... ]
+
+> @@ -1780,6 +1781,9 @@ int iommu_dma_mmap(struct device *dev, struct vm_ar=
+ea_struct *vma,
+>  		pfn =3D vmalloc_to_pfn(cpu_addr);
+>  	} else {
+>  		pfn =3D page_to_pfn(virt_to_page(cpu_addr));
+> +		/* A decrypted PISA page (CoCo guest) needs a decrypted user mapping t=
+oo. */
+> +		vma->vm_page_prot =3D pisa_pgprot_decrypted(virt_to_page(cpu_addr),
+> +							  vma->vm_page_prot);
+>  	}
 > =20
->  /* Enabled in CoCo guests by pisa_node_init(): new PISA pages are decryp=
-ted for DMA. */
->  DEFINE_STATIC_KEY_FALSE(pisa_decrypt_key);
-> +EXPORT_SYMBOL(pisa_decrypt_key);
-> =20
-> -/* A confidential guest: PISA pages are decrypted for DMA. A bare-metal =
-SME host is not one. */
-> +/*
-> + * A confidential guest: PISA pages are decrypted for DMA. A bare-metal =
-SME host
-> + * is not one. An arm64 Realm only reports CC_ATTR_MEM_ENCRYPT.
-> + */
->  static bool pisa_coco_guest(void)
->  {
-> -	return cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT);
-> +	return cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) ||
-> +	       (IS_ENABLED(CONFIG_ARM64) && cc_platform_has(CC_ATTR_MEM_ENCRYPT=
-));
->  }
+>  	return remap_pfn_range(vma, vma->vm_start, pfn + off,
 
-[Severity: Low]
-Is the CC_ATTR_MEM_ENCRYPT fallback in pisa_coco_guest() needed?
+[Severity: Medium]
+Can iommu_dma_alloc() ever allocate a decrypted PISA page in a CoCo guest?
 
-On arm64, cc_platform_has() handles CC_ATTR_GUEST_MEM_ENCRYPT in the same
-case as CC_ATTR_MEM_ENCRYPT:
+When force_dma_unencrypted(dev) is true, dma_alloc_attrs() sets
+__DMA_ATTR_ALLOC_CC_SHARED in attrs before calling iommu_dma_alloc(), and
+__pisa_alloc_map_coherent() accepts that attribute.  However,
+iommu_dma_alloc() still bails out on is_alloc_cc_shared before calling
+pisa_alloc_map_coherent():
 
-arch/arm64/mm/init.c:cc_platform_has() {
-	switch (attr) {
-	case CC_ATTR_MEM_ENCRYPT:
-	case CC_ATTR_GUEST_MEM_ENCRYPT:
-		return is_realm_world() || is_protected_kvm_guest();
+drivers/iommu/dma-iommu.c:iommu_dma_alloc() {
+	...
+	/* Not yet supported */
+	if (is_alloc_cc_shared)
+		return NULL;
+
+	gfp |=3D __GFP_ZERO;
+
+	cpu_addr =3D pisa_alloc_map_coherent(dev, size, handle, gfp, attrs);
+	if (cpu_addr)
+		return cpu_addr;
 	...
 }
 
-Because cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) already returns true
-in an arm64 Realm, the extra arm64 check is unreachable today and would
-misclassify an arm64 host as a CoCo guest if host memory encryption is
-added later.
+As a result, coherent allocations for IOMMU-backed devices in CoCo guests
+always fail with NULL before reaching PISA, and this new
+pisa_pgprot_decrypted() path in iommu_dma_mmap() is unreachable for them.
+Moving the pisa_alloc_map_coherent() call ahead of the is_alloc_cc_shared
+check would allow PISA to serve those allocations.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120010655.4678=
-25-1-lrizzo@google.com?part=3D20
+25-1-lrizzo@google.com?part=3D19
 
