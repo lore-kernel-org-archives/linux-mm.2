@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F78B606A69C
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 04:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CE0606A68E
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 04:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B6h7mEeR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dHE5kvuJ
 Received: by kanga.kvack.org (Postfix)
-	id 6AD066B05B1; Fri, 20 Nov 2026 23:20:09 -0500 (EST)
+	id E00626B05B3; Fri, 20 Nov 2026 23:20:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65E1D6B05B2; Fri, 20 Nov 2026 23:20:09 -0500 (EST)
+	id DD7AA6B05B4; Fri, 20 Nov 2026 23:20:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54D846B05B3; Fri, 20 Nov 2026 23:20:09 -0500 (EST)
+	id D149B6B05B5; Fri, 20 Nov 2026 23:20:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F9496B05B1
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:20:09 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95EA01202FF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:20:08 +0000 (UTC)
-X-FDA: 85457823696.02.78646D7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 07E5C120005
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:20:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B6h7mEeR;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 979106B05B3
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:20:10 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 745E6160329
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:20:09 +0000 (UTC)
+X-FDA: 85457823738.26.6E9DA3D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B75F340003
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:20:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dHE5kvuJ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795234807;
-	b=8f+/C5l7g4fGxEGQNj1ZAoe7pxrjJhT2rdROv4dVyrmgnJo/NOy6IVRBU7pdKPdpLzZvoq
-	SneYtB7xlT6l+teBgv0xBvHRjPIYrlxDHjRmknR4ywuHB5Ial3xYModq+YpWwCU8aOfKWj
-	M7AUsphRlBKtGV5qNePCChH+HRUq1q0=
+	b=bMs4YR1WvMuWKGIQEFe3TK7uEQfzgfYTzEK/uq7DH2x8mfb2zXD3HvnuchFrvRBWBTLmg+
+	1cJ2NPM2ZXvyt8ozXSxPwLfif07cHkFt3vjQK7VXLCL9LCUXcmv/hUFmsd7pZ2Xg8pi5Uv
+	kHwZa1jQFtyooiWtydK5NcE6Flwid5E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795234807;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m3vBbC7lB+1mVcxJ5atawTX+EVeRE8qP3n/h7VzprXo=;
-	b=SfS4sO8ywkm/ohWafTEe7njBLMCP34dTsvodho2J4XPYbz3kYGQcnpEbHo9qdqTkgaC2/a
-	H4iHygRd+jUwfKw6H0z5p7brs1/QlyivNM9FCaRoBPy24cpNzBiIPLrBHaslcZrpzUdmb9
-	W2WCcOJ0dfQK8hBc27JAFx46Mc4u8Sc=
+	bh=8ZqbbDSjke+XMJ3ebFLBEmOYyidYIFJAnfBofycZOb8=;
+	b=cmGgWxs5Man0Jrq68GN9HGcSIe7WmDqU8BS8BPeKpaq1PIIRJYTAsq56mTmy1WIYl7eLRS
+	0xze57S4b70Lm9lWBSTU/Tw2odZ4DrEk60d7u0pZL9+u6WBqfHedZFmY6AEJnpFn/IWB5/
+	wo3c4ZFY5x9EdhHRgsLbBABc61GHibw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B6h7mEeR;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dHE5kvuJ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 380C36062F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 106A54049E;
+	Sat, 21 Nov 2026 04:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646721F000C0;
 	Sat, 21 Nov 2026 04:20:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7211F000C0;
-	Sat, 21 Nov 2026 04:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795234805;
-	bh=m3vBbC7lB+1mVcxJ5atawTX+EVeRE8qP3n/h7VzprXo=;
+	s=k20260515; t=1795234806;
+	bh=8ZqbbDSjke+XMJ3ebFLBEmOYyidYIFJAnfBofycZOb8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B6h7mEeR1Mv3qoAzE4yw+PE46Iq0LrN+52Lm/HS9ht0fe5qlh80JanfLMQfrtaZOE
-	 DIm84eFrBlVtY+vuIVc7D4BEFKEg06Zwpr7Fc2S2sf1J6oJPSC322ukSfOhFGUGlYA
-	 tfiHrFYJjpwDT7OQXQ3m8H5mt2mXcjwU3oN/XSVvXS2xeZxITKU7HD+pJSNBi5YJXB
-	 OVLiSdC4KaLxhs5Dl0z08RqkZPF86gcKwnkVErNnpSSxHpBMWCMBH7zP9MvFIw4E1A
-	 xyRaZCsPFGjRzBAd6GYanovcFiCjKDxbmbPSF8Orj8k1WFzuRuNtiTg6TRydV0Lpay
-	 EWaw//njTwELg==
-Message-ID: <sashiko-outbox-226635@kernel.org>
+	b=dHE5kvuJY5/LeYveUlenuretLxiRsnhTU576aiX7Voj9dKn4BshHsU8K03gyizSM2
+	 NCfy+T43GbQ/ZsGJMgG1oAB4IsBm+5VFEozoRSXZxFKqgsXpza6leHoxETCWLTeHvf
+	 kZnVF5WKV8lF1APrsZYaSyvjqUBSCrOz0rW3j/3ts9hwdbJYfBbL5CQBPvPlCGRbim
+	 o1BXuTsLFd1Rc7PvUad15wIUorvA1Up411QtkkQmsXl0hNmvGO7CUZXA6FJlZdrukt
+	 cup+zwO67wRNB9inCdy2nRJWD893Ts97kPtMtlLr5bjGvMexeg+7z+4jociWt05NFC
+	 i10YDnnNf8baw==
+Message-ID: <sashiko-outbox-226638@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 5/8] mm: zswap: Store the folio's node id in the
- zswap_entry.
+Subject: Re: [PATCH v4 8/8] mm: zswap: Batched zswap_compress() for storing
+ large folios in batches.
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>, hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, davem@davemloft.net, linux-crypto@vger.kernel.org
 Cc: rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
-In-Reply-To: <20261120041906.5785-6-kanchanapsridhar2026@gmail.com>
+In-Reply-To: <20261120041906.5785-9-kanchanapsridhar2026@gmail.com>
 References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
- <20261120041906.5785-6-kanchanapsridhar2026@gmail.com>
+ <20261120041906.5785-9-kanchanapsridhar2026@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 04:20:05 +0000
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 07E5C120005
-X-Stat-Signature: kgw9g5uhiz7edurjzkkbmfqdguh88zfc
+Date: Sat, 21 Nov 2026 04:20:06 +0000
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B75F340003
+X-Rspam-User:
+X-Stat-Signature: rtaizbqq9uqt9gp6sumd5bfonmj784na
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-HE-Tag: 1795234806-691309
-X-HE-Meta: U2FsdGVkX1+u79xS77PC0ghMo5mGoZ+Hc44TZbw+mHpwcocD1ylcDEUvZez9Ibi1yrIh3tWhsnP/3jFITkk+RAECtU9TGP8h72NQJ8lIbgRAv48pRJgB2dB57iy/7YaR5L28sFMDFTlab15osaSlx/HOKSChTJoa95Od0lImaXL3XvDFTBnolI8fefmBglhFg2qPirmh0bxJuK5jn1l3yE6Ogm0JVCcNBTVGcrQ5ObgzdlKsRXcK4uB7BVCW5nyJVl8S/neG+4h0C21MhplfP95kK0k5YMsyUZ90jvB7Y8mdggwMc4GqAPyfBF8YXUSljs5y3Rd9HEVlm15iLeZjdX7ovCS7nFXa2e8bbm6Cqs0eJxnkmVf3UvO5Z6QcPh6WvL7G6yQ7mQGeXrSewPb72k1VsywrMQ5g/3MlrCXSNT6pRGbnGbRyjaxahYhoIi9c3/kfr0SjHbDrsk1CJQSNHIWU0u2zfTh/bi2ndi4Ck0ruNdg+hRxuDt/P2J9+FYoK8Jy+9Eff4clHvuqUpzLw25TCKvYOPy4ij6wlIH+pls94hOODcDy2PqmDiA6mLyo+OaditQFL4wkc3ZNU7JZt3NcLlPm1MrTPFO/NH4RLnT/zvL4CD4Poku2pNHyTSmsRGPEb0GZ1aj9AAYROIe4CXkeyuLwOJ2xDoPUXb1/wS3tVEvH4hTpb3jP6gasSqOAyeLvvRx0+J9aW/0srXWDpWunMtBFarui08+E1mh3Ojc1lUDY6wZIJ4qiQXu1aEMpu5YhYoeerqM0UidDDH0ikpsGAkZJkXAXaHisEKpw4iQGciM2NI632ZfaoP99OI3gu/fTGeFItPjrxBf2EoFdR2phT7hBeG2SFb8nx8DVQNvRWdaRe1JYGWCuX3WnWDKnt6TqbNxnssC0DFOTuYfONSDHFaKmfqt6zVRzWjukRd8jGBKLKUVGvOKUh1sH/r0CwnoDkrAjFDuKFDkeGMZi
- H6QXC7i7
- dbYQyCTGbDgydD9o6BbXw+IIFJZqQY7uVhyuzaF0BOyLaWBlO1bDS6tcD3ZPe/ceQsAUDzQsbZThX/TDSA7f1DPdR4AUB3VkJYVVgI7xFVX0H7kvNt7s4i5j7ZxoR8Rbnsgxsg5SryVfDO6dS9DPayxbWf7jamc+nKfizSsQiol6+n96MzBvDWgqc7FrlgyVNzheoiYO5FzybHHZsyo5eBYtRykocf4Z1qm0kHkKXzsgu7Tz9AMsskL1UDNJYUzYy6FauvMmchUb2kJbMzzSEVSi8+GHOENBLhFfnyGY1qehtFgCwtCzZZyg7jmZ1Cjt2TfIRt9Q2vOMzIs8KJ2vR1Yj0VQHiD+MdHkJjfG6sAh1wW/0U7Rdb2Lnu/8coozYS5hGe51JZ50rVJF4eoOmg8aVKnWH284uWXng9cFc87G/bXdbRAPzQ4oP1cNtXiytfDXHm/qGmZFkfPUS0GyekXfcoUTtLgfim433Z8H8WBaazgvyna/hndWN5zhPp1JbXkgMlhZziZ3/pQmld0wu8PaQV6AG83IvCUg6XrJ2fFfMjQd9nGw9SYxA+YjF1OzDNn0/V3uLtDnlLC2v8HstHUykxPZMx1jTlQ/57DfNlZ7z0Gx8F7cevVKjoG9g0La0nl5QdAJKpw2EP/uU1rJcZ3MFf23CEOK7SJ9Pz1wJ3qWjmCt1NUc01PFuZOCpTzilwxXwkx1YseGT+xQwzD/FyY2fpdx2DVzUmL6409DNoqk9IWK+vHgKGsTligXh5eHgI6HkITXW1045NiCEwdhTdRUGCs+2dBI3blFEOvcAjWFHF/b3Ku+10Rn3xSxb13glQ/xvoYmD5RQRyHCPesChHPuINw9c7wjgbLYaR/TtmLla73CE=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1795234807-959387
+X-HE-Meta: U2FsdGVkX1/nXTVHOJG7zP25St8OxJXpe5EzPQolKlgk+1nsQSa/iahtp3Iy1NyyB4cYAPrAmOJhIpy+CDd2wnNAGsGhUahmJYptyOehdat+NpRxg2d0+bFT5cYP6aqQPp80qy2j28ta3d4a1duWFCSnw6iAfwyofAtxYBCArre49YKkXk+fcetnUAjT/snlHjXcgB60qmjCxHZd4RxqfiMkYWyC2xkJE06cQEV9Gtc4y5jEEq/N+NNCsq/jZmMBTGQFju4/6vNMMCvY9nCbmJDM0ZhDr5SOFGVnO67j/BFKFb4JT06lPDaKVcND5uJJxLqxi/7K6QqFAUDSJDIj/gffGzavlaK078zgR6LeXRXW5Q6ZvTZbaf/4iKYA/o26rauqRWOxsUpUSOYP9D4ul57MMlpR+srr5hf1kLqsqMwnz2AWUSURb0IDPgxFQcPqNuzr+/ftqcVwxa3tsElGAx00r95O06ByI0nkJ1tgu2s1vAwH7vARDdXy0vo7iyZREkAKqm+EmIzkCmd2HLNtHwR2mn1AmZtb/kH7EH/qrJGo0MopfzIjk6mu9lN3dL1Vv6ZYVbasZG9f+lCoY8SJOnxGENEaI/XU5wT5hFyCpZGwcbQTsFeyRms8il917E5ITpB72DbtHilZ6JK2AZuR6w8X8X1x759+fx4aeUIORn06KWcTKjMMsLSbmV2lMGdwXu1xqF0bThPGwjiVVv5fqMnIqgQ4uWKasnPpU21p1k//MZShuWIkblk3LncBv7L5hTdaG/41dF8Av658P3eb2kTDycS98hkiYn/6ChclR96hOHRw2EeenDroQY+U5yrYRN1Ls9WwXJjJnh9c487R3ODHN5ZjJXg0LpAHgYdNwl5hQvjp3UILKE59X+nR42LXO7z+EMFuVS/eSiaTkRdFdG+F1Vw4n+J1eRdTTsdStXalZW+34BvA+M2IdKSTfROgVtXDdF3p3Ueq2Q51JDP
+ swIQmN+m
+ 7wgboyyLNnxt+NbzIYogmrwoQowL603UuMfDPhwKct+eWjbtN7W7nA/fbw09jUb1AP4twiRerDU+PydFGDkJlQGnaDlPDgJlpqZB4ri+1/Lw5NM4i5j4SNYllrrPfq8YvQxJuPIkpQX7u7GlGbnCCyaqXp2u9gO8CvL9NHp4Z7Rv/kzuyQoRZFejiaVFTwrctdtZ+v9JzMx83007arlJkSNfjXYLdS4cJLyyMiV2Hpqg0GzYRFmUnu8L5zFuZqKnNsOIg54A+W2yJ8wD5wVGSRqj8KACRF3x/6yGI3lbL5TNbMKdlK4be52xztIL/WvO9N8bqYVSouC9L+Bu+jEfzJfYeH7Do9sfKiP2r3PfpmJMZGB0HEKXY3zQeRnr4s3xGRpWP/1qOq+eN8MCvGNsNUJ4XwcN3n5zmrUwDPmMeiAHqIl+/G2eB6xu1E4oNWie6glT1dKw6l0fhj71+Uj8zxI1SBC0HM9p/6P3KaR3rCLp4WyWkp0eDs3qwnC55cEzgqfKyK/df2UYdNlbAIY+f7e9G8P7pu5zgNxb+c2DmTrvpL93uFsY40hUKckFE409UETwutavTnOmAzgi/31gdCopMT2ZtnPXtL0WaZCqPve+7xJbNzND8QYbf3EfoNweebelgxu554dSbHuOmhle4/GgPpWFgdm+2JKtKak+Cd3imCz05OEl3E+wob/ATqRD/1NM6NsdtUDnKHzN35I1DovFY/e568fwDMyWeEYhiBcG6WmhQr8XTPawrhDW2drHX4fGQ8yFShNZ2DSeUdpgJSctdwC7FLMPp/eylh720JGpZkUpqJW0p6B4jlrw26UfvyceONNZBeLaTYf6diAJmShrng5GcQRUr6/uGnVISAIojEz0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,98 +94,215 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm: zswap: shrink_memcg() skips non-N_NORMAL_MEMORY nodes in
-  zswap_list_lru
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [High] mm: zswap: invalid and unreset dst scatterlist lengths in
+  zswap_compress()
+- [High] mm: zswap: unterminated dst scatterlist slice passed in
+  zswap_compress()
+- [Medium] mm: zswap: unsigned sg->length check and error accounting in
+  zswap_compress()
 --
 
-commit e4e47a21782dc39867fe81289fb7e9ed7f2692b4
+commit a77cc3e636d5134b6371aa977bb1025c031583c2
 Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
 
-mm: zswap: Store the folio's node id in the zswap_entry.
+mm: zswap: Batched zswap_compress() for storing large folios in batches.
 
-This commit stores the folio's NUMA node ID in struct zswap_entry and uses
-it when adding and removing entries on zswap_list_lru, instead of deriving
-the node ID from the slab page backing the zswap_entry.
+This commit replaces the per-page zswap_compress() call in
+zswap_store_pages() with a batched zswap_compress() and
+zswap_update_entries() that compress up to ZSWAP_MAX_BATCH_SIZE pages per
+batch using a per-CPU scatterlist table mapped to destination buffers.
 
 > diff --git a/mm/zswap.c b/mm/zswap.c
-> index 9a323862bd59d..78d9694f75b5e 100644
+> index 5e1fb5624ffb8..56354a568bad0 100644
 > --- a/mm/zswap.c
 > +++ b/mm/zswap.c
 [ ... ]
-> @@ -680,14 +685,8 @@ static int zswap_enabled_param_set(const char *val,
->  * lru functions
->  **********************************/
+> @@ -949,6 +971,26 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, =
+struct hlist_node *node)
+>  		}
+>  	}
 > =20
-> -static inline int entry_to_nid(struct zswap_entry *entry)
-> -{
-> -	return page_to_nid(virt_to_page(entry));
-> -}
-> -
->  static void zswap_lru_add(struct zswap_entry *entry)
->  {
-> -	int nid =3D entry_to_nid(entry);
->  	struct mem_cgroup *memcg;
+> +	acomp_ctx->comp.sg_table =3D kmalloc(sizeof(*acomp_ctx->comp.sg_table),
+> +					   GFP_KERNEL);
+> +	if (!acomp_ctx->comp.sg_table) {
+> +		ret =3D -ENOMEM;
+> +		goto req_fail;
+> +	}
+> +
+> +	if (sg_alloc_table(acomp_ctx->comp.sg_table, ZSWAP_MAX_BATCH_SIZE,
+> +			   GFP_KERNEL)) {
+> +		ret =3D -ENOMEM;
+> +		goto req_fail;
+> +	}
+> +
+> +	/*
+> +	 * Statically map the per-CPU destination buffers to the per-CPU
+> +	 * SG lists; crucial for performance.
+> +	 */
+> +	for_each_sg(acomp_ctx->comp.sg_table->sgl, sg, ZSWAP_MAX_BATCH_SIZE, i)
+> +		sg_set_buf(sg, acomp_ctx->comp.buffers[i], PAGE_SIZE);
+> +
+[ ... ]
+> @@ -965,88 +1007,179 @@ static int zswap_cpu_comp_prepare(unsigned int cp=
+u, struct hlist_node *node)
+[ ... ]
+> +static bool zswap_compress(struct zswap_store_context *zc)
+> +{
+> +	u8 nr_batch_pages, batch_start, comp_batch_iter;
+> +	struct scatterlist *sg, *dst_sg;
+> +	unsigned int slen;
+> +	int err;
 > =20
 >  	/*
-> @@ -704,19 +703,18 @@ static void zswap_lru_add(struct zswap_entry *entry)
->  	rcu_read_lock();
->  	memcg =3D obj_cgroup_memcg(entry->objcg);
->  	/* will always succeed */
-> -	list_lru_add(&zswap_list_lru, &entry->lru, nid, memcg);
-> +	list_lru_add(&zswap_list_lru, &entry->lru, entry->nid, memcg);
->  	rcu_read_unlock();
->  }
-[ ... ]
-> @@ -1537,9 +1536,10 @@ static bool zswap_store_page(struct folio *folio, =
-long index,
->  {
->  	swp_entry_t page_swpentry =3D folio_swap_entry(folio, index);
->  	struct zswap_entry *entry, *old;
-> +	int nid =3D folio_nid(folio);
-> =20
->  	/* allocate entry */
-> -	entry =3D zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio));
-> +	entry =3D zswap_entry_cache_alloc(GFP_KERNEL);
->  	if (!entry) {
->  		zswap_reject_kmemcache_fail++;
->  		return false;
-> @@ -1554,6 +1554,7 @@ static bool zswap_store_page(struct folio *folio, l=
-ong index,
->  	 * to an unrelated live pool.
+> +	 * @nr_batch_pages is constrained by the per-CPU comp_ctx's compressor
+> +	 * batch size and the @zc->nr_pages in this store batch. @slen indicates
+> +	 * the total source length bytes for @nr_batch_pages.
 >  	 */
->  	entry->pool_idx =3D pool->idx;
-> +	entry->nid =3D nid;
+> +	nr_batch_pages =3D min(zc->comp_ctx->compr_batch_size, zc->nr_pages);
+> =20
+>  	/*
+> +	 * Compress the @nr_pages in @folio starting at index @folio_start
+> +	 * in batches of @nr_batch_pages.
+>  	 */
+> +	for (batch_start =3D 0; batch_start < zc->nr_pages;
+> +	     batch_start +=3D nr_batch_pages) {
+> +		/*
+> +		 * Clamp the last iteration's batch size if the compressor's
+> +		 * batch_size does not evenly divide @zc->nr_pages.
+> +		 */
+> +		nr_batch_pages =3D min(nr_batch_pages, zc->nr_pages - batch_start);
+> +		slen =3D nr_batch_pages * PAGE_SIZE;
+> +
+> +		/*
+> +		 * Send @nr_batch_pages to crypto_acomp for compression:
+> +		 *
+> +		 * These pages are in @zc->folio's range of indices in the
+> +		 * interval:
+> +		 *     [@zc->folio_start + @batch_start,
+> +		 *      @zc->folio_start + @batch_start + @nr_batch_pages).
+> +		 *
+> +		 * The source folio pages in the batch are directly submitted to
+> +		 * crypto_acomp via acomp_request_set_src_folio().
+> +		 */
+> +		acomp_request_set_src_folio(zc->comp_ctx->areq.req, zc->folio,
+> +				(zc->folio_start + batch_start) * PAGE_SIZE,
+> +				slen);
+> +
+> +		dst_sg =3D zc->comp_ctx->sg_table->sgl + batch_start;
+> +		dst_sg->length =3D slen;
+
+[Severity: High]
+Does setting only dst_sg->length =3D slen overrun acomp_ctx->comp.buffers[]
+and leave dst_sg[1 .. nr_batch_pages - 1].length uninitialized when
+nr_batch_pages > 1?
+
+Each entry in acomp_ctx->comp.sg_table->sgl is mapped to a single
+PAGE_SIZE buffer in acomp_ctx->comp.buffers[i], and earlier runs overwrite
+each entry's sg->length with compressed lengths or negative error codes.
+When a batching compressor runs with nr_batch_pages > 1, dst_sg[0].length
+is set to nr_batch_pages * PAGE_SIZE (exceeding its PAGE_SIZE buffer),
+while dst_sg[1 .. nr_batch_pages - 1].length are not reset to PAGE_SIZE.
+If the compressor fails when zc->wb_enabled is true without updating
+dst_sg[1 .. nr_batch_pages - 1].length, any entry still holding a stale
+compressed length (0 < sg->length < PAGE_SIZE) from a previous call will
+skip the PAGE_SIZE fallback and cause zswap_update_entries() to store
+stale data from the previous folio.
+
+Each of the nr_batch_pages scatterlist entries in dst_sg needs its length
+reset to PAGE_SIZE before crypto_acomp_compress().
+
+> +
+> +		/*
+> +		 * The per-CPU @zc->comp_ctx->sg_table scatterlists are statically
+> +		 * mapped to the per-CPU dst @buffers at pool creation time.
+> +		 * There are ZSWAP_MAX_BATCH_SIZE per-CPU SG lists and dst
+> +		 * buffers allocated for all compressors.
+> +		 */
+> +		acomp_request_set_dst_sg(zc->comp_ctx->areq.req, dst_sg, slen);
+
+[Severity: High]
+Isn't dst_sg an unterminated scatterlist slice whenever
+batch_start + nr_batch_pages < ZSWAP_MAX_BATCH_SIZE?
+
+sg_alloc_table() only sets SG_END on sgl[ZSWAP_MAX_BATCH_SIZE - 1], so
+passing dst_sg as req->dst leaves sg_nents(req->dst) equal to
+ZSWAP_MAX_BATCH_SIZE - batch_start (4, 3, or 2 instead of nr_batch_pages).
+In-tree hardware acomp drivers rely on sg_nents(req->dst):
+iaa_comp_acompress() falls back to software deflate whenever
+sg_nents(req->dst) > 1 (affecting all order-0 folios and 3 of every 4
+pages in a batch), while __qat_bl_sgl_to_bufl() and
+hisi_acc_sg_buf_map_to_hw_sgl() walk and DMA-map all sg_nents(req->dst)
+entries up to sgl[3] using their sg->length fields, which can still hold a
+negative errno such as (unsigned int)-ENOSPC (~4 GiB) left behind by a
+prior failed batch.
+
+> +
+> +		err =3D crypto_wait_req(crypto_acomp_compress(zc->comp_ctx->areq.req),
+> +				      &zc->comp_ctx->areq.wait);
+> +
+> +		/*
+> +		 * If a page cannot be compressed into a size smaller than
+> +		 * PAGE_SIZE, save the content as is without a compression, to
+> +		 * keep the LRU order of writebacks.  If writeback is disabled,
+> +		 * reject the page since it only adds metadata overhead.
+> +		 * swap_writeout() will put the page back to the active LRU list
+> +		 * in the case.
+> +		 */
+> +		if (err && !zc->wb_enabled)
+> +			goto compress_error;
+> +
+> +		/*
+> +		 * For each output SG list in @acomp_ctx->req->sg_table->sgl,
+> +		 * the @sg->length should be set to either the page's compressed
+> +		 * length (success), or it's negative value compression error.
+> +		 */
+> +		for_each_sg(dst_sg, sg, nr_batch_pages, comp_batch_iter) {
+> +			if (((int)sg->length <=3D 0) || (sg->length >=3D PAGE_SIZE)) {
+> +				if (!zc->wb_enabled) {
+> +					if (sg->length =3D=3D PAGE_SIZE)
+> +						sg->length =3D -ENOSPC;
+> +					else if (WARN_ON_ONCE(!sg->length || sg->length > PAGE_SIZE))
+> +						sg->length =3D -EINVAL;
+> +					goto compress_error;
+> +				}
+> +
+> +				sg->length =3D PAGE_SIZE;
+> +			}
+> +		}
+>  	}
+> =20
+> +	return zswap_update_entries(zc);
+> =20
+> +compress_error:
+> +	for_each_sg(dst_sg, sg, nr_batch_pages, comp_batch_iter) {
+> +		if ((int)sg->length < 0) {
+> +			if ((int)sg->length =3D=3D -ENOSPC)
+> +				zswap_reject_compress_poor++;
+> +			else
+> +				zswap_reject_compress_fail++;
+> +		}
+> +	}
+> =20
+> +	return false;
+>  }
 
 [Severity: Medium]
-Can shrink_memcg() miss zswap_list_lru entries when a folio resides on a
-node outside N_NORMAL_MEMORY, such as a ZONE_MOVABLE-only CXL or
-hotplugged memory node?
+Won't evaluating sg->length > PAGE_SIZE on an unsigned int trigger
+WARN_ON_ONCE() whenever sg->length holds a negative error code?
 
-Previously, entry_to_nid() took the node ID from the GFP_KERNEL slab page
-backing struct zswap_entry, which was always in N_NORMAL_MEMORY.  Now
-entry->nid is folio_nid(folio), which for GFP_HIGHUSER_MOVABLE folios can
-be any node in N_MEMORY, while shrink_memcg() only walks
-N_NORMAL_MEMORY:
-
-mm/zswap.c:shrink_memcg() {
-	...
-	for_each_node_state(nid, N_NORMAL_MEMORY) {
-		unsigned long nr_to_walk =3D SWAP_CLUSTER_MAX;
-
-		shrunk +=3D list_lru_walk_one(&zswap_list_lru, nid, memcg,
-					    &shrink_memcg_cb, &ctl, &nr_to_walk);
-		scanned +=3D SWAP_CLUSTER_MAX - nr_to_walk;
-	}
-	...
-}
-
-Entries stored from non-N_NORMAL_MEMORY nodes will never be scanned or
-written back by synchronous cgroup limit reclaim or shrink_worker().
-Should shrink_memcg() iterate over N_MEMORY instead?
+Because sg->length is unsigned, a negative error code in sg->length (such
+as -ENOSPC from a failed page in a batch) satisfies sg->length > PAGE_SIZE
+when !zc->wb_enabled, firing a spurious WARN_ON_ONCE() and overwriting the
+error code with -EINVAL so compress_error increments
+zswap_reject_compress_fail instead of zswap_reject_compress_poor.
+Conversely, if crypto_acomp_compress() returns an early request-level
+error in err before writing negative error codes into dst_sg->length,
+jumping to compress_error leaves all sg->length values positive and
+returns false without incrementing either rejection counter.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120041906.5785=
--1-kanchanapsridhar2026@gmail.com?part=3D5
+-1-kanchanapsridhar2026@gmail.com?part=3D8
 
