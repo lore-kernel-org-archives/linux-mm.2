@@ -1,120 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A923E606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 19:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55874606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 19:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=a9e85s3/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bedBI7aV
 Received: by kanga.kvack.org (Postfix)
-	id 9F4036B05B0; Sat, 21 Nov 2026 14:41:19 -0500 (EST)
+	id 4776E6B05B6; Sat, 21 Nov 2026 14:42:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CB846B05B5; Sat, 21 Nov 2026 14:41:19 -0500 (EST)
+	id 427546B05B7; Sat, 21 Nov 2026 14:42:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E11A6B05B6; Sat, 21 Nov 2026 14:41:19 -0500 (EST)
+	id 315E76B05B8; Sat, 21 Nov 2026 14:42:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 66FAF6B05B0
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 14:41:19 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B69F2C05C8
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:41:18 +0000 (UTC)
-X-FDA: 85460145036.25.4BD0C58
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 86068180004
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:41:16 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 0F2886B05B6
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 14:42:13 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56006C05CF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:42:12 +0000 (UTC)
+X-FDA: 85460147304.20.44A1CD7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AC562180007
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 19:42:10 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="a9e85s3/";
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf24.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bedBI7aV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795290077;
-	b=ffafcr7QaTHn0BaKiq3prB1XqAAxTpuY+Mrr/TGw1gDci0PdR6hU+SzjadTKe6x3fBCfV9
-	FynFUUIvB+1j0/eTkbts4Mme3eqyBI2rewDzSdsm2J8Y1WmFuxeW4jekxfhznhmKafDzu5
-	Npo82VOzRfaYjo9Vv6XWsvVcxzNnd0w=
+	t=1795290130;
+	b=lzPMiPniVAWzDnF4rdSBlwGBvClOCenjh65a3BI8E/0wfc87wDkvqGnYaqZMC1w7JbAOI/
+	uX9mdBtDcpaohPVIXb963vcLiam+IZDnvyrLyBZtlWs8LFt2/SemUzV8/UaXw3Bu9MiGGp
+	ac3+ZH5ImN/iVwWvLKB4mRgZSYIQGxA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795290077;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1795290130;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+onO+f8a19JOkIsaY0Ktl6fAq9BXdKARBPZo/DbSfCU=;
-	b=xRfsK1WTY99V6PmTPGMo2wz49FXMYAon3iA5rk9kRgNND1T3oePlWW9PM4f/rYeBlrAqAJ
-	msTBHukk9UYy6sRgVbmO4r2J0/294i02BExDNARwQObG97GoqpL3mV2WQRVAf34knjvgSR
-	Ec9O/MRR8yhMBlqPzC9a273chGpXJOE=
+	bh=sULQB/3Q3yNuI6DbYkIoJUffkHiAfgS8UC+0bPKsFgU=;
+	b=WjrherSK5Uu9sYvEZ7ZWfLUqoO3cJlPasLik3Dmg3S9D+B3+hkPuEOb5slrWG+6ldz3KSg
+	0yRedJoPrA/1Fdmi1QKeRTtI81tLHl/fBmCkcOoabx0rkjEoq8wHX4fcX56O8kAzKI0kwa
+	llijk9ftyNShECEjeF2BsfCFSNi/Ra8=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="a9e85s3/";
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf24.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7E11940E00DC;
-	Sat, 21 Nov 2026 19:41:13 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id GJebFJ9-qlEV; Sat, 21 Nov 2026 19:41:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1795290070; bh=+onO+f8a19JOkIsaY0Ktl6fAq9BXdKARBPZo/DbSfCU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a9e85s3/Kcg6dkQ4T/hod+dHO+ADXdQXKv80Rc06qwTecP/R43KDj6Tf7mOA4GDcE
-	 CtwDSx5FolO6snw/xn7zaBizU+UyqRv2z/Ka9CfNOevUJymosv2KYuIVnPwCnI9jS+
-	 Gr80otaHgiV7SbeWX4Lerce5gyskwWSZ2CGdZjvZ6hXtiiebuwyB5f53E7MZaLjFBG
-	 3FhhGiBHs8lfLRwPSf2JVQxtpqqkXr4ghaYyfqJPvGy3TaILZEoQ45PMHQPNxgVRUs
-	 7MWBv3k/1LCalDnIP6qXRCZeEe3ythQaxfD8uY0/F4Sd67rPOrU54e+cogrSasT2UU
-	 DfbO/cBzBLgTYAn/NlzU/+dysZ0F2zO8CNYdGTNYhpa1+KDHRiRCAEoVjdwe/9y9qQ
-	 SLIBW2ZoIPC7NkndmPiZOhjevW1FDuWVpWK5sIjRWBCoZPDTn0ctDkgxkQnsn5CFVi
-	 B339NEmPnE6t/FVch24RfqhW3LQJDyn2XbMkHv8quVtReb/v8PYNTAy9BQxk49k+Y2
-	 uxQ5y3ntPRgw+Igch283WMP5H5NyZYappEXYUnmq2XAHwY2Lhxg31v2hGnix+VKjnI
-	 r3l6BR+7vwp8LUseBXEc/+wrNQk6x32BAJhPZSIXeTolPchGgRkX5Ft3y9OVtRmWGo
-	 41yM3Zn3a+BzfhjJOas2NWyQ=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6CAB340E019C;
-	Sat, 21 Nov 2026 19:40:33 +0000 (UTC)
-Date: Sat, 21 Nov 2026 11:40:30 -0800
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shijujose2008@gmail.com>
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	ashok.raj@oss.qualcomm.com, jic23@kernel.org, linuxarm@huawei.com,
-	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
-	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	gthelen@google.com, wschwartz@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com
-Subject: Re: [PATCH v23 2/2] ras: mem: Add ACPI RAS2 memory driver
-Message-ID: <20261121194030.GBawHzrrCNCMpfr7Gx@fat_crate.local>
-References: <20260726212812.89266-1-shijujose2008@gmail.com>
- <20260726212812.89266-3-shijujose2008@gmail.com>
- <20261017055852.GBatMOnEl66YObvU5k@fat_crate.local>
- <CAG4KcR+NOKHNzg6FN-oLLHgUxeitZHKXg9cN7dz24+Ap=RrwSA@mail.gmail.com>
- <20261110071729.GIavLFCfLKzPx8R0i0@fat_crate.local>
- <CAG4KcR+ikfQEBjCZiNJ1CUz=u3Gtbk_XDroA_GQqYpgO4Lo5Qw@mail.gmail.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bedBI7aV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C45A743A25;
+	Sat, 21 Nov 2026 19:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5290F1F000C4;
+	Sat, 21 Nov 2026 19:42:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795290129;
+	bh=sULQB/3Q3yNuI6DbYkIoJUffkHiAfgS8UC+0bPKsFgU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bedBI7aVCspHsh4ZdaN1XF+8PoUrhYhmAa8fONB2RqeBqNI8NUgkMAfWJK4+tFIsB
+	 aZz/U7Eibxdoarb+NrxYtaCm5xilWsYkvCHW1SEjSLhzc2t/66QMhRtlIblAXB/hqU
+	 rQqZcxL+IbXOAt5xB+s7C5dMQuK04ST3PoChVFNHzCL8JevR83Of2cPPa94MyTOQQO
+	 m+JIDzi2piV7ZCclyV86C09qdgxviyciM+7M5t6P6kF1kCENTuKvUSjqWH/JzeWen7
+	 c5VO76dJgNfNi3dXLgpbKdyu5esf7LfcUXGE5H/hNgIbRXhq7EBy8Wyo+cfOsNtClf
+	 yk3Sw/p8qFpwQ==
+Message-ID: <sashiko-outbox-227319@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 2/4] Docs/mm/damon/maintainer-profile: use damon.git
+ for patch baselines
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "SJ Park" <sj@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Randy Dunlap" <rdunlap@infradead.org>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261121193331.108587-3-sj@kernel.org>
+References: <20261121193331.108587-1-sj@kernel.org>
+ <20261121193331.108587-3-sj@kernel.org>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAG4KcR+ikfQEBjCZiNJ1CUz=u3Gtbk_XDroA_GQqYpgO4Lo5Qw@mail.gmail.com>
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 21 Nov 2026 19:42:08 +0000
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AC562180007
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 86068180004
-X-Stat-Signature: f69zqpmmjaq7iqsd8we4jpg8ifgzd8ng
-X-HE-Tag: 1795290076-976267
-X-HE-Meta: U2FsdGVkX18YnA0hXtNQv0N+gYp8h9sjB2x8W+/gfk/bbcjT8Y5cj+D1qNh3al7UaL17RMxlGLgiWTnVgQ9pRWGrFqouFkkQFogNs2Thl1yv3aE2BJOTbUN3Jo2pHKGghlkaHR7KVtn+5u+2yK8mWNyt+6sH7duJPQxPysGLhFxk0U8ovwjIIpMAGyF33kPygCMK6qfxMCNbeK0mT7LgRn1uOMuS5WauC0t7Rgnz2LzUMaNOHdxUr3ORWjtazQeswm04tY9mxwCMDa4lpUwItZ+sQfTKjHJZIX6exD+UYYZBGW/0+tVoeuNes41b9U0w6baLv2Xh6nlIGay3vzcZoEzKE8kPzUwD9Wppc3que9pN5ohJxNRHByDkQ/n4tObnCN3bmywVShCH8o/opd+lhRLGDaOOdD+UblUyhr2OjqMSnnXN+dWOBzDuh6V0O78kVZAP7e8bWIAENC7eN+KpkxHQoazBNygHPYnky8vARbPyqtzrscHdlLKAHklkwEWFEa0Vcd4Z7LWj9i4GYyjnDr3Y/Y3+l00G5AzqnvroNkTN6xO91AfIXmY+QYf4D2rnRyyQxPDv9bt7PsIuxB9klCZbuAgOLIzbDUdCP/Oyp4IW2YX/UkbKo4GtnVZP9vC2ACWURM3aWiDCZZ+QX0P6BtLTBwq6RiJO93ER2tO+6TVc6OSMJL0dJ+4ZjMsLhkWHsAxumllvnK9dloz3ZpuczqByVH4Idqm2VzGcZ3FruBnxHWSOE5Wnv3OlCvSiptRzUB1jO8fkB9MAdYNEfO69NktM0OtuUKQkbytkM71VVA1Vg67mx9L8qifTfXPSPJrMa5xuAj2kg/9E+cTuO++3cPNprZQq2P6W0ADZU9vplcS+iWiwzmrsCUG0AiX4VqXk+CeYhHurFzWe0yACko1mNB1fgmncVSn038SGr8iJnw3jjhnztBQDXdLrlnBfLMlYBzyHCnrNpWnhAG8IYmX
- 8kgTMbz4
- 50uAndUHPyr0P0sl+UuQqKuBjI+XheJcLsFkkggwBNrtYRHlJr0PV9cUpV+yT6peeBbiIEvb+LRKwG4kh9/ngKOZLthYDcj+NO23uc3DzX/0nwCsFaR3Vpnp8/9+TfZZh0oLx3tIKQYoRA4xRQ1WAHjVPhOgzvM6TPcfd4p8tKlQ9GD5RajGvjC8YErp7D6iDbcCSoAJpzT/wObZp+hz1qjRlxghOeJ1Q25EiVvQ7ZFrpLEjoAuqzFPylgW0evSvE4z47sP4rv304SYZ9t2RSuy+3gzBrSEUtFI+1BQMWigAk7J6Al9Hv0Z78dE/NYdpwCJgL4Ph01r4e6r15vPLRppbsMhQDdnia4AqjVusMwbbLBAoe1KJZVpu7o6TMGzK5NJPSNmJjNY7vTj/WOCyj4qF9DrpVYsow8jJ4m/CknO6ZcHrHudWo1sgQEZjvTgXB/Y6yX8oULeGRGXehoc/9HYn0HR24aYvjMankc6umThL6DhbnTN1+5AYB6PWxiijkg013HHhDj2tRY3o=
+X-Stat-Signature: 9sybqme1o89ekkyz9xps66in6e5khif3
+X-Rspam-User:
+X-HE-Tag: 1795290130-594133
+X-HE-Meta: U2FsdGVkX1+Khek3kzk6M4X+WH7HcWRd4hc/2RDPynPxwbt/VHmWYzbFzLZe0wFbKpu8NAf2ul0BXprcwi3LcaJWqwI5CkQHOW+qh1YKoMbHGfkhVDR3AxHNjUIlveTEGCTz8g+g59dxQ4WIhTLxoDJox/x8oxh0LXFaouYYxnxSPzK9qXSN1XCtmuuVoJcDE3u+IVpMJSOM5Fh7jtjGeTj1LD4k5pob0OOtPufQt1v3JJ2dxaLxJgDn2rBah1nOx/UcQwoSuXoq6oZgQFSmf6sS7u+9yYublcMZMOPeQ3WPWerIHdE9QRulIcTJ5OFm4VXzStBUvoMLVpPcOI8HdHqkgWvxB+otEnrJ2UGAYY9AL12OCZCu2p6qxKN3YDl11zvBhqJ9H+5MYNlms5eN7NLnu0x6Wdh95tncIgftYnZKFvXvoeutMEhuYToG+f0irro6Z6UO+EgJ1cfFftMcPHnzFUAB8U7t9C+vC7axpv4PbfDynzaITCziXH96jw5wX0ILoVcCKoNEArPkzGvkYF+DpEKRJvVsiMa48mpQvmwy4vvrgch1WX1koGdn29zlm6m1BqPfQc4oVdAnihmTgIQc38PBx58Lx8fh4+8CaQb/lEJAYonNcXjU0hMEOc3AiZII5sCsdlealuCvwHY8sjvllmMBC58ZMxAoO75afAQNb3bpaLh4sVTeUnoDqY+t/CXI85nZIs8eRRuin/EfoDGrslB0lCzzgar6rLyCozWI4lftCR0FHsxhxnI83/9CSARjcGdGHByNNU5GgPEWAdHXvh91C8h533+RK24wltakujeBBUtsRb5rqj7tLICPDQ5+4oiBCGpl0u2CkakrIQSR0FuUnoR+YmMDrIzmBNqsZ8qqVsyAysouibR3qunTb3m3PRZtIBAiKRb46WrgE2XcOL5IfAR/ViB5CBUxgUjFATAzB2b9PYQZClcDL06/MrojSAggbYEHkdBsLnh
+ upqbvRwz
+ 2+yxS2jbpj8BZxliW+0l6JqJvIc270ruHJdXWeX0D1s0rMoyvtH9jtTVFa+0nY3yiUotiUsBSsIVkz202xNtFrkJuj6XmIXSbTa9df3OpvlMnRxu5QB4aTiiZ95BQcAqc0ZBUIWilob8ouhouPyGmbWI9icHteh+0MxiIEEjNzRkYuwJxTN9G3hqhnZK2cdi0C6pDzrAUYSs5xtPcdNhG6rfLYaTxodwZifOYj08LB6D4GR/Q+sdryTAtSn4bC+QpeOPvY4zZL97y8YTEcwSiI2RTsey5ntm95hBrlBJ4/eP4YkD2ARhy29tHoaQwKfxAYMzBa2pAL7Cd2qH/ZA+B+/2UGVAcuBs4iPaAhapzH4AIm8W7nkBhNeTQmRCC961DezPkUMY7jJoIPSG0DMqTt5lhr5nnGlqhtpFm2mF/BGJrwINfusr73g8ejyv2tSIKsIUJF7Po9IE80upqbXxyf1fCZBdllBJCvk4m+9CPTbOgX5w+r47s0x5q8Ujhci1ib04/aO6zMvotXjtNqiD8cLJeqhE4bOnj16S5o5tNjMAYGCH075QH7xLWO3sAXHSNH5dAmSsgH7amW8VUHHLANUZ0L3dEZd5gfI2Vfi91CwFJO92JXv3R5i+7vmf3WxlNsRjiAgF5Z6bLXCOxnk7LsyAEnqQ0wPQgv2yFML5X/kaWjjCEeCXozNbLGQXNpurn640/kzasw0K5QzcKLudVX5VPYpIpQz+i4x30aSA5qlERXGDrup1T/39a72KWLnisEwB5slPo6lkU9VMsN+CygzpcZQYcU+ZL9Gg85fPnmmOnKFlBivo0ATX80g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,18 +94,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue, Nov 10, 2026 at 11:00:45PM +0000, Shiju Jose wrote:
-> I am sharing the changes in patch#2 here for feedback while testing on
-> other platforms.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] Docs/mm/damon: commit message omits MAINTAINERS section name
+  update
+--
 
-This doesn't apply. You can attach the diff so that I can fold it in.
+commit 6bab7534a11559ea9b976bf2b9816f3e4a1d90b2
+Author: SJ Park <sj@kernel.org>
 
-Thx.
+Docs/mm/damon/maintainer-profile: use damon.git for patch baselines
 
--- 
-Regards/Gruss,
-    Boris.
+This commit updates the DAMON maintainer profile documentation to direct
+patches against the damon.git for-next and for-next-fixes trees and updates
+the referenced MAINTAINERS section name.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentatio=
+n/mm/damon/maintainer-profile.rst
+> index c482690320249..cc6b79c066a64 100644
+> --- a/Documentation/mm/damon/maintainer-profile.rst
+> +++ b/Documentation/mm/damon/maintainer-profile.rst
+> @@ -3,13 +3,20 @@
+>  DAMON Maintainer Entry Profile
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+> =20
+> -The DAMON subsystem covers the files that are listed in 'DAMON' section =
+of
+> -'MAINTAINERS' file.
+> +The DAMON subsystem covers the files that are listed in 'MEMORY MANAGEME=
+NT -
+> +DAMON' section of 'MAINTAINERS' file.
+
+[Severity: Low]
+This isn't a bug, but the commit message only describes updating the patch
+baseline branches to damon.git and doesn't mention updating the MAINTAINERS
+section name reference to 'MEMORY MANAGEMENT - DAMON'.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261121193331.1085=
+87-1-sj@kernel.org?part=3D2
 
