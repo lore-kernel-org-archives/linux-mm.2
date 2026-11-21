@@ -1,102 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51615606A331
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 15:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476C9606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U08EaliS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R9qpsHfY
 Received: by kanga.kvack.org (Postfix)
-	id 567F86B00EF; Sat, 21 Nov 2026 10:58:28 -0500 (EST)
+	id 597D26B05B1; Sat, 21 Nov 2026 11:03:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F14C6B05B0; Sat, 21 Nov 2026 10:58:28 -0500 (EST)
+	id 56FED6B05B2; Sat, 21 Nov 2026 11:03:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BA106B05B1; Sat, 21 Nov 2026 10:58:28 -0500 (EST)
+	id 45F696B05B3; Sat, 21 Nov 2026 11:03:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A2A86B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 10:58:28 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90359A8122
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 15:58:27 +0000 (UTC)
-X-FDA: 85459583454.09.4F9A9E5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F89F6B05B1
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:16 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 17FD74052E
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:14 +0000 (UTC)
+X-FDA: 85459595508.18.465A538
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 04B2A40005
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 15:58:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U08EaliS;
-	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3567DC0007
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R9qpsHfY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795276706;
-	b=xTQPeTiPVu5ibk85DT8LqyyDd6dBrHh6vuDoR5Ax1jZUdVLh/ZDs4hsA04BaErk4WJSTxp
-	wYSJdGJbIFSAGsu8vZMR2m7kN9fnjnLhAQhAViRXOMyWslynyNRyk3ifL7LL+tMR0m6zRh
-	smKLBP+UbkoiVks0+brsmAFjN+TZHds=
+	t=1795276992;
+	b=jr0qvGiJJndRV2LBHcJANp1P4lg2LkKSsrJBJuQ4am7AypxI9bIRjR0RA4IoRGR5CTQpJ/
+	y6SkqvkqqfQ5bZvfzQXeKSMG8wz/j4ZauEHDtFu+k4FDbrs9zcYB2vEUx/WogrvMajS3W+
+	x2jgLTU60nCeTH4pcFFFhzHTz8NYEM0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795276706;
+	s=arc-20220608; t=1795276992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v59nU/2/9ru5K4MWt6NBStp2evSJmM0oxZDWWYQAtDI=;
-	b=MBvsW+p8yEvH1rT9xgd2H1g9f0qv7HogmFjff6cpL7p7CTAhWyAfnUcxcjpXLC7Sl8EFQH
-	qa/VR9bG2LvRLBKqCpaSB0kqjlEUfzbYO+6OVeC1vMx89R6tc7luLnBCXC1kdXzIiRV9s3
-	1cKmi/BsfxOGxMppjRAIqbk1WK1HnW4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KmtJcCst2/r+CIlcfONxSVxRUgwHgVKNPqqN2/5YJ+A=;
+	b=0VoFRR5Qj/oV4SOu/S+HWz/el2i+s2B8853raoBJ8kw/HfDj7dZKiThbEuwlsOO0QHaflR
+	78UJ3AU5cgyb3veyzq7+TQOdU44LEPY7yD5EUstJ1Cnv0AIpdgPbmflo4GsoliRzMBJ0+f
+	ONkk+9YpJH5PpJC9ee2lX8cxy7g1pfk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U08EaliS;
-	spf=pass (imf11.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R9qpsHfY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 7372844E41;
-	Sat, 21 Nov 2026 15:58:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id CCAC31F000CA;
-	Sat, 21 Nov 2026 15:58:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4680740948;
+	Sat, 21 Nov 2026 16:03:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCCB1F000C4;
+	Sat, 21 Nov 2026 16:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795276704;
-	bh=v59nU/2/9ru5K4MWt6NBStp2evSJmM0oxZDWWYQAtDI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U08EaliSbWubcMuaRUSpPl/xtocKTKRG5+LWCQtIwOvf1KyYvw7cQGTtMNjwQj+jx
-	 Ng4QuX/N5lAp9jx7j2hYITxmWQlgrLoVVYa7nA2uyLxoanOfvKHnmbqHjP3p/WCFrD
-	 wR2GLYIVuzGz9NvoACIKUCu691qClsGC87Em4zfKUaOoSmXlVErC63uKS9A8IKcQXV
-	 JshEx6xACR1YzyWXaG3Je89a0VlL+//Y5PN4Fs+llD0UvUh/DHsT+RER+LdFLuuIYI
-	 qeEI4tunehkM1Hw5Lm2kKHa7grtpMKogAQdxNcFXoeymOIsJD6zKuEuZzxuJLG15Uh
-	 +W0MW70agCpIw==
-Date: Sat, 21 Nov 2026 17:58:20 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	Alexander Mikhalitsyn <alex@amutable.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josef Bacik <josef@toxicpanda.com>, Kees Cook <kees@kernel.org>,
-	Neal Gompa <neal@gompa.dev>, Paul Moore <paul@paul-moore.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Subject: Re: [RFC PATCH v5 03/25] arch: Wire up userns_set_idmap() system call
-Message-ID: <awG_nK9E-UjkVgK6@kernel.org>
-References: <20261121000844.1863324-1-jarkko@kernel.org>
- <20261121000844.1863324-4-jarkko@kernel.org>
+	s=k20260515; t=1795276991;
+	bh=KmtJcCst2/r+CIlcfONxSVxRUgwHgVKNPqqN2/5YJ+A=;
+	h=From:Subject:Date:To:Cc;
+	b=R9qpsHfYx+rDofq/QUCfrQI8mEkYCYK0QQlD1LeSnRo/qiTn7na7Gz5+E+WN8LL20
+	 pswwehqF3Bx859yEwso3IIdzx0TJv2XQzANySMF/aKcCQTVCcMNa8woxVq0t5YG3OR
+	 4d40WwRIKsN7LItS2fwnEs7xYL02rJXD1Jn867ho3vArpfiq725qIg9G7fc9nGeKqD
+	 tVWSAwzHGWHlj6/OpfoE8rIlzuki6E2wlqrbDiAEOvMLRwrKulGYMXHCwcnFokeVLD
+	 n0lvFk2YbkHTxv0UbkLWwhcCJnAfeRt/kvTx0xo5WRHRlFw4LK6MmDzMaYS+cjWpZb
+	 MgADsX3IIbUoQ==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH 0/7] mm: reworked AI-generated VMA and mremap fixes
+Date: Sat, 21 Nov 2026 16:02:26 +0000
+Message-Id: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261121000844.1863324-4-jarkko@kernel.org>
-X-Rspam-User:
-X-Rspamd-Queue-Id: 04B2A40005
-X-Stat-Signature: qf5i5ze1eyh9figqd9ejiqd8thwx8op8
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3LMQqAMBAF0avI1i6YaCy8iljE+KNbaCQLIoh3N
+ 1g+hnlIkQVKQ/VQxiUq6SgwdUVh88cKlqWYbGN7Y2zDmnbwnjLYC0e5oeyxtKGbHaILVMYz4w/
+ lG6f3/QApS8PvZAAAAA==
+X-Change-ID: 20261120-some-more-ai-fixes-aed3c4b5ef5c
+To: "Liam R. Howlett" <liam@infradead.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Pedro Falcato <pfalcato@suse.de>, 
+ David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Kees Cook <kees@kernel.org>, Peter Zijlstra <a.p.zijlstra@chello.nl>, 
+ Ollie Wild <aaw@google.com>, Adrian Bunk <bunk@stusta.de>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Hugh Dickins <hughd@google.com>, Joey Gouly <joey.gouly@arm.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>, 
+ Josef Bacik <josef@toxicpanda.com>, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2112; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=rc0Rcgs0tXdSEXR4lnymZC5iarX/LI0OXwfascDWCDo=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2zjvyV23oz3kTz726Nf14lfuuj+g9/gA9vN1LAeu
+ f1bJz492FHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJMKkyMlwSfuM44Yte2KnU
+ 3QsyfdtmMzAurIyNWleRqWLw4OLDHUYM/xQbZyjdd5vbpfP/zIVDb1UKBQ++7EjQjyt61qQSvTM
+ 5nhMA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3567DC0007
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795276705-179516
-X-HE-Meta: U2FsdGVkX18op+0dqzENtP12aaTTja3C4Jlrle0Q1DJlAhvHWVP2KZ4zi4dpKDkl30rqeuEVSC0G9oiuP7tVzYZZeQIlOXpcxeCqKO7o2ys6NZ27pvM2AQAQshlAyhwJU3o6x+dsPSnD+2LfASOeEf5inCcuQdwpHsxpE9aBm6Tp4XDw7wkMVJm3rut2/8P7nUgOVC+C/y0PPYYblSZAG9OIVVAVl+1zhQZdU3JB+P3RPaf1/wKY3nNm+2GER1i5j6PkT6jbtI22GufW8pHS7NqgyK8OzGC3DVS6UCsP2XJbc6BCua2D9raUhPDImB+9jXI+z4gVCz9gyMZHTS2qNu2jOhc9nIt3jix+E7HF+/S9ELA2uTbhZd+M5Wo7HM6ZXg/0d4coBrodQzY8i4zY4qmIMFwM+70qotmR1ePOXbRiN7u5YimPMPVytL0wLAmzLZheAmjMWaxFNdRPPQUHbmc0iRUVcRfEFuQ+gDkd5H2B9s1eplgrm4HVViCJ/iUxOA7dEAUVK4hOVyPvWhaR4UWiEknc0xq4sfr0YdYavo48hPnrWRh7hIMvvsDcOOuRlFGCgUM89nj+KHzjRtn9wOM/OPa9bs9/aviH3TsXKasquWvOJECrcMxMIHbpiweO030YJhZLwrOpPkslp6k3nexAE+3TAKB8L8SAIvPI1Ldd8WZWaUFm8VwT2sHUN1ZNhRqgnHIeTV7Jy4lVK5ieCVycxS2n5h5FftbxU7cZvK8KeZ9+9OwzCpOeXUlSEQyjiuR+mo/TLyzXmETOUzILeo7S05b3nEpKQYKnIm8K7Mt6q4A03Eko6sqFXfAvdnA0EMCxuxOE9CRAFHXLJ2zsFQeAA9AliSeOUo4CIQw3JoLXZ43Hnh1R96enkr+bTA7tSvg+ZILUvdQBVQJ+hwNZIi4XLdBR3RxopR8A/AV5tqwfClIgN1OlUQOx777335WQiBWHevp9ciDaBjDdUhN
- 7djpxbiC
- 08XwhL361+EsB7y9DqMP+h97CDlstwwK4nMhv+gwJkZn7Ny0OSi5fI768CnAjQ6w1vC8sVQgy5lFUMImT2J/Wkz6oujuofcd6Jqkok2dYRKGUgZq0s+s5fEhGfbie5CzyYXtIgPzvCfbYK3GlPkB6FOFc/FQyPQTqhJ0IM6O876BC2PrHO7zJnhtza5N/ZHAyD4VooNk0PU+Qg/2fJPLRUCLb/5Vj8TXy9BFsgGHePkgfwNu4QfDnibcJ74h9QjoHNiwtriDpS0njJCzvt/s1ONgoeASXilQqteXuyxjEZuQLxYYa/hB4xCB6CXmydqBD5gBtnBXtFuQOvDRWAUXOSs2pzcVE2j9G7e5jZLQrvdfB/UlJWJ0XiaZg4FeU1kUuq9iYITo9tI0W+hWcj/hXae6ab4PUigrLaAL6PtMsg8vFoB5kmZqII6SVMC1nRT5J4BS2tsWv+9h1cY8L3qaRasu51FMaotGVS/IU+yxf+ts6PqW5qqf6S2MrFrX4ayELUTEk
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: cniiuc61uokf5whs536n7465xm85tjh1
+X-Rspam-User:
+X-HE-Tag: 1795276992-163108
+X-HE-Meta: U2FsdGVkX1/GYnpu73BcuTQJzuguo/2BsIx1jh1xXo6bEsdNPKKoUEBQba3nbY839qQgjvIUBgft/HNv4il+btZTVU6JlqHEP/0wBqGyHe5o0eT2OrvkRCNmDi4wLzGlx9AOsnZPxeaNaVeK3FVXO3dZIzv8mrkzuvzSCs5CfmsOhe9DraTykdOfCuv37PSMnK9hvZj/srZUYIqkA3pfAzsg3V9vBUDjPWTfQwOFe/1Cmc8kP90ThDps/dHTydoCZo66at4D11OH4L0r0vipzpoh16KJP3QrOyUE1jr5G/iuvCmVLCocMjmD4D4z/BzbRM8gYSPVzcjIg2qoM/NgYaqVMCOjpLVfN0d2u3BwqieEj6i5Outs88LjL0oWOhySx09vBc7jU7r0bO4W/ovbkOHKvZCzdhIJTOWY2bLGRrIenpBAxMI/MYu5Rzen/Gq0moyE8CSjm1RTIZUM/UVzrnNPo3jwIdoHa7M4FNu2tpwFET27QiE+dt2zPzioQvm5Wgvu3+nlSh/fZBLnCMcOhkqXOq/6CDb7fBekgTX/UmZwvfYaWnxzUlmUQvNhaNWKXjzTsx+vzBRgndRCjITHUJTUpiiZ/bsZTPkHQWheovCH2FyPCLUm5xzjFVVbWrkjliqqcW5cOpEB9Rx53tzF16iI8NPD8phIls6QH5Cotxdeg02m2uppbkV0mzMBtxErnsdSKqn8uVHxdJ4+CMIxhknuXG2NU/IDFgM6UouwJbiAVI9jMig302npi/XfQtcWH7JlnU1nhyBni8yWl/C3JJJAOUXFprNZpoYLLYOSUUCFmD47i7P5ZXXU+/33u/HUz0gdmC8mMQnW+5YhH3np7cxAAvlXmmm8chiAGmHbDm05SWxwUISxP3AUmQBjYuGdErP5sQnvv8+0rKFVnplUszllGHseZ+nzir4IVnODEbowc9KRh1KU7KHDeTCBzNDDXQ0HoZfn7Frihx8Gayc
+ yktkUdMQ
+ 3QsD9TvRI8uoMPrbg84RCgZzYWUYWyKggdtff8bildFtRG9MmSZBkD9m+vIyVdxMFux2d95mC1VHKBsIJQUCPwMuiX85rtPobWQCtqPCikVHPeITnaIYpahgYBlIulNdK6kt0rZJzT6BjNSIKOMtax3SoGRQ3t4jqPFr+hEb4P+prgKtGx7q8Y0tSVmvoaSzYCT8oOkj+POnjG4mg7RFIcJAzMGycVCxq9QpEpHTvz1SQ65W68E1iiqXtdwgfdHIPxJe7EgSlol96hPrvYmqZUkGRs9GesD/pYypdm03OssdwxZ7rpmXK7Lhl/I39+10iP82JQAvzDNNMkY9oYcon8OwPim2oYyrtSx4rZMuK+N2OVVtKIvn/gNgyG4mgT9ZxD1vo/GaDyjo0lIg7ulLg5M2d0ylcZDSDZ7Ly3nAOz6GNs0NrgGLUI+gQp8sFwPQLoOkcLCi8z7Q1irxxs+TpAlhl0KJqGwFfP+6J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,34 +116,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 21, 2026 at 02:08:22AM +0200, Jarkko Sakkinen wrote:
-> Expose userns_set_idmap() (473, 583 on Alpha) across all architecture
-> system call tables and asm-generic unistd.h.
-> 
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
->  arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
->  arch/arm/tools/syscall.tbl                  | 1 +
->  arch/arm64/tools/syscall_32.tbl             | 1 +
->  arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
->  arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
->  arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
->  arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
->  arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
->  arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
->  arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
->  arch/s390/kernel/syscalls/syscall.tbl       | 1 +
->  arch/sh/kernel/syscalls/syscall.tbl         | 1 +
->  arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
->  arch/x86/entry/syscalls/syscall_32.tbl      | 1 +
->  arch/x86/entry/syscalls/syscall_64.tbl      | 1 +
->  arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
->  include/uapi/asm-generic/unistd.h           | 6 +++++-
->  scripts/syscall.tbl                         | 1 +
->  18 files changed, 22 insertions(+), 1 deletion(-)
+I have reordered the patches here by priority, David - the first 2 should
+be prioritised as hotfixes, the rest can go in 7.5:
 
-I'll populate remaining arch's at the time when I split this. It has
-enough coverage for the time being.
+== Critical ==
 
-Br, Jarkko
+1. unmapped_area_topdown() invalid bounds - possible memory corruption,
+   triggerable by any local user.
+2. Lock VMAs before mm_all_locks_mutex - system-wide unkillable hang,
+   triggerable by a local user with FUSE.
+
+== Need fixing ==
+
+3. KSM unmerge only interrupted by fatal signal - silent data loss on
+   mremap() of KSM memory.
+4. Uncharge after failed stack relocation - strict overcommit limit
+   defeated system-wide.
+5. mmap() offset limits on mremap() expansion - invalid file offset
+   reaches the DAX fault handler.
+
+== Hardening (no need for Cc: stable) ==
+
+6. Guard gaps on in-place mremap() expansion.
+7. Non-executable brk mappings under MDWE.
+
+As usual, please go through and check these carefully for correctness,
+sanity.
+
+Note that one of the original patches was punted over to the BPF
+guys ([0]), as it doesn't feel that it'd make sense to change core mm to
+address it.
+
+[0]:https://lore.kernel.org/all/awGZWsCp6v63H_py@gremlin/
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Chris Mason (4):
+      mm/vma: fix uncharge after failed stack relocation
+      mm/mremap: apply the mmap() offset limits on expansion
+      mm/mremap: respect guard gaps on in-place expansion
+      mm/vma: make brk mappings non-executable under MDWE
+
+Lorenzo Stoakes (ARM) (3):
+      mm/vma: error out on invalid bounds in unmapped_area_topdown()
+      mm/vma: lock VMAs before taking mm_all_locks_mutex
+      mm/ksm: only interrupt unmerging on a fatal signal
+
+ mm/internal.h |  2 ++
+ mm/ksm.c      |  4 ++--
+ mm/mmap.c     |  4 ++--
+ mm/mremap.c   | 10 +++++++-
+ mm/vma.c      | 75 ++++++++++++++++++++++++++++++-----------------------------
+ mm/vma_exec.c | 22 +++++++++++++++---
+ 6 files changed, 72 insertions(+), 45 deletions(-)
+---
+base-commit: d12eccbcb79a4fa35c3aa588eb79056af62eb859
+change-id: 20261120-some-more-ai-fixes-aed3c4b5ef5c
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
