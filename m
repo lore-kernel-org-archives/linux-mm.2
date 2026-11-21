@@ -1,81 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CB6606A330
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 12:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4073B606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 12:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A7q/Cux+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XETjTlsV
 Received: by kanga.kvack.org (Postfix)
-	id 2E2016B05B1; Sat, 21 Nov 2026 07:39:41 -0500 (EST)
+	id 535046B05B3; Sat, 21 Nov 2026 07:41:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 292606B05B2; Sat, 21 Nov 2026 07:39:41 -0500 (EST)
+	id 4DF3C6B05B4; Sat, 21 Nov 2026 07:41:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 183B56B05B3; Sat, 21 Nov 2026 07:39:41 -0500 (EST)
+	id 3CF2D6B05B5; Sat, 21 Nov 2026 07:41:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E685A6B05B1
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:39:40 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7ECBD40448
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:39:40 +0000 (UTC)
-X-FDA: 85459082520.11.785AB45
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 99C5E20002
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:39:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A7q/Cux+";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B6516B05B3
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:41:22 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D7AB1C3C5F
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:41:21 +0000 (UTC)
+X-FDA: 85459086762.18.9F6EC81
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7BFB6A0005
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:41:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XETjTlsV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795264778;
-	b=E80nCWExJjfcMM86IpojmsitoGag9jVjJ2DK3M6PxhTTnx+cIs1pr2Y/s0HoaLLxTZQuWE
-	KpyW1+s9t8jhpkirfHoYXIR0t5bx1dG4qBy+J2ivCwjMNhbk5iebGDtfZhCK5HGKEzGX4m
-	nKBvokMC7ZcOvwOnnh8HOWrUyGs7EXE=
+	t=1795264879;
+	b=K7wqgFjhp3h6bzBwh+xQOBpbBH3rS0IXnJX6mGvFtWjVflSOQ707woj0/ZJ84u4wHHegJU
+	hYuD59j4lgBFjOjfXnBr9EN28VT60vE15OpJwEOcHo5tdyx2YqIhb4CNnwZfPIZwy/M6oJ
+	LnKYVwDltIGQ64LW+3m9xZju/x7cS68=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795264778;
+	s=arc-20220608; t=1795264879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7kRaZlBYwQKaGUWsSpXvjXWu3lCWTflVYkINEhdc9Mo=;
-	b=Q51LAvWCeVvKKeOfZSSE2mBEFgDyeh2G6CMuipuG9qz75Eif5Ax0d2/Y2bEsE7QeExVBBc
-	rCCJcrvxOdtvHWxrQ8KbBVvPZP2sWELoTonNi7LkLTm8Gf6ID25xligjKP+BSLtz+9vvVl
-	+rNC0XlkAbjOEVGx/rJQ+GtoYsEnTb4=
+	bh=c164Hmbr735n5mNaKtM6iTMF9AUxTNwADbTKvfj5lqY=;
+	b=41drkpEUbU3uZhPnwx+3f2DlqFC/Mmy+FUX82rTtkvfa9swLZedNTARavrRbRhD2BSUwFW
+	YHG6b6x12wQXypxQKleyrsTJ3Z+xCCiLst5e1zJJNtXLW7S+BUoITjmLbyFhgV9zDU3TWZ
+	rd12EpF4X9YlokEKeZmiOpK9E2Cqg3o=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A7q/Cux+";
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XETjTlsV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CD05C4061D;
-	Sat, 21 Nov 2026 12:39:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8D01F000C6;
-	Sat, 21 Nov 2026 12:39:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8A079601F6;
+	Sat, 21 Nov 2026 12:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1C21F000C0;
+	Sat, 21 Nov 2026 12:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795264777;
-	bh=7kRaZlBYwQKaGUWsSpXvjXWu3lCWTflVYkINEhdc9Mo=;
+	s=k20260515; t=1795264878;
+	bh=c164Hmbr735n5mNaKtM6iTMF9AUxTNwADbTKvfj5lqY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=A7q/Cux+9C9ZMCksUHX1QSLLT/swgOvr8Pw0Ap3u7eb2qdoixd9E7mr3aJaWtnQsZ
-	 0Bmvw9DwzF08JgOoVrk35M2qQLXK5pN3VhhKYIopvEfHHaN2qq4cIRY+6HDL+m1zHj
-	 M4pq1PrralIPB6BIIeBXsktubuebNv1uivvFUy7iiZCq1okQeCgQPPfNimybWldepB
-	 lEMOVFMaOj4qFeTJMAz0+E+xM73JSdxe50LWhOZpATp9djgCirluirc3nqaYNmKzCK
-	 B+Vn1k9LZEpXcf6DW4+76nUr1saZIQVAzkQHf32C9J4Dzvp3UD4J6s2WH5FODkbphN
-	 6y9KoP5HubEnA==
-Message-ID: <bb3b0f93-f86c-41d8-80a6-2e7691147434@kernel.org>
-Date: Sat, 21 Nov 2026 13:39:31 +0100
+	b=XETjTlsVsLXlnYtr4HaCo3KD/0wwyfOgv9/6YcSrTwzLDDddus/bgbajmCX2JaDTc
+	 yyzwzt6t1vd4pUsuCakjuppiVrAPh0L/91M5cV6jj+4L3XQ9BLNsW2smLRT696/tlq
+	 Rqeymmat/niMyLDypJmXzFf4CBxe0bxWC3rC4Mzeagn6jB/lVhClGvgrp3G1Pb/J8e
+	 1zmrUqtYwotOZgRPpZVrbPai9DeUdnooCp67T7s3OJ/ydEApHZZuyyV/cHLOuqvNgL
+	 7Igd1A0tTnUEwfKF+biRNjqKrt/uDpBe0x6FzKq2mnb+JxQIVsjIliVKOI+NsGXakD
+	 r0RtAbS8uPvzQ==
+Message-ID: <bc42fbba-1c35-4d81-b28f-6b1324b34ebd@kernel.org>
+Date: Sat, 21 Nov 2026 13:41:12 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] [v3] mm/mempolicy: fix copy_nodes_to_user() for odd
- inputs
+Subject: Re: [PATCH 2/2] [v3] mm/mempolicy: replace copy_nodes_to_user()
+ interface with put_nodes()
 To: Arnd Bergmann <arnd@kernel.org>, Gregory Price <gourry@gourry.net>,
- Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: larips <larips950@gmail.com>, stable@vger.kernel.org,
- Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, larips <larips950@gmail.com>,
+ stable@vger.kernel.org, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
 References: <20261120185248.823415-1-arnd@kernel.org>
+ <20261120185248.823415-2-arnd@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,21 +124,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261120185248.823415-1-arnd@kernel.org>
+In-Reply-To: <20261120185248.823415-2-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cf6535pzch7skb9syu5bno14xa3ris1b
 X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7BFB6A0005
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 99C5E20002
-X-HE-Tag: 1795264778-919668
-X-HE-Meta: U2FsdGVkX18wrVjukJkeQJFvJNzrbdf54icPg3KQ1Ri/NKiVaOpeEF8Ks7kvS/El2ZGC6UH3bRH9lly58vYYXETWFMmKSn8L8ScONYxVxEDH998TvwUTV9NItbxW33ei88QfiExxjJYQwkDJgW/B4DoxTFYDJLG9JricH+APFJQl7n1aFdbcX56VZtT7YZ7RqCj7H1549UllbfuBOzd6zJOt8SM3gQYw9Aac/ILAmqBXA7qFZv8PoOCrGrSioazzlXDwOJ+2v+a9RrHiH2pc4buzoh0ejWGCBGdW9lCokCv2pytYRG6Ptaslb8ghff9B0bne5lHPqPoGhpS6T8U9C2d0JV4ujNQO/snTjfeekFRvWX3QCnsi40LWRsYA9DfJjHCee/T28fdOMlmAAi3h8/7k6OfpoAPQZD4g1GMVB8Bfi+sELz8W7e9v3VbKvAJ3cHSFUGiNGDZTg+GUHM1wHWKiZV6PoBJ72HBlcW0h/QhmtHxnRRZP1qRyjJlD3CiMw+kT0bBxl4OQAkXXWRSgVe14EX4erKiHi5I23BDy+098FyuT5PhI3lHS1fo1/LivF3gqdsTFta4yOJfS5LeBDVcYgnCEGYqv5ZPox7kEKRq2LwoIH4X6DcmpZSPTbWKsNX8lX02tdfCw7cXXGy3QO0TH2OkatAds4DkYm2ST/7rlx1V+VUY0utwSUxqjKM9St0qvB7L/dUyXfCmVt+iMhjtio0n7/KvjID1lovb/hbDGqpfEo9qad2CBh7F3qXG8Fidg9IBmv3kV+5qBVFESpR45CGvStX76d7hm0+oy5WUqmq4+P9jPCIbgzQxAArIdqPYUxSh5IE4XxQyboeDJPutq+Ni9YMm8jbSS4rHIjl/Oon5/SnH6+hYg6eTm3UFrzTUTZ40PoJCDpSzsllK4/+H2+2uA7QwpdoPlJ7WpMLckzCA/PyVHY8JpDkf8xePXt3mIaGG7uCR1x2bhWxo
- Jde97UZc
- I77SfftAuWMQX1MQhQKw32i865GlUf01f124+LCuNgmU/1ZCcQnlvODRfB3dqubCQ6knXS2GNywF2XVjvdLGHLmnB3i/PZTISSYdJxctpDl8Tdrx9pL8i4vlTvdsbR9U68o0y2t3fGhDTqCuTcqznyT3GKNPY3wGembDGsS9HNefaL7UptVKEqBuMGrHbcEQIpZ4Rfga/KHkAzVBo0y2DPWLzKvalrap66I+9ftbBGsmrzg0t6rTxuigLF3m5wO8HmvgYkFUdMq3j97tzgv0b/q3sRomRaupVE14JxqyQacLrimntuYOdsijhDTzzPHuY1x0Ay1ev4mcTnY5H8dO4Sh9JedcODzrQJvkddvys1Cuh4Mov0LRviULjXpPgwFwI286Iq81ixysf+BQ65JTCfBeLVLtkZbmyClnsfa8xkaY/5hCNpSjGcsgtqtaK4MpWwBfYmnG6s1QDx0sVunz3PoxSsW+EPouRPK8L0Qnsp1/KS7YaxqYg63uj86+qafdI4cBx0stk1p2LqTE20/zAXDNbQG5cqFLnwVDTIaEaR2WtG1FEjthl61MegGvxAPUGAj1XyUQgfIoyonk3V7gOY+ak6lyjVP9QdqqmJiNRrVG42QF7P/e5Grw8BNj6UdM1jsibrR/MqqVTG+LWzWXsiaU7K8ESbJ6diaX5mx6+umspDEMcYbQ4A7fA1S9LQR0eObZzkpOQvKYcPqznYVZI9bd/9A==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: jge5xfq818oiio3mh49fp6yy89joydk9
+X-HE-Tag: 1795264879-106932
+X-HE-Meta: U2FsdGVkX19kh4yWbUoMXXON9ujjVVnSmTxFiGHzFdC/ZH7F3kozGxiv5V019ryyFy13I+3ZImJqwfTbmJer/2t1aNAMHr6UEKMlevkb8+fCxqiOU6tSkYPBm8u08qjBwV2vCpTWIyHl+PwYXW/NIWexlgHLKKZERCAHCJkGVLlnvT1rH6BbueU+FWHxXy2h37Z7u8tlRk+6mvXS+kilGxiyFr0Np44mEaSqpqoDWt4PAvJQH7U8AsAdKD1SJE52sil+yMKjEt6/ulC5buSPtpUjddBemtxVWWpRKym3OF6h8U8Mpa+B9ndORkwL36PzicZpMLz0/FvKxnOhKeaR9XP1aLkrp6h+ISYX1zRM8nW7dp5QDU1lFNHMGcGxc93Zh+UrwkBbDad9Q0vW0X91pMRt6PpLpXp9oks54oOgAmICzbQyTYVUaLUYlyz7FrV6tUbqmYW1QYpC3Wmcqo5p7rAUseEdrD4wNvLdLjwTEgdnQloVmNe/pKIPyGspoYybvTakqe+vMy7/N4u4ZwovrA/ZHsq6YEDAahcq5v92hqLGZQQj5UDA243tatZTmD8pSVSS4BiV743fmlKvZsb3ICumkQ2BENadvucNy/NoQ5nI1MjPV844X3B39MrJ5bLBOExoxf6R198SBbuRcdUPc7J8HmFzFhoCtLPVXTr74FmAbRZcKx8sMQ/jiGgmwAs+X8k13DZ+tvVAjzCTLR00VBrBZyPdAjqfpRIRnMGjRRg7NfxqD0ZPGoR/kuzv03sYIjufuteaZfviuHkqkN6RIzxp+ZlV257B9yNt0L6Ow6C6jEhxh1cTX0Vv9ZMyE/S11klWB1xGjaH1utRnQdzAxYvF9Dxgmnp5qMtyw1pPNkzzuxrUzrsatl7RhC/YX1xOOTGgRPT4B3OQ80ES2WvoaTQT3iMIA3qsH4Gx7W3UxvTu1lJGkg2EiYrwdIJ0LXPFviGJe9eOykGZEL8q5lj
+ NcdZzDQz
+ UhMncKX4WmGzejGervSDXOyBK9bbkdAnnF3jyhCoCWPLWHwMIt2sDoeJeC6+z6iOjQLV7rt3IgP2Z6gfiXGYA5PQ0tPdA+fPkxQRMEFYF1jgvy6zKmccJgcijxH/n5URSur6clTWm4tVyh7TMrto2OWpoCm14dTmUPYfj9u9UPHBEQF99C3WGsC4gkFMwCV0myOf6OTpLxnjza7Xx+S+sjXdpEkhH8euAUBoM8k/9mNnkI0x/Qb7qghVZdS55e5j1zQE+GnHlcJso97Fr9OXPEfQvS0uaSszu1s3ydKMWv54igKypSDiZzC8xeRfVApRsV0nIBIkWTVRqWeW6u8Wwrozr+qmDYIszRH73G8nZ66Zy6o7WzYEDoE+eNZpT5r9aDlu6kWaOZgUFHKUbAfbMbA+fuHujFPBnk7I6Zs0VJYIWLCxrYBYxsSWhVzQs2PM5o2NStk+G7cSQCkLte1yhc1N+iGEis9rOETjzU04DfsosuuQIHaQZVqxf2ZPbJgJmBDfek0bESs51WxYEoMfnCx3kHXiX5vDVWftrQKGJ7fgpZrH6uLtYdkfL1MaYCfO/h+ZzwDpNNIB6OEP/V2pjNiUbuBpPnYajcv26dFVyJuLXwwg6jAAZRU/W9+u/5uWpPP0h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,49 +151,108 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 11/20/26 19:52, Arnd Bergmann wrote:
 > From: Arnd Bergmann <arnd@arndb.de>
 > 
-> copy_nodes_to_user() is broken for compat userspace in three
-> distinct ways:
+> The get_nodes() function handles copying node masks from userspace,
+> while copy_nodes_to_user() copies the same masks to userspace, but
+> with a different argument order and slightly different meaning of the
+> same variables.
+> 
+> To make that less confusing, change copy_nodes_to_user() to look more
+> like get_nodes(), using similar name and arguments as well as adjusting
+> the maxnode value once, and restructure it for readability.
 
-"Three" but below you list two. So I assume this should be "two" ?
+Could briefly mention here the change in get_nodes() for consistency.
 
 > 
->  - Passing a power-of-two size plus 1 as most normal userspace
->    does can end up calling compat_put_bitmap() with the wrong
->    size, copying an extra 32-bit word from the stack into
->    userspace and overflowing both arrays as compat_put_bitmap()
->    expects the actual number of bits, not the number plus 1.
-> 
->  - Asking for an odd number of 32-bit words rounds up the
->    userspace buffer size full 64-bit words, leading to
->    an out-of-bounds access in userspace.
-> 
-> Fix the calculation of 'copy' to be based on the userspace
-> word size and use this to for calculating the final number
-
-s/to for/for/
-
-> of bits to copy as well.
-> 
-
-You might also want to link to Gregory's test case.
-
-> Reported-by: larips <larips950@gmail.com>
-> Reported-by: Gregory Price (Meta) <gourry@gourry.net>
-> Fixes: e130242dc351 ("mm: simplify compat numa syscalls")
-> Link: https://lore.kernel.org/all/20261117101910.1820066-1-gourry@gourry.net/
-
-Should this be a Closes: for Gregory's report?
-
-> Cc: stable@vger.kernel.org
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> v3: don't introduce a bug that skip setting a 32-bit word to zero
->     where needed.
-> v2: as Lorenzo pointed out, the off-by-one mistake is part of the ABI
->     and cannot change, we just have to use it consistently.
-> ---
+>  mm/mempolicy.c | 48 +++++++++++++++++++++++++++++-------------------
+>  1 file changed, 29 insertions(+), 19 deletions(-)
+> 
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index afe614efb77c..b240acaa8cf1 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -1736,7 +1736,9 @@ static int get_bitmap(unsigned long *mask, const unsigned long __user *nmask,
+>  static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
+>  		     unsigned long maxnode)
+>  {
+> -	--maxnode;
+> +        /* User space passes the number of bits plus 1. Fix that up. */
+> +	maxnode -= 1;
+> +
+>  	nodes_clear(*nodes);
+>  	if (maxnode == 0 || !nmask)
+>  		return 0;
+> @@ -1769,31 +1771,39 @@ static int get_nodes(nodemask_t *nodes, const unsigned long __user *nmask,
+>  }
+>  
+>  /* Copy a kernel node mask to user space */
+> -static int copy_nodes_to_user(unsigned long __user *mask, unsigned long maxnode,
+> -			      nodemask_t *nodes)
+> +static int put_nodes(unsigned long __user *mask, nodemask_t *nodes,
+> +		     unsigned long maxnode)
 
-I can fix the description up when applying.
+Two tabs here here is the preferred way in MM. Can fix that up when applying.
+
+>  {
+> -	unsigned long copy = ALIGN(maxnode-1, BITS_PER_LONG) / 8;
+> -	unsigned int nbytes = BITS_TO_LONGS(nr_node_ids) * sizeof(long);
+> -	bool compat = in_compat_syscall();
+> +	const bool compat = in_compat_syscall();
+> +	const unsigned int word_bits = compat ? BITS_PER_COMPAT_LONG : BITS_PER_LONG;
+> +	unsigned long bits, node_bits;
+>  
+> -	if (compat) {
+> -		copy = ALIGN(maxnode-1, BITS_PER_COMPAT_LONG) / 8;
+> -		nbytes = BITS_TO_COMPAT_LONGS(nr_node_ids) * sizeof(compat_long_t);
+> -	}
+> +	/* User space passes the number of bits plus 1. Fix that up. */
+> +	maxnode -= 1;
+>  
+> -	if (copy > nbytes) {
+> -		if (copy > PAGE_SIZE)
+> -			return -EINVAL;
+> -		if (clear_user((char __user *)mask + nbytes, copy - nbytes))
+> +	/* Don't exceed what would fit into a single page. */
+> +	if (maxnode > PAGE_SIZE * BITS_PER_BYTE)
+> +		return -EINVAL;
+> +
+> +	/* Process full words, which depend on the user space ABI. */
+> +	bits = ALIGN(maxnode, word_bits);
+> +	node_bits = ALIGN(nr_node_ids, word_bits);
+> +
+> +	/* Clear anything we won't copy below. */
+> +	if (bits > node_bits) {
+> +		if (clear_user((char __user *)mask + node_bits / BITS_PER_BYTE,
+> +			       (bits - node_bits) / BITS_PER_BYTE))
+>  			return -EFAULT;
+> -		copy = nbytes;
+> +		bits = node_bits;
+>  	}
+>  
+> +	/* Finally, copy the bitmap. */
+>  	if (compat)
+>  		return compat_put_bitmap((compat_ulong_t __user *)mask,
+> -					 nodes_addr(*nodes), copy * 8);
+> -
+> -	return copy_to_user(mask, nodes_addr(*nodes), copy) ? -EFAULT : 0;
+> +					 nodes_addr(*nodes), bits);
+> +	if (copy_to_user(mask, nodes_addr(*nodes), bits / BITS_PER_BYTE))
+> +		return -EFAULT;
+> +	return 0;
+>  }
+>  
+>  /* Basic parameter sanity check used by both mbind() and set_mempolicy() */
+> @@ -2054,7 +2064,7 @@ static int kernel_get_mempolicy(int __user *policy,
+>  		return -EFAULT;
+>  
+>  	if (nmask)
+> -		err = copy_nodes_to_user(nmask, maxnode, &nodes);
+> +		err = put_nodes(nmask, &nodes, maxnode);
+>  
+>  	return err;
+>  }
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
