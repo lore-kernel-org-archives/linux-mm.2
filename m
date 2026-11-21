@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB33606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 21:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102E5606A32C
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 21:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dn4/oKL2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UFZ/WE6K
 Received: by kanga.kvack.org (Postfix)
-	id 311546B05BC; Sat, 21 Nov 2026 16:00:28 -0500 (EST)
+	id A11B36B05BF; Sat, 21 Nov 2026 16:00:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E4656B05BE; Sat, 21 Nov 2026 16:00:28 -0500 (EST)
+	id 9C1CC6B05C1; Sat, 21 Nov 2026 16:00:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FAED6B05BF; Sat, 21 Nov 2026 16:00:28 -0500 (EST)
+	id 8FE526B05C0; Sat, 21 Nov 2026 16:00:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E833D6B05BC
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:00:27 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 605DD1A059B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 693C66B05BE
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:00:28 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B70C1A8199
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:00:27 +0000 (UTC)
-X-FDA: 85460344494.14.B2771FD
+X-FDA: 85460344494.24.C3418A3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B304314000A
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:00:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dn4/oKL2";
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3154A180010
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 21:00:26 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UFZ/WE6K";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795294825;
-	b=rG597H0tWAJf2Fk1MPXETPs2UBvrLxLq2z6o+lf2eZFAiea97JkQ/XDATIr6eBZ72NDyrI
-	fogoF6xIlUMmdpkN6X4Dcz6llAi9txoziGpkM6RHym02QCi5EUiXGrbwTAr7QPB7DqMCA+
-	GJn5j0LzZaBVsNWigLNRO9t1lzPz2yc=
+	t=1795294826;
+	b=xWkkdowIQ+wBQVhsmipX1CuzbN1qqnPl+AjiiyEXvxrnTDo93A6z9lTLIU9+jFHZDtvl++
+	3/7pbspnCSNjPfYmjCEQgrcELI/dRQnvWu0RrxPsbamoHsI7aodttWv7uaG5SWCOQ5ZBQe
+	G7taar1IVW483U+yrYxznGdP5Fuc7GY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795294825;
+	s=arc-20220608; t=1795294826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j9zNU7VFP9R08IpO6GDu4i26WmaNoJQ1rmpNbfyIt9I=;
-	b=RM3pM7iKYhVS0VTEtvca8ZT933myt7Y+Xm6zFqxWrFkmUML7JjeAef1iXt/sTXjZyUzqyo
-	SYl6+LFIc1bSYSb2HMmR7C61TPQHw6GbotIzo8FUPWD0TsVyrIjndCdjNJ5gq79xCy0gSE
-	+A6/PywTxbVsV/S9gEh7AQAbxYCle50=
+	bh=RMY1w6zCdZbZED46otQNO9VCdx7EIsblDhOC0YAAboA=;
+	b=y6Ctf/Mk3482SEPes97C9dXnQ49rh7+zH36PAu5s1TcCmAY18VR/AjT44+HGn+6TUbtZUz
+	q1XmGk3zDYZu6Tyd1I9lYlHG9TrE33xe66xd6wVCkN0jm9fhKyFUwsRUiU5vWy4AQPpJvp
+	GFwZ8ttZdrmsvFD8nztlCqPb/JP0aUQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dn4/oKL2";
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UFZ/WE6K";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 90CF561CF7;
+	by tor.source.kernel.org (Postfix) with ESMTP id C8A4D61CFF;
 	Sat, 21 Nov 2026 21:00:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A7B1F000C0;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7522D1F000C6;
 	Sat, 21 Nov 2026 21:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795294825;
-	bh=j9zNU7VFP9R08IpO6GDu4i26WmaNoJQ1rmpNbfyIt9I=;
+	bh=RMY1w6zCdZbZED46otQNO9VCdx7EIsblDhOC0YAAboA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Dn4/oKL2StXi0ppkVyq6NMoGGStoQVOFsvq5r09vK+G1xmI0P3FbWkYbEhfDm1FeP
-	 aTixH78iV/1vGXruWunbhtCTUX+7VzZnoSWNUoDHcy+0fpkqswWegR0egeFDdAFCUM
-	 SDhMGuQeKfBFXlkNQ12gng3JeINwL2UCvjzeqUHvXt5kMf799CCLqCMf9S8Vc8uBUS
-	 GvHlo+rVJNaLhIK7z12UhnIUruXIP+OfSAvw5SY31XVR1ewXALjCBStah7BBgT/mLU
-	 mutYgJS89AdkFK4AGun2njPS8zIPIjg/yyyLbX6JihtUVDaW7dQxEa2fNd7RwgnMYK
-	 TRlo07iMhQgpQ==
+	b=UFZ/WE6KhWtr9VybeKBqUIhhNCBUTgstyBIGbyOxgpFC960bXs5izLL/7toxJ3UM3
+	 Ks/1xK6+gjdGqdFkMBF7V6DaEBPG8R2lJCBVOPgl238jkwNh5FDRJkDXon/rJQujmA
+	 ldirllh7ZqxtIwH2GarZlme8Bt1oWg6+bP4Nb3C3CYUxOVOu8jIJjSfC2McnkGdlg8
+	 NWahdZobWKc5jNsGRUX3KzDQt8HlAPhmcscQLKX+VD6bslHoJ1G82uhkCuel/0arWw
+	 eiT2ZOW3DyWcd0VIFxiR8wSjOrvwHcYS64BQ67zkGwU9I9vkUWpVp0Fl2EprI575ha
+	 An17lWc5uz85w==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: [PATCH 12/27] mm/damon/core: introduce DAMON_FILTER_TYPE_REPORT_MADE
-Date: Sat, 21 Nov 2026 12:59:56 -0800
-Message-ID: <20261121210013.130397-13-sj@kernel.org>
+Subject: [PATCH 13/27] mm/damon/core: introduce damon_report_exist()
+Date: Sat, 21 Nov 2026 12:59:57 -0800
+Message-ID: <20261121210013.130397-14-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261121210013.130397-1-sj@kernel.org>
 References: <20261121210013.130397-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Stat-Signature: eqersererydonijfztqzrwm1g8s9u3md
+X-Rspamd-Queue-Id: 3154A180010
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: B304314000A
-X-Stat-Signature: rrhftji8hpaxm31fy363nbbp3p6cuczt
-X-HE-Tag: 1795294825-735067
-X-HE-Meta: U2FsdGVkX198XFGTekQLs7NZyLctfJDrOs2IIMynWFDmzBtUUOoQX1qCXxx6gstLPuDSwbFIUqB0poUdLM32is+VgUoqwBVvM0Z4XJc18AlwxdQQCVxzFgp6FI9Bd3PXQM7Lj8ste9SXij5R0TZJQeO+Wc9O0/9Y5uumN1WKyUwy/a7cDc3egEJ4ZR7eTWAiMKgE+IRSE5c6MhxeYxeHt82lVc/CX2iD21sYjAjVEhK6diXlTyzJBX4EdxtCnx+4RdGaA3M/Bm3jf6nDPm1VbaVWoPvnZQA08FppcDOqcz7Ab3bj3dpADdhZhztpdLoWHVvqGH+d9mpquaoQHX9/z+z8nX147o9JLUxdEVNPy5PeabSgCYDm6kJ3ukOgZgwvTV/bKQYHOp6PSXypqMHup1h1vJsNKm8ki7beY4jEIqRVPGztLsLsoE3aC4oJMRJuKIUsZTRWcwE4Pa2JzldCTkSFR6K9I9cPI12WPJ+O5M/j+1pOuHZwhnqMqiwoAvyhYnqaoL0levwY0yZkWdzr8ZmwbzgsxDnGeWl8pTrRBl1dkosJ9WV3RY1vg684CEkhZPgt9IxMoCI5fAMperQNDikEVeVmjQOUIaj0hOfrYwrs57fdiZzoACNG7Sj7bR1Pg6MJMfG1APYNrXkDZeFF1Ag6rZ1dL+0obJy8Cg5KKIAxrksRgnBpi3KpIP6xZ1upDqIsyQNXKm9YhD6NcLUvHJjQyBRBe+SR2IsesnIw358+sNBwK0gb1UPNRoLd475DZMwW8bU+tLfzHZVRPqei3+orOchoSRcsoRXO+DIzzFAy2d39azz8QHZ2s96GJICohkBUm0RhNhUF821ZX6ETHsYYL/+OjwwhE0t5t/npZS85yXHjRvfv4UeZrXG6tsUsyJjbJwOtw6l3jW8TZvM8CCdr9E+9W6IewVrvcycLPzR5BPIvpBk71xlf3+1LObaJ2VUynaK/2nQKKE5UpIt
- bTVDRnmE
- ZLwJMTCg0cAl6/jyjq8BJjhO/F1YW0V+C5MQVykXaMeTiOAwc2snum9Rg0hTfuZ947n5CmfahOOw8oknLOKSlv7EA/0FZQQ8SHs/N2kqSeGnAxgs3MEYlwXSSKLm/642zaWKRd8L6dHMoPUDRK9M/JamIodZWZrs+iJ9ywCKYmTskOZrIUb//I+k7GXit5oCMZVDG83JlCkZ3UVcquBe/6PgKr0KHy0waHdQeUut7PmwqVJONEAkm24PD5XCx5hDLPhOz/X3NjpgUU3i+sjTnIqfh5D/NFvU1717kQkXxYOugTLIDspZk4V3wwQKEUkA6KXAZySrQZsirI+xzu522f+9CyMcr96jyTmo98VOSnV3/nOqt0UBDsaSQtAVB6+xK74P+Z4ynOoOwxVHYQElx3+rf54Tkd2KwdplxRg93presdFnwwZ9/9JH1gCiVek1B+dHCUEEo/cyUsRRkPx/TD7oWuhLHwH7tyVoaH9q76n3WrXlSq9jhcp8HaH6O0hehKjS3
+X-Rspamd-Server: rspam02
+X-Rspam-User:
+X-HE-Tag: 1795294826-761404
+X-HE-Meta: U2FsdGVkX199649sqGuHsjIov4aykQlJCX09Aa0oR9L3mGGZhrhgsuiRYUwWdxH/Lr/hCZmoHQWTB2Dv28W4RmfMJzui/4mgEADrIfCZZV1P0Bk6kapiJ0eE1saULf6H4HtzHY0vKL+xtb9zREh6NOK7oIVsWdNELY4gNr+4dfoEgXcXrK3T3IbBxa1hZteAZ9loifK/J8ovNr3Eyl9LQRBh/GcCcd6pL2aeXwKdhX2vs9xjh7Q/BJu+JCXgjh656Nz2i6YVEU/WzFQcsSqWTebMJjhospQoQy/hujaZ+OivjymferfptML4SkYbVlPaKmsfgime7uVoBr5bdSMxJA617ex7JUO4/QdGtq9e4b3eg5b1IR4qFNv3+Xc8mvXcDh/idOG4H4gMvGkC3Fw/80OV+CaNp9McM91+QRbL2LF3jAwdy2ODZSabv6lbtJnDvI3dqwAgn6U1LFDrnMa5KDzUBndSwSPRtXUV8BRPWFvM3SXDkSC7IuFmOmDE66RM+m+qwMTxNwC7EMDs2gK612yoO4o143HLC49eTH/wZsM4fjHX2ZPQUzMw9c1GAqjw1fm+PSis+ZxZJucVZwDfmT55ITmiOLAQTuAStWunk31fsEQTiYlafyFAyGru7G/Lgb5AoSfD2HfNDMCDFxhj64gQd5rH3UJxOcJNNQkgSRwOga55TvRF8BbCbae3odeNMcCYTDRpEVTbpX7qhBrajberPEqlU2uHT2LI3OXAh87/gEgRqDQ5IVWywjVaGvMek4X4dmMV2tkrHQHxs/7vJFwYLtQpNxnK5q3JBbsB1yoReB7Qpi6pbitrWeErTSJzOD5ZtDskJbT4GS/RKwgqZWWjXqF8j4DqMCZ9sKIM8d8FMZuXFObiCgufja4W9jAxcCGL7VIyEeQf4It/7n2ZkgG8RBDk/v1nw/+CQdPR9SZNGC2Drp52ppJ8qcTr0ht6ZDa3TxH7pINeLTP3m0j
+ 112kLuPn
+ +mpSLwtsktviTczGDJklsDH4ixaX8kD9aCJhZxEm6jbaV6kRSeD//6bWx4iCHkAbdUcz0qES/5GgmZePfoFyCyA0YIbfYviFl2yKrTK8doPmYOYgelAM3BLEhcRyUOfTHumfgu8od9+KrjMfNcmvgXS5cYcJuRzqsDYl4CMzhYdrJC67ZyrR8ITfG1blcoh8gkxD8yX9f4WInU/uEowGa+dHaZnNF8FyXjxRGT/Y2VRGD+XQJyXf1S4CHF97yhgpk4eHZ8kpXrOa/IB0JR24/yKE2VzXsbqdik1q+vLOy3kruCdmedAemcdVZcDH1AIMdPRVJESf2hWtRfm4ECPrm9M4tKstr8dsTRkic2ge6yIrmUNsPLCk++YfM3vPLZFdKEIIKcFhk3Ph+dZyBTSgJqujByHLGAmwAJ0DtKizWCB4GgvFrgaWNrq+Y2InN9Jn559mxQKQlWVg6xajLBiPDOsybz2gYrDabrTxtfFu4Ymn4W9RDneog2zrYYKCZcP3bHjxz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,79 +94,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Extend DAMON probe filter for the existence of data attribute reports
-for the probing memory.  Define a new filter type, REPORT_MADE, for the
-purpose.  Add a union argument for specifying the type of the reports
-for the filter.  Update the new argument for the new type when new
-filter parameters of the type are committed.
+Implement and expose a new DAMON API function for searching data
+attribute reports from the report queue.  The purpose is to let
+operation sets use it for supporting the REPORT_MADE type probe filters.
+
+The caller can specify the type, associated memory address range, and
+the creation time range of reports to search.
+
+The function uses CAS-based try-locking for the mutual-exclusive
+synchronization.  If any parallel access to the queue is detected, it
+forgives searching.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 5 +++++
- mm/damon/core.c       | 6 ++++++
- 2 files changed, 11 insertions(+)
+ include/linux/damon.h |  3 +++
+ mm/damon/core.c       | 46 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 35ad002d1536c..09f0dfbde8966 100644
+index 09f0dfbde8966..fc84cb9cf5bd9 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -802,6 +802,7 @@ struct damon_prep {
-  * @DAMON_FILTER_TYPE_PGIDLE_SET:	Pgidle is set.
-  * @DAMON_FILTER_TYPE_HUGEPAGE_SIZE:	Page is part of a hugepage.
-  * @DAMON_FILTER_TYPE_ACTIVE:		LRU-active pages.
-+ * @DAMON_FILTER_TYPE_REPORT_MADE:	Report is submitted.
-  */
- enum damon_filter_type {
- 	DAMON_FILTER_TYPE_ANON,
-@@ -810,6 +811,7 @@ enum damon_filter_type {
- 	DAMON_FILTER_TYPE_PGIDLE_SET,
- 	DAMON_FILTER_TYPE_HUGEPAGE_SIZE,
- 	DAMON_FILTER_TYPE_ACTIVE,
-+	DAMON_FILTER_TYPE_REPORT_MADE,
- };
+@@ -1193,6 +1193,9 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
+ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
  
- /**
-@@ -821,6 +823,8 @@ enum damon_filter_type {
-  * @memcg_id:	Memcg id of the question if @type is DAMON_FILTER_MEMCG.
-  * @range_min:	Minimum value of range arguments.
-  * @range_max:	Maximum value of range arguments.
-+ * @report_type:	Type of the report, if @type is
-+ *			DAMON_FILTER_TYPE_REPORT_MADE..
-  */
- struct damon_filter {
- 	enum damon_filter_type type;
-@@ -832,6 +836,7 @@ struct damon_filter {
- 			unsigned long range_min;
- 			unsigned long range_max;
- 		};
-+		enum damon_report_type report_type;
- 	};
- /* private: */
- 	/* Siblings list. */
+ int damon_submit_report(struct damon_report *report);
++bool damon_report_exist(enum damon_report_type report_type,
++		struct damon_addr_range *addr_range,
++		unsigned long jiffies_old);
+ 
+ int damon_set_region_system_rams_default(struct damon_target *t,
+ 				unsigned long *start, unsigned long *end,
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 61ff3adcc69f4..54e0ed6561c05 100644
+index 54e0ed6561c05..22028cdc0f03b 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -1833,6 +1833,9 @@ static int damon_commit_filter(struct damon_filter *dst,
- 		dst->range_min = src->range_min;
- 		dst->range_max = src->range_max;
- 		break;
-+	case DAMON_FILTER_TYPE_REPORT_MADE:
-+		dst->report_type = src->report_type;
-+		break;
- 	default:
- 		break;
- 	}
-@@ -1876,6 +1879,9 @@ static int damon_commit_filters(struct damon_probe *dst,
- 			new_filter->range_min = src_filter->range_min;
- 			new_filter->range_max = src_filter->range_max;
- 			break;
-+		case DAMON_FILTER_TYPE_REPORT_MADE:
-+			new_filter->report_type = src_filter->report_type;
+@@ -2388,6 +2388,52 @@ int damon_submit_report(struct damon_report *report)
+ 	return 0;
+ }
+ 
++/**
++ * damon_report_exist() - Find if a report of a given condition exists.
++ *
++ * @report_type:	Type of the report.
++ * @addr_range:		Address range of the report.
++ * @jiffies_old:	Oldest jiffies to find the report for.
++ *
++ * Returns true if the report is found, false otherwise.
++ */
++bool damon_report_exist(enum damon_report_type report_type,
++		struct damon_addr_range *addr_range, unsigned long jiffies_old)
++{
++	struct damon_report_queue *queue;
++	int lock_old_val;
++	unsigned int idx, nr_read;
++	struct damon_report *report;
++	bool found = false;
++
++	queue = &damon_report_queue;
++	lock_old_val = atomic_cmpxchg(&queue->lock, 0, 1);
++
++	if (lock_old_val)
++		return false;
++	idx = queue->tail;
++	for (nr_read = 0; nr_read < queue->nr_reports; nr_read++) {
++		if (idx)
++			idx--;
++		else
++			idx = queue->size - 1;
++		report = &queue->reports[idx];
++
++		if (time_before(report->jiffies, jiffies_old))
 +			break;
- 		default:
- 			break;
- 		}
++		if (report->type != report_type)
++			continue;
++		if (addr_range->end <= report->addr_range.start ||
++				report->addr_range.end <= addr_range->start)
++			continue;
++		found = true;
++		break;
++	}
++
++	atomic_cmpxchg(&queue->lock, 1, 0);
++	return found;
++}
++
+ /*
+  * Reset the aggregated monitoring results ('nr_accesses' of each region).
+  */
 -- 
 2.47.3
 
