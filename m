@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1C0606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31EF9606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YS1mv0Zd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W+Kgbu0c
 Received: by kanga.kvack.org (Postfix)
-	id D3A456B05B3; Sat, 21 Nov 2026 11:03:21 -0500 (EST)
+	id 412496B05B4; Sat, 21 Nov 2026 11:03:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D117F6B05B4; Sat, 21 Nov 2026 11:03:21 -0500 (EST)
+	id 3EA9E6B05B5; Sat, 21 Nov 2026 11:03:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C003C6B05B5; Sat, 21 Nov 2026 11:03:21 -0500 (EST)
+	id 2B1606B05B6; Sat, 21 Nov 2026 11:03:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 88B226B05B3
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B66311A0536
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:20 +0000 (UTC)
-X-FDA: 85459595760.04.0517089
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E235540003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:18 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YS1mv0Zd;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DA1C36B05B4
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:26 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46B831C3DB3
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:26 +0000 (UTC)
+X-FDA: 85459596012.09.7B755FE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 344FF40003
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W+Kgbu0c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795276999;
-	b=qYErRXZGzpgDkGGQ8NVxPt9genc+kvBCA0ODzbX+uU4D30dEt7FeY7eRq4ylwQpmgWzXDF
-	4p7RVzqP8n+2OHITUnjrux+R9gFr9JjM5RSesQtKgV7+X8x42tbMh7sdoPuJTDzOyk4iDo
-	ho833pdl5hoK5PJRooS2waPVvCtvddo=
+	t=1795277004;
+	b=5vdL1bfR59k8v/8s1W7DmYCscXU5PinCMLu7MZxbcal7xGPp0fKlxYODa31BqP0rfTWRWo
+	7xdy/C/Ilk2ThaAbRBS4BXDCFEnMdqARjQQBSu7exFbNJW7e31Ri1FwoISpNQSPuRyGtYc
+	lVjUjQn7jCHgBJZ5mruM3op9DjgY1Pw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795276999;
+	s=arc-20220608; t=1795277004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kQtR/PmrOPe+b32IwJ53yV0sN7VuoVDU7/08bj0Hnhk=;
-	b=lWCQ7PBvfCWN40pyNGch6U4mJfwP0AVNqsNi2teHb/9EXCSuRdbS0hRNg3cFQTno//1v4m
-	NWu+OkDOlpI3IYH1bcA6aaXZEAA1G6aGh/Y2dQCER5Opc+Xosen9bVwa2RjDrogm1EbLsf
-	xSZVjweyU2FRSDMPo+aL2jNhLC+glQU=
+	bh=LId/pfdNK+kcwrBUkujBAEx5NAsbcSjlaxfY3IRiHMQ=;
+	b=AWtJmZsKBSP08GirjFp2WiHWS4M4P6PQE86zz+lIOIRxUpHa7zhHAm80YY6RcRYTa3eX1I
+	junlV4BVsfQ6Qx5KPDfVVN10Qel6SiNjAyNyn8MbigRo52mnFLZdXeOIc1aeDZRui9Bv7s
+	Ct3n9E6qA3nHK3qd8dQS5v1HJrL1ZYE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YS1mv0Zd;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W+Kgbu0c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FDD3611B8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 454C8459E8;
+	Sat, 21 Nov 2026 16:03:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60DA1F000C0;
 	Sat, 21 Nov 2026 16:03:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73921F000CA;
-	Sat, 21 Nov 2026 16:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795276997;
-	bh=kQtR/PmrOPe+b32IwJ53yV0sN7VuoVDU7/08bj0Hnhk=;
+	s=k20260515; t=1795277003;
+	bh=LId/pfdNK+kcwrBUkujBAEx5NAsbcSjlaxfY3IRiHMQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YS1mv0ZdGcWiRFfMStIUvrZh479IvpEBJ+qvvuZSLk3Ft1Tu3sV9xUII0/od9Li7x
-	 IW/UVTcAwjr8v2YRO2IyWXI3b7vQb0rO4C6w2iXu20Tfbx/Ce0C6WmM3eXEuNnrhGB
-	 4+3W3AoUKudpInzxiGGZFSfLFb7kRM9DLULE0XuK36tY+DH2BnozSq09JTLZebS6mz
-	 OUkoFaF0bVPF1KcsrRb4o/PZnWc2vB7nb37gTubrevKQmsM0MVD5xdI+VwnOjclonr
-	 ZWBXySKoBxZPjMSeoFp2RT/Q7EQSdzodWNyTyMfXZDR/0tckf/sexKWsa5xXkzhIz3
-	 YcwompBGiE1xQ==
+	b=W+Kgbu0c6J7SGfPQ62/PPeyc4fUL1Z6sm4hDkdNeYNV90392EaD2iD8hCMRfL9q/H
+	 EkjPSGjTuwn6j5ALU6yA2mau7ArCdK+LGHOgFDz4gTkjiQsMqq3MKun2ypLTSSN+hm
+	 7L+fqa6neyZgUoZ3XbM1HEvyFNXkRyoeyWfbELQTTOwb8phr7+nF83wMfj1d2JewLq
+	 RB74X9qZCCq8HDGAJbJet/enCNUSbqw0gEotGLbEc5fSNusnqM48mxWN8Sm3kI8iGQ
+	 WbjWR9KGSl4RGGag1na8PxxH3bT5lSZ0VIdRL6V1IfuQ8aDi2QpVyW3bMyJ6xiatkI
+	 2uQgjwRcmPQGA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Sat, 21 Nov 2026 16:02:27 +0000
-Subject: [PATCH 1/7] mm/vma: error out on invalid bounds in
- unmapped_area_topdown()
+Date: Sat, 21 Nov 2026 16:02:28 +0000
+Subject: [PATCH 2/7] mm/vma: lock VMAs before taking mm_all_locks_mutex
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261121-some-more-ai-fixes-v1-1-236e925d9b64@kernel.org>
+Message-Id: <20261121-some-more-ai-fixes-v1-2-236e925d9b64@kernel.org>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 In-Reply-To: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -88,26 +87,26 @@ Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>,
  Josef Bacik <josef@toxicpanda.com>, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4829; i=ljs@kernel.org;
- h=from:subject:message-id; bh=+4kE7CdMswTMuf4/1YP3lHCd+R2WBN1rK5h5dCacX84=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2zPlJS15juidKU60Phw59Yj3sHiL977RD16K3Tqy
- ubC8vQFHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIn2qG/545Zsfz1eNMDAP4
- fdf8m8fCVfal7tXl35M90gI0jPTX6DH8d7R/cP5hF7+E2en6mGYJs0PTw285Ny18eGKn0LqjUw9
- MZQQA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4094; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=LrpiwotdXkJz5/ABY48wAzoP5uiMEH0O95S+K/32rIg=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2xP/HWsKIUv41ZP+9YPG7MeHpby+H3+0Y7fS5IML
+ SQkjq/b3VHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJRBgx/LOb8MhgJ+Ph3QUr
+ BNlftZrKc5Y92eNpvezaCp/7PKsKYxczMsx9wiXqmj+37mTH6T7L8vANmrs26z3KkTpWzfDi/G2
+ nEgYA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspam-User:
-X-Rspamd-Queue-Id: E235540003
-X-Stat-Signature: qycb6fwb69gfkukhgkhobcs4rato17dc
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 344FF40003
+X-Stat-Signature: pu41qpmyds8mqnfjhb6t9o1xnf6q3qcs
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1795276998-24647
-X-HE-Meta: U2FsdGVkX19nqrPPDD33p0fuAaBHZPLyM8OFf1U0YiwXGCrOarJWdeY1TqCyqRmc444kf/tj6qElI1vzrOvY/yHBfcPhMnQYCEK8OF4zD+SqjwOmEIS8wUFxvUzSOHlTDrrP8fjC5A76KESBo1HXYDCewEOe8FuDFP6Dpu27gS0md2a6V2dT2wtddC5+HC0jg9tlGoTAwimst5e/3zpT+qAgQyoDMsEfW0wXLbAkcAq9Vai1ZgSz34axyJ22lbsD6r1/EtRAQjsHKzGUEJT4acTJ4ENZnwAirzRWkVwWn38kjah5Fv17+G+3ctC5vChTNZ9mN3yLAuafzeM6AQZsPcOCZwkQmN+/PspcMHEoSJ0XvTUnZH3QoKg+zRzRFPV6UsQjRB3jEfIjYfNDnfSZgGtHdfXuzz75YU3i8zS2vE2X9GJcSHUK3jZvJxAq/oa9v+T3fPoEofhR2cEVuNFxzLjZLE4SA2XoZiG+vkKGGgEfbqG68nEHi/4Ax7iSTs/kpdQzrykxEH4hV6LSKz+QP2ImKvBC5KTSjmENYs0tkfTR4F22bd3MKYOKVlN7AarZlrfypEpdmY996bmpIP5rM8ECcDxG/jC1n3YIbay3FC7gK8AYylAvJ7ApgRLqH0bY9MesmFXNJv2i7f+whj1ZUM3ldpWeQEcUHfwv4w39jaVIwVzFReK1n04a9sp4Du/vvYLo/Rw24IyIcIJDyF9nw3p87IhkjjPrSXPOMqRxSe1khL2O/u4fIbyB1A74uuTjW8DMa6x++F3URDGIuFYKRBT37hqlZ3k32sTL8ZOPJKcxheUO7+/6HoPE829h50HYhKE7afn4ufhA9wbS2Om394cld15aY3WLxc1G/50Sqgcq8GV68tGLDBJfGnMecrAbNXpfJADHgqd9zWHDX/QrwrRs/0wKUi4d2mwF9JAMfL9ipUL1PyZNvI1Vt3Q/9inFLO8/TMxfGbtgB7OMIt6
- kUQdeWZu
- oq3Q4KMY0ZnDvyCeXDD90Z8CVQtmmcjF7hi5XLUIGbq7x6cnXLmGNJjA8VEPhNz1zFZrsFv/TWndP2Q7sZvLyvoqJ2tgsQvtrLJlU7oEhmoVeg4f1f579UIw8xIjSB2HVDVCyYqZhcqvxSQSQBOJF6wGm3sXMlhMUCmwBuj6QKuEp/Sa/qmB8KVfLOnZj3RmuF9lzuIyhZ3HwBO1+yVNXwQWpOoDe4sUwwWQvZyFY0CXZ4pRzwX6KxDIryzDTGb8d1gHDbeOCvOtQgd9d0f3ByeWmwHpbPkcFoHURu+Uxk+lhXdgtoWCbArIjRcggIoP+ePDqSiet8laWrEdcb4lT0Pr3HO1+A2dYczci0vdFamG9IUqhO6R3gtqTOiAxOJGnLNEoawrG89w6XN/uc5Ed9NZ4qsvVTzRxUgErSIZ4zLfKWtyuq1mM+yKgx3e+aR6eV5Fa+75tHfNLZwIflCieDHiDVxGhH+newISE6SeIyOond5ChU7cnvUpFlOO0YPjY5YE6++zYSDL5V9U=
+X-Rspam-User:
+X-HE-Tag: 1795277003-751847
+X-HE-Meta: U2FsdGVkX18shXzFBvywIt7bI05dbZjBH5sHovxA9i53PlS/Wt3nXv/PrmOXDWeb8Koq/kTBTJc65fy/CkBfQu7ZzR0i9nNjy+tE+Nrkwq+1fn0MbLJaNbjczWt2sQkw4i/A1ZOw54pNbzUxxXS0JfyQ698T6losJyyx5wDXIVJPa6rO9Rf0GUrLziNm393FBevHK/Zf5TkU3xTcX3vaD91L5f2ED2HfLuWy/LgJdb65M8QhObaG9k3sNO0WDS7ONr5ME/APuZxjtI/l/hmo+2FICIi2FTZj0ojiSJPp7KquKRlrxAJfNHf1TPDjrd0KI3F4/n7Y8dYHZxpYfeTZglUi4nLSA53dKiSkN4e+js384KM0W3Nvv8pdsx3WU4IfHLgfpS2mdKgaQLW5U7vTeJVssI66KY63LLCwnxq/x/s7ktuA+jUsVSAeaXi0i1STKW9CORA3LwTbzFSp6nQCMtCajd8NJslgFzu41zJN1tYCPnkEEsMexQjbEIZiYG+Io5n0vQxeBZxq1pmsGABpz3CqC/NXgO5pIAxpCzx6QzNr6jam45UJyEKtEWqj4Ym5kFP3Fp+Q1dni3Fk1tqkSRKXa+TezInWI46Ouk3qsn+T1ExlxjfDiy4xoFJRlcrk0OcpGzy74d493NAuihJuQENo0vVOQU/XvotkkCu+Zyq7hr9odfa76oNkMWrN/PQd3+j+LprP0K10QwSR/v3e3xrL5YfLd6D5TsGwNjIlYhWelbMUugZlxdh6HiEXDGfdPlkErJdQwy+PWFUSbyidlTJ1ru1mPvT+RLxIKxukE2CELQ5jUyCjHrz/NLyApYcRCz6J+OqRv+1LrcVmMn2d2AwLIypqqjs2o09JwcK2JBCGFv+M1V3aPNVUporsX+Dlt5dSL5NtOYKd1mIEkPoDFljnpBJKq0rtg301nRgmZ2zw+P1MYvFM/JvjLGYJLccbj2Ektrlbe2eCTqddnvke
+ jex8ppY4
+ IQh9cwQxTw0q8uszbqbmFY+2FYzfYi0gNdqcbwEzpgNeihWmN8s//rgPtpmbAc4Z7AM2sik2vCUa+Tpe4oAdmlBXtKPJ8x/2KQ01wchFOp/cbzOc+IteO1N1EAXLaKP+xbXLZiiGsfAORDe12wVLr0Y9LK3ZCKPjrC63lERvZ2onf4ESDvcQAC0kEehY+PiKxlwIVCD6fS7x6ozDMMXqafE2R/2UaGU6sgBxlz4BWzufIu5vB8bgEp0XtWmGdlHTOsWh8P5E5XCPrvblzLiJ4/Bg/q1F2f0DOGfwFRAI36g2yfLCGKfdkutJxcx9gkQnyH3DrkXCDx4PwzI9BewKSTlozX9EYiYIbVzu3BGKQpDfK3to+r9QFwkGgRQhyVCcG4t25IgDDeqiiBUHaosQnD9SFigv8hSRvWLawo91njRTSHEu6u4MMczQAKF4WA1es447YW1t6plRoYJK7O5BV9/NjdaYwPcoGIFIewt0bd+NzedwDX+pFqplINLtV2SAD4Oa8X49eya289zI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,133 +115,112 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-unmapped_area_topdown() suffers from a class of bug arising from a mismatch
-between how maple tree functions and VMA iterator functions express ranges
-- the former inclusively, the latter exclusively.
+If an mmu notifier is registered for an mm while one of its page faults
+sleeps indefinitely under the VMA lock, the registration of mmu
+notifiers for every other mm can hang un-killably.
 
-This is problematic with an exclusive upper bound of 0, as it translates
-to an inclusive upper bound of ULONG_MAX, that is a range which extends to
-the end of the address space, and start < end or equivalent comparisons
-evaluate false in a situation where in fact the expression should evaluate
-true.
+mm_all_locks_mutex is shared by all mms, so its holder must not wait for
+something that has no bound.
 
-unmapped_area_topdown() calls vma_iter_area_highest() to position the VMA
-iterator into the next highest empty range spanning [low_limit,
-high_limit), iteratively reducing high_limit without checking whether it
-has reached 0.
+However, mm_take_all_locks() calls vma_start_write() on each VMA with the
+mutex held, and thus waits for the readers of the VMA.
 
-This can result in a [low_limit, 0) pair being passed to
-vma_iter_area_highest() and thus unexpected underflow. Consider:
+Since commit 4ed4379881aa ("mm: handle shared faults under the VMA lock"),
+such a reader can sleep in ->page_mkwrite().
 
-    vm_start        = 0x30000
-    stack_guard_gap = 0x100000
-    info->length    = 0x1000
-    high_limit      = vm_start_gap() = 0
-    high_limit - 1  = ULONG_MAX
-    window          = [low_limit, ULONG_MAX]
-    vma_iter_end()  = ULONG_MAX + 1 = 0
-    gap             = 0 - info->length = 0xfffffffffffff000
+Consider fuse_page_mkwrite(), which sleeps until the FUSE server replies to
+a write request:
 
-The result is page aligned and below the IS_ERR_VALUE() range, so it
-does not look like an error. What follows depends on the caller:
+    mm A, thread 1          mm A, thread 2         mm B
+    ==============          ==============         ====
+    lock_vma_under_rcu()
+    fuse_page_mkwrite()
+      folio_wait_writeback()
+                            mm_take_all_locks()
+                              mutex_lock()
+                              vma_start_write()
+                                                   mm_take_all_locks()
+                                                     mutex_lock()
 
- - mmap() with no hint can fail with -ENOMEM while space is free. The
-   bottom-up fallback is skipped, and __get_unmapped_area() refuses the
-   address as above TASK_SIZE.
- - On x86-64, find_nearest_trampoline() can pick the address for the
-   uprobe trampoline. _install_special_mapping() then inserts a VMA
-   whose vm_end is 0, and exit_mmap() frees kernel page tables that
-   every mm shares.
- - On powerpc64 with the hash MMU, slice_get_unmapped_area() can pass
-   the address to alloc_extended_context(), which then writes out of
-   bounds of mm->context.extended_id[].
+Fix the issue by locking the VMAs before the mutex is taken.
 
-mmap() can succeed with an address from the wrapped window where the
-range above TASK_SIZE is too short for the request and its alignment
-padding. On s390 that range is one page, so this takes no more than the
-default stack_guard_gap.
+Additionally, make the VMA write lock killable so a fatal signal returns as
+quickly as possible.
 
-Fix the issue by converting the loop into one that explicitly tests
-low_limit < high_limit.
+Finally, update the comments to reflect the change, dropping the lock
+ordering list which begs for bitrot.
 
-Additionally, simplify the logic by declaring the VMA iterator in the
-loop (it is reset on each iteration anyway) and exiting with the correct
-output value on success rather than performing a goto when an iteration is
-required.
+Note that the lock order at the top of mm/rmap.c doesn't appear to be right
+- the hugetlb locks are taken after the VMA write locks. However, this was
+already the case, and can be addressed in a follow-up in any case.
+
+Target commit 4ed4379881aa ("mm: handle shared faults under the VMA lock")
+as this is where it became possible for VMA lock readers to sleep in
+->page_mkwrite().
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 58c5d0d6d522 ("mm/mmap: regression fix for unmapped_area{_topdown}")
+Fixes: 4ed4379881aa ("mm: handle shared faults under the VMA lock")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/vma.c | 42 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ mm/vma.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
 diff --git a/mm/vma.c b/mm/vma.c
-index c82e9306b11a..09bbcdb4971b 100644
+index 09bbcdb4971b..f8cf319ff9cf 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -3369,8 +3369,6 @@ unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
- {
- 	unsigned long length, gap, gap_end;
- 	unsigned long low_limit, high_limit;
--	struct vm_area_struct *tmp;
--	VMA_ITERATOR(vmi, current->mm, 0);
+@@ -2375,15 +2375,10 @@ static void vm_lock_mapping(struct mm_struct *mm, struct address_space *mapping)
+  * mapping->flags avoid to take the same lock twice, if more than one
+  * vma in this mm is backed by the same anon rmap or address_space.
+  *
+- * We take locks in following order, accordingly to comment at beginning
+- * of mm/rmap.c:
+- *   - all hugetlbfs_i_mmap_rwsem_key locks (aka mapping->i_mmap_rwsem for
+- *     hugetlb mapping);
+- *   - all vmas marked locked
+- *   - all i_mmap_rwsem locks;
+- *   - all anon_vma->rwseml
+- *
+- * We can take all locks within these types randomly because the VM code
++ * Mark all vmas locked, before taking mm_all_locks_mutex. Then take remaining
++ * locks in the order mandated by the comment at the top of mm/rmap.c.
++ *
++ * We can take locks of the same type in arbitrary order because the VM code
+  * doesn't nest them and we protected from parallel mm_take_all_locks() by
+  * mm_all_locks_mutex.
+  *
+@@ -2400,20 +2395,24 @@ int mm_take_all_locks(struct mm_struct *mm)
  
- 	/* Adjust search length to account for worst case alignment overhead */
- 	length = info->length + info->align_mask + info->start_gap;
-@@ -3381,31 +3379,31 @@ unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
- 	if (low_limit < mmap_min_addr)
- 		low_limit = mmap_min_addr;
- 	high_limit = info->high_limit;
--retry:
--	if (vma_iter_area_highest(&vmi, low_limit, high_limit, length))
--		return -ENOMEM;
+ 	mmap_assert_write_locked(mm);
  
--	gap = vma_iter_end(&vmi) - info->length;
--	gap -= (gap - info->align_offset) & info->align_mask;
--	gap_end = vma_iter_end(&vmi);
--	tmp = vma_next(&vmi);
--	 /* Avoid prev check if possible */
--	if (tmp && vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS)) {
--		if (vm_start_gap(tmp) < gap_end) {
-+	while (low_limit < high_limit) {
-+		VMA_ITERATOR(vmi, current->mm, 0);
-+		struct vm_area_struct *tmp;
-+
-+		if (vma_iter_area_highest(&vmi, low_limit, high_limit, length))
-+			break;
-+
-+		gap = vma_iter_end(&vmi) - info->length;
-+		gap -= (gap - info->align_offset) & info->align_mask;
-+		gap_end = vma_iter_end(&vmi);
-+		tmp = vma_next(&vmi);
-+		/* Avoid prev check if possible */
-+		if (tmp && vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS)) {
-+			if (vm_start_gap(tmp) >= gap_end)
-+				return gap;
- 			high_limit = vm_start_gap(tmp);
--			vma_iter_reset(&vmi);
--			goto retry;
--		}
--	} else {
--		tmp = vma_prev(&vmi);
--		if (tmp && vm_end_gap(tmp) > gap) {
-+		} else {
-+			tmp = vma_prev(&vmi);
-+			if (!tmp || vm_end_gap(tmp) <= gap)
-+				return gap;
- 			high_limit = tmp->vm_start;
--			vma_iter_reset(&vmi);
--			goto retry;
- 		}
- 	}
+-	mutex_lock(&mm_all_locks_mutex);
 -
--	return gap;
-+	return -ENOMEM;
- }
+ 	/*
+-	 * vma_start_write() does not have a complement in mm_drop_all_locks()
+-	 * because vma_start_write() is always asymmetrical; it marks a VMA as
++	 * VMA write locks do not have a complement in mm_drop_all_locks(),
++	 * because VMA write locking is always asymmetrical; it marks a VMA as
+ 	 * being written to until mmap_write_unlock() or mmap_write_downgrade()
+ 	 * is reached.
+ 	 */
+ 	for_each_vma(vmi, vma) {
++		int err;
++
+ 		if (signal_pending(current))
+-			goto out_unlock;
+-		vma_start_write(vma);
++			return -EINTR;
++		err = vma_start_write_killable(vma);
++		if (err)
++			return err;
+ 	}
  
- /*
++	mutex_lock(&mm_all_locks_mutex);
++
+ 	vma_iter_init(&vmi, mm, 0);
+ 	for_each_vma(vmi, vma) {
+ 		if (signal_pending(current))
 
 -- 
 2.56.0
