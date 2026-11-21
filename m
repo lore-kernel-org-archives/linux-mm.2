@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FC0606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30D1606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 16:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AM5vyY5c
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OflyxjEh
 Received: by kanga.kvack.org (Postfix)
-	id BB4296B05B8; Sat, 21 Nov 2026 11:03:38 -0500 (EST)
+	id AF0726B05B9; Sat, 21 Nov 2026 11:03:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8B2C6B05B9; Sat, 21 Nov 2026 11:03:38 -0500 (EST)
+	id AC8AE6B05BA; Sat, 21 Nov 2026 11:03:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7A146B05BA; Sat, 21 Nov 2026 11:03:38 -0500 (EST)
+	id 9DDA96B05BB; Sat, 21 Nov 2026 11:03:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A0FB6B05B8
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:38 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DAA41A0550
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:37 +0000 (UTC)
-X-FDA: 85459596474.04.5199E06
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AFCB6B05B9
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 11:03:44 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6EE416053A
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:43 +0000 (UTC)
+X-FDA: 85459596726.30.9EA8D1F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 138E340008
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:35 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AM5vyY5c;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 026C540005
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 16:03:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OflyxjEh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795277016;
-	b=mTS/dzLLKDHgnrOut/JRSEg0FJCKBI2ZvIJcmWi+IxzLEUOQIdCvJCJInWjo2zv3oIpyld
-	eXABoeTPutnPDPAX+U88hO73RKJ9l7Ou2iGtYezbL42DRQNwjWhNLWOCl56SM/SI8bC7Jo
-	F8Qi16NDBNrpX1wGaUAjJQvvBjvz4Pk=
+	t=1795277022;
+	b=TKil8k3sz6OlqOPZM9rbqwerfoeZr2T7ntpQzJuLyEC4/OuUHiIncQL3hvPLtaemPfkQOS
+	Q864KxNpsClJfH1T5E2nhemsKyVkAc5FzOFmt6MBABDLudQ5cahX0g5V5xP76t66G0uYMk
+	Q4Vh0szkWi71p69x/hhQwqWx+iMIgu8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795277016;
+	s=arc-20220608; t=1795277022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fjtW3tWTyT2H196OmI5oHGMlahZwHiXtTvIY2ftsbT4=;
-	b=Y+JtVcoOokV49u5SEo16jta+c888nEtMCXKgw6slFqobz15NZCcNYovJU4m9CvsDgu2HCD
-	wLPHWUr8inF7p/B6NFNaq0tbAlWSAPxOqZ2Pb48BVGC/ZnI09jZzIi4HZd9tEfF6a4M/rU
-	6J5jFVTZ3EeVPu0AvtgnMaVQnxppnks=
+	bh=+C9l+IS7SCxPcSHtzeCDE4TxFlpud6Kg+iAbboFgMPs=;
+	b=w2Ae0t17hegW5qFBqWO6NDdrqYYfjrPSDFNHwqoqH2P0oljO7H4ZrCoW8pDh8a0x2I7mL1
+	b5794eZan8kJorFaWcQbiMgXCiJkQmBjHEG8dc3tGpwRdV630vmw6qlhzkBvsHLceuoCPg
+	8fGutx6EaT1n6tvW9zMZH3X5rC7E4fs=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AM5vyY5c;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OflyxjEh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4E12B45A68;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D8FC43872;
+	Sat, 21 Nov 2026 16:03:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE49E1F000C4;
 	Sat, 21 Nov 2026 16:03:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7DE1F000C4;
-	Sat, 21 Nov 2026 16:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795277015;
-	bh=fjtW3tWTyT2H196OmI5oHGMlahZwHiXtTvIY2ftsbT4=;
+	s=k20260515; t=1795277021;
+	bh=+C9l+IS7SCxPcSHtzeCDE4TxFlpud6Kg+iAbboFgMPs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=AM5vyY5cH1h8CNycg8kMNZ88A5BtN4ZaCO+c8FK8uYi89pGcHUiG+1K6TVsaUJ/r4
-	 5vNhLxRNRqRcMLAyfSLSpHCbR48SqHTMOSwkUzk/UvMcRgpEVXNHqu0Y4L8C+VxUiQ
-	 cUKYsBeiVKPtKMzCurl5U/+sY2ho0AKvFLn2lHK5as4BKL8m/OxsroGYnqZr20v/EP
-	 UnOGMwsamBqTugTZChTFjwKxQ8o/K9mxnfTjLD/uneDFB16IUKeUzpOS2fVWD/lR9D
-	 QO0W4+lGI20OOQDSjkp1Q9tBMeYFMvO71mcYD1C7Y5CpMMRhvw0PgbjWMYHYTZMRPk
-	 EnPBajbz/NLiQ==
+	b=OflyxjEhoD0voCnNCY2R4mds+3ZOkH1KDw1OHvIBpX7XBt8KynH5tr+nm8jt49Ghb
+	 Bm9B6MvN3DhyFx/reQttoZW5upnQ5lvbQKTOh+Dqt2M9lb10xyOTI4bI9lbRz0DcN7
+	 zs21McIaO1VBXKcQgDPu9rEfWhU7unsQXE+KMBb20r+kTYbZNyisZw8K3XY7Gz+zQt
+	 CPOdbOMwp17PxlU/HZrLW9K8RRFLS1EBzPNDhfKzt2+W/0XBwT4z3I6eCcFACiW26q
+	 2EzDsXttSK4pv9ihhDuY4rA98g+k+MhZxiuyy9TOXYpo5dhy7HX7/GyTzibWRnsfsR
+	 55PQ3x1aIrESQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Sat, 21 Nov 2026 16:02:30 +0000
-Subject: [PATCH 4/7] mm/vma: fix uncharge after failed stack relocation
+Date: Sat, 21 Nov 2026 16:02:31 +0000
+Subject: [PATCH 5/7] mm/mremap: apply the mmap() offset limits on expansion
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261121-some-more-ai-fixes-v1-4-236e925d9b64@kernel.org>
+Message-Id: <20261121-some-more-ai-fixes-v1-5-236e925d9b64@kernel.org>
 References: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 In-Reply-To: <20261121-some-more-ai-fixes-v1-0-236e925d9b64@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -87,26 +87,26 @@ Cc: linux-mm@kvack.org, Chris Mason <mason@kernel.org>,
  Josef Bacik <josef@toxicpanda.com>, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2955; i=ljs@kernel.org;
- h=from:subject:message-id; bh=jvGf/uqdCmatWvRece4f6kn/YJqJuQMD/ohnWFCk+Y4=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2zn3pJ7OiDo14erch31uQuPv7HSSc7u3nX56s3o6
- J3betzlO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRaSYMv5ieN35gtAu9cL/U
- 8rPWvRuXAuqNnsxS3sJw8Z5N4vczB18zMhzW3qbz97v6SmUds4OzpL2eH5Dtqk3yXzwj4d6vmNu
- P1rMCAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3113; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=xSyHxzLxvrEBvMH92UdZdyEHtxwSf4VUzODUn24kk2w=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIZD2wPe/IvvkVZ3OyvcOL8yLWGMYF83nuDn+WdjzT5a
+ cKsHKTeUcrCIMbFICumyPL8i/j+IJGweZ0X/N1g5rAygQxh4OIUgIn4rGZkuLD8SQu3kt7505qV
+ xh7Hl8k8+Rhsrarnt+nBz+sMd1P1Mxj+O7ZJ7zqblJytsv7+3jPez75w8p/y2Hfg+Su7xENT7z9
+ 34gQA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 138E340008
+X-Rspamd-Queue-Id: 026C540005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User:
-X-Stat-Signature: zjtcmueed8o648y4ayz1ymq6t4w7o7z9
-X-HE-Tag: 1795277015-114125
-X-HE-Meta: U2FsdGVkX1/QlBFvuyTsnS7wkayEGgzEvsG7ARfdQ+lyiAISA+AovGEAk7G4D74YdCRZO/v3CKDQ2OAQIitNfdaEcqJFCWzMuXSN7lx69IvB5HutQwSj5e0uU56ATnOPPZoGR//viPg4lw3I5ifZ3mCPhaC8CEJtDNvytL1ylduVh7LoQAV8S9tSHuJitkkAFHF2R1kGj+2nIdfayy+V7RpoR6VwOVEe/U3hYpwU/bkiZsN3hQrFDdktAo9hE+L9RCWsZrLjM9X0nRtO5UPg4d7zP3wDn3DH40I9XU7ITZ4qa/WCdcpXUaAjQhPc297NSc2AxmiJLpr6WrqXn/AbVlpMLfbiu8jQz8BFdkwBR7SZAYfuWkPK0YIQCH5HgtW+uyswdAjFpLDzUzJY7OuqN5O/ssuWKtKhn2UBSwShx3o/1QCkhmFmhE8LwKIbQNrnWxZEXsOe9aUjjiZLFrLmPKU9xhJTaEhNv6rYjYP0gMJIR9cP7jtpfFC2HlXtk1e4hVnq5jqeJcC62cu5wCy5Q9B7QZP5RCgiRcpzZcnghGE5c+X+FYz4agaO7G/5ozUG8T87yt1QUZaCnG7gOPJsVbgaj71Widw+3eyDMIkGZvHydN67NOYK0t3HsKUFtzvvBR8CCa78McY226ROeSl8PtzkTdNMmWFklDZNEUHUfPEEdgpd4uF9O9pD9T6nOVOvJDLuxf97RDk0mLJIR/USpmxfs7E/L1kk+sm8HEfnn4n54S7xbQkdobZl17WLxVz934OK2/RGLp+zyD7RfuOKdESWtg2pjgbBvsYl+57ZbGXsb7Y4Nh93VfvTWuQscw7oDNLAHzKDKiElsbnCutmhWRNLcEoEZnDiq7hBg3aGwI58biT+4fZgag0+2fqOkvLhSrOHGquwwXLspKqiUkddmUPkhhBbWQx0xwX+c4+ctX57SxjTjwBv8Ylk1lY2ZcqfbyYAiHoVX6UkUSPTuqa
- Xb235EX4
- vi0slHnayPuUug2YbWNnIn3d/lAW+asUaWDe+jHlgzBnIyCTCsTGvT410SgqlXMprhvPRrgfdUqxw/qbreZdtQ1iGmKM/gc26He62JMSc3GaJ2MScWoXMtrNlXKSH/tbQx0Qd7q6ca1yU8j3S/KgKpNQ5N7fltBt5UKOTO+7oyINh/gd2SRg62DQvshgyJ7yOqLnYeEIvyOA9EjKcvPEo4XFedOuvaOwU2n++lNyViyqqKx0CVA5TmPPn7dFFJsoxLDEl9EtDw6Zcpwq1mI+jJ1S6LdZFqGAJxYN4zAHTMeXLo87PYP/uCdJS9UPhoZMFuZpfKXTShUazP7PTX3LeTVJki9yB2k44yVOpc4vd+ZNjyJdLH3wViESIFdveQH+s8ogLkhyzBC08hsqki27wbOyPLf5ELqrq3fiBxEcOsD13LtmaA0iXTRy6o2x4/7Kn45hJ3lljlXrjD1x2yKeZZ80/RDJiH5/JUwRNXgFI3ToAepsppJdocM0pGyexcfFnEE2V
+X-Stat-Signature: qyzrzgqzw518um7owqejjk5j39rqbrux
+X-HE-Tag: 1795277021-476951
+X-HE-Meta: U2FsdGVkX1/Q9WzVLduUXyqTO/EREDbZEF/8ZT2Ogjqzq219AjLK3xzKzWAqtV3ljFobFHHbgp4foRH4JeNBusphlsMULiwf+77HdWxrXTS3ApsUkDF0L6mCjR1sFnxzUTvsJduk46I1kPADezfANy0Z3U7Ndpk3nPXHEv/y5xLxioey5TJALrX8kiEdIfDL25+yGrnEo1eCD2emYUhgBX5oedzIEA0lvClOI03GIoaCaOVozvx3pbM7ZPcj0TYD9H4nRq6oolWcStK6UFVhupBBnedc/d6+q7IyeNvaaOdMsuUMOat47+dqr6qO4Ux3Fae6Yr2D0MZg3RirHePs2elEFNLcbuS2PQG2PYcOZ1klNlSkV800QWARJLChu2hczXfHVlhJiXAdMM+qkBw6cEg/W9fEJR5QE6uj8k++ppKBNSbs4Z7XSXlgJjAd8q6dm201ub1z3ky8amMkZKIGyva0IyPoWs4k3mP81LM7ZjCykLKrugRI5uRz9uEBYZzFs0i/n0jeBvngV2OfPu0OzYTAgAIrVxSS30K9VxsAfQXcHS7EcHI0c7QfjQXq3tt9NaUb30FbMAxMf3+nlNAuvrmytXBY81TDAIho+CBxMwCFI7RkgHvhQHu1kMjAIHboN4boFFmYfnNEGakKRuPufdTtqNE6OUYgDexpOahgbLjEzLl1VrgHPhyL8p5ceM55Sugbd9Mh4bu9CSWfipVB0eEOW+hYHhIAyzlQlsqH+NM//pwg/OINjd3SuU2/3Um8JGQCo4pASm9lAJRVdzcCh0o+9TkCrW7HBQwS0OByGWx8cjIF5odpsXOztlXUKfBN4GnSIZMNWxxq0lFminqep5Rn1mC/o6oIKwRMtmHMRrzvX2vWSD9K8zJLftK+OVozcyuR9XNOhV8jRYA5ChqKPtFkPuweJX/QqNy6tAh/rcFDzt2NIqDQiRHb6mXqVbPuG8xuUIgIvh9VRR+U5UN
+ ML15k0yf
+ gpqO43xb3K4x36ylNZGQMn5GAhszsFsHBwhCimXiB+MkPnj06XgkKuYsEyuiQvePFwOTkS/blY99wx55m7Cryh3+9UhtJ896VTSMKUIWt4PKk+klUivTgLJIbh2ldhJagHGAwSx1cbmV/lAeXpSE2cBaDxsJOaA+iLPzLz0Vlddbf1INQfRQYf5XsM0A+5OW49+BLZm2MpcLvORd0dJ7a77+7hG4yr0SjMN6jQ7T/yzc8kCSAG9mAMjFY+ZRgS4cJGV3/mXG5YgcbaISb0FC2LW778hZ5KxWuTrSPLwgY//5amug6wR87etrjDHKxq0jC7OGKEu6DwqWg+rNd/CV4qpD6QNN2dCTL6K3GjMn0ryggbHycPoXKoKc/YTQ5ZeoC8oy4UJhcM45E7co9vSWL2foFbnZ32ZLqBf9OkXG03WXmUyiyxOSaEst3W9x2Np9chsmxdDmnYo2CUBNu1pj6wByITUBZT278+vzoN9fiaippm6Z0jzRSD7kzFGP+/Y+jF9JS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,91 +117,89 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Chris Mason <mason@kernel.org>
 
-An execve() that fails to relocate its stack can underflow
-vm_committed_as, and the commit limit of vm.overcommit_memory=2 then no
-longer holds.
+Commit be83bbf80682 ("mmap: introduce sane default mmap limits") made
+do_mmap() reject file mappings which extend beyond the maximum offset the
+file can support, via file_mmap_ok().
 
-exit_mmap() uncharges vma_pages() of each VMA with VMA_ACCOUNT_BIT, so
-the charge has to match the size of the VMA. relocate_vma_down() expands
-the stack VMA by the relocation distance without a charge, and relies on
-its vma_shrink() to make the two match again. But it returns with the
-VMA still expanded if move_page_tables() can't allocate a page table,
-for example at the memory cgroup limit, or if vma_shrink() fails:
+However mremap() can expand a file mapping and only checks that the page
+offset does not wrap, so a mapping can be grown past the limit that mmap()
+would have enforced.
 
-    relocate_vma_down()             charged    vma_pages()
-    ===================             =======    ===========
-                                    L          L
-    vma_expand()                    L          L + shift
-    move_page_tables() fails
-      return -ENOMEM
+Fault handlers rely on that limit. For instance dax_iomap_pte_fault()
+converts vmf->pgoff into a loff_t, which overflows for such an offset and
+defeats its i_size check.
 
-    exit_mmap()
-      tear_down_vmas()
-      vm_unacct_memory(L + shift)   -shift
+Fix the issue by applying file_mmap_ok() to the expanded range in
+check_prep_vma(), failing the mremap() with -EINVAL if it exceeds the
+limit.
 
-On x86-64 with 4-level page tables, the distance is up to 16 GiB for a
-64-bit program, and about 128 TiB for a 32-bit one.
+This means that mremap() now refuses expansions it previously permitted,
+however no file can have data at these offsets, and mmap() already refuses
+the equivalent mapping.
 
-Fix the issue by giving back the charge of the stack VMA where its
-relocation fails, and excluding the VMA from what exit_mmap() uncharges.
-The argument pages of the dying task are then outside the commit charge
-until exit_mmap() frees them.
-
-Fixes: b6a2fea39318 ("mm: variable length argument support")
+Fixes: be83bbf80682 ("mmap: introduce sane default mmap limits")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Chris Mason <mason@kernel.org>
+[ ljs: fixed up commit msg ]
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/vma_exec.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ mm/internal.h | 2 ++
+ mm/mmap.c     | 4 ++--
+ mm/mremap.c   | 6 ++++++
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-index 586c52155942..84b98f1a201d 100644
---- a/mm/vma_exec.c
-+++ b/mm/vma_exec.c
-@@ -45,6 +45,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
- 	struct vm_area_struct *next;
- 	struct mmu_gather tlb;
- 	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
-+	int err;
- 
- 	BUG_ON(new_start > new_end);
- 
-@@ -68,8 +69,10 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
- 	 * process cleanup to remove whatever mess we made.
- 	 */
- 	pmc.for_stack = true;
--	if (length != move_page_tables(&pmc))
--		return -ENOMEM;
-+	if (length != move_page_tables(&pmc)) {
-+		err = -ENOMEM;
-+		goto err_unacct;
-+	}
- 
- 	tlb_gather_mmu(&tlb, mm);
- 	next = vma_next(&vmi);
-@@ -93,7 +96,20 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
- 
- 	vma_prev(&vmi);
- 	/* Shrink the vma to just the new range */
--	return vma_shrink(&vmi, vma, new_end);
-+	err = vma_shrink(&vmi, vma, new_end);
-+	if (err)
-+		goto err_unacct;
-+
-+	return 0;
-+
-+err_unacct:
-+	/*
-+	 * The vma now spans more than was charged, so exit_mmap() must not
-+	 * derive the uncharge from its size.
-+	 */
-+	vm_unacct_memory(length >> PAGE_SHIFT);
-+	vma_clear_flags(vma, VMA_ACCOUNT_BIT);
-+	return err;
- }
+diff --git a/mm/internal.h b/mm/internal.h
+index a09dbdfd615d..aa7fba0a1c41 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -941,6 +941,8 @@ extern long faultin_page_range(struct mm_struct *mm, unsigned long start,
+ 		unsigned long end, bool write, int *locked);
+ bool mlock_future_ok(const struct mm_struct *mm, bool is_vma_locked,
+ 		unsigned long bytes);
++bool file_mmap_ok(struct file *file, struct inode *inode, unsigned long pgoff,
++		  unsigned long len);
  
  /*
+  * NOTE: This function can't tell whether the folio is "fully mapped" in the
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 7618e72766a5..79702841c06c 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -264,8 +264,8 @@ static inline u64 file_mmap_size_max(struct file *file, struct inode *inode)
+ 	return ULONG_MAX;
+ }
+ 
+-static inline bool file_mmap_ok(struct file *file, struct inode *inode,
+-				unsigned long pgoff, unsigned long len)
++bool file_mmap_ok(struct file *file, struct inode *inode, unsigned long pgoff,
++		  unsigned long len)
+ {
+ 	u64 maxsize = file_mmap_size_max(file, inode);
+ 
+diff --git a/mm/mremap.c b/mm/mremap.c
+index fff0465f5e06..8043c425b5df 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1791,6 +1791,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
+ 	struct mm_struct *mm = current->mm;
+ 	unsigned long addr = vrm->addr;
+ 	unsigned long old_len, new_len, pgoff;
++	struct file *file;
+ 
+ 	if (!vma)
+ 		return -EFAULT;
+@@ -1870,6 +1871,11 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
+ 	if (vma_is_fixed_mapping(vma))
+ 		return -EFAULT;
+ 
++	/* The expanded range must obey the same offset limits as mmap(). */
++	file = vma->vm_file;
++	if (file && !file_mmap_ok(file, file_inode(file), pgoff, new_len))
++		return -EINVAL;
++
+ 	if (!mlock_future_ok(mm, vma_test(vma, VMA_LOCKED_BIT), vrm->delta))
+ 		return -EAGAIN;
+ 
 
 -- 
 2.56.0
