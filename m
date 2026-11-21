@@ -1,117 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD85606A33B
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 04:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A65E606A6AB
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 04:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=x8GICWD4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l6myZ4Q0
 Received: by kanga.kvack.org (Postfix)
-	id C662A6B00EF; Fri, 20 Nov 2026 23:10:16 -0500 (EST)
+	id 12EC96B05B2; Fri, 20 Nov 2026 23:20:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C171B6B05B0; Fri, 20 Nov 2026 23:10:16 -0500 (EST)
+	id 0DF846B05B3; Fri, 20 Nov 2026 23:20:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2DB36B05B1; Fri, 20 Nov 2026 23:10:16 -0500 (EST)
+	id EE8E86B05B4; Fri, 20 Nov 2026 23:20:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 266F76B00EF
-	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:10:16 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5365D120301
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:10:15 +0000 (UTC)
-X-FDA: 85457798790.17.5C57D42
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 50AB2100005
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:10:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=x8GICWD4;
-	dmarc=fail reason="No valid SPF" header.from=linux-m68k.org (policy=none);
-	spf=none (imf14.hostedemail.com: domain of fthain@linux-m68k.org has no SPF policy when checking 103.168.172.145) smtp.mailfrom=fthain@linux-m68k.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CF2006B05B2
+	for <linux-mm@kvack.org>; Fri, 20 Nov 2026 23:20:09 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BE2738031C
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:20:07 +0000 (UTC)
+X-FDA: 85457823654.15.4DE80EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 125EF80008
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 04:20:05 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l6myZ4Q0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795234213;
-	b=YApdcxYriEbtinEHETWlAGWtvjXnfiUtAY/omppGz51rnFdeOdUPkRKMFNqJ6ocvA+tbZ8
-	9cyDz6VdHOLI+fYBnlEYqLN8Bf6O3IWpnCOb1r1Fj+uO4UoRmkaAHtne5dwa+OmnuQ+ftD
-	aZy+LDhKWw/jI1ff0bJ5IweIsUSqKdM=
+	t=1795234806;
+	b=x7gUXC45aSdrjLMJbbq2o0YNnJcE7IoRdCXucx67QtmozWHzPw7NvtsM+K/gm3reSGnk/0
+	CyeED0dirviTaGuSEhZGqczDx/PqXikIWYNZuxCgGNFCkQ0QqXQmlg8chjG0ggcBnWIDl/
+	U05FMZtlwyUiYrFdqgAkAwBTUyNPC6k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795234213;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1795234806;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V/ZfUxjm7VkyBHyByjR7jRTw9kA/DfQjZiBXJ4WYVbw=;
-	b=wdSkzcdbAgoAZJC9U4sdYAcZoxQ6ppwNtySRVUPZDt6ySzW3iNkAInWZsg5Rr7avisMHuW
-	g2JrC1z/iHuopebFDWFe6MN81nVohb5hg/re7FJXKVnwaLnh9lF1DeIoQumWrsUQ5sbTDC
-	8Yr9on+I+lnlU5+jiYKprk/0Pk8USeM=
+	bh=1AnGr17n7QBlqJTgR0L/2DWD4IMKoGtf1+NZyW5LFIg=;
+	b=yIomnZmHCQ1X7S38gMW15aCTfAr51NraAoytF6HbS3hYgEZFK9UTwL3OObpemGx6ztwQ3e
+	g2oZUSBdS6YOWzUzi5oYxvZb/abSiBnWTERp/Fc95xy16K9gvriwUnvJXFqnnUAMv7MmFA
+	ezpTqwL7S7Bbp2LoH3RuvuJ9nZzpXBA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=x8GICWD4;
-	dmarc=fail reason="No valid SPF" header.from=linux-m68k.org (policy=none);
-	spf=none (imf14.hostedemail.com: domain of fthain@linux-m68k.org has no SPF policy when checking 103.168.172.145) smtp.mailfrom=fthain@linux-m68k.org
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 85CD8EC0C22;
-	Fri, 20 Nov 2026 23:10:12 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Fri, 20 Nov 2026 23:10:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1795234212; x=1795320612; bh=V/ZfUxjm7VkyBHyByjR7jRTw9kA/DfQjZiB
-	XJ4WYVbw=; b=x8GICWD4UoDMvXS68x4O4raIRV//lKadGXkbR+0GkMwSLKHNN3a
-	l65ZMHAOpoRExR7pAIvihhPjQGT3B+CeCPEqupiPdS+y8m4qWGZ0gFpOiAf3WOyQ
-	HXEPJYXyYELOEC6BDLHbodcnTwzVV3AE1F7UpDMoJby54p6nhGHYXquXPb2CJU5w
-	jYZKsTebidgw58LYURef+XgVl2Vvo0E0IHKmrSBdHyUYlRxcToqjV9PzNEE2to69
-	9SiQnb828hKNRHd/0vTC9yk7rdxaIXohwi80VCCcKKU8Oq7mBsVOUl4cZeajtcfZ
-	YTBS3+mVttGKchkvH2ImD7jWE+U1EC5PLLw==
-X-ME-Sender: <xms:oxkBa3_mj_f_gnNZhkN3ShMI9QrSQF8vMo8R673cBuK0m2EVP3DZkg>
-    <xme:oxkBa9CtXDTbRboHpek_vq2QxNVXphewrT1_3YqsK2S2sYZ8AgrCsexDWypt8KOs7
-    An0ZVmTZSlTXZtRd21vXqRaX0sswChd5bVReTsoWaXbyefruZSL1n0>
-X-ME-Received: <xmr:oxkBa8Sw1JHyWSpg0ZGJunlZh2DyuYd5kKA4PTgFCfkO4O0XltAeKO-oT8hj89JEMpKCoyr_LD2OfzuTy7M61nZKhGlg1c0YH5A>
-X-ME-Proxy-Cause: dmFkZTGD4fLbFmQBkWa7VJDwENrHmzx1MAeeBGv5VgoUdl7GYZCUtedTAG5hE6WZtkUvp2
-    jAxj0aDLHn5ZP0N9STxC5xdAbnE0dTF3qbtjthBjKPJ8Xsg3BQKLzjqyD6oP3zVt3yoPRR
-    vNfzy4cMdcP814aPPyf/BWEw8HV2TY/g0kehcIDNvbT1J5MpDpxMMSdo3VH7ucRWfBF/Vy
-    GZz+6B1N9UgoWYOU6ZK0DviVw9YdJhilwDMtQCMhN4cEAWiNbwHxYR9iyQ6mNgMN85GVZk
-    QAOliH/uQm3sqP7RJJsYaZ9dt5fbOXYVQzeMVjmtVn+hF0yO5K3Iw5fCUS41YyOlTc5LBM
-    smdKMjYaK+8NATKUP2Xdh1tgnP5RghKgOENnJ3sSyIqkf7N5MrdULnt9MMPtaDzG9OJdqD
-    PLjiEE+l19d/S1OL9XToIkbZrI7c0RVSl/g/aoaUewq9zXhvua/NuT3GsZA4XTt0GqxaYI
-    9zUxhmWzhxREwooMd8UeI0kW1XmyJ581hXq4X57YbBbQYwuKroBTAvrSkrjXS1IYhGJt8V
-    iTPHzuj4vtNYyCyjma9N7uuEFw9teoFZAcOYTJfCx888gRUlxRBZP78R2Ti4PgJTuuWfSQ
-    wK4/4NtKUGUCxVqKwprh9irouxF+izv1AN5Am/1bYfPQV3gfEhrtcAcfT2WQ
-X-ME-Proxy: <xmx:oxkBa0t6P6pw-Udkc6dfiSa5yNT73qkgqAfAJMkl2BSqo3iIMduBNQ>
-    <xmx:oxkBa43qElqcSN6y_5x8IPKnFPpP0M-AtQ2SWPu9L0c76O3bOsE5jA>
-    <xmx:oxkBa1WQktdHrofSNid1wbZlxky8UhzYTZBX75sAWpnroo8lYqT0lg>
-    <xmx:oxkBazKusyYOQSnaO7tLQPZUNByO6OqtMiJaGRr9nje1FBji1FpzFA>
-    <xmx:pBkBa3_ka8wtlkl1H0cTDIoa3OHUpoP06-hjcafN-uO9spnFcy3lYCjQ>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Nov 2026 23:10:09 -0500 (EST)
-Date: Sat, 21 Nov 2026 15:10:04 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: kernel test robot <lkp@intel.com>
-cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Linux Memory Management List <linux-mm@kvack.org>, 
-    Arnd Bergmann <arnd@arndb.de>
-Subject: Re: include/linux/compiler_types.h:631:45: error: call to
- '__compiletime_assert_433' declared with attribute error: BUILD_BUG_ON
- failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) !=
- sizeof(*u)
-In-Reply-To: <20261121034304.2dPxVKzk-lkp@intel.com>
-Message-ID: <0b947a72-7a68-9bde-8b0b-adb539f09a8c@linux-m68k.org>
-References: <20261121034304.2dPxVKzk-lkp@intel.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 50AB2100005
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 18sr3zzd9n9fp3zfqs3peeq7jry6ye4h
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l6myZ4Q0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 052EA441EC;
+	Sat, 21 Nov 2026 04:20:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56EA41F000C6;
+	Sat, 21 Nov 2026 04:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795234804;
+	bh=1AnGr17n7QBlqJTgR0L/2DWD4IMKoGtf1+NZyW5LFIg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=l6myZ4Q0DB+5S1slDpMuSwj+aBJpNMW6/Js8aMwBVS7+OrzbjxL9drtdk/O1+C20E
+	 0rQoUwn5jXHlhJmKWvHPGOmzc5ZlvSvCzDJsK9SsR2q+f8ZDSZANxcFjDj0vv2oGCL
+	 iHT9g9NP+s9UHbe9NvEirOr0CIQwEQPWrExpAF9Zf70YIZQ8fFkD0VXNdLo8ReUtxa
+	 7TbBUNscblAGuQ7O1M2ax+vyq006PaMEGpPJ3IgSO7cRYLt9ZIud1K+sVEP2rB/xXQ
+	 GNCiN91dT6i3/Hty/hh6+4rxhDopgFB9t1kkUhs5EgoXa//EORdR8ic9kMiAfV5Isy
+	 qteQPQbAqAO4w==
+Message-ID: <sashiko-outbox-226634@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 4/8] crypto: acomp - Add API to get a compression
+ algorithm's batch-size.
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>, hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, davem@davemloft.net, linux-crypto@vger.kernel.org
+Cc: rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
+In-Reply-To: <20261120041906.5785-5-kanchanapsridhar2026@gmail.com>
+References: <20261120041906.5785-1-kanchanapsridhar2026@gmail.com>
+ <20261120041906.5785-5-kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 21 Nov 2026 04:20:03 +0000
 X-Rspam-User:
-X-HE-Tag: 1795234213-495863
-X-HE-Meta: U2FsdGVkX1+J+hZeTF4zdXqk9WCENkg28PnWUUh9yGUWejH3Q3TJQPipn8OW2OyF1CwEgfz0t6Ezp5nMPDRWXUaDCU0djs03oClKV3OpEb5G/emxr8YJSagHq2UGFerqg+Nkv+gGvnwPvpjG7cM9xwjPJQl6uQaEamone1Gkj8JcYtCPikxwTSPklwW9wJ2iFmkOzAGIxeCqiTOsaRQFR1IDRS/zE+UcoB++hFuY19dj/lkd+7ohGt0Y3TD0G38UM6WOwlOdbjsoDCVdc1+GJRKD1DFn7nGFlk/82YICwUkhSVkCexcOUrZioScUYgcvRxd6cML6uB3c4cgA+nqwWuaHqm3qAUcq/qM6pzxpnjCBSz4D2GqPi806Qz+fTNnUArXcVcKroW8FxJ7izxXq0w7VlfJjeLdEGohPgi/PRAvjTnjxYUg2ZWdjZ1lb4ahPW8mgDsqQowOk7WvsF9wnf0VuuhrIU8/Mf5ufz4eESRHyTUTgGQ/VSmysh1jGzUoXHGrXyVGmO8X9p/Xwtc33uwPOlXGLQic10ZS9fTD9Lj9ld+/l96gV0OCwsZQkLn2OaoyZUH42g2uTuBn0z2rAjn10d/0wyHv9Eh00mszOl6CVPxjjGIGMHzWyqYNM9CTQL9EsOcTt2NA8UUOsitdJfbu9s7EAlfo+LyRuUopHrRjY4LV6D31RLTa1Z38RnQwPvNSo9U3MTqIGN8+T3/ljrbMAcrp9BHiejoMPT9Xq6MSrcudxz1btExBPkgr4YJny4od9f3At20XJkaIzK7AGZDF1+p0IFcvW6QEg/qE2sV3UKx3l6X+UkffBP1G/QJvYgnfpwJfOqQmTrTX33xzFsxDCFm50+TkEex2s5+J3S9I/WeiAmJ5wKvPWmNr1oO4hib6Qw4R0sD9lDcwfc5xL+523Yd9OgehVt2sYrbufrySTHnPyXTWLYL4ZZW6JgzU0PvzilRI0bDc9v34XVpr
- hQkTrXMl
- jhlXNnD02VkGW02NGfpMu4doam+smboyYK1KN0GIvl7Z1orzURCe9zRMr4ANeaE5bELFUt/UpV72V5dCUDtdtukoR9e7d9cpJAhw1fagmHZQNkxYsLJQIKn0cizLMbVNeyuAPiGTsMgiZfOvvmBN56WdW7/ua/iPqlnyyoC0mgZGyMTTd3/QkIkPL/E5sg5M/x1GghTOmxLY1a7HUZ3PahWdMXRhWxMINivUx3RgjPrBTEMWYDKnfsXMB0IbFDgdRQ8oeB7XmYw7qREDRSrFDSwYaPIWHY8JrVF/FWIC1pGDUu/pADY3CxrnodpZosTHIcpELYIPcNmiXrUM+h/ZVDG5lZsj6HPkKuvXKnxTztsfanRtv5ER64OQKpAuMlMU62TYBmp0A/L7NyrT0XkqREQUUHcikh2pXR5Hgh5EkC47fIHsKberyNj2Jz0En5e7srrDK6Lrr4qufcbrOiKFkdPgh8BVcGVK2COIXJSC9n48pXciemFzi2F7TKMKyL/vElRPnvcrrToADDRrZ5dOPLDIgYe/7qXYdNO/sUwI42jhmnRM=
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 125EF80008
+X-Stat-Signature: rm3s7eso5fj75ebfg4cmim8sc3f73knf
+X-HE-Tag: 1795234805-823235
+X-HE-Meta: U2FsdGVkX19WFr+p4kpQecvExz4xdIQWsk1BHg1yj523YRt3iyu0iIozR8wqwxg9sKGv5U4cLUQPGPJxrLxlTbi57qFToMeW0MIslpnV8EN32GqnOWhBKkUp4pPGclDatVQRP1SgjR1K9/eJnBr29KzdtTn+VXoyVjfU4jYVsW4E6FGXHTwhx8wXIKKwwhLuQm75z98qcKDE/kxB3V2t23XsZISJp6ftm0UCgcHoZTuZQYqOeL6XA9E7v9O+E4a+2Ta9jU9angCP0SPfm2vEvqOl9Bb4UylLwUfq/XZC9Dh5NsqSkVeo45Yh98HiJXcm/5cDpeFvH9EDsOcvEbO1PLM/RtSUIUUO/1GksKGwe1fwxRzGpFrAuV20m3Nmv0vODXjJlM+b2zhukKLHCyGeBzEjyZKrSd8GgeLj2XWz1hj9M6xdT7aFVOJMVIcRIBOthvCdaFu6rITRmaiBQhJsTgU9MltXaJkAGVIQY2zZ47Pw64VE1LTviyApTYWas5L/NZUElHHei6IILC/ggJ4XEoFVYn3LUfAVw0eUHrnhkUMvZC9nT0UJ5GGpTfoQ+B2asCBDDx4PL5AFEq6BGgjndRDM+tUuKjS3hzh7Scc91fnocrCsPheR0qsjNIuwFjVBBY6n7PiFVHdHFsMY7ej8ASEPJA2S7VG2jU0dBJq0fkvxsW/DImwHG362qlycNqe7eOXjWiYHDOP27S6/1O5GVuSENZQqERUna1/NKd4gjPBsaZ3DWCJiPF4FXUbes8wqK8J7zz1YspGkgZ2xfLXOeLpGgtoSrwMnjLoxB4lhTTaqjmYnLTrajAHx0yP4oHsUowDDympzOMherlRGiAJ/JYY2b40uxpY49+p8+2p6Hdj316ehz+Mgp97e4lMNjmBx6NFqnKmcV3fNpqMdfzrlW8ynB7GfuTe9IdKJKhbdtItWBI2R+VdeC5vjhWOUPxF0Jg6/mhfzIZqAJbCuflE
+ u9UXOMfQ
+ Tdj9efFa0FcYmhFvyn7nCFUMVrjYoS3fMb+/UabYZoT3eyEmsB60Llwu/Sd/J/Ot6UX45A7apq8+Fz55SXTr32ArXiz3nIzhfjnE85C3LLF1yXC7v1t/I0BGEHK1KQynXF5IDfaLyhaEcFi36TYXpMU7QnA8CRHh2B3Vw9a++Al1XixbFDQ66sHgMh/+1jqMm7GMQX9CWrvmDKKQzdGlO6BFfXM2qoXhGQ4lO2i5j7oKOsLpb9sU9/xoErRznlSYO9YZT6v3FncjRE6JKfSJT5K+OFen6W0nQbLuDv7chEAqfjBu5xHuZePty5/hgrs37vks06SvezOYc87ssEh5+BvMpjDqtyQ1NCIkoJ4zZ03sPqWT6MR8M2KgkAqmA3PmyPp0RK4rqgB7DT4ZXuD0CUCkDBIR8+yiLbPVl/dgrmhzPgg1qr7T0HuH4C+MvGNYNO3Zd4aohp0BsYR9RMf8QygaU5O9aupNHou3oLUm2JCNzhM6ymY/PTkyq+IWxbRfFzohQ3K6/udUOsWpmZhrRsXwfVnCoD09+u2Z4LVrO3q4tgWbPm5bEiuZJS5HcAjyaflXQQQdzjm78F/5y9GOIlXBqTgsdIwRmrbp9ImxhsZBhYRBvAwkF7prRS/XycMNH6ZtZO58/O6bcyPLAaZeoh3e0dN5Njq/SrFGFinZ56aCR6LwYmCxWBxHsR/MD/lujMzTLON4mj0ItLVApgUACCW/SAn7pcQdZ4ESBOuNgBPlnJIWGZGVmOvRwr0f328XeuhOyKzGRSngTn6qjZLA/Wa8RmjTxTKaZGhfty1B9hw36XsR8vTXrLDQOajhWTirrGxsX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,13 +92,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] crypto: acomp: crypto_acomp_batch_size() checks async instead
+  of req_seg
+--
 
-On Sat, 21 Nov 2026, kernel test robot wrote:
+commit 4f8164105102abaa98a8641d32dd35c9cb223ee0
+Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
 
-> FYI, the error/warning still remains.
-> 
+crypto: acomp - Add API to get a compression algorithm's batch-size.
 
-That's because the qla2xxx maintainers at Marvell did not respond to any 
-of the three fixes I sent. I'm not a paying customer so all bets are off.
+This commit adds a batch_size field to struct acomp_alg and introduces
+crypto_acomp_batch_size() so callers can query the maximum batch size suppo=
+rted
+by an acomp algorithm.
+
+> diff --git a/crypto/acompress.c b/crypto/acompress.c
+> index ac4dc52668b89..df9e42f519c35 100644
+> --- a/crypto/acompress.c
+> +++ b/crypto/acompress.c
+> @@ -327,6 +327,20 @@ int crypto_acomp_decompress(struct acomp_req *req)
+>  }
+>  EXPORT_SYMBOL_GPL(crypto_acomp_decompress);
+> =20
+> +unsigned int crypto_acomp_batch_size(struct crypto_acomp *tfm)
+> +{
+> +	if (acomp_is_async(tfm) &&
+> +	    (crypto_comp_alg_common(tfm)->base.cra_type =3D=3D &crypto_acomp_ty=
+pe)) {
+> +		struct acomp_alg *alg =3D crypto_acomp_alg(tfm);
+> +
+> +		if (alg && alg->batch_size > 1)
+> +			return alg->batch_size;
+> +	}
+> +
+> +	return 1;
+> +}
+> +EXPORT_SYMBOL_GPL(crypto_acomp_batch_size);
+
+[Severity: Medium]
+Should crypto_acomp_batch_size() check crypto_acomp_req_seg(tfm) instead of
+acomp_is_async(tfm)?
+
+crypto_acomp_compress() only dispatches segmented requests (where
+req->unit_size is set) to tfm->compress(req) when crypto_acomp_req_seg(tfm)=
+ is
+true, and otherwise sends them to acomp_do_req_chain(), which rejects
+multi-segment requests (req->slen > req->unit_size) with -ENOSYS:
+
+crypto/acompress.c:crypto_acomp_compress() {
+    ...
+	if (req->unit_size && acomp_request_issg(req)) {
+		if (!crypto_acomp_req_seg(tfm))
+			return acomp_do_req_chain(req, true);
+
+		return tfm->compress(req);
+	}
+    ...
+}
+
+If an asynchronous acomp_alg sets batch_size > 1 without CRYPTO_ALG_REQ_SEG,
+crypto_acomp_batch_size() returns alg->batch_size and callers such as zswap
+will submit multi-unit requests that fail with -ENOSYS.  Conversely, because
+base.cra_type =3D=3D &crypto_acomp_type already distinguishes struct acomp_=
+alg from
+struct scomp_alg, requiring acomp_is_async(tfm) forces
+crypto_acomp_batch_size() to return 1 for a synchronous acomp_alg even when=
+ it
+sets CRYPTO_ALG_REQ_SEG and batch_size > 1.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120041906.5785=
+-1-kanchanapsridhar2026@gmail.com?part=3D4
 
