@@ -1,99 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783E0606A32A
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 17:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27144606A32A
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 17:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dqhNilQt
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RuZEFH12
 Received: by kanga.kvack.org (Postfix)
-	id 914026B05B0; Sat, 21 Nov 2026 12:23:59 -0500 (EST)
+	id 464176B00EF; Sat, 21 Nov 2026 12:29:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89D746B05B1; Sat, 21 Nov 2026 12:23:59 -0500 (EST)
+	id 415236B05B2; Sat, 21 Nov 2026 12:29:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 765B36B05B2; Sat, 21 Nov 2026 12:23:59 -0500 (EST)
+	id 32B5F6B05B3; Sat, 21 Nov 2026 12:29:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 511E66B05B0
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:23:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BED19140598
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 17:23:58 +0000 (UTC)
-X-FDA: 85459798956.20.B79CFC3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 26013C0003
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 17:23:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dqhNilQt;
+	by kanga.kvack.org (Postfix) with ESMTP id 0B2556B00EF
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 12:29:32 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4FD3BA8183
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 17:29:31 +0000 (UTC)
+X-FDA: 85459812942.03.186DCF4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AE5B31C0006
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 17:29:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RuZEFH12;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1795281837;
-	b=fcBOZJ9UkhuLuBoP0zIDd3LI+rObE1mmh+87Rk7xlxGqXYQMdporgjV/PajTNOw+yAsIn6
-	hagXOmnuUChNyfiUj5KRtGRc0UePpKUDimVE8Keo+DSdrLSIzMeqHQJT2Whs6qCwG5ZSJC
-	N0OLX6GI2OR0nnT46HEhRTkm55yeVng=
+	t=1795282169;
+	b=WJEMuUgjkXwsp+Ntz9Y7ec0j7dI1ih/xrKhHXqjUCf65zqZwBBSDQPBmCKCf8Mtzl6VPQl
+	NDXNOvHTe0B+ZU055FCC7r868YSLLtZCBHZ6M173xfbtehjB2Meo6qD3WD4Stn5WK7My9N
+	JMaH9vR3JiPGtFey1duzZYY7LMINvbU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1795281837;
+	s=arc-20220608; t=1795282169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fUMUx3jV+Cza+EQigl1rcYAIkS0QbtIwp0tnJ+ZrKLk=;
-	b=ky9oicZem0LkI9WkU4IsPRkttadnJg5wGebbLDcoV7cV4Ps5ADA2N1+8aR97gd1YLorqE4
-	j5MU8rHR+wLkNyBb8tZ5o2JoZGlEQSish3DLs6Tq5oGeVUEnQxvamL/pa5SQ6dIgychX2k
-	ciefwj1AywKhUyOlVWumrLrneSzEnXs=
+	bh=NJvtiQFrK+TKOzdlaogJMSqLyClicrfyTdVB70PUMlI=;
+	b=QFCA9mpWKOIKafMsqPsDYGNFiBlcc5c3l86fMADSqer+o0B+tYwZXXSBUV4tA1ymcliKA3
+	QdZzPfBeAi5MBgeDgSZ0D/cGbhAStDP6U1OEqLwL9YjeSrxLf9x+XpphbJOEQhz6vtZj7D
+	tdbzHgWUCzJjlW6VfhmJsKlnXKb/DnY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dqhNilQt;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RuZEFH12;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 606F96120C;
-	Sat, 21 Nov 2026 17:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20501F000C0;
-	Sat, 21 Nov 2026 17:23:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 436B840B2A;
+	Sat, 21 Nov 2026 17:29:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4521F000C0;
+	Sat, 21 Nov 2026 17:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795281836;
-	bh=fUMUx3jV+Cza+EQigl1rcYAIkS0QbtIwp0tnJ+ZrKLk=;
+	s=k20260515; t=1795282168;
+	bh=NJvtiQFrK+TKOzdlaogJMSqLyClicrfyTdVB70PUMlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dqhNilQtZwoham26ThtkeeHFtRSps35xLwa1G2F5usdzpdsiI6le/VhPeXYv1dufh
-	 OgjnWpU9RRjsrB0eA7/vhOqPTprsZS6b8J45b7hr5KwnQE3bHQKEkFd6V1O+ucl6f1
-	 NiZBhQ5VDsvThE9AzIuNjg9TcJQPe6e2fGOV6BdxqJ5UrI11oSpbUH+qXoLw940UkO
-	 GABVMs95EFUbN0PV6MrjJecVWDRwRDL5tLSbcZWSyG6jzK3h4Gen5q0cZ9AgCF0sLD
-	 T9nD7cd/T3xXNxdyUHmH8nGpteEU5wZX5UuqUZTGXQ/Up7i/WAZqKgpOnPJiXT3ZCO
-	 W5ZrEdrbWrXvw==
+	b=RuZEFH12nvc2PIbb9pavr1AbcZ5VX507aGY34xBjHeKBSPsbw8RiW3S6Vq+F/+RuB
+	 zvl/t7XXqQ4bO57J+rIZge5gQHAyIpvucvFW2CkDhTjfgK6o3sChHdm6hX5603pTYw
+	 jvN9pQLVAdwoOVp/TOOCGg2Ym+Fl3l+bN3NYKmYVYJIg51s4pudgnEW+kkbcjcg7f1
+	 bPpEIwI2rRfCFtjCnYeCP0sXHoD/D98SG6wn2AOc8e0+24rDxPl4Z4c7Zqqjq8ua3e
+	 c9NCrmW4EqGkUtlLMk3O3NR7JwJbmT98JdYhKlubfdYlaBC11LWPfxZYBODW5Kai8h
+	 Cj/82WdZZ/TBA==
 From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
+To: Yifan Feng <evanfengff@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	arijit.desaii@crusoe.ai,
-	Jonathan Corbet <corbet@lwn.net>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-mm@kvack.org,
-	Randy Dunlap <rdunlap@infradead.org>,
-	sashiko-bot@kernel.org,
-	sashiko-reviews@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [RFC PATCH 2/4] mm/damon/reclaim: set memory PSI 0.05% as default quota goal
-Date: Sat, 21 Nov 2026 09:23:47 -0800
-Message-ID: <20261121172348.80312-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/damon/core: fix damos_walk() hang with zero watermarks interval
+Date: Sat, 21 Nov 2026 09:29:20 -0800
+Message-ID: <20261121172921.84465-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179526475633.4.14859465649138957731.b4-reply@b4>
+In-Reply-To: <20261121025626.75981-1-evanfengff@gmail.com>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rr19tfnqgbb37fiiweefotsp5wgogaxw
 X-Rspam-User:
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 26013C0003
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: w7n67gaxjri75e4f3159fcfyyzm64gz7
-X-HE-Tag: 1795281836-768241
-X-HE-Meta: U2FsdGVkX19bY7H3wCEEyxZafvRyBhet5JylxAVo4XL2riLNzW5OYFkYm+ynahS3CANyp0oryWerlxoThNikv8Eg+7RL8kMFxvsRiMI/nlyk9gA/Npk2m2/0WMrabaIEszb6Zc1t2t7u9jlN8t9iszaTI0R8KC5brCkSWCUdFi2iiYQNjaDvAjiDzqcOE4dKVHHqlr7psaEG7QqIybpCZYY0zYkF4ax4VTTC4PpzqZNnm3Gy+9rFx3Cmu8QYVCOXE14KhtKZRdHPp+pAPWsCjH3O8HhqmcYdjrdujvMtv5JC91BiPNzQdmgT9rbSKqDfUfpxmqBl1tQzFtYYjXo7D3yR+4d/eylWk98oaDAygIzRWP3H3ZirauVl03+P5iKvVRDbWCeZQNm70K3zV8fVwEe6m2lJuWRnlxXL2Ui74oNKNScU4l436EPrO5leHtuHb8M7QNNi+CxunshjkCXI19DFfd6fcW6xsef1od3a4xJzhrtKOYh7gbSD2WYwfAxaW1UzmBylppQjc8i4ZCPCnG2SmvUzQFHzBeiNvVQK8gKvVbXijwTGHB/Wy90pHK5Dgevez+5eOz5PO9My3SN1cf850rBa+DutumZ8LKaUUkUPxm6hh6U1xpArdlCM+k3INMQ6dlnANAxhjmnTNxtL7Bym9uMDVkzwREAo/7MLzMMzhBPPU7KCnrjZtGWWgkyvZTY7lJ4a8LcHzyg2gKp8fmAvZiHFhi9aoAwgpxZljvq5oglTYc2iu/t4AFAmSk0vTDwQFObuEu/5JecRO/+itrFgXx3xk/E3FoqMij3kf8Dll+0859pYXp2EjX7diO2bh3djbEZplIR0p1ESZI+MpsmG3ZCRIa94Psfq31hpPtf5BhcqAakfiOqtpJswiGnAA6PiZtMmD/8H2frAAkahjlswlfQI8md74Wyq9KYdHbUtqEOqsk/nLOFtl9sqf7ftY179N5PPcIhUYie6H0E
- gG6LLmxe
- YySCqTeSnDkat445oQNgZzbgLcMpTKR5caSi3bCM6LEvM7n1iHxoy5L/RcjJpUGQmBssY7HsvwxdjHxx2WKcBdmrWLsV5s7ap2sHGvtdaBiA98b2npoXpM8f9l+P+1IFhvoHYltGz+6rRDnUl2LHSd4CI6sq50TQSjv2qOGpua8hCtxhkB68vq/ENfd22gKmNBJ9XfK6ybbJGE62Oa17Mu5rmT7Xlkcx0nfXeAyp5FnP9cTIH464fGeDmy/9MdwaoI4MJkUIWyBuyTWIXjW0jyC6NRh79iWtxs+rlfP2Jw5qA2XZdzuWbUFGTxYH4AdqjKtqPZ246nJJYn7tLsp+GsXVpLMlodJcLiv2bINR97SoxN1qdni5Ta4EqG4qoOTBALkZjRi43WMXCfwUTQH580K9+czEfGCTvxL6iOyYRX/lUuPBJcbucMg2MGDS3rqpYSLK3fcyx85Gi9IolfRkt5DTxRt/14YpCVA/7dRh9S5r1iXo=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AE5B31C0006
+X-HE-Tag: 1795282169-437176
+X-HE-Meta: U2FsdGVkX19iyPFeA8K57ZdXiBo0sHCL0yrb+EBDyAM6ZmaIWREtv+9H51eefToFAsGgTSOXxALFxW8ZRAReBxVVyyL+oNAFCfnNqX88nsjLpAJ6HvHDgRx7OIe1yLWm8FCWrjUzVHgeqxXBpU1odVWOLa/PdADZxgcag1mvuSir1nuVffhTed2pt7o9mc5vLnBYAVHX4b32nbb++k0/W+E/qhOo96wz5HfG71lMlzkzhzVNBgG8Gvk/JPcVWWdtL4QkyRPc/BqJH2wZJ6hyhGVWc/03S7kVcihb1BZlZ7MOdivXblo3r0GLeWenG1MaRDKzh5fY2doOQzrIfeTmqxJfhFuJ+jztyi5n7WKsGdKOa38BLKqv664OV+/alcI1awvaIs/+HqviQS7Qyg6IaOpn5E41GY+YBJHylLoSU7EhSdkf6efZH/gTlvdrTEaWVetfzfb6n/YuVGsLIjLUGii9fiQgOexLeHVU7EEPQBbFDRg5NYSPM2+Cda7qQQU8Gb1i1oZ3OdUwThG9fpWgXQthJF3znJL6gRWf6C8wBHlijxXhAOI2C7ASaGa1qSoXYx9DDz6D4UIeZfW/qZ4hPlUaEnyHLNwiGsPiGAz/JA5QFP/rTK8BxthEwgGRbUEuaxmQinOoIXqZtouycUaCDHtPW1/ASCXotNBBVUSSARlHKG8uMD2d5Snb7viDdkfsN0rAutwNLTX+QdEwuuqj/+milwUotRV3GScQctBHZzsqjpFeyaZnwo/SEvz5vAmq2EZ4ylryxufFpXmyebwP5v/k8ECzfFkkWshEsL4GdwVIYFsOqHP9mSmH5ECq7NoNkq0iAIiFhneDNcdx2P9v20Xb2BHrRHI8v/BVO2cF+UIgHUTzVZPTTuKs0CKNeJlV40cBszpaQVIvX2d+qZDCoQrKwhceCfQ1lhhHrR/znyibiJ4H2i0u9H0cu82zCptlZyaWTlMLGs0tYVcIpHN
+ g9MFQ8gD
+ 0fPjSP3C++26IB0t3lnN9y15SrU4gDQi3VIfCjb8tmiTPV65QnVu7fM5e9Gy9i+7h1zXu+B22osfN/wkMeed9nyceZTmc8kXGp8sCiNz1byRcJycnNzkZQT8E4GdNKxd4Q0Cmjr1o37YCVpWc/+FF+Y9flJzw78twIMjQyN0sS4xP4qKUrZ22YlfvhFM5L+yeKrmpandGygZW6Edb7Ma850IisclTPEVgojPtOWzEizkzrRtleK9/YSFkeLvGJyDYoXyX6Fhq4yoM9sdyc+pRXU+tzXz0+SF0LswW8E3j/Db6DwI6zLnfoaJJkaW27dMuvPnvFStdLhtttm0cWlTG/IPuXeudEIUmtV/+TcxV5Ur2jQuwgu+kVIh/k3UV4LfwdQoj+0O6PAH4fL0naBvxwJipiWdteXu3m/K+KQ5nqE3hEFqwh2lrrvgW965maVZBo+xnyJn1zwLBGeObI3X/NBISQ4kNlTvArTQJzuKC4TGJhLsDjutIq6xGVIn8aVdO9E0pC9uwFrBpv4Ed63m2guaG7qfMclu+GEGa0cvvOh1EKZ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,41 +97,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Aveline,
+Hello Yifan,
 
-On Sat, 21 Nov 2026 23:39:16 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+On Fri, 20 Nov 2026 18:56:26 -0800 Yifan Feng <evanfengff@gmail.com> wrote:
 
-> Hi SJ,
+> kdamond_wait_activation() cancels damos_walk() requests while all
+> schemes are deactivated by their watermarks.  But it returns without
+> waiting when the watermarks check interval of a deactivated scheme is
+> zero, which is the default of the DAMON sysfs interface.  The kdamond
+> main loop then runs with all schemes deactivated.
 > 
-> On Thu, 19 Nov 2026 22:07:36 -0800 SJ Park wrote:
+> In that state, kdamond_apply_schemes() finds no scheme to apply and
+> returns before it calls damos_walk_complete().  The walk request is
+> neither completed nor cancelled, so damos_walk() waits until the
+> watermarks activate a scheme again, possibly forever.
 > 
-> > Set 0.5 milliseconds per second
-> > (0.5%) as the default auto-tuning target memory pressure ratio.
+> For example, with a scheme that has the free_mem_rate metric, zero
+> interval_us and a high watermark below the current free memory rate,
+> writing update_schemes_tried_regions to the kdamond state file never
+> returns and cannot be killed.  The writer holds damon_sysfs_lock, so all
+> other DAMON sysfs writes including "off" fail with -EBUSY meanwhile.
 > 
-> 0.5 ms per second comes out to 0.05%.
+> Cancel the walk request in kdamond_apply_schemes() when no scheme is
+> activated, as kdamond_wait_activation() does for a non-zero interval.
+
+Thank you for finding and fixing this issue.
+
 > 
-> > +static unsigned long quota_mem_pressure_us __read_mostly = 500;
-> 
-> With a fixed 500 us target, maybe a longer aggregation interval also
-> lengthen the PSI measurement window. For example, if the quota ends up
-> being reset every 2 s, should 1000 us of stalls still be compared 
-> against 500 us? If so, the tuner would drop the effective quota
-> to 1 byte, skipping pageout for the next quota window.
+> Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
+> Cc: <stable@vger.kernel.org> # 6.14.x
+> Suggested-by: SJ Park <sj@kernel.org>
+> Signed-off-by: Yifan Feng <evanfengff@gmail.com>
 
-DAMOS quota is not reset for aggregation interval.  It has a separate interval
-for quota reset.  It is exposed to users via quotqa_reset_interval_ms
-parameter.  The default value is 1 second.
+Reviewed-by: SJ Park <sj@kernel.org>
 
-The quota reset interval is evaluated for every sampling interval, though.  If
-the sampling interval is tuned to be larger than 1 second, the problem Aveline
-mentioned could happen.
+This patch is applied to damon/next [1] tree.  I will repost it soon (~1 week)
+as an mm.git merge request.  So, no action from your side is needed for now.
 
-But, I'm not sure if it could be a real problem.  Reclaiming more than expected
-is a definite problem that can degrade the system performance.  Reclaiming less
-than expected is less concerning, as long as the extent is not too much.  It
-doesn't regress something.  Anyway this is a best effort proactive reclamation.
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
-We could revisit this if it becomes clear some real users find it as a problem.
 
 
 Thanks,
