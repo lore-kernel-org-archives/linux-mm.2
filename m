@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5040606A325
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 07:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF32D606A32C
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Nov 2026 07:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RmtGv7CJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T2zjd5lz
 Received: by kanga.kvack.org (Postfix)
-	id D895A6B00EF; Sat, 21 Nov 2026 02:45:36 -0500 (EST)
+	id 80AC66B05B0; Sat, 21 Nov 2026 02:45:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D39B86B05B0; Sat, 21 Nov 2026 02:45:36 -0500 (EST)
+	id 76CD26B05B2; Sat, 21 Nov 2026 02:45:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C50086B05B1; Sat, 21 Nov 2026 02:45:36 -0500 (EST)
+	id 688F46B05B0; Sat, 21 Nov 2026 02:45:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F6806B00EF
-	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 02:45:36 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2BA24C039A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 414256B05B0
+	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 02:45:37 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 37BC81A0377
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:45:36 +0000 (UTC)
-X-FDA: 85458341472.06.314C46C
+X-FDA: 85458341472.05.DE6BCC3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 87CC1180006
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9368680004
 	for <linux-mm@kvack.org>; Sat, 21 Nov 2026 07:45:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RmtGv7CJ;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T2zjd5lz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1795247134;
-	b=Ez6pakC3kq2RsDP2fJTZKrfOSq+PF+pTRPc7rIC02IEyEj1GVwneycctUhxB5/7uLiGyZG
-	5pJDqkz0JSeex400GtFI+Rqc/5ZQ5Xq2ez+V+ZZmjeTZLiFuW1AQWpzy8UL7qEOKGr+fe/
-	cmLNw04/kvQiGSOq48+a4CGNxwt/qj8=
+	b=d+sIUXhr3UXZXDSOlMDoKnLo68ClYSmEkv2uxg19LTfzQyaM+97G8IcfvQOmcJuhw6X2vO
+	xUZex5dkHoBmQ6o0vmR6X5LKdLbaY/QqM23REe1P5L3skRMpJohmQQRNLDA4Ml8KAEN8DH
+	OOWPmJjNSoYHZ7z5q7WJelT/llVz2ik=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1795247134;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WzJaMs2T6e7SVplt6j1n4FowiofI86G0Ejnb7luKxuU=;
-	b=2RdYUtBZNS08chhHvoUwCILOzq1myNI0FUANP9BtLeQV+0wR/BUGD/XB940Xv9OzCgPZJz
-	PmWusrF06hitqw+L6L5NNccKKMSZDtbhBaWa78qO5UbR/8q3NjnqM3+OB2422f2LGVNkqw
-	YtIhe7t1pQcysU535JCc4UyT0e9+s/w=
+	bh=VWT6EOaZJkGf1HPX4V9lRUEg8cUvv4X1pw3eaSYG/wU=;
+	b=7RdoP6DC5sSRVh4a1ZMWIm+RvPlatYPLtZ+xMtEvLDuQKrkHCnO5GV31pKf9u4826cExIE
+	IhqpIFXOKmNBoQoBVq+6qP/XerxxZvKfgvbBKr464yGKEBKXss6/ZyocHcPjJQL8bhwryF
+	UhKAOtTPVCA1/BdCItcheZnoOsTVdAQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RmtGv7CJ;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T2zjd5lz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4418360BFB;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0855A602D4;
+	Sat, 21 Nov 2026 07:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CFE1F000C0;
 	Sat, 21 Nov 2026 07:45:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27961F000C4;
-	Sat, 21 Nov 2026 07:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795247133;
-	bh=WzJaMs2T6e7SVplt6j1n4FowiofI86G0Ejnb7luKxuU=;
+	bh=VWT6EOaZJkGf1HPX4V9lRUEg8cUvv4X1pw3eaSYG/wU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RmtGv7CJ9anPybwJ4a6mmf/6LE/eUc9wg0gsGyfAIibyWRqqaqEzLUAZUlMJzsQkO
-	 VQxLxyp7dD0fTVwT2ohaGcAqDlhAUHWTd9zqaMSCa8bkMH5YrvWDIpYHvR+9art0fl
-	 ZX5BEzbqFcFzUBiJwtC4Oc4Mji3fbntdNc2u8zF07SjdHukdMMOqH8jre/z4ZUtUi6
-	 irIc1s502lIe1AFk+zKtRrIIM3EobPExY+yf30WFMVdTk6RxlDjy9rvvWIVtBqF8rN
-	 Eqvtv31wb3aQVPeDgHFG7N8A0AVh3SApzi3XODtTK8veDoBJXgC7ZZ3X1jXn/qSxjx
-	 8XBOYHuVM2VaQ==
-Message-ID: <sashiko-outbox-226795@kernel.org>
+	b=T2zjd5lzizPuC5XLM4B2D8unXuxWcsyabBcY/VDIjkwspMfVayFSwOxspAEhG9gPe
+	 Gv8wUd3/6LXnSqbCQX88kLFjesG1u6A8Alnope61TqiG7doecovB7snbbfJiIYwUip
+	 3/SfJ3t464YAUGy2sIedY3RSQZJTBDde79hteTv7fwsR+OiDLlp17tmcf4QNSodCgL
+	 D+0mtqoFbOkSayuXMbn+emrqZb+vR0pZw9m0uNU3ZB3p8FyhLtrIODJ491QJIdRlLU
+	 xE9yKxJ89WByDKKVT6egGqZnquwsEwYEvhZaxaokCCr0pwED4ADQYIMQlQ2AM7BAVn
+	 5IBfIMaFld1wA==
+Message-ID: <sashiko-outbox-226796@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] selftests/mm: fix false-positive KSM fork test
- by dropping init_global_file_handles()
+Subject: Re: [PATCH v2 3/3] selftests/mm: verify ksm_zero_pages is not
+ inherited on fork
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?WHUgWGluICh2aXZvKQ==?= <xu.xin@linux.dev>
 Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, david@kernel.org, donettom@linux.ibm.com, linux-mm@kvack.org
-In-Reply-To: <20261120074445.41446-1-xu.xin@linux.dev>
+In-Reply-To: <20261120074459.41517-1-xu.xin@linux.dev>
 References: <20261120074230.40269-1-xu.xin@linux.dev>
- <20261120074445.41446-1-xu.xin@linux.dev>
+ <20261120074459.41517-1-xu.xin@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 07:45:32 +0000
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 87CC1180006
+Date: Sat, 21 Nov 2026 07:45:33 +0000
+X-Rspam-User:
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9368680004
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Stat-Signature: fetk34o3ekqg4g9cwhqfshspbbn3bo8o
-X-HE-Tag: 1795247134-16853
-X-HE-Meta: U2FsdGVkX1+yPZfXewTb0x5GIk6lvJ9fCVlSS8MBdSAmVYtRtPDnbBaxDo7e3Pw/W+t9Whixb0zPkBEx+JNR0oS9sc90CPcxpR/WVbD8M41xBZcExD2r4Pi8Unf1QY7Y6cG7DNan8MdggztFIWVyyWdSfHSskMMAYVfjxxZQvs/nla+768ybCNXlr7mf7SiTkCKv4iHe2elFkRtqDn+4swmvdwj5QxfbmsOOtmJIjSBo6QpmWKmrYYT/wWTWMjmr0wcvtYkkDT1ibYJMLFpHum1DqW4I5/QPOumNpmhYGjWyhGfbRz+gX2BA98x36+hM9akN8eYq4WXCVd/8S5fwuKr1vU+ddxgBGh5kB6nIlxOCWCQymvB+KkghYMILb80vAfewWRKhsO9GC2rxwS/E8x+VELmcbllPxSYiuKdyvf8BtpH2YgpJL66eNw0rIBeQHwOrvNI+gaBRoGxI26TQd55CGbC8S5WFTrzqiThEke2gSGOssB1n+cHqLmVGCmohGmQontOC1ChLYGEV6BNJx9Edne27xmdLvte22B4AGNQDVFGR4ObNJY8lIfPPz6+RUceJBhxmILLjXkSxX/vp4oPOkmlwzaenB5Ct+AFgfa0R7m5r+4JUj58GugiW9braH0BsKiPndhryBN/JzG5QwXt/MmE0RaBCDt0z3M4JwRJddkC5cnZ0hAI9Y1EBypLk4Vk/ENPucs3hc87Wmdhv+CKaOJxwGNlxpwi13KUCjLdacFsIlm28GQifthvavpmk/thuqjMyZPhGT8Q1AFvnpVy068eQNuffgqqRMz5M2V+QMHD5orwbrcEinjCx0tWQX7mOwFwftCyCFGP0FOzcLmI/peRDKsstNgy2L95RWHNPmYLiEKUZLPzsdgprDqylHlXIxNGLE4cgxlbSC+dmprD+BLdb6B1E6aYfd5DuBDcvx2N1LWzJpPbOrW5aRXKl3YQo9jSyxqoib15CUt1
- +gEtVVEH
- xy3+xctBvGq/Fg9pruircKalPiuGlD8zzder9sHVhkOqPWc0T1OEMyDxeJgPl1BooOXMy4jScgWqnGf5uNpdVz24fsLw2s7iJyM6CpFEuz/l2nOO9nmlk+HmW7eiIYkbBihR12YsKEU9kKe2TyXixQEdny8DYClPFc3wCbpUMPZDOS/pCJmm7jXbX0x4FtMbAM/IDrorvMeS3ymTT5zNRakZHhxbHcXjrgqHjXBCcEWwH240Kf/60u2meRlKzSav8Q+UmRuu9TADVV3OdqduAqvUlIxzssBA6ZhS6hJoZ4Lo8Thq+Krrewm6NFNldHgA/EQ2XGhW6g98lnyG95PV2zBBvLbVLRP8Kwvp1HiKvYiMzrtI5waS270ESOSmblnq8tuLRE6yLUwifylq0SvbOi8mdKKzAACwZHGk/hoMdeSGuxQD4tZi+X2rNbg42On1WdUhfx+SL/lfpYtlNZoheyqaSUNldi0JAQBOvjK9KiSuetZU8kDjfONsnwOJaSKKmGafeElatYjHG64S1v1+8Q890IoOu3RfryxvnqdXw1qFUv6vHS8rvkX0TyKE4Elt9FbKwaHizo2zCHvxEUaQ/xffduQT3nEX4yIaC2Xv0MbSTPNPqwU78UlnWJs5f81r+CAgCglevfLMBZKJwW5eyMwHI1PDyyojkztgclksn1GL2a+4nXtcwOg03VjNMlga0yRAD/l/zpEWm4AgpehpCelT3PHFlMQSdhCKgzcxr0QjNEiGgQUVNQrSI3XASwJpSTeK1s/RfcIIe/g91GY44UahCSP4Rc1RS7OQooJx4jPRojlgUOtO+1MslPmM4ftBwBp1qYVUlCQLp0wi28s0B1roz8XeILazd8YcRJUPx+2bYsItkcm4HFeXqTQ==
+X-Stat-Signature: a3xojtzkt7wrzic4oeuimcojott3ojqf
+X-HE-Tag: 1795247134-265342
+X-HE-Meta: U2FsdGVkX1+NHHf4J0SqsR5cGprWX3uYqsGbyE0AAUBLli0PZRZ5rYTUWAcJY6NKw3GkQNiRtLzKjMda8xJ6e3xZnHwmix/dqivpIY6a2zPDG0WNtawi77vUADKWrxDH1U66SzAsvmf1fHszJICXgfw06cMSbyivWJDg7IOHjV/1QR62bRMtOT1+C6d3Bew3qnxwy9Th3g1gSZWNIUtK+kotKqmz86lPrl7O8hyYY9HSl1qdZ3J6pb9+1FQuFFrZurrCPX/TYx7jcvqikGi/8NX58RmNSxV1vtjl90Kp9NBm8IjfIgx8qQY3pTq8uUNNM3Nahq6MOFlpbnBZx55LUGLlSZvINudlIB3ybwezExbz/IFJkbGCQFqoupPfPL2/gzoNEi7z9EgcrorQbpQg91nyaKf/OKHr040IX0Ch9CH4X54RLWe+2yQg9zZVAT+RJ1Ubicvc+QC3XdbEqG/Md32lnvXmWUP56mMMVWD1lkY6yizZ80J2fi4VkDtdRqTQ8CtPDQv3EooKLccteKZAKBblYBfTzM2LyiVnUhViw1BmtiN1oOVZ6Yenp4DF7UMAFQGbwV0UbnF9rmN47Li0ir1P6hyco3wS0eyuVkgKG7kfUIvKU37PPbZ5EAOaWJm++u7h4M6JExHx6m1V5rY5KnKjz2YV/yfVW7QsT76DS/8+gnAPNzo+WUjlYOOaWLVH6XPYZ49hnsDkS/yKQYm45qX7XjmY8og9L0AumTnUue0QZ2n7bhJ/0eSk+j8oseApS80Ug0gCrGKxEdzmrCyCNWAzYLJ20WDaBZ+8cTWhr7bmPyLa/H/wSiCQ02DaXGnqkjZWrRQOiypRK2FNXJkfp0CJYNiX1ddUsrIajrASx49lFGsdECrHwRTGPyH1nPpg+NMAWHkxE6za2fzx8NhElwzYJ0JWfkWI/K1ix/+GX1lLJXA+lAX8sdQVHn3zGvSLJJ3Bpy30v//9arB55a5
+ ApMWRDB7
+ NRzS27jltb8FxB+APuZLg+9HfOZK6c+1P2kvujxMzjMScXz7b3lC+C6ZUJkGD5gLS7QtZFBck3OFwZSTklP8bXS7FX/RK1nTOijyXvXsxmf+U1TFnXps5TDMfw2TYHNXuhctND0PAonlX+ybL0QMh2ZpGZ6wd7jeEKKDLWzN6EfS9knzA2aZqlMzXJkaW53Sda3vUQF9YaaOUJX26NDYL70hxD3Qppk3ufcl0WPtrfKnoSJI9f3metW0QMPNlwzV9+fQgfingvhYD2TOVOd9G6WsYftbrQH/b6UiFrkSKqspmFs3JsVXbkkkRvz80NqAhIbogPN/P0WXPpu2f+eQRYk94LTsAJ2GvuooNJ48Q4miJLpdSotulGAJAwt4kCKX017UxqzNsOgGrkV29CN7brEOIzRQiaF2UKoHLM79T+SMV8Hg6OhHTl8Solfdre/CaGHlZ7txohcXE+GArQcwwxyFFn8zTHA9UZmokAUpkAarlaZvSjGh53g4Hb/WZWNQ+tZZ8h8ZAsp65fWyUGUBkjBwFKGaWCu9GfsMABmmObLIj8XUQQ4FlDFEup79xuOL2PZ2JquRgMGTpeeyLD88sVVyhDBelMlcsZdkzARyApqbvQDHz2pskUiRXZtgUOPfQnHEj0B8UjgVmYlVHycHfQZ+qcd/DydwlJi42+vGZ+U0LozCa/tdTOKs1igjxqvXujjZ7bcFOfa6XMT3+guaUB+BsoBI7eqr/KsO3U0CKWjGjmTL3d5hj6Ewvt2lj6jlk5huMCNMtpXjuLEKVev+rKoiD1H0iKkTP7959SyiXWcFTCfBfsVcmUjH1eRdh5HvWtsmv7HzI7WG30cIZ+Q2HyMTARciQAt9tTRMHuZ4dtpF38NHXJ3mvsKYhqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,91 +94,82 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] selftests/mm: exit() truncates page count in
-  test_fork_ksm_merging_page_count()
-- [Medium] selftests/mm: ksmd race across fork() in
-  test_fork_ksm_merging_page_count()
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] selftests/mm: unchecked negative error returns in
+  test_fork_ksm_statistic_count()
 --
 
-commit 320ca42efa1f04c6ac42a52e155a4cd5bc860e0e
+commit a4b057316a412b00cfd864404acbc77cd671159c
 Author: Xu Xin (vivo) <xu.xin@linux.dev>
 
-selftests/mm: fix false-positive KSM fork test by dropping init_global_file=
-_handles()
+selftests/mm: verify ksm_zero_pages is not inherited on fork
 
-This commit removes the init_global_file_handles() call from the child
-process in test_fork_ksm_merging_page_count() so it does not invoke
-ksm_stop() before reading ksm_get_self_merging_pages().
+This commit renames test_fork_ksm_merging_page_count() to
+test_fork_ksm_statistic_count() and extends it to verify that neither
+ksm_merging_pages nor ksm_zero_pages is inherited across fork().
 
 > diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/te=
 sting/selftests/mm/ksm_functional_tests.c
-> index 135191f99962d..c20982b0aff0e 100644
+> index c20982b0aff0e..321f8abc85f91 100644
 > --- a/tools/testing/selftests/mm/ksm_functional_tests.c
 > +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-> @@ -670,7 +670,6 @@ static void test_fork_ksm_merging_page_count(void)
+> @@ -655,40 +655,57 @@ static void test_prot_none(void)
+>  	munmap(map, size);
+>  }
 > =20
+> -static void test_fork_ksm_merging_page_count(void)
+> +static void test_fork_ksm_statistic_count(void)
+>  {
+>  	const unsigned int size =3D 2 * MiB;
+>  	char *map;
+> +	char *zero_map;
+>  	pid_t child_pid;
+>  	int status;
+> =20
+>  	ksft_print_msg("[RUN] %s\n", __func__);
+> =20
+> +	if (ksm_use_zero_pages() < 0) {
+> +		ksft_test_result_skip("write \"/sys/kernel/mm/ksm/use_zero_pages\" fai=
+led\n");
+> +		return;
+> +	}
+> +
+>  	map =3D mmap_and_merge_range(0xcf, size, PROT_READ | PROT_WRITE, KSM_ME=
+RGE_MADVISE);
+>  	if (map =3D=3D MAP_FAILED)
+>  		return;
+> =20
+> +	zero_map =3D mmap_and_merge_range(0x00, size, PROT_READ | PROT_WRITE, K=
+SM_MERGE_MADVISE);
+> +	if (zero_map =3D=3D MAP_FAILED)
+> +		goto unmap;
+> +
+> +	if (!ksm_get_self_merging_pages() || !ksm_get_self_zero_pages()) {
+> +		ksft_test_result_fail("KSM failed to merge pages before fork\n");
+> +		goto unmap_zero;
+> +	}
+> +
 >  	child_pid =3D fork();
 >  	if (!child_pid) {
-> -		init_global_file_handles();
->  		exit(ksm_get_self_merging_pages());
+> -		exit(ksm_get_self_merging_pages());
+> +		exit(!!(ksm_get_self_merging_pages() + ksm_get_self_zero_pages()));
 
-[Severity: Medium]
-Does exit(ksm_get_self_merging_pages()) truncate the page count to 0 on
-4 KiB page systems?
+[Severity: Low]
+Can negative error returns from ksm_get_self_zero_pages() or
+ksm_get_self_merging_pages() bypass the pre-fork check and corrupt the
+child status check?
 
-test_fork_ksm_merging_page_count() merges a 2 MiB region, which is 512
-(0x200) pages on 4 KiB page systems (or 256 pages on 8 KiB page
-systems).  Because exit() and WEXITSTATUS() only preserve the low 8 bits
-of the exit code, an inherited count of 512 is truncated to 0 and the
-test still falsely passes when fork() fails to reset
-mm->ksm_merging_pages.
-
-Also, does ksm_stop() actually reset an inherited ksm_merging_pages
-counter in the child as described in the commit message?
-unmerge_and_remove_all_rmap_items() only decrements
-rmap_item->mm->ksm_merging_pages when removing rmap_items from
-mm_slot->rmap_list, which is empty in a newly forked child.
-
-A later commit in this series, commit "selftests/mm: verify
-ksm_zero_pages is not inherited on fork", converts the exit argument to
-a boolean via !!, but doing exit(!!ksm_get_self_merging_pages()) here is
-needed so this stable-tagged fix works on its own.
-
-[Severity: Medium]
-Can ksmd race with the child process across fork() and cause a false
-test failure?
-
-mmap_and_merge_range() leaves ksmd running in KSM_RUN_MERGE mode, and
-ksm_fork() adds the child mm to ksmd's scan list:
-
-Parent                            ksmd
-test_fork_ksm_merging_page_count()
-  mmap_and_merge_range()
-    ksm_start()
-  fork()
-    dup_mmap()
-      ksm_fork()
-        child_mm->ksm_merging_pages =3D 0
-        __ksm_enter(child_mm)
-                                  ksm_do_scan()
-                                    cmp_and_merge_page()
-                                      try_to_merge_with_ksm_page()
-                                      stable_tree_append()
-                                        child_mm->ksm_merging_pages++
-  Child:
-  ksm_get_self_merging_pages()  <-- reads non-zero count
-
-Because the child's forked PTEs already map the merged KSM folio,
-try_to_merge_one_page() succeeds on the first scan pass ("ksm page
-forked") and stable_tree_append() increments
-child_mm->ksm_merging_pages before the child reads
-/proc/self/ksm_merging_pages.  Pausing ksmd by writing 0 (KSM_RUN_STOP)
-to /sys/kernel/mm/ksm/run after mmap_and_merge_range() and before fork()
-would avoid this race without unmerging pages.
+Both helpers return a negative error code on open() or pread() failure
+(for example when /proc/self/ksm_stat is unavailable, which
+test_unmerge_zero_pages() checks for with ksm_get_self_zero_pages() < 0
+to skip the test).  Because a negative value is non-zero, testing with !
+treats the error as a valid positive page count before fork(), and
+summing the two signed values in the child either causes the test to fail
+instead of skipping or allows a negative error return to cancel out an
+equal positive page count.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120074230.4026=
-9-1-xu.xin@linux.dev?part=3D2
+9-1-xu.xin@linux.dev?part=3D3
 
